@@ -1,269 +1,170 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [61.152.208.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391C63D7D6A
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 08:58:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64953F23D0
+	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 09:01:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.152.208.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777366685; cv=none; b=CazOn8UQaNQK7BUnB7aCJdzk8OsE5qaThjF0fyoLgMyiaRqupIvmdY9ZezSBY5oZFXug8GxZoqz7rg/k+6gRoE6/EHMNaBwwJeZNtl4hUxaTbpC14yTt7dnu0wGTNQipcIPT4NyhbiT00eLJiM8dZPA1r5CvGzIvFGJ2/YZGbOI=
+	t=1777366880; cv=none; b=YhLy2jRZs8uQrUySTcyDiNR2MXTpaxz0y6pKeI1ZVB8KBt35fntZ/3uAq3QVSGKZhowLY9UuElTla+AJ0FGlWia4oSkEn7GCfoaal/Q9jAjNCflpAHk/kdr9fSZ+17MSwQbgIMfqO6CCw07kHMqZEhIJZTbJVg8nFupF/QuudO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777366685; c=relaxed/simple;
-	bh=uRW8e72Rqzipki+9LHRLNLqQmu5KdCJEOG4HG3wjS9Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M7DbarSHyN2jjNUy0UADwqrpRhxGHtxgV+yFfvmBINxOYE27cl35oxlYnsFK/WzvsFQbGxvEKRqg2VoqatSppKVd0KWZqnHjVMVEDDAvRGZatogPb14ozJJstwVnN4F0shV6Br1apHzYClQeWEgP8AlkON+qaZaBLK9Ji2pSVgw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=E3wtYt3e; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=OAwM32SR; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="E3wtYt3e";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="OAwM32SR"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777366682;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=eq86QjeYlD20o4XVhJa8zSjeSJAedvnhgfqIHlBbJ8s=;
-	b=E3wtYt3eUxBGj12tW/gIcz50/XmiZPJMM0HzbpTs3U7o5qgwidg+7DAfBSV6siDD0Fi8Gc
-	FnflyB0U9xEIiTOQof7fTtKlG09VTJytbYGkZHT0xcumbzFFCR41j4w/vxWJxp7rckVqsB
-	/OWxwKlpx1xmzcNHjGCmdSCT996c5+M=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-466-p-bf-w2yMfu96L6kMpKfGQ-1; Tue, 28 Apr 2026 04:58:00 -0400
-X-MC-Unique: p-bf-w2yMfu96L6kMpKfGQ-1
-X-Mimecast-MFC-AGG-ID: p-bf-w2yMfu96L6kMpKfGQ_1777366679
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-43efc93e4f6so9028880f8f.3
-        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 01:58:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1777366674; x=1777971474; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=eq86QjeYlD20o4XVhJa8zSjeSJAedvnhgfqIHlBbJ8s=;
-        b=OAwM32SRVUIL37zmjCtBd49J8Q3ecj9VpYAuKE/n947vXGaniH1Gyy7cJR5mQw6Ake
-         SB1m/ewoTHsEUYt1VHUn9zsf4PPmZd1nM5e723O61RdUCV/QGLjO0bHDdA9hct7VqlXS
-         LrX2n8Z4QVhp9fqRVaHTzt+nLpAkBgNBg3YcUcQqWb0L25CIOY3Yi62EKmjb3f/d/INq
-         sCznr/pjENHq5VYyhAVneyWUyrVA9FIPdUBMXBdg77xnx+sEPLf6DT0yX57SREB8bRcH
-         6LV1DDZldR7O3ja9+Mz8SCaWj+zWqLj8Ek/tCGS1zBni044cG9w8i2Erq18CTDGPlTUy
-         yq3Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777366674; x=1777971474;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=eq86QjeYlD20o4XVhJa8zSjeSJAedvnhgfqIHlBbJ8s=;
-        b=M8oA3vViuKxYHZJ9iAxwyvITiptLNJApIgq3k9bLcKTLCQotO8+1KXcMSfUe8dEAja
-         O32EjLgR7qivYtHbhR3ZslWyG3wmxZZ1YASFz9URWah7UtjLqgPwWNjQUhHQDWWKT1gf
-         tFCagN6P8CCR4p31qD4P3HAgrGW5XW9dgI20ZcSyhgL+rBoywM5N+BdggMWVD99418pP
-         CammDAzfdrwd2u0wCXsLjMQ46egYtnA78UFFIpiE2aItYJWXeobWGTUpkHa5wYUMKMZz
-         r6FrOpCdG3aL1EcP41gK8WzIQdpqO9oP/++MVWzbKoR82I93BaXehtRCGsGPizOYXOhj
-         Kzqg==
-X-Forwarded-Encrypted: i=1; AFNElJ9203u4kCzgFpgIOX6hOEmkunYxCZKH8ZhRcHcCDEcx5q+nkAe0SWf2jGDB/Ijttf0stP0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwYt2kyzAJ2Nt81l2rrLZ4gQY7bLo361y/ZiNCrbYU4L/yT1X+q
-	g5oM+Hu+M0NvVDj4q8/GE3l1XTHCmVkwRZxLvH9wZeB2A6pi8v2CJ3AWu2SN8+3MYuIXHGWww61
-	x+TaujKR9NA/kVHxyekZI0x+7RfMiI6In+3g6eVcIn1z/Y+8qc0lBfA==
-X-Gm-Gg: AeBDieutXznXoBZeZM0P3a/DP+ZXTog/yvz/duMzQUUzqaxKsrco/r5tM/4+C9KSIDm
-	ckFU2pFt3t3uHOx7INk3tRPEeJK3jLtqvXEeyq8c6xB1YIlZVCMnR6H8y2ox2OntGdOBqv+WRs5
-	+fjy2IL+rOtk99BeXrT74QDcXub0x8dO/xSzewl2c2WzhQMVwP5SXtGW76tGjtD8pThIw7KTNKO
-	hOT+XI3vdKy0HgOx/jHSWjKgXyHVO6pY23wpyaU4bS3ZxeyKSl4NeEaNMecm1M2LAsvWzbDLeIl
-	PGd+YztDsGTKd9kUZPEu+vdXh1PYjgsyAkUgmflVO4jSEMLlxRnAEHdPCTQzvHRzOGIC7v4fFy8
-	qo3YAqysYmNszDQQwAdKE7ZQO/nKMcJ7aZlppk3A4b39KjUcx6OnCz0wFfSY4vOdtCPOJ86GgCh
-	51JjGqkg==
-X-Received: by 2002:a05:6000:2481:b0:441:362c:39c1 with SMTP id ffacd0b85a97d-4464a913403mr3894582f8f.33.1777366674233;
-        Tue, 28 Apr 2026 01:57:54 -0700 (PDT)
-X-Received: by 2002:a05:6000:2481:b0:441:362c:39c1 with SMTP id ffacd0b85a97d-4464a913403mr3894514f8f.33.1777366673658;
-        Tue, 28 Apr 2026 01:57:53 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-16-204-83.retail.telecomitalia.it. [87.16.204.83])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4463fb7e2afsm4634086f8f.28.2026.04.28.01.57.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 01:57:53 -0700 (PDT)
-Date: Tue, 28 Apr 2026 10:57:47 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Deepanshu Kartikey <kartikey406@gmail.com>
-Cc: mst@redhat.com, jasowang@redhat.com, xuanzhuo@linux.alibaba.com, 
-	eperezma@redhat.com, stefanha@redhat.com, davem@davemloft.net, edumazet@google.com, 
-	kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	virtualization@lists.linux.dev, kvm@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
-Subject: Re: [PATCH] vsock/virtio: fix memory leak in
- virtio_transport_recv_listen()
-Message-ID: <afB2QCHtoREOV6ml@sgarzare-redhat>
-References: <20260424150310.57228-1-kartikey406@gmail.com>
- <ae9ilWoZI_-EMdWQ@sgarzare-redhat>
- <CADhLXY6APdmMQLSxN9b66pV5mp5sDwJRR7_BJAh13BaK-qoa=w@mail.gmail.com>
+	s=arc-20240116; t=1777366880; c=relaxed/simple;
+	bh=+43qLQ2M3HXvDRwJfWZZ6USu5YpnKlM3URYdkJW2yR4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EDVinLkSvXeAK6s6gXgR53kxpCvMkdCltawXYOTNgsJK485cUCqIiRgZppD0MkMLUR4DV2UIyaBPTvFJSaBZOB+2JdwuFSEpP1l/qngXp/p5AMVJLbdyHh8t2kIqfXKQzNZu/qNkSwA+R/u8ZkpFZ6l9aCYRHn5gYwNd2rmpeKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=61.152.208.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
+X-ASG-Debug-ID: 1777365730-1eb14e680f2b810001-HEqcsx
+Received: from zhaoxin.com (zxmail.zhaoxin.com [10.28.208.166]) by mx2.zhaoxin.com with ESMTP id lFKtIK0Ory4J5Lyu; Tue, 28 Apr 2026 16:42:10 +0800 (CST)
+X-Barracuda-Envelope-From: ewanhai-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.208.166
+X-ASG-Whitelist: Client
+X-Append-Disclaimer: 1
+Received: from [127.0.0.1] ([127.0.0.1] [10.28.24.2])
+	by zhaoxin.com (8.30) with ESMTP7effe6796d32c21aaca640dcc2b7505b
+	Tue, 28 Apr 2026 16:42:08 +0800
+X-Eyou-Smtpauth: EwanHai-oc@zhaoxin.com
+X-Eyou-EnvelopeSender: ewanhai-oc@zhaoxin.com
+Message-ID: <7a515afc-7cfd-4756-a8b0-bf7a8c0e7490@zhaoxin.com>
+Date: Tue, 28 Apr 2026 16:42:07 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADhLXY6APdmMQLSxN9b66pV5mp5sDwJRR7_BJAh13BaK-qoa=w@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/9] hw/core: Make CPU topology enumeration
+ arch-agnostic
+To: Zhao Liu <zhao1.liu@intel.com>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Peter Maydell <peter.maydell@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Sia Jee Heng <jeeheng.sia@starfivetech.com>,
+ Alireza Sanaee <alireza.sanaee@huawei.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>
+X-ASG-Orig-Subj: Re: [PATCH v5 2/9] hw/core: Make CPU topology enumeration
+ arch-agnostic
+Cc: Yongwei Ma <yongwei.ma@intel.com>
+References: <20241101083331.340178-1-zhao1.liu@intel.com>
+ <20241101083331.340178-3-zhao1.liu@intel.com>
+From: Ewan Hai <ewanhai-oc@zhaoxin.com>
+Content-Language: en-US
+In-Reply-To: <20241101083331.340178-3-zhao1.liu@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: base64
+X-Eyou-Sender: <ewanhai-oc@zhaoxin.com>
+X-Barracuda-Connect: zxmail.zhaoxin.com[10.28.208.166]
+X-Barracuda-Start-Time: 1777365730
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 4941
+X-Barracuda-BRTS-Status: 1
 
-On Tue, Apr 28, 2026 at 01:54:36PM +0530, Deepanshu Kartikey wrote:
->On Mon, Apr 27, 2026 at 7:15 PM Stefano Garzarella <sgarzare@redhat.com> wrote:
->>
->> On Fri, Apr 24, 2026 at 08:33:10PM +0530, Deepanshu Kartikey wrote:
->> >Two bugs exist in virtio_transport_recv_listen():
->>
->> Two bugs, two fixes, two patches usually.
->>
->> >
->> >1. On the transport assignment error path, sk_acceptq_added() is called
->> >   but sk_acceptq_removed() is never called when vsock_assign_transport()
->> >   fails or assigns a different transport than expected. This causes the
->> >   parent listener's accept backlog counter to be permanently inflated,
->> >   eventually causing sk_acceptq_is_full() to reject legitimate incoming
->> >   connections.
->>
->> Wait, I can't see this issue. sk_acceptq_added() is called after the
->> vsock_assign_transport(), so why we should call sk_acceptq_removed()
->> in the error path of vsock_assign_transport()?
->>
->> Maybe I'm missing something.
->>
->> >
->> >2. There is a race between __vsock_release() and vsock_enqueue_accept().
->> >   __vsock_release() sets sk->sk_shutdown to SHUTDOWN_MASK and flushes
->> >   the accept queue under the parent socket lock. However,
->> >   virtio_transport_recv_listen() checks sk_shutdown and subsequently
->> >   calls vsock_enqueue_accept() without holding the parent socket lock.
->>
->> Are you sure about this?
->>
->> virtio_transport_recv_listen() is called only by
->> virtio_transport_recv_pkt() after calling lock_sock(sk), so I'm really
->> confused.
->>
->> >   This means a child socket can be enqueued after __vsock_release() has
->> >   already flushed the queue, causing the child socket and its associated
->> >   resources to leak
->> >   permanently. The existing comment in the code hints at this race but
->> >   the fix was never implemented.
->>
->> Are you referring to:
->>         /* __vsock_release() might have already flushed accept_queue.
->>          * Subsequent enqueues would lead to a memory leak.
->>          */
->>         if (sk->sk_shutdown == SHUTDOWN_MASK) {
->>                 virtio_transport_reset_no_sock(t, skb, sock_net(sk));
->>                 return -ESHUTDOWN;
->>         }
->>
->> In this case I think we are saying that we are doing this check exactly
->> to avoid that issue.
->>
->> >
->> >Fix both issues: add sk_acceptq_removed() on the transport error path,
->>
->> Again, better to fix the 2 issues with 2 patches (same series is fine).
->>
->> >and re-check sk->sk_shutdown under the parent socket lock before calling
->> >vsock_enqueue_accept() to close the race window. The child socket lock
->> >is released before acquiring the parent socket lock to maintain correct
->> >lock ordering (parent before child).
->> >
->>
->> We are missing the Fixes tag, and I think we can target the `net` tree
->> with this patch (i.e. [PATCH net]), see:
->> https://www.kernel.org/doc/html/next/process/maintainer-netdev.html
->>
->> >Reported-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
->> >Closes: https://syzkaller.appspot.com/bug?extid=1b2c9c4a0f8708082678
->> >Tested-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
->> >Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
->> >---
->> > net/vmw_vsock/virtio_transport_common.c | 13 +++++++++++--
->> > 1 file changed, 11 insertions(+), 2 deletions(-)
->> >
->> >diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->> >index 416d533f493d..fad5fa4a4296 100644
->> >--- a/net/vmw_vsock/virtio_transport_common.c
->> >+++ b/net/vmw_vsock/virtio_transport_common.c
->> >@@ -1578,6 +1578,7 @@ virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
->> >        */
->> >       if (ret || vchild->transport != &t->transport) {
->> >               release_sock(child);
->> >+              sk_acceptq_removed(sk);
->>
->> Ditto, are we sure about this?
->>
->> >               virtio_transport_reset_no_sock(t, skb, sock_net(sk));
->> >               sock_put(child);
->> >               return ret;
->> >@@ -1588,11 +1589,19 @@ virtio_transport_recv_listen(struct sock *sk, struct sk_buff *skb,
->> >               child->sk_write_space(child);
->> >
->> >       vsock_insert_connected(vchild);
->> >+      release_sock(child);
->> >+      lock_sock(sk);
->>
->> IMO this is a deadlock with the lock_sock(sk) called by the caller.
->>
->> Also a comment would be helpful here to explain why we're doing this.
->>
->> >+      if (sk->sk_shutdown == SHUTDOWN_MASK) {
->> >+              release_sock(sk);
->> >+              sk_acceptq_removed(sk);
->> >+              virtio_transport_reset_no_sock(t, skb, sock_net(sk));
->> >+              sock_put(child);
->> >+              return -ESHUTDOWN;
->>
->> Since this is very similar to the error path of
->> vsock_assign_transport(), I think it would be better to start by
->> defining a common error path for the function and use labels to exit, so
->> we can avoid duplicating the code multiple times.
->>
->> >+      }
->> >       vsock_enqueue_accept(sk, child);
->> >+      release_sock(sk);
->> >       virtio_transport_send_response(vchild, skb);
->> >
->> >-      release_sock(child);
->> >-
->>
->> TBH I'm really worried about this patch since both fixes are completely
->> wrong IMO.
->>
->> Thanks,
->> Stefano
->>
->> >       sk->sk_data_ready(sk);
->> >       return 0;
->> > }
->> >--
->> >2.43.0
->> >
->>
->
->
->Hi Stefano,
->
->Thank you for the detailed review!
->
->You are correct on both points. I apologize for the confusion — I was
->looking at an older version of the code where sk_acceptq_added() was
->called BEFORE vsock_assign_transport(), which made the
->sk_acceptq_removed() fix appear necessary. In the current kernel,
->sk_acceptq_added() is already moved to after vsock_assign_transport(),
->so that issue no longer exists.
->
->Regarding the lock_sock(sk) fix — you are also correct that
->virtio_transport_recv_pkt() already holds lock_sock(sk) before calling
->virtio_transport_recv_listen(), so our second fix would indeed cause a
->deadlock. I missed that completely.
->
->I am still investigating the root cause of the memory leak reported by
->syzbot. The backtrace points to the vsock loopback path
->(vsock_loopback_work), so I am looking there next. I will send a v2
->once I have a correct analysis and fix.
-
-Okay, thanks for looking into that issue, feel free to chat here, or in 
-reply to the syzbot report if you have some new findings.
-
-Thanks,
-Stefano
+WmhhbyBMaXUgd3JvdGUgb24gMTEvMS8yNCA0OjMzIFBNOj4gQ2FjaGUgdG9wb2xvZ3kg
+bmVlZHMgdG8gYmUgZGVmaW5lZCBiYXNlZCBvbiBDUFUgdG9wb2xvZ3kgbGV2ZWxzLiBU
+aHVzLD4gZGVmaW5lIENQVSB0b3BvbG9neSBlbnVtZXJhdGlvbiBpbiBxYXBpL21hY2hp
+bmUuanNvbiB0byBtYWtlIGl0IGdlbmVyaWM+IGZvciBhbGwgYXJjaGl0ZWN0dXJlcy4+
+ID4gVG8gbWF0Y2ggdGhlIGdlbmVyYWwgdG9wb2xvZ3kgbmFtaW5nIHN0eWxlLCByZW5h
+bWUgQ1BVX1RPUE9fTEVWRUxfKiB0bz4gQ1BVX1RPUE9MT0dZX0xFVkVMXyosIGFuZCBy
+ZW5hbWUgU01UIGFuZCBwYWNrYWdlIGxldmVscyB0byB0aHJlYWQgYW5kPiBzb2NrZXQu
+PiA+IEFsc28sIGVudW1lcmF0ZSBhZGRpdGlvbmFsIHRvcG9sb2d5IGxldmVscyBmb3Ig
+bm9uLWkzODYgYXJjaGVzLCBhbmQgYWRkPiBhIENQVV9UT1BPTE9HWV9MRVZFTF9ERUZB
+VUxUIHRvIGhlbHAgZnV0dXJlIHNtcC1jYWNoZSBvYmplY3QgdG8gd29yaz4gd2l0aCBj
+b21wYXRpYmlsaXR5IHJlcXVpcmVtZW50IG9mIGFyY2gtc3BlY2lmaWMgY2FjaGUgdG9w
+b2xvZ3kgbW9kZWxzLj4gPiBTaWduZWQtb2ZmLWJ5OiBaaGFvIExpdSA8emhhbzEubGl1
+QGludGVsLmNvbT4+IFRlc3RlZC1ieTogWW9uZ3dlaSBNYSA8eW9uZ3dlaS5tYUBpbnRl
+bC5jb20+PiBSZXZpZXdlZC1ieTogSm9uYXRoYW4gQ2FtZXJvbiA8Sm9uYXRoYW4uQ2Ft
+ZXJvbkBodWF3ZWkuY29tPj4gQWNrZWQtYnk6IFBoaWxpcHBlIE1hdGhpZXUtRGF1ZMOp
+IDxwaGlsbWRAbGluYXJvLm9yZz4+IC0tLS4uLj4gQEAgLTM3MywxNyArMzczLDE3IEBA
+IHN0YXRpYyB2b2lkIGVuY29kZV90b3BvX2NwdWlkMWYoQ1BVWDg2U3RhdGUgKmVudiwg
+dWludDMyX3QgY291bnQsPiAgICAgIHVuc2lnbmVkIGxvbmcgbGV2ZWwsIGJhc2VfbGV2
+ZWwsIG5leHRfbGV2ZWw7PiAgICAgIHVpbnQzMl90IG51bV90aHJlYWRzX25leHRfbGV2
+ZWwsIG9mZnNldF9uZXh0X2xldmVsOz4gID4gLSAgICBhc3NlcnQoY291bnQgPD0gQ1BV
+X1RPUE9fTEVWRUxfUEFDS0FHRSk7PiArICAgIGFzc2VydChjb3VudCA8PSBDUFVfVE9Q
+T0xPR1lfTEVWRUxfU09DS0VUKTs+ICBIaSBaaGFvLFdoaWxlIGJvb3RpbmcgTGludXgg
+dW5kZXIgVENHIFFFTVUgKC1rZXJuZWwgKyByb290ZnMpIHdpdGggYSBDUFUgbW9kZWwg
+dGhhdGVuYWJsZXMgY3B1aWRfMHgxZiAoZS5nLiBTaGlqaWRhZGFvLXYyKSwgSSBoaXQg
+dGhpcyBhc3NlcnQ6IHdoZW4gdGhlIGd1ZXN0cXVlcmllcyBDUFVJRC4xRiB3aXRoIGEg
+dG9wb2xvZ3kgbGV2ZWwgZ3JlYXRlciB0aGFuIENQVV9UT1BPTE9HWV9MRVZFTF9TT0NL
+RVQsUUVNVSBhYm9ydHMuIFVuZGVyIEtWTSB0aGUgcGF0aCBpc24ndCByZWFjaGVkIChD
+UFVJRCBpcyBzZXJ2ZWQgZnJvbUtWTV9TRVRfQ1BVSUQyKSwgc28gdGhpcyBpcyBUQ0ct
+b25seSwgd2hpY2ggaXMgcHJvYmFibHkgd2h5IGl0IGhhZG4ndCBiZWVuY2F1Z2h0IGVh
+cmxpZXIuSSdtIG5vdCBzdXJlIHRoZSBhc3NlcnQgaXMgbmVjZXNzYXJ5OiB0aGUgY29k
+ZSB0aGF0IGZvbGxvd3MgYWxyZWFkeSBoYW5kbGVzdGhlICJpbnB1dCBsZXZlbCBvdXQg
+b2YgcmFuZ2UiIGNhc2UgY29ycmVjdGx5LiBmaW5kX25leHRfYml0KCkgcmV0dXJucyBT
+T0NLRVRvbmNlIHRoZSBiaXRtYXAgaXMgZXhoYXVzdGVkLCB0aGUgbG9vcCBicmVha3Mg
+d2l0aCBsZXZlbCA9IElOVkFMSUQsIGFuZCB0aGVlbmNvZGluZyBwYXRoIGJlbG93IHBy
+b2R1Y2VzIHRoZSBTRE0tZGVmaW5lZCBpbnZhbGlkLWRvbWFpbiByZXNwb25zZSAoRUFY
+PTAsRUJYPTAsIEVDWCA9IGNvdW50IHwgSU5WQUxJRF90eXBlLCBFRFggPSBhcGljX2lk
+KS5QZXIgSW50ZWwgU0RNLCBDUFVJRCBMZWFmIDFGSCBkb2VzIG5vdCBjb25zdHJhaW4g
+dGhlIGlucHV0IEVDWCB2YWx1ZSwgc28gZ3Vlc3Rzb2Z0d2FyZSBpcyBmcmVlIHRvIHF1
+ZXJ5IGFueSBzdWItbGVhZiBpbmRleC4gRGlkIHRoZSBhc3NlcnQgaW50ZW50aW9uYWxs
+eXByb3RlY3QgYW4gaW52YXJpYW50IEknbSBtaXNzaW5nLCBvciBpcyBpdCBhIGxlZnRv
+dmVyIGRlZmVuc2l2ZSBjaGVjaz9Gb3IgcmVmZXJlbmNlLCB0aGUgS1ZNIGtlcm5lbCBz
+aWRlIChhcmNoL3g4Ni9rdm0vY3B1aWQuYyBrdm1fY3B1aWQoKSkgaGFzZXhwbGljaXRs
+eSBoYW5kbGVkIG91dC1vZi1yYW5nZSAweDFGIHN1YmxlYXZlcyB0aGlzIHdheSBzaW5j
+ZSAyMDE5OiAgICB9IGVsc2UgeyAgICAgICAgKmVheCA9ICplYnggPSAqZWN4ID0gKmVk
+eCA9IDA7ICAgICAgICAvKiAgICAgICAgICogV2hlbiBsZWFmIDBCSCBvciAxRkggaXMg
+ZGVmaW5lZCwgQ0wgaXMgcGFzcy10aHJvdWdoICAgICAgICAgKiBhbmQgRURYIGlzIGFs
+d2F5cyB0aGUgeDJBUElDIElELCBldmVuIGZvciB1bmRlZmluZWQgICAgICAgICAqIHN1
+YmxlYXZlcy4gLi4uICAgICAgICAgKi8gICAgICAgIGlmIChmdW5jdGlvbiA9PSAweGIg
+fHwgZnVuY3Rpb24gPT0gMHgxZikgeyAgICAgICAgICAgIGVudHJ5ID0ga3ZtX2ZpbmRf
+Y3B1aWRfZW50cnlfaW5kZXgodmNwdSwgZnVuY3Rpb24sIDEpOyAgICAgICAgICAgIGlm
+IChlbnRyeSkgeyAgICAgICAgICAgICAgICAqZWN4ID0gaW5kZXggJiAweGZmOyAgICAg
+ICAgICAgICAgICAqZWR4ID0gZW50cnktPmVkeDsgICAgICAgICAgICB9ICAgICAgICB9
+ICAgIH1pbnRyb2R1Y2VkIGluIGNvbW1pdCA0MzU2MTEyM2FiMzcgKCJrdm06IHg4Njog
+SW1wcm92ZSBlbXVsYXRpb24gb2YgQ1BVSUQgbGVhdmVzMEJIIGFuZCAxRkgiKS4gU28g
+S1ZNLWFjY2VsZXJhdGVkIGd1ZXN0cyBhbHJlYWR5IHNlZSB0aGUgU0RNLWNvbXBsaWFu
+dCByZXNwb25zZTtvbmx5IFRDRyBhYm9ydHMuVGhhbmtzLEV3YW4+ICAgICAgLyo+ICAg
+ICAgICogRmluZCB0aGUgTm8uKGNvdW50ICsgMSkgdG9wb2xvZ3kgbGV2ZWwgaW4gYXZh
+aWxfY3B1X3RvcG8gYml0bWFwLj4gLSAgICAgKiBUaGUgc2VhcmNoIHN0YXJ0cyBmcm9t
+IGJpdCAwIChDUFVfVE9QT19MRVZFTF9TTVQpLj4gKyAgICAgKiBUaGUgc2VhcmNoIHN0
+YXJ0cyBmcm9tIGJpdCAwIChDUFVfVE9QT0xPR1lfTEVWRUxfVEhSRUFEKS4+ICAgICAg
+ICovPiAtICAgIGxldmVsID0gQ1BVX1RPUE9fTEVWRUxfU01UOz4gKyAgICBsZXZlbCA9
+IENQVV9UT1BPTE9HWV9MRVZFTF9USFJFQUQ7PiAgICAgIGJhc2VfbGV2ZWwgPSBsZXZl
+bDs+ICAgICAgZm9yIChpbnQgaSA9IDA7IGkgPD0gY291bnQ7IGkrKykgez4gICAgICAg
+ICAgbGV2ZWwgPSBmaW5kX25leHRfYml0KGVudi0+YXZhaWxfY3B1X3RvcG8sPiAtICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgQ1BVX1RPUE9fTEVWRUxfUEFDS0FHRSw+
+ICsgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBDUFVfVE9QT0xPR1lfTEVWRUxf
+U09DS0VULD4gICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJhc2VfbGV2ZWwp
+Oz4gID4gICAgICAgICAgLyo+IEBAIC0zOTEsMjAgKzM5MSwyMCBAQCBzdGF0aWMgdm9p
+ZCBlbmNvZGVfdG9wb19jcHVpZDFmKENQVVg4NlN0YXRlICplbnYsIHVpbnQzMl90IGNv
+dW50LD4gICAgICAgICAgICogYW5kIGl0IGp1c3QgZW5jb2RlcyB0aGUgaW52YWxpZCBs
+ZXZlbCAoYWxsIGZpZWxkcyBhcmUgMCk+ICAgICAgICAgICAqIGludG8gdGhlIGxhc3Qg
+c3VibGVhZiBvZiAweDFmLj4gICAgICAgICAgICovPiAtICAgICAgICBpZiAobGV2ZWwg
+PT0gQ1BVX1RPUE9fTEVWRUxfUEFDS0FHRSkgez4gLSAgICAgICAgICAgIGxldmVsID0g
+Q1BVX1RPUE9fTEVWRUxfSU5WQUxJRDs+ICsgICAgICAgIGlmIChsZXZlbCA9PSBDUFVf
+VE9QT0xPR1lfTEVWRUxfU09DS0VUKSB7PiArICAgICAgICAgICAgbGV2ZWwgPSBDUFVf
+VE9QT0xPR1lfTEVWRUxfSU5WQUxJRDs+ICAgICAgICAgICAgICBicmVhazs+ICAgICAg
+ICAgIH0+ICAgICAgICAgIC8qIFNlYXJjaCB0aGUgbmV4dCBsZXZlbC4gKi8+ICAgICAg
+ICAgIGJhc2VfbGV2ZWwgPSBsZXZlbCArIDE7PiAgICAgIH0+ICA+IC0gICAgaWYgKGxl
+dmVsID09IENQVV9UT1BPX0xFVkVMX0lOVkFMSUQpIHs+ICsgICAgaWYgKGxldmVsID09
+IENQVV9UT1BPTE9HWV9MRVZFTF9JTlZBTElEKSB7PiAgICAgICAgICBudW1fdGhyZWFk
+c19uZXh0X2xldmVsID0gMDs+ICAgICAgICAgIG9mZnNldF9uZXh0X2xldmVsID0gMDs+
+ICAgICAgfSBlbHNlIHs+ICAgICAgICAgIG5leHRfbGV2ZWwgPSBmaW5kX25leHRfYml0
+KGVudi0+YXZhaWxfY3B1X3RvcG8sPiAtICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICBDUFVfVE9QT19MRVZFTF9QQUNLQUdFLD4gKyAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgQ1BVX1RPUE9MT0dZX0xFVkVMX1NPQ0tFVCw+ICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGxldmVsICsgMSk7PiAgICAgICAg
+ICBudW1fdGhyZWFkc19uZXh0X2xldmVsID0gbnVtX3RocmVhZHNfYnlfdG9wb19sZXZl
+bCh0b3BvX2luZm8sPiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAg
+ICAgICAgICAgICAgICAgICAgICAgICBuZXh0X2xldmVsKTsuLi4KCgoKCuS/neWvhuWj
+sOaYjgrmnKzpgq7ku7blkKvmnInkv53lr4bmiJbkuJPmnInkv6Hmga/vvIzku4Xkvpvm
+jIflrprmlLbku7bkurrkvb/nlKjjgILkuKXnpoHlr7nmnKzpgq7ku7bmiJblhbblhoXl
+rrnlgZrku7vkvZXmnKrnu4/mjojmnYPnmoTmn6XpmIXjgIHkvb/nlKjjgIHlpI3liLbm
+iJbovazlj5HjgIIKClRoaXMgZW1haWwgY29udGFpbnMgY29uZmlkZW50aWFsIG9yIGxl
+Z2FsbHkgcHJpdmlsZWdlZCBpbmZvcm1hdGlvbiBhbmQgaXMgZm9yIHRoZSBzb2xlIHVz
+ZSBvZiBpdHMgaW50ZW5kZWQgcmVjaXBpZW50LiBBbnkgdW5hdXRob3JpemVkIHJldmll
+dywgdXNlLCBjb3B5aW5nIG9yIGZvcndhcmRpbmcgb2YgdGhpcyBlbWFpbCBvciB0aGUg
+Y29udGVudCBvZiB0aGlzIGVtYWlsIGlzIHN0cmljdGx5IHByb2hpYml0ZWQu
 
