@@ -1,134 +1,125 @@
-Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA743822AC
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 09:25:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F72338E5E9
+	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 09:26:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777368341; cv=none; b=n1pwu1Kv1NH9VoUghDjFFYUZqsLVXEAtCzOKRZ+pE0ccfB8LvX/21xL0jyGqEaF9jbVWQp/TY625rKoLIXfxjaVLCzixxUOsRFrzjdcSL+N+Yjjel73/9sgw5La/xEewgDjH4BwvRkpcph/FBKShs6+2ayLdCPuWM95RVxMOb3Y=
+	t=1777368419; cv=none; b=PzUVjFp70fi+r59ZbLUnFyw3zwc0f6q7arxLlE/SSB7rwU8T+fz3asGSZQaAiNiYrsb5SLZzbca8IohdE96vljCyjtvd4fR042eodREx3HSBgYAXpgBJoTSJQ/ReEE8yJ5Y8jqDvQ1xMfHDunZqR4e71cyeAtrSlbfGVFmOgqh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777368341; c=relaxed/simple;
-	bh=WZ0dv++aH+AeLwkvbNXxLqu7wJ3mA6GpS63WG1N27Uc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U461UO6dJ7gqNBzGzI8heLmpDmmGY8z5WUM/oLN1c221aIocMerZvDT1F5D6ll/oduXZDPmOUKmIYjqU5+HKdElK2qRH5SfcAJO+Vi/MAbqQWYMh8yqfumRvT9mwBOO7eV3hFspSTPtiTfFJGMf7seBYc3g5xO6YOutLBqwAeJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.208.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-m68k.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-678a526f374so7365230a12.0
-        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 02:25:31 -0700 (PDT)
+	s=arc-20240116; t=1777368419; c=relaxed/simple;
+	bh=BwUcI927SyLVRlFXerZ4C2KhkdStVKNEijngOS5FYtg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=dikTIqVl6HSljCArOLm+dIpVhRwsW38RZfNmpKuC0/Yx/VebC5m68Uypf7f3MMIMwni4Ed2OMrJYubogVUngHBSonL3nZw+fxfi7b8kDzYK7kJo91SotpIerCOwvrOgguQGMjRDQfKRcPuN7u6RbFf+tlJWjOLviuIjfVKHsB0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=W3FvDheu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=IeCB9IEg; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="W3FvDheu";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="IeCB9IEg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777368415;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=SElkUbSArWKRvTI8r4YNCpzW999fwj8na5PfWJ0BC/g=;
+	b=W3FvDheuTiScigotBS9L8HRsC30ZYPlMt6IaYOrd9cctHIcvxb364EO9dartI9GhHBT1os
+	Ff0IiObLZBhzwqjA5Pmr0biirMnlnvKK0trC+D8jps7GHEsWPtHOjXEbBFIn/npWW3xzQx
+	ZbLJeIflIZr7GIjId0VvopWQIDIsWA0=
+Received: from mail-qk1-f198.google.com (mail-qk1-f198.google.com
+ [209.85.222.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-228-6J9hveDqPVi8Q1R-dEwadA-1; Tue, 28 Apr 2026 05:26:54 -0400
+X-MC-Unique: 6J9hveDqPVi8Q1R-dEwadA-1
+X-Mimecast-MFC-AGG-ID: 6J9hveDqPVi8Q1R-dEwadA_1777368414
+Received: by mail-qk1-f198.google.com with SMTP id af79cd13be357-8ed2c173d3bso1810269785a.2
+        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 02:26:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1777368413; x=1777973213; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=SElkUbSArWKRvTI8r4YNCpzW999fwj8na5PfWJ0BC/g=;
+        b=IeCB9IEgSOPoyRtZGwMe3F8N5YaQ+IPM1KNmAUx61r5a3t/AYrel43cCQtybm9E6Y7
+         uefS2YDdAkS2IPmy2tyZJi7vAC4wxKbi/F/KOQMk+Fi5z1idQTulRBwIAfOU8Gt7uvKL
+         T74NISAf2RYrkPrWyp1P5N0SlqR6acGSwHjuGkK3WMKdJD/reZBwbbC/amcGnUOk9kOQ
+         fZOxu9gpP73FqtHrkIySDXE02pP9hVEmHo4HIZCuG+57vzcN56X7rnHbkm7kwiaHNdUz
+         6gGWMRPpPCemA9zmGUvds6bkZOzwhRPwRMfNSSAsmwfUBRmBdx4KxtdiAd7bhSyRke8X
+         7plw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777368329; x=1777973129;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Al22kA6RCf7FSEzj29cZLSkjdM9EgXxihmBX7/SeSVI=;
-        b=EAdUPn83IMdvfvI6JZX4wAgRKlvzzNC5kUwf9xUNpvyvbZcBWW0nNBdD/AgiIZGxBT
-         0Um3j7npkIrWQWMUVr6mkkw8IPDqk8EFcAG6feq4jo4Gs6YDEqk5IOfSf1PRAVv/ag2R
-         ok3m0zY5qLeWHRIB+PrWtMb0KdQdnvc77RmDMw5hNqQHqv8edb1PHnWGjsmtdFRGzIG1
-         8Avoez7yUWC4JTT+tnWMLJR4Ar46oQaZJ796lHc24UBPRmxhJJfkuoJBx6kCxEVkIloa
-         mvtkh7JqCoE1Ts1wGOHJNVNY8B62tu0rPCDrVIcq6gP6uR/nsnnSAbHGyoZeelYB/Hp7
-         LOOg==
-X-Forwarded-Encrypted: i=1; AFNElJ96YlXo3Chpmqas+WRJzdQh6UV2in83wux9e0CQnrDdAYMGpP1pcI4kwOkJ/n2GTuOFJzQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwU/2bQr48zbfz/TpIQodOlXqV1HzdPPG21/WUUoxdISCYSb5sc
-	HAr3sQnLVJOc3ArSUxv4FqlypA3xrw37Sh9OkqzZQma7jRh4xX/fGEVDcZ8v4takjis=
-X-Gm-Gg: AeBDietO+i70OukiDD2BTEgvliFQ3DPxFmLrls7LQ/rMNRIVuXQdc7MQB2hmLPsw7Gl
-	8sXi6gAxzAmh8hWnEfwMePLThTok9hF/drek7jvgWxYZwktLz/WnPaoAlF3l0PCQ30cSt5v7uoY
-	Ehahnmd4+0xS1MvsKvGCiH9CcSaNyy0TgMaMioe1woGrt1R97iHrg338QE3WFdaHBgLeG7zzfxf
-	k4+VXZXweOQZwjPSs4d2FYI6jA4TZKtzBm2ZobySTg/eyUZjQ1chs6fsMCJZn4ubLGQtnLasJZA
-	wGek05i/8w+r8WQH3EaIZyBvyvly4MIF0YiJMbHVacSpN/rfoGn0spRGWaem0KwKOjhNooijv47
-	f1CE2vbLyeRZbzwjAiYdZq3ug5tyg/yP6EfCJ0Yi4YWV3yCflftrOXQluYifeoOTOTXY2ogQ7nU
-	T3P6UYc8fwe6Vi5DN87pj9V1heqvo5Z5Tmx5+rY7na+dT2wuAQYIkramZqAJ5NgtyoMiw7q+Y=
-X-Received: by 2002:a05:6402:26cc:b0:674:bbc4:be21 with SMTP id 4fb4d7f45d1cf-679bb0625e3mr1120329a12.10.1777368328716;
-        Tue, 28 Apr 2026 02:25:28 -0700 (PDT)
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com. [209.85.208.47])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-679b68430a9sm501031a12.15.2026.04.28.02.25.24
-        for <kvm@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Apr 2026 02:25:27 -0700 (PDT)
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-678a526f374so7365045a12.0
-        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 02:25:24 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9v/nYSGlaTUzfR+fJfCdNd8Ji9ahAjPPP+5BAewJwbZf4sPZ/vTfN6yfDYdyuzsmQIt0k=@vger.kernel.org
-X-Received: by 2002:a05:6402:5056:b0:676:d8a1:7a04 with SMTP id
- 4fb4d7f45d1cf-679bb09a4admr915149a12.23.1777368324094; Tue, 28 Apr 2026
- 02:25:24 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777368413; x=1777973213;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=SElkUbSArWKRvTI8r4YNCpzW999fwj8na5PfWJ0BC/g=;
+        b=hfGfSzwKQdfPsruiYZcRB87b8viTuWVMQAjd81qoZmPG7ZupbGlCl+d/a531wBxIR3
+         QnsWygZVwOu2WMfmbY/GavTMSaWb9M7IqmYUQ/txWkwUGqvTS/dhrFvwEV6DY6daR340
+         pL6NLVngxoa5hEeKRx7uc4yC+bFfxUNWO4mVOORWCOyTUTncmVOG6fk/tap5/l87wULR
+         wxWVz61aCVNH2VszhpqDKe9LeOFtZXd7IAWGPoytAVbDNudiZ6bwGMgzdTGZMGaIdjKr
+         zmI2BcXl/BYBxuKLA+9fw5AtruTpimTjaTYcSYd3E4+nPObn8Ax2vSOSezgyTo002yp/
+         P2cA==
+X-Forwarded-Encrypted: i=1; AFNElJ8nwtgqRfNM17CVy6mtB5iBgtgsoIs/Q1MB2mbcgB/S+JScLqROdQp9yn+lzQljLYAfkSc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6UW9Ph6ZwCNfnw0Y1/VMcsri+f6XGC4EvNNGMk+m+QGLgtlcg
+	+KVhEl59/21hK6yeH+iyAVC9MxaBEXaaSkA68zvj7jEZr/18SeHmN9/cZtgltv7EV3vYF+pAeuU
+	A2ITBsPr+BuQ1ZBufbp8/PJpMeASt9Wc8teCvLCgJvNvtKZOJK6Ko+g==
+X-Gm-Gg: AeBDieu8hH5efpZmqIsjCLowNl4qzcJk3sh24YzTBcHY16PnkySmiwTPB9j5r5oH9n7
+	f06uMUvf9Catqo1ihIV+vStW2V5doJvUur0Z1rndqM2RBqHJiAGGFtmJCLeOEPmdAnikL4rVg6X
+	XUF1BaE3hI6QVDtEXXnOcbz1b6PiPS/y0dmUa1osUi2OnkChCU8d6LaXa5jTHt3K1zodV6FROVO
+	serXcABE2Aj0tyckyUQwX/6vJ+YaXVqmvEYEQd093EeaCratFrxnL+nU6KeAaWpWNdPY6GqKIMZ
+	w7zsXjccVj6mZGLh54W5CwkYqp0sr+h3sTXTZ9ISKfpVwmLQIS6SATtlDCX2F/oCW9YVcWaQzKY
+	A5V6MZ70mAgsRg+yr8i9fXQ4/U8g3
+X-Received: by 2002:a05:620a:2a07:b0:8cb:5176:f00 with SMTP id af79cd13be357-8f7d98fe7c8mr276280285a.45.1777368413601;
+        Tue, 28 Apr 2026 02:26:53 -0700 (PDT)
+X-Received: by 2002:a05:620a:2a07:b0:8cb:5176:f00 with SMTP id af79cd13be357-8f7d98fe7c8mr276261885a.45.1777368409899;
+        Tue, 28 Apr 2026 02:26:49 -0700 (PDT)
+Received: from fedora (g3.ign.cz. [91.219.240.17])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8f7c81c5605sm142517985a.33.2026.04.28.02.26.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 Apr 2026 02:26:49 -0700 (PDT)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: Piotr Zarycki <piotr.zarycki@gmail.com>, seanjc@google.com,
+ pbonzini@redhat.com
+Cc: shuah@kernel.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Piotr Zarycki <piotr.zarycki@gmail.com>
+Subject: Re: [PATCH] KVM: selftests: Fix typo in comment in hyperv_features.c
+In-Reply-To: <20260428083037.1926902-1-piotr.zarycki@gmail.com>
+References: <20260428083037.1926902-1-piotr.zarycki@gmail.com>
+Date: Tue, 28 Apr 2026 11:26:45 +0200
+Message-ID: <87v7dbl9ka.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1777306795.git.chleroy@kernel.org> <c73b90236f2810edd47c84edd2a8d8e8e0c816da.1777306795.git.chleroy@kernel.org>
-In-Reply-To: <c73b90236f2810edd47c84edd2a8d8e8e0c816da.1777306795.git.chleroy@kernel.org>
-From: Geert Uytterhoeven <geert@linux-m68k.org>
-Date: Tue, 28 Apr 2026 11:25:11 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUvTBWoDN_wUo2n8-gkoheJ+-rbwew53OvoAwo8G5n1qg@mail.gmail.com>
-X-Gm-Features: AVHnY4JEWBVPw4tSjHgbQTia8gZd2WGJ1sv6qLdKJbtvs4hms1blpvc35yb0VWw
-Message-ID: <CAMuHMdUvTBWoDN_wUo2n8-gkoheJ+-rbwew53OvoAwo8G5n1qg@mail.gmail.com>
-Subject: Re: [RFC PATCH v1 4/9] uaccess: Introduce copy_{to/from}_user_partial()
-To: "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>
-Cc: Yury Norov <ynorov@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Linus Torvalds <torvalds@linux-foundation.org>, David Laight <david.laight.linux@gmail.com>, 
-	Thomas Gleixner <tglx@linutronix.de>, linux-alpha@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-snps-arc@lists.infradead.org, 
-	linux-arm-kernel@lists.infradead.org, linux-mips@vger.kernel.org, 
-	linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, 
-	sparclinux@vger.kernel.org, linux-um@lists.infradead.org, 
-	dmaengine@vger.kernel.org, linux-efi@vger.kernel.org, 
-	linux-fsi@lists.ozlabs.org, amd-gfx@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, intel-gfx@lists.freedesktop.org, 
-	linux-wpan@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-wireless@vger.kernel.org, linux-spi@vger.kernel.org, 
-	linux-media@vger.kernel.org, linux-staging@lists.linux.dev, 
-	linux-serial@vger.kernel.org, linux-usb@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, linux-fsdevel@vger.kernel.org, 
-	ocfs2-devel@lists.linux.dev, bpf@vger.kernel.org, kasan-dev@googlegroups.com, 
-	linux-mm@kvack.org, linux-x25@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-sound@vger.kernel.org, sound-open-firmware@alsa-project.org, 
-	linux-csky@vger.kernel.org, linux-hexagon@vger.kernel.org, 
-	loongarch@lists.linux.dev, linux-m68k@lists.linux-m68k.org, 
-	linux-openrisc@vger.kernel.org, linux-parisc@vger.kernel.org, 
-	linux-sh@vger.kernel.org, linux-arch@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain
 
-Hi Christophe,
+Piotr Zarycki <piotr.zarycki@gmail.com> writes:
 
-Thanks for your patch!
-
-On Mon, 27 Apr 2026 at 19:18, Christophe Leroy (CS GROUP)
-<chleroy@kernel.org> wrote:
-> Today there are approximately 3000 calls for copy_to_user() and
-> 3000 calls to copy_from_user().
+> Fix a typo in a comment: 'vailable' -> 'available'.
 >
-> The majority of callers of copy_{to/from}_user() don't care about the
-> return value, they only check whether it is 0 or not, and when it is
-> not 0 they handle it as a -EACCES.
-
-I think the "a" can be dropped.
-
-> In order to allow better optimisation of copy_{to/from}_user() when
-> the size of the copy is known at build time, create new fonctions
-
-functions
-
-> named copy_{to/from}_user_partial() to be used by the few callers
-> that are interested in partial copies and need to now how many
-
-know
-
-> bytes remain at the end of the copy.
+> Signed-off-by: Piotr Zarycki <piotr.zarycki@gmail.com>
+> ---
+>  tools/testing/selftests/kvm/x86/hyperv_features.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
-> For the time being it is just the same as copy_{to/from}_user().
->
-> Signed-off-by: Christophe Leroy (CS GROUP) <chleroy@kernel.org>
+> diff --git a/tools/testing/selftests/kvm/x86/hyperv_features.c b/tools/testing/selftests/kvm/x86/hyperv_features.c
+> index 130b9ce7e5dd..f943c748f9ff 100644
+> --- a/tools/testing/selftests/kvm/x86/hyperv_features.c
+> +++ b/tools/testing/selftests/kvm/x86/hyperv_features.c
+> @@ -457,7 +457,7 @@ static void guest_test_msrs_access(void)
+>  			msr->fault_expected = true;
+>  			break;
+>  		case 45:
+> -			/* MSR is vailable when CPUID feature bit is set */
+> +			/* MSR is available when CPUID feature bit is set */
+>  			if (!has_invtsc)
+>  				goto next_stage;
+>  			vcpu_set_cpuid_feature(vcpu, HV_ACCESS_TSC_INVARIANT);
 
-Gr{oetje,eeting}s,
+Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
 
-                        Geert
+Thanks!
 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+Vitaly
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
