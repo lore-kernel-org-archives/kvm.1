@@ -1,66 +1,50 @@
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F733CFF55
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 09:43:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C8A37F733;
+	Tue, 28 Apr 2026 09:44:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777369415; cv=none; b=Qf9EcJw5/7iGu195EG5G/B8xQXEmmBxjd6Dr5AqXIbCz54m6e8LpOOxv9Y0/7S52AS6lQuggKJkerZ/9/0veEIs/RW4z168DupiwiS6tY4+YwNnZgeQ0nwV3mk2eTOYtrc6yOKqGeNVq0/6Xh9/isx0hGa29p41ARfygV28Gvms=
+	t=1777369446; cv=none; b=MsZ7ZLdAvZ8n0QoabinX19RCggfIzIjAE2BRUsBVz0bEkii2mRzLEbn94pp+/G/saxKP1nXJw/0u6xk+OvPDczrw8Jee3ljsQ5alFo9/wwCYwnOzUy0meOo0HJC71teJOEwAAGQO+ZBx8/xO+pnLRV1CNJ6fbjnTnD6MmJyj5hw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777369415; c=relaxed/simple;
-	bh=8Rfk7gIPEuIIX2PIjkrJ4msFNT/ja2cu5nvMt9DMmmI=;
+	s=arc-20240116; t=1777369446; c=relaxed/simple;
+	bh=IZN2UvEGJf77lifxDojCugFWinMAwXa1VpFtqtzwUJg=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EGpWChrjXAwKyEhvwxk8xBAhmxufj3xdXCmQ3ec4w0kde4tWqYH0KlSkp7ihw/57RpWTmHyJd7hYw3jQdcya1k7HShoqgGXohBbWVtKY10Ts9Qj0CkajecP1WSgCVfz9oXrCfGKFZ6WCE8szj+x+KAKyxjazGZSx2z35gxxDfNg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eMfju6Gz; arc=none smtp.client-ip=74.125.82.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=GMpVaqVGqEa+yVPBgNJH39FrNL8D8+G94HE9IQNaxBqKjc0BStU+xQVQkv3lr5uwY7iVWPxqO9qHc+pwHIZ7tf2BtiZ6Um7Z5TKiyfaAVRrYMqkwfBPOCOdlBcEV1eCqqcZ/enPf0ADWk8l+q+A+sE7IjUdn/IAFqDxO/de9Z3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GmYZaBln; arc=none smtp.client-ip=192.198.163.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eMfju6Gz"
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-12c6df0b9bbso2687966c88.1
-        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 02:43:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777369414; x=1777974214; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=E+2aQrESKSPjXIMgAlPSq2BTaZgqO5ydTBn6YvPyGsg=;
-        b=eMfju6GzWQTFgzfwahFC+fZwObRlrvjOwzwa4hDWscxLbvALYh0n9Ujz3tJv4SBSX8
-         WAzgdY0IpAy9AHZJCL1UzCc7ZXBiAu2ESz2HRroCxaneaJkkKI+QSwtVOHKRIwmzpCGY
-         9cHiAYASJiAmS4rN9FQMRwvASpCwhaMNKT6B28ykOn+fT7VMHhgdNF5a9E1CEEiuoB9O
-         xooJsR5GL7dWbFqhpfkPzTXjNxgN0GY2zKaQ9ncaJoOJWiixO53YLYkLoCNBpmVG5mxZ
-         Z8UA67vIazPk7MeIR615PyCXJg7EXqiR+yvZos9H9p4SEZ5R/RfWGkmGDi+uipJ97x3a
-         vjoA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777369414; x=1777974214;
-        h=content-transfer-encoding:in-reply-to:content-language:from
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E+2aQrESKSPjXIMgAlPSq2BTaZgqO5ydTBn6YvPyGsg=;
-        b=lt+g9nzqZj9QNn5r+JdUImEhNb09sr+pMj+nFd4lI8rLLlx3Tlt7wCrTRfmeY1H0pN
-         2OsElr9QvGDTO6he9gWho5KtzPm54m/vEpIe2vWxS8ZNpnaQOFq8lRCz8nTDH3e3dMWw
-         3beesbzgW61vC7O3iMfZQpOlpcTblSRms5PVkfG75yPRR46me2Qc14ZHkiHnxiCzwGv9
-         GDMAUrWFUajL+2LufRD7kZZ4fvfZ0dYLiuRZJYU1LKU1KewkUN8s5+FIbFBxAZn0oOdr
-         q7ecDOMf+RESHNH7WUWv53tO3YVndQIJBA64SShaCPRZNT+fjGVvyWE5HF8iGsKHo30x
-         uIUA==
-X-Forwarded-Encrypted: i=1; AFNElJ9E2ioihKQAoVFnjx5uTaKo+9bpxKP5suEHwIR/yzNxIfvYtK+6b6RFYmIFNyXwtMjRWmM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8YwYJcQKXvWphMczpayU72PvHVnN86xLf5dzUAwxQmDwvEHur
-	V2uCArRNkcx4HemDb9siRITjz07df2FiTKieh5dI3D3V9iG60x3Nhitc
-X-Gm-Gg: AeBDietcNdZy3X2n/tuf6Hz8cBSazI7xohHy2tdwQ5RzNuR3wNsfGLGXL/BBoKVBizP
-	Y7A5cBy9yFvWoXDMelpqDUqbF7gI3uHjIAHc1qsfEHGYJqZS8L6eZ/uPgB33Qx24HTZHfh8RGWP
-	nJ1WxEgixHxSkk+n/u8yto4fdAD/YQd6KSDwU58hlKwZLLL3p0yxIwSc64knn2s8BZfRPrkEvEi
-	dIsrGXCOyJ9miiTFLc5xwtAsuo/63jBpv3RWcOj59XAPOeEctR2CZygpjj4O7gqggw+GlKSWl6I
-	NbK8Jjv+sUPDs3P3fxhvIR9fzWkwaYG8FTtxCFQ7ax4lTa/B+oqv44s4rcI9j3h11KmrkrS8HRg
-	On2Pvgx895QGY70Ai6QRHZ3jlq2mIWQVxr0fMu7znsZ9S8G4tNKZYR02yJKrKvVOUHwTYb8dk6J
-	hmKfUd7JhJt+heioG3pjNGpKyyeS9Cm/Mco/zW
-X-Received: by 2002:a05:7022:621:b0:119:e56b:957b with SMTP id a92af1059eb24-12ddd90e40amr1289308c88.0.1777369413478;
-        Tue, 28 Apr 2026 02:43:33 -0700 (PDT)
-Received: from [198.18.0.1] ([154.26.185.247])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12ddd9be1f9sm1811919c88.15.2026.04.28.02.43.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 28 Apr 2026 02:43:33 -0700 (PDT)
-Message-ID: <4b66c381-09c5-496e-b95e-100d1ba20dc5@gmail.com>
-Date: Tue, 28 Apr 2026 17:43:25 +0800
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GmYZaBln"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777369444; x=1808905444;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=IZN2UvEGJf77lifxDojCugFWinMAwXa1VpFtqtzwUJg=;
+  b=GmYZaBlnmp4yUsl9nKApoFl/qkgTCx6UUtOLBzOomPXfVS3dlpRfLDlG
+   8NSWZelzPF0SY1GXNutwRn4GDAmKsqQ9EJwrqvjAsQOtYzkB4JIb0RdlM
+   MYC4kgsQy4Z1I4XTUNNYifebZx/pkUr80rVxG1fEIfxxg2wMiXdccMz7s
+   wgBetlewhOoYZW91nMZsOUOKiq4c9ko/oS1syYyIvECVm/2dZJXigRa8v
+   gUyjxnI3u71DDNFNvccyDqrwOiMIVNFULaarSgCssm8/eYcQUawj/DxOW
+   ipGc0BEXdeUfCcLVtRewLhznRKWsDTEmiGSeGNBTsPWp8OOxYiv4YHTzV
+   Q==;
+X-CSE-ConnectionGUID: pxzZ85v8S/mMekG2L5Zqfw==
+X-CSE-MsgGUID: Waf3fuu0Q9+DscnFDxd1kQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78335615"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
+   d="scan'208";a="78335615"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 02:44:03 -0700
+X-CSE-ConnectionGUID: 0C+rWLPFToi3IAKqWd2Z7Q==
+X-CSE-MsgGUID: Rf3C5pC2QEGk4e7Z1ZDD6Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
+   d="scan'208";a="264296639"
+Received: from unknown (HELO [10.238.1.89]) ([10.238.1.89])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 02:44:00 -0700
+Message-ID: <e47f29d5-17f1-47ce-b80e-bfa543f9a712@linux.intel.com>
+Date: Tue, 28 Apr 2026 17:43:58 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -68,149 +52,154 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 2/9] hw/core: Make CPU topology enumeration
- arch-agnostic
-To: Zhao Liu <zhao1.liu@intel.com>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
- <berrange@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
- Eduardo Habkost <eduardo@habkost.net>,
- Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
- =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
- Yanan Wang <wangyanan55@huawei.com>, "Michael S . Tsirkin" <mst@redhat.com>,
- Paolo Bonzini <pbonzini@redhat.com>,
- Richard Henderson <richard.henderson@linaro.org>,
- Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
- <alex.bennee@linaro.org>, Peter Maydell <peter.maydell@linaro.org>,
- Jonathan Cameron <Jonathan.Cameron@huawei.com>,
- Sia Jee Heng <jeeheng.sia@starfivetech.com>,
- Alireza Sanaee <alireza.sanaee@huawei.com>, qemu-devel@nongnu.org,
- kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
- Zhenyu Wang <zhenyu.z.wang@intel.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>
-Cc: Yongwei Ma <yongwei.ma@intel.com>
-References: <20241101083331.340178-1-zhao1.liu@intel.com>
- <20241101083331.340178-3-zhao1.liu@intel.com>
-From: EwanHai <ewandevelop@gmail.com>
+Subject: Re: [PATCH 1/2] x86/kvm/vmx: Move IRQ/NMI dispatch from KVM into x86
+ core
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: tglx@kernel.org, linux-kernel@vger.kernel.org,
+ Sean Christopherson <seanjc@google.com>, Jim Mattson <jmattson@google.com>,
+ Vishal L Verma <vishal.l.verma@intel.com>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ Rick P Edgecombe <rick.p.edgecombe@intel.com>,
+ Binbin Wu <binbin.wu@intel.com>, "x86@kernel.org" <x86@kernel.org>,
+ Paolo Bonzini <bonzini@redhat.com>
+References: <20260423155611.216805954@infradead.org>
+ <20260423155936.843498069@infradead.org>
 Content-Language: en-US
-In-Reply-To: <20241101083331.340178-3-zhao1.liu@intel.com>
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260423155936.843498069@infradead.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Apologies for the noise, please ignore my previous reply, the corporate mailer
-collapsed all the newlines. Resending in plain text below.
 
-Zhao Liu wrote on 11/1/24 4:33 PM:
-> Cache topology needs to be defined based on CPU topology levels. Thus,
-> define CPU topology enumeration in qapi/machine.json to make it generic
-> for all architectures.
+
+On 4/23/2026 11:56 PM, Peter Zijlstra wrote:
+> Move the VMX interrupt dispatch magic into the x86 core code. This
+> isolates KVM from the FRED/IDT decisions and reduces the amount of
+> EXPORT_SYMBOL_FOR_KVM().
 > 
-> To match the general topology naming style, rename CPU_TOPO_LEVEL_* to
-> CPU_TOPOLOGY_LEVEL_*, and rename SMT and package levels to thread and
-> socket.
-> 
-> Also, enumerate additional topology levels for non-i386 arches, and add
-> a CPU_TOPOLOGY_LEVEL_DEFAULT to help future smp-cache object to work
-> with compatibility requirement of arch-specific cache topology models.
-> 
-> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
-> Tested-by: Yongwei Ma <yongwei.ma@intel.com>
-> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-> Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Tested-by: "Verma, Vishal L" <vishal.l.verma@intel.com>
 > ---
-
-...
-
-
-> @@ -373,17 +373,17 @@ static void encode_topo_cpuid1f(CPUX86State *env, uint32_t count,
->      unsigned long level, base_level, next_level;
->      uint32_t num_threads_next_level, offset_next_level;
+>  arch/x86/entry/Makefile             |    2 -
+>  arch/x86/entry/common.c             |   48 ++++++++++++++++++++++++++++++++++++
+>  arch/x86/entry/entry.S              |   46 ++++++++++++++++++++++++++++++++++
+>  arch/x86/entry/entry_64_fred.S      |    1 
+>  arch/x86/include/asm/desc.h         |    4 +++
+>  arch/x86/include/asm/desc_defs.h    |    2 -
+>  arch/x86/include/asm/entry-common.h |    2 +
+>  arch/x86/include/asm/fred.h         |    1 
+>  arch/x86/include/asm/idtentry.h     |   11 --------
+>  arch/x86/kernel/idt.c               |   13 +++++++++
+>  arch/x86/kernel/nmi.c               |    8 ------
+>  arch/x86/kvm/vmx/vmenter.S          |   46 ----------------------------------
+>  arch/x86/kvm/vmx/vmx.c              |   20 ++-------------
+>  13 files changed, 118 insertions(+), 86 deletions(-)
+> 
+> --- a/arch/x86/entry/Makefile
+> +++ b/arch/x86/entry/Makefile
+> @@ -13,7 +13,7 @@ CFLAGS_REMOVE_syscall_64.o	= $(CC_FLAGS_
+>  CFLAGS_syscall_32.o		+= -fno-stack-protector
+>  CFLAGS_syscall_64.o		+= -fno-stack-protector
 >  
-> -    assert(count <= CPU_TOPO_LEVEL_PACKAGE);
-> +    assert(count <= CPU_TOPOLOGY_LEVEL_SOCKET);
+> -obj-y				:= entry.o entry_$(BITS).o syscall_$(BITS).o
+> +obj-y				:= entry.o entry_$(BITS).o syscall_$(BITS).o common.o
 >  
+>  obj-y				+= vdso/
+>  obj-y				+= vsyscall/
+> --- /dev/null
+> +++ b/arch/x86/entry/common.c
+> @@ -0,0 +1,48 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +
+> +#include <linux/entry-common.h>
+> +#include <linux/kvm_types.h>
+> +#include <asm/fred.h>
+> +#include <asm/desc.h>
+> +
+> +#if IS_ENABLED(CONFIG_KVM_INTEL)
+> +/*
+> + * On VMX, NMIs and IRQs (as configured by KVM) are acknowledge by hardware as
 
-Hi Zhao,
+s/acknowledge/acknowledged
+ 
+> + * part of the VM-Exit, i.e. the event itself is consumed as part the VM-Exit.
+> + * x86_entry_from_kvm() is invoked by KVM to effectively forward NMIs and IRQs
+> + * to the kernel for servicing.  On SVM, a.k.a. AMD, the NMI/IRQ VM-Exit is
+> + * purely a signal that an NMI/IRQ is pending, i.e. the event that triggered
+> + * the VM-Exit is held pending until it's unblocked in the host.
+> + */
 
-While booting Linux under TCG QEMU (-kernel + rootfs) with a CPU model that
-enables cpuid_0x1f (e.g. Shijidadao-v2), I hit this assert: when the guest
-queries CPUID.1F with a topology level greater than CPU_TOPOLOGY_LEVEL_SOCKET,
-QEMU aborts. Under KVM the path isn't reached (CPUID is served from
-KVM_SET_CPUID2), so this is TCG-only, which is probably why it hadn't been
-caught earlier.
+[...]
 
-I'm not sure the assert is necessary: the code that follows already handles
-the "input level out of range" case correctly. find_next_bit() returns SOCKET
-once the bitmap is exhausted, the loop breaks with level = INVALID, and the
-encoding path below produces the SDM-defined invalid-domain response (EAX=0,
-EBX=0, ECX = count | INVALID_type, EDX = apic_id).
+> -
+> -#if IS_ENABLED(CONFIG_KVM_INTEL)
+> -/*
+> - * Special entry point for VMX which invokes this on the kernel stack, even for
+> - * 64-bit, i.e. without using an IST.  asm_exc_nmi() requires an IST to work
 
-Per Intel SDM, CPUID Leaf 1FH does not constrain the input ECX value, so guest
-software is free to query any sub-leaf index. Did the assert intentionally
-protect an invariant I'm missing, or is it a leftover defensive check?
+Although it's being removed, I guess what it says is still true?
 
-For reference, the KVM kernel side (arch/x86/kvm/cpuid.c kvm_cpuid()) has
-explicitly handled out-of-range 0x1F subleaves this way since 2019:
-    } else {
-        *eax = *ebx = *ecx = *edx = 0;
-        /*
-         * When leaf 0BH or 1FH is defined, CL is pass-through
-         * and EDX is always the x2APIC ID, even for undefined
-         * subleaves. ...
-         */
-        if (function == 0xb || function == 0x1f) {
-            entry = kvm_find_cpuid_entry_index(vcpu, function, 1);
-            if (entry) {
-                *ecx = index & 0xff;
-                *edx = entry->edx;
-            }
-        }
-    }
-introduced in commit 43561123ab37 ("kvm: x86: Improve emulation of CPUID leaves
-0BH and 1FH"). So KVM-accelerated guests already see the SDM-compliant response;
-only TCG aborts.
+It says asm_exc_nmi() requires an IST to work correctly, and the new path for
+handling NMI when FRED is disabled.
 
-Thanks,
-Ewan
+idt_entry_from_kvm
+    idt_do_nmi_irqoff
+        IDT_DO_EVENT_IRQOFF call asm_exc_nmi
+            ...
+            call asm_exc_nmi
 
+It seems the stack before calling asm_exc_nmi is not an IST?
+Does it matter?
 
->      /*
->       * Find the No.(count + 1) topology level in avail_cpu_topo bitmap.
-> -     * The search starts from bit 0 (CPU_TOPO_LEVEL_SMT).
-> +     * The search starts from bit 0 (CPU_TOPOLOGY_LEVEL_THREAD).
->       */
-> -    level = CPU_TOPO_LEVEL_SMT;
-> +    level = CPU_TOPOLOGY_LEVEL_THREAD;
->      base_level = level;
->      for (int i = 0; i <= count; i++) {
->          level = find_next_bit(env->avail_cpu_topo,
-> -                              CPU_TOPO_LEVEL_PACKAGE,
-> +                              CPU_TOPOLOGY_LEVEL_SOCKET,
->                                base_level);
+> - * correctly vs. the NMI 'executing' marker.  Used for 32-bit kernels as well
+> - * to avoid more ifdeffery.
+> - */
+> -DECLARE_IDTENTRY(X86_TRAP_NMI,		exc_nmi_kvm_vmx);
+> -#endif
+> -
+>  DECLARE_IDTENTRY_NMI(X86_TRAP_NMI,	exc_nmi);
+>  #ifdef CONFIG_XEN_PV
+>  DECLARE_IDTENTRY_RAW(X86_TRAP_NMI,	xenpv_exc_nmi);
+
+[...]
+
+> @@ -7127,17 +7124,9 @@ static void handle_external_interrupt_ir
+>  	    "unexpected VM-Exit interrupt info: 0x%x", intr_info))
+>  		return;
 >  
->          /*
-> @@ -391,20 +391,20 @@ static void encode_topo_cpuid1f(CPUX86State *env, uint32_t count,
->           * and it just encodes the invalid level (all fields are 0)
->           * into the last subleaf of 0x1f.
->           */
-> -        if (level == CPU_TOPO_LEVEL_PACKAGE) {
-> -            level = CPU_TOPO_LEVEL_INVALID;
-> +        if (level == CPU_TOPOLOGY_LEVEL_SOCKET) {
-> +            level = CPU_TOPOLOGY_LEVEL_INVALID;
->              break;
->          }
->          /* Search the next level. */
->          base_level = level + 1;
->      }
+> -	/*
+> -	 * Invoke the kernel's IRQ handler for the vector.  Use the FRED path
+> -	 * when it's available even if FRED isn't fully enabled, e.g. even if
+> -	 * FRED isn't supported in hardware, in order to avoid the indirect
+> -	 * CALL in the non-FRED path.
+> -	 */
+> +	/* For the IRQ to the core kernel for processing. */
+
+For -> Forward?
+
+>  	kvm_before_interrupt(vcpu, KVM_HANDLING_IRQ);
+> -	if (IS_ENABLED(CONFIG_X86_FRED))
+> -		fred_entry_from_kvm(EVENT_TYPE_EXTINT, vector);
+> -	else
+> -		vmx_do_interrupt_irqoff(gate_offset((gate_desc *)host_idt_base + vector));
+> +	x86_entry_from_kvm(EVENT_TYPE_EXTINT, vector);
+>  	kvm_after_interrupt(vcpu);
 >  
-> -    if (level == CPU_TOPO_LEVEL_INVALID) {
-> +    if (level == CPU_TOPOLOGY_LEVEL_INVALID) {
->          num_threads_next_level = 0;
->          offset_next_level = 0;
->      } else {
->          next_level = find_next_bit(env->avail_cpu_topo,
-> -                                   CPU_TOPO_LEVEL_PACKAGE,
-> +                                   CPU_TOPOLOGY_LEVEL_SOCKET,
->                                     level + 1);
->          num_threads_next_level = num_threads_by_topo_level(topo_info,
->                                                             next_level);
-...
+>  	vcpu->arch.at_instruction_boundary = true;
+> @@ -7447,10 +7436,7 @@ noinstr void vmx_handle_nmi(struct kvm_v
+>  		return;
+>  
+>  	kvm_before_interrupt(vcpu, KVM_HANDLING_NMI);
+> -	if (cpu_feature_enabled(X86_FEATURE_FRED))
+> -		fred_entry_from_kvm(EVENT_TYPE_NMI, NMI_VECTOR);
+> -	else
+> -		vmx_do_nmi_irqoff();
+> +	x86_entry_from_kvm(EVENT_TYPE_NMI, NMI_VECTOR);
+>  	kvm_after_interrupt(vcpu);
+>  }
+>  
+> 
+> 
+> 
 
