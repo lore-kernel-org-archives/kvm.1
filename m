@@ -1,68 +1,68 @@
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D65144B671
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 13:36:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA12A3AD513
+	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 13:38:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777383406; cv=none; b=YhWmyHEQDCsrslUpXyRITfmK40Czy0m6fOGKQEnWyrbr5cfxbi4kH1iBNZ9tHInXrHk0jN2FYaubPodqk0hyrHOmiiLRZXfpvVMkrKimXu+uB0uoOqxu7edtOQhZDiEYeof3THUfEjGDBqf9MItgXwMsoKwljA1cFPH7fxU1l1o=
+	t=1777383485; cv=none; b=bkN0Ww8bQJF/EMLyWjoThv0VFrE/O5X/lHpGbOIoeZoyXSKNAHUsxCRksEik7inFi+nfCqTv5C0NvRWvrxdvZt2HTfxP97NZcdt2kouzj5f3aAWBkuhRGlEpuynYmilk1ks1zKWNRpM0OycRrzLlfMCE4EpspjaI3lXT+k3Hr9s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777383406; c=relaxed/simple;
-	bh=esToKOeJowsAkTTeyqSbmSIgmhGnHRhb2YdBS1u1Im0=;
+	s=arc-20240116; t=1777383485; c=relaxed/simple;
+	bh=fZyMs6ThguauJIy48ic57lQ7RORMc9Mh6i8joTX9Hr0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aIeEjbKMxuEshGauUb7dAViX7X1FmWn7jAuRRkFVhPHelzGZ8qlfUZINBm3oJyY/zFs+3DzjuC4ofOaunMLqmxYSqoy4C5nicELLJSW7JlOgBnHxBeQkv/jAAEOKX8Eu22KlRblaMk6UkZy8cF8NOdwOgRqFjFLUYuQArfxdvxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=CCCpCEka; arc=none smtp.client-ip=209.85.222.174
+	 Content-Type:Content-Disposition:In-Reply-To; b=sSJB7I3S5WMkm0dVZOOCNSeBC7feQo91qXGqPtdVh0w6SNyPPhmG5iZnGu1oT1YdM3JCV5pXd714UYACypyWYmEnPzHilIwr6sItmDYmlbmn3Z0J/gXN/X2gTRVZEBF1PWd8DZR/V+xG26HIvbL6Zse5ddGMP5le/wZlAn/W0ZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=GboBkd8K; arc=none smtp.client-ip=209.85.222.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="CCCpCEka"
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-8ec37d52c0dso1181058485a.0
-        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 06:36:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="GboBkd8K"
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-8dbbc6c16b2so1442441285a.0
+        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 06:38:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1777383404; x=1777988204; darn=vger.kernel.org;
+        d=ziepe.ca; s=google; t=1777383482; x=1777988282; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eZ19NsW5fr6ajdZR5D4lYg3z8k9sQDPcT96d4+jJChg=;
-        b=CCCpCEkaKpe5tEjOu+k7WSh0VNfkjg802bvXXdHMbKlYZZjGdecKDW7UTXH+OU5rU8
-         Jkc/Z6ZX0bpi5JvTDUKWMntyc4Izso7NrzcCakzoZReb1nTwFpD6TtoRFhnwuJMBzcgM
-         JFNg/SMdDPMRFjVuOSuGIYqqpE2WpwVR+4DZDpUnAls7mja2kBvXtZZ/bVthpnb14ch8
-         eiMXBFQyfUuFMo+8K1hdac4AqHfeX5kxLPfbDcIxqejVv55q6nzfYl2kM+qLTniXf5cn
-         /YBURlAde3Nxe+TkrXaq4uRfKUh7LlEMqL8WgHe8wfRGyRGCToZuYfs8kmW8Cz6qcnXC
-         ddMg==
+        bh=WHmUngA0Beg9PMjrunFUFdxSHW2GXtc2kWTAdD0BnF4=;
+        b=GboBkd8K0nVybK22XBEF2gkuuaa0h7mQCZx4WWhb/QaQMCED/ilKPEQFu1sFU8RZHP
+         wcVVPEEkQAnNDtfz4aE1isM2SHwhiX/gCFvMcIpHG3fz3pANPE9tqUZ1oGAnSaLifsNB
+         /yGGi/CK4MgbNZc3Byh0y0BDsDz9H9hQTnpEQ9RoH61Pgo6KiyWVYRHH/RdKH2EqcB9r
+         FhUF8XJe2XDdRUwXH72FGbqqYYHXBZZD0UlLqH1Rp0oQAVaAOu8NzF9VfFc/v6LzzTjM
+         0k+hyL7b8BdMgSOigzCrsg1lX6SIgTHPIrUoQtxigpih5uXC4DuZT1w6r4JrjiDGSlRD
+         nVEg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777383404; x=1777988204;
+        d=1e100.net; s=20251104; t=1777383482; x=1777988282;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eZ19NsW5fr6ajdZR5D4lYg3z8k9sQDPcT96d4+jJChg=;
-        b=pb4oVXdcb4expN75tg5vip3AwlinvkiFqvBMIYQOZtfw1Xmhu8OJW46dkDo9M+FUOx
-         bEUgSpRQkG+jhCZXLmqxKVUxNB3vb501nWUc2cyutbk6F3E6yERxfE9CsPay6v2ftI1S
-         ymzrUF1/d7EistueZnH4hu/4vwEUMn/987s6VPIV7zgC7Zkz0MSJW/88/ul0KD0XknAQ
-         YsCzN0dbviQM/bHe556ZHuwTzOv2Dj/JILp6BkfcdWvvwMeKQYe0MNQUv5QoASutTvJq
-         CItYX/JDtPemj2sxmm4sSj+DVYePXy8Br90m1jl/kAEa5flTjL4QSyGTXIDMy6r0GMoL
-         dYDw==
-X-Forwarded-Encrypted: i=1; AFNElJ/yHok00f6LKN2cPDD2WhIxgVAKA1fL9RAU2kNTGKsBfZMu7FnAwaZ0NZEn3mq0Vx90q58=@vger.kernel.org
-X-Gm-Message-State: AOJu0YydSrAMvygKdJ9GXc6Yhbues7i5vJ0uujXABrcka1nCrHo+V3+/
-	vqoBHRYWdxBJrpuBOnvNUANNhQ9C1Qh9OL5N0xw/cOkQEOrCPAxWkyyNh5SSVs9o6UE=
-X-Gm-Gg: AeBDieu16+0DJj7WwtA/rsKLyN3u055U85/gzF9Xb12Cp0P82wjHFhXqfRxdb5hrH5z
-	oxokIjgK0nj1rqfc0OQ03ukT3mDGHH+pTaeaL8/7ERKnFV8GorSmxQBzQJFPLKZwT19SNIg+YML
-	fN1NGTW6ok0b2x0HGw/hUnmbEzqbONaaJ2KG2rO4eXBbVkOaqwbOMNuoPHGkp/S0rl0HEGiPfl9
-	BweieC7+A4oUX5yoVHXMNp+Kuo8iBY+c5m3c7WGgsxOEr59AE6VjI6cPWpfmNCyQfSH9wUH7QSd
-	dDIEmzgnT3Z79SVZSPrwANar9I7aeqhW13cIdCltN1J8CAKo7QocIv/bVIv7G/wd4PtKwMDQBMd
-	0vCCjiZNRs+FlR4HfWDSPP6GZNaZDAHrqSAMgKLFuTnnrz/VZybyjsiHbYJlGwCq2uq/ZMdlkdv
-	nmSMIMlE8KjGGAGuQeQh+4WKbM5C6evhi0QYGfZXtNg3UVNzmsQT2RbjOgwcTkF7L3Okqddg90e
-	8JAHl28/z/HA20i
-X-Received: by 2002:a05:620a:4002:b0:8ec:a621:a3af with SMTP id af79cd13be357-8f7d7d17f49mr430093585a.27.1777383404115;
-        Tue, 28 Apr 2026 06:36:44 -0700 (PDT)
+        bh=WHmUngA0Beg9PMjrunFUFdxSHW2GXtc2kWTAdD0BnF4=;
+        b=NXwV9Z6DUBolgoVtZ2T2hncATqfoCR9Eeivo7CYJcEtRHGNVRjUkEtD29N/NNGtLDK
+         BnBG2owesDb9WAYxDKISj1CX4OoK78O+AsVWdYbCjgpB8orldR+cghWul/IIb20Qf0X2
+         5zF3oV2E1BDKcrMOozTb1JGrGqEd7Wzt5KdEx5uGdu8QDqYFc7eiU2jBAd31XghX9li9
+         e20f8rvC6KVvIXmdLAbMP+QPxM2WVGoiWyP16zYK1/ZXO2bm+SHOUux83vtTfJkW/AFG
+         FPaQUlPVcdBfv/XaF8nUHjn1t75lKm58SwPp4C8CcYtCox5YbMouMUJrYdQOMUWi/nyu
+         9DUw==
+X-Forwarded-Encrypted: i=1; AFNElJ9OGgqJ+Hnf0592Y4ZN1NeIXQmPReF8LKxrULEkMSgYuMdY0S7d5q+TnSjo/gKS6Nbhpqc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyl7tHVXN1UCESH0s+qom0Ztd9vwiuvh3uil9WkEJ4B6MftRGBw
+	39NSaHt2tNqV7mKf+A74OP/zRzIaDiEFM+r/6py7AkTI1CVCRVMrqhYEZLGzFUgOipE=
+X-Gm-Gg: AeBDiesRH1cWHGjy1K5mJ4jA/+fftpXl1/iuCvyDtYkwxfCUhIdN88F8JMPT94I6CVX
+	Bdq0gTyETj8SNTkzkduKnYfv+YqB1KC3jp0KNd5kiqd7G6KdATwZfnjA0eeWRXufRriZ5agXJLa
+	ZSKvVtw4sN0oC41yAEoL14wUoyWvsQtWR1YbhZ7aboJ5cMgZb0rEu7eu19kjXKgIIeMqfi0U8/e
+	9P9tcMoYo7eZIt3JZo6Cgb51jLzVi5BIBK5aRJz3vdWjpuBn0IoqmfB3arc+dt6vOIpHoxF8gYZ
+	n2Fi88ERBVZDbMXkYvcI6y2Y7sYeVK2NmzI9Vu2E9NT9fO+FwASCvUWczNb6AK1R9s/FX/DLzZQ
+	myh8SnAZo2H9iFtbT5GzHyq4nOg7XOPT1sshmSFoWJqGVo+0pYkigNM6aaZdWl71XFpCRo+AUPF
+	LANvvIx9G4AuYpmhik1zmuELkHYUla8OHPSx2EiqSIC9Yl50dYAi1jgXYozRn7Z62ffxy4aeYod
+	C7I8+qQWTvttZo7
+X-Received: by 2002:a05:620a:178c:b0:8cd:aa61:ad8f with SMTP id af79cd13be357-8f7d5d6dc38mr357079385a.14.1777383481817;
+        Tue, 28 Apr 2026 06:38:01 -0700 (PDT)
 Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8f7c7cd2becsm194526285a.29.2026.04.28.06.36.42
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8f7c4dbcfbdsm203538685a.12.2026.04.28.06.38.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 06:36:42 -0700 (PDT)
+        Tue, 28 Apr 2026 06:38:01 -0700 (PDT)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1wHicD-0000000Aii6-3yTF;
-	Tue, 28 Apr 2026 10:36:41 -0300
-Date: Tue, 28 Apr 2026 10:36:41 -0300
+	id 1wHidU-0000000Aj1L-1JSZ;
+	Tue, 28 Apr 2026 10:38:00 -0300
+Date: Tue, 28 Apr 2026 10:38:00 -0300
 From: Jason Gunthorpe <jgg@ziepe.ca>
 To: fangyu.yu@linux.alibaba.com
 Cc: joro@8bytes.org, will@kernel.org, robin.murphy@arm.com, pjw@kernel.org,
@@ -73,11 +73,11 @@ Cc: joro@8bytes.org, will@kernel.org, robin.murphy@arm.com, pjw@kernel.org,
 	kvm@vger.kernel.org, iommu@lists.linux.dev,
 	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH 07/11] iommupt: Don't preset D when RISC-V IOMMU
- dirty tracking on
-Message-ID: <20260428133641.GF849557@ziepe.ca>
+Subject: Re: [RFC PATCH 08/11] iommu/riscv: Add dirty tracking support for
+ second-stage domains
+Message-ID: <20260428133800.GG849557@ziepe.ca>
 References: <20260428131359.34872-1-fangyu.yu@linux.alibaba.com>
- <20260428131359.34872-8-fangyu.yu@linux.alibaba.com>
+ <20260428131359.34872-9-fangyu.yu@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -86,28 +86,53 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260428131359.34872-8-fangyu.yu@linux.alibaba.com>
+In-Reply-To: <20260428131359.34872-9-fangyu.yu@linux.alibaba.com>
 
-On Tue, Apr 28, 2026 at 09:13:55PM +0800, fangyu.yu@linux.alibaba.com wrote:
-> From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
-> 
-> When mapping writable pages, the RISC-V format code currently
-> pre-sets the PTE D bit unconditionally.
-> 
-> If hardware dirty tracking is active (DC.tc.GADE set), the IOMMU
-> sets D autonomously on the first write. Pre-setting D makes every
-> new mapping appear dirty immediately and breaks dirty tracking.
-> 
-> Introduce PT_FEAT_RISCV_DIRTY_TRACKING_ACTIVE and, when set, leave
-> D cleared for new writable mappings so hardware can capture the
-> first write. Keep pre-setting D when dirty tracking is inactive.
-> 
-> Only meaningful for second-stage (iohgatp) page tables.
+On Tue, Apr 28, 2026 at 09:13:56PM +0800, fangyu.yu@linux.alibaba.com wrote:
 
-You shouldn't need anything like this, the D bit is managed by the
-iommufd core appropriately. It *should* start out pre-set as that is
-faster when not tacking. Only once dirty tracking is started does D
-get cleared. User space is supposed to assume that everything is dirty
-prior to its first D clear.
+> @@ -1247,6 +1247,84 @@ static int riscv_iommu_attach_paging_domain(struct iommu_domain *iommu_domain,
+>  	return 0;
+>  }
+>  
+> +/*
+> + * Enable or disable hardware A/D bit updates (GADE) in the device context for
+> + * all devices attached to a second-stage domain. When dirty tracking is
+> + * enabled the IOMMU hardware will set the dirty bit in PTEs on write access,
+> + * making them visible to read_and_clear_dirty().
+> + */
+> +static int riscv_iommu_set_dirty_tracking(struct iommu_domain *iommu_domain,
+> +					  bool enable)
+> +{
+> +	struct riscv_iommu_domain *domain = iommu_domain_to_riscv(iommu_domain);
+> +	struct riscv_iommu_bond *bond;
+> +	struct riscv_iommu_device *iommu, *prev;
+> +	struct riscv_iommu_dc *dc;
+> +	struct iommu_fwspec *fwspec;
+> +	struct riscv_iommu_command cmd;
+> +	u64 tc;
+> +	int i;
+> +
+> +	rcu_read_lock();
+> +
+> +	list_for_each_entry_rcu(bond, &domain->bonds, list) {
+> +		iommu = dev_to_iommu(bond->dev);
+> +		fwspec = dev_iommu_fwspec_get(bond->dev);
+> +
+> +		for (i = 0; i < fwspec->num_ids; i++) {
+> +			dc = riscv_iommu_get_dc(iommu, fwspec->ids[i]);
+> +			tc = READ_ONCE(dc->tc);
+> +			if (!(tc & RISCV_IOMMU_DC_TC_V))
+> +				continue;
+> +
+> +			if (enable)
+> +				tc |= RISCV_IOMMU_DC_TC_GADE;
+> +			else
+> +				tc &= ~RISCV_IOMMU_DC_TC_GADE;
+> +			WRITE_ONCE(dc->tc, tc);
+
+I'm pretty sure you don't need to do this. Just preset GADE when ever
+a S2 domain is attached, rely on the pre-set D to avoid any HW cost
+and you are fine. No need to change it dynamically unless something is
+reall weird about riscv.
 
 Jason
