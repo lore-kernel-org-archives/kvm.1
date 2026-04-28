@@ -1,158 +1,213 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485ED399039;
-	Tue, 28 Apr 2026 02:43:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0031F3128B6;
+	Tue, 28 Apr 2026 05:26:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777344243; cv=none; b=RkBmJmZXci/kqOJU4LCgYSnjUx9L3e4D2Q8Xr4klkAfVKox20sAWPkZCWrhmz25kEu8S+HpcFm1ecfK8aS9nIBgQRrmdMTAxvXVx1EifUuPOIeLul2iQsSNpYk22ua3bnpwSWszcSP/Xu+/Jo3kKH9xpx6NPCgliaXg9rdFip7c=
+	t=1777353977; cv=none; b=Hq9EOUhDGUvCIjYSnU6pitDOoBJU8OMBNg2CRSxQn59ySD4NrIj3UIz7jyYx8/YrhFMCYSUaKOOu3sNSP7VMEOG+WQaee6XtKFqVgoKLI2wmIMh7+0SPc9GN9Sfnwc7UWDQDcXZeS6H+7jPah/zt95c9/t3nKT4ukohipYb+6cE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777344243; c=relaxed/simple;
-	bh=z7ZK8TLDaYBSF/7f/V/eqd54Mqd0jIJMP4tJH7E1aMU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SlU02oyq6gBjGVWmKdALl0DUrFiAkBmeDeaEVCRCr8BbUODsx4AIz8MzgIo58AxogvgCVihfNa8Km57hFmay2OQyzE0RWNYuDXLMHpD2lBhTXTO/6NNogpI98EX+Uirfuer1txX4PMIcTkhlocYgH861Jn2pca4gAXqr4nfD6Mo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E1/mwqTT; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1777353977; c=relaxed/simple;
+	bh=i3yVVYelNDMh8MY5WCys9RfgZhb0sc8HuvpTySdHf4w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WW3MHFyrjgJ+EMQP+ng8Ow/BT1YH3ZxejAXVZNITgq6bU3X1XnZPlsbxos2z1EtvgUQSp96ULziQ5RFPhe1V2hx7hBTNGP6ZeiG7YzX1opivVtXG6wZ9ywYdZGHi92xbkVg18mwIJdwnYurPly5RfovPWsPJumoFZgE4Wxb5CF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C0CKmuKz; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E1/mwqTT"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C0CKmuKz"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777344231; x=1808880231;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=z7ZK8TLDaYBSF/7f/V/eqd54Mqd0jIJMP4tJH7E1aMU=;
-  b=E1/mwqTTHVelN1ISHgiBJNmPz//zYzhFlvbPwva831lWm6ow7ebuzjyk
-   Ul1DRDkYa4l2G2FSwGs8fF8sEh0zymFE9857LnwfQ5zF71UY2KiFTk8KX
-   dhAeqEbBYrfyLGOJ3k/obplKEozzAiuOL/+cC8kwbLym/7LPzuHZwPPg6
-   CnYsclJ95nZLcQJYHcic3+4Vr9w7vuIsnVr48XlT1VDMfbSV4dBrGuvX/
-   k9mHfIcpaHkIDOjq+501WzVedx95h91hhT/jGOqylMPuuI2oS9WJchp3/
-   7qQrdioGHrOZvtWQMcHLWkJiLrfbNupXJCpvOBQBPoUJQf8uciu1VKkFL
-   Q==;
-X-CSE-ConnectionGUID: wlSgttKgQwGa4NUBMBuwTw==
-X-CSE-MsgGUID: pHIk2DK5ST+/pZsRVnZwcg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="82096004"
+  t=1777353976; x=1808889976;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=i3yVVYelNDMh8MY5WCys9RfgZhb0sc8HuvpTySdHf4w=;
+  b=C0CKmuKzJmSIRjA4aJmt2sO/2wi/W+KkrZQFqH7PKnTaR20bS8+yYz3U
+   8WURRpSmakxa1EkY80Fnh0Xp1S0coNkSmIzl5SzAMLfoqa34LhUmznbmM
+   6mZbpbfWarZN5muNQfohhdoCl8DnyCJIejv4WqVzjGT3lZjXFiBpBGbtQ
+   LMMQfHMFNJm6QGJv9y9reoyFKMc1ibnFQa3QobX4U6TO2XR50K5HfN9VN
+   e6VltM0whcdLEQ3CbHV6zdjXaCeW6JjGNty8n5In6agC2wiKCMlKoTO8x
+   YpIU6GKal/T2YfzB2xv4xVhSvY5bAEB+08EgYFrtXsF3CQYF9W2QG8C2e
+   A==;
+X-CSE-ConnectionGUID: yJKX1yUKQ+qdYthMGwhx9g==
+X-CSE-MsgGUID: JcIVQRs/QQWa+UL/HXSuTg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78131665"
 X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="82096004"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 19:43:51 -0700
-X-CSE-ConnectionGUID: UHvBJLxwQlit1jjx2+V7cQ==
-X-CSE-MsgGUID: ihXS4Ql4Q3ySeRj/rQtVJw==
+   d="scan'208";a="78131665"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 22:26:13 -0700
+X-CSE-ConnectionGUID: X/wP4DM9Ss65m+CzvuhQSg==
+X-CSE-MsgGUID: o+GUW00BTVOvxNpVXRj6jA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="271943214"
-Received: from litbin-desktop.sh.intel.com ([10.239.159.60])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 19:43:48 -0700
-From: Binbin Wu <binbin.wu@linux.intel.com>
-To: kvm@vger.kernel.org,
+   d="scan'208";a="234130154"
+Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.106])
+  by orviesa007.jf.intel.com with ESMTP; 27 Apr 2026 22:26:13 -0700
+From: "Chang S. Bae" <chang.seok.bae@intel.com>
+To: pbonzini@redhat.com,
+	seanjc@google.com
+Cc: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	x86@kernel.org
-Cc: pbonzini@redhat.com,
-	seanjc@google.com,
-	dave.hansen@intel.com,
-	kas@kernel.org,
-	rick.p.edgecombe@intel.com,
-	vishal.l.verma@intel.com,
-	xiaoyao.li@intel.com,
 	chao.gao@intel.com,
-	binbin.wu@linux.intel.com
-Subject: [PATCH 2/2] x86/cpu: Skip reading MSR_IA32_PLATFORM_ID in virtualized environment
-Date: Tue, 28 Apr 2026 10:47:46 +0800
-Message-ID: <20260428024746.1040531-3-binbin.wu@linux.intel.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20260428024746.1040531-1-binbin.wu@linux.intel.com>
-References: <20260428024746.1040531-1-binbin.wu@linux.intel.com>
+	chang.seok.bae@intel.com
+Subject: [PATCH v3 00/20] KVM: x86: Enable APX for guests
+Date: Tue, 28 Apr 2026 05:00:51 +0000
+Message-ID: <20260428050111.39323-1-chang.seok.bae@intel.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The Linux kernel now reads MSR_IA32_PLATFORM_ID during CPU init.  When
-running as a guest, if the underlying hypervisor does not emulate the
-MSR, the RDMSR from 0x17 in intel_get_platform_id() can trigger an
-unchecked MSR access during early boot.
+Hi all,
 
-    unchecked MSR access error: RDMSR from 0x17 at rIP: 0xffffffffba38d6fc (intel_get_platform_id+0x7c/0xb0)
-    Call Trace:
-     <TASK>
-     ? early_init_intel+0x28/0x2c0
-     ? early_cpu_init+0x9b/0x930
-     ? setup_arch+0xbf/0xbb0
-     ? _printk+0x6b/0x90
-     ? start_kernel+0x7f/0xaa0
-     ? x86_64_start_reservations+0x24/0x30
-     ? x86_64_start_kernel+0xda/0xe0
-     ? common_startup_64+0x13e/0x141
-     </TASK>
+This revision tries to reflect the recent design discussions [1]. Notably
+the series also depends on preparatory work [1,2], so should be on hold
+until they are merged. But the intention here is to sort out next level
+of details by collecting feedbacks.
 
-Currently, KVM does not support guest reads of MSR_IA32_PLATFORM_ID for
-TDX.  This should be fixed in the hypervisor, but for compatibility with
-newer guests running on older KVM hosts, skip reading MSR_IA32_PLATFORM_ID
-and return 0. It's meaningless to read MSR_IA32_PLATFORM_ID since guests
-are not allowed to do microcode update.  cpu_has_old_microcode(), which
-uses platform ID for CPU match, also skips checking whether the microcode
-is old or not in a virtualized environment.
+Below is a summary of the recently established direction:
 
-Since intel_get_platform_id() can be called early before cpuinfo_x86
-is fully initialized, check whether it's running in a virtualized
-environment from CPUID and opportunistically add a helper.
+  Since the V2 posting [4], Sean gave his feedbacks that led to shift the
+  approach. The initial approach was access physical EGPRs directly
+  similar to vector registers, but this introduces non-uniform access
+  patterns against directly accessing VCPU regs[].
 
-Fixes: d8630b67ca1ed ("x86/cpu: Add platform ID to CPU info structure")
-Reported-by: Vishal Verma <vishal.l.verma@intel.com>
-Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
----
- arch/x86/kernel/cpu/microcode/core.c     | 2 +-
- arch/x86/kernel/cpu/microcode/intel.c    | 4 ++++
- arch/x86/kernel/cpu/microcode/internal.h | 5 +++++
- 3 files changed, 10 insertions(+), 1 deletion(-)
+  To maintain uniformity, EGPRs need to be stored in regs[]. Sean's reg
+  accessor infra updates [1] makes this feasible. It was also realized
+  that saving EGPRs outside of the fastpath is not viable, as fastpath
+  handlers may access EGPRs as well.
 
-diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
-index 651202e6fefb..ee204c8a90bf 100644
---- a/arch/x86/kernel/cpu/microcode/core.c
-+++ b/arch/x86/kernel/cpu/microcode/core.c
-@@ -135,7 +135,7 @@ bool __init microcode_loader_disabled(void)
- 	 * 3) Certain AMD patch levels are not allowed to be
- 	 *    overwritten.
- 	 */
--	hypervisor_present = native_cpuid_ecx(1) & BIT(31);
-+	hypervisor_present = x86_cpuid_has_hypervisor();
- 
- 	if ((hypervisor_present && !IS_ENABLED(CONFIG_MICROCODE_DBG)) ||
- 	    amd_check_current_patch_level())
-diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
-index 37ac4afe0972..cb93e4ea410e 100644
---- a/arch/x86/kernel/cpu/microcode/intel.c
-+++ b/arch/x86/kernel/cpu/microcode/intel.c
-@@ -147,6 +147,10 @@ u32 intel_get_platform_id(void)
- 	if (intel_cpuid_vfm() <= INTEL_PENTIUM_II_KLAMATH)
- 		return 0;
- 
-+	/* Don't try to read microcode bits when virtualized. */
-+	if (x86_cpuid_has_hypervisor())
-+		return 0;
-+
- 	/* get processor flags from MSR 0x17 */
- 	native_rdmsr(MSR_IA32_PLATFORM_ID, val[0], val[1]);
- 
-diff --git a/arch/x86/kernel/cpu/microcode/internal.h b/arch/x86/kernel/cpu/microcode/internal.h
-index 3b93c0676b4f..0233e074d76b 100644
---- a/arch/x86/kernel/cpu/microcode/internal.h
-+++ b/arch/x86/kernel/cpu/microcode/internal.h
-@@ -100,6 +100,11 @@ static inline unsigned int x86_cpuid_family(void)
- 	return x86_family(eax);
- }
- 
-+static inline bool x86_cpuid_has_hypervisor(void)
-+{
-+	return native_cpuid_ecx(1) & BIT(31);
-+}
-+
- extern bool force_minrev;
- 
- #ifdef CONFIG_CPU_SUP_AMD
+  Then, saving EGPRs on entry code appears to be the choice. This also
+  looks to provide some degree of robustness (but not completely yet
+  though [*]) for when the kernel clobbers those registers. The VCPU XCR0
+  can gate this path to avoid #UD from non-APX guests.
+
+  The conditional path should be also under speculation-safety, rather
+  than wild guest control. Paolo's rework on entry code [2] will
+  establish a SPEC_CTRL macro which allows a finer control.
+
+  For userspace interactions, the EGPR state in regs[] can be copied
+  directly to/from the userspace buffer at the boundary of ABI handlers.
+
+With this design concept in mind, here are a couple of points to call out
+while each patch has a note of changes:
+
+  * Entry changes
+
+    The entry code is first refactored to generalize (64-bit) register
+    save/restore via macros (part1-3). This simplifies integration of
+    EGPR handling (patch5). I also sorted to simplify the register saving
+    path by skipping VM-Fail check.
+
+  * XSAVE ABI
+
+    Similar to PKRU, the state is not managed by XSAVE internally but is
+    exposed via the XSAVE format. KVM fully owns both ends: storage and
+    ABI handling so KVM-side changes alone cover the support. There are 
+    some subtlties (noted in patch6) in arrangement with the existing 
+    copy function.
+
+Finally, series layout and relevant test comments:
+
+  * Part1, PATCH 01-03: Prepare entry code by macrofying GPR handling
+    Most KVM test will capture any regression out of it. I also tested it 
+    more explicitly with tweaking the posted patch [3].
+
+  * Part2, PATCH 04-06: Establish EGPR state management
+    These new state management flow is rather unique compared to other
+    XSTATEs. This fact leads to new test cases (patch18), in addition to
+    state_test (patch19).
+
+  * Part3, PATCH 07-11: Update VMX handlers for extended reg. indices
+    Previously I tweaked to test an exit case like LGDT with an extended 
+    ID. But this part leans into VMX unless KVM is paranoid.
+
+  * Part4, PATCH 12-15: Add emulator support for REX2
+    KVM unit test patch [3] covers emulator changes.
+
+  * Part5, PATCH 16-19: Expose features and add selftests
+    XCR0 tests basically covers the exposition.
+
+This series is currently based on an old commit (02896e0065ca) in x86 KVM
+next branch and includes preparatory patches [1,2]. It can be also found
+here:
+  git://github.com/intel/apx.git apx-kvm_v3
+
+Thanks,
+Chang
+
+References:
+[1] Sean's preparatory series:
+    https://lore.kernel.org/kvm/20260409224236.2021562-1-seanjc@google.com/
+[2] Paolo's SPEC_CTRL refactoring:
+    https://lore.kernel.org/kvm/20260427105848.44865-1-pbonzini@redhat.com/
+[3] KVM unit tests:
+    https://lore.kernel.org/kvm/20260420212355.507827-1-chang.seok.bae@intel.com/
+[4] Previous version (V2):
+    https://lore.kernel.org/kvm/20260112235408.168200-1-chang.seok.bae@intel.com/
+[5] APX specification:
+    https://cdrdv2.intel.com/v1/dl/getContent/784266
+[*] E.g. NMIs at entry code could mess up with APX-clobbering handlers
+    when XCR0[APX]=0. VMX extention to afford XCR0 switching by hardware
+    itself could be an option to avoid the issue.
+
+Chang S. Bae (20):
+  KVM: VMX: Macrofy 64-bit GPR swapping in __vmx_vcpu_run()
+  KVM: SVM: Macrofy 64-bit GPR swapping in __svm_vcpu_run()
+  KVM: SEV: Macrofy 64-bit GPR swapping in __svm_sev_es_vcpu_run()
+  KVM: x86: Extend VCPU registers for EGPRs
+  KVM: VMX: Save guest EGPRs in VCPU cache
+  KVM: x86: Support APX state for XSAVE ABI
+  KVM: VMX: Refactor VMX instruction information access
+  KVM: VMX: Refactor instruction information decoding
+  KVM: VMX: Refactor register index retrieval from exit qualification
+  KVM: VMX: Support instruction information extension
+  KVM: nVMX: Propagate the extended instruction info field
+  KVM: x86: Support EGPR accessing and tracking for emulator
+  KVM: x86: Handle EGPR index and REX2-incompatible opcodes
+  KVM: x86: Support REX2-prefixed opcode decode
+  KVM: x86: Reject EVEX-prefixed instructions
+  KVM: x86: Guard valid XCR0.APX settings
+  KVM: x86: Expose APX foundation feature to guests
+  KVM: x86: Expose APX sub-features to guests
+  KVM: x86: selftests: Add APX state and ABI test
+  KVM: x86: selftests: Add APX state handling and XCR0 sanity checks
+
+ arch/x86/Kconfig.assembler                    |   5 +
+ arch/x86/include/asm/kvm_host.h               |  35 +++-
+ arch/x86/include/asm/kvm_vcpu_regs.h          |  11 -
+ arch/x86/include/asm/vmx.h                    |   2 +
+ arch/x86/kvm/Kconfig                          |   4 +
+ arch/x86/kvm/cpuid.c                          |  28 ++-
+ arch/x86/kvm/cpuid.h                          |   2 +
+ arch/x86/kvm/emulate.c                        | 121 +++++++----
+ arch/x86/kvm/kvm_emulate.h                    |  13 +-
+ arch/x86/kvm/reverse_cpuid.h                  |   6 +
+ arch/x86/kvm/svm/svm.c                        |   8 +-
+ arch/x86/kvm/svm/vmenter.S                    |  51 +----
+ arch/x86/kvm/vmenter.h                        |  51 +++++
+ arch/x86/kvm/vmx/nested.c                     |  74 +++----
+ arch/x86/kvm/vmx/nested.h                     |   2 +-
+ arch/x86/kvm/vmx/vmcs12.c                     |   1 +
+ arch/x86/kvm/vmx/vmcs12.h                     |   3 +-
+ arch/x86/kvm/vmx/vmenter.S                    |  67 +++---
+ arch/x86/kvm/vmx/vmx.c                        |  26 ++-
+ arch/x86/kvm/vmx/vmx.h                        |  77 ++++++-
+ arch/x86/kvm/x86.c                            |  76 ++++++-
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../selftests/kvm/include/x86/processor.h     | 120 +++++++++++
+ tools/testing/selftests/kvm/x86/apx_test.c    | 192 ++++++++++++++++++
+ tools/testing/selftests/kvm/x86/state_test.c  |   3 +
+ .../selftests/kvm/x86/xcr0_cpuid_test.c       |  19 ++
+ 26 files changed, 803 insertions(+), 195 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/x86/apx_test.c
+
+
+base-commit: 109b8abcee6413717b09ba6b0bd4b3bc5aaa4608
 -- 
-2.46.0
+2.51.0
 
