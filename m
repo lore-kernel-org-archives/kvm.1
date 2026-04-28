@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8AD38947A;
-	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E6323A4523;
+	Tue, 28 Apr 2026 23:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777418720; cv=none; b=rFBbJpQdOq5iJol1ntQGZ4gFD94fVvGNpr21j0v294JADt9q+DAbz0jAFXhBexAVA1YzIkPRPnt+wHi0SKI3zYOTfH1rO7flIPHU0KObwtQNFrUlbUWc92UOVgmc6H6HcuUuW8rCNOpj4PrQ+AqZyyDdtayo+O6SFBWnxr8PTJ0=
+	t=1777418719; cv=none; b=eMYib1y9F/aahQOFny7vZx1Wc/0CKky30QXasNj9wyx5bRKYGlbunfO8lCN69KDAQOZYKMJUiOnH3+D5U46sfpdTfXjJqhA82K+LojQs5zDSewVnJ4eDLZwec4cJ9XMlSeHwVF6CoCZHbyhg1UknXyds1s2XpTRcM7OMksgWQfI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777418720; c=relaxed/simple;
-	bh=k74W65/sgUamQSqwCX6QPTIXutTYcok2/gXOIvWj2PA=;
+	s=arc-20240116; t=1777418719; c=relaxed/simple;
+	bh=yIQ1qb/5thBEPl1WW7+A4KzPierGynmKhGiUR/3Ml6c=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=X9rZenK/7eet4SdCTb9lDuraKIgMO5OWTAOSCmule1KPPBO0FMK+OP0vmavsxvh59+wwaapFjlVW5P5n64UOdYC5fLltdvI/qVZ69TEPgMOzJHfBD9VgjuIJytCmYlIAE76pn7Vc+H6us3fDJNMQ/MvA8cK4lnQxWxrep5k3ZZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LSi4BCso; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=XqEaT6JGDXqdgesbmVFh/YZ4cGvMSg4xdJY6F7CjQgcPvGD/2IxN1941YadEYrz8r/lTlmecLFgDxNem8UHXrUXEJQRn/FtRrNlQHy4EKMYMiuw26lj67/9ny5EHuf+0pQRnQiyvjkyri4taodfHRdPwiXOdA868SRac4LkNh+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iqzkNOfj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LSi4BCso"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 9152DC2BCFD;
-	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iqzkNOfj"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 540A2C2BCF7;
+	Tue, 28 Apr 2026 23:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777418720;
-	bh=k74W65/sgUamQSqwCX6QPTIXutTYcok2/gXOIvWj2PA=;
+	s=k20201202; t=1777418719;
+	bh=yIQ1qb/5thBEPl1WW7+A4KzPierGynmKhGiUR/3Ml6c=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=LSi4BCsoodSXa1Wtr13JwRzUK7xTLAqk5OWVYFi2qSZPJ8zA7D+SSEZ1D48CUQuT+
-	 rWdSDWpaqxHqFxy+C8tpaeex+3XlA/tdpLIO8UDkK6nnXxZD/h7cmmE++U6gJk3C2D
-	 veEGJHjGxJutmaCwOy1blzJNkJVTaVSnd+qKK+/ZDF65hFJXLzL5k55DQNEwpVZJjs
-	 chf90qFJ55yGB1MFvKtI6gllnnUEiMFUB29cB6ag4flt/+o5SeW/liCAjjEA/ap/W+
-	 KqNkstYd+cJqeIILMDbXblEpphRxwalJU5tVTSbo+mhaujLAi01uGpsdsuhmLwv/N+
-	 8Rv/jZsXG7DMA==
+	b=iqzkNOfjetQv0OkOlMI4tZoTh+sRABN+hK+ANmOFw/Y0SQPFWkuEL1h8joP+JXUaw
+	 holJDjTe6B+rq4XlfKj3mAaSD488WXovSxw7VjFVbkk31MlIsZriCcQAUobgbbS5+4
+	 U3vufYnU831eYzE7hnJgsAplr2Sf/lQetR74SIaW6TYCvLC9TnTHOVdX1yhvunNxmR
+	 sAZhmVuNPo8Ha+M+kQdBEXi3e+yI+rAc5yHBoH4kzECyKbbnVWSU33aaWelmlFVaur
+	 YvVc8MESc7z18FYFcuPypzKc/GC7Ywh8zipYDdvDfBE6GhtkEphZ+kVUEtljAgqH/I
+	 bH4JGvvE8VGtw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 868DAFF8877;
-	Tue, 28 Apr 2026 23:25:20 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 4B007FF8875;
+	Tue, 28 Apr 2026 23:25:19 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Tue, 28 Apr 2026 16:25:35 -0700
-Subject: [PATCH RFC v5 40/53] KVM: selftests: Test that shared/private
- status is consistent across processes
+Date: Tue, 28 Apr 2026 16:25:20 -0700
+Subject: [PATCH RFC v5 25/53] KVM: TDX: Make source page optional for
+ KVM_TDX_INIT_MEM_REGION
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260428-gmem-inplace-conversion-v5-40-d8608ccfca22@google.com>
+Message-Id: <20260428-gmem-inplace-conversion-v5-25-d8608ccfca22@google.com>
 References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 In-Reply-To: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -74,11 +74,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=3473;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=2077;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=za9mbinhXQlrBGNX8T7yWO9RNCSzSfL649W98OVJnA0=;
- b=lkg9YFQlIbB1hlTVjPrGIukY3fzR7s6d2zyamzlqVzgGFcxL3JfBdyNqZw0C9MA3wGvekD5Qw
- vGC5eHP/UQ6DLO56Vn4ZHsd+yy/F3u/Qr3S2vgUpUxAbrEbmXmlAi+g
+ bh=ZUVil0lCIwc17luhnyQSnbr0drwWGJzhuW+VIyBKAEE=;
+ b=7+JgXh5IsJ8zEo/B+5TkhpuCJ+LAfF3PUrxanugOqLUqBAxiPXjz3BKUNbVG/YL3JTPBaLNVM
+ Arrpar2DOqaCNzQACmKnSm35p43EbE0LBLcBBsBuSJO2Q79UgEO9KPL
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -86,111 +86,56 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 
-From: Sean Christopherson <seanjc@google.com>
+From: Ackerley Tng <ackerleytng@google.com>
 
-Add a test to verify that a guest_memfd's shared/private status is
-consistent across processes, and that any shared pages previously mapped in
-any process are unmapped from all processes.
+Update tdx_gmem_post_populate() to handle cases where a source page is
+not explicitly provided. Instead of returning -EOPNOTSUPP when src_page
+is NULL, default to using the page associated with the destination PFN.
 
-The test forks a child process after creating the shared guest_memfd
-region so that the second process exists alongside the main process for the
-entire test.
+This change allows for in-place memory conversion where the data is
+already present in the target PFN, ensuring the TDX module has a valid
+source page reference for the TDH.MEM.PAGE.ADD operation.
 
-The processes then take turns to access memory to check that the
-shared/private status is consistent across processes.
-
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Co-developed-by: Ackerley Tng <ackerleytng@google.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- .../kvm/x86/guest_memfd_conversions_test.c         | 74 ++++++++++++++++++++++
- 1 file changed, 74 insertions(+)
+ Documentation/virt/kvm/x86/intel-tdx.rst | 4 ++++
+ arch/x86/kvm/vmx/tdx.c                   | 8 ++++++--
+ 2 files changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-index 8dfbf3630cec2..21918b83d3792 100644
---- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-+++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-@@ -334,6 +334,80 @@ GMEM_CONVERSION_TEST_INIT_SHARED(truncate)
- 	test_private(t, 0, 0, 'A');
- }
+diff --git a/Documentation/virt/kvm/x86/intel-tdx.rst b/Documentation/virt/kvm/x86/intel-tdx.rst
+index 6a222e9d09541..fbc0f179dc750 100644
+--- a/Documentation/virt/kvm/x86/intel-tdx.rst
++++ b/Documentation/virt/kvm/x86/intel-tdx.rst
+@@ -158,6 +158,10 @@ KVM_TDX_INIT_MEM_REGION
+ Initialize @nr_pages TDX guest private memory starting from @gpa with userspace
+ provided data from @source_addr. @source_addr must be PAGE_SIZE-aligned.
  
-+/* Test that shared/private memory protections work and are seen from any process. */
-+GMEM_CONVERSION_TEST_INIT_SHARED(forked_accesses)
-+{
-+	/*
-+	 * No races are intended in this test, shared memory is only used to
-+	 * coordinate between processes.
-+	 */
-+	static enum {
-+		STATE_INIT,
-+		STATE_CHECK_SHARED,
-+		STATE_DONE_CHECKING_SHARED,
-+		STATE_CHECK_PRIVATE,
-+		STATE_DONE_CHECKING_PRIVATE,
-+	} *test_state;
-+	pid_t child_pid;
++If memory attributes are tracked in guest_memfd, pass NULL for
++@source_addr to initialize the memory region using memory contents
++already populated in guest_memfd memory.
 +
-+	test_state = kvm_mmap(sizeof(*test_state), PROT_READ | PROT_WRITE,
-+			      MAP_SHARED | MAP_ANONYMOUS, -1);
+ Note, before calling this sub command, memory attribute of the range
+ [gpa, gpa + nr_pages] needs to be private.  Userspace can use
+ KVM_SET_MEMORY_ATTRIBUTES to set the attribute.
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 04ce321ebdf39..10373e606242a 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -3116,8 +3116,12 @@ static int tdx_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+ 	if (KVM_BUG_ON(kvm_tdx->page_add_src, kvm))
+ 		return -EIO;
+ 
+-	if (!src_page)
+-		return -EOPNOTSUPP;
++	if (!src_page) {
++		if (vm_memory_attributes)
++			return -EOPNOTSUPP;
 +
-+#define TEST_STATE_AWAIT(__state)						\
-+	while (READ_ONCE(*test_state) != __state) {				\
-+		if (child_pid != 0) {						\
-+			int status;						\
-+			pid_t pid;						\
-+			do {							\
-+				pid = waitpid(child_pid, &status, WNOHANG);	\
-+			} while (pid == -1 && errno == EINTR);			\
-+			if (pid == -1)						\
-+				TEST_FAIL("Couldn't check child status.");	\
-+			else if (pid != 0)					\
-+				TEST_FAIL("Child exited prematurely.");		\
-+		}								\
++		src_page = pfn_to_page(pfn);
 +	}
-+
-+#define TEST_STATE_SET(__state) WRITE_ONCE(*test_state, __state)
-+
-+	child_pid = fork();
-+	TEST_ASSERT(child_pid != -1, "fork failed");
-+
-+	if (child_pid == 0) {
-+		const char inconsequential = 0xdd;
-+
-+		TEST_STATE_AWAIT(STATE_CHECK_SHARED);
-+
-+		/*
-+		 * This maps the pages into the child process as well, and tests
-+		 * that the conversion process will unmap the guest_memfd memory
-+		 * from all processes.
-+		 */
-+		host_do_rmw(t->mem, 0, 0xB, 0xC);
-+
-+		TEST_STATE_SET(STATE_DONE_CHECKING_SHARED);
-+		TEST_STATE_AWAIT(STATE_CHECK_PRIVATE);
-+
-+		TEST_EXPECT_SIGBUS(READ_ONCE(t->mem[0]));
-+		TEST_EXPECT_SIGBUS(WRITE_ONCE(t->mem[0], inconsequential));
-+
-+		TEST_STATE_SET(STATE_DONE_CHECKING_PRIVATE);
-+		exit(0);
-+	}
-+
-+	test_shared(t, 0, 0, 0xA, 0xB);
-+
-+	TEST_STATE_SET(STATE_CHECK_SHARED);
-+	TEST_STATE_AWAIT(STATE_DONE_CHECKING_SHARED);
-+
-+	test_convert_to_private(t, 0, 0xC, 0xD);
-+
-+	TEST_STATE_SET(STATE_CHECK_PRIVATE);
-+	TEST_STATE_AWAIT(STATE_DONE_CHECKING_PRIVATE);
-+
-+	kvm_munmap(test_state, sizeof(*test_state));
-+}
-+
- int main(int argc, char *argv[])
- {
- 	TEST_REQUIRE(kvm_check_cap(KVM_CAP_VM_TYPES) & BIT(KVM_X86_SW_PROTECTED_VM));
+ 
+ 	kvm_tdx->page_add_src = src_page;
+ 	ret = kvm_tdp_mmu_map_private_pfn(arg->vcpu, gfn, pfn);
 
 -- 
 2.54.0.545.g6539524ca2-goog
