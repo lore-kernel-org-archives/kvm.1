@@ -1,170 +1,128 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2A027F19F
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 18:44:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CE5D3783B5;
+	Tue, 28 Apr 2026 18:49:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777401845; cv=none; b=mo8H8BY0ifvq7KGgeZZMruRZQsX2SSzV9aH8+D0u6v4Oo/KrBAbrDvbEbvMYAPpLnsmuJuJIBjo0RKgNBSfqB6Nx3Ajv1TFhPL5nYvsf9/v2Gm5RF2BRKmL9nhCk91MVjUsZGFgVFpqGu3EdcsLeLLlR1kuaoI6I4btv+mPE9Fg=
+	t=1777402169; cv=none; b=tTP5ftfaDHbX3gZUSXR7OCpdqQDsheeWnIEhUgMHis5djvCHwrZUs7fNxzRsyFmfY7EUeiFlaZD9qt9qy51x5w7CKgN60sOBj/FTnsVxxEJNkilnTa7zsEZON6L6ManxdX0aKM9tPKLv8Di6XnUL0UXzOgo092gBnszT8aSMiuA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777401845; c=relaxed/simple;
-	bh=+4dWjNW0MAtI7qbpEEHTSK3A6idXP3scE6YWXGSI2Lc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=miTaQBWEYkBjApcoqhj2ybbv2bkgSe02hJA1ck4yd538k9bu4lOSN3yWYj1W7yyTL+C/eK+9xTeJVa4gzXwHNzzKBwjz9Ksf8Dn51pKRwABxNA0ZbMUU90MBxMHSpFXTEhTSU5eprYNI/dlul3d8btLU+ydMWEQZFpqmFq3IV7w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wT9BM3dw; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1777402169; c=relaxed/simple;
+	bh=hzXa/s8uuKwIli/LbY0gxmjVr1DaNQhMGQX0hwpWfxs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=a/V8BTypRXeGMCbWVcGz5tT+7TRuvAyAbqNqONFUAlQuLK7rPnmFnGJ+LQmEtjHzSYUzMedVy4r+u50C/HYe0Y+rjwlnWIp4+Ciq848rpLVD/OTAY/gse1tHdgqmuPzzB6hWb36OoBOSvs81h4/rqfGVcfILCfFkmG6YYSpDuh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GySTEoXn; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wT9BM3dw"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b4678c6171so111760995ad.1
-        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 11:44:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777401844; x=1778006644; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WTnb3RdkOOM3FgAsrKAJXfLReTvrvHzD4M2LtCPRIn0=;
-        b=wT9BM3dwA3S0jQ4WXuaudI/6JNSb6xcnDmJuisoMKee000mqGezwg6A1/Az+L8HFZo
-         BTBI56A9fpnHrvMMfuc/qeDOOm/YgoGFW5fwgj3LK8ld76WavzzTPUzLcYmRGMipB1Vg
-         4IrwCN3KxS2J5kzuTRfbO5dpgOsOcV2MjfWgFlDGXv1IbPftFC8ePJUM2zE/8FYDdyQ/
-         UflvJxMmETtahWEQUmObDp4HXXmHqYEVLS9aSt068dQHNUoXwar7hprVTIdajDylYpug
-         1Jy5XzjaRuaLZyUi5iMn3RcEarDmO98SuDcompkyBEAwKSRVuNXXu2/N5YkAQh1xUOzm
-         AAUA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777401844; x=1778006644;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=WTnb3RdkOOM3FgAsrKAJXfLReTvrvHzD4M2LtCPRIn0=;
-        b=g7Ok/T910I+tnB70iRpJR0gqyzjpn4WeOCMzsoAz698QJ3SoqM8hmeyRPdqCZq2nMI
-         +ltdq6cb9GGCXaW3uh7BCYgO03AjLtLdAO66N7EXzf5JpfPWg+B9fl6bLgatapQ3Dub3
-         8ZOm7CBnQuMHjYdsDPp/JsW3cOp3U0G/tOVc7yYmFy3ZkJEpHv6Gzueb+cte7O+3O2LD
-         xzWTlZt4L/GqixaZUQnEpuPUKznWB5UjGugfPYz5v4i5vnc3kMqtQmMWhO76jOiCttey
-         SWQPB2zKrCsUeeJI9tWJ+1dt7S7x0hFF9BjFyYMlHwHZHT9RcKzVmVOz4iOACyjsxpES
-         y6wg==
-X-Forwarded-Encrypted: i=1; AFNElJ9jvK8/d1tBjOC8D7ecBWErkQ6RGbnTngmVHSLrmF0btciOejYAL0W0Wqlf7MQLncGSx8M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxiYVJm9pnxQr/k3SJ1cDgZAb/k4+izv2+lXtbKQ86VEBx/b+z4
-	/6fVcIEUxebvZAQNfpo1uiaMozB6dXqB+/JsmTxOQJFsW0m7wJlJMZfb1vIO+4rqDp725gjyVfN
-	6QpBPlA==
-X-Received: from pgib18.prod.google.com ([2002:a63:e712:0:b0:c73:cc95:c0d7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7fa2:b0:3a0:b65a:5def
- with SMTP id adf61e73a8af0-3a39c2726f9mr5138003637.33.1777401843677; Tue, 28
- Apr 2026 11:44:03 -0700 (PDT)
-Date: Tue, 28 Apr 2026 11:44:02 -0700
-In-Reply-To: <b8c413a52c0285534d552c8646f9071fca4351f4.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GySTEoXn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777402167; x=1808938167;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=hzXa/s8uuKwIli/LbY0gxmjVr1DaNQhMGQX0hwpWfxs=;
+  b=GySTEoXnkOF/TISb8OekqDRa50BwcWoab1HH8G2AwFIxG81fQS+kVHCY
+   b6X4T90fr+VEKSytMqk3BTPjsUEJhzO4POQ1qE2/LWbWCezz+qSFGVAwx
+   8PcLCQK3ZSEalyp6dBapHZSMzxS3RZuK7P/FrH4RQZkJ6Ud5KKfN7bnKD
+   wHWB1lptJIE69961zU88paMIGpK4q7ffFJht9IwwI+yQaYDcVFDFFY/14
+   mdeY4lBfTCdCKKzp/doDvOS+VClApNU+JFMkuP96m+1VximftRnqBvCOs
+   dsE6XeL/h8WJ88sPurSVowPpl6NxXtxVfWW2dZtvWrdPUOmjtwOnJYOqb
+   w==;
+X-CSE-ConnectionGUID: RAusM2ZmQsepLMp5pMtIJg==
+X-CSE-MsgGUID: 4e2LKv+PRnKP/oxLQiBwkw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11770"; a="89019155"
+X-IronPort-AV: E=Sophos;i="6.23,204,1770624000"; 
+   d="scan'208";a="89019155"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 11:49:26 -0700
+X-CSE-ConnectionGUID: 5ZDx2DgGR6uP7a/1foAwpg==
+X-CSE-MsgGUID: RzluhfUuSiGyItnX+We7hw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,204,1770624000"; 
+   d="scan'208";a="235792341"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.108.208]) ([10.125.108.208])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 11:49:26 -0700
+Message-ID: <0fa94f46-4cd8-4e28-a080-1517fccb1578@intel.com>
+Date: Tue, 28 Apr 2026 11:49:24 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260428024746.1040531-1-binbin.wu@linux.intel.com>
- <20260428024746.1040531-2-binbin.wu@linux.intel.com> <afCdoufK0D+1hKAR@intel.com>
- <afDgiz38tARlIQNr@google.com> <b8c413a52c0285534d552c8646f9071fca4351f4.camel@intel.com>
-Message-ID: <afD_8se-aOikeHTT@google.com>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/2] KVM: TDX: Allow TDs to read MSR_IA32_PLATFORM_ID
-From: Sean Christopherson <seanjc@google.com>
-To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Chao Gao <chao.gao@intel.com>, Dave Hansen <dave.hansen@intel.com>, 
-	"x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Vishal L Verma <vishal.l.verma@intel.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: Binbin Wu <binbin.wu@linux.intel.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, x86@kernel.org
+Cc: pbonzini@redhat.com, seanjc@google.com, kas@kernel.org,
+ rick.p.edgecombe@intel.com, vishal.l.verma@intel.com, xiaoyao.li@intel.com,
+ chao.gao@intel.com
+References: <20260428024746.1040531-1-binbin.wu@linux.intel.com>
+ <20260428024746.1040531-2-binbin.wu@linux.intel.com>
+Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260428024746.1040531-2-binbin.wu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Apr 28, 2026, Rick P Edgecombe wrote:
-> On Tue, 2026-04-28 at 09:30 -0700, Sean Christopherson wrote:
-> > > This patch looks good to me. But the rule for which MSRs should be em=
-ulated
-> > > by KVM for TDX is not very clear to me.
-> >=20
-> > I would strongly prefer to not take this patch, and instead fix the gue=
-st.=C2=A0
-> > This isn't some latent/pre-existing guest behavior, it's brand new
-> > functionality. I.e. Linux-as-a-TDX-guest broke itself.
-> >=20
-> > More importantly from a guest security perspective, consuming
-> > MSR_IA32_PLATFORM_ID is actively dangerous.=C2=A0 E.g. it could allow t=
-he untrusted
-> > host to steer the guest's behavior with respect to feature detection an=
-d
-> > enablement.
->=20
-> I feel like you could make similar cases about a lot the VMM controlled M=
-SRs.
+On 4/27/26 19:47, Binbin Wu wrote:
+> Linux kernel reads MSR_IA32_PLATFORM_ID during init since commit
+> d8630b67ca1e ("x86/cpu: Add platform ID to CPU info structure").  KVM
+> already supports this MSR on read for normal VMs by returning 0.
+> Without support for this MSR, TDs get unchecked MSR access errors.
 
-Oh, for sure.  And far worse (yet another reminder that I need to refresh t=
-his
-series).
+NAK from me on this.
 
-https://lore.kernel.org/all/20250227021855.3257188-1-seanjc@google.com
+The platform ID is used for one thing and one thing only: microcode
+updates. Those updates are solely the domain of the bare-metal OS.
 
-> > And once KVM allows reads from MSR_IA32_PLATFORM_ID, there's no going b=
-ack.=C2=A0
-> > E.g. if the TDX-Module wants to emulate MSR_IA32_PLATFORM_ID, because t=
-here's
-> > an actual *need* to do so, then we're going to have a (minor) mess with=
- KVM's
-> > ABI.
->=20
-> This is a problem with the bare metal KVM behavior too, and it's just sup=
-er old?
+The (guest) kernel code that's even trying to touch this MSR is buggy
+and insane. We need to turn that code it off when
+X86_FEATURE_HYPERVISOR==1. There's already a patch floating around to do
+that.
 
-No?  Oh, I see what you're asking.  I'm mostly concerned about the host sid=
-e of
-things.  The problem with TDX is that a TDX-Module update could effectively=
- change
-KVM's behavior, i.e. if the TDX-Module decides it needs to emulate PLATFORM=
-_ID for
-whatever reason.  So not only would KVM need to enumerate to userspace that=
- the
-MSR is supported/emulated for TDX guests, KVM would also need to differenti=
-ate
-between emulated by KVM and emulated by the TDX-Module.
-
-> For TDX, hmm. I guess the standard thing to do in order to avoid creating=
- a KVM
-> ABI problems is just match the arch behavior. But for TDs, it is a very s=
-pecial
-> type of VM. The special TDX guest things can't work on bare metal. Furthe=
-rmore,
-> guest opt ins can change what arch is even supposed to be virtualized. So=
- the
-> normal KVM default thing to do doesn't always fit.
->=20
-> So instead we will just virtualize as little as possible to keep Linux gu=
-est
-> running? Ok.
-
-Yeah, and the sequence of events matters.  Most of KVM's half-hearted emula=
-tion
-of random MSRs exists because KVM needed to be able to run existing kernels=
-.  But
-once KVM (and other hypervisors) existed, kernels learned to run as guests =
-(and
-hardware vendors largely did a better job of explicitly enumerating MSRs an=
-d
-whatnot), and so the need to throw hacks into KVM mostly went away.
-
-> > > Maybe we can document the rule here, if there is one. That would make=
- it
-> > > much easier to tell whether future issues like this are guest regress=
-ions
-> > > or missing KVM handling.
->=20
-> Speaking in general now about TDX guest ABI, not about this specific MSR.=
- I
-> agree it would be good to have some story about how this is supposed to w=
-ork and
-> evolve. Similar to the CPUID bit stuff we are trying to clean up.
->=20
-> I'm also remembering the debate about what to do about the MTRR bit being=
- forced
-> on, but not being able to apply the KVM solution (which got ripped out an=
-yway)
-> to the S-EPT. Or the guest maxpfn thing, where we got the TDX module to a=
-dd
-> CPUID bit support we needed. By default, we can try to make it so the TDX=
- module
-> will, or will let us, faithfully match the normal x86 arch bit behavior.
+Please don't add more smoke and mirrors.
