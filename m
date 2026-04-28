@@ -1,53 +1,53 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AD3143CED6
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 13:35:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C7B243CED6
+	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 13:35:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777383337; cv=none; b=gsZ3OifdTcuSCiJAhAgcZFrq+BqbobI2Q+rzqMWe1in71E3TcPGsBToX9huGm4rbmlFEEpq7FHVIg6IjVVr1zos1VY195EwKBCZcE9VqKagGa29Vi7wZ8RIOr+kB7c8QlJb1Ya9eL5xjAiNkf+B5EA61FnNwYJtmGD3XozZSH9A=
+	t=1777383341; cv=none; b=NRfE5N05IGT30bRSkVr0yQG7+mX2QLcs9De0m1WJzVx3y/tfAuGMWSAYXX/EqMu5JZsbKJ+sVHlDzP3cjlcb1bXF5NhEg+wOixTnFXa5CcWOL5EJN/jz5H93t8uwFKq8Wit2boyFg34PAXScg5J0vM5Lk8njw+YnphLqW0ZUbow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777383337; c=relaxed/simple;
-	bh=dBaDq7DDtU0aTlgQ5s8CMa+83DSC3thz5fkCkbIj/Ic=;
+	s=arc-20240116; t=1777383341; c=relaxed/simple;
+	bh=qxplnc/JBQyyyGTyLoPjndr1NOiChBJT8A4Z0PcAMWA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=J5OesRG0Yr20zA5QNypm2jXNHJH6//wQAR6AA7/XooxXY/wxwfcTha3TZ0he3kpmaWzdft3MupWWDR/nOKx3gMTmiJwVtjBHknmIardk6H1UNPO9VbIt5bXK4cNpYXxll7KDs1EIooYiUdn0vOx8+qodeY2Vhixa16jdeK0fu1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LXjyk9TZ; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=duEWM9GXjiNVoz3Xpnah/U1qtmB7DILzN4Uexd+kd37RFBABDl0JAAgyJsdw8irjlJ6/IEKrZKM/wI0FyfZAMKr+X1BLr2UuZrRmPKYH7LIfq1m7lLn4xgWost8dQ6DknWD810oveKm4GITo/INTK6eBbX3LR3LUUw/HryjhEOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T+X38T2j; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LXjyk9TZ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T+X38T2j"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777383335;
+	s=mimecast20190719; t=1777383338;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=zWWZVJcA4Bjor51Fqp6C5iiJ6Bii0wYwQw98xBxMno0=;
-	b=LXjyk9TZL+9jRYJ7Zr/x13ZeTzMCizqFdMuZaCFEwyCPs4rma7sHf2mxFpQ6obeD56mbTY
-	0JRl6gYl0LRs3q68ZeIiv8G8SNwr6qRTaFHe1K2VTq6GmQg6/I5B3eg6EvC2zB/wrnJXXJ
-	+AL6U2x78I5SAzFrdpDI49RnwjyZEQU=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=lB4Y/5cqM0khTaQSgF8Vzt4Eb20B1iT0B3MRjtH5Vyw=;
+	b=T+X38T2jRlFFHsu8fZ97ZKBYqrREpH/d5XXKfXbIv9sI4OH6YcKJ771pw+Co/7keD/9I6R
+	4I6UM/BhpktLdmvWk4j/Vz8hCyJiSifyGZOwvUmTi6nmdRu+82a0hVy4K4RsUaD7U53DNo
+	3IH+a0WMvXN+lkq+Xta3UIVlg6+V/do=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-618-WVz3OuZoNcKumkEQuylhBg-1; Tue,
- 28 Apr 2026 09:35:33 -0400
-X-MC-Unique: WVz3OuZoNcKumkEQuylhBg-1
-X-Mimecast-MFC-AGG-ID: WVz3OuZoNcKumkEQuylhBg_1777383332
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-665-kMCbZgEZONuA5cps0NeEcw-1; Tue,
+ 28 Apr 2026 09:35:35 -0400
+X-MC-Unique: kMCbZgEZONuA5cps0NeEcw-1
+X-Mimecast-MFC-AGG-ID: kMCbZgEZONuA5cps0NeEcw_1777383331
 Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id AD4D61954B0B
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 13:35:30 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7E1891802439
+	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 13:35:29 +0000 (UTC)
 Received: from dell-r430-03.lab.eng.brq2.redhat.com (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DA35419560B7;
-	Tue, 28 Apr 2026 13:35:29 +0000 (UTC)
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id AB60C19560AB;
+	Tue, 28 Apr 2026 13:35:28 +0000 (UTC)
 From: Igor Mammedov <imammedo@redhat.com>
 To: kvm@vger.kernel.org
 Cc: pbonzini@redhat.com
-Subject: [kvm-unit-tests PATCH 2/2] x86/apic: add retry logic to test_apic_change_mode
-Date: Tue, 28 Apr 2026 15:35:24 +0200
-Message-ID: <20260428133524.3628482-3-imammedo@redhat.com>
+Subject: [kvm-unit-tests PATCH 1/2] x86/apic: separate reporting from actual measurements
+Date: Tue, 28 Apr 2026 15:35:23 +0200
+Message-ID: <20260428133524.3628482-2-imammedo@redhat.com>
 In-Reply-To: <20260428133524.3628482-1-imammedo@redhat.com>
 References: <20260428133524.3628482-1-imammedo@redhat.com>
 Precedence: bulk
@@ -60,66 +60,148 @@ Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-The APIC timer runs at wall clock time under KVM. If vCPU is stalled for
-long enough, timer can expire before the guest reads TMCCT or tick well
-past expected values, causing various false test failures [1].
+Move report() calls to the end of the function so that serial I/O
+does not interfere with timer measurements.
 
-Add retry attempts with increasing timer period (10ms, 60ms, 700ms)
-if any test fails, to handle spurious failures due to vCPU stalls.
-
-1) Failures we sometimes observe in CI are:
-  "FAIL: TMCCT should have a non-zero value"
-  "FAIL: TMCCT should be reset to the initial-count"
-  "FAIL: TMCCT should not be reset to TMICT value"
-Seen on both Intel and AMD hosts.
-
-PS:
-on most test runs, test completes fine on the 1st iteration.
-The patch would affect only failure path which will be slowed down
-due to retries but still fail if there is a bug with benefit of
-getting rid of false positives caused by vCPU stalls.
-
-PS2:
-Number of tries and tmict delta comes from analyzing vcpu stalls
-on heavily overcommited Haswell host with test being bounced between
-2 sockets.
-Typically 2nd iteration (60ms) is enough to get rid of
-false positives.
+While at it, wrap the test body in a for loop as preparation
+for adding retry logic to deal with failures due to large
+enough vCPU stalls.
 
 Signed-off-by: Igor Mammedov <imammedo@redhat.com>
 ---
- x86/apic.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ x86/apic.c | 109 +++++++++++++++++++++++++++++++----------------------
+ 1 file changed, 63 insertions(+), 46 deletions(-)
 
 diff --git a/x86/apic.c b/x86/apic.c
-index d4eb8e11..27597323 100644
+index 0a52e9a4..d4eb8e11 100644
 --- a/x86/apic.c
 +++ b/x86/apic.c
-@@ -575,9 +575,12 @@ static void test_apic_change_mode(void)
- {
- 	const uint32_t tmict_values[] = {
- 		0x999999,    /* ~10ms */
-+		0x3938700,   /* ~60ms */
-+		0x29b92700,  /* ~700ms */
- 	};
- 	int retry, max_retries = ARRAY_SIZE(tmict_values);
- 	uint32_t tmict;
-+	bool fail;
- 	bool tmict_reset = false, o_nonzero = false, o_reached_zero = false;
- 	bool p_nonzero = false, p_not_reset = false, p_after_wrap = false;
- 	bool p2o_not_reset = false, p2o_reached_zero = false, p2o_stay_zero = false;
-@@ -635,6 +638,11 @@ static void test_apic_change_mode(void)
- 		/* now tmcct == 0 and tmict != 0 */
- 		apic_change_mode(APIC_LVT_TIMER_PERIODIC);
- 		p2o_stay_zero = !apic_read(APIC_TMCCT);
-+		fail = !(tmict_reset && o_nonzero && o_reached_zero &&
-+			 p_nonzero && p_not_reset && p_after_wrap &&
-+			 p2o_not_reset && p2o_reached_zero && p2o_stay_zero);
-+		if (!fail)
-+			break;
- 	}
+@@ -573,62 +573,79 @@ static inline void apic_change_mode(unsigned long new_mode)
  
- 	report(tmict_reset, "TMICT value reset");
+ static void test_apic_change_mode(void)
+ {
+-	uint32_t tmict = 0x999999;
++	const uint32_t tmict_values[] = {
++		0x999999,    /* ~10ms */
++	};
++	int retry, max_retries = ARRAY_SIZE(tmict_values);
++	uint32_t tmict;
++	bool tmict_reset = false, o_nonzero = false, o_reached_zero = false;
++	bool p_nonzero = false, p_not_reset = false, p_after_wrap = false;
++	bool p2o_not_reset = false, p2o_reached_zero = false, p2o_stay_zero = false;
+ 
+ 	printf("starting apic change mode\n");
+ 
+-	apic_write(APIC_TMICT, tmict);
++	for (retry = 0; retry < max_retries; retry++) {
++		tmict = tmict_values[retry];
++		apic_write(APIC_TMICT, tmict);
++		apic_change_mode(APIC_LVT_TIMER_PERIODIC);
++		tmict_reset = apic_read(APIC_TMICT) == tmict;
+ 
+-	apic_change_mode(APIC_LVT_TIMER_PERIODIC);
++		/* Testing one-shot */
++		apic_change_mode(APIC_LVT_TIMER_ONESHOT);
++		apic_write(APIC_TMICT, tmict);
++		o_nonzero = apic_read(APIC_TMCCT);
+ 
+-	report(apic_read(APIC_TMICT) == tmict, "TMICT value reset");
++		wait_until_tmcct_is_zero(tmict, false);
++		o_reached_zero = !apic_read(APIC_TMCCT);
+ 
+-	/* Testing one-shot */
+-	apic_change_mode(APIC_LVT_TIMER_ONESHOT);
+-	apic_write(APIC_TMICT, tmict);
+-	report(apic_read(APIC_TMCCT), "TMCCT should have a non-zero value");
++		/*
++		 * Write TMICT before changing mode from one-shot to periodic
++		 * TMCCT should be reset to TMICT periodicly
++		 */
++		apic_write(APIC_TMICT, tmict);
++		wait_until_tmcct_is_zero(tmict, true);
++		apic_change_mode(APIC_LVT_TIMER_PERIODIC);
++		p_nonzero = apic_read(APIC_TMCCT);
+ 
+-	wait_until_tmcct_is_zero(tmict, false);
+-	report(!apic_read(APIC_TMCCT), "TMCCT should have reached 0");
++		/*
++		 * After the change of mode, the counter should not be reset
++		 * and continue counting down from where it was
++		 */
++		p_not_reset = apic_read(APIC_TMCCT) < (tmict / 2);
++		/*
++		 * Specifically wait for timer wrap around and skip 0.
++		 * Under KVM lapic there is a possibility that a small amount
++		 * of consecutive TMCCR reads return 0 while hrtimer is reset
++		 * in an async callback
++		 */
++		wait_until_tmcct_wrap_around(tmict, false);
++		p_after_wrap = apic_read(APIC_TMCCT) > (tmict / 2);
+ 
+-	/*
+-	 * Write TMICT before changing mode from one-shot to periodic TMCCT should
+-	 * be reset to TMICT periodicly
+-	 */
+-	apic_write(APIC_TMICT, tmict);
+-	wait_until_tmcct_is_zero(tmict, true);
+-	apic_change_mode(APIC_LVT_TIMER_PERIODIC);
+-	report(apic_read(APIC_TMCCT), "TMCCT should have a non-zero value");
++		wait_until_tmcct_is_zero(tmict, true);
++		/*
++		 * Keep the same TMICT and change timer mode to one-shot
++		 * TMCCT should be > 0 and count-down to 0
++		 */
++		apic_change_mode(APIC_LVT_TIMER_ONESHOT);
++		p2o_not_reset = apic_read(APIC_TMCCT) < (tmict / 2);
+ 
+-	/*
+-	 * After the change of mode, the counter should not be reset and continue
+-	 * counting down from where it was
+-	 */
+-	report(apic_read(APIC_TMCCT) < (tmict / 2),
+-	       "TMCCT should not be reset to TMICT value");
+-	/*
+-	 * Specifically wait for timer wrap around and skip 0.
+-	 * Under KVM lapic there is a possibility that a small amount of consecutive
+-	 * TMCCR reads return 0 while hrtimer is reset in an async callback
+-	 */
+-	wait_until_tmcct_wrap_around(tmict, false);
+-	report(apic_read(APIC_TMCCT) > (tmict / 2),
+-	       "TMCCT should be reset to the initial-count");
++		wait_until_tmcct_is_zero(tmict, false);
++		p2o_reached_zero = !apic_read(APIC_TMCCT);
+ 
+-	wait_until_tmcct_is_zero(tmict, true);
+-	/*
+-	 * Keep the same TMICT and change timer mode to one-shot
+-	 * TMCCT should be > 0 and count-down to 0
+-	 */
+-	apic_change_mode(APIC_LVT_TIMER_ONESHOT);
+-	report(apic_read(APIC_TMCCT) < (tmict / 2),
+-	       "TMCCT should not be reset to init");
+-	wait_until_tmcct_is_zero(tmict, false);
+-	report(!apic_read(APIC_TMCCT), "TMCCT should have reach zero");
+-
+-	/* now tmcct == 0 and tmict != 0 */
+-	apic_change_mode(APIC_LVT_TIMER_PERIODIC);
+-	report(!apic_read(APIC_TMCCT), "TMCCT should stay at zero");
++		/* now tmcct == 0 and tmict != 0 */
++		apic_change_mode(APIC_LVT_TIMER_PERIODIC);
++		p2o_stay_zero = !apic_read(APIC_TMCCT);
++	}
++
++	report(tmict_reset, "TMICT value reset");
++	report(o_nonzero, "one-shot: TMCCT should have a non-zero value");
++	report(o_reached_zero, "one-shot: TMCCT should have reached 0");
++	report(p_nonzero, "periodic: TMCCT should have a non-zero value");
++	report(p_not_reset, "TMCCT should not be reset to TMICT value");
++	report(p_after_wrap, "TMCCT should be reset to the initial-count");
++	report(p2o_not_reset, "TMCCT should not be reset to init");
++	report(p2o_reached_zero, "TMCCT should have reach zero");
++	report(p2o_stay_zero, "TMCCT should stay at zero");
+ }
+ 
+ #define KVM_HC_SEND_IPI 10
 -- 
 2.47.3
 
