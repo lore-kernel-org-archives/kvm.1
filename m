@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35B039DBDD;
-	Tue, 28 Apr 2026 23:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C79F395276;
+	Tue, 28 Apr 2026 23:25:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777418718; cv=none; b=AOOY79cpr3S6MwagA5B8StTQy/xCqx//2aZlY6BRCf0+ZifCA0qxqXwv8YMg3T2E7YKpMp3RsWAVDi8PNrx/8lR4FyfRBmRaKE5BDPoE9uG1KwPc+xDsTiHmFllH660RJ/KnNUBZrlyhDtcvvNy9/sOjKDzX/Mj+YUrH1L1+0zQ=
+	t=1777418719; cv=none; b=Sz3+kzrijbvh4niyne0a2mOvHUqx/CEdPQgmsY8stTwvF/b1e8J4mSfl9WhZ7YLtMy09n3DLFoZcnq+Bsv81ZvEYKXn+aOFf/Kke5erFPwX+Tf8ws2QigmLiMRCJmyCHmWNdguSX4UgOJsySVEwHuNXMIsl3asQosSbzRzxBme0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777418718; c=relaxed/simple;
-	bh=HhJ8C2ULYSnKpU02/tGXtPPTADB2EfVQtqS/uHVIzYg=;
+	s=arc-20240116; t=1777418719; c=relaxed/simple;
+	bh=O5EusdRtRRcBsbLXs41Iht6PiU+kaHavayRHgykcm70=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=FRFQgQUIb/SoiHGVBwl7TKEf/mfTYtNvks4DN1+/IS+cuS/9ArgUdgkum3sixigHjaL/fzPykpZjaMvt5WqxQVh+MrCvgLrOm1xVDOPg1mwc74oqS8ONqPNFDqVtoQuvzStvlAK/xBu1U9w9eRuGaW8shG9DNoW9S0BwKIaAkyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tSugz+H3; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=iD1AOchk1KyylMPn+BT/+HVPfEIOobd5DjZO2ks6eksYz9nAJlubUSIbFOb5TOsktRUQLGthGdltbombPFe2tisU3ZQaXo8Pm7WeIImFx6A1yTHN6YbTaM+Q9+6/TPnhyZXjPpo71f8ATlbBUNTEnNXhwmitYqdE2DL/WFWlrL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ILyLZIk7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tSugz+H3"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 638E1C2BCC4;
-	Tue, 28 Apr 2026 23:25:18 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ILyLZIk7"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 2D89AC2BCAF;
+	Tue, 28 Apr 2026 23:25:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777418718;
-	bh=HhJ8C2ULYSnKpU02/tGXtPPTADB2EfVQtqS/uHVIzYg=;
+	s=k20201202; t=1777418719;
+	bh=O5EusdRtRRcBsbLXs41Iht6PiU+kaHavayRHgykcm70=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=tSugz+H3r/bI8vLM/FsW49w2uoH13PWHVcTzFRtrZgLmztYlbaddalMvd/GPTH+OA
-	 iybcJYb2OEuzlGIC6yNJfTEkpiT83ARkUZ2JPgi2lXgvwhA8MqYV3aQ8sUW1X83nPU
-	 C5w0QpKbTOd/Fs6e787e59kCqffkVfninVVTqOK+iY3ZxBzCmQ1Tr93k/WviiOttt6
-	 ta4n3L6M7bOsywGHXUMUzRNqlaLjeH7/a/Yx5K5BtO4VQp2asnw4k5AnF80Iul28GE
-	 xW/Z9ZjMM9oUrbE4k3Y89z0drmZzmP/JwrfdMCuUFnHGJa73yQmhc2IMaiV2HlM7PO
-	 U7mb5V9fIagpQ==
+	b=ILyLZIk7mLcRdFizYiNm5+SQt8Rlc0tM/h5WbkdME+trzC0BLp+ecwawGTzp7X8II
+	 DyOCuQHsDjEiKr3ElyRdA9StEXtC2u0lcl+vBpq3qruQkTKF7ILo2PWH1qrxFuEUqR
+	 labSI41SqA0y78nZAvZwTa4v1OSrnwqtTBEQ5gDvBOaMyjPGtUXHfk6RW10uLHEtdv
+	 hMw93TrV2EjkWkIO0aa0v41/BfUU4ut4DUNRHwSOdUvcdlh6VBc1teBRCTY2afGGDV
+	 UI0k7eDX5mu96a/iXr8rn5vo49LfAMB3Z+Q4qdLdrFaN6X+UpYGIFuVd0u2ubwumMc
+	 WxYFtlz+uRxhA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 4FFC5FF8875;
-	Tue, 28 Apr 2026 23:25:18 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 23281FF887B;
+	Tue, 28 Apr 2026 23:25:19 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Tue, 28 Apr 2026 16:25:10 -0700
-Subject: [PATCH RFC v5 15/53] KVM: guest_memfd: Handle lru_add fbatch
- refcounts during conversion safety check
+Date: Tue, 28 Apr 2026 16:25:18 -0700
+Subject: [PATCH RFC v5 23/53] KVM: x86: Support SW_PROTECTED_VM in applying
+ content modes
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260428-gmem-inplace-conversion-v5-15-d8608ccfca22@google.com>
+Message-Id: <20260428-gmem-inplace-conversion-v5-23-d8608ccfca22@google.com>
 References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 In-Reply-To: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -74,11 +74,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=2931;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1777418714; l=3447;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=bFm4QUlwLsCLqMqV3YPlW4ZQKVQMPLtcpdDZUrpsyS4=;
- b=jnKXP7vtqQUPCENWxWAGbQ0dyHE7F1LL90NmrM8GuZj1v4CE7P3RePJ10i1Bn0oSZ+kBtpsLM
- 59D3dWe3a+IA5MdRKM63mYMm4SKWGoeTvHRJZSGf2oiZZKLmvyKMBTn
+ bh=9ksW1lIO9ZmZXIT5xvo0JGaOScZO9eFAx8q/FWxGah8=;
+ b=Cy4xUfQRFEwNJDgZS17EsIHexFRRfCGZCJzHnrfM2HPN/NoecocgbvmuMuwK8/LWmqP1BNxCk
+ G0AVsZtj4TUBD2z0PWLopI3VJCmZQUh+/Miluf8cH7GpfDGSe8Qxxx0
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -88,93 +88,128 @@ Reply-To: ackerleytng@google.com
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-When checking if a guest_memfd folio is safe for conversion, its refcount
-is examined. A folio may be present in a per-CPU lru_add fbatch, which
-temporarily increases its refcount. This can lead to a false positive,
-incorrectly indicating that the folio is in use and preventing the
-conversion, even if it is otherwise safe. The conversion process might not
-be on the same CPU that holds the folio in its fbatch, making a simple
-per-CPU check insufficient.
+Override the architecture-specific guest_memfd content mode functions for
+x86 to provide support for KVM_X86_SW_PROTECTED_VM.
 
-To address this, drain all CPUs' lru_add fbatches if an unexpectedly high
-refcount is encountered during the safety check. This is performed at most
-once per conversion request. Draining only if the folio in question may be
-lru cached.
+For software-protected VMs, specify KVM_SET_MEMORY_ATTRIBUTES2_ZERO and
+KVM_SET_MEMORY_ATTRIBUTES2_PRESERVE as supported content modes. Implement
+the logic for these modes as follows:
 
-guest_memfd folios are unevictable, so they can only reside in the lru_add
-fbatch. If the folio's refcount is still unsafe after draining, then the
-conversion is truly deemed unsafe.
++ ZERO: Zero out the memory using the generic guest_memfd helper.
++ PRESERVE: Maintain the existing memory content without modification.
++ UNSPECIFIED: KVM_X86_SW_PROTECTED_VM is guest_memfd's testing
+  vehicle. Scramble the memory range by filling it with random bytes so
+  test behavior will differ from that of PRESERVE.
 
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- mm/swap.c              |  2 ++
- virt/kvm/guest_memfd.c | 18 ++++++++++++++----
- 2 files changed, 16 insertions(+), 4 deletions(-)
+ arch/x86/kvm/x86.c | 93 ++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 93 insertions(+)
 
-diff --git a/mm/swap.c b/mm/swap.c
-index 5cc44f0de9877..3134d9d3d7c30 100644
---- a/mm/swap.c
-+++ b/mm/swap.c
-@@ -37,6 +37,7 @@
- #include <linux/page_idle.h>
- #include <linux/local_lock.h>
- #include <linux/buffer_head.h>
-+#include <linux/kvm_types.h>
- 
- #include "internal.h"
- 
-@@ -904,6 +905,7 @@ void lru_add_drain_all(void)
- 	lru_add_drain();
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 6609957ecfea3..e8abff71001eb 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -14194,6 +14194,99 @@ void kvm_arch_gmem_invalidate(kvm_pfn_t start, kvm_pfn_t end)
+ 	kvm_x86_call(gmem_invalidate)(start, end);
  }
- #endif /* CONFIG_SMP */
-+EXPORT_SYMBOL_FOR_KVM(lru_add_drain_all);
- 
- atomic_t lru_disable_count = ATOMIC_INIT(0);
- 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index d8bdb51c50cf0..18dec87dd4baa 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -8,6 +8,7 @@
- #include <linux/mempolicy.h>
- #include <linux/pseudo_fs.h>
- #include <linux/pagemap.h>
-+#include <linux/swap.h>
- 
- #include "kvm_mm.h"
- 
-@@ -608,18 +609,27 @@ static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
- 	const int filemap_get_folios_refcount = 1;
- 	pgoff_t last = start + nr_pages - 1;
- 	struct folio_batch fbatch;
-+	bool lru_drained = false;
- 	bool safe = true;
- 	int i;
- 
- 	folio_batch_init(&fbatch);
- 	while (safe && filemap_get_folios(mapping, &start, last, &fbatch)) {
- 
--		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
-+		for (i = 0; i < folio_batch_count(&fbatch);) {
- 			struct folio *folio = fbatch.folios[i];
- 
--			if (folio_ref_count(folio) !=
--			    folio_nr_pages(folio) + filemap_get_folios_refcount) {
--				safe = false;
-+			safe = (folio_ref_count(folio) ==
-+				folio_nr_pages(folio) +
-+				filemap_get_folios_refcount);
+ #endif
 +
-+			if (safe) {
-+				++i;
-+			} else if (folio_may_be_lru_cached(folio) &&
-+				   !lru_drained) {
-+				lru_add_drain_all();
-+				lru_drained = true;
++u64 kvm_arch_gmem_supported_content_modes(struct kvm *kvm, bool to_private)
++{
++	if (!kvm) {
++		return KVM_SET_MEMORY_ATTRIBUTES2_ZERO |
++		       KVM_SET_MEMORY_ATTRIBUTES2_PRESERVE;
++	}
++
++	switch (kvm->arch.vm_type) {
++	case KVM_X86_SW_PROTECTED_VM:
++		return KVM_SET_MEMORY_ATTRIBUTES2_ZERO |
++		       KVM_SET_MEMORY_ATTRIBUTES2_PRESERVE;
++	default:
++		return 0;
++	}
++}
++
++int kvm_arch_gmem_apply_content_mode_zero(struct kvm *kvm, struct inode *inode,
++					  pgoff_t start, pgoff_t end)
++{
++	switch (kvm->arch.vm_type) {
++	case KVM_X86_SW_PROTECTED_VM:
++		return kvm_gmem_apply_content_mode_zero(inode, start, end);
++	default:
++		return 0;
++	}
++}
++
++int kvm_arch_gmem_apply_content_mode_preserve(struct kvm *kvm,
++					      struct inode *inode,
++					      pgoff_t start, pgoff_t end)
++{
++	switch (kvm->arch.vm_type) {
++	case KVM_X86_SW_PROTECTED_VM:
++		/* Do nothing to preserve content. */
++		return 0;
++	default:
++		/* Not a valid content mode for other types, so do nothing. */
++		return 0;
++	}
++}
++
++static int __scramble_range(struct inode *inode, pgoff_t start, pgoff_t end)
++{
++	struct address_space *mapping = inode->i_mapping;
++	struct folio_batch fbatch;
++	struct folio *f;
++	char *kaddr;
++	int ret = 0;
++	int i;
++
++	folio_batch_init(&fbatch);
++	while (!ret && filemap_get_folios(mapping, &start, end - 1, &fbatch)) {
++		for (i = 0; !ret && i < folio_batch_count(&fbatch); ++i) {
++			f = fbatch.folios[i];
++
++			folio_lock(f);
++
++			if (folio_test_hwpoison(f)) {
++				ret = -EHWPOISON;
 +			} else {
- 				*err_index = folio->index;
- 				break;
- 			}
++				/*
++				 * Hard-coding range to scramble since
++				 * guest_memfd only supports PAGE_SIZE
++				 * folios now.
++				 */
++				kaddr = kmap_local_folio(f, 0);
++				get_random_bytes(kaddr, PAGE_SIZE);
++				kunmap_local(kaddr);
++			}
++
++			folio_unlock(f);
++		}
++
++		folio_batch_release(&fbatch);
++		cond_resched();
++	}
++
++	return ret;
++}
++
++int kvm_arch_gmem_apply_content_mode_unspecified(struct kvm *kvm,
++						 struct inode *inode,
++						 pgoff_t start, pgoff_t end)
++{
++	switch (kvm->arch.vm_type) {
++	case KVM_X86_SW_PROTECTED_VM:
++		return __scramble_range(inode, start, end);
++	default:
++		return 0;
++	}
++}
++
+ #endif
+ 
+ int kvm_spec_ctrl_test_value(u64 value)
 
 -- 
 2.54.0.545.g6539524ca2-goog
