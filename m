@@ -1,140 +1,216 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897043BB9E1
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 09:40:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777369202; cv=pass; b=GMKOZL1wM8IxP00bsvT3QWoGHcKC82n9Fd7dXmsUOpMYmwwDP/H3PThB3GYkocPrQ7jIcG7X7ss8HQZ/coFZl+QZ88hgDlCgbqI0gJYs4fOHUgqfkLkNUcM4YMa7+hzA/IEuTIcGQ3LzN0GxjWFqZvVS4Bqlb9yr4jKKC5XqpgQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777369202; c=relaxed/simple;
-	bh=a8mF3Jvkb6RjDZM0P9AxS67wS1aU5+HJqF17cB1Oy5o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Bl4LUp20Y9mHeO3UCvTVKzyS2VrceqdFqzEC2U1HGflPwbbyjyOAxCpKx3lqK0hjjK/wdSjwd/+1MMSHYW1LzOf+1ZETq/EbPhdSmFCMHrCdrBX4pVd94cn5FqTB/PjVj/WsjSfhBvN2srIIMvBiiEJAXoPy42HvQWUjkmi0AxA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dSB5QitU; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tnpGN+B+; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F733CFF55
+	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 09:43:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777369415; cv=none; b=Qf9EcJw5/7iGu195EG5G/B8xQXEmmBxjd6Dr5AqXIbCz54m6e8LpOOxv9Y0/7S52AS6lQuggKJkerZ/9/0veEIs/RW4z168DupiwiS6tY4+YwNnZgeQ0nwV3mk2eTOYtrc6yOKqGeNVq0/6Xh9/isx0hGa29p41ARfygV28Gvms=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777369415; c=relaxed/simple;
+	bh=8Rfk7gIPEuIIX2PIjkrJ4msFNT/ja2cu5nvMt9DMmmI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EGpWChrjXAwKyEhvwxk8xBAhmxufj3xdXCmQ3ec4w0kde4tWqYH0KlSkp7ihw/57RpWTmHyJd7hYw3jQdcya1k7HShoqgGXohBbWVtKY10Ts9Qj0CkajecP1WSgCVfz9oXrCfGKFZ6WCE8szj+x+KAKyxjazGZSx2z35gxxDfNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eMfju6Gz; arc=none smtp.client-ip=74.125.82.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dSB5QitU";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tnpGN+B+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777369200;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SgqD2LjcS3lfaRz0Bbuyp5agpi0erzgXbo3a6MpALAQ=;
-	b=dSB5QitU6Wk9xlj6KkNxkAHXjerOCx+S3wy/zvTWAnl25KiunrUqpDi8gwdodQRjC1mR9R
-	s/NEIbTuU4oEeG7auQ4qsMGUYIfEg36UHGPU700zFP/GexIaJ+S3+c1Eld9YSUFGffLktZ
-	IuxGtM5ifwrrCSwM86WDw3CQDFmciws=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-13-1kc8TuwLM8ejWv7H5WPqWA-1; Tue, 28 Apr 2026 05:39:58 -0400
-X-MC-Unique: 1kc8TuwLM8ejWv7H5WPqWA-1
-X-Mimecast-MFC-AGG-ID: 1kc8TuwLM8ejWv7H5WPqWA_1777369197
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-43cff5ef652so7185347f8f.2
-        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 02:39:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777369197; cv=none;
-        d=google.com; s=arc-20240605;
-        b=CiyMTPrOYbh8DmwNBPb8zoOWi08cRY2re0uMb0Pg45QWP/Il4lOYEOYnj8t7vRvr0I
-         PVCU88e7M/kNlqOVY5WTBuYF9a2VC6ch9/wVFySel+s2k3rEfBcPpy3LzmMIj+e3kWlM
-         qEM7bNVlv94Jpxj6FlM7UGBGKiFdwBHi9JQnTJvkvZmHaXaHO8NqHMXshD0OmWRcAwEH
-         2DwGGj5BZNKw1yQSCNSm5WooEbH6VZSGZkQ9IFI1g4H4eT0muRZOqc53wL8Dmvsn3w+H
-         bnXtSI8fwwyb2EysnIb+Alj3DAZjzPW7ucm/7Uqs0jnrELbIChZNeORsmMS4kIg8pFBg
-         KXjg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=SgqD2LjcS3lfaRz0Bbuyp5agpi0erzgXbo3a6MpALAQ=;
-        fh=cb0deLVfK9V0CcMJHBEGaL8jeP9WwldPw18a67fn2QE=;
-        b=Ku31vefyVEHMYq3akE9+lB5d/w4u8rSdda51DE7FzyX3R1iahnRHnQgS+2uFamr5iy
-         PGW2g/YxP9oXO7ZkHdWnTowfdevpU2InRb48cJ1cSYlpl2YyLasnWLPfqFCLL/B6uSCF
-         0brNBpbYJICuPhzNj+epwDHugMYN4gnmHGztYgZ05xQBUdMM6L7tXfsRwknqfRmQSseC
-         8fwPkuyVC4wmm1UQ/BZAhLTM+j9lTJhNzGSSZa+v2dtwgJS1VdTgPpWVyh1pZvECPZYX
-         31cNFY+lc87GzNXxh2QkU+oi4AGt6Utdlu2yQjNFV62d91stFm0cjFMflaCGAITK7IYX
-         31jQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eMfju6Gz"
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-12c6df0b9bbso2687966c88.1
+        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 02:43:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1777369197; x=1777973997; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SgqD2LjcS3lfaRz0Bbuyp5agpi0erzgXbo3a6MpALAQ=;
-        b=tnpGN+B+KIu7AR9PQ2ZiEbgE7pxnqhA03wEwWzgX9bqgkoB0Pu9pNpnB1pAhL/Zy5v
-         OxpjSgpHVXeSW4M3DoDm+zfWuSojLdmGFhHVcDmGOp5MIMnZj7O7mDqmAppmsLXOo6Yb
-         HdTchWFR0IQGhyQy1W5Hmk57/6MfhmMJ82XnLg21Ej7EfweBgQU2dVTR8JCV/vs3GCm7
-         L8PQ96gQPJvkojCvpnK3QxK/WxZQbTxsbZ8BUMhygzr/FnSU5MxgrhRDf81VHOEm8pxC
-         1jMhR1POnvq29peYDixqQhmiNtnF5RmY1HrUd3egBDxHN2R1JSCq8KJUuuPgtJScj7Zp
-         vxOA==
+        d=gmail.com; s=20251104; t=1777369414; x=1777974214; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=E+2aQrESKSPjXIMgAlPSq2BTaZgqO5ydTBn6YvPyGsg=;
+        b=eMfju6GzWQTFgzfwahFC+fZwObRlrvjOwzwa4hDWscxLbvALYh0n9Ujz3tJv4SBSX8
+         WAzgdY0IpAy9AHZJCL1UzCc7ZXBiAu2ESz2HRroCxaneaJkkKI+QSwtVOHKRIwmzpCGY
+         9cHiAYASJiAmS4rN9FQMRwvASpCwhaMNKT6B28ykOn+fT7VMHhgdNF5a9E1CEEiuoB9O
+         xooJsR5GL7dWbFqhpfkPzTXjNxgN0GY2zKaQ9ncaJoOJWiixO53YLYkLoCNBpmVG5mxZ
+         Z8UA67vIazPk7MeIR615PyCXJg7EXqiR+yvZos9H9p4SEZ5R/RfWGkmGDi+uipJ97x3a
+         vjoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777369197; x=1777973997;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=SgqD2LjcS3lfaRz0Bbuyp5agpi0erzgXbo3a6MpALAQ=;
-        b=oiznOAgJOeUyem+//jEPmc6CAy9vZga+TvZvXpb2R9qoGlUxKOv7ZlKYWGdpJOek5n
-         YfvvseuTN6j3TydlHRLmclMPzsmSLEgL9da++KcNqLgqO+ASJ9FfgmQgun2N5ACnOjYk
-         63F7oCxzW0PQ0gb2aFIcRYO+BzgqnQSyIMt7wSnk4qoz4we8kbnXAtovysLk0UfboOUm
-         so/SpI23Xh72/sAEqlGxeaWoKfzB5C1xywr6DNq4zcBG4eFVMB9mwW4gikGJvbxYEQF6
-         AG/rIAG4xFdtozBgSjnS9e3zrxVitzm3ptUyl/FAgQHYdWZ1KMn4MnDAD1wxJ/e76fRj
-         DTzw==
-X-Forwarded-Encrypted: i=1; AFNElJ8uoCcBJZXVEbSpRu80BE08lsC3dwiD1NvVwz91SJ8ceetOSkJ7ETEyiLCDbTKTeeVzQ/I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWF6dzRqvunaqNlNbgb32EQVi+3qYpkYPg2pXZ8SNETfi2lfnQ
-	zOOCmMgDRNsKngZiB04H/h3tXV+jkPIezcCmhFpk7QINxg9HP6JnNCkdEwJh3NlDfdTBgd3uuVG
-	/cxLtjGRQ2UigTRmAd12ZNTGFVwY1aHon0wckIWVBMb/XU5r3aq7czdnUl70B5N9SeZ62jTliFP
-	I8I5SOQyqmRUZFBqqdknKYutL/a/lG
-X-Gm-Gg: AeBDievBRLdCtx7BoD0mXoi/FmVUPAhzPV9TpO0f9Fcj93fGbyiMJfxnNMHFWpwf4iv
-	4ydZdMcz+SyPzr7OOol4qM/Gv6+N7G2mK10YxVa3ll3oyGsJrAU6cDfIm0iGW3a0K6F3NDIsaQs
-	flb8cJZ+XPgcfjWMW63pvZdquO1irQv4miYlOpwMwzcvK2CXpCbEtRQDH3cDrQ3g+oR6wS2hC6r
-	MSA/27rBJ+3Am5lY0Yig7zuRO3tPR3zI2rmse/jFZJ9HgbbeRlXMMLNf2G6fjzyRyXMdTK1VNuL
-	lP4HWbFdhQsjvk4H
-X-Received: by 2002:a05:6000:184a:b0:43d:7946:badc with SMTP id ffacd0b85a97d-446496d5208mr4451823f8f.26.1777369197236;
-        Tue, 28 Apr 2026 02:39:57 -0700 (PDT)
-X-Received: by 2002:a05:6000:184a:b0:43d:7946:badc with SMTP id
- ffacd0b85a97d-446496d5208mr4451757f8f.26.1777369196742; Tue, 28 Apr 2026
- 02:39:56 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777369414; x=1777974214;
+        h=content-transfer-encoding:in-reply-to:content-language:from
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=E+2aQrESKSPjXIMgAlPSq2BTaZgqO5ydTBn6YvPyGsg=;
+        b=lt+g9nzqZj9QNn5r+JdUImEhNb09sr+pMj+nFd4lI8rLLlx3Tlt7wCrTRfmeY1H0pN
+         2OsElr9QvGDTO6he9gWho5KtzPm54m/vEpIe2vWxS8ZNpnaQOFq8lRCz8nTDH3e3dMWw
+         3beesbzgW61vC7O3iMfZQpOlpcTblSRms5PVkfG75yPRR46me2Qc14ZHkiHnxiCzwGv9
+         GDMAUrWFUajL+2LufRD7kZZ4fvfZ0dYLiuRZJYU1LKU1KewkUN8s5+FIbFBxAZn0oOdr
+         q7ecDOMf+RESHNH7WUWv53tO3YVndQIJBA64SShaCPRZNT+fjGVvyWE5HF8iGsKHo30x
+         uIUA==
+X-Forwarded-Encrypted: i=1; AFNElJ9E2ioihKQAoVFnjx5uTaKo+9bpxKP5suEHwIR/yzNxIfvYtK+6b6RFYmIFNyXwtMjRWmM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8YwYJcQKXvWphMczpayU72PvHVnN86xLf5dzUAwxQmDwvEHur
+	V2uCArRNkcx4HemDb9siRITjz07df2FiTKieh5dI3D3V9iG60x3Nhitc
+X-Gm-Gg: AeBDietcNdZy3X2n/tuf6Hz8cBSazI7xohHy2tdwQ5RzNuR3wNsfGLGXL/BBoKVBizP
+	Y7A5cBy9yFvWoXDMelpqDUqbF7gI3uHjIAHc1qsfEHGYJqZS8L6eZ/uPgB33Qx24HTZHfh8RGWP
+	nJ1WxEgixHxSkk+n/u8yto4fdAD/YQd6KSDwU58hlKwZLLL3p0yxIwSc64knn2s8BZfRPrkEvEi
+	dIsrGXCOyJ9miiTFLc5xwtAsuo/63jBpv3RWcOj59XAPOeEctR2CZygpjj4O7gqggw+GlKSWl6I
+	NbK8Jjv+sUPDs3P3fxhvIR9fzWkwaYG8FTtxCFQ7ax4lTa/B+oqv44s4rcI9j3h11KmrkrS8HRg
+	On2Pvgx895QGY70Ai6QRHZ3jlq2mIWQVxr0fMu7znsZ9S8G4tNKZYR02yJKrKvVOUHwTYb8dk6J
+	hmKfUd7JhJt+heioG3pjNGpKyyeS9Cm/Mco/zW
+X-Received: by 2002:a05:7022:621:b0:119:e56b:957b with SMTP id a92af1059eb24-12ddd90e40amr1289308c88.0.1777369413478;
+        Tue, 28 Apr 2026 02:43:33 -0700 (PDT)
+Received: from [198.18.0.1] ([154.26.185.247])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12ddd9be1f9sm1811919c88.15.2026.04.28.02.43.27
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 28 Apr 2026 02:43:33 -0700 (PDT)
+Message-ID: <4b66c381-09c5-496e-b95e-100d1ba20dc5@gmail.com>
+Date: Tue, 28 Apr 2026 17:43:25 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260427105810.23761-1-pbonzini@redhat.com> <CAMuHMdUvehWeTwdN1czjvv7OjGsu_XaaYS1R6Tg557mDqP+fSg@mail.gmail.com>
-In-Reply-To: <CAMuHMdUvehWeTwdN1czjvv7OjGsu_XaaYS1R6Tg557mDqP+fSg@mail.gmail.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 28 Apr 2026 11:39:44 +0200
-X-Gm-Features: AVHnY4InOLQxxAYojPY9TCY0WEKwcodWBYhqlVS7vN1v5Z6dVPP34NbhnYWlh34
-Message-ID: <CABgObfa+2ERN1TmVeeWxCQKzra_OThkgkVkBGgDfu5yOsjOH1A@mail.gmail.com>
-Subject: Re: [PATCH] mm_types: remove references to s390 gmap
-To: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-mm@kvack.org, 
-	linux-m68k@lists.linux-m68k.org, "David Hildenbrand (Arm)" <david@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 2/9] hw/core: Make CPU topology enumeration
+ arch-agnostic
+To: Zhao Liu <zhao1.liu@intel.com>, =?UTF-8?Q?Daniel_P_=2E_Berrang=C3=A9?=
+ <berrange@redhat.com>, Igor Mammedov <imammedo@redhat.com>,
+ Eduardo Habkost <eduardo@habkost.net>,
+ Marcel Apfelbaum <marcel.apfelbaum@gmail.com>,
+ =?UTF-8?Q?Philippe_Mathieu-Daud=C3=A9?= <philmd@linaro.org>,
+ Yanan Wang <wangyanan55@huawei.com>, "Michael S . Tsirkin" <mst@redhat.com>,
+ Paolo Bonzini <pbonzini@redhat.com>,
+ Richard Henderson <richard.henderson@linaro.org>,
+ Eric Blake <eblake@redhat.com>, Markus Armbruster <armbru@redhat.com>,
+ Marcelo Tosatti <mtosatti@redhat.com>, =?UTF-8?Q?Alex_Benn=C3=A9e?=
+ <alex.bennee@linaro.org>, Peter Maydell <peter.maydell@linaro.org>,
+ Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+ Sia Jee Heng <jeeheng.sia@starfivetech.com>,
+ Alireza Sanaee <alireza.sanaee@huawei.com>, qemu-devel@nongnu.org,
+ kvm@vger.kernel.org, qemu-riscv@nongnu.org, qemu-arm@nongnu.org,
+ Zhenyu Wang <zhenyu.z.wang@intel.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>
+Cc: Yongwei Ma <yongwei.ma@intel.com>
+References: <20241101083331.340178-1-zhao1.liu@intel.com>
+ <20241101083331.340178-3-zhao1.liu@intel.com>
+From: EwanHai <ewandevelop@gmail.com>
+Content-Language: en-US
+In-Reply-To: <20241101083331.340178-3-zhao1.liu@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Tue, Apr 28, 2026 at 8:58=E2=80=AFAM Geert Uytterhoeven <geert@linux-m68=
-k.org> wrote:
->
-> On Mon, 27 Apr 2026 at 12:58, Paolo Bonzini <pbonzini@redhat.com> wrote:
-> > s390 does not anymore use special struct page for its shadow page table=
-s.
-> > The honor of giving a special meaning to pt_index is now m68k's, so
-> > rename the fields and adjust them for the desired type.
-> >
-> > Cc: linux-mm@kvack.org
-> > Cc: linux-m68k@lists.linux-m68k.org
-> > Cc: David Hildenbrand (Arm) <david@kernel.org>
-> > Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-> > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
->
-> >  arch/m68k/mm/motorola.c  |  2 +-
->
-> Acked-by: Geert Uytterhoeven <geert@linux-m68k.org> # m68k
+Apologies for the noise, please ignore my previous reply, the corporate mailer
+collapsed all the newlines. Resending in plain text below.
 
-Thanks, do you expect it to go through the mm tree or are you taking
-it yourself?
+Zhao Liu wrote on 11/1/24 4:33 PM:
+> Cache topology needs to be defined based on CPU topology levels. Thus,
+> define CPU topology enumeration in qapi/machine.json to make it generic
+> for all architectures.
+> 
+> To match the general topology naming style, rename CPU_TOPO_LEVEL_* to
+> CPU_TOPOLOGY_LEVEL_*, and rename SMT and package levels to thread and
+> socket.
+> 
+> Also, enumerate additional topology levels for non-i386 arches, and add
+> a CPU_TOPOLOGY_LEVEL_DEFAULT to help future smp-cache object to work
+> with compatibility requirement of arch-specific cache topology models.
+> 
+> Signed-off-by: Zhao Liu <zhao1.liu@intel.com>
+> Tested-by: Yongwei Ma <yongwei.ma@intel.com>
+> Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+> Acked-by: Philippe Mathieu-Daudé <philmd@linaro.org>
+> ---
 
-Paolo
+...
+
+
+> @@ -373,17 +373,17 @@ static void encode_topo_cpuid1f(CPUX86State *env, uint32_t count,
+>      unsigned long level, base_level, next_level;
+>      uint32_t num_threads_next_level, offset_next_level;
+>  
+> -    assert(count <= CPU_TOPO_LEVEL_PACKAGE);
+> +    assert(count <= CPU_TOPOLOGY_LEVEL_SOCKET);
+>  
+
+Hi Zhao,
+
+While booting Linux under TCG QEMU (-kernel + rootfs) with a CPU model that
+enables cpuid_0x1f (e.g. Shijidadao-v2), I hit this assert: when the guest
+queries CPUID.1F with a topology level greater than CPU_TOPOLOGY_LEVEL_SOCKET,
+QEMU aborts. Under KVM the path isn't reached (CPUID is served from
+KVM_SET_CPUID2), so this is TCG-only, which is probably why it hadn't been
+caught earlier.
+
+I'm not sure the assert is necessary: the code that follows already handles
+the "input level out of range" case correctly. find_next_bit() returns SOCKET
+once the bitmap is exhausted, the loop breaks with level = INVALID, and the
+encoding path below produces the SDM-defined invalid-domain response (EAX=0,
+EBX=0, ECX = count | INVALID_type, EDX = apic_id).
+
+Per Intel SDM, CPUID Leaf 1FH does not constrain the input ECX value, so guest
+software is free to query any sub-leaf index. Did the assert intentionally
+protect an invariant I'm missing, or is it a leftover defensive check?
+
+For reference, the KVM kernel side (arch/x86/kvm/cpuid.c kvm_cpuid()) has
+explicitly handled out-of-range 0x1F subleaves this way since 2019:
+    } else {
+        *eax = *ebx = *ecx = *edx = 0;
+        /*
+         * When leaf 0BH or 1FH is defined, CL is pass-through
+         * and EDX is always the x2APIC ID, even for undefined
+         * subleaves. ...
+         */
+        if (function == 0xb || function == 0x1f) {
+            entry = kvm_find_cpuid_entry_index(vcpu, function, 1);
+            if (entry) {
+                *ecx = index & 0xff;
+                *edx = entry->edx;
+            }
+        }
+    }
+introduced in commit 43561123ab37 ("kvm: x86: Improve emulation of CPUID leaves
+0BH and 1FH"). So KVM-accelerated guests already see the SDM-compliant response;
+only TCG aborts.
+
+Thanks,
+Ewan
+
+
+>      /*
+>       * Find the No.(count + 1) topology level in avail_cpu_topo bitmap.
+> -     * The search starts from bit 0 (CPU_TOPO_LEVEL_SMT).
+> +     * The search starts from bit 0 (CPU_TOPOLOGY_LEVEL_THREAD).
+>       */
+> -    level = CPU_TOPO_LEVEL_SMT;
+> +    level = CPU_TOPOLOGY_LEVEL_THREAD;
+>      base_level = level;
+>      for (int i = 0; i <= count; i++) {
+>          level = find_next_bit(env->avail_cpu_topo,
+> -                              CPU_TOPO_LEVEL_PACKAGE,
+> +                              CPU_TOPOLOGY_LEVEL_SOCKET,
+>                                base_level);
+>  
+>          /*
+> @@ -391,20 +391,20 @@ static void encode_topo_cpuid1f(CPUX86State *env, uint32_t count,
+>           * and it just encodes the invalid level (all fields are 0)
+>           * into the last subleaf of 0x1f.
+>           */
+> -        if (level == CPU_TOPO_LEVEL_PACKAGE) {
+> -            level = CPU_TOPO_LEVEL_INVALID;
+> +        if (level == CPU_TOPOLOGY_LEVEL_SOCKET) {
+> +            level = CPU_TOPOLOGY_LEVEL_INVALID;
+>              break;
+>          }
+>          /* Search the next level. */
+>          base_level = level + 1;
+>      }
+>  
+> -    if (level == CPU_TOPO_LEVEL_INVALID) {
+> +    if (level == CPU_TOPOLOGY_LEVEL_INVALID) {
+>          num_threads_next_level = 0;
+>          offset_next_level = 0;
+>      } else {
+>          next_level = find_next_bit(env->avail_cpu_topo,
+> -                                   CPU_TOPO_LEVEL_PACKAGE,
+> +                                   CPU_TOPOLOGY_LEVEL_SOCKET,
+>                                     level + 1);
+>          num_threads_next_level = num_threads_by_topo_level(topo_info,
+>                                                             next_level);
+...
 
