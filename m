@@ -1,151 +1,117 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6677E389E18
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 07:03:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EC8530DD11;
+	Tue, 28 Apr 2026 07:36:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777359839; cv=none; b=ck5T4ffN1rTemTuOC8kL7iTkz9+2jlqsyuEozVrh6+VhjUqHBRoVvrCS3tQVwu51tHCtkwwSkrN2z0jE8Q6OvQFlPyFks5hRpRT41xNDTewAGYUluimbP5L+vH9kSuFe0Dj6cPZmFDRwA7L3m41lvCPR8NrVYh744Sh4gvTflI8=
+	t=1777361813; cv=none; b=koYQE7jgQkrqnBTKgSDPs4bre07y+rucKQU30E4SnprfWbnOGzR+kXVXenz3dQ+4ko9zwiEXAK5q/ZGmwCAqvgSzhjSjzgX8v2bhHyT9E2Q1RPbIExmCHgu7Glr7t5MPPBTfN6uMqgpjIhbGWiZMfKf0kbGJcZVpJldKYEjkBDQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777359839; c=relaxed/simple;
-	bh=vZrwHsYKaiOo6cp4xIbTsy3+95RfnU375oJ1Bni4EK4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aVqsm5VNkABU0BgiRF+Qo7Mpgc7w8yXICZ/41Di6pH3/6WW7jqZew26AIeYkq5lgS2IHlIJcyPK3fJPoiQklqGljK7/Dgqn7tQeGET00BQBnnrBMP9MGPsdtes7pSWT9pqioMTPUximP6eWvDF3X86nAZeAqUr3anXwp/dqz0F8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ALv5DB93; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1777361813; c=relaxed/simple;
+	bh=HWeOWAl+pWKGYzyrbQxD81mjJ/WJJUZNnSYnLw3qIMg=;
+	h=Mime-Version:Content-Type:Date:Message-Id:To:Cc:Subject:From:
+	 References:In-Reply-To; b=FlW2ygTjY4h1t1GXKmOohXnxndTczs0awxtLplgS5RTEGxu+O2Jj7gFnTBgnHD1ywKtHVrB3go5bR2nawUQqF4AGvI6iFhtj1nUkTJVAlKTj7sDQTInYvNiWF8NCrtzIDVpncPiBn8+wIDjrywfdTYxZcQDPg3DExEKd1tp/uDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ctOOKiVK; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ALv5DB93"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777359837; x=1808895837;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=vZrwHsYKaiOo6cp4xIbTsy3+95RfnU375oJ1Bni4EK4=;
-  b=ALv5DB935sw2PbvggTYtFcGUq7dJ+kT0UWsAgHfj0BzMlBb+wkYBwDQi
-   Kf6//L1Y2bWeZ+XT7TriiBHoolzVXJg1xMhheZWRwYw74Uf0rTH1/NRpo
-   kzMiF2rWvWhnl3AEIbQ3AJSi0yaWqxMvJsVNJGAG7/fJ3TbtfNzQXguAl
-   lUoqJ8P7dGR7be/k6pxzxww2OaGdry9Sy3pFKPi4UEZ+R0euh1BWyRMcf
-   XQtcFt3C5ziFAPV1tVsYbDTYwtojiTOmK2RjTmHphCMfejwRY6vEHmj7M
-   ZkQaZWbyNolAcbZfCmVLGc2DxUIHL751xCDzo0owRUt2Mk9o+/zUYUOOB
-   w==;
-X-CSE-ConnectionGUID: rfHdyEW9TDqh2HK5TLVQpQ==
-X-CSE-MsgGUID: 2LX5D7YZSVSKRKc/Ce5uvA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="88571827"
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="88571827"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 00:03:56 -0700
-X-CSE-ConnectionGUID: rBNhLOiURUuRUZILX1VpJw==
-X-CSE-MsgGUID: 0jS/rjQ4QwOg2hwxmE67CA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="227350871"
-Received: from emr-bkc.sh.intel.com ([10.112.230.82])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 00:03:54 -0700
-From: Chenyi Qiang <chenyi.qiang@intel.com>
-To: kvm@vger.kernel.org
-Cc: Chenyi Qiang <chenyi.qiang@intel.com>,
-	Sean Christopherson <seanjc@google.com>,
-	Jim Mattson <jmattson@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Gao Chao <chao.gao@intel.com>,
-	Farrah Chen <farrah.chen@intel.com>
-Subject: [PATCH] KVM: VMX: Fall back to IRR scan when PIR is empty despite PID.ON being set
-Date: Tue, 28 Apr 2026 15:03:26 +0800
-Message-ID: <20260428070349.1633238-1-chenyi.qiang@intel.com>
-X-Mailer: git-send-email 2.43.5
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ctOOKiVK"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63S7EBWZ3232750;
+	Tue, 28 Apr 2026 07:36:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=HWeOWA
+	l+pWKGYzyrbQxD81mjJ/WJJUZNnSYnLw3qIMg=; b=ctOOKiVKmHzHw8UEHEpwUF
+	9oHap0Y6rp2q1LPeW7s3Z7slB+Wl6GplCelH60JjJ9TsgVFl3hmhj4D+n9yS4I4Y
+	QGyBMgcV7QJ/AOcD9QdWOp655wGVQ9WwEPbi0r7KQh47+XDtMA5CUV2ZCPCCLfEV
+	hZi8fY9DsaaaAjFhMy7zb/pMfLurPW4WD3sXChamyV1J66bMgEAfQXtQ5c//7nUU
+	PxpUwwfq/iNMpIIL3VB0h74cj+rz93oTG7FiKy2c0/R8J32+e/dd0cThM3scdjGQ
+	G49w262qCJ87/SZbWTtMBOPw/JgIFeI/6MELzSommhz6aJ6IsPAtcbjbaDUqt5/w
+	==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4drk1jke1s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Apr 2026 07:36:47 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63S7NhBn006577;
+	Tue, 28 Apr 2026 07:36:46 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dsamy8ewj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Apr 2026 07:36:46 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63S7agoq56689058
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 28 Apr 2026 07:36:42 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BC56020043;
+	Tue, 28 Apr 2026 07:36:42 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 9BB8C2004E;
+	Tue, 28 Apr 2026 07:36:42 +0000 (GMT)
+Received: from t14-nrb (unknown [9.111.4.79])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 28 Apr 2026 07:36:42 +0000 (GMT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Tue, 28 Apr 2026 09:36:42 +0200
+Message-Id: <DI4M6BZGMT5A.3HTHW9ZYNHA0X@linux.ibm.com>
+To: "Christoph Schlameuss" <schlameuss@linux.ibm.com>,
+        <linux-s390@vger.kernel.org>, <kvm@vger.kernel.org>
+Cc: "Janosch Frank" <frankja@linux.ibm.com>,
+        "Claudio Imbrenda"
+ <imbrenda@linux.ibm.com>,
+        =?utf-8?q?Nico_B=C3=B6hr?= <nrb@linux.ibm.com>,
+        "David Hildenbrand" <david@kernel.org>,
+        "Thomas Huth" <thuth@redhat.com>
+Subject: Re: [kvm-unit-tests PATCH v4 3/6] s390x: sclp: Check sclp byte
+ before reading feature bits
+From: "Nico Boehr" <nrb@linux.ibm.com>
+X-Mailer: aerc 0.21.0
+References: <20260423-vsie-stfle-fac-v4-0-32943fe43394@linux.ibm.com>
+ <20260423-vsie-stfle-fac-v4-3-32943fe43394@linux.ibm.com>
+In-Reply-To: <20260423-vsie-stfle-fac-v4-3-32943fe43394@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI4MDA2NiBTYWx0ZWRfX7IoJZnWkHirb
+ zefA6gPt8fqCLzGrk4LODRH/73VOOz0Mtdz9xfYKKNNXWy68hUaDC51lSQR8wMTlyTsd4mV0Bmp
+ K+vDCgUyyNW8eh8o04INp9iySvSBur4AaaZNOdiN7sYxIvkhxwkFHG9iQaPbLK73T/7K9UcjPrJ
+ kGjhmzm/y6mX2Ys5FFhMb9ETWW7bMLcuoW8pKa+rXCosykymArn9ttQX6Pde3h77qmZMkVV4jIn
+ C3hAEunpgaP1iwGCITNv3sCNgmics4E6JW6PNv+evyFMOjbZw9Ycdqyw1xwurSbPtKBdlxfPBUO
+ hxbYTUixN5AFpkZ94MESSTAXL0mwQRNA3qIeRIAjW5veeBgo5b8hp0S+FTsdyXKB+3o60DMGQBg
+ 05rOSY3YJspi/pDRFksv47QxXMtiFxdHYKCMQTc4q9rKf77voFFySljs8rda4lc2WFuJiP/wf0l
+ 94b06f2NKmecggrCPVQ==
+X-Proofpoint-GUID: -6UkYm0l-Oy_zCEnyByoslpnw4Bopz_k
+X-Proofpoint-ORIG-GUID: -6UkYm0l-Oy_zCEnyByoslpnw4Bopz_k
+X-Authority-Analysis: v=2.4 cv=MohiLWae c=1 sm=1 tr=0 ts=69f0638f cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=OjJgPJLet3IxckCSjGgA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-28_01,2026-04-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 adultscore=0 suspectscore=0 bulkscore=0 spamscore=0
+ priorityscore=1501 malwarescore=0 clxscore=1015 lowpriorityscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2604280066
 
-Fall back to kvm_lapic_find_highest_irr() in vmx_sync_pir_to_irr() when
-PID.ON is set but PIR turns out to be empty, to correctly report the
-highest pending interrupt from the existing IRR.
+On Thu Apr 23, 2026 at 4:26 PM CEST, Christoph Schlameuss wrote:
+> Improve the readability and simplicity of the code in
+> sclp_facilities_setup() by moving the check for availabity of feature bit=
+s
+> into sclp_feat_check().
+>
+> Suggested-by: Janosch Frank <frankja@linux.ibm.com>
+> Signed-off-by: Christoph Schlameuss <schlameuss@linux.ibm.com>
 
-In a nested VM stress test, the following WARNING fires in
-vmx_check_nested_events() when kvm_cpu_has_interrupt() reports a pending
-interrupt but the subsequent kvm_apic_has_interrupt() (which invokes
-vmx_sync_pir_to_irr() again) returns -1:
-
-  WARNING: CPU: 99 PID: 57767 at arch/x86/kvm/vmx/nested.c:4449 vmx_check_nested_events+0x6bf/0x6e0 [kvm_intel]
-  Call Trace:
-   kvm_check_and_inject_events
-   vcpu_enter_guest.constprop.0
-   vcpu_run
-   kvm_arch_vcpu_ioctl_run
-   kvm_vcpu_ioctl
-   __x64_sys_ioctl
-   do_syscall_64
-   entry_SYSCALL_64_after_hwframe
-
-The root cause is a race between vmx_sync_pir_to_irr() on the target vCPU
-and __vmx_deliver_posted_interrupt() on a sender vCPU.  The sender
-performs two individually-atomic operations that are not a single
-transaction:
-
-  1. pi_test_and_set_pir(vector)  -- sets the PIR bit
-  2. pi_test_and_set_on()         -- sets PID.ON
-
-The following interleaving triggers the bug:
-
-  Sender vCPU (IPI):              Target vCPU (1st sync_pir_to_irr):
-  B1: set PIR[vector]
-                                  A1: pi_clear_on()
-                                  A2: pi_harvest_pir() -> sees B1 bit
-                                  A3: xchg() -> consumes bit, PIR=0
-                                      (1st sync returns correct max_irr)
-  B2: set PID.ON = 1
-
-                                  Target vCPU (2nd sync_pir_to_irr):
-                                  C1: pi_test_on() -> TRUE (from B2)
-                                  C2: pi_clear_on() -> ON=0
-                                  C3: pi_harvest_pir() -> PIR empty
-                                  C4: *max_irr = -1, early return
-                                      IRR NOT SCANNED
-
-The interrupt is not lost (it resides in the IRR from the first sync and
-is recovered on the next vcpu_enter_guest() iteration), but the incorrect
-max_irr causes a spurious WARNING and a wasted L2 VM-Enter/VM-Exit cycle.
-
-Fixes: b41f8638b9d3 ("KVM: VMX: Isolate pure loads from atomic XCHG when processing PIR")
-Reported-by: Farrah Chen <farrah.chen@intel.com>
-Assisted-by: GitHub Copilot:Claude Opus 4.6
-Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
-
----
-There is a WARNING call trace during a nested VM stress test. AI
-provided an analysis of a race condition and the related fix, which
-looks reasonable to me. With the patch applied, the WARNING can not
-be reproduced in overnight stress testing.
----
- arch/x86/kvm/vmx/vmx.c | 10 ++++++++++
- 1 file changed, 10 insertions(+)
-
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 8b24e682535b..e2da29371e00 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7153,6 +7153,16 @@ int vmx_sync_pir_to_irr(struct kvm_vcpu *vcpu)
- 		smp_mb__after_atomic();
- 		got_posted_interrupt =
- 			kvm_apic_update_irr(vcpu, vt->pi_desc.pir, &max_irr);
-+		/*
-+		 * If PID.ON was set but PIR is empty, another CPU may have
-+		 * set PID.ON via __vmx_deliver_posted_interrupt() after a
-+		 * previous sync already consumed the PIR bits.  In this
-+		 * case, kvm_apic_update_irr() will not have scanned the
-+		 * existing IRR, so fall back to scanning the IRR directly
-+		 * to correctly report the highest pending interrupt.
-+		 */
-+		if (max_irr == -1)
-+			max_irr = kvm_lapic_find_highest_irr(vcpu);
- 	} else {
- 		max_irr = kvm_lapic_find_highest_irr(vcpu);
- 		got_posted_interrupt = false;
--- 
-2.43.5
+Reviewed-by: Nico Boehr <nrb@linux.ibm.com>
 
