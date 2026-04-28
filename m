@@ -1,75 +1,65 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D0A23101C8
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 08:32:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9EE738B135;
+	Tue, 28 Apr 2026 08:45:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777365146; cv=none; b=a/9iJeuiyoKkJhHxM9nHXaaVo6/PhtWvgbvSURdV6gN6NS+1zkq7rHGBzkvp+KcxHsRrlo7UgkECn30TFfziE3Y+U8/1DusEhTh5keHS8kcRVU5qStv0efRX/NDY0s3CUEWmA8RYzfjsFtOE3CsayjCf5s1MK1nGAA1cirOcd+w=
+	t=1777365960; cv=none; b=OrploAVBf5tSEEx5e2SKtN8ServPc5gIzuF4DmkAWo2iayvHHMlI7tXEJZlxOoRo979nbgMSrqjG6OaqGeN8mVg6IBlhPAo7p+EI8BAcumY3NzeAB+mb2HWRNlonEsHK0IFM/q5VDBwkcnLZ+0B4u/2U0au6nW6TCI0KUJQ3kIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777365146; c=relaxed/simple;
-	bh=7m9TSkIprBQnO5SnKEMtRqur5OBCaZU7a+82O7NNe8w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NsyzqW3DpWVeJX9FTnH7/bJLnKnWeS8XSoWvabRdzUoqcWoTkvv5dIusL8n2cerQ5xl0Y3u101yKwyDehsHB8fguGRcf8Ha0MEWw6zYT3Z0f0TVsWqXPgGV02b1txRL0TJzlHI5POtG2IAEPGnRHGaW3+OM55UkqTrpET3i62vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DI16++ZH; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777365960; c=relaxed/simple;
+	bh=+x8VFvKHNANBfKWrQINkGF41dP799tccJPZccINN00s=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=niw4cgjf/1ebmFWsh+WCnOiorzBtCGQc2ZTPTZLS6pzZ6lJaziMbSqCsaTlb5CkKF1u3o9ggpAEhi9JOpNZjx27aXKcp9/deNuDHkwuuJhncSRZaQeoroTKdLebd9rfGumhyN2DPAcurGz5Nh+jeamvocz7+APDyomWlqaZbX2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ibm.com; spf=pass smtp.mailfrom=ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=s2mLWQrx; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DI16++ZH"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-676a89de629so11834679a12.1
-        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 01:32:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777365144; x=1777969944; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=s+jLeOsk7xNnSzOzCqVVJFK8K7hUB/KB4pNNUZN70BM=;
-        b=DI16++ZHqDSVFE7ldw6cfr/ixcDGYqvKWZClvJJLu70ZZXmbywp6VK1QRHJVm9FDv6
-         XNjTS8WRLhEh6U1ZQo9tw9H5DaUhALpb/xfqKbC1rDZ87SuAPMj2dxPoXGc2TimlroFG
-         6DAmCc9zb0awDrKiYMftkLNJXMyzkndF8o6F2HdbWapY92ZqWdYndloXBqA3jckfXKlE
-         ccjRRgURYx9PI17CLRO7B/+L8hsQy5Sd+fswYcZVwsn4Ph9LVOI+zOMSshoKJR3fNa2g
-         RcazcAqjl/TiH0m45R+IURwOimZJ4e016wPtJ6lKF0CZJ5i+jXl7zBwUtxlQ9rrYWYPe
-         ko1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777365144; x=1777969944;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=s+jLeOsk7xNnSzOzCqVVJFK8K7hUB/KB4pNNUZN70BM=;
-        b=Ve6bi1lTjUAyn66VybuuKyA1XwPn8BCY0lKbVqF51GnV4NQbVosUAIF8ogk3jmTv7f
-         RDXnCoOoYEVDNjuLp4CdSgSsQ8G4OT0IPK6tCnECHCrtrIbEP6srSnD0gtc1ToThgDws
-         pfGAyQoIZ1DpJRlTb8lUX2x4zmRz3lh2nGbsGapNiux9s4NIHZ3E8Im6vESuUSlttyFn
-         eeDC+HvqzugcMI+xVtWgrhSYd1V/BaQSf2i4ABRcJueXqz1RjGSFfvNwOYhrYJT9+wls
-         ZNhX42t3JECfBVt/wuXsFokJ4CQI43vDaVDcHOkxuKgxkkaF972ZsH/FLm+MVrne8RsQ
-         xnsQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+pY5R8RiPF0Q+qvOG/grAJCRf8kO7blr3+/HvIgbzhGD1UhobfKhfmOKr/EPfLcUkcVAU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwiXAabe9KmB+mcInGO/gH2kjQAQkVmDvmnUV03EcWP/6vLBEFe
-	nBYX92hSc35zvO4S7FZwiId7O5yjuCL2ASDbb8b7V4bTyiHZA+/1bjQi
-X-Gm-Gg: AeBDieu7FJ2fLWyYfZGaUeaUrl1/X4gcB6X0TUG+KHOKAWv/hPKAfdNUAZst/zcB6zr
-	meyMku5SDtKPkbANk9ZgOAqAo7YYtams+vKnb4zQTI6+D4FfYRjp7IxcLYGhANotxaKApsvhpRY
-	ECq2AmxoBfgZh+fIQ4EFuuQPQ7SeS/lOtMOi7vP8MlffHJuVJ0txqtEQ5jZkc1jz05dseaYhA6m
-	vun5FHWX8eftH8GnfrcCGybKsvVRqNvXRshxdQiv3n1iMIOdEILGb5EGmDSWhcfGPqV/htGGyR6
-	HcP0zeswAGOrpyS1eWuKJ3tZzf+Cc89jOtI7hvhklmWCGIzI+3l6ww3HFgx2HFjaXo52KUEofo/
-	4sZV7HjvJvyeoqtAoKzZGEXWajcSeR1t+CCd3vEBEmGdvpz4uPUDG3KcXW5GYSO+MFDJn7BGV+H
-	7c0hz9RvNuWNF/KYzOITIIc1+XDc12z1SO7HapEmHP/o4dmw0WZnegtA3x3k452xMMdZhDriCxN
-	GUDjsszlodGI+iP1EOjhxyhBhaIKZIOxQx5XA==
-X-Received: by 2002:a05:6402:1f46:b0:674:5b2c:d42c with SMTP id 4fb4d7f45d1cf-679bb04c1aemr866693a12.3.1777365143488;
-        Tue, 28 Apr 2026 01:32:23 -0700 (PDT)
-Received: from arch-piotr.tailb7ebba.ts.net (226.55.classcom.pl. [195.150.55.226])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-679b67ccdc8sm456152a12.4.2026.04.28.01.32.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 Apr 2026 01:32:22 -0700 (PDT)
-From: Piotr Zarycki <piotr.zarycki@gmail.com>
-To: seanjc@google.com,
-	pbonzini@redhat.com
-Cc: shuah@kernel.org,
-	vkuznets@redhat.com,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Piotr Zarycki <piotr.zarycki@gmail.com>
-Subject: [PATCH] KVM: selftests: Fix typo in comment in hyperv_features.c
-Date: Tue, 28 Apr 2026 10:30:37 +0200
-Message-ID: <20260428083037.1926902-1-piotr.zarycki@gmail.com>
-X-Mailer: git-send-email 2.53.0
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="s2mLWQrx"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63S6cRlH3060766;
+	Tue, 28 Apr 2026 08:45:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=2oM9ZUK8Yw9T0FTGW9SPFwR/OUqAGn0tAJHGRHZ4m
+	IY=; b=s2mLWQrxvYSp90wbsZbLQrxyd2RtnKwrWcmLalOU/xB6YvlG/5qo6dHEg
+	2nOGZmtVc1s9bgH0XT0gS0wT+8RMHeKu123aIO8axfPBuUVotQrdiYEyEzaY9VgS
+	Cyg9WXi/rVLqjUzn66/1syEh/qzB16u4x7jSGFrS+gXxXM2jMtnqrsPfFki/DpBR
+	FLXveHHBv1x5tSUmPrZP7SqH0z7Ld4Y0XO4lIS6cldpoisKVWAqtrYMOH7BQ+/1I
+	mT4NKle4hcYf+HCnsh9PglJBfCElu0ecx5OdfMkLMfabEa1/H2ActKUG1m2AzeeD
+	Zc36dpU85hUyp0MrdKgSo/24NstNA==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4drn9r4hrt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Apr 2026 08:45:44 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63S8cwxp028537;
+	Tue, 28 Apr 2026 08:45:43 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ds8xk0w1p-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 28 Apr 2026 08:45:43 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63S8jd9i47120676
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 28 Apr 2026 08:45:39 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 7FC6E20049;
+	Tue, 28 Apr 2026 08:45:39 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8307A20040;
+	Tue, 28 Apr 2026 08:45:37 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.43.36.19])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 28 Apr 2026 08:45:37 +0000 (GMT)
+From: Gautam Menghani <Gautam.Menghani@ibm.com>
+To: maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au,
+        chleroy@kernel.org
+Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2] KVM: PPC: Book3S HV: Add H_FAC_UNAVAIL mapping for tracing exits
+Date: Tue, 28 Apr 2026 14:15:33 +0530
+Message-ID: <20260428084534.49781-1-Gautam.Menghani@ibm.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -77,27 +67,60 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: Qow9ZXYMgiiZmAeXIL36goCJmfQgFKS0
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI4MDA3NiBTYWx0ZWRfXxCqLGLxKdCn/
+ tBi7hLt3YR8B3PDSpCE3QTYNaa3a88x0ndo7lSFzAoD8YO1oeVc2/hKDrbkn2knv6yrc9gjumtW
+ aDTgtbeixvgXnxiyLlJdmMpXmhO/M3veC6UrBU1elj56jEoztO0afqOWXUoEuALA6D1LFjrAIOE
+ 0QXy9n1+6w5z78GZ4zc3rB+S44nBqClFA6HZQCHilffKsbUoPqjOAQ8BZfJGiKxxJM2FoKzxPpM
+ 5ylp9lslUH+35lUF3I+TNUZ8l50rsZ8csC4qLaDTFdp3yjZintTCl76XP0n8WtNXRmE9QrQXR+/
+ d9aRWbqnSawByR9MAo9D0gKh/fNEME+sDGfD+51eIYSyF4T6dNbqGYBnyjqYYZscYA9jKuTERg6
+ PWXkekVO0xGWVbXZ/C4mogEHTrLYU6oEq7PN/uKwEigSzJ7jiQF27jevdRVrsj7Wedx77HRCAeV
+ Nm3R8p5QXHKzeV1UHmA==
+X-Authority-Analysis: v=2.4 cv=Kc7idwYD c=1 sm=1 tr=0 ts=69f073b8 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=HaZPnmESgsJLTL5AR_AA:9
+X-Proofpoint-ORIG-GUID: cMAJkuGQsHnZrBxSyViz107S60p7Mqxi
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-28_02,2026-04-21_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 phishscore=0 bulkscore=0 adultscore=0 spamscore=0
+ malwarescore=0 impostorscore=0 priorityscore=1501 lowpriorityscore=0
+ suspectscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2604280076
 
-Fix a typo in a comment: 'vailable' -> 'available'.
+From: Gautam Menghani <gautam@linux.ibm.com>
 
-Signed-off-by: Piotr Zarycki <piotr.zarycki@gmail.com>
+The macro kvm_trace_symbol_exit is used for providing the mappings
+for the trap vectors and their names. Add mapping for H_FAC_UNAVAIL so that
+trap reason is displayed as string instead of a vector number when using
+the kvm_guest_exit tracepoint.
+
+Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
 ---
- tools/testing/selftests/kvm/x86/hyperv_features.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+v2:
+1. Remove the trailing comma after last element
 
-diff --git a/tools/testing/selftests/kvm/x86/hyperv_features.c b/tools/testing/selftests/kvm/x86/hyperv_features.c
-index 130b9ce7e5dd..f943c748f9ff 100644
---- a/tools/testing/selftests/kvm/x86/hyperv_features.c
-+++ b/tools/testing/selftests/kvm/x86/hyperv_features.c
-@@ -457,7 +457,7 @@ static void guest_test_msrs_access(void)
- 			msr->fault_expected = true;
- 			break;
- 		case 45:
--			/* MSR is vailable when CPUID feature bit is set */
-+			/* MSR is available when CPUID feature bit is set */
- 			if (!has_invtsc)
- 				goto next_stage;
- 			vcpu_set_cpuid_feature(vcpu, HV_ACCESS_TSC_INVARIANT);
+ arch/powerpc/kvm/trace_book3s.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kvm/trace_book3s.h b/arch/powerpc/kvm/trace_book3s.h
+index 9260ddbd557f..5d272c115331 100644
+--- a/arch/powerpc/kvm/trace_book3s.h
++++ b/arch/powerpc/kvm/trace_book3s.h
+@@ -28,6 +28,7 @@
+ 	{0xea0, "H_VIRT"}, \
+ 	{0xf00, "PERFMON"}, \
+ 	{0xf20, "ALTIVEC"}, \
+-	{0xf40, "VSX"}
++	{0xf40, "VSX"}, \
++	{0xf80, "H_FAC_UNAVAIL"}
+ 
+ #endif
 -- 
-2.53.0
+2.52.0
 
