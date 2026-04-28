@@ -1,138 +1,121 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AA6D3A7850;
-	Tue, 28 Apr 2026 05:26:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67BC7274B23;
+	Tue, 28 Apr 2026 05:31:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777354001; cv=none; b=n8AU3WfDlX0+T8sc8E6hRFaCnXK+ihBlo7tXMPZrdC7n1AANo8o74lRldImWK12TBjjQICvpY9l+Vn3+mxIUP4aUmDhFrcTOGgQIlO1qIzgdN6GV+kGY2oEDmZJDgXjvaHdjusg60p1zROOZCcss0RMg+I2oAEtj3EzH6wRPLhU=
+	t=1777354294; cv=none; b=m+U9sIU+jxOVGPvpiaP8donBOdZb5+PA1JrZ0LuK73lsIwSQqsxnSpbhfJmCOlSw51XKF7dAQYLI0cZyG9s67rifzPRRHTTF1jXcFsTK3/Oz2V+ggiAnq3mTrNEtr5yUZ7kYfjo4M1ofuJWmfuuS3/FWkpSGAnuLIAGNvGJT/p4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777354001; c=relaxed/simple;
-	bh=BA4K49FXnQuhBJJw/KO/ibdCTSpSfOVRwZkwOiJn57A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sNi0NLwqU2E9sLtKDn80I4M3DKn4TDn34IZy56z8a0B/O46/um6/FGnNZ2qLhsFfLXYYRQnWiBdukrs0KoGm1li96WjfWvcTwba7tV9KBG0ZSWGiKJNH93rbOthO8DCEGYDToXMC957skIdv95SxDmWJCeppVgdL+OYLvp55vNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U6wLoTFe; arc=none smtp.client-ip=192.198.163.17
+	s=arc-20240116; t=1777354294; c=relaxed/simple;
+	bh=ZQD/7NDBZLUGR9PfzG4/DrCuHMrvTRqWnHRdplwB0Yc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AVVHLIFQlmXin3nVjkiI2dZl0fUvru+WTD8dr2RUVVWVrmkjgMnAAxEK1vCdmdcVSlCtI/H8McoNZ265FNjAJpPV0V/Ova61k+d+4hAy5MfenoIqSkVPBhUra1IFesHKaAWsnJl3xdQ+5SnozLu3Yd4uOP6uV7g2fFE9ZX+0ZcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iefjk9Xs; arc=none smtp.client-ip=192.198.163.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U6wLoTFe"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iefjk9Xs"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777353999; x=1808889999;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=BA4K49FXnQuhBJJw/KO/ibdCTSpSfOVRwZkwOiJn57A=;
-  b=U6wLoTFeaqeLRJg4Q6jMpPswRnsag3ZOw2YVEOMqOvROcpk/4dlQheZt
-   n1eb5zVybL9KNmpMw4nqEB0+lDcpxOPtDTCPuSTINLW++EeLQHw/BV3yK
-   +H2SaORqgZxbPt7zG0bExeGVSHWJAzVgTSXetEQApc8CUbtOK/RpjSejV
-   dThcepJYeB4XU0fEZbOZOIfI2tW7t9cCvfPbL9kni77IemjrmD7saIHI8
-   IvEOreiOPwxPa7pkIDwD/89QSOyWAL1OUoD/YSvH2t2GaMR1khj/dxRNY
-   5pPwpH2YE0k5FtFtsq32Cm9RuFyQT/9Dq23FD+Z08BpryofrMTzko1mbi
-   Q==;
-X-CSE-ConnectionGUID: Rjcw9btgRPaTg5r1u4WNhA==
-X-CSE-MsgGUID: QVLKqPOZTIaChE0NhRj1uQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="78131759"
+  t=1777354293; x=1808890293;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ZQD/7NDBZLUGR9PfzG4/DrCuHMrvTRqWnHRdplwB0Yc=;
+  b=iefjk9Xs6eG+4OrFnl0/hquJs559GZIS8e9QlLhQRBCvYW8QphSCeiLX
+   ZArbLN9sPFfDZFFZpOwsPVLIdYCMjP5tS+h3saKEWjDo/T64oXzJ5OQtT
+   xXgc/wcKxRgkdFI8gh9MOCvodq4eHgpVJ+safsH63qYAr/D/5V//hai2W
+   FGgQHHe+8639gwoyaPY8O6ixeWZnBkficAkuQVlMOcZIw56IMBplqa5CP
+   Xq6RlFIglhrOLDN75kVWH0JerB6IT5KqiTZzU+5fcmvWLSkj7snjggjrk
+   ZOUVZSmwZOp8r1zn3TsZIkcMCwu9sGzCWbYoZfMuCYTwWvhH0yplYyz4W
+   g==;
+X-CSE-ConnectionGUID: HmFFbUW+TVeiYbqV6wRWWA==
+X-CSE-MsgGUID: uPoMrVb3RQuShhshjYnw5Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="65782480"
 X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="78131759"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 22:26:37 -0700
-X-CSE-ConnectionGUID: voXSxJl3RuW3nFH8HXCiSw==
-X-CSE-MsgGUID: ZiVwZWXEQXaK28S8Xpdb+A==
+   d="scan'208";a="65782480"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 22:31:33 -0700
+X-CSE-ConnectionGUID: FBADyz7nQCid/gLOeZBF1Q==
+X-CSE-MsgGUID: 27KnJNDGQjupDn7qufwTHQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
-   d="scan'208";a="234130245"
-Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.106])
-  by orviesa007.jf.intel.com with ESMTP; 27 Apr 2026 22:26:37 -0700
-From: "Chang S. Bae" <chang.seok.bae@intel.com>
-To: pbonzini@redhat.com,
-	seanjc@google.com
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	chao.gao@intel.com,
-	chang.seok.bae@intel.com
-Subject: [PATCH v3 20/20] KVM: x86: selftests: Add APX state handling and XCR0 sanity checks
-Date: Tue, 28 Apr 2026 05:01:11 +0000
-Message-ID: <20260428050111.39323-21-chang.seok.bae@intel.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260428050111.39323-1-chang.seok.bae@intel.com>
-References: <20260428050111.39323-1-chang.seok.bae@intel.com>
+   d="scan'208";a="230681066"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.241.120]) ([10.124.241.120])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Apr 2026 22:31:30 -0700
+Message-ID: <fea2bf8b-c52c-45f8-ad57-5056d0a6fd55@intel.com>
+Date: Tue, 28 Apr 2026 13:31:27 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] KVM: TDX: Allow TDs to read MSR_IA32_PLATFORM_ID
+To: Binbin Wu <binbin.wu@linux.intel.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, x86@kernel.org
+Cc: pbonzini@redhat.com, seanjc@google.com, dave.hansen@intel.com,
+ kas@kernel.org, rick.p.edgecombe@intel.com, vishal.l.verma@intel.com,
+ chao.gao@intel.com
+References: <20260428024746.1040531-1-binbin.wu@linux.intel.com>
+ <20260428024746.1040531-2-binbin.wu@linux.intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260428024746.1040531-2-binbin.wu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Now that KVM exposes the APX feature to guests, extend some existing
-selftests to validate XCR0 configuration and state management.
+On 4/28/2026 10:47 AM, Binbin Wu wrote:
+> Add MSR_IA32_PLATFORM_ID to tdx_has_emulated_msr() so that TDs can read
+> it.
+> 
+> Linux kernel reads MSR_IA32_PLATFORM_ID during init since commit
+> d8630b67ca1e ("x86/cpu: Add platform ID to CPU info structure").  KVM
+> already supports this MSR on read for normal VMs by returning 0.
+> Without support for this MSR, TDs get unchecked MSR access errors.
+> 
+>      unchecked MSR access error: RDMSR from 0x17 at rIP: 0xffffffffba38d6fc (intel_get_platform_id+0x7c/0xb0)
+>      Call Trace:
+>       <TASK>
+>       ? early_init_intel+0x28/0x2c0
+>       ? early_cpu_init+0x9b/0x930
+>       ? setup_arch+0xbf/0xbb0
+>       ? _printk+0x6b/0x90
+>       ? start_kernel+0x7f/0xaa0
+>       ? x86_64_start_reservations+0x24/0x30
+>       ? x86_64_start_kernel+0xda/0xe0
+>       ? common_startup_64+0x13e/0x141
+>       </TASK>
+> 
+> Add MSR_IA32_PLATFORM_ID in tdx_has_emulated_msr() to allow TDs to read
+> the MSR.  MSR_IA32_PLATFORM_ID is read-only by hardware definition, i.e.
+> KVM should never add it as writable, no need to add it in
+> tdx_is_read_only_msr().
+> 
+> Fixes: dd50294f3e3c ("KVM: TDX: Implement callbacks for MSR operations")
+> Reported-by: Vishal Verma <vishal.l.verma@intel.com>
+> Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
 
-Since APX repurposes the XSAVE area previously used by MPX in the
-non-compacted format, add a check to ensure that MPX states are not set
-when APX is enabled.
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Also, load non-init APX state data in the guest so that XSTATE_BV[APX] is
-set, allowing validation of APX state testing.
+Nit: It would be helpful to add the info that read on this MSR from TDs 
+always triggers #VE so that Linux guest will request emulation from KVM.
 
-Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
----
-V2 -> V3: Use EGPR helper
----
- tools/testing/selftests/kvm/x86/state_test.c  |  3 +++
- .../selftests/kvm/x86/xcr0_cpuid_test.c       | 19 +++++++++++++++++++
- 2 files changed, 22 insertions(+)
-
-diff --git a/tools/testing/selftests/kvm/x86/state_test.c b/tools/testing/selftests/kvm/x86/state_test.c
-index 992a52504a4a..24a8166d2a4f 100644
---- a/tools/testing/selftests/kvm/x86/state_test.c
-+++ b/tools/testing/selftests/kvm/x86/state_test.c
-@@ -171,6 +171,9 @@ static void __attribute__((__flatten__)) guest_code(void *arg)
- 			asm volatile ("vmovupd %0, %%zmm16" :: "m" (buffer));
- 		}
- 
-+		if (supported_xcr0 & XFEATURE_MASK_APX)
-+			write_egpr(16, 0xcccccccc);
-+
- 		if (this_cpu_has(X86_FEATURE_MPX)) {
- 			uint64_t bounds[2] = { 10, 0xffffffffull };
- 			uint64_t output[2] = { };
-diff --git a/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c b/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c
-index d038c1571729..e3d3af5ab6f2 100644
---- a/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c
-+++ b/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c
-@@ -46,6 +46,20 @@ do {									\
- 		       __supported, (xfeatures));			\
- } while (0)
- 
-+/*
-+ * Verify that mutually exclusive architectural features do not overlap.
-+ * For example, APX and MPX must never be reported as supported together.
-+ */
-+#define ASSERT_XFEATURE_CONFLICT(supported_xcr0, xfeatures, conflicts)			\
-+do {											\
-+	uint64_t __supported = (supported_xcr0) & ((xfeatures) | (conflicts));		\
-+											\
-+	__GUEST_ASSERT((__supported & (xfeatures)) != (xfeatures) ||			\
-+		       !(__supported & (conflicts)),					\
-+		       "supported = 0x%lx, xfeatures = 0x%llx, conflicts = 0x%llx",	\
-+		       __supported, (xfeatures), (conflicts));				\
-+} while (0)
-+
- static void guest_code(void)
- {
- 	uint64_t initial_xcr0;
-@@ -79,6 +93,11 @@ static void guest_code(void)
- 	ASSERT_ALL_OR_NONE_XFEATURE(supported_xcr0,
- 				    XFEATURE_MASK_XTILE);
- 
-+	/* Check APX by ensuring MPX is not exposed concurrently */
-+	ASSERT_XFEATURE_CONFLICT(supported_xcr0,
-+				 XFEATURE_MASK_APX,
-+				 XFEATURE_MASK_BNDREGS | XFEATURE_MASK_BNDCSR);
-+
- 	vector = xsetbv_safe(0, XFEATURE_MASK_FP);
- 	__GUEST_ASSERT(!vector,
- 		       "Expected success on XSETBV(FP), got %s",
--- 
-2.51.0
+> ---
+>   arch/x86/kvm/vmx/tdx.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index 04ce321ebdf3..812ad99b11e5 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -2094,6 +2094,7 @@ void tdx_get_exit_info(struct kvm_vcpu *vcpu, u32 *reason,
+>   bool tdx_has_emulated_msr(u32 index)
+>   {
+>   	switch (index) {
+> +	case MSR_IA32_PLATFORM_ID:
+>   	case MSR_IA32_UCODE_REV:
+>   	case MSR_IA32_ARCH_CAPABILITIES:
+>   	case MSR_IA32_POWER_CTL:
 
