@@ -1,202 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10229125AA;
-	Tue, 28 Apr 2026 16:40:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7C902580CF
+	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 16:46:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777394457; cv=none; b=ian61mc3d+exNA3F4rzZhu9Gyau+5Va35MGLC7Z8vD6E82ShuGHyGzP3wiGw5PdAOP9E9HDuCA6V3ViX3DgrJRhTrmSkRYWHnOWOjYkfIM6bQ/Qw+racPAQVkGXlNGN/En5rnvy7v9wVYBi+STzJCtVr0vTJNZEfE2GOOcE7rnM=
+	t=1777394806; cv=none; b=u7YyLahNrnkBFpcbWcVCENPskBvAb/+aWZ2y7eXmGPKCOV9VeHb9MF0GiwX+fH4tK5b2Nt2gI2c6peIvTCuLUZe2A3DWWMQJpnK/r+sJh7jyhAwJyHDaC7xGwCCLvBmHUNK1zrUZ9BDd0lJnR3ZrzL+tkHHUjfetEDGVwNtyot4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777394457; c=relaxed/simple;
-	bh=ZAspeRQpPs/vaebT+xzsMbjuhXb3xNX22pJl6stbWDA=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=u3/uZ9SZADnUQCaoRnWaFwpfocUgOwHIrCagV7T2jy2hV3dhqifCHFjUdpVoabZ01aMNtOGtJpcKdR+QBbKC6G4nnwI0BRh3bdxjVSNqLUTLrw+WMntNw+1u8kcNCx2rYcj/ujvNuqynQ6bnj1jQT4XfeNp7ZZ7YUu5/shPJvz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sxfqcIAp; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777394806; c=relaxed/simple;
+	bh=02Ll0yphJszxQQ3HWl4fGFlC3mEDZ3rgtgF4T/gAhdc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=hXoWMCjyU4lHsYIEClxoJ7Ytg54qnJ3M7NgUIjwgzr4XgXBWSZUDYVEQTC97sfxpd0Kt2otj6Jexd6HzAJJyQVDhFoL7xCZffnCrAbqGRX8xGexr68+mMCPKBFhLc+gG54U1tBWpKxjCYPv5wdroMJq/M2DouYh7kdgNF0Gc4ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hVOGYrQN; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sxfqcIAp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97051C2BCAF;
-	Tue, 28 Apr 2026 16:40:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777394456;
-	bh=ZAspeRQpPs/vaebT+xzsMbjuhXb3xNX22pJl6stbWDA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=sxfqcIApUyYsWistFCrBLd9QTLKDkKOvTn3RdTUl3kjMNi1qhtGnxGLr91D9JyBz1
-	 l4gznvyNDfYWEC//aTJEC0FvuaQbZSXJtoCD5seIPn42MUeZ6Pz8WGA0zsXc8BNZFV
-	 n9c91AtT2i2yvFPRSE49hG89u42PVMPJ4/cn09MgLepVdYtSlehgB2VAror+E1S3wh
-	 0lRTrm0h01F7KvcuM1oZESH/27Fadct7uACVQUnowlCKLFZATCrTauXijMmeVjugzr
-	 8C2fkvVzwewJ075tysgn/Ioc2DlP1+63Blom0J4dBnNoIdQsRgHjS36xpkYIhgsOJE
-	 sfKbe9kTrWR9Q==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wHlUU-0000000FbYc-1IMf;
-	Tue, 28 Apr 2026 16:40:54 +0000
-Date: Tue, 28 Apr 2026 17:40:53 +0100
-Message-ID: <86o6j3yr56.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Sascha Bischoff <Sascha.Bischoff@arm.com>
-Cc: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	nd <nd@arm.com>,
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
-	Joey Gouly
-	<Joey.Gouly@arm.com>,
-	Suzuki Poulose <Suzuki.Poulose@arm.com>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"peter.maydell@linaro.org"
-	<peter.maydell@linaro.org>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	Timothy Hayes <Timothy.Hayes@arm.com>
-Subject: Re: [PATCH 06/43] KVM: arm64: gic-v5: Add VPE doorbell domain
-In-Reply-To: <20260427160547.3129448-7-sascha.bischoff@arm.com>
-References: <20260427160547.3129448-1-sascha.bischoff@arm.com>
-	<20260427160547.3129448-7-sascha.bischoff@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hVOGYrQN"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b2e06219cbso141149305ad.3
+        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 09:46:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777394804; x=1777999604; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kEkPC/bbmwo82zT+9sMdK7tO+DGFA2UM3xH5lqU9uE8=;
+        b=hVOGYrQNYg6P/8G4eKUVwhdKyjDwMXiB5eQ9087qmJI1lyCBmM3OseIjfS/q8VVJhg
+         ADPRjMrlOxT7EK8MTZ0tsjcq+JAh5WfbU2+jM8tBl0vXBVwES8+6B3/MJQqSvaX6pV4L
+         ajb7UdDtFQFgU0N5oh1FdXQ5OZTXkyl4+PCjyi1DmUtfDM5J8jO5JLczp1veitgmszfq
+         +tjYUHOVCMQnfd8a6CynmoNLgQ11ILWXuTJhfF9oG8KlPEpj4qPBDTXtv6XVffqdC9rS
+         weSEqTD3S6WOWRgfS5xjI9OJrm5otHK7lh3vepR/DGJufXkg77k+0GUwxN2NL1eC79rN
+         eI1Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777394804; x=1777999604;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kEkPC/bbmwo82zT+9sMdK7tO+DGFA2UM3xH5lqU9uE8=;
+        b=o1qgzi6D4wQVsDZkeBKv+Ju8d2DLNmvVIZbgXUGpzseyDXgzGEg7N+BbVNkPXylpLA
+         jgqGQ7bpKoNSRLpRI8q9aEr3tYrPoxDcKeYGYEpBD97i2Nrrsy1H1q79a1POmV6z5CY7
+         SZiO1snhVJuVrVccoC97dKFJSgAP+SfrU+FfHMuRcDWy2B9vznNEMhhJkj+lXrzpX1HZ
+         RyU7fmmtbnSv1L7vKTTFA2fFi1t8dh8u/sx8ShT4cZO4r/URNMha2r7h4O3W87kl9SVr
+         PiMNjTEm9GfSNvCjpA87wk/ctebuHXyhEIzCNIpOxJHt+FoDrwTslsXhrIr6fZBJ34Kl
+         lWVg==
+X-Forwarded-Encrypted: i=1; AFNElJ/VgiFY0aUTuk7Zz4i4b1z7/eUre8uIE8cZELWaLTopFWbGSMVMzLAqqAXS9q/aQGgNicw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyG34JnRglZFf1JzW1+kMWGxQ/seuUsVgsMIlaSLVtPvtY//nII
+	tqTz1S5sK2KcTAQ3pEdmI9ZacX8DJyvkCccFUk9CqLvpc1c6uAjdE92OJKKJPPK5zkhHCnpoTSy
+	xZo+Kog==
+X-Received: from pgbcz1.prod.google.com ([2002:a05:6a02:2301:b0:c61:2d0c:40bf])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a1a:b0:3a3:5726:7e39
+ with SMTP id adf61e73a8af0-3a3af426340mr463737637.23.1777394803747; Tue, 28
+ Apr 2026 09:46:43 -0700 (PDT)
+Date: Tue, 28 Apr 2026 09:46:42 -0700
+In-Reply-To: <20f94bed-2843-44ab-877c-3e68bd4314f8@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, nd@arm.com, oliver.upton@linux.dev, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, lpieralisi@kernel.org, Timothy.Hayes@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Mime-Version: 1.0
+References: <20260427204847.112899-1-tycho@kernel.org> <20260427204847.112899-4-tycho@kernel.org>
+ <ae_TCofu4bHP_Ch-@google.com> <afDJZQHNi-qdcEEe@tycho.pizza>
+ <afDYCpbeT0HsXTMF@google.com> <20f94bed-2843-44ab-877c-3e68bd4314f8@amd.com>
+Message-ID: <afDkcpcQ5vPsjQkO@google.com>
+Subject: Re: [PATCH v2 3/4] KVM: SEV: Add the kvm-amd.rapl_disable module parameter
+From: Sean Christopherson <seanjc@google.com>
+To: Tom Lendacky <thomas.lendacky@amd.com>
+Cc: Tycho Andersen <tycho@kernel.org>, Ashish Kalra <ashish.kalra@amd.com>, 
+	John Allen <john.allen@amd.com>, Herbert Xu <herbert@gondor.apana.org.au>, 
+	"David S. Miller" <davem@davemloft.net>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, linux-crypto@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Kim Phillips <kim.phillips@amd.com>, 
+	Alexey Kardashevskiy <aik@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Randy Dunlap <rdunlap@infradead.org>, Dapeng Mi <dapeng1.mi@linux.intel.com>, 
+	Kees Cook <kees@kernel.org>, Marco Elver <elver@google.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Li RongQing <lirongqing@baidu.com>, Eric Biggers <ebiggers@kernel.org>, 
+	"Paul E. McKenney" <paulmck@kernel.org>, linux-doc@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, 27 Apr 2026 17:08:05 +0100,
-Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
+On Tue, Apr 28, 2026, Tom Lendacky wrote:
+> On 4/28/26 10:53, Sean Christopherson wrote:
+> > On Tue, Apr 28, 2026, Tycho Andersen wrote:
+> >> On Mon, Apr 27, 2026 at 02:20:10PM -0700, Sean Christopherson wrote:
+> >>> I'm pretty sure I said this earlier: KVM absolutely should not be able to disable
+> >>> RAPL for the entire system.  That needs to be a power management thing.
+> >>
+> >> You definitely noted "not CCP", I don't think I quite understood what
+> >> that meant though:
+> >> https://lore.kernel.org/all/aZ86BZWi-GLiHvmt@tycho.pizza/
+> >>
+> >> I'm a little worried that putting it in power management will generate
+> >> some weird dependencies, or weakref symbols that can't change things
+> >> if they are loaded independently of kvm_amd or something. But let me
+> >> see what I can come up with.
+> > 
+> > Ugh, and it's not even powerman per se, it's actually a module in perf.  Oof.
+> > 
+> > I 100% agree it'll be tricky, but I also stand by comments that neither the CCP
+> > driver or KVM should be allowed to silently pull the rug out from under the RAPL
+> > module.
 > 
-> GICv5 supports two types of doorbell - VPE doorbells and VM
-> doorbells. In KVM we only support Targeted interrupts, and do not
-> support 1ofN target selection. This means that we only implement VPE
-> doorbells. These doorbells are implemented as host LPIs which are
-> generated when a non-resident VPE has a pending interrupt of
-> sufficient priority and the doorbell has been requested as part of
-> making the VPE non-resident.
+> Maybe something that can be added to the current sev= kernel command line
+> parameter, e.g. sev=norapl, or such?
 
-This is mostly a repeat of the architecture spec. I don't think we
-need to paraphrase it.
+Yeah.  The only question I have is if we expect end users to want to disable RAPL
+at runtime.  If so, then we probably want a sysfs knob or something.
 
+However, letting RAPL be toggled on/off will introduce some amount of complexity,
+as the kernel would need to negotiate/coordinate with the RAPL perf module and
+with the CPP driver to ensure RAPL stays in the "correct" state.  E.g. if the
+perf module is loaded, then RAPL is effectively pinned "on".  And if SNP has been
+initialized with RAPL_DIS, then RAPL is effectively pinned "off".  Blech.
+
+> Maybe even with a kernel config option for a default value?
+
+Probably overkill?
+
+> On SNP_SHUTDOWN it will be re-enabled if it was disabled.
+
+Stating the obvious, if we do this, we open the can of worms I described above.
+
+> >>> KVM then needs to communicate (and enforce?) the policy to
+> >>> userspace.
+> >>
+> >> KVM doesn't need to enforce anything, the SEV firmware will generate a
+> >> launch error for policy violation if it's not supported.
+> >>
+> >> For communicating to userspace if it's not a kvm module parameter, one
+> >> option is to mask it off in sev_get_snp_supported_policy() if it was
 > 
-> VPE doorbells allow KVM to wake VPEs (so, vcpus) as soon as the
-> hardware determines that sufficient conditions for the interrupt to be
-> signalled have been met. This simplifies the wake-up path for vcpus
-> with GICv5 for LPIs and SPIs. NOTE: PPI pending state must still be
-> checked explicitly as the IRS never sees them.
-
-Drop the note, it serves no purpose here.
-
+> Did you mean sev_get_snp_policy_bits() or were you referring to the KVM
+> ioctl() for retrieving them?
 > 
-> This change introduces support for the vgic_v5 doorbell domain. One
-> doorbell domain is created per GICv5 VM, and all VPEs have their own
-> doorbell within this domain. When the doorbell fires, this is tracked
-> (in gicv5_vpe.db_fired) and the corresponding vcpu is kicked.
+> >> initialized without the support. Then it'll be visible via
+> >> KVM_X86_SNP_POLICY_BITS.
+> > 
+> > Ya, this is what I was envisioning.
 > 
-> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
-> ---
->  arch/arm64/kvm/vgic/vgic-init.c    |   5 +-
->  arch/arm64/kvm/vgic/vgic-v5.c      | 143 +++++++++++++++++++++++++++++
->  arch/arm64/kvm/vgic/vgic.h         |   1 +
->  include/kvm/arm_vgic.h             |   6 ++
->  include/linux/irqchip/arm-gic-v5.h |   2 +
->  5 files changed, 156 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/arm64/kvm/vgic/vgic-init.c b/arch/arm64/kvm/vgic/vgic-init.c
-> index 907057881b26a..984908a271c8d 100644
-> --- a/arch/arm64/kvm/vgic/vgic-init.c
-> +++ b/arch/arm64/kvm/vgic/vgic-init.c
-> @@ -500,8 +500,11 @@ static void kvm_vgic_dist_destroy(struct kvm *kvm)
->  		dist->vgic_cpu_base = VGIC_ADDR_UNDEF;
->  	}
->  
-> -	if (vgic_supports_direct_irqs(kvm))
-> +	if (dist->vgic_model == KVM_DEV_TYPE_ARM_VGIC_V3 &&
-> +	    vgic_supports_direct_irqs(kvm))
->  		vgic_v4_teardown(kvm);
-> +	else if (dist->vgic_model == KVM_DEV_TYPE_ARM_VGIC_V5)
-> +		vgic_v5_teardown(kvm);
+> It's still a valid policy bit (if supported by the platform), so I don't
+> think masking it off is appropriate.
 
-nit: switch/case instead?
+But it's not fully supported, no?  I.e. won't the VM fail if it requests RAPL_DIS?
 
->
->  	xa_destroy(&dist->lpi_xa);
->  }
-> diff --git a/arch/arm64/kvm/vgic/vgic-v5.c b/arch/arm64/kvm/vgic/vgic-v5.c
-> index fd3d6299a2baa..4e0d52b309628 100644
-> --- a/arch/arm64/kvm/vgic/vgic-v5.c
-> +++ b/arch/arm64/kvm/vgic/vgic-v5.c
-> @@ -7,6 +7,7 @@
->  
->  #include <linux/bitops.h>
->  #include <linux/irqchip/arm-vgic-info.h>
-> +#include <linux/irqdomain.h>
->  
->  #include "vgic.h"
->  #include "vgic-v5-tables.h"
-> @@ -162,6 +163,138 @@ int vgic_v5_probe(const struct gic_kvm_info *info)
->  	return 0;
->  }
->  
-> +/*
-> + * This set of irq_chip functions is specific for doorbells.
-> + */
-> +static struct irq_chip vgic_v5_db_irq_chip = {
-
-const?
-
-> +	.name = "GICv5-DB",
-> +	.irq_mask = irq_chip_mask_parent,
-> +	.irq_unmask = irq_chip_unmask_parent,
-> +	.irq_eoi = irq_chip_eoi_parent,
-> +	.irq_set_affinity = irq_chip_set_affinity_parent,
-> +	.irq_get_irqchip_state = irq_chip_get_parent_state,
-> +	.irq_set_irqchip_state = irq_chip_set_parent_state,
-> +	.flags = IRQCHIP_SET_TYPE_MASKED | IRQCHIP_SKIP_SET_WAKE |
-> +		 IRQCHIP_MASK_ON_SUSPEND,
-> +};
-> +
-> +static int vgic_v5_irq_db_domain_map(struct irq_domain *d, unsigned int virq,
-> +				     u16 vpe_id)
-> +{
-> +	int ret;
-> +	u32 lpi;
-> +	irq_hw_number_t hwirq;
-> +	struct irq_chip *chip = &vgic_v5_db_irq_chip;
-> +	struct irq_data *irqd = irq_desc_get_irq_data(irq_to_desc(virq));
-> +
-> +	/*
-> +	 * For the DB domain, we don't use the same hwirq as for LPIs.
-> +	 */
-> +	hwirq = vpe_id;
-> +
-> +	ret = gicv5_alloc_lpi();
-
-NAK. Allocating LPIs is the task of the underlying domain that manages
-LPIs, and absolutely not the vgic code.
-
-> +	if (ret < 0)
-> +		return ret;
-> +	lpi = ret;
-> +
-> +	ret = irq_domain_alloc_irqs_parent(d, virq, 1, &lpi);
-
-Why? I'd expect to see an irq_domain_alloc_irqs() for the whole VM,
-and be done with it.
-
-The whole allocation/freeing of LPIs is upside down. You really should
-not have to do this, and I'd strongly suggest you align the way the
-doorbell domain is constructed with the way GICv4 does it.
-
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+Ooh, presumably the subtle difference is that on a platform without RAPL_DIS at
+all, the VM will successfully launch and thus could run with RAPL enabled even
+if the VM requested RAPL_DIS?
