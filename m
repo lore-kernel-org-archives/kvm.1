@@ -1,269 +1,263 @@
-Received: from mail-yw1-f170.google.com (mail-yw1-f170.google.com [209.85.128.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B718F3D3304
-	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 08:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.128.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 675D83D4131
+	for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 08:27:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.18
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777364692; cv=pass; b=Fq+W4d9cAx7dTDXCpRF195uXwNm+49bmrrNM+ySLOZJYT5n86unn5rhr7SAO/vU2pYfGltOzpZy5VQ/1nyADlL950MjEYlhYffLTxUk5nleaOg72rNAK7q1FgxDzfesqohVmtURqkKU9iJArYNRe/Li/GFWSOeBK3tbUaqsAY80=
+	t=1777364874; cv=fail; b=gjg6oluc6Lt+hXLGMq7cFFxhXViOm4b4LKIlsk1jJ6i0xx+wjbaQ8xnwe+8YJiSBJdc3RffgGZQ5r1BkZ6TpmF2ZkVljDYCgFcxU4uFC2OavF32FJekz2xgI9oCkGKQVT8OLySFkjiqoNPODPBn/sZApn2Iaw3gm4eZoIQsSBpw=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777364692; c=relaxed/simple;
-	bh=rflQkKHjNVxCVgZtglvz+DJcNmjV4gDXBMOsyusJUg4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d+6z2U/nRO8umyXU929ZjuKV6pv5LHwg4X4Pww6SuIaxrYZ3nfiDMR3NyNt4Q9M7vStY9oTpWUbVbDLVKRqbKsRDDIsVWyMrpeHREBKjZwwfWUucPujeT0377FsfkMxgs+auDpUvVDGO642Fvf7m+ql5GFKM6SenlFktFEzGwDc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FKlDK6/J; arc=pass smtp.client-ip=209.85.128.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777364874; c=relaxed/simple;
+	bh=37uN0H6cgp+JGGz2HiBe2Em/eA4Vu7BS73ThgQuq/0g=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=LY9dwpJo6bdDxkQw0M33d5sweAERRbnvDKSHNImNHtw7c78395ZXXW9iHI3ETiJCuzMBaGoNfGZCYFSONc0uDp1ow8Tb7QG4aSty4vkeBkcezAa9RKSBLqIfYmwcr43CeWqf9IQ6qOpZ9U+ntGsop86nqAU7qw0g3HSlN/ObOeA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZWQy/yZU; arc=fail smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FKlDK6/J"
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-7991db3dc98so121699197b3.0
-        for <kvm@vger.kernel.org>; Tue, 28 Apr 2026 01:24:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777364689; cv=none;
-        d=google.com; s=arc-20240605;
-        b=gSWen9ZJSi0YIpAel/Va0bHnTcaC0t4LVjOWW/7vVJrEOFBdebpudgagvyW3094db+
-         spSQjcS4pyuYseS9z0T1GXYVqSATD4a0RUIKzIHGsZy7OwIwDVeAuLQvx3NB1G39Eeon
-         yEUauwxeJjE87UkkLj50aufvnnVBRyd28um6FFcOpLUkEpv0zcpqOgZyj+v/k0XTBy5b
-         kuNyPYR6VIKkedZO65mpTS6ISt6SBhlfd2mWUmZznnVy1VBTb56oRtoPJrfy78hq6GXx
-         HR1yVUD9Uiiefsq9Ze+TLeYGiLsq95CEUYX49Q0S+3hWVMwTWyIeDCj2Z/9YBDJKnWwz
-         FbXA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=5nbTPPIa6lE5He4gxsryrRCR65xYKtTO0ggHOsJlUxQ=;
-        fh=LWUNqf/CUR8xT2vk61z8Fn4yLP7BchD60909ndnpXp0=;
-        b=EnT5czQsvVFEJ+DrhXpmZXGYwiRrPeINW3CfT/fTrpDY5JuUvZLol12hfIcFoSInWx
-         ecuTqP9DKZ85bpJnxQXk6aRTiOU/N3ZUQhyR+pqxzQ2Py1i4qVUiRim1/675P0ZChY3w
-         X16gN+ryCV7rjKkM6kzMC8BZUo91/DPYzc+Fsa3Myyk51bvWv2O1XVSfAPoRnpfhLN+k
-         g4zISXGmeKOpGTOYSIv1P+QARs246x4iXTuRWvFb6ehxn0dJ6omdZDCj17uauNT8M3LR
-         KjmC62J51+97cDA1NLlzg/xHr/s6wLG/DSfjEs6K6fPteNv66kLUEve1zwb5FDcr4kmP
-         NBhw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777364689; x=1777969489; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5nbTPPIa6lE5He4gxsryrRCR65xYKtTO0ggHOsJlUxQ=;
-        b=FKlDK6/Jv8kfNtGY1NX3h4cuGQWkh2bPTW7s66iUkenkESCJzpbNLojgUNBzDYprm9
-         9kki5WolLEy4iP4IZ4NnwQihx9jf4egowH5WAba33+Y/OWmQgkweU1z7f6S5djyqJTrH
-         HvAZlGXU3uq+ugZQomxwBSaQts3a+yRqX8z5CJTekmBpgkiim9ViESCEWAPkwXk7xdsC
-         qkYoejn0VNDhBvEDV6mjENXKuKOrxO4gv0q0AFPoYme3nFCC+B/vaErA10V4qyvfc4Zu
-         lvwCBXlasfqxv6fdHxJjDabhVhOFY2nnXcQmUnpn9mLRZm+znxQSAjedltgsdXTMtu8t
-         UhIg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777364689; x=1777969489;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5nbTPPIa6lE5He4gxsryrRCR65xYKtTO0ggHOsJlUxQ=;
-        b=Q4dSckQKosNxLsOr7ITGU7FqyQ0u2aDB8L4bN4lOROq9tiS679dEAPNg3dzQLvd8q+
-         Dk8MA6AnXB84J2AQ7TOVtdcdBoq7oB4vR2lKENQj3C2pFzqy4Tx2nBS9QN4m/qmAjbWo
-         hPP18glsVtQv9aMqyhu+JMRAe4/VvmKfSQ6afSi9UtdxTLLJa5xkSA6PTFQOlT4Q2rkN
-         HiLnU5RGU2BAlq0avexa+bFppBmXV5ftvj+yd9YqmtaVKrTbFFofeB1XiDrmL6v6q/dx
-         k9OswaYquebx40PjD99Nxr4v61GQpcsvtNgyOxckKGlpUdqRfkCrK3KZUk6gVJAsDDjf
-         CjtQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/1QLnuoOflB7FpM3Hex4YA7K7WP37fS8H9h3blgsF8aBZbw9fR6oca6OJXgasH30SnQE8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyPwpzGMMV7959mJ3wZCW+yqPcJ/q7qZKyMl14I52qYOeQTs385
-	NyrdgEPpptkW85ZEadx4DrVc848SZwfV+F32ZgfSmh3hQOTA5q8YQiiyyMBT37UsMrsFEX2wLCW
-	v7ocI5gQb9HN3OGHx610P+qzoCtml6PM=
-X-Gm-Gg: AeBDiesUttR2kVZ6XUce1uzuQjcGDGATGnlMVgVWnb7jaQvAWx23ir+0V03l3IiVfRT
-	T3TSjz6XqMAZqNchQ6bbrpZwyUw4V6ju56lpe4JTD7N13y6JlmB+2Cv1Jesxg5yskeqJ5YgRMYt
-	kHO3QZHD5f/g3Z4LFg4LkUNQu8vA6k6gYZuJHGUIy6FTOgqkJEi5UyNw+D8jVJ1y0Yifn1GOug0
-	3fpCmm49PkF6P5Y9GlDxYVBAMU84SysJSffKcVQtnVjQw3AO1JeNrwpi2HgvLXmAUZKqM5f6dob
-	62rS79IcM00G1cPQnY47oIyBSdC8PuC6+Xyr/Ub7zrtfO7fBDnrkpmnTziNOl4rl4vuAvdpki6w
-	1MZOLoug=
-X-Received: by 2002:a05:690c:2607:b0:7b6:422d:7623 with SMTP id
- 00721157ae682-7bcf5212a91mr20867887b3.16.1777364688595; Tue, 28 Apr 2026
- 01:24:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZWQy/yZU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777364872; x=1808900872;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=37uN0H6cgp+JGGz2HiBe2Em/eA4Vu7BS73ThgQuq/0g=;
+  b=ZWQy/yZUx+0utSQG0dnpLUDtWoC8cyhSP3thct0aco+UkRGq/pgiJ64L
+   7MHMYcttOJdipv9UmSvaT5H5Fg5vIXR3bwjQEgNIqVUf1VnfBXdcuHe61
+   7x0rUkTNDIs5R+RRB4OAvbyDJ8QWZFxFMHoQFgjhg319CDKI/xn5sKaDR
+   KOcoP/Pa87mMSbCmRZfzAf2ESQBcdSI+uRvsTclRi97GmBkXxqu0nGnUK
+   mSHjfwrolY3+TofpnnXBJ6g4XqcKlF8PLunE18xgudKYNrIy3RcERPcQw
+   4EdaNcro3eAbJX+9rtDTgy1c6zhca/D43Bo03i/TFU0s/9LEltJeSrZ3r
+   A==;
+X-CSE-ConnectionGUID: LJJ1bkv4ToCN2vReqndcHA==
+X-CSE-MsgGUID: nGZAKAkNTWGi47QNRqYATQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11769"; a="77431324"
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
+   d="scan'208";a="77431324"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 01:27:51 -0700
+X-CSE-ConnectionGUID: 7RiB48r1S5azbVdmhyDYLg==
+X-CSE-MsgGUID: OTWNJUFgTtOaxhJT+RRhRg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,203,1770624000"; 
+   d="scan'208";a="272020586"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by orviesa001.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 28 Apr 2026 01:27:52 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 28 Apr 2026 01:27:51 -0700
+Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 28 Apr 2026 01:27:51 -0700
+Received: from CY7PR03CU001.outbound.protection.outlook.com (40.93.198.18) by
+ edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 28 Apr 2026 01:27:49 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=FHA5w+CGF8/jqD5WHBHAmsnXEgx3TEEevXPuYENFMRZ1Ev/gQCvfSvFHLZX4kE+u7ToOpImtUu5OxktabBguprQ3s2nXVXWTlpIvvnirnMQhPW0SdWjnPX4n93E5yf80h5Y9SDl1y/QANCVauctkM4rJzMwIbp5yU5wyejIJvTUBAj+g7PxYQOn0F+Qhy19y2xrOnUWFacXpm33W4MUhUJXMhaI/8LqzvRM0eFKNQ074ATF9w5Sr7GBFQJlLhNIz3LgPWtrokMN70+DsSKTA0RGckGlwAE/8fJ7F50ECcpZlwf+FcgNoPepMWDSRAhEXCnrgdb8Gf8XqpgD2oA144A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wzpUjQulw0feuYU45RgunDDVmj39klXSQ1Mj40ZIFeI=;
+ b=EaHRD5omDZ5PacNy0M3bjXYvBPvOgTjAwRAN8MMPhZJcUhb22CNszEB5GBAtMZnXVGNlHZ0G7w6EHZlxK3fWI3zaeqz4hgH+6NL/Zj+5zO32SJt1Z4eFKHcbaGI0Pce/YLyc7FATp3HDetDS5TXiMH9xlT0k6JoPDsyKM/CYPVExLOOu/dGooMwXtU7nWL7H8JfCgPybVaL2hfKKGoOmI725UHkDLNyHr5stGoNSQbhJ+bCmauiBVT95VBX+uLCJAr9x1HKII5KH4AuzWZWKSVbryUFtTUTxwqDVLLiNngFxr+GTcZHdlRdmMKkU3+H8nMRlp/6sL5Yf40H09+CYAQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DM3PR11MB8735.namprd11.prod.outlook.com (2603:10b6:0:4b::20) by
+ CH3PR11MB7180.namprd11.prod.outlook.com (2603:10b6:610:148::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9870.18; Tue, 28 Apr 2026 08:27:43 +0000
+Received: from DM3PR11MB8735.namprd11.prod.outlook.com
+ ([fe80::8f1e:49f4:122c:c675]) by DM3PR11MB8735.namprd11.prod.outlook.com
+ ([fe80::8f1e:49f4:122c:c675%7]) with mapi id 15.20.9870.013; Tue, 28 Apr 2026
+ 08:27:43 +0000
+Message-ID: <04c954e6-a23a-4cc8-8bd3-5882a951a8cc@intel.com>
+Date: Tue, 28 Apr 2026 16:27:35 +0800
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: VMX: Fall back to IRR scan when PIR is empty despite
+ PID.ON being set
+To: Paolo Bonzini <pbonzini@redhat.com>, <kvm@vger.kernel.org>
+CC: Sean Christopherson <seanjc@google.com>, Jim Mattson
+	<jmattson@google.com>, Gao Chao <chao.gao@intel.com>, Farrah Chen
+	<farrah.chen@intel.com>
+References: <20260428070349.1633238-1-chenyi.qiang@intel.com>
+ <3235eb76-9b28-4000-920a-491659927e67@redhat.com>
+Content-Language: en-US
+From: Chenyi Qiang <chenyi.qiang@intel.com>
+In-Reply-To: <3235eb76-9b28-4000-920a-491659927e67@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: SI1PR02CA0042.apcprd02.prod.outlook.com
+ (2603:1096:4:1f6::17) To DM3PR11MB8735.namprd11.prod.outlook.com
+ (2603:10b6:0:4b::20)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260424150310.57228-1-kartikey406@gmail.com> <ae9ilWoZI_-EMdWQ@sgarzare-redhat>
-In-Reply-To: <ae9ilWoZI_-EMdWQ@sgarzare-redhat>
-From: Deepanshu Kartikey <kartikey406@gmail.com>
-Date: Tue, 28 Apr 2026 13:54:36 +0530
-X-Gm-Features: AVHnY4LkfkfcAbNkAqMYMqsD9ddBBMlOtODTH4wKfniL5RjT_dtXJ2UJOta3HQA
-Message-ID: <CADhLXY6APdmMQLSxN9b66pV5mp5sDwJRR7_BJAh13BaK-qoa=w@mail.gmail.com>
-Subject: Re: [PATCH] vsock/virtio: fix memory leak in virtio_transport_recv_listen()
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: mst@redhat.com, jasowang@redhat.com, xuanzhuo@linux.alibaba.com, 
-	eperezma@redhat.com, stefanha@redhat.com, davem@davemloft.net, 
-	edumazet@google.com, kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, 
-	virtualization@lists.linux.dev, kvm@vger.kernel.org, netdev@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, 
-	syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Mon, Apr 27, 2026 at 7:15=E2=80=AFPM Stefano Garzarella <sgarzare@redhat=
-.com> wrote:
->
-> On Fri, Apr 24, 2026 at 08:33:10PM +0530, Deepanshu Kartikey wrote:
-> >Two bugs exist in virtio_transport_recv_listen():
->
-> Two bugs, two fixes, two patches usually.
->
-> >
-> >1. On the transport assignment error path, sk_acceptq_added() is called
-> >   but sk_acceptq_removed() is never called when vsock_assign_transport(=
-)
-> >   fails or assigns a different transport than expected. This causes the
-> >   parent listener's accept backlog counter to be permanently inflated,
-> >   eventually causing sk_acceptq_is_full() to reject legitimate incoming
-> >   connections.
->
-> Wait, I can't see this issue. sk_acceptq_added() is called after the
-> vsock_assign_transport(), so why we should call sk_acceptq_removed()
-> in the error path of vsock_assign_transport()?
->
-> Maybe I'm missing something.
->
-> >
-> >2. There is a race between __vsock_release() and vsock_enqueue_accept().
-> >   __vsock_release() sets sk->sk_shutdown to SHUTDOWN_MASK and flushes
-> >   the accept queue under the parent socket lock. However,
-> >   virtio_transport_recv_listen() checks sk_shutdown and subsequently
-> >   calls vsock_enqueue_accept() without holding the parent socket lock.
->
-> Are you sure about this?
->
-> virtio_transport_recv_listen() is called only by
-> virtio_transport_recv_pkt() after calling lock_sock(sk), so I'm really
-> confused.
->
-> >   This means a child socket can be enqueued after __vsock_release() has
-> >   already flushed the queue, causing the child socket and its associate=
-d
-> >   resources to leak
-> >   permanently. The existing comment in the code hints at this race but
-> >   the fix was never implemented.
->
-> Are you referring to:
->         /* __vsock_release() might have already flushed accept_queue.
->          * Subsequent enqueues would lead to a memory leak.
->          */
->         if (sk->sk_shutdown =3D=3D SHUTDOWN_MASK) {
->                 virtio_transport_reset_no_sock(t, skb, sock_net(sk));
->                 return -ESHUTDOWN;
->         }
->
-> In this case I think we are saying that we are doing this check exactly
-> to avoid that issue.
->
-> >
-> >Fix both issues: add sk_acceptq_removed() on the transport error path,
->
-> Again, better to fix the 2 issues with 2 patches (same series is fine).
->
-> >and re-check sk->sk_shutdown under the parent socket lock before calling
-> >vsock_enqueue_accept() to close the race window. The child socket lock
-> >is released before acquiring the parent socket lock to maintain correct
-> >lock ordering (parent before child).
-> >
->
-> We are missing the Fixes tag, and I think we can target the `net` tree
-> with this patch (i.e. [PATCH net]), see:
-> https://www.kernel.org/doc/html/next/process/maintainer-netdev.html
->
-> >Reported-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
-> >Closes: https://syzkaller.appspot.com/bug?extid=3D1b2c9c4a0f8708082678
-> >Tested-by: syzbot+1b2c9c4a0f8708082678@syzkaller.appspotmail.com
-> >Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-> >---
-> > net/vmw_vsock/virtio_transport_common.c | 13 +++++++++++--
-> > 1 file changed, 11 insertions(+), 2 deletions(-)
-> >
-> >diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/vir=
-tio_transport_common.c
-> >index 416d533f493d..fad5fa4a4296 100644
-> >--- a/net/vmw_vsock/virtio_transport_common.c
-> >+++ b/net/vmw_vsock/virtio_transport_common.c
-> >@@ -1578,6 +1578,7 @@ virtio_transport_recv_listen(struct sock *sk, stru=
-ct sk_buff *skb,
-> >        */
-> >       if (ret || vchild->transport !=3D &t->transport) {
-> >               release_sock(child);
-> >+              sk_acceptq_removed(sk);
->
-> Ditto, are we sure about this?
->
-> >               virtio_transport_reset_no_sock(t, skb, sock_net(sk));
-> >               sock_put(child);
-> >               return ret;
-> >@@ -1588,11 +1589,19 @@ virtio_transport_recv_listen(struct sock *sk, st=
-ruct sk_buff *skb,
-> >               child->sk_write_space(child);
-> >
-> >       vsock_insert_connected(vchild);
-> >+      release_sock(child);
-> >+      lock_sock(sk);
->
-> IMO this is a deadlock with the lock_sock(sk) called by the caller.
->
-> Also a comment would be helpful here to explain why we're doing this.
->
-> >+      if (sk->sk_shutdown =3D=3D SHUTDOWN_MASK) {
-> >+              release_sock(sk);
-> >+              sk_acceptq_removed(sk);
-> >+              virtio_transport_reset_no_sock(t, skb, sock_net(sk));
-> >+              sock_put(child);
-> >+              return -ESHUTDOWN;
->
-> Since this is very similar to the error path of
-> vsock_assign_transport(), I think it would be better to start by
-> defining a common error path for the function and use labels to exit, so
-> we can avoid duplicating the code multiple times.
->
-> >+      }
-> >       vsock_enqueue_accept(sk, child);
-> >+      release_sock(sk);
-> >       virtio_transport_send_response(vchild, skb);
-> >
-> >-      release_sock(child);
-> >-
->
-> TBH I'm really worried about this patch since both fixes are completely
-> wrong IMO.
->
-> Thanks,
-> Stefano
->
-> >       sk->sk_data_ready(sk);
-> >       return 0;
-> > }
-> >--
-> >2.43.0
-> >
->
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR11MB8735:EE_|CH3PR11MB7180:EE_
+X-MS-Office365-Filtering-Correlation-Id: 7332a2c3-5275-4b0f-3e6e-08dea5000495
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|1800799024|22082099003|18002099003|56012099003;
+X-Microsoft-Antispam-Message-Info: cvIq5KXx3LfEu/geWt/9gFkq4BtPNUaGCaMhQit8/SJ2Ok0ChGGmEDTxKCNC80EHV52AX19cRjFEEP929WYB7nU/PUB3kQBfwheDhiM8tk0w8K4NeHw90cZlRExqa2U92JgPyiW2IaDaQ3wvMcmFX3ZmKHHaDYZ/WZrFYIxh0D/H2ka2PIU/OX7sSxjqrsCPi6DmtKpsuqolWvwxR//SRR1OvtrTOfG9WQc4vhkDEGy65LarJ8zzSdT1ZOlTZf4buXSes9lwuI+1BiwSpixQoM00JQ6t/sahG0EYDwONl0Fpr0Kc4g0ADOgDVpkJTxcOQy8hLCstf9WrwobN/cPn8Sg0Y+JmPW/zT97xTqI3TCtTMiaJTGmHqH5la7yarf94L2oKSBnQLx7y+v+m4mJaIgllDHtSCMq14Lvdp17AFjQpP6kVrFqZMdkfnQ4B66idojrbG26y7X1zZrJOtuHwCf0o3c8DnHU4WmzlaxPrVlPVCgNtuA/K4ztKXx/EB965TERRzh25mQTeEvng/NgLql2xtFAUNDhTdtZFmWXZOs9zl7cnZ2foiVOdP+ZfIcqIqillv4uG94wXtPgfRzH4+MjHBwwpPOANEPQTjdL/j2OT/hiYn+edJXjWkptXPvDpSP7x34YZcqngcCdNQe11l/SLaQVzR9iOfhGFEYkC2mOQJHsTn08V4vYlaggvYkRZY+3Y5W1cm67sWrnOChZEECrkDQd4r/ktqCKXov5Bqwo=
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR11MB8735.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?V0RxZHZEQVVKaXdJOXNUSHEyUmRvYjZ2bVQ1enQ1Q1BtZnhhYkt4OHlEcDRL?=
+ =?utf-8?B?enVzNlhSTUtIdVlDWVkreXpTZDB3cHZjQ3VpdlA0Y1haTTVoNmhvQnE5aEZN?=
+ =?utf-8?B?RlJzR1U1V1ZrZVhXSE1yeENwVVNwRERPUllVUXFkdGJET0E4TlZ5N0gzb20v?=
+ =?utf-8?B?VWlzVmYwWTlTNVBsOGhZSU8rQnNmZFZGbEE4Q0Z4OHRDZnpJUWhOVnU3WUgx?=
+ =?utf-8?B?Um9HOVNjU3RlUFRudndIQk94Z0hnaUt3TjRtekZLMmdBSThmbVZ5cWc1M0FX?=
+ =?utf-8?B?bDh6ZEtweFowRW1LL0JBdWRMR0tHdUM2Z1pnUnhRcXNyVjdnMjNyQzJHWmto?=
+ =?utf-8?B?bmZyVnF0bStnamFFT01WTFZzcXkvWndPSXlDaTJzelBkY1pydERaak1zNEgr?=
+ =?utf-8?B?TnA3czZFdU9XcFN3azZWa2Z1R01Rcm9wVTR3REdaOG1pbHRraFJjejJxSlE5?=
+ =?utf-8?B?RjhvOVZkZG5IQWVwbUNBaXRFeWhDc0Z1M0s2MzQ4MWdRdllLRlFpSlJzaHJ4?=
+ =?utf-8?B?dmxuRWJlNlk5OWlDSk5QWjA3YVZwR2JWL0w3aFU4bjlWU0o2WFozSkN3Q1pm?=
+ =?utf-8?B?cVpKZThoUFEwVGoyVklIdnFUUlBXUm1adVFYYlF4SXJuU2E2T0dMcTRiNUVk?=
+ =?utf-8?B?UEVhUlpxQkpENTRvNWxkQ1hOUW1WYTNFaFVhSWk5UnhTNFV5UXowWHZ4Yldw?=
+ =?utf-8?B?cVg3Wi9MalRuYzdWeFNUY01BaVpNdVl1NVRad0liKzZVdjVUL0J3ZW5Ya3l3?=
+ =?utf-8?B?Tk94SWpUejFjOUYwdjF4RW5MNDVvOHY0ZWJVeFN4Q2g5RXNSTGh5REhGcko5?=
+ =?utf-8?B?d2d1dDRrcHM3R0hzVWZoMTV1RENJVlF3aGUxOWs1VFdMMWdORlVCVllvU0th?=
+ =?utf-8?B?VEM0cUZWNHB3d1Rzc2J1ZXR0RjBpWVp0cVc3c24yYXozQi8vWUlyWldRamo5?=
+ =?utf-8?B?VGtFZFkxaGFBbVBFcGZTMHlBTUVGUWw5QTdWVDFqNjR3NGxscmttZGRUSlo3?=
+ =?utf-8?B?dTZaQVRURHR2NDloYkVKelRlMStqTHhpbTNsQlZ5dGcreW1BVndGaWdjc01u?=
+ =?utf-8?B?eHYzaGl2SjR5MitzY3M4Rm9iNDYwbnBqQlNPUDZVYXAyZWxiMnU3VDdWNFVy?=
+ =?utf-8?B?dkVzUHNkMytqWC9JK3RSSlYvQmEvam5QT1gwVzF3OWVMZ2toOFZ2TGV2NkhK?=
+ =?utf-8?B?Q1lFYk1PK0hnend0ZVAxRXFwV1V6MHJ3b1lsSGtQWW1HakxXMUsxb0o3Tklz?=
+ =?utf-8?B?OTV4V1VWNmQwYjgrSjdndldpczBCb3ZyMjBJOTlnTW1XRHVnQWFHNk1TZW9K?=
+ =?utf-8?B?ZjR0V2t6enhPYzJ1Y3dWZ01xR21iRURoQ2NxVlQrVmpiZ1FhcmRyTUNCV0JZ?=
+ =?utf-8?B?bVFhTHYvRzFSbGZSN1V3alRFbnozZjhOQklxNVRTQjBITlhWYzExNTVFbXFV?=
+ =?utf-8?B?aUJUcWR6VmJGL054andtVkZPanRTSDgzN1gza0d6OTJlaGJkSU9DQ1VjeGQx?=
+ =?utf-8?B?ZE00dHJKbWJuN3lZMWhDQURxTnhkY1VGa1RWRHQrcVFwNVEvOU12T3NwTHZu?=
+ =?utf-8?B?ODE4OGdMVGZVS1VQTkpQODRQSUpDM0dyYVdYZG1hM0ZBOHBCTjBJemNSbWZN?=
+ =?utf-8?B?bmhUS2ZtOEFaamNaSE1zOW8xSGlrV0tmNklmSFVXSG1oOUNUNEhjNUVWcFAw?=
+ =?utf-8?B?TFBlVTlmMVBZb1lpNE9OWGxHMVZvdEt0KzQrcGQzbjk5dUVoQUc5c1pIUHQy?=
+ =?utf-8?B?UWpPYVBtcTNBcEZXa0RtL2w2Tmd1TWdJa1Y1WXVtTWZ6MTBwdWpwbGN2T3lR?=
+ =?utf-8?B?Sk02Vmp1aUJIbkxwbjdwUUNsTGlCU2VHWFpjZmhuMHdIVE1HNVdVcGMxVWxV?=
+ =?utf-8?B?V2hVd3MvRGpDeFMxa0NncXQ2RXJpRWl4MTJOeEF3QmhoVVpMb2JQWmw4UWZW?=
+ =?utf-8?B?a2J3aktWN3lCZmJER2xBVU94QVZYNGQ0MW1SVXZneWY2UGJ2Q3JzWG5yU3lM?=
+ =?utf-8?B?MW82L1lvQWZUbWZPaVMzVHYvME9nY1J3cm9vNDdVbCt5Y0IvVDlMYys1NitC?=
+ =?utf-8?B?WGk5eXBBSWNwb2I0QjY2ZVBWR3FkT3daZHdDV2E5L29vZU1aUC91WnlqQnc0?=
+ =?utf-8?B?QW82U3NSUmQvMHlYUHhTc2FSNzNhVkZmT1ZhYkp5a3pSdm5YRmN0a2NGTVl2?=
+ =?utf-8?B?NDhyam1nQ1BDWlFMa0MzU3RLOHRhN0puMGZrSVhnaVE1L3h4YjBockZ5U0VZ?=
+ =?utf-8?B?S0VYdHNYMUE2RlJ5Sk5RdXhJaGtlSlRTMUNZZndrUTZJVndmTGRXNGtXQjVo?=
+ =?utf-8?B?cHRQYTlQalFJbFVxNWNITEs1TU5XZlhGclJMa0gwNzViUFp6WmFCUT09?=
+X-Exchange-RoutingPolicyChecked: sKkpHJNsdtI84MsYGynsPLOy/PeSWUIEhAiChYs0x3eksgwdm1wPW6pF7e+eMsmwSEXRiBa30iEzV8v1y7pSgrNUmzHUplwwyloLFsje+iB5lXBLuyJ1U+Wa46vMNVTsfqkml9Tx6VJK3Yn2WO6KwDWH/ttQfY5gEHoOlt1fkd6FGydn9bfd7qOpyO8ZR27/4tVc+4QNUToahiNiOCf8yK0OEk5sbVf0MNUhqJ/cfDAA4X4xQQ52sOvzqlZVbqv/1EGYy8l7IUEqgijJeO6nYhecsZ9YKh3AZhw5BiNwovrKnV1Owavv20R5teEwUiclJ1T3AigbdEkOpqObPMxQHw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 7332a2c3-5275-4b0f-3e6e-08dea5000495
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR11MB8735.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Apr 2026 08:27:43.0538
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: zw8m6NAOZZ54HH3TnKCaRfBUKZL71FUNtpW8Ts9G/TSaPcgVc8xMem+Sb2YZrJqG3vh/PgMxVWE8yhJkH09IbA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR11MB7180
+X-OriginatorOrg: intel.com
 
 
-Hi Stefano,
 
-Thank you for the detailed review!
+On 4/28/2026 3:45 PM, Paolo Bonzini wrote:
+> On 4/28/26 09:03, Chenyi Qiang wrote:
+>> Fall back to kvm_lapic_find_highest_irr() in vmx_sync_pir_to_irr() when
+>> PID.ON is set but PIR turns out to be empty, to correctly report the
+>> highest pending interrupt from the existing IRR.
+>>
+>> In a nested VM stress test, the following WARNING fires in
+>> vmx_check_nested_events() when kvm_cpu_has_interrupt() reports a pending
+>> interrupt but the subsequent kvm_apic_has_interrupt() (which invokes
+>> vmx_sync_pir_to_irr() again) returns -1:
+>>
+>>    WARNING: CPU: 99 PID: 57767 at arch/x86/kvm/vmx/nested.c:4449 vmx_check_nested_events+0x6bf/0x6e0 [kvm_intel]
+>>    Call Trace:
+>>     kvm_check_and_inject_events
+>>     vcpu_enter_guest.constprop.0
+>>     vcpu_run
+>>     kvm_arch_vcpu_ioctl_run
+>>     kvm_vcpu_ioctl
+>>     __x64_sys_ioctl
+>>     do_syscall_64
+>>     entry_SYSCALL_64_after_hwframe
+>>
+>> The root cause is a race between vmx_sync_pir_to_irr() on the target vCPU
+>> and __vmx_deliver_posted_interrupt() on a sender vCPU.  The sender
+>> performs two individually-atomic operations that are not a single
+>> transaction:
+>>
+>>    1. pi_test_and_set_pir(vector)  -- sets the PIR bit
+>>    2. pi_test_and_set_on()         -- sets PID.ON
+>>
+>> The following interleaving triggers the bug:
+>>
+>>    Sender vCPU (IPI):              Target vCPU (1st sync_pir_to_irr):
+>>    B1: set PIR[vector]
+>>                                    A1: pi_clear_on()
+>>                                    A2: pi_harvest_pir() -> sees B1 bit
+>>                                    A3: xchg() -> consumes bit, PIR=0
+>>                                        (1st sync returns correct max_irr)
+>>    B2: set PID.ON = 1
+>>
+>>                                    Target vCPU (2nd sync_pir_to_irr):
+>>                                    C1: pi_test_on() -> TRUE (from B2)
+>>                                    C2: pi_clear_on() -> ON=0
+>>                                    C3: pi_harvest_pir() -> PIR empty
+>>                                    C4: *max_irr = -1, early return
+>>                                        IRR NOT SCANNED
+>>
+>> The interrupt is not lost (it resides in the IRR from the first sync and
+>> is recovered on the next vcpu_enter_guest() iteration), but the incorrect
+>> max_irr causes a spurious WARNING and a wasted L2 VM-Enter/VM-Exit cycle.
+>>
+>> Fixes: b41f8638b9d3 ("KVM: VMX: Isolate pure loads from atomic XCHG when processing PIR")
+>> Reported-by: Farrah Chen <farrah.chen@intel.com>
+>> Assisted-by: GitHub Copilot:Claude Opus 4.6
+>> Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
+>>
+>> ---
+>> There is a WARNING call trace during a nested VM stress test. AI
+>> provided an analysis of a race condition and the related fix, which
+>> looks reasonable to me. With the patch applied, the WARNING can not
+>> be reproduced in overnight stress testing.
+> 
+> The analysis of the race is correct and changing the logic is the
+> right thing to do; but I would change directly __kvm_apic_update_irr,
+> either like this:
+> 
+> diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+> index e3ec4d8607c1..5ee14d6bc288 100644
+> --- a/arch/x86/kvm/lapic.c
+> +++ b/arch/x86/kvm/lapic.c
+> @@ -669,12 +669,14 @@ bool __kvm_apic_update_irr(unsigned long *pir, void *regs, int *max_irr)
+>      u32 irr_val, prev_irr_val;
+>      int max_updated_irr;
+>  
+> +    if (!pi_harvest_pir(pir, pir_vals)) {
+> +        *max_irr = apic_find_highest_vector(regs + APIC_IRR);
+> +        return false;
+> +    }
+> +
+>      max_updated_irr = -1;
+>      *max_irr = -1;
+>  
+> -    if (!pi_harvest_pir(pir, pir_vals))
+> -        return false;
+> -
+>      for (i = vec = 0; i <= 7; i++, vec += 32) {
+>          u32 *p_irr = (u32 *)(regs + APIC_IRR + i * 0x10);
 
-You are correct on both points. I apologize for the confusion =E2=80=94 I w=
-as
-looking at an older version of the code where sk_acceptq_added() was
-called BEFORE vsock_assign_transport(), which made the
-sk_acceptq_removed() fix appear necessary. In the current kernel,
-sk_acceptq_added() is already moved to after vsock_assign_transport(),
-so that issue no longer exists.
+Make sense. This resolves the problem at the source.
+I will verify the change in this way and respin it.
 
-Regarding the lock_sock(sk) fix =E2=80=94 you are also correct that
-virtio_transport_recv_pkt() already holds lock_sock(sk) before calling
-virtio_transport_recv_listen(), so our second fix would indeed cause a
-deadlock. I missed that completely.
-
-I am still investigating the root cause of the memory leak reported by
-syzbot. The backtrace points to the vsock loopback path
-(vsock_loopback_work), so I am looking there next. I will send a v2
-once I have a correct analysis and fix.
-
-Sorry again for the noise.
-
-Thanks,
-Deeranshu Kartikey
+>  
+> 
+> Or even ignoring altogether the return value of pi_harvest_pir(), always
+> going in the loop below for simplicity.
+> 
+> Paolo
+> 
