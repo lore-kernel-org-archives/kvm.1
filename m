@@ -1,38 +1,38 @@
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95D923A961B;
-	Wed, 29 Apr 2026 09:35:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.35
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D9B63C65FE;
+	Wed, 29 Apr 2026 09:35:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=183.62.165.209
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777455348; cv=none; b=Z9Gfp6wf9Kwsyz+2rBl6PL8CRumO5OuYsVhCA1Sx0Bfoyg2Y1m+Y35NKSDKGgehcZ7knOLw7TPQF6f6WnVYsu5VN12J+X0JFiPWEhE4ZjjaTw1241WMO6Fo++FXsxCV3bbAIXDudZvXkjRMQ8p+BuB5mEI3X7iE7JDTRDFnlopQ=
+	t=1777455354; cv=none; b=XSZZDZ7M7ZvKDZkNWlnAMqy84HHWkBNlZZynmEjMfNk7FOJrr5GA5DahgIQfGHdsAy1uSONRlxMw7gfumbnhjWUgW/lvcH/0xcMSHVqZTeJO/nYa5rmwBshpsHNMSxMiGp+swl76RYUAGW3V56CGGkfa/U7Mi69u1cbUT2rnFk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777455348; c=relaxed/simple;
-	bh=CexRTtM318HDefEzOyGAF7xJFBs2v23ygPITk+Ythy8=;
+	s=arc-20240116; t=1777455354; c=relaxed/simple;
+	bh=YIsqrOvuP24c3lFcvG+mL4CEy1RG0sXEiMx+Yl56Twk=;
 	h=Message-ID:In-Reply-To:References:Date:Mime-Version:From:To:Cc:
-	 Subject:Content-Type; b=bWP1U5GS39PQch43lMgU1+vIGSe/dzUddVCVZcfzbV6jI6cjReKn3cfwg87dc5p6ynyNNMKxrg4BWLVPWDLFsgioPmlXChTEQp73R1rJn/WTZt6lDBZg5dhfLCGC/vdKfF44ueVta79EPYbB2BL7duauYpTySQ8/Mebd6m1q28Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.35
+	 Subject:Content-Type; b=uyLbzUZ6zybdh8RP1Bzc20F01SH9a7jfgNRdByGLewxDjLOxmZ68H9zsAvaV29ZfFlhnPMGAksKbl/Ke1nyI9oc0RW6PrViVo/qfVdUp3uU5PnPMXx46W6nOfhIoJc8lT8FBGqkE2eE53Yl8FpmSlfqC0q++b0RSORv5V4mMeX4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=183.62.165.209
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
 Received: from mse-fl1.zte.com.cn (unknown [10.5.228.132])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4g5BxR2CYGz8Xs6w;
-	Wed, 29 Apr 2026 17:35:39 +0800 (CST)
-Received: from szxlzmapp04.zte.com.cn ([10.5.231.166])
-	by mse-fl1.zte.com.cn with SMTP id 63T9ZVkW066221;
-	Wed, 29 Apr 2026 17:35:31 +0800 (+08)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4g5Bxd5tKVz51N23;
+	Wed, 29 Apr 2026 17:35:49 +0800 (CST)
+Received: from szxlzmapp03.zte.com.cn ([10.5.231.207])
+	by mse-fl1.zte.com.cn with SMTP id 63T9ZbHM066310;
+	Wed, 29 Apr 2026 17:35:37 +0800 (+08)
 	(envelope-from wang.yechao255@zte.com.cn)
-Received: from mapi (szxlzmapp04[null])
+Received: from mapi (szxl2zmapp06[null])
 	by mapi (Zmail) with MAPI id mid12;
-	Wed, 29 Apr 2026 17:35:34 +0800 (CST)
-X-Zmail-TransId: 2b0669f1d0e6212-add86
+	Wed, 29 Apr 2026 17:35:39 +0800 (CST)
+X-Zmail-TransId: 2b0869f1d0eba34-9a5bc
 X-Mailer: Zmail v1.0
-Message-ID: <20260429173534386Dfz8RALJT73-jMfif0nSb@zte.com.cn>
+Message-ID: <20260429173539941luiwhNDDtflTHOClbNtk4@zte.com.cn>
 In-Reply-To: <20260429173002565bdp1o7P0bvOs6yTz64yNx@zte.com.cn>
 References: 20260429173002565bdp1o7P0bvOs6yTz64yNx@zte.com.cn
-Date: Wed, 29 Apr 2026 17:35:34 +0800 (CST)
+Date: Wed, 29 Apr 2026 17:35:39 +0800 (CST)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -44,153 +44,178 @@ To: <anup@brainfault.org>, <atish.patra@linux.dev>, <pjw@kernel.org>,
         <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>, <alex@ghiti.fr>
 Cc: <kvm@vger.kernel.org>, <kvm-riscv@lists.infradead.org>,
         <linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>
-Subject: =?UTF-8?B?wqBbUEFUQ0ggdjIgMi8zXSBSSVNDLVY6IEtWTTogYWRkIHRyYWNlcG9pbnRzIGZvciBndWVzdCBwYWdlIGZhdWx0cw==?=
-Content-Type: multipart/mixed;
-	boundary="=====_001_next====="
-X-MAIL:mse-fl1.zte.com.cn 63T9ZVkW066221
+Subject: =?UTF-8?B?W1BBVENIIHYyIDMvM10gUklTQy1WOiBLVk06IFJlY292ZXIgZ3N0YWdlIGh1Z2UgcGFnZSBtYXBwaW5ncyBkdXJpbmfCoGRpc2FibGUtZGlydHktbG9n?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl1.zte.com.cn 63T9ZbHM066310
 X-TLS: YES
 X-SPF-DOMAIN: zte.com.cn
 X-ENVELOPE-SENDER: wang.yechao255@zte.com.cn
 X-SPF: None
-X-SOURCE-IP: 10.5.228.132 unknown Wed, 29 Apr 2026 17:35:39 +0800
+X-SOURCE-IP: 10.5.228.132 unknown Wed, 29 Apr 2026 17:35:49 +0800
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 69F1D0EB.000/4g5BxR2CYGz8Xs6w
+X-Fangmail-MID-QID: 69F1D0F5.001/4g5Bxd5tKVz51N23
 
+From: Wang Yechao <wang.yechao255@zte.com.cn>
 
+When dirty logging is enabled, the gstage mappings are split into
+4K pages to track dirty pages. If the migration fails or is canceled,
+in order to keep the VM's performance consistent with that before
+dirty logging was enabled, the gstage huge page mappings are recoverd
+when dirty logging is disabled.
 
---=====_001_next=====
-Content-Type: multipart/related;
-	boundary="=====_002_next====="
+With this patch, dirty_log_perf_test shows a decrease in the number of
+vCPU faults:
 
+$ perf stat -e kvm:kvm_page_fault \
+/dirty_log_perf_test -s anonymous_hugetlb_1gb -v 1 -e -b 1G
 
---=====_002_next=====
-Content-Type: multipart/alternative;
-	boundary="=====_003_next====="
+Before: 524,819      kvm:kvm_page_fault
+After : 263,211      kvm:kvm_page_fault
 
+Signed-off-by: Wang Yechao <wang.yechao255@zte.com.cn>
+---
+ arch/riscv/include/asm/kvm_gstage.h |  4 +++
+ arch/riscv/kvm/gstage.c             | 42 ++++++++++++++++++++++++++
+ arch/riscv/kvm/mmu.c                | 47 +++++++++++++++++++++++++++++
+ 3 files changed, 93 insertions(+)
 
---=====_003_next=====
-Content-Type: text/plain;
-	charset="UTF-8"
-Content-Transfer-Encoding: base64
+diff --git a/arch/riscv/include/asm/kvm_gstage.h b/arch/riscv/include/asm/kvm_gstage.h
+index 9c908432bc17..a074493596d1 100644
+--- a/arch/riscv/include/asm/kvm_gstage.h
++++ b/arch/riscv/include/asm/kvm_gstage.h
+@@ -64,6 +64,10 @@ int kvm_riscv_gstage_split_huge(struct kvm_gstage *gstage,
+ 				struct kvm_mmu_memory_cache *pcache,
+ 				gpa_t addr, u32 target_level, bool flush);
 
-RnJvbTogV2FuZyBZZWNoYW8gPHdhbmcueWVjaGFvMjU1QHp0ZS5jb20uY24+DQoNCkFkZCB0aGUg
-a3ZtX3BhZ2VfZmF1bHQgZXZlbnQgdHJhY2Vwb2ludHMgdG8gY291bnQgdGhlIG51bWJlciBvZiBL
-Vk0NCmd1ZXN0IHBhZ2UgZmF1bHRzLg0KDQpTaWduZWQtb2ZmLWJ5OiBXYW5nIFllY2hhbyA8d2Fu
-Zy55ZWNoYW8yNTVAenRlLmNvbS5jbj4NCi0tLQ0KIGFyY2gvcmlzY3Yva3ZtL3RyYWNlLmggICAg
-IHwgMjUgKysrKysrKysrKysrKysrKysrKysrKysrKw0KIGFyY2gvcmlzY3Yva3ZtL3ZjcHVfZXhp
-dC5jIHwgIDMgKysrDQogMiBmaWxlcyBjaGFuZ2VkLCAyOCBpbnNlcnRpb25zKCspDQoNCmRpZmYg
-LS1naXQgYS9hcmNoL3Jpc2N2L2t2bS90cmFjZS5oIGIvYXJjaC9yaXNjdi9rdm0vdHJhY2UuaA0K
-aW5kZXggM2Q1NDE3NWQ4MDVjLi45MDU2Y2M5ODgzY2YgMTAwNjQ0DQotLS0gYS9hcmNoL3Jpc2N2
-L2t2bS90cmFjZS5oDQorKysgYi9hcmNoL3Jpc2N2L2t2bS90cmFjZS5oDQpAQCAtNTYsNiArNTYs
-MzEgQEAgVFJBQ0VfRVZFTlQoa3ZtX2V4aXQsDQogCQlfX2VudHJ5LT5odGluc3QpDQogKTsNCiAN
-CisvKg0KKyAqIFRyYWNlcG9pbnQgZm9yIHBhZ2UgZmF1bHQuDQorICovDQorVFJBQ0VfRVZFTlQo
-a3ZtX3BhZ2VfZmF1bHQsDQorCVRQX1BST1RPKHN0cnVjdCBrdm1fdmNwdSAqdmNwdSwgdTY0IGZh
-dWx0X2FkZHJlc3MsIHU2NCBlcnJvcl9jb2RlKSwNCisJVFBfQVJHUyh2Y3B1LCBmYXVsdF9hZGRy
-ZXNzLCBlcnJvcl9jb2RlKSwNCisNCisJVFBfU1RSVUNUX19lbnRyeSgNCisJCV9fZmllbGQodW5z
-aWduZWQgaW50LCAgIHZjcHVfaWQpDQorCQlfX2ZpZWxkKHU2NCwgICAgICAgICAgICBmYXVsdF9h
-ZGRyZXNzKQ0KKwkJX19maWVsZCh1NjQsICAgICAgICAgICAgZXJyb3JfY29kZSkNCisJKSwNCisN
-CisJVFBfZmFzdF9hc3NpZ24oDQorCQlfX2VudHJ5LT52Y3B1X2lkICAgICAgICA9IHZjcHUtPnZj
-cHVfaWQ7DQorCQlfX2VudHJ5LT5mYXVsdF9hZGRyZXNzICA9IGZhdWx0X2FkZHJlc3M7DQorCQlf
-X2VudHJ5LT5lcnJvcl9jb2RlICAgICA9IGVycm9yX2NvZGU7DQorCSksDQorDQorCVRQX3ByaW50
-aygidmNwdSAldSBhZGRyZXNzIDB4JTAxNmxseCBlcnJvcl9jb2RlIDB4JWxseCIsDQorCQlfX2Vu
-dHJ5LT52Y3B1X2lkLA0KKwkJX19lbnRyeS0+ZmF1bHRfYWRkcmVzcywNCisJCV9fZW50cnktPmVy
-cm9yX2NvZGUpDQorKTsNCisNCiAjZW5kaWYgLyogX1RSQUNFX1JTSUNWX0tWTV9IICovDQogDQog
-I3VuZGVmIFRSQUNFX0lOQ0xVREVfUEFUSA0KZGlmZiAtLWdpdCBhL2FyY2gvcmlzY3Yva3ZtL3Zj
-cHVfZXhpdC5jIGIvYXJjaC9yaXNjdi9rdm0vdmNwdV9leGl0LmMNCmluZGV4IDBiYjBjNTFlM2M4
-OS4uMGNmYjAxNDlkYTlmIDEwMDY0NA0KLS0tIGEvYXJjaC9yaXNjdi9rdm0vdmNwdV9leGl0LmMN
-CisrKyBiL2FyY2gvcmlzY3Yva3ZtL3ZjcHVfZXhpdC5jDQpAQCAtMTEsNiArMTEsNyBAQA0KICNp
-bmNsdWRlIDxhc20vaW5zbi1kZWYuaD4NCiAjaW5jbHVkZSA8YXNtL2t2bV9tbXUuaD4NCiAjaW5j
-bHVkZSA8YXNtL2t2bV9uYWNsLmg+DQorI2luY2x1ZGUgInRyYWNlLmgiDQogDQogc3RhdGljIGlu
-dCBnc3RhZ2VfcGFnZV9mYXVsdChzdHJ1Y3Qga3ZtX3ZjcHUgKnZjcHUsIHN0cnVjdCBrdm1fcnVu
-ICpydW4sDQogCQkJICAgICBzdHJ1Y3Qga3ZtX2NwdV90cmFwICp0cmFwKQ0KQEAgLTQzLDYgKzQ0
-LDggQEAgc3RhdGljIGludCBnc3RhZ2VfcGFnZV9mYXVsdChzdHJ1Y3Qga3ZtX3ZjcHUgKnZjcHUs
-IHN0cnVjdCBrdm1fcnVuICpydW4sDQogCQl9Ow0KIAl9DQogDQorCXRyYWNlX2t2bV9wYWdlX2Zh
-dWx0KHZjcHUsIGZhdWx0X2FkZHIsIHRyYXAtPnNjYXVzZSk7DQorDQogCXJldCA9IGt2bV9yaXNj
-dl9tbXVfbWFwKHZjcHUsIG1lbXNsb3QsIGZhdWx0X2FkZHIsIGh2YSwNCiAJCQkJKHRyYXAtPnNj
-YXVzZSA9PSBFWENfU1RPUkVfR1VFU1RfUEFHRV9GQVVMVCkgPyB0cnVlIDogZmFsc2UsDQogCQkJ
-CSZob3N0X21hcCk7DQotLSANCjIuNDMuNQ==
++void kvm_riscv_gstage_recover_huge(struct kvm_gstage *gstage, gpa_t addr,
++				   unsigned long taget_page_size,
++				   unsigned long *page_size);
++
+ enum kvm_riscv_gstage_op {
+ 	GSTAGE_OP_NOP = 0,	/* Nothing */
+ 	GSTAGE_OP_CLEAR,	/* Clear/Unmap */
+diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
+index d9fe8be2a151..e2c8cbac30d9 100644
+--- a/arch/riscv/kvm/gstage.c
++++ b/arch/riscv/kvm/gstage.c
+@@ -337,6 +337,48 @@ int kvm_riscv_gstage_split_huge(struct kvm_gstage *gstage,
+ 	return 0;
+ }
 
++void kvm_riscv_gstage_recover_huge(struct kvm_gstage *gstage, gpa_t addr,
++				   unsigned long target_page_size,
++				   unsigned long *page_size)
++{
++	u32 current_level = gstage->pgd_levels - 1;
++	pte_t *next_ptep = (pte_t *)gstage->pgd;
++	u32 target_level, out_level;
++	pte_t *ptep, *child_ptep;
++	int ret;
++
++	out_level = 0;
++	ret = gstage_page_size_to_level(gstage, target_page_size, &target_level);
++	if (ret)
++		goto out;
++
++	while (current_level >= target_level) {
++		ptep = (pte_t *)&next_ptep[gstage_pte_index(gstage, addr, current_level)];
++
++		out_level = current_level;
++		if (!pte_val(ptep_get(ptep)))
++			goto out;
++
++		/* The mapping is already a huge page mapping. */
++		if (gstage_pte_leaf(ptep))
++			goto out;
++
++		next_ptep = (pte_t *)gstage_pte_page_vaddr(ptep_get(ptep));
++		current_level--;
++	}
++
++	/* Replace the huge PTE with the first PTE entry of the child.*/
++	child_ptep = (pte_t *)&next_ptep[0];
++	if (gstage_pte_leaf(child_ptep)) {
++		set_pte(ptep, __pte(pte_val(ptep_get(child_ptep))));
++		gstage_tlb_flush(gstage, target_level, addr);
++		put_page(virt_to_page(next_ptep));
++	}
++
++out:
++	gstage_level_to_page_size(gstage, out_level, page_size);
++}
++
+ void kvm_riscv_gstage_op_pte(struct kvm_gstage *gstage, gpa_t addr,
+ 			     pte_t *ptep, u32 ptep_level, enum kvm_riscv_gstage_op op)
+ {
+diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+index dc6a8efde99e..789e3362144f 100644
+--- a/arch/riscv/kvm/mmu.c
++++ b/arch/riscv/kvm/mmu.c
+@@ -16,6 +16,8 @@
+ #include <asm/kvm_mmu.h>
+ #include <asm/kvm_nacl.h>
 
---=====_003_next=====
-Content-Type: text/html ;
-	charset="UTF-8"
-Content-Transfer-Encoding: base64
++static void kvm_mmu_recover_huge_pages(struct kvm *kvm, int slot);
++
+ static void mmu_wp_memory_region(struct kvm *kvm, int slot)
+ {
+ 	struct kvm_memslots *slots = kvm_memslots(kvm);
+@@ -160,6 +162,17 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
+ 		if (kvm_dirty_log_manual_protect_and_init_set(kvm))
+ 			return;
+ 		mmu_wp_memory_region(kvm, new->id);
++	} else {
++		/*
++		 * Recover huge page mappings in the slot now that dirty logging
++		 * is disabled, i.e. now that KVM does not have to track guest
++		 * writes at 4KiB granularity.
++		 *
++		 * Dirty logging might be disabled by userspace if an ongoing VM
++		 * live migration is cancelled and the VM must continue running
++		 * on the source.
++		 */
++		kvm_mmu_recover_huge_pages(kvm, new->id);
+ 	}
+ }
 
-PGRpdiBjbGFzcz0iemNvbnRlbnRSb3ciPjxwPkZyb206IFdhbmcgWWVjaGFvICZsdDt3YW5nLnll
-Y2hhbzI1NUB6dGUuY29tLmNuJmd0OzwvcD48cD48YnI+PC9wPjxwPkFkZCB0aGUga3ZtX3BhZ2Vf
-ZmF1bHQgZXZlbnQgdHJhY2Vwb2ludHMgdG8gY291bnQgdGhlIG51bWJlciBvZiBLVk08L3A+PHA+
-Z3Vlc3QgcGFnZSBmYXVsdHMuPC9wPjxwPjxicj48L3A+PHA+U2lnbmVkLW9mZi1ieTogV2FuZyBZ
-ZWNoYW8gJmx0O3dhbmcueWVjaGFvMjU1QHp0ZS5jb20uY24mZ3Q7PC9wPjxwPi0tLTwvcD48cD4m
-bmJzcDthcmNoL3Jpc2N2L2t2bS90cmFjZS5oJm5ic3A7ICZuYnNwOyAmbmJzcDt8IDI1ICsrKysr
-KysrKysrKysrKysrKysrKysrKys8L3A+PHA+Jm5ic3A7YXJjaC9yaXNjdi9rdm0vdmNwdV9leGl0
-LmMgfCZuYnNwOyAzICsrKzwvcD48cD4mbmJzcDsyIGZpbGVzIGNoYW5nZWQsIDI4IGluc2VydGlv
-bnMoKyk8L3A+PHA+PGJyPjwvcD48cD5kaWZmIC0tZ2l0IGEvYXJjaC9yaXNjdi9rdm0vdHJhY2Uu
-aCBiL2FyY2gvcmlzY3Yva3ZtL3RyYWNlLmg8L3A+PHA+aW5kZXggM2Q1NDE3NWQ4MDVjLi45MDU2
-Y2M5ODgzY2YgMTAwNjQ0PC9wPjxwPi0tLSBhL2FyY2gvcmlzY3Yva3ZtL3RyYWNlLmg8L3A+PHA+
-KysrIGIvYXJjaC9yaXNjdi9rdm0vdHJhY2UuaDwvcD48cD5AQCAtNTYsNiArNTYsMzEgQEAgVFJB
-Q0VfRVZFTlQoa3ZtX2V4aXQsPC9wPjxwPiZuYnNwOzxzcGFuIHN0eWxlPSJ3aGl0ZS1zcGFjZTpw
-cmUiPgkJPC9zcGFuPl9fZW50cnktJmd0O2h0aW5zdCk8L3A+PHA+Jm5ic3A7KTs8L3A+PHA+Jm5i
-c3A7PC9wPjxwPisvKjwvcD48cD4rICogVHJhY2Vwb2ludCBmb3IgcGFnZSBmYXVsdC48L3A+PHA+
-KyAqLzwvcD48cD4rVFJBQ0VfRVZFTlQoa3ZtX3BhZ2VfZmF1bHQsPC9wPjxwPis8c3BhbiBzdHls
-ZT0id2hpdGUtc3BhY2U6cHJlIj4JPC9zcGFuPlRQX1BST1RPKHN0cnVjdCBrdm1fdmNwdSAqdmNw
-dSwgdTY0IGZhdWx0X2FkZHJlc3MsIHU2NCBlcnJvcl9jb2RlKSw8L3A+PHA+KzxzcGFuIHN0eWxl
-PSJ3aGl0ZS1zcGFjZTpwcmUiPgk8L3NwYW4+VFBfQVJHUyh2Y3B1LCBmYXVsdF9hZGRyZXNzLCBl
-cnJvcl9jb2RlKSw8L3A+PHA+KzwvcD48cD4rPHNwYW4gc3R5bGU9IndoaXRlLXNwYWNlOnByZSI+
-CTwvc3Bhbj5UUF9TVFJVQ1RfX2VudHJ5KDwvcD48cD4rPHNwYW4gc3R5bGU9IndoaXRlLXNwYWNl
-OnByZSI+CQk8L3NwYW4+X19maWVsZCh1bnNpZ25lZCBpbnQsJm5ic3A7ICZuYnNwO3ZjcHVfaWQp
-PC9wPjxwPis8c3BhbiBzdHlsZT0id2hpdGUtc3BhY2U6cHJlIj4JCTwvc3Bhbj5fX2ZpZWxkKHU2
-NCwmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyBmYXVsdF9hZGRyZXNz
-KTwvcD48cD4rPHNwYW4gc3R5bGU9IndoaXRlLXNwYWNlOnByZSI+CQk8L3NwYW4+X19maWVsZCh1
-NjQsJm5ic3A7ICZuYnNwOyAmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgZXJyb3JfY29kZSk8
-L3A+PHA+KzxzcGFuIHN0eWxlPSJ3aGl0ZS1zcGFjZTpwcmUiPgk8L3NwYW4+KSw8L3A+PHA+Kzwv
-cD48cD4rPHNwYW4gc3R5bGU9IndoaXRlLXNwYWNlOnByZSI+CTwvc3Bhbj5UUF9mYXN0X2Fzc2ln
-big8L3A+PHA+KzxzcGFuIHN0eWxlPSJ3aGl0ZS1zcGFjZTpwcmUiPgkJPC9zcGFuPl9fZW50cnkt
-Jmd0O3ZjcHVfaWQmbmJzcDsgJm5ic3A7ICZuYnNwOyAmbmJzcDsgPSB2Y3B1LSZndDt2Y3B1X2lk
-OzwvcD48cD4rPHNwYW4gc3R5bGU9IndoaXRlLXNwYWNlOnByZSI+CQk8L3NwYW4+X19lbnRyeS0m
-Z3Q7ZmF1bHRfYWRkcmVzcyZuYnNwOyA9IGZhdWx0X2FkZHJlc3M7PC9wPjxwPis8c3BhbiBzdHls
-ZT0id2hpdGUtc3BhY2U6cHJlIj4JCTwvc3Bhbj5fX2VudHJ5LSZndDtlcnJvcl9jb2RlJm5ic3A7
-ICZuYnNwOyAmbmJzcDs9IGVycm9yX2NvZGU7PC9wPjxwPis8c3BhbiBzdHlsZT0id2hpdGUtc3Bh
-Y2U6cHJlIj4JPC9zcGFuPiksPC9wPjxwPis8L3A+PHA+KzxzcGFuIHN0eWxlPSJ3aGl0ZS1zcGFj
-ZTpwcmUiPgk8L3NwYW4+VFBfcHJpbnRrKCJ2Y3B1ICV1IGFkZHJlc3MgMHglMDE2bGx4IGVycm9y
-X2NvZGUgMHglbGx4Iiw8L3A+PHA+KzxzcGFuIHN0eWxlPSJ3aGl0ZS1zcGFjZTpwcmUiPgkJPC9z
-cGFuPl9fZW50cnktJmd0O3ZjcHVfaWQsPC9wPjxwPis8c3BhbiBzdHlsZT0id2hpdGUtc3BhY2U6
-cHJlIj4JCTwvc3Bhbj5fX2VudHJ5LSZndDtmYXVsdF9hZGRyZXNzLDwvcD48cD4rPHNwYW4gc3R5
-bGU9IndoaXRlLXNwYWNlOnByZSI+CQk8L3NwYW4+X19lbnRyeS0mZ3Q7ZXJyb3JfY29kZSk8L3A+
-PHA+Kyk7PC9wPjxwPis8L3A+PHA+Jm5ic3A7I2VuZGlmIC8qIF9UUkFDRV9SU0lDVl9LVk1fSCAq
-LzwvcD48cD4mbmJzcDs8L3A+PHA+Jm5ic3A7I3VuZGVmIFRSQUNFX0lOQ0xVREVfUEFUSDwvcD48
-cD5kaWZmIC0tZ2l0IGEvYXJjaC9yaXNjdi9rdm0vdmNwdV9leGl0LmMgYi9hcmNoL3Jpc2N2L2t2
-bS92Y3B1X2V4aXQuYzwvcD48cD5pbmRleCAwYmIwYzUxZTNjODkuLjBjZmIwMTQ5ZGE5ZiAxMDA2
-NDQ8L3A+PHA+LS0tIGEvYXJjaC9yaXNjdi9rdm0vdmNwdV9leGl0LmM8L3A+PHA+KysrIGIvYXJj
-aC9yaXNjdi9rdm0vdmNwdV9leGl0LmM8L3A+PHA+QEAgLTExLDYgKzExLDcgQEA8L3A+PHA+Jm5i
-c3A7I2luY2x1ZGUgJmx0O2FzbS9pbnNuLWRlZi5oJmd0OzwvcD48cD4mbmJzcDsjaW5jbHVkZSAm
-bHQ7YXNtL2t2bV9tbXUuaCZndDs8L3A+PHA+Jm5ic3A7I2luY2x1ZGUgJmx0O2FzbS9rdm1fbmFj
-bC5oJmd0OzwvcD48cD4rI2luY2x1ZGUgInRyYWNlLmgiPC9wPjxwPiZuYnNwOzwvcD48cD4mbmJz
-cDtzdGF0aWMgaW50IGdzdGFnZV9wYWdlX2ZhdWx0KHN0cnVjdCBrdm1fdmNwdSAqdmNwdSwgc3Ry
-dWN0IGt2bV9ydW4gKnJ1biw8L3A+PHA+Jm5ic3A7PHNwYW4gc3R5bGU9IndoaXRlLXNwYWNlOnBy
-ZSI+CQkJPC9zcGFuPiZuYnNwOyAmbmJzcDsgJm5ic3A7c3RydWN0IGt2bV9jcHVfdHJhcCAqdHJh
-cCk8L3A+PHA+QEAgLTQzLDYgKzQ0LDggQEAgc3RhdGljIGludCBnc3RhZ2VfcGFnZV9mYXVsdChz
-dHJ1Y3Qga3ZtX3ZjcHUgKnZjcHUsIHN0cnVjdCBrdm1fcnVuICpydW4sPC9wPjxwPiZuYnNwOzxz
-cGFuIHN0eWxlPSJ3aGl0ZS1zcGFjZTpwcmUiPgkJPC9zcGFuPn07PC9wPjxwPiZuYnNwOzxzcGFu
-IHN0eWxlPSJ3aGl0ZS1zcGFjZTpwcmUiPgk8L3NwYW4+fTwvcD48cD4mbmJzcDs8L3A+PHA+Kzxz
-cGFuIHN0eWxlPSJ3aGl0ZS1zcGFjZTpwcmUiPgk8L3NwYW4+dHJhY2Vfa3ZtX3BhZ2VfZmF1bHQo
-dmNwdSwgZmF1bHRfYWRkciwgdHJhcC0mZ3Q7c2NhdXNlKTs8L3A+PHA+KzwvcD48cD4mbmJzcDs8
-c3BhbiBzdHlsZT0id2hpdGUtc3BhY2U6cHJlIj4JPC9zcGFuPnJldCA9IGt2bV9yaXNjdl9tbXVf
-bWFwKHZjcHUsIG1lbXNsb3QsIGZhdWx0X2FkZHIsIGh2YSw8L3A+PHA+Jm5ic3A7PHNwYW4gc3R5
-bGU9IndoaXRlLXNwYWNlOnByZSI+CQkJCTwvc3Bhbj4odHJhcC0mZ3Q7c2NhdXNlID09IEVYQ19T
-VE9SRV9HVUVTVF9QQUdFX0ZBVUxUKSA/IHRydWUgOiBmYWxzZSw8L3A+PHA+Jm5ic3A7PHNwYW4g
-c3R5bGU9IndoaXRlLXNwYWNlOnByZSI+CQkJCTwvc3Bhbj4mYW1wO2hvc3RfbWFwKTs8L3A+PHA+
-LS0mbmJzcDs8L3A+PHA+Mi40My41PC9wPjxwIHN0eWxlPSJmb250LXNpemU6MTRweDtmb250LWZh
-bWlseTrlvq7ova/pm4Xpu5EsTWljcm9zb2Z0IFlhSGVpOyI+PGJyPjwvcD48cCBzdHlsZT0iZm9u
-dC1zaXplOjE0cHg7Zm9udC1mYW1pbHk65b6u6L2v6ZuF6buRLE1pY3Jvc29mdCBZYUhlaTsiPjxi
-cj48L3A+PHAgc3R5bGU9ImZvbnQtc2l6ZToxNHB4O2ZvbnQtZmFtaWx5OuW+rui9r+mbhem7kSxN
-aWNyb3NvZnQgWWFIZWk7Ij48YnI+PC9wPjxwIHN0eWxlPSJmb250LXNpemU6MTRweDtmb250LWZh
-bWlseTrlvq7ova/pm4Xpu5EsTWljcm9zb2Z0IFlhSGVpOyI+PGJyPjwvcD48cD48YnI+PC9wPjwv
-ZGl2Pg==
-
-
---=====_003_next=====--
-
---=====_002_next=====--
-
---=====_001_next=====--
-
+@@ -598,3 +611,37 @@ void kvm_riscv_mmu_update_hgatp(struct kvm_vcpu *vcpu)
+ 	if (!kvm_riscv_gstage_vmid_bits())
+ 		kvm_riscv_local_hfence_gvma_all();
+ }
++
++static void kvm_mmu_recover_huge_pages(struct kvm *kvm, int slot)
++{
++	struct kvm_memslots *slots = kvm_memslots(kvm);
++	struct kvm_memory_slot *memslot = id_to_memslot(slots, slot);
++	unsigned long hva = gfn_to_hva(kvm, memslot->base_gfn);
++	phys_addr_t start = memslot->base_gfn << PAGE_SHIFT;
++	phys_addr_t end = (memslot->base_gfn + memslot->npages) << PAGE_SHIFT;
++	phys_addr_t addr = start;
++	struct kvm_gstage gstage;
++	unsigned long page_size;
++
++	if (!fault_supports_gstage_huge_mapping(memslot, hva))
++		return;
++
++	kvm_riscv_gstage_init(&gstage, kvm);
++
++	spin_lock(&kvm->mmu_lock);
++
++	while (addr < end) {
++		if (get_hva_mapping_size(kvm, hva) < PMD_SIZE) {
++			addr += PMD_SIZE;
++			hva  += PMD_SIZE;
++			continue;
++		}
++
++		kvm_riscv_gstage_recover_huge(&gstage, addr, PMD_SIZE, &page_size);
++
++		addr += page_size;
++		hva  += page_size;
++		cond_resched_lock(&kvm->mmu_lock);
++	}
++	spin_unlock(&kvm->mmu_lock);
++}
+-- 
+2.43.5
