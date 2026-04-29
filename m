@@ -1,74 +1,74 @@
-Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA6523750B9
-	for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 10:15:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D683750B9
+	for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 10:17:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777457726; cv=none; b=dLWTSfHHfYaAUjTf2YWvPi0eOqBQGEXeNBrtpnj6FAlpjIy//0ayynkLL1PdQjJaxkzk9dXyDFrx8ZnGWDAYt2alHQ+Ky0Ah5XMT2oQ1Tl9CaS1k78eVPxu7YIR7nTkqtv22YjuDha7rBXkgidr8OymfdC7ConhPKhh7cfMpfFU=
+	t=1777457876; cv=none; b=NskAI/kI1TqjfX1xUQ3b7QYiNQjHmoU9pJMuBVeMdxAgOIH8Gw/1oz9ze2/ZIhlLTkWhiitmEj5qUU2+4LooqjZ37N89VrzaP/HfK5yI2KbcIW1nwLovZ2br/0Vx7yP3hX2P1e3l14c0l10Pnp4aUb4Xxdsajy8RlIK/DR8WojA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777457726; c=relaxed/simple;
-	bh=hQug3qkwF07/UwbNYXE2gQIGd7kBMCi2EgqyXQ+NWKk=;
+	s=arc-20240116; t=1777457876; c=relaxed/simple;
+	bh=Hvppf1MWyfS3as7jeN/6m10Lw5zLo3BkYizAxj3louc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C5+AUHFHqj81X9WDx2lJbR4lFe4eIrfgghkFhoyFTDkbXhADzaxmiDNXtR8Z3tKIgaC4VA2RCfskYBNtmrXvh5mg9n8WVl3cflNLXwKRAeoVgfUbalxrZ8AnGp0ZBB3PP0xqvGoRcQG+1CoFtnu3n7u4YmPhRmoFuX/PPFO5ysE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=kX0/Nff3; arc=none smtp.client-ip=67.231.153.30
+	 In-Reply-To:Content-Type; b=UlDcOpYplw3Gv5zO9PkIJwJVCW4FY6U0ctbVkdjOMkjhOuY8jyFDZChcVqNn8rQaE23GGZcQ/KX7jW+2M24LE7aqZxLSqDH91pZl1Z/OJ5XDC11DCv988xFWGxWfT7/2EZHqALTynZqgdJXBZkHl3rbBcpoRY4Q8lKX3ppRvOr4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=VhYl5xqX; arc=none smtp.client-ip=67.231.145.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="kX0/Nff3"
-Received: from pps.filterd (m0089730.ppops.net [127.0.0.1])
-	by m0089730.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 63SIj9oP2319541
-	for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 03:15:23 -0700
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="VhYl5xqX"
+Received: from pps.filterd (m0044010.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63SIjUqw1474920
+	for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 03:17:54 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=ly8JAFvIw75h5tYXkVpwyGwZpL0+gkqQbMxNXD6jLUY=; b=kX0/Nff3iVch
-	xvLKyaXFI4CdPx/BZom54wnHCQLL56keHS+vRQXeJnb8NRRAjyb2tk19UKjkRg/K
-	eFu8yrKmg3nux7wJkEGSXyHlsyziMeYkgyfLc2eX4eYCNxTq6uoONVU2iIN8GU8/
-	hIv9Y+iVJooSxr/jlAiuPz9SckHVNeIyeU8QkRO3FPTrJIsVF4b5hr43EeQZYwCU
-	mwVSVhGgjWeD1desHOxSWbybytc3WEvUh3x2KGoS/PVuCtMxE6O4RqsQupBZbV//
-	nV+Mt5gcDtVfXJaL5Njl6xr5nCMpDvPdOYGWPQZUCrgiK9eTA6b2KbLY4mvogRxW
-	Y/wp9O8qjg==
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com [209.85.128.72])
-	by m0089730.ppops.net (PPS) with ESMTPS id 4drs3s9esk-1
+	 bh=7yJqq3a04kcSDFbt2GTsDnPI5s5xDilbsLSAdvfilyw=; b=VhYl5xqXuBK4
+	elmpHl+yTYS2osrmlQFZy0ISq5MRcXpkz5wMjmPejblNLYk7nUaoHgYbfUa9gLjc
+	kuvjfatsN60mkJZfx6EirnJcNcYYTpPz8nmSLnRhGJPMXKQ85tYOqGF8qd4gFrFA
+	hTTwILf1Z/HDbw5Ahl+ry6ERfnskTDLQbLoWkaR5IAjl9rG8js+o5gOCD8Reo1Xt
+	ps20tdFxtKCIqE9axe1gvdu+UuQKrJCE4fepXLNidhg6conlzjs6BtuFlfuW8QYS
+	QAggP2BEO8f7Q+YGoR4MokTb3AHa1aiiVezyYQkPKGZV11J9IbYxQtuS82EBRQes
+	N40r2nmyfw==
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com [209.85.221.70])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4drrx5sb5p-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 03:15:23 -0700 (PDT)
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4837b6f6b93so135264375e9.3
-        for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 03:15:23 -0700 (PDT)
+	for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 03:17:49 -0700 (PDT)
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4411a1f9601so8517011f8f.0
+        for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 03:17:49 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777457722; x=1778062522;
+        d=1e100.net; s=20251104; t=1777457868; x=1778062668;
         h=content-transfer-encoding:in-reply-to:from:references:cc:to
          :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ly8JAFvIw75h5tYXkVpwyGwZpL0+gkqQbMxNXD6jLUY=;
-        b=T11biOxQy57XhHnm/PwZ0LOMC5MhHd12/MoVI2SgkWVP+pJfRNWCkNnviVC4E3hMVP
-         MwQ7MnDAEzBkLe8NeLSxMzMRuky44yjpVmhdXCNZMzVhcziIPVYgJjXwFvKhAkb+tpyq
-         /PqNItiedbJnYC9uAXMN0wbbnC8HKARp8zqKJQtbd3EcR3hpn3Zsgad+WIjUwyBNzio3
-         dir8pdM7WwTBoSiW0+3RQhYpePIXXQKixJ7GgTHEDYonyAga6EWpZvKlypdYy47mK8Bs
-         A6VSCDOS7B7k9/sIigL0Pt1EgyLtIK2NzS7D70MOheXSr8CEYS0qW7N+22eVFZr0K6QR
-         z7RA==
-X-Forwarded-Encrypted: i=1; AFNElJ/4onSeZXtgMOWp0XoY/YZ+1w+6l+mw2Xu81IaR2lgzPBvC/8PbjzL7/VjzJNiiqbpc+HA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyT/+2s2kZQyCnaU4UiOpVgWssqYrwUvtRQeBSplLkpng4Cb6m9
-	aRUBTMOU9WpBhf32GrpVCB4RuNFqEbfGxS3M+K4VqP6HZstOezEQYWXW3hAcWryW+OgVA2YgJKJ
-	wa13zQ4wT5ZC3hj0efxCFdRmGR19QbxCHg2D7fiOYtki5j9KszAfI
-X-Gm-Gg: AeBDievcCvHjOUXmB4ThiJGrjaHABVRUgi0YG3pbcqWE2nHj5Mx8JD9BaLpKuff0CkO
-	kXDYreocUy1Nw98sq3zjWTr6GVIbGmShgXcVe2wV/wVCo264r8SAm46PmsgKO3yAZGnTki0x4lY
-	TcvXQef5vbCnHa49DV6PuUl4CfjV27hOEBQ3p7BzBsjAxpH0mYeaO8dWnbaQiY4ncev3EDakKvL
-	tc++xHg6Ukd/aIk0b2HkygoaQd6Jx4z8FQAiS+S96ypNDPBjolOKetgfSrf3GmmnBZPGhiNXJcH
-	eNT9uczjsdAasPbq3nN75xh9ZHJsqr0pa4HqyDG2Z+anmpO3F1Ym1Tj6rzM2DL6QfikqtP+nJYT
-	rL5tBTLxfGly2i/GWVWWHke0OZSxC9bpcevtohdMVegAfgDFjKmJUNO5lEaahD49UWkP++nX9/g
+        bh=uhqacqCsOEkZm6rZuptvAn6IpvZgDy/PZABzqjx+5ns=;
+        b=q8m9wW162CRi5BgqiaqE7hcQHi0Pksm3KH4ppBZH9nPy9bKlKaLtQLPgoFzl3vm5pS
+         y8wnnDToqiHNOPu6pF8ZVPGmOqpA8Fr80rMWtmGY3sjeRKWvTgGLPhss8IAl/gPKUtc8
+         x9EdfRNC+chdl5vQ7xhtTCtjIYNc49HY3emSxOAejsTnPE2FNSXjCEtnacF+ZcY0e7jI
+         klBW/P8jMWZyBjy2hbZbOpN4XlbshhZ1LlKkBb4oZjisXl6lJNJObV1RTgRpQ0rdVhG6
+         mpIfeiv+TCISZliXyQLdE6lUJ10cAQUlgBhY6C578CH41/mnphnIo23IzvMt5t2OseKQ
+         sWWA==
+X-Forwarded-Encrypted: i=1; AFNElJ9yr2eGl98ptOxhYzq4BoCGKV/Eosy19FyQiqlDbU24blk0ZkpzAGjA/i93LAu0rJHH84k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/Xfq085ZDXHLzvSF/3V4Y3UCpavtrAQVtXwtEgMQE00ptEXyz
+	tErWs8wDsPh0RxG5zy6miGv+TJbMa8LW03MYMDAUCLizSyES3fQOQyBLuUqQ5CTPSufJLYPWdyC
+	bUYNTVbSRn1VzzJwbStSAIkD41jGDFpjNXTl1+7XLzYV0GPVw0oK8
+X-Gm-Gg: AeBDiesXqZkdc8h1LWQe/QmVBHCPJMjKl7m/jMMECOOPGCUqvAf83p3CM/Aw5OIn8fE
+	0xFdT0JGdHRISmPXpYugGKNvZxBdqGmDNHB3r7vBAILVffcqPNm+gfIbKm97o5IiamoL1qfQbYm
+	8+iACTXN/GNySpuw/Wg/5c5XGbsTsq+iu556JDyFOt5pdhLqAH8NSOnhuo7HoXw9KVCMaCVYPlv
+	410+r3WPmgpPMUrusl4GlM2b+LWGDpa1u3UNZVPeMghZKiv4XR+ivFrqCZheueUtb5BZecInigZ
+	U2a3SOxaCtqqdA99xz4Bxht1Rjqyx8gxLAzVyH7vOfmoWLgRPOgti02tOENvl+amZj08MaZ9q1I
+	voWmLKoFhPxYv4I+iP21Hfyf8vfKqcqlozCqLkwdxUTOLDmRzj0R3j2wgnCG0mn1F4dxx3FJ7+A
 	==
-X-Received: by 2002:a05:600c:3e19:b0:48a:569c:abab with SMTP id 5b1f17b1804b1-48a77b12a61mr119915995e9.14.1777457722281;
-        Wed, 29 Apr 2026 03:15:22 -0700 (PDT)
-X-Received: by 2002:a05:600c:3e19:b0:48a:569c:abab with SMTP id 5b1f17b1804b1-48a77b12a61mr119914095e9.14.1777457721719;
-        Wed, 29 Apr 2026 03:15:21 -0700 (PDT)
+X-Received: by 2002:a05:6000:2083:b0:439:c661:3245 with SMTP id ffacd0b85a97d-4464b2acac8mr12680061f8f.34.1777457868156;
+        Wed, 29 Apr 2026 03:17:48 -0700 (PDT)
+X-Received: by 2002:a05:6000:2083:b0:439:c661:3245 with SMTP id ffacd0b85a97d-4464b2acac8mr12679996f8f.34.1777457867712;
+        Wed, 29 Apr 2026 03:17:47 -0700 (PDT)
 Received: from ?IPV6:2a03:83e0:1126:4:18:b9f9:127f:ecc1? ([2620:10d:c092:500::4:fbdf])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-447b7ca5fe6sm5126538f8f.32.2026.04.29.03.15.19
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-447b7ca64ffsm5099429f8f.37.2026.04.29.03.17.46
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Apr 2026 03:15:20 -0700 (PDT)
-Message-ID: <bac93215-c781-42ef-b5e4-3d5d71dc5503@meta.com>
-Date: Wed, 29 Apr 2026 11:15:17 +0100
+        Wed, 29 Apr 2026 03:17:46 -0700 (PDT)
+Message-ID: <393f65a8-75c3-401c-b983-5814e1bfcba2@meta.com>
+Date: Wed, 29 Apr 2026 11:17:43 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -76,14 +76,13 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] vfio/pci: Set up bar resources and maps in
- vfio_pci_core_enable()
+Subject: Re: [PATCH v2 2/3] vfio/pci: Replace vfio_pci_core_setup_barmap()
+ with checks for resource/map
 Content-Language: en-GB
-To: Alex Williamson <alex@shazbot.org>
-Cc: Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Ankit Agrawal <ankita@nvidia.com>,
-        Alistair Popple <apopple@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>, Kees Cook <kees@kernel.org>,
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Alex Williamson <alex@shazbot.org>, Kevin Tian <kevin.tian@intel.com>,
+        Jason Gunthorpe <jgg@ziepe.ca>, Ankit Agrawal <ankita@nvidia.com>,
+        Alistair Popple <apopple@nvidia.com>, Kees Cook <kees@kernel.org>,
         Shameer Kolothum <skolothumtho@nvidia.com>,
         Yishai Hadas
  <yishaih@nvidia.com>,
@@ -93,121 +92,102 @@ Cc: Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
         Zhi Wang <zhiw@nvidia.com>, kvm@vger.kernel.org,
         linux-kernel@vger.kernel.org, virtualization@lists.linux.dev
 References: <20260423182517.2286030-1-mattev@meta.com>
- <20260423182517.2286030-2-mattev@meta.com>
- <20260423153053.6833135e@shazbot.org>
- <729d6593-f88b-42bf-b3a0-8c364d9ca5b4@meta.com>
- <20260424112007.592fd6c0@shazbot.org>
+ <20260423182517.2286030-3-mattev@meta.com> <20260426110517.GB440345@unreal>
 From: Matt Evans <mattev@meta.com>
-In-Reply-To: <20260424112007.592fd6c0@shazbot.org>
+In-Reply-To: <20260426110517.GB440345@unreal>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-GUID: cVsQth2ChQD1pwyH_by5igY90LO7043G
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI5MDEwMyBTYWx0ZWRfX46HcLxkDDVkA
- UoQC7lp8WWWEYjcAvUWofblKu1uy+WfyowKrFgAkN73+cIQ4FQVrggTqmPLi4G+bN7sdJiidyQV
- z7Ca6ICwhEtiRYJyRfYNdm9H6UvAXQUFzEaCRXMtXa0N5+5EMGYLNJanlY2GBP1zQDNH1SBLNgu
- Q2NLwm1kMZCmZGpVDYyMlKHAN4S740ovAv8Ox0OcL/ODSmlF419jPMDv3MZzXODdbD/VAeduP3+
- 76EHpcDe/ROXX4nfqy+dFHk63LMPL9f6LPUGf9lhHDQQ7YxY6XKCNDfKNdCoom1u7O6e9NcgpMm
- CbmanKvUfHvJ+jeUvinpEg4rI4mSgQfPAmf/QR7LUkeRKUwzzfu/cwTXVV+usWEegualcg+syyZ
- r/mPCQHDJ0RflxxvQrXfHwmUd97ZdeMJs6vB8jQqB18aAZVCCVP9ujYykwlb65uCIEmhvuovRAj
- BevZCRuAvj6Al0K2d4g==
-X-Authority-Analysis: v=2.4 cv=DdonbPtW c=1 sm=1 tr=0 ts=69f1da3b cx=c_pps
- a=IwH782EDBk/vqbJ9rM8UFw==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI5MDEwNCBTYWx0ZWRfX3BG86JObWh6V
+ 5ClEJ3aOdx7vXHne+cMkZMh9gFov2PW6TigJL0glvXCW4B/rn1emgHoMzWa0sKVoMciNQewc2/h
+ 0mMy+wD3bVbgcaL6WKFX98k89AYOlCs/nxkDwRuTuNTEg+24VlIH6+o6J5F8MW7dLQkG0gPLN1/
+ Ru1MIsdE19K7ftOcsriH8v2tzChoHJLhliaA6bFFX+nJ8sjyQQWbh++rPKBJWXd2kgmZfIYJnrM
+ b2IcZg0ZsPdRSTFlq25btuw4hoYZ3W4KJPjOWmntR2h62jwUZDs7/LJCpxOgyyOesma3gqvgZsN
+ gsyGGScdy+tpnL2p5Qu4DTbnqEwwqjEbw1tUKDgk9SYur7kBHKRT3njXU2ezKXvUjAkxVvAfHqb
+ QQIRj40J6rWrbV0DS45aNErrv8T/Op877XqvIlcNHcQz2yfocXe7RS5MFQZG2WJYA+WIIKK0NWs
+ jWbkWCb1Ri7P5Yj1mhg==
+X-Proofpoint-GUID: 2XOeF7OA5PM2b_ZPp_8FNKHbTInTgZSX
+X-Proofpoint-ORIG-GUID: 2XOeF7OA5PM2b_ZPp_8FNKHbTInTgZSX
+X-Authority-Analysis: v=2.4 cv=ZZUt8MVA c=1 sm=1 tr=0 ts=69f1dacd cx=c_pps
+ a=I6ewnrIBtnKHmb6SxpX7Vg==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
  a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=855S8uPTkML1Oy45N9_h:22 a=VabnemYjAAAA:8 a=OKIG4whRnQEbbrv9YZ8A:9
- a=QEXdDO2ut3YA:10 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-ORIG-GUID: cVsQth2ChQD1pwyH_by5igY90LO7043G
+ a=8elwO82fXORLTBIkMd32:22 a=VabnemYjAAAA:8 a=iaFi8TtKhGdbX_SpOFsA:9
+ a=QEXdDO2ut3YA:10 a=MqNruPmfsT8GavliLQMe:22 a=gKebqoRLp9LExxC7YDUY:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-28_05,2026-04-28_01,2025-10-01_01
 
-Hi Alex,
+Hi Leon,
 
-On 24/04/2026 18:20, Alex Williamson wrote:
-> 
-> On Fri, 24 Apr 2026 16:15:06 +0100
-> Matt Evans <mattev@meta.com> wrote:
->> On 23/04/2026 22:30, Alex Williamson wrote:
->>> On Thu, 23 Apr 2026 11:25:07 -0700
->>> Matt Evans <mattev@meta.com> wrote:
->>>> +
->>>> +		if (pci_resource_len(pdev, i) == 0)
->>>> +			continue;
->>>> +
->>>> +		ret = pci_request_selected_regions(pdev, 1 << bar, "vfio");
->>>> +		if (ret) {
->>>> +			pci_warn(vdev->pdev, "Failed to reserve region %d\n", bar);
->>>> +			continue;
->>>> +		}
->>>> +		vdev->have_bar_resource[bar] = true;
->>>> +
->>>> +		io = pci_iomap(pdev, bar, 0);
->>>> +		if (io)
->>>> +			vdev->barmap[bar] = io;
->>>> +		else
->>>> +			pci_warn(vdev->pdev, "Failed to iomap region %d\n", bar);
->>>> +	}
->>>> +}
->>>
->>> I see you making the point in the cover letter about the resource
->>> request vs the iomap resource, but we currently handle these together.
->>> If either fails, setup barmap fails and the path returns error.  I
->>> don't see any justification for now allowing the request resource to
->>> succeed but the iomap fails.
+On 26/04/2026 12:05, Leon Romanovsky wrote:
+> >=20
+> On Thu, Apr 23, 2026 at 11:25:08AM -0700, Matt Evans wrote:
+>> Since "vfio/pci: Set up barmap in vfio_pci_core_enable()", the
+>> resource request and iomap for the BARs was performed early, and
+>> vfio_pci_core_setup_barmap() now just checks those actions succeeded.
 >>
->> The primary effect was to let consumers see -EBUSY for a resource
->> reservation failure or -ENOMEM for an iomap failure (whether through
->> this patch's vfio_pci_core_setup_barmap() or the next patch's helpers),
->> and that keeps the error signatures identical.
+>> There were two types of callers:
+>>   - Those that need the iomap, because they'll access the BAR
+>>   - Those that need the resource, because they'll map/export it
 >>
->> A weak secondary effect was that a BAR that gets resource but fails for
->> whatever reason to iomap it can still be used by most clients (assuming
->> the general usage is to mmap).  The system's pretty sick if this is the
->> case, so as I say it's weak.
-> 
-> Right, I don't see that's really a necessary add at this point.  In
-> fact while we expect users to access through the mmap when available,
-> we don't actually have a way to specify that mmap works w/o read/write,
-> which is effectively what this proposes is a valid state.
-> 
+>> This replaces vfio_pci_core_setup_barmap() with two helpers,
+>> vfio_pci_core_check_barmap_valid() and vfio_pci_core_check_bar_rsrc(),
+>> to make it clear which behaviour is required in each caller.
 >>
->> OK, if you prefer the combined approach and don't feel the subsequent
->> single-semantic check helpers (need mapping, need resource) are clearer
->> to read then I'll recombine them, though:
->>
->>    - If vfio_pci_core_map_bars() just sets barmap[n] iff both resource
->> acquisition and iomap succeed, then a later check can only return one
->> error from either cause.  I'll go with -ENOMEM unless you prefer -EBUSY.
->>    Using something else can again make userspace see previously-unseen
->> error values.
->>
->>    - IMHO vfio_pci_core_setup_barmap() should still be renamed (in a 2nd
->> patch) since it doesn't do any setting up anymore.  Cosmetic, but
->> cleaner to parse when the callers use vfio_pci_core_check_barmap_valid() no?
-> 
-> I'm not sure how important it is to preserve the identical errno, but
-> we can actually do that too.  Make the enable time "setup" function
-> store the ERR_PTR in the barmap and change the current callers from
-> "setup" to "get-iomap", where get-iomap is a __must_check return that
-> callers test against IS_ERR_OR_NULL().
+>> Signed-off-by: Matt Evans <mattev@meta.com>
+>> ---
+>>   drivers/vfio/pci/nvgrace-gpu/main.c |  8 +++-----
+>>   drivers/vfio/pci/vfio_pci_core.c    |  5 ++---
+>>   drivers/vfio/pci/vfio_pci_rdwr.c    | 22 ++--------------------
+>>   drivers/vfio/pci/virtio/legacy_io.c |  4 ++--
+>>   include/linux/vfio_pci_core.h       | 23 ++++++++++++++++++++++-
+>>   5 files changed, 31 insertions(+), 31 deletions(-)
+>=20
+> <...>
+>=20
+>> +/* Returns 0 if vdev->barmap[bar] can be accessed, otherwise errno */
+>> +static inline int
+>> +vfio_pci_core_check_barmap_valid(struct vfio_pci_core_device *vdev, int=
+ bar)
+>> +{
+>> +	if (bar < 0 || bar >=3D PCI_STD_NUM_BARS)
+>> +		return -EINVAL;
+>> +	if (vdev->barmap[bar] =3D=3D 0)
+>=20
+> I understand this line was copied from an earlier implementation, but
+> barmap[bar] is a pointer, and it is set to NULL when it is released.
+>=20
+>   if (!dev->barmap[bar])
+>     return -ENOMEM;
 
-I like that!  (My mental model of ERR_PTR was one of function return 
-values and must admit it didn't occur to me to stash one longer-term in 
-barmap.)
-
-> Or maybe better, collapse NULL into -ENODEV so callers only test
-> IS_ERR().
-> 
-> There's even one user in vfio_pci_bar_rw() where this provides a minor
-> simplification.  Likely the others are just wrapping the get-iomap call
-> in the ERR/NULL test to get the equivalent behavior.  Thoughts?  Thanks,
-
-Just implemented a vfio_pci_core_get_iomap() and I think it's a lot 
-nicer.  I also prefer the helper returning the BAR map pointer rather 
-than the open-coded vdev->barmap[]s.  I've moved the helper [back] to a 
-header, since the additional index checks will then fold out at compile 
-time in some cases.
-
-Thanks much for the suggestion, posting a v3 shortly.
+Absolutely.  Fixed in upcoming v3, thank you,
 
 
 Matt
+
+>=20
+> Thanks
+>=20
+>> +		return -ENOMEM;
+>> +	return 0;
+>> +}
+>> +
+>> +/* Returns 0 if BAR has a valid resource reserved for use, otherwise er=
+rno */
+>> +static inline int vfio_pci_core_check_bar_rsrc(struct vfio_pci_core_dev=
+ice *vdev,
+>> +					       int bar)
+>> +{
+>> +	if (bar < 0 || bar >=3D PCI_STD_NUM_BARS)
+>> +		return -EINVAL;
+>> +	if (!vdev->have_bar_resource[bar])
+>> +		return -EBUSY;
+>> +	return 0;
+>> +}
+>> +
+>>   static inline bool is_aligned_for_order(struct vm_area_struct *vma,
+>>   					unsigned long addr,
+>>   					unsigned long pfn,
+>> --=20
+>> 2.47.3
+>>
+
