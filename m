@@ -1,63 +1,749 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA09833F58E;
-	Wed, 29 Apr 2026 14:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6FA1A0B15;
+	Wed, 29 Apr 2026 14:29:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777471264; cv=none; b=cPlvfN/RlCexvG+sAAMuSdYV7j2v+i5O7sH4Jx4+n5LEnMpqZv+HiJ0HmJbZpLbk/nVPg9EdsmlvDLfOAal7L+Z4WvssBZqAPSlz034uZ3PUS1l4AvHUsGAO6Urz35cHqEghx+Qb4HD/eyo/xwHv45+PT++at6ueQnZ2oFRgCuc=
+	t=1777472993; cv=none; b=l31aIMm8qXazqJeEDsOyHlE0y25VVU2LVTh/3lrTNPa15wq7JYyiqB4NT0aNL0+P0wF5+NpDHcnsHrasp/uEM4gwvb/1WtORKP1n8hTwgCVnku1kw4To2nvePj4GbIjkDORP8vvCxTAXGeQ15/tA8VP2ha1iPeyilc+XYg4P6gc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777471264; c=relaxed/simple;
-	bh=bI4ohHhpZ2D6iuB+GgCFXxZny80BjtbBm/afJ7rthTo=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=XpasjNI03PitrjiWiWpadVskc8ijLsyM2oWSGUAEt3Ixjb7+yaukuuABOyozZbzY1Irn4fvQEuzufY6rbJazo+MSWsWsJXvmtx/lMkENv9eVGm2Qc9/D8wdJs6vBMa2xySfefYcCd+Z2Sef6+g1ZMPDppLsOgltWdSDM5zRQyuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H16VYy+l; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777472993; c=relaxed/simple;
+	bh=6ocCy8TIV0+gPrcHIlPynkDbNoVfSvANd+w/fdhTFcw=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=G1kx7xsvj/h1Dn1W31kbuD7A7hpudxTQUsXQAmy5/6fwTRJ0o1apqOFiTN1BBXplXCAUxyVYU8RIYdegCr8XoWf8ZEDQFbl4JTjAdjyMjGNXMwBFTPf2Er5Lus2WTD/i1sX/HAXfqEQOy0xh5JQEUdNHOXFLCNtijuJ0a9rMkBY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZVeS4Apa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H16VYy+l"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97F59C2BCB8;
-	Wed, 29 Apr 2026 14:01:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZVeS4Apa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A2D1C19425;
+	Wed, 29 Apr 2026 14:29:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777471264;
-	bh=bI4ohHhpZ2D6iuB+GgCFXxZny80BjtbBm/afJ7rthTo=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=H16VYy+lS4d+djeTcdP+Q/BpYMy9x3n2K4NEIRW1jTdlKUSA6eU22P8AKtqSP+oYl
-	 BZePgcUn193SOBWPaNx2Qm22lCDqtPsZdWkyWUFzAefCGDRmxTIdh1xP8VXvydbsOv
-	 m1S99DbD6jxCMR1z3/o9kvN3sNmzoEFDxJG1PkkmM/AqmzHtPI9hrAHdpBC+lQEuYQ
-	 Eqo7mQmrccUm3ri1G1xXID8jX8+jPpJn1rTNoG8XWC5NWBZEssyoMKmYTXWRo9575t
-	 0gR2Ysy9dnV7RBacXcVnRVXappB4hASRqSlOSFrhsuUhT2ASi4Ni0sAJzGCxscei1m
-	 wfyJjuJ9zZaiQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 936F239307A1;
-	Wed, 29 Apr 2026 14:00:21 +0000 (UTC)
-Subject: Re: [GIT PULL] KVM fixes and selftest big rename for Linux 7.1-rc2
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20260429133833.16993-1-pbonzini@redhat.com>
-References: <20260429133833.16993-1-pbonzini@redhat.com>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20260429133833.16993-1-pbonzini@redhat.com>
-X-PR-Tracked-Remote: https://git.kernel.org/pub/scm/virt/kvm/kvm.git tags/for-linus
-X-PR-Tracked-Commit-Id: 39f1c201b93f4ff71631bac72cff6eb155f976a4
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 57b8e2d666a31fa201432d58f5fe3469a0dd83ba
-Message-Id: <177747122045.1980932.17855825848288786558.pr-tracker-bot@kernel.org>
-Date: Wed, 29 Apr 2026 14:00:20 +0000
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: torvalds@linux-foundation.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+	s=k20201202; t=1777472992;
+	bh=6ocCy8TIV0+gPrcHIlPynkDbNoVfSvANd+w/fdhTFcw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=ZVeS4Apa7crY9kO5ZzMCoL1/mqKAgr3eEqKYrawxtPUdtci24CEfQ9KIVPFQWSh58
+	 HQd21ZiYS3TvmK8iMZNTrZtT+0u0+5VhDJ2ZnsNh/f5eLA8okeASmdU0JPId7V1ZZY
+	 emMim9CB+a4kK6k4kIbDc8QdSoPrXzFv7+jv1DI2tG4gb+xelC5cEO44LfxGiP8blS
+	 TKEkeNRj4hFBkm+wPXwqLKsuhcRWWr6DBt7/BPqrRj89pZeX4e73g6EX6JNrDElSkE
+	 Uk6K4TGioMy5Hb6TiLJ2IWfxANSDftS2J+84pyFljXMjzjueuypwsN8G6igauO7Qv5
+	 iEsRwotBdKOSg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wI5vB-0000000Fvh4-3lma;
+	Wed, 29 Apr 2026 14:29:50 +0000
+Date: Wed, 29 Apr 2026 15:29:49 +0100
+Message-ID: <86lde5zvoi.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Sascha Bischoff <Sascha.Bischoff@arm.com>
+Cc: "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	nd <nd@arm.com>,
+	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+	Joey Gouly
+	<Joey.Gouly@arm.com>,
+	Suzuki Poulose <Suzuki.Poulose@arm.com>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+	"peter.maydell@linaro.org"
+	<peter.maydell@linaro.org>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	Timothy Hayes <Timothy.Hayes@arm.com>
+Subject: Re: [PATCH 08/43] KVM: arm64: gic-v5: Introduce guest IST alloc and management
+In-Reply-To: <20260427160547.3129448-9-sascha.bischoff@arm.com>
+References: <20260427160547.3129448-1-sascha.bischoff@arm.com>
+	<20260427160547.3129448-9-sascha.bischoff@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, nd@arm.com, oliver.upton@linux.dev, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, lpieralisi@kernel.org, Timothy.Hayes@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-The pull request you sent on Wed, 29 Apr 2026 09:38:33 -0400:
+On Mon, 27 Apr 2026 17:08:46 +0100,
+Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
+> 
+> GICv5 guests use Interrupt State Tables (ISTs) to track and manage the
+> interrupt state for SPIs and LPIs. These ISTs are provided to the
+> host's IRS via the VMTE.
+> 
+> On a host GICv5 system, SPIs do not require any up-front memory
+> allocation prior to their use, unlike LPIs which require the OS to
+> allocate an IST. For a GICv5 guest, the same holds from the guest's
+> point of view - the SPIs should require no explicit memory allocation
+> by the guest. This means that the hypervisor must provision the memory
+> which it passed to the IRS for managing a guest's SPI state.
+> 
+> In light of the above, the hypervisor allocates the SPI IST prior to
+> running the guest for the first time. As only a small number of SPIs
+> are expected, this is always allocated as a linear IST. The host is
+> responsible for freeing this memory on guest teardown.
+> 
+> For LPIs, the OS needs to provision memory for state tracking. This
+> applies to both hosts and guests, and so the guest will provision some
+> memory for the LPI IST. However, this is not directly used by
+> KVM. Instead, KVM allocates a shadow LPI IST which is passed to the
+> IRS (in the VMTE). Again, on guest teardown, the hypervisor must free
+> this memory again. The LPI IST is allocated as a two level structure,
+> as many more LPIs are expected than SPIs.
+> 
+> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+> ---
+>  arch/arm64/kvm/vgic/vgic-v5-tables.c | 531 +++++++++++++++++++++++++++
+>  arch/arm64/kvm/vgic/vgic-v5-tables.h |  22 ++
+>  include/linux/irqchip/arm-gic-v5.h   |   3 +
+>  3 files changed, 556 insertions(+)
+> 
+> diff --git a/arch/arm64/kvm/vgic/vgic-v5-tables.c b/arch/arm64/kvm/vgic/vgic-v5-tables.c
+> index 502d05d46cccf..de905f37b61a5 100644
+> --- a/arch/arm64/kvm/vgic/vgic-v5-tables.c
+> +++ b/arch/arm64/kvm/vgic/vgic-v5-tables.c
+> @@ -501,6 +501,25 @@ int vgic_v5_vmte_init(struct kvm *kvm)
+>  	return ret;
+>  }
+>  
+> +/*
+> + * The following set of forward declarations makes the code layout a *little*
+> + * clearer as it lets us keep the IST-related code together.
+> + */
+> +static int vgic_v5_alloc_linear_ist(struct kvm *kvm, bool spi_ist,
+> +				    unsigned int id_bits,
+> +				    unsigned int istsz);
+> +static int vgic_v5_alloc_l1_ist(struct kvm *kvm, unsigned int id_bits,
+> +				unsigned int istsz, unsigned int l2_split);
+> +static int vgic_v5_alloc_l2_ists(struct kvm *kvm, unsigned int id_bits,
+> +				 unsigned int istsz, unsigned int l2_split);
+> +static int vgic_v5_alloc_two_level_lpi_ist(struct kvm *kvm,
+> +					   unsigned int id_bits,
+> +					   unsigned int istsz,
+> +					   unsigned int l2_split);
+> +static int vgic_v5_linear_ist_free(struct kvm *kvm, bool spi);
+> +static int vgic_v5_two_level_ist_free(struct kvm *kvm, bool spi);
+> +static int vgic_v5_spi_ist_free(struct kvm *kvm);
+> +
+>  /*
+>   * Release the VMT Entry, freeing up any allocated data structures before
+>   * zeroing the VMTE.
+> @@ -531,6 +550,18 @@ int vgic_v5_vmte_release(struct kvm *kvm)
+>  	kfree(vmi->vmd_base);
+>  	kfree(vmi->vpet_base);
+>  
+> +	/* If we have an LPI IST, free it */
+> +	if (vmi->h_lpi_ist)
+> +		ret = vgic_v5_lpi_ist_free(kvm);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* If we have an SPI IST, free it */
+> +	if (vmi->h_spi_ist)
+> +		ret = vgic_v5_spi_ist_free(kvm);
+> +	if (ret)
+> +		return ret;
+> +
+>  	xa_erase(&vm_info, vm_id);
+>  	kfree(vmi);
+>  
+> @@ -634,3 +665,503 @@ int vgic_v5_vmte_free_vpe(struct kvm_vcpu *vcpu)
+>  
+>  	return 0;
+>  }
+> +
+> +/*
+> + * Assign an already allocated IST to the VM by populating the fields in the
+> + * corresponding VMTE. We re-use this code for both an SPI IST and LPI IST, even
+> + * if the paths to reach it might be vastly different.
+> + */
+> +int vgic_v5_vmte_assign_ist(struct kvm *kvm, phys_addr_t ist_base,
+> +			    bool two_level, unsigned int id_bits,
+> +			    unsigned int l2sz, unsigned int istsz,
+> +			    bool spi_ist)
+> +{
+> +	struct kvm_vcpu *vcpu0 = kvm_get_vcpu(kvm, 0);
+> +	u16 vm_id = vgic_v5_vm_id(kvm);
+> +	struct gicv5_cmd_info cmd_info;
+> +	struct vmtl2_entry *vmte;
+> +	unsigned int section;
+> +	u64 tmp;
+> +	int ret;
+> +
+> +	section = spi_ist ? GICV5_VMTEL2_SPI_SECTION : GICV5_VMTEL2_LPI_SECTION;
 
-> https://git.kernel.org/pub/scm/virt/kvm/kvm.git tags/for-linus
+Section? What is a section? This needs documentation (11.2.2 in the
+EAC0 version of the spec) so that people can understand you are
+talking about the 64bit word number in the Level-2 VM Table Entry.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/57b8e2d666a31fa201432d58f5fe3469a0dd83ba
+> +
+> +	if (ist_base & ~GICV5_VMTEL2E_IST_ADDR) {
+> +		kvm_err("IST alignment issue! Address: 0x%llx, Mask 0x%llx\n",
+> +			ist_base, GICV5_VMTEL2E_IST_ADDR);
+> +		return -EINVAL;
+> +	}
+> +
+> +	ret = vgic_v5_get_l2_vmte(vm_id, &vmte);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Bail if already allocated - something is broken! */
+> +	if (FIELD_GET(GICV5_VMTEL2E_IST_VALID, vmte->val[section])) {
+> +		vgic_v5_clean_inval(vmte, sizeof(*vmte), true, true);
 
-Thank you!
+Still this odd construct. I'm starting to wonder whether I'm really
+missing something.
+
+> +		return -EINVAL;
+> +	}
+> +
+> +	tmp = FIELD_PREP(GICV5_VMTEL2E_IST_L2SZ, l2sz);
+> +	tmp |= FIELD_PREP(GICV5_VMTEL2E_IST_ADDR,
+> +			ist_base >> GICV5_VMTEL2E_IST_ADDR_SHIFT);
+> +	tmp |= FIELD_PREP(GICV5_VMTEL2E_IST_ISTSZ, istsz);
+> +	tmp |= FIELD_PREP(GICV5_VMTEL2E_IST_ID_BITS, id_bits);
+> +	tmp |= FIELD_PREP(GICV5_VMTEL2E_IST_STRUCTURE, two_level);
+> +
+> +	WRITE_ONCE(vmte->val[section], cpu_to_le64(tmp));
+> +	vgic_v5_clean_inval(vmte, sizeof(*vmte), true, false);
+> +
+> +	/* Finally, mark the entry as valid */
+> +	cmd_info.cmd_type = spi_ist ? SPI_VIST_MAKE_VALID : LPI_VIST_MAKE_VALID;
+> +	ret = irq_set_vcpu_affinity(vgic_v5_vpe_db(vcpu0), &cmd_info);
+> +
+> +	/* Any cached entries we now have are stale! */
+> +	vgic_v5_clean_inval(vmte, sizeof(*vmte), false, true);
+
+Shouldn't the clean operation happen *before* you call into the IRQ
+stack? It feels dangerous to do so, even if the callback doesn't do
+much.
+
+> +
+> +	return ret;
+> +}
+> +
+> +/*
+> + * Helper to determine the correct l2sz to use based on the combination of
+> + * PAGE_SIZE and whatever hardware supports.
+> + */
+> +static unsigned int vgic_v5_ist_l2sz(void)
+> +{
+> +	switch (PAGE_SIZE) {
+> +	case SZ_64K:
+> +		if (gicv5_host_ist_caps.ist_l2sz & 0x4)
+
+Please had definitions for IRS_IDR2.IST_L2SZ.
+
+> +			return GICV5_IRS_IST_CFGR_L2SZ_64K;
+> +		fallthrough;
+> +	case SZ_4K:
+> +		if (gicv5_host_ist_caps.ist_l2sz & 0x1)
+> +			return GICV5_IRS_IST_CFGR_L2SZ_4K;
+> +		fallthrough;
+> +	case SZ_16K:
+> +		if (gicv5_host_ist_caps.ist_l2sz & 0x2)
+> +			return GICV5_IRS_IST_CFGR_L2SZ_16K;
+> +		break;
+> +	}
+> +
+> +	if (gicv5_host_ist_caps.ist_l2sz & 0x1)
+> +		return GICV5_IRS_IST_CFGR_L2SZ_4K;
+> +
+> +	return GICV5_IRS_IST_CFGR_L2SZ_64K;
+> +}
+> +
+> +/* Helper to determine ISTE size based on metadata requirements */
+> +static unsigned int vgic_v5_ist_istsz(unsigned int id_bits)
+> +{
+> +	if (!gicv5_host_ist_caps.istmd)
+> +		return GICV5_IRS_IST_CFGR_ISTSZ_4;
+> +
+> +	if (id_bits >= gicv5_host_ist_caps.istmd_sz)
+> +		return GICV5_IRS_IST_CFGR_ISTSZ_16;
+> +
+> +	return GICV5_IRS_IST_CFGR_ISTSZ_8;
+> +}
+> +
+> +/*
+> + * Allocate a Linear IST - always used for SPIs and potentially LPIs.
+> + *
+> + * The calculation for n has been taken from the GICv5 spec.
+
+Bonus points if you add a reference to the relevant part of the spec.
+
+> + *
+> + * NOTE: istsz is the FIELD used by GICv5, not the actual size (or log2() of the
+> + * size).
+> + */
+> +static int vgic_v5_alloc_linear_ist(struct kvm *kvm, bool spi_ist,
+> +				    unsigned int id_bits, unsigned int istsz)
+> +{
+> +	const size_t n = id_bits + 1 + istsz;
+> +	u16 vm_id = vgic_v5_vm_id(kvm);
+> +	struct vgic_v5_vm_info *vmi;
+> +	__le64 *ist;
+> +	u32 l1sz;
+> +
+> +	vmi = xa_load(&vm_info, vm_id);
+> +	if (WARN_ON_ONCE(!vmi))
+> +		return -EINVAL;
+> +
+> +	/*
+> +	 * Allocate the IST. We only have one level, so we just use the L2 ISTE.
+> +	 */
+> +	l1sz = BIT(n + 1);
+> +	ist = kzalloc(l1sz, GFP_KERNEL);
+> +	if (!ist)
+> +		return -ENOMEM;
+> +
+> +	if (spi_ist) {
+> +		vmi->h_spi_ist = ist;
+> +	} else {
+> +		vmi->h_lpi_ist_structure = false;
+> +		vmi->h_lpi_ist = ist;
+> +	}
+> +
+> +	vgic_v5_clean_inval(ist, l1sz, true, true);
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * Allocate the first level of a two-level IST - LPI, only.
+> + *
+> + * The calculations for n, l1_size have been taken from the GICv5 spec.
+> + *
+> + * NOTE: istsz and l2sz are the FIELDS used by GICv5, not the actual sizes (or
+> + * log2() of the sizes).
+> + */
+> +static int vgic_v5_alloc_l1_ist(struct kvm *kvm, unsigned int id_bits,
+> +				unsigned int istsz, unsigned int l2sz)
+> +{
+> +	const size_t n =  max(5, id_bits - ((10 - istsz) + (2 * l2sz)) + 3 - 1);
+> +	u16 vm_id = vgic_v5_vm_id(kvm);
+> +	const u32 l1_size = BIT(n + 1);
+> +	struct vgic_v5_vm_info *vmi;
+> +	__le64 *ist;
+> +
+> +	vmi = xa_load(&vm_info, vm_id);
+> +	if (!vmi)
+> +		return -EINVAL;
+> +
+> +	ist = kzalloc(l1_size, GFP_KERNEL);
+> +	if (!ist)
+> +		return -ENOMEM;
+> +
+> +	vmi->h_lpi_ist_structure = true;
+> +	vmi->h_lpi_ist = ist;
+> +
+> +	vgic_v5_clean_inval(ist, l1_size, true, true);
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * Allocate ALL of the second level ISTs for a two-level IST - LPI, only.
+> + *
+> + * The calculations for n, l1_entries, l2_size have been taken from the GICv5
+> + * spec.
+> + *
+> + * NOTE: istsz and l2sz are the FIELDS used by GICv5, not the actual sizes (or
+> + * log2() of the sizes).
+> + */
+> +static int vgic_v5_alloc_l2_ists(struct kvm *kvm, unsigned int id_bits,
+> +				unsigned int istsz, unsigned int l2sz)
+> +{
+> +	const size_t n =  max(5, id_bits - ((10 - istsz) + (2 * l2sz)) + 3 - 1);
+> +	const int l1_entries = BIT(n + 1) / GICV5_IRS_ISTL1E_SIZE;
+> +	const size_t l2_size = BIT(11 + (2 * l2sz) + 1);
+> +	u16 vm_id = vgic_v5_vm_id(kvm);
+> +	struct vgic_v5_vm_info *vmi;
+> +	__le64 *l2ist;
+> +	__le64 *l1ist;
+> +	int index;
+> +
+> +	vmi = xa_load(&vm_info, vm_id);
+> +	if (WARN_ON_ONCE(!vmi))
+> +		return -EINVAL;
+> +
+> +	l1ist = vmi->h_lpi_ist;
+> +
+> +	/*
+> +	 * Allocate the storage for the pointers to the L2 ISTs (used when
+> +	 * freeing later).
+> +	 */
+> +	vmi->h_lpi_l2_ists = kzalloc_objs(*vmi->h_lpi_l2_ists, l1_entries,
+> +					  GFP_KERNEL);
+> +	if (!vmi->h_lpi_l2_ists)
+> +		return -ENOMEM;
+> +
+> +	/* Allocate the L2 IST for each L1 IST entry */
+> +	for (index = 0; index < l1_entries; ++index) {
+> +		l2ist = kzalloc(l2_size, GFP_KERNEL);
+> +		if (!l2ist) {
+> +			while (--index >= 0)
+> +				kfree(vmi->h_lpi_l2_ists[index]);
+> +
+> +			kfree(vmi->h_lpi_l2_ists);
+> +			vmi->h_lpi_l2_ists = NULL;
+> +
+> +			return -ENOMEM;
+> +		}
+> +
+> +		/*
+> +		 * We are not doing on-demand allocation of the L2 ISTs, and are
+> +		 * instead provisioning the whole IST up front. This means that
+> +		 * we are able to mark the L2 ISTs as valid in the L1 ISTEs as
+> +		 * the overall IST is not yet valid.
+> +		 */
+> +		l1ist[index] = cpu_to_le64(
+> +			virt_to_phys(l2ist) & GICV5_ISTL1E_L2_ADDR_MASK) |
+> +			GICV5_ISTL1E_VALID;
+> +
+> +		vmi->h_lpi_l2_ists[index] = l2ist;
+> +
+> +		vgic_v5_clean_inval(l2ist, l2_size, true, true);
+> +	}
+> +
+> +	/* Handle CMOs for the whole L1 IST in one go */
+> +	vgic_v5_clean_inval(l1ist, l1_entries * sizeof(*l1ist), true, false);
+> +
+> +	return 0;
+> +}
+> +
+> +/* Allocate a two-level IST - LPIs, only */
+> +static int vgic_v5_alloc_two_level_lpi_ist(struct kvm *kvm, unsigned int id_bits,
+> +					   unsigned int istsz, unsigned int l2sz)
+> +{
+> +	u16 vm_id = vgic_v5_vm_id(kvm);
+> +	struct vgic_v5_vm_info *vmi;
+> +	int ret;
+> +
+> +	/*
+> +	 * Allocate the L1 IST first, then all of the L2s. Everything
+> +	 * is preallocated and we do no on-demand IST allocation. This
+> +	 * is to avoid needing to track if and when the guest is doing
+> +	 * on-demand IST allocation.
+> +	 */
+> +	ret = vgic_v5_alloc_l1_ist(kvm, id_bits, istsz, l2sz);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = vgic_v5_alloc_l2_ists(kvm, id_bits, istsz, l2sz);
+> +	if (ret) {
+> +		/* Free the L1 IST again */
+> +		vmi = xa_load(&vm_info, vm_id);
+> +		kfree(vmi->h_lpi_ist);
+> +		vmi->h_lpi_ist = 0;
+> +
+> +		return ret;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static void vgic_v5_free_allocated_lpi_ist(struct vgic_v5_vm_info *vmi,
+> +					   unsigned int id_bits,
+> +					   unsigned int istsz,
+> +					   unsigned int l2sz)
+> +{
+> +	if (!vmi->h_lpi_ist_structure) {
+> +		kfree(vmi->h_lpi_ist);
+> +		vmi->h_lpi_ist = NULL;
+> +		return;
+> +	}
+> +
+> +	if (vmi->h_lpi_l2_ists) {
+> +		const size_t n = max(2, id_bits - ((10 - istsz) + (2 * l2sz)) + 3 - 1);
+> +		const int l1_entries = BIT(n + 1) / GICV5_IRS_ISTL1E_SIZE;
+> +		int index;
+> +
+> +		for (index = 0; index < l1_entries; ++index)
+> +			kfree(vmi->h_lpi_l2_ists[index]);
+> +
+> +		kfree(vmi->h_lpi_l2_ists);
+> +		vmi->h_lpi_l2_ists = NULL;
+> +	}
+> +
+> +	kfree(vmi->h_lpi_ist);
+> +	vmi->h_lpi_ist = NULL;
+> +}
+> +
+> +void vgic_v5_free_allocated_spi_ist(struct kvm *kvm)
+> +{
+> +	u16 vm_id = vgic_v5_vm_id(kvm);
+> +	struct vgic_v5_vm_info *vmi;
+> +
+> +	vmi = xa_load(&vm_info, vm_id);
+> +	if (WARN_ON_ONCE(!vmi))
+> +		return;
+> +
+> +	kfree(vmi->h_spi_ist);
+> +	vmi->h_spi_ist = NULL;
+> +}
+> +
+> +/*
+> + * Free a Linear IST. Can only happen once the VM is dead.
+> + */
+> +static int vgic_v5_linear_ist_free(struct kvm *kvm, bool spi)
+> +{
+> +	u16 vm_id = vgic_v5_vm_id(kvm);
+> +	struct vmtl2_entry *vmte;
+> +	struct vgic_v5_vm_info *vmi;
+> +	int section, ret;
+> +
+> +	vmi = xa_load(&vm_info, vm_id);
+> +	if (!vmi)
+> +		return -EINVAL;
+> +
+> +	ret = vgic_v5_get_l2_vmte(vm_id, &vmte);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (spi) {
+> +		section = GICV5_VMTEL2_SPI_SECTION;
+> +		vgic_v5_free_allocated_spi_ist(kvm);
+> +	} else {
+> +		section = GICV5_VMTEL2_LPI_SECTION;
+> +		vgic_v5_free_allocated_lpi_ist(vmi, 0, 0, 0);
+> +	}
+> +
+> +	/* The VM should be dead here, so we can just zero the VMT section */
+> +	WRITE_ONCE(vmte->val[section], 0ULL);
+> +	vgic_v5_clean_inval(vmte, sizeof(*vmte), true, true);
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * Free a Two-Level IST. Can only happen once the VM is dead.
+> + */
+> +static int vgic_v5_two_level_ist_free(struct kvm *kvm, bool spi)
+> +{
+> +	unsigned int id_bits, istsz, l2sz;
+> +	u16 vm_id = vgic_v5_vm_id(kvm);
+> +	struct vgic_v5_vm_info *vmi;
+> +	__le64 *l1ist, tmp;
+> +	struct vmtl2_entry *vmte;
+> +	int section, l1_entries;
+> +	size_t n;
+> +	int ret;
+> +
+> +	/* We don't create two-level SPI ISTs, so freeing is a bad idea! */
+> +	if (spi)
+> +		return -EINVAL;
+> +
+> +	vmi = xa_load(&vm_info, vm_id);
+> +	if (!vmi)
+> +		return -EINVAL;
+> +
+> +	section = GICV5_VMTEL2_LPI_SECTION;
+> +	l1ist = vmi->h_lpi_ist;
+> +
+> +	if (!vmi->h_lpi_ist_structure)
+> +		return -EINVAL;
+> +
+> +	ret = vgic_v5_get_l2_vmte(vm_id, &vmte);
+> +	if (ret)
+> +		return ret;
+> +
+> +	tmp = le64_to_cpu(READ_ONCE(vmte->val[section]));
+> +
+> +	id_bits = FIELD_GET(GICV5_VMTEL2E_IST_ID_BITS, tmp);
+> +	istsz = FIELD_GET(GICV5_VMTEL2E_IST_ISTSZ, tmp);
+> +	l2sz = FIELD_GET(GICV5_VMTEL2E_IST_L2SZ, tmp);
+> +
+> +	/* Calculation for n taken from the GICv5 specification */
+> +	n =  max(2, id_bits - ((10 - istsz) + (2 * l2sz)) + 3 - 1);
+> +	l1_entries = BIT(n + 1) / GICV5_IRS_ISTL1E_SIZE;
+> +
+> +	vgic_v5_free_allocated_lpi_ist(vmi, id_bits, istsz, l2sz);
+> +
+> +	/* The VM must be dead, so we can just zero the VMT section */
+> +	WRITE_ONCE(vmte->val[section], 0ULL);
+> +
+> +	vgic_v5_clean_inval(vmte, sizeof(*vmte), true, true);
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * Allocate an IST for SPIs.
+> + *
+> + * We don't anticipate a large number of SPIs being allocated. Therefore, we
+> + * always allocate a Linear IST for SPIs. This will need to be revisited should
+> + * that assumption no longer hold.
+> + */
+> +int vgic_v5_spi_ist_allocate(struct kvm *kvm, phys_addr_t *base_addr,
+> +			     unsigned int id_bits, unsigned int istsz)
+> +{
+> +	u16 vm_id = vgic_v5_vm_id(kvm);
+> +	struct vgic_v5_vm_info *vmi;
+> +	int ret;
+> +
+> +	vmi = xa_load(&vm_info, vm_id);
+> +	if (WARN_ON_ONCE(!vmi))
+> +		return -EINVAL;
+> +
+> +	ret = vgic_v5_alloc_linear_ist(kvm, true, id_bits, istsz);
+> +	if (ret)
+> +		return ret;
+> +
+> +	*base_addr = virt_to_phys(vmi->h_spi_ist);
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * Free the IST for SPIs. Should only happen once the VM is dead.
+> + */
+> +static int vgic_v5_spi_ist_free(struct kvm *kvm)
+> +{
+> +	return vgic_v5_linear_ist_free(kvm, true);
+> +}
+> +
+> +/*
+> + * Allocate an IST for LPIs.
+> + *
+> + * Unlike with SPIs, we anticipate that the guest will allocate a relatively
+> + * large number of LPIs. Therefore, while we support doing a linear LPI IST, it
+> + * is expected that LPI ISTs will be two-level.
+> + */
+> +int vgic_v5_lpi_ist_alloc(struct kvm *kvm, unsigned int id_bits)
+> +{
+> +	u16 vm_id = vgic_v5_vm_id(kvm);
+> +	struct vgic_v5_vm_info *vmi;
+> +	unsigned int istsz, l2sz;
+> +	phys_addr_t phys_addr;
+> +	bool two_level;
+> +	int ret;
+> +
+> +	vmi = xa_load(&vm_info, vm_id);
+> +	if (WARN_ON_ONCE(!vmi))
+> +		return -EINVAL;
+> +
+> +	istsz = vgic_v5_ist_istsz(id_bits);
+> +	l2sz = vgic_v5_ist_l2sz();
+> +
+> +	/*
+> +	 * Determine if we want to create a Linear or a Two-Level IST.
+> +	 *
+> +	 * If we require more than one page for the IST, create a Two-Level IST
+> +	 * (if the host supports it, which is likely).
+> +	 *
+> +	 * Note: GICv5's istsz is not the size of the ISTEs in log2(bytes). It
+> +	 * is 2 less, hence the +2 below.
+> +	 */
+> +	two_level = gicv5_host_ist_caps.ist_levels &&
+> +		id_bits > PAGE_SHIFT - (2 + istsz);
+> +
+> +	if (!two_level)
+> +		ret = vgic_v5_alloc_linear_ist(kvm, false /* LPIs, not SPIs */,
+> +					       id_bits, istsz);
+> +	else
+> +		ret = vgic_v5_alloc_two_level_lpi_ist(kvm, id_bits, istsz,
+> +						      l2sz);
+> +
+> +	if (ret)
+> +		return ret;
+> +
+> +	phys_addr = virt_to_phys(vmi->h_lpi_ist);
+> +	ret = vgic_v5_vmte_assign_ist(kvm, phys_addr, two_level, id_bits, l2sz,
+> +				      istsz, false);
+> +	if (ret)
+> +		vgic_v5_free_allocated_lpi_ist(vmi, id_bits, istsz, l2sz);
+> +
+> +	return ret;
+> +}
+> +
+> +/* Free the LPI IST again */
+> +int vgic_v5_lpi_ist_free(struct kvm *kvm)
+> +{
+> +	u16 vm_id = vgic_v5_vm_id(kvm);
+> +	struct vgic_v5_vm_info *vmi;
+> +
+> +	vmi = xa_load(&vm_info, vm_id);
+> +	if (!vmi)
+> +		return -ENXIO;
+> +
+> +	if (!vmi->h_lpi_ist_structure)
+> +		return vgic_v5_linear_ist_free(kvm, false);
+> +	else
+> +		return vgic_v5_two_level_ist_free(kvm, false);
+> +}
+> diff --git a/arch/arm64/kvm/vgic/vgic-v5-tables.h b/arch/arm64/kvm/vgic/vgic-v5-tables.h
+> index 5501a44308362..37e220cda1987 100644
+> --- a/arch/arm64/kvm/vgic/vgic-v5-tables.h
+> +++ b/arch/arm64/kvm/vgic/vgic-v5-tables.h
+> @@ -54,6 +54,13 @@ struct vmtl2_entry {
+>  #define GICV5_VMTEL2E_IST_STRUCTURE	BIT_ULL(58)
+>  #define GICV5_VMTEL2E_IST_ID_BITS	GENMASK_ULL(63, 59)
+>  
+> +/*
+> + * The LPI and SPI configuration is stored in the 2nd and 3rd 64-bit chunks of
+> + * the VMTE (0-based).
+> + */
+> +#define GICV5_VMTEL2_LPI_SECTION	2
+> +#define GICV5_VMTEL2_SPI_SECTION	3
+> +
+>  /* Virtual PE Table Entry */
+>  typedef __le64 vpe_entry;
+>  #define GICV5_VPE_VALID			BIT_ULL(0)
+> @@ -66,6 +73,12 @@ struct vgic_v5_vm_info {
+>  	vpe_entry __iomem	*vpet_base;
+>  	void __iomem		**vped_ptrs;
+>  	u8			vpe_id_bits;
+> +
+> +	/* Tracking for the hyp-owned ISTs */
+> +	bool			h_lpi_ist_structure;
+> +	__le64			*h_lpi_ist;
+> +	__le64			**h_lpi_l2_ists;
+> +	__le64			*h_spi_ist;
+
+Can you please document what these individual fields represent? I'm
+not sure what hyp-owned means here...
+
+>  };
+>  
+>  struct vgic_v5_vmt {
+> @@ -146,4 +159,13 @@ int vgic_v5_vmte_release(struct kvm *kvm);
+>  int vgic_v5_vmte_alloc_vpe(struct kvm_vcpu *vcpu);
+>  int vgic_v5_vmte_free_vpe(struct kvm_vcpu *vcpu);
+>  
+> +int vgic_v5_vmte_assign_ist(struct kvm *kvm, phys_addr_t ist_base,
+> +			    bool two_level, unsigned int id_bits,
+> +			    unsigned int l2sz, unsigned int istsz, bool spi_ist);
+> +int vgic_v5_spi_ist_allocate(struct kvm *kvm, phys_addr_t *base_addr,
+> +			     unsigned int id_bits, unsigned int istsz);
+> +void vgic_v5_free_allocated_spi_ist(struct kvm *kvm);
+> +int vgic_v5_lpi_ist_alloc(struct kvm *kvm, unsigned int id_bits);
+> +int vgic_v5_lpi_ist_free(struct kvm *kvm);
+> +
+>  #endif
+> diff --git a/include/linux/irqchip/arm-gic-v5.h b/include/linux/irqchip/arm-gic-v5.h
+> index 89579ee04f5d1..ccec0a045927c 100644
+> --- a/include/linux/irqchip/arm-gic-v5.h
+> +++ b/include/linux/irqchip/arm-gic-v5.h
+> @@ -450,6 +450,9 @@ enum gicv5_vcpu_info_cmd_type {
+>  	VMT_L2_MAP,		/* Map in a L2 VMT - *may* happen on VM init */
+>  	VMTE_MAKE_VALID,	/* Make the VMTE valid */
+>  	VMTE_MAKE_INVALID,	/* Make the VMTE (et al.) invalid */
+> +	SPI_VIST_MAKE_VALID,	/* No corresponding invalid */
+> +	LPI_VIST_MAKE_VALID,	/* Triggered by a guest */
+> +	LPI_VIST_MAKE_INVALID,	/* Triggered by a guest */
+>  };
+>  
+>  struct gicv5_cmd_info {
+
+Thanks,
+
+	M.
 
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Without deviation from the norm, progress is not possible.
