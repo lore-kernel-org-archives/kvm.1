@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59AAE1F4C8E;
-	Wed, 29 Apr 2026 23:14:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A827B339844;
+	Wed, 29 Apr 2026 23:17:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777504467; cv=none; b=s11PGjvXfdZSi33psbnfagM7EIwkV5Qxpm+nxR3B6Q7ch9SUq3xFfx8nAoZPMGPx5u2+6Wo6pCDNGKGF/UZ/Y7c2lAqQPi9WTkdsZmDBUuVRc1DT2zgbkFxYqU0dx1+JS6LL5+yPH71MScDbe2XcAAt/Kg2lGJfC1Dl+7DZct7Q=
+	t=1777504633; cv=none; b=WKeYa7S8SKhm08IrwHo50vBs+I4/XxlyhjNRgw3X+o1nAKagXgs+MQGbNrzbt8+BYaZjcUrMTVVTtlq0uYJgDqG6RvVkvHJYNQUnCT+VNpWHlewzVDer7dPQQ92b/xI7Tc34fWhx7qmhPV7jRwVDHgwo5QZWonBJRKnONn/mlB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777504467; c=relaxed/simple;
-	bh=7R0lr6fap7Xb2/lQqGzCAJbRvASoERTT1b4QYrlTPqc=;
+	s=arc-20240116; t=1777504633; c=relaxed/simple;
+	bh=AwCNBaK5hM/aXAfMED+qg2QImNeWJFI+dJO7sNnHM5I=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kf+KbEYEIcKdLl6pNC50kua0dkJcAj/udFdykhj0E2lefQkanmHK6DSRZ4DBx+smIqON7ugRyL5q51EPmU/BE69MromqytEXSkKiVrHR/GrvREFS/70jOU6IiZTMBEHv/oySAVfw47FRoEwiKuVFsI7DimuMTLqk4KOKwUyQh6s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L77x++ms; arc=none smtp.client-ip=198.175.65.13
+	 In-Reply-To:Content-Type; b=trJrDytAvPFF9zE4QD0Puuta4Q8RQkjsfm0rACHjj02HBhLR1CoVd8XFTiqCBcWV/H4iTAjzV8K2DoRCwKESNIVdHAQiCs10nBQ5fvR1sI/92kgeZVmqExtmkbRWJqbWIlej4eZZ9Ke3kFSgjDnYEDqTCIjNy9Oa3sM+dh+Jro0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=E2nPdUn8; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L77x++ms"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="E2nPdUn8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777504466; x=1809040466;
+  t=1777504631; x=1809040631;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=7R0lr6fap7Xb2/lQqGzCAJbRvASoERTT1b4QYrlTPqc=;
-  b=L77x++msAJz+s1sHZfD7fEy1lzmDiWmXdQBU7yIfiqq12/KCuJ28vcWQ
-   zAcr2k2cPzv9m7rOoAC4floqiVJS1VhYJc/sufTw828s8DIW0KSM0FBDj
-   8zE3aXqlGCWH6qyhKgF8cV+eEHf/pnlHzU3zti6cj8WZRE5E1suXcOI/+
-   w6ukPguzOzUfP2ExPB1cIHd2UBLRqqNKiNdsr05bEvHU3jQ29oDmw9ULh
-   CNMfXyQtsoybwrhfGuznp/tZQMLdvAEPBHHucpp2YE6SU3scu7Fh8kM4e
-   bsp+eCKzd8w3EDLzTJLr/u5B8rt3d2p4LKNCziQtukdPpN9oIbbDFIR/l
-   Q==;
-X-CSE-ConnectionGUID: OhgEQuFCRi6nRwQhRqPmYg==
-X-CSE-MsgGUID: AYOw0KnjQqmbYcdciNSoTQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="89538268"
+  bh=AwCNBaK5hM/aXAfMED+qg2QImNeWJFI+dJO7sNnHM5I=;
+  b=E2nPdUn8ziR4LOQscv+e87Q/iNnbfGsT+Xg9xK/3sgWeVfX3AEegMcBN
+   SDYo0DfW2t7vH2ap9LCb4IjpEPoaL5ZnZkA4lTnMuVEuPICUSmCOO9rM7
+   XhzBcmtfkuDOlZH6PNn6yuxFuqwq/HaNHa2ywiKLwZ6DB+BH2bcuuTcs+
+   chFpg2lYuOO0Mz83i8kjcX6wGFhNI3Wdi8JeGcRA/XD7qSIxsEjB/G8gP
+   G+4JP+687xejLMr54S4mH+JYhMahgPIA+CYmhxfgojysjINb/IT2qj3Qc
+   aARlaRhbsm3UllUUUTIU8MBvgDrOtc3P6tvHsAgzQ4WKG4jElJATCZ6Fs
+   g==;
+X-CSE-ConnectionGUID: /6EpWHn5TCunlAnGuCPXBQ==
+X-CSE-MsgGUID: bOpKjOdlQYWKAGDC3SNvMw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="78636771"
 X-IronPort-AV: E=Sophos;i="6.23,207,1770624000"; 
-   d="scan'208";a="89538268"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 16:14:26 -0700
-X-CSE-ConnectionGUID: NdJ168auSk+wms8vdhuChg==
-X-CSE-MsgGUID: UyoUmC+OTnSrcrhtwQ5vFg==
+   d="scan'208";a="78636771"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 16:17:11 -0700
+X-CSE-ConnectionGUID: Kt2fYh0jTE2Xd4piQbvFWw==
+X-CSE-MsgGUID: 49P+TGfwSci3XpDpGa6j7w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,207,1770624000"; 
-   d="scan'208";a="233364165"
+   d="scan'208";a="238738817"
 Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.109.40]) ([10.125.109.40])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 16:14:25 -0700
-Message-ID: <1a1b0f7c-aa3f-4758-8e17-bc2176c52952@intel.com>
-Date: Wed, 29 Apr 2026 16:14:26 -0700
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 16:17:11 -0700
+Message-ID: <06682111-2b63-444e-a431-b8dd0db2b0ab@intel.com>
+Date: Wed, 29 Apr 2026 16:17:10 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,17 +52,23 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] x86/cpu: Skip reading MSR_IA32_PLATFORM_ID in
- virtualized environment
-To: Binbin Wu <binbin.wu@linux.intel.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, x86@kernel.org
-Cc: pbonzini@redhat.com, seanjc@google.com, kas@kernel.org,
- rick.p.edgecombe@intel.com, vishal.l.verma@intel.com, xiaoyao.li@intel.com,
- chao.gao@intel.com
-References: <20260428024746.1040531-1-binbin.wu@linux.intel.com>
- <20260428024746.1040531-3-binbin.wu@linux.intel.com>
-Content-Language: en-US
+Subject: Re: [PATCH v8 07/21] coco/tdx-host: Implement firmware upload sysfs
+ ABI for TDX module updates
+To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
+Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
+ ira.weiny@intel.com, kai.huang@intel.com, kas@kernel.org,
+ nik.borisov@suse.com, paulmck@kernel.org, pbonzini@redhat.com,
+ reinette.chatre@intel.com, rick.p.edgecombe@intel.com, sagis@google.com,
+ seanjc@google.com, tony.lindgren@linux.intel.com, vannapurve@google.com,
+ vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com,
+ yan.y.zhao@intel.com, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>
+References: <20260427152854.101171-1-chao.gao@intel.com>
+ <20260427152854.101171-8-chao.gao@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
  oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
@@ -106,19 +112,39 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260428024746.1040531-3-binbin.wu@linux.intel.com>
+In-Reply-To: <20260427152854.101171-8-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 4/27/26 19:47, Binbin Wu wrote:
-> +static inline bool x86_cpuid_has_hypervisor(void)
+On 4/27/26 08:28, Chao Gao wrote:
+> Linux kernel supports two primary firmware update mechanisms:
+>   - request_firmware()
+>   - firmware upload (or fw_upload)
+
+All the stuff here is good info, but it was hard to extract the
+implementation information from the background.
+
+I think this would do:
+
+	Select fw_upload for doing TDX module updates. The process of
+	selecting among available update images is complicated and
+	nuanced. Punt the selection policy out to userspace.
+
+...
+> +static int seamldr_init(struct device *dev)
 > +{
-> +	return native_cpuid_ecx(1) & BIT(31);
-> +}
+> +	struct fw_upload *tdx_fwl;
+> +
+> +	if (!can_expose_seamldr())
+> +		return 0;
 
-Could you please put X86_FEATURE_HYPERVISOR in here somewhere? Even if
-it's just (logically):
+can_expose_seamldr() has a not great name.
 
-	return native_cpuid_ecx(1) & (X86_FEATURE_HYPERVISOR & 0x1f);
+Why not just have naming that says:
+
+	if (supports_runtime_update())
+		...
+
+Why abstract this out to what can or can't be exposed?
 
 
