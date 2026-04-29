@@ -1,58 +1,63 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6E6C2DF153
-	for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 07:29:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B2FE3A544A;
+	Wed, 29 Apr 2026 07:29:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777447743; cv=none; b=aTMIRd5yXd1OxDqA6tqai1T0pcxM6M0FXhMjiqIOE/lUKftrhcGkVqmcyYS9TF9IDgyvTSuBYzPjIhT0kdL4RlugLegvC1LzCCXm3ndIJ2TsBA/FPcFFTZHK4MdjBnNlVet+NVxocrQhG8gztcgOSsWv1qHg1BvQZbqxX4nIx1M=
+	t=1777447748; cv=none; b=jYjS73RQDbxY1kYZTIZYkVOs91VB7tDKzHgNNMkY2hSZ25IaVzt5WepbNPyJCw7KxT9XJlYRDNRv8TOOavE667ipFA1g/hnYfoRK7cSJuXOiGAraFYYI7vPtuMjpabqdwqpiJGrMQMrDFdrtt5t8zV2V2BTDi7zooZC+o+81eo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777447743; c=relaxed/simple;
-	bh=3xa1UQa08cE25rP1nygGbEoUCnbB3YZwvUNHlhrBcSI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QhmU8HU/iS95PFnfgqcrvIjhwNbCg09rYyh+i8YmS7vf+x0MwfyIoCC4btcQVU8Zrqpi08Ai3xR4TIR3dRljQCENK14rN0o4c0uY92qdijmHJubRnN9xE4/iUwmOpa89lEy3ffnhoiGcrkFSEsIkpTEXMAzfnDJlPBN0l+txJ5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jvtGievV; arc=none smtp.client-ip=198.175.65.18
+	s=arc-20240116; t=1777447748; c=relaxed/simple;
+	bh=ZQOkCYnVZVIH8EPI+hVf+trWhsoG6Ezt8CwwxR3iaFc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=kKYyvuBrK2611aFac9OliDmNrSgV7ciJbHmpEI1+Lp4QcMgzPRk7ZQ6QrnkSiyAtLn5rxsFaEocEuwALLtNRORmx0FlqxWox38aMkOuO/s2lzjskwHb9Rt6KpHYzBP7bXAYfwxLlhyOMndH60W2+1zC+vcjgkPASZbxVeIslID4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dS1BH+oy; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jvtGievV"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dS1BH+oy"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777447742; x=1808983742;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=3xa1UQa08cE25rP1nygGbEoUCnbB3YZwvUNHlhrBcSI=;
-  b=jvtGievV8YQ3I+GtQAJiOD9OnUSrPmYfAl14P91utY5EM9CPSWeOrvvx
-   vQJHq0h4IjdrpCAeC4zTLSruRqE1v+weAxBijoG5wLZqDOfHlsY2txFye
-   KNbMQh/uw+t8NfWCEjl69X1bFPYos6Bl1Y+wn4NzpXcFL3t2PC/+hTJiE
-   vzqGHJbT9RCEg7gx5ZcZLZ4GPICy+0HbMdi5bncVijIzVoY2kOORPG2P0
-   aiaoGOdexJTm5b/u9WFqe2+ia1Lmux5+4k4OmuHOFwWkOSYMfyq0Ms7fn
-   gXTcNQ0D5/HRHxzuDNIxwey5BJlvFUq4+eHzKodxzLkPRqIJdPKLO8S3B
-   g==;
-X-CSE-ConnectionGUID: XcdlUniQRHakSH1efRR0bg==
-X-CSE-MsgGUID: LsnR/VrbQE6KEUuQJKW8kA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11770"; a="78385795"
+  t=1777447747; x=1808983747;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=ZQOkCYnVZVIH8EPI+hVf+trWhsoG6Ezt8CwwxR3iaFc=;
+  b=dS1BH+oyNU7JxF0rLYnzXZB42C3nE9N9mpUk2wIY97EgpRHfihcS3ZgV
+   Ble6foL92JI6UTSxyPgQwj1u89K/JwWrcNhvXFjqMDESovLsAl4YfQ8ye
+   cDyKMS8bmSIIF4dJ469x/k9uACwI48DyBCDdtSrSGH3aglX3lvkCttahV
+   sZr+3mxlCws7DOQHpxtbrc4/sau9+NjVs0Q265U6B4CZKKEOcllAdClXm
+   rjjJRFrVRlw5dEfYJxV696cwohAw1BiersMyp0JZuhchJ1KRU7LWndg7B
+   yySG/GzT33qwh4x6m5M+8pqpizWPxwFcP9uNnnRatWmYqNHN0R40miAbx
+   w==;
+X-CSE-ConnectionGUID: 1+7SY+m4Q5GkdY7FWHh50Q==
+X-CSE-MsgGUID: dEOHlRmnSPC+jMYpqO/UPA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11770"; a="78385801"
 X-IronPort-AV: E=Sophos;i="6.23,205,1770624000"; 
-   d="scan'208";a="78385795"
+   d="scan'208";a="78385801"
 Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 00:29:01 -0700
-X-CSE-ConnectionGUID: BxxFYMfnRy+RNdOgW143gA==
-X-CSE-MsgGUID: Tx6+rYyzR5Gi61ifNvnFtQ==
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 00:29:07 -0700
+X-CSE-ConnectionGUID: +1M7tQq+Q2egq0jq81cD9g==
+X-CSE-MsgGUID: hse7KraFR/eiex16L4hUgw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,205,1770624000"; 
-   d="scan'208";a="272324242"
+   d="scan'208";a="272324268"
 Received: from emr-bkc.sh.intel.com ([10.112.230.82])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 00:29:00 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 00:29:05 -0700
 From: Chenyi Qiang <chenyi.qiang@intel.com>
 To: kvm@vger.kernel.org
 Cc: Chenyi Qiang <chenyi.qiang@intel.com>,
 	Sean Christopherson <seanjc@google.com>,
 	Jim Mattson <jmattson@google.com>,
 	Paolo Bonzini <pbonzini@redhat.com>,
-	Gao Chao <chao.gao@intel.com>
-Subject: [PATCH v2 0/2] KVM: x86: Fix max_irr reporting when PIR is empty despite PID.ON
-Date: Wed, 29 Apr 2026 15:28:06 +0800
-Message-ID: <20260429072851.3004430-1-chenyi.qiang@intel.com>
+	Gao Chao <chao.gao@intel.com>,
+	stable@vger.kernel.org,
+	Farrah Chen <farrah.chen@intel.com>
+Subject: [PATCH v2 1/2] KVM: x86: Always report highest IRR from __kvm_apic_update_irr()
+Date: Wed, 29 Apr 2026 15:28:07 +0800
+Message-ID: <20260429072851.3004430-2-chenyi.qiang@intel.com>
 X-Mailer: git-send-email 2.43.5
+In-Reply-To: <20260429072851.3004430-1-chenyi.qiang@intel.com>
+References: <20260429072851.3004430-1-chenyi.qiang@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -61,32 +66,92 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Fix a race in the PIR-to-IRR synchronization path where PID.ON is set
-but PIR is empty, causing __kvm_apic_update_irr() to report max_irr as
--1 even though there are pending interrupts in the IRR.  This triggers a
-spurious WARNING in vmx_check_nested_events() during nested VM stress
-tests.
+Compute *max_irr from the existing IRR in __kvm_apic_update_irr() even
+when pi_harvest_pir() returns false (PIR is empty), instead of leaving
+*max_irr uninitialized at -1.
 
-v2:
-  - Move the fix from vmx_sync_pir_to_irr() to __kvm_apic_update_irr()
-    as suggested by Paolo along with some commit message changes. [Paolo]
-  - Add Cc: stable, Suggested-by, Reviewed-by tags.
-  - Carry Sean's cleanup patch for variable renames and expanded
-    comments. [Sean]
+In a nested VM stress test, the following WARNING fires in
+vmx_check_nested_events() when kvm_cpu_has_interrupt() reports a pending
+interrupt but the subsequent kvm_apic_has_interrupt() (which invokes
+vmx_sync_pir_to_irr() again) returns -1:
 
-v1: https://lore.kernel.org/kvm/20260428070349.1633238-1-chenyi.qiang@intel.com/
+  WARNING: CPU: 99 PID: 57767 at arch/x86/kvm/vmx/nested.c:4449 vmx_check_nested_events+0x6bf/0x6e0 [kvm_intel]
+  Call Trace:
+   kvm_check_and_inject_events
+   vcpu_enter_guest.constprop.0
+   vcpu_run
+   kvm_arch_vcpu_ioctl_run
+   kvm_vcpu_ioctl
+   __x64_sys_ioctl
+   do_syscall_64
+   entry_SYSCALL_64_after_hwframe
 
-Chenyi Qiang (1):
-  KVM: x86: Always report highest IRR from __kvm_apic_update_irr()
+The root cause is a race between vmx_sync_pir_to_irr() on the target vCPU
+and __vmx_deliver_posted_interrupt() on a sender vCPU.  The sender
+performs two individually-atomic operations that are not a single
+transaction:
 
-Sean Christopherson (1):
-  KVM: x86: Fix misleading variable names and add more comments for
-    PIR=>IRR flow
+  1. pi_test_and_set_pir(vector)  -- sets the PIR bit
+  2. pi_test_and_set_on()         -- sets PID.ON
 
- arch/x86/kvm/lapic.c   | 24 +++++++++++++-----------
- arch/x86/kvm/vmx/vmx.c | 40 ++++++++++++++++++++++++++++++++--------
- 2 files changed, 45 insertions(+), 19 deletions(-)
+The following interleaving triggers the bug:
 
+  Sender vCPU (IPI):              Target vCPU (1st sync_pir_to_irr):
+  B1: set PIR[vector]
+                                  A1: pi_clear_on()
+                                  A2: pi_harvest_pir() -> sees B1 bit
+                                  A3: xchg() -> consumes bit, PIR=0
+                                      (1st sync returns correct max_irr)
+  B2: set PID.ON = 1
+
+                                  Target vCPU (2nd sync_pir_to_irr):
+                                  C1: pi_test_on() -> TRUE (from B2)
+                                  C2: pi_clear_on() -> ON=0
+                                  C3: pi_harvest_pir() -> PIR empty
+                                  C4: *max_irr = -1, early return
+                                      IRR NOT SCANNED
+
+The interrupt is not lost (it resides in the IRR from the first sync and
+is recovered on the next vcpu_enter_guest() iteration), but the incorrect
+max_irr causes a spurious WARNING and a wasted L2 VM-Enter/VM-Exit cycle.
+
+Fix this by scanning the IRR via apic_find_highest_vector() in
+__kvm_apic_update_irr() when PIR is empty, so that *max_irr always
+reflects the true highest pending interrupt regardless of PIR state.
+
+Fixes: b41f8638b9d3 ("KVM: VMX: Isolate pure loads from atomic XCHG when processing PIR")
+Cc: stable@vger.kernel.org
+Reported-by: Farrah Chen <farrah.chen@intel.com>
+Assisted-by: GitHub Copilot:Claude Opus 4.6
+Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+Reviewed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
+---
+ arch/x86/kvm/lapic.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
+
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index 9381c58d4c85..e9f1e5451160 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -669,12 +669,14 @@ bool __kvm_apic_update_irr(unsigned long *pir, void *regs, int *max_irr)
+ 	u32 irr_val, prev_irr_val;
+ 	int max_updated_irr;
+ 
++	if (!pi_harvest_pir(pir, pir_vals)) {
++		*max_irr = apic_find_highest_vector(regs + APIC_IRR);
++		return false;
++	}
++
+ 	max_updated_irr = -1;
+ 	*max_irr = -1;
+ 
+-	if (!pi_harvest_pir(pir, pir_vals))
+-		return false;
+-
+ 	for (i = vec = 0; i <= 7; i++, vec += 32) {
+ 		u32 *p_irr = (u32 *)(regs + APIC_IRR + i * 0x10);
+ 
 -- 
 2.43.5
 
