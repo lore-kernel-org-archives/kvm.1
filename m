@@ -1,93 +1,96 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 431903B47E2
-	for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 09:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BE403B47D2
+	for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 10:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777456295; cv=none; b=PQbyDoY4xXLBKk9lsiV7hNZXTr1r22DeNVi5XP5udQhRhvIY13xsRzk/qqMxrDsH335X5B0VeaHqF4nol0JNyvu9bdOQmtDvzq7/U6ZD5BCGXgTCAN7qEnKF7n0cFJXfVqUQ4qys2P0ffEQk1T9X6cxJOd+fbGUzXI5VFDm0tWk=
+	t=1777457572; cv=none; b=KpfgSx1RciOP7y0r3v01zI5wbM0T5fqQxg8LDkv7z8ZijUrIw22GKIBm7qVCAzyEFYl+hejsSacNLM50BOZ7qk7eeeLVq5zNbrJWtC/7jxtIib38HtNUjHhHDWWC3rYkTGZmJL8mZqKb2FbmWhkIZMfazY0xQ17uheWvYpkZDXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777456295; c=relaxed/simple;
-	bh=rIKmiPZH+xJuZhZOOa5gB26GovqjLJ7l2NrhyuJwVQM=;
+	s=arc-20240116; t=1777457572; c=relaxed/simple;
+	bh=WmBRG7ybVpEVt5f1Yz8SeR7dvYo1ePWwV4o7bJ6Ib3I=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ugy/P4926wsp0eHtt1Nx3ayL19DNnUHadqgDyH/RVMHQUUqCySgR4q4+bguVn+QtYAzxAUEe/Nk+kIl7BZIwYZTZgR5KUEZdPQKdNS9xJ8Tiou30uxtC5p6aKJ4BU90YT2CS8pnfw+4YYNowlRxodpALGNP2YBU3btUZQjIkWyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MVhNvmYV; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=MjjpBazXofOZZWZ8i83VzS4ZKgBRAnWkl1kMMTX4UHq9j7Cl6RQehr0U0TBTTXcryFrRnB/ZpV/tbqtpqtYI4HWlNHMzRD6krinOD3D6cecdpzLfDiMfI6YarpK6ZHsFOfWCR/NhvYZ5Qc/O794JUcEuiLndF7NkKJQ3bTGkYAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VOkvuMrA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MVhNvmYV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F248CC19425
-	for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 09:51:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VOkvuMrA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEEE0C2BCC7
+	for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 10:12:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777456295;
-	bh=rIKmiPZH+xJuZhZOOa5gB26GovqjLJ7l2NrhyuJwVQM=;
+	s=k20201202; t=1777457572;
+	bh=WmBRG7ybVpEVt5f1Yz8SeR7dvYo1ePWwV4o7bJ6Ib3I=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=MVhNvmYVtRYjfHVevrKB59NWofXv49pNxvJWFGx4NE/3w6tq6+ZyreQp8W3oHLEOP
-	 OlcqdfD/cUxO4easr2Qf68pflHOHz+8oXwm9RP3BPlm/3rZyotta62fjpBUmTo5mds
-	 ut1JMZ1MRlsvJn4VC+C6N9eh/z8qNCT5BC6CG0069H97pZ29kxBYInJyqTIMZ9ANQm
-	 tGSwliuK+FUUMXZr4pU+r/uEZ++OCt+0EAUCwWsBhRds/DEST8v/kiMZ3LEmpXGSta
-	 uWu6ujVXapyLIQIy/UCoe5EiNuU9ot1VQSZXeD32MOE5gjNdZv0acvvZkPExl2vFA0
-	 +acmrfbCFhNNA==
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-ba51e69988aso1704648266b.0
-        for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 02:51:34 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+fcM+uga2i7Twp3+quCgofSv4wWsxR6aU6UAwdVzJL+YGFM9Qq1uf6AWP+hRUPyLrnY/0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWbzri0wcjyfsRpDiQ5E366SNL98e7LnLJzJY7XjM2bmZxTTlx
-	jyeZq0Yo8Tl26ApQkV45NOMcvFtGU9qylLZ69pAjvyldnm+X2a8tqnpvDSI5wEeHONV0qAzGr1e
-	XNXXznKWlNOi7zsHIIm50aeyc2NIeXj4=
-X-Received: by 2002:a17:906:5194:10b0:ba2:3f1b:1314 with SMTP id
- a640c23a62f3a-bb8045375f5mr284382766b.33.1777456293613; Wed, 29 Apr 2026
- 02:51:33 -0700 (PDT)
+	b=VOkvuMrAFbVvOrkIm2EYoRN7uZHwY3rP/qWKL5riKuQ2obF5xEP5E3g7rLHwPkXB4
+	 uPQ5Bw43puqAG3Jf7mY8sZubBHBf5qxdNK9WkcvUySo09qd6UW3UP9U3wohAC1bbcj
+	 MFOi2xxEoIePQoGRZ0unPi5ad7ALnefx3NHDu5EX//O8xvyI2rcoC3CzN+ai5fORIp
+	 bkPQkMVWvbVYLpcN5max55FriEbKb6TfLxixok8O0PvSCV/QIAS1my+gfjkEYxwGm2
+	 mJaSa2gxP2MwhUC4dJf/k9EmGnnhYIN71L7l5cXc/DRbV/KgmDdeFTd1dXE2NbPOQ8
+	 bDNN4d3WzPLOA==
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-672c12e95e9so17327059a12.2
+        for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 03:12:51 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8JNIm+USK+I04TzG2Z4wQ+rGvXEq+TJuPcFCW1HJu908C4mY3AKOpQloBe1dVZGSfXgQk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzbBNnhWrF9kxcxAssuth1nsJ4+OGsFrwOWVbTlo3R3FWgQFv3g
+	K47UpFDO+CZkpzUmOeZ+X42Ca6pHcXevi2s6wWKp0M8IhHekNS/gmkpO7JJ2vS4Y4rK/bkyEuR5
+	XsDBPzInb3L1kv6C/rAcDX2IEATf/lGI=
+X-Received: by 2002:a17:907:874b:b0:ba6:8a6c:f91d with SMTP id
+ a640c23a62f3a-bb804537cffmr412174666b.36.1777457570525; Wed, 29 Apr 2026
+ 03:12:50 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260428121813.296781-1-maqianga@uniontech.com> <0b8db33a-6c26-d9f5-b78f-d9249dd02c1c@loongson.cn>
-In-Reply-To: <0b8db33a-6c26-d9f5-b78f-d9249dd02c1c@loongson.cn>
+References: <20260414072313.3801110-1-maobibo@loongson.cn>
+In-Reply-To: <20260414072313.3801110-1-maobibo@loongson.cn>
 From: Huacai Chen <chenhuacai@kernel.org>
-Date: Wed, 29 Apr 2026 17:51:49 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H7FH0Woxh4fvgZoL8LQKzNh4fkMvC3qzdpHFiRsZH=yJA@mail.gmail.com>
-X-Gm-Features: AVHnY4JFcELWysuRIi0rMPkOf97VQsUzXI3ZG2R3SP-Rmv1WXieBdpiM2-QqrFs
-Message-ID: <CAAhV-H7FH0Woxh4fvgZoL8LQKzNh4fkMvC3qzdpHFiRsZH=yJA@mail.gmail.com>
-Subject: Re: [PATCH v2] LoongArch: KVM: Cap KVM_CAP_NR_VCPUS by KVM_CAP_MAX_VCPUS
+Date: Wed, 29 Apr 2026 18:13:05 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H5+mR5gnd6x6yUEFK7ZnWyYQVTiE6C=enk7bHxe2Mo2Sg@mail.gmail.com>
+X-Gm-Features: AVHnY4IE7b_uD3Pu012Z-8FrM3vF54CDje-BOBCpe2XN_WV3r3i-oCnlJyOGEcE
+Message-ID: <CAAhV-H5+mR5gnd6x6yUEFK7ZnWyYQVTiE6C=enk7bHxe2Mo2Sg@mail.gmail.com>
+Subject: Re: [PATCH 0/3] LoongArch: KVM: Small enhancement about timer
 To: Bibo Mao <maobibo@loongson.cn>
-Cc: Qiang Ma <maqianga@uniontech.com>, zhaotianrui@loongson.cn, kernel@xen0n.name, 
-	kvm@vger.kernel.org, loongarch@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc: kernel@xen0n.name, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Apr 28, 2026 at 8:59=E2=80=AFPM Bibo Mao <maobibo@loongson.cn> wrot=
-e:
->
-> On 2026/4/28 =E4=B8=8B=E5=8D=888:18, Qiang Ma wrote:
-> > It doesn't make sense to return the recommended maximum number of
-> > vCPUs which exceeds the maximum possible number of vCPUs.
-> >
-> > Other architectures have already done this, such as Commit
-> > 57a2e13ebdda ("KVM: MIPS: Cap KVM_CAP_NR_VCPUS by KVM_CAP_MAX_VCPUS")
-> >
-> > Signed-off-by: Qiang Ma <maqianga@uniontech.com>
-> > ---
-> >   arch/loongarch/kvm/vm.c | 2 +-
-> >   1 file changed, 1 insertion(+), 1 deletion(-)
-> >
-> > diff --git a/arch/loongarch/kvm/vm.c b/arch/loongarch/kvm/vm.c
-> > index 8cc5ee1c53ef..1317c718f896 100644
-> > --- a/arch/loongarch/kvm/vm.c
-> > +++ b/arch/loongarch/kvm/vm.c
-> > @@ -125,7 +125,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, l=
-ong ext)
-> >               r =3D 1;
-> >               break;
-> >       case KVM_CAP_NR_VCPUS:
-> > -             r =3D num_online_cpus();
-> > +             r =3D min_t(unsigned int, num_online_cpus(), KVM_MAX_VCPU=
-S);
-> >               break;
-> >       case KVM_CAP_MAX_VCPUS:
-> >               r =3D KVM_MAX_VCPUS;
-> >
-> Reviewed-by: Bibo Mao <maobibo@loongson.cn>
-Applied, thanks.
+The first patch cannot be applied cleanly, I adjusted it and applied,
+hope it is correct.
+https://git.kernel.org/pub/scm/linux/kernel/git/chenhuacai/linux-loongson.g=
+it/log/?h=3Dloongarch-next
+
 
 Huacai
+
+On Tue, Apr 14, 2026 at 3:23=E2=80=AFPM Bibo Mao <maobibo@loongson.cn> wrot=
+e:
+>
+> By running LTP stress test cases on VM, there is an RCU timeout issue on
+> some vCPUs recently. The problem is that there is HW timer interrupt lost
+> issue when injecting SIP0/IPI interrupt from KVM hypervisor, this problem
+> is hidden because the KVM hypervisor will inject spurious timer interrupt
+> if emulated timer is expired. In late the spurious timer interrupt is
+> clear if old TI bit of ESTAT register is not set, so there will be RCU
+> timeout issue with LTP stress test.
+>
+> This patch set fixes the HW timer interrupt lost issue, also this patch
+> moves unconditional delay in timer interrupt clear scenery, which happens
+> seldomly; mostly the timer interrupt bit is set when it expires.
+>
+> Bibo Mao (3):
+>   LoongArch: KVM: Move AVEC interrupt injection in switch loop
+>   LoongArch: KVM: Fix HW timer interrupt lost when inject interrupt from
+>     software
+>   LoongArch: KVM: Move unconditional delay in timer clear scenery
+>
+>  arch/loongarch/kvm/interrupt.c | 37 +++++++++++++++++++++++++---------
+>  arch/loongarch/kvm/timer.c     | 16 +++++++++++++--
+>  2 files changed, 41 insertions(+), 12 deletions(-)
+>
+>
+> base-commit: d568788baab24875604c231f723dbb72387fb081
+> --
+> 2.39.3
+>
 >
