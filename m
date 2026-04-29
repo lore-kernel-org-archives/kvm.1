@@ -1,218 +1,165 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BFE337F8C6
-	for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 07:29:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777447750; cv=none; b=eM3xdgortGkhbF3Bta1ERqhCcbgqNiFSESxd+BskMW7FA+mXV+FAN6ktHIDeRrTGBzmF5zrXLcxlFhuRsVgzraUbRqQSYFyjEndfqs/WSMw/DEFk+PKFv1Z2qVAnudBZ9GonYhX244tgXjqsGALU3lGlC2z9rbnrrCRLno5UXiI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777447750; c=relaxed/simple;
-	bh=mEOF1Totkw3nyVlBqQbjli7dq2wTuq57zgztCWlTKJQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=twSMzUMJ5iTd8+YKm39lGbKzcQ7bixzC+X3b8N/N9lD1s2XMKihEi5bROtHiL7uMZjQ/aSUkh5uMC7nL0UUT3BJLn0/lI7MjpFLNB/7hUxqLnrmKu6AwuRRkB1N7ZhqdkYucm61dOCNWYF9xXQIAurv/Qopzha5izAHk/lC2uts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HdwNZxhv; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50F4230B525
+	for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 07:50:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777449054; cv=pass; b=UAfhGEEAmkIsl7BjjwICn/GUDYSdv+G1IuhY0BxDEpzbdS+DdKtTCbEEu2ddGPqzlQ/N6G3CHfhONytd5EmpHZT8nLpdOoKaVky5Im4PeY3/rJOq8XynFCcl3MJ5EbQmVIFgg/CLwlfa9TEI4f9Toj4DBfYmd3D1ZvMyWIrx1xE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777449054; c=relaxed/simple;
+	bh=5oGfP1CK+T7BtF/H8oVuh10E0upA8xqiMEQy84c/s8g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Q7BW+R5w4ZixfZSqpBt8Dm/HDg5uYaddK6qxng23pXYTj7I8qGMv3ELmMD2Sz2yT9vGAKoONVYekjWoGDCh6AS0AdMIYKuIJVl7xx5pA9buYWvOLo2DXOdVoNH6L8IZPFlJJr22xuMcVviFyqRb9u38NFdgw7I0VJf3CrhmO/h4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ROklb5gr; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=fpLmP3H1; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HdwNZxhv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777447749; x=1808983749;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=mEOF1Totkw3nyVlBqQbjli7dq2wTuq57zgztCWlTKJQ=;
-  b=HdwNZxhvCuZLC9TNfmn+dHFlpR8wfMef5KiUWxVpK4kTt49d4brlgs48
-   3UXPXQHUMfCkL/1b5sAh9EZ+gDteDXdfHWoCD+BN430iIL3RkgXa3/zi9
-   NLyqgkIlX0/sfe0tEzp7f4/GyGeJ6qEm81Azhew7Guxp6woHrSJ1Ar8q8
-   OtSu1Qi4Pq+y3+H+/BHtzf1tPa5gZYAGoJjWGbYWpttzzfbUJZ+FUb5iu
-   hHLQczoZLTgK4hAEOWgNRKMb/OCTK4fZmGBXB/O4+McRXdKIo50YvnYJy
-   3Gah7AyWXRs8b+qvcjbvHAOQ4ZWY7lg+xLJZ/TH3pRVw1LdcJWhXm2kCV
-   Q==;
-X-CSE-ConnectionGUID: 0jwIFTXGTYKNwYshD185/A==
-X-CSE-MsgGUID: kZKnEMJDSYO/hMQmExBVBg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11770"; a="78385804"
-X-IronPort-AV: E=Sophos;i="6.23,205,1770624000"; 
-   d="scan'208";a="78385804"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 00:29:09 -0700
-X-CSE-ConnectionGUID: gtUbeuVLR2abwR81VXYQcA==
-X-CSE-MsgGUID: cWHTlHfOSOGV7UEUkpy85g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,205,1770624000"; 
-   d="scan'208";a="272324278"
-Received: from emr-bkc.sh.intel.com ([10.112.230.82])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 00:29:08 -0700
-From: Chenyi Qiang <chenyi.qiang@intel.com>
-To: kvm@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
-	Chenyi Qiang <chenyi.qiang@intel.com>,
-	Jim Mattson <jmattson@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Gao Chao <chao.gao@intel.com>
-Subject: [PATCH v2 2/2] KVM: x86: Fix misleading variable names and add more comments for PIR=>IRR flow
-Date: Wed, 29 Apr 2026 15:28:08 +0800
-Message-ID: <20260429072851.3004430-3-chenyi.qiang@intel.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20260429072851.3004430-1-chenyi.qiang@intel.com>
-References: <20260429072851.3004430-1-chenyi.qiang@intel.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ROklb5gr";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="fpLmP3H1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777449052;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ksLBVehtFHHLiR0KtMVjgdkZVMmaOTDo6Lxsl/DgE0A=;
+	b=ROklb5grJSKJS+oUW4HmIveCbg6xmY3XIxI2Nj4Bc3WzAqRKb8W+4sI1JzbSMKyUMfPsn7
+	q01EX8gsMQMMDPLfMTN26T994cLFqsva0UVckwnGUvhqXi3aH371vh9CBhqlT5e8QgNaQw
+	F0grydMHHFNEz7jGjbJ4+XaNVPgezTs=
+Received: from mail-pl1-f197.google.com (mail-pl1-f197.google.com
+ [209.85.214.197]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-356-4Mpy9iGZNfePEc-QLx5r1A-1; Wed, 29 Apr 2026 03:50:49 -0400
+X-MC-Unique: 4Mpy9iGZNfePEc-QLx5r1A-1
+X-Mimecast-MFC-AGG-ID: 4Mpy9iGZNfePEc-QLx5r1A_1777449048
+Received: by mail-pl1-f197.google.com with SMTP id d9443c01a7336-2b24cd2e2b3so112905465ad.0
+        for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 00:50:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777449048; cv=none;
+        d=google.com; s=arc-20240605;
+        b=AFTxD+I8poREeapUemg/Zan//bbj4c8Ts21a4+q7boGpvtXjBB80i85/D7qMST3YCy
+         64iMzCI3O7kqBXfuiwcU/yWL8P4Z2o1Seifmouq63FQUIsKmyDKrXoo+H8hRb/8ABPwK
+         wc8g1MkM5HmWPZoU9ol2558ckLZQn8AB3+W8JcVsTbJ3QYpxs3cXjV564bL7Mn8JX5vt
+         j+3NOLw2j4v5GEhiDXiCAjHppEUI0HdARjcIMLvqqHpkMetr0La2foGYpImGcrM7O+AB
+         Lp1bg97GMwv0HHB21DHmrRZUFPP8SxgSg9jy0PKhLHxdJI5R5eiUOupK4byUHGAMdskW
+         E6lA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ksLBVehtFHHLiR0KtMVjgdkZVMmaOTDo6Lxsl/DgE0A=;
+        fh=oyx9pWeZz99WQ+13uUZpVBRwr5PIuHPyz0tJwG6CV5Q=;
+        b=I3C8zJwEoqb9ZzkNi+zjbHejp5Hy2IslgDA3WX8bJh70QM3XV2SLdxgHWfKCUhMRYA
+         FYQL43YYyfdOVD1aAif/SL8B1/6DwLNxV6ZbIvhirSC34mZNdzMu3LNi4JYnzBOkuWCp
+         2zYFT4XF0XZzgiRwxl2+xCLyoHMkNw4tmya1WQKz2TdinTKj6SlGqq+AD3dLgFUQx/3M
+         wDd0odqE4drSm6SpKJEoYCJibIj8MrGqIzzivDU+kvTEYtD6FSbpp+nziShCjP3375y6
+         XrxO8cvvH4obrs5RSQgRkn9Uy50Uq9WXcx0U1P5t0AvQo+WlkBxqBQUaS9p6Hij1C39l
+         QkkA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1777449048; x=1778053848; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ksLBVehtFHHLiR0KtMVjgdkZVMmaOTDo6Lxsl/DgE0A=;
+        b=fpLmP3H1HQSerH/0ptyQa2dWq9N1lldwIsWhphKZjPM43tqKS2vZu+jDiIjpZ4+ONs
+         PgNJb9mBxctR8SWCsX0PSf/5SJarJrgbXm5DIV282ElTgPgyzB08csVMBYIbSMb8FQQD
+         chX6XwG8M2SGmhPY6k2YVoeQInRHQ8GpUYVdIaoDma7TuJr5GBZ7FqWxX/bQt+b4SsLf
+         zX2tYSpR8ii1RYuRdu8WoSc0F/KCAExd8nuepVKR6OOAPp4tBZuaYzoHYYY3m9MPc9mO
+         O+qJSJCuvQLCYlWwEVYdVPd+CKn6xUNn3kGFG4+EtcYnQtzL9ku/TgGZ0lWe8szjiNtA
+         iLHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777449048; x=1778053848;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ksLBVehtFHHLiR0KtMVjgdkZVMmaOTDo6Lxsl/DgE0A=;
+        b=U5QFXr22W8xHaAun6m3NeXNmNpe1UVSq6gqdy52mBB8qusVvmSXFGuhX4Ch2cEyHLv
+         wRV5uDkO6W++JnjpZ38GtMMAZwBljBOsMCb++DBEaJxpTYOhOxpp/IhLI7YgS/oCz9HP
+         K0CoqdNdSKvUgo3funIwO+rwRxWbuqQp2cIEHC6neOhrDZSa99vn/jWE/tZijldTvzVY
+         ifSTe3YCebbdDPQkQ5F8TlOqMTg6TKPwcdHTDxEfTI0ULlobmJK7HaDphetyd8cYHvSk
+         d6nHMn8lKseV3jQyq9UB2N2HpefuOeYsFUTICGZo+yvta92csEjNFRmZOmEgN1E7wbjq
+         VrgA==
+X-Forwarded-Encrypted: i=1; AFNElJ+kecYwUPLdssu6p+5n4OdUUcgbo9elC+KjEM0XsTQLATLozrENEQeGRLU+RoNkBZ3Kb+0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzAbsR/Tz0lRclEjSxPfcylMGxrQAVWsNVnpruEsYWHJgyZVGJt
+	LUt+11OSlvimvWutXhfAThsU8savmjUlbkGxSql/ypBFdIdNa5oBnaYPcIhPFaZAZk6+t2F1k2W
+	AiJOP7XJrqGx/menbZI455+SraBx1YEwDiAiKSrD6Rlo65HVFTfhzWOPUNGqo1OnmKcGZHfUplj
+	STAdL8eRuJlnMMpbXN7qM9boEZAqAe
+X-Gm-Gg: AeBDiesX4oQuaI2GH36Un4ZIXfOaeI/Pbnoul/+5XtNSGibrXm+KyJ/Eok4sGn7oXUY
+	WAzXUt4Pdz5l2zm5lTBBPI10BGPK5XhqtNqEDl9ZviguI3zUQLyL1lPCqEg4kpHpRwL4xdDE78N
+	hwFLbouT5tWMGW6BXmPMrEdw+/rD8lxUFT7idRhsAgknBa5bIf2AN9T34nh6gQt9iHNCl0lOUM7
+	cuEqSNXyTGj0nDhrasIghdkaD3HMHAMs6a9DQpXAP1HpmfV7iqtI6fh1DbQSfF8Vuht9XcKbxnf
+	DkfJyvZ77IogVD4=
+X-Received: by 2002:a17:903:283:b0:2b2:b117:1e1b with SMTP id d9443c01a7336-2b97c41faacmr70109025ad.17.1777449047902;
+        Wed, 29 Apr 2026 00:50:47 -0700 (PDT)
+X-Received: by 2002:a17:903:283:b0:2b2:b117:1e1b with SMTP id
+ d9443c01a7336-2b97c41faacmr70108755ad.17.1777449047451; Wed, 29 Apr 2026
+ 00:50:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260428050111.39323-1-chang.seok.bae@intel.com>
+ <20260428050111.39323-2-chang.seok.bae@intel.com> <6e67df0e-e5f0-43f5-aa86-22e8b01b75d2@redhat.com>
+ <c87d863b-e053-416f-bae2-6960b4b9d0fb@intel.com>
+In-Reply-To: <c87d863b-e053-416f-bae2-6960b4b9d0fb@intel.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Wed, 29 Apr 2026 09:50:33 +0200
+X-Gm-Features: AVHnY4IxYI7oSGTYgBH2ha5fgC_OMxrOhW9MwjtJaqDmfvCjiv_ybICx-f1W7_0
+Message-ID: <CABgObfbgt35yN+o4w_D5U8A7QKRWxiwEtUuzzK39eScXNa4EfQ@mail.gmail.com>
+Subject: Re: [PATCH v3 01/20] KVM: VMX: Macrofy 64-bit GPR swapping in __vmx_vcpu_run()
+To: "Chang S. Bae" <chang.seok.bae@intel.com>
+Cc: seanjc@google.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	chao.gao@intel.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Sean Christopherson <seanjc@google.com>
+On Tue, Apr 28, 2026 at 10:12=E2=80=AFPM Chang S. Bae <chang.seok.bae@intel=
+.com> wrote:
+> On 4/28/2026 2:03 AM, Paolo Bonzini wrote:
+> > I would also consider using inst.h's name-to-index conversion:
+> >
+> > .macro LOAD_GPRS src:req, regs_ofs:req, regs:vararg
+> > .irp reg, \regs
+> > #ifdef CONFIG_X86_64
+> >      R64_NUM reg_num \reg
+> > #else
+> >      R32_NUM reg_num \reg
+> > #endif
+> >      .if \reg_num <> REG_NUM_INVALID
+> >      mov (\regs_ofs + \reg_num * WORD_SIZE)(%_ASM_DI), \reg
+> >      .else
+> >      .err invalid register \reg
+> >      .endif
+> > .endr
+> > .endm
+> Yup! Also, looks like still needs the REG_TYPE macro:
 
-Rename kvm_apic_update_irr()'s "irr_updated" and vmx_sync_pir_to_irr()'s
-"got_posted_interrupt" to a more accurate "max_irr_is_from_pir", as neither
-"irr_updated" nor "got_posted_interrupt" is accurate.
-__kvm_apic_update_irr() and thus kvm_apic_update_irr() specifically return
-true if and only if the highest priority IRQ, i.e. max_irr, is a "new"
-pending IRQ from the PIR.  I.e. it's possible for the IRR to be updated,
-i.e. for a posted IRQ to be "got", *without* the APIs returning true.
+I don't think so, you can (and should) assume that \reg has WORD_SIZE
+size (i.e. disallow %eax if CONFIG_X86_64 is set).  Only CLEAR_REGS
+uses smaller registers but it does not need the reg_num.
 
-Expand vmx_sync_pir_to_irr()'s comment to explain why it's necessary to
-set KVM_REQ_EVENT only if a "new" IRQ was found, and to explain why it's
-safe to do so only if a new IRQ is also the highest priority pending IRQ.
+Paolo
 
-No functional change intended.
-
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/lapic.c   | 16 ++++++++--------
- arch/x86/kvm/vmx/vmx.c | 40 ++++++++++++++++++++++++++++++++--------
- 2 files changed, 40 insertions(+), 16 deletions(-)
-
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index e9f1e5451160..3c9512d1d79a 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -667,14 +667,14 @@ bool __kvm_apic_update_irr(unsigned long *pir, void *regs, int *max_irr)
- 	u32 *__pir = (void *)pir_vals;
- 	u32 i, vec;
- 	u32 irr_val, prev_irr_val;
--	int max_updated_irr;
-+	int max_new_irr;
- 
- 	if (!pi_harvest_pir(pir, pir_vals)) {
- 		*max_irr = apic_find_highest_vector(regs + APIC_IRR);
- 		return false;
- 	}
- 
--	max_updated_irr = -1;
-+	max_new_irr = -1;
- 	*max_irr = -1;
- 
- 	for (i = vec = 0; i <= 7; i++, vec += 32) {
-@@ -690,25 +690,25 @@ bool __kvm_apic_update_irr(unsigned long *pir, void *regs, int *max_irr)
- 				 !try_cmpxchg(p_irr, &prev_irr_val, irr_val));
- 
- 			if (prev_irr_val != irr_val)
--				max_updated_irr = __fls(irr_val ^ prev_irr_val) + vec;
-+				max_new_irr = __fls(irr_val ^ prev_irr_val) + vec;
- 		}
- 		if (irr_val)
- 			*max_irr = __fls(irr_val) + vec;
- 	}
- 
--	return ((max_updated_irr != -1) &&
--		(max_updated_irr == *max_irr));
-+	return (max_new_irr != -1) && (max_new_irr == *max_irr);
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(__kvm_apic_update_irr);
- 
- bool kvm_apic_update_irr(struct kvm_vcpu *vcpu, unsigned long *pir, int *max_irr)
- {
- 	struct kvm_lapic *apic = vcpu->arch.apic;
--	bool irr_updated = __kvm_apic_update_irr(pir, apic->regs, max_irr);
-+	bool max_irr_is_from_pir;
- 
--	if (unlikely(!apic->apicv_active && irr_updated))
-+	max_irr_is_from_pir = __kvm_apic_update_irr(pir, apic->regs, max_irr);
-+	if (unlikely(!apic->apicv_active && max_irr_is_from_pir))
- 		apic->irr_pending = true;
--	return irr_updated;
-+	return max_irr_is_from_pir;
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_apic_update_irr);
- 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 8b24e682535b..297bb6c3ecc2 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -7138,8 +7138,8 @@ static void vmx_set_rvi(int vector)
- int vmx_sync_pir_to_irr(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_vt *vt = to_vt(vcpu);
-+	bool max_irr_is_from_pir;
- 	int max_irr;
--	bool got_posted_interrupt;
- 
- 	if (KVM_BUG_ON(!enable_apicv, vcpu->kvm))
- 		return -EIO;
-@@ -7151,17 +7151,22 @@ int vmx_sync_pir_to_irr(struct kvm_vcpu *vcpu)
- 		 * But on x86 this is just a compiler barrier anyway.
- 		 */
- 		smp_mb__after_atomic();
--		got_posted_interrupt =
--			kvm_apic_update_irr(vcpu, vt->pi_desc.pir, &max_irr);
-+		max_irr_is_from_pir = kvm_apic_update_irr(vcpu, vt->pi_desc.pir,
-+							  &max_irr);
- 	} else {
- 		max_irr = kvm_lapic_find_highest_irr(vcpu);
--		got_posted_interrupt = false;
-+		max_irr_is_from_pir = false;
- 	}
- 
- 	/*
--	 * Newly recognized interrupts are injected via either virtual interrupt
--	 * delivery (RVI) or KVM_REQ_EVENT.  Virtual interrupt delivery is
--	 * disabled in two cases:
-+	 * If APICv is enabled and L2 is not active, then update the Requesting
-+	 * Virtual Interrupt (RVI) portion of vmcs01.GUEST_INTR_STATUS with the
-+	 * highest priority IRR to deliver the IRQ via Virtual Interrupt
-+	 * Delivery.  Note, this is required even if the highest priority IRQ
-+	 * was already pending in the IRR, as RVI isn't updated in lockstep with
-+	 * the IRR (unlike apic->irr_pending).
-+	 *
-+	 * For the cases where Virtual Interrupt Delivery can't be used:
- 	 *
- 	 * 1) If L2 is running and the vCPU has a new pending interrupt.  If L1
- 	 * wants to exit on interrupts, KVM_REQ_EVENT is needed to synthesize a
-@@ -7172,10 +7177,29 @@ int vmx_sync_pir_to_irr(struct kvm_vcpu *vcpu)
- 	 * 2) If APICv is disabled for this vCPU, assigned devices may still
- 	 * attempt to post interrupts.  The posted interrupt vector will cause
- 	 * a VM-Exit and the subsequent entry will call sync_pir_to_irr.
-+	 *
-+	 * In both cases, set KVM_REQ_EVENT if and only if the highest priority
-+	 * pending IRQ came from the PIR, as setting KVM_REQ_EVENT if any IRQ
-+	 * is pending may put the vCPU into an infinite loop, e.g. if the IRQ
-+	 * is blocked, then it will stay pending until an IRQ window is opened.
-+	 *
-+	 * Note!  It's possible that one or more IRQs were moved from the PIR
-+	 * to the IRR _without_ max_irr_is_from_pir being true!  I.e. if there
-+	 * was a higher priority IRQ already pending in the IRR.  Not setting
-+	 * KVM_REQ_EVENT in this case is intentional and safe.  If APICv is
-+	 * inactive, or L2 is running with exit-on-interrupt off (in vmcs12),
-+	 * i.e. without nested virtual interrupt delivery, then there's no need
-+	 * to request an IRQ window as the lower priority IRQ only needs to be
-+	 * delivered when the higher priority IRQ is dismissed from the ISR,
-+	 * i.e. on the next EOI, and EOIs are always intercepted if APICv is
-+	 * disabled or if L2 is running without nested VID.  If L2 is running
-+	 * exit-on-interrupt on (in vmcs12), then the higher priority IRQ will
-+	 * trigger a nested VM-Exit, at which point KVM will re-evaluate L1's
-+	 * pending IRQs.
- 	 */
- 	if (!is_guest_mode(vcpu) && kvm_vcpu_apicv_active(vcpu))
- 		vmx_set_rvi(max_irr);
--	else if (got_posted_interrupt)
-+	else if (max_irr_is_from_pir)
- 		kvm_make_request(KVM_REQ_EVENT, vcpu);
- 
- 	return max_irr;
--- 
-2.43.5
+> .macro LOAD_REGS src:req, regs_ofs:req, regs:vararg
+> .irp reg, \regs
+>         REG_TYPE reg_type \reg
+>         .if reg_type =3D=3D REG_TYPE_R64
+>         R64_NUM reg_num \reg
+>         .else
+>         R32_NUM reg_num \reg
+>         .endif
+>         .if reg_num <> REG_NUM_INVALID
+>         mov (\regs_ofs + reg_num * WORD_SIZE)(\src), \reg
+>         .else
+>         .err invalid register \reg
+>         .endif
+> .endr
+> .endm
+>
+> Thanks,
+> Chang
+>
 
