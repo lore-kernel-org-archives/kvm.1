@@ -1,30 +1,30 @@
-Received: from out30-99.freemail.mail.aliyun.com (out30-99.freemail.mail.aliyun.com [115.124.30.99])
+Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6611F38DF9;
-	Wed, 29 Apr 2026 01:15:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.99
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7C5522301;
+	Wed, 29 Apr 2026 01:21:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777425329; cv=none; b=V5J2655UfWKYtV2U9D2uUQt72owTw2YSacZG5v1YqavDZkFg6J9dM3RSctrZhKR8BLmeHatCXuPToytDUV0UgFPD530qNTu+eYy+GGv+yX53NiKcX+cgnBcexSJhMUFRTW8V28ZQHn2J8O/r671kHaHDP5tGa6XSLB5PxyGoP+g=
+	t=1777425679; cv=none; b=cujggGNyuWhCGUO++aecE/yz/AreXxnU1oYf44QUnI4jwhbNqhzg8WuPG1IAIMXeErCQgukh2vSirmAkfIEmwZBGlXJID5ff461KXQgYtKcQsx1bIAEKjI9/Pn4kcbkCmzliPMtYHsWb4oZEnXDd5YtnjKJ+U7E5EvrZQ/ySc1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777425329; c=relaxed/simple;
-	bh=r8EbWNXi4J82YFK/uhQ5l2XFpmLroabMXBcb58UjF6g=;
+	s=arc-20240116; t=1777425679; c=relaxed/simple;
+	bh=7LnoYXtUgcLK+iuuo/ay/+wU4q11Fd3/PO7qvUkxaPc=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=SWw66EiHbVJXB5m1TMGYFe/XJrOPdLMx3mw3bAT4Ve+h29M9wKCNpmUrZtvGlhnotSMh6sg06X5LyYLNp49Jjbz1zjbqu5piAfaYl+ny2bbHeTTo8h7kWfG0KQKXFHMBMBfJpizTW6goQAoaVuvr0MIFuUyhUrCN8iI+QR67+4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=d7AdNmsL; arc=none smtp.client-ip=115.124.30.99
+	 MIME-Version; b=jouDBFKIT8vGMTRzC6Yr1B10+3ss8JuQGlPeJnCLq+GtZptBaCrKWH3BjZD4dSNrMyokFp51M1qATQvgyKda/WJcGVaOi2dffKd9hPL3CBUJvg4lojFeWtConZtibhPJvAh7PFBPUEnifidREkzstRjuuchlK9o9n7TPflSmf8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=DwCdb47w; arc=none smtp.client-ip=115.124.30.98
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="d7AdNmsL"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="DwCdb47w"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1777425325; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=xWnII7NbedrCecv32Wz7AYnJB6oJuNa7XLMjqnf42ng=;
-	b=d7AdNmsLQCnRsf+Gv/1Awdemh5I1CO8FJ9EBGw8TvjCMs4Gb3PNmqLSWp75UA2AIB3/UHKE3tRiaDdbyyL8v6CqoRWwhQew2v53Ko5h3V0DLQ7qqULCynqFUCdlSk0YJ7DLo1/pUxLGQFBhCQLdyXvRV0EPVCTQ494xJIvLb/zs=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R861e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0X1vlEBh_1777425321;
-Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X1vlEBh_1777425321 cluster:ay36)
+	t=1777425670; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=7LnoYXtUgcLK+iuuo/ay/+wU4q11Fd3/PO7qvUkxaPc=;
+	b=DwCdb47wwaUWfhHR6TWABRu6t5KCyS70F0SXyBS97EPaiJZbvjzfynBtXbmhYiLFglJxO/VXyqj76FHA7YLy6SJxCFfo70o1Gzmbys3c0r2ZoAv/CS/mnN27TFyFa4/PFAV4ULKjX4XI2n5dttR+BVfwClRqN+y+zdrksyOZHjk=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R131e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045133197;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=22;SR=0;TI=SMTPD_---0X1vuGUZ_1777425666;
+Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X1vuGUZ_1777425666 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Wed, 29 Apr 2026 09:15:23 +0800
+          Wed, 29 Apr 2026 09:21:08 +0800
 From: fangyu.yu@linux.alibaba.com
 To: jgg@ziepe.ca
 Cc: alex@ghiti.fr,
@@ -48,12 +48,12 @@ Cc: alex@ghiti.fr,
 	tjeznach@rivosinc.com,
 	vasant.hegde@amd.com,
 	will@kernel.org
-Subject: Re: Re: [RFC PATCH 02/11] iommu/riscv: report iommu capabilities  
-Date: Wed, 29 Apr 2026 09:15:20 +0800
-Message-Id: <20260429011520.62812-1-fangyu.yu@linux.alibaba.com>
+Subject: Re: Re: [RFC PATCH 06/11] iommu/riscv: Add domain_alloc_paging_flags for second-stage domain 
+Date: Wed, 29 Apr 2026 09:21:06 +0800
+Message-Id: <20260429012106.63618-1-fangyu.yu@linux.alibaba.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20260428133324.GD849557@ziepe.ca>
-References: <20260428133324.GD849557@ziepe.ca>
+In-Reply-To: <20260428133501.GE849557@ziepe.ca>
+References: <20260428133501.GE849557@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,15 +62,10 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
->> +static bool riscv_iommu_capable(struct device *dev, enum iommu_cap cap)
->> +{
->> +	switch (cap) {
->> +	case IOMMU_CAP_CACHE_COHERENCY:
->> +	case IOMMU_CAP_DEFERRED_FLUSH:
->
->IOMMU_CAP_DEFERRED_FLUSH is not needed in v7.1
+Understood. I will rework the flags handling to follow the switch/case pattern
+used by other drivers, and remove the dev_err() on the failure path.
 
-Thanks, I will drop IOMMU_CAP_DEFERRED_FLUSH.
+Thanks,
+Fangyu
 
->
 >Jason
