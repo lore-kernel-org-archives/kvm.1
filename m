@@ -1,234 +1,131 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0C8349B0D;
-	Wed, 29 Apr 2026 16:11:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FFB83FE668
+	for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 16:14:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777479100; cv=none; b=WasfeXRg7X1VGCF0soZcWPqEX6FAaHFoCrUlk8IHZSZxttXeOLrs2B0ki+es/xx5s5DoYMXjfO4Qe8eueA/XIS04iDClUb4vFyi56W1FtIWG4wca5K38kPJ8lU5DF7uWtXeyPGXi0npLiYbsvWzJidYP3ZBC7dvCjfVhb9Y1M1o=
+	t=1777479255; cv=none; b=JFneCBmIccYrkyq+7CpfwBZgfi8uZOWleZmlHS1GTJexKvfAIOaBea9jlq04E3KjfOjjwG6eyXIswpnMjWuVtGGfShbdPDnz2QDBv2SU4qHGjEgb49qk0EMs/EwaS9cQtYNyDO7hGgRI+LyJenbVGz0qwTAKbcsaPrHEdQNU7XE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777479100; c=relaxed/simple;
-	bh=k++l3WtLFBko4f56l2wRpN2TjenMI0cWBCrk3PWqaYg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=hKunpsg4bsZU2EHoFyKfGOHtKL5X88TM0ge28M8idvuTUOoDo5xI77LkQjBvZ1g9dClce+FGoX6Cnmlelig+PlVyg0Pcd2+1cp4b/AWNnG2E5Xr/YYqV2gsbr7Q5vtnk6BAjUFXtjMBYi/zingVkcvJCY8cHQjXaLKDBnOX4zEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tb/V+b45; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1777479255; c=relaxed/simple;
+	bh=QIUvdq75lFARum0k0kDOdaUv3IFA90teUppVmMvzJ/g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JusQpptxsrKUUUBGaLsoh47wbG0PTRRsRbHVVEOmSRIr6f5IodXvbFWrzf4IGDjS2ZEGRxjPTUGL1nB8vJEE/tQcxHb0PuMWBD8mhYnpPZjj56ZC6X2bmgNbz7zmxEqjmaxbTXOHacLhKnVCkdp4aeVY5aREYS4ciSuqhfOGQ5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com; spf=pass smtp.mailfrom=soleen.com; dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b=P6gaUGVt; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=soleen.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=soleen.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tb/V+b45"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63TAk1dI2888876;
-	Wed, 29 Apr 2026 16:11:30 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=fTqOyx
-	iaJok5OwQ/9OwcV0+As566moPHGf+m7xxSUxg=; b=tb/V+b455H7GL3THSdmrYU
-	ui42yBMWW91QJjejeGBkMSh34DDPGfMgRCAXCDo8zYlkOsTCGo5mUZeOZKV/Rcl1
-	MkFHsKm9yVQZY+v1ZtLzuL/OkvBFMpAm54KZNpVnMyoEI3vjtOvzy7p2P3AT3YYy
-	Cojqr+K7sRqIPWWZO5NN/t38MSOy0V92m1EvcMyp8d7MCa5YswfaZrIF4jqf3A1O
-	GI3vF9dBt1mj6COlH7t9vJkFw5lTUV+aP78uqvdr61Glly4+sxI3rIsZ8eBr0bQt
-	YM24crKsGOLL+1IZh0zIOfm2w6vR8cDDqcMsK47552zBVnLmMm66MhW7VeODJGNw
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4drnb5bdjk-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 Apr 2026 16:11:30 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63TG8mkd030925;
-	Wed, 29 Apr 2026 16:11:29 GMT
-Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ds8avy3xe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 29 Apr 2026 16:11:29 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
-	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63TGBRdd27918920
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 29 Apr 2026 16:11:27 GMT
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B734258058;
-	Wed, 29 Apr 2026 16:11:27 +0000 (GMT)
-Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B7F3A58057;
-	Wed, 29 Apr 2026 16:11:26 +0000 (GMT)
-Received: from [9.61.22.161] (unknown [9.61.22.161])
-	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 29 Apr 2026 16:11:26 +0000 (GMT)
-Message-ID: <cff05849-c937-4611-8776-d654e225e5cc@linux.ibm.com>
-Date: Wed, 29 Apr 2026 12:11:26 -0400
+	dkim=pass (2048-bit key) header.d=soleen.com header.i=@soleen.com header.b="P6gaUGVt"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8ef0ba61d46so1009796085a.2
+        for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 09:14:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=soleen.com; s=google; t=1777479238; x=1778084038; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=JQwXlv6d4SrpAwunOCAy3T3SkF7dwQSFYcS5dAIRLRw=;
+        b=P6gaUGVt4DL4MaxesXHAsm1WRtPsjCE96KoMA806ZhpJiTxloitgveQ6S0W55/jAjC
+         m3xxc6ak3Jv6S8Bac6jq2JH5eoiHQjs99UvHkqo8TozdXj0yIfYVjvdXKD2/kbyzB+5K
+         D7Dh30hlJhrvxm0dpoeovS6qcPrvH6gAg2gv4OyCX+5FievTIubmsiKHRK9VQ21+iYuw
+         /jQ6Xp5ZBhrYWFehn640+I0NoF4HVMYVF0HewxvqKQ4Qn2HIZN7MFCctg939Yv4nTsVo
+         8XyqtjG+lf8RBaPcYt0oz4LjY2sM5DHZXLlHauQl9nfuHhdhdhIRVIOWZpt/o3/of3Tj
+         XyLA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777479238; x=1778084038;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JQwXlv6d4SrpAwunOCAy3T3SkF7dwQSFYcS5dAIRLRw=;
+        b=cAxc4mvgtsqZfoqMdaHn9C+BRzh2aKA9FrFKWnOqM8d3tEv01MYrLpfidBvRUkZJ/e
+         ystjiNBSvS1S0vTsIgIBbgu54RC/RnbdLbtOGH3xu43U9csGK90GwnUdxUOI4lG+8sf1
+         QJbKXlHeWru1ydr6lmq8D6L7kkpJL/dAU2NpRlinSgYpuO/LVa3naPfhJJ+TQRLn2Z/9
+         zTbBDxur7cSxefP5sTGMfSe273bYaJFoYu8JxbUJFaA/O0/xHYDIU5QCLGyakLOYob2d
+         zKIa7y32yTBMlh+MeB4ne1z0NkhLU0le+EPUxkreseiF8mOE1bCD4uKgcEoAqeBrA8ek
+         36TA==
+X-Forwarded-Encrypted: i=1; AFNElJ8fM8cWqK4thSJakjErlJesUzydihKoaK4ZZXCp/3YS1hhn3gbzOiN39XTzjRs/g6/oqUU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzahUfSdZj8+v/1Z+YaK890dyb56vWncVGYZuXTRuJcXrPKsEvJ
+	2k5bp+OStH0/Udzg8N+IYzdMlBor2PpIMR3270ifJ1GT/UqBjA/uUmErAPN+pvbwprg=
+X-Gm-Gg: AeBDieuVvGY66AnW50uPgmKj9OHFfT3WGa6I255cAMkNy250ZZlIirIi1I7kWvEIZye
+	Dc2Tc5wAtcd5mRjx1+kjqXna4DdibYeesBnurhe6TBthAJxU6VQjvC3G0xX6gAy494iBOx+1W/1
+	HvXu+forKDBsrM70GHf4X0tTKv4AcN5+CMVC1d8jREs4C4w+MN/GffLI9Lrb+u7ymgVOgW4Xk+s
+	a50gYNC4Zi+K7zgZpnoc7cumd73tQTVOZZJ/Gde5NXHr8NtCx26k5erfvGUwIkjC0/P1MAt75+o
+	Fnh9c9mCdigzQ3V+O9fQXHa5gT3llBhqL04B/zvnlh1pUaCerpNCtZrHdO0yzc291VAkOlyt033
+	N9zhn0x+LEI59ych/nxkATHc6VFHCJLuN2wEgcNYgtIGFfbRJWUeJjOlq+V1Jqg9AcS/aySibdU
+	1x+8u935PJQehCyv8/sLngCDuGL43OjZXx7xNzZpX0vtTirjIqDBn8wdIpNoNPuGQU0sb4XeiS
+X-Received: by 2002:a05:620a:472b:b0:8cd:9033:172a with SMTP id af79cd13be357-8f8f3a204a5mr643580085a.3.1777479238360;
+        Wed, 29 Apr 2026 09:13:58 -0700 (PDT)
+Received: from plex ([71.181.43.54])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8f93f5826f7sm235640585a.30.2026.04.29.09.13.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 Apr 2026 09:13:57 -0700 (PDT)
+Date: Wed, 29 Apr 2026 16:13:55 +0000
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Alexander Graf <graf@amazon.com>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>, linux-kernel@vger.kernel.org, kexec@lists.infradead.org, 
+	kvm@vger.kernel.org, linux-mm@kvack.org, kvmarm@lists.linux.dev, rppt@kernel.org, 
+	pratyush@kernel.org, pbonzini@redhat.com, seanjc@google.com, maz@kernel.org, 
+	oupton@kernel.org, alex.williamson@redhat.com, kevin.tian@intel.com, 
+	rientjes@google.com, Tycho.Andersen@amd.com, anthony.yznaga@oracle.com, 
+	baolu.lu@linux.intel.com, david@kernel.org, dmatlack@google.com, mheyne@amazon.de, 
+	jgowans@amazon.com, jgg@nvidia.com, pankaj.gupta.linux@gmail.com, 
+	kpraveen.lkml@gmail.com, vipinsh@google.com, vannapurve@google.com, corbet@lwn.net, 
+	loeser@linux.microsoft.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, roman.gushchin@linux.dev, 
+	akpm@linux-foundation.org, pjt@google.com, "Petrongonas, Evangelos" <epetron@amazon.de>, 
+	kpsingh@kernel.org, jackmanb@google.com
+Subject: Re: [RFC] proposal: KVM: Orphaned VMs: The Caretaker approach for
+ Live Update
+Message-ID: <afIru_PE3W0hIsu7@plex>
+References: <afEwWZksU0Fw61oT@plex>
+ <b52e7d0a-4275-48a0-850f-6ceccfd5204e@amazon.com>
+ <cd0ae5795cf14a7b20c90840b0a3eba7db160e72.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/3] KVM: s390: Introducing kvm_arch_set_irq_inatomic
- fast inject
-To: Douglas Freimuth <freimuth@linux.ibm.com>, borntraeger@linux.ibm.com,
-        imbrenda@linux.ibm.com, frankja@linux.ibm.com, david@kernel.org,
-        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        svens@linux.ibm.com, kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260423235316.3665-1-freimuth@linux.ibm.com>
- <20260423235316.3665-4-freimuth@linux.ibm.com>
-Content-Language: en-US
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-In-Reply-To: <20260423235316.3665-4-freimuth@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=AqDeGu9P c=1 sm=1 tr=0 ts=69f22db2 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=rgTvcgvkiA0iA1z48PgA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI5MDE1OSBTYWx0ZWRfXysm9mzuzQRMh
- J0lv2s1i6Js2i20F5v+3/vJSplERpofOxFHXXl3Ksq+zOA3Hk4v8OVMfLKlOLb8zDg8bYvfBe1h
- m4AuLLcEfjRl27jqH8kpT9H4X9GkVmBDS2H1mKinn5Uv1rPfcCYslw1WFb13ZOv9XTchrPfCLxT
- 9fLAZY44qKIcJE20W39pY5gVgxuvhhe9oiqxFm+auNxkRY1nOjnO06CwafVTSxCCyJhmeR4NqGk
- QRmK2JloWelkuaZD2yQGW6IrUz8AnirtaCtFyc1SEbU1AsNZIRu7I7jY3QzwS4FrKnb6BhYupPm
- pvQSJ3HTxKNtzpLE+MNu/NHLJkJVAUTKu9nB4LfWiV4kikgAUjkK1QK0L1gMuWNuuUrqje2oJfj
- z0R/5eDhyV7Q8k9cgbkw6AIOeFWSvylgkb92I5PxDbYmoQpRKKSrSg897bn0Tbm4PYGhgtQuue1
- QVOAIcOoFrCt+DVdlDw==
-X-Proofpoint-GUID: 3YZrjGJhd0CNv_5puPZxiw2zESPCLgb-
-X-Proofpoint-ORIG-GUID: 3YZrjGJhd0CNv_5puPZxiw2zESPCLgb-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-29_01,2026-04-28_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 phishscore=0 suspectscore=0 clxscore=1015
- lowpriorityscore=0 spamscore=0 bulkscore=0 impostorscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604290159
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <cd0ae5795cf14a7b20c90840b0a3eba7db160e72.camel@infradead.org>
 
+On 04-29 09:40, David Woodhouse wrote:
+> On Wed, 2026-04-29 at 10:13 +0200, Alexander Graf wrote:
+> > I would prefer we only attach the whole caretaker and all of its 
+> > specialties right around the point when live update happens. Why keep it 
+> > dangling and active forever? That way you can also late load the kernel 
+> > module that contains it, so you can be sure it's an up to date version.
+> 
+> "Why keep it dangling and active forever?"
+> 
+> I've always wanted to tie this to address space isolation.
+> 
+> The only way to truly stay in front of the constant stream of new
+> speculation vulnerabilities has been to just make sure there's nothing
+> sensitive accessible in the address space at all. Hence all the work on
+> secret hiding, XPFO, proclocal, etc. — and hence the occasional
+> researcher finding their shiny new (5-year-old) vulnerability and being
+> confused when it doesn't leak anything *interesting* in certain
+> environments.
+> 
+> I'd like to see the inner KVM_RUN loop switch to a completely separate
+> address space, in which there's a kind of caretaker which can handle
+> the bare minimum of interrupts and timers and the most common exits,
+> and which *relatively* rarely has to come back into the real Linux
+> address space.
+> 
+> And once you have that caretaker running in its own address space...
+> why not just let it keep going while Linux does its kexec?
 
-> +static int adapter_indicators_set_fast(struct kvm *kvm,
-> +				       struct s390_io_adapter *adapter,
-> +				       struct kvm_s390_adapter_int *adapter_int,
-> +				       int setbit)
-> +{
-> +	unsigned long bit;
-> +	int summary_set;
-> +	struct s390_map_info *ind_info, *summary_info;
-> +	void *map;
-> +
-> +	raw_spin_lock(&adapter->maps_lock);
-> +	ind_info = get_map_info(adapter, adapter_int->ind_addr);
-> +	if (!ind_info) {
-> +		raw_spin_unlock(&adapter->maps_lock);
-> +		return -EWOULDBLOCK;
-> +	}
-> +	map = page_address(ind_info->page);
-> +	bit = get_ind_bit(ind_info->addr, adapter_int->ind_offset, adapter->swap);
-> +	if (setbit)
-> +		set_bit(bit, map);
-> +	else
-> +		clear_bit(bit, map);
+Yep, this captures one of the benefits of having a permanently attached
+Caretaker.
 
-Hmm, I don't know about this.  In my comment on v2 I was only concerned
-about undoing the setting of the summary indicator as that will be used
-on the slow path to decide whether or not we need to inject an interrupt
-in addition to setting the indicator bits.
+By establishing that isolated execution environment for the inner
+KVM_RUN loop to mitigate speculation vulnerabilities, we naturally get
+the hardware-enforced boundary required to survive the kexec gap. The
+Live Update capability is effectively a byproduct of achieving true
+Address Space Isolation.
 
-I think we should drop the else clear_bit() here.  If _fast already set
-it and we are now backing out to the slow path, then it will stay on all
-the way through the slow path and that should be OK.
-
-> +	summary_info = get_map_info(adapter, adapter_int->summary_addr);
-> +	if (!summary_info) {
-> +		raw_spin_unlock(&adapter->maps_lock);
-> +		return -EWOULDBLOCK;
-> +	}
-> +	map = page_address(summary_info->page);
-> +	bit = get_ind_bit(summary_info->addr, adapter_int->summary_offset,
-> +			  adapter->swap);
-> +	if (setbit)
-> +		summary_set = test_and_set_bit(bit, map);
-> +	else
-> +		summary_set = test_and_clear_bit(bit, map);
-
-I had to go back and refresh myself about WHY we needed to 'undo' our
-prior setting of the summary bit specifically.
-
-The reason is that, if we need to fall back to the slow path, that code
-will see the summary bit already on and therefore not inject an
-interrupt believing that the thread that initially set the summary bit
-did that.  But, if we fell back from the _fast path via -EWOULDBLOCK
-after setting the summary indicator, no interrupt was ever injected at
-that time.
-
-So my point: this _really_ deserves some comment blocks describing the
-purpose of setbit + a specific statement that it's OK to clear this
-summary bit now when setbit=0 but then the caller must re-drive this
-summary indication again via adapter_indicators_set().
-
-[...]
-
-> +int kvm_arch_set_irq_inatomic(struct kvm_kernel_irq_routing_entry *e,
-> +			      struct kvm *kvm, int irq_source_id, int level,
-> +			      bool line_status)
-> +{
-> +	int ret, setbit;
-> +	struct s390_io_adapter *adapter;
-> +	struct kvm_s390_float_interrupt *fi = &kvm->arch.float_int;
-> +	struct kvm_s390_interrupt_info *inti;
-> +	struct kvm_s390_interrupt s390int = {
-> +			.type = KVM_S390_INT_IO(1, 0, 0, 0),
-> +			.parm = 0,
-> +	};
-> +
-> +	kvm->stat.io_390_inatomic++;
-> +
-> +	/* We're only interested in the 0->1 transition. */
-> +	if (!level)
-> +		return -EWOULDBLOCK;
-> +	if (e->type != KVM_IRQ_ROUTING_S390_ADAPTER)
-> +		return -EWOULDBLOCK;
-> +
-> +	adapter = get_io_adapter(kvm, e->adapter.adapter_id);
-> +	if (!adapter)
-> +		return -EWOULDBLOCK;
-> +
-> +	s390int.parm64 = isc_to_int_word(adapter->isc);
-> +	setbit = 1;
-> +	ret = adapter_indicators_set_fast(kvm, adapter, &e->adapter, setbit);
-> +	if (ret < 0)
-> +		return -EWOULDBLOCK;
-> +	if (!ret || adapter->masked) {
-> +		kvm->stat.io_390_inatomic_adapter_masked++;
-> +		return 0;
-> +	}
-> +
-> +	inti = kzalloc_obj(*inti, GFP_ATOMIC);
-> +	if (!inti)
-
-You need to undo the summary bit indication on this path as well.
-
-[...]
-
-> -static void __kvm_inject_pfault_token(struct kvm_vcpu *vcpu, bool start_token,
-> -				      unsigned long token)
-> +static int __kvm_inject_pfault_token(struct kvm_vcpu *vcpu, bool start_token,
-> +				     unsigned long token)
->  {
->  	struct kvm_s390_interrupt inti;
->  	struct kvm_s390_irq irq;
-> +	struct kvm_s390_interrupt_info *inti_mem = NULL;
->  
->  	if (start_token) {
->  		irq.u.ext.ext_params2 = token;
->  		irq.type = KVM_S390_INT_PFAULT_INIT;
->  		WARN_ON_ONCE(kvm_s390_inject_vcpu(vcpu, &irq));
->  	} else {
-> +		inti_mem = kzalloc_obj(*inti_mem, GFP_KERNEL_ACCOUNT);
-> +		if (!inti_mem)
-> +			return -ENOMEM;
-
-To match the other nonzero cases here, rather than making
-__kvm_inject_pfault_token() return a value can you leave it a void
-return and then just do something like:
-
-if (WARN_ON_ONCE(!inti_mem))
-	return;
-
-
++CC KP and Brendan
