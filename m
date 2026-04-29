@@ -1,112 +1,95 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
+Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DB4839DBF2;
-	Wed, 29 Apr 2026 09:09:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACA953C8732;
+	Wed, 29 Apr 2026 09:30:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=183.62.165.209
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777453800; cv=none; b=JbG9+zi32OOigsIrE80TI0pPv++K/twO0yndWWncRoTxa2TsWk9SHwmkImKmwXdp01v5/1Hav+rtMkhUzjswdedZyfo39gO7RNce0P7ZlEtQ2GFxr0qOTagoNRMoRDM+63Ht/C4v4IMXFhbp9LigWWLo3q4XR0C6KxF/MPOovgw=
+	t=1777455038; cv=none; b=e7XmXw2FWa/IrUs75/iv3F6c/veMTvXGh3PTi07RfyBTfesoqU69B+YBiEq/tahUbZtCn805PKdsqIDPOJ/lJyf+x1QkQqR9glSvsvuQqB0Bmec4YBd7In8TfrxYpwV02nQscvA/qwWkgvyFH9/Va45eUlB7O0wi/+3ogWBfixM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777453800; c=relaxed/simple;
-	bh=goswaaK94mq6B453JKApwrx2TL9pEZS98qyOerXtYjo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ubB2UGZkJ6S2ZDTX/N7aDB8H6f6hNhWy/COCF6G7GSgW6B4v83k6+Aj4jB+bnWWVNpGEBZ4ENWGR2XDJ3Ygh1LFq/8WWUhAi7ABWGJcR9BaS6QZD5kXRlCatYnBC0M9HeFhCXD0AmrhcLfvlrKRE/gkwaDUzch25N8kmGl2Baao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=V/QmZaU6; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="V/QmZaU6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777453799; x=1808989799;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=goswaaK94mq6B453JKApwrx2TL9pEZS98qyOerXtYjo=;
-  b=V/QmZaU6Vpp9/eTXmxFP5GNd4og8jRWuQDqJ1t6WVOgeuqGx+I5J7EHQ
-   Z890iQlSTIjgKonjupYf1Y0bGR7pnftOKkwgWuptX8t0ofondDtqsMaPB
-   D0s6AR2CZBBVPF7Dr3/Uft7vsR05OE9FWPy4Es2WXJqJnCdcHLGY+A+68
-   bDMUAC8vEFkXaF1k3PyqkMDCRg12OXhrzbQ8nfBanpqUrD3Hub4DSKEWw
-   Cpk5mMtYlb1dAHX6+xvF8bdvAgnjCs8TldrHSuwE4W+agaYIrr7T6KM9V
-   FQjWvy3SJd5wFwK8Yrt7q8OibRmIk38j9rh0OtYi0Jm+lwP9gK/rf4Kej
-   w==;
-X-CSE-ConnectionGUID: HVY7yfVPQVeTBEGPYukByQ==
-X-CSE-MsgGUID: 7ts30uH+SZSdDd6etJx1/w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11770"; a="103833056"
-X-IronPort-AV: E=Sophos;i="6.23,205,1770624000"; 
-   d="scan'208";a="103833056"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 02:09:58 -0700
-X-CSE-ConnectionGUID: 2y/hYtwhQ3iX/q9Gi83pxA==
-X-CSE-MsgGUID: axgm0o6rQ/KQa2PjOOYFRg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,205,1770624000"; 
-   d="scan'208";a="229862305"
-Received: from unknown (HELO [10.238.1.89]) ([10.238.1.89])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 02:09:56 -0700
-Message-ID: <c69630c5-2608-4c3c-8a3b-d4477abecde4@linux.intel.com>
-Date: Wed, 29 Apr 2026 17:09:53 +0800
+	s=arc-20240116; t=1777455038; c=relaxed/simple;
+	bh=i12dJVJeoC9r4Nnt28ZuQRVCr9MPie70raPqffp5U9M=;
+	h=Message-ID:Date:Mime-Version:From:To:Cc:Subject:Content-Type; b=GpzxOcQ/T2OD9Szcva9ChO+ssY+h1Q8RXlJUUUuOwPh3A++UfBEm6pY1IqSqSFRQDKTWiPoI7BnqBuXVOcnl8mg6JtbUWltW0RwE2BiDcmXPZ97jhxdsJ1p54FhoHJo4eTG0MF+YM9VHazqeF+3ktcae1cw2bhw+bcKc9g16q2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=183.62.165.209
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxct.zte.com.cn (FangMail) with ESMTPS id 4g5BqD4HWzz51SWV;
+	Wed, 29 Apr 2026 17:30:16 +0800 (CST)
+Received: from szxlzmapp04.zte.com.cn ([10.5.231.166])
+	by mse-fl2.zte.com.cn with SMTP id 63T9U0DW026223;
+	Wed, 29 Apr 2026 17:30:00 +0800 (+08)
+	(envelope-from wang.yechao255@zte.com.cn)
+Received: from mapi (szxlzmapp03[null])
+	by mapi (Zmail) with MAPI id mid12;
+	Wed, 29 Apr 2026 17:30:02 +0800 (CST)
+X-Zmail-TransId: 2b0569f1cf9a10b-91c9b
+X-Mailer: Zmail v1.0
+Message-ID: <20260429173002565bdp1o7P0bvOs6yTz64yNx@zte.com.cn>
+Date: Wed, 29 Apr 2026 17:30:02 +0800 (CST)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] KVM: TDX: Allow TDs to read MSR_IA32_PLATFORM_ID
-To: Dave Hansen <dave.hansen@intel.com>, rick.p.edgecombe@intel.com
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, x86@kernel.org,
- pbonzini@redhat.com, seanjc@google.com, kas@kernel.org,
- vishal.l.verma@intel.com, xiaoyao.li@intel.com, chao.gao@intel.com
-References: <20260428024746.1040531-1-binbin.wu@linux.intel.com>
- <20260428024746.1040531-2-binbin.wu@linux.intel.com>
- <0fa94f46-4cd8-4e28-a080-1517fccb1578@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <0fa94f46-4cd8-4e28-a080-1517fccb1578@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+From: <wang.yechao255@zte.com.cn>
+To: <anup@brainfault.org>, <atish.patra@linux.dev>, <pjw@kernel.org>,
+        <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>, <alex@ghiti.fr>
+Cc: <kvm@vger.kernel.org>, <kvm-riscv@lists.infradead.org>,
+        <linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <wang.yechao255@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIHYyIDAvM10gUklTQy1WOiBLVk06IEh1Z2UgcGFnZSByZWNvdmVyeSBkdXJpbmcgZGlzYWJsZS1kaXJ0eS1sb2c=?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl2.zte.com.cn 63T9U0DW026223
+X-TLS: YES
+X-SPF-DOMAIN: zte.com.cn
+X-ENVELOPE-SENDER: wang.yechao255@zte.com.cn
+X-SPF: None
+X-SOURCE-IP: 10.5.228.133 unknown Wed, 29 Apr 2026 17:30:16 +0800
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 69F1CFA8.001/4g5BqD4HWzz51SWV
 
+From: Wang Yechao <wang.yechao255@zte.com.cn>
 
+When dirty logging is enabled, the gstage mappings are split into
+4K pages to track dirty pages. If the migration fails or is canceled,
+in order to keep the VM's performance consistent with that before
+dirty logging was enabled, we need to recover the gstage huge page mappings
+when dirty logging is disabled.
 
-On 4/29/2026 2:49 AM, Dave Hansen wrote:
-> On 4/27/26 19:47, Binbin Wu wrote:
->> Linux kernel reads MSR_IA32_PLATFORM_ID during init since commit
->> d8630b67ca1e ("x86/cpu: Add platform ID to CPU info structure").  KVM
->> already supports this MSR on read for normal VMs by returning 0.
->> Without support for this MSR, TDs get unchecked MSR access errors.
-> 
-> NAK from me on this.
+With this series, dirty_log_perf_test shows a decrease in the number of
+vCPU faults:
 
-Based on the discussions, I will drop this patch.
+$ perf stat -e kvm:kvm_page_fault \
+/dirty_log_perf_test -s anonymous_hugetlb_1gb -v 1 -e -b 1G
 
-> 
-> The platform ID is used for one thing and one thing only: microcode
-> updates. Those updates are solely the domain of the bare-metal OS.
-> 
-> The (guest) kernel code that's even trying to touch this MSR is buggy
-> and insane. We need to turn that code it off when
-> X86_FEATURE_HYPERVISOR==1. There's already a patch floating around to do
-> that.
+Before: 524,819      kvm:kvm_page_fault
+After : 263,211      kvm:kvm_page_fault
 
-I guess it's the second patch in this patch set.
+Changes in v2:
+ - Rebased on Linux v7.1-rc1.
+ - Skip recovering huge pte if the first child pte is not leaf.
 
-The second patch checks hypervisor bit via native_cpuid_ecx(1) instead of
-boot_cpu_has(X86_FEATURE_HYPERVISOR) since intel_get_platform_id() could be
-called in ucode load path even in virtualized environment when
-CONFIG_MICROCODE_DBG is set.
+ - Link to v1:
+ https://lore.kernel.org/linux-riscv/20260407171052241tmZDFGusMP_wlEsBVVtJo@zte.com.cn/T/#t
 
-But using native_cpuid_ecx(1) will have an issue for XEN PV guest.
-intel_get_platform_id() can be called by XEN PV guest and the
-native_cpuid_ecx(1) doesn't have the hypervisor bit for XEN PV guest.
+Wang Yechao (3):
+  RISC-V: KVM: Refactor kvm_arch_commit_memory_region()
+  RISC-V: KVM: add tracepoints for guest page faults
+  RISC-V: KVM: Recover gstage huge page mappings during
+    disable-dirty-log
 
-There could be two options:
-- Use cpuid_ecx(1) in intel_get_platform_id() and drop the helper.
-- Use boot_cpu_has(X86_FEATURE_HYPERVISOR) directly since CONFIG_MICROCODE_DBG
-  is just a debug config option. Maybe add some comments to avoid confusion
-  due to the pre-existing comments for intel_cpuid_vfm().
+ arch/riscv/include/asm/kvm_gstage.h |  4 ++
+ arch/riscv/kvm/gstage.c             | 42 ++++++++++++++++++++
+ arch/riscv/kvm/mmu.c                | 59 ++++++++++++++++++++++++++++-
+ arch/riscv/kvm/trace.h              | 25 ++++++++++++
+ arch/riscv/kvm/vcpu_exit.c          |  3 ++
+ 5 files changed, 132 insertions(+), 1 deletion(-)
 
-
-> 
-> Please don't add more smoke and mirrors.
-> 
-
+-- 
+2.43.5
