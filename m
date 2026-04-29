@@ -1,601 +1,234 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 986AE40DFD7;
-	Wed, 29 Apr 2026 16:04:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A0C8349B0D;
+	Wed, 29 Apr 2026 16:11:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777478685; cv=none; b=JNrR4XVW3XS23uEEelvGr4ZjoNoB6v8uVQoGQ1ay7CbeFD7jIb9mHpmjEQZzTR04BukLcKebLDZJhP4U05UKo/o2Y4fly8KGn427/rxCNEqU0iul16YuJEp+65Zf3oQtGwJG3MXwiGcLovRcEBmy+/Yplg6tONWenCA+ofxQZuc=
+	t=1777479100; cv=none; b=WasfeXRg7X1VGCF0soZcWPqEX6FAaHFoCrUlk8IHZSZxttXeOLrs2B0ki+es/xx5s5DoYMXjfO4Qe8eueA/XIS04iDClUb4vFyi56W1FtIWG4wca5K38kPJ8lU5DF7uWtXeyPGXi0npLiYbsvWzJidYP3ZBC7dvCjfVhb9Y1M1o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777478685; c=relaxed/simple;
-	bh=wgjSK03KqpSOgpV+YE2QB1a7YDefNYzqnA50VvVYNdA=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RBtYpmHsxooS0eMpaAK0fOlC1naaKNL6W6aAdXVmY8xAKX+njgJivy5aHZ52iDQeSfKe6UVlUydHEwT3kQRel+iY0EWulSCRmvikRbpYXqCikVI1UVNLhc9IAc8ObytDtSN6wq7H21PWkgNJDM1GXadHsy9vQ/oLDdNMucwkeqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=CIpU250g; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777479100; c=relaxed/simple;
+	bh=k++l3WtLFBko4f56l2wRpN2TjenMI0cWBCrk3PWqaYg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=hKunpsg4bsZU2EHoFyKfGOHtKL5X88TM0ge28M8idvuTUOoDo5xI77LkQjBvZ1g9dClce+FGoX6Cnmlelig+PlVyg0Pcd2+1cp4b/AWNnG2E5Xr/YYqV2gsbr7Q5vtnk6BAjUFXtjMBYi/zingVkcvJCY8cHQjXaLKDBnOX4zEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tb/V+b45; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="CIpU250g"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD268C19425;
-	Wed, 29 Apr 2026 16:04:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777478685;
-	bh=wgjSK03KqpSOgpV+YE2QB1a7YDefNYzqnA50VvVYNdA=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=CIpU250gZqGwPy1WLklCe3fknccm2XhXA8a19fOD+AfdYgt0/EyXYnNwnhkqqnmls
-	 AKll6IJ/Qft2q+DLRangJmYE5yO/asZuAzqP5YGurUXxp7hR0zgTdEeS4Ir7oZdN8T
-	 y1CyLlmg46OQGJ9/81napUqRXFT0Le3PQV5Xhcc1wsHiLVjGCtwNYVgrUGT4/QuVtl
-	 1W+wUY0aItpdhW9Xdse32gFoZq9NRpCM022+16IxjxaJ1oq2wUnvX8IqEYXbg/6fAl
-	 kEqQ9YDKjCK+8aLVSQWDcTqcXUCQSFOqfTF8ZKXZvp8bJnG47fDk6qCihMgXZWq0XD
-	 RgeHEOk5PZzCA==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wI7P0-0000000FxQO-0NSH;
-	Wed, 29 Apr 2026 16:04:42 +0000
-Date: Wed, 29 Apr 2026 17:04:41 +0100
-Message-ID: <86jytpzrae.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Sascha Bischoff <Sascha.Bischoff@arm.com>
-Cc: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	nd <nd@arm.com>,
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
-	Joey Gouly
-	<Joey.Gouly@arm.com>,
-	Suzuki Poulose <Suzuki.Poulose@arm.com>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"peter.maydell@linaro.org"
-	<peter.maydell@linaro.org>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	Timothy Hayes <Timothy.Hayes@arm.com>
-Subject: Re: [PATCH 09/43] KVM: arm64: gic-v5: Implement VMT/vIST IRS MMIO Ops
-In-Reply-To: <20260427160547.3129448-10-sascha.bischoff@arm.com>
-References: <20260427160547.3129448-1-sascha.bischoff@arm.com>
-	<20260427160547.3129448-10-sascha.bischoff@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tb/V+b45"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63TAk1dI2888876;
+	Wed, 29 Apr 2026 16:11:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
+	content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=fTqOyx
+	iaJok5OwQ/9OwcV0+As566moPHGf+m7xxSUxg=; b=tb/V+b455H7GL3THSdmrYU
+	ui42yBMWW91QJjejeGBkMSh34DDPGfMgRCAXCDo8zYlkOsTCGo5mUZeOZKV/Rcl1
+	MkFHsKm9yVQZY+v1ZtLzuL/OkvBFMpAm54KZNpVnMyoEI3vjtOvzy7p2P3AT3YYy
+	Cojqr+K7sRqIPWWZO5NN/t38MSOy0V92m1EvcMyp8d7MCa5YswfaZrIF4jqf3A1O
+	GI3vF9dBt1mj6COlH7t9vJkFw5lTUV+aP78uqvdr61Glly4+sxI3rIsZ8eBr0bQt
+	YM24crKsGOLL+1IZh0zIOfm2w6vR8cDDqcMsK47552zBVnLmMm66MhW7VeODJGNw
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4drnb5bdjk-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Apr 2026 16:11:30 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63TG8mkd030925;
+	Wed, 29 Apr 2026 16:11:29 GMT
+Received: from smtprelay04.dal12v.mail.ibm.com ([172.16.1.6])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ds8avy3xe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 29 Apr 2026 16:11:29 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (smtpav01.dal12v.mail.ibm.com [10.241.53.100])
+	by smtprelay04.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63TGBRdd27918920
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 29 Apr 2026 16:11:27 GMT
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B734258058;
+	Wed, 29 Apr 2026 16:11:27 +0000 (GMT)
+Received: from smtpav01.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B7F3A58057;
+	Wed, 29 Apr 2026 16:11:26 +0000 (GMT)
+Received: from [9.61.22.161] (unknown [9.61.22.161])
+	by smtpav01.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 29 Apr 2026 16:11:26 +0000 (GMT)
+Message-ID: <cff05849-c937-4611-8776-d654e225e5cc@linux.ibm.com>
+Date: Wed, 29 Apr 2026 12:11:26 -0400
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, nd@arm.com, oliver.upton@linux.dev, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, lpieralisi@kernel.org, Timothy.Hayes@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/3] KVM: s390: Introducing kvm_arch_set_irq_inatomic
+ fast inject
+To: Douglas Freimuth <freimuth@linux.ibm.com>, borntraeger@linux.ibm.com,
+        imbrenda@linux.ibm.com, frankja@linux.ibm.com, david@kernel.org,
+        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        svens@linux.ibm.com, kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+References: <20260423235316.3665-1-freimuth@linux.ibm.com>
+ <20260423235316.3665-4-freimuth@linux.ibm.com>
+Content-Language: en-US
+From: Matthew Rosato <mjrosato@linux.ibm.com>
+In-Reply-To: <20260423235316.3665-4-freimuth@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=AqDeGu9P c=1 sm=1 tr=0 ts=69f22db2 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=rgTvcgvkiA0iA1z48PgA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI5MDE1OSBTYWx0ZWRfXysm9mzuzQRMh
+ J0lv2s1i6Js2i20F5v+3/vJSplERpofOxFHXXl3Ksq+zOA3Hk4v8OVMfLKlOLb8zDg8bYvfBe1h
+ m4AuLLcEfjRl27jqH8kpT9H4X9GkVmBDS2H1mKinn5Uv1rPfcCYslw1WFb13ZOv9XTchrPfCLxT
+ 9fLAZY44qKIcJE20W39pY5gVgxuvhhe9oiqxFm+auNxkRY1nOjnO06CwafVTSxCCyJhmeR4NqGk
+ QRmK2JloWelkuaZD2yQGW6IrUz8AnirtaCtFyc1SEbU1AsNZIRu7I7jY3QzwS4FrKnb6BhYupPm
+ pvQSJ3HTxKNtzpLE+MNu/NHLJkJVAUTKu9nB4LfWiV4kikgAUjkK1QK0L1gMuWNuuUrqje2oJfj
+ z0R/5eDhyV7Q8k9cgbkw6AIOeFWSvylgkb92I5PxDbYmoQpRKKSrSg897bn0Tbm4PYGhgtQuue1
+ QVOAIcOoFrCt+DVdlDw==
+X-Proofpoint-GUID: 3YZrjGJhd0CNv_5puPZxiw2zESPCLgb-
+X-Proofpoint-ORIG-GUID: 3YZrjGJhd0CNv_5puPZxiw2zESPCLgb-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-04-29_01,2026-04-28_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 phishscore=0 suspectscore=0 clxscore=1015
+ lowpriorityscore=0 spamscore=0 bulkscore=0 impostorscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604290159
 
-On Mon, 27 Apr 2026 17:09:06 +0100,
-Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
-> 
-> GICv5 has rules about which fields of a VMTE (or L1 VMT) may be
-> directly written by the host once the table is valid. This ensures
-> that no stale state is cached by the hardware, and provides a clear
-> interface for making VMs, ISTs, etc, valid.
-> 
-> The hypervisor is responsible for populating the VMTE for a
-> VM. However, it is not permitted to write the Valid bit (as the VM
-> table is already valid). Instead, the VM is made valid via an IRS MMIO
-> Op. The same applies to the ISTs - they must be made valid via the
-> host IRS.
-> 
-> This commit adds support for:
-> 
-> * Making level 2 VMTs valid (only), allowing for dynamic level 2 table
->   allocation.
 
-Isn't it level 1 instead, if L2 is supposed to be dynamic?
-
-> * Making VMTEs (VMs) valid or invalid
-> * Making SPI/LPI ISTs valid or invalid for a specific VM
-> 
-> When (successfully) probing for a GICv5, the VMT is allocated, and is
-> made valid via the IRS's MMIO interface.
-> 
-> This commit also extends the doorbell domain to allow the doorbells
-> themselves to act as a conduit for issuing commands - this is similar
-> to what exists for GICv4 support. Effectively, irq_set_vcpu_affinity()
-> becomes an ioctl-like interface for issuing commands specific to
-> either a VM or the particular VPE that the doorbell belongs to. This
-> change adds support for the following via the VPE doorbells:
-> 
->         VMT_L2_MAP - Make a second level VM table valid
->         VMTE_MAKE_VALID - Make a single VMTE (and hence VM) valid
->         VMTE_MAKE_INVALID - Make a single VMTE (and hence VM) invalid
->         SPI_VIST_MAKE_VALID - Make the SPI IST valid
->         LPI_VIST_MAKE_VALID - Make the LPI IST valid
->         LPI_VIST_MAKE_INVALID - Make the LPI IST invalid
-> 
-> Note: It is intentional that there is no SPI_VIST_MAKE_INVALID - this
-> cannot happen while the VM is live, and given that the SPI is
-
-This SPI_VIST_MAKE_VALID introduced in the previous patch. It feels
-weird to only explain the lack of INVALID here...
-
-> allocated as part of VM creation, there is no need to make it invalid
-> again until the VM is destroyed, at which point the VMTE is
-> invalid. Therefore, there's no need to do this via the host's IRS MMIO
-> interface, as it can be directly marked as invalid and freed. LPIs, on
-> the other hand, are driven by the guest itself, and the guest is
-> theoretically free to invalidate and free the LPI IST at any point.
-> 
-> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
-> ---
->  arch/arm64/kvm/vgic/vgic-v5-tables.c |  25 +++
->  arch/arm64/kvm/vgic/vgic-v5-tables.h |   2 +
->  arch/arm64/kvm/vgic/vgic-v5.c        | 236 ++++++++++++++++++++++++++-
->  include/linux/irqchip/arm-gic-v5.h   |  30 ++++
->  4 files changed, 290 insertions(+), 3 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/vgic/vgic-v5-tables.c b/arch/arm64/kvm/vgic/vgic-v5-tables.c
-> index de905f37b61a5..0120c3205dea6 100644
-> --- a/arch/arm64/kvm/vgic/vgic-v5-tables.c
-> +++ b/arch/arm64/kvm/vgic/vgic-v5-tables.c
-> @@ -666,6 +666,26 @@ int vgic_v5_vmte_free_vpe(struct kvm_vcpu *vcpu)
->  	return 0;
->  }
->  
-> +phys_addr_t vgic_v5_get_vmt_base(void)
+> +static int adapter_indicators_set_fast(struct kvm *kvm,
+> +				       struct s390_io_adapter *adapter,
+> +				       struct kvm_s390_adapter_int *adapter_int,
+> +				       int setbit)
 > +{
-> +	phys_addr_t vmt_base;
+> +	unsigned long bit;
+> +	int summary_set;
+> +	struct s390_map_info *ind_info, *summary_info;
+> +	void *map;
 > +
-> +	if (!vgic_v5_vmt_allocated())
-> +		return -ENXIO;
-> +
-> +	if (!vmt_info->two_level)
-> +		vmt_base = virt_to_phys(vmt_info->linear.vmt_base);
+> +	raw_spin_lock(&adapter->maps_lock);
+> +	ind_info = get_map_info(adapter, adapter_int->ind_addr);
+> +	if (!ind_info) {
+> +		raw_spin_unlock(&adapter->maps_lock);
+> +		return -EWOULDBLOCK;
+> +	}
+> +	map = page_address(ind_info->page);
+> +	bit = get_ind_bit(ind_info->addr, adapter_int->ind_offset, adapter->swap);
+> +	if (setbit)
+> +		set_bit(bit, map);
 > +	else
-> +		vmt_base = virt_to_phys(vmt_info->l2.vmt_base);
-> +
-> +	return vmt_base;
-> +}
-> +
-> +u8 vgic_v5_vmt_vpe_id_bits(void)
-> +{
-> +	return fls(vmt_info->max_vpes) - 1;
-> +}
-> +
->  /*
->   * Assign an already allocated IST to the VM by populating the fields in the
->   * corresponding VMTE. We re-use this code for both an SPI IST and LPI IST, even
-> @@ -715,6 +735,11 @@ int vgic_v5_vmte_assign_ist(struct kvm *kvm, phys_addr_t ist_base,
->  	/* Finally, mark the entry as valid */
->  	cmd_info.cmd_type = spi_ist ? SPI_VIST_MAKE_VALID : LPI_VIST_MAKE_VALID;
->  	ret = irq_set_vcpu_affinity(vgic_v5_vpe_db(vcpu0), &cmd_info);
-> +	if (ret) {
-> +		WRITE_ONCE(vmte->val[section], 0ULL);
-> +		vgic_v5_clean_inval(vmte, sizeof(*vmte), true, false);
-> +		return ret;
+> +		clear_bit(bit, map);
+
+Hmm, I don't know about this.  In my comment on v2 I was only concerned
+about undoing the setting of the summary indicator as that will be used
+on the slow path to decide whether or not we need to inject an interrupt
+in addition to setting the indicator bits.
+
+I think we should drop the else clear_bit() here.  If _fast already set
+it and we are now backing out to the slow path, then it will stay on all
+the way through the slow path and that should be OK.
+
+> +	summary_info = get_map_info(adapter, adapter_int->summary_addr);
+> +	if (!summary_info) {
+> +		raw_spin_unlock(&adapter->maps_lock);
+> +		return -EWOULDBLOCK;
 > +	}
->  
->  	/* Any cached entries we now have are stale! */
->  	vgic_v5_clean_inval(vmte, sizeof(*vmte), false, true);
-> diff --git a/arch/arm64/kvm/vgic/vgic-v5-tables.h b/arch/arm64/kvm/vgic/vgic-v5-tables.h
-> index 37e220cda1987..6a024337eba79 100644
-> --- a/arch/arm64/kvm/vgic/vgic-v5-tables.h
-> +++ b/arch/arm64/kvm/vgic/vgic-v5-tables.h
-> @@ -150,6 +150,8 @@ int vgic_v5_vmt_allocate(bool two_level, unsigned int num_entries,
->  			 size_t vmd_size, size_t vped_size,
->  			 unsigned int vpe_id_bits);
->  int vgic_v5_vmt_free(void);
-> +phys_addr_t vgic_v5_get_vmt_base(void);
-> +u8 vgic_v5_vmt_vpe_id_bits(void);
->  
->  int vgic_v5_allocate_vm_id(struct kvm *kvm);
->  void vgic_v5_release_vm_id(struct kvm *kvm);
-> diff --git a/arch/arm64/kvm/vgic/vgic-v5.c b/arch/arm64/kvm/vgic/vgic-v5.c
-> index 4e0d52b309628..49eb01ca07961 100644
-> --- a/arch/arm64/kvm/vgic/vgic-v5.c
-> +++ b/arch/arm64/kvm/vgic/vgic-v5.c
-> @@ -36,6 +36,12 @@ static void vgic_v5_get_implemented_ppis(void)
->  	__assign_bit(GICV5_ARCH_PPI_PMUIRQ, ppi_caps.impl_ppi_mask, system_supports_pmuv3());
->  }
->  
-> +/*
-> + * The IRS MMIO interface is shared between all VMs, so make sure we don't do
-> + * anything stupid!
-> + */
-> +static DEFINE_RAW_SPINLOCK(vm_config_lock);
-> +
+> +	map = page_address(summary_info->page);
+> +	bit = get_ind_bit(summary_info->addr, adapter_int->summary_offset,
+> +			  adapter->swap);
+> +	if (setbit)
+> +		summary_set = test_and_set_bit(bit, map);
+> +	else
+> +		summary_set = test_and_clear_bit(bit, map);
 
-I don't think you could have picked a worse name for this lock. It has
-nothing to do with a VM. It really is a global IRS lock.
+I had to go back and refresh myself about WHY we needed to 'undo' our
+prior setting of the summary bit specifically.
 
->  static void __iomem *irs_base;
->  
->  static u32 irs_readl_relaxed(const u32 reg_offset)
-> @@ -43,6 +49,21 @@ static u32 irs_readl_relaxed(const u32 reg_offset)
->  	return readl_relaxed(irs_base + reg_offset);
->  }
->  
-> +static void irs_writel_relaxed(const u32 val, const u32 reg_offset)
+The reason is that, if we need to fall back to the slow path, that code
+will see the summary bit already on and therefore not inject an
+interrupt believing that the thread that initially set the summary bit
+did that.  But, if we fell back from the _fast path via -EWOULDBLOCK
+after setting the summary indicator, no interrupt was ever injected at
+that time.
+
+So my point: this _really_ deserves some comment blocks describing the
+purpose of setbit + a specific statement that it's OK to clear this
+summary bit now when setbit=0 but then the caller must re-drive this
+summary indication again via adapter_indicators_set().
+
+[...]
+
+> +int kvm_arch_set_irq_inatomic(struct kvm_kernel_irq_routing_entry *e,
+> +			      struct kvm *kvm, int irq_source_id, int level,
+> +			      bool line_status)
 > +{
-> +	writel_relaxed(val, irs_base + reg_offset);
-> +}
+> +	int ret, setbit;
+> +	struct s390_io_adapter *adapter;
+> +	struct kvm_s390_float_interrupt *fi = &kvm->arch.float_int;
+> +	struct kvm_s390_interrupt_info *inti;
+> +	struct kvm_s390_interrupt s390int = {
+> +			.type = KVM_S390_INT_IO(1, 0, 0, 0),
+> +			.parm = 0,
+> +	};
 > +
-> +static u64 irs_readq_relaxed(const u32 reg_offset)
-> +{
-> +	return readq_relaxed(irs_base + reg_offset);
-> +}
+> +	kvm->stat.io_390_inatomic++;
 > +
-> +static void irs_writeq_relaxed(const u64 val, const u32 reg_offset)
-> +{
-> +	writeq_relaxed(val, irs_base + reg_offset);
-> +}
+> +	/* We're only interested in the 0->1 transition. */
+> +	if (!level)
+> +		return -EWOULDBLOCK;
+> +	if (e->type != KVM_IRQ_ROUTING_S390_ADAPTER)
+> +		return -EWOULDBLOCK;
 > +
->  static int gicv5_irs_extract_vm_caps(const struct gic_kvm_info *info)
+> +	adapter = get_io_adapter(kvm, e->adapter.adapter_id);
+> +	if (!adapter)
+> +		return -EWOULDBLOCK;
+> +
+> +	s390int.parm64 = isc_to_int_word(adapter->isc);
+> +	setbit = 1;
+> +	ret = adapter_indicators_set_fast(kvm, adapter, &e->adapter, setbit);
+> +	if (ret < 0)
+> +		return -EWOULDBLOCK;
+> +	if (!ret || adapter->masked) {
+> +		kvm->stat.io_390_inatomic_adapter_masked++;
+> +		return 0;
+> +	}
+> +
+> +	inti = kzalloc_obj(*inti, GFP_ATOMIC);
+> +	if (!inti)
+
+You need to undo the summary bit indication on this path as well.
+
+[...]
+
+> -static void __kvm_inject_pfault_token(struct kvm_vcpu *vcpu, bool start_token,
+> -				      unsigned long token)
+> +static int __kvm_inject_pfault_token(struct kvm_vcpu *vcpu, bool start_token,
+> +				     unsigned long token)
 >  {
->  	u64 idr;
-> @@ -84,16 +105,22 @@ static int gicv5_irs_extract_vm_caps(const struct gic_kvm_info *info)
->  	return 0;
->  }
+>  	struct kvm_s390_interrupt inti;
+>  	struct kvm_s390_irq irq;
+> +	struct kvm_s390_interrupt_info *inti_mem = NULL;
 >  
-> +/* Forward decl for cleaner code layout */
+>  	if (start_token) {
+>  		irq.u.ext.ext_params2 = token;
+>  		irq.type = KVM_S390_INT_PFAULT_INIT;
+>  		WARN_ON_ONCE(kvm_s390_inject_vcpu(vcpu, &irq));
+>  	} else {
+> +		inti_mem = kzalloc_obj(*inti_mem, GFP_KERNEL_ACCOUNT);
+> +		if (!inti_mem)
+> +			return -ENOMEM;
 
-Drop this comment. The intent is pretty obvious. And maybe move them
-to the top, so that all forward declarations are grouped together.
+To match the other nonzero cases here, rather than making
+__kvm_inject_pfault_token() return a value can you leave it a void
+return and then just do something like:
 
-> +static int vgic_v5_irs_assign_vmt(bool two_level, u8 vm_id_bits, phys_addr_t vmt_base);
-> +static int vgic_v5_irs_clear_vmt(void);
-> +
->  /*
->   * Probe for a vGICv5 compatible interrupt controller, returning 0 on success.
->   */
->  int vgic_v5_probe(const struct gic_kvm_info *info)
->  {
-> +	struct vgic_v5_host_ist_caps *ist_caps;
->  	bool v5_registered = false;
->  	u64 ich_vtr_el2;
->  	int ret;
->  
->  	kvm_vgic_global_state.type = VGIC_V5;
-> +	kvm_vgic_global_state.max_gic_vcpus = VGIC_V5_MAX_CPUS;
->  
->  	kvm_vgic_global_state.vcpu_base = 0;
->  	kvm_vgic_global_state.vctrl_base = NULL;
-> @@ -114,13 +141,53 @@ int vgic_v5_probe(const struct gic_kvm_info *info)
->  	if (gicv5_irs_extract_vm_caps(info))
->  		goto skip_v5;
->  
-> -	kvm_vgic_global_state.max_gic_vcpus = VGIC_V5_MAX_CPUS;
-> +	ist_caps = vgic_v5_host_caps();
-> +
-> +	/*
-> +	 * Even if the HW supports more per-VM vCPUs, artifically cap as we
-> +	 * can't use them all.
-> +	 */
-> +	kvm_vgic_global_state.max_gic_vcpus = min(ist_caps->max_vpes,
-> +						  VGIC_V5_MAX_CPUS);
+if (WARN_ON_ONCE(!inti_mem))
+	return;
 
-Can this be less than 512, which we still want to support for GICv3?
 
-> +
-> +	/*
-> +	 * GICv5 requires a set of tables to be allocated in order to manage
-> +	 * VMs. We allocate them in advance here, which alas means that we
-> +	 * already have to make a decisions regarding the maximum number of VMs
-> +	 * we want to run. For now, we match the maximum number offered by the
-> +	 * hardware, but this might not be a wise choice in the long term.
-> +	 */
-> +	ret = vgic_v5_vmt_allocate(ist_caps->two_level_vmt_support,
-> +				   ist_caps->max_vms, ist_caps->vmd_size,
-> +				   ist_caps->vped_size,
-
-Why don't you just pass irs_caps to the allocator instead of teasing
-out individual fields?
-
-> +				   kvm_vgic_global_state.max_gic_vcpus);
-> +	if (ret) {
-> +		kvm_err("Failed to allocate the GICv5 VM tables; no GICv5 support\n");
-> +		goto skip_v5;
-
-Turn this into a hard fail.
-
-> +	}
-> +
-> +	/*
-> +	 * We've now allocated the VM table, but the host's IRS doesn't know
-> +	 * about it yet. Provide the base address of the VMT to the IRS, as well
-> +	 * as the number of ID bits that it covers and the structure used
-> +	 * (linear/two-level).
-> +	 */
-> +	ret = vgic_v5_irs_assign_vmt(ist_caps->two_level_vmt_support,
-> +				     vgic_v5_vmt_vpe_id_bits(),
-> +				     vgic_v5_get_vmt_base());
-> +	if (ret) {
-> +		kvm_err("Failed to assign the GICv5 VM tables to the IRS; no GICv5 support\n");
-> +		vgic_v5_vmt_free();
-> +		goto skip_v5;
-> +	}
->  
->  	vgic_v5_get_implemented_ppis();
->  
->  	ret = kvm_register_vgic_device(KVM_DEV_TYPE_ARM_VGIC_V5);
->  	if (ret) {
->  		kvm_err("Cannot register GICv5 KVM device.\n");
-> +		vgic_v5_irs_clear_vmt();
-> +		vgic_v5_vmt_free();
->  		goto skip_v5;
->  	}
->  
-> @@ -148,12 +215,13 @@ int vgic_v5_probe(const struct gic_kvm_info *info)
->  	ret = kvm_register_vgic_device(KVM_DEV_TYPE_ARM_VGIC_V3);
->  	if (ret) {
->  		kvm_err("Cannot register GICv3-legacy KVM device.\n");
-> -		return ret;
-> +		/* vGICv5 should still work */
-> +		return v5_registered ? 0 : ret;
->  	}
->  
->  	/* We potentially limit the max VCPUs further than we need to here */
->  	kvm_vgic_global_state.max_gic_vcpus = min(VGIC_V3_MAX_CPUS,
-> -						  VGIC_V5_MAX_CPUS);
-> +						  kvm_vgic_global_state.max_gic_vcpus);
->  
->  	static_branch_enable(&kvm_vgic_global_state.gicv3_cpuif);
->  	kvm_info("GCIE legacy system register CPU interface\n");
-> @@ -163,6 +231,167 @@ int vgic_v5_probe(const struct gic_kvm_info *info)
->  	return 0;
->  }
->  
-> +/*
-> + * Wait for completion of a change in any of IRS_VMT_BASER, IRS_VMAP_L2_VMTR,
-> + * IRS_VMAP_VMR, IRS_VMAP_VPER, IRS_VMAP_VISTR, IRS_VMAP_L2_VISTR.
-> + */
-> +static int vgic_v5_irs_wait_for_vm_op(void)
-> +{
-> +	u32 statusr;
-> +	int ret;
-> +
-> +	ret = readl_relaxed_poll_timeout_atomic(
-> +		irs_base + GICV5_IRS_VMT_STATUSR, statusr,
-> +		FIELD_GET(GICV5_IRS_VMT_STATUSR_IDLE, statusr), 1,
-> +		USEC_PER_SEC);
-
-nit: please don't split this line before the first parameter of the
-function.
-
-> +
-> +	if (ret == -ETIMEDOUT) {
-> +		pr_err_ratelimited("Time out waiting for IRS VM Op\n");
-> +		return ret;
-> +	}
-> +
-> +	return 0;
-> +}
-> +
-> +static int vgic_v5_irs_assign_vmt(bool two_level, u8 vm_id_bits, phys_addr_t vmt_base)
-> +{
-> +	u64 vmt_baser;
-> +	u32 vmt_cfgr;
-> +
-> +	vmt_baser = irs_readq_relaxed(GICV5_IRS_VMT_BASER);
-> +	if (!!FIELD_GET(GICV5_IRS_VMT_BASER_VALID, vmt_baser))
-> +		return -EBUSY;
-> +
-> +	vmt_cfgr = FIELD_PREP(GICV5_IRS_VMT_CFGR_VM_ID_BITS, vm_id_bits);
-> +	if (two_level)
-> +		vmt_cfgr |= FIELD_PREP(GICV5_IRS_VMT_CFGR_STRUCTURE,
-> +				       GICV5_IRS_VMT_CFGR_STRUCTURE_TWO_LEVEL);
-> +
-> +	irs_writel_relaxed(vmt_cfgr, GICV5_IRS_VMT_CFGR);
-> +
-> +	/* The base address is intentionally only masked and not shifted */
-> +	vmt_baser = FIELD_PREP(GICV5_IRS_VMT_BASER_VALID, true) |
-> +		    (vmt_base & GICV5_IRS_VMT_BASER_ADDR);
-> +	irs_writeq_relaxed(vmt_baser, GICV5_IRS_VMT_BASER);
-> +
-> +	return vgic_v5_irs_wait_for_vm_op();
-> +}
-> +
-> +static int vgic_v5_irs_clear_vmt(void)
-> +{
-> +	irs_writeq_relaxed(0ULL, GICV5_IRS_VMT_BASER);
-> +
-> +	return vgic_v5_irs_wait_for_vm_op();
-> +}
-> +
-> +static int vgic_v5_irs_vmap_l2_vmt(int vm_id)
-> +{
-> +	u64 vmap_l2_vmtr;
-> +	int ret = 0;
-> +
-> +	guard(raw_spinlock)(&vm_config_lock);
-> +
-> +	/* Make sure that we are idle to begin with */
-> +	ret = vgic_v5_irs_wait_for_vm_op();
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Mark the VM as valid */
-> +	vmap_l2_vmtr = FIELD_PREP(GICV5_IRS_VMAP_L2_VMTR_VM_ID, vm_id) |
-> +		       FIELD_PREP(GICV5_IRS_VMAP_L2_VMTR_M, true);
-> +	irs_writeq_relaxed(vmap_l2_vmtr, GICV5_IRS_VMAP_L2_VMTR);
-> +
-> +	return vgic_v5_irs_wait_for_vm_op();
-> +}
-> +
-> +static int __vgic_v5_irs_vmap_vm(int vm_id, bool unmap)
-> +{
-> +	u64 vmap_vmr;
-> +	int ret;
-> +
-> +	guard(raw_spinlock)(&vm_config_lock);
-> +
-> +	/* Make sure that we are idle to begin with */
-> +	ret = vgic_v5_irs_wait_for_vm_op();
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Mark the VM as valid */
-> +	vmap_vmr = FIELD_PREP(GICV5_IRS_VMAP_VMR_VM_ID, vm_id) |
-> +		   FIELD_PREP(GICV5_IRS_VMAP_VMR_U, unmap) |
-> +		   FIELD_PREP(GICV5_IRS_VMAP_VMR_M, true);
-> +	irs_writeq_relaxed(vmap_vmr, GICV5_IRS_VMAP_VMR);
-> +
-> +	return vgic_v5_irs_wait_for_vm_op();
-> +}
-
-There is a pattern here:
-
-static int do_something(...)
-{
-	int ret
-	guard(raw_spinlock)(&vm_config_lock);
-
-	/* Make sure that we are idle to begin with */
-	ret = vgic_v5_irs_wait_for_vm_op();
-	if (ret)
-		return ret;
-
-	[do the something we came here for]
-
-	return vgic_v5_irs_wait_for_vm_op();
-}
-
-Surely this can be turned into a helper that avoids having that
-boilerplate code in each and every function.
-
-> +
-> +static int vgic_v5_irs_set_vm_valid(int vm_id)
-> +{
-> +	return __vgic_v5_irs_vmap_vm(vm_id, false);
-> +}
-> +
-> +static int vgic_v5_irs_set_vm_invalid(int vm_id)
-> +{
-> +	return __vgic_v5_irs_vmap_vm(vm_id, true);
-> +}
-> +
-> +static int __vgic_v5_irs_update_vist_validity(int vm_id, bool spi_ist, bool unmap)
-> +{
-> +	u8 type = spi_ist ? 0b011 : 0b010;
-> +	u64 vmap_vistr;
-> +	int ret;
-> +
-> +	guard(raw_spinlock)(&vm_config_lock);
-> +
-> +	/* Make sure that we are idle to begin with */
-> +	ret = vgic_v5_irs_wait_for_vm_op();
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Mark the IST as valid */
-> +	vmap_vistr = FIELD_PREP(GICV5_IRS_VMAP_VISTR_TYPE, type) |
-> +		     FIELD_PREP(GICV5_IRS_VMAP_VISTR_VM_ID, vm_id) |
-> +		     FIELD_PREP(GICV5_IRS_VMAP_VISTR_U, unmap) |
-> +		     FIELD_PREP(GICV5_IRS_VMAP_VISTR_M, true);
-> +	irs_writeq_relaxed(vmap_vistr, GICV5_IRS_VMAP_VISTR);
-> +
-> +	return vgic_v5_irs_wait_for_vm_op();
-> +}
-> +
-> +static int vgic_v5_irs_set_vist_valid(int vm_id, bool spi_ist)
-> +{
-> +	return __vgic_v5_irs_update_vist_validity(vm_id, spi_ist, false);
-> +}
-> +
-> +/* Note: We currently do not use this as we rely on the VM becoming invalid. */
-> +static int vgic_v5_irs_set_vist_invalid(int vm_id, bool spi_ist)
-> +{
-> +	return __vgic_v5_irs_update_vist_validity(vm_id, spi_ist, true);
-> +}
-> +
-> +static int vgic_v5_db_set_vcpu_affinity(struct irq_data *data, void *vcpu_info)
-> +{
-> +	struct vgic_v5_vm *vm = data->domain->host_data;
-> +	struct gicv5_cmd_info *cmd_info = vcpu_info;
-> +
-> +	switch (cmd_info->cmd_type) {
-> +	case VMT_L2_MAP:
-> +		return vgic_v5_irs_vmap_l2_vmt(vm->vm_id);
-> +	case VMTE_MAKE_VALID:
-> +		return vgic_v5_irs_set_vm_valid(vm->vm_id);
-> +	case VMTE_MAKE_INVALID:
-> +		return vgic_v5_irs_set_vm_invalid(vm->vm_id);
-> +	case SPI_VIST_MAKE_VALID:
-> +		return vgic_v5_irs_set_vist_valid(vm->vm_id, true);
-> +	case LPI_VIST_MAKE_VALID:
-> +		return vgic_v5_irs_set_vist_valid(vm->vm_id, false);
-> +	case LPI_VIST_MAKE_INVALID:
-> +		return vgic_v5_irs_set_vist_invalid(vm->vm_id, false);
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-
-This function should be introduced ages ago, as soon as you start
-issuing vcpu_set_affinity() calls.
-
-> +
->  /*
->   * This set of irq_chip functions is specific for doorbells.
->   */
-> @@ -174,6 +403,7 @@ static struct irq_chip vgic_v5_db_irq_chip = {
->  	.irq_set_affinity = irq_chip_set_affinity_parent,
->  	.irq_get_irqchip_state = irq_chip_get_parent_state,
->  	.irq_set_irqchip_state = irq_chip_set_parent_state,
-> +	.irq_set_vcpu_affinity = vgic_v5_db_set_vcpu_affinity,
->  	.flags = IRQCHIP_SET_TYPE_MASKED | IRQCHIP_SKIP_SET_WAKE |
->  		 IRQCHIP_MASK_ON_SUSPEND,
->  };
-> diff --git a/include/linux/irqchip/arm-gic-v5.h b/include/linux/irqchip/arm-gic-v5.h
-> index ccec0a045927c..ff5ad653252d2 100644
-> --- a/include/linux/irqchip/arm-gic-v5.h
-> +++ b/include/linux/irqchip/arm-gic-v5.h
-> @@ -87,6 +87,12 @@
->  #define GICV5_IRS_IST_CFGR		0x0190
->  #define GICV5_IRS_IST_STATUSR		0x0194
->  #define GICV5_IRS_MAP_L2_ISTR		0x01c0
-> +#define GICV5_IRS_VMT_BASER		0x0200
-> +#define GICV5_IRS_VMT_CFGR		0x0210
-> +#define GICV5_IRS_VMT_STATUSR		0x0214
-> +#define GICV5_IRS_VMAP_L2_VMTR		0x02c0
-> +#define GICV5_IRS_VMAP_VMR		0x02c8
-> +#define GICV5_IRS_VMAP_VISTR		0x02d0
->  
->  #define GICV5_IRS_IDR0_VIRT		BIT(6)
->  
-> @@ -181,6 +187,30 @@
->  
->  #define GICV5_IRS_MAP_L2_ISTR_ID	GENMASK(23, 0)
->  
-> +#define GICV5_IRS_VMT_BASER_ADDR	GENMASK_ULL(51, 3)
-> +#define GICV5_IRS_VMT_BASER_ADDR_SHIFT	3ULL
-> +#define GICV5_IRS_VMT_BASER_VALID	BIT_ULL(0)
-> +
-> +#define GICV5_IRS_VMT_CFGR_STRUCTURE_TWO_LEVEL	0b1
-> +#define GICV5_IRS_VMT_CFGR_STRUCTURE_LINEAR	0b0
-> +
-> +#define GICV5_IRS_VMT_CFGR_STRUCTURE	BIT(16)
-> +#define GICV5_IRS_VMT_CFGR_VM_ID_BITS	GENMASK(4, 0)
-> +
-> +#define GICV5_IRS_VMT_STATUSR_IDLE	BIT(0)
-> +
-> +#define GICV5_IRS_VMAP_L2_VMTR_M	BIT_ULL(63)
-> +#define GICV5_IRS_VMAP_L2_VMTR_VM_ID	GENMASK_ULL(15, 0)
-> +
-> +#define GICV5_IRS_VMAP_VMR_M		BIT_ULL(63)
-> +#define GICV5_IRS_VMAP_VMR_U		BIT_ULL(62)
-> +#define GICV5_IRS_VMAP_VMR_VM_ID	GENMASK_ULL(15, 0)
-> +
-> +#define GICV5_IRS_VMAP_VISTR_M		BIT_ULL(63)
-> +#define GICV5_IRS_VMAP_VISTR_U		BIT_ULL(62)
-> +#define GICV5_IRS_VMAP_VISTR_VM_ID	GENMASK_ULL(47, 32)
-> +#define GICV5_IRS_VMAP_VISTR_TYPE	GENMASK_ULL(31, 29)
-> +
->  #define GICV5_ISTL1E_VALID		BIT_ULL(0)
->  #define GICV5_IRS_ISTL1E_SIZE		8UL
->  
-
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
