@@ -1,193 +1,1033 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D683750B9
-	for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 10:17:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 485023D16EC;
+	Wed, 29 Apr 2026 10:25:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777457876; cv=none; b=NskAI/kI1TqjfX1xUQ3b7QYiNQjHmoU9pJMuBVeMdxAgOIH8Gw/1oz9ze2/ZIhlLTkWhiitmEj5qUU2+4LooqjZ37N89VrzaP/HfK5yI2KbcIW1nwLovZ2br/0Vx7yP3hX2P1e3l14c0l10Pnp4aUb4Xxdsajy8RlIK/DR8WojA=
+	t=1777458307; cv=none; b=oesq9ogfqUN1fn56u/I//y1MujB3Dbaei3H2N6oZUhtmocIRbjlLREc7EobDwYW+P4qv27Avg+RNRtWJgCytBimb6+r65u7Ig+ukomCKKniZYxk+B6VbN/y6xIpTYEbjF5RpzKWIs9A39u8oK6q9toZIBVaGMwadCWfgpZ5GUac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777457876; c=relaxed/simple;
-	bh=Hvppf1MWyfS3as7jeN/6m10Lw5zLo3BkYizAxj3louc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UlDcOpYplw3Gv5zO9PkIJwJVCW4FY6U0ctbVkdjOMkjhOuY8jyFDZChcVqNn8rQaE23GGZcQ/KX7jW+2M24LE7aqZxLSqDH91pZl1Z/OJ5XDC11DCv988xFWGxWfT7/2EZHqALTynZqgdJXBZkHl3rbBcpoRY4Q8lKX3ppRvOr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=VhYl5xqX; arc=none smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1777458307; c=relaxed/simple;
+	bh=MJsHb2kJmapZVsSm4CAWr9iFPJR8DhfIKREMrwM7CDE=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lhyE6Qay24fDvRbr1ta3R6vrHsdPTvyoDe/M/eepbT4NcVkfB0GbgFc+q8dwc4nlY5mV9kpZATUTWbtnsrgDTa0zRTGB3drn6OYWInnzW/UhoyztLULGgPdYJvFrFa73D/Qdbnqa41DC3QA6Pii7eDg9WEG+XqpvBcXAY/X3dBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=vNfzhJ2V; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="VhYl5xqX"
-Received: from pps.filterd (m0044010.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63SIjUqw1474920
-	for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 03:17:54 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=7yJqq3a04kcSDFbt2GTsDnPI5s5xDilbsLSAdvfilyw=; b=VhYl5xqXuBK4
-	elmpHl+yTYS2osrmlQFZy0ISq5MRcXpkz5wMjmPejblNLYk7nUaoHgYbfUa9gLjc
-	kuvjfatsN60mkJZfx6EirnJcNcYYTpPz8nmSLnRhGJPMXKQ85tYOqGF8qd4gFrFA
-	hTTwILf1Z/HDbw5Ahl+ry6ERfnskTDLQbLoWkaR5IAjl9rG8js+o5gOCD8Reo1Xt
-	ps20tdFxtKCIqE9axe1gvdu+UuQKrJCE4fepXLNidhg6conlzjs6BtuFlfuW8QYS
-	QAggP2BEO8f7Q+YGoR4MokTb3AHa1aiiVezyYQkPKGZV11J9IbYxQtuS82EBRQes
-	N40r2nmyfw==
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com [209.85.221.70])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4drrx5sb5p-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 03:17:49 -0700 (PDT)
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-4411a1f9601so8517011f8f.0
-        for <kvm@vger.kernel.org>; Wed, 29 Apr 2026 03:17:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777457868; x=1778062668;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=uhqacqCsOEkZm6rZuptvAn6IpvZgDy/PZABzqjx+5ns=;
-        b=q8m9wW162CRi5BgqiaqE7hcQHi0Pksm3KH4ppBZH9nPy9bKlKaLtQLPgoFzl3vm5pS
-         y8wnnDToqiHNOPu6pF8ZVPGmOqpA8Fr80rMWtmGY3sjeRKWvTgGLPhss8IAl/gPKUtc8
-         x9EdfRNC+chdl5vQ7xhtTCtjIYNc49HY3emSxOAejsTnPE2FNSXjCEtnacF+ZcY0e7jI
-         klBW/P8jMWZyBjy2hbZbOpN4XlbshhZ1LlKkBb4oZjisXl6lJNJObV1RTgRpQ0rdVhG6
-         mpIfeiv+TCISZliXyQLdE6lUJ10cAQUlgBhY6C578CH41/mnphnIo23IzvMt5t2OseKQ
-         sWWA==
-X-Forwarded-Encrypted: i=1; AFNElJ9yr2eGl98ptOxhYzq4BoCGKV/Eosy19FyQiqlDbU24blk0ZkpzAGjA/i93LAu0rJHH84k=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/Xfq085ZDXHLzvSF/3V4Y3UCpavtrAQVtXwtEgMQE00ptEXyz
-	tErWs8wDsPh0RxG5zy6miGv+TJbMa8LW03MYMDAUCLizSyES3fQOQyBLuUqQ5CTPSufJLYPWdyC
-	bUYNTVbSRn1VzzJwbStSAIkD41jGDFpjNXTl1+7XLzYV0GPVw0oK8
-X-Gm-Gg: AeBDiesXqZkdc8h1LWQe/QmVBHCPJMjKl7m/jMMECOOPGCUqvAf83p3CM/Aw5OIn8fE
-	0xFdT0JGdHRISmPXpYugGKNvZxBdqGmDNHB3r7vBAILVffcqPNm+gfIbKm97o5IiamoL1qfQbYm
-	8+iACTXN/GNySpuw/Wg/5c5XGbsTsq+iu556JDyFOt5pdhLqAH8NSOnhuo7HoXw9KVCMaCVYPlv
-	410+r3WPmgpPMUrusl4GlM2b+LWGDpa1u3UNZVPeMghZKiv4XR+ivFrqCZheueUtb5BZecInigZ
-	U2a3SOxaCtqqdA99xz4Bxht1Rjqyx8gxLAzVyH7vOfmoWLgRPOgti02tOENvl+amZj08MaZ9q1I
-	voWmLKoFhPxYv4I+iP21Hfyf8vfKqcqlozCqLkwdxUTOLDmRzj0R3j2wgnCG0mn1F4dxx3FJ7+A
-	==
-X-Received: by 2002:a05:6000:2083:b0:439:c661:3245 with SMTP id ffacd0b85a97d-4464b2acac8mr12680061f8f.34.1777457868156;
-        Wed, 29 Apr 2026 03:17:48 -0700 (PDT)
-X-Received: by 2002:a05:6000:2083:b0:439:c661:3245 with SMTP id ffacd0b85a97d-4464b2acac8mr12679996f8f.34.1777457867712;
-        Wed, 29 Apr 2026 03:17:47 -0700 (PDT)
-Received: from ?IPV6:2a03:83e0:1126:4:18:b9f9:127f:ecc1? ([2620:10d:c092:500::4:fbdf])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-447b7ca64ffsm5099429f8f.37.2026.04.29.03.17.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 29 Apr 2026 03:17:46 -0700 (PDT)
-Message-ID: <393f65a8-75c3-401c-b983-5814e1bfcba2@meta.com>
-Date: Wed, 29 Apr 2026 11:17:43 +0100
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="vNfzhJ2V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C049C2BCB3;
+	Wed, 29 Apr 2026 10:25:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777458306;
+	bh=MJsHb2kJmapZVsSm4CAWr9iFPJR8DhfIKREMrwM7CDE=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=vNfzhJ2VHVG8NNUBllNdRew1bsG/fUqiWsVM/pg5FaRcrAQL5gS+mjmejwKRBu6DP
+	 y/zi08WIpHyQI6QbqmOCYCm5T17MCnKZTZKIMneiBblRzCabGb6GMqusxkEm0N+7Lf
+	 dzyuG3KpJkJ20/IVLEUbbIJaR5jaO6KmHUBpjVR++JQTWNZq9Dw2ys7yQ7fCyzqL04
+	 RWz2OeTb2db8G2SYzpqazVVru5IpTadW7S1abva2x0jD8by25TVkAA36NCo9w7Y2VR
+	 sfJ0NhvaBeM3qJl62K7lczrF3IGvRtz5mKqVnH+RsXEGNC//YGbHS5vvT1zBLae3PE
+	 qOiTYz5Fd7/dw==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wI26K-0000000FrX5-0Hoi;
+	Wed, 29 Apr 2026 10:25:04 +0000
+Date: Wed, 29 Apr 2026 11:25:03 +0100
+Message-ID: <86mrymysg0.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Sascha Bischoff <Sascha.Bischoff@arm.com>
+Cc: "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	nd <nd@arm.com>,
+	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+	Joey Gouly
+	<Joey.Gouly@arm.com>,
+	Suzuki Poulose <Suzuki.Poulose@arm.com>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+	"peter.maydell@linaro.org"
+	<peter.maydell@linaro.org>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	Timothy Hayes <Timothy.Hayes@arm.com>
+Subject: Re: [PATCH 07/43] KVM: arm64: gic-v5: Create & manage VM and VPE tables
+In-Reply-To: <20260427160547.3129448-8-sascha.bischoff@arm.com>
+References: <20260427160547.3129448-1-sascha.bischoff@arm.com>
+	<20260427160547.3129448-8-sascha.bischoff@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/3] vfio/pci: Replace vfio_pci_core_setup_barmap()
- with checks for resource/map
-Content-Language: en-GB
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Alex Williamson <alex@shazbot.org>, Kevin Tian <kevin.tian@intel.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, Ankit Agrawal <ankita@nvidia.com>,
-        Alistair Popple <apopple@nvidia.com>, Kees Cook <kees@kernel.org>,
-        Shameer Kolothum <skolothumtho@nvidia.com>,
-        Yishai Hadas
- <yishaih@nvidia.com>,
-        Alexey Kardashevskiy <aik@ozlabs.ru>,
-        Eric Auger <eric.auger@redhat.com>, Peter Xu <peterx@redhat.com>,
-        Vivek Kasireddy <vivek.kasireddy@intel.com>,
-        Zhi Wang <zhiw@nvidia.com>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, virtualization@lists.linux.dev
-References: <20260423182517.2286030-1-mattev@meta.com>
- <20260423182517.2286030-3-mattev@meta.com> <20260426110517.GB440345@unreal>
-From: Matt Evans <mattev@meta.com>
-In-Reply-To: <20260426110517.GB440345@unreal>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDI5MDEwNCBTYWx0ZWRfX3BG86JObWh6V
- 5ClEJ3aOdx7vXHne+cMkZMh9gFov2PW6TigJL0glvXCW4B/rn1emgHoMzWa0sKVoMciNQewc2/h
- 0mMy+wD3bVbgcaL6WKFX98k89AYOlCs/nxkDwRuTuNTEg+24VlIH6+o6J5F8MW7dLQkG0gPLN1/
- Ru1MIsdE19K7ftOcsriH8v2tzChoHJLhliaA6bFFX+nJ8sjyQQWbh++rPKBJWXd2kgmZfIYJnrM
- b2IcZg0ZsPdRSTFlq25btuw4hoYZ3W4KJPjOWmntR2h62jwUZDs7/LJCpxOgyyOesma3gqvgZsN
- gsyGGScdy+tpnL2p5Qu4DTbnqEwwqjEbw1tUKDgk9SYur7kBHKRT3njXU2ezKXvUjAkxVvAfHqb
- QQIRj40J6rWrbV0DS45aNErrv8T/Op877XqvIlcNHcQz2yfocXe7RS5MFQZG2WJYA+WIIKK0NWs
- jWbkWCb1Ri7P5Yj1mhg==
-X-Proofpoint-GUID: 2XOeF7OA5PM2b_ZPp_8FNKHbTInTgZSX
-X-Proofpoint-ORIG-GUID: 2XOeF7OA5PM2b_ZPp_8FNKHbTInTgZSX
-X-Authority-Analysis: v=2.4 cv=ZZUt8MVA c=1 sm=1 tr=0 ts=69f1dacd cx=c_pps
- a=I6ewnrIBtnKHmb6SxpX7Vg==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=8elwO82fXORLTBIkMd32:22 a=VabnemYjAAAA:8 a=iaFi8TtKhGdbX_SpOFsA:9
- a=QEXdDO2ut3YA:10 a=MqNruPmfsT8GavliLQMe:22 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-28_05,2026-04-28_01,2025-10-01_01
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, nd@arm.com, oliver.upton@linux.dev, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, lpieralisi@kernel.org, Timothy.Hayes@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Hi Leon,
+On Mon, 27 Apr 2026 17:08:25 +0100,
+Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
+> 
+> GICv5 uses a set of in-memory tables to track and manage VM
+> state. These must be allocated by the hypervisor, and provided to the
+> IRS to use.
+> 
+> The VMT (Virtual Machine Table) is a linear or two level table
+> comprising VMT Entries (VMTE). Each VMTE describes the state for a
+> single VM. This state includes things such as the SPI and LPI IST
+> configuration (coming in a future commit), an implementation-defined
+> VM Descriptor, and a VPE Table (VPET).
+> 
+> The VPET contains one entry per VPE belonging to a VM, and is used to
+> mark a VPE as valid, as well as providing the address of an
+> implementation-defined VPE Descriptor, which is used by the hardware
+> to track and manage VPE state.
+> 
+> This commit adds support for allocating the VMT, and managing the
+> VMTEs. The VMTEs can be initialised or released for re-use. Allocation
+> and tracking of unused VMTEs is handled with an IDA.
+> 
+> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+> ---
+>  arch/arm64/kvm/vgic/vgic-v5-tables.c | 628 +++++++++++++++++++++++++++
+>  arch/arm64/kvm/vgic/vgic-v5-tables.h | 108 +++++
+>  include/kvm/arm_vgic.h               |   2 +
+>  include/linux/irqchip/arm-gic-v5.h   |  13 +
+>  4 files changed, 751 insertions(+)
+> 
+> diff --git a/arch/arm64/kvm/vgic/vgic-v5-tables.c b/arch/arm64/kvm/vgic/vgic-v5-tables.c
+> index 30e2b108b1aa3..502d05d46cccf 100644
+> --- a/arch/arm64/kvm/vgic/vgic-v5-tables.c
+> +++ b/arch/arm64/kvm/vgic/vgic-v5-tables.c
+> @@ -3,6 +3,634 @@
+>   * Copyright (C) 2025, 2026 Arm Ltd.
+>   */
+>  
+> +#include <kvm/arm_vgic.h>
+> +#include <linux/kernel.h>
+> +#include <linux/mm.h>
+> +#include <linux/sizes.h>
+> +#include <linux/slab.h>
+> +#include <linux/xarray.h>
+> +#include <asm/kvm_mmu.h>
+> +
+> +#include "vgic.h"
+>  #include "vgic-v5-tables.h"
+>  
+>  struct vgic_v5_host_ist_caps gicv5_host_ist_caps;
+> +
+> +static struct vgic_v5_vmt *vmt_info;
+> +DEFINE_XARRAY(vm_info);
 
-On 26/04/2026 12:05, Leon Romanovsky wrote:
-> >=20
-> On Thu, Apr 23, 2026 at 11:25:08AM -0700, Matt Evans wrote:
->> Since "vfio/pci: Set up barmap in vfio_pci_core_enable()", the
->> resource request and iomap for the BARs was performed early, and
->> vfio_pci_core_setup_barmap() now just checks those actions succeeded.
->>
->> There were two types of callers:
->>   - Those that need the iomap, because they'll access the BAR
->>   - Those that need the resource, because they'll map/export it
->>
->> This replaces vfio_pci_core_setup_barmap() with two helpers,
->> vfio_pci_core_check_barmap_valid() and vfio_pci_core_check_bar_rsrc(),
->> to make it clear which behaviour is required in each caller.
->>
->> Signed-off-by: Matt Evans <mattev@meta.com>
->> ---
->>   drivers/vfio/pci/nvgrace-gpu/main.c |  8 +++-----
->>   drivers/vfio/pci/vfio_pci_core.c    |  5 ++---
->>   drivers/vfio/pci/vfio_pci_rdwr.c    | 22 ++--------------------
->>   drivers/vfio/pci/virtio/legacy_io.c |  4 ++--
->>   include/linux/vfio_pci_core.h       | 23 ++++++++++++++++++++++-
->>   5 files changed, 31 insertions(+), 31 deletions(-)
->=20
-> <...>
->=20
->> +/* Returns 0 if vdev->barmap[bar] can be accessed, otherwise errno */
->> +static inline int
->> +vfio_pci_core_check_barmap_valid(struct vfio_pci_core_device *vdev, int=
- bar)
->> +{
->> +	if (bar < 0 || bar >=3D PCI_STD_NUM_BARS)
->> +		return -EINVAL;
->> +	if (vdev->barmap[bar] =3D=3D 0)
->=20
-> I understand this line was copied from an earlier implementation, but
-> barmap[bar] is a pointer, and it is set to NULL when it is released.
->=20
->   if (!dev->barmap[bar])
->     return -ENOMEM;
+Can this be made static?
 
-Absolutely.  Fixed in upcoming v3, thank you,
+> +
+> +static bool vgic_v5_vmt_allocated(void)
+> +{
+> +	return vmt_info != NULL;
+> +}
+> +
+> +static int vgic_v5_check_vm_id(u16 vm_id)
+> +{
+> +	if (vm_id >= vmt_info->num_entries)
+> +		return -EINVAL;
+> +
+> +	return 0;
+> +}
 
+Under what circumstance do we have to issue these checks? This looks
+like debug code to me.
 
-Matt
+> +
+> +/*
+> + * Our IRS might be coherent or non-coherent. If coherent, we can just emit a
+> + * DSB to ensure that we're in sync. However, when non-coherent, we need to
+> + * manage our cached data explicitly.
+> + *
+> + * This helper is used to handle both coherent and non-coherent IRSes, and
+> + * handles all combinations of cleaning and invalidating to the PoC.
+> + */
+> +static void vgic_v5_clean_inval(void *va, size_t size, bool clean, bool inval)
+> +{
+> +	unsigned long base = (unsigned long)va;
+> +
+> +	/* Catch any accidental NOPs */
+> +	BUILD_BUG_ON(!(clean || inval));
+> +
+> +	/* Coherent; emit DSB. */
+> +	if (!gicv5_host_ist_caps.irs_non_coherent) {
+> +		dsb(ishst);
+> +		return;
+> +	}
 
->=20
-> Thanks
->=20
->> +		return -ENOMEM;
->> +	return 0;
->> +}
->> +
->> +/* Returns 0 if BAR has a valid resource reserved for use, otherwise er=
-rno */
->> +static inline int vfio_pci_core_check_bar_rsrc(struct vfio_pci_core_dev=
-ice *vdev,
->> +					       int bar)
->> +{
->> +	if (bar < 0 || bar >=3D PCI_STD_NUM_BARS)
->> +		return -EINVAL;
->> +	if (!vdev->have_bar_resource[bar])
->> +		return -EBUSY;
->> +	return 0;
->> +}
->> +
->>   static inline bool is_aligned_for_order(struct vm_area_struct *vma,
->>   					unsigned long addr,
->>   					unsigned long pfn,
->> --=20
->> 2.47.3
->>
+You need a DSB in all situations. Otherwise, the subsequent CMOs are
+not ordered.
 
+> +
+> +	if (clean && inval)
+> +		dcache_clean_inval_poc(base, base + size);
+> +	else if (clean)
+> +		dcache_clean_poc(base, base + size);
+> +	else if (inval)
+> +		dcache_inval_poc(base, base + size);
+
+You could also do yourself a favour and just use clean+invalidate,
+which conveniently works everywhere. There is very little point in
+spreading that complexity all over the map.
+
+> +}
+> +
+> +/*
+> + * Create a linear VM table, rounding up the number of entries to at least one
+> + * whole page to give us nicer alignment.
+
+Define nicer. What are the constraints? Does GICv5 have a different
+notion of "page size" from the CPU like on v3?
+
+> + *
+> + * Note: We don't update the number of entries tracked in our tracking structure
+> + * as this might be higher than the number of bits supported by the HW.
+> + */
+> +static int vgic_v5_alloc_vmt_linear(unsigned int num_entries)
+> +{
+> +	unsigned int l2_entries_per_page;
+> +	size_t alloc_size;
+> +
+> +	/* Potentially throw away a bit of memory for the sake of alignment! */
+> +	l2_entries_per_page = PAGE_SIZE / GICV5_VMTEL2E_SIZE;
+> +	if (num_entries < l2_entries_per_page)
+> +		num_entries = l2_entries_per_page;
+
+Don't you want to allocate full pages, irrespective of the number of
+entries? I don't see the reason why you'd treat the first page
+differently from the rest.
+
+> +
+> +	alloc_size = num_entries * sizeof(struct vmtl2_entry);
+> +
+> +	vmt_info->linear.vmt_base = kzalloc(alloc_size, GFP_KERNEL);
+
+Consider using the new allocation helpers:
+
+	vmt_info->vmt_base = kzalloc_objs(struct vmtl2_entry, num_entries, GFP_KERNEL)
+
+But if you are supposed to use full pages anyway, you might as well
+switch to the page allocator.
+
+> +	if (vmt_info->linear.vmt_base == NULL)
+> +		return -ENOMEM;
+> +
+> +	vgic_v5_clean_inval(vmt_info->linear.vmt_base, alloc_size, true, true);
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * Allocate the first level of a two-level VM table. The second-level VM tables
+> + * are allocated on demand (by vgic_v5_alloc_l2_vmt()).
+> + *
+> + * Note: If there are too few entries, these are rounded up to the size of an L2
+> + * table (4k) to ensure sane alignment. As with the linear table, the tracked
+> + * number of entries is not increased to avoid the case of going above what the
+> + * hardware supports.
+> + */
+> +static int vgic_v5_alloc_vmt_two_level(unsigned int num_entries)
+> +{
+> +	size_t alloc_size;
+> +
+> +	/* Potentially throw away a bit of memory for the sake of alignment! */
+> +	if (num_entries < GICV5_VMT_L2_TABLE_ENTRIES)
+> +		num_entries = GICV5_VMT_L2_TABLE_ENTRIES;
+> +
+> +	/*
+> +	 * Let's make sure that we always allocate a whole power of 2
+> +	 * of entries. Note that we need to subtract 1 from the fls()
+> +	 * result in order to give the correct number of bits as we
+> +	 * are operating on a whole power of 2.
+> +	 */
+> +	num_entries = roundup_pow_of_two(num_entries);
+> +
+> +	vmt_info->l2.num_l1_ents = (num_entries / GICV5_VMT_L2_TABLE_ENTRIES);
+> +	alloc_size = vmt_info->l2.num_l1_ents * sizeof(vmtl1_entry);
+> +
+> +	vmt_info->l2.vmt_base = kzalloc(alloc_size, GFP_KERNEL);
+> +	if (vmt_info->l2.vmt_base == NULL)
+> +		return -ENOMEM;
+> +
+> +	vgic_v5_clean_inval(vmt_info->l2.vmt_base, alloc_size, true, true);
+> +
+> +	vmt_info->l2.l2ptrs = kzalloc_objs(*vmt_info->l2.l2ptrs,
+> +					   vmt_info->l2.num_l1_ents,
+> +					   GFP_KERNEL);
+> +	if (vmt_info->l2.l2ptrs == NULL) {
+> +		kfree(vmt_info->l2.vmt_base);
+> +		return -ENOMEM;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +
+> +/*
+> + * Allocate a second level VMT, if required. This can be called eagerly, and
+> + * will only perform the allocation if required.
+> + */
+> +static int vgic_v5_alloc_l2_vmt(struct kvm *kvm)
+> +{
+> +	unsigned int l1_index;
+> +	struct vmtl2_entry *l2_table;
+> +	vmtl1_entry tmp;
+> +	u16 vm_id = vgic_v5_vm_id(kvm);
+> +	struct kvm_vcpu *vcpu0 = kvm_get_vcpu(kvm, 0);
+> +	struct gicv5_cmd_info cmd_info;
+> +	int ret;
+> +
+> +	if (!vgic_v5_vmt_allocated())
+> +		return -ENXIO;
+
+Shouldn't that be checked in the caller rather than being buried in a
+helper? It is also odd to check for "vmt being allocated" in a
+function that "allocates a vmt". My guts feeling is that vmt_allocated
+is not exactly the correct name.
+
+> +
+> +	/* Nothing to do if we have linear tables! */
+> +	if (!vmt_info->two_level)
+> +		return 0;
+> +
+> +	ret = vgic_v5_check_vm_id(vm_id);
+> +	if (ret)
+> +		return ret;
+
+Why should we check the vm id at this stage? Surely we should be able
+to trust the value passed around.
+
+> +
+> +	/*
+> +	 * We have 4k-sized L2 tables - this is mandated by the spec for
+> +	 * two-level VMTs. This means that we have 128 entries per L1 VMTE.
+> +	 */
+> +	l1_index = vm_id / GICV5_VMT_L2_TABLE_ENTRIES;
+> +
+> +	if (l1_index > vmt_info->l2.num_l1_ents)
+> +		return -E2BIG;
+
+Same for these checks. If this is something we got form the vm_id
+allocator, we should be able to trust it.
+
+> +
+> +	/* Already valid? Great! */
+> +	if (vmt_info->l2.l2ptrs[l1_index] != NULL)
+> +		return 0;
+> +
+> +	l2_table = kzalloc(GICV5_VMT_L2_TABLE_SIZE, GFP_KERNEL);
+> +	if (l2_table == NULL)
+
+nit:
+
+	if (!l2_table)
+
+is the more idiomatic way of writing this.
+
+> +		return -ENOMEM;
+> +
+> +	if (virt_to_phys(l2_table) & ~GICV5_VMTEL1E_L2_ADDR) {
+
+Are you second-guessing the memory allocator? We have a guarantee that
+the result will be aligned to the size of the next power of 2.
+
+> +		kfree(l2_table);
+> +		return -EINVAL;
+> +	}
+> +
+> +	vmt_info->l2.l2ptrs[l1_index] = l2_table;
+> +
+> +	/* Alignment issue! */
+> +	if (virt_to_phys(l2_table) & ~GICV5_VMTEL1E_L2_ADDR) {
+
+Doing it twice just to be sure?
+
+> +		kfree(l2_table);
+> +		return -EFAULT;
+> +	}
+> +
+> +	tmp = virt_to_phys(l2_table) & GICV5_VMTEL1E_L2_ADDR;
+
+You have just verified twice that the bottom bits were 0. I sense a
+certain level of paranoia! ;-)
+
+> +	WRITE_ONCE(vmt_info->l2.vmt_base[l1_index], cpu_to_le64(tmp));
+> +
+> +	vgic_v5_clean_inval(l2_table, GICV5_VMT_L2_TABLE_SIZE, true, true);
+> +	/* Skip inval for now - wait until table is made valid by HW */
+> +	vgic_v5_clean_inval(vmt_info->l2.vmt_base + l1_index,
+> +			    sizeof(vmtl1_entry), true, false);
+> +
+> +	/* VMAP in the L2 VMT via the IRS */
+> +	cmd_info.cmd_type = VMT_L2_MAP;
+
+cmd_info.data is left uninitialised.
+
+> +	ret = irq_set_vcpu_affinity(vgic_v5_vpe_db(vcpu0), &cmd_info);
+
+Who implements the irq_set_vcpu_affinity() callback? I don't see it in
+any of the previous patches, and I'd like to be sure that this
+callback doesn't snapshot the pointer...
+
+It is also slightly odd to do the VM init using a vcpu-specific
+handle. Not necessarily something to change, but at least document it.
+
+> +
+> +	/* We've failed to make the L2 VMT valid - things are very broken! */
+> +	if (ret) {
+> +		/* Remove the pointer from L1 table */
+> +		WRITE_ONCE(vmt_info->l2.vmt_base[l1_index], 0);
+> +
+> +		kfree(l2_table);
+> +		vmt_info->l2.l2ptrs[l1_index] = NULL;
+> +
+> +		return ret;
+> +	}
+> +
+> +	/* Table updated; inval our copy */
+> +	vgic_v5_clean_inval(vmt_info->l2.vmt_base + l1_index,
+> +			    sizeof(vmtl1_entry), false, true);
+> +
+> +	return ret;
+> +}
+> +
+> +/*
+> + * Allocate the top-level VMT. This can either be linear or two-level.
+> + */
+> +int vgic_v5_vmt_allocate(bool two_level, unsigned int num_entries,
+> +			 size_t vmd_size, size_t vped_size,
+> +			 unsigned int max_vpes)
+> +{
+> +	int ret = 0;
+> +
+> +	if (vgic_v5_vmt_allocated())
+> +		return -EBUSY;
+> +
+> +	/* VMD is optional; using 0 to signal that it not needed. */
+> +	if (vmd_size != 0 &&
+> +	    (vmd_size < VMD_MIN_SIZE || vmd_size > VMD_MAX_SIZE))
+> +		return -EINVAL;
+> +
+> +	if (vped_size < VPED_MIN_SIZE || vped_size > VPED_MAX_SIZE)
+> +		return -EINVAL;
+> +
+> +	/* Allocate the tracking structure */
+> +	vmt_info = kzalloc_obj(*vmt_info, GFP_KERNEL);
+> +	if (vmt_info == NULL)
+> +		return -ENOMEM;
+> +
+> +	ida_init(&vmt_info->vm_id_ida);
+> +	vmt_info->max_vpes = max_vpes;
+> +	vmt_info->vmd_size = vmd_size;
+> +	vmt_info->vped_size = vped_size;
+> +	vmt_info->two_level = two_level;
+> +	vmt_info->num_entries = num_entries;
+> +
+> +	if (!two_level)
+> +		ret = vgic_v5_alloc_vmt_linear(num_entries);
+> +	else
+> +		ret = vgic_v5_alloc_vmt_two_level(num_entries);
+> +
+> +	/* If anything failed, free our tracking structure before returning */
+> +	if (ret) {
+> +		kfree(vmt_info);
+> +		vmt_info = NULL;
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +/*
+> + * Free the VMT and associated tracking structures. This isn't strictly expected
+> + * to be called in general operation, but instead exists for completeness.
+> + */
+> +int vgic_v5_vmt_free(void)
+> +{
+> +	if (!vgic_v5_vmt_allocated())
+> +		return -EINVAL;
+> +
+> +	if (!vmt_info->two_level) {
+> +		kfree(vmt_info->linear.vmt_base);
+> +	} else {
+> +		/* Free the L2 tables; kfree(NULL) is safe */
+> +		for (int i = 0; i < vmt_info->l2.num_l1_ents; ++i)
+> +			kfree(vmt_info->l2.l2ptrs[i]);
+> +		kfree(vmt_info->l2.l2ptrs);
+> +
+> +		/* And now free the L1 table */
+> +		kfree(vmt_info->l2.vmt_base);
+> +	}
+> +
+> +	ida_destroy(&vmt_info->vm_id_ida);
+> +	kfree(vmt_info);
+> +	vmt_info = NULL;
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * Look up a VMT Entry by VM ID.
+> + */
+> +static int vgic_v5_get_l2_vmte(u16 vm_id, struct vmtl2_entry **vmte)
+> +{
+
+A much more idiomatic way to do that would be to just return a
+pointer, and to encode the potential error with ERR_PTR(), checking
+for IS_ERR()/PTR_ERR(). Or just return NULL on error, which is a
+pretty standard behaviour.
+
+> +	unsigned int l1_index, l2_index;
+> +	struct vmtl2_entry *l2_table;
+> +	int ret;
+> +
+> +	ret = vgic_v5_check_vm_id(vm_id);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (!vmt_info->two_level) {
+> +		/* All entries always valid for Linear table */
+> +		*vmte = &vmt_info->linear.vmt_base[vm_id];
+> +	} else {
+> +		l1_index = vm_id / GICV5_VMT_L2_TABLE_ENTRIES;
+> +		l2_index = vm_id % GICV5_VMT_L2_TABLE_ENTRIES;
+> +
+> +		if (l1_index > vmt_info->l2.num_l1_ents)
+> +			return -E2BIG;
+> +
+> +		if (vmt_info->l2.l2ptrs[l1_index] == NULL)
+> +			return -EINVAL;
+> +
+> +		l2_table = vmt_info->l2.l2ptrs[l1_index];
+> +		*vmte = &l2_table[l2_index];
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * Zero a VMT Entry, and flush & invalidate to the PoC, if required.
+> + */
+> +static int vgic_v5_reset_vmte(struct kvm *kvm)
+> +{
+> +	u16 vm_id = vgic_v5_vm_id(kvm);
+> +	struct vmtl2_entry *vmte;
+> +	int ret;
+> +
+> +	ret = vgic_v5_get_l2_vmte(vm_id, &vmte);
+> +	if (ret)
+> +		return ret;
+> +
+> +	WRITE_ONCE(vmte->val[0], 0ULL);
+> +	WRITE_ONCE(vmte->val[1], 0ULL);
+> +	WRITE_ONCE(vmte->val[2], 0ULL);
+> +	WRITE_ONCE(vmte->val[3], 0ULL);
+
+Why the WRITE_ONCE()? Is there anything observing these writes
+concurrently? Also, missing endianness conversions.
+
+> +
+> +	vgic_v5_clean_inval(vmte, sizeof(*vmte), true, true);
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * Use the IDA to allocate a new VM ID, and track it in the gicv5_vm data
+> + * structure. If we're out of VM IDs, the IDA catches that, and we return the
+> + * error (-ENOSPC).
+> + */
+> +int vgic_v5_allocate_vm_id(struct kvm *kvm)
+> +{
+> +	int id;
+> +
+> +	id = ida_alloc_max(&vmt_info->vm_id_ida, vmt_info->num_entries - 1u,
+> +			   GFP_KERNEL);
+> +	if (id < 0)
+> +		return id;
+> +
+> +	kvm->arch.vgic.gicv5_vm.vm_id = id;
+> +	kvm->arch.vgic.gicv5_vm.vm_id_valid = true;
+
+Do we need this extra flag? Why can't that be a specific id value?
+
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * Release the VM ID to allow it to be reallocated in the future.
+> + */
+> +void vgic_v5_release_vm_id(struct kvm *kvm)
+> +{
+> +	ida_free(&vmt_info->vm_id_ida, kvm->arch.vgic.gicv5_vm.vm_id);
+> +	kvm->arch.vgic.gicv5_vm.vm_id_valid = false;
+> +}
+> +
+> +/*
+> + * Initialise an entry in the VMT based on the index of the VM.
+> + *
+> + * Note: We don't mark the VMTE as valid as this needs to be done by
+> + * the hardware.
+> + */
+> +int vgic_v5_vmte_init(struct kvm *kvm)
+> +{
+> +	int nr_cpus = atomic_read(&kvm->online_vcpus);
+> +	struct vgic_v5_vm_info *vmi = NULL;
+> +	u16 vm_id = vgic_v5_vm_id(kvm);
+> +	void *vmd = NULL, *vpet = NULL;
+> +	struct vmtl2_entry *vmte;
+> +	void **vped_ptrs = NULL;
+> +	size_t vpet_alloc_size;
+> +	int ret;
+> +	u64 tmp;
+> +
+> +	if (nr_cpus > vmt_info->max_vpes)
+> +		return -E2BIG;
+> +
+> +	/*
+> +	 * If we're using two-level VMTs, L2 is allocated on demand. For linear
+> +	 * VMTs, this is a NOP.
+> +	 */
+> +	if (vgic_v5_alloc_l2_vmt(kvm))
+> +		return -EIO;
+> +
+> +	ret = vgic_v5_get_l2_vmte(vm_id, &vmte);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* If the entry is already valid, something went wrong */
+> +	if (FIELD_GET(GICV5_VMTEL2E_VALID, le64_to_cpu(READ_ONCE(vmte->val[0])))) {
+> +		vgic_v5_clean_inval(vmte, sizeof(*vmte), true, true);
+> +		return -EINVAL;
+> +	}
+> +
+> +	ret = vgic_v5_reset_vmte(kvm);
+> +	if (ret)
+> +		return ret;
+> +
+> +	vmi = kzalloc_objs(*vmi, GFP_KERNEL);
+
+Errr. No. For a single object, this is *kzalloc_obj*, no trailing 's'.
+Here, you are allocating GFP_KERNEL objects, which may or may not be
+sensible...
+
+Also, GFP_KERNEL is the default, so you can write this as:
+
+	vmi = kzalloc_obj(*vmi);
+
+> +	if (vmi == NULL) {
+> +		ret = -ENOMEM;
+> +		goto out_fail;
+> +	}
+> +
+> +	ret = xa_insert(&vm_info, vm_id, vmi, GFP_KERNEL);
+> +	if (ret)
+> +		goto out_fail;
+> +
+> +	/* Allocate and assign the VM Descriptor, if required. */
+> +	if (vmt_info->vmd_size != 0) {
+> +		vmd = kzalloc(vmt_info->vmd_size, GFP_KERNEL);
+
+kzalloc_obj()
+
+> +		if (!vmd) {
+> +			ret = -ENOMEM;
+> +			goto out_fail;
+> +		}
+> +
+> +		/* Stash the VA so we can free it later */
+> +		vmi->vmd_base = vmd;
+> +
+> +		tmp = FIELD_PREP(GICV5_VMTEL2E_VMD_ADDR,
+> +				virt_to_phys(vmd) >>
+> +				GICV5_VMTEL2E_VMD_ADDR_SHIFT);
+> +		WRITE_ONCE(vmte->val[0], cpu_to_le64(tmp));
+> +	}
+> +
+> +	/*
+> +	 * Allocate and assign the VPE Table. We can only describe the number of
+> +	 * VPE ID Bits in the VMTE, and therefore we round up the number of CPUs
+> +	 * to a whole power of two.
+> +	 */
+> +	nr_cpus = roundup_pow_of_two(nr_cpus);
+> +	vmi->vpe_id_bits = fls(nr_cpus) - 1;
+> +
+> +	vpet_alloc_size = sizeof(vpe_entry) * nr_cpus;
+> +	vpet = kzalloc(vpet_alloc_size, GFP_KERNEL);
+> +	if (!vpet) {
+> +		ret = -ENOMEM;
+> +		goto out_fail;
+> +	}
+> +
+> +	/* Stash the VA so we can free it later */
+> +	vmi->vpet_base = vpet;
+> +
+> +	tmp = FIELD_PREP(GICV5_VMTEL2E_VPET_ADDR,
+> +			virt_to_phys(vpet) >> GICV5_VMTEL2E_VPET_ADDR_SHIFT);
+> +	tmp |= FIELD_PREP(GICV5_VMTEL2E_VPE_ID_BITS, vmi->vpe_id_bits);
+> +	WRITE_ONCE(vmte->val[1], cpu_to_le64(tmp));
+> +
+> +	vped_ptrs = kzalloc_objs(*vped_ptrs, nr_cpus, GFP_KERNEL);
+> +	if (vped_ptrs == NULL) {
+> +		ret = -ENOMEM;
+> +		goto out_fail;
+> +	}
+> +	vmi->vped_ptrs = vped_ptrs;
+> +
+> +	if (vmd)
+> +		vgic_v5_clean_inval(vmd, vmt_info->vmd_size, true, true);
+> +	vgic_v5_clean_inval(vpet, vpet_alloc_size, true, true);
+> +	vgic_v5_clean_inval(vmte, sizeof(*vmte), true, true);
+> +
+> +	kvm->arch.vgic.gicv5_vm.vmte_allocated = true;
+> +
+> +	return 0;
+> +
+> +out_fail:
+> +	/* kfree(NULL) is safe so we can just kfree() at leisure */
+> +	kfree(vmd);
+> +	kfree(vpet);
+> +	kfree(vped_ptrs);
+> +	if (vmi)
+> +		xa_erase(&vm_info, vm_id);
+> +	kfree(vmi);
+> +
+> +	vgic_v5_reset_vmte(kvm);
+> +
+> +	return ret;
+> +}
+> +
+> +/*
+> + * Release the VMT Entry, freeing up any allocated data structures before
+> + * zeroing the VMTE.
+> + *
+> + * The VMTE must be marked as invalid before it is released.
+> + */
+> +int vgic_v5_vmte_release(struct kvm *kvm)
+> +{
+> +	u16 vm_id = vgic_v5_vm_id(kvm);
+> +	struct vgic_v5_vm_info *vmi;
+> +	struct vmtl2_entry *vmte;
+> +	int ret;
+> +
+> +	ret = vgic_v5_get_l2_vmte(vm_id, &vmte);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Reject if the VMTE has not been marked as invalid! */
+> +	if (FIELD_GET(GICV5_VMTEL2E_VALID, le64_to_cpu(READ_ONCE(vmte->val[0])))) {
+> +		vgic_v5_clean_inval(vmte, sizeof(*vmte), true, true);
+
+What is this invalidation achieving?
+
+> +		return -EINVAL;
+> +	}
+> +
+> +	vmi = xa_load(&vm_info, vm_id);
+> +	if (WARN_ON_ONCE(!vmi))
+> +		goto no_vmi;
+> +
+> +	kfree(vmi->vmd_base);
+> +	kfree(vmi->vpet_base);
+> +
+> +	xa_erase(&vm_info, vm_id);
+> +	kfree(vmi);
+> +
+> +no_vmi:
+> +	/*
+> +	 * If we didn't get far enough into allocating a VMTE to create the VM
+> +	 * info structure, then we just zero the VMTE and move on. There's
+> +	 * nothing else we can realistically do here.
+> +	 */
+> +	ret = vgic_v5_reset_vmte(kvm);
+> +	if (ret)
+> +		return ret;
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * Allocate a VPE descriptor and provide it to the hardware via the VPE Table.
+> + */
+> +int vgic_v5_vmte_alloc_vpe(struct kvm_vcpu *vcpu)
+> +{
+> +	u16 vm_id = vgic_v5_vm_id(vcpu->kvm);
+> +	u16 vpe_id = vgic_v5_vpe_id(vcpu);
+> +	struct vgic_v5_vm_info *vmi;
+> +	vpe_entry tmp, *vpet_base;
+> +	void *vped;
+> +
+> +	/* Make sure we're not over what the hardware supports */
+> +	if (vpe_id >= vmt_info->max_vpes)
+> +		return -E2BIG;
+> +
+> +	vmi = xa_load(&vm_info, vm_id);
+> +	if (WARN_ON_ONCE(!vmi))
+> +		return -EINVAL;
+> +
+> +	if (vpe_id >= 1 << vmi->vpe_id_bits)
+> +		return -E2BIG;
+> +
+> +	vpet_base = vmi->vpet_base;
+> +
+> +	/* If the VPETE for this CPU is already valid we've gone wrong */
+> +	if (FIELD_GET(GICV5_VPE_VALID, le64_to_cpu(READ_ONCE(vpet_base[vpe_id])))) {
+> +		vgic_v5_clean_inval(&vpet_base[vpe_id], sizeof(*vpet_base), true, true);
+
+Same question as above.
+
+> +		return -EBUSY;
+> +	}
+> +
+> +	/* Alloc VPE Descriptor. Only used by IRS. */
+> +	vped = kzalloc(vmt_info->vped_size, GFP_KERNEL);
+> +	if (vped == NULL)
+> +		return -ENOMEM;
+> +
+> +	vmi->vped_ptrs[vpe_id] = vped;
+> +
+> +	tmp = FIELD_PREP(GICV5_VPED_ADDR, virt_to_phys(vped) >> GICV5_VPED_ADDR_SHIFT);
+> +	WRITE_ONCE(vpet_base[vpe_id], cpu_to_le64(tmp));
+> +
+> +	vgic_v5_clean_inval(vped, vmt_info->vped_size, true, true);
+> +	vgic_v5_clean_inval(vpet_base + vpe_id, sizeof(vpe_entry), true, true);
+> +
+> +	return 0;
+> +}
+> +
+> +/*
+> + * Free the memory allocated for the VPE descriptor.
+> + */
+> +int vgic_v5_vmte_free_vpe(struct kvm_vcpu *vcpu)
+> +{
+> +	u16 vm_id = vgic_v5_vm_id(vcpu->kvm);
+> +	u16 vpe_id = vgic_v5_vpe_id(vcpu);
+> +	struct vgic_v5_vm_info *vmi;
+> +	struct vmtl2_entry *vmte;
+> +	vpe_entry *vpet_base;
+> +	void *vped;
+> +	int ret;
+> +
+> +	ret = vgic_v5_get_l2_vmte(vm_id, &vmte);
+> +	if (ret)
+> +		return ret;
+> +
+> +	if (FIELD_GET(GICV5_VMTEL2E_VALID, le64_to_cpu(READ_ONCE(vmte->val[0])))) {
+> +		vgic_v5_clean_inval(vmte, sizeof(*vmte), true, true);
+
+Again.
+
+> +		return -EBUSY;
+> +	}
+> +
+> +	vmi = xa_load(&vm_info, vm_id);
+> +	if (!vmi)
+> +		return -EINVAL;
+> +
+> +	if (vpe_id >= 1 << vmi->vpe_id_bits)
+> +		return -E2BIG;
+> +
+> +	vpet_base = vmi->vpet_base;
+> +	WRITE_ONCE(vpet_base[vpe_id], 0ULL);
+> +
+> +	vgic_v5_clean_inval(vpet_base + vpe_id, sizeof(vpe_entry), true, true);
+> +
+> +	/* Free VPE Descriptor. Only used by IRS. */
+> +	vped = vmi->vped_ptrs[vpe_id];
+> +	vmi->vped_ptrs[vpe_id] = NULL;
+> +	kfree(vped);
+> +
+> +	return 0;
+> +}
+
+I've only very lightly went through the rest of the allocations, but
+what strikes me is the distinct lack of locking and interaction with
+the HW. I guess this is taken care of somewhere else?
+
+> diff --git a/arch/arm64/kvm/vgic/vgic-v5-tables.h b/arch/arm64/kvm/vgic/vgic-v5-tables.h
+> index cf00a248eabd5..5501a44308362 100644
+> --- a/arch/arm64/kvm/vgic/vgic-v5-tables.h
+> +++ b/arch/arm64/kvm/vgic/vgic-v5-tables.h
+> @@ -8,6 +8,86 @@
+>  
+>  #include <linux/irqchip/arm-gic-v5.h>
+>  
+> +#define VM_ID_BITS_MIN	8
+> +#define VM_ID_BITS_MAX	16
+> +#define VMD_MIN_SIZE	8
+> +#define VMD_MAX_SIZE	4096
+> +#define VPED_MIN_SIZE	8
+> +#define VPED_MAX_SIZE	4096
+> +#define VPE_ID_BITS_MIN	8
+> +#define VPE_ID_BITS_MAX	16
+> +
+> +/* Level 1 Virtual Machine Table Entry */
+> +typedef __le64 vmtl1_entry;
+> +#define GICV5_VMTEL1E_VALID		BIT_ULL(0)
+> +/* Note that there is no shift for the address by design */
+> +#define GICV5_VMTEL1E_L2_ADDR		GENMASK(51, 12)
+> +
+> +#define GICV5_VMTEL2E_SIZE		32ULL
+> +/* An L2 table (two-level VMT) is ALWAYS 4kB! */
+> +#define GICV5_VMT_L2_TABLE_SIZE		4096ULL
+> +#define GICV5_VMT_L2_TABLE_ENTRIES	(GICV5_VMT_L2_TABLE_SIZE / GICV5_VMTEL2E_SIZE)
+> +
+> +/* Level 2 Virtual Machine Table Entry */
+> +struct vmtl2_entry {
+> +	__le64 val[4];
+> +};
+> +
+> +/*
+> + * As the L2 VMTE is a large data structure, we are splitting it into 4 parts.
+> + * We only mask and shift WITHIN each part for simplicity.
+> + */
+> +/* First 64-bit chunk */
+> +#define GICV5_VMTEL2E_VALID		BIT_ULL(0)
+> +#define GICV5_VMTEL2E_VMD_ADDR_SHIFT	3ULL
+> +#define GICV5_VMTEL2E_VMD_ADDR		GENMASK_ULL(55, 3)
+> +/* Second 64-bit chunk */
+> +#define GICV5_VMTEL2E_VPET_ADDR_SHIFT	3ULL
+> +#define GICV5_VMTEL2E_VPET_ADDR		GENMASK_ULL(55, 3)
+> +#define GICV5_VMTEL2E_VPE_ID_BITS	GENMASK_ULL(63, 59)
+> +/* Third & fourth 64-bit chunks (the encodings are the same for each) */
+> +#define GICV5_VMTEL2E_IST_VALID		BIT_ULL(0)
+> +#define GICV5_VMTEL2E_IST_L2SZ		GENMASK_ULL(2, 1)
+> +#define GICV5_VMTEL2E_IST_ADDR_SHIFT	6ULL
+> +#define GICV5_VMTEL2E_IST_ADDR		GENMASK_ULL(55, 6)
+> +#define GICV5_VMTEL2E_IST_ISTSZ		GENMASK_ULL(57, 56)
+> +#define GICV5_VMTEL2E_IST_STRUCTURE	BIT_ULL(58)
+> +#define GICV5_VMTEL2E_IST_ID_BITS	GENMASK_ULL(63, 59)
+> +
+> +/* Virtual PE Table Entry */
+> +typedef __le64 vpe_entry;
+> +#define GICV5_VPE_VALID			BIT_ULL(0)
+> +/* Note that there is no shift for the address by design. */
+> +#define GICV5_VPED_ADDR_SHIFT		3ULL
+> +#define GICV5_VPED_ADDR			GENMASK_ULL(55, 3)
+
+Are these definitions used outside of the .c file? If not, consider
+moving them into it.
+
+> +
+> +struct vgic_v5_vm_info {
+> +	void __iomem		*vmd_base;
+> +	vpe_entry __iomem	*vpet_base;
+> +	void __iomem		**vped_ptrs;
+> +	u8			vpe_id_bits;
+> +};
+> +
+> +struct vgic_v5_vmt {
+> +	union {
+> +		struct {
+> +			struct vmtl2_entry *vmt_base;
+> +			unsigned int num_ents;
+> +		} linear;
+> +		struct {
+> +			vmtl1_entry *vmt_base;
+> +			struct vmtl2_entry **l2ptrs;
+> +			unsigned int num_l1_ents;
+> +		} l2;
+> +	};
+> +	bool		two_level;
+> +	unsigned int	num_entries;
+> +	unsigned int	max_vpes;
+> +	size_t		vmd_size;
+> +	size_t		vped_size;
+> +	struct ida	vm_id_ida;
+> +};
+> +
+>  struct vgic_v5_host_ist_caps {
+>  	/* IST Capabilities */
+>  
+> @@ -38,4 +118,32 @@ static inline struct vgic_v5_host_ist_caps *vgic_v5_host_caps(void)
+>  	return &gicv5_host_ist_caps;
+>  }
+>  
+> +static inline u16 vgic_v5_vm_id(struct kvm *kvm)
+> +{
+> +	return kvm->arch.vgic.gicv5_vm.vm_id;
+> +}
+> +
+> +static inline u16 vgic_v5_vpe_id(struct kvm_vcpu *vcpu)
+> +{
+> +	return vcpu->vcpu_id;
+> +}
+> +
+> +static inline int vgic_v5_vpe_db(struct kvm_vcpu *vcpu)
+> +{
+> +	return vcpu->arch.vgic_cpu.vgic_v5.gicv5_vpe.db;
+> +}
+> +
+> +int vgic_v5_vmt_allocate(bool two_level, unsigned int num_entries,
+> +			 size_t vmd_size, size_t vped_size,
+> +			 unsigned int vpe_id_bits);
+> +int vgic_v5_vmt_free(void);
+> +
+> +int vgic_v5_allocate_vm_id(struct kvm *kvm);
+> +void vgic_v5_release_vm_id(struct kvm *kvm);
+> +
+> +int vgic_v5_vmte_init(struct kvm *kvm);
+> +int vgic_v5_vmte_release(struct kvm *kvm);
+> +int vgic_v5_vmte_alloc_vpe(struct kvm_vcpu *vcpu);
+> +int vgic_v5_vmte_free_vpe(struct kvm_vcpu *vcpu);
+> +
+>  #endif
+> diff --git a/include/kvm/arm_vgic.h b/include/kvm/arm_vgic.h
+> index 05dbd01f6fd21..0bcbc751593cc 100644
+> --- a/include/kvm/arm_vgic.h
+> +++ b/include/kvm/arm_vgic.h
+> @@ -372,6 +372,8 @@ struct vgic_v5_vm {
+>  	int			vpe_db_base;
+>  	int			nr_vpes;
+>  	u16			vm_id;
+> +	bool			vm_id_valid;
+> +	bool			vmte_allocated;
+>  };
+>  
+>  struct vgic_dist {
+> diff --git a/include/linux/irqchip/arm-gic-v5.h b/include/linux/irqchip/arm-gic-v5.h
+> index 087d94f739672..89579ee04f5d1 100644
+> --- a/include/linux/irqchip/arm-gic-v5.h
+> +++ b/include/linux/irqchip/arm-gic-v5.h
+> @@ -182,6 +182,7 @@
+>  #define GICV5_IRS_MAP_L2_ISTR_ID	GENMASK(23, 0)
+>  
+>  #define GICV5_ISTL1E_VALID		BIT_ULL(0)
+> +#define GICV5_IRS_ISTL1E_SIZE		8UL
+>  
+>  #define GICV5_ISTL1E_L2_ADDR_MASK	GENMASK_ULL(55, 12)
+>  
+> @@ -444,4 +445,16 @@ void gicv5_free_lpi(u32 lpi);
+>  
+>  void __init gicv5_its_of_probe(struct device_node *parent);
+>  void __init gicv5_its_acpi_probe(void);
+> +
+> +enum gicv5_vcpu_info_cmd_type {
+> +	VMT_L2_MAP,		/* Map in a L2 VMT - *may* happen on VM init */
+> +	VMTE_MAKE_VALID,	/* Make the VMTE valid */
+> +	VMTE_MAKE_INVALID,	/* Make the VMTE (et al.) invalid */
+> +};
+> +
+> +struct gicv5_cmd_info {
+> +	enum gicv5_vcpu_info_cmd_type	cmd_type;
+> +	u64				data;
+> +};
+> +
+>  #endif
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
