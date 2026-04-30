@@ -1,92 +1,154 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1597947D93E
-	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 18:53:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284532C3255;
+	Thu, 30 Apr 2026 18:58:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777575194; cv=none; b=sN6wU3f9lyhSKfz8uYkcnx6f0I97QkG1i/8E9LUiEYIqinuMOE6hVqnbn/hgCa6REc147HFqe0ooDsrnnun4O3e5GoCnZcND5tAbNEgFpuJ7PPQ4zFytOJobpI9Vq3Vw6Uf7fg0aVCO+cJjaH/4MGeVH8DkOeY3uKuNGgaxyLpQ=
+	t=1777575493; cv=none; b=lJ2HAGv5snqz6KyvjQnPO9thwmn97O9+YmScIbsMWz/5TEPrqihMR5ryxPQNM9nPZYnoBtHbo50HRwm9/+nOz5qgTjk1hS+o8ewrcfNZnlNP3laxi2jSUlgpeJcoT93hSJKQbXE5fnmn/DjvrTxPV/W4ynXSZNVqfDvvwt2FZEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777575194; c=relaxed/simple;
-	bh=wtBL2U0Xkh0eyB8blC88iUzhR5Ul+5Qw6+NY0rU5ToU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=NoHFSufOGkM+OZ6x/s+t/URY/bhqp7uBYmH/Ofefcy1VWMeCGcQlgrRE9Zjz6DAG/E+rqlTHwoPnrO5CQppJGVpNboBMFVdcoGhWCZ0cQ7IEYobhmulbH6wvbX55xShpRwj1eXSJ0l1L/nfgpUITRYro7c/738ojuzj7bZI5l64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=C2/Fe00U; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1777575493; c=relaxed/simple;
+	bh=4u/CUwOeMlo4FcMqUB8DQiUovW0O+V8Xd9Du36Lhpx8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k8DkgpjjAyCMkG8qJ2xK1GJzvp+lz1PfWBiu9BjLog6iA1kr730yruQn4WqNpMCaXIrtDka3qKs6xVeksqb/d+FAYObNPGjS3PALGiscfHwuwEcHPfxJMfR5v7XxYVj3l6Tu9uPhCKcwozNjwBqhBpdt+RDVftv3B0jbgbnOuW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jIkQe9cu; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C2/Fe00U"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82f6b0a7164so1775719b3a.0
-        for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 11:53:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777575191; x=1778179991; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RBCWAdysHTAwufJ78WBJefPH7uJgf38wD6pxMISh4DQ=;
-        b=C2/Fe00UaQUB/c2FlspHGsKujc5BaicgKfrn+OWcSKEQ/Ub2bd2hSs7/714gM0KJuY
-         RH8HeEpEDSSQwIbVmAKGbNniGq3J7Z3IxfIfMP1UtHPhdUBIPg5+HmoX/P+zmkZu57qt
-         dyjtwvWbozxuD+M/XlrvpdMGoDXYJgKs0ejlZamn5Ij6ZNqZrQBFpt+ggBd6hILHBxQf
-         hFTp1JwLwT4x9wdUkmbGy6ggdQmQZJjTXF7fYOnrevH/tMlwMNUZ4DOA04jqUJTIHq7s
-         JJa+0buT2V9MiBWGpsS2RI++bpswDbU1KGP30BJh+onVrEHAmD8jRuXdDaZFY77/KnjO
-         SxeQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777575191; x=1778179991;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RBCWAdysHTAwufJ78WBJefPH7uJgf38wD6pxMISh4DQ=;
-        b=i1iidByohEuOMJ3mXQbYX6nOwzv+QeecCpBBjqlzLd42ZeajVGg09w98VM1+ZQKgom
-         Bm3KsNGlN+o9f7yVMsL1mnRLT7q6yQneKF055/8XVblI1sptyUAbUAlr1tt4VU0gr0wW
-         //clED9PS6MycR7pecG5kzUHxtSGt92oCvqrMjPXpQeNlm1CRkNIQdlu++b0qIm+pTgr
-         6DbO0mOtJn0UvCzUt2IZ2nmzKqHMDQ+8ulFr2rePbnoaOsj0J8IPvVpshVVISFeDtKJu
-         MTEUDoalrt/6XsGXJD+m7gh9b1rlmCK37J8lKttqR9nZiu2Wtnba0m95smaQV79Z/FW8
-         /p/A==
-X-Forwarded-Encrypted: i=1; AFNElJ8RX5S75M8BuGsy8LiCz/iHvzm8S17XPPLiBy9JmtCad6lFH1F4KrKoTdG5yyywVhuZMgE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxn0r5seHhSdTm9ZrBi24NgQyUgoMC0OLEH9qA6GfcQN3gAWy0f
-	nZiLIsz5aAb1WAWp42ENzXRfHrfUL8DDZe11cGHwZSfw9lVQQoxy1ElcxzjCP3gHfKZJnWYbv+p
-	LEnktXQ==
-X-Received: from pfbdo7.prod.google.com ([2002:a05:6a00:4a07:b0:82f:b98c:2101])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2d88:b0:82f:c1b4:8ba2
- with SMTP id d2e1a72fcca58-834fdc9a7cemr5359655b3a.47.1777575190877; Thu, 30
- Apr 2026 11:53:10 -0700 (PDT)
-Date: Thu, 30 Apr 2026 11:53:09 -0700
-In-Reply-To: <20260430150747.76749-13-pbonzini@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jIkQe9cu"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777575492; x=1809111492;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=4u/CUwOeMlo4FcMqUB8DQiUovW0O+V8Xd9Du36Lhpx8=;
+  b=jIkQe9cu3qrVHF4jU7wfa8HFmaZj2ZEq46ZA1MoirO9mDq9akASiUPuj
+   HcBYPn6rvchlYUWl2bag9yFSUlIChohNSlfKUAJh7l3cWTXXbfK2saaf+
+   JZd5rbpS4xyn+rN8rn4OxRMerQmPgOy4GiWoIzZwzt0g0quL2x5+7xI5Q
+   qNBH7wgmZAcnOoMHfqyjMaOro/MgjeZnVaxRgSo5mgbdwQXOGGkD3h5uv
+   g00Z/BvxinUiKdMiDr8KGFKleuCD/SXuOQPp3GO4Y/aOPyy5CyyeliRhn
+   GUYwIT2XtqpYa1SPB6SmlKZrOvletiIfKNUJQszX8ovcD42/vUecyQiqx
+   w==;
+X-CSE-ConnectionGUID: 7LQufOTxT2OvpBq7KwmBBA==
+X-CSE-MsgGUID: trYRR6HzQtO8QNOYFQtDqg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="78642526"
+X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
+   d="scan'208";a="78642526"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 11:58:12 -0700
+X-CSE-ConnectionGUID: aTwTouc1QkKWbzrpk68Nnw==
+X-CSE-MsgGUID: DMIFMtfwTjeUNSJqMnDwdA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
+   d="scan'208";a="239678668"
+Received: from cjhill-mobl.amr.corp.intel.com (HELO [10.125.109.74]) ([10.125.109.74])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 11:58:11 -0700
+Message-ID: <20f2d821-bfa6-4db2-a968-b5455c7b5007@intel.com>
+Date: Thu, 30 Apr 2026 11:58:12 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260430150747.76749-1-pbonzini@redhat.com> <20260430150747.76749-13-pbonzini@redhat.com>
-Message-ID: <afOlFSfWO6oTXmk3@google.com>
-Subject: Re: [PATCH 12/28] KVM: x86: make translate_nested_gpa vendor-specific
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, d.riley@proxmox.com, 
-	jon@nutanix.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 11/21] x86/virt/tdx: Reset software states during TDX
+ module shutdown
+To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
+Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
+ ira.weiny@intel.com, kai.huang@intel.com, kas@kernel.org,
+ nik.borisov@suse.com, paulmck@kernel.org, pbonzini@redhat.com,
+ reinette.chatre@intel.com, rick.p.edgecombe@intel.com, sagis@google.com,
+ seanjc@google.com, tony.lindgren@linux.intel.com, vannapurve@google.com,
+ vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com,
+ yan.y.zhao@intel.com, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>
+References: <20260427152854.101171-1-chao.gao@intel.com>
+ <20260427152854.101171-12-chao.gao@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260427152854.101171-12-chao.gao@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 30, 2026, Paolo Bonzini wrote:
-> EPT and NPT have different rules for passing PFERR_USER_MASK to the
-> nested page table walk.  In particular, for final addresses EPT
-> uses the U bit of the guest (nGVA->nGPA) walk.
-> 
-> While at it, remove PFERR_USER_MASK from the VMX version of the
-> function, since it is actually ignored by the tables that
-> update_permission_bitmask() generates for EPT.
-> 
-> Tested-by: David Riley <d.riley@proxmox.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
+On 4/27/26 08:28, Chao Gao wrote:
+> +	/*
+> +	 * Clear global and per-CPU initialization flags so the new module
+> +	 * can be fully re-initialized after a successful update.
+> +	 *
+> +	 * No locks needed as no concurrent accesses can occur here.
+> +	 */
+> +	tdx_module_initialized = false;
+> +	sysinit_done = false;
+> +	sysinit_ret = 0;
+> +	for_each_possible_cpu(cpu)
+> +		per_cpu(tdx_lp_initialized, cpu) = false;
 
-...
+This speaks to needing refactoring.
 
->  struct kvm_x86_nested_ops svm_nested_ops = {
->  	.leave_nested = svm_leave_nested,
-> +	.translate_nested_gpa = svm_translate_nested_gpa,
->  	.is_exception_vmexit = nested_svm_is_exception_vmexit,
->  	.check_events = svm_check_nested_events,
->  	.triple_fault = nested_svm_triple_fault,
+If there's global TDX state, it needs to be in a global TDX state
+structure, not scattered across random global variables.
 
-Paolo, do you have any objection to adding static_call() support for nested_ops?
-I vaguely recall you not wanting to do so.  But we're reaching the point where
-quite a few callbacks are in relative hot paths.
+Imagine the structure is:
+
+struct tdx_module_config foo;
+
+That's 0's at boot. You have to init the TDX module to bring it out of
+0's to valid state. It actually means something if you do:
+
+	memset(&foo, 0, sizeof(foo));
+
+Because it takes it right back to its bss state. That ^ is also handy
+because it naturally just works if new state gets added.
+
+Guess what will happen the next time someone adds:
+
+	int sysinit_new_fancy_thing;
+
+Someone will forget to add it to this code. Then the module gets updated
+and breaks things in fun ways.
