@@ -1,121 +1,133 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669853FFAC0;
-	Thu, 30 Apr 2026 10:04:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 341A92772E;
+	Thu, 30 Apr 2026 10:26:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777543452; cv=none; b=Q9X8gjYJvciv3w/Fhb5Pmz55CpCZ+0hefsni8ZlYj5/II83bBv4h8JYwRFWzYiD7HfbRqAs/SvRpLXoxfm5W24zK5luJLBQOktSlpPuoOC/JcvU5TWrTe86VUoaJhAcJW9YTfY+0ErIZuIvnZFDgPh8oXPjz3L19AxVjx/W/Npw=
+	t=1777544806; cv=none; b=MBAfokO2E83Bht25ItZY1/IkBDHEe3eHUQeZ0XOTFh6erf2sYYWtdvg+3RtrrKGYhVv+6neiVrl7T8cXnhxmZmF8tp/yAoNeEsYZ5x+8xzPVNt+oB3c+X2qY+5h9wOMYelMsOHgvvS9g+23YL70PCVwdax0JeSVo2LhxU36NYO0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777543452; c=relaxed/simple;
-	bh=1iGbaAKSe1uA8apN3oBgpPr44XSzoe6+bbAM3hi0qYE=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tYZngqM988+tubQWxkD4ujreOy+PG6r85pjX5VpDLj6FqH6I+pch5/g4ddexFNv8/XG2sxXAfK4L0lX6IxX0lcNOR0fqTWooQvni+Mz2mqKEu6gmTo0dKJENWhQuV5+odebqjU94qN5yAbOqbgo/f3de97TcGswx3P720soKmXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=YmBIXFu/; arc=none smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1777544806; c=relaxed/simple;
+	bh=VJPNiMDYvBsCB/7oxqwxMyogFYbHDES9uh5YZFRlgU8=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iV3C7Y4D3WIf2Rloz78J+Njz+agHAkLJy5AM3t+J8p0ojBpadIUiFa0LpVNcVcSCHxtZtuDOk6Jw9l+cdqOUfHi33h2Z9fptP5EuIzc1IbBbFNcmk+Wwsjv4nY/ZB8zdH56artlQPWvcPJ4zpeOcmNWdaNXf2WsVvE8MH/jqdUs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d049TYoY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="YmBIXFu/"
-Received: from pps.filterd (m0528008.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63TFMHjB2529526;
-	Thu, 30 Apr 2026 03:03:59 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=6y5xPQjarSGEV+y856igX3W4+XZQDOVNzN2cIpOJfv4=; b=YmBIXFu/IBR/
-	7U9n6cx/6lzIOIF9Bq+sFDB+sjrjMre5w5UsIE7qQEESry1Zo/JPjrQMSrDp1och
-	U+vVtBsL2TDi7IvsBW7Q/4fGOyioQeBDRFgtgCejh0ePq2/SCoa0if5eZOk6d7xo
-	3uZe9hdtuoEopKZrMUTwFtrak/dytZwSEvchkv1IALZQDM6afLJFQ0wuvHhZPl82
-	sahH2gV/k8ZaAwXm63hdGjezAaQ58bJ2JE22aQQSypW0B+SvBDhNWfAlXqv0Fw08
-	WqWeuIcFSo6ia099tq8NW4UL59LQwcNv0YShjpMU8t8ca3wpSDlMoJbUd0qDaqAj
-	IpYU1Me6pg==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4dty68g8dj-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Thu, 30 Apr 2026 03:03:58 -0700 (PDT)
-Received: from localhost (2620:10d:c0a8:fe::f072) by mail.thefacebook.com
- (2620:10d:c0a9:6f::237c) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.37; Thu, 30 Apr
- 2026 10:03:57 +0000
-From: Matt Evans <mattev@meta.com>
-To: Alex Williamson <alex@shazbot.org>, Kevin Tian <kevin.tian@intel.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>, Ankit Agrawal <ankita@nvidia.com>,
-        Alistair
- Popple <apopple@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>, Kees Cook
-	<kees@kernel.org>,
-        Shameer Kolothum <skolothumtho@nvidia.com>,
-        Yishai Hadas
-	<yishaih@nvidia.com>
-CC: Alexey Kardashevskiy <aik@ozlabs.ru>, Eric Auger <eric.auger@redhat.com>,
-        Peter Xu <peterx@redhat.com>,
-        Vivek Kasireddy <vivek.kasireddy@intel.com>,
-        Zhi Wang <zhiw@nvidia.com>, <kvm@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <virtualization@lists.linux.dev>
-Subject: [PATCH v3 3/3] vfio/pci: Check BAR resources before exporting a DMABUF
-Date: Thu, 30 Apr 2026 03:03:22 -0700
-Message-ID: <20260430100340.2787446-4-mattev@meta.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260430100340.2787446-1-mattev@meta.com>
-References: <20260430100340.2787446-1-mattev@meta.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d049TYoY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C88E9C2BCB3;
+	Thu, 30 Apr 2026 10:26:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777544805;
+	bh=VJPNiMDYvBsCB/7oxqwxMyogFYbHDES9uh5YZFRlgU8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=d049TYoYD6cypkxj2aOqTj7ABN09jRktXxudV+CFRxbWp6mgki1t1f4+csu1NuiIt
+	 FdhfiGQEBVugjWEQygsZkOARbGIO2R0nQlCCS03+YQTrX2Y817TdfFFDKYlRGtNm6K
+	 ntjPKdSWOt+WZ0XnZQw0oXYs3RklCSQLRPC1zjVfQaTFrWXKv8xbnhYKbXe09q8hK5
+	 hT4rnrtR4eo7GORRvSiC/KoZfBmKwv3rbYNhFX9iboxLB7RmvW1KPLSFe78ITHAL5E
+	 oSw/FC0EFNMU0Yy+g31a1MMW/pcOi3wHMwRKmAgyybCa4r/dSE5sA3+KCQZmUCqxoB
+	 zpjsuQuVawZVg==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wIObT-0000000GDd5-1Njb;
+	Thu, 30 Apr 2026 10:26:43 +0000
+Date: Thu, 30 Apr 2026 11:26:42 +0100
+Message-ID: <86fr4czqu5.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Sascha Bischoff <Sascha.Bischoff@arm.com>
+Cc: "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	nd <nd@arm.com>,
+	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+	Joey Gouly
+	<Joey.Gouly@arm.com>,
+	Suzuki Poulose <Suzuki.Poulose@arm.com>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+	"peter.maydell@linaro.org"
+	<peter.maydell@linaro.org>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	Timothy Hayes <Timothy.Hayes@arm.com>
+Subject: Re: [PATCH 13/43] KVM: arm64: gic-v5: Make VPEs (non-)resident in vgic_load/put
+In-Reply-To: <20260427160547.3129448-14-sascha.bischoff@arm.com>
+References: <20260427160547.3129448-1-sascha.bischoff@arm.com>
+	<20260427160547.3129448-14-sascha.bischoff@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-ORIG-GUID: 7W9HOYZL-GCC9RGL966pvYUOVVUmgvqi
-X-Proofpoint-GUID: 7W9HOYZL-GCC9RGL966pvYUOVVUmgvqi
-X-Authority-Analysis: v=2.4 cv=XbS5Co55 c=1 sm=1 tr=0 ts=69f3290e cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=_1IyUuN4QrATX339ibzo:22 a=VabnemYjAAAA:8 a=Cv6RvFvLZYHFA_XSKfkA:9
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDMwMDEwMCBTYWx0ZWRfXynVzco6fl7gu
- wiT2yo6NFZ9QmshXN4+CLCYKen/PaeJSZYMkyXikY0l2EtSKlS363sibRcBth/exSEILPw3pC2Q
- bkvOgn9x5EpqTPdBCsfNTdQyKkTE6v5JUuUgt9bnv5TJs++jeiiIYeLGehoeGeV+urSeYsF6JXO
- 51Uab29yej9alCiKeD20g9ufhovywPsIyGJVjvtVBvIOOPUrGxIifenjOTYsLCD4Oacsin/xJqo
- DWyE93ZbJEY75KxvjM4uee61WO5XCnDgU69VOehZYGyi7038Cf9DnYkl3M8hMI4L4RFCDZi3shF
- 1M69nhaHiQiDKrQWaDd3R7QtRtT6m9tEEkf6n5Lu0w88YylKKa3fUHrPKqY5RlwZMrIa/xGI9md
- AOpMZOC5V89GZ8xKptzn6vijFTb8V5q+yXozCa9VZKiA4wc4+A/rk928IPQBQpA4BR3RjPo309O
- ni1+ZHCZIvGbjrQeOVw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-04-30_03,2026-04-28_01,2025-10-01_01
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, nd@arm.com, oliver.upton@linux.dev, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, lpieralisi@kernel.org, Timothy.Hayes@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-A DMABUF exports access to BAR resources and, although they are
-requested at startup time, we need to ensure they really were reserved
-before exporting.  Otherwise, it's possible to access unreserved
-resources through the export.
+On Mon, 27 Apr 2026 17:10:28 +0100,
+Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
+> 
+> Extend vgic_v5_load and vgic_v5_put to make the VPEs resident and
+> non-resident, respectively. This makes the IRS aware of which VPE is
+> currently resident, and therefore allows it to perform HPPI selection
+> for LPIs and SPIs, which would otherwise never be signalled to the
+> VPE.
+> 
+> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+> ---
+>  arch/arm64/kvm/vgic/vgic-v5.c | 12 ++++++++++--
+>  1 file changed, 10 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/vgic/vgic-v5.c b/arch/arm64/kvm/vgic/vgic-v5.c
+> index 92bb63b6dd6bb..11a1a491b7e0a 100644
+> --- a/arch/arm64/kvm/vgic/vgic-v5.c
+> +++ b/arch/arm64/kvm/vgic/vgic-v5.c
+> @@ -1053,6 +1053,8 @@ void vgic_v5_flush_ppi_state(struct kvm_vcpu *vcpu)
+>  void vgic_v5_load(struct kvm_vcpu *vcpu)
+>  {
+>  	struct vgic_v5_cpu_if *cpu_if = &vcpu->arch.vgic_cpu.vgic_v5;
+> +	u16 vm = vgic_v5_vm_id(vcpu->kvm);
+> +	u16 vpe = vgic_v5_vpe_id(vcpu);
+>  
+>  	/*
+>  	 * On the WFI path, vgic_load is called a second time. The first is when
+> @@ -1065,7 +1067,11 @@ void vgic_v5_load(struct kvm_vcpu *vcpu)
+>  
+>  	kvm_call_hyp(__vgic_v5_restore_vmcr_apr, cpu_if);
+>  
+> -	cpu_if->gicv5_vpe.resident = true;
+> +	cpu_if->vgic_contextr = FIELD_PREP(ICH_CONTEXTR_EL2_V, true) |
+> +				FIELD_PREP(ICH_CONTEXTR_EL2_VPE, vpe) |
+> +				FIELD_PREP(ICH_CONTEXTR_EL2_VM, vm);
+> +
+> +	kvm_call_hyp(__vgic_v5_make_resident, cpu_if);
+>  }
+>  
+>  void vgic_v5_put(struct kvm_vcpu *vcpu)
+> @@ -1083,7 +1089,9 @@ void vgic_v5_put(struct kvm_vcpu *vcpu)
+>  
+>  	kvm_call_hyp(__vgic_v5_save_apr, cpu_if);
+>  
+> -	cpu_if->gicv5_vpe.resident = false;
+> +	cpu_if->vgic_contextr = 0;
+> +
+> +	kvm_call_hyp(__vgic_v5_make_non_resident, cpu_if);
+>  
+>  	/* The shadow priority is only updated on entering WFI */
+>  	if (vcpu_get_flag(vcpu, IN_WFI))
 
-Add a check to the DMABUF-creation path.
+Should this patch be folded in patch #3? They seem to overlap in major
+ways.
 
-Fixes: 5d74781ebc86c ("vfio/pci: Add dma-buf export support for MMIO regions")
-Signed-off-by: Matt Evans <mattev@meta.com>
----
- drivers/vfio/pci/vfio_pci_dmabuf.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+Thanks,
 
-diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-index f87fd32e4a01..3bc7d850e258 100644
---- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-+++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-@@ -244,9 +244,11 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
- 		return -EINVAL;
- 
- 	/*
--	 * For PCI the region_index is the BAR number like everything else.
-+	 * For PCI the region_index is the BAR number like everything
-+	 * else.  Check that PCI resources have been claimed for it.
- 	 */
--	if (get_dma_buf.region_index >= VFIO_PCI_ROM_REGION_INDEX)
-+	if (get_dma_buf.region_index >= VFIO_PCI_ROM_REGION_INDEX ||
-+	    !IS_ERR(vfio_pci_core_get_iomap(vdev, get_dma_buf.region_index)))
- 		return -ENODEV;
- 
- 	dma_ranges = memdup_array_user(&arg->dma_ranges, get_dma_buf.nr_ranges,
+	M.
+
 -- 
-2.47.3
-
+Without deviation from the norm, progress is not possible.
