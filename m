@@ -1,55 +1,55 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2662F49F1
-	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 15:08:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90DDF3019DC
+	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 15:08:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777561686; cv=none; b=JFz9XWksvBtBm3SCx0PFBcPhKe13BIBaKBrrnLZzOOUqTg/4oO+ZcaOnUcMFe8Xv/Ij0u6JN1HO72OI93LNJPJsRit+nrY9fboea+1vFgm/qV0PGHDvcP7SLC92tRHn392Nqn8fCcrLK4otJWJ4JsrpXMumj3gpr3kP/N/Kzk4g=
+	t=1777561688; cv=none; b=VvSsXoEScAzyk9L6zbdmPHBwElc103sGJWYPSggnEF0XFvlc2gOTZ7J0FaRpsw4TxMBdOs6vg0PzBS9eBjrBViFICxwRm6HGrPAO8ZWXgKv8EIC8GKb5M3i84L1+LZOhuCoQNnUdTpHoUZnclie3XbQjYBasl1+GvROGA34K7w0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777561686; c=relaxed/simple;
-	bh=jq5FH1Tr5AOyx+3hO6XLhhSfzPIQZVTsT/5+h8Wzc7o=;
+	s=arc-20240116; t=1777561688; c=relaxed/simple;
+	bh=5tMAP3ZFoigrW/FEomY2eR1exFYuPuU7CEe2jG4a4dQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EoqSGE+8eoCrHXC7G6QnYy0HetnIemQIV2OpCxbT3zqgpkCUmBbjNQzTf2vT6flRgnGZWG94oU4w2+YuYa35lvjNpww7QbZ8GtMfMC7g12cvv8c9zpMhLnv70eRzCiAl4WurGfDVOzM3nEhIHO2q/VlqD277JJ2DHNDm1q6a1ME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=b0xX1g7c; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=qA47X8+aHH2YmvZw+Ze07IXREyIXDLmujgMOisW8CHVggprJtEpXPtjFXLUsiUjMGkp/Bm9T3jtsFFJQADU0eibgLIVtnNILQnu3DHO02UHV2RZn118RzK5iy3dsn+MgBGF3bNFrmIXEjAppeAcM7PDFNPUJZxhpehAp9fp0Kyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EniMyZ/4; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="b0xX1g7c"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EniMyZ/4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777561683;
+	s=mimecast20190719; t=1777561684;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Xw8LQkpqhSbO89aqQneay3hfbCdjIB0MYrjWIBdldYA=;
-	b=b0xX1g7c3Xw8+uQovWiY99XZC6a9UeFurOPQXkgW5If5ysFyKPiEkVRgl3b6bX1Z+CCtSR
-	E/F2E1b9EDxwm+mI1+YgFwvwITnQTWyE0a+a1QfCBNzzNINbr8FReu7vvLdflBRRd3oMHd
-	5RtCsuWx44nhPCKY3yFcLKMQutMo4Dk=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=J3F1Qv8G+KzfvbPdCOHo6pDIPCQfYdEDaxRX4uXirEw=;
+	b=EniMyZ/4kdpQ0P6OInfxgT0kROjwWXvvqec6v2Vzi2NDRrj+U6Sz0giRuys1dVg7vHnspC
+	+cuH4bMCZDccLX5kpf36JTYR3wJQ9hOKFijNn2z6gkor+kRjuS0MMxaiFjWQnrFLhUHXsl
+	B6wRVXq2Dy0bHeBQJqxaTsm762nbykI=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-31-ldPI0HdfMlKCQfyNl6b1Fw-1; Thu,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-651-iSsvD2yxO3GYI6f-dyVA8g-1; Thu,
  30 Apr 2026 11:08:01 -0400
-X-MC-Unique: ldPI0HdfMlKCQfyNl6b1Fw-1
-X-Mimecast-MFC-AGG-ID: ldPI0HdfMlKCQfyNl6b1Fw_1777561680
+X-MC-Unique: iSsvD2yxO3GYI6f-dyVA8g-1
+X-Mimecast-MFC-AGG-ID: iSsvD2yxO3GYI6f-dyVA8g_1777561680
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B377B18005A9;
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0416A1956095;
 	Thu, 30 Apr 2026 15:08:00 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2AA7B1955D84;
-	Thu, 30 Apr 2026 15:08:00 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 6FD0F1955D84;
+	Thu, 30 Apr 2026 15:07:59 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: d.riley@proxmox.com,
 	jon@nutanix.com
-Subject: [PATCH 14/28] KVM: x86/mmu: move cr4_smep to base role
-Date: Thu, 30 Apr 2026 11:07:33 -0400
-Message-ID: <20260430150747.76749-15-pbonzini@redhat.com>
+Subject: [PATCH 13/28] KVM: x86/mmu: split XS/XU bits for EPT
+Date: Thu, 30 Apr 2026 11:07:32 -0400
+Message-ID: <20260430150747.76749-14-pbonzini@redhat.com>
 In-Reply-To: <20260430150747.76749-1-pbonzini@redhat.com>
 References: <20260430150747.76749-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -62,168 +62,223 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Guest page tables can be reused independent of the value of CR4.SMEP
-(at least if WP=1).  However, this is not true of EPT MBEC pages,
-because presence of EPT entries is signaled by bits 0-2 when MBEC
-is off, and bits 0-2 + bit 10 when MBEC is on.
+When EPT is in use, replace ACC_USER_MASK with ACC_USER_EXEC_MASK,
+so that supervisor and user-mode execution can be controlled
+independently (ACC_USER_MASK would not allow a setting similar to
+XU=0 XS=1 W=1 R=1).
 
-In preparation for enabling MBEC, move cr4_smep to the base role.
-This makes the smep_andnot_wp bit redundant, so remove it.
+Replace shadow_x_mask with shadow_xs_mask/shadow_xu_mask, to allow
+setting XS and XU bits separately in EPT entries.
+
+Note that ACC_USER_EXEC_MASK is already set through ACC_ALL in
+the kvm_mmu_page roles, but it does not propagate to the XU bit
+because (for now) shadow_xs_mask == shadow_xu_mask.
 
 Tested-by: David Riley <d.riley@proxmox.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- Documentation/virt/kvm/x86/mmu.rst | 10 ++++------
- arch/x86/include/asm/kvm-x86-ops.h |  1 +
- arch/x86/include/asm/kvm_host.h    | 23 +++++++++++++++--------
- arch/x86/kvm/mmu/mmu.c             |  6 +++---
- 4 files changed, 23 insertions(+), 17 deletions(-)
+ arch/x86/kvm/mmu.h          |  3 +-
+ arch/x86/kvm/mmu/mmu.c      |  2 +-
+ arch/x86/kvm/mmu/mmutrace.h |  6 ++--
+ arch/x86/kvm/mmu/spte.c     | 60 ++++++++++++++++++++++++++-----------
+ arch/x86/kvm/mmu/spte.h     | 11 +++++--
+ 5 files changed, 58 insertions(+), 24 deletions(-)
 
-diff --git a/Documentation/virt/kvm/x86/mmu.rst b/Documentation/virt/kvm/x86/mmu.rst
-index 2b3b6d442302..666aa179601a 100644
---- a/Documentation/virt/kvm/x86/mmu.rst
-+++ b/Documentation/virt/kvm/x86/mmu.rst
-@@ -184,10 +184,8 @@ Shadow pages contain the following information:
-     Contains the value of efer.nx for which the page is valid.
-   role.cr0_wp:
-     Contains the value of cr0.wp for which the page is valid.
--  role.smep_andnot_wp:
--    Contains the value of cr4.smep && !cr0.wp for which the page is valid
--    (pages for which this is true are different from other pages; see the
--    treatment of cr0.wp=0 below).
-+  role.cr4_smep:
-+    Contains the value of cr4.smep for which the page is valid.
-   role.smap_andnot_wp:
-     Contains the value of cr4.smap && !cr0.wp for which the page is valid
-     (pages for which this is true are different from other pages; see the
-@@ -435,8 +433,8 @@ from being written by the kernel after cr0.wp has changed to 1, we make
- the value of cr0.wp part of the page role.  This means that an spte created
- with one value of cr0.wp cannot be used when cr0.wp has a different value -
- it will simply be missed by the shadow page lookup code.  A similar issue
--exists when an spte created with cr0.wp=0 and cr4.smep=0 is used after
--changing cr4.smep to 1.  To avoid this, the value of !cr0.wp && cr4.smep
-+exists when an spte created with cr0.wp=0 and cr4.smap=0 is used after
-+changing cr4.smap to 1.  To avoid this, the value of !cr0.wp && cr4.smap
- is also made a part of the page role.
+diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
+index 63be5c5efed9..d8c13e43c2d7 100644
+--- a/arch/x86/kvm/mmu.h
++++ b/arch/x86/kvm/mmu.h
+@@ -39,7 +39,8 @@ extern bool __read_mostly enable_mmio_caching;
  
- Large pages
-diff --git a/arch/x86/include/asm/kvm-x86-ops.h b/arch/x86/include/asm/kvm-x86-ops.h
-index 3776cf5382a2..e4fca997ec79 100644
---- a/arch/x86/include/asm/kvm-x86-ops.h
-+++ b/arch/x86/include/asm/kvm-x86-ops.h
-@@ -94,6 +94,7 @@ KVM_X86_OP_OPTIONAL(sync_pir_to_irr)
- KVM_X86_OP_OPTIONAL_RET0(set_tss_addr)
- KVM_X86_OP_OPTIONAL_RET0(set_identity_map_addr)
- KVM_X86_OP_OPTIONAL_RET0(get_mt_mask)
-+KVM_X86_OP_OPTIONAL_RET0(tdp_has_smep)
- KVM_X86_OP(load_mmu_pgd)
- KVM_X86_OP_OPTIONAL(link_external_spt)
- KVM_X86_OP_OPTIONAL(set_external_spte)
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 62dc782b2dd3..23a7ac8d7fbe 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -343,8 +343,8 @@ struct kvm_kernel_irq_routing_entry;
-  *     paging has exactly one upper level, making level completely redundant
-  *     when has_4_byte_gpte=1.
-  *
-- *   - on top of this, smep_andnot_wp and smap_andnot_wp are only set if
-- *     cr0_wp=0, therefore these three bits only give rise to 5 possibilities.
-+ *   - on top of this, smap_andnot_wp is only set if cr0_wp=0,
-+ *     therefore these two bits only give rise to 3 possibilities.
-  *
-  * Therefore, the maximum number of possible upper-level shadow pages for a
-  * single gfn is a bit less than 2^14.
-@@ -360,12 +360,19 @@ union kvm_mmu_page_role {
- 		unsigned invalid:1;
- 		unsigned efer_nx:1;
- 		unsigned cr0_wp:1;
--		unsigned smep_andnot_wp:1;
- 		unsigned smap_andnot_wp:1;
- 		unsigned ad_disabled:1;
- 		unsigned guest_mode:1;
- 		unsigned passthrough:1;
- 		unsigned is_mirror:1;
-+
-+		/*
-+		 * cr4_smep is also set for EPT MBEC.  Because it affects
-+		 * which pages are considered non-present (bit 10 additionally
-+		 * must be zero if MBEC is on) it has to be in the base role.
-+		 */
-+		unsigned cr4_smep:1;
-+
- 		unsigned:3;
+ #define ACC_READ_MASK    PT_PRESENT_MASK
+ #define ACC_WRITE_MASK   PT_WRITABLE_MASK
+-#define ACC_USER_MASK    PT_USER_MASK
++#define ACC_USER_MASK    PT_USER_MASK   /* non EPT */
++#define ACC_USER_EXEC_MASK ACC_USER_MASK /* EPT only */
+ #define ACC_EXEC_MASK    8
+ #define ACC_ALL          (ACC_EXEC_MASK | ACC_WRITE_MASK | ACC_USER_MASK | ACC_READ_MASK)
  
- 		/*
-@@ -392,10 +399,10 @@ union kvm_mmu_page_role {
-  * tables (because KVM doesn't support Protection Keys with shadow paging), and
-  * CR0.PG, CR4.PAE, and CR4.PSE are indirectly reflected in role.level.
-  *
-- * Note, SMEP and SMAP are not redundant with sm*p_andnot_wp in the page role.
-- * If CR0.WP=1, KVM can reuse shadow pages for the guest regardless of SMEP and
-- * SMAP, but the MMU's permission checks for software walks need to be SMEP and
-- * SMAP aware regardless of CR0.WP.
-+ * Note, SMAP is not redundant with smap_andnot_wp in the page role.  If
-+ * CR0.WP=1, KVM can reuse shadow pages for the guest regardless of SMAP,
-+ * but the MMU's permission checks for software walks need to be SMAP
-+ * aware regardless of CR0.WP.
-  */
- union kvm_mmu_extended_role {
- 	u32 word;
-@@ -405,7 +412,6 @@ union kvm_mmu_extended_role {
- 		unsigned int cr4_pse:1;
- 		unsigned int cr4_pke:1;
- 		unsigned int cr4_smap:1;
--		unsigned int cr4_smep:1;
- 		unsigned int cr4_la57:1;
- 		unsigned int efer_lma:1;
- 	};
-@@ -1887,6 +1893,7 @@ struct kvm_x86_ops {
- 	int (*set_tss_addr)(struct kvm *kvm, unsigned int addr);
- 	int (*set_identity_map_addr)(struct kvm *kvm, u64 ident_addr);
- 	u8 (*get_mt_mask)(struct kvm_vcpu *vcpu, gfn_t gfn, bool is_mmio);
-+	bool (*tdp_has_smep)(struct kvm *kvm);
- 
- 	void (*load_mmu_pgd)(struct kvm_vcpu *vcpu, hpa_t root_hpa,
- 			     int root_level);
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 617a3204a5e0..245a2e92793d 100644
+index 88d0ff95fc8c..617a3204a5e0 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -227,7 +227,7 @@ static inline bool __maybe_unused is_##reg##_##name(struct kvm_mmu *mmu)	\
+@@ -5491,7 +5491,7 @@ static void reset_shadow_zero_bits_mask(struct kvm_vcpu *vcpu,
+ static inline bool boot_cpu_is_amd(void)
+ {
+ 	WARN_ON_ONCE(!tdp_enabled);
+-	return shadow_x_mask == 0;
++	return shadow_xs_mask == 0;
  }
- BUILD_MMU_ROLE_ACCESSOR(base, cr0, wp);
- BUILD_MMU_ROLE_ACCESSOR(ext,  cr4, pse);
--BUILD_MMU_ROLE_ACCESSOR(ext,  cr4, smep);
-+BUILD_MMU_ROLE_ACCESSOR(base, cr4, smep);
- BUILD_MMU_ROLE_ACCESSOR(ext,  cr4, smap);
- BUILD_MMU_ROLE_ACCESSOR(ext,  cr4, pke);
- BUILD_MMU_ROLE_ACCESSOR(ext,  cr4, la57);
-@@ -5764,7 +5764,7 @@ static union kvm_cpu_role kvm_calc_cpu_role(struct kvm_vcpu *vcpu,
  
- 	role.base.efer_nx = ____is_efer_nx(regs);
- 	role.base.cr0_wp = ____is_cr0_wp(regs);
--	role.base.smep_andnot_wp = ____is_cr4_smep(regs) && !____is_cr0_wp(regs);
-+	role.base.cr4_smep = ____is_cr4_smep(regs);
- 	role.base.smap_andnot_wp = ____is_cr4_smap(regs) && !____is_cr0_wp(regs);
- 	role.base.has_4_byte_gpte = !____is_cr4_pae(regs);
+ /*
+diff --git a/arch/x86/kvm/mmu/mmutrace.h b/arch/x86/kvm/mmu/mmutrace.h
+index dcfdfedfc4e9..3429c1413f42 100644
+--- a/arch/x86/kvm/mmu/mmutrace.h
++++ b/arch/x86/kvm/mmu/mmutrace.h
+@@ -357,8 +357,8 @@ TRACE_EVENT(
+ 		__entry->sptep = virt_to_phys(sptep);
+ 		__entry->level = level;
+ 		__entry->r = shadow_present_mask || (__entry->spte & PT_PRESENT_MASK);
+-		__entry->x = is_executable_pte(__entry->spte);
+-		__entry->u = shadow_user_mask ? !!(__entry->spte & shadow_user_mask) : -1;
++		__entry->x = (__entry->spte & (shadow_xs_mask | shadow_nx_mask)) == shadow_xs_mask;
++		__entry->u = !!(__entry->spte & (shadow_xu_mask | shadow_user_mask));
+ 	),
  
-@@ -5776,7 +5776,6 @@ static union kvm_cpu_role kvm_calc_cpu_role(struct kvm_vcpu *vcpu,
+ 	TP_printk("gfn %llx spte %llx (%s%s%s%s) level %d at %llx",
+@@ -366,7 +366,7 @@ TRACE_EVENT(
+ 		  __entry->r ? "r" : "-",
+ 		  __entry->spte & PT_WRITABLE_MASK ? "w" : "-",
+ 		  __entry->x ? "x" : "-",
+-		  __entry->u == -1 ? "" : (__entry->u ? "u" : "-"),
++		  __entry->u ? "u" : "-",
+ 		  __entry->level, __entry->sptep
+ 	)
+ );
+diff --git a/arch/x86/kvm/mmu/spte.c b/arch/x86/kvm/mmu/spte.c
+index 7b5f118ae211..4575dd77f854 100644
+--- a/arch/x86/kvm/mmu/spte.c
++++ b/arch/x86/kvm/mmu/spte.c
+@@ -29,8 +29,9 @@ bool __read_mostly kvm_ad_enabled;
+ u64 __read_mostly shadow_host_writable_mask;
+ u64 __read_mostly shadow_mmu_writable_mask;
+ u64 __read_mostly shadow_nx_mask;
+-u64 __read_mostly shadow_x_mask; /* mutual exclusive with nx_mask */
+ u64 __read_mostly shadow_user_mask;
++u64 __read_mostly shadow_xs_mask; /* mutual exclusive with nx_mask and user_mask */
++u64 __read_mostly shadow_xu_mask; /* mutual exclusive with nx_mask and user_mask */
+ u64 __read_mostly shadow_accessed_mask;
+ u64 __read_mostly shadow_dirty_mask;
+ u64 __read_mostly shadow_mmio_value;
+@@ -217,21 +218,26 @@ bool make_spte(struct kvm_vcpu *vcpu, struct kvm_mmu_page *sp,
+ 	 * would tie make_spte() further to vCPU/MMU state, and add complexity
+ 	 * just to optimize a mode that is anything but performance critical.
+ 	 */
+-	if (level > PG_LEVEL_4K && (pte_access & ACC_EXEC_MASK) &&
+-	    is_nx_huge_page_enabled(vcpu->kvm)) {
++	if (level > PG_LEVEL_4K && is_nx_huge_page_enabled(vcpu->kvm)) {
+ 		pte_access &= ~ACC_EXEC_MASK;
++		if (shadow_xu_mask)
++			pte_access &= ~ACC_USER_EXEC_MASK;
+ 	}
+ 
+ 	if (pte_access & ACC_READ_MASK)
+ 		spte |= PT_PRESENT_MASK; /* or VMX_EPT_READABLE_MASK */
+ 
+-	if (pte_access & ACC_EXEC_MASK)
+-		spte |= shadow_x_mask;
+-	else
+-		spte |= shadow_nx_mask;
+-
+-	if (pte_access & ACC_USER_MASK)
+-		spte |= shadow_user_mask;
++	if (shadow_nx_mask) {
++		if (!(pte_access & ACC_EXEC_MASK))
++			spte |= shadow_nx_mask;
++		if (pte_access & ACC_USER_MASK)
++			spte |= shadow_user_mask;
++	} else {
++		if (pte_access & ACC_EXEC_MASK)
++			spte |= shadow_xs_mask;
++		if (pte_access & ACC_USER_EXEC_MASK)
++			spte |= shadow_xu_mask;
++	}
+ 
+ 	if (level > PG_LEVEL_4K)
+ 		spte |= PT_PAGE_SIZE_MASK;
+@@ -318,11 +324,13 @@ static u64 make_spte_executable(u64 spte, u8 access)
+ {
+ 	u64 set, clear;
+ 
+-	if (access & ACC_EXEC_MASK)
+-		set = shadow_x_mask;
++	if (shadow_nx_mask)
++		set = (access & ACC_EXEC_MASK) ? 0 : shadow_nx_mask;
  	else
- 		role.base.level = PT32_ROOT_LEVEL;
+-		set = shadow_nx_mask;
+-	clear = set ^ (shadow_nx_mask | shadow_x_mask);
++		set =
++			(access & ACC_EXEC_MASK ? shadow_xs_mask : 0) |
++			(access & ACC_USER_EXEC_MASK ? shadow_xu_mask : 0);
++	clear = set ^ (shadow_nx_mask | shadow_xs_mask | shadow_xu_mask);
+ 	return modify_spte_protections(spte, set, clear);
+ }
  
--	role.ext.cr4_smep = ____is_cr4_smep(regs);
- 	role.ext.cr4_smap = ____is_cr4_smap(regs);
- 	role.ext.cr4_pse = ____is_cr4_pse(regs);
+@@ -389,7 +397,7 @@ u64 make_nonleaf_spte(u64 *child_pt, bool ad_disabled)
  
-@@ -5835,6 +5834,7 @@ kvm_calc_tdp_mmu_root_page_role(struct kvm_vcpu *vcpu,
+ 	spte |= __pa(child_pt) | shadow_present_mask | PT_WRITABLE_MASK |
+ 		PT_PRESENT_MASK /* or VMX_EPT_READABLE_MASK */ |
+-		shadow_user_mask | shadow_x_mask | shadow_me_value;
++		shadow_user_mask | shadow_xs_mask | shadow_xu_mask | shadow_me_value;
  
- 	role.access = ACC_ALL;
- 	role.cr0_wp = true;
-+	role.cr4_smep = kvm_x86_call(tdp_has_smep)(vcpu->kvm);
- 	role.efer_nx = true;
- 	role.smm = cpu_role.base.smm;
- 	role.guest_mode = cpu_role.base.guest_mode;
+ 	if (ad_disabled)
+ 		spte |= SPTE_TDP_AD_DISABLED;
+@@ -497,7 +505,24 @@ void kvm_mmu_set_ept_masks(bool has_ad_bits)
+ 	shadow_accessed_mask	= VMX_EPT_ACCESS_BIT;
+ 	shadow_dirty_mask	= VMX_EPT_DIRTY_BIT;
+ 	shadow_nx_mask		= 0ull;
+-	shadow_x_mask		= VMX_EPT_EXECUTABLE_MASK;
++	shadow_xs_mask		= VMX_EPT_EXECUTABLE_MASK;
++
++	/*
++	 * The MMU always maps ACC_EXEC_MASK and ACC_USER_EXEC_MASK to the
++	 * XS and XU bits of shadow EPT entries, regardless of whether MBEC
++	 * is available on the host or enabled by the L1 hypervisor's EPTP.
++	 *
++	 * For the non-nested case, pages are mapped with ACC_EXEC_MASK
++	 * and ACC_USER_EXEC_MASK set in tandem, so XS == XU and the
++	 * host's MBEC setting does not matter.  On hardware without MBEC
++	 * the XU bit is reserved-as-ignored, and setting it does no harm.
++	 *
++	 * For nested EPT MBEC is not supported, but bit 10 of the gPTE has
++	 * no effect because (a) is_present_gpte() does not treat it as a
++	 * present bit, and (b) permission_fault() uses an mmu->permissions[]
++	 * array that effectively ignores ACC_USER_EXEC_MASK.
++	 */
++	shadow_xu_mask		= VMX_EPT_USER_EXECUTABLE_MASK;
+ 	shadow_present_mask	= VMX_EPT_SUPPRESS_VE_BIT;
+ 
+ 	shadow_acc_track_mask	= VMX_EPT_RWX_MASK;
+@@ -548,7 +573,8 @@ void kvm_mmu_reset_all_pte_masks(void)
+ 	shadow_accessed_mask	= PT_ACCESSED_MASK;
+ 	shadow_dirty_mask	= PT_DIRTY_MASK;
+ 	shadow_nx_mask		= PT64_NX_MASK;
+-	shadow_x_mask		= 0;
++	shadow_xs_mask		= 0;
++	shadow_xu_mask		= 0;
+ 	shadow_present_mask	= PT_PRESENT_MASK;
+ 
+ 	shadow_acc_track_mask	= 0;
+diff --git a/arch/x86/kvm/mmu/spte.h b/arch/x86/kvm/mmu/spte.h
+index 8a4c09c5cdbf..0ed690f78e17 100644
+--- a/arch/x86/kvm/mmu/spte.h
++++ b/arch/x86/kvm/mmu/spte.h
+@@ -178,8 +178,9 @@ extern bool __read_mostly kvm_ad_enabled;
+ extern u64 __read_mostly shadow_host_writable_mask;
+ extern u64 __read_mostly shadow_mmu_writable_mask;
+ extern u64 __read_mostly shadow_nx_mask;
+-extern u64 __read_mostly shadow_x_mask; /* mutual exclusive with nx_mask */
+ extern u64 __read_mostly shadow_user_mask;
++extern u64 __read_mostly shadow_xs_mask; /* mutual exclusive with nx_mask and user_mask */
++extern u64 __read_mostly shadow_xu_mask; /* mutual exclusive with nx_mask and user_mask */
+ extern u64 __read_mostly shadow_accessed_mask;
+ extern u64 __read_mostly shadow_dirty_mask;
+ extern u64 __read_mostly shadow_mmio_value;
+@@ -357,7 +358,13 @@ static inline bool is_last_spte(u64 pte, int level)
+ 
+ static inline bool is_executable_pte(u64 spte)
+ {
+-	return (spte & (shadow_x_mask | shadow_nx_mask)) == shadow_x_mask;
++	/*
++	 * For now, return true if either the XS or XU bit is set
++	 * This function is only used for fast_page_fault,
++	 * which never processes shadow EPT, and regular page
++	 * tables always have XS==XU.
++	 */
++	return (spte & (shadow_xs_mask | shadow_xu_mask | shadow_nx_mask)) != shadow_nx_mask;
+ }
+ 
+ static inline kvm_pfn_t spte_to_pfn(u64 pte)
 -- 
 2.52.0
 
