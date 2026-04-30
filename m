@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD853AF668;
-	Thu, 30 Apr 2026 20:28:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C20B3B27C2;
+	Thu, 30 Apr 2026 20:28:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777580881; cv=none; b=TUnDQGmQT4hVFdWkBQM45rMYuTMg6Pjdq4Nnv4jmdGl+empfv0IWLiPz8Wu781dWs7OriEsMV1W79yPxINVDQAcstdX+GOEE7RfBkQTTTATZIdo7cfArd75uOPp6TpFgmaZXtpl9oSrwdW+JGEyw++axU2sgdscPnrCpVHBjpbo=
+	t=1777580881; cv=none; b=lOkGzz1vZEZZKfqb2hdc1IHZY9kOGbYaf9LMc6GFUIx0wbvU75Qe77yfOeBig6psrZQlDkMIIVkBt10sWa13P3b//532VdpxJENczBeOcmoQ3eh0FUKts/blPsMjjmw+tAfc3eqFFFDffWI3wgfhCI1ZgtXyt45vFmAwQASdYdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777580881; c=relaxed/simple;
-	bh=mGGd8tZ63q+J62gW32bgSGIV4Zg3Cz+xJFbXsCrIfzM=;
+	bh=3VXogewOmNTOmXsw7CVdZC4grJsyIcf5O6wmSDCMd98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qD3Kp2bG3sRxQRzEfxXM/W8genI8mBH0ChAIgIpn0e/Z+PJdNneCCZ482R5VCsbeTnFx2FyWDS3xQm3lpwYmoiyBHgVJ/uAedW/jQbOIX2eFQSvjWzltN5pkY/8GPRcGbQeJgwxL6RR+2OU+xL4cULH4Q/VMZIeC1chDjdLJnRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=So79m+tD; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=qn3zUnreknCFtU69E4eGItC0UgnY5V2D2ngkvfjHjuxJkG3pRpHhTWQKgdPMj417hsiTiXnz/CNWq+JiST84OkNmEEDc4En3/kYyXI4TjUiDnN7e7ktCrdN3+LvVQ2y1kuQsa+RRqhnmJO/Y0s7dDecvHsuiQEAZ+b9RoFWvXKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NeEqrYY7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="So79m+tD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FF82C2BCFF;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NeEqrYY7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6A1C2BCB8;
 	Thu, 30 Apr 2026 20:28:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777580880;
-	bh=mGGd8tZ63q+J62gW32bgSGIV4Zg3Cz+xJFbXsCrIfzM=;
+	s=k20201202; t=1777580881;
+	bh=3VXogewOmNTOmXsw7CVdZC4grJsyIcf5O6wmSDCMd98=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=So79m+tD1RdgzpnfCmN+km/c+st96I4CylqG0Xn9rY4tbHV3unoYtteM9qXt+GjI1
-	 9QASD6XeqFazba8pYMCAdKaWeDTy+9QP46WQEU3KfNYYtjmRQrtu8QMngzNdPDII5P
-	 ZKvG5e70xqahIUVepL9PsIxQGZC8XXPbObmADwMLbAlkRtsFY5Pfhb+CJqamYsc1Yz
-	 oE1tC6IN8yR0wWY76d/xMznSZx1uiEDj7Fw7ivyIOtjxKilY7MJp0yO4PrX6FB2Bhn
-	 LzX/5XsqtiMKvhymC8ihavt4iJcCH0zEC7+Q8QVApqiGSqeaWqWr80Am4QB7qYZrYX
-	 a4zxBBCTpXAVg==
+	b=NeEqrYY7smNe4XjOdK7Sn6pU9O77slY99cVEE7pZHswu/Uua9MtJvILvfOKIh723Z
+	 l/B0RFyVdbwrcYpd5RfwSdd2zm1ibxPChPJZ9lSv+iQQS0M4CVX3+OO4mpOf45dQ2I
+	 WhlxCKnyLTpaGIeYH/H/huMT8z+DNMAl/uuCZCOwZBedVux2w0V7owdFYvzdFzyWbh
+	 v+DReiiwtUf0BLTFmZ8kk0QQ24Da2/xK8MPiMdgPGc8VcS4EXMRGcDNtLpLQAGiFku
+	 EC2/5XxOWjAZxa4g6jOzYt4oZV4n8QR8guT4L9wQc3mWK9hhWd+7jTQAQjMM9QiXiy
+	 4nWZKJBSOB/8g==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -39,9 +39,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v5 02/13] KVM: nSVM: Bail early out of VMRUN emulation if advancing RIP fails
-Date: Thu, 30 Apr 2026 20:27:39 +0000
-Message-ID: <20260430202750.3924147-3-yosry@kernel.org>
+Subject: [PATCH v5 03/13] KVM: nSVM: Move VMRUN instruction retirement after entering guest mode
+Date: Thu, 30 Apr 2026 20:27:40 +0000
+Message-ID: <20260430202750.3924147-4-yosry@kernel.org>
 X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
 In-Reply-To: <20260430202750.3924147-1-yosry@kernel.org>
 References: <20260430202750.3924147-1-yosry@kernel.org>
@@ -53,67 +53,92 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-If kvm_skip_emulation_instruction() fails, then RIP could not be
-advanced correctly (e.g. decode failure when NextRIP is not available).
-KVM will exit to userspace to handle the emulation failure, but only
-after stuffing the wrong RIP into vmcb01 and entering guest mode.
+A successful VMRUN retires in guest mode and should be counted by the
+PMU as a guest instruction. However, __kvm_skip_emulated_instruction()
+is called before entering guest mode to advance L1's RIP to the
+instruction following VMRUN. This is needed as the RIP is saved in
+vmcb01 to be restored on VM-Exit.
 
-Bail early and exit to userspace before committing any side-effects of
-emulating the VMRUN. Unify both calls to
-__kvm_skip_emulated_instruction() into a single one, but return
-immediately after if copying and caching vmcb12 failed. A side effect of
-this is that the FIXME comment is now above the only caller.
+Since VMRUN emulation is the only caller of
+__kvm_skip_emulated_instruction(), move retiring instructions for PMU
+purposes to its wrapper, leaving __kvm_skip_emulated_instruction() as a
+transparent wrapper around the vendor-specific calls.
+
+Note that this is currently a noop because KVM does not virtualize
+Host-Only/Guest-Only PMC controls yet, so all instructions are counted
+regardless of the vCPU's host/guest state. But this change is needed for
+the incoming support for Host-Only/Guest-Only controls to count VMRUN
+correctly.
 
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/kvm/svm/nested.c | 21 +++++++++++----------
- 1 file changed, 11 insertions(+), 10 deletions(-)
+ arch/x86/kvm/svm/nested.c |  9 ++++++++-
+ arch/x86/kvm/x86.c        | 11 +++--------
+ 2 files changed, 11 insertions(+), 9 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 5dfcbaf7743b0..0f6ea490d707b 100644
+index 0f6ea490d707b..58c78c889a812 100644
 --- a/arch/x86/kvm/svm/nested.c
 +++ b/arch/x86/kvm/svm/nested.c
-@@ -1120,21 +1120,22 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
- 	}
+@@ -30,6 +30,7 @@
+ #include "lapic.h"
+ #include "svm.h"
+ #include "hyperv.h"
++#include "pmu.h"
  
- 	ret = nested_svm_copy_vmcb12_to_cache(vcpu, vmcb12_gpa);
--	if (ret) {
--		if (ret == -EFAULT)
--			return kvm_handle_memory_failure(vcpu, X86EMUL_IO_NEEDED, NULL);
--
--		/* Advance RIP past VMRUN as part of the nested #VMEXIT. */
--		return __kvm_skip_emulated_instruction(vcpu);
--	}
-+	if (ret == -EFAULT)
-+		return kvm_handle_memory_failure(vcpu, X86EMUL_IO_NEEDED, NULL);
+ #define CC KVM_NESTED_VMENTER_CONSISTENCY_CHECK
  
- 	/*
--	 * At this point, VMRUN is guaranteed to not fault; advance RIP.
-+	 * At this point, VMRUN is guaranteed to not fault; advance RIP. If
-+	 * caching vmcb12 failed for other reasons, return immediately afterward
-+	 * as a nested #VMEXIT was already set up.
- 	 *
- 	 * FIXME: If TF is set on VMRUN should inject a #DB (or handle guest
- 	 * debugging) right after #VMEXIT, right now it's just ignored.
- 	 */
--	ret = __kvm_skip_emulated_instruction(vcpu);
-+	if (!__kvm_skip_emulated_instruction(vcpu))
-+		return 0;
-+
-+	if (ret)
-+		return 1;
+@@ -1135,7 +1136,7 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
+ 		return 0;
+ 
+ 	if (ret)
+-		return 1;
++		goto insn_retired;
  
  	/*
  	 * Since vmcb01 is not in use, we can use it to store some of the L1
-@@ -1164,7 +1165,7 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
+@@ -1165,6 +1166,12 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
  		nested_svm_vmexit(svm);
  	}
  
--	return ret;
-+	return 1;
++insn_retired:
++	/*
++	 * A successful VMRUN is counted by the PMU in guest mode, so only
++	 * retire the instruction after potentially entering guest mode.
++	 */
++	kvm_pmu_instruction_retired(vcpu);
+ 	return 1;
  }
  
- /* Copy state save area fields which are handled by VMRUN */
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 31dc48a8111e5..08be0a63b93bd 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -9274,14 +9274,7 @@ static int kvm_vcpu_do_singlestep(struct kvm_vcpu *vcpu)
+ 
+ int __kvm_skip_emulated_instruction(struct kvm_vcpu *vcpu)
+ {
+-	int r;
+-
+-	r = kvm_x86_call(skip_emulated_instruction)(vcpu);
+-	if (unlikely(!r))
+-		return 0;
+-
+-	kvm_pmu_instruction_retired(vcpu);
+-	return r;
++	return kvm_x86_call(skip_emulated_instruction)(vcpu);
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(__kvm_skip_emulated_instruction);
+ 
+@@ -9294,6 +9287,8 @@ int kvm_skip_emulated_instruction(struct kvm_vcpu *vcpu)
+ 	if (unlikely(!r))
+ 		return 0;
+ 
++	kvm_pmu_instruction_retired(vcpu);
++
+ 	/*
+ 	 * rflags is the old, "raw" value of the flags.  The new value has
+ 	 * not been saved yet.
 -- 
 2.54.0.545.g6539524ca2-goog
 
