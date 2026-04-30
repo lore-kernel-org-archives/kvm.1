@@ -1,34 +1,34 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3E1238B14D;
-	Thu, 30 Apr 2026 03:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0617C36403D
+	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 03:26:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777519595; cv=none; b=DceDVS+x7T3XPo7QpkDopvMnHe5XoszOqMNhc09KN2Vsq++s2V7XcQHPWLvONLOqZevJbr65EsZHHOmgxcgrrO5EPCwZyimgyXv1lh1Qvq+YygzS7iJX+Yr52UYX2vyA5gejZ4hdmAuqJpQmomF/OKOTusKu5Ue5N6Fw7yn6dqQ=
+	t=1777519604; cv=none; b=YuTibY2K2Pm+tuGNv7EPdCyVifp8ghZiG7aNfSi/k/amaZCcXqFWBzJqxAmlZJgpc66c7PYJeoVI9kvQjU3GVjFm3pk9Jv3zkLYm4XWvuzszaIqPxuKdDug3qKu4+RnW+2cgSw4X8XYJGjeHyfSiVUsWlJHRhNSOQ7SytUotSpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777519595; c=relaxed/simple;
-	bh=v2FVe+EQzcRgy5kBHv31JJ1JABN71LAgpMDEFu1iEeQ=;
+	s=arc-20240116; t=1777519604; c=relaxed/simple;
+	bh=GMxRZN/UtMTJF8yKD1Ke513bn+WSJy15blPJ0tX5gfg=;
 	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
-	 In-Reply-To:To:Cc; b=LHg37gOPM1/ceRozCJjFuMBIdAd1eK6zeITajowRh9f4UGHiSncREAnE2YnT0JKyky7a9HMnU5hPyTRJDvBA3z/N9EHH0yXRrsfXYcENo33IZy4l/lL4A+Sq28T98F7mM2jkd5EDscYKK5Anmj8yXs7SiV5dteqVrsf0VPKrqNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kIzodHHo; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=t02yoz1z2rXX6t+Ho1eEVJHeetn6fSGW5vteWhCcSjmZR2Uljq/0KFDK7ThGmU1p3RKS37xbZq1b43rnlr3s7DtM0AuP4j9+5fjIbEVwFkH6gq3cYqCaUF/xhW6ws7oNbAtsQyL2r36su6wfq0ykAIhn3OGsf5ezbnBARf5VntU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KRU5slQp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kIzodHHo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BEADC2BCB8;
-	Thu, 30 Apr 2026 03:26:35 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KRU5slQp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC919C2BCB8;
+	Thu, 30 Apr 2026 03:26:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777519595;
-	bh=v2FVe+EQzcRgy5kBHv31JJ1JABN71LAgpMDEFu1iEeQ=;
+	s=k20201202; t=1777519603;
+	bh=GMxRZN/UtMTJF8yKD1Ke513bn+WSJy15blPJ0tX5gfg=;
 	h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-	b=kIzodHHoxdLZ+cDEQj8Njp+uRU2rFvB5r8IfM+fIJ9hEZSG088leSKu/922hUPp85
-	 uMHN4hDlcpbFHClaWJFg4kZDURxZTq1inA7wHZImmThwHGfHBgEpKvrqi7ijJtqwdy
-	 5WH+gX1UuJLBbrZylZYd6CoFRANggv3/UfcfBb3+dpW1T1QlADsSguUSaj5Egn2fSz
-	 Bdi/bACXwgbbfMZegVFixj8x6oV9POowqUolYkPDN08WqNkOFsPo8VKMx1GwPrzfov
-	 j0EGamHpvvWNIqGxIFN2PoHCW88iEsn1BChR7+E1rQl0nVqgLLU8i9CPn6y4VH9hy+
-	 marnzTmOrauAw==
+	b=KRU5slQpE347j7zarnXTd98IfdcwAwWAv5FaN7VKfqW4w+FLBeunoUwuW1Gl+MC5j
+	 1o2lneUKYMNx3FtNXlHv4v6kDGx8CLpXjLpftfJxHKm8cwO4vw3j7AwpfmGLCPXlw9
+	 vKXfnBabJJ84EocUa5b7Sr8tT8gGM9ckSdo9rVGRAfAGwG4d082VtaJ8QJT0bYW4rd
+	 Xo7BZUVpifR9m7RUXbfe/XZYBHEtSj/FfIQ91PxzEVnTqbCQTyI6sngdMaoJkQpGJr
+	 uPZodzZ7fwEQavdj6qn5ieGrp4jT8vzCeilaPMWSzDBYAFoUWp1SZ/8IS7Y+qlgcCH
+	 FrEY1w81628ZQ==
 Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id B9EFF3809A07;
-	Thu, 30 Apr 2026 03:25:51 +0000 (UTC)
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 3FD213809A07;
+	Thu, 30 Apr 2026 03:26:00 +0000 (UTC)
 Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -37,45 +37,49 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH v10 0/3] RISC-V: KVM: Validate SBI STA shmem alignment
+Subject: Re: [GIT PULL] KVM/riscv changes for 7.1
 From: patchwork-bot+linux-riscv@kernel.org
 Message-Id: 
- <177751955029.2274119.9759689276814198546.git-patchwork-notify@kernel.org>
-Date: Thu, 30 Apr 2026 03:25:50 +0000
-References: <20260303010859.1763177-1-xujiakai2025@iscas.ac.cn>
-In-Reply-To: <20260303010859.1763177-1-xujiakai2025@iscas.ac.cn>
-To: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- kvm-riscv@lists.infradead.org, linux-kselftest@vger.kernel.org,
- kvm@vger.kernel.org, alex@ghiti.fr, pbonzini@redhat.com, shuah@kernel.org,
- pjw@kernel.org, palmer@dabbelt.com, ajones@ventanamicro.com,
- anup@brainfault.org, atish.patra@linux.dev, aou@eecs.berkeley.edu
+ <177751955879.2274119.5780580511705921514.git-patchwork-notify@kernel.org>
+Date: Thu, 30 Apr 2026 03:25:58 +0000
+References: 
+ <CAAhSdy0sU997x67zZe00ZVPVrOT-=X8zOUk3OxWXeDcn-rHeXA@mail.gmail.com>
+In-Reply-To: 
+ <CAAhSdy0sU997x67zZe00ZVPVrOT-=X8zOUk3OxWXeDcn-rHeXA@mail.gmail.com>
+To: Anup Patel <anup@brainfault.org>
+Cc: linux-riscv@lists.infradead.org, pbonzini@redhat.com, palmer@dabbelt.com,
+ pjw@kernel.org, andrew.jones@oss.qualcomm.com, atish.patra@linux.dev,
+ kvm-riscv@lists.infradead.org, kvm@vger.kernel.org
 
 Hello:
 
-This series was applied to riscv/linux.git (fixes)
-by Anup Patel <anup@brainfault.org>:
+This pull request was applied to riscv/linux.git (fixes)
+by Paolo Bonzini <pbonzini@redhat.com>:
 
-On Tue,  3 Mar 2026 01:08:56 +0000 you wrote:
-> This series fixes a missing validation in the RISC-V KVM SBI
-> steal-time accounting (STA) register handling.
+On Sun, 12 Apr 2026 18:44:24 +0530 you wrote:
+> Hi Paolo,
 > 
-> Patch 1 validates the configured SBI STA shared memory GPA at
-> KVM_SET_ONE_REG, enforcing the 64-byte alignment requirement
-> defined by the SBI specification or allowing INVALID_GPA to explicitly
-> disable steal-time accounting. This prevents invalid userspace state
-> from reaching runtime code paths and avoids WARN_ON() triggers during
-> KVM_RUN.
+> We have the following KVM RISC-V changes for 7.1:
+> 1) Fixes for issues in steal time accounting, vector and
+>     PMU which were discovered by KVM API fuzzing
+> 2) Split huge pages during fault handling for dirty logging
+>     so that write permission is restored for smaller pages
+> 3) Improve kvm_arch_vcpu_load() performance by skipping
+>     CSR restore if VCPU is reloaded on the same core
+> 4) Implement kvm_arch_has_default_irqchip() for KVM selftests
+> 5) Support configuration of per-VM HGATP mode from KVM
+>     user space
+> 6) Some more preparatory changes for nested virtualization
+>     such as:
+>     6.1) Factored-out ISA checks into separate sources
+>     6.2) Added hideleg to struct kvm_vcpu_config
+>     6.3) Factored-out VCPU config into separate sources
 > 
 > [...]
 
 Here is the summary with links:
-  - [v10,1/3] RISC-V: KVM: Validate SBI STA shmem alignment in kvm_sbi_ext_sta_set_reg()
-    https://git.kernel.org/riscv/c/fa9681ed5c6a
-  - [v10,2/3] KVM: selftests: Refactor UAPI tests into dedicated function
-    (no matching commit)
-  - [v10,3/3] RISC-V: KVM: selftests: Add RISC-V SBI STA shmem alignment tests
-    (no matching commit)
+  - [GIT,PULL] KVM/riscv changes for 7.1
+    https://git.kernel.org/riscv/c/d880d2a9c694
 
 You are awesome, thank you!
 -- 
