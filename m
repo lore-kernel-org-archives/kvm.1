@@ -1,99 +1,100 @@
-Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
+Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519572848BA
-	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 19:08:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D6F44CAD7
+	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 19:08:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.41
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777576104; cv=pass; b=Jlj3hJQs+4Y6+Yw87nEwDLabaSRKTAmmFU+Ws3daiEojlxtECXaiF4U88npzmK444n0rBtHIbIJ3nedLkG8+47ZFOeyBxnztdT2bIVyZEXtppIxVK0C/YDNi7kVs/gg6sF0+93/kP/bOfvTE5LfoTI6UoAi5YVFhB6QcTOBJGCM=
+	t=1777576121; cv=pass; b=Q9DyatLrgPYwtE8U/d9efIBDw1PDLjNb0HI4PxdyprqQ63HkfEECZl04WGv5G7bupiRkIICDY+0lhA3yThidXZPVVnAkRYaQj2eU/fhdG1VTZh8dKP9jBAxG9NLCnb9H2Av29ftpoJ8MxNMU8tCkr711V4D0NkJ50Dh7FwePFjQ=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777576104; c=relaxed/simple;
-	bh=BcFSBFNjfiqdmSv1NgIPmx2ysvOwK+8OOiEJsqg5Jfg=;
+	s=arc-20240116; t=1777576121; c=relaxed/simple;
+	bh=X4b436mJSc2e5zCmqm/XVcNlU4gkcHTe2W6C3nsY/bs=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UlO/NEw/GDoyxBkSK8kIevuBLz7BDYclEAh5YXfZka749jPk5/j1sO2rZt6SepYIIoc/eUQ4Y2VOkynT5DDNdX4RcqWsGIRBWIZXMQDVcv9BzqcDeOPhKeIEcmAIyQRgZjA71N4jZAAeRiRfhPRW8lpxHI0MT2WgVk8LsyTzaAI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kRLWFc12; arc=pass smtp.client-ip=209.85.217.42
+	 To:Cc:Content-Type; b=KXXjmbgX8SCszXa/8LoPUZRdXNltbnwgTBSCrl7F34nUkA1qF+d8Ndl/geqsaDRJwFwIWbYlf1Ep8yA/NVOJu1DshUYrOfuXBLbbyvXWqoaWxI/hrCXxpaNgMpfCZ5YW8VvqCwcnFcVVxIQxRmh3irYPgF/wilAvam9uYCC4KTQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AMuEgC1d; arc=pass smtp.client-ip=209.85.217.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kRLWFc12"
-Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-6055a0414d7so372366137.2
-        for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 12:08:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777576102; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AMuEgC1d"
+Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-61399bdd395so449051137.2
+        for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 12:08:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777576119; cv=none;
         d=google.com; s=arc-20240605;
-        b=HUMPHIJKtvUbuMIyDpnMI0bsHBSUypcVbgWKnKwWU5WaygzY7PlYC9iR0Z4wtyZPW4
-         r3gsx9LchR4LgkeZyn9aLFyV+oPqBHzqRYbJ2aG9fUKPyzX8sEfzQd63flXKIooihdtG
-         TbliN2iNi99CkNRTbFRSdU6zPEWxy+5KiPbNtar8VtmYZ4MPUP4korFTf89e6ty1Az1B
-         oQrmA5Qmey5VMwSdxf7OPTOZ6ZcHzbLPm+rcdIyXmUNNRNS3PCXE1I1t25IGHLP3K1l+
-         xJF9kJFel+Jryx70k35UHLyIqn0G1GkSp1XesE00ayir+u72JK7Tkl+Ql5MB4IrbbzeH
-         ju1Q==
+        b=ThJ6zBNrkvIxy0MGy4AnjCnkIVVWW7lrZFHuYxlcUic6mLPQi7GAKhcvE3WGP/aq6w
+         /OBN+ywoz6ryrnVYI5tzUQbaLyAeUe4rz9Oh99MjBs1R+wiejWiZ2qPWPDElOL+OkGBk
+         k72USQX+zr672xhQshsk3Xc3uc3TlTVj9q6OxLMHWgA3DNA7kbY9VV8cHrdBAxiEBOgn
+         kDrQj6R1rpTJgR4TGl6ie4uFQbH1Ps4rL3hoPe5aj5bTQXIt7wJYmuq5qo8RvC04uwUU
+         zim13BHmk6xXn5ED+kIsq+0sfrkCLr48cMq0HuRW4rYDr8CS/M5FvdEKLS7tjU68HyIP
+         Yn3A==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:dkim-signature;
-        bh=VV5WEE2tzDHG1+/C0I3LGwTNWRiPwqZD3JqM7IwkNpg=;
-        fh=LsNjSU7DxAt65Gq0uVg8ESxOCG0volxo65KcDraRecQ=;
-        b=UkoTSyIbpBkUfudqLzwPGtlCu9wqnhPHVrPoVhiZ4HhNowtdV54j39h7Rixoc2BS+5
-         EJp2uI6Xubv9lcb83r9UufTr3t1fHfMmXH1evEI2ZLzc07z0crXIE/pgFY88FPtjbvJ5
-         VMd+17pxQjs2TyhzyFJerm9tgmIq7Av8GYEGj/spHMuJBp//xKuZcGmqz9ylnA6x2c5U
-         82JctRKFbkFj82znNQwc0NxPSYVr4kdd+1JLy1udUOXra7B7BTQLEL6ETIUfmSBvcdir
-         zeQRXLt4bS2rUZpZkUD4HydUM33lng1UHlIJ2BJOD90JmY3PsIV/lsJ73OL8Anoab2oJ
-         p2kg==;
+        bh=MS1gYH0EEQHk/k7ogIDcV5mXUN+JyX5QDT4VHKpy/LI=;
+        fh=M8c8dEgvPY2dtjfB17AaN+jDmYcrv53oqp65IgI7iQg=;
+        b=HMUlFBJFTk39xI+Z4dfTMCzYnAr206OnO9yDLMpTq4kVl2bBKpd5cKFmrwoqw0LIsa
+         vquUjIE6K/A2txEu+pDnLViya2SizsueptPqnxGYvscg50YcZM7eJDQkYsUjuLSbBNQU
+         VbD1wuqwEUS2y4KVY7iVaQwokEL0ymImSgmeWqsnJZd0EYw/2joH4mq7sy1/ICntbDup
+         PIcA6px9smLbDLY/TG0Ihin5q6OEEbquViiRo4bcFPL8nYz4ceXmusNT6XrSHDZR5Lm0
+         aUO3Yn3EadHNe9FJC8y7+TC9y7hCdC+KaoIjSENZZkL5M0Qr7mcWz04GwL6FP2OIKXHk
+         ioBA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777576102; x=1778180902; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1777576119; x=1778180919; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=VV5WEE2tzDHG1+/C0I3LGwTNWRiPwqZD3JqM7IwkNpg=;
-        b=kRLWFc12Bhiu0O5JHGGXOEbGdigbJluNB/ttXXJCVawCjLliLsS13hZhlmWFfjRQIT
-         KOG/LwYVlfRoS7sk1Lngw3yDx43I5QWlsMxBi8ST+RIVZQIFfpeKcZe/WD9+W2AAZ27H
-         g9MhYnY3YbFqFSto58JDYCeWfnk4iG2Sk4CcBXhglIi3fiPaqsDwN3GT5APM/7UlGNfz
-         06l1LluQUADFVf5k22YTVe/sNEGzWZTKLMOUQRgkFUGCUqOpaGRUXZ8w81EGlUedDri7
-         a5A9o/IU4VlgBv5H9DfkU0znUTT0iEsQt13gchALZhdds1preBFk6bZoMw6vRLJ7IUh/
-         W9zA==
+        bh=MS1gYH0EEQHk/k7ogIDcV5mXUN+JyX5QDT4VHKpy/LI=;
+        b=AMuEgC1dnXwCxdD1vR8Y5C5/mJT5bcpFifdTa/sz7GdicH6q9sKLmKj/nzzqlmC2Hz
+         iz/6xcEfrtaxC/5/gUHEh2mGD6f5QVu8x6yGRzvqGYw80AwbxehvBeeWwYd5AXO+x/3a
+         6axWYfRK0ldXBaxXjt2YQKmNmvQ3vjfAHnYl8eqLjk7kyVNFzX05DC+2GF+7Bn9/5xuT
+         K0Q5dElyJR1PuupZs3lMhCB+m00WpDD4yR/FiMMOXT3nY5xsjh6CvLft0na+q5kiRiuh
+         wgtvTwXm/gOqnMC+/8v9ZtXK04efvdsUnqmD93wsNwjIqraiDvtt6USTdbA7g0jm/uVR
+         lHXw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777576102; x=1778180902;
+        d=1e100.net; s=20251104; t=1777576119; x=1778180919;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=VV5WEE2tzDHG1+/C0I3LGwTNWRiPwqZD3JqM7IwkNpg=;
-        b=PPKLywveQhtHRq3/t+5S7OcQda0z0dN42vDEub4PbsLoBMHB0T8uw0beQ2qrHvnvDo
-         Iy7qjOMLpUPgsKDukyfpqkmW6nvqJfGwDoEhwskIx7MYhneAuY7xvHpF1ZfmT5BJfIyd
-         4A0d1HCZcU7VMwJWpXVg6VFA++J6vakk2HMDS/KuxQfDM0yKW5yMl9x4iC2AtOXekX8t
-         XhDiCFiFakG1lw3XdtXXu8/nKR9ZJKLyKXLNoZUizRTyLEt3hsu9X5R7Cwn3zrbPlus4
-         /sRLMCxiK9ilXRkMWZ7Flg8Ed4hmDPOHyKY6WLjMgN/EmMhNT3lGikQqrvkkmU3wBdfB
-         fwMw==
-X-Forwarded-Encrypted: i=1; AFNElJ8d+NrHWxglB8prQvV2VxMDoZPdhz9aGt+m7pHUgOQc+Ad2r2G/IYHOrDixeio/kKmTsBs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxdy+qbjVc3Wwj6bU4FGkjrhKX4ItOouuVXboq5346PeBIGJUy1
-	Es2qCcVuYvrzEMfRt0LZWkhIDJLFt55LsSM7clD2cmP38HrChOjPC81OF4PSWIjlEM+OVWgzRv5
-	7IE/jJxgE6fF5nu08Rm37MRhl6+TMtAg+t9N5GENj
-X-Gm-Gg: AeBDiesRVvTGjYUkVbfYhjMuqCTrlqw89TkvpKs2SHHBKPiG+AQpNSaf1S2RL17agKL
-	vTI3YNsIQeUOYS//63r4/PiUA/FtDi4f/wyEMUMHjJvLjV7p1Q0vUd5stn2zYFiBJvS58ci1+Z6
-	BiZkcdRFIa6vf3dASDd1RVyJu6f207QA89v8s60XyT7xU2d8FRO2PoNzzpZE404DV3DKLIDB6Z4
-	w8vekDnqrUc9k9w5W37YMJnR1XhmCpYOgcz13/CPooHmnMCY+LYQR6yPx0x2+kutNJseBdfDAxL
-	olwEpKVA+p+m/RGdRTym0VEaeYqj1N6te6eehsSnPFCcirRHfhrfUePypndMWbVggXa+cC/U1tz
-	xh2gljVA7yTZgr1DNbr6eZJ8g0A==
-X-Received: by 2002:a05:6102:2928:b0:628:1e7b:cd0e with SMTP id
- ada2fe7eead31-62ad234315amr2616765137.11.1777576101731; Thu, 30 Apr 2026
- 12:08:21 -0700 (PDT)
+        bh=MS1gYH0EEQHk/k7ogIDcV5mXUN+JyX5QDT4VHKpy/LI=;
+        b=qrvpSZ5h4gAx60aLUZHPACy/ZzbftkRTjChhUxG5S6Lvc5J5OtUPBT4hpq0G9Ni7if
+         YTmwIGjrezl1oqrMvLQFP1+tE+qlvdLYAc7nIVX5krmhjtHHLvyGBO/XOG4vWTYTWo+h
+         7C3h345Zzm4a19jvJyKOAVze85JXZHcoAUFao8wStfHGd84L1GJ7ehjrKogkWnVwHKJd
+         rUDCsSQLPbDiacEV4yOZynbai8hkxX3UB6Xop0tC5vtMp4C/VPnwH5is/0DhguQ7QAEX
+         rs2/sXlspJXgMI90D5xKoH1tx5LhLm39/hiwCo8jBqDWbPIvvsxAOGHGxHLzE6Fp3lk8
+         CfqQ==
+X-Gm-Message-State: AOJu0Yw0LFV9QwKx9MrwcOzm80W4+sn94rN5faqdNIIDwOJ4if7HFplt
+	XP4QU4SOwTszNlaH/26/dsZEihmWBhLRbeV6hc1ObvPkUzQ2sCMQdXYJOqMOCxGX9AQBMJiLMGQ
+	HImE6pTjOkA7rd8XferaYFuzvuahKDNP64p4mJf3w
+X-Gm-Gg: AeBDieuwnhMCNe9NpaL1jFMdyDiMnPwASiyObnpJ97M1RDc8WMY4fPFBfwklA0MaE4r
+	qodADVe7y+6IM71bPblm5UGgZSA0AB1DyTBAXl0pDD54zLGFdvhhxdF28De27EH76+T6GbX2baF
+	Q1B4cdtZJQlrIUWJ4okBwCncjfXe32yoZ8KtO2M+z0tRSYPsBm45kzHxk292FYra6uV+Nub1SDE
+	Fi5TTJK6Qw1Kj0Dbguy7MnQIdwRkrwOaUSgV2BUKTQbTna3Zb9QYtjghzh/KHWRmEUsBJh+4WVS
+	T6J0y+9yv1KFo0rmqwe6eFHpM951/kJwBEpTXI6XOGwOFhh2Hrk5DJECAURgFoY9MOp0+s4FD57
+	ySaDlgE2XlHW9wsE=
+X-Received: by 2002:a05:6102:8027:b0:602:aac7:b8bc with SMTP id
+ ada2fe7eead31-62add580593mr2693451137.30.1777576118698; Thu, 30 Apr 2026
+ 12:08:38 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Apr 2026 12:08:21 -0700
+ HTTPREST; Thu, 30 Apr 2026 12:08:38 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Apr 2026 12:08:21 -0700
+ HTTPREST; Thu, 30 Apr 2026 12:08:38 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260428171541.1342335-4-seanjc@google.com>
-References: <20260428171541.1342335-1-seanjc@google.com> <20260428171541.1342335-4-seanjc@google.com>
+In-Reply-To: <d6a90fc2-baf8-47a9-bda8-c21e55523677@kernel.org>
+References: <20260428171541.1342335-1-seanjc@google.com> <20260428171541.1342335-5-seanjc@google.com>
+ <d6a90fc2-baf8-47a9-bda8-c21e55523677@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 30 Apr 2026 12:08:21 -0700
-X-Gm-Features: AVHnY4KiaGrNK76uQ2DQK9xgBP5GUa3HxCak0xILGKcq83W_QWWNbmpTGiA_vco
-Message-ID: <CAEvNRgEL32Jc_FfKGqYvYJ3WZGz=PnGwwmxviCOHWaDXm6KX-A@mail.gmail.com>
-Subject: Re: [RFC PATCH 3/5] MAINTAINERS: Add an entry for KVM's guest_memfd
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+Date: Thu, 30 Apr 2026 12:08:38 -0700
+X-Gm-Features: AVHnY4KTCtzN8_85MDAjL6RZzAWzw9IyNgv7fvXAz5F9oXO2B9lsMWKUb-HTs0U
+Message-ID: <CAEvNRgFJfxf6Q9PNj7JFscgdH_obAvZiFgn7t3zVzGTo7u+tJw@mail.gmail.com>
+Subject: Re: [RFC PATCH 4/5] MAINTAINERS: Add David H. as a KVM guest_memfd reviewer
+To: "David Hildenbrand (Arm)" <david@kernel.org>, Sean Christopherson <seanjc@google.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Yosry Ahmed <yosry@kernel.org>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
 	Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
 	Huacai Chen <chenhuacai@kernel.org>, Anup Patel <anup@brainfault.org>, 
@@ -101,43 +102,44 @@ Cc: David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger
 	Claudio Imbrenda <imbrenda@linux.ibm.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Sean Christopherson <seanjc@google.com> writes:
+"David Hildenbrand (Arm)" <david@kernel.org> writes:
 
-> To better reflect how guest_memfd has been maintained for the last few
-> years, and to prepare for significant upcoming growth and expansion, add a
-> dedicated MAINTAINERS entry for KVM's guest_memfd, with Paolo and myself
-> (Sean) as co-maintainers.
+> On 4/28/26 19:15, Sean Christopherson wrote:
+>> Officially "reward" David with guest_memfd responsibilities and authority,
+>> as he's been instrumental in pushing guest_memfd forward, and his ongoing
+>> input and feedback, especially from an mm/ perspective, is and will be
+>> critical to keeping us virtualization folks from going too far off the
+>> rails.
 >
-> List both the KVM and KVM x86 git trees as authoritative repositories, as
-> any given guest_memfd change has a equal odds of hitting KVM x86 or not.
+> Thanks for the kind words, Sean!
 >
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  MAINTAINERS | 9 +++++++++
->  1 file changed, 9 insertions(+)
+> Acked-by: David Hildenbrand (Arm) <david@kernel.org>
 >
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 89b470db22de..9eceeb6f699d 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -14396,6 +14396,15 @@ S:	Maintained
->  F:	Documentation/devicetree/bindings/leds/backlight/kinetic,ktz8866.yaml
->  F:	drivers/video/backlight/ktz8866.c
->
-> +KVM GUEST_MEMFD
-> +M:	Sean Christopherson <seanjc@google.com>
-> +M:	Paolo Bonzini <pbonzini@redhat.com>
-> +L:	kvm@vger.kernel.org
-> +S:	Supported
-> +T:	git git://git.kernel.org/pub/scm/virt/kvm/kvm.git
-> +T:	git https://github.com/kvm-x86/linux.git
-> +F:	virt/kvm/guest_memfd.*
 
-Should selftests for guest_memfd be added here too?
+Thank you David!
 
-> +
->  KVM PARAVIRT (KVM/paravirt)
->  M:	Paolo Bonzini <pbonzini@redhat.com>
->  R:	Vitaly Kuznetsov <vkuznets@redhat.com>
+>>
+>> Cc: David Hildenbrand <david@kernel.org>
+>> Signed-off-by: Sean Christopherson <seanjc@google.com>
+>> ---
+>>  MAINTAINERS | 1 +
+>>  1 file changed, 1 insertion(+)
+>>
+>> diff --git a/MAINTAINERS b/MAINTAINERS
+>> index 9eceeb6f699d..8dd5cdbef66f 100644
+>> --- a/MAINTAINERS
+>> +++ b/MAINTAINERS
+>> @@ -14399,6 +14399,7 @@ F:	drivers/video/backlight/ktz8866.c
+>>  KVM GUEST_MEMFD
+>>  M:	Sean Christopherson <seanjc@google.com>
+>>  M:	Paolo Bonzini <pbonzini@redhat.com>
+>> +R:	David Hildenbrand <david@kernel.org>
+>>  L:	kvm@vger.kernel.org
+>>  S:	Supported
+>>  T:	git git://git.kernel.org/pub/scm/virt/kvm/kvm.git
+>
+>
 > --
-> 2.54.0.545.g6539524ca2-goog
+> Cheers,
+>
+> David
