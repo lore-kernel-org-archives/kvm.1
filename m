@@ -1,63 +1,65 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0479397689
-	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 10:44:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C349339EF30
+	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 10:44:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777545880; cv=none; b=Y9oHTW4h9ZKTUOoyD5VX6shVfgh9ts4bSG4bb4wfvyyNQUKNrDHdPJKyKADmA1quYJ5TtCZ1QYBfdGhMlh0iB31xjUm7ouN5nVp3cmlfrELOm8dCev83CRbDRRp6WgivzOkKEQTHfzkd/7uDW0zMStsW9F28STaQO22jwEdqi/A=
+	t=1777545881; cv=none; b=Ybr3VWQzsl00gn7xTXQm0xKxCu41d+W1MlJePYDHH8RjjESY1xnA7yNaLIH0XJu/lycwwRnd/XFCoef8TEgu6nhmFziAhHETFs5KvjIqYf/CbzsvP1H9nUiyu00Jrp2Q3VtE61jFdugXY7ncCrlUrJItcwry9gtQz7dHBU7elSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777545880; c=relaxed/simple;
-	bh=7VjE4idv85pWZ/rQ2l2jhHbF6QcCadUVMqGUSNRMcfE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Llr15xFfxq6G86gRLJ/DIVSJDTqV+ZpnJ6oXHt9aN3bE0ocbNHhgTHN6ILKSCN+54Z1A5RRGOZyNf90EedrV08Bap5NXGPjER7QNArMJECoTUx0s2VOTyF7VSEe3f5Rg8y8uEu1eMEoHcyZZtBBSUKwUP/n9UGqHbRtSOW/RpIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=jz9xKM3D; arc=none smtp.client-ip=209.85.221.52
+	s=arc-20240116; t=1777545881; c=relaxed/simple;
+	bh=YWoNKk9wrbiaUxDvW/Txq7tiNqohKzQVXe6grYa/p/c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NxujM4zAUpXrLbEEnUlydXk2UWJTmZrLCejneZSrYvpnbEp84dIhQF0wAxYgtO218oZUg7sjLOQzpzSMMKTFHZGzfcM1/0yEKDUG97GNpqhRMhPc+brcjArXC2MPuPgWjn/5wycRhny9GZxBfJYQkHfHzKO6GGtsjW2Okq7i6lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=a8NKd5D4; arc=none smtp.client-ip=209.85.128.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="jz9xKM3D"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-4486b5fcf3cso702229f8f.2
-        for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 03:44:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="a8NKd5D4"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4891e86fabeso9400385e9.1
+        for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 03:44:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1777545877; x=1778150677; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=uQCxK/7ijLL/t42TsiFPAMhWhZ6B9omgDsTqwxgSxOA=;
-        b=jz9xKM3DHkIqjlHGmt8mgK5SgrAcD71p3Zk6hgZlUc3uY1cHBcj7lcmuKz/DMAZBnr
-         svvcbEx/bMiZn4s32YKkDBdg6GuyVEo+21peNmd01vvyCBmYCDnn9nMSGNI/BiYM8ZXE
-         KfAEyxMNjD2JA2QC94LABLTUiRy2mtvRFeRNeT1xJpXDynvIuMGYx2hI612PRTXVfh1v
-         Q4U3kEo9LiB60LfvYfh3ApMuVH7ovo31lA8He+mi8zgovPPwEix46v29BWebRqAePI0W
-         CZw1qqHJnWpPfL35DOb6lxeeOV92Dk/L6eVrEzliPreWpMCYsMwmmB0Rh0S+7qexvpdE
-         GH1Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777545877; x=1778150677;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1777545878; x=1778150678; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uQCxK/7ijLL/t42TsiFPAMhWhZ6B9omgDsTqwxgSxOA=;
-        b=PLV2FtNRiLWivUhKenv+smZYuiCfDB5MYixwmbHuDFB2d3pshY7+Qug6vVUo5Oz8EV
-         I5RORaphc54ZCYyIz3bcr+Js5bT6IxnHk8kq3A/3JQaAU6z0bCZfblpyDIt1Mjt9q0Hb
-         icYDsP03mna3vuMw4VqkwFHn+ui7cAR1PmlAudbh+CV2qS6pjQbRdTMPFF0pmGSHqRBe
-         ZPt7CCAOULqdjY20CkoB17RTQGSz+qsTN13PolQOC1xiPdRGLyFlFx8iNDk3QVYzbErD
-         V0Mwp8/vkMDnpB72J84uuZhLRswxWRcVP8GINZX+H8a/P30HX7JzXEOlFBawIp6pBBOe
-         9pxg==
-X-Forwarded-Encrypted: i=1; AFNElJ8guWQumF8dW745D0NSfIoCUQ0bsY/6zf0AWBSQgbglf8DKVGiBcgVgygY/GGgvKO3HYWc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyP4S6vuKf61frm9J0pV/UONc4w2AiWxuqhe6aenyc3B15gWpsD
-	NkLcNlrpdsoM62b+azEKMYw9awxc17S/fKlJ/n8KGhi7S6gLW9FvpSf4i7sX/ep9QiI=
-X-Gm-Gg: AeBDieu2MAFDkgfEzA/U3gcGtwkXclhMrLoVY2pMTf0e9Y4pC5XIKFw3EJ5WYUwJoWz
-	Qph+VxPBEwH1k6KuU1h/dXeiDc83MLceZVMb93H4Y7xJaMgQ+zhrbJya55q/72Emf/FzLJe+sHy
-	PaVR+VH/M/zz3UAFJaDmt+I/5Q1bDQMgGaT98bMlUMnt5lL51skR2Xvtd6/jIa/khxWibDpBGgz
-	1D9FKcuxcJj2ubOhzAnUy+UqQK3rWGpED4BzF4V42r4Ff0EJ6Ewb08IC/CFH5FKFjZnSRnZboZp
-	AHLrKLJIm7cSoEJKTA3QchOBdfPJSs+ZhJYOyGX/4p93aaJdj+6YhLih7tx22ZXdCGoMCj2teke
-	WLeGn3UBHAxnVZFzTsRCAGDOZ10Gw5rbzQILSzSg361a5SMvhog9fprHLT0EfFkK/SbU3Mj1SF0
-	2SDhVsGh8PbkYHV3/gqaRzzfcCA2iAcXwTiQ==
-X-Received: by 2002:a05:6000:2303:b0:43d:7940:f143 with SMTP id ffacd0b85a97d-4493d7f8a6dmr3627316f8f.1.1777545877332;
-        Thu, 30 Apr 2026 03:44:37 -0700 (PDT)
+        bh=RsPS9jH4wqzZMo8K63vD2xS0qPk68eIqWMM62PQ4Kyc=;
+        b=a8NKd5D4k0ZESKf3We+bKXVMfkchVUjGOPLmP9+rowXre++Tf2znHN7QPBHVzQ4suu
+         D2kBiaGwZGw3t8KDPqZV9WtzaCBuz58+49MnsWj79LPNgLc8+giQktjB052cSeU1A+YX
+         KElIFEvIXQjUSoTxYJhuucoM6r8l+bWjtCGbVHd+RbDdZxEJ2Ok0ivCnXnQiR2WqwVya
+         4rLJYDoZeBZmNsKEcAS9JrEZtqXTeTuRQWQXMLnXHG5OVc9TJONqAseKLmn5yszZk389
+         T42bepRuRiH1EaW5+2QOzn67ZqXomd05evoBDWSqzyO8/kzQuzupJ2AwKrd2OpyKKR4A
+         dAJw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777545878; x=1778150678;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=RsPS9jH4wqzZMo8K63vD2xS0qPk68eIqWMM62PQ4Kyc=;
+        b=ka8l2Atvl3PIriRWawQs83H/G6UXOILpChO3qjCQr1h3zFaF7pdYzdOn4fthBGAiB8
+         xjO9FbSgNObnfcsIVCcJKGWIRLbR+xw84bgk1XSzf+fSWr0YrW95zghrPeTQa5Abj5TU
+         27fMJj+xP3i0Tw5jqd2D1ys1duqrCbkRcwYa/By7ub/nwdqs0ezG8qJpp4Rj9JRU46uN
+         5c+YqBaqbL9Ybwpi9g36Li9Oa3IRNEBh6pWOOIre2vZyiImChs5VbFbFHrtTDt+rnhGc
+         PRgocUBgfbrjAjCkyh+bfNYxH3L3MT2TuRCp2ZAmnXaw65yShkhKPVsMUSWjddogw/f5
+         mNEw==
+X-Forwarded-Encrypted: i=1; AFNElJ+G27DozwGRUzOQ6Z8Dw8nb2Oyot25dBwA+EhYMrzkzHWER7nkljbxAMh/CF/fb4p5AG0M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzgkYCCD61K+Xj85dUwOZ1DmNYv0XW4dEiXQO4BeyShNUk5aFNY
+	5fekIaYwrz3pSCMyHI9y9Mo5y9tzvkmUIRI6uTtul91ZMGpkFDvRRT65BL3EoOlKrWY=
+X-Gm-Gg: AeBDietQNJzcTfmN+AGRC63Zd4kImJG14R7rfhKrCyVIzPShIQfpHeidnFyT8hJwX4e
+	iVnoidLNntKbtEF0uJfBQXAemySoGh9L2vu4yqD4wYGJUr3Mq/LZPnHLfBU2ofifJ8TMaEiYBgc
+	gVjQSNwDgZcVjpSdY48Bw69d/Qau4WuUT1iIJkANM+c4d0n964US2gLol0ysDjnLKXdZ2iEDO7+
+	qz7K/VG1dodnLZstxvUPJHUdE8oVXq6R8DAN0CwPCHLT0xve8WFEEer3zfgIh69wZ5r0K9dl0V6
+	rd52i9hBbM3PNTr1ciUS5k+bkcE1nEHwVts2aoHzQP7LGr0IsfvU4ETUsCFZIGlgEb/mE4jg2qn
+	aQoBOFbKnP6Lh1lptAkJw1yIk6TA0KCrUy8NvyCwzJ+9KHYHSnhdbyen1hPrEvTz0/ZAjPva8Sd
+	xiE/LGHTX3PbM55EW2iQ/O6csk8BPCO1L+/Q==
+X-Received: by 2002:a05:600c:45d4:b0:488:90ac:8f71 with SMTP id 5b1f17b1804b1-48a83d66cd4mr33804835e9.5.1777545878132;
+        Thu, 30 Apr 2026 03:44:38 -0700 (PDT)
 Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-449c576d0a2sm1716971f8f.31.2026.04.30.03.44.35
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a7b912869sm40905485e9.6.2026.04.30.03.44.35
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Thu, 30 Apr 2026 03:44:35 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id BF26E5F810;
+	by draig.lan (Postfix) with ESMTP id F21705F932;
 	Thu, 30 Apr 2026 11:44:34 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -68,96 +70,97 @@ Cc: Mohamed Mediouni <mohamed@unpredictable.fr>,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	Alexander Graf <agraf@csgraf.de>,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v4 0/7] target/arm: fully model WFxT instructions for A-profile
-Date: Thu, 30 Apr 2026 11:44:27 +0100
-Message-ID: <20260430104434.1482407-1-alex.bennee@linaro.org>
+	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH v4 2/7] target/arm: redefine event stream fields
+Date: Thu, 30 Apr 2026 11:44:29 +0100
+Message-ID: <20260430104434.1482407-3-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260430104434.1482407-1-alex.bennee@linaro.org>
+References: <20260430104434.1482407-1-alex.bennee@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This series fully models the behaviour of WFxT instructions. We
-already had support for WFE for M-profile but we left off A-profile as
-it has more potential sources of wake-ups. The main one is the event
-stream which includes events from significant bits of the timer
-ticking over.
+The event stream control bits are the same for both CNTHCTL and
+CNTKCTL so rather than duplicating the definitions rename them to be
+useful in both cases.
 
-The refactoring from the previous iterations of the patch have now
-been merged.
+We will need these in a later commit when we start implementing event
+streams.
 
-I've dropped trying to fully model the global monitor in favour of
-taking advantage of the architectural flexibility to have an IMPDEF
-event wake up for any reason. We treat the setting of exclusive_addr
-as such a reason because it indicates the current vCPU is in a ldstx
-exclusive region and we don't want the guest to deadlock. This does mean
-the system won't sleep on WFE enabled locks but people shouldn't be
-relying on QEMU to model real world sleep patterns anyway given the
-efficiency of emulation compared to real HW.
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+---
+ target/arm/internals.h | 11 +++++++----
+ target/arm/helper.c    |  8 ++++----
+ 2 files changed, 11 insertions(+), 8 deletions(-)
 
-The following patches still need review:
-
-  target/arm: implement WFET
-  target/arm: handle the WFE trap case
-  target/arm: enable event stream on WFE instructions
-  target/arm: implements SEV/SEVL for all modes
-  target/arm: teach arm_cpu_has_work about halting reasons
-
-v4
-  - precursor refactor patches now merged
-  - dropped global monitor emulation
-  - addressed other comments
-  - tested with check-tcg and kvm-unit-test wfx tests
-
-v3
-  - fixed the WFE exception handling
-
-v2
-  - I've kept the tests separate, see:
-
-    Message-ID: <20260417164328.1009132-1-alex.bennee@linaro.org>
-    Date: Fri, 17 Apr 2026 17:43:20 +0100
-    Subject: [PATCH 0/7] tests/tcg: more capabilities for aarch64-softmmu tests
-    From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-
-  - tweaks to global monitor behaviour
-  - STLR/STL will also trigger events to avoid deadlocks
-  - see under the --- in the patches for details
-
-Alex.
-
-Alex Bennée (7):
-  target/arm: teach arm_cpu_has_work about halting reasons
-  target/arm: redefine event stream fields
-  target/arm: ensure aarch64 DISAS_WFE will exit
-  target/arm: implements SEV/SEVL for all modes
-  target/arm: enable event stream on WFE instructions
-  target/arm: handle the WFE trap case
-  target/arm: implement WFET
-
- target/arm/cpu.h               |  16 +++
- target/arm/internals.h         |  22 ++-
- target/arm/tcg/helper-defs.h   |   3 +-
- target/arm/tcg/translate.h     |  18 +++
- target/arm/tcg/a32.decode      |   5 +-
- target/arm/tcg/a64.decode      |   5 +-
- target/arm/tcg/t16.decode      |   4 +-
- target/arm/tcg/t32.decode      |   4 +-
- target/arm/arm-powerctl.c      |   4 +-
- target/arm/cpu.c               |  53 +++++--
- target/arm/helper.c            |   8 +-
- target/arm/kvm.c               |   5 +-
- target/arm/machine.c           |   2 +-
- target/arm/tcg/op_helper.c     | 254 ++++++++++++++++++++++++++++++---
- target/arm/tcg/translate-a64.c |  64 +++++----
- target/arm/tcg/translate.c     |  31 ++--
- 16 files changed, 395 insertions(+), 103 deletions(-)
-
+diff --git a/target/arm/internals.h b/target/arm/internals.h
+index 4a1ea5465d7..24423a200ff 100644
+--- a/target/arm/internals.h
++++ b/target/arm/internals.h
+@@ -269,14 +269,17 @@ FIELD(VSTCR, SA, 30, 1)
+  * have different bit definitions, and EL1PCTEN might be
+  * bit 0 or bit 10. We use _E2H1 and _E2H0 suffixes to
+  * disambiguate if necessary.
++ *
++ * The event stream bits (EVN*) are in the same position for
++ * CNTKCTL_EL1/CTNKCTL.
+  */
+ FIELD(CNTHCTL, EL0PCTEN_E2H1, 0, 1)
+ FIELD(CNTHCTL, EL0VCTEN_E2H1, 1, 1)
+ FIELD(CNTHCTL, EL1PCTEN_E2H0, 0, 1)
+ FIELD(CNTHCTL, EL1PCEN_E2H0, 1, 1)
+-FIELD(CNTHCTL, EVNTEN, 2, 1)
+-FIELD(CNTHCTL, EVNTDIR, 3, 1)
+-FIELD(CNTHCTL, EVNTI, 4, 4)
++FIELD(CNTxCTL, EVNTEN, 2, 1)
++FIELD(CNTxCTL, EVNTDIR, 3, 1)
++FIELD(CNTxCTL, EVNTI, 4, 4)
+ FIELD(CNTHCTL, EL0VTEN, 8, 1)
+ FIELD(CNTHCTL, EL0PTEN, 9, 1)
+ FIELD(CNTHCTL, EL1PCTEN_E2H1, 10, 1)
+@@ -286,7 +289,7 @@ FIELD(CNTHCTL, EL1TVT, 13, 1)
+ FIELD(CNTHCTL, EL1TVCT, 14, 1)
+ FIELD(CNTHCTL, EL1NVPCT, 15, 1)
+ FIELD(CNTHCTL, EL1NVVCT, 16, 1)
+-FIELD(CNTHCTL, EVNTIS, 17, 1)
++FIELD(CNTxCTL, EVNTIS, 17, 1)
+ FIELD(CNTHCTL, CNTVMASK, 18, 1)
+ FIELD(CNTHCTL, CNTPMASK, 19, 1)
+ 
+diff --git a/target/arm/helper.c b/target/arm/helper.c
+index 7e7677a584d..dfdb77a9fe2 100644
+--- a/target/arm/helper.c
++++ b/target/arm/helper.c
+@@ -1746,9 +1746,9 @@ static void gt_cnthctl_write(CPUARMState *env, const ARMCPRegInfo *ri,
+     uint32_t valid_mask =
+         R_CNTHCTL_EL0PCTEN_E2H1_MASK |
+         R_CNTHCTL_EL0VCTEN_E2H1_MASK |
+-        R_CNTHCTL_EVNTEN_MASK |
+-        R_CNTHCTL_EVNTDIR_MASK |
+-        R_CNTHCTL_EVNTI_MASK |
++        R_CNTxCTL_EVNTEN_MASK |
++        R_CNTxCTL_EVNTDIR_MASK |
++        R_CNTxCTL_EVNTI_MASK |
+         R_CNTHCTL_EL0VTEN_MASK |
+         R_CNTHCTL_EL0PTEN_MASK |
+         R_CNTHCTL_EL1PCTEN_E2H1_MASK |
+@@ -1763,7 +1763,7 @@ static void gt_cnthctl_write(CPUARMState *env, const ARMCPRegInfo *ri,
+             R_CNTHCTL_EL1TVCT_MASK |
+             R_CNTHCTL_EL1NVPCT_MASK |
+             R_CNTHCTL_EL1NVVCT_MASK |
+-            R_CNTHCTL_EVNTIS_MASK;
++            R_CNTxCTL_EVNTIS_MASK;
+     }
+     if (cpu_isar_feature(aa64_ecv, cpu)) {
+         valid_mask |= R_CNTHCTL_ECV_MASK;
 -- 
 2.47.3
 
