@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB8D43C2770;
-	Thu, 30 Apr 2026 20:28:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74A493C871D;
+	Thu, 30 Apr 2026 20:28:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777580884; cv=none; b=SSBAzD1bDafP7sUTWfFDR5o1OZsYhQfgJoz0/ZwgdELuJeDQPaDTPRnXXa14nbao6Ae3y/KkWXYW99EVf+tzjK+C3Z+lZxM+KW6DeRFUyCXI1Fr4oe9eMob1Rjz95H7n2CDylVqODglZbK8moBBFC+Y0amKFLlDIcRgPC+QPnw8=
+	t=1777580885; cv=none; b=bnk5zWeMmdv+vPj4iCd3bojCP7FdgaTrqUcMvUGv9K0fX6rF17EZB/4R/fJxP0VKPvxHZ2MLf1n5uL5lmmN4yH0dpE23g+aRUCzk1KlPqS2kDf6VCjikVxZnB9JNTfZrGVOTj0tlG4G8h1gjFBwA+3qH/NkuloUU51Ka3jsaj7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777580884; c=relaxed/simple;
-	bh=jomTo8ULRF9A5DKW6Mw8BQ1xjcVBIxIeA+FHWs1aIkE=;
+	s=arc-20240116; t=1777580885; c=relaxed/simple;
+	bh=peLf1xjVZgVyqN2SqYE3bmr9oD1pXuOn5SU63DvVSnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cUZdSaVV9tuc79StOlkrZEWIIQ6AHco/eged0FHamQyBVcrLZXSyFEZrfbr4bx32SrjJ6JBn5EJnT8eAOGyvOT0gBPQhFVEQIt3X79CM/aGYrp0ssVsm8Olj6qudNVnK2mTHh4CnXeBGRMGKKay9enrdMRxq4v9yTKL+AaNUHjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bwGaA/u3; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=HE75y79LoHhO/YbGoGMZG8VE96XmuwECtmYEWrp9XCCfH+hABa1l7cvOoF8yAf1LJRv2+fhb6b+HJPZsqmhZ9Gxj0j+Whqt9Te3Tiv4f0E7kQSlrAIphEwCBcR4a9HQISXn+imFaEWup1yz4IPe6kw0I2VzYDUWZCSCMyrytEmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UvQMzCZb; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bwGaA/u3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D2C3C2BCC4;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UvQMzCZb"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E728FC2BCB4;
 	Thu, 30 Apr 2026 20:28:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777580884;
-	bh=jomTo8ULRF9A5DKW6Mw8BQ1xjcVBIxIeA+FHWs1aIkE=;
+	s=k20201202; t=1777580885;
+	bh=peLf1xjVZgVyqN2SqYE3bmr9oD1pXuOn5SU63DvVSnA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bwGaA/u3qCfXVySR57ZzqS1+MjDZK+oaWbcrpyXGpqGVEYIE6oZovoZUohnArrr44
-	 yGqAqaFKfwt/utONOLHsDi359C7lqgvuVzsq0Lm1qM4WvRAa5TRmLQiOrAY5DldfQp
-	 a6w84OvJCU8e6ia0RJEeLd8QuIJRQ0tFnDwQDDsrvuVyEJQY86MqdU49aM6EJ50Upm
-	 TaJLkAaUMiwOPT8TKvbWHjOZMW1hOAviV9UPwfkdFfY3QuZYVdiONHYeRuIsauSBm2
-	 7YRCeuSvRykgD/PrPXvmilUeDDZnpUcYcJQ/YpB4lKguPX95ZuKhrOXMpvcu2FvuBA
-	 3P4glocdeKnHA==
+	b=UvQMzCZbkMZ5rXcASvLqtlRTVWcFycpepD+hRDKxseMzaul9054r1PH4U3Df2nUBs
+	 sdHOQv7lgYKr18+9imlmW9dFk1tV+DNqaJNkrIMqlATUJWKKz25PxecxecKYVrcoaG
+	 HShW5mL2E+cNJqq+NtL3NoHaxkIOiJqmRM9jW1wgK7ToQgWlzsWd0L6bexwLxqjVZo
+	 lNBZyJ2q1i+injrge5jzSEqOgxH+km31k20iePCFv4KuPCOcqI4lXjECbbn1QlPtpz
+	 r68I45+ully34gsS/utY2xh+r/BFBvLufp+C3wk5oXbIRuThAyL0PvrESSz5bHdRP7
+	 xiG7yVqC2A/4A==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -39,9 +39,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v5 09/13] KVM: x86/pmu: Allow Host-Only/Guest-Only bits with nSVM and mediated PMU
-Date: Thu, 30 Apr 2026 20:27:46 +0000
-Message-ID: <20260430202750.3924147-10-yosry@kernel.org>
+Subject: [PATCH v5 10/13] KVM: selftests: Refactor allocating guest stack into a helper
+Date: Thu, 30 Apr 2026 20:27:47 +0000
+Message-ID: <20260430202750.3924147-11-yosry@kernel.org>
 X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
 In-Reply-To: <20260430202750.3924147-1-yosry@kernel.org>
 References: <20260430202750.3924147-1-yosry@kernel.org>
@@ -53,34 +53,89 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Jim Mattson <jmattson@google.com>
+In preparation for reusing the logic to allocate stacks for nested
+guests, refactoring allocating a guest stack and aligning RSP into a
+helper.
 
-Now that KVM correctly handles Host-Only and Guest-Only bits in the
-event selector MSRs, allow the guest to set them if the vCPU advertises
-SVM and uses the mediated PMU.
+No functional change intended.
 
-Signed-off-by: Jim Mattson <jmattson@google.com>
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/kvm/svm/pmu.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ .../testing/selftests/kvm/lib/x86/processor.c | 45 ++++++++++---------
+ 1 file changed, 25 insertions(+), 20 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
-index 902d7eb4a461b..b12c35b4fccbf 100644
---- a/arch/x86/kvm/svm/pmu.c
-+++ b/arch/x86/kvm/svm/pmu.c
-@@ -207,7 +207,11 @@ static void amd_pmu_refresh(struct kvm_vcpu *vcpu)
- 	}
+diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
+index b51467d70f6e7..94a1cadb2b26b 100644
+--- a/tools/testing/selftests/kvm/lib/x86/processor.c
++++ b/tools/testing/selftests/kvm/lib/x86/processor.c
+@@ -778,6 +778,30 @@ void assert_on_unhandled_exception(struct kvm_vcpu *vcpu)
+ 		REPORT_GUEST_ASSERT(uc);
+ }
  
- 	pmu->counter_bitmask[KVM_PMC_GP] = BIT_ULL(48) - 1;
++static gva_t vm_alloc_stack(struct kvm_vm *vm, int nr_pages)
++{
++	int size = nr_pages * getpagesize();
++	gva_t stack_gva;
 +
- 	pmu->reserved_bits = 0xfffffff000280000ull;
-+	if (guest_cpu_cap_has(vcpu, X86_FEATURE_SVM) && kvm_vcpu_has_mediated_pmu(vcpu))
-+		pmu->reserved_bits &= ~AMD64_EVENTSEL_HOST_GUEST_MASK;
++	stack_gva = __vm_alloc(vm, size, DEFAULT_GUEST_STACK_VADDR_MIN, MEM_REGION_DATA);
++	stack_gva += size;
 +
- 	pmu->raw_event_mask = AMD64_RAW_EVENT_MASK;
- 	/* not applicable to AMD; but clean them to prevent any fall out */
- 	pmu->counter_bitmask[KVM_PMC_FIXED] = 0;
++	/*
++	 * Align stack to match calling sequence requirements in section "The
++	 * Stack Frame" of the System V ABI AMD64 Architecture Processor
++	 * Supplement, which requires the value (%rsp + 8) to be a multiple of
++	 * 16 when control is transferred to the function entry point.
++	 *
++	 * If this code is ever used to launch a vCPU with 32-bit entry point it
++	 * may need to subtract 4 bytes instead of 8 bytes.
++	 */
++	TEST_ASSERT(IS_ALIGNED(stack_gva, PAGE_SIZE),
++		    "__vm_alloc() did not provide a page-aligned address");
++	stack_gva -= 8;
++
++	return stack_gva;
++}
++
+ void kvm_arch_vm_post_create(struct kvm_vm *vm, unsigned int nr_vcpus)
+ {
+ 	int r;
+@@ -820,27 +844,8 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
+ {
+ 	struct kvm_mp_state mp_state;
+ 	struct kvm_regs regs;
+-	gva_t stack_gva;
+ 	struct kvm_vcpu *vcpu;
+ 
+-	stack_gva = __vm_alloc(vm, DEFAULT_STACK_PGS * getpagesize(),
+-			       DEFAULT_GUEST_STACK_VADDR_MIN, MEM_REGION_DATA);
+-
+-	stack_gva += DEFAULT_STACK_PGS * getpagesize();
+-
+-	/*
+-	 * Align stack to match calling sequence requirements in section "The
+-	 * Stack Frame" of the System V ABI AMD64 Architecture Processor
+-	 * Supplement, which requires the value (%rsp + 8) to be a multiple of
+-	 * 16 when control is transferred to the function entry point.
+-	 *
+-	 * If this code is ever used to launch a vCPU with 32-bit entry point it
+-	 * may need to subtract 4 bytes instead of 8 bytes.
+-	 */
+-	TEST_ASSERT(IS_ALIGNED(stack_gva, PAGE_SIZE),
+-		    "__vm_alloc() did not provide a page-aligned address");
+-	stack_gva -= 8;
+-
+ 	vcpu = __vm_vcpu_add(vm, vcpu_id);
+ 	vcpu_init_cpuid(vcpu, kvm_get_supported_cpuid());
+ 	vcpu_init_sregs(vm, vcpu);
+@@ -849,7 +854,7 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
+ 	/* Setup guest general purpose registers */
+ 	vcpu_regs_get(vcpu, &regs);
+ 	regs.rflags = regs.rflags | 0x2;
+-	regs.rsp = stack_gva;
++	regs.rsp = vm_alloc_stack(vm, DEFAULT_STACK_PGS);
+ 	vcpu_regs_set(vcpu, &regs);
+ 
+ 	/* Setup the MP state */
 -- 
 2.54.0.545.g6539524ca2-goog
 
