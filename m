@@ -1,149 +1,135 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EC2426C39E;
-	Thu, 30 Apr 2026 22:29:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F039434D385
+	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 23:24:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777588170; cv=none; b=e8tST7djDQ3D4eR+X7cN0O6ABAo4Mbz3feSCNdKKQecW2yPTfV+WZx47wFeoFVxlcHxyNwge9AisH1jZJoK5nrxS1xmpXY01xGEcgxkWmpMfIRKZC2GgccSKLiyXoDpl/oGIfrMlfnMyEO4Ls8oZ+K7omvOknpBmht2dG4NRhIs=
+	t=1777591463; cv=none; b=Q0pO02xcrbzxM3KovdDm9F4LwuatAnB35fX1+NYyqwmNnFWbmcIfxBAUG+LEbYjSh4SXmSG33jgVdrlI5ZygtlsEC6JKQ5uTkiugYTZz07e/pBbv4cjzbmTT1WcBLBF48KK8D/1HGlO1F8YLHlbsyGQjnysn4nfAlcGloN5PZpM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777588170; c=relaxed/simple;
-	bh=Lbh8e85BlUhcMdTo1wuURP2+FR9UF6cQO0tPsy8wB60=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ijEdVdWKgB40sHzC2mZ7lSmhHtHbOIyyp6AYRkc9qF/B8MusKnAZUCi6vaGyVcP8DCi1YcnLnTEWMtEd/pdVlHKXL728HJ8dNlQTG34nZ5YctMrGZEBibRqfB2GKFfaXBNmwyRz4CsborAyB0+bBRLfxISZFDZXzfgxJxjSSmgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lacq+qxC; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1777591463; c=relaxed/simple;
+	bh=w1lweLcjjg0Qfs5vsUT2w1GKty2lmuv55R41cHzFcr0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UZ/FR3ZwctqTWSKUSpM3qGeTHe0UpZZbN8TTa07EV+n9Bpp0g1W6uY5NAxbzPZjqsYLmwVhYzqRA12aYjGbD9LqTaYskQ+LygVLIfM9z2wGYLSmsww7IlT3uW+8X3iSMrAE4rPdKbpzYAaPTT+qhovKjPS9CW9R1caozXBTGa3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ClH4o6AG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lacq+qxC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777588168; x=1809124168;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Lbh8e85BlUhcMdTo1wuURP2+FR9UF6cQO0tPsy8wB60=;
-  b=lacq+qxCvyQAi0SS4pKLLeHZbtTTxI0IW36nrezp8c8qLBZdcA57Y6JG
-   Ga5GdXirjQL5dBmnSzaenZiPKa5jLRaTgLCu5XXjTTbDIv5ySKhLsQrCB
-   D8Cd7DgYa2zFX6vaiFbkjeA97wcXMClZa0/8eUnPepM5yHyDs3YyYW1wX
-   vdZD+BYnCwR/4jZZigKMEYHvLVdfnecDe2BxmaMmMwPsZbizJtI8L9M5a
-   8hg6fAoC9r1FqAE9BR5sKgtd3+rwwvMNamal1ET7TNfeYtgkAjb2vZJPa
-   56dqFVd6SbVt3EpqAFIjk6/axxJ9iDHgGXojjtbtmlQJCJ4xx7QpfaKgo
-   Q==;
-X-CSE-ConnectionGUID: tBpwmS3iTsq0UfS+v9Ew1Q==
-X-CSE-MsgGUID: G6tdGHmcQaCtDDCaM+gQ2Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="89652892"
-X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="89652892"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 15:29:27 -0700
-X-CSE-ConnectionGUID: WFuu1Cp6QfuioQJor+m93Q==
-X-CSE-MsgGUID: 59kUvwH/Qtm7zBIMh3TMVA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="230106901"
-Received: from cjhill-mobl.amr.corp.intel.com (HELO [10.125.109.74]) ([10.125.109.74])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 15:29:26 -0700
-Message-ID: <a2d03c1f-9b8b-4444-b93e-a01c7c7a2c5f@intel.com>
-Date: Thu, 30 Apr 2026 15:29:27 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ClH4o6AG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF70BC2BCF4
+	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 23:24:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777591462;
+	bh=w1lweLcjjg0Qfs5vsUT2w1GKty2lmuv55R41cHzFcr0=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=ClH4o6AGdhTDS4fkU1lqg78E94Y/cAj5TRwhYK/Ql/Vc60rYHol5OnuMtIESPuVbX
+	 vmS/eFFhy6yxvA0k/u5LNGpdjajz8/8QHp6kD42DmZUe23K+xxPI4NhOzUdTEuuWXK
+	 hxTUX1e8GgtWlaOjMWSkgcIMneizlE3Fxn6v23m43KwScn0+25iFEMptjO/KiDxH0V
+	 oC2GJyF/r+HomAKwaWbOsLjRFU5VOZGyS3ozNAn77bx8L5I0yr1OlTJKmcD9qo7EkO
+	 AhkEgSBrUXRcTYKC00HSwdb9l+yhtfo5zqF4sX93uqo3TL6xoD4vcsEaXArkLHxuER
+	 igIU+WMan2gJg==
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-b9c603ec2dfso190516066b.1
+        for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 16:24:22 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ829WFSIs15Qcv+43uqMzjJ9h24ESof/wBbp78CXLdRHf3EqyPR1L2DcC3L2z7kGzfB/QE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwdM0Wdh4RIOrliSSwmUqn8MEXuk2llK9O8tFIXzyQTk5cA/olg
+	Lsn7Ue7gLZRgMYqmq4qQZROT/vflMnOpvGQdCJ4bW8iFoBstjZGgGABBL1HVS8p6kmOgnqsGBxF
+	Cx5u6JhG/O/asYavsR8S8v2B9J1dDnk8=
+X-Received: by 2002:a17:907:6d15:b0:b98:595c:a76f with SMTP id
+ a640c23a62f3a-bbac61ba9e8mr331134066b.16.1777591461396; Thu, 30 Apr 2026
+ 16:24:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 12/21] x86/virt/seamldr: Install a new TDX module
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "Gao, Chao" <chao.gao@intel.com>, "x86@kernel.org" <x86@kernel.org>
-Cc: "Li, Xiaoyao" <xiaoyao.li@intel.com>, "Huang, Kai" <kai.huang@intel.com>,
- "Zhao, Yan Y" <yan.y.zhao@intel.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "kas@kernel.org" <kas@kernel.org>,
- "Chatre, Reinette" <reinette.chatre@intel.com>,
- "seanjc@google.com" <seanjc@google.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
- "Verma, Vishal L" <vishal.l.verma@intel.com>,
- "nik.borisov@suse.com" <nik.borisov@suse.com>,
- "mingo@redhat.com" <mingo@redhat.com>, "Weiny, Ira" <ira.weiny@intel.com>,
- "tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
- "Annapurve, Vishal" <vannapurve@google.com>, "Shahar, Sagi"
- <sagis@google.com>, "djbw@kernel.org" <djbw@kernel.org>,
- "tglx@kernel.org" <tglx@kernel.org>, "paulmck@kernel.org"
- <paulmck@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "bp@alien8.de" <bp@alien8.de>,
- "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>
-References: <20260427152854.101171-1-chao.gao@intel.com>
- <20260427152854.101171-13-chao.gao@intel.com>
- <f92d114c-c0f1-4eaa-a828-a4d9ac4054d4@intel.com>
- <ab11b3c922c93db045c4c0dfa8f191eb6fdb0b9f.camel@intel.com>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
- oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
- 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
- ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
- VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
- iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
- c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
- pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
- ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
- QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
- c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
- LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
- lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
- MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
- IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
- aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
- I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
- E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
- F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
- CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
- P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
- 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
- GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
- MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
- Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
- lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
- 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
- qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
- BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
- 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
- vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
- FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
- l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
- yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
- +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
- asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
- WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
- sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
- KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
- MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
- hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
- vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <ab11b3c922c93db045c4c0dfa8f191eb6fdb0b9f.camel@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260430202750.3924147-1-yosry@kernel.org> <20260430202750.3924147-8-yosry@kernel.org>
+In-Reply-To: <20260430202750.3924147-8-yosry@kernel.org>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 30 Apr 2026 16:24:09 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zMX=_zGm1Qmnd51=ca96aj=c+CkPfxzf9uinUGwxdP_Gg@mail.gmail.com>
+X-Gm-Features: AVHnY4JGu4jLc02AIHLgSwmwN3L5kduB0UvxiUM1kGlBPgCQ-Trl6GN9EhrEdLk
+Message-ID: <CAO9r8zMX=_zGm1Qmnd51=ca96aj=c+CkPfxzf9uinUGwxdP_Gg@mail.gmail.com>
+Subject: Re: [PATCH v5 07/13] KVM: x86/pmu: Disable counters based on
+ Host-Only/Guest-Only bits in SVM
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 4/30/26 14:48, Edgecombe, Rick P wrote:
-> On Thu, 2026-04-30 at 12:00 -0700, Dave Hansen wrote:
->> On 4/27/26 08:28, Chao Gao wrote:
->>> +			case MODULE_UPDATE_CPU_INSTALL:
->>> +				ret = seamldr_install(seamldr_params);
->>> +				break;
->> I really despise this naming. Could you please clarify with comments?
->>
->> This reads like it is installing a seamldr, not telling a seamldr to
->> perform an install.
-> Yea it does read that way. We kind of have a convention around the seamcall
-> wrappers matching the tdx docs name. tdh_foo_bar() is pretty clear.
-> Unfortunately the seamldr calls are defined like SEAMLDR.INSTALL.
+> diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
+> index 0e99022168a85..0c372b9f8ed34 100644
+> --- a/arch/x86/kvm/pmu.h
+> +++ b/arch/x86/kvm/pmu.h
+> @@ -36,6 +36,7 @@ struct kvm_pmu_ops {
+>         void (*reset)(struct kvm_vcpu *vcpu);
+>         void (*deliver_pmi)(struct kvm_vcpu *vcpu);
+>         void (*cleanup)(struct kvm_vcpu *vcpu);
+> +       void (*reprogram_counters)(struct kvm_vcpu *vcpu, u64 counters);
+>
+>         bool (*is_mediated_pmu_supported)(struct x86_pmu_capability *host_pmu);
+>         void (*mediated_load)(struct kvm_vcpu *vcpu);
+> diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
+> index 7aa298eeb0721..fe6f2bb79ab83 100644
+> --- a/arch/x86/kvm/svm/pmu.c
+> +++ b/arch/x86/kvm/svm/pmu.c
+> @@ -260,6 +260,48 @@ static void amd_mediated_pmu_put(struct kvm_vcpu *vcpu)
+>                 wrmsrq(MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR, pmu->global_status);
+>  }
+>
+> +static void amd_mediated_pmu_handle_host_guest_bits(struct kvm_vcpu *vcpu,
+> +                                                   struct kvm_pmc *pmc)
+> +{
+> +       u64 host_guest_bits;
+> +
+> +       if (!(pmc->eventsel & ARCH_PERFMON_EVENTSEL_ENABLE))
+> +               return;
+> +
+> +       /* Count all events if both bits are cleared */
+> +       host_guest_bits = pmc->eventsel & AMD64_EVENTSEL_HOST_GUEST_MASK;
+> +       if (!host_guest_bits)
+> +               return;
+> +
+> +       /*
+> +        * If EFER.SVME is set, the counter is disabledd if only one of the bits
+> +        * is set and it doesn't match the vCPU context. If EFER.SVME is
+> +        * cleared, the counter is disable if any of the bits is set.
+> +        */
+> +       if (vcpu->arch.efer & EFER_SVME) {
+> +               if (host_guest_bits == AMD64_EVENTSEL_HOST_GUEST_MASK)
+> +                       return;
+> +
+> +               if (!!(host_guest_bits & AMD64_EVENTSEL_GUESTONLY) == is_guest_mode(vcpu))
+> +                       return;
+> +       }
+> +
+> +       pmc->eventsel_hw &= ~ARCH_PERFMON_EVENTSEL_ENABLE;
 
-The naming convention is fine, really. It does make thing easier to look
-up in the documentation.
+Sashiko raised a good point here. In the following patch, we reprogram
+the counters synchronously on nested transitions to update the
+counters' enablement before counting VMRUN or WRMSR(EFER.SVME).
+However, this updates pmc->eventsel_hw while
+kvm_pmu_recalc_pmc_emulation() checks pmc->eventsel to check if the
+counter is enabled.
 
-In this case, just comment it, please. It's only a single site.
+I think either pmc_is_locally_enabled() needs to check
+pmc->eventsel_hw or we need to update pmc->eventsel here.
+
+AFAICT, pmc->eventself has the value written to the MSR, so I think we
+want to keep that as-is.
+
+On the other hand, ARCH_PERFMON_EVENTSEL_ENABLE is cleared in
+pmc->eventsel_hw in kvm_mediated_pmu_refresh_event_filter() if the
+event is not allowed, and kvm_pmu_recalc_pmc_emulation() has a comment
+about intentionally ignoring event filters.
+
+We can also separately track enablement for nested purposes, but that
+would add one more thing we need to check aside from general counter
+enablement and event filtering.
+
+None of these options are ideal, perhaps directly clearing the bit in
+pmc->eventsel would do the least damage as (pmc->eventsel &
+ARCH_PERFMON_EVENTSEL_ENABLE) is only checked by
+pmc_is_locally_enabled().
