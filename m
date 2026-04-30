@@ -1,134 +1,128 @@
-Received: from mail-yx1-f53.google.com (mail-yx1-f53.google.com [74.125.224.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD50D221721
-	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 13:09:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.53
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777554594; cv=pass; b=G5YAUwpyDOE8MjjCIpPPgflyiMHaHgJ9WN90dyiXPRQrki1qWnc9gsgCepy9kjjskTxr1F9414OXPFqbWR4j7QkCykObUu4dsIMz3EnIptfcNkQpbJFtWxGH7eMeVKPgZje6jEBwcGSSx1vjnB7qNPDBZYlr7pL+vFRj6vetAr4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777554594; c=relaxed/simple;
-	bh=I+YiL94/NsrvrrDIRxF2of5F/mABo9BsdOwKiBBPajg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QcIK4GiW3omnPbdOQKNOxTfGPf55aEfLL00jkJD9gZ5c5z3469pznwLgWxlbWVS7B0JdHTOrK8nWLR+Kl8tRkR/Icyprv25KBwvE7BcZT6sFwvj5pxDEpGqtBJU+vzsMx1yATET63lqo4/zb0NIIccYrzOcAqoR+rmLY/NrCR98=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=wxXvbcFS; arc=pass smtp.client-ip=74.125.224.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37164218B2;
+	Thu, 30 Apr 2026 13:14:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777554865; cv=none; b=Fl9eICEMmncYC6AYTCqUjTrzjKRbpuSm0NqdD5dLlXfm8FiFz2+FUrvIkkaqxdc/oGS1VDvIba4YUw/b1VDu0li69XHE4zYW+sv1QzOO/LP1lAq4rNJ03U6xNVSySOpQWM5tnBBvss0/ulw4vt91buJqbFLvbIM4DLu5cCOISV0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777554865; c=relaxed/simple;
+	bh=jifMlssP5+ngMhDOU+yedkwt8RjFB3XDKVz2cX4Z3Zs=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=KRMo+5rLGtlf4DOeL+tbGzvmLEnG3WWa7MgB+kShwYi1n09ZE/0bFMVXDZs3GfQrEcSHt82RR0qOg8yTe1oYxwJxQltqzXpljciPXXomcWxWJ0eBVoX7xF5ghwvEpU534BgH5qQdION6kNhGimWY34JXvYfvmbADhGYmfdI6tRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e0dgqLJE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="wxXvbcFS"
-Received: by mail-yx1-f53.google.com with SMTP id 956f58d0204a3-65c0bda7f15so864824d50.0
-        for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 06:09:52 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777554591; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IXriabWDyF/ukHtyEmUQdUsBJaaXCm51itgWYy2Evj8SrRVhT5bVoOsAo/j0aWWyLH
-         xPApnFYl8I1+PpbrSUekYIClcvSnFYvaXEpBeHMDnRJaYBqKoP0APtIJObAWt8W9bwVP
-         gpJ/PfWmr4GORrIvePV7tt9aJgwKKVJKhZm3ATDuxNXhvImSdU/8rk2ulTCU5mVPMSfW
-         CCShJ6YCOJ12BAto9Q/EnqywUCAu/Fs3DW/GwyEOCd/HXR3fyHw5c4AfBSlCC0JGdiAs
-         gOLxJMX+7PSWxELNhSNyeCNX5aG8xRkqP+UGCsB+tvpPcvKkdQ4cxZ8vu3f3peZcRCmp
-         8tig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=FxbWF8KbXOGlfQKsgorPOT1msBKMLNNbj2kYslbT5dc=;
-        fh=bOpwRoGQkCUCcMYIzL3Nymc/XUc6JHpc/7Kez2SBGkc=;
-        b=ISvqsKq8HR0WC3BaApMqPw9nuCwJ9vuXoBoEKC6H4vXgJRZ2sGdp7QM1/huaB+bUll
-         3dq0J0IIcE4QixtREswfyyaUcoRUchyI4zsJ0cv02Nl+WJhsdxNR+ywDtxlMD4Kgeis7
-         1Sb4b5yDQQ8tL8x/R76xYEweWDgqgmOWEt8d7B3hxHy4E5m5CAlHi/QfwSJ9GNZVOLiK
-         J7nzyVjvuYW16Ll8G1azgUUD/y5N5WeYmejg1MUQB3vQnUmbDxCoQ1D2T+d1NLetoMRa
-         1sG+bIdZ3iF59iIHiD7uZs9Dk5vA/jCWV6dS5Ndpmp1bFpeZWEqekiaEg3V0KJqvQKk7
-         NeRA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1777554591; x=1778159391; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=FxbWF8KbXOGlfQKsgorPOT1msBKMLNNbj2kYslbT5dc=;
-        b=wxXvbcFSbnyxfI9nZI39nhU7BsVPSKdEHP6hSiC52uf5MdzNqS3q4+7BuDBmRFggoo
-         N7bLMvtMh18Ay30ORn+r+qumOVEBkN6hIbHhtwaVjsuiS7rQJt+XaT5HP/7vNJnjdFbZ
-         7julKCcRBTAAJBKFdoCV/26+TXSf+E8t14bsicHMPjnqA9BgXRpbyQrcN8BCJE1w99mz
-         BYGsjwHJ6Evr/Gx/D1la5Cmfud3u7JVITe8/aLwftMYtuhYjhDn4BcF8MHx96jfQ25XN
-         y/JKWGPmhbmfBv6/8xxO/ZQMVI8hOC0TplhfmQpCkOT+GEUG31YuYQGeeKACmkfXzk7v
-         sinQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777554591; x=1778159391;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FxbWF8KbXOGlfQKsgorPOT1msBKMLNNbj2kYslbT5dc=;
-        b=nsVTbMEMAlkTW727jg1SZBCexnfzsScmjuRfXWggZuK6en+WKxn3ji0IpQaoa/ORHZ
-         EnSL0VPWWco6I1auWA/UGzCPb0fyjfl/52kzxLphlcwNQ7VPUjXyUCR5zwxbQ4Zk3gDc
-         bSnV73MCOQBv92Sf1N+7OMxud6K/THlhWQ+5FllGZGGtN3+e3xIic1DhVfXrdn+PFZY5
-         QA2tP3NZ6w4jKupSy8AvTowu1iLoSN3Y6/IBWuGXBFTHiSUu9J3RortuWOJUGXkF84xK
-         MBkIyWRAOG2hK1zECgE70fIbH3QH9+LL1FV7Aarcgv+KqxocA3FV8TMwBtYO0Gp5Byz2
-         Jw9g==
-X-Forwarded-Encrypted: i=1; AFNElJ8HI0ukb9UfLJ5Jychokm7KtRn3ZpAWmEAeZoRoq1UyFJDZ4+VgUmU/wo17s9dpqWiiNis=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy4UZaHQlBamdzS1JpsD2zPMu9+oXEfC4eW97LiINTT3z5pWa0b
-	d+eGYIU9jiL2VvSi82U29E7ge4Hfwvx7rvaHJSZ2/vbPopIDvtR6bYEDJ17369qxqBKhTi+RxMD
-	XseW6ePXx/bKpkD/owdpUa+QV16HJfavGJiYU13Vl1A==
-X-Gm-Gg: AeBDievs6frOH4mZPbzQZ0CMWQZOhC2pKslyqML0Bh5+ngqbhlH6vNue9pX9q38mNLp
-	CQPSoWArDLs9tJjZ6z6ORMQi+8cKd4+n17OuQan+7mR9smtwierPouNkSzuhwZef80+yqLW8VuB
-	sh2ylDJvVBF+kTQSSrx9apaNXYg83s35E1VErL6k9NXkPkK0b1twCQmbGi1GU9/afyWgxjfPBpz
-	XEdyEtXP4IGpG1Ts11mzx4yIYMvk4hmNBLDc7VkBTQEgV7ZZJBygsl7jPn4suMDtPy9GNyyv3Lm
-	mVGTs4pRvRnh6VjIgOdi1vWgxEsI1dMtopn2PfN12VUlqOP0uj46EZ8sLfUwfHtxvLxoYVDuZlW
-	aQw==
-X-Received: by 2002:a05:690e:2451:b0:649:ed08:1a01 with SMTP id
- 956f58d0204a3-65c18de27b4mr1561059d50.35.1777554591429; Thu, 30 Apr 2026
- 06:09:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e0dgqLJE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62606C2BCB3;
+	Thu, 30 Apr 2026 13:14:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777554865;
+	bh=jifMlssP5+ngMhDOU+yedkwt8RjFB3XDKVz2cX4Z3Zs=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=e0dgqLJEoMIzEHXFT4HqgpikyLxKMo8p8ZkYg8z2UAQSKn3ZH26iYJTczd6WOtzoD
+	 8WEkDCs9E33Y/ZJPKxJBzpdqm8eRWTj5JcB1CBFolQ32laxj/XOuFT7FCF8dNGbWpc
+	 z29CGKcR/P/Kmwq7fikgU8Bvz9jT6Z/JUnK2aF5onaRpVAAVJskSXFOSzYgfFTvRGM
+	 Lg1G3Y4jHvfgxYgtRhtFsvJht0gKKJQ4TluwLTxmpzKzIQHnfvrykZYujvZrkIBgH7
+	 NxxOFdSArj/Heni4c9evI+AJ1q+RzR+5HyD/0D6vMSeEKQyDZaD/wvPAw4BSN+6vOq
+	 cKs0F7d9Yz9zQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wIRDj-0000000GHED-09B6;
+	Thu, 30 Apr 2026 13:14:23 +0000
+Date: Thu, 30 Apr 2026 14:14:22 +0100
+Message-ID: <86bjf0zj2p.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Leonardo Bras <leo.bras@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,	Will Deacon
+ <will@kernel.org>,	Oliver Upton <oupton@kernel.org>,	Joey Gouly
+ <joey.gouly@arm.com>,	Suzuki K Poulose <suzuki.poulose@arm.com>,	Zenghui Yu
+ <yuzenghui@huawei.com>,	"Rafael J. Wysocki" <rafael@kernel.org>,	Len Brown
+ <lenb@kernel.org>,	Saket Dumbre <saket.dumbre@intel.com>,	Paolo Bonzini
+ <pbonzini@redhat.com>,	Chengwen Feng <fengchengwen@huawei.com>,	Jonathan
+ Cameron <jic23@kernel.org>,	Kees Cook <kees@kernel.org>,	=?UTF-8?B?TWlr?=
+ =?UTF-8?B?b8WCYWo=?= Lenczewski <miko.lenczewski@arm.com>,	Ryan Roberts
+ <ryan.roberts@arm.com>,	Yang Shi <yang@os.amperecomputing.com>,	Thomas Huth
+ <thuth@redhat.com>,	mrigendrachaubey <mrigendra.chaubey@gmail.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,	Mark Brown <broonie@kernel.org>,	Kevin
+ Brodsky <kevin.brodsky@arm.com>,	James Clark <james.clark@linaro.org>,	Ard
+ Biesheuvel <ardb@kernel.org>,	Fuad Tabba <tabba@google.com>,	Raghavendra
+ Rao Ananta <rananta@google.com>,	Nathan Chancellor <nathan@kernel.org>,
+	Vincent Donnefort <vdonnefort@google.com>,	Lorenzo Pieralisi
+ <lpieralisi@kernel.org>,	Sascha Bischoff <Sascha.Bischoff@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,	Tian Zheng
+ <zhengtian10@huawei.com>,	Wei-Lin Chang <weilin.chang@arm.com>,
+	linux-kernel@vger.kernel.org,	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev,	linux-acpi@vger.kernel.org,
+	acpica-devel@lists.linux.dev,	kvm@vger.kernel.org
+Subject: Re: [PATCH v1 00/12] KVM Dirty-bit cleaning accelerator (HACDBS)
+In-Reply-To: <20260430111424.3479613-2-leo.bras@arm.com>
+References: <20260430111424.3479613-2-leo.bras@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260428-features-v1-1-1841b39da7e6@rsg.ci.i.u-tokyo.ac.jp>
-In-Reply-To: <20260428-features-v1-1-1841b39da7e6@rsg.ci.i.u-tokyo.ac.jp>
-From: Peter Maydell <peter.maydell@linaro.org>
-Date: Thu, 30 Apr 2026 14:09:40 +0100
-X-Gm-Features: AVHnY4ISyJss64q1Mf2DvH6h2BtrzOWFl1ukcMtkQZ4nxtYAaw3YZoAhJwZVxFM
-Message-ID: <CAFEAcA9_Sc=+Cn7JiPOo9GjOZFU4KCc7nFVqU=9=QAsNBG6AsQ@mail.gmail.com>
-Subject: Re: [PATCH] target/arm/kvm: Cache host CPU probe failure
-To: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-Cc: qemu-devel@nongnu.org, Paolo Bonzini <pbonzini@redhat.com>, qemu-arm@nongnu.org, 
-	kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: leo.bras@arm.com, catalin.marinas@arm.com, will@kernel.org, oupton@kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, rafael@kernel.org, lenb@kernel.org, saket.dumbre@intel.com, pbonzini@redhat.com, fengchengwen@huawei.com, jic23@kernel.org, kees@kernel.org, miko.lenczewski@arm.com, ryan.roberts@arm.com, yang@os.amperecomputing.com, thuth@redhat.com, mrigendra.chaubey@gmail.com, yeoreum.yun@arm.com, broonie@kernel.org, kevin.brodsky@arm.com, james.clark@linaro.org, ardb@kernel.org, tabba@google.com, rananta@google.com, nathan@kernel.org, vdonnefort@google.com, lpieralisi@kernel.org, Sascha.Bischoff@arm.com, anshuman.khandual@arm.com, zhengtian10@huawei.com, weilin.chang@arm.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, kvm@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Tue, 28 Apr 2026 at 09:07, Akihiko Odaki
-<odaki@rsg.ci.i.u-tokyo.ac.jp> wrote:
->
-> kvm_arm_set_cpu_features_from_host() does not properly handle host CPU
-> probe failure with caching. The current algorithm can be summarized as
-> follows:
->
->     If dtb_compatible is not cached:
->         If kvm_arm_create_scratch_host_vcpu() fails:
->             Report failure
->
->         Cache dtb_compatible
->
->         If getting register values fails:
->             Report failure
->
->     Report success
->
-> This algorithm has the following problems:
->
-> - If kvm_arm_create_scratch_host_vcpu() fails, probing may be repeated.
-> - If getting register values fails, later invocations incorrectly report
->   success.
->
-> Make two changes to fix them:
->
-> - Cache dtb_compatible whenever a probe is attempted.
-> - Record probe failure by assigning QEMU_KVM_ARM_TARGET_NONE to
->   arm_host_cpu_features.target.
->
-> Suggested-by: Peter Maydell <peter.maydell@linaro.org>
-> Signed-off-by: Akihiko Odaki <odaki@rsg.ci.i.u-tokyo.ac.jp>
-> ---
-> Supersedes: <20260422-arm-v1-1-106a9a9e22dd@rsg.ci.i.u-tokyo.ac.jp>
+On Thu, 30 Apr 2026 12:14:04 +0100,
+Leonardo Bras <leo.bras@arm.com> wrote:
 
-Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
+[...]
 
-thanks
--- PMM
+I haven't had a chance to look at any of this yet, but just on these
+points:
+
+> b - checkpatch.pl keeps bothering me to add an entry in MAINTAINERS file,
+>     and I like the idea of maintaining this. Is there any rule or
+>     common sense on this? Should I add this entry, or should I leave it
+>     in the arch/arm64/kvm/ general rule?
+
+No specific entry in MAINTAINERS required (or wanted). This falls into
+the normal KVM/arm64 maintenance. And don't worry, we know where to
+find you when it will come to fixing this stuff.
+
+> c - There are some trace_prink() I have left in the code, as they could
+>     be helpful to check when HACDBS is not performing as well as it
+>     should. Should I introduce a tracepoint instead? or just ignore it?
+>     (it's triggered on HACDBS error, but as it falls back to software in
+>     that case, it should not impact correctness, only performance).
+
+Debug infrastructure should be preferably *removed* altogether.
+trace_printk() is definitely a big no-no.
+
+> d - In __kvm_arch_dirty_log_clear() there is no way to predict how long
+>     should be the buffer, so I used 1x PAGE_SIZE, and when it gets full
+>     it's cleaned and reused. Should I let users configure that over a
+>     parameter, or is it overthinking?
+
+How long is a piece of string? We can't know that. A single page feels
+very small in the 4kB case, and letting userspace define the size of
+that buffer seems a likely requirement.
+
+> 
+> Kernel v7.0.0 + this patchset builds properly, passing both kvm selftests
+> for dirty-bit tracking[2], on HW HACDBS enabled or disabled.
+
+I have absolutely no trust in these tests.
+
+Have you enabled a VMM to make use of these APIs, and actively
+migrated running guests? That's the level of testing I'd like to see,
+as the selftests are not what people run in production...
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
