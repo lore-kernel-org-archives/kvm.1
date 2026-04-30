@@ -1,408 +1,482 @@
-Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010034.outbound.protection.outlook.com [52.101.61.34])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31BD0282F3F;
-	Wed, 29 Apr 2026 23:51:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.34
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777506702; cv=fail; b=V3UGlTPUOesJUMeilKYCTXZSXojGiq6Kn1y5s10ZN6QcHN6fIB6j36j+ifyWE456fSGi/XDBPGg1bfu2DkjaYrNYjuUVZLq1az73zWFihGe/u6pbdl4Bh7t4NaiA5O50WUd0hLLJ+XqAibq21nhL9pkyA8/rKAsaqexAFMF6CI8=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777506702; c=relaxed/simple;
-	bh=VZ+wnu63TgR3FCLm/JdQgNp9UF83Dl7L80lMPEAXEq8=;
-	h=Date:From:To:CC:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M7bBp7syk/OwUi9dFXvGYCIEIqLpYdjCnp8RLPuLMaMLdku/M9fv1PO57g9Uf03QewtBXTsW7FdoTRNjsvLptd29B799S2LDgEyrCXbHHZ2Z5A46VI0IyBoToK66OkwE0Eh6Pa5FqWR/EoepQ/JTtuLrqfhdYHl6YDfL7gl8U/M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=ZmDttkTy; arc=fail smtp.client-ip=52.101.61.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A04181ACA;
+	Thu, 30 Apr 2026 00:45:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777509952; cv=none; b=l+K2rYll67IMfKgIEOySWMEDV3pLfCcVL6Ee+lTT0yeZ2Jh1Gc0qDJkDonOhPuAaQH8pfSNVtdZ52t7eedmFzc/e74Q854e+NiES43MxTilv5angC1kb02T5lBrUcr7iNMnLlVliliZj5QC50rKC9J7eZzjxWrcXq9yBEp63ukU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777509952; c=relaxed/simple;
+	bh=Zil/maMdk+8ongptR/3xql5omXPBATANWuzpMrLKRhc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=YpgwHYZiP5QX6+E5mhGaq7VOuG5A7l9MvWbVLkXwnbFvEiBRpiGAorTJQ7iXuiEftKDdObK2vlPk0EFJuMlFz1DrcLWS7CPHrgee91kuppx10af+0J5H+FQ9qiDEoG9iQgZ+VG9YTH9luihsR1hi1UnQFDVteQTpQ2oHm2qYB98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bUUWe/4U; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="ZmDttkTy"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=R/ASMFYR4sN7D7GWnglIW/VxnwAX5qZ1/Ev/3Q5lKGEXHh5v19pBq4tSyfNMjU00wY4zH0Kn/dOydpf3hlD7JqE4iMtvQGbYK0n0SeBKCXweGPCigyrIKzKIZvYodfB9vMVXqpXPfqvJxe4+mv9YVILqrFaUDM3RQIInRx+IQO8QpDBcEhyttN02eVg2H8Ax7Mslu2BcDsr1nRmuF41birIQ4qbDMoq9nMLV6117Un+vSyb+LJch2U9YwOc8flV9VgTseke00kf28XXswGUQgKsYz9U5bSWdwsCLlBQrKm95KWFFgnu40KV13hFlZ2LeUEscQok3EGA2jJs6J9hRRw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=pzgml3/CIhemoYumDHOZSu6Wta3BAaZKnkuahnN2rT4=;
- b=ds7J3D2CJcu82RQQN5fRsEWYBrVM4waiZWWLZvLm5jjz27kUYlkYC1rL5XiwsVRZEceLXO8Mz+g6UGm+9i42MFaMiVAiNCLjRmJBODRRMeCYJKCVQ632SDVFWSJhuwWT+b41jByq+XGHHuw2b/U8CI+HIYawGe90QOraZkCXUx/yPCIqdqPP3gR14pJMsQCNL0EpwsOgoNkXw8YHDnaYGLu+PB+25Tz073tqK7FgihMmqlpSCprMmJ8mVZpJJHlXG2xtpqqRs7fMTD9RcoZYDrk5d/YR6toVE7zGiv2BE2y0UoVubdF4bvabPN4Irx8ndJ2bTETjZMdxNOKLtapGfA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=pzgml3/CIhemoYumDHOZSu6Wta3BAaZKnkuahnN2rT4=;
- b=ZmDttkTymoeVV4N9fJxL6lOuZjoDx2qZH1P6ofYXq8LBEfGYuIPl1IGYArnuayiHjr9tjFCHoaooG30lTok3ROeFdq61EQBdyD4SqbdujpwgKaObWTvGSJbKErEBSGRJNMjuyw6DRs0Vh59rHhr6iqez8bIPxDEBNqYW93h11UU=
-Received: from PH5P222CA0010.NAMP222.PROD.OUTLOOK.COM (2603:10b6:510:34b::11)
- by CH1PPFD8936FA16.namprd12.prod.outlook.com (2603:10b6:61f:fc00::624) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9818.21; Wed, 29 Apr
- 2026 23:51:29 +0000
-Received: from SN1PEPF0002BA50.namprd03.prod.outlook.com
- (2603:10b6:510:34b:cafe::69) by PH5P222CA0010.outlook.office365.com
- (2603:10b6:510:34b::11) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9846.30 via Frontend Transport; Wed,
- 29 Apr 2026 23:51:29 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- SN1PEPF0002BA50.mail.protection.outlook.com (10.167.242.73) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9846.18 via Frontend Transport; Wed, 29 Apr 2026 23:51:28 +0000
-Received: from localhost (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Wed, 29 Apr
- 2026 18:51:28 -0500
-Date: Wed, 29 Apr 2026 18:51:13 -0500
-From: Michael Roth <michael.roth@amd.com>
-To: <ackerleytng@google.com>
-CC: <aik@amd.com>, <andrew.jones@linux.dev>, <binbin.wu@linux.intel.com>,
-	<brauner@kernel.org>, <chao.p.peng@linux.intel.com>, <david@kernel.org>,
-	<ira.weiny@intel.com>, <jmattson@google.com>, <jthoughton@google.com>,
-	<oupton@kernel.org>, <pankaj.gupta@amd.com>, <qperret@google.com>,
-	<rick.p.edgecombe@intel.com>, <rientjes@google.com>, <shivankg@amd.com>,
-	<steven.price@arm.com>, <tabba@google.com>, <willy@infradead.org>,
-	<wyihan@google.com>, <yan.y.zhao@intel.com>, <forkloop@google.com>,
-	<pratyush@kernel.org>, <suzuki.poulose@arm.com>, <aneesh.kumar@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Borislav
- Petkov" <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
-	<x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt
-	<rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, "Mathieu
- Desnoyers" <mathieu.desnoyers@efficios.com>, Jonathan Corbet
-	<corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan
-	<shuah@kernel.org>, "Vishal Annapurve" <vannapurve@google.com>, Andrew Morton
-	<akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Kairui Song
-	<kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham
-	<nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song
-	<baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie
-	<yuanchu@google.com>, Wei Xu <weixugc@google.com>, Youngjun Park
-	<youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt
-	<shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe
-	<jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, <kvm@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-trace-kernel@vger.kernel.org>,
-	<linux-doc@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-coco@lists.linux.dev>
-Subject: Re: [PATCH RFC v5 00/53] guest_memfd: In-place conversion support
-Message-ID: <x7n77snnvvukofo3slopl74c5tmlb2t2un5qy5fq6eb3d2xt7e@6a6tixg5mdfc>
-References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bUUWe/4U"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777509949; x=1809045949;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Zil/maMdk+8ongptR/3xql5omXPBATANWuzpMrLKRhc=;
+  b=bUUWe/4U0mEaJYr17eGm+1H03d1KRNZ10X/OO5JGARD+lKS2KkzV3kNA
+   VLNV7Kx1u+7ahFU9Om8/MRW57rt55NekrIotM7BYvVb7UUuPXwneNU+1+
+   MVtk7NBSv22lOG4uWbor1ucW+lYPAkAbi4F9xX98IoHWG7Z4EDdU3/wLw
+   3oMN1vEVpxSMpv2AoBQR+0QfEc7xTDVpSL/jBnWiJxbpXsSwEXVRy8yEO
+   n1/LnOq8gxN4sX5OsVv1zgxg+vyxkQYTHBGuCnfzN/PHrGZUic1AJKjp6
+   gUH6m6Sys+xhlSap2BGWaOX5Y0jKwpO5e0xwyf117SQBPJWUaB30r72uK
+   g==;
+X-CSE-ConnectionGUID: t90pUdJJTXSn8HOphNV2JA==
+X-CSE-MsgGUID: ailBTuc1T6ucw2qYuTNjQg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="78163575"
+X-IronPort-AV: E=Sophos;i="6.23,207,1770624000"; 
+   d="scan'208";a="78163575"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 17:45:48 -0700
+X-CSE-ConnectionGUID: /X1glbTDTyu6q7mWerwn2A==
+X-CSE-MsgGUID: HS/g1wNhScGxlR9N4Fy+Aw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,207,1770624000"; 
+   d="scan'208";a="233377861"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.109.40]) ([10.125.109.40])
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 17:45:48 -0700
+Message-ID: <a52c4701-c99d-48d5-9b63-8eb1c0e589f0@intel.com>
+Date: Wed, 29 Apr 2026 17:45:47 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="us-ascii"
-Content-Disposition: inline
-In-Reply-To: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN1PEPF0002BA50:EE_|CH1PPFD8936FA16:EE_
-X-MS-Office365-Filtering-Correlation-Id: 2c3368c2-8902-4747-d925-08dea64a3b89
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|36860700016|1800799024|7416014|376014|13003099007|18002099003|56012099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	MfGB1iyYxvTCPsQwl/eTQ4rWfpfuJqrslpGQi++WsYb8idqKkYrZgWAo1uluLWmBuwtL13rbRRfrntjRh2aT/px1g+j7TQS2vutkBlfW+YgJPdlYqAedGdclV9U+P4izYod//2lz2fjKNL5mlI+6J1LIfYzX4rdNV6+Mr7sLJ6Srtr/0uLdbYHivlDKsM54PGGDNTZQlipug0dEusZsh2MzIARNwagkxjFqiIFqVa+gnUP9WyBp7RmpO6ExgHT06ozQO+ie6H7CvXatz0D/wOeXYtbbH9dQOTaTTpI6L07rPccNl/SSJp4Ms3sny0o2PoivrDbWQqdOrT0c61b9ZKBdFWsiaFAcSDha+xcS+qpXXzSkQIy/q+exjl9K7dDeZOULnRsg8ftLWOKpjn84CLvS3TZLyyBPSlpDD9PUX9jC4x8bCJn7tTCYVORInmXjUqCFEUuEq79Y+/2mA/RbDsTvueqy0r9Bv7DydijrPnajswd02v4mmiaoxqgqT46Kdu2COa465kmmGd2B9p/y2dSwx7pmVP8dQqLcZ2x1FNLfzs5tAzKzqgYm+b18UZAcngiZxy69iqyDnTMdY0YRtmJ2kEz7h5nMa38QoY8dP3q1z4YGl3FICmgZO/N2baJ/kkduASn49uZLTdXsxHmpPjvuIPdw0LdUIgh532QWu/BleNaeVzv1jANNXEzee/0LgNSZIdZXsivbzA+xI1fw4gGGBUml7brCGd8qF/lec9AY=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(1800799024)(7416014)(376014)(13003099007)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	l9+7gjfyQDK4+iYTnufPFwaQrRf4/9X0oyBU3rycw7EfK0LiTWwvGqnaCyNte26lj9fkORqdCWchCY81Awx3Rl97E67k7QEcg6fAZ0iIMy+dZLzQnfkkhVuWJpI06oVj2nzkdfza8JNUv6R6wIHVqetJMaz0d2nNINLUFYlWMvlqcYLI8MaAcf+hWLlS1MkEftW3uO1Fq9jomiEjMpBwbpqFuZzYbjBiOOrASLBjO0ZGMqFa2LN9gLKZUNEUXzI9P5v8Kcxa8cD3i3Y/cKgm7bpVzcGO3AfwvNelXxADKeoDgN56DRJ5iBwQYEoALqcTwC5S32/0TZhmVIiC7GfrekxcIGXXAMGF3ld3OVt220aFmGzM6HcqnH+FCmzFCGWaEUiN2Vtg6gsrvEfpwajY1/CdzK/4xok/aG+2YX4Nd7q2fVTgI17iEsOSobeAFmtN
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 29 Apr 2026 23:51:28.9208
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 2c3368c2-8902-4747-d925-08dea64a3b89
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SN1PEPF0002BA50.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH1PPFD8936FA16
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 08/21] x86/virt/seamldr: Allocate and populate a module
+ update request
+To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
+Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
+ ira.weiny@intel.com, kai.huang@intel.com, kas@kernel.org,
+ nik.borisov@suse.com, paulmck@kernel.org, pbonzini@redhat.com,
+ reinette.chatre@intel.com, rick.p.edgecombe@intel.com, sagis@google.com,
+ seanjc@google.com, tony.lindgren@linux.intel.com, vannapurve@google.com,
+ vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com,
+ yan.y.zhao@intel.com, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>
+References: <20260427152854.101171-1-chao.gao@intel.com>
+ <20260427152854.101171-9-chao.gao@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260427152854.101171-9-chao.gao@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Apr 28, 2026 at 04:24:55PM -0700, Ackerley Tng via B4 Relay wrote:
-> [Some people who received this message don't often get email from devnull+ackerleytng.google.com@kernel.org. Learn why this is important at https://aka.ms/LearnAboutSenderIdentification ]
+On 4/27/26 08:28, Chao Gao wrote:
+> P-SEAMLDR uses the SEAMLDR_PARAMS structure to describe TDX module
+> update requests. This structure contains physical addresses pointing to
+> the module binary and its signature file (or sigstruct), along with an
+> update scenario field.
 > 
-> This is RFC v5 of guest_memfd in-place conversion support.
+> TDX modules are distributed in the tdx_blob format defined in
+> blob_structure.txt from the "Intel TDX module Binaries Repository". A
+> tdx_blob contains a header, sigstruct, and module binary. This is also the
+> format supplied by the userspace to the kernel.
 > 
-> Up till now, guest_memfd supports the entire inode worth of memory being
-> used as all-shared, or all-private. CoCo VMs may request guest memory to be
-> converted between private and shared states, and the only way to support
-> that currently would be to have the userspace VMM provide two sources of
-> backing memory from completely different areas of physical memory.
+> Parse the tdx_blob format and populate a SEAMLDR_PARAMS structure. The
+> header is consumed solely by the kernel to extract the sigstruct and
+> module, so validate it before processing to protect the kernel ABI. The
+> sigstruct and module are passed to and validated by P-SEAMLDR, so don't
+> duplicate any validation in the kernel.
 > 
-> pKVM has a use case for in-place sharing: the guest and host may be
-> cooperating on given data, and pKVM doesn't protect data through
-> encryption, so copying that given data between different areas of physical
-> memory as part of conversions would be unnecessary work.
-> 
-> This series also serves as a foundation for guest_memfd huge page
-> support. Now, guest_memfd only supports PAGE_SIZE pages, so if two sources
-> of backing memory are used, the userspace VMM could maintain a steady total
-> memory utilized by punching out the pages that are not used. When huge
-> pages are available in guest_memfd, even if the backing memory source
-> supports hole punching within a huge page, punching out pages to maintain
-> the total memory utilized by a VM would be introducing lots of
-> fragmentation.
-> 
-> In-place conversion avoids fragmentation by allowing the same physical
-> memory to be used for both shared and private memory, with guest_memfd
-> tracks the shared/private status of all the pages at a per-page
-> granularity.
-> 
-> The central principle, which guest_memfd continues to uphold, is that any
-> guest-private page will not be mappable to host userspace. All pages will
-> be mmap()-able in host userspace, but accesses to guest-private pages (as
-> tracked by guest_memfd) will result in a SIGBUS.
-> 
-> This series introduces a guest_memfd ioctl (not kvm, vm or vcpu, but
-> guest_memfd ioctl) that allows userspace to set memory
-> attributes (shared/private) directly through the guest_memfd. This is the
-> appropriate interface because shared/private-ness is a property of memory
-> and hence the request should be sent directly to the memory provider -
-> guest_memfd.
-> 
-> Tested with both CONFIG_KVM_VM_MEMORY_ATTRIBUTES enabled and disabled:
-> 
-> + tools/testing/selftests/kvm/guest_memfd_test.c
-> + tools/testing/selftests/kvm/pre_fault_memory_test.c
-> + tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-> + tools/testing/selftests/kvm/x86/private_mem_conversions_test.c
-> + tools/testing/selftests/kvm/x86/private_mem_conversions_test.sh
-> + tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-> 
-> Updates for this revision:
-> 
-> + For TDX and SNP, PRESERVE supported only before VM is finalized only for
->   to_private conversions.
->     + This allows PRESERVE to be used as part of the VM memory
->       loading/encryption flow
->     + Only support PRESERVE for to_private conversions (to_shared on
->       populated memory on TDX would cause zeroing)
->     + Relaxed constraints for SNP and TDX to allow NULL to be passed as
->       source address.
-> + Dropped KVM_CAP_MEMORY_ATTRIBUTES2. KVM_CAP_MEMORY_ATTRIBUTES reports
->   attributes supported by the KVM_SET_MEMORY_ATTRIBUTES VM ioctl, and
->   KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES reports attributes supported bt the
->   KVM_SET_MEMORY_ATTRIBUTES2 guest_memfd ioctl.
->     + KVM_SET_MEMORY_ATTRIBUTES2 is not supported by the VM ioctl
-> + Resolve locking issue when kvm_gmem_get_attribute() is called from
->   kvm_mmu_zap_collapsible_spte() by bugging the VM. guest_memfd memslots
->   don't support dirty tracking, so the locking issue is not on an
->   accessible code path.
-> + Moved guest_memfd_conversions_test.c to only be compiled and tested for
->   x86, since it depends so heavily on KVM_X86_SW_PROTECTED_VM's as a
->   testing vehicle
-> 
-> TODOs
-> 
-> + Perhaps further clarify PRESERVE flag: [8]
+> Note: the sigstruct_pa field in SEAMLDR_PARAMS has been extended to
+> a 4-element array. The updated "SEAM Loader (SEAMLDR) Interface
+> Specification" will be published separately.
 
-I made a super-long-winded reply to that thread, but to summarize:
+These changelogs have all the right info, but I find them really hard to
+parse. For instance, if you're going to have a 'struct seamldr_params',
+then just stick with that name. Don't use the "SEAMLDR_PARAMS" name too.
 
-PRESERVE flag has different enumeration/behavior/enforcement for pre-launch
-vs. post-launch, and similar considerations might come into play for
-other flags, so to make it easier to enumerate what flags are available
-for pre-launch/post-launch, maybe we could have 2 capabilities instead
-of 1:
+Start with the data structures:
 
-  KVM_CAP_MEMORY_ATTRIBUTES2_PRE_LAUNCH_FLAGS
-  KVM_CAP_MEMORY_ATTRIBUTES2_FLAGS
+There are two important ABIs here:
 
-where SNP/TDX would only advertise PRESERVE for PRE_LAUNCH, and pKVM I
-guess would enumerate it for both (or maybe just POST_LAUNCH?)
+'struct tdx_blob'       - the on-disk and in-memory format for a TDX
+ 		          module update image.
+'struct seamldr_params' - The in-memory ABI passed to the TDX module
+			  loader. Points to a single 'struct tdx_blob'
 
-That lets us keep the flags definitions more straightforward but still
-allows userspace to easily enumerate what exactly should be available at
-pre vs. post launch time, and give us some flexibility to detail
-variations in behavior between the 2 phases without documenting
-edge-cases in terms of VM types.
+> diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
+> index 650c0f097aac..f70be8e2a07b 100644
+> --- a/arch/x86/virt/vmx/tdx/seamldr.c
+> +++ b/arch/x86/virt/vmx/tdx/seamldr.c
+> @@ -7,6 +7,7 @@
+>  #define pr_fmt(fmt)	"seamldr: " fmt
+>  
+>  #include <linux/mm.h>
+> +#include <linux/slab.h>
+>  #include <linux/spinlock.h>
+>  
+>  #include <asm/seamldr.h>
+> @@ -16,6 +17,33 @@
+>  /* P-SEAMLDR SEAMCALL leaf function */
+>  #define P_SEAMLDR_INFO			0x8000000000000000
+>  
+> +#define SEAMLDR_MAX_NR_MODULE_PAGES	496
+> +#define SEAMLDR_MAX_NR_SIG_PAGES	4
 
-> + Resolve issue where guest_memfd_conversions_test, which uses the
->   kselftest framework, doesn't perform teardown on assertion
->   failure. Please see proposal at [9]
-> + Test with TDX selftests. We're in the process of rebasing TDX selftests
->   on this series and will post updates when that's tested.
-> 
-> I would like feedback on:
-> 
-> + Content modes: 0 (MODE_UNSPECIFIED), ZERO, and PRESERVE. Is that all
->   good, or does anyone think there is a use case for something else?
-> + Should the content modes apply even if no attribute changes are required?
->     + See notes added in "KVM: guest_memfd: Apply content modes while
->       setting memory attributes"
+Gah. All this complexity for the variable-length sigstruct to save a
+maximum of 4 pages. Wow.
 
-Looking at the example you have there:
+This whole thing could have been:
 
-  + Note: These content modes apply to the entire requested range, not
-  + just the parts of the range that underwent conversion. For example, if
-  + this was the initial state:
-  + 
-  +   * [0x0000, 0x1000): shared
-  +   * [0x1000, 0x2000): private
-  +   * [0x2000, 0x3000): shared
-  + and range [0x0000, 0x3000) was set to shared, the content mode would
-  + apply to all memory in [0x0000, 0x3000), not just the range that
-  + underwent conversion [0x1000, 0x2000).
+struct tdx_image {
+	u16	version; // This ABI is always 0x100
+	u16	checksum;
+	u8	signature[8];
+	u32	length;
+	u8	reserved[4076];
+	u8	sigstruct[SIGSTRUCT_SIZE];
+	u8	module[];
+}
 
-Userspace would be aware of whether the range contains pages that were
-already set to private, so if it really wants to set the just the
-[0x1000, 0x2000) range to shared with appropriate content mode, it is
-fully able to do so by just issuing the ioctl for that specific range.
-If it attempts to issue it for the entire range, it only seems like it
-would defy normal expectations and cause confusion to skip ranges, and
-I'm not sure it gains us anything useful in exchange for that potential
-confusion.
+One variable array. No module offset calculations or munging.
 
->     + Possibly related: should setting attributes be allowed if some
->       sub-range requested already has the requested attribute?
+Why do we do this to ourselves for 3 measly pages? ;)
 
-As it is now, userspace has that capability (to use finer-grained ranges
-if it doesn't want to re-issue unecessary/unwanted conversions), similar
-to above. And KVM internally will just issue kvm_arch_gmem_prepare()
-calls so that architecture-specific handling can deal with this case
-(e.g. SNP's sev_gmem_prepare() already checks if the corresponding
-attribute is set in the RMP table and just skips it otherwise). So I
-don't think we really gain anything but added complexity if we try to
-make gmem more selective about it.
+> +/*
+> + * The seamldr_params "scenario" field specifies the operation mode:
+> + * 0: Install TDX module from scratch (not used by kernel)
+> + * 1: Update existing TDX module to a compatible version
+> + */
+> +#define SEAMLDR_SCENARIO_UPDATE		1
+> +
+> +/*
+> + * This is called the "SEAMLDR_PARAMS" data structure and is defined
+> + * in "SEAM Loader (SEAMLDR) Interface Specification".
+> + *
+> + * It describes the TDX module that will be installed.
+> + */
+> +struct seamldr_params {
+> +	u32	version;
+> +	u32	scenario;
+> +	u64	sigstruct_pa[SEAMLDR_MAX_NR_SIG_PAGES];
+> +	u8	reserved[80];
+> +	u64	num_module_pages;
+> +	u64	mod_pages_pa_list[SEAMLDR_MAX_NR_MODULE_PAGES];
+> +} __packed;
+> +
+> +static_assert(sizeof(struct seamldr_params) == 4096);
+> +
+>  /*
+>   * Serialize P-SEAMLDR calls since the hardware only allows a single CPU to
+>   * interact with P-SEAMLDR simultaneously. Use raw version as the calls can
+> @@ -43,6 +71,128 @@ int seamldr_get_info(struct seamldr_info *seamldr_info)
+>  }
+>  EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
+>  
+> +/*
+> + * Intel TDX module blob. Its format is defined at:
+> + * https://github.com/intel/tdx-module-binaries/blob/main/blob_structure.txt
 
--Mike
+Heh, so URLs are not OK in changelogs because they go stale, but they're
+fine in the code?
 
-> + Structure of how various content modes are checked for support or
->   applied? I used overridable weak functions for architectures that haven't
->   defined support, and defined overrides for x86 to show how I think it would
->   work. For CoCo platforms, I only implemented TDX for illustration purposes
->   and might need help with the other platforms. Should I have used
->   kvm_x86_ops? I tried and found myself defining lots of boilerplate.
-> + The use of private_mem_conversions_test.sh to run different options in
->   private_mem_conversions_test. If this makes sense, I'll adjust the
->   Makefile to have private_mem_conversions_test tested only via the script.
-> 
-> This series is based on kvm/next, and here's the tree for your convenience:
-> 
-> https://github.com/googleprodkernel/linux-cc/commits/guest_memfd-inplace-conversion-v5
-> 
-> Older series:
-> 
-> + RFCv4 is at [7]
-> + RFCv3 is at [6]
-> + RFCv2 is at [5]
-> + RFCv1 is at [4]
-> + Previous versions of this feature, part of other series, are available at
->   [1][2][3].
-> 
-> [1] https://lore.kernel.org/all/bd163de3118b626d1005aa88e71ef2fb72f0be0f.1726009989.git.ackerleytng@google.com/
-> [2] https://lore.kernel.org/all/20250117163001.2326672-6-tabba@google.com/
-> [3] https://lore.kernel.org/all/b784326e9ccae6a08388f1bf39db70a2204bdc51.1747264138.git.ackerleytng@google.com/
-> [4] https://lore.kernel.org/all/cover.1760731772.git.ackerleytng@google.com/T/
-> [5] https://lore.kernel.org/all/cover.1770071243.git.ackerleytng@google.com/T/
-> [6] https://lore.kernel.org/r/20260313-gmem-inplace-conversion-v3-0-5fc12a70ec89@google.com/T/
-> [7] https://lore.kernel.org/all/20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com/T/
-> [8] https://lore.kernel.org/all/CAEvNRgGbMhkX310CkFY_M5x-zod=BDTiuznrZ0XvFPUK7weL1A@mail.gmail.com/
-> [9] https://lore.kernel.org/all/20260414-selftest-global-metadata-v1-0-fd223922bc57@google.com/T/
-> 
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
-> Ackerley Tng (34):
->       KVM: x86/mmu: Bug the VM if gmem attributes are queried to determine max mapping level
->       KVM: guest_memfd: Update kvm_gmem_populate() to use gmem attributes
->       KVM: guest_memfd: Only prepare folios for private pages
->       KVM: Move kvm_supported_mem_attributes() to kvm_host.h
->       KVM: guest_memfd: Add basic support for KVM_SET_MEMORY_ATTRIBUTES2
->       KVM: guest_memfd: Ensure pages are not in use before conversion
->       KVM: guest_memfd: Call arch invalidate hooks on conversion
->       KVM: guest_memfd: Return early if range already has requested attributes
->       KVM: guest_memfd: Advertise KVM_SET_MEMORY_ATTRIBUTES2 ioctl
->       KVM: guest_memfd: Handle lru_add fbatch refcounts during conversion safety check
->       KVM: guest_memfd: Use actual size for invalidation in kvm_gmem_release()
->       KVM: guest_memfd: Determine invalidation filter from memory attributes
->       KVM: guest_memfd: Introduce default handlers for content modes
->       KVM: guest_memfd: Apply content modes while setting memory attributes
->       KVM: x86: Support SW_PROTECTED_VM in applying content modes
->       KVM: TDX: Make source page optional for KVM_TDX_INIT_MEM_REGION
->       KVM: x86: Support SNP and TDX applying content modes
->       KVM: x86: Bug CoCo VM on page fault before finalizing
->       KVM: Add CAP to enumerate supported SET_MEMORY_ATTRIBUTES2 flags
->       KVM: selftests: Test basic single-page conversion flow
->       KVM: selftests: Test conversion flow when INIT_SHARED
->       KVM: selftests: Test conversion precision in guest_memfd
->       KVM: selftests: Test conversion before allocation
->       KVM: selftests: Convert with allocated folios in different layouts
->       KVM: selftests: Test that truncation does not change shared/private status
->       KVM: selftests: Test conversion with elevated page refcount
->       KVM: selftests: Test that conversion to private does not support ZERO
->       KVM: selftests: Support checking that data not equal expected
->       KVM: selftests: Test that not specifying a conversion flag scrambles memory contents
->       KVM: selftests: Reset shared memory after hole-punching
->       KVM: selftests: Provide function to look up guest_memfd details from gpa
->       KVM: selftests: Make TEST_EXPECT_SIGBUS thread-safe
->       KVM: selftests: Update private_mem_conversions_test to mmap() guest_memfd
->       KVM: selftests: Add script to exercise private_mem_conversions_test
-> 
-> Michael Roth (1):
->       KVM: SEV: Make 'uaddr' parameter optional for KVM_SEV_SNP_LAUNCH_UPDATE
-> 
-> Sean Christopherson (18):
->       KVM: guest_memfd: Introduce per-gmem attributes, use to guard user mappings
->       KVM: Rename KVM_GENERIC_MEMORY_ATTRIBUTES to KVM_VM_MEMORY_ATTRIBUTES
->       KVM: Enumerate support for PRIVATE memory iff kvm_arch_has_private_mem is defined
->       KVM: Stub in ability to disable per-VM memory attribute tracking
->       KVM: guest_memfd: Wire up kvm_get_memory_attributes() to per-gmem attributes
->       KVM: Move KVM_VM_MEMORY_ATTRIBUTES config definition to x86
->       KVM: Let userspace disable per-VM mem attributes, enable per-gmem attributes
->       KVM: guest_memfd: Enable INIT_SHARED on guest_memfd for x86 Coco VMs
->       KVM: selftests: Create gmem fd before "regular" fd when adding memslot
->       KVM: selftests: Rename guest_memfd{,_offset} to gmem_{fd,offset}
->       KVM: selftests: Add support for mmap() on guest_memfd in core library
->       KVM: selftests: Add selftests global for guest memory attributes capability
->       KVM: selftests: Add helpers for calling ioctls on guest_memfd
->       KVM: selftests: Test that shared/private status is consistent across processes
->       KVM: selftests: Provide common function to set memory attributes
->       KVM: selftests: Check fd/flags provided to mmap() when setting up memslot
->       KVM: selftests: Update pre-fault test to work with per-guest_memfd attributes
->       KVM: selftests: Update private memory exits test to work with per-gmem attributes
-> 
->  Documentation/virt/kvm/api.rst                     | 139 ++++-
->  .../virt/kvm/x86/amd-memory-encryption.rst         |  19 +-
->  Documentation/virt/kvm/x86/intel-tdx.rst           |   4 +
->  arch/x86/include/asm/kvm_host.h                    |   2 +-
->  arch/x86/kvm/Kconfig                               |  15 +-
->  arch/x86/kvm/mmu/mmu.c                             |  20 +-
->  arch/x86/kvm/svm/sev.c                             |  18 +-
->  arch/x86/kvm/vmx/tdx.c                             |   8 +-
->  arch/x86/kvm/x86.c                                 | 145 ++++-
->  include/linux/kvm_host.h                           |  74 ++-
->  include/trace/events/kvm.h                         |   4 +-
->  include/uapi/linux/kvm.h                           |  21 +
->  mm/swap.c                                          |   2 +
->  tools/testing/selftests/kvm/Makefile.kvm           |   5 +
->  tools/testing/selftests/kvm/include/kvm_util.h     | 141 ++++-
->  tools/testing/selftests/kvm/include/test_util.h    |  34 +-
->  .../selftests/kvm/kvm_has_gmem_attributes.c        |  17 +
->  tools/testing/selftests/kvm/lib/kvm_util.c         | 130 +++--
->  tools/testing/selftests/kvm/lib/test_util.c        |   7 -
->  tools/testing/selftests/kvm/lib/x86/sev.c          |   2 +-
->  .../testing/selftests/kvm/pre_fault_memory_test.c  |   4 +-
->  .../kvm/x86/guest_memfd_conversions_test.c         | 552 +++++++++++++++++++
->  .../kvm/x86/private_mem_conversions_test.c         |  55 +-
->  .../kvm/x86/private_mem_conversions_test.sh        | 128 +++++
->  .../selftests/kvm/x86/private_mem_kvm_exits_test.c |  38 +-
->  virt/kvm/Kconfig                                   |   3 +-
->  virt/kvm/guest_memfd.c                             | 591 ++++++++++++++++++++-
->  virt/kvm/kvm_main.c                                |  87 ++-
->  28 files changed, 2075 insertions(+), 190 deletions(-)
-> ---
-> base-commit: 39f1c201b93f4ff71631bac72cff6eb155f976a4
-> change-id: 20260225-gmem-inplace-conversion-bd0dbd39753a
-> 
-> Best regards,
-> --
-> Ackerley Tng <ackerleytng@google.com>
-> 
-> 
+> + * Note this structure differs from the reference above: the two variable-length
+> + * fields "@sigstruct" and "@module" are represented as a single "@data" field
+> + * here and split programmatically using the offset_of_module value.
+
+This is good info. But, it's copied and pasted between the changelog and
+here. I'd choose one, honestly.
+
+> + * Note @offset_of_module is relative to the start of struct tdx_blob, not
+> + * @data, and @length is the total length of the blob, not the length of
+> + * @data.
+> + */
+
+Out of line comments aren't great. Do these in the data structure if at
+all possible. Or, in the code. For instance:
+
+> +struct tdx_blob {
+> +	u16	version; // This ABI is always 0x100
+> +	u16	checksum;
+> +	u32	offset_of_module; // from start of tdx_blob
+> +	u8	signature[8];
+> +	u32	length;
+> +	u32	reserved0;
+> +	u64	reserved1[509];
+> +	u8	data[]; // contains sigstruct[] and module[]
+> +} __packed;
+
+That's probably _better_ than the two duplicated comments that are there
+now.
+
+Also, why bother having two reserved arrays instead of:
+
+	u8 reserved[4076];
+
+?
+
+> +/* Supported versions of the tdx_blob */
+> +#define TDX_BLOB_VERSION_1	0x100
+
+The comment here doesn't help much.
+
+> +/*
+> + * Blob fields are processed by the kernel and the payloads
+> + * are passed to the TDX module. Do normal user input type
+> + * check for any fields that don't get passed to the TDX module.
+> + */
+
+I made it this far, but I rather despise the 'blob' terminology. It's
+just bad naming. We should really just call it 'tdx_update_image' or
+'tdx_image' everywhere and stop saying 'blob'. Blob is one of those
+names that people throw at things when they give up on naming.
+
+> +static const struct tdx_blob *get_and_check_blob(const u8 *data, u32 size)
+> +{
+> +	const struct tdx_blob *blob = (const void *)data;
+> +
+> +	/*
+> +	 * Ensure the size is valid otherwise reading any field from the
+> +	 * blob may overflow.
+> +	 */
+> +	if (size <= sizeof(struct tdx_blob))
+> +		return ERR_PTR(-EINVAL);
+
+Couple of things here:
+
+First, using sizeof() on a type with a variable-length array is a big
+warning sign. It needs commenting. It's especially subtle because this
+will go on and parse patently invalid 'data' images that don't even have
+room for sigstruct[] or module[].
+
+This is *specifically* about the pre-data[] fields that are going to be
+read below.
+
+> +	/*
+> +	 * Don't care about user passing the wrong file, but protect
+> +	 * kernel ABI by preventing accepting garbage.
+> +	 */
+> +	if (memcmp(blob->signature, "TDX-BLOB", 8))
+> +		return ERR_PTR(-EINVAL);
+
+Is there really no helper in the kernel anywhere that can safely do the
+8-byte compare against two known-to-the-compiler 8-byte-wide fields
+without hard-coding the 8?
+
+> +	/*
+> +	 * Ensure the offset of the module is within valid bounds and
+> +	 * page-aligned.
+> +	 */
+> +	if (blob->offset_of_module >= size || blob->offset_of_module <= sizeof(struct tdx_blob))
+> +		return ERR_PTR(-EINVAL);
+
+Again, the sizeof(struct tdx_blob) is wonky. Why does this disallow
+pointing blob->offset_of_module at reserved1[508] but not sigstruct[]?
+
+> +	if (!IS_ALIGNED(blob->offset_of_module, PAGE_SIZE))
+> +		return ERR_PTR(-EINVAL);
+
+Wait a sec. Unless blob->offset_of_module==0, how could this check pass
+and "blob->offset_of_module <= sizeof(struct tdx_blob)" fail?
+
+> +	if (blob->version != TDX_BLOB_VERSION_1)
+> +		return ERR_PTR(-EINVAL);
+
+This should be the first check, IMNHO. If this doesn't pass then the
+rest of the fields are invalid. No?
+
+> +	if (blob->reserved0 || memchr_inv(blob->reserved1, 0, sizeof(blob->reserved1)))
+> +		return ERR_PTR(-EINVAL);
+
+There should not be two reserved, must-be-0 fields. There should be 1.
+There must be 1.
+
+Also I don't like the proposed data structure. It would make a lot more
+sense to me if it were:
+
+struct tdx_image_header {
+	u16	version; // This ABI is always 0x100
+	u16	checksum;
+	u32	offset_of_module; // from start of the header
+	u8	signature[8];
+	u32	length;
+	u8	reserved[4076];
+}
+
+struct p {
+	u8[PAGE_SIZE];
+};
+
+struct tdx_image {
+	struct tdx_image_header h;
+	struct p pages[];
+};
+
+Then you can do things like check if sizeof(struct tdx_image_header) ==
+PAGE_SIZE. Or whether offset_of_module points past the header.
+
+That stuff only makes sense if you separate out the header structure
+from the payloads which are the page-aligned sigstruct and module image
+itself.
+
+But exposing the double-variable-length arrays seems really wonky to me.
+
+> +	return blob;
+> +}
+> +
+> +static struct seamldr_params *alloc_seamldr_params(const struct tdx_blob *blob, unsigned int blob_size)
+> +{
+
+This does far more than "alloc" something.
+
+> +	struct seamldr_params *params;
+> +	int module_pg_cnt, sig_pg_cnt;
+> +	const u8 *sig, *module;
+> +	int i;
+> +
+> +	params = (struct seamldr_params *)get_zeroed_page(GFP_KERNEL);
+> +	if (!params)
+> +		return ERR_PTR(-ENOMEM);
+
+kzmalloc(PAGE_SIZE, GFP_KERNEL) will save you a cast.
+
+> +	/*
+> +	 * Split the blob into a sigstruct and a module. Assume all
+> +	 * size/offsets are within bounds of blob_size due to prior checks.
+> +	 */
+> +	sig		= blob->data;
+> +	sig_pg_cnt	= (blob->offset_of_module - sizeof(struct tdx_blob)) >> PAGE_SHIFT;
+
+Of course, the size of the first thing is defined by the offset of the
+second thing.
+
+This really should just be called ->end_of_sig.
+
+> +	module		= (const u8 *)blob + blob->offset_of_module;
+> +	module_pg_cnt	= (blob_size - blob->offset_of_module) >> PAGE_SHIFT;
+
+This looks halfway sane:
+
+	 /* adjust for size of the header: */
+	sig_size    = blob->end_of_sig - PAGE_SIZE;
+	module_size = module_image_size - blob->end_of_sig;
+
+Then, page-adjust it later. One bit of magic at a time, please.
+
+> +	/*
+> +	 * Only use version 1 when required (sigstruct > 4KB) for backward
+> +	 * compatibility with P-SEAMLDR that lacks version 1 support.
+> +	 */
+> +	params->version = sig_pg_cnt > 1;
+
+Ewwww.
+
+But what do we do if we're on an old P-SEAMLDR but get a big sigstruct?
+It'll just fail?
+
+How many old P-SEAMLDRs are there in the wild? Do we even care about this?
+
+> +	params->scenario = SEAMLDR_SCENARIO_UPDATE;
+> +
+> +	for (i = 0; i < MIN(sig_pg_cnt, SEAMLDR_MAX_NR_SIG_PAGES); i++) {
+
+Same for the MIN(). Do all the calculations separate from the loop.
+
+> +		params->sigstruct_pa[i] = vmalloc_to_pfn(sig) << PAGE_SHIFT;
+> +		sig += PAGE_SIZE;
+> +	}
+> +
+> +	params->num_module_pages = MIN(module_pg_cnt, SEAMLDR_MAX_NR_MODULE_PAGES);
+> +	for (i = 0; i < params->num_module_pages; i++) {
+> +		params->mod_pages_pa_list[i] = vmalloc_to_pfn(module) << PAGE_SHIFT;
+> +		module += PAGE_SIZE;
+> +	}
+
+Really what you want here is a helper. Have it take the module or
+sigstruct pointer, a pointer to the pa_list[] and a maximum size.
+
+Then call the helper twice.
+
+> +	return params;
+> +}
+> +
+> +static struct seamldr_params *init_seamldr_params(const u8 *data, u32 size)
+> +{
+> +	const struct tdx_blob *blob;
+> +
+> +	blob = get_and_check_blob(data, size);
+> +	if (IS_ERR(blob))
+> +		return ERR_CAST(blob);
+> +
+> +	return alloc_seamldr_params(blob, size);
+> +}
+> +
+> +DEFINE_FREE(free_seamldr_params, struct seamldr_params *,
+> +	    if (!IS_ERR_OR_NULL(_T)) free_page((unsigned long)_T))
+
+Is this really worth it?
+
+>  /**
+>   * seamldr_install_module - Install a new TDX module.
+>   * @data: Pointer to the TDX module update blob.
+> @@ -52,6 +202,11 @@ EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
+>   */
+>  int seamldr_install_module(const u8 *data, u32 size)
+>  {
+> +	struct seamldr_params *params __free(free_seamldr_params) =
+> +						init_seamldr_params(data, size);
+> +	if (IS_ERR(params))
+> +		return PTR_ERR(params);
+> +
+>  	/* TODO: Update TDX module here */
+>  	return 0;
+>  }
+
+IMNHO, this patch has way too much going on. It took well over an hour
+to go through it. That's problematic.
