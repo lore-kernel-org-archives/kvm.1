@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D9B375F69;
-	Thu, 30 Apr 2026 19:37:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86094287503;
+	Thu, 30 Apr 2026 20:03:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777577871; cv=none; b=oCNUlTiNBFkl+Ol38Ew0S+/YNNi2hqP/crIOetQFNXGQv9fISjvMXw4xd1tpzNY8xBUzwQfJq8G8Z5hCrxufr6AVem33MD+/nmqq7S8dKH0B6pYsRxWdm7yp7fwC0K5LpuG54zwLY7kKfxp1EG+bPJUkKlc+ccj0QcnExA6ORsE=
+	t=1777579434; cv=none; b=pi3K1nQquZONrJXfMZmNmGM9HnucbbKI/Gl89VtLh2Jei8QCABaU+sKCxX8+GRTOG+DAT85JD32W0nVExmXpdCwZypvF0VtFCGvBftcMMgCGnvokFZklegKl1KFYr9x/xJJN0lQNAa5mmiOzS7JN5BAo4GyN/ql9AGEGEUBiHeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777577871; c=relaxed/simple;
-	bh=PK0LEXe3TtNKQhIlbceGzGtKMvMj/2zt+eO6bxlynKI=;
+	s=arc-20240116; t=1777579434; c=relaxed/simple;
+	bh=HqoEKhNdNAs4HAiI16FeOPUx0S4GR5UsTsVixvVJp1E=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Rter6SEJBhBMrVboXEysNS+CCP8SVR2VENiqV+jN8/cQ7B53tBR3i1xjhOy4w5yR/EXzeH3FePjuVNsq4/gYDTp3rRpyE0LSeg55xONCiTreeXpTdPM4NodCm4DOcT+jbPOTnK32XyDK/fSNNlcSFNw4E6OKGOmYF9i0OKcUo1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AWf17YT3; arc=none smtp.client-ip=192.198.163.19
+	 In-Reply-To:Content-Type; b=EVZSM6zH1Yq+U2QCVkAec6fPeB5gwFuXcEOas/Sb6ikqh3MHRUUgc+0kIOcXP2EOw7Gr2RcslmAw1Fx2kA8BZ4K6EdjCNEKhLf+eU/pbXg4+2GB59bukfuSrETY5xepGOyr1PIzi05ONiamIP5UVxcCA5iNdrPi2gMX7xS9nVAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gk598cNf; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AWf17YT3"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gk598cNf"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777577870; x=1809113870;
+  t=1777579433; x=1809115433;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=PK0LEXe3TtNKQhIlbceGzGtKMvMj/2zt+eO6bxlynKI=;
-  b=AWf17YT3cIYeF6v+NbMXYk33dWOi2RAXwahSwLP3bGueJP4BmLiJDXYi
-   PnFZi0CNqc149LcBqJOIfRAZBrl7AaTFlmWtEkYuqxWY+6YXZLzRFyski
-   B5DoyZK23CArNWyuTF4GDPd9jXUDfz7uVI0EiozuyFhchAk/KxiGH8+ty
-   x/uS3UI80LSfZ0GPEiQb8XK0Y13xYYXyuUbURL0TxZYhmCdAbTN3Yyphj
-   YZAAOoa4RZb11vdUUoEBA/GSIcfOvC6r1VZOHi4tVO+WWBucsgEaUmWXA
-   s89D3LMYdXvxn5s/DK+GviuJUwZeDqPBrMsQZYwRDm49g+Tvc09RPI7+o
-   Q==;
-X-CSE-ConnectionGUID: N7yRV4FHR0eD3YXmT3Qq9w==
-X-CSE-MsgGUID: TRIz6CapQ0mexEela3L0wQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="77570727"
+  bh=HqoEKhNdNAs4HAiI16FeOPUx0S4GR5UsTsVixvVJp1E=;
+  b=Gk598cNfxsE8Ae2s+D/mfUtEapdpjPxNvLItIFv0iDPX7IhLCs8JUgkv
+   hsSD1Qk9hyOXLQWQp2S+aRsUCCrAKOE3TiWCvXaShe1sULIwrbTacVIVL
+   e9niQyygOln/CGYpXaMEBTyeX/wU29nmHNCv30H+LpRmvhgHAN0Jv02oX
+   Rwrds9UQAIoeLsCM8hRMfN+8B6aNtq5zCI70H6IHflhmeFbjedfsPV7Qm
+   nmPEKbgHz3+9s7t6wKFsWk+yancCDLI1o8IAQSkuH5qBUhFkffecqBrld
+   PnngsJNZSpjOX1bnbGIeD1XBThB7HDy5elifpM9kKHccAGh/+WW/nmwjG
+   w==;
+X-CSE-ConnectionGUID: OsAfndYcTTyxDHUt5dxxQw==
+X-CSE-MsgGUID: 5u7RrjaARqezcuq17Hy6hw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="78256283"
 X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="77570727"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 12:37:49 -0700
-X-CSE-ConnectionGUID: dlsul9h4Rl6x5ByS+BX1eA==
-X-CSE-MsgGUID: a+pkLobjT52J8iy+XkhrRQ==
+   d="scan'208";a="78256283"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 13:03:53 -0700
+X-CSE-ConnectionGUID: MnQGwa7ZQTKIV2lqIoxuIQ==
+X-CSE-MsgGUID: BWH4cdEVQaqVJED1QUL3qg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="233640285"
+   d="scan'208";a="258266646"
 Received: from cjhill-mobl.amr.corp.intel.com (HELO [10.125.109.74]) ([10.125.109.74])
-  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 12:37:49 -0700
-Message-ID: <3067bbb0-b528-41ae-8739-c49432f9a62c@intel.com>
-Date: Thu, 30 Apr 2026 12:37:49 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 13:03:52 -0700
+Message-ID: <5dc70847-332d-496f-b0ab-03323eff7118@intel.com>
+Date: Thu, 30 Apr 2026 13:03:53 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,30 +52,21 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] x86/tdx: Use PFN directly for unmapping guest
- private memory
-To: Sean Christopherson <seanjc@google.com>,
- Rick P Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Ackerley Tng <ackerleytng@google.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- Yan Y Zhao <yan.y.zhao@intel.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- Sagi Shahar <sagis@google.com>, Isaku Yamahata <isaku.yamahata@intel.com>,
- "x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>,
- "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
- "bp@alien8.de" <bp@alien8.de>, "mingo@redhat.com" <mingo@redhat.com>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- Kai Huang <kai.huang@intel.com>, "kvm@vger.kernel.org"
- <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- Xiaoyao Li <xiaoyao.li@intel.com>, "tglx@kernel.org" <tglx@kernel.org>,
- "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
- Vishal Annapurve <vannapurve@google.com>
-References: <20260430014852.24183-1-yan.y.zhao@intel.com>
- <20260430014948.24226-1-yan.y.zhao@intel.com>
- <CAEvNRgGsMaioFvTWaLhnDiLbdx3tunZpo3Qzxdm1xeb4ef0J9Q@mail.gmail.com>
- <231efd4e9267d3dbb8c63e57b3a43567c965e24a.camel@intel.com>
- <afOrd7JYkUfe7wcZ@google.com>
+Subject: Re: [PATCH v8 09/21] x86/virt/seamldr: Introduce skeleton for TDX
+ module updates
+To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
+Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
+ ira.weiny@intel.com, kai.huang@intel.com, kas@kernel.org,
+ nik.borisov@suse.com, paulmck@kernel.org, pbonzini@redhat.com,
+ reinette.chatre@intel.com, rick.p.edgecombe@intel.com, sagis@google.com,
+ seanjc@google.com, tony.lindgren@linux.intel.com, vannapurve@google.com,
+ vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com,
+ yan.y.zhao@intel.com, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>
+References: <20260427152854.101171-1-chao.gao@intel.com>
+ <20260427152854.101171-10-chao.gao@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -121,33 +112,17 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <afOrd7JYkUfe7wcZ@google.com>
+In-Reply-To: <20260427152854.101171-10-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 4/30/26 12:20, Sean Christopherson wrote:
->> Yea, this is used to construct u64 inputs for seamcall args. So I think it
->> should keep returning u64s.
-> +1.  IMO, we should treat the TDX-Module as an extension of hardware and pass in
-> u64s where the spec says it takes a 64-bit value.
+On 4/27/26 08:28, Chao Gao wrote:
+> +static struct {
+> +	enum module_update_state state;
+> +	int thread_ack;
 
-+2
+multi_stop_data has an atomic_t for this.
 
-In this very specific case 'phys_addr_t' is 100% the *WRONG* type for
-mk_keyed_paddr(). Why? Because the thing being returned is *NOT* *A*
-*PHYSICAL* *ADDRESS*. It's a composite type that contains a special
-physical address plus some metadata in a special "hardware" format. It's
-as much of a 'phys_addr_t' as a PTE is a 'phys_addr_t'. Yeah, they
-contain and are constructed partly from physical addresses, but they are
-not physical addresses themselves.
+You have an int.
 
-At the same time, if the kernel has a type-safe way of representing
-something that's also a 64-bit value, we should use it. Just because the
-TDX spec takes a 64-bit virtual address doesn't mean we should use a u64
-and not a "struct foo *".
-
-Let's please just not go back to a sea of u64's everywhere. Use common
-sense. Use the kernel's type system where appropriate, but don't
-over-apply it.
-
-IOW, I agree with Sean. But please don't take Sean's advise too far here.
+Which one is right?
