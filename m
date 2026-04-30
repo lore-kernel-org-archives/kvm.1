@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86094287503;
-	Thu, 30 Apr 2026 20:03:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8CE3750D5;
+	Thu, 30 Apr 2026 20:06:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777579434; cv=none; b=pi3K1nQquZONrJXfMZmNmGM9HnucbbKI/Gl89VtLh2Jei8QCABaU+sKCxX8+GRTOG+DAT85JD32W0nVExmXpdCwZypvF0VtFCGvBftcMMgCGnvokFZklegKl1KFYr9x/xJJN0lQNAa5mmiOzS7JN5BAo4GyN/ql9AGEGEUBiHeM=
+	t=1777579601; cv=none; b=XxO5Emoy8ZhJvIvmOZAv8Omnr7bibyG+VOni4j6D7eeqq9QrwBv22QnOmlDvlAOKYPIPEuUL+mX3rnjq7yhLFuTTFFaCFV5E3+DPGj/0cuBHyd3vlcvgJZDz7C/2AnNEYmfBhElQDQtTA+XtI2MerMwL5RozQAybyE3AX94bMK8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777579434; c=relaxed/simple;
-	bh=HqoEKhNdNAs4HAiI16FeOPUx0S4GR5UsTsVixvVJp1E=;
+	s=arc-20240116; t=1777579601; c=relaxed/simple;
+	bh=zW6ilyPstN2ic5OBfRy/434YzbeY0IjouFZUfbRCXw4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=EVZSM6zH1Yq+U2QCVkAec6fPeB5gwFuXcEOas/Sb6ikqh3MHRUUgc+0kIOcXP2EOw7Gr2RcslmAw1Fx2kA8BZ4K6EdjCNEKhLf+eU/pbXg4+2GB59bukfuSrETY5xepGOyr1PIzi05ONiamIP5UVxcCA5iNdrPi2gMX7xS9nVAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gk598cNf; arc=none smtp.client-ip=198.175.65.20
+	 In-Reply-To:Content-Type; b=uTeRLizXr/vej3v3S/EtOH0oM5RU8o8AN2+CImReQKr3nilz4ewPbKS0MhjtFNEnULhL4XJd24aQBnniszae7FpcUjnFHbw11LfnMbvKQCKNoHJLcY/yrz109m+S8ozAdX4wYhklERhvnlVEsTtXgwG9l7EPAQoBvnQhc16Ho5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fs1z9S/d; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gk598cNf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fs1z9S/d"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777579433; x=1809115433;
+  t=1777579600; x=1809115600;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=HqoEKhNdNAs4HAiI16FeOPUx0S4GR5UsTsVixvVJp1E=;
-  b=Gk598cNfxsE8Ae2s+D/mfUtEapdpjPxNvLItIFv0iDPX7IhLCs8JUgkv
-   hsSD1Qk9hyOXLQWQp2S+aRsUCCrAKOE3TiWCvXaShe1sULIwrbTacVIVL
-   e9niQyygOln/CGYpXaMEBTyeX/wU29nmHNCv30H+LpRmvhgHAN0Jv02oX
-   Rwrds9UQAIoeLsCM8hRMfN+8B6aNtq5zCI70H6IHflhmeFbjedfsPV7Qm
-   nmPEKbgHz3+9s7t6wKFsWk+yancCDLI1o8IAQSkuH5qBUhFkffecqBrld
-   PnngsJNZSpjOX1bnbGIeD1XBThB7HDy5elifpM9kKHccAGh/+WW/nmwjG
+  bh=zW6ilyPstN2ic5OBfRy/434YzbeY0IjouFZUfbRCXw4=;
+  b=fs1z9S/dhnm/7Dijc9gNGbRt5eGMOBRNG2YHxQeH0AiTDWZNgSHEt5sU
+   pLI6TnMJ/JgZx93k1FYENjK04pnELB+NyAtz5M90KgRd2QHBtkOFdlJOR
+   wJj/eRKdJhvkVcKjwMmCrodUpD5DFpGeHyk2LCmC0jwJBcCHTvrp0oX3J
+   9sbl9OtrwuQprzQX68+hJgr+ozWsv0eCSMuFNIv+EYu78ZMIvR+fT3YRr
+   xEo4RQWp5dal1diMhlXrUbCvY/P2BQMQr78oFz5u7X1jPZBrSXdXhuc3x
+   +ZryYfzzJWZLsfvJxDt5J3/e63ohxJq2HFntPAWxYqLHlcFgDbScRpFQF
    w==;
-X-CSE-ConnectionGUID: OsAfndYcTTyxDHUt5dxxQw==
-X-CSE-MsgGUID: 5u7RrjaARqezcuq17Hy6hw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="78256283"
+X-CSE-ConnectionGUID: R6nYtAgcSYGz+a6UNf80uQ==
+X-CSE-MsgGUID: O+anzHthQqKqtG02xr33bg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="82149295"
 X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="78256283"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 13:03:53 -0700
-X-CSE-ConnectionGUID: MnQGwa7ZQTKIV2lqIoxuIQ==
-X-CSE-MsgGUID: BWH4cdEVQaqVJED1QUL3qg==
+   d="scan'208";a="82149295"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 13:06:39 -0700
+X-CSE-ConnectionGUID: 51gswkZGRaS+/3NAh6WV8w==
+X-CSE-MsgGUID: XNkPAHNIRSiWz+4D2EzI6g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="258266646"
+   d="scan'208";a="232026114"
 Received: from cjhill-mobl.amr.corp.intel.com (HELO [10.125.109.74]) ([10.125.109.74])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 13:03:52 -0700
-Message-ID: <5dc70847-332d-496f-b0ab-03323eff7118@intel.com>
-Date: Thu, 30 Apr 2026 13:03:53 -0700
+  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 13:06:37 -0700
+Message-ID: <fc27ad0e-fceb-4eed-bb1c-dbfb5b913bf6@intel.com>
+Date: Thu, 30 Apr 2026 13:06:38 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,8 +52,7 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 09/21] x86/virt/seamldr: Introduce skeleton for TDX
- module updates
+Subject: Re: [PATCH v8 17/21] x86/virt/seamldr: Abort updates on failure
 To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
 Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
@@ -66,7 +65,7 @@ Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
  "H. Peter Anvin" <hpa@zytor.com>
 References: <20260427152854.101171-1-chao.gao@intel.com>
- <20260427152854.101171-10-chao.gao@intel.com>
+ <20260427152854.101171-18-chao.gao@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -112,17 +111,101 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260427152854.101171-10-chao.gao@intel.com>
+In-Reply-To: <20260427152854.101171-18-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 4/27/26 08:28, Chao Gao wrote:
-> +static struct {
-> +	enum module_update_state state;
-> +	int thread_ack;
+I don't like how this is being done.
 
-multi_stop_data has an atomic_t for this.
+ 1. Introduce this do{}while() loop
+ 2. Do 20 other patches
+ 3. Introduce a thing that can make it change
+ 4. Change the fundamental flow of the loop, to fix #3
 
-You have an int.
+I'd much rather have:
 
-Which one is right?
+ 1. Introduce this do{}while() loop
+ 2. Tweak fundamental flow of the loop from the last patch when I can
+    remember it. Allude to future failures.
+ 3. Do 20 other patches
+ 4. Introduce a thing that uses #2
+
+
+> diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
+> index c81b26c4bac1..9b8f571eb03f 100644
+> --- a/arch/x86/virt/vmx/tdx/seamldr.c
+> +++ b/arch/x86/virt/vmx/tdx/seamldr.c
+> @@ -220,6 +220,7 @@ enum module_update_state {
+>  static struct {
+>  	enum module_update_state state;
+>  	int thread_ack;
+> +	bool failed;
+>  	/*
+>  	 * Protect update_data. Raw spinlock as it will be acquired from
+>  	 * interrupt-disabled contexts.
+> @@ -284,12 +285,15 @@ static int do_seamldr_install_module(void *seamldr_params)
+>  				break;
+>  			}
+>  
+> -			ack_state();
+> +			if (ret)
+> +				WRITE_ONCE(update_data.failed, true);
+> +			else
+> +				ack_state();
+>  		} else {
+>  			touch_nmi_watchdog();
+>  			rcu_momentary_eqs();
+>  		}
+
+I don't like how this is turning out either. I don't like all the nested
+conditions or ack_state() that hides its mucking with update data while
+its caller mucks with it directly. It's just all hacked together.
+
+Defer all of the acking, and *failed* acking to the ack_state() helper.
+
+Also, I'm kinda peeved that you copied and pasted the  		
+touch_nmi_watchdog()/rcu_momentary_eqs() bits and none of the comments.
+This is a rather subtle use of both. If you want this to be a normal
+"spinning in stop machine" idiom, then create a helper and put the
+comments there.
+
+Also, this is a case where:
+
+	do {
+		cpu_relax();
+		newstate = READ_ONCE(update_data.state);
+
+		if (newstate == curstate) {
+			// can cpu_relax() just go in here??
+			touch_nmi_watchdog();
+			rcu_momentary_eqs();
+			continue;
+		}
+	
+		switch() {
+			// state changing here
+		}
+	} while (...);
+
+is a much more sane setup. You're not paying the if() indentation cost
+for the entire state transition block. You're also putting the "shut up
+the warnings" code out of the way where you can forget about it.
+
+
+> -	} while (curstate != MODULE_UPDATE_DONE);
+> +	} while (curstate != MODULE_UPDATE_DONE && !READ_ONCE(update_data.failed));
+>  
+>  	return ret;
+>  }
+> @@ -315,6 +319,7 @@ int seamldr_install_module(const u8 *data, u32 size)
+>  
+>  	/* Ensure a stable set of online CPUs for the update process. */
+>  	guard(cpus_read_lock)();
+> +	WRITE_ONCE(update_data.failed, false);
+>  	set_target_state(MODULE_UPDATE_START + 1);
+>  	ret = stop_machine_cpuslocked(do_seamldr_install_module, params, cpu_online_mask);
+>  	if (ret)
+I kinda wish this 'update_data.failed' set was named. This is trying to
+bring 'update_data' into some initial state. Let's _call_ it that.
+Honestly, I wouldn't hate if that function just also did the spinlock
+init since it's so ugly do to statically.
