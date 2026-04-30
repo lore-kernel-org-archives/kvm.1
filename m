@@ -1,263 +1,207 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8293E25F98A;
-	Thu, 30 Apr 2026 02:26:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F29C227B94;
+	Thu, 30 Apr 2026 02:28:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777516012; cv=none; b=srH8RMRLjCYJPriIRVvhY9pU2WcWwekK830Gc/ckZMGkHPminCMjvYLj+2fhRZHgMXct0/xJo/r3MiENS4M0nJIUtOWXYtJWpu6KdQfcYHqsKb/kFTJa1ic1mmZfqWiWa3Y9CeFwH3kqpAqSf/vSECSJuh/teYU8USIU5StCJJ8=
+	t=1777516128; cv=none; b=fHA6wPsQ8X3YOxWe34HjD/IErTDT6gXUFxUYO8iLIcN8gTbogbO9eud14UwEKNVtKkWdPvXlQHDx7B+WfSlynn59CydMeGvetcvaKYhwEnhUk/INliS8AsbcjFMMvaDw+nmAYVjVU6ZQU3PuXfkXTAOdNRAB4RK7osE0gern9Ho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777516012; c=relaxed/simple;
-	bh=aSIe1EPNPHcYjBYiR9Sbp9DI5WVQ/blh8RJRz9hfiq8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iQj4fb9mlwivZPwSBbGTqtFEbx1A+jcnxldxmINJ0b+RaRCe7Y/5r5t09M9BZ7K07MXyBSnxKJIRHn0zN4gq+vc7xAqsQrWCWRshHC990SzDsqlPd/BjR+BRtBeQD8/JmrZYYyUSN1o65L2HjCfIkcEYJO0KbtrWPaipIcUOkRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fCxkDrIQ; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1777516128; c=relaxed/simple;
+	bh=nPNoW2pYPDravTZkT2VTal7aTO1BdgdClA3Kh7Skva4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HKy4ykc/FzteoBUjJj9nhtsSeZ8q9/2VEaCAxC5y39iW7JPPFwkY2pvcbPVZYQT0wx5clxQvD43RQFdAg/9D51cZjtE6hy5CeHJMYys5g6OuMJzIZcW/UjrtKYLpFIq3BWBrQ4Rx2wshZiJMuLKxtwWzjABDLjqeotCYhakJEJU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EjoBrZgv; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fCxkDrIQ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EjoBrZgv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777516010; x=1809052010;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=aSIe1EPNPHcYjBYiR9Sbp9DI5WVQ/blh8RJRz9hfiq8=;
-  b=fCxkDrIQj0QjOjbDR13aNgPB0N/ebM37vaxQnC3PmA6toXq8CF7QW5Pi
-   ZsRMBVgwaQ+7tI8APR0wzviI4AVLxcTZzg4OIpsI5aD9UefzPROGvGZs9
-   +8QbDECiwgt9BBhTI49I3l2o2hEfbTnTXxUxCZA138DxJSo3Dz11/ZFBI
-   IU0y4Upg1rkqU7if8dcO4ILVHxslsVe8yfdC/7Cd8qTqUMw+fLdKFJW8B
-   AovsbG76V2L4r+Rf1vViX2a74TM57Skaan1T3O4HoEZ8aRPBjapXVCeHO
-   WJ7QGuBcnL4zZ+fqvZ+jyz+9rWCm7NsYRu+2ilesXb0CDyXi4nqzoKXSe
-   g==;
-X-CSE-ConnectionGUID: UYTlrODuRg2SOoWTCZO2Fg==
-X-CSE-MsgGUID: yQaDfMR3QdOW2ND7tX/iGw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="65989326"
+  t=1777516127; x=1809052127;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=nPNoW2pYPDravTZkT2VTal7aTO1BdgdClA3Kh7Skva4=;
+  b=EjoBrZgvs2fE42tXbvrSOn9dHrrDckDdugw5Mg4XEpHbLJuo3BidNGCm
+   c5ONf7ZbKqBR/MW0k2msqqwXYXX+B00kV2/MV8Cn1T56MJRgjco7Z37RX
+   JcUYlXrPI/Jm+3f8HBH7svQ8CgC1yGHhRXIMzDFXRZEY7KPkjkfJ9Yd8X
+   6KXgasQ4kA5UlrDcwK9gwahEcFvrIMHC9BPR9Y+sGEfeXv05Y/zrb1+4i
+   9OihdWc6EtU/6eUZqwdG2c++SwnIePpwb6KczTx1ODWu42OUM3msU4YS5
+   xzm59dN5VJoLXEH+1FtNm8/dpKIN9NMQj7Fw3+8tf7T3pnlSwMg8flTVP
+   w==;
+X-CSE-ConnectionGUID: Ts7wTPnmRL23sCRUy5PBUA==
+X-CSE-MsgGUID: 9sqnNJD+SKmpevNXyY7NIA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="78562687"
 X-IronPort-AV: E=Sophos;i="6.23,207,1770624000"; 
-   d="scan'208";a="65989326"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 19:26:50 -0700
-X-CSE-ConnectionGUID: A1sz8srcQwy0nBLwyqaOfQ==
-X-CSE-MsgGUID: FnGdnyAFR0GwfmWf6kdrZQ==
+   d="scan'208";a="78562687"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 19:28:46 -0700
+X-CSE-ConnectionGUID: vArqlbUQSuukWfm7+dKNdA==
+X-CSE-MsgGUID: VwOBPzZdRqmi2IBQ8ArlIw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,207,1770624000"; 
-   d="scan'208";a="264824117"
-Received: from unknown (HELO [10.238.2.250]) ([10.238.2.250])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 19:26:48 -0700
-Message-ID: <9bad0de9-18ab-422d-b020-9b08d8e10296@linux.intel.com>
-Date: Thu, 30 Apr 2026 10:26:45 +0800
+   d="scan'208";a="272563436"
+Received: from yzhao56-desk.sh.intel.com ([10.239.47.19])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 19:28:42 -0700
+From: Yan Zhao <yan.y.zhao@intel.com>
+To: dave.hansen@linux.intel.com,
+	pbonzini@redhat.com,
+	seanjc@google.com
+Cc: tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	kas@kernel.org,
+	x86@kernel.org,
+	linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-coco@lists.linux.dev,
+	kai.huang@intel.com,
+	rick.p.edgecombe@intel.com,
+	yan.y.zhao@intel.com,
+	yilun.xu@linux.intel.com,
+	vannapurve@google.com,
+	ackerleytng@google.com,
+	sagis@google.com,
+	binbin.wu@linux.intel.com,
+	xiaoyao.li@intel.com,
+	isaku.yamahata@intel.com
+Subject: [PATCH v2 0/4] struct page to PFN conversion for TDX guest private memory
+Date: Thu, 30 Apr 2026 09:48:52 +0800
+Message-ID: <20260430014852.24183-1-yan.y.zhao@intel.com>
+X-Mailer: git-send-email 2.43.2
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 4/4] KVM: selftests: Add perf_metrics and fixed counter
- 3 tests
-To: Zide Chen <zide.chen@intel.com>, Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- Jim Mattson <jmattson@google.com>, Mingwei Zhang <mizhang@google.com>,
- Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
- Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>
-References: <20260423174639.56149-1-zide.chen@intel.com>
- <20260423174639.56149-5-zide.chen@intel.com>
-Content-Language: en-US
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <20260423174639.56149-5-zide.chen@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+
+Hi
+
+This is v2 of the struct page to PFN conversion series, which converts TDX
+guest private memory mapping/unmapping APIs from taking struct page to
+taking PFN as input.
+
+v2 is based on v7.1.0-rc1 + Sean's 4 cleanup patches (see details in
+section "Base" below). The purpose is to get Dave's Ack, so Sean can take
+it from the KVM x86 tree. The full stack of v2 is available at [14].
+
+Compared to v1, v2:
+- Rewrote commit messages of patches 1/2 (the conversion patches for
+  mapping and unmapping) by specifically explaining the downside of
+  assuming guest private memory must be backed by struct page, and
+  incorporating Dave's rewording that also works for Sean.
+
+- Updated patch 2 (which is for unmapping) to use tdx_quirk_reset_paddr()
+  directly for unmapping guest private memory, and added patch 3 to drop
+  the exported function tdx_quirk_reset_page() by having KVM invoke
+  tdx_quirk_reset_paddr() in all scenarios, as suggested by Paolo and
+  Xiaoyao.
+
+- Split patch 4 (moving mk_keyed_paddr() to .c) out of patch 2, so patch 2
+  can focus on the struct page to PFN conversion for unmapping.
+
+Note: as agreed in v1, Kirill's concern about AUG "level" will be addressed
+in a separate patch later.
 
 
-On 4/24/2026 1:46 AM, Zide Chen wrote:
-> Add a selftest to exercise IA32_PERF_METRICS, i.e. architectural
-> support for Topdown (TMA) Level 1 metrics, enumerated by
-> IA32_PERF_CAPABILITIES[15].
->
-> Only check for non-zero metrics, as they are derived and depend on
-> the workload, CPU model, and host scheduling, making precise
-> expectations fragile.
->
-> Extend the PMU selftest to cover Intel fixed counter 3 by bumping
-> MAX_NR_FIXED_COUNTERS to 4 and validating basic functionality.
->
-> Signed-off-by: Zide Chen <zide.chen@intel.com>
-> ---
-> V2: New patch.
-> ---
->  tools/arch/x86/include/asm/msr-index.h        |  1 +
->  tools/testing/selftests/kvm/include/x86/pmu.h |  3 +
->  .../selftests/kvm/x86/pmu_counters_test.c     | 71 +++++++++++++++++--
->  3 files changed, 70 insertions(+), 5 deletions(-)
->
-> diff --git a/tools/arch/x86/include/asm/msr-index.h b/tools/arch/x86/include/asm/msr-index.h
-> index 6673601246b3..31ecbea42459 100644
-> --- a/tools/arch/x86/include/asm/msr-index.h
-> +++ b/tools/arch/x86/include/asm/msr-index.h
-> @@ -331,6 +331,7 @@
->  #define PERF_CAP_PEBS_FORMAT		0xf00
->  #define PERF_CAP_FW_WRITES		BIT_ULL(13)
->  #define PERF_CAP_PEBS_BASELINE		BIT_ULL(14)
-> +#define PERF_CAP_PERF_METRICS		BIT_ULL(15)
->  #define PERF_CAP_PEBS_TIMING_INFO	BIT_ULL(17)
->  #define PERF_CAP_PEBS_MASK		(PERF_CAP_PEBS_TRAP | PERF_CAP_ARCH_REG | \
->  					 PERF_CAP_PEBS_FORMAT | PERF_CAP_PEBS_BASELINE | \
-> diff --git a/tools/testing/selftests/kvm/include/x86/pmu.h b/tools/testing/selftests/kvm/include/x86/pmu.h
-> index 72575eadb63a..c68d6435422c 100644
-> --- a/tools/testing/selftests/kvm/include/x86/pmu.h
-> +++ b/tools/testing/selftests/kvm/include/x86/pmu.h
-> @@ -46,6 +46,9 @@
->  /* Fixed PMC controls, Intel only. */
->  #define FIXED_PMC_GLOBAL_CTRL_ENABLE(_idx)	BIT_ULL((32 + (_idx)))
->  
-> +/* PERF_METRICS enable, Intel only. */
-> +#define PERF_METRICS_GLOBAL_CTRL_ENABLE		BIT_ULL(48)
-> +
->  #define FIXED_PMC_KERNEL			BIT_ULL(0)
->  #define FIXED_PMC_USER				BIT_ULL(1)
->  #define FIXED_PMC_ANYTHREAD			BIT_ULL(2)
-> diff --git a/tools/testing/selftests/kvm/x86/pmu_counters_test.c b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
-> index 3eaa216b96c0..240bcf9184c2 100644
-> --- a/tools/testing/selftests/kvm/x86/pmu_counters_test.c
-> +++ b/tools/testing/selftests/kvm/x86/pmu_counters_test.c
-> @@ -6,6 +6,7 @@
->  
->  #include "pmu.h"
->  #include "processor.h"
-> +#include <linux/bitfield.h>
->  
->  /* Number of iterations of the loop for the guest measurement payload. */
->  #define NUM_LOOPS			10
-> @@ -241,17 +242,20 @@ do {										\
->  	);									\
->  } while (0)
->  
-> -#define GUEST_TEST_EVENT(_idx, _pmc, _pmc_msr, _ctrl_msr, _value, FEP)		\
-> +#define GUEST_RUN_PAYLOAD(_ctrl_msr, _value, FEP)				\
->  do {										\
-> -	wrmsr(_pmc_msr, 0);							\
-> -										\
->  	if (this_cpu_has(X86_FEATURE_CLFLUSHOPT))				\
->  		GUEST_MEASURE_EVENT(_ctrl_msr, _value, "clflushopt %[m]", FEP);	\
->  	else if (this_cpu_has(X86_FEATURE_CLFLUSH))				\
->  		GUEST_MEASURE_EVENT(_ctrl_msr, _value, "clflush  %[m]", FEP);	\
->  	else									\
->  		GUEST_MEASURE_EVENT(_ctrl_msr, _value, "nop", FEP);		\
-> -										\
-> +} while (0)
-> +
-> +#define GUEST_TEST_EVENT(_idx, _pmc, _pmc_msr, _ctrl_msr, _value, FEP)		\
-> +do {										\
-> +	wrmsr(_pmc_msr, 0);							\
-> +	GUEST_RUN_PAYLOAD(_ctrl_msr, _value, FEP);				\
->  	guest_assert_event_count(_idx, _pmc, _pmc_msr);				\
->  } while (0)
->  
-> @@ -318,6 +322,55 @@ static void guest_test_arch_event(uint8_t idx)
->  				FIXED_PMC_GLOBAL_CTRL_ENABLE(i));
->  }
->  
-> +static void guest_test_perf_metrics(void)
-> +{
-> +	int retiring, bad_spec, fe_bound, be_bound;
-> +	uint64_t global_ctrl, metrics;
-> +
-> +	if ((guest_get_pmu_version() < 2) ||	/* Does guest has GLOBAL_CTRL? */
-> +	    !this_cpu_has(X86_FEATURE_PDCM) ||
-> +	    !(rdmsr(MSR_IA32_PERF_CAPABILITIES) & PERF_CAP_PERF_METRICS))
-> +		return;
-> +
-> +	wrmsr(MSR_CORE_PERF_GLOBAL_CTRL, 0);
-> +	wrmsr(MSR_CORE_PERF_FIXED_CTR3, 0);
-> +	wrmsr(MSR_PERF_METRICS, 0);
-> +
-> +	/* Enable fixed ctr3 (TOPDOWN.SLOTS) and PERF_METRICS . */
-> +	wrmsr(MSR_CORE_PERF_FIXED_CTR_CTRL, FIXED_PMC_CTRL(3, FIXED_PMC_KERNEL));
-> +	global_ctrl = FIXED_PMC_GLOBAL_CTRL_ENABLE(3) |
-> +		      PERF_METRICS_GLOBAL_CTRL_ENABLE;
-> +
-> +	GUEST_RUN_PAYLOAD(MSR_CORE_PERF_GLOBAL_CTRL, global_ctrl, "");
-> +
-> +	/* Check test results. */
-> +	metrics = rdmsr(MSR_PERF_METRICS);
-> +	retiring = FIELD_GET(GENMASK_ULL(7, 0), metrics);
-> +	bad_spec = FIELD_GET(GENMASK_ULL(15, 8), metrics);
-> +	fe_bound = FIELD_GET(GENMASK_ULL(23, 16), metrics);
-> +	be_bound = FIELD_GET(GENMASK_ULL(31, 24), metrics);
-> +
-> +	/*
-> +	 * Be conservative: the measured payload definitely retires work, so
-> +	 * Retiring should be non-zero.
-> +	 */
-> +	GUEST_ASSERT_NE(metrics, 0ULL);
-> +	GUEST_ASSERT_NE(retiring, 0ULL);
-> +
-> +	/*
-> +	 * The derived percentage of the metrics should be close to 100%.
+Background
+----------
+TDX SEAMCALL wrappers take struct page as input, which provides:
+1. Type safety
+2. Make it harder to misuse and make it obvious that physical pages in RAM
+   are expected from just looking at the API declaration [2][3][4][5].
 
-Better say "The sum of the 4 level-1 topdown metrics should be close to
-100%" which is preciser.
+This is appropriate for SEAMCALL wrappers for TDX control pages (e.g., TDR
+page, TDCS pages, TDX SEPT pages), since KVM manages and allocates those
+pages explicitly from core MM.
 
-Thanks.
+However, unlike TDX control pages, KVM guest memory is not necessarily
+backed by refcounted struct page or even struct page (e.g., VM_PFNMAP
+memory [6]). Taking struct page as input for SEAMCALL wrappers for
+mapping/unmapping guest private memory imposes unnecessary assumptions on
+how KVM and guest_memfd manage memory [7]. So, Sean suggested converting
+from using struct page to PFN for SEAMCALL wrappers operating on guest
+private memory [8].
+
+This series therefore converts struct page to PFN for guest private memory
+while keeping struct page for TDX control pages, and uses kvm_pfn_t for
+type safety.
 
 
-> +	 * 3 is chosen as a loose sanity check.
-> +	 */
-> +	GUEST_ASSERT(abs(retiring + bad_spec + fe_bound + be_bound - 0xff) < 3);
-> +
-> +	/* Sanity check after PERF_METRICS disabled. */
-> +	__asm__ __volatile__("loop ." : "+c"((int){NUM_LOOPS}));
-> +	GUEST_ASSERT_EQ(rdmsr(MSR_PERF_METRICS), metrics);
-> +	wrmsr(MSR_PERF_METRICS, 0xdeaddead);
-> +
-> +	GUEST_ASSERT_EQ(rdmsr(MSR_PERF_METRICS), 0xdeaddead);
-> +}
-> +
->  static void guest_test_arch_events(void)
->  {
->  	uint8_t i;
-> @@ -325,6 +378,8 @@ static void guest_test_arch_events(void)
->  	for (i = 0; i < NR_INTEL_ARCH_EVENTS; i++)
->  		guest_test_arch_event(i);
->  
-> +	guest_test_perf_metrics();
-> +
->  	GUEST_DONE();
->  }
->  
-> @@ -361,7 +416,7 @@ static void test_arch_events(uint8_t pmu_version, uint64_t perf_capabilities,
->   * other than PMCs in the future.
->   */
->  #define MAX_NR_GP_COUNTERS	8
-> -#define MAX_NR_FIXED_COUNTERS	3
-> +#define MAX_NR_FIXED_COUNTERS	4
->  
->  #define GUEST_ASSERT_PMC_MSR_ACCESS(insn, msr, expect_gp, vector)		\
->  __GUEST_ASSERT(expect_gp ? vector == GP_VECTOR : !vector,			\
-> @@ -586,6 +641,7 @@ static void test_intel_counters(void)
->  	uint8_t nr_fixed_counters = kvm_cpu_property(X86_PROPERTY_PMU_NR_FIXED_COUNTERS);
->  	uint8_t nr_gp_counters = kvm_cpu_property(X86_PROPERTY_PMU_NR_GP_COUNTERS);
->  	uint8_t pmu_version = kvm_cpu_property(X86_PROPERTY_PMU_VERSION);
-> +	uint64_t advertised_perf_caps = kvm_get_feature_msr(MSR_IA32_PERF_CAPABILITIES);
->  	unsigned int i;
->  	uint8_t v, j;
->  	uint32_t k;
-> @@ -593,6 +649,7 @@ static void test_intel_counters(void)
->  	const uint64_t perf_caps[] = {
->  		0,
->  		PMU_CAP_FW_WRITES,
-> +		PERF_CAP_PERF_METRICS,
->  	};
->  
->  	/*
-> @@ -650,6 +707,10 @@ static void test_intel_counters(void)
->  			if (!kvm_has_perf_caps && perf_caps[i])
->  				continue;
->  
-> +			/* Ignore unsupported features. */
-> +			if (perf_caps[i] & ~advertised_perf_caps)
-> +				continue;
-> +
->  			pr_info("Testing arch events, PMU version %u, perf_caps = %lx\n",
->  				v, perf_caps[i]);
->  
+Sanity check
+------------
+Reasonable PFN sanity checks in the guest private memory mapping/unmapping
+APIs are still agreed upon [9][10], such as checking TDX convertibility to
+avoid SEAMCALL failure.
+
+However, we decided not to provide any in-kernel sanity checks to avoid
+introducing unnecessary overhead, both because those failures are supposed
+to only occur when there are kernel bugs, and due to the lack of
+satisfactory tiny checks to ensure convertibility. When unexpected
+non-TDX-convertible PFNs are passed in, just let SEAMCALLs fail or have
+#MCs or #PFs generated, which are obvious enough in themselves.
+
+
+Base:
+----
+This v2 is rebased on top of v7.1.0-rc1 (kvm/next, commit 39f1c201b93f) +
+the first 4 patches from Sean's v5 "TDX: Dynamic PAMT + S-EPT Hugepage"
+series [11].
+
+Note: due to the instability of v7.1.0-rc1, I also applied series [12] and
+[13] to pass CI.
+
+
+Changelogs:
+-----------
+v1 [1] --> v2:
+    1. Updated patch logs of patches 1/2. (Dave).
+    2. Added patch 3 to drop tdx_quirk_reset_page() and export
+       tdx_quirk_reset_paddr() only. (Paolo, Xiaoyao)
+    3. Split out patch 4 to move mk_keyed_paddr() from .h to .c.
+    4. Rebased to v7.1.0-rc1 + Sean's 4 cleanup patches.
+
+Sean's original patch [0] --> v1:
+    1. Rebased to kvm-x86-next-2026.03.13.
+    2. Split to 2 patches for easy review.  (Rick)
+    3. Replaced "u64 pfn" with "kvm_pfn_t pfn"  (Rick)
+    4. Dropped using PFN as input to tdx_reclaim_page(). (Rick)
+    5. Move mk_keyed_paddr() from tdx.h to tdx.c. 
+
+Thanks
+Yan
+
+[0] https://lore.kernel.org/kvm/20260129011517.3545883-26-seanjc@google.com
+[1] https://lore.kernel.org/all/20260319005605.8965-1-yan.y.zhao@intel.com
+[2] https://lore.kernel.org/all/30d0cef5-82d5-4325-b149-0e99833b8785@intel.com
+[3] https://lore.kernel.org/kvm/f4240495-120b-4124-b91a-b365e45bf50a@intel.com
+[4] https://lore.kernel.org/kvm/435b8d81-b4de-4933-b0ae-357dea311488@intel.com
+[5] https://lore.kernel.org/kvm/1b236a64-d511-49a2-9962-55f4b1eb08e3@intel.com
+[6] https://lore.kernel.org/all/20241010182427.1434605-1-seanjc@google.com
+[7] https://lore.kernel.org/all/aWgyhmTJphGQqO0Y@google.com
+[8] https://lore.kernel.org/all/aWe1tKpFw-As6VKg@google.com
+[9] https://lore.kernel.org/all/aWkVLViKBgiVGgaI@google.com
+[10] https://lore.kernel.org/all/d119c824-4770-41d2-a926-4ab5268ea3a6@intel.com
+[11] https://lore.kernel.org/all/20260129011517.3545883-1-seanjc@google.com
+[12] https://lore.kernel.org/all/20260423155611.216805954@infradead.org
+[13] https://lore.kernel.org/all/20260428024746.1040531-1-binbin.wu@linux.intel.com
+[14] https://github.com/intel-staging/tdx/tree/struct_page_to_pfn_v2
+
+
+Sean Christopherson (2):
+  x86/tdx: Use PFN directly for mapping guest private memory
+  x86/tdx: Use PFN directly for unmapping guest private memory
+
+Yan Zhao (2):
+  x86/tdx: Drop exported function tdx_quirk_reset_page()
+  x86/virt/tdx: Move mk_keyed_paddr() to tdx.c due to no external users
+
+ arch/x86/include/asm/tdx.h  | 21 ++++++-------------
+ arch/x86/kvm/vmx/tdx.c      | 17 ++++++++--------
+ arch/x86/virt/vmx/tdx/tdx.c | 40 +++++++++++++++++++++----------------
+ 3 files changed, 37 insertions(+), 41 deletions(-)
+
+-- 
+2.43.2
+
