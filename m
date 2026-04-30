@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284532C3255;
-	Thu, 30 Apr 2026 18:58:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01ECB421F07;
+	Thu, 30 Apr 2026 19:00:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777575493; cv=none; b=lJ2HAGv5snqz6KyvjQnPO9thwmn97O9+YmScIbsMWz/5TEPrqihMR5ryxPQNM9nPZYnoBtHbo50HRwm9/+nOz5qgTjk1hS+o8ewrcfNZnlNP3laxi2jSUlgpeJcoT93hSJKQbXE5fnmn/DjvrTxPV/W4ynXSZNVqfDvvwt2FZEo=
+	t=1777575602; cv=none; b=e6oCaUx42WG1d9ZJszhkWbp06V/DCuJ62pz3UvJFH6DgsBasKzjis7RVdP9X6snypjeaWmHsG13EyDsU8cRx+MpYxnL9i6wQ6/eDXkHeHEyStH/LoSGIEL3Sayx8o19hUQjBGVK01iEBNd93M0pUJZ/gQMPeYcSQ7cMHpE/ezTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777575493; c=relaxed/simple;
-	bh=4u/CUwOeMlo4FcMqUB8DQiUovW0O+V8Xd9Du36Lhpx8=;
+	s=arc-20240116; t=1777575602; c=relaxed/simple;
+	bh=MjHEfUId+0e8UDN1Tx5Rw73alOm5tdqOOm8jIkMc4AM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k8DkgpjjAyCMkG8qJ2xK1GJzvp+lz1PfWBiu9BjLog6iA1kr730yruQn4WqNpMCaXIrtDka3qKs6xVeksqb/d+FAYObNPGjS3PALGiscfHwuwEcHPfxJMfR5v7XxYVj3l6Tu9uPhCKcwozNjwBqhBpdt+RDVftv3B0jbgbnOuW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jIkQe9cu; arc=none smtp.client-ip=192.198.163.15
+	 In-Reply-To:Content-Type; b=ERG7P2LxSmAUNGxTP1D7IXDGg0XLxwoP17UXI7s1ZFnWQiSHb8cKQCsBjZOiuDVWG/6ZZq3t+Mw+bf+ZM1ysv26iyzXd7IZRwnljExlnzyfUBZlOtHDRuFf2/L8NUJGxQMHATh9h8qWISMlLyH2rVFj4nSFgVu//EI3QRFFANoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IQZmg61Y; arc=none smtp.client-ip=192.198.163.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jIkQe9cu"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IQZmg61Y"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777575492; x=1809111492;
+  t=1777575601; x=1809111601;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=4u/CUwOeMlo4FcMqUB8DQiUovW0O+V8Xd9Du36Lhpx8=;
-  b=jIkQe9cu3qrVHF4jU7wfa8HFmaZj2ZEq46ZA1MoirO9mDq9akASiUPuj
-   HcBYPn6rvchlYUWl2bag9yFSUlIChohNSlfKUAJh7l3cWTXXbfK2saaf+
-   JZd5rbpS4xyn+rN8rn4OxRMerQmPgOy4GiWoIzZwzt0g0quL2x5+7xI5Q
-   qNBH7wgmZAcnOoMHfqyjMaOro/MgjeZnVaxRgSo5mgbdwQXOGGkD3h5uv
-   g00Z/BvxinUiKdMiDr8KGFKleuCD/SXuOQPp3GO4Y/aOPyy5CyyeliRhn
-   GUYwIT2XtqpYa1SPB6SmlKZrOvletiIfKNUJQszX8ovcD42/vUecyQiqx
-   w==;
-X-CSE-ConnectionGUID: 7LQufOTxT2OvpBq7KwmBBA==
-X-CSE-MsgGUID: trYRR6HzQtO8QNOYFQtDqg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="78642526"
+  bh=MjHEfUId+0e8UDN1Tx5Rw73alOm5tdqOOm8jIkMc4AM=;
+  b=IQZmg61YJ4MxTUBwJNDiuquv5HKVpGmPeZxgJ3vmmo6X9kT51W75IJPM
+   FdQMJXa9wVW4roUzKPPSlgEcVdD1uvzfZy4MysN40Z8J1ZZ7W8S43qRBw
+   SQlqmEvSgPDzjrT3ej1MnbXmQlObjv3vpZrdbYcfBJUnpTA+kfBsdxXWx
+   fztu0/HD5vU6cbTPRAJxcCb63KUzE8OOyC37UIzex+a0RO96j+1Ht+jJ6
+   hGcWL3Mzbi2vc4zxKkUq5Z7mXAJyiCAcqALDT9MTBh6XrLFjft7Ro3sUs
+   5Ml4nPg38bYBEr61qkJsqFQjGNFSb1hbYGzdjcIVNSfgipEqIKQafW7Zy
+   A==;
+X-CSE-ConnectionGUID: z2IwZ5CMQYSxG3qL7meg/g==
+X-CSE-MsgGUID: ZIPg8kNyTtaTawpx3HFE3w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="78642708"
 X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="78642526"
+   d="scan'208";a="78642708"
 Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 11:58:12 -0700
-X-CSE-ConnectionGUID: aTwTouc1QkKWbzrpk68Nnw==
-X-CSE-MsgGUID: DMIFMtfwTjeUNSJqMnDwdA==
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 12:00:00 -0700
+X-CSE-ConnectionGUID: FUTCQpaWSAW5qYo90wgubA==
+X-CSE-MsgGUID: 68o6ca4kT0WRmGiUdJxuZg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="239678668"
+   d="scan'208";a="239679019"
 Received: from cjhill-mobl.amr.corp.intel.com (HELO [10.125.109.74]) ([10.125.109.74])
-  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 11:58:11 -0700
-Message-ID: <20f2d821-bfa6-4db2-a968-b5455c7b5007@intel.com>
-Date: Thu, 30 Apr 2026 11:58:12 -0700
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 12:00:00 -0700
+Message-ID: <f92d114c-c0f1-4eaa-a828-a4d9ac4054d4@intel.com>
+Date: Thu, 30 Apr 2026 12:00:00 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,8 +52,7 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 11/21] x86/virt/tdx: Reset software states during TDX
- module shutdown
+Subject: Re: [PATCH v8 12/21] x86/virt/seamldr: Install a new TDX module
 To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
 Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
@@ -66,7 +65,7 @@ Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
  "H. Peter Anvin" <hpa@zytor.com>
 References: <20260427152854.101171-1-chao.gao@intel.com>
- <20260427152854.101171-12-chao.gao@intel.com>
+ <20260427152854.101171-13-chao.gao@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -112,43 +111,16 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260427152854.101171-12-chao.gao@intel.com>
+In-Reply-To: <20260427152854.101171-13-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 4/27/26 08:28, Chao Gao wrote:
-> +	/*
-> +	 * Clear global and per-CPU initialization flags so the new module
-> +	 * can be fully re-initialized after a successful update.
-> +	 *
-> +	 * No locks needed as no concurrent accesses can occur here.
-> +	 */
-> +	tdx_module_initialized = false;
-> +	sysinit_done = false;
-> +	sysinit_ret = 0;
-> +	for_each_possible_cpu(cpu)
-> +		per_cpu(tdx_lp_initialized, cpu) = false;
+> +			case MODULE_UPDATE_CPU_INSTALL:
+> +				ret = seamldr_install(seamldr_params);
+> +				break;
 
-This speaks to needing refactoring.
+I really despise this naming. Could you please clarify with comments?
 
-If there's global TDX state, it needs to be in a global TDX state
-structure, not scattered across random global variables.
-
-Imagine the structure is:
-
-struct tdx_module_config foo;
-
-That's 0's at boot. You have to init the TDX module to bring it out of
-0's to valid state. It actually means something if you do:
-
-	memset(&foo, 0, sizeof(foo));
-
-Because it takes it right back to its bss state. That ^ is also handy
-because it naturally just works if new state gets added.
-
-Guess what will happen the next time someone adds:
-
-	int sysinit_new_fancy_thing;
-
-Someone will forget to add it to this code. Then the module gets updated
-and breaks things in fun ways.
+This reads like it is installing a seamldr, not telling a seamldr to
+perform an install.
