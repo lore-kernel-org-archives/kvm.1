@@ -1,87 +1,165 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-vs1-f48.google.com (mail-vs1-f48.google.com [209.85.217.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95F1F40B6C4
-	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 18:15:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777572906; cv=none; b=K5zIL1aSMUCxcb1BlIQJmBZtzeXFpcCnUu0AftWYbk1+a8YWqnabqQd+7lx/DNcBQrZHWeOwO7gJjs2yJ4IbLZZkUCgGY6NaXd4ofk/rhpV8osTGfwtF+IzvCv6r3aKTrF5YLRokIRg+dxSf5+y0PQCrFZIj/x0KN7WDjkaCWAU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777572906; c=relaxed/simple;
-	bh=JrorKwYUHH4zZ4zy+pqcEJAl4tqafS2Mqv4yUo/QuME=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=FDU75j2jkhuLBLBvB44GQ/R/VJLyUxJQ/PzXlzLUDpHTuGLnL3q08c1ARgzCKlvtRvAAmOfg4E5Sdpn09NpdnrWzV5o5CeKtcs3ANun3uynnARu2VY8zy4wltylGsUu5nWTHaT/WnfMLIKJFBkEtTVHyNQk/ltKOepPOraBNoqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=a4vJLKU4; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17ECC28851F
+	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 18:17:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.48
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777573040; cv=pass; b=G2g89bTVfVEDLFCO44YnLpg3RSMOg5GT4ZDqumIQyjxyNLmX1L6QQuh9exAP5hBnaIgeFtaDLYYXej+j1u1lAdatzutuH/+4PkwpIjf6WmQPZsWmSygMTh8Z1QyWOvgqDD3rqMnGucXGH63k3MqHRnwD0FSgfg7plG6nmiJg2vM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777573040; c=relaxed/simple;
+	bh=/jEC7IJfBBxXHlgchTjCqACCqOEjsTnHcHLIw8XQ6Lw=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Va5pepQMXwev9oiVuX1KcKUEo2zV3Wiwq1XWlbgGb3v4sFlK6hUrhyW8OfIjqN94/TYllu1mQ19TjxwtA781U3Mcc50mxdCeOtGJCbhcdHI98HDxy2FgrHwr84LuTdo4MDp9J5gzLcK4ZUmU5LDGpQp1UudMFVPotkQ1vhvYBRc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=g9cK0n6R; arc=pass smtp.client-ip=209.85.217.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="a4vJLKU4"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b7c2ee830aso26595755ad.3
-        for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 11:15:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="g9cK0n6R"
+Received: by mail-vs1-f48.google.com with SMTP id ada2fe7eead31-610aadb2d9fso405892137.0
+        for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 11:17:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777573038; cv=none;
+        d=google.com; s=arc-20240605;
+        b=CUSu1yjePP9xGyDMoY+OmPx1ijhWPP7ieTWxdnEFzeXGMldm8hVNfK0JQ2ozzxtmxk
+         nT7SrDD7pyZ285w+dcyiGPKuE41Dmu+tQjmwM2ZylVzYB4xYP5OfhBQQPnX55/FQWDdc
+         +GGlyARHROv4CZMm9xghnZSA8L0Nn/PsLTKpJ84Ym1ZRAoFdvxq3iIKHYkzwrZELQYi2
+         omyWV99sAaBd+PgDPAIiSwV8mvjvWQi4LfJjD9MsvBGSxHC6xeVecB3IgNHNhPbY3tab
+         vCkVtjjO/Is1JEp8kc9YRtMpf+ayREG69koRWHopdzt6/fCrMIGIYTkDQZmHNFNhdFjw
+         9gZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=s/OJBjFU5E2BcXru/6ZaLRbo+YS3ANxLYhS97YcrWVE=;
+        fh=qKUWM3oX6NKThNxoJIW6iLR3j2N5+NjMtAcWehkdlyY=;
+        b=PeoEka9G3sAaEGXUdqoYVuDdAGlkp4Dr/i0o+TwBcAudQ9QwMqe8DCwPIPD+eV1ohW
+         SzEsO7VCjiLFqEO5DR7cXNjyr59NPCoVFQpNeVffsx9AF6Dn/K0fCvZv+nitOprt6jLh
+         Qw8BxpPKvLlsdSW6KC5x8gUFCGH3P5I1whyQA+aMxOI9NJiPQOpS5Y1+CqDpW/Learfp
+         w0CYwOIJYnMgUi0CyszguLEMQEw032dXTlUaM1phgv4knJWpBFcrtRjcXTKFm68GoVYm
+         GzozPPZe7Kztc1VQRMB3GeNtXQHKKeHNqovfhNG9d2VKqDPQucqu0ELpSv7WZf4dD/2P
+         ge5w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777572905; x=1778177705; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=C1+2Il3IVXV0VYL0NW7a1NeGzgz+qodUBQceYiBkkQc=;
-        b=a4vJLKU4M+tUxBuivkM1puVBf1FjmzvjXKcoGjIALFQrogFC84KMk/r08NzBV8pYSa
-         MLTbiDgvxn9BSXahJA9L097EQAKx/YMROSY2K77epTGUhGJO9rTmldeHIXBwniP7KIa5
-         T8T3X/tRPAWWEEFboqMETcdsYve5Wi7c0e1BlLt2/7USMc+zvXEh67ZU1zrcdgteLW60
-         B2mX9SPI5kN+DYHQm3NjzAZkXqOX7VFltXWWpjgikaTkOzRHGd/NdBRLt5dYL0e6xV3Y
-         KD/OAL3WVs4IpDzhhzviYG7tAL4hGV9zJz2KTAqPFbC4MutzyV4e3tVqw3d1b8xsQ57J
-         qdbA==
+        d=google.com; s=20251104; t=1777573038; x=1778177838; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=s/OJBjFU5E2BcXru/6ZaLRbo+YS3ANxLYhS97YcrWVE=;
+        b=g9cK0n6RSxFFWA2YCRDDwgKtQ4RVHBBzQCXjiLZ4d2tLXHegPuGtQM5qulyxSfLiOC
+         zC8mAjkVpQtR2rd7u4LNH4ssmBvKYRnsTCKWxEcaQpdhHeXyYvinTpP+iMBI10Q3dtD3
+         iCsLky4bOAfvWGXdOC3p6yeLNJowA4AhVm4zyw3zFRWnqsDTZY67Y+mZ53z7qzEqq5Co
+         wTvwa27dK4xGnq/PS2s+2F+x0BuPbQ+v9WtRf4OdpCGTNkzISzdvETEYR4VcbTLHhZdD
+         SbKFwIagBncS981zozfdyi8cnkhaGsZ4bJtMY7wh3FZqZO2Mv0dbrmV7RZRpiJPunoXb
+         +QmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777572905; x=1778177705;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=C1+2Il3IVXV0VYL0NW7a1NeGzgz+qodUBQceYiBkkQc=;
-        b=IAJBk46BEzu/eVX4iy0derxKqBGH6rC/frFVNazerA7d1XiaAWkeIEhSgBpJM54dHB
-         zoxaHRtd1+/FaWIqZRhLncDwYcrKdR0Z0oyMa0Nf7yKeW+RT2L7ByzKju+2maY+OqynR
-         UhEkHfk5ZD3B4YzWWGVhHSEpIInwwrpLQOVfeIN8kKoTvBg+WOodqorSSMAv74WDT+LL
-         ZC2z85WZGp2Jo7a6GJhddUT9I0JFHvbquLZ1Ltzea7jtXxoW0/ZmF6b8KtYI2eGJGPs0
-         NoypwWiFlIoee/PaiGvNxHi9PpMTugde29pz5Y/rlEy4paLz1ahmR60rnEy/IcwzrOqR
-         hPNA==
-X-Forwarded-Encrypted: i=1; AFNElJ9u76jxwFzCnrXCaJ1jlPU6hDNiB4zWoPdtW7qHJJjCFA0XAOv1QG9y6TJpwrjwYDq+xY4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyroIM26m2I0FpJrT1BZba9yMgYLMGtp22jtbRD7YNunTvrK119
-	J3eAYYJ53KenerPuWH9IOA5rrXHy0FNYi7pSlld6Gwg+P+E0rRF/08p6vffXGgbAS6uIMNybbrW
-	WFn/lKQ==
-X-Received: from plpa5.prod.google.com ([2002:a17:902:9005:b0:2b2:a488:ae47])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2ed0:b0:2b2:4a9a:b168
- with SMTP id d9443c01a7336-2b9a23175c0mr42550985ad.11.1777572904545; Thu, 30
- Apr 2026 11:15:04 -0700 (PDT)
-Date: Thu, 30 Apr 2026 11:15:03 -0700
-In-Reply-To: <20260430150747.76749-5-pbonzini@redhat.com>
+        d=1e100.net; s=20251104; t=1777573038; x=1778177838;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=s/OJBjFU5E2BcXru/6ZaLRbo+YS3ANxLYhS97YcrWVE=;
+        b=jHnv6QFvbzN1SB3OCAUb5ry5OCp/5i+IcYEcVL9nyAmzb+e7vdFxBCv6rXL9+1UQLr
+         agYy6ZL/l/AMWLE2SgSrgHXZauMwhZFUT7S1IyyC8dGsuW7AFX+aXrnc+Q7ZhhIuRIRQ
+         SqPGtjIH+lvswpdPsQhKLkvkM27po34F68I4oPnOCjTnNjmAYSJqjKduMP1OHYqNL7bG
+         8+VRe/7zRI01ttB7FuITe8JKO266iU94+V3ksZdofiFzEkzTtoVfnps4ZDl344MeoPBr
+         Ps2n+VPR861f++Om4VlkGIG8C/Cb4VRcPyGRFjyH6RN80EYWgyeM+L/0m9072Y9l3b4G
+         B2uA==
+X-Forwarded-Encrypted: i=1; AFNElJ9baoYXY2M+cFHwe8HtRxZu5E9kMghzhKYGdUu0SOh4o3PqbNhLY+0h6m8epEFziu0g+lI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyZ8UZXpKqtJxf4f90A6H4Xr3MhJpJ6IYcKgBnSS4tu9cZMERzB
+	dEyJm/BM1JFeP+/Xl3jRAKaZCfT4ml3UcVv0Ay6qiVIRQRwNc+LbyzVMCRsZv8Vd0hOIxF+VkeT
+	qVz4ThGohU31tItPKcvtW6/f2rQ1TBDTboHe7kuQ4
+X-Gm-Gg: AeBDietvSiYqKR01g4YL6c/SpEwAA+z1cvqrY08iVz7bDZCmsEA7Ubjqh/p0l1wBbUU
+	o5Md3osM7nHS6mw5q6mm2/xdAwWeZes29NpQrs1q/NhZA5YQZvsJFUtP0a6BVi1uzQLB/ltsr9C
+	00N17PfHlBj3nQ0QHKO/cyOck9ESrhYlWCPXUSjkuQAXmciS9ejXvpefEzmd7leRbcpQNTaAZ3M
+	4bnQMJR9XxsghDUU0bERgWhDc+BNYmdVrsYXi3HvAvJZ+tbroUkW/mVUqhTmr3fs7xzpEQMG2rm
+	nWj/PRpt8M5/rO9nmqyi3S24HlTXFcyalAlms+yhProBmnouNM/QrILJa8eumwAkmLUb8p+iNrz
+	bxVjrX4XhZn2QtgRvoZtSNRSD4w==
+X-Received: by 2002:a05:6102:508f:b0:611:6fef:90d with SMTP id
+ ada2fe7eead31-62ad52b8422mr2417607137.31.1777573037446; Thu, 30 Apr 2026
+ 11:17:17 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 30 Apr 2026 11:17:16 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 30 Apr 2026 11:17:16 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <20260430014948.24226-1-yan.y.zhao@intel.com>
+References: <20260430014852.24183-1-yan.y.zhao@intel.com> <20260430014948.24226-1-yan.y.zhao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260430150747.76749-1-pbonzini@redhat.com> <20260430150747.76749-5-pbonzini@redhat.com>
-Message-ID: <afOcJ052Cs1BKuqi@google.com>
-Subject: Re: [PATCH 04/28] KVM: x86/mmu: shuffle high bits of SPTEs in
- preparation for MBEC
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, d.riley@proxmox.com, 
-	jon@nutanix.com
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Date: Thu, 30 Apr 2026 11:17:16 -0700
+X-Gm-Features: AVHnY4J9PCIVECZvrtLYhw7bWhM7_gjG-2ujkDrQ3DZ1AfQmK6yn52gKG4WOSMs
+Message-ID: <CAEvNRgGsMaioFvTWaLhnDiLbdx3tunZpo3Qzxdm1xeb4ef0J9Q@mail.gmail.com>
+Subject: Re: [PATCH v2 2/4] x86/tdx: Use PFN directly for unmapping guest
+ private memory
+To: Yan Zhao <yan.y.zhao@intel.com>, dave.hansen@linux.intel.com, pbonzini@redhat.com, 
+	seanjc@google.com
+Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de, kas@kernel.org, 
+	x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, kai.huang@intel.com, rick.p.edgecombe@intel.com, 
+	yilun.xu@linux.intel.com, vannapurve@google.com, sagis@google.com, 
+	binbin.wu@linux.intel.com, xiaoyao.li@intel.com, isaku.yamahata@intel.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, Apr 30, 2026, Paolo Bonzini wrote:
-> Access tracking will need to save bit 10 when MBEC is enabled.
-> Right now it is simply shifting the R and X bits into bits 54 and 56,
-> but bit 10 would not fit with the same scheme.  Reorganize the
-> high bits so that access tracking will use bits 52, 54 and 62.
-> As a side effect, the free bits are compacted slightly, with
-> 56-59 still unused.
+Yan Zhao <yan.y.zhao@intel.com> writes:
 
-> @@ -84,8 +94,8 @@ static_assert(!(SPTE_TDP_AD_MASK & SHADOW_ACC_TRACK_SAVED_MASK));
->   * to not overlap the A/D type mask or the saved access bits of access-tracked
->   * SPTEs when A/D bits are disabled.
+>
+> [...snip...]
+>
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> index b24b81cea5ea..e5a37ea2d4a0 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -710,7 +710,7 @@ static __init int tdmrs_set_up_pamt_all(struct tdmr_info_list *tdmr_list,
+>   * to normal kernel memory. Systems with the X86_BUG_TDX_PW_MCE erratum need to
+>   * do the conversion explicitly via MOVDIR64B.
 >   */
-> -#define EPT_SPTE_HOST_WRITABLE		BIT_ULL(57)
-> -#define EPT_SPTE_MMU_WRITABLE		BIT_ULL(58)
+> -static void tdx_quirk_reset_paddr(unsigned long base, unsigned long size)
+> +void tdx_quirk_reset_paddr(unsigned long base, unsigned long size)
 
-FWIW, I originally chose bits 57 and 58 so that HOST-writable and MMU-writable
-would occupy the high byte, e.g. for faster access (in theory).  But that's
-uninteresting in practice because the mask is stored in a global variable, i.e.
-the compiler can't optimize the SPTE access anyways.
+Could this be updated to use phys_addr_t base and size_t size instead of
+generic unsigned long?
+
+>  {
+>  	const void *zero_page = (const void *)page_address(ZERO_PAGE(0));
+>  	unsigned long phys, end;
+> @@ -729,6 +729,7 @@ static void tdx_quirk_reset_paddr(unsigned long base, unsigned long size)
+>  	 */
+>  	mb();
+>  }
+> +EXPORT_SYMBOL_FOR_KVM(tdx_quirk_reset_paddr);
+>
+>  void tdx_quirk_reset_page(struct page *page)
+>  {
+> @@ -1920,17 +1921,17 @@ u64 tdh_phymem_page_wbinvd_tdr(struct tdx_td *td)
+>  {
+>  	struct tdx_module_args args = {};
+>
+> -	args.rcx = mk_keyed_paddr(tdx_global_keyid, td->tdr_page);
+> +	args.rcx = mk_keyed_paddr(tdx_global_keyid, page_to_pfn(td->tdr_page));
+
+Should mk_keyed_paddr() be updated to have a return type of phys_addr_t?
+I guess in this case since mk_keyed_paddr() is pretty much an internal
+function, returning u64 also makes sense to indicate that it should only
+be used to set 64 bit registers.
+
+>
+>  	return seamcall(TDH_PHYMEM_PAGE_WBINVD, &args);
+>  }
+>  EXPORT_SYMBOL_FOR_KVM(tdh_phymem_page_wbinvd_tdr);
+>
+> -u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, struct page *page)
+> +u64 tdh_phymem_page_wbinvd_hkid(u64 hkid, kvm_pfn_t pfn)
+>  {
+>  	struct tdx_module_args args = {};
+>
+> -	args.rcx = mk_keyed_paddr(hkid, page);
+> +	args.rcx = mk_keyed_paddr(hkid, pfn);
+>
+>  	return seamcall(TDH_PHYMEM_PAGE_WBINVD, &args);
+>  }
+> --
+> 2.43.2
+
+Reviewed-by: Ackerley Tng <ackerleytng@google.com>
