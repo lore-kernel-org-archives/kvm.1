@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11AB03B389F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C90663B6C08;
 	Thu, 30 Apr 2026 20:28:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777580882; cv=none; b=KWx3LMJZn2OJ3c1N+xEzZRZAhDkRK7g29XQd6mEqp9H5wu79Y3HocUsDzNnQwpycBR0E881dx+ADnctFhOpmbGFp9KlLG9F8AFt6S8t+D2RbbjKAoVJMc5dr6nV3QHOvNe4UV7uOa6/NcuNo/svZ8V8kTquMhk23diTR+6FP0LA=
+	t=1777580882; cv=none; b=OcVR4Ph7bF3aW/L1Nkm0VItF4f2oGHQaZ6NUmF6X1PvtTDRZd0GcuOjkLnJaq2pq4G2lC6gOW22RRr7MFGa33StHvQq6ewpxcPe/vdELaE1ppnagP77o3l7BvbGQLsjcLZE6J7iWynVJL5k0sg/AeOWEeRmY1c8ik0omPuKsxJs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777580882; c=relaxed/simple;
-	bh=cCwH5w0fK4UfQLUAiej/+ef24PRVhP/LsGjCzYXi6Cc=;
+	bh=cEJJ2WyrU/9RGR1OUnEPy2odZL0xSqI7NatJ9TETZUg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=a45vDiZe3dUfLQafNVKBUHA5S6+JIpjetTukWOlMEm919sHB8EaHjasmDU48YAtOsyFz1Vl57dM4IxGiDfTeCiKHeI2N87XvO1NotD09KzfdGYE5Hr7EpkiMCRllyQYCQGOykVoBUgctQh8nQNj0/WBy8FoOfRBwE7nfX6mlfY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k3jyQTHY; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=rK6SC0A7h4VVAcoezdGmSEi1SVuQz4DrFoGLraoy4/t6gEF9CYhxFGowXe3y7R4oG1FqAS+3OA30YCg5lJdnfhhtbRTw+iLL+Yy9rAj+UD4sdhD5Kjj+NCQynmMbP5U1zAB7CR6wafbmFJemLmZHXE9S5Kkf8jQJlHUDo3DXugM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UJVMt+0n; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k3jyQTHY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84908C2BCC6;
-	Thu, 30 Apr 2026 20:28:01 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UJVMt+0n"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C0ECC2BCB8;
+	Thu, 30 Apr 2026 20:28:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1777580882;
-	bh=cCwH5w0fK4UfQLUAiej/+ef24PRVhP/LsGjCzYXi6Cc=;
+	bh=cEJJ2WyrU/9RGR1OUnEPy2odZL0xSqI7NatJ9TETZUg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k3jyQTHYM3/jf1V/TJHzAnsicniRHzvCwMww0oOUchFXhd6cmOBQVciJcpFMjzEPn
-	 AM2YL5RYJz7zuV31f9HB8vKZZV8lZwJioCutiy7sxnwHd+FTxZ92Mu54PiReDarD/w
-	 iampRdY9XSlKlBclSC1A+NZ1kkbAtJq1Ox5RoVwKKe22JsUeocKI8EQePZgF/8OFk1
-	 p33e0LsYafTlVJTp1ebz8lybK5lZLrtAz6LqH2DgBwHhY5vO9Uk8Mziem9z54IOtyG
-	 uhfg7WWO5pkFVNxKEbP8lcsSskpaciSGgZTN5A9DRiiK1wJXn+dJleynZrh3BGy3MB
-	 4nKrufXItv+rg==
+	b=UJVMt+0nsh8aXA4Nng9mp9Q2s4rtXm+K0yg13KpzVV1CHth5Io0XlgFQeOeffZK1j
+	 WS88NvlOtL1DMKqbaYu26ZYA/71CuWhCr1seSLyZcU9BTY7mIXr+PRU4AJfo26RaZN
+	 AcCe7ODlPoe1wlYCJU9LvUCQ4LGm9qmoiRBFxqoYI80q6a0i8PseNheW7gAK7BKGin
+	 AiLuS2kJduBDV+KDBdqO5Q7xlMk0mXNUcuAzpa+6vxc+fAV54Ct1Dv5pcxV/E2mzJU
+	 K12o6aGBxfeG5DJSdFBaU1ABD8CkzgmcXbnkWt3Tkhhx+cPHUMAhsczW9cqkjImekl
+	 GwbZd5FFkCu9Q==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -39,9 +39,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v5 04/13] KVM: x86: Move enable_pmu/enable_mediated_pmu to pmu.h and pmu.c
-Date: Thu, 30 Apr 2026 20:27:41 +0000
-Message-ID: <20260430202750.3924147-5-yosry@kernel.org>
+Subject: [PATCH v5 05/13] KVM: x86/pmu: Rename reprogram_counters() to clarify usage
+Date: Thu, 30 Apr 2026 20:27:42 +0000
+Message-ID: <20260430202750.3924147-6-yosry@kernel.org>
 X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
 In-Reply-To: <20260430202750.3924147-1-yosry@kernel.org>
 References: <20260430202750.3924147-1-yosry@kernel.org>
@@ -53,99 +53,72 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-The declaration and definition of enable_pmu/enable_mediated_pmu
-semantically belongs in pmu.h and pmu.c, and more importantly, pmu.h
-uses enable_mediated_pmu and relies on the caller including x86.h.
+Rename reprogram_counters() to kvm_pmu_request_counters_reprogram()
+clarifying that it is more similar to
+kvm_pmu_request_counter_reprogram(), and less similar to
+reprogram_counter(). The kvm_pmu_* prefix is also appropriate as the
+function is exposed in the header.
 
-There is already precedence for other module params defined outside of
-x86.c, so move enable_pmu/enable_mediated_pmu to pmu.c.
+Opportunistically rename the argument from 'diff' to 'counters'.
 
 No functional change intended.
 
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/kvm/pmu.c | 10 ++++++++++
- arch/x86/kvm/pmu.h |  3 +++
- arch/x86/kvm/x86.c |  9 ---------
- arch/x86/kvm/x86.h |  3 ---
- 4 files changed, 13 insertions(+), 12 deletions(-)
+ arch/x86/kvm/pmu.c           | 2 +-
+ arch/x86/kvm/pmu.h           | 7 ++++---
+ arch/x86/kvm/vmx/pmu_intel.c | 2 +-
+ 3 files changed, 6 insertions(+), 5 deletions(-)
 
 diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-index e218352e34231..d6ac3c55fce55 100644
+index d6ac3c55fce55..afbc731e72174 100644
 --- a/arch/x86/kvm/pmu.c
 +++ b/arch/x86/kvm/pmu.c
-@@ -16,6 +16,7 @@
- #include <linux/perf_event.h>
- #include <linux/bsearch.h>
- #include <linux/sort.h>
-+#include <linux/moduleparam.h>
- #include <asm/perf_event.h>
- #include <asm/cpu_device_id.h>
- #include "x86.h"
-@@ -33,6 +34,15 @@ static struct x86_pmu_capability __read_mostly kvm_host_pmu;
- struct x86_pmu_capability __read_mostly kvm_pmu_cap;
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_pmu_cap);
- 
-+/* Enable/disable PMU virtualization */
-+bool __read_mostly enable_pmu = true;
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(enable_pmu);
-+module_param(enable_pmu, bool, 0444);
-+
-+/* Enable/disabled mediated PMU virtualization. */
-+bool __read_mostly enable_mediated_pmu;
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(enable_mediated_pmu);
-+
- struct kvm_pmu_emulated_event_selectors {
- 	u64 INSTRUCTIONS_RETIRED;
- 	u64 BRANCH_INSTRUCTIONS_RETIRED;
+@@ -889,7 +889,7 @@ int kvm_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 		if (pmu->global_ctrl != data) {
+ 			diff = pmu->global_ctrl ^ data;
+ 			pmu->global_ctrl = data;
+-			reprogram_counters(pmu, diff);
++			kvm_pmu_request_counters_reprogram(pmu, diff);
+ 		}
+ 		/*
+ 		 * Unconditionally forward writes to vendor code, i.e. to the
 diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
-index 0925246731cb1..b1f2418e960ac 100644
+index b1f2418e960ac..f8286067722b0 100644
 --- a/arch/x86/kvm/pmu.h
 +++ b/arch/x86/kvm/pmu.h
-@@ -53,6 +53,9 @@ struct kvm_pmu_ops {
- 	const u32 MSR_STRIDE;
- };
+@@ -210,14 +210,15 @@ static inline void kvm_pmu_request_counter_reprogram(struct kvm_pmc *pmc)
+ 	kvm_make_request(KVM_REQ_PMU, pmc->vcpu);
+ }
  
-+extern bool enable_pmu;
-+extern bool enable_mediated_pmu;
-+
- void kvm_pmu_ops_update(const struct kvm_pmu_ops *pmu_ops);
+-static inline void reprogram_counters(struct kvm_pmu *pmu, u64 diff)
++static inline void kvm_pmu_request_counters_reprogram(struct kvm_pmu *pmu,
++						      u64 counters)
+ {
+ 	int bit;
  
- void kvm_handle_guest_mediated_pmi(void);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 08be0a63b93bd..0b421ea29977b 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -182,15 +182,6 @@ module_param(force_emulation_prefix, int, 0644);
- int __read_mostly pi_inject_timer = -1;
- module_param(pi_inject_timer, bint, 0644);
+-	if (!diff)
++	if (!counters)
+ 		return;
  
--/* Enable/disable PMU virtualization */
--bool __read_mostly enable_pmu = true;
--EXPORT_SYMBOL_FOR_KVM_INTERNAL(enable_pmu);
--module_param(enable_pmu, bool, 0444);
--
--/* Enable/disabled mediated PMU virtualization. */
--bool __read_mostly enable_mediated_pmu;
--EXPORT_SYMBOL_FOR_KVM_INTERNAL(enable_mediated_pmu);
--
- bool __read_mostly eager_page_split = true;
- module_param(eager_page_split, bool, 0644);
- 
-diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
-index 38a905fa86de2..30a69effc81e2 100644
---- a/arch/x86/kvm/x86.h
-+++ b/arch/x86/kvm/x86.h
-@@ -490,9 +490,6 @@ fastpath_t handle_fastpath_invd(struct kvm_vcpu *vcpu);
- extern struct kvm_caps kvm_caps;
- extern struct kvm_host_values kvm_host;
- 
--extern bool enable_pmu;
--extern bool enable_mediated_pmu;
--
- void kvm_setup_xss_caps(void);
- 
- /*
+-	for_each_set_bit(bit, (unsigned long *)&diff, X86_PMC_IDX_MAX)
++	for_each_set_bit(bit, (unsigned long *)&counters, X86_PMC_IDX_MAX)
+ 		set_bit(bit, pmu->reprogram_pmi);
+ 	kvm_make_request(KVM_REQ_PMU, pmu_to_vcpu(pmu));
+ }
+diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+index 27eb76e6b6a03..9bd77843d8da2 100644
+--- a/arch/x86/kvm/vmx/pmu_intel.c
++++ b/arch/x86/kvm/vmx/pmu_intel.c
+@@ -391,7 +391,7 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 		if (pmu->pebs_enable != data) {
+ 			diff = pmu->pebs_enable ^ data;
+ 			pmu->pebs_enable = data;
+-			reprogram_counters(pmu, diff);
++			kvm_pmu_request_counters_reprogram(pmu, diff);
+ 		}
+ 		break;
+ 	case MSR_IA32_DS_AREA:
 -- 
 2.54.0.545.g6539524ca2-goog
 
