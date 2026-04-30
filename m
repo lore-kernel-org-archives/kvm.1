@@ -1,262 +1,118 @@
-Received: from mail-wr1-f67.google.com (mail-wr1-f67.google.com [209.85.221.67])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B43683B38B7
-	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 10:44:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.67
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99C113A4F32;
+	Thu, 30 Apr 2026 10:47:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777545895; cv=none; b=HYBh0c8CY9qBDXgUThM+TmK6D47Tx6bg8NH7q/phRPGZ3K04kfhnNmle5vxo/rYA0Mfy6LKWaNC4HaObnqMVBk4QPPHK5fH9vCqYnEBsfl6x8FPoSfW70hkhB1WfTNOrcx9+MyCs7u6QGU9hi3ksFUyx/y0PlS/nsbGuUM3aAaM=
+	t=1777546067; cv=none; b=oQfDJB3akw9L86EYgsjdBYK/E5erSnhNxfVo4ekY2VvAYrPR5hngcMDM/DNRatzTkfJNQoCfCrP/bvt/TjVLgoTht9rKiiwSnIZZx5//4rhDyRNt0PmdBny9b0Kt6HhC4n7vti9nwsODUeuSN1OkFwD0EWNWi3UrKCrKm8TOTOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777545895; c=relaxed/simple;
-	bh=NyW3kmltoQcTnJAQqYhdbgrR2aKrsmVp0QpQcRUypsc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DVaB+eFFf+kZk12k+4/a+0sinCQLO/vXszuswOkNOIG6g4RMDTBz60geqbVmkFIFHAD21SGqZtuDHVNOugMqV4JQqS+3eY/P/lX/94XoBDVTXB3VlYHYi4kPwYNVhlnnhsYHwSkjBSXxK7+4UVp/qpTTTK3AiVKkyJ4JUfLGSuc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BN26Vvc1; arc=none smtp.client-ip=209.85.221.67
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1777546067; c=relaxed/simple;
+	bh=nAR48QPMaW3D2KAOMmyQEOb81lOwfSZlfPuY3LhL6nU=;
+	h=Message-ID:Date:MIME-Version:From:To:Subject:Content-Type; b=gFL+Xyke4ZQ+zw+GfLdQY5Wo/uc7zCWIA/OcheDHYcfPp72qrNG4JzyU+Ou9R7UQ3JGyVGF327SKOeX+og8q+2HggnIjC1DKC48ebGmiS+CylA2E+MlYAErHLc1r6AtQ8csW+uKlQjBVhKVkYDxTwlJK7knwpdIr1LikEaKcb14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SGaP6dSA; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BN26Vvc1"
-Received: by mail-wr1-f67.google.com with SMTP id ffacd0b85a97d-44a044cb827so4430f8f.0
-        for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 03:44:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1777545882; x=1778150682; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=5z/E+NEUk6p/y4Qsh2ZiVobxIRwHiu1lhqMJeWdQLKM=;
-        b=BN26Vvc1eLgC+UDowsefA0wmAhn7pjiYYyrrn+mAZiOB3/MGngcuyfmkSO45hFs1Ni
-         L9HjiKLxa16W3U86vVMWxhQ15gJC79tcmFEh5IhLVzpi5T0StKmcE0zT/GTOjagGtPxM
-         ks+x+P8g82EAKecj35gXBjhn/+XvYB6h53usmAwetV//rzjEM4LsLl41P62A1r8irK5G
-         BoIPJJl9fyISPR2bogA9NW4k2EHTg6Fcj3L83diRnnLSR+h2KOeddfwYX57WyCHTTZG+
-         TiqsZt190Za4ZJleWg6TmwmLkb0YNfm4QXk+ODzccvqZiUWUKh7NZB6J+d31E8iignJs
-         XDEA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777545882; x=1778150682;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=5z/E+NEUk6p/y4Qsh2ZiVobxIRwHiu1lhqMJeWdQLKM=;
-        b=KlXYI4OCadDi6Zy3SvF8Gj8De5KksOMnigj/Jew8DwTi6JcPu3IgNvamr+QTIoLBmh
-         z6uokCGaDGiIgpUBpDOJnmEPaG/CAt3gTkY40k4wDSm/iAWamqhehjG+LvrBK7S69d1n
-         fIEKVkI+ZE8cnvomThhmp7LriIne6F9oxR32obgMMuJFDqncgllO3kaJey8xGGEHGCqS
-         rsdpKoFlMDBGV21DBENQUOj3mb2trfge3U2DTiuPkmiBSEF67+8uZRQBx9ShaQ50Xi4A
-         IAbzxdbvqzjAP33HrFaLCD2Emw9xLZ/cbhDWVTKUPki/C7pXKDUYVhGgr2oI7hmtH1ux
-         j5Cg==
-X-Forwarded-Encrypted: i=1; AFNElJ9A69Fx0uAO2OnYp6S5nt1SnYz0i2Hlcs9CikXatHEZHBoHdH6A2+qOGBOyGbavDQS9eeQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAS7dgJoTOF277FFLBZq77dRYjb/qYfRl0FnLAT6HoBbRgRh6N
-	96fsSEkge78K5DpMjGgTc/KeG5psHG2y8EUwl5L6FGdzDPN9C4woyHwa4y0C/7MbJGc=
-X-Gm-Gg: AeBDieu0kKcMjKndFL+YR7vpsD8haN1RmrFHlLZEADwZe8QzND+G717Tv+DyBkz7k0F
-	6+z1ghNuYtIgShPVDi4e5PzT//oLFjonyFBXSABVMLAVI//VgfBnbpqbazzVKOPtZdaJ+VHhV4H
-	Ma8bqS7767ol9vvld6AcDhRnkhaW/SrCfA88/dp/nIesppIobA4HimrE3RLLntjkCkJic6jcQzu
-	vYH91eWWlf9QqYj6Fo5kRnqWu4RyQugpmPxh9TV7QW9kNYsFuPglBDSm6zycToYw/nFLqhK627O
-	RvfH4l0Ft6km4R5EuSjYiNGHIruWMihSISYfZb4Mqim34RyyWLXkpk75mfxYmt4TkS7rc1+mUbz
-	7cXtpxkUJkkznQUW+QO0KFfeuCZr+uQ+SCpdlVRlGw4veHVGBbdSnV2GKGYOGiiH8VQ/ejdfnIS
-	WpDtc3NxSrElBNC/jCeCeIC0X5cZAweRjzfg==
-X-Received: by 2002:a5d:5847:0:b0:43f:e791:a347 with SMTP id ffacd0b85a97d-4493e982935mr3711927f8f.26.1777545881915;
-        Thu, 30 Apr 2026 03:44:41 -0700 (PDT)
-Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-447b7217afesm12338368f8f.23.2026.04.30.03.44.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 Apr 2026 03:44:39 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 7D1855F954;
-	Thu, 30 Apr 2026 11:44:35 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Mohamed Mediouni <mohamed@unpredictable.fr>,
-	qemu-arm@nongnu.org,
-	Pedro Barbuda <pbarbuda@microsoft.com>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org,
-	Alexander Graf <agraf@csgraf.de>,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v4 7/7] target/arm: implement WFET
-Date: Thu, 30 Apr 2026 11:44:34 +0100
-Message-ID: <20260430104434.1482407-8-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260430104434.1482407-1-alex.bennee@linaro.org>
-References: <20260430104434.1482407-1-alex.bennee@linaro.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SGaP6dSA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30EE6C2BCB3;
+	Thu, 30 Apr 2026 10:47:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777546067;
+	bh=nAR48QPMaW3D2KAOMmyQEOb81lOwfSZlfPuY3LhL6nU=;
+	h=Date:From:To:Subject:From;
+	b=SGaP6dSA2Fs55W2qjTp2vtr74QYSgnOjD89uryal9DYfenhk9E+PR2PTH2j+g6NpZ
+	 Gmm3Uya3TC3o6wdGRPhpgIXgGzVEWEdnupIiThrTw5MFJsLdICxy62SRhsjXDCSvxD
+	 MHfK3CLvz1WTVQIOjjdkYvJASbPMZvXhQFahGhnU1BnymwjIT53nQfOOD1RI349k9R
+	 98yNGXZa4MQRn3mErf8pT4o3b6E79Eeka3ATtmKBDBvHYFXb3x/SjTXV0FpErriWak
+	 002Jct6Iscj77u2/qte49aChrDRRF4WDKgK8mGrmlZP+tKLJ8tugACPjFPgGGZONgs
+	 wvYliwesMhV2w==
+Message-ID: <aa4f747c-840e-432b-bd6e-2cb207f2ff0c@kernel.org>
+Date: Thu, 30 Apr 2026 12:47:34 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+From: "David Hildenbrand (Arm)" <david@kernel.org>
+Content-Language: en-US
+To: "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "linux-mm@kvack.org" <linux-mm@kvack.org>, KVM <kvm@vger.kernel.org>
+Subject: [Invitation] bi-weekly guest_memfd upstream call on 2026-04-30
+ (today!)
+Autocrypt: addr=david@kernel.org; keydata=
+ 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
+ qIws/H2t
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-Now we have the event stream and SEV/SEVL implemented we can finally
-enable WFET for Aarch64.
+Hi,
 
-To avoid issues with QEMU's incomplete ldst exclusive handling causing
-potential deadlocks in common WFE enabled locking patterns we take
-advantage of the architectures flexibility and treat being in the
-exclusive region as a reason to exit.
+Late reminder :(
 
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Our next guest_memfd upstream call is scheduled for today, Thursday,
+2026-04-30 at 8:00 - 9:00am (GMT-07:00) Pacific Time - Vancouver.
 
----
-v2
-  - fix exception syndrome by using enum value
-  - use env->halt_reason
-v3
-  - fix check_wfx_trap(s/false/true/) as it is a WFE
-v4
-  - defer expensive calculations until needed
-  - treat cs->exclusive_addr as a IMPDEF WFE exit
-  - update commit message
----
- target/arm/tcg/helper-defs.h   |  1 +
- target/arm/tcg/op_helper.c     | 95 ++++++++++++++++++++++++++++++++++
- target/arm/tcg/translate-a64.c | 15 +++---
- 3 files changed, 104 insertions(+), 7 deletions(-)
+We'll be using the following Google meet:
+http://meet.google.com/wxp-wtju-jzw
 
-diff --git a/target/arm/tcg/helper-defs.h b/target/arm/tcg/helper-defs.h
-index ebdf09be38a..5e4d828dd55 100644
---- a/target/arm/tcg/helper-defs.h
-+++ b/target/arm/tcg/helper-defs.h
-@@ -56,6 +56,7 @@ DEF_HELPER_1(setend, void, env)
- DEF_HELPER_2(wfi, void, env, i32)
- DEF_HELPER_2(wfe, void, env, i32)
- DEF_HELPER_2(wfit, void, env, i32)
-+DEF_HELPER_2(wfet, void, env, i32)
- DEF_HELPER_1(yield, void, env)
- DEF_HELPER_1(pre_hvc, void, env)
- DEF_HELPER_2(pre_smc, void, env, i32)
-diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
-index 77ac6161e93..8421c548303 100644
---- a/target/arm/tcg/op_helper.c
-+++ b/target/arm/tcg/op_helper.c
-@@ -640,6 +640,101 @@ void HELPER(wfe)(CPUARMState *env, uint32_t insn_len)
- #endif
- }
- 
-+void HELPER(wfet)(CPUARMState *env, uint32_t rd)
-+{
-+#ifdef CONFIG_USER_ONLY
-+    /*
-+     * As for WFIT make it NOP here, because trying to raise EXCP_HLT
-+     * would trigger an abort.
-+     */
-+    return;
-+#else
-+    CPUState *cs = env_cpu(env);
-+    uint32_t excp;
-+    int target_el;
-+    ARMCPU *cpu;
-+    uint64_t cntval, timeout, offset, cntvct, nexttick;
-+    int64_t next_event;
-+
-+    /*
-+     * As for WFE if the event register is already set we can consume
-+     * the event and return immediately.
-+     */
-+    if (env->event_register) {
-+        env->event_register = false;
-+        return;
-+    }
-+
-+    /*
-+     * Don't bother to go into our "low power state" if
-+     * we would just wake up immediately.
-+     *
-+     * We want the value that we would get if we read CNTVCT_EL0 from
-+     * the current exception level, so the direct_access offset, not
-+     * the indirect_access one. Compare the pseudocode LocalTimeoutEvent(),
-+     * which calls VirtualCounterTimer().
-+     */
-+    cntval = gt_get_countervalue(env);
-+    offset = gt_direct_access_timer_offset(env, GTIMER_VIRT);
-+    cntvct = cntval - offset;
-+    timeout = env->xregs[rd];
-+    if (cpu_has_work(cs) || cntvct >= timeout) {
-+        return;
-+    }
-+
-+    /* We might sleep, so now we check to see if we should trap */
-+    target_el = check_wfx_trap(env, true, &excp);
-+    if (target_el) {
-+        env->pc -= 4;
-+        raise_exception(env, excp, syn_wfx(1, 0xe, rd, true, WFET, false), target_el);
-+    }
-+
-+    /*
-+     * If the CPU has entered the exclusive region we could sleep
-+     * until the global monitor moves from Exclusive to Open Access.
-+     * However it would be expensive for QEMU to fully model the
-+     * global monitor and not doing so would potentially trigger
-+     * deadlocks in WFE enabled locking code. However as WFE is a hint
-+     * instruction the architecture allows for the PE to leave
-+     * low-power state for any reason. QEMU chooses to treat being in
-+     * an exclusive region as such and return directly.
-+     */
-+    if (env->exclusive_addr != -1) {
-+        return;
-+    }
-+
-+    /*
-+     * Finally work out if the timeout or event stream will kick in
-+     * earlier.
-+     *
-+     * The WFET should time out when CNTVCT_EL0 >= the specified value.
-+     */
-+    cpu = env_archcpu(env);
-+    if (uadd64_overflow(timeout, offset, &nexttick)) {
-+        nexttick = UINT64_MAX;
-+    }
-+    if (nexttick > INT64_MAX / gt_cntfrq_period_ns(cpu)) {
-+        nexttick = INT64_MAX;
-+    }
-+
-+    next_event = gt_calc_next_event_stream(env);
-+    if (next_event > 0 && next_event < nexttick) {
-+        timer_mod(cpu->wfxt_timer, next_event);
-+    } else {
-+        if (nexttick == INT64_MAX) {
-+            timer_mod_ns(cpu->wfxt_timer, INT64_MAX);
-+        } else {
-+            timer_mod(cpu->wfxt_timer, nexttick);
-+        }
-+    }
-+
-+    env->halt_reason = HALT_WFE;
-+    cs->exception_index = EXCP_HLT;
-+    cs->halted = 1;
-+    cpu_loop_exit(cs);
-+#endif
-+}
-+
- void HELPER(yield)(CPUARMState *env)
- {
-     CPUState *cs = env_cpu(env);
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index a6f392a28f8..ead2a7ff81f 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -2086,14 +2086,15 @@ static bool trans_WFET(DisasContext *s, arg_WFET *a)
-         return false;
-     }
- 
--    /*
--     * We rely here on our WFE implementation being a NOP, so we
--     * don't need to do anything different to handle the WFET timeout
--     * from what trans_WFE does.
--     */
--    if (!(tb_cflags(s->base.tb) & CF_PARALLEL)) {
--        s->base.is_jmp = DISAS_WFE;
-+    if (s->ss_active) {
-+        /* Act like a NOP under architectural singlestep */
-+        return true;
-     }
-+
-+    gen_a64_update_pc(s, 4);
-+    gen_helper_wfet(tcg_env, tcg_constant_i32(a->rd));
-+    /* Go back to the main loop to check for interrupts */
-+    s->base.is_jmp = DISAS_EXIT;
-     return true;
- }
- 
+The meeting notes can be found at [1], where we also link recordings and
+collect current guest_memfd upstream proposals. If you want an google
+calendar invitation that also covers all future meetings, just write me
+or Ackerley a mail.
+
+In this meeting, we'll talk about progress on the in-place conversion front.
+
+To put something to discuss onto the agenda, reply to this mail or add
+them to the "Topics/questions for next meeting(s)" section in the
+meeting notes as a comment.
+
+[1]
+https://docs.google.com/document/d/1M6766BzdY1Lhk7LiR5IqVR8B8mG3cr-cxTxOrAosPOk/edit?usp=sharing
+
 -- 
-2.47.3
+Cheers,
+
+David
 
