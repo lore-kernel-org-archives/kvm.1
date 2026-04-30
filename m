@@ -1,55 +1,55 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A5143CED9
-	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 15:08:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63D643DA5A
+	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 15:08:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777561697; cv=none; b=qBmLPOOENCkrpKFRkfNm8sMoXLfeAQOFUxGCApoZVBDM9RpY4VSqLz3u6IeqSjdVpRssayiKowvjggaiRLtU9wFMW0dRCN2FObtP96XEVcd4uXbuSHjb6R9SKZQpvK43aPtklYCcNwaDl3i53auiM5KLFkN7tRjQN+frOJVut8w=
+	t=1777561698; cv=none; b=Jj76B4uyQCBOTPNUkCoWugWN+kHcSMJ8RFUcG73WePhwDeYS2Wby1p0LnHGikoeYD0Fbxxl/WqNynQWDroblXbqX+GRJsK+/sMlBWjobWkzfoKH2iS+p4qo2Ddmpe+OcGdo1BY1eCLsNmz2k4wJ8XCK4wMNUp54MrtdDen4FNfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777561697; c=relaxed/simple;
-	bh=GR++9H5p0i1D5sIKFL2DvhkQ9RXdFtz3TIvO90pRMw0=;
+	s=arc-20240116; t=1777561698; c=relaxed/simple;
+	bh=JuQ5ifpSezq9RPetdtgiaNYLdjC6VLx7Jds/OSAOh30=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BtU5aM7xwUf/fImtB27NgLgsxuakEqTJ4iaJMFY9P0oEP0P43O/b2QH4oW2mjgqKu9Xr52yoxUKAFBVaJpY35IKXLfVQg4zm6fd/BTV35OK9j2y+u71/6QdLPtvqp4Zc0XeBSkeuaYuyZxZ25EP0OitS4oWJyUIWPc00ik+FNA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TnlrR38m; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=oY0u88rJG/S3Ue1I5t+QvIu8ZGxJtCNw9GE4elRDySZDLtFN5lcitd0hk6PAYHjAAP8ITuXHtLALHQG8/wA7P6bJGVpoxFzIb05qRyiZP1/7GOmgyWu0mzkix51Km4zf6m1qFPozj0nj48QEQBZ64/rm58m42i0VlPx3oWzyrYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CrAneewK; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TnlrR38m"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CrAneewK"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777561693;
+	s=mimecast20190719; t=1777561694;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=RQb5rHk5eMELl/+vuZzClPskfe+ABko0k3vSQpQtlOY=;
-	b=TnlrR38mGYWcwhXUpTNEm2XzZnVoTyAym5mGBoxMkvmQWNYFD/9vcJsQpzKy9LiLBBXLj7
-	OMvwz77zu76SaTbQ1Mu1D+UzmTnlDDIHjs9AYZXlzz3GX8CHy88G7bv7Rry2lnyS+/Apn/
-	7tc6OzQLQGtwodLkGQMRP9RAqyGQ/R8=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=C1YGIFeSK9cmskuSDD+3fm+A3buUMN10rubEx5F9QP0=;
+	b=CrAneewK3ezS+7DmIEmJxZ4+HMQpumhWwxi3M7jxtS+mnycTZjDlkb5nT2gI0qo8Xylw4D
+	uMp+j/RG8kz6hj1AQxAbeSzU8zh9xSTKTvwrCFvrO/xabSe307KOjmtuqu4ezY9imtfByG
+	deVdFiqt545LtRWJ4HsD0aWSZ0rJMJU=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-144-MLPCkoqHOc-0nWAHvwyKRg-1; Thu,
- 30 Apr 2026 11:08:12 -0400
-X-MC-Unique: MLPCkoqHOc-0nWAHvwyKRg-1
-X-Mimecast-MFC-AGG-ID: MLPCkoqHOc-0nWAHvwyKRg_1777561691
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-281-kh3IWg7oPT-O4hkP7f2kjA-1; Thu,
+ 30 Apr 2026 11:08:10 -0400
+X-MC-Unique: kh3IWg7oPT-O4hkP7f2kjA-1
+X-Mimecast-MFC-AGG-ID: kh3IWg7oPT-O4hkP7f2kjA_1777561689
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0ABF8195608E;
-	Thu, 30 Apr 2026 15:08:11 +0000 (UTC)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 97A4918004A9;
+	Thu, 30 Apr 2026 15:08:09 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 786C518001ED;
-	Thu, 30 Apr 2026 15:08:10 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 114A3180045E;
+	Thu, 30 Apr 2026 15:08:08 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: d.riley@proxmox.com,
 	jon@nutanix.com
-Subject: [PATCH 27/28] KVM: SVM: work around errata 1218
-Date: Thu, 30 Apr 2026 11:07:46 -0400
-Message-ID: <20260430150747.76749-28-pbonzini@redhat.com>
+Subject: [PATCH 25/28] KVM: x86/mmu: add support for GMET to NPT page table walks
+Date: Thu, 30 Apr 2026 11:07:44 -0400
+Message-ID: <20260430150747.76749-26-pbonzini@redhat.com>
 In-Reply-To: <20260430150747.76749-1-pbonzini@redhat.com>
 References: <20260430150747.76749-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -62,46 +62,147 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-According to AMD, the hypervisor may not be able to determine whether a
-fault was a GMET fault or an NX fault based on EXITINFO1, and software
-"must read the relevant VMCB to determine whether a fault was a GMET
-fault or an NX fault".  The APM further details that they meant the
-CPL field.
-
-KVM uses the page fault error code to distinguish the causes of a
-nested page fault, so recalculate the PFERR_USER_MASK bit of the
-vmexit information.  Only do it for fetches and only if GMET is in
-use, because KVM does not differentiate based on PFERR_USER_MASK
-for other nested NPT page faults.
+GMET allows page table entries to be created with U=0 in NPT.
+However, when GMET=1 U=0 only affects execution, not reads or
+writes.  Ignore user faults on non-fetch accesses for NPT GMET.
 
 Tested-by: David Riley <d.riley@proxmox.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/svm/svm.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ arch/x86/include/asm/kvm_host.h |  2 ++
+ arch/x86/kvm/mmu.h              |  2 +-
+ arch/x86/kvm/mmu/mmu.c          | 18 ++++++++++++------
+ arch/x86/kvm/svm/nested.c       | 10 +++++++---
+ 4 files changed, 22 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index 3895d8794366..fd79874c5f4b 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -1993,6 +1993,18 @@ static int npf_interception(struct kvm_vcpu *vcpu)
- 		}
- 	}
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 7dde4ca87752..1da3d5c59e15 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -370,6 +370,8 @@ union kvm_mmu_page_role {
+ 		 * cr4_smep is also set for EPT MBEC.  Because it affects
+ 		 * which pages are considered non-present (bit 10 additionally
+ 		 * must be zero if MBEC is on) it has to be in the base role.
++		 * It also has to be in the base role for AMD GMET because
++		 * kernel-executable pages need to have U=0 with GMET enabled.
+ 		 */
+ 		unsigned cr4_smep:1;
  
-+	if (!is_sev_es_guest(vcpu) &&
-+	    (svm->vmcb->control.misc_ctl & SVM_MISC_ENABLE_GMET) &&
-+	    (error_code & PFERR_FETCH_MASK)) {
-+		/*
-+		 * Work around errata 1218: EXITINFO1[2] May Be Incorrectly Set
-+		 * When GMET (Guest Mode Execute Trap extension) is Enabled
-+		 */
-+		error_code |= PFERR_USER_MASK;
-+		if (svm_get_cpl(vcpu) != 3)
-+			error_code &= ~PFERR_USER_MASK;
-+	}
+diff --git a/arch/x86/kvm/mmu.h b/arch/x86/kvm/mmu.h
+index 1b354e1f2d81..ddf4e467c071 100644
+--- a/arch/x86/kvm/mmu.h
++++ b/arch/x86/kvm/mmu.h
+@@ -97,7 +97,7 @@ void kvm_mmu_set_ept_masks(bool has_ad_bits);
+ 
+ void kvm_init_mmu(struct kvm_vcpu *vcpu);
+ void kvm_init_shadow_npt_mmu(struct kvm_vcpu *vcpu, unsigned long cr4,
+-			     u64 efer, gpa_t nested_cr3);
++			     u64 efer, gpa_t nested_cr3, u64 misc_ctl);
+ void kvm_init_shadow_ept_mmu(struct kvm_vcpu *vcpu, bool execonly,
+ 			     int huge_page_level, bool accessed_dirty,
+ 			     bool mbec, gpa_t new_eptp);
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index 32845edd14fa..015085ef6e46 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -55,6 +55,7 @@
+ #include <asm/io.h>
+ #include <asm/set_memory.h>
+ #include <asm/spec-ctrl.h>
++#include <asm/svm.h>
+ #include <asm/vmx.h>
+ 
+ #include "trace.h"
+@@ -5572,7 +5573,7 @@ reset_ept_shadow_zero_bits_mask(struct kvm_mmu *context, bool execonly)
+ 	 (14 & (access) ? 1 << 14 : 0) | \
+ 	 (15 & (access) ? 1 << 15 : 0))
+ 
+-static void update_permission_bitmask(struct kvm_mmu *mmu, bool ept)
++static void update_permission_bitmask(struct kvm_mmu *mmu, bool tdp, bool ept)
+ {
+ 	unsigned byte;
+ 
+@@ -5633,7 +5634,12 @@ static void update_permission_bitmask(struct kvm_mmu *mmu, bool ept)
+ 			/* Faults from kernel mode accesses to user pages */
+ 			u16 kf = (pfec & PFERR_USER_MASK) ? 0 : u;
+ 
+-			uf = (pfec & PFERR_USER_MASK) ? (u16)~u : 0;
++			/*
++			 * For NPT GMET, U=0 does not affect reads and writes.  Fetches
++			 * are handled below via cr4_smep.
++			 */
++			if (!(tdp && cr4_smep))
++				uf = (pfec & PFERR_USER_MASK) ? (u16)~u : 0;
+ 
+ 			if (efer_nx)
+ 				ff = (pfec & PFERR_FETCH_MASK) ? (u16)~x : 0;
+@@ -5744,7 +5750,7 @@ static void reset_guest_paging_metadata(struct kvm_vcpu *vcpu,
+ 		return;
+ 
+ 	reset_guest_rsvds_bits_mask(vcpu, mmu);
+-	update_permission_bitmask(mmu, false);
++	update_permission_bitmask(mmu, mmu == &vcpu->arch.guest_mmu, false);
+ 	update_pkru_bitmask(mmu);
+ }
+ 
+@@ -5940,7 +5946,7 @@ static void kvm_init_shadow_mmu(struct kvm_vcpu *vcpu,
+ }
+ 
+ void kvm_init_shadow_npt_mmu(struct kvm_vcpu *vcpu, unsigned long cr4,
+-			     u64 efer, gpa_t nested_cr3)
++			     u64 efer, gpa_t nested_cr3, u64 misc_ctl)
+ {
+ 	struct kvm_mmu *context = &vcpu->arch.guest_mmu;
+ 	struct kvm_mmu_role_regs regs = {
+@@ -5953,7 +5959,7 @@ void kvm_init_shadow_npt_mmu(struct kvm_vcpu *vcpu, unsigned long cr4,
+ 
+ 	/* NPT requires CR0.PG=1. */
+ 	WARN_ON_ONCE(cpu_role.base.direct || !cpu_role.base.guest_mode);
+-	cpu_role.base.cr4_smep = false;
++	cpu_role.base.cr4_smep = (misc_ctl & SVM_MISC_ENABLE_GMET) != 0;
+ 
+ 	root_role = cpu_role.base;
+ 	root_role.level = kvm_mmu_get_tdp_level(vcpu);
+@@ -6011,7 +6017,7 @@ void kvm_init_shadow_ept_mmu(struct kvm_vcpu *vcpu, bool execonly,
+ 		context->gva_to_gpa = ept_gva_to_gpa;
+ 		context->sync_spte = ept_sync_spte;
+ 
+-		update_permission_bitmask(context, true);
++		update_permission_bitmask(context, true, true);
+ 		context->pkru_mask = 0;
+ 		reset_rsvds_bits_mask_ept(vcpu, context, execonly, huge_page_level);
+ 		reset_ept_shadow_zero_bits_mask(context, execonly);
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index a1cffd274000..7adfa7da210d 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -95,7 +95,8 @@ static void nested_svm_init_mmu_context(struct kvm_vcpu *vcpu)
+ 	 */
+ 	kvm_init_shadow_npt_mmu(vcpu, svm->vmcb01.ptr->save.cr4,
+ 				svm->vmcb01.ptr->save.efer,
+-				svm->nested.ctl.nested_cr3);
++				svm->nested.ctl.nested_cr3,
++				svm->nested.ctl.misc_ctl);
+ 	vcpu->arch.mmu->get_guest_pgd     = nested_svm_get_tdp_cr3;
+ 	vcpu->arch.mmu->get_pdptr         = nested_svm_get_tdp_pdptr;
+ 	vcpu->arch.mmu->inject_page_fault = nested_svm_inject_npf_exit;
+@@ -2076,12 +2077,15 @@ static gpa_t svm_translate_nested_gpa(struct kvm_vcpu *vcpu, gpa_t gpa,
+ 				      struct x86_exception *exception,
+ 				      u64 pte_access)
+ {
++	struct vcpu_svm *svm = to_svm(vcpu);
+ 	struct kvm_mmu *mmu = vcpu->arch.mmu;
+ 
+ 	BUG_ON(!mmu_is_nested(vcpu));
+ 
+-	/* NPT walks are always user-walks */
+-	access |= PFERR_USER_MASK;
++	/* Non-GMET walks are always user-walks */
++	if (!(svm->nested.ctl.misc_ctl & SVM_MISC_ENABLE_GMET))
++		access |= PFERR_USER_MASK;
 +
- 	if (is_sev_snp_guest(vcpu) && (error_code & PFERR_GUEST_ENC_MASK))
- 		error_code |= PFERR_PRIVATE_ACCESS;
+ 	return mmu->gva_to_gpa(vcpu, mmu, gpa, access, exception);
+ }
  
 -- 
 2.52.0
