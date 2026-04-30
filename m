@@ -1,331 +1,123 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274B034B1A7;
-	Thu, 30 Apr 2026 12:23:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7CB40243A
+	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 12:26:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777551816; cv=none; b=oN+kxA9wUsAMPZ4DaO4KuGoFv15DnLX/DeJxGc7+obEELXEXYFklnvqHS8ShhWQWNfd945K67f47OMinuT7L1xxusLYHbskphUc64g0FyQ8u/h3+1RCzrd0+gW2ci6wtg+uRqeSpoNvnyXDkDNii+yYfbrbiG4l8cocK2kJt+Z4=
+	t=1777552016; cv=none; b=TfxPZWJBIrpu4ldlkQvbQOBMC6eBMLhVkarZu4OvoFcyW0QtTC0zVrUrCtR9vG0p27jKwIFVaA9twAvBsexiyhDHcMI2wLX0y3sVY4dN1W6M8t1XXn87MYkbNamIK5uXFthbMj85qstgEwvXjkEoENBNoql6K6ta6KYS4aEdPug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777551816; c=relaxed/simple;
-	bh=AVgeA8sBc9eOp4iD/j14fMtAMEu72+Vkz0L7R4Cqg6g=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iAgBqvMAigOp7YmONHALTOO5udohrAH3iRKugn6dkz5jYrRd1cbXBV2EssndG2gzwq8FKPK1If8vXIaPZCi3tt5vvwjl8gd4DLQuwtQCZpTmg9WMUQnNjfGTLhQMy3EL6xtYNnFnsG8rU+k3t/OMMAWMJjKX4Jytd3zPL3f25Fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mV0kEkwQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777552016; c=relaxed/simple;
+	bh=Q+CUg+VsmZKjq366q44C8YuEEFsvKKcl8wiXNOwD0e0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=SwIiI/TwUpRMSlUtds0vvpygY6cAtoeu+y7EFef0lZRR1Gx787NkNpffRDYShik+SgAc7nS9IYApnfecX2m6+1QhgGfvRVrDYv5uLVfMKyO6YK8HNH0M2ALd0RFgtAazbjnUqOmiszdWysN9sfpDryulZ8J39s9y4ZbjgroTNvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lfqm2Ci1; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--edumazet.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mV0kEkwQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A477C2BCB3;
-	Thu, 30 Apr 2026 12:23:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777551815;
-	bh=AVgeA8sBc9eOp4iD/j14fMtAMEu72+Vkz0L7R4Cqg6g=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=mV0kEkwQ0rPw+9zUmr5GT8+hrsdSA9tCIfGIOIRciTyfx+sN3O5epgqwp5Sg9/xKx
-	 dooTaJ7rFTlNRlFuV0tT8+xs+PP7UqE8WHXVul+fmDVXqsIUMHbjCXKx9AGZ94orpi
-	 RiCOVLZAZME6MIo6n9vrcPg56jAhS0Kmm7M4SetBCkbRfD6BLBHNlRrUMB0PlLte+G
-	 Er2XwmM4q1RsbTZpcL1lnqaXmn/FStt2eaQSKxNakfA7/BqVmRNqSOoV2HgRjME4js
-	 HitBiM1PMzxMlAaELaKqgda+odpRkM7xujUba3YmmDDLNJO8riRJGIiX5EXtNvgK3q
-	 ZZoepWksDJW/A==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wIQQW-0000000GGM6-3rQ7;
-	Thu, 30 Apr 2026 12:23:33 +0000
-Date: Thu, 30 Apr 2026 13:23:32 +0100
-Message-ID: <86cxzgzlff.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Sascha Bischoff <Sascha.Bischoff@arm.com>
-Cc: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	nd <nd@arm.com>,
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
-	Joey Gouly
-	<Joey.Gouly@arm.com>,
-	Suzuki Poulose <Suzuki.Poulose@arm.com>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"peter.maydell@linaro.org"
-	<peter.maydell@linaro.org>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	Timothy Hayes <Timothy.Hayes@arm.com>
-Subject: Re: [PATCH 16/43] KVM: arm64: gic-v5: Initialise and teardown VMTEs & doorbells
-In-Reply-To: <20260427160547.3129448-17-sascha.bischoff@arm.com>
-References: <20260427160547.3129448-1-sascha.bischoff@arm.com>
-	<20260427160547.3129448-17-sascha.bischoff@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lfqm2Ci1"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-79472373f48so15100517b3.3
+        for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 05:26:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777552014; x=1778156814; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ee+M/5NYR6efU5/2iPR/zMWzx0RQD/fTLUx2lJ5g5rk=;
+        b=lfqm2Ci1kxT7L2zqkmRFBiUldnMQYEIwVlyC4CShIeA7shJH7AX7DHWCBCJDzjX8Zq
+         oSCiJaZlezPfdkJSmrVkbW7KC0Z1fX0A1l39JNUwhTEuTh09afUG83wxzG96+LKigBoy
+         PSOxxw8GkPzPFK/GiIHBiCsca+mETKzwnaRHcRMfYDdBoDQLLWx1ersgT4w9/Y68/AMx
+         g8Ax8Fh0yS8Y2FlERja0efTjNPNH1ED1/zBpcxMkPPrEh6Mf/P9yyL/hGOhQLmguJdLs
+         s3EDA3Dy6rkDGCjq/VvjRKEAB4GSUrTTP5BK4235XeG6o+1WfJm4DVmmDEIryxWdbpSE
+         XtsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777552014; x=1778156814;
+        h=content-transfer-encoding:cc:to:from:subject:message-id
+         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ee+M/5NYR6efU5/2iPR/zMWzx0RQD/fTLUx2lJ5g5rk=;
+        b=dN+fdfE70kz+jp34N/HMwzD+fZjO+rZgG8L4OZDk54IewOVD2eyDrHMi9rgX7fMj6B
+         hy0VWRt7BtfHX9IUlv/jH6AUiq/3OxAfn9b4UxZtIO0mXfUdjU9CGNMpAi7eFDpw32vI
+         mQ3fCC83bq6EO3NOAxqxnPS6JhaHi7TE6qAkMXyLOKlkHHxjkLbKfVq3ksHz1ugr+w7/
+         3xGd2g45JsHimxdLEZlQlUYLLu7br06G9aUKOUYVbZ+pN8k9WAnLGxb6P5VzabuDS+kH
+         My8m8RtRRSFKIarRQ3wea3CZx7/9gA5KO6xCKuMNoz4gccS0stCfFZPVfpFSKp+48IW3
+         VQYQ==
+X-Forwarded-Encrypted: i=1; AFNElJ//zkDTgIpJ0faf+8pbamSm2aJRelvanctUUTohOSP+U7qOONaximrzP2jL/Qvv0w6g4tk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzdl/sp7r1XJc0sapuYcq9Od+EvmlkFfb1urKMTuOkGNnEN854h
+	/av/kLJMmnkCpJFi5CjcLgUn+1ucQORMys8Spc1QvvbRBbQujQB3q9ViCuzKAqF8+6AVojFlxJz
+	8qvoGwmL2L2dHgw==
+X-Received: from ywbnv28-n1.prod.google.com ([2002:a05:690c:931c:10b0:7ba:eed4:c262])
+ (user=edumazet job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a81:8ac2:0:b0:7a1:3088:e528 with SMTP id 00721157ae682-7bd5286eebfmr19968607b3.18.1777552014025;
+ Thu, 30 Apr 2026 05:26:54 -0700 (PDT)
+Date: Thu, 30 Apr 2026 12:26:52 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, nd@arm.com, oliver.upton@linux.dev, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, lpieralisi@kernel.org, Timothy.Hayes@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
+Message-ID: <20260430122653.554058-1-edumazet@google.com>
+Subject: [PATCH net] vsock/virtio: fix potential unbounded skb queue
+From: Eric Dumazet <edumazet@google.com>
+To: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Eric Dumazet <edumazet@google.com>, Arseniy Krasnov <AVKrasnov@sberdevices.ru>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	"=?UTF-8?q?Eugenio=20P=C3=A9rez?=" <eperezma@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 27 Apr 2026 17:11:30 +0100,
-Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
-> 
-> Each GICv5 VM requires a valid VM Table Entry (VMTE). The VM Table
-> itself is allocated during probe time, but a VM needs to provision a
-> VMTE before it is able to properly run (PPIs will work, but nothing
-> else will - and PPIs only are not useful!).
-> 
-> The correct time for setting up the VMTE is during VM
-> initialisation. For GICv5, this is vgic_v5_init(). Each VM needs a VM
-> ID - this is actually the index into the VM Table so it is how a
-> specific VMTE is selected too. As part of vgic_v5_init get a VM ID via
-> vgic_v5_allocate_vm_id(), which internally uses an IDA to select an
-> unused VM ID (and hence VMTE) within the range of allowed VM IDs.
-> 
-> Once the VM ID has been allocated, the doorbell domain for the VM is
-> allocated, and each of the doorbells itself is allocated and assigned
-> to a vcpu.
-> 
-> Assuming everything up until this point has succeeded, initialise the
-> VMTE. Internally this allocates the additional data structures
-> required by the hardware - the VM Descriptor, VPE Table, etc. This
-> VMTE is then made valid via the IRS's MMIO interface. Finally, all
-> VPEs are allocated within the VPET.
-> 
-> On teardown, this process is reversed again. The VMTE is made invalid,
-> the VPEs are freed, the doorbells are released and the domain torn
-> down, and finally the VM ID is released. The latter allows the VM ID
-> and VMTE to be reused for a future VM.
-> 
-> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
-> ---
->  arch/arm64/kvm/vgic/vgic-v5.c | 146 +++++++++++++++++++++++++++++-----
->  1 file changed, 128 insertions(+), 18 deletions(-)
-> 
-> diff --git a/arch/arm64/kvm/vgic/vgic-v5.c b/arch/arm64/kvm/vgic/vgic-v5.c
-> index 2fc6fa4df034f..9347bc6895223 100644
-> --- a/arch/arm64/kvm/vgic/vgic-v5.c
-> +++ b/arch/arm64/kvm/vgic/vgic-v5.c
-> @@ -518,6 +518,18 @@ static int vgic_v5_irs_vpe_cr0_update(int vm_id, int vpe_id, u32 cr0)
->  	return 0;
->  }
->  
-> +static irqreturn_t db_handler(int irq, void *data)
-> +{
-> +	struct kvm_vcpu *vcpu = data;
-> +
-> +	WRITE_ONCE(vcpu->arch.vgic_cpu.vgic_v5.gicv5_vpe.db_fired, true);
-> +
-> +	kvm_make_request(KVM_REQ_IRQ_PENDING, vcpu);
-> +	kvm_vcpu_kick(vcpu);
-> +
-> +	return IRQ_HANDLED;
-> +}
-> +
+virtio_transport_inc_rx_pkt() checks vvs->rx_bytes + len > vvs->buf_alloc.
 
-I think it'd make more sense if the doorbell
-handling/requesting/freeing was one patch, or at least a set of
-consecutive patches in the series.
+virtio_transport_recv_enqueue() skips coalescing for packets
+with VIRTIO_VSOCK_SEQ_EOM.
 
-As it is now, it is very hard to keep track of things. You have part
-of it in the previous patch, the requesting and handling here, and
-probably the freeing in some other patch I haven't seen.
+If fed with packets with len =3D=3D 0 and VIRTIO_VSOCK_SEQ_EOM,
+a very large number of packets can be queued
+because vvs->rx_bytes stays at 0.
 
->  static int vgic_v5_send_command(struct kvm_vcpu *vcpu,
->  				enum gicv5_vcpu_info_cmd_type type)
->  {
-> @@ -726,26 +738,46 @@ void vgic_v5_reset(struct kvm_vcpu *vcpu)
->  	}
->  }
->  
-> -int vgic_v5_init(struct kvm *kvm)
-> +int vgic_v5_map_resources(struct kvm *kvm)
->  {
-> -	struct kvm_vcpu *vcpu;
-> -	unsigned long idx;
-> -	int ret;
-> +	if (!vgic_initialized(kvm))
-> +		return -EBUSY;
->  
-> -	if (vgic_initialized(kvm))
-> -		return 0;
-> +	return 0;
-> +}
+Fix this by estimating the skb metadata size:
 
-Pointless code movement?
+	(Number of skbs in the queue) * SKB_TRUESIZE(0)
 
->
-> -	ret = vgic_v5_create_per_vm_domain(&kvm->arch.vgic.gicv5_vm);
-> -	if (ret)
-> -		return ret;
-> +/*
-> + * Claim and populate a VMTE (optionally making a new L2 VMT valid), create VPE
-> + * doorbells, allocate VPET and populate for each VPE. Finally, we also init the
-> + * vIRS, which means allocating and making the virtual SPI IST valid.
-> + *
-> + * Note: We do need to put the cart before the horse here. The VPE doorbells are
-> + * our conduit for communication with the IRS, which means we need to have those
-> + * before making the VMTE valid.
-> + *
-> + * On failure, we clean up in the teardown path (vgic_v5_teardown()).
-> + */
-> +int vgic_v5_init(struct kvm *kvm)
-> +{
-> +	int nr_vcpus, ret = 0;
-> +	struct kvm_vcpu *vcpu, *vcpu0;
-> +	unsigned long i;
-> +	struct irq_data *d;
-> +	unsigned int db_virq;
-> +
-> +	nr_vcpus = atomic_read(&kvm->online_vcpus);
-> +	if (nr_vcpus == 0)
-> +		return -ENODEV;
->  
-> -	kvm_for_each_vcpu(idx, vcpu, kvm) {
-> +	kvm_for_each_vcpu(i, vcpu, kvm) {
->  		if (vcpu_has_nv(vcpu)) {
->  			kvm_err("Nested GICv5 VMs are currently unsupported\n");
->  			return -EINVAL;
->  		}
->  	}
->  
-> +	kvm->arch.vgic.gicv5_vm.nr_vpes = nr_vcpus;
+Fixes: 077706165717 ("virtio/vsock: don't use skbuff state to account credi=
+t")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
+Cc: Stefan Hajnoczi <stefanha@redhat.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>
+Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Cc: "Eugenio P=C3=A9rez" <eperezma@redhat.com>
+Cc: kvm@vger.kernel.org
+Cc: virtualization@lists.linux.dev
+---
+ net/vmw_vsock/virtio_transport_common.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-Why do we need to track the number of vcpus separately from what KVM
-already does? GICv4 does it because a lot of the state is managed by
-the irqchip driver, but that's not the case here. I hope we can come
-up with a slightly simpler model with GICv5.
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio=
+_transport_common.c
+index 416d533f493d7b07e9c77c43f741d28cfcd0953e..9b8014516f4fb1130ae184635fb=
+ba4dfee58bd64 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -447,7 +447,9 @@ static int virtio_transport_send_pkt_info(struct vsock_=
+sock *vsk,
+ static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
+ 					u32 len)
+ {
+-	if (vvs->buf_used + len > vvs->buf_alloc)
++	u64 skb_overhead =3D (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0=
+);
++
++	if (skb_overhead + vvs->buf_used + len > vvs->buf_alloc)
+ 		return false;
+=20
+ 	vvs->rx_bytes +=3D len;
+--=20
+2.54.0.545.g6539524ca2-goog
 
-> +
->  	/* We only allow userspace to drive the SW_PPI, if it is implemented. */
->  	bitmap_zero(kvm->arch.vgic.gicv5_vm.userspace_ppis,
->  		    VGIC_V5_NR_PRIVATE_IRQS);
-> @@ -754,20 +786,98 @@ int vgic_v5_init(struct kvm *kvm)
->  		   kvm->arch.vgic.gicv5_vm.userspace_ppis,
->  		   ppi_caps.impl_ppi_mask, VGIC_V5_NR_PRIVATE_IRQS);
->  
-> -	return 0;
-> +	ret = vgic_v5_allocate_vm_id(kvm);
-> +	if (ret) {
-> +		kvm_err("Maximum number of GICv5 VMs reached!\n");
-> +		return ret;
-> +	}
-
-I'd rather we don't scream on the console when running out of
-VMIDs. If we're at capacity, so be it. That's not an error worth
-spamming the console over.
-
-> +
-> +	ret = vgic_v5_create_per_vm_domain(&kvm->arch.vgic.gicv5_vm);
-> +	if (ret)
-> +		return ret;
-
-Who is freeing the VMID?
-
-> +
-> +	/*
-> +	 * Allocate VPE doorbells first - these are our conduit for
-> +	 * communicating with the host irqchip driver.
-> +	 */
-> +	db_virq = irq_domain_alloc_irqs(kvm->arch.vgic.gicv5_vm.domain,
-> +					nr_vcpus, NUMA_NO_NODE,
-> +					&kvm->arch.vgic.gicv5_vm);
-> +	if (db_virq < 0) {
-> +		/* Simplify teardown by doing this early! */
-> +		vgic_v5_teardown_per_vm_domain(&kvm->arch.vgic.gicv5_vm);
-> +		return db_virq;
-> +	}
-> +
-> +	kvm->arch.vgic.gicv5_vm.vpe_db_base = db_virq;
-> +
-> +	kvm_for_each_vcpu(i, vcpu, kvm) {
-> +		d = irq_domain_get_irq_data(kvm->arch.vgic.gicv5_vm.domain,
-> +					    db_virq + i);
-> +		irq_set_status_flags(db_virq + i, IRQ_NOAUTOEN);
-> +
-> +		ret = request_irq(db_virq + i, db_handler, 0, "vcpu", vcpu);
-> +		if (ret)
-> +			return ret;
-> +
-> +		/* Stash it with the VCPU for easy retrieval */
-> +		vcpu->arch.vgic_cpu.vgic_v5.gicv5_vpe.db = db_virq + i;
-> +	}
-> +
-> +	/* Populate VMTE (with VPET and VM descriptor) */
-> +	ret = vgic_v5_vmte_init(kvm);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* We pick the first vcpu to make the VMTE valid - any would do */
-> +	vcpu0 = kvm_get_vcpu(kvm, 0);
-> +	ret = vgic_v5_send_command(vcpu0, VMTE_MAKE_VALID);
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Loop over all VPEs, allocate/populate their data structures */
-> +	kvm_for_each_vcpu(i, vcpu, kvm) {
-> +		ret = vgic_v5_vmte_alloc_vpe(vcpu);
-> +		if (ret)
-> +			return ret;
-> +	}
-> +
-> +	return ret;
-
-I'm very worried about the error handling of that function. Who is
-responsible for cleaning up the mess when this fails?
-
->  }
->  
->  void vgic_v5_teardown(struct kvm *kvm)
->  {
-> -	vgic_v5_teardown_per_vm_domain(&kvm->arch.vgic.gicv5_vm);
-> -}
-> +	struct kvm_vcpu *vcpu, *vcpu0;
-> +	struct vgic_dist *dist = &kvm->arch.vgic;
-> +	unsigned long i;
-> +	int rc;
->  
-> -int vgic_v5_map_resources(struct kvm *kvm)
-> -{
-> -	if (!vgic_initialized(kvm))
-> -		return -EBUSY;
-> +	/*
-> +	 * If the VM's ID isn't valid, then we failed init very early. Nothing
-> +	 * to do here.
-> +	 */
-> +	if (!kvm->arch.vgic.gicv5_vm.vm_id_valid)
-> +		return;
->  
-> -	return 0;
-> +	if (kvm->arch.vgic.gicv5_vm.vmte_allocated) {
-> +		/* Make the VM invalid  */
-> +		vcpu0 = kvm_get_vcpu(kvm, 0);
-> +		rc = vgic_v5_send_command(vcpu0, VMTE_MAKE_INVALID);
-> +		if (rc)
-> +			kvm_err("could not make VMTE invalid\n");
-> +
-> +		kvm_for_each_vcpu(i, vcpu, kvm) {
-> +			if (vgic_v5_vmte_free_vpe(vcpu))
-> +				kvm_err("Failed to free VPE\n");
-> +		}
-> +
-> +		if (vgic_v5_vmte_release(kvm))
-> +			kvm_err("Failed to release VM 0x%x\n", dist->gicv5_vm.vm_id);
-> +	}
-> +
-> +	vgic_v5_teardown_per_vm_domain(&kvm->arch.vgic.gicv5_vm);
-> +
-> +	vgic_v5_release_vm_id(kvm);
->  }
->  
->  int vgic_v5_finalize_ppi_state(struct kvm *kvm)
-
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
