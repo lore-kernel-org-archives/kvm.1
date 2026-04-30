@@ -1,199 +1,203 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C26FE3314C5
-	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 16:16:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1A67082D;
+	Thu, 30 Apr 2026 16:28:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777565807; cv=none; b=HB9gfh/+QZKQu3wFpmklVEgWNjoXPUcP+YI2CtPH5cQ0ZwuCK43yYdVnp7O0RZy9RrwuhmfV2bEqT6g+uDi566btWNU00C0m6pMNKa/vosFgTvQpUyZIlG7qhwTvB7cdX4qej/cHjs5hTP7Xfaqp8XNWbIAtFQH7iwT10zIimRs=
+	t=1777566499; cv=none; b=DEP27cKY6CNioFzdQss97PJ66ExBV2LgE6KL+yyAwuKNJcGm3we3tqjs0y7UrmdPQkX6Ihx2IXPrYU3JnpG4WdUTeMiAgAHXSF/zTuOLGKkUzmWaXLYByBPL5dysn/N15VR7vRVy7F1GCudZo4mTvFGhSK4r2stpYy0UqoUVONA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777565807; c=relaxed/simple;
-	bh=NS1hXzMwNlNeELf6tfokB8A0U2esXVs5kEvQlnBzzDM=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=g6ElvLOMrFxELH3YlommyNYwfg9soZKoMrU9fKDfl9a4nP8J3lnl7mo6hxBhBaLbzvZQlIZ7uObZJl/biFKYF2qq4+KwLdNQd5+G9eY+DhGWutiulTZcsgeu5Ow2y1umPudYpOpLZjmYAA9YmtsWPnWP4nWLJmYyg/nWav7O1CY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AjwncAQC; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1777566499; c=relaxed/simple;
+	bh=xuHLlRVx0WdFbm/ciuLaXhbgiLBbjPGhjCQyHiREPFU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i0uvOdPqhrrjvOS0THjCtRgC0dgnCNv+PqShPBbZJ9WJ9vqDe8+X87MTtqxhf1Mz/AUPyGbBISnmChJJ7L3YG9lhFlYeXz6k0/I9Ew9rCeE1RA1vLWJ/o9QTrt2S8BXIpjtlXJ0JRxu/8CIWqunrO+aFRqAHd6YvwRYjHbM22jU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YrN/xFL8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AjwncAQC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777565802;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=PaMQiKUB6gk/d0VVBJ9lG+Y+gC5pmabTI7erdrEsW0M=;
-	b=AjwncAQCVVi+u9rvIk1qSwTGE3YKQCjsxrgZnQpclgFqaCraX7D8oAeFkY82Nwz64NW9rV
-	H5nkZ2WNRPvata2yC8pPTsRA1Y8K9iZVcrcZdBKIwsexQO/gpQOcVVBr9fo4ocnS+ip2Dn
-	2WSVtXNn20wn0vlHiYUIUC0524YS968=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-436-BgvLDh5cPBm5JeABD_a0Rg-1; Thu,
- 30 Apr 2026 12:16:39 -0400
-X-MC-Unique: BgvLDh5cPBm5JeABD_a0Rg-1
-X-Mimecast-MFC-AGG-ID: BgvLDh5cPBm5JeABD_a0Rg_1777565798
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C8D081800578;
-	Thu, 30 Apr 2026 16:16:37 +0000 (UTC)
-Received: from [10.44.50.160] (unknown [10.44.50.160])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7FEAD1800446;
-	Thu, 30 Apr 2026 16:16:36 +0000 (UTC)
-Message-ID: <7b4dc292-a2e2-4d42-9e4a-bb1fe37a9013@redhat.com>
-Date: Thu, 30 Apr 2026 18:16:35 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YrN/xFL8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F090C2BCC6;
+	Thu, 30 Apr 2026 16:28:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777566499;
+	bh=xuHLlRVx0WdFbm/ciuLaXhbgiLBbjPGhjCQyHiREPFU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YrN/xFL8k5VgBaNpK5LHDdomvtjX9zCVPkilhGlJ304+ICekhhk+PzD5cl+IUNYPC
+	 Fb3ArpaMIEMLc7BN4CRT8wLsrRukGkGqIdV6/e0/HvTYYDgwyv33ejZZkfrXovYFDb
+	 8H5U5Q+A9fjAwkQ6w0+unT1EGKbSp2wGb8fKZWwyP5QN7bpfV6rq7zcVWdLkc2sqB4
+	 d7RLtD1z7tZd5SjYfvuSJzKmB6JEa2n7tZcdt4SYFGrvZtW3MnTTWWT6Mxk4T/Ze7J
+	 F15PRktsnx4etKx/CQ+OOLNsEqz0iqWHSrInTQjkOWQF97QosnVSo9S8pTfEeNY+qQ
+	 sxwcbCy+9/TRw==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 68B4CF40080;
+	Thu, 30 Apr 2026 12:28:17 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Thu, 30 Apr 2026 12:28:17 -0400
+X-ME-Sender: <xms:IYPzabrEaTTcoVHbOU8Ie-jBwN9yekMCWj0oti8qKoYkC107BYdBPg>
+    <xme:IYPzaeqktlbosTGgF0RMQ9mIAVA3CRhYGBrVWa-VSfRhqNbyE6glOJAhz_NkDgB7u
+    010dtQL86rUaX2AO-bBdCM0yrbNsa1iO1Hql1F4XPk2XLJxHAZjmHc>
+X-ME-Received: <xmr:IYPzaR6Hg64kuEe3KSi2SIGLExTJCxZKXaWUaHqF8zwOxNk5hfwFAEdLMFr2Cg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdekjeektdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuffkfhggtggujgesthdtredttd
+    dtvdenucfhrhhomhepmfhirhihlhcuufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgv
+    lhdrohhrgheqnecuggftrfgrthhtvghrnhepgeetuedtjefhkeeuiefgudduvdfgvdeiue
+    eigeehheehudetuedtkeelhfeihedunecuffhomhgrihhnpehsrghshhhikhhordguvghv
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepgeeipdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoh
+    eprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehpvghtvghrgiesrhgvughh
+    rghtrdgtohhmpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpth
+    htoheplhhjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhurhgvnhgssehgohho
+    ghhlvgdrtghomhdprhgtphhtthhopehvsggrsghkrgeskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthho
+    peiiihihsehnvhhiughirgdrtghomh
+X-ME-Proxy: <xmx:IYPzaV3LWTFN8XfRSCiRwGIC6e-pKYil930TJaa7zUHObc4fVT3QIw>
+    <xmx:IYPzadlAdJGUbc96HtR7fIZDC2Iy1FdPr5XLM6d7Nj0_Yp-TL4uufw>
+    <xmx:IYPzaegg5wt9LVrIuTqa6gy-ZRJ7gBH1_0_6b2QPw4xRK57zVnDpdg>
+    <xmx:IYPzaU2FMoS_d2ECU8W6GqFaKCAiG1a9OOh76eW6SUV8f-8qZ1knuQ>
+    <xmx:IYPzabYpwp038SUGhWJQqOEZL1x6wK5YoctLTEvtdxpDWv6eu7DBYYWJ>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 30 Apr 2026 12:28:15 -0400 (EDT)
+Date: Thu, 30 Apr 2026 17:28:08 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
+	david@kernel.org
+Cc: ljs@kernel.org, surenb@google.com, vbabka@kernel.org, 
+	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, 
+	sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kvm@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 07/14] mm: handle VM_UFFD_RWP in khugepaged, rmap, and GUP
+Message-ID: <afOCAZ-dTQiLFN0y@thinkstation>
+References: <20260427114607.4068647-1-kas@kernel.org>
+ <20260427114607.4068647-8-kas@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 00/28] KVM: combined patchset for MBEC/GMET support
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: d.riley@proxmox.com, jon@nutanix.com
-References: <20260430150747.76749-1-pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <20260430150747.76749-1-pbonzini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260427114607.4068647-8-kas@kernel.org>
 
-On 4/30/26 17:07, Paolo Bonzini wrote:
-> I will once more send you to v3 (https://lore.kernel.org/kvm/20260408154217.458420-1-pbonzini@redhat.com/)
-> for the description of the series.
-> 
-> v4 incorrectly rebased onto 7.1 KVM and broke the case where L1 disables
-> NPT.  On top of that I made a few final touches on the patch split, and
-> opted to use the XU bit unconditionally in the MMU even if MBEC is disabled.
-> This is more consistent with the idea of reducing as much as possible
-> the differences between mbec=0 and mbec=1 modes.
+sashiko.dev -- https://sashiko.dev/#/patchset/20260427114607.4068647-1-kas@kernel.org -- wrote:
+> > @@ -1084,9 +1092,29 @@ static __always_inline void __copy_present_ptes(struct vm_area_struct *dst_vma,
+> >  		pte_t pte, unsigned long addr, int nr)
+> >  {
+> >  	struct mm_struct *src_mm = src_vma->vm_mm;
+> > +	bool writable;
+> > +
+> > +	/*
+> > +	 * Snapshot writability before the RWP-disarm rewrite below: when the
+> > +	 * child is not RWP-armed, pte_modify(pte, dst_vma->vm_page_prot) can
+> > +	 * silently drop _PAGE_RW from a resolved (no-marker) writable PTE,
+> > +	 * so a later pte_write(pte) check would skip the COW wrprotect and
+> > +	 * leave the parent writable over a folio shared with the child.
+> > +	 */
+> > +	writable = pte_write(pte);
+> > +
+> > +	/*
+> > +	 * Child is not RWP-armed: restore accessible protection so the
+> > +	 * inherited PAGE_NONE does not cost a fault on first read.
+> > +	 */
+> > +	if (!userfaultfd_protected(dst_vma)) {
+> > +		if (userfaultfd_rwp(src_vma))
+> > +			pte = pte_modify(pte, dst_vma->vm_page_prot);
+> > +		pte = pte_clear_uffd(pte);
+> > +	}
+> Does this unconditional pte_modify() create invalid clean and writable PTEs
+> for shared mappings?
+>
+> Without checking pte_uffd(pte) first, this blindly modifies every present PTE
+> if the source VMA had RWP enabled. For shared writable mappings, vm_page_prot
+> includes _PAGE_RW. If a PTE was clean and mapped read-only to intercept the
+> first write for filesystem dirty-tracking, pte_modify() forces the write bit
+> on while preserving the clean state.
 
-I placed this also at branch kvm-mbec of 
-https://git.kernel.org/pub/scm/virt/kvm/kvm.git.
+Two reasons this is safe in practice:
 
-Paolo
+1. RWP cannot reach a backing that uses the clean-RO + page_mkwrite()
+   dirty-tracking pattern. vma_can_userfault() admits RWP only on anon,
+   shmem and hugetlbfs (the ones with vm_uffd_ops); regular file-backed
+   shared mappings are rejected at register time.
 
-> Paolo
-> 
-> v4->v5:
-> - patches 8 and 9: swap to clarify use of ACC_USER_MASK to detect read faults
-> - patch 11: fix final argument to kvm_translate_gpa (using pte_access instead
->    of walker->pte_access worked more or less accidentally, but it is incorrect
->    because vmx_translate_nested_gpa uses ACC_* constants rather than PT_*)
-> - patches 13 and 15: revert to always setting shadow_xu_mask ==
->    VMX_EPT_USER_EXECUTABLE_MASK, even if MBEC is disabled.  The MMU always
->    operates as if MBEC is available, instead of complicating its life (and
->    potentially introducing bugs) by mapping XU onto X; blocking incorrect
->    configuration can be done at higher levels.  Add a comment on the design.
-> - patch 24: also block CR4.SMAP
-> - patches 26 and 28: fix rebase onto 7.1 KVM (fixes nested NPT disabled)
-> 
-> v3->v4:
-> - patch 15: clear enable_mbec = 0 if enable_ept == 0
-> - patches 23-27: adjust for rename of nested_ctl to misc_ctl
-> - patch 24: new
-> - patch 27: disable svm_get_cpl for SEV-ES/SEV-SNP
-> - patch 28: fix commit message reference to __nested_svm_check_controls
-> 
-> 
-> Jon Kohler (5):
->    KVM: TDX/VMX: rework EPT_VIOLATION_EXEC_FOR_RING3_LIN into PROT_MASK
->    KVM: x86/mmu: remove SPTE_PERM_MASK
->    KVM: x86/mmu: free up bit 10 of PTEs in preparation for MBEC
->    KVM: nVMX: advertise MBEC to nested guests
->    KVM: nVMX: allow MBEC with EVMCS
-> 
-> Paolo Bonzini (23):
->    KVM: x86/mmu: shuffle high bits of SPTEs in preparation for MBEC
->    KVM: x86/mmu: remove SPTE_EPT_*
->    KVM: x86/mmu: merge make_spte_{non,}executable
->    KVM: x86/mmu: rename and clarify BYTE_MASK
->    KVM: x86/mmu: separate more EPT/non-EPT permission_fault()
->    KVM: x86/mmu: introduce ACC_READ_MASK
->    KVM: x86/mmu: pass PFERR_GUEST_PAGE/FINAL_MASK to kvm_translate_gpa
->    KVM: x86/mmu: pass pte_access for final nGPA->GPA walk
->    KVM: x86: make translate_nested_gpa vendor-specific
->    KVM: x86/mmu: split XS/XU bits for EPT
->    KVM: x86/mmu: move cr4_smep to base role
->    KVM: VMX: enable use of MBEC
->    KVM: nVMX: pass advanced EPT violation vmexit info to guest
->    KVM: nVMX: pass PFERR_USER_MASK to MMU on EPT violations
->    KVM: x86/mmu: add support for MBEC to EPT page table walks
->    KVM: x86/mmu: propagate access mask from root pages down
->    KVM: x86/mmu: introduce cpu_role bit for availability of PFEC.I/D
->    KVM: SVM: add GMET bit definitions
->    KVM: x86/mmu: hard code more bits in kvm_init_shadow_npt_mmu
->    KVM: x86/mmu: add support for GMET to NPT page table walks
->    KVM: SVM: enable GMET and set it in MMU role
->    KVM: SVM: work around errata 1218
->    KVM: nSVM: enable GMET for guests
-> 
->   Documentation/virt/kvm/x86/mmu.rst |  10 +-
->   arch/x86/include/asm/cpufeatures.h |   1 +
->   arch/x86/include/asm/kvm-x86-ops.h |   1 +
->   arch/x86/include/asm/kvm_host.h    |  48 +++++---
->   arch/x86/include/asm/svm.h         |   1 +
->   arch/x86/include/asm/vmx.h         |  14 ++-
->   arch/x86/kvm/hyperv.c              |   4 +-
->   arch/x86/kvm/mmu.h                 |  30 +++--
->   arch/x86/kvm/mmu/mmu.c             | 176 ++++++++++++++++++++---------
->   arch/x86/kvm/mmu/mmutrace.h        |  19 ++--
->   arch/x86/kvm/mmu/paging_tmpl.h     |  73 ++++++++----
->   arch/x86/kvm/mmu/spte.c            |  92 +++++++++------
->   arch/x86/kvm/mmu/spte.h            |  70 +++++++-----
->   arch/x86/kvm/mmu/tdp_mmu.c         |   6 +-
->   arch/x86/kvm/svm/nested.c          |  38 ++++++-
->   arch/x86/kvm/svm/svm.c             |  31 +++++
->   arch/x86/kvm/svm/svm.h             |   1 +
->   arch/x86/kvm/vmx/capabilities.h    |  12 +-
->   arch/x86/kvm/vmx/common.h          |  20 ++--
->   arch/x86/kvm/vmx/hyperv_evmcs.h    |   1 +
->   arch/x86/kvm/vmx/main.c            |   9 ++
->   arch/x86/kvm/vmx/nested.c          |  46 +++++++-
->   arch/x86/kvm/vmx/tdx.c             |   2 +-
->   arch/x86/kvm/vmx/vmx.c             |  27 ++++-
->   arch/x86/kvm/vmx/vmx.h             |   1 +
->   arch/x86/kvm/vmx/x86_ops.h         |   1 +
->   arch/x86/kvm/x86.c                 |  18 +--
->   27 files changed, 529 insertions(+), 223 deletions(-)
-> 
+2. For backings that *do* support shared writable + dirty tracking (i.e.
+   the ones RWP isn't enabled on), the fs sets vma->vm_page_prot to RO
+   precisely so the first write traps page_mkwrite(). pte_modify(pte,
+   dst_vma->vm_page_prot) would not add _PAGE_RW in that configuration
+   either.
 
+> Hardware writes could then bypass page_mkwrite(), leaving the filesystem
+> unaware that the page is dirty, and potentially causing silent data loss
+> upon reclaim.
+> Could this also overwrite other important PTE states like NUMA hinting
+> or soft-dirty tracking?
+
+pte_modify() on the supported architectures preserves _PAGE_CHG_MASK,
+which covers _PAGE_DIRTY, _PAGE_ACCESSED, _PAGE_SOFT_DIRTY, and the PFN.
+NUMA hinting is encoded in the protection bits, so a transient hint
+state on a resolved (no-marker) PTE would be lost across this rewrite,
+but that's just a re-prime on the next NUMA scan, not a correctness
+issue.
+
+> @@ -298,6 +298,16 @@ static __always_inline void change_present_ptes(struct mmu_gather *tlb,
+>      else if (uffd_wp_resolve || uffd_rwp_resolve)
+>          ptent = pte_clear_uffd(ptent);
+>
+> +    /*
+> +     * The uffd bit on a VM_UFFD_RWP VMA carries PROT_NONE
+> +     * semantics. If mprotect() or NUMA hinting changed the
+> +     * base protection, restore PAGE_NONE so the PTE still
+> +     * traps on any access. pte_modify() preserves
+> +     * _PAGE_UFFD.
+> +     */
+> +    if (userfaultfd_rwp(vma) && pte_uffd(ptent))
+> +        ptent = pte_modify(ptent, PAGE_NONE);
+>
+> For VMAs registered with both UFFD WP and RWP, could this silently upgrade
+> Write-Protected pages to Read-Write-Protected?
+
+VM_UFFD_WP and VM_UFFD_RWP are mutually exclusive per VMA. The combination
+is rejected at registration time:
+
+  fs/userfaultfd.c, userfaultfd_register():
+        if ((vm_flags & VM_UFFD_WP) && (vm_flags & VM_UFFD_RWP))
+                goto out;       /* -EINVAL */
+
+and re-registration cannot drop either bit (also -EBUSY in the same
+function), so a PTE in a WP-armed VMA can never satisfy
+userfaultfd_rwp(vma); the new branch never fires there.
+
+[ ... ]
+> +        /* Re-arm RWP on the moved PTE if dst_vma is RWP-registered. */
+> +        if (userfaultfd_rwp(dst_vma)) {
+> +            orig_dst_pte = pte_modify(orig_dst_pte, PAGE_NONE);
+> +            orig_dst_pte = pte_mkuffd(orig_dst_pte);
+> +        }
+> +
+>          set_pte_at(mm, dst_addr, dst_pte, orig_dst_pte);
+>
+> Could applying PAGE_NONE unconditionally to newly moved pages trap
+> applications in an infinite fault loop?
+
+No -- the post-MOVE access is delivered as a normal RWP fault. In sync
+mode it goes to the registered handler, which resolves it with
+UFFDIO_RWPROTECT clearing MODE_RWP; in async mode the kernel resolves
+it in-kernel and the faulting thread continues. There is no loop.
+
+The semantics here are intentional: a VM_UFFD_RWP VMA has the contract
+that every present PTE is either an active marker or a tracked-and-
+resolved PTE whose next access will re-trap. UFFDIO_MOVE into such a
+VMA must keep that contract, otherwise the moved-in page would be a
+silent hole in the working-set view. UFFDIO_MOVE has no mode flag for
+"skip protection", by design -- the same way it has no flag to skip
+WP arming if dst_vma were WP-armed (and the equivalent could be added
+there if we ever decide UFFDIO_MOVE should preserve markers in WP
+VMAs too).
+
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
