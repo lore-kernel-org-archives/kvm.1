@@ -1,56 +1,55 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFE5A43C059
-	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 15:08:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5A5143CED9
+	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 15:08:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777561696; cv=none; b=dTGfyApTcbSwB0ekpdvCv2ZXo4zpZWRnyWb25tVagUTA9/wl+4aNJVRRE4U1eWitxNecyT8D451wV0dKbzpLZlyF3Js790cfEWmDqFBRAprDAIbs1XAgX5D3SInMjHJ5K0cgVCGT1/LK9LWbuXCjx8b9tm/CS5AkeyWosZ4sfl8=
+	t=1777561697; cv=none; b=qBmLPOOENCkrpKFRkfNm8sMoXLfeAQOFUxGCApoZVBDM9RpY4VSqLz3u6IeqSjdVpRssayiKowvjggaiRLtU9wFMW0dRCN2FObtP96XEVcd4uXbuSHjb6R9SKZQpvK43aPtklYCcNwaDl3i53auiM5KLFkN7tRjQN+frOJVut8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777561696; c=relaxed/simple;
-	bh=yWXdoiQVh8ATDy6+edjM/jh5GvM/cnaOKN/EbxBl6do=;
+	s=arc-20240116; t=1777561697; c=relaxed/simple;
+	bh=GR++9H5p0i1D5sIKFL2DvhkQ9RXdFtz3TIvO90pRMw0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KOW/VMfsX5U62e/GZ0Ygsc+WQQTrmO7W1DOo3uCk+ZYPpCx7H2cnd7dlfyt/bK57wwhTVuGod45UiMtYerSEu4ksEkXpPEpsbM5XBFHINwlUA1gPujzVvSlCZ+HL1Dd3ic5nzyODhoDmRuwVWGVmUAl6xZdXhGXwT97aWn3JdLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OowoG+QT; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=BtU5aM7xwUf/fImtB27NgLgsxuakEqTJ4iaJMFY9P0oEP0P43O/b2QH4oW2mjgqKu9Xr52yoxUKAFBVaJpY35IKXLfVQg4zm6fd/BTV35OK9j2y+u71/6QdLPtvqp4Zc0XeBSkeuaYuyZxZ25EP0OitS4oWJyUIWPc00ik+FNA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TnlrR38m; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OowoG+QT"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TnlrR38m"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777561692;
+	s=mimecast20190719; t=1777561693;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=eMXRbG836TtpgBO9IHiswDkh+14f6bX9mDfcP8XvT0M=;
-	b=OowoG+QTFrzTYExnfrk9ZKY03Vo+kOP3mkmyfh8D/WQ0/svJsTUUg3NOhzZwUHBWZofe01
-	IurSPhSw/pvJ556zGXXHuTFexY5wi13NKsodUrNqvp3Jq5Nqjg/oVlX+UmtdIMKZ2ZdTxX
-	IOcE9QMIgvxz/WQNTlD1AzSkNiy8+zE=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=RQb5rHk5eMELl/+vuZzClPskfe+ABko0k3vSQpQtlOY=;
+	b=TnlrR38mGYWcwhXUpTNEm2XzZnVoTyAym5mGBoxMkvmQWNYFD/9vcJsQpzKy9LiLBBXLj7
+	OMvwz77zu76SaTbQ1Mu1D+UzmTnlDDIHjs9AYZXlzz3GX8CHy88G7bv7Rry2lnyS+/Apn/
+	7tc6OzQLQGtwodLkGQMRP9RAqyGQ/R8=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-147-eHQvP40FM5SU0V5qIRzPTQ-1; Thu,
- 30 Apr 2026 11:08:09 -0400
-X-MC-Unique: eHQvP40FM5SU0V5qIRzPTQ-1
-X-Mimecast-MFC-AGG-ID: eHQvP40FM5SU0V5qIRzPTQ_1777561688
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-144-MLPCkoqHOc-0nWAHvwyKRg-1; Thu,
+ 30 Apr 2026 11:08:12 -0400
+X-MC-Unique: MLPCkoqHOc-0nWAHvwyKRg-1
+X-Mimecast-MFC-AGG-ID: MLPCkoqHOc-0nWAHvwyKRg_1777561691
 Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3208A18003FC;
-	Thu, 30 Apr 2026 15:08:08 +0000 (UTC)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0ABF8195608E;
+	Thu, 30 Apr 2026 15:08:11 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 27BB6180045E;
-	Thu, 30 Apr 2026 15:08:07 +0000 (UTC)
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 786C518001ED;
+	Thu, 30 Apr 2026 15:08:10 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: d.riley@proxmox.com,
-	jon@nutanix.com,
-	"Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 23/28] KVM: SVM: add GMET bit definitions
-Date: Thu, 30 Apr 2026 11:07:42 -0400
-Message-ID: <20260430150747.76749-24-pbonzini@redhat.com>
+	jon@nutanix.com
+Subject: [PATCH 27/28] KVM: SVM: work around errata 1218
+Date: Thu, 30 Apr 2026 11:07:46 -0400
+Message-ID: <20260430150747.76749-28-pbonzini@redhat.com>
 In-Reply-To: <20260430150747.76749-1-pbonzini@redhat.com>
 References: <20260430150747.76749-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -63,43 +62,47 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-GMET (Guest Mode Execute Trap) is an AMD virtualization feature,
-essentially the nested paging version of SMEP.  Hyper-V uses it;
-add it in preparation for making it available to hypervisors
-running under KVM.
+According to AMD, the hypervisor may not be able to determine whether a
+fault was a GMET fault or an NX fault based on EXITINFO1, and software
+"must read the relevant VMCB to determine whether a fault was a GMET
+fault or an NX fault".  The APM further details that they meant the
+CPL field.
 
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+KVM uses the page fault error code to distinguish the causes of a
+nested page fault, so recalculate the PFERR_USER_MASK bit of the
+vmexit information.  Only do it for fetches and only if GMET is in
+use, because KVM does not differentiate based on PFERR_USER_MASK
+for other nested NPT page faults.
+
 Tested-by: David Riley <d.riley@proxmox.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/include/asm/cpufeatures.h | 1 +
- arch/x86/include/asm/svm.h         | 1 +
- 2 files changed, 2 insertions(+)
+ arch/x86/kvm/svm/svm.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index de7bd88e539d..d58dbce83f45 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -379,6 +379,7 @@
- #define X86_FEATURE_AVIC		(15*32+13) /* "avic" Virtual Interrupt Controller */
- #define X86_FEATURE_V_VMSAVE_VMLOAD	(15*32+15) /* "v_vmsave_vmload" Virtual VMSAVE VMLOAD */
- #define X86_FEATURE_VGIF		(15*32+16) /* "vgif" Virtual GIF */
-+#define X86_FEATURE_GMET		(15*32+17) /* Guest Mode Execution Trap */
- #define X86_FEATURE_X2AVIC		(15*32+18) /* "x2avic" Virtual x2apic */
- #define X86_FEATURE_V_SPEC_CTRL		(15*32+20) /* "v_spec_ctrl" Virtual SPEC_CTRL */
- #define X86_FEATURE_VNMI		(15*32+25) /* "vnmi" Virtual NMI */
-diff --git a/arch/x86/include/asm/svm.h b/arch/x86/include/asm/svm.h
-index bcfeb5e7c0ed..aa63431ba92c 100644
---- a/arch/x86/include/asm/svm.h
-+++ b/arch/x86/include/asm/svm.h
-@@ -243,6 +243,7 @@ struct __attribute__ ((__packed__)) vmcb_control_area {
- #define SVM_MISC_ENABLE_NP		BIT(0)
- #define SVM_MISC_ENABLE_SEV		BIT(1)
- #define SVM_MISC_ENABLE_SEV_ES	BIT(2)
-+#define SVM_MISC_ENABLE_GMET	BIT(3)
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 3895d8794366..fd79874c5f4b 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -1993,6 +1993,18 @@ static int npf_interception(struct kvm_vcpu *vcpu)
+ 		}
+ 	}
  
- #define SVM_MISC2_ENABLE_V_LBR	BIT_ULL(0)
- #define SVM_MISC2_ENABLE_V_VMLOAD_VMSAVE	BIT_ULL(1)
++	if (!is_sev_es_guest(vcpu) &&
++	    (svm->vmcb->control.misc_ctl & SVM_MISC_ENABLE_GMET) &&
++	    (error_code & PFERR_FETCH_MASK)) {
++		/*
++		 * Work around errata 1218: EXITINFO1[2] May Be Incorrectly Set
++		 * When GMET (Guest Mode Execute Trap extension) is Enabled
++		 */
++		error_code |= PFERR_USER_MASK;
++		if (svm_get_cpl(vcpu) != 3)
++			error_code &= ~PFERR_USER_MASK;
++	}
++
+ 	if (is_sev_snp_guest(vcpu) && (error_code & PFERR_GUEST_ENC_MASK))
+ 		error_code |= PFERR_PRIVATE_ACCESS;
+ 
 -- 
 2.52.0
 
