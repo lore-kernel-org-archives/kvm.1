@@ -1,142 +1,156 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B2F34E746;
-	Thu, 30 Apr 2026 14:51:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211012C21E6
+	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 15:07:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777560684; cv=none; b=mWPkIqNhX/sIEnCiKXf07QyryHannEWL38iRjq1mYxSHSZxPHbjmgCMbpCKQMWJtxdhgg96MitwGiSuOMjN5yvpuq9swIFzescUpIQiWB1EIgvBQ7mNOwoBlJcEfJNmQf7q91nBWoh2FEB/9iZndbl8WiIV41b+mBFxSrYOxpKY=
+	t=1777561674; cv=none; b=CWvolf0+OVIR4D763o97Bdk2UxHarsnc9CBvSJyrAYIhjQajxfqDfchvOX2sYUBMhWfg70Z6+eyaAoTKUYoQTx/4Q9SIn8LC3qXKN3b4ZxdK2tL1l+i8M6EQFS31xV+3yvwUah9l4SuANcfUh3/dVGcNTVQIfejM7yRq72KKW9E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777560684; c=relaxed/simple;
-	bh=F04flt0u0jeUiSYW5q5UKAs4vTOREkSTch+Sz1CLuk0=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cOLVBvjyYoS9AqfmgMd1nRA47nDj2nww9IT1oINTNObpQKSXrau7DzTmhvaeOxS11JUNoAxBfhDUtr4kMJYDAT0tl4HUqUYRaP+nAzKF3/uITWVu0GUMqgcK7Kn8BhaT+8HZX3/N97wbTw4meIt5RlZfhhRmoXXn6FK08jf4KYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N06B4eCq; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777561674; c=relaxed/simple;
+	bh=NKfzEz5eh/DVff2wBeQgLuIoj2Xu9ad4B/iPUZG9zuI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=G1OGWtCRZUOek1sIPhOUQUGORPpGGRTcMBcc3tct7VpRJvGX7i3UMtlphLgV/SB1fn7HilCF1fqo+3lAhbvr6b8UHVFe8SwC/4vMcMKf3L1p2sFbVi2xI0n2bTUWXKE/l/btyY5AaDwhK977PhSNtVDcFgccBki9fl4iRh3yDOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LN84hBdC; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N06B4eCq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B9C2C2BCB3;
-	Thu, 30 Apr 2026 14:51:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777560683;
-	bh=F04flt0u0jeUiSYW5q5UKAs4vTOREkSTch+Sz1CLuk0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=N06B4eCqsyK+pw6ROnfRJmBqvv47hgUyYU3hv0SxLfsuzCH4fxYZ1wmQDZ2ruXsdR
-	 oIR/l0FOsZGg2ty2hV1U1a/W9uHxkOvVDSUqRjzq0hnYQpZtGBgqwztoqou2pEC9MS
-	 y5WH0yO2QeyMqV05hlQNRaVYjji8gjkBXXSYtvI6/aIDb3Gyg7ozE8KP4Ly47lET7a
-	 dlqPSNSIsPgTtBYzFCCq/5iK9YQiENFB6sL+kThbsctiHB4bwmsN1cnJ/7Mq0kyXJC
-	 osnc32UOYzmWEvlvu7atHCyDaLBNpJ0PAvkNumGB/wBlm8sC5HRdQPqYZZ6oJpGvDu
-	 TCkuI5i9o4vsw==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wISjY-0000000GIer-3eg7;
-	Thu, 30 Apr 2026 14:51:20 +0000
-Date: Thu, 30 Apr 2026 15:51:20 +0100
-Message-ID: <86a4ukzel3.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Leonardo Bras <leo.bras@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,	Will Deacon
- <will@kernel.org>,	Oliver Upton <oupton@kernel.org>,	Joey Gouly
- <joey.gouly@arm.com>,	Suzuki K Poulose <suzuki.poulose@arm.com>,	Zenghui Yu
- <yuzenghui@huawei.com>,	"Rafael J. Wysocki" <rafael@kernel.org>,	Len Brown
- <lenb@kernel.org>,	Saket Dumbre <saket.dumbre@intel.com>,	Paolo Bonzini
- <pbonzini@redhat.com>,	Chengwen Feng <fengchengwen@huawei.com>,	Jonathan
- Cameron <jic23@kernel.org>,	Kees Cook <kees@kernel.org>,	=?UTF-8?B?TWlr?=
- =?UTF-8?B?b8WCYWo=?= Lenczewski <miko.lenczewski@arm.com>,	Ryan Roberts
- <ryan.roberts@arm.com>,	Yang Shi <yang@os.amperecomputing.com>,	Thomas Huth
- <thuth@redhat.com>,	mrigendrachaubey <mrigendra.chaubey@gmail.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,	Mark Brown <broonie@kernel.org>,	Kevin
- Brodsky <kevin.brodsky@arm.com>,	James Clark <james.clark@linaro.org>,	Ard
- Biesheuvel <ardb@kernel.org>,	Fuad Tabba <tabba@google.com>,	Raghavendra
- Rao Ananta <rananta@google.com>,	Nathan Chancellor <nathan@kernel.org>,
-	Vincent Donnefort <vdonnefort@google.com>,	Lorenzo Pieralisi
- <lpieralisi@kernel.org>,	Sascha Bischoff <Sascha.Bischoff@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,	Tian Zheng
- <zhengtian10@huawei.com>,	Wei-Lin Chang <weilin.chang@arm.com>,
-	linux-kernel@vger.kernel.org,	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,	linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev,	kvm@vger.kernel.org
-Subject: Re: [PATCH v1 00/12] KVM Dirty-bit cleaning accelerator (HACDBS)
-In-Reply-To: <afNZQKIiKmHPD5My@devkitleo>
-References: <20260430111424.3479613-2-leo.bras@arm.com>
-	<86bjf0zj2p.wl-maz@kernel.org>
-	<afNZQKIiKmHPD5My@devkitleo>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LN84hBdC"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777561672;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=XLWE5FG8IgoiHj6EYrliqHdaYICLsz2pS88JmEnCS+E=;
+	b=LN84hBdCci9AISrJgmsdzwhCNOECHrgyeR2GaqNiidRpov6OT0hUwIaWWkTl2bA41eY/Dy
+	FcVHW1DTPPgXz4p8dOt80tSisKw7mVhn+doltR5lg78yoIRYsQa+ly/Rl+675xbYkyJYZQ
+	0cjCNI5RMSSnaAHaft7oW2d4CWs5vJA=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-471-0bl-iImSPnmuXDNiY-xCKg-1; Thu,
+ 30 Apr 2026 11:07:50 -0400
+X-MC-Unique: 0bl-iImSPnmuXDNiY-xCKg-1
+X-Mimecast-MFC-AGG-ID: 0bl-iImSPnmuXDNiY-xCKg_1777561669
+Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 17D9B195608D;
+	Thu, 30 Apr 2026 15:07:49 +0000 (UTC)
+Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 44E3D1800906;
+	Thu, 30 Apr 2026 15:07:48 +0000 (UTC)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: d.riley@proxmox.com,
+	jon@nutanix.com
+Subject: [PATCH v5 00/28] KVM: combined patchset for MBEC/GMET support
+Date: Thu, 30 Apr 2026 11:07:19 -0400
+Message-ID: <20260430150747.76749-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: leo.bras@arm.com, catalin.marinas@arm.com, will@kernel.org, oupton@kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, rafael@kernel.org, lenb@kernel.org, saket.dumbre@intel.com, pbonzini@redhat.com, fengchengwen@huawei.com, jic23@kernel.org, kees@kernel.org, miko.lenczewski@arm.com, ryan.roberts@arm.com, yang@os.amperecomputing.com, thuth@redhat.com, mrigendra.chaubey@gmail.com, yeoreum.yun@arm.com, broonie@kernel.org, kevin.brodsky@arm.com, james.clark@linaro.org, ardb@kernel.org, tabba@google.com, rananta@google.com, nathan@kernel.org, vdonnefort@google.com, lpieralisi@kernel.org, Sascha.Bischoff@arm.com, anshuman.khandual@arm.com, zhengtian10@huawei.com, weilin.chang@arm.com, linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev, kvm@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-On Thu, 30 Apr 2026 14:29:37 +0100,
-Leonardo Bras <leo.bras@arm.com> wrote:
-> 
-> On Thu, Apr 30, 2026 at 02:14:22PM +0100, Marc Zyngier wrote:
-> > On Thu, 30 Apr 2026 12:14:04 +0100,
-> > Leonardo Bras <leo.bras@arm.com> wrote:
-> > 
-> > > d - In __kvm_arch_dirty_log_clear() there is no way to predict how long
-> > >     should be the buffer, so I used 1x PAGE_SIZE, and when it gets full
-> > >     it's cleaned and reused. Should I let users configure that over a
-> > >     parameter, or is it overthinking?
-> > 
-> > How long is a piece of string? We can't know that. A single page feels
-> > very small in the 4kB case, and letting userspace define the size of
-> > that buffer seems a likely requirement.
-> > 
-> 
-> Ok, as a KVM parameter, or as a compile-time option?
+I will once more send you to v3 (https://lore.kernel.org/kvm/20260408154217.458420-1-pbonzini@redhat.com/)
+for the description of the series.
 
-Noticed the "userspace" word in there? It *has* to be controlled by
-userspace one way or another. So not as a kernel parameter, and
-*never* as a compile option.
+v4 incorrectly rebased onto 7.1 KVM and broke the case where L1 disables
+NPT.  On top of that I made a few final touches on the patch split, and
+opted to use the XU bit unconditionally in the MMU even if MBEC is disabled.
+This is more consistent with the idea of reducing as much as possible
+the differences between mbec=0 and mbec=1 modes.
 
-> > > Kernel v7.0.0 + this patchset builds properly, passing both kvm selftests
-> > > for dirty-bit tracking[2], on HW HACDBS enabled or disabled.
-> > 
-> > I have absolutely no trust in these tests.
-> > 
-> > Have you enabled a VMM to make use of these APIs, and actively
-> > migrated running guests? That's the level of testing I'd like to see,
-> > as the selftests are not what people run in production...
-> > 
-> 
-> There is no enablement needed on VMM side.
-> Yes, I have created a VM on upstream qemu with --enable-kvm and migrated it 
-> on the same host. (Inside a model)
-> 
-> That was the first test I used, but then I found out that kvm selftests 
-> stress up multiple scenarios in an easier way.
+Paolo
 
-Except when they don't. In my experience, the selftests are only there
-to give the CI people the fuzzy feeling that they are doing something
-useful. I have a collection of examples indicating that what these
-things test is not representative of the bugs we have in KVM.
+v4->v5:
+- patches 8 and 9: swap to clarify use of ACC_USER_MASK to detect read faults
+- patch 11: fix final argument to kvm_translate_gpa (using pte_access instead
+  of walker->pte_access worked more or less accidentally, but it is incorrect
+  because vmx_translate_nested_gpa uses ACC_* constants rather than PT_*)
+- patches 13 and 15: revert to always setting shadow_xu_mask ==
+  VMX_EPT_USER_EXECUTABLE_MASK, even if MBEC is disabled.  The MMU always
+  operates as if MBEC is available, instead of complicating its life (and
+  potentially introducing bugs) by mapping XU onto X; blocking incorrect
+  configuration can be done at higher levels.  Add a comment on the design.
+- patch 24: also block CR4.SMAP
+- patches 26 and 28: fix rebase onto 7.1 KVM (fixes nested NPT disabled)
 
-> Do you prefer me to test on any specific scenario, or does whatever qemu
-> uses as a default parameter work well enough?
+v3->v4:
+- patch 15: clear enable_mbec = 0 if enable_ept == 0
+- patches 23-27: adjust for rename of nested_ctl to misc_ctl
+- patch 24: new
+- patch 27: disable svm_get_cpl for SEV-ES/SEV-SNP
+- patch 28: fix commit message reference to __nested_svm_check_controls 
 
-I want to hear about testing at a scale that make sense for production
-VMs, including live migrating between hosts while under memory
-pressure (swapping out).
 
-I'm also interested in efficiency: how much better is HACDBS compared
-to the current page faulting? Just having patches for a feature is not
-enough to decide adoption of that feature. Show me the benefits in a
-quantitative way (within the limits of the model, of course).
+Jon Kohler (5):
+  KVM: TDX/VMX: rework EPT_VIOLATION_EXEC_FOR_RING3_LIN into PROT_MASK
+  KVM: x86/mmu: remove SPTE_PERM_MASK
+  KVM: x86/mmu: free up bit 10 of PTEs in preparation for MBEC
+  KVM: nVMX: advertise MBEC to nested guests
+  KVM: nVMX: allow MBEC with EVMCS
 
-Thanks,
+Paolo Bonzini (23):
+  KVM: x86/mmu: shuffle high bits of SPTEs in preparation for MBEC
+  KVM: x86/mmu: remove SPTE_EPT_*
+  KVM: x86/mmu: merge make_spte_{non,}executable
+  KVM: x86/mmu: rename and clarify BYTE_MASK
+  KVM: x86/mmu: separate more EPT/non-EPT permission_fault()
+  KVM: x86/mmu: introduce ACC_READ_MASK
+  KVM: x86/mmu: pass PFERR_GUEST_PAGE/FINAL_MASK to kvm_translate_gpa
+  KVM: x86/mmu: pass pte_access for final nGPA->GPA walk
+  KVM: x86: make translate_nested_gpa vendor-specific
+  KVM: x86/mmu: split XS/XU bits for EPT
+  KVM: x86/mmu: move cr4_smep to base role
+  KVM: VMX: enable use of MBEC
+  KVM: nVMX: pass advanced EPT violation vmexit info to guest
+  KVM: nVMX: pass PFERR_USER_MASK to MMU on EPT violations
+  KVM: x86/mmu: add support for MBEC to EPT page table walks
+  KVM: x86/mmu: propagate access mask from root pages down
+  KVM: x86/mmu: introduce cpu_role bit for availability of PFEC.I/D
+  KVM: SVM: add GMET bit definitions
+  KVM: x86/mmu: hard code more bits in kvm_init_shadow_npt_mmu
+  KVM: x86/mmu: add support for GMET to NPT page table walks
+  KVM: SVM: enable GMET and set it in MMU role
+  KVM: SVM: work around errata 1218
+  KVM: nSVM: enable GMET for guests
 
-	M.
+ Documentation/virt/kvm/x86/mmu.rst |  10 +-
+ arch/x86/include/asm/cpufeatures.h |   1 +
+ arch/x86/include/asm/kvm-x86-ops.h |   1 +
+ arch/x86/include/asm/kvm_host.h    |  48 +++++---
+ arch/x86/include/asm/svm.h         |   1 +
+ arch/x86/include/asm/vmx.h         |  14 ++-
+ arch/x86/kvm/hyperv.c              |   4 +-
+ arch/x86/kvm/mmu.h                 |  30 +++--
+ arch/x86/kvm/mmu/mmu.c             | 176 ++++++++++++++++++++---------
+ arch/x86/kvm/mmu/mmutrace.h        |  19 ++--
+ arch/x86/kvm/mmu/paging_tmpl.h     |  73 ++++++++----
+ arch/x86/kvm/mmu/spte.c            |  92 +++++++++------
+ arch/x86/kvm/mmu/spte.h            |  70 +++++++-----
+ arch/x86/kvm/mmu/tdp_mmu.c         |   6 +-
+ arch/x86/kvm/svm/nested.c          |  38 ++++++-
+ arch/x86/kvm/svm/svm.c             |  31 +++++
+ arch/x86/kvm/svm/svm.h             |   1 +
+ arch/x86/kvm/vmx/capabilities.h    |  12 +-
+ arch/x86/kvm/vmx/common.h          |  20 ++--
+ arch/x86/kvm/vmx/hyperv_evmcs.h    |   1 +
+ arch/x86/kvm/vmx/main.c            |   9 ++
+ arch/x86/kvm/vmx/nested.c          |  46 +++++++-
+ arch/x86/kvm/vmx/tdx.c             |   2 +-
+ arch/x86/kvm/vmx/vmx.c             |  27 ++++-
+ arch/x86/kvm/vmx/vmx.h             |   1 +
+ arch/x86/kvm/vmx/x86_ops.h         |   1 +
+ arch/x86/kvm/x86.c                 |  18 +--
+ 27 files changed, 529 insertions(+), 223 deletions(-)
 
 -- 
-Without deviation from the norm, progress is not possible.
+2.52.0
+
