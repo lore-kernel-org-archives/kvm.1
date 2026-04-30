@@ -1,394 +1,215 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7243FE37B;
-	Thu, 30 Apr 2026 08:46:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777538781; cv=none; b=jqfUkWn2DPxpvxx2SOjFKKc+IhuB9VrL3I7iRP6RmO1LyxGFhHKM4A0HbIqrCPk1sqSzUdR+rkQ2ASr8r9zBMNGvHknPbgTENKSrqZhXZd0JDJ8moJPRRlmUM14YWZWAYNTuzBi6hLCJKfxI5tQwgViKoQK7FwWbVt70VYtPcu4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777538781; c=relaxed/simple;
-	bh=Hi80MVPwek2SD7+HknMpXPXec3jfYu6RuSg2vyl+NiQ=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ehQwD6Kz9psp277/NvNbbkaKcsla3bzN3UOca8dGjFDsvwaUe5seq3F/ervWdEllYWElbDhZzUM4JKf0bQ30UcxT03bKd9rWmh1hi3mwrfgfDIctVTre15PnskHBRwv86ZZdLTbYyeD/Dc4E7N5yBAslEGDM5EBdk6E1KzkEqAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XXVQHuop; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0878A3DBD71
+	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 08:57:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.47
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777539442; cv=pass; b=NC5bJiDZKSCPT/ZzfgpQ6yDRKEDma9HzW62tj/PmJnpKdyagKHOvMgSal6y8gj3ppRhxpqLE9rIE/qfh20yPM26jbm8/COpCmUF6WU7hidOWcly3OkONsbYjxPEAnS8CNJXO6xjTjpULkIw0GW+3Mdi0V4hwvUA7Oa56XsqdQTk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777539442; c=relaxed/simple;
+	bh=wjFl6GDkmUJl+dKx1Cia494ZvHYp6ty44K36Qbt6DgA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rznOAXlFr+ZuuXMfgyAGDUNLUTxu7jwI81AH6HfwCJ6J/urcJY7++0AXozviESGRS16antDzrUTgXmnO637kPFwPSweFQ6TDOd3vfHdzeYuOdgI736hXEpf9NC9RFcpBFmUGgosVvgitPr3guv74944E8zSnIhMqkfUWnQAhwdw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=L74zFk9h; arc=pass smtp.client-ip=74.125.224.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XXVQHuop"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65022C2BCB3;
-	Thu, 30 Apr 2026 08:46:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777538780;
-	bh=Hi80MVPwek2SD7+HknMpXPXec3jfYu6RuSg2vyl+NiQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=XXVQHuop4BJEFD8mQkNQOSpToGwhFRtscxB/04LjHh17C4qgVNUf0S6YHCKx4pmz6
-	 yIsiRk92t9GV+f5D4oH7ccsDjsllPWpt++1TKEKBzTiQ6tSsiMrDoRCafQ0TA+4Qr1
-	 X8gewKnYAo8srQP7UEw3og9kaNFekIMXgdT43IlZnDxEQPcPiRTekQojqfYhlmUneC
-	 HmjUDwwL+8PtfNt+YwLB4TZ8+Anl25mihSMDsdrNhxw+HXignd3gutoBYiWfD5pm6o
-	 QLfI7rQZ0I7SDxvlBpGgrRjzpsbHE/hoWQo/zX03dbdCUteC2E5BnnBaY3RMTeUJ9d
-	 j/PdlfVasQlIg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wIN2H-0000000GBY6-3b3w;
-	Thu, 30 Apr 2026 08:46:18 +0000
-Date: Thu, 30 Apr 2026 09:46:17 +0100
-Message-ID: <86ik98zvhi.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Sascha Bischoff <Sascha.Bischoff@arm.com>
-Cc: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	nd <nd@arm.com>,
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
-	Joey Gouly
-	<Joey.Gouly@arm.com>,
-	Suzuki Poulose <Suzuki.Poulose@arm.com>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"peter.maydell@linaro.org"
-	<peter.maydell@linaro.org>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	Timothy Hayes <Timothy.Hayes@arm.com>
-Subject: Re: [PATCH 10/43] KVM: arm64: gic-v5: Implement VPE IRS MMIO Ops
-In-Reply-To: <20260427160547.3129448-11-sascha.bischoff@arm.com>
-References: <20260427160547.3129448-1-sascha.bischoff@arm.com>
-	<20260427160547.3129448-11-sascha.bischoff@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="L74zFk9h"
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-6530287803cso667461d50.1
+        for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 01:57:20 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777539440; cv=none;
+        d=google.com; s=arc-20240605;
+        b=kld9yUYKUQg0HvKVo6JnuqXgut/ARvrbO8DWvJ07+T94L2CLEie1BA+GPLgj8wY3kb
+         9DN4ulEuI44+9MlcJxSvqQGvwtfYSu4d1pRN9/mnoFhCm2N5P49rXYb0ANwzYCHUGOnA
+         f1iZs6OtYhS6g2o6bNGsiWc9Us8ZeT4YRGii1tz9AZLsF4rES8YbixWNnjotdRgNYv56
+         vVkraM3d7wS/OIjIlOgGA+DedMu8qOl8e0onTA29WS3HWksET1UzRDDNTpxWhFpufqGb
+         EJXA5rFdCpHIiIFJIWQ0DY6xo+Wwt+Levtmlwtb9+/RexWcK7OqWxG5XjRug1/mHktXh
+         uoMQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=WHn7aNKe8Z0UpZANHbjAHiTC29hYbOiQjktEyz/Ro2M=;
+        fh=eLyMBGUjNwqzSUPz9l7Xh7hHT/B8VAOSJiqGQPYyR+8=;
+        b=UiXIP7oR9nqGUc0hAazilE4vfCK7W5KlbSRtuyjO8ETO+J9gsg4/i4qhunFAbZrCbC
+         43SzbWXqlDkafZEte8bXIAyrgzdGmFSAGNu6lT0grqvJPNHc28ZXvtMFKlZEcqdivAOJ
+         Vf5IjYhaFJR27NlKzEUkpq3NKZDRe8FRJPqhA28//jiUmC34T+s7Uu9jtoqrjyGCHyQv
+         +PVJljadsqb6KKc8L++iFnobqcF8TASATvc9RhDGjrl3Qzskh59+lyTmqK9TRhb/GRRn
+         keAnkCotef/EnaGlc4PmnoJfWwlYVorByikEoFL/tYYtYt8HFz3Mkg/Uqs3ikLFPSn/Z
+         Ne5g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1777539440; x=1778144240; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=WHn7aNKe8Z0UpZANHbjAHiTC29hYbOiQjktEyz/Ro2M=;
+        b=L74zFk9hf2DcG7kiPzU5qEczU9uO1gZcZVODS0rNwVPkY+CTOtYPcdv/ASvkAAS7af
+         FO6oHG9Yzz9u1mjgefYgGBHvSoiqYobnxP/YApt1G+sosUnzBGbkj3pjiJWktT9OelXC
+         s2Kio3eR4Rc9hTnaptwm9KZCf9HZNX6gvLCD8TURtcUHprVSuVWlGUYNj3e8VTyS4AqU
+         X7ahaILHtf0fayPoSuIsuMv6Rqc1v8v1RavkITgZfxrrxSi+uwD9A1LxKaM7pmkvQFwy
+         1FKlyCHM3XWCGlqPnPPjeUnNowFeWC+H6M7LrghTUn3VVVjh3WhMJxW1tjTsCjIBuJ0I
+         egnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777539440; x=1778144240;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WHn7aNKe8Z0UpZANHbjAHiTC29hYbOiQjktEyz/Ro2M=;
+        b=RUpFZ/6dJ/CRpPQ+RcjwE00jkEwLraDTrCOhT9CSdOp+uRPBXd+PxAkgUV6yVewMKl
+         ca8B5nif5rA9gdC7m8ox3GKP6a8o/N19ZRHs6UyYDMY6CUuXzvGTJC7W4f1olfQnJ93k
+         ZPjAOlDdJ+DYyBUP8VDAqasAJFoQbbAPQFnll7F2jMTc8c0B8bSg2xxigQDtbHvqvCRs
+         tC/RNMoDXHfCKX8GjT97f6iqJmXMO2kXANm3uTdyKTrPu9cYQwVQ7tRvKeRG7YS/93cr
+         0+lfczvxvsdTA0RLOlq6GpMRglg2sKl+eyRhvsZaJpQKgZPmIiXzzoiC37UE6MUP3Ajq
+         k1QQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+7jz8wMkN0xuKVPBBzT0ACaSUNTRCuTCD03aGKRxq2MB28Nofvxdj0wG6uZaVd20blu8g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwF2b6gZZnbtCeLXHrKNjzOWbZd6OhFPZ3JWtINYJwUlNUtCzMz
+	Ho+y0nZEYDvzT/iDwX0eG5sYNDbc0q2OdkM2/JlO3T1BgUCfZzhLZOTe52X/TuOV0fZpJUKvKmY
+	B+colcXDj28zcXkTU/V1L3EWEAxaRsCzqCfUfLRthvA==
+X-Gm-Gg: AeBDievH6EIaMZMSoxih09Wc8JTwQeQhEMzTc+iwkQyEJIXi9Hw1Ydn9Due9WH+yd+W
+	PGYtvffwkRGyIKjW2IEC6mYRzPwHw/mX1OQoJtOAJwQkuiK9saNQgRrmrJg//YilMiojOp1eC78
+	NlDnFRDpi3aCi8iW+bJeQ5TrjkaBxKTrbp45pYNrZQ/rB2R8UhyRplVo1WryAsP2tLS4In4usjj
+	2cE0I/Hfh27uTu5UoJ/y8Stz176a6WBlOKd40uTm1wjjqzocAdUpCdk2qgRrSYKKNXy1DYb6D3X
+	9s4PWwMFdgpZ1wM1Jdx65TmjF+B8prNpIQt7jqoc8q/Y1s89MTKP8165ddEyjkqzjSiLd3tHQ82
+	F7A==
+X-Received: by 2002:a05:690e:1698:b0:651:c782:6a8 with SMTP id
+ 956f58d0204a3-65c18b3e650mr1335368d50.15.1777539439953; Thu, 30 Apr 2026
+ 01:57:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, nd@arm.com, oliver.upton@linux.dev, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, lpieralisi@kernel.org, Timothy.Hayes@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+References: <20260427160547.3129448-1-sascha.bischoff@arm.com> <20260427160547.3129448-44-sascha.bischoff@arm.com>
+In-Reply-To: <20260427160547.3129448-44-sascha.bischoff@arm.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 30 Apr 2026 09:57:08 +0100
+X-Gm-Features: AVHnY4Jvy3n3XpKrxh1FlvrSB6Vt4VXuFhqD0yDhLAN5iHhEm91Tb3vWrZI7GfM
+Message-ID: <CAFEAcA8m1Y-8=+7RZjte1WBwycgnHEx_+yiU_ieriZr5DbQKsQ@mail.gmail.com>
+Subject: Re: [PATCH 43/43] Documentation: KVM: Add the VGICv5 IRS save/restore sequences
+To: Sascha Bischoff <Sascha.Bischoff@arm.com>
+Cc: "linux-arm-kernel@lists.infradead.org" <linux-arm-kernel@lists.infradead.org>, 
+	"kvmarm@lists.linux.dev" <kvmarm@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, nd <nd@arm.com>, 
+	"maz@kernel.org" <maz@kernel.org>, "oliver.upton@linux.dev" <oliver.upton@linux.dev>, Joey Gouly <Joey.Gouly@arm.com>, 
+	Suzuki Poulose <Suzuki.Poulose@arm.com>, "yuzenghui@huawei.com" <yuzenghui@huawei.com>, 
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>, Timothy Hayes <Timothy.Hayes@arm.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 27 Apr 2026 17:09:27 +0100,
-Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
-> 
-> Introduce interfaces to make VPEs valid, and to configure them, via
-> the host's IRS. As with the other valid bits in the GICv5 VM tables,
-> VPEs cannot be made valid directly, and instead are made valid via an
-> IRS MMIO Op.
-> 
-> Additionally, some of the VPE configuration takes place via the IRS
-> MMIO interface too (via the IRS_VPE_CR0, IRS_VPE_DBR). VPE doorbells
-> are, for example, configured via this interface.
-> 
-> The existing VPE-doorbell-based commands are extended with:
-> 
->         VPE_MAKE_VALID - Make the VPE valid in the VPET
->         VPE_CR0_READ - Handle a guest read from IRS_PE_CR0
->         VPE_CR0_WRITE - Handle a guest write to IRS_PE_CR0
-> 
-> Note: There is no VPE_MAKE_INVALID as VPEs are only made invalid on
-> teardown, at which point the whole VMTE is marked as invalid. Hence,
-> it is not required.
-> 
+On Mon, 27 Apr 2026 at 17:22, Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
+>
+> When saving/restoring the state of the GICv5 IRS, it is important that
+> it happens in the correct order. Failure to do so will almost
+> certainly result in failing to restore a guest that is capable of
+> handling interrupts correctly.
+>
+> On a save, the ISTs must be saved prior to saving the guest's memory
+> as the guest's LPI IST is written to guest memory. Conversely, on
+> restore the guest's memory must be restored prior to restoring the
+> ISTs.
+>
+> It is important to restore the IRS MMIO registers by first restoring
+> the IRS_IDx registers as they define the capabilities of the IRS, and
+> are used as part of creating and managing ISTs and SPIs.
+>
+> In order to restore the ISTs themselves, the IRS_IST_CFGR must be
+> restored prior to the IRS_IST_BASER. This is because KVM extracts
+> fields from the CFGR to determine the size and structure of the IRS
+> created by the guest. The IST itself is created as part of the write
+> to the IRS_IST_BASER. At this stage the remaining MMIO registers can
+> be restored.
+>
+> Once the LPI IST has been created (by the aforementioned write to the
+> IRS_IST_BASER), the IST state can be restored using
+> KVM_DEV_ARM_VGIC_GRP_IST. The SPI IST gets extracted from a userspace
+> provided buffer, and is transferred to the host-allocated SPI IST. The
+> LPI IST is extracted from guest memory, and is written to the
+> host-allocated LPI IST.
+>
+> As a general rule, the IRS_*_STATUSR registers can be ignored on
+> restore. They are not userspace writable.
+>
 > Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
 > ---
->  arch/arm64/kvm/vgic/vgic-v5.c      | 164 +++++++++++++++++++++++++++++
->  include/linux/irqchip/arm-gic-v5.h |  27 +++++
->  2 files changed, 191 insertions(+)
-> 
-> diff --git a/arch/arm64/kvm/vgic/vgic-v5.c b/arch/arm64/kvm/vgic/vgic-v5.c
-> index 49eb01ca07961..0649729f6b834 100644
-> --- a/arch/arm64/kvm/vgic/vgic-v5.c
-> +++ b/arch/arm64/kvm/vgic/vgic-v5.c
-> @@ -253,6 +253,25 @@ static int vgic_v5_irs_wait_for_vm_op(void)
->  	return 0;
->  }
->  
-> +/* Wait for completion of an VPE_STATUSR change */
-> +static int vgic_v5_irs_wait_for_vpe_op(void)
-> +{
-> +	int ret;
-> +	u32 statusr;
+>  .../virt/kvm/devices/arm-vgic-v5.rst          | 63 +++++++++++++++++++
+>  1 file changed, 63 insertions(+)
+>
+> diff --git a/Documentation/virt/kvm/devices/arm-vgic-v5.rst b/Documentation/virt/kvm/devices/arm-vgic-v5.rst
+> index 38eef7cc63e3e..1c55f5040757d 100644
+> --- a/Documentation/virt/kvm/devices/arm-vgic-v5.rst
+> +++ b/Documentation/virt/kvm/devices/arm-vgic-v5.rst
+> @@ -201,3 +201,66 @@ Groups:
+>        -ENOMEM      Restoring IST state failed while tracking pending interrupts
+>        -ETIMEDOUT   An IRS save/VM operation timed out
+>        ===========  ============================================================
 > +
-> +	ret = readl_relaxed_poll_timeout_atomic(
-> +		irs_base + GICV5_IRS_VPE_STATUSR, statusr,
-> +		FIELD_GET(GICV5_IRS_VPE_STATUSR_IDLE, statusr), 1,
-> +		USEC_PER_SEC);
+> +IRS Save Sequence:
+> +------------------
+> +
+> +The following ordering should be followed when saving the virtual GICv5 and
+> +IRS:
+> +
+> +a) Save the ISTs by issuing KVM_GET_DEVICE_ATTR on KVM_DEV_ARM_VGIC_GRP_IST.
+> +   This MUST happen before the guest's memory is serialised as the LPI IST is
+> +   stored directly to guest memory.
+> +
+> +b) Save the IRS MMIO register state in the following order by issuing
+> +   KVM_GET_DEVICE_ATTR on KVM_DEV_ARM_VGIC_GRP_IRS_REGS:
+> +
+> +     1. Save IRS_IDR0-2 and IRS_IDR5-7 registers.
+> +     2. Save IRS_IST_CFGR.
+> +     3. Save IRS_IST_BASER.
+> +     4. Save the remaining global IRS MMIO registers.
+> +     5. For each PE:
+> +        - write IRS_PE_SELR
+> +        - save IRS_PE_CR0
+> +     6. For each SPI:
+> +        - write IRS_SPI_SELR
+> +        - save IRS_SPI_CFGR
+> +
+> +IRS Restore Sequence:
+> +---------------------
+> +
+> +The following ordering must be followed when restoring the virtual GICv5 and
+> +IRS:
+> +
+> +a) restore all guest memory and create vcpus
+> +b) provide the IRS base address by issuing KVM_SET_DEVICE_ATTR on
+> +   KVM_DEV_ARM_VGIC_GRP_ADDR
+> +c) initialise the GIC - this sets up the default state and creates the SPI
+> +   IST - by issuing KVM_SET_DEVICE_ATTR on KVM_DEV_ARM_VGIC_GRP_CTRL with
+> +   KVM_DEV_ARM_VGIC_CTRL_INIT
 
-Formatting.
+This isn't going to work for QEMU, if I understand it correctly.
+QEMU always creates the whole VM first, including creating the
+VCPUs and GIC, telling KVM what its base address is, initializing it,
+etc, before it starts an inbound migration. So the memory read
+is going to come in after step (c), not right at the start.
 
+> +d) restore the IRS MMIO register state in the following order by issuing
+> +   KVM_SET_DEVICE_ATTR on KVM_DEV_ARM_VGIC_GRP_IRS_REGS:
 > +
-> +	if (ret == -ETIMEDOUT) {
-> +		pr_err_ratelimited("Time out waiting for IRS VPE Op\n");
-> +		return ret;
-> +	}
+> +     1. Restore IRS_IDR0-2 and IRS_IDR5-7 registers.
+> +     2. Restore IRS_IST_CFGR.
+> +     3. Restore IRS_IST_BASER - this triggers KVM to create the LPI IST.
 > +
-> +	return 0;
+> +e) restore the ISTs by issuing KVM_SET_DEVICE_ATTR on
+> +   KVM_DEV_ARM_VGIC_GRP_IST.
+> +f) restore the remaining IRS MMIO register state in the following order by
+> +   issuing KVM_SET_DEVICE_ATTR on KVM_DEV_ARM_VGIC_GRP_IRS_REGS:
+> +
+> +     1. Restore the remaining global IRS MMIO registers.
+> +     2. For each PE:
+> +        - write IRS_PE_SELR
+> +        - restore IRS_PE_CR0
+> +     3. For each SPI:
+> +        - write IRS_SPI_SELR
+> +        - restore IRS_SPI_CFGR
 
-You seem to have a number of these primitives. Consider having a
-generic helper that takes the required parameters, including a partial
-string in case of error.
+More generally, if your API involves this much in the way
+of complicated ordering dependencies, it's going to be
+very bug prone.  From userspace's perspective, this is
+not a very helpful way to design the interface :-)
 
-> +}
-> +
->  static int vgic_v5_irs_assign_vmt(bool two_level, u8 vm_id_bits, phys_addr_t vmt_base)
->  {
->  	u64 vmt_baser;
-> @@ -369,10 +388,142 @@ static int vgic_v5_irs_set_vist_invalid(int vm_id, bool spi_ist)
->  	return __vgic_v5_irs_update_vist_validity(vm_id, spi_ist, true);
->  }
->  
-> +static int vgic_v5_irs_set_up_vpe(int vm_id, int vpe_id, irq_hw_number_t db_hwirq)
-> +{
-> +	u64 vmap_vper, dbr, selr;
-> +	u32 statusr, cr0;
-> +	int ret;
-> +
-> +	guard(raw_spinlock)(&vm_config_lock);
-> +
-> +	/* Make sure that we are idle to begin with */
-> +	ret = vgic_v5_irs_wait_for_vm_op();
-> +	if (ret)
-> +		return ret;
-> +
-> +	/* Mark the VPE as valid */
-> +	vmap_vper = FIELD_PREP(GICV5_IRS_VMAP_VPER_VPE_ID, vpe_id) |
-> +		    FIELD_PREP(GICV5_IRS_VMAP_VPER_VM_ID, vm_id) |
-> +		    FIELD_PREP(GICV5_IRS_VMAP_VPER_M, true);
-
-That's another of these single bit mask used with FIELD_PREP. Consider
-rewriting it as:
-
-	vmap_vper = FIELD_PREP(GICV5_IRS_VMAP_VPER_VPE_ID, vpe_id) |
-		    FIELD_PREP(GICV5_IRS_VMAP_VPER_VM_ID, vm_id) |
-		    GICV5_IRS_VMAP_VPER_M;
-
-
-> +	irs_writeq_relaxed(vmap_vper, GICV5_IRS_VMAP_VPER);
-> +
-> +	/* Wait for the VPE to be marked valid in the VPET */
-> +	ret = vgic_v5_irs_wait_for_vm_op();
-> +	if (ret)
-> +		return ret;
-> +
-> +	selr = FIELD_PREP(GICV5_IRS_VPE_SELR_VPE_ID, vpe_id) |
-> +	       FIELD_PREP(GICV5_IRS_VPE_SELR_VM_ID, vm_id) |
-> +	       FIELD_PREP(GICV5_IRS_VPE_SELR_S, true);
-> +	irs_writeq_relaxed(selr, GICV5_IRS_VPE_SELR);
-> +
-> +	ret = vgic_v5_irs_wait_for_vpe_op();
-> +	if (ret)
-> +		return ret;
-> +
-> +	statusr = irs_readl_relaxed(GICV5_IRS_VPE_STATUSR);
-> +	if (!FIELD_GET(GICV5_IRS_VPE_STATUSR_V, statusr))
-> +		return -EINVAL;
-> +
-> +	/* Set targeted only routing (disable 1ofN vPE selection) */
-> +	cr0 = FIELD_PREP(GICV5_IRS_VPE_CR0_DPS, true);
-> +	irs_writel_relaxed(cr0, GICV5_IRS_VPE_CR0);
-> +
-> +	ret = vgic_v5_irs_wait_for_vpe_op();
-> +	if (ret)
-> +		return ret;
-> +
-> +	statusr = irs_readl_relaxed(GICV5_IRS_VPE_STATUSR);
-> +	if (FIELD_GET(GICV5_IRS_VPE_STATUSR_F, statusr))
-> +		ret = -EINVAL;
-> +
-> +	/*
-> +	 * The VPE has not yet run. Therefore, make sure that all interrupts
-> +	 * will generate a doorbell.
-> +	 */
-> +	dbr = FIELD_PREP(GICV5_IRS_VPE_DBR_LPI_ID, db_hwirq) |
-> +	      FIELD_PREP(GICV5_IRS_VPE_DBR_DBPM, 0b11111) |
-> +	      FIELD_PREP(GICV5_IRS_VPE_DBR_REQ_DB, false) |
-
-And anything that set to false can be removed altogether.
-
-> +	      FIELD_PREP(GICV5_IRS_VPE_DBR_DBV, true);
-> +	irs_writeq_relaxed(dbr, GICV5_IRS_VPE_DBR);
-> +
-> +	ret = vgic_v5_irs_wait_for_vpe_op();
-> +	if (ret)
-> +		return ret;
-> +
-> +	statusr = irs_readl_relaxed(GICV5_IRS_VPE_STATUSR);
-> +	if (FIELD_GET(GICV5_IRS_VPE_STATUSR_F, statusr))
-> +		return -EINVAL;
-> +
-> +	return 0;
-> +}
-> +
-> +static int vgic_v5_irs_vpe_cr0_read(int vm_id, int vpe_id, u64 *cr0)
-> +{
-> +	u32 statusr;
-> +	u64 selr;
-> +	int ret;
-> +
-> +	guard(raw_spinlock)(&vm_config_lock);
-> +
-> +	selr = FIELD_PREP(GICV5_IRS_VPE_SELR_VPE_ID, vpe_id) |
-> +	       FIELD_PREP(GICV5_IRS_VPE_SELR_VM_ID, vm_id) |
-> +	       FIELD_PREP(GICV5_IRS_VPE_SELR_S, true);
-> +	irs_writeq_relaxed(selr, GICV5_IRS_VPE_SELR);
-> +
-> +	ret = vgic_v5_irs_wait_for_vpe_op();
-> +	if (ret)
-> +		return ret;
-> +
-> +	statusr = irs_readl_relaxed(GICV5_IRS_VPE_STATUSR);
-> +	if (!FIELD_GET(GICV5_IRS_VPE_STATUSR_V, statusr))
-> +		return -EINVAL;
-> +
-> +	*cr0 = irs_readl_relaxed(GICV5_IRS_VPE_CR0);
-> +
-> +	return 0;
-
-I'd rather this function returned the CR0 value directly, even if the
-IDLE bit isn't set. You can have a WARN_ONCE() if you want.
-
-> +}
-> +
-> +static int vgic_v5_irs_vpe_cr0_update(int vm_id, int vpe_id, u32 cr0)
-
-*_write() would be better than *_update() when you already have
-*_read(). Specially as a consequence of VPE_CR0_WRITE.
-
-> +{
-> +	u32 statusr;
-> +	u64 selr;
-> +	int ret;
-> +
-> +	guard(raw_spinlock)(&vm_config_lock);
-> +
-> +	selr = FIELD_PREP(GICV5_IRS_VPE_SELR_VPE_ID, vpe_id) |
-> +	       FIELD_PREP(GICV5_IRS_VPE_SELR_VM_ID, vm_id) |
-> +	       FIELD_PREP(GICV5_IRS_VPE_SELR_S, true);
-> +	irs_writeq_relaxed(selr, GICV5_IRS_VPE_SELR);
-> +
-> +	ret = vgic_v5_irs_wait_for_vpe_op();
-> +	if (ret)
-> +		return ret;
-> +
-> +	statusr = irs_readl_relaxed(GICV5_IRS_VPE_STATUSR);
-> +	if (!FIELD_GET(GICV5_IRS_VPE_STATUSR_V, statusr))
-> +		return ret;
-
-return 0?  But you have set SELR to something. Surely reading V==0
-here is an indication of a bug. So should you report the error? Warn?
-
-> +
-> +	irs_writel_relaxed(cr0, GICV5_IRS_VPE_CR0);
-> +
-> +	ret = vgic_v5_irs_wait_for_vpe_op();
-> +	if (ret)
-> +		return ret;
-> +
-> +	statusr = irs_readl_relaxed(GICV5_IRS_VPE_STATUSR);
-> +	if (FIELD_GET(GICV5_IRS_VPE_STATUSR_F, statusr))
-> +		return -EINVAL;
-> +
-> +	return 0;
-> +}
-> +
->  static int vgic_v5_db_set_vcpu_affinity(struct irq_data *data, void *vcpu_info)
->  {
->  	struct vgic_v5_vm *vm = data->domain->host_data;
->  	struct gicv5_cmd_info *cmd_info = vcpu_info;
-> +	/* Our VPE ID is the index within the doorbell domain */
-> +	u16 vpe_id = data->hwirq;
->  
->  	switch (cmd_info->cmd_type) {
->  	case VMT_L2_MAP:
-> @@ -381,6 +532,19 @@ static int vgic_v5_db_set_vcpu_affinity(struct irq_data *data, void *vcpu_info)
->  		return vgic_v5_irs_set_vm_valid(vm->vm_id);
->  	case VMTE_MAKE_INVALID:
->  		return vgic_v5_irs_set_vm_invalid(vm->vm_id);
-> +	case VPE_MAKE_VALID:
-> +		/*
-> +		 * We need the actual LPI ID which lives in the top-most parent
-> +		 * domain. This hwirq won't include the type (LPI) but that's
-> +		 * not required for the IRS_VPE_DBR.
-> +		 */
-> +		while (data->parent_data != NULL)
-> +			data = data->parent_data;
-> +		return vgic_v5_irs_set_up_vpe(vm->vm_id, vpe_id, data->hwirq);
-> +	case VPE_CR0_READ:
-> +		return vgic_v5_irs_vpe_cr0_read(vm->vm_id, vpe_id, &cmd_info->data);
-> +	case VPE_CR0_WRITE:
-> +		return vgic_v5_irs_vpe_cr0_update(vm->vm_id, vpe_id, cmd_info->data);
->  	case SPI_VIST_MAKE_VALID:
->  		return vgic_v5_irs_set_vist_valid(vm->vm_id, true);
->  	case LPI_VIST_MAKE_VALID:
-> diff --git a/include/linux/irqchip/arm-gic-v5.h b/include/linux/irqchip/arm-gic-v5.h
-> index ff5ad653252d2..54b573783cd75 100644
-> --- a/include/linux/irqchip/arm-gic-v5.h
-> +++ b/include/linux/irqchip/arm-gic-v5.h
-> @@ -90,9 +90,14 @@
->  #define GICV5_IRS_VMT_BASER		0x0200
->  #define GICV5_IRS_VMT_CFGR		0x0210
->  #define GICV5_IRS_VMT_STATUSR		0x0214
-> +#define GICV5_IRS_VPE_SELR		0x0240
-> +#define GICV5_IRS_VPE_DBR		0x0248
-> +#define GICV5_IRS_VPE_CR0		0x0258
-> +#define GICV5_IRS_VPE_STATUSR		0x025c
->  #define GICV5_IRS_VMAP_L2_VMTR		0x02c0
->  #define GICV5_IRS_VMAP_VMR		0x02c8
->  #define GICV5_IRS_VMAP_VISTR		0x02d0
-> +#define GICV5_IRS_VMAP_VPER		0x02e0
->  
->  #define GICV5_IRS_IDR0_VIRT		BIT(6)
->  
-> @@ -199,6 +204,21 @@
->  
->  #define GICV5_IRS_VMT_STATUSR_IDLE	BIT(0)
->  
-> +#define GICV5_IRS_VPE_SELR_S		BIT_ULL(63)
-> +#define GICV5_IRS_VPE_SELR_VPE_ID	GENMASK_ULL(47, 32)
-> +#define GICV5_IRS_VPE_SELR_VM_ID	GENMASK_ULL(15, 0)
-> +
-> +#define GICV5_IRS_VPE_DBR_DBV		BIT_ULL(63)
-> +#define GICV5_IRS_VPE_DBR_REQ_DB	BIT_ULL(62)
-> +#define GICV5_IRS_VPE_DBR_DBPM		GENMASK_ULL(36, 32)
-> +#define GICV5_IRS_VPE_DBR_LPI_ID	GENMASK_ULL(23, 0)
-> +
-> +#define GICV5_IRS_VPE_CR0_DPS		BIT(0)
-> +
-> +#define GICV5_IRS_VPE_STATUSR_F		BIT(2)
-> +#define GICV5_IRS_VPE_STATUSR_V		BIT(1)
-> +#define GICV5_IRS_VPE_STATUSR_IDLE	BIT(0)
-> +
->  #define GICV5_IRS_VMAP_L2_VMTR_M	BIT_ULL(63)
->  #define GICV5_IRS_VMAP_L2_VMTR_VM_ID	GENMASK_ULL(15, 0)
->  
-> @@ -211,6 +231,10 @@
->  #define GICV5_IRS_VMAP_VISTR_VM_ID	GENMASK_ULL(47, 32)
->  #define GICV5_IRS_VMAP_VISTR_TYPE	GENMASK_ULL(31, 29)
->  
-> +#define GICV5_IRS_VMAP_VPER_M		BIT_ULL(63)
-> +#define GICV5_IRS_VMAP_VPER_VM_ID	GENMASK_ULL(47, 32)
-> +#define GICV5_IRS_VMAP_VPER_VPE_ID	GENMASK_ULL(15, 0)
-> +
->  #define GICV5_ISTL1E_VALID		BIT_ULL(0)
->  #define GICV5_IRS_ISTL1E_SIZE		8UL
->  
-> @@ -480,6 +504,9 @@ enum gicv5_vcpu_info_cmd_type {
->  	VMT_L2_MAP,		/* Map in a L2 VMT - *may* happen on VM init */
->  	VMTE_MAKE_VALID,	/* Make the VMTE valid */
->  	VMTE_MAKE_INVALID,	/* Make the VMTE (et al.) invalid */
-> +	VPE_MAKE_VALID,		/* No corresponding invalid */
-> +	VPE_CR0_READ,		/* Read of VPE_CR0 (guest read from PE_CR0) */
-> +	VPE_CR0_WRITE,		/* Write to VPE_CR0 (guest write to PE_CR0) */
->  	SPI_VIST_MAKE_VALID,	/* No corresponding invalid */
->  	LPI_VIST_MAKE_VALID,	/* Triggered by a guest */
->  	LPI_VIST_MAKE_INVALID,	/* Triggered by a guest */
-
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
+thanks
+-- PMM
