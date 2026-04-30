@@ -1,68 +1,67 @@
 Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5125634750A;
-	Thu, 30 Apr 2026 05:51:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14774372B4F;
+	Thu, 30 Apr 2026 05:51:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777528262; cv=none; b=uYa45PTpGrQUuLu+idbghTSvOYz6ws8eMazSV6MtQH0u4vi9cZC8yAiMYyrieddD641LHSoiecM6VhwKq/wXUvmCvTuemOFzw7zsxSfW4QPaNA0Yf4m/HptRy9U/puJC7YJEImbjyNNftx2URrU3eX4+wV3/90PmbDW6bbJ16Mc=
+	t=1777528266; cv=none; b=oDP2q8j29v2tuF8H2EyLJoTAaAeo3Gf94B5cnwfw6MPmSeVd2K0rnkvtA5yK0kzySk/658Fv+Xiw29OZ2U7p9jiyGdeoiRpwhCavOoyLLgEixmtLejcWO2Jq/oxuvgfgZs44Zl5C2f0OOxPrbLx6q6mW2AcPmFQUqg8GfQDWPPE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777528262; c=relaxed/simple;
-	bh=sspOeu1mcLYb6FLxYRgorDB3bHqOpq5HnJhItrLaqNE=;
+	s=arc-20240116; t=1777528266; c=relaxed/simple;
+	bh=p4nEDrWIGS+qGXKeYk/iD+rTPCQaDzWwOPIhNDYyz68=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZeW2V9C9TWuy2bGWBCN3AvZkiss6IA5r09LjnNmkIRGirxbw55ccscqpiR4Ozpczeq0Wp4ib0cv7RfjC8BWFHfFvJJOkpNSnUnmgicPre4lJrKoI8L/n9Z9Qj5WlWhqpGO2YjQaB4z49/hDZibU0k0gegcSeQPEWK2lbgSQvExw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Xx6zKEGf; arc=none smtp.client-ip=148.163.158.5
+	 MIME-Version; b=ccZ43oTb9I+WbtqH3JS+X3Z0e42J+Z+qgo/37E6cYV1BZBYJYMIFNCaXGPfWqeveeWGX2igxyuoV4Egr5zV6SPyogE+/8iR9JBlS5q/y1saN3duZZJjIgVBm4NYjgCfJgsIwvV0HON25aD2IFw5arJNPD9To6JgdmFdgZ7UJhMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=mkvZF/tZ; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Xx6zKEGf"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63TGV5kW2037068;
-	Thu, 30 Apr 2026 05:50:50 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="mkvZF/tZ"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 63U3nlGN4169201;
+	Thu, 30 Apr 2026 05:50:59 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=Cy6bOdGwcpAN6PjTw
-	79AQNezQbvoMdFpgvQLRpDMT4o=; b=Xx6zKEGfL7r8a/2aJpcd+XBzp8SJckW2Z
-	N/BTFMBuDZ+WkAvGPbQCWQkNSaFtSRzcGubBS8vCIIdfchvyjn+ZGFkbiETATQyZ
-	acb1mVOKzGYpbHyQRmeiROMEvFFfKWLmOeHdnbRqGnTPOxe15Hxw3n+Bg3JzSQy+
-	mn/tV92igrKC3WOn/5PCQc4ZrEp8heq4SVa8zEm3hOLZEpSClLEUTVkwXcIRgBeH
-	HHsK+26Z5U3mWgBp60T7JDHycQkBDsoYhAR70WTlD4RIChq6VYDyPokj5S8q5LoC
-	6pzKbo0ye6GvUN4cbFqVFcBZVRq0SXDvPf9rXoRsEkL+QIa38p4QQ==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4drk1jvm7s-1
+	:mime-version:references:subject:to; s=pp1; bh=A+TFab3TxBuckPuod
+	X7Yxrhrp4K3N57dRmZphKt1Eog=; b=mkvZF/tZ9H1ZcDPBQw8C1FYMVoFP9PfLZ
+	Gm9aAcX2/YFNgJ+kijTkDJIimLxaico8pF+wtq+PZa2pl18cH3O2QJK+uBjxsRht
+	vFNqse3ClGn/u3ZcMSPZgpJxqural0/MbITnOTjVbt+0tbmbGby2hhngUL+eWCcs
+	iduXJ7JbsoKb+1Q9BXB7rS2LA4mMpBXY/56IzMZLIhohGeTB8/PntmcX4nnH7j1c
+	8Ev3EiDZBQJBG7CwszxKV+wp3i5MqqQKKWaWYX6MyxM3XmH5ADO8BiRyEie551En
+	2Zq4Z9sVQ0GtnNjB2eJNzzYjojeISrEL/zOmKJ6x/ZCjAZITYXQwQ==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4drm1e4fej-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Apr 2026 05:50:49 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63U5colb013174;
-	Thu, 30 Apr 2026 05:50:48 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dsa5ghems-1
+	Thu, 30 Apr 2026 05:50:59 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 63U5dF2N026090;
+	Thu, 30 Apr 2026 05:50:58 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ds8aw1nse-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 30 Apr 2026 05:50:48 +0000 (GMT)
+	Thu, 30 Apr 2026 05:50:58 +0000 (GMT)
 Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63U5ojMI43516166
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 63U5osal51511636
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 30 Apr 2026 05:50:45 GMT
+	Thu, 30 Apr 2026 05:50:54 GMT
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4B0C920043;
-	Thu, 30 Apr 2026 05:50:45 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id B41D82004B;
+	Thu, 30 Apr 2026 05:50:54 +0000 (GMT)
 Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 1FABA20040;
-	Thu, 30 Apr 2026 05:50:42 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id 44F4920043;
+	Thu, 30 Apr 2026 05:50:51 +0000 (GMT)
 Received: from localhost.localdomain (unknown [9.39.18.70])
 	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 30 Apr 2026 05:50:41 +0000 (GMT)
+	Thu, 30 Apr 2026 05:50:50 +0000 (GMT)
 From: Amit Machhiwal <amachhiw@linux.ibm.com>
 To: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>
 Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
         Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 5/6] KVM: PPC: Book3S HV: Add support for compat CPU capabilities for KVM on PowerNV
-Date: Thu, 30 Apr 2026 11:19:04 +0530
-Message-ID: <20260430054906.94431-6-amachhiw@linux.ibm.com>
+        Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: [PATCH 6/6] KVM: PPC: Document KVM_PPC_GET_COMPAT_CAPS ioctl
+Date: Thu, 30 Apr 2026 11:19:05 +0530
+Message-ID: <20260430054906.94431-7-amachhiw@linux.ibm.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <20260430054906.94431-1-amachhiw@linux.ibm.com>
 References: <20260430054906.94431-1-amachhiw@linux.ibm.com>
@@ -74,117 +73,85 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDMwMDA1NSBTYWx0ZWRfX8jDAyDYbPtOE
- Eg8rmNMFA6EGZhA7uZg0FYtC9vDsNcUzUjLGExNIk3+kwyY+t8qXirKd9C1fVicTKqbsF0lz6xv
- JhPRPoqW2DUNEzFAK5fWm75SK9Gy6cu6nI2ySzSxiatxEx4tiwQAbGG8hgq5YZ3TKpBZ4ALUWTU
- x6dqeZzEl/XfKF3b0dm8JLOSjRXSqGHK3m4NORwa2eWHz38eHO0AJ009+JoR9tq1bkZN16dF9rn
- S9ho+lIanXoi19X4FAEmkT3iMPT9Vrhvzy4pNqLY/kRbyjuwOC1jh2Zl9/nNXfi8C59wjqc4Z50
- 1jnb48V85Sim/CxmKC7BIlXy0NhdCDGO32aCZXyWFP8XSC9Jt0LVhSCJ7GijVvjXWURDEp+DxqH
- ioeJL0EsSvuTM0R0rzdFgKYJlTi49/15MScXq/M183CSHa0c2MChBkN9NNK2GYlJjJT26esuTEw
- dwOMZCN0UdUF7Tf4+kA==
-X-Proofpoint-GUID: iUj-YKxo3sPB2St381_RksO7wj_EEXK9
-X-Proofpoint-ORIG-GUID: xI8XyEiWmMkw5kpVVqnlBb77BpNUczlI
-X-Authority-Analysis: v=2.4 cv=MohiLWae c=1 sm=1 tr=0 ts=69f2edba cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+X-Proofpoint-ORIG-GUID: PY1Pk5C2qoENucOkMV8Y5LISX-Mrjos1
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNDMwMDA1NSBTYWx0ZWRfXxz0Q8GlnGWtM
+ EACpotdoO0dzuIwZvB9q10VwKgpegGJshExny1JYwCH1ruDGf/ku8UOJR+tl0C+xRVNWanTlsXY
+ fXUihCv6bXer8gOgw0UcxNbbmZjIFgAxVPRAXJwd0igKe1K6BclAwXj0AXFJ8wf7JSAPXeUCbvQ
+ 1zl2CBCsk8xGI+5WF9uFhNbyuPlbdFWv7QGhoR1mm203pd/1R6qyoA6YNTjsjSwwtVfxBMtT0pd
+ s2wt73DrID/95Z456Xc4BsxdAqnEHSJ7U9zZuG/kpZROIHFFDvETBcU9xYDP2abrUEYzYy1P63p
+ kkjWF/5Shwi9Q3hqySQ12oh6BHNqfoYSCFC3pQsyD6TfqmDj1NbvuNEBJWVUYstsCDlSB4nx+zw
+ g7MAWXZKl0nbR9kFJv5sd/CBlSZmuWMm+hzgSgZJ/bEOnE0CB/TsDcTkcjrwQjfOs+AcTi5cFEI
+ ZI9N0NdjjPfRymOZu8w==
+X-Authority-Analysis: v=2.4 cv=VZLH+lp9 c=1 sm=1 tr=0 ts=69f2edc3 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
  a=A5OVakUREuEA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=LbGGMz8L2r-vpTRwWUsA:9
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=fHGwRvExhQHp1Ic8jzwA:9
+X-Proofpoint-GUID: PY1Pk5C2qoENucOkMV8Y5LISX-Mrjos1
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-04-30_01,2026-04-28_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 adultscore=0 suspectscore=0 bulkscore=0 spamscore=0
- priorityscore=1501 malwarescore=0 clxscore=1015 lowpriorityscore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2604300055
+ clxscore=1015 suspectscore=0 adultscore=0 lowpriorityscore=0 phishscore=0
+ spamscore=0 malwarescore=0 bulkscore=0 priorityscore=1501 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2604300055
 
-Currently, when booting a compatibility-mode KVM guest (L1) on a PowerNV
-hypervisor (L0), the guest runs with the expected processor
-compatibility level. However, when booting a nested KVM guest (L2)
-inside the L1, QEMU derives the CPU model from the raw host PVR and
-attempts to run the nested guest at that level, instead of honoring the
-compatibility mode of the L1.
+Add documentation for the KVM_PPC_GET_COMPAT_CAPS ioctl to the KVM API
+documentation.
 
-Extend host CPU compatibility capability reporting to support nested
-virtualization on PowerNV systems (PAPR nested API v1).
-
-For nested API v2 (PowerVM), compatibility capabilities are obtained
-from the hypervisor via the H_GUEST_GET_CAPABILITIES hcall. This
-information is not available on PowerNV systems.
-
-For nested API v1, derive the compatibility capabilities from the L1
-guest by reading the "cpu-version" property from the device tree, which
-reflects the effective (logical) processor compatibility level. Map this
-value to the corresponding compatibility capability bitmap.
-
-Introduce a helper to translate CPU version values into compatibility
-capability bits and integrate it into kvmppc_get_compat_cpu_caps().
-
-This allows userspace to query host CPU compatibility modes on both
-PowerVM and PowerNV platforms via the KVM_PPC_GET_COMPAT_CAPS ioctl.
+The ioctl exposes host processor compatibility modes supported for
+nested KVM guests on PowerPC systems.
 
 Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
 ---
- arch/powerpc/kvm/book3s_hv.c | 37 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 36 insertions(+), 1 deletion(-)
+ Documentation/virt/kvm/api.rst | 35 ++++++++++++++++++++++++++++++++++
+ 1 file changed, 35 insertions(+)
 
-diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-index d602d90111d1..25d05f1ccb72 100644
---- a/arch/powerpc/kvm/book3s_hv.c
-+++ b/arch/powerpc/kvm/book3s_hv.c
-@@ -6516,16 +6516,51 @@ static bool kvmppc_hash_v3_possible(void)
- 	return true;
- }
+diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+index 52bbbb553ce1..7a10c3c6cbf1 100644
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -6555,6 +6555,41 @@ KVM_S390_KEYOP_SSKE
  
-+static int kvmppc_map_compat_capabilities(const __be32 cpu_version,
-+				      unsigned long *capabilities)
-+{
-+	switch (cpu_version) {
-+	case PVR_ARCH_31_P11:
-+		*capabilities |= H_GUEST_CAP_POWER11;
-+		break;
-+	case PVR_ARCH_31:
-+		*capabilities |= H_GUEST_CAP_POWER10;
-+		break;
-+	case PVR_ARCH_300:
-+		*capabilities |= H_GUEST_CAP_POWER9;
-+		break;
-+	default:
-+		return -EINVAL;
-+	}
+ .. _kvm_run:
+ 
++4.145 KVM_PPC_GET_COMPAT_CAPS
++-----------------------------
++:Capability: KVM_CAP_PPC_COMPAT_CAPS
++:Architectures: powerpc
++:Type: vm ioctl
++:Parameters: struct kvm_ppc_compat_caps (out)
++:Returns:
++	0 on successful completion,
++	-EFAULT if ``struct kvm_ppc_compat_caps`` cannot be written
 +
-+	return 0;
-+}
- 
- static int kvmppc_get_compat_cpu_caps(struct kvm_ppc_compat_caps *host_caps)
- {
- 
-+	struct device_node *np;
- 	unsigned long capabilities = 0;
-+	const __be32 *prop = NULL;
- 	long rc = -EINVAL;
-+	u32 cpu_version;
- 
- 	if (kvmhv_on_pseries()) {
--		if (kvmhv_is_nestedv2())
-+		if (kvmhv_is_nestedv2()) {
- 			rc = plpar_guest_get_capabilities(0, &capabilities);
-+		} else {
-+			for_each_node_by_type(np, "cpu") {
-+				prop = of_get_property(np, "cpu-version", NULL);
-+				if (prop) {
-+					cpu_version = be32_to_cpup(prop);
-+					break;
-+				}
-+			}
-+			if (!prop)
-+				return -EINVAL;
-+			rc = kvmppc_map_compat_capabilities(cpu_version,
-+								&capabilities);
-+		}
- 		host_caps->compat_capabilities = capabilities;
- 	}
++IBM POWER system server-based processors provide a compatibility mode feature
++where an Nth generation processor can operate in modes consistent with earlier
++generations such as (N-1) and (N-2).
++
++This ioctl provides userspace with information about the CPU compatibility modes
++supported by the current host processor for booting the nested KVM guests on
++PowerNV (KVM nested APIv1) and PowerVM (KVM nested APIv2) platforms.
++
++::
++
++  struct kvm_ppc_compat_caps {
++         __u32   flags;
++         __u64   compat_capabilities;    /* Capabilities supported by the host */
++  };
++
++The ``compat_capabilities`` bit field describes the processor compatibility
++modes supported by the host. For example, the following bits indicate support
++for specific processor modes.
++
++::
++
++ bit 1: KVM guests can run in Power9 processor mode
++ bit 2: KVM guests can run in Power10 processor mode
++ bit 3: KVM guests can run in Power11 processor mode
++
+ 5. The kvm_run structure
+ ========================
  
 -- 
 2.50.1
