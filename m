@@ -1,55 +1,56 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF412D97B9
-	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 15:08:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418202DAFCB
+	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 15:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777561684; cv=none; b=FL9dszTLjg91XmlqFqDn3YT1k/7VZhF2rKQP1pAkqhrL8/BeueosW4KF6ss+XLzec114dG2QVE9n4FVsc7pkLnYn0Z4nVd/yr2fsCnV19DEXgVPGQsnl682RLCJe1zP07YClzcXdcAa77aQVKTHf3+BMn8JYe8YiY9hXVIcnlXA=
+	t=1777561684; cv=none; b=Hc4Hpos8aAQkvdiuMrXzW6eJS/eBDKCbXhcfuDTspaqgHGe3awfhNKqIiSMBsz65dZGP5HJ73KqnJvSTr4HlgpKSIBlTw/msahW7Mlqnb5slt2/RuaEUQECR1tIH8oc6UE+QBwU4XIV8tKmDMcC0dAkK05cRBSGUyafyGIhjRho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777561684; c=relaxed/simple;
-	bh=pYxi/j+e+ki5JQsTiKeKDXJukerh7jXKmGy6I5ArLY0=;
+	bh=zZVoVFJ/nOF7y9rXzfbb0RWNmNB2de94MyMjpNi5bVk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kTRclQr3kNXNEcjyDmbwU1qkW2NSicmdgNwhhnVIM9ewPsZyGdKJ2daz35a1Qacdg/xNHAmdZUjl4zw86neMMKMj6gASUbrzEPhkx6uHyVWHSBfCG2FL1G9mct4xN6p7HMo/bYw/4as/jK+HeNcVWWXR4A9gPfRkryNF9nz2Z2o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z0hsBsvw; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=NwLoSGn+LDQDly0mnWikbjeEfe5Eg6ynntFP/Q2encCfPsEcStQcWXojtwj7lnovsFyb8tEdYxYk3pi7B16K+qUlskzqNXiST/JBvq6u18brvBmlLZv+D9MqlhkAikVw6m70TdbcAyLs0aZsOHn60ytvh79Xx4Srm4aSWbVvLGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dJ+XF93C; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z0hsBsvw"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dJ+XF93C"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777561681;
+	s=mimecast20190719; t=1777561678;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IqH4mMwuSaq5xJDDbQpqV0WrUZp6tq9mDH2+yND/Ss0=;
-	b=Z0hsBsvwcGtTEKIyCAq0Qd2jVVMQLwpPNSRJicVup6UPA1wNhba6I5Ko+cx5Z+5f8z0ReE
-	XbGun51HtVCYqg1Uba66BU/ehERi8IwEMoKjidKlAsBYgw/tQs1lSR3/gzXx3JHyGabmCr
-	9F5kVf6e0Usj4L77pJEeUOvEoHiBV14=
+	bh=GAkplb3fEQUh//5D4yri74NW8yHpfRyCt1Rq8wCX+vc=;
+	b=dJ+XF93C5dY/ScjNFuBI4GFJa/5NmBOCW8vQUI6xtl+WeyBHknkovQKYXXVUOFdYLQ8LLj
+	BA+FUFRMzN1nmn8k1agkTz1cV/WzpeZKIUywW8IFmI7h2PpGcuP6FRd4ZEDn6sB/mOeR6V
+	Fhql+NXnSwR4cLuBw/nzYXAodFPcFI0=
 Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-493-8e-_lmkvPlqTTPP7ksHpqw-1; Thu,
- 30 Apr 2026 11:07:56 -0400
-X-MC-Unique: 8e-_lmkvPlqTTPP7ksHpqw-1
-X-Mimecast-MFC-AGG-ID: 8e-_lmkvPlqTTPP7ksHpqw_1777561675
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-687-_i1dfoj1Ov2WrIZApdNmZA-1; Thu,
+ 30 Apr 2026 11:07:54 -0400
+X-MC-Unique: _i1dfoj1Ov2WrIZApdNmZA-1
+X-Mimecast-MFC-AGG-ID: _i1dfoj1Ov2WrIZApdNmZA_1777561672
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 47F65195605A;
-	Thu, 30 Apr 2026 15:07:55 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 235CF19560B4;
+	Thu, 30 Apr 2026 15:07:52 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7F6B81800906;
-	Thu, 30 Apr 2026 15:07:54 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 39D901800347;
+	Thu, 30 Apr 2026 15:07:51 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: d.riley@proxmox.com,
-	jon@nutanix.com
-Subject: [PATCH 07/28] KVM: x86/mmu: rename and clarify BYTE_MASK
-Date: Thu, 30 Apr 2026 11:07:26 -0400
-Message-ID: <20260430150747.76749-8-pbonzini@redhat.com>
+	jon@nutanix.com,
+	Kai Huang <kai.huang@intel.com>
+Subject: [PATCH 03/28] KVM: x86/mmu: free up bit 10 of PTEs in preparation for MBEC
+Date: Thu, 30 Apr 2026 11:07:22 -0400
+Message-ID: <20260430150747.76749-4-pbonzini@redhat.com>
 In-Reply-To: <20260430150747.76749-1-pbonzini@redhat.com>
 References: <20260430150747.76749-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -62,107 +63,106 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-The BYTE_MASK macro is the central point of the black magic
-in update_permission_bitmask().  Rename it to something
-that relates to how it is used, and add a comment explaining
-how it works.
+From: Jon Kohler <jon@nutanix.com>
 
-Using shifts instead of powers of two was actually suggested by
-David Hildenbrand back in 2017 for clarity[1] but I evidently
-forgot his suggestion when applying to kvm.git.
+Update SPTE_MMIO_ALLOWED_MASK to allow EPT user executable (bit 10) to
+be treated like EPT RWX bit2:0, as when mode-based execute control is
+enabled, bit 10 can act like a "present" bit.  Likewise do not include
+it in FROZEN_SPTE.
 
-[1] https://lore.kernel.org/kvm/e4b5df86-31ae-2f4e-0666-393753e256df@redhat.com/
+No functional changes intended, other than the reduction of the maximum
+MMIO generation that is stored in page tables.
 
+Cc: Kai Huang <kai.huang@intel.com>
+Signed-off-by: Jon Kohler <jon@nutanix.com>
+Message-ID: <20251223054806.1611168-4-jon@nutanix.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
 Tested-by: David Riley <d.riley@proxmox.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/mmu/mmu.c | 55 ++++++++++++++++++++++++++++++------------
- 1 file changed, 39 insertions(+), 16 deletions(-)
+ arch/x86/include/asm/vmx.h |  2 ++
+ arch/x86/kvm/mmu/spte.h    | 20 +++++++++++---------
+ 2 files changed, 13 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 24fbc9ea502a..70fd6868a555 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -5529,29 +5529,53 @@ reset_ept_shadow_zero_bits_mask(struct kvm_mmu *context, bool execonly)
- 				    max_huge_page_level);
- }
+diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
+index b2291a766e3f..2b30b921b375 100644
+--- a/arch/x86/include/asm/vmx.h
++++ b/arch/x86/include/asm/vmx.h
+@@ -560,10 +560,12 @@ enum vmcs_field {
+ #define VMX_EPT_ACCESS_BIT			(1ull << 8)
+ #define VMX_EPT_DIRTY_BIT			(1ull << 9)
+ #define VMX_EPT_SUPPRESS_VE_BIT			(1ull << 63)
++
+ #define VMX_EPT_RWX_MASK                        (VMX_EPT_READABLE_MASK |       \
+ 						 VMX_EPT_WRITABLE_MASK |       \
+ 						 VMX_EPT_EXECUTABLE_MASK)
+ #define VMX_EPT_MT_MASK				(7ull << VMX_EPT_MT_EPTE_SHIFT)
++#define VMX_EPT_USER_EXECUTABLE_MASK		(1ull << 10)
  
--#define BYTE_MASK(access) \
--	((1 & (access) ? 2 : 0) | \
--	 (2 & (access) ? 4 : 0) | \
--	 (3 & (access) ? 8 : 0) | \
--	 (4 & (access) ? 16 : 0) | \
--	 (5 & (access) ? 32 : 0) | \
--	 (6 & (access) ? 64 : 0) | \
--	 (7 & (access) ? 128 : 0))
--
-+/*
-+ * Build a mask with all combinations of PTE access rights that
-+ * include the given access bit.  The mask can be queried with
-+ * "mask & (1 << access)", where access is a combination of
-+ * ACC_* bits.
-+ *
-+ * By mixing and matching multiple masks returned by ACC_BITS_MASK,
-+ * update_permission_bitmask() builds what is effectively a
-+ * two-dimensional array of bools.  The second dimension is
-+ * provided by individual bits of permissions[pfec >> 1], and
-+ * logical &, | and ~ operations operate on all the 8 possible
-+ * combinations of ACC_* bits.
-+ */
-+#define ACC_BITS_MASK(access) \
-+	((1 & (access) ? 1 << 1 : 0) | \
-+	 (2 & (access) ? 1 << 2 : 0) | \
-+	 (3 & (access) ? 1 << 3 : 0) | \
-+	 (4 & (access) ? 1 << 4 : 0) | \
-+	 (5 & (access) ? 1 << 5 : 0) | \
-+	 (6 & (access) ? 1 << 6 : 0) | \
-+	 (7 & (access) ? 1 << 7 : 0))
- 
- static void update_permission_bitmask(struct kvm_mmu *mmu, bool ept)
+ static inline u8 vmx_eptp_page_walk_level(u64 eptp)
  {
- 	unsigned byte;
+diff --git a/arch/x86/kvm/mmu/spte.h b/arch/x86/kvm/mmu/spte.h
+index 28086fa86fe0..4283cea3e66c 100644
+--- a/arch/x86/kvm/mmu/spte.h
++++ b/arch/x86/kvm/mmu/spte.h
+@@ -96,11 +96,11 @@ static_assert(!(EPT_SPTE_MMU_WRITABLE & SHADOW_ACC_TRACK_SAVED_MASK));
+ #undef SHADOW_ACC_TRACK_SAVED_MASK
  
--	const u8 x = BYTE_MASK(ACC_EXEC_MASK);
--	const u8 w = BYTE_MASK(ACC_WRITE_MASK);
--	const u8 u = BYTE_MASK(ACC_USER_MASK);
-+	const u8 x = ACC_BITS_MASK(ACC_EXEC_MASK);
-+	const u8 w = ACC_BITS_MASK(ACC_WRITE_MASK);
-+	const u8 u = ACC_BITS_MASK(ACC_USER_MASK);
+ /*
+- * Due to limited space in PTEs, the MMIO generation is a 19 bit subset of
++ * Due to limited space in PTEs, the MMIO generation is an 18 bit subset of
+  * the memslots generation and is derived as follows:
+  *
+- * Bits 0-7 of the MMIO generation are propagated to spte bits 3-10
+- * Bits 8-18 of the MMIO generation are propagated to spte bits 52-62
++ * Bits 0-6 of the MMIO generation are propagated to spte bits 3-9
++ * Bits 7-17 of the MMIO generation are propagated to spte bits 52-62
+  *
+  * The KVM_MEMSLOT_GEN_UPDATE_IN_PROGRESS flag is intentionally not included in
+  * the MMIO generation number, as doing so would require stealing a bit from
+@@ -111,7 +111,7 @@ static_assert(!(EPT_SPTE_MMU_WRITABLE & SHADOW_ACC_TRACK_SAVED_MASK));
+  */
  
- 	bool cr4_smep = is_cr4_smep(mmu);
- 	bool cr4_smap = is_cr4_smap(mmu);
- 	bool cr0_wp = is_cr0_wp(mmu);
- 	bool efer_nx = is_efer_nx(mmu);
+ #define MMIO_SPTE_GEN_LOW_START		3
+-#define MMIO_SPTE_GEN_LOW_END		10
++#define MMIO_SPTE_GEN_LOW_END		9
  
-+	/*
-+	 * In hardware, page fault error codes are generated (as the name
-+	 * suggests) on any kind of page fault.  permission_fault() and
-+	 * paging_tmpl.h already use the same bits after a successful page
-+	 * table walk, to indicate the kind of access being performed.
-+	 *
-+	 * However, PFERR_PRESENT_MASK and PFERR_RSVD_MASK are never set here,
-+	 * exactly because the page walk is successful.  PFERR_PRESENT_MASK is
-+	 * removed by the shift, while PFERR_RSVD_MASK is repurposed in
-+	 * permission_fault() to indicate accesses that are *not* subject to
-+	 * SMAP restrictions.
-+	 */
- 	for (byte = 0; byte < ARRAY_SIZE(mmu->permissions); ++byte) {
- 		unsigned pfec = byte << 1;
+ #define MMIO_SPTE_GEN_HIGH_START	52
+ #define MMIO_SPTE_GEN_HIGH_END		62
+@@ -133,7 +133,8 @@ static_assert(!(SPTE_MMU_PRESENT_MASK &
+  * and so they're off-limits for generation; additional checks ensure the mask
+  * doesn't overlap legal PA bits), and bit 63 (carved out for future usage).
+  */
+-#define SPTE_MMIO_ALLOWED_MASK (BIT_ULL(63) | GENMASK_ULL(51, 12) | GENMASK_ULL(2, 0))
++#define SPTE_MMIO_ALLOWED_MASK (BIT_ULL(63) | GENMASK_ULL(51, 12) | \
++				BIT_ULL(10) | GENMASK_ULL(2, 0))
+ static_assert(!(SPTE_MMIO_ALLOWED_MASK &
+ 		(SPTE_MMU_PRESENT_MASK | MMIO_SPTE_GEN_LOW_MASK | MMIO_SPTE_GEN_HIGH_MASK)));
  
-@@ -5598,10 +5622,9 @@ static void update_permission_bitmask(struct kvm_mmu *mmu, bool ept)
- 			 *   - The access is supervisor mode
- 			 *   - If implicit supervisor access or X86_EFLAGS_AC is clear
- 			 *
--			 * Here, we cover the first four conditions.
--			 * The fifth is computed dynamically in permission_fault();
--			 * PFERR_RSVD_MASK bit will be set in PFEC if the access is
--			 * *not* subject to SMAP restrictions.
-+			 * Here, we cover the first four conditions.  The fifth
-+			 * is computed dynamically in permission_fault() and
-+			 * communicated by setting PFERR_RSVD_MASK.
- 			 */
- 			if (cr4_smap)
- 				smapf = (pfec & (PFERR_RSVD_MASK|PFERR_FETCH_MASK)) ? 0 : kf;
+@@ -141,7 +142,7 @@ static_assert(!(SPTE_MMIO_ALLOWED_MASK &
+ #define MMIO_SPTE_GEN_HIGH_BITS		(MMIO_SPTE_GEN_HIGH_END - MMIO_SPTE_GEN_HIGH_START + 1)
+ 
+ /* remember to adjust the comment above as well if you change these */
+-static_assert(MMIO_SPTE_GEN_LOW_BITS == 8 && MMIO_SPTE_GEN_HIGH_BITS == 11);
++static_assert(MMIO_SPTE_GEN_LOW_BITS == 7 && MMIO_SPTE_GEN_HIGH_BITS == 11);
+ 
+ #define MMIO_SPTE_GEN_LOW_SHIFT		(MMIO_SPTE_GEN_LOW_START - 0)
+ #define MMIO_SPTE_GEN_HIGH_SHIFT	(MMIO_SPTE_GEN_HIGH_START - MMIO_SPTE_GEN_LOW_BITS)
+@@ -217,10 +218,11 @@ extern u64 __read_mostly shadow_nonpresent_or_rsvd_mask;
+  *
+  * Only used by the TDP MMU.
+  */
+-#define FROZEN_SPTE	(SHADOW_NONPRESENT_VALUE | 0x5a0ULL)
++#define FROZEN_SPTE	(SHADOW_NONPRESENT_VALUE | 0x1a0ULL)
+ 
+-/* Frozen SPTEs must not be misconstrued as shadow present PTEs. */
+-static_assert(!(FROZEN_SPTE & SPTE_MMU_PRESENT_MASK));
++/* Frozen SPTEs must not be misconstrued as shadow or MMU present PTEs. */
++static_assert(!(FROZEN_SPTE & (SPTE_MMU_PRESENT_MASK |
++			       VMX_EPT_RWX_MASK | VMX_EPT_USER_EXECUTABLE_MASK)));
+ 
+ static inline bool is_frozen_spte(u64 spte)
+ {
 -- 
 2.52.0
 
