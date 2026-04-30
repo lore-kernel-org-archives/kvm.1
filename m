@@ -1,107 +1,147 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38187258CD0;
-	Thu, 30 Apr 2026 01:20:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8D7223BCF7;
+	Thu, 30 Apr 2026 01:55:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777512057; cv=none; b=QnFPWLpn4O6ARZ5E8NOeDyImMgfVZJ1+8y9i2B7+mJRxdy29CO0OnheHmgczbvM9XqakVssqIZZNkjE+tDbRPZDhqfiPrAsSpp0AuSLdsgtmCCnHql/WgtrZhPKfgm+IbtTMqgEV1uxbxNnRpWXJk102vDl+uR/4Zxdw4JH2tOY=
+	t=1777514145; cv=none; b=avT5NCPM2iLq/9QoZdZ1Vh37yC7jlVr4r3vUjVOLMuacNGSwEC2hkDxBbOc05Pr7a9lOMLkksIdBx6VwMJdYfUJr5aflt3GQbgzskdonUyuk3w5ApqQycbPGXUb0ho5H9fMuxebYI1pWCUyuwX5eGFVERBXgU95yLr+jPsZXsA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777512057; c=relaxed/simple;
-	bh=4WMlS+6nNoILyYGEsTdq0dsFvBtHEN+h2tbgANLOzb4=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=kEBotG/P3WEcw8xWTBO/lQ41bsWhfdRiIZz2cZS2BfT9qWwEo9lmH5T9raunjwsIRA6o4seyMrWAhs5t3KIS4efMxZFs9HjRxmuMXD9P77ax5EVFA/HuFMR36C6gUBOTVIQURKuCGGWG+VImCim4cAq1p3xpcqSX094OK3UFy1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8Dx7elzrvJpLVYFAA--.17409S3;
-	Thu, 30 Apr 2026 09:20:51 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJCxvsJxrvJpCsB3AA--.31058S3;
-	Thu, 30 Apr 2026 09:20:49 +0800 (CST)
-Subject: Re: [PATCH 0/3] LoongArch: KVM: Small enhancement about timer
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: kernel@xen0n.name, kvm@vger.kernel.org, loongarch@lists.linux.dev,
- linux-kernel@vger.kernel.org
-References: <20260414072313.3801110-1-maobibo@loongson.cn>
- <CAAhV-H5+mR5gnd6x6yUEFK7ZnWyYQVTiE6C=enk7bHxe2Mo2Sg@mail.gmail.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <b876bfe6-4a47-559a-1f33-00e363cb62de@loongson.cn>
-Date: Thu, 30 Apr 2026 09:17:56 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1777514145; c=relaxed/simple;
+	bh=FRcrDvHtiYsTRyqXrRdh9YKMIL0/EKMfvtEznVjJ89U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=P3bBHgaGIhXbme87O2KArX+2PkQYQ3L4ITxOyEmQJgZ56IInB5e0KCumUGHqiz31YJzxs7vJ0uNJBbTNCLLPZdPmvya3XdxnKJOFYcCLjJBWNa41zR+2nGXLeKJJEUKv0Kqhevwu7oIzhqUZGvHhyNWVp7EYLfs1Lto4tBkeSR8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HqCMrmi3; arc=none smtp.client-ip=198.175.65.14
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HqCMrmi3"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1777514144; x=1809050144;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=FRcrDvHtiYsTRyqXrRdh9YKMIL0/EKMfvtEznVjJ89U=;
+  b=HqCMrmi3azbMHgEUh8UkBkx5xXy9xrf2WWfxhVLbZyFVWOWOCdgweok0
+   Y5t5ngr9nhlZefcKqLOgB0S78698KTfYciv6x87vNwMIDMSG4X4gWtXZr
+   dxzI2uYiBhGtKfs7yIuMUosgUJiEu59zOuoFtthuEk+qH6sWPBeQ+YsOj
+   CDwGBIAguNUmRbo6OYWyoVHahe2lFXrGx+eBYI9XzDP7uuBQ7uEnydb0m
+   kCJknsah0N8fqrPKpHhahQ5tqjwHfow6ErM77IbED2caFHrst6dQq32uQ
+   AIBWBDuME2r2wxQ2y7EFBhG5MMVyk4BXkiEC7SLJca/AHv0fmH02USWZ4
+   Q==;
+X-CSE-ConnectionGUID: EZ96YU1LRoy0uRRUyuBLuA==
+X-CSE-MsgGUID: tyBOOQ9ZR+2y/lHC95Yxrw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11771"; a="82320200"
+X-IronPort-AV: E=Sophos;i="6.23,207,1770624000"; 
+   d="scan'208";a="82320200"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 18:55:44 -0700
+X-CSE-ConnectionGUID: V0FnxMY9SEOKGLfk582lvQ==
+X-CSE-MsgGUID: tVGJpI6JQc23aWwsHnZQmA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,207,1770624000"; 
+   d="scan'208";a="258023787"
+Received: from unknown (HELO [10.238.2.250]) ([10.238.2.250])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 29 Apr 2026 18:55:40 -0700
+Message-ID: <f672b965-26f3-4c7a-a2ef-b18cc44f0bf0@linux.intel.com>
+Date: Thu, 30 Apr 2026 09:55:37 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CAAhV-H5+mR5gnd6x6yUEFK7ZnWyYQVTiE6C=enk7bHxe2Mo2Sg@mail.gmail.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH V2 1/4] KVM: x86/pmu: Do not map fixed counters >= 3 to
+ generic perf events
+To: Zide Chen <zide.chen@intel.com>, Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ Jim Mattson <jmattson@google.com>, Mingwei Zhang <mizhang@google.com>,
+ Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
+ Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>
+References: <20260423174639.56149-1-zide.chen@intel.com>
+ <20260423174639.56149-2-zide.chen@intel.com>
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJCxvsJxrvJpCsB3AA--.31058S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoW7Cw15ZF1fAFykZF4UGrWDZFc_yoW8Ww18pF
-	WI93ZIgr4kCr47Jw1av3Wqywn8AryrGr13W3Wxt3y8ArZIyryjqr47WFWFyF9xGrWrAF10
-	gF1rKrZ0g3WUJ3gCm3ZEXasCq-sJn29KB7ZKAUJUUUU8529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
-	8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AK
-	xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
-	AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
-	14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIx
-	kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
-	wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
-	4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8j-e5UU
-	UUU==
+From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
+In-Reply-To: <20260423174639.56149-2-zide.chen@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
 
+On 4/24/2026 1:46 AM, Zide Chen wrote:
+> Only fixed counters 0..2 have matching generic cross-platform
+> hardware perf events (INSTRUCTIONS, CPU_CYCLES, REF_CPU_CYCLES).
+> Therefore, perf_get_hw_event_config() is only applicable to these
+> counters.
+>
+> KVM does not intend to emulate fixed counters >= 3 on legacy
+> (non-mediated) vPMU, while for mediated vPMU, KVM does not care what
+> the fixed counter event mappings are.  Therefore, return 0 for their
+> eventsel.
+>
+> Also remove __always_inline as BUILD_BUG_ON() is no longer needed.
+>
+> Signed-off-by: Zide Chen <zide.chen@intel.com>
+> ---
+> V2:
+> - Replace 3 in "if (index < 3)" with ARRAY_SIZE(fixed_pmc_perf_ids).
+> ---
+>  arch/x86/kvm/vmx/pmu_intel.c | 26 ++++++++++++++------------
+>  1 file changed, 14 insertions(+), 12 deletions(-)
+>
+> diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
+> index 27eb76e6b6a0..05a59f4acfdd 100644
+> --- a/arch/x86/kvm/vmx/pmu_intel.c
+> +++ b/arch/x86/kvm/vmx/pmu_intel.c
+> @@ -454,28 +454,30 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+>   * different perf_event is already utilizing the requested counter, but the end
+>   * result is the same (ignoring the fact that using a general purpose counter
+>   * will likely exacerbate counter contention).
+> - *
+> - * Forcibly inlined to allow asserting on @index at build time, and there should
+> - * never be more than one user.
+>   */
+> -static __always_inline u64 intel_get_fixed_pmc_eventsel(unsigned int index)
+> +static u64 intel_get_fixed_pmc_eventsel(unsigned int index)
+>  {
+>  	const enum perf_hw_id fixed_pmc_perf_ids[] = {
+>  		[0] = PERF_COUNT_HW_INSTRUCTIONS,
+>  		[1] = PERF_COUNT_HW_CPU_CYCLES,
+>  		[2] = PERF_COUNT_HW_REF_CPU_CYCLES,
+>  	};
+> -	u64 eventsel;
+> -
+> -	BUILD_BUG_ON(ARRAY_SIZE(fixed_pmc_perf_ids) != KVM_MAX_NR_INTEL_FIXED_COUNTERS);
+> -	BUILD_BUG_ON(index >= KVM_MAX_NR_INTEL_FIXED_COUNTERS);
+> +	u64 eventsel = 0;
+>  
+>  	/*
+> -	 * Yell if perf reports support for a fixed counter but perf doesn't
+> -	 * have a known encoding for the associated general purpose event.
+> +	 * Fixed counters 3 and above don't have corresponding generic hardware
+> +	 * perf event, and KVM does not intend to emulate them on non-mediated
+> +	 * vPMU.
 
-On 2026/4/29 下午6:13, Huacai Chen wrote:
-> The first patch cannot be applied cleanly, I adjusted it and applied,
-> hope it is correct.
-> https://git.kernel.org/pub/scm/linux/kernel/git/chenhuacai/linux-loongson.git/log/?h=loongarch-next
-yes, that is correct.
-And thanks for your modification.
+The above comments are ambiguous. Fixed counter 3 and above indeed have
+dedicated perf event, but they are not supported perf_hw_id{} yet. So KVM
+has no way to get their specific event code now.
 
-Regards
-Bibo Mao
-> 
-> 
-> Huacai
-> 
-> On Tue, Apr 14, 2026 at 3:23 PM Bibo Mao <maobibo@loongson.cn> wrote:
->>
->> By running LTP stress test cases on VM, there is an RCU timeout issue on
->> some vCPUs recently. The problem is that there is HW timer interrupt lost
->> issue when injecting SIP0/IPI interrupt from KVM hypervisor, this problem
->> is hidden because the KVM hypervisor will inject spurious timer interrupt
->> if emulated timer is expired. In late the spurious timer interrupt is
->> clear if old TI bit of ESTAT register is not set, so there will be RCU
->> timeout issue with LTP stress test.
->>
->> This patch set fixes the HW timer interrupt lost issue, also this patch
->> moves unconditional delay in timer interrupt clear scenery, which happens
->> seldomly; mostly the timer interrupt bit is set when it expires.
->>
->> Bibo Mao (3):
->>    LoongArch: KVM: Move AVEC interrupt injection in switch loop
->>    LoongArch: KVM: Fix HW timer interrupt lost when inject interrupt from
->>      software
->>    LoongArch: KVM: Move unconditional delay in timer clear scenery
->>
->>   arch/loongarch/kvm/interrupt.c | 37 +++++++++++++++++++++++++---------
->>   arch/loongarch/kvm/timer.c     | 16 +++++++++++++--
->>   2 files changed, 41 insertions(+), 12 deletions(-)
->>
->>
->> base-commit: d568788baab24875604c231f723dbb72387fb081
->> --
->> 2.39.3
->>
->>
+Thanks.
 
+
+>  	 */
+> -	eventsel = perf_get_hw_event_config(fixed_pmc_perf_ids[index]);
+> -	WARN_ON_ONCE(!eventsel && index < kvm_pmu_cap.num_counters_fixed);
+> +	if (index < ARRAY_SIZE(fixed_pmc_perf_ids)) {
+> +		/*
+> +		 * Yell if perf reports support for a fixed counter but perf
+> +		 * doesn't have a known encoding for the associated general
+> +		 * purpose event.
+> +		 */
+> +		eventsel = perf_get_hw_event_config(fixed_pmc_perf_ids[index]);
+> +		WARN_ON_ONCE(!eventsel && index < kvm_pmu_cap.num_counters_fixed);
+> +	}
+>  	return eventsel;
+>  }
+>  
