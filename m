@@ -1,186 +1,140 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 345E42EA151;
-	Thu, 30 Apr 2026 15:36:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777563361; cv=none; b=LkosrFUpHtrzqGQnOiV+7kw/8vTDNzebcXqb3srjZJDFsJKL0kuacDWS7UDLlkik5sDkbrISacv1jF0pEZ5rReKrp89YBv5bmWYXiJ5grHXV42n7pWODvyRnNPrFNuzWxH9BlBhrWYoIq2TkBtCttTu7MAH47c0LkXQa86nElRY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777563361; c=relaxed/simple;
-	bh=gzTlnjHw8z8mwv/xrWX3uCr8DWsCDpEaX9cnmlYIzL4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type:Content-Disposition; b=n0mUb5mZkIKUZv2kZ9uElRLGuZjz7HfNzCecwIOgdVOTKOXa3/mtOVkHTg4CHlFyrkv8DNSFsUYN3VTsXKeC8l1YJlB8PZAlu0cXhOVqmqofgBxLAvHxEG/ODApcxb27AI70pVdt6/USw7DMR+Rzt/5nFyvpCuYpYUGlHPHrnzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=rxVLEs6U; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from mail-yx1-f44.google.com (mail-yx1-f44.google.com [74.125.224.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96092344D9B
+	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 15:56:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.224.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777564584; cv=pass; b=VA+JIkIF8O6Jtr1WJHKxBWvhlchylp27cBPwBDayim9FM51SQRmXL6Mj/+YU5z9/Pv+98M+up6oTxwRGDdVt2UywSapGeOtZO02pknmpRk32jYU6ZsIUfwTEXOgEN9K0HO33AHR6caMQ940/PxwfJS4It+S5mTRc7nprUZamzfE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777564584; c=relaxed/simple;
+	bh=VTJYUql25eupJTm/JUHDzzu9EwTmKEBNPtYaM8Sh1Mw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ilijAomPCg1oOiAWEL9qD0Svlj89t7P9DbbVT+edemye5wctQ9Y5tzL4fVX7tM7b9DRrenpRO3KGs+2qb12pYeLpQ93byjapzAkBTN1oVs0uZBHaglzZFBUlLV1f5s0TvxnpImoXnOEdETYmGgKJHmAlpQqUBOvlcA5zsh02I9M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aSX9cZzs; arc=pass smtp.client-ip=74.125.224.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="rxVLEs6U"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3D4A332D1;
-	Thu, 30 Apr 2026 08:35:54 -0700 (PDT)
-Received: from devkitleo.cambridge.arm.com (devkitleo.cambridge.arm.com [10.1.196.90])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 212283F763;
-	Thu, 30 Apr 2026 08:35:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1777563359; bh=gzTlnjHw8z8mwv/xrWX3uCr8DWsCDpEaX9cnmlYIzL4=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rxVLEs6Uu9YtFHgDKWpqFThQucat2oz2BVkAKJuDquKK56IPfzpBNZYTsMFNEbVp1
-	 pemTxhelUalIb7Qi82U6Rxdc/+UMhQAMRDNwKfIkadkFtpiJHVDXyWH9iIQJcPlhY+
-	 k6wBIDO5CwXuT6qTDMLK+lOqFVOyJml4tIhzFcX0=
-From: Leonardo Bras <leo.bras@arm.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: Leonardo Bras <leo.bras@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Oliver Upton <oupton@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>,
-	Saket Dumbre <saket.dumbre@intel.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Chengwen Feng <fengchengwen@huawei.com>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Kees Cook <kees@kernel.org>,
-	=?utf-8?Q?Miko=C5=82aj?= Lenczewski <miko.lenczewski@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>,
-	Yang Shi <yang@os.amperecomputing.com>,
-	Thomas Huth <thuth@redhat.com>,
-	mrigendrachaubey <mrigendra.chaubey@gmail.com>,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Fuad Tabba <tabba@google.com>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Sascha Bischoff <Sascha.Bischoff@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Tian Zheng <zhengtian10@huawei.com>,
-	Wei-Lin Chang <weilin.chang@arm.com>,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-acpi@vger.kernel.org,
-	acpica-devel@lists.linux.dev,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH v1 00/12] KVM Dirty-bit cleaning accelerator (HACDBS)
-Date: Thu, 30 Apr 2026 16:35:52 +0100
-Message-ID: <afN21w6J4Awg3gV3@devkitleo>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <86a4ukzel3.wl-maz@kernel.org>
-References: <20260430111424.3479613-2-leo.bras@arm.com> <86bjf0zj2p.wl-maz@kernel.org> <afNZQKIiKmHPD5My@devkitleo> <86a4ukzel3.wl-maz@kernel.org>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aSX9cZzs"
+Received: by mail-yx1-f44.google.com with SMTP id 956f58d0204a3-64937edbc9eso937419d50.2
+        for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 08:56:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777564580; cv=none;
+        d=google.com; s=arc-20240605;
+        b=EUDU5K3Cins89PrVH6vXPTphaSyTmy5dMglKaJIHjJWd2/sU6EpgQKT6gb+8q8ov7l
+         KI8VZGvZhcFuI83A5WStkhmKErzzUyH5yQ/NtRWBOuOkNCVlAzv4vsjs2k0ygtBG9nCB
+         1cC2HNZ7wwgZfwywWV3ViYULU2irBIG4Qi5KVaDUpXscJSweLw4jtum7Y8LdXKw9Z2N0
+         4b2Jh94jPL9tUfK3MQGpQsxeEv6Y3yNmghoz5vZceYb769I3t5SbYxjACx098im7g40+
+         8PkLB8hOIDLQevqeiSex5KHgzjMx+EE7ObShXXdMBf67BDizGQ7i1vg9Ct/cmHPuDCAl
+         2moQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=xMXqpN92SKXGDZxwQpT/wGrtZuuK9up/gI1Yf/fEMHU=;
+        fh=bXcI0ElBKnA9L7iB3lsQYW3m25qaUpkq2nqEf6rqgoc=;
+        b=DXLz9SYbED2g967ZGjjWkGkhvB76BkBHj7hocvvCHt38/yF7aQHVWSjJtvvKHLcO0I
+         TkXc9tXKaF+OKU9nXv5pBM+c836K0faX7+Zx07xZlJF2HnIvPQY+bjzmrRAlwdGYUVHU
+         V6LVbEuXm/gCzDuEOQEHkoAoQom/imRw08C+H28V1fp4h7uswgmvHy5nFgczMOxsoikd
+         X1x2AYGxCVtqYpHnQnny9ozn2svpwOzaKeZ9vNJn+vNujYfwy3MAsl8kHNj6ZiandQ9H
+         FSQ5Xuvvqc8lzvt0CEll0N8+JIJotiMGYdJ7aeUgkktRv/W6LW5h2GfgKW/5uPKOatEX
+         s14g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1777564580; x=1778169380; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xMXqpN92SKXGDZxwQpT/wGrtZuuK9up/gI1Yf/fEMHU=;
+        b=aSX9cZzsAU3gwdTn2v3SGuRLHa73eOF67gAPkAcXFJ25fe4jl/1UUhW6dECmtkJt8h
+         J6oHgfwEcDR4Qpczu0XKbmQ7Wj42SWhROmOXP2Qa1f3XcpQO/enNwKJSe4IZN8dORlzk
+         YVEEDus5/YWbM/9VWRm2eFMcC3Ku+nIYzB8IkZrdEfTOaqvz4INt+UxNodoEcmp0Avnl
+         4S3cbTBVx5vcpSiwQok9z9uyv5g+AVqyPt9p+yQD5BrmaYyVqVxnKpmms/bVFZhU7Cyf
+         GAt8VeW2IGERTPURfxjCASYFSwDdrKAR7SVKhsfctlJ9sqS9SO7fXQyNM5RSiME8IODP
+         ee9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777564580; x=1778169380;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=xMXqpN92SKXGDZxwQpT/wGrtZuuK9up/gI1Yf/fEMHU=;
+        b=mnYYSliGiYteu2mi2svcDyIp3nUKGcWF3byUm59QriDiy2TN84sRbWrBjuNmJfyMKx
+         VTCqHpK+RoqYXIm+kuYDKz/H97G3rIhoKHZw1BtQ2g4Fux5g1rqesgrHMHz1epqKIXFI
+         9rJdE1fFtiDKY62XhtN0zyRmnyAD67SQcVqB6ERqpm8usaozsBya0Tfqh2cC5vf2iROx
+         8kSC2nL6F9LIwg+rD2eqyJ0pxm5JcGXjocPdWo+ewajYVisw5ZP+TZl1uvJBlXDn92+u
+         xvLBQySLMM03gJ46xeOD9+BqgFv6KCOYAPoAWFOaIc5g2QKABcwDMP+8HpNUdj8IveS9
+         eaIg==
+X-Forwarded-Encrypted: i=1; AFNElJ+pxXVOFv++nWIYOQK1EKQ1gEM2p53Dl3+OXjCuGtyghmfOs5P3VqNwqu9n7NZr7ZuCmjQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywe766GG9AJeaFCq6YGHYQ0Ig71EdshzZN+/7oi3sqYsdGW7xwD
+	V1kio4g9+Lfqv1QJGxyJQtGyzCYn6iMpp+yco9GQz0JhljH+eAHYQGu5YgeRvv1BkAemK4gfZap
+	xv1uPIkqwHbVFzRqUtxtX0KtWIrdUBgsn3DBUWw8S7Q==
+X-Gm-Gg: AeBDietd8SVK4O0cJOGt6zWUXPLIgtJwaWZbJn15l+Zw2ZrC0N58qqukNHVrv8SenpG
+	NemrXE8XhCmAcPjM9wT4O6OgT0Jzi/XjJIkl4lTvocNo4xw6iwI48VQzBy6zEab5I9/H7mozsuE
+	amPYeMVte4tcy0r0zF3lLh4S+V07Ryx8rouw0g+Wyk/7cmtCC/V3iufOKvdAsrhfCjrRjNZ/LWr
+	mrg804ofZQ+XDAsYscQPL2KSqxu6CNvdZys0EcjiJpj5cwikxZQR4jnj4kimk/6Msk/4sUhG4OL
+	jBCPUgk0w9/DLAmvC3TFBLRN5BbPapD9tA0UIuWKb52zTgja2ArD+QUgSuQsH87ZGUmV/zU4Enh
+	jRw==
+X-Received: by 2002:a05:690e:140f:b0:658:e840:d5b4 with SMTP id
+ 956f58d0204a3-65c18ccf91emr2957670d50.29.1777564580128; Thu, 30 Apr 2026
+ 08:56:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
+References: <20260427-qom-tests-v1-0-c413f3605311@redhat.com> <20260427-qom-tests-v1-26-c413f3605311@redhat.com>
+In-Reply-To: <20260427-qom-tests-v1-26-c413f3605311@redhat.com>
+From: Peter Maydell <peter.maydell@linaro.org>
+Date: Thu, 30 Apr 2026 16:56:08 +0100
+X-Gm-Features: AVHnY4IkTiAPQC5mp_5g4LgXokUDMDchdMkceN42WvdN5sfP_aNAx2N9fUv0J1I
+Message-ID: <CAFEAcA_tcK95_mOb0U=69zXbwWtT-Ty1wNbbHUs-sanMEsd2TA@mail.gmail.com>
+Subject: Re: [PATCH 26/41] accel/kvm: free device path on finalization
+To: =?UTF-8?B?TWFyYy1BbmRyw6kgTHVyZWF1?= <marcandre.lureau@redhat.com>
+Cc: qemu-devel@nongnu.org, armbru@redhat.com, 
+	Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 30, 2026 at 03:51:20PM +0100, Marc Zyngier wrote:
-> On Thu, 30 Apr 2026 14:29:37 +0100,
-> Leonardo Bras <leo.bras@arm.com> wrote:
-> > 
-> > On Thu, Apr 30, 2026 at 02:14:22PM +0100, Marc Zyngier wrote:
-> > > On Thu, 30 Apr 2026 12:14:04 +0100,
-> > > Leonardo Bras <leo.bras@arm.com> wrote:
-> > > 
-> > > > d - In __kvm_arch_dirty_log_clear() there is no way to predict how long
-> > > >     should be the buffer, so I used 1x PAGE_SIZE, and when it gets full
-> > > >     it's cleaned and reused. Should I let users configure that over a
-> > > >     parameter, or is it overthinking?
-> > > 
-> > > How long is a piece of string? We can't know that. A single page feels
-> > > very small in the 4kB case, and letting userspace define the size of
-> > > that buffer seems a likely requirement.
-> > > 
-> > 
-> > Ok, as a KVM parameter, or as a compile-time option?
-> 
-> Noticed the "userspace" word in there? It *has* to be controlled by
-> userspace one way or another. So not as a kernel parameter, and
-> *never* as a compile option.
+On Mon, 27 Apr 2026 at 20:45, Marc-Andr=C3=A9 Lureau
+<marcandre.lureau@redhat.com> wrote:
+>
+> kvm_set_device allocates device via g_strdup, but no
+> instance_finalize existed for the KVM accelerator type.
+>
+> Fixes: aef158b093b9 ("Add class property to configure KVM device node to =
+use")
+> Signed-off-by: Marc-Andr=C3=A9 Lureau <marcandre.lureau@redhat.com>
+> ---
+>  accel/kvm/kvm-all.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>
+> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
+> index 92af42503b1..96f90ebb240 100644
+> --- a/accel/kvm/kvm-all.c
+> +++ b/accel/kvm/kvm-all.c
+> @@ -4342,10 +4342,18 @@ static void kvm_accel_class_init(ObjectClass *oc,=
+ const void *data)
+>      kvm_arch_accel_class_init(oc);
+>  }
+>
+> +static void kvm_accel_finalize(Object *obj)
+> +{
+> +    KVMState *s =3D KVM_STATE(obj);
+> +
+> +    g_free(s->device);
+> +}
+> +
+>  static const TypeInfo kvm_accel_type =3D {
+>      .name =3D TYPE_KVM_ACCEL,
+>      .parent =3D TYPE_ACCEL,
+>      .instance_init =3D kvm_accel_instance_init,
+> +    .instance_finalize =3D kvm_accel_finalize,
+>      .class_init =3D kvm_accel_class_init,
+>      .instance_size =3D sizeof(KVMState),
+>  };
+>
 
-Okay, I would suggest that a module parameter could be set by userspace, 
-but I remember now that it is usually built in the kernel instead. Also, it 
-could be bad having this set for the whole system, instead of per-VM.
+Reviewed-by: Peter Maydell <peter.maydell@linaro.org>
 
-How do you suggest letting userspace control that?
-(All I could think was using an ioctl / API of any sorts, which would 
-require changing the VMMs as well.)
-
-> 
-> > > > Kernel v7.0.0 + this patchset builds properly, passing both kvm selftests
-> > > > for dirty-bit tracking[2], on HW HACDBS enabled or disabled.
-> > > 
-> > > I have absolutely no trust in these tests.
-> > > 
-> > > Have you enabled a VMM to make use of these APIs, and actively
-> > > migrated running guests? That's the level of testing I'd like to see,
-> > > as the selftests are not what people run in production...
-> > > 
-> > 
-> > There is no enablement needed on VMM side.
-> > Yes, I have created a VM on upstream qemu with --enable-kvm and migrated it 
-> > on the same host. (Inside a model)
-> > 
-> > That was the first test I used, but then I found out that kvm selftests 
-> > stress up multiple scenarios in an easier way.
-> 
-> Except when they don't. In my experience, the selftests are only there
-> to give the CI people the fuzzy feeling that they are doing something
-> useful.
-
-LOL
-
-> I have a collection of examples indicating that what these
-> things test is not representative of the bugs we have in KVM.
-> 
-
-Fair enough... it was tested in qemu live migration, and it works properly 
-(migrated from 2 instances of qemu in the same host, emulated by model).
-
-> > Do you prefer me to test on any specific scenario, or does whatever qemu
-> > uses as a default parameter work well enough?
-> 
-> I want to hear about testing at a scale that make sense for production
-> VMs, including live migrating between hosts while under memory
-> pressure (swapping out).
-
-I agree that's a more interesting test.
-
-> 
-> I'm also interested in efficiency: how much better is HACDBS compared
-> to the current page faulting? 
-
-The terms are indeed confusing, but HACDBS is just the cleaning accelerator 
-for dirty-bit. It means it will only affect how long it takes to transverse 
-the page table making pages in the array writable-dirty -> writable-clean.
-
-That being said, it regards to efficiency:
-Well, as I only have the model to test that, I am limmited to those 
-results, which may not reflect reality.
-
-As an example, on dirty_log_perf_test, the cleaning process took much 
-longer (8x) compared to software cleaning, even when faced with no error, 
-and entries that fit the array (4k page above). If it took that long even 
-in this ideal scenario, it means the HACDBS mechanism implemented in the 
-model takes much longer than software, which is counter-intuitive.
-
-> Just having patches for a feature is not
-> enough to decide adoption of that feature. Show me the benefits in a
-> quantitative way (within the limits of the model, of course).
-
-Sure, I will try measuring migration between 2 instances of the model, and 
-see how qemu live migration time is affected, then post the results in this 
-thread for us to compare.
-
-Thanks!
-Leo
-
+thanks
+-- PMM
