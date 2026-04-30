@@ -1,56 +1,55 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3742C21E8
-	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 15:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5972D8793
+	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 15:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777561682; cv=none; b=LRfW5jrXGisB713c0G26rjuGroeoSB63XCMKUbpAvFgAJstb653c538Yvk5eg00wMgjN4G9KCOBNxYpx0UfHt6H9LdfBxn6oilaFx2koNFe07wTQ6oMpofZuSXVFhLmHUA/WUklRE9WGyrN9nFlcai49NlqEFrLNx0Mmt5Pn7Ag=
+	t=1777561682; cv=none; b=XgmmWYvQqIMNxNWOwg/h8JzpTaDCbcqTw7++LYoWzmnfARk+xN3CBOUlqkEZyBifl55HbYNSZbMxjz1HhtdNTWvEkHw8BoXPwPbFQsiyXs7Z4dUBX/WlbTCATM6OSYCjz2B7CNUafAP15Xe0kv+KohlbyxepXznuFYv6EIgP8DQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777561682; c=relaxed/simple;
-	bh=qN6uNsXXrdxPWeiUyZUCQi9CQmefkvVmCbWD7S5KIeA=;
+	bh=vQvPgt0Mq2Gsbr1Skf087n28m4o4mK3xVgjfrnI90KM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WdY4TAiXYlcv8D/LpOQkQsDOK1UR87n3LgpM6bT4nhgpow1fRul6ekkDQO48sX8iGmBFEZg1U7eZOoRfZ+gWxl2hR0DA/nhNrjgQ/KtjmlJw4i5LiCzco37cEPYP0Cqjnxiq3e4lzIxFyN+XD9/vpKOUK1IXRBG7F2jPadxHgaM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B70tK9mm; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=thAEUiAdZJ8b2Buldbtu9dV+DsZD+RUUiXyVf5z4stSfhppCIBYjy7vDOxNyUJ3cOMmGXy2e5fQfPvdhj6VjI5TXcVnMWvh5MqEd98+pUhhUx6RvWssacVuTfI4LJn1tLcAu1msBT9AnCyM0YL1we01dadLcF4JX9i56+pRCNos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QO2BS0VI; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B70tK9mm"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QO2BS0VI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777561678;
+	s=mimecast20190719; t=1777561680;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=mgCNJ6QbPXfdRFucAOWtH1ZqPtP2sYd3GhwHotAeOtc=;
-	b=B70tK9mm911nvmMS+DHN2+KCAEQrOXOIgnBBcv+b59G+W5+x+wi7eEKkMmAYKLNQ8Gu6Vk
-	9zhF0PRGgCYWkgcYiuEE746/jx6x/c6CK2n2d64NVYLVDIuVx7vmtVTm5HvJNkPmsUeuwZ
-	IP4sfOaD8q0+ssbmKGDiPSP3FSJUlrI=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=pMPlsOACadmgUCBsX+kfM3jcuhxlgiVMWFCf2O3a/w0=;
+	b=QO2BS0VI9q6U4ajGibVzatgrBqJ7AAB7TJjCO/qekig2N862nTcEDnlfTupsGg3GOaUhfU
+	83gdW4aCuOi3f6zLtus4B4hUd6fUdNoe1xDd6hcnvQ1oGfjTbLjlbPeZBGk8EOGSMVxeFj
+	JMS0bVvx0aTCmgt35l+vbrJ+FMdfK70=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-314-lYvAiO0cNxWV0EBGXJWXaQ-1; Thu,
- 30 Apr 2026 11:07:51 -0400
-X-MC-Unique: lYvAiO0cNxWV0EBGXJWXaQ-1
-X-Mimecast-MFC-AGG-ID: lYvAiO0cNxWV0EBGXJWXaQ_1777561670
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-50-JjgX3ONNOwumryolFVpoZQ-1; Thu,
+ 30 Apr 2026 11:07:55 -0400
+X-MC-Unique: JjgX3ONNOwumryolFVpoZQ-1
+X-Mimecast-MFC-AGG-ID: JjgX3ONNOwumryolFVpoZQ_1777561674
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 24EF919560A5;
-	Thu, 30 Apr 2026 15:07:50 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 581AA1800245;
+	Thu, 30 Apr 2026 15:07:54 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3EE001800480;
-	Thu, 30 Apr 2026 15:07:49 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C65D91800577;
+	Thu, 30 Apr 2026 15:07:53 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: d.riley@proxmox.com,
-	jon@nutanix.com,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 01/28] KVM: TDX/VMX: rework EPT_VIOLATION_EXEC_FOR_RING3_LIN into PROT_MASK
-Date: Thu, 30 Apr 2026 11:07:20 -0400
-Message-ID: <20260430150747.76749-2-pbonzini@redhat.com>
+	jon@nutanix.com
+Subject: [PATCH 06/28] KVM: x86/mmu: merge make_spte_{non,}executable
+Date: Thu, 30 Apr 2026 11:07:25 -0400
+Message-ID: <20260430150747.76749-7-pbonzini@redhat.com>
 In-Reply-To: <20260430150747.76749-1-pbonzini@redhat.com>
 References: <20260430150747.76749-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -63,90 +62,62 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-From: Jon Kohler <jon@nutanix.com>
+As the logic will become more complicated with the introduction
+of MBEC, at least write it only once.
 
-EPT exit qualification bit 6 is used when mode-based execute control
-is enabled, and reflects user executable addresses. Rework name to
-reflect the intention and add to EPT_VIOLATION_PROT_MASK, which allows
-simplifying the return evaluation in
-tdx_is_sept_violation_unexpected_pending a pinch.
-
-Rework handling in __vmx_handle_ept_violation to unconditionally clear
-EPT_VIOLATION_PROT_USER_EXEC until MBEC is implemented, as suggested by
-Sean [1].
-
-Note: Intel SDM Table 29-7 defines bit 6 as:
-  If the "mode-based execute control" VM-execution control is 0, the
-  value of this bit is undefined. If that control is 1, this bit is the
-  logical-AND of bit 10 in the EPT paging-structure entries used to
-  translate the guest-physical address of the access causing the EPT
-  violation. In this case, it indicates whether the guest-physical
-  address was executable for user-mode linear addresses.
-
-[1] https://lore.kernel.org/all/aCJDzU1p_SFNRIJd@google.com/
-
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Jon Kohler <jon@nutanix.com>
-Message-ID: <20251223054806.1611168-2-jon@nutanix.com>
 Tested-by: David Riley <d.riley@proxmox.com>
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/include/asm/vmx.h | 5 +++--
- arch/x86/kvm/vmx/common.h  | 9 +++++++--
- arch/x86/kvm/vmx/tdx.c     | 2 +-
- 3 files changed, 11 insertions(+), 5 deletions(-)
+ arch/x86/kvm/mmu/spte.c | 20 +++++++++++---------
+ 1 file changed, 11 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
-index 37080382df54..b2291a766e3f 100644
---- a/arch/x86/include/asm/vmx.h
-+++ b/arch/x86/include/asm/vmx.h
-@@ -608,10 +608,11 @@ enum vm_entry_failure_code {
- #define EPT_VIOLATION_PROT_READ		BIT(3)
- #define EPT_VIOLATION_PROT_WRITE	BIT(4)
- #define EPT_VIOLATION_PROT_EXEC		BIT(5)
--#define EPT_VIOLATION_EXEC_FOR_RING3_LIN BIT(6)
-+#define EPT_VIOLATION_PROT_USER_EXEC	BIT(6)
- #define EPT_VIOLATION_PROT_MASK		(EPT_VIOLATION_PROT_READ  | \
- 					 EPT_VIOLATION_PROT_WRITE | \
--					 EPT_VIOLATION_PROT_EXEC)
-+					 EPT_VIOLATION_PROT_EXEC  | \
-+					 EPT_VIOLATION_PROT_USER_EXEC)
- #define EPT_VIOLATION_GVA_IS_VALID	BIT(7)
- #define EPT_VIOLATION_GVA_TRANSLATED	BIT(8)
- 
-diff --git a/arch/x86/kvm/vmx/common.h b/arch/x86/kvm/vmx/common.h
-index 412d0829d7a2..adf925500b9e 100644
---- a/arch/x86/kvm/vmx/common.h
-+++ b/arch/x86/kvm/vmx/common.h
-@@ -94,8 +94,13 @@ static inline int __vmx_handle_ept_violation(struct kvm_vcpu *vcpu, gpa_t gpa,
- 	/* Is it a fetch fault? */
- 	error_code |= (exit_qualification & EPT_VIOLATION_ACC_INSTR)
- 		      ? PFERR_FETCH_MASK : 0;
--	/* ept page table entry is present? */
--	error_code |= (exit_qualification & EPT_VIOLATION_PROT_MASK)
-+	/*
-+	 * ept page table entry is present?
-+	 * note: unconditionally clear USER_EXEC until mode-based
-+	 * execute control is implemented
-+	 */
-+	error_code |= (exit_qualification &
-+		       (EPT_VIOLATION_PROT_MASK & ~EPT_VIOLATION_PROT_USER_EXEC))
- 		      ? PFERR_PRESENT_MASK : 0;
- 
- 	if (exit_qualification & EPT_VIOLATION_GVA_IS_VALID)
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 1e47c194af53..89f9fe30435d 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1845,7 +1845,7 @@ static inline bool tdx_is_sept_violation_unexpected_pending(struct kvm_vcpu *vcp
- 	if (eeq_type != TDX_EXT_EXIT_QUAL_TYPE_PENDING_EPT_VIOLATION)
- 		return false;
- 
--	return !(eq & EPT_VIOLATION_PROT_MASK) && !(eq & EPT_VIOLATION_EXEC_FOR_RING3_LIN);
-+	return !(eq & EPT_VIOLATION_PROT_MASK);
+diff --git a/arch/x86/kvm/mmu/spte.c b/arch/x86/kvm/mmu/spte.c
+index 85a0473809b0..e9dc0ae44274 100644
+--- a/arch/x86/kvm/mmu/spte.c
++++ b/arch/x86/kvm/mmu/spte.c
+@@ -317,14 +317,16 @@ static u64 modify_spte_protections(u64 spte, u64 set, u64 clear)
+ 	return spte;
  }
  
- static int tdx_handle_ept_violation(struct kvm_vcpu *vcpu)
+-static u64 make_spte_executable(u64 spte)
++static u64 make_spte_executable(u64 spte, u8 access)
+ {
+-	return modify_spte_protections(spte, shadow_x_mask, shadow_nx_mask);
+-}
++	u64 set, clear;
+ 
+-static u64 make_spte_nonexecutable(u64 spte)
+-{
+-	return modify_spte_protections(spte, shadow_nx_mask, shadow_x_mask);
++	if (access & ACC_EXEC_MASK)
++		set = shadow_x_mask;
++	else
++		set = shadow_nx_mask;
++	clear = set ^ (shadow_nx_mask | shadow_x_mask);
++	return modify_spte_protections(spte, set, clear);
+ }
+ 
+ /*
+@@ -356,8 +358,8 @@ u64 make_small_spte(struct kvm *kvm, u64 huge_spte,
+ 		 * the page executable as the NX hugepage mitigation no longer
+ 		 * applies.
+ 		 */
+-		if ((role.access & ACC_EXEC_MASK) && is_nx_huge_page_enabled(kvm))
+-			child_spte = make_spte_executable(child_spte);
++		if (is_nx_huge_page_enabled(kvm))
++			child_spte = make_spte_executable(child_spte, role.access);
+ 	}
+ 
+ 	return child_spte;
+@@ -379,7 +381,7 @@ u64 make_huge_spte(struct kvm *kvm, u64 small_spte, int level)
+ 	huge_spte &= KVM_HPAGE_MASK(level) | ~PAGE_MASK;
+ 
+ 	if (is_nx_huge_page_enabled(kvm))
+-		huge_spte = make_spte_nonexecutable(huge_spte);
++		huge_spte = make_spte_executable(huge_spte, 0);
+ 
+ 	return huge_spte;
+ }
 -- 
 2.52.0
 
