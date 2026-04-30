@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52432D876A;
-	Thu, 30 Apr 2026 19:25:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D9B375F69;
+	Thu, 30 Apr 2026 19:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777577153; cv=none; b=AKd5rONbB/8iGxrZWmoDd0UJtWdqDAlEIVtr7nmfoXuSTUMWy6zNmMlsQMVxWji3IDEXS3yK6H7w4XPAwsiW6cnwN9nO7RVdR0J95M00iiSPQCFDTWMPi6OFLxUWmybMc2uhlOuiLZviQBH3NKjkWuNFGjSVZSYPZa0Ejv2CEaw=
+	t=1777577871; cv=none; b=oCNUlTiNBFkl+Ol38Ew0S+/YNNi2hqP/crIOetQFNXGQv9fISjvMXw4xd1tpzNY8xBUzwQfJq8G8Z5hCrxufr6AVem33MD+/nmqq7S8dKH0B6pYsRxWdm7yp7fwC0K5LpuG54zwLY7kKfxp1EG+bPJUkKlc+ccj0QcnExA6ORsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777577153; c=relaxed/simple;
-	bh=6dBDporUOHlhRFoPnEKMbDDUiZkzE8G4e/S74V9XVU8=;
+	s=arc-20240116; t=1777577871; c=relaxed/simple;
+	bh=PK0LEXe3TtNKQhIlbceGzGtKMvMj/2zt+eO6bxlynKI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=N7UVaAU+f511oYQzWhufD4OG7TSkB12sD3HpZluPZhYeXm5X5iiz9FavgahBs/t/Ko1yv8GL1JFKO6q9L2nmhwVGc1XhHw/+hWSrbX9fRVdh5aIdSS/E1vtjVDgA73h9BE0K0+QklX+17JfbM/U1xLWyN0k73LbrO7ZHnvo0wAI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AcjEfc0K; arc=none smtp.client-ip=192.198.163.15
+	 In-Reply-To:Content-Type; b=Rter6SEJBhBMrVboXEysNS+CCP8SVR2VENiqV+jN8/cQ7B53tBR3i1xjhOy4w5yR/EXzeH3FePjuVNsq4/gYDTp3rRpyE0LSeg55xONCiTreeXpTdPM4NodCm4DOcT+jbPOTnK32XyDK/fSNNlcSFNw4E6OKGOmYF9i0OKcUo1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=AWf17YT3; arc=none smtp.client-ip=192.198.163.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AcjEfc0K"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="AWf17YT3"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777577151; x=1809113151;
+  t=1777577870; x=1809113870;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=6dBDporUOHlhRFoPnEKMbDDUiZkzE8G4e/S74V9XVU8=;
-  b=AcjEfc0KVG5iscEUOFYeutlLUstCXtaHbwJQLdu0YsNcf51I7KKjpCEh
-   xOigpGQc+yV6SM/Pn68FNpW9n8IrvNAl1HIsjfAjqixEyKEpX9rNvzWw9
-   ljRzLWEhh8behIaVagI4CNRJKV51rP5rJrzAiRsh4M17Qz9XpJXGkWiDQ
-   f4l+Qb6Mz1dr6QjwbbGacO5bqctg7T41V8tYgVefydFi8/+zQtKaOsA1t
-   bSWpH9PZIcV6qdvnTcfKgBX2pvUfGuLyKvDpH4nPMfLzGFBUDzT+48S5r
-   L1AX41WDWFst3vUD8EMhzvNXwKnZhlQCdibJ1DZoJw/bbaQ5N31cbDIN2
+  bh=PK0LEXe3TtNKQhIlbceGzGtKMvMj/2zt+eO6bxlynKI=;
+  b=AWf17YT3cIYeF6v+NbMXYk33dWOi2RAXwahSwLP3bGueJP4BmLiJDXYi
+   PnFZi0CNqc149LcBqJOIfRAZBrl7AaTFlmWtEkYuqxWY+6YXZLzRFyski
+   B5DoyZK23CArNWyuTF4GDPd9jXUDfz7uVI0EiozuyFhchAk/KxiGH8+ty
+   x/uS3UI80LSfZ0GPEiQb8XK0Y13xYYXyuUbURL0TxZYhmCdAbTN3Yyphj
+   YZAAOoa4RZb11vdUUoEBA/GSIcfOvC6r1VZOHi4tVO+WWBucsgEaUmWXA
+   s89D3LMYdXvxn5s/DK+GviuJUwZeDqPBrMsQZYwRDm49g+Tvc09RPI7+o
    Q==;
-X-CSE-ConnectionGUID: UVojYwbZQXWc3A/RH0+g2A==
-X-CSE-MsgGUID: msnjbHDwR5W7V1dY6MtrTA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="78645274"
+X-CSE-ConnectionGUID: N7yRV4FHR0eD3YXmT3Qq9w==
+X-CSE-MsgGUID: TRIz6CapQ0mexEela3L0wQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="77570727"
 X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="78645274"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 12:25:51 -0700
-X-CSE-ConnectionGUID: tAPjKxIiQeKGOF2OzOUwUA==
-X-CSE-MsgGUID: 8qty0iXFT0KKTe2S/aTqug==
+   d="scan'208";a="77570727"
+Received: from orviesa006.jf.intel.com ([10.64.159.146])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 12:37:49 -0700
+X-CSE-ConnectionGUID: dlsul9h4Rl6x5ByS+BX1eA==
+X-CSE-MsgGUID: a+pkLobjT52J8iy+XkhrRQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="230324251"
+   d="scan'208";a="233640285"
 Received: from cjhill-mobl.amr.corp.intel.com (HELO [10.125.109.74]) ([10.125.109.74])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 12:25:50 -0700
-Message-ID: <36c477ba-13b0-4361-baf1-16cb19648f64@intel.com>
-Date: Thu, 30 Apr 2026 12:25:51 -0700
+  by orviesa006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 12:37:49 -0700
+Message-ID: <3067bbb0-b528-41ae-8739-c49432f9a62c@intel.com>
+Date: Thu, 30 Apr 2026 12:37:49 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,21 +52,30 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 16/21] x86/virt/tdx: Reject updates during concurrent
- TD build
-To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
-Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
- ira.weiny@intel.com, kai.huang@intel.com, kas@kernel.org,
- nik.borisov@suse.com, paulmck@kernel.org, pbonzini@redhat.com,
- reinette.chatre@intel.com, rick.p.edgecombe@intel.com, sagis@google.com,
- seanjc@google.com, tony.lindgren@linux.intel.com, vannapurve@google.com,
- vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com,
- yan.y.zhao@intel.com, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- "H. Peter Anvin" <hpa@zytor.com>
-References: <20260427152854.101171-1-chao.gao@intel.com>
- <20260427152854.101171-17-chao.gao@intel.com>
+Subject: Re: [PATCH v2 2/4] x86/tdx: Use PFN directly for unmapping guest
+ private memory
+To: Sean Christopherson <seanjc@google.com>,
+ Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Ackerley Tng <ackerleytng@google.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ Yan Y Zhao <yan.y.zhao@intel.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ Sagi Shahar <sagis@google.com>, Isaku Yamahata <isaku.yamahata@intel.com>,
+ "x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>,
+ "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
+ "bp@alien8.de" <bp@alien8.de>, "mingo@redhat.com" <mingo@redhat.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ Kai Huang <kai.huang@intel.com>, "kvm@vger.kernel.org"
+ <kvm@vger.kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ Xiaoyao Li <xiaoyao.li@intel.com>, "tglx@kernel.org" <tglx@kernel.org>,
+ "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
+ Vishal Annapurve <vannapurve@google.com>
+References: <20260430014852.24183-1-yan.y.zhao@intel.com>
+ <20260430014948.24226-1-yan.y.zhao@intel.com>
+ <CAEvNRgGsMaioFvTWaLhnDiLbdx3tunZpo3Qzxdm1xeb4ef0J9Q@mail.gmail.com>
+ <231efd4e9267d3dbb8c63e57b3a43567c965e24a.camel@intel.com>
+ <afOrd7JYkUfe7wcZ@google.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -112,133 +121,33 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260427152854.101171-17-chao.gao@intel.com>
+In-Reply-To: <afOrd7JYkUfe7wcZ@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 4/27/26 08:28, Chao Gao wrote:
-> tl;dr: A TDX module erratum can silently corrupt TD measurement state if a
-> module update races with TD build. Handle that by rejecting the update,
-> instead of introducing new TD-build ioctl failure paths.
+On 4/30/26 12:20, Sean Christopherson wrote:
+>> Yea, this is used to construct u64 inputs for seamcall args. So I think it
+>> should keep returning u64s.
+> +1.  IMO, we should treat the TDX-Module as an extension of hardware and pass in
+> u64s where the spec says it takes a 64-bit value.
 
-The downside of this needs to be discussed. Namely that module updates
-can be blocked forever.
++2
 
-> Long Version:
-...
+In this very specific case 'phys_addr_t' is 100% the *WRONG* type for
+mk_keyed_paddr(). Why? Because the thing being returned is *NOT* *A*
+*PHYSICAL* *ADDRESS*. It's a composite type that contains a special
+physical address plus some metadata in a special "hardware" format. It's
+as much of a 'phys_addr_t' as a PTE is a 'phys_addr_t'. Yeah, they
+contain and are constructed partly from physical addresses, but they are
+not physical addresses themselves.
 
-This explanation is confusing.
+At the same time, if the kernel has a type-safe way of representing
+something that's also a 64-bit value, we should use it. Just because the
+TDX spec takes a 64-bit virtual address doesn't mean we should use a u64
+and not a "struct foo *".
 
-Focus on what the patch *does* and its features and downsides.
+Let's please just not go back to a sea of u64's everywhere. Use common
+sense. Use the kernel's type system where appropriate, but don't
+over-apply it.
 
-*Then* broach the alternatives. But, please, clearly separate out this
-patch from other opining.
-
-> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-> index de822ed9ef0b..b063aabe2554 100644
-> --- a/arch/x86/include/asm/tdx.h
-> +++ b/arch/x86/include/asm/tdx.h
-> @@ -26,11 +26,18 @@
->  #define TDX_SEAMCALL_GP			(TDX_SW_ERROR | X86_TRAP_GP)
->  #define TDX_SEAMCALL_UD			(TDX_SW_ERROR | X86_TRAP_UD)
->  
-> +#define TDX_SEAMCALL_STATUS_MASK		0xFFFFFFFF00000000ULL
-> +
->  /*
->   * TDX module SEAMCALL leaf function error codes
->   */
-> -#define TDX_SUCCESS		0ULL
-> -#define TDX_RND_NO_ENTROPY	0x8000020300000000ULL
-> +#define TDX_SUCCESS			0ULL
-> +#define TDX_RND_NO_ENTROPY		0x8000020300000000ULL
-> +#define TDX_UPDATE_COMPAT_SENSITIVE	0x8000051200000000ULL
-> +
-> +/* Bit definitions of TDX_FEATURES0 metadata field */
-> +#define TDX_FEATURES0_NO_RBP_MOD	BIT_ULL(18)
-> +#define TDX_FEATURES0_UPDATE_COMPAT	BIT_ULL(47)
-
-Refactor first. Add new features second.
-
->  #ifndef __ASSEMBLER__
->  
-> diff --git a/arch/x86/kvm/vmx/tdx_errno.h b/arch/x86/kvm/vmx/tdx_errno.h
-> index 6ff4672c4181..215c00d76a94 100644
-> --- a/arch/x86/kvm/vmx/tdx_errno.h
-> +++ b/arch/x86/kvm/vmx/tdx_errno.h
-> @@ -4,8 +4,6 @@
->  #ifndef __KVM_X86_TDX_ERRNO_H
->  #define __KVM_X86_TDX_ERRNO_H
->  
-> -#define TDX_SEAMCALL_STATUS_MASK		0xFFFFFFFF00000000ULL
-> -
->  /*
->   * TDX SEAMCALL Status Codes (returned in RAX)
->   */
-> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-> index a7dfa4ee8813..7864ab68f4e3 100644
-> --- a/arch/x86/virt/vmx/tdx/tdx.c
-> +++ b/arch/x86/virt/vmx/tdx/tdx.c
-> @@ -1234,10 +1234,13 @@ static __init int tdx_enable(void)
->  }
->  subsys_initcall(tdx_enable);
->  
-> +#define TDX_SYS_SHUTDOWN_AVOID_COMPAT_SENSITIVE BIT(16)
-> +
->  int tdx_module_shutdown(void)
->  {
->  	struct tdx_sys_info_handoff handoff = {};
->  	struct tdx_module_args args = {};
-> +	u64 err;
->  	int ret, cpu;
->  
->  	ret = get_tdx_sys_info_handoff(&handoff);
-> @@ -1248,9 +1251,26 @@ int tdx_module_shutdown(void)
->  	 * module can produce and most likely supported by newer modules.
->  	 */
->  	args.rcx = handoff.module_hv;
-> -	ret = seamcall_prerr(TDH_SYS_SHUTDOWN, &args);
-> -	if (ret)
-> -		return ret;
-> +
-> +	/*
-> +	 * Mitigate the erratum where updates can break concurrent TD
-> +	 * build. Do not pre-check support for this flag. If unsupported,
-> +	 * rely on the TDX module to reject shutdown requests.
-> +	 */
-> +	args.rcx |= TDX_SYS_SHUTDOWN_AVOID_COMPAT_SENSITIVE;
-
-"Mitigate the erratum..." is a strange way to start this.
-
-This would be a much better format I think:
-
-	/*
-	 * This flag will <say what it does> if <triggering event>
-	 * happens. That eliminates exposure to a TDX erratum which
-	 * can <explain bad things here>.
-	 *
-	 * This flag is not supported by all TDX modules and may cause
-	 * the shutdown (and subsequent update procedure) to fail.
-	 */
-
-> +	err = seamcall(TDH_SYS_SHUTDOWN, &args);
-> +
-> +	/*
-> +	 * Return -EBUSY to signal that some ongoing flows are incompatible
-> +	 * with updates so that userspace can retry.
-> +	 */
-
-	/*
-	 * The shutdown ran into a "sensitive" ongoing operation, like
-	 * TD build. Signal to userspace that it can retry.
-	 */
-
-> +	if ((err & TDX_SEAMCALL_STATUS_MASK) == TDX_UPDATE_COMPAT_SENSITIVE)
-> +		return -EBUSY;
-> +	if (err) {
-> +		seamcall_err(TDH_SYS_SHUTDOWN, err, &args);
-> +		return -EIO;
-> +	}
-
-Whitespace between the if()s please.
-
-
+IOW, I agree with Sean. But please don't take Sean's advise too far here.
