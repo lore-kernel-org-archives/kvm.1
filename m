@@ -1,98 +1,97 @@
-Received: from mail-ua1-f54.google.com (mail-ua1-f54.google.com [209.85.222.54])
+Received: from mail-vs1-f42.google.com (mail-vs1-f42.google.com [209.85.217.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BFC947DD51
-	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 19:07:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 519572848BA
+	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 19:08:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.42
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777576030; cv=pass; b=ocxpyGoOWme+yzxv5VbzQ/SgzeyT5zugZIlbqiBnsstldQDst/U24r9NZ4wMaJjUvbukfg0WdaIkMpMzCcCfAZSaCd9+a+1rO8l1u5/jhT1CHWlf5GDylC82n6pWjP5O6zeTCwvnbweeDVjsSA9H1GkkjKmWVzmw3MvxgE8eiNE=
+	t=1777576104; cv=pass; b=Jlj3hJQs+4Y6+Yw87nEwDLabaSRKTAmmFU+Ws3daiEojlxtECXaiF4U88npzmK444n0rBtHIbIJ3nedLkG8+47ZFOeyBxnztdT2bIVyZEXtppIxVK0C/YDNi7kVs/gg6sF0+93/kP/bOfvTE5LfoTI6UoAi5YVFhB6QcTOBJGCM=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777576030; c=relaxed/simple;
-	bh=lbKI88j24zL5a/G4P31XWejGAZvwD0yA7HjlaqItY/Y=;
+	s=arc-20240116; t=1777576104; c=relaxed/simple;
+	bh=BcFSBFNjfiqdmSv1NgIPmx2ysvOwK+8OOiEJsqg5Jfg=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FooGQQAdR7/l3xAcmXPAlE8S7STib2DNRUB1xVnVRcv9WlgHDgq03G1aN+4p+0JvpzSuhGPmBv6iNsdY6JqxU3hxVgsiBr/bqKNOAI7rt7vWgwmWZ2aZ51L3s40xIXa2UOr3WHIIYNhzOxxJoDRHRFKCftnZgguBrBB8a4cdaqc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O1C6sevA; arc=pass smtp.client-ip=209.85.222.54
+	 To:Cc:Content-Type; b=UlO/NEw/GDoyxBkSK8kIevuBLz7BDYclEAh5YXfZka749jPk5/j1sO2rZt6SepYIIoc/eUQ4Y2VOkynT5DDNdX4RcqWsGIRBWIZXMQDVcv9BzqcDeOPhKeIEcmAIyQRgZjA71N4jZAAeRiRfhPRW8lpxHI0MT2WgVk8LsyTzaAI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kRLWFc12; arc=pass smtp.client-ip=209.85.217.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O1C6sevA"
-Received: by mail-ua1-f54.google.com with SMTP id a1e0cc1a2514c-95ce0cf2d4bso126075241.0
-        for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 12:07:07 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777576027; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kRLWFc12"
+Received: by mail-vs1-f42.google.com with SMTP id ada2fe7eead31-6055a0414d7so372366137.2
+        for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 12:08:23 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777576102; cv=none;
         d=google.com; s=arc-20240605;
-        b=BHBzR3X+r5mlQo/KzEEDr8e0W9p+nu6keJ0cJJsLqcYvnZAmRGstn6rps+veXNIsMk
-         PRXZqviw4VaQQDQxRKPIkMGVTicmbc1he+QMiaVzXK1Pvq/zrGSqIg4VE6Bo+TnDpNwo
-         Y1g1xV1DPTzerABMzcqb8byoxKTNlt7nWzy6OGgDiDas9V6mpNr3BaJH1XOJYp2/ZV9P
-         CwkoAlK+4ueX1xOp70BFsYo7USqqnB5vN9tO2iXH49fZ+xYo9S1WfLATPcIJy5PP3RUl
-         edT4hrR09vCumBP80PPtzZwxi1JL1GPXunqD+tTpxWshhnmin+zxrpZPTHaYU5JGtjjy
-         ravQ==
+        b=HUMPHIJKtvUbuMIyDpnMI0bsHBSUypcVbgWKnKwWU5WaygzY7PlYC9iR0Z4wtyZPW4
+         r3gsx9LchR4LgkeZyn9aLFyV+oPqBHzqRYbJ2aG9fUKPyzX8sEfzQd63flXKIooihdtG
+         TbliN2iNi99CkNRTbFRSdU6zPEWxy+5KiPbNtar8VtmYZ4MPUP4korFTf89e6ty1Az1B
+         oQrmA5Qmey5VMwSdxf7OPTOZ6ZcHzbLPm+rcdIyXmUNNRNS3PCXE1I1t25IGHLP3K1l+
+         xJF9kJFel+Jryx70k35UHLyIqn0G1GkSp1XesE00ayir+u72JK7Tkl+Ql5MB4IrbbzeH
+         ju1Q==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:dkim-signature;
-        bh=wE/mzJ1slStIo/XImW9RMGfZLtcSrEsQfhXpy86FMIU=;
-        fh=RTQHOBI0IZHFWszE9XoSMp76ltjOGhWND7ogHZParP8=;
-        b=J72CfR9KBULYcSeMhTbmS1/t7d5taoblTpZjiv1+W62R8eTCVoh+68JgyXksEDtxmg
-         +xcJK5Z7VIQswRUsHqddlFGGIXa9GP4iGUuq2w/IxR/F0tzwvQXbRaIBrdgyBJaRaMHi
-         3PoL+2HPcPQSiQtPTCfguLdGnOqkJtASrBTvr5hAwKvIMPBqvTEdOYA6YBdAeqnHx0zz
-         4jsA8jNUOmCCNrWS+6ah8JsTXJEtaHBRsx45XQ5z9HnzLrf/j9Xosw+wxB9sQ+1kn7WA
-         OMk0A62h2LDYZg0vGvip7tSFtQom1qSTJqmb8Ze0Ounsry91tJrXKVfKxVG18vcm6GXX
-         HVEQ==;
+        bh=VV5WEE2tzDHG1+/C0I3LGwTNWRiPwqZD3JqM7IwkNpg=;
+        fh=LsNjSU7DxAt65Gq0uVg8ESxOCG0volxo65KcDraRecQ=;
+        b=UkoTSyIbpBkUfudqLzwPGtlCu9wqnhPHVrPoVhiZ4HhNowtdV54j39h7Rixoc2BS+5
+         EJp2uI6Xubv9lcb83r9UufTr3t1fHfMmXH1evEI2ZLzc07z0crXIE/pgFY88FPtjbvJ5
+         VMd+17pxQjs2TyhzyFJerm9tgmIq7Av8GYEGj/spHMuJBp//xKuZcGmqz9ylnA6x2c5U
+         82JctRKFbkFj82znNQwc0NxPSYVr4kdd+1JLy1udUOXra7B7BTQLEL6ETIUfmSBvcdir
+         zeQRXLt4bS2rUZpZkUD4HydUM33lng1UHlIJ2BJOD90JmY3PsIV/lsJ73OL8Anoab2oJ
+         p2kg==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777576027; x=1778180827; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1777576102; x=1778180902; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=wE/mzJ1slStIo/XImW9RMGfZLtcSrEsQfhXpy86FMIU=;
-        b=O1C6sevAiquG92RrO6aofEkcrn7yILoB9Ub41W9bosg4fXS1C5RVTxpppdxiVpYM8E
-         a9hJVzKYjnnk1bCGKgjJY6XcvF7j4c37/o6uTB1AKfRFP+o/1MqFwOf3qf29Y4cgq7rC
-         SsNJStZViI77pSq1ipM3HCUQXmXVhwo3djnKUJdgi/VZPSQeE8t3WUdc3tKp+vVIeWKx
-         yP1m7q9pyxuzGJy8xoKvfH+6GhGedp2qNb+2qL3T8kg+KT8v+0MYSq2ai+CkyLNOfuSt
-         ugDvjSzBbA22WocWSotFDfkDArDlrJ4HASh9zq/+dvQK8BSfiG5XNHTKP6yulSj8o9hQ
-         /UQw==
+        bh=VV5WEE2tzDHG1+/C0I3LGwTNWRiPwqZD3JqM7IwkNpg=;
+        b=kRLWFc12Bhiu0O5JHGGXOEbGdigbJluNB/ttXXJCVawCjLliLsS13hZhlmWFfjRQIT
+         KOG/LwYVlfRoS7sk1Lngw3yDx43I5QWlsMxBi8ST+RIVZQIFfpeKcZe/WD9+W2AAZ27H
+         g9MhYnY3YbFqFSto58JDYCeWfnk4iG2Sk4CcBXhglIi3fiPaqsDwN3GT5APM/7UlGNfz
+         06l1LluQUADFVf5k22YTVe/sNEGzWZTKLMOUQRgkFUGCUqOpaGRUXZ8w81EGlUedDri7
+         a5A9o/IU4VlgBv5H9DfkU0znUTT0iEsQt13gchALZhdds1preBFk6bZoMw6vRLJ7IUh/
+         W9zA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777576027; x=1778180827;
+        d=1e100.net; s=20251104; t=1777576102; x=1778180902;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=wE/mzJ1slStIo/XImW9RMGfZLtcSrEsQfhXpy86FMIU=;
-        b=m825lOjHMoq8sXmUSm3fpc9eN4HzzZSTNmhdTqeL1uLy/13G4xZ25maK+nvoE2qicR
-         J/oPgeDptC3lntqUqNz9kecNOOd+L7kFMfFNVBDyxOz97i1XGmErPVJ4jWdH0RP7xZC+
-         pdrQZH2KSASA5mX1QFKgEsNBAGHDXbhf/p9bfnJflonvsG8s0HK570OgGBCRhYJJGCR4
-         slwLeMycvoIqA7/qPi9lVfYEpTWeZIj4fIGhzMEFvTABCVe0qiW1Tk46px+avYKbikpv
-         JR5nLTxJ7rsu28mCYb7vpq7DsaKzWNUje9Bc2EoUtDnRnY3psftMWktEmdF/0ItiF7eF
-         x0vg==
-X-Forwarded-Encrypted: i=1; AFNElJ9P/a8M3a6XPA3p59lUck038uVgBnj1a4ZIdptSrue2XOMQ61f+861dkqo0qwAIMG81Brs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzzbea+xlzltjQEOAdCO0YhC6KquUX6DBqx7NeB4hJHt5i05bZ0
-	9w94yPYvFPJxmbyVJRwB8/2h0M1Qu8byNybXrLWgu4Fa3oQn4MA62Yw+A773AHrYu1jSaRcKuWT
-	Pl3iXAYqJo92ZRFnKxn6xDzOiTig0JoaaLQtgMZCxnNNkJrovGs7KGnRy
-X-Gm-Gg: AeBDieuYICncURGOH/KSZH12DyfOqYxbvncqG3MZMOJYMpySL4nhr4s85qFpGlEyp29
-	Ebg1EY/X9zGRjeVumMgXrPdw4Ls9VWk7QTTYM8ESiW8Uzcq+QNXc/opRHSz8FlweZc7cD+MZuxu
-	WX23nkjK57QkvI8eH+sogbcNox7OuplHay53QPl7RbIfWCip4QLVNYODJvQjEPAG6f3Bzgf47zN
-	AS1IGrQyj5wSZ7v2CUtMGMfZs2WW56HFLP6gc5svPoB5p84s0wisIoy2NnAITsXqM8Vg/NsZWiZ
-	JJ08RXhB5/bzu/+WZboDY3Tx9kaQcrJdnRV/4PpAtlmHexUcD2B7G52vcTj1r2xsaiIg6htaMXW
-	a9G1xyXqPIB7XU2U=
-X-Received: by 2002:a05:6102:8012:b0:608:d8be:da4c with SMTP id
- ada2fe7eead31-62afc506124mr1968314137.1.1777576026377; Thu, 30 Apr 2026
- 12:07:06 -0700 (PDT)
+        bh=VV5WEE2tzDHG1+/C0I3LGwTNWRiPwqZD3JqM7IwkNpg=;
+        b=PPKLywveQhtHRq3/t+5S7OcQda0z0dN42vDEub4PbsLoBMHB0T8uw0beQ2qrHvnvDo
+         Iy7qjOMLpUPgsKDukyfpqkmW6nvqJfGwDoEhwskIx7MYhneAuY7xvHpF1ZfmT5BJfIyd
+         4A0d1HCZcU7VMwJWpXVg6VFA++J6vakk2HMDS/KuxQfDM0yKW5yMl9x4iC2AtOXekX8t
+         XhDiCFiFakG1lw3XdtXXu8/nKR9ZJKLyKXLNoZUizRTyLEt3hsu9X5R7Cwn3zrbPlus4
+         /sRLMCxiK9ilXRkMWZ7Flg8Ed4hmDPOHyKY6WLjMgN/EmMhNT3lGikQqrvkkmU3wBdfB
+         fwMw==
+X-Forwarded-Encrypted: i=1; AFNElJ8d+NrHWxglB8prQvV2VxMDoZPdhz9aGt+m7pHUgOQc+Ad2r2G/IYHOrDixeio/kKmTsBs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxdy+qbjVc3Wwj6bU4FGkjrhKX4ItOouuVXboq5346PeBIGJUy1
+	Es2qCcVuYvrzEMfRt0LZWkhIDJLFt55LsSM7clD2cmP38HrChOjPC81OF4PSWIjlEM+OVWgzRv5
+	7IE/jJxgE6fF5nu08Rm37MRhl6+TMtAg+t9N5GENj
+X-Gm-Gg: AeBDiesRVvTGjYUkVbfYhjMuqCTrlqw89TkvpKs2SHHBKPiG+AQpNSaf1S2RL17agKL
+	vTI3YNsIQeUOYS//63r4/PiUA/FtDi4f/wyEMUMHjJvLjV7p1Q0vUd5stn2zYFiBJvS58ci1+Z6
+	BiZkcdRFIa6vf3dASDd1RVyJu6f207QA89v8s60XyT7xU2d8FRO2PoNzzpZE404DV3DKLIDB6Z4
+	w8vekDnqrUc9k9w5W37YMJnR1XhmCpYOgcz13/CPooHmnMCY+LYQR6yPx0x2+kutNJseBdfDAxL
+	olwEpKVA+p+m/RGdRTym0VEaeYqj1N6te6eehsSnPFCcirRHfhrfUePypndMWbVggXa+cC/U1tz
+	xh2gljVA7yTZgr1DNbr6eZJ8g0A==
+X-Received: by 2002:a05:6102:2928:b0:628:1e7b:cd0e with SMTP id
+ ada2fe7eead31-62ad234315amr2616765137.11.1777576101731; Thu, 30 Apr 2026
+ 12:08:21 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Apr 2026 12:07:05 -0700
+ HTTPREST; Thu, 30 Apr 2026 12:08:21 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Apr 2026 12:07:05 -0700
+ HTTPREST; Thu, 30 Apr 2026 12:08:21 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260428171541.1342335-3-seanjc@google.com>
-References: <20260428171541.1342335-1-seanjc@google.com> <20260428171541.1342335-3-seanjc@google.com>
+In-Reply-To: <20260428171541.1342335-4-seanjc@google.com>
+References: <20260428171541.1342335-1-seanjc@google.com> <20260428171541.1342335-4-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 30 Apr 2026 12:07:05 -0700
-X-Gm-Features: AVHnY4Ks5Bm2PCziJ-syWgasNF85MyJs2TP5cmPUkTf-8K0QlT_PnzepmIRnslw
-Message-ID: <CAEvNRgHqLcdO5j1X-nXXSjewOmnCDJmHtmPh=1jtQ3Tkf7+HMw@mail.gmail.com>
-Subject: Re: [RFC PATCH 2/5] KVM: guest_memfd: Move gmem function declarations
- to dedicated guest_memfd.h
+Date: Thu, 30 Apr 2026 12:08:21 -0700
+X-Gm-Features: AVHnY4KiaGrNK76uQ2DQK9xgBP5GUa3HxCak0xILGKcq83W_QWWNbmpTGiA_vco
+Message-ID: <CAEvNRgEL32Jc_FfKGqYvYJ3WZGz=PnGwwmxviCOHWaDXm6KX-A@mail.gmail.com>
+Subject: Re: [RFC PATCH 3/5] MAINTAINERS: Add an entry for KVM's guest_memfd
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Yosry Ahmed <yosry@kernel.org>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
@@ -104,27 +103,41 @@ Content-Type: text/plain; charset="UTF-8"
 
 Sean Christopherson <seanjc@google.com> writes:
 
-> Extract the gmem function declarations out of kvm_mm.h and into a dedicated
-> header, guest_memfd.h.  This will allow creating a MAINTAINERS entry for
-> guest_memfd without having to rely on content pattern matching.
+> To better reflect how guest_memfd has been maintained for the last few
+> years, and to prepare for significant upcoming growth and expansion, add a
+> dedicated MAINTAINERS entry for KVM's guest_memfd, with Paolo and myself
+> (Sean) as co-maintainers.
 >
-
-This also trims kvm_mm.h, which makes it easier to look stuff
-up. Thanks!
-
-Shall we do something similar for include/linux/kvm_host.h?
-
-Reviewed-by: Ackerley Tng <ackerleytng@google.com>
-
+> List both the KVM and KVM x86 git trees as authoritative repositories, as
+> any given guest_memfd change has a equal odds of hitting KVM x86 or not.
+>
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 > ---
->  virt/kvm/guest_memfd.c |  1 +
->  virt/kvm/guest_memfd.h | 34 ++++++++++++++++++++++++++++++++++
->  virt/kvm/kvm_main.c    |  1 +
->  virt/kvm/kvm_mm.h      | 27 ---------------------------
->  4 files changed, 36 insertions(+), 27 deletions(-)
->  create mode 100644 virt/kvm/guest_memfd.h
+>  MAINTAINERS | 9 +++++++++
+>  1 file changed, 9 insertions(+)
 >
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 89b470db22de..9eceeb6f699d 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -14396,6 +14396,15 @@ S:	Maintained
+>  F:	Documentation/devicetree/bindings/leds/backlight/kinetic,ktz8866.yaml
+>  F:	drivers/video/backlight/ktz8866.c
 >
-> [...snip...]
->
+> +KVM GUEST_MEMFD
+> +M:	Sean Christopherson <seanjc@google.com>
+> +M:	Paolo Bonzini <pbonzini@redhat.com>
+> +L:	kvm@vger.kernel.org
+> +S:	Supported
+> +T:	git git://git.kernel.org/pub/scm/virt/kvm/kvm.git
+> +T:	git https://github.com/kvm-x86/linux.git
+> +F:	virt/kvm/guest_memfd.*
+
+Should selftests for guest_memfd be added here too?
+
+> +
+>  KVM PARAVIRT (KVM/paravirt)
+>  M:	Paolo Bonzini <pbonzini@redhat.com>
+>  R:	Vitaly Kuznetsov <vkuznets@redhat.com>
+> --
+> 2.54.0.545.g6539524ca2-goog
