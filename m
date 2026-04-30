@@ -1,142 +1,172 @@
-Received: from fhigh-a4-smtp.messagingengine.com (fhigh-a4-smtp.messagingengine.com [103.168.172.155])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03C8B38D6B1;
-	Thu, 30 Apr 2026 20:13:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.155
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD7AA3A5439;
+	Thu, 30 Apr 2026 20:27:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777580041; cv=none; b=HFj8+H2P7AR5rF/FOPrgGzQA/oqVyClb7esfINhpUDfWROiQi+MvrMwR6TCxScppH3XOSy9mIr1niQpSJ+3osCCJT8O795TeEvbh5x9QToxZR4jPz8XjwY3N/WcHE70Ccu4R0DpWyRw36b+zDTJRzjQn7215pewHyo60EyU58U0=
+	t=1777580879; cv=none; b=tl1DK/8Qnjncv3aG0er6giY5drC8Otyfb0Jo1DqxPDJrUdx3Ra2ZErnRPVNSrl+MWnEZAl8bWVmpYTYLPmR6kLfnhDymG6GjLEBncc05BFuz0CaGZ41bYpSkVoWqOkPyZTuC6rSzBUoL9pHITStUUlF/zn/QgeCGX6BSeCadD8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777580041; c=relaxed/simple;
-	bh=aDsCu3z80QPVoVoKfmhKYpp3qc/i+wge3CyQtaksykc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VczVk6Q8ndFLXywwTQrBXZ2aJDC3I8+nb2iGcIZAcE3/N890CqXwE5ASZj1OCwXanezSp1WZwnyffLgcOERCKLxnZb4ZWT1jcUES68C70dK5qZub/QrA7H4+6wEpZrGy1TrTOceTnXm3mOLk3vN6NqwryY35ZcMVXHN/g1W+lUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=F7zDOruJ; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=QhcpOjG3; arc=none smtp.client-ip=103.168.172.155
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1777580879; c=relaxed/simple;
+	bh=hEWN4DEjj6+rNoXobuwRsoCxULeupgoiPwSbDK9HxzE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=iiMNlxIzwHL0Jz+LI5xtelLnrEie4foTyL6vdLN7TotwbG9ALCv0ljIVaNzwW2PgWx/AQ6sdr/WKjnB8NSjoSr1bp2Bfja3y9EqKrIceMIdJ93bDtG+T4T/g1NQCr6WfLl19eHlUEI3e125v7c1wPHaoApokoOm1YrHL3AEh1oo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Dc/zG+R9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="F7zDOruJ";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="QhcpOjG3"
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 5F7B91400116;
-	Thu, 30 Apr 2026 16:13:58 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Thu, 30 Apr 2026 16:13:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1777580038;
-	 x=1777666438; bh=cIWUfOtmNgofCmZE+cELVNsQTIEZ0ZyUaH/wBFQLd3I=; b=
-	F7zDOruJQXQ8mLKLQJttYHVqPhz09unuo2SGsuJcrRI8wic60b5zgSYVPzIkrVQ5
-	+n+9LSAygmWqPOe2IXqaqDqPyZ2DHHL8CVkiqxCdAJFFjpeoVKK8CjgSWElz1vjM
-	WL7LF6XWshYPfKlWEe8vpcJkG2/4udHeF3FC5hnGxJR6sKSPkFxM/dIKcHVkzbH0
-	aDRvr1VFLhTTMZIII3ZNJ5T7401pK4Bg5KnFigcQDyQ93WGNxb4zLcWmHvDU3WlL
-	yY9m+eSxOQ8q+SX29el8e6Nr0lhWhSImA/RGib1Q/yKGKsB7lijvKFEPdJoGcSoZ
-	5WHg0aNfXuFzzbZnuD0IbA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=1777580038; x=
-	1777666438; bh=cIWUfOtmNgofCmZE+cELVNsQTIEZ0ZyUaH/wBFQLd3I=; b=Q
-	hcpOjG3lfcddc6eaEvhvdn6vYzAItFt6ozbIZQLaf3XPgRziuQkR+pCDXhpus3H6
-	9MZE+j+dC7uo5nwLEGC1GGTw+VJvXsGF0sIkWBvoyzSmqUyO/tPd9MS0LXplZrjl
-	9xXg8IYlZn/gy9VaASoolAV1zllMcBYHO+uqgRbf5UzwByXNgLpVQeLGtcV6MfXy
-	7Vk3N0JXTJK2+uyz1fm2zicskGmIZaPe0OfB6lQJanhCF4BG9y7GKgzBYiJiWHtI
-	vPpu4CEKFSiat/zaWKGVsyhSfH2CKdTRSnXrnHHsVvzgvwjdADfbrgA4vfNk0Jy6
-	j4x9jmpUeK6qYb98UtMAA==
-X-ME-Sender: <xms:Brjzacx-HVQm2Mn9FMGLs8sWrnaTacE-3jvv1UXr-Wk0UfQtRxXf3Q>
-    <xme:Brjzaa8dMD_KYvYPIDoUS68uqrkdPnzIsNlz0YA9w_KWKtiaBXxIcjrxa1K9q08-f
-    REAeEUDgX6wrTkwy3OQ4Cwb_ES75IFfGiN10e9Ub8ByhYhz5_XIog>
-X-ME-Received: <xmr:BrjzaU-QO04gCh9B3WRaXu8QMEpVu9C_d5gD2g-qmMkQCKQMN645cLvN6Ys>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdekkedvhecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefukfgjfhfogggtgfesthejredtredtvdenucfhrhhomheptehlvgigucgh
-    ihhllhhirghmshhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrth
-    htvghrnhepvdekfeejkedvudfhudfhteekudfgudeiteetvdeukedvheetvdekgfdugeev
-    ueeunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
-    hlvgigsehshhgriigsohhtrdhorhhgpdhnsggprhgtphhtthhopedukedpmhhouggvpehs
-    mhhtphhouhhtpdhrtghpthhtohepmhgrthhtvghvsehmvghtrgdrtghomhdprhgtphhtth
-    hopehkvghvihhnrdhtihgrnhesihhnthgvlhdrtghomhdprhgtphhtthhopehjghhgseii
-    ihgvphgvrdgtrgdprhgtphhtthhopegrnhhkihhtrgesnhhvihguihgrrdgtohhmpdhrtg
-    hpthhtoheprghpohhpphhlvgesnhhvihguihgrrdgtohhmpdhrtghpthhtoheplhgvohhn
-    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehkvggvsheskhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtohepshhkohhlohhthhhumhhthhhosehnvhhiughirgdrtghomhdprhgtphht
-    thhopeihihhshhgrihhhsehnvhhiughirgdrtghomh
-X-ME-Proxy: <xmx:BrjzaVcHAPtVFjtDb_HWWqg6tTw7C8HolPzWF-Xba0bePE5AKq7LIw>
-    <xmx:BrjzaYtpbmYP8qkYjiF6xMtpAN5v5Ig1duBthFxWz43ngN3Tu-uZ3w>
-    <xmx:BrjzaW1pFAha9sv0dnSXQCY19H014t3qx5aSy9oTdN6myl_-DjucSg>
-    <xmx:BrjzadCQmxkOqmAMZNBIESxSI4NUc3NVOLYNwIjdjime7ghPfSzSww>
-    <xmx:BrjzaVKPw4NE4431AbwDHoDXn7jT24j5rxx7DCMG0ekhusPejP7mrUQG>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 30 Apr 2026 16:13:56 -0400 (EDT)
-Date: Thu, 30 Apr 2026 14:13:55 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Matt Evans <mattev@meta.com>
-Cc: Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, Ankit
- Agrawal <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>, Leon
- Romanovsky <leon@kernel.org>, Kees Cook <kees@kernel.org>, Shameer Kolothum
- <skolothumtho@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>, Alexey
- Kardashevskiy <aik@ozlabs.ru>, Eric Auger <eric.auger@redhat.com>, Peter Xu
- <peterx@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>, Zhi Wang
- <zhiw@nvidia.com>, <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <virtualization@lists.linux.dev>, alex@shazbot.org
-Subject: Re: [PATCH v3 3/3] vfio/pci: Check BAR resources before exporting a
- DMABUF
-Message-ID: <20260430141355.2751f9ff@shazbot.org>
-In-Reply-To: <20260430100340.2787446-4-mattev@meta.com>
-References: <20260430100340.2787446-1-mattev@meta.com>
-	<20260430100340.2787446-4-mattev@meta.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Dc/zG+R9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D529C2BCB3;
+	Thu, 30 Apr 2026 20:27:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777580879;
+	bh=hEWN4DEjj6+rNoXobuwRsoCxULeupgoiPwSbDK9HxzE=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Dc/zG+R9/OQQmKoQj35sbc8AmYFYvP2kTaQnZnDqRgTqaCkP1AOo1EWNHsFBtkYUA
+	 fQt81C/sqrTRBYDL6ojCH4LWArZNWv6WLzST25HTtQpOd96r2LjXLJbi1m8P/Hniy5
+	 mM8by8s/6+MI6MDjcniDrEJOjIW1aibwjjHxyYwsJ+WEu7RlogGBZoOemy1uxGTUpW
+	 pPdcstoRGvVIqqPRabcmicMeaxOKQvE1HWNkyfdZBoK6m9hyEC87dodgzOoxwWlMqH
+	 QRIcb3/v9H4Yi3tWWI5/lYAbhROupRJ0PUymLgvXoMPaAfZR3NrI0Kcz4rn60um4qj
+	 +D5yTapimEpyA==
+From: Yosry Ahmed <yosry@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Jim Mattson <jmattson@google.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yosry Ahmed <yosry@kernel.org>
+Subject: [PATCH v5 00/13] KVM: x86/pmu: Add support for AMD Host-Only/Guest-Only bits
+Date: Thu, 30 Apr 2026 20:27:37 +0000
+Message-ID: <20260430202750.3924147-1-yosry@kernel.org>
+X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-On Thu, 30 Apr 2026 03:03:22 -0700
-Matt Evans <mattev@meta.com> wrote:
+v5 of Jim and myself's series adding support for AMD's Host-Only and
+Guest-Only performance counter eventsel bits in KVM's mediated PMU
+passthrough implementation.
 
-> A DMABUF exports access to BAR resources and, although they are
-> requested at startup time, we need to ensure they really were reserved
-> before exporting.  Otherwise, it's possible to access unreserved
-> resources through the export.
-> 
-> Add a check to the DMABUF-creation path.
-> 
-> Fixes: 5d74781ebc86c ("vfio/pci: Add dma-buf export support for MMIO regions")
-> Signed-off-by: Matt Evans <mattev@meta.com>
-> ---
->  drivers/vfio/pci/vfio_pci_dmabuf.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
-> 
-> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> index f87fd32e4a01..3bc7d850e258 100644
-> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> @@ -244,9 +244,11 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
->  		return -EINVAL;
->  
->  	/*
-> -	 * For PCI the region_index is the BAR number like everything else.
-> +	 * For PCI the region_index is the BAR number like everything
-> +	 * else.  Check that PCI resources have been claimed for it.
->  	 */
-> -	if (get_dma_buf.region_index >= VFIO_PCI_ROM_REGION_INDEX)
-> +	if (get_dma_buf.region_index >= VFIO_PCI_ROM_REGION_INDEX ||
-> +	    !IS_ERR(vfio_pci_core_get_iomap(vdev, get_dma_buf.region_index)))
+These bits allow an nSVM-enabled guest to configure performance counters
+that count only during L1 execution (Host-Only) or only during L2 execution
+(Guest-Only).
 
-Polarity of the test is wrong, should just be IS_ERR().
+KVM updates the hardware event selector ENABLE bit at nested transitions
+and EFER.SVME changes such that counters only count in the appropriate
+mode.
 
-It would be good practice here to front-load the Fixes: patches in your
-series.  I'd suggest making this patch #2, using the existing
-setup_barmap API, then include it in the conversion to iomap in patch
-#3.  Thanks,
+The series grew significantly since v4, as it now includes semi-related
+nSVM fixups and selftests cleanups needed for the series. I think parts
+of this series can land independently (patches 1-6 and patches 10-12),
+but then the remaining series would depend on both.
 
-Alex
+v4 -> v5:
+- Dropped moving leave_guest_mode() and enter_guest_mode() definitions,
+  since the calls to update the vPMU no longer happen within these
+  functions.
+- Add PMU helpers refactoring to facilitate SVM usage.
+- Added nested SVM fixups to count VMRUN correctly in guest mode when
+  Host-Only/Guest-Only support is enabled [Jim/Sean].
+- Update the vPMU synchronously on nested VM-Enter/VM-Exit and EFER.SVME
+  changes, such that counter enablement is reevaluated before the
+  instructions are counted, as the vPMU counts based on the vCPU state
+  at instruction retirement (e.g. using new EFER value when EFER.SVME
+  changes) [Jim/Sean].
+- Keep deferring vPMU updates using KVM_REQ_PMU in the
+  svm_leave_nested() path to avoid KVM potentially consuming stale
+  state [Sean].
+- Use a single PMU callback for reprogramming counters instead of a
+  per-counter callback [Sean].
+- Move the bitmap tracking counters into SVM code. The generic vPMU code
+  now only exposes an API to reprogram counters, and an SVM wrapper uses
+  it on nested transitions [Sean].
+- Drop the manual stack-alignment fixes in the vPMU selftest, instead
+  rework L2 stack setup in all nested selftests to reuse the allocation
+  and alignment logic used by L1, and completely drop L1-provided stacks
+  for L2 [Sean].
+
+Jim Mattson (2):
+  KVM: x86/pmu: Allow Host-Only/Guest-Only bits with nSVM and mediated
+    PMU
+  KVM: selftests: Add svm_pmu_host_guest_test for Host-Only/Guest-Only
+    bits
+
+Yosry Ahmed (11):
+  KVM: nSVM: Stop leaking single-stepping on VMRUN into L2
+  KVM: nSVM: Bail early out of VMRUN emulation if advancing RIP fails
+  KVM: nSVM: Move VMRUN instruction retirement after entering guest mode
+  KVM: x86: Move enable_pmu/enable_mediated_pmu to pmu.h and pmu.c
+  KVM: x86/pmu: Rename reprogram_counters() to clarify usage
+  KVM: x86/pmu: Do a single atomic OR when reprogramming counters
+  KVM: x86/pmu: Disable counters based on Host-Only/Guest-Only bits in
+    SVM
+  KVM: x86/pmu: Reprogram Host/Guest-Only counters on nested transitions
+  KVM: selftests: Refactor allocating guest stack into a helper
+  KVM: selftests: Allocate a dedicated guest page for x86 L2 guest stack
+  KVM: selftests: Drop L1-provided stacks for L2 guests on x86
+
+ arch/x86/include/asm/kvm-x86-pmu-ops.h        |   1 +
+ arch/x86/include/asm/kvm_host.h               |   2 +
+ arch/x86/include/asm/perf_event.h             |   2 +
+ arch/x86/kvm/pmu.c                            |  19 +-
+ arch/x86/kvm/pmu.h                            |  28 ++-
+ arch/x86/kvm/svm/nested.c                     |  43 +++-
+ arch/x86/kvm/svm/pmu.c                        |  53 +++++
+ arch/x86/kvm/svm/svm.c                        |   2 +
+ arch/x86/kvm/svm/svm.h                        |  33 +++
+ arch/x86/kvm/vmx/pmu_intel.c                  |   2 +-
+ arch/x86/kvm/x86.c                            |  17 +-
+ arch/x86/kvm/x86.h                            |   3 -
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ tools/testing/selftests/kvm/include/x86/pmu.h |   6 +
+ .../selftests/kvm/include/x86/processor.h     |   2 +
+ .../selftests/kvm/include/x86/svm_util.h      |   5 +-
+ tools/testing/selftests/kvm/include/x86/vmx.h |   4 +-
+ .../testing/selftests/kvm/lib/x86/memstress.c |  19 +-
+ .../testing/selftests/kvm/lib/x86/processor.c |  45 ++--
+ tools/testing/selftests/kvm/lib/x86/svm.c     |   6 +-
+ tools/testing/selftests/kvm/lib/x86/vmx.c     |   6 +-
+ .../selftests/kvm/x86/aperfmperf_test.c       |   9 +-
+ .../kvm/x86/evmcs_smm_controls_test.c         |   5 +-
+ .../testing/selftests/kvm/x86/hyperv_evmcs.c  |   6 +-
+ .../selftests/kvm/x86/hyperv_svm_test.c       |   6 +-
+ .../selftests/kvm/x86/kvm_buslock_test.c      |   9 +-
+ .../selftests/kvm/x86/nested_close_kvm_test.c |  12 +-
+ .../selftests/kvm/x86/nested_dirty_log_test.c |   8 +-
+ .../selftests/kvm/x86/nested_emulation_test.c |   4 +-
+ .../kvm/x86/nested_exceptions_test.c          |   9 +-
+ .../kvm/x86/nested_invalid_cr3_test.c         |  10 +-
+ .../kvm/x86/nested_tsc_adjust_test.c          |  10 +-
+ .../kvm/x86/nested_tsc_scaling_test.c         |  10 +-
+ .../kvm/x86/nested_vmsave_vmload_test.c       |   6 +-
+ tools/testing/selftests/kvm/x86/smm_test.c    |   8 +-
+ tools/testing/selftests/kvm/x86/state_test.c  |  11 +-
+ .../selftests/kvm/x86/svm_int_ctl_test.c      |   5 +-
+ .../selftests/kvm/x86/svm_lbr_nested_state.c  |   6 +-
+ .../kvm/x86/svm_nested_clear_efer_svme.c      |   7 +-
+ .../kvm/x86/svm_nested_shutdown_test.c        |   5 +-
+ .../kvm/x86/svm_nested_soft_inject_test.c     |   6 +-
+ .../selftests/kvm/x86/svm_nested_vmcb12_gpa.c |  13 +-
+ .../kvm/x86/svm_pmu_host_guest_test.c         | 216 ++++++++++++++++++
+ .../selftests/kvm/x86/svm_vmcall_test.c       |   5 +-
+ .../kvm/x86/triple_fault_event_test.c         |   9 +-
+ .../selftests/kvm/x86/vmx_apic_access_test.c  |   5 +-
+ .../kvm/x86/vmx_apicv_updates_test.c          |   4 +-
+ .../kvm/x86/vmx_invalid_nested_guest_state.c  |   6 +-
+ .../kvm/x86/vmx_nested_la57_state_test.c      |   5 +-
+ .../kvm/x86/vmx_preemption_timer_test.c       |   5 +-
+ 50 files changed, 484 insertions(+), 235 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/x86/svm_pmu_host_guest_test.c
+
+
+base-commit: 85f871f6ba46f20d7fbc0b016b4db648c33220dd
+-- 
+2.54.0.545.g6539524ca2-goog
+
