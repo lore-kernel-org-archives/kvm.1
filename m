@@ -1,68 +1,331 @@
-Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A94F3E639B;
-	Thu, 30 Apr 2026 12:08:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 274B034B1A7;
+	Thu, 30 Apr 2026 12:23:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777550911; cv=none; b=PUalKMmHv+Us01L49uRkiv01spD/AwhIbOZCuYiVM2FO6LTtE238qzo/fAY3oeBufsFlohpkzShX52pmMgYWA4TxSDp1KHI0yZyik/0blgw/LpyDwuERe24WXEdYZ04eXULDEJakUyQP47FT79eDAwsbIq/ctj0xjMSkRwGfgpk=
+	t=1777551816; cv=none; b=oN+kxA9wUsAMPZ4DaO4KuGoFv15DnLX/DeJxGc7+obEELXEXYFklnvqHS8ShhWQWNfd945K67f47OMinuT7L1xxusLYHbskphUc64g0FyQ8u/h3+1RCzrd0+gW2ci6wtg+uRqeSpoNvnyXDkDNii+yYfbrbiG4l8cocK2kJt+Z4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777550911; c=relaxed/simple;
-	bh=oluNaMfMjMlDnbEbvhyZlQVRhDvgPAxeU1QvDeTib+o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Kcm9NPBnuhJKuN2WIGCnjn/XJBN7GX7EPVvC+rW6ov2mhPhXvofcS4kEZBYIpRfnID3oIhpCCB4N15oel7iBQppH9sFNxRS66b3Zn7D3faDYaV7SqCIPfepAdvn+3/WuFtrbE6pL1fRwLdj+Yi8i8yAoyaxo1yRhH1X1ddG7Knw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
-Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
-	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 10C5987606;
-	Thu, 30 Apr 2026 14:08:26 +0200 (CEST)
-Message-ID: <1a7c35d8-d7fe-4eec-ad83-da92780b62ce@proxmox.com>
-Date: Thu, 30 Apr 2026 14:08:25 +0200
+	s=arc-20240116; t=1777551816; c=relaxed/simple;
+	bh=AVgeA8sBc9eOp4iD/j14fMtAMEu72+Vkz0L7R4Cqg6g=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iAgBqvMAigOp7YmONHALTOO5udohrAH3iRKugn6dkz5jYrRd1cbXBV2EssndG2gzwq8FKPK1If8vXIaPZCi3tt5vvwjl8gd4DLQuwtQCZpTmg9WMUQnNjfGTLhQMy3EL6xtYNnFnsG8rU+k3t/OMMAWMJjKX4Jytd3zPL3f25Fo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mV0kEkwQ; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mV0kEkwQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A477C2BCB3;
+	Thu, 30 Apr 2026 12:23:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777551815;
+	bh=AVgeA8sBc9eOp4iD/j14fMtAMEu72+Vkz0L7R4Cqg6g=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=mV0kEkwQ0rPw+9zUmr5GT8+hrsdSA9tCIfGIOIRciTyfx+sN3O5epgqwp5Sg9/xKx
+	 dooTaJ7rFTlNRlFuV0tT8+xs+PP7UqE8WHXVul+fmDVXqsIUMHbjCXKx9AGZ94orpi
+	 RiCOVLZAZME6MIo6n9vrcPg56jAhS0Kmm7M4SetBCkbRfD6BLBHNlRrUMB0PlLte+G
+	 Er2XwmM4q1RsbTZpcL1lnqaXmn/FStt2eaQSKxNakfA7/BqVmRNqSOoV2HgRjME4js
+	 HitBiM1PMzxMlAaELaKqgda+odpRkM7xujUba3YmmDDLNJO8riRJGIiX5EXtNvgK3q
+	 ZZoepWksDJW/A==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wIQQW-0000000GGM6-3rQ7;
+	Thu, 30 Apr 2026 12:23:33 +0000
+Date: Thu, 30 Apr 2026 13:23:32 +0100
+Message-ID: <86cxzgzlff.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Sascha Bischoff <Sascha.Bischoff@arm.com>
+Cc: "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	nd <nd@arm.com>,
+	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+	Joey Gouly
+	<Joey.Gouly@arm.com>,
+	Suzuki Poulose <Suzuki.Poulose@arm.com>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+	"peter.maydell@linaro.org"
+	<peter.maydell@linaro.org>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	Timothy Hayes <Timothy.Hayes@arm.com>
+Subject: Re: [PATCH 16/43] KVM: arm64: gic-v5: Initialise and teardown VMTEs & doorbells
+In-Reply-To: <20260427160547.3129448-17-sascha.bischoff@arm.com>
+References: <20260427160547.3129448-1-sascha.bischoff@arm.com>
+	<20260427160547.3129448-17-sascha.bischoff@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/28] KVM: combined patchset for MBEC/GMET support
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, jon@nutanix.com
-References: <20260428110946.11466-1-pbonzini@redhat.com>
- <dbc9f517-bd57-4c1c-a638-c33bb83a1171@proxmox.com>
- <CABgObfaFeK4kJpMGuki2hQxnz2ij8Nyyk0egxEfW4b_OYf9hgg@mail.gmail.com>
-Content-Language: en-US
-From: David Riley <d.riley@proxmox.com>
-In-Reply-To: <CABgObfaFeK4kJpMGuki2hQxnz2ij8Nyyk0egxEfW4b_OYf9hgg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
-X-Bm-Transport-Timestamp: 1777550806435
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, nd@arm.com, oliver.upton@linux.dev, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, lpieralisi@kernel.org, Timothy.Hayes@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On 4/30/26 12:27 PM, Paolo Bonzini wrote:
-> On Wed, Apr 29, 2026 at 3:05 PM David Riley <d.riley@proxmox.com> wrote:
->> I observed the following:
->> The guest now never actually boots into Windows. It gets stuck before
->> that and therefore does not even enter Windows Recovery.
-> Last minute rebase screwup. The old code had:
->
->      vmcb02->control.misc_ctl = vmcb01->control.misc_ctl & SVM_MISC_ENABLE_NP;
->
-> New code has:
->
->      vmcb02->control.misc_ctl = vmcb01->control.misc_ctl & SVM_MISC_ENABLE_NP;
->
-> And now needs to pass down GMET as well.
+On Mon, 27 Apr 2026 17:11:30 +0100,
+Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
+> 
+> Each GICv5 VM requires a valid VM Table Entry (VMTE). The VM Table
+> itself is allocated during probe time, but a VM needs to provision a
+> VMTE before it is able to properly run (PPIs will work, but nothing
+> else will - and PPIs only are not useful!).
+> 
+> The correct time for setting up the VMTE is during VM
+> initialisation. For GICv5, this is vgic_v5_init(). Each VM needs a VM
+> ID - this is actually the index into the VM Table so it is how a
+> specific VMTE is selected too. As part of vgic_v5_init get a VM ID via
+> vgic_v5_allocate_vm_id(), which internally uses an IDA to select an
+> unused VM ID (and hence VMTE) within the range of allowed VM IDs.
+> 
+> Once the VM ID has been allocated, the doorbell domain for the VM is
+> allocated, and each of the doorbells itself is allocated and assigned
+> to a vcpu.
+> 
+> Assuming everything up until this point has succeeded, initialise the
+> VMTE. Internally this allocates the additional data structures
+> required by the hardware - the VM Descriptor, VPE Table, etc. This
+> VMTE is then made valid via the IRS's MMIO interface. Finally, all
+> VPEs are allocated within the VPET.
+> 
+> On teardown, this process is reversed again. The VMTE is made invalid,
+> the VPEs are freed, the doorbells are released and the domain torn
+> down, and finally the VM ID is released. The latter allows the VM ID
+> and VMTE to be reused for a future VM.
+> 
+> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+> ---
+>  arch/arm64/kvm/vgic/vgic-v5.c | 146 +++++++++++++++++++++++++++++-----
+>  1 file changed, 128 insertions(+), 18 deletions(-)
+> 
+> diff --git a/arch/arm64/kvm/vgic/vgic-v5.c b/arch/arm64/kvm/vgic/vgic-v5.c
+> index 2fc6fa4df034f..9347bc6895223 100644
+> --- a/arch/arm64/kvm/vgic/vgic-v5.c
+> +++ b/arch/arm64/kvm/vgic/vgic-v5.c
+> @@ -518,6 +518,18 @@ static int vgic_v5_irs_vpe_cr0_update(int vm_id, int vpe_id, u32 cr0)
+>  	return 0;
+>  }
+>  
+> +static irqreturn_t db_handler(int irq, void *data)
+> +{
+> +	struct kvm_vcpu *vcpu = data;
+> +
+> +	WRITE_ONCE(vcpu->arch.vgic_cpu.vgic_v5.gicv5_vpe.db_fired, true);
+> +
+> +	kvm_make_request(KVM_REQ_IRQ_PENDING, vcpu);
+> +	kvm_vcpu_kick(vcpu);
+> +
+> +	return IRQ_HANDLED;
+> +}
+> +
 
-Thanks for looking into it.
-I changed the line to:
+I think it'd make more sense if the doorbell
+handling/requesting/freeing was one patch, or at least a set of
+consecutive patches in the series.
 
-vmcb02->control.misc_ctl = vmcb01->control.misc_ctl & (SVM_MISC_ENABLE_NP | SVM_MISC_ENABLE_GMET);
+As it is now, it is very hard to keep track of things. You have part
+of it in the previous patch, the requesting and handling here, and
+probably the freeing in some other patch I haven't seen.
 
-and was able to start the Windows VM with VBS enabled.
+>  static int vgic_v5_send_command(struct kvm_vcpu *vcpu,
+>  				enum gicv5_vcpu_info_cmd_type type)
+>  {
+> @@ -726,26 +738,46 @@ void vgic_v5_reset(struct kvm_vcpu *vcpu)
+>  	}
+>  }
+>  
+> -int vgic_v5_init(struct kvm *kvm)
+> +int vgic_v5_map_resources(struct kvm *kvm)
+>  {
+> -	struct kvm_vcpu *vcpu;
+> -	unsigned long idx;
+> -	int ret;
+> +	if (!vgic_initialized(kvm))
+> +		return -EBUSY;
+>  
+> -	if (vgic_initialized(kvm))
+> -		return 0;
+> +	return 0;
+> +}
 
-> Paolo
+Pointless code movement?
+
 >
->
+> -	ret = vgic_v5_create_per_vm_domain(&kvm->arch.vgic.gicv5_vm);
+> -	if (ret)
+> -		return ret;
+> +/*
+> + * Claim and populate a VMTE (optionally making a new L2 VMT valid), create VPE
+> + * doorbells, allocate VPET and populate for each VPE. Finally, we also init the
+> + * vIRS, which means allocating and making the virtual SPI IST valid.
+> + *
+> + * Note: We do need to put the cart before the horse here. The VPE doorbells are
+> + * our conduit for communication with the IRS, which means we need to have those
+> + * before making the VMTE valid.
+> + *
+> + * On failure, we clean up in the teardown path (vgic_v5_teardown()).
+> + */
+> +int vgic_v5_init(struct kvm *kvm)
+> +{
+> +	int nr_vcpus, ret = 0;
+> +	struct kvm_vcpu *vcpu, *vcpu0;
+> +	unsigned long i;
+> +	struct irq_data *d;
+> +	unsigned int db_virq;
+> +
+> +	nr_vcpus = atomic_read(&kvm->online_vcpus);
+> +	if (nr_vcpus == 0)
+> +		return -ENODEV;
+>  
+> -	kvm_for_each_vcpu(idx, vcpu, kvm) {
+> +	kvm_for_each_vcpu(i, vcpu, kvm) {
+>  		if (vcpu_has_nv(vcpu)) {
+>  			kvm_err("Nested GICv5 VMs are currently unsupported\n");
+>  			return -EINVAL;
+>  		}
+>  	}
+>  
+> +	kvm->arch.vgic.gicv5_vm.nr_vpes = nr_vcpus;
 
+Why do we need to track the number of vcpus separately from what KVM
+already does? GICv4 does it because a lot of the state is managed by
+the irqchip driver, but that's not the case here. I hope we can come
+up with a slightly simpler model with GICv5.
+
+> +
+>  	/* We only allow userspace to drive the SW_PPI, if it is implemented. */
+>  	bitmap_zero(kvm->arch.vgic.gicv5_vm.userspace_ppis,
+>  		    VGIC_V5_NR_PRIVATE_IRQS);
+> @@ -754,20 +786,98 @@ int vgic_v5_init(struct kvm *kvm)
+>  		   kvm->arch.vgic.gicv5_vm.userspace_ppis,
+>  		   ppi_caps.impl_ppi_mask, VGIC_V5_NR_PRIVATE_IRQS);
+>  
+> -	return 0;
+> +	ret = vgic_v5_allocate_vm_id(kvm);
+> +	if (ret) {
+> +		kvm_err("Maximum number of GICv5 VMs reached!\n");
+> +		return ret;
+> +	}
+
+I'd rather we don't scream on the console when running out of
+VMIDs. If we're at capacity, so be it. That's not an error worth
+spamming the console over.
+
+> +
+> +	ret = vgic_v5_create_per_vm_domain(&kvm->arch.vgic.gicv5_vm);
+> +	if (ret)
+> +		return ret;
+
+Who is freeing the VMID?
+
+> +
+> +	/*
+> +	 * Allocate VPE doorbells first - these are our conduit for
+> +	 * communicating with the host irqchip driver.
+> +	 */
+> +	db_virq = irq_domain_alloc_irqs(kvm->arch.vgic.gicv5_vm.domain,
+> +					nr_vcpus, NUMA_NO_NODE,
+> +					&kvm->arch.vgic.gicv5_vm);
+> +	if (db_virq < 0) {
+> +		/* Simplify teardown by doing this early! */
+> +		vgic_v5_teardown_per_vm_domain(&kvm->arch.vgic.gicv5_vm);
+> +		return db_virq;
+> +	}
+> +
+> +	kvm->arch.vgic.gicv5_vm.vpe_db_base = db_virq;
+> +
+> +	kvm_for_each_vcpu(i, vcpu, kvm) {
+> +		d = irq_domain_get_irq_data(kvm->arch.vgic.gicv5_vm.domain,
+> +					    db_virq + i);
+> +		irq_set_status_flags(db_virq + i, IRQ_NOAUTOEN);
+> +
+> +		ret = request_irq(db_virq + i, db_handler, 0, "vcpu", vcpu);
+> +		if (ret)
+> +			return ret;
+> +
+> +		/* Stash it with the VCPU for easy retrieval */
+> +		vcpu->arch.vgic_cpu.vgic_v5.gicv5_vpe.db = db_virq + i;
+> +	}
+> +
+> +	/* Populate VMTE (with VPET and VM descriptor) */
+> +	ret = vgic_v5_vmte_init(kvm);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* We pick the first vcpu to make the VMTE valid - any would do */
+> +	vcpu0 = kvm_get_vcpu(kvm, 0);
+> +	ret = vgic_v5_send_command(vcpu0, VMTE_MAKE_VALID);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/* Loop over all VPEs, allocate/populate their data structures */
+> +	kvm_for_each_vcpu(i, vcpu, kvm) {
+> +		ret = vgic_v5_vmte_alloc_vpe(vcpu);
+> +		if (ret)
+> +			return ret;
+> +	}
+> +
+> +	return ret;
+
+I'm very worried about the error handling of that function. Who is
+responsible for cleaning up the mess when this fails?
+
+>  }
+>  
+>  void vgic_v5_teardown(struct kvm *kvm)
+>  {
+> -	vgic_v5_teardown_per_vm_domain(&kvm->arch.vgic.gicv5_vm);
+> -}
+> +	struct kvm_vcpu *vcpu, *vcpu0;
+> +	struct vgic_dist *dist = &kvm->arch.vgic;
+> +	unsigned long i;
+> +	int rc;
+>  
+> -int vgic_v5_map_resources(struct kvm *kvm)
+> -{
+> -	if (!vgic_initialized(kvm))
+> -		return -EBUSY;
+> +	/*
+> +	 * If the VM's ID isn't valid, then we failed init very early. Nothing
+> +	 * to do here.
+> +	 */
+> +	if (!kvm->arch.vgic.gicv5_vm.vm_id_valid)
+> +		return;
+>  
+> -	return 0;
+> +	if (kvm->arch.vgic.gicv5_vm.vmte_allocated) {
+> +		/* Make the VM invalid  */
+> +		vcpu0 = kvm_get_vcpu(kvm, 0);
+> +		rc = vgic_v5_send_command(vcpu0, VMTE_MAKE_INVALID);
+> +		if (rc)
+> +			kvm_err("could not make VMTE invalid\n");
+> +
+> +		kvm_for_each_vcpu(i, vcpu, kvm) {
+> +			if (vgic_v5_vmte_free_vpe(vcpu))
+> +				kvm_err("Failed to free VPE\n");
+> +		}
+> +
+> +		if (vgic_v5_vmte_release(kvm))
+> +			kvm_err("Failed to release VM 0x%x\n", dist->gicv5_vm.vm_id);
+> +	}
+> +
+> +	vgic_v5_teardown_per_vm_domain(&kvm->arch.vgic.gicv5_vm);
+> +
+> +	vgic_v5_release_vm_id(kvm);
+>  }
+>  
+>  int vgic_v5_finalize_ppi_state(struct kvm *kvm)
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
