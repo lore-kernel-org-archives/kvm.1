@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED8CE3750D5;
-	Thu, 30 Apr 2026 20:06:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C73A638A70C;
+	Thu, 30 Apr 2026 20:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777579601; cv=none; b=XxO5Emoy8ZhJvIvmOZAv8Omnr7bibyG+VOni4j6D7eeqq9QrwBv22QnOmlDvlAOKYPIPEuUL+mX3rnjq7yhLFuTTFFaCFV5E3+DPGj/0cuBHyd3vlcvgJZDz7C/2AnNEYmfBhElQDQtTA+XtI2MerMwL5RozQAybyE3AX94bMK8=
+	t=1777579772; cv=none; b=iMWoP9MQzyoERZlAYQhYETxNB0Fw5GH50EeHg6736QOXcvuk+FKvrcP9Q2wvVH2U9wwKr47ct7qsQ2m7SDojOP5lQVOOK9373vB1Q771qBTf9DDaDotKupBcjbJtdjQx3ZzKuoqpsBU8Z6yi10vf5JaPeeaRaXsIa6d5QiKe1NM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777579601; c=relaxed/simple;
-	bh=zW6ilyPstN2ic5OBfRy/434YzbeY0IjouFZUfbRCXw4=;
+	s=arc-20240116; t=1777579772; c=relaxed/simple;
+	bh=M1URPv9e+IZXV+h3oEKlscKswcZPg5WgSb7wsfeDOFQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uTeRLizXr/vej3v3S/EtOH0oM5RU8o8AN2+CImReQKr3nilz4ewPbKS0MhjtFNEnULhL4XJd24aQBnniszae7FpcUjnFHbw11LfnMbvKQCKNoHJLcY/yrz109m+S8ozAdX4wYhklERhvnlVEsTtXgwG9l7EPAQoBvnQhc16Ho5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fs1z9S/d; arc=none smtp.client-ip=198.175.65.15
+	 In-Reply-To:Content-Type; b=Lln3JTRlENSL6qAGOeAwll20/Pv6B9KfIwSOVWZuRwp+4DiBgR9+/gxek2dxjVO0oPA+ze486C6GMuF4x2gmIqxQTSVq4xcayMm5F3Q2DhOfVlyNAwCa8DbJUHsPF9likfbQGy7NzJujKi92emMBcg5L4kmJKcsoJf7HrPCxe2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JofVPE92; arc=none smtp.client-ip=198.175.65.15
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fs1z9S/d"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JofVPE92"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1777579600; x=1809115600;
+  t=1777579771; x=1809115771;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=zW6ilyPstN2ic5OBfRy/434YzbeY0IjouFZUfbRCXw4=;
-  b=fs1z9S/dhnm/7Dijc9gNGbRt5eGMOBRNG2YHxQeH0AiTDWZNgSHEt5sU
-   pLI6TnMJ/JgZx93k1FYENjK04pnELB+NyAtz5M90KgRd2QHBtkOFdlJOR
-   wJj/eRKdJhvkVcKjwMmCrodUpD5DFpGeHyk2LCmC0jwJBcCHTvrp0oX3J
-   9sbl9OtrwuQprzQX68+hJgr+ozWsv0eCSMuFNIv+EYu78ZMIvR+fT3YRr
-   xEo4RQWp5dal1diMhlXrUbCvY/P2BQMQr78oFz5u7X1jPZBrSXdXhuc3x
-   +ZryYfzzJWZLsfvJxDt5J3/e63ohxJq2HFntPAWxYqLHlcFgDbScRpFQF
+  bh=M1URPv9e+IZXV+h3oEKlscKswcZPg5WgSb7wsfeDOFQ=;
+  b=JofVPE92zMS4Y/iPHqBj+kmYV4ofmV3JP7+NPKrCY9++wPUJRDjVR8cs
+   rV6gQT7+yjJDEkIb2/uhpuiGwmpYdeI6jZxUth4HmrU9HV+rShGj79fwS
+   uUZpUxiy7uZA4iFm+zPrsj5DLLAlEl6TaOHBzbXAPD2jiIoPThCJM19fs
+   1BXtJWAH0tY2VC025Y2W6bbxIvla26rpNVCYyWP1u1kkWMIi7NNKuIfhh
+   UWQbcnlg3+zlMvZdhsb60x3+vY1HnRmI1+S/CEqoGBjAhXEFy0lASEaGN
+   Ak1tRfUqHwpNiN6h5KCBiP8wK//SY6rEZ35uxXEFJm6rawGdBCaMpTMEM
    w==;
-X-CSE-ConnectionGUID: R6nYtAgcSYGz+a6UNf80uQ==
-X-CSE-MsgGUID: O+anzHthQqKqtG02xr33bg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="82149295"
+X-CSE-ConnectionGUID: jKcTCHx3RLq+V5qJbEWI5g==
+X-CSE-MsgGUID: 8XpAYKECSMaC73B8CPi4hQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11772"; a="82149691"
 X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="82149295"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 13:06:39 -0700
-X-CSE-ConnectionGUID: 51gswkZGRaS+/3NAh6WV8w==
-X-CSE-MsgGUID: XNkPAHNIRSiWz+4D2EzI6g==
+   d="scan'208";a="82149691"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 13:09:30 -0700
+X-CSE-ConnectionGUID: SNEz8PeATAK1O7MuGM1Hfg==
+X-CSE-MsgGUID: 0Uhm1u2sQDSf1UzQl4dYBQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,208,1770624000"; 
-   d="scan'208";a="232026114"
+   d="scan'208";a="239006982"
 Received: from cjhill-mobl.amr.corp.intel.com (HELO [10.125.109.74]) ([10.125.109.74])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 13:06:37 -0700
-Message-ID: <fc27ad0e-fceb-4eed-bb1c-dbfb5b913bf6@intel.com>
-Date: Thu, 30 Apr 2026 13:06:38 -0700
+  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 30 Apr 2026 13:09:29 -0700
+Message-ID: <abd48a30-8d51-4a86-b662-b09afb567dc5@intel.com>
+Date: Thu, 30 Apr 2026 13:09:30 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,7 +52,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 17/21] x86/virt/seamldr: Abort updates on failure
+Subject: Re: [PATCH v8 18/21] coco/tdx-host: Don't expose P-SEAMLDR features
+ on CPUs with erratum
 To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, x86@kernel.org
 Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
@@ -65,7 +66,7 @@ Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
  "H. Peter Anvin" <hpa@zytor.com>
 References: <20260427152854.101171-1-chao.gao@intel.com>
- <20260427152854.101171-18-chao.gao@intel.com>
+ <20260427152854.101171-19-chao.gao@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -111,101 +112,30 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260427152854.101171-18-chao.gao@intel.com>
+In-Reply-To: <20260427152854.101171-19-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-I don't like how this is being done.
+On 4/27/26 08:28, Chao Gao wrote:
+> Some TDX-capable CPUs have an erratum, as documented in Intel® Trust
+> Domain CPU Architectural Extensions (May 2021 edition) Chapter 2.3:
+> 
+>   SEAMRET from the P-SEAMLDR clears the current VMCS structure pointed
+>   to by the current-VMCS pointer. A VMM that invokes the P-SEAMLDR using
+>   SEAMCALL must reload the current-VMCS, if required, using the VMPTRLD
+>   instruction.
+> 
+> Clearing the current VMCS behind KVM's back will break KVM.
+> 
+> This erratum is not present when IA32_VMX_BASIC[60] is set. Add a CPU
+> bug bit for this erratum and refuse to expose P-SEAMLDR features (e.g.,
+> TDX module updates) on affected CPUs.
 
- 1. Introduce this do{}while() loop
- 2. Do 20 other patches
- 3. Introduce a thing that can make it change
- 4. Change the fundamental flow of the loop, to fix #3
+This seems totally random.
 
-I'd much rather have:
+Shouldn't this be way back when can_expose_seamldr() got defined in the
+first place?
+> +#define X86_BUG_SEAMRET_INVD_VMCS	X86_BUG( 1*32+11) /* "seamret_invd_vmcs" SEAMRET from P-SEAMLDR clears the current VMCS */
 
- 1. Introduce this do{}while() loop
- 2. Tweak fundamental flow of the loop from the last patch when I can
-    remember it. Allude to future failures.
- 3. Do 20 other patches
- 4. Introduce a thing that uses #2
+I find myself wondering if this is worth a bug bit.
 
-
-> diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-> index c81b26c4bac1..9b8f571eb03f 100644
-> --- a/arch/x86/virt/vmx/tdx/seamldr.c
-> +++ b/arch/x86/virt/vmx/tdx/seamldr.c
-> @@ -220,6 +220,7 @@ enum module_update_state {
->  static struct {
->  	enum module_update_state state;
->  	int thread_ack;
-> +	bool failed;
->  	/*
->  	 * Protect update_data. Raw spinlock as it will be acquired from
->  	 * interrupt-disabled contexts.
-> @@ -284,12 +285,15 @@ static int do_seamldr_install_module(void *seamldr_params)
->  				break;
->  			}
->  
-> -			ack_state();
-> +			if (ret)
-> +				WRITE_ONCE(update_data.failed, true);
-> +			else
-> +				ack_state();
->  		} else {
->  			touch_nmi_watchdog();
->  			rcu_momentary_eqs();
->  		}
-
-I don't like how this is turning out either. I don't like all the nested
-conditions or ack_state() that hides its mucking with update data while
-its caller mucks with it directly. It's just all hacked together.
-
-Defer all of the acking, and *failed* acking to the ack_state() helper.
-
-Also, I'm kinda peeved that you copied and pasted the  		
-touch_nmi_watchdog()/rcu_momentary_eqs() bits and none of the comments.
-This is a rather subtle use of both. If you want this to be a normal
-"spinning in stop machine" idiom, then create a helper and put the
-comments there.
-
-Also, this is a case where:
-
-	do {
-		cpu_relax();
-		newstate = READ_ONCE(update_data.state);
-
-		if (newstate == curstate) {
-			// can cpu_relax() just go in here??
-			touch_nmi_watchdog();
-			rcu_momentary_eqs();
-			continue;
-		}
-	
-		switch() {
-			// state changing here
-		}
-	} while (...);
-
-is a much more sane setup. You're not paying the if() indentation cost
-for the entire state transition block. You're also putting the "shut up
-the warnings" code out of the way where you can forget about it.
-
-
-> -	} while (curstate != MODULE_UPDATE_DONE);
-> +	} while (curstate != MODULE_UPDATE_DONE && !READ_ONCE(update_data.failed));
->  
->  	return ret;
->  }
-> @@ -315,6 +319,7 @@ int seamldr_install_module(const u8 *data, u32 size)
->  
->  	/* Ensure a stable set of online CPUs for the update process. */
->  	guard(cpus_read_lock)();
-> +	WRITE_ONCE(update_data.failed, false);
->  	set_target_state(MODULE_UPDATE_START + 1);
->  	ret = stop_machine_cpuslocked(do_seamldr_install_module, params, cpu_online_mask);
->  	if (ret)
-I kinda wish this 'update_data.failed' set was named. This is trying to
-bring 'update_data' into some initial state. Let's _call_ it that.
-Honestly, I wouldn't hate if that function just also did the spinlock
-init since it's so ugly do to statically.
