@@ -1,98 +1,119 @@
-Received: from out-185.mta0.migadu.com (out-185.mta0.migadu.com [91.218.175.185])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA7EC382F2A
-	for <kvm@vger.kernel.org>; Fri,  1 May 2026 09:51:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.185
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 544643876A7;
+	Fri,  1 May 2026 10:41:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777629082; cv=none; b=hzr2TfusjrqrXYbKQy+5pgsoHlwHatzMQZh/wkpSF9QQIPSRrVewUF86II+cSwvRCNSyP3KVatQPpb6kkPvg4pbKy0wB68gQgdNoAZu+SwSH5wBzphdoCLsJNVpuNSiq1IOqH0L6ry8wnqxljBjt9qkaZhPltJZa6bUgSj13kFs=
+	t=1777632099; cv=none; b=auqWdufsJnFL6f9sN8oWVWp4FX/o4C4704UZCLTJsHp+3zK+Zr0DwFHsCKL9llBWMYHBFf1TqmHmQ87kmJjnbFVraHqwuuSTbShMyGwR4EoIcOswfEJoi8j1f4abejYDiA498SsmLuSk791f4Epu4LJehznGFqp/5crphyr6ug4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777629082; c=relaxed/simple;
-	bh=iK/inTQXXe2W33q+2ejIJxYil1ZGxCcgNGcNTjVfVqE=;
-	h=MIME-Version:Date:Content-Type:From:Message-ID:Subject:To:Cc:
-	 In-Reply-To:References; b=XTa5qP7IkZGu1qQY/wdxvPkkmntBrWYvfJWTyIAWv6FrNOVZkbbmXwBBCGta/Nd+2dkDTiCpLPoFBV6qNzn2HLqrCLBTX5e0YZOVptDhkbLpuk5ObJNbRREtuHE81eFmlDbosvbSur8kcsWH0g7YzdMeQpl/1L8U26FT+7doGJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=ZtfcCaLa; arc=none smtp.client-ip=91.218.175.185
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+	s=arc-20240116; t=1777632099; c=relaxed/simple;
+	bh=zG0cdIpqGrSUk2e0Yn+pCtQM9mDMXSK9RTMePPjgQUY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jTN7yyNq7GKOMMrqY3umF+i9tcA0PmVEe9ofM7uTj5DODLXQAeNFTVy7BDCl5tHEpcoqnwGlaZIdZDHl4GgpsBtO6SHxVSFdApqLJSjPQGUG80jiV4ohc3Pw5fBHagn/ye1q0L+mSG9rrxJQEQKKnxnfrkWTwEECY1vy44AQJno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fnB+pKBT; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="ZtfcCaLa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fnB+pKBT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76D2BC2BCB4;
+	Fri,  1 May 2026 10:41:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777632099;
+	bh=zG0cdIpqGrSUk2e0Yn+pCtQM9mDMXSK9RTMePPjgQUY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fnB+pKBTokhVGJuDJN9IgXLZgBgg09jlvv+bsR8hb6uaLf76tr1KzLGxF+/GCSjer
+	 2D29vaBf9nQwROhDNX09xqsVTwnY38mZWOBahE6sDiR1q1InE2UBpe/bJ0qI8QrWUi
+	 41KOmOihS6O8kPOKwaDpPLDgE9fGMbPVIHg6C9MxxkiGD9PsWJEL9Mynz66m10hsli
+	 Da9EFM9UpZt99E+QDYiGt+TI2FDKwEOt+O4By6AqpRzfafAxV3jo16bjoH+4keL715
+	 1R3PEuepwz08c5hRNIkpZ1jo/FALM44qjuIK6cvqKUcfciKbO3xD9zUa9VoWdPcK0O
+	 MgrWMIx1lrlqQ==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 7C44BF40068;
+	Fri,  1 May 2026 06:41:37 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Fri, 01 May 2026 06:41:37 -0400
+X-ME-Sender: <xms:YYP0aZN06RmVqMUSnMjk7NRoE7xJNkvoT7DHftyfyVzRQ5vc7zcfVA>
+    <xme:YYP0aZk_XNWfWQrpYD8zDV4kSMkoFuykiICxx3sdSflnWtTyGL9dCF4becjLPW69h
+    g3ot1Z0qmhp8T0w1d4S0G5oxfzqD7ixkSXaFDDmS1Z0tbPSO0ZAdjs>
+X-ME-Received: <xmr:YYP0ad1P7V8V5tSdLF7sI6CDaKilTeyvZidMwGpgYy-DrwFh2zPHB-Ju9b9bdw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdekleellecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuffkfhggtggujgesthdtredttd
+    dtvdenucfhrhhomhepmfhirhihlhcuufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgv
+    lhdrohhrgheqnecuggftrfgrthhtvghrnhepgeetuedtjefhkeeuiefgudduvdfgvdeiue
+    eigeehheehudetuedtkeelhfeihedunecuffhomhgrihhnpehsrghshhhikhhordguvghv
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepgeeipdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoh
+    eprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehpvghtvghrgiesrhgvughh
+    rghtrdgtohhmpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpth
+    htoheplhhjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhurhgvnhgssehgohho
+    ghhlvgdrtghomhdprhgtphhtthhopehvsggrsghkrgeskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthho
+    peiiihihsehnvhhiughirgdrtghomh
+X-ME-Proxy: <xmx:YYP0aZWiZApYblD-N6cQEHz6QtqrsEqvEOw2unL5khPHcR3R_53ctQ>
+    <xmx:YYP0aQhnkxK9GE-6qcefPj6VSn2jPsN6XkBEDVzgR1KvO6IY3-Lctw>
+    <xmx:YYP0aagqewTE3OQZ9zFGq1-wp4dXwGODRGx6helK13TyuhnSYzuPew>
+    <xmx:YYP0aQuovEgr2tAjxRgxYFOgURqX6Gnvhm80YLa-0SD51FJpInh4fQ>
+    <xmx:YYP0aTSByjDZzE51VF-0XGGywziZbAzVBNk7pTuSOdNzpDuXYM2Gxc5j>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 1 May 2026 06:41:35 -0400 (EDT)
+Date: Fri, 1 May 2026 11:41:30 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
+	david@kernel.org
+Cc: ljs@kernel.org, surenb@google.com, vbabka@kernel.org, 
+	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, 
+	sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kvm@vger.kernel.org, kernel-team@meta.com
+Subject: Re: [PATCH 10/14] mm/pagemap: add PAGE_IS_ACCESSED for RWP tracking
+Message-ID: <afSC1NHWzrtA-vmA@thinkstation>
+References: <20260427114607.4068647-1-kas@kernel.org>
+ <20260427114607.4068647-11-kas@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1777629067;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=KXdFBx8l3tGZes4ujoaocRj3EKhi8wM6pgwvAxaoGBA=;
-	b=ZtfcCaLazBolB4/VlQ0LaPzoKu4Ng703NTgA/qwXY4I9AkgFiMOnWok7yaN/V6hCT9PVcL
-	LVveJlxCP8Ts2wTfD5kL7fqk8XtnUYrQGURP2rNEBCPwYCOeg88JXXWrmd5YN0WOtM/0wD
-	8nsmz2nwggH+JScFjPlRrrQ9/Wbrjbg=
-Date: Fri, 01 May 2026 09:51:04 +0000
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: "Kunwu Chan" <kunwu.chan@linux.dev>
-Message-ID: <a66e8fbcc197cd25b234d946f818f97d6b76bab8@linux.dev>
-TLS-Required: No
-Subject: Re: [RFC PATCH 0/3] srcu: KVM: Add, export and use
- call_srcu_expedited()
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: "Lai Jiangshan" <jiangshanlai@gmail.com>, "Paul E. McKenney"
- <paulmck@kernel.org>, "Josh Triplett" <josh@joshtriplett.org>, "Paolo
- Bonzini" <pbonzini@redhat.com>, rcu@vger.kernel.org, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, "Nikita Kalyazin" <kalyazin@amazon.com>,
- "Keir Fraser" <keirf@google.com>
-In-Reply-To: <abSZyLff5y-IQ0Ix@google.com>
-References: <20260309193059.2244645-1-seanjc@google.com>
- <067c53cc-b015-43c6-9ba3-c734eff17819@linux.dev>
- <abSZyLff5y-IQ0Ix@google.com>
-X-Migadu-Flow: FLOW_OUT
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260427114607.4068647-11-kas@kernel.org>
 
-[...]
-> I'm all for a general solution, but that's far, far beyond my SRCU know=
-ledge level.
-> I was quite proud of myself for piecing together the incurred-delay. :-=
-)
->=20
->=20FYI, I'm going to be unavailable for ~2 weeks. Nikita (Cc'd) can like=
-ly help test
-> potential fixes.
->=20
-Hi=20Sean, hi Nikita,
+sashiko.dev -- https://sashiko.dev/#/patchset/20260427114607.4068647-1-kas@kernel.org -- wrote:
+> commit 6d6b8f986b2959f8ae0932deccc5afa4ec485813
+> Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Subject: mm/pagemap: add PAGE_IS_ACCESSED for RWP tracking
+[ ... ]
+> Does this new PAGE_IS_ACCESSED tracking correctly support the atomic
+> read-and-reset workflow (PM_SCAN_WP_MATCHING) for RWP VMAs?
+[ ... ]
+> Since WP and RWP are mutually exclusive per VMA, userfaultfd_wp_async() and
+> userfaultfd_wp_use_markers() will return false for RWP VMAs, causing
+> pagemap_scan_test_walk() to return 1 and skip the VMA.
+[ ... ]
+> Because these loops hardcode a check against PAGE_IS_WRITTEN, and RWP VMAs
+> now populate PAGE_IS_ACCESSED instead, this check will always evaluate to
+> true for RWP. As a result, it looks like make_uffd_wp_pte() and
+> make_uffd_wp_pmd() will be silently skipped, preventing the atomic
+> reset of the tracking bits.
+> Would it make sense to update both the wp_allowed check and the hardcoded
+> PAGE_IS_WRITTEN checks to accommodate PAGE_IS_ACCESSED for RWP VMAs?
 
-Some data points on the RFC scenario.
+PM_SCAN_WP_MATCHING is the atomic read-and-reset flavour and is
+implemented for the WP marker only.
 
-The setup follows the pattern discussed in the RFC:
-a call_srcu()-like path that can start a non-expedited GP,
-followed by a synchronize_srcu_expedited()-like wait on
-the same SRCU instance.
+The silent-skip on PM_SCAN_WP_MATCHING + RWP VMA is not intended
+Will fold this fixup
 
-KVM selftest setup, BPF tracing.Single VM, single vCPU.
-Guest holds a long measured window (~8s, fixed in selftest).
+        if (userfaultfd_rwp(vma) && (p->arg.flags & PM_SCAN_WP_MATCHING))
+                return -EINVAL;
 
-Baseline:
-  In 5 recent 10-run batches, the no-preemption case produced
-  a single >1ms sample in total.
+We can add similar operation for RWP later if there's a use-case.
 
-With same-CPU preemption:
-  >1ms reproduces consistently and shows up in most runs.
-
-For >1ms samples, sched_switch/off-CPU attribution lines up
-with switch-out in the same measured window.
-
-In this setup, >1ms is mostly off-CPU time,not continuous in-CPU executio=
-n.
-
-Question on the original report:
-when synchronize_srcu_expedited() delay was observed,
-was the host mostly idle/bursty, or under steady load?
-
-Can share repro details if needed.
-
-Thanks,
-Kunwu Chan
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
