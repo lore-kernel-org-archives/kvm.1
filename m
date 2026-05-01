@@ -1,144 +1,331 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C8413B584
-	for <kvm@vger.kernel.org>; Fri,  1 May 2026 03:59:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD71325495
+	for <kvm@vger.kernel.org>; Fri,  1 May 2026 07:39:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.173
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777607990; cv=pass; b=W14+mngrSIVczCU+ROCW1gPVqGVK1xmosl6VlWd62QHT1YsKSAkV6UVuYKlNYEIOmu8jsyxXkGSj3CClOZNyiIWsuKY7Zk34r1ofAHotEW4qjQLrG1VNJp+8aa6rcHozX2zuj9ye6ZnwQvMaTMVv8iqjME7pmbi/s3warepqXfo=
+	t=1777621185; cv=pass; b=Sa9ojrBijGWTx0AL8k0L3FFyPQbnViP5Ephhd27kfYwiMAjHWr4pAc2NiRWpA2Io2kHD+4i/nvtXjtvWIvbREpwJLvGUIWIoN3zRbtMX5xNHBnj9Z+XhYWBfOqmsROFUzXSl0N8ytfFli2kMbzv+hc5py4u+H4FF3QFUAVaVivg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777607990; c=relaxed/simple;
-	bh=SB0Np+gOIxrgCBJ144s8IzsBKMOFqrvc0XMD/QdFvxM=;
+	s=arc-20240116; t=1777621185; c=relaxed/simple;
+	bh=TbLaoWYohHPqj/XG/w1dzsXdf6YqFfSZc9edl1STeRg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VC803FvIZ2mHHIeQyjWrkQCiNfS+SgDDs0/GTgws0hb4iQCs3Bv6t6qrwG0tDjqZq03JI1um7gEotCZnYyPq7k+6eLbMVYjfCOTaH72LQZvyMeJ4S1ysqt9HvvMuL1gdK2XSwFf592X7UZXGcw/ckVIh11c6kfR4vhXdwuYwwgY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AUtADle7; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=DeuE+nJe; arc=pass smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 To:Cc:Content-Type; b=hqDIG+/3WkunAIYGD7D57D2CHPdNw/eXF1rRe+yVxppW3ihU+SdzYYAt6aGBWBOlPfDp+TJAMjygeF//vZ+s7w77GGFTxS3ieVP7Cx+iQfZCozoon2xpXS5EgXajgl7HW4Jagmop70JNwpC12x6oGK83elCAbkP6F5/Vu9deXnI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GEJ5aEQO; arc=pass smtp.client-ip=209.85.208.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AUtADle7";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="DeuE+nJe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777607988;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=RCL8DA3zB5MjNcRvLVRvgoYpbXn0RP/jEQuf7w+5rHg=;
-	b=AUtADle7SHfgUJ8px/CtxHLj2NGX7zJ3QGJ7u0J2uU0gbfkaSHxTWtiJ1gjCbI2ANBsXGj
-	XnOjpu9qNLT7yS60TY3fUYNPNiTuJBNRXy6877FAGh8dYtpNQ7Tu32g/86zVXZZbNNwjde
-	6b+AWKEgluolnz8BphFwFQMYuAEatpk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-636-rPgZzeEwPEOTlvHoOmuqAQ-1; Thu, 30 Apr 2026 23:59:46 -0400
-X-MC-Unique: rPgZzeEwPEOTlvHoOmuqAQ-1
-X-Mimecast-MFC-AGG-ID: rPgZzeEwPEOTlvHoOmuqAQ_1777607985
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-48a5952c635so15085265e9.2
-        for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 20:59:46 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777607985; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GEJ5aEQO"
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-38e7c3a2deaso16027051fa.2
+        for <kvm@vger.kernel.org>; Fri, 01 May 2026 00:39:43 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777621182; cv=none;
         d=google.com; s=arc-20240605;
-        b=TYhbSMzyos0I7v8+Ghk72XsH/uWE3bldsFyKIxduKGvGhTLv9/mha8xiFxn1RXxu2T
-         XR3XjSlJcXdr8k8y5jKwxfp8NXafgvUpQ+sq1zAwsGHv8xFuWhnJkGS5uAI/BhUy+PoK
-         WRpCFjc/pc6Iv9MfukVDnd+zkbgU5hVh4Sxe9GpuiO95DOzmGm798DhHFzNNFipZ+6fI
-         qCgvb49xDdvYR1YLHoM2K8Zaz9y4302egCZNl/qTozbf56QFWvtotKz/MxGMKlub8Ztb
-         ICOOFzFp2IU6QjRSkF1th6BHEVJlcWda9iV4+4ZJ1qACsi5eG/oCxWgXf6VG/YwemOiS
-         WGbA==
+        b=EI/BNDPG0CI9LXAMs4Y+skWAeJjJey1U6XlLW3jLbYNCJ8eBBaVRfD8eT6++N7SGdU
+         c3CBRiwMhP7ZX/tqvV5M3QrXg9Cd00ioyjwDLRRyy1hZQ9+ZrALte7/xpa3Kf0nOhFUG
+         6wOtuBFIugzjp+LkKDlK5XF8OHhXR2v/iDy2kDBpZsSQo3DSs1++OaTsvEH58cfrCu1W
+         QzRESLajiV+7Y6/3UkPh1Lze6xSLdvoOzQJjbLq2eMNYmIBrel2LM3b9FVbEfiWCJqQZ
+         A3WDSNvO+8KA3XF0imnm+EMb3389x5NpUquWgThARBS7lqjBhIwjvcGnpqFoT4DAlol5
+         uMQw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RCL8DA3zB5MjNcRvLVRvgoYpbXn0RP/jEQuf7w+5rHg=;
-        fh=jwYEKFWP5EM1py4jlRM+1/JF+NregRiOH8X7DwPHEH8=;
-        b=SOolfZxkdvJctRM8OibRF5aYoUJeZ7R16kxHOzW97glvjBWQc1aJLKBlYJeDYFD/Z8
-         x/+m58MsWZemMsWlbmW4zYXGIAMbUnWjfuVv1x3s4IhrYreZm+ghG/iyLtuut42nFNCZ
-         89huJyq9+dN4Du91HN4zmgLNIElJclU/O63Cnq0qQZzA95k5dMyTEXjw/+ebt/UtDRou
-         WSDhgHrMnXBlVUzIPOXHRlH4dImbivk8hNNVd53LE7YI4zH4yY2G4qqRQ4K/cJZwRdao
-         pHXgOrAPhdVa1sJ/WHZT4yRNoZtPszmddUXms6u8mSskd2oBgXQRvnm+Uv3NF62JW4L2
-         NCPQ==;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=N5yIG/VNV+70xFszkANHVR8rh10LtJp9VdT7AZQOrpQ=;
+        fh=ZDP2KRwZmAMKlsxEclPQe79EVg6Ypnpe+XA6lSM7pig=;
+        b=XTeOzPUFvFFMKaTVwQmQyTqI3BqqbxY1yED1aBBxQheCVoWteDzCrXuICYkhBwhZMj
+         XvcH88u8LtzdigsrtZq1Rg052N7DK8vzzR0oAefnCeZtr/dRJkhuElxuWCPampREDOF7
+         DqTYKutFCaUZZPx9ABseuq/x7/ZHcgy1Yt1i5nNSunWIwF1czenlLh4j/9N0+V8XhM5e
+         KAVX4S4GXAHKUezYiRUrMbeyNIXHXJ60tL3CO3lbOitJ3QgJOI5IJh92rzx9418gPKKm
+         2eYOiPgYTq8dGMK7oks/Qn4ohaFrQJBlJ3D45B9oePfOGFZ/igqK5roRPnKTJzD4KRxe
+         Ze8A==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1777607985; x=1778212785; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RCL8DA3zB5MjNcRvLVRvgoYpbXn0RP/jEQuf7w+5rHg=;
-        b=DeuE+nJe+8rfH7ZatNtFkm6n0V7Hye/fjJnf8+jbYTgnnw30LLCy7lncYfIs1RMFsY
-         +679zEUD3qeNg4dzy8Vx9o2iaSFEoNptz8nx9pFu3IaagbP5t5dw3i8j5hnpn+zTPuuH
-         TV53ryCnYbqxEHirQYGZ6faadqte4gbxe5AIcb3Q3FE3DIJ7XeEEmRiIqnQM8wAl9N+o
-         b65zgTiva3CUIJuZGpRK4l1mNDubYLEwipD0/dbQxSIz6kscQJgOP5xHXlTa5qDGdb5N
-         MT7eJoQzrFCVE9Ue8uZRUdR33WYuqktPgJjBCIsvjneR3d3sFoJNKNIEq4r0WkZH6eBQ
-         JD3Q==
+        d=google.com; s=20251104; t=1777621182; x=1778225982; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=N5yIG/VNV+70xFszkANHVR8rh10LtJp9VdT7AZQOrpQ=;
+        b=GEJ5aEQOu5JLBc6QAEWPXNoNw5rmPtGCkkwJVDi/4RVZt6sP6NLm0N1Lb2skecFh1G
+         L/rEjbj4kT6EpiQjScndF2ADL8GtmfTPVyJjRNj7BchFBe/LNOnOOjsFfv2sEyzNItz3
+         YcSaTJAZSuRs1tR0HNPvdQsXclUK07kLBy97rFTq8tsydXZzpk4HZ3kNVo1/sXrPXk6o
+         b56vqWt8Zq267NZrYGdU8K1sKJ/AS7E8XFXo0i6p0YbFri7CyTs11oATh3kcAJoWbcHj
+         mfl6nOFQrX7qXQvFdUF+AjF+6AOrga66G5QTACPftbBl1PER3WU09VQUXP83j46+7eaz
+         8wgQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777607985; x=1778212785;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=RCL8DA3zB5MjNcRvLVRvgoYpbXn0RP/jEQuf7w+5rHg=;
-        b=jD3BV+Zxv36nRwiszk3mbDUuv5eaO7ITR84is/LScWsls5QgcNmMAN30gEMXhAh+Rs
-         k4d778zwu1anJep7SaXXcC3PXNNjWvSqON+uS7CdW9Hm93F9wCf8sNFsD/lBbL6n3/2s
-         nRLS6+g7EaxhNloaTZiogFeBwMTbb8b+JwBHDe4uPmQ/FNgTPg2ezvS6uIy0PxdtbMOT
-         IylcSLkgAUnJy5oDcyIa/b8Duqvr0Fisoy5sYJhgKWhptTkf0dJS7a5MhVbaD5IcjDha
-         ng0f3CKf+MRmJq55zy3jFYjMV2kdWZSMYNs8oYEWQts2eGyY5uFNXv6IcuNIglq8ZBf9
-         PEJg==
-X-Forwarded-Encrypted: i=1; AFNElJ/71FYK3eWw4LQuP5s5ReRlje63Tcm4UCACkdBrCc9oBow5FZWbUJwGF6iOklac1hSSj34=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzzZwF6Eu5YNLSzGYJxGiSptYHgvZbLGgnmuT+vumTNSmWIyRm1
-	VEei108iXSkIqtxjZsYykwnjV93YD1k1RFtNRdnJCwdrOV2jpkFwtwymv0vCmgf9N71H4L2ffyT
-	3I1aDBCCl9UYNe8ddvmCak3dov1wxTrSVmrypKr1+UyFj8GlbaHBFBcz7x9qpgUI58o2TvyhAhC
-	kAJyYmQUdLkhEdVS+wrGPzYDAjJ9aS
-X-Gm-Gg: AeBDietilf1P9MI80e0kJJ0U+XCuvqn78cb0rOpFYlWG82voPAjgVftUsGhfIiBalHd
-	AoUMirfaQPv2fkbhaYuYH5kZbJMdarurM9s4Rp5AI7R4xH3P9hkDEgs/rEvr3QcUvHx52tOy8MI
-	keXefDjTlwuXe6D5ERH89lTWbOu7LF1fJR7udhk2Ct73GcPwjsNMWCQqYr0sXgZmzC82FoVoizj
-	WmWFfrzGRfPUPWfF1KypAh738DasL6LXAd/dWRnx3W039LUDwq2qHKvxIRLSsjY5A8BLGreMXBS
-	xujkC4FDICLTBqA=
-X-Received: by 2002:a05:600c:628b:b0:485:364e:9328 with SMTP id 5b1f17b1804b1-48a84452792mr101574255e9.16.1777607985045;
-        Thu, 30 Apr 2026 20:59:45 -0700 (PDT)
-X-Received: by 2002:a05:600c:628b:b0:485:364e:9328 with SMTP id
- 5b1f17b1804b1-48a84452792mr101573915e9.16.1777607984694; Thu, 30 Apr 2026
- 20:59:44 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777621182; x=1778225982;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=N5yIG/VNV+70xFszkANHVR8rh10LtJp9VdT7AZQOrpQ=;
+        b=LB506u1v0WgP8J/fzGUfQXq5BE1/ZmlhDoBRHzgIet9USazKYa66RE4cccIkMmmAMk
+         HaXxU1tBQuI/cyobw9VXvhUz3CkDGfttEa0OzVvJgB/zWs1YvVkG83Cbw78B+qJCDxAH
+         yrurQ9kKlPpaaDTfZDOI7xmv+R4g7VZPgiMv86yW8SRF8uvta4d4xKEjTFyqfVqgEYys
+         x3d0dyT3uyZuyCmBD8VPkuAkauhSW4bwwHeBuZzewDFGXK81nwnAcl0nLlTrzv5B1XaK
+         tbaM38VfdaYP/zN7TXtR+fs8xYdGdjo+TWSAsCsL1hZhOj14BOhHpfN9nB6JB9bWBBu2
+         IVXg==
+X-Forwarded-Encrypted: i=1; AFNElJ+kFIJF/+p6nYCylRB7RFOhyhQcv2kqM0X8nRYre8BaCWmkRAP7cUB/rrS1nDWdisYCxog=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJ2yCMNLEunF2saLVtFz+qXT9OCKq+EcXw7XHxgX8CX+73iYwP
+	PYEp5fkNwV8Xomuo2CnVimexvmXajFK4BwwdQqnSy06bf+zJN/BTrODDxp49HHCRTlKJaH3OuLL
+	OEKBFkAO9DXA++5dZB28QpPVPjYQZFs2qX+sCP/X6
+X-Gm-Gg: AeBDiev5qAKR69HLTLOMNqx365LQWJPQlNJTJLXWDKuyw8+KI5kgNrMmxH2/j9wbbdk
+	a5TaXZcfHNZgcZ1/KAo9l7vAXWgWfo7+DZOByniuwMitL/l/4Si2Ddzn9nbHi81FawojXoo5L0G
+	I4OpmnwR/kNADKsNCD9g3R3ntGPwtrMBsEE2uLrEp0BFAb2tI9qvSwT7vr25eUICon6qfCdSOPr
+	81UgiHN9oiiDK64e+1GKL3z0odVHCeYMUfAuU/azUHfBB7Sit47dncRl5+b6niP+3uin+P82Fpy
+	5WmBrT3MK2iD/QA+/83F1/mTqVbdpiA/LQ0SMc2dRDUAUw8SeP7mKiWYUXtMAzEyrzbhESRG+0s
+	/sa8xQTMcBm8dM8w3Rw==
+X-Received: by 2002:a05:651c:2114:b0:38e:186e:350e with SMTP id
+ 38308e7fff4ca-3934dec7039mr26121991fa.7.1777621181309; Fri, 01 May 2026
+ 00:39:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260430150747.76749-1-pbonzini@redhat.com> <20260430150747.76749-27-pbonzini@redhat.com>
- <afOqSkJnemK1B0PE@google.com>
-In-Reply-To: <afOqSkJnemK1B0PE@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 1 May 2026 05:59:32 +0200
-X-Gm-Features: AVHnY4Lf2EX9VEl0S-HGewg5IzCYmBO8wXO3pd-Rj2akrNC-BQNzF9WNF5FNAbk
-Message-ID: <CABgObfaCVaKfn1Jh7SdzzjwFpSURJTQw9fP0tjM2==PAwfP_pQ@mail.gmail.com>
-Subject: Re: [PATCH 26/28] KVM: SVM: enable GMET and set it in MMU role
-To: Sean Christopherson <seanjc@google.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, d.riley@proxmox.com, 
-	jon@nutanix.com
+References: <20260430-kcov-refactor-common-handle-v1-1-23a0c7a0ba38@google.com>
+In-Reply-To: <20260430-kcov-refactor-common-handle-v1-1-23a0c7a0ba38@google.com>
+From: Dmitry Vyukov <dvyukov@google.com>
+Date: Fri, 1 May 2026 09:39:30 +0200
+X-Gm-Features: AVHnY4LuOCyhbkG_hl8Sa5NNYS1SbIPwYG33VO-fKmuVe5zr0rpNYf2arYcAEvU
+Message-ID: <CACT4Y+ZMJs0-9N+tcAa7Yi9-r5wshy0BAD1cdYRxBBPvOtMpZQ@mail.gmail.com>
+Subject: Re: [PATCH] kcov: refactor common handle ID into kcov_common_handle_id
+To: Jann Horn <jannh@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>, kasan-dev@googlegroups.com, 
+	Andrew Morton <akpm@linux-foundation.org>, Alexander Potapenko <glider@google.com>, 
+	Valentina Manea <valentina.manea.m@gmail.com>, Shuah Khan <shuah@kernel.org>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Hongren Zheng <i@zenithal.me>, linux-usb@vger.kernel.org, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev, netdev@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 30, 2026 at 9:15=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
+On Thu, 30 Apr 2026 at 16:15, Jann Horn <jannh@google.com> wrote:
 >
-> On Thu, Apr 30, 2026, Paolo Bonzini wrote:
-> > diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-> > index e7fdd7a9c280..3895d8794366 100644
-> > --- a/arch/x86/kvm/svm/svm.c
-> > +++ b/arch/x86/kvm/svm/svm.c
-> > @@ -138,6 +138,9 @@ module_param(pause_filter_count_max, ushort, 0444);
-> >  bool __ro_after_init npt_enabled =3D true;
-> >  module_param_named(npt, npt_enabled, bool, 0444);
-> >
-> > +bool gmet_enabled =3D true;
+> Store common handle IDs in "struct kcov_common_handle_id", which consumes
+> no space in non-KCOV builds.
+> This cleanup removes #ifdef boilerplate code from subsystems that
+> integrate with KCOV (in particular in usbip_common.h and skbuff.h, see the
+> diffstat).
+> This should also make it easier to add KCOV remote coverage to more
+> subsystems in the future.
 >
-> This really should be hardcoded false, with no module param, until "enabl=
-e GMET
-> for guests".  Otherwise stopping here means KVM is over-reporting support=
-.
+> Signed-off-by: Jann Horn <jannh@google.com>
 
-Are module parameters reporting support of nested features? I thought
-of these as "does KVM know about MBEC/GMET".
+Reviewed-by: Dmitry Vyukov <dvyukov@google.com>
 
-This is I think the only point where I disagree, I think. I'll fix up
-patches 6/7/8/17.
+Thanks!
 
-Paolo
-
+> ---
+>  drivers/usb/usbip/usbip_common.h | 29 +----------------------------
+>  drivers/usb/usbip/vhci_rx.c      |  4 ++--
+>  drivers/usb/usbip/vhci_sysfs.c   |  2 +-
+>  drivers/vhost/vhost.h            |  2 +-
+>  include/linux/kcov.h             | 12 ++++++------
+>  include/linux/skbuff.h           | 14 +++-----------
+>  include/linux/types.h            |  6 ++++++
+>  kernel/kcov.c                    |  6 +++---
+>  8 files changed, 23 insertions(+), 52 deletions(-)
+>
+> diff --git a/drivers/usb/usbip/usbip_common.h b/drivers/usb/usbip/usbip_common.h
+> index 282efca64a01..be4c5e65a7f8 100644
+> --- a/drivers/usb/usbip/usbip_common.h
+> +++ b/drivers/usb/usbip/usbip_common.h
+> @@ -282,9 +282,7 @@ struct usbip_device {
+>                 void (*unusable)(struct usbip_device *);
+>         } eh_ops;
+>
+> -#ifdef CONFIG_KCOV
+> -       u64 kcov_handle;
+> -#endif
+> +       struct kcov_common_handle_id kcov_handle;
+>  };
+>
+>  #define kthread_get_run(threadfn, data, namefmt, ...)                     \
+> @@ -339,29 +337,4 @@ static inline int interface_to_devnum(struct usb_interface *interface)
+>         return udev->devnum;
+>  }
+>
+> -#ifdef CONFIG_KCOV
+> -
+> -static inline void usbip_kcov_handle_init(struct usbip_device *ud)
+> -{
+> -       ud->kcov_handle = kcov_common_handle();
+> -}
+> -
+> -static inline void usbip_kcov_remote_start(struct usbip_device *ud)
+> -{
+> -       kcov_remote_start_common(ud->kcov_handle);
+> -}
+> -
+> -static inline void usbip_kcov_remote_stop(void)
+> -{
+> -       kcov_remote_stop();
+> -}
+> -
+> -#else /* CONFIG_KCOV */
+> -
+> -static inline void usbip_kcov_handle_init(struct usbip_device *ud) { }
+> -static inline void usbip_kcov_remote_start(struct usbip_device *ud) { }
+> -static inline void usbip_kcov_remote_stop(void) { }
+> -
+> -#endif /* CONFIG_KCOV */
+> -
+>  #endif /* __USBIP_COMMON_H */
+> diff --git a/drivers/usb/usbip/vhci_rx.c b/drivers/usb/usbip/vhci_rx.c
+> index a75f4a898a41..a678e7c89837 100644
+> --- a/drivers/usb/usbip/vhci_rx.c
+> +++ b/drivers/usb/usbip/vhci_rx.c
+> @@ -261,9 +261,9 @@ int vhci_rx_loop(void *data)
+>                 if (usbip_event_happened(ud))
+>                         break;
+>
+> -               usbip_kcov_remote_start(ud);
+> +               kcov_remote_start_common(ud->kcov_handle);
+>                 vhci_rx_pdu(ud);
+> -               usbip_kcov_remote_stop();
+> +               kcov_remote_stop();
+>         }
+>
+>         return 0;
+> diff --git a/drivers/usb/usbip/vhci_sysfs.c b/drivers/usb/usbip/vhci_sysfs.c
+> index 5bc8c47788d4..b98d14c43d13 100644
+> --- a/drivers/usb/usbip/vhci_sysfs.c
+> +++ b/drivers/usb/usbip/vhci_sysfs.c
+> @@ -425,7 +425,7 @@ static ssize_t attach_store(struct device *dev, struct device_attribute *attr,
+>         vdev->ud.tcp_rx     = tcp_rx;
+>         vdev->ud.tcp_tx     = tcp_tx;
+>         vdev->ud.status     = VDEV_ST_NOTASSIGNED;
+> -       usbip_kcov_handle_init(&vdev->ud);
+> +       vdev->ud.kcov_handle = kcov_common_handle();
+>
+>         spin_unlock(&vdev->ud.lock);
+>         spin_unlock_irqrestore(&vhci->lock, flags);
+> diff --git a/drivers/vhost/vhost.h b/drivers/vhost/vhost.h
+> index 4fe99765c5c7..0192ade6e749 100644
+> --- a/drivers/vhost/vhost.h
+> +++ b/drivers/vhost/vhost.h
+> @@ -44,7 +44,7 @@ struct vhost_worker {
+>         /* Used to serialize device wide flushing with worker swapping. */
+>         struct mutex            mutex;
+>         struct llist_head       work_list;
+> -       u64                     kcov_handle;
+> +       struct kcov_common_handle_id kcov_handle;
+>         u32                     id;
+>         int                     attachment_cnt;
+>         bool                    killed;
+> diff --git a/include/linux/kcov.h b/include/linux/kcov.h
+> index 0143358874b0..cdb72b3859d8 100644
+> --- a/include/linux/kcov.h
+> +++ b/include/linux/kcov.h
+> @@ -43,11 +43,11 @@ do {                                                \
+>  /* See Documentation/dev-tools/kcov.rst for usage details. */
+>  void kcov_remote_start(u64 handle);
+>  void kcov_remote_stop(void);
+> -u64 kcov_common_handle(void);
+> +struct kcov_common_handle_id kcov_common_handle(void);
+>
+> -static inline void kcov_remote_start_common(u64 id)
+> +static inline void kcov_remote_start_common(struct kcov_common_handle_id id)
+>  {
+> -       kcov_remote_start(kcov_remote_handle(KCOV_SUBSYSTEM_COMMON, id));
+> +       kcov_remote_start(kcov_remote_handle(KCOV_SUBSYSTEM_COMMON, id.val));
+>  }
+>
+>  static inline void kcov_remote_start_usb(u64 id)
+> @@ -99,11 +99,11 @@ static inline void kcov_prepare_switch(struct task_struct *t) {}
+>  static inline void kcov_finish_switch(struct task_struct *t) {}
+>  static inline void kcov_remote_start(u64 handle) {}
+>  static inline void kcov_remote_stop(void) {}
+> -static inline u64 kcov_common_handle(void)
+> +static inline struct kcov_common_handle_id kcov_common_handle(void)
+>  {
+> -       return 0;
+> +       return (struct kcov_common_handle_id){};
+>  }
+> -static inline void kcov_remote_start_common(u64 id) {}
+> +static inline void kcov_remote_start_common(struct kcov_common_handle_id id) {}
+>  static inline void kcov_remote_start_usb(u64 id) {}
+>  static inline void kcov_remote_start_usb_softirq(u64 id) {}
+>  static inline void kcov_remote_stop_softirq(void) {}
+> diff --git a/include/linux/skbuff.h b/include/linux/skbuff.h
+> index 2bcf78a4de7b..a3fe418f7ced 100644
+> --- a/include/linux/skbuff.h
+> +++ b/include/linux/skbuff.h
+> @@ -1082,9 +1082,7 @@ struct sk_buff {
+>         __u16                   network_header;
+>         __u16                   mac_header;
+>
+> -#ifdef CONFIG_KCOV
+> -       u64                     kcov_handle;
+> -#endif
+> +       struct kcov_common_handle_id kcov_handle;
+>
+>         ); /* end headers group */
+>
+> @@ -5437,20 +5435,14 @@ static inline void skb_reset_csum_not_inet(struct sk_buff *skb)
+>  }
+>
+>  static inline void skb_set_kcov_handle(struct sk_buff *skb,
+> -                                      const u64 kcov_handle)
+> +                                      struct kcov_common_handle_id kcov_handle)
+>  {
+> -#ifdef CONFIG_KCOV
+>         skb->kcov_handle = kcov_handle;
+> -#endif
+>  }
+>
+> -static inline u64 skb_get_kcov_handle(struct sk_buff *skb)
+> +static inline struct kcov_common_handle_id skb_get_kcov_handle(struct sk_buff *skb)
+>  {
+> -#ifdef CONFIG_KCOV
+>         return skb->kcov_handle;
+> -#else
+> -       return 0;
+> -#endif
+>  }
+>
+>  static inline void skb_mark_for_recycle(struct sk_buff *skb)
+> diff --git a/include/linux/types.h b/include/linux/types.h
+> index 608050dbca6a..93166b0b0617 100644
+> --- a/include/linux/types.h
+> +++ b/include/linux/types.h
+> @@ -224,6 +224,12 @@ struct ustat {
+>         char                    f_fpack[6];
+>  };
+>
+> +struct kcov_common_handle_id {
+> +#ifdef CONFIG_KCOV
+> +       u64 val;
+> +#endif
+> +};
+> +
+>  /**
+>   * struct callback_head - callback structure for use with RCU and task_work
+>   * @next: next update requests in a list
+> diff --git a/kernel/kcov.c b/kernel/kcov.c
+> index 0b369e88c7c9..a43e33a28adb 100644
+> --- a/kernel/kcov.c
+> +++ b/kernel/kcov.c
+> @@ -1083,11 +1083,11 @@ void kcov_remote_stop(void)
+>  EXPORT_SYMBOL(kcov_remote_stop);
+>
+>  /* See the comment before kcov_remote_start() for usage details. */
+> -u64 kcov_common_handle(void)
+> +struct kcov_common_handle_id kcov_common_handle(void)
+>  {
+>         if (!in_task())
+> -               return 0;
+> -       return current->kcov_handle;
+> +               return (struct kcov_common_handle_id){ .val = 0 };
+> +       return (struct kcov_common_handle_id){ .val = current->kcov_handle };
+>  }
+>  EXPORT_SYMBOL(kcov_common_handle);
+>
+>
+> ---
+> base-commit: 57b8e2d666a31fa201432d58f5fe3469a0dd83ba
+> change-id: 20260430-kcov-refactor-common-handle-25178495b2eb
+>
+> --
+> Jann Horn <jannh@google.com>
+>
