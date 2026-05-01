@@ -1,177 +1,158 @@
-Received: from mail-vk1-f172.google.com (mail-vk1-f172.google.com [209.85.221.172])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAB36311969
-	for <kvm@vger.kernel.org>; Fri,  1 May 2026 22:21:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.172
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777674116; cv=pass; b=fqwwN5e8wcB8qKQZZOJcaDBtj/hWpRtiMF5IdGYh4oXHAWSI06En7GQWfAoDLeD6d7aHEpJbPklMddinMwLG7SErTN4T79nWtoLxV20z63IPW3ulPoE60DSE6sC8A15Yy4v0CXVozLw3ULOF5fir31CDVU+1JxQWrITywKACsM4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777674116; c=relaxed/simple;
-	bh=jLrfkaOhEb3MmFwOmWCGQPBbw6a6kIN8jleBSy0FvN0=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=u/gqGr/zroXhcCuuCLhKqsn0YXwVI8/oBPedlOnKcZGlE83RlTyd5nZbnOI3seOGlhUzVdJ49Y6ddPpye98Ei3cDp+sKGcIdI3S33y92Py9qPzGckhCPwlUkX2I4Z/Y8oaSlPR1hXWMcPzeyBqJ5bATBQ4yOxqLee1gh2P+vOZ0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZHd7Xygz; arc=pass smtp.client-ip=209.85.221.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1216637A48A
+	for <kvm@vger.kernel.org>; Fri,  1 May 2026 22:43:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777675384; cv=none; b=usYuItcy50d17tJuGEvFglQDEQy6UED552cJ2VmO0kFvyTk2yBcQPt+VmJP6pjd97b5570Z02D0X62w1xk3Pm0/tpZQ0SxZPLXah4XRfZhsBdPdGpGpKKYJBCbb05j7tPfPtqB9nKxw4bplmWEHYmoifjlITU6fQgPqkS/zsFM8=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777675384; c=relaxed/simple;
+	bh=zxY+FJ/D1qGJPLj7LmqjRlqbTv0Us5t8F//4LBJztq8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=R0oWRYXpywzusvo8yOCsF76yA457IJ+OVzGWxLM5SYP9QMDLUPF5lqgCbmdg3PQ/tDZ3sIeQWr0p+5StkYZIMCHmdmAEmz1gzkYxQ7JMRuq2sFMYIigyu/vHZSR6FBps5bCmft9a70ZEY2Yj/cpAs4fpzn6x0hweKMbr9QOoKmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m4Ln+7I/; arc=none smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZHd7Xygz"
-Received: by mail-vk1-f172.google.com with SMTP id 71dfb90a1353d-56a9c5cb48bso841861e0c.0
-        for <kvm@vger.kernel.org>; Fri, 01 May 2026 15:21:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777674114; cv=none;
-        d=google.com; s=arc-20240605;
-        b=lUD0LVFx8EErK/sP1P7XNXFv0N4hjy+1G6YldEePlFLELhWjkL7zwR2fbMao/11YCf
-         o0B0lu0tx3DHtpKCET20GVY5MO70RdjXu9vYiO581dvCSqV6HLiOak8YXVTrWAG4tUDC
-         c3dO0i5kYX3Ufjdo94Tg73MGpKmQP3vsYQ3bQw7ul8bwEgDUFo1l4l6j33A0K0+a6o9A
-         O4IpripYi2N2kyFjF5g2h+MtwELYcey76DbO4NHYHs2L+/igI87p+FAEBRCOjYNN/o0O
-         XQ9K1LP/0fE6tltQ1dzdJIzLiPqPTLSi+LBFQrapqDv7rSa2bbTDPptsq9b68DvxOEk4
-         DZYg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=dtXXiVGCKhisCk8aLdkBNg++qq/ezEnbK3PGbPzPAeg=;
-        fh=9FHrpcwa1auUcUvDPyrM6cQzUQ15S0NmkBTrEbAJ+qk=;
-        b=aCK6vRkODFSGcoWXnhHhl5v5OmNTVRWOhqGP4WIWQTNdglOI7oXtPlDJ1pps2mvF6F
-         0NmxpBGfsx3c+x8rBjpgbvM7+jhM2A0KgHnAnCrn6Gb5RRtwtidoOJZb9VjeihiUS+7Y
-         uapXHuBFKqNVl2206yxapq0QsGtPERjdhawJ0Xm2z1zI6aiEBupDeZl7iwjIJn0C1ac5
-         LsMIb7Ray3jynEYr72ZM559l9ZnKxhRNaF0bmFxAONPXeyMybmfkdFF6d5DrO2243vDf
-         6duTH0j/gMFwzOm4JlMs3HQamaFlrupjb20Kle3QDblVVeuSfX8ZABtOEbe8LFFlhdJg
-         8RgQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m4Ln+7I/"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-364c5317d67so2185442a91.2
+        for <kvm@vger.kernel.org>; Fri, 01 May 2026 15:43:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777674114; x=1778278914; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=dtXXiVGCKhisCk8aLdkBNg++qq/ezEnbK3PGbPzPAeg=;
-        b=ZHd7XygzDp1+bgpyWWstsNSnzgN6A1YDrvqFBMoy6WgTGyMnmYazVRVPJtbxC8vn9T
-         5rNBfMGbYsd/9p9gqxkzT5iL82Nhaoou/IOl/YSZVZbM4Qy1Ler2R4MyufI/9osHe2By
-         IIj9OcO2N70WgtpGUepjHj55uy67gMHUQY8Qxloi1RGDC1mn9WhCaAbtpcbgYudS+sGI
-         hqC38rJ/ghaVd6FJu4ZPxxi7iIhwbXfvh+virH1w65yL36SdYPKAlViRgChAwMHQCH83
-         mwh5sQq56kIFmFVqTGgYM4KOW4sjrHgjvmx5wn0AlDvo9tji4+Hqz6fYBGO/n7ZSjQY0
-         NxLw==
+        d=google.com; s=20251104; t=1777675382; x=1778280182; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zA7ZB+9cdr8jZzJkhetR/xMmU5JX5i8WCgvlAknX308=;
+        b=m4Ln+7I/rTNlDZVJ2LF4fMLARnw3NNs5xfG76SQZSeMZzdYDd0DKOihUgvHOxY4rg1
+         /tS4HRLRZxP7nbm5/HQv9NvsDrcpjzyBRA5AqX1DGiMGxSL+MNPMt1WDCyRHpy5XZmIg
+         PLLLE8usZEu1QK4XjRKoFmsQDElNDmIFzR1YFTnW42XYD1Wzd+XSZIkd6qUEMCdCdXZN
+         KcKa9tZb9/k3vPRJLlalRWbbPDlscuBOGezAP39aOR2Aj2h/clMw34GSy4CdRIN5Cfsf
+         O18lkSQIB9PUdNCsY689uLrZcX0NUdFmIigcrqixxLsD+BGUcYyd6AjaNpjOK/H23TYu
+         v00w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777674114; x=1778278914;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dtXXiVGCKhisCk8aLdkBNg++qq/ezEnbK3PGbPzPAeg=;
-        b=L/byklwqk93Ble5H1as6Q6dtkGy+5eJ8K/gUf1194+9yo3opcvFN932QaAJFZ02yXR
-         7zKwi1nLwkfIirdNQGgVTp9k/O8EWOzyJ+22zRJGnRi15Mnb5B3Y85ZKnxSqOmwUOQCQ
-         TXsXIIP1MNIwp/JKetzcX539D7b7PLa8NGDkhYryGW0W2dWtI5CuKfECj41XYGU7ZNkw
-         IQTvPy11N2vw5oyY/5583/0ljNu+Mcbwfv7xTrUn58fFV5Yn9LeWXfxlcsrmcFxi2Wgd
-         uofSsZc1Na09hShR4e2NTbWo3whuU0xolsR3qptujWUwPCvlqNZgfAFGSelWAQ5W23jI
-         ZdkA==
-X-Forwarded-Encrypted: i=1; AFNElJ/dIHpLfmXSBQ7fhCFjRHOnBXKkS0ikPpbX52qAe9h6J25BL5B3K4mkzvBBqC0DsWpjzC4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxT6gRH086xEbtHDN+up7JmAmu8VGCCxmhyLNY6COxzsA2b0kRQ
-	us04Z8rhzyN1aS3sWSOLadam2MZfnTKRYy0rw7FS3wcZ/bLO15UsFfkDWxTmRPe9ihx1TUZ7kFX
-	htWID1KUj9kVLUZ2qo4pM+pQs0XXY1+jkLXPKwEGL
-X-Gm-Gg: AeBDievObPG5o2adWtM/r/Y2vGe1wLFFzXkzLRLZcMYIJF5XC+d5C0l4J86IZm8vuNd
-	pytDLqmkbNp9spVZbKxcJ01yqeXmfpcYkV9sGCisJSsPWPGQT+Na4Hp8bUGScf1JCTA/n+EnWb9
-	ffCOSYH9pNPQOWg8ewje0UVPIiWK7/gatOM3zrT58CJTOhgpsHXFUYcJEqe/deMyWhBedl8rgxw
-	lIdOgpzv5ObhpaPKIy9P1qo0ycwY9ZiYpsJeQy+ENq95Vtw9JFZnBWiHzEyfZlh22Afez4i9+6+
-	Obi2EcH6cGkZtOHkjwC5HtqEVlcWFeVKf31s7CCmsb84oFU69XlQ+xyoR5HF36VC8iT/BY5DHB6
-	Nv9HtCqqzaUPsIsU=
-X-Received: by 2002:a05:6122:1789:b0:56f:1c32:bd07 with SMTP id
- 71dfb90a1353d-5750c6b46damr742606e0c.2.1777674113098; Fri, 01 May 2026
- 15:21:53 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 1 May 2026 15:21:52 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 1 May 2026 15:21:52 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <CAEvNRgHRpvsEjtr1A_Qz3d4oMEaffTxESavrZ73Jtt6OobCwhA@mail.gmail.com>
-References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
- <x7n77snnvvukofo3slopl74c5tmlb2t2un5qy5fq6eb3d2xt7e@6a6tixg5mdfc> <CAEvNRgHRpvsEjtr1A_Qz3d4oMEaffTxESavrZ73Jtt6OobCwhA@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1777675382; x=1778280182;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zA7ZB+9cdr8jZzJkhetR/xMmU5JX5i8WCgvlAknX308=;
+        b=oyodu2YxTE/HyFgBzmXgve3qnETrdWgkdNtw50FWM4Q8as+Zb3lxnbwPO5rcY5aZwL
+         PDQAlueUNtFCVvNdu9E7M9+Ng7szIwDy6lD73iMOXTdPoMrh7dCxQ6XYjb2vqCH5HmJd
+         UJN5koYlZe2hO/9rxv2gNp1oIcQD2/wFIJ8EXFD9pJUzldxBuT78vjeteyf034SK3iOC
+         KPnMixyDslcXYV7wM7BUfnyvRPZQwlYCz6UgyDATHNa5SgSNQsKjTNvYMKzKls10HSXF
+         voOM0nR8RgsstSgmoFv+P4F0/fDofzzG9ks662M8B2l6qQ8wzUPsrOggiNiUuw6VaeWy
+         bbYg==
+X-Forwarded-Encrypted: i=1; AFNElJ883goGnmIK4cE761+FPGnjlFCyttPfD+g0lWEDfqAHJ8N553cS0VMtrT5VdOm0atWCJoo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx2RRuyh3UcaR79KlBZOhHgIDNJB9d5AEhcH0BSInAocruCgn1O
+	pzCRlCu7hB7GGkGQHgX3Qmbz36UKcUsPKkg6To70pDIk8vGNkbHh0Etwz4SX0TMIEQ==
+X-Gm-Gg: AeBDies7oSt+3wFDgmpaVEYoY617Vo5kmB08lGf33umTkBPflVKx29Gdyf3EBbhEV4G
+	B/8noZmxC6NIIHZNR18ti/qfzrW4KIUsCWsAogf9Ku1LQe7Lw0M9xDlIqKYYYDlNGlilYdlEfWC
+	qodSuwWPz59yQinBgYo8SpLOaJbjqIcdGtV917I5F0GQyO+SjVuvI+Lpq0kHp2jXohGHh/+HKb1
+	ve4SgnE1d+O0SefInXhX5IUGqEqpU2U+wcD/zpAa5CmuqmlKYjsp/6Omad9pfGhseO63ti33TYz
+	8JITS2yMiXPnch9HYWi4YfqhhDfUqXxwgdoJylV2xDZTLOyWLnXC+YNpcuGL/8z5HcwZCbDynN9
+	kdGh28B3LAGT9kZPAidHRfLG5P1qC4u2Pt0gbPgmKfPIZ4EuxZgkvZcoy1z5cu09tg3IIOX6VEe
+	BcsVwbrXXXowC3/A3PpwwXHdYPzBn0BF+s6bHA2x8Anl1U1xaod9qqM0Aq3sYMLIAmzBeCSLE/8
+	rmxqQ==
+X-Received: by 2002:a17:90b:3852:b0:35e:30bc:96e2 with SMTP id 98e67ed59e1d1-3650cdd40cfmr981966a91.10.1777675381854;
+        Fri, 01 May 2026 15:43:01 -0700 (PDT)
+Received: from google.com (76.9.127.34.bc.googleusercontent.com. [34.127.9.76])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-364f3fc1714sm1322177a91.2.2026.05.01.15.43.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 May 2026 15:43:01 -0700 (PDT)
+Date: Fri, 1 May 2026 22:42:57 +0000
+From: David Matlack <dmatlack@google.com>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>,
+	Pranjal Shrivastava <praan@google.com>,
+	Vipin Sharma <vipinsh@google.com>, YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH v2 04/16] iommu: Implement device and IOMMU HW
+ preservation
+Message-ID: <afUscSeXKnNAJ0ZF@google.com>
+References: <20260427175633.1978233-1-skhawaja@google.com>
+ <20260427175633.1978233-5-skhawaja@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 1 May 2026 15:21:52 -0700
-X-Gm-Features: AVHnY4I-FL7ow2VQuDyStuaACgF9aoh7fvjduqjprjOyhgxszANTKzDwmZOdoKM
-Message-ID: <CAEvNRgHZJ3RONKBXqWWLu2f4G7FhAvsYY0iMowmHu7v-O+g=kA@mail.gmail.com>
-Subject: Re: [PATCH RFC v5 00/53] guest_memfd: In-place conversion support
-To: Michael Roth <michael.roth@amd.com>
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev, 
-	Jacob Xu <jacobhxu@google.com>, Darwin Guo <darwinguo@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260427175633.1978233-5-skhawaja@google.com>
 
-Ackerley Tng <ackerleytng@google.com> writes:
+On 2026-04-27 05:56 PM, Samiullah Khawaja wrote:
+> Add IOMMU ops to preserve/unpreserve a device. These can be implemented
 
->
-> [...snip...]
->
->
-> TLDR:
->
-> + PRESERVE == guarantee that the process of setting memory attributes
->   doesn't change memory contents.
->     + implementation == do nothing in most cases, except -EOPNOTSUPP for
->       to-shared on TDX, since unmapping is a required part of setting
->       memory attributes to private, and a TDX side effect of unmapping
->       is zeroing memory,
+Can you make this comment more specific about what is being preserved?
+Saying it preserves a device is vague and maybe even misleading. It's
+more about  about preserving a device's attachment to a specific domain
+correct?
 
--EOPNOTSUPP will only be for TDX, not SNP.
+> by the IOMMU drivers that support preservation of devices that have
+> their IOMMU domains preserved. During device preservation the state of
+> the associated IOMMU is also preserved as dependency.
+> 
+> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
 
-> + ZERO == guarantee that the process of setting memory attributes zeroes
->   memory contents.
->     + implementation == memset(zero) in most cases. For TDX, a future
->       optimization exists, where memset() can be skipped for pages that
->       were mapped in Secure EPTs before conversion
-> + UNSPECIFIED == no guarantees
->     + implementation == guest_memfd does nothing explicitly about memory
->       contents. The implementation is pretty much the same as PRESERVE
->       except guest_memfd won't take into account vendor-specific side
->       effects of the process of conversion. Except for the test vehicle
->       KVM_X86_SW_PROTECTED_VMS, where memory is scrambled.
->
+> diff --git a/drivers/iommu/liveupdate.c b/drivers/iommu/liveupdate.c
+> index f71f14518248..765d042e22e3 100644
+> --- a/drivers/iommu/liveupdate.c
+> +++ b/drivers/iommu/liveupdate.c
 
-Found another use case internally for pre-finalize, SNP, to-shared,
-PRESERVE, which works with the above smaller scope.
+> +static struct iommu_device_ser *alloc_iommu_device_ser(struct iommu_flb_obj *flb)
 
-During SNP_LAUNCH_UPDATE, when inserting a CPUID page, the firmware will
-check that the CPUID values would not lead to an insecure guest
-state. SNP_LAUNCH_UPDATE will fail with an error and the page remains
-shared in the RMP table.
+It is unforunate that struct iommu_device_ser has nothing to do with
+struct iommu_device. The former represents an a PCI device, while the
+latter represents an IOMMU.
 
-Here's the proposed flow in the userspace VMM:
+> diff --git a/include/linux/iommu-liveupdate.h b/include/linux/iommu-liveupdate.h
+> index 6019cfc27428..279c7ab04f09 100644
+> --- a/include/linux/iommu-liveupdate.h
+> +++ b/include/linux/iommu-liveupdate.h
 
-1. Load CPUID in shared guest_memfd memory
-2. SET_MEMORY_ATTRIBUTES(PRIVATE, PRESERVE)
-3. SNP_LAUNCH_UPDATE => get error since CPUID was insecure
-4. SET_MEMORY_ATTRIBUTES(SHARED, PRESERVE)
-5. Read shared guest_memfd memory, error if VMM disagrees
-6. SET_MEMORY_ATTRIBUTES(PRIVATE, PRESERVE)
-7. SNP_LAUNCH_UPDATE => successful, since CPUID is now corrected
+>  int iommu_domain_preserve(struct iommu_domain *domain, struct iommu_domain_ser **ser);
+>  void iommu_domain_unpreserve(struct iommu_domain *domain);
+> +int iommu_preserve_device(struct iommu_domain *domain,
+> +			  struct device *dev, u64 *preserved_state);
+> +void iommu_unpreserve_device(struct iommu_domain *domain, struct device *dev);
 
-Does that seem ok?
+The naming scheme is inconsistent... Maybe it can be:
 
->>>
->>> [...snip...]
->>>
+  iommu_preserve_domain()
+  iommu_unpreserve_domain()
+  iommu_preserve_device() or iommu_preserve_device_attachment()
+  iommu_unpreserve_device() or iommu_unpreserve_device_attachment()
+
+> diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+> index 3853a3946733..1c424b32c5fc 100644
+> --- a/include/linux/iommu.h
+> +++ b/include/linux/iommu.h
+
+> +#ifdef CONFIG_IOMMU_LIVEUPDATE
+> +	int (*preserve_device)(struct device *dev, struct iommu_device_ser *device_ser);
+> +	void (*unpreserve_device)(struct device *dev, struct iommu_device_ser *device_ser);
+> +	int (*preserve)(struct iommu_device *iommu, struct iommu_hw_ser *iommu_ser);
+> +	void (*unpreserve)(struct iommu_device *iommu, struct iommu_hw_ser *iommu_ser);
+> +#endif
+
+Maybe we can make these names a little more specific:
+
+  preserve_device_attachment()
+  unpreserve_device_attachment()
+  preserve_iommu()
+  unpreserve_iommu()
+
+?
