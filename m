@@ -1,55 +1,55 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A180E4219E7
-	for <kvm@vger.kernel.org>; Fri,  1 May 2026 20:35:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBBA0423176
+	for <kvm@vger.kernel.org>; Fri,  1 May 2026 20:35:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777667751; cv=none; b=B4d0Pq9EQOyXPvxi68NrwYUopVcjWHh4bWMN7ClMTVejBAcN+dafaXsFJHC1nn0l80IKKP9rviJR9n52fC4GMRvse4cJTjvNEPVePXgZHOs6+KJH2nABouIGtAKlxb8oHXkXiYeZnqAzRSkdWKNS8Smvy1nyZ4LlFipeh618QhA=
+	t=1777667756; cv=none; b=AgTI3nVJbnGLl4rRWvACifp0lK5dtjzsiwv1bBThm+dSQI77vmII93NjOLdKaCK5+WreuvyM33H9dSU4kLtbzsqBvrP1TH1GBGPyQpbKVHKK8X2Oa5yV1w8HHDMfjM6BAKv3pVbeP+gVPDbWtA5E3i9sL2LAQMXdwwG5oqtdclo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777667751; c=relaxed/simple;
-	bh=Rlg4Fh/OJMOGGM68mvWjoZtGIv4+CjGrzl5e3f/h7OQ=;
+	s=arc-20240116; t=1777667756; c=relaxed/simple;
+	bh=owBtY1ELTAvA1+3avvZSr0u1v4pPHYD2JReBYyVBKOs=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=HU9Qp2b952S3U20PRWO9qpalSVZfKHL5prn6KpHOVKUGWX/niDE1ReZ0606mcutDwgu7uA4RBG0mxRlbez+t1pgIixFwlF22CY1Ed4AA3OiL8oZnKWjAqy+RsEi2KL0NuYP1jhBaXvhNLUx4jDYafbAJuj0hqbZl3J8CpDhIR3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aGTgjfCX; arc=none smtp.client-ip=209.85.210.201
+	 To:Cc:Content-Type; b=T1qF4YxbW+i1DQmqB8VESZM3IM5+QO0qTkNVpWzrljnfWmhtocUCRnkE2oU/3fYr2UzEFc7DOP+BOiplBobIdRtK8m5q9vVp1RAJ39fzcQyeLV8JZGdfRlEF2wJoM753tFTKIuPAutKGCXhbGPNQJmg58qZzzXrf200DyRWYbTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TmT3E4L9; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aGTgjfCX"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82f504f6b75so1230897b3a.1
-        for <kvm@vger.kernel.org>; Fri, 01 May 2026 13:35:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TmT3E4L9"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c70f19f0f37so1241362a12.0
+        for <kvm@vger.kernel.org>; Fri, 01 May 2026 13:35:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777667749; x=1778272549; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1777667752; x=1778272552; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=K56fVDi5EkAo7p4gllqrxnHbaoeRU2pIE/SomnN3Fyk=;
-        b=aGTgjfCXJ7phaQ0DopTy2LAUNmGddZ9gmgA/7mzUbQPF15nNJG274/nVDE87VLcRTv
-         BwA94zYh5eetUvmIlWNhDsorfBnb+9kSMubOFtXVd6Rj7Vwk7phAGDW4kniMBu6Wy2EG
-         pow7m/taPj1kmmN3XBPh/sRVbQE5soyKNQ3GBMTsEyij5aq14IcsDS0AOQJxrJGwJTSZ
-         p/K/HEU8RJBezNh3icZrLoG4XjAERGsL3Q8jntm+e0tYGMa1ONSavUFNjBzDB6v5PHdK
-         8immsamlrkc9CrFZYTkkCjUoP8vueQJ1map+6wPwHYfI9aVHjPCfmw9ShkWOdy7IyU2t
-         Qz2A==
+        bh=f7ChgRzJoZv20LTTFq5AT076grxjadNMggjOvVlT0J0=;
+        b=TmT3E4L98GsK7p04jHp0WklS51KJM4oaxuO5Q+ybbxmcmPLssaN5SxwSChQUDwVezo
+         +cE7705YaapoNaYHbviieal6VYtNCKyEPZ7Dmvm1v8Lb4RwtPhR2rF+G98h4XVV8vTDy
+         JUVKrsxFMFLx7EoE+xnRV3mswAOcQ8jSKCO/5YtWHr55a0ZM0xttD30Roif6FmlGufiH
+         sjv7OsJlyIjhs1zB4+qP0QHMP3GvYd6IxoB1ZtDzNFi0adQ2b2c1XVY95e6pjRl4cAsp
+         UF43LUfNS0gj5vVbZiUU4O6qAcv9PHiPy7oefhtYxAkY7QyO8TiVUM7LxYCY0i3T6nDi
+         pLcw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777667749; x=1778272549;
+        d=1e100.net; s=20251104; t=1777667752; x=1778272552;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=K56fVDi5EkAo7p4gllqrxnHbaoeRU2pIE/SomnN3Fyk=;
-        b=nJwU2jSYOmWhENj1APDd+OZuZt58j+zcsAcf66jr/5cz1qhn5PbgksNlg+otaHovcI
-         R2VM3zRdJDRomoCnXCw7GNmMZCRwD2rqDJQb64UlPP6iGuWN/vgig+jbldqc5nXDJHwt
-         CoZrjesgn+MRF9mjzoiSqugKyHBH5qEj8eRJjyJtVXrMklG7Wyq98pGvFjqqgrMFVUkM
-         pSsqEVYGgmmQzEGlnKEJQChPVdpZ26rFUb8HhGVC+NIx+YT2/Ma4rxpp+5VZVDKGI57b
-         E6KQzTtny+/EAhvqtbPhrOc3rGqZ92Roq5u32YLNVyrtJYuC7awehGqFtEA7eGUytsah
-         5FoQ==
-X-Gm-Message-State: AOJu0YwmUDX69+tY36dBRbiksJOV/N2mRzftxG/7Mnfamddb+UOcs77e
-	2cN68lB02b256RTZaSImS7etNAH9t+b9xqXunlg+YPf+IcakP6tuYqpxthH3ReThquZRZUvSepa
-	GMM7YPg==
-X-Received: from pfbbn21.prod.google.com ([2002:a05:6a00:3255:b0:82f:8cba:4285])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:430a:b0:82c:6b23:6d10
- with SMTP id d2e1a72fcca58-8352d03a355mr645681b3a.3.1777667748889; Fri, 01
- May 2026 13:35:48 -0700 (PDT)
+        bh=f7ChgRzJoZv20LTTFq5AT076grxjadNMggjOvVlT0J0=;
+        b=DuwlVaAkSaJjtcNkAJWP10wXPsX0czKMzrcu0rF08bb3glwjkcXPMjkSBYSAawO/Zq
+         gLyDoYtE6DHJlTywaRdxauxzwA3+puPZz6vxYLJyfJAyxTPQqRaZOMcWPc58e9nJqJDs
+         gHxfL6XoGSqxt9+zuF4UzhiiFqesDAnGyfvja1MO4EvBFKc5EYOo2DMMzmmIT8MAdrtT
+         44qT4l05gq+1KTyhg+oazxsmn6pcxpTBMy2bo9IO8IwcIpl8u08RfXbS3HvSFkKTWL3K
+         33YTUeZfrroIxRoRmOSQDYbNLH6qRHcpHkNduNllj0/owv1g8JpLZwfVQSKPfwdB4Ztr
+         7NXQ==
+X-Gm-Message-State: AOJu0YzYkkCJ3wflxb+qFexDFXfeymcqUVK0HApJt0KsRofGEHbHkYCb
+	HaxvUQD8ZZnBaKqpi5+4naIfUQ9olT+WzvsLmpQHocBayKZPi6R5s6QSiBxYZJWXT1wy3MvezEA
+	SyVFEAw==
+X-Received: from pglq9.prod.google.com ([2002:a63:5049:0:b0:c79:81bb:79dd])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3d26:b0:3a0:71f:ea41
+ with SMTP id adf61e73a8af0-3a3d21b2f69mr7795242637.33.1777667751923; Fri, 01
+ May 2026 13:35:51 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri,  1 May 2026 13:35:35 -0700
+Date: Fri,  1 May 2026 13:35:36 -0700
 In-Reply-To: <20260501203537.2120074-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,320 +59,415 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260501203537.2120074-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260501203537.2120074-5-seanjc@google.com>
-Subject: [PATCH v2 4/6] KVM: SEV: Add helper function to pin/unpin a single page
+Message-ID: <20260501203537.2120074-6-seanjc@google.com>
+Subject: [PATCH v2 5/6] KVM: SEV: Rewrite logic to {de,en}crypt memory for debug
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Ashutosh Desai <ashutoshdesai993@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Add helpers to pin/unpin a single page, and use it in all flows that pin
-exactly one page.  None of the single-page users actually check that the
-correct number of pages was pinned, which is functionally ok, but visually
-jarring, especially in the decrypt/encrypt flow, which separately pins two
-pages, but uses a single variable to track how pages were pinned each time.
-Again, it's functionally ok since core mm guarantees exactly one page will
-be pinned on success, but it's ugly.
+Wholesale rewrite the guts of the debug {de,en}crypt flows, as the existing
+code is broken, e.g. doesn't handle cases where the access isn't naturally
+sized and aligned, and is so wildly flawed that attempting to salvage the
+current code in an iterative fashion would be more risky than a rewrite.
 
-Opportunistically use page_to_phys() instead of open coding an equivalent
-via page_to_pfn().
+E.g. when encrypting 9 bytes at offset 8, KVM needs to _decrypt_
+destination[31:0] into a temporary buffer, buffer[31:0], then copy 9 bytes
+from source[8:0] to buffer[16:8], then encrypt buffer[31:0] back into
+destination[31:0].  The current code only ever copies 16 bytes, and
+bizarrely uses a temporary buffer for the source as well.
 
-Note, all users of the single-page helper pre-validate the address and
-length, i.e. don't rely on the sanity check in sev_pin_memory().
+To keep the code easier to read and maintain, send the unaligned cases
+down dedicated "slow" paths instead of trying to mix and match the possible
+combinations in one helper.
 
-No functional change intended.
+For now, preserve the basic approach of the current code, e.g. allocate an
+entire page for the temporary buffer, to minimize unwanted changes in
+functionality.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/svm/sev.c | 145 +++++++++++++++++++++++++----------------
- 1 file changed, 90 insertions(+), 55 deletions(-)
+ arch/x86/kvm/svm/sev.c | 306 +++++++++++++++++++----------------------
+ 1 file changed, 139 insertions(+), 167 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 9d2044fd910d..4146c91788fb 100644
+index 4146c91788fb..89586f821c9c 100644
 --- a/arch/x86/kvm/svm/sev.c
 +++ b/arch/x86/kvm/svm/sev.c
-@@ -720,14 +720,50 @@ static int sev_launch_start(struct kvm *kvm, struct kvm_sev_cmd *argp)
+@@ -1237,159 +1237,140 @@ static int sev_guest_status(struct kvm *kvm, struct kvm_sev_cmd *argp)
  	return ret;
  }
  
-+static int sev_check_pin_count(struct kvm *kvm, unsigned long npages)
-+{
-+	unsigned long total_npages, lock_limit;
-+
-+	total_npages = to_kvm_sev_info(kvm)->pages_locked + npages;
-+	if (total_npages > totalram_pages())
-+		return -EINVAL;
-+
-+	lock_limit = rlimit(RLIMIT_MEMLOCK) >> PAGE_SHIFT;
-+	if (total_npages > lock_limit && !capable(CAP_IPC_LOCK)) {
-+		pr_err_ratelimited("SEV: %lu total pages would exceed the lock limit of %lu.\n",
-+				   total_npages, lock_limit);
-+		return -ENOMEM;
-+	}
-+
-+	return 0;
-+}
-+
-+static int sev_pin_user_pages(struct kvm *kvm, unsigned long addr, int npages,
-+			      unsigned int gup_flags, struct page **pages)
-+{
-+	int npinned;
-+
-+	lockdep_assert_held(&kvm->lock);
-+
-+	npinned = pin_user_pages_fast(addr, npages, gup_flags, pages);
-+	if (npinned != npages) {
-+		if (npinned > 0)
-+			unpin_user_pages(pages, npinned);
-+		pr_err_ratelimited("SEV: Failure locking %u pages.\n", npages);
-+		return -ENOMEM;
-+	}
-+
-+	to_kvm_sev_info(kvm)->pages_locked += npages;
-+	return 0;
-+}
-+
- static struct page **sev_pin_memory(struct kvm *kvm, unsigned long uaddr,
- 				    unsigned long ulen, unsigned long *n,
- 				    unsigned int flags)
+-static int __sev_issue_dbg_cmd(struct kvm *kvm, unsigned long src,
+-			       unsigned long dst, int size,
+-			       int *error, bool enc)
++static int sev_issue_dbg_cmd(struct kvm *kvm, unsigned long src_pa,
++			     unsigned long dst_pa, unsigned int size,
++			     unsigned int ioctl, int *error)
  {
--	struct kvm_sev_info *sev = to_kvm_sev_info(kvm);
--	unsigned long npages, total_npages, lock_limit;
-+	unsigned long npages;
- 	struct page **pages;
--	int npinned, ret;
-+	int ret;
+-	struct sev_data_dbg data;
++	int cmd = ioctl == KVM_SEV_DBG_DECRYPT ? SEV_CMD_DBG_DECRYPT :
++						 SEV_CMD_DBG_ENCRYPT;
++	struct sev_data_dbg data = {
++		.handle = to_kvm_sev_info(kvm)->handle,
++		.dst_addr = dst_pa,
++		.src_addr = src_pa,
++		.len = size,
++	};
++
++	return sev_issue_cmd(kvm, cmd, &data, error);
++}
++
++static struct page *sev_alloc_dbg_buffer(void **buf)
++{
++	struct page *buf_p;
  
- 	lockdep_assert_held(&kvm->lock);
+-	data.reserved = 0;
+-	data.handle = to_kvm_sev_info(kvm)->handle;
+-	data.dst_addr = dst;
+-	data.src_addr = src;
+-	data.len = size;
++	buf_p = alloc_page(GFP_KERNEL);
++	if (!buf_p)
++		return NULL;
++
++	*buf = kmap_local_page(buf_p);
++	return buf_p;
++}
  
-@@ -743,16 +779,9 @@ static struct page **sev_pin_memory(struct kvm *kvm, unsigned long uaddr,
- 	if (npages > INT_MAX)
- 		return ERR_PTR(-EINVAL);
+-	return sev_issue_cmd(kvm,
+-			     enc ? SEV_CMD_DBG_ENCRYPT : SEV_CMD_DBG_DECRYPT,
+-			     &data, error);
++static void sev_free_dbg_buffer(struct page *buf_p, void *buf)
++{
++	kunmap_local(buf);
++	__free_page(buf_p);
+ }
  
--	total_npages = sev->pages_locked + npages;
--	if (total_npages > totalram_pages())
--		return ERR_PTR(-EINVAL);
--
--	lock_limit = rlimit(RLIMIT_MEMLOCK) >> PAGE_SHIFT;
--	if (total_npages > lock_limit && !capable(CAP_IPC_LOCK)) {
--		pr_err("SEV: %lu total pages would exceed the lock limit of %lu.\n",
--		       total_npages, lock_limit);
--		return ERR_PTR(-ENOMEM);
--	}
-+	ret = sev_check_pin_count(kvm, npages);
-+	if (ret)
-+		return ERR_PTR(ret);
+-static int __sev_dbg_decrypt(struct kvm *kvm, unsigned long src_paddr,
+-			     unsigned long dst_paddr, int sz, int *err)
++static unsigned int sev_dbg_crypt_slow_addr_and_size(struct page *page,
++						     unsigned long __va,
++						     unsigned int len,
++						     unsigned long *pa)
+ {
+-	int offset;
++	/* The number of bytes to {de,en}crypt must be 16-byte aligned. */
++	unsigned int nr_bytes = round_up(len, 16);
++	unsigned long va = ALIGN_DOWN(__va, 16);
++
++	/*
++	 * Increase the number of bytes to {de,en}crypt by one chunk (16 bytes)
++	 * if the aligned address and length doesn't cover the unaligned range,
++	 * e.g. if the address is unaligned _and_ the access will split a chunk
++	 * at the tail.
++	 */
++	if (va + nr_bytes < __va + len)
++		nr_bytes += 16;
++
++	*pa = __sme_page_pa(page) + (va & ~PAGE_MASK);
  
  	/*
- 	 * Don't WARN if the kernel (rightly) thinks the total size is absurd,
-@@ -764,25 +793,14 @@ static struct page **sev_pin_memory(struct kvm *kvm, unsigned long uaddr,
- 	if (!pages)
- 		return ERR_PTR(-ENOMEM);
+-	 * Its safe to read more than we are asked, caller should ensure that
+-	 * destination has enough space.
++	 * Sanity check that the new access won't split a page.  This should
++	 * never happen; just squash the access and let the firmware command
++	 * fail.
+ 	 */
+-	offset = src_paddr & 15;
+-	src_paddr = round_down(src_paddr, 16);
+-	sz = round_up(sz + offset, 16);
++	if (WARN_ON_ONCE((*pa & PAGE_MASK) != ((*pa + nr_bytes - 1) & PAGE_MASK)))
++		return 0;
  
--	/* Pin the user virtual address. */
--	npinned = pin_user_pages_fast(uaddr, npages, flags, pages);
--	if (npinned != npages) {
--		pr_err("SEV: Failure locking %lu pages.\n", npages);
--		ret = -ENOMEM;
--		goto err;
-+	ret = sev_pin_user_pages(kvm, uaddr, npages, flags, pages);
-+	if (ret) {
-+		kvfree(pages);
-+		return ERR_PTR(ret);
- 	}
- 
- 	*n = npages;
--	sev->pages_locked = total_npages;
--
- 	return pages;
--
--err:
--	if (npinned > 0)
--		unpin_user_pages(pages, npinned);
--
--	kvfree(pages);
--	return ERR_PTR(ret);
+-	return __sev_issue_dbg_cmd(kvm, src_paddr, dst_paddr, sz, err, false);
++	return nr_bytes;
  }
  
- static void sev_unpin_memory(struct kvm *kvm, struct page **pages,
-@@ -793,6 +811,29 @@ static void sev_unpin_memory(struct kvm *kvm, struct page **pages,
- 	to_kvm_sev_info(kvm)->pages_locked -= npages;
- }
- 
-+static struct page *sev_pin_page(struct kvm *kvm, unsigned long addr,
-+				 unsigned int flags)
-+{
-+	struct page *page;
+-static int __sev_dbg_decrypt_user(struct kvm *kvm, unsigned long paddr,
+-				  void __user *dst_uaddr,
+-				  unsigned long dst_paddr,
+-				  int size, int *err)
++static int sev_dbg_decrypt_slow(struct kvm *kvm, unsigned long src,
++				struct page *src_p, unsigned long dst,
++				unsigned int len, int *err)
+ {
+-	struct page *tpage = NULL;
+-	int ret, offset;
+-
+-	/* if inputs are not 16-byte then use intermediate buffer */
+-	if (!IS_ALIGNED(dst_paddr, 16) ||
+-	    !IS_ALIGNED(paddr,     16) ||
+-	    !IS_ALIGNED(size,      16)) {
+-		tpage = (void *)alloc_page(GFP_KERNEL_ACCOUNT | __GFP_ZERO);
+-		if (!tpage)
+-			return -ENOMEM;
+-
+-		dst_paddr = __sme_page_pa(tpage);
+-	}
+-
+-	ret = __sev_dbg_decrypt(kvm, paddr, dst_paddr, size, err);
+-	if (ret)
+-		goto e_free;
+-
+-	if (tpage) {
+-		offset = paddr & 15;
+-		if (copy_to_user(dst_uaddr, page_address(tpage) + offset, size))
+-			ret = -EFAULT;
+-	}
+-
+-e_free:
+-	if (tpage)
+-		__free_page(tpage);
+-
+-	return ret;
++	unsigned int nr_bytes;
++	unsigned long src_pa;
++	struct page *buf_p;
++	void *buf;
 +	int r;
 +
-+	r = sev_check_pin_count(kvm, 1);
++	buf_p = sev_alloc_dbg_buffer(&buf);
++	if (!buf_p)
++		return -ENOMEM;
++
++	nr_bytes = sev_dbg_crypt_slow_addr_and_size(src_p, src, len, &src_pa);
++
++	r = sev_issue_dbg_cmd(kvm, src_pa, __sme_page_pa(buf_p),
++			      nr_bytes, KVM_SEV_DBG_DECRYPT, err);
 +	if (r)
-+		return ERR_PTR(r);
++		goto out;
 +
-+	r = sev_pin_user_pages(kvm, addr, 1, flags, &page);
++	if (copy_to_user((void __user *)dst, buf + (src & 15), len))
++		r = -EFAULT;
++out:
++	sev_free_dbg_buffer(buf_p, buf);
++	return r;
+ }
+ 
+-static int __sev_dbg_encrypt_user(struct kvm *kvm, unsigned long paddr,
+-				  void __user *vaddr,
+-				  unsigned long dst_paddr,
+-				  void __user *dst_vaddr,
+-				  int size, int *error)
++static int sev_dbg_encrypt_slow(struct kvm *kvm, unsigned long src,
++				unsigned long dst, struct page *dst_p,
++				unsigned int len, int *err)
+ {
+-	struct page *src_tpage = NULL;
+-	struct page *dst_tpage = NULL;
+-	int ret, len = size;
++	unsigned int nr_bytes;
++	unsigned long dst_pa;
++	struct page *buf_p;
++	void *buf;
++	int r;
+ 
+-	/* If source buffer is not aligned then use an intermediate buffer */
+-	if (!IS_ALIGNED((unsigned long)vaddr, 16)) {
+-		src_tpage = alloc_page(GFP_KERNEL_ACCOUNT);
+-		if (!src_tpage)
+-			return -ENOMEM;
++	buf_p = sev_alloc_dbg_buffer(&buf);
++	if (!buf_p)
++		return -ENOMEM;
+ 
+-		if (copy_from_user(page_address(src_tpage), vaddr, size)) {
+-			__free_page(src_tpage);
+-			return -EFAULT;
+-		}
++	/* Decrypt the _destination_ to do a RMW on plaintext. */
++	nr_bytes = sev_dbg_crypt_slow_addr_and_size(dst_p, dst, len, &dst_pa);
+ 
+-		paddr = __sme_page_pa(src_tpage);
+-	}
++	r = sev_issue_dbg_cmd(kvm, dst_pa, __sme_page_pa(buf_p),
++			      nr_bytes, KVM_SEV_DBG_DECRYPT, err);
 +	if (r)
-+		return ERR_PTR(r);
-+
-+	return page;
-+}
-+
-+static void sev_unpin_page(struct kvm *kvm, struct page *page)
-+{
-+	unpin_user_pages(&page, 1);
-+	to_kvm_sev_info(kvm)->pages_locked -= 1;
-+}
-+
- static void sev_clflush_pages(struct page *pages[], unsigned long npages)
++		goto out;
+ 
+ 	/*
+-	 *  If destination buffer or length is not aligned then do read-modify-write:
+-	 *   - decrypt destination in an intermediate buffer
+-	 *   - copy the source buffer in an intermediate buffer
+-	 *   - use the intermediate buffer as source buffer
++	 * Copy from the source into the intermediate buffer, and then
++	 * re-encrypt the buffer into the destination.
+ 	 */
+-	if (!IS_ALIGNED((unsigned long)dst_vaddr, 16) || !IS_ALIGNED(size, 16)) {
+-		int dst_offset;
+-
+-		dst_tpage = alloc_page(GFP_KERNEL_ACCOUNT);
+-		if (!dst_tpage) {
+-			ret = -ENOMEM;
+-			goto e_free;
+-		}
+-
+-		ret = __sev_dbg_decrypt(kvm, dst_paddr,
+-					__sme_page_pa(dst_tpage), size, error);
+-		if (ret)
+-			goto e_free;
+-
+-		/*
+-		 *  If source is kernel buffer then use memcpy() otherwise
+-		 *  copy_from_user().
+-		 */
+-		dst_offset = dst_paddr & 15;
+-
+-		if (src_tpage)
+-			memcpy(page_address(dst_tpage) + dst_offset,
+-			       page_address(src_tpage), size);
+-		else {
+-			if (copy_from_user(page_address(dst_tpage) + dst_offset,
+-					   vaddr, size)) {
+-				ret = -EFAULT;
+-				goto e_free;
+-			}
+-		}
+-
+-		paddr = __sme_page_pa(dst_tpage);
+-		dst_paddr = round_down(dst_paddr, 16);
+-		len = round_up(size, 16);
+-	}
+-
+-	ret = __sev_issue_dbg_cmd(kvm, paddr, dst_paddr, len, error, true);
+-
+-e_free:
+-	if (src_tpage)
+-		__free_page(src_tpage);
+-	if (dst_tpage)
+-		__free_page(dst_tpage);
+-	return ret;
++	if (copy_from_user(buf + (dst & 15), (void __user *)src, len))
++		r = -EFAULT;
++	else
++		r = sev_issue_dbg_cmd(kvm, __sme_page_pa(buf_p), dst_pa,
++				      nr_bytes, KVM_SEV_DBG_ENCRYPT, err);
++out:
++	sev_free_dbg_buffer(buf_p, buf);
++	return r;
+ }
+ 
+-static int sev_dbg_crypt(struct kvm *kvm, struct kvm_sev_cmd *argp, bool dec)
++static int sev_dbg_crypt(struct kvm *kvm, struct kvm_sev_cmd *argp,
++			 unsigned int cmd)
  {
- 	uint8_t *page_virtual;
-@@ -1345,9 +1386,8 @@ static int sev_dbg_crypt(struct kvm *kvm, struct kvm_sev_cmd *argp, bool dec)
- {
- 	unsigned long vaddr, vaddr_end, next_vaddr;
- 	unsigned long dst_vaddr;
--	struct page **src_p, **dst_p;
-+	struct page *src_p, *dst_p;
+-	unsigned long vaddr, vaddr_end, next_vaddr;
+-	unsigned long dst_vaddr;
+-	struct page *src_p, *dst_p;
  	struct kvm_sev_dbg debug;
--	unsigned long n;
- 	unsigned int size;
- 	int ret;
+-	unsigned int size;
+-	int ret;
++	unsigned int i, len;
  
-@@ -1373,13 +1413,13 @@ static int sev_dbg_crypt(struct kvm *kvm, struct kvm_sev_cmd *argp, bool dec)
- 		int len, s_off, d_off;
+ 	if (!sev_guest(kvm))
+ 		return -ENOTTY;
+@@ -1404,20 +1385,29 @@ static int sev_dbg_crypt(struct kvm *kvm, struct kvm_sev_cmd *argp, bool dec)
+ 	    debug.dst_uaddr + debug.len < debug.dst_uaddr)
+ 		return -EINVAL;
  
- 		/* lock userspace source and destination page */
--		src_p = sev_pin_memory(kvm, vaddr & PAGE_MASK, PAGE_SIZE, &n, 0);
-+		src_p = sev_pin_page(kvm, vaddr & PAGE_MASK, 0);
+-	vaddr = debug.src_uaddr;
+-	size = debug.len;
+-	vaddr_end = vaddr + size;
+-	dst_vaddr = debug.dst_uaddr;
++	for (i = 0; i < debug.len; i += len) {
++		unsigned long src = debug.src_uaddr + i;
++		unsigned long dst = debug.dst_uaddr + i;
++		unsigned long s_off = src & ~PAGE_MASK;
++		unsigned long d_off = dst & ~PAGE_MASK;
++		struct page *src_p, *dst_p;
++		int ret;
+ 
+-	for (; vaddr < vaddr_end; vaddr = next_vaddr) {
+-		int len, s_off, d_off;
++		/*
++		 * Copy as many remaining bytes as possible while staying in a
++		 * single page for both the source and destination.
++		 */
++		len = min3(debug.len - i, PAGE_SIZE - s_off, PAGE_SIZE - d_off);
+ 
+-		/* lock userspace source and destination page */
+-		src_p = sev_pin_page(kvm, vaddr & PAGE_MASK, 0);
++		/*
++		 * Pin the source and destination pages; firmware operates on
++		 * physical addresses.
++		 */
++		src_p = sev_pin_page(kvm, src & PAGE_MASK, 0);
  		if (IS_ERR(src_p))
  			return PTR_ERR(src_p);
  
--		dst_p = sev_pin_memory(kvm, dst_vaddr & PAGE_MASK, PAGE_SIZE, &n, FOLL_WRITE);
-+		dst_p = sev_pin_page(kvm, dst_vaddr & PAGE_MASK, FOLL_WRITE);
+-		dst_p = sev_pin_page(kvm, dst_vaddr & PAGE_MASK, FOLL_WRITE);
++		dst_p = sev_pin_page(kvm, dst & PAGE_MASK, FOLL_WRITE);
  		if (IS_ERR(dst_p)) {
--			sev_unpin_memory(kvm, src_p, n);
-+			sev_unpin_page(kvm, src_p);
+ 			sev_unpin_page(kvm, src_p);
  			return PTR_ERR(dst_p);
- 		}
+@@ -1431,41 +1421,25 @@ static int sev_dbg_crypt(struct kvm *kvm, struct kvm_sev_cmd *argp, bool dec)
+ 		sev_clflush_pages(&src_p, 1);
+ 		sev_clflush_pages(&dst_p, 1);
  
-@@ -1388,8 +1428,8 @@ static int sev_dbg_crypt(struct kvm *kvm, struct kvm_sev_cmd *argp, bool dec)
- 		 * the pages; flush the destination too so that future accesses do not
- 		 * see stale data.
- 		 */
--		sev_clflush_pages(src_p, 1);
--		sev_clflush_pages(dst_p, 1);
-+		sev_clflush_pages(&src_p, 1);
-+		sev_clflush_pages(&dst_p, 1);
- 
- 		/*
- 		 * Since user buffer may not be page aligned, calculate the
-@@ -1402,20 +1442,20 @@ static int sev_dbg_crypt(struct kvm *kvm, struct kvm_sev_cmd *argp, bool dec)
- 
- 		if (dec)
- 			ret = __sev_dbg_decrypt_user(kvm,
--						     __sme_page_pa(src_p[0]) + s_off,
-+						     __sme_page_pa(src_p) + s_off,
- 						     (void __user *)dst_vaddr,
--						     __sme_page_pa(dst_p[0]) + d_off,
-+						     __sme_page_pa(dst_p) + d_off,
- 						     len, &argp->error);
+-		/*
+-		 * Since user buffer may not be page aligned, calculate the
+-		 * offset within the page.
+-		 */
+-		s_off = vaddr & ~PAGE_MASK;
+-		d_off = dst_vaddr & ~PAGE_MASK;
+-		len = min_t(size_t, (PAGE_SIZE - s_off), size);
+-		len = min_t(size_t, len, PAGE_SIZE - d_off);
+-
+-		if (dec)
+-			ret = __sev_dbg_decrypt_user(kvm,
+-						     __sme_page_pa(src_p) + s_off,
+-						     (void __user *)dst_vaddr,
+-						     __sme_page_pa(dst_p) + d_off,
+-						     len, &argp->error);
++		if (IS_ALIGNED(src, 16) && IS_ALIGNED(dst, 16) && IS_ALIGNED(len, 16))
++			ret = sev_issue_dbg_cmd(kvm,
++						__sme_page_pa(src_p) + s_off,
++						__sme_page_pa(dst_p) + d_off,
++						len, cmd, &argp->error);
++		else if (cmd == KVM_SEV_DBG_DECRYPT)
++			ret = sev_dbg_decrypt_slow(kvm, src, src_p, dst,
++						   len, &argp->error);
  		else
- 			ret = __sev_dbg_encrypt_user(kvm,
--						     __sme_page_pa(src_p[0]) + s_off,
-+						     __sme_page_pa(src_p) + s_off,
- 						     (void __user *)vaddr,
--						     __sme_page_pa(dst_p[0]) + d_off,
-+						     __sme_page_pa(dst_p) + d_off,
- 						     (void __user *)dst_vaddr,
- 						     len, &argp->error);
+-			ret = __sev_dbg_encrypt_user(kvm,
+-						     __sme_page_pa(src_p) + s_off,
+-						     (void __user *)vaddr,
+-						     __sme_page_pa(dst_p) + d_off,
+-						     (void __user *)dst_vaddr,
+-						     len, &argp->error);
++			ret = sev_dbg_encrypt_slow(kvm, src, dst, dst_p,
++						   len, &argp->error);
  
--		sev_unpin_memory(kvm, src_p, n);
--		sev_unpin_memory(kvm, dst_p, n);
-+		sev_unpin_page(kvm, src_p);
-+		sev_unpin_page(kvm, dst_p);
+ 		sev_unpin_page(kvm, src_p);
+ 		sev_unpin_page(kvm, dst_p);
  
  		if (ret)
- 			goto err;
-@@ -1698,8 +1738,7 @@ static int sev_send_update_data(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 	struct sev_data_send_update_data data;
- 	struct kvm_sev_send_update_data params;
- 	void *hdr, *trans_data;
--	struct page **guest_page;
--	unsigned long n;
-+	struct page *guest_page;
- 	int ret, offset;
- 
- 	if (!sev_guest(kvm))
-@@ -1723,8 +1762,7 @@ static int sev_send_update_data(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 		return -EINVAL;
- 
- 	/* Pin guest memory */
--	guest_page = sev_pin_memory(kvm, params.guest_uaddr & PAGE_MASK,
--				    PAGE_SIZE, &n, 0);
-+	guest_page = sev_pin_page(kvm, params.guest_uaddr & PAGE_MASK, 0);
- 	if (IS_ERR(guest_page))
- 		return PTR_ERR(guest_page);
- 
-@@ -1745,7 +1783,7 @@ static int sev_send_update_data(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 	data.trans_len = params.trans_len;
- 
- 	/* The SEND_UPDATE_DATA command requires C-bit to be always set. */
--	data.guest_address = (page_to_pfn(guest_page[0]) << PAGE_SHIFT) + offset;
-+	data.guest_address = page_to_phys(guest_page) + offset;
- 	data.guest_address |= sev_me_mask;
- 	data.guest_len = params.guest_len;
- 	data.handle = to_kvm_sev_info(kvm)->handle;
-@@ -1772,8 +1810,7 @@ static int sev_send_update_data(struct kvm *kvm, struct kvm_sev_cmd *argp)
- e_free_hdr:
- 	kfree(hdr);
- e_unpin:
--	sev_unpin_memory(kvm, guest_page, n);
+-			goto err;
 -
-+	sev_unpin_page(kvm, guest_page);
- 	return ret;
+-		next_vaddr = vaddr + len;
+-		dst_vaddr = dst_vaddr + len;
+-		size -= len;
++			return ret;
+ 	}
+-err:
+-	return ret;
++	return 0;
  }
  
-@@ -1878,8 +1915,7 @@ static int sev_receive_update_data(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 	struct kvm_sev_receive_update_data params;
- 	struct sev_data_receive_update_data data;
- 	void *hdr = NULL, *trans = NULL;
--	struct page **guest_page;
--	unsigned long n;
-+	struct page *guest_page;
- 	int ret, offset;
- 
- 	if (!sev_guest(kvm))
-@@ -1916,8 +1952,7 @@ static int sev_receive_update_data(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 	data.trans_len = params.trans_len;
- 
- 	/* Pin guest memory */
--	guest_page = sev_pin_memory(kvm, params.guest_uaddr & PAGE_MASK,
--				    PAGE_SIZE, &n, FOLL_WRITE);
-+	guest_page = sev_pin_page(kvm, params.guest_uaddr & PAGE_MASK, FOLL_WRITE);
- 	if (IS_ERR(guest_page)) {
- 		ret = PTR_ERR(guest_page);
- 		goto e_free_trans;
-@@ -1928,10 +1963,10 @@ static int sev_receive_update_data(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 	 * encrypts the written data with the guest's key, and the cache may
- 	 * contain dirty, unencrypted data.
- 	 */
--	sev_clflush_pages(guest_page, n);
-+	sev_clflush_pages(&guest_page, 1);
- 
- 	/* The RECEIVE_UPDATE_DATA command requires C-bit to be always set. */
--	data.guest_address = (page_to_pfn(guest_page[0]) << PAGE_SHIFT) + offset;
-+	data.guest_address = page_to_phys(guest_page) + offset;
- 	data.guest_address |= sev_me_mask;
- 	data.guest_len = params.guest_len;
- 	data.handle = to_kvm_sev_info(kvm)->handle;
-@@ -1939,7 +1974,7 @@ static int sev_receive_update_data(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 	ret = sev_issue_cmd(kvm, SEV_CMD_RECEIVE_UPDATE_DATA, &data,
- 				&argp->error);
- 
--	sev_unpin_memory(kvm, guest_page, n);
-+	sev_unpin_page(kvm, guest_page);
- 
- e_free_trans:
- 	kfree(trans);
+ static int sev_launch_secret(struct kvm *kvm, struct kvm_sev_cmd *argp)
+@@ -2727,10 +2701,8 @@ int sev_mem_enc_ioctl(struct kvm *kvm, void __user *argp)
+ 		r = sev_guest_status(kvm, &sev_cmd);
+ 		break;
+ 	case KVM_SEV_DBG_DECRYPT:
+-		r = sev_dbg_crypt(kvm, &sev_cmd, true);
+-		break;
+ 	case KVM_SEV_DBG_ENCRYPT:
+-		r = sev_dbg_crypt(kvm, &sev_cmd, false);
++		r = sev_dbg_crypt(kvm, &sev_cmd, sev_cmd.id);
+ 		break;
+ 	case KVM_SEV_LAUNCH_SECRET:
+ 		r = sev_launch_secret(kvm, &sev_cmd);
 -- 
 2.54.0.545.g6539524ca2-goog
 
