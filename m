@@ -1,123 +1,185 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670263290D2
-	for <kvm@vger.kernel.org>; Fri,  1 May 2026 22:08:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0526A311969;
+	Fri,  1 May 2026 22:19:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777673333; cv=none; b=UkdQqFG4jtDUgfgxSKerHX9ukiXgoc37NGmRCl0ICANFjyEoHGBMtehcuwPeGgXaaHmvRlv7LaX7ztYF+DhMtuLgX6QCGGxuq/6zH2SxrCYRmGhgs6hsqC8ry9T5o8MiEj2vcqs2OEFO3a7YgwFmjC9LhLxKmD7J7hl2vTckb4U=
+	t=1777673964; cv=none; b=UxA6TEaYhCGZJa1tyfKX0vCe/0R5E3mRgQ+ULWCeRxW9jSeauSx9m7pGm8u2RpKY+AhV/xYZLnAmN0z8yaOQTjW8v4nFzczyr7exh0Dq/QbnpIsnkmohQwIBaHD4/rtcjifa8PM9rXhvGg0SvkUL5FdaBKU3AH9VjwvS/blA9R8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777673333; c=relaxed/simple;
-	bh=Gg8XwvR2iye8ftuUb9NqbqgTU1BVsr9N0mr1rcUra+M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LlT7j0XBNUZacBcY4ezdhDSgBxcSjrC2tx1lkQ/OwYsDsBHUb1z2yAbK3E/3bx59WzzbBZkdbMcu5fniYWyuBlZnqjIOi5bkbUEhF4ZQBHAJSwxIB6OGqBDutzFzzqGBaFSEQW7e8CaXdXn2mFR38/f+DZN6GFwLKwmczvCzZPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FB/UTE6y; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1777673964; c=relaxed/simple;
+	bh=LKLmpAMvdy7nhyII+neC4/sH0Z65su8gdM107KwQx8k=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=G/kaolrcDO9LYlQ0iF29zBHOHDGHZv6omtlvexgHjrj0hpJIHRB7pNz/fCYEBQVjc7EZg+uHwpat1mtaelxwL+EiB/M3pakznXXiLLuvCPTj7nGEHj/POCMX6hG0bxTOF8II6qyG/m+uqGVWDSTctlQoFUKrlNp1eUeTivq2g4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=Z36rFCSV; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Riv28Dn2; arc=none smtp.client-ip=202.12.124.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FB/UTE6y"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2b7d3ecc10dso19995885ad.2
-        for <kvm@vger.kernel.org>; Fri, 01 May 2026 15:08:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777673332; x=1778278132; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=rIaBOF6T3Igmnhw7WxYJufQz1JELLjrBCUgq2t+SNoU=;
-        b=FB/UTE6yrxnLOfl/SWHG/JOdIUkdte5z/Va9gzKPiVkf+Yw/OwzoTopbUuIYGs5WGf
-         0ULgy3tiaZJdN1ExKkpvKOsCRE1fhdVrsBPayKfaZ7e63Sw5sulgKTxf1O6Nwfmso8xa
-         Rg+jPPhHjpoyBnIj2gFilMZC1WRjQuwM+NlHTFr0n5biDIjKnbpE2CF/EMxWUeVTJUk3
-         Id+bVufmLLA22suG1BE/dOTWp2agYba/jD39teCzZsOENf5AiSNRbciImLmNFIoWdCN9
-         fArB2NI5pk1jqXZepvlozBNHfx6bH9pTbUu7wSHTESH/X8ds/evxf2kBzJ09SWFulZyN
-         iSFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777673332; x=1778278132;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rIaBOF6T3Igmnhw7WxYJufQz1JELLjrBCUgq2t+SNoU=;
-        b=XUV9kqzmRJ7ndr/tBmrBa4Ha8ugopzTA1rfTCCd/JEcpZwT6ynRBra/nTm+TkLCNrw
-         y7SphbQE1OoWRoSi2U3ai8xlcqUc7YhpQZFgXWf3ficYHejktAxhfERhTkfBuBZ9hhn+
-         sOfj8ag42iuoO27mDWSMeEQIpCht3DqHlAZ1Acv5cSmUucm5pmLGhrA8KBCjuzXymoop
-         eW+pzU6K/QHeoBJiLSBqYvKr5gGYVwuks7UApJgT1vIG5+3xAoBRxeWSS431f/zG4zxn
-         a4tL52hdLaQJrt4XG+qinaWJ1ycSGAIJotDsIhkkxDzuAJTkraM8qwt7Eo8Eb39V6WvX
-         ZZdg==
-X-Forwarded-Encrypted: i=1; AFNElJ+TzvQOCN/krQvMI6aUIftAFg+jV60P4wZGpuD+OSCOcBFp/YDbn0dDQMWtHKHjzhPO0xY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxmpCFcuCkjFxNZwy8oFne5SRFAYfDsRnGSlMVB659SnqRjdiY8
-	rniVmHlmZ4r+3F1hRf3pgVZgtX6wfUM1uSK1aFSPgi1C+imu+eRtAK+8Q6y9BM43xQ==
-X-Gm-Gg: AeBDiesBfqR1THj0qq0+cvtJR4cpRRIsJdIgiXS1dRnnKHhIEMKaW/Svs5c1+DLA0cu
-	3RWsI+ayX5bSxvZZ5RA0Y+B9Y935FQe73eWhJdzG+ykfmarBqqY7HHPwnkqdmOUm52EosqoBCy3
-	GI0SduTSGwYrRlG/t3pSk13Xzh9J6HQpvlK0mwtREfedqKL43/aAHvUkTzgdVE6C1ILuygELEhk
-	wGMsTjehJmnlbXT1s/s83A303JM8FEbvHEks+nPI9vZf7Ki8PnIRvZFo+Jnk46UAe2+3QjjERwk
-	nooZ32SyzU13T4+fi1EPXLs/7JDSyVQgxNSnIoVRtBshP47P9ZWIB+acsJZnERWcHWNaLWOEpxz
-	k82Tbeka0NXkFzhWYNsam8ru/m05BMT3b5YxaN1eAPdwBcdfHgfebaW7iT5X1NHRSBlucllRgmC
-	DZhFMtYbOeeTbBr4UsxFZBjgOwkodpNWb1Iy4HzKs3vHPmZhH59zF1vEaIKmfpUlDeaJkRo324q
-	TLUpQ==
-X-Received: by 2002:a17:903:3c23:b0:2b2:41a9:8e10 with SMTP id d9443c01a7336-2b9f25e5495mr9622995ad.23.1777673331344;
-        Fri, 01 May 2026 15:08:51 -0700 (PDT)
-Received: from google.com (76.9.127.34.bc.googleusercontent.com. [34.127.9.76])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b9cae6d123sm33770635ad.84.2026.05.01.15.08.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 May 2026 15:08:50 -0700 (PDT)
-Date: Fri, 1 May 2026 22:08:47 +0000
-From: David Matlack <dmatlack@google.com>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Parav Pandit <parav@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>,
-	Pranjal Shrivastava <praan@google.com>,
-	Vipin Sharma <vipinsh@google.com>, YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH v2 03/16] iommu: Implement IOMMU domain preservation
-Message-ID: <afUkbz0IQh98siYn@google.com>
-References: <20260427175633.1978233-1-skhawaja@google.com>
- <20260427175633.1978233-4-skhawaja@google.com>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="Z36rFCSV";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Riv28Dn2"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id EEA127A0078;
+	Fri,  1 May 2026 18:19:18 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Fri, 01 May 2026 18:19:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1777673958;
+	 x=1777760358; bh=4TX/vtHUA9w5SLfj0GTrWfQ85zbl7VX0Zm2z9iybBGg=; b=
+	Z36rFCSV/QHmdMLY8t8AOreKTfAXJWjSgrmCwCpHa9+ReT7y36fgcR5pc5+GEqDS
+	eLpXfKzpd0Pc5TaH6ae90SgtPzwSlgr89CNZqPRsW47EsnsrIX+eViySl4rlJXJD
+	0F2itZ57gCSkpgtOJv7K6SMJGOfORF01ic1R15jRI1L6IZZIEEM5PxD8/BsWu1/S
+	eyBik5hXWGwGMEDvebHDpYuvooohhzBSUWUlWqxW5QVsSx9q0fx/UddnaEJHV3aT
+	RB8FAxyZIsh4OjFeHxAaN+E/dhHafNo39QJbQlYa8fMtqJQ6+32I4TlwfypNBE7h
+	HQ5Kpv9hq7/KDnu1Km7UMA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1777673958; x=
+	1777760358; bh=4TX/vtHUA9w5SLfj0GTrWfQ85zbl7VX0Zm2z9iybBGg=; b=R
+	iv28Dn26iAUXL2ry8P1je31g/3uECfkks3pwYk9h65HngH0Uy4tOs8zDdqIm3hTs
+	2g+1rC0b6Eab1EBcDdcko4IpzoO3iQl8O4VlqgECyUO/TDmw6G6xF09vGFwoDb4w
+	n6yPBJR9BwpOqX0r6Tzsq7S85jq8xcWXZtgS+i6nWtpLzWCod1Ql082fOt+qrApx
+	LA082YBqLFDO/c1RehIIZ+KLdEViXvdJm2aFqGfN5eGh2PZHZKlZlQROnqIBPL3Y
+	/RT8E42WicUOqDnfMP8MAFa0nnXc6BU02LBH82hdlnq1iUNOWI3mc8HHu2dO0fZl
+	WtInGVcI42IirGJLw2KWQ==
+X-ME-Sender: <xms:5Sb1aYNUZG6T84P__jBOxGJPdzhKXLpgaVTqJd1cXLahJ0eYRUblwQ>
+    <xme:5Sb1adWX3Ppw0aaRcnn1VTGpwyEtrCbaY1rJdxNJAw3gY8Qh5qHyX6gkUGXRxwAhV
+    SZU7HWEsSInE0NDEVm30R3Jp1ez00nieWantHFXFI_UW3MDUb3npw>
+X-ME-Received: <xmr:5Sb1abS8HSqyQU0NUgEdetLRrzJ6a0L4Vpr7eu3FwEp3OqHnQmshig8iHdo>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeludefkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefukfgjfhfogggtgfesthejredtredtvdenucfhrhhomheptehlvgigucgh
+    ihhllhhirghmshhonhcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrfgrth
+    htvghrnhepvdekfeejkedvudfhudfhteekudfgudeiteetvdeukedvheetvdekgfdugeev
+    ueeunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheprg
+    hlvgigsehshhgriigsohhtrdhorhhgpdhnsggprhgtphhtthhopedvtddpmhhouggvpehs
+    mhhtphhouhhtpdhrtghpthhtohepmhgrthhtvghvsehmvghtrgdrtghomhdprhgtphhtth
+    hopehlvghonheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepjhhgghesnhhvihguihgr
+    rdgtohhmpdhrtghpthhtoheprghmrghsthhrohesfhgsrdgtohhmpdhrtghpthhtoheptg
+    hhrhhishhtihgrnhdrkhhovghnihhgsegrmhgurdgtohhmpdhrtghpthhtohepmhhnghih
+    rggurghmsegrmhgriihonhdruggvpdhrtghpthhtohepughmrghtlhgrtghksehgohhogh
+    hlvgdrtghomhdprhgtphhtthhopegsjhhorhhnsehkvghrnhgvlhdrohhrghdprhgtphht
+    thhopehsuhhmihhtrdhsvghmfigrlheslhhinhgrrhhordhorhhg
+X-ME-Proxy: <xmx:5Sb1aT2nfnQUIzMnrub8onPVS6x1O83t5QZSLF6nuatY8uH4aCgxHA>
+    <xmx:5Sb1aYgkNICmhWFuRTixu6bvx7m-uS9MLGbEM5FmKoWyu6rCyTmhaQ>
+    <xmx:5Sb1aRZydNZyMo71yCBoVHolTdcupfRLa2hpmAv6ykZVda_STzI6tQ>
+    <xmx:5Sb1aRNlFq0ad7VlC83tSd-C0QFRQmU6ijTgGpN5eYNtdh63LiM6AQ>
+    <xmx:5ib1aS08He7QGz8xhxxoeRfmtj1zPSWcv__eW5qdQrbWWPjrMHjHHPHD>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 1 May 2026 18:19:16 -0400 (EDT)
+Date: Fri, 1 May 2026 16:19:15 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Matt Evans <mattev@meta.com>
+Cc: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
+ Alex Mastro <amastro@fb.com>, Christian =?UTF-8?B?S8O2bmln?=
+ <christian.koenig@amd.com>, Mahmoud Adam <mngyadam@amazon.de>, David
+ Matlack <dmatlack@google.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, Kevin Tian
+ <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>, Pranjal
+ Shrivastava <praan@google.com>, Alistair Popple <apopple@nvidia.com>, Vivek
+ Kasireddy <vivek.kasireddy@intel.com>, <linux-kernel@vger.kernel.org>,
+ <linux-media@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+ <linaro-mm-sig@lists.linaro.org>, <kvm@vger.kernel.org>, alex@shazbot.org
+Subject: Re: [PATCH 4/9] vfio/pci: Convert BAR mmap() to use a DMABUF
+Message-ID: <20260501161915.75525c15@shazbot.org>
+In-Reply-To: <20260416131815.2729131-5-mattev@meta.com>
+References: <20260416131815.2729131-1-mattev@meta.com>
+	<20260416131815.2729131-5-mattev@meta.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260427175633.1978233-4-skhawaja@google.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On 2026-04-27 05:56 PM, Samiullah Khawaja wrote:
-> Add IOMMU domain ops that can be implemented by the IOMMU drivers if
-> they support IOMMU domain preservation across liveupdate. The new IOMMU
-> domain preserve, unpreserve and restore APIs call these ops to perform
-> respective live update operations.
+On Thu, 16 Apr 2026 06:17:47 -0700
+Matt Evans <mattev@meta.com> wrote:
+
+> Convert the VFIO device fd fops->mmap to create a DMABUF representing
+> the BAR mapping, and make the VMA fault handler look up PFNs from the
+> corresponding DMABUF.  This supports future code mmap()ing BAR
+> DMABUFs, and iommufd work to support Type1 P2P.
 > 
-> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+> First, vfio_pci_core_mmap() uses the new
+> vfio_pci_core_mmap_prep_dmabuf() helper to export a DMABUF
+> representing a single BAR range.  Then, the vfio_pci_mmap_huge_fault()
+> callback is updated to understand revoked buffers, and uses the new
+> vfio_pci_dma_buf_find_pfn() helper to determine the PFN for a given
+> fault address.
+> 
+> Now that the VFIO DMABUFs can be mmap()ed, vfio_pci_dma_buf_move() and
+> vfio_pci_dma_buf_cleanup() need to zap PTEs on revocation and cleanup
+> paths.
+> 
+> CONFIG_VFIO_PCI_CORE now unconditionally depends on
+> CONFIG_DMA_SHARED_BUFFER.  CONFIG_VFIO_PCI_DMABUF remains, to
+> conditionally include support for VFIO_DEVICE_FEATURE_DMA_BUF, and
+> depends on CONFIG_PCI_P2PDMA.
+> 
+> Signed-off-by: Matt Evans <mattev@meta.com>
+> ---
+>  drivers/vfio/pci/Kconfig           |  3 +-
+>  drivers/vfio/pci/Makefile          |  3 +-
+>  drivers/vfio/pci/vfio_pci_core.c   | 86 ++++++++++++++++++------------
+>  drivers/vfio/pci/vfio_pci_dmabuf.c | 14 +++++
+>  drivers/vfio/pci/vfio_pci_priv.h   | 11 +---
+>  5 files changed, 71 insertions(+), 46 deletions(-)
+> 
+> diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
+> index 296bf01e185e..2074f2a941e1 100644
+> --- a/drivers/vfio/pci/Kconfig
+> +++ b/drivers/vfio/pci/Kconfig
+> @@ -6,6 +6,7 @@ config VFIO_PCI_CORE
+>  	tristate
+>  	select VFIO_VIRQFD
+>  	select IRQ_BYPASS_MANAGER
+> +	select DMA_SHARED_BUFFER
+>  
+>  config VFIO_PCI_INTX
+>  	def_bool y if !S390
+> @@ -56,7 +57,7 @@ config VFIO_PCI_ZDEV_KVM
+>  	  To enable s390x KVM vfio-pci extensions, say Y.
+>  
+>  config VFIO_PCI_DMABUF
+> -	def_bool y if VFIO_PCI_CORE && PCI_P2PDMA && DMA_SHARED_BUFFER
+> +	def_bool y if PCI_P2PDMA
 
-> +static int alloc_object_ser(struct iommu_array_hdr_ser **curr_array_ptr, u64 max_objs)
-> +{
-> +	struct iommu_array_hdr_ser *curr_array = *curr_array_ptr;
-> +	struct iommu_array_hdr_ser *next_array;
-> +
+But here we introduce the call chain:
 
-There's a trade-off being made in this function to leak deleted array
-elements instead of trying to reuse them that warrants a comment.
+ vfio_pci_core_mmap()
+   -> vfio_pci_core_mmap_prep_dmabuf()
+        -> pcim_p2pdma_provider()
 
-> +	if (curr_array->nr_objects >= max_objs) {
-> +		next_array = kho_alloc_preserve(PAGE_SIZE);
-> +		if (IS_ERR(next_array))
-> +			return PTR_ERR(next_array);
-> +
-> +		curr_array->next_array_phys = virt_to_phys(next_array);
-> +		*curr_array_ptr = next_array;
-> +		curr_array = next_array;
-> +	}
-> +
-> +	return curr_array->nr_objects++;
-> +}
+Where pcim_p2pdma_provider() requires PCI_P2PDMA.  So honestly,
+VFIO_PCI_CORE depends on PCI_P2PDMA.  I think that's a pretty
+significant regression.
+
+Exporting dma-bufs from vfio-pci is a feature, but mmap of MMIO BARs is
+a legacy requirement.  That legacy requirement now depends on
+PCI_P2PDMA, which depends on 64BIT and ZONE_DEVICE.
+
+It's possible that our 32-bit support is already broken and we can
+easily codify it in Kconfig.  We should check.  Otherwise it seems
+pretty harsh to drop it without notice, or make it fundamentally broken
+by exposing mmap support flags for regions where mmap is no longer
+available.
+
+ZONE_DEVICE is harder, it seems like it's possible there could be
+minimal 64-bit custom kernel configs where vfio-pci currently works
+without ZONE_DEVICE.
+
+We might be headed to this impasse already as dma-buf is required to
+have feature-complete compatibility with iommufd, but I had hoped we'd
+be able to manage that with full legacy functionality through the
+transition.  Thanks,
+
+Alex
