@@ -1,189 +1,151 @@
-Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76FB21A6831
-	for <kvm@vger.kernel.org>; Fri,  1 May 2026 00:58:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.170
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777597109; cv=pass; b=JAkC12HTMf59RuuIAuBA28Zc+ceno1ElitDsUWI22GscfWa4YfEXTfkzxTP6TjJEZVEw/xBEt2tOK6IOtuEBqvidXWyZZG8BY8okO48IGtGOwJa37dQIe83Zy22D4up/lSuryk+DsAUaGP22pL++cWWZP3KbnyJmOpHBpujQ6MU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777597109; c=relaxed/simple;
-	bh=fqYlQShHSMRctvGEIU2QmFWw1GV/FMGu+gThhwXZyvQ=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=beP6ZDZsyN4MufwnQUY2V2xeAkMipKjmugKH9QQFzSL4q4xhj+PJjrZdqmj9+541P1yyDjR+V6AWYyKSUXpMp3Y2XqcXOzXsdqw7LvNKp7ka89KvWNTUT1j+orFl86ls81eBPK3piUGCEfSo6+SO0rQg6apEab76KU8n3+/NQUw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iXtrKkZ6; arc=pass smtp.client-ip=209.85.221.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D5618C008
+	for <kvm@vger.kernel.org>; Fri,  1 May 2026 01:29:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777598952; cv=none; b=Pr/CXeuZl+2UZYuNtjGxwWYVQ2F46j92UX39yc9FQpkVKhRa10CSYq08xSM2NgDM8Y6z59Soe7SrT8JmrHSIV63NpkKyT596q1sPlKgpZhKXI+OsAnyuWs7XIBWbKoMvHWwCfiMYgc/x2g8+FBsYti3ZmxRKB/YpL+4uOUsGBR0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777598952; c=relaxed/simple;
+	bh=UI1JTGnTRkhg/YzWAk1s/Q6IgUGuMZVe5AfaJ5Cr5qY=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=eJ+AbELFf9Ve9kIb4gRfd2UmcdwSdqPmk4HZHBW3aCLUZ65nsqvpozflwCmLZVszZY/8YUIHyNKQF/31Dv+oE1An4ejNQqbIFqfAUzLol4oJSuttIkePmNhOWzdAnHiJ0kQxUZwbIuN48wesnjjYQ7ZuZi4nLpTmCUBB8PKFGRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hG8kaM1D; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iXtrKkZ6"
-Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-56efdc96b05so923085e0c.1
-        for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 17:58:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777597107; cv=none;
-        d=google.com; s=arc-20240605;
-        b=NV4BO80CyJbFBA1iokLJcPncNMilc+0knwDcNxvhGDo5jyIw6IXwgkanBP3UgLD+kJ
-         9ME4qdlY1vraCNsFitR6x8MQthwyDdWsmtMU1UjDnyvzxU7zy1O80kecz21N2z5RDWFv
-         B8FPLB9WlIvrEF6QLle96Ncs/zI8bvNr5Bl3BsxfUZeOX6r2dMlBZdyQEcU06CCBt9xd
-         sAxPAvF0JyHFOsSwlaZ9UibXvR7M/AOGuwnQQihfTGvpzhXEtBjv/F/mqGRh7sVTzRi6
-         GcK/YyX8nn3YLj7yFR97OW8day5e440xoSiieY6utqug7H5VUS5FUFU3K5zDCmBhrzaN
-         +CaA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:dkim-signature;
-        bh=sH/8kc6iI1JLK2/3TZ78o+aqGZdALyItajE7z4O66hQ=;
-        fh=+3cHobsrc4VfFfQ0gGPM+NxwTuqfFFHzkw2HI6qcj2s=;
-        b=S7WAKsbMA/1U8nngA3Z+PbB0viTootebDIBD9x1gg+L+mQlKtWDEIlIjuDhUiqhks+
-         h4I8Tr/h0KcQeKgsa5BJ140TDYwFCLg5EZOrYCHmFMCkqrjSaxFcPY38el5b2ROubEtD
-         io5p3enYT+eA9bkPhz0UPTrEADMdjkBYAzZANr+AYewA+iHPq/VvKwtLBVOxYlVL1jVG
-         XhybYo94nZ+w0MDvxlfmp8Swqrsuh4S4OI67ThilScC4UpiBFddJ2NeNDT+nKdkooLtp
-         BYbYtsUPZZvTNoSltH5JQhZg8SA4KS7oOd/iRdXghitFnHP2iC/znpXIFVbWhYBfELOI
-         oQSA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777597107; x=1778201907; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sH/8kc6iI1JLK2/3TZ78o+aqGZdALyItajE7z4O66hQ=;
-        b=iXtrKkZ6QahBGJBzYtvjhxvOLttbebfX88GeehfPb4tuT2SLB3Y7DqnfA2zBty172a
-         aBT034EHPe+4NnFmFfsZGSafVwgZPyUhe1DQCvfayp8xWDK/Kfdwjt1FxxhyPn9W80BW
-         Esuxg3LPzyU31lykb1MJB1DMssIRxugbo9WG4pXKPimBvsneBtaDMjh1bb1RIPX8kUZy
-         MSw6gU1wH4jp5VhVB9F/E887+I7qf4+kKfwSoX8hdC9f1QKkWUrSatMTlbeT65FpZGV9
-         PqmjWVxiyTBMMZXNJWvO2C8jkjcVsAEDg3DhU+/64HEZ7O5S4WZY8IbgmADS151cyYSv
-         BLLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777597107; x=1778201907;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=sH/8kc6iI1JLK2/3TZ78o+aqGZdALyItajE7z4O66hQ=;
-        b=EjPifouucZPwnKo8UMaKXVl7oNQXvX6/ydxEhxvsn2fGRz6uptyCInSG5rLm0kwmgW
-         EgYVx7yGp2oQ7IPN2N3QLJk0yt8Yrw7dV13NSKi7DPH35cteD1QtOxXacM6qKPKvMjJ0
-         sBOwKNad2BtJz4z5XxGLIosgNvFrF8QsEJSqVSZwUkZwBg/CsL+PhrzsHZha+WX2Aq1u
-         hIXcGi67lxWKIhilKOQaRNI6KMX6kJha17GYLVMGGSKvnvsXS3Gl8cilAN6tdvRDYUnC
-         QONEZ7XofiSQDqFl/O39ZcKFd3d/OZbzvNEbVKpZoYafvpTCXHWI8J1w1V1JxEbTUGdP
-         RA0A==
-X-Forwarded-Encrypted: i=1; AFNElJ9NYxl/mI5YoALc5dfUAzSyLGIj1MWtL/Qz4TXx5gwiquA1tmnGJPtSSmyO1mUTIWyD3G4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwWTGzWWTFT2i1/bJkH3+XX09y2KAsHBpv9K1Ap+nKqBT9vxxgT
-	qrOdOJ/jjzY/ZF5dc+S66qYRBJrhgvgPZMDYxzFYzhLPLsQ8Ey87wb6ABKniogzBc+5ypZ0cy2P
-	9BZD5CgbGrvYly+igWw0MKEShSTHFi/hw2LK587qS
-X-Gm-Gg: AeBDiesd2KirncqqwsAUO0t0Jh4YUg1ppldvAaKKzlOg+zTNnskNY2jCat5FxHJp7gn
-	n055fKgExS7pnPt5yGJkJrbOy9RLaghk2j9HBEXoJ4wRfpKV0iOwI6M5v9MSEtqEvuQM1JUl7ky
-	V0h7OIMuh1dppDVEwDsCuL9CCCCZzM1CZKJTLI15tt32hYCKpUSYBuVijuUedQxm3WWsq29Htb1
-	eidEVfhXrKPp3Iaz5/FuhALt8eTNBXsCiTrqc9FWh2iL1m0TOVizP/IUetSm5fdojhMK3JxMM4v
-	Ug+i2E4jbsyxdgdMl2uOBmHnNHz5ilzRDGqu/JKx6Mhl/whHO9I9rVPmEnzW
-X-Received: by 2002:a05:6122:2a56:b0:567:4e8a:fb13 with SMTP id
- 71dfb90a1353d-574bea2b1eamr480295e0c.8.1777597106942; Thu, 30 Apr 2026
- 17:58:26 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Apr 2026 17:58:26 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Apr 2026 17:58:26 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <231efd4e9267d3dbb8c63e57b3a43567c965e24a.camel@intel.com>
-References: <20260430014852.24183-1-yan.y.zhao@intel.com> <20260430014948.24226-1-yan.y.zhao@intel.com>
- <CAEvNRgGsMaioFvTWaLhnDiLbdx3tunZpo3Qzxdm1xeb4ef0J9Q@mail.gmail.com> <231efd4e9267d3dbb8c63e57b3a43567c965e24a.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hG8kaM1D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52957C2BCB8;
+	Fri,  1 May 2026 01:29:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777598951;
+	bh=UI1JTGnTRkhg/YzWAk1s/Q6IgUGuMZVe5AfaJ5Cr5qY=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
+	b=hG8kaM1DZSLP/NhWnpCzh0k/uz4Qw2q/mx08rS2tGGCUKipCZitLubMSdbX8t2FwE
+	 rI8uvMkwATVxic8cMi7+IpN6C7z1Mla3knqBD4zEAYgrDJv3PQsB9GCcnbuMFI3AlO
+	 Ti32g2lPsgU9no2OZKFRzZOOnyXXgT/N8z3ha2EtqP49XI8vkiIqePwv8c79O4pU88
+	 efRaEUJ5gYKBIHPYaRtmzq1jIYu3KePGcp3OcZ+2nl1TsDFj9E3dKOjBAu+wlkF5jy
+	 ah3A42u9Y54deTeyEOu/Ox4zJO1+0vVPHJDKw/wW9QmWThr1YqC6Tq2arGxWE0Miss
+	 tBCFNkWSOcfRg==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 5DBC4F40086;
+	Thu, 30 Apr 2026 21:29:10 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Thu, 30 Apr 2026 21:29:10 -0400
+X-ME-Sender: <xms:5gH0aT1QvMsAJ_m88vJLQrGZ9IPkmxaA4Ldnvr1K9R70_3HPyg_DCA>
+    <xme:5gH0aRLz6Vt8rYLIVrhhQXcTmG-5ABH0btmTt26JD8zMQNzPmPhfkKT_qGC0OH794
+    xkO7G5nsTWvBr25-_kLrYMJg_DMVJm1UGwElgbthrYOod6IQM8zXvI>
+X-ME-Received: <xmr:5gH0aaFoI5d5KOU9aZJqvz_Ym8sxgadS9G7G-pAyyKURwoQsXP3b9wJbSS3CQTVptRprM7JNgcbUcp8_DOvZI86E6MLeDFaYLYk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdekkeekkecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpeffhffvvefkjghfufggtgfgsehtqhertddttdejnecuhfhrohhmpedfffgrnhcuhghi
+    lhhlihgrmhhsucdlnhhvihguihgrmddfuceoughjsgifsehkvghrnhgvlhdrohhrgheqne
+    cuggftrfgrthhtvghrnhephfeijeetkedtudevueekveehgffhgffggffglefhfeejtddv
+    vefhudffveekkeevnecuffhomhgrihhnpegtohhnfhhiuggvnhhtihgrlhgtohhmphhuth
+    hinhhgrdhiohenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhr
+    ohhmpegujhgsfidomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudejjedvfe
+    dtgeehhedqfeeffeelgedtgeejqdgujhgsfieppehkvghrnhgvlhdrohhrghesfhgrshht
+    mhgrihhlrdgtohhmpdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprh
+    gtphhtthhopehjrghmvghsrdgsohhtthhomhhlvgihsehhrghnshgvnhhprghrthhnvghr
+    shhhihhprdgtohhmpdhrtghpthhtohepughjsgifsehkvghrnhgvlhdrohhrghdprhgtph
+    htthhopehpsghonhiiihhnihesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprhhitghk
+    rdhprdgvughgvggtohhmsggvsehinhhtvghlrdgtohhmpdhrtghpthhtohepkhhvmhesvh
+    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihgthhgrvghlrdhrohhthhes
+    rghmugdrtghomhdprhgtphhtthhopeihihhluhhnrdiguhesihhnthgvlhdrtghomhdprh
+    gtphhtthhopehirhgrrdifvghinhihsehinhhtvghlrdgtohhm
+X-ME-Proxy: <xmx:5gH0aVVQabEVZ1GBCGUqz7NXGQY9ragtMDaJN5397LLJUVclYcT7Mg>
+    <xmx:5gH0aawgnhTLX_C8NKBpQJGRRt4ocTOplYsB5XFOwtAjnHY3P2UpYg>
+    <xmx:5gH0aSRv9v83FkiLkJqmK6YGQlZci0Ild4BUI_gejSzBm5l0OO_gxg>
+    <xmx:5gH0aej6upM5GMsCi6R8vHFSxZfkhEnXTfzIk7UH-CV-RLnF2Xehxg>
+    <xmx:5gH0aRklnZTS6SUJf-qznWBohpbxwg56Oc76i-uWJ80dYUvTqhoxnLHX>
+Feedback-ID: i67ae4b3e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 30 Apr 2026 21:29:09 -0400 (EDT)
+Date: Thu, 30 Apr 2026 18:29:08 -0700
+From: "Dan Williams (nvidia)" <djbw@kernel.org>
+To: James Bottomley <James.Bottomley@HansenPartnership.com>, 
+ Dan Williams <djbw@kernel.org>, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
+Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+ "michael.roth@amd.com" <michael.roth@amd.com>, 
+ "Xu, Yilun" <yilun.xu@intel.com>, 
+ "Weiny, Ira" <ira.weiny@intel.com>
+Message-ID: <69f401e46ee72_2fadd10073@djbw-dev.notmuch>
+In-Reply-To: <96b0938a2ec7a83c7d2010c6a363e8417749cc27.camel@HansenPartnership.com>
+References: <1f6e9052c0c748f023e880503ed0001a9a919599.camel@intel.com>
+ <CABgObfasYTWmuqkz4TaTprcivwkzKGxAjdYZJVgO66HB1wK-5w@mail.gmail.com>
+ <69e19cf75b5e9_147c8010018@djbw-dev.notmuch>
+ <96b0938a2ec7a83c7d2010c6a363e8417749cc27.camel@HansenPartnership.com>
+Subject: Re: PUCK follow up: Trusted IO call details
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Thu, 30 Apr 2026 17:58:26 -0700
-X-Gm-Features: AVHnY4L-ucZ5s1_gFXeDk_hy8TeRQ49rUaAznyPNkwU0xPAMQzcyCgeetMPMl68
-Message-ID: <CAEvNRgHuaztV3_FoRf1UVRDNP-JJ3PJPJgQKANoYOVvg8SjPJw@mail.gmail.com>
-Subject: Re: [PATCH v2 2/4] x86/tdx: Use PFN directly for unmapping guest
- private memory
-To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"seanjc@google.com" <seanjc@google.com>, "Zhao, Yan Y" <yan.y.zhao@intel.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>
-Cc: "Shahar, Sagi" <sagis@google.com>, "Yamahata, Isaku" <isaku.yamahata@intel.com>, 
-	"x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, 
-	"yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>, "bp@alien8.de" <bp@alien8.de>, 
-	"mingo@redhat.com" <mingo@redhat.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Huang, Kai" <kai.huang@intel.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "Li, Xiaoyao" <xiaoyao.li@intel.com>, 
-	"tglx@kernel.org" <tglx@kernel.org>, "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
-	"Annapurve, Vishal" <vannapurve@google.com>
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-"Edgecombe, Rick P" <rick.p.edgecombe@intel.com> writes:
+James Bottomley wrote:
+> On Thu, 2026-04-16 at 19:37 -0700, Dan Williams wrote:
+> > Paolo Bonzini wrote:
+> > > On Wed, Apr 15, 2026 at 8:59=E2=80=AFPM Edgecombe, Rick P
+> > > <rick.p.edgecombe@intel.com> wrote:
+> > > > =
 
-> On Thu, 2026-04-30 at 11:17 -0700, Ackerley Tng wrote:
->> Yan Zhao <yan.y.zhao@intel.com> writes:
->>
->> >
->> > [...snip...]
->> >
->> > diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
->> > index b24b81cea5ea..e5a37ea2d4a0 100644
->> > --- a/arch/x86/virt/vmx/tdx/tdx.c
->> > +++ b/arch/x86/virt/vmx/tdx/tdx.c
->> > @@ -710,7 +710,7 @@ static __init int tdmrs_set_up_pamt_all(struct tdm=
-r_info_list *tdmr_list,
->> > =C2=A0=C2=A0 * to normal kernel memory. Systems with the X86_BUG_TDX_P=
-W_MCE erratum need to
->> > =C2=A0=C2=A0 * do the conversion explicitly via MOVDIR64B.
->> > =C2=A0=C2=A0 */
->> > -static void tdx_quirk_reset_paddr(unsigned long base, unsigned long s=
-ize)
->> > +void tdx_quirk_reset_paddr(unsigned long base, unsigned long size)
->>
->> Could this be updated to use phys_addr_t base and size_t size instead of
->> generic unsigned long?
->
-> A type is a really good idea. It could look like a virtual address, despi=
-te the
-> paddr in the name.
->
-> I added it to the cleanup list. But I would prefer to keep this series fo=
-cused
-> on resolving the critical controversy around the struct page/pfn type, ra=
-ther
-> than adding in more things to debate. If you don't mind.
->
+> > > > The call I mentioned is officially called: "TAC Subcommittee:
+> > > > Linux Kernel Special Interest Group (Linux Kernel-SIG)". This
+> > > > seems to be the info:
+> > > > https://confidentialcomputing.io/about/committees/#Linux-Kernel-S=
+IG
+> > > > =
 
-No worries, please go ahead :)
+> > > > Paolo, unfortunately I did remember correctly that it is not an
+> > > > EU friendly time.
+> > > =
 
->>
->> > =C2=A0 {
->> > =C2=A0=C2=A0	const void *zero_page =3D (const void *)page_address(ZERO=
-_PAGE(0));
->> > =C2=A0=C2=A0	unsigned long phys, end;
->> > @@ -729,6 +729,7 @@ static void tdx_quirk_reset_paddr(unsigned long ba=
-se, unsigned long size)
->> > =C2=A0=C2=A0	 */
->> > =C2=A0=C2=A0	mb();
->> > =C2=A0 }
->> > +EXPORT_SYMBOL_FOR_KVM(tdx_quirk_reset_paddr);
->> >
->> > =C2=A0 void tdx_quirk_reset_page(struct page *page)
->> > =C2=A0 {
->> > @@ -1920,17 +1921,17 @@ u64 tdh_phymem_page_wbinvd_tdr(struct tdx_td *=
-td)
->> > =C2=A0 {
->> > =C2=A0=C2=A0	struct tdx_module_args args =3D {};
->> >
->> > -	args.rcx =3D mk_keyed_paddr(tdx_global_keyid, td->tdr_page);
->> > +	args.rcx =3D mk_keyed_paddr(tdx_global_keyid, page_to_pfn(td->tdr_pa=
-ge));
->>
->> Should mk_keyed_paddr() be updated to have a return type of phys_addr_t?
->> I guess in this case since mk_keyed_paddr() is pretty much an internal
->> function, returning u64 also makes sense to indicate that it should only
->> be used to set 64 bit registers.
->
-> Yea, this is used to construct u64 inputs for seamcall args. So I think i=
-t
-> should keep returning u64s. Maybe instead it would be better to have a fu=
-nction
-> name pattern that denotes that purpose. We have some more helpers like th=
-is
-> coming.
->
-> But similarly, I'd like to not grow a snowballing cleanup series for this=
- one.
+> > > This one is friendly (9AM PST =3D 6PM CEST). The unfriendly one is
+> > > the IOMMUFD one (5AM :)).
+> > =
 
-Makes sense, let's go :)
+> > There are couple topics at present that would be suitable to raise at=
+
+> > the EU-US friendly time. Specifically whether all of the per-arch
+> > implementations of "transport large attestation evidence blobs over
+> > shared memory from host-to-guest" would be better served with a
+> > shared generic transport (simple virtio-pipe / something equivalent
+> > for vmbus to publish).
+> =
+
+> Sorry to be a bit late to the party, but why invent a new thing
+> (virtio-pipe), why not use the existing virtio-vsock (and hyperv-vsock,=
+
+> so no new vmbus device is needed)?  If you're thinking it's because you=
+
+> need a simple cat into host and out of guest, then you can do that with=
+
+> the ncat --vsock utility:
+
+I missed replying to this while I was on break. The problem with
+virtio-vsock is that it is built to terminate in guest userspace not in
+the kernel. I want to see the same flow for bare metal retrieval of
+device attestation blobs as guests, which points to not having a
+userspace indirection dependency for the PCI core.
+
+I have also heard concerns of the complexity / availability of vsock
+early in the boot flow (firmware?). For that concern a "simple" pipe
+protocol, like drivers/virt/coco/tdx_guest implements, pulls the blob
+over instead. Except, now we have simple drivers/virt/coco/arm-cca-guest
+transport, and simple drivers/virt/coco/sev-guest transport all
+duplicating blob retrieval over shared memory with payload size quirks
+and bugs.
+
+The problem is about to get worse with TEE I/O because all of these
+archs have defined extension blob retrieval interfaces for the new PCI
+material. That duplication is not in Linux's long term interest, so a
+common "blob transport over shared memory" implementation is the
+proposal. virtio has already done the work to handle arbitrary data
+transfers, no need to reinvent that wheel. The only hangup is that we
+would still need a vmbus filter to feed the same mechanism.=
