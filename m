@@ -1,151 +1,138 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2D5618C008
-	for <kvm@vger.kernel.org>; Fri,  1 May 2026 01:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD4654768;
+	Fri,  1 May 2026 02:11:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777598952; cv=none; b=Pr/CXeuZl+2UZYuNtjGxwWYVQ2F46j92UX39yc9FQpkVKhRa10CSYq08xSM2NgDM8Y6z59Soe7SrT8JmrHSIV63NpkKyT596q1sPlKgpZhKXI+OsAnyuWs7XIBWbKoMvHWwCfiMYgc/x2g8+FBsYti3ZmxRKB/YpL+4uOUsGBR0=
+	t=1777601477; cv=none; b=jYmT8H9SKmAbvXdZbivEmwd2R60j3D+8iQATJgsyCaZCrfyCcDp5N3AzgN3SsIPaswpdR+OjdpA5AIf4Ju7z0jHok8uTXvCnRiVMZoMkdx6lqE05DXaaJAbt+ZY33PHClf5TKOYNI86dLwOkw59UCyF5J4uwcTiBv2BHNICOEuY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777598952; c=relaxed/simple;
-	bh=UI1JTGnTRkhg/YzWAk1s/Q6IgUGuMZVe5AfaJ5Cr5qY=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=eJ+AbELFf9Ve9kIb4gRfd2UmcdwSdqPmk4HZHBW3aCLUZ65nsqvpozflwCmLZVszZY/8YUIHyNKQF/31Dv+oE1An4ejNQqbIFqfAUzLol4oJSuttIkePmNhOWzdAnHiJ0kQxUZwbIuN48wesnjjYQ7ZuZi4nLpTmCUBB8PKFGRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hG8kaM1D; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1777601477; c=relaxed/simple;
+	bh=9QR0cnUgXF6rP+G/fgL1ZOPWMm8v63S58EfEC1IYVzQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OHEWWJGvM5+6YcI/22U2P26dQfVWruzteqmNgT/tOabSX8XnN5BpyjYfMA5FUnnPNfA5rGZu8txwnrHJ83Eg95Sm7Xc4HjLSNq7dw9C06s+YlENuzPoUqXKnho9eVFtFFf/bf56HC7eLmk/+/rJqFPesIC9iVjFZ3T6FE6AXMOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uRa3t4sD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hG8kaM1D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52957C2BCB8;
-	Fri,  1 May 2026 01:29:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uRa3t4sD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA878C2BCB3;
+	Fri,  1 May 2026 02:11:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777598951;
-	bh=UI1JTGnTRkhg/YzWAk1s/Q6IgUGuMZVe5AfaJ5Cr5qY=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=hG8kaM1DZSLP/NhWnpCzh0k/uz4Qw2q/mx08rS2tGGCUKipCZitLubMSdbX8t2FwE
-	 rI8uvMkwATVxic8cMi7+IpN6C7z1Mla3knqBD4zEAYgrDJv3PQsB9GCcnbuMFI3AlO
-	 Ti32g2lPsgU9no2OZKFRzZOOnyXXgT/N8z3ha2EtqP49XI8vkiIqePwv8c79O4pU88
-	 efRaEUJ5gYKBIHPYaRtmzq1jIYu3KePGcp3OcZ+2nl1TsDFj9E3dKOjBAu+wlkF5jy
-	 ah3A42u9Y54deTeyEOu/Ox4zJO1+0vVPHJDKw/wW9QmWThr1YqC6Tq2arGxWE0Miss
-	 tBCFNkWSOcfRg==
-Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 5DBC4F40086;
-	Thu, 30 Apr 2026 21:29:10 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Thu, 30 Apr 2026 21:29:10 -0400
-X-ME-Sender: <xms:5gH0aT1QvMsAJ_m88vJLQrGZ9IPkmxaA4Ldnvr1K9R70_3HPyg_DCA>
-    <xme:5gH0aRLz6Vt8rYLIVrhhQXcTmG-5ABH0btmTt26JD8zMQNzPmPhfkKT_qGC0OH794
-    xkO7G5nsTWvBr25-_kLrYMJg_DMVJm1UGwElgbthrYOod6IQM8zXvI>
-X-ME-Received: <xmr:5gH0aaFoI5d5KOU9aZJqvz_Ym8sxgadS9G7G-pAyyKURwoQsXP3b9wJbSS3CQTVptRprM7JNgcbUcp8_DOvZI86E6MLeDFaYLYk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdekkeekkecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
-    hrpeffhffvvefkjghfufggtgfgsehtqhertddttdejnecuhfhrohhmpedfffgrnhcuhghi
-    lhhlihgrmhhsucdlnhhvihguihgrmddfuceoughjsgifsehkvghrnhgvlhdrohhrgheqne
-    cuggftrfgrthhtvghrnhephfeijeetkedtudevueekveehgffhgffggffglefhfeejtddv
-    vefhudffveekkeevnecuffhomhgrihhnpegtohhnfhhiuggvnhhtihgrlhgtohhmphhuth
-    hinhhgrdhiohenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhr
-    ohhmpegujhgsfidomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudejjedvfe
-    dtgeehhedqfeeffeelgedtgeejqdgujhgsfieppehkvghrnhgvlhdrohhrghesfhgrshht
-    mhgrihhlrdgtohhmpdhnsggprhgtphhtthhopeekpdhmohguvgepshhmthhpohhuthdprh
-    gtphhtthhopehjrghmvghsrdgsohhtthhomhhlvgihsehhrghnshgvnhhprghrthhnvghr
-    shhhihhprdgtohhmpdhrtghpthhtohepughjsgifsehkvghrnhgvlhdrohhrghdprhgtph
-    htthhopehpsghonhiiihhnihesrhgvughhrghtrdgtohhmpdhrtghpthhtoheprhhitghk
-    rdhprdgvughgvggtohhmsggvsehinhhtvghlrdgtohhmpdhrtghpthhtohepkhhvmhesvh
-    hgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihgthhgrvghlrdhrohhthhes
-    rghmugdrtghomhdprhgtphhtthhopeihihhluhhnrdiguhesihhnthgvlhdrtghomhdprh
-    gtphhtthhopehirhgrrdifvghinhihsehinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:5gH0aVVQabEVZ1GBCGUqz7NXGQY9ragtMDaJN5397LLJUVclYcT7Mg>
-    <xmx:5gH0aawgnhTLX_C8NKBpQJGRRt4ocTOplYsB5XFOwtAjnHY3P2UpYg>
-    <xmx:5gH0aSRv9v83FkiLkJqmK6YGQlZci0Ild4BUI_gejSzBm5l0OO_gxg>
-    <xmx:5gH0aej6upM5GMsCi6R8vHFSxZfkhEnXTfzIk7UH-CV-RLnF2Xehxg>
-    <xmx:5gH0aRklnZTS6SUJf-qznWBohpbxwg56Oc76i-uWJ80dYUvTqhoxnLHX>
-Feedback-ID: i67ae4b3e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 30 Apr 2026 21:29:09 -0400 (EDT)
-Date: Thu, 30 Apr 2026 18:29:08 -0700
-From: "Dan Williams (nvidia)" <djbw@kernel.org>
-To: James Bottomley <James.Bottomley@HansenPartnership.com>, 
- Dan Williams <djbw@kernel.org>, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
- "michael.roth@amd.com" <michael.roth@amd.com>, 
- "Xu, Yilun" <yilun.xu@intel.com>, 
- "Weiny, Ira" <ira.weiny@intel.com>
-Message-ID: <69f401e46ee72_2fadd10073@djbw-dev.notmuch>
-In-Reply-To: <96b0938a2ec7a83c7d2010c6a363e8417749cc27.camel@HansenPartnership.com>
-References: <1f6e9052c0c748f023e880503ed0001a9a919599.camel@intel.com>
- <CABgObfasYTWmuqkz4TaTprcivwkzKGxAjdYZJVgO66HB1wK-5w@mail.gmail.com>
- <69e19cf75b5e9_147c8010018@djbw-dev.notmuch>
- <96b0938a2ec7a83c7d2010c6a363e8417749cc27.camel@HansenPartnership.com>
-Subject: Re: PUCK follow up: Trusted IO call details
+	s=k20201202; t=1777601477;
+	bh=9QR0cnUgXF6rP+G/fgL1ZOPWMm8v63S58EfEC1IYVzQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uRa3t4sDDbQpv7M6lTSaoochov6MAYzb6y7riWmPgQGz26Fxvq1g0V6HxcEVB4OOZ
+	 dDm6eFhIZRdVv31oRZYaYzcM7dzco1gJXHNAbV9z2w6ENGowfGEpvZjgqb+1Ow3lsx
+	 9gYSbxshRf5euC1t6Eq4JDevvKjmwWKRicLObAiTsLAHsFzXK7MlcdnWyBzJwVVYBM
+	 OXGarWvtRJ0/zcrnZPCMdqlgy6S/nsKNYM2bX5T6wASoFB/USX7PPs2/5lDpaeNa5f
+	 sIQhDVq9nGKrvIyg/x9pS/ik1r8n0Pn28IWUnGTQvJqAD8FFrt8N5nUDZyBahPQGnu
+	 zC9DTSnlxWZGA==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id 94D0A1AC5863; Fri, 01 May 2026 03:11:14 +0100 (BST)
+Date: Fri, 1 May 2026 11:11:14 +0900
+From: Mark Brown <broonie@kernel.org>
+To: Marc Zyngier <maz@kernel.org>
+Cc: Leonardo Bras <leo.bras@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Oliver Upton <oupton@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>, Saket Dumbre <saket.dumbre@intel.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Chengwen Feng <fengchengwen@huawei.com>,
+	Jonathan Cameron <jic23@kernel.org>, Kees Cook <kees@kernel.org>,
+	=?utf-8?Q?Miko=C5=82aj?= Lenczewski <miko.lenczewski@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>,
+	Yang Shi <yang@os.amperecomputing.com>,
+	Thomas Huth <thuth@redhat.com>,
+	mrigendrachaubey <mrigendra.chaubey@gmail.com>,
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	James Clark <james.clark@linaro.org>,
+	Ard Biesheuvel <ardb@kernel.org>, Fuad Tabba <tabba@google.com>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Sascha Bischoff <Sascha.Bischoff@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Tian Zheng <zhengtian10@huawei.com>,
+	Wei-Lin Chang <weilin.chang@arm.com>, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	linux-acpi@vger.kernel.org, acpica-devel@lists.linux.dev,
+	kvm@vger.kernel.org
+Subject: Re: [PATCH v1 00/12] KVM Dirty-bit cleaning accelerator (HACDBS)
+Message-ID: <afQLwhnDLtCHnjeQ@sirena.co.uk>
+References: <20260430111424.3479613-2-leo.bras@arm.com>
+ <86bjf0zj2p.wl-maz@kernel.org>
+ <afNZQKIiKmHPD5My@devkitleo>
+ <86a4ukzel3.wl-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="ssT59TgwkbIJmTw+"
+Content-Disposition: inline
+In-Reply-To: <86a4ukzel3.wl-maz@kernel.org>
+X-Cookie: 667:
+
+
+--ssT59TgwkbIJmTw+
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-James Bottomley wrote:
-> On Thu, 2026-04-16 at 19:37 -0700, Dan Williams wrote:
-> > Paolo Bonzini wrote:
-> > > On Wed, Apr 15, 2026 at 8:59=E2=80=AFPM Edgecombe, Rick P
-> > > <rick.p.edgecombe@intel.com> wrote:
-> > > > =
+On Thu, Apr 30, 2026 at 03:51:20PM +0100, Marc Zyngier wrote:
+> Leonardo Bras <leo.bras@arm.com> wrote:
 
-> > > > The call I mentioned is officially called: "TAC Subcommittee:
-> > > > Linux Kernel Special Interest Group (Linux Kernel-SIG)". This
-> > > > seems to be the info:
-> > > > https://confidentialcomputing.io/about/committees/#Linux-Kernel-S=
-IG
-> > > > =
+> > There is no enablement needed on VMM side.
+> > Yes, I have created a VM on upstream qemu with --enable-kvm and migrate=
+d it=20
+> > on the same host. (Inside a model)
 
-> > > > Paolo, unfortunately I did remember correctly that it is not an
-> > > > EU friendly time.
-> > > =
+> > That was the first test I used, but then I found out that kvm selftests=
+=20
+> > stress up multiple scenarios in an easier way.
 
-> > > This one is friendly (9AM PST =3D 6PM CEST). The unfriendly one is
-> > > the IOMMUFD one (5AM :)).
-> > =
+> Except when they don't. In my experience, the selftests are only there
+> to give the CI people the fuzzy feeling that they are doing something
+> useful. I have a collection of examples indicating that what these
+> things test is not representative of the bugs we have in KVM.
 
-> > There are couple topics at present that would be suitable to raise at=
+There's a bit of a circular thing there - if things are working well
+then the selftests really shouldn't be representitive of the problems
+that turn up since people ought to have seen any issues they show during
+development.  If you could share your list that'd be helpful.
 
-> > the EU-US friendly time. Specifically whether all of the per-arch
-> > implementations of "transport large attestation evidence blobs over
-> > shared memory from host-to-guest" would be better served with a
-> > shared generic transport (simple virtio-pipe / something equivalent
-> > for vmbus to publish).
-> =
+TBH the various stress style tests like the dirty bit ones in the KVM
+selftests are actually a bit of a pain for CI IME.  Since they all
+control their runtimes by iteration counts rather than time there's
+scaling issues, the performance is such that on lower end systems
+they're often on the edge of generating timeouts leading to unstable
+results.  They also interact so poorly with the fast models that the run
+time blows up spectacularly which is it's own problem trying to run
+them, that's partly on the model side of course.  These performance
+and/or stress tests really aren't idiomatic for kselftest so there's
+always going to be some tension with trying to run them in that
+framework.
 
-> Sorry to be a bit late to the party, but why invent a new thing
-> (virtio-pipe), why not use the existing virtio-vsock (and hyperv-vsock,=
+--ssT59TgwkbIJmTw+
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> so no new vmbus device is needed)?  If you're thinking it's because you=
+-----BEGIN PGP SIGNATURE-----
 
-> need a simple cat into host and out of guest, then you can do that with=
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmn0C8EACgkQJNaLcl1U
+h9CS4gf6A7/M0j4C+bjIv3MUjhE/mp8ttmFweM6NFGjW71XsY5UMxrlSOLPo8FsA
+dc18jjcaPaGl6ozZGbZnEdt4/olC2ZeZCW+itSIOMNCTlcUpK7MRkAu6/L0/NRyF
+hUup3657nGbemC0awUnJgdPtnRl2cUej+eLw6rLa6LUpC2VNQixM1GputtDlcbMB
+xtTncUwiuypXtPjVfGwx6NasjoOux+XHXF3s2tdeFX8crXdtFojI6aGqNZ0+abxH
+RT/GD1WIOVZwmAQ0PYhC8XkPYyL8wQ92yjVZGjw5vXDPNlS/CesakgrnLJcL5pfq
+wxdoTRitTAuP8hoREPUgw/vN5C7QQA==
+=FWnL
+-----END PGP SIGNATURE-----
 
-> the ncat --vsock utility:
-
-I missed replying to this while I was on break. The problem with
-virtio-vsock is that it is built to terminate in guest userspace not in
-the kernel. I want to see the same flow for bare metal retrieval of
-device attestation blobs as guests, which points to not having a
-userspace indirection dependency for the PCI core.
-
-I have also heard concerns of the complexity / availability of vsock
-early in the boot flow (firmware?). For that concern a "simple" pipe
-protocol, like drivers/virt/coco/tdx_guest implements, pulls the blob
-over instead. Except, now we have simple drivers/virt/coco/arm-cca-guest
-transport, and simple drivers/virt/coco/sev-guest transport all
-duplicating blob retrieval over shared memory with payload size quirks
-and bugs.
-
-The problem is about to get worse with TEE I/O because all of these
-archs have defined extension blob retrieval interfaces for the new PCI
-material. That duplication is not in Linux's long term interest, so a
-common "blob transport over shared memory" implementation is the
-proposal. virtio has already done the work to handle arbitrary data
-transfers, no need to reinvent that wheel. The only hangup is that we
-would still need a vmbus filter to feed the same mechanism.=
+--ssT59TgwkbIJmTw+--
