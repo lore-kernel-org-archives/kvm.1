@@ -1,119 +1,117 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5877735F610;
-	Fri,  1 May 2026 20:32:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D46F52367DF
+	for <kvm@vger.kernel.org>; Fri,  1 May 2026 20:35:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777667525; cv=none; b=f/wPqyMtQ67STanUnZAdZLyWnaVHMlhD5EMIrC1jefpr/qiU0pukCCOFrJB52byQWkylt0XabaDjuPROrli2LIkMtfTc0zbqfchjxjWSgLjCiWwlQ/V1YXAiG6gWo4ZSsFdMZNLXvGmQt6ysQb4LUEvTQnsu6cT+eJXr3Yo6seE=
+	t=1777667743; cv=none; b=BPomISxeSONxjyzFBXXP5WZb3oB9UPQxU73he9vWh7g8CQTt/sUNcIR2Fe3+IJaBrdPKFjVC/gt79MwMiDlnANMzunRci3COAOrIi+agiL7Q0T8IOtTg1v+r2X+sg2sJiRUZt0mMyMAjwOCMfNgHcrdppnctPPmxcL23YOa5Tgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777667525; c=relaxed/simple;
-	bh=c7MmscP++YUgFYzjA/ykwHxhnEJ2bamX+8YPXQaEtQc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dJRN9Vpi2FK6duUe5dkWtME9f2zsjT68TqoOIcgLUjdPK18xKA66mUNjYP9ebpsqPXRB5OwRsXH43lR/3IyxoBp+bbrEc1g8va4E+sJgLIqot/xEWqhPYEPwpqFUpSF2cLtTtNEIO9V4FzQkzHwUpOsgnnSX5nk/35gVZg/5FkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=WZFMJ5l3; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1777667743; c=relaxed/simple;
+	bh=ShDrWoz7mOaJbO/fe9YryxY5OnKnA1570r4jAcpBljY=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=hih8b7lBJ4w1WSbqC2jiJn8+OQubc1eZmlgBwb8psuRA04z5gdEFQygAu9KYd6yvial/LoJNit7fec08BTO6F16AKqUjvdBcASITc/pZqh9guCwh48Yx0MaqdAFB+aQsvE5tBD96tIghWQx7vZZyZ1pGT1TCpi2ApNQ/KZVoiVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GT97b7HE; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="WZFMJ5l3"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=UTPiOjrUYcq0prPteEqGmDJ21zoEzEBDXmOnjCIfwlg=; b=WZFMJ5l35SyRAnS2yEVIjamMwA
-	nPc7eMnkx59q0ZVrk740CDyXl7PWWoslKQKH4teLiQlG4X9rZfqlJqyAOnn3ti/9fpGU0GaBuvOMP
-	pZOK7EtvE5E2xLgpIKVIydiuA4dG7g4BgP1Pe4Lmhc7zUfqb3cMoVu+9Twlb8WV4fBwYPSQ/BVDw6
-	k+AbNAch0X4iXzMgFX/AWQfoHaq9/OW8e7BHl5SmWUqJoubPezPfPWDxDZbDD1Txi/z2v0VwYm6VS
-	jniGIZAyTX7wxggfs9AoXR2MvP4nSysHXbiC6v1JC92HPAMbwGTfSUf2SIeh+crcun6jfXQob6ei7
-	LsbTqc4w==;
-Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wIuWb-00000009OsW-2Oex;
-	Fri, 01 May 2026 20:31:51 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 397A43008E2; Fri, 01 May 2026 22:31:48 +0200 (CEST)
-Date: Fri, 1 May 2026 22:31:48 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Binbin Wu <binbin.wu@linux.intel.com>, tglx@kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Jim Mattson <jmattson@google.com>,
-	Vishal L Verma <vishal.l.verma@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	Rick P Edgecombe <rick.p.edgecombe@intel.com>,
-	Binbin Wu <binbin.wu@intel.com>, "x86@kernel.org" <x86@kernel.org>,
-	Paolo Bonzini <bonzini@redhat.com>
-Subject: Re: [PATCH 1/2] x86/kvm/vmx: Move IRQ/NMI dispatch from KVM into x86
- core
-Message-ID: <20260501203148.GG1026330@noisy.programming.kicks-ass.net>
-References: <20260423155611.216805954@infradead.org>
- <20260423155936.843498069@infradead.org>
- <e47f29d5-17f1-47ce-b80e-bfa543f9a712@linux.intel.com>
- <1aaf6b2d-85da-400e-b8ad-d611fdaa015f@redhat.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GT97b7HE"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82f74bcfb86so2960627b3a.0
+        for <kvm@vger.kernel.org>; Fri, 01 May 2026 13:35:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1777667741; x=1778272541; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=z9uZznzsA8koMaIsMZF8pjffelkGGnvGQ9vat9X1p7Y=;
+        b=GT97b7HEfPV5qJqpPoZ4Z72AewhnLpwOGeyEJJNl4zhcdl26YAgxUge/pSogTzxzC8
+         y1Yvx/G7EQPoJ1V1RFfWp+DOHEV2EfQNXZZZ7MU7njW47KjsQemcDOIo0B2j2ZcPFzhU
+         b8Gx/4A0zp4I2DSN1yZN5s8LHkudxXihQH6EfBphnde4LGOVoXr5fR903vg3TE1h+IJL
+         dz+Vp0cFOhgyfujkVy4LOeZ+ZRUfaSzRyK/0UvatENaoEHEKmxLn+iw6ZmhKcj9099AU
+         uZ7FFbY1uZQIZxGcDY5bdF+YMhUoQ3VqpW/Nz1jfJoPx3/DdUh4KcokiVxh6rfQH3OnI
+         8HLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777667741; x=1778272541;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=z9uZznzsA8koMaIsMZF8pjffelkGGnvGQ9vat9X1p7Y=;
+        b=QUt/ze1Xdr2FkiOr144C5p3LG0sV6KQNazKTiHn7A/86Tsz3ZZBbbB8Gu5uKhPva2Y
+         Mba09qMDIm+gvWLZBundTWm75MF1DwchauDDMjuA8ob+afNtweqNUd/8K4hQhiJe12gO
+         gdiEIe8cjZgxtfzODoDUdvgJirCc1PRFVT9iODw3Gf66gWi8C+L7BXjvZM9YsMGQ6qvp
+         op+90tYJjpl6+MiSLPFA1TIjULPxSrG+G7ckcUkcpj1P/TXDviurK1FzJ1xK8BqmCX43
+         0F/OoiSLDna56kIE+31zblHRiEEsQK6TJXJ22F4RPx3Bav58rFK8q0HKIkshSktRdOL5
+         Mpqg==
+X-Gm-Message-State: AOJu0YzMTeWrAeW+9g3rUrWqwRDbckOLvBy9G5gb1nDdV1pdi5Qb7H0G
+	II4R5kxpIrIzPUdFKCqj1aGAxQn5ru9ALq5nyGe33ouRC+rmyD0vAGLy5JshlaBRgXKu2AuAbpO
+	Blb8yOw==
+X-Received: from pfmu6.prod.google.com ([2002:aa7:8386:0:b0:82f:96ee:b9ad])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1405:b0:82c:20ba:1570
+ with SMTP id d2e1a72fcca58-8352d28c184mr636547b3a.29.1777667741078; Fri, 01
+ May 2026 13:35:41 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Fri,  1 May 2026 13:35:31 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <1aaf6b2d-85da-400e-b8ad-d611fdaa015f@redhat.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
+Message-ID: <20260501203537.2120074-1-seanjc@google.com>
+Subject: [PATCH v2 0/6] KVM: SEV: sev_dbg_crypt() fix and overhaul
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Ashutosh Desai <ashutoshdesai993@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Apr 28, 2026 at 01:25:58PM +0200, Paolo Bonzini wrote:
+Disclaimer: I could have sworn I sent this last week, but obviously did not,
+and I can't remember _why_ I didn't send it.  So don't be too surprised if
+there's some glaring flaw or boneheaded mistake.
 
-> > > +#if IS_ENABLED(CONFIG_KVM_INTEL)
-> > > +/*
-> > > + * On VMX, NMIs and IRQs (as configured by KVM) are acknowledge by hardware as
-> > 
-> > s/acknowledge/acknowledged
-> > > + * part of the VM-Exit, i.e. the event itself is consumed as part the VM-Exit.
-> > > + * x86_entry_from_kvm() is invoked by KVM to effectively forward NMIs and IRQs
-> > > + * to the kernel for servicing.  On SVM, a.k.a. AMD, the NMI/IRQ VM-Exit is
-> > > + * purely a signal that an NMI/IRQ is pending, i.e. the event that triggered
-> > > + * the VM-Exit is held pending until it's unblocked in the host.
-> > > + */
-> > 
-> > [...]
-> > 
-> > > -
-> > > -#if IS_ENABLED(CONFIG_KVM_INTEL)
-> > > -/*
-> > > - * Special entry point for VMX which invokes this on the kernel stack, even for
-> > > - * 64-bit, i.e. without using an IST.  asm_exc_nmi() requires an IST to work
-> > 
-> > Although it's being removed, I guess what it says is still true?
-> > 
-> > It says asm_exc_nmi() requires an IST to work correctly, and the new path for
-> > handling NMI when FRED is disabled.
-> > 
-> > idt_entry_from_kvm
-> >      idt_do_nmi_irqoff
-> >          IDT_DO_EVENT_IRQOFF call asm_exc_nmi
-> >              ...
-> >              call asm_exc_nmi
-> > 
-> > It seems the stack before calling asm_exc_nmi is not an IST?
-> > Does it matter?
-> 
-> I think it does, the IST is needed because of all the stuff to detect
-> recursive NMIs.  So asm_exc_nmi_kvm_vmx needs to remain.
-> 
-> By the way, here:
-> 
-> > +	/*
-> > +	 * Notably, we must use IDT dispatch for NMI when running in IDT mode.
-> > +	 * The FRED NMI context is significantly different and will not work
-> > +	 * right (speficially FRED fixed the NMI recursion issue).
-> > +	 */
-> 
-> It's even more important to note that NMIs need an IRET in order to unblock
-> further NMIs.  This is even more important than the recursion issue, which
-> does not affect KVM's non-IST entry into the NMI handler, and is the real
-> reason to use IDT_DO_EVENT_IRQOFF to build the interrupt stack frame for
-> NMIs.
+Ashutosh's fix for a heap OOB/UAF bug in the debug {de,en}crypt code, now
+with a selftest to detect the bug (and confirm the fix), and to validate the
+functionality.
 
-Durr, I missed that: DECLARE_IDTENTRY_NMI != DECLARE_IDTENTRY_RAW
+The rest of the patches completely rewrite the code.  When creating the
+selftest, I did the silly thing of testing arbitrary offsets+sizes, and
+couldn't trigger the true badness because the test failed long before it got
+to the larger sizes.
 
-Let me go rectify that.
+Specifically (or, at least) the current code fails to handle cases where an
+address and the size aren't naturally aligned.  E.g. when encrypting 9 bytes
+at offset 8, KVM needs to _decrypt_ destination[31:0] into a temporary buffer,
+buffer[31:0], then copy 9 bytes from source[8:0] to buffer[16:8], then encrypt
+buffer[31:0] back into destination[31:0].  The current code only ever copies
+16 bytes, and bizarrely uses a temporary buffer for the source as well.
+
+A wholesale rewrite in a single patch isn't my first choice, but the existing
+code obviously hasn't been tested, and it's so bizarre and unnecessarily
+complex that I've zero confidence that an iterative cleanup would be a net
+positive, especially given how many hours it would take.
+
+The initial fix is 7.1 material, the rest (including the selftest, because it
+won't pass), can wait for 7.2.
+
+v1: https://lore.kernel.org/all/20260410050854.2463447-1-ashutoshdesai993@gmail.com
+
+Ashutosh Desai (1):
+  KVM: SVM: Fix page overflow in sev_dbg_crypt() for ENCRYPT path
+
+Sean Christopherson (5):
+  KVM: selftests: Add a test to verify SEV {en,de}crypt debug ioctls
+  KVM: SEV: Explicitly validate the dst buffer for debug operations
+  KVM: SEV: Add helper function to pin/unpin a single page
+  KVM: SEV: Rewrite logic to {de,en}crypt memory for debug
+  KVM: SEV: Allocate only as many bytes as needed for temp crypt buffers
+
+ arch/x86/kvm/svm/sev.c                        | 423 +++++++++---------
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ tools/testing/selftests/kvm/include/x86/sev.h |  24 +
+ .../testing/selftests/kvm/x86/sev_dbg_test.c  | 118 +++++
+ 4 files changed, 347 insertions(+), 219 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/x86/sev_dbg_test.c
+
+
+base-commit: 39f1c201b93f4ff71631bac72cff6eb155f976a4
+-- 
+2.54.0.545.g6539524ca2-goog
+
