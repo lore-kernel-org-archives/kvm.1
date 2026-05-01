@@ -1,102 +1,154 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C53132BDC32
-	for <kvm@vger.kernel.org>; Fri,  1 May 2026 14:46:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777646766; cv=none; b=jCLNUDqsYJ/nufdWDCoGQAUml3dqR88ykf3BXsVNyBOr9CVhAKV1qMHD01PITCwUyOSv/VJav6pEz99hLarIQEQQ3N3/WZ6N0fusFNYwr+XUu5e4yqF0sa7tbgvQ6bIhSQeEcA8VVRoSfMDMNRGK1Jw35bAZKvyODzKfQQ0FqQQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777646766; c=relaxed/simple;
-	bh=8+SYuy3/V8HogtLO+S7kYhDAmArGFSu0qCRo8mG2p+0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GNEeMwzhqavlX9YFJhJRYo7pkiVWe9g5whCu36jeVm5kPFWQGwwdoDSVxUEDiSNLrEyef0BDx/x7oo8T3agkj4cw3CY6QnddrUNYfJ+rlTr7V8DaELZsnQwGK4DaOffeTRLrv2FYp7dm7dlJWBh3x1jKCMqeOCSSglNERw3uVMg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ORDo+SaB; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64E4B3E3140
+	for <kvm@vger.kernel.org>; Fri,  1 May 2026 16:11:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777651907; cv=pass; b=WES2ZcE2ZFUtqFbfHAFOb4jOoqdzS7ecBh9GXBXQLbm4k7f0tIZvfz7CgJoXDn1vs5V46WQo8PWOqhG7SIgWCz+LxnXJVh8YETvX+k49NCxGA4kNOtbV91kJ9nEpLlaFrXG5bxvCeFpqf9xc5dChPT1BfIbSVwzPfXa7zyDobag=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777651907; c=relaxed/simple;
+	bh=Lg3I4a5CVSLmEfFpzSrc+IJ6RbdpOOFMUy6frdtkKdg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PtO7dFFN2p2KJavKWNkuPTEOpBZwhC+05ZwUBtVTe5+VfFCh157qh22vnXtcgYt7JTP0iXuwEgMoNqSqLZsEyLNQGd27dYd1FRgN4QOfE3WfGxA3yPZCg2vZoPR7KTGg/rnWNR4Xn5NMrBU+flSFdS5fY7oITHrOnI1DcglpEHs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iuDKym33; arc=pass smtp.client-ip=74.125.82.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ORDo+SaB"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2b941cd869cso12224355ad.1
-        for <kvm@vger.kernel.org>; Fri, 01 May 2026 07:46:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iuDKym33"
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-12dbd0f7ecaso4643396c88.0
+        for <kvm@vger.kernel.org>; Fri, 01 May 2026 09:11:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777651899; cv=none;
+        d=google.com; s=arc-20240605;
+        b=RgnEzNB2Yn6YK8AcPwhK/4rE67qexg6korXyxvy/K6ilcqehvDVGo2bZpYSeKcTiI/
+         Un8WxLSVGMA88Job5t8EssVBWZDd3yh26Y8ExP/e58tc1YwNiaysd/sOOG7wWZ32RI2O
+         aSN9EE/1g29kn8lzUjL8sot9ZIKFqMiyk5cDd2oNCziaGvSclk87D7y4NBnBvMY/UItV
+         31p/JJYBRmHxnIwZrdt41Jr0vpeRWRiBiYdTVKd9FoFyDetVKKDg/OGJgD3wlLKsa6MX
+         HlIOfM1XKDY5UlRQDZQtBdByeZPMRnCsTPw2w6ENTqtCVbLk4w2Xt5nA2Kj+VIJnvSH7
+         UqZw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=qUtLnk45BiKrXHINpVcyMQeBwCn16A0KrBFa2QFTWtI=;
+        fh=w0+VPqUWeU/PSZzL8vPYGvrS+erCGpPjFYLuOUEFwho=;
+        b=R8G+ObiTqA5DBGXeU+q4NcXt1vx7Tkjydyv+HRuLQRlEIuC/HnwBGpOkBVmvEns76t
+         KC6vkDIYBPEYUPcPEJrO6tBgb0eLk/I5BjcEZ+d+A67N+d8fQLOCPZEld3jn81wxPuMY
+         Em06akdMEBPvUvd7Q36uy814+Ta8kDMcBAXiQtvKYBVWXCH/cApb6Zzavn7IBeSkQ5RR
+         ac5bGJUNYOeg03EU5qWgS56KRfJTzcCQMzwsxplMIe47ADPJI3/0djPsmPk6SNK3PRt/
+         PMYF63ItR3kzmQQxUKRqeaLfxUIgzJvIJOz/AShdOGg5UItsc9bp+8GAYnX3y203xGH3
+         bAzw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777646765; x=1778251565; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=WemtiGdq+I+K//LbOUkC3ojvlcJlzW/WyY9SxNsaYiE=;
-        b=ORDo+SaBYgTq31CkzVPhszsAHINiECUWzqv+Mf+R+qXHgbBxlfJ+QPvvCNYlBBDpMe
-         Rvuh47G3OzB72/PhR7XXX2JPBEa0+Bi1U+i0QHjO1pwzKLZYXDkMxEajaAtcMq11gB7T
-         i+iiQ9+NbJOL2ArT/6kELXtKRATOn8W8GrUblxaOi7BdVgBXqnAyWrod9va111yplBLW
-         wSFSRaWBd3F9JfRdwQGX9U4AHnWW2u5Y9y/JrBKCi5O9fhczaKfwLENHbF5T7Q1lSmDI
-         XZP/asudV+JLFKz07fz0UXOtSVrEQ+HF2YI+HC44mcQuUmCy0U2pmvzqb9H8zufE44gP
-         9eng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777646765; x=1778251565;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20251104; t=1777651899; x=1778256699; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WemtiGdq+I+K//LbOUkC3ojvlcJlzW/WyY9SxNsaYiE=;
-        b=oyonssINLQVgirB2fom5qCqUi1Okl2wq5GEbj2zKpd+oRGVlBXGeblsMpvvEuUgQ1p
-         P/7eFad1LXGXEsVcNvPVCGXtAR9HbNfSOvsxjfOPwigECaHeviNG/iPr515pVfWLMdAA
-         3KEK4iJdLmgzUk/YiRILW0Iq2Xl21lT11KZzCfSnYXvViFVwT27FtWDQvTc2lurzijF+
-         POky7RPDDwm9w9n4e9DO8bS2QLb+JG8mMTrh95sF9VAln2ah9nD+c/U3p+Dzy7NSAani
-         sC+9y7S52JTMTq3RxHqfGjspok25caXCk6nfyrJ5YcfKbkIHcoAaFXeq17qV51zDBmbI
-         bPNA==
-X-Forwarded-Encrypted: i=1; AFNElJ/xdVUUszTBMDafWD+HqYwySdpxVCMoMsde4DNf/wSP0naxP7NMQCdQ/n51VbjNyHllUvI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzQh7NE4mQAH9JL3IlbHPmLuZRm6vs3tOJnjrg/I0r7bcQTw3ag
-	1uJePnnpPlSS7aOhQZp41Qb++KmNwsMsArpKBvX3qqtYYdMwhMnIe0bi
-X-Gm-Gg: AeBDies2TypcsT+cdd7us5ZY0eC9WiWHw0AkjE7ceWdAuBBtF0HrdQbbJGHdh6TvKtY
-	YFwr36s4M8dqNkdud3IwO5nwckCLOFud7mStVFbAiHQ7ud57Y3dlBQDPzs7Vu0UIV0jjxWJ1Loi
-	oryDW3lhqoqiTnKuaZ4Fec4HR7C1Os4xmrwH2ToojDI67hwhpfDmob4oDGDkGVbAAHuTE6bJZj3
-	ZAtoQQYCj73pnJMgwEL2QVffPYu9SgPRFao5G1RIfAKK+iirJmq0/cG8mnY0RJ4un50ZzW89vH3
-	8CCXjJK3wSz1yyRS7R7uDD8r4A5WvjillM9C6MCNlOx4Jmfkeo5ap9WC7LOannmRtKvWaBXrzfQ
-	Myej9nbhOg04+bR04jsDyyFKUi8HaeTLR2RG3TyyiZ747eyUZVzeeXQl/TEDcFbbuE/99JG0YN+
-	lhleDqU577+Tl1Ln/tenZVZzNW5h+3CK77Am80+Kv1F++vlLaHgoC1/PZum4En4E2YvD3K9sqbF
-	Zf1VtWAwzgc
-X-Received: by 2002:a17:902:848f:b0:2b9:547d:ce1f with SMTP id d9443c01a7336-2b9a253e0cdmr49989415ad.37.1777646764898;
-        Fri, 01 May 2026 07:46:04 -0700 (PDT)
-Received: from jiun-HP-ProBook-455-15-6-inch-G9-Notebook-PC.. ([222.99.195.72])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b9caac6e7asm23710195ad.30.2026.05.01.07.46.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 May 2026 07:46:04 -0700 (PDT)
-From: Jiun Jeong <jiun.jeong.cs@gmail.com>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>
-Cc: Keith Busch <kbusch@kernel.org>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Jiun Jeong <jiun.jeong.cs@gmail.com>
-Subject: [PATCH] kvm: fix typo in call_once.h comment
-Date: Fri,  1 May 2026 23:44:13 +0900
-Message-ID: <20260501144413.49419-1-jiun.jeong.cs@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=qUtLnk45BiKrXHINpVcyMQeBwCn16A0KrBFa2QFTWtI=;
+        b=iuDKym332S3y8j2Dh8gx5+R6x5q9ow83jxo2eSebtwLzoL7A08OmajBfhFzWCdKifv
+         tSC2/qCqb0EUCeKQDXArWwsFbvxZshdj6+YxZkOwWJCHAlm9NTkqeDbUD5DhrBf+uT8b
+         7OVSxiC+3KhCsYvtennSRH1IZs6NYrEzCC0WKMmPy12hYAmghoqQEMvJSKgRc/MER5jp
+         SdoEm9F7/eDVT3mm6gVwb+36REfhqT1KtcCZSynk5T8jlVrrv2iHBADepDV4W4Fny6Ce
+         VqcOd4HzKiBmsbe9OdD/EaQKN8No8kqjD+EfMrTpOxVlFahLEr+8c0miMiEYERdd7FJz
+         H1Pw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777651899; x=1778256699;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=qUtLnk45BiKrXHINpVcyMQeBwCn16A0KrBFa2QFTWtI=;
+        b=J6S6yq/U1GPeQrGXCOqvvsWy2dJLYlPYC+iv8P4YZ11P+YxgxW81FHE3J2AoTLTkab
+         me3Pf1w2ys84Ak2DiUWiprMF47DOV09Y1mEaxWa/UileJMclLkWR3cKu/OAjC0norcpz
+         46KgKTaVm9ngocOJqZl0x/FtgLkiuQTb92VxBIGzN6AloJxX5PmxCudD6S/QUslufDsK
+         AuI/THv28L2GS7LtXFExbmTrw2pJBrWudjk9/gZ48lI3D/KvHsNePtiAxVwjSAQpbtqf
+         NmLDsP7kqPlLTve3UdehZ62ZKpJKh6X4IWMnfEyRo9fSu1aVugGhddRGAxaggCIp7sN2
+         qEwQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+RlBAy8Z7PBbpOkShIrUorfhPcLOjffnxVgyInSONHPzSyvL4FI88czN8XH9XIkMw4Ryw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGnOhwpyS4Vf0qMNgLIyhoJqCaaJaAT4hlsjPCNtC3D4wYNOwU
+	Gmve251MrwdUM9tp4+UXdkTLcFV2Wm0chhtI/DXudlLVuOeDtpRhSZC65qCI3apSELWiEChD6nz
+	Lyqzgl2DqYVth/HaskfvTt2J86wIEiNxG5py8bbRy
+X-Gm-Gg: AeBDievowlvSH+o6A1b7k/C+O9YKh3dJ1zjIMj7P/5tRUPUWWT2+P+L3r+8Jo+ZilRC
+	pp+Btr1ct7RLN+amL/bpQUBUT1pddEwiEbfxoKugPoZ2peciH7WMmga/GcFHMTQpPm+oT2xVfFY
+	y+/B0iordKxHFdwH9h6b+znwCbPtzrxJY7wICJFhWdhxWcCabpBh5h9cjkZkpiWvUmOV5YzcjMS
+	nQ+dEr8UqHcekzYxWTHHTZ9nAL8gQQIgshE4muZ0HefMr1WClQHBBtRzL2UiNoJ5f+bQFC4X2q6
+	S5rrU6kHqukr5QKwEFapDcQpkRAM1MFglavAtTFI
+X-Received: by 2002:a05:7022:423:b0:12d:e126:b7c8 with SMTP id
+ a92af1059eb24-12deac411demr3607716c88.13.1777651898369; Fri, 01 May 2026
+ 09:11:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <0-v1-dc5fa250ca1d+3213-mlx5st_jgg@nvidia.com>
+In-Reply-To: <0-v1-dc5fa250ca1d+3213-mlx5st_jgg@nvidia.com>
+From: David Matlack <dmatlack@google.com>
+Date: Fri, 1 May 2026 09:11:11 -0700
+X-Gm-Features: AVHnY4IcOZBEwRDeFauz0p7wo2ItTFGZpUDr4nDVbee6fBs6NBQ1Q0W5r-m7yp8
+Message-ID: <CALzav=ci8bi3=sY+F3HJTB5sOQ_pJ8Lm+kz0CDBBWVXry5P98w@mail.gmail.com>
+Subject: Re: [PATCH 00/11] mlx5 support for VFIO self test
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org, 
+	Leon Romanovsky <leon@kernel.org>, linux-kselftest@vger.kernel.org, 
+	linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>, netdev@vger.kernel.org, 
+	Saeed Mahameed <saeedm@nvidia.com>, Shuah Khan <shuah@kernel.org>, Tariq Toukan <tariqt@nvidia.com>, 
+	patches@lists.linux.dev, Josh Hilke <jrhilke@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Change "succesfully" to "successfully" in the kerneldoc
-comment of call_once().
+On Thu, Apr 30, 2026 at 5:08=E2=80=AFPM Jason Gunthorpe <jgg@nvidia.com> wr=
+ote:
+>
+> Add an mlx5 driver to VFIO self test. This is largely a remix of the
+> existing VFIO mlx5 driver in rdma-core. It uses an RDMA loopback QP
+> to issue RDMA WRITE operations which effectively perform memory
+> copies using DMA. Since mlx5 has a stable programming ABI this
+> should work on devices from CX5 to current HW. The device FW must
+> support the QP loopback configuration.
 
-Signed-off-by: Jiun Jeong <jiun.jeong.cs@gmail.com>
----
- include/linux/call_once.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+> This entire series was coded by Claude Code in about 4 days.
 
-diff --git a/include/linux/call_once.h b/include/linux/call_once.h
-index 13cd6469e7e5..1625a9d6ff5b 100644
---- a/include/linux/call_once.h
-+++ b/include/linux/call_once.h
-@@ -36,7 +36,7 @@ do {									\
-  * it returns a zero or positive value, mark @once as completed.  Return
-  * the value returned by @cb
-  *
-- * If @once has completed succesfully before, return 0.
-+ * If @once has completed successfully before, return 0.
-  *
-  * The call to @cb is implicitly surrounded by a mutex, though for
-  * efficiency the * function avoids taking it after the first call.
--- 
-2.43.0
+Very exciting. Josh Hilke from Google is also working on using AI to
+create a selftest driver for Intel IGB NICs so VFIO selftests can run
+in QEMU [1]. So it's encouraging to see you were able to do it with
+mlx5.
 
+[1] https://www.qemu.org/docs/master/system/devices/igb.html
+
+> For those interested, the flow I used was broadly a prompt sequence
+> sort of like:
+>
+>  - Hey Claude, go look at the falcon series, VFIO self test, the
+>    mlx5 driver, rdma-core and some PDF documentation and make a
+>    plan to put mlx5 under the selftest.
+>  - Write an rdma-core application using the built-in VFIO provider
+>    that can do the required memcpy operations that vfio selftests
+>    wants.
+>    (This resulted in a 1k loc C file that compiled and ran the
+>     first time but had a few bugs related to device programming
+>     that the AI resolved.)
+>  - Replace the rdma-core components with open-coded versions to
+>    create a fully stand-alone program that does the DMA memcpy.
+>  - Review and audit the thing.
+>  [Pause and de-slop it]
+>  - Make it work on a PF too (this is surprisingly hard!).
+
+Can it work on CX VFs? We're interested in continuously performing
+memory copies across a Live Update using a VF via selftests to
+demonstrate SR-IOV preservation (when we eventually get there).
+
+>  [Move to a kernel tree and copy all the .md files and .c program
+>   it made]
+>  - Hey Claude, look at all this stuff and make a broad plan to
+>    actually build a VFIO self test.
+>  - Here is my 1 sentence advice on what each patch should look
+>    like, make a detailed plan to make a patch for every one.
+>  [Pause and polish the patch plans]
+>  - Execute plan X then commit it [pause and de-slop each patch,
+>    repeat].
+>  [Review and final polish]
+>
+> It is based on a tree with the falcon series applied.
+
+Thanks for sending, I look forward to reviewing!
