@@ -1,183 +1,148 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34277223DFF
-	for <kvm@vger.kernel.org>; Fri,  1 May 2026 03:35:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777606513; cv=none; b=X9zwrq4YQWFyqT5qC/duutoI0W7O6QFNDFmb5kO7B8EOJXyO2OEVPPXbia9Qyzc8a99PDv79acKgihKIKAGBxTLF7MW9joOMdS5z0DCT0cE+ffDIimuYJx538TshHXySRqboHe3AOgth8Zu3qEpzK/M0GxKF4OJduvH/nS9/VIU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777606513; c=relaxed/simple;
-	bh=wMOff3L7vo4NlTvymXNWl4uuW3vMa1LwHz1mnUc7f+M=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35AA011CBA
+	for <kvm@vger.kernel.org>; Fri,  1 May 2026 03:47:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777607225; cv=pass; b=Gi4Fpuo73kRMrstPcjsf7o6Ko442pGhN9B35dzcN7+QFKGBXEF3snbLGkFg8Z++MO31j0NqP4WRIonP+z8hsx7UmpLZNpLmmSydRceSozb+3N4FERDwwWYX3mJ+rR2okpFPLPftW7WcjVaTpGKn/7MT8+ps5BWpsISVtaWANxJ4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777607225; c=relaxed/simple;
+	bh=4OWpo6VaBFpeXh1oCTIM66xrw0oCx9lo7khd/wOSDZo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cnBSMSfpS42ASmDdhMIm7oQtxOfLvIC8NG6eVFHnQZs3hbqW+ZW7inaM5cE2WL9T/vCGV2Aklq3cSmabnd9C7oKzjce9DSCADUIdB+Yvhr0VIMMi66EOUGC0HTt5c5LhXDvaRozr5t2v1sy8W9NCoZ6rPA1hc3qfPDggB2l/WaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zz8WtCNW; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=O56TkhAskgatqygSm2uaByBlIhsLVS6w+SvH6XflfgDvqujeypZDPsZrl8MfZ4Iz3YBxXvHEzcwdEC7vEgQNyt5lxFH/Z+l5kMqi0LAMt4ggVaBdNUcDMW9m6BZf4taLSzy5rj7JSVz1EdAWlKdGr9H6e120YBOEk0uhTMnwdKo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QpbKonej; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=sVgnnFIs; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zz8WtCNW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D63C2BCB3
-	for <kvm@vger.kernel.org>; Fri,  1 May 2026 03:35:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777606512;
-	bh=wMOff3L7vo4NlTvymXNWl4uuW3vMa1LwHz1mnUc7f+M=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=Zz8WtCNWrK54fcIpGMm+gJDiTHFZGsWTUN8/jhVxJTtjiZIzK6tNvF6AcWmeX5R8L
-	 kzTuBCgdv7b81RGES1heKSR3+egjbj7au6qjTYFI+3AMb7eYvPtghwJ/aKy9ByXlNH
-	 +ocU4hrV9lU6bcwxrTGELZc7o7YC2lS4nSYWZxZsP39J45L7fdsoRqd7hHRggXJrny
-	 RUiUioTyOtWOCkaWQHkaa/IxW5ERu//AMGZlbv/GmfWswHFLnHK/+5vhIaWOaYhsxb
-	 bVuBiVsIIgll2JL1sLx4bNrCQsNLZGxVm7hxyYZHDKTN+TM6sliN3XMBZYHV95d64D
-	 JkVL9Y3XAugWg==
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ba3115fe0d5so480282966b.1
-        for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 20:35:12 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9V/DraOi3em7CsuHuk02c0yXyBXjtbUaqq3s4SA260WEVQNXUgxMs6wc1SVhQMuurbf0k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvvhljD238OHZD+fPoZIZ5Qq9Qme8viBeDlzfskjjVHb8O+2ZG
-	O4hp2KmLAkyTsJ7gh3K9cUt0Ap5iaO4uFjcAnC+HsLn3bVzf3CjOM1fX7nvUKYxq3g9TAqCRzbG
-	JzT+dTmj17Vd9ZQmir44mqgxeRLkX1gA=
-X-Received: by 2002:a17:907:3c89:b0:bab:f568:38ea with SMTP id
- a640c23a62f3a-bbb97b8946bmr282079666b.7.1777606511620; Thu, 30 Apr 2026
- 20:35:11 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QpbKonej";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="sVgnnFIs"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777607223;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=aVBZdlCz89eivV0S2EJ7M170Yj+NIquGdnZCXji9AXs=;
+	b=QpbKonejnoSv7cKIEQ/KyupccMNVqp/lF2wrP2Xl70btrECNDAK/UxPTYnqiVMjcESnrhj
+	TgEjSe/ljXf9NorAfjf+3+nXQJLx0ht3MLq1K6Nay6CYGlcMI5z+b6ZBCje78mEJVrmRTs
+	XFDlMDjsYr+k+kvORO2lxZzMfYseDQc=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-630-XSWKRaDDOj2XZRKVwGH7tQ-1; Thu, 30 Apr 2026 23:47:01 -0400
+X-MC-Unique: XSWKRaDDOj2XZRKVwGH7tQ-1
+X-Mimecast-MFC-AGG-ID: XSWKRaDDOj2XZRKVwGH7tQ_1777607220
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43d7757463eso1666978f8f.0
+        for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 20:47:01 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777607220; cv=none;
+        d=google.com; s=arc-20240605;
+        b=gMwi09R0p3fxtNcYVjpqgPiZ5Vp469z0v19btu5yodW1oOktkni48LrYfQr/ZaR8D5
+         Iqhq/vXxqwYoRTovB3IsnXripaNoIiCB2a0eiHZtf92KVFFIsojbV7aNowJEPlFJJzMb
+         zVdsi9F1v3ttxuvIA4jKuJhmP6esC6BI5LKqrh7yoPS1lqTo0suJfek3dAYQd54rgvS1
+         d42yeDaLupNuWPcSUCmGPdhcMgyuS3yhqelNCwcAMP2kNKKKUqbmLziZVLOIoeWDgTRX
+         bK4BQ/jZ5WQSKNbj7/ov1LI2sCk3wGkBce//sUdbo1gL6RJa5jxkc+wx1GlCQeZxaFwH
+         vJeg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=aVBZdlCz89eivV0S2EJ7M170Yj+NIquGdnZCXji9AXs=;
+        fh=7X+7xbsNv2UiFGT8RDNC6gsY0l78lrv8xSDbx53RSPY=;
+        b=iY+hv3HiX4PC6YtpSpnASRVWc4/ljDWDcBxfAMUsiX1yWURFe1sCYxsoQO4Y9PDT/y
+         xzvi4e9v+HmwPUd6yIStBukSfVjAHAZUvYMUp2GIdwjzLpDmrjtsxv2v5luEwxo++eo2
+         4CkhNv/YQXeXH9LoQfbMV741lkg3yvP4yd9Ol8zCkHax9zejLzFCVaeQDHdfW/2ST4bD
+         RTMfEudP/z0cRrDnhxOqd2werQZIZdFJVtWA2iPMXUQfUPXpj2P3Ywg8Eb1bUHEuR7uf
+         9ESIlR/yLrw8CnluygyEeSYfvjKE8PlMcBeusV2ePepcZ9Zml1EQn4T7fRY3ZgzsAZxO
+         irMg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1777607220; x=1778212020; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=aVBZdlCz89eivV0S2EJ7M170Yj+NIquGdnZCXji9AXs=;
+        b=sVgnnFIsLxnhvV/B0sCyVh5WweDnXBlDLgeEWQwkReVdvFIs373LwGOXaw+OTl5zKy
+         Y8zZeG54p4JyeN8tIZ52FqpS0kg7LbNKt18tBFedKlzfqmKOnY2Ps5lDXLnJOjUkhBe3
+         pWhdqRve5wH1QtX11LSjYu+yD5S0RFTLodYl/rGn57jOlObGq5p/o1EFWELbk573BvqH
+         YKYN8+2zHhvVSzOEa/hhWksA+lpjCnFUjvGqQziNcvVzfpQGeA8u2K/vplu4l1KUGe9Q
+         beCgX61gz54wlVJYT8yHk7p75+6a1GDZwqO4at+T1Qevi8zq5oVdoy4y9WGs7FA3AC1O
+         zLvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777607220; x=1778212020;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=aVBZdlCz89eivV0S2EJ7M170Yj+NIquGdnZCXji9AXs=;
+        b=RkDPr/eAix1FMyklf0RcJigSJZdtY0JkAxkn5T7zFFhCXR/PBuy/u9dOM17bxXUKD8
+         3qKqyFwm5QuvF7lgnneDHmbEOQn/jrNvj6nHDyoo16YgTqu9v9Uv1Q5+tt377mejs9yp
+         DlZ4DyOgVi5MDzfgv5vP+FniYRV+8bk7pDp5PFRR1xTBF9ztahbS30p6f6N/OBzAUzI6
+         kq4GAj6PRNIP0LxKxFJfjwPnW0t1dQbhiYKVkrUcQRY5LuX+OIHweFMH8XcGrbAlPVLV
+         4C5U6HGQyeXnMSI3aEyrY+pJ5H+w6W9byjeA/S7lpdIxxI0MiIX+vxKRTXHMrzc7XNle
+         KUNA==
+X-Forwarded-Encrypted: i=1; AFNElJ97+5UnWAGj5v3BRkaa05VP0UGqwKytzWwF3Nx9k3ASPxI+xzd2mYzHyeOzIWV/TqCUf6w=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzo/kSdSRmYGl6qrRmLWiU6pqzYzgtIothYHnKqXwCAT7g+WFXQ
+	jcwqf2By4e34Sz5ayZFDDbD1HH1NDWi9OXVQbmtA8YiRhlFAGThm23DQplIDm8zq+6g5sRw0x/4
+	OpXOIKViETGekOdScwyK5NgJlCw0uFWODAdZE+Xdd1hVb+2c/n0bnNp5H/7n34hQzKOO7aH0RE0
+	JO7cpke5rZQ+j50tINWJEQZpNwtw7Y
+X-Gm-Gg: AeBDies9zj/Fnijuccy7PTo5anoMyzRWbtM16OQX/Wl6O904FUrT8Go/mnJEVVoeB6R
+	WcL648x1ZarjxWuXCYt0iV5G3+4EC/Fhpptu334wRawU3yEQh+xLLGQ6tkebZ+pGGlDhF90D352
+	RWXue5wT8PlwD1fDUdBezZKu7sQvvZoXdv9pWqlldOJalCffPuotQpEIQd7SfoO7bUhWiQcpo15
+	GRNRkmkhzNjiRuqXS2HRONi3+drkkmbEGbRZM7fmiXXm/gNrNIC6QuAW0pB8qQsN32Yx5Z57+C7
+	N4/23vo94GYHko0=
+X-Received: by 2002:a05:6000:4558:b0:441:30d8:f023 with SMTP id ffacd0b85a97d-4494dc52af2mr5337987f8f.6.1777607220193;
+        Thu, 30 Apr 2026 20:47:00 -0700 (PDT)
+X-Received: by 2002:a05:6000:4558:b0:441:30d8:f023 with SMTP id
+ ffacd0b85a97d-4494dc52af2mr5337981f8f.6.1777607219886; Thu, 30 Apr 2026
+ 20:46:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260430202750.3924147-1-yosry@kernel.org> <20260430202750.3924147-8-yosry@kernel.org>
- <CAO9r8zMX=_zGm1Qmnd51=ca96aj=c+CkPfxzf9uinUGwxdP_Gg@mail.gmail.com>
-In-Reply-To: <CAO9r8zMX=_zGm1Qmnd51=ca96aj=c+CkPfxzf9uinUGwxdP_Gg@mail.gmail.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 30 Apr 2026 20:34:59 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNM-ECiiSKGS4Z7eM2S_06_6+fDO4mEeKiWFM-NFgHOUg@mail.gmail.com>
-X-Gm-Features: AVHnY4JlYNTJL5qCwLEet9WknamJDi4ht6isEtLL6-xJq0fTtKlELJpz0CiwMuM
-Message-ID: <CAO9r8zNM-ECiiSKGS4Z7eM2S_06_6+fDO4mEeKiWFM-NFgHOUg@mail.gmail.com>
-Subject: Re: [PATCH v5 07/13] KVM: x86/pmu: Disable counters based on
- Host-Only/Guest-Only bits in SVM
+References: <20260430150747.76749-1-pbonzini@redhat.com> <7b4dc292-a2e2-4d42-9e4a-bb1fe37a9013@redhat.com>
+ <afOqrUcq6Hi7DuaA@google.com>
+In-Reply-To: <afOqrUcq6Hi7DuaA@google.com>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Fri, 1 May 2026 05:46:48 +0200
+X-Gm-Features: AVHnY4KXr64Aoxg-_vK3KXl2jWWLPyCumONYK3JzZ3D2HiExCK-iI3UN4xlFoww
+Message-ID: <CABgObfYwuYRk7U9aqYKpLC3tCL+Ks0UwN94FaARPGjKv1tiW=g@mail.gmail.com>
+Subject: Re: [PATCH v5 00/28] KVM: combined patchset for MBEC/GMET support
 To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, d.riley@proxmox.com, 
+	jon@nutanix.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Apr 30, 2026 at 4:24=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
-e:
+On Thu, Apr 30, 2026 at 9:17=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
 >
-> > diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
-> > index 0e99022168a85..0c372b9f8ed34 100644
-> > --- a/arch/x86/kvm/pmu.h
-> > +++ b/arch/x86/kvm/pmu.h
-> > @@ -36,6 +36,7 @@ struct kvm_pmu_ops {
-> >         void (*reset)(struct kvm_vcpu *vcpu);
-> >         void (*deliver_pmi)(struct kvm_vcpu *vcpu);
-> >         void (*cleanup)(struct kvm_vcpu *vcpu);
-> > +       void (*reprogram_counters)(struct kvm_vcpu *vcpu, u64 counters)=
-;
+> On Thu, Apr 30, 2026, Paolo Bonzini wrote:
+> > On 4/30/26 17:07, Paolo Bonzini wrote:
+> > > I will once more send you to v3 (https://lore.kernel.org/kvm/20260408=
+154217.458420-1-pbonzini@redhat.com/)
+> > > for the description of the series.
+> > >
+> > > v4 incorrectly rebased onto 7.1 KVM and broke the case where L1 disab=
+les
+> > > NPT.  On top of that I made a few final touches on the patch split, a=
+nd
+> > > opted to use the XU bit unconditionally in the MMU even if MBEC is di=
+sabled.
+> > > This is more consistent with the idea of reducing as much as possible
+> > > the differences between mbec=3D0 and mbec=3D1 modes.
 > >
-> >         bool (*is_mediated_pmu_supported)(struct x86_pmu_capability *ho=
-st_pmu);
-> >         void (*mediated_load)(struct kvm_vcpu *vcpu);
-> > diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
-> > index 7aa298eeb0721..fe6f2bb79ab83 100644
-> > --- a/arch/x86/kvm/svm/pmu.c
-> > +++ b/arch/x86/kvm/svm/pmu.c
-> > @@ -260,6 +260,48 @@ static void amd_mediated_pmu_put(struct kvm_vcpu *=
-vcpu)
-> >                 wrmsrq(MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR, pmu->glob=
-al_status);
-> >  }
-> >
-> > +static void amd_mediated_pmu_handle_host_guest_bits(struct kvm_vcpu *v=
-cpu,
-> > +                                                   struct kvm_pmc *pmc=
-)
-> > +{
-> > +       u64 host_guest_bits;
-> > +
-> > +       if (!(pmc->eventsel & ARCH_PERFMON_EVENTSEL_ENABLE))
-> > +               return;
-> > +
-> > +       /* Count all events if both bits are cleared */
-> > +       host_guest_bits =3D pmc->eventsel & AMD64_EVENTSEL_HOST_GUEST_M=
-ASK;
-> > +       if (!host_guest_bits)
-> > +               return;
-> > +
-> > +       /*
-> > +        * If EFER.SVME is set, the counter is disabledd if only one of=
- the bits
-> > +        * is set and it doesn't match the vCPU context. If EFER.SVME i=
-s
-> > +        * cleared, the counter is disable if any of the bits is set.
-> > +        */
-> > +       if (vcpu->arch.efer & EFER_SVME) {
-> > +               if (host_guest_bits =3D=3D AMD64_EVENTSEL_HOST_GUEST_MA=
-SK)
-> > +                       return;
-> > +
-> > +               if (!!(host_guest_bits & AMD64_EVENTSEL_GUESTONLY) =3D=
-=3D is_guest_mode(vcpu))
-> > +                       return;
-> > +       }
-> > +
-> > +       pmc->eventsel_hw &=3D ~ARCH_PERFMON_EVENTSEL_ENABLE;
+> > I placed this also at branch kvm-mbec of
+> > https://git.kernel.org/pub/scm/virt/kvm/kvm.git.
 >
-> Sashiko raised a good point here. In the following patch, we reprogram
-> the counters synchronously on nested transitions to update the
-> counters' enablement before counting VMRUN or WRMSR(EFER.SVME).
-> However, this updates pmc->eventsel_hw while
-> kvm_pmu_recalc_pmc_emulation() checks pmc->eventsel to check if the
-> counter is enabled.
->
-> I think either pmc_is_locally_enabled() needs to check
-> pmc->eventsel_hw or we need to update pmc->eventsel here.
->
-> AFAICT, pmc->eventself has the value written to the MSR, so I think we
-> want to keep that as-is.
->
-> On the other hand, ARCH_PERFMON_EVENTSEL_ENABLE is cleared in
-> pmc->eventsel_hw in kvm_mediated_pmu_refresh_event_filter() if the
-> event is not allowed, and kvm_pmu_recalc_pmc_emulation() has a comment
-> about intentionally ignoring event filters.
->
-> We can also separately track enablement for nested purposes, but that
-> would add one more thing we need to check aside from general counter
-> enablement and event filtering.
->
-> None of these options are ideal, perhaps directly clearing the bit in
-> pmc->eventsel would do the least damage as (pmc->eventsel &
-> ARCH_PERFMON_EVENTSEL_ENABLE) is only checked by
-> pmc_is_locally_enabled().
+> A decent number of nits, but nothing that truly necessitates a respin or =
+rewriting
+> of history.  I don't have a strong preference between doing fixups versus=
+ cleanups
+> on top.
 
-No, we can't really clear the bit in pmc->eventsel as that's what the
-guest reads with RDMSR.
+I'll definitely do fixups.
 
-The more I think about this, the more I think we should drop
-pmc->eventsel_hw. It serves two purposes AFAICT:
-1. On AMD, we use it to clear HOSTONLY and set GUESTONLY in actual HW.
-2. For event filtering, we use it to clear EVENTSEL_ENABLE.
+Paolo
 
-But maybe it's easier to explicitly track the changes we need to apply
-to eventsel rather than a HW version?
-
-(1) is trivial, we can just clear HOSTONLY and set GUESTONLY before
-doing the actual write as that's constant.
-
-For (2), instead of eventsel_hw, maybe add a boolean called 'filtered'
-to track if that PMC should be filtered out or not. Then, we can add
-another boolean to track if the counter is disabled due to
-nested/HG-bits (e.g. 'nested_disabled').
-
-With that, pmc_is_locally_enabled() would check:
-  (pmc->eventsel & ARCH_PERFMON_EVENTSEL_ENABLE) && !pmc->nested_disabled
-
-, and then before writing to HW we check pmc->filtered,
-pmc->nested_disabled, as well as do the HOSTONLY/GUESTONLY changes for
-AMD.
-
-Actually, instead of a boolean, maybe add 'disabled_reasons' flags,
-with possible flags like PMC_DISABLED_FILTER and PMC_DISABLED_NESTED.
-
-This might all be unclear, I will draft some diff on top of the series
-tomorrow and send it in case it makes things clearer.
