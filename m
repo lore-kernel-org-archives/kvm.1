@@ -1,305 +1,256 @@
-Received: from mail-vk1-f169.google.com (mail-vk1-f169.google.com [209.85.221.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011043.outbound.protection.outlook.com [52.101.62.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE3E3D9045
-	for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 23:51:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 197DD256D;
+	Fri,  1 May 2026 00:08:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.43
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777593117; cv=pass; b=WbUrPgjKw8qv44Kwkx/NUVq4WMu8d6TNQmfu/XzByH8jgCplc6+UOGVZF8Sbg6eyDVqVR/T25WPzzDNfYmzvBMs/ieeZrRt+j/mxLBHv1y0TWztKN032Zqvc6FULY3eE34+dQw0T/RxxWm/5G1afncwL2jzPk6VRGbP7sW4nfMU=
+	t=1777594123; cv=fail; b=i/4CRSvF0YyJm8NTfCg2har6qUqfVymb3byFhrTXR+YBEsBGHwDeydF4qMHOiuJ3ZdmmaWxAM9ieUwrBTkAVx6f9+cP8GcFbmRNS7Rfznx/PHmSUy9Gn/F33CFEsVCnWt8eYjHMfKeJELXaW0TdBWHzXt7hE/5xPrJ6JOhYYByg=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777593117; c=relaxed/simple;
-	bh=UxyyQr0iDJsnmrDySmyYHIs/8DyWV1oc/NXfPvCT6kQ=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RKpMJSHbycim7gZP9aq2vRhp+VkTSpSPqjqqfgCW9wLOtlt6hcAb1HgyiJz8IvGA6GLOVV8fqGB91ZjljEJhSA8IHaQmMLhCazaby+TKXwxhtcQF46AOE53L07YLKeK/8w9rRNbQzhJJyHdDBP0evDx6oSYpc9XXzvVpFUslgu8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CqSFCUZd; arc=pass smtp.client-ip=209.85.221.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1777594123; c=relaxed/simple;
+	bh=j99qN15SeQBC14aGGofgJTIUtx9It7wHPXLLqdaQZ7M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=nfTppE+lIqc/NdjRcNPCKPyxl34BQUN62sO2X6ggwM77V8Yyaoaki06fGx2644aO/LAGenq7P1BJUJbD0kZdchRWhRkQ9NVSr6wmUvsugDCaQ3EGdk9N1WHK11pUkkizH4OcEcK1chYs+vlw0y6x98iBbB+ArXFW7nR3H0YC0m4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=MoikjP59; arc=fail smtp.client-ip=52.101.62.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CqSFCUZd"
-Received: by mail-vk1-f169.google.com with SMTP id 71dfb90a1353d-56eec951db1so513376e0c.3
-        for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 16:51:54 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777593114; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YrLJyi+Khiq8kSpNnT986DGqOSclLi3D8uFCqPGLUN1SYFB9ACuD2/UGBDvLyzJRtZ
-         8fE6FFaC9eKy1WjuLhlyTH8pFGpuGoV1Q2j33tchUmcCYmm6PbqgJ1RJt7mMVHcq27gy
-         axeX0jaE8quBTqmeZama29A8LkO399ky9qAVUhjJLRA7RrwnTXCM2Rt8hRqt7onIWhan
-         O01xuHj53pEpoBEOrugPhf6RLkhH0yCgtlq4w92+mlct1fGvEe3MP+FhuSycWWor9WL0
-         2Ggb1z8mzKnGV5qaqSmZ+hREtnUO9eqJsMC0X6hiqNWzV0SP1z7HiRaM8Ljl8sGxApEJ
-         e4bA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=BpU7aJAXyZDKrOT/BsTxtUzbjAh38uTL3HfdWXDy/eU=;
-        fh=qAS/4nkUVDhqNmPF0g8hdQhUQvfkapu8ALkP3JobDSQ=;
-        b=kCEHD4Cw6gtSl70SJgm6PUT6hGwI00cQxIKWqUB78Ks0w0pUmEYVG2WwEokdBGySNV
-         MpihdizfzlRX59PhSCymBozHIPR//1/Z+KPohm3aNhN0gAH7THuR5w8b/gLVgfW1uR4v
-         /tUPWqv7mltzw1r9e19+wrYQpzier4yY5VjgKFfW5CiSEV3++fuNkyxroyv8J6DjexPv
-         /4k6a6WDEneCKpxP2jWdLMz8v9ImtLHMfRPTU3A3xdGAou8eaxQP36vX3ub7KJ5btV/L
-         JNnbgnWKAm/7Pvszk6R9XCGArSHwOnMBA7FvnwdBuUl5yi39aj1o44vjrSwTo1MT+1Bu
-         WSRA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777593114; x=1778197914; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=BpU7aJAXyZDKrOT/BsTxtUzbjAh38uTL3HfdWXDy/eU=;
-        b=CqSFCUZdk9omtQVbKBoOT2HudEPyTkg3FSNYpCLNmhNr04zzQ3mdJd5rYebPzBP6as
-         ng9vpnaeX/qFbPaoaxLOTNlkr+NfjfpVl4hlFzHM8RAn7zq59yQ2aMZlhRuTKLf5kqvT
-         kWuBAvC3R1LzPs5vm6Zf5Xu1IEocUORqu+WoexPeXJQ1knC0M2eCOkqqUZdFzr7Rp8ov
-         cwT7eJoAo6HFTIo69ew4bIpDbE1hjLHLaLTgvKnW9FrF5+f7zu6xYLsSwa9zOW9ZPFxt
-         Rs5U/Mm8NTh6UB9HoczgM99qFid63mMHWE9OJHMLOKnLfLmWR509TBJiovCtxeG/FfX7
-         Wn/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777593114; x=1778197914;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=BpU7aJAXyZDKrOT/BsTxtUzbjAh38uTL3HfdWXDy/eU=;
-        b=sP3Q5dytUhlAHACyKBfmsCo164QkOjf7NbaaaWuqLu95hFw1XH1s2BPvxnKpjEqKwj
-         JhZ61X/iJ2hElBfpL7V7pdlpwESNxP1ENWevEQ7Q+pQ5KWgKvsUN3q0qOKixMhg1ruNP
-         wv3yWjd9TMuXXEUpipiVC1yNNu7CaDYJ9BCfZsulwNJJkI30phWvnZNMge+4YQDKpL5B
-         r4rX7I47oqKZk8BWFJbScvuKjfgOB508UxQqQDkLIYb3iAp54lm3Iw9XhZ3Tdycxfd4d
-         vNJnD/CBQFZpw11vb8XlgEA95GvAFfpQRmjBTOJR47ZdvWShnduxVJbDsCUq+0EDpuV8
-         D2+w==
-X-Forwarded-Encrypted: i=1; AFNElJ9BP9QZ9vJZaecIlMvc8n6sjjhyL+K3PePeKNHhMYrb7VPc9FRfPzFAViUkugHS7T6jXtA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6YaGa399ebuAE3LrfQV/h6K5SFabGlfDPBnfPrc4sbdZfY+Uj
-	c0geg4DAYTToJeGJdghmh4d1PfT02p/qolgs0KsNO5R8YV8w5arhO2ndbVOAiFRDti30+4zrLoe
-	kmsYZypvmQNEt7lDYM3WN5cvgGWb8Ln06DxaP+79o
-X-Gm-Gg: AeBDieu/58dG4iajzh0QUQvCqfRc35SMov87xN+C3XcTXS140Rg4nUvHtO8pRMq9QXl
-	CdEIPgkKActP64xV1Ge8CfPhfYrOUseVMSLiQNsPOpz8NTpi0nkTTZkirNKFMUZORJAEZXTE6B6
-	GFlfFf/QuIPXRDGvANYnPiqw3rDpdsddHJJeaX/4vSiOQqbFFhf7hKDpDkyinc+/uvVqUbtHzuv
-	CWU8ycVq5pljY6w+bds8a4nmvLZx4DiU6boY4+ZUUrHmKHBrJeBDzwFoBSJ7rC3a+z84JX3P3Tl
-	aAyZ2ABYlpaS6xkkK8tQIU545K2PFRD2BwlVJbKY9qfuXPkC6LOQ8rsCO5vmZn6xV1bJcUlZvHs
-	AcHy2pUMJuQ4UZsk=
-X-Received: by 2002:a05:6122:8b14:b0:56c:d66b:7516 with SMTP id
- 71dfb90a1353d-574beb44409mr376458e0c.13.1777593113169; Thu, 30 Apr 2026
- 16:51:53 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Apr 2026 16:51:52 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 30 Apr 2026 16:51:52 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <x7n77snnvvukofo3slopl74c5tmlb2t2un5qy5fq6eb3d2xt7e@6a6tixg5mdfc>
-References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com> <x7n77snnvvukofo3slopl74c5tmlb2t2un5qy5fq6eb3d2xt7e@6a6tixg5mdfc>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="MoikjP59"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=uoyaYb+knryz5+E5BbHtjsOiy2kItdBUdpUV3h9RYu1UavsI0laZWJKM/OxS0Cy140Ma0Dtsj5vzt3q3Qtl05oRsDG3iaCWu351gpvbgz2GMXy5Gm3oLEeyb7wqvf6HowryFtZRhf6HixQfbkQpqnpcr9JDePEJehbfOHKPg/q8Pn7YacQhz0wZSupImfNFq05KT9XqcfRMsnzimFktsC5+gNKveB+EAFSdgaDMxO3Ga6IwaWqrtocRNcp11u3paSplDQn5QfDt9QY7M0HpmrARwZ8y15NwbppekYpOX5wqUYMT7RWpspZznVLCfJfHv8CrlMa21zprjtYjxdZBgoQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qmYuxiN5ZZ/T+NTdwCrnkSS8mq90pNHhmRuiSSre+IM=;
+ b=AEzArhJkaBezjoYMfjVHmpfCTQEHJm8QMDVMEjDsZ6MMCrdlVsN5rDI/rUVBpP3+H18v4Cxx1H3PC1Be07nUuM5qNTeR3dr/FyywghmynBlq483xqe/vR/du45EyxPbY8mU1pXyNvrc5T3sCxYqVFs6Glh/TeBWSAR8JZqrZEZLqWMQJZUaZsrJmAAeW1rnLWx7usiyzHRAcTjnpDKVku3Bn5pErAu3ZaqBl7bts/MwgVqa24f8soMQvVVZlJB6nX6om03X/+wlRoydxKT2H5YpCJCPRt2Qgy2J1Jh2+f0sqynn74oaFFoDvGBjCPGzTiIRRnYe7k5+2/bGdMo0e1A==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=qmYuxiN5ZZ/T+NTdwCrnkSS8mq90pNHhmRuiSSre+IM=;
+ b=MoikjP59/MhdxCL8jHsqKHcBKGFW6kwyW2ixaeyK/LA6Nvr4DtG7hmFf4FPhmeYaGn3iWsEID7kkeso/as/6oG7MqcooKfGe7IMkwpizE1hEVPCerrP56z+JNtfJVEejkbIsvnekhcU4iDz3Jxw9srsfQA8EKtxsNmlh3NajtvApNPk5Bw6wiGG3YOmnE4i02NgoYtUKn1kibjdU602VUjUSO8DKy3x2KzwmjqIR39q34y8Ek3cDOoXShAsQODu39sVX1FKq04FM+C/JbTSub2s/3HASMK1KRo1+9OaC3F82Pl/Ijd3fq+A6xWdYhHzAogIwA/zSu+D0ahP+EU5AdQ==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by SAVPR12MB999167.namprd12.prod.outlook.com (2603:10b6:806:4e5::19) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.19; Fri, 1 May
+ 2026 00:08:39 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9870.013; Fri, 1 May 2026
+ 00:08:38 +0000
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Alex Williamson <alex@shazbot.org>,
+	David Matlack <dmatlack@google.com>,
+	kvm@vger.kernel.org,
+	Leon Romanovsky <leon@kernel.org>,
+	linux-kselftest@vger.kernel.org,
+	linux-rdma@vger.kernel.org,
+	Mark Bloch <mbloch@nvidia.com>,
+	netdev@vger.kernel.org,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Tariq Toukan <tariqt@nvidia.com>
+Cc: patches@lists.linux.dev
+Subject: [PATCH 05/11] selftests: Add additional kernel functions to tools/include/
+Date: Thu, 30 Apr 2026 21:08:31 -0300
+Message-ID: <5-v1-dc5fa250ca1d+3213-mlx5st_jgg@nvidia.com>
+In-Reply-To: <0-v1-dc5fa250ca1d+3213-mlx5st_jgg@nvidia.com>
+References:
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: MN2PR03CA0016.namprd03.prod.outlook.com
+ (2603:10b6:208:23a::21) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 30 Apr 2026 16:51:52 -0700
-X-Gm-Features: AVHnY4KlBX901bcbV2QvS7GwShwnTIsgZQP6_kTRQYnSwTTeAKUt2VFX-7vfC-o
-Message-ID: <CAEvNRgHRpvsEjtr1A_Qz3d4oMEaffTxESavrZ73Jtt6OobCwhA@mail.gmail.com>
-Subject: Re: [PATCH RFC v5 00/53] guest_memfd: In-place conversion support
-To: Michael Roth <michael.roth@amd.com>
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|SAVPR12MB999167:EE_
+X-MS-Office365-Filtering-Correlation-Id: 6e318fec-c3d1-43d7-231a-08dea715cb77
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|1800799024|366016|921020|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	TyJZuKRy1JX2pQRK7yVgiLmMUc1UuA/ecWyFuURrwZ3FjDm7doFOjARz1pcPC5a0P2aPO/dKwqFCUaDBmO1VqCYBhdWY1bCD9z1TN6TwkpE9jFQ1AarYfE0Ub8Ikz9CDcLqo9NqEKBXP2iSjcLFsC7DXxhuJF/twLuN8ksSc7miWp+4bmeZauR48ns9BAfb3e7BoLvmTdKwrDQdvz9AmSkOT0ON37Lz/ETxilefAySJb3e30y53z6wkoUp1x2G5/fIfYVZ82MTjZu4a4eh0rqLO+Ac7FwooI9lWpiuI0C8jg+Sk1MsvzR0ovfyApkOTZjZVWuvCLxIAN/NkIO00QaDVUivjBCP6AZPIIAlQlSQJPheqcZbeG7hFD8SbDsRRr5LGf/8SxnszogmOgPFqpCzAmAyCjntTMPJBNJMTF0HKOBghyhW9flW5PgiKhOdp5CU5lQSVkPuqiDOyipc//0NQJnthSRylR9hPIalfrQkFlQlCILG3A8ZcuNshHFdQfAzjRPpTVxrWp4+6icrLHr/9JTQFfE5XGa5ehVAbm8zvUaj72RUJJwS9lZ0B6VfR5ToypbyEYPmOKr4biLkwg1AQb1lrVYW7AOTbw2o1hEEdros9L1mZgkuwGfr5GkeRJ+gDpf0tsSlFzWuQbHWaznL5JOAAdZtZJ3JhNnJQtFnjc9ZMKT599NUpbZHgXV0lLPHAL0H5a2EJEDJU1jiZEt2VDi3Axu7uwKPHeB/BVWeA=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(921020)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?LQPz0oY+uvsFZpnxsKTquooCJXctvyRA6QhO+s6wvoW83FhuO6JPO98dyFOg?=
+ =?us-ascii?Q?fgV0EhX5FaHijS44rCryhmQ8CeiMToUEEj80iKzi0Y4RfCdWLx/UujgmyTo+?=
+ =?us-ascii?Q?MRsmEdrato9dqtFvFRjZq8BFJBA8HCjHLwgjnxegkXTzCexWm8xoRviRmhM2?=
+ =?us-ascii?Q?NVtwSmICSrmQVlVc1pWqlz6apo0wCDQUse0zhOhxYc2y+HibshzGLulMJKJ8?=
+ =?us-ascii?Q?wBFJX69PGszSulBda+JbnxG8/N3niAB/K/4ETnx1FiC4HfAOVU01SAb7jGpf?=
+ =?us-ascii?Q?3PFlC/Ah6AFvxRW1m/WBK6T+pU0jpmH0zyfjpnhhpQYKrPw5DjBH6GWzrqly?=
+ =?us-ascii?Q?jwpBcxySoDsAsWt/KFRj4OoAkCGsfXIZhHzt3lVYdBmYcuSp/OWKLKMtzCe/?=
+ =?us-ascii?Q?64iwrzUX1KXeTsd2g1QUm3wOFvuyzF4mSsE2RNRh825LoT80uQt0p3+LQAO2?=
+ =?us-ascii?Q?Y9kLV+6GwbYWMl9hXs1cve2DVc24SHdKERkFm6RL7uI/1LbqirEFbzgocktL?=
+ =?us-ascii?Q?btjUPsnR+ypNpz8gfkU0hUxwHCT3veyI1gycjR330RCRYcPToHACr8U+u+HJ?=
+ =?us-ascii?Q?dtUYX/KkdKJJ97QDPs0sgk2FFZE+q6t6OlDK+4RACJvJ8mQ+PPo6jnGYCKOu?=
+ =?us-ascii?Q?MYvOn32D51lwoynehpA/xZKU8wlNokeiDu/Qrr9a16OA/rnKlyhBmyOOBERN?=
+ =?us-ascii?Q?fuq/ilD7hnOdruAGDnyZeJgnCnfm44hqNuUYCc5V3+KbD1szr8sKkT1uuOfj?=
+ =?us-ascii?Q?UPayRzOC3FZGC+Kn8hq0Jn2HQvelCtQ+NfiX2V0/sNiieCKYF7kJ+mObYHyb?=
+ =?us-ascii?Q?c56zgR9/KRTG9KB8bdUUQjAYVLU5fK/wA3Z93Gl5vgCQ+fMK7EsMb3RkDnlb?=
+ =?us-ascii?Q?WuFJa76bp6IiMFaSYNn5RldUrTRGhkgT3QTF903ZHxf8WeN0IpcpQXt0BXlO?=
+ =?us-ascii?Q?C6Hiyznrl+Zmqs1Yf9cY/UhALG8id1F/kbAt8tsdQYRcaWj1mQYn+UInigW/?=
+ =?us-ascii?Q?ieT73YFM9AixQ8mj/fFmBQC3/lCgi0Km7+DLfk0kOe4FPZOe0pDfSrjk0P3D?=
+ =?us-ascii?Q?vH8XUHfj0dQFRT8O3rhEPjYBNYgHNv9L70LpM6bxlTcIpehGclViVrtgxeT0?=
+ =?us-ascii?Q?FjX2VUo8IUhdbIBGW6c4dEZnjA1P8gVdTzMwsWs+hXsttF0Mwxdps+B9eC4X?=
+ =?us-ascii?Q?/mprDp8EB1jzPpjUs8NXlE53bOCnQs0UhKhD00hrzaYe31plPUz+3XNQg7af?=
+ =?us-ascii?Q?xCyurzjkT1JykmoW9Lzwxik1XxKEGixC21/qSSj02VpYZdP7FZGCIOGgIytw?=
+ =?us-ascii?Q?C7AxmwRV3IvxzilCmKOHV9CQwXO++/gsm59nfS0vh5bLHGTT1mGQNX6Zb+uB?=
+ =?us-ascii?Q?sc1ipN+6iqfUKRAOzlQZVtD1AbgD/4alC81G8KvDxK8MRCtM6dBGgijgifw6?=
+ =?us-ascii?Q?GcFu3UNSkyeDUMfC5VZVwthIddTCop1e3EPoltLmEfR1IMO2vQGMqRsYWz+K?=
+ =?us-ascii?Q?Gpoc72fNU6psQnQt2HW+hb+Lo0cKPNX+WoKcVkkUEO2v/1BtlEJUTxKSexvV?=
+ =?us-ascii?Q?SY4IkpV/uop6t5nURo8pAOkUHKeraXLfabxlnc+iA9NpxaABh58yRMXREEhq?=
+ =?us-ascii?Q?66p7Z1M0n56YuF1LdzYYQyOT0N4TdGre0+Hsh4NNEXiCb3Mtp5Fxc4NmUKkA?=
+ =?us-ascii?Q?sPmrferZnrhSqy6m2OWErBJDtK0SwAfAmYGV5ZZKbAOgdPCW?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 6e318fec-c3d1-43d7-231a-08dea715cb77
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 May 2026 00:08:38.4818
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uBcYI+YkwueNas5Z3/7cyVgrKqRpV0U+75X2joOPUQvGd7RGEF+MxikNqr0q8Vm2
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SAVPR12MB999167
 
-Michael Roth <michael.roth@amd.com> writes:
+These are needed by the VFIO mlx5 selftest in the following patches,
+which includes some headers from mlx5 and also needs a few more
+MMIO-related features.
 
->
-> [...snip...]
->
-> I made a super-long-winded reply to that thread, but to summarize:
->
-> PRESERVE flag has different enumeration/behavior/enforcement for pre-launch
-> vs. post-launch, and similar considerations might come into play for
-> other flags, so to make it easier to enumerate what flags are available
-> for pre-launch/post-launch, maybe we could have 2 capabilities instead
-> of 1:
->
->   KVM_CAP_MEMORY_ATTRIBUTES2_PRE_LAUNCH_FLAGS
->   KVM_CAP_MEMORY_ATTRIBUTES2_FLAGS
->
-> where SNP/TDX would only advertise PRESERVE for PRE_LAUNCH, and pKVM I
-> guess would enumerate it for both (or maybe just POST_LAUNCH?)
->
-> That lets us keep the flags definitions more straightforward but still
-> allows userspace to easily enumerate what exactly should be available at
-> pre vs. post launch time, and give us some flexibility to detail
-> variations in behavior between the 2 phases without documenting
-> edge-cases in terms of VM types.
->
+- DECLARE_FLEX_ARRAY in new tools/include/linux/stddef.h (wraps
+  existing __DECLARE_FLEX_ARRAY from uapi/linux/stddef.h)
 
-Oops Michael I only read this after the meeting today.
+- dma_wmb/dma_rmb barriers: x86 uses compiler barrier
+  (DMA-coherent), arm64 uses dmb oshst/oshld (outer-shareable for
+  device visibility), generic fallback uses wmb/rmb
 
-Sean, today at guest_memfd biweekly we also discussed this topic. I
-brought up this topic because IMO the interface is starting to get
-a little awkward, I'm struggling to put the awkwardness into words.
+- ioread32be/iowrite32be in tools/include/asm-generic/io.h for
+  big-endian MMIO register access
 
-Here are some awkward points:
+Assisted-by: Claude:claude-opus-4.6
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+---
+ tools/arch/arm64/include/asm/barrier.h |  4 ++++
+ tools/arch/x86/include/asm/barrier.h   |  5 +++++
+ tools/include/asm-generic/io.h         | 28 ++++++++++++++++++++++++++
+ tools/include/asm/barrier.h            |  8 ++++++++
+ tools/include/linux/stddef.h           | 10 +++++++++
+ 5 files changed, 55 insertions(+)
+ create mode 100644 tools/include/linux/stddef.h
 
-For PRESERVE, even though it is defined (now) as that what the host
-writes will be readable in the guest, it only works for both to-private
-and to-shared conversions for KVM_X86_SW_PROTECTED_VMs and pKVM. That's
-because guest_memfd doesn't actually invoke encryption during the
-conversion. For TDX and SNP, the encryption can only be done before the
-VM is finalized, through vendor-specific ioctls that go through
-kvm_gmem_populate() to load memory into the guest.
+diff --git a/tools/arch/arm64/include/asm/barrier.h b/tools/arch/arm64/include/asm/barrier.h
+index 3b9b41331c4f16..abdc64fc3c70f0 100644
+--- a/tools/arch/arm64/include/asm/barrier.h
++++ b/tools/arch/arm64/include/asm/barrier.h
+@@ -24,6 +24,10 @@
+ #define smp_wmb()	asm volatile("dmb ishst" ::: "memory")
+ #define smp_rmb()	asm volatile("dmb ishld" ::: "memory")
+ 
++/* DMA barriers use outer-shareable (osh) for device visibility */
++#define dma_rmb()	asm volatile("dmb oshld" ::: "memory")
++#define dma_wmb()	asm volatile("dmb oshst" ::: "memory")
++
+ #define smp_store_release(p, v)						\
+ do {									\
+ 	union { typeof(*p) __val; char __c[1]; } __u =			\
+diff --git a/tools/arch/x86/include/asm/barrier.h b/tools/arch/x86/include/asm/barrier.h
+index 0adf295dd5b6aa..0b51431fa530ea 100644
+--- a/tools/arch/x86/include/asm/barrier.h
++++ b/tools/arch/x86/include/asm/barrier.h
+@@ -43,4 +43,9 @@ do {						\
+ 	___p1;					\
+ })
+ #endif /* defined(__x86_64__) */
++
++/* x86 is DMA-coherent so DMA barriers are just compiler barriers */
++#define dma_rmb()	barrier()
++#define dma_wmb()	barrier()
++
+ #endif /* _TOOLS_LINUX_ASM_X86_BARRIER_H */
+diff --git a/tools/include/asm-generic/io.h b/tools/include/asm-generic/io.h
+index e5a0b07ad452a6..0d89decdafb818 100644
+--- a/tools/include/asm-generic/io.h
++++ b/tools/include/asm-generic/io.h
+@@ -479,4 +479,32 @@ static inline void writesq(volatile void __iomem *addr, const void *buffer,
+ }
+ #endif
+ 
++/*
++ * ioread/iowrite for big-endian MMIO registers.
++ */
++
++#ifndef ioread32be
++#define ioread32be ioread32be
++static inline u32 ioread32be(const volatile void __iomem *addr)
++{
++	return bswap_32(readl(addr));
++}
++#endif
++
++#ifndef iowrite32be
++#define iowrite32be iowrite32be
++static inline void iowrite32be(u32 value, volatile void __iomem *addr)
++{
++	writel(bswap_32(value), addr);
++}
++#endif
++
++#ifndef iowrite64be
++#define iowrite64be iowrite64be
++static inline void iowrite64be(u64 value, volatile void __iomem *addr)
++{
++	writeq(bswap_64(value), addr);
++}
++#endif
++
+ #endif /* _TOOLS_ASM_GENERIC_IO_H */
+diff --git a/tools/include/asm/barrier.h b/tools/include/asm/barrier.h
+index 0c21678ac5e65f..e7e0c7de5a2ffe 100644
+--- a/tools/include/asm/barrier.h
++++ b/tools/include/asm/barrier.h
+@@ -47,6 +47,14 @@
+ # define smp_mb()	mb()
+ #endif
+ 
++#ifndef dma_rmb
++# define dma_rmb()	rmb()
++#endif
++
++#ifndef dma_wmb
++# define dma_wmb()	wmb()
++#endif
++
+ #ifndef smp_store_release
+ # define smp_store_release(p, v)		\
+ do {						\
+diff --git a/tools/include/linux/stddef.h b/tools/include/linux/stddef.h
+new file mode 100644
+index 00000000000000..99182ea4a1419b
+--- /dev/null
++++ b/tools/include/linux/stddef.h
+@@ -0,0 +1,10 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef _TOOLS_LINUX_STDDEF_H
++#define _TOOLS_LINUX_STDDEF_H
++
++#include_next <linux/stddef.h>
++
++#define DECLARE_FLEX_ARRAY(TYPE, NAME) \
++	__DECLARE_FLEX_ARRAY(TYPE, NAME)
++
++#endif /* _TOOLS_LINUX_STDDEF_H */
+-- 
+2.43.0
 
-For ZERO, it is defined in api.rst that ZERO is not supported for
-to-private conversions, and the rationale there was that when ZEROing,
-guest_memfd/KVM can zero, but it's really the contract between the guest
-and the vendor trusted firmware whether the guest sees zeros later.
-
-Another awkward point is that ZERO was meant to enable an optimization
-for TDX since the firmware zeroes memory, but it actually only zeroes
-memory when the page is unmapped from Secure EPTs. guest_memfd (for now)
-doesn't track whether the page was unmapped from Secure EPTs as part of
-the conversion, so guest_memfd can't assume it was mapped before the
-conversion request. To uphold the ZERO contract with userspace,
-guest_memfd applies zeroing for TDX anyway.
-
-Summarizing from guest_memfd biweekly today:
-
-David suggested enumerating the combinations, something like
-`SHARED_ZERO` and friends (since to-private and ZERO is not supported)
-and Michael then brought up the other axis of pre/post launch. IIRC
-there might be another axis since pKVM would need to determine
-dynamically if a to_shared conversion can be permitted for the range
-being converted, based on whether the guest had requested a to_shared
-conversion.
-
-I think this might just result in too many flags, and could paint us
-into a corner if more options get supported later.
-
-
-I spent even more time thinking about this today. I get that we want a
-consistent contract to userspace, can we scope the contract differently?
-
-What if we scope as "what KVM guarantees the content will look like
-after guest_memfd updates attributes"? This is a smaller contract, since
-it doesn't promise anything about what the guest sees. Running this
-through a few examples:
-
-+ Pre-finalize, SNP, to-private, PRESERVE: guest_memfd guarantees that
-  after setting memory attributes, the contents of the pages will not
-  change. The contents are then ready for populate. What populate does
-  to the memory is another contract between SNP and the guest that is
-  out of scope of guest_memfd's contract.
-
-+ Post-finalize, SNP, to-private, PRESERVE: guest_memfd guarantees that
-  after setting memory attributes, the contents of the pages will not
-  change. SNP's contract with the guest does not, though. After the page
-  gets faulted in, the guest sees scrambled data. This may be a
-  meaningless operation now, but it leaves the door open so perhaps we
-  could have an SNP-specific ioctl in future where step 1 is to set
-  memory attributes within guest_memfd to private and step 2 is to
-  encrypt in place.
-
-+ pKVM, to-private, PRESERVE: guest_memfd guarantees that after setting
-  memory attributes, the contents of the pages don't change. Separately,
-  pKVM doesn't do encryption, so the pKVM guest reads the same contents
-  the host wrote. The distinction here from the current state is that
-  guest_memfd didn't guarantee that the pKVM guest will see the same
-  content the host wrote since that's a separate contract between the
-  pKVM guest and pKVM.
-
-+ Post-finalize, TDX, to-shared, ZERO: guest_memfd guarantees that
-  contents of the pages will be zeroed in the process of updating
-  guest_memfd attributes. Host userspace reads zeros after faulting it
-  in, which is because guest_memfd did zero the pages after conversion
-  to shared. A future optimization is possible, where guest_memfd only
-  zeroes the pages that were unmapped from Secure EPTs, since (this
-  version of) TDX zeros memory when unmapping from Secure EPTs.
-
-+ Post-finalize, TDX, to-shared, PRESERVE: -EOPNOTSUPP. guest_memfd is
-  unable to guarantee that the process of setting memory attributes will
-  not change memory contents. The process of setting memory attributes
-  requires unmapping from Secure EPTs, which will zero the memory. (In
-  future, if we want to relax this, we could permit this if nothing in
-  the requested range was mapped in Secure EPTs)
-
-+ Post-finalize, SNP, to-shared, PRESERVE: guest_memfd guarantees that
-  after setting memory attributes, the contents of the pages will not
-  change. For SNP, unmapping doesn't change memory contents? The guest
-  reads garbage, and that's a separate contract between SNP and the
-  guest. In the guest_memfd contract, guest_memfd PRESERVEs the memory
-  contents in the process of setting memory attributes, and can fulfil
-  that.
-
-+ Post-finalize, TDX, to-private, ZERO: guest_memfd zeroes the shared
-  memory before updating the attributes to be private, because it
-  promised to. If this memory gets faulted in to Secure EPTs, TDX
-  firmware zeros it again, because that's TDX's contract with the
-  guest. I can't see any benefit to userspace in using this combination,
-  but the guest_memfd contract and implementation are simple.
-
-TLDR:
-
-+ PRESERVE == guarantee that the process of setting memory attributes
-  doesn't change memory contents.
-    + implementation == do nothing in most cases, except -EOPNOTSUPP for
-      to-shared on TDX, since unmapping is a required part of setting
-      memory attributes to private, and a TDX side effect of unmapping
-      is zeroing memory,
-+ ZERO == guarantee that the process of setting memory attributes zeroes
-  memory contents.
-    + implementation == memset(zero) in most cases. For TDX, a future
-      optimization exists, where memset() can be skipped for pages that
-      were mapped in Secure EPTs before conversion
-+ UNSPECIFIED == no guarantees
-    + implementation == guest_memfd does nothing explicitly about memory
-      contents. The implementation is pretty much the same as PRESERVE
-      except guest_memfd won't take into account vendor-specific side
-      effects of the process of conversion. Except for the test vehicle
-      KVM_X86_SW_PROTECTED_VMS, where memory is scrambled.
-
->>
->> [...snip...]
->>
->
-> Looking at the example you have there:
->
->   + Note: These content modes apply to the entire requested range, not
->   + just the parts of the range that underwent conversion. For example, if
->   + this was the initial state:
->   +
->   +   * [0x0000, 0x1000): shared
->   +   * [0x1000, 0x2000): private
->   +   * [0x2000, 0x3000): shared
->   + and range [0x0000, 0x3000) was set to shared, the content mode would
->   + apply to all memory in [0x0000, 0x3000), not just the range that
->   + underwent conversion [0x1000, 0x2000).
->
-> Userspace would be aware of whether the range contains pages that were
-> already set to private, so if it really wants to set the just the
-> [0x1000, 0x2000) range to shared with appropriate content mode, it is
-> fully able to do so by just issuing the ioctl for that specific range.
-> If it attempts to issue it for the entire range, it only seems like it
-> would defy normal expectations and cause confusion to skip ranges, and
-> I'm not sure it gains us anything useful in exchange for that potential
-> confusion.
->
-
-Great that we're aligned here :) No complaints from guest_memfd biweekly
-today as well :)
-
->>
->> [...snip...]
->>
