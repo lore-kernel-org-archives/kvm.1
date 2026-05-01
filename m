@@ -1,170 +1,183 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88EA8241665
-	for <kvm@vger.kernel.org>; Fri,  1 May 2026 03:32:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34277223DFF
+	for <kvm@vger.kernel.org>; Fri,  1 May 2026 03:35:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777606359; cv=none; b=XvYWb9JRdxjssFr4WagnLPP4efB+8wcywprGXEAglAI6xM+G9B8tURYPTPz1j5AD+BwH+egsn+cnZRMfVh6EOA0JYONTqsyAW1AnehOZ45CqgWl/7ijA2oi84v514GcmB5b0ZHn+Bs97IReilCBibeRXCbENRtD4ZFd7ra4eh04=
+	t=1777606513; cv=none; b=X9zwrq4YQWFyqT5qC/duutoI0W7O6QFNDFmb5kO7B8EOJXyO2OEVPPXbia9Qyzc8a99PDv79acKgihKIKAGBxTLF7MW9joOMdS5z0DCT0cE+ffDIimuYJx538TshHXySRqboHe3AOgth8Zu3qEpzK/M0GxKF4OJduvH/nS9/VIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777606359; c=relaxed/simple;
-	bh=4j/gula7rF66aSX0/AyL1iWe/WjoemN8rnjRdMZNdSw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=YwUinrtIHX14+Z0KIvUplAyLuRI6XKcheRH/kqhuumBdD4znESTE3ijOn743UhH7BFW32ZVpBzTS+zDRtddci7G9o4vQ36meTkMcrojDRDaJxShE2pDpl0/uOFDWmt1y/1IyHFoHANNs5+6jHqG3TvOlyuFiIIn2gG+kHsZ8ghw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AjRhNCeV; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1777606513; c=relaxed/simple;
+	bh=wMOff3L7vo4NlTvymXNWl4uuW3vMa1LwHz1mnUc7f+M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=cnBSMSfpS42ASmDdhMIm7oQtxOfLvIC8NG6eVFHnQZs3hbqW+ZW7inaM5cE2WL9T/vCGV2Aklq3cSmabnd9C7oKzjce9DSCADUIdB+Yvhr0VIMMi66EOUGC0HTt5c5LhXDvaRozr5t2v1sy8W9NCoZ6rPA1hc3qfPDggB2l/WaA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Zz8WtCNW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AjRhNCeV"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777606357;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=AGHQZIIr7JtLFpAcwzlVPtO345HWtqACErkZP29Clnw=;
-	b=AjRhNCeVya2hhO3tD9yDwGH52MO5K9TU0y4dsuuug82CTbj8sZsj1cwbHftrLqOmJuoxoh
-	uSS2VDqeFD4zxtsup1Z1bidq7kX6a0WWgbihY4tNv/T583KjkRp/RY8sv2AUScyfkOh4dH
-	1t4R1tnDmEHFmu35pZfOSr7l/QSYjlo=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-440-JLdQnSEhO5WXLV2G9iAbOQ-1; Thu,
- 30 Apr 2026 23:32:33 -0400
-X-MC-Unique: JLdQnSEhO5WXLV2G9iAbOQ-1
-X-Mimecast-MFC-AGG-ID: JLdQnSEhO5WXLV2G9iAbOQ_1777606348
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9C9CA1800347;
-	Fri,  1 May 2026 03:32:26 +0000 (UTC)
-Received: from [10.44.48.3] (unknown [10.44.48.3])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 06CE71955D84;
-	Fri,  1 May 2026 03:32:13 +0000 (UTC)
-Message-ID: <3ff53353-3842-4a63-80a1-90a60d09fe02@redhat.com>
-Date: Fri, 1 May 2026 05:32:11 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Zz8WtCNW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5D63C2BCB3
+	for <kvm@vger.kernel.org>; Fri,  1 May 2026 03:35:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1777606512;
+	bh=wMOff3L7vo4NlTvymXNWl4uuW3vMa1LwHz1mnUc7f+M=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Zz8WtCNWrK54fcIpGMm+gJDiTHFZGsWTUN8/jhVxJTtjiZIzK6tNvF6AcWmeX5R8L
+	 kzTuBCgdv7b81RGES1heKSR3+egjbj7au6qjTYFI+3AMb7eYvPtghwJ/aKy9ByXlNH
+	 +ocU4hrV9lU6bcwxrTGELZc7o7YC2lS4nSYWZxZsP39J45L7fdsoRqd7hHRggXJrny
+	 RUiUioTyOtWOCkaWQHkaa/IxW5ERu//AMGZlbv/GmfWswHFLnHK/+5vhIaWOaYhsxb
+	 bVuBiVsIIgll2JL1sLx4bNrCQsNLZGxVm7hxyYZHDKTN+TM6sliN3XMBZYHV95d64D
+	 JkVL9Y3XAugWg==
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-ba3115fe0d5so480282966b.1
+        for <kvm@vger.kernel.org>; Thu, 30 Apr 2026 20:35:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ9V/DraOi3em7CsuHuk02c0yXyBXjtbUaqq3s4SA260WEVQNXUgxMs6wc1SVhQMuurbf0k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwvvhljD238OHZD+fPoZIZ5Qq9Qme8viBeDlzfskjjVHb8O+2ZG
+	O4hp2KmLAkyTsJ7gh3K9cUt0Ap5iaO4uFjcAnC+HsLn3bVzf3CjOM1fX7nvUKYxq3g9TAqCRzbG
+	JzT+dTmj17Vd9ZQmir44mqgxeRLkX1gA=
+X-Received: by 2002:a17:907:3c89:b0:bab:f568:38ea with SMTP id
+ a640c23a62f3a-bbb97b8946bmr282079666b.7.1777606511620; Thu, 30 Apr 2026
+ 20:35:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] proposal: KVM: Orphaned VMs: The Caretaker approach for
- Live Update
-To: David Woodhouse <dwmw2@infradead.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>, linux-kernel@vger.kernel.org,
- kexec@lists.infradead.org, kvm@vger.kernel.org, linux-mm@kvack.org,
- kvmarm@lists.linux.dev
-Cc: rppt@kernel.org, graf@amazon.com, pratyush@kernel.org, seanjc@google.com,
- maz@kernel.org, oupton@kernel.org, alex.williamson@redhat.com,
- kevin.tian@intel.com, rientjes@google.com, Tycho.Andersen@amd.com,
- anthony.yznaga@oracle.com, baolu.lu@linux.intel.com, david@kernel.org,
- dmatlack@google.com, mheyne@amazon.de, jgowans@amazon.com, jgg@nvidia.com,
- pankaj.gupta.linux@gmail.com, kpraveen.lkml@gmail.com, vipinsh@google.com,
- vannapurve@google.com, corbet@lwn.net, loeser@linux.microsoft.com,
- tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- roman.gushchin@linux.dev, akpm@linux-foundation.org, pjt@google.com
-References: <afEwWZksU0Fw61oT@plex>
- <0a71472c-b397-4699-a518-61faffcf4ab2@redhat.com>
- <c004f333ed4f7dedae1383f22d43b009cd83837e.camel@infradead.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <c004f333ed4f7dedae1383f22d43b009cd83837e.camel@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+References: <20260430202750.3924147-1-yosry@kernel.org> <20260430202750.3924147-8-yosry@kernel.org>
+ <CAO9r8zMX=_zGm1Qmnd51=ca96aj=c+CkPfxzf9uinUGwxdP_Gg@mail.gmail.com>
+In-Reply-To: <CAO9r8zMX=_zGm1Qmnd51=ca96aj=c+CkPfxzf9uinUGwxdP_Gg@mail.gmail.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 30 Apr 2026 20:34:59 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNM-ECiiSKGS4Z7eM2S_06_6+fDO4mEeKiWFM-NFgHOUg@mail.gmail.com>
+X-Gm-Features: AVHnY4JlYNTJL5qCwLEet9WknamJDi4ht6isEtLL6-xJq0fTtKlELJpz0CiwMuM
+Message-ID: <CAO9r8zNM-ECiiSKGS4Z7eM2S_06_6+fDO4mEeKiWFM-NFgHOUg@mail.gmail.com>
+Subject: Re: [PATCH v5 07/13] KVM: x86/pmu: Disable counters based on
+ Host-Only/Guest-Only bits in SVM
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 4/30/26 17:27, David Woodhouse wrote:
-> On Thu, 2026-04-30 at 15:28 +0200, Paolo Bonzini wrote:
->> I even wonder if, for long term simplicity, the interface for
->> host->caretaker should be just for the caretaker to swallow the host
->> into non-root mode, again as in Arm nVHE.
-> 
-> There's a lot of merit in that approach.
-> 
-> I talked about wanting to use this 'caretaker' for secret hiding.  But
-> why have *voluntary* secret hiding with the kernel hiding things from
-> its own address space, when you have have *mandatory* secret hiding
-> with something running in EL2, like pKVM.
+On Thu, Apr 30, 2026 at 4:24=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> wrot=
+e:
+>
+> > diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
+> > index 0e99022168a85..0c372b9f8ed34 100644
+> > --- a/arch/x86/kvm/pmu.h
+> > +++ b/arch/x86/kvm/pmu.h
+> > @@ -36,6 +36,7 @@ struct kvm_pmu_ops {
+> >         void (*reset)(struct kvm_vcpu *vcpu);
+> >         void (*deliver_pmi)(struct kvm_vcpu *vcpu);
+> >         void (*cleanup)(struct kvm_vcpu *vcpu);
+> > +       void (*reprogram_counters)(struct kvm_vcpu *vcpu, u64 counters)=
+;
+> >
+> >         bool (*is_mediated_pmu_supported)(struct x86_pmu_capability *ho=
+st_pmu);
+> >         void (*mediated_load)(struct kvm_vcpu *vcpu);
+> > diff --git a/arch/x86/kvm/svm/pmu.c b/arch/x86/kvm/svm/pmu.c
+> > index 7aa298eeb0721..fe6f2bb79ab83 100644
+> > --- a/arch/x86/kvm/svm/pmu.c
+> > +++ b/arch/x86/kvm/svm/pmu.c
+> > @@ -260,6 +260,48 @@ static void amd_mediated_pmu_put(struct kvm_vcpu *=
+vcpu)
+> >                 wrmsrq(MSR_AMD64_PERF_CNTR_GLOBAL_STATUS_CLR, pmu->glob=
+al_status);
+> >  }
+> >
+> > +static void amd_mediated_pmu_handle_host_guest_bits(struct kvm_vcpu *v=
+cpu,
+> > +                                                   struct kvm_pmc *pmc=
+)
+> > +{
+> > +       u64 host_guest_bits;
+> > +
+> > +       if (!(pmc->eventsel & ARCH_PERFMON_EVENTSEL_ENABLE))
+> > +               return;
+> > +
+> > +       /* Count all events if both bits are cleared */
+> > +       host_guest_bits =3D pmc->eventsel & AMD64_EVENTSEL_HOST_GUEST_M=
+ASK;
+> > +       if (!host_guest_bits)
+> > +               return;
+> > +
+> > +       /*
+> > +        * If EFER.SVME is set, the counter is disabledd if only one of=
+ the bits
+> > +        * is set and it doesn't match the vCPU context. If EFER.SVME i=
+s
+> > +        * cleared, the counter is disable if any of the bits is set.
+> > +        */
+> > +       if (vcpu->arch.efer & EFER_SVME) {
+> > +               if (host_guest_bits =3D=3D AMD64_EVENTSEL_HOST_GUEST_MA=
+SK)
+> > +                       return;
+> > +
+> > +               if (!!(host_guest_bits & AMD64_EVENTSEL_GUESTONLY) =3D=
+=3D is_guest_mode(vcpu))
+> > +                       return;
+> > +       }
+> > +
+> > +       pmc->eventsel_hw &=3D ~ARCH_PERFMON_EVENTSEL_ENABLE;
+>
+> Sashiko raised a good point here. In the following patch, we reprogram
+> the counters synchronously on nested transitions to update the
+> counters' enablement before counting VMRUN or WRMSR(EFER.SVME).
+> However, this updates pmc->eventsel_hw while
+> kvm_pmu_recalc_pmc_emulation() checks pmc->eventsel to check if the
+> counter is enabled.
+>
+> I think either pmc_is_locally_enabled() needs to check
+> pmc->eventsel_hw or we need to update pmc->eventsel here.
+>
+> AFAICT, pmc->eventself has the value written to the MSR, so I think we
+> want to keep that as-is.
+>
+> On the other hand, ARCH_PERFMON_EVENTSEL_ENABLE is cleared in
+> pmc->eventsel_hw in kvm_mediated_pmu_refresh_event_filter() if the
+> event is not allowed, and kvm_pmu_recalc_pmc_emulation() has a comment
+> about intentionally ignoring event filters.
+>
+> We can also separately track enablement for nested purposes, but that
+> would add one more thing we need to check aside from general counter
+> enablement and event filtering.
+>
+> None of these options are ideal, perhaps directly clearing the bit in
+> pmc->eventsel would do the least damage as (pmc->eventsel &
+> ARCH_PERFMON_EVENTSEL_ENABLE) is only checked by
+> pmc_is_locally_enabled().
 
-Well, other than because it's a lot of work? :)
+No, we can't really clear the bit in pmc->eventsel as that's what the
+guest reads with RDMSR.
 
-> Honestly, I don't see the *caretaker* being much of an ABI at all,
-> except from one kernel to the next.
+The more I think about this, the more I think we should drop
+pmc->eventsel_hw. It serves two purposes AFAICT:
+1. On AMD, we use it to clear HOSTONLY and set GUESTONLY in actual HW.
+2. For event filtering, we use it to clear EVENTSEL_ENABLE.
 
-I agree.
+But maybe it's easier to explicitly track the changes we need to apply
+to eventsel rather than a HW version?
 
-> The *userspace* ABI considerations are all about how you make a vCPU
-> that runs asynchronously (should it conceptually just be an async
-> KVM_RUN call, which allows the vCPU to run in a kernel thread up to the
-> point of kexec? Why is it fundamentally tied to kexec at all?).
+(1) is trivial, we can just clear HOSTONLY and set GUESTONLY before
+doing the actual write as that's constant.
 
-It's not tied to kexec.  kexec is just forcing a handoff + forcing an 
-update.
+For (2), instead of eventsel_hw, maybe add a boolean called 'filtered'
+to track if that PMC should be filtered out or not. Then, we can add
+another boolean to track if the counter is disabled due to
+nested/HG-bits (e.g. 'nested_disabled').
 
-The big difference is that:
+With that, pmc_is_locally_enabled() would check:
+  (pmc->eventsel & ARCH_PERFMON_EVENTSEL_ENABLE) && !pmc->nested_disabled
 
-1) if you don't tie it to kexec, a detached vCPU thread is a struct 
-vhost_task and a blocking vmexit schedules out the thread; while during 
-kexec you have s/kthread/pCPU/ and halting the CPU instead of scheduling 
-it out.
+, and then before writing to HW we check pmc->filtered,
+pmc->nested_disabled, as well as do the HOSTONLY/GUESTONLY changes for
+AMD.
 
-2) if you don't tie it to kexec, address space isolation is the only 
-real reason for the complication of treating the caretaker as a separate 
-bare metal program.  OTOH maybe that's a feature - you could do:
+Actually, instead of a boolean, maybe add 'disabled_reasons' flags,
+with possible flags like PMC_DISABLED_FILTER and PMC_DISABLED_NESTED.
 
-- ioctl(KVM_RUN_ASYNC)
-
-- then vmfd/vcpufd handoff to a new mm on top
-
-- then address space isolation on top
-
-- then kexec (de)serialization on top
-
-> I'd love to start without kexec in the picture at all. Just show me the
-> KVM API for starting a *confidential* guest (pKVM, SEV-SNP, whatever),
-> leaving it running, completely stopping the VMM and then starting a new
-> VMM to pick up from where it left off.
-
-Why confidential?
-
-Paolo
-
+This might all be unclear, I will draft some diff on top of the series
+tomorrow and send it in case it makes things clearer.
