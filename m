@@ -1,132 +1,304 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E928A3314BF;
-	Fri,  1 May 2026 13:12:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A3916CD33
+	for <kvm@vger.kernel.org>; Fri,  1 May 2026 13:15:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777641132; cv=none; b=uFjpUdDgFQfDRy5utcFb6Vd41Fg48NRqDDDaYFKb1cMyvf2kWUbVNBksUW/OGTZwPrbycSya+kupBvZzR97+XULxamvZYjOeiBJdavzEXjwNhw3+c878jacKO4clspJbcO5+2WN/Dm3Sz3/gLKr2exLscAriXiXb04zAWndDnBk=
+	t=1777641329; cv=none; b=B862M7cY6MSmC0T3b7ma/IsSMdZeceKwXs40KahhI1rkvp569Rlewo+SzjxA5t72QdDD1fBnffU5XRdYHQ+kMg56d65bhWU3nJFjvsnPb91gIibXNarg1uEW4RFpBpuUiVEfLz5Pp8E1T9j8jv5QQUKNz8g4+dvuOM1m9pxHmXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777641132; c=relaxed/simple;
-	bh=rPY6kpU0k2x/r+Y5vurIQbKrBbLh1ktKKLy++xxDRJI=;
+	s=arc-20240116; t=1777641329; c=relaxed/simple;
+	bh=rtObenOdQ8wqhsp4Fy1heo+C47dsP6ZRiDQgq9YzCbc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CwsEV3F/mZ8XcZOjDj/g8aUfrirsuCjg/TznWBkL4MaiAijc3u/avv0cmcvjgfDdXiPyhybRJe7HoLBMUpSXeqItF5vFqEgNazzKrSEnyGaqz1joIVHLQooM6rUMk9pdzCQpU6c0zAVhmo+0T+8Mpxyit0jDkmNroXipi0t49u0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XHOZWyfp; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=fnsrHXEZjOJzqqKaogW/CH7dU05F3QDvaeWWlxtG3+doqPU3ACfwQZQzZQEdm+zfNlaE69IYeEQWUZVAZnGCNR2HCSuQv2ypWoshetVul0uFGBCCHDowuGf2VK5FmsRGDAWUrjFOfYLE0a/dcqulUofTJTRGMJMHdJLbYZiVcmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=X0qfOId7; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XHOZWyfp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2431C2BCB8;
-	Fri,  1 May 2026 13:12:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1777641131;
-	bh=rPY6kpU0k2x/r+Y5vurIQbKrBbLh1ktKKLy++xxDRJI=;
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="X0qfOId7"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 68229176A;
+	Fri,  1 May 2026 06:15:21 -0700 (PDT)
+Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id AC1E83F62B;
+	Fri,  1 May 2026 06:15:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1777641326; bh=rtObenOdQ8wqhsp4Fy1heo+C47dsP6ZRiDQgq9YzCbc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XHOZWyfp/mCR6Px6qXMz9bAhRrRNKNfaUrZLr92WGzjhU5+ZD1HguQ9Y3zf/HM2CF
-	 ING0+AfXfn4kDPc5x2uBTNvI7zCbPfMuKpXbYAAi8OEzsl2QVVIMv+isnIlWUg+HW/
-	 xM6JTb0dcYH2RKUDP49boYGZDv7s2GZFK8LGyFIzn02ETafhtg6uI2N6+M3EIf/xI2
-	 BE6Jzgy/GAbwfChY5kjJoV3STuzVSX0a4+cK7PkhgRPIYcC217OaSRl87qAJLW2e9b
-	 Eo3cgSsQdRWPfvn75RbdCGpts/o6G00Qy1sSFFfhfMVqEEjyvnl4CMhoQ4Darvr1Sb
-	 tELR0d3vPlwEA==
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfauth.phl.internal (Postfix) with ESMTP id DAB1EF4007E;
-	Fri,  1 May 2026 09:12:09 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Fri, 01 May 2026 09:12:09 -0400
-X-ME-Sender: <xms:qab0aZZ4lmLNO5LE8pviXf6YBxnkbKewj-zXCrnavZJbivsPPh6_BA>
-    <xme:qab0aZbhJsDTscqH55SYr_OEFAwzsgNjg7sBPCrdUYW-66rhcJAAMeTZbxEEhGJKj
-    Hmt6Egs2mZe8Q_M1jOAVb0eQiM7QKHFLTfa8h7WPEyyvnetTmzZgl8H>
-X-ME-Received: <xmr:qab0aVrkX4Bbo0Q6l--ODLheZLKc2hOtjBXU1_HfQMhjypegpMpmi1QJbluuUQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdeltddvlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
-    ihhlohhuthemuceftddtnecunecujfgurhepfffhvfevuffkfhggtggujgesthdtredttd
-    dtvdenucfhrhhomhepmfhirhihlhcuufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgv
-    lhdrohhrgheqnecuggftrfgrthhtvghrnhepgeetuedtjefhkeeuiefgudduvdfgvdeiue
-    eigeehheehudetuedtkeelhfeihedunecuffhomhgrihhnpehsrghshhhikhhordguvghv
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepgeeipdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoh
-    eprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehpvghtvghrgiesrhgvughh
-    rghtrdgtohhmpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpth
-    htoheplhhjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhurhgvnhgssehgohho
-    ghhlvgdrtghomhdprhgtphhtthhopehvsggrsghkrgeskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthho
-    peiiihihsehnvhhiughirgdrtghomh
-X-ME-Proxy: <xmx:qab0aellQYNT_R3fN52NGkYyZEn9mCcboTG8efe4UUa4xZvIjmghYQ>
-    <xmx:qab0aXXW-mbF5hvwEoNxPCMKoYDCFHu3nt6c2smZz8Vk1gQK780nrQ>
-    <xmx:qab0aVT8bhREa829ct_FBCqcDdAvlwJ95mcAgBiFkHkE-FJLxXvqbQ>
-    <xmx:qab0aUn6vSQB25ybLkc5R3M2QJMF_5HgjWaudrlMGx7p-UFnWnJSjw>
-    <xmx:qab0aQJhjaQAJXOfWCBO_ZYZ2jbBsI4emal1EOnO7LoIoTINtPTJhE9Z>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 1 May 2026 09:12:09 -0400 (EDT)
-Date: Fri, 1 May 2026 14:12:08 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
-	david@kernel.org
-Cc: ljs@kernel.org, surenb@google.com, vbabka@kernel.org, 
-	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, 
-	seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, 
-	sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kvm@vger.kernel.org, kernel-team@meta.com
-Subject: Re: [PATCH 12/14] userfaultfd: add UFFDIO_SET_MODE for runtime
- sync/async toggle
-Message-ID: <afSmJ4LLuLJWdI4A@thinkstation>
-References: <20260427114607.4068647-1-kas@kernel.org>
- <20260427114607.4068647-13-kas@kernel.org>
+	b=X0qfOId7Bi5ntpNSoWqPYR5zTb26315+ZlOu3XYlWZKlzACsSssvI/WEmYbJtg2ta
+	 DVX3+c4G0IOwtOZ0EXqgEQqb9mSrDxvxteyvXD3TlJg4sdRP2j8VMSPBMJ2lNPv9PS
+	 /mQWZHYkqYnC+0xEEtP8eUh0+1yI/Mbfyy7KLzTE=
+Date: Fri, 1 May 2026 14:15:14 +0100
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Andrew Jones <andrew.jones@linux.dev>,
+	Eric Auger <eric.auger@redhat.com>,
+	"open list:ARM" <kvmarm@lists.linux.dev>,
+	"open list:Default mailing list" <kvm@vger.kernel.org>
+Subject: Re: [kvm-unit-tests PATCH] arm: add wfx test case
+Message-ID: <afSnVJLe7HrB6ISS@raptor>
+References: <20260427130045.3669851-1-alex.bennee@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260427114607.4068647-13-kas@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260427130045.3669851-1-alex.bennee@linaro.org>
 
-sashiko.dev -- https://sashiko.dev/#/patchset/20260427114607.4068647-1-kas@kernel.org -- wrote:
-> Since ctx->mm can be an external mm_struct, is it possible for the target
-> process to have encountered an OOM-reap or a failed dup_mmap() and be
-> marked MMF_UNSTABLE?
-> If so, should there be a call to check_stable_address_space(mm) after
-> acquiring the mmap lock to avoid iterating over a maple tree that might
-> contain XA_ZERO_ENTRY markers?
+Hi Alex,
 
-This is the same pattern as userfaultfd_register() and
-userfaultfd_unregister(), which acquire mmap_write_lock(mm) after a
-successful mmget_not_zero() and walk the VMA tree without
-check_stable_address_space().
+On Mon, Apr 27, 2026 at 02:00:45PM +0100, Alex Bennée wrote:
+> This is based on a similar test case I wrote for QEMU's tcg tests although
+> obviously able to take advantage of kvm-unit-tests additional plumbing for
+> dealing with the GIC and IRQs.
+> 
+> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> ---
+>  arm/Makefile.arm64        |   1 +
+>  lib/arm64/asm/processor.h |   7 ++
+>  lib/arm64/asm/sysreg.h    |   3 +
+>  arm/wfx.c                 | 137 ++++++++++++++++++++++++++++++++++++++
+>  arm/unittests.cfg         |   5 ++
+>  5 files changed, 153 insertions(+)
+>  create mode 100644 arm/wfx.c
+> 
+> diff --git a/arm/Makefile.arm64 b/arm/Makefile.arm64
+> index a40c830d..52b3f35d 100644
+> --- a/arm/Makefile.arm64
+> +++ b/arm/Makefile.arm64
+> @@ -64,6 +64,7 @@ tests += $(TEST_DIR)/cache.$(exe)
+>  tests += $(TEST_DIR)/debug.$(exe)
+>  tests += $(TEST_DIR)/fpu.$(exe)
+>  tests += $(TEST_DIR)/mte.$(exe)
+> +tests += $(TEST_DIR)/wfx.$(exe)
+>  
+>  include $(SRCDIR)/$(TEST_DIR)/Makefile.common
+>  
+> diff --git a/lib/arm64/asm/processor.h b/lib/arm64/asm/processor.h
+> index 32ddc1b3..2104036d 100644
+> --- a/lib/arm64/asm/processor.h
+> +++ b/lib/arm64/asm/processor.h
+> @@ -173,5 +173,12 @@ static inline bool system_supports_rndr(void)
+>  	return ((id_aa64isar0_el1 >> ID_AA64ISAR0_EL1_RNDR_SHIFT) & 0xf) != 0;
+>  }
+>  
+> +static inline bool system_supports_wfxt(void)
+> +{
+> +	u64 id_aa64isar2_el1 = read_sysreg_s(ID_AA64ISAR2_EL1);
+> +
+> +	return ((id_aa64isar2_el1 >> ID_AA64ISAR2_EL1_WFxT_SHIFT) & 0xf) != 0;
+> +}
+> +
+>  #endif /* !__ASSEMBLER__ */
+>  #endif /* _ASMARM64_PROCESSOR_H_ */
+> diff --git a/lib/arm64/asm/sysreg.h b/lib/arm64/asm/sysreg.h
+> index f2d05018..cb96a649 100644
+> --- a/lib/arm64/asm/sysreg.h
+> +++ b/lib/arm64/asm/sysreg.h
+> @@ -77,6 +77,9 @@ asm(
+>  #define ID_AA64ISAR0_EL1_RNDR_SHIFT	60
+>  #define ID_AA64PFR1_EL1_MTE_SHIFT	8
+>  
+> +#define ID_AA64ISAR2_EL1		sys_reg(3, 0, 0, 6, 2)
+> +#define ID_AA64ISAR2_EL1_WFxT_SHIFT	0
+> +
+>  #define ID_AA64MMFR0_EL1_FGT_SHIFT	56
+>  #define ID_AA64MMFR0_EL1_FGT_FGT2	0x2
+>  
+> diff --git a/arm/wfx.c b/arm/wfx.c
+> new file mode 100644
+> index 00000000..912e50e6
+> --- /dev/null
+> +++ b/arm/wfx.c
+> @@ -0,0 +1,137 @@
+> +/*
+> + * WFX Instructions Test (WFI, WFE, WFIT, WFET)
+> + *
+> + * Copyright (c) 2026 Linaro Ltd
+> + *
+> + * SPDX-License-Identifier: GPL-2.0-or-later
+> + */
+> +
+> +#include <libcflat.h>
+> +#include <asm/processor.h>
+> +#include <asm/gic.h>
+> +#include <asm/timer.h>
+> +#include <asm/io.h>
+> +
+> +#define TIMEOUT 200000
+> +
+> +#define sev() asm volatile("sev" : : : "memory")
+> +#define sevl() asm volatile("sevl" : : : "memory")
+> +#define wfi() asm volatile("wfi" : : : "memory")
+> +#define wfe() asm volatile("wfe" : : : "memory")
+> +
+> +#define wfit(reg) \
+> +	asm volatile(".arch armv8.7-a\n\twfit %0" : : "r" (reg) : "memory")
+> +#define wfet(reg) \
+> +	asm volatile(".arch armv8.7-a\n\twfet %0" : : "r" (reg) : "memory")
+> +
+> +static void timer_handler(struct pt_regs *regs)
+> +{
+> +	/* Disable timer to stop IRQ from re-firing */
+> +	write_sysreg(0, cntv_ctl_el0);
+> +}
 
-The OOM reaper takes mmap_read_lock, so it is excluded once we hold the
-write lock; failed dup_mmap() unwinds its partial tree before returning.
+It is customary for the interrupt handler to ack the interrupt at the GIC level.
 
-> The commit message notes that fdinfo reads ctx->features with READ_ONCE to
-> avoid seeing a mid-RMW intermediate value. Are there other lockless readers
-> of ctx->features that also need this annotation?
-[ ... ]
-> Could executing UFFDIO_SET_MODE concurrently with these paths cause a data
-> race on ctx->features?
+> +
+> +static bool check_elapsed(uint64_t start, uint64_t threshold, const char *test, bool more)
+> +{
+> +	uint64_t end = read_sysreg(cntvct_el0);
+> +	uint64_t elapsed = end - start;
+> +	bool pass = more ? elapsed >= threshold : elapsed <= threshold;
+> +
+> +	report(pass, "%s (%ld ticks)", test, elapsed);
+> +
+> +	if (!pass) {
+> +		report_info("%s %s", test, more ? "woke too early" : "slept despite SEV");
+> +	}
+> +	return pass;
+> +}
+> +
+> +static void test_wfi(void)
+> +{
+> +	uint64_t start;
+> +
+> +	report_info("Testing WFI...");
+> +
+> +	start = read_sysreg(cntvct_el0);
+> +	write_sysreg(TIMEOUT, cntv_tval_el0);
+> +	write_sysreg(1, cntv_ctl_el0); /* Enable timer, no mask */
+> +	isb();
+> +
+> +	local_irq_enable();
+> +	wfi();
 
-Confirmed. userfaultfd_is_initialized() is reached from
-userfaultfd_poll(), userfaultfd_read_iter(), and userfaultfd_ioctl()
-with no mm lock held, so SET_MODE's mmap_write_lock + vma_start_write()
-drain does not exclude them. The INITIALIZED bit is never modified by
-SET_MODE so the value is functionally stable, but READ_ONCE pairing is
-still the right thing for KCSAN.
+Consider this scenario:
 
-Will fold into 12/14 a small helper plus conversions:
+	local_irq_enable();
+	// CPU takes the interrupt, handles it and returns.
+	wfi(); <- CPU now waits forever for an interrupt that will never come
 
-        static unsigned int userfaultfd_features(struct userfaultfd_ctx *ctx)
-        {
-                return READ_ONCE(ctx->features);
-        }
+The proper way to do it on baremetal would be:
 
-with userfaultfd_is_initialized(), userfaultfd_wp_async_ctx(),
-userfaultfd_rwp_async_ctx(), userfaultfd_wp_unpopulated(), and the
-fdinfo printer reading through the helper. Hot-path reads inside
-handle_userfault() and friends stay plain -- they run under the
-per-VMA lock or mmap_read_lock that SET_MODE drains before the RMW.
+	local_irq_disable();
+	// Program timer to fire
+	wfi();
+	// Timer fires, GIC asserts the interrupt, WFI completes
+	local_irq_enable();
+	// CPU handles the interrupt
+	check_elapsed(..)
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+But this is not baremetal. KVM can decide not to trap WFI (look at
+arch/arm64/kvm/arm.c::kvm_arch_vcpu_load() -> kvm_vpcu_should_clear_twi()). In
+that case, the WFI might complete due a host interrupt, and check_elapsed() will
+fail because the timer hasn't yet fired.
+
+> +	local_irq_disable();
+> +
+> +	check_elapsed(start, TIMEOUT, "WFI", true);
+> +}
+> +
+> +static void test_wfe(void)
+> +{
+> +	uint64_t start;
+> +
+> +	report_info("Testing WFE/SEV...");
+> +	sev();
+> +	start = read_sysreg(cntvct_el0);
+> +	wfe();
+> +	check_elapsed(start, TIMEOUT, "WFE/SEV", false);
+> +
+> +	report_info("Testing WFE/SEVL...");
+> +	sevl();
+> +	start = read_sysreg(cntvct_el0);
+> +	wfe();
+> +	check_elapsed(start, TIMEOUT, "WFE/SEVL", false);
+> +}
+
+I haven't thought about this too much, but it looks to me like the same
+situation with WFI can happen with WFE
+
+Also, kvm-unit-tests() makes use of WFE and SEV for multithreading, and the fact
+that multithreaded tests work at all might be taken as proof enough that the two
+instructions are correctly implemented.
+
+Thanks,
+Alex
+
+> +
+> +static void test_wfit(void)
+> +{
+> +	uint64_t start, timeout;
+> +
+> +	report_info("Testing WFIT...");
+> +	start = read_sysreg(cntvct_el0);
+> +	timeout = start + TIMEOUT;
+> +	wfit(timeout);
+> +	check_elapsed(start, TIMEOUT, "WFIT", true);
+> +}
+> +
+> +static void test_wfet(void)
+> +{
+> +	uint64_t start, timeout;
+> +
+> +	report_info("Testing WFET...");
+> +	/* Ensure no pending events */
+> +	sev();
+> +	wfe();
+> +
+> +	start = read_sysreg(cntvct_el0);
+> +	timeout = start + TIMEOUT;
+> +	wfet(timeout);
+> +	check_elapsed(start, TIMEOUT, "WFET", true);
+> +}
+> +
+> +int main(void)
+> +{
+> +
+> +	if (gic_init() < 0) {
+> +		report_abort("GIC init failed");
+> +		return 1;
+> +	}
+> +
+> +	/* Install timer handler for WFI wake-up */
+> +	install_irq_handler(EL1H_IRQ, timer_handler);
+> +	gic_enable_defaults();
+> +
+> +	/* Enable Virtual Timer PPI */
+> +	gic_irq_set_clr_enable(27, true);
+> +
+> +	report_prefix_push("WFx");
+> +	test_wfi();
+> +	test_wfe();
+> +	report_prefix_pop();
+> +
+> +	if (system_supports_wfxt()) {
+> +		report_prefix_push("WFxT");
+> +		test_wfit();
+> +		test_wfet();
+> +	} else {
+> +		report_skip("WFxT instructions not supported");
+> +	}
+> +
+> +	return report_summary();
+> +}
+> diff --git a/arm/unittests.cfg b/arm/unittests.cfg
+> index 12fc4468..7adf96f2 100644
+> --- a/arm/unittests.cfg
+> +++ b/arm/unittests.cfg
+> @@ -339,3 +339,8 @@ groups = mte
+>  test_args = asymm
+>  qemu_params = -machine mte=on
+>  arch = arm64
+> +
+> +[wfx]
+> +file = wfx.flat
+> +groups = wfx
+> +arch = arm64
+> -- 
+> 2.47.3
+> 
