@@ -1,219 +1,390 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3F6421F1D
-	for <kvm@vger.kernel.org>; Fri,  1 May 2026 20:35:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42671175A66;
+	Fri,  1 May 2026 20:37:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777667760; cv=none; b=tcT2nn3xJ+2uW5Q5wZxKTkeTxAXJ7zTg1y/XzM3/DX6Yrt1LUONewLw4p95zKs0r48qVAIefl+Ge/NcdGjIKdT/vz6x1s7EBfCR8LzJcyM9Sfekq0MnV/qc1P1+l7w46FF1G5Q+aMeoOhA2h7VDpc9/Z0eTqEFMjUwtA6AMtsTY=
+	t=1777667851; cv=none; b=W1Sv2FrW1YS1gUnQM+A5m+IvmDHLHZ+CXKuTkw+C/edGfJIpTRaOPjRMoPs1KibblBQySTC/mqMRnlbr7ONN8wnL6XBUI8wOuqIHdgM9soIuu4Mn8Ql8AmlkHClauXdX48E4LTKV6ocwbmi7C2aLDatLILrRchyYmurt2KsZjKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777667760; c=relaxed/simple;
-	bh=zbH2ZSJhkTnv7M6GW+1yYa9nXucIRak6aeyoMh/dwdw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RrYa4a6vDSepxLmg+ybkV9GdrQAOgez6JWHNilV7UvtpwMF2fOyOGOeCIiyrKN3DhLxNFKIz5wWH4euNXzeQAxKOS5xn/fJTMDrnZA50FGIJPuiMD6Usxfcg6kSt8YOJ9+2JkgcdwmiUsDctHqAiMFO4bl9ziE5nGcy/7VIA/+c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fdMSkQRa; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1777667851; c=relaxed/simple;
+	bh=gcKEBhG43jdDaUh7nReVBSrGxgk2XC2O5cbxfkavTsY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LNW88EuicZQCojbs5KxJajvEs49bXgf//8MrBz7A5bCXJ3AW4tEW20IJg7l5F9QCnj4VOHVubHXFapqPokJUaygxHOoWCfCCVEm+/HAuda5AgoyMCAKAoWNgouew3g60Ww89sn02Irsv33hNuiXADfPREgUWeVjZ+6COOpkx3V4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Auz2J4C6; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fdMSkQRa"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b4678c6171so23055835ad.1
-        for <kvm@vger.kernel.org>; Fri, 01 May 2026 13:35:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777667754; x=1778272554; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=2rmwcvThwjw92x9D0plyk0s/qULXiJrO5D2DLQI9XGw=;
-        b=fdMSkQRaoWtBC+/v2fM75t1VOpgap1y/zAaWot+MGt/URr9Gt0WVnK11O8ttgk9vaX
-         BCrX2MCeBFEWkrtrMvIjwaZ/2YzPNVXMg3hT32CEzbybwky45YeTFrX1a/CYIEEpzrFL
-         B7FjCuC/d7ZeHt3uB6UfcXhxXXiMRPxrHctV3DDSHYlbfKkYEdlHsFGuP5S+52oinJsZ
-         u29UQfzViy8PwnfmZg2MsYddXMwej4hnUNwe5VUxLYOrX+ixCvA2idAAIGbzcQ+zIFDM
-         +u/M87qaY3lb16HbEPgwCEPzlWtjfe3LMxo4yfGXScLMuMqoMneIqVyxAcpme9fwJDs2
-         DdWw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777667754; x=1778272554;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2rmwcvThwjw92x9D0plyk0s/qULXiJrO5D2DLQI9XGw=;
-        b=QWJfDjgrN+4klx/INPR1Z3D3jHg6uML627m55/0tbvEG+fO3I98q/vTs0jY3heCNcI
-         Z20nrBCI7NkKpCMnnCFjch7YpTqqhz5gwXhp3/IP7miBNny/cQ4sls43pGixBkDhPv/q
-         Af1M/XFjudXqBfT9zQxVKI/SAtNnmhk+jJAOfLcYPUUo4RjOBnFljU81esceF5K34Zvt
-         /mZ0Acr8IMd7dDxcKvIzw11FYDJXpmhhoNH2jUhSZm1rGu7tm3o4uFLZsrSBIqNw/XLN
-         VSnLtZn45F4jEk29ZosX9kG4SuD+XSHXgH5ItIMSYWM6tPb7UJA591R7AL7AeoVtzrTO
-         MNOg==
-X-Gm-Message-State: AOJu0YxalAda8savlc0NWkS9pqx0pajD1vKHf6Rr9BQJyt1puuSCfNiq
-	J0mEgbs09VsvDpKFywydCYWt9zWJzQAvltThV+D0Md6cS47lhT87eMp0X1WKd32sskVKJ07mdrB
-	CZaQqTQ==
-X-Received: from plmt18.prod.google.com ([2002:a17:903:3d52:b0:2b2:cc58:2a31])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3e0d:b0:2ae:6092:8d93
- with SMTP id d9443c01a7336-2b9f2825508mr4439065ad.28.1777667753622; Fri, 01
- May 2026 13:35:53 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri,  1 May 2026 13:35:37 -0700
-In-Reply-To: <20260501203537.2120074-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Auz2J4C6"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=nNUJ8zhmXZ8YaWnvZyInsSAN9H+BPPtlINfBiLHsCH4=; b=Auz2J4C6noKB5n8kCIq1kZ9Jpg
+	O2wVtD3BHd0wiSJZKNBWSdTcczeWGSBLJGiyUSCpsTaurWN/SQF/1sfokePhEG0P7Pz1Sx3A/CEG8
+	FTM5Yc8mO60wTdMqqmz458PiTSnF1AaH4xTORGg3osX2lNisWzBmdY4ZkWGRqwftxpspPoqsYlr9p
+	elLJiLHu0dygnenOSFdIYoGCwi6k6+LwRISVVEXuIyYtNOlz+rKUSI7s9d2n41eleTYgm2SDZK2xi
+	igdbc/ITusombQXFefQea8gzw/hMRmd1c090TDLbb/IrJjN1iO0is4VJjxK6Yc0OA6qFXNEvv9DFK
+	yN+4lXrw==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.98.2 #2 (Red Hat Linux))
+	id 1wIubt-00000009PKn-39vM;
+	Fri, 01 May 2026 20:37:21 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 379D53008E2; Fri, 01 May 2026 22:37:17 +0200 (CEST)
+Date: Fri, 1 May 2026 22:37:17 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: tglx@kernel.org
+Cc: linux-kernel@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
+	Jim Mattson <jmattson@google.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	Vishal L Verma <vishal.l.verma@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Rick P Edgecombe <rick.p.edgecombe@intel.com>,
+	Binbin Wu <binbin.wu@intel.com>, "x86@kernel.org" <x86@kernel.org>,
+	Paolo Bonzini <bonzini@redhat.com>
+Subject: [PATCH v2 1/2] x86/kvm/vmx: Move IRQ/NMI dispatch from KVM into x86
+ core
+Message-ID: <20260501203717.GH1026330@noisy.programming.kicks-ass.net>
+References: <20260423155611.216805954@infradead.org>
+ <20260423155936.843498069@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260501203537.2120074-1-seanjc@google.com>
-X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260501203537.2120074-7-seanjc@google.com>
-Subject: [PATCH v2 6/6] KVM: SEV: Allocate only as many bytes as needed for
- temp crypt buffers
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Ashutosh Desai <ashutoshdesai993@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260423155936.843498069@infradead.org>
 
-When using a temporary buffer to {de,en}crypt unaligned memory for debug,
-allocate only the number of bytes that are needed instead of allocating an
-entire page.  The most common case for unaligned accesses will be reading
-or writing less than 16 bytes.
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Move the VMX interrupt dispatch magic into the x86 core code. This
+isolates KVM from the FRED/IDT decisions and reduces the amount of
+EXPORT_SYMBOL_FOR_KVM().
+
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Tested-by: "Verma, Vishal L" <vishal.l.verma@intel.com>
 ---
- arch/x86/kvm/svm/sev.c | 69 ++++++++++++++----------------------------
- 1 file changed, 22 insertions(+), 47 deletions(-)
+ arch/x86/entry/Makefile             |    2 -
+ arch/x86/entry/common.c             |   48 ++++++++++++++++++++++++++++++++++++
+ arch/x86/entry/entry.S              |   46 ++++++++++++++++++++++++++++++++++
+ arch/x86/entry/entry_64_fred.S      |    1 
+ arch/x86/include/asm/desc.h         |    4 +++
+ arch/x86/include/asm/desc_defs.h    |    2 -
+ arch/x86/include/asm/entry-common.h |    2 +
+ arch/x86/include/asm/fred.h         |    1 
+ arch/x86/kernel/idt.c               |   13 +++++++++
+ arch/x86/kernel/nmi.c               |    1 
+ arch/x86/kvm/vmx/vmenter.S          |   46 ----------------------------------
+ arch/x86/kvm/vmx/vmx.c              |   20 ++-------------
+ 12 files changed, 118 insertions(+), 68 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 89586f821c9c..0865ce4bcecb 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -1253,53 +1253,34 @@ static int sev_issue_dbg_cmd(struct kvm *kvm, unsigned long src_pa,
- 	return sev_issue_cmd(kvm, cmd, &data, error);
- }
+--- a/arch/x86/entry/Makefile
++++ b/arch/x86/entry/Makefile
+@@ -13,7 +13,7 @@ CFLAGS_REMOVE_syscall_64.o	= $(CC_FLAGS_
+ CFLAGS_syscall_32.o		+= -fno-stack-protector
+ CFLAGS_syscall_64.o		+= -fno-stack-protector
  
--static struct page *sev_alloc_dbg_buffer(void **buf)
-+static void *sev_dbg_crypt_slow_alloc(struct page *page, unsigned long __va,
-+				      unsigned int len, unsigned long *pa,
-+				      unsigned int *nr_bytes)
- {
--	struct page *buf_p;
--
--	buf_p = alloc_page(GFP_KERNEL);
--	if (!buf_p)
--		return NULL;
--
--	*buf = kmap_local_page(buf_p);
--	return buf_p;
--}
--
--static void sev_free_dbg_buffer(struct page *buf_p, void *buf)
--{
--	kunmap_local(buf);
--	__free_page(buf_p);
--}
--
--static unsigned int sev_dbg_crypt_slow_addr_and_size(struct page *page,
--						     unsigned long __va,
--						     unsigned int len,
--						     unsigned long *pa)
--{
--	/* The number of bytes to {de,en}crypt must be 16-byte aligned. */
--	unsigned int nr_bytes = round_up(len, 16);
- 	unsigned long va = ALIGN_DOWN(__va, 16);
+-obj-y				:= entry.o entry_$(BITS).o syscall_$(BITS).o
++obj-y				:= entry.o entry_$(BITS).o syscall_$(BITS).o common.o
  
-+	/* The number of bytes to {de,en}crypt must be 16-byte aligned. */
-+	*nr_bytes = round_up(len, 16);
+ obj-y				+= vdso/
+ obj-y				+= vsyscall/
+--- /dev/null
++++ b/arch/x86/entry/common.c
+@@ -0,0 +1,48 @@
++/* SPDX-License-Identifier: GPL-2.0 */
 +
- 	/*
- 	 * Increase the number of bytes to {de,en}crypt by one chunk (16 bytes)
- 	 * if the aligned address and length doesn't cover the unaligned range,
- 	 * e.g. if the address is unaligned _and_ the access will split a chunk
- 	 * at the tail.
- 	 */
--	if (va + nr_bytes < __va + len)
--		nr_bytes += 16;
-+	if (va + *nr_bytes < __va + len)
-+		*nr_bytes += 16;
++#include <linux/entry-common.h>
++#include <linux/kvm_types.h>
++#include <asm/fred.h>
++#include <asm/desc.h>
++
++#if IS_ENABLED(CONFIG_KVM_INTEL)
++/*
++ * On VMX, NMIs and IRQs (as configured by KVM) are acknowledged by hardware as
++ * part of the VM-Exit, i.e. the event itself is consumed as part the VM-Exit.
++ * x86_entry_from_kvm() is invoked by KVM to effectively forward NMIs and IRQs
++ * to the kernel for servicing.  On SVM, a.k.a. AMD, the NMI/IRQ VM-Exit is
++ * purely a signal that an NMI/IRQ is pending, i.e. the event that triggered
++ * the VM-Exit is held pending until it's unblocked in the host.
++ */
++noinstr void x86_entry_from_kvm(unsigned int event_type, unsigned int vector)
++{
++	if (event_type == EVENT_TYPE_EXTINT) {
++#ifdef CONFIG_X86_64
++		/*
++		 * Use FRED dispatch, even when running IDT. The dispatch
++		 * tables are kept in sync between FRED and IDT, and the FRED
++		 * dispatch works well with CFI.
++		 */
++		fred_entry_from_kvm(event_type, vector);
++#else
++		idt_entry_from_kvm(vector);
++#endif
++		return;
++	}
++
++	WARN_ON_ONCE(event_type != EVENT_TYPE_NMI);
++
++#ifdef CONFIG_X86_64
++	if (cpu_feature_enabled(X86_FEATURE_FRED))
++		return fred_entry_from_kvm(event_type, vector);
++#endif
++
++	/*
++	 * Notably, we must use IDT dispatch for NMI when running in IDT mode.
++	 * The FRED NMI context is significantly different and will not work
++	 * right (speficially FRED fixed the NMI recursion issue).
++	 */
++	idt_entry_from_kvm(vector);
++}
++EXPORT_SYMBOL_FOR_KVM(x86_entry_from_kvm);
++#endif
+--- a/arch/x86/entry/entry.S
++++ b/arch/x86/entry/entry.S
+@@ -75,3 +75,49 @@ THUNK warn_thunk_thunk, __warn_thunk
+ #if defined(CONFIG_STACKPROTECTOR) && defined(CONFIG_SMP)
+ EXPORT_SYMBOL(__ref_stack_chk_guard);
+ #endif
++
++#if IS_ENABLED(CONFIG_KVM_INTEL)
++.macro IDT_DO_EVENT_IRQOFF call_insn call_target
++	/*
++	 * Unconditionally create a stack frame, getting the correct RSP on the
++	 * stack (for x86-64) would take two instructions anyways, and RBP can
++	 * be used to restore RSP to make objtool happy (see below).
++	 */
++	push %_ASM_BP
++	mov %_ASM_SP, %_ASM_BP
++
++#ifdef CONFIG_X86_64
++	/*
++	 * Align RSP to a 16-byte boundary (to emulate CPU behavior) before
++	 * creating the synthetic interrupt stack frame for the IRQ/NMI.
++	 */
++	and  $-16, %rsp
++	push $__KERNEL_DS
++	push %rbp
++#endif
++	pushf
++	push $__KERNEL_CS
++	\call_insn \call_target
++
++	/*
++	 * "Restore" RSP from RBP, even though IRET has already unwound RSP to
++	 * the correct value.  objtool doesn't know the callee will IRET and,
++	 * without the explicit restore, thinks the stack is getting walloped.
++	 * Using an unwind hint is problematic due to x86-64's dynamic alignment.
++	 */
++	leave
++	RET
++.endm
++
++.pushsection .text, "ax"
++SYM_FUNC_START(idt_do_interrupt_irqoff)
++	IDT_DO_EVENT_IRQOFF CALL_NOSPEC _ASM_ARG1
++SYM_FUNC_END(idt_do_interrupt_irqoff)
++.popsection
++
++.pushsection .noinstr.text, "ax"
++SYM_FUNC_START(idt_do_nmi_irqoff)
++	IDT_DO_EVENT_IRQOFF call asm_exc_nmi_kvm_vmx
++SYM_FUNC_END(idt_do_nmi_irqoff)
++.popsection
++#endif
+--- a/arch/x86/entry/entry_64_fred.S
++++ b/arch/x86/entry/entry_64_fred.S
+@@ -147,5 +147,4 @@ SYM_FUNC_START(asm_fred_entry_from_kvm)
+ 	RET
  
- 	*pa = __sme_page_pa(page) + (va & ~PAGE_MASK);
+ SYM_FUNC_END(asm_fred_entry_from_kvm)
+-EXPORT_SYMBOL_FOR_KVM(asm_fred_entry_from_kvm);
+ #endif
+--- a/arch/x86/include/asm/desc.h
++++ b/arch/x86/include/asm/desc.h
+@@ -438,6 +438,10 @@ extern void idt_setup_traps(void);
+ extern void idt_setup_apic_and_irq_gates(void);
+ extern bool idt_is_f00f_address(unsigned long address);
  
- 	/*
- 	 * Sanity check that the new access won't split a page.  This should
--	 * never happen; just squash the access and let the firmware command
--	 * fail.
-+	 * never happen; just pretend the allocation failed.
- 	 */
--	if (WARN_ON_ONCE((*pa & PAGE_MASK) != ((*pa + nr_bytes - 1) & PAGE_MASK)))
--		return 0;
-+	if (WARN_ON_ONCE((*pa & PAGE_MASK) != ((*pa + *nr_bytes - 1) & PAGE_MASK)))
-+		return NULL;
++extern void idt_do_interrupt_irqoff(unsigned int vector);
++extern void idt_do_nmi_irqoff(void);
++extern void idt_entry_from_kvm(unsigned int vector);
++
+ #ifdef CONFIG_X86_64
+ extern void idt_setup_early_pf(void);
+ #else
+--- a/arch/x86/include/asm/desc_defs.h
++++ b/arch/x86/include/asm/desc_defs.h
+@@ -145,7 +145,7 @@ struct gate_struct {
+ typedef struct gate_struct gate_desc;
  
--	return nr_bytes;
-+	return kmalloc(*nr_bytes, GFP_KERNEL);
- }
- 
- static int sev_dbg_decrypt_slow(struct kvm *kvm, unsigned long src,
-@@ -1308,17 +1289,14 @@ static int sev_dbg_decrypt_slow(struct kvm *kvm, unsigned long src,
+ #ifndef _SETUP
+-static inline unsigned long gate_offset(const gate_desc *g)
++static __always_inline unsigned long gate_offset(const gate_desc *g)
  {
- 	unsigned int nr_bytes;
- 	unsigned long src_pa;
--	struct page *buf_p;
- 	void *buf;
- 	int r;
- 
--	buf_p = sev_alloc_dbg_buffer(&buf);
--	if (!buf_p)
-+	buf = sev_dbg_crypt_slow_alloc(src_p, src, len, &src_pa, &nr_bytes);
-+	if (!buf)
- 		return -ENOMEM;
- 
--	nr_bytes = sev_dbg_crypt_slow_addr_and_size(src_p, src, len, &src_pa);
--
--	r = sev_issue_dbg_cmd(kvm, src_pa, __sme_page_pa(buf_p),
-+	r = sev_issue_dbg_cmd(kvm, src_pa, __sme_set(__pa(buf)),
- 			      nr_bytes, KVM_SEV_DBG_DECRYPT, err);
- 	if (r)
- 		goto out;
-@@ -1326,7 +1304,7 @@ static int sev_dbg_decrypt_slow(struct kvm *kvm, unsigned long src,
- 	if (copy_to_user((void __user *)dst, buf + (src & 15), len))
- 		r = -EFAULT;
- out:
--	sev_free_dbg_buffer(buf_p, buf);
-+	kfree(buf);
- 	return r;
+ #ifdef CONFIG_X86_64
+ 	return g->offset_low | ((unsigned long)g->offset_middle << 16) |
+--- a/arch/x86/include/asm/entry-common.h
++++ b/arch/x86/include/asm/entry-common.h
+@@ -97,4 +97,6 @@ static __always_inline void arch_exit_to
  }
+ #define arch_exit_to_user_mode arch_exit_to_user_mode
  
-@@ -1336,18 +1314,15 @@ static int sev_dbg_encrypt_slow(struct kvm *kvm, unsigned long src,
++extern void x86_entry_from_kvm(unsigned int entry_type, unsigned int vector);
++
+ #endif
+--- a/arch/x86/include/asm/fred.h
++++ b/arch/x86/include/asm/fred.h
+@@ -110,7 +110,6 @@ static __always_inline unsigned long fre
+ static inline void cpu_init_fred_exceptions(void) { }
+ static inline void cpu_init_fred_rsps(void) { }
+ static inline void fred_complete_exception_setup(void) { }
+-static inline void fred_entry_from_kvm(unsigned int type, unsigned int vector) { }
+ static inline void fred_sync_rsp0(unsigned long rsp0) { }
+ static inline void fred_update_rsp0(void) { }
+ #endif /* CONFIG_X86_FRED */
+--- a/arch/x86/kernel/idt.c
++++ b/arch/x86/kernel/idt.c
+@@ -268,6 +268,19 @@ void __init idt_setup_early_pf(void)
+ }
+ #endif
+ 
++noinstr void idt_entry_from_kvm(unsigned int vector)
++{
++	if (vector == NMI_VECTOR)
++		return idt_do_nmi_irqoff();
++
++	/*
++	 * Only the NMI path requires noinstr.
++	 */
++	instrumentation_begin();
++	idt_do_interrupt_irqoff(gate_offset(idt_table + vector));
++	instrumentation_end();
++}
++
+ static void __init idt_map_in_cea(void)
  {
- 	unsigned int nr_bytes;
- 	unsigned long dst_pa;
--	struct page *buf_p;
- 	void *buf;
- 	int r;
+ 	/*
+--- a/arch/x86/kernel/nmi.c
++++ b/arch/x86/kernel/nmi.c
+@@ -614,7 +614,6 @@ DEFINE_IDTENTRY_RAW(exc_nmi_kvm_vmx)
+ {
+ 	exc_nmi(regs);
+ }
+-EXPORT_SYMBOL_FOR_KVM(asm_exc_nmi_kvm_vmx);
+ #endif
  
--	buf_p = sev_alloc_dbg_buffer(&buf);
--	if (!buf_p)
--		return -ENOMEM;
+ #ifdef CONFIG_NMI_CHECK_CPU
+--- a/arch/x86/kvm/vmx/vmenter.S
++++ b/arch/x86/kvm/vmx/vmenter.S
+@@ -31,38 +31,6 @@
+ #define VCPU_R15	__VCPU_REGS_R15 * WORD_SIZE
+ #endif
+ 
+-.macro VMX_DO_EVENT_IRQOFF call_insn call_target
+-	/*
+-	 * Unconditionally create a stack frame, getting the correct RSP on the
+-	 * stack (for x86-64) would take two instructions anyways, and RBP can
+-	 * be used to restore RSP to make objtool happy (see below).
+-	 */
+-	push %_ASM_BP
+-	mov %_ASM_SP, %_ASM_BP
 -
- 	/* Decrypt the _destination_ to do a RMW on plaintext. */
--	nr_bytes = sev_dbg_crypt_slow_addr_and_size(dst_p, dst, len, &dst_pa);
-+	buf = sev_dbg_crypt_slow_alloc(dst_p, dst, len, &dst_pa, &nr_bytes);
-+	if (!buf)
-+		return -ENOMEM;
+-#ifdef CONFIG_X86_64
+-	/*
+-	 * Align RSP to a 16-byte boundary (to emulate CPU behavior) before
+-	 * creating the synthetic interrupt stack frame for the IRQ/NMI.
+-	 */
+-	and  $-16, %rsp
+-	push $__KERNEL_DS
+-	push %rbp
+-#endif
+-	pushf
+-	push $__KERNEL_CS
+-	\call_insn \call_target
+-
+-	/*
+-	 * "Restore" RSP from RBP, even though IRET has already unwound RSP to
+-	 * the correct value.  objtool doesn't know the callee will IRET and,
+-	 * without the explicit restore, thinks the stack is getting walloped.
+-	 * Using an unwind hint is problematic due to x86-64's dynamic alignment.
+-	 */
+-	leave
+-	RET
+-.endm
+-
+ .section .noinstr.text, "ax"
  
--	r = sev_issue_dbg_cmd(kvm, dst_pa, __sme_page_pa(buf_p),
-+	r = sev_issue_dbg_cmd(kvm, dst_pa, __sme_set(__pa(buf)),
- 			      nr_bytes, KVM_SEV_DBG_DECRYPT, err);
- 	if (r)
- 		goto out;
-@@ -1359,10 +1334,10 @@ static int sev_dbg_encrypt_slow(struct kvm *kvm, unsigned long src,
- 	if (copy_from_user(buf + (dst & 15), (void __user *)src, len))
- 		r = -EFAULT;
- 	else
--		r = sev_issue_dbg_cmd(kvm, __sme_page_pa(buf_p), dst_pa,
-+		r = sev_issue_dbg_cmd(kvm, __sme_set(__pa(buf)), dst_pa,
- 				      nr_bytes, KVM_SEV_DBG_ENCRYPT, err);
- out:
--	sev_free_dbg_buffer(buf_p, buf);
-+	kfree(buf);
- 	return r;
+ /**
+@@ -320,10 +288,6 @@ SYM_INNER_LABEL_ALIGN(vmx_vmexit, SYM_L_
+ 
+ SYM_FUNC_END(__vmx_vcpu_run)
+ 
+-SYM_FUNC_START(vmx_do_nmi_irqoff)
+-	VMX_DO_EVENT_IRQOFF call asm_exc_nmi_kvm_vmx
+-SYM_FUNC_END(vmx_do_nmi_irqoff)
+-
+ #ifndef CONFIG_CC_HAS_ASM_GOTO_OUTPUT
+ 
+ /**
+@@ -375,13 +339,3 @@ SYM_FUNC_START(vmread_error_trampoline)
+ 	RET
+ SYM_FUNC_END(vmread_error_trampoline)
+ #endif
+-
+-.section .text, "ax"
+-
+-#ifndef CONFIG_X86_FRED
+-
+-SYM_FUNC_START(vmx_do_interrupt_irqoff)
+-	VMX_DO_EVENT_IRQOFF CALL_NOSPEC _ASM_ARG1
+-SYM_FUNC_END(vmx_do_interrupt_irqoff)
+-
+-#endif
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7083,9 +7083,6 @@ void vmx_load_eoi_exitmap(struct kvm_vcp
+ 	vmcs_write64(EOI_EXIT_BITMAP3, eoi_exit_bitmap[3]);
  }
  
--- 
-2.54.0.545.g6539524ca2-goog
-
+-void vmx_do_interrupt_irqoff(unsigned long entry);
+-void vmx_do_nmi_irqoff(void);
+-
+ static void handle_nm_fault_irqoff(struct kvm_vcpu *vcpu)
+ {
+ 	/*
+@@ -7127,17 +7124,9 @@ static void handle_external_interrupt_ir
+ 	    "unexpected VM-Exit interrupt info: 0x%x", intr_info))
+ 		return;
+ 
+-	/*
+-	 * Invoke the kernel's IRQ handler for the vector.  Use the FRED path
+-	 * when it's available even if FRED isn't fully enabled, e.g. even if
+-	 * FRED isn't supported in hardware, in order to avoid the indirect
+-	 * CALL in the non-FRED path.
+-	 */
++	/* For the IRQ to the core kernel for processing. */
+ 	kvm_before_interrupt(vcpu, KVM_HANDLING_IRQ);
+-	if (IS_ENABLED(CONFIG_X86_FRED))
+-		fred_entry_from_kvm(EVENT_TYPE_EXTINT, vector);
+-	else
+-		vmx_do_interrupt_irqoff(gate_offset((gate_desc *)host_idt_base + vector));
++	x86_entry_from_kvm(EVENT_TYPE_EXTINT, vector);
+ 	kvm_after_interrupt(vcpu);
+ 
+ 	vcpu->arch.at_instruction_boundary = true;
+@@ -7447,10 +7436,7 @@ noinstr void vmx_handle_nmi(struct kvm_v
+ 		return;
+ 
+ 	kvm_before_interrupt(vcpu, KVM_HANDLING_NMI);
+-	if (cpu_feature_enabled(X86_FEATURE_FRED))
+-		fred_entry_from_kvm(EVENT_TYPE_NMI, NMI_VECTOR);
+-	else
+-		vmx_do_nmi_irqoff();
++	x86_entry_from_kvm(EVENT_TYPE_NMI, NMI_VECTOR);
+ 	kvm_after_interrupt(vcpu);
+ }
+ 
