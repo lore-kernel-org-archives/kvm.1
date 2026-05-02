@@ -1,140 +1,166 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011010.outbound.protection.outlook.com [52.101.57.10])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02599175A66;
-	Sat,  2 May 2026 13:40:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777729232; cv=fail; b=XtKOY8AwwD5siRHOV88IJVIya+NguoSJK7qeFTI0Dj1X6rKOBfFf3e4kl8voYCeKXL0KeLkrxlL5e8W1k2C6W5ZtDFhvz9OOCzrBMmC+kPHtOSL2ZCDOTom2+wRMWHjwvIOQE8eD67Eqo+MtWNjX3QCsSxt/n81Zk4eUXa0YeHY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777729232; c=relaxed/simple;
-	bh=nm3PVgMMxdPWcgzW3XERj2TYCZkN9Neyp36kF1ydPeg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=qZGWas6rK7C6eRK2midqO+rZim4bCeo9xlwXQeALjK6FBpLz2m6N2HLt5yEoh0uYQTkvQJW6nEdQI5TlGpx7deb2G2+NGq/ahQsjV3zBnV8VXf7ytweZq0iwohThtPRmv6CY6t8Yx/OD2vOL30t/kYruDJJM9xNYo6LCFjQTyAc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=AKYMD5qV; arc=fail smtp.client-ip=52.101.57.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2FBB40DFB4
+	for <kvm@vger.kernel.org>; Sat,  2 May 2026 14:00:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777730454; cv=none; b=g8r0QWDl3pTw2UWElp1scUEGAzfxk1ivfnDw5He7Usk2baELeN6hMZmWkijMSsOVD9JPaPLUG//VF9RXGq9uzkt7hQ0D+ocKd4rKvxTO/iOcnbkGryn8P9UC1T/dqD00S7yJHkLGJn3fP3Sktu2srIdu2XvzOJteYxqkS4hIozk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777730454; c=relaxed/simple;
+	bh=5gdOlOshG8gMT7xdEx61bwqPp/wKCjg2VY4yCj1rDHE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WSBAOBTrUfCG9upAZRz5M8MTys13G0e3NJHFPXGYG5hsRHZzM/h6QSCjvfudAeYHU9WcgJxNi0R9KiNwqUWx61MIlJNoMEnboJkI+Zz4PWxFwRKZSZwW9RQlVo0LxyzrfRJ36B/UhBFR50bssXOeAAFwScAiX3+kfEGovg1Z4LU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=EDjx8Ed/; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="AKYMD5qV"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=LVjLFwgk7OClZ/hBdljG+y3YHas+R7ssLpWZ6iV8TBXOTUkHfy4YIyqrfzMl4X5s0XiQ6+c6rp0NTSIi3azCDH8hcCU/V3Goz/PQYvoSU4nakWkpmCM0yLIsz2aQUG8vd9OWMnrbbuyaQ43wVGgneEuB7pA4mR+DMTghqkpGsyNqN+WpiE0COVGWBN7O+Re7oOeiHtGpkpwbXKEL2h5m0IjoWv2+I2mOwbNC2iQ5ygkC/0JT6Dt2V+jaLrBW9qpDqceNECNloC/NbcO22zfsDAdVhSj23C+ZuzBoj6jAgtquEMx4i41jEWIKcJodoJIUd5U7abmGBzxa3gj08FClJA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=lPLLxaN/HNkZxGxyFNnJeAly4uq4N4+5z3KTupex5I4=;
- b=YuAnsKtjF0wYjxNMcIWGJeFN/bf85yjPOg3YEk7RPipNMXO1er7vSTV/NUs5R/bMxSnspyZj6uMAF5Xu+k/CbUN918VK/GSZpTHd7VGOy5kzBg2GBVRtjEqEeQadDDpxldnT41AUW/paSjfbmNc9UQY+tK6MLgHdDzO7PQRvIZFruxiDrnKguPomKxQNcfPS5w7zvxVpkLpJZ86nxJRn5RipYVLhsQfP1gDP6+h75sZmghgculx2FUeODW74qoV5iCiUXOfOS4rfNQDjDH1c9lWsfyaI6FSPaoOOfM3tHzscBCBtK8h7nViRLDHEUmUyLSv9dgIUottt2JMe2pAddA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=lPLLxaN/HNkZxGxyFNnJeAly4uq4N4+5z3KTupex5I4=;
- b=AKYMD5qVbtgcRZ+u31KN2hCcNvQTLeIhmizekyMd9x5+3PM1IQ7h4U+bN/Y4JqFzATfYP88Sx/jB3DbPfrba0T5AXPzpNstdsqNkbH6ZdOrDsQQynnDAEqOsvL2Y/FeK2hVN9dwE+yASsDETwEXZAD3RUppc/a01WN6b/7Hkw5fLyXyDitf4hZqQ4SZXWDtOtBYEMsobqtgFY8kRlIkVZSUFsYmbiNKTMCyspo1IybeqCKoNPDtskvWE3Bnk0xCHkTbSLAjdMFCXxd4n7f8aZtxpgLbFkZoRY6pysaFG4Au4f2qQGqmp1Wefz0e2UzD09n5B47UNI1wlBDZtAC78UQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by SN7PR12MB7953.namprd12.prod.outlook.com (2603:10b6:806:345::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.23; Sat, 2 May
- 2026 13:40:26 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9870.022; Sat, 2 May 2026
- 13:40:26 +0000
-Date: Sat, 2 May 2026 10:40:24 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Alex Williamson <alex@shazbot.org>
-Cc: David Matlack <dmatlack@google.com>, kvm@vger.kernel.org,
-	Leon Romanovsky <leon@kernel.org>, linux-kselftest@vger.kernel.org,
-	linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
-	netdev@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
-	Shuah Khan <shuah@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
-	patches@lists.linux.dev
-Subject: Re: [PATCH 00/11] mlx5 support for VFIO self test
-Message-ID: <20260502134024.GC1381708@nvidia.com>
-References: <0-v1-dc5fa250ca1d+3213-mlx5st_jgg@nvidia.com>
- <71afd479-71b4-4ab7-bcbe-3f7b53bd11f4@app.fastmail.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <71afd479-71b4-4ab7-bcbe-3f7b53bd11f4@app.fastmail.com>
-X-ClientProxiedBy: MN2PR18CA0001.namprd18.prod.outlook.com
- (2603:10b6:208:23c::6) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="EDjx8Ed/"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 642Bh44K3369056;
+	Sat, 2 May 2026 14:00:45 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=+KEF0RGGlu0z1YHcRdhnUWsGv9q1vdeLnOVUKCbc2
+	A4=; b=EDjx8Ed/oLRMPJba62a64l9DnKtYDM3ca5Bpfo58Ap5NqV38qCy30o7aj
+	vhiU8y7dNa96VEQS8RBOpAHB1JugTpFma07EMKCdRswreeC1QmV1728WS5utzLSJ
+	5yZ3ZbuT3bx1+o/s3E2xgGpmFoZiMK8+c1Xh7zLXDZRw4WvF8w09QD9nK6eUDhuJ
+	HF4BN+LmW0cH9S4AvTOU3jZhmUoNoQlhCuTq7Zu+wUVfkitj3ZPG3yZhGFq1gfKm
+	xeX6clp8R9ordc1Og72ynAT423pCfe+h32MsQI3rMyAIEYlbBIkxA5zbkh7bOJ5B
+	7kcVZr10xN+9N6UWqqbArpk/CgMQQ==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9w613p8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 02 May 2026 14:00:45 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 642DsZ4h012905;
+	Sat, 2 May 2026 14:00:44 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dw9fs9bdb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sat, 02 May 2026 14:00:44 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 642E0eDw43516300
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Sat, 2 May 2026 14:00:40 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8C27920040;
+	Sat,  2 May 2026 14:00:40 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 06ADB20043;
+	Sat,  2 May 2026 14:00:37 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.124.223.28])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Sat,  2 May 2026 14:00:36 +0000 (GMT)
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: qemu-ppc@nongnu.org, Harsh Prateek Bora <harshpb@linux.ibm.com>
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
+        Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Chinmay Rath <rathc@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+        kvm@vger.kernel.org
+Subject: [PATCH v2 0/3] ppc/kvm: Handle CPU compatibility mode correctly for nested guests
+Date: Sat,  2 May 2026 19:30:18 +0530
+Message-ID: <20260502140021.69712-1-amachhiw@linux.ibm.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|SN7PR12MB7953:EE_
-X-MS-Office365-Filtering-Correlation-Id: 1a8b3557-836b-4728-00ff-08dea8505da8
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|1800799024|376014|22082099003|18002099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	/fI7RtQ6J2R6tUfxWAexS5pfHh1lK5GUaTkID68n8l9wbWtaYvgbO1acGaLzJGdQkO4x4bmsqy8UrIOCv0l0B3GLE59iD/jQt9MtqsDoiIwlTjL54eTPeLi7Dv+ALs3r9GQxQQ47+wtg+xgD5vkEP3KGLZMYeiDC7hl3FZBAPgUYI3opJ/VvkNPqqbzyb8iltY0dhIvdpyi5y3peUbcS/FWorCNDpFiOtRItcrUEGLi9EGr9DOE6d5W6IP+DXjAS7BqvpG9yqBBeC6OXY2aTBiJ/gX0zAa2UrTvAlMsMdCpNmuPfcmcz/p8jUwhI+guGjYCmK5dFNlk4FFRi8q0hELaP7Apl8epWhEnaIsLACM48+pL1wkDfuQYuKG3nFG2MA7NDDm3FN/kSAxyXajiuW5Tt5/QckQqZvmcxSNueMFUkeuvU3cOQx0jps/iKzZJ/K3iKmUY4agP0RlFcj2JtPK0wwTN/Bnx+OMfLSLBwdChfmJFM3DLrwt7MBmfaD3GIJv6utVhyFLn83dwPHyTcm5+oSnQpQxySzqdAtX6oTU4Fe1RH1bLqgCSPGeJyeDiqL2OhstSc8c4oa0tkn1VkX3sL5d9M04XcXq2saUHfhAqoW8zfLgLkreBtSQJpJcHS8RuORJX8pF9+weLb8RDVDtA++EPMLyUYZDO27tG2RePmkuPX975xF5Gihj+ywO08
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(22082099003)(18002099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?AWtf1Gs4myadVtoBxR3FwGW1AKLKIQh3KnyeD6h7656HPQfTlsTZ8K9OQ9xy?=
- =?us-ascii?Q?d7vOxBtwjF/rdVOfVLIkBKeYccGJmc6Bzl3Cl3uRLCwV+gnbn1tywCWp9AZd?=
- =?us-ascii?Q?wAy33ZrkDFZogjt9pzz5NsRb6srr65NkM2dgkAXpof5lad++SJCJ74fnhpbL?=
- =?us-ascii?Q?RGP1ShFLtxix8/w1jTzgKuiMZA+jUuyzEdWMY8iD/AlVY3TADmc08Kc490Yd?=
- =?us-ascii?Q?BcPwhzgrMQnPD+fWZRmqlzTDpFJojIngTTChtDGdpWk2xgeH1+yWFqraWnLG?=
- =?us-ascii?Q?q4XGucArLwJg26jQcqvDxssvsrGyM17dfLbxuvuSMnb7FK9HmSHVFCb1XJZ7?=
- =?us-ascii?Q?TxtxlRPkjJq7iqxsifwWqoTYz4N6M4skFGigXzs/HNX7f2WYNsKQ/HktF9sV?=
- =?us-ascii?Q?RwocFR+3KkJtuqWZXhk1tC6y9I5pS0TbWpcCAoMyNrKc50vXpdSl3cR4uIEK?=
- =?us-ascii?Q?amAL7/aNlpxEw7XCYffIiipJm7JLvn95LVU7Z1TK9WmSOcHLRDFGdEE7IHAp?=
- =?us-ascii?Q?+2fVj8P5clPzozK6evztVoVGxI9E1eC0L03jyCAQG+W7JGoZGiJ3lbSMxhFm?=
- =?us-ascii?Q?bpe5gNUKF94ZWSx4a8Vg+zA+W8get2CXB1W4KPLahY8jIM1FZY+6IxbQ4aQG?=
- =?us-ascii?Q?ltBc9XSoYSufBBxhX0BRbfZmT9Z8h6UDHElmUS+HU4XxyOqIj+KjvM/uGvDt?=
- =?us-ascii?Q?7/Qt8AyEEOb47uwJHt1aQsEc56CPqeAcld9VbgZXGdXZStzm4eDe350pe05v?=
- =?us-ascii?Q?1YzqMm6qVoIddM9HauHaxuqghLAyAGJLSMyRY3870TfIX/A2hT5lMZD+nOcb?=
- =?us-ascii?Q?h85Lc9KYA8xwjyHlJ+hZg/e/YZkczH6azfQm1bNSqiSLbS2rGjFB3Ji3T8sE?=
- =?us-ascii?Q?meRaKB2DRsBXLiYUKhlJC3MkIMpI7rqyHCgX0oTuh2Hx7nh4nZ37DtUQjhpc?=
- =?us-ascii?Q?0r2jg5pGMeQrDdxLYN/R2erx53Hgk1D50JDyMg+KFKg9MI3i0y57RVuuWXRQ?=
- =?us-ascii?Q?R3w6Tx31WO3QJzuJFvp189JfuFkwMMleRkh0zNc4lBwzhCNDpT7KFvXx1n3R?=
- =?us-ascii?Q?6mOWTtpBUyed54/vj6nM0hW7bZId3hU2u2G/7Uo2Sp7QrQ9TIL0nptCOklQh?=
- =?us-ascii?Q?SnTx9yAd0IuO2JeMdm751oIY6FyA9rwVSquaYrW/UoiHfX8CvdoDhemtyRNR?=
- =?us-ascii?Q?Ij6TB6s6MONMBu9ILIw5xkZ03r8x+3bCYQx4MCGzklK3WdLnvhFFzhnG4Ape?=
- =?us-ascii?Q?Useg4ifcAS6wyZU1Gl3LwHWbJhp0AQ72N/OfBhm6Uvh1iYiFhQoWBW9wng/i?=
- =?us-ascii?Q?B7b5ImSEqkKjn6bxc/loy8eXllHHG2f8a+ayFEQYMqTlbJ/d+dNdm9gsAak/?=
- =?us-ascii?Q?MlB3o6828UNy/H7iZlemGKb99eJmouClyNUmIKJm6iasNEbe38kLGGOfXijd?=
- =?us-ascii?Q?CiuzCP/bNtAgD6LaHj1kG0lDFm4X7ajMXyr3j9vxGv08OEInKnPkG3+I98Se?=
- =?us-ascii?Q?Wf8dK1JHiGmUiIuNm7DtuoiZfyjUMAhfQ+65d4qHMclLQgT1IJR1CnV96zLv?=
- =?us-ascii?Q?Ton2M9R/simxpEy7an3YH/R8uPrTKp6/gtY81xHm6lRG8BfckUaHct96HVGj?=
- =?us-ascii?Q?/9tgXU83Fgwt5jGZI6L8U4csgM64mHmVDZtTaS+LVE7YZjQozyOpbQCKnOWb?=
- =?us-ascii?Q?32o30xeAq5J6bqW9YOoM2aZFLOsQsrfQX/5r1lhH8652vWqP?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 1a8b3557-836b-4728-00ff-08dea8505da8
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 02 May 2026 13:40:25.8863
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: AjP5Cw59N1Fjbp/BzvGsDjE5kQAiGPt5WBy7RxEXdKT9+W4FBXz34tw0urwLFySW
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB7953
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=XPQAjwhE c=1 sm=1 tr=0 ts=69f6038d cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=p0WdMEafAAAA:8 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=M_kZukdR289U2EYsLHYA:9
+X-Proofpoint-ORIG-GUID: BhrSuD8qIEGPipBkZCAPlPXoqQ4K48C6
+X-Proofpoint-GUID: frMv7xi41FMWDl_9MxokzL5EH7i_Rv3E
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTAyMDEzNiBTYWx0ZWRfXzbQTG886JqAt
+ TnltEK12QTxHHkBGNmlG91TyhbVpDlsJoSKfLiIxZhM9J119z38oWPs1W2cmCW0pQCYU927ylql
+ dcO6LVl/pNFm+GRqb3QwBRxMBjRqVy9Ku+wCnS/hnIj1IjsLlH/i7GhyCf0B44NCqqsaFXpT+Sw
+ wuS7ceRi3VfT91rQ0B2bYPrtuSfgk/N6C/UQhRVVGIxkKTAimxaXO6EA5FRYaWMi3VSRLhsActW
+ OqxuRcCo0rqTjFUlXHpIvSiKwxwmzi3i+smY/h0SHp14opYIODs+WKO7sTgZHW8T0BfY71dIgUW
+ djm4T0MQ6GjvFCdh5hrjqNFIs5oF+UUYXqUX17zteTPSO1+DRPeNsR5OwRkSpVa552Q2mmvgSgX
+ fLLmTO8d1ZURgnwPzc7TLAV5eiBeZ8m7HTZIgerydSB3K7lGf95VlwfyNUOg55xDkyJxL+Nb8D7
+ li2CXh00tVhuxpxt5oQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-02_03,2026-04-30_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0 spamscore=0
+ priorityscore=1501 impostorscore=0 phishscore=0 malwarescore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605020136
 
-On Fri, May 01, 2026 at 10:31:49PM -0600, Alex Williamson wrote:
-> On Thu, Apr 30, 2026, at 6:08 PM, Jason Gunthorpe wrote:
-> > Add an mlx5 driver to VFIO self test. This is largely a remix of the
-> > existing VFIO mlx5 driver in rdma-core. It uses an RDMA loopback QP
-> > to issue RDMA WRITE operations which effectively perform memory
-> > copies using DMA. Since mlx5 has a stable programming ABI this
-> > should work on devices from CX5 to current HW. The device FW must
-> > support the QP loopback configuration.
-> 
-> Does the PCI ID table in the series need some pruning then?  It
-> includes CX4.  
+On POWER systems, newer processor generations can operate in compatibility
+modes corresponding to earlier generations (e.g., a Power11 system running
+in Power10 compatibility mode). In such cases, the effective CPU level
+exposed to guests differs from the physical processor generation.
 
-Maybe.. I don't actually know that it doesn't work on CX4 and before,
-I only was able to test as far back as CX5. I'm thinking to leave it
-and if someone does try it and it doesn't work then remove it.
+This creates issues for nested virtualization. When booting a nested KVM
+guest, QEMU may derive the CPU model from the raw hardware PVR and attempt
+to configure the guest accordingly. However, the host is constrained by the
+compatibility level negotiated with the hypervisor, and requests exceeding
+that level are rejected by KVM, leading to guest boot failures such as:
 
-Jason
+  KVM-NESTEDv2: couldn't set guest wide elements
+
+This series addresses the issue in two ways:
+
+1. Do not silently fall back to raw mode when KVM rejects a requested
+   compatibility level during CAS. Instead, propagate the error so invalid
+   configurations are visible and fail early.
+
+2. Query the effective CPU compatibility modes supported by the host via
+   KVM and use this information to select an appropriate CPU model for
+   nested guests.
+
+With these changes, QEMU avoids masking KVM errors and ensures that nested
+guests are configured with CPU models consistent with the host
+compatibility mode, allowing them to boot correctly.
+
+Patch summary:
+  [1/3] hw/ppc/spapr: Do not fallback to raw mode when KVM rejects compat
+  [2/3] [DO_NOT_MERGE] linux-headers: Add uapi header changes
+  [3/3] target/ppc/kvm: Use host compatibility mode for nested guests
+
+Changes in v2:
+- Patch 3: Guard compatibility mode code with #if defined(TARGET_PPC64)
+  to fix compilation for ppc32 targets. The POWER9/10/11 PVR constants
+  are only defined for 64-bit builds, and compatibility modes are only
+  relevant for 64-bit systems.
+
+Tested on:
+  - Power11 pSeries LPAR in Power10 compatibility mode
+  - Power10 PowerNV and QEMU PowerNV 11 TCG L0 host
+
+CI test results: https://gitlab.com/amachhiw/qemu/-/pipelines/2494987253
+
+Note: Patch 2 is marked DO_NOT_MERGE as it contains linux-headers updates
+that will be synced separately once the corresponding kernel patches are
+merged.
+
+The corresponding Linux patches have been posted [1]
+
+[1] https://lore.kernel.org/all/20260430054906.94431-1-amachhiw@linux.ibm.com/
+
+Amit Machhiwal (3):
+  hw/ppc/spapr: Do not fallback to raw mode when KVM rejects compat
+  [DO_NOT_MERGE] linux-headers: Add uapi header changes
+  target/ppc/kvm: Use host compatibility mode for nested guests
+
+ hw/ppc/spapr_hcall.c            |  9 ++++++
+ linux-headers/asm-powerpc/kvm.h |  7 ++++
+ linux-headers/linux/kvm.h       |  3 ++
+ target/ppc/kvm.c                | 57 +++++++++++++++++++++++++++++++++
+ 4 files changed, 76 insertions(+)
+
+
+base-commit: 3d626609ccae61a2e552bccd59c7a0931bab8261
+-- 
+2.50.1 (Apple Git-155)
+
