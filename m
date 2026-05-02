@@ -1,169 +1,110 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1A7946C
-	for <kvm@vger.kernel.org>; Sat,  2 May 2026 00:04:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777680301; cv=pass; b=eEfM1WSHykFIjXX3tkaNvQioO/Rz2kIggu987hGSm086V1O86OvdXGmfazLeZ4KDEzzq3xsYSLqliURt4Ej32qISPWzz86D4wiMVRFiwqtaP9E1EC2pv8LOdKuLQcSYsQ4JHS7mSIFnsqNkVLrLZfUcBuuYNmbLvmNMHF+TQceE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777680301; c=relaxed/simple;
-	bh=jmTIlqDIG+2F0eY0rS1JU8RB5gKbSRn+IjlGTZDRniw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hQzfMuxtMi5c4j4EpIPzXrAuS8CuEWTNxkJ0bFfgaoqiJdSWBMhktqYZ6JD/zbHZho7G37fTA/20VKhaJJrOtUuhtSoMzIAj2PAzbq/q1ovE+rZE3y/cmfcUz8PSSJyXgdouUw7H6g8l4dH8IEqNCi2ZvaUJxG3Q/qdlBRX+XXo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nronevRu; arc=pass smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CDED1A9F97;
+	Sat,  2 May 2026 04:32:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.154
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777696333; cv=none; b=Lryt8aV5tsi1Y6jtCDXQCsAOcMl290ojOX/waXZcJo0denoHsPNkBWJjZR0yDH5TkB20FQvZqpEfheXGSOc1Exno4LyF2rKTOK5DMTKi3cFXT+aYVXi+p4qoiFeXY7TcvhAPIdjrIHJ49uzKCAs6XraKLlDJrB7DO2X1nQeX84I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777696333; c=relaxed/simple;
+	bh=VvzNqcyWvOSXIgK/Bn248L/jEf6SxdUEYXGuhkZRyNQ=;
+	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
+	 Subject:Content-Type; b=m7savpaJtISdfieT8K0HSVe+O6SfhPyfoeJzsZA2wLKz5pdkxL+cjZtFlthkKT9q/6Aocj37LdAjTZXjbHcmzdnlmV/EHGrt6qG0K75TJHoxZTy2h9ezraVrS0iYgdGzAS+kLIkAwXRMFbwFMEO9dzUkvdQPV0WKypTaCaQ2d6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=ortqi6uW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=HUtDmXXB; arc=none smtp.client-ip=103.168.172.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nronevRu"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-671588ab0cfso1441a12.1
-        for <kvm@vger.kernel.org>; Fri, 01 May 2026 17:04:58 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777680297; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Au1DSroscIf78+L608TXHM+akWwbJ9DCjLAvmHEl9h0x59gQjwtRZ3kYUJWYAYXU5W
-         w7wYcv+/lsrSNwBEEoA4gkAyQrgO+VdSnG7wKCx01aMUv6d/1s3qVG9OCKAfipUUdLwz
-         h5l51xdPBI+LT0h8B1x1DeYcNGWzL9L4EFpC5Z9numIgBFq5ycls1Bdm63Bmb/RMBYHk
-         hBVTyC30Pbqr8LHwIa9lQmkEw7HVN1GQd36vhC06qhmn5RVhnlGZ43GIU2b6ptQCRt6E
-         pzErkHPm4hJtS+7+G9u/iuCHgj9yFI3toM3JUH/9mq3jozZzF5XDW3ZM+heIziE9aNad
-         4dcg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=BiMKE0Qc1DxW4ucWujV74L8Z61uu2FejYlr/YNQXWk4=;
-        fh=f6i8COwecYJKqFDZk3b/e+tkeHGG64CszUgcW79TYyY=;
-        b=MjzYPI0FQBG1xbRVhfMiNI7mB2adNW+wkFehTGqCwwZOIe75+vJ7yJmGXMFszv6ghz
-         64DJInJMYWMUJvU1PJt0Bfa0vRyZ/xwRTJEyNmzBHoBNZ1UkUVu8H3VzXPoxJzPVkJGO
-         9T0Eawq/7LRwgs//2yPC6eP2ros/hEcM/dwoqDFHZW1Jez4N85X8h50tv60CVZzcC6oy
-         pY9SyEdgikQvHlC5Mcv8nv+3FxFsu02sATAy622V9OEi2DeQiSEa64c98CDVTA1DJ/gA
-         yogCxGgplEh2yt2fghF7MrRKmUcxCYXd59F6ujvUt3OgaSMaZ0cqb4alazaThfANPKqz
-         ck9g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777680297; x=1778285097; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BiMKE0Qc1DxW4ucWujV74L8Z61uu2FejYlr/YNQXWk4=;
-        b=nronevRu2lKBvXZMA4+w1LG6/B98OZddxZukCSWvBQdVCFdO8pw8sbQWwvAh8XiyMp
-         ADLq9OVAXH0Xxs46757UkllcnOv1nNM2dmcHQxzVLHylVhxYttTFEEAxwg3FQJs3VRhg
-         17U1AJVMovjqFgLKEtOGQwAFB+wyNUUT/Ose0t6NmWyD+i5POra1kCVncM/020454owu
-         EghtXs7ir5X2Czf4oNqxzlp6ofbGLUYvYMAU5A43tm3YGTghUMZSdDMuUB5SGiueWn0e
-         MEDLZp3RCy7MexwtKh8keLCXwQKNqNqJcUO5Z1J7pTdwTxllyIEgwxWl14cFhTf3A/2f
-         dnVQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777680297; x=1778285097;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=BiMKE0Qc1DxW4ucWujV74L8Z61uu2FejYlr/YNQXWk4=;
-        b=WzWiPoh8Pig0OA/+M3EaxrXjE8z0th8Wo0lgn6Kk2BOjfTP+fVwziui8+5UrYWKaLx
-         Fxs92p42M8H+1/NXxEdsMv/IeWcNXQ6fvUhUe7l3AKWCAMjkEjiUN/j+h8iTnDGjK/dR
-         N1ew7R4uxLvd7o9l53unQZMQ58VZKQVmqiMJNVpbcXZmpGkI6/ntpOQ2FvRcken9vFYQ
-         hoRbzg/4yTyIgdAXPmyjbU/xLF/nkizp/VqBCOke3hFDW0HNFF4rifCtKlDwEWb4o38R
-         dYIrRDyeT+QBWtpGb8ASz8VmIPfifaMvYUqCtR/Vxr7ZK/sBl4mJFmpHHyauQ8q7+g+/
-         k32w==
-X-Forwarded-Encrypted: i=1; AFNElJ/U36KMf4N74OaI0QY4DACtkPfCz8jL0N5QXQbCdf/TRe4ZpH1MBZlOmbdrmCH1O/1MNd4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFr04qvJUTCqq4Av+Dhjeq3VodGzfkQY6o4tAGNbhKTbBYEVyf
-	Axy2geqbYO4kNNWbuW/hdQ5xGzUwYM45mEskfwcSMbYPOGAvmIHiynTE2i0MOxKVepSI4m2yBEC
-	G7FJpo962uQpOJINE6ebZ6pk2aQM6m8QzYe8Mu+HF
-X-Gm-Gg: AeBDiesDqioBQjKepcKu2dDam59vd+StWrK/K+BFaMOUqzeJ41948S9gUvEtRFJ8Dja
-	2CC4qi05MEMawOOMbbXdom/upNngHw3S7JrnjIUTn+mmeUP0sZhxxYL9xy+3JbEZFoQ583LQK1Y
-	srfsKEKGHnKUu5SJTxshDqv2vwKmzRs0O9NctgMevjx1U0L2mSI5M06HltfKbkJ099eYBMFw0pa
-	l23wKZLKmLo4gFHSjZV1VXkW2tTR+p4EB9NlsduPOfwZ4ZboVoCzp04PGoptvyCtDyp5+9Vi/K3
-	f1hnTFYE4hqXZhvDGurMGciOkPWL
-X-Received: by 2002:a05:6402:148c:b0:678:a5c3:4d12 with SMTP id
- 4fb4d7f45d1cf-67c1df8eb77mr10027a12.3.1777680296929; Fri, 01 May 2026
- 17:04:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="ortqi6uW";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="HUtDmXXB"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 703E51400176;
+	Sat,  2 May 2026 00:32:10 -0400 (EDT)
+Received: from phl-imap-18 ([10.202.2.89])
+  by phl-compute-02.internal (MEProxy); Sat, 02 May 2026 00:32:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1777696330;
+	 x=1777782730; bh=BREJYA/ynimdlvkziKMjJqbroFR4YvUmHC1hcGjm9x8=; b=
+	ortqi6uWikQ8D9//DCJX6HdxN8qFN/wNEWu0GjtX/JPurb0gBkR4R/br/H8uDKTd
+	nmVrg/zHJo0fowP7PEuIKYgTWsjvTn/JdCJtKg4LDUDZerAGHgfF9Wi4dCDnEz/z
+	xo7Cu6HZlvV/3FeDd6e5zuviTb21KWNY546Y37/CojJP/NnsnHd7W6hCdYhaIWB2
+	ArmF0d7GHsn5B6tN9kr+tNJUVJ9hJfLXqTpV2a0cEtPuE1POhSO63SN8Qiz+45JU
+	D8R7mCSTm10le84gZO/UDNJ7N5uJWx1tlUX9FBoTm+TUhhqIbt5kMjahBTcPcbkn
+	JYkoZCpvAl2ZZlRXYr67xg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1777696330; x=
+	1777782730; bh=BREJYA/ynimdlvkziKMjJqbroFR4YvUmHC1hcGjm9x8=; b=H
+	UtDmXXBWutpUdoGrBRVkz3b0v9T8jZ9AxD3wms8UA4sCaccGEoiIGJpK176hlCs1
+	++oYIaUXtDgRouEW/wv6KP3LjaKSxpYEltfcSD3oZEfFP6TyMC99JLukz1YL/v4G
+	cjKGQjjPtr33m2OCkT0tTqbHjMzDxnYagJ1qStOR0GFdJeU7amfTXugPKwN62WUq
+	hiyssUkSzOmygpsS8dCbuuyOvMh1Kb5d+dg7nkr6nXgnPKgEUPja215mCA1Cw5S1
+	MsafOhxA8wAd/KM9YBS4Jec6jghW6ceGUIVgYIZwj1gCHRoczHzzL6q0RZXW//VV
+	iH4LIN0H3D4mzXmiHQclQ==
+X-ME-Sender: <xms:Sn71af8e8p1BZAIxzaNAVYGvLu3pfDMXKBpJ5rTpm9xoo5togOtt_A>
+    <xme:Sn71aWggk1gjkF9-EHfQIMZHiV4bsxMT7xaTeKwa00mLlxXLEKvL1_2UxMe9e0Wxv
+    hDOHgv0q7JWKiWysf5stfrURGwhzrGbcofLmOa0cnS1a18WrK_A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdelvddufecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpuffrtefokffrpgfnqfghnecuuegr
+    ihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenucfjug
+    hrpefoggffhffvvefkjghfufgtgfesthejredtredttdenucfhrhhomhepfdetlhgvgicu
+    hghilhhlihgrmhhsohhnfdcuoegrlhgvgiesshhhrgiisghothdrohhrgheqnecuggftrf
+    grthhtvghrnhepgfeffeelgffgffevffetteeivdettdfgvdeiveefjeeffeffveetjeet
+    udffgfevnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    eprghlvgigsehshhgriigsohhtrdhorhhgpdhnsggprhgtphhtthhopeduvddpmhhouggv
+    pehsmhhtphhouhhtpdhrtghpthhtohepughmrghtlhgrtghksehgohhoghhlvgdrtghomh
+    dprhgtphhtthhopehlvghonheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhhuhgr
+    hheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepphgrthgthhgvsheslhhishhtshdrlh
+    hinhhugidruggvvhdprhgtphhtthhopehjghhgsehnvhhiughirgdrtghomhdprhgtphht
+    thhopehmsghlohgthhesnhhvihguihgrrdgtohhmpdhrtghpthhtohepshgrvggvughmse
+    hnvhhiughirgdrtghomhdprhgtphhtthhopehtrghrihhqthesnhhvihguihgrrdgtohhm
+    pdhrtghpthhtohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:Sn71abxKiOXJB7RlQcQ0yz-wxuLtklAZqMqe2BAF8vmaUaUeZEd0oA>
+    <xmx:Sn71af8FJynU3OCbEob14bK3zdFzrZp2mhbGaDRk_tZAmL75iuQH9g>
+    <xmx:Sn71aZOKAri6LW5ABVGBIXnZ0WVwarqNA3Af0NJ3y5SX_iMTF7-AEQ>
+    <xmx:Sn71afoF33idoETcqH1XenMvYie6Fa-e0WkFHEuikluE6lh-pDs1Zw>
+    <xmx:Sn71aeZ3SmnZnKSEnikCL7LK8w_aZoWWQ1OImsJAmIbITGiETqVEP4kj>
+Feedback-ID: i03f14258:Fastmail
+Received: by mailuser.phl.internal (Postfix, from userid 501)
+	id 14AE715C008F; Sat,  2 May 2026 00:32:10 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260423150340.463896-1-seanjc@google.com> <20260423150340.463896-5-seanjc@google.com>
-In-Reply-To: <20260423150340.463896-5-seanjc@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Fri, 1 May 2026 17:04:44 -0700
-X-Gm-Features: AVHnY4LR57kQ_JJz2IVwy7QXTY7cpNVRpOebxhP2Ymd9SP-YstGqP92VpD8VPNc
-Message-ID: <CALMp9eSt-ZDCxhyVjEiov2475ToZ7M_94HSpKg6hqrh=m3iZAg@mail.gmail.com>
-Subject: Re: [PATCH v2 4/4] perf/x86: KVM: Have perf define a dedicated struct
- for getting guest PEBS data
-To: Sean Christopherson <seanjc@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-perf-users@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Mingwei Zhang <mizhang@google.com>, Stephane Eranian <eranian@google.com>, 
-	Dapeng Mi <dapeng1.mi@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-ThreadId: ALXc8_xz--ng
+Date: Fri, 01 May 2026 22:31:49 -0600
+From: "Alex Williamson" <alex@shazbot.org>
+To: "Jason Gunthorpe" <jgg@nvidia.com>, "David Matlack" <dmatlack@google.com>,
+ kvm@vger.kernel.org, "Leon Romanovsky" <leon@kernel.org>,
+ linux-kselftest@vger.kernel.org, linux-rdma@vger.kernel.org,
+ "Mark Bloch" <mbloch@nvidia.com>, netdev@vger.kernel.org,
+ "Saeed Mahameed" <saeedm@nvidia.com>, "Shuah Khan" <shuah@kernel.org>,
+ "Tariq Toukan" <tariqt@nvidia.com>
+Cc: patches@lists.linux.dev
+Message-Id: <71afd479-71b4-4ab7-bcbe-3f7b53bd11f4@app.fastmail.com>
+In-Reply-To: <0-v1-dc5fa250ca1d+3213-mlx5st_jgg@nvidia.com>
+References: <0-v1-dc5fa250ca1d+3213-mlx5st_jgg@nvidia.com>
+Subject: Re: [PATCH 00/11] mlx5 support for VFIO self test
+Content-Type: text/plain
+Content-Transfer-Encoding: 7bit
 
-.
+On Thu, Apr 30, 2026, at 6:08 PM, Jason Gunthorpe wrote:
+> Add an mlx5 driver to VFIO self test. This is largely a remix of the
+> existing VFIO mlx5 driver in rdma-core. It uses an RDMA loopback QP
+> to issue RDMA WRITE operations which effectively perform memory
+> copies using DMA. Since mlx5 has a stable programming ABI this
+> should work on devices from CX5 to current HW. The device FW must
+> support the QP loopback configuration.
 
-On Thu, Apr 23, 2026 at 8:03=E2=80=AFAM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> Have perf define a struct for getting guest PEBS data from KVM instead of
-> poking into the kvm_pmu structure.  Passing in an entire "struct kvm_pmu"
-> _as an opaque pointer_ to get at four fields is silly, especially since
-> one of the fields exists purely to convey information to perf, i.e. isn't
-> used by KVM.
->
-> Perf should also own its APIs, i.e. define what fields/data it needs, not
-> rely on KVM to throw fields into data structures that effectively hold
-> KVM-internal state.
->
-> Opportunistically rephrase the comment about cross-mapped counters to
-> explain *why* PEBS needs to be disabled.
->
-> Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
-> ...
-> diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-> index 7403ca721b6a..04d9c51335d7 100644
-> --- a/arch/x86/events/intel/core.c
-> +++ b/arch/x86/events/intel/core.c
-> @@ -14,7 +14,6 @@
->  #include <linux/slab.h>
->  #include <linux/export.h>
->  #include <linux/nmi.h>
-> -#include <linux/kvm_host.h>
->
->  #include <asm/cpufeature.h>
->  #include <asm/debugreg.h>
-> @@ -4992,11 +4991,11 @@ static int intel_pmu_hw_config(struct perf_event =
-*event)
->   * when it uses {RD,WR}MSR, which should be handled by the KVM context,
->   * specifically in the intel_pmu_{get,set}_msr().
->   */
-> -static struct perf_guest_switch_msr *intel_guest_get_msrs(int *nr, void =
-*data)
-> +static struct perf_guest_switch_msr *intel_guest_get_msrs(int *nr,
-> +                                                         struct x86_gues=
-t_pebs *guest_pebs)
->  {
->         struct cpu_hw_events *cpuc =3D this_cpu_ptr(&cpu_hw_events);
->         struct perf_guest_switch_msr *arr =3D cpuc->guest_switch_msrs;
-> -       struct kvm_pmu *kvm_pmu =3D (struct kvm_pmu *)data;
->         u64 intel_ctrl =3D hybrid(cpuc->pmu, intel_ctrl);
->         u64 pebs_mask =3D cpuc->pebs_enabled & x86_pmu.pebs_capable;
->         u64 guest_pebs_mask =3D pebs_mask & ~cpuc->intel_ctrl_host_mask;
-> @@ -5052,7 +5051,7 @@ static struct perf_guest_switch_msr *intel_guest_ge=
-t_msrs(int *nr, void *data)
->          * wrong counter(s).  Similarly, disallow PEBS in the guest if th=
-e host
->          * is using PEBS, to avoid bleeding host state into PEBS records.
->          */
-> -       guest_pebs_mask &=3D kvm_pmu->pebs_enable & ~kvm_pmu->host_cross_=
-mapped_mask;
-> +       guest_pebs_mask &=3D guest_pebs->enable & ~guest_pebs->cross_mapp=
-ed_mask;
+Does the PCI ID table in the series need some pruning then?  It includes CX4.
+Thanks,
 
-It would be helpful to save this mask somewhere, so that it can be
-used when calculating guest_pebs_idxs in x86_pmu_handle_guest_pebs().
-I think that code needs a fix similar to the one in commit
-58f6217e5d01 ("perf/x86/intel: KVM: Mask PEBS_ENABLE loaded for guest
-with vCPU's value.").
+Alex
