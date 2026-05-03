@@ -1,149 +1,94 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B582FC01B
-	for <kvm@vger.kernel.org>; Sun,  3 May 2026 21:28:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18BFD35DA46
+	for <kvm@vger.kernel.org>; Sun,  3 May 2026 21:47:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777843703; cv=none; b=EXqIVxpNYWCaiyjmPrJgSvbCNJuYu/rEvHwhErQAPvk9KRouLdGzIJwMjIrwJnqWjxhcV1nTZgySGN5FKYKhhBhzinJmYbJMchc1DOI8j3HX2rb1KoPFyYZ6IhVJegEE0/j7r+zs61+lExTcfUKyDnrXih/1Bxu2AO0aIS8oA0E=
+	t=1777844855; cv=none; b=aED0jCOzF/gJaPe0vFGXNCmQH8678mdfZr4EHEo9+4/BbRybLVw1S/uXfSIqQcE93B5rOSlf9Is/4T2Nrm4g8CTRocL7rJX2Gi8DgV02itElq1woW5NFmE9IC5iFEKd7T5zYzYl/+DR2wbzn8gkrPm4dqI8ZLT0NVUs95k6QMm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777843703; c=relaxed/simple;
-	bh=p1+53MgjG3tRE4zXVmx3A+yzO575nwGdlDEr5UF4Wr4=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XWmrYuUufBc28pbaEsltlF9TCbvaB8O6pB007EE9KnhXD5dMbPW03yYnFMu/9a3/RwmlHe+Bp9oIwmjmhJeTe0hvekQzEcqY92tWNBreNZFz9GkZwnMM2qZdnYwPvDsCeoPt+IevxGOJ3cJy21vCTYSJ+IpDevkDc7USp7JDpNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GMk/5syW; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=pijTBlbN; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1777844855; c=relaxed/simple;
+	bh=Oy13R2u7bK3vATN8lpRrxP2GJoGzJr1vkAvsAvVpaBs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ATl4uKwc1n+hV/GrGP3H4N72ja1RH+DdzesBHA+2FZdsUeo9ftIkBSSYg2kIHr2mMnj+IPmaU37MurkNMR2UznL5KG+VF6IsaYNYwj8r7spjUQ2twffdIuVbOoGCkxfwriTybLKmlZkKhbwdVTzFDVaAtcpoJ8I9mgSKU+608d0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=FbTeOmUo; arc=none smtp.client-ip=209.85.208.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GMk/5syW";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="pijTBlbN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777843700;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=g/jy3K0DTnk1EpdHbq98KlNCKdivc2YZwBxANLQFwTQ=;
-	b=GMk/5syW4dnUl2IDnFSuMGPJ39XZwnep6qP6RHMe9R8PL/0ihDguoIRMQpvekF4vhanjgY
-	SkItafqjJDk8Baa2dS/tPckugaL/7bzKmCPyPAyo8KHjSoM1+UdwpQlYSCn50+i1wZAhqR
-	SwZRIbz1sKlMm2BvtV9aFH/o+V/zUV8=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-235-uLSZaohpNUajxGBGqCPGHA-1; Sun, 03 May 2026 17:28:18 -0400
-X-MC-Unique: uLSZaohpNUajxGBGqCPGHA-1
-X-Mimecast-MFC-AGG-ID: uLSZaohpNUajxGBGqCPGHA_1777843698
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-43d7d0947aeso1452141f8f.3
-        for <kvm@vger.kernel.org>; Sun, 03 May 2026 14:28:18 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="FbTeOmUo"
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-678e678970fso4806382a12.2
+        for <kvm@vger.kernel.org>; Sun, 03 May 2026 14:47:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1777843697; x=1778448497; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=g/jy3K0DTnk1EpdHbq98KlNCKdivc2YZwBxANLQFwTQ=;
-        b=pijTBlbN/fvjqWkAsqxLI8If6uOOQm6w2HlXQ0kjL35BzHwl1KvOcGtH5e39WGfqOo
-         ghg1m5qfdCnP4VzTv+t5G+pAgoNKzL7GuRidNHk6ZO9aBmzW0jy2KERDtMPGcGEMZnqv
-         x7URJSf+BhDmmo/JgrVIOEf1OjcCvxlFrmkRIcGi2DRJjYv2pmKfSd61v3lZcewOhB0s
-         +47WC0BFS0k1D/SfH707idiz4pVw2waK3UVPxqc6kdOZcujv1QsN7X25srnJMFrrh8Mk
-         f8tBGFE/tDr/k3ASrXYAZUW6qhlzVR+JvkgYE36MAe99K5cVenh/7hewdRtzmQ3J/l5i
-         YklQ==
+        d=linux-foundation.org; s=google; t=1777844852; x=1778449652; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=coO2RqxQevJoZjvcL2S5BNWRNyr/bQDBKmzTs5CHpyM=;
+        b=FbTeOmUo0vz7fLKn9EsLgHuUSLi+J4T/K8BiUTaYKAZ5DcCLSJABLUyJy7A8k66hTZ
+         5iYZOIsVUPHjxAfoIB/0N1xxpvpO0fYVeOr49peTmNBOSDM3evYAnNyCrZW/BpObAQoy
+         ceOHBKeO3vQhEo5t85z5fTgTKJRFPjBH78VUU=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777843697; x=1778448497;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1777844852; x=1778449652;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=g/jy3K0DTnk1EpdHbq98KlNCKdivc2YZwBxANLQFwTQ=;
-        b=V0cA4a0EIGsis2ZBil4mBMzcBjNtniSS7HyHm9KNNEdqyOiWvCuuKgAGn6B+wjKXOP
-         n40Ey5+dSb10F/hei3EUxJDraIbGofrYqWz6O6L9yDDVxPLk/IaMT5lxLQbkDBduT+Xd
-         Pnvy33lPM8lPA+2bULtfTsKII/dAs3AIKYolGooCVIAbkYXnAHkz35INxok/Bwh+ZkPd
-         JC5IFlqqTn+HgNe+rr9zarFXTtOyY7DNnUoqIsBbxSFwEMSNGi4luImapNGPT17K/WjR
-         v/15rWbExbH0RpLLYb4EPNZtSw2OvitjbXL/QBtwctZ5Z/Z744mvH+hRsJDgqte+3aH+
-         gc6Q==
-X-Forwarded-Encrypted: i=1; AFNElJ9dSvBvm3JYvaNmCUnG3InrVh2TMAYZGfRrpUmKTjTe3sfURAa4XHIKban1AFTNboiCFDg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxR6Fof06rVcFVvbORk7MHXArOQozYtafezf0N8E2arPUrn7Z/w
-	tyN+5l5Lv3jBD1oCh+l972hrDrYRfVIYd4RHxj+CK9omNmaPhcUUmNuFKVhLA0b8gkgkWCkpyqu
-	+HnYAwtdvowWOMfoak7aw3x60YQhTiRXjxfIqtQs9O/C1oaPS5Fnfdg==
-X-Gm-Gg: AeBDieuIZRUt+rQBFggwXijiX8Zds2saZjxe8G6quJ53ZL+DJUNKRRUKZAHgQdS3Sa4
-	vM1VgKHSO2Hn7/piwARmbYOxQ3XO4tGmQ6aJMI6sRS4lOlqe6vsfGFlTQEJdAg0eyDgbw+Cut0H
-	QATlDPMVviRJt8N4FIwKcsFWLX+3edjoekQROMK9i1HRSxprO5NqqsWvlbWKA52omjt3Z0Sg/45
-	vMvqSRwBZ0hBqcoCDuckTfZ+aM5FJIuz/4vNinEMvGP1LDFJA9VibraOHII6C3yQ22bUqTTpUWk
-	NnwaQ3WqwtRWmTR/QBgSji+tZbhoifcD/ACO8y0/wSPOeFWEWENcH05JP9xWwUnpgHNHZHgLDK0
-	lWpkEjuiBPpvv7gTaZa1lu9DmGVM4z300+/WPfQITHBWf/2Lfgdhlkn/KqgnCEFaytpY9EC8a25
-	zs0foZKoOzUNMPkyXMc9J9EFAhtNNTN9jnQgk=
-X-Received: by 2002:a05:600c:444c:b0:488:a824:fe04 with SMTP id 5b1f17b1804b1-48a98671f6fmr123145925e9.26.1777843697594;
-        Sun, 03 May 2026 14:28:17 -0700 (PDT)
-X-Received: by 2002:a05:600c:444c:b0:488:a824:fe04 with SMTP id 5b1f17b1804b1-48a98671f6fmr123145725e9.26.1777843697275;
-        Sun, 03 May 2026 14:28:17 -0700 (PDT)
-Received: from [192.168.10.48] ([151.49.85.67])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48a820c865esm265825705e9.5.2026.05.03.14.28.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 May 2026 14:28:16 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: torvalds@linux-foundation.org
-Cc: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	seanjc@google.com
-Subject: [GIT PULL] Last minute KVM x86 fixes for Linux 7.1-rc2
-Date: Sun,  3 May 2026 23:28:15 +0200
-Message-ID: <20260503212815.127436-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.54.0
+        bh=coO2RqxQevJoZjvcL2S5BNWRNyr/bQDBKmzTs5CHpyM=;
+        b=UVh+Ni9k2ENvMkOP5Z+08c01QN651alFdt0jjOv0YOzjbeWb/cJpMImGOQzk8VRCNL
+         4Hn2wY99vXFt0bf8Sfnj47OIVz11H9YHcC5nmoDBUONK/6bkrLZrg8Sd3aVngz6h0qa/
+         BRogqo+Td/CsiJ01okEwREkeck0J5WHDLk4lSyw6VW5WZ0L4o7FGvFjdFZ9eKZNbMhdN
+         ctoG0vtcjJyC9+Oj3oI9oWBoEztLDCjjY0J3TSmcT+8gt8peRncDO1xfEjtOH67xCOlj
+         t9u3ccvtPlZ+r5RC+f7F1QGu5+uS45UI5Y8dvuwEROp8KN0abQyXlNzKjbGQ9TkL6gTi
+         E8Ew==
+X-Forwarded-Encrypted: i=1; AFNElJ+TNmzCzoth6UXZgTV+iKcy/+S/MqdwHytdBDYlwSej+3J6VotqAnEJ7V7ayBhIFaarct0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxb0fMUtMkOtiPrcuOu3X7HVbKyNt9TUf+AIGqcHWt9QUTKxQbP
+	s330RtsDjJh/Von3Y4AOxbQsRcIPEO2ZLvA6eTTfu2X4DQsyZn1hDIhZM3K6uKihBBL+RH+lE7j
+	3tqmm/W/Pb8rmfY/ZIA/TsQ1mHMpFD/Zmg6o8uHdG9zjQ4L3RI6Ts7EIhh3nYrHg=
+X-Gm-Gg: AeBDietJEckKG94NkY4C37AJsxO24ebBLSZdWcTb7rvTOIh3al3LEDBbiG/iyz13T/Z
+	mO++1VGatAjsezzrNEUM5LZ3bI+zQFXXIO1PD75GA+2ztX1Bni9jdJuUovKwpF3YOoTY8BgXjqu
+	pLqQmMMKHhPhdE0PM8AJM70MEYKeHax3D9KG+CNWO2DqoAPJhK0RcatNxlCp4mP0X1ZRgPY8RAi
+	XtOiQ3G3tTW67qwOhmpWus+LHl56byu8R/PEbSIPxIJjGC+AhF2ZLMZ2rIFxNZYTng/Lr5vIjq5
+	lWUoARcPBsR88D0Y/nmqakgOuyCIJObC5QUj8hABeBIToSURw1xgXk0GFilf4AiNrcK8ve5Mv0Q
+	923hCNfnoiN5HfYhnoxPJ70wdjVJ41NWVz5xXMKrbmVQBkTAub3tChINCpLf697XrU2XAL+zhYX
+	sc2gsP/v2uZ7PDPVaVQZ4uOcOVfDIA749jsMimOXZAVEtNPzuS0Po9+pxAySaoi/O4b9NgxVhvJ
+	YKicd5A12M=
+X-Received: by 2002:a17:906:f595:b0:b9c:4fa:9141 with SMTP id a640c23a62f3a-bbff8dc777amr379574066b.9.1777844852214;
+        Sun, 03 May 2026 14:47:32 -0700 (PDT)
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com. [209.85.208.44])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bbe6a64c66csm337720666b.21.2026.05.03.14.47.31
+        for <kvm@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 03 May 2026 14:47:32 -0700 (PDT)
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-6634bb959a2so4407933a12.1
+        for <kvm@vger.kernel.org>; Sun, 03 May 2026 14:47:31 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+GDOkK2wRBROi0RwYXkjGKgNbU1pMZzzERMWxVttRChP2UR+3blHt5bA2oobXhpnbtX4Y=@vger.kernel.org
+X-Received: by 2002:aa7:c707:0:b0:66c:17d5:c18f with SMTP id
+ 4fb4d7f45d1cf-67c1aab2f5fmr2292390a12.21.1777844851428; Sun, 03 May 2026
+ 14:47:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260503212815.127436-1-pbonzini@redhat.com>
+In-Reply-To: <20260503212815.127436-1-pbonzini@redhat.com>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Sun, 3 May 2026 14:47:14 -0700
+X-Gmail-Original-Message-ID: <CAHk-=whYdZRrGas5CRytYGK1JBe-MXA9gJx5sQ2EJAHGopOYDA@mail.gmail.com>
+X-Gm-Features: AVHnY4JJhSsTKNUUAwiq198h5xV0KOicxk8okl2-COYfHf2M5940L6WtXaM7NOs
+Message-ID: <CAHk-=whYdZRrGas5CRytYGK1JBe-MXA9gJx5sQ2EJAHGopOYDA@mail.gmail.com>
+Subject: Re: [GIT PULL] Last minute KVM x86 fixes for Linux 7.1-rc2
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, seanjc@google.com
+Content-Type: text/plain; charset="UTF-8"
+X-Gm-Spam: 0
+X-Gm-Phishy: 0
 
-Linus,
+On Sun, 3 May 2026 at 14:28, Paolo Bonzini <pbonzini@redhat.com> wrote:
+>
+> If it's too late, then it'll be for -rc3.
 
-The following changes since commit 39f1c201b93f4ff71631bac72cff6eb155f976a4:
+Well, it came in 7 minutes after I had locally tagged -rc2 and was in
+the middle of writing the announcement email, so it *just* missed the
+cut-off.
 
-  Merge tag 'kvm-x86-selftests_kernel_types-7.1' of https://github.com/kvm-x86/linux into HEAD (2026-04-27 04:24:41 -0400)
-
-are available in the Git repository at:
-
-  https://git.kernel.org/pub/scm/virt/kvm/kvm.git tags/for-linus
-
-for you to fetch changes up to 0cb2af2ea66ad8ff195c156ea690f11216285bdf:
-
-  KVM: x86: Fix shadow paging use-after-free due to unexpected GFN (2026-05-03 22:32:53 +0200)
-
-For once, these were all found by humans.  Two of the patches were
-developed and tested offlist, but I have now posted them on LKML and
-the KVM list.  So here they are for inclusion in the release candidates.
-
-I was hoping to send them earlier today, but a birthday present from
-one son to the other got in the way. :)  If it's too late, then it'll
-be for -rc3.
-
-Please pull,
-
-Paolo
-
-----------------------------------------------------------------
-Three bug fixes for x86:
-
-* Check that nEPT/nNPT is enabled in slow flush hypercalls.  If it is
-  not, the hypercalls can be processed as usual even while running a
-  nested guest.
-
-* Fix shadow paging use-after-free due to page tables changing outside
-  execution of the guest.  A bug that is 16 years old and stems from an
-  imprecision in the very first KVM series.
-
-* Scan IRR whenever PID.ON is true, even if PIR is empty, which avoids
-  a somewhat rare WARN.
-
-----------------------------------------------------------------
-Paolo Bonzini (2):
-      KVM: x86: check for nEPT/nNPT in slow flush hypercalls
-      KVM: x86: Do IRR scan in __kvm_apic_update_irr even if PIR is empty
-
-Sean Christopherson (2):
-      KVM: x86: Fix misleading variable names and add more comments for PIR=>IRR flow
-      KVM: x86: Fix shadow paging use-after-free due to unexpected GFN
-
- arch/x86/kvm/hyperv.c  |  2 +-
- arch/x86/kvm/lapic.c   | 24 +++++++++++++-----------
- arch/x86/kvm/mmu/mmu.c | 35 ++++++++++++++---------------------
- arch/x86/kvm/vmx/vmx.c | 40 ++++++++++++++++++++++++++++++++--------
- 4 files changed, 60 insertions(+), 41 deletions(-)
-
+            Linus
