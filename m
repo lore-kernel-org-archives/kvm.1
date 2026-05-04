@@ -1,111 +1,124 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BA723DCDB6
-	for <kvm@vger.kernel.org>; Mon,  4 May 2026 17:59:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC13E3E5ED0
+	for <kvm@vger.kernel.org>; Mon,  4 May 2026 18:33:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777917550; cv=none; b=m30J0UF71Jg2WsFjSg+A2ufmP5SDu9FAFllXOOBp9kMc1CaQyUp4wj8mXoggrg4oO3NV5wWknT6IR9UNoWkBS+stkUAyOw3lvbDuSh/fBPJrDpMu2nRB9rlotPiTN8s/CctbxVaL6k4NsuYpIOf51WdvirbvG7q4WJLuEsJzJ5I=
+	t=1777919594; cv=none; b=RP0gyZ3toR74fOMPBAC6NrU0H/LFSrrNUsfSIkJLEV1FRIO2pXR8e4zdkvje0cc6kFLeRp4aaXahP1xah41pfxayUDfKX47inON1qJM6n3A4FdxNVEw76d1uStdVBnzU9r/kz3PCL2aATR5wCDJehPKEDduulVL6D8Eb1rxyZXY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777917550; c=relaxed/simple;
-	bh=1IqJvmzII7/T39MzvKNBERzTIiEA/ExVEQqrmFi4W5I=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=e0ZSPWPipX4lbpr/WjOIBLSjCs7QOVAYq8BfclTt/AJu32Ljio3a7yIIcK21Cx7Qixdofkt9PCN8yb0Evdt1TPzPIGIceQ94RXo7I9UKsgFV0qRiXJlsWdgxRQ65wuBCd6kwiYk65Hy4WIF7d2R8iSlklDOIH7L6fmPxh3QRiM0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=N+eFMwoX; arc=none smtp.client-ip=209.85.210.201
+	s=arc-20240116; t=1777919594; c=relaxed/simple;
+	bh=9S6I1BVV9U+hakYrzMNgB+o+EjrvcNV62AWmq1dpHmE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nFsyOG99B+eNv9978NYQ1KowI7xhBg9+aVJiaGSYNA2rfYe7Geu0dtY7VOThsB+BFTPlNzi+WRRPOn7EdnbflsHgjsgk9rCgagmdkwPsRMkg6f+latIoD3n5/ILuzjqSVTZnSFXmUBmCAKHTIElsaQPrBiYdAhkXxf9PPxmPWQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rZXqMoxK; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="N+eFMwoX"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82fa2165c3eso3055233b3a.0
-        for <kvm@vger.kernel.org>; Mon, 04 May 2026 10:59:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rZXqMoxK"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ba180a022dso20215ad.1
+        for <kvm@vger.kernel.org>; Mon, 04 May 2026 11:33:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777917549; x=1778522349; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zkucIX59KTNPBaVai4FthTKe5zTpFdhn5FHJDfPK5ao=;
-        b=N+eFMwoXxgt8jiu1JI0ibHDGvQMB30SwtW54St1UX5hkRMSv6uUayt6tBdpfC2n2P2
-         BAI9tAC5OI4lrrTxpo+eg4w5K4ECulrhM3mek/9jucUrK+t79W9hfQky8FdpqXjpKJOQ
-         TYsaLK73UX9MTGE2ZEnY/1n5havNOpKocRjOdph+y4AttcR5lON0QrQhLPdg4RILvnTu
-         Wg6d5tdvUzR3SqlhBHRDPHrszOXFpQNQPd0sMzANzGuX3LUSIFsJgR2z+0WygP50jJOT
-         dCcn+EEaA8BtCCaVdkaq/J7mjBXTmrEyYLP2qdClsCrSaQj2OcT1gAxAhSL3+xw0q0Kc
-         +EBg==
+        d=google.com; s=20251104; t=1777919592; x=1778524392; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=sJD8nC3hNpz1bkOtzLotRv5riDST1DKSmHvRTvkrIKA=;
+        b=rZXqMoxKb+hLCsxkgguFkmHYKHaJb50nh6aodXGN7ABV8ppP5AhCgxOekajKTeTqhb
+         kIqrXcddxsnrRSBnitsLIVvh+bjXs6zRYKULF8q39HTtS3UJQglH8Q0Agxpza9hwlcsS
+         mF5sxOJ6nDRs0bxsGBCd/jdyW3OaDLsXYuUHuHZmkblBkXbMvb/vTRu1ANc2KmCMH5Z1
+         3m3hVBoC5SMegTtrbUUwg7gD5Ja4+YP2CGnKcGfHJQ2b2CHE+ujWuv41y8RCHkKDDxoh
+         thxL7fhJCw3vwgndFcXwxYVmpAxzWlIbdTi3YwLukWGYPwO+520BHg/4TJq9IZNgzbLG
+         vyJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777917549; x=1778522349;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=zkucIX59KTNPBaVai4FthTKe5zTpFdhn5FHJDfPK5ao=;
-        b=F8JRDYq/7LLHV2B+gR7wrvoL7SBxcY4LGfC9q+CvbWY1jMcbe+PrWVuLxxCIOxaDf+
-         6v3OkB5nQSLoMxBTbSU02ni2c3uyYAjKGxDOz/+Xa3irMhVPRfNHKupylphBuXUssayV
-         k4wQ8SNogXpbkSuVPRnVMRMy1994Z/ujkKNK7YZ2M1nu6nLEukreZ23y6wjdspy1NhPH
-         a4k9w8DD4Wevot6CRw8fJxx6QJgrPjRNzhhhD1XLBgq2tcXiPItXYPULrs0yNDCSuYDQ
-         M/490wshpNxuhkQ2djKWKJUqIBIaVre0MN5N54oVla5q31VZbXrM1nhvbVKbD4hSAc3j
-         DXYA==
-X-Forwarded-Encrypted: i=1; AFNElJ9teqlvoYZldlUy4Ny6DEswI35lDJTRMiV8/crviMhwr8IfD5MWQJXWdi6V0KmJ7+uRk+g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZRTg6Yi53E+w8QZcMcp3v9f8J3Zep4wnqti5vCU0EXhF508uZ
-	qvVQWawVacegMN2zdYZwIREWwkKhfWmptp5PuS0ypMu4bzR0sCae5SCwmxqTSebbWy+OHp2gSQr
-	MY4c6fQ==
-X-Received: from pfoo26.prod.google.com ([2002:a05:6a00:1a1a:b0:82f:b388:7a9e])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a489:b0:835:685b:8e31
- with SMTP id d2e1a72fcca58-835685b9161mr6298997b3a.25.1777917548420; Mon, 04
- May 2026 10:59:08 -0700 (PDT)
-Date: Mon, 4 May 2026 10:59:06 -0700
-In-Reply-To: <20260427080554.GD1733452@pedri>
+        d=1e100.net; s=20251104; t=1777919592; x=1778524392;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sJD8nC3hNpz1bkOtzLotRv5riDST1DKSmHvRTvkrIKA=;
+        b=DLv6gVWxDG00WpkkPrQLpkWOYKZ/fb/WIbFCpR5reY3Z0G730HG/jrEbhomJ/8SClu
+         KGtwBTp2skhQgKJEht7aSz9QQYX+uJLQ6dBKciaAGGQcLq+5pKAWhCCLFLY5lqy5PLkG
+         H+ObQul5GkVKX5fjsEaz9pwixas8O30vToTivmMu32GgEShu0W/uiS3SRRjXfs1gIQUP
+         0otYdnbtsiEobvHTweXm85tur5O+VdDzZuz0XBAlP2iOfPXOm4HbAJBfXBEXfZbfaiMa
+         ghdQo3z3lD8YtaBFUeMh99Qgbu6QQBQs9O+Q2CG1khQhbG0ywGXNhngpQv/pVAq8PNji
+         tLrg==
+X-Forwarded-Encrypted: i=1; AFNElJ93TWyeWA89T/TKJPvoC5PzlufrtirTnuf9qhYo5fU67lgTXLwXepEzrvVnxuCyt7h8h3M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZ8xX/9zlWvPjjhilWqRoo/N1UWx8auwWwS38fKwmz3sl9pS4v
+	sNEKzGgoJSaQVBeFpwlGD5ubM0QXpWl4g3yql+gteUyC7UwxAO+aFspIMMyLq/82vQ==
+X-Gm-Gg: AeBDiesnzMa5rEkzGCzRSFpzmJRTtfU7oFlXzLMYc/2E8RYFmCMb3C6MdxKNdpi0CFi
+	Wym2CinVNk5XPMMwwacl1cr//Dqa6JNWgr91ZawL7fpren1ARQXiXOvC2p8HwzPvgtwH+qhIe0q
+	cWXM6+USXVBXwZ/WDIUfuxA0gYBr8monIm1pRTYXIZvLMWaZ3uNPVYg3Am+G9g0l0M8hzWngW9R
+	6nbg3YabuZMdQfgDCi0NAcGMSerjFTWBlHou+nugoqTjrS7Coh4RfTHnFxGhoSqBDFLVxxqfDrp
+	zfpcp0lwEayPHOw7++DG5Tj+XgPuFMB1gEKeYykjojM+qBjEix4/1klhRB/jp9fQ6TK04u/Op5R
+	+RVrZl2U0wmoPlexpPRHYxJOQDAOVr9C/9NX+u1Z3BfbCLzFd2pNLMQkAV07mIcy2ubLjn8Rc/j
+	xeO8YDDdunE/yacFAyYRKtF5mkLa3QCmOLGjMbrQyf5k6sA1AjNUWwTiLF5FRFaH5NXUslM8tw7
+	MBwxVKezm0=
+X-Received: by 2002:a17:903:1c7:b0:2ba:f71:57a8 with SMTP id d9443c01a7336-2ba4f7af343mr587695ad.10.1777919591414;
+        Mon, 04 May 2026 11:33:11 -0700 (PDT)
+Received: from google.com (195.236.83.34.bc.googleusercontent.com. [34.83.236.195])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b9cae3b169sm113335475ad.63.2026.05.04.11.33.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 May 2026 11:33:10 -0700 (PDT)
+Date: Mon, 4 May 2026 18:33:06 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
+	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>, 
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH v2 03/16] iommu: Implement IOMMU domain preservation
+Message-ID: <afjlRNfYA37ePRm0@google.com>
+References: <20260427175633.1978233-1-skhawaja@google.com>
+ <20260427175633.1978233-4-skhawaja@google.com>
+ <afUkbz0IQh98siYn@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260408001137.3290444-1-peter.fang@intel.com>
- <c2fad21764d2561469151f5dd5d35833ae8f76e6.camel@infradead.org> <20260427080554.GD1733452@pedri>
-Message-ID: <afjeahNaSG0zsMgx@google.com>
-Subject: Re: [PATCH v2 0/3] KVM: Fix and clean up kvm_vcpu_map[_readonly]() usages
-From: Sean Christopherson <seanjc@google.com>
-To: Peter Fang <peter.fang@intel.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Fred Griffoul <fgriffo@amazon.com>, Yosry Ahmed <yosry@kernel.org>, 
-	Ritesh Harjani <ritesh.list@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <afUkbz0IQh98siYn@google.com>
 
-On Mon, Apr 27, 2026, Peter Fang wrote:
-> On Fri, Apr 24, 2026 at 11:27:03AM +0100, David Woodhouse wrote:
-> >=20
-> > Fred is already removing all the usage of kvm_vcpu_map() in nested VMX=
-=C2=B9
-> > and nested SVM probably wants the same treatment. And the PowerPC one
-> > looks like it could just as easily operate on the userspace address?=20
-> >=20
-> > Could we just kill kvm_vcpu_map() completely?
+On Fri, May 01, 2026 at 10:08:47PM +0000, David Matlack wrote:
+>On 2026-04-27 05:56 PM, Samiullah Khawaja wrote:
+>> Add IOMMU domain ops that can be implemented by the IOMMU drivers if
+>> they support IOMMU domain preservation across liveupdate. The new IOMMU
+>> domain preserve, unpreserve and restore APIs call these ops to perform
+>> respective live update operations.
+>>
+>> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>
+>> +static int alloc_object_ser(struct iommu_array_hdr_ser **curr_array_ptr, u64 max_objs)
+>> +{
+>> +	struct iommu_array_hdr_ser *curr_array = *curr_array_ptr;
+>> +	struct iommu_array_hdr_ser *next_array;
+>> +
+>
+>There's a trade-off being made in this function to leak deleted array
+>elements instead of trying to reuse them that warrants a comment.
 
-Yeah, that's probably for the best in the long run.
-
-> Thanks David!
->=20
-> I think I'd need at least input from the maintainers on this but just by
-> code inspection, the kvm_vcpu_map() usage in sev.c seems a bit tricky.
-> Unmapping doesn't happen until right before switching to the guest, so
-> this might fall into the "keep the mapping around for a longer time"
-> category [1].
-
-It definitely falls into that category.  But that code is also rather gross=
-, i.e.
-could use some cleanup no matter what, so I don't think it's a good argumen=
-t for
-keeping kvm_vcpu_map() around.
-
-To avoid a bunch of pointless work and churn, let's hold off on hardening a=
-nd/or
-renaming kvm_vcpu_map() for now.  I'll take this v2 as-is; even though taki=
-ng a
-gpa instead of a gfn will conflict with the nVMX series, it's dead simple a=
-nd a
-worthwhile cleanup even if some of the conversions get discarded shortly af=
-ter.
+Are you referring to the "deleted" flag in the HDR of each object? Yes
+we don't look for deleted objects in linked-list of arrays and reuse
+them for simplicity. I will add a comment that says this.
+>
+>> +	if (curr_array->nr_objects >= max_objs) {
+>> +		next_array = kho_alloc_preserve(PAGE_SIZE);
+>> +		if (IS_ERR(next_array))
+>> +			return PTR_ERR(next_array);
+>> +
+>> +		curr_array->next_array_phys = virt_to_phys(next_array);
+>> +		*curr_array_ptr = next_array;
+>> +		curr_array = next_array;
+>> +	}
+>> +
+>> +	return curr_array->nr_objects++;
+>> +}
