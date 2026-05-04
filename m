@@ -1,296 +1,180 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011066.outbound.protection.outlook.com [40.93.194.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CFC4388E64
-	for <kvm@vger.kernel.org>; Mon,  4 May 2026 23:10:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777936251; cv=none; b=gIaLoUNK02Ju4mYtddFNbeZZ8pjwsSy32+qBxkPAvq1J4terft94N5aLtlVgyQrdUAewRhTb8sADxfoCvmJRKopw2nR664ucXsJgKc1IZ7C0mM4lwkQaB5s7DxQEyXpcRI5cpbBw/f4LULJdNzQTCDrDzN9r8w+KZXMSlCzKCDM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777936251; c=relaxed/simple;
-	bh=e1v+wg5Mt+4G2ehJr+dbUseIs8rNc8zIUsahECLU2nU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=TXXjmKR2l69opdHzQClu263KUrpDzCUBU3jBjaf5Sh5QX24j4ViGa8upvoth6OGjYUg2EHlejwj3vUyeN48IR+dweko2ATwo7eUSsMUCpDQyIaOCnZbFvl2nyZPLQ8N0vp8ek+r2M59ZNkGykuI7yN4PcfckELE5viHklmrGCJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RzmO6ZuJ; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jthoughton.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BAFD38A71B;
+	Mon,  4 May 2026 23:14:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.66
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777936477; cv=fail; b=ppPTUJJhRl9Tap1+iW4I/NF6s9Dmm0CUToasU0dzNyAM9AE/PbXCxysQnrzdC/PUuB/uDDxfYpIziN1e8INXxfmcNywsn6m03kC8IBx+tqrYJKIYfIyUMrTb3j4M5OMCQWGyS9fg138Qk4Ry8XPnf+COuxt9hoKbOECzy31Cj6U=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777936477; c=relaxed/simple;
+	bh=NVI5BZ4JN5t8rG+kUTdGBBy1SbHe/u9HcRjKxfJxlTk=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QdRZoPWDIeMUI/OFMcP9nUL8I8tUJdOhU2Xa1wLfAadUAfCM9jbLEs32t+hN6z9TwAt5T11huByX76nuKap1Dn0AnfHyDTFlds6WONHFh81gi09RiKxORiX1JcuFWq4CvJtH5IG4YpFfEW0FU8GSHqd02LNrEl3NHj3q7/WO6Vk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=jRRfDlT4; arc=fail smtp.client-ip=40.93.194.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RzmO6ZuJ"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36512f223d8so4713465a91.3
-        for <kvm@vger.kernel.org>; Mon, 04 May 2026 16:10:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777936250; x=1778541050; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=cAttJD+RV5lk5kNpW7EPj87JP+4oaqPyp5frl0M0LOQ=;
-        b=RzmO6ZuJiopjK38sYolMzLnHfoNKdZUPClmlYeciE2hDCq/GK68Af+Aq4ilU/LBOyu
-         HJgBS3Rjnc7jW3gfRj9bBOY7lYfn8muJKT+JUFj9JRmWwhHAL5TCRNNYb2Fz0eG6Au2O
-         lATPW9Wnlpi43hQ5ZZNncwTF+LkssYpWjZKAGzDtodO9AWVFumfKNdH5kOCopS00GhJi
-         W7EtlDbcGr/xMPMltlyKoeKW5SZvrTbxNmdDqyjcYcfJ/XASjAdYvasigg1MnxkeeCCU
-         EKsOWAY8ND2hZDD1rGaRpaRxKED4xNaaKQJkAcfTu2GsDkLoZuoKtAgSycAa59PCwreb
-         meCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777936250; x=1778541050;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=cAttJD+RV5lk5kNpW7EPj87JP+4oaqPyp5frl0M0LOQ=;
-        b=SlHkaBW2J28KIfqpxSb9NnqCxB+GA3ZnS911hBXpshhDCuzqZxA0DmK4Lvw54xozHX
-         byiVyhT/3k1+YXmvDS1+X2oqnEDa5tar50/Vr0dnFifkgKhXoKNfofaT2XhSD1Q1xsrT
-         vruOaqKUhu4Hsi2ee3yc2GzHhA/5YpfLJ4CPOwG9QxRt2aXz5GRP9WjWe8mMPIPjg1g7
-         kc29FGg/3IgDwRyl4OBrWdq8zrvSRZkbD0AMj2uZQgVkC4i6r4fiDIeyMJ1ctV12b8la
-         BqDiTdgy2MSPBofD5Zq3MHWZ1SV6C3avCJR8+xjIcUOe/l/ML45/tdfvQ+WOdYEU7IKB
-         xxBg==
-X-Forwarded-Encrypted: i=1; AFNElJ/q8RBgTca549dpsE9+2MnvXzPqGjjFKEYtybvbFV6ANJn0qWlNYsT3Mb/bAnsCbVjycfI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzcpMeSj6bFtHs+ceiAXQ/PCHHnzoaa+UKuPP8k09YHFAH6cxDX
-	Fmd2eVWQPa9DazEDHakmNqg+UztvMNniJwgncz/DKsSyWp0SxL5tvEclfJHzWhWZdl1FAaO1esf
-	KLnSoZkItjQolchhIOJ8/iA==
-X-Received: from pgbcs4.prod.google.com ([2002:a05:6a02:4184:b0:c79:8b14:e151])
- (user=jthoughton job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:90b:580f:b0:35f:bae8:3531 with SMTP id 98e67ed59e1d1-3657761ae72mr698785a91.25.1777936249486;
- Mon, 04 May 2026 16:10:49 -0700 (PDT)
-Date: Mon,  4 May 2026 23:10:47 +0000
-In-Reply-To: <20260504224213.1049426-2-jthoughton@google.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="jRRfDlT4"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=mPgNM2uljrtgZq3LjwBcgjE1i+RCwbLYFg96y+MNcWb4eUkhXPkXRhtdrEi6aIL/OmKEB4quryMkxx8u+AIMq+ddzYWcQ6HaQZD8E+IzUhnolku4xsqeTawwgrpUTtH3gcERcgRYfjEDlTJqmSnQOTXgrYOs6d0N85aCSOzShDwLgEsKVTX4l8jSHKmVz4Ogz/cloWQpAjkCXZ5oRgkmZtnMnWminqRR24eZ8MLvOB6I5AOSK7BOG9H9JjNv7L4iJ3uA0stC28Ao3KrKeh2KC8Mi2TDkwZGZ/Ov/Lzv518OBz30ImwUhmIeql1OTPhOi7WvbiooSTCKGxijOqgz5zA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Dp9+WptzmKO+k1EbeWJuLgtWwXlB1Hl2WtVtk9fIIjU=;
+ b=KPCcWN5ECS38wHrLfw7yew8m6K/qhR1jCrpu5HzDcULgWSyNfQ6dbXjfdtk6MseSo6CLif96nJQV7YGCCAHsBEzJ6JNCIxpYw6OBudNCdj9BAzX/B29ulsAd7cuQuMakB7dxCBALnQEESxCx2tdrMVj9xL6lzqkxqBpn6iVU6t3+V7+I6cQEcpfnIzSleAmSwMl+54RHwvyJ83jy1nMBX4s9fr3P1AWgE7slSC25vOj12ot/J5p92n+RK3ONrGIqVKBeZoppxxVdqEYyvgAFslLTAV5CzFLsx9uPy0yr3ksraVHWz8jveje07axI2sqOmIO7BA8SZ0iNLL58v3vzpA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.161) smtp.rcpttodomain=huawei.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Dp9+WptzmKO+k1EbeWJuLgtWwXlB1Hl2WtVtk9fIIjU=;
+ b=jRRfDlT4606zIgKLfWkNUejqojN1baUdmkUl+FtwqeplRiOngUiefQza4ObqXLpUg8N5b/KobBBtaCHogHJW7NRRyWZKHKwJ/CA+v1IW01szoQhGLJM7qtewrYNBRrd14frX8/Hgn4bi5yqjDVW8TYTI7g28dBX+tA6oamsp5O9kz1UC0adCskJ8+TVHkGcYpaCuLDFj768nxAkHiyot06RQ2+XRK0e5pUTOWjP6fD7t9xFORF3OneTi3TCNM9Lu/vNE/mbJLGB7RYcdn2elnIHGGpcVaiYS7jZhBmb39PiTxTvoEov6/c/ptTwgK3TCm6lk30nNXqzTB63kcOZo2Q==
+Received: from SJ0PR03CA0103.namprd03.prod.outlook.com (2603:10b6:a03:333::18)
+ by DS0PR12MB6439.namprd12.prod.outlook.com (2603:10b6:8:c9::7) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9870.25; Mon, 4 May 2026 23:14:29 +0000
+Received: from SJ1PEPF000023D0.namprd02.prod.outlook.com
+ (2603:10b6:a03:333:cafe::f3) by SJ0PR03CA0103.outlook.office365.com
+ (2603:10b6:a03:333::18) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9870.25 via Frontend Transport; Mon,
+ 4 May 2026 23:14:29 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.161)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.161 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.161; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.161) by
+ SJ1PEPF000023D0.mail.protection.outlook.com (10.167.244.4) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9891.9 via Frontend Transport; Mon, 4 May 2026 23:14:28 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.67) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 4 May
+ 2026 16:14:11 -0700
+Received: from nvidia.com (10.126.230.37) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Mon, 4 May
+ 2026 16:14:10 -0700
+Date: Mon, 4 May 2026 17:11:07 -0600
+From: Alex Williamson <alex.williamson@nvidia.com>
+To: Chengwen Feng <fengchengwen@huawei.com>
+CC: <jgg@ziepe.ca>, <wathsala.vithanage@arm.com>, <helgaas@kernel.org>,
+	<wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
+	<liuyonglong@huawei.com>, <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
+Subject: Re: [PATCH v5 1/6] PCI/TPH: Fix pcie_tph_get_st_table_loc() field
+ extraction
+Message-ID: <20260504171107.040d1190@nvidia.com>
+In-Reply-To: <20260427085843.42460-2-fengchengwen@huawei.com>
+References: <20260427085843.42460-1-fengchengwen@huawei.com>
+	<20260427085843.42460-2-fengchengwen@huawei.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260504224213.1049426-2-jthoughton@google.com>
-X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260504231048.1184273-1-jthoughton@google.com>
-Subject: Re: [PATCH 1/5] KVM: arm64: Grab KVM MMU write lock in kvm_arch_flush_shadow_all()
-From: James Houghton <jthoughton@google.com>
-To: jthoughton@google.com
-Cc: chenhuacai@kernel.org, gshan@redhat.com, jhogan@kernel.org, 
-	joey.gouly@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	linux-mips@vger.kernel.org, loongarch@lists.linux.dev, maobibo@loongson.cn, 
-	maz@kernel.org, oupton@kernel.org, pbonzini@redhat.com, ricarkol@google.com, 
-	seanjc@google.com, shahuang@redhat.com, stable@vger.kernel.org, 
-	suzuki.poulose@arm.com, yuzenghui@huawei.com, zhaotianrui@loongson.cn
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: rnnvmail203.nvidia.com (10.129.68.9) To
+ rnnvmail201.nvidia.com (10.129.68.8)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ1PEPF000023D0:EE_|DS0PR12MB6439:EE_
+X-MS-Office365-Filtering-Correlation-Id: 96c4ddad-44b3-4c90-90d4-08deaa32e420
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700016|376014|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	ZDfA+xcA8wiXdn6KmRPYpb3QqGsEdj8gaKA3nuFWoPZub9q4B+VOag7pSVMXfjrhx7BddZmFov4f/j7M5r1sgCh+oFVN78rFt9wzCcBWrXn509XJ6mMoYlGIV0DfUGUhizWzI+bjOoDn0TJk97BV1Bo0LD8SQFvY0PprUdTY4m7MJfN0ZVtvtn89St9GeomXWo7T442b+tuHLrXBYm8UrqkBFfhU2FoA5Rv/klQb5lFCYeCarhogGUKSH8fafop2FV496dGGXn9Z+UVpYLC/iXIz/ou9lnet9cN6p1L1SfQC5pO68OApyPuMQDBMR0GHCy/oZQqHFK3AU5pks6XqJQfLiaHVPEy2Pojozbw4Ib8Uh+vAsEPJO99CWtLJtOyeRVdXbUPCkAP7+WOlhOY0cw7y8RAtpraaBy4TBYaNL+i5APrC8AgVSgkPrOryUWGyxAlBXQ2pncjq96LoTmteeXop7QC4y0X13PKdUiagq6BW0W0CAc1KdGHZsBkhLDoc/PNAK9SqKNYnOBb5mT9PbAimRb+7gTOibTBxF5YpKbw9SCbAFJYiPOO6uz4j4OGXfmszBlBSNUTRlVtwuoOducdIZ/KM+OheeNB1WUCO62Rl8VR/1pIiYShzTCUcaOKIYWZ9eBTy5D0QFtyQ3SHwUupbNGaJ5KV7jTcMySqNOaryU5Ef7kjBRaj/bG0cjwD9xzHi8HiDd3uj4NrF+fzgCL3a0zrnDu/7T4p6FRDdWDU=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.161;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge2.nvidia.com;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700016)(376014)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	AOYSE5tDUiUZGnyRY7iGG/J7atcXyjIbNokc/VrpKPc4X6q1Cn25MDGRpQ+Lz3xrzfgAneQMxDqkwnl4fDwkJeTD4ymSzhxj41Tp649z3tACR3Ej/S2qAtFEKDdQkYrFjSmkv8VUtgqFsBXDnDBXRaD1mAfDSgF2iteSFMdNSaqYjtgAt2qX1io6b998wZsJatWZ2v3hNPHkOTCoYns+aLqcF+5RS93kpIBzD2F68wFGcJ67MZ9UQkIB77m0VFdCWQ53EbQMVt3NYuvotrjepbBCKXghcZ9hFiTjwaifzCjT1AfVUyI3oOQEM7+wQCXtPrh/0C2PBCuXccV18JbBsBWUcsUYsrb2E7LDpfDVHVj7CkEni24SrMDvE5zm0wpCzwru82DzlECNlhE+sdRzlytKw1lahQkooUn48CS7QwwBNNxx/pZLGME15rnWj+Va
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 May 2026 23:14:28.5231
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 96c4ddad-44b3-4c90-90d4-08deaa32e420
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.161];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ1PEPF000023D0.namprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6439
 
-On Mon, May 4, 2026 at 3:42=E2=80=AFPM James Houghton <jthoughton@google.co=
-m> wrote:
->
-> kvm_arch_flush_shadow_all() may sometimes be called on the same `kvm`
-> concurrently in the event that the KVM's `mm` is __mmput() at the
-> same time that last reference to the KVM is being dropped.
->
-> T1              T2
-> KVM_CREATE_VM
->                 Get VM file from T1
-> close VM
-> exit_mm()       close VM
->
-> T1: exit_mm() -> kvm_mmu_notifier_release() -> kvm_flush_shadow_all(),
->     with only the KVM srcu read lock held.
->
-> T2: kvm_vm_release() ---> mmu_notifier_unregister() ->
->     kvm_mmu_notifier_release() -> kvm_flush_shadow_all(),
->     again, with only the KVM srcu read lock held.
->
-> This leads to a potential double-free of
-> kvm->arch.kvm_mmu_free_memory_cache and now with NV
-> kvm->arch.nested_mmus.
->
+On Mon, 27 Apr 2026 16:58:38 +0800
+Chengwen Feng <fengchengwen@huawei.com> wrote:
+
+> pcie_tph_get_st_table_loc() incorrectly uses FIELD_GET(), which shifts the
+> field value to bit 0. But the function is designed to return raw
+> PCI_TPH_LOC_* values as defined in the function comment.
+> 
+> This causes incorrect ST table location detection. Fix it by using bitwise
+> AND with PCI_TPH_CAP_LOC_MASK to return the unshifted field value matching
+> the function specification.
+> 
+> Fixes: d2e8a34876ce ("PCI/TPH: Add Steering Tag support")
 > Cc: stable@vger.kernel.org
-> Fixes: e7bf7a490c68 ("KVM: arm64: Split huge pages when dirty logging is =
-enabled")
-> Signed-off-by: James Houghton <jthoughton@google.com>
+> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
 > ---
->  arch/arm64/include/asm/kvm_mmu.h |  1 +
->  arch/arm64/kvm/mmu.c             | 23 +++++++++++++++++++----
->  arch/arm64/kvm/nested.c          |  4 +++-
->  3 files changed, 23 insertions(+), 5 deletions(-)
->
-> diff --git a/arch/arm64/include/asm/kvm_mmu.h b/arch/arm64/include/asm/kv=
-m_mmu.h
-> index 01e9c72d6aa7..30d5c24fcebb 100644
-> --- a/arch/arm64/include/asm/kvm_mmu.h
-> +++ b/arch/arm64/include/asm/kvm_mmu.h
-> @@ -178,6 +178,7 @@ void stage2_unmap_vm(struct kvm *kvm);
->  int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigne=
-d long type);
->  void kvm_uninit_stage2_mmu(struct kvm *kvm);
->  void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu);
-> +void kvm_free_stage2_pgd_locked(struct kvm_s2_mmu *mmu);
->  int kvm_phys_addr_ioremap(struct kvm *kvm, phys_addr_t guest_ipa,
->                           phys_addr_t pa, unsigned long size, bool writab=
-le);
->
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index d089c107d9b7..4bab407d43bb 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -1021,7 +1021,9 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm=
-_s2_mmu *mmu, unsigned long t
->
->  void kvm_uninit_stage2_mmu(struct kvm *kvm)
->  {
-> -       kvm_free_stage2_pgd(&kvm->arch.mmu);
-> +       lockdep_assert_held_write(&kvm->mmu_lock);
+>  drivers/pci/tph.c | 8 +-------
+>  1 file changed, 1 insertion(+), 7 deletions(-)
 
-*facepalm*.... this doesn't account for the other callers of
-kvm_uninit_stage2_mmu(). They will get lockdep warnings.
+AFAICT, this is effectively a no-op within drivers/pci/tph.c.  We remove
+the FIELD_GET(), but we also remove the FIELD_PREP(), so the end result
+is no change, other than to align with the function comment.
 
-I've attached a diff to the bottom of this reply that *does* deal with them=
-.
-:( Sorry.
+However, not mentioned in the commit log, mlx5_st_create() expects the
+documented rather than implemented behavior here.  That should be noted
+here to justify the Fixes: tag.
 
-I'm guessing Marc or Oliver will probably want this patch to look quite
-different, so I'll wait to hear from them before actually sending a v2.
+Reviewed-by: Alex Williamson <alex.williamson@nvidia.com>
 
-In the meantime, I'll properly retest with lockdep enabled.
-
-> +
-> +       kvm_free_stage2_pgd_locked(&kvm->arch.mmu);
->         kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
+Nit below...
+ 
+> diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
+> index 91145e8d9d95..f17b74b5fb1e 100644
+> --- a/drivers/pci/tph.c
+> +++ b/drivers/pci/tph.c
+> @@ -170,7 +170,7 @@ u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev)
+>  
+>  	pci_read_config_dword(pdev, pdev->tph_cap + PCI_TPH_CAP, &reg);
+>  
+> -	return FIELD_GET(PCI_TPH_CAP_LOC_MASK, reg);
+> +	return reg & PCI_TPH_CAP_LOC_MASK;
 >  }
->
-> @@ -1095,12 +1097,14 @@ void stage2_unmap_vm(struct kvm *kvm)
->         srcu_read_unlock(&kvm->srcu, idx);
->  }
->
-> -void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
-> +static void __kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu, bool locked)
->  {
->         struct kvm *kvm =3D kvm_s2_mmu_to_kvm(mmu);
->         struct kvm_pgtable *pgt =3D NULL;
->
-> -       write_lock(&kvm->mmu_lock);
-> +       if (!locked)
-> +               write_lock(&kvm->mmu_lock);
-> +
->         pgt =3D mmu->pgt;
->         if (pgt) {
->                 mmu->pgd_phys =3D 0;
-> @@ -1111,7 +1115,8 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
->         if (kvm_is_nested_s2_mmu(kvm, mmu))
->                 kvm_init_nested_s2_mmu(mmu);
->
-> -       write_unlock(&kvm->mmu_lock);
-> +       if (!locked)
-> +               write_unlock(&kvm->mmu_lock);
->
->         if (pgt) {
->                 kvm_stage2_destroy(pgt);
-> @@ -1119,6 +1124,16 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
->         }
->  }
->
-> +void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
-> +{
-> +       __kvm_free_stage2_pgd(mmu, false);
-> +}
-> +
-> +void kvm_free_stage2_pgd_locked(struct kvm_s2_mmu *mmu)
-> +{
-> +       __kvm_free_stage2_pgd(mmu, true);
-> +}
-> +
->  static void hyp_mc_free_fn(void *addr, void *mc)
->  {
->         struct kvm_hyp_memcache *memcache =3D mc;
-> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-> index 883b6c1008fb..977598bff5e6 100644
-> --- a/arch/arm64/kvm/nested.c
-> +++ b/arch/arm64/kvm/nested.c
-> @@ -1190,11 +1190,13 @@ void kvm_arch_flush_shadow_all(struct kvm *kvm)
->  {
->         int i;
->
-> +       guard(write_lock)(&kvm->mmu_lock);
-> +
->         for (i =3D 0; i < kvm->arch.nested_mmus_size; i++) {
->                 struct kvm_s2_mmu *mmu =3D &kvm->arch.nested_mmus[i];
->
->                 if (!WARN_ON(atomic_read(&mmu->refcnt)))
-> -                       kvm_free_stage2_pgd(mmu);
-> +                       kvm_free_stage2_pgd_locked(mmu);
->         }
->         kvfree(kvm->arch.nested_mmus);
->         kvm->arch.nested_mmus =3D NULL;
-> --
-> 2.54.0.545.g6539524ca2-goog
+>  EXPORT_SYMBOL(pcie_tph_get_st_table_loc);
+>  
+> @@ -183,11 +183,7 @@ u16 pcie_tph_get_st_table_size(struct pci_dev *pdev)
+>  	u32 reg;
+>  	u32 loc;
+>  
+> -	/* Check ST table location first */
 
-And here is the diff that should fix this patch. (Sorry!!)
+This comment still seems valid.  Thanks,
 
-diff --git a/arch/arm64/include/asm/kvm_mmu.h b/arch/arm64/include/asm/kvm_=
-mmu.h
-index 30d5c24fcebb..e32e844943be 100644
---- a/arch/arm64/include/asm/kvm_mmu.h
-+++ b/arch/arm64/include/asm/kvm_mmu.h
-@@ -177,6 +177,7 @@ void kvm_stage2_wp_range(struct kvm_s2_mmu *mmu, phys_a=
-ddr_t addr, phys_addr_t e
- void stage2_unmap_vm(struct kvm *kvm);
- int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned =
-long type);
- void kvm_uninit_stage2_mmu(struct kvm *kvm);
-+void kvm_uninit_stage2_mmu_locked(struct kvm *kvm);
- void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu);
- void kvm_free_stage2_pgd_locked(struct kvm_s2_mmu *mmu);
- int kvm_phys_addr_ioremap(struct kvm *kvm, phys_addr_t guest_ipa,
-diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-index 4bab407d43bb..98ba8116676c 100644
---- a/arch/arm64/kvm/mmu.c
-+++ b/arch/arm64/kvm/mmu.c
-@@ -1019,14 +1019,6 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_=
-s2_mmu *mmu, unsigned long t
- 	return err;
- }
-=20
--void kvm_uninit_stage2_mmu(struct kvm *kvm)
--{
--	lockdep_assert_held_write(&kvm->mmu_lock);
--
--	kvm_free_stage2_pgd_locked(&kvm->arch.mmu);
--	kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
--}
--
- static void stage2_unmap_memslot(struct kvm *kvm,
- 				 struct kvm_memory_slot *memslot)
- {
-@@ -1134,6 +1126,24 @@ void kvm_free_stage2_pgd_locked(struct kvm_s2_mmu *m=
-mu)
- 	__kvm_free_stage2_pgd(mmu, true);
- }
-=20
-+static void __kvm_uninit_stage2_mmu(struct kvm *kvm, bool locked)
-+{
-+	__kvm_free_stage2_pgd(&kvm->arch.mmu, locked);
-+	kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
-+}
-+
-+void kvm_uninit_stage2_mmu(struct kvm *kvm)
-+{
-+	__kvm_uninit_stage2_mmu(kvm, false);
-+}
-+
-+void kvm_uninit_stage2_mmu_locked(struct kvm *kvm)
-+{
-+	lockdep_assert_held_write(&kvm->mmu_lock);
-+
-+	__kvm_uninit_stage2_mmu(kvm, true);
-+}
-+
- static void hyp_mc_free_fn(void *addr, void *mc)
- {
- 	struct kvm_hyp_memcache *memcache =3D mc;
-diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
-index 977598bff5e6..f61f0244f0fb 100644
---- a/arch/arm64/kvm/nested.c
-+++ b/arch/arm64/kvm/nested.c
-@@ -1201,7 +1201,7 @@ void kvm_arch_flush_shadow_all(struct kvm *kvm)
- 	kvfree(kvm->arch.nested_mmus);
- 	kvm->arch.nested_mmus =3D NULL;
- 	kvm->arch.nested_mmus_size =3D 0;
--	kvm_uninit_stage2_mmu(kvm);
-+	kvm_uninit_stage2_mmu_locked(kvm);
- }
-=20
- /*
+Alex
+
+>  	loc = pcie_tph_get_st_table_loc(pdev);
+> -
+> -	/* Convert loc to match with PCI_TPH_LOC_* defined in pci_regs.h */
+> -	loc = FIELD_PREP(PCI_TPH_CAP_LOC_MASK, loc);
+>  	if (loc != PCI_TPH_LOC_CAP)
+>  		return 0;
+>  
+> @@ -316,8 +312,6 @@ int pcie_tph_set_st_entry(struct pci_dev *pdev, unsigned int index, u16 tag)
+>  	set_ctrl_reg_req_en(pdev, PCI_TPH_REQ_DISABLE);
+>  
+>  	loc = pcie_tph_get_st_table_loc(pdev);
+> -	/* Convert loc to match with PCI_TPH_LOC_* */
+> -	loc = FIELD_PREP(PCI_TPH_CAP_LOC_MASK, loc);
+>  
+>  	switch (loc) {
+>  	case PCI_TPH_LOC_MSIX:
+
