@@ -1,241 +1,160 @@
-Received: from mail-dl1-f47.google.com (mail-dl1-f47.google.com [74.125.82.47])
+Received: from mail-oa1-f79.google.com (mail-oa1-f79.google.com [209.85.160.79])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2587D26ED59
-	for <kvm@vger.kernel.org>; Mon,  4 May 2026 17:51:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.47
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777917115; cv=pass; b=VL06UaX2euOHsR/9Vz7swrhdcLJ+31ZMSgOkZLVXQv8enln6FdVB6KYp+dJVyjZuy0mZo+AElksBeH3FYOSpWsh39WWy1fZai8DMAaK8mbT8LqZtmS2hJSmA2VFSrejp4cr2Y3TY+xQLIUWe/MGSk1TwQM/FylKgFqocUORm7zg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777917115; c=relaxed/simple;
-	bh=FbHsoMsHli5/bczS9MJxSfVWx9qE6HW/Ce3g4P2e/vo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=q1X5ReOLOPzSqR1L6bLzXbSBQfVtOXICDpgmVXCoX9IqvmdMCMIwGT16Gsb7tCZrQS+fdpxL+Lidq0QFGXRPSZkU28ZiZwLh0FhyZvbvqhlUdHBZEr5qiH8SKaARvmif8cLFSpRwxl9ObboT5LwTtRDzZkIcrroH9KTxxnsL8S0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hG9uR7gB; arc=pass smtp.client-ip=74.125.82.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hG9uR7gB"
-Received: by mail-dl1-f47.google.com with SMTP id a92af1059eb24-1270fc2bdf2so2973c88.0
-        for <kvm@vger.kernel.org>; Mon, 04 May 2026 10:51:53 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777917113; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Wr8oO9wE1QeklfSt3yLRHxZLO5jvyNBft/VOXsl732DaOXyaBwEjJ7/tHY+u5qmqN6
-         vFT+DpO0Q+FzX/2GEKJoQQ/0EDxwff6AWbaeBiYk0YrlMoncxmukpMdZGU6ndGmJpbxR
-         yrhXch6L/zoizHRQpNs1JBEbN/UAARnvAtnMqbvHULSs/+d2EZo3rSu05cYv6I9HwikE
-         v+Pe4oU1Y7r4/mqbjqp7Fg6ofOtPk/rgeKpmKkETFYbxQal2ZGDcOlz004jBC1IcrVfA
-         a3NVx90wXRE/7x8FBBLNfQL/vksvJdtpbRAvjLrQ2FgmMt4cdHY/donbeotkZllPUmxL
-         tAVg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=53bAEBip6nNI98gVRWnP7DW9jlE2Bq/GJ0zf+nAEMWQ=;
-        fh=2wOTwsyaqet/brh1AfXSU79KCVPv9g+WADlwtXmC818=;
-        b=IVoIQ+LTxhtuzZGydQJwPW0C6AEUIyOXqUpDxyqYvZ760PIlRy1zzpKd//1/R33Gff
-         tYksonGNfzf8xC4BayWkv0YV6hPV1ol60Ba5++7/GETqjxaJf/uWmQHJFTElM0xzd1mV
-         LKBu2IXGxeE5tevRSmkhMdqTwP+63GES0nhy5A5/Vc+zKQRvWGQBnYwP56pRIYeMX3hW
-         qiZZCX6DsIR+NIs0TZ19svCYEqsGAUFx1G0vpxly+K+tSVqV/fCn2nKg8mUahG1w17Ov
-         KWJ3iJPEkOpLJF7HUBx81nYkHRa0B2hBQBn/xMdvhzcKiEaTY4YO1DEaPs3AZwc28GSf
-         0kJA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777917113; x=1778521913; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=53bAEBip6nNI98gVRWnP7DW9jlE2Bq/GJ0zf+nAEMWQ=;
-        b=hG9uR7gBqf3syOhcspyOOP9hvIEGm45F8piePqHN/8FCYVZETtHtn6nNUXnneN5Z59
-         YmhDbhczMEjUVvTN/HXD0D8IsdsKBNv6SyAq/U7Z2YjihnlTPjm2DR4eETOyQ3gxIiKj
-         T8s8pifqZEWMUAP+3ULLd+Zh3PN4GK7rkQkSEPiVWdqVwnKcyzm0/QKyFs+ZGG1mqLex
-         4grg84GSwlEkAUzMifdGtG8C122wqD2KqmKXACq2ZPPt/gRsg7HG++h7hLwv7Q7xAo7h
-         +KLOj/sseCCpzJV1gYJYNV9qR3lLICJmrVBIdBvoiOYVlGy78JXW++oGF5aU+Sq6XRtT
-         5YdQ==
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFA73D9029
+	for <kvm@vger.kernel.org>; Mon,  4 May 2026 17:54:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.79
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777917276; cv=none; b=bn1EY8DpCNLJHhB0TETB9/nhX8Vzs0siJVszZm0sqjC7qE+IH3m8qwHGX3hdjZ72Wp+SiGagjnKNTTH1wGL3VO6DHHUx0be+d+tjHut6PwPcqPWWHuewXq3JxYoEsd9q8uSejAHYQ3COcIQJkb3ZiR7PuQNpHEPLf0anoqvxOH0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777917276; c=relaxed/simple;
+	bh=N3OJlCmNm5ZFq7j1A2SYJQW6LfmovEqwcV0g/6bRjFM=;
+	h=MIME-Version:Date:In-Reply-To:Message-ID:Subject:From:To:
+	 Content-Type; b=o0X6VDaDffscSwpyC0p4hudPi4vz46jMZesGxws9Di6YoH8K27C+YgcaVT+rew/gXIRwL9k8aLRxkAM8ObrQsqTGLBCtmyB40g9z+Zo8+rdGwOqJ944YqR1S/FwioE3XbK5/f2aKN188VQDWcLMt/o2/Z9ILfRbWpTZIx3Hb3ws=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.160.79
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oa1-f79.google.com with SMTP id 586e51a60fabf-423133d22a0so10102123fac.3
+        for <kvm@vger.kernel.org>; Mon, 04 May 2026 10:54:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777917113; x=1778521913;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=53bAEBip6nNI98gVRWnP7DW9jlE2Bq/GJ0zf+nAEMWQ=;
-        b=bPoU/g5Fw0znSAo5556pNnoWtzxNAgW5xNRJq4LAjXOTdSKXiqUEomjOIPxwoUky+E
-         qqxUni/NGL8Sfma7rzxQhBs2VTHBFI5vrZZvEci0Qe+yBAQzerQAYGsE+4IqLeC2tUe1
-         xOq97Et1wnoIUOLzM2wvkCmNQB4wwC1ckHDKJXh6P+KL4y51JnUUKWVIVccBCN9Qelb/
-         Y1KT/bDpovUu/xtwFccitJHiV+j1nGqibkDgVKVWDmIH+FmnhB5MCdyh/x5ZYn6roB+M
-         MKGpJe8QJJAHJ+Y40Lhv3c3RL1QKGHNH1V9/+5BQJMsm/wLdsrzdNMfdu/jBEbIA6lNO
-         FVfQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8FIWj5/cySyUwHwY9n6CxJby2AtArUNx2WMosL3ux9Rk5GEz6WlD+IX+d9NnGxpsSGuew=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxyUJ7Z2deEYzvcmknljaknqxY5uD7CgdsKGi0UWBJhrmjhZ+S
-	XAab2ehaEhLq0ZlHOf/Tk8b0WLy2dswc9T3fYRhPnwfqY2vrgL1wX4LiYjnIjFRyUYhlie5QngE
-	rp4d9hW7TPyXYm3QFVHow23aD8A4Oz+A9LamQbgtq
-X-Gm-Gg: AeBDievhKHrVSTEai2f3AffHycH+EN5DKqgSjxxgEBGdsDeobGq8dMspmXuIQspk/1t
-	hpmHko76qs01UiuYauxI3pwEkLbfzKKQWMx+EXS1hXfePZbvPQA2eFcvquPwFS9RDNlihehAcAK
-	8psWIyZu6fo4AIh4X+Ty9JHSCYLQ3RifCRWXCmRHWbXmSLEs7yKlUjWWudw9O46CbkBDNZby2yy
-	/51r0MFNJcNAc829yVzA5D4HrEiV0PCErvsFSSgfOcmoRBBejQoNRmBfig7j0y9wca0mAZDkSVU
-	dDNXO1s9g/Uq7TwOlhbiSQ0acS5o3H7hs9F7wQxF
-X-Received: by 2002:a05:7022:1281:b0:130:aa42:16a4 with SMTP id
- a92af1059eb24-130adaf6a6emr34704c88.6.1777917112470; Mon, 04 May 2026
- 10:51:52 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777917274; x=1778522074;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=yf1acHnuMkvLtJHbgF3Z56jQ1gcWmSXrdwsWfpDSszg=;
+        b=ngKnkHJydvTZ3/u1e7NYELTwXAUL7HMFK+waDt/mbbB+gJ4KULknO30WeWjtpMQoLs
+         TMClO2i8ORS42hxW6jDbrp8AfE0TFWQZseu+Z4bI+UCPNnCZcwRbSYqFxfCGVlOQDI82
+         gz6eSTxtSTB/dXFNsGUBW9XU/3OFErvS4aLYfi75+JAtfA7XMXBD6X0RNRlhUJsmEVX9
+         5NPYYfxTbq8Ws+mRK0Ga8szZzbM5e0i1DgnncakMChRru7w26601Z/c248wGdd2AgQG4
+         zEUs9VvLR8Zae3e74RXnxtC5k0AKPS9VK7qx7fYa50oWOSg7S2Pk2plAJyl1ZaskOlja
+         vLXQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8Ldxq+Q7JxAHljj6+cD05+dcyDPD1Q1Esq71B6wYub7FrV4a2OSxpj4/bOwVmhW9FMlSo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhzC/YphQmHp/AJ27WdZWesA62EO/otALzfX5FSJLb7LQiM6Gj
+	7wTSCHtM4RgThI42XA6fcClGEJPy43iWOr9yko/sKsE6nDpbryocGKOVhtjRlzc+3B2ZLEAJKh/
+	gOerKnEDPEiT/MQ6yQ4V6cO64qiHTK9ADcpiScbWJCd/Kswl/Vd2h+KHbVcs=
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260402173059.1018805-1-rananta@google.com> <20260402173059.1018805-9-rananta@google.com>
- <20260413165308.GA3034974.vipinsh@google.com>
-In-Reply-To: <20260413165308.GA3034974.vipinsh@google.com>
-From: Raghavendra Rao Ananta <rananta@google.com>
-Date: Mon, 4 May 2026 10:51:41 -0700
-X-Gm-Features: AVHnY4IWxi-DqTo-Asd49m8JryWQ1KRx0tVF9GOke2Ulr9MS-_rxSsCVYgxTVvw
-Message-ID: <CAJHc60yS==1ZeOPYbPNw+WC8_rZwze16_zOSxFE4o_dP8KKXUw@mail.gmail.com>
-Subject: Re: [PATCH v7 8/8] vfio: selftests: Add tests to validate SR-IOV UAPI
-To: Vipin Sharma <vipinsh@google.com>
-Cc: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>, 
-	Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+X-Received: by 2002:a05:6820:f022:b0:68a:e01a:9b99 with SMTP id
+ 006d021491bc7-69697df9a6cmr5304663eaf.50.1777917273794; Mon, 04 May 2026
+ 10:54:33 -0700 (PDT)
+Date: Mon, 04 May 2026 10:54:33 -0700
+In-Reply-To: <6936812a.a70a0220.38f243.0090.GAE@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69f8dd59.170a0220.bb392.0004.GAE@google.com>
+Subject: Re: [syzbot] [mm?] BUG: sleeping function called from invalid context
+ in kvm_mmu_notifier_invalidate_range_start
+From: syzbot <syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com>
+To: akpm@linux-foundation.org, dwmw@amazon.co.uk, kvm@vger.kernel.org, 
+	liam.howlett@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	linux-rt-devel@lists.linux.dev, lkp@intel.com, llvm@lists.linux.dev, 
+	lorenzo.stoakes@oracle.com, me@brighamcampbell.com, mhocko@suse.com, 
+	oe-kbuild-all@lists.linux.dev, pbonzini@redhat.com, rientjes@google.com, 
+	rppt@kernel.org, seanjc@google.com, shaikhkamal2012@gmail.com, 
+	shakeel.butt@linux.dev, skhan@linuxfoundation.org, surenb@google.com, 
+	syzkaller-bugs@googlegroups.com, vbabka@kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Apr 13, 2026 at 11:08=E2=80=AFAM Vipin Sharma <vipinsh@google.com> =
-wrote:
->
-> On Thu, Apr 02, 2026 at 05:30:59PM +0000, Raghavendra Rao Ananta wrote:
-> > diff --git a/tools/testing/selftests/vfio/vfio_pci_sriov_uapi_test.c b/=
-tools/testing/selftests/vfio/vfio_pci_sriov_uapi_test.c
-> > +static struct vfio_pci_device *device_init(const char *bdf, struct iom=
-mu *iommu,
-> > +                                        const char *vf_token, int *out=
-_ret)
-> > +{
-> > +     struct vfio_pci_device *device =3D vfio_pci_device_alloc(bdf, iom=
-mu);
-> > +
-> > +     if (iommu->mode->container_path)
-> > +             *out_ret =3D container_setup(device, bdf, vf_token);
-> > +     else
-> > +             *out_ret =3D iommufd_setup(device, bdf, vf_token);
-> > +
-> > +     return device;
->
-> I will recommend to return the error code and pass struct
-> vfio_pci_device **out_dev in the arguments. This seems more natural
-> compared to having a last argument as an ret value which is checked in
-> the caller.
->
-The idea was to keep it in line with vfio_pci_device_init(), so I
-returned 'struct vfio_pci_device *'. But, it's not a big deal. I've
-changed it to return an 'int' if that's what we prefer.
+syzbot has found a reproducer for the following issue on:
 
-> > +
-> > +/*
-> > + * PF's token is always set with UUID_1 and VF's token is rotated with
-> > + * various tokens (including UUID_1 and NULL).
->
-> Nit: s/UUID_1/UUID_2
->
-We rotate with UUID_1, UUID_2, and NULL. I've adjusted the comment to
-incude all three.
+HEAD commit:    b9303e6bff70 Add linux-next specific files for 20260430
+git tree:       linux-next
+console output: https://syzkaller.appspot.com/x/log.txt?x=13745dba580000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=5474e13c6d20d45c
+dashboard link: https://syzkaller.appspot.com/bug?extid=c3178b6b512446632bac
+compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=125dd748580000
 
-> > + * This asserts if the VF device is successfully created for a match
-> > + * in the token or actually fails during a mismatch.
-> > + */
-> > +#define ASSERT_VF_CREATION(_ret) do {                                 =
-       \
-> > +     if (!variant->vf_token || strcmp(UUID_1, variant->vf_token)) {  \
-> > +             ASSERT_NE((_ret), 0);                                   \
-> > +     } else {                                                        \
-> > +             ASSERT_EQ((_ret), 0);                                   \
-> > +     }                                                               \
-> > +} while (0)
-> > +
-> > +/*
-> > + * Validate if the UAPI handles correctly and incorrectly set token on=
- the VF.
-> > + */
-> > +TEST_F(vfio_pci_sriov_uapi_test, init_token_match)
-> > +{
-> > +     struct vfio_pci_device *pf;
-> > +     struct vfio_pci_device *vf;
-> > +     struct iommu *iommu;
-> > +     int ret;
-> > +
-> > +     iommu =3D iommu_init(variant->iommu_mode);
-> > +
-> > +     pf =3D device_init(pf_bdf, iommu, UUID_1, &ret);
-> > +     ASSERT_EQ(ret, 0);
-> > +
-> > +     vf =3D device_init(vf_bdf, iommu, variant->vf_token, &ret);
-> > +     ASSERT_VF_CREATION(ret);
->
-> ASSERT_VF_CREATION() name is confusing, as it is asserting both success
-> and failure ret value based on the variant passed.
->
-> I will recommend to rename it to ASSERT_COND_VF_CREATION(), or, may be
-> create a wrapper function to check if current test is a UUID_1 variant
-> or not, and then directly the assert needed.
->
-> > +/*
-> > + * After setting a token on the PF, validate if the VF can still set t=
-he
-> > + * expected token.
-> > + */
->
-> This comment seems incorrect. VF doesn't set the token, it just provides
-> the token which is set on a PF.
->
-> May be a comment can be "After closing the PF, validate VF access still
-> needs the right token.
->
-> > +TEST_F(vfio_pci_sriov_uapi_test, override_token)
-> > +{
-> > +     struct vfio_pci_device *pf;
-> > +     struct vfio_pci_device *vf;
-> > +     struct iommu *iommu;
-> > +     int ret;
-> > +
-> > +     iommu =3D iommu_init(variant->iommu_mode);
-> > +
-> > +     pf =3D device_init(pf_bdf, iommu, UUID_2, &ret);
->
-> I am assuming because of this, you cannot move device_init and
-> device_cleanup calls to FIXTURE_SETUP and FIXTURE_TEARDOWN respectively.
->
-> Can we just start this test with device_cleanup(), then do init with
-> UUID_2? This will allow to reduce the code in all of the tests by moving
-> things to corresponding setup and teardown functions. WDYT?
->
-Yes it was intentionally kept this way for the 'override_token' test.
-Also see the previous 'pf_early_close' test that performs a premature
-cleanup of the PF. To accommodate these (and any future TEST_F()s we
-may want to add) based on your suggestion, we'd have to create
-special/conditional statements across the tests and I'd like to avoid
-that if possible. The current setup clearly shows what each test
-does/requires.
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/b3a0a2e50f73/disk-b9303e6b.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/d3d481b220d4/vmlinux-b9303e6b.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/d6e012913960/bzImage-b9303e6b.xz
 
-> > +
-> > +static void vf_setup(void)
-> > +{
-> > +     char *vf_driver;
-> > +     int nr_vfs;
-> > +
-> > +     nr_vfs =3D sysfs_sriov_totalvfs_get(pf_bdf);
-> > +     if (nr_vfs <=3D 0)
-> > +             ksft_exit_skip("SR-IOV may not be supported by the PF: %s=
-\n", pf_bdf);
-> > +
-> > +     nr_vfs =3D sysfs_sriov_numvfs_get(pf_bdf);
-> > +     if (nr_vfs !=3D 0)
-> > +             ksft_exit_skip("SR-IOV already configured for the PF: %s\=
-n", pf_bdf);
->
-> Why would we want to skip if VFs are already enabled. Just
-> set it to 0 if it is already there and set it to 1 unconditionally after
-> that.
->
-This actually goes back to a previous discussion with David where we
-agreed to avoid such situations. For instance, what if the device is
-already in use elsewhere.
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com
 
-Other than these, I've addressed other comments.
+BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+in_atomic(): 0, irqs_disabled(): 0, non_block: 1, pid: 40, name: oom_reaper
+preempt_count: 0, expected: 0
+RCU nest depth: 0, expected: 0
+4 locks held by oom_reaper/40:
+ #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_trylock include/linux/mmap_lock.h:611 [inline]
+ #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task_mm mm/oom_kill.c:566 [inline]
+ #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task mm/oom_kill.c:609 [inline]
+ #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reaper+0x2bb/0xc10 mm/oom_kill.c:650
+ #1: ffffffff8e3066c0 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: mmu_notifier_invalidate_range_start_nonblock include/linux/mmu_notifier.h:495 [inline]
+ #1: ffffffff8e3066c0 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: zap_vma_for_reaping+0x193/0x380 mm/memory.c:2119
+ #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: srcu_lock_acquire include/linux/srcu.h:187 [inline]
+ #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: srcu_read_lock include/linux/srcu.h:294 [inline]
+ #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: mn_hlist_invalidate_range_start mm/mmu_notifier.c:515 [inline]
+ #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: __mmu_notifier_invalidate_range_start+0x5a1/0xb60 mm/mmu_notifier.c:580
+ #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: spin_lock include/linux/spinlock_rt.h:45 [inline]
+ #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: kvm_mmu_notifier_invalidate_range_start+0x1b7/0xc00 virt/kvm/kvm_main.c:744
+CPU: 0 UID: 0 PID: 40 Comm: oom_reaper Not tainted syzkaller #0 PREEMPT_{RT,(full)} 
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ __might_resched+0x329/0x480 kernel/sched/core.c:9163
+ __rt_spin_lock kernel/locking/spinlock_rt.c:48 [inline]
+ rt_spin_lock+0xc2/0x400 kernel/locking/spinlock_rt.c:57
+ spin_lock include/linux/spinlock_rt.h:45 [inline]
+ kvm_mmu_notifier_invalidate_range_start+0x1b7/0xc00 virt/kvm/kvm_main.c:744
+ mn_hlist_invalidate_range_start mm/mmu_notifier.c:525 [inline]
+ __mmu_notifier_invalidate_range_start+0x6e4/0xb60 mm/mmu_notifier.c:580
+ mmu_notifier_invalidate_range_start_nonblock include/linux/mmu_notifier.h:498 [inline]
+ zap_vma_for_reaping+0x1f7/0x380 mm/memory.c:2119
+ __oom_reap_task_mm mm/oom_kill.c:548 [inline]
+ oom_reap_task_mm mm/oom_kill.c:585 [inline]
+ oom_reap_task mm/oom_kill.c:609 [inline]
+ oom_reaper+0x51e/0xc10 mm/oom_kill.c:650
+ kthread+0x388/0x470 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+in_atomic(): 0, irqs_disabled(): 0, non_block: 1, pid: 40, name: oom_reaper
+preempt_count: 0, expected: 0
+RCU nest depth: 0, expected: 0
+4 locks held by oom_reaper/40:
+ #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_trylock include/linux/mmap_lock.h:611 [inline]
+ #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task_mm mm/oom_kill.c:566 [inline]
+ #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task mm/oom_kill.c:609 [inline]
+ #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reaper+0x2bb/0xc10 mm/oom_kill.c:650
+ #1: ffffffff8e3066c0 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: __mmu_notifier_invalidate_range_end+0x67/0x400 mm/mmu_notifier.c:611
+ #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: __mmu_notifier_invalidate_range_end+0x67/0x400 mm/mmu_notifier.c:611
+ #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: spin_lock include/linux/spinlock_rt.h:45 [inline]
+ #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: kvm_mmu_notifier_invalidate_range_end+0x1d6/0x3d0 virt/kvm/kvm_main.c:814
+CPU: 0 UID: 0 PID: 40 Comm: oom_reaper Tainted: G        W           syzkaller #0 PREEMPT_{RT,(full)} 
+Tainted: [W]=WARN
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
+ __might_resched+0x329/0x480 kernel/sched/core.c:9163
+ __rt_spin_lock kernel/locking/spinlock_rt.c:48 [inline]
+ rt_spin_lock+0xc2/0x400 kernel/locking/spinlock_rt.c:57
+ spin_lock include/linux/spinlock_rt.h:45 [inline]
+ kvm_mmu_notifier_invalidate_range_end+0x1d6/0x3d0 virt/kvm/kvm_main.c:814
+ mn_hlist_invalidate_end mm/mmu_notifier.c:597 [inline]
+ __mmu_notifier_invalidate_range_end+0x23b/0x400 mm/mmu_notifier.c:616
+ mmu_notifier_invalidate_range_end include/linux/mmu_notifier.h:511 [inline]
+ zap_vma_for_reaping+0x2d9/0x380 mm/memory.c:2124
+ __oom_reap_task_mm mm/oom_kill.c:548 [inline]
+ oom_reap_task_mm mm/oom_kill.c:585 [inline]
+ oom_reap_task mm/oom_kill.c:609 [inline]
+ oom_reaper+0x51e/0xc10 mm/oom_kill.c:650
+ kthread+0x388/0x470 kernel/kthread.c:436
+ ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
+ </TASK>
+oom_reaper: reaped process 6034 (syz.0.24), now anon-rss:0kB, file-rss:64kB, shmem-rss:0kB
 
-Thank you.
-Raghavendra
+
+---
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
