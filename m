@@ -1,141 +1,208 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-oo1-f74.google.com (mail-oo1-f74.google.com [209.85.161.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2108346A0A
-	for <kvm@vger.kernel.org>; Mon,  4 May 2026 21:15:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 400D7344DA2
+	for <kvm@vger.kernel.org>; Mon,  4 May 2026 21:18:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777929347; cv=none; b=JjlCX295aYXcEp6+i51U/W8Z2f1NU7qntSGUpd4rbCNta9Y0tR5OJXv0rDTDuJktfp7N1P/mT8WFRRIEGc0786+fUFeMqSkGGKZ5AkiD1azrMRhZklkeno2MAoYSC3s8xdwXcSrWF6BZMbKyAWGtWWZXPHcjJACnMzi0NghSsVw=
+	t=1777929511; cv=none; b=Q1xEzIX6nLJufalFyoUbzGt01+nGPcIJhANykyoZCc1kYqGIjpbT7cDjXZXh7T3D+4I/aFrgfM+a2bnNyNKLpW95hOIClK1aA90O4NuHd5tgybmBgFUcbHyti9LQSaas1W9K2gTZFhSUtHhVInWTt0HO/ghMphia3qe3qJ91spA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777929347; c=relaxed/simple;
-	bh=DklPH6/6YJ0p6u4Cf1PUxpd4itLk/dZorR5WDOT5W/8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=crSk5LBiiugIxAam/qQYZXEdrYjJ3uprBbIPm2hbe1JhXFJuPMzCLtzLDBM5oKafZlRjNwJGw1vrNGQujuJVxQEdAxRzuoay0moIfsv7ajKWr4mL2q3C+O7RMVVpjviSmzbzbpyFW2vF2/ge1n/DIStlh4h5Z/N+Jsd3CpSqvDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=khNLVBj4; arc=none smtp.client-ip=209.85.210.181
+	s=arc-20240116; t=1777929511; c=relaxed/simple;
+	bh=gaSAW0vbxuJ8Ztv+Ptyrd97pvIgNhbocUwZ87v8ZJro=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=kz6qInv5Rw8WsWwWZuZeMIbRLmoE24NWbQHSSOyBn0ywD1I0tEvK8bo+fpjWz1YuothIwS+v3bz/NPBjoFdiWArxAo9oivIFaRDiHfJ0H3aI03+ENhF4FtiTlUhVGlvrx0WsNXHUFOBBR2/F6GcNMGQEnCyeKZ0IfgTXA4F55DY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QzPmEEY2; arc=none smtp.client-ip=209.85.161.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="khNLVBj4"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-835c98b659eso1018536b3a.0
-        for <kvm@vger.kernel.org>; Mon, 04 May 2026 14:15:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QzPmEEY2"
+Received: by mail-oo1-f74.google.com with SMTP id 006d021491bc7-6967b799acdso8347564eaf.3
+        for <kvm@vger.kernel.org>; Mon, 04 May 2026 14:18:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777929343; x=1778534143; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JKpE5oRLemYbfg1MRy2f9zZjvjCWWH6F7jRfRxX1jLc=;
-        b=khNLVBj4s5KuwBKGO9lJ/eqFzIsaK4KCG4wxZKNMPcAQ+Wn4tSOkIMa7+xeZfkE0IQ
-         3wFfDaSM7aKJ7tAOwx6mOBeiBE8WMDL8FG64mRwSytpDDhYTVV9zxqzFnf4qocem4m1A
-         Q4+h3WMazXtwwGvMdIgRuCns/ULO/NE5Mm3eZM+xBwLC9RJ/hmNkmXArWF+P2FqRgWpo
-         kzPr/bJT6yDka0BgH8kQ15LdJqv5zEe13wipN0AXPaf3EYFO90kmSlHvuu2A7FxuV+TW
-         qgI7HBYuOt+q9qGHJvR7VCt2OMa3CA41le3Fc1UEr9pkg1REKRRIeN+65f3hhLviS2Si
-         tqVw==
+        d=google.com; s=20251104; t=1777929508; x=1778534308; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=s5oN3WHDlvrpSTYnrxqaHijQGk2I8Xsq5SmkYySfX18=;
+        b=QzPmEEY2h8u5ld+H1xesuXw4WOtrRmqfmZRNfYNTMrXLlKB7ws0Pu1aXfXWo6nsNCN
+         h73pj2vPcKuRFnEgVPywte5+Mk3itd4F4Xx1Kkzt9R5OpOULPQeqkKyI8b07JeIjokv1
+         26OJA8rY2x4OWjTOL1eFPeOa5BVNqGRu5G+uIyiQ6gsVAkT3RoUnVfESg+wKU0o8pPHv
+         MFE11RQSIqIwzT402NFmU4nkojHvVidKV6OkywsnoIQB88Lywtby/RLdD2N0g1M4SIRN
+         xUCl/frvqKNKVHa/YxPlr1/fVv4LgiN9z0u0WzvPowgh5gwxG/YhBHP77asL9RvocKKe
+         cAew==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777929343; x=1778534143;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JKpE5oRLemYbfg1MRy2f9zZjvjCWWH6F7jRfRxX1jLc=;
-        b=VH0O5JjhxxaFgePdqUn1+XKYYamQwFpKg33QmxvACwGSQifWg+jV9mIpLPI0yotguJ
-         dWI/1y5ySKbSiI4fiB2b1YfTp7mD2zDbdEYACVemeap12znVbCzH8V33ubZjiPZWvb8d
-         T4Xd6qT3OgiGfiba2tMgyJ5qL/5zgHtMSXiGxij9k1CbcRe10Bmwo7FmbxSf2hCvfp8M
-         q6EKlouEnmNqxb1xqNGY6f45QBhmf1DhBoVb3vQF5+5J5hUjjhSKT3ffqJI/Fa/NtX2X
-         aItp9CD/CK4sri/JDd+kL5fSVBkX1Rd3pc7NUDzHQ9BWGE25KECp2h+LZoT70ATbxZUR
-         uwpw==
-X-Forwarded-Encrypted: i=1; AFNElJ8MJmjxVRd63lxYPH8Xuo7lw6upU3zTlmyMXnhLOMedagejSwIHYcWgQ+8Xzuexu20SxI4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw4Tgtt01FFdvgM/bnsqIxYTU8f1BKydvZvMpRQQwTbcLsHgTb8
-	+P1ELfpCeoIxBl0YhoMJnZHimcSKbYiZQGQmS9j+JSIYUpBmlI6M0i4/59H/Vlmmng==
-X-Gm-Gg: AeBDietCwmC7BijHVluJ/RVuMRlqoCZAqk4hOKagf7sZB6IF0SpcwcbigEZ6e+rRIfF
-	Loat5AHKmSBOJOwrM6ZnQJ98EAObFRDs2l7tTLwGbSEazEq6L/Iom7XvLbNDJkXpNRbMZHCj2X6
-	ItfLB4Wj22qeKSukF5Jzf9mSg2nsfJLOBy8PTJreID2gI7poWLiDltL2AvBLhhc6TE61D0laliL
-	WcqEwLZNWy9mesXoKVBzNKZSmkbwbJg4Wqu3ZXhVl+MGx0rUUckfFeO/g85hgnLmqx6GyJ11kFH
-	653TiASPtgHcsOJBHm+orqZErEMaqCcXZdU45a02WSWTQ13MbqvJA/2seT8Znz7Wr9kMyAmKxK+
-	LP8xK8XEzr8PHuGJ8JPI5obG8YvjKmBYQT5bJ5PvXQcPa/a50P4lYH4sl4dj3U2VbtI7uwRteIO
-	NyYaht8I8ZB/C/PfcoDxM8qGwg5Vqw7Ek7TxXDaoxeNNzaR+mgQE2KciLmQuTtY23oEO8DRH4vo
-	ufc+g==
-X-Received: by 2002:a05:6a00:428c:b0:829:9a7b:db84 with SMTP id d2e1a72fcca58-8352d2f425bmr10106522b3a.49.1777929342450;
-        Mon, 04 May 2026 14:15:42 -0700 (PDT)
-Received: from google.com (76.9.127.34.bc.googleusercontent.com. [34.127.9.76])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83943dde006sm41031b3a.10.2026.05.04.14.15.41
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2026 14:15:42 -0700 (PDT)
-Date: Mon, 4 May 2026 21:15:38 +0000
-From: David Matlack <dmatlack@google.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
-	Leon Romanovsky <leon@kernel.org>, linux-kselftest@vger.kernel.org,
-	linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
-	netdev@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
-	Shuah Khan <shuah@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
-	patches@lists.linux.dev
-Subject: Re: [PATCH 08/11] vfio: selftests: Add dev_dbg
-Message-ID: <afkMenQ_gfmLUJIy@google.com>
-References: <0-v1-dc5fa250ca1d+3213-mlx5st_jgg@nvidia.com>
- <8-v1-dc5fa250ca1d+3213-mlx5st_jgg@nvidia.com>
+        d=1e100.net; s=20251104; t=1777929508; x=1778534308;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=s5oN3WHDlvrpSTYnrxqaHijQGk2I8Xsq5SmkYySfX18=;
+        b=YsB7DWFENNcHfHeIcLXc0JGuN31vNOrNU0j1fELwgiZ8qyr7FDy+zxt7iCanyizHlv
+         kZUQ3O5B5nfcAUXUZhdw2gs4ngj48sH9w14Ys6AFr1w++xyRZjoeRONYEHyPRH1SZhfa
+         RyGxwHaO5V0CF+L/p8qn+LDv2GWDVEMCthGw0WfahKxQUNGY6+Vbha3MgSDuNHXWYMaw
+         tpkypaFwggiQ0P9jPwKDOcumVGfhW4z2yHJZrIOZpCxK90n/n79L3xXrw9QV4h3Bt8l7
+         OyeE8z88wKGarUp4E4/nVR9cQdNDOPIlqc1JRnV8YVUxe/eScMik47C5UEHV0cazDpPd
+         +n5Q==
+X-Gm-Message-State: AOJu0Yyyy6TF7OUdjGkwbVc9bmc1SGFNYz9xe/7IdACbldSPyZd1SgLS
+	+5hpoCf6mFACkVtGUtqemykQcZyoq5JItjQZHEgJOFdMWAMn2bXp3G2YCdizvmxRtM+Hyj5WbRA
+	UgDdqxQsXV4962wr3R8EJa8q8eewNVk0LuvFFewCf6aK1cU07AVJni9XZd+opizs+xuigwFe9ap
+	uk7D0+j1OCplEmuimGhW0UGugTkLiLV3ntFwdx6HSlYGHuLoviqfB0YCoIvD8=
+X-Received: from ilto4.prod.google.com ([2002:a05:6e02:924:b0:4fe:8e18:ccb3])
+ (user=coltonlewis job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6820:2212:b0:694:a362:4b8f with SMTP id 006d021491bc7-696979bbc34mr5451589eaf.6.1777929507943;
+ Mon, 04 May 2026 14:18:27 -0700 (PDT)
+Date: Mon,  4 May 2026 21:17:53 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8-v1-dc5fa250ca1d+3213-mlx5st_jgg@nvidia.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
+Message-ID: <20260504211813.1804997-1-coltonlewis@google.com>
+Subject: [PATCH v7 00/20] ARM64 PMU Partitioning
+From: Colton Lewis <coltonlewis@google.com>
+To: kvm@vger.kernel.org
+Cc: Alexandru Elisei <alexandru.elisei@arm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Russell King <linux@armlinux.org.uk>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oliver.upton@linux.dev>, Mingwei Zhang <mizhang@google.com>, 
+	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Mark Rutland <mark.rutland@arm.com>, 
+	Shuah Khan <shuah@kernel.org>, Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, 
+	James Clark <james.clark@linaro.org>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, linux-perf-users@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, Colton Lewis <coltonlewis@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 2026-04-30 09:08 PM, Jason Gunthorpe wrote:
-> Enable it with a #define DEBUG at the top of the file. Allows leaving
-> behind debugging prints that are useful in case future changes are
-> required.
-> 
-> Assisted-by: Claude:claude-opus-4.6
-> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-> ---
->  .../selftests/vfio/lib/include/libvfio/vfio_pci_device.h    | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
-> index bb4525abd01a22..2d587b988c09fa 100644
-> --- a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
-> +++ b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
-> @@ -38,6 +38,12 @@ struct vfio_pci_device {
->  #define dev_info(_dev, _fmt, ...) printf("%s: " _fmt, (_dev)->bdf, ##__VA_ARGS__)
->  #define dev_err(_dev, _fmt, ...) fprintf(stderr, "%s: " _fmt, (_dev)->bdf, ##__VA_ARGS__)
->  
-> +#ifdef DEBUG
-> +#define dev_dbg dev_info
-> +#else
-> +#define dev_dbg(_dev, _fmt, ...) do { } while (0)
+This series creates a new PMU scheme on ARM, a partitioned PMU that
+allows reserving a subset of counters for more direct guest access,
+significantly reducing overhead. More details, including performance
+benchmarks, can be read in the v1 cover letter linked below.
 
-Can you add something to make sure the format strings are still
-validated by the compiler even if DEBUG is not defined? (since it
-will almost never be defined). e.g.
+An overview of what this series accomplishes was presented at KVM
+Forum 2025. Slides [1] and video [2] are linked below.
 
-diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/assert.h b/tools/testing/selftests/vfio/lib/include/libvfio/assert.h
-index f4ebd122d9b6..406c430ef28d 100644
---- a/tools/testing/selftests/vfio/lib/include/libvfio/assert.h
-+++ b/tools/testing/selftests/vfio/lib/include/libvfio/assert.h
-@@ -51,4 +51,9 @@
-        VFIO_ASSERT_EQ(__ret, 0, "ioctl(%s, %s, %s) returned %d\n", #_fd, #_op, #_arg, __ret); \
- } while (0)
+After a few false starts, meeting with Will Deacon and Mark Rutland to
+discuss implementation ideas, and a few more false starts, I finally
+have an implementation of dynamic counter reservation that works
+without disrupting host perf too much. Now the host only loses access
+to the guest counters when a vCPU resides on the CPU.
 
-+ __attribute__((__format__(__printf__, 1, 2)))
-+static inline void check_format_string(const char *fmt, ...)
-+{
-+}
-+
- #endif /* SELFTESTS_VFIO_LIB_INCLUDE_LIBVFIO_ASSERT_H */
-diff --git a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
-index 2d587b988c09..3abfa6ff481c 100644
---- a/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
-+++ b/tools/testing/selftests/vfio/lib/include/libvfio/vfio_pci_device.h
-@@ -39,9 +39,9 @@ struct vfio_pci_device {
- #define dev_err(_dev, _fmt, ...) fprintf(stderr, "%s: " _fmt, (_dev)->bdf, ##__VA_ARGS__)
+The key was creating perf_pmu_resched_update, which behaves exactly
+like perf_pmu_resched except it takes a callback to call in between
+when the perf events are scheduled out and when they are scheduled
+back in. That allows us to update the PMU's available counters when we
+know they are not currently in use without needing to expose private
+perf core functions and triple check they are not being called in a
+way that violates existing assumptions.
 
- #ifdef DEBUG
--#define dev_dbg dev_info
-+#define dev_dbg(_dev, _fmt, ...) dev_info
- #else
--#define dev_dbg(_dev, _fmt, ...) do { } while (0)
-+#define dev_dbg(_dev, _fmt, ...) check_format_string(_fmt, ##__VA_ARGS__)
- #endif
+Because this introduces a possibility of perf reschedule during vCPU
+load, I've optimized to only do that operation if there are host
+events occupying the intended guest counters at the time of the load.
 
- struct vfio_pci_device *vfio_pci_device_init(const char *bdf, struct iommu *iommu);
+The kernel command line parameter for the driver still exists, but now
+only defines an upper limit of counters the guest might use rather
+than taking those counters from the host permanently.
+
+v7:
+
+* Implement dynamic counter reservation as described above. One side
+  effect is the PMUv3 driver now needs much fewer changes to enforce
+  the boundary.
+
+* Move register accesses out of fast path for non-FGT hardware. The
+  performance impact was negligible and this moves bloat out of the
+  fast path and allows a more reliable design with more code sharing.
+
+* Make PMCCNTR a special case in the context swap again because trying
+  to access it with PMXEVCNTR is undefined.
+
+* Fix a bug where kvm_pmu_guest_counter_mask was using & instead of |.
+
+* Re-expose the dedicated instruction counter to the host since it was
+  decided the guest will not own it.
+
+* Change the global armv8pmu_reserved_host_counters to
+  armv8pmu_is_partitoned because it was only used in boolean checks.
+
+* Fix typo in vcpu attribute commit so the spelling of the flag in the
+  commit message matches the code.
+
+* Rebase to v7.0-rc7
+
+v6:
+https://lore.kernel.org/kvmarm/20260209221414.2169465-1-coltonlewis@google.com/
+
+v5:
+https://lore.kernel.org/kvmarm/20251209205121.1871534-1-coltonlewis@google.com/
+
+v4:
+https://lore.kernel.org/kvmarm/20250714225917.1396543-1-coltonlewis@google.com/
+
+v3:
+https://lore.kernel.org/kvm/20250626200459.1153955-1-coltonlewis@google.com/
+
+v2:
+https://lore.kernel.org/kvm/20250620221326.1261128-1-coltonlewis@google.com/
+
+v1:
+https://lore.kernel.org/kvm/20250602192702.2125115-1-coltonlewis@google.com/
+
+[1] https://gitlab.com/qemu-project/kvm-forum/-/raw/main/_attachments/2025/Optimizing__itvHkhc.pdf
+[2] https://www.youtube.com/watch?v=YRzZ8jMIA6M&list=PLW3ep1uCIRfxwmllXTOA2txfDWN6vUOHp&index=9
+
+Colton Lewis (19):
+  arm64: cpufeature: Add cpucap for HPMN0
+  KVM: arm64: Reorganize PMU functions
+  perf: arm_pmuv3: Generalize counter bitmasks
+  perf: arm_pmuv3: Check cntr_mask before using pmccntr
+  perf: arm_pmuv3: Add method to partition the PMU
+  KVM: arm64: Set up FGT for Partitioned PMU
+  KVM: arm64: Add Partitioned PMU register trap handlers
+  KVM: arm64: Set up MDCR_EL2 to handle a Partitioned PMU
+  KVM: arm64: Context swap Partitioned PMU guest registers
+  KVM: arm64: Enforce PMU event filter at vcpu_load()
+  perf: Add perf_pmu_resched_update()
+  KVM: arm64: Apply dynamic guest counter reservations
+  KVM: arm64: Implement lazy PMU context swaps
+  perf: arm_pmuv3: Handle IRQs for Partitioned PMU guest counters
+  KVM: arm64: Detect overflows for the Partitioned PMU
+  KVM: arm64: Add vCPU device attr to partition the PMU
+  KVM: selftests: Add find_bit to KVM library
+  KVM: arm64: selftests: Add test case for Partitioned PMU
+  KVM: arm64: selftests: Relax testing for exceptions when partitioned
+
+Marc Zyngier (1):
+  KVM: arm64: Reorganize PMU includes
+
+ arch/arm/include/asm/arm_pmuv3.h              |  18 +
+ arch/arm64/include/asm/arm_pmuv3.h            |  12 +-
+ arch/arm64/include/asm/kvm_host.h             |  17 +-
+ arch/arm64/include/asm/kvm_types.h            |   6 +-
+ arch/arm64/include/uapi/asm/kvm.h             |   2 +
+ arch/arm64/kernel/cpufeature.c                |   8 +
+ arch/arm64/kvm/Makefile                       |   2 +-
+ arch/arm64/kvm/arm.c                          |   2 +
+ arch/arm64/kvm/config.c                       |  41 +-
+ arch/arm64/kvm/debug.c                        |  31 +-
+ arch/arm64/kvm/pmu-direct.c                   | 494 ++++++++++++
+ arch/arm64/kvm/pmu-emul.c                     | 674 +----------------
+ arch/arm64/kvm/pmu.c                          | 701 ++++++++++++++++++
+ arch/arm64/kvm/sys_regs.c                     | 250 ++++++-
+ arch/arm64/tools/cpucaps                      |   1 +
+ arch/arm64/tools/sysreg                       |   6 +-
+ drivers/perf/arm_pmuv3.c                      | 111 ++-
+ include/kvm/arm_pmu.h                         | 110 +++
+ include/linux/perf/arm_pmu.h                  |   3 +
+ include/linux/perf/arm_pmuv3.h                |  14 +-
+ include/linux/perf_event.h                    |   3 +
+ kernel/events/core.c                          |  28 +-
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../selftests/kvm/arm64/vpmu_counter_access.c | 112 ++-
+ tools/testing/selftests/kvm/lib/find_bit.c    |   1 +
+ 25 files changed, 1861 insertions(+), 787 deletions(-)
+ create mode 100644 arch/arm64/kvm/pmu-direct.c
+ create mode 100644 tools/testing/selftests/kvm/lib/find_bit.c
+
+
+base-commit: 591cd656a1bf5ea94a222af5ef2ee76df029c1d2
+--
+2.54.0.545.g6539524ca2-goog
