@@ -1,159 +1,132 @@
-Received: from mail-ot1-f74.google.com (mail-ot1-f74.google.com [209.85.210.74])
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D9F4421EE1
-	for <kvm@vger.kernel.org>; Mon,  4 May 2026 21:18:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777929543; cv=none; b=mZ27GpTVAUI/4LoMCLb/AP0q0Y0Z4jZe5WV9qW0zzK3pErWpaFi/qeWzF3ajRQduCS1POo8LvLhE7qZSuuqnubS5FX1iLNFRd0owXZTfFpILKEAzaZLuFRqvfGxJOmAy7urn5tY/PJIlZ4yUyM5Ti4tyNXbZ9ipqsOXpNNgu1+M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777929543; c=relaxed/simple;
-	bh=z22FJ/RoHsM+jeuWzpMU9byGN80HsM7C3iFbEeU0P2Q=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=iKZ2K9SvKDaw5ArI1i57durWW2Blp2f1vjfgPK/ZFnHKH+oaxL0VoNPMPziIRfTHrwxRgTn9Juo77GnH5qnQeBaSD5+aXDIuF5gatsiSxN6copOhfqWaj82ww9Tui4kYC1MTuNSRr1LGjLIPwid6xOlz47GD8oMU/KcqN8KM7GM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cLtfez+A; arc=none smtp.client-ip=209.85.210.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57003603E1
+	for <kvm@vger.kernel.org>; Mon,  4 May 2026 21:40:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.49
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777930837; cv=pass; b=oXLAJMIuQINcogjD3KtjNM1PjiEqeDugnqEXEZJyyZVFRSqEZwP87foZnuJLiJKNOQi0QdSdJ7NBdIXZru4NRmiLMDNoxllwrZPI47QORcaBkQUFSrTjv/xP7EcE3dpSPrCk47DTsIb5dLTovJ344ROdIu1FgQo44bSp7Pr+pUU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777930837; c=relaxed/simple;
+	bh=Ld/LlEcorrolam1YE/IxVJLvik1dqmhrK0l7FZfLbwk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Kp/nXlbgzOpAhRzRaGWsNpTIXFdCRN0bh9OPDNBUybBYqi0NxrbrtHENyahw/y/LUOYt5e9w6Cvg5Cz5uvVGKT6+v6Butijn7uce/QH1CIZRlVmmfdDVAJMB54EhuRfsOC1wtixdCbQSIOFEf9OsNxKnf5JPvzcEp5Zquaaq4+M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I0A0LL7E; arc=pass smtp.client-ip=209.85.210.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cLtfez+A"
-Received: by mail-ot1-f74.google.com with SMTP id 46e09a7af769-7dcd9f8dbe2so7980986a34.1
-        for <kvm@vger.kernel.org>; Mon, 04 May 2026 14:18:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I0A0LL7E"
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-7dcc9b506d9so4470378a34.1
+        for <kvm@vger.kernel.org>; Mon, 04 May 2026 14:40:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777930835; cv=none;
+        d=google.com; s=arc-20240605;
+        b=YqcpwRJEepPwqwVdR8pxTezdHR3ai00QlVRvyMfoeQuyyKToFsj5gChBBLpalSaijF
+         Mn1vy4BhKcFusnEWb8w9bv+7jO6z/wwkY290ECWgx2N4tRGa9hzu9A0ULXNwShm1SaWd
+         xpJRDuwJV+RTH0AssR2MBaPX4pUZZVax/cmzUzyXcHwLbGvCQPTRDHSswZbOjp3N6OJ2
+         x1icEFU9/fJ0y0+gQ7jfLX+h2jUjz6Hmi561xwyGdfZCfLlJLLQEfqRzQ0MVrORpk8BE
+         vq+yNAD4DTTQ+wxkdLkHb8s7+EvYZ47XMjoCUFJTEfCIQTOBaBImpHlgscR2/Hlmy0sL
+         M46g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=O6+fBRwmn91m7bKwrvqg/u2DaVnZzqIZNZQkz4P/IjY=;
+        fh=LXNRnmNfv3V41mmX0K/qQ1eFe5GArTQU8I4mEOU3MyI=;
+        b=jsbbiWUYO0tLT8wusFd3Tr/UcYE/9LdWELBjLuKhrhqykAX6beRE3cT8YE59veP9du
+         b29XMnAA8qdVxy4nnVJ0bizXDl+dYXUUy6lfQGd52wdAWU9b/rG0t4quYwa/7vbDmKDi
+         ws9I7XqH4Z+B6VbIdSUQurXglpBGs4fAdWSvceaQREe3Mo5RnQ/4g2/BAmLB8g8WtBqf
+         eLpEXAk2oFRHqxpCeHM3KkQ+36PuiwJ2gYpfBs/hhbsayDiViUVqsScJaJNwagdb+K3M
+         rpYVB+rCUoINZi1N1wFU7mo4FoLjBMP9O49TpjbJmxs9JcCDC1qrF8UjyGNk2PogBGWp
+         HPAw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777929535; x=1778534335; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BjlPgXNwXeFHjDTHfAecQAjmNwOoUuZdzNZWTJemW0E=;
-        b=cLtfez+AcMC+GjbVP/sLegG4Ev2Kqp0rj95GdVnSM5UIqNdYQvFaVWnpV1f4Mhou0u
-         mMc6kkuCa+4rH95H0nkPzlN4l48xKX93DikxuGC7iGOb3SozrInCm7ZkhzGVi0IxJaac
-         8vx1n3G7n5CuTEgzf9mk3f//CLemcxPL3xrr5tvRZAbWlKABI90N6jGyUZ9MxogyS0dy
-         sJ72O2Bqomq8dvG89WMxlwRPToslhwLOEM7iCUzTnduOAdy834MG1XsLqoBWzxA+tC0U
-         46AmUcRv43DKxqnqykvU9+XcVAVDu4vD04754WPXRphv9PC2Nnz2dj6z/tr5J1E3qQWY
-         3obg==
+        d=gmail.com; s=20251104; t=1777930835; x=1778535635; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O6+fBRwmn91m7bKwrvqg/u2DaVnZzqIZNZQkz4P/IjY=;
+        b=I0A0LL7EWimP7llsOGkQMq0EYBNcedqFUHQzEzUXOjaoS1OlCxUJnbO0TdvpbYkT6Q
+         5O+NjJKNZzctpfRYoDl/GcZ5YyQLWCtfv7wZqzhHd1aOShOR8lsCJuDRpKcaNYQP+W+C
+         ftZDKoWXonjrYywKxJ6eNTv6wOBFTpjj5rPYKWY/PeJrRIVnahHqXeXqCdeEjCm8iue7
+         ebVzQ1i4mPwsvflM/giocfPh/wMQfl2+9iQ3ZcZLqy0DvzdrGu/L1VONvwQzbVVYI1iX
+         1HsvUB4slHnRQZmI3jQPQpB8Eta8SsgylMjKa88RX674v14XVh2eI9G7HGgvaQxeL+tW
+         HEeg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777929535; x=1778534335;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BjlPgXNwXeFHjDTHfAecQAjmNwOoUuZdzNZWTJemW0E=;
-        b=loNCf43VjWQS4LUCtwzORvc6epm3qyQ8V2ppHII2P2NHlNTrvneaV9vxJs9lDVabRw
-         Z8G1CfQ9fZ362CGQaL5h4pxliSOapsXApQLo+ukKw2x2mCDkqulJUNTUh/Z3WO5GJYmt
-         m/EyVhXbJoG66Dbil3YFN8TNjZf/SeRH9t8Z6bsqrtoM1v/AN1YKMGlL6c/ctGTMo1Nm
-         +NKlQsJA7eGNtzGDZTyOOHcLBnvOObwOF77Wu9nczNwLMN8zaHDGyRG3gdizKmtBwpKm
-         G+cjC5eiCgdQDL7x1bO+X+TmkAY6vFSGlu602ybNuWPNlEq0S9n6VXTM+tUKYSAUVOIL
-         v/Zg==
-X-Gm-Message-State: AOJu0Yw5AtgKtpOjlDjbJ8zoar7OXQGxaRVeB0kAm6kwFz8cQti5FigM
-	Oz3poVAldTJZzl0ay5gcxJZrz0z7RH2rFNAtyrb0YwMio7ji+urrHsNvNJ/G/7C1IeVujt/T1b4
-	ZykVDmHyYFOeRvwD0e4ZD80Kta56hwquz3MXyCRcnDp2V4nar7Z8j0e1NcdDESM0XC3ulxL6fji
-	6/T4klNpvDaHCu+UxZprvNZu3DkOfvA3Bd+1R3Lk9DtEn405sA2vp17AoIabI=
-X-Received: from ilqt1.prod.google.com ([2002:a92:cc41:0:b0:4fd:69a2:6072])
- (user=coltonlewis job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6820:81c6:b0:694:8fb2:2c35 with SMTP id 006d021491bc7-6998a59a043mr161048eaf.2.1777929534601;
- Mon, 04 May 2026 14:18:54 -0700 (PDT)
-Date: Mon,  4 May 2026 21:18:13 +0000
-In-Reply-To: <20260504211813.1804997-1-coltonlewis@google.com>
+        d=1e100.net; s=20251104; t=1777930835; x=1778535635;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=O6+fBRwmn91m7bKwrvqg/u2DaVnZzqIZNZQkz4P/IjY=;
+        b=rya5CAoGrL4CKGAE/xMx02DBv42WGt8pyRkTQMabZcFyTk5rfR/wU2duIEIbsH1OI+
+         mTdYI7kuYiKO6wQ8MgYjOtwQUDGPaM/HB+ffE75obTcgIN7z+zNWn002mhJPRA/0FonD
+         gJyqbPNLgVZo37QV3winrBZ4HovdQlVDOn7QsBQoa2j8B5NznK0OpeDvPE1hEW10JpdA
+         TWUb1UF1r66TNrA+LJjw6Y9WD5vQapyJ3XwTyu17l8B2aKFafqwmOJ/+BqbvNfpnA5Lh
+         3wPhhwfhPeh49C5XiV2nePP/EjY0trtZP9ZX6tbfB/pj7Ulz5yPC4LFafXyNSZax3xik
+         pQOA==
+X-Forwarded-Encrypted: i=1; AFNElJ+fFdy9fjqUvb7zxBR7rWYbE7x0CHJoRpN941nVivwLZx0zGQ8OZfeVpw7UPGsKjjyPRDg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSpwKXSEVh5j+H2bhFI7j9DW0IaZcFgizdB/e5ERoyrOSrZww/
+	El4DJGYd2XvkdbMp5ebzUDqtL84WUn25KKiJhD7rUB4JdsHVz+8gmJQSmqWFGbEwXJSK1hjT19T
+	JVEa9qMpAePWky4pMKk+2OgDkhw9itHU=
+X-Gm-Gg: AeBDietJm/lAORytZO/vdXd580Bu1Rz8DFefwt8EZlOh7mp/hR5fK5kzjOA7KnFOxi9
+	CilmMtQKhrfDd/qCxfYNkQGpHuaEEMn3jhcZebug4kYcJemudj9DFVf+4NdtVs1ndu0KYxqHzHS
+	B50Sv2rMiVVshtomaeB/hPrXmquQnxBXK/YFWbgrqeKZPxQr+WTsuoZlXjp4fb0jDqkMOj3BOBj
+	Ipb3vtLIgOxIGjQJUyoSDunuMUT6Qi6L/MGGHiCGB6/79JJlU24Gx/bzjeSD2z+N6/xSRCEqbWD
+	NIaLQFZFn3N3reYF9ENf
+X-Received: by 2002:a05:6830:2785:b0:7dc:d951:977f with SMTP id
+ 46e09a7af769-7dee126e036mr6225714a34.7.1777930835645; Mon, 04 May 2026
+ 14:40:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260504211813.1804997-1-coltonlewis@google.com>
-X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
-Message-ID: <20260504211813.1804997-21-coltonlewis@google.com>
-Subject: [PATCH v7 20/20] KVM: arm64: selftests: Relax testing for exceptions
- when partitioned
-From: Colton Lewis <coltonlewis@google.com>
-To: kvm@vger.kernel.org
-Cc: Alexandru Elisei <alexandru.elisei@arm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Russell King <linux@armlinux.org.uk>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oliver.upton@linux.dev>, Mingwei Zhang <mizhang@google.com>, 
-	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Shuah Khan <shuah@kernel.org>, Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, 
-	James Clark <james.clark@linaro.org>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, Colton Lewis <coltonlewis@google.com>
+MIME-Version: 1.0
+References: <20260503174534.45699-1-mikhail.v.gavrilov@gmail.com>
+ <afjcCBGzuZU2iON9@google.com> <CABXGCsPTbCdfrwWAtXOb7wOMUOgtL=hpsYYXXQrosoUjj_WkYw@mail.gmail.com>
+In-Reply-To: <CABXGCsPTbCdfrwWAtXOb7wOMUOgtL=hpsYYXXQrosoUjj_WkYw@mail.gmail.com>
+From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Date: Tue, 5 May 2026 02:40:24 +0500
+X-Gm-Features: AVHnY4Jugm6GIYUL3mjnI9SYGJLDXas3QDiAq6lrNI2LPx4RdXL8Ywk9x3vNxtI
+Message-ID: <CABXGCsO5RCdgE0rhY_NXOmvKCDX0q=sifNryMK3qYwUuDze5AQ@mail.gmail.com>
+Subject: Re: [PATCH] x86/virt: Fix RCU lockdep splat in emergency virt
+ callback path
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"H . Peter Anvin" <hpa@zytor.com>, Dan Williams <djbw@kernel.org>, Chao Gao <chao.gao@intel.com>, x86@kernel.org, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Because the Partitioned PMU must lean heavily on underlying hardware
-support, it can't guarantee an exception occurs when accessing an
-invalid pmc index.
+On Mon, May 4, 2026 at 11:50=E2=80=AFPM Mikhail Gavrilov
+<mikhail.v.gavrilov@gmail.com> wrote:
+>
+> What direction would you prefer? I'm happy to spin v2 as needed.
+>
 
-The ARM manual specifies that accessing PMEVCNTR<n>_EL0 where n is
-greater than the number of counters on the system is constrained
-unpredictable when FEAT_FGT is not implemented, and it is desired the
-Partitioned PMU still work without FEAT_FGT.
+After looking at how other places in the kernel handle this =E2=80=94 kerne=
+l/notifier.c,
+kernel/cgroup/cgroup.c, kernel/fork.c, kernel/sched/fair.c all use
+rcu_dereference_raw() when the caller has context-specific knowledge that
+makes lockdep checks inappropriate.
 
-Though KVM could enforce exceptions here since all PMU accesses
-without FEAT_FGT are trapped, that creates further difficulties. For
-one example, the manual also says that after writing a value to
-PMSELR_EL0 greater than the number of counters on a system, direct
-reads will return an unknown value, meaning KVM could not rely on the
-hardware register to hold the correct value.
+I'll send v2 using rcu_dereference_raw() with a comment explaining the
+panic-context reasoning. The diff would look like:
 
-Signed-off-by: Colton Lewis <coltonlewis@google.com>
----
- .../selftests/kvm/arm64/vpmu_counter_access.c | 20 ++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+  /*
+   * The crashing CPU may be outside RCU's watching set in panic context.
+   * Use rcu_dereference_raw() to avoid lockdep complaints =E2=80=94 the wr=
+iters
+   * (KVM module load/unload) cannot run during emergency virt callback
+   * invocation, so the pointer is effectively stable here.
+   */
+  kvm_callback =3D rcu_dereference_raw(kvm_emergency_callback);
 
-diff --git a/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c b/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c
-index 9702f1d43b832..27b7d7b2a059a 100644
---- a/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c
-+++ b/tools/testing/selftests/kvm/arm64/vpmu_counter_access.c
-@@ -38,10 +38,14 @@ const char *pmu_impl_str[] = {
- struct vpmu_vm {
- 	struct kvm_vm *vm;
- 	struct kvm_vcpu *vcpu;
-+};
-+
-+struct guest_context {
- 	bool pmu_partitioned;
- };
- 
- static struct vpmu_vm vpmu_vm;
-+static struct guest_context guest_context;
- 
- struct pmreg_sets {
- 	uint64_t set_reg_id;
-@@ -342,11 +346,16 @@ static void test_access_invalid_pmc_regs(struct pmc_accessor *acc, int pmc_idx)
- 	/*
- 	 * Reading/writing the event count/type registers should cause
- 	 * an UNDEFINED exception.
-+	 *
-+	 * If the pmu is partitioned, we can't guarantee it because
-+	 * hardware doesn't.
- 	 */
--	TEST_EXCEPTION(ESR_ELx_EC_UNKNOWN, acc->read_cntr(pmc_idx));
--	TEST_EXCEPTION(ESR_ELx_EC_UNKNOWN, acc->write_cntr(pmc_idx, 0));
--	TEST_EXCEPTION(ESR_ELx_EC_UNKNOWN, acc->read_typer(pmc_idx));
--	TEST_EXCEPTION(ESR_ELx_EC_UNKNOWN, acc->write_typer(pmc_idx, 0));
-+	if (!guest_context.pmu_partitioned) {
-+		TEST_EXCEPTION(ESR_ELx_EC_UNKNOWN, acc->read_cntr(pmc_idx));
-+		TEST_EXCEPTION(ESR_ELx_EC_UNKNOWN, acc->write_cntr(pmc_idx, 0));
-+		TEST_EXCEPTION(ESR_ELx_EC_UNKNOWN, acc->read_typer(pmc_idx));
-+		TEST_EXCEPTION(ESR_ELx_EC_UNKNOWN, acc->write_typer(pmc_idx, 0));
-+	}
- 	/*
- 	 * The bit corresponding to the (unimplemented) counter in
- 	 * {PMCNTEN,PMINTEN,PMOVS}{SET,CLR} registers should be RAZ.
-@@ -459,7 +468,7 @@ static void create_vpmu_vm(void *guest_code, enum pmu_impl impl)
- 		vpmu_vm.vcpu, KVM_ARM_VCPU_PMU_V3_CTRL, KVM_ARM_VCPU_PMU_V3_ENABLE_PARTITION);
- 	if (!ret) {
- 		vcpu_ioctl(vpmu_vm.vcpu, KVM_SET_DEVICE_ATTR, &part_attr);
--		vpmu_vm.pmu_partitioned = partition;
-+		guest_context.pmu_partitioned = partition;
- 		pr_debug("Set PMU partitioning: %d\n", partition);
- 	}
- 
-@@ -511,6 +520,7 @@ static void test_create_vpmu_vm_with_nr_counters(
- 		TEST_ASSERT(!ret, KVM_IOCTL_ERROR(KVM_SET_DEVICE_ATTR, ret));
- 
- 	vcpu_device_attr_set(vcpu, KVM_ARM_VCPU_PMU_V3_CTRL, KVM_ARM_VCPU_PMU_V3_INIT, NULL);
-+	sync_global_to_guest(vpmu_vm.vm, guest_context);
- }
- 
- /*
--- 
-2.54.0.545.g6539524ca2-goog
+Let me know if you'd prefer a different approach (option (b) from my
+previous mail =E2=80=94 converting away from RCU entirely =E2=80=94 is a bi=
+gger change
+but I can do that instead).
 
+--=20
+Best Regards,
+Mike Gavrilov.
