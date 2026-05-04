@@ -1,150 +1,184 @@
-Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 582B33E123A
-	for <kvm@vger.kernel.org>; Mon,  4 May 2026 18:50:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777920660; cv=pass; b=vBJXHiZf/V4L6hL3KH/VFAfGP6hp40U054VepFQnC+kaJx/cJ9CBGcfZWpO3ITfNqFLcklRyMhPvVeD4dGnX3m+2tBMl2NH2HaotJ+Xjatf41mAbsBqCvJXx9A54lMnBI+KJ707ehmdaY2h2J8L2b6R3wHzbS27GMKFEy/e7Qq0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777920660; c=relaxed/simple;
-	bh=WFwN+Wgh0NtNG8yxylw5yYzCOPx4Vj/DeeMIuhH/y74=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GXfZyQDPr2f9oD540mtzSnkMXbG9dG4SU77zj5J2XENIL7eAVp1S9988e3ggAqDr8UkmS51bKjUGYNwO6LvXaQYQ2Jdvle/lY6YuiLOa0qHEY9L1M02BiT7H4GbDuxK3mj5yYcrLOV1sEj9Xrv8JVqTDfTdg9ygUfzayxk25baw=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GZM7b5fT; arc=pass smtp.client-ip=209.85.210.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBD3D3E5568
+	for <kvm@vger.kernel.org>; Mon,  4 May 2026 19:06:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777921606; cv=none; b=LXceaCniMwYdwjcsmoyoAP2hhmEQPur73tmlu3+/VNMoZhcheymCL3Jb6QJLB0CZJvu/PZu3MOhpgqreUCGvKXVDXxdtUKLakeDhxNhvZ1f7CcHUu8h7kuVj2mFvxrfbKXFGyShSaABglLWvAqOOsZ31PBoESHAUYWB/crho/CQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777921606; c=relaxed/simple;
+	bh=xSEaTTVUVlwKE9SMgvY/jxSjdT4lw2aY23m0oR9BIGM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cIrvb52DHqy5m31lmRzLSW44GGpd6YFM6xwPMQSTxyMr8usOSKA9h2Kq/N+7cqhoL4d7JHfD/1RH4JOGQ9iIgr+I/fESRfZq8jX2zQzJ/54XuCk/bNhKJQeVf49MbdE9GuQLVDM9Y4Pn8RdgQxORlHl1oyuVjpvJw0zJOtn2sjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EJlZuLFF; arc=none smtp.client-ip=209.85.214.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GZM7b5fT"
-Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-7dcd89701acso4190631a34.1
-        for <kvm@vger.kernel.org>; Mon, 04 May 2026 11:50:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777920658; cv=none;
-        d=google.com; s=arc-20240605;
-        b=h88HenI9CMuCqI/BniMF3CEz2EpiWavwHbCTX6I6mn38yTEEpGJPVORMQCuiD0k5qx
-         qcZABkKACPMpPT1V0uXjF66bYiZun5h5ep44kfDpMeeDsVRG8I89JuaAByJ3zcZa4oaM
-         mKi1hHS+WXLZzoeWfGDAoq6jeh/VXpyROoXNBXOPAKj8wM9Msq+HV4HOV8cZmvGaVJEE
-         zH0GrZRKkWqWflfB+l9yr0kAR+WVeXhIX9eFqqMXEC6iAg52FWHWU1ebf0zu0rIS7Rpo
-         L+APNlWd4ga5tmCBJV1/K8ufjQv/xmQ7M8DWWEyOpO5hQghuBxwCQy3dr0jx5T8BAk20
-         EVGg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=7/k9XzcJNhM8ywmPnBuWkWoz/ZfLZiQHln4TiRKv62M=;
-        fh=JZvX+rkkcQsyFTVh0raw7yGloh0QN22IjMuiyOE1iEY=;
-        b=IGuHTZyG04YpXYly3j2l3smmVzPUtzTunzK4U336l7JAYjxUofkr5XRZnNtc2zqkqy
-         g2g4LWqKkJtNwKOBUbpMdPG6H+uVwocN1aMygzE/le3hqGZp9Hhn12BD3MbK2Hsx4X8O
-         WAjvRQebpG0gJZUc8bt0hYCkfEk3EI9fdDlFpnLTqRopmJd81yoBUY5k4SzR6MWRB7La
-         06u0j877WETp3o/KRH8ZGKFV/Dic3dZ1fSxb7Z1a+FQ9gWPTap3yXHH6WevDAU4EcqdX
-         0j5lLpUEurg30+clwa4UJVKX3bit1hb6SnaZBGlvzodcV9HuznmWYIvFlY1UrL8sJydZ
-         1sKw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EJlZuLFF"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2b2e8b95bdbso295ad.0
+        for <kvm@vger.kernel.org>; Mon, 04 May 2026 12:06:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777920658; x=1778525458; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7/k9XzcJNhM8ywmPnBuWkWoz/ZfLZiQHln4TiRKv62M=;
-        b=GZM7b5fTTmr99cxZOlNdlzZ3rLygd3hUPA5gdYc85TY0OJNDQbOIPe4Eur4MWLDrmf
-         75upXTx/wOWsZCWX7KlBtkaqxY2uiTLO/pJu/TvXxHEAJqbkUgKigV+lhAr2dR+HF+XU
-         spDY/K4eUHKq1jZ87AkcMeMAl40q+yWVKeU7hTyowTgztX2+WOsBvXaV/qkrppa3jgac
-         BW6ch1Lvjp0xECgGTWHQR2XEFOo5dZwLK0SK3fiXIsAfbKub4E817cT3XsrrlgHroiYd
-         zWi7Bb2JTHBUi0Ind9WsffzlWZ51I5NAlFYwu222BRJUymZP1KlMmMllDUDJC4H9g4lW
-         vZVQ==
+        d=google.com; s=20251104; t=1777921604; x=1778526404; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=t6F35o67JJ+BgMKb1KLJGbh+gKAaYW0m1XJ+eMW24qM=;
+        b=EJlZuLFFdUNKnf+E3u8Qb8uhuOdQNSGqrPoqurdqyZsZ1Q4FQL6JlTk5SAbVZkuQ4O
+         74Bk5BQTstvd8l3FKxIBL1Vhc+C6tGcTEHXbp4seZPKeZ5MAORlCmhxv8RJOcjCdM3tR
+         qjfu4CsUjZRVcKArbbbCjVRWjCAjzpITsgQDgA7Aui0AQ5faAt4AItcl4lYx0VUMlFgA
+         5q/jLmpdIpEckXvEB7PapgZaktnve5ATX9chcyX9JuCMwS+4pZ3XoHfNx1kLCvVJBCZT
+         ITQh3bGQxQGRDxETIiUS3HEsm08uvpFmUKkKhZBbsRKacJ4WcJTlasPv39UQxtNIkmeJ
+         LSJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777920658; x=1778525458;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=7/k9XzcJNhM8ywmPnBuWkWoz/ZfLZiQHln4TiRKv62M=;
-        b=FHh6yHjpNcVL4Q/w54Rm9ror+87iGMvWcTjdluYAq/8WlSR/JFWmxmjh1STCT9wCK8
-         lB4IQq1xzqASVn9I5kD1wBqRKRi+E0jSEMGTCp0gUwBIvxF20HKzDFO7MsK5ski2VPne
-         X2ztDwNidMaWxghqc2hkAHAWcYs6uTxOV4sfcHSjofgBD6eqRZEix6iFyMEtZSPBDMzp
-         VoalDaCKZzGk+eXeHmT5RIc40UckonzGRXLqHpLZJPVHVIzR5UMPAjKrcKi4f+O129SE
-         v4ub+jH3PcrpWeqpiS6wUf/Aws1fFATEwfPpStSKY4tUC+4gVNY5kUgu8Qa6mGTyjufr
-         7zmg==
-X-Forwarded-Encrypted: i=1; AFNElJ/Cdw+OntWgr8/c+ladt9TJLC+uXvXrFYHhfi1m1n8oS6QegzWzrZTngd65a4iHacAksas=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVDIZ5ut3N5re7dcnxwoL0a2kw39CK1Vhom5XVgoaH+hsGQoOn
-	GIww4o3aajomguj/pOxmQZfoNEjk96cl55oXYbVLmKXD07nOuf3XKMZnC4xPxV7wd1O44m1JUlp
-	NKZi5DeeucP233yvNdRXzmUV156TZEJ4=
-X-Gm-Gg: AeBDieugwQXz26eq3KkC3SI+LSXowH1HrzIUhXhUVSWXcNGTM9iT9X1L/RaDgp3RXWN
-	9eSiFvR26Dp9slgf9a4etSM+P1hmvGpWgt6HJGI3o+ALttFoF1zM+wECsKl4tQduKtPfVofZe00
-	H9Hxz3nvmSL7uUvIb5mGzDy6MYCkxq97eB7zGIbMyuflNyjJuzrofPBI+LGM7GJbVOuWxpzlKBQ
-	aepoKmKnuvCVqiFEX/MCmTU9NNj2LSK/7Pb0LgusQ+KWiLGhvRPGHCuKdk5Oc77pvyTlFpWp3ay
-	9VY63zZFgqhO/UwCtPC/IVBwLTbMQC0=
-X-Received: by 2002:a05:6830:6616:b0:7dd:91cd:2b19 with SMTP id
- 46e09a7af769-7dee13c1841mr7143978a34.14.1777920658269; Mon, 04 May 2026
- 11:50:58 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777921604; x=1778526404;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=t6F35o67JJ+BgMKb1KLJGbh+gKAaYW0m1XJ+eMW24qM=;
+        b=giIU+ymgu0MgD5kLBn9959meuaZ+4sE3nQHR4A45zHNHts+8Mf6HIzq0UICIzaCRjC
+         eqE0qcbG1oMXpnZ3eun00abpX9VfxqGS/BCaKM4PDDStdP89WkSayKZMseepMrMlmH1t
+         3SsXWerwEP0bcEoisF90RjKYVN01O6S+hSpSfAjtFneszMV334TZgs9lWsEuxF2fydd5
+         q56Vu6UfjlTP3fN+cqGuFCrq6ucQ+OcBPh+9DeEJLJalxJcK2D4a/x5ZhikeGZ2s0DD1
+         km0BZdoiqwO9V7VxC4Vp/K5z0tiqEsRsUAX8f1PvhVzEeao2oiBe0yan/hifEnIbKtkN
+         7d7Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9hiOnZlzgPJhnvh3MMSKhZFvoXFM4ToL8zZjrLflARd8UPFuA38NIEdAKvWUga7PwhIYo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnWl3FFhaRct1lbK5/sdarikiarea9xKi0Kct2PHSopt4X2Fx8
+	YnaDeMn2ORZ2KPXkpTQhbqHqilELm4GL12rYOJzbKIzb/vDRb5SSFUh/9OHChkXhZw==
+X-Gm-Gg: AeBDieuCCFLx8MIbiNsIMs7zjzC0htdMwuMNtrRkY2lGAy20BdbysLG9SmcuT+JXMKg
+	R41OVefIG4+J55g7FCdPfJ98PKEbzN/WEVuoUA86rQJ9YWonypBhvwGBmXjOC3tfustF4cGF2ke
+	Funlr/rU/kr5IirCUntHAspsL9nPGZW1WXl+1dCUbJbjsPRQAiIzIgYaIOONPn9iPq/gSrsJOt3
+	V5hU7rxiUfVRrd9mEH+IpU+dIPVplHvOnKkZoWHZIDyNrkpq9hc060XXzr9rAu7CroeUOBVOE96
+	63u3+SKhk5XCdDr/kUK9fNy8aidfRvA3kcGUcyGm9lxT0k/mCjh8vp9YSw00Gsgc1dCbMaqyvMW
+	uqEq4Rdk6PwBnhG+0a/HOHlW9sj7TBFlJrkxgxGZy/3p/pT6uYBUjU9/BhmcCLd01UxYGdSQbM4
+	h4QFplX7jarJYNfraOK/Zu2cCSHI7Max7dpy+Oz6K8LFDLJkkCq7OzqFx2Z4iR9dblCSBtHUAxM
+	V7DTHpgGT4=
+X-Received: by 2002:a17:902:f645:b0:2b9:e831:5e5c with SMTP id d9443c01a7336-2ba4f6fc12dmr829715ad.4.1777921603289;
+        Mon, 04 May 2026 12:06:43 -0700 (PDT)
+Received: from google.com (195.236.83.34.bc.googleusercontent.com. [34.83.236.195])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b9caa8bd20sm114957035ad.14.2026.05.04.12.06.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 May 2026 12:06:42 -0700 (PDT)
+Date: Mon, 4 May 2026 19:06:37 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
+	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>, 
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH v2 04/16] iommu: Implement device and IOMMU HW
+ preservation
+Message-ID: <afjnVR0OCGMN0XNf@google.com>
+References: <20260427175633.1978233-1-skhawaja@google.com>
+ <20260427175633.1978233-5-skhawaja@google.com>
+ <afUscSeXKnNAJ0ZF@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260503174534.45699-1-mikhail.v.gavrilov@gmail.com> <afjcCBGzuZU2iON9@google.com>
-In-Reply-To: <afjcCBGzuZU2iON9@google.com>
-From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Date: Mon, 4 May 2026 23:50:46 +0500
-X-Gm-Features: AVHnY4JpLV8TW3QXgd33Dm6Y0B2vguMOGlcRW8WNYYnY-37DO7FNpuRQP2R6RmE
-Message-ID: <CABXGCsPTbCdfrwWAtXOb7wOMUOgtL=hpsYYXXQrosoUjj_WkYw@mail.gmail.com>
-Subject: Re: [PATCH] x86/virt: Fix RCU lockdep splat in emergency virt
- callback path
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	"H . Peter Anvin" <hpa@zytor.com>, Dan Williams <djbw@kernel.org>, Chao Gao <chao.gao@intel.com>, x86@kernel.org, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <afUscSeXKnNAJ0ZF@google.com>
 
-On Mon, May 4, 2026 at 10:48=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
+On Fri, May 01, 2026 at 10:42:57PM +0000, David Matlack wrote:
+>On 2026-04-27 05:56 PM, Samiullah Khawaja wrote:
+>> Add IOMMU ops to preserve/unpreserve a device. These can be implemented
 >
-> This feels wrong.  If RCU truly isn't watching this CPU, then isn't RCU a=
-llowed
-> to ignore this CPU when synchronizing?
+>Can you make this comment more specific about what is being preserved?
+>Saying it preserves a device is vague and maybe even misleading. It's
+>more about  about preserving a device's attachment to a specific domain
+>correct?
+
+There is attachment ID, but the preservation of device can have IOMMU
+driver specific things, so in core I mostly mention "preseve device
+specific state". In later patches in this series, we save PASID table
+using the same callback. I will add more details in the commit message.
 >
+>> by the IOMMU drivers that support preservation of devices that have
+>> their IOMMU domains preserved. During device preservation the state of
+>> the associated IOMMU is also preserved as dependency.
+>>
+>> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>
+>> diff --git a/drivers/iommu/liveupdate.c b/drivers/iommu/liveupdate.c
+>> index f71f14518248..765d042e22e3 100644
+>> --- a/drivers/iommu/liveupdate.c
+>> +++ b/drivers/iommu/liveupdate.c
+>
+>> +static struct iommu_device_ser *alloc_iommu_device_ser(struct iommu_flb_obj *flb)
+>
+>It is unforunate that struct iommu_device_ser has nothing to do with
+>struct iommu_device. The former represents an a PCI device, while the
+>latter represents an IOMMU.
 
-You're correct that irqs_disabled() doesn't imply RCU is watching, and
-in the general case that would be a real concern. However, on the
-emergency virt callback path the practical situation is narrower:
+Yes, I went through various iterations of trying to name it in a
+different way but keeping the "iommu_" prefix and the "device" state
+naturally falls into this. Not sure if iommu_pci_device_ser is suitable?
+>
+>> diff --git a/include/linux/iommu-liveupdate.h b/include/linux/iommu-liveupdate.h
+>> index 6019cfc27428..279c7ab04f09 100644
+>> --- a/include/linux/iommu-liveupdate.h
+>> +++ b/include/linux/iommu-liveupdate.h
+>
+>>  int iommu_domain_preserve(struct iommu_domain *domain, struct iommu_domain_ser **ser);
+>>  void iommu_domain_unpreserve(struct iommu_domain *domain);
+>> +int iommu_preserve_device(struct iommu_domain *domain,
+>> +			  struct device *dev, u64 *preserved_state);
+>> +void iommu_unpreserve_device(struct iommu_domain *domain, struct device *dev);
+>
+>The naming scheme is inconsistent... Maybe it can be:
+>
+>  iommu_preserve_domain()
+>  iommu_unpreserve_domain()
+>  iommu_preserve_device() or iommu_preserve_device_attachment()
+>  iommu_unpreserve_device() or iommu_unpreserve_device_attachment()
 
-  1. The reader (x86_virt_invoke_kvm_emergency_callback) only runs from
-     panic/kexec/reboot via x86_virt_emergency_disable_virtualization_cpu()
-     and machine_crash_shutdown().
+Agreed, but I am trying to follow the already existing naming scheme
+for domains that is used for APIs in iommu.c
 
-  2. The writer (x86_virt_unregister_emergency_callback) calls
-     synchronize_rcu(), which would observe an RCU read-side critical
-     section started by rcu_read_lock(). But on the panic path we don't
-     have rcu_read_lock() =E2=80=94 we just have IRQs disabled. So even wit=
-h my
-     patch, a concurrent unregister could in principle free the callback
-     out from under us.
+iommu_domain_free()
+iommu_domain_init()
+iommu_domain_preserve()
 
-  3. In practice, the writer can only run from KVM module unload. By
-     the time we're in panic context, all CPUs except the crashing one
-     have been NMI'd into x86_svm_emergency_disable_virtualization_cpu
-     too =E2=80=94 a kvm_amd unload happening concurrently with panic seems
-     extraordinarily unlikely, and the system is going down regardless.
+But I think this is rare, I will update to this as you mentioned above:
 
-So the splat is technically a real issue, but the underlying race is
-already so vanishingly small that I'm not sure what the right fix
-shape is. Some options:
+iommu_preserve_domain()
+iommu_unpreserve_domain()
+iommu_preserve_device()
+iommu_unpreserve_device()
+>
+>> diff --git a/include/linux/iommu.h b/include/linux/iommu.h
+>> index 3853a3946733..1c424b32c5fc 100644
+>> --- a/include/linux/iommu.h
+>> +++ b/include/linux/iommu.h
+>
+>> +#ifdef CONFIG_IOMMU_LIVEUPDATE
+>> +	int (*preserve_device)(struct device *dev, struct iommu_device_ser *device_ser);
+>> +	void (*unpreserve_device)(struct device *dev, struct iommu_device_ser *device_ser);
+>> +	int (*preserve)(struct iommu_device *iommu, struct iommu_hw_ser *iommu_ser);
+>> +	void (*unpreserve)(struct iommu_device *iommu, struct iommu_hw_ser *iommu_ser);
+>> +#endif
+>
+>Maybe we can make these names a little more specific:
+>
+>  preserve_device_attachment()
+>  unpreserve_device_attachment()
 
-  a) Treat this as "panic context can't be RCU-correct anyway" and
-     use rcu_dereference_raw() with a comment.
+Attachment is too specific. See my comment above.
+>  preserve_iommu()
+>  unpreserve_iommu()
 
-  b) Convert kvm_emergency_callback away from RCU (it's only set/cleared
-     once per KVM module lifetime; a regular pointer with smp_store_release=
-/
-     smp_load_acquire would suffice).
-
-  c) Keep my patch but document that it's a minor lockdep silencer for
-     a path where the use-after-free window is closed by other means
-     (panic-time module unload being unrealistic).
-
-What direction would you prefer? I'm happy to spin v2 as needed.
-
---=20
-Best Regards,
-Mike Gavrilov.
+These are part of iommu_ops and having preserve_iommu() instead of
+preserve() is redundant I think. Note ops like capable(), hw_info() in
+the same struct.
+>
+>?
