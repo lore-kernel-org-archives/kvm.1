@@ -1,128 +1,128 @@
-Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6C738B143
-	for <kvm@vger.kernel.org>; Mon,  4 May 2026 22:54:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B8F38D6AD
+	for <kvm@vger.kernel.org>; Mon,  4 May 2026 23:03:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777935255; cv=none; b=fuptzBl5L+QEqOH1Vj38alk3ThLT0HdZWMNtxk2Ak3Z+f/75dpYoEdUITYN6hHwiwRck/bQ2fAkQh5SjFDa9kkzRrTzUNF3Vk9CmMBOZzYu9PJCqipI0rF1nGh+iGHln4oYeVURuyuwj5JBoh2Jq4OmwllhZNo8Kfp0vAUWIKO8=
+	t=1777935809; cv=none; b=YLwL8nJlfINDYOw6+gZv3F6WlfsI3ZuVSw8r/ywXKg7Ld2BTYtHO3ouB9YdT1Q2vftnq8pCqxnBYHAlALwUeUTeMr9w7IbAPdAxXG9frjhdYX9lWWUs1KBGT9EVLhOqdyStvD7CeImoLB7nHEA9pFXZ34QY1lJJvC+rfltTLVjg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777935255; c=relaxed/simple;
-	bh=GJA5seVahYpViKnGZOh3rNiBjtA0B+KD0LRZTUEpgoI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=E/y7zIldk7UN4SallQwCduuYQKzWitj7UQzpORODcwFFiayhSBMby3cMGwhmkD1DWpcoNj31621zfz3OmkQlFrd/yV9EiknajM7jDRjBjsD4uLpC/A1iAVSuTBpReMKGC9RqwbJqOHCBQpKAdmgcsP3vozLBfkrtMZVFZdQOpFE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DZV+R6HH; arc=none smtp.client-ip=209.85.216.47
+	s=arc-20240116; t=1777935809; c=relaxed/simple;
+	bh=gB1YeXZjOLidRaaBER9ixl9cpdeIZX4jkYyGOiGcZ2g=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=aSCpzd46Zg84U2h3Rt1+9ohuZq4pgcl1QStDTDAiO65tPU5DKdioEDVJKlCCrbN1Lo1xwzQeYP6+j4Rf/0M/qzXxi9yyJKw6L4+3uMpnd63WWzmTncALbpx/9vVRnrjdVLVQzTUYFCE2cITigLQSSWwm7p6Y7d9s1tDlTWZMPd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QhMjk3tK; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DZV+R6HH"
-Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-35fb166b0c6so2734913a91.0
-        for <kvm@vger.kernel.org>; Mon, 04 May 2026 15:54:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QhMjk3tK"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c799ee56bd6so1701317a12.2
+        for <kvm@vger.kernel.org>; Mon, 04 May 2026 16:03:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777935253; x=1778540053; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=9ugfH2lM7nQgOC3+hZY16zqoQboC9qbhlDerkTWHT2Q=;
-        b=DZV+R6HHRl2Ey2t3N3yv3xwGuB30C/kzGN7Tq/IPskIxfiKxxF0RXYE5d19hJeWkh7
-         M3eceaUMnvjnz2yu5bKALKMVbo5tTJ0zSQOEwetuBV7Y1jQFJipQ8SV1H7OSIHHoVA59
-         HIsPgRuPqqHCtqWkKqzRugFIbu/QbGOHWLl6QKrCi4zCBp1GurcsCSxu8O6fyKaMfNam
-         +OFzRzwSGViW00TaV2NafVAphvxP34SKk4SB7j3MiJdW1avgzQRsNLxknPA6tMS/l/oL
-         ssl6edK1TGxxm4uJR09O8l1RmfZyC5o+fr+xYWhEuJQzE4rtGSTmuxt6faHImSwEY+Ry
-         raWw==
+        d=google.com; s=20251104; t=1777935807; x=1778540607; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=F5u0NRaaVg1firf+FEu7AwSnY3aSrTVvAGDevzmZHuA=;
+        b=QhMjk3tKYQbY5FjD0vCvPMnrVX6sUN2fmSg6WiqMKjnsVgzBlEm/T2Cu+2MHx2TCRf
+         SYQPxfybB7UR5CRLZyEj4eUm4u7y/56fPPa1wPPrvY9HM/WbgZibgI7pJ7/EdkE0T7BE
+         dx/7JnEcmuPLBpdt+Ia3eAzAElHPrjgbXPX4Xh/yOjoQI5JgPF3rnYdcyDBmgwuKf2ua
+         85SCXuFgtvaSj3QsghIg/K/L3rfBVvEp1SOBNfkToneKe/2qkFO/CwL1492O6uGdGsiV
+         8y+oEGefjcuZRNl2AFx3acfY/dBe0kWE4X6HqCmyeR6ZLyMM3tSDmbN7TGgwfWhliYzP
+         M6gg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777935253; x=1778540053;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9ugfH2lM7nQgOC3+hZY16zqoQboC9qbhlDerkTWHT2Q=;
-        b=OirvS9ihIYBfYFaKO5SoR6DY604C0wbsy4nYTLzOqSg5oi1o/0lnpQPbQ42XgutK5K
-         6Dv+ERk7D2l3KTUItWMe/etB67zGoFNwh6iUiskR3z7Iuu0BAy0NM/3bubMXHV3Jei1g
-         2fdVzka+cUjrLgNcTNh58pLRjvjkkYAh7/gbecMwIHFLP6Hgv6DRjZgMJ7RYytbfwRWv
-         hIRF6LZErnPnEtJYIKNDw+CyOj6jm8/sQiNBcz9C/JukPUE2e5jNM/aTXCU06ol9LFUB
-         s7D365tTY97ASYzOIONsuz2WXgoXFTGsKqPfcEmF01f12Mvu8oZqHmFuLIRsJseV/DdO
-         6nTg==
-X-Forwarded-Encrypted: i=1; AFNElJ9gEizreJGYq/cT8zA5CFpKyXl7eVN+39K9mIRb0mg8IFebVwPXjvxz+Aa6KtdSWi5xHp0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwLALT0J83MVBUy3CCG3peySNLIC5meDNOJtPyVioO1IHnRnTrj
-	9/yem6RhuRyLEAjN+nJwyNvdSScZPc2q/4mmVSgHdAbmMkS/IBqHPHT3vIMBCS0Hrg==
-X-Gm-Gg: AeBDieux1jy75qp8uhJ2zooNWUMClVahvPWdfprRBOVt2vru1rxe0esak/+rP0Vn/w+
-	olqzzz9bqHdIl3/T0MrvfKYnTC27yX95JZMXyRo2ydNtEP57yf64jdTTi1iE5pmLpqI1wuQKYvA
-	PwJImBDankZ+0bdhgaMYoKaSI+Yl4YgkriQeJnwz6rZ1uGYB+/iiIo/uHS859POZKvQPhCT6x76
-	Xv4KJLFRlc+cq3icuv3t5iuH2FhQzRpq1QCiX/7/C5q7OCoLc5sCXDUXgJFKClhlx4JEcCejcPC
-	dbvFiXGmQcyfwKwofAlNphMfUhgjIHHiAw+TCodw0swTs2UhXOtWrMDSocxf+vQIz1Gc2Iy75Ua
-	ENuQ7i2cqTa0uHBz2OSkpC6mKQZbMDtnHbaQdSdi5jmgAb05P8Z9X0/g8yovzD5w/zn5NWPERvr
-	S1VUyYWzRWzud0u8qbLiG9drvDOZ0vM4/FpRf5tQhRFwEl9PlFGmfkdNyrhm7ZAKKJIpf6xpU7A
-	29zdg==
-X-Received: by 2002:a17:90b:2e85:b0:364:a497:db8f with SMTP id 98e67ed59e1d1-365727322f8mr956720a91.9.1777935252914;
-        Mon, 04 May 2026 15:54:12 -0700 (PDT)
-Received: from google.com (76.9.127.34.bc.googleusercontent.com. [34.127.9.76])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2b9f0b21c4bsm88242915ad.29.2026.05.04.15.54.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2026 15:54:12 -0700 (PDT)
-Date: Mon, 4 May 2026 22:54:08 +0000
-From: David Matlack <dmatlack@google.com>
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm@vger.kernel.org,
-	Leon Romanovsky <leon@kernel.org>, linux-kselftest@vger.kernel.org,
-	linux-rdma@vger.kernel.org, Mark Bloch <mbloch@nvidia.com>,
-	netdev@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
-	Shuah Khan <shuah@kernel.org>, Tariq Toukan <tariqt@nvidia.com>,
-	patches@lists.linux.dev, Josh Hilke <jrhilke@google.com>
-Subject: Re: [PATCH 00/11] mlx5 support for VFIO self test
-Message-ID: <afkjkBq8B-4KjhS_@google.com>
-References: <0-v1-dc5fa250ca1d+3213-mlx5st_jgg@nvidia.com>
- <CALzav=ci8bi3=sY+F3HJTB5sOQ_pJ8Lm+kz0CDBBWVXry5P98w@mail.gmail.com>
- <20260501164314.GA1381708@nvidia.com>
+        d=1e100.net; s=20251104; t=1777935807; x=1778540607;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=F5u0NRaaVg1firf+FEu7AwSnY3aSrTVvAGDevzmZHuA=;
+        b=eoI3Wvz9waInr/x8dHB9kjyEafvumX1o0Vl3ZVPPIwt+RuHIRrAkMgNPuwWd/y1xk2
+         zocuYL4gygPo9UCITAKN/hPnFJSw7J+YD/qtPeKufBEmEo0IV4gT4STdVYAq9yFh0Drw
+         UATejD2Uw2R898lKb4ErOOfAkymVZYcCgF5RrEJ9OJm9+61Sw1QlfKAhcxijpvtXZqWr
+         VI3LIFkcq4oCHfhOZk75IhciMbiGeDhg7t/7/4YBMJj8uoosYYOlccIqXs1PMdGuES6c
+         7UC7nzKPuISTSJAF6zt0GsncqFk2Rw/lTGkPxyORwd78bndXLl5IZI++9+GIMIR8MG77
+         ZRXQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/ogtyz8B0bbZAutFPdcnwwonhBg8o6xXPHWnJSoRJefrezCATQL/KVdjAI259gYJZkHb0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywggd/xIm9w9imBchbaiGWvhtwNhmQmJAJDjSX5TUuAN60Zjhse
+	ACSl0VIrd09P+aXRsHo53gUOPr/R4vCda0uxlsIY8/BtsbZ4rkFpQc+H93oR3ezOM3Hga5LLhcz
+	5JMupfg==
+X-Received: from pfbit6.prod.google.com ([2002:a05:6a00:4586:b0:82f:cdc8:c871])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:1586:b0:39e:badd:c1d8
+ with SMTP id adf61e73a8af0-3a7f1bc3fa6mr11902179637.31.1777935807188; Mon, 04
+ May 2026 16:03:27 -0700 (PDT)
+Date: Mon, 4 May 2026 16:03:25 -0700
+In-Reply-To: <CABXGCsO5RCdgE0rhY_NXOmvKCDX0q=sifNryMK3qYwUuDze5AQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260501164314.GA1381708@nvidia.com>
+Mime-Version: 1.0
+References: <20260503174534.45699-1-mikhail.v.gavrilov@gmail.com>
+ <afjcCBGzuZU2iON9@google.com> <CABXGCsPTbCdfrwWAtXOb7wOMUOgtL=hpsYYXXQrosoUjj_WkYw@mail.gmail.com>
+ <CABXGCsO5RCdgE0rhY_NXOmvKCDX0q=sifNryMK3qYwUuDze5AQ@mail.gmail.com>
+Message-ID: <afklvRDc4wwzjkhJ@google.com>
+Subject: Re: [PATCH] x86/virt: Fix RCU lockdep splat in emergency virt
+ callback path
+From: Sean Christopherson <seanjc@google.com>
+To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	"H . Peter Anvin" <hpa@zytor.com>, Dan Williams <djbw@kernel.org>, Chao Gao <chao.gao@intel.com>, x86@kernel.org, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 2026-05-01 01:43 PM, Jason Gunthorpe wrote:
-> On Fri, May 01, 2026 at 09:11:11AM -0700, David Matlack wrote:
-> > On Thu, Apr 30, 2026 at 5:08 PM Jason Gunthorpe <jgg@nvidia.com> wrote:
-> > >
-> > > Add an mlx5 driver to VFIO self test. This is largely a remix of the
-> > > existing VFIO mlx5 driver in rdma-core. It uses an RDMA loopback QP
-> > > to issue RDMA WRITE operations which effectively perform memory
-> > > copies using DMA. Since mlx5 has a stable programming ABI this
-> > > should work on devices from CX5 to current HW. The device FW must
-> > > support the QP loopback configuration.
-> > 
-> > > This entire series was coded by Claude Code in about 4 days.
-> > 
-> > Very exciting. Josh Hilke from Google is also working on using AI to
-> > create a selftest driver for Intel IGB NICs so VFIO selftests can run
-> > in QEMU [1]. So it's encouraging to see you were able to do it with
-> > mlx5.
-> > 
-> > [1] https://www.qemu.org/docs/master/system/devices/igb.html
-> 
-> Yes! I would feed DPDK in as well in this case? Combined with the
-> kernel driver it should be doable. It is much easier if you understand
-> how the NIC works, of course. This worked out significantly because I
-> guided it through sufficiently small steps and knew where to find all
-> the quality reference material..
-> 
-> > >  - Make it work on a PF too (this is surprisingly hard!).
-> > 
-> > Can it work on CX VFs? We're interested in continuously performing
-> > memory copies across a Live Update using a VF via selftests to
-> > demonstrate SR-IOV preservation (when we eventually get there).
-> 
-> Yes, I started with VF because it is simpler.
+On Tue, May 05, 2026, Mikhail Gavrilov wrote:
+> On Mon, May 4, 2026 at 11:50=E2=80=AFPM Mikhail Gavrilov
+> <mikhail.v.gavrilov@gmail.com> wrote:
+> >
+> > What direction would you prefer? I'm happy to spin v2 as needed.
+> >
+>=20
+> After looking at how other places in the kernel handle this =E2=80=94 ker=
+nel/notifier.c,
+> kernel/cgroup/cgroup.c, kernel/fork.c, kernel/sched/fair.c all use
+> rcu_dereference_raw() when the caller has context-specific knowledge that
+> makes lockdep checks inappropriate.
+>=20
+> I'll send v2 using rcu_dereference_raw() with a comment explaining the
+> panic-context reasoning. The diff would look like:
+>=20
+>   /*
+>    * The crashing CPU may be outside RCU's watching set in panic context.
+>    * Use rcu_dereference_raw() to avoid lockdep complaints =E2=80=94 the =
+writers
+>    * (KVM module load/unload) cannot run during emergency virt callback
+>    * invocation, so the pointer is effectively stable here.
 
-Makes sense. I tested it out and was able to get vfio_pci_driver_test
-passing with a CX7 VF.
+AFAIK, nothing actually prevents module unload when the kernel is panicking=
+ and/or
+rebooting.  E.g. see commit 2baa33a8ddd6 ("KVM: x86: Leave user-return noti=
+fier
+registered on reboot/shutdown").
 
-> The PF support flow requires a bunch more complicated stuff.
+>    */
+>   kvm_callback =3D rcu_dereference_raw(kvm_emergency_callback);
+>=20
+> Let me know if you'd prefer a different approach (option (b) from my
+> previous mail =E2=80=94 converting away from RCU entirely =E2=80=94 is a =
+bigger change
+> but I can do that instead).
 
-Do you think it's worth supporting PFs? If anyone with a CX NIC can
-enable SR-IOV and run selftests on a VF then we can keep the driver
-somewhat simpler.
+For "normal" usage, if there really is even such a thing for this case,
+smp_store_release() / smp_load_acquire() won't suffice, because the kernel =
+needs
+to ensure the module text isn't freed while the callback is in-flight.
+
+But as you noted before, if the kernel is panicking, (a) the window for any=
+thing
+to go wrong is comically small, and (b) at some point the kernel _can't_ gu=
+arantee
+that everything will be "fine".  So I'd probably be ok with just sweeping t=
+his
+under the rug?  Assuming we can't come up with an easy-ish solution that do=
+esn't
+require taking locks (which to me, would have a higher probability of causi=
+ng
+problems).
