@@ -1,135 +1,177 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4687175A7D;
-	Tue,  5 May 2026 20:45:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778013931; cv=none; b=S983Ft8orrSD31/LBW7Bhvn7M4+Ux6O0TQCYKBrugHFqafxGgQWmh+9GP8Z0hMTr9J+JErS8g0MzviU96RZ6SSJDsu5iRqgy4mxgdDp8D4OhG6j/YI/5zB4u08NZAL1EQ1owoSbxDWmnraWAnWIyVHNFi+h0ggo7KVM/xW8O+4g=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778013931; c=relaxed/simple;
-	bh=Nn04C1knZJirWEuYFoTKWZvlblyH82RCgi5tvI7g5cE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ckc/2Sr6inBp50N/QsGgwkCqZ4WFSP1iFFgyIU3kKFp5XMXidIGupPjHLVTvUiGdmqHE1tCTWvXjQeCVx9PDKwDIrapmb4ZYd4j+qAXSyj4RaNa6b1mo28NbMQNxstBp5SXUQf0/NZCMmRd+CF4yPUiQdSPY7ipnXE4ib7bbcAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=sAGkipe6; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D422F0661
+	for <kvm@vger.kernel.org>; Tue,  5 May 2026 20:50:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778014210; cv=pass; b=YE+qdmaojhMMIQ5ShGe/4deW6otG8TypcEm1hjRIbDoGhS1YNtWQN2Zsvlc6uSn54CzVxrnWkYzt562Hp4UxzQv3cuzGe50E5vIdfOzCZU1+ZQ3jgTj5KeeCHZZOTBH0TFszEX011ZtoBzXwgAxzyoOT7F8uUA47VkLATSWOx8s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778014210; c=relaxed/simple;
+	bh=UOcOSM0NVTp+AhHGw2v9/iHru63uilQRzg5I7GcGloA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=A8pu6ItzJoryutw0yOTYK4bm6cg5orNVCrveVQiDqvBp0TZExHR6H71+GpxbuqqjrIAzxxS76+oU2ppOQUke+9ql8ni3x5jS3fuSp1w9fl0mhF3i7O+zAM3U9jCWFeXOo1OKTD5pC97ujdBJi9lQRxo8xaRcZvjsj427M3yvePo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wGogNPoo; arc=pass smtp.client-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="sAGkipe6"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 645DrJPK1421455;
-	Tue, 5 May 2026 20:45:28 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=oO6+PbfZP1uHPSGGS9+78RwOJ4UVqSw7sxxfIMwAA
-	BI=; b=sAGkipe6cAFRU88mNgjKCs2BvOD28GXduFZ1Tws+B/TwrgWqEcKzSlpL4
-	KCFnZdUtHOnRuRxobEWd6oLvIME8DHTJOUx0Bx5t1O9b9ZPb3IUwwmiIOZIepeLa
-	WaWr9Lg/LjUVdXzTVh81KLrRFxcR2JAClmbitDbpV2gFV3KqBbe9hs1Tf78gN9HG
-	VrArL0ZUErlTG1b5cRYhVeYrTRLIEMH4pOpwT8EzTn5DOEeOKk5ZxGAUntBSagTB
-	eMkHmI1V6VnszeQQs4JFE3wb4LE3DsWo3ZN188JAxaY+WpkT28u5AyBjHAAWaBmk
-	YqjEpwWyar3kJEvWhJBZiwpZLyX6w==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9x4nnd2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 May 2026 20:45:28 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 645Kdlnp026809;
-	Tue, 5 May 2026 20:45:27 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dww3h3b6g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 May 2026 20:45:27 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 645KjNW643843978
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 5 May 2026 20:45:23 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 4336620049;
-	Tue,  5 May 2026 20:45:23 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2780F20040;
-	Tue,  5 May 2026 20:45:23 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Tue,  5 May 2026 20:45:23 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 4958)
-	id 12A90E069B; Tue, 05 May 2026 22:45:23 +0200 (CEST)
-From: Eric Farman <farman@linux.ibm.com>
-To: Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        Eric Farman <farman@linux.ibm.com>
-Subject: [PATCH] KVM: s390: Toggle operation exception for userspace
-Date: Tue,  5 May 2026 22:45:21 +0200
-Message-ID: <20260505204521.1658704-1-farman@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wGogNPoo"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-50e61648f10so69071cf.1
+        for <kvm@vger.kernel.org>; Tue, 05 May 2026 13:50:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778014208; cv=none;
+        d=google.com; s=arc-20240605;
+        b=CR5cNI641oAFNvZ92Jm/OQsjMz+kBLfmDmo7BdhUghTGGoDysm01ZW2bQHg6A4kVMH
+         WDfguk/RIf/3Hwe/GgCOlWvW/OBFDX0olmHDfUspiu5AInjlxhKRPIu4LOGGkV/OrIv4
+         vPyg3pm0OILIypFzp7AZ6Yi6UjW+Jq4AhlD1WHIlPro6WSjDJFV2ZB1VGh8JLHDKm92m
+         HYterRGkhTPoYnM5n5d4Gpfjy2yLuEKSXCKdJUP5SDqh/jkGy9EVCdCPCRonAWyO4R8Y
+         bNn2TcUg++NdMdHcGJ6e+2pW6M/sozrYtDtz7SND2/4yDZljD4OXi7d0IdIH4XiMa3yo
+         9ggg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=ZdlfzVxcZ8EbOedFXFU/5hBDrFZ+Mq+/UCaBvwRzoJM=;
+        fh=FLOGviUmksfDXOGh5CJ4t52jP1oaPJZ+vaHSBpx+N1k=;
+        b=Z0omv7JdAEHLEhbNiYzPa2UCjYuwPQvup2CaPgEThFe2J9Cmxh1Y9Djv+Ze+JB9oOZ
+         c89qBAXurFbzq5/DWgKmzVlKneYn5CdeJLcRssWd8DIbIJVe88DFfjcE6RMwYzRVVpA/
+         jXzxHvGna8d0WQdqqxaz9bg8yLIspQ21r92wSLinPo6xeNTyHzcpSLOuZ/N8fKjnhrKU
+         nMcICWMX/QQGsfRMH/BHw7kVXRnXZTLmRFYyXl8+6+KxoqZj/1dMQNsNOA/BjJ8SNg9D
+         I+bhk941+dT16KOHtpB1cACzmeLl24Mw2Uwwh4nWEd/X9ShrTtwJXUIC7c38d34VoE03
+         zf8Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778014208; x=1778619008; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZdlfzVxcZ8EbOedFXFU/5hBDrFZ+Mq+/UCaBvwRzoJM=;
+        b=wGogNPoo2xu3ct48FIkbI2o4keVvLZ2S0B+R9NecOxy1s+RlIiOydOBtFYjkMyS4Gb
+         dZKXK4QzpW01OGJhTDbOW9khMjmBQYomj5uWH3kH6WySVUSJJHYKn50ZI/iPcVJmuhnf
+         HnTKmqtpHVwwPrPKIDn3wVqmht6gduyqnb0/akVBwJOnUpEcEld9R/+/M5WTFqs12x3/
+         XGLxKLhuYKx94UdN5hy2OHNyIML4sYACIo3QTSD/f634aoNd8gqoQ01Hf5pV3L3E4nuc
+         b954wFsKnbpFQ4m+r/vBa4lk+bsNptfFcnx3qA+mzeWBP05WISNGnS34YV1CAADHO5e/
+         cGnA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778014208; x=1778619008;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=ZdlfzVxcZ8EbOedFXFU/5hBDrFZ+Mq+/UCaBvwRzoJM=;
+        b=HMOaTNxZECyEcO4pwDgnOg8CzFZIALcfUsiJ+owDVXd0FTOl4pQZ+cJ+x2M/XsSSHc
+         wiIH1adGsJWupY/OmKImkV6tPVwM7TVtfk3nCJXLt0hTaZeFHkQHNzgtr5d1hqrF1j+8
+         z/VX5hTWxXLpKGdt2cjeOBVjofbIOgoXJsperCskj3xjjhYwgX9IEHlWSHmc0xIgwzrL
+         2yy5OXVgN3Shk0ZvKHUt3NFbOk8OgBnbIFGfCEUBS39mFk3r7HEn7NCr3uixWYwMNuxR
+         yKyL/gcsiYtWssG77m9JE1c3/efRtIr3wSJtL8KFyW5kZnzYnNdqGK1k6/UZAjLurRWN
+         0a/Q==
+X-Forwarded-Encrypted: i=1; AFNElJ/6ccYT0yl/sVcIfYJBNUqjSnn3+0aM3hTOG1HUWW2pMFuy2cEFUB0ukdMr2yQ0qDvjnhU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyTZrWRaVyJscQVBSifyYR+Pber4LkpFppiRWqOLj8ZdfQGwgUN
+	3tjEM4epyQIXqG62lZWijIFa+6tCXbcRv9FQeFMqpMVz6NNdAEQWp5dpkHFozw30+LyYiWiNBZg
+	XULdpqX6GkztiXAk0swfLoV+g2PZR42LzVQBP5qRJ
+X-Gm-Gg: AeBDieuuEBwwsflOLdQfPLaTg/EfxTMclMjuGiQzE60rSxepRyoqw8FNsvPzbw9tnXt
+	bERUc6uwdvSDuOW30HlVx5tMc646na3o03cF5Dc6JkzicbQAa7B27WKCF8GLwAqNQOt68lGQXCz
+	ZSbq0NuM3XhZtguxP7hsTeRq+T49E1Qd9lVBY5wRJYUzHMYxFp5Z79sicbeLAGZlsGw0FJ53nNX
+	nxO/pXgXry4No2xJQLvi3ORiXs5Z07wPLwvdJX/mwCjUbi6f7sQAKjEKXSqXMk9tOu7xEBKgYrQ
+	r2YaKfWfR+xQv1lype+SQ6HwKOG9Yg==
+X-Received: by 2002:ac8:584f:0:b0:50d:edb1:6bd1 with SMTP id
+ d75a77b69052e-514632cb431mr917981cf.13.1778014207794; Tue, 05 May 2026
+ 13:50:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <20260402173059.1018805-1-rananta@google.com> <20260402173059.1018805-9-rananta@google.com>
+ <20260413165308.GA3034974.vipinsh@google.com> <CAJHc60yS==1ZeOPYbPNw+WC8_rZwze16_zOSxFE4o_dP8KKXUw@mail.gmail.com>
+ <20260505182013.GA3901795.vipinsh@google.com>
+In-Reply-To: <20260505182013.GA3901795.vipinsh@google.com>
+From: Raghavendra Rao Ananta <rananta@google.com>
+Date: Tue, 5 May 2026 13:49:55 -0700
+X-Gm-Features: AVHnY4K6PAoBfr1_XmT9VnlV68fcFC3Tnjry_PmMy_eFsV9ZZIR3PSYcoij8Ry4
+Message-ID: <CAJHc60ysfZCENvNsWSLrp=ughrgR5M3wSM4Z669ESanMPnMm6g@mail.gmail.com>
+Subject: Re: [PATCH v7 8/8] vfio: selftests: Add tests to validate SR-IOV UAPI
+To: Vipin Sharma <vipinsh@google.com>
+Cc: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>, 
+	Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA1MDIwMCBTYWx0ZWRfX4m70vA6LmF/s
- J2hb1VsZXdLtOxjqw6n0Zy36f/IVlVpvCnKt+ygzTfLm1y7y/o8eZpkiC3sFTrnJq/X42dNdHbz
- PqFdqHPRgcVBTk5JZ6yKE2/Kw+I2rxIogO64MCub3NgQ2ynX4FiUf47Vm5/VdYHyGorvBwbuIRe
- EQ4MQUDuNbzzIkHh6d/JJhywDl/0HMUPTp4+OcUR2/5mSp62On0ZzpqC7i9IkcFWVtovqwOqJ9w
- WaOcDxUGNAb/wbY2tSrebz0UYB5rJtfREpNKc0p1e/02K2xnBaXxSOQsdUmb9Dh3CFxstODrFvJ
- hAc3yIYP37Nl8+cipwStAArHywSIdvar+bkYRkzCykOYAERMrSr6BTPLx/yGE3NdVY1PwYiWIcJ
- pS3S7uIU7vlABJuWh0MjaaFuz0pTxMJ7l43KUa8xJrUk8NcxvNottw5b4EiikcULD0k2EaBJVnF
- KoB+iogP8I6VbMzlzvA==
-X-Proofpoint-ORIG-GUID: PHdM-PhnVcymXSs9NyVuPTCsxm8_lFcO
-X-Proofpoint-GUID: PHdM-PhnVcymXSs9NyVuPTCsxm8_lFcO
-X-Authority-Analysis: v=2.4 cv=W7UIkxWk c=1 sm=1 tr=0 ts=69fa56e8 cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=ea8k8XiQOFGV3AjeF4IA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-05_02,2026-04-30_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 adultscore=0 lowpriorityscore=0 malwarescore=0
- suspectscore=0 spamscore=0 clxscore=1015 phishscore=0 bulkscore=0
- impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2605050200
 
-The KVM_CAP_S390_USER_OPEREXEC capability allows operation exceptions
-to be forwarded to userspace. But the actual enablement at the hardware
-level occurs in kvm_arch_vcpu_postcreate(), and only if STFLE.74 or
-user_instr0 are enabled. The latter is associated with a separate
-capability (KVM_CAP_S390_USER_INSTR0), so the only way this happens
-for the USER_OPEREXEC capability is if STFLE.74 is enabled. KVM
-unconditionally enables this bit in kvm_arch_init_vm(), but the guest
-could disable it from the CPU model and thus ignore this capability.
+On Tue, May 5, 2026 at 11:52=E2=80=AFAM Vipin Sharma <vipinsh@google.com> w=
+rote:
+>
+> On Mon, May 04, 2026 at 10:51:41AM -0700, Raghavendra Rao Ananta wrote:
+> > On Mon, Apr 13, 2026 at 11:08=E2=80=AFAM Vipin Sharma <vipinsh@google.c=
+om> wrote:
+> > >
+> > > On Thu, Apr 02, 2026 at 05:30:59PM +0000, Raghavendra Rao Ananta wrot=
+e:
+> > > > +TEST_F(vfio_pci_sriov_uapi_test, override_token)
+> > > > +{
+> > > > +     struct vfio_pci_device *pf;
+> > > > +     struct vfio_pci_device *vf;
+> > > > +     struct iommu *iommu;
+> > > > +     int ret;
+> > > > +
+> > > > +     iommu =3D iommu_init(variant->iommu_mode);
+> > > > +
+> > > > +     pf =3D device_init(pf_bdf, iommu, UUID_2, &ret);
+> > >
+> > > I am assuming because of this, you cannot move device_init and
+> > > device_cleanup calls to FIXTURE_SETUP and FIXTURE_TEARDOWN respective=
+ly.
+> > >
+> > > Can we just start this test with device_cleanup(), then do init with
+> > > UUID_2? This will allow to reduce the code in all of the tests by mov=
+ing
+> > > things to corresponding setup and teardown functions. WDYT?
+> > >
+> > Yes it was intentionally kept this way for the 'override_token' test.
+> > Also see the previous 'pf_early_close' test that performs a premature
+> > cleanup of the PF. To accommodate these (and any future TEST_F()s we
+> > may want to add) based on your suggestion, we'd have to create
+> > special/conditional statements across the tests and I'd like to avoid
+> > that if possible. The current setup clearly shows what each test
+> > does/requires.
+> >
+>
+> I think if you make device_cleanup() handle already cleaned up device as
+> no-op this should avoid any special handling.
+>
 
-Add USER_OPEREXEC to the check in kvm_arch_vcpu_postcreate(), such that
-either capability would enable this type of exception.
+Having a conditional check to avoid doing the cleanup only to satisfy
+the 'pf_early_close' test was the special handling that I was
+referring to.
+No other test requires this.
 
-Fixes: 8e8678e740ec ("KVM: s390: Add capability that forwards operation e=
-xceptions")
-Signed-off-by: Eric Farman <farman@linux.ibm.com>
----
- arch/s390/kvm/kvm-s390.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+> iommu_init() and device_init() with UUID_1 will be used by all three
+> tests in FIXTURE_SETUP(). Their corresponding cleanup will be in
+> FIXTURE_TEARDOWN().
+>
 
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index e09960c2e6ed..a91a42174302 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -3521,7 +3521,8 @@ void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcpu=
-)
- 		vcpu->arch.gmap =3D vcpu->kvm->arch.gmap;
- 		sca_add_vcpu(vcpu);
- 	}
--	if (test_kvm_facility(vcpu->kvm, 74) || vcpu->kvm->arch.user_instr0)
-+	if (test_kvm_facility(vcpu->kvm, 74) || vcpu->kvm->arch.user_instr0 ||
-+	    vcpu->kvm->arch.user_operexec)
- 		vcpu->arch.sie_block->ictl |=3D ICTL_OPEREXC;
- }
-=20
---=20
-2.51.0
+'override_token' first initializes the PF with UUID_2 as the token and
+then overrides to UUID_1.
+To easily satisfy all the tests, ASSERT_COND_VF_CREATION() was built
+on the assumption that when the VF is verified, the pf token will
+always be UUID_1.
 
+Anyway, I tried moving the PF setup into FIXTURE_SETUP() and the PF/VF
+cleanups into FIXTURE_CLEANUP(), and I adjusted
+ASSERT_COND_VF_CREATION() to accommodate any PF token for comparison.
+I'll push these changes to v8 soon. Let me know what you think.
+
+> If we are running a test harness, and one test failed without clearing
+> up VFs then all the following tests will pay penalty this way. As this
+> is a selftest code, device assigned to it is for testing not for some
+> production work at the same time, I am not able to see why it will be a
+> unsafe.
+>
+> My recommendation will be to reset and not skip, I don't think there are
+> any practical risks here. I will leave it to you to make a final
+> decision on this.
+
+Not just selftests, it's possible that the VF devices were created for
+use by actual vfio users. Hence, I'd like to avoid that assumption and
+skip touching the devices altogether.
+
+Thank you.
+Raghavendra
