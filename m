@@ -1,184 +1,182 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1845F3F1649
-	for <kvm@vger.kernel.org>; Mon,  4 May 2026 23:55:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C743AEEBB;
+	Tue,  5 May 2026 00:32:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777938902; cv=none; b=WrokiXil3SEZZPf1kt6+8G+bmKB86I/opcbsCqZV9DAcPNOGVCI+M4WEOi3LoFv12yoMOyzxMveyh+FnAnh5VrhChxJcTD79dlg87ytCBkg8E49PGSkjEhiSX6ToPwSEodw/ytWChlotAdniGkrxqh//+67M6NQ57cpvPX1Tcbc=
+	t=1777941179; cv=none; b=BxlET/UjG9GTDWP/RAeYFlABttoH+cdXdFWd99yz2WFCqdlJeu+Bd7fvQ+w0301eSkOiJjBYzAgDdkoaSeaBKHs1H+BYhk4Cbq9EVpD/ZwWghcNurlCPUNTICCAyzLZf95BuvYt6ondForMJVu8cPzFUE7l/XJehZcy4JUQqYGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777938902; c=relaxed/simple;
-	bh=16Qy1g9e024T3eQPkkHONHePEBiWUuGa4M5dg3fF1+U=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=r1LdIO0nBySvnvcMc7ncyJ8U0QhxbA1A6F+tdK0h+bQcXfRZpM8G1R0moEBqlcdPzQxZhh4kI5p2TEHbmCpgT/VX51JsVpOadOlK3CaW9FmD6RdbbZkgsmYoJurxoNoyVe5biQlfDaVXxmxXyI/EozekzrZVCK6oJsGaHbFgq+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PHi5P0Qf; arc=none smtp.client-ip=209.85.167.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1777941179; c=relaxed/simple;
+	bh=KPBQIZB0MM2O4amuoqpSTUhWnhGEz5ixYsVmvyDCMZQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XZsIdiyFdcOXLUM4krx1kEUGVwQ6oUpCaMq0d1nR8A/meH/GttIF+H5wRlW2TbaeBUi+O30giVeJuP7r6G+NhNTj9bZ1KA2cxZDtNwwO7u0seckPQp8UO8nVeFN829tsSAafegpHFsiPbHgqH14SQzx/9NBGEM/j2mDWVaFa7I0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=nffAvrzk; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PHi5P0Qf"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-5a40b2bc96dso5051563e87.3
-        for <kvm@vger.kernel.org>; Mon, 04 May 2026 16:55:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1777938899; x=1778543699; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/SLggLJp610Gg7NZM7a23wAW5VQqtLpjxD6ykGg6+MA=;
-        b=PHi5P0QfJOhf2/SDvdSQST7j+fmeBGucqAz9LLHMOZjUIYq/PLmUp+1j9D+5MUCf3g
-         kMXNtsPXGSRs9szMAl4iqLLa8c8uXjVKSb/0pQORcqnlHW5Q4BFkprW4rNIaMsQQ5vHC
-         TDeUxr1Cpe7UsTgob4gPj/Ccj9WGWnK+6r8p0R1j8Sxg25APx/lLCWuv6UmaJ1k8EBxH
-         Lgis7t+n0SRPSq9wLkmh1wDD7/kmvErUy4rcvxU2YzsTW8VWKzmioH2xJu1+GKTBAATq
-         6mROC7vnEmY5OqVc0wBwlDhFeoWKHIFWvy1EEd5jOGv7bHVL1/GblGY95fH1MZa8ecQW
-         wCrA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777938899; x=1778543699;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=/SLggLJp610Gg7NZM7a23wAW5VQqtLpjxD6ykGg6+MA=;
-        b=HB92R6NSG0giF5j7GaslkwOET6/iKdRfrEnkhLQF395h7xfizNdQMAXPQlFHbMyflT
-         msXkIKWQ6p9oR1rE/TzEnBZ6UKoSWXI7WjeJFBE0yrnq5KxOiVIWo2kqp/U5GD33jFYz
-         UiBWX237XQsjbpPWYV08GahCBFx+fcktG23ASnc90848WzNvSUHsHWxx5S/UdwnpJwt0
-         RRJL0GmWVXribHKLDGOXP5iUSTJoc79wBwGaERVR/CvRe2L6fEAL3XH/+dG2jwEOn/nq
-         dXnTIhQk0VFNmUo74drV3+zx1M8L+/PxSY7NZ7RN+rOYFUISOnVJ/Ki5WYyeGxQlKCyo
-         AQaQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+geDc5YG4pDKTUpdLTqW/zThzKsNt/aMpfc5wQ7ofNaIFQcm5q/P+dwflEMjPi0rMGAtQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YylgpbZsQGNV0smS/O7SqBmePM3e+JOQgLPEIEORKpU72GJK/UP
-	GRhl/E0q/FOQjSFlBFAyxbeVrLK/KZfrgOACTFaUYGoFz/MFAbS+lqig
-X-Gm-Gg: AeBDiesPy6klD2Hz4Ogp0t+7/CkJUqPVzrT287O8TN+l1AEhb9vBwAKV6wIyDtn+Uta
-	O3N77tqAQTElry55tJlEutJFwQ8NUEvdwgMxE2NrYdXjR9cJKWiJkgceY+1B4AdVJ4K17cvNiKs
-	uufmES9hNoi9u5sOGurh8yY8MlQDtaHoBwRjZgZ9APEC8isbQL3e+WEBDb7XKVzZu9QTsZ+JNAU
-	EN5pQulJhcxTera3wA10MT2dYJbk0ekdw9slDCHs1vX7wgILaxsSkpDORNN1DUK9QSDyNLzZF2V
-	WENxiJr1LiNHbLwt24ei2CfSSAOeD69KAxiTYp3WAUm7tB5JPmXgw+77JUFfp3G3lnwOLKtCeJJ
-	wfWa+KXS6iWY8hP55lJdTaQSmh+gsBMtQi/U/K6G/d41SQpXeFzC3rWvumSdT4DHoXbCScGXLzF
-	Az8Mm8YoCmc1kmT0ErXz0iTsz4RCrthtd6R+na89oUhU13J2NNSOzPtyU=
-X-Received: by 2002:a05:6512:1241:b0:5a8:7b52:946c with SMTP id 2adb3069b0e04-5a87b529bc0mr1055894e87.22.1777938898997;
-        Mon, 04 May 2026 16:54:58 -0700 (PDT)
-Received: from localhost ([188.234.148.119])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5a85c341772sm3362720e87.58.2026.05.04.16.54.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2026 16:54:58 -0700 (PDT)
-From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-To: seanjc@google.com,
-	pbonzini@redhat.com
-Cc: tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	hpa@zytor.com,
-	djbw@kernel.org,
-	chao.gao@intel.com,
-	x86@kernel.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Subject: [PATCH v2] x86/virt: Silence RCU lockdep splat in emergency virt callback path
-Date: Tue,  5 May 2026 04:54:35 +0500
-Message-ID: <20260504235435.90957-1-mikhail.v.gavrilov@gmail.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260503174534.45699-1-mikhail.v.gavrilov@gmail.com>
-References: <20260503174534.45699-1-mikhail.v.gavrilov@gmail.com>
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="nffAvrzk"
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 644IcEpx2134319;
+	Tue, 5 May 2026 00:32:27 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=8iRk5oK9TL9vll3HarsCLFCChpY6n
+	GOthUWyLqkdcG0=; b=nffAvrzkQKGWiAZmc1ievttoTf3h47dn0R3/OL71GwDqN
+	TQ3oV/wDQaelaaEPwEDgsp2ZbZrPXGK5W5OPdRC5oYnlzK5T66PumFjnBDd2a/Gz
+	ugwzmOI51BjC35rPwp8VALA9wObneJtUD/twjL72IZxTFLD8QyOtdrKHBtiPP1UX
+	kMvqkSZy+NDe+hlcAor+QbwnvnEaU7xwPrsWbVVprjJWYHWeRqqheMmtLsKt3nuu
+	FvJEltq9BvHf3TPxMo1f2ZJjdMInQplW3dFqv1Mgb2xcWvgio14+kCU01CuvbvUZ
+	kEgVWcqwXE2CC5284cttpn+AN27gOEOilw31szE2w==
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4dw9dguvxv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 05 May 2026 00:32:26 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 6450VF5a006936;
+	Tue, 5 May 2026 00:32:25 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4dx5e9yjg5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 05 May 2026 00:32:25 +0000 (GMT)
+Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 6450Tr5V001260;
+	Tue, 5 May 2026 00:32:25 GMT
+Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4dx5e9yjfe-1;
+	Tue, 05 May 2026 00:32:24 +0000 (GMT)
+From: Dongli Zhang <dongli.zhang@oracle.com>
+To: kvm@vger.kernel.org, x86@kernel.org, linux-kselftest@vger.kernel.org
+Cc: seanjc@google.com, pbonzini@redhat.com, vkuznets@redhat.com,
+        tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
+        dave.hansen@linux.intel.com, shuah@kernel.org, hpa@zytor.com,
+        peterz@infradead.org, juri.lelli@redhat.com,
+        vincent.guittot@linaro.org, dietmar.eggemann@arm.com,
+        rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
+        vschneid@redhat.com, kprateek.nayak@amd.com, jgross@suse.com,
+        dwmw2@infradead.org, joe.jin@oracle.com
+Subject: [PATCH 0/5] Fix and enhance KVM steal accounting for both guest and host
+Date: Mon,  4 May 2026 17:30:13 -0700
+Message-ID: <20260505003044.78693-1-dongli.zhang@oracle.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-04_06,2026-04-30_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ malwarescore=0 lowpriorityscore=0 mlxscore=0 adultscore=0 suspectscore=0
+ spamscore=0 bulkscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2604200000 definitions=main-2605050003
+X-Proofpoint-GUID: 7PVlGbH6Qj_FSc6N740yUCbKkl6Bijsy
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA1MDAwMiBTYWx0ZWRfX8XR9t8UGlzdJ
+ u5H0aJRUIwIGF0z7YQQIkOnx+GetQMgSx5bCQNKPheaiyojC7kA4RVxhJPADjdF4FquQ3QvF83d
+ lmbdwLnkQHEiGotDgWzyCuKE//HhMX2DUXmO2GdoM7Kr4vXvw3fQ+GUqxWq5JNK9dmiASC0de5Y
+ D4w0tJyliD7bQjEnZzoJM9k35IBM5ohQ0pFSUpG99UCo6ylB8hGWZikU1frxAnvprddNoMn+jAu
+ i7tTenJeeMnpqmnCRdTcJyT7OwKpwQjoVWreSzZLHLrW5JpQLWmfGsS5hTTDFUfPWFSJDLVfXpo
+ SMOJSWT2H6AOfvd43ecWLCddD7Mwf8X6lqE5FSA+WNdAbvMTfqgJwV+KFGfmV7Y4iOyYElT8v70
+ ZJOErkV7KLwLLPLcLaSZ/QyJNrwTJFs47yqeKZEf7O/gM8Bjkur+tHIvVAOvaCmEmLR00j4k9B9
+ 2PMIx5Y3v09GceBTM0Q==
+X-Proofpoint-ORIG-GUID: 7PVlGbH6Qj_FSc6N740yUCbKkl6Bijsy
+X-Authority-Analysis: v=2.4 cv=HZckiCE8 c=1 sm=1 tr=0 ts=69f93a9a cx=c_pps
+ a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
+ a=x4eqshVgHu-cdnggieHk:22 a=nm8xYOCaj8weQRiawgYA:9
 
-x86_virt_invoke_kvm_emergency_callback() reaches rcu_dereference()
-through machine_crash_shutdown() with IRQs disabled but with RCU not
-necessarily watching the crashing CPU, which triggers a suspicious
-RCU usage splat on debug kernels (CONFIG_PROVE_RCU=y) during
-panic/kdump:
+This patchset resolves two issue releted to KVM steal time accounting.
 
-  WARNING: suspicious RCU usage
-  arch/x86/virt/hw.c:52 suspicious rcu_dereference_check() usage!
+1. KVM does not support vCPU hotplug. When a vCPU is removed, its
+corresponding data structures are not freed by KVM. Instead, QEMU destroys
+only the userspace state and the vCPU thread, while the KVM vCPU fd remains
+open and parked in QEMU.
 
-  rcu_scheduler_active = 2, debug_locks = 1
-  1 lock held by tee/11119:
-   #0: ffff8881fa32c440 (sb_writers#3){.+.+}-{0:0}, at: ksys_write
+As a result, vcpu->arch.st.last_steal is not reset. If the same vCPU is
+later re-created by QEMU, last_steal retains its old value, while
+current->sched_info.run_delay starts from zero since a new vCPU thread is
+created. This causes current->sched_info.run_delay - vcpu->arch.st.last_steal
+to produce a large, bogus value.
 
-  Call Trace:
-   <TASK>
-   dump_stack_lvl+0x84/0xd0
-   lockdep_rcu_suspicious.cold+0x37/0x8f
-   x86_virt_invoke_kvm_emergency_callback+0x5f/0x70
-   x86_svm_emergency_disable_virtualization_cpu+0x2a/0x30
-   x86_virt_emergency_disable_virtualization_cpu+0x6b/0x90
-   native_machine_crash_shutdown+0x72/0x170
-   __crash_kexec+0x137/0x280
-   panic+0xce/0xd0
-   sysrq_handle_crash+0x1f/0x20
-   __handle_sysrq.cold+0x192/0x335
-   write_sysrq_trigger+0x8c/0xc0
-   proc_reg_write+0x1c3/0x3c0
-   vfs_write+0x1d0/0xf80
-   ksys_write+0x116/0x250
-   do_syscall_64+0x11c/0x1480
-   entry_SYSCALL_64_after_hwframe+0x76/0x7e
-   </TASK>
+For instance, current->sched_info.run_delay can become smaller than
+vcpu->arch.st.last_steal (see line 3832) if a QEMU vCPU is re-added after
+it has previously been removed.
 
-A truly correct fix is non-trivial: the RCU usage genuinely is wrong in
-panic context (RCU may ignore the crashing CPU during synchronization),
-and a concurrent KVM module unload could in principle race with the
-callback read; see commit 2baa33a8ddd6 ("KVM: x86: Leave user-return
-notifier registered on reboot/shutdown") which notes that nothing
-prevents module unload during panic/reboot.
+As a result, st->steal restarts from a very small value, close to
+current->sched_info.run_delay.
 
-However, the alternatives are worse:
+3748 static void record_steal_time(struct kvm_vcpu *vcpu)
+3749 {
+3831         unsafe_get_user(steal, &st->steal, out);
+3832         steal += current->sched_info.run_delay -
+3833                 vcpu->arch.st.last_steal;
+3834         vcpu->arch.st.last_steal = current->sched_info.run_delay;
+3835         unsafe_put_user(steal, &st->steal, out);
 
-  - smp_store_release()/smp_load_acquire() handles ordering but not
-    liveness; the kernel still needs to keep the module text alive
-    while the callback is in flight.
-  - Taking a lock in the panic path is risky — any lock could be held
-    by a CPU that has already been NMI'd to a halt.
+This means that, from the guest VM, paravirt_steal_clock() for a newly added
+vCPU starts from a very small value.
 
-Use rcu_dereference_raw() to silence the splat and accept the
-vanishingly small remaining race. Panic context inherently cannot
-guarantee complete correctness; the goal here is to keep debug builds
-quiet on the kdump path so the splat doesn't obscure the actual
-kernel state being captured.
+Since this_rq()->prev_steal_time is not reset during vCPU hotplug, it may
+exceed paravirt_steal_clock(). This results in a negative delta (interpreted as
+a large u64) being accounted to cpustat[CPUTIME_STEAL], causing it to appear
+either very small or to start from a large u64 value (as line 275).
 
-Reproducible on a debug kernel (CONFIG_PROVE_LOCKING=y, CONFIG_PROVE_RCU=y)
-with kvm_amd or kvm_intel loaded by triggering kdump:
+268 static __always_inline u64 steal_account_process_time(u64 maxtime)
+269 {
+270 #ifdef CONFIG_PARAVIRT
+271         if (static_key_false(&paravirt_steal_enabled)) {
+272                 u64 steal;
+273
+274                 steal = paravirt_steal_clock(smp_processor_id());
+275                 steal -= this_rq()->prev_steal_time;
+276                 steal = min(steal, maxtime);
+277                 account_steal_time(steal);
+278                 this_rq()->prev_steal_time += steal;
+279
+280                 return steal;
+281         }
+282 #endif /* CONFIG_PARAVIRT */
+283         return 0;
+284 }
 
-  echo c > /proc/sysrq-trigger
+This patchset fixes the issue on both the KVM guest and host sides by resetting
+prev_steal_time/prev_steal_time_rq and vcpu->arch.st.last_steal when KVM steal
+time is enabled.
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Fixes: 428afac5a8ea ("KVM: x86: Move bulk of emergency virtualizaton logic to virt subsystem")
-Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
----
- arch/x86/virt/hw.c | 15 ++++++++++++++-
- 1 file changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/virt/hw.c b/arch/x86/virt/hw.c
-index f647557d38ac..7e9091c640be 100644
---- a/arch/x86/virt/hw.c
-+++ b/arch/x86/virt/hw.c
-@@ -49,7 +49,20 @@ static void x86_virt_invoke_kvm_emergency_callback(void)
- {
- 	cpu_emergency_virt_cb *kvm_callback;
- 
--	kvm_callback = rcu_dereference(kvm_emergency_callback);
-+	/*
-+	 * RCU may not be watching the crashing CPU here, so rcu_dereference()
-+	 * triggers a suspicious-RCU-usage splat. In principle, a concurrent
-+	 * KVM module unload could race with this read; see commit 2baa33a8ddd6
-+	 * ("KVM: x86: Leave user-return notifier registered on reboot/shutdown")
-+	 * which notes that nothing prevents module unload during panic/reboot.
-+	 *
-+	 * However, taking a lock here would be riskier than the current race:
-+	 * the system is going down via NMI shootdown, and any lock could be
-+	 * held by an already-stopped CPU. Use rcu_dereference_raw() to silence
-+	 * the lockdep splat and accept the comically small remaining race;
-+	 * panic context inherently cannot guarantee complete correctness.
-+	 */
-+	kvm_callback = rcu_dereference_raw(kvm_emergency_callback);
- 	if (kvm_callback)
- 		kvm_callback();
- }
--- 
-2.54.0
+2. The KVM_CLOCK_REALTIME has been introduced to help track the downtime of
+live migration. KVM uses that realtime value to advance guest clock, but
+the same blackout is not reflected in KVM steal time.
+
+Account that same delta in steal time directly in kvm_vm_ioctl_set_clock(),
+only when KVM_CLOCK_REALTIME is used. This keeps the KVM-only solution
+self-contained and avoids adding a new KVM ioctl or requiring additional
+userspace changes (i.e. QEMU).
+
+
+I have also created two KVM selftests.
+
+
+Dongli Zhang (5):
+  x86/kvm: Reset prev_steal_time and prev_steal_time_rq when enabling steal time
+  KVM: x86: Reset vcpu->arch.st.last_steal when enabling steal time
+  KVM: x86: account KVM_SET_CLOCK downtime in steal time
+  KVM: selftests: Test steal time when re-adding a vCPU on a new thread
+  KVM: selftests: Test KVM_SET_CLOCK downtime in steal time
+
+ arch/x86/include/asm/kvm_host.h                 |   4 +
+ arch/x86/kernel/kvm.c                           |  40 +++---
+ arch/x86/kvm/x86.c                              |  32 ++++-
+ include/linux/sched/cputime.h                   |   2 +
+ kernel/sched/cputime.c                          |  10 ++
+ tools/testing/selftests/kvm/Makefile.kvm        |   1 +
+ .../testing/selftests/kvm/x86/kvm_clock_test.c  |  42 ++++--
+ .../selftests/kvm/x86/steal_time_reset_test.c   | 144 +++++++++++++++++++
+ 8 files changed, 248 insertions(+), 27 deletions(-)
+
+Thank you very much!
+
+Dongli Zhang
 
