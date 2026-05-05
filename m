@@ -1,259 +1,205 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from PH8PR06CU001.outbound.protection.outlook.com (mail-westus3azon11012042.outbound.protection.outlook.com [40.107.209.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBF9B3C061F
-	for <kvm@vger.kernel.org>; Tue,  5 May 2026 19:58:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778011120; cv=none; b=LfXAKdXSxLtw47y6hGvXkhRSGHWa5BFJ9JNVKDujA7JpAE26X9wk2+gjDjibUr6EJIYtMt4cV/LHBEmpc0mcEtJsxfooDNkt6z4vM8x3kqi45LMf47ojPWaNux19PnsNa9hZY/PTysyrC3NO8IOAchQTFbSG9hc9VaKRxKjfVog=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778011120; c=relaxed/simple;
-	bh=wZ+4e4bdgtA+cnZnsi1sCsZpKcgiP7bLYcdq96UmCG8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mPIf27iiIC03etJ5zzURKTiJLn0oDQfv8NAaeafd2/u8tCFS2DHC+MY/+4I75Gr/iG4oPD5KQm87G09l4PW9MhMSuQFZDq4SzaWbKaorty4Q0Nvgca4oqiH5bkX+Z+3KgjkOa6AMxmvuhaMENVIFKjSvUhODipKE2d4zv4CUUGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=k5kxg8fw; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FFC1F5847;
+	Tue,  5 May 2026 20:04:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.209.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778011477; cv=fail; b=QX8bLq81C5wK4kG+RYzbEX94G7C1rEqZEyAATr8Q6SpBkk3FDscqDfcE2cRZA/K13/DRtUNAoEQ5a3InTr63BI2uPY1g7mR7J0b5hD0+F13yY6PXcBBWMU4FzoiUM9XKTnwnh3TwokFjkepV0/4R6joOrlwzY4eXhmqGZ+Mx0m0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778011477; c=relaxed/simple;
+	bh=HW7AWwitY69CmIkJ1NXhcSaluIcIL+5kd2XpLfLbSPE=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=NP7zq4l9SER68kR/+hvG3kCaPxgUd5ak6IMYiYHYMH4XefdBcGJ8LvFZ/4b2QgDS2x7GqOAPqXZrZSx0FN1oEFooNXS8mKOtowbt5WrUI94CysLc6mCa+2W99tB166Lsc5QdW+236vDCDGWue7VJybGtpIYNheIIAAxaWqC2pVk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=phLyV8G2; arc=fail smtp.client-ip=40.107.209.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="k5kxg8fw"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ba603a7d2cso1814465ad.1
-        for <kvm@vger.kernel.org>; Tue, 05 May 2026 12:58:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778011118; x=1778615918; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0N8pahFNFpVRIbsdReJ0xAb2DOf33TA/Z1AFvPeKNcA=;
-        b=k5kxg8fwnKsRaK+SPA2KgFFy1+a56vNBQ74gok7XVFO2ltfNbSznU5vKRUWwrM02yA
-         j+1elym+nr1+3ngGqPW4R8uZMucfzOCtGm6QUkCWUEk11XuycaKb0iRMIA82jw2zjy91
-         fhQICs2otAjyVnM7FmakNsVsV1akysxjM4GrwZ49rMIXURcMDoju8O+I8pT0THFSIlGA
-         ky/iJr5pORakUka0JzufWZBNG8YyS6MPlZn42DFR/r3LgUHzECfNR3XmOqGoVJmwGOZ7
-         p5bYZSx5fS9KZiW4jdiiFut4wVJj/VA29oiFUd7KMF9AQxqMOovvKQB8NTq2WT3kghh+
-         aPoQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778011118; x=1778615918;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0N8pahFNFpVRIbsdReJ0xAb2DOf33TA/Z1AFvPeKNcA=;
-        b=T/QRcE7Rx5DRjBg84WNOuJG4mPhGhsELHTTgMJengCrBUKtQ1rWdjzLpI49t61NYRp
-         e22ZEosqPKwkQc1gm01Z+BKke2lm59KWW+tkiBgZhyJWJVXh+d1iuUvoLtwGdmPq593H
-         CkAJzR1WRR2QznKxPaLSFsUZtzqyG7uHeGv6Pyiyak2p0PTLu7zuzCx1Uh9HaZ2IuLje
-         HikSHpIkK/eAT82e8MptAXb6GLtx53qlYeXS/jg5v1PhQUOopfFM5IfARzPXOeKwL+CE
-         PlRxXb9keHxo/DgJXB//mJV8WKGZr7At0eh6T7UlZA8s7cfxQvT6uG1HKwDnYwID6B5C
-         +xXA==
-X-Forwarded-Encrypted: i=1; AFNElJ9Ww6PPaNOjIB+ZkYF5PNf7UzfCqMEGmX8AIhdSSdlWpQhLOJYuyxoJs7ppPhP98/jAgJw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxM0/IkMez2Bc9uVfEcuI/eOhSx67JJjNeg6aPxcrk7bja91jjk
-	sHzWbPW8V+HEAxIKjIiSjrd4NJU3GM9vIGJ6bqf26uWkZdgjBl7eP+Mkd5x/j6y8VlnxkoE8hjB
-	ZorAsaQ==
-X-Received: from plhq10.prod.google.com ([2002:a17:903:11ca:b0:2b2:a488:ae47])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1b4d:b0:2b4:6122:10f8
- with SMTP id d9443c01a7336-2ba4e4d0cc0mr37140905ad.21.1778011117786; Tue, 05
- May 2026 12:58:37 -0700 (PDT)
-Date: Tue, 5 May 2026 12:58:37 -0700
-In-Reply-To: <afpAw3UkbVMbXptv@google.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="phLyV8G2"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=GNAGz6anlDdQPIEi4fPad/drSZEU+Xh8JSKQk5kytgOH5yqiXQ5KfkT4hEcTBxvcBuSFTaNJxTSvxcJv0qASI26ywDF5xHMZW0fdHgCWcHfqpeIN8Uei6bD5vvs+wHqC3TocC8+X/VzCEkx1lqyLEPHihS1ADCCuOUoYhyz7t4xBQ/m717VB8WIXdTSAuKNGSRWP7BL+/54U6pVQnzAFiY02DhujUbKx3Skqcw3/TokJnzcwj/MfdBqazehmKeyr7yzZQA8zcUK3OL2w5MWou8ph3yL+GZpX17FHKjh1/v8yBn4ZGmoCWc0EJWC98BUPZ/y3MrGF4PN1WYST23WMPA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=/jJ4tdDZbmkUoyCUqZcfsjYh6mQNJ+or8vFY4zpVCXs=;
+ b=ldro4IJVTuDVpPXZ/D89+5gU+Ip2aDQuLdSDCXJshyC0FCgnin91KX420n3DP8tWVS8zxhucJu/8+nsMHp9oZCY2BUPMNHyo+Lftn7ZvwWvMcmxQvEVXA+fvlKTLk/HKwh8qsxlZqY0mXk6fPmFR9pWIWYO25TMGvEDwLf2O6ZCPpoadCNigGJ9zTIufRAbk/1oMSl92WpfZplN/3ltFqdvR8kxw9xtwSgw92qVi6+Pn1KIBLATBLCmcLA0zAFlz0U3lPbVUgq28bieQYC3+16A34Nl0waRl+2Lyoh9kovOL80BnDV8Wz1bCVsWWVlyNFBSCpBzmOsKGGXEMWoQFOw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=/jJ4tdDZbmkUoyCUqZcfsjYh6mQNJ+or8vFY4zpVCXs=;
+ b=phLyV8G2+w+s0uN3e1KBMTRa1ANEcP+OuaZooP7YPIjoAUO80mKrJ1CNKWY4on3kTOV7alBb0xNh8isl/zlyMvJGtyWo7sWkpeJM0XzqnadXvk3c3I16jUvA/i5SL1SX/Fs9PiWynE2DzrefPXrni+uCaJHGMMvK1nDH6CwopGo=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from BL3PR12MB9049.namprd12.prod.outlook.com (2603:10b6:208:3b8::21)
+ by PH0PR12MB8774.namprd12.prod.outlook.com (2603:10b6:510:28e::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9870.25; Tue, 5 May
+ 2026 20:04:31 +0000
+Received: from BL3PR12MB9049.namprd12.prod.outlook.com
+ ([fe80::ae6a:9bdd:af5b:e9ad]) by BL3PR12MB9049.namprd12.prod.outlook.com
+ ([fe80::ae6a:9bdd:af5b:e9ad%6]) with mapi id 15.20.9870.023; Tue, 5 May 2026
+ 20:04:31 +0000
+Message-ID: <faed09f4-7fb3-4810-bcb7-0315bf4c0e5f@amd.com>
+Date: Tue, 5 May 2026 15:04:25 -0500
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/7] x86/sev: Initialize RMPOPT configuration MSRs
+To: Ackerley Tng <ackerleytng@google.com>, tglx@kernel.org, mingo@redhat.com,
+ bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
+ seanjc@google.com, peterz@infradead.org, thomas.lendacky@amd.com,
+ herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org
+Cc: pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+ KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com, Nathan.Fontenot@amd.com,
+ jackyli@google.com, pgonda@google.com, rientjes@google.com,
+ jacobhxu@google.com, xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+ babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com,
+ darwi@linutronix.de, linux-kernel@vger.kernel.org,
+ linux-crypto@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev
+References: <cover.1775874970.git.ashish.kalra@amd.com>
+ <846263383f9b6a08fc87ce6edb931c912f68c60d.1775874970.git.ashish.kalra@amd.com>
+ <CAEvNRgEC2NSROZWz8uxnOSD6t8s1KmmFrr92=e8s30PJzYhQ1g@mail.gmail.com>
+Content-Language: en-US
+From: "Kalra, Ashish" <ashish.kalra@amd.com>
+In-Reply-To: <CAEvNRgEC2NSROZWz8uxnOSD6t8s1KmmFrr92=e8s30PJzYhQ1g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: CH0PR03CA0336.namprd03.prod.outlook.com
+ (2603:10b6:610:11a::8) To BL3PR12MB9049.namprd12.prod.outlook.com
+ (2603:10b6:208:3b8::21)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260430202750.3924147-1-yosry@kernel.org> <20260430202750.3924147-8-yosry@kernel.org>
- <CAO9r8zMX=_zGm1Qmnd51=ca96aj=c+CkPfxzf9uinUGwxdP_Gg@mail.gmail.com>
- <CAO9r8zNM-ECiiSKGS4Z7eM2S_06_6+fDO4mEeKiWFM-NFgHOUg@mail.gmail.com>
- <afTnlv_cAWFfouqk@google.com> <afoytsu6LzzpeTfc@google.com>
- <CAO9r8zPqvBY0=O2L6DterLyN3nZrtOCs-mv_4hvZ+gt=bxRbDg@mail.gmail.com>
- <afo7qB3hyrD_9Jme@google.com> <afpAw3UkbVMbXptv@google.com>
-Message-ID: <afpL7QTODL5JbJsN@google.com>
-Subject: Re: [PATCH v5 07/13] KVM: x86/pmu: Disable counters based on
- Host-Only/Guest-Only bits in SVM
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL3PR12MB9049:EE_|PH0PR12MB8774:EE_
+X-MS-Office365-Filtering-Correlation-Id: d6cb0bb0-8650-44f4-ea3f-08deaae184ca
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|366016|1800799024|921020|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	01WoMcVobJNmO773zuKuvfhcIo7nW9in7KCy3hh5N01HKS6xODRx50VUqS+55zHOL1YEzaNB7jDHX1Wq3dO5E2n+GpxBcov97CdxEyepJATbrUfzeTn3WDQMW2cWxt37AalqibUBaS3HGfUx8tz9/c/g+GeJrYZHFrmD498bafAcC0GWHCKLLwQWql7z13XjY+AOpsS2ahIXMKGl9QAsNU0XwHmKhlLUXsLR5dcurhLpLaxlRDfpLF391urAHP5B7csOdbyV6cjWNAnM/7FnuAbRt/SyBCKZG3EjdycYRDZKv7tjLSeu3jBSwPtVReMt4+2aBnHw0upOXDVBIDupA1FYtTyzkKfINAZmosz65oWciyZKEwmNR0yizvtqVvO+TeteuUiIxaTEx9fNZK3NdYTumV5Z65xG+1ydJ4MVVl1amjwHaJZTPwlyC7VzqPEo+bBVT2Mjq46d5DjP7kLBcClnF0hiuXEGT2xN20RI5t1j5B8soW9AUT9Rsi3CHn4w/kTRTC//uFY9hgsJA4XeZC0aXPQQUZrodfDGDgz0rNONoj0slrnHs57npGqGUNVamPwIahMnmCIL/pklk3e8xYMnPdG/Vr6hkdSrz6mCyEl7ZN/RMrQvVyPHWzBjto2QYtSx80wD2bclnAhpn0n+H2vD1hhKH0bY9f99TIaTR+WFvnaZ7yAMKC/R/fBvWFOF/JsvAxqQbJRpubbsWp0zA9RrYKxJpxzmh3jCVREIzSx5U44yN1aC3fmOYk4KlRty
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL3PR12MB9049.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(366016)(1800799024)(921020)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SFBKRWg3T09tY1FoMGNtbzIwRytSdUR0RlZkTFRtYzFEUnh2cXZ6UXZva3kz?=
+ =?utf-8?B?aml4NXJNUDlvYzZ0TXgzWWVvN05JZjc4MlJEVk5CMEVrbDZzVnJjOWFPcEp1?=
+ =?utf-8?B?bU44OTlQQlhISHM4MmVaOUR1ZzlvcUcwOCt1TTNpZGEvY2lHODRVckROUVow?=
+ =?utf-8?B?UnBvb1dKSVQxaEdnTWNCaWVMaEhtRjNLV1ZCUHpWOUNDeHJLRUFuTjJ6SmFh?=
+ =?utf-8?B?RkdURjYwbXpYNGhGUGpjZWhONzhJRkV6MUhocXpPdzQ0djZaUVJacklZbzRV?=
+ =?utf-8?B?UDBkRG41R3BBT1NxRUV0a2lOZytBM0R3NzdsdzE0ejVwOThTTVN0VEdOLy9w?=
+ =?utf-8?B?VmljZjRSdW5lR3NGZ1IyWGI0Q3MxV21CZ3RTN0FNeWkvZVlxdklYemZlRjQx?=
+ =?utf-8?B?U0RPWmQ4emJYMEk2dy9tTGI3bDFPQ29PdW5VcjlCeVR6SHduYVJndzUremNH?=
+ =?utf-8?B?U1A5bjRMZDhseThoZ3Q3YWhmRGJlU2d5NG1IcmNoRFE4RXF6NnNNN2hKcjdk?=
+ =?utf-8?B?M2VGci9WMmhxMldKNUZwOTZhNlBPMVRuZjJGYzd2RUt4c2hFcjI3akhsbjJx?=
+ =?utf-8?B?bGlSeGh0NXdBOW5OaElDQi9TV1ZpSy9sOVhhemtGVnFqSVJlTStUZWdLQ3A1?=
+ =?utf-8?B?R1VzUHFnZ0tZN0FDOVFuNlhlaHdEdks2NTlUaWdqSlJKOVR3R1BGM2k4anNL?=
+ =?utf-8?B?eDdPWU1JemJTRzB5alN3bG16emxVdUJSamlkUmhldDRHUnkxVUwreFlTVW4v?=
+ =?utf-8?B?TEVKUTZDN1dDRkJBSEtpY0NJeTFNaHFFSjRpU2JCREpadHJMWTdmT3VHMnU1?=
+ =?utf-8?B?WHJDeHgyNjNwTm9EZnVFbFg3WXlvR3dYaGNQVVkzRURHdXplK3pvbHJNUWFD?=
+ =?utf-8?B?ZytaRFFaeXdZbzE5bHdYbytvNmUvOTU4UEFHU2QwUEV1ek1pTWlmcTdnTmVm?=
+ =?utf-8?B?ZlZHVW5NaHZOMjhMMmxvaENCaTl1SXFSd0FlQk9jNXBWT1FZR1ZEeVFId3dK?=
+ =?utf-8?B?Uk1vR3JuVFFRTGVXMVR5YU5walBQa2YzanEwcDdMTHRnRTVpY0xUOXI0TVEz?=
+ =?utf-8?B?cmtOK25obmVlRGN1eG5SamhSMno0OExHR0hrTmk3R3BqZmhtMmRGYWZ3UlBj?=
+ =?utf-8?B?Sk9zUE80N2VjdldtaTdYVnJTK2FjSEtUQ0c1c0g2a1VWMFRabTR4ZkQ5cDRP?=
+ =?utf-8?B?NzJ4V25IemFzaDBYS0lJV2JTVk9EaXpxbW9iazF2NzZoajNncnRQOVJSM1p0?=
+ =?utf-8?B?R1hJMU9WYzdzTERjYWlHd1RiaS8yUG1mbVo2NVIrWTNwL2EwOGN4N2RnVUhu?=
+ =?utf-8?B?NFVacWFFbXFEUVJCT2RDK3ZBRHdyRkZ4Qkd1djEyTHVScXpYR0psV2haSzVP?=
+ =?utf-8?B?b25za29LQVo4YXNpQXFBMGxQdWtGWFRrbUZiRUVaQ3gzeTdjOVArclVjdFhr?=
+ =?utf-8?B?dHBYcWZ5MUhQM250TzUwVXFLaFY2WmYvYUZrYXZBekliZzJ4VUR6TXNNd2dq?=
+ =?utf-8?B?dzFKc0Nxcm0xUHRtQWE5NVFCaW5SYXp4cEpRZ2U5OWVSaWRla0VMc01uME10?=
+ =?utf-8?B?bkRUeHJBU0R0YStkMkdROW1iMStzaUNWVW9scUxYcEFrYUNXTm1hckNTOU5i?=
+ =?utf-8?B?aC9NT002MEduZ21aa1pCWVIvWCszM2pBQ1FLT2xhUnFvK0wyWG9GM2poU3J3?=
+ =?utf-8?B?a2hXZkJickorY2x3akJSRW1kTFdRU1FVdVNORzAxVldleHJ1THVEZlRiZ1Mx?=
+ =?utf-8?B?d0o3a09MUzhadHB6c0ExUG5iVEt4S3Z2MnA0czV1VlpkUzJjcnExMCtrM1JM?=
+ =?utf-8?B?NzNnUmN1VE5yNVdqZTM2NWpHRDNCRk53RnF6aUN0M1NkbWc5SmxQMkl6Q1V4?=
+ =?utf-8?B?UHd0Z3V6TDQzV1ZBQm9iSUhHSW15RXhqWWExZzlzS0JGSm9UUldsSHF6eE5Q?=
+ =?utf-8?B?U0Q3c0hTTkNveDliZGRWa0RjUHQyU1VMMG1JamNhVFVqR1dUZXZyVGUxTUtq?=
+ =?utf-8?B?S3RYSnVGMzdsZlVsNFIzcko0eTkyQkNmcU9rK0wwWThScW5lM0JNVzNhN1cr?=
+ =?utf-8?B?dFNpYXRoR2Q4aFhDSWR3N081YStWUjFOTktZNEpWVXdoTFZUcDZlWnp4WU56?=
+ =?utf-8?B?em01VW1La2VaWVowMHNoeDRIY0lFSnNydnZJU2tQaEZCMWNsK3hXa1JoR3VX?=
+ =?utf-8?B?a29qcG0wSW9CM3hZMWRlOGpuc0tyK3B1VTV2K043MHNMVENoSnhvMXpHcGg0?=
+ =?utf-8?B?eFpITmZEd2lZNnY4VDM3bEtPbkVLRWNmRFhFcFNnd2NTT1IwQ2dHRnZiWnVS?=
+ =?utf-8?Q?FxjC83SJYqAiF14+kt?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: d6cb0bb0-8650-44f4-ea3f-08deaae184ca
+X-MS-Exchange-CrossTenant-AuthSource: BL3PR12MB9049.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 May 2026 20:04:30.9345
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: g+XFZod5VsDzwjbJ21kJ4jo40Xt2gjzXCMXYdv3MQAdZL1GnTj/lzuGRk69oyf0AYEbpT70Kwa7INYgW4mpNIw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8774
 
-On Tue, May 05, 2026, Yosry Ahmed wrote:
-> > > Did you see my other replies and code snippet tracking disabling
-> > > reasons? I think the code snippet would still work, I just need to
-> > > move the pmc_is_nested_disabled() check into pmc_is_locally_enabled().
-> > 
-> > I did.  IMO, all of what you proposed is an optimization to avoid the "costly"
-> > checks at the time of pmc_is_locally_enabled().  In quotes because I don't think
-> > the _overall_ cost is actually all that high.  pmc_is_locally_enabled() is only
-> > called in relatively slow paths, and my guess is the CALL+RET (or untrained RET,
-> > ugh) is probably more expensive than the logic itself.
-> > 
-> > The very nice side effect of incorporating the logic into pmc_is_locally_enabled()
-> > is that I _think_ we can drop kvm_pmu_ops.reprogram_counters(), because
-> > amd_mediated_pmu_handle_host_guest_bits() will instead be:
-> > 
-> >   static bool amd_pmc_is_locally_disabled(struct kvm_pmc *pmc)
-> >   {
-> > 	struct kvm_pmu *pmu = pmc_to_pmu(pmc);
-> > 	struct kvm_vcpu *vcpu = pmu_to_vcpu(pmu);
-> > 	u64 host_guest_bits;
-> > 
-> > 	/* Common code is supposed to check the common enable bit. */
-> > 	if (WARN_ON_ONCE(!(pmc->eventsel & ARCH_PERFMON_EVENTSEL_ENABLE)))
-> > 		return false;
-> > 
-> > 	/*
-> > 	 * If both bits are cleared, always keep the counter enabled. Otherwise,
-> > 	 * counter enablement needs to be re-evaluated on every nested
-> > 	 * transition (and EFER.SVME change).
-> > 	 */
-> > 	host_guest_bits = pmc->eventsel & AMD64_EVENTSEL_HOST_GUEST_MASK;
-> > 	if (!host_guest_bits)
-> > 		return true;
-> > 
-> > 	/* If either bit is set and EFER.SVME=0, the counter is disabled. */
-> > 	if (!(vcpu->arch.efer & EFER_SVME))
-> > 		return false;
-> > 
-> > 	if (host_guest_bits == AMD64_EVENTSEL_HOST_GUEST_MASK)
-> > 		return true;
-> > 
-> > 	return !!(host_guest_bits & AMD64_EVENTSEL_GUESTONLY) == is_guest_mode(vcpu);
-> >   }
+Hello Ackerley,
+
+On 5/1/2026 1:12 PM, Ackerley Tng wrote:
+> Ashish Kalra <Ashish.Kalra@amd.com> writes:
 > 
-> If we do this and drop kvm_pmu_ops.reprogram_counters(), we still need
-> somewhere to actually clear ARCH_PERFMON_EVENTSEL_ENABLE in eventsel_hw.
-
-Yep.  I was thinking we'd do that as part of reprogram_counter().
-
-> What if we call kvm_pmu_ops.pmc_is_locally_disabled() at the top of
-> reprogram_counter(), cache the result, and use that for eventsel_hw
-> modification and in pmc_is_locally_enabled()?
-
-Why bother caching it?  I suspect it will make the code harder to read, I would
-generally prefer pmc_is_locally_enabled() be self-sufficient, and I don't think
-the caching will elide any lookups.  Legacy PMU doesn't care, and even if it did,
-it should only query pmc_is_locally_enabled() once.  And the mediated PMU should
-only query it once.
-
-> We'd also probably want to rename it. I would honeslty just use 'nested'
-> instead of 'locally_disabled' and 'mode_specific_enables' as that's the
-> only current user.
-
-But it's not strictly nested specific.  E.g. even the vCPU doesn't support nested
-virtualization, a (stupid) guest can still set HOST_ONLY and effectively disable
-the counter, thanks to the bizarro behavior of HOST_ONLY when EFER.SVME=0.
-
-> Something like this with your proposed amd_pmc_is_locally_disabled()
-> above, which is similar to the kvm_pmu_ops.mediated_reprogram_counter()
-> implementation in v4 except that the vendor-specific callback is more
-> targeted:
+>>
+>> [...snip...]
+>>
+>> +void snp_setup_rmpopt(void)
+>> +{
+>> +	u64 rmpopt_base;
+>> +	int cpu;
+>> +
+>> +	if (!cpu_feature_enabled(X86_FEATURE_RMPOPT))
+>> +		return;
+>> +
+>> +	/*
+>> +	 * RMPOPT_BASE MSR is per-core, so only one thread per core needs to
+>> +	 * setup RMPOPT_BASE MSR.
+>> +	 */
+>> +
+>> +	for_each_online_cpu(cpu) {
 > 
-> static void pmc_check_nested_disabled(struct kvm_pmc *pmc)
-> {
-> 	if (!(pmc->eventsel & ARCH_PERFMON_EVENTSEL_ENABLE))
-> 		return;
-> 	
-> 	if (!test_bit(pmc->idx, &pmu->pmc_has_nested_enables))
-> 		return;
+> Dave mentioned hotplug in v3 [1], which led me to check. From this
+> series, it looks like RMPOPT won't ever be performed for newly-plugged
+> cpus, is that okay?
+
+Yes, with this current series, RMPOPT won't be performed on newly-plugged
+CPUs, i was computing and storing the cpumask for threads to fire RMPOPT on,
+statically during the setup code to save computing it again on the
+worker thread, but i believe the simple fix for handling hotplugged CPUs
+would be to compute the cpumask every time the worker thread executes.
+
 > 
-> 	pmc->is_nested_disabled = kvm_pmu_call(pmc_is_nested_disabled)(pmc);
-> 	if (!pmc->is_nested_disabled)
-> 		pmc->eventsel_hw &= ~ARCH_PERFMON_EVENTSEL_ENABLE;
+>> +		if (!topology_is_primary_thread(cpu))
+>> +			continue;
+>> +
+>> +		cpumask_set_cpu(cpu, &rmpopt_cpumask);
+> 
+> nit: perhaps flipping the condition is easier to read:
 
-I don't want multiple paths mucking with eventsel_hw's ARCH_PERFMON_EVENTSEL_ENABLE.
-That's how we end up with ordering bugs.  E.g. pmc_check_nested_disabled() *must*
-be called after kvm_mediated_pmu_refresh_event_filter(), which is gross and brittle.
+Yes.
 
-E.g. something like so.  We can even optimize away the PMU filter lookup (which
-I suspect would be more expensive in the common case?) if the counter is disabled
-thanks to H/G bits.
-
-diff --git arch/x86/kvm/pmu.c arch/x86/kvm/pmu.c
-index 7b2b4ce6bdad..4ca4a0078d35 100644
---- arch/x86/kvm/pmu.c
-+++ arch/x86/kvm/pmu.c
-@@ -530,21 +530,24 @@ static bool pmc_is_event_allowed(struct kvm_pmc *pmc)
-        return is_fixed_event_allowed(filter, pmc->idx);
- }
- 
--static void kvm_mediated_pmu_refresh_event_filter(struct kvm_pmc *pmc)
-+static void kvm_mediated_pmu_refresh_eventsel_hw(struct kvm_pmc *pmc)
- {
--       bool allowed = pmc_is_event_allowed(pmc);
-        struct kvm_pmu *pmu = pmc_to_pmu(pmc);
- 
-        if (pmc_is_gp(pmc)) {
-                pmc->eventsel_hw &= ~ARCH_PERFMON_EVENTSEL_ENABLE;
--               if (allowed)
-+               if (!test_bit(pmc->idx, &pmu->pmc_has_mode_specific_enables) &&
-+                   kvm_pmu_call(pmc_is_locally_disabled(pmc)))
-+                       return;
-+
-+               if (pmc_is_event_allowed(pmc))
-                        pmc->eventsel_hw |= pmc->eventsel &
-                                            ARCH_PERFMON_EVENTSEL_ENABLE;
-        } else {
-                u64 mask = intel_fixed_bits_by_idx(pmc->idx - KVM_FIXED_PMC_BASE_IDX, 0xf);
- 
-                pmu->fixed_ctr_ctrl_hw &= ~mask;
--               if (allowed)
-+               if (pmc_is_event_allowed(pmc))
-                        pmu->fixed_ctr_ctrl_hw |= pmu->fixed_ctr_ctrl & mask;
-        }
- }
-
-Actually, this code is being silly.  It unnecessarily performs the PMU filter
-lookup when the _guest_ disables the counters via eventsel.  If you first "fix"
-that by querying pmc_is_locally_enabled() before checking the event filter, then
-you won't even need to touch that code when introducing H/G bits, because it will
-Just Work thanks to pmc_is_locally_enabled() doing the right thing (as it should,
-becase as mentioned early, that logic is architectural).
-
-diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-index 7b2b4ce6bdad..c84f2f971ab1 100644
---- a/arch/x86/kvm/pmu.c
-+++ b/arch/x86/kvm/pmu.c
-@@ -530,22 +530,23 @@ static bool pmc_is_event_allowed(struct kvm_pmc *pmc)
-        return is_fixed_event_allowed(filter, pmc->idx);
- }
- 
--static void kvm_mediated_pmu_refresh_event_filter(struct kvm_pmc *pmc)
-+static void kvm_mediated_pmu_refresh_eventsel_hw(struct kvm_pmc *pmc)
- {
--       bool allowed = pmc_is_event_allowed(pmc);
-+       bool allowed = pmc_is_locally_enabled(pmc) && pmc_is_event_allowed(pmc);
-        struct kvm_pmu *pmu = pmc_to_pmu(pmc);
- 
-        if (pmc_is_gp(pmc)) {
--               pmc->eventsel_hw &= ~ARCH_PERFMON_EVENTSEL_ENABLE;
-                if (allowed)
--                       pmc->eventsel_hw |= pmc->eventsel &
--                                           ARCH_PERFMON_EVENTSEL_ENABLE;
-+                       pmc->eventsel_hw |= ARCH_PERFMON_EVENTSEL_ENABLE;
-+               else
-+                       pmc->eventsel_hw &= ~ARCH_PERFMON_EVENTSEL_ENABLE;
-        } else {
-                u64 mask = intel_fixed_bits_by_idx(pmc->idx - KVM_FIXED_PMC_BASE_IDX, 0xf);
- 
--               pmu->fixed_ctr_ctrl_hw &= ~mask;
-                if (allowed)
--                       pmu->fixed_ctr_ctrl_hw |= pmu->fixed_ctr_ctrl & mask;
-+                       pmu->fixed_ctr_ctrl_hw |= mask;
-+               else
-+                       pmu->fixed_ctr_ctrl_hw &= ~mask;
-        }
- }
- 
-@@ -558,7 +559,7 @@ static int reprogram_counter(struct kvm_pmc *pmc)
-        u8 fixed_ctr_ctrl;
- 
-        if (kvm_vcpu_has_mediated_pmu(pmu_to_vcpu(pmu))) {
--               kvm_mediated_pmu_refresh_event_filter(pmc);
-+               kvm_mediated_pmu_refresh_eventsel_hw(pmc);
-                return 0;
-        }
-
-> Also, would you rather I send a new version with everything, or do you
-> want to pick up some of the patches in this version independently?
-
-Uh, probably just send a new version.  I doubt I'll get through the first few
-patches before you're ready to send the next version.
+> 
+>     if (topology_is_primary_thread(cpu))
+>     	cpumask_set_cpu()
+> 
+>> +	}
+>> +
+>> +	rmpopt_pa_start = ALIGN_DOWN(PFN_PHYS(min_low_pfn), SZ_1G);
+>> +	rmpopt_base = rmpopt_pa_start | MSR_AMD64_RMPOPT_ENABLE;
+>> +
+>> +	/*
+>> +	 * Per-CPU RMPOPT tables support at most 2 TB of addressable memory
+>> +	 * for RMP optimizations. Initialize the per-CPU RMPOPT table base
+>> +	 * to the starting physical address to enable RMP optimizations for
+>> +	 * up to 2 TB of system RAM on all CPUs.
+>> +	 */
+>> +	wrmsrq_on_cpus(&rmpopt_cpumask, MSR_AMD64_RMPOPT_BASE, rmpopt_base);
+>> +}
+> 
+> [1] https://lore.kernel.org/all/ab41b1d8-e464-4ad6-ac07-7318686db10e@intel.com/
+> 
+>>
+>> [...snip...]
+>>
