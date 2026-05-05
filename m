@@ -1,85 +1,60 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABAD03E0245
-	for <kvm@vger.kernel.org>; Tue,  5 May 2026 08:03:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E62E239E9A;
+	Tue,  5 May 2026 08:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777968193; cv=none; b=DzcdnomJcZO8NhTYlW8xcKM4BBrfZ+1907bHteckxtMLP0OD22w6qg1vTfOzX/sM3qInA7RWqQ091lGFbQRyy9oGNF5rMZvEkJzn8GZMqcGF9J1Qmquvn8OZwRCyM79fNyC2EBEPWK7JQC+qXWpqhe3Vdmwusw58svgsZMaqsyE=
+	t=1777969928; cv=none; b=niu/7wL7eUjUjSC1q1wHtynVw6hw5TWQWas/yzhGYBfbIcDu34WpIKAancI/fnwbUWmj8Ss6CtomN0vC7kcConRu8L6A6nzAPN2pkPtk4PBTEZtFAL3z05RVfOHTTedAR5Nc1o9eYFS2/cJESoDv0eOgUjIMgCOggSt1W0dpM40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777968193; c=relaxed/simple;
-	bh=RLA8b8mDlObYOAIilVvwoN3jydgwLgQhT2Lqj+jCBpw=;
+	s=arc-20240116; t=1777969928; c=relaxed/simple;
+	bh=dPMEKlrluuVUz1AE7lNmIgONTj76ByH0hN/4DPmlY4U=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QhTDB2r2gfo1FucO67+N7+E6R2tIDv1/Myqlk0W23gv8kLew1UzMQUUhVtemiXYSYNIohrQtlZQ7Tjqb7H0mC6j2OV+OPLd6TsLIcBVDO/icqhwqvtRSKQX53mNRPANRfqxgOc99OgwnUaAqIDjdnk8uJUaC8djGTbedn17JEUM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HWNQOubD; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Th/cFoov; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=M7c6bCUOdJgcVOZbI4gmCbweL10rOkC7mLY+Q8OqOE394SBvgfz+UoCw+1L1hhH1/eUy1kB9rZ/v4cMkVQ3RLgDZrkLePrzSoxXECj4UsjJjA+x7+W2yhINVyNYVf3ttiS/w90XEd/IIjJBRwdUmBoCW9tiqCkGMCHO4CdzfgRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tX7P9zZs; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HWNQOubD";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Th/cFoov"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777968190;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=yQdPdITxq+ffr8+gE6PUvuhNfzMVTIAKI/zKqGdYQsk=;
-	b=HWNQOubDR0ungrKOZr4fLfuKvJD2S7eWnvuqSiMrhbw6/NKcW101WCnW5aNBHPl+0vi6iK
-	+Ph8e+Dbv4bDRyRt3ZOzz3cTfdp/F2hX242hCo/zst5zvWYRxBiiB466JnrPOn7jOqiCpN
-	ToDYrqAprdODCDR20MCTqNaRDrWCat4=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-611-TYb-n_GoNSi4MOJTXopThQ-1; Tue, 05 May 2026 04:03:07 -0400
-X-MC-Unique: TYb-n_GoNSi4MOJTXopThQ-1
-X-Mimecast-MFC-AGG-ID: TYb-n_GoNSi4MOJTXopThQ_1777968187
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-48d104d1d8aso10905265e9.3
-        for <kvm@vger.kernel.org>; Tue, 05 May 2026 01:03:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1777968186; x=1778572986; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=yQdPdITxq+ffr8+gE6PUvuhNfzMVTIAKI/zKqGdYQsk=;
-        b=Th/cFoovcjFVEbLiiO2KfI07rOxVavYbLLtF5T0eh++JA5lEuKXrFc3R7Nh5yGLvPG
-         Rkqh/IoMkjkeQFEaMxkjTsKXaANhlQK1gZ5702cNvOPxn7t4N1jAyU2+48SkjV6rZ1/d
-         fGPagJ4wG8s5DuI1VATZZpkkeE/3lC+OI/tVAZXJuIAiboK36hTRig3pd7boq4BhuS4V
-         sw2xkjGe/iJR27rT6kvg52wqT9IlBG66N32iWrH9sIx9bD/Zin+wJgFvZ5qhdzUeN+jE
-         C5N8oIxCTCzPA9ucZFaw8c7r6e2oYX2XmItUhNa2n0G+i0AEf4aBzVD9m/n93175drAD
-         hLCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777968186; x=1778572986;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yQdPdITxq+ffr8+gE6PUvuhNfzMVTIAKI/zKqGdYQsk=;
-        b=qXZSJOYNi2yYHOUWyB3DA6UsAYaGM0Nt5BED1MVBWzULa5rosBqgigNw+oCl4zgGpm
-         SSmL/9I29AEwQBiM2U1QOHCEaLaMySzbfVBUhnEEkEIUVVL8uzV8lO2FobNlyhl1F5Zz
-         WZDprDvG5i3tUA4Bco4Ak6/vLoq52yyOW1kgdZ8gWYDFFaYdB0MP1DHNExxhZ7TZQ1E4
-         ea3/yB5nX+TuDf+dpKA98TeBYgGfjsu8mwUhLyRnqU+ScOdZUVDfo8eQD/PnABH6fq6L
-         62kezKdtBJ+8tb8G06N54lQyfIgnxlKCPfZCLAYfBDASC5+z7H0FK5iTGd20B71L/s+M
-         B+nQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8Bjw29Apqd/sY8KFXlyUmTtaiL/Z4gvYZQ5TrM4XY0+WcC3G4Y6HjJsUW9ZEq/PjjUsyA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHRL0PIyFLXIR1vpPKxKQ9a9UhvBfrQPSMb+dxp3F7JC3gGy+z
-	AZHUXpDiAQOO63lYc39sx77saRBlA4I1RvnKQ1gvrg5CeMDINYrTttZU1Stl9vs65nhIuUJMi5a
-	vycza28oBgr0mjp7S9/k4NH+HO0e8cVAbU1lAtEtk2gwvGHGvjvvf7w==
-X-Gm-Gg: AeBDiesd20jRlrRgFpj4Xa/auGzlUE9EHGmFv40hCdmlhCCqdmUdn0i2WTkZeH/ofIW
-	2kX4Hw1yUQpBK4WFXhUPPwa3VQZBNgtQ1dUEZIl81qmdAbbRCiNZpHSRZ7NXLGgZ7dvgJYm1btx
-	NvbFFptvBkP9eeOPcT+uhV1LtCsi9sj5fCTJHnPBeAzN/AWkg4IH9lRXYx7fNpt1Y5GiJ03IopN
-	EG78IytWmC0ANeKPRn4+jbQw/1/RfMP1I3oeabT1WSmzmADdt12hTvWZ/0GU4/ZUsJbWCUokJLd
-	iIX2k2rYD38OWncZabiMfxza5aBHALNQDFlDJvX/IsUWta6jwU2mq58AsseRnCmHpJZYi3xmaex
-	WaGGCwXenW2aZqfrC69aoX8H1ONyrAg==
-X-Received: by 2002:a05:600c:8b6c:b0:48a:581c:ead with SMTP id 5b1f17b1804b1-48d187d9516mr32185245e9.10.1777968185054;
-        Tue, 05 May 2026 01:03:05 -0700 (PDT)
-X-Received: by 2002:a05:600c:8b6c:b0:48a:581c:ead with SMTP id 5b1f17b1804b1-48d187d9516mr32182155e9.10.1777968183125;
-        Tue, 05 May 2026 01:03:03 -0700 (PDT)
-Received: from [192.168.0.9] ([47.64.115.164])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48d184e09eesm11009625e9.29.2026.05.05.01.03.01
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 May 2026 01:03:02 -0700 (PDT)
-Message-ID: <9bd9b2c7-2082-4ec6-b415-734a5994769d@redhat.com>
-Date: Tue, 5 May 2026 10:02:59 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tX7P9zZs"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 644LUNgU1302390;
+	Tue, 5 May 2026 08:31:52 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=eaJj1Z
+	jQaCtE8Ym/FuUd6FqlOIOFMMoDDBlh+ytlNAc=; b=tX7P9zZsjgsUJ2NG8mhw+R
+	TUgwE1cz+1pYQ64UwJFn8MHG9PxgFq3ULSE+c9TjP34/J6KmYRpVopK2iqa76ba2
+	YQCQ268n+gbCN8z84Uadu/BmzGR1IuZykp6TEEaB44qV9oGnFeXm6GPS82JHpMl+
+	0ggap5HsOfeTAmaRGOI/DGPCmTHarReI5h4UUoNVk0PiujifolKbGwsqnko6ymqG
+	WwBN9QThnx9r1A8JONRnGkhUGmSBiDqi9iFDI2kmxrkPds7/vL5M6DUa0vNbe44b
+	u1Krx/2mmdAulAZER7U5Kj4dCEhOGKOPfD+nvm0oOVrsQqq1EzOFlDfgJJPvdmdQ
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9v7aqpg-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 May 2026 08:31:51 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6458OSH2018104;
+	Tue, 5 May 2026 08:31:51 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwukq8wb1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 May 2026 08:31:51 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (smtpav06.wdc07v.mail.ibm.com [10.39.53.233])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6458Vns926280564
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 5 May 2026 08:31:50 GMT
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id BE81D58055;
+	Tue,  5 May 2026 08:31:49 +0000 (GMT)
+Received: from smtpav06.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 44C525803F;
+	Tue,  5 May 2026 08:31:46 +0000 (GMT)
+Received: from [9.123.0.169] (unknown [9.123.0.169])
+	by smtpav06.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  5 May 2026 08:31:45 +0000 (GMT)
+Message-ID: <8c72bee5-664d-4ecc-b4c5-03f825febc75@linux.ibm.com>
+Date: Tue, 5 May 2026 14:01:44 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -87,76 +62,124 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] x86/kvm: Include linux/types.h in asm/kvm_para.h
-To: "WEI-HONG, YE" <1234567weewee457@gmail.com>, seanjc@google.com,
- pbonzini@redhat.com
-Cc: vkuznets@redhat.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de,
- dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org, hank20010209@gmail.com
-References: <20260505065849.81691-1-1234567weewee457@gmail.com>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <20260505065849.81691-1-1234567weewee457@gmail.com>
+Subject: Re: [PATCH 2/6] KVM: PPC: Introduce KVM_CAP_PPC_COMPAT_CAPS and
+ KVM_PPC_GET_COMPAT_CAPS
+Content-Language: en-GB
+To: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>, Paolo Bonzini
+ <pbonzini@redhat.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260430054906.94431-1-amachhiw@linux.ibm.com>
+ <20260430054906.94431-3-amachhiw@linux.ibm.com>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <20260430054906.94431-3-amachhiw@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA1MDA3NCBTYWx0ZWRfX9KOC+1u33PMS
+ EtXmb47YOTat61uKHygQGBuv720+CIeB/qIXHyBndf1SmZIx/ZS8yoNrUqGp57qZh4KFdFRpDtP
+ 6yMq4T8CllduOOaM8070Vb1ep0HJgeh31pQ3NALQcG7nAk0lOC0KAI98caPd1bJC/JVICOC2Em/
+ +L7L9ujJbtZGE39yXbtzx+18ND0LzarnF3WdlpaConA36Izdfraew7WsNEhHlP4mc6FWXNDO5xW
+ M8auEbhmtq8whCl7wgb++3MesegKci+lFwAV7Ao/oKZfdzuQUhpY26tvXllz7OmcpLGvcjyc6qs
+ eCkcO6rID/OKw8fdTENgtn2zPCeUDpBO3gLEzBaLX6paBY6iZoIrbR8rjuNar/cx//RkUyij49O
+ 3EzHZOL6/iQLs48Do2gontiBeYZLcWK3WaKv3CPyTmKdzxBOkYDDljzkGAQqACPqmq8/VBqK1SE
+ vVA9U06UtcmRwpg/p5g==
+X-Proofpoint-GUID: o59ZPpBlbnUmsti7_Mh6cxhtBfobLzmz
+X-Proofpoint-ORIG-GUID: NvttF5c3fnTZWqALW5T8POHRWbpM_xXn
+X-Authority-Analysis: v=2.4 cv=eu/vCIpX c=1 sm=1 tr=0 ts=69f9aaf8 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=f7IdgyKtn90A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22
+ a=VnNF1IyMAAAA:8 a=kGkaLfDY5_2FI7PzZF8A:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-05_02,2026-04-30_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0
+ suspectscore=0 malwarescore=0 bulkscore=0 impostorscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605050074
 
-On 05/05/2026 08.58, WEI-HONG, YE wrote:
-> arch/x86/include/asm/kvm_para.h uses u32 in function declarations, but
-> does not include linux/types.h itself. One user, mtrr.c, carried an
-> explicit workaround for this dependency.
+
+
+On 30/04/26 11:19 am, Amit Machhiwal wrote:
+> Introduce a new capability and ioctl to expose CPU compatibility modes
+> supported by the host processor for nested guests.
 > 
-> Include linux/types.h from asm/kvm_para.h and remove the workaround from
-> mtrr.c.
+> Introduce a new KVM capability, KVM_CAP_PPC_COMPAT_CAPS, and a
+> corresponding vm ioctl, KVM_PPC_GET_COMPAT_CAPS, to expose processor
+> compatibility modes supported by the host.
 > 
-> Build-tested with x86_64 defconfig.
+> On IBM POWER systems, newer processor generations (N) can operate in
+> compatibility modes corresponding to earlier generations, like (N-1) and
+> (N-2). This is particularly relevant for nested virtualization, where
+> nested KVM guests may need to run with a specific processor compatibility
+> level.
 > 
-> Signed-off-by: WEI-HONG, YE <1234567weewee457@gmail.com>
+> The new ioctl returns a bitmap describing the compatibility modes
+> supported by the host in respective bit numbers. This allows userspace
+> to select an appropriate compatibility level when configuring nested KVM
+> guests.
+> 
+> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
 > ---
->   arch/x86/include/asm/kvm_para.h | 2 ++
->   arch/x86/kernel/cpu/mtrr/mtrr.c | 2 --
->   2 files changed, 2 insertions(+), 2 deletions(-)
+>   arch/powerpc/include/uapi/asm/kvm.h | 6 ++++++
+>   include/uapi/linux/kvm.h            | 4 ++++
+>   2 files changed, 10 insertions(+)
+> 
+> diff --git a/arch/powerpc/include/uapi/asm/kvm.h b/arch/powerpc/include/uapi/asm/kvm.h
+> index 077c5437f521..a38dff7a8aea 100644
+> --- a/arch/powerpc/include/uapi/asm/kvm.h
+> +++ b/arch/powerpc/include/uapi/asm/kvm.h
+> @@ -437,6 +437,12 @@ struct kvm_ppc_cpu_char {
+>   	__u64	behaviour_mask;		/* valid bits in behaviour */
+>   };
+>   
+> +/* For KVM_PPC_GET_COMPAT_CAPS */
+> +struct kvm_ppc_compat_caps {
+> +	__u32	flags;
 
-Reviewed-by: Thomas Huth <thuth@redhat.com>
+You may either want flags to be __u64, or rearrange to keep variables in 
+descending order of size or add padding as appropriate.
+Also, if we are not using flags with this series, we need to document 
+comment as /* reserved for future use */
+
+> +	__u64	compat_capabilities;	/* Capabilities supported by the host */
+> +};
+> +
+>   /*
+>    * Values for character and character_mask.
+>    * These are identical to the values used by H_GET_CPU_CHARACTERISTICS.
+> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> index 6c8afa2047bf..1788a0068662 100644
+> --- a/include/uapi/linux/kvm.h
+> +++ b/include/uapi/linux/kvm.h
+> @@ -996,6 +996,7 @@ struct kvm_enable_cap {
+>   #define KVM_CAP_S390_USER_OPEREXEC 246
+>   #define KVM_CAP_S390_KEYOP 247
+>   #define KVM_CAP_S390_VSIE_ESAMODE 248
+> +#define KVM_CAP_PPC_COMPAT_CAPS 249
+>   
+>   struct kvm_irq_routing_irqchip {
+>   	__u32 irqchip;
+> @@ -1349,6 +1350,9 @@ struct kvm_s390_keyop {
+>   #define KVM_GET_DEVICE_ATTR	  _IOW(KVMIO,  0xe2, struct kvm_device_attr)
+>   #define KVM_HAS_DEVICE_ATTR	  _IOW(KVMIO,  0xe3, struct kvm_device_attr)
+>   
+> +/* Available with KVM_CAP_PPC_COMPAT_CAPS */
+> +#define KVM_PPC_GET_COMPAT_CAPS	_IOR(KVMIO,  0xe4, struct kvm_ppc_compat_caps)
+> +
+
+
+This patch can actually be squashed with next patch where the struct, 
+macros are actually being used.
+
+>   /*
+>    * ioctls for vcpu fds
+>    */
 
