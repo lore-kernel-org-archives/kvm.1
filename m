@@ -1,51 +1,51 @@
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E662175A85;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F3E778F4A;
 	Tue,  5 May 2026 00:32:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.165.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777941180; cv=none; b=avryZ/TddFBtpw6eLEv7ZyAJi0BWQVavLTOIRWV7I/fDq2Yu6KMRiuCKprW3eWId+TM0twMOv5eW+cdhNJ2vSOwXiq0dzx3lZPYFicVG2HVAHKkJVpDGE0xorJAv/EASto7qG/xYp1lEq9m+KDS0izEQt84oIqFQ2ZryQbGyLB4=
+	t=1777941180; cv=none; b=T3djpDxvU/q4BMsyM9+IqR4Mmm5H+q8V4S8B8CiSrCyaggQpuyS9TOumUQ+wI5s0QdgOQok5rWrNYbpRxbr+HaOBDk/GSH/50a7KInspJ6N4ntDNLJ/80arJFmnBpf5zahzmIsxKZ1a2F0mDr+pFJ6D2PYtzbvBLK8hj4D8wIgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1777941180; c=relaxed/simple;
-	bh=myaxIaX9bf6fqa9uiEURUxFFJn2fzZDsH5/vz4GBWCQ=;
+	bh=UDusgEp0ml0WwtZkuy6T2abTYWGkA8sO0XZm+60+Wjs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AS50ckqShr48auqYLWWiB5QaHXvcQ1FoAMAvjWi93Hypt8dW8xfy9WoLjXP0GxC1/Q1siElFqAOcx3kD+J5heVvQpivekDO5vqbyxech8c/Gt0iLxbpvxRfRteu2BOlTzFxeRTew51XTxzYCANOC7gi/+R6rRGVviWm3gcKfSjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=hb119nYA; arc=none smtp.client-ip=205.220.177.32
+	 MIME-Version; b=KaCNTLkLJ+apyPoZMFNfuYbrfGuODz38jOtTv7gAJV3I7uFzM4j3L5Y34vo8X1qxd/o+nDyFIUsdNZ3mlOppfvo7BEytImr1uNi6J0YnTD3pWTAKft7GjlCM2FBQZ8nWR9Zu2g7GK5FXzggkP7784PQx2hpUSmCV73dzQnQ7XpQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=JpzGzpt7; arc=none smtp.client-ip=205.220.165.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="hb119nYA"
-Received: from pps.filterd (m0333520.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 644I3vHo250500;
-	Tue, 5 May 2026 00:32:28 GMT
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="JpzGzpt7"
+Received: from pps.filterd (m0246629.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 644IK26O1405055;
+	Tue, 5 May 2026 00:32:30 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
 	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2025-04-25; bh=gKOm5
-	SvWyJeeJorwvHnm6f1ncnArZCwFOibmWIZF/pE=; b=hb119nYA/c+ypeHQUiz8n
-	4ZpDs5TjzZbD1o6dr38uJG3+laL81CP1FrSui1NagzFYXTsDja8xnNDnns2ZcHwD
-	HaogofoaAmLsChNQ7UcCACGgoyMUimv8DdsisRW7AY8A1sb4L2/9B9/KTdyXk+Us
-	pSCrCXFdctmFDzZEjku8nrp7NNwwgnw8e1l/7CjtoYGCLx938HITaFuQm8ULWMk5
-	LrimQN1cqC34c5UJ9WVUymOIFMx7wILafoxqvaXtsyMfhuprWmabnriCeHssOiCN
-	pxPWjJWdFH8L+W2ra5LBTXcldBfsx69xrN2avAYFUxMnIKAvCTWQIWti/8AlYqpR
-	g==
+	:mime-version:references:subject:to; s=corp-2025-04-25; bh=Ycy3v
+	45H5/lO50tJU2PYnO8jRnwOCn3MU7E6p8gUv+g=; b=JpzGzpt7ZpGLobvQz+uTf
+	11pGr5wZTZIR4C6dAmhKNZyL3bIjceWRQ5927aA6N1iqLBDcG6Ai5IWCN73NPH4B
+	zxtOgHR8zGgr6LRZfB7C7M/Xy13zBPVXAKOnkmR5Ddh8RRKPUVlYEk1xIoH9uyEQ
+	lYXbpv/RPTWCXXT1Qv7tZBWCTHuDwnKsaH7Na5zda8hrF9XOlALLFvhgFnJsxu3l
+	bqfxF4XSa9AOjihxqFVtHrc2QE481IxttNOYuDv36EOlFuujJMc2yV59/RPxMT/b
+	QPg/1YScSMh9ZSJGw2Erm1lBLY3nc4aQkduO/5JB5dEI0d5hylPPdICRUDnEukK1
+	A==
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.appoci.oracle.com [138.1.114.2])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4dw9e1c06p-1
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4dw9epuy7u-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 05 May 2026 00:32:28 +0000 (GMT)
+	Tue, 05 May 2026 00:32:30 +0000 (GMT)
 Received: from pps.filterd (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 6450VGel007014;
-	Tue, 5 May 2026 00:32:27 GMT
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 6450VG9E007015;
+	Tue, 5 May 2026 00:32:30 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4dx5e9yjh2-1
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4dx5e9yjjn-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 05 May 2026 00:32:27 +0000 (GMT)
+	Tue, 05 May 2026 00:32:29 +0000 (GMT)
 Received: from phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 6450Tr5X001260;
-	Tue, 5 May 2026 00:32:26 GMT
+	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 6450Tr5b001260;
+	Tue, 5 May 2026 00:32:29 GMT
 Received: from localhost.localdomain (ca-dev80.us.oracle.com [10.211.9.80])
-	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4dx5e9yjfe-2;
-	Tue, 05 May 2026 00:32:26 +0000 (GMT)
+	by phxpaimrmta01.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4dx5e9yjfe-4;
+	Tue, 05 May 2026 00:32:29 +0000 (GMT)
 From: Dongli Zhang <dongli.zhang@oracle.com>
 To: kvm@vger.kernel.org, x86@kernel.org, linux-kselftest@vger.kernel.org
 Cc: seanjc@google.com, pbonzini@redhat.com, vkuznets@redhat.com,
@@ -56,9 +56,9 @@ Cc: seanjc@google.com, pbonzini@redhat.com, vkuznets@redhat.com,
         rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de,
         vschneid@redhat.com, kprateek.nayak@amd.com, jgross@suse.com,
         dwmw2@infradead.org, joe.jin@oracle.com
-Subject: [PATCH 1/5] x86/kvm: Reset prev_steal_time and prev_steal_time_rq when enabling steal time
-Date: Mon,  4 May 2026 17:30:14 -0700
-Message-ID: <20260505003044.78693-2-dongli.zhang@oracle.com>
+Subject: [PATCH 3/5] KVM: x86: account KVM_SET_CLOCK downtime in steal time
+Date: Mon,  4 May 2026 17:30:16 -0700
+Message-ID: <20260505003044.78693-4-dongli.zhang@oracle.com>
 X-Mailer: git-send-email 2.43.5
 In-Reply-To: <20260505003044.78693-1-dongli.zhang@oracle.com>
 References: <20260505003044.78693-1-dongli.zhang@oracle.com>
@@ -76,140 +76,131 @@ X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
  malwarescore=0 lowpriorityscore=0 mlxscore=0 adultscore=0 suspectscore=0
  spamscore=0 bulkscore=0 phishscore=0 classifier=spam adjust=0 reason=mlx
  scancount=1 engine=8.19.0-2604200000 definitions=main-2605050003
-X-Proofpoint-ORIG-GUID: dSfiiVMfveQ2965z7auX2ZEBNd8A2mKI
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA1MDAwMiBTYWx0ZWRfX4zIa8eA9yyRM
- 6J4EfwaxcJnRhcgioMit4Y6YR7j7Le6/HpqPheuLV7DVINo2ZSxyYba34dQUwKfnig64gG1RU2D
- KXOvYwiKtrF1WLAvJN7YR0FEe85frYZahuQ/l/WbYpFllgmJMGs+MDleTgZ2MYCQxMrDs4Tiwys
- WYRRe77TNL3EPv5uS+3baXZHrdAavBrxOZI+BDt8fCShNELUSsaBaxwwln57kLfG9yzl6TlvndW
- eLxgqz91YcJG5Mwx3WgEBBBKsZsJHR6jsLLelpou7nP+UuWZ0zJIQN9ZZX4xsjq2xEmBlotBCHg
- Bqi0q9nziLKKvvIv90CkPKovrarLe8S0/0CeFDiM8BJUARUlMez/REoIPVANnVzQeulbbroHPMC
- CyKscSuUA7fX7wqbO3RoF5CQPLOu4oD2XDJ4s16rgwSF2VTJ/fuBReTNdvC6XJ88o3HnjMUlDzy
- +QzXovfZWGvivR6dkBw==
-X-Proofpoint-GUID: dSfiiVMfveQ2965z7auX2ZEBNd8A2mKI
-X-Authority-Analysis: v=2.4 cv=OPAXGyaB c=1 sm=1 tr=0 ts=69f93a9c cx=c_pps
+X-Proofpoint-ORIG-GUID: V9sbreCY7n_-ivAUEQILdNBIak7p7IIK
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA1MDAwMiBTYWx0ZWRfX7hd151W+wg3C
+ BeO9jbrBN/TZ0+Xy1YE+HRSLWlCS+OA+EuJBah5De1sWhg6Aqw8UWfliMSKn43uVFMZSEgn91df
+ iGiE0+InNo4oBikivoz/Ks5ym3SIGJTLvQLFgGIIfsnkQx38vanJ3YkOXF4OZWWik8oA3ENAraD
+ Bi6iS74Uxb/dVRPzvUl6odx861rzZvnIDp9sp4W85bI/MCW6KbonTA78E2S61tNr1AP5aRyRScd
+ 86/taZYYv4AsehXsQ8GyyK3dPl/RtfUJ2MydVSPXc0JRxGJI6rLCu8eP5L4Y55tlwlWiFHHvb5O
+ DPiYeyPUkzKt6sr5d6aQhe//mzB4i7Z3khb01mD1yDNxFORcxmLjWwtt3xI7m05AdaRzCQf+a7A
+ CDlx/JbbLbMXqxcRmlxmYeBrtDAwh86kXYDBFzN3+k2XbCUwrcpcqwAqRASClaS529z4eWAaM4Y
+ I7Pj5tzRTozRgzkeGLw==
+X-Authority-Analysis: v=2.4 cv=YKKvDxGx c=1 sm=1 tr=0 ts=69f93a9e cx=c_pps
  a=XiAAW1AwiKB2Y8Wsi+sD2Q==:117 a=XiAAW1AwiKB2Y8Wsi+sD2Q==:17
  a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=jiCTI4zE5U7BLdzWsZGv:22
- a=BqU2WV_vvsyTyxaotp0D:22 a=yPCof4ZbAAAA:8 a=-G8wzUU2UffRpiCYI1EA:9
+ a=EIcjfB9IiI4px24ztqRk:22 a=yPCof4ZbAAAA:8 a=WxiHPqxzqn99l1sN-H0A:9
+X-Proofpoint-GUID: V9sbreCY7n_-ivAUEQILdNBIak7p7IIK
 
-kvm_steal_clock() is not guaranteed to be monotonic, especially during vCPU
-hotplug, and may restart from a small value due to a KVM bug.
+The KVM_CLOCK_REALTIME has been introduced to help track the downtime of
+live migration. KVM uses that realtime value to advance guest clock, but
+the same blackout is not reflected in KVM steal time.
 
-Since per-vCPU prev_steal_time and prev_steal_time_rq are not reset on vCPU
-hotplug, they can become larger than the value returned by
-paravirt_steal_clock(), leading to incorrect accounting.
+Account that same delta in steal time directly in kvm_vm_ioctl_set_clock(),
+only when KVM_CLOCK_REALTIME is used. This keeps the KVM-only solution
+self-contained and avoids adding a new KVM ioctl or requiring additional
+userspace changes (i.e. QEMU).
 
-Reset both prev_steal_time and prev_steal_time_rq when enabling KVM steal
-time paravirtualization to avoid this issue.
+Record the per-VM downtime delta when KVM_SET_CLOCK receives
+KVM_CLOCK_REALTIME, and fold it into the existing x86 steal accounting
+path. Initialize each vCPU's local cursor
+(vcpu->arch.st.last_downtime_steal) when the guest enables
+MSR_KVM_STEAL_TIME so previously accumulated blackout is not charged.
 
-A fix for the underlying KVM hypervisor steal time accounting bug will be
-addressed in a subsequent patch.
+Note that this means a vCPU may observe additional steal time after
+blackout even if the host side contribution from current->sched_info
+did not increase during that interval.
 
 Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
 ---
- arch/x86/kernel/kvm.c         | 40 ++++++++++++++++++++---------------
- include/linux/sched/cputime.h |  2 ++
- kernel/sched/cputime.c        | 10 +++++++++
- 3 files changed, 35 insertions(+), 17 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  3 +++
+ arch/x86/kvm/x86.c              | 25 +++++++++++++++++++++++--
+ 2 files changed, 26 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-index 29226d112029..819abd3a9a26 100644
---- a/arch/x86/kernel/kvm.c
-+++ b/arch/x86/kernel/kvm.c
-@@ -328,6 +328,23 @@ static void __init paravirt_ops_setup(void)
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 1f1f29128c5d..920441b1abf0 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -959,6 +959,7 @@ struct kvm_vcpu_arch {
+ 		u8 preempted;
+ 		u64 msr_val;
+ 		u64 last_steal;
++		u64 last_downtime_steal;
+ 		struct gfn_to_hva_cache cache;
+ 		bool need_reset;
+ 	} st;
+@@ -1506,6 +1507,8 @@ struct kvm_arch {
+ 	u64 master_kernel_ns;
+ 	u64 master_cycle_now;
+ 
++	atomic64_t downtime_steal;
++
+ #ifdef CONFIG_KVM_HYPERV
+ 	struct kvm_hv hyperv;
  #endif
- }
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index eec578894ad5..452293fc0505 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -3751,6 +3751,7 @@ static void record_steal_time(struct kvm_vcpu *vcpu)
+ 	struct kvm_steal_time __user *st;
+ 	struct kvm_memslots *slots;
+ 	gpa_t gpa = vcpu->arch.st.msr_val & KVM_STEAL_VALID_BITS;
++	u64 downtime_steal;
+ 	u64 steal;
+ 	u32 version;
  
-+static u64 kvm_steal_clock(int cpu)
-+{
-+	u64 steal;
-+	struct kvm_steal_time *src;
-+	int version;
+@@ -3838,6 +3839,11 @@ static void record_steal_time(struct kvm_vcpu *vcpu)
+ 	steal += current->sched_info.run_delay -
+ 		vcpu->arch.st.last_steal;
+ 	vcpu->arch.st.last_steal = current->sched_info.run_delay;
 +
-+	src = &per_cpu(steal_time, cpu);
-+	do {
-+		version = src->version;
-+		virt_rmb();
-+		steal = src->steal;
-+		virt_rmb();
-+	} while ((version & 1) || (version != src->version));
++	downtime_steal = atomic64_read(&vcpu->kvm->arch.downtime_steal);
++	steal += downtime_steal - vcpu->arch.st.last_downtime_steal;
++	vcpu->arch.st.last_downtime_steal = downtime_steal;
 +
-+	return steal;
-+}
-+
- static void kvm_register_steal_time(void)
- {
- 	int cpu = smp_processor_id();
-@@ -337,6 +354,12 @@ static void kvm_register_steal_time(void)
- 		return;
+ 	unsafe_put_user(steal, &st->steal, out);
  
- 	wrmsrq(MSR_KVM_STEAL_TIME, (slow_virt_to_phys(st) | KVM_MSR_ENABLED));
-+
-+	/*
-+	 * This CPU is not ready to be scheduled yet.
-+	 */
-+	sched_steal_time_cpu_init(cpu, kvm_steal_clock(cpu));
-+
- 	pr_debug("stealtime: cpu %d, msr %llx\n", cpu,
- 		(unsigned long long) slow_virt_to_phys(st));
- }
-@@ -411,23 +434,6 @@ static void kvm_disable_steal_time(void)
- 	wrmsrq(MSR_KVM_STEAL_TIME, 0);
- }
+ 	version += 1;
+@@ -4185,6 +4191,9 @@ int kvm_set_msr_common(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
+ 			break;
  
--static u64 kvm_steal_clock(int cpu)
--{
--	u64 steal;
--	struct kvm_steal_time *src;
--	int version;
--
--	src = &per_cpu(steal_time, cpu);
--	do {
--		version = src->version;
--		virt_rmb();
--		steal = src->steal;
--		virt_rmb();
--	} while ((version & 1) || (version != src->version));
--
--	return steal;
--}
--
- static inline __init void __set_percpu_decrypted(void *ptr, unsigned long size)
- {
- 	early_set_memory_decrypted((unsigned long) ptr, size);
-diff --git a/include/linux/sched/cputime.h b/include/linux/sched/cputime.h
-index e90efaf6d26e..7a0313bd053a 100644
---- a/include/linux/sched/cputime.h
-+++ b/include/linux/sched/cputime.h
-@@ -186,6 +186,8 @@ struct static_key;
- extern struct static_key paravirt_steal_enabled;
- extern struct static_key paravirt_steal_rq_enabled;
- 
-+void sched_steal_time_cpu_init(int cpu, u64 steal);
+ 		vcpu->arch.st.need_reset = true;
++		vcpu->arch.st.last_downtime_steal =
++			atomic64_read(&vcpu->kvm->arch.downtime_steal);
 +
- #ifdef CONFIG_HAVE_PV_STEAL_CLOCK_GEN
- u64 dummy_steal_clock(int cpu);
+ 		kvm_make_request(KVM_REQ_STEAL_UPDATE, vcpu);
  
-diff --git a/kernel/sched/cputime.c b/kernel/sched/cputime.c
-index fbf31db0d2f3..1490d1bcf3b4 100644
---- a/kernel/sched/cputime.c
-+++ b/kernel/sched/cputime.c
-@@ -255,6 +255,16 @@ void __account_forceidle_time(struct task_struct *p, u64 delta)
- #ifdef CONFIG_PARAVIRT
- struct static_key paravirt_steal_enabled;
+ 		break;
+@@ -7250,8 +7259,18 @@ static int kvm_vm_ioctl_set_clock(struct kvm *kvm, void __user *argp)
+ 		/*
+ 		 * Avoid stepping the kvmclock backwards.
+ 		 */
+-		if (now_real_ns > data.realtime)
+-			data.clock += now_real_ns - data.realtime;
++		if (now_real_ns > data.realtime) {
++			u64 downtime_ns = now_real_ns - data.realtime;
++
++			data.clock += downtime_ns;
++
++			if (sched_info_on()) {
++				atomic64_add(downtime_ns,
++					     &kvm->arch.downtime_steal);
++				kvm_make_all_cpus_request(kvm,
++							  KVM_REQ_STEAL_UPDATE);
++			}
++		}
+ 	}
  
-+void sched_steal_time_cpu_init(int cpu, u64 steal)
-+{
-+	struct rq *rq = cpu_rq(cpu);
+ 	if (ka->use_master_clock)
+@@ -13389,6 +13408,8 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+ 	kvm->arch.hv_root_tdp = INVALID_PAGE;
+ #endif
+ 
++	atomic64_set(&kvm->arch.downtime_steal, 0);
 +
-+	rq->prev_steal_time = steal;
-+#ifdef CONFIG_PARAVIRT_TIME_ACCOUNTING
-+	rq->prev_steal_time_rq = steal;
-+#endif
-+}
-+
- #ifdef CONFIG_HAVE_PV_STEAL_CLOCK_GEN
- static u64 native_steal_clock(int cpu)
- {
+ 	kvm_apicv_init(kvm);
+ 	kvm_hv_init_vm(kvm);
+ 	kvm_xen_init_vm(kvm);
 -- 
 2.39.3
 
