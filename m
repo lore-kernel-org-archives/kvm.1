@@ -1,85 +1,60 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FDBF19995E
-	for <kvm@vger.kernel.org>; Tue,  5 May 2026 09:45:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E236320CD9;
+	Tue,  5 May 2026 09:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777974328; cv=none; b=Q50V0OvkJXAuZPTslat+2BimKeEUfxcyDS0qebfiB1xXvIkqwC6Ztcynd3D7WeZFZ59jUarRAxaUrxYL6xmNte1en4aJBWOMRW2JmdCpJ8N5fZOdZPsZEmSnckTZwMHsUdMfhIrg8OD0qJLAWecCGru3aN/7ZGrimzD2PkSsRYE=
+	t=1777974609; cv=none; b=ItFlR74LuQvtSEdx96/TI8cpD6/FlPJVS86OO94N+3NAlZPtLdsapOmqJAtG/I8C3WQMXa4R6aNz2kMadPiRl2dyg6os2iS18uPG5770iBjAcOufgkRa50aj1s+cI5z0Q5Or1f6mb4IpiJ2ghlLYue5HYzolMmW3zZZhlHhlLqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777974328; c=relaxed/simple;
-	bh=CGQD1MF+kx+ogyGRC5gfAe2LEPosFkI1OVwgwR3xyiY=;
+	s=arc-20240116; t=1777974609; c=relaxed/simple;
+	bh=HfSJi/mSuslRViJB8xy/0ka6SYD7308OVYJfdmtPZfU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=BRLdpwOBdhKiPt6a682vadzU6mW3S3K0rVp3rexnl0j4eYJ1fvXnMM2AVew76uGNpC6jif7GbuTu2TBfIk3txpOADcDbnOtFELFpZgmsZXuPjY/2vY3Wuf+ShM4k+SzO4UG2b74WHNzBqLD/XQFJe0cSAY5mhXSjn41P+4yX1rM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YC5kF+lB; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=t6cPwvXx; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=KCZu/181KI8/d9g6mXqB77iLfdWfwh1bWJhQZ4Bnfm3qubKjVjWmbGdoR1sAmXn6k7nGD9t2CN87aGtsvIsckbmXPjwSORRIm2WfsOOOutU8Z/OhLwWE+N5JRXDdG8sBCxeer4wV8PFBKwH0AbXqyVs6phlyBYsGO+IiN9kuATg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=lAsft1xP; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YC5kF+lB";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="t6cPwvXx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777974322;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ZFnklJ0uzsLFOaVRqEVGytAqWFY5sAoTXkf2yj+bS7Y=;
-	b=YC5kF+lBfrsOaCZic+CllM9WqDO08RtJI8Fz7P1NNc4mtrmftt3Mxp/GoimjLLFxzATbkT
-	6N+3Wja9CXjfBXG+cStNrftQlOXKRjp0kVLmeJvmixcOAYuVZePBVP9WojJmnZsOQURg3u
-	vWBcw97qh6UP1iNSs6HdQaNwIVBIKfA=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-684-iNldg0XFNI6i4e9PU-aRow-1; Tue, 05 May 2026 05:45:21 -0400
-X-MC-Unique: iNldg0XFNI6i4e9PU-aRow-1
-X-Mimecast-MFC-AGG-ID: iNldg0XFNI6i4e9PU-aRow_1777974320
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-488ba2f4094so36616265e9.1
-        for <kvm@vger.kernel.org>; Tue, 05 May 2026 02:45:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1777974320; x=1778579120; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ZFnklJ0uzsLFOaVRqEVGytAqWFY5sAoTXkf2yj+bS7Y=;
-        b=t6cPwvXxvZgTLUi+G8SVPI22MEnwULg3rs2/TorY1I8Viyn/UAFgx7W71bxoYsB1Y7
-         vUHC0nhgEc26QxJWIEeIwC9EiCwLHEzfl9BdLmRuDSstyb8AjkvoK94HvcIgegcLlq/Y
-         inPPakzqVyninfs8JjDjpDD/ycKQsG7w8Y+clZv0TKsDuCATq2cKQTScYEXzExPgFCaR
-         B8RajaLrgh9I0i6fhYsYkXcO9eWI5sX2g+q57z4LyB8k/Qh+/BOMCfzcBB3qCTK/rtSA
-         xyvsk6aN/twkN+0WE2jazxIcvHHkTKYl/zf5UfLtVeT4VEcOxDbbJPIrXXhTQW3UyE9I
-         e50A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777974320; x=1778579120;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZFnklJ0uzsLFOaVRqEVGytAqWFY5sAoTXkf2yj+bS7Y=;
-        b=cthNgZJ33lBT8Pte4v2o9d7HkGYRmPhfkYX4Ln3vTArchTU4ipdju2ClBSACYdMPaZ
-         obwwjnHx0N32L5NPIg48bGW7N3jZ1fEiANSeTv++ZvYPwJ1hCy7rUbvsR7HzPF8DEK5b
-         iLqIUA3KJLRF6s4EZybI89mWBYCWro6K0qCKFhmOr9sF6B4d/vXVB07O4gOullhfPMA3
-         tH8QykUGXQGctLhB0O9oL8LY1uRVhI+qJRqqoABeJrjf3vOLsIM78tjcTcREQKMD56Ka
-         FZBsUKTzmwTicG9oGKNw1S7mopRIO1VEFNgFsXZizKOKFYAYml7GiYa4nyStudXvsjON
-         JuLw==
-X-Forwarded-Encrypted: i=1; AFNElJ/JhCgQm0wLhYCn1C/TDBTEb/EOvpi9h8zuiK0rGo2/1y7FEFMrwnvkjhVHTRYffxCmPP8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwotexPvFOW//l+oJhU1E1DJD2jn4LPQoMryXYaKjcgNGrm4Fy8
-	VqQLZbP9AA0dd4GgCR6RpkXN10nYJ9JeyR+YbLvK256DYXjwSRz3q4+0vDVjPl8c78A6Ir5wTL/
-	9MjmHGyrs9+6R/Md8Ltj0xydiaijDZYwfplVcF1T2HAwte+JJm2gSSA==
-X-Gm-Gg: AeBDieuZcuevz69PqXUTPn+teSnWmJ8vtwv4qkkJa4e6Ua0DPHCIMbh35T588I+akbQ
-	sAaHBYhGtPfcHpMYZdvIzPvN821x0hdHO4fZxjGKWltMO+8tOCQioCQcifW8tzO9jwI+jyzGdth
-	ljG+jUS+FhgeRJxOgJM9JJ0ZIEhycm7F6hLkHxnryR0YZZfkuJ0mhyCkIVJHr8Ndk4uGwJetPBC
-	Q9y2wW6/HYAiSXd8LFT+fBlbX1Gob7wF2FfAvXzK/kNAVyAa2EwEhfBU7vzjzA+091vAL8+Bj3U
-	TdTKLG450SFd+TUAjvgCbQSWUndPCidMOVyrl47/XxMp7AINBwhsdYQP0McjIFFi7AH5VBjSvXR
-	230jAn4XdTkFNgOyIYtddc/sGIljQUw==
-X-Received: by 2002:a05:600c:8286:b0:48a:5333:811e with SMTP id 5b1f17b1804b1-48d18bde32fmr38493135e9.15.1777974320311;
-        Tue, 05 May 2026 02:45:20 -0700 (PDT)
-X-Received: by 2002:a05:600c:8286:b0:48a:5333:811e with SMTP id 5b1f17b1804b1-48d18bde32fmr38492745e9.15.1777974319821;
-        Tue, 05 May 2026 02:45:19 -0700 (PDT)
-Received: from [192.168.0.9] ([47.64.115.164])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4504f4857ffsm3233688f8f.0.2026.05.05.02.45.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 May 2026 02:45:19 -0700 (PDT)
-Message-ID: <6b338140-873c-4303-bdd1-633d69f4a971@redhat.com>
-Date: Tue, 5 May 2026 11:45:17 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="lAsft1xP"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6456YUq92732371;
+	Tue, 5 May 2026 09:49:56 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=wg84nt
+	OAW2Dwegt+EtfJkt0bJBi0L3C+LRr1yoq0bqc=; b=lAsft1xPoeDnhk2jjhOsJZ
+	W5RZI0FcCBEg1aE99DY8N4kiroavVG+lN8srg0+JQdg2YafLDCT4z5fzDVkKVuAM
+	OzWOL7aCNw5l9vUoqdRR6BFKvm1GRwdp1gVq5TN3FmMBdpha6TLAUFfVuqEH86D2
+	yFrHxextKRAkS5E1lv9dL+fVLtYixnFVHh3uOpUsnIdzhjJb/wEEU6T7gHzoFV1W
+	fkPccua5j1ZM9IXU80xDnR7kZbMc9vPuZvJntYwd1SLcVCkZu0o8mFLW1k2e8prh
+	LFXl0NEjZkGQMVkQvbBh6fS4GaOAPh1o2wTNj1YI+tQJ3DOSfG9Tl2JuwY0L15xg
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9v7b10a-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 May 2026 09:49:56 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6459dZFJ001660;
+	Tue, 5 May 2026 09:49:55 GMT
+Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwwtg8ut5-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 05 May 2026 09:49:55 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6459nrao3605374
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 5 May 2026 09:49:53 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5169158065;
+	Tue,  5 May 2026 09:49:53 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 53E6E58052;
+	Tue,  5 May 2026 09:49:50 +0000 (GMT)
+Received: from [9.123.0.169] (unknown [9.123.0.169])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue,  5 May 2026 09:49:49 +0000 (GMT)
+Message-ID: <a85ed3d9-2a7e-4e63-93ef-c38c4b9a4305@linux.ibm.com>
+Date: Tue, 5 May 2026 15:19:48 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -87,160 +62,148 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: intel_iommu unit test is also failing
-To: =?UTF-8?Q?Cl=C3=A9ment_MATHIEU--DRIF?= <clement.mathieu--drif@bull.com>,
- Peter Xu <peterx@redhat.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>, Yi Liu <yi.l.liu@intel.com>,
- "Michael S. Tsirkin" <mst@redhat.com>
-References: <20240604143507.1041901-1-pbonzini@redhat.com>
- <8aa24294-439f-4484-b6fc-9327b6fd0306@redhat.com>
- <600b025e-602e-4128-9679-f53f32b96e8e@redhat.com> <afi_HNJoObF10rwz@x1.local>
- <96f57df07e6d39e30557357142b2212e0ea26af4.camel@bull.com>
- <0abf41c113c9425ea4c73a108db22f28290fa395.camel@bull.com>
- <13002aef21dec62205c252f3d12bb42ea59cf287.camel@bull.com>
- <d4ae6782e30a05ea9d56c38f0c5d296fb6a5c7b1.camel@bull.com>
-Content-Language: en-US
-From: Thomas Huth <thuth@redhat.com>
-Autocrypt: addr=thuth@redhat.com; keydata=
- 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
-In-Reply-To: <d4ae6782e30a05ea9d56c38f0c5d296fb6a5c7b1.camel@bull.com>
+Subject: Re: [PATCH 5/6] KVM: PPC: Book3S HV: Add support for compat CPU
+ capabilities for KVM on PowerNV
+Content-Language: en-GB
+To: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>, Nicholas Piggin
+ <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260430054906.94431-1-amachhiw@linux.ibm.com>
+ <20260430054906.94431-6-amachhiw@linux.ibm.com>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <20260430054906.94431-6-amachhiw@linux.ibm.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA1MDA4OSBTYWx0ZWRfX2nKzsJOBRHqD
+ 5cxYCVjh1F4sQWDMDAEmjRHWrOauBllx8EPE4RVIvXKK1pe4z8uC9RyaezCkof3pw1xtwXdK8dp
+ aQfPVz1OZ3lQxFj42kQqwRVL2ntCVsDz9I28DcRPPYbUf5NFTwvGHyU6DNTiddWc/spZvueJYKd
+ xcvAMzN5isHEdrVlSNV+QoZpnh+upAvfGLg3Us90luCRvoV2i2TrnYylJRoCKkmoV6Hs2Mwzrf/
+ dnQGhxMCjAI1/nLSur3gq4Y3WJNKQW/kowAD61P8bPTKmIxfQu8IeysiKQ+NIQ17TWSHTaDvyJa
+ Itu3JNegZSIYLXxxGrxdJhy+k6793ntjjjcTgwwq1tdSLgvNwlu8wrOAbVyLkdBu/KuBvHgKEUK
+ DyZcahOvc/s/4ho2yp73PK4lnwSsWVw+bvVrdQN7xh1rJpMeLHg95cOSCz14wzzbGzUHfAxLoAi
+ Lu9Cz2g6KHtza8bTJNw==
+X-Proofpoint-GUID: 3bxmTmYm5aOtlNoUAHoSlI-du3CG43pf
+X-Proofpoint-ORIG-GUID: Dl4g9JgMdUTLWArVAiTB7EOJW-eGJQUS
+X-Authority-Analysis: v=2.4 cv=eu/vCIpX c=1 sm=1 tr=0 ts=69f9bd44 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=f7IdgyKtn90A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22
+ a=VnNF1IyMAAAA:8 a=snkozyE_eINVwAcpY-AA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-05_02,2026-04-30_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0
+ suspectscore=0 malwarescore=0 bulkscore=0 impostorscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605050089
 
-On 05/05/2026 11.27, Clément MATHIEU--DRIF wrote:
-> I had a bit more time to hook into qemu to check the root cause.
+
+
+On 30/04/26 11:19 am, Amit Machhiwal wrote:
+> Currently, when booting a compatibility-mode KVM guest (L1) on a PowerNV
+> hypervisor (L0), the guest runs with the expected processor
+> compatibility level. However, when booting a nested KVM guest (L2)
+> inside the L1, QEMU derives the CPU model from the raw host PVR and
+> attempts to run the nested guest at that level, instead of honoring the
+> compatibility mode of the L1.
 > 
-> It seems that testb issues a single byte read (out of the valid size range), as we can see on the following breakpoint:
+> Extend host CPU compatibility capability reporting to support nested
+> virtualization on PowerNV systems (PAPR nested API v1).
 > 
-> ```
-> Thread 6 "CPU 0/TCG" hit Breakpoint 2, memory_region_dispatch_read (mr=0x55d72883cb30, addr=152, pval=0x7f62d25f4590, op=MO_BSWAP, attrs=...) at ../system/memory.c:1473
-> 1473       unsigned size = memop_size(op);
-> (gdb) n
-> 1474       MemTxResult r;
-> (gdb) p size
-> $1 = 1
-> (gdb)
-> ```
-
-Ouch! That's an excellent finding, Clément ... so GCC 16 is "smart" enough 
-to see that we only want to test the lowest bit here, so it optimizes the 
-code to access only one byte of memory instead of 4 bytes... which would be 
-ok for normal memory, but not for an MMIO register :-/
-
-Ugly work-around, to force GCC to read 32 bits:
-
-diff --git a/lib/asm-generic/io.h b/lib/asm-generic/io.h
---- a/lib/asm-generic/io.h
-+++ b/lib/asm-generic/io.h
-@@ -38,7 +38,9 @@ static inline u16 __raw_readw(const volatile void *addr)
-  #ifndef __raw_readl
-  static inline u32 __raw_readl(const volatile void *addr)
-  {
--       return *(const volatile u32 *)addr;
-+       u32 val = *(const volatile u32 *)addr;
-+       asm volatile ("\n" : : "r"(addr));
-+       return val;
-  }
-  #endif
-
-... but I wonder whether this should rather be treated as a bug in GCC 
-instead, since it should IMHO really not change the access size for a 
-volatile memory access?
-
-  Thomas
-
-
-> cmd
+> For nested API v2 (PowerVM), compatibility capabilities are obtained
+> from the hypervisor via the H_GUEST_GET_CAPABILITIES hcall. This
+> information is not available on PowerNV systems.
 > 
-> On Tue, 2026-05-05 at 09:36 +0200, Clement Mathieu--Drif wrote:
->> Back with some answers:
->>
->> This is the incriminated hunk:
->>
->> ```diff
->> --- <unnamed>
->> +++ <unnamed>
->> @@ -1,17 +1,16 @@
->> -  404395:       8b 80 98 00 00 00       mov    0x98(%eax),%eax
->> +  40441d:       8b 43 38                mov    0x38(%ebx),%eax
->>           edu_reg_writeq(dev, EDU_REG_DMA_DST, to);
->>           edu_reg_writeq(dev, EDU_REG_DMA_COUNT, size);
->>           edu_reg_writel(dev, EDU_REG_DMA_CMD, cmd);
->>
->>           /* Wait until DMA finished */
->>           while (edu_reg_readl(dev, EDU_REG_DMA_CMD) & EDU_CMD_DMA_START)
->> -  40439b:       a8 01                   test   $0x1,%al
->> -  40439d:       74 10                   je     4043af <edu_dma+0x121>
->> -  40439f:       f3 90                   pause
->> -  4043a1:       48                      dec    %eax
->> -  4043a2:       8b 43 38                mov    0x38(%ebx),%eax
->> -  4043a5:       8b 80 98 00 00 00       mov    0x98(%eax),%eax
->> -  4043ab:       a8 01                   test   $0x1,%al
->> -  4043ad:       75 f0                   jne    40439f <edu_dma+0x111>
->> +  404420:       f6 80 98 00 00 00 01    testb  $0x1,0x98(%eax)
->> +  404427:       74 0f                   je     404438 <edu_dma+0x11f>
->> +  404429:       f3 90                   pause
->> +  40442b:       48                      dec    %eax
->> +  40442c:       8b 43 38                mov    0x38(%ebx),%eax
->> +  40442f:       f6 80 98 00 00 00 01    testb  $0x1,0x98(%eax)
->> +  404436:       75 f1                   jne    404429 <edu_dma+0x110>
->>                   cpu_relax();
->>   }
->>
->> + is gcc 16
->> - is gcc 15
->>
->> The instructions generated by gcc 16 always skip the following condition:
->>
->> ```
->>        /* Wait until DMA finished */
->>        while (edu_reg_readl(dev, EDU_REG_DMA_CMD) & EDU_CMD_DMA_START)
->>                cpu_relax();
->> ```
->>
->> As a consequence, the test performs the second dma operation too early and reads a wrong value.
->>
->> Regards,
->> cmd
+> For nested API v1, derive the compatibility capabilities from the L1
+> guest by reading the "cpu-version" property from the device tree, which
+> reflects the effective (logical) processor compatibility level. Map this
+> value to the corresponding compatibility capability bitmap.
+> 
+> Introduce a helper to translate CPU version values into compatibility
+> capability bits and integrate it into kvmppc_get_compat_cpu_caps().
+> 
+> This allows userspace to query host CPU compatibility modes on both
+> PowerVM and PowerNV platforms via the KVM_PPC_GET_COMPAT_CAPS ioctl.
+> 
+> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+> ---
+>   arch/powerpc/kvm/book3s_hv.c | 37 +++++++++++++++++++++++++++++++++++-
+>   1 file changed, 36 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index d602d90111d1..25d05f1ccb72 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -6516,16 +6516,51 @@ static bool kvmppc_hash_v3_possible(void)
+>   	return true;
+>   }
+>   
+> +static int kvmppc_map_compat_capabilities(const __be32 cpu_version,
+> +				      unsigned long *capabilities)
+> +{
+> +	switch (cpu_version) {
+> +	case PVR_ARCH_31_P11:
+> +		*capabilities |= H_GUEST_CAP_POWER11;
+
+Should this be:
+
++               *capabilities |= H_GUEST_CAP_POWER11 |
++                                H_GUEST_CAP_POWER10 |
++                                H_GUEST_CAP_POWER9;
+
+Likewise, the remaining as applicable?
+
+> +		break;
+> +	case PVR_ARCH_31:
+> +		*capabilities |= H_GUEST_CAP_POWER10;
+> +		break;
+> +	case PVR_ARCH_300:
+> +		*capabilities |= H_GUEST_CAP_POWER9;
+> +		break;
+> +	default:
+> +		return -EINVAL;
+> +	}
+> +
+> +	return 0;
+> +}
+>   
+>   static int kvmppc_get_compat_cpu_caps(struct kvm_ppc_compat_caps *host_caps)
+>   {
+>   
+> +	struct device_node *np;
+>   	unsigned long capabilities = 0;
+> +	const __be32 *prop = NULL;
+>   	long rc = -EINVAL;
+> +	u32 cpu_version;
+>   
+>   	if (kvmhv_on_pseries()) {
+
+Commit title says PowerNV, but here were are doing only for PowerVM?
+
+> -		if (kvmhv_is_nestedv2())
+> +		if (kvmhv_is_nestedv2()) {
+>   			rc = plpar_guest_get_capabilities(0, &capabilities);
+> +		} else {
+> +			for_each_node_by_type(np, "cpu") {
+> +				prop = of_get_property(np, "cpu-version", NULL);
+> +				if (prop) {
+> +					cpu_version = be32_to_cpup(prop);
+> +					break;
+> +				}
+> +			}
+> +			if (!prop)
+> +				return -EINVAL;
+> +			rc = kvmppc_map_compat_capabilities(cpu_version,
+> +								&capabilities);
+> +		}
+>   		host_caps->compat_capabilities = capabilities;
+>   	}
+>   
 
