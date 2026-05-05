@@ -1,80 +1,80 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B07123D170B
-	for <kvm@vger.kernel.org>; Tue,  5 May 2026 07:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06E1F3D2FE0
+	for <kvm@vger.kernel.org>; Tue,  5 May 2026 07:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777964412; cv=none; b=OUFS/O04nEYrj8RT2u2zYL1MurRXXEKZRI62wM1Mva7/P6WStUugZ275O+MRBgNB06Ur12WvE6dYjYbWaKGiurVYcQvuqq90LHI2PeyKa1p7tX6Y4H04ewemd5Tm580S8kIviYiNRGdPJgGfPpY0190YPAhzYqnhhIKla918Vv4=
+	t=1777964467; cv=none; b=Z64dkisyRP2zpqhXdlBfdJwQxpoqHzfdKstp8M4sLFY5BUh5bAAoAGqj7/xYvA9yaGZbTWgu3yJFdImHf40PInQAhKQonZO9jy8mP9qmBgvElthQhWW6oW9dAy7cLQo2uXyScC4cthViBHJFIazcA/47a+MFJ95SAHVmLe7O7m0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777964412; c=relaxed/simple;
-	bh=4C1O+8Yb28gsJ7ML7nEymKcrBpr/Esj8D8nSpfVwuLs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DDmRgpgwTZb7zgtzutDsAqeNDfrinMRun0HuA3acBA5lFp+/+onmJBi881E9f1FTD192NbYOdvPrh5pCDnuNBYJfK889A/LMkvLixQcorgpsSmSyXJXYPtpFqAlZ82Yw9dXKN/TX6sXJGySLwcjOMxikN28cYTh9n3TcHDsW4Ww=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=amt0ZNNX; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=SblfkwJW; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1777964467; c=relaxed/simple;
+	bh=3LvJ5/xV1RQZaGHxF6pNpvvDu+FnGFMU5F1qw0qXnjo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DsQUx5XVoGBorhJHUk4Hgw+bTRkxTL1JjmmCBihHceO5F3VbKphX69Y4DGHiUGFFQVt2ke0iDntmralN5C3bx3NIVpUQ8czl0tilTVZJdGMgW15OgdBLc5AzOcukgGiM7NRifaBISdeLxjMmYkhlfbYQhYZkzpvz0Uzbo8OGhS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YrhYUhP3; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=gNXAjP/Y; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="amt0ZNNX";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="SblfkwJW"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YrhYUhP3";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="gNXAjP/Y"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777964401;
+	s=mimecast20190719; t=1777964465;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
-	bh=x2E3eylXZgkiQ5B17tOE4z6voBdoulQpJBVyOORx3Bk=;
-	b=amt0ZNNXW36cL+R+OvyPrI1rOkCZ6Uu9UZ7TZZDvghGK9VbFjCwWAFP4TIthl5NCd9HYf7
-	x4i8F68edsHqCZEmpJSUDFBV9EyvUnsk7HaikNw8VKaYtBncLyOgMF5wP1zeV0UxtwJf5y
-	0u/1dT6KTO2cCTuSzqyr9HurK+BurWc=
+	bh=nmU0xMG7ra+orDcAl7Q5QIsymSvh/y1zuyvrvlpHwIA=;
+	b=YrhYUhP305Osv1ukn8NPEH3wxEqXHr3x5VNOWBxaY+poDZv0sW1vPm7BlC8t4B3+E7fk4A
+	Whvk535GZ22KpbKTmnisMN7TlsqrF9/h5rn9ZSWvQU0VKkn7C4QfzJXFRurwJFIThL8Qfk
+	UAOO78e9x9NM7DUUamL5b7LV1Y6DwCQ=
 Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
  [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-407-sXvlblmqMsy4nTqve1qyIA-1; Tue, 05 May 2026 03:00:00 -0400
-X-MC-Unique: sXvlblmqMsy4nTqve1qyIA-1
-X-Mimecast-MFC-AGG-ID: sXvlblmqMsy4nTqve1qyIA_1777964399
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-441243ba35fso4686803f8f.0
-        for <kvm@vger.kernel.org>; Tue, 05 May 2026 00:00:00 -0700 (PDT)
+ us-mta-547-lLDhv4apOdC60Ebwi5y7yg-1; Tue, 05 May 2026 03:01:01 -0400
+X-MC-Unique: lLDhv4apOdC60Ebwi5y7yg-1
+X-Mimecast-MFC-AGG-ID: lLDhv4apOdC60Ebwi5y7yg_1777964460
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43d7d0947aeso2318596f8f.3
+        for <kvm@vger.kernel.org>; Tue, 05 May 2026 00:01:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1777964399; x=1778569199; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1777964460; x=1778569260; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=x2E3eylXZgkiQ5B17tOE4z6voBdoulQpJBVyOORx3Bk=;
-        b=SblfkwJWSZNAg6DHpBf/Q5w9WyE8NRnBNqN2ofgWgbLVpPg8XXLCa+IIzUo3HJuUF4
-         gZLjHA3kpfGMy0rbLWYetQ37MCC1r44fvVbvnHk1+olBWktXGeofm7YHwiQ8pVjXf4e2
-         88tMRzSn0ebbhPyYT9lk9J9Mwke23S1+U/xwQPQ8e5RtxRP5an4ym8Eb9UOBCCj9bFho
-         NHtGKmpDI8FpxhwyRS6yidMwJldj0TenSuQYIYn0aTphWarI54aIMqFtbOwsqkw9ZK0R
-         1/hlL+InP6W0p0earCJ2ngRGlCUihFHy5a4LauWRUHyqEU1sGEoYEZ6wowAt5pOoypLV
-         u6+A==
+        bh=nmU0xMG7ra+orDcAl7Q5QIsymSvh/y1zuyvrvlpHwIA=;
+        b=gNXAjP/YCH+BJXEFZoPi3y5k7IyJTd7W9tOKKYEna/lRAJ55aGll9DNfER2xmL5JaR
+         T2EqxiBnbFikIUbYCfclTRidRPMEtCto4Dk24YEX8pcI2+OKYDwgRdURN+X8H+ghZa1m
+         lql8TUgJZtA7MJr1AxHGYz1N05zB/iRBBwBBGrGqm3anDCj6Cjz9cCBPZ59wXBxQsHxv
+         Woyz/gORjpRKbRoyCAupeh0G2rZNaiS5e/1PZ2blfoLLX8qiNRjB3nwY104DVrhYwLIK
+         lAJuF6quI5LPEUjsZxSoZCOYnjBiy/D7zl7w7vi/kssthzdTdKv1R9jkY+mmOieh+M78
+         Yajg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777964399; x=1778569199;
+        d=1e100.net; s=20251104; t=1777964460; x=1778569260;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=x2E3eylXZgkiQ5B17tOE4z6voBdoulQpJBVyOORx3Bk=;
-        b=fTcNNInAlOEX3joMInGLiKWHEoOmi4rkbcwUp9xDQgJF7PcjkCUj+5mOggnWE5i4vG
-         9viv9jf4UlDoLbGGMHZNT24HggaarxvhKoYFr/k5/6bp2AzrjVwpy5Bf1ReL3Tz8u537
-         1x7EGP9pZM9GzyiXItoeYp4iofd6jY3bCI87fnFlScfDLr/HE3z3HCF8+j2T1ZO+K5eX
-         e2LaWyA/yrxbICXBlNLx7IlLCG3ksTRc7e52sD6DEHK9aktX64sBgkPPSeEBWyvVp/9x
-         /KCbnsJCk0T9iq5ak4P3PK5p1bKh1Jh2N1bdIbpC2UQ72UBgDDCiU2QosDs5spqQu/eM
-         a+hw==
-X-Forwarded-Encrypted: i=1; AFNElJ/tVzLPjopxvQejmKzxZ8iP1xDC/MAa6NVNhVePtT/DTmYSuJGh+iiq1aCOOF3P6PY1USQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzHVAgM78Dmv/j0rscMjrlc7lvVEjphdJxTsinzhVV95Gbtx11j
-	sGN7fYweUuUQb0s9MDRBROd9QMHOVcEzhLOC1KQqO7yXDflI81eYdnPR78UwJMebfo416vAOjTo
-	4yhds5sPMDemoh0gogzo0BgQoCQVeHsQaGKpTpvZXVW/i2L6LmQMQsQ==
-X-Gm-Gg: AeBDieuDwsUkSRU60JVAGTH4A+n1JLUrc7jQPOLUXqnAKMaVP70okBZiBW4ERa1iP9L
-	IejvvSmBngvWJLuizuP7M3A0tlbZEaNDkZ6FrGMEh9DawKlkYAVp/WufPjwuEY+/X9o7JdZrIwz
-	7h0R+/rK50+pbyRHhaEZWwEf2veAn9CE6RHxa/GYsPL3R3XCVs7q31sUtlfCCoNmeUQaqWdnAJD
-	M1NP09L6koGOaE80H1+70fM/I1dFRBu85aPwdRsgQ//uO4nTdPlW5EL86RFE+l1pxi4uGs7TTvE
-	f+bPnEW+WAhYrO9vcgEdcFNNRQKPq0xueyzq9d/RaZ0PqlBAJTvpEBDxA+cbXGE2B7RdzHHeRM6
-	Ie2VncSeMYE4jml8S8of2ITd31CsJ9HbKXsaJ+cS6Bz65aZkey/zbNWKEy+Dd7kJlpETVGhyVrE
-	hBm5WWJJVprHnxpd6Lss8EQOtZc0DtSxbv55HA4sc=
-X-Received: by 2002:a05:6000:24c9:b0:43d:21a:9a3e with SMTP id ffacd0b85a97d-44bb65dfc18mr19767190f8f.32.1777964398752;
-        Mon, 04 May 2026 23:59:58 -0700 (PDT)
-X-Received: by 2002:a05:6000:24c9:b0:43d:21a:9a3e with SMTP id ffacd0b85a97d-44bb65dfc18mr19767108f8f.32.1777964398115;
-        Mon, 04 May 2026 23:59:58 -0700 (PDT)
+        bh=nmU0xMG7ra+orDcAl7Q5QIsymSvh/y1zuyvrvlpHwIA=;
+        b=ryBd+Cp3ynmb7CjYcHnLEdrPPQZPLzl6IMNyJK66rQYOSNxfXkXpmZaS+BNFh2RZ7+
+         cniIuON0h7IIUnhiC7F7mDlHuj//FQDa/j93gsnIRhez8NUtG4OPMvd23nNUD21lgByM
+         CmjlTKIQnMJw50LdQ5FUbotB6MiiqAn2K+J+cUtx85l/FGjPl8QKLkX4JbTkEWYf5PQf
+         QFl+qu3OropRXGwkZhCRvdgmleYYCn3F2j1kwYsTNBPU0Pam0C+uGaSRnZ3CUZuGtM+m
+         8gL3sr8jLsAnb+4A7D3D2Xtz2mHH1DwX1yWUvaM0XWE0zyuiptv9ljEqU/1i6tc4wpQM
+         NuPQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8DVkHUI4CkyO/6Nv4Y0/9yQqGjASS3WTe9D+rEKUHRZq5SAnENDSYn73Y8GcZWARGqFi8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6zEk2gPyyBqkR6WLP7PlGEzwARv3+PB1GHtS9aH2Rr05yIpLe
+	spAkbCcpF0IkZfNh3PHxI6vsOf63gatL7cxg52e50F2kbIp1GTPP2IRBMzg6/5O07KN85AnMhxZ
+	fgPMMd1eC7OZvUkcANyd4mgyxgAH4J2apyM090+jL9GorE5mH9nGJng==
+X-Gm-Gg: AeBDieu5sAqgFwHyRwrRtCkFXizLm2uTS/RzSGUf/kdaOtLe0YF8QdkdCxdXmkPUP2a
+	s4uEvsiKIpChbtvEdz4Lor9H7IAgmphU7GoxKiHcyeRJ8mgxED6Mg/gSKFJKg/t7+WBBrRQjesz
+	3BUxlbpUEP0tmzHfrY/scF1HEIzDptgKxaHSZcgEOUvz5DPihRW7UMBRi9izsSi9hyC3aLamvhN
+	aHitJ0PA2EQkFa1KDMow+AR77Aa91ET7b9/6qgHZ7QvWAKGwARkzlN31wR8H7cDwq+SGrMrSaGc
+	YetfmW2zm+8i8u+fJfNSArFvwS1O5KZ+nOXCIchFX4IZVkkq21Wkd5YSGfwfFGVpFx0+hH4peRz
+	tj8ZjjDvGsuNJ4J0J4RyeHV8sqlfQNLAQ73VYqjYAP6nbA7tpSDbvEE1YoOjKZOW6bztmfvaisc
+	iVbqHWShFkGJv3oV826xzrkMhPSmwxImU0eCzCf/g=
+X-Received: by 2002:a05:6000:24ca:b0:43d:7508:c9c9 with SMTP id ffacd0b85a97d-45005c81614mr3326430f8f.27.1777964460045;
+        Tue, 05 May 2026 00:01:00 -0700 (PDT)
+X-Received: by 2002:a05:6000:24ca:b0:43d:7508:c9c9 with SMTP id ffacd0b85a97d-45005c81614mr3326348f8f.27.1777964459369;
+        Tue, 05 May 2026 00:00:59 -0700 (PDT)
 Received: from [192.168.10.48] ([176.206.106.181])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4505238e6e0sm2069200f8f.6.2026.05.04.23.59.57
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-450524833e1sm2243371f8f.2.2026.05.05.00.00.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 May 2026 23:59:57 -0700 (PDT)
+        Tue, 05 May 2026 00:00:58 -0700 (PDT)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -82,9 +82,9 @@ Cc: Sean Christopherson <seanjc@google.com>,
 	Alexander Bulekov <bkov@amazon.com>,
 	Fred Griffoul <fgriffo@amazon.co.uk>,
 	stable@vger.kernel.org
-Subject: [PATCH 6.12.y] KVM: x86: Fix shadow paging use-after-free due to unexpected GFN
-Date: Tue,  5 May 2026 08:59:56 +0200
-Message-ID: <20260505065956.194882-1-pbonzini@redhat.com>
+Subject: [PATCH 6.6.y] KVM: x86: Fix shadow paging use-after-free due to unexpected GFN
+Date: Tue,  5 May 2026 09:00:57 +0200
+Message-ID: <20260505070057.198705-1-pbonzini@redhat.com>
 X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -157,7 +157,7 @@ Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
  1 file changed, 14 insertions(+), 21 deletions(-)
 
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 2c11819bd216..d288c60ae200 100644
+index 0dc804149b0f..774bc26b8235 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
 @@ -182,6 +182,8 @@ struct kmem_cache *mmu_page_header_cache;
@@ -169,7 +169,7 @@ index 2c11819bd216..d288c60ae200 100644
  
  struct kvm_mmu_role_regs {
  	const unsigned long cr0;
-@@ -1187,19 +1189,6 @@ static void drop_spte(struct kvm *kvm, u64 *sptep)
+@@ -1194,19 +1196,6 @@ static void drop_spte(struct kvm *kvm, u64 *sptep)
  		rmap_remove(kvm, sptep);
  }
  
@@ -189,7 +189,7 @@ index 2c11819bd216..d288c60ae200 100644
  /*
   * Write-protect on the specified @sptep, @pt_protect indicates whether
   * spte write-protection is caused by protecting shadow page table.
-@@ -2342,7 +2331,8 @@ static struct kvm_mmu_page *kvm_mmu_get_child_sp(struct kvm_vcpu *vcpu,
+@@ -2350,7 +2339,8 @@ static struct kvm_mmu_page *kvm_mmu_get_child_sp(struct kvm_vcpu *vcpu,
  {
  	union kvm_mmu_page_role role;
  
@@ -199,7 +199,7 @@ index 2c11819bd216..d288c60ae200 100644
  		return ERR_PTR(-EEXIST);
  
  	role = kvm_mmu_child_role(sptep, direct, access);
-@@ -2420,13 +2410,16 @@ static void __link_shadow_page(struct kvm *kvm,
+@@ -2428,13 +2418,16 @@ static void __link_shadow_page(struct kvm *kvm,
  
  	BUILD_BUG_ON(VMX_EPT_WRITABLE_MASK != PT_WRITABLE_MASK);
  
