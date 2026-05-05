@@ -1,175 +1,141 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a2-smtp.messagingengine.com (fout-a2-smtp.messagingengine.com [103.168.172.145])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EDA2FE56E
-	for <kvm@vger.kernel.org>; Tue,  5 May 2026 14:14:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777990491; cv=pass; b=UCYUUCpCwz7Cw+M4nbndwc0uaVOYGwX1Q184YApLVURNfJYFaRBUOuod7Xqto8nxG0vZpNVf2ahEGQbFjicGX19Nnktl7WnG/uc91rg3J1khwupoTN/cBy9IObWh+fNGLgCYr1/NS8+yqdDoaXOivsM9b4DLJi9Vb6OBQW7IZdE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777990491; c=relaxed/simple;
-	bh=MnAAO4w1VfmrD02ylbi+VLyroPBD+EN8jrV6PBVFQ5Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ow0ZWQaNucBDICyj0kbI2meOu1wCS0vrtvEIG92bT+NnJWCE7wHY+/4GbBwjlj7QT6aVzndN1XTwtsyHw9EY5ZbUcjJRMQJLE+9X+8vSlMwwa3dvBW1AoQGgDBKZA5AvJRk9Qc13YcEDPqpgUgLcmgRbdxrHl5ILDEabMlABFs8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ksi3C2L9; arc=pass smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A455A1DF27D;
+	Tue,  5 May 2026 14:51:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.145
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777992666; cv=none; b=Lof0roAwhnyHbcHKoi178XOHuC4ls+0h/7gnMPwiXEr/5qc+5lZyIyvBATUk1ONSlplb6mkdi4yQyIayiJiDDxXWu7z2kWzJqs/kpHo1mLIn1vzm7BGqFd0SQ1gIzGVQ9yZQmC2G+jaY85w66jGOvm+8sK94vDvzZabedSdCM8I=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777992666; c=relaxed/simple;
+	bh=C0kAjV4pMDILIUmatYUVAuuoX1kyqtkpEFM7Vw7PqPY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=WqGDZb99PZs5/mtT3EqsCkUyvPA2ZDvWDf6esfWK/dWg/TSS9T/0Hq8Whfo3c67+ErSZE1+iKf9qd4xLbH23AVW+i8DFSHe7URfAUwo3yCQqG+ksCnF4r3+pf0ynDcAuqd2JWaPOHd7IF5GJREHNRJ1BX9EAp23IhuKtgpM7SEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=fXU0z364; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=AzG99EHP; arc=none smtp.client-ip=103.168.172.145
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ksi3C2L9"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-50fb4a7d704so42801511cf.1
-        for <kvm@vger.kernel.org>; Tue, 05 May 2026 07:14:49 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777990489; cv=none;
-        d=google.com; s=arc-20240605;
-        b=PnOP1jVI0rxW75fhXhYMY7lNHS3HHAe13ynHGJ6UhCyUSEh4jbjLIbXHPRcqm2N9A6
-         RmS88s3FwMsucngDyr7AoH8tFmK3C/97svGiREwqyXhcgaNPS3wxbCC30IscOC/yw+jq
-         xy6W1nQDzMWb5DT5yfOYSqCY21vrBeORcP06mRUaEY9ZtvFcvbN9/5Umi7LCVmmdzZsI
-         BQ9KaibgT0DIP2YVu30bgX+uJZF4N4V4WPJSo0DhRRwcfgdTAYsxyS97ErSrvYqMBKCC
-         wGOwXgKl+mpw5BUphT+FUKC1lpyQbJCI3mn4qeVphnBNQ8EzO1IhtMPqWHt5xCoGiHe+
-         VImA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=dUYAYav/BIYvObp7yQw4M/QPkHnKb2/syh6Sp2vU04w=;
-        fh=ny4EFSf8Vr8WlR6oiyYdcKi5kYHRx5jKunTpC3i5u0U=;
-        b=MVZN9HIuIjmI9sXY5p3uNbTcKOYWFY8CI/fL0JGJicYnjx22bulDqyLXkqvmv2CN6e
-         qR/amiYIaj42GrGaR9FU1sqsVnAN9E/MeiejV0oBtVyHRkOSj8cmFJ5rqH68QExT4xrS
-         5/GvKh9R+/suHqCYKCKNyC5Cz6Oo36Tnfo1P2U+Gi6whU+l/MvoACo9jXE0GSRiw4U8T
-         9MkxaP3sTNTjEWN//yzyaw4dfY6c4lBXsD3poDfcv4KtgK6au3C9xSViL6ptSCEnzyw6
-         D90FmhAl0ymUttNy2/MNZanjHZ9lh8YPSOCXSys6B9/+jtEzRAUif+rK4SotjWvOEKwS
-         LwMA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1777990489; x=1778595289; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dUYAYav/BIYvObp7yQw4M/QPkHnKb2/syh6Sp2vU04w=;
-        b=Ksi3C2L9ttBJn9Sa/0LCRG2B9dbjILuemw/L11glQyg+RUpdTs49KRZbGlGD898wb/
-         8J9Rt8WszvxU5q0RJSXPJdBCZepMCzqri8yPSp+92b1Z4r3G2jgxyBpoRYm39O+w5Jld
-         4cHH6+vMMlM4/fnVHKx94pMgkqrbZ9dc2wUq/BuGHSqdz3dC0V1og1Hs3GioelpjlxJN
-         7jsNVSG1l28DlECqoljLqnZFBjbvwO5ZVyw2U4080sFt61jZ0fmkHDU2WTUdezHS/T4J
-         2nR4vpIbODkv/hf5CiddcAQIpbIxXMoIsK07eEl9nH+C+PckGxdmpZ9sikI8jWv5+TZl
-         Dvew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777990489; x=1778595289;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=dUYAYav/BIYvObp7yQw4M/QPkHnKb2/syh6Sp2vU04w=;
-        b=Qb0+7P5UUauCruTCNzgmCFRuGpDXspbzH+zgr8gaCcmfjuxYgQ6M4fPWZUlgM5aCsl
-         pBLUosv4T4yf7fS3hs75BO0tD7NpmRKw3zYKl8GtLMpYhoNzMLu19evEY4j+PoDXJPsy
-         u2w4XmxaYcoX8l6TgN36xDM0VJ4DaptGJ+yB7g1AaaBgd+64GxVNGYPM5YpYhXgdJi9W
-         kuicV5tC9xWtFxznJBGmpUhN9LT7Hzrrn3ToWS1rYVymerM1jgaGDAWt+eWYJlEyITWP
-         6oIxi4YYDcKGR9WnbDT2cUWh11avtm2UjGo7bJXVqZaKqjLlnWFKhmaoPwD83tdla/lN
-         8DLw==
-X-Forwarded-Encrypted: i=1; AFNElJ+vtAIvhJVu7GkdYqMXuqReu1Zey190HMj5A0lRLDzI6eK6w4ZeeItxtLJ22tFBNnBkzy8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyz6+pqeZl01emnoXQirQX3bGlkkKzYUNzQXMNqYTIZNchPH2ya
-	34chL2mEPXrR+Jv63t8nnzYtZH1yNhSgPAS6RGbZWloY5iW9M9BJd+SkvpPSmJ8/mewOZSLH/kZ
-	AV7dOYhxy6xWgSTNCnsVzm5FZwJljNUJUcvjndGk0
-X-Gm-Gg: AeBDievHTxoK7ZB1d4le9GOs62GjPFfzYzV7uyyc9D/IJToYAVc+YmiWJJ2WEOI+Pa7
-	4K86G4L+zlsLLyVpPrX7OT3APTBZArpVghTujTevZl1DFeKwCcb5q4IIGbmhd4SysMSLyEEB9Xf
-	i/VyU2Kjl5CrIsdPNp1ZHVIMF2XLpT3ftZTSsQ6zSGmSYoRoaeR5IysGEalDiQb+r5SpHyfRIVP
-	AqyKxRZymR3Mz+y1FasjpR/1NwgJFWDt0dnF1aphpRK/3ibFSyBNTFT5/vUstnVdXeOpQ2hdPG8
-	GQzcmz3j1oPM0+N+SBiu4qLvH1nVN9SmnniBO7I/qDVoiwbRd/68nLXzS80wGMKidqhJmXpafmZ
-	6cYKtCtKAmTP8ht0CwpFDg5QZEpBRxljecDITMoL9dJtx4d/HQg==
-X-Received: by 2002:a05:622a:2304:b0:50e:5cc3:6f42 with SMTP id
- d75a77b69052e-5104c033490mr204851261cf.59.1777990488136; Tue, 05 May 2026
- 07:14:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="fXU0z364";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="AzG99EHP"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfout.phl.internal (Postfix) with ESMTP id D4E38EC017D;
+	Tue,  5 May 2026 10:51:01 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Tue, 05 May 2026 10:51:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1777992661;
+	 x=1778079061; bh=gkDZbs2uaJHENXDOI2poVxNdOMle19rKsTDPE0HZKMA=; b=
+	fXU0z364wpLxyhGw1FFiSVfRZctUjUqsgLbmFjICajIPr/x7ipnqLrG7lm/uwzCs
+	It+jQB1lwqEQtgrzHP8jfg3I3uIDBO3sY/ZR8gR17sz87ibQ1L+XhXAktc6nsYdS
+	+lYs81EzRvnPPpBDod4WMiSn02jKh9DV535B5wgFtMCtvfg5OLarzxgwvgTh2EYz
+	w33bcZs14dAks0R79+a09NR42Y3q4pk5E6HVnlgkUt4JwPOD2XyY3JYSH5Xf6wKx
+	URxS6lk/1jgaPF+CNpUClihp4ywhhmFymKpKHt5BhMi8gQZssgs6KDnfLfWeEl/f
+	PAMLNlxxmAvIlCR4Ic6T/w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1777992661; x=
+	1778079061; bh=gkDZbs2uaJHENXDOI2poVxNdOMle19rKsTDPE0HZKMA=; b=A
+	zG99EHPhenxS4yZZfFG60g7VrVmcxsv1fMbNLEBVDpJTlSiAWHsDj27R4bTeL2Rf
+	PX2yLeUoWkWs12dsYqHCZNoS8DrwUQLkreK6GaWsAouQZAT5axnzUci8BPfxuhAQ
+	2/E2wQ5aemdhY4QwuKF3nmnmYLUt+5hZACCjl3dOsw/nxOwSl8SPGL+XdSZnVdJ7
+	Xne2EChYhTFlyH7MQfTSbB27vCvXZqWIuufsaSvRCP5MXc7xfEgR7UGw/OmQPD46
+	UbVQlOWobvrcYf9u8MbyMvJa5K1StuDEz1mEo5DsGCJRxsj/2wuGkc4nWuiupBXD
+	+UU1wFaArRJEZivAvq7HA==
+X-ME-Sender: <xms:1QP6adOsYjVujziS2XbXhHbegIg0FLeI-rQ73vipHvb_2LUmfieotA>
+    <xme:1QP6aeURQAKx3onP5Z7kUGP2n_XAlfpZmBNsnYsIyglcDUWYhJZrkh8uZXQDp3Z42
+    eD4zNXyXnCoBRpAvt6QVkuQK3UiDdQ5hFlB6rsK-8QzUgoeHyaJ>
+X-ME-Received: <xmr:1QP6aYQV4xWIBaqkM6kEOqlTHpYN41HaxgTUpQI5ca3mj-jAMvIeoUoyk7A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddutdduleelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
+    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
+    htthgvrhhnpeekheejieetffefueeiteejtdejffdvleelvdeuvdffvdefteeghfevkeeu
+    vdefvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhg
+    pdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheplh
+    gvohhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehjghhgsehnvhhiughirgdrtgho
+    mhdprhgtphhtthhopehmrghtthgvvhesmhgvthgrrdgtohhmpdhrtghpthhtoheprghmrg
+    hsthhrohesfhgsrdgtohhmpdhrtghpthhtoheptghhrhhishhtihgrnhdrkhhovghnihhg
+    segrmhgurdgtohhmpdhrtghpthhtohepmhhnghihrggurghmsegrmhgriihonhdruggvpd
+    hrtghpthhtohepughmrghtlhgrtghksehgohhoghhlvgdrtghomhdprhgtphhtthhopegs
+    jhhorhhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsuhhmihhtrdhsvghmfigrlh
+    eslhhinhgrrhhordhorhhg
+X-ME-Proxy: <xmx:1QP6ac1XEGUg9AUVJlQ0-SZQrvWT5ZvR-QbEsKC7sMztsJMLBvciyQ>
+    <xmx:1QP6adixnXdwv19vs0-AxX5Vue1jOu8ROretV_FjnrNHOaC2quRPVw>
+    <xmx:1QP6aSZ9G6mwiUoZVYIItZS1tGQKri9Z_gVMeoDrzZ-MJzHFmg_rYQ>
+    <xmx:1QP6aeN65oRxR3evY_-F0Q7K6P2zlzr49_AlYTFK649DON_Wa5r3Rg>
+    <xmx:1QP6aT3lKtiqvfZtVlBsud0gtvkXfV8SYs66edwWzbncxNiYnjc3l2Kt>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 5 May 2026 10:50:59 -0400 (EDT)
+Date: Tue, 5 May 2026 08:50:58 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Leon Romanovsky <leon@kernel.org>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, Matt Evans <mattev@meta.com>, Alex
+ Mastro <amastro@fb.com>, Christian =?UTF-8?B?S8O2bmln?=
+ <christian.koenig@amd.com>, Mahmoud Adam <mngyadam@amazon.de>, David
+ Matlack <dmatlack@google.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, Kevin Tian
+ <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>, Pranjal
+ Shrivastava <praan@google.com>, Alistair Popple <apopple@nvidia.com>, Vivek
+ Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org, alex@shazbot.org
+Subject: Re: [PATCH 4/9] vfio/pci: Convert BAR mmap() to use a DMABUF
+Message-ID: <20260505085058.74c34290@shazbot.org>
+In-Reply-To: <20260505104911.GB11063@unreal>
+References: <20260416131815.2729131-1-mattev@meta.com>
+	<20260416131815.2729131-5-mattev@meta.com>
+	<20260501161915.75525c15@shazbot.org>
+	<afhNeYS174EW7RYp@nvidia.com>
+	<20260505104911.GB11063@unreal>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260430122653.554058-1-edumazet@google.com> <afn0ZdvZWswBuDMm@sgarzare-redhat>
-In-Reply-To: <afn0ZdvZWswBuDMm@sgarzare-redhat>
-From: Eric Dumazet <edumazet@google.com>
-Date: Tue, 5 May 2026 07:14:36 -0700
-X-Gm-Features: AVHnY4LCs_m-4d1LFjbzwKLOUUlRczsxD4uzf7jMKren00MMyTffvChvT5hoQlU
-Message-ID: <CANn89iLs8DOWJwDpf_ARoMrV+6b2tbhEJ=VVzeC8gCm5dRGaig@mail.gmail.com>
-Subject: Re: [PATCH net] vsock/virtio: fix potential unbounded skb queue
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: "David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Arseniy Krasnov <AVKrasnov@sberdevices.ru>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
-	kvm@vger.kernel.org, virtualization@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, May 5, 2026 at 6:52=E2=80=AFAM Stefano Garzarella <sgarzare@redhat.=
-com> wrote:
->
-> On Thu, Apr 30, 2026 at 12:26:52PM +0000, Eric Dumazet wrote:
-> >virtio_transport_inc_rx_pkt() checks vvs->rx_bytes + len > vvs->buf_allo=
-c.
-> >
-> >virtio_transport_recv_enqueue() skips coalescing for packets
-> >with VIRTIO_VSOCK_SEQ_EOM.
-> >
-> >If fed with packets with len =3D=3D 0 and VIRTIO_VSOCK_SEQ_EOM,
-> >a very large number of packets can be queued
-> >because vvs->rx_bytes stays at 0.
-> >
-> >Fix this by estimating the skb metadata size:
-> >
-> >       (Number of skbs in the queue) * SKB_TRUESIZE(0)
-> >
-> >Fixes: 077706165717 ("virtio/vsock: don't use skbuff state to account cr=
-edit")
-> >Signed-off-by: Eric Dumazet <edumazet@google.com>
-> >Cc: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
-> >Cc: Stefan Hajnoczi <stefanha@redhat.com>
-> >Cc: Stefano Garzarella <sgarzare@redhat.com>
-> >Cc: "Michael S. Tsirkin" <mst@redhat.com>
-> >Cc: Jason Wang <jasowang@redhat.com>
-> >Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-> >Cc: "Eugenio P=C3=A9rez" <eperezma@redhat.com>
-> >Cc: kvm@vger.kernel.org
-> >Cc: virtualization@lists.linux.dev
-> >---
-> > net/vmw_vsock/virtio_transport_common.c | 4 +++-
-> > 1 file changed, 3 insertions(+), 1 deletion(-)
-> >
-> >diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/vir=
-tio_transport_common.c
-> >index 416d533f493d7b07e9c77c43f741d28cfcd0953e..9b8014516f4fb1130ae18463=
-5fbba4dfee58bd64 100644
-> >--- a/net/vmw_vsock/virtio_transport_common.c
-> >+++ b/net/vmw_vsock/virtio_transport_common.c
-> >@@ -447,7 +447,9 @@ static int virtio_transport_send_pkt_info(struct vso=
-ck_sock *vsk,
-> > static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
-> >                                       u32 len)
-> > {
-> >-      if (vvs->buf_used + len > vvs->buf_alloc)
-> >+      u64 skb_overhead =3D (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TR=
-UESIZE(0);
-> >+
-> >+      if (skb_overhead + vvs->buf_used + len > vvs->buf_alloc)
-> >               return false;
->
-> I'm not sure about this fix, I mean that maybe this is incomplete.
-> In virtio-vsock, there is a credit mechanism between the two peers:
-> https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01.ht=
-ml#x1-4850003
->
-> This takes only the payload into account, so it=E2=80=99s true that this =
-problem
-> exists; however, perhaps we should also inform the other peer of a lower
-> credit balance, otherwise the other peer will believe it has much more
-> credit than it actually does, send a large payload, and then the packet
-> will be discarded and the data lost (there are no retransmissions,
-> etc.).
+On Tue, 5 May 2026 13:49:11 +0300
+Leon Romanovsky <leon@kernel.org> wrote:
 
-I dunno, perhaps revert 077706165717 ("virtio/vsock: don't use skbuff
-state to account credit")
-and find a better fix then?
+> On Mon, May 04, 2026 at 04:40:41AM -0300, Jason Gunthorpe wrote:
+> > On Fri, May 01, 2026 at 04:19:15PM -0600, Alex Williamson wrote:
+> >   
+> > > Exporting dma-bufs from vfio-pci is a feature, but mmap of MMIO BARs is
+> > > a legacy requirement.  That legacy requirement now depends on
+> > > PCI_P2PDMA, which depends on 64BIT and ZONE_DEVICE.  
+> > 
+> > That should be split up now, Leon missed it when he added the new
+> > APIs that didn't require ZONE_DEVICE..  
+> 
+> Sorry, what did I miss here?  
+> VFIO_DMABUF is an optional feature and is enabled only when P2P support is  
+> available. It does not affect legacy systems where P2P cannot be enabled.
 
-There is always a discrepancy between skb->len and skb->truesize.
-You will not be able to announce a 1MB window, and accept one milliion
-skb of 1-byte each.
+If we look at the long term view of moving exclusively to cdev/iommufd,
+where VFIO_DMABUF becomes the mechanism for implementing P2P DMA
+mappings, VFIO_DMABUF may be optional, but it's highly desirable for
+legacy compatibility.  There's an argument though that providing P2P
+compatibility on platforms that support PCI_P2PDMA is probably
+sufficient.
 
-This kind of contract is broken.
+However, in providing mmap of dmabufs as a feature, this series is
+wiring all mmaps through dmabufs and therefore that dependency becomes
+fundamental to the use of vfio-pci.  Thus the discussion whether the
+noted config requirements could be lifted.  Thanks,
+
+Alex
+
+PS - Please also weigh in on the dmabuf underflow[1]
+
+[1]https://lore.kernel.org/all/20260501131236.278ac431@shazbot.org/
