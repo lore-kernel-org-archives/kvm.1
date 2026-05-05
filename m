@@ -1,63 +1,65 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3CC30216D
-	for <kvm@vger.kernel.org>; Tue,  5 May 2026 11:20:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FD5386573
+	for <kvm@vger.kernel.org>; Tue,  5 May 2026 11:20:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777980019; cv=none; b=uPimrjl5xGqEEpeDSevZproGcCPls9AxXmpbr/B5P414tqA0EjXhEOLdq8xFByAYVx8VAsh9x33OdGuv7wOmlplmGFvALd3imt1kdhz8bduIi1TKlCfdAfGfnLqvIGbKX3ARq32+P1BiyenxgiVO+Ut5t6ncyc9h5fcZ2FE0eZA=
+	t=1777980021; cv=none; b=TbA3SpHjUnd6YhjckEiIM4CWgEEEJin3cO6RJb1MsUI/HecIUdYvVmx1hTW6crwfk2ti0TJfMeo4+dnC3czm3YJGpy6/UroFP5PqoDBSQ/cxGJlj0sfywjd/mY2Vh/w+9ED4sP2a3uZBkMwyfsfI5KfKSPB3RdTBaKHzuB/h7PA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777980019; c=relaxed/simple;
-	bh=mnsJSAROUR/wjVgj8osu2BXXQpF0UrgvEJRClOqsiRA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=VehwJ9CVSRJr7C6Eytm8a/aMJbt5i/RzAyk72ifveukkkGXfSfkT0DlAwEqulSL5G0hm7sAB5zxR6ZBTQN0tMP+xlIepWmnhd22+4xsNeZ08qdUT0Es4r2AjxhpqAXghgGk6MJh4sN1KyDMS4EFkmIH3v8j9XBWvPn2NyHGlje4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=cTB2xQEj; arc=none smtp.client-ip=209.85.221.53
+	s=arc-20240116; t=1777980021; c=relaxed/simple;
+	bh=0nqGd77fmybqjyWYUicu8dCWOm3zwiLR5xsVZh9y/kw=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LCoZx0olqT44t4Z6LLBEzbY9ft5RTXuJ7dWIXwVJTbfjwC7xCjkY+GA4JBB5eX2ugMgLMU8UJauE5UwulyYTPkC/de48ot1y0RqZyAUXMGxvjQR7RdFNfvf8ZOy5gAmv5kgZ++sScXhxeGyDzniTrwYbXUjLRockhZXg4NpbgNg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=GIq+rpZA; arc=none smtp.client-ip=209.85.221.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="cTB2xQEj"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-44e1ebb3122so1014373f8f.2
-        for <kvm@vger.kernel.org>; Tue, 05 May 2026 04:20:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="GIq+rpZA"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-44a74032ff8so2728302f8f.1
+        for <kvm@vger.kernel.org>; Tue, 05 May 2026 04:20:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1777980016; x=1778584816; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=AoNkPdfNYcUACJXAldjc8yWRMq0hFedw1nCez7xbQqU=;
-        b=cTB2xQEjhUc74HnDnQk9NAY5L+gt8KBih0reYTf8yXY++ixRlq6ptOmv9ovDn6mfDE
-         juCe/Codd5XR9hioLQuykDvNBx+4l+7pVMoQg3RSRvdSIfPH+9fGJTmnAz3TorrAQu9Z
-         jlHH1jTMyvrQXKxhJQ9IzLFqRU1xv+fEBPNh3WxDkYwFJ7AZstC/CHcRFik6QseJs8om
-         va+lNurG+PokiQhr3/y9AqBiDm/Ft/CU0YjSAfWU0sa+TbiuJz4Bg47NqigRuOGk5dpO
-         GkmTOWr0B8YpzTNeqxKFmhSj+Nr06jZ53xbX+z9HFaZLt5AoZEt4HO1dfPqxblRMRiH7
-         UVyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777980016; x=1778584816;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=linaro.org; s=google; t=1777980018; x=1778584818; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=AoNkPdfNYcUACJXAldjc8yWRMq0hFedw1nCez7xbQqU=;
-        b=XMf3nWtqhF9MqhkHh0vEZt5TXLPEXPkTQTwRIUriAJ2T+uG3s2Ge10cV1Oj7JhDpEk
-         jqmeqtdxIskYD2BwyUvRAemhlMPciUwAIO8iv8aeMqH4l/9NShYuwIHrR9JCDQDkxfvS
-         yrnLF8FYisTeLYMv6fxKzm664uJUhWxiksILpiwjKOy6aAhCiv9ItyWrx9fC6Mit7V4N
-         hczw6EbxqHlUiRxJTfTRnNBJJne2EWfCBTC6OrX0AbZ9s+C7pOWTGz6R+BAVvllNxCOp
-         QyIK9ZZab/UbdPtr7Gap6nZwQJF4L3bw4EZgptrHkEKR2imFPxpF44PUGwV72nGIxTXb
-         PN2Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+DCu2RuqvfbJWhHi4hTXdLRzq9jXNHBTzwaMuHauag64swxCDAe19gHE25884qS1X+UO0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzpZyMcEQd0GKZanGM0P0iG9wJDvhlmuHcqVmn47v9YUU5OFRBu
-	3i3MVAP/HLaxCzuODxeSiYIF9j5g/j5/3puzhY1hnkT/j58TsZlIwpF4XTq08b9UXII=
-X-Gm-Gg: AeBDieuzgpGENf6Mdk0KGyKy/PEph5lEk8hD1Jq4ZJZZIf+LEu1V6IR9953glr61xLV
-	M92GjrFC1d0DywfO+7ebjDyqNxA7rWcRjV9TSZ0NrGlzpAA8M6BO5qozH2Zzgjmi7kg5xwh8sIM
-	kfdcxmEXg+25DjTGXPgbV4dLuLG9G/oLyNIGo/VD2VpPv6Sqx9uzqc12F/VsMcN9CdyeU0ApZsL
-	eDP3gSo5vPYTZ3DBJeFv+6fRDVMhTqUXUHhwPHFVEM1TDdGysJeYtaEsXR3/JWazkttkZAXOk3K
-	lv+kpwYvP0HhuDN8EfV4rBmYPGG3vQCL0dNpRZskTDmHigQxKY3gZkULo/pFjrwjn7Vnnx95Ila
-	vmsKzkL14FVinc1THYJXDgT9pv5pSsyNiGOKIgxs0bW1vJd0aa2KEeTVk21umD846yUCkUs/WWy
-	TaXYXwIvrRJss8iikg8nmZ4hg+RMA9WgVAjg==
-X-Received: by 2002:a5d:6a04:0:b0:450:e5fd:e1a1 with SMTP id ffacd0b85a97d-450e5fde1cbmr508966f8f.3.1777980016391;
-        Tue, 05 May 2026 04:20:16 -0700 (PDT)
+        bh=SJ3nvH0CdgnQGuiZq72mX6EJh1rauF0iDM3crLBhnzQ=;
+        b=GIq+rpZAlM2pJX8SZhouPtL+bpYLKM/Vg9FbVfcWJywphSmqF63wohrqxhJLirpMd5
+         DdPidoRNR6iz3NE0M3/8DkpSdg0sUfzVysJ/1qkqXJveCgTJ/l+iJ5pXAQ9373PsggmP
+         J6Gf6rfE2sYeZSuAlTkika3nmKOi8xpfHPXSEndbjT6AC2o0dJR4KV4zMXa6EJWVf00R
+         /jLXJN9sgnB5wY8sphKoLyMFvPEgDLNGQoxQudpv/zOQ6FEq0Zr31jJKmIm25w4eP60w
+         eMoVrZh5fFHGUCfu1aA3GVnmxQ2yX1fjGbAJAjV7QiC61zMCAPoqiUwz8N7ICr2hAI+W
+         A9yA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777980018; x=1778584818;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=SJ3nvH0CdgnQGuiZq72mX6EJh1rauF0iDM3crLBhnzQ=;
+        b=nzjv+AA3ulb+5Ezsuh8iFA1fkek51jTAu9qasGadTKeAfJ1PL5aohK+pPwNliRQj7d
+         VKd4ooWSOUdULChDVmhAe26B0QTPeP0fPz+6HUcr27ALLLJG6ZLUy9K+ajj6UeCRwaDU
+         qF4xuj3O263aZlBIfr02C8+1IrjmO5sqiqi+jpVYJvcOSqZfCX2KL6eVM97HQw8AvKmt
+         9WYB/j+GW31+r+pLHavXSPEbZzU1IzIQa/NEJkvD46O5uq5EtvTDSvlgYnrDyUHyv/vb
+         7d+ZhBq77WbAfeywUE90T3tmX8ZGZASfNEnDpwpp+VUbcFkL0s5uXpg72vBifDzlNkwP
+         AQDg==
+X-Forwarded-Encrypted: i=1; AFNElJ+NcO7i3jGq2n0S6NaRTaY4wkw6AFVoC9Z8cxZv/dXctZbxLInh4TAlbLjqH+gpDnSjsLc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLkFc8fq07FVUeaDlFXnI6sF4s3/QtmO3xtcF4unFPWUs3UF4p
+	CJtPdCN762swYh5JfRD9J9phlli6GPAR1vnBVR74Omd9Cqn9dDtGLVrrFWXvJveEJWU=
+X-Gm-Gg: AeBDietBsU8E3AeQsavNu0nVOck8rK8qvaVSf7z0HhwXGfigV3MvAv1m3g9kMnGMZMb
+	UGC+Y8/2nSSnqB9YjpzIqrRwB31+w729Q2tXE60veGGAG1UTj/sM8VR09/3V1URiSEWV/v8KdMp
+	3wBW57HjgWf38IwPEzrED4zMiGDOXtobjzHVmkDBIYcKJFiuXrIfaKN/HzBEmh6R4kUdl6UT7Z+
+	xEQFxV8JYco/UUQdL16BOTqGFMxyw4sPXh1ic6rgXf7+6Y2U1miNWafb/+LvsV9aCHX2GhUCfJS
+	qN/2xBGA/FITBefD0zXLtWnKNbOF6GxAoW3LQAZf2GaLOo0MBnEmghoAautBhUZk7k7dvIze9BM
+	QgHXn/0fpqpKzF1EBkJ5ly8tKNdpw+mOOiUr4oIfYVXBc8tH/m9ZS+SjDpdbPS4q52L8FWvQ2BG
+	XS5xC7DjFlBMuleCadK5OZ7nIYXkJ8Gy/zOg==
+X-Received: by 2002:a5d:5f87:0:b0:44f:f8f2:665a with SMTP id ffacd0b85a97d-44ff8f26672mr5117226f8f.10.1777980017867;
+        Tue, 05 May 2026 04:20:17 -0700 (PDT)
 Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45055d36dacsm3723597f8f.32.2026.05.05.04.20.15
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45054b03d59sm3787813f8f.20.2026.05.05.04.20.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 05 May 2026 04:20:15 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 497815F8E7;
+	by draig.lan (Postfix) with ESMTP id 92A0C5F9CD;
 	Tue, 05 May 2026 12:20:14 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -68,96 +70,80 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
 	Paolo Bonzini <pbonzini@redhat.com>,
 	Pedro Barbuda <pbarbuda@microsoft.com>,
 	qemu-arm@nongnu.org,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-Subject: [PATCH v5 0/7] target/arm: fully model WFxT instructions for A-profile
-Date: Tue,  5 May 2026 12:20:06 +0100
-Message-ID: <20260505112014.102993-1-alex.bennee@linaro.org>
+	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Richard Henderson <richard.henderson@linaro.org>
+Subject: [PATCH v5 3/7] target/arm: ensure aarch64 DISAS_WFE will exit
+Date: Tue,  5 May 2026 12:20:09 +0100
+Message-ID: <20260505112014.102993-4-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20260505112014.102993-1-alex.bennee@linaro.org>
+References: <20260505112014.102993-1-alex.bennee@linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-This series fully models the behaviour of WFxT instructions. We
-already had support for WFE for M-profile but we left off A-profile as
-it has more potential sources of wake-ups. The main one is the event
-stream which includes events from significant bits of the timer
-ticking over.
+This mirrors the logic for DISAS_WFE in 32 bit world. As the WFE/WFI
+have similar behaviours shuffle the case statements around a little
+and update the commentary to cover both.
 
-The refactoring from the previous iterations of the patch have now
-been merged.
+Fixes: 252ec405768 (target-arm: implement WFE/YIELD as a yield for AArch64)
+Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
+Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
-I've dropped trying to fully model the global monitor in favour of
-taking advantage of the architectural flexibility to have an IMPDEF
-event wake up for any reason. We treat the setting of exclusive_addr
-as such a reason because it indicates the current vCPU is in a ldstx
-exclusive region and we don't want the guest to deadlock. This does mean
-the system won't sleep on WFE enabled locks but people shouldn't be
-relying on QEMU to model real world sleep patterns anyway given the
-efficiency of emulation compared to real HW.
-
-Only the following patch still need review:
-
-  target/arm: enable event stream on WFE instructions
-
-v5
-  - addressed rth's comments
-  - all but one patch now reviewed
-
+---
 v4
-  - precursor refactor patches now merged
-  - dropped global monitor emulation
-  - addressed other comments
-  - tested with check-tcg and kvm-unit-test wfx tests
+  - shuffle case statements, unify the comments.
+---
+ target/arm/tcg/translate-a64.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-v3
-  - fixed the WFE exception handling
-
-v2
-  - I've kept the tests separate, see:
-
-    Message-ID: <20260417164328.1009132-1-alex.bennee@linaro.org>
-    Date: Fri, 17 Apr 2026 17:43:20 +0100
-    Subject: [PATCH 0/7] tests/tcg: more capabilities for aarch64-softmmu tests
-    From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-
-  - tweaks to global monitor behaviour
-  - STLR/STL will also trigger events to avoid deadlocks
-  - see under the --- in the patches for details
-
-Alex.
-
-Alex Bennée (7):
-  target/arm: teach arm_cpu_has_work about halting reasons
-  target/arm: redefine event stream fields
-  target/arm: ensure aarch64 DISAS_WFE will exit
-  target/arm: implements SEV/SEVL for all modes
-  target/arm: enable event stream on WFE instructions
-  target/arm: handle the WFE trap case
-  target/arm: implement WFET
-
- target/arm/cpu.h               |  16 +++
- target/arm/internals.h         |  22 ++-
- target/arm/tcg/helper-defs.h   |   3 +-
- target/arm/tcg/translate.h     |  18 +++
- target/arm/tcg/a32.decode      |   5 +-
- target/arm/tcg/a64.decode      |   5 +-
- target/arm/tcg/t16.decode      |   4 +-
- target/arm/tcg/t32.decode      |   4 +-
- target/arm/arm-powerctl.c      |   6 +-
- target/arm/cpu.c               |  53 +++++--
- target/arm/helper.c            |   8 +-
- target/arm/kvm.c               |   5 +-
- target/arm/machine.c           |   2 +-
- target/arm/tcg/op_helper.c     | 254 ++++++++++++++++++++++++++++++---
- target/arm/tcg/translate-a64.c |  64 +++++----
- target/arm/tcg/translate.c     |  31 ++--
- 16 files changed, 395 insertions(+), 105 deletions(-)
-
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index 9a27c4c6ec7..25f0a806512 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -10916,25 +10916,25 @@ static void aarch64_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
+         case DISAS_NORETURN:
+         case DISAS_SWI:
+             break;
+-        case DISAS_WFE:
+-            gen_a64_update_pc(dc, 4);
+-            gen_helper_wfe(tcg_env);
+-            break;
+         case DISAS_YIELD:
+             gen_a64_update_pc(dc, 4);
+             gen_helper_yield(tcg_env);
+             break;
++        /*
++         * Both WFE/WFI can cause exceptions or exit the loop to
++         * halt so we have to make sure we have rectified the PC.
++         * However they can also return directly if they don't
++         * enter a wait state so we must add an exit block so we exit
++         * the loop and check for interrupts.
++         */
++        case DISAS_WFE:
++            gen_a64_update_pc(dc, 4);
++            gen_helper_wfe(tcg_env);
++            tcg_gen_exit_tb(NULL, 0);
++            break;
+         case DISAS_WFI:
+-            /*
+-             * This is a special case because we don't want to just halt
+-             * the CPU if trying to debug across a WFI.
+-             */
+             gen_a64_update_pc(dc, 4);
+             gen_helper_wfi(tcg_env, tcg_constant_i32(4));
+-            /*
+-             * The helper doesn't necessarily throw an exception, but we
+-             * must go back to the main loop to check for interrupts anyway.
+-             */
+             tcg_gen_exit_tb(NULL, 0);
+             break;
+         }
 -- 
 2.47.3
 
