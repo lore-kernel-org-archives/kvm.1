@@ -1,129 +1,161 @@
-Received: from out30-98.freemail.mail.aliyun.com (out30-98.freemail.mail.aliyun.com [115.124.30.98])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 190BF311968;
-	Tue,  5 May 2026 13:48:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.98
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C779347DD76
+	for <kvm@vger.kernel.org>; Tue,  5 May 2026 13:52:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777988937; cv=none; b=dOpGiADbyruM0KgrSx5/rG69fonSC9xYyWEBikUIBC9B67LUDjcX/tHMWTrIXzO2XmNRz6u6pUV0P4CMDxCP7+2ycZJ6N85lN9nyfjimJUwDe+m+KHiNIrS5GtjDdDf/SjMs3JWLL+AJL5GtQVibLJEvAXUrW2ghS3FxiNOG7p8=
+	t=1777989122; cv=none; b=WkmLjhsRLtEAczFfkdTFaXI14U2kDrd93BmpwGOa9oA40pMaSH2k+1qKQrI7mmAsa30qCRPI2QpmESqc4AM4rFWngg4GWF6vkfCAJp4TYYy66hFCDi3VIiwhIN85myaqMh6oy7hWj/k11PY04U/YWhF+2a6YUzhR/cCCNeiDML8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777988937; c=relaxed/simple;
-	bh=Zk/1K+MnMpA92ul7kl0jDIMKnTfYzSHa9pyZmtvAxfU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g0i4DmXUHrAr+kLO7W7cVsO7BL+99V6UDuUzBzoV50y1iqdVgq/3mhu+CX+5sfE0nHlvLLzTiBUIsZDjEBsDhUFg87H+hf47dToij9qsVZbNxC5LJj8Q38RRNKlUCdOXUT9vOXGXfVP4oNiAYY8A+o9EOWbyO5dk9NmrXpm3HAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=LLJa0R2N; arc=none smtp.client-ip=115.124.30.98
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1777989122; c=relaxed/simple;
+	bh=FYwyJcUh1yGE5As2Q/7Ku6QHLAJWBWFMlQ45xYvu8B0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EpH+utKOxkeyMe+qrgUk+1VbB4jF4IOLFkXsVL3x1FTN56CDVt7CvjvV/fG70kJEkK16skVbGULCfvOSWbOhAiiKsUzOn1ooGX0sFruDtG0Tiht3mxKI6UNmBzVKct1FaoX4iP4IEgK6N1sc6AQlFdCZ2BEX+rr7X+2No515Jyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ce+Jvckf; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=N9kJ6hfe; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="LLJa0R2N"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1777988927; h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type;
-	bh=AIhBTePeyajf+I+K0EBW6V9IUyGlhUFNxPuEI2KpBN0=;
-	b=LLJa0R2Nq4uTZI1OpwoEOBViMjpdxtfErSZFnGpw1Al0PjMqX4N3IUszUj+FO1W4ZVx1vWMbmjOngaXQhcmSLIioLScukvhqThUSePKUoEBdiC/b5zb1lLYi8XVsTPqYNvQYrI9nZGHyZS1NMIRogVLufFHP8K4yZ1eosR7JN3Y=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R571e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=24;SR=0;TI=SMTPD_---0X2I-OJb_1777988923;
-Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X2I-OJb_1777988923 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 05 May 2026 21:48:45 +0800
-From: fangyu.yu@linux.alibaba.com
-To: andrew.jones@oss.qualcomm.com
-Cc: alex@ghiti.fr,
-	anup@brainfault.org,
-	aou@eecs.berkeley.edu,
-	atish.patra@linux.dev,
-	baolu.lu@linux.intel.com,
-	fangyu.yu@linux.alibaba.com,
-	guoren@kernel.org,
-	iommu@lists.linux.dev,
-	jgg@nvidia.com,
-	jgg@ziepe.ca,
-	joro@8bytes.org,
-	kevin.tian@intel.com,
-	kvm-riscv@lists.infradead.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	palmer@dabbelt.com,
-	pjw@kernel.org,
-	robin.murphy@arm.com,
-	skhawaja@google.com,
-	tjeznach@rivosinc.com,
-	vasant.hegde@amd.com,
-	will@kernel.org
-Subject: Re: Re: [RFC PATCH 00/11] iommu/riscv: Add hardware dirty tracking for second-stage domains 
-Date: Tue,  5 May 2026 21:48:42 +0800
-Message-Id: <20260505134842.23549-1-fangyu.yu@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <tdcd7276ffsfc6vh3expyfcajnfkowknbtkpyplb3xe3dcukj2@tnhi6jcwrfgn>
-References: <tdcd7276ffsfc6vh3expyfcajnfkowknbtkpyplb3xe3dcukj2@tnhi6jcwrfgn>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ce+Jvckf";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="N9kJ6hfe"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1777989119;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fB7sNER4g4DilTXabFUlJ4D1a4B/9taTrBXoE4PehVQ=;
+	b=ce+JvckfeVDypvea8PrEAdlSCop5kAu1KFxR0PacpX3nCjjys1wLNRs7sc2IJFIzN5Pm6D
+	MSEx5ae2TdCpdPlffDdI+7CiZEdCuKjZYUARjEK5Zyu1m6TS6nx2HcDgveZl/U4xSP8WK0
+	ipTdGh1qrusUkIWflterRhniPejKLdg=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-62-5jtZT88BPkqEQuRHtdAizA-1; Tue, 05 May 2026 09:51:58 -0400
+X-MC-Unique: 5jtZT88BPkqEQuRHtdAizA-1
+X-Mimecast-MFC-AGG-ID: 5jtZT88BPkqEQuRHtdAizA_1777989118
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-43fe791a398so4749622f8f.0
+        for <kvm@vger.kernel.org>; Tue, 05 May 2026 06:51:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1777989117; x=1778593917; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=fB7sNER4g4DilTXabFUlJ4D1a4B/9taTrBXoE4PehVQ=;
+        b=N9kJ6hfeziR9L54uFCw1qd68Fb6j26vTNLiIhyLG62rdVROFavQYgE7uvYSBZz4FEu
+         bfxy1VPy0YOhPhuGffpSdvLhJyuj894vNYzTOF9NDNGtGcDJ1Jq85hzZEdXwQgmVnFCg
+         f4wo+MFMzmy56717skPLH79f3rgk4Kene6eyJgPFr/skVScqZJVJyxi0PlY2LapWgzD8
+         OW8A50mm5QTHZgGXkyvJufOicZAmq1ldPi2QahUZhGwcWvhZDhGpK9gXlqXmnUgS5hIP
+         X47mpzEM8zFiDcn6PXYrmtlonkjnexKfQ72uk2lsgMYgPntbj0Cz4uDH6jWyF3rxl+P+
+         67Gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777989117; x=1778593917;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=fB7sNER4g4DilTXabFUlJ4D1a4B/9taTrBXoE4PehVQ=;
+        b=ouEKluiGUI1XGlWK/MUvmVjJF5d6Hc6AkzTei6LKI9eKyKmmjCo3KK1x/6nmiS0Qjz
+         iy5hDhiWsEGNF67LXsOKgAbmBrbObMJeAUZLnx98Z9ZT3zxdXJXJLls2t+wSuo7Lxzp9
+         DwziIHN84U+yKkjBPisHt+V/3ovpJAiGHM9NqXFhuhYbWHYuTtn0U532uRBRoPSRSvRy
+         GKPuH70ZmWMV6igzRvG7fmQVAlmWugG15HLiIEdw/TbhVTFMlCasAclo2GNQ4QD27VFC
+         bodOFOR6Tb5yH56Q8r8VRb6o8WvISFlTi9KNz7tCVCrdqN28W74CD4ANof9kgNX3/l++
+         jUJA==
+X-Forwarded-Encrypted: i=1; AFNElJ+jkIopXi//lQtxZ/JbFB0jT8mCC2oDtNbDB/7UnG8BBGOlKgVuMlffp8jfk8ymzBuTy0g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxS0WjMdVSl1uWyse9fRBS1pcUcvaWPYZM94RMQOfGry86PsaI1
+	avb+C0hAqCI+xvl/0TUxs9KwdXpgiS8XqFYNv46PuokVrMwZh8Ec99EKvBFlMy7HetRSWqO3jgc
+	bfg+l/kJDCn1HKKeZQLl4iHyQoquVZvnrbbAMZsWHFHkGVMzTO4eY8fWv9Ww+Zg==
+X-Gm-Gg: AeBDieu80ZDNlRY62w0VTGGFqrTe/AGKRNPqEs9n0YmKU2WP2UXGcudAPqJaPmazWgr
+	NZVjK0+766VFqr0yzpn61aJpqZ9OQvQDIvW0A4eBOX2mIx0v50XPlyTxBROJ/B3Cvt+SBoxMxtu
+	OgwPhI3Ix2h424E1KIDZj0Ln2fp/juNV0+WXdLG3Xsv+juN0lBjYnnRue7UnwQXjPdvn1AbF1UC
+	0VafKNbldN/qRszVqFADaRbSDm5e/whMcJCNgFXGE91abi7qoRVVE74s7In5T4fFHdNPRvo3S2E
+	GFa5l25Pay07rlTtgyb34e+OBMw8GCbhiNBnk7N7fmszlcs8rxk//GaFLqyjA0VAy3f7+MSALhU
+	u4mk6kjOulioUJfq218LiNuDw2oxpzCsWZ3v20Q1BiVdX5cGzI+Pa+ZRsPC4UksWRBgy44OQRfA
+	==
+X-Received: by 2002:a05:6000:1841:b0:43d:714:34e5 with SMTP id ffacd0b85a97d-44bb5b4d3cdmr23938871f8f.24.1777989117058;
+        Tue, 05 May 2026 06:51:57 -0700 (PDT)
+X-Received: by 2002:a05:6000:1841:b0:43d:714:34e5 with SMTP id ffacd0b85a97d-44bb5b4d3cdmr23938787f8f.24.1777989116454;
+        Tue, 05 May 2026 06:51:56 -0700 (PDT)
+Received: from sgarzare-redhat (host-87-11-6-2.retail.telecomitalia.it. [87.11.6.2])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45055f2487dsm4641869f8f.35.2026.05.05.06.51.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 May 2026 06:51:55 -0700 (PDT)
+Date: Tue, 5 May 2026 15:51:50 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: "David S . Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Arseniy Krasnov <AVKrasnov@sberdevices.ru>, Stefan Hajnoczi <stefanha@redhat.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	kvm@vger.kernel.org, virtualization@lists.linux.dev
+Subject: Re: [PATCH net] vsock/virtio: fix potential unbounded skb queue
+Message-ID: <afn0ZdvZWswBuDMm@sgarzare-redhat>
+References: <20260430122653.554058-1-edumazet@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260430122653.554058-1-edumazet@google.com>
 
->> From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
->> 
->> The RISC-V IOMMU architecture defines an AMO_HWAD capability (Hardware
->> Access/Dirty update) that allows the IOMMU to atomically set the A/D bits
->> in second-stage PTEs on DMA access.  When DC.tc.GADE is asserted, the IOMMU
->> autonomously sets D on the first write to a page mapped by an iohgatp
->> domain.  This series wires that capability up to the iommufd dirty-tracking
->> interface (IOMMU_HWPT_SET_DIRTY_TRACKING / IOMMU_HWPT_GET_DIRTY_BITMAP) and
->> reports IOMMU_CAP_DIRTY_TRACKING.
->> 
->> Design notes
->> ------------
->> 
->> * The feature is scoped to second-stage (iohgatp) domains only; these are
->>   the domains created for KVM / VFIO device pass-through when userspace
->>   allocates an HWPT with IOMMU_HWPT_ALLOC_NEST_PARENT or
->>   IOMMU_HWPT_ALLOC_DIRTY_TRACKING.  First-stage (iosatp) domains are not
->>   touched by this series.
->> 
->> * The page-table side plugs into the existing generic_pt dirty hook
->>   framework (amdv1 / vtdss style).  RISC-V adds the three required PTE
->>   ops – is_write_dirty / make_write_clean / make_write_dirty.
->> 
->> Testing
->> -------
->> 
->> * Test on QEMU RISC-V, a virtio-net and an e1000e device was passed through
->>   to an L2 guest via vfio-pci + iommufd.
->> 
->> * generic_pt KUnit: the existing test_dirty case now runs and passes for
->>   the RISC-V 64-bit format.
->> 
->> Follow-up work
->> --------------
->> * Build a dedicated end-to-end test case that drives the full flow
->>   (HWPT_ALLOC with DIRTY_TRACKING -> attach -> IOAS_MAP -> generate real
->>   DMA -> SET_DIRTY_TRACKING -> GET_DIRTY_BITMAP -> verify bitmap against
->>   expected IOVA footprint) so that the behaviour can be regression-tested
->>   beyond the KUnit PTE-level coverage.
->> 
->> * If possible, rebase and retest on top of the updated "iommu irqbypass"
->>   patchset.
+On Thu, Apr 30, 2026 at 12:26:52PM +0000, Eric Dumazet wrote:
+>virtio_transport_inc_rx_pkt() checks vvs->rx_bytes + len > vvs->buf_alloc.
 >
->Thanks for this series! I was starting to go down a similar road myself
->in order to limit irqbypass to IOMMU_HWPT_ALLOC_NEST_PARENT domains since
->I wasn't happy with other approaches, e.g. continuing to use s-stage, but
->activating g-stage too with identity mappings since the MSI table can't be
->activated otherwise. Or, simply using g-stage instead of s-stage in order
->to get the MSI table enabled. In the end, I think the best is to require
->nested for irqbypass and this series will provide a good base for that.
+>virtio_transport_recv_enqueue() skips coalescing for packets
+>with VIRTIO_VSOCK_SEQ_EOM.
 >
->I'll rebase irqbypass on this series and test it out.
+>If fed with packets with len == 0 and VIRTIO_VSOCK_SEQ_EOM,
+>a very large number of packets can be queued
+>because vvs->rx_bytes stays at 0.
 >
+>Fix this by estimating the skb metadata size:
+>
+>	(Number of skbs in the queue) * SKB_TRUESIZE(0)
+>
+>Fixes: 077706165717 ("virtio/vsock: don't use skbuff state to account credit")
+>Signed-off-by: Eric Dumazet <edumazet@google.com>
+>Cc: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
+>Cc: Stefan Hajnoczi <stefanha@redhat.com>
+>Cc: Stefano Garzarella <sgarzare@redhat.com>
+>Cc: "Michael S. Tsirkin" <mst@redhat.com>
+>Cc: Jason Wang <jasowang@redhat.com>
+>Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+>Cc: "Eugenio Pérez" <eperezma@redhat.com>
+>Cc: kvm@vger.kernel.org
+>Cc: virtualization@lists.linux.dev
+>---
+> net/vmw_vsock/virtio_transport_common.c | 4 +++-
+> 1 file changed, 3 insertions(+), 1 deletion(-)
+>
+>diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>index 416d533f493d7b07e9c77c43f741d28cfcd0953e..9b8014516f4fb1130ae184635fbba4dfee58bd64 100644
+>--- a/net/vmw_vsock/virtio_transport_common.c
+>+++ b/net/vmw_vsock/virtio_transport_common.c
+>@@ -447,7 +447,9 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+> static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
+> 					u32 len)
+> {
+>-	if (vvs->buf_used + len > vvs->buf_alloc)
+>+	u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
+>+
+>+	if (skb_overhead + vvs->buf_used + len > vvs->buf_alloc)
+> 		return false;
 
-Thanks for the feedback. Jason has provided some helpful suggestions on this
-series, and I am in the process of updating it. I expect to send out a new
-version in the coming days.
+I'm not sure about this fix, I mean that maybe this is incomplete.
+In virtio-vsock, there is a credit mechanism between the two peers:
+https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01.html#x1-4850003
 
-Fangyu
+This takes only the payload into account, so it’s true that this problem 
+exists; however, perhaps we should also inform the other peer of a lower 
+credit balance, otherwise the other peer will believe it has much more 
+credit than it actually does, send a large payload, and then the packet 
+will be discarded and the data lost (there are no retransmissions, 
+etc.).
 
->Thanks,
->drew
+Thanks,
+Stefano
+
