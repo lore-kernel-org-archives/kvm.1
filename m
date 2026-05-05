@@ -1,193 +1,201 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E56F38B12B
-	for <kvm@vger.kernel.org>; Tue,  5 May 2026 11:52:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777981975; cv=pass; b=qFfawNhrtMxPGbM9N5Mu5Av57IThPzKvKoxyIYipcqU8OWE07ZocoU5h3CJASsKoS61UQRjXqKLh+3AVRxKAMyR3PUkrmTkgkBbV0GmGtHfSuXpqjvs9hENPtH0JWjIfDfODe/9GBLcO0jLsZedkZOvUP08rDYpK4kpyB/Ma0ss=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777981975; c=relaxed/simple;
-	bh=5xFm/6VZfh7QumngVDzgPt66le+s6CIRgnaE1fBHlLk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TubVLh4jENE0+n/ks++Q6bq+va6comKBeluXnpVez7RG7B7rfB+kSI1h2snSuKtzh5vPDud05HmIizAfaYfCEGsC9EnqS2ArwFxx6fmzvmwVrWjeNwRhxghxOErLZBTHPjAyNEljJBegEZtEOiAFSohG+WR01NeF+l7604RohRg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YO7vQqBR; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=HXX2fVX/; arc=pass smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DB0E1FC0EA
+	for <kvm@vger.kernel.org>; Tue,  5 May 2026 12:33:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777984406; cv=none; b=XVQcSCPq3pUzmku+7AwXH/FAyXyZcbRt6S1EDarpPkHeWxrSFAkfdH07VfiTVSVd2jhG+mVuwZXoVUEI8JQGwprom6q01uoyy0aPLXaA26BzpeRhtq3l987BHhAHTSRb3Bsi0rdzkgMGkLyPe9d5ZPb9oG1fY3pM+ee5BEklw8g=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777984406; c=relaxed/simple;
+	bh=sP47eRscCaT3uVSCrMtg2yrLp8kXjDiCXS6A+m0T96k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k3NmkfThgCin9iiX+O52976sCaNM6tVzf3gZIj+JmacXbNNxY7EBNGWNr9WF594VXDC5WUWP7dqG4Hs+/7owLA5Yy4LfzjaU4yz3iVNYUOc7KUmAXT67wFL27h6sUg+iqPim9Ekkgo1SRkKmfqZ/S4DxRDARnu5PacZHwdqLdFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QAbdvItb; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ia6nyHdj; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YO7vQqBR";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="HXX2fVX/"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QAbdvItb";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ia6nyHdj"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777981973;
+	s=mimecast20190719; t=1777984403;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hVAK8QclidSN7r87l0VnRFJs0yHrHmyHsHmBXtcxHhg=;
-	b=YO7vQqBRMUehRlgQxMfOgCbUpg8VRMI4nRqehuydKvOAgl+i4aqc84p7oj5ccd6l04VNmb
-	S+pZSMVb9a5729uNqIpT9ve5bFUUkfxO5iWq4m+ZLIl4ClzIKslhGemy9DHefO1R8s5OKA
-	eos3SOrpVMJUlOTi8BSowy8Pvr4qqGY=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=gw6HRxntIGc8pezkmH9AUc0dIB1QCUnD3UqyanJ83PQ=;
+	b=QAbdvItbGTIIj1Ak3VazQxvzACUwGU92/33d4cuuN4Dc7lnVfmJITuUJAIgXOuZPVjzVcQ
+	GXeKxxFFIITV2U8hcbANsKpUxODnNQZzDLhGp0Zb0rKLwU4/lkWqAHMG3dvYZ6nb0XIa0D
+	iALKya9L2tCydkOWa+RMUAqZ2EIXYNY=
+Received: from mail-ej1-f69.google.com (mail-ej1-f69.google.com
+ [209.85.218.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-696-vv05o8anPViHnH6kk1_R9A-1; Tue, 05 May 2026 07:52:24 -0400
-X-MC-Unique: vv05o8anPViHnH6kk1_R9A-1
-X-Mimecast-MFC-AGG-ID: vv05o8anPViHnH6kk1_R9A_1777981944
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-488c0fcc6deso29381875e9.2
-        for <kvm@vger.kernel.org>; Tue, 05 May 2026 04:52:24 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1777981943; cv=none;
-        d=google.com; s=arc-20240605;
-        b=GWMQ3GxGuFZEIBeK12FZXwRe7sfld6G7hRQ3K6ixxh1/h6fszqafnX7kgH6pBGFvYY
-         zo4vJW4wMbdjA6GB0+LVN3DmDEfUtACb6vsgfRgYKTQAiyUnM1D0uVcBQHoJurO5vh3k
-         dpXDk6tQI+v5ef0QM7zdaNrZo0ARYj9+b5yVZGoQ0ciKC+89HVdnM3MOiqK+S14bHnVJ
-         +VMTZox+xLLjMcXceS2jlqGgTmDaSUVO0z6cblzaKUQAqOYp3pOzmcJql7JKmrSrnYmB
-         nIoNbHCn2Ho37X88nbU2k8aLfrlyLF3w4Z9OPVJIW6kOwvXAZLPRo+7wNHA27lUePCMP
-         1n4g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=hVAK8QclidSN7r87l0VnRFJs0yHrHmyHsHmBXtcxHhg=;
-        fh=Y407Ve4EUuHJHdnIUAU3cQLBB1F8S44BvsDkl30GjYg=;
-        b=itSQaKHwBYmDsvqQNBvHNlEs2DbnWu4dHVgPauq0KRzSQFk0m2vNWp7/wB8DHRx4O+
-         QqhV1dGNA3x4dPh9O5WSCrP5bACpV2XYJs7D3dXEkhO9QgDhKaKaVpEbxjkHB3+1ooKS
-         YAP3VDkbti+foaqF19fzUlrDatjqz5yIlXtgMze8bnc3quH1mvAiQVSgqBcFV4xkYjbM
-         4qEwat25uajOK0OGEOzVaKfyglN5Qte2JR3F4AYxT7xUttOJ9lpQuiSOTWLBi2E+ndcr
-         ZrQrP2JRN+QFTBZg5je1C8MMHpohB6ANx7eU0qt/LeZ0mq3v9Y85vaEnkXPYJ83uH7Vw
-         FxXA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+ us-mta-686-XAAtEitbPliLyyEqlvq3oQ-1; Tue, 05 May 2026 08:33:22 -0400
+X-MC-Unique: XAAtEitbPliLyyEqlvq3oQ-1
+X-Mimecast-MFC-AGG-ID: XAAtEitbPliLyyEqlvq3oQ_1777984401
+Received: by mail-ej1-f69.google.com with SMTP id a640c23a62f3a-b8f5bce308dso405725966b.1
+        for <kvm@vger.kernel.org>; Tue, 05 May 2026 05:33:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1777981943; x=1778586743; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hVAK8QclidSN7r87l0VnRFJs0yHrHmyHsHmBXtcxHhg=;
-        b=HXX2fVX/6EM2cVnYp0TUz7tZAd4joj56wxip6mvk2PWCDXOGkvzPwshTEVx92lJkcQ
-         m+VE55pV7chvl+osjXiAz+pycNPIZcfisgQ96xV97gau1Y6awviHP3O594TLMP0Z0P36
-         7oaD/05jnbRgdFWoRZ6TZtXPnDLht/bta8qEkQQw3qBjeZBNsxNd48qgcLKZlTM9/cx+
-         /ndLq0+YS4nxjbomW6g5FTOSx3iDwMBpJQEp6tXeFb/iTC7/ErdpWZLi/G16NQ/VLJsM
-         9ADR5ZEX+wox4l1USvecA19FO3glcCBi8HShXNXWimVnonsN6bj3DbNKyZ1jytNNyIuB
-         s3AA==
+        d=redhat.com; s=google; t=1777984401; x=1778589201; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=gw6HRxntIGc8pezkmH9AUc0dIB1QCUnD3UqyanJ83PQ=;
+        b=Ia6nyHdjOBWIBQIoFeTs6wxaVDElBUN3tZpI6XHG1Vp6KbEbBoNQPKsh2VqLwRnbd3
+         CYCVaJGxtfJXdic+8KTxWKaXpennKTuU2UGyKaMPi3WJOG0zG3okFTg+LUsxtlcgAnLP
+         Os4fLIi5oJZwS5ZTG2QdbMBFnshfIRqBBMpHhYyq1dKQLBlVxb8C4swOOQxYYr59QYIv
+         liCNNj7Re0dvqB4SGa3Pk/qGYBZj6tDBA2wEZmS+oPTO6AUARXh7MD1lvOBSo0i4Lfhy
+         OAU5tdzTDD9p+6HJ6J8R+ftgMB9nhtDtGNLEAldhd02n19MnZb/wTmAhEiAjB4rJ+n5X
+         Z/dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777981943; x=1778586743;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=hVAK8QclidSN7r87l0VnRFJs0yHrHmyHsHmBXtcxHhg=;
-        b=G2SRnF0RrDZB18xBTtxWR6CBVA9M+FkArQm182ipUD+FFbhJ6azvDjvs8/jfD5W+mc
-         7pxD8PzDcjW+1w6/EW8TuoHGp+NcmsI3WMNXu5Ulp6VQmwFakQAo774JAMLXxfgBPAQT
-         d9Nmki3Fhdn+sPAxjDf7julMqmWGQZebuYuPCa4bn/OJtu6vgMtzocEebvPg3xyZtgRz
-         dGNHO4kXc8+9cLOFGtyNLvxjaqQ72hVKu75fBDkaDS0nr77+O4n2kBiRgsIIbnGkOIXV
-         D7u8H6Kjnf8xezKFvQDix3PES31VxzUI+Vg8olQIwvs8C4nXk5uTAcTlMUSC5EcOCwHA
-         OswQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8jqRlOBdM95ZzTPgCZOlqkO2800ELgcQpZqrSQTCihX5PWKycBSOelKWu/HZnIaYdNQlw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YykAEOUJlnzXB/wadkCze9el+gJWji4JYslVGXJB7kFWBvagffs
-	WFX+kf2++2yCfTwwmRKFQps9v0TvOnmPFIUqGCJwBimQfaxAOOSV636mR6Mj1hI4W+3IEMrv1WJ
-	XYZddBsprXCvd28Ne3fSEolUeOK8vk2sTzogrxj10u/ZGqDbnAy1WVwFeA9NOZe99tHGpKiLziD
-	D1vSvVAhm8Sh241zVjBuypbH0v2Jn2
-X-Gm-Gg: AeBDieu0vlf23TCEEBfiy5SKpfy9enfIm1iwUDWEclmIxAcCaZJNUTpQpD9mIbvwQa8
-	wMDT1cvunL84f7tpJX+K3VagFMkMD8JcLhAXcWF6vsYodLNMDUwRNsu7T9IoyInDDN66RUGigE1
-	qZck0qTmzclCuwqvNLjVYK0tg1qvbTq3SieqL+q40otiGzxkRmyHBW6CjX0AvyxlUCHTcHTa9D3
-	qxsYZy69A+Fn9pVmjEn1RXBgF6ThR/5e3gxaq+spigWtg7A6/thLCzt7s/JAEyBpE89806/ioSk
-	wAfybNd/PxfAi0ECX18=
-X-Received: by 2002:a05:600c:8b11:b0:487:1108:48b8 with SMTP id 5b1f17b1804b1-48d186dc81bmr41444785e9.2.1777981943354;
-        Tue, 05 May 2026 04:52:23 -0700 (PDT)
-X-Received: by 2002:a05:600c:8b11:b0:487:1108:48b8 with SMTP id
- 5b1f17b1804b1-48d186dc81bmr41444355e9.2.1777981942949; Tue, 05 May 2026
- 04:52:22 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1777984401; x=1778589201;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gw6HRxntIGc8pezkmH9AUc0dIB1QCUnD3UqyanJ83PQ=;
+        b=M0H8amKWi7Omg2FWY8MszebIgsf/X+DIIZuD5A5dqnS/l4Jzcofrghy4V7o46UUkhH
+         yCYQ+YYlOjNVXxA7sbgCX4im9Nd42ZTDP9nMAUmu/DqI3VVZtNql/JA4GoMsMU9W8+RN
+         oKCMmwOLDwVmXVsJxHDwcsETy2DT6Uw0YCRiBdBIQGHWxiQKI+BZMmn4o7G5Pijn8P73
+         axVcX9sx/+tP3HFq1wmIruhz8S3MI6V+itE8yDScyNyNAYMXtOm3MgmoVj9BwOkaOLj0
+         o4mrdRwO5y9JFiH0qBB4c9WfxOeQVWKmCDWJjhWelMq+zOiQoiW20aul7wxRT4PUEBcJ
+         X86g==
+X-Forwarded-Encrypted: i=1; AFNElJ9MJGELOU9CfnjIRQUyGysO7qclUH/lZdc+7AGw7swnPnUv1CLc+NM7F+X7B1yWBg9Sg6o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHPm9gFg0qXGhUSjyQlWtNfKLAcYUgfFel4hOXgYklWgiXaEIF
+	LbFy2ult5OeKwekrEJa5kZWIhY+JylymdcDxEHfJfYCRH68TR+uGerl9434kK51nIaLe1FPZ0Zy
+	FfeZBi/C2IxLPHnYlRuykPyB97OORfGtr1z/XtkE7nYdl4uZb7GKNHQ==
+X-Gm-Gg: AeBDiessNQ+t/r2SfDrbQ/BmxXyuvfZMXlQtRaPCqzRHdlM6OW/Fk5FeUfhJRsDYI7N
+	A2FQgrDa7jBovWNmLws1EjWFro27BWz+zSrhuKR87UU9UocXR3UC+f7SNaayoUmeWcdnJ8/gk94
+	L/m0qBI+rSqa8QCFUiML7at16kFXTANo9lNTkBP1xKRbVp1juT1tZT+5x0SFUW6fVkhqJ4U4QYq
+	Sdm3moQQR47iTjE1xnN8o+gGpYUtqncNS1tTEZZhvTpZ3DgcOT1s0yTLBxFDVJv/YxyGSUy5e9n
+	E/VtT7RPbYeu2GZnGu+AJ7pIrX5CSXteYABXNi1u/xvl5t6EHSixrKI2wPY/1i9ze4w8gXiQ8Je
+	v12AAH8p55yU+GblN5y/AKw6sz/sAvat+q78kTjZJlAH4kWlI+v7yTgjQ
+X-Received: by 2002:a17:907:1b09:b0:bbe:37ee:8a2b with SMTP id a640c23a62f3a-bbffd8c81c6mr767783066b.33.1777984400899;
+        Tue, 05 May 2026 05:33:20 -0700 (PDT)
+X-Received: by 2002:a17:907:1b09:b0:bbe:37ee:8a2b with SMTP id a640c23a62f3a-bbffd8c81c6mr767774366b.33.1777984400045;
+        Tue, 05 May 2026 05:33:20 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-47-179.inter.net.il. [80.230.47.179])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45052a48b23sm4543844f8f.14.2026.05.05.05.33.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 May 2026 05:33:19 -0700 (PDT)
+Date: Tue, 5 May 2026 08:33:16 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Thomas Huth <thuth@redhat.com>
+Cc: =?iso-8859-1?Q?Cl=E9ment?= MATHIEU--DRIF <clement.mathieu--drif@bull.com>,
+	Peter Xu <peterx@redhat.com>, Paolo Bonzini <pbonzini@redhat.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Yi Liu <yi.l.liu@intel.com>
+Subject: Re: intel_iommu unit test is also failing
+Message-ID: <20260505081337-mutt-send-email-mst@kernel.org>
+References: <afi_HNJoObF10rwz@x1.local>
+ <96f57df07e6d39e30557357142b2212e0ea26af4.camel@bull.com>
+ <0abf41c113c9425ea4c73a108db22f28290fa395.camel@bull.com>
+ <13002aef21dec62205c252f3d12bb42ea59cf287.camel@bull.com>
+ <d4ae6782e30a05ea9d56c38f0c5d296fb6a5c7b1.camel@bull.com>
+ <6b338140-873c-4303-bdd1-633d69f4a971@redhat.com>
+ <20260505061927-mutt-send-email-mst@kernel.org>
+ <c7b1a006-a67b-4ddc-8e2b-67fbeb23b066@redhat.com>
+ <20260505065122-mutt-send-email-mst@kernel.org>
+ <48384da2-7eb5-4044-bc3a-201b09d9cf81@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260503210917.121840-1-pbonzini@redhat.com> <afjW63q5KqkwHMK4@google.com>
- <afjnKSeSX2IegtW1@google.com>
-In-Reply-To: <afjnKSeSX2IegtW1@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 5 May 2026 13:52:10 +0200
-X-Gm-Features: AVHnY4Lc9X954kZAtXcIBtlG4hTg9WT5t9Jwghv2xqel7xVBivKniexDIDZI46M
-Message-ID: <CABgObfYR1NLbzsgoe=agkpjVJ7hs3E_ftrJ5zNnu_xF5moeKLQ@mail.gmail.com>
-Subject: Re: [PATCH] KVM: x86: use again the flush argument of __link_shadow_page()
-To: Sean Christopherson <seanjc@google.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <48384da2-7eb5-4044-bc3a-201b09d9cf81@redhat.com>
 
-On Mon, May 4, 2026 at 8:36=E2=80=AFPM Sean Christopherson <seanjc@google.c=
-om> wrote:
->
-> On Mon, May 04, 2026, Sean Christopherson wrote:
-> > x86/mmu
-> >
-> > On Sun, May 03, 2026, Paolo Bonzini wrote:
-> > > Except in the case of parentless nested-TDP pages, mmu_page_zap_pte()
-> > > clears the SPTE but leaves the invalid_list empty.  In this case, usi=
-ng
-> > > kvm_flush_remote_tlbs() as kvm_mmu_remote_flush_or_zap() does is over=
-kill.
-> > > Avoid flushing the entirety of the remote TLBs unless the invalid_lis=
-t
-> > > was populated: instead, use a more efficient gfn-targeting flush (if
-> > > available) and skip it altogether if the caller guarantees that a TLB
-> > > flush is not necessary.
-> > >
-> > > Based-on: <20260503201029.106481-1-pbonzini@redhat.com>
-> > > Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> > > ---
-> > >  arch/x86/kvm/mmu/mmu.c | 6 ++++--
-> > >  1 file changed, 4 insertions(+), 2 deletions(-)
-> > >
-> > > diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> > > index 892246204435..85bec8eeace8 100644
-> > > --- a/arch/x86/kvm/mmu/mmu.c
-> > > +++ b/arch/x86/kvm/mmu/mmu.c
-> > > @@ -2541,8 +2541,10 @@ static void __link_shadow_page(struct kvm *kvm=
-,
-> > >             parent_sp =3D sptep_to_sp(sptep);
-> > >             WARN_ON_ONCE(parent_sp->role.level =3D=3D PG_LEVEL_4K);
-> > >
-> > > -           mmu_page_zap_pte(kvm, parent_sp, sptep, &invalid_list);
-> > > -           kvm_mmu_remote_flush_or_zap(kvm, &invalid_list, true);
-> > > +           if (mmu_page_zap_pte(kvm, parent_sp, sptep, &invalid_list=
-))
-> > > +                   kvm_mmu_commit_zap_page(kvm, &invalid_list);
-> > > +           else if (flush)
-> > > +                   kvm_flush_remote_tlbs_sptep(kvm, sptep);
-> >
-> > Duh, this is obvious in hindsight.
-> >
-> > Reviewed-by: Sean Christopherson <seanjc@google.com>
->
-> An amendment to that: I thought this was just switching back to the more =
-targeted
-> range-based flushed, I didn't realize you applied the version that hardco=
-ded the
-> @flush param to kvm_mmu_remote_flush_or_zap() with "true".
+On Tue, May 05, 2026 at 01:38:26PM +0200, Thomas Huth wrote:
+> On 05/05/2026 12.53, Michael S. Tsirkin wrote:
+> > On Tue, May 05, 2026 at 12:34:41PM +0200, Thomas Huth wrote:
+> > > On 05/05/2026 12.23, Michael S. Tsirkin wrote:
+> > > > On Tue, May 05, 2026 at 11:45:17AM +0200, Thomas Huth wrote:
+> > > > > On 05/05/2026 11.27, Clément MATHIEU--DRIF wrote:
+> > > > > > I had a bit more time to hook into qemu to check the root cause.
+> > > > > > 
+> > > > > > It seems that testb issues a single byte read (out of the valid size range), as we can see on the following breakpoint:
+> > > > > > 
+> > > > > > ```
+> > > > > > Thread 6 "CPU 0/TCG" hit Breakpoint 2, memory_region_dispatch_read (mr=0x55d72883cb30, addr=152, pval=0x7f62d25f4590, op=MO_BSWAP, attrs=...) at ../system/memory.c:1473
+> > > > > > 1473       unsigned size = memop_size(op);
+> > > > > > (gdb) n
+> > > > > > 1474       MemTxResult r;
+> > > > > > (gdb) p size
+> > > > > > $1 = 1
+> > > > > > (gdb)
+> > > > > > ```
+> > > > > 
+> > > > > Ouch! That's an excellent finding, Clément ... so GCC 16 is "smart" enough
+> > > > > to see that we only want to test the lowest bit here, so it optimizes the
+> > > > > code to access only one byte of memory instead of 4 bytes... which would be
+> > > > > ok for normal memory, but not for an MMIO register :-/
+> > > > > 
+> > > > > Ugly work-around, to force GCC to read 32 bits:
+> > > > > 
+> > > > > diff --git a/lib/asm-generic/io.h b/lib/asm-generic/io.h
+> > > > > --- a/lib/asm-generic/io.h
+> > > > > +++ b/lib/asm-generic/io.h
+> > > > > @@ -38,7 +38,9 @@ static inline u16 __raw_readw(const volatile void *addr)
+> > > > >    #ifndef __raw_readl
+> > > > >    static inline u32 __raw_readl(const volatile void *addr)
+> > > > >    {
+> > > > > -       return *(const volatile u32 *)addr;
+> > > > > +       u32 val = *(const volatile u32 *)addr;
+> > > > > +       asm volatile ("\n" : : "r"(addr));
+> > > > > +       return val;
+> > > > >    }
+> > > > >    #endif
+> > > > > 
+> > > > > ... but I wonder whether this should rather be treated as a bug in GCC
+> > > > > instead, since it should IMHO really not change the access size for a
+> > > > > volatile memory access?
+> > > > > 
+> > > > >    Thomas
+> > > > 
+> > > > Wouldn't this break linux generally?
+> > > > 
+> > > > #ifndef __READ_ONCE
+> > > > #define __READ_ONCE(x)  (*(const volatile __unqual_scalar_typeof(x) *)&(x))
+> > > > #endif
+> > > 
+> > > I asked myself the very same question, but after googling for "GCC 16 linux
+> > > kernel" issues, I did not find anything related... there is likely something
+> > > specific to kvm-unit-tests in here...
+> > > 
+> > >   Thomas
+> > 
+> > 
+> > This seems to be pertinent:
+> > https://gcc.gnu.org/onlinedocs/gcc/Optimize-Options.html
+> > 
+> > -ffuse-ops-with-volatile-access
+> > Allow limited optimization of operations with volatile memory access when doing so does not change the semantics outlined in See When is a Volatile Object Accessed?.
+> > 
+> > The default is -ffuse-ops-with-volatile-access
+> > 
+> > implemented here:
+> > https://gcc.gnu.org/bugzilla/show_bug.cgi?id=122343
+> > 
+> > Try disabling? -fno-fuse-ops-with-volatile-access
+> 
+> Thanks, this seems to fix the issue, indeed!
+> 
+> Would you like to send a patch for it?
+> 
+>  Thomas
 
-Yes, I was hoping to simplify stable backports a bit.  Here is my
-version of your comment (yes, I did try adding batched zapping to
-shadow_mmu_split_huge_page() and failed):
 
-/*
- * Note: while normally KVM uses a "bool flush" return value to let
- * the caller batch flushes, __link_shadow_page() flushes immediately
- * immediately before populating the parent PTE with the new shadow page.
- * The typical callers, direct_map() and FNAME(fetch)(), are not going
- * to zap more than one large SPTE anyway.
- *
- * The only exception, where @flush can be false, is when a large SPTE
- * is replaced with a large SPTE with a fully populated page table,
- * which can happen from shadow_mmu_split_huge_page().  In this case,
- * no memory is unmapped across the change to the page tables and no
- * immediate flush is needed for correctness.
- *
- * Even in that case, calls to kvm_mmu_commit_zap_page() are not
- * batched.  Doing so would require adding an invalid_list argument
- * all the way down to __walk_slot_rmaps().
- */
+So then it's this bug apparently:
 
-What do you think?
+https://gcc.gnu.org/bugzilla/show_bug.cgi?id=125180
 
-Paolo
+will likely be in 16.2?
+
+Maybe just wait?
+
+
+-- 
+MST
 
