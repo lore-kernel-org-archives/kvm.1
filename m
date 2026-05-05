@@ -1,187 +1,182 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AECE62D9EFB
-	for <kvm@vger.kernel.org>; Tue,  5 May 2026 18:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB90351C1F
+	for <kvm@vger.kernel.org>; Tue,  5 May 2026 18:52:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778006955; cv=none; b=PvbtsWgqGRMYqQpqJjAgKiF8MKeNvIcfpYwBilazoQDJ2H+Di3XyuvramUMklLcOv5ySCC5Lpg4EmlPOACcQYfBTA+TPxwzL8OYxyhVo2r7mVGFcPciu53ahwQWq2YBpS1tpLbO4OREsx1ltsz2vDitsm+SV7wUNOCLaE9zOA+A=
+	t=1778007133; cv=none; b=YYGkJbMqFo8cvbMgGCe/GsHGgdBAdKZVQ9xfeeXOUM44qTHv8GFdAUQ9VYdnk4gi2HFp1o68ED6RSvm+ASi5zlPJh9268tgD6F24THPxfXb2MDcY65++NzpPNK7qufPO95YIo7EPzsbBswmNG60dlp1XbP+y81WoX489UgZv6PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778006955; c=relaxed/simple;
-	bh=5zP82cyVU4IyOHLV43G3xJU+LY/ju7pe6k4Rpc/NVto=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GduXCs1QBRMp2yIoKZmY3Q70AE78P9onpw2bGMe7qfep9Oueaz3xGxy3G30iOD9XxWkRh44rYBK25RBMucwJdLuY2WdHpJcn6UWpJ7nYw9PznhRn9iwDwXVj25XvH6GrfS86H7KaRyQ+sdkVH1n/wvkqci39+vDvBpDj5tpgw34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LgByotJI; arc=none smtp.client-ip=209.85.214.201
+	s=arc-20240116; t=1778007133; c=relaxed/simple;
+	bh=Necu5iIML2CGhfY98kpt5DRUIpvMw9GIxHKd/bh17Zw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=j07scRwFR9XPX6TI1snS1pWeTWTcD6G/UDOx5dxAqP/7kUnpgEydzJ4wfb+0gVJCnYW9Oy2vuwLAmlTbW586j/zMBvVxoCRdfuFCA7t27xBzS7Dy4PGtxS2LJjODUGYRPBotGODBU9pUtlt8D0QDzJHueaXja+ME519388e0n6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jHXRyW3q; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LgByotJI"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b4654f9bb6so58795845ad.2
-        for <kvm@vger.kernel.org>; Tue, 05 May 2026 11:49:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jHXRyW3q"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2ba3b9bcf69so20915ad.0
+        for <kvm@vger.kernel.org>; Tue, 05 May 2026 11:52:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778006953; x=1778611753; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=EXtpS07tBEv3WQr9Lo010ZB646RMAloupbb7TUk/iMY=;
-        b=LgByotJIsiYgJ9QMiGaxMOtqldgzDJ96Y2iwa1EzGoIt+yJN0h4fxLSIqm9w+LJe0D
-         rt29IU70SgwNGNZ52fWHnJvrMtLnHBzp9rnKF4RANnSLB0HjTe1WIqGukU5dqC6xRf+E
-         M3PE+Rk4NZ9CzOJpV5f2qnXWVAfgJv1wnDN4p7SHFRBx4WYO/E4nG156Efl0qs6m1GkB
-         sd9C8GLyQ2zwQvKo4lY3bSGTLfpGjoeIx1wtlvPRCGiwqpFCmILExcaRd54BCNeAwkh2
-         UqfDWXfvki1BvGTfzjLDv2KQQQL2cXrwj25fPW4UlMbDrb1Z5AFXO1LHS4390qJlGVMb
-         t7Qw==
+        d=google.com; s=20251104; t=1778007131; x=1778611931; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=rDKJuoKevMUOnItPfylkAbx5N1w4MZ7LpcukgnsK1jI=;
+        b=jHXRyW3qxq/kVhg0uBqiwm1u66Gi80mvSwuf5YvnvVFpZp3UL+go2wB9peU8lWZoJy
+         ucoLC11+gCZK0XCQSC2bOMaAnOVZmQWL86oxWMboqU4u91jedwBnyXBavBVhAWOA6bkU
+         +wjp6oRNyZKK4Tv7KnbjGjKR+w8N+cLuSpYtiti9WzVUe47mzfuxTwJOjUtJcv4UwjL4
+         fmKzeOaJJ48X6blClzREJWqmriy3Kahaahums6Qa3/Svwy4LalQ9jcOQXt1FqrDI+PP6
+         l5KL2Yls5r8KKBGjeUFKu1Wf1ELqYoIo9aTuTY+hozG/9dJZIR5tqwUJzSo/cVa1ukAQ
+         xgPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778006953; x=1778611753;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=EXtpS07tBEv3WQr9Lo010ZB646RMAloupbb7TUk/iMY=;
-        b=d8OSmutTLOMyzLKbiE7TU0GPoQm7iJn0aIpoR4NGqAVtUK08Uahu0FIK6GNxHTv3rg
-         9/o3f+NsNeJtkYh/kzz/tR6NNvHSkvX35t9LlzXYepUFPTtXB3Y6DHdT0vmNMLRKzgpD
-         Jjyk8IfLbUTJQZqmnmerlpqxuaONdnPzs9JQ1v23qvWy96t1Nc2iJw6Xz0gzaTcs6RBy
-         pS3CaszeNjfrHWYqJdkNvaUpWPEHpSOv52olB0H4AZpfH/iVsQB8qYfPT7GDNS4Ue2wQ
-         gQWsir/ATKan6NOYjM2SCw/v+Y1eMVTtPNXbhueBA1zMzO4zvYvi8dlZm5DY+79D59qy
-         n+Dg==
-X-Forwarded-Encrypted: i=1; AFNElJ9ozbY00IOL587oXEIfMBTBNQtzc2nTdRoZE/fMLvuQSDC9fn044lwd7faGBHJed4y4NCI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzksLFViCuNAPXM+EJ4oul2L5x5qHxX0ZphZxR112ULOFf0qHu5
-	jBS7VO4lp64DiBWAI8CcH9GjGagC6flf2WezuIU8KDgfv8h55VHVr273eWSeYUDqRRXP4e7563A
-	selPT6Q==
-X-Received: from plbkb8.prod.google.com ([2002:a17:903:3388:b0:2b2:a6ef:8235])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:187:b0:2b9:fb9a:1103
- with SMTP id d9443c01a7336-2ba79ad08e6mr1442675ad.38.1778006952787; Tue, 05
- May 2026 11:49:12 -0700 (PDT)
-Date: Tue, 5 May 2026 11:49:12 -0700
-In-Reply-To: <CAO9r8zPqvBY0=O2L6DterLyN3nZrtOCs-mv_4hvZ+gt=bxRbDg@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1778007131; x=1778611931;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=rDKJuoKevMUOnItPfylkAbx5N1w4MZ7LpcukgnsK1jI=;
+        b=bxwUhMU9/brYijP/aX1Yl3Fa9DkUhxFhq5/c/3Y0u22SWQlfGqZ3iTIUFZ3Uqun6vU
+         QPc7XA5nTvNmGJkJqowfA3XLFjKyL1PYjIQ3VmOacmr8cAojxbRxToeCMPMJHSifW9Ym
+         eRtUq2OQwfWmIuTVLFrn+gnf54ANVShD75dJPMLqziuHW+XlMrWUMG3KTgHLKLEvICvz
+         wY5x/wGjHsM48Ux/AUIGLEGvk+UMj7hmYC1GVF1T7kXWG8I4W70RkyWAmeQrY5boQ42v
+         wGMBng/GCDCH3nSEa+kCFvMbc9J2am6ANtaRCp0vQJ/6ugkjv4obDTka4ogb2tm7QZsi
+         n2rA==
+X-Forwarded-Encrypted: i=1; AFNElJ9FV0SrJ2UhMwhYROS5az5Bb8PQR3BFbC/QujzOlc9FrCml6Z6Wn+dpEvEOaQw036QisfY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyO8CjW0pxl5FQK8c77PItIJuVztiwoMCzBKfSMi7ID0ZksUlfw
+	zIixwz62hmxzGBAG2kUj4iTyo1TqFxdtvKMQp1TTmFRWuquCs8SSisONygFRnEubbg==
+X-Gm-Gg: AeBDievLYySAc+Ft0OzL5uIVL0UwO940bhuN3K0JrBomemNxkWHA/Gu37fRBgfjC3mh
+	3zRODvmUcWF3IYQciVrdvrmHP6boegPhwIF/vuxzZAmOqpi4f4qmfXUsC4dJqXJTkoYviBlnP1Y
+	LkJYxfj8DxtwWN4JU6IXuvaF9OZeeq+I7p3xWjnspKTEo4BmM+yU04LAqob6ArSpqfi1p3DUNgn
+	1wZ7i8k8MP411pcPBi07j45XxRjcaw+XQnqzBAoQvEASOGsfbdbtgPWQ6i/QEfW4gNJ1I3KlUie
+	NZCdeR1g6rcecce1CEtidUiBZBLFTCXvL6TgLgrnITDWcATyGqcjdoaM6IpZcxRPjTmg27vmeVG
+	0iVvup9Qoyu1FNMr+VDeRC9ZsqvUlbyHH+QP66+v1+SWpNG1o5pBFF+c4g4mRA3MBWAYXMnodvD
+	HgA7RELtrB3IZHkmv10vmx09SLxxLciLDBtJpj/P0HsBCSZWezZkASLXNt7wZ2QkS+MTcODJV6+
+	1IBthOlNQ==
+X-Received: by 2002:a17:903:2b0e:b0:2ba:743d:259a with SMTP id d9443c01a7336-2ba77d84073mr595445ad.16.1778007130971;
+        Tue, 05 May 2026 11:52:10 -0700 (PDT)
+Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-8396563f127sm3174151b3a.5.2026.05.05.11.52.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 May 2026 11:52:10 -0700 (PDT)
+Date: Tue, 5 May 2026 11:52:06 -0700
+From: Vipin Sharma <vipinsh@google.com>
+To: Raghavendra Rao Ananta <rananta@google.com>
+Cc: David Matlack <dmatlack@google.com>, 
+	Alex Williamson <alex@shazbot.org>, Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v7 8/8] vfio: selftests: Add tests to validate SR-IOV UAPI
+Message-ID: <20260505182013.GA3901795.vipinsh@google.com>
+References: <20260402173059.1018805-1-rananta@google.com>
+ <20260402173059.1018805-9-rananta@google.com>
+ <20260413165308.GA3034974.vipinsh@google.com>
+ <CAJHc60yS==1ZeOPYbPNw+WC8_rZwze16_zOSxFE4o_dP8KKXUw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260430202750.3924147-1-yosry@kernel.org> <20260430202750.3924147-8-yosry@kernel.org>
- <CAO9r8zMX=_zGm1Qmnd51=ca96aj=c+CkPfxzf9uinUGwxdP_Gg@mail.gmail.com>
- <CAO9r8zNM-ECiiSKGS4Z7eM2S_06_6+fDO4mEeKiWFM-NFgHOUg@mail.gmail.com>
- <afTnlv_cAWFfouqk@google.com> <afoytsu6LzzpeTfc@google.com> <CAO9r8zPqvBY0=O2L6DterLyN3nZrtOCs-mv_4hvZ+gt=bxRbDg@mail.gmail.com>
-Message-ID: <afo7qB3hyrD_9Jme@google.com>
-Subject: Re: [PATCH v5 07/13] KVM: x86/pmu: Disable counters based on
- Host-Only/Guest-Only bits in SVM
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAJHc60yS==1ZeOPYbPNw+WC8_rZwze16_zOSxFE4o_dP8KKXUw@mail.gmail.com>
 
-On Tue, May 05, 2026, Yosry Ahmed wrote:
-> On Tue, May 5, 2026 at 11:11=E2=80=AFAM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> > So I think we actually want to handle this in pmc_is_locally_enabled(),=
- because
-> > the host/guest bits are "local" controls.  One option would be to add t=
-he guest/host
-> > masks as constants in kvm_pmu_ops, and bleed the logic into pmc_is_loca=
-lly_enabled(),
-> > e.g. to avoid the CALL+RET overhead.  But if make the callback a "negat=
-ive", then
-> > we can make the static call OPTIONAL_RET0, which will turn the call int=
-o a glorified
-> > nop for everything except AMD with a mediated PMU.  E.g.
+On Mon, May 04, 2026 at 10:51:41AM -0700, Raghavendra Rao Ananta wrote:
+> On Mon, Apr 13, 2026 at 11:08 AM Vipin Sharma <vipinsh@google.com> wrote:
 > >
-> > diff --git arch/x86/kvm/pmu.h arch/x86/kvm/pmu.h
-> > index 0925246731cb..d8ce0938fcbe 100644
-> > --- arch/x86/kvm/pmu.h
-> > +++ arch/x86/kvm/pmu.h
-> > @@ -190,7 +190,8 @@ static inline bool pmc_is_locally_enabled(struct kv=
-m_pmc *pmc)
-> >                                         pmc->idx - KVM_FIXED_PMC_BASE_I=
-DX) &
-> >                                         (INTEL_FIXED_0_KERNEL | INTEL_F=
-IXED_0_USER);
+> > On Thu, Apr 02, 2026 at 05:30:59PM +0000, Raghavendra Rao Ananta wrote:
+> > > +TEST_F(vfio_pci_sriov_uapi_test, override_token)
+> > > +{
+> > > +     struct vfio_pci_device *pf;
+> > > +     struct vfio_pci_device *vf;
+> > > +     struct iommu *iommu;
+> > > +     int ret;
+> > > +
+> > > +     iommu = iommu_init(variant->iommu_mode);
+> > > +
+> > > +     pf = device_init(pf_bdf, iommu, UUID_2, &ret);
 > >
-> > -       return pmc->eventsel & ARCH_PERFMON_EVENTSEL_ENABLE;
-> > +       return (pmc->eventsel & ARCH_PERFMON_EVENTSEL_ENABLE) &&
-> > +              !kvm_pmu_call(pmc_is_locally_disabled(pmc));
->=20
-> We still get the overhead on AMD with mediated PMU enabled, but more
-> importantly, I am not sure what pmc_is_locally_disabled() would test
-> for here? Do we re-check EFER, guest mode, etc to figure it out? I
-> don't think this is what you mean as it would be redundant, but I am
-> not sure what else.
+> > I am assuming because of this, you cannot move device_init and
+> > device_cleanup calls to FIXTURE_SETUP and FIXTURE_TEARDOWN respectively.
+> >
+> > Can we just start this test with device_cleanup(), then do init with
+> > UUID_2? This will allow to reduce the code in all of the tests by moving
+> > things to corresponding setup and teardown functions. WDYT?
+> >
+> Yes it was intentionally kept this way for the 'override_token' test.
+> Also see the previous 'pf_early_close' test that performs a premature
+> cleanup of the PF. To accommodate these (and any future TEST_F()s we
+> may want to add) based on your suggestion, we'd have to create
+> special/conditional statements across the tests and I'd like to avoid
+> that if possible. The current setup clearly shows what each test
+> does/requires.
+> 
 
-Yep, that's exactly what I mean.
+I think if you make device_cleanup() handle already cleaned up device as
+no-op this should avoid any special handling.
 
-> Did you see my other replies and code snippet tracking disabling
-> reasons? I think the code snippet would still work, I just need to
-> move the pmc_is_nested_disabled() check into pmc_is_locally_enabled().
+iommu_init() and device_init() with UUID_1 will be used by all three
+tests in FIXTURE_SETUP(). Their corresponding cleanup will be in
+FIXTURE_TEARDOWN().
 
-I did.  IMO, all of what you proposed is an optimization to avoid the "cost=
-ly"
-checks at the time of pmc_is_locally_enabled().  In quotes because I don't =
-think
-the _overall_ cost is actually all that high.  pmc_is_locally_enabled() is =
-only
-called in relatively slow paths, and my guess is the CALL+RET (or untrained=
- RET,
-ugh) is probably more expensive than the logic itself.
+This way only pf_early_close() will have extra call of
+device_cleanup(pf).
 
-The very nice side effect of incorporating the logic into pmc_is_locally_en=
-abled()
-is that I _think_ we can drop kvm_pmu_ops.reprogram_counters(), because
-amd_mediated_pmu_handle_host_guest_bits() will instead be:
-
-  static bool amd_pmc_is_locally_disabled(struct kvm_pmc *pmc)
-  {
-	struct kvm_pmu *pmu =3D pmc_to_pmu(pmc);
-	struct kvm_vcpu *vcpu =3D pmu_to_vcpu(pmu);
-	u64 host_guest_bits;
-
-	/* Common code is supposed to check the common enable bit. */
-	if (WARN_ON_ONCE(!(pmc->eventsel & ARCH_PERFMON_EVENTSEL_ENABLE)))
-		return false;
-
-	/*
-	 * If both bits are cleared, always keep the counter enabled. Otherwise,
-	 * counter enablement needs to be re-evaluated on every nested
-	 * transition (and EFER.SVME change).
-	 */
-	host_guest_bits =3D pmc->eventsel & AMD64_EVENTSEL_HOST_GUEST_MASK;
-	if (!host_guest_bits)
-		return true;
-
-	/* If either bit is set and EFER.SVME=3D0, the counter is disabled. */
-	if (!(vcpu->arch.efer & EFER_SVME))
-		return false;
-
-	if (host_guest_bits =3D=3D AMD64_EVENTSEL_HOST_GUEST_MASK)
-		return true;
-
-	return !!(host_guest_bits & AMD64_EVENTSEL_GUESTONLY) =3D=3D is_guest_mode=
-(vcpu);
-  }
+Can you tell more about special/conditional statements which each test
+will have to write? Currently, we don't have any tests like that, we can
+revisit it when we see that kind of issue.
 
 
-reprogram_pmcs_on_nested_transitions would need to be handled somewhere els=
-e, but
-(a) that's probably the correct approach anyways (hook writes to the events=
-el)
-and (b) is _also_ an optimization, because KVM can start with the naive app=
-roach
-of always reprogramming counters on nested transitions (if guest/host bits =
-are
-supported).
+> > > +
+> > > +static void vf_setup(void)
+> > > +{
+> > > +     char *vf_driver;
+> > > +     int nr_vfs;
+> > > +
+> > > +     nr_vfs = sysfs_sriov_totalvfs_get(pf_bdf);
+> > > +     if (nr_vfs <= 0)
+> > > +             ksft_exit_skip("SR-IOV may not be supported by the PF: %s\n", pf_bdf);
+> > > +
+> > > +     nr_vfs = sysfs_sriov_numvfs_get(pf_bdf);
+> > > +     if (nr_vfs != 0)
+> > > +             ksft_exit_skip("SR-IOV already configured for the PF: %s\n", pf_bdf);
+> >
+> > Why would we want to skip if VFs are already enabled. Just
+> > set it to 0 if it is already there and set it to 1 unconditionally after
+> > that.
+> >
+> This actually goes back to a previous discussion with David where we
+> agreed to avoid such situations. For instance, what if the device is
+> already in use elsewhere.
+> 
 
-And if we're clever, we can optimize pmc_is_locally_enabled() by putting
-reprogram_pmcs_on_nested_transitions in kvm_pmu, e.g. as something like
-pmc_has_mode_specific_enables, and then doing:
+I think this is what you are referring to:
+https://lore.kernel.org/all/aQzcQ0fJd-aCRThS@google.com
+--------
+	> > > +     snprintf(path, PATH_MAX, "%s/%s/sriov_numvfs", PCI_SYSFS_PATH, pf_dev_bdf);
+	> > > +     ASSERT_GT(fd = open(path, O_RDWR), 0);
+	> > > +     ASSERT_GT(read(fd, buf, ARRAY_SIZE(buf)), 0);
+	> > > +     nr_vfs = strtoul(buf, NULL, 0);
+	> > > +     if (nr_vfs == 0)
+	> >
+	> > If VFs are already enabled, shouldn't the test fail or skip?
+	> >
+	> My idea was to simply "steal" the device that was already created and
+	> use it. Do we want to skip it, as you suggested?
 
-	if (!(pmc->eventsel & ARCH_PERFMON_EVENTSEL_ENABLE))
-		return false;
+	If a VF already exists it might be bound to a different driver, and may
+	be in use by something else. I think the only safe thing to do is to
+	bail if a VF already exists. If the test creates the VF, then it knows
+	that it owns it.
+--------
 
-	if (!test_bit(pmc->idx, &pmu->pmc_has_mode_specific_enables))
-		return true;
+If we are running a test harness, and one test failed without clearing
+up VFs then all the following tests will pay penalty this way. As this
+is a selftest code, device assigned to it is for testing not for some
+production work at the same time, I am not able to see why it will be a
+unsafe.
 
-	return !kvm_pmu_call(pmc_is_locally_disabled(pmc));
+My recommendation will be to reset and not skip, I don't think there are
+any practical risks here. I will leave it to you to make a final
+decision on this.
