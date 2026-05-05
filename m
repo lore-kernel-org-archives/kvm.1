@@ -1,167 +1,402 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D922D3B6C16;
-	Tue,  5 May 2026 06:44:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777963491; cv=none; b=tdK67Pe1wqQjFf2mU4OhvjwDCimp1LqkMK5CZFKRm1KIANpO0d6sDWp7E2UE0ZHc+v2155VxR8PBFkrftcUiGosxDnXU/7oBMDxXeaG2ZDEe03/pBxP+B3nJtfFyPOc/aB/25mFRrKOHsb80HOBZSVLp0oWguwGlHpAY7RriLFQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777963491; c=relaxed/simple;
-	bh=DOyzyYjdrzuGT4pNBaPgsnEOvH3BTwhOsnnPqZ3KjGE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=alZbDX7QlCOB+Lkqpae+ADjM/TGwIdIRjc6N0okATLsA1AABvqZtla1mGGd+dokFC9lwtWrS7AXZQGc4t+WjsFb8BTfl6NWYJG4oN/ySVDYWsusUC0xiPwX5GY5mt3lCx6OuBMqwYF2+BTApxv3xX/6YuR/R5FPFNuw0fa63yF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=GPftc1tR; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B5FA3C1985
+	for <kvm@vger.kernel.org>; Tue,  5 May 2026 06:54:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.145.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1777964061; cv=fail; b=PvyOT73IRAt9++cA+aaLzZEUQEqHyoozJbxAewXYGGqYYXjVGrWLRvYYRA3kINYM76FHRSVYpc0tWqxNsPhXCQP3YcAXFQeEQYqm/A2Ac5zj/nBGjSUN8fIXB1NCY3y6fNuCon5TW5PB5fA4r987WNFuqxLfL0/5WKkdWiw0n3c=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1777964061; c=relaxed/simple;
+	bh=GnOs6zrMZZDdRu2gdB9Y7jzSPOwey5UzAT8kxViXCiM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IcCkX2D1aWwy5E+nNnkZVaXq7C8Y9aFhd0eqcypl5r/jmuUaxRXF4GzqzLDt3efNBLVFFSDytrHH+Nl1a/zOzFSxYecf1Jen+cOhGeqdkPi0bvGJ3hiWlsSrx2k7eLclbMPYO9+t212HdvlYvqZkF0+KEH+f7LaSPUyiTYukSf4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=IhXflBOe; arc=fail smtp.client-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="GPftc1tR"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 644JthrQ1356523;
-	Tue, 5 May 2026 06:44:37 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="IhXflBOe"
+Received: from pps.filterd (m0528008.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6453rXar2167823
+	for <kvm@vger.kernel.org>; Mon, 4 May 2026 23:54:19 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=UsdRCX
-	XsnjgLFgNt6EMqjtMpVNDMxPDznWpwvLiUaQ4=; b=GPftc1tRsELDFWqzvWsmmZ
-	/GdL6RGldmS+RSTaUzcFx8qRK5TWOhAedgtTwven6uglr8ZFG5PjLbRLbLJqurTb
-	HzHnCI7jLYmWZiiFnLY+oeCZuKeT/UBIZC6+prnNFNtJgW/XF/KC5NnpV++0Urh5
-	QHxI8ianVrP9eQbQ0k+EZGE5dxNBXWnjwCFOsbcOoQLekbYLgnG6Jw5i1Rny3M3M
-	XenRwewQTE6vt8j8oV0H7w0eDDLxt+/MXKwHz6tU/Eo0AaVjF0L/7iIVLagGDSRp
-	O9EBQLnbRaL+wmZwgASoavUgPdiYzBStErd70Oh6Isyk5Tg8celEwCYL46S/trPA
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9v7aac3-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 May 2026 06:44:37 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6456dSUw001998;
-	Tue, 5 May 2026 06:44:36 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwwtg87s9-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 05 May 2026 06:44:36 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (smtpav02.dal12v.mail.ibm.com [10.241.53.101])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6456iYNT35783398
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 5 May 2026 06:44:34 GMT
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5DA7A5805A;
-	Tue,  5 May 2026 06:44:34 +0000 (GMT)
-Received: from smtpav02.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3B55D58051;
-	Tue,  5 May 2026 06:44:30 +0000 (GMT)
-Received: from [9.123.0.169] (unknown [9.123.0.169])
-	by smtpav02.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Tue,  5 May 2026 06:44:29 +0000 (GMT)
-Message-ID: <0ca0e84a-ec56-428f-ac6a-22dd52ad4a1a@linux.ibm.com>
-Date: Tue, 5 May 2026 12:14:28 +0530
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=D1mf9Znv8+ZNWIl/62MdhJpFIl6cZ0E08irrbj6h/RE=; b=IhXflBOemPK3
+	U8Z15qfbXAtar3VVsStb8w8V6wh1lL2Ws0tmFDXc99BVDS7Lo21exksx9//XQMUo
+	DBuksD73qntJ+bIuhKGsMusUX8KD2Z6Q1vueNAPDNMzQiBh8DAxMOo/GYY+gLh8K
+	cmxuT+sv/xGOvDt99IP0ecrA6vErAQe5cN6jEUwhzHS2o2nb5mFKdUeCvXQbtTUK
+	Eja7bMB/foB8yPMA2nUogQvg0I/LLcJxjf7s1hxBfoDxtmnD+lRAAgDGEL9fOx+R
+	YQykJpmeDb9fGCDSBTOeJdine5TdaUnpHeOn9c53exrV+NGMQyBxtSB076wdHsTj
+	X96BUp0ASw==
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com [209.85.210.69])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4dx5vjaebt-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Mon, 04 May 2026 23:54:18 -0700 (PDT)
+Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-7dcc59fe0d8so5772800a34.2
+        for <kvm@vger.kernel.org>; Mon, 04 May 2026 23:54:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1777964058; cv=none;
+        d=google.com; s=arc-20240605;
+        b=jEE+MTqeVDtzowWgGXcRUzmCKifLzv1XODz3kS7SBdmWy4s4CkQvMef+pbXIjW5PGZ
+         ZyvEUfK31tH0dv9AH8AJncBa5mglc9v1P6a/LimCaFOaOW4du4Kmf/NiibEnMSJs1/Bj
+         W4zYZNon0h3j6R3Mj+vLkts/Kw287isRWRTK5Kuw0RVTnw14d0dDGdeTFB/YfPDjfE64
+         N5jz6VqRazmzixlT9fl6VLSihqyPm3hSB3ZNVEgZd0e0gP4rN/+LKwqjQCs7Is+INpCE
+         k81mWOtt4oLbN4IrJ1VIu+CYVzbg6VK8lPNEF/9gLsA1H0nKxrCCaQ+IwNTpspEfogVe
+         dY7A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version;
+        bh=uhzg8pVh5XZoijloMRfkO2ATqnu2chpe+p7ocg9d4tw=;
+        fh=g1RBKhca0W1istDYHH6gMOiFfzB1V1ElHvKvNJThpoo=;
+        b=kgJYbSgqzdLwNE21zA0SaU//JHdL69e3ygRjdMy0hNyhQztLqf4NEBmS1J1yMdBVsH
+         5p5zVmLBQR82EH0WlgUNEWXrY241bA3p3Mr3NYZKsh64Psdx8V2rRHH1IhgGwdwK9ur2
+         YrIJzHf4WjfdCdVfgBTKFSphOxAlJuEgTiOpHtqphfoc0LW095ScsDIoUzg9RrrVGup+
+         oGdN2dKvF9saFDodWQgxXVfGvMvnU71zzOv0a5XAerdkltfyE503AX81SZrwl4sq6kS6
+         mIPfDjrZVLrOITCQ3jKiYxhfXrudp9t97UwNkeRuTbYgVmHMczXSCxSN6QR3uK3g/a3Q
+         MV+A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777964058; x=1778568858;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=uhzg8pVh5XZoijloMRfkO2ATqnu2chpe+p7ocg9d4tw=;
+        b=SOubwj6ZCRDRgaF2LMAxLxBuDNcE1/bfq2BcZFxwn+KZ6Pt3TcKx9ZhQlFS2ISACzM
+         tYVSK68/GtrfG5hs5welx9Pl0aBX3eh3DP38mFJLipXy71MXL5lT484eXxk9DALckusJ
+         FnJWRkJVA+n+X+gndz2TtI4FSI2XY6L4NmmOR6n0zH4Be5/JbflxbV7oRs+mg41jEIYL
+         zjYmkhdeIGpr0owUAKqd3JXirY5g89nCpTxlfEdO4CDw9H/nrZrPqAsIDZ645zaBGUXC
+         Sc7RYQkycUM4ptAv7c6FzdnNEgaUccBcDA4ZNLPZeuWIRWZBCCmsr9uBqvDJ6uSZSbO8
+         yimA==
+X-Forwarded-Encrypted: i=1; AFNElJ8QNYaSK+/NZvPm+5udGQZ7RRGSuW0yhS8UQ0LunG6pppRfP6G0EW2C6tfh/tUKzbg16cw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxe90sZY0o9I1qcG5gclMlaa/NH0nhVXXWiBoAJkbFbVMtHSp6k
+	QX1iitEXsxA0twzvxGFKnnGECGoseCvQhq1RzjmFAsYKBWi8r5MUJ3xOOsjJ2ywDH9C5eCfnodS
+	1qdV2PEuOtJTSlTCU7+I38s9BHXWDkkVAvg/qgbu1ohU6ek4AE8vniQbtCGab3ivBoAyTpcdtB3
+	Fhbdh4oOfMUi/CRW5BessVj6Di51k=
+X-Gm-Gg: AeBDiesXydE9rhzMSQrsf7mBvKQYXWpNrRYNjvVyU52SDNros7VgSaZRi3vPNEICMa6
+	b3s48hnQJZjhaxDD/QzGaGVfSKvv44sttw7wF8O62z7fhJg9avTynLy5YjcTHoiPAs3VLc9YuiO
+	qyMpfjf6VdXF5H/RBEpwIriXL6j93bwUxBlJImUG8whqlStYoMvNxhaHQ17XpFH/AVwvc8nEelO
+	OjNHwm9bM7YhInvqrHen77MeW9C2ifxpNLGOI3A4ZYmlm+iguI=
+X-Received: by 2002:a05:6830:6e1b:b0:7e1:cbe3:bb1b with SMTP id 46e09a7af769-7e1cbe3be7emr251851a34.0.1777964057800;
+        Mon, 04 May 2026 23:54:17 -0700 (PDT)
+X-Received: by 2002:a05:6830:6e1b:b0:7e1:cbe3:bb1b with SMTP id
+ 46e09a7af769-7e1cbe3be7emr251833a34.0.1777964057130; Mon, 04 May 2026
+ 23:54:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/6] KVM: PPC: Book3S HV: Validate arch_compat against
- host compatibility mode
-Content-Language: en-GB
-To: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Vaibhav Jain <vaibhav@linux.ibm.com>, Nicholas Piggin
- <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260430054906.94431-1-amachhiw@linux.ibm.com>
- <20260430054906.94431-2-amachhiw@linux.ibm.com>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20260430054906.94431-2-amachhiw@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA1MDA1OSBTYWx0ZWRfXy6aiYLGfef+p
- aCesTAyGB2gYp6iuY4gPx79D89AsuxPzSA04y/mhRb1fj8q2H5HseoR9qf1HjZKxpVP+TCWpQu/
- iAezXourTgm8+OiIwVo3DWyCupC1u43XDlu1HjB5/n06HRXTi1ph+xQaIo1U3Ixqw3rGcQNcpCd
- C6KgypbkOydymIPiHY1DTAT/Ar3v8CfDaqcOJo52zyQ0FYCALVDa4DCWRl+oobMYs+0Gjse0Ynl
- 29sFma5QmwtCdDuhPafub932ed7XUfk3ZKi/MD6EBDzrnzVIWRBVmDi6QRT6rHPXJ2YdLYLipW4
- qbuSxri67gc9znabyyVaLt0WLsk6lZ8qpmuINlusnXs+l6gNpOJccBADlw6mO7WEGA4L6vJ13B9
- LVtlshRZ/cgFhL2LNAuLZc8h6PX1RdnO6YG9J0j4qIFGl6bjfRCUa9vDpwH+ZQEg2Jj8OYtUCQy
- JSyR4lEToVrKrHt2ztA==
-X-Proofpoint-GUID: mT_UAeRqjB9VpM9PKugoM9XjbFYTVnhX
-X-Proofpoint-ORIG-GUID: tLslHPtKow73aKNrMZ39cBUoHdJQcsrz
-X-Authority-Analysis: v=2.4 cv=eu/vCIpX c=1 sm=1 tr=0 ts=69f991d5 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=f7IdgyKtn90A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22
- a=VnNF1IyMAAAA:8 a=f1vRVuFlCkgBq9oUj50A:9 a=QEXdDO2ut3YA:10
+References: <20260430200704.352228-1-zhipingz@meta.com> <20260430200704.352228-2-zhipingz@meta.com>
+ <20260504154459.77b8153d@shazbot.org>
+In-Reply-To: <20260504154459.77b8153d@shazbot.org>
+From: Zhiping Zhang <zhipingz@meta.com>
+Date: Mon, 4 May 2026 23:54:06 -0700
+X-Gm-Features: AVHnY4LnfRqtsa29br_gywqWSmKi9XQx9-UD43AecyJJP1ECdfbRFsjVzAPHTkA
+Message-ID: <CAH3zFs3ZEAjsy_8nq4EHGbNWzXVVfJeRynEdVNYu9_j8N24s8w@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] vfio: add dma-buf get_tph callback and DMA_BUF_TPH feature
+To: Alex Williamson <alex@shazbot.org>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
+        Bjorn Helgaas <helgaas@kernel.org>, linux-rdma@vger.kernel.org,
+        linux-pci@vger.kernel.org, netdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, Keith Busch <kbusch@kernel.org>,
+        Yochai Cohen <yochai@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
+        kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-ORIG-GUID: BUqlKKl1p_28aJUfwB6BwU8LjZy2GEd6
+X-Proofpoint-GUID: BUqlKKl1p_28aJUfwB6BwU8LjZy2GEd6
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA1MDA2MiBTYWx0ZWRfX+PFwZP0EJmro
+ R7PTtbXCzAtsp1OMEDelx4MZrjQARFdBIoF9N3NiXLwP0gc2CxM5WkBbKSMNNrdV/wAVRy/F5Ir
+ 0UTXdZcJeg0BhR7V0xPbPOOvkX9y3wCzot0bSDcUxZt5qzqULwMZpsk5t6ajP6VpNHVPeYo9/hz
+ 8Noyf+TkmPDhgcWJ6QJ7gTK0DwK/85Vgy/5tdye/UmeOSS5Fc3IuP3JGsETA2X0OAo07HoNhrj3
+ DP5KrjqAZbUcy6R/915JQp6UGfI74c2IF5WiNLB1U2LKf4NXBMmgQX/rtb0Phovu1+K38pZx5fm
+ N58skRskc4nmFp5sBM+z8bnT1uLiWPL34TKRGyhcCxMnDdCoiu9HkkyknkvA6nszj+WosjdoYio
+ 82idr2PwvDqnj8ajo+SiUDY1lq4SsEYUh0JwbixY2LKczMrqcLEeoJZGIjyEGcITsE0Y0r2Q8rq
+ eRXTlE1ZOBjzeE/X4qw==
+X-Authority-Analysis: v=2.4 cv=fvrsol4f c=1 sm=1 tr=0 ts=69f9941a cx=c_pps
+ a=z9lCQkyTxNhZyzAvolXo/A==:117 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=_1IyUuN4QrATX339ibzo:22
+ a=c92rfblmAAAA:8 a=VabnemYjAAAA:8 a=r1p2_3pzAAAA:8 a=VwQbUJbxAAAA:8
+ a=YLhAehpVo6qmETfym2AA:9 a=QEXdDO2ut3YA:10 a=EyFUmsFV_t8cxB2kMr4A:22
+ a=GvGzcOZaWPEFPQC_NcjD:22 a=gKebqoRLp9LExxC7YDUY:22 a=r_pkcD-q9-ctt7trBg_g:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-05_02,2026-04-30_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 phishscore=0 lowpriorityscore=0 clxscore=1011 adultscore=0
- suspectscore=0 malwarescore=0 bulkscore=0 impostorscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605050059
 
+On Mon, May 4, 2026 at 2:45=E2=80=AFPM Alex Williamson <alex@shazbot.org> w=
+rote:
+>
+> >
+> On Thu, 30 Apr 2026 13:06:56 -0700
+> Zhiping Zhang <zhipingz@meta.com> wrote:
+>
+> > Add a dma-buf callback that returns raw TPH metadata from the exporter
+> > so peer devices can reuse the steering tag and processing hint
+> > associated with a VFIO-exported buffer.
+> >
+> > Add a new VFIO_DEVICE_FEATURE_DMA_BUF_TPH ioctl that takes the fd from
+> > VFIO_DEVICE_FEATURE_DMA_BUF along with a steering tag and processing
+> > hint, validates the fd is a vfio-exported dma-buf belonging to this
+> > device, and stores the TPH values under memory_lock. This keeps the
+> > existing VFIO_DEVICE_FEATURE_DMA_BUF uAPI completely unchanged.
+> >
+> > The user sequences setting TPH on the dma-buf before the importer
+> > consumes it.
+> >
+> > Add an st_width parameter to get_tph() so the exporter can reject
+> > steering tags that exceed the consumer's supported width (8 vs 16 bit).
+> > When no TPH metadata was supplied, get_tph() returns -EOPNOTSUPP.
+> >
+> > Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
+>
+> The uAPI is better, but sashiko has some review comments[1] for you.
+>
+> Please also copy the kvm list for vfio related development.  Thanks,
+>
+> Alex
 
+Got it, thanks Alex. let me check sashiko's comments and post a new
+revision. i also copied kvm@vger.kernel.org and will include in future
+revisions.
 
-On 30/04/26 11:19 am, Amit Machhiwal wrote:
-> On IBM POWER systems, newer processor generations can operate in
-> compatibility modes corresponding to earlier generations. This becomes
-> relevant for nested virtualization, where nested KVM guests may need to
-> run with a specific processor compatibility level.
-> 
-> Currently, when running a nested KVM guest (L2) inside a Power11 pSeries
-> logical partition (L1) booted in Power10 compatibility mode, the guest
-> fails to boot while setting 'arch_compat'. This happens because the CPU
-> class is derived from the hardware PVR (via mfspr()), which reflects the
-> physical processor generation (Power11), rather than the effective
-> compatibility mode (Power10).
-> 
-> As a result, userspace may request a Power11 arch_compat for the L2
-> guest. However, the L1 partition, running in Power10 compatibility, has
-> only negotiated support up to Power10 with the Power Hypervisor (L0).
-> When H_SET_STATE is invoked with a Power11 Logical PVR, the hypervisor
-> rejects the request, leading to a late guest boot failure:
-> 
->    KVM-NESTEDv2: couldn't set guest wide elements
->    [..KVM reg dump..]
-> 
-> This situation should be detected earlier. Rejecting unsupported
-> 'arch_compat' values in 'kvmppc_set_arch_compat()' avoids issuing an
-> invalid H_SET_STATE hcall and provides a clearer failure mode.
-> 
-> Add a check to reject Power11 'arch_compat' requests when the host is
-> running in Power10 compatibility mode, returning -EINVAL early instead
-> of deferring the failure to the hypervisor.
-> 
-> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-> ---
->   arch/powerpc/kvm/book3s_hv.c | 6 ++++++
->   1 file changed, 6 insertions(+)
-> 
-> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
-> index 61dbeea317f3..948c6b099a29 100644
-> --- a/arch/powerpc/kvm/book3s_hv.c
-> +++ b/arch/powerpc/kvm/book3s_hv.c
-> @@ -446,7 +446,13 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
->   			guest_pcr_bit = PCR_ARCH_300;
->   			break;
->   		case PVR_ARCH_31:
-> +			guest_pcr_bit = PCR_ARCH_31;
-> +			break;
->   		case PVR_ARCH_31_P11:
-> +			if ((PVR_ARCH_31 & cur_cpu_spec->pvr_mask) ==
-> +				cur_cpu_spec->pvr_value) {
-> +				return -EINVAL;
-> +			}
+Zhiping
 
-Is it possible to keep the check generic for applicable ISA versions 
-(ISA 3.1 onwards?) instead of keeping it specific for P11 ?
-Also need to add a comment, why it's not applicable for older ISAs.
-
->   			guest_pcr_bit = PCR_ARCH_31;
->   			break;
->   		default:
-
+>
+> [1]https://urldefense.com/v3/__https://sashiko.dev/*/patchset/20260430200=
+704.352228-1-zhipingz@meta.com__;Iw!!Bt8RZUm9aw!7glmqoMRhcdDwOgCAQuuEVqlhFJ=
+rh9bAYHXvicXPAO2M-k-NPwE_wFeUjVhe7EXbkXMd6g7eOe13$
+>
+> > diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_p=
+ci_core.c
+> > --- a/drivers/vfio/pci/vfio_pci_core.c
+> > +++ b/drivers/vfio/pci/vfio_pci_core.c
+> > @@ -1534,6 +1534,9 @@ int vfio_pci_core_ioctl_feature(struct vfio_devic=
+e *device, u32 flags,
+> >               return vfio_pci_core_feature_token(vdev, flags, arg, args=
+z);
+> >       case VFIO_DEVICE_FEATURE_DMA_BUF:
+> >               return vfio_pci_core_feature_dma_buf(vdev, flags, arg, ar=
+gsz);
+> > +     case VFIO_DEVICE_FEATURE_DMA_BUF_TPH:
+> > +             return vfio_pci_core_feature_dma_buf_tph(vdev, flags, arg,
+> > +                                                      argsz);
+> >       default:
+> >               return -ENOTTY;
+> >       }
+> > diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio=
+_pci_dmabuf.c
+> > --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
+> > +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+> > @@ -19,6 +19,9 @@ struct vfio_pci_dma_buf {
+> >       u32 nr_ranges;
+> >       struct kref kref;
+> >       struct completion comp;
+> > +     u16 steering_tag;
+> > +     u8 ph;
+> > +     u8 tph_present : 1;
+> >       u8 revoked : 1;
+> >  };
+> >
+> > @@ -69,6 +72,22 @@ vfio_pci_dma_buf_map(struct dma_buf_attachment *atta=
+chment,
+> >       return ret;
+> >  }
+> >
+> > +static int vfio_pci_dma_buf_get_tph(struct dma_buf *dmabuf, u16 *steer=
+ing_tag,
+> > +                                 u8 *ph, u8 st_width)
+> > +{
+> > +     struct vfio_pci_dma_buf *priv =3D dmabuf->priv;
+> > +
+> > +     if (!priv->tph_present)
+> > +             return -EOPNOTSUPP;
+> > +
+> > +     if (st_width < 16 && priv->steering_tag > ((1U << st_width) - 1))
+> > +             return -EINVAL;
+> > +
+> > +     *steering_tag =3D priv->steering_tag;
+> > +     *ph =3D priv->ph;
+> > +     return 0;
+> > +}
+> > +
+> >  static void vfio_pci_dma_buf_unmap(struct dma_buf_attachment *attachme=
+nt,
+> >                                  struct sg_table *sgt,
+> >                                  enum dma_data_direction dir)
+> > @@ -101,6 +120,7 @@ static void vfio_pci_dma_buf_release(struct dma_buf=
+ *dmabuf)
+> >
+> >  static const struct dma_buf_ops vfio_pci_dmabuf_ops =3D {
+> >       .attach =3D vfio_pci_dma_buf_attach,
+> > +     .get_tph =3D vfio_pci_dma_buf_get_tph,
+> >       .map_dma_buf =3D vfio_pci_dma_buf_map,
+> >       .unmap_dma_buf =3D vfio_pci_dma_buf_unmap,
+> >       .release =3D vfio_pci_dma_buf_release,
+> > @@ -331,6 +351,55 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_=
+core_device *vdev, u32 flags,
+> >       return ret;
+> >  }
+> >
+> > +int vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vde=
+v,
+> > +                                   u32 flags,
+> > +                                   struct vfio_device_feature_dma_buf_=
+tph __user *arg,
+> > +                                   size_t argsz)
+> > +{
+> > +     struct vfio_device_feature_dma_buf_tph set_tph;
+> > +     struct vfio_pci_dma_buf *priv;
+> > +     struct dma_buf *dmabuf;
+> > +     int ret;
+> > +
+> > +     ret =3D vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SET,
+> > +                              sizeof(set_tph));
+> > +     if (ret !=3D 1)
+> > +             return ret;
+> > +
+> > +     if (copy_from_user(&set_tph, arg, sizeof(set_tph)))
+> > +             return -EFAULT;
+> > +
+> > +     if (set_tph.reserved)
+> > +             return -EINVAL;
+> > +
+> > +     dmabuf =3D dma_buf_get(set_tph.dmabuf_fd);
+> > +     if (IS_ERR(dmabuf))
+> > +             return PTR_ERR(dmabuf);
+> > +
+> > +     if (dmabuf->ops !=3D &vfio_pci_dmabuf_ops) {
+> > +             ret =3D -EINVAL;
+> > +             goto out_put;
+> > +     }
+> > +
+> > +     priv =3D dmabuf->priv;
+> > +     down_write(&vdev->memory_lock);
+> > +     if (priv->vdev !=3D vdev) {
+> > +             ret =3D -EINVAL;
+> > +             goto out_unlock;
+> > +     }
+> > +
+> > +     priv->steering_tag =3D set_tph.steering_tag;
+> > +     priv->ph =3D set_tph.ph;
+> > +     priv->tph_present =3D 1;
+> > +     ret =3D 0;
+> > +
+> > +out_unlock:
+> > +     up_write(&vdev->memory_lock);
+> > +out_put:
+> > +     dma_buf_put(dmabuf);
+> > +     return ret;
+> > +}
+> > +
+> >  void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool rev=
+oked)
+> >  {
+> >       struct vfio_pci_dma_buf *priv;
+> > diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_p=
+ci_priv.h
+> > --- a/drivers/vfio/pci/vfio_pci_priv.h
+> > +++ b/drivers/vfio/pci/vfio_pci_priv.h
+> > @@ -118,6 +118,10 @@ static inline bool vfio_pci_is_vga(struct pci_dev =
+*pdev)
+> >  int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u=
+32 flags,
+> >                                 struct vfio_device_feature_dma_buf __us=
+er *arg,
+> >                                 size_t argsz);
+> > +int vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vde=
+v,
+> > +                                   u32 flags,
+> > +                                   struct vfio_device_feature_dma_buf_=
+tph __user *arg,
+> > +                                   size_t argsz);
+> >  void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev);
+> >  void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool rev=
+oked);
+> >  #else
+> > @@ -128,6 +132,13 @@ vfio_pci_core_feature_dma_buf(struct vfio_pci_core=
+_device *vdev, u32 flags,
+> >  {
+> >       return -ENOTTY;
+> >  }
+> > +static inline int
+> > +vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vdev, u=
+32 flags,
+> > +                               struct vfio_device_feature_dma_buf_tph =
+__user *arg,
+> > +                               size_t argsz)
+> > +{
+> > +     return -ENOTTY;
+> > +}
+> >  static inline void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_devic=
+e *vdev)
+> >  {
+> >  }
+> > diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
+> > --- a/include/linux/dma-buf.h
+> > +++ b/include/linux/dma-buf.h
+> > @@ -113,6 +113,23 @@ struct dma_buf_ops {
+> >        */
+> >       void (*unpin)(struct dma_buf_attachment *attach);
+> >
+> > +     /**
+> > +      * @get_tph:
+> > +      * @dmabuf: DMA buffer for which to retrieve TPH metadata
+> > +      * @steering_tag: Returns the raw TPH steering tag
+> > +      * @ph: Returns the TPH processing hint
+> > +      * @st_width: Consumer's supported steering tag width in bits (8 =
+or 16)
+> > +      *
+> > +      * Return the TPH (TLP Processing Hints) metadata associated with=
+ this
+> > +      * DMA buffer. Exporters that do not provide TPH metadata should =
+return
+> > +      * -EOPNOTSUPP. If the steering tag exceeds @st_width bits, return
+> > +      * -EINVAL.
+> > +      *
+> > +      * This callback is optional.
+> > +      */
+> > +     int (*get_tph)(struct dma_buf *dmabuf, u16 *steering_tag, u8 *ph,
+> > +                    u8 st_width);
+> > +
+> >       /**
+> >        * @map_dma_buf:
+> >        *
+> > diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
+> > --- a/include/uapi/linux/vfio.h
+> > +++ b/include/uapi/linux/vfio.h
+> > @@ -1534,6 +1534,28 @@ struct vfio_device_feature_dma_buf {
+> >   */
+> >  #define VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2  12
+> >
+> > +/**
+> > + * Upon VFIO_DEVICE_FEATURE_SET associate TPH (TLP Processing Hints) m=
+etadata
+> > + * with a vfio-exported dma-buf. The dma-buf must have been created by
+> > + * VFIO_DEVICE_FEATURE_DMA_BUF on this device.
+> > + *
+> > + * dmabuf_fd is the file descriptor returned by VFIO_DEVICE_FEATURE_DM=
+A_BUF.
+> > + * steering_tag and ph are the raw TPH values that importing drivers s=
+hould use
+> > + * when accessing the buffer.
+> > + *
+> > + * The user must set TPH on the dma-buf before the importer consumes i=
+t.
+> > + *
+> > + * Return: 0 on success, -errno on failure.
+> > + */
+> > +#define VFIO_DEVICE_FEATURE_DMA_BUF_TPH 13
+> > +
+> > +struct vfio_device_feature_dma_buf_tph {
+> > +     __s32   dmabuf_fd;
+> > +     __u16   steering_tag;
+> > +     __u8    ph;
+> > +     __u8    reserved;
+> > +};
+> > +
+> >  /* -------- API for Type1 VFIO IOMMU -------- */
+> >
+> >  /**
+>
