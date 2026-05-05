@@ -1,49 +1,85 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5838B428469
-	for <kvm@vger.kernel.org>; Tue,  5 May 2026 10:14:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64BB9481FBF
+	for <kvm@vger.kernel.org>; Tue,  5 May 2026 10:15:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777976091; cv=none; b=lqNF3BdHeubKv1RSYknc99ZyYksrPGXqqrfSo3IuITwtoATO1Vd4k8kOc1D2L/71Aap446R2slGyqbU5gq6ZLFEBcIyEwspaezEd6JH8Ch7O8j+RD1mV9P+sxY0WNAQzRGTVf7g57HffABpAb2hhY51o/e39fzl5VNFC7+Yebxc=
+	t=1777976109; cv=none; b=Z/FugD7bBIpDLwMIwE2Fr0rkk0VBmwLiZN3DRuRyqO6u18eNAlZD0Qlm3cd2F2f0fCXUlrUiqzwe4o6Jtyy8xk5YEPGjnCK1j5e5n5TfVoCOa29nZHn1HBa0lGi2vZUJTycvhFaZG0ielfTGFDilvnUK/H2vfiB6YwZkvSRfYdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777976091; c=relaxed/simple;
-	bh=xqux/Fd5buH+CzIcqbYSn/lGJjrhMtUoi6ppmBWbEJw=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=rPJ73RDIIZBeSn6ujd3nCsPHNuZLh5OJtonnXbIrklMCNSM8wv9n8UCLW89DyYsvMMN5wCG07NCegYm3wyKcNQLs4Eb3FLLIu/5Wycgnpz+FtEJkUoyVWnUvS79NAag2AA4d7k+0XEvlUmE20J87wDVteAk1zBXt871k0Lealo4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YkUioSuA; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1777976109; c=relaxed/simple;
+	bh=UKDJHyq6kR+KTaggQU0rUwYmWNFE7XHciXg36o5yv4s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Jm9Y0YekC+4zMyxpShVyZ0WkjXJbWYybkWTjbcnI8iF8dNjGLM8uaf4JudPw1YKaI7Kvc/K5n0bNnCGDTMXUjF1nk/jjAf49LsOwbacUKMX+HoMIq1W9cvqv5hB7G773VdkM889xG9q+TFOQXcV+lGebweBGOIBXlV0yvMdtsa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Dp/5WFCM; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=jUSo+jE+; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YkUioSuA"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Dp/5WFCM";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="jUSo+jE+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1777976088;
+	s=mimecast20190719; t=1777976107;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ygfuYqoarx7W9ynFu+RmzkMb+Wwwu56seaguP6G/dYM=;
-	b=YkUioSuA4ATaOIpFF/Rm3+Z7stO5lLnJTMnJzsQdnyTO5mxwlu2CzN4VNtl1yF4wVTxFi1
-	4pK1dJCV68s0yd80Zv/9mOaq+bQUr/LsfI9vPifXLuQGEjVFrOrcr8KYkJsbkBlcn+4Y93
-	usNagg5iOpa7GsKK+b2XQomhTzyOt9Q=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-616-zAKHCovCM-OeH5_ufHa6yg-1; Tue,
- 05 May 2026 06:14:45 -0400
-X-MC-Unique: zAKHCovCM-OeH5_ufHa6yg-1
-X-Mimecast-MFC-AGG-ID: zAKHCovCM-OeH5_ufHa6yg_1777976083
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0086D195DE5C;
-	Tue,  5 May 2026 10:14:32 +0000 (UTC)
-Received: from [10.44.50.148] (unknown [10.44.50.148])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A771F196B0A4;
-	Tue,  5 May 2026 10:13:37 +0000 (UTC)
-Message-ID: <62bedd23-a9d8-4c05-bf39-662c2d37b793@redhat.com>
-Date: Tue, 5 May 2026 12:13:34 +0200
+	bh=1KlKmz+hmhefhSW67Eory1JV8nFIgF9o1/58OtkCEUE=;
+	b=Dp/5WFCMKQ2+sxVgh9GZEM7SA8Xf8mHhx6Y+JUnvQ8EUPtTtMsNVrTwsRVWQlCHeg/QLD8
+	8Zai0gnDKWdYpRI5JEDOfKQbb3Pozz/5LZWA1n0ckJT3lqGJMvn07HW6ueOPEMIWfjQFtB
+	WDREzquCQXnUDxieXatu7kef2+U1sEY=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-286-VeoJpbJVNcGR0JjZodU2nQ-1; Tue, 05 May 2026 06:15:05 -0400
+X-MC-Unique: VeoJpbJVNcGR0JjZodU2nQ-1
+X-Mimecast-MFC-AGG-ID: VeoJpbJVNcGR0JjZodU2nQ_1777976105
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43d7b7bacddso2900986f8f.0
+        for <kvm@vger.kernel.org>; Tue, 05 May 2026 03:15:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1777976104; x=1778580904; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=1KlKmz+hmhefhSW67Eory1JV8nFIgF9o1/58OtkCEUE=;
+        b=jUSo+jE+aIhaek537rJpcF/TtYXI1KQZ+uqq6aX4Yq/GqL2vPoF3CBR9FxL+Sbkxog
+         SCLoDxn8gRxQG/dGHqFiB98kkMInRI7L7PUKBoRpbqqejFcBBS7iLgl7rVGtOHzccKMA
+         ZHEhX6ki+6DU0wjPJPOcaB0RkVjZPVPlG2wQKTmXQkWDby0xLAGCT3YbhrAxbTTYh97Z
+         UPoog9Wks/e+XCLDhMB5hhIYg20yIXZAKz8AcYaLoyZeouN1rqJPPoHuwjAvZCOQNtDO
+         UW77XY1pnGKUnm9hRWMVNUfwXU7wGlG8xbtl4eDIQNIBbO0oduFTFZvgUd7N2fSo49Lw
+         3EBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1777976104; x=1778580904;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=1KlKmz+hmhefhSW67Eory1JV8nFIgF9o1/58OtkCEUE=;
+        b=rs2DvWxTq2DKsXIQQQ2dfsZA891sCtLPFf36iehpZTnGBtrq+EwU5LfF2DJtBENEGC
+         Y+CrqMq6WT7/3tBR03YKdJrPtQgO5oWc5BOEVQxAa+xAKlQ6pHdEgkleuH66jU+4BRL2
+         kkmz2Az0CtgDuF2lKq3JsWmjdvAmniJtr7z4jDfmNnNDy9iLnKd7iBOh1IySQ3k8mInI
+         +B4k+GFdIzoR29n/kStyYS5SSiqYuRetsHz5gu0HU8ADpTwSOfggbAXNRsm4hflF2YlF
+         7S5cXpIrtEA5SWUys8kp0MwXYFXqaAOBMdWX3d7yWLctL4mu7Bwqn4xRsIlE4s4kxvcZ
+         ydGw==
+X-Forwarded-Encrypted: i=1; AFNElJ+t1WMea2mno2BzAGTSsl0Lu4i9eu+REhizNbOIrzlufffJxrbv8aL+3mO/jyd5uSbjsJc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzWF/EwVCIo7q6bRYp90Erdmnifv8UeYKFQlx5KDYqPiobWDTa5
+	uoq2ftkNzsauPImRfINQFyN8bn+Rtu8A2CiTqyTSGoqzjvEsTXV1HN0OVGnMHYHDeRiVMMzAOdx
+	jPTq1fxORTr1IeqceeZNECE8CUkwXNwIw7t45sBUhYxqQ4QjaXnWdig==
+X-Gm-Gg: AeBDietksClGQ533rYEJDmdEtCtzKQj+8uxGJC84f8tU4h9Ly1LdnMnVJJyRcM1lPAp
+	N9W+xGrkM2gTGRmN3zdvO3i76yUauSIRuXpIPSiUt3EwPmhUOQJHrZfNHL5vDznr9zIubemkOwb
+	1NhLTYn++Tg01WQmh4QuZcRDPT2tEK36BMV6mio2kUAKndWWxfql7EWr0Cm9EwhY6vq7OsOuy6Q
+	bpvZnKNJZf+rVzc9+e2ajnel28kGhmifdTalncspHTeY7ianuuINa0jgmBFWzmxwbcwpAvzl39I
+	XbTmG19sDTDDvlhsxWAqDp5kfo8KpfseyEpa6IY+GI4qGNipZ3/Ih9+US7UIyflSFAiwMV7TAyn
+	wI9egS7N85pREbiIt3cXUMCHic13XaQ==
+X-Received: by 2002:a05:6000:2c05:b0:449:af52:6167 with SMTP id ffacd0b85a97d-44bb2f27780mr21688894f8f.8.1777976104598;
+        Tue, 05 May 2026 03:15:04 -0700 (PDT)
+X-Received: by 2002:a05:6000:2c05:b0:449:af52:6167 with SMTP id ffacd0b85a97d-44bb2f27780mr21688847f8f.8.1777976104202;
+        Tue, 05 May 2026 03:15:04 -0700 (PDT)
+Received: from [192.168.0.9] ([47.64.115.164])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45052a4878fsm3436003f8f.9.2026.05.05.03.15.03
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 May 2026 03:15:03 -0700 (PDT)
+Message-ID: <b860aea4-849e-4d0d-83ea-931de4cfc545@redhat.com>
+Date: Tue, 5 May 2026 12:15:02 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -51,232 +87,159 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Paolo Bonzini <pbonzini@redhat.com>
-Subject: stable backports for "KVM: x86: Fix shadow paging use-after-free due
- to unexpected GFN"
-To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: Sean Christopherson <seanjc@google.com>,
- Alexander Bulekov <bkov@amazon.com>, Fred Griffoul <fgriffo@amazon.co.uk>,
- stable@vger.kernel.org
-References: <20260503201029.106481-1-pbonzini@redhat.com>
+Subject: Re: intel_iommu unit test is also failing
+To: =?UTF-8?Q?Cl=C3=A9ment_MATHIEU--DRIF?= <clement.mathieu--drif@bull.com>,
+ Peter Xu <peterx@redhat.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>, Yi Liu <yi.l.liu@intel.com>,
+ "Michael S. Tsirkin" <mst@redhat.com>
+References: <20240604143507.1041901-1-pbonzini@redhat.com>
+ <8aa24294-439f-4484-b6fc-9327b6fd0306@redhat.com>
+ <600b025e-602e-4128-9679-f53f32b96e8e@redhat.com> <afi_HNJoObF10rwz@x1.local>
+ <96f57df07e6d39e30557357142b2212e0ea26af4.camel@bull.com>
+ <0abf41c113c9425ea4c73a108db22f28290fa395.camel@bull.com>
+ <13002aef21dec62205c252f3d12bb42ea59cf287.camel@bull.com>
+ <d4ae6782e30a05ea9d56c38f0c5d296fb6a5c7b1.camel@bull.com>
+ <6b338140-873c-4303-bdd1-633d69f4a971@redhat.com>
+ <0e67d95e01efb0823fe07cd556461ad3d9a0709a.camel@bull.com>
 Content-Language: en-US
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <20260503201029.106481-1-pbonzini@redhat.com>
+From: Thomas Huth <thuth@redhat.com>
+Autocrypt: addr=thuth@redhat.com; keydata=
+ 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
+In-Reply-To: <0e67d95e01efb0823fe07cd556461ad3d9a0709a.camel@bull.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-I have started sending out backports for stable kernels up to 6.1.  For 
-5.10 and 5.15 I have identified the required patches and backported 
-them, but I haven't tested them yet.
+On 05/05/2026 11.53, Clément MATHIEU--DRIF wrote:
+> 
+> 
+> On Tue, 2026-05-05 at 11:45 +0200, Thomas Huth wrote:
+>> Caution: External email. Do not open attachments or click links, unless this email comes from a known sender and you know the content is safe.
+>>
+>>
+>> On 05/05/2026 11.27, Clément MATHIEU--DRIF wrote:
+>>
+>>> I had a bit more time to hook into qemu to check the root cause.
+>>>
+>>> It seems that testb issues a single byte read (out of the valid size range), as we can see on the following breakpoint:
+>>>
+>>> ```
+>>> Thread 6 "CPU 0/TCG" hit Breakpoint 2, memory_region_dispatch_read (mr=0x55d72883cb30, addr=152, pval=0x7f62d25f4590, op=MO_BSWAP, attrs=...) at ../system/memory.c:1473
+>>> 1473       unsigned size = memop_size(op);
+>>> (gdb) n
+>>> 1474       MemTxResult r;
+>>> (gdb) p size
+>>> $1 = 1
+>>> (gdb)
+>>> ```
+>>
+>>
+>> Ouch! That's an excellent finding, Clément ... so GCC 16 is "smart" enough
+>> to see that we only want to test the lowest bit here, so it optimizes the
+>> code to access only one byte of memory instead of 4 bytes... which would be
+>> ok for normal memory, but not for an MMIO register :-/
+>>
+>> Ugly work-around, to force GCC to read 32 bits:
+>>
+>> diff --git a/lib/asm-generic/io.h b/lib/asm-generic/io.h
+>> --- a/lib/asm-generic/io.h
+>> +++ b/lib/asm-generic/io.h
+>> @@ -38,7 +38,9 @@ static inline u16 __raw_readw(const volatile void *addr)
+>>    #ifndef __raw_readl
+>>    static inline u32 __raw_readl(const volatile void *addr)
+>>    {
+>> -       return *(const volatile u32 *)addr;
+>> +       u32 val = *(const volatile u32 *)addr;
+>> +       asm volatile ("\n" : : "r"(addr));
+>> +       return val;
+>>    }
+>>    #endif
+>>
+>> ... but I wonder whether this should rather be treated as a bug in GCC
+>> instead, since it should IMHO really not change the access size for a
+>> volatile memory access?
+> 
+> Volatile is expected to make sure that the read side effect is visible.
+> I don't know if the size of the access is in the scope of this constraint or not o.O
 
-I'll get to testing and sending them out, but it will take a while; if 
-anybody wants to help testing, I can provide my tentative patches.
+Maybe we should simply adjust the read/write functions in the pci-edu.h 
+code, WDYT:
 
-This is the list for 5.15:
+diff --git a/lib/pci-edu.h b/lib/pci-edu.h
+--- a/lib/pci-edu.h
++++ b/lib/pci-edu.h
+@@ -59,24 +59,24 @@ struct pci_edu_dev {
 
-     27a59d57f073 KVM: x86/mmu: Use a bool for direct
-     86938ab6925b KVM: x86/mmu: Stop passing "direct" to mmu_alloc_root()
-     2e65e842c57d KVM: x86/mmu: Derive shadow MMU page role from parent
-     7f49777550e5 KVM: x86/mmu: Always pass 0 for @quadrant when gptes
-                  are 8 bytes
-     0cd8dc739833 KVM: x86/mmu: pull call to drop_large_spte() into
-                  __link_shadow_page()
-     0cb2af2ea66a KVM: x86: Fix shadow paging use-after-free due to
-                  unexpected GFN
+  static inline uint64_t edu_reg_readq(struct pci_edu_dev *dev, int reg)
+  {
+-       return __raw_readq(edu_reg(dev, reg));
++       return readq(edu_reg(dev, reg));
+  }
 
+  static inline uint32_t edu_reg_readl(struct pci_edu_dev *dev, int reg)
+  {
+-       return __raw_readl(edu_reg(dev, reg));
++       return readl(edu_reg(dev, reg));
+  }
 
-and the longer one for 5.10:
+  static inline void edu_reg_writeq(struct pci_edu_dev *dev, int reg,
+                                   uint64_t val)
+  {
+-       __raw_writeq(val, edu_reg(dev, reg));
++       writeq(val, edu_reg(dev, reg));
+  }
 
-     b37233c911cb KVM: x86/mmu: Capture 'mmu' in a local variable when
-                  allocating roots
-     ba0a194ffbfb KVM: x86/mmu: Allocate the lm_root before allocating
-                  PAE roots
-     748e52b9b736 KVM: x86/mmu: Allocate pae_root and lm_root pages in
-                  dedicated helper
-     6e6ec5848574 KVM: x86/mmu: Ensure MMU pages are available when
-                  allocating roots
-     27a59d57f073 KVM: x86/mmu: Use a bool for direct
-     86938ab6925b KVM: x86/mmu: Stop passing "direct" to mmu_alloc_root()
-     03fffc5493c8 KVM: x86/mmu: Refactor shadow walk in __direct_map() to
-                  reduce indentation
-     f81602958c11 KVM: X86: Fix missed remote tlb flush in
-                  rmap_write_protect()
-     65855ed8b034 KVM: X86: Synchronize the shadow pagetable before link
-                  it
-     2e65e842c57d KVM: x86/mmu: Derive shadow MMU page role from parent
-     7f49777550e5 KVM: x86/mmu: Always pass 0 for @quadrant when gptes
-                  are 8 bytes
-     6e0918aec49a KVM: x86/mmu: Check PDPTRs before allocating PAE roots
-     0cd8dc739833 KVM: x86/mmu: pull call to drop_large_spte() into
-                  __link_shadow_page()
-     0cb2af2ea66a KVM: x86: Fix shadow paging use-after-free due to
-                  unexpected GFN
+  static inline void edu_reg_writel(struct pci_edu_dev *dev, int reg,
+                                   uint32_t val)
+  {
+-       __raw_writel(val, edu_reg(dev, reg));
++       writel(val, edu_reg(dev, reg));
+  }
 
-Paolo
+  bool edu_init(struct pci_edu_dev *dev);
 
-On Sun, May 3, 2026 at 10:10 PM Paolo Bonzini <pbonzini@redhat.com> wrote:
->
-> From: Sean Christopherson <seanjc@google.com>
->
-> The shadow MMU computes GFNs for direct shadow pages using sp->gfn plus
-> the SPTE index. This assumption breaks for shadow paging if the guest
-> page tables are modified between VM entries (similar to commit
-> aad885e77496, "KVM: x86/mmu: Drop/zap existing present SPTE even
-> when creating an MMIO SPTE", 2026-03-27).  The flow is as follows:
->
-> - a PDE is installed for a 2MB mapping, and a page in that area is
->   accessed.  KVM creates a kvm_mmu_page consisting of 512 4KB pages;
->   the kvm_mmu_page is marked by FNAME(fetch) as direct-mapped because
->   the guest's mapping is a huge page (and thus contiguous).
->
-> - the PDE mapping is changed from outside the guest.
->
-> - the guest accesses another page in the same 2MB area.  KVM installs
->   a new leaf SPTE and rmap entry; the SPTE uses the "correct" GFN
->   (i.e. based on the new mapping, as changed in the previous step) but
->   that GFN is outside of the [sp->gfn, sp->gfn + 511] range; therefore
->   the rmap entry cannot be found and removed when the kvm_mmu_page
->   is zapped.
->
-> - the memslot that covers the first 2MB mapping is deleted, and the
->   kvm_mmu_page for the now-invalid GPA is zapped.  However, rmap_remove()
->   only looks at the [sp->gfn, sp->gfn + 511] range established in step 1,
->   and fails to find the rmap entry that was recorded by step 3.
->
-> - any operation that causes an rmap walk for the same page accessed
->   by step 3 then walks a stale rmap and dereferences a freed kvm_mmu_age.
->   This includes dirty logging or MMU notifier invalidations (e.g., from
->   MADV_DONTNEED).
->
-> The underlying issue is that KVM's walking of shadow PTEs assumes that
-> if a SPTE is present when KVM wants to install a non-leaf SPTE, then the
-> existing kvm_mmu_page must be for the correct gfn.  Because the only way
-> for the gfn to be wrong is if KVM messed up and failed to zap a SPTE...
-> which shouldn't happen, but *actually* only happens in response to a
-> guest write.
->
-> That bug dates back literally forever, as even the first version of KVM
-> assumes that the GFN matches and walks into the "wrong" shadow page.
-> However, that was only an imprecision until 2032a93d66fa ("KVM: MMU:
-> Don't allocate gfns page for direct mmu pages") came along.
->
-> Fix it by checking for a target gfn mismatch and zapping the existing
-> SPTE.  That way the old SP and rmap entries are gone, KVM installs
-> the rmap in the right location, and everyone is happy.
->
-> Fixes: 2032a93d66fa ("KVM: MMU: Don't allocate gfns page for direct mmu pages")
-> Fixes: 6aa8b732ca01 ("kvm: userspace interface")
-> Reported-by: Alexander Bulekov <bkov@amazon.com>
-> Reported-by: Fred Griffoul <fgriffo@amazon.co.uk>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  arch/x86/kvm/mmu/mmu.c | 35 ++++++++++++++---------------------
->  1 file changed, 14 insertions(+), 21 deletions(-)
->
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index 24fbc9ea502a..892246204435 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-> @@ -182,6 +182,8 @@ static struct kmem_cache *pte_list_desc_cache;
->  struct kmem_cache *mmu_page_header_cache;
->
->  static void mmu_spte_set(u64 *sptep, u64 spte);
-> +static int mmu_page_zap_pte(struct kvm *kvm, struct kvm_mmu_page *sp,
-> +                           u64 *spte, struct list_head *invalid_list);
->
->  struct kvm_mmu_role_regs {
->         const unsigned long cr0;
-> @@ -1287,19 +1289,6 @@ static void drop_spte(struct kvm *kvm, u64 *sptep)
->                 rmap_remove(kvm, sptep);
->  }
->
-> -static void drop_large_spte(struct kvm *kvm, u64 *sptep, bool flush)
-> -{
-> -       struct kvm_mmu_page *sp;
-> -
-> -       sp = sptep_to_sp(sptep);
-> -       WARN_ON_ONCE(sp->role.level == PG_LEVEL_4K);
-> -
-> -       drop_spte(kvm, sptep);
-> -
-> -       if (flush)
-> -               kvm_flush_remote_tlbs_sptep(kvm, sptep);
-> -}
-> -
->  /*
->   * Write-protect on the specified @sptep, @pt_protect indicates whether
->   * spte write-protection is caused by protecting shadow page table.
-> @@ -2466,7 +2455,8 @@ static struct kvm_mmu_page *kvm_mmu_get_child_sp(struct kvm_vcpu *vcpu,
->  {
->         union kvm_mmu_page_role role;
->
-> -       if (is_shadow_present_pte(*sptep) && !is_large_pte(*sptep))
-> +       if (is_shadow_present_pte(*sptep) && !is_large_pte(*sptep) &&
-> +           spte_to_child_sp(*sptep) && spte_to_child_sp(*sptep)->gfn == gfn)
->                 return ERR_PTR(-EEXIST);
->
->         role = kvm_mmu_child_role(sptep, direct, access);
-> @@ -2544,13 +2534,16 @@ static void __link_shadow_page(struct kvm *kvm,
->
->         BUILD_BUG_ON(VMX_EPT_WRITABLE_MASK != PT_WRITABLE_MASK);
->
-> -       /*
-> -        * If an SPTE is present already, it must be a leaf and therefore
-> -        * a large one.  Drop it, and flush the TLB if needed, before
-> -        * installing sp.
-> -        */
-> -       if (is_shadow_present_pte(*sptep))
-> -               drop_large_spte(kvm, sptep, flush);
-> +       if (is_shadow_present_pte(*sptep)) {
-> +               struct kvm_mmu_page *parent_sp;
-> +               LIST_HEAD(invalid_list);
-> +
-> +               parent_sp = sptep_to_sp(sptep);
-> +               WARN_ON_ONCE(parent_sp->role.level == PG_LEVEL_4K);
-> +
-> +               mmu_page_zap_pte(kvm, parent_sp, sptep, &invalid_list);
-> +               kvm_mmu_remote_flush_or_zap(kvm, &invalid_list, true);
-> +       }
->
->         spte = make_nonleaf_spte(sp->spt, sp_ad_disabled(sp));
->
-> --
-> 2.54.0
+... it might be good to use the non-raw functions here for ordered access 
+anyway...
+
+  Thomas
 
