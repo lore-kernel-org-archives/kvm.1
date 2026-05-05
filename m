@@ -1,306 +1,164 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1413038F23F
-	for <kvm@vger.kernel.org>; Tue,  5 May 2026 16:40:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C52147DD5E
+	for <kvm@vger.kernel.org>; Tue,  5 May 2026 17:05:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777999224; cv=none; b=hzsiMwXcxwYBWmKoI9b4RRFMBIkuhe7slQtQJ8oTneEyfyDWqr3WVmIqmG0OxvluaPd9XQKqK0Egl4/AsFSAPBo5ItJ50g3Kke/iSd1vxw5IsdbgI1sut2rDwNPEYJvYVfvxtHQ8HvwFOk9pYUv21SbSa4TwwmGIiVb6fjWwS0k=
+	t=1778000719; cv=none; b=dybHDkw5oMCNSl/0dN3ByR293DxAUwip4D22O7+4bNfDNERjLv73/UKu0A3dG17NCFim8pbRAKRRqOg+q8yF4aVNCzUGuXUxuk3AOJv+9VRPeiAGPWFFE7Y9dOUQApAeBzdVVJhFkxCv+YgHyv6wsVy582l6lenvZJtjDqVlsf4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777999224; c=relaxed/simple;
-	bh=UDR1zOPIRSdW0W4yFUpqT4dJSQum3JAxuTAJBHmewzU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=jpJPzfP7MKnEdTsxnJMSxQhw/tIu0f+WnZR2lxeKiBBtWMHQW6Vokt9zNzVKzSGH3vk0iHce/ewxKa09yP9enBYRc8CxMwKiFuuMxhWmh8eYPAG1+qgT1oy31NpH3C8oP/B7Exebi1tzoEFARIkeYSp7q6d1MaHOAcg6QWE6Fss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=HlRPtb9e; arc=none smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1778000719; c=relaxed/simple;
+	bh=LlXGiT8km7O3+s8Me6WlqDhDtU9jqmDQ3ztOup/45zg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=DFX9pr8g0d1kCpkE/bKqBeVzno3Xtojm0c13BX3lj60XhTWDS9MUPK/X3N1LUUk6S2A7MEhay60vuRpqsMXYrSgd/tafSRn39U/tnNE+6rOj0lX7+jhOGFYiS2itPYRBSw4Kpfup9vfREweMN7+WqDg0Vc9m77H2mZLjgk+/qZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qjmwJmSW; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="HlRPtb9e"
-Received: from pps.filterd (m0044010.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 645EFuXY2489750
-	for <kvm@vger.kernel.org>; Tue, 5 May 2026 09:40:21 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=tYIUuM8zuFxT1UxHsWJkyelnLZZiUalOVyo2zlArhts=; b=HlRPtb9exjPN
-	n2rKzsjZtjkSuDEb9KH2ORJNZaf9TUxWkpDI5uu5oI4/WU2mWpiUn3N0D08cZzb2
-	k6X/E2D/BEgCmcZiz4rcm6w+ruhcOgsPXm1uOYVyFrqFGcvg8KVYdG7isct8AHR5
-	ZmjwU+HnFkQVK7p+d815WNHitv65yXgXiYX45bloskp+mLwuHCAH2ydqCy0w/4r6
-	nRm4ji76gbkH7Opp4NEZgm6HoALCX9r4EZKdRZH8ecflaZTOPfOlErweZFCUuj9Z
-	vrkHbcgaZHeqFD0rSoAMX4LsSA5JjSUZLF/6Q8dtMR2tNXf1oRkjnWR+J2SpJY11
-	mMW1c18Tyw==
-Received: from mail-dl1-f72.google.com (mail-dl1-f72.google.com [74.125.82.72])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4dwck1j3qq-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Tue, 05 May 2026 09:40:21 -0700 (PDT)
-Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-131371497a1so644080c88.0
-        for <kvm@vger.kernel.org>; Tue, 05 May 2026 09:40:21 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777999221; x=1778604021;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qjmwJmSW"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-837cc5bc6deso1437556b3a.3
+        for <kvm@vger.kernel.org>; Tue, 05 May 2026 10:05:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778000717; x=1778605517; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=tYIUuM8zuFxT1UxHsWJkyelnLZZiUalOVyo2zlArhts=;
-        b=Z/dhcWxw6baOyHPKxDTguWnGZ/Fqw3/yjcjR5B9mETYiWATem5MLoIw4NbkX7WK6V1
-         njgaBaUhF7PK5ff7qdkXaMHCpUiuDcIMuiq39YOHy/Q1H6kQDQTaF5wEDNjYG1/G0HSS
-         rBgXYuvzDtRsr4Fj7B2NRwjnAJEWJhtmeSTbBeh2fGwH+atvJpwOOs8MPJtMfMC+oHjC
-         TSKQfzW9mOjVyiAlOuwDQgjF5QKQN3d1tr1tgg8MI8lLwg1d3R8ULZRg8JRvydZRi2ps
-         3fgn7AOO2dSUZzfX2fCAH6u5CeLWKdzdsO/cEenf1xUt6F8zKS8S8+kat/OC0NPnz+3c
-         NOXw==
-X-Forwarded-Encrypted: i=1; AFNElJ/hxXSCoBdTtIix28nKMe67kplVnrfTyhWoYcNYErnAmzywHUJhKfAvVL1IxmoNiUgOlx8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxWWzAaPTFtzmgNuNDBdA1OJcW8jecN1aV2+ehIPCwXjty2fMpw
-	qjQD4Vr20yBAIP1sgYBLv4NVWJe/G4Hl43Ecaov7aPDZa13/xGU8fBq5F2KHMgPAGkhs7NJLRyE
-	qcMk7YcxEFDPUA1zT/dt8oVVfNbysJru8+uPoo1PZd/RF5Lf1iXBT
-X-Gm-Gg: AeBDiesstCY3in86ZYKKIjfX2Jp8MlAFR4EAmGcJ7x0DPDD+kej1m1PHcTfnmzggT/i
-	gCEuE09JCdur9RH7/P10ralxCHrriVx7Pill95Fziz6M82aJZtcE6vAut+EHMH8WJuBuG+VG4gk
-	guDHNjM86ZTuMIqCtY2GPLQtJT+wm9Bg6wEN3yzvQr5sgpFTtPg/5clt/zWek7pTwr1K7qHNO8O
-	oAnSFBNfZKBSx8TcsKIcOZhPfVd97K/goUofu23WjNQtb23gFYEoL6Y6tOlgdisOzyvbWEjIV8c
-	U9IQohKgLSsSEdhljiqQd+1sijuryl0P7OwhyVYHMt/Qgd+Gvx7+JhSv5SsXQwGZq1Ow626EPmr
-	cfmm3FOmIAoF72XjlbkJPcO/cpQgcKoOwkFI45kIA
-X-Received: by 2002:a05:7022:61a:b0:128:d2b3:5df with SMTP id a92af1059eb24-12dfd81a65emr7341070c88.23.1777999220510;
-        Tue, 05 May 2026 09:40:20 -0700 (PDT)
-X-Received: by 2002:a05:7022:61a:b0:128:d2b3:5df with SMTP id a92af1059eb24-12dfd81a65emr7341042c88.23.1777999219794;
-        Tue, 05 May 2026 09:40:19 -0700 (PDT)
-Received: from [10.0.40.30] ([51.52.155.79])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-12df82a141asm24127544c88.8.2026.05.05.09.40.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 05 May 2026 09:40:19 -0700 (PDT)
-Message-ID: <ab327008-2b5f-4fbb-8045-736ff90ea5ab@meta.com>
-Date: Tue, 5 May 2026 17:40:14 +0100
+        bh=m3ZWo/jJEgMHbppCM8fWNjqKfThN79PtinobDbAzSRU=;
+        b=qjmwJmSWmELI9sNlA3GoOQLvGyc/W/fZNgZh10tOAgN5BH/YQQDDg8y2B1IeT3Wu0l
+         0fxS3/Y7DPE0vlcHyPEvRzXY7WYFM7fyT4b9e0XI2l8MktAjpFFg4xDQ/iGENLbVxfCC
+         7c4bIW4m2KEL9WLEKZyydicr4iRQ5lozcInVJShbm8paXiGpG3R+SrioTgSk3yGRxnPC
+         S6ThrbKfV/xoL+PauQ/Kacxcw7EbcESLq9kAGsvUromk5fIbOBN4nQtv1xCOSiIqVx0O
+         VJqYNvB0szxgt3Eq2Q9cRE1nTJd5Ay5I9WJIxMXWqCRXZX1vZYMjv7T8EIV77qp+7TQM
+         sugg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778000717; x=1778605517;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=m3ZWo/jJEgMHbppCM8fWNjqKfThN79PtinobDbAzSRU=;
+        b=qaJO8mhXQaj57yTeuSNPAOeTDZqQguaDUOFIMequtvmfynhnEshjSJWTOWDZWFuQbV
+         ry3rzprClCbcZNboSBMxjvwNtgIr4mIqeMYNg2B7zbWS6bgiY/DwNd3jwIXYNgy6LvIp
+         +Nv2HG6T4Lg3orSCFggIpCec5o21cvgXUfFejqYIOoMzaipwq0J/y4BntTYJT2eYUiQR
+         TAEuxONKFbUzQGoxJI+F+D6K1j8jYTCvxJhnFNgiHJlZCAG4kiRDQxkC5VgthXQo6MnE
+         GcEFbRncN8Anz5PWIKbDDEz+vlYv7wzyGrixrb0TM2sptsY1TJZqkB2iwsnI4e4ckxeH
+         Mmxw==
+X-Forwarded-Encrypted: i=1; AFNElJ8ieNVvRRTs/hts5UOSxQuucDNkiIMfNHxPN93qMORKuRlI61WrGWO9M5UvUJw3EkY3P3k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1Psp0Pv8xpB2qVnfaP00XuBYy8CbyTPhUeig0Hl+WWla1QEcM
+	Ern7Itzugu9dZNyv/q7jfawkzjC/yC/miD4Uyfpc3RXoM51v6LnIpr+bSDtvuTVgJeC2JMgwrUs
+	hBxCvFw==
+X-Received: from pfblm11.prod.google.com ([2002:a05:6a00:3c8b:b0:82c:e899:f089])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:368c:b0:82c:e1a3:986f
+ with SMTP id d2e1a72fcca58-839247bfb7bmr3652379b3a.43.1778000717292; Tue, 05
+ May 2026 10:05:17 -0700 (PDT)
+Date: Tue, 5 May 2026 10:05:15 -0700
+In-Reply-To: <20260504231048.1184273-1-jthoughton@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/3] vfio/pci: Set up bar resources and maps in
- vfio_pci_core_enable()
-Content-Language: en-GB
-To: Alex Williamson <alex@shazbot.org>
-Cc: Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Ankit Agrawal <ankita@nvidia.com>,
-        Alistair Popple <apopple@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>, Kees Cook <kees@kernel.org>,
-        Shameer Kolothum <skolothumtho@nvidia.com>,
-        Yishai Hadas
- <yishaih@nvidia.com>,
-        Alexey Kardashevskiy <aik@ozlabs.ru>,
-        Eric Auger <eric.auger@redhat.com>, Peter Xu <peterx@redhat.com>,
-        Vivek Kasireddy <vivek.kasireddy@intel.com>,
-        Zhi Wang <zhiw@nvidia.com>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, virtualization@lists.linux.dev
-References: <20260430100340.2787446-1-mattev@meta.com>
- <20260430100340.2787446-2-mattev@meta.com>
- <20260430141341.163ed827@shazbot.org>
-From: Matt Evans <mattev@meta.com>
-In-Reply-To: <20260430141341.163ed827@shazbot.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: wATYqo5x2uKi5a3CuohsbLmdUgBRfT7n
-X-Proofpoint-GUID: wATYqo5x2uKi5a3CuohsbLmdUgBRfT7n
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA1MDE2MSBTYWx0ZWRfX5fPDMyVZ7Mxs
- 8VBl5QOythlYqBbPqM9L37i7wl/uZ71JeM1QmURNQy0HvqQR9xl8/V/Dxsa2vdrUqiPj0xMFC3i
- 3CzVsfGdlWMQeZELmM3VDxfNTNKkB+KtgTXsB0H5fnup9SPD7SJFGiWUB7hnkIjP8kbYHmxpvi6
- 47SZhrZ4HtpofrSgQ0RO7BuKWPlKWPsonGQuErXmOhYkrfuhONA6vUwi7c/lNFMDKiQGUJKmHag
- YjycAywoVVdRO8HvXsUnfftiOlKRqIOQCUJDHKB9JsBAGioOAlx5GeWkBM6XQWU3E1Vb26KWf9F
- nOsHHNKqM4un3lzGT2j6HBzb/cXB2ZYd8quazIpw3HfIuswsoKAJQUtgTt0qvWKrEXW/Znzoc4N
- gtXWK563XlfdP0JSd4B2s+emUFJSOuA+G/P+/uX3Eri/6tRXo5jxW8cCl94OU+fDXsswYOQvg8A
- eHUtHwq3yBGSFhr2+Ug==
-X-Authority-Analysis: v=2.4 cv=Pu+jqQM3 c=1 sm=1 tr=0 ts=69fa1d75 cx=c_pps
- a=bS7HVuBVfinNPG3f6cIo3Q==:117 a=2UbFsIa4v//lIgRL4kGwwA==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=8elwO82fXORLTBIkMd32:22 a=VabnemYjAAAA:8
- a=nkPybr1PKv9t0ePcFoAA:9 a=QEXdDO2ut3YA:10 a=vBUdepa8ALXHeOFLBtFW:22
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-05_02,2026-04-30_02,2025-10-01_01
+Mime-Version: 1.0
+References: <20260504224213.1049426-2-jthoughton@google.com> <20260504231048.1184273-1-jthoughton@google.com>
+Message-ID: <afohshVlK9YcBk-f@google.com>
+Subject: Re: [PATCH 1/5] KVM: arm64: Grab KVM MMU write lock in kvm_arch_flush_shadow_all()
+From: Sean Christopherson <seanjc@google.com>
+To: James Houghton <jthoughton@google.com>
+Cc: chenhuacai@kernel.org, gshan@redhat.com, jhogan@kernel.org, 
+	joey.gouly@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	linux-mips@vger.kernel.org, loongarch@lists.linux.dev, maobibo@loongson.cn, 
+	maz@kernel.org, oupton@kernel.org, pbonzini@redhat.com, ricarkol@google.com, 
+	shahuang@redhat.com, stable@vger.kernel.org, suzuki.poulose@arm.com, 
+	yuzenghui@huawei.com, zhaotianrui@loongson.cn
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Alex,
+On Mon, May 04, 2026, James Houghton wrote:
+> On Mon, May 4, 2026 at 3:42=E2=80=AFPM James Houghton <jthoughton@google.=
+com> wrote:
+> >
+> > kvm_arch_flush_shadow_all() may sometimes be called on the same `kvm`
+> > concurrently in the event that the KVM's `mm` is __mmput() at the
+> > same time that last reference to the KVM is being dropped.
+> >
+> > T1              T2
+> > KVM_CREATE_VM
+> >                 Get VM file from T1
+> > close VM
+> > exit_mm()       close VM
+> >
+> > T1: exit_mm() -> kvm_mmu_notifier_release() -> kvm_flush_shadow_all(),
+> >     with only the KVM srcu read lock held.
+> >
+> > T2: kvm_vm_release() ---> mmu_notifier_unregister() ->
+> >     kvm_mmu_notifier_release() -> kvm_flush_shadow_all(),
+> >     again, with only the KVM srcu read lock held.
+> >
+> > This leads to a potential double-free of
+> > kvm->arch.kvm_mmu_free_memory_cache and now with NV
+> > kvm->arch.nested_mmus.
 
-On 30/04/2026 21:13, Alex Williamson wrote:
-> 
-> On Thu, 30 Apr 2026 03:03:20 -0700
-> Matt Evans <mattev@meta.com> wrote:
-> 
->> Previously BAR resource requests and the corresponding pci_iomap()
->> were performed on-demand and without synchronisation, which was racy.
->> Rather than add synchronisation, it's simplest to address this by
->> doing both activities from vfio_pci_core_enable().
->>
->> The resource allocation and/or pci_iomap() can still fail; their
->> status is tracked and existing calls to vfio_pci_core_setup_barmap()
->> will fail in a similar way to before.  This keeps the point of failure
->> as observed by userspace the same, i.e. failures to request/map unused
->> BARs are benign.
->>
->> Fixes: 7f5764e179c6 ("vfio: use vfio_pci_core_setup_barmap to map bar in mmap")
->> Fixes: 0d77ed3589ac0 ("vfio/pci: Pull BAR mapping setup from read-write path")
-> 
-> Neither of these introduced races, they only moved what they were
-> already doing into a function or made use of that shared function for
-> what they were already doing.  I'm inclined to believe the raciness
-> existed from the introduction, 89e1f7d4c66d.
-> 
->> Signed-off-by: Matt Evans <mattev@meta.com>
->> ---
->>   drivers/vfio/pci/vfio_pci_core.c | 33 ++++++++++++++++++++++++++++++++
->>   drivers/vfio/pci/vfio_pci_rdwr.c | 29 ++++++++++++----------------
->>   2 files changed, 45 insertions(+), 17 deletions(-)
->>
->> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
->> index 3f8d093aacf8..eab4f2626b39 100644
->> --- a/drivers/vfio/pci/vfio_pci_core.c
->> +++ b/drivers/vfio/pci/vfio_pci_core.c
->> @@ -482,6 +482,38 @@ static int vfio_pci_core_runtime_resume(struct device *dev)
->>   }
->>   #endif /* CONFIG_PM */
->>   
->> +static void vfio_pci_core_map_bars(struct vfio_pci_core_device *vdev)
->> +{
->> +	struct pci_dev *pdev = vdev->pdev;
->> +	int i;
->> +
->> +	/*
->> +	 * Eager-request BAR resources, and iomap.  Soft failures are
->> +	 * allowed, and consumers must check the barmap before use in
->> +	 * order to give compatible user-visible behaviour with the
->> +	 * previous on-demand allocation method.
->> +	 */
->> +	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
->> +		int bar = i + PCI_STD_RESOURCES;
->> +		void __iomem *io = ERR_PTR(-ENODEV);
-> 
-> It would collapse the nesting depth to just do:
-> 
-> 		vdev->barmap[bar] = ERR_PTR(-ENODEV);
-> 
-> 		if (!pci_resource_len(pdev, i))
-> 			continue;
-> 
-> 		if (pci_request_selected_regions(pdev, 1 << bar, "vfio")) {
-> 			pci_dbg(vdev->pdev, "Failed to reserve region %d\n", bar);
-> 			vdev->barmap[bar] = ERR_PTR(-EBUSY);
-> 			continue;
-> 		}
-> 
-> 		vdev->barmap[bar] = pci_iomap(pdev, bar, 0);
-> 		if (!vdev->barmap[bar]) {
-> 			pci_dbg(vdev->pdev, "Failed to iomap region %d\n", bar);
-> 			vdev->barmap[bar] = ERR_PTR(-ENOMEM);
-> 		}
-> 
-> It's debatable what level to use for the errors, but we were previously
-> silent on this, so going all the way to pci_warn() seems unnecessary.
+...
 
-Hm, okay, returned it to a nesting-less format and replaced pci_warn()s 
-with pci_dbg().
+> >  void kvm_uninit_stage2_mmu(struct kvm *kvm)
+> >  {
+> > -       kvm_free_stage2_pgd(&kvm->arch.mmu);
+> > +       lockdep_assert_held_write(&kvm->mmu_lock);
+>=20
+> *facepalm*.... this doesn't account for the other callers of
+> kvm_uninit_stage2_mmu(). They will get lockdep warnings.
+>=20
+> I've attached a diff to the bottom of this reply that *does* deal with th=
+em.
+> :( Sorry.
 
->> +
->> +		if (pci_resource_len(pdev, i) > 0) {
->> +			if (pci_request_selected_regions(pdev, 1 << bar, "vfio")) {
->> +				pci_warn(vdev->pdev, "Failed to reserve region %d\n", bar);
->> +				io = ERR_PTR(-EBUSY);
->> +			} else {
->> +				io = pci_iomap(pdev, bar, 0);
->> +				if (!io) {
->> +					pci_warn(vdev->pdev, "Failed to iomap region %d\n",
->> +						 bar);
->> +					io = ERR_PTR(-ENOMEM);
->> +				}
->> +			}
->> +		}
->> +		vdev->barmap[bar] = io;
->> +	}
->> +}
->> +
->>   /*
->>    * The pci-driver core runtime PM routines always save the device state
->>    * before going into suspended state. If the device is going into low power
->> @@ -568,6 +600,7 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
->>   	if (!vfio_vga_disabled() && vfio_pci_is_vga(pdev))
->>   		vdev->has_vga = true;
->>   
->> +	vfio_pci_core_map_bars(vdev);
->>   
->>   	return 0;
-> 
-> You're missing the barmap test in vfio_pci_core_disable() now, it's
-> still testing for NULL, which is (almost?) never true.  It needs to
-> convert to IS_ERR_OR_NULL().
+...
 
-Arrrrgh, yes it does, thank you.  (For the second time, the first being 
-the !IS_ERR() typo you caught in patch #3 :(  Thanks there also; it 
-slipped by my usual testing routine.)
+> > diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+> > index 883b6c1008fb..977598bff5e6 100644
+> > --- a/arch/arm64/kvm/nested.c
+> > +++ b/arch/arm64/kvm/nested.c
+> > @@ -1190,11 +1190,13 @@ void kvm_arch_flush_shadow_all(struct kvm *kvm)
+> >  {
+> >         int i;
+> >
+> > +       guard(write_lock)(&kvm->mmu_lock);
+> > +
+> >         for (i =3D 0; i < kvm->arch.nested_mmus_size; i++) {
+> >                 struct kvm_s2_mmu *mmu =3D &kvm->arch.nested_mmus[i];
+> >
+> >                 if (!WARN_ON(atomic_read(&mmu->refcnt)))
+> > -                       kvm_free_stage2_pgd(mmu);
+> > +                       kvm_free_stage2_pgd_locked(mmu);
+> >         }
+> >         kvfree(kvm->arch.nested_mmus);
+> >         kvm->arch.nested_mmus =3D NULL;
+> > --
+> > 2.54.0.545.g6539524ca2-goog
+>=20
+> And here is the diff that should fix this patch. (Sorry!!)
 
->> diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
->> index 4251ee03e146..f66ad3d96481 100644
->> --- a/drivers/vfio/pci/vfio_pci_rdwr.c
->> +++ b/drivers/vfio/pci/vfio_pci_rdwr.c
->> @@ -200,25 +200,20 @@ EXPORT_SYMBOL_GPL(vfio_pci_core_do_io_rw);
->>   
->>   int vfio_pci_core_setup_barmap(struct vfio_pci_core_device *vdev, int bar)
->>   {
->> -	struct pci_dev *pdev = vdev->pdev;
->> -	int ret;
->> -	void __iomem *io;
->> -
->> -	if (vdev->barmap[bar])
->> -		return 0;
->> -
->> -	ret = pci_request_selected_regions(pdev, 1 << bar, "vfio");
->> -	if (ret)
->> -		return ret;
->> -
->> -	io = pci_iomap(pdev, bar, 0);
->> -	if (!io) {
->> -		pci_release_selected_regions(pdev, 1 << bar);
->> -		return -ENOMEM;
->> -	}
->> +	/*
->> +	 * The barmap is set up in vfio_pci_core_enable().  Callers
->> +	 * use this function to check that the BAR resources are
->> +	 * requested or that the pci_iomap() was done.
->> +	 */
-> 
-> Looks like a function level comment to be placed above the function
-> definition.  TBH, the comment in the previous function could also be
-> pulled up as a function level comment.
-> 
->> +	if (bar < 0 || bar >= PCI_STD_NUM_BARS)
-> 
-> Maybe `if ((unsigned)bar >= PCI_STD_NUM_BARS)` but really author
-> preference here.
-> 
->> +		return -EINVAL;
->>   
->> -	vdev->barmap[bar] = io;
->> +	/* Did vfio_pci_core_map_bars() set it up yet? */
->> +	if (!vdev->barmap[bar])
->> +		return -ENODEV;
-> 
-> What hits this?  Should it be a WARN_ON_ONCE?  It would need to be a use
-> case that accesses barmap outside of the window between enable and
-> disable, where I think we're defining the contract that it's only valid
-> between those events.  Both this and the range check could move to the
-> iomap implemenation to keep the Fixes: patch reasonably small since
-> afaik they're not triggered.  The BAR range test could be WARN_ON_ONCE
-> as well, only driver bugs should hit it.  Thanks,
+There are more issues.  kvm->arch.mmu.split_page_cache can be freed by
+kvm_arch_commit_memory_region(), which holds slots_lock and slots_arch_lock=
+,
+but not mmu_lock.
 
-I've reduced the fix patch #1 to just an IS_ERR test (without the null 
-or range checks as you suggest).  And indeed WARN_ON_ONCE() is a good 
-idea as only tremendous mishaps would lead to these conditions 
-triggering (worth testing though).
+IMO, the handling of kvm->arch.mmu.split_page_cache should be reworked.  I =
+don't
+entirely get the motivation for aggressively freeing the cache.  The cache =
+will
+only be filled if KVM actually does eager page splitting, so it's not like =
+KVM is
+burning pages for setups that will never use the cache.
 
-Also ack on your suggestion on patch #2 to make the call to 
-nvgrace_gpu_wait_device_ready() more minimalist, and to order the 2x 
-fixes up front.  Posting v4 shortly, cheers!
-
-
-Thanks,
-
-
-Matt
-
+Maybe I'm underestimating how many pages arm64 needs in the worst case scen=
+ario?
+(I can't follow the math, too many macros).  But if KVM is configuring the =
+cache
+with a capacity that's _so_ high that the "wasted" memory is problematic, t=
+hen we
+probably should we revisit the capacity and algorithm.  E.g. if KVM is spli=
+tting
+from 1GiB =3D> 4KiB in a single pass (I can't tell if KVM does this on arm6=
+4), then
+we could break that into a 1GiB =3D> 2MiB =3D> 4KiB sequence.
