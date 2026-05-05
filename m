@@ -1,65 +1,66 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1A033EAEC
-	for <kvm@vger.kernel.org>; Tue,  5 May 2026 11:20:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 574D2386C37
+	for <kvm@vger.kernel.org>; Tue,  5 May 2026 11:20:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1777980021; cv=none; b=a7b6VdIRVNSF8udM93jlbDUh+4PaniQWcHWI431NU8dXjIanJAvjFYHOqGIG+kl6TN5VDnQgGBB1cBMW7rf4N9JsOy50rAAYVZHPGZIhVWU3du5w2xrBa1b+x1y0Vp7falIUAZD+8EuzIoWNoqnE0zbJHOWH+WsG1VkRbB/nv0g=
+	t=1777980022; cv=none; b=lITvmPxNP5gm/nWDVj5WYDJaMxZ17DeDSrUu3UFGZxaSGqpOojTqPN8yyYD3C8zhzqYsG0wLQh4sXngR1+OTUd7uNZSO483WwKYS18wO39pyAeyPF9F2hZV8ldyvOdiSlDdMrnMjxyiIyzkgFSNTWZPQuiEf6dDq4rOHjCN1xC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1777980021; c=relaxed/simple;
-	bh=eZjeF/JrB/30U5D5cBP2vYNLiOgE3qU8JE/X7+IwAnw=;
+	s=arc-20240116; t=1777980022; c=relaxed/simple;
+	bh=55DI8FfKu6fpW4BL+PHePqbhu75roU1vIZwKGVfGCF0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=N+BDVo25Wzk+QIEtWspI5IDHwkEPs721ZGLwPvD0nfI4CqnoqeGVJEv84FmxgAKPwr5H4hGgbbURAJT5GyDLGxixnWgHdyHr+vJ/gUYOskutlwGmyGi15jaNpB5R090Z0r7txHynvVGI7qofTu7ikEeVfFiIbd5c7UDpIBjTWtA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bL+Vb+ky; arc=none smtp.client-ip=209.85.128.53
+	 MIME-Version:Content-Type; b=sVBfw6bBnVtNx49N5myfyqeN06boWquA8+FFpcz+VrbBvndAnzV0sj/HVQw1s3kYfjm0sCTWbROssvTKJn2FnyOBoejSrOg5TjpDzMoj7l1EMyO34sSGozD7IDHIEgdCs9e5BIHwjIKbRPju/EfZ9nMJSvPCHL3eMRkLnmxuhKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xgpJkjPm; arc=none smtp.client-ip=209.85.221.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bL+Vb+ky"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-48d146705b4so10031435e9.3
-        for <kvm@vger.kernel.org>; Tue, 05 May 2026 04:20:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xgpJkjPm"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-43d7e23defbso2891193f8f.0
+        for <kvm@vger.kernel.org>; Tue, 05 May 2026 04:20:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1777980017; x=1778584817; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1777980019; x=1778584819; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DJazhEDPgKRcDHmZKYIM+jso6J9Jwwost9U+BImJW8o=;
-        b=bL+Vb+ky7SHcfjNRaPeAU1PaMovJtxy7XjtVsLB5YVCVf7+P92VN7BseJ6AVlmPak+
-         KZOJ72e51TMv//qyHTLg3VG2o9NTHSCONfIzTDYDk6L3QSPDxKySZRbne/BW45Mpi2LC
-         /ZwbmW9IdePT/kc7ledPwSWm+RoNPD8kxXz6MyFtFpIMgogAKI9eA8ewnn7gy2P3j5bW
-         d1dFZNDP9S2D8IxHMwZknmgE9f8EmX+OiJ8oY0FucyQE7iXO/iLUXG7DZn8Rnkao+y8n
-         OfW1apmGNlmHR0bIiCFfys+IT2SCE2bV0Ba/9yuDxUI0UNfuFkcTm1xEUkltw/IqhIbZ
-         exLg==
+        bh=HgMS5WqoQTNwMotfKg5CtyWMirTfACd/41i5C9cIqU0=;
+        b=xgpJkjPmFGhVJn3QVhUrIrDVXhS9BpwJv7Tx/EncoY9o5IvMUyGa6xwCXnBdFVpUi0
+         kIzjmb7mGvgC/TZMHbnVLCF8OLlp+L2dtrfzjGmKFRB1oRY1D23RiPDgt0uS68Zci4Q4
+         jojRLCI9PdCV8GZd6eHEsTissefxxsXjNC0Fp5Bvu1C921BMVx9fZemIgASYrv54EOcP
+         xNYMn1J0I7VKBeVOp2iGihlFz4h/k0nGGU+FkBkcZ+Mf5yGSOxU2MKY4CbVFDrU+A9m6
+         UPpx1Ao1URq1YDDcq/hSm4Z4oqXEeWmR2rbZ8zKzYfasUV67enKii+Cp4WSrJN9/RVZ9
+         bI7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1777980017; x=1778584817;
+        d=1e100.net; s=20251104; t=1777980019; x=1778584819;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=DJazhEDPgKRcDHmZKYIM+jso6J9Jwwost9U+BImJW8o=;
-        b=CPaqPAsuCziHN1skkKeZT90VgFP7g1b+SBnPu6b24xvxGxsQ2cegyROVQZSXIMmDXx
-         Z+mjRV21Ebrh/jG2VvUQcaoWmJLV1oW1m0S+y6vaIkJ/lkyZfL/M6b2e3OcBnXbwvtzL
-         PthfdSBYaG/AOOiOK4593g63uUJK5Wyxn4MzGsghMYmfxMmCX38qUNRXaDWFxCOy1BPB
-         /JlcdUA459SPcgYQfkwSoPrr6onFhyChm+igypqwk3YKA4KCOV1ZLrP2BrNbLNWepYcm
-         WgyvW+6dsiRFn5/qpfESXMrb6IUHVyrYvbbIN6fzBYXvPfuXGv0UqTw1LCw7X317jtnW
-         mVew==
-X-Forwarded-Encrypted: i=1; AFNElJ+tdT5U+hVkKwLmtLlAI1Q7ZzLzHf2tZX0IKwPLRAVrZWFvNnBgu4aYDlTVzvdUDj0Bm/o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzw3cohyVdgdhffzq4mJoYblBd74/RAOiNaiyT4yJbCVi0iEpU2
-	H4FNIOL23oGwlkNNOnmxpEZwJkQUGOwL24tuwRUeOgKUW9evnHOSjX/Cx4JtjOwEC+g=
-X-Gm-Gg: AeBDies7JNIXQWUG+uazzU9vZni25oEE54QBBP+FCxBjTImg+eurrIZGRh8ysqSY4Vq
-	Iz3BeFhtovqbiQ08I0X36AbMe2ejTMAg1do/E2XIMcMzCqbpsjGSFtXc+wrDAZS9QvU9De38KiR
-	cigk3GQlIU5TxqtBa37MOjSLGySEP1HRKdFUbSvHsbEFLPwLjQ06PkIXNW17d4JAr71sYm7OXSA
-	y4dY2c3lY4wNmyXZ4OZz0n2ELGUujTSJX9y/8KL3dG5LqBEEXLi7eXsiSt4jqfHYxjLWGm60+3Y
-	xMEyKydpBloih8J/3uReUJcjVOz4Si0IIts8Dfl30zM6LbqVXda5e/M+hoZ7/oa4J32Uia+LrJP
-	jC3Q/QnsLepeXFRQlie9NjD6Ayf6BNSPBkMKEnVR/athaQtA+tI0tGdFtBantjC5OiA74QUui/X
-	ra8UGLDM4gZB2TVkdNy9RskHF3gWyy5FRVmg==
-X-Received: by 2002:a05:600c:810a:b0:48a:592c:e655 with SMTP id 5b1f17b1804b1-48d18be5ab5mr41738105e9.17.1777980016924;
-        Tue, 05 May 2026 04:20:16 -0700 (PDT)
+        bh=HgMS5WqoQTNwMotfKg5CtyWMirTfACd/41i5C9cIqU0=;
+        b=QWMG6r/YC9QmeNlnpB6G4d9TEF94Vv2PBJt3pzKqzp/1DK6Ybm8wIzzuGURplyFWzC
+         SavsZEjtoowq+KAUeHplnDfNvfoP/Dliq9OgPXCNWD/c9xyY/lbq++bF5WCESMIEoKLK
+         RCCkWR88yBkvIudihoDOyBip/uzsrWWq1V4Iblge5if2NdBAmIG23Lew7HQGZ8cvd1vc
+         0Qag+QjexQy31h4uoWAwZoOGGTVvwRVHnSYz0hTzvpED9bI6dJ7huPaq0JYvE80j11Cs
+         onkrna3OtorqqBVR294QWe49GA+DW8DRl0uIWf/3Z8Rg4vceQTzcaJpZMzLOBOWxA5NG
+         1ANg==
+X-Forwarded-Encrypted: i=1; AFNElJ+xxSm+VWv8F3fB9E0XNA37osobghEY2rgYSvlxCCLMxwCy2FEp5s/DUYIZWb0UvS6thkU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKd/4DYvBY9PHvvZDStOBHiM6RsLwUu1HOq52NvNSscGpLHsqe
+	nlxjOGVXcoWQSv1Kwd8SKjuoZRo3bqXZbQa2ST4Kfwk6ZL4p3SK/KVF/vIfBF9oIhkNRV2cPiyP
+	N3PZ3oqw=
+X-Gm-Gg: AeBDievpCzktkCz6TabxXVzvrkC5X21mHCoZaF+b3mlL4P6jAplIrs/0qPSXsyBi4eV
+	6mdenPyPG9DBiJrpsozSfLorq+OnCFWzRphppJJfzI+aVHyMxO9DoU+O96jgSBbouev7v+aTF0x
+	UsUXjaPQf1lBlaRNyrc5lCuah0lU6NaEskOtaSyyH1bJ0029lFki+DVAGCBVEvJnHtqnaQjbtDI
+	RHQmD2roSQu1ts+6f7yyh12ZXQixTts+CKnCL9AY8+dtHQVgaNQozZeX7k3xQx/vA1O6hz1Ww1W
+	GGlEAEK/xd69UDKyepmJ+osl0LzqBi07+Wqj/65hAzavnQmh3uMbvzv0lhrfXRTSI6nUVPQyzD4
+	IDaGHhqkXJGABIDl+zi5GYj9xsR+2Mlt95OJMFVs5f4fx1Ug2igQ3WmthOmU2b6mn3D9rf4F5aP
+	LiBBN3wOd1mAYEPTyq01R+oWxLjBg4MbsDVw==
+X-Received: by 2002:a05:6000:61e:b0:43d:7b90:fa23 with SMTP id ffacd0b85a97d-44bb65df7c8mr22454198f8f.29.1777980018492;
+        Tue, 05 May 2026 04:20:18 -0700 (PDT)
 Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48d17ff41a0sm15578735e9.20.2026.05.05.04.20.15
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45054b02c5asm3784684f8f.19.2026.05.05.04.20.15
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
         Tue, 05 May 2026 04:20:15 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 6856F5F913;
+	by draig.lan (Postfix) with ESMTP id AF1185FA53;
 	Tue, 05 May 2026 12:20:14 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -72,9 +73,9 @@ Cc: Peter Maydell <peter.maydell@linaro.org>,
 	qemu-arm@nongnu.org,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v5 1/7] target/arm: teach arm_cpu_has_work about halting reasons
-Date: Tue,  5 May 2026 12:20:07 +0100
-Message-ID: <20260505112014.102993-2-alex.bennee@linaro.org>
+Subject: [PATCH v5 4/7] target/arm: implements SEV/SEVL for all modes
+Date: Tue,  5 May 2026 12:20:10 +0100
+Message-ID: <20260505112014.102993-5-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260505112014.102993-1-alex.bennee@linaro.org>
 References: <20260505112014.102993-1-alex.bennee@linaro.org>
@@ -87,241 +88,195 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-With the advent of WFE and WFI we need to pay closer attention to the
-reason why the vCPU may be sleeping to figure out if we should wake
-it up.
-
-Create env->halt_reason to track this and then re-order the tests so
-we:
-
-  - ignore everything is the vCPU is powered off
-  - wake up if the event_register is set and we were in a WFE
-  - otherwise any IRQ event does wake the vCPU up.
+Remove the restrictions that make this a M-profile only operation and
+enable the instructions for all Arm profiles.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
 
 ---
-v3
-  - move arm_set_cpu_power_state to internals.h
-  - drop excess brackets
-v5
-  - more arm_set_cpu_power_state cases
+v2
+  - fix alignment in a32.decode
+  - set bool directly, defend with QEMU_BUILD_BUG_ON
+  - s/instructions/profiles/
+  - share get_event_reg between translate/translate-a64
 ---
- target/arm/cpu.h           | 16 +++++++++++++++
- target/arm/internals.h     | 11 +++++++++++
- target/arm/arm-powerctl.c  |  6 +++---
- target/arm/cpu.c           | 40 +++++++++++++++++++++++++++-----------
- target/arm/kvm.c           |  5 +++--
- target/arm/machine.c       |  2 +-
- target/arm/tcg/op_helper.c |  3 +++
- 7 files changed, 66 insertions(+), 17 deletions(-)
+ target/arm/tcg/translate.h     | 18 ++++++++++++++++++
+ target/arm/tcg/a32.decode      |  5 ++---
+ target/arm/tcg/a64.decode      |  5 ++---
+ target/arm/tcg/t16.decode      |  4 +---
+ target/arm/tcg/t32.decode      |  4 +---
+ target/arm/tcg/op_helper.c     |  4 +---
+ target/arm/tcg/translate-a64.c | 17 +++++++++++++++++
+ target/arm/tcg/translate.c     | 13 ++++++++-----
+ 8 files changed, 50 insertions(+), 20 deletions(-)
 
-diff --git a/target/arm/cpu.h b/target/arm/cpu.h
-index be14a47c357..357359011cb 100644
---- a/target/arm/cpu.h
-+++ b/target/arm/cpu.h
-@@ -257,6 +257,19 @@ typedef enum ARMFPStatusFlavour {
- } ARMFPStatusFlavour;
- #define FPST_COUNT  10
+diff --git a/target/arm/tcg/translate.h b/target/arm/tcg/translate.h
+index 77fdc5f3a17..340848793d4 100644
+--- a/target/arm/tcg/translate.h
++++ b/target/arm/tcg/translate.h
+@@ -854,6 +854,24 @@ static inline void gen_restore_rmode(TCGv_i32 old, TCGv_ptr fpst)
+     gen_helper_set_rmode(old, old, fpst);
+ }
  
-+/**
-+ * ARMHaltReason - the reason we have entered halt state
++/*
++ * Event Register signalling.
 + *
-+ * To be able to correctly wake up via arm_cpu_has_work() we need to
-+ * track the reason we went to sleep.
++ * A bunch of activities trigger events, we just need to latch on to
++ * true. The event eventually gets consumed by WFE/WFET.
++ *
++ * user-mode treats these as NOPs.
 + */
-+typedef enum {
-+    NOT_HALTED = 0,
-+    HALT_PSCI,
-+    HALT_WFI,
-+    HALT_WFE
-+} ARMHaltReason;
 +
- typedef struct CPUArchState {
-     /* Regs for current mode.  */
-     uint32_t regs[16];
-@@ -760,6 +773,9 @@ typedef struct CPUArchState {
-     /* Optional fault info across tlb lookup. */
-     ARMMMUFaultInfo *tlb_fi;
- 
-+    /* Reason the CPU is halted */
-+    ARMHaltReason halt_reason;
-+
-     /*
-      * The event register is shared by all ARM profiles (A/R/M),
-      * so it is stored in the top-level CPU state.
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index a632584a4e0..4a1ea5465d7 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -1997,4 +1997,15 @@ bool arm_cpu_match_cpreg_mig_tolerance(ARMCPU *cpu, uint64_t kvmidx,
-                                        ARMCPRegMigToleranceType type);
- 
- 
-+/**
-+ * arm_set_cpu_power_state() - set power state synced with halt_reason
-+ */
-+static inline void arm_set_cpu_power_state(ARMCPU *cpu, ARMPSCIState state)
++static inline void gen_event_reg(void)
 +{
-+    CPUARMState *env = &cpu->env;
-+
-+    cpu->power_state = state;
-+    env->halt_reason = state == PSCI_OFF ? HALT_PSCI : NOT_HALTED;
++#ifndef CONFIG_USER_ONLY
++    TCGv_i32 set_event = tcg_constant_i32(1);
++    QEMU_BUILD_BUG_ON(sizeof_field(CPUARMState, event_register) != 1);
++    tcg_gen_st8_i32(set_event, tcg_env, offsetof(CPUARMState, event_register));
++#endif
 +}
 +
- #endif
-diff --git a/target/arm/arm-powerctl.c b/target/arm/arm-powerctl.c
-index a788376d1d3..a06be5cc997 100644
---- a/target/arm/arm-powerctl.c
-+++ b/target/arm/arm-powerctl.c
-@@ -78,7 +78,7 @@ static void arm_set_cpu_on_async_work(CPUState *target_cpu_state,
+ /*
+  * Helpers for implementing sets of trans_* functions.
+  * Defer the implementation of NAME to FUNC, with optional extra arguments.
+diff --git a/target/arm/tcg/a32.decode b/target/arm/tcg/a32.decode
+index f2ca4809495..547aa2b1490 100644
+--- a/target/arm/tcg/a32.decode
++++ b/target/arm/tcg/a32.decode
+@@ -192,9 +192,8 @@ SMULTT           .... 0001 0110 .... 0000 .... 1110 ....      @rd0mn
+       WFE        ---- 0011 0010 0000 1111 ---- 0000 0010
+       WFI        ---- 0011 0010 0000 1111 ---- 0000 0011
  
-     /* Finally set the power status */
-     assert(bql_locked());
--    target_cpu->power_state = PSCI_ON;
-+    arm_set_cpu_power_state(target_cpu, PSCI_ON);
- }
+-      # TODO: Implement SEV, SEVL; may help SMP performance.
+-      # SEV      ---- 0011 0010 0000 1111 ---- 0000 0100
+-      # SEVL     ---- 0011 0010 0000 1111 ---- 0000 0101
++      SEV        ---- 0011 0010 0000 1111 ---- 0000 0100
++      SEVL       ---- 0011 0010 0000 1111 ---- 0000 0101
  
- int arm_set_cpu_on(uint64_t cpuid, uint64_t entry, uint64_t context_id,
-@@ -186,7 +186,7 @@ static void arm_set_cpu_on_and_reset_async_work(CPUState *target_cpu_state,
+       ESB        ---- 0011 0010 0000 1111 ---- 0001 0000
+     ]
+diff --git a/target/arm/tcg/a64.decode b/target/arm/tcg/a64.decode
+index 01b1b3e38be..dcb3099dd5c 100644
+--- a/target/arm/tcg/a64.decode
++++ b/target/arm/tcg/a64.decode
+@@ -237,9 +237,8 @@ ERETA           1101011 0100 11111 00001 m:1 11111 11111 &reta  # ERETAA, ERETAB
+     YIELD       1101 0101 0000 0011 0010 0000 001 11111
+     WFE         1101 0101 0000 0011 0010 0000 010 11111
+     WFI         1101 0101 0000 0011 0010 0000 011 11111
+-    # We implement WFE to never block, so our SEV/SEVL are NOPs
+-    # SEV       1101 0101 0000 0011 0010 0000 100 11111
+-    # SEVL      1101 0101 0000 0011 0010 0000 101 11111
++    SEV         1101 0101 0000 0011 0010 0000 100 11111
++    SEVL        1101 0101 0000 0011 0010 0000 101 11111
+     # Our DGL is a NOP because we don't merge memory accesses anyway.
+     # DGL       1101 0101 0000 0011 0010 0000 110 11111
+     XPACLRI     1101 0101 0000 0011 0010 0000 111 11111
+diff --git a/target/arm/tcg/t16.decode b/target/arm/tcg/t16.decode
+index 778fbf16275..9a8f89538ac 100644
+--- a/target/arm/tcg/t16.decode
++++ b/target/arm/tcg/t16.decode
+@@ -228,10 +228,8 @@ REVSH           1011 1010 11 ... ...            @rdm
+     WFE         1011 1111 0010 0000
+     WFI         1011 1111 0011 0000
  
-     /* Finally set the power status */
-     assert(bql_locked());
--    target_cpu->power_state = PSCI_ON;
-+    arm_set_cpu_power_state(target_cpu, PSCI_ON);
- }
+-    # M-profile SEV is implemented.
+-    # TODO: Implement SEV for other profiles, and SEVL for all profiles; may help SMP performance.
+     SEV         1011 1111 0100 0000
+-    # SEVL      1011 1111 0101 0000
++    SEVL        1011 1111 0101 0000
  
- int arm_set_cpu_on_and_reset(uint64_t cpuid)
-@@ -239,7 +239,7 @@ static void arm_set_cpu_off_async_work(CPUState *target_cpu_state,
-     ARMCPU *target_cpu = ARM_CPU(target_cpu_state);
+     # The canonical nop has the second nibble as 0000, but the whole of the
+     # rest of the space is a reserved hint, behaves as nop.
+diff --git a/target/arm/tcg/t32.decode b/target/arm/tcg/t32.decode
+index 49b8d0037ec..8ae277fe112 100644
+--- a/target/arm/tcg/t32.decode
++++ b/target/arm/tcg/t32.decode
+@@ -369,10 +369,8 @@ CLZ              1111 1010 1011 ---- 1111 .... 1000 ....      @rdm
+         WFE      1111 0011 1010 1111 1000 0000 0000 0010
+         WFI      1111 0011 1010 1111 1000 0000 0000 0011
  
-     assert(bql_locked());
--    target_cpu->power_state = PSCI_OFF;
-+    arm_set_cpu_power_state(target_cpu, PSCI_OFF);
-     target_cpu_state->halted = 1;
-     target_cpu_state->exception_index = EXCP_HLT;
- }
-diff --git a/target/arm/cpu.c b/target/arm/cpu.c
-index 10feb639c4d..fb79981338c 100644
---- a/target/arm/cpu.c
-+++ b/target/arm/cpu.c
-@@ -144,18 +144,36 @@ static bool arm_cpu_has_work(CPUState *cs)
- {
-     ARMCPU *cpu = ARM_CPU(cs);
+-        # M-profile SEV is implemented.
+-        # TODO: Implement SEV for other profiles, and SEVL for all profiles; may help SMP performance.
+         SEV      1111 0011 1010 1111 1000 0000 0000 0100
+-        # SEVL   1111 0011 1010 1111 1000 0000 0000 0101
++        SEVL     1111 0011 1010 1111 1000 0000 0000 0101
  
--    if (arm_feature(&cpu->env, ARM_FEATURE_M)) {
--        if (cpu->env.event_register) {
--            return true;
--        }
-+    /*
-+     * Only another PSCI call can wake the CPU up in which case the
-+     * power_state would be set by arm_set_cpu_on_and_reset_async_work()
-+     */
-+    if (cpu->power_state == PSCI_OFF) {
-+        g_assert(cpu->env.halt_reason == HALT_PSCI);
-+        return false;
-+    }
-+
-+    /*
-+     * A wake-up event should only wake us if we are halted on a WFE
-+     */
-+    if (cpu->env.halt_reason == HALT_WFE && cpu->env.event_register) {
-+        cpu->env.halt_reason = NOT_HALTED;
-+        return true;
-+    }
-+
-+    /*
-+     * Otherwise pretty much any IRQ would wake us up
-+     */
-+    if (cpu_test_interrupt(cs,
-+                           CPU_INTERRUPT_FIQ | CPU_INTERRUPT_HARD
-+                           | CPU_INTERRUPT_NMI | CPU_INTERRUPT_VINMI | CPU_INTERRUPT_VFNMI
-+                           | CPU_INTERRUPT_VFIQ | CPU_INTERRUPT_VIRQ | CPU_INTERRUPT_VSERR
-+                           | CPU_INTERRUPT_EXITTB)) {
-+        cpu->env.halt_reason = NOT_HALTED;
-+        return true;
-     }
- 
--    return (cpu->power_state != PSCI_OFF)
--        && cpu_test_interrupt(cs,
--               CPU_INTERRUPT_FIQ | CPU_INTERRUPT_HARD
--               | CPU_INTERRUPT_NMI | CPU_INTERRUPT_VINMI | CPU_INTERRUPT_VFNMI
--               | CPU_INTERRUPT_VFIQ | CPU_INTERRUPT_VIRQ | CPU_INTERRUPT_VSERR
--               | CPU_INTERRUPT_EXITTB);
-+    return false;
- }
- #endif /* !CONFIG_USER_ONLY */
- 
-@@ -326,7 +344,7 @@ static void arm_cpu_reset_hold(Object *obj, ResetType type)
-     env->vfp.xregs[ARM_VFP_MVFR1] = cpu->isar.mvfr1;
-     env->vfp.xregs[ARM_VFP_MVFR2] = cpu->isar.mvfr2;
- 
--    cpu->power_state = cs->start_powered_off ? PSCI_OFF : PSCI_ON;
-+    arm_set_cpu_power_state(cpu, cs->start_powered_off ? PSCI_OFF : PSCI_ON);
- 
-     if (arm_feature(env, ARM_FEATURE_AARCH64)) {
-         /* 64 bit CPUs always start in 64 bit mode */
-diff --git a/target/arm/kvm.c b/target/arm/kvm.c
-index d4a68874b88..c08e4797b32 100644
---- a/target/arm/kvm.c
-+++ b/target/arm/kvm.c
-@@ -1143,11 +1143,12 @@ static int kvm_arm_sync_mpstate_to_qemu(ARMCPU *cpu)
-     if (cap_has_mp_state) {
-         struct kvm_mp_state mp_state;
-         int ret = kvm_vcpu_ioctl(CPU(cpu), KVM_GET_MP_STATE, &mp_state);
-+        ARMPSCIState state;
-         if (ret) {
-             return ret;
-         }
--        cpu->power_state = (mp_state.mp_state == KVM_MP_STATE_STOPPED) ?
--            PSCI_OFF : PSCI_ON;
-+        state = (mp_state.mp_state == KVM_MP_STATE_STOPPED) ? PSCI_OFF : PSCI_ON;
-+        arm_set_cpu_power_state(cpu, state);
-     }
-     return 0;
- }
-diff --git a/target/arm/machine.c b/target/arm/machine.c
-index 8dc766d3225..dbd39e7ba76 100644
---- a/target/arm/machine.c
-+++ b/target/arm/machine.c
-@@ -916,7 +916,7 @@ static int get_power(QEMUFile *f, void *opaque, size_t size,
- {
-     ARMCPU *cpu = opaque;
-     bool powered_off = qemu_get_byte(f);
--    cpu->power_state = powered_off ? PSCI_OFF : PSCI_ON;
-+    arm_set_cpu_power_state(cpu, powered_off ? PSCI_OFF : PSCI_ON);
-     return 0;
- }
- 
+         ESB      1111 0011 1010 1111 1000 0000 0001 0000
+       ]
 diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
-index e8f0996ed39..504526153a6 100644
+index 504526153a6..2b1fb1e059d 100644
 --- a/target/arm/tcg/op_helper.c
 +++ b/target/arm/tcg/op_helper.c
-@@ -402,6 +402,7 @@ void HELPER(wfi)(CPUARMState *env, uint32_t insn_len)
-                         target_el);
-     }
- 
-+    env->halt_reason = HALT_WFI;
-     cs->exception_index = EXCP_HLT;
-     cs->halted = 1;
-     cpu_loop_exit(cs);
-@@ -463,6 +464,7 @@ void HELPER(wfit)(CPUARMState *env, uint32_t rd)
-     } else {
-         timer_mod(cpu->wfxt_timer, nexttick);
-     }
-+    env->halt_reason = HALT_WFI;
-     cs->exception_index = EXCP_HLT;
-     cs->halted = 1;
-     cpu_loop_exit(cs);
-@@ -507,6 +509,7 @@ void HELPER(wfe)(CPUARMState *env)
-             return;
+@@ -476,9 +476,7 @@ void HELPER(sev)(CPUARMState *env)
+     CPUState *cs = env_cpu(env);
+     CPU_FOREACH(cs) {
+         ARMCPU *target_cpu = ARM_CPU(cs);
+-        if (arm_feature(&target_cpu->env, ARM_FEATURE_M)) {
+-            target_cpu->env.event_register = true;
+-        }
++        target_cpu->env.event_register = true;
+         if (!qemu_cpu_is_self(cs)) {
+             qemu_cpu_kick(cs);
          }
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index 25f0a806512..07014717316 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -2033,6 +2033,23 @@ static bool trans_WFI(DisasContext *s, arg_WFI *a)
+     return true;
+ }
  
-+        env->halt_reason = HALT_WFE;
-         cs->exception_index = EXCP_HLT;
-         cs->halted = 1;
-         cpu_loop_exit(cs);
++static bool trans_SEV(DisasContext *s, arg_SEV *a)
++{
++    /*
++     * SEV is a NOP for user-mode emulation.
++     */
++#ifndef CONFIG_USER_ONLY
++    gen_helper_sev(tcg_env);
++#endif
++    return true;
++}
++
++static bool trans_SEVL(DisasContext *s, arg_SEV *a)
++{
++    gen_event_reg();
++    return true;
++}
++
+ static bool trans_WFE(DisasContext *s, arg_WFI *a)
+ {
+     /*
+diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
+index ce427c5a3ca..50d0184e84e 100644
+--- a/target/arm/tcg/translate.c
++++ b/target/arm/tcg/translate.c
+@@ -3246,17 +3246,20 @@ static bool trans_YIELD(DisasContext *s, arg_YIELD *a)
+ static bool trans_SEV(DisasContext *s, arg_SEV *a)
+ {
+     /*
+-     * Currently SEV is a NOP for non-M-profile and in user-mode emulation.
+-     * For system-mode M-profile, it sets the event register.
++     * SEV is a NOP for user-mode emulation.
+      */
+ #ifndef CONFIG_USER_ONLY
+-    if (arm_dc_feature(s, ARM_FEATURE_M)) {
+-        gen_helper_sev(tcg_env);
+-    }
++    gen_helper_sev(tcg_env);
+ #endif
+     return true;
+ }
+ 
++static bool trans_SEVL(DisasContext *s, arg_SEV *a)
++{
++    gen_event_reg();
++    return true;
++}
++
+ static bool trans_WFE(DisasContext *s, arg_WFE *a)
+ {
+     /*
 -- 
 2.47.3
 
