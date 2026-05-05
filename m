@@ -1,215 +1,179 @@
-Received: from mail.zytor.com (terminus.zytor.com [198.137.202.136])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 922AE3DA5DE;
-	Tue,  5 May 2026 19:30:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD0AA47ECD9;
+	Tue,  5 May 2026 19:32:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778009463; cv=none; b=EmimqIOVG1vX6RnZlVhYj3NTkHeLYryL1thY0Uenv7vAiBxCsRwLyKOX+xPQ/9Iv5UVXD6oSfDZKgsgq2kTd/3OM5zhRw+6N68ZMWH0tqRzvGLuKcIx6xlrCFJOWO6E+iQ6zS3Y6Nn8abN4WS05ABCyyGOVyPO3y+vBjrL13KwY=
+	t=1778009558; cv=none; b=QIO/3E04u4KNs1GHc9iJN5hGx+voUrej7XGujVfcKPrPLgiIp3FIh+tLvcfEPXh/qDjF0hQJyH4amOIxuh3iPxjp7cJ3/mjoFsPyg9uGXcLbMEW4X0+fe5JT6x116Np+Si1j/ywGm/kxO50LD9Izftn2jk7CkP+/QLLSWw7LyVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778009463; c=relaxed/simple;
-	bh=t5lJnaYrrtK+BLYUn5z0WIOUm2B5o/rz/l0BYxthXmo=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=OyYkW7lhV4eq2E00YXxSz+4GZCOGbA8PiLXCxWsPNuGKGS7eB8+At2zpRtoxdngXFrYtogBfC+ASTvySsS/5wypBodqqe7soZmU+ao3IoBF4IO3cHrVWL+HDoqaxlt0XhzWN2LpzXPDBqz5jK3mb9TsecS3Ji0DPFmH7dqV1LJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com; spf=pass smtp.mailfrom=zytor.com; dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b=L5ID19q5; arc=none smtp.client-ip=198.137.202.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zytor.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zytor.com
+	s=arc-20240116; t=1778009558; c=relaxed/simple;
+	bh=jYq6AI/fPz5hho9LrkE9S3epnRL7OW/Cz2HIRTaUUl8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=l67dGF4DqZPlQPD5menxK3o7ZHIUosl2n2y9oo6NVmMgQlcOEttQAoxS7an+JmBEXf/myXi9Gh40H5KsWxLEiUJhcPTcB1rpnFB+cZ5OWBTSNC+UHlJOfqrwfW4/X0HC04SnHFnEk8ch4sV0cTRTY48PsVDw2p89WVeAgl09kYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SP9qputI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=zytor.com header.i=@zytor.com header.b="L5ID19q5"
-Received: from ehlo.thunderbird.net (c-76-133-66-138.hsd1.ca.comcast.net [76.133.66.138])
-	(authenticated bits=0)
-	by mail.zytor.com (8.18.1/8.17.1) with ESMTPSA id 645JTi8s1137479
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NO);
-	Tue, 5 May 2026 12:29:45 -0700
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.zytor.com 645JTi8s1137479
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=zytor.com;
-	s=2026042601; t=1778009386;
-	bh=0WCSuwfj1W768FCvM5VfHc16ZgHnSUwYc0Gvq6neuLI=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=L5ID19q52aKnwJ9P975VEI/vfNLiSaFxu2L1Iops3NXlqejwwhUaZV7oV3eDZ/cTh
-	 46cpWvpOx7aZconf7YrokP+Keg954OFqfJfL35dYVRdFifjgYGej63rYNG2IPVpIOh
-	 evChBncxTjPS+8W8PVqWUFkwVu+OtWJMD6OnZZeh2YGOZ8r4dLveOdqd+aAvyICoV0
-	 fJ6s4unSjniEIAbPlHbsZ85jaaEhaPXv+9MP60ZLJzQF5MAHPUaNnRW83V7m0B/nhr
-	 7ko/vPM7O7kLsCBkEMln1XizFWOG4FbN2bj4J/N2HUeC4F8Rhypv0+UKwFx+yIdQW0
-	 p/YafANatYSOw==
-Date: Tue, 05 May 2026 12:29:38 -0700
-From: "H. Peter Anvin" <hpa@zytor.com>
-To: Andrew Cooper <andrew.cooper3@citrix.com>,
-        Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>,
-        Xin Li <xin@zytor.com>
-CC: David Woodhouse <dwmw2@infradead.org>, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org, linux-doc@vger.kernel.org,
-        "Saenz Julienne, Nicolas" <nsaenz@amazon.es>, pbonzini@redhat.com,
-        seanjc@google.com, corbet@lwn.net, tglx@linutronix.de,
-        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-        x86@kernel.org, luto@kernel.org, peterz@infradead.org,
-        chao.gao@intel.com, hch@infradead.org, sohil.mehta@intel.com
-Subject: Re: [PATCH v9 00/22] Enable FRED with KVM VMX
-User-Agent: K-9 Mail for Android
-In-Reply-To: <f4cb5f8e-caf5-4513-9538-edaaea20de2d@citrix.com>
-References: <20251026201911.505204-1-xin@zytor.com> <7f93eb25874ddd13a1ad6e3c75785f11041c8b7f.camel@infradead.org> <DADE0E58-DD8A-4206-BF54-1DA87864117D@zytor.com> <afojoHJSlqqm2Ges@wieczorr-mobl1.localdomain> <f4cb5f8e-caf5-4513-9538-edaaea20de2d@citrix.com>
-Message-ID: <74DB6CAE-5ABD-4F2C-91AD-EEACE0F43020@zytor.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SP9qputI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EB6EC2BCC7;
+	Tue,  5 May 2026 19:32:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778009558;
+	bh=jYq6AI/fPz5hho9LrkE9S3epnRL7OW/Cz2HIRTaUUl8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=SP9qputIY2kKyWg4Y8J3nZ7D9qYNNdDwUn4etktKpjC2oe+DVEygCBT9hrxkdGTGQ
+	 AKWw5jb69W5H/eZXpm1A77rm9Afc1Rf6r5P/IAM6aXIHoS7Wm5PxN+3U8ZcOiJe61C
+	 PiPL0zG8lq9G0J7SUQp440UfvGsduzV1nBkbD0kerFXFGfyl2Vvi+wxzOBhr+CCJN+
+	 HdLx7MnSXmMdLQpnabQYJpjf74/BCxH5jANRz4RzmJJ6Tv7ksnHuCnamKnPe0zXtPT
+	 MzJzRyvC2KACAX4ZLjHLpUr/gHjarMik430X3Qpg+FcSHTGZBAc2JcnYMWYnhnsgge
+	 GsYQnTwqOwLeQ==
+Date: Tue, 5 May 2026 19:32:36 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 07/13] KVM: x86/pmu: Disable counters based on
+ Host-Only/Guest-Only bits in SVM
+Message-ID: <afpAw3UkbVMbXptv@google.com>
+References: <20260430202750.3924147-1-yosry@kernel.org>
+ <20260430202750.3924147-8-yosry@kernel.org>
+ <CAO9r8zMX=_zGm1Qmnd51=ca96aj=c+CkPfxzf9uinUGwxdP_Gg@mail.gmail.com>
+ <CAO9r8zNM-ECiiSKGS4Z7eM2S_06_6+fDO4mEeKiWFM-NFgHOUg@mail.gmail.com>
+ <afTnlv_cAWFfouqk@google.com>
+ <afoytsu6LzzpeTfc@google.com>
+ <CAO9r8zPqvBY0=O2L6DterLyN3nZrtOCs-mv_4hvZ+gt=bxRbDg@mail.gmail.com>
+ <afo7qB3hyrD_9Jme@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <afo7qB3hyrD_9Jme@google.com>
 
-On May 5, 2026 11:30:21 AM PDT, Andrew Cooper <andrew=2Ecooper3@citrix=2Eco=
-m> wrote:
->On 05/05/2026 7:04 pm, Maciej Wieczor-Retman wrote:
->> Hello!
->>
->>
->> On 2026-04-23 at 15:56:54 -0700, Xin Li wrote:
->>>> On Apr 23, 2026, at 7:35=E2=80=AFAM, David Woodhouse <dwmw2@infradead=
-=2Eorg> wrote:
->>>> Here's one to get you started (untested as I haven't found suitable
->>>> hardware to test it on)=2E
->>> Same here for me now :(
->> I ran David's selftest on a PTL laptop and ran into a couple of issues=
-=2E
->>
->>>> From bd465aabebcb124e09a26fe9f4c861354febabe4 Mon Sep 17 00:00:00 200=
-1
->>>> From: David Woodhouse <dwmw@amazon=2Eco=2Euk>
->>>> Date: Thu, 23 Apr 2026 15:20:11 +0100
->>>> Subject: [PATCH] KVM: selftests: Add FRED event type classification t=
-est
->>>>
->>>> +static void __used fred_handler(struct fred_stack_frame *frame)
->>>> +{
->>>> + fred_ss_value =3D frame->ss;
->>>> + fred_saved_rip =3D frame->rip;
->>>> + fred_handler_called =3D true;
->>>> +}
->> fred_handler() has problems getting linked:
->>
->> 	/usr/bin/ld: /home/maciej/linux/tools/testing/selftests/kvm/x86/int1_f=
-red_test=2Eo: in function `fred_entrypoint_kernel':
->> 	int1_fred_test=2Ec:(=2Etext+0x104): undefined reference to `fred_handl=
-er'
->> 	collect2: error: ld returned 1 exit status
->>
->> I guess the =2Epushsection below makes it a different translation unit?=
- Because
->> getting rid of the static keyword takes care of the problem for me=2E
->
->The problem is, being static, fred_handler() is eligible to be optimised
->away, because the compiler can't see that the asm() refers to it=2E
->
->Dropping static is the right fix to make=2E
->
->GCC 15 can now do references out of global asm() to identify the symbols
->they use, but it's going to be years before this capability is safe to
->use generally=2E
->
->>
->>>> +
->>>> +/*
->>>> + * FRED entry points=2E MSR_IA32_FRED_CONFIG points to the page-alig=
-ned
->>>> + * base=2E Ring 3 events enter at base+0, ring 0 events at base+0x10=
-0=2E
->>>> + * Since ICEBP executes in ring 0, the CPU enters at fred_entrypoint
->>>> + * + 256 =3D fred_entrypoint_kernel=2E
->>>> + */
->>>> +extern void fred_entrypoint(void);
->>>> +
->>>> +asm(
->>>> + "=2Epushsection =2Etext\n"
->>>> + "=2Eglobal fred_entrypoint\n"
->>>> + "=2Ebalign 4096\n"
->>>> +"fred_entrypoint:\n"
->>>> + /* Ring 3 entry =E2=80=94 unused, no userspace in this test */
->>>> + "ud2\n"
->>>> + /* Pad to +256 for ring 0 entry */
->>>> + "=2Eorg fred_entrypoint + 256, 0xcc\n"
->>>> +"fred_entrypoint_kernel:\n"
->>>> + "movq %rsp, %rdi\n"
->>>> + "call fred_handler\n"
->>>> + "=2Ebyte 0xf2, 0x0f, 0x01, 0xca\n" /* ERETS */
->>>> + "=2Epopsection\n"
->>>> +);
->>>> +
->> =2E=2E=2E
->>>> +
->>>> + /* Test 1: ICEBP (INT1) =E2=80=94 should be EVENT_TYPE_PRIV_SWEXC (=
-5) */
->>>> + fred_handler_called =3D false;
->>>> + asm volatile("lea 1f(%%rip), %0\n\t"
->>>> +     "=2Ebyte 0xf1\n\t"
->>>> +     "1:" : "=3Dr"(expected_rip) :: "memory");
->>>> + check_fred_event(expected_rip, DB_VECTOR, EVENT_TYPE_PRIV_SWEXC,
->>>> + "ICEBP");
->>>> + GUEST_SYNC(0);
->> The above event type test seems to fail and return 0x3 instead of 0x5:
->>
->> Random seed: 0x6b8b4567
->> Testing FRED event types with EPT fault on stack
->> =3D=3D=3D=3D Test Assertion Failure =3D=3D=3D=3D
->>   x86/int1_fred_test=2Ec:120: event_type =3D=3D expected_type
->>   pid=3D16646 tid=3D16646 errno=3D4 - Interrupted system call
->>      1  0x0000000000413349: assert_on_unhandled_exception at processor=
-=2Ec:659
->>      2  0x0000000000407d36: _vcpu_run at kvm_util=2Ec:1703
->>      3   (inlined by) vcpu_run at kvm_util=2Ec:1714
->>      4  0x0000000000403104: main at int1_fred_test=2Ec:207
->>      5  0x00007ff8d4c2a1c9: ?? ??:0
->>      6  0x00007ff8d4c2a28a: ?? ??:0
->>      7  0x0000000000403314: _start at ??:?
->>   0x3 !=3D 0x5 (event_type !=3D expected_type)
->>
->> after a little digging I think the issue could be this in arch/x86/kvm/=
-x86=2Eh:
->>
->> 	static inline bool kvm_exception_is_soft(unsigned int nr)
->> 	{
->> 		return (nr =3D=3D BP_VECTOR) || (nr =3D=3D OF_VECTOR);
->> 	}
->>
->> Since ICEBP(INT1) results in a DB_VECTOR it's not take into account and=
- the
->> check fails=2E Then in vmx_inject_exception() INTR_TYPE_HARD_EXCEPTION =
-is picked
->> which is 0x3 when decoded=2E
->
->That's a real bug then=2E
->
->> I think you'd need to add another check in vmx_inject_exception() to ha=
-ndle that
->> DB_VECTOR too=2E Simply changing the event type if the vector is of DB_=
-VECTOR type
->> fixes that problem but then the selftest fails in other places (assert
->> fred_handler_called and saved rip vs expected_rip)=2E I didn't yet have=
- the time
->> to figure out what could be wrong there, maybe you would have more of a=
-n idea :)
->
->#DB is intercepted to mitigate CVE-2015-8104 (systemwide DoS)=2E=C2=A0 Bu=
-t, to
->start with, check that the test passes when #DB is not intercepted=2E=C2=
-=A0
->That's the basecase for architectural behaviour=2E
->
->When #DB is intercepted, the type in EXIT_INTR_INFO needs preserving and
->forwarding into ENTRY_INTR_INFO, because that is what distinguishes an
->ICEBP #DB from other #DBs=2E=C2=A0 There's no way of recovering this deta=
-il
->after the fact=2E
->
->On the injection side, some #DB's are traps and some are faults=2E=C2=A0 =
-ICEBP
->will have a fault-like VMExit but need trap semantics, so like other
->soft interrupts, need INSN_LEN adding to %rip=2E=C2=A0 But, type=3D3 #DBs=
- need to
->leave %rip unchanged=2E
->
->~Andrew
+> > Did you see my other replies and code snippet tracking disabling
+> > reasons? I think the code snippet would still work, I just need to
+> > move the pmc_is_nested_disabled() check into pmc_is_locally_enabled().
+> 
+> I did.  IMO, all of what you proposed is an optimization to avoid the "costly"
+> checks at the time of pmc_is_locally_enabled().  In quotes because I don't think
+> the _overall_ cost is actually all that high.  pmc_is_locally_enabled() is only
+> called in relatively slow paths, and my guess is the CALL+RET (or untrained RET,
+> ugh) is probably more expensive than the logic itself.
+> 
+> The very nice side effect of incorporating the logic into pmc_is_locally_enabled()
+> is that I _think_ we can drop kvm_pmu_ops.reprogram_counters(), because
+> amd_mediated_pmu_handle_host_guest_bits() will instead be:
+> 
+>   static bool amd_pmc_is_locally_disabled(struct kvm_pmc *pmc)
+>   {
+> 	struct kvm_pmu *pmu = pmc_to_pmu(pmc);
+> 	struct kvm_vcpu *vcpu = pmu_to_vcpu(pmu);
+> 	u64 host_guest_bits;
+> 
+> 	/* Common code is supposed to check the common enable bit. */
+> 	if (WARN_ON_ONCE(!(pmc->eventsel & ARCH_PERFMON_EVENTSEL_ENABLE)))
+> 		return false;
+> 
+> 	/*
+> 	 * If both bits are cleared, always keep the counter enabled. Otherwise,
+> 	 * counter enablement needs to be re-evaluated on every nested
+> 	 * transition (and EFER.SVME change).
+> 	 */
+> 	host_guest_bits = pmc->eventsel & AMD64_EVENTSEL_HOST_GUEST_MASK;
+> 	if (!host_guest_bits)
+> 		return true;
+> 
+> 	/* If either bit is set and EFER.SVME=0, the counter is disabled. */
+> 	if (!(vcpu->arch.efer & EFER_SVME))
+> 		return false;
+> 
+> 	if (host_guest_bits == AMD64_EVENTSEL_HOST_GUEST_MASK)
+> 		return true;
+> 
+> 	return !!(host_guest_bits & AMD64_EVENTSEL_GUESTONLY) == is_guest_mode(vcpu);
+>   }
 
-Also, a function that is accessed only from assembly should have the __vis=
-ible annotation=2E
+If we do this and drop kvm_pmu_ops.reprogram_counters(), we still need
+somewhere to actually clear ARCH_PERFMON_EVENTSEL_ENABLE in eventsel_hw.
+
+What if we call kvm_pmu_ops.pmc_is_locally_disabled() at the top of
+reprogram_counter(), cache the result, and use that for eventsel_hw
+modification and in pmc_is_locally_enabled()?
+
+We'd also probably want to rename it. I would honeslty just use 'nested'
+instead of 'locally_disabled' and 'mode_specific_enables' as that's the
+only current user.
+
+Something like this with your proposed amd_pmc_is_locally_disabled()
+above, which is similar to the kvm_pmu_ops.mediated_reprogram_counter()
+implementation in v4 except that the vendor-specific callback is more
+targeted:
+
+static void pmc_check_nested_disabled(struct kvm_pmc *pmc)
+{
+	if (!(pmc->eventsel & ARCH_PERFMON_EVENTSEL_ENABLE))
+		return;
+	
+	if (!test_bit(pmc->idx, &pmu->pmc_has_nested_enables))
+		return;
+
+	pmc->is_nested_disabled = kvm_pmu_call(pmc_is_nested_disabled)(pmc);
+	if (!pmc->is_nested_disabled)
+		pmc->eventsel_hw &= ~ARCH_PERFMON_EVENTSEL_ENABLE;
+}
+
+static int reprogram_counter(struct kvm_pmc *pmc)
+{
+	...
+
+	if (kvm_vcpu_has_mediated_pmu(pmu_to_vcpu(pmu))) {
+		kvm_mediated_pmu_refresh_event_filter(pmc);
+		pmc_check_nested_disabled(pmc);
+		return 0;
+	}
+	...
+}
+
+Then pmc_is_locally_enabled() also checks pmc->is_nested_disabled. This
+completely avoids the extra calls in pmc_is_locally_enabled() and
+provides a place for us to actually clear ARCH_PERFMON_EVENTSEL_ENABLE.
+
+> 
+> reprogram_pmcs_on_nested_transitions would need to be handled somewhere else, but
+> (a) that's probably the correct approach anyways (hook writes to the eventsel)
+> and (b) is _also_ an optimization, because KVM can start with the naive approach
+> of always reprogramming counters on nested transitions (if guest/host bits are
+> supported).
+> 
+> And if we're clever, we can optimize pmc_is_locally_enabled() by putting
+> reprogram_pmcs_on_nested_transitions in kvm_pmu, e.g. as something like
+> pmc_has_mode_specific_enables, and then doing:
+
+Yeah I more-or-less incorporated this above. pmu->pmc_has_nested_enables
+would be set for a counter in amd_pmu_set_msr() if either bits is set.
+Then, svm_pmu_handle_nested_transition() (in the next patch) will use
+pmu->pmc_has_nested_enables instead of
+svm->nested.reprogram_pmcs_on_nested_transitions.
+
+WDYT? This is essentially the v4 approach except that the per-counter
+callback now returns a boolean that we cache and reuse in
+pmc_is_locally_enabled(). We have come full circle with the per-counter
+callback vs. single callback for all :)
+
+Also, would you rather I send a new version with everything, or do you
+want to pick up some of the patches in this version independently?
+
+> 
+> 	if (!(pmc->eventsel & ARCH_PERFMON_EVENTSEL_ENABLE))
+> 		return false;
+> 
+> 	if (!test_bit(pmc->idx, &pmu->pmc_has_mode_specific_enables))
+> 		return true;
+> 
+> 	return !kvm_pmu_call(pmc_is_locally_disabled(pmc));
+> 
