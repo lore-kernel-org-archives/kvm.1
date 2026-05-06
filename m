@@ -1,154 +1,242 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC8A8329C6B
-	for <kvm@vger.kernel.org>; Wed,  6 May 2026 22:27:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778106464; cv=pass; b=X9YibO1xvcjIDaXeASshFJTcBPTKaZgeIV+gV0GRTxzxg58ojWrc8RnhefvKLXfuqCF1qJMVvxBTJwBf5xprBxfhsMXcw0iSvwztK8YGs6S2jbXz1ynvvzOdZty6HS9iYTyULfxGPOvQUlPhx6TtUL4prKKJxDDYtRlbhWLTY2I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778106464; c=relaxed/simple;
-	bh=OFxur1GhFZVWQMFt33G6qqBEblfHMDr8zmYAB9sah6Y=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nSoXIir87yxHmQblDBaWEDDxYWra6NcAPZjHzzpOOqMyRePzwaO2oEi2d7tzj6kxE8ENepU46/vPCm3K1cDXvbO255/QspZW2bGLGg8rxs4y435rHUb/ksP4XcVTQ05oY5lRB/OHy0zWSx1cPPiy+wj3U+CMjStEL8RuBsjtA2Q=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tiHvC/t3; arc=pass smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DAF136212C
+	for <kvm@vger.kernel.org>; Wed,  6 May 2026 22:28:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778106492; cv=none; b=C2nEN1Uf5VNxJTQWjDHVzDftScAMUHgZd9thgoSRR9/cqTMsAtMI2ru1OcKAjU6zQuDLLg22evbB4lZPi9jwxoW+z5WntpArXYVMRmAZxswkRarYuryigr1IRkR5HVI/F7tEmj8L3GslcOjowBIoE8QWmUN9tcJbL++EP0T1JCE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778106492; c=relaxed/simple;
+	bh=rtVwk1ax2o4nJ4GXyKTejUp5AmKhUCVDmo4YRJ3ERHs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=sMrXRIE9wgCS7gJ5CMRLvHmYYyrdW6B0ZMCKEw4a/tz+wFbWDqWIAP3OdSaHSHgqhz7HG/95RXVri9OZfcwXMQBWZjlFrDM7tF0A9hh+KLDmflG3RRMmqVU8lUo9YUn91uvs2f3GjWAjQQFV0EzBhkKeULOZcR3JN/jDAwJ1xuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MUjfmNVI; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=T7JIkOfA; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tiHvC/t3"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-67bf769704eso2013a12.0
-        for <kvm@vger.kernel.org>; Wed, 06 May 2026 15:27:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778106460; cv=none;
-        d=google.com; s=arc-20240605;
-        b=PxqFhUt4oB3knZvh24T9htuToVN0S/GYQj16qQTxWv3WXBOUaaK0XNZPEprKmKRHMT
-         qDq5ffVG2KKPzziyDkXMGd7euavq0PzqorTrU82j7Qys7X6fNYxnuKLFUdpLqm8MSZAM
-         osWoEt5r5/OzOTxtenqvhMQIaseRvwSNpxenGK+DVT44fD18RBpmhgwzbKLpCo9LYawH
-         v3jKhRagVgs32ZUYTJGAL2W9Y95miP6+3qZNPoX+6y/AAa4sMwvDW9vWFEPSLR1yDz8C
-         BLEtavP1+hrAgAkH+nqHB4MJRY1yRCRwBgDsZb4aSMJ5ZMSLpNfnSn1xjLoM7vST3z9N
-         X+4w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=v2IrwpP7KxqGE27hDJZDtz9djCHbFpjKlwdFeLloPxI=;
-        fh=Nj1RtEOlU3PsZ4t72tPB7a6wfs/LrqYGCBBT+VSdjvs=;
-        b=GQh/kZalFnZZLH12V11YDEIZnVjj8WxGLBiqIKudNVOf0TrY/oknUpkzvxlefijax4
-         kcYMvKRUwDUL4/qMPDESF4f7aiZjT6F9AEPFqYW4skb5STHKYQ75J9StPjec9OeT+hk4
-         8hgyB4wVNakcqNJtA2iGRiYqV/9e+wCsgOHNgVlEKxaP/zdMT7q1XoDU7+2H3USK+Lfz
-         HSyiJOShlZpWHZ2Raw5LAcCX77xfrvvuX3nm7fSMH4KZ+QT6K9tLLa36RiZklmlKqkrs
-         31I6cYgVcTG3RkI5JDabDVNb3j9nL44mlgHcy8lpBKOkozY3/9ZnKUssqhPLmjeK6cfH
-         7xNg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MUjfmNVI";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="T7JIkOfA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778106490;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=t8i9O8vJ9NfXLrrn+cYRMOYCqXIwE6jcbZ+nzxxFXS0=;
+	b=MUjfmNVII8pyesxkNhTQ+aYy8V7AIgF+SkfNbZXDw0DiOWopUsR9+kjQtwCg6zKpiBpc6K
+	bI1SX+9HLspDdk0JXPWQKJeruKV5FTJSYbwaLSG1Ek93pEjKlmj26bBKuhXb1QlvlZ+gdz
+	i5nVMmC7GzQv1LcnejeGQAezQR33FiM=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-462-7GjYfRhpPQ-mi-Nnt00i0w-1; Wed, 06 May 2026 18:28:08 -0400
+X-MC-Unique: 7GjYfRhpPQ-mi-Nnt00i0w-1
+X-Mimecast-MFC-AGG-ID: 7GjYfRhpPQ-mi-Nnt00i0w_1778106487
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-44a122a5128so136802f8f.0
+        for <kvm@vger.kernel.org>; Wed, 06 May 2026 15:28:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778106460; x=1778711260; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=v2IrwpP7KxqGE27hDJZDtz9djCHbFpjKlwdFeLloPxI=;
-        b=tiHvC/t3XQozQPRvB/CO7suDzXnEARgeC4pkCnSDEI9tdRHllr6HzEoBWBp+mdZW+P
-         C0HXNXNXGZxv7XdgocEOZUFKpgglbIOh19WJOUrYuET8MEQDA6AkwEMGyxyZlZmID3FH
-         jMZ6ivbc/P0KS1bgBje73RGkvsqDc4qntB4dPDTq6IxCBdyoTmOgtOPY27hhhn0tuXwz
-         QSRPNXjQ+0aR/bEmY4e0DN7Oe3v/RWOVvF5am8kGJ2jlqdFNeg38onjxWgYu/D8sDAFe
-         CombWiLuxDv2HB+xNH5ViyYEn+SmYXS3dEfDBsEfSivNkHZc1i/p+YeCCjjoid7d36Z+
-         +QZw==
+        d=redhat.com; s=google; t=1778106487; x=1778711287; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=t8i9O8vJ9NfXLrrn+cYRMOYCqXIwE6jcbZ+nzxxFXS0=;
+        b=T7JIkOfA6LbehnvBkk0609D5QbeP0HnzceqdAojuDwtCVjAcVhTFLIVvYYQu400PFJ
+         iT6iTcvEK+l1WVKMU7J+LpSLVdWwTFYCO59KthyikifuNBCeKAKh6oIsWmLvw/scTFcv
+         f2v31Ds7CwBq+6cKpkhV40tsSNLLuKtBX6aCs5Ka9cTE8bRt5M8aN2kUFNAk6WoI40IP
+         XaNNH2A2w2RFnkJGs363Bxla86nrcpQr1Hhgn0Z5JOy87HCYkbBwddikygWd9lc4b9I7
+         DrN+pFOOVLsWnX/Zl8Qb8Qw1fBXgqgwXuGJ3oSqY/btk0zXApynMWU6zXELRvxMAso4p
+         OghQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778106460; x=1778711260;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=v2IrwpP7KxqGE27hDJZDtz9djCHbFpjKlwdFeLloPxI=;
-        b=mpwPYqrxnpbCqtjn8NbMYHC5IbQiVa2eQWHlaMeh02EBIvHKJ/z6dR52q6jk230WXo
-         vp1229Fn/V7Wd7D1Fn9i7IlfBAbiCdETZmX7qk+G1WpgN7+u3JF9+ytqVjqASNiJdgse
-         dDIkY/1aIxwOoBDVYeUM0ejdUA3PYn3ZpL24fec+ScUdMxwyziw7hRMrwzAQZINrz0T7
-         OfhvrxbGSBOcJ5/l3IahKYcct/l5vKV48bc2jXxQB4r4/k+RkFHJOu5OQ9yDizIfs7SL
-         L8yzn9/os7xqS2/HJMei0R8rfJcWJfUTpdaB8RbE8tDqoFVocVN/DngaLJmiwtXwHeZV
-         1VSA==
-X-Forwarded-Encrypted: i=1; AFNElJ9WO7pYBq5vG4HGZs5z1wMRMWlQIfwXKsLdIGlOcpxB9T8iw9YnbD+g/ZhLrzSOAhG/W8s=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzt/NnRfAuvl0PeE4YTNx0sHCyxh1ikXpELVNDqb9RI66JMVw9P
-	DbFOcJEgQT00X28mgov+TrQX6HJmPNNHhOsAnHQcITcyttoZLHsg1Hne40FZ8LCkEZVfzO6LLZI
-	NVx7iV+Qxa+UeoprwoP7DFSPBs5KycMHJaAduZyfPalY0Q8sJXeWOKk4z
-X-Gm-Gg: AeBDietlP9SGg56DO+TIpGufN3V+IOCSIWkIqEBfUncIlq6wmP3zwKCQiY1zMAx+ITy
-	JvHqjmsQdqyeIS1QzlURThn/NKbBJC0T08vW3XZ64R+vECHx32eKwWz9bTtEud+PN6g/u2ecyP3
-	U6JPaIkKyLZRifuaPPkSaUqFBBiRzN3CzJRaOJrt+avY7Q4ZaXK/pM+VuK4nqJhsV+QKLdvuJn0
-	aywzsQTrP3DxbxhGTrHgUsZvZbM47u5eAvxh229F/xMsosGHkZp5ioXhtUvmx7MMrv5Mt/Iw1G7
-	nGD+8ib0nTo7F0zkMyRzWWcOK9Mw
-X-Received: by 2002:aa7:d906:0:b0:678:a5c3:4d12 with SMTP id
- 4fb4d7f45d1cf-67d63d7e3a1mr70226a12.3.1778106459919; Wed, 06 May 2026
- 15:27:39 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1778106487; x=1778711287;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=t8i9O8vJ9NfXLrrn+cYRMOYCqXIwE6jcbZ+nzxxFXS0=;
+        b=YUj/0V3orbXCvqqsQZh1XZbojQ/M4aJzCd4+Ppl9mY4KUwzcc7CL/O6jRGA6PlL76P
+         9cBBGvz4MnJV7CrgmIDtSoNMAiE1aNhf/AaOp0dy9q1hR6S5A+FXXJp9yiiMXRGJP7FE
+         Sq6ZE5HDTMiLPm9WpPYMsBKkELzH5uaNNtCnFmsbG/QsSX7w1EPlLRf7DmEisRAwbgJ/
+         epBbQo798fTMeDrKMrnoAhY+Bm+Z4JuMcwmLsRhLGBeSSWk+7RrL38zqUctnFVdeNZCf
+         yGoUpg6HeIQH5ZDXN9xnMJkPaI4nCvG+khVUDnoNDIZEjYzRuwxFORS9zWvyxoLFU3Yr
+         FKpg==
+X-Forwarded-Encrypted: i=1; AFNElJ/MzchsOtzaWYd1jHVGUrDWWl4jlz12u8q7idwgWkbyAX2KgJzwPPTaJB3kOjt3hs9VK5w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YybAy7T5/SVI9euYyDzSNL7pOrvPlgC1NiVpekH+kQymesZnpIn
+	JfLqht9aBgeYqRuHS6WqNC3B1KZ9zEVe8ns+4YxtUvttoUW+fwWStNEWBeTPHB9K+oVei5IF5tG
+	vcj1OJ0/uH6pVFHwBx/20IhmUjUwcoKRlm2Jfclw60jUT1oLuDDZ2/Q==
+X-Gm-Gg: AeBDies382eM7H2ZkGXl+NbAgq4D+eeaop3wc7G81xorxug52lo5wx4YjfI12EkSiJ0
+	venvdLH7Y1WtsxVibbUkhByKmIKqql3jqCama+tAVRy6S5FXaCKlFCnJ0z9vW+Eft9ZfW0FW4/Z
+	YOy2yZYYnmRcTQmPA1Xp0eZ+O9GYhp8p5kILOABLx9/t817m5s8Kr/RBictu6JveJvpwt+0U8oN
+	Dd+RZ0BVL5f9/JmWeGE+rEh3cE0XdT+D0kMzDLjrrRiLuiJIyfHe+kR1+qNL3rTP7lQJ9OcB3bI
+	mruF0sSfJtHwXIjoi84lvjLSJwQUm63AOgfjB9xzO8XpNKWmsic4LyRN6EP4hlU0pqYLCluIvP9
+	hXMVu1bVqrdhmbkCemhJ0Ze+UeoPe/6ZuHz63cqdXHkX5Ws5e+ws=
+X-Received: by 2002:a05:600c:8908:b0:48a:5821:5ff2 with SMTP id 5b1f17b1804b1-48e51f24340mr59778975e9.8.1778106487228;
+        Wed, 06 May 2026 15:28:07 -0700 (PDT)
+X-Received: by 2002:a05:600c:8908:b0:48a:5821:5ff2 with SMTP id 5b1f17b1804b1-48e51f24340mr59778725e9.8.1778106486686;
+        Wed, 06 May 2026 15:28:06 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e538aaa0fsm97231005e9.7.2026.05.06.15.28.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 May 2026 15:28:06 -0700 (PDT)
+Date: Wed, 6 May 2026 18:28:02 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Simon Schippers <simon.schippers@tu-dortmund.de>
+Cc: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, eperezma@redhat.com,
+	leiyang@redhat.com, stephen@networkplumber.org, jon@nutanix.com,
+	tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev
+Subject: Re: [PATCH net-next v10 4/4] tun/tap & vhost-net: avoid ptr_ring
+ tail-drop when a qdisc is present
+Message-ID: <20260506181909-mutt-send-email-mst@kernel.org>
+References: <20260506141033.180450-1-simon.schippers@tu-dortmund.de>
+ <20260506141033.180450-5-simon.schippers@tu-dortmund.de>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260506213514.2781948-1-seanjc@google.com>
-In-Reply-To: <20260506213514.2781948-1-seanjc@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Wed, 6 May 2026 15:27:28 -0700
-X-Gm-Features: AVHnY4Kp9F2JtfnRKYqHAH_8oMPl71G55GiKunMe6DyoNiaxJBPhrLQ9_4FsIMg
-Message-ID: <CALMp9eSArSjiUq1CXxzHRRtaJX5u_nBXVJLhLnjb+UiX2ww3mg@mail.gmail.com>
-Subject: Re: [PATCH v2] KVM: x86: Swap the dst and src operand for MOVNTDQA
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Josh Eads <josheads@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260506141033.180450-5-simon.schippers@tu-dortmund.de>
 
-On Wed, May 6, 2026 at 2:35=E2=80=AFPM Sean Christopherson <seanjc@google.c=
-om> wrote:
->
-> Swap the MOVNTDQA operands, as MOVNTDQA does NOT in fact have "the same
-> characteristics as 0F E7 (MOVNTDQ)"; MOVNTDQA loads from memory and store=
-s
-> to registers, while MOVNTDQ loads from registers and stores to memory.
->
-> Per the SDM:
->
->  MOVNTDQ - Move packed integer values in xmm1 to m128 using non-temporal
->            hint.
->
->  MOVNTDQA - Move double quadword from m128 to xmm1 using non-temporal hin=
-t
->             if WC memory type.
->
-> Reported-by: Josh Eads <josheads@google.com>
-> Fixes: c57d9bafbd0b ("KVM: x86: Add support for emulating MOVNTDQA")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+On Wed, May 06, 2026 at 04:10:33PM +0200, Simon Schippers wrote:
+> This commit prevents tail-drop when a qdisc is present and the ptr_ring
+> becomes full. Once an entry is successfully produced and the ptr_ring
+> reaches capacity, the netdev queue is stopped instead of dropping
+> subsequent packets. If no qdisc is present, the previous tail-drop
+> behavior is preserved.
+> 
+> If producing an entry fails anyways due to a race, tun_net_xmit() drops
+> the packet. Such races are expected because LLTX is enabled and the
+> transmit path operates without the usual locking.
+> 
+> The __tun_wake_queue() function of the consumer races with the producer
+> for waking/stopping the netdev queue, which could result in a stalled
+> queue. Therefore, an smp_mb__after_atomic() is introduced that pairs
+> with the smp_mb() of the consumer. It follows the principle of store
+> buffering described in tools/memory-model/Documentation/recipes.txt:
+> 
+> - The producer in tun_net_xmit() first sets __QUEUE_STATE_DRV_XOFF,
+>   followed by an smp_mb__after_atomic() (= smp_mb()), and then reads the
+>   ring with __ptr_ring_produce_peek().
+> 
+> - The consumer in __tun_wake_queue() first writes zero to the ring in
+>   __ptr_ring_consume(), followed by an smp_mb(), and then reads the queue
+>   status with netif_tx_queue_stopped().
+> 
+> => Following the aforementioned principle, it is impossible for the
+>    producer to see a full ring (and therefore not wake the queue on the
+>    re-check) while the consumer simultaneously fails to see a stopped
+>    queue (and therefore also does not wake it).
+> 
+> Benchmarks:
+> The benchmarks show a slight regression in raw transmission performance
+> when using two sending threads. Packet loss also occurs only in the
+> two-thread sending case; no packet loss was observed with a single
+> sending thread.
+> 
+> Test setup:
+> AMD Ryzen 5 5600X at 4.3 GHz, 3200 MHz RAM, isolated QEMU threads;
+> Average over 50 runs @ 100,000,000 packets. SRSO and spectre v2
+> mitigations disabled.
+> 
+> Note for tap+vhost-net:
+> XDP drop program active in VM -> ~2.5x faster; slower for tap due to
+> more syscalls (high utilization of entry_SYSRETQ_unsafe_stack in perf)
+> 
+> +--------------------------+--------------+----------------+----------+
+> | 1 thread                 | Stock        | Patched with   | diff     |
+> | sending                  |              | fq_codel qdisc |          |
+> +------------+-------------+--------------+----------------+----------+
+> | TAP        | Received    | 1.132 Mpps   | 1.133 Mpps     | +0.1%    |
+> |            +-------------+--------------+----------------+----------+
+> |            | Lost/s      | 3.765 Mpps   | 0 pps          |          |
+> +------------+-------------+--------------+----------------+----------+
+> | TAP        | Received    | 3.857 Mpps   | 3.905 Mpps     | +1.2%    |
+> |            +-------------+--------------+----------------+----------+
+> | +vhost-net | Lost/s      | 0.802 Mpps   | 0 pps          |          |
+> +------------+-------------+--------------+----------------+----------+
+> 
+> +--------------------------+--------------+----------------+----------+
+> | 2 threads                | Stock        | Patched with   | diff     |
+> | sending                  |              | fq_codel qdisc |          |
+> +------------+-------------+--------------+----------------+----------+
+> | TAP        | Received    | 1.115 Mpps   | 1.092 Mpps     | -2.1%    |
+> |            +-------------+--------------+----------------+----------+
+> |            | Lost/s      | 8.490 Mpps   | 359 pps        |          |
+> +------------+-------------+--------------+----------------+----------+
+> | TAP        | Received    | 3.664 Mpps   | 3.549 Mpps     | -3.1%    |
+> |            +-------------+--------------+----------------+----------+
+> | +vhost-net | Lost/s      | 5.330 Mpps   | 832 pps        |          |
+> +------------+-------------+--------------+----------------+----------+
+> 
+> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
 > ---
->
-> v2: Suck less. [Josh]
->
-> v1: https://lore.kernel.org/all/20260506185510.2723091-1-seanjc@google.co=
-m
->
->  arch/x86/kvm/emulate.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-> index c8c6cc0406d6..8013dccb3110 100644
-> --- a/arch/x86/kvm/emulate.c
-> +++ b/arch/x86/kvm/emulate.c
-> @@ -4481,7 +4481,7 @@ static const struct opcode opcode_map_0f_38[256] =
-=3D {
->         X16(N), X16(N),
->         /* 0x20 - 0x2f */
->         X8(N),
-> -       X2(N), GP(SrcReg | DstMem | ModRM | Mov | Aligned, &pfx_0f_e7_0f_=
-38_2a), N, N, N, N, N,
-> +       X2(N), GP(SrcMem | DstReg | ModRM | Mov | Aligned, &pfx_0f_e7_0f_=
-38_2a), N, N, N, N, N,
+>  drivers/net/tun.c | 25 +++++++++++++++++++++++--
+>  1 file changed, 23 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+> index fc358c4c355b..d9ffbf88cfd8 100644
+> --- a/drivers/net/tun.c
+> +++ b/drivers/net/tun.c
+> @@ -1018,6 +1018,7 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
+>  	struct netdev_queue *queue;
+>  	struct tun_file *tfile;
+>  	int len = skb->len;
+> +	int ret;
+>  
+>  	rcu_read_lock();
+>  	tfile = rcu_dereference(tun->tfiles[txq]);
+> @@ -1072,13 +1073,33 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
+>  
+>  	nf_reset_ct(skb);
+>  
+> -	if (ptr_ring_produce(&tfile->tx_ring, skb)) {
+> +	queue = netdev_get_tx_queue(dev, txq);
+> +
+> +	spin_lock(&tfile->tx_ring.producer_lock);
+> +	ret = __ptr_ring_produce(&tfile->tx_ring, skb);
+> +	if (!qdisc_txq_has_no_queue(queue) &&
+> +	    (__ptr_ring_produce_peek(&tfile->tx_ring) || ret)) {
+> +		netif_tx_stop_queue(queue);
+> +		/* Paired with smp_mb() in __tun_wake_queue() */
+> +		smp_mb__after_atomic();
+> +		if (!__ptr_ring_produce_peek(&tfile->tx_ring))
+> +			netif_tx_wake_queue(queue);
+> +	}
+> +	spin_unlock(&tfile->tx_ring.producer_lock);
+> +
 
-Ten Ns starting at 0x20 leaves you at 0x2a, so I buy it. :)
+There's a weird corner case here when tx_queue_len is 0
+but a qdisc has been configured - it looks like that
+currently it just drops all packets, with this change,
+the qdisc will get stuck permanently.
 
-Reviewed-by: Jim Mattson <jmattson@google.com>
+I suspect just checking tx_ring.size should fix it.
+Or if you feel adventurous, change return code for __ptr_ring_produce
+to distinguish between "no ring" and "no space".
 
->         /* 0x30 - 0x7f */
->         X16(N), X16(N), X16(N), X16(N), X16(N),
->         /* 0x80 - 0xef */
->
-> base-commit: 6d35786de28116ecf78797a62b84e6bf3c45aa5a
-> --
-> 2.54.0.545.g6539524ca2-goog
->
->
+
+> +	if (ret) {
+> +		/* This should be a rare case if a qdisc is present, but
+> +		 * can happen due to lltx.
+> +		 * Since skb_tx_timestamp(), skb_orphan(),
+> +		 * run_ebpf_filter() and pskb_trim() could have tinkered
+> +		 * with the SKB, returning NETDEV_TX_BUSY is unsafe and
+> +		 * we must drop instead.
+> +		 */
+>  		drop_reason = SKB_DROP_REASON_FULL_RING;
+>  		goto drop;
+>  	}
+>  
+>  	/* dev->lltx requires to do our own update of trans_start */
+> -	queue = netdev_get_tx_queue(dev, txq);
+>  	txq_trans_cond_update(queue);
+>  
+>  	/* Notify and wake up reader process */
+> -- 
+> 2.43.0
+
