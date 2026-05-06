@@ -1,161 +1,203 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FEFA47B426;
-	Wed,  6 May 2026 15:29:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2B33F0AB2
+	for <kvm@vger.kernel.org>; Wed,  6 May 2026 15:37:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778081384; cv=none; b=YJp1QwQi1t9nl6jc66uH0BizIKtYS1lUuOympclC7M1ZRLwLmGKT5pPbqBc0AmvFgOh7+j019KGwpPS5kd7mYqGT9YFi1qNEJFYMAN0TtqCbwXBP7Bt9JMLDDmsduCRKoXlycri21c+Kmt11476aUVNkoyBIkcmn2aHjkZM5zjY=
+	t=1778081876; cv=none; b=a6+/qo0ZfOhKhZ9f3JEik9J2KUXT57rbrF/3ucsejc6dWKmLqg6skKmjERbiEl0jJcZEnnq1ZDcZOJ6rNa1i791ZUD0WjJlYDOtAwSEDyIFxeBEDnhvmEbOGIwe4/vrMwpAe0uLbDtZJpRrUcuBU+6tfXQu5hprduNkMG/CJbaI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778081384; c=relaxed/simple;
-	bh=UzMH2u1MU8F8phCcA9cvtgS+wSBo2orCoIMTn8w+YRI=;
+	s=arc-20240116; t=1778081876; c=relaxed/simple;
+	bh=YJyiH7vsjN9wJDdrOLzg7WAgRAisr5GaMsdx9zFAeac=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A5+6YE0fUR7gkuKcF7JN9ULhcHHjqFXPNy9x8Id3ZxPAVrBANnoJ0CooF+0ysw53u11hU+0Er0FjBR7tWzTRRplQ6u6uAOL9xF8RXDxzpOE2yZ+fWaNF2Cfq7KHrkyt4/jiTcRuxyTb09tAvSSQAJgXSQ8QJAIs3M2bPFkFL8wc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=STDn1RSW; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZlvGPhaiJPCbhCQzMatJxxQLNUpqxDw0KjLpd2rQV31djUKa/3KdOFuVlMz0zyS2E4kMrXS21Db9O7BGoDkXrrgrNQOpCEESiwyj6X9l4v/S3jER3etXMk0w5C99eiBjzdDNKIIYb4J4c/wIFV/PqwvUe+QpO7qI/jSdajJrzdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NG8S3duw; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZLwXuurX; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="STDn1RSW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97DBCC2BCC7;
-	Wed,  6 May 2026 15:29:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778081383;
-	bh=UzMH2u1MU8F8phCcA9cvtgS+wSBo2orCoIMTn8w+YRI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=STDn1RSWQtQf5vQAmkckEpHw+vLcrntjTrcGNB2Vatv/Z6fCUX2vp9pfzwOUSuFu7
-	 +mdGkigx/ldWmmEm+YSTEzOjCANn8lR6dtfuu1cBebE1lJDWyqzF32ynbLILRxumZ/
-	 115NwbwoMhlAIz1AIAjb2v8dc+P+ohamlniLb15kqZEMaZgzCa4P+42sgnNmy4coZz
-	 VQRB7/nPKpidYRftVvm9evvu37ksRbGq7zqZZMNxL+bHFMKD7k60VO8NLebkXOMw2L
-	 o7CQ0+rY8nrjlfXaFym19/+wafjPVLYQFcUjcFzaPq326lovpu5sJuS9aLX8TgrTqd
-	 eEnWjzOAqtXBw==
-Date: Wed, 6 May 2026 18:29:37 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Matt Evans <mattev@meta.com>
-Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@nvidia.com>,
-	Alex Mastro <amastro@fb.com>,
-	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
-	Mahmoud Adam <mngyadam@amazon.de>,
-	David Matlack <dmatlack@google.com>,
-	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
-	Sumit Semwal <sumit.semwal@linaro.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Pranjal Shrivastava <praan@google.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Vivek Kasireddy <vivek.kasireddy@intel.com>,
-	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-	kvm@vger.kernel.org,
-	Carlos =?iso-8859-1?Q?L=F3pez?= <clopez@suse.de>
-Subject: Re: [PATCH 1/9] vfio/pci: Fix vfio_pci_dma_buf_cleanup() double-put
-Message-ID: <20260506152937.GJ11063@unreal>
-References: <20260416131815.2729131-1-mattev@meta.com>
- <20260416131815.2729131-2-mattev@meta.com>
- <20260501131236.278ac431@shazbot.org>
- <9304aada-ee84-4cf2-a1d7-82313eda07aa@meta.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NG8S3duw";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZLwXuurX"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778081873;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=J4Q8PvkIMQ5a5m63+buAC7DaLgwo1MQIWybr1f7ZYKw=;
+	b=NG8S3duw4pH4CooKSbvJr53YMJtQBxjoirdGOgfk9xanbXoqE0NxyeW3GrnbKj4vMBZ1w3
+	OKKgYlWAlA+5Zop0CxiNXQ3q3xeJ7zIIU6z2T29OtnhFPl1gfuPdj9+6UNfwAZ+RNGV/Rb
+	ztsoB1AJO5sp9P/CXYdx/jKiuVo2c6M=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-259-RAb4tZFFNNezh9GQ-7H-Yw-1; Wed, 06 May 2026 11:37:51 -0400
+X-MC-Unique: RAb4tZFFNNezh9GQ-7H-Yw-1
+X-Mimecast-MFC-AGG-ID: RAb4tZFFNNezh9GQ-7H-Yw_1778081870
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4470d6d2a4fso7417604f8f.1
+        for <kvm@vger.kernel.org>; Wed, 06 May 2026 08:37:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1778081870; x=1778686670; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=J4Q8PvkIMQ5a5m63+buAC7DaLgwo1MQIWybr1f7ZYKw=;
+        b=ZLwXuurXYWQ6Y1VGE98BAWXzHWnsJ5jrkEq825f0t/n/my5KGcLPA+6FeRPKoxiHpy
+         uq99CdvVFeeqy1phNn0xX49Q6avAp+OPFepYISyPKouhVTQwAV4Fu9iq6hw07dp6PtI9
+         oZ/He44+Kj6yBJoxJcDgz9+bB4M4QCzZFjM2r5RMbbBVbjE11klzzUfQWGW//FAD4fda
+         tlLYL+5XWjUN1HA2Leqp9al5rBu+EVfE4ycfMIF1FDkJJ8SkZPBnvCnK71WgsJaPYtBN
+         kenSDvuksfKbPJzmY0fjDLBTKucDeZyJwaehrB1x32XSX2qHYGkhOEaeWVBqGSTKPnpI
+         4bEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778081870; x=1778686670;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=J4Q8PvkIMQ5a5m63+buAC7DaLgwo1MQIWybr1f7ZYKw=;
+        b=r7MKaUKTtjoJbClf/t6fZ6c6Wzf2AZkjPu3N8Lb/idatXgNWOlD8WcaPrHKqvihNTX
+         qzfqfD7izrIQ5u0/YKdadmAejvjUxdmOKj2Ny+tk5jzIqeVmeMljUtbSx40qwvu7sDBI
+         tS+pMnAB7mkEnEZAP2ZC1A9t4mX0RPudS5zpLq8KBMSiEiNIYmcJYM4MuEGOTJ77aTKV
+         kOBKV1hq1P3LjLbB6F/SyD8KiDUXsJyjgJ0nEQ25minsx+CQGxsyo/wlaAgkq8yLz5ZH
+         zNFyTN/pozBYaKlh16vO/c4JJbGlKyBBS9BH9O4vMuqWm0hJEYwehBmduM4rFTivJQC1
+         9UBA==
+X-Forwarded-Encrypted: i=1; AFNElJ9e/1yc4dMPd1VG4oEQP8OQMVk9yHkl9fcp/hKeLyhqBTE2Yt828jsnoCtSiLgcHHEnvEQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxAJq6/GPZ4EYgwIrdeY2FmAZ0zsbH2VB3cTBkFEAHoU1li2nIw
+	B/kfsLDQ2ZqaiZgCSQnO0fwJVl0FFyaXAc1oK1bNL6HAmyFrPsoLcTDByXXZN+vkrWGGkGe9pV0
+	kuwnfMHXWB6jnde8CrD3Unc9Z1cqzrY9KpI0V/mfJQSQq1qLtem0iPQ==
+X-Gm-Gg: AeBDievJviFYDdZE3rLjSXoGOdSOztEXp9dT/oPiApMT2eL7tKrkML6Xkl23StKy1Y1
+	rzyp8j5ZJhOC2YqT/L30Bs/c3b96XkD7qwSKbLyJ26sifZeNC7BiKTdPqxkHkKaG+5zC2Ox+u0j
+	GaQG7OXOg1pnQtUWKIyS809JAJQYYFik3LbZRTbjpWbZOmiiknswK/vFPStQzZs9wC29d26Hnf5
+	NVg4u/dOsF9LiStG8lToAtvsDNx+SM50PzeH3TSmEQNq/C2dg+fQqHJaZYsg62O0olsZjMh4P8v
+	QgUoIs0XS8MZuNdlaUmCXzR7AxRcWGMu5BIGk/r89ZPD8u7qSvuvYgkz1LgK8Cd477ho9KT7ZHg
+	AXi9fuIZ0JdTvjorAptq2JdzPUFZ7yJnDTfpqRLl04fqPIIyzx7o=
+X-Received: by 2002:a05:6000:4312:b0:43d:7d24:b4ff with SMTP id ffacd0b85a97d-4515da967a5mr7045456f8f.40.1778081869594;
+        Wed, 06 May 2026 08:37:49 -0700 (PDT)
+X-Received: by 2002:a05:6000:4312:b0:43d:7d24:b4ff with SMTP id ffacd0b85a97d-4515da967a5mr7045381f8f.40.1778081868998;
+        Wed, 06 May 2026 08:37:48 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45055d36dacsm13194806f8f.32.2026.05.06.08.37.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 May 2026 08:37:48 -0700 (PDT)
+Date: Wed, 6 May 2026 11:37:45 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Eric Dumazet <edumazet@google.com>,
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	Bobby Eshleman <bobbyeshleman@meta.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	eric.dumazet@gmail.com, Arseniy Krasnov <AVKrasnov@sberdevices.ru>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	kvm@vger.kernel.org, virtualization@lists.linux.dev
+Subject: Re: [PATCH net] vsock/virtio: fix potential unbounded skb queue
+Message-ID: <20260506113554-mutt-send-email-mst@kernel.org>
+References: <20260430122653.554058-1-edumazet@google.com>
+ <afn0ZdvZWswBuDMm@sgarzare-redhat>
+ <CANn89iLs8DOWJwDpf_ARoMrV+6b2tbhEJ=VVzeC8gCm5dRGaig@mail.gmail.com>
+ <afoF_cHfl6ygcupM@sgarzare-redhat>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <9304aada-ee84-4cf2-a1d7-82313eda07aa@meta.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <afoF_cHfl6ygcupM@sgarzare-redhat>
 
-On Wed, May 06, 2026 at 02:53:31PM +0100, Matt Evans wrote:
-> Hi Alex,
-> 
-> On 01/05/2026 20:12, Alex Williamson wrote:
-> > 
-> > On Thu, 16 Apr 2026 06:17:44 -0700
-> > Matt Evans <mattev@meta.com> wrote:
-> > 
-> > > vfio_pci_dma_buf_cleanup() assumed all VFIO device DMABUFs need to be
-> > > revoked.  However, if vfio_pci_dma_buf_move() revokes DMABUFs before
-> > > the fd/device closes, then vfio_pci_dma_buf_cleanup() would do a
-> > > second/underflowing kref_put() then wait_for_completion() on a
-> > > completion that never fires.  Fixed by predicating on revocation
-> > > status.
+On Tue, May 05, 2026 at 06:11:13PM +0200, Stefano Garzarella wrote:
+> On Tue, May 05, 2026 at 07:14:36AM -0700, Eric Dumazet wrote:
+> > On Tue, May 5, 2026 at 6:52 AM Stefano Garzarella <sgarzare@redhat.com> wrote:
 > > > 
-> > > This could happen if PCI_COMMAND_MEMORY is cleared before closing the
-> > > device fd (but the scenario is more likely to hit when future commits
-> > > add more methods to revoke DMABUFs).
+> > > On Thu, Apr 30, 2026 at 12:26:52PM +0000, Eric Dumazet wrote:
+> > > >virtio_transport_inc_rx_pkt() checks vvs->rx_bytes + len > vvs->buf_alloc.
+> > > >
+> > > >virtio_transport_recv_enqueue() skips coalescing for packets
+> > > >with VIRTIO_VSOCK_SEQ_EOM.
+> > > >
+> > > >If fed with packets with len == 0 and VIRTIO_VSOCK_SEQ_EOM,
+> > > >a very large number of packets can be queued
+> > > >because vvs->rx_bytes stays at 0.
+> > > >
+> > > >Fix this by estimating the skb metadata size:
+> > > >
+> > > >       (Number of skbs in the queue) * SKB_TRUESIZE(0)
+> > > >
+> > > >Fixes: 077706165717 ("virtio/vsock: don't use skbuff state to account credit")
+> > > >Signed-off-by: Eric Dumazet <edumazet@google.com>
+> > > >Cc: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
+> > > >Cc: Stefan Hajnoczi <stefanha@redhat.com>
+> > > >Cc: Stefano Garzarella <sgarzare@redhat.com>
+> > > >Cc: "Michael S. Tsirkin" <mst@redhat.com>
+> > > >Cc: Jason Wang <jasowang@redhat.com>
+> > > >Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+> > > >Cc: "Eugenio Pérez" <eperezma@redhat.com>
+> > > >Cc: kvm@vger.kernel.org
+> > > >Cc: virtualization@lists.linux.dev
+> > > >---
+> > > > net/vmw_vsock/virtio_transport_common.c | 4 +++-
+> > > > 1 file changed, 3 insertions(+), 1 deletion(-)
+> > > >
+> > > >diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+> > > >index 416d533f493d7b07e9c77c43f741d28cfcd0953e..9b8014516f4fb1130ae184635fbba4dfee58bd64 100644
+> > > >--- a/net/vmw_vsock/virtio_transport_common.c
+> > > >+++ b/net/vmw_vsock/virtio_transport_common.c
+> > > >@@ -447,7 +447,9 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+> > > > static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
+> > > >                                       u32 len)
+> > > > {
+> > > >-      if (vvs->buf_used + len > vvs->buf_alloc)
+> > > >+      u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
+> > > >+
+> > > >+      if (skb_overhead + vvs->buf_used + len > vvs->buf_alloc)
+> > > >               return false;
 > > > 
-> > > Fixes: 1a8a5227f2299 ("vfio: Wait for dma-buf invalidation to complete")
-> > > Signed-off-by: Matt Evans <mattev@meta.com>
-> > > ---
+> > > I'm not sure about this fix, I mean that maybe this is incomplete.
+> > > In virtio-vsock, there is a credit mechanism between the two peers:
+> > > https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01.html#x1-4850003
 > > > 
-> > > (Just a fix, but later "vfio/pci: Convert BAR mmap() to use a DMABUF"
-> > > and "vfio/pci: Permanently revoke a DMABUF on request" depend on this
-> > > context, so including in this series.)
+> > > This takes only the payload into account, so it’s true that this problem
+> > > exists; however, perhaps we should also inform the other peer of a lower
+> > > credit balance, otherwise the other peer will believe it has much more
+> > > credit than it actually does, send a large payload, and then the packet
+> > > will be discarded and the data lost (there are no retransmissions,
+> > > etc.).
 > > 
-> > We really need a fix for this split out from this series, It's already
-> > been shown[1] that this is trivially reachable.  Carlos proposed[2] a
-> > similar solution to the one below.  I was concurrently working on the
-> > issued and suggested an alternative[3].  Let's pick a solution for
-> > 7.1-rc.  Thanks,
+> > I dunno, perhaps revert 077706165717 ("virtio/vsock: don't use skbuff
+> > state to account credit")
+> > and find a better fix then?
 > 
-> It looks like [3] is progressing, so I'll drop this one when I can rebase
-> onto it.
+> IIRC the same issue was there before the commit fixed by that one (commit
+> 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")), so
+> not sure about reverting it TBH.
 > 
-> I noticed [3] removes the dma_resv_lock(priv->dmabuf->resv) around the
-> priv->vdev = NULL, and this series' vfio_pci_mmap_huge_fault() relies on
-> vdev only changing whilst resv is held to resolve a race between a fault and
-> cleanup (see patch 7 of this series).  The handler takes resv so that it can
-> stably test vdev in order to take memory_lock.
-
-I think that you should rely on priv->revoked and not on priv->vdev.
-
-Thanks
-
+> CCing Arseniy and Bobby.
 > 
-> Must your fix change vdev outside of holding resv?  I'm still sketching
-> alternatives; at first glance perhaps the fault handler could rely on vdev
-> being valid if !revoked, which can be tested holding [only] resv.
+> > 
+> > There is always a discrepancy between skb->len and skb->truesize.
+> > You will not be able to announce a 1MB window, and accept one milliion
+> > skb of 1-byte each.
+> > 
+> > This kind of contract is broken.
+> > 
 > 
+> Yep, I agree, but before we start discarding data (and losing it), IMHO we
+> should at least inform the other peer that we're out of space.
+> 
+> @Stefan, @Michael, do you think we can do something in the spec to avoid
+> this issue and in some way take into account also the metadata in the
+> credit. I mean to avoid the 1-byte packets flooding.
 > 
 > Thanks,
-> 
-> Matt
-> 
-> > 
-> > Alex
-> > 
-> > [1]https://lore.kernel.org/all/GVXPR02MB12019AA6014F27EF5D773E89BFB372@GVXPR02MB12019.eurprd02.prod.outlook.com/
-> > [2]https://lore.kernel.org/all/20260429182736.409323-2-clopez@suse.de/
-> > [3]https://lore.kernel.org/all/20260429142242.70f746b4@nvidia.com/
-> > 
-> > > drivers/vfio/pci/vfio_pci_dmabuf.c | 9 +++++++--
-> > >   1 file changed, 7 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> > > index 281ba7d69567..04478b7415a0 100644
-> > > --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-> > > +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> > > @@ -395,20 +395,25 @@ void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev)
-> > >   	down_write(&vdev->memory_lock);
-> > >   	list_for_each_entry_safe(priv, tmp, &vdev->dmabufs, dmabufs_elm) {
-> > > +		bool was_revoked;
-> > > +
-> > >   		if (!get_file_active(&priv->dmabuf->file))
-> > >   			continue;
-> > >   		dma_resv_lock(priv->dmabuf->resv, NULL);
-> > >   		list_del_init(&priv->dmabufs_elm);
-> > >   		priv->vdev = NULL;
-> > > +		was_revoked = priv->revoked;
-> > >   		priv->revoked = true;
-> > >   		dma_buf_invalidate_mappings(priv->dmabuf);
-> > >   		dma_resv_wait_timeout(priv->dmabuf->resv,
-> > >   				      DMA_RESV_USAGE_BOOKKEEP, false,
-> > >   				      MAX_SCHEDULE_TIMEOUT);
-> > >   		dma_resv_unlock(priv->dmabuf->resv);
-> > > -		kref_put(&priv->kref, vfio_pci_dma_buf_done);
-> > > -		wait_for_completion(&priv->comp);
-> > > +		if (!was_revoked) {
-> > > +			kref_put(&priv->kref, vfio_pci_dma_buf_done);
-> > > +			wait_for_completion(&priv->comp);
-> > > +		}
-> > >   		vfio_device_put_registration(&vdev->vdev);
-> > >   		fput(priv->dmabuf->file);
-> > >   	}
-> > 
-> 
+> Stefano
+
+Why do we need the metadata? Just don't keep it around if you begin
+running low on memory.
+
+-- 
+MST
+
