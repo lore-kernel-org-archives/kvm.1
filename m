@@ -1,254 +1,113 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCC63D332B
-	for <kvm@vger.kernel.org>; Wed,  6 May 2026 09:00:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DB673EBF33;
+	Wed,  6 May 2026 09:46:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778058013; cv=none; b=mYB1Cu47gdJxHe2BMBxr5k3JtyYWIX5vC13g8NnmFFxuPr6Ad4sLgnoUVx6AYS0GHkQ4SO352CzwsDDTJpBhUE+2ad/jZSXN8RhKtyeW3AV55M+/wTimndxzkKDz35AffUbF6VBCALchIm3KgTk0AlrcWeM3jsOx9yS/xEZvntE=
+	t=1778060796; cv=none; b=gA8Oeiuj7AiwMbNnDmt06MzMereI30BGbe4Dg1Mc6yDMnbxZV3Bbrfk46CN1y5RGm7JAVKj5Vvq2RZB9nJ2J0akg1Bep/G6r+glj0zyyJRg9ZXVxDj7vS0/2wt3qu/fUCeTOtCgdyNfVO7LLNcc6FOXi3+qppNThRgvIZ+iRjVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778058013; c=relaxed/simple;
-	bh=bLe/QX5/0o/d4nlfDaO/xQf9oT1VeInhFRblscbUl8Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RJvIT3j9mIDbOKfNh44LgSEIcJHwQAIaHrsD2LQA7DZGlCQsdLd1zpu6K5C8Mk18JrE0br0GNxChMWRlYS2NHnd++tT8yqvZ52BfF2aDTVh9JeeYY8P5F164LXrvBYqSue5sAZNPo3W6a6XXbuRkDEk3OQdtVaCqI5+3KsxHzUw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=FFLM80pf; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1778060796; c=relaxed/simple;
+	bh=Cb3lKr9ZT4E4FXXH5XoY9N6dSkYP7CZkxlXZCxhMIoc=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=B2v1CiaTCZ3PrLS7zJj6F70+Mhv7uXzYtQoBfwQzE2MFxem7nfKaNAWmX9+GtHkiQozuITS3RNgcIbXaTTm6U1EqVv+ir4urEJaVCIZVjzG37kxWw9a7AbpzbQJSRxc46GiAgSPhGMY3UoKcZU94HMGyk4zVrrkB5p5YkGDjWG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=tkoMLbra; arc=none smtp.client-ip=113.46.200.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="FFLM80pf"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5AEC61A25;
-	Wed,  6 May 2026 02:00:05 -0700 (PDT)
-Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 43E523F836;
-	Wed,  6 May 2026 02:00:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1778058010; bh=bLe/QX5/0o/d4nlfDaO/xQf9oT1VeInhFRblscbUl8Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FFLM80pfAJPlpvnWuIusIk6eU/BnLbm+MpfnEX2p3YteXEKJdHmIezKISdJ8ywsId
-	 KKy2jmtbaDjQVhrytJNskHFAmuHC1nyrI7M5PlsYMTufxgjfE4OAA0B1M/T+J5DUVv
-	 ZmUAbkNUSOqLPxHb4MeyAFCPBbzV44ESHJKtP/ZU=
-Date: Wed, 6 May 2026 10:00:05 +0100
-From: Alexandru Elisei <alexandru.elisei@arm.com>
-To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
-Cc: qemu-devel@nongnu.org, Andrew Jones <andrew.jones@linux.dev>,
-	Eric Auger <eric.auger@redhat.com>,
-	"open list:ARM" <kvmarm@lists.linux.dev>,
-	"open list:Default mailing list" <kvm@vger.kernel.org>
-Subject: Re: [kvm-unit-tests PATCH] arm: add wfx test case
-Message-ID: <afsDFUaOUBknpo1Q@raptor>
-References: <20260427130045.3669851-1-alex.bennee@linaro.org>
- <afSnVJLe7HrB6ISS@raptor>
- <87zf2jcisg.fsf@draig.linaro.org>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="tkoMLbra"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=33nqALlC/zQMkVVrhUBV9oznkV8KXr0/Dt1jYSrqjtU=;
+	b=tkoMLbradJVeoI2VlmEYvv46f0MOHjAhRSw87ubCLksQd4MTOiacqFqlt0S5aSuAhPouQnHmd
+	mxoyVtPByNX1GuK2cVGOCpcckazq/I1JtUxRlUsJOxR6eiQmyhuIPdemCh0SgnydGb1HhaO6HZx
+	NY4J4l1rqfJxePTba7F9/mg=
+Received: from mail.maildlp.com (unknown [172.19.163.15])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4g9VhX1pmYznTV8;
+	Wed,  6 May 2026 17:39:24 +0800 (CST)
+Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id 0FBF840571;
+	Wed,  6 May 2026 17:46:31 +0800 (CST)
+Received: from localhost.localdomain (10.50.163.32) by
+ kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 6 May 2026 17:46:30 +0800
+From: Chengwen Feng <fengchengwen@huawei.com>
+To: <alex@shazbot.org>, <jgg@ziepe.ca>
+CC: <wathsala.vithanage@arm.com>, <helgaas@kernel.org>, <wei.huang2@amd.com>,
+	<wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
+	<liuyonglong@huawei.com>, <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
+Subject: [PATCH v6 1/6] PCI/TPH: Fix pcie_tph_get_st_table_loc() field extraction
+Date: Wed, 6 May 2026 17:46:18 +0800
+Message-ID: <20260506094623.29327-2-fengchengwen@huawei.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20260506094623.29327-1-fengchengwen@huawei.com>
+References: <20260506094623.29327-1-fengchengwen@huawei.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <87zf2jcisg.fsf@draig.linaro.org>
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemk500009.china.huawei.com (7.202.194.94)
 
-Hi,
+pcie_tph_get_st_table_loc() incorrectly uses FIELD_GET(), which shifts the
+field value to bit 0. But the function is designed to return raw
+PCI_TPH_LOC_* values as defined in the function comment.
 
-On Fri, May 01, 2026 at 03:21:19PM +0100, Alex Bennée wrote:
-> Alexandru Elisei <alexandru.elisei@arm.com> writes:
-> 
-> > Hi Alex,
-> >
-> > On Mon, Apr 27, 2026 at 02:00:45PM +0100, Alex Bennée wrote:
-> >> This is based on a similar test case I wrote for QEMU's tcg tests although
-> >> obviously able to take advantage of kvm-unit-tests additional plumbing for
-> >> dealing with the GIC and IRQs.
-> >> 
-> >> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
-> >> ---
-> >>  arm/Makefile.arm64        |   1 +
-> >>  lib/arm64/asm/processor.h |   7 ++
-> >>  lib/arm64/asm/sysreg.h    |   3 +
-> >>  arm/wfx.c                 | 137 ++++++++++++++++++++++++++++++++++++++
-> >>  arm/unittests.cfg         |   5 ++
-> >>  5 files changed, 153 insertions(+)
-> >>  create mode 100644 arm/wfx.c
-> >> 
-> >> diff --git a/arm/Makefile.arm64 b/arm/Makefile.arm64
-> >> index a40c830d..52b3f35d 100644
-> >> --- a/arm/Makefile.arm64
-> >> +++ b/arm/Makefile.arm64
-> >> @@ -64,6 +64,7 @@ tests += $(TEST_DIR)/cache.$(exe)
-> >>  tests += $(TEST_DIR)/debug.$(exe)
-> >>  tests += $(TEST_DIR)/fpu.$(exe)
-> >>  tests += $(TEST_DIR)/mte.$(exe)
-> >> +tests += $(TEST_DIR)/wfx.$(exe)
-> >>  
-> >>  include $(SRCDIR)/$(TEST_DIR)/Makefile.common
-> >>  
-> >> diff --git a/lib/arm64/asm/processor.h b/lib/arm64/asm/processor.h
-> >> index 32ddc1b3..2104036d 100644
-> >> --- a/lib/arm64/asm/processor.h
-> >> +++ b/lib/arm64/asm/processor.h
-> >> @@ -173,5 +173,12 @@ static inline bool system_supports_rndr(void)
-> >>  	return ((id_aa64isar0_el1 >> ID_AA64ISAR0_EL1_RNDR_SHIFT) & 0xf) != 0;
-> >>  }
-> >>  
-> >> +static inline bool system_supports_wfxt(void)
-> >> +{
-> >> +	u64 id_aa64isar2_el1 = read_sysreg_s(ID_AA64ISAR2_EL1);
-> >> +
-> >> +	return ((id_aa64isar2_el1 >> ID_AA64ISAR2_EL1_WFxT_SHIFT) & 0xf) != 0;
-> >> +}
-> >> +
-> >>  #endif /* !__ASSEMBLER__ */
-> >>  #endif /* _ASMARM64_PROCESSOR_H_ */
-> >> diff --git a/lib/arm64/asm/sysreg.h b/lib/arm64/asm/sysreg.h
-> >> index f2d05018..cb96a649 100644
-> >> --- a/lib/arm64/asm/sysreg.h
-> >> +++ b/lib/arm64/asm/sysreg.h
-> >> @@ -77,6 +77,9 @@ asm(
-> >>  #define ID_AA64ISAR0_EL1_RNDR_SHIFT	60
-> >>  #define ID_AA64PFR1_EL1_MTE_SHIFT	8
-> >>  
-> >> +#define ID_AA64ISAR2_EL1		sys_reg(3, 0, 0, 6, 2)
-> >> +#define ID_AA64ISAR2_EL1_WFxT_SHIFT	0
-> >> +
-> >>  #define ID_AA64MMFR0_EL1_FGT_SHIFT	56
-> >>  #define ID_AA64MMFR0_EL1_FGT_FGT2	0x2
-> >>  
-> >> diff --git a/arm/wfx.c b/arm/wfx.c
-> >> new file mode 100644
-> >> index 00000000..912e50e6
-> >> --- /dev/null
-> >> +++ b/arm/wfx.c
-> >> @@ -0,0 +1,137 @@
-> >> +/*
-> >> + * WFX Instructions Test (WFI, WFE, WFIT, WFET)
-> >> + *
-> >> + * Copyright (c) 2026 Linaro Ltd
-> >> + *
-> >> + * SPDX-License-Identifier: GPL-2.0-or-later
-> >> + */
-> >> +
-> >> +#include <libcflat.h>
-> >> +#include <asm/processor.h>
-> >> +#include <asm/gic.h>
-> >> +#include <asm/timer.h>
-> >> +#include <asm/io.h>
-> >> +
-> >> +#define TIMEOUT 200000
-> >> +
-> >> +#define sev() asm volatile("sev" : : : "memory")
-> >> +#define sevl() asm volatile("sevl" : : : "memory")
-> >> +#define wfi() asm volatile("wfi" : : : "memory")
-> >> +#define wfe() asm volatile("wfe" : : : "memory")
-> >> +
-> >> +#define wfit(reg) \
-> >> +	asm volatile(".arch armv8.7-a\n\twfit %0" : : "r" (reg) : "memory")
-> >> +#define wfet(reg) \
-> >> +	asm volatile(".arch armv8.7-a\n\twfet %0" : : "r" (reg) : "memory")
-> >> +
-> >> +static void timer_handler(struct pt_regs *regs)
-> >> +{
-> >> +	/* Disable timer to stop IRQ from re-firing */
-> >> +	write_sysreg(0, cntv_ctl_el0);
-> >> +}
-> >
-> > It is customary for the interrupt handler to ack the interrupt at the GIC level.
-> >
-> >> +
-> >> +static bool check_elapsed(uint64_t start, uint64_t threshold, const char *test, bool more)
-> >> +{
-> >> +	uint64_t end = read_sysreg(cntvct_el0);
-> >> +	uint64_t elapsed = end - start;
-> >> +	bool pass = more ? elapsed >= threshold : elapsed <= threshold;
-> >> +
-> >> +	report(pass, "%s (%ld ticks)", test, elapsed);
-> >> +
-> >> +	if (!pass) {
-> >> +		report_info("%s %s", test, more ? "woke too early" : "slept despite SEV");
-> >> +	}
-> >> +	return pass;
-> >> +}
-> >> +
-> >> +static void test_wfi(void)
-> >> +{
-> >> +	uint64_t start;
-> >> +
-> >> +	report_info("Testing WFI...");
-> >> +
-> >> +	start = read_sysreg(cntvct_el0);
-> >> +	write_sysreg(TIMEOUT, cntv_tval_el0);
-> >> +	write_sysreg(1, cntv_ctl_el0); /* Enable timer, no mask */
-> >> +	isb();
-> >> +
-> >> +	local_irq_enable();
-> >> +	wfi();
-> >
-> > Consider this scenario:
-> >
-> > 	local_irq_enable();
-> > 	// CPU takes the interrupt, handles it and returns.
-> > 	wfi(); <- CPU now waits forever for an interrupt that will never come
-> >
-> > The proper way to do it on baremetal would be:
-> >
-> > 	local_irq_disable();
-> > 	// Program timer to fire
-> > 	wfi();
-> > 	// Timer fires, GIC asserts the interrupt, WFI completes
-> > 	local_irq_enable();
-> > 	// CPU handles the interrupt
-> > 	check_elapsed(..)
-> >
-> > But this is not baremetal. KVM can decide not to trap WFI (look at
-> > arch/arm64/kvm/arm.c::kvm_arch_vcpu_load() -> kvm_vpcu_should_clear_twi()). In
-> > that case, the WFI might complete due a host interrupt, and check_elapsed() will
-> > fail because the timer hasn't yet fired.
-> >
-> >> +	local_irq_disable();
-> >> +
-> >> +	check_elapsed(start, TIMEOUT, "WFI", true);
-> >> +}
-> >> +
-> >> +static void test_wfe(void)
-> >> +{
-> >> +	uint64_t start;
-> >> +
-> >> +	report_info("Testing WFE/SEV...");
-> >> +	sev();
-> >> +	start = read_sysreg(cntvct_el0);
-> >> +	wfe();
-> >> +	check_elapsed(start, TIMEOUT, "WFE/SEV", false);
-> >> +
-> >> +	report_info("Testing WFE/SEVL...");
-> >> +	sevl();
-> >> +	start = read_sysreg(cntvct_el0);
-> >> +	wfe();
-> >> +	check_elapsed(start, TIMEOUT, "WFE/SEVL", false);
-> >> +}
-> >
-> > I haven't thought about this too much, but it looks to me like the same
-> > situation with WFI can happen with WFE
-> >
-> > Also, kvm-unit-tests() makes use of WFE and SEV for multithreading, and the fact
-> > that multithreaded tests work at all might be taken as proof enough that the two
-> > instructions are correctly implemented.
-> 
-> So I'm using kvm-unit-test to exercise QEMU's TCG modelling of the
-> instructions, see:
-> 
->   Message-ID: <20260430104434.1482407-1-alex.bennee@linaro.org>
->   Date: Thu, 30 Apr 2026 11:44:27 +0100
->   Subject: [PATCH v4 0/7] target/arm: fully model WFxT instructions for A-profile
-> 
-> So while I'm confident the current modelling doesn't cause issues
-> (because we basically treat it as a NOP) I wanted to check the various
-> modes behave as they should with the above patches.
-> 
-> I can limit the test to TCG only if it is likely to fail under KVM.
+This causes incorrect ST table location detection. Fix it by using bitwise
+AND with PCI_TPH_CAP_LOC_MASK to return the unshifted field value matching
+the function specification.
 
-I think that would be best. But please also ack the interrupt in the timer
-IRQ handler, as that is what software would do (you can have a look at
-arm/timer.c::irq_handler() for an example).
+While this change appears to be a no-op within tph.c, the external caller
+mlx5_st_create() relies on the documented function behavior, making this
+fix necessary.
 
-Thanks,
-Alex
+Fixes: d2e8a34876ce ("PCI/TPH: Add Steering Tag support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
+Reviewed-by: Alex Williamson <alex.williamson@nvidia.com>
+---
+ drivers/pci/tph.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
+
+diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
+index 91145e8d9d95..f17b74b5fb1e 100644
+--- a/drivers/pci/tph.c
++++ b/drivers/pci/tph.c
+@@ -170,7 +170,7 @@ u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev)
+ 
+ 	pci_read_config_dword(pdev, pdev->tph_cap + PCI_TPH_CAP, &reg);
+ 
+-	return FIELD_GET(PCI_TPH_CAP_LOC_MASK, reg);
++	return reg & PCI_TPH_CAP_LOC_MASK;
+ }
+ EXPORT_SYMBOL(pcie_tph_get_st_table_loc);
+ 
+@@ -183,11 +183,7 @@ u16 pcie_tph_get_st_table_size(struct pci_dev *pdev)
+ 	u32 reg;
+ 	u32 loc;
+ 
+-	/* Check ST table location first */
+ 	loc = pcie_tph_get_st_table_loc(pdev);
+-
+-	/* Convert loc to match with PCI_TPH_LOC_* defined in pci_regs.h */
+-	loc = FIELD_PREP(PCI_TPH_CAP_LOC_MASK, loc);
+ 	if (loc != PCI_TPH_LOC_CAP)
+ 		return 0;
+ 
+@@ -316,8 +312,6 @@ int pcie_tph_set_st_entry(struct pci_dev *pdev, unsigned int index, u16 tag)
+ 	set_ctrl_reg_req_en(pdev, PCI_TPH_REQ_DISABLE);
+ 
+ 	loc = pcie_tph_get_st_table_loc(pdev);
+-	/* Convert loc to match with PCI_TPH_LOC_* */
+-	loc = FIELD_PREP(PCI_TPH_CAP_LOC_MASK, loc);
+ 
+ 	switch (loc) {
+ 	case PCI_TPH_LOC_MSIX:
+-- 
+2.17.1
+
