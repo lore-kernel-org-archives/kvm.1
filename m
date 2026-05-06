@@ -1,54 +1,221 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 50959283C9D;
-	Wed,  6 May 2026 02:00:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF81F217648;
+	Wed,  6 May 2026 02:30:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778032835; cv=none; b=Cyv1np634aMQFiEog57ON+t8siIWAI226CsKWApbmdJ/ZlnnJbr5qJ91iGnlttLhurUf17eAqvt07NSJH8kkA4Ef3eNdsMR4xgLnIpHgjgrY9mMTAxuvnZ95xPLZKYONuOs5O/nfRFsxJkT0niDFFgnBworeuId+wtYZuiYg/Gc=
+	t=1778034647; cv=none; b=ICTH92OR+ZzBqa74zOy2itNulJREAd3MPDxCHE3+gMVLS/XNxYO6EbSmd3I/JW/Q8yEbEexSxU0sFcHGJ0k3VPiqg4RF/ghEUI29iFykBRzcnPrhbR8Puct+Ueoyr81iaUsmiFEf7o1x7mX25AcfrQgB6za+5ZJYW8jm/2oqoWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778032835; c=relaxed/simple;
-	bh=F+8Vlb9jurWZhguRxg5yIAVEgTP+P/vVFiPz8zVArMs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GS9Fw5ZuDfrTffYOeOk+OudkUOATBuKLMcecCNsRIeFxcFxkWf6nN06NM436RT9+VFfq6QNiw4SZpU8e3ZTsfD+On3bXgn25NKUZTEPnWS9ziOBzmJfgjQDhiRxsX0Mk5Uf5iSTXk8uCjk/m4VqZLD5ZpOnAm9yII/8MAwH9JA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ESpsnSVZ; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ESpsnSVZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2332C2BCB9;
-	Wed,  6 May 2026 02:00:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778032835;
-	bh=F+8Vlb9jurWZhguRxg5yIAVEgTP+P/vVFiPz8zVArMs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ESpsnSVZITdLouN4BAmcwI3BOgZyi9tAF82vLn44Pzk0KOMfCgFdCYDMWsElFPqQR
-	 XXpL8753EfROS6XNN9zQ4qC6oJZWS80y89u3mf0PVgqeBsJ4K6oieyWVxHpRO5DamB
-	 F3Xm71ARKFm80MNxTyKpi4grwIo/zl9I9P0YeufPBcg4I/dHyjoGGmvOQpGI68N6V8
-	 +mpsMcq3TKZyIWuUy3BVRf0rrGMNcNBgEb9BUfu/2jj72rZpq3qZAMrFAV82DhpXAY
-	 bKmy44ZWDhJOzR+WqKmzexvw6G71KEHDhuD14wfgDpKAHYEPmXPFTGBITfXwZ3jTNa
-	 Gc21LGuWk/hJw==
-Date: Wed, 6 May 2026 02:00:33 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
-	Dapeng Mi <dapeng1.mi@linux.intel.com>, Sandipan Das <sandipan.das@amd.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Alexander Shishkin <alexander.shishkin@linux.intel.com>, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 00/16]
-Message-ID: <afqgfvt6TeX2qVe4@google.com>
-References: <20260506015733.1671124-1-yosry@kernel.org>
+	s=arc-20240116; t=1778034647; c=relaxed/simple;
+	bh=S4/VXvdku8KrRO7E02/awFvdGYjK7r5TqE4xFnD51jM=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=DoeHSlb/YZO1FMo4UTdwu4WF3Y5rV7ut8QX++rBKnLSO18xNfm2Zykmr7IMHeb+Gxi+p2uONTEe4iv3SR6QbEpmMPl3tvXl/Scw/5LAOan7LGIU90NpRskA3HZYrgcpOc62UiggjtR/sehWxIbq9S6YLU/ky/r4rCRTPqHwwpVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8Dx8erLp_ppMvoGAA--.22639S3;
+	Wed, 06 May 2026 10:30:35 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJDxB8G1p_ppz2Z7AA--.24349S3;
+	Wed, 06 May 2026 10:30:15 +0800 (CST)
+Subject: Re: [PATCH 1/5] KVM: arm64: Grab KVM MMU write lock in
+ kvm_arch_flush_shadow_all()
+To: James Houghton <jthoughton@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>,
+ Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Zenghui Yu <yuzenghui@huawei.com>, Sean Christopherson <seanjc@google.com>,
+ Gavin Shan <gshan@redhat.com>, Shaoqin Huang <shahuang@redhat.com>,
+ Ricardo Koller <ricarkol@google.com>, Tianrui Zhao
+ <zhaotianrui@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
+ James Hogan <jhogan@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ kvmarm@lists.linux.dev, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260504224213.1049426-1-jthoughton@google.com>
+ <20260504224213.1049426-2-jthoughton@google.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <25838e74-01dd-d085-395b-676266dc9a9a@loongson.cn>
+Date: Wed, 6 May 2026 10:27:19 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260506015733.1671124-1-yosry@kernel.org>
+In-Reply-To: <20260504224213.1049426-2-jthoughton@google.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJDxB8G1p_ppz2Z7AA--.24349S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxWryxWry7uF4rWrWDXFy7Jwc_yoWrKFW7pF
+	WDCa4DGr45Gr1Y9343Jw1DZw1F9ws5KF1fGFy5XayrtFyYv3s8K3WvyF1xAFW5JrZ7WFZa
+	vF15Krn8A3yvywbCm3ZEXasCq-sJn29KB7ZKAUJUUUUf529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUPIb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6r4UJVWxJr1ln4kS14v26r126r1DM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
+	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r12
+	6r1DMcIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr4
+	1lc7I2V7IY0VAS07AlzVAYIcxG8wCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x0EwIxG
+	rwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07C267AKxVWUAVWUtwC20s026c02F40E14
+	v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_GFv_WrylIxkG
+	c2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCVW8JwCI42IY6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4U
+	MIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x07j0mhrUUU
+	UU=
 
-.. and of course I sent the cover letter without a proper subject. This
-was supposed to be:
 
-"KVM: x86/pmu: Add support for AMD Host-Only/Guest-Only bits"
+
+On 2026/5/5 上午6:42, James Houghton wrote:
+> kvm_arch_flush_shadow_all() may sometimes be called on the same `kvm`
+> concurrently in the event that the KVM's `mm` is __mmput() at the
+> same time that last reference to the KVM is being dropped.
+> 
+> T1              T2
+> KVM_CREATE_VM
+>                  Get VM file from T1
+> close VM
+> exit_mm()       close VM
+> 
+> T1: exit_mm() -> kvm_mmu_notifier_release() -> kvm_flush_shadow_all(),
+>      with only the KVM srcu read lock held.
+> 
+> T2: kvm_vm_release() ---> mmu_notifier_unregister() ->
+>      kvm_mmu_notifier_release() -> kvm_flush_shadow_all(),
+>      again, with only the KVM srcu read lock held.
+By looking through the code, kvm_arch_destroy_vm() will free PGD page 
+only, page table walking is executing in deleting memslot or exit_mm().
+
+With normal code, life cycle of VM is something like this:
+   KVM_CREATE_VM
+     Create_VCPUs
+     Create memslots
+     Destroy_VCPUs
+     Destroy memslots
+   close VM
+   exit_mm()
+
+And there is kvm_get_kvm()/kvm_put_kvm() function call with 
+creating/destroy vCPUs, however no such operations with memslot 
+operation. Is it possible that VM is destroyed without removing 
+memslots, such as the following operation.
+   KVM_CREATE_VM
+     Create memslots
+   close VM
+   exit_mm()
+
+Regards
+Bibo Mao
+
+> 
+> This leads to a potential double-free of
+> kvm->arch.kvm_mmu_free_memory_cache and now with NV
+> kvm->arch.nested_mmus.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: e7bf7a490c68 ("KVM: arm64: Split huge pages when dirty logging is enabled")
+> Signed-off-by: James Houghton <jthoughton@google.com>
+> ---
+>   arch/arm64/include/asm/kvm_mmu.h |  1 +
+>   arch/arm64/kvm/mmu.c             | 23 +++++++++++++++++++----
+>   arch/arm64/kvm/nested.c          |  4 +++-
+>   3 files changed, 23 insertions(+), 5 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_mmu.h b/arch/arm64/include/asm/kvm_mmu.h
+> index 01e9c72d6aa7..30d5c24fcebb 100644
+> --- a/arch/arm64/include/asm/kvm_mmu.h
+> +++ b/arch/arm64/include/asm/kvm_mmu.h
+> @@ -178,6 +178,7 @@ void stage2_unmap_vm(struct kvm *kvm);
+>   int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long type);
+>   void kvm_uninit_stage2_mmu(struct kvm *kvm);
+>   void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu);
+> +void kvm_free_stage2_pgd_locked(struct kvm_s2_mmu *mmu);
+>   int kvm_phys_addr_ioremap(struct kvm *kvm, phys_addr_t guest_ipa,
+>   			  phys_addr_t pa, unsigned long size, bool writable);
+>   
+> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
+> index d089c107d9b7..4bab407d43bb 100644
+> --- a/arch/arm64/kvm/mmu.c
+> +++ b/arch/arm64/kvm/mmu.c
+> @@ -1021,7 +1021,9 @@ int kvm_init_stage2_mmu(struct kvm *kvm, struct kvm_s2_mmu *mmu, unsigned long t
+>   
+>   void kvm_uninit_stage2_mmu(struct kvm *kvm)
+>   {
+> -	kvm_free_stage2_pgd(&kvm->arch.mmu);
+> +	lockdep_assert_held_write(&kvm->mmu_lock);
+> +
+> +	kvm_free_stage2_pgd_locked(&kvm->arch.mmu);
+>   	kvm_mmu_free_memory_cache(&kvm->arch.mmu.split_page_cache);
+>   }
+>   
+> @@ -1095,12 +1097,14 @@ void stage2_unmap_vm(struct kvm *kvm)
+>   	srcu_read_unlock(&kvm->srcu, idx);
+>   }
+>   
+> -void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
+> +static void __kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu, bool locked)
+>   {
+>   	struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
+>   	struct kvm_pgtable *pgt = NULL;
+>   
+> -	write_lock(&kvm->mmu_lock);
+> +	if (!locked)
+> +		write_lock(&kvm->mmu_lock);
+> +
+>   	pgt = mmu->pgt;
+>   	if (pgt) {
+>   		mmu->pgd_phys = 0;
+> @@ -1111,7 +1115,8 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
+>   	if (kvm_is_nested_s2_mmu(kvm, mmu))
+>   		kvm_init_nested_s2_mmu(mmu);
+>   
+> -	write_unlock(&kvm->mmu_lock);
+> +	if (!locked)
+> +		write_unlock(&kvm->mmu_lock);
+>   
+>   	if (pgt) {
+>   		kvm_stage2_destroy(pgt);
+> @@ -1119,6 +1124,16 @@ void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
+>   	}
+>   }
+>   
+> +void kvm_free_stage2_pgd(struct kvm_s2_mmu *mmu)
+> +{
+> +	__kvm_free_stage2_pgd(mmu, false);
+> +}
+> +
+> +void kvm_free_stage2_pgd_locked(struct kvm_s2_mmu *mmu)
+> +{
+> +	__kvm_free_stage2_pgd(mmu, true);
+> +}
+> +
+>   static void hyp_mc_free_fn(void *addr, void *mc)
+>   {
+>   	struct kvm_hyp_memcache *memcache = mc;
+> diff --git a/arch/arm64/kvm/nested.c b/arch/arm64/kvm/nested.c
+> index 883b6c1008fb..977598bff5e6 100644
+> --- a/arch/arm64/kvm/nested.c
+> +++ b/arch/arm64/kvm/nested.c
+> @@ -1190,11 +1190,13 @@ void kvm_arch_flush_shadow_all(struct kvm *kvm)
+>   {
+>   	int i;
+>   
+> +	guard(write_lock)(&kvm->mmu_lock);
+> +
+>   	for (i = 0; i < kvm->arch.nested_mmus_size; i++) {
+>   		struct kvm_s2_mmu *mmu = &kvm->arch.nested_mmus[i];
+>   
+>   		if (!WARN_ON(atomic_read(&mmu->refcnt)))
+> -			kvm_free_stage2_pgd(mmu);
+> +			kvm_free_stage2_pgd_locked(mmu);
+>   	}
+>   	kvfree(kvm->arch.nested_mmus);
+>   	kvm->arch.nested_mmus = NULL;
+> 
+
