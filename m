@@ -1,159 +1,114 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF38248B368;
-	Wed,  6 May 2026 15:03:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E976336B076
+	for <kvm@vger.kernel.org>; Wed,  6 May 2026 15:15:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778079835; cv=none; b=SFlnkra1FIP5Bz98Lm1rM15C/Lrmzx/5Wj9CnXdVegIYq4Nnv2x0FQ1xNkbSKmUsY/n1RG5DGfqTAkZebfIIwiDqAlwzymQL63D4HpiAsmjBV/Ovz6d9ddEXC/Y/YWTJujdyYukXVP2ZvyDcpxxGnVZuMgmM5ULmElgDgXJWR6s=
+	t=1778080536; cv=none; b=rlO4DDmVux/tOlJyxAydIUuepkieqgprKcSsWAny/6KvQkpsvtiKvpWiZA19CkK1i+GSjxcsOgbsMjE5rswV+ah8ZZBitxTDtGuA7yi3Xy/zMpcPfu+Rg1k1ueHFmWlkH87oKCbXV8/GDCxMldmWTUpwmSXtQYQE13rFJCUuqvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778079835; c=relaxed/simple;
-	bh=9wYxQMmVtBz3DEPWlbfvcyKeSl2P2HX1/nFCNbnRXls=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NY59RNhTisbpgGLE8Br1GHz+U0m7LYcY3rb12iPUh0KZTj6VrH461el32Gh1hWTForJ+o+wGzJT8d9Ct2XlajY+43kha2NZg4FZXqLJWxuR90RYLwlObQAg1H39UTLgM/3GQCxPzkDVgGRG4f1kW18/KDXlPWzRAIoJKP+oH4GQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RFpwT+nC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778080536; c=relaxed/simple;
+	bh=dyYVoDEtFDSgPhQADtst+OcAghGp7Ei9IraYcw4HcQY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=h/LuF1F2DrivJ0CjbL2nrNLLyuiuAG5cYjyqu3SRmgT5viukSbbqgasU+rzpxlcunZIe6ip38Nwu3/hFJW0bPWlgT7258cIpzM9ul6utsopfU1JX5evchH6Osq90lyNff/CLhQpUhdXkp3I08DTeb8imprxt6Qy1UfS8ZrVEtq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c+jp5bNk; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=HPnfHl3W; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RFpwT+nC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DBDFC2BCB8;
-	Wed,  6 May 2026 15:03:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778079835;
-	bh=9wYxQMmVtBz3DEPWlbfvcyKeSl2P2HX1/nFCNbnRXls=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RFpwT+nC2ToI8BxTZFN8/5u1tm+3XR/8IolTmSTdxDuUH4ga2bcXbIEO5MD+izzJ4
-	 dbZ/i5b1gy9lmmy/B3/OvVn5WFeVb8oRgO3nD2f3hpUWDMZTZgotkRhXa3/atRqhAz
-	 r7EByGrr6h3BSOu4SOb9aaWOBYi8a1yaSQvIk6YV8Z/h6kzODBHBtAwKYrR3UPxN2I
-	 WOSZ4Qzk7mfCa9D7KSpaBqIKltq0ag0Cxgvwjsz5OSTkGI0WDX1RFBbDewjzTN/yBM
-	 iYQklEifxgdd1uI4wJxFNFsKsfHXGzW0u7qtRyIjEYbrxsovlw+74J9LsIXq49Zb4D
-	 mEGWB5UqF3I6w==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wKdmz-00000000KcH-1ZnQ;
-	Wed, 06 May 2026 15:03:53 +0000
-Date: Wed, 06 May 2026 16:03:53 +0100
-Message-ID: <861pfozijq.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Sascha Bischoff <Sascha.Bischoff@arm.com>
-Cc: "linux-arm-kernel@lists.infradead.org"
-	<linux-arm-kernel@lists.infradead.org>,
-	"kvmarm@lists.linux.dev"
-	<kvmarm@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	nd <nd@arm.com>,
-	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
-	Joey Gouly
-	<Joey.Gouly@arm.com>,
-	Suzuki Poulose <Suzuki.Poulose@arm.com>,
-	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
-	"peter.maydell@linaro.org"
-	<peter.maydell@linaro.org>,
-	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
-	Timothy Hayes <Timothy.Hayes@arm.com>
-Subject: Re: [PATCH 17/43] KVM: arm64: gic-v5: Enable VPE DBs on VPE reset and disable on teardown
-In-Reply-To: <20260427160547.3129448-18-sascha.bischoff@arm.com>
-References: <20260427160547.3129448-1-sascha.bischoff@arm.com>
-	<20260427160547.3129448-18-sascha.bischoff@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c+jp5bNk";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="HPnfHl3W"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778080531;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dyYVoDEtFDSgPhQADtst+OcAghGp7Ei9IraYcw4HcQY=;
+	b=c+jp5bNk+Varjo6OPBr+hYZkuJJCcoHgBlbrJyXUBAPPzrsRtAGGH256qwbpQX3NP8seyI
+	Thlr2thN1cRRi21ccFiU1BQkzFepk3QrSrGjX2GLvsPvaRKHYE1jX85LM2hMCx0dttpuMu
+	8wAELmLFkbuNR1LXQTTnP32l8eW5mSw=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-657-GCVpocsXO_Gh3yiy_P7HtA-1; Wed, 06 May 2026 11:15:30 -0400
+X-MC-Unique: GCVpocsXO_Gh3yiy_P7HtA-1
+X-Mimecast-MFC-AGG-ID: GCVpocsXO_Gh3yiy_P7HtA_1778080529
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4837bfcfe0dso80041705e9.1
+        for <kvm@vger.kernel.org>; Wed, 06 May 2026 08:15:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1778080529; x=1778685329; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dyYVoDEtFDSgPhQADtst+OcAghGp7Ei9IraYcw4HcQY=;
+        b=HPnfHl3WhXiNQLzmBF7kK7Jt65U184IqyoxE0M484yInTICyzYZGjvoFtNgfrA/vxb
+         LgKndyUbhjOmyVGOYPU9wnbkMXnlkiFeCOhtA8DVSP1OfQEcteB65H7weMmbPLYHXSZz
+         tqoncI/gvvSSrcHK7V+mdiEZ0MQfF5IVo0s1YqBB5yQqoSTzz4DXglfskPmm5aofCJZK
+         1f/heqbeljqqjzI7rweXi0nRzCqlhVS+uj7jHcVU2MnkAjRIXa2x8cniN5dKHKc+gYin
+         qxxGcIPkYwE12TpvP8eI3+2vYp2/v+68XzZGXa4agzNfuct1ohrRSCnaY5XgkSAKnmvM
+         nF4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778080529; x=1778685329;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dyYVoDEtFDSgPhQADtst+OcAghGp7Ei9IraYcw4HcQY=;
+        b=Tn7dvX7iYmTV36yJzw+bsrGDCRx1mVlxjXPSkcc0XmRkaSI/v/thOdUa5Nb/szIwEe
+         LH/KxEFEUwnlEW0MAFT4kbSe4aUBXO1rkIpcYZfjCT6SvpjAJQ+aQjcGCpMogxI9hjpU
+         95g+IQUfrnC8BmezmD0oyBNTVvDQKvOycZ+eOBH9/GzBNQzU36FIM/2WIfz7fc8FVpCr
+         TX7yu4nCfOrI5S20Lwoo2asI3nHmv4E/Mndrmgfsro5uj2A2fnW4yAeKGadO1i0cJoaT
+         Hh0xbBa97ikrAfj6EqMjAVojk7cNa5KHdGaTGJXQR5gpcbdQK+je05vedkjmdMtm1VoJ
+         BmEw==
+X-Forwarded-Encrypted: i=1; AFNElJ+QmW5jemx3zuNkfoNk+KAtOT4AkEoOXl4GCRbw4E0+XWwrHOwnr69NUgvsFTgHGHuxT4I=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+FUiT+BT5DyPEhzKHegyeYSGv2rLl/IgLSngouqXoPuKKFX/3
+	iyX1JmhmsINoTpaA/h3ljR+wMXX3OZBH2SQnfnxyBOxc/JZxbSHASmrYG/2W7BFYbnZKFZrUJ2c
+	DNsTzpp9RtNGeZdPW/ydg8Vqi1GevtWGFBZb4kwWRhYXGF0VlDI4KPg==
+X-Gm-Gg: AeBDieuQ0sw9LyW4/Yx7p9nHjLo8hkp7K5gHYa7oW54ZCikfNst8ru3zPNArgWwvwJO
+	Sm6zGwDosot2zn+BZQPaWNyZTFXj8G2E5hQT6rl4lwnKezpqmJG5m6aN6EcG7mnD7ZqxfxZ2Duz
+	fCpHfpQdnJEmGgsyyTzYs8sybs8NkTD5v8q8O6mRYq6cf44G3LKO/wP+UqLN3wf8AYSlj/GSvkQ
+	N5jFqX7YJ+aj/XHGLltrPkHfgmtSd0IWuUTsMqUigTGv0Dw105CNNReB1Czhrujiz9VNBdp3CrV
+	d2SWQy2c9AShTSzgoHqNsWhyy9KHHTzV0YQljhrkIlr8JX0jJKha1arUs/z5t8URpSTFgz4Veoj
+	c4fCVu5bji01as+NSzpGYSoxWOs1+oOChpb+BE35C+1ZoAE4nFQo=
+X-Received: by 2002:a05:600c:871b:b0:48a:592c:e655 with SMTP id 5b1f17b1804b1-48e51f45eddmr62856685e9.17.1778080529265;
+        Wed, 06 May 2026 08:15:29 -0700 (PDT)
+X-Received: by 2002:a05:600c:871b:b0:48a:592c:e655 with SMTP id 5b1f17b1804b1-48e51f45eddmr62855865e9.17.1778080528659;
+        Wed, 06 May 2026 08:15:28 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e538b26a3sm95210515e9.9.2026.05.06.08.15.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 May 2026 08:15:28 -0700 (PDT)
+Date: Wed, 6 May 2026 11:15:24 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Eric Dumazet <edumazet@google.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	eric.dumazet@gmail.com, Arseniy Krasnov <AVKrasnov@sberdevices.ru>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	kvm@vger.kernel.org, virtualization@lists.linux.dev
+Subject: Re: [PATCH net] vsock/virtio: fix potential unbounded skb queue
+Message-ID: <20260506111507-mutt-send-email-mst@kernel.org>
+References: <20260430122653.554058-1-edumazet@google.com>
+ <afn0ZdvZWswBuDMm@sgarzare-redhat>
+ <CANn89iLs8DOWJwDpf_ARoMrV+6b2tbhEJ=VVzeC8gCm5dRGaig@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, nd@arm.com, oliver.upton@linux.dev, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, lpieralisi@kernel.org, Timothy.Hayes@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CANn89iLs8DOWJwDpf_ARoMrV+6b2tbhEJ=VVzeC8gCm5dRGaig@mail.gmail.com>
 
-On Mon, 27 Apr 2026 17:11:50 +0100,
-Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
-> 
-> Ensure that each VPE doorbell is enabled on the host prior to running
-> the guest by enabling it as part of vgic_v5_reset(). Add a function to
-> disable it again as part of VM teardown, vgic_v5_disable_vcpu(), which
-> also frees the IRQ again.
-> 
-> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
-> ---
->  arch/arm64/kvm/vgic/vgic-v5.c | 29 +++++++++++++++++++++++++++++
->  1 file changed, 29 insertions(+)
-> 
-> diff --git a/arch/arm64/kvm/vgic/vgic-v5.c b/arch/arm64/kvm/vgic/vgic-v5.c
-> index 9347bc6895223..48ffcb2494db3 100644
-> --- a/arch/arm64/kvm/vgic/vgic-v5.c
-> +++ b/arch/arm64/kvm/vgic/vgic-v5.c
-> @@ -736,6 +736,31 @@ void vgic_v5_reset(struct kvm_vcpu *vcpu)
->  		kvm_vm_dead(vcpu->kvm);
->  		return;
->  	}
-> +
-> +	enable_irq(vgic_v5_vpe_db(vcpu));
+On Tue, May 05, 2026 at 07:14:36AM -0700, Eric Dumazet wrote:
+> There is always a discrepancy between skb->len and skb->truesize.
+> You will not be able to announce a 1MB window, and accept one milliion
+> skb of 1-byte each.
 
-Odd. Why do you need to manage the enabling of the doorbell? I see
-from the previous patch that you set it as IRQ_NOAUTOEN, but this
-seems to be cargo-culted from GICv4 (which really needs it).
+We can if we copy.
 
-My expectations that since the doorbell is controlled from KVM and is
-only one-shot, we should be OK. This is the flow that v4.1 adopts,
-without a need to baby-sit the interrupt state.
+> This kind of contract is broken.
 
-> +}
-> +
-> +static void vgic_v5_disable_vcpu(struct kvm_vcpu *vcpu)
-> +{
-> +	int virq = vgic_v5_vpe_db(vcpu);
-> +
-> +	if (!vcpu->kvm->arch.vgic.gicv5_vm.domain)
-> +		return;
-> +
-> +	if (!virq)
-> +		return;
-> +
-> +	/*
-> +	 * We are called in the vgic_v5_teardown path. We no longer need the
-> +	 * doorbell virqs.
-> +	 */
-> +	disable_irq(virq);
-
-And then this can go as well.
-
-> +
-> +	/* Free the doorbell irq (counter-part to request_irq)*/
-> +	free_irq(virq, vcpu);
-> +
-> +	/* Remove the irq from the domain too */
-> +	irq_domain_free_irqs(virq, 1);
-
-Surely you remove the domain at some point. That should cover the
-freeing of all the doorbells.
-
->  }
->  
->  int vgic_v5_map_resources(struct kvm *kvm)
-> @@ -875,6 +900,10 @@ void vgic_v5_teardown(struct kvm *kvm)
->  			kvm_err("Failed to release VM 0x%x\n", dist->gicv5_vm.vm_id);
->  	}
->  
-> +	/* Goodbye doorbells */
-> +	kvm_for_each_vcpu(i, vcpu, kvm)
-> +		vgic_v5_disable_vcpu(vcpu);
-> +
->  	vgic_v5_teardown_per_vm_domain(&kvm->arch.vgic.gicv5_vm);
->  
->  	vgic_v5_release_vm_id(kvm);
-
-I reckon this patch would be better folded into the previous one, so
-that we can see both the requesting and freeing of the doorbell
-interrupt in the same patch.
-
-Thanks,
-
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
