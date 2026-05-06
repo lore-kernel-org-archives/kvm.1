@@ -1,42 +1,51 @@
-Received: from mx4.sberdevices.ru (mx4.sberdevices.ru [152.89.196.46])
+Received: from relay.yourmailgateway.de (relay.yourmailgateway.de [188.68.63.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCD53EC2E0;
-	Wed,  6 May 2026 09:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=152.89.196.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99A1A3F2100;
+	Wed,  6 May 2026 09:56:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.68.63.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778061025; cv=none; b=ISerWp9M8ukuK/gA11Bc9+WdOBowNP1wp8PuRbfFuVE925pe39ZoSmLH7KUK8VqG8tKfkxHCkWVcqfOyX3mNq6BJVuV2pXv6dNP1RbBf7MTXDH0uLonlmjbx4CkdlZprz595prRYiZN5o9LpDAhq9P4eulfkphrpsILTcphhJJc=
+	t=1778061411; cv=none; b=FaMgzBrYhMfscOA/XW0Aa666LlJUeIRpVF6IRZZdWhPDMDvCd4F+Qc7JZ5H/EOVCBkJY7MDaEXEj3uD9sZ8jkgdNjHrXgD4/6bTkAk3BafYvI9igR8jJVrAcT17aYOHK7H45Z9bMB3IPAzEmmjfpicBfn2AfhUw/A37o5hVkCAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778061025; c=relaxed/simple;
-	bh=d5gbTt/rFSi+YlAu2A09VdNyvTNIlHL4oX8ZwclG1tQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=GJQyp33D7BMC4DVzQbZOnFVU1tiklz1S6/n7LreLHNf/iYDAN2pWIZWCfvQJcbHuUUfL21ARDMhXhP/NgGKvMRhS1wVtvE37DbyGvvdcoTEj5GqRqYCW9Uqz7Hrfkg+J+ssQuyq4y4nHEvuHR7QqMQMzKokevmy7kinQ2hIDO2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=salutedevices.com; spf=pass smtp.mailfrom=salutedevices.com; dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b=GlFYOnOg; arc=none smtp.client-ip=152.89.196.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=salutedevices.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=salutedevices.com
+	s=arc-20240116; t=1778061411; c=relaxed/simple;
+	bh=GGV9DNdwCRoaJL90u+Hhuk9ehoDj8FDOovIw7TYhYJU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=giTrCoHZSw/IsAK7qw3vaYT3X4qJS3NE+8k/kzWXu4KojrDY1QVWZlTJgH1K2LQgySW39TRUZBJ/3YYgdtfZQJvJOR0t2M6Rs+8BjeY9OgeG9iKadT3mEQHkmX0Wn/nW21GxdKzVyyogFHsFSIkPSDwtTWqMz8I3D1yCEj5exLA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info; spf=pass smtp.mailfrom=leemhuis.info; dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b=FVvWscX7; arc=none smtp.client-ip=188.68.63.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=leemhuis.info
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=leemhuis.info
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b="GlFYOnOg"
-Received: from p-antispam-ksmg-sc-msk02.sberdevices.ru (localhost [127.0.0.1])
-	by mx4.sberdevices.ru (Postfix) with ESMTP id 505454000B;
-	Wed,  6 May 2026 12:50:13 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx4.sberdevices.ru 505454000B
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
-	s=post; t=1778061013;
-	bh=4dSd9JK+HYxiH/D05MkH3azRzSX4B6Cu/45ydrD2Lbw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
-	b=GlFYOnOg3hSa0bYkDNl3hYzOv1wWPAiYT2d5Zc8sj5syDQTlq5XVvsDq6xfto7kcM
-	 kzvYC0Ri7jEJgB8EU+Y4vuWrB5uFq6du7OHrgMEDUEtbBIy3hIgSHR3vtJ8TgvLvsj
-	 iYVg6UnFrISGQPh/aInN/3qauT6ELqpVC98q8f85YLTf5TY4Rlb8v79Ik4zLliM6Tl
-	 rotnYzhzpIdmeKD6LEeOOSc0Hto8OApXn4H8RFl2PkNl6ibw8HjXEtnWBGXYLM/zi4
-	 3MtrqKqOfZbbb/2AFwfkPEs9bS8u1CPsk8VxISYOr4HVXJ6NsCu82EmD2KzQZefh6x
-	 JamoxI6honxOA==
-Received: from smtp.sberdevices.ru (p-exch-cas-a-m1.sberdevices.ru [172.24.201.216])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "sberdevices.ru", Issuer "R12" (not verified))
-	by mx4.sberdevices.ru (Postfix) with ESMTPS;
-	Wed,  6 May 2026 12:50:12 +0300 (MSK)
-Message-ID: <e1f32df5-b6a1-47a8-a783-fcc8e3c91f25@salutedevices.com>
-Date: Wed, 6 May 2026 12:50:04 +0300
+	dkim=pass (2048-bit key) header.d=leemhuis.info header.i=@leemhuis.info header.b="FVvWscX7"
+Received: from mors-relay8203.netcup.net (localhost [127.0.0.1])
+	by mors-relay8203.netcup.net (Postfix) with ESMTPS id 4g9VvD4dgGz8hfY;
+	Wed,  6 May 2026 09:48:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=leemhuis.info;
+	s=key2; t=1778060920;
+	bh=GGV9DNdwCRoaJL90u+Hhuk9ehoDj8FDOovIw7TYhYJU=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=FVvWscX7l78GZ/COWVrEW371dC842Ox4zJZbjbu8ezaSwRI88S5zpSBNMbelTXxrl
+	 cXjbH2J4Y7iR3vSM7s8VZ88Dfj0hn8rB2lhYHNkAsMrUlRQAY1juw8Usi8l2FStUX3
+	 2zRxbRmMudGavMdOPR1fcbkKb3quZXUakyzx9jm7tBvV85ikWjUVzKY1HsVIvsK7Z/
+	 NqWx+okx+sAp0icBvCdGEdVrcn3w2+IxDnvnIVfNcViZWcqkyjPMdFnZm4cehROGBN
+	 ncMZbmWHNp09YgIvi6kkwnJavbF+YhQt5eIYl65NIVPaNLa2dLy/D9dDRIAmTKZvMI
+	 3FyvnmgfMe0aw==
+Received: from policy02-mors.netcup.net (unknown [46.38.225.35])
+	by mors-relay8203.netcup.net (Postfix) with ESMTPS id 4g9VvD3tzzz8hfV;
+	Wed,  6 May 2026 09:48:40 +0000 (UTC)
+Received: from mxe9fb.netcup.net (unknown [10.243.12.53])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by policy02-mors.netcup.net (Postfix) with ESMTPS id 4g9VvC5lhdz8sgT;
+	Wed,  6 May 2026 11:48:39 +0200 (CEST)
+Received: from [IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f] (unknown [IPv6:2a02:8108:8984:1d00:a0cf:1912:4be:477f])
+	by mxe9fb.netcup.net (Postfix) with ESMTPSA id B06F763304;
+	Wed,  6 May 2026 11:48:38 +0200 (CEST)
+Authentication-Results: mxe9fb;
+        spf=pass (sender IP is 2a02:8108:8984:1d00:a0cf:1912:4be:477f) smtp.mailfrom=regressions@leemhuis.info smtp.helo=[IPV6:2a02:8108:8984:1d00:a0cf:1912:4be:477f]
+Received-SPF: pass (mxe9fb: connection is authenticated)
+Message-ID: <f1c742e0-41c1-4bdc-867c-a768a5eb89c5@leemhuis.info>
+Date: Wed, 6 May 2026 11:48:37 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -44,153 +53,166 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] vsock/virtio: fix potential unbounded skb queue
-To: Bobby Eshleman <bobbyeshleman@gmail.com>, Stefano Garzarella
-	<sgarzare@redhat.com>
-CC: Eric Dumazet <edumazet@google.com>, Bobby Eshleman
-	<bobbyeshleman@meta.com>, Stefan Hajnoczi <stefanha@redhat.com>, "Michael S.
- Tsirkin" <mst@redhat.com>, "David S . Miller" <davem@davemloft.net>, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
-	<horms@kernel.org>, <netdev@vger.kernel.org>, <eric.dumazet@gmail.com>,
-	Arseniy Krasnov <AVKrasnov@sberdevices.ru>, Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
-	<eperezma@redhat.com>, <kvm@vger.kernel.org>,
-	<virtualization@lists.linux.dev>
-References: <20260430122653.554058-1-edumazet@google.com>
- <afn0ZdvZWswBuDMm@sgarzare-redhat>
- <CANn89iLs8DOWJwDpf_ARoMrV+6b2tbhEJ=VVzeC8gCm5dRGaig@mail.gmail.com>
- <afoF_cHfl6ygcupM@sgarzare-redhat>
- <afocwkfBHJ5u10rx@devvm29614.prn0.facebook.com>
-Content-Language: ru
-From: Arseniy Krasnov <avkrasnov@salutedevices.com>
-In-Reply-To: <afocwkfBHJ5u10rx@devvm29614.prn0.facebook.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: p-exch-cas-s-m1.sberdevices.ru (172.16.210.2) To
- p-exch-cas-a-m1.sberdevices.ru (172.24.201.216)
-X-KSMG-AntiPhishing: NotDetected, bases: 2026/05/06 09:23:00
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: avkrasnov@salutedevices.com
-X-KSMG-AntiSpam-Info: LuaCore: 104 0.3.104 557b3c2486a74077a103cf2acd83f2ecf4c95118, {Tracking_uf_ne_domains}, {Tracking_arrow_http}, {Tracking_from_domain_doesnt_match_to}, docs.oasis-open.org:7.1.1;127.0.0.199:7.1.2;salutedevices.com:7.1.1;smtp.sberdevices.ru:7.1.1,5.0.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 202898 [May 06 2026]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.22
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2026/05/06 07:22:00 #28502761
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-KATA-Status: Not Scanned
-X-KSMG-LinksScanning: NotDetected, bases: 2026/05/06 09:23:00
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 5
+Subject: Re: [PATCH v2] KVM: x86: Rate-limit global clock updates on vCPU load
+To: Sean Christopherson <seanjc@google.com>, Lei Chen <lei.chen@smartx.com>
+Cc: igor@gooddata.com, jan.cipa@gooddata.com, jaroslav.pulchart@gooddata.com,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com,
+ Linux kernel regressions list <regressions@lists.linux.dev>
+References: <adVGrJaRlRooO4su@google.com>
+ <20260409142226.2581-1-lei.chen@smartx.com> <adf8Q1VSeAMMyCa_@google.com>
+From: Thorsten Leemhuis <regressions@leemhuis.info>
+Content-Language: de-DE, en-US
+X-Enigmail-Draft-Status: N11222
+Autocrypt: addr=linux@leemhuis.info; keydata=
+ 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 MEK4
+In-Reply-To: <adf8Q1VSeAMMyCa_@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-PPP-Message-ID: 
+ <177806091922.3821122.18141829574976920146@mxe9fb.netcup.net>
+X-Rspamd-Server: rspamd-worker-8404
+X-Rspamd-Queue-Id: B06F763304
+X-NC-CID: wK9o0aQCpElR5NBNPkBy66XV8zKmcEwDpfvEQeJ+o3KYVLhZRyM=
 
+On 4/9/26 21:21, Sean Christopherson wrote:
+> On Thu, Apr 09, 2026, Lei Chen wrote:
+>> commit 446fcce2a52b ("Revert "x86: kvm: rate-limit global clock updates"")
+>> dropped the rate limiting for KVM_REQ_GLOBAL_CLOCK_UPDATE.
+>>
+>> As a result, kvm_arch_vcpu_load() can queue global clock update requests
+>> every time a vCPU is scheduled when the master clock is disabled or when
+>> the vCPU is loaded for the first time.
+>>
+>> Restore the throttling with a per-VM ratelimit state and gate
+>> KVM_REQ_GLOBAL_CLOCK_UPDATE through __ratelimit(), so frequent vCPU
+>> scheduling does not generate a steady stream of redundant clock update
+>> requests.
+>>
+>> Fixes: 446fcce2a52b ("Revert "x86: kvm: rate-limit global clock updates"")
+>> Signed-off-by: Lei Chen <lei.chen@smartx.com>
+>> Reported-by: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
+>> Closes: https://lore.kernel.org/all/CAK8fFZ5gY8_Mw2A=iZVFNVKQNrXQzVsn-HTd+Me9K6ZfmdgA+Q@mail.gmail.com/
 
+Was this performance regression ever addressed? Looks like this fall
+through the cracks, but it's easy to miss something.
 
-05.05.2026 19:37, Bobby Eshleman wrote:
-> On Tue, May 05, 2026 at 06:11:13PM +0200, Stefano Garzarella wrote:
->> On Tue, May 05, 2026 at 07:14:36AM -0700, Eric Dumazet wrote:
->>> On Tue, May 5, 2026 at 6:52 AM Stefano Garzarella <sgarzare@redhat.com> wrote:
->>>>
->>>> On Thu, Apr 30, 2026 at 12:26:52PM +0000, Eric Dumazet wrote:
->>>>> virtio_transport_inc_rx_pkt() checks vvs->rx_bytes + len > vvs->buf_alloc.
->>>>>
->>>>> virtio_transport_recv_enqueue() skips coalescing for packets
->>>>> with VIRTIO_VSOCK_SEQ_EOM.
->>>>>
->>>>> If fed with packets with len == 0 and VIRTIO_VSOCK_SEQ_EOM,
->>>>> a very large number of packets can be queued
->>>>> because vvs->rx_bytes stays at 0.
->>>>>
->>>>> Fix this by estimating the skb metadata size:
->>>>>
->>>>>       (Number of skbs in the queue) * SKB_TRUESIZE(0)
->>>>>
->>>>> Fixes: 077706165717 ("virtio/vsock: don't use skbuff state to account credit")
->>>>> Signed-off-by: Eric Dumazet <edumazet@google.com>
->>>>> Cc: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
->>>>> Cc: Stefan Hajnoczi <stefanha@redhat.com>
->>>>> Cc: Stefano Garzarella <sgarzare@redhat.com>
->>>>> Cc: "Michael S. Tsirkin" <mst@redhat.com>
->>>>> Cc: Jason Wang <jasowang@redhat.com>
->>>>> Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
->>>>> Cc: "Eugenio Pérez" <eperezma@redhat.com>
->>>>> Cc: kvm@vger.kernel.org
->>>>> Cc: virtualization@lists.linux.dev
->>>>> ---
->>>>> net/vmw_vsock/virtio_transport_common.c | 4 +++-
->>>>> 1 file changed, 3 insertions(+), 1 deletion(-)
->>>>>
->>>>> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->>>>> index 416d533f493d7b07e9c77c43f741d28cfcd0953e..9b8014516f4fb1130ae184635fbba4dfee58bd64 100644
->>>>> --- a/net/vmw_vsock/virtio_transport_common.c
->>>>> +++ b/net/vmw_vsock/virtio_transport_common.c
->>>>> @@ -447,7 +447,9 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->>>>> static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
->>>>>                                       u32 len)
->>>>> {
->>>>> -      if (vvs->buf_used + len > vvs->buf_alloc)
->>>>> +      u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
->>>>> +
->>>>> +      if (skb_overhead + vvs->buf_used + len > vvs->buf_alloc)
->>>>>               return false;
->>>>
->>>> I'm not sure about this fix, I mean that maybe this is incomplete.
->>>> In virtio-vsock, there is a credit mechanism between the two peers:
->>>> https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01.html#x1-4850003
->>>>
->>>> This takes only the payload into account, so it’s true that this problem
->>>> exists; however, perhaps we should also inform the other peer of a lower
->>>> credit balance, otherwise the other peer will believe it has much more
->>>> credit than it actually does, send a large payload, and then the packet
->>>> will be discarded and the data lost (there are no retransmissions,
->>>> etc.).
->>>
->>> I dunno, perhaps revert 077706165717 ("virtio/vsock: don't use skbuff
->>> state to account credit")
->>> and find a better fix then?
->>
->> IIRC the same issue was there before the commit fixed by that one (commit
->> 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")), so
->> not sure about reverting it TBH.
->>
->> CCing Arseniy and Bobby.
+Ciao, Thorsten
 
-Thanks!
-
+>> ---
+>> CHANGELOG:
+>> v2:
+>> - remove comment of kvmclock_update_rs
+>> - make sure kvm_arch_vcpu_load make KVM_REQ_CLOCK_UPDATE for this vcpu
+>> - add RATELIMIT_MSG_ON_RELEASE to kvmclock_update_rs
 >>
->>>
->>> There is always a discrepancy between skb->len and skb->truesize.
->>> You will not be able to announce a 1MB window, and accept one milliion
->>> skb of 1-byte each.
->>>
->>> This kind of contract is broken.
->>>
+>> v1:
+>> - initial version(https://lore.kernel.org/all/20260407070046.2336-1-lei.chen@smartx.com/)
+>> ---
+>>  arch/x86/include/asm/kvm_host.h |  1 +
+>>  arch/x86/kvm/x86.c              | 11 +++++++++--
+>>  2 files changed, 10 insertions(+), 2 deletions(-)
 >>
->> Yep, I agree, but before we start discarding data (and losing it), IMHO we
->> should at least inform the other peer that we're out of space.
->>
->> @Stefan, @Michael, do you think we can do something in the spec to avoid
->> this issue and in some way take into account also the metadata in the
->> credit. I mean to avoid the 1-byte packets flooding.
->>
->> Thanks,
->> Stefano
->>
+>> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+>> index 5a3bfa293e8b..5e750c49d21e 100644
+>> --- a/arch/x86/include/asm/kvm_host.h
+>> +++ b/arch/x86/include/asm/kvm_host.h
+>> @@ -1453,6 +1453,7 @@ struct kvm_arch {
+>>  	bool use_master_clock;
+>>  	u64 master_kernel_ns;
+>>  	u64 master_cycle_now;
+>> +	struct ratelimit_state kvmclock_update_rs;
+>>  
+>>  #ifdef CONFIG_KVM_HYPERV
+>>  	struct kvm_hv hyperv;
+>> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+>> index 63afdb6bb078..a534e8391611 100644
+>> --- a/arch/x86/kvm/x86.c
+>> +++ b/arch/x86/kvm/x86.c
+>> @@ -5210,8 +5210,13 @@ void kvm_arch_vcpu_load(struct kvm_vcpu *vcpu, int cpu)
+>>  		 * On a host with synchronized TSC, there is no need to update
+>>  		 * kvmclock on vcpu->cpu migration
+>>  		 */
+>> -		if (!vcpu->kvm->arch.use_master_clock || vcpu->cpu == -1)
+>> -			kvm_make_request(KVM_REQ_GLOBAL_CLOCK_UPDATE, vcpu);
+>> +		if (!vcpu->kvm->arch.use_master_clock || vcpu->cpu == -1) {
+>> +			if (__ratelimit(&vcpu->kvm->arch.kvmclock_update_rs))
+>> +				kvm_make_request(KVM_REQ_GLOBAL_CLOCK_UPDATE, vcpu);
+>> +			else
+>> +				kvm_make_request(KVM_REQ_CLOCK_UPDATE, vcpu);
+> 
+> What I was trying to call out in my review of v1, is that prior to commit
+> 446fcce2a52b, the effectively ratelimiting applied to *all* instances of
+> KVM_REQ_GLOBAL_CLOCK_UPDATE.  Which meant that KVM's existing behavior is that
+> kvm_write_system_time() would be subject to the ratelimiting as well.
+> 
+> That said, I don't see any obvious problems with immediately honoring writes to
+> MSR_KVM_SYSTEM_TIME{,_NEW}, and it's probably a much better experience for the
+> guest.  So I'm a-ok with this approach, but we should call out that skipping the
+> synthetic MSR case is deliberate.  No need for a v3, I'll add a blurb when
+> applying.
+> 
+>> +		}
+>> +
+>>  		if (vcpu->cpu != cpu)
+>>  			kvm_make_request(KVM_REQ_MIGRATE_TIMER, vcpu);
+>>  		vcpu->cpu = cpu;
+>> @@ -13189,6 +13194,8 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+>>  	raw_spin_lock_init(&kvm->arch.tsc_write_lock);
+>>  	mutex_init(&kvm->arch.apic_map_lock);
+>>  	seqcount_raw_spinlock_init(&kvm->arch.pvclock_sc, &kvm->arch.tsc_write_lock);
+>> +	ratelimit_state_init(&kvm->arch.kvmclock_update_rs, HZ, 10);
+>> +	ratelimit_set_flags(&kvm->arch.kvmclock_update_rs, RATELIMIT_MSG_ON_RELEASE);
+> 
+> IIUC, so long was KVM doesn't explicitly invoke ratelimit_state_exit(), setting
+> RATELIMIT_MSG_ON_RELEASE means we won't get dmesg spam?  To be clear, I'm 100%
+> in favor of suppressing dmesg output.
+> 
+>>  	kvm->arch.kvmclock_offset = -get_kvmclock_base_ns();
+>>  
+>>  	raw_spin_lock_irqsave(&kvm->arch.tsc_write_lock, flags);
+>> -- 
+>> 2.51.0
 >>
 > 
-> Indeed the old pre-fix skb code would have the same issue.
-> 
-> I can't think of any way around this without extending the spec.
-
-Hi, thanks, agree with Bobby, that accounting metadata (e.g. skb size here) was not implemented "by
-design" in credit logic - another side of data exchange knows nothing about that. Also the same
-situation was before skb implementation was added by Bobby. So looks like need to update spec may be.
-
-Thanks!
-
-
-> 
-> Best,
-> Bobby
 
