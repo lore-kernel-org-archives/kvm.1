@@ -1,180 +1,242 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7E4847ECE2
-	for <kvm@vger.kernel.org>; Wed,  6 May 2026 13:57:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E7B3F210E
+	for <kvm@vger.kernel.org>; Wed,  6 May 2026 14:01:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778075864; cv=none; b=Sahto3vQtrfGvIzu5aoW2w5RECbO6Dke2Ni5c1YDEjZNcVxY7WQOQusVnV2umOT96OXsla30krok+GiCUFNNmMN3KgEC33DHdUEXg4zRVMz0JoHjECpzhLglHtKzwItVMUvgnEPQu/lGGDXO5BNFUjY9RSTek+dvVCjbiLNlTKY=
+	t=1778076071; cv=none; b=suXrIUYBPiBGMUXJOujK98cvK188nFdtfbDXxteD3Oqe0Qn7Q9ZIiqG6MBHj72qxvlcJ9oyRvDJgStldLM6KzhANpuSWhEDTaUTE5V5yxJ3USleSBwMb/8dfGR1zQ831BkZdfPc+vaWl4Je2XaEdQwTQYiEcp2kRteyLiGjxB8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778075864; c=relaxed/simple;
-	bh=Mp+WgSWHYdKleZjS+gQsLtyvkLgTIxaCvE/kSEKBR5U=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oocm+jtdVWaX6arqtlo21a74hk7sBUDnNG/fIn0pvNrWgdj+qhDxran5OQLif08W+q2CDFWso6MTBdnWomlttWwuguYzlgUxvvwTFYzbBHUKmC3XLwOFRYXvib+RLVrfdMfywjWwI9l8+pHWh81zmFxJZDJ5AKdtKXD+f/2OkzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ctr2HuSN; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1778076071; c=relaxed/simple;
+	bh=SFiFDucNaRObAcaMrKWI6BPwF1qadwuDj2Vt2SN+ha0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UqT8TySNFNXN8wi5qk7vestnSuoEw4WPSoEa9tAT460jcavA0v3IYqs0J3Gbt0Z45JHM08knZ04hA3WFqgudJ8vfzfSez0TPBljAuTf5kQLQ5d8izklv8nfoeHZjLnfB6ECnjjWMT5YXFcAEQbKpUpiNdGLA99CsK0X1qFVMbrM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KyTZ+2Oz; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=JDgy/5B5; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ctr2HuSN"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-36514eb1194so8264813a91.2
-        for <kvm@vger.kernel.org>; Wed, 06 May 2026 06:57:42 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KyTZ+2Oz";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="JDgy/5B5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778076068;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cCRVTBZQDAEVaqanV0j4+1ERDgnWXkjidry1aEHpyPY=;
+	b=KyTZ+2OztYRg+gdueg9d+lfLVNutjAk9xcp9yGdStW+MkKZ7l5oWNNw/r0JoCrglF4ud1d
+	wkKFh2mJ7XBGJjEr9N9VV/YQ+E89EyhsCNaYfY5h8nJQIw7zkAwTQ6TX+TcvdM+jkW9fMP
+	Lmp77+bTZYOk4LEJU3aIJBkEBefKWT0=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-607-Yfspj5u8PPmZ8t7rrEYGgw-1; Wed, 06 May 2026 10:00:59 -0400
+X-MC-Unique: Yfspj5u8PPmZ8t7rrEYGgw-1
+X-Mimecast-MFC-AGG-ID: Yfspj5u8PPmZ8t7rrEYGgw_1778076058
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-43d7a5b9678so5425840f8f.2
+        for <kvm@vger.kernel.org>; Wed, 06 May 2026 07:00:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778075862; x=1778680662; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bte2ikXfMH1X30UWHnUNHKf52jg/NvhErm9OVWL82Ks=;
-        b=Ctr2HuSN3ksSlYmnK1Ef+1814T8v7ijWbwMqvWLwRWgOszcgzQK+YNhV8MoT7LkyCQ
-         V+J9pzPkBKQoF9Amhdz/q1Qcsn2ILAEvI99m2zejwkUbXdcc6FzMclTVZATzGisQ0eU2
-         43zUSa7Xf+Ejc5Uv0B9J4/bYw7ZcPHB8US9GF63Ki6dPn8w8Whs5XjY9Bb/K50Dn2Ghd
-         pvsySe14C6A2C5OWJAcVUIkLSRqne6TCdiSGh6F1AP3EXfT4PRa4HIAWHbGi39TJjF9Z
-         85CJRHbPa7wIJsPSMHalAoXxfMmIdeYvaWhDgXAIC6iCXZuiVTqHPdW+DhKDkL4tdwke
-         h+3Q==
+        d=redhat.com; s=google; t=1778076057; x=1778680857; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=cCRVTBZQDAEVaqanV0j4+1ERDgnWXkjidry1aEHpyPY=;
+        b=JDgy/5B54uLx12v9iyT87H7na1YzGdm5xAhDsIsMc1XWYhG4kapzzzDqhMiaxO9UMP
+         8rXu4qCAOM+Mv16d92UPMeNLNta0s8H2pJ/kHch36gCFSVu3v07k6zatxFE5Hb4EEqoL
+         B616DI2AzV01FPbPY+bxUCcctC2Xzed9oJ4R2C9tp6kGCyJ2aX2trmLLZb3j/dLzoSHW
+         +YU49mCi7P8yl3wgXQIl+pZTG5VAzcMjtu8ydLJJa9R/+12waQhJXGU5xtzHPSnUkZvP
+         6H7ofQqKN+4sGzCtX4PilplS+ApO41/2QTzExFHzqMvLFLhYEbfN4FZG1VYRQIxNgvxj
+         DC7w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778075862; x=1778680662;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=bte2ikXfMH1X30UWHnUNHKf52jg/NvhErm9OVWL82Ks=;
-        b=ePSuEBtp4MnruOfjxOxcVL5M7iVIZhRDYUB2lJkNJmXSIny/VDJmu50CcqCzOagtv3
-         drX9AnzfsO94mBnVb9IJJ9VjZV4WryKkQmgi4myhcymmT578Oy/1C6CLw7fNd85+iQUQ
-         UmO5DvhlOzH+gjCnuziKpVe3H9YqqH59gYdOvFUdMBV746t/1Sk17CJAL30jFByTAHdf
-         gWV8tUxLWSWtejes1C4aeafqyLyCuO04ytG/uuzYh38NxTFBU+azO8noWZGuxnJSdN+R
-         wdmgn+3vrrO+kr5j4s9kUZm45J+NHshmRvLZuAkJVF8SatETuhE4GCZbWNh8SBTbul4Z
-         mZMQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8qM4khozQzn0DpqLfoO/lkLHQvuOQIDVSCvls6I8fiUYLfVa/d7liYFsNv1RfFuviqsoY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz4imR0wpWt7PONYwTLI1t9tVvNlNkiKGcPSuFMVSQr/TqqiGAg
-	0uGEKZMlexN4aPdkhXGsnqRTCqFlCQp/J328myW6h8yW6+4Zf5miNNSTe7Iqq7jxCC7BggYT3Xm
-	x2VIfGg==
-X-Received: from pgbcr4.prod.google.com ([2002:a05:6a02:4104:b0:c80:2817:3a23])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:4314:b0:3a2:dbaa:82ec
- with SMTP id adf61e73a8af0-3aa5aae7ab0mr3951938637.32.1778075861517; Wed, 06
- May 2026 06:57:41 -0700 (PDT)
-Date: Wed, 6 May 2026 06:57:40 -0700
-In-Reply-To: <69f8dd59.170a0220.bb392.0004.GAE@google.com>
+        d=1e100.net; s=20251104; t=1778076057; x=1778680857;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cCRVTBZQDAEVaqanV0j4+1ERDgnWXkjidry1aEHpyPY=;
+        b=m67QzU9GWT8F3Ofk9jMefV6jD19l5nDZ4zB1n9eFqqRyqwpVNEn4Ycfot7hytl2uYd
+         /IQzDUw0OKA1hPPxeFz1bbyCBhD4B1aCwd8ZS66w0CSgiOoXcoJfWkkXHc1xtZPmTwTU
+         0ubw9ArgCbxIfUHWRoVgJ+5CVQC5OGP7ItuqbCh5KdthqGLTy4weqwgjVTyv9jbKNWfk
+         1+kC8PQ71pqWD4C0Tb4yNAUHH4BoI0e+9F2f9UGThYL0QzKh3xtdD8pryD2CMIXbJ50h
+         yumBZ/2yuESs3hqLGcxEJX/yt1nOt+iRUr7U2GnzWWdcCkTXGsTKFVWHfUOkocgJRnDL
+         uCBw==
+X-Forwarded-Encrypted: i=1; AFNElJ/jS6dviDfkui+x5O/Empg58PiTanjvJb4fLp39loFCSrUWXW+XuigVfOuEvX3vfCCfa0M=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIRGxrGPROdmhn7W3ZT0p6CLeN2elTDbzbtVLsrTX4d5Y4omtk
+	7zjBsPpwxRn07SE8pk5I6BcsVDOkBWUH7CvY4uybCyId2srZaMXy+w1p6f/q+bv29Oil5gDwUBP
+	ukBY6nQHGogCpidi7N5ylpXbUixCKkDq0+TlVg3vVg3x+F4PRyrdpdA==
+X-Gm-Gg: AeBDievtdLfrV1W1fs37H86q7+eGdIL83mHxpx4TGkwAdqa56rkLaipvdsaDjmQKLwx
+	cwV74wSQCvADAhotDHeWsoTBqbJteO4YXZjM7k3yERxw8yWcgP/RtJH06tdXTw3exXbjiFANGwJ
+	0BYz4nr7n1vgwTYgL3mjqA09L4GVgY0suNBiiEhsEvv0aZMAihkn7XU/a2jzvanmcngr8Fu91Uq
+	+wtlF/JES5EYMiiAr6rM1sQy4hx8XkOydcWWpCtEmeVhC1FY9OIJaDz3Unl0X6d9l2Efa2QXK3K
+	7bfWKRuwec+beDaXNX3ekE9sIEC13X/bvrq2pGF4KEwyV00xUiriZTo190he0Vznh+iVYdqcU5O
+	xnC2T7hmhZKqk4nWX1ceb/IMCOlr6CfHVsNi4JqZHyFjh2g9VLYUgs1xwdd/F6xsyGmqU10GJsg
+	==
+X-Received: by 2002:a05:6000:2c03:b0:43d:21a:9a3e with SMTP id ffacd0b85a97d-4515d5c54c0mr5877769f8f.32.1778076057342;
+        Wed, 06 May 2026 07:00:57 -0700 (PDT)
+X-Received: by 2002:a05:6000:2c03:b0:43d:21a:9a3e with SMTP id ffacd0b85a97d-4515d5c54c0mr5877593f8f.32.1778076056142;
+        Wed, 06 May 2026 07:00:56 -0700 (PDT)
+Received: from sgarzare-redhat (host-87-11-6-2.retail.telecomitalia.it. [87.11.6.2])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45055d36dacsm12654112f8f.32.2026.05.06.07.00.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 May 2026 07:00:55 -0700 (PDT)
+Date: Wed, 6 May 2026 16:00:48 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Cc: Bobby Eshleman <bobbyeshleman@gmail.com>, 
+	Eric Dumazet <edumazet@google.com>, Bobby Eshleman <bobbyeshleman@meta.com>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
+	eric.dumazet@gmail.com, Arseniy Krasnov <AVKrasnov@sberdevices.ru>, 
+	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev
+Subject: Re: [PATCH net] vsock/virtio: fix potential unbounded skb queue
+Message-ID: <afs9FsY51D3zRA5N@sgarzare-redhat>
+References: <20260430122653.554058-1-edumazet@google.com>
+ <afn0ZdvZWswBuDMm@sgarzare-redhat>
+ <CANn89iLs8DOWJwDpf_ARoMrV+6b2tbhEJ=VVzeC8gCm5dRGaig@mail.gmail.com>
+ <afoF_cHfl6ygcupM@sgarzare-redhat>
+ <afocwkfBHJ5u10rx@devvm29614.prn0.facebook.com>
+ <e1f32df5-b6a1-47a8-a783-fcc8e3c91f25@salutedevices.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <6936812a.a70a0220.38f243.0090.GAE@google.com> <69f8dd59.170a0220.bb392.0004.GAE@google.com>
-Message-ID: <aftI1Nt2PTptaUs2@google.com>
-Subject: Re: [syzbot] [mm?] BUG: sleeping function called from invalid context
- in kvm_mmu_notifier_invalidate_range_start
-From: Sean Christopherson <seanjc@google.com>
-To: syzbot <syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com>
-Cc: akpm@linux-foundation.org, dwmw@amazon.co.uk, kvm@vger.kernel.org, 
-	liam.howlett@oracle.com, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	linux-rt-devel@lists.linux.dev, lkp@intel.com, llvm@lists.linux.dev, 
-	lorenzo.stoakes@oracle.com, me@brighamcampbell.com, mhocko@suse.com, 
-	oe-kbuild-all@lists.linux.dev, pbonzini@redhat.com, rientjes@google.com, 
-	rppt@kernel.org, shaikhkamal2012@gmail.com, shakeel.butt@linux.dev, 
-	skhan@linuxfoundation.org, surenb@google.com, syzkaller-bugs@googlegroups.com, 
-	vbabka@kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <e1f32df5-b6a1-47a8-a783-fcc8e3c91f25@salutedevices.com>
 
-On Mon, May 04, 2026, syzbot wrote:
-> syzbot has found a reproducer for the following issue on:
-> 
-> HEAD commit:    b9303e6bff70 Add linux-next specific files for 20260430
-> git tree:       linux-next
-> console output: https://syzkaller.appspot.com/x/log.txt?x=13745dba580000
-> kernel config:  https://syzkaller.appspot.com/x/.config?x=5474e13c6d20d45c
-> dashboard link: https://syzkaller.appspot.com/bug?extid=c3178b6b512446632bac
-> compiler:       Debian clang version 21.1.8 (++20251221033036+2078da43e25a-1~exp1~20251221153213.50), Debian LLD 21.1.8
-> syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=125dd748580000
-> 
-> Downloadable assets:
-> disk image: https://storage.googleapis.com/syzbot-assets/b3a0a2e50f73/disk-b9303e6b.raw.xz
-> vmlinux: https://storage.googleapis.com/syzbot-assets/d3d481b220d4/vmlinux-b9303e6b.xz
-> kernel image: https://storage.googleapis.com/syzbot-assets/d6e012913960/bzImage-b9303e6b.xz
-> 
-> IMPORTANT: if you fix the issue, please add the following tag to the commit:
-> Reported-by: syzbot+c3178b6b512446632bac@syzkaller.appspotmail.com
-> 
-> BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+On Wed, May 06, 2026 at 12:50:04PM +0300, Arseniy Krasnov wrote:
+>
+>
+>05.05.2026 19:37, Bobby Eshleman wrote:
+>> On Tue, May 05, 2026 at 06:11:13PM +0200, Stefano Garzarella wrote:
+>>> On Tue, May 05, 2026 at 07:14:36AM -0700, Eric Dumazet wrote:
+>>>> On Tue, May 5, 2026 at 6:52 AM Stefano Garzarella <sgarzare@redhat.com> wrote:
+>>>>>
+>>>>> On Thu, Apr 30, 2026 at 12:26:52PM +0000, Eric Dumazet wrote:
+>>>>>> virtio_transport_inc_rx_pkt() checks vvs->rx_bytes + len > vvs->buf_alloc.
+>>>>>>
+>>>>>> virtio_transport_recv_enqueue() skips coalescing for packets
+>>>>>> with VIRTIO_VSOCK_SEQ_EOM.
+>>>>>>
+>>>>>> If fed with packets with len == 0 and VIRTIO_VSOCK_SEQ_EOM,
+>>>>>> a very large number of packets can be queued
+>>>>>> because vvs->rx_bytes stays at 0.
+>>>>>>
+>>>>>> Fix this by estimating the skb metadata size:
+>>>>>>
+>>>>>>       (Number of skbs in the queue) * SKB_TRUESIZE(0)
+>>>>>>
+>>>>>> Fixes: 077706165717 ("virtio/vsock: don't use skbuff state to account credit")
+>>>>>> Signed-off-by: Eric Dumazet <edumazet@google.com>
+>>>>>> Cc: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
+>>>>>> Cc: Stefan Hajnoczi <stefanha@redhat.com>
+>>>>>> Cc: Stefano Garzarella <sgarzare@redhat.com>
+>>>>>> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+>>>>>> Cc: Jason Wang <jasowang@redhat.com>
+>>>>>> Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+>>>>>> Cc: "Eugenio Pérez" <eperezma@redhat.com>
+>>>>>> Cc: kvm@vger.kernel.org
+>>>>>> Cc: virtualization@lists.linux.dev
+>>>>>> ---
+>>>>>> net/vmw_vsock/virtio_transport_common.c | 4 +++-
+>>>>>> 1 file changed, 3 insertions(+), 1 deletion(-)
+>>>>>>
+>>>>>> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>>>>>> index 416d533f493d7b07e9c77c43f741d28cfcd0953e..9b8014516f4fb1130ae184635fbba4dfee58bd64 100644
+>>>>>> --- a/net/vmw_vsock/virtio_transport_common.c
+>>>>>> +++ b/net/vmw_vsock/virtio_transport_common.c
+>>>>>> @@ -447,7 +447,9 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+>>>>>> static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
+>>>>>>                                       u32 len)
+>>>>>> {
+>>>>>> -      if (vvs->buf_used + len > vvs->buf_alloc)
+>>>>>> +      u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
+>>>>>> +
+>>>>>> +      if (skb_overhead + vvs->buf_used + len > vvs->buf_alloc)
+>>>>>>               return false;
+>>>>>
+>>>>> I'm not sure about this fix, I mean that maybe this is incomplete.
+>>>>> In virtio-vsock, there is a credit mechanism between the two peers:
+>>>>> https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01.html#x1-4850003
+>>>>>
+>>>>> This takes only the payload into account, so it’s true that this problem
+>>>>> exists; however, perhaps we should also inform the other peer of a lower
+>>>>> credit balance, otherwise the other peer will believe it has much more
+>>>>> credit than it actually does, send a large payload, and then the packet
+>>>>> will be discarded and the data lost (there are no retransmissions,
+>>>>> etc.).
+>>>>
+>>>> I dunno, perhaps revert 077706165717 ("virtio/vsock: don't use skbuff
+>>>> state to account credit")
+>>>> and find a better fix then?
+>>>
+>>> IIRC the same issue was there before the commit fixed by that one (commit
+>>> 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")), so
+>>> not sure about reverting it TBH.
+>>>
+>>> CCing Arseniy and Bobby.
+>
+>Thanks!
+>
+>>>
+>>>>
+>>>> There is always a discrepancy between skb->len and skb->truesize.
+>>>> You will not be able to announce a 1MB window, and accept one milliion
+>>>> skb of 1-byte each.
+>>>>
+>>>> This kind of contract is broken.
+>>>>
+>>>
+>>> Yep, I agree, but before we start discarding data (and losing it), IMHO we
+>>> should at least inform the other peer that we're out of space.
+>>>
+>>> @Stefan, @Michael, do you think we can do something in the spec to avoid
+>>> this issue and in some way take into account also the metadata in the
+>>> credit. I mean to avoid the 1-byte packets flooding.
+>>>
+>>> Thanks,
+>>> Stefano
+>>>
+>>>
+>>
+>> Indeed the old pre-fix skb code would have the same issue.
+>>
+>> I can't think of any way around this without extending the spec.
+>
+>Hi, thanks, agree with Bobby, that accounting metadata (e.g. skb size here) was not implemented "by
+>design" in credit logic - another side of data exchange knows nothing about that. Also the same
+>situation was before skb implementation was added by Bobby. So looks like need to update spec may be.
+>
 
-This is a known issue:
+Even if we change the specifications, we still need to work with older 
+devices, so we should find a solution for this as well.
 
-https://lore.kernel.org/all/20260429222502.25414-1-shaikhkamal2012@gmail.com
+My main concern is data loss, so I'm considering the following options:
 
-> in_atomic(): 0, irqs_disabled(): 0, non_block: 1, pid: 40, name: oom_reaper
-> preempt_count: 0, expected: 0
-> RCU nest depth: 0, expected: 0
-> 4 locks held by oom_reaper/40:
->  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_trylock include/linux/mmap_lock.h:611 [inline]
->  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task_mm mm/oom_kill.c:566 [inline]
->  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task mm/oom_kill.c:609 [inline]
->  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reaper+0x2bb/0xc10 mm/oom_kill.c:650
->  #1: ffffffff8e3066c0 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: mmu_notifier_invalidate_range_start_nonblock include/linux/mmu_notifier.h:495 [inline]
->  #1: ffffffff8e3066c0 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: zap_vma_for_reaping+0x193/0x380 mm/memory.c:2119
->  #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: srcu_lock_acquire include/linux/srcu.h:187 [inline]
->  #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: srcu_read_lock include/linux/srcu.h:294 [inline]
->  #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: mn_hlist_invalidate_range_start mm/mmu_notifier.c:515 [inline]
->  #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: __mmu_notifier_invalidate_range_start+0x5a1/0xb60 mm/mmu_notifier.c:580
->  #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: spin_lock include/linux/spinlock_rt.h:45 [inline]
->  #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: kvm_mmu_notifier_invalidate_range_start+0x1b7/0xc00 virt/kvm/kvm_main.c:744
-> CPU: 0 UID: 0 PID: 40 Comm: oom_reaper Not tainted syzkaller #0 PREEMPT_{RT,(full)} 
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
-> Call Trace:
->  <TASK>
->  dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
->  __might_resched+0x329/0x480 kernel/sched/core.c:9163
->  __rt_spin_lock kernel/locking/spinlock_rt.c:48 [inline]
->  rt_spin_lock+0xc2/0x400 kernel/locking/spinlock_rt.c:57
->  spin_lock include/linux/spinlock_rt.h:45 [inline]
->  kvm_mmu_notifier_invalidate_range_start+0x1b7/0xc00 virt/kvm/kvm_main.c:744
->  mn_hlist_invalidate_range_start mm/mmu_notifier.c:525 [inline]
->  __mmu_notifier_invalidate_range_start+0x6e4/0xb60 mm/mmu_notifier.c:580
->  mmu_notifier_invalidate_range_start_nonblock include/linux/mmu_notifier.h:498 [inline]
->  zap_vma_for_reaping+0x1f7/0x380 mm/memory.c:2119
->  __oom_reap_task_mm mm/oom_kill.c:548 [inline]
->  oom_reap_task_mm mm/oom_kill.c:585 [inline]
->  oom_reap_task mm/oom_kill.c:609 [inline]
->  oom_reaper+0x51e/0xc10 mm/oom_kill.c:650
->  kthread+0x388/0x470 kernel/kthread.c:436
->  ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
->  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
->  </TASK>
-> BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-> in_atomic(): 0, irqs_disabled(): 0, non_block: 1, pid: 40, name: oom_reaper
-> preempt_count: 0, expected: 0
-> RCU nest depth: 0, expected: 0
-> 4 locks held by oom_reaper/40:
->  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: mmap_read_trylock include/linux/mmap_lock.h:611 [inline]
->  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task_mm mm/oom_kill.c:566 [inline]
->  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reap_task mm/oom_kill.c:609 [inline]
->  #0: ffff8880335ed1b0 (&mm->mmap_lock){++++}-{4:4}, at: oom_reaper+0x2bb/0xc10 mm/oom_kill.c:650
->  #1: ffffffff8e3066c0 (mmu_notifier_invalidate_range_start){+.+.}-{0:0}, at: __mmu_notifier_invalidate_range_end+0x67/0x400 mm/mmu_notifier.c:611
->  #2: ffffffff8e306718 (srcu){.+.+}-{0:0}, at: __mmu_notifier_invalidate_range_end+0x67/0x400 mm/mmu_notifier.c:611
->  #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: spin_lock include/linux/spinlock_rt.h:45 [inline]
->  #3: ffff88803996caf8 (&kvm->mn_invalidate_lock){+.+.}-{3:3}, at: kvm_mmu_notifier_invalidate_range_end+0x1d6/0x3d0 virt/kvm/kvm_main.c:814
-> CPU: 0 UID: 0 PID: 40 Comm: oom_reaper Tainted: G        W           syzkaller #0 PREEMPT_{RT,(full)} 
-> Tainted: [W]=WARN
-> Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 04/18/2026
-> Call Trace:
->  <TASK>
->  dump_stack_lvl+0xe8/0x150 lib/dump_stack.c:120
->  __might_resched+0x329/0x480 kernel/sched/core.c:9163
->  __rt_spin_lock kernel/locking/spinlock_rt.c:48 [inline]
->  rt_spin_lock+0xc2/0x400 kernel/locking/spinlock_rt.c:57
->  spin_lock include/linux/spinlock_rt.h:45 [inline]
->  kvm_mmu_notifier_invalidate_range_end+0x1d6/0x3d0 virt/kvm/kvm_main.c:814
->  mn_hlist_invalidate_end mm/mmu_notifier.c:597 [inline]
->  __mmu_notifier_invalidate_range_end+0x23b/0x400 mm/mmu_notifier.c:616
->  mmu_notifier_invalidate_range_end include/linux/mmu_notifier.h:511 [inline]
->  zap_vma_for_reaping+0x2d9/0x380 mm/memory.c:2124
->  __oom_reap_task_mm mm/oom_kill.c:548 [inline]
->  oom_reap_task_mm mm/oom_kill.c:585 [inline]
->  oom_reap_task mm/oom_kill.c:609 [inline]
->  oom_reaper+0x51e/0xc10 mm/oom_kill.c:650
->  kthread+0x388/0x470 kernel/kthread.c:436
->  ret_from_fork+0x514/0xb70 arch/x86/kernel/process.c:158
->  ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:245
->  </TASK>
-> oom_reaper: reaped process 6034 (syz.0.24), now anon-rss:0kB, file-rss:64kB, shmem-rss:0kB
-> 
-> 
-> ---
-> If you want syzbot to run the reproducer, reply with:
-> #syz test: git://repo/address.git branch-or-commit-hash
-> If you attach or paste a git patch, syzbot will apply it before testing.
+1. Notify the other peer of a smaller buf_alloc from the start, leave 
+some room for overhead, and when it's running out, notify them that 
+buf_alloc = 0. This way, the peer realizes it can’t send anything else.
+
+2. Or update buf_alloc each time by removing the overhead, similar to 
+what’s currently done in virtio_transport_inc_rx_pkt(), but also do it 
+in virtio_transport_inc_tx_pkt().
+
+As I said, IMO this patch alone is incomplete; we need to communicate 
+with the peer somehow regarding space. I don’t think including the 
+overhead in fwd_cnt is spec compliant, since the other peer has no idea 
+how much overhead is needed, but reducing buf_alloc should be okay, even 
+though I’m concerned about packets in flight.
+
+As a quick fix, I think option 2 might be the easiest; I’ll run some 
+tests and send over a patch.
+
+But in the long run, I think we absolutely need to improve memory 
+management in vsock, perhaps by avoiding custom solutions.
+
+Thanks,
+Stefano
+
