@@ -1,220 +1,152 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201DC31A7E4
-	for <kvm@vger.kernel.org>; Wed,  6 May 2026 13:53:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49C883F1645;
+	Wed,  6 May 2026 13:55:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778075619; cv=none; b=rVPNy76+mhQh/13SMvMBEOarX9JQ+oVCwv5QGwy7TbIENSzytKK0mDRjgjOpgbUyEYha5Vbdi1JW4Un82lxtrPp2wT9fpfr9yOJDIVnfboUCpOGu5jetBHXec7F1tWOHB9drg/MhUMx4guSjsYtqJbP9n330C08Z4RdP/Wo5/LM=
+	t=1778075725; cv=none; b=SJPmwtO2y2aB8U6SQ4tI7y+rU6IXwpsvTtYXaK5CQn5b7E4fQx72nuZ93n0sd3MQDzk7EgTOZH9dnnlV0aszCyz4qGwqQMOwV37TIKqmGvEz8ue5dm5pD+MNW/hVlFLV5JLe3ZvWTwkaheKgSiwi9QPyO6BwXM/B64i/7ebD6Mg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778075619; c=relaxed/simple;
-	bh=Yf3p9DePpxrz1wRV7pVbqVJsbvljiS6iIc3Z+7d2LCk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TepqcLRu1RDKPOyjIS3gXT5SdUGh5n97OTiVPbHumXb28V9izci+h0OiWca4QechhQU0LcyN55/a37WucF0kZBECztxMBK0b14doJI5EolKD3Awn0qaqahb9fjAhbhjWpxcjLIigPSSY3KhFjsofBTf4wcSHfN+uXzq+y2xSWhQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=gW3xmhO/; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1778075725; c=relaxed/simple;
+	bh=X7KKTp4eS62Kb7RbgA46G+mYGISlbx+Lnbg459zCqCo=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Dk8ldXrRKV/6S12fd5YjNWI9MouHiMqA+dGIFjThHZgHHRjinwwh7Krv/Xgrtca3N9FLwD2aI7ZTvgD6iWy576lnrYgkqC1z0+aC0ZnMdE6zx2wvhHp++kTKFI4f+CNw89U/b74stkOZv/GRJZa3g4rLP4Q52UTBFyImsRJgqfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ek59/uKV; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="gW3xmhO/"
-Received: from pps.filterd (m0528006.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6467gsiv1815915
-	for <kvm@vger.kernel.org>; Wed, 6 May 2026 06:53:36 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ek59/uKV"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 646Bsh5L3452190;
+	Wed, 6 May 2026 13:55:21 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=Wr10VTJN3duBxSrKADAl6R/6nUDyzwk22GvJwJKGKOw=; b=gW3xmhO/sRQz
-	XJqsiB30MPqABfSYdPyLP0Gn/OezmfyWpq/Qzqjhz2ze7SQRMEXSQHa99g+b7Iir
-	gFzVLc2FOh5mAKnK8IvSBVns4QA0YXbcRl87u0f1pieyGY90bP6vERpbS+L7g+P9
-	DHCWf4PcInhjkxO+Gm7vkvPJ6GVW5B0TpH8Jp8xFidA4r6Hlogd/JJy3L8saGMRk
-	15ap4MCtUXuicSVe2/hcNksNiN8B1EbtQCmsjgszWsFwGMWCoArp5Upp87gHiWGn
-	78NOQtEVTH4koE76G93+00BqHzW9i4PIfjFdjf47b5lVOIeDazmu1SVOr2EArvRI
-	msxzNEBCAw==
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com [209.85.208.69])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4dx1wgvu8d-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Wed, 06 May 2026 06:53:35 -0700 (PDT)
-Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-66a3c95958fso5009210a12.2
-        for <kvm@vger.kernel.org>; Wed, 06 May 2026 06:53:35 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778075615; x=1778680415;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Wr10VTJN3duBxSrKADAl6R/6nUDyzwk22GvJwJKGKOw=;
-        b=GZ1IXvkC2QsaiQSVenzD4daq/tNY8jiNfV7OSqEYhdZYq6NUiM5hDk6ee7WRJta2vT
-         0PtaW/MycOMKSRt3NCWkiIHc6FYwWULAP9dW6RaXfJ1i6OiL/wiCg7fTd5UB9hPx2Ieo
-         iwXq07GH1E2ipEtzxZXocytBJYsg0KISzjy4+ApgXAp6rqsOUFYjxIO/ECHgNoAi3DVd
-         bsat2Rjsd3/W0u60t6hVK4GBKIjPe19xIfs+k17Rl+W8htdDBqqAUZmYeVk3VOQDdTsi
-         KBsU/Jk7/P6/InmqOgqhPjoQIsb2VAOm+Tr+b3u9O3hfPhbhMxTs4nLi3C22JKXp27tc
-         MqYw==
-X-Forwarded-Encrypted: i=1; AFNElJ+BQtSSRYcFGf2LPR21u+EixAwxrWmwmFvE44EgQGqhklRRD5ZjCUqqOCEZ10rrA1Tr2aQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwH3H8sZcx5CnS1W1l09KtQ/69rBGBDBYE8+qiHIGiQM7uol3Y4
-	nTFfCqXN2KqTfeKGqP4gPqlPyTmg5GD7BV8We98XRRUbJhFRs30bKd4E2krZAYtzApLGUAOpeMS
-	FurSflAmawfZs07Ru23mgeKd2r+b5nAt6AfmvLklZWRprrQ1i8CAF
-X-Gm-Gg: AeBDievEql7uz0pbs/M7AnWJUj5YkkrPDmIIalPL1yKuh7y9CLrEzNowfRCqU9bAL6r
-	9xskaO0mViCUKCRqCpSWJvbcI1eSyG20N2UmAB6uvIvS7leDnC0PsZDXV4nQ0r84F+/KrlLK6Yt
-	Cp9W+MP62+tOAaaSyjUbwGXPAoTFAakLwqAR6svwEXmETbgNtMCG2gIl2Dz8kNhWeRKWUMMeE5/
-	u+BaEo/mV6krFo0NLVlnslviDkaaKm2PfaaG3Tc7a8XHZmkui2g2MATmpuSaQRiK9tLJ6pMWvYP
-	fg5rP7W3Gv4aluArNmF57FUY6kPUQaLz9Wo0NamlYdzYv35lBJ1OoTVSFM0XkdG5dP7CrDrre2P
-	fvEVTtfCipMexAQqHbBKRHa8ZZmzo738NrGY1fjNzrpKivGnOhvBpd0zt+aHNdx29Ul22okWCx+
-	aVA4s98nLEVNbiZ/YiFrxl9/u0QXzYLneV4CwMBRU8Ti7C+vVRjStViy3vO+iL9irFTrdPex9Xq
-	dUtDyI9yiro6V4egDVCX+pmid+//u3NUQ==
-X-Received: by 2002:a05:6402:3788:b0:674:b1b1:d039 with SMTP id 4fb4d7f45d1cf-67d63db380emr1617979a12.11.1778075614656;
-        Wed, 06 May 2026 06:53:34 -0700 (PDT)
-X-Received: by 2002:a05:6402:3788:b0:674:b1b1:d039 with SMTP id 4fb4d7f45d1cf-67d63db380emr1617931a12.11.1778075614040;
-        Wed, 06 May 2026 06:53:34 -0700 (PDT)
-Received: from ?IPV6:2001:8b0:8b6:13d4:102e:f2af:e074:5cde? (e.d.c.5.4.7.0.e.f.a.2.f.e.2.0.1.4.d.3.1.6.b.8.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:8b6:13d4:102e:f2af:e074:5cde])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-67cd904fe68sm1337174a12.0.2026.05.06.06.53.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 May 2026 06:53:33 -0700 (PDT)
-Message-ID: <9304aada-ee84-4cf2-a1d7-82313eda07aa@meta.com>
-Date: Wed, 6 May 2026 14:53:31 +0100
+	:message-id:mime-version:references:subject:to; s=pp1; bh=wyPTZP
+	JGBXl92pvzlRytExwFC101737pHluhtMlqBfo=; b=ek59/uKVhtPiQbhd3BgV+i
+	ExMHffzruHt3Ajz45Jj7PmFI0UIft4hNyXboiJfJaRhfiRvLTU4AA/e0RYrl1YZQ
+	pTl18XQ49oGro1QTaY1GnvcBE1FZ056NVAYMaFfMn4Plbi3ZfsIZbVbujhvbRIpJ
+	fNwsbEmBVxhGpYB8tM6RBB3vtB0j7mrRZLeW4VL48A649V+ZTj8i5QF9/j+9TdMC
+	bn9sUDzpGZR3GkNe/yfDUO1hPJrC5HX2ls/3DiM+o4wHmeWYnoSilSZqCycTOMQn
+	DR159xskusaKJ3XimGCxyO42tD2+BkFYvJLQi7rRndE+F/sfJo6nzrB4GRs+9geQ
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9xxr8sb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 06 May 2026 13:55:21 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 646DsTpx016927;
+	Wed, 6 May 2026 13:55:20 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dwuyw6j1y-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 06 May 2026 13:55:20 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 646DtJHu23003830
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 6 May 2026 13:55:19 GMT
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 71C065805E;
+	Wed,  6 May 2026 13:55:19 +0000 (GMT)
+Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 865E558052;
+	Wed,  6 May 2026 13:55:18 +0000 (GMT)
+Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown [9.61.44.93])
+	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Wed,  6 May 2026 13:55:18 +0000 (GMT)
+Message-ID: <8f8f757b12f203db1afc00a122f67226beddc76b.camel@linux.ibm.com>
+Subject: Re: [PATCH] KVM: s390: Toggle operation exception for userspace
+From: Eric Farman <farman@linux.ibm.com>
+To: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank
+	 <frankja@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org
+Date: Wed, 06 May 2026 09:55:18 -0400
+In-Reply-To: <20260506151909.60278083@p-imbrenda>
+References: <20260505204521.1658704-1-farman@linux.ibm.com>
+	 <20260506151909.60278083@p-imbrenda>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/9] vfio/pci: Fix vfio_pci_dma_buf_cleanup() double-put
-Content-Language: en-GB
-To: Alex Williamson <alex@shazbot.org>
-Cc: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
-        Alex Mastro <amastro@fb.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>,
-        Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
-        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
-        Pranjal Shrivastava <praan@google.com>,
-        Alistair Popple
- <apopple@nvidia.com>,
-        Vivek Kasireddy <vivek.kasireddy@intel.com>,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-        kvm@vger.kernel.org, =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
-References: <20260416131815.2729131-1-mattev@meta.com>
- <20260416131815.2729131-2-mattev@meta.com>
- <20260501131236.278ac431@shazbot.org>
-From: Matt Evans <mattev@meta.com>
-In-Reply-To: <20260501131236.278ac431@shazbot.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=Jt/Bas4C c=1 sm=1 tr=0 ts=69fb47e0 cx=c_pps
- a=Tczdrg5if7+wQeIJmxD/XA==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=kkcUborcUVj0H7zxAXTl:22 a=VwQbUJbxAAAA:8 a=UqCG9HQmAAAA:8 a=Ikd4Dj_1AAAA:8
- a=VabnemYjAAAA:8 a=CQcdbiei6IkXp1Z0tZsA:9 a=QEXdDO2ut3YA:10
- a=1oAhN8tkTtOBK6_UvoHx:22 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA2MDEzNiBTYWx0ZWRfX5HLM33mEdoij
- UogLJ6w90Q9kZeRN27dMyqfrRhDq6c4L0nYTBFeRqgQncUDFTaX0A61IaAAauR9lCFyD0JqPrMo
- uUX9KP5AKH8J6wGpK8zw4FtGPomqvH9oZ65cjQMULD9oaoSvjNpBYwY5G8U8ZlMfoyTvgQAAZNE
- 48CxZnFaycpbZYvfu8hlRQhXx/19bkWE1BfKs6rAVsqUAFLV8sjjEoYmO436CD36iUf3b0KLi3Y
- emiTsjfqP5C5KlC01ve48o/qtSkVyWodD7prhcp4qVOW4legc2HpXPjtyNOjUccR3s8wBeNBlzX
- A7Q0OFytcpbRIKGAWRuW/GAuBujK+RtbeTydy86Fnp9f8dIatQQocCIdMo9oliVziZpW7zgY7oy
- gbQPS4P+uStPM/olklxxu6Kb7aKb8MkOmuzGMuXOUfwdHLAsJwgrO5Z8RQd5sjGzmaidHbB8hUU
- 4V2sHZf8Yxlp6/iERDg==
-X-Proofpoint-GUID: D6DZ0BOOWHBabQP2IvdZ4iSYxFfVGaCm
-X-Proofpoint-ORIG-GUID: D6DZ0BOOWHBabQP2IvdZ4iSYxFfVGaCm
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA2MDEzNCBTYWx0ZWRfXxJBd4D+FzYAb
+ /Qyqwuu0PHVKknPDgRrr4d5qji7jl2h/wWzi0tQ6i/2cJ+V7KwtsX2arGk5uDNa0P8cWjwHEzzc
+ HctJu9JU1NnyRMn0tX7mOJO1zO2G25Dz+Z3hPmrz0pfUbRBR0VWxkszJiyjtcEf/vtGzKBuF7bE
+ e7a0Yxa6Qjgjn4F+GMYty6Cb6me3A1Zc5X7+pC2uk1g2eiAFXrMB/MnL57sX6C/PY8TzyahFMwZ
+ gIS96J4oyNa9I4KzH0OcCwdBP8pFcdkHsiRv/psOiy0qEEh4njvWgUz1JOzc/p22wC6nDYoMX5+
+ UFhQhjtj/WejILfuZLx+VSF7aqEoaJRszNpeAK5RpOPUfoqhmSP1wt/vHavU14NuzSxpjyIdZEg
+ YUsQl9HIqnnaMM37jPNaMhZfkbO6zwlEbDp6GCTlwTg1dWo32/Ky9K+kzzfDwVbbRcW3QVAuSlr
+ Gzv7BgJHzQhzWROxD8w==
+X-Proofpoint-ORIG-GUID: 3rIqLs-vJ5OGfpNjDHvqHH1nKUWrOkvc
+X-Proofpoint-GUID: 3rIqLs-vJ5OGfpNjDHvqHH1nKUWrOkvc
+X-Authority-Analysis: v=2.4 cv=ctWrVV4i c=1 sm=1 tr=0 ts=69fb4849 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
+ a=CuL7MAiMsHSykVvUlJYA:9 a=QEXdDO2ut3YA:10
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-05_03,2026-05-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 lowpriorityscore=0 adultscore=0 clxscore=1015
+ suspectscore=0 impostorscore=0 spamscore=0 malwarescore=0 phishscore=0
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2605060134
 
-Hi Alex,
+On Wed, 2026-05-06 at 15:19 +0200, Claudio Imbrenda wrote:
+> On Tue,  5 May 2026 22:45:21 +0200
+> Eric Farman <farman@linux.ibm.com> wrote:
+>=20
+> > The KVM_CAP_S390_USER_OPEREXEC capability allows operation exceptions
+> > to be forwarded to userspace. But the actual enablement at the hardware
+> > level occurs in kvm_arch_vcpu_postcreate(), and only if STFLE.74 or
+> > user_instr0 are enabled. The latter is associated with a separate
+> > capability (KVM_CAP_S390_USER_INSTR0), so the only way this happens
+> > for the USER_OPEREXEC capability is if STFLE.74 is enabled. KVM
+> > unconditionally enables this bit in kvm_arch_init_vm(), but the guest
+> > could disable it from the CPU model and thus ignore this capability.
+> >=20
+> > Add USER_OPEREXEC to the check in kvm_arch_vcpu_postcreate(), such
+> > that either capability would enable this type of exception.
+> > KVM_CAP_S390_USER_INSTR0
+> > Fixes: 8e8678e740ec ("KVM: s390: Add capability that forwards
+> > operation exceptions") Signed-off-by: Eric Farman
+> > <farman@linux.ibm.com>
+>=20
+> Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+>=20
+> can you also extend the existing selftest for KVM_CAP_S390_USER_OPEREXEC
+> to also properly test with all combinations of
+> STFLE.74 / KVM_CAP_S390_USER_OPEREXEC / KVM_CAP_S390_USER_INSTR0
 
-On 01/05/2026 20:12, Alex Williamson wrote:
-> 
-> On Thu, 16 Apr 2026 06:17:44 -0700
-> Matt Evans <mattev@meta.com> wrote:
-> 
->> vfio_pci_dma_buf_cleanup() assumed all VFIO device DMABUFs need to be
->> revoked.  However, if vfio_pci_dma_buf_move() revokes DMABUFs before
->> the fd/device closes, then vfio_pci_dma_buf_cleanup() would do a
->> second/underflowing kref_put() then wait_for_completion() on a
->> completion that never fires.  Fixed by predicating on revocation
->> status.
->>
->> This could happen if PCI_COMMAND_MEMORY is cleared before closing the
->> device fd (but the scenario is more likely to hit when future commits
->> add more methods to revoke DMABUFs).
->>
->> Fixes: 1a8a5227f2299 ("vfio: Wait for dma-buf invalidation to complete")
->> Signed-off-by: Matt Evans <mattev@meta.com>
->> ---
->>
->> (Just a fix, but later "vfio/pci: Convert BAR mmap() to use a DMABUF"
->> and "vfio/pci: Permanently revoke a DMABUF on request" depend on this
->> context, so including in this series.)
-> 
-> We really need a fix for this split out from this series, It's already
-> been shown[1] that this is trivially reachable.  Carlos proposed[2] a
-> similar solution to the one below.  I was concurrently working on the
-> issued and suggested an alternative[3].  Let's pick a solution for
-> 7.1-rc.  Thanks,
+Ah, of course. Will do.
 
-It looks like [3] is progressing, so I'll drop this one when I can 
-rebase onto it.
-
-I noticed [3] removes the dma_resv_lock(priv->dmabuf->resv) around the 
-priv->vdev = NULL, and this series' vfio_pci_mmap_huge_fault() relies on 
-vdev only changing whilst resv is held to resolve a race between a fault 
-and cleanup (see patch 7 of this series).  The handler takes resv so 
-that it can stably test vdev in order to take memory_lock.
-
-Must your fix change vdev outside of holding resv?  I'm still sketching 
-alternatives; at first glance perhaps the fault handler could rely on 
-vdev being valid if !revoked, which can be tested holding [only] resv.
-
-
-Thanks,
-
-Matt
-
-> 
-> Alex
-> 
-> [1]https://lore.kernel.org/all/GVXPR02MB12019AA6014F27EF5D773E89BFB372@GVXPR02MB12019.eurprd02.prod.outlook.com/
-> [2]https://lore.kernel.org/all/20260429182736.409323-2-clopez@suse.de/
-> [3]https://lore.kernel.org/all/20260429142242.70f746b4@nvidia.com/
-> 
->   
->> drivers/vfio/pci/vfio_pci_dmabuf.c | 9 +++++++--
->>   1 file changed, 7 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
->> index 281ba7d69567..04478b7415a0 100644
->> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
->> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
->> @@ -395,20 +395,25 @@ void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev)
->>   
->>   	down_write(&vdev->memory_lock);
->>   	list_for_each_entry_safe(priv, tmp, &vdev->dmabufs, dmabufs_elm) {
->> +		bool was_revoked;
->> +
->>   		if (!get_file_active(&priv->dmabuf->file))
->>   			continue;
->>   
->>   		dma_resv_lock(priv->dmabuf->resv, NULL);
->>   		list_del_init(&priv->dmabufs_elm);
->>   		priv->vdev = NULL;
->> +		was_revoked = priv->revoked;
->>   		priv->revoked = true;
->>   		dma_buf_invalidate_mappings(priv->dmabuf);
->>   		dma_resv_wait_timeout(priv->dmabuf->resv,
->>   				      DMA_RESV_USAGE_BOOKKEEP, false,
->>   				      MAX_SCHEDULE_TIMEOUT);
->>   		dma_resv_unlock(priv->dmabuf->resv);
->> -		kref_put(&priv->kref, vfio_pci_dma_buf_done);
->> -		wait_for_completion(&priv->comp);
->> +		if (!was_revoked) {
->> +			kref_put(&priv->kref, vfio_pci_dma_buf_done);
->> +			wait_for_completion(&priv->comp);
->> +		}
->>   		vfio_device_put_registration(&vdev->vdev);
->>   		fput(priv->dmabuf->file);
->>   	}
-> 
-
+>=20
+> > ---
+> >  arch/s390/kvm/kvm-s390.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+> > index e09960c2e6ed..a91a42174302 100644
+> > --- a/arch/s390/kvm/kvm-s390.c
+> > +++ b/arch/s390/kvm/kvm-s390.c
+> > @@ -3521,7 +3521,8 @@ void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vc=
+pu)
+> >  		vcpu->arch.gmap =3D vcpu->kvm->arch.gmap;
+> >  		sca_add_vcpu(vcpu);
+> >  	}
+> > -	if (test_kvm_facility(vcpu->kvm, 74) || vcpu->kvm->arch.user_instr0)
+> > +	if (test_kvm_facility(vcpu->kvm, 74) || vcpu->kvm->arch.user_instr0 |=
+|
+> > +	    vcpu->kvm->arch.user_operexec)
+> >  		vcpu->arch.sie_block->ictl |=3D ICTL_OPEREXC;
+> >  }
+> > =20
