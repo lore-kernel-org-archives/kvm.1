@@ -1,237 +1,176 @@
-Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85CD49552A
-	for <kvm@vger.kernel.org>; Wed,  6 May 2026 15:55:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778082937; cv=none; b=IpcRnAh7VYeab+njiuBYwEXiMi8KMjtenkDRMKpGCvmf4MaciH3NDUesuDWQ7JJcsYasryzRpK4b1JOwc2qgqigSiuDY0XIc3qGiPvsih8gGVPkdyBikGXIqMjgqepwllMraBc2nrQodMsu9BR4BDUda0uKXgBlAHtyqWtUV+jc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778082937; c=relaxed/simple;
-	bh=yAE/Ym57GFy/KISCQT6Y8a/+2nm5BztVchD6EC2QOxQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IUAoBulBS+Xh1nw7cSUosS9kAT2eRiE3+ahPcpK33zM1I10ObSR7q7MsTCI4K3YUXrE6Qhc8C/oX880+TIIVVBXYBUsErao93bX+BcqaxKYsUGtMFxCcvBDhW97a8tS4byK1MLVY8L5kK9K3iwYYjZj8voFx71eIkv494WuGC/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=V5KJ2Qsv; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2D24963D7
+	for <kvm@vger.kernel.org>; Wed,  6 May 2026 15:58:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778083119; cv=pass; b=uJBTBZzAkJKozj0qmizATuw8sb3DjYovMTOTw4Hj9qZ3xUM5AS+KFLgcGEkSAW1MBjH9Jmb7ErfAIew9QJ/AFoCTZBKC+tg5Sg+wzu2yDLW541VZ9izx3rQY9I4nJZy2FH6nOTbr97dW6WnxS5Ze9jyCmJbVPL3yAvrppDtobRw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778083119; c=relaxed/simple;
+	bh=FhSYlENSAfffr0fB2hnLYwj9NycYdYCk8jtg8WRyAe0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZS5tCzN6GvW4lVWGM61AMZtpnVkubnfhenidYYBC84pMg7BPB54gRiOncfgoM3nzRg3ocgmb3drkaMMw1n1kZ67kQTQzkbWx+GolRK/5S9FXkUV8m9R5nPaatF/DQ+UELrDs6GMQJVKpk9zdyUmJw437bbcX9s6hOSwGhmW9w8g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gooddata.com; spf=pass smtp.mailfrom=gooddata.com; dkim=pass (1024-bit key) header.d=gooddata.com header.i=@gooddata.com header.b=R4DmKnlh; arc=pass smtp.client-ip=74.125.82.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gooddata.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gooddata.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="V5KJ2Qsv"
-Received: from pps.filterd (m0001303.ppops.net [127.0.0.1])
-	by m0001303.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 6466OYiK2865632
-	for <kvm@vger.kernel.org>; Wed, 6 May 2026 08:55:31 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=Utn027AUC8UDDUJXMpqeQ33wB0VHRXSGiBE+zdS1lww=; b=V5KJ2QsvDqXI
-	jsaAHALFGR6sjzWQOy2R8fDT1m2z8Vp+BEzdkIo2E0PzKZT3MoRqQ2oxFN/cf+RI
-	zNdxXgZ/yC9TXtV3oASmSQ58occoBlUXUmIfLY3rEyKedGP+G26q9XfNbpy/cyyL
-	ATxSfUlKU+0cbiv5isn7bvGMH98bzLSc6Cor0iZ7DZsrSsJL5Y4HlAHYbDQh47an
-	JgHWaoOdPrg/9kinsjy7I1FZDdWBQ1dYEjz8FgwQ2xDR3PrtkNygxgXG3PaHOc5k
-	UAwldnK7l+6FDmkB2j0Yjq5S7uSzqNd6Utnc2cINNmewbNDHUuno2cDWgkWZsFdm
-	9itz8d4OIQ==
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
-	by m0001303.ppops.net (PPS) with ESMTPS id 4dwcx9sdu2-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Wed, 06 May 2026 08:55:31 -0700 (PDT)
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-441243ba35fso6478242f8f.0
-        for <kvm@vger.kernel.org>; Wed, 06 May 2026 08:55:31 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=gooddata.com header.i=@gooddata.com header.b="R4DmKnlh"
+Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-12dfee30612so404871c88.0
+        for <kvm@vger.kernel.org>; Wed, 06 May 2026 08:58:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778083115; cv=none;
+        d=google.com; s=arc-20240605;
+        b=OhkpD1RWymnHdo69HKWu766nwJuiNw5nlZx9flXgKB2NtEwEODk+v7Z7QO8NYHjZDW
+         IXcz3A0+OTRjaT75uO5RIDg4Fp4C67wMyXkpeFA8BQ5ZtfDEi+A7P8mfNj7Y7HbHq/XQ
+         +aBaE6RBdpwRSynqb0GWqGm+Qqd/gmryjwkTrTHj5IPMUmpK46PSfbUSyNTQQPJ9qpYH
+         2f8mHtU0KNZC9LWOoIn15ArYnuTqc6m3xSu3rw/DRG42P2pmRIgMmJZexVN8gw8eWj/M
+         h7/WlC6A4OcusL5I6UcDB3QG6eltfO7MPizorvJniFrNZhzmskcjBhK+3qDhpGySmVu5
+         pXbQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=o7GIM54i3SVstJr/lO8ZPGq5HIJS7v25gtjFcSTW0Uo=;
+        fh=olqoQ7CDFqIBGnYAbtDcmDb8q6lJi0epAF/c6lWaTyI=;
+        b=jVJ+S8O4elBYil8exnmzEMUTysqdYK1UOO7cME/O5Byhiv7FPIV+Or9HYm3qiDsGcC
+         ONcK4RY4KGEaqgyXB8UQGpLKIYsZp441nKrM4n2Dh12L0I2tPaHp9q2glsJ8aA65Atm5
+         cJzxpd5hD0mUzhg8+XGYKhNpG9orTRa4NB/+1XH4tTKNVaVpbZerKGvPLq/80jMczsKp
+         qjFOD1fcaA3ebmrNP+kyTrEM8WXE5IabkH7bBJcp5wLqI/8rC1fLBbPQ6AvrBTxzjSYn
+         w/b/NnPY7hg7RDN06t573EBjdQAbRcffBe9laVmldIRawM0Z7ALQWidXcjq1EfnavUd4
+         k54Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gooddata.com; s=google; t=1778083115; x=1778687915; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=o7GIM54i3SVstJr/lO8ZPGq5HIJS7v25gtjFcSTW0Uo=;
+        b=R4DmKnlhe9Xkd6ii1SFFgWffWrhL952M55i3IPFu/E71lsrV8VEymv0VLo640wan3u
+         teo0vILjc6k+F6neFPFOyQg+GfEvEQcP8JJUWiamtmPJt5o4x7avYSUWOaSsNz63PyJg
+         c+pqD4VsfbVVsKmP0NGlZesHI+Ux5OxO2B/zY=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778082930; x=1778687730;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Utn027AUC8UDDUJXMpqeQ33wB0VHRXSGiBE+zdS1lww=;
-        b=EMjKb69UzHQF9iJCFCBE1nQGlMz5tgeODYtk5BDb+BnUfrIdkg6E0mQxTHAzN3+IMu
-         yk9mRGeMbJZMbPsC4lutI/M1TVoZU8W5XehtkH0fB+s+yKSAROLeEpNsjccAqOPfCidI
-         fQhUX04whHXFTiwRRkppnjvfJjvFjP5uzkcEz4VH+E4EIhbugHjFm2CYink7fwYp5rM5
-         7wIs5jJKvi+8zKrjIcD9pIspiM0sqcXTg9LxaFx34YqTVwpCn5fzktTREqczHLQrhimK
-         1fzsUvRHSpbYLydJNqubDaxVBxdox6sihno9ZIzg6I0GT29PNRflglZtnB0fQKxQ2DTe
-         Gc1Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/+PBDozsuTTd2oPMfg01u2BSgarmoW6nYbjotzWtzmyrHd4SIVmnWhnK+UfuDhgG02HUg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzhce6VCY1U2HCAEyFcWi5IAWP1E7UYclyF45wuyawUxxQsZblc
-	SVqfOpeN2S9ImNJm1IO7HzoWy9ZlW4frkVTGQEWF57k03DaDdOWq5mmTSw0YZvA39YzBGK6jL4q
-	1Jx0Ety2cjQTrNcBBXdV/d6muXtG9SETQhywtCiWBy5T9LrCMmL14
-X-Gm-Gg: AeBDietTJCIHAOX3NCytmqwF17hdARAXeiyx9NCL8t8IiMY90nW9lOpFsZW+SdiDy6P
-	eX5RE6XlrazcC/yMhJ8xGWS58VaIa4Wy+8Q7anaQHDnMrbRbebXoGz2Nj6T9zmTn69BhkB5Qeae
-	tbuQ8y/cuIT86N6fgP/ctGzLSOt1g/C1FNIn8Q85GVSeAxm5VbwrLugxHwnNgUMcc1TlgK/wEZY
-	X27t7WUUOTu9P+wVX8bsvhSyTkq0cmHp492y4/TpSffrDKAYuwUy0Em8EYthq8Z38oMkoa+UUs4
-	bpHxYxPRWgFC5g6V7t7mEznvUsnF7KDThYwxlQnJMq8A9zBKFwQ0m7OtxvPTUHjI9Fj44AzG5/2
-	oJVu0Ju71t0wid66c1oY2fvvhhaP/g26SoXQjB2YWmP057ESPuoa1JoiKUFHMuzj0PC/QedXAVN
-	Kbl99TXbWa0jKqypx6W4kB9G2b+DQVfcymF67OJieZxPvzCnmrFd0iwnRta5hz/rWIXQrNpLGpR
-	Z1GpGNbeCujMZssOPebulprgQlU8bsz9Q==
-X-Received: by 2002:a05:6000:2082:b0:441:1c18:f779 with SMTP id ffacd0b85a97d-4515da967c3mr6651398f8f.37.1778082930003;
-        Wed, 06 May 2026 08:55:30 -0700 (PDT)
-X-Received: by 2002:a05:6000:2082:b0:441:1c18:f779 with SMTP id ffacd0b85a97d-4515da967c3mr6651329f8f.37.1778082929442;
-        Wed, 06 May 2026 08:55:29 -0700 (PDT)
-Received: from ?IPV6:2001:8b0:8b6:13d4:102e:f2af:e074:5cde? (e.d.c.5.4.7.0.e.f.a.2.f.e.2.0.1.4.d.3.1.6.b.8.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:8b6:13d4:102e:f2af:e074:5cde])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45052483166sm13251331f8f.7.2026.05.06.08.55.27
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 May 2026 08:55:28 -0700 (PDT)
-Message-ID: <c0bd0e23-712c-483e-a809-47126ab6e9e9@meta.com>
-Date: Wed, 6 May 2026 16:55:27 +0100
+        d=1e100.net; s=20251104; t=1778083115; x=1778687915;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o7GIM54i3SVstJr/lO8ZPGq5HIJS7v25gtjFcSTW0Uo=;
+        b=sfODc2OilIPRUkYdE/vWAOMP8TCY9eiQmwZWAX1Fu+tMOWI3X/hjQvwa5pMtdHyO7/
+         TshKdMKfFY1CEmGZD2lvGGC1zTtgkaYFwZpkGnYeOMmNRK1gS+i+Vu/M9cBuKGlASl4/
+         +HIrjhtoHD8Yb8i3N5NVXA3rd6CvKQSFCWgqZuSCauWW7uGmnH4IoF1o3lLxjmAmX+iE
+         u/8ayhYTuTcFtVBCRl8JD4+cOZQ8pJ0fJ4xY8zITtYzcByu8lcTBdLZ1q3p0UctZDMmK
+         o506PpHwopNt/4TRiO17BPOdBtbi2Yft9Lplu7Y2syF4vzDyBBLoHf/WrYykAcDMdhNq
+         mEjw==
+X-Forwarded-Encrypted: i=1; AFNElJ++nNI+Xyg1yAdqDEoq8j1y3dgGeH98qog7zAnXSLVJh7G/4mBGnF2hvM2r5aV8+zxodkY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKe7sZ3/LbNfLtfhDprA/BLbqmDzbcHEAJPwazsMMy9Y09gDl9
+	yKF3IY2a5NR/ysumOBxcztJcMBuZxRcA4Rt38yzUi/+oq/TB/Nycg+GCKPRDk8rP8WdxCAh6Wsr
+	TM8UbVylqVojYxtFwyLclMmr6B9v6VpQXk3e68LI0
+X-Gm-Gg: AeBDietfPAlZQSuk5N7htrbbXHQIwCxLjNujkQkTp4z4ug2V02RKbDNXdqV2r/pX9MQ
+	iu01bYvjLRFUDD6fKJX7juMlxMsZsIslopf/SAROjigEeemjpmMgKGrYi1G0+SiU4oXR/AdmNBi
+	jratfm7MJs00FTL/rfx9uklMAL2RQ5TDCcXKxt6UN0IpvVKJ5khqSrIgmW+n/Z8yH4tpce9JQTl
+	hbeA3n865vJ+BtjzKS8gOBmWq0rSkPrVerkR+BlADq/xKI3+k+1EKRwWNJn0PPrYtrRAgDgJCDt
+	SeiUNsfxJnVG1Iglsm8=
+X-Received: by 2002:a05:7022:fa05:b0:128:ca6f:adf2 with SMTP id
+ a92af1059eb24-131963a9b86mr2420082c88.32.1778083115090; Wed, 06 May 2026
+ 08:58:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/9] vfio/pci: Fix vfio_pci_dma_buf_cleanup() double-put
-Content-Language: en-GB
-To: Leon Romanovsky <leon@kernel.org>
-Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@nvidia.com>,
-        Alex Mastro <amastro@fb.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>,
-        Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
-        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
-        Pranjal Shrivastava <praan@google.com>,
-        Alistair Popple
- <apopple@nvidia.com>,
-        Vivek Kasireddy <vivek.kasireddy@intel.com>,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-        kvm@vger.kernel.org, =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
-References: <20260416131815.2729131-1-mattev@meta.com>
- <20260416131815.2729131-2-mattev@meta.com>
- <20260501131236.278ac431@shazbot.org>
- <9304aada-ee84-4cf2-a1d7-82313eda07aa@meta.com>
- <20260506152937.GJ11063@unreal>
-From: Matt Evans <mattev@meta.com>
-In-Reply-To: <20260506152937.GJ11063@unreal>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-ORIG-GUID: u8h7bZ4_Pe5eN4AvDmbGdnWuKYD0GlNq
-X-Proofpoint-GUID: u8h7bZ4_Pe5eN4AvDmbGdnWuKYD0GlNq
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA2MDE1NiBTYWx0ZWRfX0gPhbycorcGU
- QByrrl/AyRK0F458aFUn643aTQlfDfMfsSGpKEhYMip89YNbusgoIit5/XaQEtcwVwdXIU9qx/X
- MltPUb+EjC+9M5QiOToQ9jzYY0vBhx7PNLKnkV7r8nA3JgwFQfCJrvTjEj0G8JPqgGO6CJNJI1L
- afK10pEEQULMKTIgzWcEUL+2BaxQGHbkRMhNYTMpa6TQ2G7HFDkA3DqoL7lIwmpfs4QxKCfJflS
- cHZPX/61urf1P/wSzY6Akuml17wb/GQeF1/ppAjAwOKLvbojr8zwlzVUyOY5k8lR8MA/+9oucw8
- uLtPQkh07O/3TYExQXhHvckBuO86YVQTxMFUbUhnPYvvUNYkNOw3QWyY0EQOablme7aAQ0SeX3x
- VEIqLeDJt/7D80uAZyeQvm/27zMnr7wNYCVKMbHBbHIOAWXbanC9COqDqMy05DOzp9DDG43UIny
- gvcIVl7TDxoz77Mpeeg==
-X-Authority-Analysis: v=2.4 cv=SoCgLvO0 c=1 sm=1 tr=0 ts=69fb6473 cx=c_pps
- a=pX1sPZUoWPGeQgUnKQNIgA==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=_78whYxrdx1mplLwxq1U:22 a=VwQbUJbxAAAA:8 a=UqCG9HQmAAAA:8 a=Ikd4Dj_1AAAA:8
- a=VabnemYjAAAA:8 a=bm6tUXqWTanbjDFH1akA:9 a=QEXdDO2ut3YA:10
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-06_01,2026-05-06_01,2025-10-01_01
+References: <adVGrJaRlRooO4su@google.com> <20260409142226.2581-1-lei.chen@smartx.com>
+ <adf8Q1VSeAMMyCa_@google.com> <f1c742e0-41c1-4bdc-867c-a768a5eb89c5@leemhuis.info>
+ <afs6PJzU3rHZwGv3@google.com> <cd8a2ae6-a276-480d-b942-bcd318a30451@leemhuis.info>
+ <aftct6WWHdOG_EwX@google.com>
+In-Reply-To: <aftct6WWHdOG_EwX@google.com>
+From: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
+Date: Wed, 6 May 2026 17:58:08 +0200
+X-Gm-Features: AVHnY4ISyvq7t1Jo4cNzuW8GhcCkTyIWQpR3YIS4f7df6O_vWqMubXb7G9-3F-Q
+Message-ID: <CAK8fFZ4j1tYc+eYH79RQnNSjr9J-SocFL6duMuBg+76NHhRUxQ@mail.gmail.com>
+Subject: Re: [PATCH v2] KVM: x86: Rate-limit global clock updates on vCPU load
+To: Sean Christopherson <seanjc@google.com>, Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: Lei Chen <lei.chen@smartx.com>, igor@gooddata.com, jan.cipa@gooddata.com, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	Linux kernel regressions list <regressions@lists.linux.dev>, 
+	Linus Torvalds <torvalds@linux-foundation.org>
+Content-Type: text/plain; charset="UTF-8"
 
-Hi Leon,
+>
+> On Wed, May 06, 2026, Thorsten Leemhuis wrote:
+> > On 5/6/26 14:55, Sean Christopherson wrote:
+> > > On Wed, May 06, 2026, Thorsten Leemhuis wrote:
+> > >> On 4/9/26 21:21, Sean Christopherson wrote:
+> > >>> On Thu, Apr 09, 2026, Lei Chen wrote:
+> > >>>> commit 446fcce2a52b ("Revert "x86: kvm: rate-limit global clock updates"")
+> > >>>> dropped the rate limiting for KVM_REQ_GLOBAL_CLOCK_UPDATE.
+> > >>>>
+> > >>>> As a result, kvm_arch_vcpu_load() can queue global clock update requests
+> > >>>> every time a vCPU is scheduled when the master clock is disabled or when
+> > >>>> the vCPU is loaded for the first time.
+> > >>>>
+> > >>>> Restore the throttling with a per-VM ratelimit state and gate
+> > >>>> KVM_REQ_GLOBAL_CLOCK_UPDATE through __ratelimit(), so frequent vCPU
+> > >>>> scheduling does not generate a steady stream of redundant clock update
+> > >>>> requests.
+> > >>>>
+> > >>>> Fixes: 446fcce2a52b ("Revert "x86: kvm: rate-limit global clock updates"")
+> > >>>> Signed-off-by: Lei Chen <lei.chen@smartx.com>
+> > >>>> Reported-by: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
+> > >>>> Closes: https://lore.kernel.org/all/CAK8fFZ5gY8_Mw2A=iZVFNVKQNrXQzVsn-HTd+Me9K6ZfmdgA+Q@mail.gmail.com/
+> > >>
+> > >> Was this performance regression ever addressed?
+> > > Nope, not yet.
+> > >
+> > >> Looks like this fall through the cracks, but it's easy to miss something.
+> > >
+> > > It's in my list of patches to apply (probably for 7.2?).  I didn't want to squeeze
+> > > it into the initial 7.1 pull request for a variety of reasons.
+> >
+> > Hmmm. CCing Linus so he can speak up if he wants to about the following:
+> >
+> > Given that this is a fix for a performance regression[1] I'd say it's
+> > not as urgent as a "something stopped working" case -- so I guess it's
+> > something where the "[fix] "within a week", preferably before the next
+> > rc" approach Linus recently mentioned does not need to be applied strictly.
+> >
+> > But Jaroslav OTOH reported it more than 7 weeks ago already and back
+> > then called it something that "severely impacts KVM hosts running many
+> > Firecracker microVMs."[1];
+>
+> For a setup that is likely broken.  On modern hardware, the path in question
+> should never actually be hit.  I do want to resolve the bug since older hardware
+> and funky setups do rely on the old behavior, but it's not pants-on-fire urgent.
+>
+> More importantly, the original reporter(s) hasn't responded to any of our questions,
+> or to the proposed fix.  I'm not going to rush in a fix if I don't actually *know*
+> it's going to fix the original problem.
 
-On 06/05/2026 16:29, Leon Romanovsky wrote:
-> 
-> On Wed, May 06, 2026 at 02:53:31PM +0100, Matt Evans wrote:
->> Hi Alex,
->>
->> On 01/05/2026 20:12, Alex Williamson wrote:
->>>
->>> On Thu, 16 Apr 2026 06:17:44 -0700
->>> Matt Evans <mattev@meta.com> wrote:
->>>
->>>> vfio_pci_dma_buf_cleanup() assumed all VFIO device DMABUFs need to be
->>>> revoked.  However, if vfio_pci_dma_buf_move() revokes DMABUFs before
->>>> the fd/device closes, then vfio_pci_dma_buf_cleanup() would do a
->>>> second/underflowing kref_put() then wait_for_completion() on a
->>>> completion that never fires.  Fixed by predicating on revocation
->>>> status.
->>>>
->>>> This could happen if PCI_COMMAND_MEMORY is cleared before closing the
->>>> device fd (but the scenario is more likely to hit when future commits
->>>> add more methods to revoke DMABUFs).
->>>>
->>>> Fixes: 1a8a5227f2299 ("vfio: Wait for dma-buf invalidation to complete")
->>>> Signed-off-by: Matt Evans <mattev@meta.com>
->>>> ---
->>>>
->>>> (Just a fix, but later "vfio/pci: Convert BAR mmap() to use a DMABUF"
->>>> and "vfio/pci: Permanently revoke a DMABUF on request" depend on this
->>>> context, so including in this series.)
->>>
->>> We really need a fix for this split out from this series, It's already
->>> been shown[1] that this is trivially reachable.  Carlos proposed[2] a
->>> similar solution to the one below.  I was concurrently working on the
->>> issued and suggested an alternative[3].  Let's pick a solution for
->>> 7.1-rc.  Thanks,
->>
->> It looks like [3] is progressing, so I'll drop this one when I can rebase
->> onto it.
->>
->> I noticed [3] removes the dma_resv_lock(priv->dmabuf->resv) around the
->> priv->vdev = NULL, and this series' vfio_pci_mmap_huge_fault() relies on
->> vdev only changing whilst resv is held to resolve a race between a fault and
->> cleanup (see patch 7 of this series).  The handler takes resv so that it can
->> stably test vdev in order to take memory_lock.
-> 
-> I think that you should rely on priv->revoked and not on priv->vdev.
+Hi Sean, Thorsten,
 
-Needs both unfortunately, as the fault handler ultimately needs to take
-vdev->memory_lock.
+sorry for the missing response from my side, this thread unfortunately
+ended up in trash due to mail filters on my side and I completely
+missed it. I currently don't have the full context loaded back in yet,
+but I'll re-read the thread and follow up properly once I do.
 
+For additional context, we are currently running the latest 6.19/7.0.y
+kernels with a revert of the commits causing the reported regression,
+and the hardware is AMD EPYC 9454P 48-Core Processor.
 
-Matt
+Jaroslav
 
-> 
-> Thanks
-> 
->>
->> Must your fix change vdev outside of holding resv?  I'm still sketching
->> alternatives; at first glance perhaps the fault handler could rely on vdev
->> being valid if !revoked, which can be tested holding [only] resv.
->>
->>
->> Thanks,
->>
->> Matt
->>
->>>
->>> Alex
->>>
->>> [1]https://lore.kernel.org/all/GVXPR02MB12019AA6014F27EF5D773E89BFB372@GVXPR02MB12019.eurprd02.prod.outlook.com/
->>> [2]https://lore.kernel.org/all/20260429182736.409323-2-clopez@suse.de/
->>> [3]https://lore.kernel.org/all/20260429142242.70f746b4@nvidia.com/
->>>
->>>> drivers/vfio/pci/vfio_pci_dmabuf.c | 9 +++++++--
->>>>    1 file changed, 7 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
->>>> index 281ba7d69567..04478b7415a0 100644
->>>> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
->>>> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
->>>> @@ -395,20 +395,25 @@ void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev)
->>>>    	down_write(&vdev->memory_lock);
->>>>    	list_for_each_entry_safe(priv, tmp, &vdev->dmabufs, dmabufs_elm) {
->>>> +		bool was_revoked;
->>>> +
->>>>    		if (!get_file_active(&priv->dmabuf->file))
->>>>    			continue;
->>>>    		dma_resv_lock(priv->dmabuf->resv, NULL);
->>>>    		list_del_init(&priv->dmabufs_elm);
->>>>    		priv->vdev = NULL;
->>>> +		was_revoked = priv->revoked;
->>>>    		priv->revoked = true;
->>>>    		dma_buf_invalidate_mappings(priv->dmabuf);
->>>>    		dma_resv_wait_timeout(priv->dmabuf->resv,
->>>>    				      DMA_RESV_USAGE_BOOKKEEP, false,
->>>>    				      MAX_SCHEDULE_TIMEOUT);
->>>>    		dma_resv_unlock(priv->dmabuf->resv);
->>>> -		kref_put(&priv->kref, vfio_pci_dma_buf_done);
->>>> -		wait_for_completion(&priv->comp);
->>>> +		if (!was_revoked) {
->>>> +			kref_put(&priv->kref, vfio_pci_dma_buf_done);
->>>> +			wait_for_completion(&priv->comp);
->>>> +		}
->>>>    		vfio_device_put_registration(&vdev->vdev);
->>>>    		fput(priv->dmabuf->file);
->>>>    	}
->>>
->>
-
+>
+> > and a potential fix exists for 4 weeks already. Due to that, 7.2 feels a bit
+> > too far away for me, as that is still ~15 weeks away. But maybe that's just
+> > me.
+>
+> The "user" is also a fairly sizeable company, not some random person that's trying
+> to use KVM and is blocked.  I highly doubt they are still actually running a buggy
+> kernel.  E.g. based on a "same workload after rollback" comment in the bug report,
+> I assume they simply rolled back to the last good kernel (6.18).
+>
+> Who knows, maybe they also took our hints/suggestions about theire setup being
+> wonky and addressed whatever hiccup was sending them down the uncommon, already-
+> slow path.
+>
+> All in all, AFAICT the only difference between sending this into 7.1 vs. 7.2 is
+> that the reporter won't be able to upgrade their kernel (without patching) for an
+> extra ~8 weeks.
