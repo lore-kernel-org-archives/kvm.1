@@ -1,242 +1,129 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6E7B3F210E
-	for <kvm@vger.kernel.org>; Wed,  6 May 2026 14:01:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AD8B3F166B
+	for <kvm@vger.kernel.org>; Wed,  6 May 2026 14:02:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778076071; cv=none; b=suXrIUYBPiBGMUXJOujK98cvK188nFdtfbDXxteD3Oqe0Qn7Q9ZIiqG6MBHj72qxvlcJ9oyRvDJgStldLM6KzhANpuSWhEDTaUTE5V5yxJ3USleSBwMb/8dfGR1zQ831BkZdfPc+vaWl4Je2XaEdQwTQYiEcp2kRteyLiGjxB8w=
+	t=1778076182; cv=none; b=p4ZcRdT68/HItB9Oq0LeqRvenb0lWjiOqM8ROuo+49Iw0pM/RJkbEJQRQkuA4xuTgoeD9W0P4tsIxOkPbDAK6nVeyR8ZtiOi94X04NMkmfa6DC4yr8JcPph9DI/wEC7hJ1mBfgh489qDRB2OGsu8D1QIyMivz7mUanxUqdF77BM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778076071; c=relaxed/simple;
-	bh=SFiFDucNaRObAcaMrKWI6BPwF1qadwuDj2Vt2SN+ha0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UqT8TySNFNXN8wi5qk7vestnSuoEw4WPSoEa9tAT460jcavA0v3IYqs0J3Gbt0Z45JHM08knZ04hA3WFqgudJ8vfzfSez0TPBljAuTf5kQLQ5d8izklv8nfoeHZjLnfB6ECnjjWMT5YXFcAEQbKpUpiNdGLA99CsK0X1qFVMbrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KyTZ+2Oz; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=JDgy/5B5; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1778076182; c=relaxed/simple;
+	bh=hcD0toSVOOteQihfnyNTjZWFv8+nFbgAq2DRSdobVB4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=po1ivVxa3xQUlUCzQzGkkYGgo4RoZxhQV8ZcC0Ep8kVqFMglYQ5Xsv3mIyd9DacL6GoZVj5kgJ4148YvacPO2vhXAWS1lPTgDFHXk1olH68ZDEypLhk3dhGy4MPPfA6PTAo0MbN9LLrCiZG4yvlmovsanOTNrD5u6Wt4cxTZADY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ew2VpmFP; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KyTZ+2Oz";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="JDgy/5B5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778076068;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cCRVTBZQDAEVaqanV0j4+1ERDgnWXkjidry1aEHpyPY=;
-	b=KyTZ+2OztYRg+gdueg9d+lfLVNutjAk9xcp9yGdStW+MkKZ7l5oWNNw/r0JoCrglF4ud1d
-	wkKFh2mJ7XBGJjEr9N9VV/YQ+E89EyhsCNaYfY5h8nJQIw7zkAwTQ6TX+TcvdM+jkW9fMP
-	Lmp77+bTZYOk4LEJU3aIJBkEBefKWT0=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-607-Yfspj5u8PPmZ8t7rrEYGgw-1; Wed, 06 May 2026 10:00:59 -0400
-X-MC-Unique: Yfspj5u8PPmZ8t7rrEYGgw-1
-X-Mimecast-MFC-AGG-ID: Yfspj5u8PPmZ8t7rrEYGgw_1778076058
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-43d7a5b9678so5425840f8f.2
-        for <kvm@vger.kernel.org>; Wed, 06 May 2026 07:00:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ew2VpmFP"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ba6ca20ceeso12349575ad.2
+        for <kvm@vger.kernel.org>; Wed, 06 May 2026 07:02:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778076057; x=1778680857; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=cCRVTBZQDAEVaqanV0j4+1ERDgnWXkjidry1aEHpyPY=;
-        b=JDgy/5B54uLx12v9iyT87H7na1YzGdm5xAhDsIsMc1XWYhG4kapzzzDqhMiaxO9UMP
-         8rXu4qCAOM+Mv16d92UPMeNLNta0s8H2pJ/kHch36gCFSVu3v07k6zatxFE5Hb4EEqoL
-         B616DI2AzV01FPbPY+bxUCcctC2Xzed9oJ4R2C9tp6kGCyJ2aX2trmLLZb3j/dLzoSHW
-         +YU49mCi7P8yl3wgXQIl+pZTG5VAzcMjtu8ydLJJa9R/+12waQhJXGU5xtzHPSnUkZvP
-         6H7ofQqKN+4sGzCtX4PilplS+ApO41/2QTzExFHzqMvLFLhYEbfN4FZG1VYRQIxNgvxj
-         DC7w==
+        d=google.com; s=20251104; t=1778076179; x=1778680979; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4inufemHLYVw7e0Jw1npJcdd1uysY1TXg59beodcgGQ=;
+        b=ew2VpmFPwYUxcWwdPoARfvhlzAn5cIe5vtO9/39ay38WU3hL5wNvrCMR6U2gvT12DI
+         8PgowFtXER1fpqjDKdM2CMiHAIRZCRT9dUeftX+epmwPMcNdN5KdnVIThgEdQF2NUx1H
+         5wsOIcCBzOdD38qIvSNGCErduUFZsz72A5VtuXK+gMhN6s6JnwLyO8eJaHTkG6lMTvCc
+         /mKC2XdY0qnSrlxHOGvhqqV75EjgMs5abHsv8LUqBGTnzffrdklBRr1aMB34sfEPazMx
+         PfYOdzSzT2wOCy4zHTozB0dP7ALdK1iq26ACkBLSox3kl7r2tHQ8XpACgzr0x/UES7V/
+         JMTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778076057; x=1778680857;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cCRVTBZQDAEVaqanV0j4+1ERDgnWXkjidry1aEHpyPY=;
-        b=m67QzU9GWT8F3Ofk9jMefV6jD19l5nDZ4zB1n9eFqqRyqwpVNEn4Ycfot7hytl2uYd
-         /IQzDUw0OKA1hPPxeFz1bbyCBhD4B1aCwd8ZS66w0CSgiOoXcoJfWkkXHc1xtZPmTwTU
-         0ubw9ArgCbxIfUHWRoVgJ+5CVQC5OGP7ItuqbCh5KdthqGLTy4weqwgjVTyv9jbKNWfk
-         1+kC8PQ71pqWD4C0Tb4yNAUHH4BoI0e+9F2f9UGThYL0QzKh3xtdD8pryD2CMIXbJ50h
-         yumBZ/2yuESs3hqLGcxEJX/yt1nOt+iRUr7U2GnzWWdcCkTXGsTKFVWHfUOkocgJRnDL
-         uCBw==
-X-Forwarded-Encrypted: i=1; AFNElJ/jS6dviDfkui+x5O/Empg58PiTanjvJb4fLp39loFCSrUWXW+XuigVfOuEvX3vfCCfa0M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIRGxrGPROdmhn7W3ZT0p6CLeN2elTDbzbtVLsrTX4d5Y4omtk
-	7zjBsPpwxRn07SE8pk5I6BcsVDOkBWUH7CvY4uybCyId2srZaMXy+w1p6f/q+bv29Oil5gDwUBP
-	ukBY6nQHGogCpidi7N5ylpXbUixCKkDq0+TlVg3vVg3x+F4PRyrdpdA==
-X-Gm-Gg: AeBDievtdLfrV1W1fs37H86q7+eGdIL83mHxpx4TGkwAdqa56rkLaipvdsaDjmQKLwx
-	cwV74wSQCvADAhotDHeWsoTBqbJteO4YXZjM7k3yERxw8yWcgP/RtJH06tdXTw3exXbjiFANGwJ
-	0BYz4nr7n1vgwTYgL3mjqA09L4GVgY0suNBiiEhsEvv0aZMAihkn7XU/a2jzvanmcngr8Fu91Uq
-	+wtlF/JES5EYMiiAr6rM1sQy4hx8XkOydcWWpCtEmeVhC1FY9OIJaDz3Unl0X6d9l2Efa2QXK3K
-	7bfWKRuwec+beDaXNX3ekE9sIEC13X/bvrq2pGF4KEwyV00xUiriZTo190he0Vznh+iVYdqcU5O
-	xnC2T7hmhZKqk4nWX1ceb/IMCOlr6CfHVsNi4JqZHyFjh2g9VLYUgs1xwdd/F6xsyGmqU10GJsg
-	==
-X-Received: by 2002:a05:6000:2c03:b0:43d:21a:9a3e with SMTP id ffacd0b85a97d-4515d5c54c0mr5877769f8f.32.1778076057342;
-        Wed, 06 May 2026 07:00:57 -0700 (PDT)
-X-Received: by 2002:a05:6000:2c03:b0:43d:21a:9a3e with SMTP id ffacd0b85a97d-4515d5c54c0mr5877593f8f.32.1778076056142;
-        Wed, 06 May 2026 07:00:56 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-11-6-2.retail.telecomitalia.it. [87.11.6.2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45055d36dacsm12654112f8f.32.2026.05.06.07.00.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 May 2026 07:00:55 -0700 (PDT)
-Date: Wed, 6 May 2026 16:00:48 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Cc: Bobby Eshleman <bobbyeshleman@gmail.com>, 
-	Eric Dumazet <edumazet@google.com>, Bobby Eshleman <bobbyeshleman@meta.com>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
-	"David S . Miller" <davem@davemloft.net>, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, netdev@vger.kernel.org, 
-	eric.dumazet@gmail.com, Arseniy Krasnov <AVKrasnov@sberdevices.ru>, 
-	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, kvm@vger.kernel.org, virtualization@lists.linux.dev
-Subject: Re: [PATCH net] vsock/virtio: fix potential unbounded skb queue
-Message-ID: <afs9FsY51D3zRA5N@sgarzare-redhat>
-References: <20260430122653.554058-1-edumazet@google.com>
- <afn0ZdvZWswBuDMm@sgarzare-redhat>
- <CANn89iLs8DOWJwDpf_ARoMrV+6b2tbhEJ=VVzeC8gCm5dRGaig@mail.gmail.com>
- <afoF_cHfl6ygcupM@sgarzare-redhat>
- <afocwkfBHJ5u10rx@devvm29614.prn0.facebook.com>
- <e1f32df5-b6a1-47a8-a783-fcc8e3c91f25@salutedevices.com>
+        d=1e100.net; s=20251104; t=1778076179; x=1778680979;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=4inufemHLYVw7e0Jw1npJcdd1uysY1TXg59beodcgGQ=;
+        b=efToZt9ytPHTHE+7Sc+aNOoBXW3xA6fE9FtvyHs8/A8PbVUZdZPFje+FuAz+ofgrPk
+         MkmTzZIVTDCAERredeITTYDp2qcxbeWCgpURQRv3LJC94zT8cG69Tl72yCx/iRMQNg3a
+         bLtfk4oiVhu7MXwiiW/+lniWD8S+r0/mJfwKRtOEOtp03H9r4a4OVM1K3fW7Vo5Rt1W4
+         yfViaTbOsnDn56jf/5Amo7zQUJQD+EFGIX8bOigVNh+SFSIubrkrTTQbhQsdVsfBFZc0
+         cOzmU0Ah5eniYj/XgFCxDaoxzxI4wVHzHbA02OpIf9+GZVcdddWRv6HHoc6N4UhvysVN
+         BOWw==
+X-Forwarded-Encrypted: i=1; AFNElJ+z038NljZxTcW8emqMhOwt0xeCDrSHXO3cRr9mCpLkjnlP4fpOrI2cLPECY6J1wkulH6k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqmQVnG6uKWOtY7akq/aSWVlG/nHVAnvJnU/+C3nuC2CC/JlHA
+	tiDwVp7wir4rXnuhuSuVK4DIcO4/DVGCc5SKcoRmaXHb+mfgwmhn6D+TOJYJhEwtNz+2/jbT+xa
+	r+V9GJw==
+X-Received: from plqt9.prod.google.com ([2002:a17:902:a5c9:b0:2b9:a1d0:9f13])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1ad0:b0:2b2:5597:bad4
+ with SMTP id d9443c01a7336-2ba7a20545bmr34631745ad.30.1778076178340; Wed, 06
+ May 2026 07:02:58 -0700 (PDT)
+Date: Wed, 6 May 2026 07:02:57 -0700
+In-Reply-To: <CALMp9eRBcyLZJrcK+RqpSn3efPP62kuD00pDzQv7kRDBjkbqJQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e1f32df5-b6a1-47a8-a783-fcc8e3c91f25@salutedevices.com>
+Mime-Version: 1.0
+References: <20260423150340.463896-1-seanjc@google.com> <20260423150340.463896-5-seanjc@google.com>
+ <CALMp9eSt-ZDCxhyVjEiov2475ToZ7M_94HSpKg6hqrh=m3iZAg@mail.gmail.com>
+ <afjU2ZbwRq7Jig0w@google.com> <CALMp9eRBcyLZJrcK+RqpSn3efPP62kuD00pDzQv7kRDBjkbqJQ@mail.gmail.com>
+Message-ID: <aftKEcYiZlbnnLg0@google.com>
+Subject: Re: [PATCH v2 4/4] perf/x86: KVM: Have perf define a dedicated struct
+ for getting guest PEBS data
+From: Sean Christopherson <seanjc@google.com>
+To: Jim Mattson <jmattson@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, linux-perf-users@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Mingwei Zhang <mizhang@google.com>, Stephane Eranian <eranian@google.com>, 
+	Dapeng Mi <dapeng1.mi@linux.intel.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 06, 2026 at 12:50:04PM +0300, Arseniy Krasnov wrote:
->
->
->05.05.2026 19:37, Bobby Eshleman wrote:
->> On Tue, May 05, 2026 at 06:11:13PM +0200, Stefano Garzarella wrote:
->>> On Tue, May 05, 2026 at 07:14:36AM -0700, Eric Dumazet wrote:
->>>> On Tue, May 5, 2026 at 6:52 AM Stefano Garzarella <sgarzare@redhat.com> wrote:
->>>>>
->>>>> On Thu, Apr 30, 2026 at 12:26:52PM +0000, Eric Dumazet wrote:
->>>>>> virtio_transport_inc_rx_pkt() checks vvs->rx_bytes + len > vvs->buf_alloc.
->>>>>>
->>>>>> virtio_transport_recv_enqueue() skips coalescing for packets
->>>>>> with VIRTIO_VSOCK_SEQ_EOM.
->>>>>>
->>>>>> If fed with packets with len == 0 and VIRTIO_VSOCK_SEQ_EOM,
->>>>>> a very large number of packets can be queued
->>>>>> because vvs->rx_bytes stays at 0.
->>>>>>
->>>>>> Fix this by estimating the skb metadata size:
->>>>>>
->>>>>>       (Number of skbs in the queue) * SKB_TRUESIZE(0)
->>>>>>
->>>>>> Fixes: 077706165717 ("virtio/vsock: don't use skbuff state to account credit")
->>>>>> Signed-off-by: Eric Dumazet <edumazet@google.com>
->>>>>> Cc: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
->>>>>> Cc: Stefan Hajnoczi <stefanha@redhat.com>
->>>>>> Cc: Stefano Garzarella <sgarzare@redhat.com>
->>>>>> Cc: "Michael S. Tsirkin" <mst@redhat.com>
->>>>>> Cc: Jason Wang <jasowang@redhat.com>
->>>>>> Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
->>>>>> Cc: "Eugenio Pérez" <eperezma@redhat.com>
->>>>>> Cc: kvm@vger.kernel.org
->>>>>> Cc: virtualization@lists.linux.dev
->>>>>> ---
->>>>>> net/vmw_vsock/virtio_transport_common.c | 4 +++-
->>>>>> 1 file changed, 3 insertions(+), 1 deletion(-)
->>>>>>
->>>>>> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->>>>>> index 416d533f493d7b07e9c77c43f741d28cfcd0953e..9b8014516f4fb1130ae184635fbba4dfee58bd64 100644
->>>>>> --- a/net/vmw_vsock/virtio_transport_common.c
->>>>>> +++ b/net/vmw_vsock/virtio_transport_common.c
->>>>>> @@ -447,7 +447,9 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->>>>>> static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
->>>>>>                                       u32 len)
->>>>>> {
->>>>>> -      if (vvs->buf_used + len > vvs->buf_alloc)
->>>>>> +      u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
->>>>>> +
->>>>>> +      if (skb_overhead + vvs->buf_used + len > vvs->buf_alloc)
->>>>>>               return false;
->>>>>
->>>>> I'm not sure about this fix, I mean that maybe this is incomplete.
->>>>> In virtio-vsock, there is a credit mechanism between the two peers:
->>>>> https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01.html#x1-4850003
->>>>>
->>>>> This takes only the payload into account, so it’s true that this problem
->>>>> exists; however, perhaps we should also inform the other peer of a lower
->>>>> credit balance, otherwise the other peer will believe it has much more
->>>>> credit than it actually does, send a large payload, and then the packet
->>>>> will be discarded and the data lost (there are no retransmissions,
->>>>> etc.).
->>>>
->>>> I dunno, perhaps revert 077706165717 ("virtio/vsock: don't use skbuff
->>>> state to account credit")
->>>> and find a better fix then?
->>>
->>> IIRC the same issue was there before the commit fixed by that one (commit
->>> 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")), so
->>> not sure about reverting it TBH.
->>>
->>> CCing Arseniy and Bobby.
->
->Thanks!
->
->>>
->>>>
->>>> There is always a discrepancy between skb->len and skb->truesize.
->>>> You will not be able to announce a 1MB window, and accept one milliion
->>>> skb of 1-byte each.
->>>>
->>>> This kind of contract is broken.
->>>>
->>>
->>> Yep, I agree, but before we start discarding data (and losing it), IMHO we
->>> should at least inform the other peer that we're out of space.
->>>
->>> @Stefan, @Michael, do you think we can do something in the spec to avoid
->>> this issue and in some way take into account also the metadata in the
->>> credit. I mean to avoid the 1-byte packets flooding.
->>>
->>> Thanks,
->>> Stefano
->>>
->>>
->>
->> Indeed the old pre-fix skb code would have the same issue.
->>
->> I can't think of any way around this without extending the spec.
->
->Hi, thanks, agree with Bobby, that accounting metadata (e.g. skb size here) was not implemented "by
->design" in credit logic - another side of data exchange knows nothing about that. Also the same
->situation was before skb implementation was added by Bobby. So looks like need to update spec may be.
->
+On Mon, May 04, 2026, Jim Mattson wrote:
+> On Mon, May 4, 2026 at 10:19=E2=80=AFAM Sean Christopherson <seanjc@googl=
+e.com> wrote:
+> >
+> > On Fri, May 01, 2026, Jim Mattson wrote:
+> > > > @@ -5052,7 +5051,7 @@ static struct perf_guest_switch_msr *intel_gu=
+est_get_msrs(int *nr, void *data)
+> > > >          * wrong counter(s).  Similarly, disallow PEBS in the guest=
+ if the host
+> > > >          * is using PEBS, to avoid bleeding host state into PEBS re=
+cords.
+> > > >          */
+> > > > -       guest_pebs_mask &=3D kvm_pmu->pebs_enable & ~kvm_pmu->host_=
+cross_mapped_mask;
+> > > > +       guest_pebs_mask &=3D guest_pebs->enable & ~guest_pebs->cros=
+s_mapped_mask;
+> > >
+> > > It would be helpful to save this mask somewhere, so that it can be
+> > > used when calculating guest_pebs_idxs in x86_pmu_handle_guest_pebs().
+> > > I think that code needs a fix similar to the one in commit
+> > > 58f6217e5d01 ("perf/x86/intel: KVM: Mask PEBS_ENABLE loaded for guest
+> > > with vCPU's value.").
+> >
+> > Blech.  This all feels like a losing game of whack-a-mole.  Proxying th=
+e PMU
+> > through perf is a mediocre approximation for non-PEBS events, and it se=
+ems like
+> > it's downright awful for PEBS.  Ideally, we'd just rip out all of the p=
+erf-based
+> > PEBS virtualization support, and only support PEBS through the mediated=
+ PMU.  :-/
+> >
+> > Absent drastic measures though, saving the effective guest_pebs_enable =
+in the
+> > per-CPU tracking does seem like the least awful approach.  Though I don=
+'t quite
+> > understand why we can't use GLOBAL_STATUS for x86_pmu_handle_guest_pebs=
+().  I.e.
+> > what happens if x86_pmu_handle_guest_pebs() only processes counters tha=
+t actually
+> > got marked as overflowing?
+>=20
+> x86_pmu_handle_guest_pebs() is called in the path where we are
+> handling GLOBAL_STATUS bit 62 (GLOBAL_STATUS_BUFFER_OVF_BIT).
+> Individual PEBS PMCs are not configured to raise PMI on overflow.
 
-Even if we change the specifications, we still need to work with older 
-devices, so we should find a solution for this as well.
-
-My main concern is data loss, so I'm considering the following options:
-
-1. Notify the other peer of a smaller buf_alloc from the start, leave 
-some room for overhead, and when it's running out, notify them that 
-buf_alloc = 0. This way, the peer realizes it can’t send anything else.
-
-2. Or update buf_alloc each time by removing the overhead, similar to 
-what’s currently done in virtio_transport_inc_rx_pkt(), but also do it 
-in virtio_transport_inc_tx_pkt().
-
-As I said, IMO this patch alone is incomplete; we need to communicate 
-with the peer somehow regarding space. I don’t think including the 
-overhead in fwd_cnt is spec compliant, since the other peer has no idea 
-how much overhead is needed, but reducing buf_alloc should be okay, even 
-though I’m concerned about packets in flight.
-
-As a quick fix, I think option 2 might be the easiest; I’ll run some 
-tests and send over a patch.
-
-But in the long run, I think we absolutely need to improve memory 
-management in vsock, perhaps by avoiding custom solutions.
-
-Thanks,
-Stefano
-
+Right, but aren't the per-counter OVF bits still set in GLOBAL_STATUS?  Ah,=
+ no,
+at least that's not supposed to happen, per commit 8077eca079a2 ("perf/x86/=
+pebs:
+Add workaround for broken OVFL status on HSW+").  Well that's lame.
