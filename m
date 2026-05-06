@@ -1,157 +1,126 @@
-Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012001.outbound.protection.outlook.com [52.101.43.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 988E13ED5C7;
-	Wed,  6 May 2026 13:16:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.1
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778073395; cv=fail; b=o79QUo+HOtMIRv6FUaKjUjHGnfnoWfvQo4Y4/e1soqNdwLF3FJQ/kNRx6qBSF8GCOYw2+c3Qq+8iXShUAvV76tXBWtYn7RQDjPtZ6tN5y0an1GYCpoih65HRn3Lt68C2yPI7RQUUiHSJrFpupgd9GUKf0qFADZ7Sv3c//LUChnk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778073395; c=relaxed/simple;
-	bh=oZgM/Q5bplZ4BDH4Z48zNtUIttiaSY5ZKigKMJm9+S8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=QMM3el2jQsD4hbk2tfbN1SZANG+Q+3kt8nhHf5bQPd1b41z7JjODwuervwD8APjQVNHZM2DKMREpqPZVz59OO0LT/B4iXpj8vA1qo4zqUO0M09xg56mh2GVBsQPPRJ4SlkurTDkhAiwHdeE6sZhJ4PadZLrUTI4pxcrYhiYlaRA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=pF/cLyrQ; arc=fail smtp.client-ip=52.101.43.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D6C033A6E0
+	for <kvm@vger.kernel.org>; Wed,  6 May 2026 13:21:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778073708; cv=none; b=IB2FGCXzOUfZR/cUSEKm0AeKyvBpKZHw8zWX6wD4r6U77va1QpP7H+SdMXIGFB/Qb8kDIfhDjUCC1NpWGkCJLFMVA3jRgDgsAqu2du7tmR5KEvJHiEsddGqYcQQ+o4z7JJtDb4XbrbUCSe+yn1Ny4AefFVH4s5iE509mrkYxoPw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778073708; c=relaxed/simple;
+	bh=pZppoCGkMooXKPApnmHM8gfolIM30zRu7nca3HF0ugc=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=biVUEwJ8USPiRY+iCdhGoUomTKLqmiFSFufydBaIXxZtMO90V0WEEuAqfQzLVCFhnGzT1JXBY2ZToOLOoGL4lOg60aBLcClakkzpQgvQ5MikVhx89PALvyYBwGfO0zCA8AE9Sh5R4S4quftSbgdz85QDgbqAjLFvwOaKimPGEdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=egkOhsfC; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="pF/cLyrQ"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=N/AxU00LqxNyW0MsZnob8ifD7ec7gnNkmzFua4ecYBA6lsWBLs/d1+/zhjoEyl2cPOm6oMHHlQwV5nZuTEqs1Q9y3KI630Ml68p5QXrERrnsK7Jfh5/bl+YDXyCGiMueHMlxfY4g7jkG2yudmuPQ9Ikm72EKYrHuV6qHSyCQr2QvZ1Jst4CP3niSDWsxw/IbPo/jcmNidBJkWtwsGmc/1nzAGH6ZfUE9xjtCSpYUN29Hc3CVi0B1eOhmLp/jqtIltJN06ucaIcxk4zx/wvrFEB/ybKN3lUqB3tzpu/b0sO1I0B3sn8V7Bc4r1xV/jBR1l3A16+oo969QoqeJ5RgkXw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=xQQ7u14iNCXmbIsVjuRS+udApjZvqfzi4Y2pg1Rz1z0=;
- b=AmiUUD1hJQYJMF0dYxTgeS+KPGntyex7ZYO4fDd27kllrpOZv81cBmdrkBoSP28bJtx/GpRcYnAPTN8zv63d4FskyTcmU/ruizOzoJc7pyj5CoMqJphyeIzYtjgmw9b1GD5lqfmg6K1o7FZc5daaNhhtR+2f/y+fAJtazy9mMFmjjJVeYrXU2/uex66RMnqsPv+uvvIRbwx1JkWdqOgZONohP5eiqgDJNIkQA+ZVVstRZov2F3CzhJomgyOkjqmOYLi+aA1binjB104qWmASi4Owhjx3g9WmTKw8ENP9nep0IRDafRolxv4xDFJOfClGuGZ2MuQ14swqxtrWk+K9tg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=xQQ7u14iNCXmbIsVjuRS+udApjZvqfzi4Y2pg1Rz1z0=;
- b=pF/cLyrQLJ2zLjUjmHK2DpLGxV2yIqOoDEkrzaDXl+wlYvqrRMyPdnHnA5HuRboJxgThkBg4bOH8xccpbD5v3sXETm/FakCaMNINKdVrFk9miJEVhpBOt/tasSwBPoBKLBBdOy5cFY7lClChHphs3Yne9sO18OvsaMJdugTYGefpClVwuKBP91TmJUWQsKuE1X8/fHpgWOYjfr7VlMBu94lMVFUzAAR9v68D5AZadgUugcL3rDnn3DXmSg5hLbEFFUHFKStcaN47CiiihN0Nz9357EzDWQbZhxSA+PrWLAsVkCU6ukx4pxY6gHt1KSXipeXrSTEqCAadMrF4Rj9yjQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by PH8PR12MB6842.namprd12.prod.outlook.com (2603:10b6:510:1c9::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Wed, 6 May
- 2026 13:16:25 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9891.008; Wed, 6 May 2026
- 13:16:25 +0000
-Date: Wed, 6 May 2026 10:16:21 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Alexey Kardashevskiy <aik@amd.com>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
-	linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
-	christian.koenig@amd.com, pbonzini@redhat.com, seanjc@google.com,
-	alex.williamson@redhat.com, vivek.kasireddy@intel.com,
-	dan.j.williams@intel.com, yilun.xu@intel.com,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	lukas@wunner.de, yan.y.zhao@intel.com, daniel.vetter@ffwll.ch,
-	leon@kernel.org, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com,
-	tao1.su@intel.com
-Subject: Re: [RFC PATCH 04/12] vfio/pci: Allow MMIO regions to be exported
- through dma-buf
-Message-ID: <afs/Jamxnj6GGFfM@nvidia.com>
-References: <20250107142719.179636-1-yilun.xu@linux.intel.com>
- <20250107142719.179636-5-yilun.xu@linux.intel.com>
- <c0b160f8-2930-4158-9e50-b4cc4209e2ca@amd.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <c0b160f8-2930-4158-9e50-b4cc4209e2ca@amd.com>
-X-ClientProxiedBy: VI4PEPF0000015E.AUTP296.PROD.OUTLOOK.COM
- (2603:10a6:808:1::86a) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="egkOhsfC"
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4891f625344so10230115e9.0
+        for <kvm@vger.kernel.org>; Wed, 06 May 2026 06:21:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778073706; x=1778678506; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=L7rCjUTJQsAQHnwXFtsx6ks2Ud7GiaEkWHxltyMvS7k=;
+        b=egkOhsfC3JZun8iS46/xjV6yGeW7yhy1ZT2WdQZvACVg63sZWtMdmaiJVmSRQgpnE2
+         f7XhsUprB2ujMKl9VtU3Be4UKrIP8UE9tlSj/9SMswMFQz20BscteQLl826U9vXrnkqn
+         vIWAWUkwfoPPN+X2eUTcxVlWiK8TkL0JulVUBJ5VxRzzJhGS7g2PupwFxDfL89kIir2v
+         /0iASIxoAmbV00OeafTA+r0iTrghMlrDY/2R0BslOHw9S5pnNne/vvQ9dF+Bm2+xJaJl
+         jrtGpSMa3d6N1yQ6CXXv+gB9h3B0PRaqqBJOc1ywQBEr5rMohwqb1rCCSHd3/M7M36HI
+         eJwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778073706; x=1778678506;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=L7rCjUTJQsAQHnwXFtsx6ks2Ud7GiaEkWHxltyMvS7k=;
+        b=j4bboSQR8938iDlVgekd3Y9+S63QPEMEWo4Wqovh7Cih5YMhOWdo5UsU9RUx1aW/5k
+         q0+/Iw+HhAQ7oiGJ94pKPXajcIMr8nzPuwXik8ZAYAnAe21PCj8F9yFRda9/k/YpSVWD
+         wKk8sIb5RogRCQ9LfmwdChk+2NyhozE0Jr0DNIhiD1MYBWWFZ1hVEcTRBWaYEVuWFgY4
+         MWggxl6ve1yy+WSp13HYKbCoVmrVcqpuA3uHYNQBHQ2cntpWoD+yqMgvPaWMo5pp66Gp
+         jD4a7HChr2W83hTf2ElATy9mkMzwHDt+N3FBMQ96auiurpnKwHwcjYwGqQNta7pBe+Kx
+         mv1A==
+X-Forwarded-Encrypted: i=1; AFNElJ9OvuLdxbDEV1jt9nCX+nurvSdomPh+oEHWRfjru9iD3YrXCj+4Gn1ll9p7U/Nqpj0dAok=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8b04VFhsnywca7vVhB9WtTrSIcnTWTjNd2xRWdCfyC42HYq3A
+	A+6Ox5e6ehFNS/9buqGqWlKYQgs8lCEcLDTt9WqzHzzc+17jEv7fDM0W
+X-Gm-Gg: AeBDietdMcQ9cbQLqaZ5b6COwBX6pT9gqCRhpcfrEcNSByP+J06USobon87lgnNW+pZ
+	upXDiJ/G1F5h/qx4Qw0wATB2RN1Pa/6KPxRzcdBxfinSkxhLvm8l4MyjULxtrg7CwKAAOjplHGt
+	AgIGYPOtewAqljxWkDy7RL95MWQOatLghr40lG6MGvTfP3kxOqkxeVXARJ5wRGe9UeMXpjToycM
+	hNZWAbf2Pd1KFHSxACR2BCwFRyfSVxdD5tyjV4UTW+ourmsPOw6SGS/3bBybEZXJuv48g+W/z/w
+	3H99AFUfXUVaWib8IysVuE37pfgDMiwgD0fAwJMpYDIPjRclILqM19RvBvOeNNsO5JzwvOdRi9u
+	8dl7w56lWwlLon9EjaJRxm8MtrRgGsSrrlyNOCSrSgQw9c2fcbCb8uldS3kqINPhWZdoCSY/hqD
+	hrkjLLVNEcn6CCFUIbURsqpItLKMa3IVsBolttZiV2Q6417OxFGwTY4ZGVQN7rxiy/EItc
+X-Received: by 2002:a05:600c:6612:b0:486:f893:56c6 with SMTP id 5b1f17b1804b1-48e522b71f2mr50112055e9.10.1778073705537;
+        Wed, 06 May 2026 06:21:45 -0700 (PDT)
+Received: from osama ([2a02:908:1b6:8980:89b3:e462:e9ca:df27])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e53895f0asm52221165e9.2.2026.05.06.06.21.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 May 2026 06:21:45 -0700 (PDT)
+Date: Wed, 6 May 2026 15:21:43 +0200
+From: Osama Abdelkader <osama.abdelkader@gmail.com>
+To: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>,
+	Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+	kvm@vger.kernel.org, kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH] riscv: kvm: return SBI_ERR_FAILURE for PMU shmem OOM
+Message-ID: <aftAZ6U93qCXLcSc@osama>
+References: <20260415220930.287592-1-osama.abdelkader@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|PH8PR12MB6842:EE_
-X-MS-Office365-Filtering-Correlation-Id: fef0759e-af05-4a49-f6c8-08deab71ac9b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|1800799024|7416014|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	1T8zA5UyAma7zQYXmJaH+34sH4rdZ3Q2rr2Ay6NVFHP4Hsgv0KvshhckF/oWVZp3Z/NGNFSpdqCEPHr41K+ftXZaoTcRMpIe8NzPq2blZbc418xuIibvH8U0Io2IuYMMGesIioKV8xYEN/TDJ3jxDgg1hZ5cWbvpibkFAhtHk7mBtqeeoYNn5kFuUTYTcc8XTxWizDakxp7ToyOsZ7aP3L0xWZzryrBGPh/G6ctoFIy1Ua88vfSXN49pC9iod6ACgQ9am5CiwRLhy0i4abs4TCtqVyknSAWv66Q6TcH6pt03QA8HUkxusUCo7NyoIrn8WHbxrzr7GOqB3Padyg2iMGQu8+BgMFBL6qg57mu4aaAUOPrk5233Dl4Pgr80MD+ZtLbWozMxRTWcYtfjnGSyOLxHyPdSbg0S95926AYbs8PSGkjymBwIez8wzHfsOgsw4v7zgkYzzkycq6Vi3pV1XtzStPt6Okd0U4MDQF9Quev1YI40ZBHCmf7yK5ARDiPrNPpLxz74gPdfJ2+RbLZnMFjjidXi5RYvaRhJ31UuU2XSdc/x9vtMSqrKPwcSGY9HW1Z2GgmHZrWoBFv5Q7CzOFv8ffPdE81R6vR2cFhvmgPSL6aJLl/DZmudtwmFZc2uODGVv2E1S+xbl5PhD0HgCoiu8pfhGKtu+ah2Z+oy9uZEzVMyxOP16ahyRuhLRy7y
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(7416014)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?uiSSxDWdmzm7kzkzV0UpUIvu1sdkDl6iYSvFmSlbx845Q29M/b9aiMEO0xhX?=
- =?us-ascii?Q?4VCkwAQKj6ZktWKnzBe9I1zWwhCbdwX/P/SKTQ/XVetDHcgWGQZyju6jOB22?=
- =?us-ascii?Q?oshWtETHXrLM3Fp2QujPC1wv7fWdPi7igSu0EPqX5Zq8/07IDQs2Mzq33fTP?=
- =?us-ascii?Q?ISXFkRhYPM8BwncxAMdkCstKSCtCPHdpa/7XTrEcoelqXB7SbQOXIRG8Xn+7?=
- =?us-ascii?Q?nmxRqRQFZEp4ZS7UaIem3Im00V44JqWkQMpo6l9LTKISYBiDdWdfT5BcKD5W?=
- =?us-ascii?Q?v3lELeOlCZn+tCMSuQ9vkELehpVgbsLHEuQAbtWmuY1xprJMc2V60EfFzBQz?=
- =?us-ascii?Q?OjQgYv/I8zDvrpNBQAdgYJCcoSC0BQG9fQCbRJOEFk6oF4eHeaNXdERpgCLF?=
- =?us-ascii?Q?kKESgznyHdyef4iswNfJNdshH6uO1zLtEn7T7FxSzFWRPuBLODhmS862BVMy?=
- =?us-ascii?Q?xzK5jK8Lhy1fbGhIZIF7852rl5QuYQodeqz904EV+5JYU+dDBTepvurBJDsB?=
- =?us-ascii?Q?aedSW0TvtE+ISQp0Kj3r2nUu2wlbTc/I8DfST/ndMqGvO9cnjtQ938CgMWGq?=
- =?us-ascii?Q?YzR/vYSd713nPfb6W9CES+q0i2B/FkEwauekUiAnZKUVUK/DA0v+fK+GXucG?=
- =?us-ascii?Q?53rWQd+A7tDoZ7M5TXGxBjqOzB0h3+AeLZWdNgKrW4GcsxtYJhwfGGx+WZt0?=
- =?us-ascii?Q?Ab0EM2cQYHOeHvqyg8TrMOIwvRbklINa8xzNepP9lJhGWueWCrH+2Sm47/2M?=
- =?us-ascii?Q?dN3vD6Ila8VfEbbUWwEwK9uIC7tX7G97Bp+cxS1FuwiT1PsLsKhAgx4JUAA3?=
- =?us-ascii?Q?3mAGt9UGziFzXlDiGrnOJLvqRhGYJQjkYwJRnmG35kT4XmeMREt7Abcv2BRg?=
- =?us-ascii?Q?B6BrkT1EwaPqDYCEP4VkomSNkioFDZnkte65FeV9mOtC+7NQOeyo4Si/fU6X?=
- =?us-ascii?Q?v6buGCOQOm6dOXT+vXjjDdZ9YWVgsW+l4IXP/TShuw+9oR0GpfWxC82sS6BR?=
- =?us-ascii?Q?r2I7kGeHoxxQ19iRbvRntk+e3LpzUw00ppHq/92FoNm4rUaY4xp5/bzHuVBt?=
- =?us-ascii?Q?mzPpXKmyzroAHrXETnxR72Ex2aw/GexCBa9ODi0odnlm07g8LENhmXwn+K3e?=
- =?us-ascii?Q?q/dh5tU+/AWGnzE3FyEfbK6Npz/hYtQzMS+xrvD/i2AIwVau2VV3niXbEV0R?=
- =?us-ascii?Q?TSwW/6ZeNQjYgQpov8FD4D951fKFT7Cso/FE5uhwdw2PrL490nPTDCuudN8G?=
- =?us-ascii?Q?tWNZPyhB8wpVvgqZo9NXkweSb/IGEp80S0/1j6D19676O26mSK/YfP1uq2GA?=
- =?us-ascii?Q?mLcLVxR94EY3Cm9KS2I30R6M40LH4jV7CPWWrEKyMk03y6PTJUh2IhWvrQQY?=
- =?us-ascii?Q?BUhiYGEzmof0akbe820Kn6V/1GuTnQhxk5DEWswXEvfv1TmmaAkAzqKPODzG?=
- =?us-ascii?Q?8tlEXqQeNot40Quj+SqVdU3BIxwuhMLeCsHXHKE3uDUOgTQMAVFHWGlkwB4s?=
- =?us-ascii?Q?AI0oo4S0RYu05jPsPnpnWfLvXh1JXujOcfUh6zkkwBpQ/FAyFPGmFRU1Np8u?=
- =?us-ascii?Q?g97XWwkYsfEI7utpw4R7n2APBHqdHNp2DZW9bsdp2mYn9vdqnJJKrfgaZg8J?=
- =?us-ascii?Q?wgA/LkiedlaZh2hmA9TJoD40EXHdPrPcUOflKJEt3NhlhlU7CcArMWhrQSJ2?=
- =?us-ascii?Q?6aaBdzn8oS+2v/t5f7Sqr800uI6i4tG091Ki/4sgqJWw4tKG?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fef0759e-af05-4a49-f6c8-08deab71ac9b
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 May 2026 13:16:25.1838
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6LB3C3o++YDzM/zMpHa2ah9H3M1MnGP9U6fQs9/Eg8rVmGEaUmE6LiYPGkM7hS8L
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR12MB6842
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260415220930.287592-1-osama.abdelkader@gmail.com>
 
-On Wed, May 06, 2026 at 12:35:42PM +1000, Alexey Kardashevskiy wrote:
-> Hi!
+On Thu, Apr 16, 2026 at 12:09:30AM +0200, Osama Abdelkader wrote:
+> kvm_riscv_vcpu_pmu_snapshot_set_shmem() and kvm_riscv_vcpu_pmu_event_info()
+> returned -ENOMEM from the SBI extension handler, which caused 
+> kvm_riscv_vcpu_sbi_ecall() to abort KVM_RUN and surface the error to 
+> userspace instead of completing the ECALL with a negative SBI error in a0.
+> Use SBI_ERR_FAILURE and the normal retdata path, matching other PMU
+> handlers and kvm_sbi_ext_pmu_handler comment.
 > 
-> Let's reignite this topic.
+> Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
+> ---
+>  arch/riscv/kvm/vcpu_pmu.c | 12 ++++++++----
+>  1 file changed, 8 insertions(+), 4 deletions(-)
 > 
-> I've been using these patches + QEMU side hacks for 6+ months. And it's been fine until I got a device where MSIX BAR is in a middle of another BAR marked as TEE in the TDISP interface report. And no trusted MSIX yet.
+> diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
+> index e873430e596b..f36b099f447c 100644
+> --- a/arch/riscv/kvm/vcpu_pmu.c
+> +++ b/arch/riscv/kvm/vcpu_pmu.c
+> @@ -435,8 +435,10 @@ int kvm_riscv_vcpu_pmu_snapshot_set_shmem(struct kvm_vcpu *vcpu, unsigned long s
+>  	}
+>  
+>  	kvpmu->sdata = kzalloc(snapshot_area_size, GFP_ATOMIC);
+> -	if (!kvpmu->sdata)
+> -		return -ENOMEM;
+> +	if (!kvpmu->sdata) {
+> +		sbiret = SBI_ERR_FAILURE;
+> +		goto out;
+> +	}
+>  
+>  	/* No need to check writable slot explicitly as kvm_vcpu_write_guest does it internally */
+>  	if (kvm_vcpu_write_guest(vcpu, saddr, kvpmu->sdata, snapshot_area_size)) {
+> @@ -480,8 +482,10 @@ int kvm_riscv_vcpu_pmu_event_info(struct kvm_vcpu *vcpu, unsigned long saddr_low
+>  	}
+>  
+>  	einfo = kzalloc(shmem_size, GFP_KERNEL);
+> -	if (!einfo)
+> -		return -ENOMEM;
+> +	if (!einfo) {
+> +		ret = SBI_ERR_FAILURE;
+> +		goto out;
+> +	}
+>  
+>  	ret = kvm_vcpu_read_guest(vcpu, shmem, einfo, shmem_size);
+>  	if (ret) {
+> -- 
+> 2.43.0
 > 
-> Every time QEMU mmaps a BAR - I request a dmabuf fd from VFIO in QEMU. Since mapping of an entire MSIX BAR is allowed by default, VFIORegion::nr_mmaps==1 and it is an entire BAR.
-> 
-> Problem: KVM memslot mismatches the dmabuf fd size 
-
-Huh? kvm does not care about dmabuf at all? Are you running other
-patches to hook kvm and dmabuf?
-
-Putting a slice in a dmabuf is a well understood need for MSI, so I
-expect whatever kvm dmabuf interface that gets merged to accomodate
-this?
-
-> Solution2: modify logic in VFIO dmabuf to allow multiple KVM memory
-> slots per dmabuf. Now it is kvm_memory_slot::dmabuf_attach with no
-> offset into the dmabuf and one kvm_vfio_dmabuf per dma_buf.
-
-Yes, when kvm learns to take in a dmabuf it needs to take in a slice,
-not the whole buf. Or you need to create multiple dmabufs with the
-necessary slices from the VFIO. The upstream vfio dmabuf creation
-allows creating it with a slice.
-
-Jason
+ping.
