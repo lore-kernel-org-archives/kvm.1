@@ -1,137 +1,161 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D7548C40C
-	for <kvm@vger.kernel.org>; Wed,  6 May 2026 15:22:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FEFA47B426;
+	Wed,  6 May 2026 15:29:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778080956; cv=none; b=KTNQV2F5ducbAdAgTXDoY3auHS6nWWqy1OfxlXm7dixiTBcbPS/EmvlE52qxoIvTBOKMYFzuUhn/zk8oGQnoolonvwmxl3myrUz8nPbWH13HOX5mmeV+Zaw6oQlLEddHYfczjIkqgPCyCw9MfFJ2/3qjjlrkC7trDg81r3PJ6Ro=
+	t=1778081384; cv=none; b=YJp1QwQi1t9nl6jc66uH0BizIKtYS1lUuOympclC7M1ZRLwLmGKT5pPbqBc0AmvFgOh7+j019KGwpPS5kd7mYqGT9YFi1qNEJFYMAN0TtqCbwXBP7Bt9JMLDDmsduCRKoXlycri21c+Kmt11476aUVNkoyBIkcmn2aHjkZM5zjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778080956; c=relaxed/simple;
-	bh=hbB68Mo6u/IPP2ovVkT2sj3ajh8a4Sa30RDg6ZHW2tU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=BH1MXitR6kvNmXYIYjenmKbdyxVwAm8V7agBdBagMrhEWLQZUFYfKoWOgZx4VC6+3QZVOn/zxxxGsB47kLKOmB9wPvQOfZHdUvDQB0iqSWKNc4uk+a0xwHdRED4OL1VexqvT1bO/ULTZ+iDTr2rL/QVwutLMaELRdCL6EUqBCRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qEFGuM1Y; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1778081384; c=relaxed/simple;
+	bh=UzMH2u1MU8F8phCcA9cvtgS+wSBo2orCoIMTn8w+YRI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A5+6YE0fUR7gkuKcF7JN9ULhcHHjqFXPNy9x8Id3ZxPAVrBANnoJ0CooF+0ysw53u11hU+0Er0FjBR7tWzTRRplQ6u6uAOL9xF8RXDxzpOE2yZ+fWaNF2Cfq7KHrkyt4/jiTcRuxyTb09tAvSSQAJgXSQ8QJAIs3M2bPFkFL8wc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=STDn1RSW; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qEFGuM1Y"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c82437a0e6bso432698a12.2
-        for <kvm@vger.kernel.org>; Wed, 06 May 2026 08:22:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778080952; x=1778685752; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=buwWB1nkgqPih7qI3rf/2APZUYQhP2m22o6eBnTuB5o=;
-        b=qEFGuM1YGm9hlCzeRbUMoHY0PvIgrioMx4kR8bGkln27dewGOeWw574dYJia8YaiF+
-         C8PJQoU2kA0N8I0tCtPFjtE62hWJaSARWheclQjehF3fY/xZGKAFsE+bTo+lJXYBUCsx
-         HA+JdbPUAJlDLNxnaoE1GZppiJuJdsnIJbtzbK79KHyo+ftYEO+q19HuomWAQZ3l+hWa
-         uJxEyeDN7Sq2prM8tr77cL11/WrpDhEMH7hSubffbA6HNBvBmt9R7mFlRCZOAI1AHBIc
-         O2X4GaePf7kAVmB8L4csu8gZ+pDEuQAURGj0lvUmyd+3Pc5I4iphPJTAb+Q3L7jY+ope
-         i1uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778080952; x=1778685752;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=buwWB1nkgqPih7qI3rf/2APZUYQhP2m22o6eBnTuB5o=;
-        b=HJIfCYMIJqitjzMOebFYlkRwjVAsnAG2N8opImEL6l6arpnPjlnFE4QJ1XwJGUu/MB
-         aA3+e+paa3tgIXBOaZO4w+xXuRVXIQon+D2PlulmWzAAuKSDPvURW7FQbxhGwKp+6ruc
-         iLQc1NabfpdhGYGsFc9+wU//A/fUjKQepzBAnY0wYacEvMsRRPnQKm2IV7vQL3pAs9+p
-         bEQoYZSRiNyXc0jyxdjyv1nNDrKQhBdze9SKykKsassj28a6JRz/8XL4Q96JGOqFeN8l
-         FdGuyf2DVbRqJ8xnZBL3+MDRXXYJR0ttFde/c00eoAizgP/71Gk3g9IBHvYtaUOWjB3U
-         vSlA==
-X-Forwarded-Encrypted: i=1; AFNElJ+q0WKG64pSwEG9TCXN1H/YnAUPhP9UJpyW560XXiwDMFmG/ByGegxSlvqs5+3NddTl2RY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9YLRwvekdDNyiETq8FEQ5HaT52yx9AUTK8XhDuCK0Ys02HsFU
-	A/yVZXfIcheZE21ZYiqnQ/sVOH2HcRQvhVi98k4IhLnPNJG0NF71DWfXluCHQwoOER/VeKsdmx1
-	sPuhntA==
-X-Received: from pgbcq2.prod.google.com ([2002:a05:6a02:4082:b0:c73:97d4:afe0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a09:b0:3a2:f14a:4290
- with SMTP id adf61e73a8af0-3aa5aa7a02dmr4080837637.38.1778080951955; Wed, 06
- May 2026 08:22:31 -0700 (PDT)
-Date: Wed, 6 May 2026 08:22:31 -0700
-In-Reply-To: <cd8a2ae6-a276-480d-b942-bcd318a30451@leemhuis.info>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="STDn1RSW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97DBCC2BCC7;
+	Wed,  6 May 2026 15:29:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778081383;
+	bh=UzMH2u1MU8F8phCcA9cvtgS+wSBo2orCoIMTn8w+YRI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=STDn1RSWQtQf5vQAmkckEpHw+vLcrntjTrcGNB2Vatv/Z6fCUX2vp9pfzwOUSuFu7
+	 +mdGkigx/ldWmmEm+YSTEzOjCANn8lR6dtfuu1cBebE1lJDWyqzF32ynbLILRxumZ/
+	 115NwbwoMhlAIz1AIAjb2v8dc+P+ohamlniLb15kqZEMaZgzCa4P+42sgnNmy4coZz
+	 VQRB7/nPKpidYRftVvm9evvu37ksRbGq7zqZZMNxL+bHFMKD7k60VO8NLebkXOMw2L
+	 o7CQ0+rY8nrjlfXaFym19/+wafjPVLYQFcUjcFzaPq326lovpu5sJuS9aLX8TgrTqd
+	 eEnWjzOAqtXBw==
+Date: Wed, 6 May 2026 18:29:37 +0300
+From: Leon Romanovsky <leon@kernel.org>
+To: Matt Evans <mattev@meta.com>
+Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@nvidia.com>,
+	Alex Mastro <amastro@fb.com>,
+	Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>,
+	Mahmoud Adam <mngyadam@amazon.de>,
+	David Matlack <dmatlack@google.com>,
+	=?iso-8859-1?Q?Bj=F6rn_T=F6pel?= <bjorn@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Ankit Agrawal <ankita@nvidia.com>,
+	Pranjal Shrivastava <praan@google.com>,
+	Alistair Popple <apopple@nvidia.com>,
+	Vivek Kasireddy <vivek.kasireddy@intel.com>,
+	linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+	kvm@vger.kernel.org,
+	Carlos =?iso-8859-1?Q?L=F3pez?= <clopez@suse.de>
+Subject: Re: [PATCH 1/9] vfio/pci: Fix vfio_pci_dma_buf_cleanup() double-put
+Message-ID: <20260506152937.GJ11063@unreal>
+References: <20260416131815.2729131-1-mattev@meta.com>
+ <20260416131815.2729131-2-mattev@meta.com>
+ <20260501131236.278ac431@shazbot.org>
+ <9304aada-ee84-4cf2-a1d7-82313eda07aa@meta.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <adVGrJaRlRooO4su@google.com> <20260409142226.2581-1-lei.chen@smartx.com>
- <adf8Q1VSeAMMyCa_@google.com> <f1c742e0-41c1-4bdc-867c-a768a5eb89c5@leemhuis.info>
- <afs6PJzU3rHZwGv3@google.com> <cd8a2ae6-a276-480d-b942-bcd318a30451@leemhuis.info>
-Message-ID: <aftct6WWHdOG_EwX@google.com>
-Subject: Re: [PATCH v2] KVM: x86: Rate-limit global clock updates on vCPU load
-From: Sean Christopherson <seanjc@google.com>
-To: Thorsten Leemhuis <regressions@leemhuis.info>
-Cc: Lei Chen <lei.chen@smartx.com>, igor@gooddata.com, jan.cipa@gooddata.com, 
-	jaroslav.pulchart@gooddata.com, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
-	Linux kernel regressions list <regressions@lists.linux.dev>, 
-	Linus Torvalds <torvalds@linux-foundation.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <9304aada-ee84-4cf2-a1d7-82313eda07aa@meta.com>
 
-On Wed, May 06, 2026, Thorsten Leemhuis wrote:
-> On 5/6/26 14:55, Sean Christopherson wrote:
-> > On Wed, May 06, 2026, Thorsten Leemhuis wrote:
-> >> On 4/9/26 21:21, Sean Christopherson wrote:
-> >>> On Thu, Apr 09, 2026, Lei Chen wrote:
-> >>>> commit 446fcce2a52b ("Revert "x86: kvm: rate-limit global clock updates"")
-> >>>> dropped the rate limiting for KVM_REQ_GLOBAL_CLOCK_UPDATE.
-> >>>>
-> >>>> As a result, kvm_arch_vcpu_load() can queue global clock update requests
-> >>>> every time a vCPU is scheduled when the master clock is disabled or when
-> >>>> the vCPU is loaded for the first time.
-> >>>>
-> >>>> Restore the throttling with a per-VM ratelimit state and gate
-> >>>> KVM_REQ_GLOBAL_CLOCK_UPDATE through __ratelimit(), so frequent vCPU
-> >>>> scheduling does not generate a steady stream of redundant clock update
-> >>>> requests.
-> >>>>
-> >>>> Fixes: 446fcce2a52b ("Revert "x86: kvm: rate-limit global clock updates"")
-> >>>> Signed-off-by: Lei Chen <lei.chen@smartx.com>
-> >>>> Reported-by: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
-> >>>> Closes: https://lore.kernel.org/all/CAK8fFZ5gY8_Mw2A=iZVFNVKQNrXQzVsn-HTd+Me9K6ZfmdgA+Q@mail.gmail.com/
-> >>
-> >> Was this performance regression ever addressed?
-> > Nope, not yet.
+On Wed, May 06, 2026 at 02:53:31PM +0100, Matt Evans wrote:
+> Hi Alex,
+> 
+> On 01/05/2026 20:12, Alex Williamson wrote:
 > > 
-> >> Looks like this fall through the cracks, but it's easy to miss something.
+> > On Thu, 16 Apr 2026 06:17:44 -0700
+> > Matt Evans <mattev@meta.com> wrote:
 > > 
-> > It's in my list of patches to apply (probably for 7.2?).  I didn't want to squeeze
-> > it into the initial 7.1 pull request for a variety of reasons.
+> > > vfio_pci_dma_buf_cleanup() assumed all VFIO device DMABUFs need to be
+> > > revoked.  However, if vfio_pci_dma_buf_move() revokes DMABUFs before
+> > > the fd/device closes, then vfio_pci_dma_buf_cleanup() would do a
+> > > second/underflowing kref_put() then wait_for_completion() on a
+> > > completion that never fires.  Fixed by predicating on revocation
+> > > status.
+> > > 
+> > > This could happen if PCI_COMMAND_MEMORY is cleared before closing the
+> > > device fd (but the scenario is more likely to hit when future commits
+> > > add more methods to revoke DMABUFs).
+> > > 
+> > > Fixes: 1a8a5227f2299 ("vfio: Wait for dma-buf invalidation to complete")
+> > > Signed-off-by: Matt Evans <mattev@meta.com>
+> > > ---
+> > > 
+> > > (Just a fix, but later "vfio/pci: Convert BAR mmap() to use a DMABUF"
+> > > and "vfio/pci: Permanently revoke a DMABUF on request" depend on this
+> > > context, so including in this series.)
+> > 
+> > We really need a fix for this split out from this series, It's already
+> > been shown[1] that this is trivially reachable.  Carlos proposed[2] a
+> > similar solution to the one below.  I was concurrently working on the
+> > issued and suggested an alternative[3].  Let's pick a solution for
+> > 7.1-rc.  Thanks,
 > 
-> Hmmm. CCing Linus so he can speak up if he wants to about the following:
+> It looks like [3] is progressing, so I'll drop this one when I can rebase
+> onto it.
 > 
-> Given that this is a fix for a performance regression[1] I'd say it's
-> not as urgent as a "something stopped working" case -- so I guess it's
-> something where the "[fix] "within a week", preferably before the next
-> rc" approach Linus recently mentioned does not need to be applied strictly.
+> I noticed [3] removes the dma_resv_lock(priv->dmabuf->resv) around the
+> priv->vdev = NULL, and this series' vfio_pci_mmap_huge_fault() relies on
+> vdev only changing whilst resv is held to resolve a race between a fault and
+> cleanup (see patch 7 of this series).  The handler takes resv so that it can
+> stably test vdev in order to take memory_lock.
+
+I think that you should rely on priv->revoked and not on priv->vdev.
+
+Thanks
+
 > 
-> But Jaroslav OTOH reported it more than 7 weeks ago already and back
-> then called it something that "severely impacts KVM hosts running many
-> Firecracker microVMs."[1]; 
-
-For a setup that is likely broken.  On modern hardware, the path in question
-should never actually be hit.  I do want to resolve the bug since older hardware
-and funky setups do rely on the old behavior, but it's not pants-on-fire urgent.
-
-More importantly, the original reporter(s) hasn't responded to any of our questions,
-or to the proposed fix.  I'm not going to rush in a fix if I don't actually *know*
-it's going to fix the original problem.
-
-> and a potential fix exists for 4 weeks already. Due to that, 7.2 feels a bit
-> too far away for me, as that is still ~15 weeks away. But maybe that's just
-> me.
-
-The "user" is also a fairly sizeable company, not some random person that's trying
-to use KVM and is blocked.  I highly doubt they are still actually running a buggy
-kernel.  E.g. based on a "same workload after rollback" comment in the bug report,
-I assume they simply rolled back to the last good kernel (6.18).
-
-Who knows, maybe they also took our hints/suggestions about theire setup being
-wonky and addressed whatever hiccup was sending them down the uncommon, already-
-slow path.
-
-All in all, AFAICT the only difference between sending this into 7.1 vs. 7.2 is
-that the reporter won't be able to upgrade their kernel (without patching) for an
-extra ~8 weeks.
+> Must your fix change vdev outside of holding resv?  I'm still sketching
+> alternatives; at first glance perhaps the fault handler could rely on vdev
+> being valid if !revoked, which can be tested holding [only] resv.
+> 
+> 
+> Thanks,
+> 
+> Matt
+> 
+> > 
+> > Alex
+> > 
+> > [1]https://lore.kernel.org/all/GVXPR02MB12019AA6014F27EF5D773E89BFB372@GVXPR02MB12019.eurprd02.prod.outlook.com/
+> > [2]https://lore.kernel.org/all/20260429182736.409323-2-clopez@suse.de/
+> > [3]https://lore.kernel.org/all/20260429142242.70f746b4@nvidia.com/
+> > 
+> > > drivers/vfio/pci/vfio_pci_dmabuf.c | 9 +++++++--
+> > >   1 file changed, 7 insertions(+), 2 deletions(-)
+> > > 
+> > > diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
+> > > index 281ba7d69567..04478b7415a0 100644
+> > > --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
+> > > +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+> > > @@ -395,20 +395,25 @@ void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev)
+> > >   	down_write(&vdev->memory_lock);
+> > >   	list_for_each_entry_safe(priv, tmp, &vdev->dmabufs, dmabufs_elm) {
+> > > +		bool was_revoked;
+> > > +
+> > >   		if (!get_file_active(&priv->dmabuf->file))
+> > >   			continue;
+> > >   		dma_resv_lock(priv->dmabuf->resv, NULL);
+> > >   		list_del_init(&priv->dmabufs_elm);
+> > >   		priv->vdev = NULL;
+> > > +		was_revoked = priv->revoked;
+> > >   		priv->revoked = true;
+> > >   		dma_buf_invalidate_mappings(priv->dmabuf);
+> > >   		dma_resv_wait_timeout(priv->dmabuf->resv,
+> > >   				      DMA_RESV_USAGE_BOOKKEEP, false,
+> > >   				      MAX_SCHEDULE_TIMEOUT);
+> > >   		dma_resv_unlock(priv->dmabuf->resv);
+> > > -		kref_put(&priv->kref, vfio_pci_dma_buf_done);
+> > > -		wait_for_completion(&priv->comp);
+> > > +		if (!was_revoked) {
+> > > +			kref_put(&priv->kref, vfio_pci_dma_buf_done);
+> > > +			wait_for_completion(&priv->comp);
+> > > +		}
+> > >   		vfio_device_put_registration(&vdev->vdev);
+> > >   		fput(priv->dmabuf->file);
+> > >   	}
+> > 
+> 
