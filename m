@@ -1,363 +1,196 @@
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+Received: from mx4.sberdevices.ru (mx4.sberdevices.ru [152.89.196.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6436E3EDAAF;
-	Wed,  6 May 2026 09:46:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCD53EC2E0;
+	Wed,  6 May 2026 09:50:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=152.89.196.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778060803; cv=none; b=BzWen/GPoWsDjBorFvNvnDwG3+oUcDrjGzYYCzUmAXn5A7wLbk+9y9IHnpTfwBr/FMc+ad4NI9XhI6DyYothnposHK4PuXoCjQ7SZ2sE3BwgcHrNsxOupYv0PWaH5DeYfERw2wJiJ19VI8mnNXdxpjY9E3A/FfhDFQBncJkTWUA=
+	t=1778061025; cv=none; b=ISerWp9M8ukuK/gA11Bc9+WdOBowNP1wp8PuRbfFuVE925pe39ZoSmLH7KUK8VqG8tKfkxHCkWVcqfOyX3mNq6BJVuV2pXv6dNP1RbBf7MTXDH0uLonlmjbx4CkdlZprz595prRYiZN5o9LpDAhq9P4eulfkphrpsILTcphhJJc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778060803; c=relaxed/simple;
-	bh=XIfyEc91HNmgRzMcr/nSXiOd3IlLvw3qC2jbTjV8R7Y=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nnGJzb99a55CEKx60XwfQ/AMNZdA4IUDfXZLSSxVOQY5X659LLT3rgZBbO4H7lZv0op+0B4Kyv7Yh2wn8kgkNiEDB81LAR9iXbO4ep0TMtqv+ZpyRrSM9bLhrv7g0BgGceB+h4Ik4EkGmubuhQW4BnxUxPUdms7CPG0+EZ0CNX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=5v5FNZz/; arc=none smtp.client-ip=113.46.200.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1778061025; c=relaxed/simple;
+	bh=d5gbTt/rFSi+YlAu2A09VdNyvTNIlHL4oX8ZwclG1tQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=GJQyp33D7BMC4DVzQbZOnFVU1tiklz1S6/n7LreLHNf/iYDAN2pWIZWCfvQJcbHuUUfL21ARDMhXhP/NgGKvMRhS1wVtvE37DbyGvvdcoTEj5GqRqYCW9Uqz7Hrfkg+J+ssQuyq4y4nHEvuHR7QqMQMzKokevmy7kinQ2hIDO2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=salutedevices.com; spf=pass smtp.mailfrom=salutedevices.com; dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b=GlFYOnOg; arc=none smtp.client-ip=152.89.196.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=salutedevices.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=salutedevices.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="5v5FNZz/"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=7cLJyVSz2iZJ28Z6iIJQCs50V5QNwqYcrH/C9Q1rhj8=;
-	b=5v5FNZz/HJ+FmLfw0M52/ixcy+05xTOyGsunogFcU9uNYq7fgIoTVNanvJSg97kBwcrYSr+Xt
-	W9VdUnCH2P6LIgMXRbrMEOlMETqGlQ8qzjYVntEPjhmcLQ076ZPPEEVz0YOWIQ76IfmrKPiMmhI
-	RggkiAXLyxjJX4VnnsGQ8e4=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4g9Vht4kFgzpSwn;
-	Wed,  6 May 2026 17:39:42 +0800 (CST)
-Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
-	by mail.maildlp.com (Postfix) with ESMTPS id CF54F40577;
-	Wed,  6 May 2026 17:46:31 +0800 (CST)
-Received: from localhost.localdomain (10.50.163.32) by
- kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Wed, 6 May 2026 17:46:31 +0800
-From: Chengwen Feng <fengchengwen@huawei.com>
-To: <alex@shazbot.org>, <jgg@ziepe.ca>
-CC: <wathsala.vithanage@arm.com>, <helgaas@kernel.org>, <wei.huang2@amd.com>,
-	<wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
-	<liuyonglong@huawei.com>, <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
-Subject: [PATCH v6 3/6] vfio/pci: Add PCIe TPH interface with capability query
-Date: Wed, 6 May 2026 17:46:20 +0800
-Message-ID: <20260506094623.29327-4-fengchengwen@huawei.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20260506094623.29327-1-fengchengwen@huawei.com>
-References: <20260506094623.29327-1-fengchengwen@huawei.com>
+	dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b="GlFYOnOg"
+Received: from p-antispam-ksmg-sc-msk02.sberdevices.ru (localhost [127.0.0.1])
+	by mx4.sberdevices.ru (Postfix) with ESMTP id 505454000B;
+	Wed,  6 May 2026 12:50:13 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx4.sberdevices.ru 505454000B
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
+	s=post; t=1778061013;
+	bh=4dSd9JK+HYxiH/D05MkH3azRzSX4B6Cu/45ydrD2Lbw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
+	b=GlFYOnOg3hSa0bYkDNl3hYzOv1wWPAiYT2d5Zc8sj5syDQTlq5XVvsDq6xfto7kcM
+	 kzvYC0Ri7jEJgB8EU+Y4vuWrB5uFq6du7OHrgMEDUEtbBIy3hIgSHR3vtJ8TgvLvsj
+	 iYVg6UnFrISGQPh/aInN/3qauT6ELqpVC98q8f85YLTf5TY4Rlb8v79Ik4zLliM6Tl
+	 rotnYzhzpIdmeKD6LEeOOSc0Hto8OApXn4H8RFl2PkNl6ibw8HjXEtnWBGXYLM/zi4
+	 3MtrqKqOfZbbb/2AFwfkPEs9bS8u1CPsk8VxISYOr4HVXJ6NsCu82EmD2KzQZefh6x
+	 JamoxI6honxOA==
+Received: from smtp.sberdevices.ru (p-exch-cas-a-m1.sberdevices.ru [172.24.201.216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client CN "sberdevices.ru", Issuer "R12" (not verified))
+	by mx4.sberdevices.ru (Postfix) with ESMTPS;
+	Wed,  6 May 2026 12:50:12 +0300 (MSK)
+Message-ID: <e1f32df5-b6a1-47a8-a783-fcc8e3c91f25@salutedevices.com>
+Date: Wed, 6 May 2026 12:50:04 +0300
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemk500009.china.huawei.com (7.202.194.94)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] vsock/virtio: fix potential unbounded skb queue
+To: Bobby Eshleman <bobbyeshleman@gmail.com>, Stefano Garzarella
+	<sgarzare@redhat.com>
+CC: Eric Dumazet <edumazet@google.com>, Bobby Eshleman
+	<bobbyeshleman@meta.com>, Stefan Hajnoczi <stefanha@redhat.com>, "Michael S.
+ Tsirkin" <mst@redhat.com>, "David S . Miller" <davem@davemloft.net>, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+	<horms@kernel.org>, <netdev@vger.kernel.org>, <eric.dumazet@gmail.com>,
+	Arseniy Krasnov <AVKrasnov@sberdevices.ru>, Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+	<eperezma@redhat.com>, <kvm@vger.kernel.org>,
+	<virtualization@lists.linux.dev>
+References: <20260430122653.554058-1-edumazet@google.com>
+ <afn0ZdvZWswBuDMm@sgarzare-redhat>
+ <CANn89iLs8DOWJwDpf_ARoMrV+6b2tbhEJ=VVzeC8gCm5dRGaig@mail.gmail.com>
+ <afoF_cHfl6ygcupM@sgarzare-redhat>
+ <afocwkfBHJ5u10rx@devvm29614.prn0.facebook.com>
+Content-Language: ru
+From: Arseniy Krasnov <avkrasnov@salutedevices.com>
+In-Reply-To: <afocwkfBHJ5u10rx@devvm29614.prn0.facebook.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: p-exch-cas-s-m1.sberdevices.ru (172.16.210.2) To
+ p-exch-cas-a-m1.sberdevices.ru (172.24.201.216)
+X-KSMG-AntiPhishing: NotDetected, bases: 2026/05/06 09:23:00
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Envelope-From: avkrasnov@salutedevices.com
+X-KSMG-AntiSpam-Info: LuaCore: 104 0.3.104 557b3c2486a74077a103cf2acd83f2ecf4c95118, {Tracking_uf_ne_domains}, {Tracking_arrow_http}, {Tracking_from_domain_doesnt_match_to}, docs.oasis-open.org:7.1.1;127.0.0.199:7.1.2;salutedevices.com:7.1.1;smtp.sberdevices.ru:7.1.1,5.0.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1, FromAlignment: s
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 202898 [May 06 2026]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.22
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2026/05/06 07:22:00 #28502761
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-KATA-Status: Not Scanned
+X-KSMG-LinksScanning: NotDetected, bases: 2026/05/06 09:23:00
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 5
 
-Add VFIO_DEVICE_PCI_TPH IOCTL to allow userspace to query device TPH
-capabilities, supported modes, and steering tag table information.
 
-Add module parameter 'enable_unsafe_tph_ds_mode' to restrict unsafe
-device-specific TPH mode to trusted userspace only.
 
-Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
----
- drivers/vfio/pci/vfio_pci.c      |  13 ++-
- drivers/vfio/pci/vfio_pci_core.c |  55 ++++++++++++-
- include/linux/vfio_pci_core.h    |   3 +-
- include/uapi/linux/vfio.h        | 131 +++++++++++++++++++++++++++++++
- 4 files changed, 199 insertions(+), 3 deletions(-)
+05.05.2026 19:37, Bobby Eshleman wrote:
+> On Tue, May 05, 2026 at 06:11:13PM +0200, Stefano Garzarella wrote:
+>> On Tue, May 05, 2026 at 07:14:36AM -0700, Eric Dumazet wrote:
+>>> On Tue, May 5, 2026 at 6:52 AM Stefano Garzarella <sgarzare@redhat.com> wrote:
+>>>>
+>>>> On Thu, Apr 30, 2026 at 12:26:52PM +0000, Eric Dumazet wrote:
+>>>>> virtio_transport_inc_rx_pkt() checks vvs->rx_bytes + len > vvs->buf_alloc.
+>>>>>
+>>>>> virtio_transport_recv_enqueue() skips coalescing for packets
+>>>>> with VIRTIO_VSOCK_SEQ_EOM.
+>>>>>
+>>>>> If fed with packets with len == 0 and VIRTIO_VSOCK_SEQ_EOM,
+>>>>> a very large number of packets can be queued
+>>>>> because vvs->rx_bytes stays at 0.
+>>>>>
+>>>>> Fix this by estimating the skb metadata size:
+>>>>>
+>>>>>       (Number of skbs in the queue) * SKB_TRUESIZE(0)
+>>>>>
+>>>>> Fixes: 077706165717 ("virtio/vsock: don't use skbuff state to account credit")
+>>>>> Signed-off-by: Eric Dumazet <edumazet@google.com>
+>>>>> Cc: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
+>>>>> Cc: Stefan Hajnoczi <stefanha@redhat.com>
+>>>>> Cc: Stefano Garzarella <sgarzare@redhat.com>
+>>>>> Cc: "Michael S. Tsirkin" <mst@redhat.com>
+>>>>> Cc: Jason Wang <jasowang@redhat.com>
+>>>>> Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+>>>>> Cc: "Eugenio Pérez" <eperezma@redhat.com>
+>>>>> Cc: kvm@vger.kernel.org
+>>>>> Cc: virtualization@lists.linux.dev
+>>>>> ---
+>>>>> net/vmw_vsock/virtio_transport_common.c | 4 +++-
+>>>>> 1 file changed, 3 insertions(+), 1 deletion(-)
+>>>>>
+>>>>> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>>>>> index 416d533f493d7b07e9c77c43f741d28cfcd0953e..9b8014516f4fb1130ae184635fbba4dfee58bd64 100644
+>>>>> --- a/net/vmw_vsock/virtio_transport_common.c
+>>>>> +++ b/net/vmw_vsock/virtio_transport_common.c
+>>>>> @@ -447,7 +447,9 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+>>>>> static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
+>>>>>                                       u32 len)
+>>>>> {
+>>>>> -      if (vvs->buf_used + len > vvs->buf_alloc)
+>>>>> +      u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
+>>>>> +
+>>>>> +      if (skb_overhead + vvs->buf_used + len > vvs->buf_alloc)
+>>>>>               return false;
+>>>>
+>>>> I'm not sure about this fix, I mean that maybe this is incomplete.
+>>>> In virtio-vsock, there is a credit mechanism between the two peers:
+>>>> https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01.html#x1-4850003
+>>>>
+>>>> This takes only the payload into account, so it’s true that this problem
+>>>> exists; however, perhaps we should also inform the other peer of a lower
+>>>> credit balance, otherwise the other peer will believe it has much more
+>>>> credit than it actually does, send a large payload, and then the packet
+>>>> will be discarded and the data lost (there are no retransmissions,
+>>>> etc.).
+>>>
+>>> I dunno, perhaps revert 077706165717 ("virtio/vsock: don't use skbuff
+>>> state to account credit")
+>>> and find a better fix then?
+>>
+>> IIRC the same issue was there before the commit fixed by that one (commit
+>> 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")), so
+>> not sure about reverting it TBH.
+>>
+>> CCing Arseniy and Bobby.
 
-diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
-index 0c771064c0b8..40bf5aa9fd0b 100644
---- a/drivers/vfio/pci/vfio_pci.c
-+++ b/drivers/vfio/pci/vfio_pci.c
-@@ -60,6 +60,12 @@ static bool disable_denylist;
- module_param(disable_denylist, bool, 0444);
- MODULE_PARM_DESC(disable_denylist, "Disable use of device denylist. Disabling the denylist allows binding to devices with known errata that may lead to exploitable stability or security issues when accessed by untrusted users.");
- 
-+#ifdef CONFIG_PCIE_TPH
-+static bool enable_unsafe_tph_ds_mode;
-+module_param(enable_unsafe_tph_ds_mode, bool, 0444);
-+MODULE_PARM_DESC(enable_unsafe_tph_ds_mode, "Enable UNSAFE TPH device-specific (DS) mode. This mode provides weak isolation, cannot be safely used for virtual machines. If you do not know what this is for, step away. (default: false)");
-+#endif
-+
- static bool vfio_pci_dev_in_denylist(struct pci_dev *pdev)
- {
- 	switch (pdev->vendor) {
-@@ -257,12 +263,17 @@ static int __init vfio_pci_init(void)
- {
- 	int ret;
- 	bool is_disable_vga = true;
-+	bool is_enable_unsafe_tph_ds_mode = false;
- 
- #ifdef CONFIG_VFIO_PCI_VGA
- 	is_disable_vga = disable_vga;
- #endif
-+#ifdef CONFIG_PCIE_TPH
-+	is_enable_unsafe_tph_ds_mode = enable_unsafe_tph_ds_mode;
-+#endif
- 
--	vfio_pci_core_set_params(nointxmask, is_disable_vga, disable_idle_d3);
-+	vfio_pci_core_set_params(nointxmask, is_disable_vga, disable_idle_d3,
-+				 is_enable_unsafe_tph_ds_mode);
- 
- 	/* Register and scan for devices */
- 	ret = pci_register_driver(&vfio_pci_driver);
-diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-index 3f8d093aacf8..d98d04bad4a3 100644
---- a/drivers/vfio/pci/vfio_pci_core.c
-+++ b/drivers/vfio/pci/vfio_pci_core.c
-@@ -29,6 +29,7 @@
- #include <linux/sched/mm.h>
- #include <linux/iommufd.h>
- #include <linux/pci-p2pdma.h>
-+#include <linux/pci-tph.h>
- #if IS_ENABLED(CONFIG_EEH)
- #include <asm/eeh.h>
- #endif
-@@ -41,6 +42,7 @@
- static bool nointxmask;
- static bool disable_vga;
- static bool disable_idle_d3;
-+static bool enable_unsafe_tph_ds_mode;
- 
- static void vfio_pci_eventfd_rcu_free(struct rcu_head *rcu)
- {
-@@ -1461,6 +1463,53 @@ static int vfio_pci_ioctl_ioeventfd(struct vfio_pci_core_device *vdev,
- 				  ioeventfd.fd);
- }
- 
-+static int vfio_pci_tph_get_cap(struct vfio_pci_core_device *vdev,
-+				struct vfio_device_pci_tph_op *op,
-+				void __user *uarg)
-+{
-+	struct pci_dev *pdev = vdev->pdev;
-+	u8 mode = pcie_tph_get_st_modes(pdev);
-+	struct vfio_pci_tph_cap cap = {0};
-+
-+	if (op->argsz < offsetof(struct vfio_device_pci_tph_op, cap) +
-+			sizeof(struct vfio_pci_tph_cap))
-+		return -EINVAL;
-+
-+	if (mode == 0 || mode == PCI_TPH_CAP_ST_NS)
-+		return -EOPNOTSUPP;
-+
-+	if (mode & PCI_TPH_CAP_ST_IV)
-+		cap.supported_modes |= VFIO_PCI_TPH_MODE_IV;
-+	if (mode & PCI_TPH_CAP_ST_DS)
-+		cap.supported_modes |= VFIO_PCI_TPH_MODE_DS;
-+
-+	if (pcie_tph_get_st_table_loc(pdev) != PCI_TPH_LOC_NONE)
-+		cap.st_table_sz = pcie_tph_get_st_table_size(pdev);
-+
-+	if (copy_to_user(uarg, &cap, sizeof(cap)))
-+		return -EFAULT;
-+
-+	return 0;
-+}
-+
-+static int vfio_pci_ioctl_tph(struct vfio_pci_core_device *vdev,
-+			      void __user *uarg)
-+{
-+	struct vfio_device_pci_tph_op op = {0};
-+	size_t minsz = sizeof(op.argsz) + sizeof(op.op);
-+
-+	if (copy_from_user(&op, uarg, minsz))
-+		return -EFAULT;
-+
-+	switch (op.op) {
-+	case VFIO_PCI_TPH_GET_CAP:
-+		return vfio_pci_tph_get_cap(vdev, &op, uarg + minsz);
-+	default:
-+		/* Other ops are not implemented yet */
-+		return -EINVAL;
-+	}
-+}
-+
- long vfio_pci_core_ioctl(struct vfio_device *core_vdev, unsigned int cmd,
- 			 unsigned long arg)
- {
-@@ -1483,6 +1532,8 @@ long vfio_pci_core_ioctl(struct vfio_device *core_vdev, unsigned int cmd,
- 		return vfio_pci_ioctl_reset(vdev, uarg);
- 	case VFIO_DEVICE_SET_IRQS:
- 		return vfio_pci_ioctl_set_irqs(vdev, uarg);
-+	case VFIO_DEVICE_PCI_TPH:
-+		return vfio_pci_ioctl_tph(vdev, uarg);
- 	default:
- 		return -ENOTTY;
- 	}
-@@ -2570,11 +2621,13 @@ static void vfio_pci_dev_set_try_reset(struct vfio_device_set *dev_set)
- }
- 
- void vfio_pci_core_set_params(bool is_nointxmask, bool is_disable_vga,
--			      bool is_disable_idle_d3)
-+			      bool is_disable_idle_d3,
-+			      bool is_enable_unsafe_tph_ds_mode)
- {
- 	nointxmask = is_nointxmask;
- 	disable_vga = is_disable_vga;
- 	disable_idle_d3 = is_disable_idle_d3;
-+	enable_unsafe_tph_ds_mode = is_enable_unsafe_tph_ds_mode;
- }
- EXPORT_SYMBOL_GPL(vfio_pci_core_set_params);
- 
-diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-index 2ebba746c18f..5af2a2e04ca7 100644
---- a/include/linux/vfio_pci_core.h
-+++ b/include/linux/vfio_pci_core.h
-@@ -157,7 +157,8 @@ int vfio_pci_core_register_dev_region(struct vfio_pci_core_device *vdev,
- 				      const struct vfio_pci_regops *ops,
- 				      size_t size, u32 flags, void *data);
- void vfio_pci_core_set_params(bool nointxmask, bool is_disable_vga,
--			      bool is_disable_idle_d3);
-+			      bool is_disable_idle_d3,
-+			      bool is_enable_unsafe_tph_ds_mode);
- void vfio_pci_core_close_device(struct vfio_device *core_vdev);
- int vfio_pci_core_init_dev(struct vfio_device *core_vdev);
- void vfio_pci_core_release_dev(struct vfio_device *core_vdev);
-diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-index 5de618a3a5ee..f899521e52c6 100644
---- a/include/uapi/linux/vfio.h
-+++ b/include/uapi/linux/vfio.h
-@@ -1321,6 +1321,137 @@ struct vfio_precopy_info {
- 
- #define VFIO_MIG_GET_PRECOPY_INFO _IO(VFIO_TYPE, VFIO_BASE + 21)
- 
-+/**
-+ * struct vfio_pci_tph_cap - PCIe TPH capability information
-+ * @supported_modes: Supported TPH operating modes
-+ * @st_table_sz: Number of entries in ST table; 0 means no ST table
-+ * @reserved: Must be zero
-+ *
-+ * Used with VFIO_PCI_TPH_GET_CAP operation to return device
-+ * TLP Processing Hints (TPH) capabilities to userspace.
-+ */
-+struct vfio_pci_tph_cap {
-+	__u8  supported_modes;
-+#define VFIO_PCI_TPH_MODE_IV	(1u << 0) /* Interrupt vector */
-+#define VFIO_PCI_TPH_MODE_DS	(1u << 1) /* Device specific */
-+	__u8  reserved0;
-+	__u16 st_table_sz;
-+	__u32 reserved;
-+};
-+
-+/**
-+ * struct vfio_pci_tph_ctrl - TPH enable control structure
-+ * @mode: Selected TPH operating mode (VFIO_PCI_TPH_MODE_*)
-+ * @reserved: Must be zero
-+ *
-+ * Used with VFIO_PCI_TPH_ENABLE operation to specify the
-+ * operating mode when enabling TPH on the device.
-+ */
-+struct vfio_pci_tph_ctrl {
-+	__u8 mode;
-+	__u8 reserved[7];
-+};
-+
-+/**
-+ * struct vfio_pci_tph_entry - Single TPH steering tag entry
-+ * @cpu: CPU identifier for steering tag calculation
-+ * @mem_type: Memory type (VFIO_PCI_TPH_MEM_TYPE_*)
-+ * @reserved0: Must be zero
-+ * @index: ST table index for programming
-+ * @st: Unused for SET_ST
-+ * @reserved1: Must be zero
-+ *
-+ * For VFIO_PCI_TPH_GET_ST:
-+ *   Userspace sets @cpu and @mem_type; kernel returns @st.
-+ *
-+ * For VFIO_PCI_TPH_SET_ST:
-+ *   Userspace sets @index, @cpu, and @mem_type.
-+ *   Kernel internally computes the steering tag and programs
-+ *   it into the specified @index.
-+ *
-+ *   If @cpu == U32_MAX, kernel clears the steering tag at
-+ *   the specified @index.
-+ */
-+struct vfio_pci_tph_entry {
-+	__u32 cpu;
-+	__u8  mem_type;
-+#define VFIO_PCI_TPH_MEM_TYPE_VM	0
-+#define VFIO_PCI_TPH_MEM_TYPE_PM	1
-+	__u8  reserved0;
-+	__u16 index;
-+	__u16 st;
-+	__u16 reserved1;
-+};
-+
-+/**
-+ * struct vfio_pci_tph_st - Batch steering tag request
-+ * @count: Number of entries in the array
-+ * @reserved: Must be zero
-+ * @ents: Flexible array of steering tag entries
-+ *
-+ * Container structure for batch get/set operations.
-+ * Used with both VFIO_PCI_TPH_GET_ST and VFIO_PCI_TPH_SET_ST.
-+ */
-+struct vfio_pci_tph_st {
-+	__u32 count;
-+	__u32 reserved;
-+	struct vfio_pci_tph_entry ents[];
-+#define VFIO_PCI_TPH_MAX_ENTRIES    2048
-+};
-+
-+/**
-+ * struct vfio_device_pci_tph_op - Argument for VFIO_DEVICE_PCI_TPH
-+ * @argsz: User allocated size of this structure
-+ * @op: TPH operation (VFIO_PCI_TPH_*)
-+ * @cap: Capability data for GET_CAP
-+ * @ctrl: Control data for ENABLE
-+ * @st: Batch entry data for GET_ST/SET_ST
-+ *
-+ * @argsz must be set by the user to the size of the structure
-+ * being executed. Kernel validates input and returns data
-+ * only within the specified size.
-+ *
-+ * Operations:
-+ * - VFIO_PCI_TPH_GET_CAP: Query device TPH capabilities.
-+ * - VFIO_PCI_TPH_ENABLE:  Enable TPH using mode from &ctrl.
-+ * - VFIO_PCI_TPH_DISABLE: Disable TPH on the device.
-+ * - VFIO_PCI_TPH_GET_ST:  Retrieve CPU's steering tags.
-+ *                         Valid only for Device-Specific mode and
-+ *                         no ST table is present.
-+ * - VFIO_PCI_TPH_SET_ST:  Program steering tags into device table.
-+ *                         If any entry fails, previously programmed entries
-+ *                         are rolled back to 0 before returning error.
-+ */
-+struct vfio_device_pci_tph_op {
-+	__u32 argsz;
-+	__u32 op;
-+#define VFIO_PCI_TPH_GET_CAP	0
-+#define VFIO_PCI_TPH_ENABLE	1
-+#define VFIO_PCI_TPH_DISABLE	2
-+#define VFIO_PCI_TPH_GET_ST	3
-+#define VFIO_PCI_TPH_SET_ST	4
-+	union {
-+		struct vfio_pci_tph_cap cap;
-+		struct vfio_pci_tph_ctrl ctrl;
-+		struct vfio_pci_tph_st st;
-+	};
-+};
-+
-+/**
-+ * VFIO_DEVICE_PCI_TPH - _IO(VFIO_TYPE, VFIO_BASE + 22)
-+ *
-+ * IOCTL for managing PCIe TLP Processing Hints (TPH) on
-+ * a VFIO-assigned PCI device. Provides operations to query
-+ * device capabilities, enable/disable TPH, retrieve CPU's
-+ * steering tags, and program steering tag tables.
-+ *
-+ * Return: 0 on success, negative errno on failure.
-+ *         -EOPNOTSUPP: Operation not supported
-+ *         -ENODEV: Device or required functionality not present
-+ *         -EINVAL: Invalid argument or TPH not supported
-+ */
-+#define VFIO_DEVICE_PCI_TPH	_IO(VFIO_TYPE, VFIO_BASE + 22)
-+
- /*
-  * Upon VFIO_DEVICE_FEATURE_SET, allow the device to be moved into a low power
-  * state with the platform-based power management.  Device use of lower power
--- 
-2.17.1
+Thanks!
+
+>>
+>>>
+>>> There is always a discrepancy between skb->len and skb->truesize.
+>>> You will not be able to announce a 1MB window, and accept one milliion
+>>> skb of 1-byte each.
+>>>
+>>> This kind of contract is broken.
+>>>
+>>
+>> Yep, I agree, but before we start discarding data (and losing it), IMHO we
+>> should at least inform the other peer that we're out of space.
+>>
+>> @Stefan, @Michael, do you think we can do something in the spec to avoid
+>> this issue and in some way take into account also the metadata in the
+>> credit. I mean to avoid the 1-byte packets flooding.
+>>
+>> Thanks,
+>> Stefano
+>>
+>>
+> 
+> Indeed the old pre-fix skb code would have the same issue.
+> 
+> I can't think of any way around this without extending the spec.
+
+Hi, thanks, agree with Bobby, that accounting metadata (e.g. skb size here) was not implemented "by
+design" in credit logic - another side of data exchange knows nothing about that. Also the same
+situation was before skb implementation was added by Bobby. So looks like need to update spec may be.
+
+Thanks!
+
+
+> 
+> Best,
+> Bobby
 
