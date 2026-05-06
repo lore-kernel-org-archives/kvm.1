@@ -1,102 +1,101 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32083481A84
-	for <kvm@vger.kernel.org>; Wed,  6 May 2026 18:13:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.145.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D8BD4A3405
+	for <kvm@vger.kernel.org>; Wed,  6 May 2026 18:23:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.153.30
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778091211; cv=fail; b=RxlPVqgV81L0wh6CRgtKzwdq6OtOlThx01iPApiYXTeOwpyj+9zf9xsHs5itqIW9sLkqY723YDyJkwnMu440r5855uxuR7PiiapltBk0hkI0F+WeHNvAM89LDsGgffso7hI0OF0zyZ4QYSlgvnJ2GW29BS0RziEe6cWoZke1s3Q=
+	t=1778091814; cv=fail; b=VG5Ic09Ds9DLB9YKG6qoy5HKw14V8aLNkLd1DxYjeZgfVNDrt6xc88YAuvxla5XvB4AYrwrSFS6Si9hoMA0SdKsdcxp1yDSvx4cNdRvP+vbf6sK61VNZdMoHedHVZrlrk3RGr4C8fvvY/jKHiRR6VY3R4F0uTr4zy5WDe/9L3B4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778091211; c=relaxed/simple;
-	bh=iwJF8kNlzSONi72wttB9cdvYDDohgwHHTCevGMN+7M0=;
+	s=arc-20240116; t=1778091814; c=relaxed/simple;
+	bh=bW6VioqM1I6vjQsLLVeVP3XOu1uhGTd03bArfH78eFc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l490v7BdGu5+e75dzdCzOgvnqRj3Kk39LAQ/z7AzVkgV3f8DM5B1agHlz+XWxceuVR/xMQP1Mp4FUF5rklOBY1oqmCwRd0YL3c6Y5AdzAADOeckiCzr/vQpoUlUg2iIUOhOQA/vHgbEfbJvs3eQ2N625qwsoOm5HxzmOfzoLCYY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=WohxvzDB; arc=fail smtp.client-ip=67.231.145.42
+	 To:Cc:Content-Type; b=YGjncXD/Ubuubgv9OXC60UzuKC9c8zKdtZMcTxv2q5rPOSNiT+iqdSRvo0dM6GHLpsWByFjYBzg+ckjX/n8klewhgPhOojLx7kVtXAgGX3+Oe7axm9grn7UdsrVaHuraXcdi59gOzeHlgSACUI4diYf68IVGL9F8e4P/b8fvmIA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=ecrKNO8M; arc=fail smtp.client-ip=67.231.153.30
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="WohxvzDB"
-Received: from pps.filterd (m0044012.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6466x7iG2141649
-	for <kvm@vger.kernel.org>; Wed, 6 May 2026 11:13:29 -0700
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="ecrKNO8M"
+Received: from pps.filterd (m0001303.ppops.net [127.0.0.1])
+	by m0001303.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 64651Zcr2865749
+	for <kvm@vger.kernel.org>; Wed, 6 May 2026 11:23:32 -0700
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
 	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=bsbBvRMYnEJLwO6vFciq2lgaf49YRFfLC0382/bbMDg=; b=WohxvzDB7qU8
-	o2wqk7WXisIZ2+qX8jjaoaehtsTVUyToiY5UVloN7qizzETPowd5S4Zb8nsC9EMl
-	ULfRCe+eyS5F3L7XFUvewUEdAC5eCpjIHy/fSU0RKXCPBgxqLmVKOK5uz4d1xyua
-	Eke9sevlGUcg5bDSN2idKRVF5h0mP8Krj1GJ0bk7ZFEuvrRJTHCQyy6EslL8rHDc
-	eY2QYB8+Y7raLFdBngjmOlFSqJJ7pt4TUuOaX0mcx7wJ+l1lJ5lGdJpHSXCX+lte
-	R3HEpqoAP35QuGsNrP9kQzHI0fvkMtoI/VDJafYjIWur8zAzA/LlV1Ml+TglKNA0
-	ju/vhonoEw==
+	 bh=2YYLKXiToPfzzk84iAjnpM/kE1au7fYknVhGTQOnVXE=; b=ecrKNO8MJk5q
+	oKIjdTP3cT9AdMHpRtYIW89FhY5abcRsfaMChsqaI29WSGcVqrxmCW6KF0syyjsU
+	vXI+L5TDYQh9jgaGGd8jj0BHllL5waomMFt0M0n9CBCiB1dPI9YoWYdjX9Ms3CAr
+	/SAHXyeletOuK9p8msNRfKXlukH2yHk5gRcTM18srPB6KJhdvGbk2B06ATSaEUy0
+	GNA4BpGfx4il8hopju1ylXLm53Xe1Jd0huucKOv9aqixb3LuPoCYJS2o5kzLnMkP
+	tS+7rw11iVZoYfP9udWgz/AiMp9YnhOy+Cp1r+syjSjMfpGJEU/w5r3R/fpUCjql
+	KHoh0wEEWw==
 Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4dwey028r4-1
+	by m0001303.ppops.net (PPS) with ESMTPS id 4dwcx9tmtq-1
 	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Wed, 06 May 2026 11:13:29 -0700 (PDT)
-Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-7de442b3402so7991a34.3
-        for <kvm@vger.kernel.org>; Wed, 06 May 2026 11:13:28 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778091208; cv=none;
+	for <kvm@vger.kernel.org>; Wed, 06 May 2026 11:23:31 -0700 (PDT)
+Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-7dcc5fa38faso59566a34.1
+        for <kvm@vger.kernel.org>; Wed, 06 May 2026 11:23:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778091811; cv=none;
         d=google.com; s=arc-20240605;
-        b=SFHfmQcrYVKnq5bg1ALa7eFMPQnRWHAORrAKjQ2yFbxuKKYaeH8psaJ9ZVU2m6BaH2
-         uqp4kpqy8nhW7URZouefNeEaf6fRZal7ZXiD/1KLDGtL1m4rcJlGGa0mpxXSW3tGaJSI
-         n0wLtMO+acJFXBVuqO7Uepg4Mf3jErQc29nZm6CYW3jzMllS7oll9EE2gqcRvV4EhvQU
-         QmrjU1SP+bD4zyb2VRykOvdypNq3hFpoLTk4dICjvNaoGlOl3NR/f8WtQNmJ0oBDBo1z
-         u0efhJ5yLOP0gH6Roakg6/Jtzn6giXdOOSo8BxN43y/VceObbczqSrt4WT0WE1ylxMKn
-         fdDw==
+        b=WloEeQVcy2fF+yFMeFMEV4yOM/D9dT8Z/51J7gAL98X7E6Spu3akRCkf1G7EWDqfqI
+         Qp6UHXnNREhGA7UpU2+bjzkYEvHCN5m9nLZmwFQXZIlxdMy4jKnfxCo3vRFTtYoluRVy
+         qFRpb1/iiu6sckbU02on03cqGEZgLCCsvE0rwYF2VMjuwV4QTzOWTTd8AXihNeJXlHs3
+         bZ9UqCv8HKcFXSfbh0tuQB0c9deedH5GesT02cTFCgml9Tf0p6srXClpm3uOtOU2cZsa
+         Xo68m84XYoZ8W05vXy6VRVZocADJeXfaKXCDswG0xguBDvTtLQbdk3gsNrS2srgcZOdj
+         A2TQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version;
-        bh=3NDxADxfe9nDq1onSpJIot5yt/9B+/JmRFYIwD1lbrE=;
-        fh=n7kNpLSY0GBgN1Wfd36ufF0AR839ze0GHPf7q8Adbis=;
-        b=CAGX17/xvEE7gkDCklI9yIoGdKMUH0rUgxcDPbSqpAhPePSpOBcHHmdqlztZUi762c
-         z3vu9APh6Pv26G0Du5ZcoGytWSM5+S8MhBeGVORoUUO3oi6j8gFlKncmrrFEBA2pQ6+z
-         dF4wQadsu3u+FEWKeP8e6RB2yxXb2HiJUrwAJsQotXZJMJt0ALap33adFYuDgq1Dvces
-         f7epxku/G5NL6OQZuayWjKCaaByN6i3qa8kPoa0Z6/WCpd8dd3ENXJRzvEohcSIDr//C
-         iPIsI/26+AGEHTbMKi3dzB/oFdMw+jT+Zzu8y985lxOVXSwdAl/oe1+osU7wy7eJtNUj
-         xPOA==;
+        bh=06MsYmJiQI0tIH7Lw/430OArMXdAJd2jDLxFSIS0mBU=;
+        fh=Iy7yWl4Qeq5vvJVKXHLrtpaKswCTEFpq2WqPxSqWoTk=;
+        b=EGQjCcQMGDQOdHnuP0Llc+rHIKEgw6msLOd8bPcHw9I+ESh6UDkrz4Nb6VD7IDPjdU
+         RI8CerIJqKLVbNP5lfEITe5J7v8STqzRB8dVR0dKI/XknYHdi5EQzf8WVUP2V6UlMdH5
+         36Xn+hT1EIYgmOaH+tpfYbVonjK6KS/4w5s635DuPBrM72yoF3cfxYuKdB1IOJvV01xn
+         7P/Ij1VIyPg72Vr715yoNh3Bmd1zfaQoNlSlD1mvOr1CHbQeOxpXBv22EXkur3nRIAgk
+         yPo0XoY+RU2dOzwfyGyuYi8m6Ro5imejoEjxvXzpxD+fU5Wq+bOGgku5kKsGE8EiPIEM
+         50IA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778091208; x=1778696008;
+        d=1e100.net; s=20251104; t=1778091811; x=1778696611;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=3NDxADxfe9nDq1onSpJIot5yt/9B+/JmRFYIwD1lbrE=;
-        b=EUmrRTI3ytgWQKUpc2hAw8PlgvFqLWJr9iSS1qELaYPU1aBrQWcVOxp1sL9e99/isf
-         +4YdwFg+Wl+5bwK2GN5I9CWWPIZ3Y3rbHoUjPKuJgD0DKC4Whz+x/E66yzVxyA6xB9zw
-         N/RA0XoWuubsUmywyVg9oJiEH0y/JDgjwRFFdKeSO3HPOqF+aTaBn1sQA/LiW7Y8pZRU
-         V/V+GZP0YC2TtymUno+TGZOhW1jrCsHVdfqGaYmcZi19aid9ntk4yZVz68pQI7imBhYR
-         +WfWzz5/sFUuejscscqLQRaY4BrvVVopapAgsHz8HNb1oIap04Md3WzO706PyZtXyWzR
-         qXmw==
-X-Forwarded-Encrypted: i=1; AFNElJ+u2u1aPwy7SBgyi2hTRyfrXyVDri6RKwpBGtl3xCAMRRsBvf7DkIfn3awYnxtuacjapDA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxbKNxDHL0sOYONdCVrgHpBCUOO6InPK7wYWFImBiUVIsJk8faB
-	kTmhMCC/kdlOAnuVZ3KoXyESJUpn2CvHyonqyOx8YRmW4eoUqcq0es0nDDBVOB0rg44AZpf+MHs
-	KZ7/oJE+C0lvynCECCQhluK5Sl9ggA7lKrfmH/SEEDFZ1fyqZGFDxa1aXzm66CT7Xem1WljkmGq
-	hwqB0AtUyjZ4L0OJ99XD8mPoC/mFU=
-X-Gm-Gg: AeBDievUiIomZ+mOS2OkemkKr82Nx4IxCWvD+jNV2r8wXyuk/9ZGoEedIFAn4xzwpMT
-	6nO43EC7rHtxv6JmielNmz50S5Q6TnhQ7oqYkM40A+IpX+UHVVWbMNRiEpbGJ4yYNE8cxbR0DtI
-	bYDVdw6/xuu2UQpcLnmc5fXPCDDXzWrJ0TLHyF/gS7m7jC+R5FS4P8HOdoq5XaO5kRUDwYnexNU
-	vgi58KSYsFeODlCzocvNfOuDfvujs77
-X-Received: by 2002:a05:6830:6615:b0:7dc:da80:42c5 with SMTP id 46e09a7af769-7e1df2863femr2542389a34.28.1778091208364;
-        Wed, 06 May 2026 11:13:28 -0700 (PDT)
-X-Received: by 2002:a05:6830:6615:b0:7dc:da80:42c5 with SMTP id
- 46e09a7af769-7e1df2863femr2542358a34.28.1778091207771; Wed, 06 May 2026
- 11:13:27 -0700 (PDT)
+        bh=06MsYmJiQI0tIH7Lw/430OArMXdAJd2jDLxFSIS0mBU=;
+        b=BSwADQEBHJQ/bYUnZ0Cn93k/55ER3He0r0Z6U6aSOr1NmXWTqqMWsnp4R8Jlx4Hex0
+         plOmKw4o1fYSYhl1UpTA1qd0YvmKygfihpNtQTjpqLxOPU3cQWsLx2gt8UJuR8TxZ4v3
+         hHxc8HmZ+say7oAdy2JcjC8F/kP3YWc47ZT2SCbVEuWeubSnV/PHVh8da70krP+PV2ow
+         MXor/D8TwPsaZVkXJWPe1IWvR9v2hfPxTDHZWxB2o2qJMxKFSMwAyBfTukaNaZ5wEH3O
+         vxJbg8BxIFNohxF0z0Y+v7UPAmfN4QJMW9CA/KX04eVMn4CL6icNAQuNWIo3oYhttsDA
+         w3TQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+goMXAZw17QU/ZfiExTKH9BMRXDUVheZMrY0B2vgTmSr2K7Gbaxmlx77nZWYWYA20iUjQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywf24WpfLSwD5noNcf9dBgF/xVlZKmwJPrmhwIA+ekWCyLkGKht
+	fPus0nM4FTQSHWqCcSvFG9DbW0O7j9SzqZybF/lFPnOPgwcD74tUT6dIsfq3t8gRhxmYtNY3te+
+	kCARlwUPDdNrWgL38IZJowx+4rwHiSXeCAPnozezig5zS7IO9EL9W25W2jE8I9ICPohk9vcc6Kx
+	+QQSyojr1/sTug6nK5bGkpJ4licKo=
+X-Gm-Gg: AeBDievwaHv0iSAgWQudcrnMmJnsH6umc9PnMCiyjNn+FR5eSW1i/8PKHhQBGPPkBPr
+	nr4VKheyKgUfNXSXcqCccIqvCQzbeQCxory4zjpkWycTbAlxuknQdkpxuj0JNvdYhbmLOwm8hLy
+	5p/3EE3wJfmasDQUArPrO48MwMBmaWIq1UlDxOfSTnQTiBiu8kcdoalDEDJEPFtFW2o2+CONQve
+	sp2fcVU8C9BpoVcNZbK8VxGmq5Mihmeq1uygRF6z4w=
+X-Received: by 2002:a05:6830:4986:b0:7dc:e032:9b5f with SMTP id 46e09a7af769-7e1df220611mr2715781a34.25.1778091811268;
+        Wed, 06 May 2026 11:23:31 -0700 (PDT)
+X-Received: by 2002:a05:6830:4986:b0:7dc:e032:9b5f with SMTP id
+ 46e09a7af769-7e1df220611mr2715758a34.25.1778091810773; Wed, 06 May 2026
+ 11:23:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260430200704.352228-1-zhipingz@meta.com> <20260430200704.352228-3-zhipingz@meta.com>
- <a63179d7-28b1-4269-9ef2-c20368d0b91c@huawei.com>
-In-Reply-To: <a63179d7-28b1-4269-9ef2-c20368d0b91c@huawei.com>
+References: <20260430200704.352228-1-zhipingz@meta.com> <20260430200704.352228-2-zhipingz@meta.com>
+ <09995589-b81d-4cb7-a313-15a943d8b28d@huawei.com>
+In-Reply-To: <09995589-b81d-4cb7-a313-15a943d8b28d@huawei.com>
 From: Zhiping Zhang <zhipingz@meta.com>
-Date: Wed, 6 May 2026 11:13:16 -0700
-X-Gm-Features: AVHnY4IkP9FyuA_XByk4LxkXqiqZTgspyYe5GlY8B_-IOTQbxE0OcjjDWm1D7Xc
-Message-ID: <CAH3zFs0zAf0=kxxMfyxuBF0Mw+0FTFANHDG5C9d7-vQ9dFO0Qg@mail.gmail.com>
-Subject: Re: [PATCH v2 2/2] RDMA/mlx5: get tph for p2p access when registering
- dma-buf mr
+Date: Wed, 6 May 2026 11:23:19 -0700
+X-Gm-Features: AVHnY4Lr6ainK1nflhUwWMi2SscR_b7hHjj8HpGh-ezHilmWJEso71FyiVM42gA
+Message-ID: <CAH3zFs2x2QebpqDC0qwQg_GP2FVs-qqNxPupck40cEHNrBMEsA@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] vfio: add dma-buf get_tph callback and DMA_BUF_TPH feature
 To: fengchengwen <fengchengwen@huawei.com>
 Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
         Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <helgaas@kernel.org>,
@@ -106,104 +105,133 @@ Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
         Yishai Hadas <yishaih@nvidia.com>, kvm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-GUID: iWAd9RMKMk7Fn__p_CxysYsrcqHKCV8G
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA2MDE3OCBTYWx0ZWRfXzeAPP08RyG7S
- EzVxRMHxTSRzkKmEUWcJ08CJyxc685ScRbfqNqsAeV77BPrZEftJza/vy+8co3DeJKpq2gEcQaB
- KqkIdCCKPgtDvIwkLGOae48gru1qW+h5ppy9liLy9SguYFH3yU4j2gO+x23Hl0d3JXIuGgSYaGJ
- cKjxjp2rry+gUTn9svHGN9WJN9oC1RKv6E6V9UzQ4C89PUB/u8EbPr5KNlBKaXAkhDkatq1gbXg
- NoTdmqUvguAbvkqLlOxw/eaAgntjlEdzaQaPp8WR7yM/FJnfQEn6H+jxfuf9ccgmUmg8aGlqF+M
- pLcdD4yWb2f+raPivgoJJ9THZrUiGLISB+ORGviS42DFlcQlzN+vjYmTMf2UsZHC5BYw9WZEkor
- PYTgD5MNxcO6Uk+P+ujNfDpysprJprk2dyrIcIjpiyOuQ2lKBPOwmWQQ19Hpv48YgtO7HPd5WD0
- SnQJXD2XsTH2Z6Qpgyw==
-X-Proofpoint-ORIG-GUID: iWAd9RMKMk7Fn__p_CxysYsrcqHKCV8G
-X-Authority-Analysis: v=2.4 cv=Zcwt8MVA c=1 sm=1 tr=0 ts=69fb84c9 cx=c_pps
+X-Proofpoint-ORIG-GUID: eiFlRpCKdvVDrYMquD57R6_2VKzO9fTu
+X-Proofpoint-GUID: eiFlRpCKdvVDrYMquD57R6_2VKzO9fTu
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA2MDE4MCBTYWx0ZWRfX5FPZ6vGRMtVh
+ 1cGfAhYup0MwrrzFjVg4bRzXto7Qjp6VKe9NHjTmwwZ9jVfbSZ587WN12PL+MPdvUz2qDYelgPG
+ aEDvDElV/z/9xPw6E7jW2EWzW1zaCM6gZqAmY/USBetzDnJeoXtmUbhkjVL0Mi7JOH89kazhLfv
+ nYgbMnX5kUyHzKvJ+DCppC2Uoev6AAikzw6kSbQ39NtxSVafVwiV95Z49db687zq3b60K/k7D3l
+ RH0sq54PY62utc2staycCe5uV1UPMDsV3Df58NEAha8vffauhH4o8sHMSZ7XQjuSArsTKBaiQ7k
+ MzqimacHmKPd+zTuJXXjhMz3qTkAJXRhV50sXXlQqQXH2bxysrWPQXOQkAZEkKP0JO1T0dD4JcX
+ NKPh5EdnZ6ZcW7cg0P3W8ZRYgZq2nvciK4cLtKIw5LZI/T2EbtmjbB7oG3BKCu5yf0vNSJoi8ox
+ 98jR3/VuOw1FxhyBm1Q==
+X-Authority-Analysis: v=2.4 cv=SoCgLvO0 c=1 sm=1 tr=0 ts=69fb8723 cx=c_pps
  a=7uPEO8VhqeOX8vTJ3z8K6Q==:117 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=PAz_-FQ8hEVmOPYdF0yf:22
- a=i0EeH86SAAAA:8 a=VabnemYjAAAA:8 a=kFoJLRxUVyBjw7Himy0A:9 a=QEXdDO2ut3YA:10
- a=EXS-LbY8YePsIyqnH6vw:22 a=gKebqoRLp9LExxC7YDUY:22
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=_78whYxrdx1mplLwxq1U:22
+ a=i0EeH86SAAAA:8 a=VabnemYjAAAA:8 a=jjQCJkVV9gP_kkOIbcAA:9 a=QEXdDO2ut3YA:10
+ a=gKebqoRLp9LExxC7YDUY:22
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-06_01,2026-05-06_01,2025-10-01_01
 
-On Wed, May 6, 2026 at 12:04=E2=80=AFAM fengchengwen <fengchengwen@huawei.c=
+On Tue, May 5, 2026 at 11:58=E2=80=AFPM fengchengwen <fengchengwen@huawei.c=
 om> wrote:
 >
 > >
 > On 5/1/2026 4:06 AM, Zhiping Zhang wrote:
-> > Query dma-buf TPH metadata when registering a dma-buf MR for peer to
-> > peer access and translate the raw steering tag into an mlx5 steering tag
-> > index. Factor mlx5_st_alloc_index() so callers that already have a raw
-> > steering tag can allocate the corresponding mlx5 index directly. Keep t=
-he
-> > DMAH path as the first priority and only fall back to dma-buf metadata =
-when
-> > no DMAH is supplied.
+> > Add a dma-buf callback that returns raw TPH metadata from the exporter
+> > so peer devices can reuse the steering tag and processing hint
+> > associated with a VFIO-exported buffer.
 > >
-> > Pass the device's supported ST width (8 or 16 bit, derived from
-> > pdev->tph_req_type) to get_tph() so the exporter can reject tags that
-> > exceed the consumer's capability. Initialize ret in mlx5_st_create() so=
- the
-> > cached steering-tag path returns success cleanly under clang builds.
+> > Add a new VFIO_DEVICE_FEATURE_DMA_BUF_TPH ioctl that takes the fd from
+> > VFIO_DEVICE_FEATURE_DMA_BUF along with a steering tag and processing
+> > hint, validates the fd is a vfio-exported dma-buf belonging to this
+> > device, and stores the TPH values under memory_lock. This keeps the
+> > existing VFIO_DEVICE_FEATURE_DMA_BUF uAPI completely unchanged.
+> >
+> > The user sequences setting TPH on the dma-buf before the importer
+> > consumes it.
+> >
+> > Add an st_width parameter to get_tph() so the exporter can reject
+> > steering tags that exceed the consumer's supported width (8 vs 16 bit).
+> > When no TPH metadata was supplied, get_tph() returns -EOPNOTSUPP.
 > >
 > > Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
 > >
-> > diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/ml=
-x5/mr.c
-> > --- a/drivers/infiniband/hw/mlx5/mr.c
-> > +++ b/drivers/infiniband/hw/mlx5/mr.c
-> > @@ -46,6 +46,8 @@
-> >  #include "data_direct.h"
-> >  #include "dmah.h"
-> >
-> > +MODULE_IMPORT_NS("DMA_BUF");
-> > +
-> >  static int mkey_max_umr_order(struct mlx5_ib_dev *dev)
-> >  {
-> >       if (MLX5_CAP_GEN(dev->mdev, umr_extended_translation_offset))
-> > @@ -899,6 +901,40 @@ static struct dma_buf_attach_ops mlx5_ib_dmabuf_at=
-tach_ops =3D {
-> >       .invalidate_mappings =3D mlx5_ib_dmabuf_invalidate_cb,
+> > diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_p=
+ci_core.c
+> > --- a/drivers/vfio/pci/vfio_pci_core.c
+> > +++ b/drivers/vfio/pci/vfio_pci_core.c
+> > @@ -1534,6 +1534,9 @@ int vfio_pci_core_ioctl_feature(struct vfio_devic=
+e *device, u32 flags,
+> >               return vfio_pci_core_feature_token(vdev, flags, arg, args=
+z);
+> >       case VFIO_DEVICE_FEATURE_DMA_BUF:
+> >               return vfio_pci_core_feature_dma_buf(vdev, flags, arg, ar=
+gsz);
+> > +     case VFIO_DEVICE_FEATURE_DMA_BUF_TPH:
+> > +             return vfio_pci_core_feature_dma_buf_tph(vdev, flags, arg,
+> > +                                                      argsz);
+> >       default:
+> >               return -ENOTTY;
+> >       }
+> > diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio=
+_pci_dmabuf.c
+> > --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
+> > +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+> > @@ -19,6 +19,9 @@ struct vfio_pci_dma_buf {
+> >       u32 nr_ranges;
+> >       struct kref kref;
+> >       struct completion comp;
+> > +     u16 steering_tag;
+> > +     u8 ph;
+> > +     u8 tph_present : 1;
+> >       u8 revoked : 1;
 > >  };
 > >
-> > +static void get_tph_mr_dmabuf(struct mlx5_ib_dev *dev, int fd, u16 *st=
-_index,
-> > +                           u8 *ph)
+> > @@ -69,6 +72,22 @@ vfio_pci_dma_buf_map(struct dma_buf_attachment *atta=
+chment,
+> >       return ret;
+> >  }
+> >
+> > +static int vfio_pci_dma_buf_get_tph(struct dma_buf *dmabuf, u16 *steer=
+ing_tag,
+> > +                                 u8 *ph, u8 st_width)
 > > +{
-> > +     struct pci_dev *pdev =3D dev->mdev->pdev;
-> > +     struct dma_buf *dmabuf;
-> > +     u16 steering_tag;
-> > +     u8 st_width;
-> > +     int ret;
+> > +     struct vfio_pci_dma_buf *priv =3D dmabuf->priv;
 > > +
-> > +     st_width =3D (pdev->tph_req_type =3D=3D PCI_TPH_REQ_EXT_TPH) ? 16=
- : 8;
+> > +     if (!priv->tph_present)
+> > +             return -EOPNOTSUPP;
+> > +
+> > +     if (st_width < 16 && priv->steering_tag > ((1U << st_width) - 1))
+> > +             return -EINVAL;
 >
-> The tph_req_type is defined under CONFIG_PCIE_TPH, how about add a wrap f=
-unction
-> to query it.
+> The checker will failed in following cases:
+> 1. If the exporter passed 8bit st, and importer support 16bit st, then it=
+ will pass
+>    the checker.
+> 2. The exporter enabled 16bit st and its st is < 256 (note: the pcie prot=
+ocol doesn't
+>    restrict 16bit-st must >=3D256), and importer only support 8bit st, th=
+en it will also
+>    pass the checker
 >
-Good catch!
-so the direct dereference here will break the build when TPH is
-disabled. I'll add a small
-wrapper in include/linux/pci-tph.h alongside the existing helpers, e.g.:
+> Suggest userspace passing both st(8bit) and extend-st(16bit), and importe=
+r chose the
+> right one.
+>
 
-  #ifdef CONFIG_PCIE_TPH
-  u8 pcie_tph_get_st_width(struct pci_dev *pdev);
-  #else
-  static inline u8 pcie_tph_get_st_width(struct pci_dev *pdev) { return 0; }
-  #endif
+ Agreed =E2=80=94 8-bit ST and 16-bit Extended ST are distinct namespaces
+(firmware returns
+them as separate fields with separate validity bits), so a numeric
+range check is insufficient.
+For v3 I'll change the uAPI to carry both, gated by a flags field:
 
-  with the implementation
-in drivers/pci/pcie/tph.c returning 16 for PCI_TPH_REQ_EXT_TPH and 8 otherw=
-ise.
-Then get_tph_mr_dmabuf() becomes:
+  #define VFIO_DMA_BUF_TPH_ST (1 << 0)  /* steering_tag valid */
+  #define VFIO_DMA_BUF_TPH_ST_EXT (1 << 1)  /* steering_tag_ext valid
+*/
+  struct vfio_device_feature_dma_buf_tph {
+      __s32 dmabuf_fd;
+      __u32 flags;
+      __u16 steering_tag;       /* 8-bit ST */
+      __u16 steering_tag_ext;   /* 16-bit Extended ST */
+      __u8  ph;
+      __u8  reserved[3];
+  };
 
-  st_width =3D pcie_tph_get_st_width(pdev);
-  if (!st_width)
-      goto end_dbuf_put;
-
-which also gives us a clean early-out when TPH isn't supported on the
-device. Will fix in v3.
+get_tph() then picks the field matching the importer's st_width and
+returns -EOPNOTSUPP
+if that one isn't valid.
 
 Thanks,
 Zhiping
