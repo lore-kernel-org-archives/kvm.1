@@ -1,242 +1,194 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 826702288CB;
-	Wed,  6 May 2026 01:36:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A3102773CA;
+	Wed,  6 May 2026 01:57:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778031378; cv=none; b=G1D+aPhZRzraHjZjUVTGw3p9BBmbebhxiK79nN2WOla03qpy/YZ2fqZ10Cafmt4FpKh36IZu0PttfUn7uIyUjd/+pYPAtyynW95m+ajaMHEHd7XbL1UC33q0zUKDAfgsIZPasDhgyYo+9wxTbJjY2MBLlTZLaZKZfXBI0vJrEhU=
+	t=1778032680; cv=none; b=bKJXTVqMbBKeHMk0PnGUURiHDu3sNQ7jXFksIR4cFWndyNpWlBeNpnC0bDr4KQE0Ls4c/AG37AKBUJNkqsy8MGvwSoL1PCVfNBlrA0PaYCp5TucJsEr+IuOwLESl9cGFzbVUqnN+niCLJjJN3RXtrSH0iNk7/QCHPrci44VuBbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778031378; c=relaxed/simple;
-	bh=sUqdsHMX8Dr0cij44Af2niVPKTIvPJnCIEJYWSYU2Co=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HievFozfZVdtcAGwKlLR3KHe4BpYciUAraMWOsmG7SAWEuRIbMs7S9UmppOEfZ3uRtPQY5ZDg70gqKekY6VPqwyzDmZtWcBibW0A7gK4DKRnI3iPxj6sw0/szDhPXaKwYmJlUKkpJiEoliL6ZepIIw7Via3a82Q0mhmFgUjeFNQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=K6pZtJzd; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1778032680; c=relaxed/simple;
+	bh=yxu6nS9AUYrVkH6s9ve2LiRv7vNRnU+OLzJJBBBh1cs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=chdCsAMW9+ch5NyMT2Gc3bEmwflc7LLBXkehQBSM/SPG84RLbwMwou0Ez+UyHDICvSLaCcW9b9N4xHmFxUg0K31P+/PPs006P/O3QK/HvgliQJXRD/RzD/tUHLhdKcx1gqvNlpQp+UFYUzijhofVKADJ43gsi2fFdPaU+1J6/Jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tqPAOm/t; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="K6pZtJzd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778031377; x=1809567377;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=sUqdsHMX8Dr0cij44Af2niVPKTIvPJnCIEJYWSYU2Co=;
-  b=K6pZtJzdwQUeVXvRRBOuGfLyXC2bw0xyV8LE4Ysq+ZmpcavQH+upPH74
-   lZ435bk8pJkut2qn3Vu1C6jKHyBkHYkzUZJ1hWI66QCF7dcaQ8qRjLN0W
-   bkq0XG/UIip9JiOLfsuqNwFudL15KcZqBsf5b/GInLe4YEHaS068jqUt1
-   sm/aoiiVxbZP5xKL/K1QebGphWZtQK2PGWUn+mEd4UT942bUVR1HJ2xps
-   NBNocB9goapDf1/IJRQ2dYwywauOX0q/Ayq0L5SKz//Xtp6LTDrcLD2h7
-   CXsqyJXiwAxF1I0edmzuabhDFg/BTI2qStmfsWJ4neFgmA0z5qrA9wuHQ
-   A==;
-X-CSE-ConnectionGUID: MaAB1qWdShaP5KwBq5ot7w==
-X-CSE-MsgGUID: dyDxZ0RtSiCStYpwE1twgg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11777"; a="66442500"
-X-IronPort-AV: E=Sophos;i="6.23,218,1770624000"; 
-   d="scan'208";a="66442500"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2026 18:36:16 -0700
-X-CSE-ConnectionGUID: sYSajY25SrSWjnSrOnEXmA==
-X-CSE-MsgGUID: gF+kOfjuSw2DJ8nIbS5P0g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,218,1770624000"; 
-   d="scan'208";a="274111117"
-Received: from dapengmi-mobl1.ccr.corp.intel.com (HELO [10.124.241.147]) ([10.124.241.147])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 May 2026 18:36:13 -0700
-Message-ID: <3af0b9d4-f708-4225-9480-cb7080406ca0@linux.intel.com>
-Date: Wed, 6 May 2026 09:36:10 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tqPAOm/t"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 590CDC2BCB4;
+	Wed,  6 May 2026 01:57:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778032679;
+	bh=yxu6nS9AUYrVkH6s9ve2LiRv7vNRnU+OLzJJBBBh1cs=;
+	h=From:To:Cc:Subject:Date:From;
+	b=tqPAOm/tqUnIMplz/eAV21pXnJi0q1G34d/KQv/NioDBV96CRk71rc1YOmPV1ZRKl
+	 wrVjUEZe3hKmjdIvvgacv+5WTYYztCDt4D27x9Ym31aSXprjh3vqFhnTATGwAqOcrY
+	 SZTr3xLK7YzKbhSFrMJL0kKB9xDukz0CcRiSg7HhU1qRd8jN9S+Q+jvXYPyk/37JdE
+	 4gi/GxpLCRHb4rjaMRWXXlZhmtc4kFtpE/Xlr3PSGAKA2wGNc7Rkm7zs/u3QQxtkH6
+	 oa+SMIBh187H2GUgFWYZeoMzChnDYqgf0Iq1qejpUzBkDceBrQ9S5kiBG5v4ZK+BGl
+	 B8E0yFl+P5e7g==
+From: Yosry Ahmed <yosry@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Jim Mattson <jmattson@google.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Sandipan Das <sandipan.das@amd.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yosry Ahmed <yosry@kernel.org>
+Subject: [PATCH v6 00/16] 
+Date: Wed,  6 May 2026 01:57:16 +0000
+Message-ID: <20260506015733.1671124-1-yosry@kernel.org>
+X-Mailer: git-send-email 2.54.0.545.g6539524ca2-goog
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH V2 2/4] KVM: x86/pmu: Support Intel fixed counter 3 on
- mediated vPMU
-To: "Chen, Zide" <zide.chen@intel.com>,
- Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- Jim Mattson <jmattson@google.com>, Mingwei Zhang <mizhang@google.com>,
- Das Sandipan <Sandipan.Das@amd.com>, Shukla Manali <Manali.Shukla@amd.com>,
- Falcon Thomas <thomas.falcon@intel.com>, Xudong Hao <xudong.hao@intel.com>
-References: <20260423174639.56149-1-zide.chen@intel.com>
- <20260423174639.56149-3-zide.chen@intel.com>
- <6d472e6e-ad75-4d0f-8475-469875806cc4@linux.intel.com>
- <7d5ca8ac-2118-4d70-b70f-9188cf36f40a@intel.com>
-Content-Language: en-US
-From: "Mi, Dapeng" <dapeng1.mi@linux.intel.com>
-In-Reply-To: <7d5ca8ac-2118-4d70-b70f-9188cf36f40a@intel.com>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+v6 of Jim and myself's series adding support for AMD's Host-Only and
+Guest-Only performance counter eventsel bits in KVM's mediated PMU
+passthrough implementation. The series keeps growing in size over
+versions. This is Sean's fault (as usual), as he keeps finding subtle
+problems and making excellent suggestions.
 
-On 5/1/2026 1:54 AM, Chen, Zide wrote:
->
-> On 4/29/2026 7:19 PM, Mi, Dapeng wrote:
->> On 4/24/2026 1:46 AM, Zide Chen wrote:
->>> From: Dapeng Mi <dapeng1.mi@linux.intel.com>
->>>
->>> Starting with Ice Lake, Intel introduces fixed counter 3, which counts
->>> TOPDOWN.SLOTS - the number of available slots for an unhalted logical
->>> processor.  It serves as the denominator for top-level metrics in the
->>> Top-down Microarchitecture Analysis method.
->>>
->>> Emulating this counter on legacy vPMU would require introducing a new
->>> generic perf encoding for the Intel-specific TOPDOWN.SLOTS event in
->>> order to call perf_get_hw_event_config().  This is undesirable as it
->>> would pollute the generic perf event encoding.
->>>
->>> Moreover, KVM does not intend to emulate IA32_PERF_METRICS in the
->>> legacy vPMU model, and without IA32_PERF_METRICS, emulating this
->>> counter has little practical value.  Therefore, expose fixed counter
->>> 3 to guests only when mediated vPMU is enabled.
->>>
->>> Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
->>> Co-developed-by: Zide Chen <zide.chen@intel.com>
->>> Signed-off-by: Zide Chen <zide.chen@intel.com>
->>> ---
->>> V2:
->>> - Don't advertise fixed counter 3 to userspace if the host doesn't
->>>   support it.
->>> ---
->>>  arch/x86/include/asm/kvm_host.h | 2 +-
->>>  arch/x86/kvm/cpuid.c            | 9 +++++++--
->>>  arch/x86/kvm/pmu.c              | 4 ++++
->>>  arch/x86/kvm/x86.c              | 4 ++--
->>>  4 files changed, 14 insertions(+), 5 deletions(-)
->>>
->>> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
->>> index c470e40a00aa..cb736a4c72ea 100644
->>> --- a/arch/x86/include/asm/kvm_host.h
->>> +++ b/arch/x86/include/asm/kvm_host.h
->>> @@ -556,7 +556,7 @@ struct kvm_pmc {
->>>  #define KVM_MAX_NR_GP_COUNTERS		KVM_MAX(KVM_MAX_NR_INTEL_GP_COUNTERS, \
->>>  						KVM_MAX_NR_AMD_GP_COUNTERS)
->>>  
->>> -#define KVM_MAX_NR_INTEL_FIXED_COUNTERS	3
->>> +#define KVM_MAX_NR_INTEL_FIXED_COUNTERS	4
->>>  #define KVM_MAX_NR_AMD_FIXED_COUNTERS	0
->>>  #define KVM_MAX_NR_FIXED_COUNTERS	KVM_MAX(KVM_MAX_NR_INTEL_FIXED_COUNTERS, \
->>>  						KVM_MAX_NR_AMD_FIXED_COUNTERS)
->>> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
->>> index e69156b54cff..d87a26f740e5 100644
->>> --- a/arch/x86/kvm/cpuid.c
->>> +++ b/arch/x86/kvm/cpuid.c
->>> @@ -1505,7 +1505,7 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
->>>  		break;
->>>  	case 0xa: { /* Architectural Performance Monitoring */
->>>  		union cpuid10_eax eax = { };
->>> -		union cpuid10_edx edx = { };
->>> +		union cpuid10_edx edx = { }, host_edx;
->>>  
->>>  		if (!enable_pmu || !static_cpu_has(X86_FEATURE_ARCH_PERFMON)) {
->>>  			entry->eax = entry->ebx = entry->ecx = entry->edx = 0;
->>> @@ -1516,9 +1516,14 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
->>>  		eax.split.num_counters = kvm_pmu_cap.num_counters_gp;
->>>  		eax.split.bit_width = kvm_pmu_cap.bit_width_gp;
->>>  		eax.split.mask_length = kvm_pmu_cap.events_mask_len;
->>> -		edx.split.num_counters_fixed = kvm_pmu_cap.num_counters_fixed;
->>>  		edx.split.bit_width_fixed = kvm_pmu_cap.bit_width_fixed;
->>>  
->>> +		/* Guest does not support non-contiguous fixed counters. */
->>> +		host_edx = (union cpuid10_edx)entry->edx;
->>> +		edx.split.num_counters_fixed =
->>> +			 min_t(int, kvm_pmu_cap.num_counters_fixed,
->>> +			       host_edx.split.num_counters_fixed);
->> kvm_pmu_cap are derived from kvm_pmu_host which already represents host
->> fixed counters number, why host fixed counters number is checked again here?
-> This stems from KVM not supporting non-contiguous fixed counters on the
-> guest.
->
-> On CWF, the fixed counter mask is 0x77 and the number of contiguous
-> fixed counters is 3. kvm_host_pmu.num_counters_fixed is 6 from the host,
-> and in kvm_pmu_cap it's capped to KVM_MAX_NR_INTEL_FIXED_COUNTERS
-> without accounting for non-contiguity:
->
-> memcpy(&kvm_pmu_cap, &kvm_host_pmu, sizeof(kvm_host_pmu));
-> kvm_pmu_cap.num_counters_fixed = min(kvm_pmu_cap.num_counters_fixed,
->                                      KVM_MAX_NR_FIXED_COUNTERS);
->
-> It would be more natural to check against the host's contiguous fixed
-> counter count in kvm_init_pmu_capability(), but I placed it in cpuid.c
-> to leverage do_host_cpuid().
->
-> A more complete fix would be to pull in some PerfmonExt patches to add
-> fixed/GP counter mask support in kvm_host_pmu, and filter out
-> non-contiguous counters in kvm_init_pmu_capability(). But in this way,
-> it could have too much "temporary" code to translate between
-> nr_of_xxx_counters and xxx_counter_mask.
+These bits allow an nSVM-enabled guest to configure performance counters
+that count only during L1 execution (Host-Only) or only during L2 execution
+(Guest-Only).
 
-I see. It may be not a good choice to pull in the PerfmonExt patches in
-this patchset considering its large patch size. We'd better move this part
-of code into kvm_init_pmu_capability() which is a better place for it, and
-we need some comments to explain it. Thanks.
+KVM updates the hardware event selector ENABLE bit at nested transitions
+and EFER.SVME changes such that counters only count in the appropriate
+mode.
+
+The series grew significantly after v4, as it now includes semi-related
+nSVM fixups and selftests cleanups needed for the series. I think parts
+of this series can land independently (patches 1-7 and patches 13-15),
+but then the remaining series would depend on both.
+
+v5 -> v6:
+- Use a per-counter PMU callback that is called from
+  pmc_is_locally_enabled(), rather than a single callback for all
+  counters from kvm_pmu_handle_event(). This is mainly to address the
+  problem Sashiko found where kvm_pmu_recalc_pmc_emulation() does not
+  capture counter disablement due to Host-Only/Guest-Only bits [Sean].
+- Move the bitmap tracking counters using Host-Only/Guest-Only bits from
+  SVM code to the generic PMU code (and in its own patch), as it's now a
+  generic optimization for pmc_is_locally_enabled() that is reused by SVM
+  code on nested transitions [Sean].
+
+v4 -> v5:
+- Dropped moving leave_guest_mode() and enter_guest_mode() definitions,
+  since the calls to update the vPMU no longer happen within these
+  functions.
+- Add PMU helpers refactoring to facilitate SVM usage.
+- Added nested SVM fixups to count VMRUN correctly in guest mode when
+  Host-Only/Guest-Only support is enabled [Jim/Sean].
+- Update the vPMU synchronously on nested VM-Enter/VM-Exit and EFER.SVME
+  changes, such that counter enablement is reevaluated before the
+  instructions are counted, as the vPMU counts based on the vCPU state
+  at instruction retirement (e.g. using new EFER value when EFER.SVME
+  changes) [Jim/Sean].
+- Keep deferring vPMU updates using KVM_REQ_PMU in the
+  svm_leave_nested() path to avoid KVM potentially consuming stale
+  state [Sean].
+- Use a single PMU callback for reprogramming counters instead of a
+  per-counter callback [Sean].
+- Move the bitmap tracking counters into SVM code. The generic vPMU code
+  now only exposes an API to reprogram counters, and an SVM wrapper uses
+  it on nested transitions [Sean].
+- Drop the manual stack-alignment fixes in the vPMU selftest, instead
+  rework L2 stack setup in all nested selftests to reuse the allocation
+  and alignment logic used by L1, and completely drop L1-provided stacks
+  for L2 [Sean].
+
+v5: https://lore.kernel.org/kvm/20260430202750.3924147-1-yosry@kernel.org/
+v4: https://lore.kernel.org/kvm/20260326031150.3774017-1-yosry@kernel.org/
+
+Jim Mattson (2):
+  KVM: x86/pmu: Allow Host-Only/Guest-Only bits with nSVM and mediated
+    PMU
+  KVM: selftests: Add svm_pmu_host_guest_test for Host-Only/Guest-Only
+    bits
+
+Yosry Ahmed (14):
+  KVM: nSVM: Stop leaking single-stepping on VMRUN into L2
+  KVM: nSVM: Bail early out of VMRUN emulation if advancing RIP fails
+  KVM: nSVM: Move VMRUN instruction retirement after entering guest mode
+  KVM: x86: Move enable_pmu/enable_mediated_pmu to pmu.h and pmu.c
+  KVM: x86/pmu: Rename reprogram_counters() to clarify usage
+  KVM: x86/pmu: Do a single atomic OR when reprogramming counters
+  KVM: x86/pmu: Check mediated PMU counter enablement before event
+    filters
+  KVM: x86/pmu: Add support for KVM_X86_PMU_OP_OPTIONAL_RET0
+  KVM: x86/pmu: Disable counters based on Host-Only/Guest-Only bits in
+    SVM
+  KVM: x86/pmu: Track mediated PMU counters with mode-specific enables
+  KVM: x86/pmu: Reprogram Host/Guest-Only counters on nested transitions
+  KVM: selftests: Refactor allocating guest stack into a helper
+  KVM: selftests: Allocate a dedicated guest page for x86 L2 guest stack
+  KVM: selftests: Drop L1-provided stacks for L2 guests on x86
+
+ arch/x86/include/asm/kvm-x86-pmu-ops.h        |   5 +-
+ arch/x86/include/asm/kvm_host.h               |   5 +-
+ arch/x86/include/asm/perf_event.h             |   2 +
+ arch/x86/kvm/pmu.c                            |  21 +-
+ arch/x86/kvm/pmu.h                            |  44 +++-
+ arch/x86/kvm/svm/nested.c                     |  43 +++-
+ arch/x86/kvm/svm/pmu.c                        |  42 ++++
+ arch/x86/kvm/svm/svm.c                        |   1 +
+ arch/x86/kvm/svm/svm.h                        |  22 ++
+ arch/x86/kvm/vmx/pmu_intel.c                  |   2 +-
+ arch/x86/kvm/x86.c                            |  17 +-
+ arch/x86/kvm/x86.h                            |   3 -
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ tools/testing/selftests/kvm/include/x86/pmu.h |   6 +
+ .../selftests/kvm/include/x86/processor.h     |   2 +
+ .../selftests/kvm/include/x86/svm_util.h      |   5 +-
+ tools/testing/selftests/kvm/include/x86/vmx.h |   4 +-
+ .../testing/selftests/kvm/lib/x86/memstress.c |  19 +-
+ .../testing/selftests/kvm/lib/x86/processor.c |  45 ++--
+ tools/testing/selftests/kvm/lib/x86/svm.c     |   6 +-
+ tools/testing/selftests/kvm/lib/x86/vmx.c     |   6 +-
+ .../selftests/kvm/x86/aperfmperf_test.c       |   9 +-
+ .../kvm/x86/evmcs_smm_controls_test.c         |   5 +-
+ .../testing/selftests/kvm/x86/hyperv_evmcs.c  |   6 +-
+ .../selftests/kvm/x86/hyperv_svm_test.c       |   6 +-
+ .../selftests/kvm/x86/kvm_buslock_test.c      |   9 +-
+ .../selftests/kvm/x86/nested_close_kvm_test.c |  12 +-
+ .../selftests/kvm/x86/nested_dirty_log_test.c |   8 +-
+ .../selftests/kvm/x86/nested_emulation_test.c |   4 +-
+ .../kvm/x86/nested_exceptions_test.c          |   9 +-
+ .../kvm/x86/nested_invalid_cr3_test.c         |  10 +-
+ .../kvm/x86/nested_tsc_adjust_test.c          |  10 +-
+ .../kvm/x86/nested_tsc_scaling_test.c         |  10 +-
+ .../kvm/x86/nested_vmsave_vmload_test.c       |   6 +-
+ tools/testing/selftests/kvm/x86/smm_test.c    |   8 +-
+ tools/testing/selftests/kvm/x86/state_test.c  |  11 +-
+ .../selftests/kvm/x86/svm_int_ctl_test.c      |   5 +-
+ .../selftests/kvm/x86/svm_lbr_nested_state.c  |   6 +-
+ .../kvm/x86/svm_nested_clear_efer_svme.c      |   7 +-
+ .../kvm/x86/svm_nested_shutdown_test.c        |   5 +-
+ .../kvm/x86/svm_nested_soft_inject_test.c     |   6 +-
+ .../selftests/kvm/x86/svm_nested_vmcb12_gpa.c |  13 +-
+ .../kvm/x86/svm_pmu_host_guest_test.c         | 216 ++++++++++++++++++
+ .../selftests/kvm/x86/svm_vmcall_test.c       |   5 +-
+ .../kvm/x86/triple_fault_event_test.c         |   9 +-
+ .../selftests/kvm/x86/vmx_apic_access_test.c  |   5 +-
+ .../kvm/x86/vmx_apicv_updates_test.c          |   4 +-
+ .../kvm/x86/vmx_invalid_nested_guest_state.c  |   6 +-
+ .../kvm/x86/vmx_nested_la57_state_test.c      |   5 +-
+ .../kvm/x86/vmx_preemption_timer_test.c       |   5 +-
+ 50 files changed, 483 insertions(+), 238 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/x86/svm_pmu_host_guest_test.c
 
 
->
->
->> Besides, we can't only depend on the fixed counters number to check if
->> fixed counter 3 is supported on host, e.g., CWF supports fixed counter 4, 5
->> and 6 but doesn't support fixed counter 3. Before adding PerfmonExt (0x23)
->> CPUID leaves support in KVM, we need to check the  CPUID.0xa.ecx to get the
->> real fixed countera bitmap and then check if fixed counter 3 is supported.
-> This is a theoretical concern even without fixed counter 3 support.
-> Before this patch, KVM supports up to 3 fixed counters and assumes they
-> are contiguous, which holds true in practice.
->
-> CPUID.0xa.ecx is only meaningful starting from PMU v4, so it can't be
-> used unconditionally. However, CPUID.0xa.edx[4:0] always represents the
-> number of contiguous fixed counters, so checking against it is
-> sufficient to filter out non-contiguous ones.
->
->> Thanks.
->>
->>
->>> +
->>>  		if (kvm_pmu_cap.version)
->>>  			edx.split.anythread_deprecated = 1;
->>>  
->>> diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
->>> index e218352e3423..9ff4a6a9cd0b 100644
->>> --- a/arch/x86/kvm/pmu.c
->>> +++ b/arch/x86/kvm/pmu.c
->>> @@ -148,12 +148,16 @@ void kvm_init_pmu_capability(struct kvm_pmu_ops *pmu_ops)
->>>  	}
->>>  
->>>  	memcpy(&kvm_pmu_cap, &kvm_host_pmu, sizeof(kvm_host_pmu));
->>> +
->>>  	kvm_pmu_cap.version = min(kvm_pmu_cap.version, 2);
->>>  	kvm_pmu_cap.num_counters_gp = min(kvm_pmu_cap.num_counters_gp,
->>>  					  pmu_ops->MAX_NR_GP_COUNTERS);
->>>  	kvm_pmu_cap.num_counters_fixed = min(kvm_pmu_cap.num_counters_fixed,
->>>  					     KVM_MAX_NR_FIXED_COUNTERS);
->>>  
->>> +	if (!enable_mediated_pmu && kvm_pmu_cap.num_counters_fixed > 3)
->>> +		kvm_pmu_cap.num_counters_fixed = 3;
->>> +
->>>  	kvm_pmu_eventsel.INSTRUCTIONS_RETIRED =
->>>  		perf_get_hw_event_config(PERF_COUNT_HW_INSTRUCTIONS);
->>>  	kvm_pmu_eventsel.BRANCH_INSTRUCTIONS_RETIRED =
->>> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
->>> index 0a1b63c63d1a..604072d9354f 100644
->>> --- a/arch/x86/kvm/x86.c
->>> +++ b/arch/x86/kvm/x86.c
->>> @@ -360,7 +360,7 @@ static const u32 msrs_to_save_base[] = {
->>>  
->>>  static const u32 msrs_to_save_pmu[] = {
->>>  	MSR_ARCH_PERFMON_FIXED_CTR0, MSR_ARCH_PERFMON_FIXED_CTR1,
->>> -	MSR_ARCH_PERFMON_FIXED_CTR0 + 2,
->>> +	MSR_ARCH_PERFMON_FIXED_CTR2, MSR_ARCH_PERFMON_FIXED_CTR3,
->>>  	MSR_CORE_PERF_FIXED_CTR_CTRL, MSR_CORE_PERF_GLOBAL_STATUS,
->>>  	MSR_CORE_PERF_GLOBAL_CTRL,
->>>  	MSR_IA32_PEBS_ENABLE, MSR_IA32_DS_AREA, MSR_PEBS_DATA_CFG,
->>> @@ -7756,7 +7756,7 @@ static void kvm_init_msr_lists(void)
->>>  {
->>>  	unsigned i;
->>>  
->>> -	BUILD_BUG_ON_MSG(KVM_MAX_NR_FIXED_COUNTERS != 3,
->>> +	BUILD_BUG_ON_MSG(KVM_MAX_NR_FIXED_COUNTERS != 4,
->>>  			 "Please update the fixed PMCs in msrs_to_save_pmu[]");
->>>  
->>>  	num_msrs_to_save = 0;
+base-commit: 85f871f6ba46f20d7fbc0b016b4db648c33220dd
+-- 
+2.54.0.545.g6539524ca2-goog
+
