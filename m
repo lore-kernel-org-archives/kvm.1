@@ -1,114 +1,137 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E976336B076
-	for <kvm@vger.kernel.org>; Wed,  6 May 2026 15:15:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3D7548C40C
+	for <kvm@vger.kernel.org>; Wed,  6 May 2026 15:22:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778080536; cv=none; b=rlO4DDmVux/tOlJyxAydIUuepkieqgprKcSsWAny/6KvQkpsvtiKvpWiZA19CkK1i+GSjxcsOgbsMjE5rswV+ah8ZZBitxTDtGuA7yi3Xy/zMpcPfu+Rg1k1ueHFmWlkH87oKCbXV8/GDCxMldmWTUpwmSXtQYQE13rFJCUuqvc=
+	t=1778080956; cv=none; b=KTNQV2F5ducbAdAgTXDoY3auHS6nWWqy1OfxlXm7dixiTBcbPS/EmvlE52qxoIvTBOKMYFzuUhn/zk8oGQnoolonvwmxl3myrUz8nPbWH13HOX5mmeV+Zaw6oQlLEddHYfczjIkqgPCyCw9MfFJ2/3qjjlrkC7trDg81r3PJ6Ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778080536; c=relaxed/simple;
-	bh=dyYVoDEtFDSgPhQADtst+OcAghGp7Ei9IraYcw4HcQY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=h/LuF1F2DrivJ0CjbL2nrNLLyuiuAG5cYjyqu3SRmgT5viukSbbqgasU+rzpxlcunZIe6ip38Nwu3/hFJW0bPWlgT7258cIpzM9ul6utsopfU1JX5evchH6Osq90lyNff/CLhQpUhdXkp3I08DTeb8imprxt6Qy1UfS8ZrVEtq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c+jp5bNk; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=HPnfHl3W; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1778080956; c=relaxed/simple;
+	bh=hbB68Mo6u/IPP2ovVkT2sj3ajh8a4Sa30RDg6ZHW2tU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=BH1MXitR6kvNmXYIYjenmKbdyxVwAm8V7agBdBagMrhEWLQZUFYfKoWOgZx4VC6+3QZVOn/zxxxGsB47kLKOmB9wPvQOfZHdUvDQB0iqSWKNc4uk+a0xwHdRED4OL1VexqvT1bO/ULTZ+iDTr2rL/QVwutLMaELRdCL6EUqBCRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qEFGuM1Y; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c+jp5bNk";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="HPnfHl3W"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778080531;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dyYVoDEtFDSgPhQADtst+OcAghGp7Ei9IraYcw4HcQY=;
-	b=c+jp5bNk+Varjo6OPBr+hYZkuJJCcoHgBlbrJyXUBAPPzrsRtAGGH256qwbpQX3NP8seyI
-	Thlr2thN1cRRi21ccFiU1BQkzFepk3QrSrGjX2GLvsPvaRKHYE1jX85LM2hMCx0dttpuMu
-	8wAELmLFkbuNR1LXQTTnP32l8eW5mSw=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-657-GCVpocsXO_Gh3yiy_P7HtA-1; Wed, 06 May 2026 11:15:30 -0400
-X-MC-Unique: GCVpocsXO_Gh3yiy_P7HtA-1
-X-Mimecast-MFC-AGG-ID: GCVpocsXO_Gh3yiy_P7HtA_1778080529
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4837bfcfe0dso80041705e9.1
-        for <kvm@vger.kernel.org>; Wed, 06 May 2026 08:15:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qEFGuM1Y"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c82437a0e6bso432698a12.2
+        for <kvm@vger.kernel.org>; Wed, 06 May 2026 08:22:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778080529; x=1778685329; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dyYVoDEtFDSgPhQADtst+OcAghGp7Ei9IraYcw4HcQY=;
-        b=HPnfHl3WhXiNQLzmBF7kK7Jt65U184IqyoxE0M484yInTICyzYZGjvoFtNgfrA/vxb
-         LgKndyUbhjOmyVGOYPU9wnbkMXnlkiFeCOhtA8DVSP1OfQEcteB65H7weMmbPLYHXSZz
-         tqoncI/gvvSSrcHK7V+mdiEZ0MQfF5IVo0s1YqBB5yQqoSTzz4DXglfskPmm5aofCJZK
-         1f/heqbeljqqjzI7rweXi0nRzCqlhVS+uj7jHcVU2MnkAjRIXa2x8cniN5dKHKc+gYin
-         qxxGcIPkYwE12TpvP8eI3+2vYp2/v+68XzZGXa4agzNfuct1ohrRSCnaY5XgkSAKnmvM
-         nF4w==
+        d=google.com; s=20251104; t=1778080952; x=1778685752; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=buwWB1nkgqPih7qI3rf/2APZUYQhP2m22o6eBnTuB5o=;
+        b=qEFGuM1YGm9hlCzeRbUMoHY0PvIgrioMx4kR8bGkln27dewGOeWw574dYJia8YaiF+
+         C8PJQoU2kA0N8I0tCtPFjtE62hWJaSARWheclQjehF3fY/xZGKAFsE+bTo+lJXYBUCsx
+         HA+JdbPUAJlDLNxnaoE1GZppiJuJdsnIJbtzbK79KHyo+ftYEO+q19HuomWAQZ3l+hWa
+         uJxEyeDN7Sq2prM8tr77cL11/WrpDhEMH7hSubffbA6HNBvBmt9R7mFlRCZOAI1AHBIc
+         O2X4GaePf7kAVmB8L4csu8gZ+pDEuQAURGj0lvUmyd+3Pc5I4iphPJTAb+Q3L7jY+ope
+         i1uw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778080529; x=1778685329;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dyYVoDEtFDSgPhQADtst+OcAghGp7Ei9IraYcw4HcQY=;
-        b=Tn7dvX7iYmTV36yJzw+bsrGDCRx1mVlxjXPSkcc0XmRkaSI/v/thOdUa5Nb/szIwEe
-         LH/KxEFEUwnlEW0MAFT4kbSe4aUBXO1rkIpcYZfjCT6SvpjAJQ+aQjcGCpMogxI9hjpU
-         95g+IQUfrnC8BmezmD0oyBNTVvDQKvOycZ+eOBH9/GzBNQzU36FIM/2WIfz7fc8FVpCr
-         TX7yu4nCfOrI5S20Lwoo2asI3nHmv4E/Mndrmgfsro5uj2A2fnW4yAeKGadO1i0cJoaT
-         Hh0xbBa97ikrAfj6EqMjAVojk7cNa5KHdGaTGJXQR5gpcbdQK+je05vedkjmdMtm1VoJ
-         BmEw==
-X-Forwarded-Encrypted: i=1; AFNElJ+QmW5jemx3zuNkfoNk+KAtOT4AkEoOXl4GCRbw4E0+XWwrHOwnr69NUgvsFTgHGHuxT4I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+FUiT+BT5DyPEhzKHegyeYSGv2rLl/IgLSngouqXoPuKKFX/3
-	iyX1JmhmsINoTpaA/h3ljR+wMXX3OZBH2SQnfnxyBOxc/JZxbSHASmrYG/2W7BFYbnZKFZrUJ2c
-	DNsTzpp9RtNGeZdPW/ydg8Vqi1GevtWGFBZb4kwWRhYXGF0VlDI4KPg==
-X-Gm-Gg: AeBDieuQ0sw9LyW4/Yx7p9nHjLo8hkp7K5gHYa7oW54ZCikfNst8ru3zPNArgWwvwJO
-	Sm6zGwDosot2zn+BZQPaWNyZTFXj8G2E5hQT6rl4lwnKezpqmJG5m6aN6EcG7mnD7ZqxfxZ2Duz
-	fCpHfpQdnJEmGgsyyTzYs8sybs8NkTD5v8q8O6mRYq6cf44G3LKO/wP+UqLN3wf8AYSlj/GSvkQ
-	N5jFqX7YJ+aj/XHGLltrPkHfgmtSd0IWuUTsMqUigTGv0Dw105CNNReB1Czhrujiz9VNBdp3CrV
-	d2SWQy2c9AShTSzgoHqNsWhyy9KHHTzV0YQljhrkIlr8JX0jJKha1arUs/z5t8URpSTFgz4Veoj
-	c4fCVu5bji01as+NSzpGYSoxWOs1+oOChpb+BE35C+1ZoAE4nFQo=
-X-Received: by 2002:a05:600c:871b:b0:48a:592c:e655 with SMTP id 5b1f17b1804b1-48e51f45eddmr62856685e9.17.1778080529265;
-        Wed, 06 May 2026 08:15:29 -0700 (PDT)
-X-Received: by 2002:a05:600c:871b:b0:48a:592c:e655 with SMTP id 5b1f17b1804b1-48e51f45eddmr62855865e9.17.1778080528659;
-        Wed, 06 May 2026 08:15:28 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e538b26a3sm95210515e9.9.2026.05.06.08.15.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 May 2026 08:15:28 -0700 (PDT)
-Date: Wed, 6 May 2026 11:15:24 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Eric Dumazet <edumazet@google.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	eric.dumazet@gmail.com, Arseniy Krasnov <AVKrasnov@sberdevices.ru>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	kvm@vger.kernel.org, virtualization@lists.linux.dev
-Subject: Re: [PATCH net] vsock/virtio: fix potential unbounded skb queue
-Message-ID: <20260506111507-mutt-send-email-mst@kernel.org>
-References: <20260430122653.554058-1-edumazet@google.com>
- <afn0ZdvZWswBuDMm@sgarzare-redhat>
- <CANn89iLs8DOWJwDpf_ARoMrV+6b2tbhEJ=VVzeC8gCm5dRGaig@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1778080952; x=1778685752;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=buwWB1nkgqPih7qI3rf/2APZUYQhP2m22o6eBnTuB5o=;
+        b=HJIfCYMIJqitjzMOebFYlkRwjVAsnAG2N8opImEL6l6arpnPjlnFE4QJ1XwJGUu/MB
+         aA3+e+paa3tgIXBOaZO4w+xXuRVXIQon+D2PlulmWzAAuKSDPvURW7FQbxhGwKp+6ruc
+         iLQc1NabfpdhGYGsFc9+wU//A/fUjKQepzBAnY0wYacEvMsRRPnQKm2IV7vQL3pAs9+p
+         bEQoYZSRiNyXc0jyxdjyv1nNDrKQhBdze9SKykKsassj28a6JRz/8XL4Q96JGOqFeN8l
+         FdGuyf2DVbRqJ8xnZBL3+MDRXXYJR0ttFde/c00eoAizgP/71Gk3g9IBHvYtaUOWjB3U
+         vSlA==
+X-Forwarded-Encrypted: i=1; AFNElJ+q0WKG64pSwEG9TCXN1H/YnAUPhP9UJpyW560XXiwDMFmG/ByGegxSlvqs5+3NddTl2RY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx9YLRwvekdDNyiETq8FEQ5HaT52yx9AUTK8XhDuCK0Ys02HsFU
+	A/yVZXfIcheZE21ZYiqnQ/sVOH2HcRQvhVi98k4IhLnPNJG0NF71DWfXluCHQwoOER/VeKsdmx1
+	sPuhntA==
+X-Received: from pgbcq2.prod.google.com ([2002:a05:6a02:4082:b0:c73:97d4:afe0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a09:b0:3a2:f14a:4290
+ with SMTP id adf61e73a8af0-3aa5aa7a02dmr4080837637.38.1778080951955; Wed, 06
+ May 2026 08:22:31 -0700 (PDT)
+Date: Wed, 6 May 2026 08:22:31 -0700
+In-Reply-To: <cd8a2ae6-a276-480d-b942-bcd318a30451@leemhuis.info>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CANn89iLs8DOWJwDpf_ARoMrV+6b2tbhEJ=VVzeC8gCm5dRGaig@mail.gmail.com>
+Mime-Version: 1.0
+References: <adVGrJaRlRooO4su@google.com> <20260409142226.2581-1-lei.chen@smartx.com>
+ <adf8Q1VSeAMMyCa_@google.com> <f1c742e0-41c1-4bdc-867c-a768a5eb89c5@leemhuis.info>
+ <afs6PJzU3rHZwGv3@google.com> <cd8a2ae6-a276-480d-b942-bcd318a30451@leemhuis.info>
+Message-ID: <aftct6WWHdOG_EwX@google.com>
+Subject: Re: [PATCH v2] KVM: x86: Rate-limit global clock updates on vCPU load
+From: Sean Christopherson <seanjc@google.com>
+To: Thorsten Leemhuis <regressions@leemhuis.info>
+Cc: Lei Chen <lei.chen@smartx.com>, igor@gooddata.com, jan.cipa@gooddata.com, 
+	jaroslav.pulchart@gooddata.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	Linux kernel regressions list <regressions@lists.linux.dev>, 
+	Linus Torvalds <torvalds@linux-foundation.org>
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, May 05, 2026 at 07:14:36AM -0700, Eric Dumazet wrote:
-> There is always a discrepancy between skb->len and skb->truesize.
-> You will not be able to announce a 1MB window, and accept one milliion
-> skb of 1-byte each.
+On Wed, May 06, 2026, Thorsten Leemhuis wrote:
+> On 5/6/26 14:55, Sean Christopherson wrote:
+> > On Wed, May 06, 2026, Thorsten Leemhuis wrote:
+> >> On 4/9/26 21:21, Sean Christopherson wrote:
+> >>> On Thu, Apr 09, 2026, Lei Chen wrote:
+> >>>> commit 446fcce2a52b ("Revert "x86: kvm: rate-limit global clock updates"")
+> >>>> dropped the rate limiting for KVM_REQ_GLOBAL_CLOCK_UPDATE.
+> >>>>
+> >>>> As a result, kvm_arch_vcpu_load() can queue global clock update requests
+> >>>> every time a vCPU is scheduled when the master clock is disabled or when
+> >>>> the vCPU is loaded for the first time.
+> >>>>
+> >>>> Restore the throttling with a per-VM ratelimit state and gate
+> >>>> KVM_REQ_GLOBAL_CLOCK_UPDATE through __ratelimit(), so frequent vCPU
+> >>>> scheduling does not generate a steady stream of redundant clock update
+> >>>> requests.
+> >>>>
+> >>>> Fixes: 446fcce2a52b ("Revert "x86: kvm: rate-limit global clock updates"")
+> >>>> Signed-off-by: Lei Chen <lei.chen@smartx.com>
+> >>>> Reported-by: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
+> >>>> Closes: https://lore.kernel.org/all/CAK8fFZ5gY8_Mw2A=iZVFNVKQNrXQzVsn-HTd+Me9K6ZfmdgA+Q@mail.gmail.com/
+> >>
+> >> Was this performance regression ever addressed?
+> > Nope, not yet.
+> > 
+> >> Looks like this fall through the cracks, but it's easy to miss something.
+> > 
+> > It's in my list of patches to apply (probably for 7.2?).  I didn't want to squeeze
+> > it into the initial 7.1 pull request for a variety of reasons.
+> 
+> Hmmm. CCing Linus so he can speak up if he wants to about the following:
+> 
+> Given that this is a fix for a performance regression[1] I'd say it's
+> not as urgent as a "something stopped working" case -- so I guess it's
+> something where the "[fix] "within a week", preferably before the next
+> rc" approach Linus recently mentioned does not need to be applied strictly.
+> 
+> But Jaroslav OTOH reported it more than 7 weeks ago already and back
+> then called it something that "severely impacts KVM hosts running many
+> Firecracker microVMs."[1]; 
 
-We can if we copy.
+For a setup that is likely broken.  On modern hardware, the path in question
+should never actually be hit.  I do want to resolve the bug since older hardware
+and funky setups do rely on the old behavior, but it's not pants-on-fire urgent.
 
-> This kind of contract is broken.
+More importantly, the original reporter(s) hasn't responded to any of our questions,
+or to the proposed fix.  I'm not going to rush in a fix if I don't actually *know*
+it's going to fix the original problem.
 
+> and a potential fix exists for 4 weeks already. Due to that, 7.2 feels a bit
+> too far away for me, as that is still ~15 weeks away. But maybe that's just
+> me.
+
+The "user" is also a fairly sizeable company, not some random person that's trying
+to use KVM and is blocked.  I highly doubt they are still actually running a buggy
+kernel.  E.g. based on a "same workload after rollback" comment in the bug report,
+I assume they simply rolled back to the last good kernel (6.18).
+
+Who knows, maybe they also took our hints/suggestions about theire setup being
+wonky and addressed whatever hiccup was sending them down the uncommon, already-
+slow path.
+
+All in all, AFAICT the only difference between sending this into 7.1 vs. 7.2 is
+that the reporter won't be able to upgrade their kernel (without patching) for an
+extra ~8 weeks.
