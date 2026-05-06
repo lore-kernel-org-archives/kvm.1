@@ -1,134 +1,159 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21173F2114;
-	Wed,  6 May 2026 14:50:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF38248B368;
+	Wed,  6 May 2026 15:03:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778079059; cv=none; b=jdoMKisgtOn3eUm/cvR9NGHkHE9JQf7xYfOGDqD6YgjZHOWVFvR/Lj620eFZwv5PL2B1OJHMpGzGoXlNtnY52tWeYPKPmrPke2aMO8GoWK48NC+zsAcQpQ3FwmQOwqvZ3mNvOZvWZjwIyyLaZelRqNPKobbahojJGoBqJaJ4ARA=
+	t=1778079835; cv=none; b=SFlnkra1FIP5Bz98Lm1rM15C/Lrmzx/5Wj9CnXdVegIYq4Nnv2x0FQ1xNkbSKmUsY/n1RG5DGfqTAkZebfIIwiDqAlwzymQL63D4HpiAsmjBV/Ovz6d9ddEXC/Y/YWTJujdyYukXVP2ZvyDcpxxGnVZuMgmM5ULmElgDgXJWR6s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778079059; c=relaxed/simple;
-	bh=lEQ+qSVW6EIwygyt9swWHQtyrw6Evt9IuoYFwTsaQ10=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=XvZH/237aQ6D3S/JqHzhKsRRXb1daL3VCR7InuvnfOMqh3eDbjMyjW5Tq9vgHpY5q0qRmGeNurjn45B0aeWtT32wMZciEvhaL3ZcFf/hDys8Qhzc2noOvsrpASPltTnJd/67zlkoMjJU1ks8IPx45vCo5dH2fSWXnD8hBadpFFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=DQvd1A7t; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1778079835; c=relaxed/simple;
+	bh=9wYxQMmVtBz3DEPWlbfvcyKeSl2P2HX1/nFCNbnRXls=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=NY59RNhTisbpgGLE8Br1GHz+U0m7LYcY3rb12iPUh0KZTj6VrH461el32Gh1hWTForJ+o+wGzJT8d9Ct2XlajY+43kha2NZg4FZXqLJWxuR90RYLwlObQAg1H39UTLgM/3GQCxPzkDVgGRG4f1kW18/KDXlPWzRAIoJKP+oH4GQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RFpwT+nC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="DQvd1A7t"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64603HvH067384;
-	Wed, 6 May 2026 14:50:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=uMYzae
-	8XLE9z3eL5ayLh28wWMN/rSPGtFkJwz/8+m9g=; b=DQvd1A7tpxgvFuIUIk1B+B
-	i69RbUNyM0sBmjSd/lIJXQ1JT9VuHcqwB85a6hxqfhJsuFOzZt9wecVvW2kmu/IN
-	SIrDcwJzum7d2q0vUTZpuumN0d0F7k6L0waJU4pJzkt1oGce+mIaY2AWuZX5yFlc
-	OU39r2I1vypKv+sCCkNOXfX9nbdvw/Rmt1UthxrXvX2PZ02jVhDXNKYlX28oVQD7
-	nZwiLCScXDcn3OARgXIgPtfKZCIWyeboSzHBqXSI6px7jT+XTtAVvEMZRBipj5Vn
-	nDJsj3dRWpgTHFYFoWp8aNXopO6PeOJk1hehqUFOUVb4rNKiJsODE8+rhMUnvwFQ
-	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9y1h8tv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 06 May 2026 14:50:56 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 646EdThh007349;
-	Wed, 6 May 2026 14:50:55 GMT
-Received: from smtprelay01.wdc07v.mail.ibm.com ([172.16.1.68])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwwtgeh16-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 06 May 2026 14:50:55 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay01.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 646EorkY46727482
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 6 May 2026 14:50:53 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 863FB5806B;
-	Wed,  6 May 2026 14:50:53 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9F5E558052;
-	Wed,  6 May 2026 14:50:52 +0000 (GMT)
-Received: from [9.61.249.171] (unknown [9.61.249.171])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Wed,  6 May 2026 14:50:52 +0000 (GMT)
-Message-ID: <d39c54bc-1984-490c-9457-5eff63edef56@linux.ibm.com>
-Date: Wed, 6 May 2026 10:50:52 -0400
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RFpwT+nC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DBDFC2BCB8;
+	Wed,  6 May 2026 15:03:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778079835;
+	bh=9wYxQMmVtBz3DEPWlbfvcyKeSl2P2HX1/nFCNbnRXls=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=RFpwT+nC2ToI8BxTZFN8/5u1tm+3XR/8IolTmSTdxDuUH4ga2bcXbIEO5MD+izzJ4
+	 dbZ/i5b1gy9lmmy/B3/OvVn5WFeVb8oRgO3nD2f3hpUWDMZTZgotkRhXa3/atRqhAz
+	 r7EByGrr6h3BSOu4SOb9aaWOBYi8a1yaSQvIk6YV8Z/h6kzODBHBtAwKYrR3UPxN2I
+	 WOSZ4Qzk7mfCa9D7KSpaBqIKltq0ag0Cxgvwjsz5OSTkGI0WDX1RFBbDewjzTN/yBM
+	 iYQklEifxgdd1uI4wJxFNFsKsfHXGzW0u7qtRyIjEYbrxsovlw+74J9LsIXq49Zb4D
+	 mEGWB5UqF3I6w==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wKdmz-00000000KcH-1ZnQ;
+	Wed, 06 May 2026 15:03:53 +0000
+Date: Wed, 06 May 2026 16:03:53 +0100
+Message-ID: <861pfozijq.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Sascha Bischoff <Sascha.Bischoff@arm.com>
+Cc: "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	nd <nd@arm.com>,
+	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+	Joey Gouly
+	<Joey.Gouly@arm.com>,
+	Suzuki Poulose <Suzuki.Poulose@arm.com>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+	"peter.maydell@linaro.org"
+	<peter.maydell@linaro.org>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	Timothy Hayes <Timothy.Hayes@arm.com>
+Subject: Re: [PATCH 17/43] KVM: arm64: gic-v5: Enable VPE DBs on VPE reset and disable on teardown
+In-Reply-To: <20260427160547.3129448-18-sascha.bischoff@arm.com>
+References: <20260427160547.3129448-1-sascha.bischoff@arm.com>
+	<20260427160547.3129448-18-sascha.bischoff@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 3/4] KVM: s390: Change the fi->lock to a raw_spinlock
- for RT case
-To: Heiko Carstens <hca@linux.ibm.com>
-Cc: borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, frankja@linux.ibm.com,
-        david@kernel.org, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        svens@linux.ibm.com, kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org, mjrosato@linux.ibm.com
-References: <20260505173728.160562-1-freimuth@linux.ibm.com>
- <20260505173728.160562-4-freimuth@linux.ibm.com>
- <20260506045734.11230A02-hca@linux.ibm.com>
-Content-Language: en-US
-From: Douglas Freimuth <freimuth@linux.ibm.com>
-In-Reply-To: <20260506045734.11230A02-hca@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: foTD0CRPasax-PbCZ_SrJMF1kD0N3KDn
-X-Proofpoint-GUID: foTD0CRPasax-PbCZ_SrJMF1kD0N3KDn
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA2MDE0NCBTYWx0ZWRfX+3AohF6DDMaY
- FopO4Wg2NqL70tqiN6lnBFKyuBQtqzi2hdAOwC+/GuOejrTzhAebj8znhc5sDR9R+xkDUH35vHy
- TlTRLfmzjQAoStpXkvPjhwrMojjzBQXyVWnZ7jpmBX1Ew5xRvFcOf2CHsmbkRMMZXkeqccb3zqA
- 1BEfQOo+5l6o4eqWZd3WUeuKU9aRmSe8uXlOCPBYPcQ5Ng5qk8ATZFaozkisUCOY4OKHfe7YXij
- PV1ZjC1YVCN6Ts8gbRt7Om63V8SzGVzocboFDGdqp3gFcnAbbBq5sgwMB27bcAckOPkKiMst421
- yZNLXoO3L2y52J1U5Wxgkkwhh1goDCuawiF4f4KfOvxqFgUb2QTItktrrY77VlUwjmZX5bsO5wQ
- BYgyyCzoV0RPJ+wlsXZK4Gl4TGTUJ4Maumi3eQJZtPsG5nZUXP09oLf3RY/mpeQs4JpBS406zdh
- LXzyygpbehycnWC/4Bw==
-X-Authority-Analysis: v=2.4 cv=UbFhjqSN c=1 sm=1 tr=0 ts=69fb5550 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=ljoCnXVPeUkr4m1FovgA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-05_03,2026-05-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=0
- adultscore=0 priorityscore=1501 bulkscore=0 phishscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605060144
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, nd@arm.com, oliver.upton@linux.dev, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, lpieralisi@kernel.org, Timothy.Hayes@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-
-
-On 5/6/26 12:57 AM, Heiko Carstens wrote:
-> On Tue, May 05, 2026 at 07:37:27PM +0200, Douglas Freimuth wrote:
->> s390 needs to maintain support for an RT kernel. This requires the
->> floating interrupt lock, fi->lock to be changed to a raw spin lock
->> since the fi->lock maybe called with interrupts disabled in __inject_io.
->>
->> Signed-off-by: Douglas Freimuth <freimuth@linux.ibm.com>
->> ---
->>   arch/s390/include/asm/kvm_host.h |  2 +-
->>   arch/s390/kvm/intercept.c        |  4 +-
->>   arch/s390/kvm/interrupt.c        | 68 ++++++++++++++++----------------
->>   arch/s390/kvm/kvm-s390.c         |  2 +-
->>   4 files changed, 38 insertions(+), 38 deletions(-)
+On Mon, 27 Apr 2026 17:11:50 +0100,
+Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
 > 
-> s390 does not support RT, but I guess you are referring to a lockdep splat
-> which you would see without doing this change, similar like we have seen at
-> other places.
+> Ensure that each VPE doorbell is enabled on the host prior to running
+> the guest by enabling it as part of vgic_v5_reset(). Add a function to
+> disable it again as part of VM teardown, vgic_v5_disable_vcpu(), which
+> also frees the IRQ again.
 > 
-> Can you include the relevant parts of the splat for reference, please?
+> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+> ---
+>  arch/arm64/kvm/vgic/vgic-v5.c | 29 +++++++++++++++++++++++++++++
+>  1 file changed, 29 insertions(+)
+> 
+> diff --git a/arch/arm64/kvm/vgic/vgic-v5.c b/arch/arm64/kvm/vgic/vgic-v5.c
+> index 9347bc6895223..48ffcb2494db3 100644
+> --- a/arch/arm64/kvm/vgic/vgic-v5.c
+> +++ b/arch/arm64/kvm/vgic/vgic-v5.c
+> @@ -736,6 +736,31 @@ void vgic_v5_reset(struct kvm_vcpu *vcpu)
+>  		kvm_vm_dead(vcpu->kvm);
+>  		return;
+>  	}
+> +
+> +	enable_irq(vgic_v5_vpe_db(vcpu));
 
-Heiko, thank you for you response. I dont recall trapping it with 
-lockdep (while it was on) but discussion on the mailing list in an 
-earlier version made us look closer (and we saw it across the AI models 
-that reviewed the patch.) It appears that while RT isn't supported it 
-can still be compiled in to the kernel so we wanted to mitigate the 
-issues we would add to if someone does that while not impacting non-RT 
-environments, the main use case.
+Odd. Why do you need to manage the enabling of the doorbell? I see
+from the previous patch that you set it as IRQ_NOAUTOEN, but this
+seems to be cargo-culted from GICv4 (which really needs it).
 
+My expectations that since the doorbell is controlled from KVM and is
+only one-shot, we should be OK. This is the flow that v4.1 adopts,
+without a need to baby-sit the interrupt state.
+
+> +}
+> +
+> +static void vgic_v5_disable_vcpu(struct kvm_vcpu *vcpu)
+> +{
+> +	int virq = vgic_v5_vpe_db(vcpu);
+> +
+> +	if (!vcpu->kvm->arch.vgic.gicv5_vm.domain)
+> +		return;
+> +
+> +	if (!virq)
+> +		return;
+> +
+> +	/*
+> +	 * We are called in the vgic_v5_teardown path. We no longer need the
+> +	 * doorbell virqs.
+> +	 */
+> +	disable_irq(virq);
+
+And then this can go as well.
+
+> +
+> +	/* Free the doorbell irq (counter-part to request_irq)*/
+> +	free_irq(virq, vcpu);
+> +
+> +	/* Remove the irq from the domain too */
+> +	irq_domain_free_irqs(virq, 1);
+
+Surely you remove the domain at some point. That should cover the
+freeing of all the doorbells.
+
+>  }
+>  
+>  int vgic_v5_map_resources(struct kvm *kvm)
+> @@ -875,6 +900,10 @@ void vgic_v5_teardown(struct kvm *kvm)
+>  			kvm_err("Failed to release VM 0x%x\n", dist->gicv5_vm.vm_id);
+>  	}
+>  
+> +	/* Goodbye doorbells */
+> +	kvm_for_each_vcpu(i, vcpu, kvm)
+> +		vgic_v5_disable_vcpu(vcpu);
+> +
+>  	vgic_v5_teardown_per_vm_domain(&kvm->arch.vgic.gicv5_vm);
+>  
+>  	vgic_v5_release_vm_id(kvm);
+
+I reckon this patch would be better folded into the previous one, so
+that we can see both the requesting and freeing of the doorbell
+interrupt in the same patch.
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
