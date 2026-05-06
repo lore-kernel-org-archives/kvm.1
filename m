@@ -1,145 +1,254 @@
-Received: from pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com [44.246.1.125])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51F83E123A;
-	Wed,  6 May 2026 08:08:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=44.246.1.125
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BCC63D332B
+	for <kvm@vger.kernel.org>; Wed,  6 May 2026 09:00:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778054902; cv=none; b=HR3WOs7Ja2eh1TvGbXchV5JIFq0KEV/8X2D979+F034arWQ6wqgREKDP4KEXw4Mt5sCNJcE61akfIfh9YlJutbLO6kZOcjAooo3ZkXLQ9mtUIxjNVJeSp0bEJPHiZftJYmW0WZUdAwS2u2tp+2cMIhEoUFlHC0AEAZbvcDGLRSo=
+	t=1778058013; cv=none; b=mYB1Cu47gdJxHe2BMBxr5k3JtyYWIX5vC13g8NnmFFxuPr6Ad4sLgnoUVx6AYS0GHkQ4SO352CzwsDDTJpBhUE+2ad/jZSXN8RhKtyeW3AV55M+/wTimndxzkKDz35AffUbF6VBCALchIm3KgTk0AlrcWeM3jsOx9yS/xEZvntE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778054902; c=relaxed/simple;
-	bh=LakSgXK9xZWfp62uOJDjuByvdgT3HOkvb9TfiFQGvLA=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TVG39jySvJ/+3ee7DQECwTBZ09B3nHnwfKA1bs6/JCudtcE2X1XMsLcEeWjP9ohBlOFjIA+KoUEc8F62Jvg1Ai/80p1MHnuY0DBvvvsvz/z4kVCzTaRKFmLXL4g/iS7lSANmj4cxHMOL9vBqHOHjg66z2SzDNC66KUKP9jc6gsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=XmfCuIXA; arc=none smtp.client-ip=44.246.1.125
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
+	s=arc-20240116; t=1778058013; c=relaxed/simple;
+	bh=bLe/QX5/0o/d4nlfDaO/xQf9oT1VeInhFRblscbUl8Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RJvIT3j9mIDbOKfNh44LgSEIcJHwQAIaHrsD2LQA7DZGlCQsdLd1zpu6K5C8Mk18JrE0br0GNxChMWRlYS2NHnd++tT8yqvZ52BfF2aDTVh9JeeYY8P5F164LXrvBYqSue5sAZNPo3W6a6XXbuRkDEk3OQdtVaCqI5+3KsxHzUw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=FFLM80pf; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="XmfCuIXA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1778054900; x=1809590900;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=bfdMAsgvM6p8hWk2sdmIXhE1O1tOVF0HFNlReXBroqU=;
-  b=XmfCuIXAF6d7b2BBCfezzI6lhB2W3xRFdTJ58T7uFoDIjOQRXC/wdaZY
-   ThKAkg+TdefJtTnaGAg4Wu+hZk0qtvw3DpMIVGO7XTouuWs8WbfODJmtt
-   BxGb4uhnzZxBGiIPEPhiz6+LuQnrTTdtWBDPGCgje78IZBtJGAnXt30Nx
-   FBUmVOzjTRUr4uZDqVNBU7hqMbLE4D2TfkHcUDdaMGuHHfYBlvxnzrcL9
-   GY8aA5L3yMpDf0cqksUWxseGsaEG/g5O+G72uJLm6AP8BPfZd6sAhNLVK
-   UewJGEb4jl7vd3wAvmrnP5xMZ/hKYzU9VdAAleMG+HOszeHEouwQAyZ+H
-   g==;
-X-CSE-ConnectionGUID: MmMFvwZCQLewcyBwlWjNrw==
-X-CSE-MsgGUID: dKPa6oOPR+SZmZUz/KuDQg==
-X-IronPort-AV: E=Sophos;i="6.23,219,1770595200"; 
-   d="scan'208";a="18975878"
-Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
-  by internal-pdx-out-002.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 08:08:18 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.178:20934]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.20.153:2525] with esmtp (Farcaster)
- id 4c3798b6-d4c5-412e-bccc-51de55c2e359; Wed, 6 May 2026 08:08:17 +0000 (UTC)
-X-Farcaster-Flow-ID: 4c3798b6-d4c5-412e-bccc-51de55c2e359
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Wed, 6 May 2026 08:08:17 +0000
-Received: from dev-dsk-itazur-1b-11e7fc0f.eu-west-1.amazon.com (172.19.66.53)
- by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
- Wed, 6 May 2026 08:08:03 +0000
-From: Takahiro Itazuri <itazur@amazon.com>
-To: <seanjc@google.com>, <ljs@kernel.org>
-CC: <Liam.Howlett@oracle.com>, <ackerleytng@google.com>,
-	<agordeev@linux.ibm.com>, <ajones@ventanamicro.com>,
-	<akpm@linux-foundation.org>, <alex@ghiti.fr>, <andrii@kernel.org>,
-	<aou@eecs.berkeley.edu>, <ast@kernel.org>, <baolu.lu@linux.intel.com>,
-	<borntraeger@linux.ibm.com>, <bp@alien8.de>, <bpf@vger.kernel.org>,
-	<catalin.marinas@arm.com>, <chenhuacai@kernel.org>, <corbet@lwn.net>,
-	<coxu@redhat.com>, <daniel@iogearbox.net>, <dave.hansen@linux.intel.com>,
-	<david@kernel.org>, <derekmn@amazon.com>, <dev.jain@arm.com>,
-	<eddyz87@gmail.com>, <gerald.schaefer@linux.ibm.com>, <gor@linux.ibm.com>,
-	<haoluo@google.com>, <hca@linux.ibm.com>, <hpa@zytor.com>,
-	<itazur@amazon.co.uk>, <jackabt@amazon.co.uk>, <jackmanb@google.com>,
-	<jannh@google.com>, <jgg@ziepe.ca>, <jgross@suse.com>, <jhubbard@nvidia.com>,
-	<jiayuan.chen@shopee.com>, <jmattson@google.com>, <joey.gouly@arm.com>,
-	<john.fastabend@gmail.com>, <jolsa@kernel.org>, <jthoughton@google.com>,
-	<kalyazin@amazon.co.uk>, <kas@kernel.org>, <kernel@xen0n.name>,
-	<kpsingh@kernel.org>, <kvm@vger.kernel.org>, <kvmarm@lists.linux.dev>,
-	<lenb@kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<linux-doc@vger.kernel.org>, <linux-fsdevel@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <linux-kselftest@vger.kernel.org>,
-	<linux-mm@kvack.org>, <linux-pm@vger.kernel.org>,
-	<linux-riscv@lists.infradead.org>, <linux-s390@vger.kernel.org>,
-	<loongarch@lists.linux.dev>, <lorenzo.stoakes@oracle.com>, <luto@kernel.org>,
-	<maobibo@loongson.cn>, <martin.lau@linux.dev>, <maz@kernel.org>,
-	<mhocko@suse.com>, <mingo@redhat.com>, <mlevitsk@redhat.com>,
-	<nikita.kalyazin@linux.dev>, <oupton@kernel.org>, <palmer@dabbelt.com>,
-	<patrick.roy@linux.dev>, <pavel@kernel.org>, <pbonzini@redhat.com>,
-	<peterx@redhat.com>, <peterz@infradead.org>, <pfalcato@suse.de>,
-	<pjw@kernel.org>, <prsampat@amd.com>, <rafael@kernel.org>,
-	<riel@surriel.com>, <rppt@kernel.org>, <ryan.roberts@arm.com>,
-	<sdf@fomichev.me>, <shijie@os.amperecomputing.com>,
-	<skhan@linuxfoundation.org>, <song@kernel.org>, <surenb@google.com>,
-	<suzuki.poulose@arm.com>, <svens@linux.ibm.com>, <tabba@google.com>,
-	<tglx@kernel.org>, <thuth@redhat.com>, <urezki@gmail.com>,
-	<vannapurve@google.com>, <vbabka@kernel.org>, <will@kernel.org>,
-	<willy@infradead.org>, <wu.fei9@sanechips.com.cn>, <x86@kernel.org>,
-	<yang@os.amperecomputing.com>, <yangyicong@hisilicon.com>,
-	<yonghong.song@linux.dev>, <yosry@kernel.org>, <yu-cheng.yu@intel.com>,
-	<yuzenghui@huawei.com>, <zhengqi.arch@bytedance.com>
-Subject: Re: [PATCH v12 00/16] Direct Map Removal Support for guest_memfd
-Date: Wed, 6 May 2026 08:07:52 +0000
-Message-ID: <20260506080753.14517-1-itazur@amazon.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <aeennZlV60k81OBf@google.com>
-References: <aeennZlV60k81OBf@google.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="FFLM80pf"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5AEC61A25;
+	Wed,  6 May 2026 02:00:05 -0700 (PDT)
+Received: from raptor (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 43E523F836;
+	Wed,  6 May 2026 02:00:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1778058010; bh=bLe/QX5/0o/d4nlfDaO/xQf9oT1VeInhFRblscbUl8Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=FFLM80pfAJPlpvnWuIusIk6eU/BnLbm+MpfnEX2p3YteXEKJdHmIezKISdJ8ywsId
+	 KKy2jmtbaDjQVhrytJNskHFAmuHC1nyrI7M5PlsYMTufxgjfE4OAA0B1M/T+J5DUVv
+	 ZmUAbkNUSOqLPxHb4MeyAFCPBbzV44ESHJKtP/ZU=
+Date: Wed, 6 May 2026 10:00:05 +0100
+From: Alexandru Elisei <alexandru.elisei@arm.com>
+To: Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>
+Cc: qemu-devel@nongnu.org, Andrew Jones <andrew.jones@linux.dev>,
+	Eric Auger <eric.auger@redhat.com>,
+	"open list:ARM" <kvmarm@lists.linux.dev>,
+	"open list:Default mailing list" <kvm@vger.kernel.org>
+Subject: Re: [kvm-unit-tests PATCH] arm: add wfx test case
+Message-ID: <afsDFUaOUBknpo1Q@raptor>
+References: <20260427130045.3669851-1-alex.bennee@linaro.org>
+ <afSnVJLe7HrB6ISS@raptor>
+ <87zf2jcisg.fsf@draig.linaro.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: EX19D037UWB002.ant.amazon.com (10.13.138.121) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <87zf2jcisg.fsf@draig.linaro.org>
 
-Hi Lorenzo and Sean,
+Hi,
 
-Apologies for the delayed reply =E2=80=94 Nikita is leaving Amazon, and I'm
-taking over this series going forward. Thanks for your patience.
+On Fri, May 01, 2026 at 03:21:19PM +0100, Alex Bennée wrote:
+> Alexandru Elisei <alexandru.elisei@arm.com> writes:
+> 
+> > Hi Alex,
+> >
+> > On Mon, Apr 27, 2026 at 02:00:45PM +0100, Alex Bennée wrote:
+> >> This is based on a similar test case I wrote for QEMU's tcg tests although
+> >> obviously able to take advantage of kvm-unit-tests additional plumbing for
+> >> dealing with the GIC and IRQs.
+> >> 
+> >> Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+> >> ---
+> >>  arm/Makefile.arm64        |   1 +
+> >>  lib/arm64/asm/processor.h |   7 ++
+> >>  lib/arm64/asm/sysreg.h    |   3 +
+> >>  arm/wfx.c                 | 137 ++++++++++++++++++++++++++++++++++++++
+> >>  arm/unittests.cfg         |   5 ++
+> >>  5 files changed, 153 insertions(+)
+> >>  create mode 100644 arm/wfx.c
+> >> 
+> >> diff --git a/arm/Makefile.arm64 b/arm/Makefile.arm64
+> >> index a40c830d..52b3f35d 100644
+> >> --- a/arm/Makefile.arm64
+> >> +++ b/arm/Makefile.arm64
+> >> @@ -64,6 +64,7 @@ tests += $(TEST_DIR)/cache.$(exe)
+> >>  tests += $(TEST_DIR)/debug.$(exe)
+> >>  tests += $(TEST_DIR)/fpu.$(exe)
+> >>  tests += $(TEST_DIR)/mte.$(exe)
+> >> +tests += $(TEST_DIR)/wfx.$(exe)
+> >>  
+> >>  include $(SRCDIR)/$(TEST_DIR)/Makefile.common
+> >>  
+> >> diff --git a/lib/arm64/asm/processor.h b/lib/arm64/asm/processor.h
+> >> index 32ddc1b3..2104036d 100644
+> >> --- a/lib/arm64/asm/processor.h
+> >> +++ b/lib/arm64/asm/processor.h
+> >> @@ -173,5 +173,12 @@ static inline bool system_supports_rndr(void)
+> >>  	return ((id_aa64isar0_el1 >> ID_AA64ISAR0_EL1_RNDR_SHIFT) & 0xf) != 0;
+> >>  }
+> >>  
+> >> +static inline bool system_supports_wfxt(void)
+> >> +{
+> >> +	u64 id_aa64isar2_el1 = read_sysreg_s(ID_AA64ISAR2_EL1);
+> >> +
+> >> +	return ((id_aa64isar2_el1 >> ID_AA64ISAR2_EL1_WFxT_SHIFT) & 0xf) != 0;
+> >> +}
+> >> +
+> >>  #endif /* !__ASSEMBLER__ */
+> >>  #endif /* _ASMARM64_PROCESSOR_H_ */
+> >> diff --git a/lib/arm64/asm/sysreg.h b/lib/arm64/asm/sysreg.h
+> >> index f2d05018..cb96a649 100644
+> >> --- a/lib/arm64/asm/sysreg.h
+> >> +++ b/lib/arm64/asm/sysreg.h
+> >> @@ -77,6 +77,9 @@ asm(
+> >>  #define ID_AA64ISAR0_EL1_RNDR_SHIFT	60
+> >>  #define ID_AA64PFR1_EL1_MTE_SHIFT	8
+> >>  
+> >> +#define ID_AA64ISAR2_EL1		sys_reg(3, 0, 0, 6, 2)
+> >> +#define ID_AA64ISAR2_EL1_WFxT_SHIFT	0
+> >> +
+> >>  #define ID_AA64MMFR0_EL1_FGT_SHIFT	56
+> >>  #define ID_AA64MMFR0_EL1_FGT_FGT2	0x2
+> >>  
+> >> diff --git a/arm/wfx.c b/arm/wfx.c
+> >> new file mode 100644
+> >> index 00000000..912e50e6
+> >> --- /dev/null
+> >> +++ b/arm/wfx.c
+> >> @@ -0,0 +1,137 @@
+> >> +/*
+> >> + * WFX Instructions Test (WFI, WFE, WFIT, WFET)
+> >> + *
+> >> + * Copyright (c) 2026 Linaro Ltd
+> >> + *
+> >> + * SPDX-License-Identifier: GPL-2.0-or-later
+> >> + */
+> >> +
+> >> +#include <libcflat.h>
+> >> +#include <asm/processor.h>
+> >> +#include <asm/gic.h>
+> >> +#include <asm/timer.h>
+> >> +#include <asm/io.h>
+> >> +
+> >> +#define TIMEOUT 200000
+> >> +
+> >> +#define sev() asm volatile("sev" : : : "memory")
+> >> +#define sevl() asm volatile("sevl" : : : "memory")
+> >> +#define wfi() asm volatile("wfi" : : : "memory")
+> >> +#define wfe() asm volatile("wfe" : : : "memory")
+> >> +
+> >> +#define wfit(reg) \
+> >> +	asm volatile(".arch armv8.7-a\n\twfit %0" : : "r" (reg) : "memory")
+> >> +#define wfet(reg) \
+> >> +	asm volatile(".arch armv8.7-a\n\twfet %0" : : "r" (reg) : "memory")
+> >> +
+> >> +static void timer_handler(struct pt_regs *regs)
+> >> +{
+> >> +	/* Disable timer to stop IRQ from re-firing */
+> >> +	write_sysreg(0, cntv_ctl_el0);
+> >> +}
+> >
+> > It is customary for the interrupt handler to ack the interrupt at the GIC level.
+> >
+> >> +
+> >> +static bool check_elapsed(uint64_t start, uint64_t threshold, const char *test, bool more)
+> >> +{
+> >> +	uint64_t end = read_sysreg(cntvct_el0);
+> >> +	uint64_t elapsed = end - start;
+> >> +	bool pass = more ? elapsed >= threshold : elapsed <= threshold;
+> >> +
+> >> +	report(pass, "%s (%ld ticks)", test, elapsed);
+> >> +
+> >> +	if (!pass) {
+> >> +		report_info("%s %s", test, more ? "woke too early" : "slept despite SEV");
+> >> +	}
+> >> +	return pass;
+> >> +}
+> >> +
+> >> +static void test_wfi(void)
+> >> +{
+> >> +	uint64_t start;
+> >> +
+> >> +	report_info("Testing WFI...");
+> >> +
+> >> +	start = read_sysreg(cntvct_el0);
+> >> +	write_sysreg(TIMEOUT, cntv_tval_el0);
+> >> +	write_sysreg(1, cntv_ctl_el0); /* Enable timer, no mask */
+> >> +	isb();
+> >> +
+> >> +	local_irq_enable();
+> >> +	wfi();
+> >
+> > Consider this scenario:
+> >
+> > 	local_irq_enable();
+> > 	// CPU takes the interrupt, handles it and returns.
+> > 	wfi(); <- CPU now waits forever for an interrupt that will never come
+> >
+> > The proper way to do it on baremetal would be:
+> >
+> > 	local_irq_disable();
+> > 	// Program timer to fire
+> > 	wfi();
+> > 	// Timer fires, GIC asserts the interrupt, WFI completes
+> > 	local_irq_enable();
+> > 	// CPU handles the interrupt
+> > 	check_elapsed(..)
+> >
+> > But this is not baremetal. KVM can decide not to trap WFI (look at
+> > arch/arm64/kvm/arm.c::kvm_arch_vcpu_load() -> kvm_vpcu_should_clear_twi()). In
+> > that case, the WFI might complete due a host interrupt, and check_elapsed() will
+> > fail because the timer hasn't yet fired.
+> >
+> >> +	local_irq_disable();
+> >> +
+> >> +	check_elapsed(start, TIMEOUT, "WFI", true);
+> >> +}
+> >> +
+> >> +static void test_wfe(void)
+> >> +{
+> >> +	uint64_t start;
+> >> +
+> >> +	report_info("Testing WFE/SEV...");
+> >> +	sev();
+> >> +	start = read_sysreg(cntvct_el0);
+> >> +	wfe();
+> >> +	check_elapsed(start, TIMEOUT, "WFE/SEV", false);
+> >> +
+> >> +	report_info("Testing WFE/SEVL...");
+> >> +	sevl();
+> >> +	start = read_sysreg(cntvct_el0);
+> >> +	wfe();
+> >> +	check_elapsed(start, TIMEOUT, "WFE/SEVL", false);
+> >> +}
+> >
+> > I haven't thought about this too much, but it looks to me like the same
+> > situation with WFI can happen with WFE
+> >
+> > Also, kvm-unit-tests() makes use of WFE and SEV for multithreading, and the fact
+> > that multithreaded tests work at all might be taken as proof enough that the two
+> > instructions are correctly implemented.
+> 
+> So I'm using kvm-unit-test to exercise QEMU's TCG modelling of the
+> instructions, see:
+> 
+>   Message-ID: <20260430104434.1482407-1-alex.bennee@linaro.org>
+>   Date: Thu, 30 Apr 2026 11:44:27 +0100
+>   Subject: [PATCH v4 0/7] target/arm: fully model WFxT instructions for A-profile
+> 
+> So while I'm confident the current modelling doesn't cause issues
+> (because we basically treat it as a NOP) I wanted to check the various
+> modes behave as they should with the above patches.
+> 
+> I can limit the test to TCG only if it is likely to fail under KVM.
 
-On Tue, Apr 21, 2026 at 01:40:00PM +0000, Lorenzo Stoakes wrote:
-> Hm, given this touches a fair bit of mm, I wonder if we shouldn't try to =
-do this
-> through the mm tree?
+I think that would be best. But please also ack the interrupt in the timer
+IRQ handler, as that is what software would do (you can have a look at
+arm/timer.c::irq_handler() for an example).
 
-On Tue, Apr 21, 2026 at 04:36:00PM +0000, Sean Christopherson wrote:
-> Yeah, when the time comes, the mm pieces definitely need to go through th=
-e mm
-> tree.  Ideally, I think this would be merged in two separate parts, with =
-all mm
-> changes going through the mm tree, and then the KVM changes through the K=
-VM tree
-> using a stable topic branch/tag from Andrew.
-
-Thanks for the guidance. The split makes sense to me; I'm planning to
-follow this approach with patches 1-6 (mm) going through the mm tree
-and patches 7-16 (KVM) through the KVM tree on top of a stable
-branch/tag from mm. I'll confirm the exact boundary and coordination
-details as I prepare the repost.
-
-On Tue, Apr 21, 2026 at 01:40:00PM +0000, Lorenzo Stoakes wrote:
-> In any case, we definitely need a rebase on something not-next :) if not =
-mm then
-> Linus's tree at least maybe?
->
-> I'm seeing a lot of conflicts against mm-unstable, it can't b4 shazam eve=
-n patch
-> 1 and in Linus's tree it's failing at an mm patch (mm: introduce
-> AS_NO_DIRECT_MAP).
-
-I'll rebase onto v7.1-rc1 and resolve the conflicts as part of the split.
-
-Takahiro
-
+Thanks,
+Alex
