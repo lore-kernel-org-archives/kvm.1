@@ -1,151 +1,141 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F622D77E6
-	for <kvm@vger.kernel.org>; Thu,  7 May 2026 15:58:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A6C6359703;
+	Thu,  7 May 2026 16:02:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778169482; cv=none; b=gOt3HZCDADHKB5nQN923fmk1hSuM8G6XImb7rE6obay1K8reZ3hWtolyFIleI2YWnMXjGOxM12YfReHJRZQHk4iCYhIKJrfJNAW/J4RpRspak5N1s3/0aHYU0jtXaAuZjnHKbe9NgzPX2fVxkuEiGXlRtgt63j6lhEWgbwF1qZQ=
+	t=1778169782; cv=none; b=RtKjgQo3E6Vv6YtelX/ubQpUSg7++cOw06gqsxTo6BhxER1es1Jm1kYEfT+wWDnWZkE3lT+Hn0l96cUYiUzGr64t/G02iodYeoDFVEM2qnWc5d+PqyrK/WUttBQyl9Y48wE+sYLvXOQOmJx0EyUtHNy+tsY0am4MJFu7X2pjJ9Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778169482; c=relaxed/simple;
-	bh=5Wivp9U2yCtQO4QW67/cjygZbRLiFs7wxrSWZOOZJ2I=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=h+Sei0aJfoO67M/oF2h1nfoP3ZkPGNa9qPvww2w0gfRUFFzq2BMT2sGM0OyQ2T/MZUXITqmLT2rh9BBr8eW1axkwp0P9R0scYsXZjLNu/T1vUcDImLeI3SipFPqDly5S+NtKTj/Ko2Z7GT7ZVo7eBitYHGRacKIZpg5j5TxfziM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CzDHKBB9; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1778169782; c=relaxed/simple;
+	bh=Th1hjQuufLS9REOhWsexKk/7cmOrb46IkaHoblflYaY=;
+	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
+	 Message-ID:Content-Type; b=E3Cg4UId4DM9PNIBBNdne5NgXF6kP4xmUvPjEWmvv6wrx1YhMkaE3+ioIv/I398pzLeqvvqjJGKD4UtglLv7q4GfXpFQ9iL0NjBiO9tQJGFi3rZWAomiwtDWBJaEYW+Arm9Y/0DFkLWsuCKWHVRCLrCMm5rl7X93WOuIhJMnlWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=SpK/ExbU; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CzDHKBB9"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c70f19f0f37so625030a12.0
-        for <kvm@vger.kernel.org>; Thu, 07 May 2026 08:58:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778169480; x=1778774280; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6mSziYlZgd3GXeUVegM0+SSnBqSyCsBX7MEl0zdBtNo=;
-        b=CzDHKBB9fQpGwcHCzqxfLs3Py1k3La2LiiTg/t3wIrF/1ZuMDwwzsJxIAjPxUtiScb
-         pvBQjVRVvgAa9C2ZyZYM40pl2Mh4UZ9SGCHolX5BZiXToTJfwmHPNKVhZOzx59Nbhs82
-         Fyd79VXJufFKTgMcTfPWN36UnOtl60Eoeyg0IJHU1LW+SLrez6lQjQt+wHyDFfyuhHcZ
-         hG5Iy0tz3+XtTaGcn6XYysIsGKhXBcF4h2MqJn2pHFh8zYkSpixSSZ+xSjxhlNK5JjXa
-         Sn8xHY4Crqh8JkwL9PyKLNo+iaCEDg2XbT00gikAhSnaM7MAZ+/LdeZtpAdkq63BUjh7
-         o/Ew==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778169480; x=1778774280;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=6mSziYlZgd3GXeUVegM0+SSnBqSyCsBX7MEl0zdBtNo=;
-        b=MAKfx87QA0+HzbZggiI8+31IyH7gAKUnPgojw4P6SBqVxgGf63BpOMWrGpCgDSZlRO
-         cjSY0UoFIRdFlE/gSUQ9fqnnIHCqRBq9sxVcz40e+i4lvN+WwHsXUguOU66PPmn+H9A2
-         eWnyuunjBg6mj+MzPUpSpLN4Uh4QSQi/XvJx2NEhvqBrdBQQbyxpUGYzXPH3dMxQa9Sp
-         CIReGELFUH0I0rmZ8pwpbfwObcdYhl2QtwPLQ9QcwWpa9okD9yxrG483ND+pAy43fmwo
-         ltU/HTmKXulHnCxVgCe+56hO4Kr5MuuGJyns082ykfLoTnMX9qXFfvBQNiBvvypP4AAy
-         cFjw==
-X-Forwarded-Encrypted: i=1; AFNElJ8HJpJK2jIFPPt4hctiNY5JWnrXTcGYa1XGxARB9h8znkbQJBAOXh6ZRB5sCn8R0t5N0ao=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIyo+Z2LeOPpkyVa59I9hWY1YXYoT1juG7WDYqGqprfUFewRHo
-	anwwfLlLl9DY8XtiJfGrSp32bwbGVs3qc4OV2mxmVXL39gnfXdxFcxnMkGh+qMnPB9X/f9rRh8c
-	QSn04wg==
-X-Received: from pfmm17.prod.google.com ([2002:a05:6a00:2491:b0:835:38b2:68c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a90e:b0:82f:51e8:b38e
- with SMTP id d2e1a72fcca58-83bb8499969mr2962562b3a.24.1778169480294; Thu, 07
- May 2026 08:58:00 -0700 (PDT)
-Date: Thu, 7 May 2026 08:57:59 -0700
-In-Reply-To: <afysu56g2dTFla6-@google.com>
+	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="SpK/ExbU"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Content-Transfer-Encoding:Content-Type:Message-ID:References:
+	In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:Sender:Reply-To:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=e+2rMOcxQiS7pmWEbLk0qHzSpsi+HafNxyucucuvAOU=; b=SpK/ExbUBb0rHe93ZvL4ZniPPO
+	YfvvQXnE9pASIF5Cji+pILzYGQfQjlz4aPx0WvpZANcpqFxzwcFSxjL5UjXOo+QjROswINdJW4DcJ
+	ZljJGq0X57/oQom+UtIOV6qgOssGjlyok6i/vbOL5OHdsZcAxZu56xg28gE4NyujtVZONNR2JmERU
+	HAKkmwv4pz5kod/ZqRLtffaIJ4QE3FsHGkvZcZD3qx0TRT+VXFCKN4NLRsiX5ZlnosIyi1tlrTJoZ
+	x8MTdcS4fHH6UfYIqiTRYQeAGqWu6b8X8pn99nl2AH+c9y5yxVPYtfQmpvtrldo7huuzzJrTHCtk2
+	QJP5+hDg==;
+Received: from maestria.local.igalia.com ([192.168.10.14] helo=mail.igalia.com)
+	by fanzine2.igalia.com with esmtps 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1wL1B8-007TXP-Ab; Thu, 07 May 2026 18:02:21 +0200
+Received: from webmail.service.igalia.com ([192.168.21.45])
+	by mail.igalia.com with esmtp (Exim)
+	id 1wL1B5-000NUo-5I; Thu, 07 May 2026 18:02:21 +0200
+Received: from localhost ([127.0.0.1] helo=webmail.igalia.com)
+	by webmail.service.igalia.com with esmtp (Exim 4.98.2)
+	(envelope-from <mfo@igalia.com>)
+	id 1wL1B4-00000004NMS-28cN;
+	Thu, 07 May 2026 18:02:18 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <e03f092dfbb7d391a6bf2797ba01e122ba080bcd.camel@infradead.org>
- <afycwi4KT6xrQhMX@google.com> <beff5bd9-ae7c-4f2e-a718-7c8e92e78e4e@citrix.com>
- <afysu56g2dTFla6-@google.com>
-Message-ID: <afy2h3RxiKSBh_Ym@google.com>
-Subject: Re: [PATCH] KVM: SVM: Always intercept ICEBP, add INT1 selftests
-From: Sean Christopherson <seanjc@google.com>
-To: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	"Saenz Julienne, Nicolas" <nsaenz@amazon.es>, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Shivansh Dhiman <shivansh.dhiman@amd.com>, 
-	Neeraj Upadhyay <Neeraj.Upadhyay@amd.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Date: Thu, 07 May 2026 13:02:18 -0300
+From: Mauricio Faria de Oliveira <mfo@igalia.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Paul Durrant <paul@xen.org>, Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo
+ Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark
+ Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ kernel-dev@igalia.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev,
+ syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com
+Subject: Re: [PATCH] KVM: x86/xen: bail in IRQ context on PREEMPT_RT in
+ kvm_xen_set_evtchn_fast()
+In-Reply-To: <876c720ab963f550d3166b067f6457fcd78ec415.camel@infradead.org>
+References: <20260506-xen-rt-sleep-v1-1-53b6b60a671d@igalia.com>
+ <8e7bc66a7994ca06f164a5d5f7ceb3f07d3a1357.camel@infradead.org>
+ <e23df9d183c2c421946ea73b8053e4c4@igalia.com>
+ <876c720ab963f550d3166b067f6457fcd78ec415.camel@infradead.org>
+Message-ID: <122adcacb2a6ccc3a5b78c750fe85e0b@igalia.com>
+X-Sender: mfo@igalia.com
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Report: NO, Score=-3.9, Tests=ALL_TRUSTED=-3,AWL=-1.700,BAYES_50=0.8
+X-Spam-Score: -38
+X-Spam-Bar: ---
 
-+AMD folks
+On 2026-05-07 12:22, David Woodhouse wrote:
+> On Thu, 2026-05-07 at 11:56 -0300, Mauricio Faria de Oliveira wrote:
+>> On 2026-05-07 03:58, David Woodhouse wrote:
+>> > On Wed, 2026-05-06 at 23:36 -0300, Mauricio Faria de Oliveira wrote:
+>> > > kvm_xen_set_evtchn_fast() calls read_lock_irqsave(), which might block
+>> > > on PREEMPT_RT, but that is invalid in IRQ context, as when it's called
+>> > > by xen_timer_callback() (even on PREEMPT_RT per HRTIMER_MODE_ABS_HARD).
+>> > > 
+>> > > Check for that case, and bail out early.
+>> > > 
+>> > > Note: there is previous work and discussion on this [1] (~2 years ago),
+>> > > which involved continuing to execute the function with changes, but it
+>> > > was not merged. That was a different, more complex approach.
+>> > > 
+>> > > [1] https://lore.kernel.org/lkml/ZdPQVP7eejq3eFjc@google.com/
+>> > 
+>> > ...
+>> > 
+>> > > +	/* Bail in IRQ context on PREEMPT_RT; read_lock_irqsave() might block */
+>> > > +	if (IS_ENABLED(CONFIG_PREEMPT_RT) && in_hardirq())
+>> > > +		goto out;
+>> > 
+>> > 
+>> > The approach in Paul's earlier patch was better; we absolutely *want*
+>> > to deliver the interrupt to the guest immediately whenever we can, and
+>> > only fall back to the workqueue in the rare case that the shared info
+>> > page has been invalidated.
+>> 
+>> Certainly, that was better. This was a simple workaround, but with this
+>> clarification, it indeed doesn't fit.
+>> 
+>> > We should switch to plain read_trylock(), *without* the
+>> > local_irq_save(). And since this was the *only* case where the GPC lock
+>> > was ever taken under IRQ¹, all the GPC locking can drop the _irq part.
+>> 
+>> Ok, I can take a look. Or do you plan to work on it yourself (as you
+>> hit the issue with read_unlock later in this thread)?
+> 
+> I'm working on it now; thanks.
 
-On Thu, May 07, 2026, Sean Christopherson wrote:
-> On Thu, May 07, 2026, Andrew Cooper wrote:
-> > On 07/05/2026 3:08 pm, Sean Christopherson wrote:
-> > > On Thu, May 07, 2026, David Woodhouse wrote:
-> > >> From: David Woodhouse <dwmw@amazon.co.uk>
-> > >>
-> > >> ICEBP (INT1, opcode 0xF1) generates a #DB that is architecturally a
-> > >> trap, but on SVM it was not always intercepted. Unconditionally
-> > >> intercept ICEBP on SVM to match VMX behaviour and ensure correct
-> > >> event delivery semantics.
-> > >>
-> > >> Add two selftests exercising ICEBP:
-> > >>
-> > >>  - int1_ept_test: verifies that ICEBP works correctly when the
-> > >>    exception stack page is not present (EPT/NPT fault during #DB
-> > >>    delivery). The IST stack is evicted via MADV_DONTNEED before
-> > >>    executing INT1.
-> > >>
-> > >>  - int1_task_gate_test: verifies ICEBP delivery through a 32-bit
-> > >>    task gate, exercising the legacy task-switch path for #DB.
-> > >>
-> > >> Tested on Intel Sapphire Rapids and AMD Genoa. Without the SVM fix,
-> > >> int1_task_gate_test fails on AMD with EIP pointing at ICEBP instead
-> > >> of after it. With the fix, both tests pass on both platforms.
-> > > Hmm, but KVM unconditionally intercepts task switches.  Is this effec=
-tively working
-> > > around a bug in task_switch_interception()?
-> >=20
-> > Not really.=C2=A0 It's a bug/misfeature in AMD CPUs.
-> >=20
-> > When you get TASK_SWITCH (which always has fault semantics), you look a=
-t
-> > the vectoring event type to decide whether it was logically caused by a
-> > trap, and therefore whether to move %rip forwards before entering the
-> > new task.
-> >=20
-> > AMD CPUs don't distinguish instruction-induced #DBs (i.e. ICEBP) from
-> > exception-induced #DBs (all others), and also don't report an
-> > instruction length for an ICEBP-induced TASK_SWITCH.
->=20
-> Heh, that explains why I couldn't find an equivalent of INTR_TYPE_PRIV_SW=
-_EXCEPTION
-> in the SVM code.
+Ok, thanks; I'll drop this. Could you please Cc me when you send it out?
 
-Dragging in a comment/concern Andrew raised offlist.  If AMD doesn't provid=
-e or
-*allow* the equivalent of INTR_TYPE_PRIV_SW_EXCEPTION, i.e. type 5, then wh=
-at
-happens when KVM needs to inject an INT1 #DB with FRED enabled?  Per Intel'=
-s FRED
-spec, which presumably AMD is following, the event type is shoved onto the =
-stack:
+> Currently confused by the fact that the read_trylock() seems to fail
+> more often than it should under RT, causing the fallback path to be
+> taken... and the fallback path doesn't seem to work properly...
+> 
+> Your version should have seen this too, surely? Did the selftest in
+> linux/tools/testing/selftests/kvm/x86/xen_shinfo_test work with your
+> patch?
 
-    =E2=80=94 For INT1, the event stack level is IA32_FRED_STKLVLS[3:2]. Th=
-e event type is
-      5 (privileged software exception) and the vector is 1.
+Yes, it works, apparently. Timing is similar with/without PREEMPT_RT.
 
-But if SVM doesn't support SVM_EVTINJ_TYPE_INT1, then realistically this ca=
-n't
-work (no way in hell is KVM going to emulate FRED event delivery).  Does FR=
-ED on
-AMD even do the right thing for INT1 without SVM?
+# dmesg -C
+# time ./xen_shinfo_test
+Random seed: 0x6b8b4567
 
-> > The workaround is to intercept ICEBP unconditionally, handle the
-> > FAULT->TRAP conversion in the hypervisor, at which point the #DB-induce=
-d
-> > TASK_SWITCH occurs with %rip on the correct instruction boundary whethe=
-r
-> > it was instruction-induced or exception-induced.
-> >=20
-> > ~Andrew
+real    0m4.064s
+user    0m1.654s
+sys     0m4.915s
+# echo $?
+0
+# dmesg
+#
+
+-- 
+Mauricio
