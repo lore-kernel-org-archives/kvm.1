@@ -1,150 +1,177 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7DB73B9DB6
-	for <kvm@vger.kernel.org>; Thu,  7 May 2026 16:05:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C7E3FAE18
+	for <kvm@vger.kernel.org>; Thu,  7 May 2026 16:10:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778169918; cv=none; b=itwfz6AEWPDbwXW9mxZHwtJyShpURMwjGjT1dlTcdMdB5nQYA4cVYMKelRAWwcvVHtXovAjfezJrLp7GmHnKc24pNRu1j8lN7rtctVlJN+MVNrkNsbIDi6AkQ8qDeo2ixPWlOIp7fkdCO5eeKVSihkZQ7p15wcuJpkM9y6tTumw=
+	t=1778170205; cv=none; b=Bah2fxfMaWfqnzuxdWrO2NbOLjFEX5m9/bTQndh9awlStb6/zvbIvKxIw0vRPa34fIrXg2CJIntXW2dFAEVjXcbFhFQArlrEqhIAh6QnlSwP2dUX6e8XAcIzWbYRwCaFiMDjb8U/zpC4IOgVPJBoPR9mU7o5ye6xpWjpxKAk4TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778169918; c=relaxed/simple;
-	bh=sZ79yV65rGcfZNXlNxRvakvY2Z8WmdeNfaJ+WX7yPAg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gbIYiNlTGpL42LEJVYsCLe3yO9b9nX4WHwkgX3YHCoe7Hp9oh5i5EtL9QnVkhzaVb1bWDfoIPES0LtmYjLN4VRJydPgYZ/VmouwpCZPL8fRzQqv4M9v62PxDFHUDVd0ytis5wgtWxyJilypxT1/8MJ8wNtDD3BhaDQJ94ejnCNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XGaxOrcd; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=GK1QSXhd; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1778170205; c=relaxed/simple;
+	bh=xhlnadrHwiFfIWY2g2xSfdQ0B9ev2VRblVYd07DI1c8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Emd4gsB8vbTe9g7Rq+lGKWli3BGrEILWD0vHc0eF0BILt+3qE3EbImbTtY1NFfKn5p8he7WQM4atq9ulyuN+tjuOYeeyyUQ5hOmpcTuw+GHpA8i5xnR0MZ+y9aFVanPehB4bwKcDDp5VlSlLVmvvqqS8ExiOXmlxWOzIo+SNZxY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=sC/HxRbj; arc=none smtp.client-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XGaxOrcd";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="GK1QSXhd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778169915;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=SMkAzYz7L2YKNDrmJwl9k395tnV77yLFqHt9dixreVQ=;
-	b=XGaxOrcdhj9tv/oASFZ4TED5Gm4l3yA1FbP9y2L0DmpH8Rhfm+DT78M536oWQobq9ORQmS
-	Iy/HdFrURi/cJv/HEiyWAyZcisKI8uHI9snzBHEBnfl9etRhqFyW2Jvzaz7F816c8y6a4s
-	6p/WjcEdz8yeZTR5GypMt84yEsVDKR8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-561-w3DCxKslPJWcPjRmBizjLg-1; Thu, 07 May 2026 12:05:14 -0400
-X-MC-Unique: w3DCxKslPJWcPjRmBizjLg-1
-X-Mimecast-MFC-AGG-ID: w3DCxKslPJWcPjRmBizjLg_1778169913
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-48d05e7b117so9177905e9.0
-        for <kvm@vger.kernel.org>; Thu, 07 May 2026 09:05:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778169913; x=1778774713; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=SMkAzYz7L2YKNDrmJwl9k395tnV77yLFqHt9dixreVQ=;
-        b=GK1QSXhdBe/uV0+4/ebp6JyNLvVoHeU5ZH7PrbVjG++te+52J5Socma5315sxdfYNs
-         C4NhVpGJgxrZUfJqstfUJIcxfEGecCbrfCb3KizaW3LARuDGHdo19ZLpaRd6J1BtoWHx
-         EAKVetMaudpRmx2Ot8ORJPle8dw6fpyYz/JHC5ED2M6TN8YKVYBK21TabFvCuzMMnDnE
-         /pV8H8b2xEu850DZMJZNRi+hBX7j/EX4HwCRvtYVCrpTmli+K/mbH1UkI+QyFf/QS/rI
-         Ivvv1JodWRviiVRcthxX/dvugJl3D1m277t9lMMC4fgqhDQEYQj7xrz+5M1ILMdRxBgE
-         ua3A==
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="sC/HxRbj"
+Received: from pps.filterd (m0109333.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 647Bmi6b1163058
+	for <kvm@vger.kernel.org>; Thu, 7 May 2026 09:10:03 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=eFG1vBkuGjV5WqwCWdKJSFjXXoeKLNuaVc0SsnohSl0=; b=sC/HxRbj/khP
+	lauwqZ9En1m3PiufFWhk2MVi8NnVzUAemf9bI6F5CBdj1cHPIggkaXe2/+EQOCEU
+	Qfst0vpp73IxZdukxzFpSLZ/U+7vQBDU5pepEIqV/Iud44cWwJgw12gI1g58sTtM
+	KksXYFPHQ8h6CUL6YKHLFFteuLAoXy3X/XAZiCtRuXtKlenAOWQS4xrDbUZ67XKR
+	BAi7ALQLC2NtDOk9eMoLHqLiIEvmiSJgtKCAHe7XRwq5NbKpCcUkRb+O1q4FcLKp
+	jMlfnYMVmysh10DkwwgF9TodXhraCJ5gFNKqgDPilbYYJj3L3jdHUXWSyilWfZwb
+	YMz6VepcRw==
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4e0t6dsqr6-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Thu, 07 May 2026 09:10:03 -0700 (PDT)
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-44f65835b77so607605f8f.2
+        for <kvm@vger.kernel.org>; Thu, 07 May 2026 09:10:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778169913; x=1778774713;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SMkAzYz7L2YKNDrmJwl9k395tnV77yLFqHt9dixreVQ=;
-        b=EYPKA8BlLRrIA0yXWZiul8E7ZVkb5PoFdbdAXCMxFxOWb2sWJzjnFE1chRDEHULXic
-         /czS75vKg6IMHVD+VlUDN/eRW7GN9RmJ5TLJ5IiH69aHshaZVcn9Chx5B/knYahcYrHt
-         LU/c5BWdmTXY3KGiKK4aqOLnjnCRecYJy3FpbYOk0KFnyuX3TkLy/z8iaUhf9GzvB21D
-         dLpWKTCRkRVCc/+wzIqEumCKdq6h2Ol6B3vGMtPn2Zt1RRyYiAHOoJRRhBJAXcoxZOpo
-         3HZ3twsigRCfF9JcsMx88uVthYMCqBOE5sSqykUuFQYYq7uxxQLdSrk0GJHmGcE0Iv6q
-         YReQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9SkShAeGoEat3aFkcSTyu+Ku75SZZHPHmC7D/18vJ/wBew3hlAVhdit3T04zXR11bxTQU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywvlttqb86xkUFU/D3TwokAPEhxh+RXtxkFHrgsKQenbucZa0FE
-	KyC/T0nPzK1/aDTfLK58RiRtVEFmwmixHrIYx0Eui900Bjf6b/VsYyi7K7cAc8XqlaWV5R7vDmq
-	7a/M8+r8sJVQMW42wz8n7Ba7Ekw1osQkD1nhxYNjjrrRuwH54h3hKlA==
-X-Gm-Gg: AeBDieuGXKo7T85fX6pXN5ru+gGG1JNNkLKN16yOqyXTDRdwN8IW8Eu3H/+E9IQOOa5
-	7M/7zU3VqX9wMdpIOxTgGX0moyK88ll/ehGmM7F9xSUz3/zOKjK7WvE9l7jSJhe5bx65Ak2IbTC
-	Wy704LuF2jF3or8svsuvPFWZooOFnwaFQQTV2NnV53m/MYucAGGAZHIOgH/b8hLmPRHWaNJpcIJ
-	3qXoFP1eFrGohbPZh/r0P6+r8O2IugkEvwt01KPFX1c1zFKp5NJxFBiVHmlLZvKaRSzKl/jVSC0
-	5PpKeEYf8Ecj/+IxycVl0VEZi0oXGtDAciFl6DdYDWyKLe0FiYwtq/02ZcfuSyuqRyrPnsveux1
-	oI+X5Pix60644Zx35xNAMPMwlgfQkrCkUs9xjLlCdcgKrUl6CEBbQ8yH1cGrbvNM=
-X-Received: by 2002:a05:600c:4888:b0:48e:526e:1012 with SMTP id 5b1f17b1804b1-48e526e10a2mr74268865e9.5.1778169913218;
-        Thu, 07 May 2026 09:05:13 -0700 (PDT)
-X-Received: by 2002:a05:600c:4888:b0:48e:526e:1012 with SMTP id 5b1f17b1804b1-48e526e10a2mr74268215e9.5.1778169912467;
-        Thu, 07 May 2026 09:05:12 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-11-6-2.retail.telecomitalia.it. [87.11.6.2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e538a547bsm145700815e9.5.2026.05.07.09.05.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 09:05:11 -0700 (PDT)
-Date: Thu, 7 May 2026 18:05:06 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
-	Eric Dumazet <edumazet@google.com>, Arseniy Krasnov <avkrasnov@salutedevices.com>, 
-	Bobby Eshleman <bobbyeshleman@meta.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
-	"David S . Miller" <davem@davemloft.net>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Arseniy Krasnov <AVKrasnov@sberdevices.ru>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	kvm@vger.kernel.org, virtualization@lists.linux.dev
-Subject: Re: [PATCH net] vsock/virtio: fix potential unbounded skb queue
-Message-ID: <afyy9CeniTBF3o2I@sgarzare-redhat>
-References: <20260430122653.554058-1-edumazet@google.com>
- <afn0ZdvZWswBuDMm@sgarzare-redhat>
- <CANn89iLs8DOWJwDpf_ARoMrV+6b2tbhEJ=VVzeC8gCm5dRGaig@mail.gmail.com>
- <afoF_cHfl6ygcupM@sgarzare-redhat>
- <20260506113554-mutt-send-email-mst@kernel.org>
- <afxVH2So9BbZ3Gta@sgarzare-redhat>
- <20260507074113-mutt-send-email-mst@kernel.org>
- <afyMCyBvZpzWrLtO@sgarzare-redhat>
- <20260507073340.0604667d@kernel.org>
+        d=1e100.net; s=20251104; t=1778170202; x=1778775002;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eFG1vBkuGjV5WqwCWdKJSFjXXoeKLNuaVc0SsnohSl0=;
+        b=ELEJC/spkZs1RevaaEqti7O0zQKW21FLQTvLBspvu/xJHBxKSBQ6U3kesFoOBrcLky
+         LaeeGMPWsaoEwjVXU0goT4WMujAc47GOxunpiDeayVdm8c4w2jBBUpByqHVY8ZRnPhdL
+         PRUBYcFxO/Nqn8ncx0w/cs+isNjxUQmdxpzyVDQ5oczVUR7QSZ1+PqsstCb2ie/zlpQE
+         DYSb4zgfI/QbabxYu1OC/DXCqmEEXSisQhy8vkPU2CYjrFN4pJf1JPUM5pqWSQQXJ1OQ
+         KfIIkq/weZwYZNWe4MZIIKtomoO3ia1D4J7NsDXhY17YGPCdHKMI5FIWRfzxr/2TV/TQ
+         9gQA==
+X-Forwarded-Encrypted: i=1; AFNElJ8bxxV00CV9HEoDvRuO3PoV/xJ9G8Vuw62mO0lDhbcM6L8jEX4T3vPG340vIod1BMFhjbw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxkawPbIp1rDDgMrckEB/rXWovkfhp2vgQtEGJ8MsR8OVk0dmhc
+	ezBorstw/izTQGeM9oqoURCk3Eu9AW4lNjc4Vpy2nS8hea3OEZ2RoNYgMZwDfSjb2X2Y3MrLtDZ
+	nhdANvoisoQWHCv4IPsGRU7fVCOvm6RxAIcvX4SjEMaDpj7ZTJEC4
+X-Gm-Gg: AeBDievps1rWT2YxSONMrr/A4ENggs2BLFbvaolmiV2xER/PPa1D44OZEAY2PgM8tmC
+	zCFVdSN1cz1PbP7lhTrvFhS8bkZvFqnZuSrVx6Sk2Th+8vOkAwu5SuVRmsspVR3qqIZ6K7kM9PB
+	z/nrq9A0RI/zETtO+HN/iH1yp+dJ2KHXZMkE7C+czVZ9CEOBwpGhBqaZBfkuh4x/Jsn0zfq40vh
+	xvqJFVzShLPlvkfUvcOH0ALlB2vTTP/8jC+tvcw9NR6x+33tYHSFr2h4q+rnkS0tk4MbdE9i1xs
+	6jHlnV7Z7/bj0CG8TnIfZ+nT8iVMt1+95zDNiRq116Wt+zAZQtRph71teRQs1PzxniuIzXmp4Fb
+	y3YLovAYP1yXs5uuXlpsBQfL0yuhHy+AAUA21RJo4W/egMpVS0MyH8BgLpecq+C0sRN3nLmZX/D
+	LKhGjMF/TUABYt1vwqLYmC+W5sqF4EwZAy2GGKHdtnlBaJ9L8dwb1GAzZjSG9oSC+4btB0xqo8p
+	6Y91EtV+fiytfRcDsLhNnE=
+X-Received: by 2002:a5d:5f47:0:b0:43d:613:33de with SMTP id ffacd0b85a97d-4515cf11d94mr13854419f8f.20.1778170201774;
+        Thu, 07 May 2026 09:10:01 -0700 (PDT)
+X-Received: by 2002:a5d:5f47:0:b0:43d:613:33de with SMTP id ffacd0b85a97d-4515cf11d94mr13854369f8f.20.1778170201226;
+        Thu, 07 May 2026 09:10:01 -0700 (PDT)
+Received: from ?IPV6:2001:8b0:8b6:13d4:102e:f2af:e074:5cde? (e.d.c.5.4.7.0.e.f.a.2.f.e.2.0.1.4.d.3.1.6.b.8.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:8b6:13d4:102e:f2af:e074:5cde])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45412820454sm149530f8f.6.2026.05.07.09.09.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 May 2026 09:10:00 -0700 (PDT)
+Message-ID: <2a75c858-5dfe-4b93-98fc-909a2ee5558d@meta.com>
+Date: Thu, 7 May 2026 17:09:59 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260507073340.0604667d@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 7/9] vfio/pci: Support mmap() of a VFIO DMABUF
+Content-Language: en-GB
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
+        Alex Mastro <amastro@fb.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>,
+        Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
+        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@kernel.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
+        Pranjal Shrivastava <praan@google.com>,
+        Alistair Popple
+ <apopple@nvidia.com>,
+        Vivek Kasireddy <vivek.kasireddy@intel.com>,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+        kvm@vger.kernel.org
+References: <20260416131815.2729131-1-mattev@meta.com>
+ <20260416131815.2729131-8-mattev@meta.com>
+ <20260424183006.GI3444440@nvidia.com>
+From: Matt Evans <mattev@meta.com>
+In-Reply-To: <20260424183006.GI3444440@nvidia.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA3MDE2MSBTYWx0ZWRfX5hKDtpjgoD9X
+ t4kfrMgsLrqfeO15hCnfsWlyq1SA4W3rj+OAz6bE0q+rGJ1PU9G+rDxwqLJoWt7/OY50MqISehu
+ c2j/1zV9EkBIlDkii8LQrvrvEdaIsCYzHtp45rt5pYwj30Lo+Qo8oR7dn8iLgf+xBE3AzAZT3Na
+ sTamYH5RFuBCe1qvZhDRflf0xDH8ClWk+17AMcfAbLsuU6FGj1AfZ+EtU4c8Fzf6JldaQ4KjOa9
+ fTg4pMqZ1lLUnyi68cOx8AjIYYNvd27JbAs4HRssg4ZmW7b4f9PkiNUWw3wXWe52DKNHw2SlqFD
+ FcwAA+2yzLy5m4tIGoHoz4GdGJ9QYatiM9R64tIrYoHBsE6gAevSEqILyynLtBBHRn52rxCCIHf
+ T7U4sqEHb4J9FjAZykSRS6dHyb/WFCSg9RGpZaT3bJWXKLVusZb+tYqVkWqNMew2S+kZsM2STgC
+ U/40mKsUwvjfdxZp1mQ==
+X-Proofpoint-ORIG-GUID: j4XdOVXnZuT60TlGatdHHpcHFxLsG9b5
+X-Proofpoint-GUID: j4XdOVXnZuT60TlGatdHHpcHFxLsG9b5
+X-Authority-Analysis: v=2.4 cv=F7dnsKhN c=1 sm=1 tr=0 ts=69fcb95b cx=c_pps
+ a=pX1sPZUoWPGeQgUnKQNIgA==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
+ a=tpM8CJlwf7uhpglF1g9U:22 a=bfFL6uTa8VbwhnMIod8A:9 a=QEXdDO2ut3YA:10
+ a=XGGHjNwGSpTZ5T66x7Ix:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-07_01,2026-05-06_01,2025-10-01_01
 
-On Thu, May 07, 2026 at 07:33:40AM -0700, Jakub Kicinski wrote:
->On Thu, 7 May 2026 14:59:13 +0200 Stefano Garzarella wrote:
->> >well if you want to support pathological cases such as 1 byte messages
->> >that would mean like 100x reduction no?
+Hi Jason,
+
+On 24/04/2026 19:30, Jason Gunthorpe wrote:
+> 
+> On Thu, Apr 16, 2026 at 06:17:50AM -0700, Matt Evans wrote:
+>> +
+>> +	dma_resv_lock(priv->dmabuf->resv, NULL);
+>>   	vdev = READ_ONCE(priv->vdev);
 >>
->> Yep, but since this patch is already merged, IMHO that is better than
->> losing data in those pathological cases.
->
->We can revert if you think that the risk of regression is high..
->Please LMK soon, we can do it before patch reaches Linus.
->
+>> +	if (READ_ONCE(priv->revoked) || !vdev) {
+> 
+> Why is this read once? It is inside the resv lock so it is stable?
+> 
+>> +		pr_debug_ratelimited("%s VA 0x%lx, pgoff 0x%lx: DMABUF revoked/cleaned up\n",
+>> +				     __func__, vmf->address, vma->vm_pgoff);
+>> +		dma_resv_unlock(priv->dmabuf->resv);
+>> +		return VM_FAULT_SIGBUS;
+>> +	}
+>> +	/* vdev is usable */
+>> +
+>> +	if (!vfio_device_try_get_registration(&vdev->vdev)) {
+>> +		/*
+>> +		 * If vdev != NULL (above), the registration should
+>> +		 * already be >0 and so this try_get should never
+>> +		 * fail.
+>> +		 */
+>> +		dev_warn(&vdev->pdev->dev, "%s: Unexpected registration failure\n",
+>> +			 __func__);
+>> +		dma_resv_unlock(priv->dmabuf->resv);
+>> +		return VM_FAULT_SIGBUS;
+>> +	}
+>> +	dma_resv_unlock(priv->dmabuf->resv);
+>> +
+>>   	scoped_guard(rwsem_read, &vdev->memory_lock) {
+>> -		if (!priv->revoked) {
+>> +		if (!READ_ONCE(priv->revoked)) {
+> 
+> Same here, it is not read once since you hold the memory_lock it is
+> stable.
 
-Some tests in tools/testing/vsock/vsock_test.c are failing with this 
-patch applied.
+I used them more as an 'eyecatcher' to complement the comment.  Although 
+they're not strictly required (compiler barriers at the lock/unlocks), 
+they stand out to say "something's going on here".
 
-Test 18 are failing sometime in this way (I guess because we are 
-dropping packets):
+Revoked/status is read first holding resv, and _must be read a second 
+time_ once that's released and after memory_lock is taken, so two 
+READ_ONCEs seemed appropriate to show this.
 
-18 - SOCK_STREAM MSG_ZEROCOPY...hash mismatch
-
-Test 22 is failing 100% in this way:
-
-22 - SOCK_STREAM virtio credit update + SO_RCVLOWAT...send failed: 
-Resource temporarily unavailable
+But if you feel strongly, sure, I can remove it (though I'd add, say, a 
+/* Re-read status value */ comment).
 
 
-With my followup patch adding also advertisement to the other peer 
-(still draft locally, waiting for Michael proposal) I saw 22 failing, 
-because tests expects that can use the entire buf_alloc, but now we are 
-reducing it.  So IMO we should do like in `__sock_set_rcvbuf()` and 
-double the buffer size, or at least digest an overhead equal to the 
-buffer size set by the user via SO_VM_SOCKETS_BUFFER_SIZE (yeah, 
-AF_VSOCK has it owns sockopt since the beginning :-().
-
-With that approach tests are passing, but I'd like to stress a bit more 
-that patch. I'll send it tomorrow as fixup of this patch, or if you 
-prefer to revert, I'll send as standalone.
-
-Thanks,
-Stefano
-
+Matt
