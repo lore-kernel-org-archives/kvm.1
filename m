@@ -1,151 +1,268 @@
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9323A5E97;
-	Thu,  7 May 2026 16:34:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21EFC35DA69
+	for <kvm@vger.kernel.org>; Thu,  7 May 2026 16:52:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778171683; cv=none; b=JHdKKk9L8rYpmhn1HsSIejFCYyjbDTAhNgLnEhHA5LvV81uZKh0jnbVaWs9KCTllZzzDfNqoVmItZENYX+uaD+0WPLfPePcpj/pnPf0l2BRsmNcmyTxLADOkrf3CJi+vIB5H5tdrtzaQmB3/kZZdNTBDotPfoVaoljbsr1qCcq0=
+	t=1778172743; cv=none; b=MexZL35xuh9p+E3ah7ib1u7jBzS7wq0xCxFNCbAiTYJZUgTVutG1G8mFxX4++G1vseRh5wPPSwdumDwCYMPBfnrJcMrmKlk9zqnPKyVzxiyQRU8Nt+Wg6MEIpdX94GTPUT51y0fKl4v7CnLQaNPvpB1aOFkjKJ60THbDOZXrh2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778171683; c=relaxed/simple;
-	bh=IX4j+KXjMqm1cT++0NVi6uSCU0kxWxNvVJir+5TlHHs=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=tU+D6dq1koYhb5Ee3BCSQaMAEuGBBEV2glpVdUsiAZp5JUaSqcATEJdYYq0UZZQLe+CcKjjQv0omsW7zsHIXCY+rFid3FAFtY8nRwnqHsHD8w+STRreYBgTOS+dIM8WiPnwAAuFq60EH5mylexlDsMZzI87652j+N+TjalE52zM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=sjBbcl6X; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+	s=arc-20240116; t=1778172743; c=relaxed/simple;
+	bh=1ru2kTEbiaxGDhtsW3+iRy+k8GjCkWQuz0hTRiFgBjM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SowfGxHkiMab4hswrbyjEOHvVkKjhUtTVoEv9fvv8tquFJ1jEEamQu49dBrh+oqDhZZlZDTzwRIQORQ0S5aL7xHtlqt8bKaA/6N99rrSv3c+9vLhfXP0eUb7UYHRRf4cVIDu+F8ivqkv8fnw6V0kdFD4+9WCcOz6AsvIa32/ciQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MVzEokZ/; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="sjBbcl6X"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:Message-ID:References:
-	In-Reply-To:Subject:Cc:To:From:Date:MIME-Version:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=Pw0d7TJg62h/MzpaFohoRRf/ofQWSP3GEU76wkiH020=; b=sjBbcl6XJtP3h5EBE7x3db22wl
-	fPuACPAz/4XNqHYDmKuICUpqJbpb87XdbMvZmelrSc65SUzuoz96RFBZEZ2BNreqfaVjYdxZYhESa
-	sU61V5OQGeI2fDWdqCJDRSJpFCf4xXFTwT4ppdmP58O0MIoLPJIq9B8wipprByy/fYruBRUCwJg7b
-	tiXOiXkfGDeejMZQzrYVx3YsOM6Xtt9CK3duK2BfZZnPePes70hy2Ihfb9QJj/ZllMAsUTFqSLHRw
-	iBlGyQfgeANCDUDZ5ro0a5Y2gRDfPGz/csLnxjk+VH7hxCoeUdcPLOvMMmofu+fANwK3EmpBw+DGJ
-	9ikUsN5g==;
-Received: from maestria.local.igalia.com ([192.168.10.14] helo=mail.igalia.com)
-	by fanzine2.igalia.com with esmtps 
-	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1wL1fx-007UMs-5K; Thu, 07 May 2026 18:34:12 +0200
-Received: from webmail.service.igalia.com ([192.168.21.45])
-	by mail.igalia.com with esmtp (Exim)
-	id 1wL1ft-000Pi8-Rn; Thu, 07 May 2026 18:34:12 +0200
-Received: from localhost ([127.0.0.1] helo=webmail.igalia.com)
-	by webmail.service.igalia.com with esmtp (Exim 4.98.2)
-	(envelope-from <mfo@igalia.com>)
-	id 1wL1ft-00000004Nnn-0s6x;
-	Thu, 07 May 2026 18:34:09 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MVzEokZ/"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2b46da8c48eso110515ad.1
+        for <kvm@vger.kernel.org>; Thu, 07 May 2026 09:52:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778172741; x=1778777541; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Hxt15R9Do9bnwlfCs2VrOW/Q0eumEFUxda7bzIZj6C8=;
+        b=MVzEokZ/N1PNTpA6/x91Qo2AGwUA4349aZiaX3P9+7abgRV0vlaSMSpcW3mckkoM7d
+         Cm7+mOZwDcFpoMdwGJtsCCAoB2kYrjfNRjqpjHaVcHYX77BtBpFPtMnDklGhebysg+U8
+         JoYc+ceLCuOHfRKDu1Pa879GHk95PYildOczGTZTU7CHbwXPjpvTF4mLCp7sG2mQVfjN
+         JXdtfo8XQjp0h9NktBeYbs34zDJlQ7NFNiULJ9N1xd+Hm8Gy3Ux65lKYw5mG+xGMN+HN
+         S6tZ/aQbYfvUsY7czlH7SR3AK7Zu7Fu0tZu4Put251sKfV2IqgdvH56eYjci1hAELJuv
+         +MCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778172741; x=1778777541;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Hxt15R9Do9bnwlfCs2VrOW/Q0eumEFUxda7bzIZj6C8=;
+        b=O6VKvUFxGqPAw9/F5rS6Eqv6OyhsDS2FQ2VforVQV9FVsChRvK87oq+tEDoByeP+6c
+         /fMcSQJtfurF0XAd6C8qOf8aCWTC3L5lxmphB22c0xNoCAd6piOikUTYWv1fLZ7vmt2Y
+         CJ6q3Key7q9SxC2SqJykOwHJKr100NIaDIiHJSXzo+piWTXpFGiqUhVdq86lOr3H6NlC
+         4bX3SlioYwZzayDak+X9vO0A1zGpedP3k33Co1306PbyUjdk+h28vh3yk7uk9t8hgOIh
+         cOczLGcorRDDgm5iNBuXJAEjSJptv4Pqi9k0NhoJKWuh7aXwWEM8e/P3JNMJsjTa52nY
+         T4ww==
+X-Forwarded-Encrypted: i=1; AFNElJ8GTEySYrznwTfiNExDyDS98896NMTgDJo1GBgGFkMuWQiShxPc6mTgrQIctfJAaBGq3l4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzb/0aznjCIUTiPsNGyAr4lLQgVpPysNhqQsME37Azbtr/foQSv
+	evfHd4/VR7x/1wCjvyAZMqI6ZVvpl/cnPExrzgCmXUpjCvY73pIFpj3YOVkNycqGFg==
+X-Gm-Gg: Acq92OFGnjW0x80K5jXIRaicouz3+6aWfI36D196mqDYtjgn24ngzndwyfvhLg+Jv2+
+	mnhWVdhq4IVyuwP/+THK2S/U1E1hgIJQxD6XxkzQ4D7YRsMAqOeOd8bgwTL5zf0bewJULPQSnyu
+	b9EiRvyCmBKyVxl1KSBZ2sHRPafY2UcCZcSatWvgUrOPSYDWjvc/yUZzyKCvwW7uGtt/MVw12qN
+	QnuAk4N1rEqd4rsBCRBxumOKn+RBKSMkD/HFnWlrznbM4dCGuqXaH81iL6hV/ZGR++u9dDpy1NN
+	XbcaCEaW69PwSXn2fmEapf128eBBiGbOe/cDOpiL2b0Tv5YNr5ct4mt/V7duSHfkuIUAfcVa2Au
+	tYDpn2M5nmvGPS9fnylzmqQs280Iuj8MejT9yHtFP+zgkcxLbfWS5CWSYhd3R8qTB+dxlhF0A5G
+	DaS+g8R2vO237Ei+lfYsULoDB9FTIKB9LjrFmd4qDXHTp4OIi4qsbi+WBYMeUo5b3oTTDlomgdf
+	xw3VON6
+X-Received: by 2002:a17:903:2c7:b0:2b4:641a:6b7c with SMTP id d9443c01a7336-2bae5ae409amr643225ad.13.1778172740873;
+        Thu, 07 May 2026 09:52:20 -0700 (PDT)
+Received: from google.com (153.46.83.34.bc.googleusercontent.com. [34.83.46.153])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bae783dc45sm2176155ad.39.2026.05.07.09.52.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 May 2026 09:52:20 -0700 (PDT)
+Date: Thu, 7 May 2026 16:52:18 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Pranjal Shrivastava <praan@google.com>, 
+	Vipin Sharma <vipinsh@google.com>, YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH v2 10/16] iommu: Restore and reattach preserved domains
+ to devices
+Message-ID: <afzBptf2YsmdJ8V8@google.com>
+References: <20260427175633.1978233-1-skhawaja@google.com>
+ <20260427175633.1978233-11-skhawaja@google.com>
+ <a88649ec-de69-43ed-a364-dcbfef09dfa6@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 07 May 2026 13:34:09 -0300
-From: Mauricio Faria de Oliveira <mfo@igalia.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Paul Durrant <paul@xen.org>, Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo
- Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark
- Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- kernel-dev@igalia.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev,
- syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com
-Subject: Re: [PATCH] KVM: x86/xen: bail in IRQ context on PREEMPT_RT in
- kvm_xen_set_evtchn_fast()
-In-Reply-To: <9bc8666e63d7de8b32dd23934fe0097f98d72726.camel@infradead.org>
-References: <20260506-xen-rt-sleep-v1-1-53b6b60a671d@igalia.com>
- <8e7bc66a7994ca06f164a5d5f7ceb3f07d3a1357.camel@infradead.org>
- <e23df9d183c2c421946ea73b8053e4c4@igalia.com>
- <876c720ab963f550d3166b067f6457fcd78ec415.camel@infradead.org>
- <122adcacb2a6ccc3a5b78c750fe85e0b@igalia.com>
- <9bc8666e63d7de8b32dd23934fe0097f98d72726.camel@infradead.org>
-Message-ID: <d47d2c7e58abed48332902e34f4e9984@igalia.com>
-X-Sender: mfo@igalia.com
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Report: NO, Score=-4.2, Tests=ALL_TRUSTED=-3,AWL=-2.040,BAYES_50=0.8
-X-Spam-Score: -41
-X-Spam-Bar: ----
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <a88649ec-de69-43ed-a364-dcbfef09dfa6@linux.intel.com>
 
-On 2026-05-07 13:15, David Woodhouse wrote:
-> On Thu, 2026-05-07 at 13:02 -0300, Mauricio Faria de Oliveira wrote:
->> On 2026-05-07 12:22, David Woodhouse wrote:
->> > On Thu, 2026-05-07 at 11:56 -0300, Mauricio Faria de Oliveira wrote:
->> > > On 2026-05-07 03:58, David Woodhouse wrote:
->> > > > On Wed, 2026-05-06 at 23:36 -0300, Mauricio Faria de Oliveira wrote:
->> > > > > kvm_xen_set_evtchn_fast() calls read_lock_irqsave(), which might block
->> > > > > on PREEMPT_RT, but that is invalid in IRQ context, as when it's called
->> > > > > by xen_timer_callback() (even on PREEMPT_RT per HRTIMER_MODE_ABS_HARD).
->> > > > > 
->> > > > > Check for that case, and bail out early.
->> > > > > 
->> > > > > Note: there is previous work and discussion on this [1] (~2 years ago),
->> > > > > which involved continuing to execute the function with changes, but it
->> > > > > was not merged. That was a different, more complex approach.
->> > > > > 
->> > > > > [1] https://lore.kernel.org/lkml/ZdPQVP7eejq3eFjc@google.com/
->> > > > 
->> > > > ...
->> > > > 
->> > > > > +	/* Bail in IRQ context on PREEMPT_RT; read_lock_irqsave() might block */
->> > > > > +	if (IS_ENABLED(CONFIG_PREEMPT_RT) && in_hardirq())
->> > > > > +		goto out;
->> > > > 
->> > > > 
->> > > > The approach in Paul's earlier patch was better; we absolutely *want*
->> > > > to deliver the interrupt to the guest immediately whenever we can, and
->> > > > only fall back to the workqueue in the rare case that the shared info
->> > > > page has been invalidated.
->> > > 
->> > > Certainly, that was better. This was a simple workaround, but with this
->> > > clarification, it indeed doesn't fit.
->> > > 
->> > > > We should switch to plain read_trylock(), *without* the
->> > > > local_irq_save(). And since this was the *only* case where the GPC lock
->> > > > was ever taken under IRQ¹, all the GPC locking can drop the _irq part.
->> > > 
->> > > Ok, I can take a look. Or do you plan to work on it yourself (as you
->> > > hit the issue with read_unlock later in this thread)?
->> > 
->> > I'm working on it now; thanks.
->> 
->> Ok, thanks; I'll drop this. Could you please Cc me when you send it out?
->> 
->> > Currently confused by the fact that the read_trylock() seems to fail
->> > more often than it should under RT, causing the fallback path to be
->> > taken... and the fallback path doesn't seem to work properly...
->> > 
->> > Your version should have seen this too, surely? Did the selftest in
->> > linux/tools/testing/selftests/kvm/x86/xen_shinfo_test work with your
->> > patch?
->> 
->> Yes, it works, apparently. Timing is similar with/without PREEMPT_RT.
-> 
-> Huh. Something weird going on for me. Would you mind confirming it
-> still works with my version:
-> 
-> https://git.infradead.org/?p=users/dwmw2/linux.git;a=shortlog;h=refs/heads/gpc-stealtime
+On Thu, May 07, 2026 at 09:54:27PM +0800, Baolu Lu wrote:
+>On 4/28/2026 1:56 AM, Samiullah Khawaja wrote:
+>>Restore the preserved domains by restoring the page tables using restore
+>>IOMMU domain op. Reattach the preserved domain to the device during
+>>default domain setup. While attaching, reuse the domain ID that was used
+>>in the previous kernel. The context entry setup is not needed as that is
+>>preserved during liveupdate.
+>>
+>>Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
+>>---
+>>  drivers/iommu/intel/iommu.c      | 49 ++++++++++++++------
+>>  drivers/iommu/intel/iommu.h      |  3 +-
+>>  drivers/iommu/intel/nested.c     |  2 +-
+>>  drivers/iommu/iommu.c            | 61 ++++++++++++++++++++++++-
+>>  drivers/iommu/liveupdate.c       | 78 ++++++++++++++++++++++++++++++++
+>>  include/linux/iommu-liveupdate.h | 50 ++++++++++++++++++++
+>>  6 files changed, 224 insertions(+), 19 deletions(-)
+>
+>Please split the changes in the Intel iommu driver and the iommu core
+>into different patches.
 
-Yes, it also works with that tree [1].
+Agreed. I will split these.
+>
+>>
+>>diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+>>index 4118a0861f38..b90757164cd8 100644
+>>--- a/drivers/iommu/intel/iommu.c
+>>+++ b/drivers/iommu/intel/iommu.c
+>>@@ -1031,7 +1031,8 @@ static bool first_level_by_default(struct intel_iommu *iommu)
+>>  	return true;
+>>  }
+>>-int domain_attach_iommu(struct dmar_domain *domain, struct intel_iommu *iommu)
+>>+int domain_attach_iommu(struct dmar_domain *domain, struct intel_iommu *iommu,
+>>+			int restore_did)
+>
+>How about using a new helper for restored domain? For example,
+>
+>	int domain_reattach_iommu(...)
+>
+>or
+>
+>	int domain_restore_iommu(...)
 
-Is PREEMPT_RT enabled in the Xen guest as well? In earlier tests, that
-caused interrupt issues on boot (a few 'nobody cared, try irqpoll' and
-'Disabled IRQ #'), but that also happened without changes in the Xen
-host kernel, thus not a regression, and I disabled it as couldn't look
-further then.
+Agreed. I didn't do this to avoid code duplication, but I think this
+might be much clean. Also in the restore path, the did test can also be
+done as you pointed out below.
+>
+>>  {
+>>  	struct iommu_domain_info *info, *curr;
+>>  	int num, ret = -ENOSPC;
+>>@@ -1051,8 +1052,11 @@ int domain_attach_iommu(struct dmar_domain *domain, struct intel_iommu *iommu)
+>>  		return 0;
+>>  	}
+>>-	num = ida_alloc_range(&iommu->domain_ida, IDA_START_DID,
+>>-			      cap_ndoms(iommu->cap) - 1, GFP_KERNEL);
+>>+	if (restore_did >= IDA_START_DID)
+>>+		num = restore_did;
+>
+>For a preserved domain ID, do we need to check whether it has been
+>reserved from the ida pool?
 
-[1] HEAD at commit 916875860566 ("locking/rt: Use
-raw_spin_lock_irqsave() in __rwbase_read_unlock()")
+Yes, I will add a sanity check once I move this logic into separate
+function.
+>
+>>+	else
+>>+		num = ida_alloc_range(&iommu->domain_ida, IDA_START_DID,
+>>+				      cap_ndoms(iommu->cap) - 1, GFP_KERNEL);
+>>  	if (num < 0) {
+>>  		pr_err("%s: No free domain ids\n", iommu->name);
+>>  		goto err_unlock;
+>>@@ -1320,10 +1324,14 @@ static int dmar_domain_attach_device(struct dmar_domain *domain,
+>>  {
+>>  	struct device_domain_info *info = dev_iommu_priv_get(dev);
+>>  	struct intel_iommu *iommu = info->iommu;
+>>+	struct device_ser *device_ser = NULL;
+>>  	unsigned long flags;
+>>  	int ret;
+>>-	ret = domain_attach_iommu(domain, iommu);
+>>+	device_ser = dev_iommu_restored_state(dev);
+>>+
+>>+	ret = domain_attach_iommu(domain, iommu,
+>>+				  dev_iommu_restore_did(dev, &domain->domain));
+>
+>What is the expected behavior if there is a mismatch between the
+>restored state and the availability of a domain ID? Specifically, if
+>device_ser is found but dev_iommu_restore_did() fails (returns -1), how
+>should the driver proceed in that case?
 
-Hope this helps,
+The restore of the domain should fail in this case, as this is
+unexpected behaviour, as the DID should be preserved in the previous
+kernel and in this (new) kernel the did should have been reclaimed
+during iommu HW restore.
 
--- 
-Mauricio
+But I think we can sanity check these in the separate restore function.
+I will rework this.
+>
+>>  	if (ret)
+>>  		return ret;
+>>@@ -1336,16 +1344,18 @@ static int dmar_domain_attach_device(struct dmar_domain *domain,
+>>  	if (dev_is_real_dma_subdevice(dev))
+>>  		return 0;
+>>-	if (!sm_supported(iommu))
+>>-		ret = domain_context_mapping(domain, dev);
+>>-	else if (intel_domain_is_fs_paging(domain))
+>>-		ret = domain_setup_first_level(iommu, domain, dev,
+>>-					       IOMMU_NO_PASID, NULL);
+>>-	else if (intel_domain_is_ss_paging(domain))
+>>-		ret = domain_setup_second_level(iommu, domain, dev,
+>>-						IOMMU_NO_PASID, NULL);
+>>-	else if (WARN_ON(true))
+>>-		ret = -EINVAL;
+>>+	if (!device_ser) {
+>>+		if (!sm_supported(iommu))
+>>+			ret = domain_context_mapping(domain, dev);
+>>+		else if (intel_domain_is_fs_paging(domain))
+>>+			ret = domain_setup_first_level(iommu, domain, dev,
+>>+						       IOMMU_NO_PASID, NULL);
+>>+		else if (intel_domain_is_ss_paging(domain))
+>>+			ret = domain_setup_second_level(iommu, domain, dev,
+>>+							IOMMU_NO_PASID, NULL);
+>>+		else if (WARN_ON(true))
+>>+			ret = -EINVAL;
+>>+	}
+>>  	if (ret)
+>>  		goto out_block_translation;
+>>@@ -3170,6 +3180,15 @@ int paging_domain_compatible(struct iommu_domain *domain, struct device *dev)
+>>  	struct intel_iommu *iommu = info->iommu;
+>>  	int ret = -EINVAL;
+>>+#ifdef CONFIG_IOMMU_LIVEUPDATE
+>>+	/*
+>>+	 * Restored IOMMU domains are already attached to the device and can
+>>+	 * only be freed. So no need to check the compatibility.
+>>+	 */
+>>+	if (iommu_domain_restored_state(domain))
+>>+		return 0;
+>>+#endif
+>>+
+>>  	if (intel_domain_is_fs_paging(dmar_domain))
+>>  		ret = paging_domain_compatible_first_stage(dmar_domain, iommu);
+>>  	else if (intel_domain_is_ss_paging(dmar_domain))
+>>@@ -3647,7 +3666,7 @@ domain_add_dev_pasid(struct iommu_domain *domain,
+>>  	if (!dev_pasid)
+>>  		return ERR_PTR(-ENOMEM);
+>>-	ret = domain_attach_iommu(dmar_domain, iommu);
+>>+	ret = domain_attach_iommu(dmar_domain, iommu, -1);
+>>  	if (ret)
+>>  		goto out_free;
+>>diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
+>>index b0ec0b471a43..8e37acf7de12 100644
+>>--- a/drivers/iommu/intel/iommu.h
+>>+++ b/drivers/iommu/intel/iommu.h
+>>@@ -1182,7 +1182,8 @@ void __iommu_flush_iotlb(struct intel_iommu *iommu, u16 did, u64 addr,
+>>   */
+>>  #define QI_OPT_WAIT_DRAIN		BIT(0)
+>>-int domain_attach_iommu(struct dmar_domain *domain, struct intel_iommu *iommu);
+>>+int domain_attach_iommu(struct dmar_domain *domain, struct intel_iommu *iommu,
+>>+			int restore_did);
+>>  void domain_detach_iommu(struct dmar_domain *domain, struct intel_iommu *iommu);
+>>  void device_block_translation(struct device *dev);
+>>  int paging_domain_compatible(struct iommu_domain *domain, struct device *dev);
+>>diff --git a/drivers/iommu/intel/nested.c b/drivers/iommu/intel/nested.c
+>>index 2b979bec56ce..6e13f697b463 100644
+>>--- a/drivers/iommu/intel/nested.c
+>>+++ b/drivers/iommu/intel/nested.c
+>>@@ -40,7 +40,7 @@ static int intel_nested_attach_dev(struct iommu_domain *domain,
+>>  		return ret;
+>>  	}
+>>-	ret = domain_attach_iommu(dmar_domain, iommu);
+>>+	ret = domain_attach_iommu(dmar_domain, iommu, -1);
+>>  	if (ret) {
+>>  		dev_err_ratelimited(dev, "Failed to attach domain to iommu\n");
+>>  		return ret;
+>
+>Thanks,
+>baolu
+
+Thanks,
+Sami
