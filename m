@@ -1,228 +1,192 @@
-Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A820743DA2D;
-	Thu,  7 May 2026 15:20:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7972239D6D4;
+	Thu,  7 May 2026 15:20:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778167212; cv=none; b=T+sn7ZjDIyX/uM8NxBp/SD3jtdjgcRfJa9BBWhGEY2dcL0GqUuotW/dAI6/I63+vw3oKjbuVu/7J/rNvXq4J5J21HS2uCvm4l+1mIwImfwHPbCbztJQMm7OnsqbaZjxPrJg7d38qhiXBfcRxj4RiMoj7/cOomrRzJKRu8rGNuLw=
+	t=1778167236; cv=none; b=bWEVUyFg4DIBXxjjhD6XOpDN3pPOGT5/U8ghnKN6UdeLsgtST/JvNw5NurAFPRH5eG/+qoNVGl/6oMe+0H08oPthwD0859ohKlldOh+aFiX0BDtCvQzfTRf7Quuy6V06nIheiDyHSLpnXRaslXmVp9SwRZmEO6G8ZICjIM/OS2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778167212; c=relaxed/simple;
-	bh=pH+m4CbKXg8EGYoMm/o3QnZ38KyQXrcHhYW5W+nMDP4=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=NW8SANsScZ3bwK4w9FGh+g3QwtwBH8yOHo171BcrizhxjCC0dWIVN6O0JLoWkTf8pV04rkeAsuosNwm9suQLmCr+/I+xjqi36vkzc2fiIowArv064ZhjDHdCswF2qeqvVSf0KZ8XWSg08eBcxvoV2unMHC5inWxZK57y8hgc/Zw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=sHUwFqXA; arc=none smtp.client-ip=129.217.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
+	s=arc-20240116; t=1778167236; c=relaxed/simple;
+	bh=aYYbg88IhEHyYmCiA4rj3UhfTz25/VVIy7+Dn0azyyo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=pe4sBnk7rikSXRCfo4S/BRW+Fe5r+9E6V/Oa2b3gMFlaMYZJptG9EHkdJkwfmxqkCeoRu86P5EQLvdaBXrGInL8LHjMxUWbgtMcXWHfFeLL2pCeAVgAuo46TmMWYr75QfBcz27gjlPwwnSCMIKjHIa5r3nKzSDZsQndBcrs6EhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=QsOKyDWB; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="sHUwFqXA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
-	s=unimail; t=1778167194;
-	bh=pH+m4CbKXg8EGYoMm/o3QnZ38KyQXrcHhYW5W+nMDP4=;
-	h=Date:Subject:From:To:Cc:References:In-Reply-To;
-	b=sHUwFqXAmCc07AEtA4s871B9gGTvOWmY0J/cC2aCLOxnHmUIi0CbUxFuScjRkKvaN
-	 kxpQHqecAUTyZW+4AWwKF9L5HWk+yDmakKl+HYCD/NXH8KENLZ7GeC9zuiHLQMeuYK
-	 vKqH8+pyP3nbqcK46EC7xpxWFSn30IBhUEcA+LF0=
-Received: from [129.217.186.46] ([129.217.186.46])
-	(authenticated bits=0)
-	by unimail.uni-dortmund.de (8.19.0.1/8.19.0.1) with ESMTPSA id 647FJqDW013345
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Thu, 7 May 2026 17:19:52 +0200 (CEST)
-Message-ID: <81f2d6e8-5138-495a-9efb-1d6ad9c6072b@tu-dortmund.de>
-Date: Thu, 7 May 2026 17:19:52 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="QsOKyDWB"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 647CF1Jt2437018;
+	Thu, 7 May 2026 15:20:29 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=Mq0oQl
+	iX2jfdvzCuQTD+5Vg1x+CebNs1jWtDlDkyf9c=; b=QsOKyDWBo2DgVvbJwJFTvo
+	N1YD4raN7oP6qSi43KgfPP9CN/lORvc6rux7rvux8HXMM4SrjOkgJ50y3IH3MU7+
+	Z1mdo+esIxV3XbacZuDhCdope2yvgWBQfXtJSGPBMkagK3uNNOZ3bj7+CS2FZY+U
+	zJbcDLOb/xPu7w5YwfMFkfcRy9VcFV0NPMjXgWol2W7BZSCdoK0u02gGny9W5zYm
+	eEmBCkgMo6X676HKsGzHt9zXi+Sbma1CKBq5tboVBhxeIEr6bH5L42611cqRKUGz
+	Bs2kJNpTLa9aehYwU//fPuNFOszPvHEa2AX1SvWvWGvg/hDmlwQRjWmR3ZaFMQJQ
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9y1qaah-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 May 2026 15:20:28 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 647F9Qk8024468;
+	Thu, 7 May 2026 15:20:27 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwukqmd1j-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 May 2026 15:20:27 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 647FKO9k30147046
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 7 May 2026 15:20:24 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5AA9520043;
+	Thu,  7 May 2026 15:20:24 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id AD2E22004B;
+	Thu,  7 May 2026 15:20:20 +0000 (GMT)
+Received: from Amits-MacBook-Pro.local (unknown [9.124.211.112])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  7 May 2026 15:20:20 +0000 (GMT)
+Date: Thu, 7 May 2026 20:50:17 +0530
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH 6/6] KVM: PPC: Document KVM_PPC_GET_COMPAT_CAPS ioctl
+Message-ID: <20260507204149.593a749a-e7-amachhiw@linux.ibm.com>
+Mail-Followup-To: Harsh Prateek Bora <harshpb@linux.ibm.com>, 
+	linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Vaibhav Jain <vaibhav@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+References: <20260430054906.94431-1-amachhiw@linux.ibm.com>
+ <20260430054906.94431-7-amachhiw@linux.ibm.com>
+ <81b9d00f-7568-4bcd-9b77-2f6de3162d65@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net-next v10 4/4] tun/tap & vhost-net: avoid ptr_ring
- tail-drop when a qdisc is present
-From: Simon Schippers <simon.schippers@tu-dortmund.de>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
-        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, eperezma@redhat.com,
-        leiyang@redhat.com, stephen@networkplumber.org, jon@nutanix.com,
-        tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        virtualization@lists.linux.dev
-References: <20260506141033.180450-1-simon.schippers@tu-dortmund.de>
- <20260506141033.180450-5-simon.schippers@tu-dortmund.de>
- <20260506181909-mutt-send-email-mst@kernel.org>
- <20260506185515-mutt-send-email-mst@kernel.org>
- <c9fc9e0a-0837-49b4-91b9-4adb54c1a037@tu-dortmund.de>
-Content-Language: en-US
-In-Reply-To: <c9fc9e0a-0837-49b4-91b9-4adb54c1a037@tu-dortmund.de>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <81b9d00f-7568-4bcd-9b77-2f6de3162d65@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: _GRVGeuooRgFfRFu6BAqMzxBWdIDt1nG
+X-Proofpoint-GUID: _GRVGeuooRgFfRFu6BAqMzxBWdIDt1nG
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA3MDE1MSBTYWx0ZWRfX5Nx4Y81I/MKJ
+ 4VKZR+UY3eS13OOhySHiskovVwSRk/B1X9sKCCbkYjs+C8NaNCgGjS4TSds1mDHK7YFb05EV2mK
+ BUOyG4MXNLfVdacy6aaCfumKT/XXbD7cg+Mlu8TVAFsUGBeP6PW6/J8Vu68c3/QHoRoUS6Rzltt
+ WPhUng8P52MyHOVjuUSghsmMogmhActU7tK6t6QCjeucBe+GTM7CxbyfcjYSYuRAb53k6sNCPKf
+ Iq7KIKZE+vEE4z8/TysitOMLAk/iVNSnnsqmN4UUoWKga+zR+NRqM6INlnu//wX8zQw2gFnxGjU
+ l4bY/RHvgu8mnM8cnP7Kmzerg8j70Yo5eh2iFlRP/5PiyBeJHXHzEGfnIdm5iyThXq0l0HrySdy
+ +FMRMAOfmbGYlDuH5bze8uECvVodizO+G2rLuKE6YrnHwIfu4wF2Xle/BgIx2rrMw0TZm1A+Mbt
+ lQIwz3ETTMc6vwuG4XA==
+X-Authority-Analysis: v=2.4 cv=UbFhjqSN c=1 sm=1 tr=0 ts=69fcadbc cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
+ a=qrTcMcv5DQrz4xUTKAQA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-07_01,2026-05-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=0
+ adultscore=0 priorityscore=1501 bulkscore=0 phishscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605070151
 
-On 5/7/26 08:32, Simon Schippers wrote:
-> On 5/7/26 00:56, Michael S. Tsirkin wrote:
->> On Wed, May 06, 2026 at 06:28:06PM -0400, Michael S. Tsirkin wrote:
->>> On Wed, May 06, 2026 at 04:10:33PM +0200, Simon Schippers wrote:
->>>> This commit prevents tail-drop when a qdisc is present and the ptr_ring
->>>> becomes full. Once an entry is successfully produced and the ptr_ring
->>>> reaches capacity, the netdev queue is stopped instead of dropping
->>>> subsequent packets. If no qdisc is present, the previous tail-drop
->>>> behavior is preserved.
->>>>
->>>> If producing an entry fails anyways due to a race, tun_net_xmit() drops
->>>> the packet. Such races are expected because LLTX is enabled and the
->>>> transmit path operates without the usual locking.
->>>>
->>>> The __tun_wake_queue() function of the consumer races with the producer
->>>> for waking/stopping the netdev queue, which could result in a stalled
->>>> queue. Therefore, an smp_mb__after_atomic() is introduced that pairs
->>>> with the smp_mb() of the consumer. It follows the principle of store
->>>> buffering described in tools/memory-model/Documentation/recipes.txt:
->>>>
->>>> - The producer in tun_net_xmit() first sets __QUEUE_STATE_DRV_XOFF,
->>>>   followed by an smp_mb__after_atomic() (= smp_mb()), and then reads the
->>>>   ring with __ptr_ring_produce_peek().
->>>>
->>>> - The consumer in __tun_wake_queue() first writes zero to the ring in
->>>>   __ptr_ring_consume(), followed by an smp_mb(), and then reads the queue
->>>>   status with netif_tx_queue_stopped().
->>>>
->>>> => Following the aforementioned principle, it is impossible for the
->>>>    producer to see a full ring (and therefore not wake the queue on the
->>>>    re-check) while the consumer simultaneously fails to see a stopped
->>>>    queue (and therefore also does not wake it).
->>>>
->>>> Benchmarks:
->>>> The benchmarks show a slight regression in raw transmission performance
->>>> when using two sending threads. Packet loss also occurs only in the
->>>> two-thread sending case; no packet loss was observed with a single
->>>> sending thread.
->>>>
->>>> Test setup:
->>>> AMD Ryzen 5 5600X at 4.3 GHz, 3200 MHz RAM, isolated QEMU threads;
->>>> Average over 50 runs @ 100,000,000 packets. SRSO and spectre v2
->>>> mitigations disabled.
->>>>
->>>> Note for tap+vhost-net:
->>>> XDP drop program active in VM -> ~2.5x faster; slower for tap due to
->>>> more syscalls (high utilization of entry_SYSRETQ_unsafe_stack in perf)
->>>>
->>>> +--------------------------+--------------+----------------+----------+
->>>> | 1 thread                 | Stock        | Patched with   | diff     |
->>>> | sending                  |              | fq_codel qdisc |          |
->>>> +------------+-------------+--------------+----------------+----------+
->>>> | TAP        | Received    | 1.132 Mpps   | 1.133 Mpps     | +0.1%    |
->>>> |            +-------------+--------------+----------------+----------+
->>>> |            | Lost/s      | 3.765 Mpps   | 0 pps          |          |
->>>> +------------+-------------+--------------+----------------+----------+
->>>> | TAP        | Received    | 3.857 Mpps   | 3.905 Mpps     | +1.2%    |
->>>> |            +-------------+--------------+----------------+----------+
->>>> | +vhost-net | Lost/s      | 0.802 Mpps   | 0 pps          |          |
->>>> +------------+-------------+--------------+----------------+----------+
->>>>
->>>> +--------------------------+--------------+----------------+----------+
->>>> | 2 threads                | Stock        | Patched with   | diff     |
->>>> | sending                  |              | fq_codel qdisc |          |
->>>> +------------+-------------+--------------+----------------+----------+
->>>> | TAP        | Received    | 1.115 Mpps   | 1.092 Mpps     | -2.1%    |
->>>> |            +-------------+--------------+----------------+----------+
->>>> |            | Lost/s      | 8.490 Mpps   | 359 pps        |          |
->>>> +------------+-------------+--------------+----------------+----------+
->>>> | TAP        | Received    | 3.664 Mpps   | 3.549 Mpps     | -3.1%    |
->>>> |            +-------------+--------------+----------------+----------+
->>>> | +vhost-net | Lost/s      | 5.330 Mpps   | 832 pps        |          |
->>>> +------------+-------------+--------------+----------------+----------+
->>>>
->>>> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
->>>> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
->>>> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
->>>> ---
->>>>  drivers/net/tun.c | 25 +++++++++++++++++++++++--
->>>>  1 file changed, 23 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
->>>> index fc358c4c355b..d9ffbf88cfd8 100644
->>>> --- a/drivers/net/tun.c
->>>> +++ b/drivers/net/tun.c
->>>> @@ -1018,6 +1018,7 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
->>>>  	struct netdev_queue *queue;
->>>>  	struct tun_file *tfile;
->>>>  	int len = skb->len;
->>>> +	int ret;
->>>>  
->>>>  	rcu_read_lock();
->>>>  	tfile = rcu_dereference(tun->tfiles[txq]);
->>>> @@ -1072,13 +1073,33 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
->>>>  
->>>>  	nf_reset_ct(skb);
->>>>  
->>>> -	if (ptr_ring_produce(&tfile->tx_ring, skb)) {
->>>> +	queue = netdev_get_tx_queue(dev, txq);
->>>> +
->>>> +	spin_lock(&tfile->tx_ring.producer_lock);
->>>> +	ret = __ptr_ring_produce(&tfile->tx_ring, skb);
->>>> +	if (!qdisc_txq_has_no_queue(queue) &&
->>>> +	    (__ptr_ring_produce_peek(&tfile->tx_ring) || ret)) {
->>>> +		netif_tx_stop_queue(queue);
->>>> +		/* Paired with smp_mb() in __tun_wake_queue() */
->>>> +		smp_mb__after_atomic();
->>>> +		if (!__ptr_ring_produce_peek(&tfile->tx_ring))
->>>> +			netif_tx_wake_queue(queue);
->>>> +	}
->>>> +	spin_unlock(&tfile->tx_ring.producer_lock);
->>>> +
->>>
->>> There's a weird corner case here when tx_queue_len is 0
->>> but a qdisc has been configured - it looks like that
->>> currently it just drops all packets, with this change,
->>> the qdisc will get stuck permanently.
->>>
->>> I suspect just checking tx_ring.size should fix it.
->>> Or if you feel adventurous, change return code for __ptr_ring_produce
->>> to distinguish between "no ring" and "no space".
->>
->>
->> __ptr_ring_produce_peek really.
->>
+On 2026/05/05 03:25 PM, Harsh Prateek Bora wrote:
 > 
-> Yes, I like the approach of returning this from
-> __ptr_ring_produce_peek(). Then I will do a switch on the return value
-> in tun_net_xmit().
+> 
+> On 30/04/26 11:19 am, Amit Machhiwal wrote:
+> > Add documentation for the KVM_PPC_GET_COMPAT_CAPS ioctl to the KVM API
+> > documentation.
+> > 
+> > The ioctl exposes host processor compatibility modes supported for
+> > nested KVM guests on PowerPC systems.
+> > 
+> > Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+> > ---
+> >   Documentation/virt/kvm/api.rst | 35 ++++++++++++++++++++++++++++++++++
+> >   1 file changed, 35 insertions(+)
+> > 
+> > diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+> > index 52bbbb553ce1..7a10c3c6cbf1 100644
+> > --- a/Documentation/virt/kvm/api.rst
+> > +++ b/Documentation/virt/kvm/api.rst
+> > @@ -6555,6 +6555,41 @@ KVM_S390_KEYOP_SSKE
+> >   .. _kvm_run:
+> > +4.145 KVM_PPC_GET_COMPAT_CAPS
+> > +-----------------------------
+> > +:Capability: KVM_CAP_PPC_COMPAT_CAPS
+> > +:Architectures: powerpc
+> > +:Type: vm ioctl
+> > +:Parameters: struct kvm_ppc_compat_caps (out)
+> > +:Returns:
+> > +	0 on successful completion,
+> > +	-EFAULT if ``struct kvm_ppc_compat_caps`` cannot be written
+> 
+> -EINVAL also needs to be documented?
 
-Sashiko reports the same :)
-
-
-So for the v11 I will:
-
-- Change __ptr_ring_produce_peek() to return -ENOSPC / -EINVAL? (for 0
-  sized ring) / 0
-
-- Lock the ring.consumer_lock in __tun_detach() to avoid a race with
-  consumer (Sashiko).
+We do not currently return -EINVAL for this ioctl, so I did not document it. As
+implemented, the only explicit error documented here is -EFAULT when struct
+kvm_ppc_compat_caps cannot be written. Please let me know if I am missing a case
+where -EINVAL should be returned.
 
 > 
-> Additionally, I should wake up in tun_queue_resize() after calling
-> ptr_ring_resize_multiple_bh(). For a new dev->tx_queue_len > 0, it
-> should be fine without waking, but for 0 it is not.
+> > +
+> > +IBM POWER system server-based processors provide a compatibility mode feature
+> > +where an Nth generation processor can operate in modes consistent with earlier
+> > +generations such as (N-1) and (N-2).
+> > +
+> > +This ioctl provides userspace with information about the CPU compatibility modes
+> > +supported by the current host processor for booting the nested KVM guests on
+> > +PowerNV (KVM nested APIv1) and PowerVM (KVM nested APIv2) platforms.
+> > +
+> > +::
+> > +
+> > +  struct kvm_ppc_compat_caps {
+> > +         __u32   flags;
+> > +         __u64   compat_capabilities;    /* Capabilities supported by the host */
+> > +  };
+> > +
+> > +The ``compat_capabilities`` bit field describes the processor compatibility
+> > +modes supported by the host. For example, the following bits indicate support
+> > +for specific processor modes.
+> > +
+> > +::
+> > +
+> > + bit 1: KVM guests can run in Power9 processor mode
+> > + bit 2: KVM guests can run in Power10 processor mode
+> > + bit 3: KVM guests can run in Power11 processor mode
 > 
->>
->>>
->>>> +	if (ret) {
->>>> +		/* This should be a rare case if a qdisc is present, but
->>>> +		 * can happen due to lltx.
->>>> +		 * Since skb_tx_timestamp(), skb_orphan(),
->>>> +		 * run_ebpf_filter() and pskb_trim() could have tinkered
->>>> +		 * with the SKB, returning NETDEV_TX_BUSY is unsafe and
->>>> +		 * we must drop instead.
->>>> +		 */
->>>>  		drop_reason = SKB_DROP_REASON_FULL_RING;
->>>>  		goto drop;
->>>>  	}
->>>>  
->>>>  	/* dev->lltx requires to do our own update of trans_start */
->>>> -	queue = netdev_get_tx_queue(dev, txq);
->>>>  	txq_trans_cond_update(queue);
->>>>  
->>>>  	/* Notify and wake up reader process */
->>>> -- 
->>>> 2.43.0
->>
+> May be use H_GUEST_CAP_POWER9 and friends ?
+
+I used the bit descriptions directly since this is documenting the uAPI bitmap
+layout, which felt clearer for userspace than using only H_GUEST_CAP_POWER9 and
+friends. But I’m happy to mention those macros as well if you think that
+improves clarity.
+
+Thanks again for reviewing the series. I will wait a little longer for any
+further feedback before posting v2.
+
+Thanks,
+Amit
+
+> 
+> > +
+> >   5. The kvm_run structure
+> >   ========================
+> 
