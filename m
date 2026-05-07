@@ -1,198 +1,199 @@
-Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1843D3C661D
-	for <kvm@vger.kernel.org>; Thu,  7 May 2026 16:56:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778172976; cv=pass; b=jaoriLQyQCr7AK4YrwLg1eFu/q252JqVf/p8OMljSd8ytvWfDcu5D+AD7BbfLeWO60xsFYPMxH+2WtlHY4rwW0yLeH8H63RHhkYnHPrRkUNHVdApceztz8m95i6ncJQm9V1hU0B7+yzy4Py5OvRFD/rXpSeiGOlJwCKOA2gWNKQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778172976; c=relaxed/simple;
-	bh=yU58Xq2jlsKwRvWVzMF/35DqD9SuerVG6YnTfgrQsdg=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UMYkESBYgFBafI1ivfFRiYWEI9356qfoWS61LXUXkEuBoIRAy4YOKFqD4cOMhi+/Db1hJ2dbS0JteRXvQVJgM3LfGrDliny43kQz9dKl54ALMLmGHkMnKIhD2g2Db9/bFBxfAlzrUCRSxUOd4i1PbstD1TRdwoffKSEWLOWQy/8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=X+qM3eJX; arc=pass smtp.client-ip=209.85.222.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB765401A0E
+	for <kvm@vger.kernel.org>; Thu,  7 May 2026 16:56:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778172977; cv=none; b=A9tDXJK98JjCkEi8YE+ij27FLME+RpfnDyUfWY6CRdT93uvbw0ZDM1eeZ2u2X0Jh2SLnj43NPRjQCCSOCBmjB6VvhKOYeaAgcXfuNvLJ/6tzcGfe6PBkbIpjjq6PUOC8JLCeL9HquPfbz+0Stv0qYtLLcImy2hF8tyy5SGFOcyM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778172977; c=relaxed/simple;
+	bh=+2wx6vKDw+c0VU0AZTmqbnZRdl3cwkeppMWHRhyO0Go=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=a/tZ2SyxTeSZWB0HU+320157lxDkGioCrQSBRPVjFTgSfk3jZLTfXMa7wb06uEpgtMY91BI5WhlVUMsXFhyT7oHfP8ROctr7IFaBKoUjNGVBcldzplFNUgLOyzxADyYvav09JArJkeY7TNZi7WeVNctEA5p2dPNnEnXhFqb9haM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=qL/Obi5d; arc=none smtp.client-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="X+qM3eJX"
-Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-9568159ee07so631858241.1
-        for <kvm@vger.kernel.org>; Thu, 07 May 2026 09:56:13 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778172973; cv=none;
-        d=google.com; s=arc-20240605;
-        b=egtl89zeoLaa4N+VJZtYZzu4+5xgrQUqfDYP0yh808EJmla8ofcL4c0Z+9UnirhZxx
-         ijMN0aiF0gUWVGUAsUkwaF/SD3yyGwyZrmu5slPvqivONxxAOwHiMaBmcXEZU2hQeakN
-         49XPggrpu9NSR5vNgoBcG7szmmMC1eFWShR4FIkPJK5+CvBJL54U7lWmamPIXRXmOmM7
-         YpwsyFhLuxD3/+2OEfR3Eb/LEZ/FacmXNBuNK4AEL3ui3MBy11NbwufI4f3b0es/0kK0
-         WS6LYkdfpNvprw1gtsYq7gprQUMyJFh7SI0chckykHz8u6zPZmTEeh8WkQ0SgJcdXn8t
-         QMYA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=fxKJNK3JYOXtq/6RpdHSxauIPnnYNnrQjQPiGKEVycA=;
-        fh=GVwIAchlG+ji4OE/hk+Bn/4qFWHF1gX5kj7QGkXAA6k=;
-        b=FilLkuiqDS5bKAsrpdKhUOQYXCnver5K71HZcm9okmYznbcaOyb6BqHiPoHOH55i/5
-         W/DDbitTui3KepqkCQi7wojBFV4PeKOD6sxoQTA2V/iGszUKe6H51sg1zJkEo3ngJF97
-         6icgQA1ldDxq53rO9NP3zO0Mm6KTJAaOMwNTEKw4pr5mVOfWhrX7zdZ/yB40AeHm6J9u
-         +vOCZedOK4yMHDxe8QQWzN6/azKGUVfm2wX5rrn/92JWScwawANFGy1ybE1H2criVFmm
-         ax+UnZNlTHp+D+l5KJARMBaIxiz5DCAGJVHA1K+siTsrdYxw9blmHC/1ViT4nWiEiHFp
-         lfkg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778172973; x=1778777773; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fxKJNK3JYOXtq/6RpdHSxauIPnnYNnrQjQPiGKEVycA=;
-        b=X+qM3eJXNBkXxwX1JTjGOqY+SYIjD7OSQTTVvvH/d7Nt/MhXpv/9WeJL03HkywvFpu
-         lDNyX+dclfgyAnhD+8YhHeNs5NOIBeliQTxtb8XsPAmy168xewtjrqpiDUODMgKv8j4G
-         S4MFtygN/7tarwoktBPjP2v4hmJwm/cQhkSRO6F3xWWFtwvysExswW6eESe7LkSwF6ZA
-         zTDl6THueBMTmPSkjEHcp50WYWxQefW/LSpbIvVkvqecKpIvnbleFhnWRg4wFwJnVCem
-         rwB+sfNX0dtugfmtyQV7/a7IBs7+GPxCDbM5fVrClxK3C8X2tJ9hpm4tNg5S8jMzzLdC
-         lIRA==
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="qL/Obi5d"
+Received: from pps.filterd (m0109334.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64746DnJ128275
+	for <kvm@vger.kernel.org>; Thu, 7 May 2026 09:56:15 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=AStKs7gIf+H7qi7ZzQdIOFiCgW57yK3MpNAkRUF2is0=; b=qL/Obi5dvBwt
+	i9c2sv9SNtqXpLw63YE0iVFyLwL6b4BaMhACgc6cvxDCuo+iXEgY5AqcK8DYXOfG
+	Oy2Cy3R2kU+21KVGKEdcKnO+JORfiteK8SES7tlFIxyrNJzXgNQnK5HgJvFp3gp9
+	ZnR3EfXRenjXlRDNZApwgtgRy4IabZdUKVivNibPvjxRcMi9IvB0Db0W3LQCsLet
+	oDdCWe82S8Q9Od6e/B0LJxAkBUtfBo3NK8J9ZB1phV+Om3BTlNLhHQh4kwQdPjrt
+	Yeq/XkO+njD2M7PWY6DdNkD4qHPoIjFPhOFiwolRaAFuyZWZzKXpW4t5P5TGgTnF
+	1qzC6F8MXg==
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com [209.85.128.70])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4dwgjh8xmb-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Thu, 07 May 2026 09:56:14 -0700 (PDT)
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-486fa07f2bbso6855305e9.2
+        for <kvm@vger.kernel.org>; Thu, 07 May 2026 09:56:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1778172973; x=1778777773;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=fxKJNK3JYOXtq/6RpdHSxauIPnnYNnrQjQPiGKEVycA=;
-        b=gnKz/Yeu8Xsv7ivk9MQnms4Ayb/RPW+ys2OhEhcrTuJyL5ZUxztU2DDBkzHK+Sje1u
-         ieaG83rNBH4mf0MCOTCXJmVxutcILFuQeW2PwAP3sVxibYfk1ZTRR1XD7JmtcqmEDCn+
-         Fr8QHWUPLstw5degncNc2uefcoJfJv4B/cLvUnlOx1QplI95quxuR+y+I72k+chnUimO
-         BvbZxysX88/+zdE+zO/Frj+7uEg/hlaFzhZYhZ8QavxYflqyPSj1IVHcmUVKfzSMXl/c
-         RN5bJRRFn0OyE+aRJwqtjb7/S7sV4LymrOm0uT8uw8sf8XLJpaLGziwZKoBkhCk/4Juc
-         7uLw==
-X-Forwarded-Encrypted: i=1; AFNElJ88H/gE/vYusYoJhjxTBLPVYGuhlSxh00CBMn+7WaxQd7kw1rvNuZir8EgKAihD9NTs0c8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4UkeT//R2Bzo6qNYPGDK3OpKpFq65xGtPJKCdvjK6Lrxvz8HL
-	EfqwL81AJt6Ijmvq1Xvz3sF/m+dFqpEJ+DxhmRBFy5XeClHs6esSztyaDBEM2IY9YhWAVWhBPy4
-	X78SGmV4VbaAXhYYTEhOofnZG5ff9azPsitnDbVxe
-X-Gm-Gg: AeBDievZOsHNH85+nw5sZ8W3R9/sT5IXsnjmXVi13ybmSI3gB1yKoYZOtTMCYpdU/M2
-	IFc3XtpIzLl+LB3+pdFjSzKPUSxflB/e0GfgplRHOBbA7oJdb+6/kfXwBZGugHYBGM5o5Pe4F/W
-	MyTfk7MSXEli3UXTAAzwaUK9iOuIvi8aM97A6CMyZzye5DHN0JAS/s/mJVunQtLY8DxOQ4TK5Gh
-	eOs30PdhlMIE6szXwHfsv0OPnFo4+Ijtzqg8boed9rsVPY3qTgB9iOX86F6CkdQmLiqkixBTGwp
-	dZ/1QA2jz9fHk/m+SPnuTTVvUF+EkCZY0M0DaRsMqI/DMEHlBWGKLaZR/Z7HWKGrJGk76uKnHal
-	0r081
-X-Received: by 2002:a05:6102:3f52:b0:604:f29d:84be with SMTP id
- ada2fe7eead31-630f8e78530mr5085650137.3.1778172972306; Thu, 07 May 2026
- 09:56:12 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 7 May 2026 09:56:11 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Thu, 7 May 2026 09:56:11 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <n5ce32wumzeiqqyqutom4apy2kqfetbvusc6j4k2xarsska5mw@klp5bmy7qhfm>
-References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
- <20260428-gmem-inplace-conversion-v5-10-d8608ccfca22@google.com> <n5ce32wumzeiqqyqutom4apy2kqfetbvusc6j4k2xarsska5mw@klp5bmy7qhfm>
+        bh=AStKs7gIf+H7qi7ZzQdIOFiCgW57yK3MpNAkRUF2is0=;
+        b=PIrfiVehM1kBlH3cKshvPRXer1uBniY9Pxa8lD21esTHkb8ObEFRbi8hG5fkHe8HY4
+         MVPnN8YGK+l6VbFnboDENig9ezQfSHEA85K4IWeHJX9HZaAky98m84PuCScz3sKeVdc0
+         PjCpDhMwzblVvfuhFLef7V3twCRGVtbLthx1YLWeNL6N1B4XcMmxn8j9Xe1jxC8iJh8h
+         LTB34Xd+CDEpCux5SoYflNTjKXmfohE4H6TcW6Q8+zASfznL1A6Wjq5nNt3lTMHKwHnO
+         f45RwtfY9r9r0CoMpoXkzHqVmZ85xRsD6Xpp+t/BFgRAicXpYBMg67rweJeOSOe8BFvZ
+         G1rw==
+X-Forwarded-Encrypted: i=1; AFNElJ/lXGNjut3a5xm40QhIsqdbqwjXxdMDN8T9qzaakwAldMu1eqko7G3yvZQHFXfH/6/H/5U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKfzbXuKD9Q93D6ZC8X7dMkb5OgrDM7lmvDuWsoVfkArzwixFH
+	CordpC0DqKYgabAYPwTViEH44rQwO8aBiUk805KSKO0fBW/OOAzhmmPQQ7PuLUH6PnH42HQLLaY
+	pRYoBHPxUoyBWQn3jwbLxuTiaop6YIcbiClkIE52mKr5kEd5P4DGO
+X-Gm-Gg: AeBDieurt5rHl1xG+jm5/YAoWjLRQBU5E2sYgLRMQGzB5imIH73f1cUgWJFBmnKfUL9
+	mQVVxQ5MTHkc0A9U0C0zXR84lEFM9trndzPMZaiAwHmiB0WgPh9fkxDSFwTdX4sJBDh5AVSci2W
+	vbEmjjBBe0G37bzeMVHnTMIcshxmbG5qu8b9wnukkFtWlp4cUDyzLR5Wrdm8jPrnM0/luE05Iai
+	2C/rZigN/t/xTzFfFTe48jask70M/b2S6390hnbDNvvgzEqmXWimlg5WNw8nT9AXm0iSxn4yAs7
+	v0du6b+4AOJiqcFPOW2IlSquHE/Lyq5mB0jXGjk4S5iHuQpPe7HEuBREnX9MDmjiwEoTQ/1SPhw
+	2lyUyVY8lEOPJI4/KWB5/dkS299pknBSX8Xb49lu458hWpiJXa7IdFpFn2HOxkbxmtnInY+3JRt
+	sRvf/x6T7P6Ym14M2Apy2Mf+VjaRfHOVSUZYOe9Ot9byRuvgY0/oHePQB1QdUf4sjZym2yAymwa
+	L5DQNhwehSKmmUG8XJzw+8=
+X-Received: by 2002:a05:600c:4e0c:b0:48a:55d8:7882 with SMTP id 5b1f17b1804b1-48e51e16e58mr154923155e9.9.1778172973461;
+        Thu, 07 May 2026 09:56:13 -0700 (PDT)
+X-Received: by 2002:a05:600c:4e0c:b0:48a:55d8:7882 with SMTP id 5b1f17b1804b1-48e51e16e58mr154922585e9.9.1778172973017;
+        Thu, 07 May 2026 09:56:13 -0700 (PDT)
+Received: from ?IPV6:2001:8b0:8b6:13d4:102e:f2af:e074:5cde? (e.d.c.5.4.7.0.e.f.a.2.f.e.2.0.1.4.d.3.1.6.b.8.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:8b6:13d4:102e:f2af:e074:5cde])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e642f8d32sm369175e9.25.2026.05.07.09.56.11
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 May 2026 09:56:12 -0700 (PDT)
+Message-ID: <7d370a5d-3730-42f0-8656-14ad9c0da682@meta.com>
+Date: Thu, 7 May 2026 17:56:11 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Thu, 7 May 2026 09:56:11 -0700
-X-Gm-Features: AVHnY4IiEmQejwyUzKbSGtsBzFH7WMpl699YC0dogi8imsP9-pFhPzVdvXeVDZc
-Message-ID: <CAEvNRgF9+Gr7UVEq-E2SQEb_XOQQMOXy9F_A2tA=DbNV_fJ0EQ@mail.gmail.com>
-Subject: Re: [PATCH RFC v5 10/53] KVM: guest_memfd: Add basic support for KVM_SET_MEMORY_ATTRIBUTES2
-To: "Liam R. Howlett" <liam@infradead.org>
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5/9] vfio/pci: Provide a user-facing name for BAR mappings
+Content-Language: en-GB
+To: Alex Williamson <alex@shazbot.org>
+Cc: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
+        Alex Mastro <amastro@fb.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>,
+        Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
+        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@kernel.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
+        Pranjal Shrivastava <praan@google.com>,
+        Alistair Popple
+ <apopple@nvidia.com>,
+        Vivek Kasireddy <vivek.kasireddy@intel.com>,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+        kvm@vger.kernel.org
+References: <20260416131815.2729131-1-mattev@meta.com>
+ <20260416131815.2729131-6-mattev@meta.com>
+ <20260501164430.5d3ea683@shazbot.org>
+From: Matt Evans <mattev@meta.com>
+In-Reply-To: <20260501164430.5d3ea683@shazbot.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=FpA1OWrq c=1 sm=1 tr=0 ts=69fcc42e cx=c_pps
+ a=Q4jRaax7EcWM5fECTC1wcQ==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
+ a=crHB47gyY4rKiduisYu9:22 a=VwQbUJbxAAAA:8 a=VabnemYjAAAA:8
+ a=L20xLjZDwgROH_O_AugA:9 a=QEXdDO2ut3YA:10 a=nJq5_VNI1X7IEIKzvdHs:22
+ a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-GUID: IWgxm_ZcBZmEEXj4cGUaEW8BLfzVuUwu
+X-Proofpoint-ORIG-GUID: IWgxm_ZcBZmEEXj4cGUaEW8BLfzVuUwu
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA3MDE3MCBTYWx0ZWRfX1UALNBI+W0tI
+ txS4WxsbeFY36eeaf7mE5PoRRz9d1jCRsqxllJhRYY0+u8pbwJ8tLU7ReAmtQE660Xjrs73FlKz
+ GusFe+k2jci/elCupEXap8JBR6Mu6tD8gqyprVB/FssRkM/nPX/EAG1ah7/n8rAUEtTSpNO+F9+
+ UA8+doir49ySp6/VI76DLDNB6Nxzjm7v2dfzHoZOY9iulFWUTKnZ+/lRIpF59ig4mKn6mZeaTw9
+ mbXOrgkc72mF4Xwckx0x+RZoX4RmjTh/h4AULZF1FO+NXkvRq57TN303YswavJBEGnJCZuccT6x
+ OZeKzT2Jp1q5VcnEJKMTAiXH6rx5n/y1p3Ion0w4WvRa5syT1CQB+r2KGDqxJbYLCDSt52XMF5p
+ E18dztDp907vOZBoItMZVfg+hd271BsWDpZ7Yy0yb2mL5VKTZ8aCfwv/AFLTBoQ0KIY0oyjKP7m
+ EjpwjpYOxwJwEruzEJg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-07_02,2026-05-06_01,2025-10-01_01
 
-"Liam R. Howlett" <liam@infradead.org> writes:
+Hi Alex,
 
-> On 26/04/28 04:25PM, Ackerley Tng via B4 Relay wrote:
+On 01/05/2026 23:44, Alex Williamson wrote:
+> 
+> On Thu, 16 Apr 2026 06:17:48 -0700
+> Matt Evans <mattev@meta.com> wrote:
+> 
+>> Since converting BAR mmap()s to using DMABUFs, we lose the original
+>> device path in /proc/<pid>/maps, lsof, etc.  Generate a debug-oriented
+>> synthetic 'filename' based on the cdev, plus BDF, plus resource index.
 >>
->> [...snip...]
+>> This applies only to BAR mappings via the VFIO device fd, as
+>> explicitly-exported DMABUFs are named by userspace via the
+>> DMA_BUF_SET_NAME ioctl.
 >>
->> +/*
->> + * Preallocate memory for attributes to be stored on a maple tree, pointed to
->> + * by mas.  Adjacent ranges with attributes identical to the new attributes
->> + * will be merged.  Also sets mas's bounds up for storing attributes.
->> + *
->> + * This maintains the invariant that ranges with the same attributes will
->> + * always be merged.
->> + */
->> +static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attributes,
->> +				    pgoff_t start, size_t nr_pages)
->> +{
->> +	pgoff_t end = start + nr_pages;
->> +	pgoff_t last = end - 1;
->> +	void *entry;
->> +
->> +	/* Try extending range. entry is NULL on overflow/wrap-around. */
->> +	mas_set_range(mas, end, end);
->> +	entry = mas_find(mas, end);
-
-Thank you for your reviews!
-
->
-> Please read the documentation as I believe you have a bug here.  What
-> happens if there is another range stored higher than end + 1?
->
-
-The invariant in this maple tree is that contiguous ranges with the same
-attribute are stored as a single range.
-
-The goal of this first part is to get the entry at the index just after
-the requested range, and see what the attribute there is. If that
-attribute is what we're about to set, extend the requested range for
-storing to the end of that range.
-
-If there is another range higher than end + 1, with the invariant
-maintained, that attribute has to be different than the attribute stored
-at end. Hence, we only want to extend this requested range up till end.
-
-> Do you have testing of these functions somewhere?
->
-
-GMEM_CONVERSION_MULTIPAGE_TEST_INIT_SHARED(indexing, 4) tests setting
-attributes in ranges. If test_page is 2,
-
-1. [0, 4) starts off shared (4 is the number of pages in the guest_memfd)
-2. [2, 3) is converted to private
-    => so the ranges should now be [0, 2), [2, 3), [3, 4)
-3. [2, 3) is converted back to shared
-    => so the ranges should now be [0, 4)
-
-I verified this by inserting some trace_printk()s and inspecting manually.
-
->> +	if (entry && xa_to_value(entry) == attributes)
->> +		last = mas->last;
->> +
->> +	if (start > 0) {
->> +		mas_set_range(mas, start - 1, start - 1);
->> +		entry = mas_find(mas, start - 1);
->> +		if (entry && xa_to_value(entry) == attributes)
->> +			start = mas->index;
+>> Signed-off-by: Matt Evans <mattev@meta.com>
+>> ---
+>>   drivers/vfio/pci/vfio_pci_dmabuf.c | 27 +++++++++++++++++++++++++--
+>>   1 file changed, 25 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
+>> index a12432825e5e..04c7733fe712 100644
+>> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
+>> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+>> @@ -4,6 +4,7 @@
+>>   #include <linux/dma-buf-mapping.h>
+>>   #include <linux/pci-p2pdma.h>
+>>   #include <linux/dma-resv.h>
+>> +#include <uapi/linux/dma-buf.h>
+>>   
+>>   #include "vfio_pci_priv.h"
+>>   
+>> @@ -467,6 +468,7 @@ int vfio_pci_core_mmap_prep_dmabuf(struct vfio_pci_core_device *vdev,
+>>   {
+>>   	struct vfio_pci_dma_buf *priv;
+>>   	const unsigned int nr_ranges = 1;
+>> +	char *bufname;
+>>   	int ret;
+>>   
+>>   	priv = kzalloc_obj(*priv);
+>> @@ -479,6 +481,20 @@ int vfio_pci_core_mmap_prep_dmabuf(struct vfio_pci_core_device *vdev,
+>>   		goto err_free_priv;
+>>   	}
+>>   
+>> +	bufname = kzalloc(DMA_BUF_NAME_LEN, GFP_KERNEL);
+>> +	if (!bufname) {
+>> +		ret = -ENOMEM;
+>> +		goto err_free_phys;
 >> +	}
 >> +
->> +	mas_set_range(mas, start, last);
->> +	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
->> +}
->> +
->>
->> [...snip...]
->>
+>> +	/*
+>> +	 * Maximum size of the friendly debug name is
+>> +	 * vfio1234567890:ffff:ff:3f.7-9 = 30, which fits within
+>> +	 * DMA_BUF_NAME_LEN.
+>> +	 */
+>> +	snprintf(bufname, DMA_BUF_NAME_LEN, "%s:%s/%x",
+>> +		 dev_name(&vdev->vdev.device), pci_name(vdev->pdev), res_index);
+> 
+> Comment suggests 9 is the max res_index that can be printed, but mmap
+> only directly supports standard BARs 0-5.  Comment also uses a '-'
+> while the code uses a '/'.  Thanks,
+
+Right you are.  Fixed, but, since...
+https://lore.kernel.org/kvm/52162da4-e1cc-4f90-a95a-218d6089cd71@meta.com/
+
+...I'm keeping the resource index encoded in the vm_pgoffs and as that's
+in /proc/<pid>/maps it doesn't need to be in the name. I.e., an example
+mapping of BAR 2 looks like:
+
+ffffa9330000-ffffad300000 rw-s 20000030000 00:0b 12 /dmabuf:vfio0:0000:00:03.0
+
+Thanks,
+
+Matt
