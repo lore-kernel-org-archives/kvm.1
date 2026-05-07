@@ -1,309 +1,138 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FF240DFC2;
-	Thu,  7 May 2026 03:46:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DAB2D5C7A;
+	Thu,  7 May 2026 05:24:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778125604; cv=none; b=UvMh1jEoMgvVmrHECQ9z9uvL1F53NWsc8u/+3QJDdyDRTmyQv8D9rWjn/b7W9RKnxGrXERclBp5J/W2ECL8Zkaf+4kwBGlZB/PcQTva0hn9U7j22dCWxY73yLhmOyhoh9ABJvgKTzMMBHqqUAXNtgvxb8ahB7Ht8oDAJR+Ro2vA=
+	t=1778131468; cv=none; b=WZaK8vUra9bOtZH0fF6/Yw7fXa4OuozBItb2MyDGfsa3q9RzSrhFX+jpwv5DeXVMYVgVQZv6TMWBaM5dESdA7tlj2VHrFnukEj5Cl0oWg3DNrVtoCLLQvPsRBFE6FF6C6O7AHHRb1WwyJQW7g0MY8VCtfoGRLESFjJhQEd0xhos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778125604; c=relaxed/simple;
-	bh=xxcrdSXmNdhPWwzMlPrzwxnNaC+rR2uDPFDlV1fwyD4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iFGe9q82jnAcx65BitUNBLwD/IU7u7+pDWt+eWDJ3LlJOnmb3zy7MOvIUPzd3yYk5HcIADgYNR49BGUi6OFtca17N7pHvXbMtt9Oz011hofB+wVibeQ06/4uNoVFfBFBH5s8xbyk0kRn8wOuJ599/kIeLV8co8C+fJVsD+8hYqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=aODkj6ZG; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1778131468; c=relaxed/simple;
+	bh=TtGByUFfgFVb/4oaOkU+3mTd5dlepSoS4j9QgvOdAcs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GTDkLX9/rpm/WcUtGqP9Inu8pCxjkZ8L/JVMRsqWD9rG0dVVG+pIBFyieoVG9Y5A9WMUFDzs7MW+NTMnqMbTD/bNabpI5xGGltf/jH/AEoZ9cbjW8odMmrObBq3A7B9h9ATvT7ssoaUQ2YjmtZ+mzM5SXZVdacQNnYMSsQ8FpxI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=YpxmtDkW; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="aODkj6ZG"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=LFhQhkh41UePai+TD3hLFI5QjWkx+fFqVjyduNFwnjk=; b=aODkj6ZGpdU9IY0LeVaYF/frYm
-	/DoQPAz37gHhg16BeWUko4CcjIQ5bMs198GG9t4zoGR8E244k4HrfRF+k1S3GqyivqRbLH2IL0Hnm
-	0pcb6b5ElyCzPiko/s/xRyKmTc0x67HTBdLBNwzJOT2QkieLCKJNeNgHqxWF6e6Ky2FgNeNFESqk5
-	pLge4I1B7HNF3hrw6SAcrdO9+r0o80YqrhIO31/tXJbChU6BaPbJA4zHmStpf7ngYYEqECoo+Dvpe
-	+5+Lyv8DGXmSzvR56zkyHbAsHuApJTOBoTKeUhLnZw1Svjef38xyl3FYUn7WB8TcVBygW+dR5lTlu
-	6LuBxKCA==;
-Received: from [213.147.98.98] (helo=localhost)
-	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wKpgm-00000002fOB-39IP;
-	Thu, 07 May 2026 03:46:17 +0000
-Date: Thu, 7 May 2026 05:46:04 +0200
-From: "Liam R. Howlett" <liam@infradead.org>
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, steven.price@arm.com, 
-	tabba@google.com, willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
-	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
-	aneesh.kumar@kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, 
-	Vishal Annapurve <vannapurve@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
-	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
-	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
-	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
-	Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, 
-	Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Subject: Re: [PATCH RFC v5 10/53] KVM: guest_memfd: Add basic support for
- KVM_SET_MEMORY_ATTRIBUTES2
-Message-ID: <n5ce32wumzeiqqyqutom4apy2kqfetbvusc6j4k2xarsska5mw@klp5bmy7qhfm>
-References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
- <20260428-gmem-inplace-conversion-v5-10-d8608ccfca22@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="YpxmtDkW"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 646Mo7Dv2210426;
+	Thu, 7 May 2026 05:24:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=TucOZ0
+	sBTZFdshtdPDyBxWcOC6Ft10rot4sd8h+52sg=; b=YpxmtDkWv7KWlAHeuJIO8w
+	NqpcEj4tyZZhTrGjZw2q/AfoESH/i2qCJtwg8+M4fOt795pvOBn7pkivmJU4UpG0
+	LPTBXI6OPE7zyaKqnmlJpuwIyiTmz7vX3XU3D1vP0DNJ3mmIxm0jrqZMFuxSv5fS
+	Tqbxr3vaLJP6w78sQE4Qw9dYiN7b6+BHEzfJvc9MTHnC9huExunjQZQElwWga5LL
+	58vdaZH9R6m46YwDu0TXDZLQ4dyB6UAtgHMM2kzAjcMkFgSuWHSmMbD0CNS8R+3k
+	R3QV63bvccBFapddA1nmJAuUNpm5QoqP7LPFNPXWHoNqSaYLRGaE2w6ScH+KqW7w
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9y1m9pa-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 May 2026 05:24:16 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64759dwV013557;
+	Thu, 7 May 2026 05:24:15 GMT
+Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dwvkk1jgy-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 May 2026 05:24:15 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
+	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6475ODuj31326914
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 7 May 2026 05:24:13 GMT
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A646658053;
+	Thu,  7 May 2026 05:24:13 +0000 (GMT)
+Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 8C02C58059;
+	Thu,  7 May 2026 05:24:10 +0000 (GMT)
+Received: from [9.123.0.169] (unknown [9.123.0.169])
+	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
+	Thu,  7 May 2026 05:24:10 +0000 (GMT)
+Message-ID: <7907d821-b2f0-4f55-9763-6d419f04d01b@linux.ibm.com>
+Date: Thu, 7 May 2026 10:54:09 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260428-gmem-inplace-conversion-v5-10-d8608ccfca22@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] KVM: PPC: Book3S HV: Add H_FAC_UNAVAIL mapping for
+ tracing exits
+Content-Language: en-GB
+To: Gautam Menghani <Gautam.Menghani@ibm.com>, maddy@linux.ibm.com,
+        npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org
+Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260428084534.49781-1-Gautam.Menghani@ibm.com>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <20260428084534.49781-1-Gautam.Menghani@ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: lxxOA8XLE-8Wzx3m7j-fLuNrZphalmWy
+X-Proofpoint-GUID: 4zUHY9eC3UmHz477yT1_bcYfE0X_wwCQ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA3MDA0NyBTYWx0ZWRfX22owosNOeKce
+ ROtBVmIOK2zgv5tfJEZyCt03DW0B6P2jT/TSB6I+Bxwz8bLzuKA5uyUgOqqDF8KVrVj3baZyaju
+ 9K2J4Yg08sYcCmGylqst4CI1LHaK7cbVpdpZJQ1ndSQppepeQBhEHLTTzhFuhIkrYfJ6sHDYWf5
+ tjzUIWmr+4Z51HQms+JfR4M7Sk1eK7TLlJf01E3qqjp8jKFP5R8wa97/IOO/zSVmNgqh3aV8QiO
+ fiJmRyJz8Tz7ou0o9PZwAw5f73ABH1jaNZ3O27c6v30rlHr2qCOcunTtWTP6BJLivhPgSj97eDz
+ pPM2c+Lu8ghZgZFWuuoM7lte0bW8hlUxYTKt35L6EQAtoq4Gv8Fb2aRGquMGHzQUv01865MOuNt
+ hf5S4QN+iaJIF/iHuka0MO2h1CLLsSR0Mu7rkG8qyJBkp6xGfOfmxgQdtn6M+GCzF85BY8+BQY3
+ mw2AtK1CMPG1vcFGCpQ==
+X-Authority-Analysis: v=2.4 cv=UbFhjqSN c=1 sm=1 tr=0 ts=69fc2200 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=f7IdgyKtn90A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22
+ a=VnNF1IyMAAAA:8 a=sf-K9OUI_O-0kvPjvxEA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-06_02,2026-05-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=0
+ adultscore=0 priorityscore=1501 bulkscore=0 phishscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605070047
 
-On 26/04/28 04:25PM, Ackerley Tng via B4 Relay wrote:
-> From: Ackerley Tng <ackerleytng@google.com>
+
+
+On 28/04/26 2:15 pm, Gautam Menghani wrote:
+> From: Gautam Menghani <gautam@linux.ibm.com>
 > 
-> Introduce basic support for KVM_SET_MEMORY_ATTRIBUTES2 in guest_memfd,
-> which just updates attributes tracked by guest_memfd.
+> The macro kvm_trace_symbol_exit is used for providing the mappings
+> for the trap vectors and their names. Add mapping for H_FAC_UNAVAIL so that
+> trap reason is displayed as string instead of a vector number when using
+> the kvm_guest_exit tracepoint.
 > 
-> Validate input fields in general. Guard usage of KVM_SET_MEMORY_ATTRIBUTES2
-> by making sure requested attributes are supported for this instance of kvm.
-> 
-> A new KVM_SET_MEMORY_ATTRIBUTES2 is defined to support writes (unlike
-> KVM_SET_MEMORY_ATTRIBUTES) in addition to reads so it can provide error
-> details to userspace. This will be used in a later patch.
-> 
-> The two ioctls use their corresponding structs with no overlap, but
-> backward compatibility is baked in for future support of
-> KVM_SET_MEMORY_ATTRIBUTES2 and struct kvm_memory_attributes2 in the VM
-> ioctl.
-> 
-> The process of setting memory attributes is set up such that the later half
-> will not fail due to allocation. Any necessary checks are performed before
-> the point of no return.
-> 
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> Co-developed-by: Vishal Annapurve <vannapurve@google.com>
-> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-> Co-developed-by: Sean Christoperson <seanjc@google.com>
-> Signed-off-by: Sean Christoperson <seanjc@google.com>
+> Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
 > ---
->  include/uapi/linux/kvm.h |  13 ++++++
->  virt/kvm/Kconfig         |   1 +
->  virt/kvm/guest_memfd.c   | 114 +++++++++++++++++++++++++++++++++++++++++++++++
->  virt/kvm/kvm_main.c      |  12 +++++
->  4 files changed, 140 insertions(+)
+> v2:
+> 1. Remove the trailing comma after last element
 > 
-> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-> index 6c8afa2047bf3..e6bbf68a83813 100644
-> --- a/include/uapi/linux/kvm.h
-> +++ b/include/uapi/linux/kvm.h
-> @@ -1648,6 +1648,19 @@ struct kvm_memory_attributes {
->  	__u64 flags;
->  };
->  
-> +#define KVM_SET_MEMORY_ATTRIBUTES2              _IOWR(KVMIO,  0xd2, struct kvm_memory_attributes2)
-> +
-> +struct kvm_memory_attributes2 {
-> +	union {
-> +		__u64 address;
-> +		__u64 offset;
-> +	};
-> +	__u64 size;
-> +	__u64 attributes;
-> +	__u64 flags;
-> +	__u64 reserved[12];
-> +};
-> +
->  #define KVM_MEMORY_ATTRIBUTE_PRIVATE           (1ULL << 3)
->  
->  #define KVM_CREATE_GUEST_MEMFD	_IOWR(KVMIO,  0xd4, struct kvm_create_guest_memfd)
-> diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
-> index 3fea89c45cfb4..e371e079e2c50 100644
-> --- a/virt/kvm/Kconfig
-> +++ b/virt/kvm/Kconfig
-> @@ -109,6 +109,7 @@ config KVM_VM_MEMORY_ATTRIBUTES
->  
->  config KVM_GUEST_MEMFD
->         select XARRAY_MULTI
-> +       select KVM_MEMORY_ATTRIBUTES
->         bool
->  
->  config HAVE_KVM_ARCH_GMEM_PREPARE
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 506219e2359eb..9a26eca717047 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -552,11 +552,125 @@ unsigned long kvm_gmem_get_memory_attributes(struct kvm *kvm, gfn_t gfn)
->  }
->  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_memory_attributes);
->  
-> +/*
-> + * Preallocate memory for attributes to be stored on a maple tree, pointed to
-> + * by mas.  Adjacent ranges with attributes identical to the new attributes
-> + * will be merged.  Also sets mas's bounds up for storing attributes.
-> + *
-> + * This maintains the invariant that ranges with the same attributes will
-> + * always be merged.
-> + */
-> +static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attributes,
-> +				    pgoff_t start, size_t nr_pages)
-> +{
-> +	pgoff_t end = start + nr_pages;
-> +	pgoff_t last = end - 1;
-> +	void *entry;
-> +
-> +	/* Try extending range. entry is NULL on overflow/wrap-around. */
-> +	mas_set_range(mas, end, end);
-> +	entry = mas_find(mas, end);
+>   arch/powerpc/kvm/trace_book3s.h | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
+> 
+> diff --git a/arch/powerpc/kvm/trace_book3s.h b/arch/powerpc/kvm/trace_book3s.h
+> index 9260ddbd557f..5d272c115331 100644
+> --- a/arch/powerpc/kvm/trace_book3s.h
+> +++ b/arch/powerpc/kvm/trace_book3s.h
+> @@ -28,6 +28,7 @@
+>   	{0xea0, "H_VIRT"}, \
+>   	{0xf00, "PERFMON"}, \
+>   	{0xf20, "ALTIVEC"}, \
+> -	{0xf40, "VSX"}
+> +	{0xf40, "VSX"}, \
+> +	{0xf80, "H_FAC_UNAVAIL"}
 
-Please read the documentation as I believe you have a bug here.  What
-happens if there is another range stored higher than end + 1?
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
-Do you have testing of these functions somewhere?
 
-> +	if (entry && xa_to_value(entry) == attributes)
-> +		last = mas->last;
-> +
-> +	if (start > 0) {
-> +		mas_set_range(mas, start - 1, start - 1);
-> +		entry = mas_find(mas, start - 1);
-> +		if (entry && xa_to_value(entry) == attributes)
-> +			start = mas->index;
-> +	}
-> +
-> +	mas_set_range(mas, start, last);
-> +	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
-> +}
-> +
-> +static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
-> +				     size_t nr_pages, uint64_t attrs)
-> +{
-> +	struct address_space *mapping = inode->i_mapping;
-> +	struct gmem_inode *gi = GMEM_I(inode);
-> +	pgoff_t end = start + nr_pages;
-> +	struct maple_tree *mt;
-> +	struct ma_state mas;
-> +	int r;
-> +
-> +	mt = &gi->attributes;
-> +
-> +	filemap_invalidate_lock(mapping);
-> +
-> +	mas_init(&mas, mt, start);
-> +	r = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
-> +	if (r)
-> +		goto out;
-> +
-> +	/*
-> +	 * From this point on guest_memfd has performed necessary
-> +	 * checks and can proceed to do guest-breaking changes.
-> +	 */
-> +
-> +	kvm_gmem_invalidate_begin(inode, start, end);
-> +	mas_store_prealloc(&mas, xa_mk_value(attrs));
-> +	kvm_gmem_invalidate_end(inode, start, end);
-> +out:
-> +	filemap_invalidate_unlock(mapping);
-> +	return r;
-> +}
-> +
-> +static long kvm_gmem_set_attributes(struct file *file, void __user *argp)
-> +{
-> +	struct gmem_file *f = file->private_data;
-> +	struct inode *inode = file_inode(file);
-> +	struct kvm_memory_attributes2 attrs;
-> +	size_t nr_pages;
-> +	pgoff_t index;
-> +	int i;
-> +
-> +	if (copy_from_user(&attrs, argp, sizeof(attrs)))
-> +		return -EFAULT;
-> +
-> +	if (attrs.flags)
-> +		return -EINVAL;
-> +	for (i = 0; i < ARRAY_SIZE(attrs.reserved); i++) {
-> +		if (attrs.reserved[i])
-> +			return -EINVAL;
-> +	}
-> +	if (attrs.attributes & ~kvm_supported_mem_attributes(f->kvm))
-> +		return -EINVAL;
-> +	if (attrs.size == 0 || attrs.offset + attrs.size < attrs.offset)
-> +		return -EINVAL;
-> +	if (!PAGE_ALIGNED(attrs.offset) || !PAGE_ALIGNED(attrs.size))
-> +		return -EINVAL;
-> +
-> +	if (attrs.offset >= i_size_read(inode) ||
-> +	    attrs.offset + attrs.size > i_size_read(inode))
-> +		return -EINVAL;
-> +
-> +	nr_pages = attrs.size >> PAGE_SHIFT;
-> +	index = attrs.offset >> PAGE_SHIFT;
-> +	return __kvm_gmem_set_attributes(inode, index, nr_pages,
-> +					 attrs.attributes);
-> +}
-> +
-> +static long kvm_gmem_ioctl(struct file *file, unsigned int ioctl,
-> +			   unsigned long arg)
-> +{
-> +	switch (ioctl) {
-> +	case KVM_SET_MEMORY_ATTRIBUTES2:
-> +		if (vm_memory_attributes)
-> +			return -ENOTTY;
-> +
-> +		return kvm_gmem_set_attributes(file, (void __user *)arg);
-> +	default:
-> +		return -ENOTTY;
-> +	}
-> +}
-> +
->  static struct file_operations kvm_gmem_fops = {
->  	.mmap		= kvm_gmem_mmap,
->  	.open		= generic_file_open,
->  	.release	= kvm_gmem_release,
->  	.fallocate	= kvm_gmem_fallocate,
-> +	.unlocked_ioctl	= kvm_gmem_ioctl,
->  };
->  
->  static int kvm_gmem_migrate_folio(struct address_space *mapping,
-> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-> index ff20e63143642..4d7bf52b7b717 100644
-> --- a/virt/kvm/kvm_main.c
-> +++ b/virt/kvm/kvm_main.c
-> @@ -110,6 +110,18 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(STATIC_CALL_KEY(__kvm_get_memory_attributes));
->  EXPORT_SYMBOL_FOR_KVM_INTERNAL(STATIC_CALL_TRAMP(__kvm_get_memory_attributes));
->  #endif
->  
-> +#define MEMORY_ATTRIBUTES_MATCH(one, two)				\
-> +	static_assert(offsetof(struct kvm_memory_attributes, one) ==	\
-> +		      offsetof(struct kvm_memory_attributes2, two));	\
-> +	static_assert(sizeof_field(struct kvm_memory_attributes, one) ==\
-> +		      sizeof_field(struct kvm_memory_attributes2, two))
-> +
-> +/* Ensure the common parts of the two structs are identical. */
-> +MEMORY_ATTRIBUTES_MATCH(address, address);
-> +MEMORY_ATTRIBUTES_MATCH(size, size);
-> +MEMORY_ATTRIBUTES_MATCH(attributes, attributes);
-> +MEMORY_ATTRIBUTES_MATCH(flags, flags);
-> +
->  /*
->   * Ordering of locks:
->   *
-> 
-> -- 
-> 2.54.0.545.g6539524ca2-goog
-> 
-> 
-> 
+>   
+>   #endif
+
