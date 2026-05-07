@@ -1,177 +1,266 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36ABF41B344;
-	Thu,  7 May 2026 15:42:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4698244CF2E
+	for <kvm@vger.kernel.org>; Thu,  7 May 2026 15:44:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778168559; cv=none; b=CGVZiFrKzDjJQlIqteT1NnMUj5eEPTgE3sdzjA6OeH9R24+xDB44Ms3GBw7nrYf/puFqr/aTO6rH4uz/omIq0LxLa8fNHvpGtiKdbf/kTckZdA3Y6utO6IGnq36AQ/h0rUHBROgklzUcRPzk1U7gPhpa3rmYjAAjga8X4ftfHHM=
+	t=1778168650; cv=none; b=drcKne7qORzWBt7qDnWeBatOFp6DYvi1qv+ChJ5ToxUUlzwcYWk+LdfoIx98Ebu1F5tb2iDjKS60jK5AOqrmijb+3yc6GmndSoOUXm+mgEQ2rCxB8RQ5cFd/k5zsaawzYDxccIdWlPK0gMyuGhjMVoHJw23fa4M/6dBU2x1Sn+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778168559; c=relaxed/simple;
-	bh=l1ZPnnUQo3LA7hrPEfFbmz90OUYfRkfGIapw7V4O47Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Hi6lHDOaLiUz1hYfxUEXyf4rMuh4666hnEDO1WotFwihBDUjuSN2o+xVA0mVTKNTgg+MMt8FqNn8D/CXEjzrGqfVWrAy+FJb1jL4xvaGiSsUqVv8eiwijUqtbAxg1MyMBO8YGyDj+i9o7h50XyrTjgQZwTH+ASpBUw4vZZwgCks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IyOMHArE; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778168650; c=relaxed/simple;
+	bh=VrVdJWtSNKPP14BRfHMrLK4mVvv761yMYL0GiaVQ990=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=QSurxW5D9Rpxtee2wHcUu+j/jzCLva8qz29mr1WHFmocC9hoFrw4v9s+1WEbRt8uThYcGysLPPCEbrExtXfJX08u44gOlJZT6NARJYOa0rNjLQokIGIDLkfbMwnJwPApXFiOl0qCSLRty2POgoNiVzR1/s+SbA58U5GUpBKrFnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GCLiwK3H; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IyOMHArE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACAEDC2BCB2;
-	Thu,  7 May 2026 15:42:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778168558;
-	bh=l1ZPnnUQo3LA7hrPEfFbmz90OUYfRkfGIapw7V4O47Y=;
-	h=From:To:Cc:Subject:Date:From;
-	b=IyOMHArEmgi0Q5vGh1Du3NDsI2BpGYwYQjALrYGiVjrX+0vCKu09jJ0vFfepHcjo/
-	 xDn90EmBuObaJoFsF9RF/vvl0RY+jG97lmNVMaU+XM56t8NzM4UEa6Y+tg/Epr+Tif
-	 0qyBNhy8eKUSpu26ge9xIi/GlL7fESAHcWZekUS1Q/SrXtKgy+Y7IAlaXqpZfudix0
-	 avkfhEESCpbR6+BNj5UswHve3fUXzMSu+At1soFld57tG8iNa2gq3jJ7wAE5iwufU8
-	 KGlR1ALBLD/o5RvphbioZvPjmuZLsvN3gLvOwIrkY2cq8Fm1Pnq1C6wI396s/Vw6Ps
-	 IKsOcUDc29bXQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wL0s0-000000001gn-216s;
-	Thu, 07 May 2026 15:42:36 +0000
-From: Marc Zyngier <maz@kernel.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Alexandru Elisei <alexandru.elisei@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	James Morse <james.morse@arm.com>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mostafa Saleh <smostafa@google.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Sebastian Ott <sebott@redhat.com>,
-	Steffen Eiden <seiden@linux.ibm.com>,
-	Sudeep Holla <sudeep.holla@kernel.org>,
-	Vincent Donnefort <vdonnefort@google.com>,
-	Wei-Lin Chang <weilin.chang@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Yuan Yao <yaoyuan@linux.alibaba.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	kvmarm@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org
-Subject: [GIT PULL] KVM/arm64 fixes for 7.1, take #2
-Date: Thu,  7 May 2026 16:42:21 +0100
-Message-ID: <20260507154221.2905554-1-maz@kernel.org>
-X-Mailer: git-send-email 2.47.3
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GCLiwK3H"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82f9429f49cso1111858b3a.3
+        for <kvm@vger.kernel.org>; Thu, 07 May 2026 08:44:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778168647; x=1778773447; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=65TWr3go5iy70z9FYsv2NihxFIFA0cnFSm5OBGOU7IM=;
+        b=GCLiwK3H7JcCZRFXJaWgqHc9gqVsnzZqlQLWOsfavXGNpGImhCok6NEhe8TUpuarz+
+         q+9zQkWqD/Ej0BVtVSca7c/wWyINd6wirFF4/XFCWMQ2rorMYJ40IpEypef/RL5G2yBM
+         CqbIdl0H+MA5Q3k2Rj/6oGhMHlnc8XBrPJldK35H4FDRW7O9lbm0vh5Bz160v9nTaJNb
+         dDSm8SXrv+J+2hLS/sWuEkL2W1h9UeHrVWzmLQdOfzSD3qybK3flbbJD4tBmF8dolJGw
+         iCK2PVAuEWhPieeOeG6gRkLSyb/Zn+yV20aikRGKpzf7QYWI77sDAnvvYkbBf5U+ZeEv
+         WxjQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778168647; x=1778773447;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=65TWr3go5iy70z9FYsv2NihxFIFA0cnFSm5OBGOU7IM=;
+        b=CySIg8ExbHo9W52VvDiinYCCIuN3xIjLa883W0ztB0z7WHta0wWQ1dXrVp3LfPMv8/
+         wTBSgSF3y/mEG3Gehl0jFCSlCmULxLc9SFF2ulDkg3ibO8EHdsU+gHbypVcVYcw7//HB
+         pOVGDrbzBZn/LfTr8RC71IRpWcgle+mB3eUJrlJk1fI/9TYlipQUrEDC7eV+/+tP4IK1
+         CZOtz72msytFBlcu2B/iIr3MyMrEqiimXCZXufqNoF5+Hx0nyeDFEVS53+uxGjnmjHfl
+         09e+qvI/HZRXqjmrpxG/J1ttuB4W5bkssImHaORTwaK2ToqzNORS2w/hXlg+Rxhq6wJ8
+         /MKA==
+X-Forwarded-Encrypted: i=1; AFNElJ+65HGdumTIaZVeCMzHXC99nihfxSNjOpb0QyYw99D6W8LZynZNT3iQfaq9ehjVivsEvMA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyYUZ+7t2u24K1Fi5bV+zeMAkb8TzwPbQpDUxKlCX+S+1MlCSnV
+	zAvAEz47liVAHYBOxiuNr2vBGeSzUvcKZdezlAMjGvQ77yXOAeY26kafv+p+RdUz7ZhiM+GdNdB
+	0xHv7EQ==
+X-Received: from pfaz2.prod.google.com ([2002:aa7:91c2:0:b0:82f:1051:621])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:94ce:b0:836:3f6a:3e77
+ with SMTP id d2e1a72fcca58-83a5c4bd3afmr8577198b3a.17.1778168647306; Thu, 07
+ May 2026 08:44:07 -0700 (PDT)
+Date: Thu, 7 May 2026 08:44:06 -0700
+In-Reply-To: <afyfFRkUIHuodvG2@blrnaveerao1>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: pbonzini@redhat.com, alexandru.elisei@arm.com, catalin.marinas@arm.com, tabba@google.com, james.morse@arm.com, lpieralisi@kernel.org, mark.rutland@arm.com, smostafa@google.com, oupton@kernel.org, sebott@redhat.com, seiden@linux.ibm.com, sudeep.holla@kernel.org, vdonnefort@google.com, weilin.chang@arm.com, will@kernel.org, yaoyuan@linux.alibaba.com, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+Mime-Version: 1.0
+References: <20260506184746.2719880-1-seanjc@google.com> <20260506184746.2719880-3-seanjc@google.com>
+ <afyfFRkUIHuodvG2@blrnaveerao1>
+Message-ID: <afyzRvFqb19Kodej@google.com>
+Subject: Re: [PATCH v2 2/5] KVM: SVM: Always intercept RDMSR for TMCCT
+ (current APIC timer count)
+From: Sean Christopherson <seanjc@google.com>
+To: Naveen N Rao <naveen@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Paolo,
+On Thu, May 07, 2026, Naveen N Rao wrote:
+> On Wed, May 06, 2026 at 11:47:43AM -0700, Sean Christopherson wrote:
+> > Explicitly intercept RDMSR for TMMCT, a.k.a. the current APIC timer count,
+> > when x2AVIC is enabled, as TMMCT reads aren't accelerated by hardware.
+> 
+> s/TMMCT/TMCCT for the above two lines.
+> 
+> > Disabling interception is suboptimal as the RDMSR generates an
+> > AVIC_UNACCELERATED_ACCESS fault #VMEXIT, which forces KVM to decode the
+> > instruction to figure out what the guest was trying to access.
+> > 
+> > Note, the only reason this isn't a fatal bug is that the AVIC architecture
+> > had the foresight to guard against buggy hypervisors.  E.g. if hardware
+> > simply read from the virtual APIC page, the guest would get garbage.
+> > 
+> > Fixes: 4d1d7942e36a ("KVM: SVM: Introduce logic to (de)activate x2AVIC mode")
+> > Cc: stable@vger.kernel.org
+> > Cc: Naveen N Rao (AMD) <naveen@kernel.org>
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> >  arch/x86/kvm/svm/avic.c | 3 +++
+> >  1 file changed, 3 insertions(+)
+> > 
+> > diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+> > index 4f203e503e8e..d693c9ff9f18 100644
+> > --- a/arch/x86/kvm/svm/avic.c
+> > +++ b/arch/x86/kvm/svm/avic.c
+> > @@ -172,6 +172,9 @@ static void avic_set_x2apic_msr_interception(struct vcpu_svm *svm,
+> >  		svm_set_intercept_for_msr(vcpu, APIC_BASE_MSR + i,
+> >  					  MSR_TYPE_R, intercept);
+> >  
+> > +	if (!intercept)
+> > +		svm_enable_intercept_for_msr(vcpu, X2APIC_MSR(APIC_TMCCT), MSR_TYPE_R);
+> > +
+> 
+> Nit: I'm thinking it might be better to roll this into the previous 
+> loop. That way, all MSR_TYPE_R intercepts are setup in one place and we 
+> don't need to parse the if (!intercept) condition..
+> 
+> Something like this?
+> 
+> diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+> index c5d46c0d2403..f292cba45e07 100644
+> --- a/arch/x86/kvm/svm/avic.c
+> +++ b/arch/x86/kvm/svm/avic.c
+> @@ -136,11 +136,9 @@ static void avic_set_x2apic_msr_interception(struct vcpu_svm *svm,
+> 
+>         for_each_set_bit(i, (unsigned long *)&x2apic_readable_mask,
+>                          BITS_PER_TYPE(x2apic_readable_mask))
+> -               svm_set_intercept_for_msr(vcpu, APIC_BASE_MSR + i,
+> -                                         MSR_TYPE_R, intercept);
+> -
+> -       if (!intercept)
+> -               svm_enable_intercept_for_msr(vcpu, X2APIC_MSR(APIC_TMCCT), MSR_TYPE_R);
+> +               if (APIC_BASE_MSR + i != X2APIC_MSR(APIC_TMCCT))
+> +                       svm_set_intercept_for_msr(vcpu, APIC_BASE_MSR + i,
+> +                                                 MSR_TYPE_R, intercept);
 
-Here's the second set of KVM/arm64 fixes for 7.1. Nothing too horrible
-this time, aside from an ARM erratum workaround that has little impact
-on KVM, but relies on some firmware dealing with the problem. Bleh.
+Hmm, I don't love burying the check in the for-loop, as it makes it a bit hard to
+see that KVM *never* toggles the intercept for TMCCT.  And in the unlikely scenario
+we need to exempt more MSRs, this will be annoying to maintain.
 
-The rest is a small collection of bug fixes, mostly affecting the MMU
-(permission fault handling with guest_memfd, 52bit VA with NV), and a
-small set of AI-enhanced fixes from Fuad. I guess I'll have to get
-used to that.
+What about adjusting the mask straightaway?
 
-And last but not least, Steffen joins the merry band of KVM/arm64
-reviewers in preparation of s390 and arm64 being joined at the hip...
+diff --git arch/x86/kvm/lapic.h arch/x86/kvm/lapic.h
+index 274885af4ebc..2842a7b70d74 100644
+--- arch/x86/kvm/lapic.h
++++ arch/x86/kvm/lapic.h
+@@ -156,6 +156,8 @@ int kvm_hv_vapic_msr_read(struct kvm_vcpu *vcpu, u32 msr, u64 *data);
+ int kvm_lapic_set_pv_eoi(struct kvm_vcpu *vcpu, u64 data, unsigned long len);
+ void kvm_lapic_exit(void);
+ 
++#define APIC_REG_MASK(reg)     (1ull << ((reg) >> 4))
++
+ u64 kvm_lapic_readable_reg_mask(struct kvm_lapic *apic);
+ 
+ static inline void kvm_lapic_set_irr(int vec, struct kvm_lapic *apic)
+diff --git arch/x86/kvm/svm/avic.c arch/x86/kvm/svm/avic.c
+index c5d46c0d2403..e51f468477a4 100644
+--- arch/x86/kvm/svm/avic.c
++++ arch/x86/kvm/svm/avic.c
+@@ -132,16 +132,14 @@ static void avic_set_x2apic_msr_interception(struct vcpu_svm *svm,
+        if (!x2avic_enabled)
+                return;
+ 
+-       x2apic_readable_mask = kvm_lapic_readable_reg_mask(vcpu->arch.apic);
++       x2apic_readable_mask = kvm_lapic_readable_reg_mask(vcpu->arch.apic) &
++                              ~APIC_REG_MASK(APIC_TMCCT);
+ 
+        for_each_set_bit(i, (unsigned long *)&x2apic_readable_mask,
+                         BITS_PER_TYPE(x2apic_readable_mask))
+                svm_set_intercept_for_msr(vcpu, APIC_BASE_MSR + i,
+                                          MSR_TYPE_R, intercept);
+ 
+-       if (!intercept)
+-               svm_enable_intercept_for_msr(vcpu, X2APIC_MSR(APIC_TMCCT), MSR_TYPE_R);
+-
+        svm_set_intercept_for_msr(vcpu, X2APIC_MSR(APIC_TASKPRI), MSR_TYPE_W, intercept);
+        svm_set_intercept_for_msr(vcpu, X2APIC_MSR(APIC_EOI), MSR_TYPE_W, intercept);
+        svm_set_intercept_for_msr(vcpu, X2APIC_MSR(APIC_SELF_IPI), MSR_TYPE_W, intercept);
 
-Please pull,
 
-	M.
+Oh!  Actually, even better!  This is a great opportunity to dedup Intel vs. AMD
+(and we can/should do the same for writes).
 
-The following changes since commit 7fd2df204f342fc17d1a0bfcd474b24232fb0f32:
-
-  Linux 7.1-rc2 (2026-05-03 14:21:25 -0700)
-
-are available in the Git repository at:
-
-  git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm.git kvmarm-fixes-7.1-2
-
-for you to fetch changes up to effc0a39b8e0f30670fe24f51e44329d4324e566:
-
-  KVM: arm64: Pre-check vcpu memcache for host->guest donate (2026-05-07 14:12:42 +0100)
-
-----------------------------------------------------------------
-KVM/arm64 fixes for 7.1, take #2
-
-- Add the pKVM side of the workaround for ARM's erratum 4193714, provided
-  that the EL3 firmware does its part of the job. KVM will refuse to
-  initialise otherwise.
-
-- Correctly handle 52bit VAs for guest EL2 stage-1 translations when
-  running under NV with E2H==0.
-
-- Correctly deal with permission faults in guest_memfd memslots.
-
-- Fix the steal-time selftest after the infrastructure was reworked.
-
-- Make sure the host cannot pass a non-sensical clock update to the
-  EL2 tracing infrastructure.
-
-- Appoint Steffen Eiden as a reviewer in anticipation of the KVM/s390
-  ability to run arm64 guests, which will inevitably lead to arm64
-  code being directly used on s390.
-
-- Make sure that EL2 is configured with both exception entry and exit
-  being Context Synchronization Events.
-
-- Handle the current vcpu being NULL on EL2 panic.
-
-- Fix the selftest_vcpu memcache being empty at the point of donation or
-  sharing.
-
-- Check that the memcache has enough capacity before engaging on the
-  share/donate path.
-
-- Fix __deactivate_fgt() to use its parameter rather than a variable
-  in the macro context.
-
-----------------------------------------------------------------
-Alexandru Elisei (1):
-      KVM: arm64: Handle permission faults with guest_memfd
-
-Fuad Tabba (6):
-      KVM: arm64: Make EL2 exception entry and exit context-synchronization events
-      KVM: arm64: Guard against NULL vcpu on VHE hyp panic path
-      KVM: arm64: Fix __deactivate_fgt macro parameter typo
-      KVM: arm64: Seed pkvm_ownership_selftest vcpu memcache
-      KVM: arm64: Pre-check vcpu memcache for host->guest share
-      KVM: arm64: Pre-check vcpu memcache for host->guest donate
-
-James Morse (1):
-      KVM: arm64: Work around C1-Pro erratum 4193714 for protected guests
-
-Mostafa Saleh (1):
-      KVM: arm64: Remove potential UB on nvhe tracing clock update
-
-Sebastian Ott (1):
-      KVM: selftests: arm64: Fix steal_time test after UAPI refactoring
-
-Steffen Eiden (1):
-      MAINTAINERS: Add Steffen as reviewer for KVM/arm64
-
-Wei-Lin Chang (1):
-      KVM: arm64: nv: Consider the DS bit when translating TCR_EL2
-
- MAINTAINERS                              |  1 +
- arch/arm64/include/asm/kvm_nested.h      |  1 +
- arch/arm64/include/asm/sysreg.h          |  2 +-
- arch/arm64/kvm/arm.c                     | 21 ++++++++++++++
- arch/arm64/kvm/hyp/include/hyp/switch.h  |  2 +-
- arch/arm64/kvm/hyp/nvhe/clock.c          |  3 ++
- arch/arm64/kvm/hyp/nvhe/mem_protect.c    | 47 +++++++++++++++++++++++++++++++-
- arch/arm64/kvm/hyp/nvhe/pkvm.c           | 16 ++++++++++-
- arch/arm64/kvm/hyp/vhe/switch.c          |  3 +-
- arch/arm64/kvm/mmu.c                     | 29 ++++++++++++++------
- include/linux/arm-smccc.h                |  6 ++++
- tools/testing/selftests/kvm/steal_time.c |  2 ++
- 12 files changed, 120 insertions(+), 13 deletions(-)
+diff --git arch/x86/kvm/lapic.c arch/x86/kvm/lapic.c
+index 4078e624ca66..ac57d6dbe032 100644
+--- arch/x86/kvm/lapic.c
++++ arch/x86/kvm/lapic.c
+@@ -1730,7 +1730,7 @@ static inline struct kvm_lapic *to_lapic(struct kvm_io_device *dev)
+ #define APIC_REGS_MASK(first, count) \
+        (APIC_REG_MASK(first) * ((1ull << (count)) - 1))
+ 
+-u64 kvm_lapic_readable_reg_mask(struct kvm_lapic *apic)
++static u64 kvm_lapic_readable_reg_mask(struct kvm_lapic *apic)
+ {
+        /* Leave bits '0' for reserved and write-only registers. */
+        u64 valid_reg_mask =
+@@ -1766,7 +1766,22 @@ u64 kvm_lapic_readable_reg_mask(struct kvm_lapic *apic)
+ 
+        return valid_reg_mask;
+ }
+-EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_lapic_readable_reg_mask);
++
++u64 kvm_x2apic_disable_intercept_reg_mask(struct kvm_vcpu *vcpu)
++{
++       if (WARN_ON_ONCE(!lapic_in_kernel(vcpu)))
++               return 0;
++
++       /*
++        * TMMCT, a.k.a. the current APIC timer count, reads aren't accelerated
++        * by hardware (Intel or AMD), and handling the fault-like APIC-access
++        * VM-Exit is more expensive than handling a WRMSR VM-Exit (because the
++        * APIC-access path requires slow emulation of the code stream).
++        */
++       return kvm_lapic_readable_reg_mask(vcpu->arch.apic) &
++              ~APIC_REG_MASK(APIC_TMCCT);
++}
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_x2apic_disable_intercept_reg_mask);
+ 
+ static int kvm_lapic_reg_read(struct kvm_lapic *apic, u32 offset, int len,
+                              void *data)
+diff --git arch/x86/kvm/lapic.h arch/x86/kvm/lapic.h
+index 274885af4ebc..7b61167e1b5c 100644
+--- arch/x86/kvm/lapic.h
++++ arch/x86/kvm/lapic.h
+@@ -156,7 +156,7 @@ int kvm_hv_vapic_msr_read(struct kvm_vcpu *vcpu, u32 msr, u64 *data);
+ int kvm_lapic_set_pv_eoi(struct kvm_vcpu *vcpu, u64 data, unsigned long len);
+ void kvm_lapic_exit(void);
+ 
+-u64 kvm_lapic_readable_reg_mask(struct kvm_lapic *apic);
++u64 kvm_x2apic_disable_intercept_reg_mask(struct kvm_vcpu *vcpu);
+ 
+ static inline void kvm_lapic_set_irr(int vec, struct kvm_lapic *apic)
+ {
+diff --git arch/x86/kvm/svm/avic.c arch/x86/kvm/svm/avic.c
+index c5d46c0d2403..1532bfff5686 100644
+--- arch/x86/kvm/svm/avic.c
++++ arch/x86/kvm/svm/avic.c
+@@ -132,16 +132,13 @@ static void avic_set_x2apic_msr_interception(struct vcpu_svm *svm,
+        if (!x2avic_enabled)
+                return;
+ 
+-       x2apic_readable_mask = kvm_lapic_readable_reg_mask(vcpu->arch.apic);
++       x2apic_readable_mask = kvm_x2apic_disable_intercept_reg_mask(vcpu);
+ 
+        for_each_set_bit(i, (unsigned long *)&x2apic_readable_mask,
+                         BITS_PER_TYPE(x2apic_readable_mask))
+                svm_set_intercept_for_msr(vcpu, APIC_BASE_MSR + i,
+                                          MSR_TYPE_R, intercept);
+ 
+-       if (!intercept)
+-               svm_enable_intercept_for_msr(vcpu, X2APIC_MSR(APIC_TMCCT), MSR_TYPE_R);
+-
+        svm_set_intercept_for_msr(vcpu, X2APIC_MSR(APIC_TASKPRI), MSR_TYPE_W, intercept);
+        svm_set_intercept_for_msr(vcpu, X2APIC_MSR(APIC_EOI), MSR_TYPE_W, intercept);
+        svm_set_intercept_for_msr(vcpu, X2APIC_MSR(APIC_SELF_IPI), MSR_TYPE_W, intercept);
+diff --git arch/x86/kvm/vmx/vmx.c arch/x86/kvm/vmx/vmx.c
+index 859f4bc01445..40dff50e800a 100644
+--- arch/x86/kvm/vmx/vmx.c
++++ arch/x86/kvm/vmx/vmx.c
+@@ -4138,7 +4138,7 @@ static void vmx_update_msr_bitmap_x2apic(struct kvm_vcpu *vcpu)
+         * mode, only the current timer count needs on-demand emulation by KVM.
+         */
+        if (mode & MSR_BITMAP_MODE_X2APIC_APICV)
+-               msr_bitmap[read_idx] = ~kvm_lapic_readable_reg_mask(vcpu->arch.apic);
++               msr_bitmap[read_idx] = ~kvm_x2apic_disable_intercept_reg_mask(vcpu);
+        else
+                msr_bitmap[read_idx] = ~0ull;
+        msr_bitmap[write_idx] = ~0ull;
+@@ -4151,7 +4151,6 @@ static void vmx_update_msr_bitmap_x2apic(struct kvm_vcpu *vcpu)
+                                  !(mode & MSR_BITMAP_MODE_X2APIC));
+ 
+        if (mode & MSR_BITMAP_MODE_X2APIC_APICV) {
+-               vmx_enable_intercept_for_msr(vcpu, X2APIC_MSR(APIC_TMCCT), MSR_TYPE_RW);
+                vmx_disable_intercept_for_msr(vcpu, X2APIC_MSR(APIC_EOI), MSR_TYPE_W);
+                vmx_disable_intercept_for_msr(vcpu, X2APIC_MSR(APIC_SELF_IPI), MSR_TYPE_W);
+                if (enable_ipiv)
