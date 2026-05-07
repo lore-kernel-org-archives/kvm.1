@@ -1,87 +1,141 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D6E26AF4;
-	Thu,  7 May 2026 01:35:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944AE204F8B;
+	Thu,  7 May 2026 01:43:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778117711; cv=none; b=FMgUll9uIyz29dttKqegDMCwUuAWMhPfi/bWcrfwOvRjt8TkgYcEibsBgLHrNEt+ywxbH4ZFEH+spr7Cio7jrjNMPsI5pW4/nbl3fl5a0M1jxuvjSizBlC0r+eyw2fSaHDpgt8zisQ/xwztFxg/O1qDHYlHLUcAyWdFngIY2NUg=
+	t=1778118197; cv=none; b=mg2BbZjAQRwCIhcCc6HpM6KPWhO2A217yZn0R5N2NDQtGwDZfh3oNbaZcyip4tmeCsvVv5dK8do49K+tyy386jVB8eay3uE7oRyD7lAaThKAz3r+8KYPROSBwsI+FiLn5q8OvLbfKUFbENUQoAq0hreZkRlJyaKozLi0QqU00HU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778117711; c=relaxed/simple;
-	bh=0O3G2lmMP/Ms3BjmJlMlwXPElBarsrFRXkD/Kf50ycA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=J3y0HehFwKfXRkjO/DYL2i25bk5arXxVSd5Z7l5Gupmpzd+yyOtNSCPgFyNvLtAV7kMETD/sNsjNDkG25O3btqboz2vXsxBBY1z9k356u9tX6JHpMOOBJYgx0Oh3s9wqxLZnlmwPsEWbQ8a3jovpQKktqjfqM2RqTSxgMYOiqUs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Bo4lhO+R; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Bo4lhO+R"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D327CC2BCB0;
-	Thu,  7 May 2026 01:35:10 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778117711;
-	bh=0O3G2lmMP/Ms3BjmJlMlwXPElBarsrFRXkD/Kf50ycA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Bo4lhO+RL3OO3IL1WEVSQSJOG6fF9WGBUGDl1kLrgeLAlSdCP3QYVcnE4NuoVGgzx
-	 g/7S893cwQQScmZfG31DQxx68sx4bTQFZHRCsTwzCRmi+//kYfehhLjej857kjGKkw
-	 NIJh31AF9QUw5NAc+v+Oh5Qzvy4+gxzz9T7eDm6LA5FIarqpaZqxpC27gC1vQmZe/u
-	 sJVA6qJ0Zuni9umvr592++g0ZN8dmb+hscUphG+dgFXZGnFVgbS6UsWBGfLSpOSyCO
-	 L3bybhVhSm6beqQIsZ76iqr5uLyrA9/G1RZshor/k2LWf4WOOQtysKNisk0+1XT4OR
-	 VLUAyE0cS1iNw==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id B29CF1AC5890; Thu, 07 May 2026 02:35:07 +0100 (BST)
-Date: Thu, 7 May 2026 10:35:07 +0900
-From: Mark Brown <broonie@kernel.org>
-To: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Andrew Jones <andrew.jones@oss.qualcomm.com>,
-	Anup Patel <anup@brainfault.org>,
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
-	Jiakai Xu <jiakaiPeanut@gmail.com>
-Subject: Re: [PATCH] KVM: arm64: Add memslot for ST_GPA_BASE in
- check_steal_time_uapi()
-Message-ID: <afvsSxLDBz6HDkCs@sirena.co.uk>
-References: <20260501021639.2563219-1-xujiakai2025@iscas.ac.cn>
+	s=arc-20240116; t=1778118197; c=relaxed/simple;
+	bh=wfkzn5vEOdAO4CItueKY05cY1KoUngcW2ziIYm3VPMY=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=RLNSmp2Nh1l0MQkKigGHxg8QWnei6PzW2LjVakV0grH2uDsLg4kiaHy22LT/sfjY7LGhIFUorKayY445do69QSubocATAq/a/dfRiPAMWmFoVZ69lIvPdXm69lj4g+XG1ddvfl532g0pXTUgbVaFm+k2Oln31Y97guWvYR3EqO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8Bx0eow7vtpG1UHAA--.24062S3;
+	Thu, 07 May 2026 09:43:12 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJBxacEo7vtpjfx7AA--.25500S3;
+	Thu, 07 May 2026 09:43:05 +0800 (CST)
+Subject: Re: [PATCH 1/5] KVM: arm64: Grab KVM MMU write lock in
+ kvm_arch_flush_shadow_all()
+To: Sean Christopherson <seanjc@google.com>
+Cc: James Houghton <jthoughton@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>,
+ Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, Gavin Shan <gshan@redhat.com>,
+ Shaoqin Huang <shahuang@redhat.com>, Ricardo Koller <ricarkol@google.com>,
+ Tianrui Zhao <zhaotianrui@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
+ James Hogan <jhogan@kernel.org>, linux-arm-kernel@lists.infradead.org,
+ kvmarm@lists.linux.dev, loongarch@lists.linux.dev,
+ linux-mips@vger.kernel.org, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260504224213.1049426-1-jthoughton@google.com>
+ <20260504224213.1049426-2-jthoughton@google.com>
+ <25838e74-01dd-d085-395b-676266dc9a9a@loongson.cn>
+ <aftIbW9G4RfoTuXh@google.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <833b7f62-5e9f-26e7-f60d-2ac1dd24c031@loongson.cn>
+Date: Thu, 7 May 2026 09:40:10 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="v1++ER88l8OUwD5L"
-Content-Disposition: inline
-In-Reply-To: <20260501021639.2563219-1-xujiakai2025@iscas.ac.cn>
-X-Cookie: Truckers welcome.
+In-Reply-To: <aftIbW9G4RfoTuXh@google.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJBxacEo7vtpjfx7AA--.25500S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoWxZr1rJF1DJFWxtw1UKw43twc_yoW5GFyxpF
+	WUC3WqgrWDA340kw4kZ3WkWw1FyaykGr4UJw1Ygry5urs8Gwn3KF4SyFy0kFZ7ZrZ7GFWq
+	qF45tr95Zas8ZrXCm3ZEXasCq-sJn29KB7ZKAUJUUUUf529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUPFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
+	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWU
+	twAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
+	k0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l
+	4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxV
+	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI
+	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
+	4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI
+	42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU2-VyUUUUU
 
 
---v1++ER88l8OUwD5L
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
 
-On Fri, May 01, 2026 at 02:16:39AM +0000, Jiakai Xu wrote:
-> The refactored check_steal_time_uapi() creates a temporary VM via
-> vm_create_with_one_vcpu(), whose default memslot0 only covers GPA
-> 0..~2MB.  Setting st_ipa to ST_GPA_BASE (1 << 30) causes
-> kvm_arm_pvtime_set_attr() to fail with EINVAL because gfn_to_hva()
-> cannot find a valid memslot at the target GFN.
+On 2026/5/6 下午9:55, Sean Christopherson wrote:
+> On Wed, May 06, 2026, Bibo Mao wrote:
+>> On 2026/5/5 上午6:42, James Houghton wrote:
+>>> kvm_arch_flush_shadow_all() may sometimes be called on the same `kvm`
+>>> concurrently in the event that the KVM's `mm` is __mmput() at the
+>>> same time that last reference to the KVM is being dropped.
+>>>
+>>> T1              T2
+>>> KVM_CREATE_VM
+>>>                   Get VM file from T1
+>>> close VM
+>>> exit_mm()       close VM
+>>>
+>>> T1: exit_mm() -> kvm_mmu_notifier_release() -> kvm_flush_shadow_all(),
+>>>       with only the KVM srcu read lock held.
+>>>
+>>> T2: kvm_vm_release() ---> mmu_notifier_unregister() ->
+>>>       kvm_mmu_notifier_release() -> kvm_flush_shadow_all(),
+>>>       again, with only the KVM srcu read lock held.
+>> By looking through the code, kvm_arch_destroy_vm() will free PGD page only,
+>> page table walking is executing in deleting memslot or exit_mm().
+>>
+>> With normal code, life cycle of VM is something like this:
+> 
+> Not necessarily.  Abruptly closing the VM, as described below, is also "normal"
+> (though likely uncommon).
+> 
+>>    KVM_CREATE_VM
+>>      Create_VCPUs
+>>      Create memslots
+>>      Destroy_VCPUs
+> 
+> This is incorrect.  KVM doesn't provide any way for userspace to destroy vCPUs.
+> Userspace can fully release every vCPU fd, but the vCPU object within KVM stays
+> alive (and indirectly reachable) until the VM is destroyed.
+yes, that is so. For users, there is vCPU fd release interface. As for 
+vCPU object release, it is kind of internal implementation in KVM.
+> 
+>>      Destroy memslots
+>>    close VM
+>>    exit_mm()
+> 
+> Note, exit_mm() may or may not be called.  E.g. there are VMMs that will destroy
+> a VM and start a new one (perhaps even the same conceptual virtual machine) in
+> the same process / mm_struct / address space.
+> 
+>> And there is kvm_get_kvm()/kvm_put_kvm() function call with creating/destroy
+>> vCPUs, however no such operations with memslot operation. Is it possible
+>> that VM is destroyed without removing memslots, such as the following
+>> operation.
+>>    KVM_CREATE_VM
+>>      Create memslots
+>>    close VM
+>>    exit_mm()
+> 
+> Yep.  KVM cannot make any assumptions when it comes to userspace-initiated
+> operations.  Even a VMM that super strictly follows the first approach may exit
+> abruptly, without destroying memslots, e.g. if it's OOM-killed.
+oh, I see. If so, the implementation about kvm_arch_destroy_vm() on 
+Loongarch is problematic, it needs consider this kind of abnormal VM 
+destroy, take page table walk and free page tables. I had thought that 
+memslots create/destroy should call kvm_get_kvm()/kvm_put_kvm() :(
 
-Tested-by: Mark Brown <broonie@kernel.org>
+Regards
+Bibo Mao
 
-It'd be good to get this merged, this is a mainline regression.
-
---v1++ER88l8OUwD5L
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmn77EoACgkQJNaLcl1U
-h9AK7Af/XR+d37P6uL0n0Fx8fm4VK+ZmK0hvIRclQwkMsoHT3vhklNUChbZVyi2C
-fpSUXPczpk17MkZQSRBLvF1KfEoUlFxTlu8fdPevOv22vaTkveC4dwNF95/M+vEH
-B51YF/vUfjcEMtlXtkE77eBJ6+5OPhJuJc0QE1yzY9HbaXXiIUnuOmHKYwFm+V9U
-Uinp/GOTEb9FO50Ks3MG1tVSsurpXJgp0Pz39qyDP0PfTTi56bCjQJdI8KnfmL/G
-iehiXZB/YJoGhID+U66QMQR3gHlh3QXTzSEZ8xg1g9jIIVA0Su8fIIycvQ/ntjCo
-XlB7jVGTFAg63YWfT5CiF+18/brE4w==
-=JSA7
------END PGP SIGNATURE-----
-
---v1++ER88l8OUwD5L--
