@@ -1,114 +1,191 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89A843F54A5
-	for <kvm@vger.kernel.org>; Thu,  7 May 2026 13:23:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 217EB3F7875;
+	Thu,  7 May 2026 13:26:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778160215; cv=none; b=N3nsgodDQJwquTnb2f+ZF27bLc/cGt1YLY+6bTqsPmbNUHUiJFY+R1SFLyANB48OPWA1nIpiG38N0++tSKtl5StBRPH6tVGaxgpXNacexJzBz4Vfbrsbdn3odxv2NoX659mDddStY1ZX1c6qaixBO/YdUcp3TBrZ8t1rC0Ca0Ts=
+	t=1778160396; cv=none; b=DcNarKMhmHE1qQx5EN6t3V3a33mYdOlgKh7AlipY4Gty8QwBCHC50PmRji/SqW4mlgql13dCjtodrlPR6z/Fm4+t3dWT2NMc1cfDF5OuIDEzbZsIHyQkNq0qwKmgtv6IZ8P97Yva4iakvS1kOrrQEQF/9+vvMnK7OHjDEcVOlJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778160215; c=relaxed/simple;
-	bh=QSvNn7mVCoqpDWRpLEwzsQYXhphwXaDFMVb19cMkdys=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Jn5MmPdrQwzqby93gLlvLyJ5CDNUH22cmNzJWuNacXTt8Rot7wdJfGB+b6XbNESWhykBShK5WiLnddBD3tcd2T0r2y4jG/jGdWeXOrslUW3uHQlrpmhAEDzdc3Np20Hn8O4h8cxfkvw5DgnRFYhGlBlSF0TI9eU1SOZHXEd9ICU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hRrp8JNh; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1778160396; c=relaxed/simple;
+	bh=nd8b/fev/maPVHEGk1geO1QB1iLuuFTwYjEftDEvO2Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=GcBuubfDrh7pR2DsWn5fGcaDB1zMQxC/TQGU1cGLac72YzBMU4kA+cixvM84sX0ctXidIJl7Ybk14fDmNh9OjVX/4cavwse1nN8s/uJ2txWqcW5agY4cCYZKAHh3OgSSjvRSlhDJtA7fim3K2CEI0ZyfLCGwYkssMTTHQvIlLgw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tBwb6lWN; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hRrp8JNh"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ba838c5ff1so19030645ad.3
-        for <kvm@vger.kernel.org>; Thu, 07 May 2026 06:23:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778160211; x=1778765011; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q2p7v66esSqoBYICxVl1Y8jghKc3MBnhyUfxMzYF7Ws=;
-        b=hRrp8JNh8g4bUYn3uiR2GvW1Qgu9c8d+uvk+Nmlxyie9df+nhitsnX81tj//GMO2dz
-         ayG6jpp8/o9tafl8bTrDaQidZrjwqPO2PICII5JezUbNy2lXWt3Dnmksns6lfEM4XW4J
-         uX3qFRiCuCPZg0qUBsS1mdlbQ0NtglZOm2NTFFXQETD68YmCKZtTf8+f/j6sghVLmQmh
-         RLcXBmEz1YtgIKdMGpbcmEynzvVpYaLGHOYWugi4lqz1LWdtC4TqszS/q5k9/9d4mubx
-         qt8Mw845D6JPStQ3li6NLZ+ZgGuhZJymuKjzY85T4sm3vpS4bVFjvGDrYDieytFJxBG4
-         0vAg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778160211; x=1778765011;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q2p7v66esSqoBYICxVl1Y8jghKc3MBnhyUfxMzYF7Ws=;
-        b=Xeui6cm3VK0IA5z2jyBATZfBvfPbAPD1qd6EB9vlj3GzR3sVUiLlAZ/HEdFQM97/v6
-         HZnO8q1ln1mutLynlpg1wp0U6+rNg1TEq5fVo/FrcGxusXzK3GEYXukBv+qiWmQVNz3K
-         MxZMjXs2HrKnoSRewvADAmX9hTUTU6gB0thCFGBMYC9zjmsGOynujrdsxMRfkcUGt3yP
-         XruBrV1ZN3P19oejCd6fb6goQMxO/JI5kqTfCJ6HhL+uxnhhx9XLpoNqFY/NI4w/3TuE
-         KRYPQ29oj9tUMsxC6b8+dr8TVWCBNNbstOd8bgyoHA/0MJPDUJwW5dxP6gLZV9woc4u2
-         ezBA==
-X-Forwarded-Encrypted: i=1; AFNElJ+PZ+dYU1meV8CW9xDmMcCovewj36oOjZz4N+usuzk5JGYqlBowhxk5KtSSFKr6ctnMqKk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzeJJKJXAFZyE9FlITM+o0gJAiYq1j6YZcOG41uz/cSbIe7JNlO
-	jctlstETyPTaD0TGlD5og8aMN5buOo+OQlMT88qSw1kx3Nyi3pomEdE/OqwVxSH0lX2GPewttZY
-	3XVfZ7w==
-X-Received: from plbmj16.prod.google.com ([2002:a17:903:2b90:b0:2ba:e27:debe])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ebc9:b0:2b2:5840:80c5
- with SMTP id d9443c01a7336-2ba7a35a6eamr91003805ad.37.1778160210966; Thu, 07
- May 2026 06:23:30 -0700 (PDT)
-Date: Thu, 7 May 2026 06:23:29 -0700
-In-Reply-To: <20260507003613.1784851-3-vannapurve@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tBwb6lWN"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6476kcNs852737;
+	Thu, 7 May 2026 13:26:11 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=YrsIwPGSozTs0qDshooUyVAFjIFile
+	oxrrcdpsFu3jc=; b=tBwb6lWNHxphDlwMTWlgeaUQu4sHyY4S6H4UzwixlRBIZj
+	xO5ktEVUEyNN62cfad0G1Voufh3Fcw1q7LfpRJ7P/mfxyL7+bD/rRWDqWJrHOMJr
+	KKJ2dXQZBeKKiYf+1T/DyX6GyChMZMeVaqjhx1a2STeN6Mf/FA0fUWR1kaBp1TRt
+	tv2yjSHMBHPWflBnVb+WGDvg1BG0ujTul8KYksJlAtI/3hs3vN6VN6iNJBaNUusW
+	Ot8+kCm6HlI/F1l/rf6TME6QTctwC0EhikrDLKPeY8nBD9E6jNpx5P230iewqY/u
+	IAUNqWlDbgZ1qhq+AILCr4rpTMpV5NkX+GPenjPw==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9y4wrfe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 May 2026 13:26:11 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 647DOTSf001358;
+	Thu, 7 May 2026 13:26:10 GMT
+Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dwvkk3qsb-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 May 2026 13:26:10 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 647DQ6tt36176154
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 7 May 2026 13:26:06 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6460D20040;
+	Thu,  7 May 2026 13:26:06 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D120E20043;
+	Thu,  7 May 2026 13:26:02 +0000 (GMT)
+Received: from Amits-MacBook-Pro.local (unknown [9.124.211.112])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  7 May 2026 13:26:02 +0000 (GMT)
+Date: Thu, 7 May 2026 18:55:57 +0530
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/6] KVM: PPC: Book3S HV: Validate arch_compat against
+ host compatibility mode
+Message-ID: <20260507184929.5197d7b4-e4-amachhiw@linux.ibm.com>
+Mail-Followup-To: Harsh Prateek Bora <harshpb@linux.ibm.com>, 
+	linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Vaibhav Jain <vaibhav@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260430054906.94431-1-amachhiw@linux.ibm.com>
+ <20260430054906.94431-2-amachhiw@linux.ibm.com>
+ <0ca0e84a-ec56-428f-ac6a-22dd52ad4a1a@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260507003613.1784851-1-vannapurve@google.com> <20260507003613.1784851-3-vannapurve@google.com>
-Message-ID: <afySUVD06XrJD0m0@google.com>
-Subject: Re: [PATCH v2 2/2] KVM: TDX: Set the has_protected_pmu flag for TDX VMs
-From: Sean Christopherson <seanjc@google.com>
-To: Vishal Annapurve <vannapurve@google.com>
-Cc: pbonzini@redhat.com, dave.hansen@linux.intel.com, 
-	rick.p.edgecombe@intel.com, dapeng1.mi@linux.intel.com, mizhang@google.com, 
-	kai.huang@intel.com, jmattson@google.com, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <0ca0e84a-ec56-428f-ac6a-22dd52ad4a1a@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA3MDEzMSBTYWx0ZWRfX+4Xn5psHPomF
+ AkqCrCChDRAqafxYCtJhTM6z7hEaEj3to3pXYLU0blvBA0VXbW7OCrFUZoJdkZuwmJQMgwO2t4W
+ /9uK6tO0dhIFGtVK7KFf8Stg2gLii6dSWwpRU82Nx5r4PNxLOwqqreaym3XgD0zUnD5ep3bXka5
+ nDJnzRxg3AT1oxc03oHRSp+3+7CHcVuyKNQWg2WbKkk1hENJJsWXFfUkYe9RGUOmA4kfklfVKvx
+ X/tBtsTas6wpGRWci6ZL+j3dU2vjjjyrYUpAwpsTt51As75unWvqeeCA4f2cm7/uMDPOg9Zg8gh
+ 9cV1yd7HY+29YPMYJ3t7HHHYEWCe6xhbNQm/oYQecDTLx0aF9YA3aGQwOcH4bcoFtda9QXPtIAL
+ NXDfcGu4BwenU0VSEe+Vwk8myNr6PB+jM7KBWrG9z33AyevmajM+JoZ3gWTwRRi1ydrtDo0Malo
+ nk/cRzDMBgv5Tk5g5Nw==
+X-Authority-Analysis: v=2.4 cv=J4GaKgnS c=1 sm=1 tr=0 ts=69fc92f3 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
+ a=uYXa65u6JyZUx7HkiKsA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-GUID: KhMse8iPlJ02IZRrliSN-BLN7lHmdG32
+X-Proofpoint-ORIG-GUID: 1NDTBBT_KRpDT5t7eUaO75GnK_7H4tL5
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-07_01,2026-05-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 clxscore=1015 malwarescore=0 bulkscore=0 suspectscore=0
+ priorityscore=1501 spamscore=0 phishscore=0 adultscore=0 lowpriorityscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605070131
 
-On Thu, May 07, 2026, Vishal Annapurve wrote:
-> TDX module virtualizes PMU for TDX VMs[1]. Host has following
-> toggles to control the PMU functionality exposed to TDX VMs:
-> 1) Configure TD_PARAMS to allow guests to use performance monitoring.
-> 2) Restrict the TD to a subset of the PEBS counters if supported.
-> 3) Limit the TD to setup a certain perfmon events using basic/enhanced
->    event filtering.
-> 
-> KVM will need to be enlightened to support these toggles.
-> 
-> Explicitly set the hast_protected_pmu flag to avoid KVM trying to manage
-> PMU state for TDX VMs using existing PMU virtualization framework.
-> 
-> [1] Section 15.2: https://cdrdv2.intel.com/v1/dl/getContent/733575
-> 
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
-> ---
->  arch/x86/kvm/vmx/tdx.c | 6 ++++++
->  1 file changed, 6 insertions(+)
-> 
-> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-> index 1e47c194af53..eb4b4518e6f0 100644
-> --- a/arch/x86/kvm/vmx/tdx.c
-> +++ b/arch/x86/kvm/vmx/tdx.c
-> @@ -638,6 +638,12 @@ int tdx_vm_init(struct kvm *kvm)
->  	kvm->arch.has_private_mem = true;
->  	kvm->arch.disabled_quirks |= KVM_X86_QUIRK_IGNORE_GUEST_PAT;
->  
-> +	/*
-> +	 * PMU support is provided by the TDX-Module (if enabled for the VM).
-> +	 * From KVM's perspective, the VM doesn't have a virtual PMU.
-> +	 */
-> +	kvm->arch.has_protected_pmu = true;
+Hi Harsh,
 
-Eh, squash this with patch 1.  It's not really possible to review patch 1 without
-seeing the usage here.
+Thanks for looking at the series and your review. Please find my comments
+inline.
 
-> +
->  	/*
->  	 * Because guest TD is protected, VMM can't parse the instruction in TD.
->  	 * Instead, guest uses MMIO hypercall.  For unmodified device driver,
-> -- 
-> 2.54.0.563.g4f69b47b94-goog
+On 2026/05/05 12:14 PM, Harsh Prateek Bora wrote:
+> 
+> 
+> On 30/04/26 11:19 am, Amit Machhiwal wrote:
+> > On IBM POWER systems, newer processor generations can operate in
+> > compatibility modes corresponding to earlier generations. This becomes
+> > relevant for nested virtualization, where nested KVM guests may need to
+> > run with a specific processor compatibility level.
+> > 
+> > Currently, when running a nested KVM guest (L2) inside a Power11 pSeries
+> > logical partition (L1) booted in Power10 compatibility mode, the guest
+> > fails to boot while setting 'arch_compat'. This happens because the CPU
+> > class is derived from the hardware PVR (via mfspr()), which reflects the
+> > physical processor generation (Power11), rather than the effective
+> > compatibility mode (Power10).
+> > 
+> > As a result, userspace may request a Power11 arch_compat for the L2
+> > guest. However, the L1 partition, running in Power10 compatibility, has
+> > only negotiated support up to Power10 with the Power Hypervisor (L0).
+> > When H_SET_STATE is invoked with a Power11 Logical PVR, the hypervisor
+> > rejects the request, leading to a late guest boot failure:
+> > 
+> >    KVM-NESTEDv2: couldn't set guest wide elements
+> >    [..KVM reg dump..]
+> > 
+> > This situation should be detected earlier. Rejecting unsupported
+> > 'arch_compat' values in 'kvmppc_set_arch_compat()' avoids issuing an
+> > invalid H_SET_STATE hcall and provides a clearer failure mode.
+> > 
+> > Add a check to reject Power11 'arch_compat' requests when the host is
+> > running in Power10 compatibility mode, returning -EINVAL early instead
+> > of deferring the failure to the hypervisor.
+> > 
+> > Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+> > ---
+> >   arch/powerpc/kvm/book3s_hv.c | 6 ++++++
+> >   1 file changed, 6 insertions(+)
+> > 
+> > diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> > index 61dbeea317f3..948c6b099a29 100644
+> > --- a/arch/powerpc/kvm/book3s_hv.c
+> > +++ b/arch/powerpc/kvm/book3s_hv.c
+> > @@ -446,7 +446,13 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
+> >   			guest_pcr_bit = PCR_ARCH_300;
+> >   			break;
+> >   		case PVR_ARCH_31:
+> > +			guest_pcr_bit = PCR_ARCH_31;
+> > +			break;
+> >   		case PVR_ARCH_31_P11:
+> > +			if ((PVR_ARCH_31 & cur_cpu_spec->pvr_mask) ==
+> > +				cur_cpu_spec->pvr_value) {
+> > +				return -EINVAL;
+> > +			}
+> 
+> Is it possible to keep the check generic for applicable ISA versions (ISA
+> 3.1 onwards?) instead of keeping it specific for P11 ?
+> Also need to add a comment, why it's not applicable for older ISAs.
+
+I believe the check is only required for ISA 3.1, the reason being that Power10
+and Power11 share the same PCR value. For newer ISA versions, that might not
+necessarily be the case. For any subsequent ISA versions, this check would
+already be taken care of by the below check in kvmppc_set_arch_compat():
+
+	if (guest_pcr_bit > host_pcr_bit)
+		return -EINVAL;
+
+Its mostly implicit but I'm okay to include a comment mentioning the same.
+
+Thanks,
+Amit
+
+> 
+> >   			guest_pcr_bit = PCR_ARCH_31;
+> >   			break;
+> >   		default:
 > 
