@@ -1,107 +1,66 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B5223A4513
-	for <kvm@vger.kernel.org>; Thu,  7 May 2026 14:52:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD06382F10;
+	Thu,  7 May 2026 14:54:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778165568; cv=none; b=Q7v0aYi5bcAr/jM6QOUmJnOhKFSJMb0u61AQdOLHksT6+I4lTGDKsjhb+dhBeFbWatyRzFaYKkjGMF2vp/irZoD8AyKz1M4TylsLlw9EsH+AtdzpjSN2UckG0QK90jXJdVgfqNd+BeGwkPvp7wIM8CPRaAF3A+EQAG+3sBYQQb0=
+	t=1778165667; cv=none; b=lIjmVtQpT+CUi7BO23IRWdJ6Ea3o+k58wsactsv2LoYoOaXnucE6cht3N4+qDYSNC0qVoH1FhCS8mNfnffJNtL6v4pgAJtC3HmlSSuHWOxjNQu9jXiRZfoagPlC9KO9OkQW1MbZPkhTk5ZKmrSyryBX/4/qv6J5wSPtDeb5WCo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778165568; c=relaxed/simple;
-	bh=ecrl1iYp1xnobO4BxmeiQm41yhEPr+oCWaARqAkOs0s=;
+	s=arc-20240116; t=1778165667; c=relaxed/simple;
+	bh=5XfS55EN4bj5QPY46V6t4BYAo27rzcuYqURs6dSESCE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BAVG9EejE3YdcQ7G87N0rvXPyuFTWxJjh+8yT+Y7BwEeHrtr4JcNwqaGSor/oqivog3jBCNpq5l4t3CY7DZFM/lbHclefS0KVSnL/OL+yQPw16bbk1QikBKSHhmTrbHnd5i15zKdiFzemXL6oOgLUwsSF7IaPF8WboRZ38Rwyps=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FOnt3OXQ; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=DoosAJ0O; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=fBlUolkbxW/AoMyWNsXJH1jyvVq+y9xVOMR/fLUpKw96EYMMhqowNyiIMS01nojI7Nf4JkS8CQEMhAdoImkKfLXP2m8SGjEzxpzV/SjIRGu6XzkBi7pTo/v3/aEZTTLap9uIx7RsPfFKxqhdtE/zT53hSXjlycjw/ahHTS37F8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1nB2eI3+; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YvM0Voub; arc=none smtp.client-ip=193.142.43.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FOnt3OXQ";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="DoosAJ0O"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778165565;
+	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1nB2eI3+";
+	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YvM0Voub"
+Date: Thu, 7 May 2026 16:54:16 +0200
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020; t=1778165658;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=Y78B/0dJ3VS7H6g0/jf9q/rfkjPnyDot3aaQ8HfMN5Y=;
-	b=FOnt3OXQcbX5pUMO0TfB4NCPzlscJKq+v1izF1GJlENpUEWBwfRjA+RZuH7u9TWiXcaDwL
-	qA6yZm9HlEGEILQaX0ftw/czjLAfQ6lGKrPzzauneq3AB+iTtUZlm9teO/NVqL9uWLUN1F
-	DLkXegBXvbpWYQyZZmVclVP5m2Rj/k0=
-Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
- [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-551-LpwDz1JYMlWGymxNju3sKA-1; Thu, 07 May 2026 10:52:43 -0400
-X-MC-Unique: LpwDz1JYMlWGymxNju3sKA-1
-X-Mimecast-MFC-AGG-ID: LpwDz1JYMlWGymxNju3sKA_1778165562
-Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-ba661b6c550so93437166b.0
-        for <kvm@vger.kernel.org>; Thu, 07 May 2026 07:52:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778165562; x=1778770362; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Y78B/0dJ3VS7H6g0/jf9q/rfkjPnyDot3aaQ8HfMN5Y=;
-        b=DoosAJ0OBrfN6K5HDZHstbmCNpdKHsrLKQvjDa3oIBudqUvLlfs4/N87oNYqCCkNLJ
-         aUD36C/Vo+c6dojHviAgrMfT6tiziBFohTgF/QB12rPWps3vOfio4YtzvUl6++t+8U+D
-         nD93t1kbt5oDXjcJUrJ/g/ehQjlFsL32PQQIcDoYWaIxOBcVbcxhfonbQgrgqCLaH6oL
-         30X421iAPWXhgpkLkBEGy1SPKEAQPJvulqPL1uk48lLCm4Oatvf0RKH9l+RJrhQzicu7
-         a6+Z+kJcwPkpZQFhdeSjuzwBblP8ArCntN5hEuBKEB5wuEnZhH5mF4t+WveYKkl+vf6M
-         FsyA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778165562; x=1778770362;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y78B/0dJ3VS7H6g0/jf9q/rfkjPnyDot3aaQ8HfMN5Y=;
-        b=Tuk6ecUuhCRVyA4xQqmSAqXxokLAvZDi6SS40bnlRkrRU2Q1KTWrq0MtQO1lrl4NuC
-         niQLdE9RVYzapjfZFcYABtO5ZhutWYiXNjs97rBPxL8I5ARDj0xVHAZVUlEDp/2WTkyi
-         /MPhk/0UDaqHk3UbIwyR5PcXevzgUBkQ03aUdscIt7jAXbcBOlXRMgtuSs674JoDPbIq
-         u/PR0VyIHFONQcGcyvBfZtggF/ry9XlTY0A07wP/WC7kiL9uGzwsqrxSXZo1L7/RQnaY
-         ZfM2pHyDDvVA5rwBuQ+15Z5KLma4crkMUGkGFF29M8nWPjlrTzRLzxWohVm1VPs+Slo7
-         Ni5g==
-X-Forwarded-Encrypted: i=1; AFNElJ/ty+N63pzPk7M0RtyiWuoS8uwpHXhmZLULcJh8Fab8AXJekfLurqgYThgChkZ7YIa8Muk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyo7NTWFrvGrpSmWD+i/stcxL1KoF9lmeYIyPWY7Pz7vCiabeEN
-	UIveNi9eLRcC2UrNJdxrykF5caXm6eGJtPFktJbNSWNKwM35pC18bh0YOFng2VeJ9FkAM7w8LCq
-	vecgUGsFOlEISyVTZKzwsIbxD6LRIJWVrfiFaLJUn8ZdCGHrALAd9zg==
-X-Gm-Gg: AeBDietmyYsiBh5IVpHG8jrMG4XsZggsIoOIa8CjKHszKx0kZAnklDWCfdRuySqzfmh
-	ctc8t/fT1jK2taHT73HanF2NyLASFtCv94fCyC1LB9qwt+sdfXSTt9PulQV1aN3Og97pNjlOn5I
-	AzpYck3Fv8I0/+8/XZdL9SZ8VkNOzl9qBRG9pK7hVB7DZAyoe3IgErcMgHngWKIb3n9P1ATDrTL
-	AGwhUavqxuHnrEFvRrEsTitQ5WQStFrL8oAhEr1u7GeqVDfEDIjnOaTP9vapox90ToYzvS1uXi1
-	k6VtbI3DOUDRzvc7pDuPEIeKoEvwtPfyhABnkMmuXls3N9OqAuP0JqMoHnr+6QsU/qwpQ3QKNTV
-	LeN+YQpofcJ12zzpP0wHr1HDpaXDtUXcFrv+Rp0kv6dUCK0WugBY=
-X-Received: by 2002:a17:907:e152:b0:bc9:e1b1:8edf with SMTP id a640c23a62f3a-bc9e1b192e3mr84388666b.12.1778165562141;
-        Thu, 07 May 2026 07:52:42 -0700 (PDT)
-X-Received: by 2002:a17:907:e152:b0:bc9:e1b1:8edf with SMTP id a640c23a62f3a-bc9e1b192e3mr84386266b.12.1778165561383;
-        Thu, 07 May 2026 07:52:41 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bc81cd34ce8sm90853066b.9.2026.05.07.07.52.39
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 07:52:40 -0700 (PDT)
-Date: Thu, 7 May 2026 10:52:37 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: Eric Dumazet <edumazet@google.com>,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
-	eric.dumazet@gmail.com, Arseniy Krasnov <AVKrasnov@sberdevices.ru>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	kvm@vger.kernel.org, virtualization@lists.linux.dev
-Subject: Re: [PATCH net] vsock/virtio: fix potential unbounded skb queue
-Message-ID: <20260507104701-mutt-send-email-mst@kernel.org>
-References: <20260430122653.554058-1-edumazet@google.com>
- <afn0ZdvZWswBuDMm@sgarzare-redhat>
- <CANn89iLs8DOWJwDpf_ARoMrV+6b2tbhEJ=VVzeC8gCm5dRGaig@mail.gmail.com>
- <afoF_cHfl6ygcupM@sgarzare-redhat>
- <20260506113554-mutt-send-email-mst@kernel.org>
- <afxVH2So9BbZ3Gta@sgarzare-redhat>
- <20260507074113-mutt-send-email-mst@kernel.org>
- <afyMCyBvZpzWrLtO@sgarzare-redhat>
+	bh=8VqblXCRKNyHMLImrYpvFEMT1rA3y4jTKAga3t+zUXo=;
+	b=1nB2eI3+qiu8j9YmpTCDVRTbPlZ51QhAvP3f5+t3HkbYLisL0ElREzuEyjh0IS9X//d2q8
+	IrICM2NhTxJoPfpVIlYnFTJX8fX/LXtke8Yv/+Eko+Qf6OHc9shfG50db+riN9Ir3bca+a
+	97XCh0dpKvG5WzaR2+ecGC4bGBWBExWPSvAFf1WdAlptV/RjfcnVFB2ZqNFuAlO9bjs20o
+	IL7qdACrARROx0cAYLpzo+nndwcIn9e8TEZ0RCQUtKDloJYBjd+Wh94+r+Ug8gUK+ZGhbI
+	b/VrarlPbMTPJDeM+BCYh6a2H4LznFwd35W8CdtrIGtAH+GwkLM0WpEG38Gs7g==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+	s=2020e; t=1778165658;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8VqblXCRKNyHMLImrYpvFEMT1rA3y4jTKAga3t+zUXo=;
+	b=YvM0VoubD8doF3g4uqGlJStfDKllP4Ks9G2jZRmF9svFmHiBK6qSBsGal4puY+/sJtyTys
+	SHXYWlmREO43PMDw==
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Mauricio Faria de Oliveira <mfo@igalia.com>,
+	Paul Durrant <paul@xen.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Clark Williams <clrkwllms@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>, kernel-dev@igalia.com,
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-rt-devel@lists.linux.dev,
+	syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com
+Subject: Re: [PATCH] KVM: x86/xen: bail in IRQ context on PREEMPT_RT in
+ kvm_xen_set_evtchn_fast()
+Message-ID: <20260507145416.55hJZOWT@linutronix.de>
+References: <20260506-xen-rt-sleep-v1-1-53b6b60a671d@igalia.com>
+ <8e7bc66a7994ca06f164a5d5f7ceb3f07d3a1357.camel@infradead.org>
+ <20260507071235.rdb4aGeE@linutronix.de>
+ <f0f447dea6c8f2deb7f153f745add15d3ecadd19.camel@infradead.org>
+ <20260507132115.w1nOBvlS@linutronix.de>
+ <e082f19aecf2d2acd30782ea9220aedac3d3f990.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -110,138 +69,41 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <afyMCyBvZpzWrLtO@sgarzare-redhat>
+In-Reply-To: <e082f19aecf2d2acd30782ea9220aedac3d3f990.camel@infradead.org>
 
-On Thu, May 07, 2026 at 02:59:13PM +0200, Stefano Garzarella wrote:
-> On Thu, May 07, 2026 at 07:45:10AM -0400, Michael S. Tsirkin wrote:
-> > On Thu, May 07, 2026 at 11:09:47AM +0200, Stefano Garzarella wrote:
-> > > On Wed, May 06, 2026 at 11:37:45AM -0400, Michael S. Tsirkin wrote:
-> > > > On Tue, May 05, 2026 at 06:11:13PM +0200, Stefano Garzarella wrote:
-> > > > > On Tue, May 05, 2026 at 07:14:36AM -0700, Eric Dumazet wrote:
-> > > > > > On Tue, May 5, 2026 at 6:52 AM Stefano Garzarella <sgarzare@redhat.com> wrote:
-> > > > > > >
-> > > > > > > On Thu, Apr 30, 2026 at 12:26:52PM +0000, Eric Dumazet wrote:
-> > > > > > > >virtio_transport_inc_rx_pkt() checks vvs->rx_bytes + len > vvs->buf_alloc.
-> > > > > > > >
-> > > > > > > >virtio_transport_recv_enqueue() skips coalescing for packets
-> > > > > > > >with VIRTIO_VSOCK_SEQ_EOM.
-> > > > > > > >
-> > > > > > > >If fed with packets with len == 0 and VIRTIO_VSOCK_SEQ_EOM,
-> > > > > > > >a very large number of packets can be queued
-> > > > > > > >because vvs->rx_bytes stays at 0.
-> > > > > > > >
-> > > > > > > >Fix this by estimating the skb metadata size:
-> > > > > > > >
-> > > > > > > >       (Number of skbs in the queue) * SKB_TRUESIZE(0)
-> > > > > > > >
-> > > > > > > >Fixes: 077706165717 ("virtio/vsock: don't use skbuff state to account credit")
-> > > > > > > >Signed-off-by: Eric Dumazet <edumazet@google.com>
-> > > > > > > >Cc: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
-> > > > > > > >Cc: Stefan Hajnoczi <stefanha@redhat.com>
-> > > > > > > >Cc: Stefano Garzarella <sgarzare@redhat.com>
-> > > > > > > >Cc: "Michael S. Tsirkin" <mst@redhat.com>
-> > > > > > > >Cc: Jason Wang <jasowang@redhat.com>
-> > > > > > > >Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-> > > > > > > >Cc: "Eugenio Pérez" <eperezma@redhat.com>
-> > > > > > > >Cc: kvm@vger.kernel.org
-> > > > > > > >Cc: virtualization@lists.linux.dev
-> > > > > > > >---
-> > > > > > > > net/vmw_vsock/virtio_transport_common.c | 4 +++-
-> > > > > > > > 1 file changed, 3 insertions(+), 1 deletion(-)
-> > > > > > > >
-> > > > > > > >diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> > > > > > > >index 416d533f493d7b07e9c77c43f741d28cfcd0953e..9b8014516f4fb1130ae184635fbba4dfee58bd64 100644
-> > > > > > > >--- a/net/vmw_vsock/virtio_transport_common.c
-> > > > > > > >+++ b/net/vmw_vsock/virtio_transport_common.c
-> > > > > > > >@@ -447,7 +447,9 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
-> > > > > > > > static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
-> > > > > > > >                                       u32 len)
-> > > > > > > > {
-> > > > > > > >-      if (vvs->buf_used + len > vvs->buf_alloc)
-> > > > > > > >+      u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
-> > > > > > > >+
-> > > > > > > >+      if (skb_overhead + vvs->buf_used + len > vvs->buf_alloc)
-> > > > > > > >               return false;
-> > > > > > >
-> > > > > > > I'm not sure about this fix, I mean that maybe this is incomplete.
-> > > > > > > In virtio-vsock, there is a credit mechanism between the two peers:
-> > > > > > > https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01.html#x1-4850003
-> > > > > > >
-> > > > > > > This takes only the payload into account, so it’s true that this problem
-> > > > > > > exists; however, perhaps we should also inform the other peer of a lower
-> > > > > > > credit balance, otherwise the other peer will believe it has much more
-> > > > > > > credit than it actually does, send a large payload, and then the packet
-> > > > > > > will be discarded and the data lost (there are no retransmissions,
-> > > > > > > etc.).
-> > > > > >
-> > > > > > I dunno, perhaps revert 077706165717 ("virtio/vsock: don't use skbuff
-> > > > > > state to account credit")
-> > > > > > and find a better fix then?
-> > > > >
-> > > > > IIRC the same issue was there before the commit fixed by that one (commit
-> > > > > 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")), so
-> > > > > not sure about reverting it TBH.
-> > > > >
-> > > > > CCing Arseniy and Bobby.
-> > > > >
-> > > > > >
-> > > > > > There is always a discrepancy between skb->len and skb->truesize.
-> > > > > > You will not be able to announce a 1MB window, and accept one milliion
-> > > > > > skb of 1-byte each.
-> > > > > >
-> > > > > > This kind of contract is broken.
-> > > > > >
-> > > > >
-> > > > > Yep, I agree, but before we start discarding data (and losing it), IMHO we
-> > > > > should at least inform the other peer that we're out of space.
-> > > > >
-> > > > > @Stefan, @Michael, do you think we can do something in the spec to avoid
-> > > > > this issue and in some way take into account also the metadata in the
-> > > > > credit. I mean to avoid the 1-byte packets flooding.
-> > > > >
-> > > > > Thanks,
-> > > > > Stefano
-> > > >
-> > > > Why do we need the metadata? Just don't keep it around if you begin
-> > > > running low on memory.
-> > > 
-> > > I don't think removing the skuffs will be easy; we added them for ebpf,
-> > > zero-copy, and seqpacket as well.
-> > 
-> > You do not need to remove them completely.
-> > 
-> > > For now, we're already doing something:
-> > > merging the skuffs if they don't have EOM set.
-> > 
-> > 
-> > Right that's good. You could go further and merge with EOM too
-> > if you stick the info about message boundaries somewhere else.
+On 2026-05-07 14:43:20 [+0100], David Woodhouse wrote:
+> Thanks. Something like this?
+
+Yes. If you could stuff the below into the patch so it does not look
+like fixing symptoms.
+
+> From 7199173d543d25333418537bcf07d6b2fce18ff1 Mon Sep 17 00:00:00 2001
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> Date: Thu, 7 May 2026 14:39:22 +0100
+> Subject: [PATCH] locking/rt: Use raw_spin_lock_irqsave() in
+>  __rwbase_read_unlock()
 > 
-> This adds a lot of complexity IMO, but we can try.
+> __rwbase_read_unlock() uses raw_spin_lock_irq()/raw_spin_unlock_irq()
+> which unconditionally disables and re-enables interrupts. When
+> read_unlock() is called from hardirq context (e.g. after a successful
+> read_trylock() in a timer callback), the raw_spin_unlock_irq()
+> incorrectly re-enables interrupts within the hardirq handler.
 > 
-> Do you have something in mind?
+> This causes lockdep warnings ('hardirqs_on_prepare' from hardirq
+> context) and can lead to IRQ state corruption.
 
-I'll send something shortly just to give you an idea.
+Using read_trylock() in hardirq context on PREEMPT_RT is safe because it
+does not record the lock owner. The read_unlock() acquires the wait_lock
+which is hardirq safe. This change additionally allows rwlock_t during
+early boot.
 
-
-> > 
-> > > As a quick fix, I'm thinking of reducing the `buf_alloc` value to account
-> > > for the overhead and notifying the other peer, at least until we find a
-> > > better solution.
-> > > 
-> > > Stefano
-> > 
-> > well if you want to support pathological cases such as 1 byte messages
-> > that would mean like 100x reduction no?
-> > 
 > 
-> Yep, but since this patch is already merged, IMHO that is better than losing
-> data in those pathological cases.
+> Switch to raw_spin_lock_irqsave()/raw_spin_unlock_irqrestore() to
+> preserve the caller's IRQ state, matching the pattern already used
+> for rt_spin_lock/unlock.
 > 
-> Thanks,
-> Stefano
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-
-
+Sebastian
