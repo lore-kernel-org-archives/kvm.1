@@ -1,225 +1,138 @@
-Received: from mx4.sberdevices.ru (mx4.sberdevices.ru [152.89.196.46])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A63933032B;
-	Thu,  7 May 2026 20:04:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=152.89.196.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF1135F60F;
+	Thu,  7 May 2026 20:08:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778184261; cv=none; b=KGHU8hYL5yPfj9exk38jQ48jBbpJhZ3ovBOb21jSiO5/AX5+Ep70zJFNAgC3vMLGK8NLwGgt5kt0YyN8j8XliJrNy0R1aVtifVsi3i+dTSfoHeIcqa8uvoqJ/v1SgSqsQaJkkCtnsMaY2aAh3pDdpfLeawaLDRkxcwkR4Q/XqPM=
+	t=1778184530; cv=none; b=n3k0n5EgzYvhPWLoYTuWu+kqbU0LG+9GkbTL+SWSaOEqQy5zYPh1yxNy3DSP5YYb2jOGg7l5Pfv/xJQ2gwsuTW+wabhU8Fz2V4zkU9tN5CLy+HilBF70C3Jh+VZDTcFYGcE7idHF4FRWgQTgpwPNGhMszlIQPbxXQ3NRtcNJ33s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778184261; c=relaxed/simple;
-	bh=x4vxn5CsbkLp6acVGZz+ODOaft347/jl8nkj0kKF5Vs=;
-	h=Message-ID:Date:MIME-Version:In-Reply-To:From:Subject:To:CC:
-	 Content-Type; b=YXz0ub0zJii3UnpPvmaNPgHwdsLDEexzPlielpmbCB1EyrZ2F3iaOEhBvJjEBvT7/vtB23NZS1+ILZnZQRv311qNuHRZ5tOBbSmxaBwMRYdYUWKQr7/e0LmxsZ80mO/UV/dD2bgm3mN9RyPT3tMHAFZBS8L2SARrG5kFg5FpKUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=salutedevices.com; spf=pass smtp.mailfrom=salutedevices.com; dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b=hXTzLo/P; arc=none smtp.client-ip=152.89.196.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=salutedevices.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=salutedevices.com
+	s=arc-20240116; t=1778184530; c=relaxed/simple;
+	bh=EAcr7chHKUqST8Dm0yjywItPUyxHW4fBBNRU9Vm2QJY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=gF7y9xeQgebyOCgYD9egotvUWNtT0NdiSCow0Mt2qlyCp6a8gGKSMHwWnNuFriqL1VALTuorwlOc9yBGzedIE3X5DFoLlXI/7nYQXqx7pTKZBoPGDVxj7BohInhMDZFmm0nGxF4Uj5wRdPouPlDo+KGa1Cv+MCh6YRX2MKzg160=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=TmAXJku0; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b="hXTzLo/P"
-Received: from p-antispam-ksmg-sc-msk02.sberdevices.ru (localhost [127.0.0.1])
-	by mx4.sberdevices.ru (Postfix) with ESMTP id B9BC240003;
-	Thu,  7 May 2026 23:04:07 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx4.sberdevices.ru B9BC240003
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
-	s=post; t=1778184247;
-	bh=YgPmkTjxoBBbEZCWI8Tkia3A3s5RoljjiPpWZm+RT/g=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Content-Type:From;
-	b=hXTzLo/Pzoe2bnKFFKGax6yUoWW7R+YHtHBl703p6DNdu6HyJXvJzSjZiPIu4bpbE
-	 CbIjnNyRAkB299e7NgWGER6/ckr6PoBv9BTCZHeFSGt69HBYatd/QBwzMmboyAEjDO
-	 WmE9aK9+cGQ0+UWJSnZNhbHpsnmh6EJzt1gUjMXhLz7W4S6RGBqlvIpa3avUiy1k5S
-	 VdV4GTktAqJz1pYufLoRTSNwr3yAP+Lpz4siIx+rc9rc18lOpPxzTOWW+mQYZMDF1B
-	 tNhvhSsj2S6jQYoiKAdCFTIoCWa+pxbSbU90ymKaASnn7R9wron3Bee4xC792sFA3Z
-	 8N4l9PZi4dQiw==
-Received: from smtp.sberdevices.ru (p-exch-cas-a-m1.sberdevices.ru [172.24.201.216])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "sberdevices.ru", Issuer "R12" (not verified))
-	by mx4.sberdevices.ru (Postfix) with ESMTPS;
-	Thu,  7 May 2026 23:04:07 +0300 (MSK)
-Message-ID: <a7b95294-3aa6-4bca-9eab-a4bcd0202ae2@salutedevices.com>
-Date: Thu, 7 May 2026 23:03:57 +0300
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="TmAXJku0"
+Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 647CPg3Y2808530;
+	Thu, 7 May 2026 20:08:46 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=r/NDFnm98gJ01g/mY
+	T8+zZJvuq70m8k+EtM0ZrIJcGU=; b=TmAXJku0hajj5lRvEdCvoAlgRKMGvLSAC
+	6TRZrqirhy/+T+SGs5qvbgv1rg2Ar7iLaX0klmxCWwYi/Gw5mqjAwNIY3X5f5Qfd
+	kLSPiZQzMNhoa71uMm0m7Z6bRlKcoUn63EWVqEA1CpC22LW6iT5a2pYAQZmg8HKi
+	iwJ7udgi5aV9yMjdYn6I4Jgx3jeLdy3b97HUFICGGkShILVQpZd92MspfNfaXfA8
+	ALBU5w+g2U2/+dVYArGjPdDFAOBMshJUSsfGtIBY/ztM2+MobhLZriGjNNyDJZ6J
+	CsAZlkrpEZlKhpmbs9m1sMIoSiU59mcbO4mrEfhnRUHZVffUPiNnw==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9y1rnnu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 May 2026 20:08:46 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 647JsTEt017766;
+	Thu, 7 May 2026 20:08:45 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e10070drx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 May 2026 20:08:45 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 647K8gbW51511728
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 7 May 2026 20:08:42 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 224A82005A;
+	Thu,  7 May 2026 20:08:42 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 01D972004F;
+	Thu,  7 May 2026 20:08:42 +0000 (GMT)
+Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Thu,  7 May 2026 20:08:41 +0000 (GMT)
+Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 4958)
+	id DEC45E05E7; Thu, 07 May 2026 22:08:41 +0200 (CEST)
+From: Eric Farman <farman@linux.ibm.com>
+To: Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+        Eric Farman <farman@linux.ibm.com>
+Subject: [PATCH v2 1/3] KVM: s390: Toggle operation exception for userspace
+Date: Thu,  7 May 2026 22:08:34 +0200
+Message-ID: <20260507200836.3500368-2-farman@linux.ibm.com>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260507200836.3500368-1-farman@linux.ibm.com>
+References: <20260507200836.3500368-1-farman@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: ru
-In-Reply-To: <afnXIGtswspSEk8x@sgarzare-redhat>
-From: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Subject: Re: [PATCH] vsock/virtio: fix vsockmon info leak in non-linear tap,
- copy
-To: Paolo Abeni <pabeni@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>,
-	Bobby Eshleman <bobbyeshleman@meta.com>
-CC: <netdev@vger.kernel.org>, <linux-kernel@vger.kernel.org>, "Michael S.
- Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, Xuan Zhuo
-	<xuanzhuo@linux.alibaba.com>, Yiqi Sun <sunyiqixm@gmail.com>,
-	<kvm@vger.kernel.org>, <virtualization@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: p-exch-cas-s-m1.sberdevices.ru (172.16.210.2) To
- p-exch-cas-a-m1.sberdevices.ru (172.24.201.216)
-X-KSMG-AntiPhishing: NotDetected
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: avkrasnov@salutedevices.com
-X-KSMG-AntiSpam-Info: LuaCore: 104 0.3.104 557b3c2486a74077a103cf2acd83f2ecf4c95118, {Tracking_from_domain_doesnt_match_to}, d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;salutedevices.com:7.1.1;smtp.sberdevices.ru:7.1.1,5.0.1, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 202959 [May 07 2026]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.22
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2026/05/07 18:14:00 #28511915
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-KATA-Status: Not Scanned
-X-KSMG-LinksScanning: NotDetected
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 5
+Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-ORIG-GUID: Z7njWV2EfEfHUUduxzESRAYY7RBjuuM3
+X-Proofpoint-GUID: Z7njWV2EfEfHUUduxzESRAYY7RBjuuM3
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA3MDIwMyBTYWx0ZWRfX446U5Fv4IyeL
+ qHdWndA99CWcxWsAJB5ABdk+RYhkZnDLOKywNUDCnpQgMazARKz26D+3WDN8CnZINXbSqyzifAF
+ O9yeogvfOKKylp2s6xyo9EYpLI0hiIBKv/EICyYmN9YttJFy3gRcW7iD3eobuai0D4yIJb3twyf
+ U9j6snDFF7uef/zWO4y07AeyeBgJ1ZCfdDpw7Kii8C9gEgxn+WsSCjrczvaHO5EsYtETln99n9c
+ okSTLRU0pRJ1Q4fa+DSgW2ht5FS9XY1nyKM3Bc6S7vwJaYxgV9EjIQ/w7IeK3gyltogC5638vRt
+ oeYiSM22t2YesIQXz+6yYjmHm06yslxd0Ifxg4CEgDQPra4Wj/p6eW5bbVFF+QuEKrBj3FRj8Zz
+ U589HJSBlFLul/t9bSFm+eKItFpwKzwDOkk0O0qPOT/buPakwZkS/e8ucP90JykUFVKvqvFAvC+
+ rOW9j3Z0s1oFIk9SW/Q==
+X-Authority-Analysis: v=2.4 cv=UbFhjqSN c=1 sm=1 tr=0 ts=69fcf14e cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8 a=ea8k8XiQOFGV3AjeF4IA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-07_02,2026-05-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 spamscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=0
+ adultscore=0 priorityscore=1501 bulkscore=0 phishscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605070203
 
->CCing Arseniy and Bobby.
+The KVM_CAP_S390_USER_OPEREXEC capability allows operation exceptions
+to be forwarded to userspace. But the actual enablement at the hardware
+level occurs in kvm_arch_vcpu_postcreate(), and only if STFLE.74 or
+user_instr0 are enabled. The latter is associated with a separate
+capability (KVM_CAP_S390_USER_INSTR0), so the only way this happens
+for the USER_OPEREXEC capability is if STFLE.74 is enabled. KVM
+unconditionally enables this bit in kvm_arch_init_vm(), but the guest
+could disable it from the CPU model and thus ignore this capability.
 
-Thanks!
+Add USER_OPEREXEC to the check in kvm_arch_vcpu_postcreate(), such that
+either capability would enable this type of exception.
 
->
->On Tue, May 05, 2026 at 12:26:21PM +0200, Paolo Abeni wrote:
->>On 4/30/26 9:11 AM, Yiqi Sun wrote:
->>> vsockmon mirrors packets through virtio_transport_build_skb(), which
->>> builds a new skb and copies the payload into it. For non-linear skbs,
->>> this goes through virtio_transport_copy_nonlinear_skb().
->>>
->>> Helper manually initializes a iov_iter, but leaves iov_iter.count unset.
->>> As a result, skb_copy_datagram_iter() sees zero writable bytes
->>> in the destination iterator and copies no payload data.
->>>
->>> This becomes an info leak because virtio_transport_build_skb() has
->>> already reserved payload_len bytes in the new skb with skb_put(). The
->>> skb is then returned to the tap path with that payload area still
->>> uninitialized, so userspace reading from a vsockmon device can observe
->>> heap contents and potentially kernel address.
->>>
->>> Fix it by initializing iov_iter.count to the number of bytes to copy.
->>>
->>> Fixes: 4b0bf10eb077 ("vsock/virtio: non-linear skb handling for tap")
->>> Signed-off-by: Yiqi Sun <sunyiqixm@gmail.com>
->>> ---
->>>  net/vmw_vsock/virtio_transport_common.c | 2 +-
->>>  1 file changed, 1 insertion(+), 1 deletion(-)
->>>
->>> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->>> index 416d533f493d..6b26ee57ccab 100644
->>> --- a/net/vmw_vsock/virtio_transport_common.c
->>> +++ b/net/vmw_vsock/virtio_transport_common.c
->>> @@ -152,7 +152,7 @@ static void virtio_transport_copy_nonlinear_skb(const struct sk_buff *skb,
->>>  	iov_iter.nr_segs = 1;
->>>
->>>  	to_copy = min_t(size_t, len, skb->len);
->>> -
->>> +	iov_iter.count = to_copy;
->>>  	skb_copy_datagram_iter(skb, VIRTIO_VSOCK_SKB_CB(skb)->offset,
->>>  			       &iov_iter, to_copy);
->>
->>@Stefano, @Stefan, the patch LGTM, but sashiko pointed out to a
->>pre-existing issue you should probably want to address:
->>
->>>  	to_copy = min_t(size_t, len, skb->len);
->>Does this length calculation account for the offset when a packet is
->>split across multiple transmissions?
->>If a packet is requeued, VIRTIO_VSOCK_SKB_CB(skb)->offset is increased,
->>but to_copy still evaluates to the full length of the skb.
->
->Yep, I just checked and vhost-vsock is the only place where we call 
->virtio_transport_deliver_tap_pkt() wiht an offset != 0, but I agree that 
->we should also fix it.
+Fixes: 8e8678e740ec ("KVM: s390: Add capability that forwards operation e=
+xceptions")
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+Signed-off-by: Eric Farman <farman@linux.ibm.com>
+---
+ arch/s390/kvm/kvm-s390.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Yes, looks like the only place where offset could be non zero is 'vhost_transport_do_send_pkt()'.
-And we set valid length in header every attempt to send it:
+diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+index e09960c2e6ed..a91a42174302 100644
+--- a/arch/s390/kvm/kvm-s390.c
++++ b/arch/s390/kvm/kvm-s390.c
+@@ -3521,7 +3521,8 @@ void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcpu=
+)
+ 		vcpu->arch.gmap =3D vcpu->kvm->arch.gmap;
+ 		sca_add_vcpu(vcpu);
+ 	}
+-	if (test_kvm_facility(vcpu->kvm, 74) || vcpu->kvm->arch.user_instr0)
++	if (test_kvm_facility(vcpu->kvm, 74) || vcpu->kvm->arch.user_instr0 ||
++	    vcpu->kvm->arch.user_operexec)
+ 		vcpu->arch.sie_block->ictl |=3D ICTL_OPEREXC;
+ }
+=20
+--=20
+2.51.0
 
-                /* Set the correct length in the header */
-                hdr->len = cpu_to_le32(payload_len);
-
-In all other places we call 'virtio_transport_deliver_tap_pkt()' with offset == 0. And thus
-skb->len == hdr->len.
-
-So for me looks ok. E.g. len in header is actual data.
-
->
->Looking better in net/vmw_vsock/virtio_transport_common.c I think this 
->is a regression, indeed we have this comment in 
->virtio_transport_build_skb():
->
->	/* A packet could be split to fit the RX buffer, so we can retrieve
->	 * the payload length from the header and the buffer pointer taking
->	 * care of the offset in the original packet.
->	 */
->	pkt_hdr = virtio_vsock_hdr(pkt);
->
->Before commit 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with 
->sk_buff") we read the payload lenght from the header that is always set 
->to the right value before delivering the packet to the tap.
->
-> From that commit, we don't to consider the offset anymore since we 
->started to use `len` from the skb, so IMO we should go back to what we 
->did before it, I mean:
->
->	payload_len = le32_to_cpu(pkt->hdr.len);
->
->@Bobby do you remember why we did that change? Or if you see any issue 
->going back to what we did initially?
->
->
->Also IMO we should avoid to set all the iov_iter fields by hand and 
->start to use iov_iter_kvec(). Plus, we can just use 
->skb_copy_datagram_iter() in any case, like we already do in vhost-vsock, 
->since it already handles linear vs non linear.
->
->At the end I mean something like this:
->
->@@ -171,7 +150,7 @@ static struct sk_buff *virtio_transport_build_skb(void *opaque)
->  	 * care of the offset in the original packet.
->  	 */
->  	pkt_hdr = virtio_vsock_hdr(pkt);
->-	payload_len = pkt->len;
->+	payload_len = le32_to_cpu(pkt_hdr->len);
->
->  	skb = alloc_skb(sizeof(*hdr) + sizeof(*pkt_hdr) + payload_len,
->  			GFP_ATOMIC);
->@@ -214,13 +193,17 @@ static struct sk_buff *virtio_transport_build_skb(void *opaque)
->  	skb_put_data(skb, pkt_hdr, sizeof(*pkt_hdr));
->
->  	if (payload_len) {
->-		if (skb_is_nonlinear(pkt)) {
->-			void *data = skb_put(skb, payload_len);
->+		struct iov_iter iov_iter;
->+		struct kvec kvec;
->+		void *data = skb_put(skb, payload_len);
->
->-			virtio_transport_copy_nonlinear_skb(pkt, data, payload_len);
->-		} else {
->-			skb_put_data(skb, pkt->data, payload_len);
->-		}
->+		kvec.iov_base = data;
->+		kvec.iov_len = payload_len;
->+		iov_iter_kvec(&iov_iter, READ, &kvec, 1, payload_len);
->+
->+		skb_copy_datagram_iter(pkt,
->+				       VIRTIO_VSOCK_SKB_CB(pkt)->offset,
->+				       &iov_iter, payload_len);
->  	}
->
->  	return skb;
->
->And removing virtio_transport_copy_nonlinear_skb().
-
-Yes, this looks shorter and better.
-
->
->If you agree, I can send a proper series with these changes that should 
->fix the issue reported by Yiqi Sun introduced by commit 4b0bf10eb077 
->("vsock/virtio: non-linear skb handling for tap") and the issue 
->introduced by commit 71dc9ec9ac7d ("virtio/vsock: replace 
->virtio_vsock_pkt with sk_buff").
->
->Thanks,
->Stefano
-
-Thanks
