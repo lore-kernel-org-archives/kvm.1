@@ -1,236 +1,211 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A77F83E6DDB
-	for <kvm@vger.kernel.org>; Thu,  7 May 2026 12:59:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778158792; cv=none; b=cKjzHtyM6SBzs9/i/OOuJ0KIjXSPKlt4RvIFRARNJP7wvqZXxxL62rslzffn8Ge59Ww+7BoDPKK13rsr4RTlzPoH9p2th4cnjHVRrS7qr5PRXv9O4Q2hEq2HcL2xSv060SP67hOJgJcOlEVRGYF1nWeWBZqJymH0ilaT2V4I3Rk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778158792; c=relaxed/simple;
-	bh=a1ipHP4vJKqQ1PCjSE2XOtkD4KIsGKmi/PHR4V/X8j4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QJuIgj3l7WyYkVqUjRfMA7Cm4iTsJYWlPX2bZtYTks8Xyp3tWpK8yF3fXIDge1aCsf8ah5NQg7/XjcI0YCkxsaD18ABUVY3FJDtcckhFc+VhylrmMW4zOJSirZEL4LEK3vUhpZ12uVoWqk8sV9mdUFUZ51D5ddu9/oa5LK8gmlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CIDM7Pvx; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=NwF2CHY6; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 150573BADA9;
+	Thu,  7 May 2026 13:00:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.16
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778158844; cv=fail; b=r1b5E0h/OK+z/vlcLKJRdVslLrUSxDzHVDJIECBeVHD/uKi3l8qGc0gWcZ0ErTIcDXvDkzGs4rDU27+LPuwZN/jtnCO1u97lXWKARcuMPfWvPJCmpxJJcTNKFIjrsBjnPpVo9ZTV67Jwox4FtvgtYvijpvxrBrEjj0rjLRP04iw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778158844; c=relaxed/simple;
+	bh=4uudz4ONJAbfph11Wy7UTrNhDv9ycKSnRMSnrtIxuhI=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=jVjY58TCT2LxAeAok/3Nj2SjYYhW8kxUvOvWHNcszeorQ7bOGlpEy9WBQJnouAWqfGfp086MZyfV7eIFOgxIf9tnLGGus2yHuHgUGNeVvF684pBDvNTi0cii5WalXWOLOrksXJ1Jx8y1RmlClJwuXKya7AmUzyk5Kzmn7XeCUUw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=JIDIUtS5; arc=fail smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CIDM7Pvx";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="NwF2CHY6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778158789;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6a38SeOw0jKuyeFe5c6jTpEyvp+0L5OzxyUUit2nySo=;
-	b=CIDM7PvxaB/92BFSQQq61oXocNmEx8gNQCRArFTpft9gsQGLJTa7GjMgM5GwQ/o+x2Z3NY
-	S07D1Sf9J86ZShwoCZ0BgRVr2PNyAHz4Pe4dZ7/0jv6JF/KjoMCKtnwWyZ/iVBdF8XwSd4
-	lEKwTILUfzYoc8PgTTHnw1nSHh87ees=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-693-okCrg-48PWSpTC9L5cDGZw-1; Thu, 07 May 2026 08:59:48 -0400
-X-MC-Unique: okCrg-48PWSpTC9L5cDGZw-1
-X-Mimecast-MFC-AGG-ID: okCrg-48PWSpTC9L5cDGZw_1778158787
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43ff19e54beso607252f8f.2
-        for <kvm@vger.kernel.org>; Thu, 07 May 2026 05:59:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778158787; x=1778763587; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=6a38SeOw0jKuyeFe5c6jTpEyvp+0L5OzxyUUit2nySo=;
-        b=NwF2CHY6/KEEcFodp2aMnq071yb21oTd6llqsUs8VOuzFik9v/IqCSkJmJsVB5w/Co
-         TIfB8XLXgDFvF7ctSKdyMl4K0lNa6+0nMyBXQx3Mj/LMiwrkL4g06zKVoj8kSYa8Aiaj
-         YYvql+H1wOcqGgw3QGmKZwqLcNbiAzJa1jiuY65Ztv9Tcv4Mm5Ga54nhAj6uaysHKqsV
-         U9dyZCbiLcxtskQGs5EibTLxjlq/26uldvu5WysHt/48wcFAh0uzJPy/uF2ky+LuW6e0
-         CCVHXDzS5ZGiHS/7CGR9nu8ulpGTJw2PsMLkBMAhjn1yOkxBpoxyvlQTozff3SwhnZqq
-         x3zw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778158787; x=1778763587;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6a38SeOw0jKuyeFe5c6jTpEyvp+0L5OzxyUUit2nySo=;
-        b=B37Ap9p/xGnJ+GKd9H5mE9dVAGOOvrwEGfFNopCMuRQrD+hSS4DUvPGPCdgQid8AyD
-         z9C8zsJBI4C60sIrfvB3v4iGiU+QoPd4HY+vMyWkgDSc6z+fMB7KaZkWh/LFnvduoI42
-         HVLYc0BvtMBvnIo8SDjITw5OWEAWktpQdghWaoylEyW1tXUxi7VtkVdpWKdQNds2hQWV
-         ZyXysShc05QX6bdDRlAeKQfvPjCaMHb4sqd63C73PG5tubhYy+/VvrZZTxOsDdGy4Thy
-         lELXBcs2xJ9G4uGwVtsBhGYZJFgFXJGPxg+Z1XEVlQkoY9Vxt1gcz5Dpm9oEqp2liuXn
-         DXHQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/hKlkW38q8+jDpPdhW6obNH8W0huKEytpbrnx9MUPQGK1iC7Rbr8Km/GSy9WCDuGyULgM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwefNCKk11yR0U1sZnRn1ZYJ7uXGjYGgHf0Fk2VV5juD9uxIal0
-	GD5GLNMhw5ggxqK+U4EtHUZCBchi3fPwvQY0PhhdcB+RNOeWc7RdTGXDw+/RGFWy2elnFD+NBQ7
-	H1vaYw6ZJ9FlglE1Xk71hniqL/5l1ceqeNPKjcCVGZuKcMuTfFiEA4w==
-X-Gm-Gg: AeBDieufPAEfdm/vvI5STqOZ/ZuLhjnQHzfCzyWiUegVqIMtXdhil904l5LT07PDJ7r
-	QC0rAPFq2NadwVgfseDeBpTZNjzZNDIY2l/PlNuJxGrveRVjFJ2sWi5MTuI2E1wyH+zyb0C7tF6
-	W1PUAY7NwY03V3FQXnV10h69seMc7sY76Jor7iXlp6auJFsIGvXaN1T6Fen/WE7wikeIVGRdgIl
-	qc0v2KsIsA2H1u7i0nDHuUKukP5ZqiQkYe5GFzIR19WmgHI5ymAZ906FxZftHXB9PrlEbzvNyNQ
-	RRJfTMfY/MUSo4mlNmtnq/rIwPDkypwifbth9pRG+YmxFbiXeopgZrC02ETXVO6of1gRiDjN1sZ
-	SJnrVqNywFCtreLkGKRlnzSLjWnNTycOkCAkWedYPCQVCO6H7Gg8dGK3wLbCMyWsOIsX+zJ4yhg
-	==
-X-Received: by 2002:a5d:5d89:0:b0:449:4079:4c39 with SMTP id ffacd0b85a97d-4515d5c5750mr12867092f8f.29.1778158787143;
-        Thu, 07 May 2026 05:59:47 -0700 (PDT)
-X-Received: by 2002:a5d:5d89:0:b0:449:4079:4c39 with SMTP id ffacd0b85a97d-4515d5c5750mr12867018f8f.29.1778158786505;
-        Thu, 07 May 2026 05:59:46 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-11-6-2.retail.telecomitalia.it. [87.11.6.2])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45055f2203csm20313623f8f.37.2026.05.07.05.59.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 05:59:45 -0700 (PDT)
-Date: Thu, 7 May 2026 14:59:13 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Eric Dumazet <edumazet@google.com>, 
-	Arseniy Krasnov <avkrasnov@salutedevices.com>, Bobby Eshleman <bobbyeshleman@meta.com>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, "David S . Miller" <davem@davemloft.net>, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	netdev@vger.kernel.org, eric.dumazet@gmail.com, 
-	Arseniy Krasnov <AVKrasnov@sberdevices.ru>, Jason Wang <jasowang@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	kvm@vger.kernel.org, virtualization@lists.linux.dev
-Subject: Re: [PATCH net] vsock/virtio: fix potential unbounded skb queue
-Message-ID: <afyMCyBvZpzWrLtO@sgarzare-redhat>
-References: <20260430122653.554058-1-edumazet@google.com>
- <afn0ZdvZWswBuDMm@sgarzare-redhat>
- <CANn89iLs8DOWJwDpf_ARoMrV+6b2tbhEJ=VVzeC8gCm5dRGaig@mail.gmail.com>
- <afoF_cHfl6ygcupM@sgarzare-redhat>
- <20260506113554-mutt-send-email-mst@kernel.org>
- <afxVH2So9BbZ3Gta@sgarzare-redhat>
- <20260507074113-mutt-send-email-mst@kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="JIDIUtS5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778158842; x=1809694842;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=4uudz4ONJAbfph11Wy7UTrNhDv9ycKSnRMSnrtIxuhI=;
+  b=JIDIUtS5csZiz585d1yXnQO/kxxID4KtGxEP6U8uvb+zWOW4RvIfw9tE
+   V8fLGT1WdjlTGmqHwKV9Vim6XXFhyT3AYn13STrk3FSvVT7w+0Q6BnRAf
+   149FiHCkBlTzZWTFtdacEamAVl3Ff/G06KeGhLBBiGI6yRsj31NrQgt4w
+   latAq2knnoTj02sPIUZYZ2PJdbdEkweAJFtVT5R/FHGUoMQjRsyIFwUpz
+   xMm5+UdDNj9B1tZls/Dj2Hr4a6xaH1LyTvl7vZj2RW+1B94BZ/FSP3IaV
+   SzBV8TBJKNAssJ/JMAZODU5PmN8hcnjz5xPSz27c/j0bY+tCrIKLU6ELU
+   w==;
+X-CSE-ConnectionGUID: dXa37TCFT4SrCo4BpqPhAA==
+X-CSE-MsgGUID: P8A+EJcVSiuybo9bRC33/Q==
+X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="66634525"
+X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
+   d="scan'208";a="66634525"
+Received: from fmviesa008.fm.intel.com ([10.60.135.148])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 06:00:38 -0700
+X-CSE-ConnectionGUID: KrvnBm4pSgeN/RCy9lC67g==
+X-CSE-MsgGUID: EkELAagmSVuFXZUEalv7Ug==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
+   d="scan'208";a="233793362"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by fmviesa008.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 06:00:37 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 7 May 2026 06:00:36 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Thu, 7 May 2026 06:00:36 -0700
+Received: from PH0PR06CU001.outbound.protection.outlook.com (40.107.208.70) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 7 May 2026 06:00:36 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QKzAVtEizlCI/t7LeSUwLthedsO0U3Ry+I68coQftN7FRFMcJsiLV+ofuqghvFKoMUa1SWuHKIaVDx4A82nQz7xl6X5pJP5KZ5j4SIv8qiTj6QgbniIHyGQEcAfKEaQ/gOP9Af3IY/+zDdP7fsPQuaeNjeRlD8Yhe9XNy9jvkMSiviKwxqWdsXbJoj6yyWF6lZCIi93N4I5xZY6OUg0FmPm/0nOnpoZ2i+XX5dl5K1vER7NPRZAV34up6JCF53NmSnYbf8llIYX1QdMttNT3VHhSHzFUmO7TkeneGIAoftq+CYHL0yzmoUGFZXXcWH37qvxFztSJScW1VWQ2FNnJ4g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=qJ8n/xj3kGU3OH6WAwxLXJf7lwwIsm38Vk0f/Q7440c=;
+ b=XKRURGSqUIqywFD+op7qXS+kjfVPSQBahEOw91gtKUhFjO8+Xy6ACQzbCFdx/q2Oy6BpOanXji0GhUEKtYnqjI+/Knrti7Nx+ldJme0XhkUMrvV1Ng2eJz4V1SycEweCcV747hmnwSrv/LzUzwuy7Y1vJvVSxaafz11GgLzQJ9PTWC62FLl2EWI1bWEJK5F6vB4aox0VjpGhZVBOeOGCPnDMpmj7ioHEU5q8PS37TT9yjWhqfjTgELc5sPDtin0e2as8YdH2KwCaSp3ItqpuIIW58JuVMRVRJh8kbkEYseTfC7S5tl3bDYURyzcEUajF0XA1sYZLm+AVz5UKWvdBNA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BL0PR11MB3282.namprd11.prod.outlook.com (2603:10b6:208:6a::32)
+ by DS7PR11MB8826.namprd11.prod.outlook.com (2603:10b6:8:256::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Thu, 7 May
+ 2026 13:00:33 +0000
+Received: from BL0PR11MB3282.namprd11.prod.outlook.com
+ ([fe80::5050:537c:f8b:6a19]) by BL0PR11MB3282.namprd11.prod.outlook.com
+ ([fe80::5050:537c:f8b:6a19%4]) with mapi id 15.20.9891.008; Thu, 7 May 2026
+ 13:00:32 +0000
+Date: Thu, 7 May 2026 14:59:59 +0200
+From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+To: David Woodhouse <dwmw2@infradead.org>
+CC: Andrew Cooper <andrew.cooper3@citrix.com>, Xin Li <xin@zytor.com>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, "Saenz Julienne, Nicolas" <nsaenz@amazon.es>,
+	<pbonzini@redhat.com>, <seanjc@google.com>, <corbet@lwn.net>,
+	<tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
+	<luto@kernel.org>, <peterz@infradead.org>, <chao.gao@intel.com>,
+	<hch@infradead.org>, <sohil.mehta@intel.com>
+Subject: Re: [PATCH v9 00/22] Enable FRED with KVM VMX
+Message-ID: <afxm400MglHAjoje@wieczorr-mobl1.localdomain>
+References: <20251026201911.505204-1-xin@zytor.com>
+ <7f93eb25874ddd13a1ad6e3c75785f11041c8b7f.camel@infradead.org>
+ <DADE0E58-DD8A-4206-BF54-1DA87864117D@zytor.com>
+ <afojoHJSlqqm2Ges@wieczorr-mobl1.localdomain>
+ <f4cb5f8e-caf5-4513-9538-edaaea20de2d@citrix.com>
+ <afpPt7gObsyFkPRy@wieczorr-mobl1.localdomain>
+ <f4650572ea8277dcde8d68e4fa5317e1abdb988c.camel@infradead.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <f4650572ea8277dcde8d68e4fa5317e1abdb988c.camel@infradead.org>
+X-ClientProxiedBy: DU2PR04CA0357.eurprd04.prod.outlook.com
+ (2603:10a6:10:2b4::32) To BL0PR11MB3282.namprd11.prod.outlook.com
+ (2603:10b6:208:6a::32)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260507074113-mutt-send-email-mst@kernel.org>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR11MB3282:EE_|DS7PR11MB8826:EE_
+X-MS-Office365-Filtering-Correlation-Id: 31b6bce3-fa78-4016-22d2-08deac389e7e
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|7416014|366016|22082099003|18002099003|56012099003|3023799003;
+X-Microsoft-Antispam-Message-Info: DXjgXh+wGnjMnLUS94E8+2OcRltd6XvnsrgihImgYrQn+CwifX7+fgoMBZOYPu0bBuK9FSBgL7CgsxCfJTebWu5/chEmeksmPuMBt7Y4fJ+HQ7CNJmLP0HfjOWZx0KqSDcUqwUNgylCFFxQb3XsAdV+xuIxTRXJxOd7CF7/mCl7sVKvamJjInAVOy/MYoqlqAcUTSfmMq9zFpxzYQqRgQOn+q7TxHIQyPFhDJSuE7JlJnMZ6qkdZom2zkAVimeH0KrvfAEAMGJdAk6cy/LYJXjmTffeAEOire6IohFPkxINjaX5iLQwHcQHAZgIteI3ldmJVuvlXo3GAyCiLOgQMaqYEALC4RQ455a5xFXQHQWz6pBYx+nLxRZVzRNkyOMm82E34Pbg7gqIwK0bfof6qLBdmMY/coq3Y4Nq8BOnAcOsv82ohBXqBKcRIF32q6IH3dD/nhK2T03twu4LeCGxVptWLqkBdAA4MBWJiMo0j2bytLPuuoIT8g7BPHcYOU94VFwhsYSsDfUWwH143QdYomKsLxLPCPCwewTNC+r9CnTGCpXDsP57gTtKSZFsoeOK+VqZd4aiVvePZDgOL6LhJIsjElbK/XCe+82HClq5dIeuGYmKehhF8tpBLq5W/qRwYfo+CiGpYUT7n6ZFwQmunJ/cvdTwGUmHg4IH+71gSoj+P12RDH7ZvN9STF0m2jrhi
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR11MB3282.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(22082099003)(18002099003)(56012099003)(3023799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?nejwur5BFWDVkzZrbMqio1dSOQF//bE98SAXkiMwyI3cHHaW2NnTIutjMm?=
+ =?iso-8859-1?Q?81O+fj0mm+BqK/63kf0vDuB4okyhsw6H6Ht8+SspaqcfnIwssxAPgk501e?=
+ =?iso-8859-1?Q?a5pAwdyTLXt9pFQkr69RVLwZzhFO2K3ByeX3vy6rZtWftone4YEBczw/Ea?=
+ =?iso-8859-1?Q?CZ9b64DInT3O+spNk3ADaxNnGBj/SMDfgQuB8xoVDc6W0vIZdi/qslfUg6?=
+ =?iso-8859-1?Q?ZMiIxghTi0faj96SvH/eIqEQExWhfrYxwuok1a+L7H5w4y0DBtenT2xsdU?=
+ =?iso-8859-1?Q?KeuOlIONG0geAlq7v29AB4vd2Y+S7UjBqTohYtkLLW2i64hp97QJGBRaG4?=
+ =?iso-8859-1?Q?fZ2emUcOTw0SdbCdAp2reMF14KA09GaknaeFk53A7JY9lvvmnnBC1cKVzB?=
+ =?iso-8859-1?Q?Ep/QDSqbwg/rxGuK7oVi4IJ1zBJEdv3TB59RQlXwI9PhBopo2WN7lCFBwe?=
+ =?iso-8859-1?Q?8rgME+i5YDx/v4V1sSw7dW2d2YJjw5aUGirwZCTMqNKNjeaTcEWxraCCqc?=
+ =?iso-8859-1?Q?ENOS2CIfgH0rQu8RCqMIJgc11GMWMAkcE9yS5Z9CWjhXSdAxVsOeY/Zmlv?=
+ =?iso-8859-1?Q?HyITTV+NVBb0MSg/YHOODCSeJFkQ21jfl2AfGRUkJNOcn00L6CUZEiJ9Mm?=
+ =?iso-8859-1?Q?/TmYxb3Ka1zhwu5ogsr5zLMqqIsbhDyBLFY73vu0d+lXxyni3A2qOQwhPB?=
+ =?iso-8859-1?Q?frAlNqKBljZE9Jdvt0JAUuuYmk/bK+/UAgk2PLCX2MS8w0Welj9ALerPiu?=
+ =?iso-8859-1?Q?P042iBlvrGfNbnsgBgSrhRc96KXIV1UkghL+P5EgwvnVCFrDpGMp0uxQLJ?=
+ =?iso-8859-1?Q?LoQMwPSjipev+XJuWsZHEUVmn0pO2N1sFIdgR+uG5KbHcMx8dPBtPCj76N?=
+ =?iso-8859-1?Q?+WvunsPMoPBsuWAmh7Ts7vcOS38Xrm4exA4uaUnlOgvY/TkslwSVsyjsbR?=
+ =?iso-8859-1?Q?E8NPgzzM6s/fH6cuxEVZ4csK3yfoVAF2nSZ+O/YFpwy3Nxd//sOjaoSbq4?=
+ =?iso-8859-1?Q?MOCJW6kA3g5NRzgePyfZeRmtO3Vn4OkeJupxs/RGVxSygBqIjwu6yAMva8?=
+ =?iso-8859-1?Q?TblMOgzaIBSn8lSOANQnmskAuVnXXb6+d/mPS7+L66fYZ2gT2hm38LzVBc?=
+ =?iso-8859-1?Q?4dXQykmUm4bMetRPqzKqRf34bCzVUY9A8KCn4zLSENJHrqEo+OSJjaXrSd?=
+ =?iso-8859-1?Q?/XjmjY4qIVToDM97gGLSMob/8H88q2MLY29ynzuaZXkeI0ViZFx9egFGp0?=
+ =?iso-8859-1?Q?HqlqZRxqeZMR9n7unsr4TdwXJFniR7aWxhYqP2OPzsvmohAIFnVZrlOGo1?=
+ =?iso-8859-1?Q?jQTUShiZqKKAEJv3oNt2ESXSeiTl5oCqPvKbDeF5NulQOd3ghYykHmzqxP?=
+ =?iso-8859-1?Q?ThakVrigZu+o/nbl2JQ2SlEhFf8W9o5bfFh51knrY7n9dRJXx1s9PZmA1M?=
+ =?iso-8859-1?Q?2Wt8nxA7Y8EMnqC+sn3nm/GTvC4rg4tm1jXC5K2BqfUlZClNWYXVe+0ug9?=
+ =?iso-8859-1?Q?JvFLF7EH5E5hXnHSARaxa0z6ZtmSnGxk9sX3wECDpjSTM2okSLrcBzy9Op?=
+ =?iso-8859-1?Q?d101TbKr4qZm3+JrLumwAAEizdke+XGxedImnJlDOCkB/SBDpnPQFaGLaX?=
+ =?iso-8859-1?Q?xSSAU+6oTLC0hwRep+lKOXuER2JLFawJvnL466Hza/x0oFrZ4BNPZrVCZ6?=
+ =?iso-8859-1?Q?50tR7+kyheuS3OY67M9WeDipkY+9s9kfAVz9fpEGZ4Mbzsd71s5aHIWdmL?=
+ =?iso-8859-1?Q?nqrGyQ3B9vhgBcliM0KesDSq+kMNfQYnPt2AntpvrYM/5bDPMHqu281F8+?=
+ =?iso-8859-1?Q?W2swUnjG6yXW38sy4SF3Mqs5hpXstONcRIa/EecKjcMesPKCdqkF?=
+X-Exchange-RoutingPolicyChecked: dBcBHcxvjilShezeMa3m6qHygfYWHSV/OhBXfaj6JB5noUewHxEYMhfM2xNhvXy2r9yTCtMzxaCh8MAqXIl12zFnHYCPr4oN9bYAKAb3eeRmLrmQQaFfweLVP30KrekHZm3c03Yh7izY9nU5EKQ97jVJ2Z6hRwnSwkgmhIVPnKDfj1+N6hAquOY/maKk20bSFwYVZhfmBPN5kpCZmbDn7CoVHK/K31K4/UCekHINYyJ+bkjhMjU3vpHFrkaw+MlJSEEpcFmdUFbtxI0XNKPWeB2AjeRa96vWiLFOM0XM8agUrV5dtDsE1nP/eaLUNrL7GW3b17ehe6M1Nd/Y03tgig==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 31b6bce3-fa78-4016-22d2-08deac389e7e
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR11MB3282.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 13:00:32.8174
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: hD/HnGnm4Q9lgm9TqeQdXwzbkShzDTOYHpx4ALOKwClkxV16Cks4b8bglEKkRS+EmLtA1TrKAXHA8Ud4ZQo0cWpdAHOkLVbuahKnN/NOdXI=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR11MB8826
+X-OriginatorOrg: intel.com
 
-On Thu, May 07, 2026 at 07:45:10AM -0400, Michael S. Tsirkin wrote:
->On Thu, May 07, 2026 at 11:09:47AM +0200, Stefano Garzarella wrote:
->> On Wed, May 06, 2026 at 11:37:45AM -0400, Michael S. Tsirkin wrote:
->> > On Tue, May 05, 2026 at 06:11:13PM +0200, Stefano Garzarella wrote:
->> > > On Tue, May 05, 2026 at 07:14:36AM -0700, Eric Dumazet wrote:
->> > > > On Tue, May 5, 2026 at 6:52 AM Stefano Garzarella <sgarzare@redhat.com> wrote:
->> > > > >
->> > > > > On Thu, Apr 30, 2026 at 12:26:52PM +0000, Eric Dumazet wrote:
->> > > > > >virtio_transport_inc_rx_pkt() checks vvs->rx_bytes + len > vvs->buf_alloc.
->> > > > > >
->> > > > > >virtio_transport_recv_enqueue() skips coalescing for packets
->> > > > > >with VIRTIO_VSOCK_SEQ_EOM.
->> > > > > >
->> > > > > >If fed with packets with len == 0 and VIRTIO_VSOCK_SEQ_EOM,
->> > > > > >a very large number of packets can be queued
->> > > > > >because vvs->rx_bytes stays at 0.
->> > > > > >
->> > > > > >Fix this by estimating the skb metadata size:
->> > > > > >
->> > > > > >       (Number of skbs in the queue) * SKB_TRUESIZE(0)
->> > > > > >
->> > > > > >Fixes: 077706165717 ("virtio/vsock: don't use skbuff state to account credit")
->> > > > > >Signed-off-by: Eric Dumazet <edumazet@google.com>
->> > > > > >Cc: Arseniy Krasnov <AVKrasnov@sberdevices.ru>
->> > > > > >Cc: Stefan Hajnoczi <stefanha@redhat.com>
->> > > > > >Cc: Stefano Garzarella <sgarzare@redhat.com>
->> > > > > >Cc: "Michael S. Tsirkin" <mst@redhat.com>
->> > > > > >Cc: Jason Wang <jasowang@redhat.com>
->> > > > > >Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
->> > > > > >Cc: "Eugenio Pérez" <eperezma@redhat.com>
->> > > > > >Cc: kvm@vger.kernel.org
->> > > > > >Cc: virtualization@lists.linux.dev
->> > > > > >---
->> > > > > > net/vmw_vsock/virtio_transport_common.c | 4 +++-
->> > > > > > 1 file changed, 3 insertions(+), 1 deletion(-)
->> > > > > >
->> > > > > >diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->> > > > > >index 416d533f493d7b07e9c77c43f741d28cfcd0953e..9b8014516f4fb1130ae184635fbba4dfee58bd64 100644
->> > > > > >--- a/net/vmw_vsock/virtio_transport_common.c
->> > > > > >+++ b/net/vmw_vsock/virtio_transport_common.c
->> > > > > >@@ -447,7 +447,9 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->> > > > > > static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
->> > > > > >                                       u32 len)
->> > > > > > {
->> > > > > >-      if (vvs->buf_used + len > vvs->buf_alloc)
->> > > > > >+      u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
->> > > > > >+
->> > > > > >+      if (skb_overhead + vvs->buf_used + len > vvs->buf_alloc)
->> > > > > >               return false;
->> > > > >
->> > > > > I'm not sure about this fix, I mean that maybe this is incomplete.
->> > > > > In virtio-vsock, there is a credit mechanism between the two peers:
->> > > > > https://docs.oasis-open.org/virtio/virtio/v1.3/csd01/virtio-v1.3-csd01.html#x1-4850003
->> > > > >
->> > > > > This takes only the payload into account, so it’s true that this problem
->> > > > > exists; however, perhaps we should also inform the other peer of a lower
->> > > > > credit balance, otherwise the other peer will believe it has much more
->> > > > > credit than it actually does, send a large payload, and then the packet
->> > > > > will be discarded and the data lost (there are no retransmissions,
->> > > > > etc.).
->> > > >
->> > > > I dunno, perhaps revert 077706165717 ("virtio/vsock: don't use skbuff
->> > > > state to account credit")
->> > > > and find a better fix then?
->> > >
->> > > IIRC the same issue was there before the commit fixed by that one (commit
->> > > 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")), so
->> > > not sure about reverting it TBH.
->> > >
->> > > CCing Arseniy and Bobby.
->> > >
->> > > >
->> > > > There is always a discrepancy between skb->len and skb->truesize.
->> > > > You will not be able to announce a 1MB window, and accept one milliion
->> > > > skb of 1-byte each.
->> > > >
->> > > > This kind of contract is broken.
->> > > >
->> > >
->> > > Yep, I agree, but before we start discarding data (and losing it), IMHO we
->> > > should at least inform the other peer that we're out of space.
->> > >
->> > > @Stefan, @Michael, do you think we can do something in the spec to avoid
->> > > this issue and in some way take into account also the metadata in the
->> > > credit. I mean to avoid the 1-byte packets flooding.
->> > >
->> > > Thanks,
->> > > Stefano
->> >
->> > Why do we need the metadata? Just don't keep it around if you begin
->> > running low on memory.
->>
->> I don't think removing the skuffs will be easy; we added them for ebpf,
->> zero-copy, and seqpacket as well.
+On 2026-05-07 at 08:49:27 +0100, David Woodhouse wrote:
+>On Tue, 2026-05-05 at 22:20 +0200, Maciej Wieczor-Retman wrote:
+>> 
+>> I take it you mean dropping the ICEBP selftest test case and just checking INT3
+>> and INT $0x20? In that case the other two tests pass after a minor change -
+>> namely in guest_code() the expected_rip needs to be volatile as well. Otherwise
+>> there is a RIP mismatch.
 >
->You do not need to remove them completely.
+>I don't understand the part about making expected_rip volatile. Are the
+>asm constraints there not correct? If not I'd rather *fix* them than
+>use 'volatile' to paper over it. I can't see the issue though.
 >
->> For now, we're already doing something:
->> merging the skuffs if they don't have EOM set.
->
->
->Right that's good. You could go further and merge with EOM too
->if you stick the info about message boundaries somewhere else.
+>Can you show the generated asm both with and without it?
 
-This adds a lot of complexity IMO, but we can try.
+---------- not volatile ---------------- | -------------- volatile -----------------
+#APP						#APP
+# 156 "x86/int1_fred_test.c" 1			# 156 "x86/int1_fred_test.c" 1
+	lea 1f(%rip), %rdi		      |		lea 1f(%rip), %rax
+	int3						int3
+	1:						1:
+# 0 "" 2					# 0 "" 2
+.LVL42:					      <
+	.loc 3 159 2 view .LVU146	      <
+#NO_APP						#NO_APP
+					      >		movq	%rax, 8(%rsp)
+					      >		.loc 3 159 2 view .LVU146
+					      >		movq	8(%rsp), %rdi
+	movl	$6, %edx				movl	$6, %edx
+	movl	$3, %esi				movl	$3, %esi
+	call	check_fred_event.isra.0			call	check_fred_event.isra.0
 
-Do you have something in mind?
+I think that when the FRED event happens it doesn't save RDI and overwrites it
+before going into check_fred_event. In the volatile case it is saved to the
+stack before check_fred_event() (.loc 159 is the check_fred_event() call).
 
->
->> As a quick fix, I'm thinking of reducing the `buf_alloc` value to account
->> for the overhead and notifying the other peer, at least until we find a
->> better solution.
->>
->> Stefano
->
->well if you want to support pathological cases such as 1 byte messages
->that would mean like 100x reduction no?
->
+The below does work, it generates pretty much the same assembly as the volatile
+expected_rip. Do you like it? I'm not sure if it can be simplified better?
 
-Yep, but since this patch is already merged, IMHO that is better than 
-losing data in those pathological cases.
+	asm volatile("lea 1f(%%rip), %%rax\n\t"
+		     "movq %%rax, %0\n\t"
+		     "int3\n\t"
+		     "1:" : "=m"(expected_rip) :: "memory", "rax");
 
-Thanks,
-Stefano
-
+-- 
+Kind regards
+Maciej Wiecz�r-Retman
