@@ -1,249 +1,244 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FE9F3EF0A0;
-	Thu,  7 May 2026 13:43:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778161412; cv=none; b=qMkWWKs6Vwh/hmIa7Y+xKUNLWHbQDaaxfVg+apCHA94ACJ7miCxJ6ygq3BRbw5Q1vEppzM38UOzg3YVebHXtJrd1zQYpqSrpDXQ8xRu9WU2Ufb3vzZyqkT6dKV+tEwLu4gUuNVbmD8GUVOtMeBqa5x+XqW50V+81kZERjxvWK4Q=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778161412; c=relaxed/simple;
-	bh=QUm506ZL5SLevPs4jte/E6h2zGVUtWm7sHkg+PLjsX8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=oavuwXCFKT3I/6nuRanzBere/A88HZSj6G7Hvs+yVNt8AI58V0cS3eAiQWt/FcuME2m9p6cySDOr6DohMLYi6l+4cDCr/qvWqYSXTdXRkA3cnVqbg63nGRN3asALsSXP+b38AGxD5keLy0X6mtds6lumAF/gDPOOdAQgqX1+pIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=pwc5yMAu; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75BB13C457F;
+	Thu,  7 May 2026 13:54:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.20
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778162045; cv=fail; b=J6zi2uxH3x/l8kHsw8YBLrFgk3dWQXD/mS2eN6XskjOZvIAPvc5ZIU5VcyPzUEyrwLU+0WK8x5Hz/BV2tJ8WmiTYnkBWDa3tu2lVk9d8InOqav79YMsh2m8i+t+Jvv2ipuCZABnBAHEKYXg36suJihUmR+pZVRaUqmSpdQ/iH2g=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778162045; c=relaxed/simple;
+	bh=Ml3B/xwbJ773l12z5OOfFndzVl52YKTSVqPNWsczLdU=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=ebljrVDuA1HVaf7gWyq/WKSgOLUYiPZsxM+VXMxvC+6jpD8b5mpe8r63zNljr9LWAyOAXTvX2KU009TsHkyXxdm/Epn1C1ptckxmxjMxdIZNEf1+PBSpT2jpEiMdY+nbIeEOicxdLK7URaCJaaOGiB6e2krREYTK7WdEkW8Ldtk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Wwzry9Bh; arc=fail smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="pwc5yMAu"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Mzt+2bXJYcRgYV5+nFdzTfFzH5NJ08dyQfJICccEyiE=; b=pwc5yMAuAGWok6Ejw8VCUOFVZP
-	jDGd3te4Md5OSAVZpmAT0T8WxJSofpb+g2CupFYzQPIPzcMlMN2qmH5j/CePmhyLPRGoxaFAEHeGn
-	yhZLqhfsUeghiS8fK31ASzqmutYOmgSlzKWm9l4uOkC+sXaXbCKdriXWAhQ/GGWyqt1OxCbzadsWT
-	NCt61uvagH0yx/vIjdVEEkfvas7wh9CnrJACD3crkougUC24CxeQEjNE1fHWuKYZam4AEM4Pbezm/
-	kZijw3T+1caTGdLwFIqhGPJNUPRWEgPA3jszT7rh7QLdtJ6I7pIp+ssVXJ0XDsV49Xcn+THVRkdF3
-	+qoTSlAg==;
-Received: from [172.31.31.148] (helo=u09cd745991455d.ant.amazon.com)
-	by desiato.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wKz0a-00000003f2T-2Swo;
-	Thu, 07 May 2026 13:43:21 +0000
-Message-ID: <e082f19aecf2d2acd30782ea9220aedac3d3f990.camel@infradead.org>
-Subject: Re: [PATCH] KVM: x86/xen: bail in IRQ context on PREEMPT_RT in
- kvm_xen_set_evtchn_fast()
-From: David Woodhouse <dwmw2@infradead.org>
-To: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: Mauricio Faria de Oliveira <mfo@igalia.com>, Paul Durrant
- <paul@xen.org>,  Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,  Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Clark Williams <clrkwllms@kernel.org>, Steven Rostedt
- <rostedt@goodmis.org>,  kernel-dev@igalia.com, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org,  linux-rt-devel@lists.linux.dev, 
- syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com
-Date: Thu, 07 May 2026 14:43:20 +0100
-In-Reply-To: <20260507132115.w1nOBvlS@linutronix.de>
-References: <20260506-xen-rt-sleep-v1-1-53b6b60a671d@igalia.com>
-	 <8e7bc66a7994ca06f164a5d5f7ceb3f07d3a1357.camel@infradead.org>
-	 <20260507071235.rdb4aGeE@linutronix.de>
-	 <f0f447dea6c8f2deb7f153f745add15d3ecadd19.camel@infradead.org>
-	 <20260507132115.w1nOBvlS@linutronix.de>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-UKAELhCR8fiUKJc+NKYG"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Wwzry9Bh"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778162044; x=1809698044;
+  h=date:from:to:cc:subject:message-id:references:
+   content-transfer-encoding:in-reply-to:mime-version;
+  bh=Ml3B/xwbJ773l12z5OOfFndzVl52YKTSVqPNWsczLdU=;
+  b=Wwzry9BhaCH19I1fRin3JqCuDJE1bgK3g9uFBe1Qxn/QyamZbFV/Xq0S
+   TSykAIuIhVndOoA22VlmxwUzS6dB4ADhpyf5VVh+DV5e3k9a3PgQb+gW7
+   UupSU1wG3zyRga1iJxKdLNeze79XsPNzM+U2kw8rvLZO/S+RXT6Ntl/gv
+   sTIrVR6xa2DeRNs5St2ULq+Ln5QNaEa2rLBQvRRO1l0P+ybsSlfgDnj+e
+   WxpRw9rhdv2LXK4ERoNEvUSExcc2iOvpX2+HH1ByvEPGzxzCkIIDey6/V
+   +5+cdrTJe19y5//NU4KPlnOAbxugQj9bjyTd46exd5jksqMKxaJEhArGV
+   w==;
+X-CSE-ConnectionGUID: fRKUfwRiQ/aaI5Ad2zmd1A==
+X-CSE-MsgGUID: j6260XwxSN6eoDlIXblsfQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="78828239"
+X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
+   d="scan'208";a="78828239"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 06:54:03 -0700
+X-CSE-ConnectionGUID: +5yy98ylSsCZ1dQIfHMPAg==
+X-CSE-MsgGUID: h30HV9TzT1G2OgnBI9xv8A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
+   d="scan'208";a="266845430"
+Received: from orsmsx901.amr.corp.intel.com ([10.22.229.23])
+  by orviesa002.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 06:54:03 -0700
+Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 7 May 2026 06:54:02 -0700
+Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
+ ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Thu, 7 May 2026 06:54:02 -0700
+Received: from BL2PR02CU003.outbound.protection.outlook.com (52.101.52.35) by
+ edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Thu, 7 May 2026 06:54:02 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=QVKdQySEYhkNYfvFUqPnbUW7PrnWvRAufJFfHoRn+f97zT8IBeYXJKRo68VK2qkUeMtzqb7QTDE1P2kAgXqxwP8KGGhn7yUvcYQk+ylP4Oy8c7hszjs+b07sh2i6Q1/JxGK2iy64Rn+8nSJ83OtGHz8NGwhLmFNeX7GwO5nY9fxvnIqEUBumx/n79bAyndHXXD+Nj7VCwkNLXtjFrqOTDyU7RmgTLlMDK4XTeLOofPlmKMeUuB0bOIbx+YW5nbkwkenRCEKj0C4X3NeLEZXQ3z+7GqAlJLqtfc2TSjFL+u4vdKcMK0NxghqadXzz9QpLy7D/+wUorSmNqeUIDFVkag==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dLMcHr3T5Q50FzXWgIH/J1J6mcNh7JmoM5FrIEiMVDM=;
+ b=SQk7Bd1BgMsrVLLImw/AE0erk6eivEqkqv7/WK1zg644NCqmazHUTGXV8J/oM+/qHiI4Qcj43QPne+AJa3F26IXoZSZT7vfY1Gn9oSTz1pCnQHVEDPx0rw8jryvx5kxtUKEuPrbZHjmwY4v8UkwtVbxn8itfxrHIzkOwv1byRIJ8hCXrjPR19eEZjciP7uN2FVy+UMNeMMuSKtmUJ7udNedOCI6lIrwUdl/XF/SV/IjrH66yBYAksx29qWL5augERd4mJ+/1xUL6XGHVfZ3Yr/MyQiwBJmuu6Ki1Faof635KrY3k/QaSW+ZWhiU8rWKYyAd9H31HVIjanWLsaBSjcw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BL0PR11MB3282.namprd11.prod.outlook.com (2603:10b6:208:6a::32)
+ by DM4PR11MB6096.namprd11.prod.outlook.com (2603:10b6:8:af::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.17; Thu, 7 May
+ 2026 13:53:53 +0000
+Received: from BL0PR11MB3282.namprd11.prod.outlook.com
+ ([fe80::5050:537c:f8b:6a19]) by BL0PR11MB3282.namprd11.prod.outlook.com
+ ([fe80::5050:537c:f8b:6a19%4]) with mapi id 15.20.9891.008; Thu, 7 May 2026
+ 13:53:53 +0000
+Date: Thu, 7 May 2026 15:53:46 +0200
+From: Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+To: David Woodhouse <dwmw2@infradead.org>
+CC: Andrew Cooper <andrew.cooper3@citrix.com>, Xin Li <xin@zytor.com>,
+	<linux-kernel@vger.kernel.org>, <kvm@vger.kernel.org>,
+	<linux-doc@vger.kernel.org>, "Saenz Julienne, Nicolas" <nsaenz@amazon.es>,
+	<pbonzini@redhat.com>, <seanjc@google.com>, <corbet@lwn.net>,
+	<tglx@linutronix.de>, <mingo@redhat.com>, <bp@alien8.de>,
+	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
+	<luto@kernel.org>, <peterz@infradead.org>, <chao.gao@intel.com>,
+	<hch@infradead.org>, <sohil.mehta@intel.com>
+Subject: Re: [PATCH v9 00/22] Enable FRED with KVM VMX
+Message-ID: <afyXgQdzdTr_JNXf@wieczorr-mobl1.localdomain>
+References: <20251026201911.505204-1-xin@zytor.com>
+ <7f93eb25874ddd13a1ad6e3c75785f11041c8b7f.camel@infradead.org>
+ <DADE0E58-DD8A-4206-BF54-1DA87864117D@zytor.com>
+ <afojoHJSlqqm2Ges@wieczorr-mobl1.localdomain>
+ <f4cb5f8e-caf5-4513-9538-edaaea20de2d@citrix.com>
+ <afpPt7gObsyFkPRy@wieczorr-mobl1.localdomain>
+ <f4650572ea8277dcde8d68e4fa5317e1abdb988c.camel@infradead.org>
+ <afxm400MglHAjoje@wieczorr-mobl1.localdomain>
+ <1146015e19d441f135d81f376c158c938a7ba340.camel@infradead.org>
+Content-Type: text/plain; charset="iso-8859-1"
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1146015e19d441f135d81f376c158c938a7ba340.camel@infradead.org>
+X-ClientProxiedBy: DU2PR04CA0249.eurprd04.prod.outlook.com
+ (2603:10a6:10:28e::14) To BL0PR11MB3282.namprd11.prod.outlook.com
+ (2603:10b6:208:6a::32)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL0PR11MB3282:EE_|DM4PR11MB6096:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8f615290-fd95-494a-3e9b-08deac40132a
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016|56012099003|18002099003|22082099003|3023799003;
+X-Microsoft-Antispam-Message-Info: lm0nRAG3qAPMrJZUJUH1viXBF4/+u/j54FKjHvnkBbdgBFbW7k8ggIEP+cWc6EmaokpeW23NifACWKRE9YnOR2VPNmSJofv3L8CBeHRHS0EnOs6cWVmdy1LMyjiVXCniQJUdIig8/TezJbHnIuhCWo6qp5Az1Dexr1lXZFEQD8WmtTa8n3Zx1m8FLvsHno9ePA6jjZiiiYTg92fxggI9oApAzmLTLibBlfKoX+on2RKNjy/05ogV4yx4oOjkD3zX9vd830xlnayqSE6uwMLezcccf9JEfxrlsq3DszbDIQ2gH3lb+3sItYtSIo7Wi7zebBPjgOhZu7uF4a0OQ1mg0Ci7gj6l9iVuCUwAXlVmzh7w83ryyxUtUga6wo0XeISxmzQKmrW16qNazIYN8/6ZFgqJPCNm0yPIXYjSKoKQ86pQp1dXpOmWEqf+9DTptpzqV7S2LKdkKAVnKac6GPW6SrwawYhLln5xyl1z/7UUixGzK5b79P09O/RIjFOjcjKvqEBxSry3T73osUtaIwDymWC+8sTcsFMjw4ZtE3i2t8XQX4vut4DoxyUn+lLP9O0Deq0n0pH2mXr+QnS8CnyrjXyL+OgfP7vSiSSuZ1G/gxfadVokHEGZqSFYYoD1FHxZsXnbnWuZIJE/TQmHDEA1BRxiO/LN1os24Sl8WORJy61UDRU3dWDaKNLDdbALvnqK
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BL0PR11MB3282.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(56012099003)(18002099003)(22082099003)(3023799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?U8NVdc2uZ6qMRmHt9PFDcwGEo6ZMpEwFJT24qbmQHnAzvMY3sjO9E9mKF+?=
+ =?iso-8859-1?Q?8RCBEr/Lf4GPfbXXnBkuZr7mclEX27PsnsX4umw/GHtmCCqxLCRpNXHwYk?=
+ =?iso-8859-1?Q?JAKWew9+KTprtSp6mJioPzG68BpE2mMpfKh0wIhmFw+y+rBFux8fR3g28t?=
+ =?iso-8859-1?Q?5Xwhn0HnQnyVU/qcqpmpvCXDYK4APayg4T/PBigG5A67peE5nHx1vLIfNk?=
+ =?iso-8859-1?Q?nq3HPUBz2Fe6zingaAj7eD5xhcE4vkziBm5V/3Qso1N2IuQ5T2ecfGyzsi?=
+ =?iso-8859-1?Q?Ca4Ik4KUeHmmfpb3pG46rJ69XSEBpPYcqtiAXZjYeILLfUlc6FnPTU6Dt1?=
+ =?iso-8859-1?Q?kP948ZYU9vGaQabzCA++n5R7nv9j+PDaM7GE47ptmQd9Uax3LCWf3V7Goc?=
+ =?iso-8859-1?Q?5U3rthghU7EqXzqC+omKjIdr1GZWes44bbbZyAmHKhTEZr9OBpZs0bKdxj?=
+ =?iso-8859-1?Q?zZAy6O37KL6OZcx466oBQ1tFFchuOYaVr1B4MglLxuvYKAObKU4VhYQqcc?=
+ =?iso-8859-1?Q?Vv7xiMKbGJRaIFVoZ6JdeLzshBkRc1dXBFPyOIlSRy2plEXYHdbIUZ7BPn?=
+ =?iso-8859-1?Q?iLSFY1VgheLpABkIKZJqGnH0tebcDq+rC52zuvBAI1jS2mPzHX+RE6zSvm?=
+ =?iso-8859-1?Q?s6un7E7vrLgk50kY/EKmvfr/DP0oNVFNJLywKpZDVUay8ef9ejqM6Qn9OM?=
+ =?iso-8859-1?Q?pg7JXHWOBXHZ32I/ASDC9SiK68bKcVCUpo06T5oiJC1NELwVhIoj8uDp84?=
+ =?iso-8859-1?Q?Z2WQ+oLSOfFSUb6v/oGq5yx73rKUPRvRQw5nDv0hhoV/ap/lI0Zrv3w/3+?=
+ =?iso-8859-1?Q?EpdMUHRnaPN32nAAMXCugwIsIl4P6mEmOIRMjmrncIeMqBld0xRPOaPJk5?=
+ =?iso-8859-1?Q?mjw8bTZzRZwlxV7l2mfmXqHoGI6r/ltXCv/K8M9mmwuxOpmtI5VB+HAIk/?=
+ =?iso-8859-1?Q?SFm38wtYsFqugI9Q0LT6rOP7CWJdBRNTw5Qiw+nZMC4ojzcCKUSTThXc2Q?=
+ =?iso-8859-1?Q?5lmHuWutuWuloV8MXOAFuupr13fA+Sh8krvTG0JtMP0+Vr+nvORs3gzEHg?=
+ =?iso-8859-1?Q?V8oVXHLMPzRq+NDRlzDBkaLO1011d9+NzAIb4JZc+ceK6BkpxjpRZG/hHP?=
+ =?iso-8859-1?Q?GErPfERtpeDz+QQa0MKsHTap/0drkAHYIr+1E9mRDBpHCCN3OUTmmYGtoY?=
+ =?iso-8859-1?Q?95cLcX+6zX2MgeZyKwxZMlIPu+JOR7QQSqVJXZDzYao+N57+Qn9e8sq4vK?=
+ =?iso-8859-1?Q?llsTL/rmneXQNk6AbLfw4xGfVVbiqMSQZdSUGJxZQ/NZErELnfecK7Z+Tx?=
+ =?iso-8859-1?Q?oa3xpjy7w3XxVitHL2+u9tdHidMxiwkYXJ7i6hGXnkCdu796FJHjyBtdPK?=
+ =?iso-8859-1?Q?t8WlDbb96M9pEicQJLsekY25AJYXGBkBzphEqEf25VWBuYPFyjoxvW2gYj?=
+ =?iso-8859-1?Q?NPCwjRA6TMP/bRyDO/Pr8mZgwO92c5opSmzwmGedfJ8L9YVEO6BQ5PfEeZ?=
+ =?iso-8859-1?Q?9k9O04IENjHFPakqkiW8qf3YPqUk35ajUtzyAEk4JIKRVHcXnkayuHO//y?=
+ =?iso-8859-1?Q?oOnqGvQQIxU47r1yTDfOIlIeuD1E7+2eSanHXFq4sIY9kmpr/WMutn1wJp?=
+ =?iso-8859-1?Q?g3iinrSbZ7Z5bLhp8a7NlGdlhLrTIJsIijVqQ5ZAvqNaq6uMvyE3JTLmNA?=
+ =?iso-8859-1?Q?zHuVxRSDSwZ90pWKslp0iH+GUMUqy8f8JyNVEF/OtUbLvWppRjcDx2WnE4?=
+ =?iso-8859-1?Q?BWIeuy3uT6Is/KJBMtcNZT2pyIAqOfBd9NWiULOfiBisD4XP12lIZUYoSz?=
+ =?iso-8859-1?Q?1c/V+nI8m7IdiDtWNb5zrzCvWUkmHYLdL1Evxw5N6Jy/czCIMrEX?=
+X-Exchange-RoutingPolicyChecked: wV3n9yKyoR/Ti3cA+YO3dqij+DQx3WWcLRq9oyA5ES+yAk7shPDhr4VsCFEMePfltTMJEWdscTSee/kwm27WscMDBos8LJm/xp7Y/bnfL9mC+wVMAuWVP6tLYW+1ohXBgN/Qe7Wd/ASu5TZ+OaSeqvItjULAfcGmZPCQLvfQ2TNLt+9U9UpAWiriBaBlnB7WKN9jJClL9K3shQTyB5Qw1NDchgon8IXi4ZI60/g+5/734KWgGk+jK5yX1ctozpVajp0IYEJR+JSa3uzPXiXNYv2F3eZ8wRztXmAwSpZ7VX9zPpYIojrtgjGx58XfuUQHkhM/VVZIGk5UgG6FYtWAHw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8f615290-fd95-494a-3e9b-08deac40132a
+X-MS-Exchange-CrossTenant-AuthSource: BL0PR11MB3282.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 13:53:53.5684
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: jBPMv8a5RHpUFP2lm3ulz3tYYZ5+YY8l85PuLTydEaOO6mqOINxwQ+6cwik28c1d3kGVocqs8xPxN6dcS0rgz7WvwFPfhBxNGgZE5Juqjb8=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB6096
+X-OriginatorOrg: intel.com
 
+On 2026-05-07 at 14:35:41 +0100, David Woodhouse wrote:
+>On Thu, 2026-05-07 at 14:59 +0200, Maciej Wieczor-Retman wrote:
+>> On 2026-05-07 at 08:49:27 +0100, David Woodhouse wrote:
+>> > On Tue, 2026-05-05 at 22:20 +0200, Maciej Wieczor-Retman wrote:
+>> > > 
+>> > > I take it you mean dropping the ICEBP selftest test case and just checking INT3
+>> > > and INT $0x20? In that case the other two tests pass after a minor change -
+>> > > namely in guest_code() the expected_rip needs to be volatile as well. Otherwise
+>> > > there is a RIP mismatch.
+>> > 
+>> > I don't understand the part about making expected_rip volatile. Are the
+>> > asm constraints there not correct? If not I'd rather *fix* them than
+>> > use 'volatile' to paper over it. I can't see the issue though.
+>> > 
+>> > Can you show the generated asm both with and without it?
+>> 
+>> ---------- not volatile ---------------- | -------------- volatile -----------------
+>> #APP						#APP
+>> # 156 "x86/int1_fred_test.c" 1			# 156 "x86/int1_fred_test.c" 1
+>> 	lea 1f(%rip), %rdi		      |		lea 1f(%rip), %rax
+>> 	int3						int3
+>> 	1:						1:
+>> # 0 "" 2					# 0 "" 2
+>> .LVL42:					      <
+>> 	.loc 3 159 2 view .LVU146	      <
+>> #NO_APP						#NO_APP
+>> 					      >		movq	%rax, 8(%rsp)
+>> 					      >		.loc 3 159 2 view .LVU146
+>> 					      >		movq	8(%rsp), %rdi
+>> 	movl	$6, %edx				movl	$6, %edx
+>> 	movl	$3, %esi				movl	$3, %esi
+>> 	call	check_fred_event.isra.0			call	check_fred_event.isra.0
+>> 
+>> I think that when the FRED event happens it doesn't save RDI and overwrites it
+>> before going into check_fred_event. In the volatile case it is saved to the
+>> stack before check_fred_event() (.loc 159 is the check_fred_event() call).
+>
+>That looks OK to me. When it calls check_fred_event(), expected_rip is
+>the first argument and thus lives in %rdi. On the right hand side where
+>it's volatile, it gets explicitly loaded again from 8(%rsp) for the
+>call to check_fred_event().
+>
+>On the left hand side, the compiler doesn't mess with it at all; just
+>chooses %rdi as the register to use for the output %0 of the inline
+>assembly. So it's loaded *directly* into %rdi by our 'lea' and it goes
+>straight from there to the check_fred_event() function as it should.
+>
+>Your version turns it into a memory operand and forces it to get
+>written out to the stack, after which the compiler has to load it
+>again, so yes it'll look a lot more like your right hand side.
+>
+>But I don't see anything actually wrong with the original.
 
---=-UKAELhCR8fiUKJc+NKYG
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+My theory is that after 'int3' call the FRED event is handled elsewhere and %rdi
+is not preserved. So the original version of the assembly looks okay but I was
+thinking that int3 has side effects.
 
-On Thu, 2026-05-07 at 15:21 +0200, Sebastian Andrzej Siewior wrote:
-> On 2026-05-07 14:00:49 [+0100], David Woodhouse wrote:
-> > On Thu, 2026-05-07 at 09:12 +0200, Sebastian Andrzej Siewior wrote:
-> > >=20
-> > > So the cited patch does not look bad. That read-trylock should be fin=
-e
-> > > on RT (as in I don't see anything wrong with it). What did happen to =
-it?
-> >=20
-> > The read_trylock() may be fine... but does a read_unlock() try to
-> > "re-enable" hardirqs?
->=20
-> Yes, I missed it while looking for it. This could become a _irqsave().
->=20
-> We do this already for spinlock_t/ rt_spin_lock()/ _unlock() because it
-> is used during early boot where interrupts are disabled and locks are
-> acquired. So it needs to preserve the state and since rwlock_t is not
-> (yet) used during early boot it was not done/ observed.
->=20
-> The try-lock on the read lock just increments a counter in order to
-> acquire the lock. This is it. The spinlock_t on the other hand records
-> the current context as owner which can lead to a mess. Therefore a
-> trylock on a spinlock_t from hardirq context is wrong but it should be
-> doable for rwlock_t. I don't see anything wrong with it (except for this
-> one thing can be corrected).
+Below is the test output of the RIPs not matching when running the original,
+does that help in any way?
 
-Thanks. Something like this?
+Random seed: 0x6b8b4567
+Testing FRED event types with EPT fault on stack
+==== Test Assertion Failure ====
+  x86/int1_fred_test.c:114: fred_saved_rip == expected_rip
+  pid=193114 tid=193114 errno=4 - Interrupted system call
+     1  0x0000000000413319: assert_on_unhandled_exception at processor.c:659
+     2  0x0000000000407d06: _vcpu_run at kvm_util.c:1703
+     3   (inlined by) vcpu_run at kvm_util.c:1714
+     4  0x0000000000403104: main at int1_fred_test.c:209
+     5  0x00007f90b3c2a1c9: ?? ??:0
+     6  0x00007f90b3c2a28a: ?? ??:0
+     7  0x0000000000403314: _start at ??:?
+  0x40446b != 0xabaf80 (fred_saved_rip != expected_rip)
 
-=46rom 7199173d543d25333418537bcf07d6b2fce18ff1 Mon Sep 17 00:00:00 2001
-From: David Woodhouse <dwmw@amazon.co.uk>
-Date: Thu, 7 May 2026 14:39:22 +0100
-Subject: [PATCH] locking/rt: Use raw_spin_lock_irqsave() in
- __rwbase_read_unlock()
-
-__rwbase_read_unlock() uses raw_spin_lock_irq()/raw_spin_unlock_irq()
-which unconditionally disables and re-enables interrupts. When
-read_unlock() is called from hardirq context (e.g. after a successful
-read_trylock() in a timer callback), the raw_spin_unlock_irq()
-incorrectly re-enables interrupts within the hardirq handler.
-
-This causes lockdep warnings ('hardirqs_on_prepare' from hardirq
-context) and can lead to IRQ state corruption.
-
-Switch to raw_spin_lock_irqsave()/raw_spin_unlock_irqrestore() to
-preserve the caller's IRQ state, matching the pattern already used
-for rt_spin_lock/unlock.
-
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
----
- kernel/locking/rwbase_rt.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/kernel/locking/rwbase_rt.c b/kernel/locking/rwbase_rt.c
-index 82e078c0665a..25744862d627 100644
---- a/kernel/locking/rwbase_rt.c
-+++ b/kernel/locking/rwbase_rt.c
-@@ -153,8 +153,9 @@ static void __sched __rwbase_read_unlock(struct rwbase_=
-rt *rwb,
- 	struct rt_mutex_base *rtm =3D &rwb->rtmutex;
- 	struct task_struct *owner;
- 	DEFINE_RT_WAKE_Q(wqh);
-+	unsigned long flags;
-=20
--	raw_spin_lock_irq(&rtm->wait_lock);
-+	raw_spin_lock_irqsave(&rtm->wait_lock, flags);
- 	/*
- 	 * Wake the writer, i.e. the rtmutex owner. It might release the
- 	 * rtmutex concurrently in the fast path (due to a signal), but to
-@@ -167,7 +168,7 @@ static void __sched __rwbase_read_unlock(struct rwbase_=
-rt *rwb,
-=20
- 	/* Pairs with the preempt_enable in rt_mutex_wake_up_q() */
- 	preempt_disable();
--	raw_spin_unlock_irq(&rtm->wait_lock);
-+	raw_spin_unlock_irqrestore(&rtm->wait_lock, flags);
- 	rt_mutex_wake_up_q(&wqh);
- }
-=20
---=20
-2.43.0
-
-
-
---=-UKAELhCR8fiUKJc+NKYG
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUwNzEzNDMy
-MFowLwYJKoZIhvcNAQkEMSIEIJKwkAazIv77MjmfsvjHLIEbQMQBcvcPNr/ahkZ+qh0dMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIANhAOnuHBM61L
-GqYZP7WH02+pAgEgRdnVSlx/p5YOJ/Su/M1ynA84z/sL9A4kwnsa/SjiWlPcwP0n2oO631FqqZoc
-wA96YPt4Xj/lEau6pQRFGarw5Q6SSIfmp1FlpxdClbCjbx1AB6s0f4yv4hsRl/LMiYcKNj0TQarT
-LqoVqMjhucvyTZ3yyAj42FcoSrTmrviwWteGctS6e7j5cptMccFZO/kMD8+vPEPmy5Blp9TORjyl
-fNH3D+IQZZxE1m1eZ6bQmcEO6oKVkSc3Jbo1Tpcut9bjHYycSBxsugc/IehlGJTx62DYVyNXvI29
-ydO9D6spp1P/3Cflovb8Qrg1VKf3WY0uQxXKKdLBwdUT7iahnoM2o3xWUsUvB9MDd7JSDmbVzhzR
-OJLD/XwCRDpS+8AIimtL54VJZSh4iOaODKCAeLxVpRCEHSlRW4FkgOgn3wl1eCGsmHsbHbDMrdXy
-M5wb2f0jfMM58sUFLUnHjJuSa4F/5ebh/+M8dbX/lrtgzxoSdT1hXjPENc4j01bMxiQt0jwYrwpQ
-Hp05wCfWLLcht+k7RaYziwCt2tsmRHxG6krmgixF1k+nxDiHLlVsk0PyuEYEi01dn3SHZKp3sRGe
-5e7rpFRMqFalrH3YdFIvjZOnMU8u6AW6H3RrYEPQChjIqfX0DEfXLHEq6raYqZ4AAAAAAAA=
-
-
---=-UKAELhCR8fiUKJc+NKYG--
+-- 
+Kind regards
+Maciej Wieczór-Retman
