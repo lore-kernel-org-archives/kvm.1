@@ -1,341 +1,328 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B314618050;
-	Thu,  7 May 2026 02:58:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E134C288C81;
+	Thu,  7 May 2026 03:35:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778122701; cv=none; b=A34KRRcBWRLCr2R7ge9CFQMXvKCfItIxks/volVjqB/3j0Th2NKc+WujM81KtYaBvgyhyzwiMWdlRp+MANyJhY2q0uC/mBfnagvWlQzEiLyHzS7UvOb7VemDvkZGJv2HC1qw/iiI+N1vh7OI/lRiFWnE3hlh/2LrA6sdCnNRB2c=
+	t=1778124921; cv=none; b=RZajjD8YhbKkPAxlE/aAuAlU5UZI9yGJkrBLbnX7/vYzWkCPB0zS9WZkYgT5s1cLzO1hSmpkllas1NgbFE4HOSW1vqhrBq/H4TzxymS/BIO6qwsybB/MUbzOmOb2ezJh4roiu4el6a2GSCcuR+gB9wP8vDe3WxGNDUaQarPIB9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778122701; c=relaxed/simple;
-	bh=iXISzev/0LC4OZ3gbHLmUdmiQ+zAVSODpccbTdBCK1U=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=efG3hN1KRvUlLdURS7zkO2+w0Scmuk690BD3Hfa8HWNOeLxQoJdMmPyk3uQ7QRbF043wWbt0yEErvCtnMW1Y89KMMLAU+kqUAfozRbNvuY8i2R3w8sq9ePWeIUQ24Vi5DC09hWlEkzXJhBi0tIYiAZv1zFzGvglHnvbsE+y22Ew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OKBhxPho; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1778124921; c=relaxed/simple;
+	bh=ej0K96f1BIdI/Z3P9sfwL5kOSt5hSoaymO40jXhvVfk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I7mR5aGSW7hdJnlHsNtJ06VnhB1Ablus/AmwdzgSsLDtcnbLl/ixLxtlYwSmw3zQHZi1sq4+1TyIMn+RwtU7m2R979LPc1pqD9J0MByS8D3auWlJnhcxsEkpLiKDf7IYCSVJQic7kgO8DjoajdaXlvmvur8+OBR0igKA9VXkW2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=zceOFB18; arc=none smtp.client-ip=198.137.202.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OKBhxPho"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778122698; x=1809658698;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=iXISzev/0LC4OZ3gbHLmUdmiQ+zAVSODpccbTdBCK1U=;
-  b=OKBhxPhozlVV/s7R/4KcdWK5MkgLAtfxP0dxCU0m7Eb+vlIMtusV5s1m
-   7pu76PEccAi6+ZTzqGl0VwlldVaFlOIP+DZKcD/Y61O8zgOZzYOzBZ4F+
-   /uHqOLA8j1uu8wSVYPIbVqRxJk0F/QkdMVhN3macvbbCiQbEFDRzFdwJs
-   JYuwhP+VPLn46N/13m4wrPPinWrai4qDTIbjiGlCsuKSJeDbJVCZwo+BX
-   4jZrUcd2T+3I/mYerZgJSSvkznn0+mkg51/sZ8NZxa4X56nzkdY79PZ9Y
-   y4VxiA0SoV8HsFEaW7DNQucvg3neEHmgfdwHJjkRwX+0MWZE9g5nN1jC1
-   g==;
-X-CSE-ConnectionGUID: zn7ajt7aQzybF8bzhw9AVQ==
-X-CSE-MsgGUID: rR16luE1Somi6FaNeenzCw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="79082964"
-X-IronPort-AV: E=Sophos;i="6.23,220,1770624000"; 
-   d="scan'208";a="79082964"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 19:58:17 -0700
-X-CSE-ConnectionGUID: oftxAlgJRXKbzWPd9mP2ug==
-X-CSE-MsgGUID: xfkid6ZrTjq8L7ZBayG4Bw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,220,1770624000"; 
-   d="scan'208";a="266707987"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 19:58:11 -0700
-Message-ID: <39a010b4-7099-434a-b8de-5d03a75f2a9f@linux.intel.com>
-Date: Thu, 7 May 2026 10:55:42 +0800
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="zceOFB18"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=lTWtM7aAvxWsgbfxNcm2HPqp/xVemJl/ZDl+oEpPXh4=; b=zceOFB185ADeycRkW+Yndduifi
+	uIG0xGUceRU+kIAdPa7QJ8YGQKCWk9Q99DyTgWkZ569DpzpmjtCTBcNlD/cVsAcw0mR906e5FYX+t
+	SgSowFDEbzlgTUCXFUUSD2A53qO4xtrsF+sb0uJT9wBb0/xSgDUYFE/QHtdPG4DcXL3pSsCAOFuej
+	EoSAzrN5nadMrg1N+y/OpKFYDYx+JAqKFZGKQRJXmPAAOnHwTYKEhU1E3Xu3gLie4Dj3v7wnyZ0UD
+	s6VXTgrcpBnAwPnlgXfb0HzrcqZPG1SyKJGzutbgYJt5HIlfPRDR1bs+MhBw0iVxWCWLjFQEZSK2a
+	0RcDxuQg==;
+Received: from [213.147.98.98] (helo=localhost)
+	by bombadil.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wKpVb-00000002dtN-3eeD;
+	Thu, 07 May 2026 03:34:44 +0000
+Date: Thu, 7 May 2026 05:34:28 +0200
+From: "Liam R. Howlett" <liam@infradead.org>
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, steven.price@arm.com, 
+	tabba@google.com, willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
+	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
+	aneesh.kumar@kernel.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Shuah Khan <shuah@kernel.org>, 
+	Vishal Annapurve <vannapurve@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Kairui Song <kasong@tencent.com>, 
+	Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+	Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+	Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, 
+	Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH RFC v5 01/53] KVM: guest_memfd: Introduce per-gmem
+ attributes, use to guard user mappings
+Message-ID: <byywwfin2aenobdwuesqihm6nzxyx6ecedwgbt7f5tvaaul6fi@u7bmexpavwdn>
+References: <20260428-gmem-inplace-conversion-v5-0-d8608ccfca22@google.com>
+ <20260428-gmem-inplace-conversion-v5-1-d8608ccfca22@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 06/16] iommupt: Implement preserve/unpreserve/restore
- callbacks
-To: Samiullah Khawaja <skhawaja@google.com>,
- David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
- Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Saeed Mahameed <saeedm@nvidia.com>,
- Adithya Jayachandran <ajayachandra@nvidia.com>,
- Parav Pandit <parav@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>,
- William Tu <witu@nvidia.com>, Pratyush Yadav <pratyush@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- David Matlack <dmatlack@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>,
- YiFei Zhu <zhuyifei@google.com>
-References: <20260427175633.1978233-1-skhawaja@google.com>
- <20260427175633.1978233-7-skhawaja@google.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20260427175633.1978233-7-skhawaja@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260428-gmem-inplace-conversion-v5-1-d8608ccfca22@google.com>
 
-On 4/28/26 01:56, Samiullah Khawaja wrote:
-> Implement the iommu domain ops for presevation, unpresevation and
-> restoration of iommu domains for liveupdate. Use the existing page
-> walker to preserve the ioptdesc of the top_table and the lower tables.
+On 26/04/28 04:24PM, Ackerley Tng via B4 Relay wrote:
+> From: Sean Christopherson <seanjc@google.com>
 > 
-> Preserve top_level, VASZ and FEAT Sign Extended to restore the domain in
-> the next kernel. On restore the domain has only the preserved features
-> enabled and all the other features are zeroed. This is ok since the
-> restored domain is made immutable and can only be freed. A kunit test is
-> added to verify that the IOMMU domain free can be done with trimmed
-> features.
+> Start plumbing in guest_memfd support for in-place private<=>shared
+> conversions by tracking attributes via a maple tree.  KVM currently tracks
+> private vs. shared attributes on a per-VM basis, which made sense when a
+> guest_memfd _only_ supported private memory, but tracking per-VM simply
+> can't work for in-place conversions as the shareability of a given page
+> needs to be per-gmem_inode, not per-VM.
 > 
-> Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
+> Use the filemap invalidation lock to protect the maple tree, as taking the
+> lock for read when faulting in memory (for userspace or the guest) isn't
+> expected to result in meaningful contention, and using a separate lock
+> would add significant complexity (avoid deadlock is quite difficult).
+> 
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Co-developed-by: Ackerley Tng <ackerleytng@google.com>
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> Co-developed-by: Vishal Annapurve <vannapurve@google.com>
+> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+> Co-developed-by: Fuad Tabba <tabba@google.com>
+> Signed-off-by: Fuad Tabba <tabba@google.com>
 > ---
->   drivers/iommu/generic_pt/iommu_pt.h       | 131 ++++++++++++++++++++++
->   drivers/iommu/generic_pt/kunit_iommu_pt.h |  28 +++++
->   include/linux/generic_pt/iommu.h          |  19 +++-
->   3 files changed, 177 insertions(+), 1 deletion(-)
+>  virt/kvm/guest_memfd.c | 139 +++++++++++++++++++++++++++++++++++++++++++------
+>  1 file changed, 123 insertions(+), 16 deletions(-)
 > 
-> diff --git a/drivers/iommu/generic_pt/iommu_pt.h b/drivers/iommu/generic_pt/iommu_pt.h
-> index 19b6daf88f2a..7bca827e3a55 100644
-> --- a/drivers/iommu/generic_pt/iommu_pt.h
-> +++ b/drivers/iommu/generic_pt/iommu_pt.h
-> @@ -961,6 +961,133 @@ static int NS(map_range)(struct pt_iommu *iommu_table, dma_addr_t iova,
->   	return ret;
->   }
->   
-> +#ifdef CONFIG_IOMMU_LIVEUPDATE
-> +/**
-> + * unpreserve() - Unpreserve page tables and other state of a domain.
-> + * @domain: Domain to unpreserve
-> + */
-> +void DOMAIN_NS(unpreserve)(struct iommu_domain *domain, struct iommu_domain_ser *ser)
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 69c9d6d546b28..17e5a23fec0a1 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -4,6 +4,7 @@
+>  #include <linux/falloc.h>
+>  #include <linux/fs.h>
+>  #include <linux/kvm_host.h>
+> +#include <linux/maple_tree.h>
+>  #include <linux/mempolicy.h>
+>  #include <linux/pseudo_fs.h>
+>  #include <linux/pagemap.h>
+> @@ -33,6 +34,12 @@ struct gmem_inode {
+>  	struct list_head gmem_file_list;
+>  
+>  	u64 flags;
+> +	/*
+> +	 * Every index in this inode, whether memory is populated or
+> +	 * not, is tracked in attributes. There are no gaps in this
+> +	 * maple tree.
+> +	 */
+> +	struct maple_tree attributes;
+>  };
+>  
+>  static __always_inline struct gmem_inode *GMEM_I(struct inode *inode)
+> @@ -60,6 +67,31 @@ static pgoff_t kvm_gmem_get_index(struct kvm_memory_slot *slot, gfn_t gfn)
+>  	return gfn - slot->base_gfn + slot->gmem.pgoff;
+>  }
+>  
+> +static u64 kvm_gmem_get_attributes(struct inode *inode, pgoff_t index)
 > +{
-> +	struct pt_iommu *iommu_table =
-> +		container_of(domain, struct pt_iommu, domain);
-> +	struct pt_common *common = common_from_iommu(iommu_table);
-> +	struct pt_range range = pt_all_range(common);
-> +	struct pt_iommu_collect_args collect = {
-> +		.free_list = IOMMU_PAGES_LIST_INIT(collect.free_list),
-> +	};
-> +
-> +	iommu_pages_list_add(&collect.free_list, range.top_table);
-> +	pt_walk_range(&range, __collect_tables, &collect);
-> +
-> +	iommu_unpreserve_pages(&collect.free_list);
-> +}
-> +EXPORT_SYMBOL_NS_GPL(DOMAIN_NS(unpreserve), "GENERIC_PT_IOMMU");
-> +
-> +/**
-> + * preserve() - Preserve page tables and other state of a domain.
-> + * @domain: Domain to preserve
-> + *
-> + * Returns: -ERRNO on failure, 0 on success.
-> + */
-> +int DOMAIN_NS(preserve)(struct iommu_domain *domain, struct iommu_domain_ser *ser)
-> +{
-> +	struct pt_iommu *iommu_table =
-> +		container_of(domain, struct pt_iommu, domain);
-> +	struct pt_common *common = common_from_iommu(iommu_table);
-> +	struct pt_range range = pt_all_range(common);
-> +	struct pt_iommu_collect_args collect = {
-> +		.free_list = IOMMU_PAGES_LIST_INIT(collect.free_list),
-> +	};
-> +	int ret;
-> +
-> +	iommu_pages_list_add(&collect.free_list, range.top_table);
-> +	pt_walk_range(&range, __collect_tables, &collect);
-> +
-> +	ret = iommu_preserve_pages(&collect.free_list);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ser->top_table_phys = virt_to_phys(range.top_table);
-> +	ser->top_level = range.top_level;
+> +	struct maple_tree *mt = &GMEM_I(inode)->attributes;
+> +	void *entry = mtree_load(mt, index);
 > +
 > +	/*
-> +	 * VASZ and SIGN_EXTEND will be needed in next kernel for collector page
-> +	 * table walk to restore and free pages.
+> +	 * The lock _must_ be held for lookups, as some maple tree operations,
+> +	 * e.g. append, are unsafe (return inaccurate information) with respect
+> +	 * to concurrent RCU-protected lookups.
 > +	 */
-> +	ser->vasz = common->max_vasz_lg2;
-> +	ser->sign_extend = pt_feature(common, PT_FEAT_SIGN_EXTEND);
+
+Can you please elaborate how you see inaccurate information and which
+information is inaccurate?
+
+Your comment is incorrect and misleading as append will not be used in
+rcu mode.  Note that you have not set this tree up in rcu mode.
+
+> +	lockdep_assert(mt_lock_is_held(mt));
 > +
-> +	return 0;
+> +	return WARN_ON_ONCE(!entry) ? 0 : xa_to_value(entry);
 > +}
-> +EXPORT_SYMBOL_NS_GPL(DOMAIN_NS(preserve), "GENERIC_PT_IOMMU");
 > +
-> +static int __restore_tables(struct pt_range *range, void *arg,
-> +			    unsigned int level, struct pt_table_p *table)
+> +static bool kvm_gmem_is_private_mem(struct inode *inode, pgoff_t index)
 > +{
-> +	struct pt_state pts = pt_init(range, level, table);
-> +	int ret;
+> +	return kvm_gmem_get_attributes(inode, index) & KVM_MEMORY_ATTRIBUTE_PRIVATE;
+> +}
 > +
-> +	for_each_pt_level_entry(&pts) {
-> +		if (pts.type == PT_ENTRY_TABLE) {
-> +			iommu_restore_page(virt_to_phys(pts.table_lower));
+> +static bool kvm_gmem_is_shared_mem(struct inode *inode, pgoff_t index)
+> +{
+> +	return !kvm_gmem_is_private_mem(inode, index);
+> +}
 > +
-> +			/*
-> +			 * pt_descend can only fail if pts.table_lower is not
-> +			 * init. So the if statement below is dead code.
-> +			 */
-> +			ret = pt_descend(&pts, arg, __restore_tables);
-> +			if (ret)
-> +				return ret;
-> +		}
+>  static int __kvm_gmem_prepare_folio(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  				    pgoff_t index, struct folio *folio)
+>  {
+> @@ -397,10 +429,13 @@ static vm_fault_t kvm_gmem_fault_user_mapping(struct vm_fault *vmf)
+>  	if (((loff_t)vmf->pgoff << PAGE_SHIFT) >= i_size_read(inode))
+>  		return VM_FAULT_SIGBUS;
+>  
+> -	if (!(GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED))
+> -		return VM_FAULT_SIGBUS;
+> +	filemap_invalidate_lock_shared(inode->i_mapping);
+> +	if (kvm_gmem_is_shared_mem(inode, vmf->pgoff))
+> +		folio = kvm_gmem_get_folio(inode, vmf->pgoff);
+> +	else
+> +		folio = ERR_PTR(-EACCES);
+> +	filemap_invalidate_unlock_shared(inode->i_mapping);
+>  
+> -	folio = kvm_gmem_get_folio(inode, vmf->pgoff);
+>  	if (IS_ERR(folio)) {
+>  		if (PTR_ERR(folio) == -EAGAIN)
+>  			return VM_FAULT_RETRY;
+> @@ -556,6 +591,51 @@ bool __weak kvm_arch_supports_gmem_init_shared(struct kvm *kvm)
+>  	return true;
+>  }
+>  
+> +static int kvm_gmem_init_inode(struct inode *inode, loff_t size, u64 flags)
+> +{
+> +	struct gmem_inode *gi = GMEM_I(inode);
+> +	MA_STATE(mas, &gi->attributes, 0, (size >> PAGE_SHIFT) - 1);
+> +	u64 attrs;
+> +	int r;
+> +
+> +	inode->i_op = &kvm_gmem_iops;
+> +	inode->i_mapping->a_ops = &kvm_gmem_aops;
+> +	inode->i_mode |= S_IFREG;
+> +	inode->i_size = size;
+> +	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
+> +
+> +	/*
+> +	 * guest_memfd memory is neither migratable nor swappable: set
+> +	 * inaccessible to gate off both.
+> +	 */
+> +	mapping_set_inaccessible(inode->i_mapping);
+> +	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
+> +
+> +	gi->flags = flags;
+> +
+> +	mt_set_external_lock(&gi->attributes,
+> +			     &inode->i_mapping->invalidate_lock);
+> +
+> +	/*
+> +	 * Store default attributes for the entire gmem instance. Ensuring every
+> +	 * index is represented in the maple tree at all times simplifies the
+> +	 * conversion and merging logic.
+> +	 */
+> +	attrs = gi->flags & GUEST_MEMFD_FLAG_INIT_SHARED ? 0 : KVM_MEMORY_ATTRIBUTE_PRIVATE;
+> +
+> +	/*
+> +	 * Acquire the invalidation lock purely to make lockdep happy.  The
+> +	 * maple tree library expects all stores to be protected via the lock,
+> +	 * and the library can't know when the tree is reachable only by the
+> +	 * caller, as is the case here.
+> +	 */
+> +	filemap_invalidate_lock(inode->i_mapping);
+> +	r = mas_store_gfp(&mas, xa_mk_value(attrs), GFP_KERNEL);
+> +	filemap_invalidate_unlock(inode->i_mapping);
+> +
+> +	return r;
+> +}
+> +
+>  static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
+>  {
+>  	static const char *name = "[kvm-gmem]";
+> @@ -586,16 +666,9 @@ static int __kvm_gmem_create(struct kvm *kvm, loff_t size, u64 flags)
+>  		goto err_fops;
+>  	}
+>  
+> -	inode->i_op = &kvm_gmem_iops;
+> -	inode->i_mapping->a_ops = &kvm_gmem_aops;
+> -	inode->i_mode |= S_IFREG;
+> -	inode->i_size = size;
+> -	mapping_set_gfp_mask(inode->i_mapping, GFP_HIGHUSER);
+> -	mapping_set_inaccessible(inode->i_mapping);
+> -	/* Unmovable mappings are supposed to be marked unevictable as well. */
+> -	WARN_ON_ONCE(!mapping_unevictable(inode->i_mapping));
+> -
+> -	GMEM_I(inode)->flags = flags;
+> +	err = kvm_gmem_init_inode(inode, size, flags);
+> +	if (err)
+> +		goto err_inode;
+>  
+>  	file = alloc_file_pseudo(inode, kvm_gmem_mnt, name, O_RDWR, &kvm_gmem_fops);
+>  	if (IS_ERR(file)) {
+> @@ -797,9 +870,13 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  	if (!file)
+>  		return -EFAULT;
+>  
+> +	filemap_invalidate_lock_shared(file_inode(file)->i_mapping);
+> +
+>  	folio = __kvm_gmem_get_pfn(file, slot, index, pfn, max_order);
+> -	if (IS_ERR(folio))
+> -		return PTR_ERR(folio);
+> +	if (IS_ERR(folio)) {
+> +		r = PTR_ERR(folio);
+> +		goto out;
 > +	}
+>  
+>  	if (!folio_test_uptodate(folio)) {
+>  		clear_highpage(folio_page(folio, 0));
+> @@ -815,6 +892,8 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  	else
+>  		folio_put(folio);
+>  
+> +out:
+> +	filemap_invalidate_unlock_shared(file_inode(file)->i_mapping);
+>  	return r;
+>  }
+>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
+> @@ -944,6 +1023,15 @@ static struct inode *kvm_gmem_alloc_inode(struct super_block *sb)
+>  
+>  	mpol_shared_policy_init(&gi->policy, NULL);
+>  
+> +	/*
+> +	 * Memory attributes are protected by the filemap invalidation lock, but
+> +	 * the lock structure isn't available at this time.  Immediately mark
+> +	 * maple tree as using external locking so that accessing the tree
+> +	 * before it's fully initialized results in NULL pointer dereferences
+> +	 * and not more subtle bugs.
+> +	 */
+> +	mt_init_flags(&gi->attributes, MT_FLAGS_LOCK_EXTERN);
 > +
-> +	return 0;
-> +}
+>  	gi->flags = 0;
+>  	INIT_LIST_HEAD(&gi->gmem_file_list);
+>  	return &gi->vfs_inode;
+> @@ -951,7 +1039,26 @@ static struct inode *kvm_gmem_alloc_inode(struct super_block *sb)
+>  
+>  static void kvm_gmem_destroy_inode(struct inode *inode)
+>  {
+> -	mpol_free_shared_policy(&GMEM_I(inode)->policy);
+> +	struct gmem_inode *gi = GMEM_I(inode);
 > +
-> +static const struct pt_iommu_ops NS(ops_immutable);
-> +
-> +/**
-> + * restore() - Restore page tables and other state of a domain.
-> + * @domain: Domain to preserve
-> + *
-> + * Returns: -ERRNO on failure, 0 on success.
-> + */
-> +int DOMAIN_NS(restore)(struct iommu_domain *domain, struct iommu_domain_ser *ser)
-> +{
-> +	struct pt_iommu *iommu_table =
-> +		container_of(domain, struct pt_iommu, domain);
-> +	struct pt_common *common = common_from_iommu(iommu_table);
-> +	struct pt_range range;
-> +
-> +	common->max_vasz_lg2 = ser->vasz;
-> +
-> +	/* Make this domain immutable.*/
-> +	iommu_table->ops = &NS(ops_immutable);
+> +	mpol_free_shared_policy(&gi->policy);
 > +
 > +	/*
-> +	 * It is safe to override this here since this domain is immutable and
-> +	 * can only be freed.
+> +	 * Note!  Checking for an empty tree is functionally necessary
+> +	 * to avoid explosions if the tree hasn't been fully
+> +	 * initialized, i.e. if the inode is being destroyed before
+> +	 * guest_memfd can set the external lock, lockdep would find
+> +	 * that the tree's internal ma_lock was not held.
 > +	 */
-> +	common->features = 0;
-> +	if (ser->sign_extend)
-> +		common->features |= BIT(PT_FEAT_SIGN_EXTEND);
-> +
-> +	range = pt_all_range(common);
-> +	iommu_restore_page(ser->top_table_phys);
-> +
-> +	/* Free new table */
-> +	iommu_free_pages(range.top_table);
-> +
-> +	/* Set the restored top table */
-> +	pt_top_set(common, phys_to_virt(ser->top_table_phys), ser->top_level);
-> +
-> +	/* Restore all pages*/
-> +	range = pt_all_range(common);
-> +	return pt_walk_range(&range, __restore_tables, NULL);
-> +}
-> +EXPORT_SYMBOL_NS_GPL(DOMAIN_NS(restore), "GENERIC_PT_IOMMU");
-> +#endif
-> +
->   struct pt_unmap_args {
->   	struct iommu_pages_list free_list;
->   	pt_vaddr_t unmapped;
-> @@ -1138,6 +1265,10 @@ static const struct pt_iommu_ops NS(ops) = {
->   	.deinit = NS(deinit),
->   };
->   
-> +static const struct pt_iommu_ops NS(ops_immutable) = {
-> +	.deinit = NS(deinit),
-> +};
-> +
->   static int pt_init_common(struct pt_common *common)
->   {
->   	struct pt_range top_range = pt_top_range(common);
-> diff --git a/drivers/iommu/generic_pt/kunit_iommu_pt.h b/drivers/iommu/generic_pt/kunit_iommu_pt.h
-> index e8a63c8ea850..af1918d693ed 100644
-> --- a/drivers/iommu/generic_pt/kunit_iommu_pt.h
-> +++ b/drivers/iommu/generic_pt/kunit_iommu_pt.h
-> @@ -426,6 +426,33 @@ static void test_mixed(struct kunit *test)
->   	check_iova(test, start, oa, len);
->   }
->   
-> +static void test_restore_free(struct kunit *test)
-> +{
-> +	struct kunit_iommu_priv *priv = test->priv;
-> +	struct pt_range top_range = pt_top_range(priv->common);
-> +	u64 start = 0x3fe400ULL << 12;
-> +	u64 end = 0x4c0600ULL << 12;
-> +	pt_vaddr_t len = end - start;
-> +
-> +	if (top_range.last_va <= start || sizeof(unsigned long) == 4)
-> +		kunit_skip(test, "range is too small");
-> +	if ((priv->safe_pgsize_bitmap & GENMASK(30, 21)) != (BIT(30) | BIT(21)))
-> +		kunit_skip(test, "incompatible psize");
-> +
-> +	/* Map a large mixed range to populate multiple levels of page tables */
-> +	do_map(test, start, start, len);
-> +
-> +	/*
-> +	 * Simulate a restored state by clearing all features except
-> +	 * SIGN_EXTEND. This verifies that the generic page table free walker
-> +	 * can correctly tear down a populated domain when other features are
-> +	 * zeroed.
-> +	 */
-> +	priv->common->features &= BIT(PT_FEAT_SIGN_EXTEND);
-> +
-> +	/* The domain will be freed when the test exits. */
-> +}
-> +
->   static struct kunit_case iommu_test_cases[] = {
->   	KUNIT_CASE_FMT(test_increase_level),
->   	KUNIT_CASE_FMT(test_map_simple),
-> @@ -434,6 +461,7 @@ static struct kunit_case iommu_test_cases[] = {
->   	KUNIT_CASE_FMT(test_random_map),
->   	KUNIT_CASE_FMT(test_pgsize_boundary),
->   	KUNIT_CASE_FMT(test_mixed),
-> +	KUNIT_CASE_FMT(test_restore_free),
->   	{},
->   };
->   
-> diff --git a/include/linux/generic_pt/iommu.h b/include/linux/generic_pt/iommu.h
-> index dd0edd02a48a..649b3b9eb1a0 100644
-> --- a/include/linux/generic_pt/iommu.h
-> +++ b/include/linux/generic_pt/iommu.h
-> @@ -13,6 +13,7 @@ struct iommu_iotlb_gather;
->   struct pt_iommu_ops;
->   struct pt_iommu_driver_ops;
->   struct iommu_dirty_bitmap;
-> +struct iommu_domain_ser;
->   
->   /**
->    * DOC: IOMMU Radix Page Table
-> @@ -251,6 +252,12 @@ struct pt_iommu_cfg {
->   #define IOMMU_PROTOTYPES(fmt)                                                  \
->   	phys_addr_t pt_iommu_##fmt##_iova_to_phys(struct iommu_domain *domain, \
->   						  dma_addr_t iova);            \
-> +	int pt_iommu_##fmt##_preserve(struct iommu_domain *domain,             \
-> +				      struct iommu_domain_ser *ser);           \
-> +	void pt_iommu_##fmt##_unpreserve(struct iommu_domain *domain,          \
-> +					 struct iommu_domain_ser *ser);        \
-> +	int pt_iommu_##fmt##_restore(struct iommu_domain *domain,              \
-> +				     struct iommu_domain_ser *ser);            \
->   	int pt_iommu_##fmt##_read_and_clear_dirty(                             \
->   		struct iommu_domain *domain, unsigned long iova, size_t size,  \
->   		unsigned long flags, struct iommu_dirty_bitmap *dirty);        \
-> @@ -266,12 +273,22 @@ struct pt_iommu_cfg {
->   	};                              \
->   	IOMMU_PROTOTYPES(fmt)
->   
-> +#ifdef CONFIG_IOMMU_LIVEUPDATE
-> +#define IOMMU_PT_LIVEUPDATE_OPS(fmt)			\
-> +	, .preserve = &pt_iommu_##fmt##_preserve,	\
-> +	.unpreserve = &pt_iommu_##fmt##_unpreserve,	\
-> +	.restore = &pt_iommu_##fmt##_restore
-
-Nit: would it look better if we put it like this?
-
-#define IOMMU_PT_LIVEUPDATE_OPS(fmt)			\
-	, .preserve = &pt_iommu_##fmt##_preserve	\
-	, .unpreserve = &pt_iommu_##fmt##_unpreserve	\
-	, .restore = &pt_iommu_##fmt##_restore
-
-> +#else
-> +#define IOMMU_PT_LIVEUPDATE_OPS(fmt)
-> +#endif
-
-Thanks,
-baolu
+> +	if (!mtree_empty(&gi->attributes)) {
+> +		/*
+> +		 * Acquire the invalidation lock purely to make lockdep happy,
+> +		 * the inode is unreachable at this point.
+> +		 */
+> +		filemap_invalidate_lock(inode->i_mapping);
+> +		__mt_destroy(&gi->attributes);
+> +		filemap_invalidate_unlock(inode->i_mapping);
+> +	}
+>  }
+>  
+>  static void kvm_gmem_free_inode(struct inode *inode)
+> 
+> -- 
+> 2.54.0.545.g6539524ca2-goog
+> 
+> 
+> 
