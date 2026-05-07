@@ -1,163 +1,341 @@
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EA5224234;
-	Thu,  7 May 2026 02:37:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B314618050;
+	Thu,  7 May 2026 02:58:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778121450; cv=none; b=AFqGPulTf0W2uRKu/6ANhzLEnWNjM+SaQ7QKYhQNHdgnCTolpCofpHxFXbvqLd4Jkv4QbTOp6BFtjik7DHlKtXoubm3P42MQ5XUbZ9robnZbDkGc2qgNSx2dnAldgBwEoLlXGMT+oIqqJyLz7wzZNMBNDQ7bGdiNDO/3YdpYtJU=
+	t=1778122701; cv=none; b=A34KRRcBWRLCr2R7ge9CFQMXvKCfItIxks/volVjqB/3j0Th2NKc+WujM81KtYaBvgyhyzwiMWdlRp+MANyJhY2q0uC/mBfnagvWlQzEiLyHzS7UvOb7VemDvkZGJv2HC1qw/iiI+N1vh7OI/lRiFWnE3hlh/2LrA6sdCnNRB2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778121450; c=relaxed/simple;
-	bh=x4OZxVVa7XuFeQ5NIz/1eEAUFe9OyoXfnPlSCrrsrgo=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=e6WH8ftLcDUaWF3WlZM7xDD661eWmY2hjWx6eJ32ssGaFnNmAWbgn5PApFL47MSyP39MuETogk3r8zd0Ov8N41s0GvEzGhKlvP8LkxHjfvK57hY0zh50E4ady6EbK3E+D4veoE5tmSdY+Z8dEf24jOseF7oPVnRIuW7vAG6N1yU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=kSwqf2eJ; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+	s=arc-20240116; t=1778122701; c=relaxed/simple;
+	bh=iXISzev/0LC4OZ3gbHLmUdmiQ+zAVSODpccbTdBCK1U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=efG3hN1KRvUlLdURS7zkO2+w0Scmuk690BD3Hfa8HWNOeLxQoJdMmPyk3uQ7QRbF043wWbt0yEErvCtnMW1Y89KMMLAU+kqUAfozRbNvuY8i2R3w8sq9ePWeIUQ24Vi5DC09hWlEkzXJhBi0tIYiAZv1zFzGvglHnvbsE+y22Ew=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OKBhxPho; arc=none smtp.client-ip=198.175.65.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="kSwqf2eJ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
-	MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:Content-Description
-	:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
-	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=9S1WGdndtZGFNHWYXQ4+xkbiY7A2wvAjhcJYFVSrbYU=; b=kSwqf2eJbwf16dBZopSNAF+AGi
-	8oHhPzgX9wfNxNjIdylz47I+Kc3CO4gTcvdH0y3OJ6t1BZ1/1/+ep24voT6Vz6mDWDcdP3nKrmQ9m
-	fHAekLGoAwq2YKvwZiE0cUC+IiDkpgT4Rj8thdZRWfPIpTNEij613gBYb0pGrVIEu716aMzU/+PIq
-	VNPr5qGCqHH+WPX3Le6cAZt9Nj44fO+c/CW3IXTkLG46gEXmpCBq5I2j9vLvQ8HLL/aPC0oromucA
-	UzeQdiI08SAHzWeIAzcjQhMwBDSN+wEMeULte4eNMkdsHxcZbLufPQDt4/G7Qno/gbP9lHpX8xOBS
-	pkhUB33A==;
-Received: from 186-249-147-124.shared.desktop.com.br ([186.249.147.124] helo=[192.168.1.66])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
-	id 1wKobn-007Avi-0E; Thu, 07 May 2026 04:37:02 +0200
-From: Mauricio Faria de Oliveira <mfo@igalia.com>
-Date: Wed, 06 May 2026 23:36:45 -0300
-Subject: [PATCH] KVM: x86/xen: bail in IRQ context on PREEMPT_RT in
- kvm_xen_set_evtchn_fast()
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OKBhxPho"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778122698; x=1809658698;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=iXISzev/0LC4OZ3gbHLmUdmiQ+zAVSODpccbTdBCK1U=;
+  b=OKBhxPhozlVV/s7R/4KcdWK5MkgLAtfxP0dxCU0m7Eb+vlIMtusV5s1m
+   7pu76PEccAi6+ZTzqGl0VwlldVaFlOIP+DZKcD/Y61O8zgOZzYOzBZ4F+
+   /uHqOLA8j1uu8wSVYPIbVqRxJk0F/QkdMVhN3macvbbCiQbEFDRzFdwJs
+   JYuwhP+VPLn46N/13m4wrPPinWrai4qDTIbjiGlCsuKSJeDbJVCZwo+BX
+   4jZrUcd2T+3I/mYerZgJSSvkznn0+mkg51/sZ8NZxa4X56nzkdY79PZ9Y
+   y4VxiA0SoV8HsFEaW7DNQucvg3neEHmgfdwHJjkRwX+0MWZE9g5nN1jC1
+   g==;
+X-CSE-ConnectionGUID: zn7ajt7aQzybF8bzhw9AVQ==
+X-CSE-MsgGUID: rR16luE1Somi6FaNeenzCw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="79082964"
+X-IronPort-AV: E=Sophos;i="6.23,220,1770624000"; 
+   d="scan'208";a="79082964"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 19:58:17 -0700
+X-CSE-ConnectionGUID: oftxAlgJRXKbzWPd9mP2ug==
+X-CSE-MsgGUID: xfkid6ZrTjq8L7ZBayG4Bw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,220,1770624000"; 
+   d="scan'208";a="266707987"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 19:58:11 -0700
+Message-ID: <39a010b4-7099-434a-b8de-5d03a75f2a9f@linux.intel.com>
+Date: Thu, 7 May 2026 10:55:42 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 06/16] iommupt: Implement preserve/unpreserve/restore
+ callbacks
+To: Samiullah Khawaja <skhawaja@google.com>,
+ David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
+ Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+ iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ Saeed Mahameed <saeedm@nvidia.com>,
+ Adithya Jayachandran <ajayachandra@nvidia.com>,
+ Parav Pandit <parav@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>,
+ William Tu <witu@nvidia.com>, Pratyush Yadav <pratyush@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ David Matlack <dmatlack@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>,
+ YiFei Zhu <zhuyifei@google.com>
+References: <20260427175633.1978233-1-skhawaja@google.com>
+ <20260427175633.1978233-7-skhawaja@google.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20260427175633.1978233-7-skhawaja@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260506-xen-rt-sleep-v1-1-53b6b60a671d@igalia.com>
-X-B4-Tracking: v=1; b=H4sIALz6+2kC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIzMDUwMz3YrUPN2iEt3inNTUAt1Uc8MkSyMDS/M0Q0sloJaCotS0zAqwcdG
- xtbUAflQHKl4AAAA=
-X-Change-ID: 20260506-xen-rt-sleep-e71b92097f19
-To: David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>, 
- Sean Christopherson <seanjc@google.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, 
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
-Cc: kernel-dev@igalia.com, kvm@vger.kernel.org, 
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
- syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com, 
- Mauricio Faria de Oliveira <mfo@igalia.com>
-X-Mailer: b4 0.14.2
 
-kvm_xen_set_evtchn_fast() calls read_lock_irqsave(), which might block
-on PREEMPT_RT, but that is invalid in IRQ context, as when it's called
-by xen_timer_callback() (even on PREEMPT_RT per HRTIMER_MODE_ABS_HARD).
+On 4/28/26 01:56, Samiullah Khawaja wrote:
+> Implement the iommu domain ops for presevation, unpresevation and
+> restoration of iommu domains for liveupdate. Use the existing page
+> walker to preserve the ioptdesc of the top_table and the lower tables.
+> 
+> Preserve top_level, VASZ and FEAT Sign Extended to restore the domain in
+> the next kernel. On restore the domain has only the preserved features
+> enabled and all the other features are zeroed. This is ok since the
+> restored domain is made immutable and can only be freed. A kunit test is
+> added to verify that the IOMMU domain free can be done with trimmed
+> features.
+> 
+> Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
+> ---
+>   drivers/iommu/generic_pt/iommu_pt.h       | 131 ++++++++++++++++++++++
+>   drivers/iommu/generic_pt/kunit_iommu_pt.h |  28 +++++
+>   include/linux/generic_pt/iommu.h          |  19 +++-
+>   3 files changed, 177 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iommu/generic_pt/iommu_pt.h b/drivers/iommu/generic_pt/iommu_pt.h
+> index 19b6daf88f2a..7bca827e3a55 100644
+> --- a/drivers/iommu/generic_pt/iommu_pt.h
+> +++ b/drivers/iommu/generic_pt/iommu_pt.h
+> @@ -961,6 +961,133 @@ static int NS(map_range)(struct pt_iommu *iommu_table, dma_addr_t iova,
+>   	return ret;
+>   }
+>   
+> +#ifdef CONFIG_IOMMU_LIVEUPDATE
+> +/**
+> + * unpreserve() - Unpreserve page tables and other state of a domain.
+> + * @domain: Domain to unpreserve
+> + */
+> +void DOMAIN_NS(unpreserve)(struct iommu_domain *domain, struct iommu_domain_ser *ser)
+> +{
+> +	struct pt_iommu *iommu_table =
+> +		container_of(domain, struct pt_iommu, domain);
+> +	struct pt_common *common = common_from_iommu(iommu_table);
+> +	struct pt_range range = pt_all_range(common);
+> +	struct pt_iommu_collect_args collect = {
+> +		.free_list = IOMMU_PAGES_LIST_INIT(collect.free_list),
+> +	};
+> +
+> +	iommu_pages_list_add(&collect.free_list, range.top_table);
+> +	pt_walk_range(&range, __collect_tables, &collect);
+> +
+> +	iommu_unpreserve_pages(&collect.free_list);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(DOMAIN_NS(unpreserve), "GENERIC_PT_IOMMU");
+> +
+> +/**
+> + * preserve() - Preserve page tables and other state of a domain.
+> + * @domain: Domain to preserve
+> + *
+> + * Returns: -ERRNO on failure, 0 on success.
+> + */
+> +int DOMAIN_NS(preserve)(struct iommu_domain *domain, struct iommu_domain_ser *ser)
+> +{
+> +	struct pt_iommu *iommu_table =
+> +		container_of(domain, struct pt_iommu, domain);
+> +	struct pt_common *common = common_from_iommu(iommu_table);
+> +	struct pt_range range = pt_all_range(common);
+> +	struct pt_iommu_collect_args collect = {
+> +		.free_list = IOMMU_PAGES_LIST_INIT(collect.free_list),
+> +	};
+> +	int ret;
+> +
+> +	iommu_pages_list_add(&collect.free_list, range.top_table);
+> +	pt_walk_range(&range, __collect_tables, &collect);
+> +
+> +	ret = iommu_preserve_pages(&collect.free_list);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ser->top_table_phys = virt_to_phys(range.top_table);
+> +	ser->top_level = range.top_level;
+> +
+> +	/*
+> +	 * VASZ and SIGN_EXTEND will be needed in next kernel for collector page
+> +	 * table walk to restore and free pages.
+> +	 */
+> +	ser->vasz = common->max_vasz_lg2;
+> +	ser->sign_extend = pt_feature(common, PT_FEAT_SIGN_EXTEND);
+> +
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_NS_GPL(DOMAIN_NS(preserve), "GENERIC_PT_IOMMU");
+> +
+> +static int __restore_tables(struct pt_range *range, void *arg,
+> +			    unsigned int level, struct pt_table_p *table)
+> +{
+> +	struct pt_state pts = pt_init(range, level, table);
+> +	int ret;
+> +
+> +	for_each_pt_level_entry(&pts) {
+> +		if (pts.type == PT_ENTRY_TABLE) {
+> +			iommu_restore_page(virt_to_phys(pts.table_lower));
+> +
+> +			/*
+> +			 * pt_descend can only fail if pts.table_lower is not
+> +			 * init. So the if statement below is dead code.
+> +			 */
+> +			ret = pt_descend(&pts, arg, __restore_tables);
+> +			if (ret)
+> +				return ret;
+> +		}
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static const struct pt_iommu_ops NS(ops_immutable);
+> +
+> +/**
+> + * restore() - Restore page tables and other state of a domain.
+> + * @domain: Domain to preserve
+> + *
+> + * Returns: -ERRNO on failure, 0 on success.
+> + */
+> +int DOMAIN_NS(restore)(struct iommu_domain *domain, struct iommu_domain_ser *ser)
+> +{
+> +	struct pt_iommu *iommu_table =
+> +		container_of(domain, struct pt_iommu, domain);
+> +	struct pt_common *common = common_from_iommu(iommu_table);
+> +	struct pt_range range;
+> +
+> +	common->max_vasz_lg2 = ser->vasz;
+> +
+> +	/* Make this domain immutable.*/
+> +	iommu_table->ops = &NS(ops_immutable);
+> +
+> +	/*
+> +	 * It is safe to override this here since this domain is immutable and
+> +	 * can only be freed.
+> +	 */
+> +	common->features = 0;
+> +	if (ser->sign_extend)
+> +		common->features |= BIT(PT_FEAT_SIGN_EXTEND);
+> +
+> +	range = pt_all_range(common);
+> +	iommu_restore_page(ser->top_table_phys);
+> +
+> +	/* Free new table */
+> +	iommu_free_pages(range.top_table);
+> +
+> +	/* Set the restored top table */
+> +	pt_top_set(common, phys_to_virt(ser->top_table_phys), ser->top_level);
+> +
+> +	/* Restore all pages*/
+> +	range = pt_all_range(common);
+> +	return pt_walk_range(&range, __restore_tables, NULL);
+> +}
+> +EXPORT_SYMBOL_NS_GPL(DOMAIN_NS(restore), "GENERIC_PT_IOMMU");
+> +#endif
+> +
+>   struct pt_unmap_args {
+>   	struct iommu_pages_list free_list;
+>   	pt_vaddr_t unmapped;
+> @@ -1138,6 +1265,10 @@ static const struct pt_iommu_ops NS(ops) = {
+>   	.deinit = NS(deinit),
+>   };
+>   
+> +static const struct pt_iommu_ops NS(ops_immutable) = {
+> +	.deinit = NS(deinit),
+> +};
+> +
+>   static int pt_init_common(struct pt_common *common)
+>   {
+>   	struct pt_range top_range = pt_top_range(common);
+> diff --git a/drivers/iommu/generic_pt/kunit_iommu_pt.h b/drivers/iommu/generic_pt/kunit_iommu_pt.h
+> index e8a63c8ea850..af1918d693ed 100644
+> --- a/drivers/iommu/generic_pt/kunit_iommu_pt.h
+> +++ b/drivers/iommu/generic_pt/kunit_iommu_pt.h
+> @@ -426,6 +426,33 @@ static void test_mixed(struct kunit *test)
+>   	check_iova(test, start, oa, len);
+>   }
+>   
+> +static void test_restore_free(struct kunit *test)
+> +{
+> +	struct kunit_iommu_priv *priv = test->priv;
+> +	struct pt_range top_range = pt_top_range(priv->common);
+> +	u64 start = 0x3fe400ULL << 12;
+> +	u64 end = 0x4c0600ULL << 12;
+> +	pt_vaddr_t len = end - start;
+> +
+> +	if (top_range.last_va <= start || sizeof(unsigned long) == 4)
+> +		kunit_skip(test, "range is too small");
+> +	if ((priv->safe_pgsize_bitmap & GENMASK(30, 21)) != (BIT(30) | BIT(21)))
+> +		kunit_skip(test, "incompatible psize");
+> +
+> +	/* Map a large mixed range to populate multiple levels of page tables */
+> +	do_map(test, start, start, len);
+> +
+> +	/*
+> +	 * Simulate a restored state by clearing all features except
+> +	 * SIGN_EXTEND. This verifies that the generic page table free walker
+> +	 * can correctly tear down a populated domain when other features are
+> +	 * zeroed.
+> +	 */
+> +	priv->common->features &= BIT(PT_FEAT_SIGN_EXTEND);
+> +
+> +	/* The domain will be freed when the test exits. */
+> +}
+> +
+>   static struct kunit_case iommu_test_cases[] = {
+>   	KUNIT_CASE_FMT(test_increase_level),
+>   	KUNIT_CASE_FMT(test_map_simple),
+> @@ -434,6 +461,7 @@ static struct kunit_case iommu_test_cases[] = {
+>   	KUNIT_CASE_FMT(test_random_map),
+>   	KUNIT_CASE_FMT(test_pgsize_boundary),
+>   	KUNIT_CASE_FMT(test_mixed),
+> +	KUNIT_CASE_FMT(test_restore_free),
+>   	{},
+>   };
+>   
+> diff --git a/include/linux/generic_pt/iommu.h b/include/linux/generic_pt/iommu.h
+> index dd0edd02a48a..649b3b9eb1a0 100644
+> --- a/include/linux/generic_pt/iommu.h
+> +++ b/include/linux/generic_pt/iommu.h
+> @@ -13,6 +13,7 @@ struct iommu_iotlb_gather;
+>   struct pt_iommu_ops;
+>   struct pt_iommu_driver_ops;
+>   struct iommu_dirty_bitmap;
+> +struct iommu_domain_ser;
+>   
+>   /**
+>    * DOC: IOMMU Radix Page Table
+> @@ -251,6 +252,12 @@ struct pt_iommu_cfg {
+>   #define IOMMU_PROTOTYPES(fmt)                                                  \
+>   	phys_addr_t pt_iommu_##fmt##_iova_to_phys(struct iommu_domain *domain, \
+>   						  dma_addr_t iova);            \
+> +	int pt_iommu_##fmt##_preserve(struct iommu_domain *domain,             \
+> +				      struct iommu_domain_ser *ser);           \
+> +	void pt_iommu_##fmt##_unpreserve(struct iommu_domain *domain,          \
+> +					 struct iommu_domain_ser *ser);        \
+> +	int pt_iommu_##fmt##_restore(struct iommu_domain *domain,              \
+> +				     struct iommu_domain_ser *ser);            \
+>   	int pt_iommu_##fmt##_read_and_clear_dirty(                             \
+>   		struct iommu_domain *domain, unsigned long iova, size_t size,  \
+>   		unsigned long flags, struct iommu_dirty_bitmap *dirty);        \
+> @@ -266,12 +273,22 @@ struct pt_iommu_cfg {
+>   	};                              \
+>   	IOMMU_PROTOTYPES(fmt)
+>   
+> +#ifdef CONFIG_IOMMU_LIVEUPDATE
+> +#define IOMMU_PT_LIVEUPDATE_OPS(fmt)			\
+> +	, .preserve = &pt_iommu_##fmt##_preserve,	\
+> +	.unpreserve = &pt_iommu_##fmt##_unpreserve,	\
+> +	.restore = &pt_iommu_##fmt##_restore
 
-Check for that case, and bail out early.
+Nit: would it look better if we put it like this?
 
-Note: there is previous work and discussion on this [1] (~2 years ago),
-which involved continuing to execute the function with changes, but it
-was not merged. That was a different, more complex approach.
+#define IOMMU_PT_LIVEUPDATE_OPS(fmt)			\
+	, .preserve = &pt_iommu_##fmt##_preserve	\
+	, .unpreserve = &pt_iommu_##fmt##_unpreserve	\
+	, .restore = &pt_iommu_##fmt##_restore
 
-[1] https://lore.kernel.org/lkml/ZdPQVP7eejq3eFjc@google.com/
+> +#else
+> +#define IOMMU_PT_LIVEUPDATE_OPS(fmt)
+> +#endif
 
-This is quickly hit while booting a Xen guest in a KVM Xen host.
-With this patch, it boots quietly and runs timer stress without issues
-(e.g., stress-ng --quiet --timer 1 --timer-freq 19000 --timer-slack 0).
-Tested with/without CONFIG_PREEMPT_RT.
-
-Test case:
-=========
-
-Configure a host kernel (CONFIG_KVM_XEN) like,
-
-    $ make x86_64_defconfig
-    $ ./scripts/config \
-      -e EXPERT -e PREEMPT_RT -e DEBUG_ATOMIC_SLEEP \
-      -e KVM -e KVM_INTEL -e KVM_AMD -e KVM_XEN
-    $ make olddefconfig
-
-and boot a Xen guest kernel (CONFIG_XEN) with:
-
-    # qemu-system-x86_64 \
-       -accel kvm,xen-version=0x40011,kernel-irqchip=split \
-       -cpu host,+xen-vapic -smp 1 -m 1024 \
-       -nodefaults -nographic -serial stdio \
-       -kernel arch/x86/boot/bzImage -append 'console=ttyS0'
-
-See dmesg in the host:
-
-    [   27.643129] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:231
-    [   27.643134] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 284, name: qemu-system-x86
-    [   27.643137] preempt_count: 10000, expected: 0
-    [   27.643138] RCU nest depth: 0, expected: 0
-    [   27.643146] CPU: 1 UID: 0 PID: 284 Comm: qemu-system-x86 Not tainted 7.1.0-rc2 #5 PREEMPT_{RT,(lazy)}
-    [   27.643150] Hardware name: QEMU Ubuntu 25.10 PC v2 (i440FX + PIIX, + 10.1 machine, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-    [   27.643152] Call Trace:
-    [   27.643155]  <TASK>
-    [   27.643157]  dump_stack_lvl+0x64/0x80
-    [   27.643165]  __might_resched+0x131/0x180
-    [   27.643171]  rt_read_lock+0x47/0x210
-    [   27.643176]  kvm_xen_set_evtchn_fast+0xa5/0x3f0
-    [   27.643184]  xen_timer_callback+0x88/0xc0
-    [   27.643188]  __hrtimer_run_queues+0x10b/0x280
-    [   27.643193]  hrtimer_interrupt+0xf6/0x1b0
-    [   27.643196]  __sysvec_apic_timer_interrupt+0x55/0x130
-    [   27.643200]  sysvec_apic_timer_interrupt+0x39/0x80
-    [   27.643204]  asm_sysvec_apic_timer_interrupt+0x1a/0x20
-    [   27.643208] RIP: 0033:0x7f069721a8db
-    ...
-    [   27.643226]  </TASK>
-
-Reported-by: syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com
-Closes: https://syzbot.org/bug?extid=208f7f3e5f59c11aeb90
-Signed-off-by: Mauricio Faria de Oliveira <mfo@igalia.com>
----
- arch/x86/kvm/xen.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index 91fd3673c09a2ef3dc154050e01df608182e59e5..76782191043b56c581f89c3861979236662cdbd7 100644
---- a/arch/x86/kvm/xen.c
-+++ b/arch/x86/kvm/xen.c
-@@ -1814,6 +1814,10 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
- 
- 	rc = -EWOULDBLOCK;
- 
-+	/* Bail in IRQ context on PREEMPT_RT; read_lock_irqsave() might block */
-+	if (IS_ENABLED(CONFIG_PREEMPT_RT) && in_hardirq())
-+		goto out;
-+
- 	idx = srcu_read_lock(&kvm->srcu);
- 
- 	read_lock_irqsave(&gpc->lock, flags);
-@@ -1892,6 +1896,7 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
- 		kvm_vcpu_kick(vcpu);
- 	}
- 
-+ out:
- 	return rc;
- }
- 
-
----
-base-commit: 7fd2df204f342fc17d1a0bfcd474b24232fb0f32
-change-id: 20260506-xen-rt-sleep-e71b92097f19
-
-Best regards,
--- 
-Mauricio Faria de Oliveira <mfo@igalia.com>
-
+Thanks,
+baolu
