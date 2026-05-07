@@ -1,144 +1,231 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0243434D382
-	for <kvm@vger.kernel.org>; Thu,  7 May 2026 21:59:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2302239150E;
+	Thu,  7 May 2026 22:21:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778191171; cv=none; b=G+y0JvicGEchDjSP9qS2fSnfmbZYDPmmE2bjmVqXxx3NHpZSvAfXpR4IZOJ3b8Ouwc+QjYNPh9/7GIRkOW/SK0fKLszKqKRpKn/2vLjFYkg11UUnbB5TDYKUVv1VvJQM8Z3oih8Ul9O1XvuwuqO3pbieGmzcXG4WrwvEnRcYdaM=
+	t=1778192484; cv=none; b=sLycm5/jXyuKqxyy2Hq1df0tEEnKnTB/Jzv+KmnhCgfMCDewihILp9wJXUZuQeDjcf8Mr95B9EBD2QFlLKVDT4fyHEpVbaMVpBzGLvNm9qpmajHNy54qEL2jgNg4sxBXnYpVeGR3VPlJChjOG3ZXklVCXMdwQ8b+zL8DGzFxvQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778191171; c=relaxed/simple;
-	bh=1YRd41fEFbY+a83nU8GaPMNuby91viU+z5FrzN8MGkc=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OojsxwoDdWYLhTkkQOX/tq0wTH5H+iioLoJg5mP9ZypyS/vGtmSWxdBrdxQG3F2UqZJ4dAVDfVzUEiDl+4F0XzerDvhvfcb/oua3sbNcr1G1t0ZhfdLqIHxvOjatn9QLFG4ZoLZT3OPsMVTIyF3Ic1ya/iYk7KX0weU3n5jLkLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h84sMev/; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1778192484; c=relaxed/simple;
+	bh=mJ4Wm3E2/rZktTizof/81ryrKyz4CZ6QItVv7zucHVI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=COVnp0X7ghfQt+RqkNm7dttmtGsD+VaxhpRcX2iRFStpV04wB93jDysniv6Tq0qNpA0e4HEKwL7GUOT0sMLqhGsSqmMfsBS27gmvjCevv897kzWQ1Fh3JVGxj69mrIoBGZ2U8ZWSXlDQWIXUIayldyXCAeg0L/YIwUgu9HJOhrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=i5q9+7yn; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=opWwyNjM; arc=none smtp.client-ip=103.168.172.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h84sMev/"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b4530a90fdso34042155ad.1
-        for <kvm@vger.kernel.org>; Thu, 07 May 2026 14:59:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778191169; x=1778795969; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ZHU90gqvYifnkG2RCuPg/6CsVL3m7MdxSFaqpK8rgG0=;
-        b=h84sMev/xs1Z2OMWlrj8iU8OrJlZuMgbeVgS5Ie0NWgdYhKvKKa6MdfTJsxRhbdXQU
-         ZzR0e3acfC8xqGmc8ND1SHmJ0bvyGs+yh1gFWgcVijizZoluKDPAgw1i2oM+Jm88BRP/
-         OY5vRkWEk9nFO0y2oqntXd+MEJ6ErjHsWAKX/ykzPO0vQVghmPxx8SSG7Q44F4h4ligL
-         7l3vAZiwE73xpfLWAiYqXsUCwLX3jJg7YpD8owwSQJbZwECdcYgSL9YN66zKVUPhZSX3
-         HdpbdqpzW2v1ycw3nFYwTTlsdt8O7W6BBgJrgm0h+vtEwtpV13e32E0HGsMx07VHdjqh
-         jE0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778191169; x=1778795969;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ZHU90gqvYifnkG2RCuPg/6CsVL3m7MdxSFaqpK8rgG0=;
-        b=WEDrOy96a7NBLyOgKk/9JV6JajrTh2ARALQr2kqxuqNZXzIlw7Icc+MBp4OE7JjD+o
-         PWf2a1Ro97AXnocFZtfMax9zvsHfgSSR/GCetr8XRuoB54IClMYFGkCzEpQ39x/I4CBx
-         BN1ecKC4s1/wpcBnPxOxdmH+8OzTjAhrvk6DjMgaSY8Nbd1E+3pe/n6Fz/GeUdGw5czy
-         KmFfdGjmlyI957JYJ9o/FNueZiRQjonlfqgZ1HvqGK23Rvn1eaIP9/ehTQMqjt2VboO0
-         0nQRexpS7p+8tJzGpdP4qKNRGFQ/VGIx43fD47ffLCaAwPglysWFMvdzTj72Hd7a44cN
-         Vjuw==
-X-Forwarded-Encrypted: i=1; AFNElJ9h1///U5zL5OVVOlULoa4FdeqM2tA1D366bYfWmlNaDjkq4jJcfHWiEXNPhPsBYfHqzDA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxu1qcCtr9q2z+eA64nJW0uFn3Oglu2CK2yCMCRmgdnrjnPwOs+
-	SdlGAmv5aBRR0v+5YuEqiEohVrSFAKgHxQJjGo1j6gLyvd+FWGWN4hf8GQH3YdmXRz/jmvh82UL
-	Xp61Vog==
-X-Received: from plblh8.prod.google.com ([2002:a17:903:2908:b0:2ba:47cc:61b3])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:fa07:b0:2b2:549f:7d2b
- with SMTP id d9443c01a7336-2ba794b9766mr66362135ad.11.1778191169247; Thu, 07
- May 2026 14:59:29 -0700 (PDT)
-Date: Thu, 7 May 2026 14:59:28 -0700
-In-Reply-To: <20260504235435.90957-1-mikhail.v.gavrilov@gmail.com>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="i5q9+7yn";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="opWwyNjM"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfout.phl.internal (Postfix) with ESMTP id 20828EC007A;
+	Thu,  7 May 2026 18:21:20 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Thu, 07 May 2026 18:21:20 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1778192480;
+	 x=1778278880; bh=Gh4OSjP3zNBwkOQ2z6YniOnM1TA/lZE1WxkyBie8Agg=; b=
+	i5q9+7ynx7C+dPft+lSOCdOPax+lbxOD/tWQY8onMNHvVriQ3DySH1HjmPVc1O0T
+	Draa1F2NMoAX3iCEVcwZIQBf/8dtkLWUdE4u31KmIon1v8HjgCmmRxhISvefp8ar
+	O2C0Syufd9zrt72GG0By8Oi5Y0EFDkrN31777i9jkhOwYmVyp7Z4to0A2/pYp+FJ
+	Rdb0Yjvk/WsfqhJ0ytAtD7z2x6G2515crokAYoalt0oCQVo8GqCMs6PcpbkNs0QR
+	JXlSa3MvJAgv6rojaAhnLHUHhirV8OxxPPfPyQAijJ81B5VxO74c5jJvj3jxo8nm
+	T/bYvTE8zmpvHlafyqmHKg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1778192480; x=
+	1778278880; bh=Gh4OSjP3zNBwkOQ2z6YniOnM1TA/lZE1WxkyBie8Agg=; b=o
+	pWwyNjMc572387uxo/u8lKUikQpA20C/6Topz0KfwXndv/PsPwfApeDapsJFMS84
+	9eLGp288rQwAeP7ZAuBG2p5CY1TI/5WGVG4JiC1WAODO5csYumx4LPcSRykB4dO9
+	0bTLixRkpnnW71N4IRzN/jn+wbbGDPoUehKU5w921snQmkBS2RKK6cplL4Rz+xN0
+	ZvAIl0F103jjvQTOYXvZecAHvj5OjJW3jG98NlO9Hkn+NJThqrzie7cJpAMHeGO1
+	FPyNUyWgMrGDxoYE3Vbjr+QbubHr3aRfx+/rv8VuFE1x1RQpSqpKtE/MhOsLQoGn
+	Hw89bqLLsWMTAsAXitsLA==
+X-ME-Sender: <xms:XxD9aa5KxrOdyJQwysKf0A9MhOU5yIhZHRjreb0IGZhlQ4WaBH1fwQ>
+    <xme:XxD9aen4k5Hh7Wux8zXWsd81KHwj6iEuKUfGLLPtoqQQvV_9ymHscgQFC3D12RTLl
+    HcwBJ4w_AhY74AwbcxTjiaDaJsXi44fb4tIjSa92iJSZeHXsV5jPw>
+X-ME-Received: <xmr:XxD9aQEELn_XazZmGDSXNLqE6E7c9r-bY0cUKFzAt-Xu_grAoEBdFPEdVpA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddutdekieehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
+    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
+    htthgvrhhnpeekleffveeiueehieeiieefleetffehieffkeelvdeljeegtdfhvdejhedu
+    ffelvdenucffohhmrghinhepshgrshhhihhkohdruggvvhenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegrlhgvgiesshhhrgiisghothdrohhr
+    ghdpnhgspghrtghpthhtohepudekpdhmohguvgepshhmthhpohhuthdprhgtphhtthhope
+    hmrghtthgvvhesmhgvthgrrdgtohhmpdhrtghpthhtohepkhgvvhhinhdrthhirghnsehi
+    nhhtvghlrdgtohhmpdhrtghpthhtohepjhhgghesiihivghpvgdrtggrpdhrtghpthhtoh
+    eprghnkhhithgrsehnvhhiughirgdrtghomhdprhgtphhtthhopegrphhophhplhgvsehn
+    vhhiughirgdrtghomhdprhgtphhtthhopehlvghonheskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtohepkhgvvghssehkvghrnhgvlhdrohhrghdprhgtphhtthhopehskhholhhothhh
+    uhhmthhhohesnhhvihguihgrrdgtohhmpdhrtghpthhtohephihishhhrghihhesnhhvih
+    guihgrrdgtohhm
+X-ME-Proxy: <xmx:XxD9aSE2Rap711ZOx_QM0MryJdd4ZB48WuF1lBgWOrEqopS83lDOaQ>
+    <xmx:XxD9aY3RJH3S12JogD5BPm2KME_CKk-s4r_4iPku0v4X7pFT93aaBw>
+    <xmx:XxD9aUd-CDMHuIJ_--F74dKPDkqUwu7J01xJRZzGt8xInZcynD8LZQ>
+    <xmx:XxD9aaJNPPPWkKH1UOjh4Y0zNql7mzwrU-sPsG3a9fjuq3hDzsN-Og>
+    <xmx:YBD9aYwjCVnIAcTFiaWV2l6OJdkVtPWSBUqUr-kuDcmjnNxucUdXZuC->
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 7 May 2026 18:21:17 -0400 (EDT)
+Date: Thu, 7 May 2026 16:21:16 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Matt Evans <mattev@meta.com>
+Cc: Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, Ankit
+ Agrawal <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>, Leon
+ Romanovsky <leon@kernel.org>, Kees Cook <kees@kernel.org>, Shameer Kolothum
+ <skolothumtho@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>, Alexey
+ Kardashevskiy <aik@ozlabs.ru>, Eric Auger <eric.auger@redhat.com>, Peter Xu
+ <peterx@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>, Zhi Wang
+ <zhiw@nvidia.com>, <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+ <virtualization@lists.linux.dev>, alex@shazbot.org
+Subject: Re: [PATCH v4 1/3] vfio/pci: Set up BAR resources and maps in
+ vfio_pci_core_enable()
+Message-ID: <20260507162116.3b9cbd98@shazbot.org>
+In-Reply-To: <20260505173835.2324179-2-mattev@meta.com>
+References: <20260505173835.2324179-1-mattev@meta.com>
+	<20260505173835.2324179-2-mattev@meta.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260503174534.45699-1-mikhail.v.gavrilov@gmail.com> <20260504235435.90957-1-mikhail.v.gavrilov@gmail.com>
-Message-ID: <af0LQNY6IhB0NEWy@google.com>
-Subject: Re: [PATCH v2] x86/virt: Silence RCU lockdep splat in emergency virt
- callback path
-From: Sean Christopherson <seanjc@google.com>
-To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
-Cc: pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, hpa@zytor.com, djbw@kernel.org, 
-	chao.gao@intel.com, x86@kernel.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, May 05, 2026, Mikhail Gavrilov wrote:
-> x86_virt_invoke_kvm_emergency_callback() reaches rcu_dereference()
-> through machine_crash_shutdown() with IRQs disabled but with RCU not
-> necessarily watching the crashing CPU, which triggers a suspicious
-> RCU usage splat on debug kernels (CONFIG_PROVE_RCU=3Dy) during
-> panic/kdump:
->=20
->   WARNING: suspicious RCU usage
->   arch/x86/virt/hw.c:52 suspicious rcu_dereference_check() usage!
->=20
->   rcu_scheduler_active =3D 2, debug_locks =3D 1
->   1 lock held by tee/11119:
->    #0: ffff8881fa32c440 (sb_writers#3){.+.+}-{0:0}, at: ksys_write
->=20
->   Call Trace:
->    <TASK>
->    dump_stack_lvl+0x84/0xd0
->    lockdep_rcu_suspicious.cold+0x37/0x8f
->    x86_virt_invoke_kvm_emergency_callback+0x5f/0x70
->    x86_svm_emergency_disable_virtualization_cpu+0x2a/0x30
->    x86_virt_emergency_disable_virtualization_cpu+0x6b/0x90
->    native_machine_crash_shutdown+0x72/0x170
->    __crash_kexec+0x137/0x280
->    panic+0xce/0xd0
->    sysrq_handle_crash+0x1f/0x20
->    __handle_sysrq.cold+0x192/0x335
->    write_sysrq_trigger+0x8c/0xc0
->    proc_reg_write+0x1c3/0x3c0
->    vfs_write+0x1d0/0xf80
->    ksys_write+0x116/0x250
->    do_syscall_64+0x11c/0x1480
->    entry_SYSCALL_64_after_hwframe+0x76/0x7e
->    </TASK>
->=20
-> A truly correct fix is non-trivial: the RCU usage genuinely is wrong in
-> panic context (RCU may ignore the crashing CPU during synchronization),
-> and a concurrent KVM module unload could in principle race with the
-> callback read; see commit 2baa33a8ddd6 ("KVM: x86: Leave user-return
-> notifier registered on reboot/shutdown") which notes that nothing
-> prevents module unload during panic/reboot.
->=20
-> However, the alternatives are worse:
->=20
->   - smp_store_release()/smp_load_acquire() handles ordering but not
->     liveness; the kernel still needs to keep the module text alive
->     while the callback is in flight.
->   - Taking a lock in the panic path is risky =E2=80=94 any lock could be =
-held
->     by a CPU that has already been NMI'd to a halt.
->=20
-> Use rcu_dereference_raw() to silence the splat and accept the
-> vanishingly small remaining race. Panic context inherently cannot
-> guarantee complete correctness; the goal here is to keep debug builds
-> quiet on the kdump path so the splat doesn't obscure the actual
-> kernel state being captured.
->=20
-> Reproducible on a debug kernel (CONFIG_PROVE_LOCKING=3Dy, CONFIG_PROVE_RC=
-U=3Dy)
-> with kvm_amd or kvm_intel loaded by triggering kdump:
->=20
->   echo c > /proc/sysrq-trigger
->=20
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Fixes: 428afac5a8ea ("KVM: x86: Move bulk of emergency virtualizaton logi=
-c to virt subsystem")
-> Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+On Tue, 5 May 2026 10:38:29 -0700
+Matt Evans <mattev@meta.com> wrote:
+
+> Previously BAR resource requests and the corresponding pci_iomap()
+> were performed on-demand and without synchronisation, which was racy.
+> Rather than add synchronisation, it's simplest to address this by
+> doing both activities from vfio_pci_core_enable().
+> 
+> The resource allocation and/or pci_iomap() can still fail; their
+> status is tracked and existing calls to vfio_pci_core_setup_barmap()
+> will fail in a similar way to before.  This keeps the point of failure
+> as observed by userspace the same, i.e. failures to request/map unused
+> BARs are benign.
+> 
+> Fixes: 89e1f7d4c66d ("vfio: Add PCI device driver")
+> Signed-off-by: Matt Evans <mattev@meta.com>
 > ---
+>  drivers/vfio/pci/vfio_pci_core.c | 36 +++++++++++++++++++++++++++++++-
+>  drivers/vfio/pci/vfio_pci_rdwr.c | 26 +++++++----------------
+>  2 files changed, 42 insertions(+), 20 deletions(-)
+> 
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index 3f8d093aacf8..62931dc381d8 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -482,6 +482,39 @@ static int vfio_pci_core_runtime_resume(struct device *dev)
+>  }
+>  #endif /* CONFIG_PM */
+>  
+> +/*
+> + * Eager-request BAR resources, and iomap them.  Soft failures are
+> + * allowed, and consumers must check the barmap before use in order to
+> + * give compatible user-visible behaviour with the previous on-demand
+> + * allocation method.
+> + */
+> +static void vfio_pci_core_map_bars(struct vfio_pci_core_device *vdev)
+> +{
+> +	struct pci_dev *pdev = vdev->pdev;
+> +	int i;
+> +
+> +	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
+> +		int bar = i + PCI_STD_RESOURCES;
+> +
+> +		vdev->barmap[bar] = ERR_PTR(-ENODEV);
+> +
+> +		if (!pci_resource_len(pdev, i))
+> +			continue;
+> +
+> +		if (pci_request_selected_regions(pdev, 1 << bar, "vfio")) {
+> +			pci_dbg(vdev->pdev, "Failed to reserve region %d\n", bar);
+> +			vdev->barmap[bar] = ERR_PTR(-EBUSY);
+> +			continue;
+> +		}
+> +
+> +		vdev->barmap[bar] = pci_iomap(pdev, bar, 0);
+> +		if (!vdev->barmap[bar]) {
 
-Acked-by: Sean Christopherson <seanjc@google.com>
+Sashiko notes[1] correctly that we need to release the requested region
+here.
 
-(I can also take this through kvm-x86; I have no preference whatsoever)
+[1]https://sashiko.dev/#/patchset/20260505173835.2324179-1-mattev@meta.com
+
+> +			pci_dbg(vdev->pdev, "Failed to iomap region %d\n", bar);
+> +			vdev->barmap[bar] = ERR_PTR(-ENOMEM);
+> +		}
+> +	}
+> +}
+> +
+>  /*
+>   * The pci-driver core runtime PM routines always save the device state
+>   * before going into suspended state. If the device is going into low power
+> @@ -568,6 +601,7 @@ int vfio_pci_core_enable(struct vfio_pci_core_device *vdev)
+>  	if (!vfio_vga_disabled() && vfio_pci_is_vga(pdev))
+>  		vdev->has_vga = true;
+>  
+> +	vfio_pci_core_map_bars(vdev);
+>  
+>  	return 0;
+>  
+> @@ -648,7 +682,7 @@ void vfio_pci_core_disable(struct vfio_pci_core_device *vdev)
+>  
+>  	for (i = 0; i < PCI_STD_NUM_BARS; i++) {
+>  		bar = i + PCI_STD_RESOURCES;
+> -		if (!vdev->barmap[bar])
+> +		if (IS_ERR_OR_NULL(vdev->barmap[bar]))
+>  			continue;
+>  		pci_iounmap(pdev, vdev->barmap[bar]);
+>  		pci_release_selected_regions(pdev, 1 << bar);
+> diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
+> index 4251ee03e146..3bfbb879a005 100644
+> --- a/drivers/vfio/pci/vfio_pci_rdwr.c
+> +++ b/drivers/vfio/pci/vfio_pci_rdwr.c
+> @@ -198,27 +198,15 @@ ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool test_mem,
+>  }
+>  EXPORT_SYMBOL_GPL(vfio_pci_core_do_io_rw);
+>  
+> +/*
+> + * The barmap is set up in vfio_pci_core_enable().  Callers use this
+> + * function to check that the BAR resources are requested or that the
+> + * pci_iomap() was done.
+> + */
+>  int vfio_pci_core_setup_barmap(struct vfio_pci_core_device *vdev, int bar)
+>  {
+> -	struct pci_dev *pdev = vdev->pdev;
+> -	int ret;
+> -	void __iomem *io;
+> -
+> -	if (vdev->barmap[bar])
+> -		return 0;
+> -
+> -	ret = pci_request_selected_regions(pdev, 1 << bar, "vfio");
+> -	if (ret)
+> -		return ret;
+> -
+> -	io = pci_iomap(pdev, bar, 0);
+> -	if (!io) {
+> -		pci_release_selected_regions(pdev, 1 << bar);
+> -		return -ENOMEM;
+> -	}
+> -
+> -	vdev->barmap[bar] = io;
+> -
+> +	if (IS_ERR(vdev->barmap[bar]))
+> +		return PTR_ERR(vdev->barmap[bar]);
+>  	return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(vfio_pci_core_setup_barmap);
+
