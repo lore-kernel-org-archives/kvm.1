@@ -1,123 +1,228 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F5FF346FBC
-	for <kvm@vger.kernel.org>; Thu,  7 May 2026 15:16:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A820743DA2D;
+	Thu,  7 May 2026 15:20:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778166974; cv=none; b=tl9WWju/1BEJjdA9zoCL5pArrtJ6LKPSAEYeix7JHAZwOZI+n67iIH25h5jlCU9FshN1sPnzW21pYV1WeylhSy6pcRjb/j/NtHqDZ4ylkvDUC1sT4crk8O3BR8d/pi/IlaMmd9lwIQhWlfJLIrdrOp5J/uApHZXBQ0xxsVtjF0g=
+	t=1778167212; cv=none; b=T+sn7ZjDIyX/uM8NxBp/SD3jtdjgcRfJa9BBWhGEY2dcL0GqUuotW/dAI6/I63+vw3oKjbuVu/7J/rNvXq4J5J21HS2uCvm4l+1mIwImfwHPbCbztJQMm7OnsqbaZjxPrJg7d38qhiXBfcRxj4RiMoj7/cOomrRzJKRu8rGNuLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778166974; c=relaxed/simple;
-	bh=rTCe/spzl8sWpB3JyRf/iV71VHlHbV7Vj/syx8S65PM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=aHOqdOnhppHgJH75DVF6XULFlAAJdXArTGcGTudGOnxNCOby7qfkScx1DCNmAZWDiRx/+Rcb4tQOLAbUuAt7JOOf3t+OC2On/jihj34sB+T8EYqpQfB4KGipoupY/exq7JZ/NtVdTT8K2DqLtMZJ32i8MZ3V9ToEs2vpA9tKrbU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eHWLxclP; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1778167212; c=relaxed/simple;
+	bh=pH+m4CbKXg8EGYoMm/o3QnZ38KyQXrcHhYW5W+nMDP4=;
+	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
+	 In-Reply-To:Content-Type; b=NW8SANsScZ3bwK4w9FGh+g3QwtwBH8yOHo171BcrizhxjCC0dWIVN6O0JLoWkTf8pV04rkeAsuosNwm9suQLmCr+/I+xjqi36vkzc2fiIowArv064ZhjDHdCswF2qeqvVSf0KZ8XWSg08eBcxvoV2unMHC5inWxZK57y8hgc/Zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=sHUwFqXA; arc=none smtp.client-ip=129.217.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eHWLxclP"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2adc527eaf5so8637785ad.0
-        for <kvm@vger.kernel.org>; Thu, 07 May 2026 08:16:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778166973; x=1778771773; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=AEFnU0WkIB6rhSU+Wp/xuz/eWKdC0rOvy0WXKBVzD/Q=;
-        b=eHWLxclP0nDHJN3WJlYk0E6f6vpqi0w3eW3J6CrCHKMyJPst+ab0Dip+ZYIDJwmlyw
-         lalZazT0dU868342fwQSSKaWOK4cT5oN03RJZv2Frn9dvL/h4PUQ6JhMqYnGebUuKHN7
-         axdJRqOXC3qVfuiB4+U3gjAAgybVpieNBtvBvmFiD6h4O0cCM5cnTBkWaU7o765YPzIk
-         sc9TgRQU/Ks8jL71HD1VtQgtsbhGLjqqM1/ysDhIRCfb7Lqx++Afd/dEvktANyzZIC7q
-         Jbd+uC4JQ+fMTat5FjFHyZIC9A0b2ECVCQHkUlx8S0B7T5j+RPgkMn8bA/XU0MCtbU6/
-         br7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778166973; x=1778771773;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=AEFnU0WkIB6rhSU+Wp/xuz/eWKdC0rOvy0WXKBVzD/Q=;
-        b=Qr48zShomsCqPbHWCRLg/NuihpV8SxTXFBDzNlfcjc5swh+epD2rPdB9lKCg3z+VeM
-         WCNU/dG0EQWi7bqd6CfjYg6MciVgk0Xd2uEWXAvc5+ZpF2GrYU4AWlmeSTtrdbF5/C5T
-         LVGuhh5c8NuSMZHnH3jP8e5F83oAKoWam94ToT2myPw/Ff37NfuP0KpJf8hBTlVfsXmh
-         Qop112+vJuBR1f2rcKjQPpJpyEemDGGDoy25FBUuFNJXcUcT2EIMZFiAKi9z4ZvEHffH
-         H9sLXQluBRdKytU/L0FpgGxeZ7SZjsXKp8TfpE5OCcGaPTW9RrhTPP4dywwzsnrWB3IR
-         SJHA==
-X-Forwarded-Encrypted: i=1; AFNElJ8cHs96yNX9aGPwmApXkKnaC1RymttoQx88SCyuJo6yLmd9vBQ9sJtEc31ggUMKTakLAoM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyI0kovp1xHY4F5r7DOxIT2lPOKqQt8KwQEB77xsCZIbNkxQYdV
-	R7CCMJXOB13rLn2reDEHHPTwfoGBxJDzZc1mZWAlPfniJ4ewzbn56lAf8vZ2JXf/LdsIAMFIG1u
-	UWNlE1A==
-X-Received: from plpk14.prod.google.com ([2002:a17:903:3dae:b0:2b0:5102:ab9e])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f78a:b0:2b2:4cd2:e16c
- with SMTP id d9443c01a7336-2ba798c165fmr85567325ad.20.1778166972445; Thu, 07
- May 2026 08:16:12 -0700 (PDT)
-Date: Thu, 7 May 2026 08:16:11 -0700
-In-Reply-To: <beff5bd9-ae7c-4f2e-a718-7c8e92e78e4e@citrix.com>
+	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="sHUwFqXA"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
+	s=unimail; t=1778167194;
+	bh=pH+m4CbKXg8EGYoMm/o3QnZ38KyQXrcHhYW5W+nMDP4=;
+	h=Date:Subject:From:To:Cc:References:In-Reply-To;
+	b=sHUwFqXAmCc07AEtA4s871B9gGTvOWmY0J/cC2aCLOxnHmUIi0CbUxFuScjRkKvaN
+	 kxpQHqecAUTyZW+4AWwKF9L5HWk+yDmakKl+HYCD/NXH8KENLZ7GeC9zuiHLQMeuYK
+	 vKqH8+pyP3nbqcK46EC7xpxWFSn30IBhUEcA+LF0=
+Received: from [129.217.186.46] ([129.217.186.46])
+	(authenticated bits=0)
+	by unimail.uni-dortmund.de (8.19.0.1/8.19.0.1) with ESMTPSA id 647FJqDW013345
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 7 May 2026 17:19:52 +0200 (CEST)
+Message-ID: <81f2d6e8-5138-495a-9efb-1d6ad9c6072b@tu-dortmund.de>
+Date: Thu, 7 May 2026 17:19:52 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <e03f092dfbb7d391a6bf2797ba01e122ba080bcd.camel@infradead.org>
- <afycwi4KT6xrQhMX@google.com> <beff5bd9-ae7c-4f2e-a718-7c8e92e78e4e@citrix.com>
-Message-ID: <afysu56g2dTFla6-@google.com>
-Subject: Re: [PATCH] KVM: SVM: Always intercept ICEBP, add INT1 selftests
-From: Sean Christopherson <seanjc@google.com>
-To: Andrew Cooper <andrew.cooper3@citrix.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	"Saenz Julienne, Nicolas" <nsaenz@amazon.es>, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v10 4/4] tun/tap & vhost-net: avoid ptr_ring
+ tail-drop when a qdisc is present
+From: Simon Schippers <simon.schippers@tu-dortmund.de>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
+        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, eperezma@redhat.com,
+        leiyang@redhat.com, stephen@networkplumber.org, jon@nutanix.com,
+        tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        virtualization@lists.linux.dev
+References: <20260506141033.180450-1-simon.schippers@tu-dortmund.de>
+ <20260506141033.180450-5-simon.schippers@tu-dortmund.de>
+ <20260506181909-mutt-send-email-mst@kernel.org>
+ <20260506185515-mutt-send-email-mst@kernel.org>
+ <c9fc9e0a-0837-49b4-91b9-4adb54c1a037@tu-dortmund.de>
+Content-Language: en-US
+In-Reply-To: <c9fc9e0a-0837-49b4-91b9-4adb54c1a037@tu-dortmund.de>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, May 07, 2026, Andrew Cooper wrote:
-> On 07/05/2026 3:08 pm, Sean Christopherson wrote:
-> > On Thu, May 07, 2026, David Woodhouse wrote:
-> >> From: David Woodhouse <dwmw@amazon.co.uk>
-> >>
-> >> ICEBP (INT1, opcode 0xF1) generates a #DB that is architecturally a
-> >> trap, but on SVM it was not always intercepted. Unconditionally
-> >> intercept ICEBP on SVM to match VMX behaviour and ensure correct
-> >> event delivery semantics.
-> >>
-> >> Add two selftests exercising ICEBP:
-> >>
-> >>  - int1_ept_test: verifies that ICEBP works correctly when the
-> >>    exception stack page is not present (EPT/NPT fault during #DB
-> >>    delivery). The IST stack is evicted via MADV_DONTNEED before
-> >>    executing INT1.
-> >>
-> >>  - int1_task_gate_test: verifies ICEBP delivery through a 32-bit
-> >>    task gate, exercising the legacy task-switch path for #DB.
-> >>
-> >> Tested on Intel Sapphire Rapids and AMD Genoa. Without the SVM fix,
-> >> int1_task_gate_test fails on AMD with EIP pointing at ICEBP instead
-> >> of after it. With the fix, both tests pass on both platforms.
-> > Hmm, but KVM unconditionally intercepts task switches.  Is this effecti=
-vely working
-> > around a bug in task_switch_interception()?
->=20
-> Not really.=C2=A0 It's a bug/misfeature in AMD CPUs.
->=20
-> When you get TASK_SWITCH (which always has fault semantics), you look at
-> the vectoring event type to decide whether it was logically caused by a
-> trap, and therefore whether to move %rip forwards before entering the
-> new task.
->=20
-> AMD CPUs don't distinguish instruction-induced #DBs (i.e. ICEBP) from
-> exception-induced #DBs (all others), and also don't report an
-> instruction length for an ICEBP-induced TASK_SWITCH.
+On 5/7/26 08:32, Simon Schippers wrote:
+> On 5/7/26 00:56, Michael S. Tsirkin wrote:
+>> On Wed, May 06, 2026 at 06:28:06PM -0400, Michael S. Tsirkin wrote:
+>>> On Wed, May 06, 2026 at 04:10:33PM +0200, Simon Schippers wrote:
+>>>> This commit prevents tail-drop when a qdisc is present and the ptr_ring
+>>>> becomes full. Once an entry is successfully produced and the ptr_ring
+>>>> reaches capacity, the netdev queue is stopped instead of dropping
+>>>> subsequent packets. If no qdisc is present, the previous tail-drop
+>>>> behavior is preserved.
+>>>>
+>>>> If producing an entry fails anyways due to a race, tun_net_xmit() drops
+>>>> the packet. Such races are expected because LLTX is enabled and the
+>>>> transmit path operates without the usual locking.
+>>>>
+>>>> The __tun_wake_queue() function of the consumer races with the producer
+>>>> for waking/stopping the netdev queue, which could result in a stalled
+>>>> queue. Therefore, an smp_mb__after_atomic() is introduced that pairs
+>>>> with the smp_mb() of the consumer. It follows the principle of store
+>>>> buffering described in tools/memory-model/Documentation/recipes.txt:
+>>>>
+>>>> - The producer in tun_net_xmit() first sets __QUEUE_STATE_DRV_XOFF,
+>>>>   followed by an smp_mb__after_atomic() (= smp_mb()), and then reads the
+>>>>   ring with __ptr_ring_produce_peek().
+>>>>
+>>>> - The consumer in __tun_wake_queue() first writes zero to the ring in
+>>>>   __ptr_ring_consume(), followed by an smp_mb(), and then reads the queue
+>>>>   status with netif_tx_queue_stopped().
+>>>>
+>>>> => Following the aforementioned principle, it is impossible for the
+>>>>    producer to see a full ring (and therefore not wake the queue on the
+>>>>    re-check) while the consumer simultaneously fails to see a stopped
+>>>>    queue (and therefore also does not wake it).
+>>>>
+>>>> Benchmarks:
+>>>> The benchmarks show a slight regression in raw transmission performance
+>>>> when using two sending threads. Packet loss also occurs only in the
+>>>> two-thread sending case; no packet loss was observed with a single
+>>>> sending thread.
+>>>>
+>>>> Test setup:
+>>>> AMD Ryzen 5 5600X at 4.3 GHz, 3200 MHz RAM, isolated QEMU threads;
+>>>> Average over 50 runs @ 100,000,000 packets. SRSO and spectre v2
+>>>> mitigations disabled.
+>>>>
+>>>> Note for tap+vhost-net:
+>>>> XDP drop program active in VM -> ~2.5x faster; slower for tap due to
+>>>> more syscalls (high utilization of entry_SYSRETQ_unsafe_stack in perf)
+>>>>
+>>>> +--------------------------+--------------+----------------+----------+
+>>>> | 1 thread                 | Stock        | Patched with   | diff     |
+>>>> | sending                  |              | fq_codel qdisc |          |
+>>>> +------------+-------------+--------------+----------------+----------+
+>>>> | TAP        | Received    | 1.132 Mpps   | 1.133 Mpps     | +0.1%    |
+>>>> |            +-------------+--------------+----------------+----------+
+>>>> |            | Lost/s      | 3.765 Mpps   | 0 pps          |          |
+>>>> +------------+-------------+--------------+----------------+----------+
+>>>> | TAP        | Received    | 3.857 Mpps   | 3.905 Mpps     | +1.2%    |
+>>>> |            +-------------+--------------+----------------+----------+
+>>>> | +vhost-net | Lost/s      | 0.802 Mpps   | 0 pps          |          |
+>>>> +------------+-------------+--------------+----------------+----------+
+>>>>
+>>>> +--------------------------+--------------+----------------+----------+
+>>>> | 2 threads                | Stock        | Patched with   | diff     |
+>>>> | sending                  |              | fq_codel qdisc |          |
+>>>> +------------+-------------+--------------+----------------+----------+
+>>>> | TAP        | Received    | 1.115 Mpps   | 1.092 Mpps     | -2.1%    |
+>>>> |            +-------------+--------------+----------------+----------+
+>>>> |            | Lost/s      | 8.490 Mpps   | 359 pps        |          |
+>>>> +------------+-------------+--------------+----------------+----------+
+>>>> | TAP        | Received    | 3.664 Mpps   | 3.549 Mpps     | -3.1%    |
+>>>> |            +-------------+--------------+----------------+----------+
+>>>> | +vhost-net | Lost/s      | 5.330 Mpps   | 832 pps        |          |
+>>>> +------------+-------------+--------------+----------------+----------+
+>>>>
+>>>> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+>>>> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+>>>> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
+>>>> ---
+>>>>  drivers/net/tun.c | 25 +++++++++++++++++++++++--
+>>>>  1 file changed, 23 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+>>>> index fc358c4c355b..d9ffbf88cfd8 100644
+>>>> --- a/drivers/net/tun.c
+>>>> +++ b/drivers/net/tun.c
+>>>> @@ -1018,6 +1018,7 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
+>>>>  	struct netdev_queue *queue;
+>>>>  	struct tun_file *tfile;
+>>>>  	int len = skb->len;
+>>>> +	int ret;
+>>>>  
+>>>>  	rcu_read_lock();
+>>>>  	tfile = rcu_dereference(tun->tfiles[txq]);
+>>>> @@ -1072,13 +1073,33 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
+>>>>  
+>>>>  	nf_reset_ct(skb);
+>>>>  
+>>>> -	if (ptr_ring_produce(&tfile->tx_ring, skb)) {
+>>>> +	queue = netdev_get_tx_queue(dev, txq);
+>>>> +
+>>>> +	spin_lock(&tfile->tx_ring.producer_lock);
+>>>> +	ret = __ptr_ring_produce(&tfile->tx_ring, skb);
+>>>> +	if (!qdisc_txq_has_no_queue(queue) &&
+>>>> +	    (__ptr_ring_produce_peek(&tfile->tx_ring) || ret)) {
+>>>> +		netif_tx_stop_queue(queue);
+>>>> +		/* Paired with smp_mb() in __tun_wake_queue() */
+>>>> +		smp_mb__after_atomic();
+>>>> +		if (!__ptr_ring_produce_peek(&tfile->tx_ring))
+>>>> +			netif_tx_wake_queue(queue);
+>>>> +	}
+>>>> +	spin_unlock(&tfile->tx_ring.producer_lock);
+>>>> +
+>>>
+>>> There's a weird corner case here when tx_queue_len is 0
+>>> but a qdisc has been configured - it looks like that
+>>> currently it just drops all packets, with this change,
+>>> the qdisc will get stuck permanently.
+>>>
+>>> I suspect just checking tx_ring.size should fix it.
+>>> Or if you feel adventurous, change return code for __ptr_ring_produce
+>>> to distinguish between "no ring" and "no space".
+>>
+>>
+>> __ptr_ring_produce_peek really.
+>>
+> 
+> Yes, I like the approach of returning this from
+> __ptr_ring_produce_peek(). Then I will do a switch on the return value
+> in tun_net_xmit().
 
-Heh, that explains why I couldn't find an equivalent of INTR_TYPE_PRIV_SW_E=
-XCEPTION
-in the SVM code.
+Sashiko reports the same :)
 
-> The workaround is to intercept ICEBP unconditionally, handle the
-> FAULT->TRAP conversion in the hypervisor, at which point the #DB-induced
-> TASK_SWITCH occurs with %rip on the correct instruction boundary whether
-> it was instruction-induced or exception-induced.
->=20
-> ~Andrew
+
+So for the v11 I will:
+
+- Change __ptr_ring_produce_peek() to return -ENOSPC / -EINVAL? (for 0
+  sized ring) / 0
+
+- Lock the ring.consumer_lock in __tun_detach() to avoid a race with
+  consumer (Sashiko).
+
+> 
+> Additionally, I should wake up in tun_queue_resize() after calling
+> ptr_ring_resize_multiple_bh(). For a new dev->tx_queue_len > 0, it
+> should be fine without waking, but for 0 it is not.
+> 
+>>
+>>>
+>>>> +	if (ret) {
+>>>> +		/* This should be a rare case if a qdisc is present, but
+>>>> +		 * can happen due to lltx.
+>>>> +		 * Since skb_tx_timestamp(), skb_orphan(),
+>>>> +		 * run_ebpf_filter() and pskb_trim() could have tinkered
+>>>> +		 * with the SKB, returning NETDEV_TX_BUSY is unsafe and
+>>>> +		 * we must drop instead.
+>>>> +		 */
+>>>>  		drop_reason = SKB_DROP_REASON_FULL_RING;
+>>>>  		goto drop;
+>>>>  	}
+>>>>  
+>>>>  	/* dev->lltx requires to do our own update of trans_start */
+>>>> -	queue = netdev_get_tx_queue(dev, txq);
+>>>>  	txq_trans_cond_update(queue);
+>>>>  
+>>>>  	/* Notify and wake up reader process */
+>>>> -- 
+>>>> 2.43.0
+>>
