@@ -1,220 +1,209 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012004.outbound.protection.outlook.com [52.101.48.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A571A36D503;
-	Thu,  7 May 2026 15:22:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778167365; cv=none; b=fcwZlEY3i5zJFo/d+NZxnJK4uKbYl5yhAhwtdpRam3jkHkFnmHDOUCD2ueCzN+0v+7FglAsHsZaFV2jf90Suo63SkLCiEZqqyPM939AUD8U7j9x25zSBCUC1h09PY3Z+ohlZPYLwJ05vp9fkY1jVJWD0XfbAV6qXvGIB1XtNqYI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778167365; c=relaxed/simple;
-	bh=gQCIv+0Rk7QaQ7hoLtSc8KzXHRcd3oSTSkIT6Q1T3BU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nJv6MaYzG9KmV87UN1dpGcZo1L28vJm3MF3gKV8jrWXoCZ+PhpCFt3coGPmtBk4ZVE47eeE61pjQgYDUbEg5I2uPRw+fPxYTvaOkI4/phjT8/jDl7lUn4jMLi2t7VTfa67z0Dnz/vKMkRwiUMKYTiCso35X5WsmgZnR2zlDSXxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=qFcNXio4; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0843ACEF1;
+	Thu,  7 May 2026 15:39:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.4
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778168358; cv=fail; b=uSpPyNqoQZq/ik+qCyoV9nn+F47STZeC+u/pu7cmwifcZpy1+Zluq3QOMrtgpx8wFLAH8uOCH/hbpbRuEtgwLYRzOEoqvgx8/Gq9R2qM0UWX39ucYzI9Db+oIZM54rMrh7bsRQrRwSb/vHevinrltdEepT1sfii1sMDHu/SvKJg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778168358; c=relaxed/simple;
+	bh=1D5+mVUOMV9cFiMtls02rCq07UPvMZnwnBUUJISDkoA=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WQF/9rgtYk1NMZdRoag85eNzfDEvBYbvvhlDx7myfVof3aZJZYLjPE0WgiyWhgES+NlUdh5PPswttfAyRQQF3hIXjSQOSrOlBVY9098Bm6LCZv4yCudlGYvrOdJ4Xvln36ENa8e3KCvMEf1iY61obfSJnDrr7pawOHNtS3EKb00=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=0LlgvLIa; arc=fail smtp.client-ip=52.101.48.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="qFcNXio4"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=QTucYTxb3ZEm/mr/ifQJhhxEirQO/2Pe1y7GAASxNd0=; b=qFcNXio4mtvPKYu2QvsR6x09GX
-	ooekun8CWk2FOi/5EwyDSk6oh+wDzgQPr3ZCUWx5FZoy58iu2vgl4FvCuMxVyvu2ctpGxgwLwRPDi
-	/3cDFDu0omwrovH2NnD2kxL0IhM74urir6Zg3wKvCAou4uA3bhOx0fpbEkpIU9fso1njRlzPv4ZdF
-	BVyVbkcNkLDkRzgqQY4MJ+oYd25mrapEhN/7YmNPThNdPv8Ye6pVTsyR/TEU1DlZp3YyvJuXvchx3
-	0xmakSwBcEQz/Y/jeIyB4ARoBTGsiZM5DuV75W50KjbPntBR/ffjSDEilvopopHGxU6fku0Wi6+pG
-	a2fx1Kww==;
-Received: from [172.31.31.148] (helo=u09cd745991455d.ant.amazon.com)
-	by desiato.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wL0YU-00000003toK-3Spk;
-	Thu, 07 May 2026 15:22:27 +0000
-Message-ID: <876c720ab963f550d3166b067f6457fcd78ec415.camel@infradead.org>
-Subject: Re: [PATCH] KVM: x86/xen: bail in IRQ context on PREEMPT_RT in
- kvm_xen_set_evtchn_fast()
-From: David Woodhouse <dwmw2@infradead.org>
-To: Mauricio Faria de Oliveira <mfo@igalia.com>
-Cc: Paul Durrant <paul@xen.org>, Sean Christopherson <seanjc@google.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>,  Borislav Petkov <bp@alien8.de>, Dave
- Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark
- Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- kernel-dev@igalia.com,  kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-rt-devel@lists.linux.dev, 
- syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com
-Date: Thu, 07 May 2026 16:22:26 +0100
-In-Reply-To: <e23df9d183c2c421946ea73b8053e4c4@igalia.com>
-References: <20260506-xen-rt-sleep-v1-1-53b6b60a671d@igalia.com>
-	 <8e7bc66a7994ca06f164a5d5f7ceb3f07d3a1357.camel@infradead.org>
-	 <e23df9d183c2c421946ea73b8053e4c4@igalia.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-KAfkmaggwtdyfy2U8XuO"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="0LlgvLIa"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Rw9qfB2RRJwPm+c3wCuPYNocV3+vQIpEGoGkKZ6BVK5FzzW090kkwdI2F/fOvbsMyn4X5RMa13kuTT7JUbDOdfy4FNQR7ylXamVfSKaz2lANwAFpJ/MhUFI/UaCkBsZqdyINVPKkYVv1UHBjStokUGuR0dy5sMS0QtaJO0Vy5Ko1VA8Ww8TMWwEkDa0anO3FV4fp27eyYKqj/hDcl7n79QfW1+l53PpoO9qzXUJIlSZYoreapYCvSKyRq08Ma59gc+qbdmuxyKavf2xO1XNBrJsuK4HmYBeceyJc1f6X5DZguUr4hNziNy8PVHegAZCYrdcHAO1AbOJk3UnqoSW9Gw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=e5c73llqw6my2uTGSFqNY7y62fCbAgMAeEgWphGR5SM=;
+ b=Ka8dyixD0NyL39Q8KE1KTtDTMzB9n49SU4UTgb1T1iSbKFXbUs6tfR+X8klvXNllTIFucFouuFzZUB4ZE81zCN6gpDeytJIUM2ne3NKo0e3xL/qcN/UZfGtMpNsWyMjuQX2BhYLh43bu+z8xtSsSc0/2VeP1c2Jhc/InR0XUb3GmdsKAbsqTkoP6GZH/2lIoEDtKEp/yVJmD0J1huHSCupSFwvwYSTMtTXUOpm9MEhwcjHMKILpnYb3i1nugttiYA/0lpP/RAAoL2AoMjCda+zWRcnck651UibK2T8pAIV9mup9CtZk//VqFkN+OJRezCiLhzQRXcbTdn67I+KakvA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=e5c73llqw6my2uTGSFqNY7y62fCbAgMAeEgWphGR5SM=;
+ b=0LlgvLIaekyR4G+a9loNXkR6LIXgMDNCXI39nb4fZi/EzhXH2qZj3NX/ncK+hJWp2PSMiUKMPE+PYpmXmgZQn0NH7vdcicQVktjv4UaGF9YU1PVsqUbBSQ2VqXjagTVhCV2vSIgQEynmiMxat/t8PXf+e7PMIv0wKp/JADNcHQA=
+Received: from CH0PR03CA0282.namprd03.prod.outlook.com (2603:10b6:610:e6::17)
+ by SN7PR12MB8027.namprd12.prod.outlook.com (2603:10b6:806:32a::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Thu, 7 May
+ 2026 15:39:12 +0000
+Received: from DS2PEPF00003443.namprd04.prod.outlook.com
+ (2603:10b6:610:e6:cafe::35) by CH0PR03CA0282.outlook.office365.com
+ (2603:10b6:610:e6::17) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.17 via Frontend Transport; Thu,
+ 7 May 2026 15:39:12 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ DS2PEPF00003443.mail.protection.outlook.com (10.167.17.70) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9891.9 via Frontend Transport; Thu, 7 May 2026 15:39:12 +0000
+Received: from MIKCARGYRISD1.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 7 May
+ 2026 10:39:11 -0500
+From: Costas Argyris <costas.argyris@amd.com>
+To: Sean Christopherson <seanjc@google.com>
+CC: Jim Mattson <jmattson@google.com>, Borislav Petkov <bp@alien8.de>, "Joerg
+ Roedel" <joro@8bytes.org>, Tom Lendacky <thomas.lendacky@amd.com>,
+	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] KVM: selftests: Add guest-side test for AMD HWCR.McStatusWrEn
+Date: Thu, 7 May 2026 16:38:50 +0100
+Message-ID: <20260507153850.8214-1-costas.argyris@amd.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS2PEPF00003443:EE_|SN7PR12MB8027:EE_
+X-MS-Office365-Filtering-Correlation-Id: 951e605f-a405-48be-15d2-08deac4ec9e6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|36860700016|82310400026|1800799024|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	eEBR37izYetKloH3xnhBZKB1wov4uDYjK4CKcs8hwsBAWUQeU59y/+f5CFWWVmOdE2f5LNDGyWI1Z3SJGnRUhVY9QhVfUy2TMf2o6Txdp+WJiLSFlwGYpUnpGyVsEc9VEoiOY/K7NNrO/Wd3ZIRJUntdCu6B37SHcnwitP67uMmDkhmLRkYm1fY6OMDjoT8kOMxSpv1nzxa15ONf6RT9kEhVtTk4DV2UOmEyejDK4Rbkx7n6yOVXQa73iupY4Ctij092/AadZh87tjjMIF6NqqmuEZUH5u+nHoT8gmY3l2jwfi5wXRRM9lsEZ7Sj/xyy70H1Q2zZg3KQgz2BoVwMBtzsehzbYoA0YJysWaMrC3SZ8cuaHKqSFYheFQFWuAjTN1mvlpDJ3RED1arxIZblZJJ1MVFn6odbxfOAXK1N7gWjLlbbM6WGAz5ORABvwXDGo+mo74GwWgDVV9fvjSP5GCE4OViMhoH/8x/35//is733HAH0eEEXhB622OWbuBzxEGIvUyVwprf152IPzMg8/qg1aS2RaUTlVYoRDfW8DmDI6iI7qHNRkMewhyG9cJF4AOlQ9AyXMcipgK30tBo4zXEKdsAqMEX4G2rjYypg3Ay+/BRi3MiBFzLCf4NLrgt696uDiRXezZnslch5phsLH/OmiFAzF78dLJ0+bKVZGdIaUtQUd+gQyUwcVdcFsY6Gnb4KelfUqv+iXndpvnIIJcGUzyZSZXhYVUaGbKSKBDI=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700016)(82310400026)(1800799024)(56012099003)(18002099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	JpCRD9FbomBQv4fILm6Yla1N6nlmPg9pydj1300bKhuWv1PuS30jMvp1jkmFZt5FxXrfPHMZwti0oluEE41zTzT4B/bpq0YRjZyS9EUEI3rmY7/Us7OyQphYh2FOhMOobRpXpQetrWPMMvWz5gXomj3yq6f8rRa0vNNaXd8oZ2JdvhaifS5R3fL7OHXrcOwrvlo8I3RNTYNfce3j5YoPFNUOEbX0aGic3LAvkmcp8HHZBUr/Q/7vzauOa931k8rQ6+BnPxk4owpicE89LMH4rSsPWPQ0u0nCxEG7XJb0ra3UVvwVWfHHmQE71nnnDrtkNqBGeJynUegh1MJ+kZ3oTHWk23QDMYB9+HqbOZpWPbA/sQU6nX1SaPodi5Lc55rjz2OIO6FtD6iOeas+8ssg+9Ln+tZyilFZRu5nJgCg9XXlHYodokf/i9N2gNXtIqEF
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 15:39:12.7545
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 951e605f-a405-48be-15d2-08deac4ec9e6
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DS2PEPF00003443.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8027
 
+The existing hwcr_msr_test exercises MSR_K7_HWCR only via KVM_SET_MSRS,
+which sets host_initiated=true in KVM. The gate in set_msr_mce() that
+calls can_set_mci_status() short-circuits when host_initiated=true, so
+can_set_mci_status() is never reached by the existing test.
 
---=-KAfkmaggwtdyfy2U8XuO
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Add a guest-side test that verifies HWCR.McStatusWrEn (bit 18) correctly
+gates non-zero writes to MCi_STATUS MSRs. With the bit set, the write
+must succeed and read back unchanged. With the bit clear, the write must
+raise #GP and leave the register unmodified.
 
-On Thu, 2026-05-07 at 11:56 -0300, Mauricio Faria de Oliveira wrote:
-> On 2026-05-07 03:58, David Woodhouse wrote:
-> > On Wed, 2026-05-06 at 23:36 -0300, Mauricio Faria de Oliveira wrote:
-> > > kvm_xen_set_evtchn_fast() calls read_lock_irqsave(), which might bloc=
-k
-> > > on PREEMPT_RT, but that is invalid in IRQ context, as when it's calle=
-d
-> > > by xen_timer_callback() (even on PREEMPT_RT per HRTIMER_MODE_ABS_HARD=
-).
-> > >=20
-> > > Check for that case, and bail out early.
-> > >=20
-> > > Note: there is previous work and discussion on this [1] (~2 years ago=
-),
-> > > which involved continuing to execute the function with changes, but i=
-t
-> > > was not merged. That was a different, more complex approach.
-> > >=20
-> > > [1] https://lore.kernel.org/lkml/ZdPQVP7eejq3eFjc@google.com/
-> >=20
-> > ...
-> >=20
-> > > +	/* Bail in IRQ context on PREEMPT_RT; read_lock_irqsave() might blo=
-ck */
-> > > +	if (IS_ENABLED(CONFIG_PREEMPT_RT) && in_hardirq())
-> > > +		goto out;
-> >=20
-> >=20
-> > The approach in Paul's earlier patch was better; we absolutely *want*
-> > to deliver the interrupt to the guest immediately whenever we can, and
-> > only fall back to the workqueue in the rare case that the shared info
-> > page has been invalidated.
->=20
-> Certainly, that was better. This was a simple workaround, but with this
-> clarification, it indeed doesn't fit.
->=20
-> > We should switch to plain read_trylock(), *without* the
-> > local_irq_save(). And since this was the *only* case where the GPC lock
-> > was ever taken under IRQ=C2=B9, all the GPC locking can drop the _irq p=
-art.
->=20
-> Ok, I can take a look. Or do you plan to work on it yourself (as you
-> hit the issue with read_unlock later in this thread)?
+Signed-off-by: Costas Argyris <costas.argyris@amd.com>
+---
+ .../testing/selftests/kvm/x86/hwcr_msr_test.c | 65 ++++++++++++++++++-
+ 1 file changed, 63 insertions(+), 2 deletions(-)
 
-I'm working on it now; thanks.
+diff --git a/tools/testing/selftests/kvm/x86/hwcr_msr_test.c b/tools/testing/selftests/kvm/x86/hwcr_msr_test.c
+index 10b1b0ba374e..4e249bffcbb1 100644
+--- a/tools/testing/selftests/kvm/x86/hwcr_msr_test.c
++++ b/tools/testing/selftests/kvm/x86/hwcr_msr_test.c
+@@ -6,9 +6,9 @@
+ 
+ #include "test_util.h"
+ #include "kvm_util.h"
+-#include "vmx.h"
++#include "processor.h"
+ 
+-void test_hwcr_bit(struct kvm_vcpu *vcpu, unsigned int bit)
++static void test_hwcr_bit(struct kvm_vcpu *vcpu, unsigned int bit)
+ {
+ 	const uint64_t ignored = BIT_ULL(3) | BIT_ULL(6) | BIT_ULL(8);
+ 	const uint64_t valid = BIT_ULL(18) | BIT_ULL(24);
+@@ -30,6 +30,61 @@ void test_hwcr_bit(struct kvm_vcpu *vcpu, unsigned int bit)
+ 	vcpu_set_msr(vcpu, MSR_K7_HWCR, 0);
+ }
+ 
++/*
++ * AMD-specific: test that HWCR.McStatusWrEn (bit 18) gates guest writes to
++ * MCi_STATUS MSRs.  With the bit set, a non-zero write to MC0_STATUS must
++ * succeed and read back unchanged.  With the bit clear, the write must take
++ * a #GP.
++ *
++ * This exercises arch/x86/kvm/x86.c:can_set_mci_status(), which is only
++ * reachable via the guest WRMSR path (host_initiated=false); test_hwcr_bit()
++ * uses KVM_SET_MSRS (host_initiated=true) and never triggers it.
++ */
++static void guest_code(void)
++{
++	uint8_t vector;
++	uint64_t val;
++
++	/* McStatusWrEn=1: non-zero write to MCi_STATUS must succeed. */
++	wrmsr(MSR_K7_HWCR, BIT_ULL(18));
++	wrmsr(MSR_IA32_MC0_STATUS, 1);
++	val = rdmsr(MSR_IA32_MC0_STATUS);
++	GUEST_ASSERT_EQ(val, 1);
++
++	/* Clear the status register before disabling the write-enable bit. */
++	wrmsr(MSR_IA32_MC0_STATUS, 0);
++
++	/* McStatusWrEn=0: non-zero write to MCi_STATUS must #GP. */
++	wrmsr(MSR_K7_HWCR, 0);
++	vector = wrmsr_safe(MSR_IA32_MC0_STATUS, 1);
++	GUEST_ASSERT_EQ(vector, GP_VECTOR);
++
++	/* Confirm the failed write left the register at zero. */
++	val = rdmsr(MSR_IA32_MC0_STATUS);
++	GUEST_ASSERT_EQ(val, 0);
++
++	GUEST_DONE();
++}
++
++static void enter_guest(struct kvm_vcpu *vcpu)
++{
++	struct ucall uc;
++
++	while (true) {
++		vcpu_run(vcpu);
++		TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
++
++		switch (get_ucall(vcpu, &uc)) {
++		case UCALL_DONE:
++			return;
++		case UCALL_ABORT:
++			REPORT_GUEST_ASSERT(uc);
++		default:
++			TEST_FAIL("Unexpected ucall %lu", uc.cmd);
++		}
++	}
++}
++
+ int main(int argc, char *argv[])
+ {
+ 	struct kvm_vm *vm;
+@@ -42,4 +97,10 @@ int main(int argc, char *argv[])
+ 		test_hwcr_bit(vcpu, bit);
+ 
+ 	kvm_vm_free(vm);
++
++	if (host_cpu_is_amd_compatible) {
++		vm = vm_create_with_one_vcpu(&vcpu, guest_code);
++		enter_guest(vcpu);
++		kvm_vm_free(vm);
++	}
+ }
+-- 
+2.43.0
 
-Currently confused by the fact that the read_trylock() seems to fail
-more often than it should under RT, causing the fallback path to be
-taken... and the fallback path doesn't seem to work properly...
-
-Your version should have seen this too, surely? Did the selftest in
-linux/tools/testing/selftests/kvm/x86/xen_shinfo_test work with your
-patch?
-
-
-
---=-KAfkmaggwtdyfy2U8XuO
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUwNzE1MjIy
-NlowLwYJKoZIhvcNAQkEMSIEIOpe3FmUg3GcwJ6vLZ9FOgt3/cdbJQ86UDTNvdNtugDuMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAHfIKQa1XmfYb
-CIXrL10bkRsr6GBnOVZt2xKp3zQcKAU4+KHs8xGNUINNvklhkSzzWSN4sxm5Hs3YLN/CWAChmcmk
-X7XfirOnj4HHEcRbbhAdaPcAwr+QKPRafslONpRbJ2iAyGicAWsrYNjUwEwevboofrFDF5CuzjpY
-dfPNVDXR88QF1YJJx/JQ5EvGV5xekKL+mbN5nJbLkKbqDPH9fcyvLjhGx22Qs06CzCmDJj0HEni/
-5dwGs5EyzfKmZ91FGSuxmtI0iAeE0sNCgpgasBha87s9PUnEMt+33rHcXLHi2eDO6Rj2R9jEVZuf
-Hgz4Ut87ocnDKwaZRtwbXMoauOh3xhggN7PWo4t/FcheJdvfa4my6tJ3Wa4k2bBeJgVaQXjh3i/z
-hIDO2EAfot1xJTksfYwquswdwCJT7iv/hDpinzvlFjNoJyQLjsejHudm50ljvnDzCXs+w2vYqicc
-4Zr4GUNM/qj+ZkGLC3Mt0z9ypRWhpbq1Q9n+Sa9fuq3p5BTbD5Khg8VC84mbdk4wDfoCZs0FrRoK
-eB5PSkRXv7aXmcQIjyfev4Ys8fBLVkByktOKxVqxGTEh0XGPLy+wQYHSCcwseLVW47pD1E9h9z0a
-7mwJfNwZ0TEOJhrQ/hmPYZFQPDaU9kwtRxrGzZxPYNLtQZ0vA53SOwCvlstRZK4AAAAAAAA=
-
-
---=-KAfkmaggwtdyfy2U8XuO--
