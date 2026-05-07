@@ -1,30 +1,29 @@
-Received: from out30-124.freemail.mail.aliyun.com (out30-124.freemail.mail.aliyun.com [115.124.30.124])
+Received: from out30-101.freemail.mail.aliyun.com (out30-101.freemail.mail.aliyun.com [115.124.30.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84B1352F95;
-	Thu,  7 May 2026 11:37:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9CC3E6DDB;
+	Thu,  7 May 2026 11:37:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778153842; cv=none; b=Z9eBxYCz8i4cmoGD3D4joECsL0Y8LBRby8dZmt9OX9M60RFQzKaAOllXZRprPPxy+EQLv+nhQIxo4b0sPxfLYOiiet3zY6kkA/ahV5/ybhYtN9hgBEuv5ULB1tbOkzaLyQCNmTyCcZSTIU2CePKdeB8xQn6TmRFfXppJDHxUpsk=
+	t=1778153843; cv=none; b=jd+vJOQVQCLHpD3zf/RKeDyAF3lBUMrdmBSlWDdFEq7hObEIBnu1QYFM1barBJ8kn1kFj+mcTDCo5CDqmwlmFQ3DUljO10VUxLYi3KTabAoP3zQ+yyqpt8f7Zx6OsgsIb6pRbH+7fR/P8hFNT2kETeO9hdI8/WT7i34UEaZwL7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778153842; c=relaxed/simple;
-	bh=hPPEJWpqwcsCvFcsSjXs2lsoWzuWtKcWOt/3dw8I5Sw=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=sA+zBAGkMDMgO0IrsuVacWlhxkJEFXhnuqAdxyLu8mwBkLYqG39IMMl6jHmQ9yv0iCE7+YzU4CowvwiuS0vOxM42rC3pFea0h3NjVFDtbZ0I/s/235bJslzblDyErsKJnkfvxyaagVnbQ8nO4TkdM7yy/LjedRuK7ShUDUtpFLA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=RSX4BvwY; arc=none smtp.client-ip=115.124.30.124
+	s=arc-20240116; t=1778153843; c=relaxed/simple;
+	bh=iIi6DSq19U1rg+snr2YDWknmdZdPmbYIuqjKBUUWwUI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=KdhHcSd7FyO0w6v+4KBxWubcUNB3SNqvISk8K70wbwGSHlSqUL5oqfJgVTkFJfFQUAqYf401XwBP4vDViOUp9Q8R86UVRz9iknJDYcXW+bh20kFieM+ACUWZVadqpYOKJkQUULjLX3u2V2v5XJLT8kD2zEIbru9D1+Ze2EUsJNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=KXZZXWia; arc=none smtp.client-ip=115.124.30.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="RSX4BvwY"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="KXZZXWia"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1778153837; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=tFAMKZYz1nJYVHM70HUe0OYd4bRWfYYuKOfYQU7XBks=;
-	b=RSX4BvwYeEHCNtgbWc5I/ytxbCmD9PK12UsigpTX1mql4jho1ttTtg9wN4mkYYEBlpapS8xptZIeOY29O3nwQH2qiCAJ8r8VTWB2LY1kzODrIF8jMbMjGOunGmr4JnKlzu2fwN5ygcc2zvZV7T+iJKQTmp8aH2oywaLhuwK/x3A=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033045098064;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=24;SR=0;TI=SMTPD_---0X2UVF.3_1778153834;
-Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X2UVF.3_1778153834 cluster:ay36)
+	t=1778153833; h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type;
+	bh=pYPOjk5vRxc6PyCVSBrJamgrCDH5JWFpBbo0/9xzAQk=;
+	b=KXZZXWiaOQKzOewqOOWD7lY0Y9uN7GuhUrQB9zIQYcFIB1Nn2bdoEHIKW5HN+mE2YvTOZDqy7D/7MoEoV43yC1HqXS0dZ//xIS+8o5zBDGg5ofAqqjyscjT5+ymvOkMwkVTUEMndwpsC/625i9PK4QujKgzSgqT0xBMGghiSqkM=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037026112;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=24;SR=0;TI=SMTPD_---0X2UVEza_1778153829;
+Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X2UVEza_1778153829 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Thu, 07 May 2026 19:37:15 +0800
+          Thu, 07 May 2026 19:37:11 +0800
 From: fangyu.yu@linux.alibaba.com
 To: joro@8bytes.org,
 	will@kernel.org,
@@ -50,60 +49,98 @@ Cc: guoren@kernel.org,
 	linux-riscv@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Fangyu Yu <fangyu.yu@linux.alibaba.com>
-Subject: [RFC PATCH v2 03/10] iommu/riscv: report iommu capabilities
-Date: Thu,  7 May 2026 19:36:59 +0800
-Message-Id: <20260507113706.11400-4-fangyu.yu@linux.alibaba.com>
+Subject: [RFC PATCH v2 00/10] iommu/riscv: Add hardware dirty tracking for second-stage domains
+Date: Thu,  7 May 2026 19:36:56 +0800
+Message-Id: <20260507113706.11400-1-fangyu.yu@linux.alibaba.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20260507113706.11400-1-fangyu.yu@linux.alibaba.com>
-References: <20260507113706.11400-1-fangyu.yu@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Tomasz Jeznach <tjeznach@rivosinc.com>
+From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 
-Report RISC-V IOMMU capabilities required by VFIO subsystem
-to enable PCIe device assignment.
+The RISC-V IOMMU architecture defines an AMO_HWAD capability (Hardware
+Access/Dirty update) that allows the IOMMU to atomically set the A/D bits
+in second-stage PTEs on DMA access.  When DC.tc.GADE is asserted, the IOMMU
+autonomously sets D on the first write to a page mapped by an iohgatp
+domain.  This series wires that capability up to the iommufd dirty-tracking
+interface (IOMMU_HWPT_SET_DIRTY_TRACKING / IOMMU_HWPT_GET_DIRTY_BITMAP) and
+reports IOMMU_CAP_DIRTY_TRACKING.
 
-Signed-off-by: Tomasz Jeznach <tjeznach@rivosinc.com>
-Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+Design notes
+------------
+
+* The feature is scoped to second-stage (iohgatp) domains only; these are
+  the domains created for KVM / VFIO device pass-through when userspace
+  allocates an HWPT with IOMMU_HWPT_ALLOC_NEST_PARENT or
+  IOMMU_HWPT_ALLOC_DIRTY_TRACKING.  First-stage (iosatp) domains are not
+  touched by this series.
+
+* The page-table side plugs into the existing generic_pt dirty hook
+  framework (amdv1 / vtdss style).  RISC-V adds the three required PTE
+  ops – is_write_dirty / make_write_clean / make_write_dirty.
+
+Testing
+-------
+
+* Test on QEMU RISC-V, a virtio-net and an e1000e device was passed through
+  to an L2 guest via vfio-pci + iommufd.
+
+* generic_pt KUnit: the existing test_dirty case now runs and passes for
+  the RISC-V 64-bit format.
+
+Follow-up work
+--------------
+* Build a dedicated end-to-end test case that drives the full flow
+  (HWPT_ALLOC with DIRTY_TRACKING -> attach -> IOAS_MAP -> generate real
+  DMA -> SET_DIRTY_TRACKING -> GET_DIRTY_BITMAP -> verify bitmap against
+  expected IOVA footprint) so that the behaviour can be regression-tested
+  beyond the KUnit PTE-level coverage.
+
+* If possible, rebase and retest on top of the updated "iommu irqbypass"
+  patchset.
+
 ---
- drivers/iommu/riscv/iommu.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+Changes in v2 (Jason's suggestions):
+    - Introduced a single PT_FEAT_RISCV_S2: second-stage selection is driven
+      purely by this feature bit.
+    - Switched from dynamic DC.tc.GADE toggling to static pre-enable.
+    - domain_alloc_paging_flags: follow the switch/case design from other
+      drivers.
+    - Drop IOMMU_CAP_DEFERRED_FLUSH in riscv_iommu_capable.
+    - Remove the .hw_info-related patch.
+    - Link to v1:
+      https://lore.kernel.org/linux-riscv/20260428131359.34872-1-fangyu.yu@linux.alibaba.com/
 
-diff --git a/drivers/iommu/riscv/iommu.c b/drivers/iommu/riscv/iommu.c
-index a31f50bbad35..bd36e3b5d13f 100644
---- a/drivers/iommu/riscv/iommu.c
-+++ b/drivers/iommu/riscv/iommu.c
-@@ -1336,6 +1336,16 @@ static struct iommu_group *riscv_iommu_device_group(struct device *dev)
- 	return generic_device_group(dev);
- }
- 
-+static bool riscv_iommu_capable(struct device *dev, enum iommu_cap cap)
-+{
-+	switch (cap) {
-+	case IOMMU_CAP_CACHE_COHERENCY:
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
- static int riscv_iommu_of_xlate(struct device *dev, const struct of_phandle_args *args)
- {
- 	return iommu_fwspec_add_ids(dev, args->args, 1);
-@@ -1397,6 +1407,7 @@ static void riscv_iommu_release_device(struct device *dev)
- 
- static const struct iommu_ops riscv_iommu_ops = {
- 	.of_xlate = riscv_iommu_of_xlate,
-+	.capable = riscv_iommu_capable,
- 	.identity_domain = &riscv_iommu_identity_domain,
- 	.blocked_domain = &riscv_iommu_blocking_domain,
- 	.release_domain = &riscv_iommu_blocking_domain,
+Fangyu Yu (6):
+  iommupt: Add RISC-V Second-stage (iohgatp) page table support
+  iommupt: Add RISC-V dirty tracking PTE ops
+  iommu/riscv: Add domain_alloc_paging_flags for second-stage domain
+  iommu/riscv: Pre-enable GADE for second-stage domains
+  iommu/riscv: Add dirty tracking support for second-stage domains
+  iommu/riscv: Add IOTINVAL.GVMA after updating DDT/PDT entries
+
+Tomasz Jeznach (2):
+  iommu/riscv: report iommu capabilities
+  RISC-V: KVM: Enable KVM_VFIO interfaces on RISC-V arch
+
+Zong Li (2):
+  iommu/riscv: use data structure instead of individual values
+  iommu/riscv: support GSCID and GVMA invalidation command
+
+ arch/riscv/kvm/Kconfig               |   2 +
+ drivers/iommu/generic_pt/fmt/riscv.h | 104 ++++++++++++++-
+ drivers/iommu/riscv/iommu-bits.h     |   7 +
+ drivers/iommu/riscv/iommu.c          | 190 +++++++++++++++++++++------
+ include/linux/generic_pt/common.h    |   5 +-
+ include/linux/generic_pt/iommu.h     |  17 ++-
+ 6 files changed, 277 insertions(+), 48 deletions(-)
+
 -- 
 2.50.1
 
