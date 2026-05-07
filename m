@@ -1,154 +1,135 @@
-Received: from canpmsgout07.his.huawei.com (canpmsgout07.his.huawei.com [113.46.200.222])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0BEF3F54B4;
-	Thu,  7 May 2026 13:10:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.222
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BBCF3F54DB
+	for <kvm@vger.kernel.org>; Thu,  7 May 2026 13:15:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778159414; cv=none; b=oNzq7Hz2z3+I8pSotz6XQOIFrPdSQk8W1LJzM/GwTg0xPbmsc40lXlzJasTNUooY1PgizN1u3xprYWe49oz29B/753qdSCzgZFJ7iUktZAH9LBowo50pkG1rkklbATm0KnTDz5EjX9RUQbzCmUOuqpbWkiJ61LmmX2c0On2rZRc=
+	t=1778159720; cv=none; b=uQ5/DtExfu2tHilzdFVNnUlqukxdNOURctZ+RPfTiN9nq5O1UJQjQS/G6XN3ngE1pIxrxJZfCju51S/iW3EoDJ379Nf2xM4BgrsrjRi0btS+p8EqpbgN+dNs17G+dYKKndEZlFvnGalIcu9biU4kbISFdiWpTe+phKAHEtIXBtE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778159414; c=relaxed/simple;
-	bh=55wJnXlTUNfgpmyzmCSO6I/RAaz76SGw9/V7AwME+eM=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BhsUbeSvfgZW098LNfM6S7MFY1IuA2RolmehM2NXbiBd80JWCUn9KiJl3m5QHqopUJtYHcqTkrBv6UjrkVaBBO2lqUy+M7nwap68jEnP/BhgOcgDhy5Z8L20L1o47KdJpHeN7gLfbNMxQu92YcmGRRYJ8R485p4Ex2WhT/ottkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=e9poUe8L; arc=none smtp.client-ip=113.46.200.222
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1778159720; c=relaxed/simple;
+	bh=TJ0W6FAj31MR3dvN8d50sBuasX/e1T3Sfw51y9p35pI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=RPWHTs1I6qHCOZrE5X9guNSM4Egtc4lFnpRQ6JRgtLMv4WVxB/LYX6BsWxaAiPPGCy0FxUhrllat/EwNcqCwLmNT8SP64SvxvA1l4WI4eQ8QXVqGzxEFK89kLPEopJ+U9vTToVLoXpe7OWx1KPJjdwCni8gJFDuCVfKMiuCjyQ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Uga1GR8T; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="e9poUe8L"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=yt7+rfS+Kkj2qInDlaSwZj33ckW2U/0zHd7UIbMMklM=;
-	b=e9poUe8LvnN5ZrtznIbfxqzFfvyKIllIvO2bOfVaIXpjOXwoNX3aV0DdtORDQzXNZRwOghHXN
-	Kgm1jGX42udQ0jf0JbU8736wWUS9NnWIycjDnp10J9AJVSzNR7OWHw/QBiK2VbJ4Qer2p8aYNac
-	2Bm6ZQML23FNJvAa9xtVKCs=
-Received: from mail.maildlp.com (unknown [172.19.163.127])
-	by canpmsgout07.his.huawei.com (SkyGuard) with ESMTPS id 4gBC8Q6hZmzLlXk;
-	Thu,  7 May 2026 21:02:30 +0800 (CST)
-Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
-	by mail.maildlp.com (Postfix) with ESMTPS id 00D0440572;
-	Thu,  7 May 2026 21:10:04 +0800 (CST)
-Received: from localhost.localdomain (10.50.163.32) by
- kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Thu, 7 May 2026 21:10:03 +0800
-From: Chengwen Feng <fengchengwen@huawei.com>
-To: <alex@shazbot.org>, <jgg@ziepe.ca>
-CC: <wathsala.vithanage@arm.com>, <helgaas@kernel.org>, <wei.huang2@amd.com>,
-	<wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
-	<liuyonglong@huawei.com>, <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
-Subject: [PATCH v7 2/6] PCI/TPH: Export pcie_tph_get_st_modes() for external use
-Date: Thu, 7 May 2026 21:09:52 +0800
-Message-ID: <20260507130956.34441-3-fengchengwen@huawei.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20260507130956.34441-1-fengchengwen@huawei.com>
-References: <20260507130956.34441-1-fengchengwen@huawei.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Uga1GR8T"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-835444b6ce1so632260b3a.1
+        for <kvm@vger.kernel.org>; Thu, 07 May 2026 06:15:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778159718; x=1778764518; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ieS6nKC0vkJ+fsaqZW4LZNoV5kL2RHdXCSYZo6FgAl8=;
+        b=Uga1GR8TjgztUCTln4ry+JZT6SPApuSj79zy0gxM1l4sG/wyraeqV8bDMLcGd2a9GD
+         osr9aB2DLwMUm78zfwApSH2yhStUipxq38+obL36+qMdDTxLQd2ZnOAKF+2eZLVH/8Th
+         0VK2QWYW2gjfcy4bPg9x7uXJEOuuSeSV1srt4tQQaLbGoBPqyWyepKzAZOV47OT/lxsW
+         PE3JXDPUZRnblrTQyfmNz2obMtTalz/8KpDA6bLRjeGUuDsczACBmk7EI/mti1ZaJ+wF
+         et1Lwel8//Ao6Xk7wBKy8A7fvwjcjIeOKdozjZkiMl4vljaxUug7kP3VDgCKWgUfkZVa
+         6Zvg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778159718; x=1778764518;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ieS6nKC0vkJ+fsaqZW4LZNoV5kL2RHdXCSYZo6FgAl8=;
+        b=B8R4dwzkFKFIbjKGIzW+AUfulRr/Zw3LWk+jtdIQAqWLDpuVozXsQNMwQk/l88v7AN
+         gEfj3pq88C6xuv11N7gXblfWSjjDFoQDtYwa/uA2T+57L7NSwXg8HyDwIx6rp8vM6cvw
+         oNggBvRMSGLcMGJKB6FKHOsmpGqOvmLiP+++LHfOJ+zq0N12JxLukm+FBAVCRlA5CJRf
+         H2jRJ939274BjCmjhITAu3t5Dtr6xJv17fKG6yVGDA7cO8N2jcIk5Ibwprwl16BEFj0w
+         AK009AlOlouwp7fasMUnWByFvDd3tgSN5wieJnbfs3NtE8UyJn70AzWz9SGqAQxHlOa2
+         00Og==
+X-Forwarded-Encrypted: i=1; AFNElJ8Uv5oHU8EVdFaUPuB4gXgxitnuNG/4dsW6bB+JxJUj5oR+nCbps6mVKz4CGmI89mYXpNA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBLgPklOaUKgqYq19i8ekv/3JD2eBVPuNNid4gIEeJ+/RLm3Qb
+	sb5nbSqXa30hwcjkbex3z74cUd3PE2hiIHcFaN76nQ+XVmPnOJac0zlb/H4ixoEePLgTE4fVIfC
+	9MxCuIQ==
+X-Received: from pfbld11.prod.google.com ([2002:a05:6a00:4f8b:b0:839:5556:c979])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:140e:b0:824:afe1:f7e3
+ with SMTP id d2e1a72fcca58-83a5badc168mr7568181b3a.15.1778159718060; Thu, 07
+ May 2026 06:15:18 -0700 (PDT)
+Date: Thu, 7 May 2026 06:15:16 -0700
+In-Reply-To: <20260507003613.1784851-2-vannapurve@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- kwepemk500009.china.huawei.com (7.202.194.94)
+Mime-Version: 1.0
+References: <20260507003613.1784851-1-vannapurve@google.com> <20260507003613.1784851-2-vannapurve@google.com>
+Message-ID: <afyQZP75rbj68ceX@google.com>
+Subject: Re: [PATCH v2 1/2] KVM: x86: Introduce arch specific
+ has_protected_pmu state
+From: Sean Christopherson <seanjc@google.com>
+To: Vishal Annapurve <vannapurve@google.com>
+Cc: pbonzini@redhat.com, dave.hansen@linux.intel.com, 
+	rick.p.edgecombe@intel.com, dapeng1.mi@linux.intel.com, mizhang@google.com, 
+	kai.huang@intel.com, jmattson@google.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Export the helper to retrieve supported PCIe TPH steering tag modes so
-that drivers like VFIO can query and expose device capabilities to
-userspace.
+On Thu, May 07, 2026, Vishal Annapurve wrote:
+> PMU state for TDX VMs is virtualized by TDX Module [1]. Introduce
+> has_protected_pmu state to track the pmu state for such scenarios. Disable
+> KVM's PMU virtualization framework if pmu state is protected as
+> additional enlightenment is needed within KVM to control/manage the
+> visibility of PMU state to such VMs.
+> 
+> Additionally disallow userspace VMM to toggle PMU state using
+> KVM_CAP_PMU_CAPABILITY if pmu state is protected.
+> 
+> [1] Section 15.2: https://cdrdv2.intel.com/v1/dl/getContent/733575
+> 
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+> ---
+>  arch/x86/include/asm/kvm_host.h | 1 +
+>  arch/x86/kvm/x86.c              | 8 ++++++--
+>  2 files changed, 7 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index c470e40a00aa..8371dcaaed1a 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1422,6 +1422,7 @@ struct kvm_arch {
+>  	bool has_private_mem;
+>  	bool has_protected_state;
+>  	bool has_protected_eoi;
+> +	bool has_protected_pmu;
+>  	bool pre_fault_allowed;
+>  	struct hlist_head *mmu_page_hash;
+>  	struct list_head active_mmu_pages;
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 0a1b63c63d1a..4836e206f64a 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -6910,7 +6910,8 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+>  			break;
+>  
+>  		mutex_lock(&kvm->lock);
+> -		if (!kvm->created_vcpus && !kvm->arch.created_mediated_pmu) {
+> +		if (!kvm->created_vcpus && !kvm->arch.created_mediated_pmu &&
+> +			!kvm->arch.has_protected_pmu) {
 
-Add stub functions for pcie_tph_get_st_table_size() and
-pcie_tph_get_st_table_loc() when !CONFIG_PCI_TPH.
+Align.
 
-Add tph_cap validation for pcie_tph_get_st_modes() and
-pcie_tph_get_st_table_loc() to prevent invalid PCI configuration
-space access when TPH is not supported.
+>  			kvm->arch.enable_pmu = !(cap->args[0] & KVM_PMU_CAP_DISABLE);
+>  			r = 0;
+>  		}
+> @@ -13375,7 +13376,10 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+>  	kvm->arch.default_tsc_khz = max_tsc_khz ? : tsc_khz;
+>  	kvm->arch.apic_bus_cycle_ns = APIC_BUS_CYCLE_NS_DEFAULT;
+>  	kvm->arch.guest_can_read_msr_platform_info = true;
+> -	kvm->arch.enable_pmu = enable_pmu;
+> +	if (kvm->arch.has_protected_pmu)
+> +		kvm->arch.enable_pmu = false;
+> +	else
+> +		kvm->arch.enable_pmu = enable_pmu;
 
-Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
----
- drivers/pci/tph.c       | 19 +++++++++++++++++--
- include/linux/pci-tph.h |  7 +++++++
- 2 files changed, 24 insertions(+), 2 deletions(-)
+	kvm->arch.enable_pmu = enable_pmu && !kvm->arch.has_protected_pmu;
 
-diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
-index 877cf556242b..ba31b010f67a 100644
---- a/drivers/pci/tph.c
-+++ b/drivers/pci/tph.c
-@@ -145,15 +145,27 @@ static void set_ctrl_reg_req_en(struct pci_dev *pdev, u8 req_type)
- 	pci_write_config_dword(pdev, pdev->tph_cap + PCI_TPH_CTRL, reg);
- }
- 
--static u8 get_st_modes(struct pci_dev *pdev)
-+/**
-+ * pcie_tph_get_st_modes - Get supported Steering Tag modes
-+ * @pdev: PCI device to query
-+ *
-+ * Return:
-+ *  Bitmask of supported ST modes (PCI_TPH_CAP_ST_NS, PCI_TPH_CAP_ST_IV,
-+ *                                 PCI_TPH_CAP_ST_DS)
-+ */
-+u8 pcie_tph_get_st_modes(struct pci_dev *pdev)
- {
- 	u32 reg;
- 
-+	if (!pdev->tph_cap)
-+		return 0;
-+
- 	pci_read_config_dword(pdev, pdev->tph_cap + PCI_TPH_CAP, &reg);
- 	reg &= PCI_TPH_CAP_ST_NS | PCI_TPH_CAP_ST_IV | PCI_TPH_CAP_ST_DS;
- 
- 	return reg;
- }
-+EXPORT_SYMBOL(pcie_tph_get_st_modes);
- 
- /**
-  * pcie_tph_get_st_table_loc - Return the device's ST table location
-@@ -168,6 +180,9 @@ u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev)
- {
- 	u32 reg;
- 
-+	if (!pdev->tph_cap)
-+		return PCI_TPH_LOC_NONE;
-+
- 	pci_read_config_dword(pdev, pdev->tph_cap + PCI_TPH_CAP, &reg);
- 
- 	return reg & PCI_TPH_CAP_LOC_MASK;
-@@ -395,7 +410,7 @@ int pcie_enable_tph(struct pci_dev *pdev, int mode)
- 
- 	/* Sanitize and check ST mode compatibility */
- 	mode &= PCI_TPH_CTRL_MODE_SEL_MASK;
--	dev_modes = get_st_modes(pdev);
-+	dev_modes = pcie_tph_get_st_modes(pdev);
- 	if (!((1 << mode) & dev_modes))
- 		return -EINVAL;
- 
-diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
-index be68cd17f2f8..5772d48ea444 100644
---- a/include/linux/pci-tph.h
-+++ b/include/linux/pci-tph.h
-@@ -30,6 +30,7 @@ void pcie_disable_tph(struct pci_dev *pdev);
- int pcie_enable_tph(struct pci_dev *pdev, int mode);
- u16 pcie_tph_get_st_table_size(struct pci_dev *pdev);
- u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev);
-+u8 pcie_tph_get_st_modes(struct pci_dev *pdev);
- #else
- static inline int pcie_tph_set_st_entry(struct pci_dev *pdev,
- 					unsigned int index, u16 tag)
-@@ -41,6 +42,12 @@ static inline int pcie_tph_get_cpu_st(struct pci_dev *dev,
- static inline void pcie_disable_tph(struct pci_dev *pdev) { }
- static inline int pcie_enable_tph(struct pci_dev *pdev, int mode)
- { return -EINVAL; }
-+static inline u16 pcie_tph_get_st_table_size(struct pci_dev *pdev)
-+{ return 0; }
-+static inline u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev)
-+{ return 0; }
-+static inline u8 pcie_tph_get_st_modes(struct pci_dev *pdev)
-+{ return 0; }
- #endif
- 
- #endif /* LINUX_PCI_TPH_H */
--- 
-2.17.1
-
+>  #if IS_ENABLED(CONFIG_HYPERV)
+>  	spin_lock_init(&kvm->arch.hv_root_tdp_lock);
+> -- 
+> 2.54.0.563.g4f69b47b94-goog
+> 
