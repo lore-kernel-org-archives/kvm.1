@@ -1,183 +1,117 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60275330D2F
-	for <kvm@vger.kernel.org>; Thu,  7 May 2026 18:47:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C1F3EF643
+	for <kvm@vger.kernel.org>; Thu,  7 May 2026 19:09:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778179634; cv=none; b=mSdnCjk5rfnZz8GNIqA2poXzYV4ffsD1Y5bt0kE9I7MP2dWRrL6hO+VEPWdm9vesKGWbIVqnuriFgCmxxtUDMymaS1sR9eX7tRCbuPDQLTRapwAwwtVOYPCj2C4T5Oafi4UceIYLYso7+s+sVpbcD693SowWn5d0ljrwBWNLbrA=
+	t=1778180952; cv=none; b=IQVKoMtdVG+JZhhYMvvOKPa149t0lBvdy+92TTe4RuVfldMElAzdmShjDyAydR8yazzKiRVfqTQ7W/tgFoS9igZn7f4IwzxS6FnlLqkRpGdoc1S9FqUyZUf016ZKs/poLbMaEGBuwrt8uQF/LNhu1D3mJHne4rd6qQZCcaXrrbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778179634; c=relaxed/simple;
-	bh=h1JkDde0JEpeHExaAaLcI/3EDWHEcgua5TaSpojYG5I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MGWykOeifmSEmpopUeZ1MUbVAXFZZgQDdJOYrrUrMJaogqUPNATeDivfEdX/wv+/EbLlkay70Vh/QQChgXuAsRlNY+4j7WkdZmWMR544zM9JGDevX3tHC9be75x/Tj9HdC1WlJ66ckIdHXxBMnsKqiUAEnibtp5kCprqPebsVgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TvN4gAr1; arc=none smtp.client-ip=209.85.214.179
+	s=arc-20240116; t=1778180952; c=relaxed/simple;
+	bh=Ms2KvJFVR6HYBltl81OHgXxkhjfuXDqHHtKaMZKJquE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=qSTp/aZBPC2+llaNXnL/a34WetAZ44Fsf0XvvGK48n71lwu2cXFXnLxN4KpCj51A/E0C7NEkaWQPEOjT0I5tuSLOImsrcMVwQSIlI/dW15OYjM9rYZ9ReKBxbzgeKmkjKKa0oG0hBy3grrVdqSnFm6MVXw75WoOywLrGSW9iqoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XWx2uA+p; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TvN4gAr1"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2b2e8b95bdbso17645ad.0
-        for <kvm@vger.kernel.org>; Thu, 07 May 2026 11:47:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XWx2uA+p"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b9b8137828so13478205ad.0
+        for <kvm@vger.kernel.org>; Thu, 07 May 2026 12:09:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778179632; x=1778784432; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CukuR4C0VokxuACh8W7BiMV3ykO5i2dF/8Jc99UlNZw=;
-        b=TvN4gAr12UOEDzR+1X/JXjdaXNGbMwc7p2aOK8dRMmVZ+EIQAD1d/H55LoTAMCSvAM
-         av4D3P2ujK8g9MhUSqABXDbWWvDQdzltWe9fsUyCyUrYpdwpHdJ3Ztr/iVGb0ZjZlWTM
-         T9lRhEQBkAcNIN0UbmEV2n73qI7+DAlsolqlnMfRBWJ5UAjqExugtVgCldQUV0ReGyKz
-         QOpJM+7PVafrMBvaPmAUrvJQhOMYAHrFKoPx83uTyG44smCeeB9qwtzJjtjEspzunfV5
-         ZIB4uNxGHrbyYe9n+NuximOLiRGSdqQYfHIPn0mx2jnSOxsYFWtHj27eDL9waLfUOilH
-         4OIg==
+        d=google.com; s=20251104; t=1778180950; x=1778785750; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6KoXjOK5QFOjtrkDoTfqMRdZ3nPGO5a5QHereU923po=;
+        b=XWx2uA+p+2REwzJrj916lCFldNJ0UALgNvGcG/DN5sEqE0AOkOUi7lSAtnVlC8A1i1
+         L06LWKH9p/KtyQLcZ7q1FRnghrkb3nwc9kt6JRGVpBqqycsNiz0bQKv7tP4f+T8MeQd3
+         ZAc7t/ZAlHTrfX5du7q4HHVp0QbcWSlTGnOW1XyU06uEzN2zrIluu4wcZRGI00SUAXmg
+         EE7GJqFEyk1IhvQw39cv2eV03DfOgIHDOSlm7XZDRcx2L+ZFeqNAT6BazvjngmGKpf/B
+         67AK/ddBWLuIu3am528DWAz83QbKIEZgTUTxVdABiSV6TxxUnwihWIo9goxWe+I9F7cS
+         WBCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778179632; x=1778784432;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CukuR4C0VokxuACh8W7BiMV3ykO5i2dF/8Jc99UlNZw=;
-        b=A752gmusxXstPhd9xSICKK1H3xL8yVMUTjQDwMVcKig3OO4AwCQXzNjQDhKs5v0MUe
-         8XK8AgkKVV2xxsFDIilFihxo+ZEcYz0GFvyrbo2vF5Q4uXXSydheeVxwFgAtIWkI8Ln7
-         cX6Y+KwiKLJKpG4UzeN9dIW7oNjNvFI4yoYbBInhlcPuqYnUXZy3hBn7PvA1YKfrE6Fv
-         HplmQM+SHFdMzwVnMlewbrp7NG7MtqkCXGXcwSbCsZD7xDksQc0/e3qectTl1hbamaZD
-         WV4bFZX3agyDAmrrhSkfkA0LITXIggdMpEt/8yo1rlC4eo6/mZOZx8k6bkChRBBbWjdu
-         bePg==
-X-Forwarded-Encrypted: i=1; AFNElJ9ATq0BkFlIG6ZKM/6mu23TilNXQ27eGgxVcaxSnKWFrzdsPeoEzElXbI+5h/HB0WzxHzE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwesCjUcDRSbAClixqczEsE5o9a6NcjER50WODKtfM1rgFgpVmX
-	cdN2Okt81QN+TI9nnqa6SfBMMu01KTXOlls4LL8y3DpUay2ukb2PwOI7YCikJhxTzbAJJz/VOOL
-	+4E6lPbpF
-X-Gm-Gg: Acq92OEe0xg5amqauAugTuV3AAr5Zv2EBAKgM+gFfErhRzYPrCVufwIoHJgQdvowjQS
-	YZ9tRaEu/+tx1ER6ORGKO/bST395bpYos6u82xhpozmHxyAvK2iaap7GJFSzsYw0MLncW/hYnbl
-	qYjrsFBEwmFWYLIOlYijISfTWLiWL6lkR80JYRCsappwrTbYT7IVoN6m6IFKrGZAVBPagJHvYv6
-	ai15Xs3LN5lda5XRAz0GZasa/k7eJyQDyp5vXheOh/DispRFfA8IZwBJpTVhO5T5eo818dYSK8C
-	1CiY/vuKQO1k1ZGyfNYP2f/d8LxUcptezPr9r/W35fFmuS9ToE3QY06xp65/cRMzlrPSF2r/GVa
-	T/FIbM9CqNGVSiuLNb5xZdPECFSQ92UJjjcimP1HNQDmL83WJchFNe3yiAkIt+AfZvLY9O14lMz
-	4tR/b/hLrGdI1vYBwPSF3EOTUir8yoI3m0t5xz/q5TjJt54DiLUvi+D2x9LDfwVt/yNljVgA==
-X-Received: by 2002:a17:902:d50d:b0:2b2:5931:5950 with SMTP id d9443c01a7336-2bae9e68566mr558665ad.16.1778179631231;
-        Thu, 07 May 2026 11:47:11 -0700 (PDT)
-Received: from google.com (153.46.83.34.bc.googleusercontent.com. [34.83.46.153])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c82640ca287sm278224a12.23.2026.05.07.11.47.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 May 2026 11:47:10 -0700 (PDT)
-Date: Thu, 7 May 2026 18:47:07 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, 
-	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Pranjal Shrivastava <praan@google.com>, 
-	Vipin Sharma <vipinsh@google.com>, YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH v2 04/16] iommu: Implement device and IOMMU HW
- preservation
-Message-ID: <afzcqWa8iVqrhJLs@google.com>
-References: <20260427175633.1978233-1-skhawaja@google.com>
- <20260427175633.1978233-5-skhawaja@google.com>
- <3874a086-98ae-4b94-8c1b-20e13f5a92fb@linux.intel.com>
+        d=1e100.net; s=20251104; t=1778180950; x=1778785750;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=6KoXjOK5QFOjtrkDoTfqMRdZ3nPGO5a5QHereU923po=;
+        b=Y4szYVIv9AjT/k0Tqw1QG0r+Vw6JZ0aXb0khoJ5mO5jadU0HdcFmFCT6FUwXXBGSwy
+         J5UUxAplkyMdRitsZHLV0y9w7mJKxoDlRqItOzFWhBZ5cb4lGqpEXFsTbef5bIugCUs/
+         Wvw2wHhjt80si+doXRPm6URoVPZI8j4ouh1Z/CmSEo7e/46q3B3enfGAiIJCW0jOf63/
+         XU27d0iQmT7f4RMCwT9HBFTTbwwxYdh8FhQtge3BbXroLh9SdEUtuFAmf1RoW4Iv+my4
+         YeNeUiTyBZj7UOwaRaCr2kbKZ5Q75lgYxP4rUR3375sU37JRvIv3nNXtldg/tCkV6rTB
+         MpFA==
+X-Forwarded-Encrypted: i=1; AFNElJ/EaXQzlN2bXBNnbN7LcjrWHzjfezAJ3/dYRBdZuSp1CdhlGyNOP5Q4pRI9OGwYmTo3cKY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOiic3wowfegBkLg9KTDXy6bmFTUieWbpevmty50JUcnF2B7De
+	d+RPL/Dr9vfva5P195uFUWDy/tCnkU8R0SToJ/K4s5rX3q7qkabJ/w9/jj77i/6NYo8JEId9F0R
+	p+8ar6Q==
+X-Received: from pgbcp6.prod.google.com ([2002:a05:6a02:4006:b0:c76:a6b1:ed23])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:328e:b0:39c:643e:f062
+ with SMTP id adf61e73a8af0-3aa5a9056b6mr10273614637.7.1778180950020; Thu, 07
+ May 2026 12:09:10 -0700 (PDT)
+Date: Thu, 7 May 2026 12:09:09 -0700
+In-Reply-To: <CAK8fFZ7LEyyR2ChXCD7B8vjvDcyG1c4jtv3wYMV4GCiUkOi1Pw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <3874a086-98ae-4b94-8c1b-20e13f5a92fb@linux.intel.com>
+Mime-Version: 1.0
+References: <adVGrJaRlRooO4su@google.com> <20260409142226.2581-1-lei.chen@smartx.com>
+ <adf8Q1VSeAMMyCa_@google.com> <f1c742e0-41c1-4bdc-867c-a768a5eb89c5@leemhuis.info>
+ <afs6PJzU3rHZwGv3@google.com> <cd8a2ae6-a276-480d-b942-bcd318a30451@leemhuis.info>
+ <aftct6WWHdOG_EwX@google.com> <CAK8fFZ4j1tYc+eYH79RQnNSjr9J-SocFL6duMuBg+76NHhRUxQ@mail.gmail.com>
+ <afulNSVKMzrx35i_@google.com> <CAK8fFZ7LEyyR2ChXCD7B8vjvDcyG1c4jtv3wYMV4GCiUkOi1Pw@mail.gmail.com>
+Message-ID: <afzjVYupUl-nlaDK@google.com>
+Subject: Re: [PATCH v2] KVM: x86: Rate-limit global clock updates on vCPU load
+From: Sean Christopherson <seanjc@google.com>
+To: Jaroslav Pulchart <jaroslav.pulchart@gooddata.com>
+Cc: Thorsten Leemhuis <regressions@leemhuis.info>, Lei Chen <lei.chen@smartx.com>, igor@gooddata.com, 
+	jan.cipa@gooddata.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	pbonzini@redhat.com, 
+	Linux kernel regressions list <regressions@lists.linux.dev>, 
+	Linus Torvalds <torvalds@linux-foundation.org>
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, May 07, 2026 at 10:07:43AM +0800, Baolu Lu wrote:
->On 4/28/26 01:56, Samiullah Khawaja wrote:
->>Add IOMMU ops to preserve/unpreserve a device. These can be implemented
->>by the IOMMU drivers that support preservation of devices that have
->>their IOMMU domains preserved. During device preservation the state of
->>the associated IOMMU is also preserved as dependency.
->>
->>Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
->>---
->>  drivers/iommu/liveupdate.c       | 162 +++++++++++++++++++++++++++++++
->>  include/linux/iommu-liveupdate.h |  33 +++++++
->>  include/linux/iommu.h            |  20 ++++
->>  3 files changed, 215 insertions(+)
->>
+On Thu, May 07, 2026, Jaroslav Pulchart wrote:
+> > On Wed, May 06, 2026, Jaroslav Pulchart wrote:
+> > > > On Wed, May 06, 2026, Thorsten Leemhuis wrote:
+> > I think the only remaining question is why/how KVM's master clock is getting
+> > disabled.  But that's more of a question for your deployment than it is a question
+> > for upstream; it's possible there's a different KVM bug lurking, but it's more
+> > likely that something in your setup is incompatible with using the master clock.
+> >
+> > Note, it's certainly not "wrong" for the master clock to be disabled, but it's
+> > quite suprising, especially for Firecracker VMs.  It's worth investigating as
+> > there might be an underlying issue that's very easy to address, and "fixing" it
+> > should provide (very) small performance benefits.
+> 
+> I've dug into the "master clock question" and have an idea.
+> 
+> Our Firecracker hosts are themselves L1 KVM VMs (nested
+> virtualisation) running on AMD EPYC 9454P and EPYC 9455 hardware. Even
+> though the compute nodes use cpu_mode=host-passthrough in qemu kvm,
+> the invtsc CPUID bit is filtered out by QEMU, which I hadn't realized.
+> Without it the guest kernel marks the TSC unstable at boot:
+>     tsc: Marking TSC unstable due to TSCs unsynchronized
+> and falls back to kvm-clock as its clocksource.
+> 
+> I suppose that in turn prevents KVM from enabling the master clock for
+> any L2 guests (the Firecracker microVMs), am I right?
+> 
+> I have resolved the issue by explicitly adding +invtsc to
+> cpu_model_extra_flags in our OpenStack nova.conf. After this change
+> the L1 VMs now correctly show constant_tsc and nonstop_tsc in
+> /proc/cpuinfo and switch clocksource to tsc. I also confirmed the IPI
+> storm disappears without the v2 patch when +invtsc is present, and
+> returns when it is absent on a vanilla 7.0.3 kernel.
+> 
+> So could this be the answer to your question: "the master clock was
+> disabled because QEMU silently drops invtsc even in host-passthrough
+> mode"?
 
-[snip]
->>+
->>+int iommu_preserve_device(struct iommu_domain *domain,
->>+			  struct device *dev, u64 *preserved_state)
->>+{
->>+	struct iommu_flb_obj *flb_obj;
->>+	struct iommu_device_ser *device_ser;
->>+	struct dev_iommu *iommu;
->>+	struct pci_dev *pdev;
->>+	int ret;
->>+
->>+	if (!dev_is_pci(dev))
->>+		return -EOPNOTSUPP;
->>+
->>+	if (!domain->preserved_state)
->>+		return -EINVAL;
->>+
->>+	if (!iommu_group_dma_owner_claimed(dev->iommu_group))
->>+		return -EINVAL;
->>+
->>+	pdev = to_pci_dev(dev);
->>+	iommu = dev->iommu;
->>+	if (!iommu->iommu_dev->ops->preserve_device ||
->>+	    !iommu->iommu_dev->ops->preserve)
->>+		return -EOPNOTSUPP;
+Yep, that'd do it.   Linux-as-a-guest will prefer kvmclock over TSC if the TSC
+isnt constant and non-stop.  That in turn will prevent KVM (as the L1 hypervisor)
+from using the master clock, since it sees the kernel clocksource as not being
+(directly) based on TSC.
 
-I will check for unpreserve ops here also.
->>+
->>+	ret = liveupdate_flb_get_outgoing(&iommu_flb, (void **)&flb_obj);
->>+	if (ret)
->>+		return ret;
->>+
-
-[snip]
->>+}
->>+
->>+void iommu_unpreserve_device(struct iommu_domain *domain, struct device *dev)
->>+{
->>+	struct iommu_flb_obj *flb_obj;
->>+	struct iommu_device_ser *iommu_device_ser;
->>+	struct dev_iommu *iommu;
->>+	struct pci_dev *pdev;
->>+	int ret;
->>+
->>+	if (!dev_is_pci(dev))
->>+		return;
->>+
->>+	if (!iommu_group_dma_owner_claimed(dev->iommu_group))
->>+		return;
->>+
->>+	pdev = to_pci_dev(dev);
->>+	iommu = dev->iommu;
->>+	if (!iommu->iommu_dev->ops->unpreserve_device ||
->>+	    !iommu->iommu_dev->ops->unpreserve)
->>+		return;
->
->Is it considered a driver bug if it implements the preserve hooks but
->not unpreserve ones? This would at least cause a silent memory leak. How
->about adding a WARN like this?
-
-I think the preservation should not be done if the unpreserve ops are
-not implemented by the driver. I will add these checks in the _preserve
-functions and return EOPNOTSUPP if it is not implemented by the driver.
->
->    if (WARN_ON_ONCE(!iommu->iommu_dev->ops->unpreserve_device ||
->                     !iommu->iommu_dev->ops->unpreserve))
->        return;
-
-We can add this warning here also.
->
->?
->
->Thanks,
->baolu
->
-
-Thanks,
-Sami
+Thanks for the follow-up!
