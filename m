@@ -1,141 +1,267 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 944AE204F8B;
-	Thu,  7 May 2026 01:43:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55C727B35F;
+	Thu,  7 May 2026 02:10:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778118197; cv=none; b=mg2BbZjAQRwCIhcCc6HpM6KPWhO2A217yZn0R5N2NDQtGwDZfh3oNbaZcyip4tmeCsvVv5dK8do49K+tyy386jVB8eay3uE7oRyD7lAaThKAz3r+8KYPROSBwsI+FiLn5q8OvLbfKUFbENUQoAq0hreZkRlJyaKozLi0QqU00HU=
+	t=1778119820; cv=none; b=JC6+F2D4GaotV+XJFJwBAc6NISEysnh5SWAw57nHz6RweuICVi3rbr7ZNNeJbNxIikpgOrZOVwU6OfvkLVtBD6YzRddq6WhBXJa9DOv/Qbxgw5dy5MEjeehamHxxY4QBXn6C2CtU+h9WxkEXlfIhLbWBa6B5AemQjDxMSS5Tyyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778118197; c=relaxed/simple;
-	bh=wfkzn5vEOdAO4CItueKY05cY1KoUngcW2ziIYm3VPMY=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=RLNSmp2Nh1l0MQkKigGHxg8QWnei6PzW2LjVakV0grH2uDsLg4kiaHy22LT/sfjY7LGhIFUorKayY445do69QSubocATAq/a/dfRiPAMWmFoVZ69lIvPdXm69lj4g+XG1ddvfl532g0pXTUgbVaFm+k2Oln31Y97guWvYR3EqO8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8Bx0eow7vtpG1UHAA--.24062S3;
-	Thu, 07 May 2026 09:43:12 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJBxacEo7vtpjfx7AA--.25500S3;
-	Thu, 07 May 2026 09:43:05 +0800 (CST)
-Subject: Re: [PATCH 1/5] KVM: arm64: Grab KVM MMU write lock in
- kvm_arch_flush_shadow_all()
-To: Sean Christopherson <seanjc@google.com>
-Cc: James Houghton <jthoughton@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>,
- Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, Gavin Shan <gshan@redhat.com>,
- Shaoqin Huang <shahuang@redhat.com>, Ricardo Koller <ricarkol@google.com>,
- Tianrui Zhao <zhaotianrui@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>,
- James Hogan <jhogan@kernel.org>, linux-arm-kernel@lists.infradead.org,
- kvmarm@lists.linux.dev, loongarch@lists.linux.dev,
- linux-mips@vger.kernel.org, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260504224213.1049426-1-jthoughton@google.com>
- <20260504224213.1049426-2-jthoughton@google.com>
- <25838e74-01dd-d085-395b-676266dc9a9a@loongson.cn>
- <aftIbW9G4RfoTuXh@google.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <833b7f62-5e9f-26e7-f60d-2ac1dd24c031@loongson.cn>
-Date: Thu, 7 May 2026 09:40:10 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1778119820; c=relaxed/simple;
+	bh=NyepB9a27hAykCXi2WMNR4qwpLX6uQ5expv6FydGVTg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rgTqLio+Mc9+UBcike+vGnQWp8pIaAdOSyb5EGR0VsPQejAfCA0Ow2aSsSiQl8DJ4/9HZpVzIKCbE9x8oZNOmKTEpSnXrP404KKbzDuNh4bqFutISeNoKhlKEXd2fopBW3TBKGCnTnPDqFEjbB4l+I0Kp0+gPTEzVD2ethfE+mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Dp95X6ub; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Dp95X6ub"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778119817; x=1809655817;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=NyepB9a27hAykCXi2WMNR4qwpLX6uQ5expv6FydGVTg=;
+  b=Dp95X6ubd9wHxg0C7yGioEk8fAp1b2WeFh+el8XIEmvrOs30k8g7+s+I
+   I+A/7asFDIOYAYAXti9ar5v0ABLVtgoOVbiN0hgju9EWHI1WB+gpOrveC
+   BJPD9mkF5Ziq0srVWhudwxpDffcvio1i1l6Rq3KsiO3Se8aC5OtR8prap
+   SYSVKQlpHHB08mt2d/+F/2dYsnApW/7EJNj7/uyMFYRL9f9NDMiriview
+   47/p0kHC9w+fcEoyc1I0Y40QETSyGDh7LqWM6ntfYtxek/fJ7FUiKIlB2
+   NbA3lJ1XuXyf1EdPuvd9bqzmpSsLcIpSkj+ciGNtNwGO/C1PE8lvEgaZh
+   A==;
+X-CSE-ConnectionGUID: mV9Wq0ksRvinzjfq+S55Jg==
+X-CSE-MsgGUID: AbN5nNfjR/WKwe+a+FMjHg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="79172187"
+X-IronPort-AV: E=Sophos;i="6.23,220,1770624000"; 
+   d="scan'208";a="79172187"
+Received: from orviesa008.jf.intel.com ([10.64.159.148])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 19:10:17 -0700
+X-CSE-ConnectionGUID: mpXeGnDjQ6Ow/ME69xlzVg==
+X-CSE-MsgGUID: idbu0OcjTZer6CMXENe4+A==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,220,1770624000"; 
+   d="scan'208";a="236241780"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 19:10:12 -0700
+Message-ID: <3874a086-98ae-4b94-8c1b-20e13f5a92fb@linux.intel.com>
+Date: Thu, 7 May 2026 10:07:43 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <aftIbW9G4RfoTuXh@google.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 04/16] iommu: Implement device and IOMMU HW
+ preservation
+To: Samiullah Khawaja <skhawaja@google.com>,
+ David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
+ Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+ iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ Saeed Mahameed <saeedm@nvidia.com>,
+ Adithya Jayachandran <ajayachandra@nvidia.com>,
+ Parav Pandit <parav@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>,
+ William Tu <witu@nvidia.com>, Pratyush Yadav <pratyush@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ David Matlack <dmatlack@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>,
+ YiFei Zhu <zhuyifei@google.com>
+References: <20260427175633.1978233-1-skhawaja@google.com>
+ <20260427175633.1978233-5-skhawaja@google.com>
 Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxacEo7vtpjfx7AA--.25500S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxZr1rJF1DJFWxtw1UKw43twc_yoW5GFyxpF
-	WUC3WqgrWDA340kw4kZ3WkWw1FyaykGr4UJw1Ygry5urs8Gwn3KF4SyFy0kFZ7ZrZ7GFWq
-	qF45tr95Zas8ZrXCm3ZEXasCq-sJn29KB7ZKAUJUUUUf529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUPFb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
-	Gr0_Gr1UM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYI
-	kI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUAVWU
-	twAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMx
-	k0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2Ij64vIr41l
-	4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxV
-	WUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r4a6rW5MIIYrxkI
-	7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JFI_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r
-	4j6F4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI
-	42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU2-VyUUUUU
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20260427175633.1978233-5-skhawaja@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+On 4/28/26 01:56, Samiullah Khawaja wrote:
+> Add IOMMU ops to preserve/unpreserve a device. These can be implemented
+> by the IOMMU drivers that support preservation of devices that have
+> their IOMMU domains preserved. During device preservation the state of
+> the associated IOMMU is also preserved as dependency.
+> 
+> Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
+> ---
+>   drivers/iommu/liveupdate.c       | 162 +++++++++++++++++++++++++++++++
+>   include/linux/iommu-liveupdate.h |  33 +++++++
+>   include/linux/iommu.h            |  20 ++++
+>   3 files changed, 215 insertions(+)
+> 
+> diff --git a/drivers/iommu/liveupdate.c b/drivers/iommu/liveupdate.c
+> index f71f14518248..765d042e22e3 100644
+> --- a/drivers/iommu/liveupdate.c
+> +++ b/drivers/iommu/liveupdate.c
+> @@ -11,6 +11,7 @@
+>   #include <linux/liveupdate.h>
+>   #include <linux/iommu-liveupdate.h>
+>   #include <linux/iommu.h>
+> +#include <linux/pci.h>
+>   #include <linux/errno.h>
+>   
+>   #define iommu_max_objs_per_page(_array) \
+> @@ -293,3 +294,164 @@ void iommu_domain_unpreserve(struct iommu_domain *domain)
+>   	domain->preserved_state = NULL;
+>   }
+>   EXPORT_SYMBOL_GPL(iommu_domain_unpreserve);
+> +
+> +static struct iommu_hw_ser *alloc_iommu_hw_ser(struct iommu_flb_obj *flb)
+> +{
+> +	int idx;
+> +
+> +	idx = alloc_object_ser((struct iommu_array_hdr_ser **)&flb->curr_iommu_array,
+> +			       iommu_max_objs_per_page(flb->curr_iommu_array));
+> +	if (idx < 0)
+> +		return ERR_PTR(idx);
+> +
+> +	flb->curr_iommu_array->objects[idx].hdr.ref_count = 1;
+> +	return &flb->curr_iommu_array->objects[idx];
+> +}
+> +
+> +static int iommu_preserve_locked(struct iommu_device *iommu,
+> +				 struct iommu_flb_obj *flb_obj)
+> +{
+> +	struct iommu_hw_ser *iommu_hw_ser;
+> +	int ret;
+> +
+> +	if (!iommu->ops->preserve)
+> +		return -EOPNOTSUPP;
+> +
+> +	lockdep_assert_held(&flb_obj->lock);
+> +	if (iommu->outgoing_preserved_state) {
+> +		iommu->outgoing_preserved_state->hdr.ref_count++;
+> +		return 0;
+> +	}
+> +
+> +	iommu_hw_ser = alloc_iommu_hw_ser(flb_obj);
+> +	if (IS_ERR(iommu_hw_ser))
+> +		return PTR_ERR(iommu_hw_ser);
+> +
+> +	ret = iommu->ops->preserve(iommu, iommu_hw_ser);
+> +	if (ret) {
+> +		iommu_hw_ser->hdr.deleted = true;
+> +		return ret;
+> +	}
+> +
+> +	iommu->outgoing_preserved_state = iommu_hw_ser;
+> +	return ret;
+> +}
+> +
+> +static void iommu_unpreserve_locked(struct iommu_device *iommu,
+> +				    struct iommu_flb_obj *flb_obj)
+> +{
+> +	struct iommu_hw_ser *iommu_hw_ser = iommu->outgoing_preserved_state;
+> +
+> +	lockdep_assert_held(&flb_obj->lock);
+> +	iommu_hw_ser->hdr.ref_count--;
+> +	if (iommu_hw_ser->hdr.ref_count)
+> +		return;
+> +
+> +	iommu->outgoing_preserved_state = NULL;
+> +	iommu->ops->unpreserve(iommu, iommu_hw_ser);
+> +	iommu_hw_ser->hdr.deleted = true;
+> +}
+> +
+> +static struct iommu_device_ser *alloc_iommu_device_ser(struct iommu_flb_obj *flb)
+> +{
+> +	int idx;
+> +
+> +	idx = alloc_object_ser((struct iommu_array_hdr_ser **)&flb->curr_device_array,
+> +			       iommu_max_objs_per_page(flb->curr_device_array));
+> +	if (idx < 0)
+> +		return ERR_PTR(idx);
+> +
+> +	flb->curr_device_array->objects[idx].hdr.ref_count = 1;
+> +	return &flb->curr_device_array->objects[idx];
+> +}
+> +
+> +int iommu_preserve_device(struct iommu_domain *domain,
+> +			  struct device *dev, u64 *preserved_state)
+> +{
+> +	struct iommu_flb_obj *flb_obj;
+> +	struct iommu_device_ser *device_ser;
+> +	struct dev_iommu *iommu;
+> +	struct pci_dev *pdev;
+> +	int ret;
+> +
+> +	if (!dev_is_pci(dev))
+> +		return -EOPNOTSUPP;
+> +
+> +	if (!domain->preserved_state)
+> +		return -EINVAL;
+> +
+> +	if (!iommu_group_dma_owner_claimed(dev->iommu_group))
+> +		return -EINVAL;
+> +
+> +	pdev = to_pci_dev(dev);
+> +	iommu = dev->iommu;
+> +	if (!iommu->iommu_dev->ops->preserve_device ||
+> +	    !iommu->iommu_dev->ops->preserve)
+> +		return -EOPNOTSUPP;
+> +
+> +	ret = liveupdate_flb_get_outgoing(&iommu_flb, (void **)&flb_obj);
+> +	if (ret)
+> +		return ret;
+> +
+> +	guard(mutex)(&flb_obj->lock);
+> +	device_ser = alloc_iommu_device_ser(flb_obj);
+> +	if (IS_ERR(device_ser))
+> +		return PTR_ERR(device_ser);
+> +
+> +	ret = iommu_preserve_locked(iommu->iommu_dev, flb_obj);
+> +	if (ret) {
+> +		device_ser->hdr.deleted = true;
+> +		return ret;
+> +	}
+> +
+> +	device_ser->domain_iommu_ser.domain_phys = __pa(domain->preserved_state);
+> +	device_ser->domain_iommu_ser.iommu_phys = __pa(iommu->iommu_dev->outgoing_preserved_state);
+> +	device_ser->devid = pci_dev_id(pdev);
+> +	device_ser->pci_domain_nr = pci_domain_nr(pdev->bus);
+> +
+> +	ret = iommu->iommu_dev->ops->preserve_device(dev, device_ser);
+> +	if (ret) {
+> +		device_ser->hdr.deleted = true;
+> +		iommu_unpreserve_locked(iommu->iommu_dev, flb_obj);
+> +		return ret;
+> +	}
+> +
+> +	dev->iommu->device_ser = device_ser;
+> +	*preserved_state = virt_to_phys(device_ser);
+> +	return 0;
+> +}
+> +
+> +void iommu_unpreserve_device(struct iommu_domain *domain, struct device *dev)
+> +{
+> +	struct iommu_flb_obj *flb_obj;
+> +	struct iommu_device_ser *iommu_device_ser;
+> +	struct dev_iommu *iommu;
+> +	struct pci_dev *pdev;
+> +	int ret;
+> +
+> +	if (!dev_is_pci(dev))
+> +		return;
+> +
+> +	if (!iommu_group_dma_owner_claimed(dev->iommu_group))
+> +		return;
+> +
+> +	pdev = to_pci_dev(dev);
+> +	iommu = dev->iommu;
+> +	if (!iommu->iommu_dev->ops->unpreserve_device ||
+> +	    !iommu->iommu_dev->ops->unpreserve)
+> +		return;
 
+Is it considered a driver bug if it implements the preserve hooks but
+not unpreserve ones? This would at least cause a silent memory leak. How
+about adding a WARN like this?
 
-On 2026/5/6 下午9:55, Sean Christopherson wrote:
-> On Wed, May 06, 2026, Bibo Mao wrote:
->> On 2026/5/5 上午6:42, James Houghton wrote:
->>> kvm_arch_flush_shadow_all() may sometimes be called on the same `kvm`
->>> concurrently in the event that the KVM's `mm` is __mmput() at the
->>> same time that last reference to the KVM is being dropped.
->>>
->>> T1              T2
->>> KVM_CREATE_VM
->>>                   Get VM file from T1
->>> close VM
->>> exit_mm()       close VM
->>>
->>> T1: exit_mm() -> kvm_mmu_notifier_release() -> kvm_flush_shadow_all(),
->>>       with only the KVM srcu read lock held.
->>>
->>> T2: kvm_vm_release() ---> mmu_notifier_unregister() ->
->>>       kvm_mmu_notifier_release() -> kvm_flush_shadow_all(),
->>>       again, with only the KVM srcu read lock held.
->> By looking through the code, kvm_arch_destroy_vm() will free PGD page only,
->> page table walking is executing in deleting memslot or exit_mm().
->>
->> With normal code, life cycle of VM is something like this:
-> 
-> Not necessarily.  Abruptly closing the VM, as described below, is also "normal"
-> (though likely uncommon).
-> 
->>    KVM_CREATE_VM
->>      Create_VCPUs
->>      Create memslots
->>      Destroy_VCPUs
-> 
-> This is incorrect.  KVM doesn't provide any way for userspace to destroy vCPUs.
-> Userspace can fully release every vCPU fd, but the vCPU object within KVM stays
-> alive (and indirectly reachable) until the VM is destroyed.
-yes, that is so. For users, there is vCPU fd release interface. As for 
-vCPU object release, it is kind of internal implementation in KVM.
-> 
->>      Destroy memslots
->>    close VM
->>    exit_mm()
-> 
-> Note, exit_mm() may or may not be called.  E.g. there are VMMs that will destroy
-> a VM and start a new one (perhaps even the same conceptual virtual machine) in
-> the same process / mm_struct / address space.
-> 
->> And there is kvm_get_kvm()/kvm_put_kvm() function call with creating/destroy
->> vCPUs, however no such operations with memslot operation. Is it possible
->> that VM is destroyed without removing memslots, such as the following
->> operation.
->>    KVM_CREATE_VM
->>      Create memslots
->>    close VM
->>    exit_mm()
-> 
-> Yep.  KVM cannot make any assumptions when it comes to userspace-initiated
-> operations.  Even a VMM that super strictly follows the first approach may exit
-> abruptly, without destroying memslots, e.g. if it's OOM-killed.
-oh, I see. If so, the implementation about kvm_arch_destroy_vm() on 
-Loongarch is problematic, it needs consider this kind of abnormal VM 
-destroy, take page table walk and free page tables. I had thought that 
-memslots create/destroy should call kvm_get_kvm()/kvm_put_kvm() :(
+     if (WARN_ON_ONCE(!iommu->iommu_dev->ops->unpreserve_device ||
+                      !iommu->iommu_dev->ops->unpreserve))
+         return;
 
-Regards
-Bibo Mao
+?
 
+Thanks,
+baolu
