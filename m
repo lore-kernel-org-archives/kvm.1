@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65873480321;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC9A481FA0;
 	Thu,  7 May 2026 20:22:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778185369; cv=none; b=fPK0csn5JF2/1nWHFYSMG46DhvWOmNElv2d91Ts3pcLW2DP9tgKj76iafKI+G4qhnWMr+XuHrew4KN+oDE2OQERuGlAjgGRuTck0BXVUVcHy6vOplzJRtBFOHh27fJzCzWmCEuELnPjN8KIQN853JcpAYVJr9asMJ4/5adCyDhE=
+	t=1778185369; cv=none; b=Tii556bz8slwvA0IZdQsxQQ+qlCsqqBQjgh0dXBlHNLzrNPLRp3AxRiwNyKL7xxN4TzQwGBDxc+AmkeHx3iDMZtQctHquFOD5Uan3JayHeE/UEOWiLar5GoSf729K+S1hmib7gzPcUpC2hrSjt5W4n0vGsiB4fRHvaRIiGd/xvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778185369; c=relaxed/simple;
-	bh=rE/8cKNqZaeVjXxwfBww6tbTvn1fWAuFQWquxX7xXVo=;
+	bh=7/iZOc9brXGA8FsdrttcBxTMx7H7bwCNR6oDaXUYPLk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=X+b3civqJPQYcW6pSaxt1gHhLsRdpz+H74028Bc8HNniFQkL8RkdRUPmxQE3PhSH1eWSl3bFndgvAzLbyPtu631cb42svk0cQ3rleK3dpsrJqroGaBGcZrmBLiePa4Fu4BzDZeDh6RLaR0vO7bvRYj6PB+2haEEi2r35r4+FuG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XvC+UzUS; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=WuaLTVrRJbEJcrYmyBvwBk3/wjR5TDyD+Zlc5HKWpm1aceCB5pt+WahWReFkAjUoy023Q7Iwi+K40JQhwfJufNwreVS1T2cuWroCkVuqJ5Lb5koVtpUGI9ow+Sx7VGuXZeSNy70Wx0S74ar3SnqKz2SXyQmkCHNb+IoAw7hIRGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WDym27k8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XvC+UzUS"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 3C5C6C2BCF6;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WDym27k8"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 84935C2BCB2;
 	Thu,  7 May 2026 20:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1778185369;
-	bh=rE/8cKNqZaeVjXxwfBww6tbTvn1fWAuFQWquxX7xXVo=;
+	bh=7/iZOc9brXGA8FsdrttcBxTMx7H7bwCNR6oDaXUYPLk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=XvC+UzUS6iBGIFHVAwkb2+EBpdCFlcRL2nbl5Rko4MtHF2EfiJTN5s1eKxS8b3pW2
-	 wThAsh142wRD6Gu6nQ+ARpn3Iw8/5RQjV8dGWb7Dqpi8bYvpUIWTjd6t8y/BckSGNk
-	 Kwopn7Kyn0UxzRuKMm3moafdTRhnDq+zQ953az0jVMSZfbgTuRm4lPC3DzKdkOm4Uj
-	 kelq47KQO1TKWefAl0kxXll2Gwtp4jkv2IJ4p3OA2fU4JwHkQSSlGIVuSmxDovy1l1
-	 9XhywJFBvEk+HFPx9Y1mfQ+wBa5xpv4aR/iXSQRctQSE6yiyf+1mAEC8VSXKao8e+W
-	 zwO0RdbQ+w4Ww==
+	b=WDym27k8yH8Wf44xK4rCdDadbWGNI4sMuAD323n4RWUdhcTEnDiDYoAixYeHczjGX
+	 aUjXS1B8pZZ5zMimuM47705y4OCuJTo+PmlUFm5VhbMCXlxetI5yrpsHRPK4k0aKVK
+	 idwX8rgGq4a0IiDKNRGAhBXsjVXhnSNVp4yB1ShlfOLNKf1MGuD18j0Q5EEHG/D4s/
+	 HnAb8WJ+qwzNTTc2PygPLFlnJy++7gN5ICRD2ttxixgt/hsGnau2uhebKVlyiV2FJD
+	 eEubKNRwVS5GOdbBTRXXs/R+nUR6Ths3YMJn+8l3bsdAJygMAW2R3eqrmr9p/L6pXN
+	 KZPb6NpKaQXKg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 29A9ACD3446;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 748EDCD343F;
 	Thu,  7 May 2026 20:22:49 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Thu, 07 May 2026 13:22:26 -0700
-Subject: [PATCH v6 07/43] KVM: guest_memfd: Update kvm_gmem_populate() to
- use gmem attributes
+Date: Thu, 07 May 2026 13:22:28 -0700
+Subject: [PATCH v6 09/43] KVM: Move kvm_supported_mem_attributes() to
+ kvm_host.h
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260507-gmem-inplace-conversion-v6-7-91ab5a8b19a4@google.com>
+Message-Id: <20260507-gmem-inplace-conversion-v6-9-91ab5a8b19a4@google.com>
 References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
 In-Reply-To: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -75,11 +75,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778185365; l=5801;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778185365; l=1904;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=xlmVc8K5kdL963hvctsSRqBmupjI5qxymxl1Xu3T0UI=;
- b=96gogwYRiScuQvD/ROeLWLvCx1B/jqbXVTHeK9UrPJ+YO0+OrZafzdC2iYxTs6p0KtdFouB73
- fsUr9AO4eW4CMbXiQWWBftI5XHfkuCK6kIOIKdvbrFJUy1YueHDC5sO
+ bh=H4KenV13dLeEqjvdyE3y5jRrxlJdQyrngi+fJmKc/3M=;
+ b=RI14MMkYeomt+WbAOHuBgg1ipOXRaDDHI21XNVAJPh2YQQwbvdvhCfGFJ1+t3mohkUod3jgSE
+ fkJgCBIWStfA2NuMm46M2fR+ccsXJzBqsgPFmYmUiI/IgKu6LsfGM3J
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -89,148 +89,61 @@ Reply-To: ackerleytng@google.com
 
 From: Ackerley Tng <ackerleytng@google.com>
 
-Update the guest_memfd populate() flow to pull memory attributes from the
-gmem instance instead of the VM when KVM is not configured to track
-shared/private status in the VM.
+Move kvm_supported_mem_attributes() from kvm_main.c to kvm_host.h and
+make it a static inline function. This allows the helper to be used in
+other parts of the KVM subsystem outside of kvm_main.c. This helper will be
+used later by guest_memfd.
 
-Rename the per-VM API to make it clear that it retrieves per-VM
-attributes, i.e. is not suitable for use outside of flows that are
-specific to generic per-VM attributes.
+No functional change intended.
 
-Co-developed-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- arch/x86/kvm/mmu/mmu.c   |  2 +-
- include/linux/kvm_host.h | 14 +++++++++++++-
- virt/kvm/guest_memfd.c   | 24 +++++++++++++++++++++---
- virt/kvm/kvm_main.c      |  8 +++-----
- 4 files changed, 38 insertions(+), 10 deletions(-)
+ include/linux/kvm_host.h | 10 ++++++++++
+ virt/kvm/kvm_main.c      | 10 ----------
+ 2 files changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 153bcc5369985..bfcf9be25598e 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -7997,7 +7997,7 @@ static bool hugepage_has_attrs(struct kvm *kvm, struct kvm_memory_slot *slot,
- 	const unsigned long end = start + KVM_PAGES_PER_HPAGE(level);
- 
- 	if (level == PG_LEVEL_2M)
--		return kvm_range_has_memory_attributes(kvm, start, end, ~0, attrs);
-+		return kvm_range_has_vm_memory_attributes(kvm, start, end, ~0, attrs);
- 
- 	for (gfn = start; gfn < end; gfn += KVM_PAGES_PER_HPAGE(level - 1)) {
- 		if (hugepage_test_mixed(slot, gfn, level - 1) ||
 diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 28a54298d27db..1deab76dc0a2c 100644
+index 1deab76dc0a2c..f9ea95e33d050 100644
 --- a/include/linux/kvm_host.h
 +++ b/include/linux/kvm_host.h
-@@ -2549,12 +2549,24 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
- #endif
- 
- #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
--bool kvm_range_has_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
-+extern bool vm_memory_attributes;
-+bool kvm_range_has_vm_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
- 				     unsigned long mask, unsigned long attrs);
- bool kvm_arch_pre_set_memory_attributes(struct kvm *kvm,
- 					struct kvm_gfn_range *range);
- bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
- 					 struct kvm_gfn_range *range);
-+#else
-+#define vm_memory_attributes false
-+static inline bool kvm_range_has_vm_memory_attributes(struct kvm *kvm,
-+						      gfn_t start, gfn_t end,
-+						      unsigned long mask,
-+						      unsigned long attrs)
-+{
-+	WARN_ONCE(1, "Unexpected call to kvm_range_has_vm_memory_attributes()");
-+
-+	return false;
-+}
- #endif /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
- 
- unsigned long kvm_gmem_get_memory_attributes(struct kvm *kvm, gfn_t gfn);
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index f055e058a3f28..9d025f518c025 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -924,12 +924,31 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
- 
- #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
-+static bool kvm_gmem_range_is_private(struct gmem_inode *gi, pgoff_t index,
-+				      size_t nr_pages, struct kvm *kvm, gfn_t gfn)
-+{
-+	pgoff_t end = index + nr_pages - 1;
-+	void *entry;
-+
-+	if (vm_memory_attributes)
-+		return kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + nr_pages,
-+						       KVM_MEMORY_ATTRIBUTE_PRIVATE,
-+						       KVM_MEMORY_ATTRIBUTE_PRIVATE);
-+
-+	mt_for_each(&gi->attributes, entry, index, end) {
-+		if (xa_to_value(entry) != KVM_MEMORY_ATTRIBUTE_PRIVATE)
-+			return false;
-+	}
-+
-+	return true;
-+}
- 
- static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
- 				struct file *file, gfn_t gfn, struct page *src_page,
- 				kvm_gmem_populate_cb post_populate, void *opaque)
- {
- 	pgoff_t index = kvm_gmem_get_index(slot, gfn);
-+	struct gmem_inode *gi;
- 	struct folio *folio;
- 	kvm_pfn_t pfn;
- 	int ret;
-@@ -944,9 +963,8 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
- 
- 	folio_unlock(folio);
- 
--	if (!kvm_range_has_memory_attributes(kvm, gfn, gfn + 1,
--					     KVM_MEMORY_ATTRIBUTE_PRIVATE,
--					     KVM_MEMORY_ATTRIBUTE_PRIVATE)) {
-+	gi = GMEM_I(file_inode(file));
-+	if (!kvm_gmem_range_is_private(gi, index, 1, kvm, gfn)) {
- 		ret = -EINVAL;
- 		goto out_put_folio;
- 	}
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 4139e903f756a..0a4024948711a 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -103,9 +103,7 @@ module_param(allow_unsafe_mappings, bool, 0444);
+@@ -2529,6 +2529,16 @@ static inline bool kvm_memslot_is_gmem_only(const struct kvm_memory_slot *slot)
+ }
  
  #ifdef CONFIG_KVM_MEMORY_ATTRIBUTES
++static inline u64 kvm_supported_mem_attributes(struct kvm *kvm)
++{
++#ifdef kvm_arch_has_private_mem
++	if (!kvm || kvm_arch_has_private_mem(kvm))
++		return KVM_MEMORY_ATTRIBUTE_PRIVATE;
++#endif
++
++	return 0;
++}
++
+ typedef unsigned long (kvm_get_memory_attributes_t)(struct kvm *kvm, gfn_t gfn);
+ DECLARE_STATIC_CALL(__kvm_get_memory_attributes, kvm_get_memory_attributes_t);
+ 
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 0a4024948711a..ff20e63143642 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -2428,16 +2428,6 @@ static int kvm_vm_ioctl_clear_dirty_log(struct kvm *kvm,
+ #endif /* CONFIG_KVM_GENERIC_DIRTYLOG_READ_PROTECT */
+ 
+ #ifdef CONFIG_KVM_MEMORY_ATTRIBUTES
+-static u64 kvm_supported_mem_attributes(struct kvm *kvm)
+-{
+-#ifdef kvm_arch_has_private_mem
+-	if (!kvm || kvm_arch_has_private_mem(kvm))
+-		return KVM_MEMORY_ATTRIBUTE_PRIVATE;
+-#endif
+-
+-	return 0;
+-}
+-
  #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
--static bool vm_memory_attributes = true;
--#else
--#define vm_memory_attributes false
-+bool vm_memory_attributes = true;
- #endif
- DEFINE_STATIC_CALL_RET0(__kvm_get_memory_attributes, kvm_get_memory_attributes_t);
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(STATIC_CALL_KEY(__kvm_get_memory_attributes));
-@@ -2450,7 +2448,7 @@ static unsigned long kvm_get_vm_memory_attributes(struct kvm *kvm, gfn_t gfn)
-  * Returns true if _all_ gfns in the range [@start, @end) have attributes
-  * such that the bits in @mask match @attrs.
-  */
--bool kvm_range_has_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
-+bool kvm_range_has_vm_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
- 				     unsigned long mask, unsigned long attrs)
+ static unsigned long kvm_get_vm_memory_attributes(struct kvm *kvm, gfn_t gfn)
  {
- 	XA_STATE(xas, &kvm->mem_attr_array, start);
-@@ -2584,7 +2582,7 @@ static int kvm_vm_set_mem_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
- 	mutex_lock(&kvm->slots_lock);
- 
- 	/* Nothing to do if the entire range has the desired attributes. */
--	if (kvm_range_has_memory_attributes(kvm, start, end, ~0, attributes))
-+	if (kvm_range_has_vm_memory_attributes(kvm, start, end, ~0, attributes))
- 		goto out_unlock;
- 
- 	/*
 
 -- 
 2.54.0.563.g4f69b47b94-goog
