@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061DF49550D;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE7FE4A13BF;
 	Thu,  7 May 2026 20:22:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778185371; cv=none; b=VtwqbzvGBOdLMw8iKQ2G9wF6SWi2rW9PXSZDgo/KoNp4AXs6tvHKu8ea82xx492kwOrSZ2J1mH5S9b0npsT/RGd9GBU3NJBk6vFHxNxcYPOM8R9W4GxAA7atGOsbu7NSUuovdt1PtrIs1y4of2ISgBcqwVy3ILRX5PgEEPYWnCg=
+	t=1778185372; cv=none; b=WapK09dfyrj7TGCfUem7Qe8eQOxmxMpKvD7Dq1jT5JCPIbX94Zar2iEylT9nf1ZFcRU/0fLEwBW+YTcXkBsK3ht64u/tangrQXes8RSGeBSBiPFbZRfd6zcKpaJxgAaUreBML3+B1KDkrm8KNBP8csttXfBe1ikwh9OnIBcwdWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778185371; c=relaxed/simple;
-	bh=3Ey26oHjBIStPVcofdxUBpg3KGMQjwyU1xBvE1HXR/Q=;
+	s=arc-20240116; t=1778185372; c=relaxed/simple;
+	bh=p4qBfxGdAfMtaGGKStlHkSWVzxsaXmOgsRx/hRU32gc=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=R5cq4JCEePXDgxkz9aXLhBBV7woNIg9V7eDPL/JqwYUQZtJD2phS0UzERoucyXc/T0hCWY48qGjluXfRsmmwO4oOegU44ocYPVcxjMCSCICfX9jHTHvfynySwMkp1Yh5rQPUYa9psFSAKBfTRRdP2Gi3iygvcVj62LFJkI/D/I8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gb8C1jBY; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=tUmJ+WmaIzoexLBe5PccIV3c2ArgG5NiIn24jNYrccHV/uT8/CmEKnhlQsKIF/iNJQ+mocOdRP1OlzNUW4E+/s8x1UkqP2RxMA+sG2ion2G9t861faKYkb4g3mkiYyOfMlUriCYjFf34tOKQCQN2HBdJYLAGE74DotmPHWugjy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rxlLOzIG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gb8C1jBY"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id DB8E5C2BCC9;
-	Thu,  7 May 2026 20:22:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rxlLOzIG"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id BDF12C2BCB2;
+	Thu,  7 May 2026 20:22:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778185370;
-	bh=3Ey26oHjBIStPVcofdxUBpg3KGMQjwyU1xBvE1HXR/Q=;
+	s=k20201202; t=1778185371;
+	bh=p4qBfxGdAfMtaGGKStlHkSWVzxsaXmOgsRx/hRU32gc=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=Gb8C1jBYrCcNvhb+cC1N2B8UsClY2LEckLli6WjImjD7JLxImOdt/tzEeXaoYJ3vd
-	 UoY8Ye38gRR9xsueOz+cDl8Xf39TGdOunMk0DLffLVE9kbsZJ18JoP2sP6yHrR9Pvg
-	 qBk4CgMgHiHQqACWNkgx8hnhG39raA71JAUyBQn0StNJSCHfNSmd2+3tx/4G0C+KHc
-	 4j4cZFwWoav4xnUEpo+OElX1V/sNKlX07Ruw75xjrx4U4rpjUFJ5b8fZQM+VwkMlo7
-	 XKGKUdkfYUztVreqQIw5A0QYmJ1L2whVj+LuEgBlQm9sXJX3hs9fVh7hZ+gYXlpy9F
-	 3AyC/D1kzp/oQ==
+	b=rxlLOzIGNAj7FEMnVgwm3ox45PBq9s1CGGFgdWvyvCNti6MeyerUm2anaLq+P7fRJ
+	 xA9rdX1lX/g5tlrrbVln9dR9upp7QbIS7jcUvkV88O8juPUASYDDdVs3JkE9MZfTJc
+	 l3fTiyHsNFyrG9HaAikEuWDGNxkSSaV0xuiivoc9URl+AlszbALOHwK5yDl4B0eLlI
+	 lnnKT64ZIUUb138FfNlfQsSGdyDBtbtSAfyfNyMO6AQaz/ZC5W+zz1PltmoO316w8G
+	 3EoqJklE91/Cvxr1MAeU7yiT7Lyeq0LpgT5mvOaUWL7JyLamRjdY1r7EZy59U1RwOI
+	 3j9JfYiGiVt8w==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id CC027CD3446;
-	Thu,  7 May 2026 20:22:50 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A2398CD37A9;
+	Thu,  7 May 2026 20:22:51 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Thu, 07 May 2026 13:22:38 -0700
-Subject: [PATCH v6 19/43] KVM: Let userspace disable per-VM mem attributes,
- enable per-gmem attributes
+Date: Thu, 07 May 2026 13:22:45 -0700
+Subject: [PATCH v6 26/43] KVM: selftests: Add selftests global for guest
+ memory attributes capability
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260507-gmem-inplace-conversion-v6-19-91ab5a8b19a4@google.com>
+Message-Id: <20260507-gmem-inplace-conversion-v6-26-91ab5a8b19a4@google.com>
 References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
 In-Reply-To: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -75,11 +75,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778185365; l=2855;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1778185365; l=2393;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=C+ZXwAuQ/e98Rs7Di9G1EWrlq6zteRCZz2vi1AClkpI=;
- b=dp6jCn9ExgjqByTG7kaxpBbRNBGPX7nuFMLB6FJJWILEhdvQnCRngdmKGdljRH2+yoCeSw4BK
- Y/wktRb6O2yBOVvPb6wUEdVPY4MaXo1fd0+4WQ5Hw96ejsK19n6u44i
+ bh=IJ9ygQg2i33wnaaQVE2Mc6MqL5xTgBpcwYj9G+DyWUc=;
+ b=VeIaOFh0QRNAhx7ITZjihhQCCPoaq56XsfynZgfAf40728nb0JQWZ3qa791FOBSgVrLiHp3Sr
+ Wqf2l87sWQqBA/pJ9RB1dMLcqLJrAdcw0v3vXSyeN9vO6E5r6VhfNQ8
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -89,78 +89,65 @@ Reply-To: ackerleytng@google.com
 
 From: Sean Christopherson <seanjc@google.com>
 
-Make vm_memory_attributes a module parameter so that userspace can disable
-the use of memory attributes on the VM level.
+Add a global variable, kvm_has_gmem_attributes, to make the result of
+checking for KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES available to all tests.
 
-To avoid inconsistencies in the way memory attributes are tracked in KVM
-and guest_memfd, the vm_memory_attributes module_param is made
-read-only (0444).
+kvm_has_gmem_attributes is true if guest_memfd tracks memory attributes, as
+opposed to VM-level tracking.
 
-Make CONFIG_KVM_VM_MEMORY_ATTRIBUTES selectable, only for (CoCo) VM types
-that might use vm_memory_attributes.
+This global variable is synced to the guest for testing convenience, to
+avoid introducing subtle bugs when host/guest state is desynced.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- arch/x86/kvm/Kconfig | 13 +++++++++----
- virt/kvm/kvm_main.c  |  1 +
- 2 files changed, 10 insertions(+), 4 deletions(-)
+ tools/testing/selftests/kvm/include/test_util.h | 2 ++
+ tools/testing/selftests/kvm/lib/kvm_util.c      | 5 +++++
+ 2 files changed, 7 insertions(+)
 
-diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
-index b6d65ee664d0f..8b97d341bd33f 100644
---- a/arch/x86/kvm/Kconfig
-+++ b/arch/x86/kvm/Kconfig
-@@ -82,13 +82,20 @@ config KVM_WERROR
+diff --git a/tools/testing/selftests/kvm/include/test_util.h b/tools/testing/selftests/kvm/include/test_util.h
+index d9b433b834f1b..c280c3233f502 100644
+--- a/tools/testing/selftests/kvm/include/test_util.h
++++ b/tools/testing/selftests/kvm/include/test_util.h
+@@ -115,6 +115,8 @@ struct guest_random_state {
+ extern u32 guest_random_seed;
+ extern struct guest_random_state guest_rng;
  
- config KVM_VM_MEMORY_ATTRIBUTES
- 	select KVM_MEMORY_ATTRIBUTES
--	bool
-+	depends on KVM_SW_PROTECTED_VM || KVM_INTEL_TDX || KVM_AMD_SEV
-+	bool "Enable per-VM memory attributes (for CoCo VMs)"
-+	help
-+	  Enable support for per-VM memory attributes, which are deprecated in
-+	  favor of tracking memory attributes in guest_memfd.  Select this if
-+	  you need to run CoCo VMs using a VMM that doesn't support guest_memfd
-+	  memory attributes.
++extern bool kvm_has_gmem_attributes;
 +
-+	  If unsure, say N.
+ struct guest_random_state new_guest_random_state(u32 seed);
+ u32 guest_random_u32(struct guest_random_state *state);
  
- config KVM_SW_PROTECTED_VM
- 	bool "Enable support for KVM software-protected VMs"
- 	depends on EXPERT
- 	depends on KVM_X86 && X86_64
--	select KVM_VM_MEMORY_ATTRIBUTES
- 	help
- 	  Enable support for KVM software-protected VMs.  Currently, software-
- 	  protected VMs are purely a development and testing vehicle for
-@@ -139,7 +146,6 @@ config KVM_INTEL_TDX
- 	bool "Intel Trust Domain Extensions (TDX) support"
- 	default y
- 	depends on INTEL_TDX_HOST
--	select KVM_VM_MEMORY_ATTRIBUTES
- 	select HAVE_KVM_ARCH_GMEM_POPULATE
- 	help
- 	  Provides support for launching Intel Trust Domain Extensions (TDX)
-@@ -163,7 +169,6 @@ config KVM_AMD_SEV
- 	depends on KVM_AMD && X86_64
- 	depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
- 	select ARCH_HAS_CC_PLATFORM
--	select KVM_VM_MEMORY_ATTRIBUTES
- 	select HAVE_KVM_ARCH_GMEM_PREPARE
- 	select HAVE_KVM_ARCH_GMEM_INVALIDATE
- 	select HAVE_KVM_ARCH_GMEM_POPULATE
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index cec02d68d7039..ba195bb239aaa 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -104,6 +104,7 @@ module_param(allow_unsafe_mappings, bool, 0444);
- #ifdef CONFIG_KVM_MEMORY_ATTRIBUTES
- #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
- bool vm_memory_attributes = true;
-+module_param(vm_memory_attributes, bool, 0444);
- #endif
- DEFINE_STATIC_CALL_RET0(__kvm_get_memory_attributes, kvm_get_memory_attributes_t);
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(STATIC_CALL_KEY(__kvm_get_memory_attributes));
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index ff301e7c22b2f..5e34593ad79c4 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -24,6 +24,8 @@ u32 guest_random_seed;
+ struct guest_random_state guest_rng;
+ static u32 last_guest_seed;
+ 
++bool kvm_has_gmem_attributes;
++
+ static size_t vcpu_mmap_sz(void);
+ 
+ int __open_path_or_exit(const char *path, int flags, const char *enoent_help)
+@@ -521,6 +523,7 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
+ 	}
+ 	guest_rng = new_guest_random_state(guest_random_seed);
+ 	sync_global_to_guest(vm, guest_rng);
++	sync_global_to_guest(vm, kvm_has_gmem_attributes);
+ 
+ 	kvm_arch_vm_post_create(vm, nr_runnable_vcpus);
+ 
+@@ -2287,6 +2290,8 @@ void __attribute((constructor)) kvm_selftest_init(void)
+ 	guest_random_seed = last_guest_seed = random();
+ 	pr_info("Random seed: 0x%x\n", guest_random_seed);
+ 
++	kvm_has_gmem_attributes = kvm_has_cap(KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES);
++
+ 	kvm_selftest_arch_init();
+ }
+ 
 
 -- 
 2.54.0.563.g4f69b47b94-goog
