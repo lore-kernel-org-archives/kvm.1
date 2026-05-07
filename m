@@ -1,125 +1,140 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D42370D6B;
-	Thu,  7 May 2026 20:08:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE9C734EEE3
+	for <kvm@vger.kernel.org>; Thu,  7 May 2026 20:11:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778184532; cv=none; b=JM6Qod1zCwgDKrQTTfFs4cRJfKAq2o6KBvSYnD2+m5lfeMD3aelZUBXZvzk2en1a8aFvl0pMkVrziLXimJPHTn+jKN9YtwCvdQoOAxrs76xF9d14yOJplHOR9T0mgMB4/emCidLL4JaGMiHVEjfgVqn1UawvwzoLqxB6na+WNjQ=
+	t=1778184709; cv=none; b=VnibZxpVwBWU0jrE0DuG/Xn9OKXhLy6UG5ff8RmpdCFPFLsdAB7X/bL5AfZs+lktUGhNJOJosc7zENp88faRuFpqE0HAidDcy4wBIlSdu5hfky56PvoJ7LieZXRIxDGbs3jDcRTbQY4egF3TWpMnj/cQleI6z6Wc6Tot5Us2Jo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778184532; c=relaxed/simple;
-	bh=dT2bHaH5mZDm4/4kojy9HRXWWhKz8YrU85VkYW9j46w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JzUpPHd/m2gWfPQZq+Az7yihd4kFqgjApoZcERjxneSZcN73URs6ZTp/BGu6PqeLpOEVJDyOdLNF8q/iZkXcvY2BA498USaUMhln+eppCezdqpU6XqAm2MCc9udv9QgTW/uuXCL1aPPcRpbvLug42MlvFv9Z726/rnVysxL9AnQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=MoQgqs7X; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1778184709; c=relaxed/simple;
+	bh=z9ZVJ1F3PpnJRs89e1DROl5O0vwpMs1ALIpbBtkCoug=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=lWA5gT4JWAC2Ef8I3qZP2CNaf7bblPsT/tS1ucAI1oJfVHKKlzyw9xqVzam/hnv/ZjwEDYPBo/Am7WnJ/Vz31TzbiglOqaQBufB+9oyTRkAcF/cRu1grEZ2vrXFqFXpV+FV1tzKZWKiQNiF+/2WJtJfKeUGC/455ako/mOP2dQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CxWrklgI; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="MoQgqs7X"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 647BBFg63390293;
-	Thu, 7 May 2026 20:08:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=KSrCAQnFrN3OA5DqH1BAOpZgEQhrSGDU7Pv58L9wR
-	nY=; b=MoQgqs7XnsuP+Y65A0xhfpC2PzfcRfVq0KNJ9v6QdE9Qn4p471muul0Jo
-	/uhyZtaiDQCHrDDCHQw1ImOCaVrdoQ4yWUit5iL/ZLs1NBQtAGP06McHvSkb2gJm
-	la4fEpPJFiXF9WZPN3AiSpPFHRY7CZPa95UI9D3225wQ74LNdaRomrhOjUydg96z
-	1YZse86WaNYmCLv/jOlV5OJ3gsd0HknBFTTjM8MKCErrUbCORV1AYFj0u+pDcAc/
-	H89IaRzztpR0N4jFZi5osHk7UiCKwZYUw3ddnNE7NkM+AN/WmyaitJJs2BJJ2p+x
-	O1ChYKIZaDyVCxL14zAewa2EEChaQ==
-Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9xxyhf5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 May 2026 20:08:46 +0000 (GMT)
-Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 647Jsgvn029587;
-	Thu, 7 May 2026 20:08:46 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dww3hdauw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 May 2026 20:08:46 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 647K8gD451642692
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 7 May 2026 20:08:42 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2607220065;
-	Thu,  7 May 2026 20:08:42 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 021A42004E;
-	Thu,  7 May 2026 20:08:42 +0000 (GMT)
-Received: from tuxmaker.boeblingen.de.ibm.com (unknown [9.87.85.9])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with SMTP;
-	Thu,  7 May 2026 20:08:41 +0000 (GMT)
-Received: by tuxmaker.boeblingen.de.ibm.com (Postfix, from userid 4958)
-	id DBD26E05E2; Thu, 07 May 2026 22:08:41 +0200 (CEST)
-From: Eric Farman <farman@linux.ibm.com>
-To: Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        Eric Farman <farman@linux.ibm.com>
-Subject: [PATCH v2 0/3] KVM: s390: Toggle operation exception for userspace
-Date: Thu,  7 May 2026 22:08:33 +0200
-Message-ID: <20260507200836.3500368-1-farman@linux.ibm.com>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CxWrklgI"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c7977177675so631985a12.0
+        for <kvm@vger.kernel.org>; Thu, 07 May 2026 13:11:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778184707; x=1778789507; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dDSEo75//X2PyTwVLJoJLq8UvjZIVy2/btfnxlV9Dz8=;
+        b=CxWrklgIdwPriu30ED4hEflw2tnen+1NsrnziZFoVKf0cWvHrq8Y9ZS6ZE9FFJvN0a
+         kvTnJUkrWE1dVvXkwR8XPXhb1EeCVzm3XPJ4GDOClFH8pw5Ao+Q0spMq1GNuEy9AduG3
+         mP2vxVJIbZ1y6WXe/OSC+vjapAwy4X1+u0SGen4w/kkrm8lvROSxNndK3NfcZLgmNAfq
+         Pl1d8kZ2x2dH2EZJ2+wkndxjPvdEV2WH+8aIBZnSrT6Le0ZegPUZjNUO2xIttptd53te
+         mAXM/6yfd1kdymdwkG3MIFjhREO6pA+nR7CCw1q6QeH0Gf2a86jwRbY5OboyT7fUM2Et
+         LtsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778184707; x=1778789507;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dDSEo75//X2PyTwVLJoJLq8UvjZIVy2/btfnxlV9Dz8=;
+        b=OC2cXIcyProvOwMMYNm5PTgcUXLlunNFN5zCk+vFT2i4cEPsAKKz9QpTUPJbZb0scO
+         QDdnFcwZayQZ2i1Kh/EJmXp2tXMhmQSzdvy3K2uDqJc/jgB5G8fznSfBY/MoMsX7VkMX
+         eCrF+UJLSLxuhU9rSwPBCs/InttthnQLyeQplIZNznN9fvdB48/LNSsTaHyawjrzvYGF
+         DF2tgjCQDrb+Sj6GYGgZ9mRDP2PDrBZ7WGNqqsGUngPxT1nbMpMW8qJJpBoj8JjXSkCR
+         P9JZjM9/HUnF+uAlOjKDNRKAtlFd7uRS7Urz5KzjV0OxOURfN2N4WdYuS/jxWrQlYlQP
+         JPXg==
+X-Forwarded-Encrypted: i=1; AFNElJ8kfJPBTlIfWZg6O5KL0Pr5vNj1LTOcxQZJ1Cqwhsj5QMcDY2fw1pwdhesnX0DoHGdwXms=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHEaB/TEv+6kyE940srRhOoWoalBl+zsE/gqWK9Wfjz5U/tYyZ
+	5U5MjohgA7axYgw2EMcVshBbzuC+NkgjehOkp2SdJ1Lf6EaRXn9BuERIh9ZbdtiDwuptwj+puVe
+	jOhXB0A==
+X-Received: from pgar3.prod.google.com ([2002:a05:6a02:2e83:b0:c80:1ab9:b111])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:a106:b0:398:787c:d2e4
+ with SMTP id adf61e73a8af0-3aa5a8fdfdamr10252140637.17.1778184706829; Thu, 07
+ May 2026 13:11:46 -0700 (PDT)
+Date: Thu, 7 May 2026 13:11:46 -0700
+In-Reply-To: <20260507142402.2175933-1-vannapurve@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA3MDIwMyBTYWx0ZWRfXw6gbhhuLgyhM
- Df+sdYAt4IkqoUxA+J75cebnh48vQl6W8+e1gOUdRHJe5VxuLsniS8zgXDbD86PNe7M/Mr3v/b3
- 1XGfCzcI50z3uTubPbzXLZYhML0vek9UNrVJURvSrhR65SWMpMYF560qWkwLdmwDRoEXeGEJzoc
- 4gkiCr9hdM6I05L6ujH2WLTyFXi5li99fql6HYxO55l/tzcHCJa0LRyBGTdk4FHZ4MbJrTBI4hn
- FncxYf0klyGQHz6LI43amTXpSNCqc+ht+VcHl8ZE5phlrBQAqJdT7/xQljXyWPWIc8NAtKM0XMW
- OYdtzZJgcR7GEn/50wcBr0BH62ci4xkQQg6kb+Hv61oCTCdErYtmozsX9ti5FptDw1pv7P8johH
- FjPoA7Lew8jd5CAwV4wWuqtK6W5yBz8lT1QY4cX9JlilqZNn5lhf8IcpfqKg0cYJtgX76WnnCjk
- oTmkR3A7jKT2d4F0KPQ==
-X-Proofpoint-ORIG-GUID: xSGdPjub5CwAjABIPH_r5I5zxqpn42nO
-X-Proofpoint-GUID: xSGdPjub5CwAjABIPH_r5I5zxqpn42nO
-X-Authority-Analysis: v=2.4 cv=ctWrVV4i c=1 sm=1 tr=0 ts=69fcf14e cx=c_pps
- a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=UtfnOWSt_DJjTBG_1EUA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-07_02,2026-05-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 lowpriorityscore=0 adultscore=0 clxscore=1015
- suspectscore=0 impostorscore=0 spamscore=0 malwarescore=0 phishscore=0
- bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
- adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2605070203
+Mime-Version: 1.0
+References: <20260507142402.2175933-1-vannapurve@google.com>
+Message-ID: <afzyAorFFnwsh7u_@google.com>
+Subject: Re: [PATCH v3 1/1] KVM: x86: Introduce has_protected_pmu state for
+ TDX VMs
+From: Sean Christopherson <seanjc@google.com>
+To: Vishal Annapurve <vannapurve@google.com>
+Cc: pbonzini@redhat.com, dave.hansen@linux.intel.com, 
+	rick.p.edgecombe@intel.com, dapeng1.mi@linux.intel.com, mizhang@google.com, 
+	kai.huang@intel.com, jmattson@google.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Claudio, et al,
+On Thu, May 07, 2026, Vishal Annapurve wrote:
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 0a1b63c63d1a..99a383455d46 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -6910,7 +6910,8 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+>  			break;
+>  
+>  		mutex_lock(&kvm->lock);
+> -		if (!kvm->created_vcpus && !kvm->arch.created_mediated_pmu) {
+> +		if (!kvm->created_vcpus && !kvm->arch.created_mediated_pmu &&
+> +		    !kvm->arch.has_protected_pmu) {
 
-Here's an update to the USER_OPEREXEC patch I'd sent the other day.
-Besides the addition of Claudio's r-b (thank you!), Patch 1 is identical.
+An offlist Sashiko review pointed out that this will prevent doing
+KVM_PMU_CAP_DISABLE on a TDX VM, which could prove problematic if userspace is
+already explicitly disabling vPMU support for TDX.  I was thinking that wouldn't
+be a problem since KVM already disallows KVM_PMU_CAP_DISABLE if enable_pmu=false,
+but in that case KVM doesn't advertise KVM_CAP_PMU_VALID_MASK:
 
-Patch 2 contains a couple of new selftests. As it stands, they all run
-with patch 1 applied, but I put the failing test at the end for if
-Patch 1 is missing.
+	r = enable_pmu ? KVM_CAP_PMU_VALID_MASK : 0;
 
-Patch 3 is unrelated, but is a minor typo I stumbled on yesterday while
-looking at this. It seems small enough that a second `git send-email`
-command seems unnecessary. :)
+And unless I'm misreading QEMU code, this will indeed be a problem.
 
-Eric Farman (3):
-  KVM: s390: Toggle operation exception for userspace
-  KVM: s390: selftests: Extended user_operexec tests
-  KVM: s390: Fix typo in UCONTROL documentation
+Argh.  I was going to suggest something sightly fancier, but we rather stupidly
+didn't provide a flag for ENABLE, and so we can't feed has_protected_pmu into the
+valid mask.  Lame.
 
- Documentation/virt/kvm/api.rst                |   2 +-
- arch/s390/kvm/kvm-s390.c                      |   3 +-
- .../selftests/kvm/include/s390/facility.h     |   6 +
- .../selftests/kvm/s390/user_operexec.c        | 110 ++++++++++++++++++
- 4 files changed, 119 insertions(+), 2 deletions(-)
+The other super minor detail is that kvm->arch.has_protected_pmu isn't guarded by
+kvm->lock, and I really hope we never get to that point (e.g. for SNP).
 
---=20
-2.51.0
+So instead of disallowing KVM_CAP_PMU_CAPABILITY entirely, this?
 
+diff --git arch/x86/kvm/x86.c arch/x86/kvm/x86.c
+index dc69b8cebe0b..b833a2596430 100644
+--- arch/x86/kvm/x86.c
++++ arch/x86/kvm/x86.c
+@@ -6911,6 +6911,13 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+                if (!enable_pmu || (cap->args[0] & ~KVM_CAP_PMU_VALID_MASK))
+                        break;
+ 
++               if (kvm->arch.has_protected_pmu) {
++                       WARN_ON_ONCE(kvm->arch.enable_pmu);
++                       if (cap->args[0] == KVM_PMU_CAP_DISABLE)
++                               r = 0;
++                       break;
++               }
++
+                mutex_lock(&kvm->lock);
+                if (!kvm->created_vcpus && !kvm->arch.created_mediated_pmu) {
+                        kvm->arch.enable_pmu = !(cap->args[0] & KVM_PMU_CAP_DISABLE);
+
+
+>  			kvm->arch.enable_pmu = !(cap->args[0] & KVM_PMU_CAP_DISABLE);
+>  			r = 0;
+>  		}
+> @@ -13375,7 +13376,10 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+>  	kvm->arch.default_tsc_khz = max_tsc_khz ? : tsc_khz;
+>  	kvm->arch.apic_bus_cycle_ns = APIC_BUS_CYCLE_NS_DEFAULT;
+>  	kvm->arch.guest_can_read_msr_platform_info = true;
+> -	kvm->arch.enable_pmu = enable_pmu;
+> +	if (kvm->arch.has_protected_pmu)
+> +		kvm->arch.enable_pmu = false;
+> +	else
+> +		kvm->arch.enable_pmu = enable_pmu;
+>  
+>  #if IS_ENABLED(CONFIG_HYPERV)
+>  	spin_lock_init(&kvm->arch.hv_root_tdp_lock);
+> -- 
+> 2.54.0.563.g4f69b47b94-goog
+> 
