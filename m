@@ -1,81 +1,110 @@
-Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com [209.85.161.72])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE161FC0EA
-	for <kvm@vger.kernel.org>; Thu,  7 May 2026 20:32:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA2A30BB8C
+	for <kvm@vger.kernel.org>; Thu,  7 May 2026 20:34:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778185946; cv=none; b=uFn1VxTQO2val8jR43fsoJazZPN8kJkALuRKZ6T4/Nsd7oxz2cOF5pmk4kq+q34sx8UJ9EA/9xwYtupNLY5KFOivW0LDzjWOv2m6P2x0igaTVdv9eMUFiFSgLE0A2H3YA94oo0yb01D+sK7vqCj04YjlrB/uvu6m5KsDPt4nCMo=
+	t=1778186077; cv=none; b=lTfmm9220ha2/WR2g/IcWiBGOONOOjJc4FfIcVUE5axi7icYn7AFJF8UJRDxTBXqLOURmz03QN2jWmUm8Ggn+6R6um+oHRBHETduLhqS3EuQZYdRtTNK0YewhY7m5GpQIjtE5j+vEVEICgIFUDQ7UA1NY0zKkdRqkLE3XaesSAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778185946; c=relaxed/simple;
-	bh=cKwanJ5PtPUt28AHvo0syC+ZCmyEN/js+LpvcfqHPYE=;
-	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=ojLqz6sUV4dJuZ0jghAhArO2CJVIh+frANgDwMHBari3ppYbOkdpzdKXqAD6YPdoYTgcWPdT9s0zj9o0r5QIBIjHsrlN61MoD51e9rSpG9ZW1QlUiohav3PKBnGXGZ4Y4Vi7AuNM8j0RoEYE74KM0J7chnu+Rm1BjTnBMA1rRXQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
-Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-6967b799acdso3014853eaf.3
-        for <kvm@vger.kernel.org>; Thu, 07 May 2026 13:32:25 -0700 (PDT)
+	s=arc-20240116; t=1778186077; c=relaxed/simple;
+	bh=EmaFnaJMd6RXOTK/VecAQDt9Nc0voXI5PxK5gicU1M0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=NmCbJ0BRCzI+os1UYSqIeqAq+e2s115V3v2p3J0a0Tvo0VO+XkIepx2d0KYNTDjHYdkeS/dVHEnNy//cgxLJTaLyZddDkhj2y47W4299+Ix4KPw6zVUZyEWgOM7JufH/Qh/jVLM6HpiFhNw+aNGYDLjdlpJHOzuQcQdpbSPKL4g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mYOcSjkL; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mYOcSjkL"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-837d43e9ff3so824722b3a.2
+        for <kvm@vger.kernel.org>; Thu, 07 May 2026 13:34:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778186075; x=1778790875; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wMq4ZGb8sxP9J+x/Ocr+9N7VOn891ReIc+MoQxb2Bzc=;
+        b=mYOcSjkLW5HZdVrE8m4EWoPTcq/zRfLcPTyLhphl8kDetBZeAvG8WrK4VVHmoTEkdb
+         cIBr/aoUceNqUa3/NYprLp+gC4hrwdvSKET4Y7fIY8ap0oROhMe/3Oxy0dmMWOQK/tmF
+         B9X7vzPnJmFSlNHSIKfq89IKS07vADUY7zvruCFbNTHo2gQWvGZ8dqSFkpSu531JUT6o
+         +B5PyHaI2YGu6vDeRuYW6bIn6cZ/w+KIh3LMp3lhfGf7zVHZmp9M1ZyvVGfVLrNGe943
+         og7zOhdsgUeZJIp8W69fR3mUsoVyalXMAw6zLGRAx1LPS1XQQMelc0qthmSUkrPEzvUM
+         /m+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778185944; x=1778790744;
-        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/M7dmOXUKvCVvTvqfeRm6J1B5s77SXEhgvgZGDmE2PA=;
-        b=ITFnA0jTu/4zX3ZxiVJt9it234euMF1wqRtASVQbMdJTI2etY2TwUSTqLofJp78qkb
-         YdVioP6hS0+o3PNftbXjH12JhJWXo4D09w8jv58XPQA4PGr6Ttv90FkJNzLykeTKe7r+
-         Yr1GRxYe6tuSXwDVFucZndnOW1K/QTS3MiFqcVk3ug1xMr4fkBbtkTz+aDV1X+iHDnXH
-         gBhOnkQcvUDgkXIvth6dvJ6AZo4BS6Teb2wOPbH6LMjnU9lNDqASpp+hd0Go0/Hv9z+a
-         NtIxXEND0z1FnfmUo1giP0Z7xO9RkTmG4hsBboT3BRZTTWi0mre7pQn9osoutZliDA+S
-         +owQ==
-X-Gm-Message-State: AOJu0Yw/8BHB87d9drbuQ24gT6znDZ3jroK7U6G47izbA+b0SZPOzmc/
-	VX0LZcufQzsnZVjUbojBfP+3wB/rdYsNP4d0bi8BxUZuyBFJ+sJYATTMuVhXwRwhowGUKiyObvb
-	pKWBjh9CRL6n7Nvb29NpqehP0yRxNhkD11wOz4zA5Ok2qA6byodzZaETnddw=
+        d=1e100.net; s=20251104; t=1778186075; x=1778790875;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wMq4ZGb8sxP9J+x/Ocr+9N7VOn891ReIc+MoQxb2Bzc=;
+        b=aSoTUG97yI/e5G9M3Yv6Uzcmfq6vez7caXInv57J4hEScBqN8Xp/UpQWW0VpZms3Yf
+         akeL535udXh+cPoX3iNsDF73IZcXlF3Sl9zUvU9+u2VSYZQbjX4wogedTljjcDNox87B
+         i3KzZvvv0BQ6AnYvQ2H0y2mQBoIOR5lvLJ/sa82JusNROY0L5Lxk3uYWTID8GEptf7sk
+         P3MVbVUBB4RnOgI4mXt8MWwHe7HHhDkkieNboLmMEMm+BXcX5+x9FQJwe6WDPoJfcYBB
+         BvMmuK9EezFju0e5F3nkmiPvTaqAZBvNI0G6c9ZRbpujmELKgLrqV4iYKZIfL2JWhyT7
+         K8xg==
+X-Forwarded-Encrypted: i=1; AFNElJ++fvfp5NzL2T3VrMl2To0PfyiVUMjKT0ulk+9L97jfGQGDaUJC0yjVlDY0MXUG/MjG9nc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw5q55bv+lpDgtwJvkJid8JSu7UqC0KSUXFlO/2LEMP1lUtSg1I
+	WwA6qOAhsnqf2QzRIfHl5E2g5/qzDilczZp9WW7F01i+PFWNGQzJ9K3D4NoKaV3T7IhA3tRmCKc
+	gncG8uSwfnDkUHyN4RBZnX6BLmg==
+X-Received: from pgbcs6.prod.google.com ([2002:a05:6a02:4186:b0:c7e:68a1:910c])
+ (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a20:1584:b0:39c:c07:1450 with SMTP id adf61e73a8af0-3aa5a9da657mr10646690637.42.1778186074357;
+ Thu, 07 May 2026 13:34:34 -0700 (PDT)
+Date: Thu,  7 May 2026 13:34:21 -0700
+In-Reply-To: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Received: by 2002:a05:6820:200c:b0:696:2cf3:3bdb with SMTP id
- 006d021491bc7-69998d0dca9mr5110087eaf.37.1778185944423; Thu, 07 May 2026
- 13:32:24 -0700 (PDT)
-Date: Thu, 07 May 2026 13:32:24 -0700
-X-Google-Appengine-App-Id: s~syzkaller
-X-Google-Appengine-App-Id-Alias: syzkaller
-Message-ID: <69fcf6d8.050a0220.3cf765.035e.GAE@google.com>
-Subject: [syzbot] Monthly kvm report (May 2026)
-From: syzbot <syzbot+list6cfe0aadb72c15b122ef@syzkaller.appspotmail.com>
-To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	syzkaller-bugs@googlegroups.com
+Mime-Version: 1.0
+References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
+Message-ID: <cover.1778185936.git.ackerleytng@google.com>
+Subject: [POC PATCH 0/5] guest_memfd in-place conversion selftests for SNP
+From: Ackerley Tng <ackerleytng@google.com>
+To: devnull+ackerleytng.google.com@kernel.org
+Cc: ackerleytng@google.com, aik@amd.com, akpm@linux-foundation.org, 
+	andrew.jones@linux.dev, aneesh.kumar@kernel.org, axelrasmussen@google.com, 
+	baohua@kernel.org, bhe@redhat.com, binbin.wu@linux.intel.com, bp@alien8.de, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, chrisl@kernel.org, 
+	corbet@lwn.net, dave.hansen@linux.intel.com, david@kernel.org, 
+	forkloop@google.com, hpa@zytor.com, ira.weiny@intel.com, jgg@ziepe.ca, 
+	jmattson@google.com, jthoughton@google.com, kas@kernel.org, 
+	kasong@tencent.com, kvm@vger.kernel.org, liam@infradead.org, 
+	linux-coco@lists.linux.dev, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
+	mathieu.desnoyers@efficios.com, mhiramat@kernel.org, michael.roth@amd.com, 
+	mingo@redhat.com, nphamcs@gmail.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	pbonzini@redhat.com, pratyush@kernel.org, qi.zheng@linux.dev, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	rostedt@goodmis.org, seanjc@google.com, shakeel.butt@linux.dev, 
+	shikemeng@huaweicloud.com, shivankg@amd.com, shuah@kernel.org, 
+	skhan@linuxfoundation.org, steven.price@arm.com, suzuki.poulose@arm.com, 
+	tabba@google.com, tglx@kernel.org, vannapurve@google.com, vbabka@kernel.org, 
+	weixugc@google.com, willy@infradead.org, wyihan@google.com, x86@kernel.org, 
+	yan.y.zhao@intel.com, youngjun.park@lge.com, yuanchu@google.com
 Content-Type: text/plain; charset="UTF-8"
 
-Hello kvm maintainers/developers,
+With these POC patches, I was able to test the set memory
+attributes/conversion ioctls with SNP.
 
-This is a 31-day syzbot report for the kvm subsystem.
-All related reports/information can be found at:
-https://syzkaller.appspot.com/upstream/s/kvm
+After allowing src_addr to be NULL, SNP_LAUNCH_UPDATE can accept NULL
+for source address and the SNP VM runs fine. :)
 
-During the period, 1 new issues were detected and 1 were fixed.
-In total, 8 issues are still open and 67 have already been fixed.
+Ackerley Tng (5):
+  KVM: selftests: Initialize guest_memfd with INIT_SHARED
+  KVM: selftests: Use guest_memfd memory contents in-place for SNP
+    launch update
+  KVM: selftests: Make guest_code_xsave more friendly
+  KVM: selftests: Allow specifying CoCo-privateness while mapping a page
+  KVM: selftests: Test conversions for SNP
 
-Some of the still happening issues:
+ .../selftests/kvm/include/x86/processor.h     |   2 +
+ tools/testing/selftests/kvm/lib/kvm_util.c    |  12 +-
+ .../testing/selftests/kvm/lib/x86/processor.c |  13 +-
+ tools/testing/selftests/kvm/lib/x86/sev.c     |   3 +-
+ .../selftests/kvm/x86/sev_smoke_test.c        | 222 +++++++++++++++++-
+ 5 files changed, 234 insertions(+), 18 deletions(-)
 
-Ref Crashes Repro Title
-<1> 98      Yes   WARNING in __kvm_gpc_refresh (3)
-                  https://syzkaller.appspot.com/bug?extid=cde12433b6c56f55d9ed
-<2> 22      Yes   INFO: task hung in kvm_swap_active_memslots (2)
-                  https://syzkaller.appspot.com/bug?extid=5c566b850d6ab6f0427a
-<3> 4       Yes   WARNING in virtio_transport_send_pkt_info (2)
-                  https://syzkaller.appspot.com/bug?extid=28e5f3d207b14bae122a
-
----
-This report is generated by a bot. It may contain errors.
-See https://goo.gl/tpsmEJ for more information about syzbot.
-syzbot engineers can be reached at syzkaller@googlegroups.com.
-
-To disable reminders for individual bugs, reply with the following command:
-#syz set <Ref> no-reminders
-
-To change bug's subsystems, reply with:
-#syz set <Ref> subsystems: new-subsystem
-
-You may send multiple commands in a single email message.
+--
+2.54.0.563.g4f69b47b94-goog
