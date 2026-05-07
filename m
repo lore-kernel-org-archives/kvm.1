@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D84473191C8;
-	Thu,  7 May 2026 07:54:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6213290A0;
+	Thu,  7 May 2026 08:03:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778140469; cv=none; b=kJB/KkNpUQ5k/fd8QWb6xbVsNOjRggIsyOBRFJedf8cNMcremD9TQuGm2yHEVziKNh2LSWnR6rWFr9ys2ublu/EBUTiFHfTaBX+gB7xAa0eqQOSdr4bMTNaeEYzRwCeX3ZvKfIj5my0JgIaggELxS040xxrSWFqOP30NFsAW2Ns=
+	t=1778140983; cv=none; b=ni/rWZorDNqCKkrU23z+ZJ/ntqXRZ8e7T8sub+8oih4PieFsg+fh1315bxqJZ2RjD1gmISPVBhsfr7uJvLbHwQ1v0COM5LctTLypQWu2xToOnvCFl1AtF7F675MID5aczQZrb8osNmVGd6tqaEpcZkZWeTy8/+pdFAaFZ2mRCWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778140469; c=relaxed/simple;
-	bh=/udflDc8cothw4i2dsB61q4+3RTwijgBESwA8j1pUNA=;
+	s=arc-20240116; t=1778140983; c=relaxed/simple;
+	bh=5IpvuiXPv82AY0isNcVKYbXTDB8EPnSG+x5AEN7RJvU=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Q3+QMz2kuZYIixJq8A46/yAivlQFuk+PTflX/XG/FyuBqFNCseJPO3zEU9XzOhLTfMIa+XkV3pCGDSWXICK0RlmS79D/V6E9SBDU+FM4SU9yBkJACJUFQdddwvH4SsOO3OoGb6/l7XesdSYmhjPhgXx7+wlLSljNh/SpWx6myF0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=HCNT17w+; arc=none smtp.client-ip=192.198.163.15
+	 In-Reply-To:Content-Type; b=lucyNpbzWlys9/HT4cg5QTKBRbnNeUT5NYvwJJodoIa9vZv7Jyr7Ey5Ncwfo/m6VLVT1IpOVnewYRYgWkmArcBGTIzl15bqJUks4VlSgEuMsAgyOU4ss6msPx7Mgbow7JSS0W9FvQ/rZknID94DRLFvhKRyhQGQLH+M/bNR9GYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=WFqeIFZ0; arc=none smtp.client-ip=198.175.65.10
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="HCNT17w+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="WFqeIFZ0"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778140468; x=1809676468;
+  t=1778140983; x=1809676983;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=/udflDc8cothw4i2dsB61q4+3RTwijgBESwA8j1pUNA=;
-  b=HCNT17w++UtZWduCRuCLC1ZxTj9gdrVhCkE/zevBuB3a6IbLtPccWctT
-   2C39lx3acKYX/rdgx2SfhOyK5B4xyAxbva+nXD+4BHaapwwMCsSPRqJRU
-   MSevCeLnRLDsj/SlsMmHlATVxpal5r3s9wb9+xUMj1RyXDBgZb5N6kJl0
-   yHS0uNXhT1Aup94Rz/HJ89hH0RyliP7iKDV7gDY6wGnRjt/JivlZVfUie
-   eN0/2Mmqf2VWmHIEW8YH/MXjj8PelT3uiUJqZmQGqj5VVLk+A6x68LJv+
-   vbHJP39S3Q4HT7ketT7O484gL6x41Q7HYwg4yruQDZ6rre+xQvG9Bmeb0
-   A==;
-X-CSE-ConnectionGUID: uAOVKGEaS2+QNMpcxPH7sQ==
-X-CSE-MsgGUID: jtqyOEAzQwSyz3sGK9xO0Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="79192803"
+  bh=5IpvuiXPv82AY0isNcVKYbXTDB8EPnSG+x5AEN7RJvU=;
+  b=WFqeIFZ003uWMWMiKj5cTvIsJrh9iAR/OVwVSPe62xH0pvGTLLIPV8x8
+   tFSOwNweZxaWgcpTRXNzZUD0ZHDZ5EYikLm4Yrr1wWSuDPTViMdG0hLk4
+   6CQDexgHsWGcIXkOvnRjNdeiL3RccM1JYxCGIpAguQ1zCheU3bFCcU0Oy
+   lHqpmLAMAtQ3ghGHK/e4Z3mr0F8Yq/rjFufv+V57/7ADZjPq5M8nT+qnJ
+   CXu3TQhn4VXLOYsVFheFhl2RYhWmJSCk51u+eXMBohojlfRC5OUCies5l
+   xfL6SfAdDNKh6Lb9ePAQGwM4m9OsE/04VwfYtiWly25zJAfr0JmC5Ltwp
+   g==;
+X-CSE-ConnectionGUID: g7obuHdZRQmrvC+t9pELBg==
+X-CSE-MsgGUID: D+IjRpTySVSbWKJGrzzOgw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="96514181"
 X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
-   d="scan'208";a="79192803"
-Received: from fmviesa005.fm.intel.com ([10.60.135.145])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 00:54:27 -0700
-X-CSE-ConnectionGUID: Hwba+87XSxWKjyA1Pg3xPg==
-X-CSE-MsgGUID: eiAgj3DXRjuMJgPiNCGbIA==
+   d="scan'208";a="96514181"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 01:03:02 -0700
+X-CSE-ConnectionGUID: w8KCcscrRYOBaAVDpfKQJw==
+X-CSE-MsgGUID: qhZIDK6eREmG6CD3xTfttw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,221,1770624000"; 
-   d="scan'208";a="241372691"
+   d="scan'208";a="236513285"
 Received: from unknown (HELO [10.239.158.42]) ([10.239.158.42])
-  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 00:54:22 -0700
-Message-ID: <90e91a3c-3f5d-454c-878f-335b19af71c3@intel.com>
-Date: Thu, 7 May 2026 15:54:20 +0800
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 01:02:57 -0700
+Message-ID: <28c33c92-e411-416a-9c21-21bb9c01434d@intel.com>
+Date: Thu, 7 May 2026 16:02:54 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/4] x86/tdx: Use PFN directly for unmapping guest
- private memory
+Subject: Re: [PATCH v2 3/4] x86/tdx: Drop exported function
+ tdx_quirk_reset_page()
 To: Yan Zhao <yan.y.zhao@intel.com>, dave.hansen@linux.intel.com,
  pbonzini@redhat.com, seanjc@google.com
 Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de, kas@kernel.org,
@@ -62,53 +62,86 @@ Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de, kas@kernel.org,
  yilun.xu@linux.intel.com, vannapurve@google.com, ackerleytng@google.com,
  sagis@google.com, binbin.wu@linux.intel.com, isaku.yamahata@intel.com
 References: <20260430014852.24183-1-yan.y.zhao@intel.com>
- <20260430014948.24226-1-yan.y.zhao@intel.com>
+ <20260430015001.24242-1-yan.y.zhao@intel.com>
 Content-Language: en-US
 From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <20260430014948.24226-1-yan.y.zhao@intel.com>
+In-Reply-To: <20260430015001.24242-1-yan.y.zhao@intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
-On 4/30/2026 9:49 AM, Yan Zhao wrote:
-> From: Sean Christopherson<seanjc@google.com>
+On 4/30/2026 9:50 AM, Yan Zhao wrote:
+> KVM invokes tdx_quirk_reset_page() to reset TDX control pages (including
+> S-EPT pages, TDR page, etc.), as all those pages are allocated by KVM TDX
+> and thus always have struct page.
 > 
-> Remove struct page assumptions/constraints in APIs for unmapping guest
-> private memory and have them take physical address directly.
+> However, it's also reasonable for KVM to reset those TDX control pages via
+> tdx_quirk_reset_paddr() directly, eliminating the need to export two
+> parallel APIs. Keeping tdx_quirk_reset_page() as a one-line helper in the
+> header file is also unnecessary.
 > 
-> Having core TDX make assumptions that guest private memory must be backed
-> by struct page (and/or folio) will create subtle dependencies on how
-> KVM/guest_memfd allocates/manages memory (e.g., whether it uses memory
-> allocated from core MM, if the memory is refcounted, or if the folio is
-> split) that are easily avoided. [1].
+> No functional change intended.
 > 
-> KVM's MMUs work with PFNs. This is very much an intentional design choice.
-> It ensures that the KVM MMUs remain flexible and are not too tightly tied
-> to the regular CPU MMUs and the kernel code around them. Using
-> "struct page" for TDX guest memory is not a good fit anywhere near the KVM
-> MMU code [2].
-> 
-> Therefore, for unmapping guest private memory: export
-> tdx_quirk_reset_paddr() for direct KVM invocation, and convert the SEAMCALL
-> wrapper API tdh_phymem_page_wbinvd_hkid() to take PFN as input (thus
-> updating mk_keyed_paddr() and tdh_phymem_page_wbinvd_tdr()).
-> 
-> Intentionally have KVM pass PAGE_SIZE (rather than KVM_HPAGE_SIZE(level))
-> to tdx_quirk_reset_paddr() in tdx_sept_remove_private_spte() to avoid
-> mixing in huge page changes. The KVM_BUG_ON() check for !PG_LEVEL_4K in
-> tdx_sept_remove_private_spte() justifies using PAGE_SIZE.
-> 
-> Do not convert tdx_reclaim_page() to use PFN as input since it currently
-> does not remove guest private memory.
-> 
-> Use "kvm_pfn_t pfn" for type safety. Using this KVM type is appropriate
-> since APIs tdh_phymem_page_wbinvd_hkid() and tdx_quirk_reset_paddr() are
-> exported to KVM only.
-> 
-> [Yan: Use kvm_pfn_t,exclude tdx_reclaim_page(),use tdx_quirk_reset_paddr()]
-> 
-> Signed-off-by: Sean Christopherson<seanjc@google.com>
-> Signed-off-by: Yan Zhao<yan.y.zhao@intel.com>
-> Link:https://lore.kernel.org/all/aWgyhmTJphGQqO0Y@google.com [1]
-> Link:https://lore.kernel.org/all/ac7V0g2q2hN3dU5u@google.com [2]
+> Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
+> Suggested-by: Xiaoyao Li <xiaoyao.li@intel.com>
+> Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
 
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
+
+> ---
+>   arch/x86/include/asm/tdx.h  | 1 -
+>   arch/x86/kvm/vmx/tdx.c      | 4 ++--
+>   arch/x86/virt/vmx/tdx/tdx.c | 6 ------
+>   3 files changed, 2 insertions(+), 9 deletions(-)
+> 
+> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+> index 65f7d874fb5a..9c63deaa0e8f 100644
+> --- a/arch/x86/include/asm/tdx.h
+> +++ b/arch/x86/include/asm/tdx.h
+> @@ -153,7 +153,6 @@ int tdx_guest_keyid_alloc(void);
+>   u32 tdx_get_nr_guest_keyids(void);
+>   void tdx_guest_keyid_free(unsigned int keyid);
+>   
+> -void tdx_quirk_reset_page(struct page *page);
+>   void tdx_quirk_reset_paddr(unsigned long base, unsigned long size);
+>   
+>   struct tdx_td {
+> diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+> index a2aadc6d0174..9bd4fd748e2a 100644
+> --- a/arch/x86/kvm/vmx/tdx.c
+> +++ b/arch/x86/kvm/vmx/tdx.c
+> @@ -343,7 +343,7 @@ static int tdx_reclaim_page(struct page *page)
+>   
+>   	r = __tdx_reclaim_page(page);
+>   	if (!r)
+> -		tdx_quirk_reset_page(page);
+> +		tdx_quirk_reset_paddr(page_to_phys(page), PAGE_SIZE);
+>   	return r;
+>   }
+>   
+> @@ -597,7 +597,7 @@ static void tdx_reclaim_td_control_pages(struct kvm *kvm)
+>   	if (TDX_BUG_ON(err, TDH_PHYMEM_PAGE_WBINVD, kvm))
+>   		return;
+>   
+> -	tdx_quirk_reset_page(kvm_tdx->td.tdr_page);
+> +	tdx_quirk_reset_paddr(page_to_phys(kvm_tdx->td.tdr_page), PAGE_SIZE);
+>   
+>   	__free_page(kvm_tdx->td.tdr_page);
+>   	kvm_tdx->td.tdr_page = NULL;
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> index e5a37ea2d4a0..deb67e68f85f 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -731,12 +731,6 @@ void tdx_quirk_reset_paddr(unsigned long base, unsigned long size)
+>   }
+>   EXPORT_SYMBOL_FOR_KVM(tdx_quirk_reset_paddr);
+>   
+> -void tdx_quirk_reset_page(struct page *page)
+> -{
+> -	tdx_quirk_reset_paddr(page_to_phys(page), PAGE_SIZE);
+> -}
+> -EXPORT_SYMBOL_FOR_KVM(tdx_quirk_reset_page);
+> -
+>   static __init void tdmr_quirk_reset_pamt(struct tdmr_info *tdmr)
+>   
+>   {
+
