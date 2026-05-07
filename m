@@ -1,192 +1,220 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7972239D6D4;
-	Thu,  7 May 2026 15:20:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A571A36D503;
+	Thu,  7 May 2026 15:22:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778167236; cv=none; b=bWEVUyFg4DIBXxjjhD6XOpDN3pPOGT5/U8ghnKN6UdeLsgtST/JvNw5NurAFPRH5eG/+qoNVGl/6oMe+0H08oPthwD0859ohKlldOh+aFiX0BDtCvQzfTRf7Quuy6V06nIheiDyHSLpnXRaslXmVp9SwRZmEO6G8ZICjIM/OS2E=
+	t=1778167365; cv=none; b=fcwZlEY3i5zJFo/d+NZxnJK4uKbYl5yhAhwtdpRam3jkHkFnmHDOUCD2ueCzN+0v+7FglAsHsZaFV2jf90Suo63SkLCiEZqqyPM939AUD8U7j9x25zSBCUC1h09PY3Z+ohlZPYLwJ05vp9fkY1jVJWD0XfbAV6qXvGIB1XtNqYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778167236; c=relaxed/simple;
-	bh=aYYbg88IhEHyYmCiA4rj3UhfTz25/VVIy7+Dn0azyyo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pe4sBnk7rikSXRCfo4S/BRW+Fe5r+9E6V/Oa2b3gMFlaMYZJptG9EHkdJkwfmxqkCeoRu86P5EQLvdaBXrGInL8LHjMxUWbgtMcXWHfFeLL2pCeAVgAuo46TmMWYr75QfBcz27gjlPwwnSCMIKjHIa5r3nKzSDZsQndBcrs6EhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=QsOKyDWB; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1778167365; c=relaxed/simple;
+	bh=gQCIv+0Rk7QaQ7hoLtSc8KzXHRcd3oSTSkIT6Q1T3BU=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=nJv6MaYzG9KmV87UN1dpGcZo1L28vJm3MF3gKV8jrWXoCZ+PhpCFt3coGPmtBk4ZVE47eeE61pjQgYDUbEg5I2uPRw+fPxYTvaOkI4/phjT8/jDl7lUn4jMLi2t7VTfa67z0Dnz/vKMkRwiUMKYTiCso35X5WsmgZnR2zlDSXxc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=qFcNXio4; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="QsOKyDWB"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 647CF1Jt2437018;
-	Thu, 7 May 2026 15:20:29 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=Mq0oQl
-	iX2jfdvzCuQTD+5Vg1x+CebNs1jWtDlDkyf9c=; b=QsOKyDWBo2DgVvbJwJFTvo
-	N1YD4raN7oP6qSi43KgfPP9CN/lORvc6rux7rvux8HXMM4SrjOkgJ50y3IH3MU7+
-	Z1mdo+esIxV3XbacZuDhCdope2yvgWBQfXtJSGPBMkagK3uNNOZ3bj7+CS2FZY+U
-	zJbcDLOb/xPu7w5YwfMFkfcRy9VcFV0NPMjXgWol2W7BZSCdoK0u02gGny9W5zYm
-	eEmBCkgMo6X676HKsGzHt9zXi+Sbma1CKBq5tboVBhxeIEr6bH5L42611cqRKUGz
-	Bs2kJNpTLa9aehYwU//fPuNFOszPvHEa2AX1SvWvWGvg/hDmlwQRjWmR3ZaFMQJQ
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9y1qaah-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 May 2026 15:20:28 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 647F9Qk8024468;
-	Thu, 7 May 2026 15:20:27 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwukqmd1j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 May 2026 15:20:27 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 647FKO9k30147046
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 7 May 2026 15:20:24 GMT
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5AA9520043;
-	Thu,  7 May 2026 15:20:24 +0000 (GMT)
-Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id AD2E22004B;
-	Thu,  7 May 2026 15:20:20 +0000 (GMT)
-Received: from Amits-MacBook-Pro.local (unknown [9.124.211.112])
-	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu,  7 May 2026 15:20:20 +0000 (GMT)
-Date: Thu, 7 May 2026 20:50:17 +0530
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: Harsh Prateek Bora <harshpb@linux.ibm.com>
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH 6/6] KVM: PPC: Document KVM_PPC_GET_COMPAT_CAPS ioctl
-Message-ID: <20260507204149.593a749a-e7-amachhiw@linux.ibm.com>
-Mail-Followup-To: Harsh Prateek Bora <harshpb@linux.ibm.com>, 
-	linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Vaibhav Jain <vaibhav@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-References: <20260430054906.94431-1-amachhiw@linux.ibm.com>
- <20260430054906.94431-7-amachhiw@linux.ibm.com>
- <81b9d00f-7568-4bcd-9b77-2f6de3162d65@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="qFcNXio4"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=QTucYTxb3ZEm/mr/ifQJhhxEirQO/2Pe1y7GAASxNd0=; b=qFcNXio4mtvPKYu2QvsR6x09GX
+	ooekun8CWk2FOi/5EwyDSk6oh+wDzgQPr3ZCUWx5FZoy58iu2vgl4FvCuMxVyvu2ctpGxgwLwRPDi
+	/3cDFDu0omwrovH2NnD2kxL0IhM74urir6Zg3wKvCAou4uA3bhOx0fpbEkpIU9fso1njRlzPv4ZdF
+	BVyVbkcNkLDkRzgqQY4MJ+oYd25mrapEhN/7YmNPThNdPv8Ye6pVTsyR/TEU1DlZp3YyvJuXvchx3
+	0xmakSwBcEQz/Y/jeIyB4ARoBTGsiZM5DuV75W50KjbPntBR/ffjSDEilvopopHGxU6fku0Wi6+pG
+	a2fx1Kww==;
+Received: from [172.31.31.148] (helo=u09cd745991455d.ant.amazon.com)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wL0YU-00000003toK-3Spk;
+	Thu, 07 May 2026 15:22:27 +0000
+Message-ID: <876c720ab963f550d3166b067f6457fcd78ec415.camel@infradead.org>
+Subject: Re: [PATCH] KVM: x86/xen: bail in IRQ context on PREEMPT_RT in
+ kvm_xen_set_evtchn_fast()
+From: David Woodhouse <dwmw2@infradead.org>
+To: Mauricio Faria de Oliveira <mfo@igalia.com>
+Cc: Paul Durrant <paul@xen.org>, Sean Christopherson <seanjc@google.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>,  Borislav Petkov <bp@alien8.de>, Dave
+ Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark
+ Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ kernel-dev@igalia.com,  kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-rt-devel@lists.linux.dev, 
+ syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com
+Date: Thu, 07 May 2026 16:22:26 +0100
+In-Reply-To: <e23df9d183c2c421946ea73b8053e4c4@igalia.com>
+References: <20260506-xen-rt-sleep-v1-1-53b6b60a671d@igalia.com>
+	 <8e7bc66a7994ca06f164a5d5f7ceb3f07d3a1357.camel@infradead.org>
+	 <e23df9d183c2c421946ea73b8053e4c4@igalia.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-KAfkmaggwtdyfy2U8XuO"
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <81b9d00f-7568-4bcd-9b77-2f6de3162d65@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: _GRVGeuooRgFfRFu6BAqMzxBWdIDt1nG
-X-Proofpoint-GUID: _GRVGeuooRgFfRFu6BAqMzxBWdIDt1nG
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA3MDE1MSBTYWx0ZWRfX5Nx4Y81I/MKJ
- 4VKZR+UY3eS13OOhySHiskovVwSRk/B1X9sKCCbkYjs+C8NaNCgGjS4TSds1mDHK7YFb05EV2mK
- BUOyG4MXNLfVdacy6aaCfumKT/XXbD7cg+Mlu8TVAFsUGBeP6PW6/J8Vu68c3/QHoRoUS6Rzltt
- WPhUng8P52MyHOVjuUSghsmMogmhActU7tK6t6QCjeucBe+GTM7CxbyfcjYSYuRAb53k6sNCPKf
- Iq7KIKZE+vEE4z8/TysitOMLAk/iVNSnnsqmN4UUoWKga+zR+NRqM6INlnu//wX8zQw2gFnxGjU
- l4bY/RHvgu8mnM8cnP7Kmzerg8j70Yo5eh2iFlRP/5PiyBeJHXHzEGfnIdm5iyThXq0l0HrySdy
- +FMRMAOfmbGYlDuH5bze8uECvVodizO+G2rLuKE6YrnHwIfu4wF2Xle/BgIx2rrMw0TZm1A+Mbt
- lQIwz3ETTMc6vwuG4XA==
-X-Authority-Analysis: v=2.4 cv=UbFhjqSN c=1 sm=1 tr=0 ts=69fcadbc cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=qrTcMcv5DQrz4xUTKAQA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-07_01,2026-05-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=0
- adultscore=0 priorityscore=1501 bulkscore=0 phishscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605070151
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-On 2026/05/05 03:25 PM, Harsh Prateek Bora wrote:
-> 
-> 
-> On 30/04/26 11:19 am, Amit Machhiwal wrote:
-> > Add documentation for the KVM_PPC_GET_COMPAT_CAPS ioctl to the KVM API
-> > documentation.
-> > 
-> > The ioctl exposes host processor compatibility modes supported for
-> > nested KVM guests on PowerPC systems.
-> > 
-> > Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-> > ---
-> >   Documentation/virt/kvm/api.rst | 35 ++++++++++++++++++++++++++++++++++
-> >   1 file changed, 35 insertions(+)
-> > 
-> > diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-> > index 52bbbb553ce1..7a10c3c6cbf1 100644
-> > --- a/Documentation/virt/kvm/api.rst
-> > +++ b/Documentation/virt/kvm/api.rst
-> > @@ -6555,6 +6555,41 @@ KVM_S390_KEYOP_SSKE
-> >   .. _kvm_run:
-> > +4.145 KVM_PPC_GET_COMPAT_CAPS
-> > +-----------------------------
-> > +:Capability: KVM_CAP_PPC_COMPAT_CAPS
-> > +:Architectures: powerpc
-> > +:Type: vm ioctl
-> > +:Parameters: struct kvm_ppc_compat_caps (out)
-> > +:Returns:
-> > +	0 on successful completion,
-> > +	-EFAULT if ``struct kvm_ppc_compat_caps`` cannot be written
-> 
-> -EINVAL also needs to be documented?
 
-We do not currently return -EINVAL for this ioctl, so I did not document it. As
-implemented, the only explicit error documented here is -EFAULT when struct
-kvm_ppc_compat_caps cannot be written. Please let me know if I am missing a case
-where -EINVAL should be returned.
+--=-KAfkmaggwtdyfy2U8XuO
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> 
-> > +
-> > +IBM POWER system server-based processors provide a compatibility mode feature
-> > +where an Nth generation processor can operate in modes consistent with earlier
-> > +generations such as (N-1) and (N-2).
-> > +
-> > +This ioctl provides userspace with information about the CPU compatibility modes
-> > +supported by the current host processor for booting the nested KVM guests on
-> > +PowerNV (KVM nested APIv1) and PowerVM (KVM nested APIv2) platforms.
-> > +
-> > +::
-> > +
-> > +  struct kvm_ppc_compat_caps {
-> > +         __u32   flags;
-> > +         __u64   compat_capabilities;    /* Capabilities supported by the host */
-> > +  };
-> > +
-> > +The ``compat_capabilities`` bit field describes the processor compatibility
-> > +modes supported by the host. For example, the following bits indicate support
-> > +for specific processor modes.
-> > +
-> > +::
-> > +
-> > + bit 1: KVM guests can run in Power9 processor mode
-> > + bit 2: KVM guests can run in Power10 processor mode
-> > + bit 3: KVM guests can run in Power11 processor mode
-> 
-> May be use H_GUEST_CAP_POWER9 and friends ?
+On Thu, 2026-05-07 at 11:56 -0300, Mauricio Faria de Oliveira wrote:
+> On 2026-05-07 03:58, David Woodhouse wrote:
+> > On Wed, 2026-05-06 at 23:36 -0300, Mauricio Faria de Oliveira wrote:
+> > > kvm_xen_set_evtchn_fast() calls read_lock_irqsave(), which might bloc=
+k
+> > > on PREEMPT_RT, but that is invalid in IRQ context, as when it's calle=
+d
+> > > by xen_timer_callback() (even on PREEMPT_RT per HRTIMER_MODE_ABS_HARD=
+).
+> > >=20
+> > > Check for that case, and bail out early.
+> > >=20
+> > > Note: there is previous work and discussion on this [1] (~2 years ago=
+),
+> > > which involved continuing to execute the function with changes, but i=
+t
+> > > was not merged. That was a different, more complex approach.
+> > >=20
+> > > [1] https://lore.kernel.org/lkml/ZdPQVP7eejq3eFjc@google.com/
+> >=20
+> > ...
+> >=20
+> > > +	/* Bail in IRQ context on PREEMPT_RT; read_lock_irqsave() might blo=
+ck */
+> > > +	if (IS_ENABLED(CONFIG_PREEMPT_RT) && in_hardirq())
+> > > +		goto out;
+> >=20
+> >=20
+> > The approach in Paul's earlier patch was better; we absolutely *want*
+> > to deliver the interrupt to the guest immediately whenever we can, and
+> > only fall back to the workqueue in the rare case that the shared info
+> > page has been invalidated.
+>=20
+> Certainly, that was better. This was a simple workaround, but with this
+> clarification, it indeed doesn't fit.
+>=20
+> > We should switch to plain read_trylock(), *without* the
+> > local_irq_save(). And since this was the *only* case where the GPC lock
+> > was ever taken under IRQ=C2=B9, all the GPC locking can drop the _irq p=
+art.
+>=20
+> Ok, I can take a look. Or do you plan to work on it yourself (as you
+> hit the issue with read_unlock later in this thread)?
 
-I used the bit descriptions directly since this is documenting the uAPI bitmap
-layout, which felt clearer for userspace than using only H_GUEST_CAP_POWER9 and
-friends. But I’m happy to mention those macros as well if you think that
-improves clarity.
+I'm working on it now; thanks.
 
-Thanks again for reviewing the series. I will wait a little longer for any
-further feedback before posting v2.
+Currently confused by the fact that the read_trylock() seems to fail
+more often than it should under RT, causing the fallback path to be
+taken... and the fallback path doesn't seem to work properly...
 
-Thanks,
-Amit
+Your version should have seen this too, surely? Did the selftest in
+linux/tools/testing/selftests/kvm/x86/xen_shinfo_test work with your
+patch?
 
-> 
-> > +
-> >   5. The kvm_run structure
-> >   ========================
-> 
+
+
+--=-KAfkmaggwtdyfy2U8XuO
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUwNzE1MjIy
+NlowLwYJKoZIhvcNAQkEMSIEIOpe3FmUg3GcwJ6vLZ9FOgt3/cdbJQ86UDTNvdNtugDuMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAHfIKQa1XmfYb
+CIXrL10bkRsr6GBnOVZt2xKp3zQcKAU4+KHs8xGNUINNvklhkSzzWSN4sxm5Hs3YLN/CWAChmcmk
+X7XfirOnj4HHEcRbbhAdaPcAwr+QKPRafslONpRbJ2iAyGicAWsrYNjUwEwevboofrFDF5CuzjpY
+dfPNVDXR88QF1YJJx/JQ5EvGV5xekKL+mbN5nJbLkKbqDPH9fcyvLjhGx22Qs06CzCmDJj0HEni/
+5dwGs5EyzfKmZ91FGSuxmtI0iAeE0sNCgpgasBha87s9PUnEMt+33rHcXLHi2eDO6Rj2R9jEVZuf
+Hgz4Ut87ocnDKwaZRtwbXMoauOh3xhggN7PWo4t/FcheJdvfa4my6tJ3Wa4k2bBeJgVaQXjh3i/z
+hIDO2EAfot1xJTksfYwquswdwCJT7iv/hDpinzvlFjNoJyQLjsejHudm50ljvnDzCXs+w2vYqicc
+4Zr4GUNM/qj+ZkGLC3Mt0z9ypRWhpbq1Q9n+Sa9fuq3p5BTbD5Khg8VC84mbdk4wDfoCZs0FrRoK
+eB5PSkRXv7aXmcQIjyfev4Ys8fBLVkByktOKxVqxGTEh0XGPLy+wQYHSCcwseLVW47pD1E9h9z0a
+7mwJfNwZ0TEOJhrQ/hmPYZFQPDaU9kwtRxrGzZxPYNLtQZ0vA53SOwCvlstRZK4AAAAAAAA=
+
+
+--=-KAfkmaggwtdyfy2U8XuO--
