@@ -1,64 +1,64 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088743161AD
-	for <kvm@vger.kernel.org>; Thu,  7 May 2026 14:35:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4EFB3F7A99
+	for <kvm@vger.kernel.org>; Thu,  7 May 2026 14:40:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778164526; cv=none; b=muprMbB1D6xWIIFv4d+UDJNCU6fpfxWVXkogiJExBxfSZR+46+KT5ZkdQHfnn06PC5HLoLPeiVFdiXdxG5YxtHj7PqZv+R+N6JOPEsFKGpo3mTKRTwZVKvzBaqhRJ8zknZKH9dGrLdPzTLdtQE4WyJOGDL9d+zAOaYAn3GU78T8=
+	t=1778164834; cv=none; b=f8CBwJLcga3wSjMXpXVWZlud+mtIXyem70+G2ynXlTLUkQs9ASdNz8BatMMB+3oexei7hORI9f2BSLneXCJVrqdH4MhA7lxLYD4X/6j4Y0qu6dgqwnh8d2p52VuUF3nWxR1J6iwOJKI4cL1S02rcECExTwVFPbyznSaKvc8NUec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778164526; c=relaxed/simple;
-	bh=vj2d3TM753Qomga1RBJYrcXk+fAbZ3DoPSidDJ7x8Jw=;
+	s=arc-20240116; t=1778164834; c=relaxed/simple;
+	bh=Cn5JYFt+re2uIrrew2b1uNvLy9dnU0v0AiT84U5uVjs=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Jl+C4USfuG/SUs/OIEs8IdrpUxdEfVhqnK1N/8VGyXEfbk9dk0MRXWGXBP8vM3vDe+mRSoalrx51woZBrBi4o60htVpwmo7dT4iF1DY2wZa4UnzD4ZrMr4U9kCpbDewB6Q0stlfFXqNTCSUfONiimLOhRXUcPM3JkEigudlEMrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UfSOMtet; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=CMNYEYk2gCrfK3ThnphMbc7Kj+8P9BKF9/CvCicD5AxmmbZPiYkAvpV3Hmy0yYXmczFpTTlhoDSASoqFyrNUwFoBoxHJrCDKImXWouB/ykPB4s2XIuEN6PL1n8XHNS1x2oXP56e30Qxaue1f2fIJpP2aSdJ+ew4AWQoDzuuwV/0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=C9nFZ09e; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UfSOMtet"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3662668b825so788426a91.3
-        for <kvm@vger.kernel.org>; Thu, 07 May 2026 07:35:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C9nFZ09e"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8397b14a689so653942b3a.2
+        for <kvm@vger.kernel.org>; Thu, 07 May 2026 07:40:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778164524; x=1778769324; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1778164832; x=1778769632; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DOrneIt3h9O5z2JucWZogecaGRGz+fXsHgOHCEh5Dqs=;
-        b=UfSOMtet5o84WTezCAT5Qo3OS9Kn/iF31GDgbrix27RoZAnSSrHO23S0W18nnQ/kZ4
-         MPvvH1OD9/sNpw9nAIYy6UdAvSiq6BCJWJyyu3BbgMfLtABf1TsrX7t5SZghMI7ucwg5
-         l96Gcmh7W+zKl9HlxMwmTsan/Ng6v7CHYHAxbsztDy1Sw0R5u2gKLDDHZ4jkbbUltGvU
-         cUF4zly2BLqFrDfZs14EQw18qjxKV5L2YVjPlWBqQEUZK0AOtEexva/eE1FUbcEUg1rQ
-         OWS+wV5tCdCoum+/tWjn/BGyq2pEgjenPv8kw11dz6XEE67zc0DTob4nyGZ27QLz/V9Y
-         DhLQ==
+        bh=geAlAIqy7GyIFv6P4BbXpEe4TxhfkgYP5jfPUWU5/oE=;
+        b=C9nFZ09e18x1arQjbszamZNXxAkPZFJ9PCoPM44SPMp3QzToUnHx+a8fSjDR9/fFL7
+         cJ/HvXVa+0c7u2fEiSQ1BoTlurVBVHdKfHE11SbfApRKAdZIAmFSKuY785+XGEFs8esA
+         FdBUqd/g5nnMQsVBbxA/S1oSbS3R46TNebiUqvv6MxEszTUxhznOyXsyDCUHrpOiXAEE
+         9gtWZFEuQh4vARXAzQOz6NjFAwE1on/WEDT6wh/aIK/mZlpYksCTDd0v0D21BfrTuFVx
+         CJW8D/8WUmvUW46gxPMqrqJe8g64+XlQ23lWdHq/nhCYupIl5rJns1eFF9yy6+vt5aNQ
+         5EJA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778164524; x=1778769324;
+        d=1e100.net; s=20251104; t=1778164832; x=1778769632;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DOrneIt3h9O5z2JucWZogecaGRGz+fXsHgOHCEh5Dqs=;
-        b=SXl2wmUW7khnkuUdZmNQv+tqB98gz/AzfzGRJvz6/o3wOMBpEx9t9C8b7DKxe6JoAx
-         tsWANdlGBcT1iRQNdVcU+eUWwyt1wP5H9DZZld4Gx70Oq1SMNWkLeOLIAg/ohBYbG9WP
-         KmPloiZh2h74qRTLsxlgpmtaM1Xr9786XqsJqDmWLGKWlpz9hUenAnfmqjGP0KGMfbhW
-         AJxrNai8Fo9j3rVTb/uupPdmColRY1SoFTRM6ab1La4JexMOFLJQsO0Zso5/LKgeyK8C
-         mbX2vc8eZvUbR51QsHpuBXH+kvMc6mlNhvXDb0RxUUdZ6nJuo2ouxa0pEfAqBD46k+cL
-         0xAQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/3o6edIsVnmX60F1e5KzTbRVAS5v8oKVU0JjEZEuLzjxfSgy3kthKdx0c5qZrh9NnYWeY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQwoMjfBov8orNWbHgTjgr7xyGmSRLfjj2ienD0bFBc57UXxXJ
-	0jciFMhdjCPvFYEZbrgeoZTASI4tV4iWTGUz2CU4dGAG81PDecqWPE8YZpOjjJ5QUSzNVtTMAMO
-	5nqzrMQ==
-X-Received: from pgbdp7.prod.google.com ([2002:a05:6a02:f07:b0:c79:607e:269c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:57eb:b0:366:132:fda7
- with SMTP id 98e67ed59e1d1-36601331e37mr3678227a91.10.1778164524025; Thu, 07
- May 2026 07:35:24 -0700 (PDT)
-Date: Thu, 7 May 2026 07:35:23 -0700
-In-Reply-To: <20260505195226.563317-9-pbonzini@redhat.com>
+        bh=geAlAIqy7GyIFv6P4BbXpEe4TxhfkgYP5jfPUWU5/oE=;
+        b=nIbv5gKYxz7+Q5gw5scwUWtDNZHQZndtZZsXhOPeRyeG2nDXBBZcB+XgQhGtX8G3Rn
+         Xkmlgjqpe0gdUatJ8MLiXS5xYEr8GxkVDneGIWLDSReudSOi/TF/QoIcj0uKXFkbFfcA
+         90ffavuicXNO4yjRkENZ0jbrh3oYFmxpMpqbaqIjBI4OKJ23IKjdIOtb9Izb68mA4a+H
+         pxC3eAuHTfmXrAa8ID6Q57Zd3tiP7U3gI57TNxsp78MUuvUJZY6JMXFKfH0CB1nal1nx
+         9m8+6v5gKmyeiUo0pVOewVfwYS6Tf3w6CjHq+jCYKHOwjtR2ibNyjGRGRThlUFsNeHGT
+         VsnQ==
+X-Forwarded-Encrypted: i=1; AFNElJ83XmqZyndDBuK0OacFWTZz260HctDnMO6FmH3aewfnoc+j5axzAlP3SNlPgBTWanug18c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVUtAYxa3EJlDirZhamc1yBjIyX9uwWq6dvqmkoWvT2hSNRTrm
+	RAPmQjGxrLDdOosAwBtLrwjNHZWUN+3w5wmcOUe5GaXz2KFBP4mE0jYOBZIiIsA1QQDTsGHzzfI
+	4hCQXQw==
+X-Received: from pfbmu6.prod.google.com ([2002:a05:6a00:6e86:b0:837:f337:257c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:f03:b0:838:c01a:7a46
+ with SMTP id d2e1a72fcca58-83a5d6810bcmr7828556b3a.26.1778164831887; Thu, 07
+ May 2026 07:40:31 -0700 (PDT)
+Date: Thu, 7 May 2026 07:40:31 -0700
+In-Reply-To: <20260505195226.563317-16-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260505195226.563317-1-pbonzini@redhat.com> <20260505195226.563317-9-pbonzini@redhat.com>
-Message-ID: <afyjK5HOF63-95XL@google.com>
-Subject: Re: [PATCH 08/28] KVM: x86/mmu: separate more EPT/non-EPT permission_fault()
+References: <20260505195226.563317-1-pbonzini@redhat.com> <20260505195226.563317-16-pbonzini@redhat.com>
+Message-ID: <afykX-a6xxCZh6GK@google.com>
+Subject: Re: [PATCH 15/28] KVM: VMX: enable use of MBEC
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, d.riley@proxmox.com, 
@@ -66,72 +66,89 @@ Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, d.riley@proxmox.com,
 Content-Type: text/plain; charset="us-ascii"
 
 On Tue, May 05, 2026, Paolo Bonzini wrote:
-> Move more of EPT handling entirely in the existing "if (!ept)"
-> conditional.  Use a new "rf" variable instead of uf for read permissions
-> for clarity.
-> 
-> Merge smepf and ff into a single variable because EPT's "SMEP" (actually
-> MBEC) is defined differently and does not need smepf.
-> 
-> Tested-by: David Riley <d.riley@proxmox.com>
-> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-> ---
->  arch/x86/kvm/mmu/mmu.c | 26 +++++++++++++++-----------
->  1 file changed, 15 insertions(+), 11 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index d94a488db79d..fc34536c536b 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-> @@ -5584,24 +5584,28 @@ static void update_permission_bitmask(struct kvm_mmu *mmu, bool ept)
->  		 * that causes a fault with the given PFEC.
->  		 */
+> @@ -7823,6 +7830,11 @@ u8 vmx_get_mt_mask(struct kvm_vcpu *vcpu, gfn_t gfn, bool is_mmio)
+>  	return (MTRR_TYPE_WRBACK << VMX_EPT_MT_EPTE_SHIFT);
+>  }
 >  
-> +		/* Faults from reads to non-readable pages */
-> +		u8 rf = 0;
->  		/* Faults from writes to non-writable pages */
->  		u8 wf = (pfec & PFERR_WRITE_MASK) ? (u8)~w : 0;
->  		/* Faults from user mode accesses to supervisor pages */
-> -		u8 uf = (pfec & PFERR_USER_MASK) ? (u8)~u : 0;
-> -		/* Faults from fetches of non-executable pages*/
-> -		u8 ff = (pfec & PFERR_FETCH_MASK) ? (u8)~x : 0;
-> -		/* Faults from kernel mode fetches of user pages */
-> -		u8 smepf = 0;
-> +		u8 uf = 0;
-> +		/* Faults from fetches of non-executable pages */
-> +		u8 ff = 0;
->  		/* Faults from kernel mode accesses of user pages */
->  		u8 smapf = 0;
->  
-> -		if (!ept) {
-> +		if (ept) {
-> +			rf = (pfec & PFERR_USER_MASK) ? (u8)~u : 0;
-> +			ff = (pfec & PFERR_FETCH_MASK) ? (u8)~x : 0;
-> +		} else {
->  			/* Faults from kernel mode accesses to user pages */
->  			u8 kf = (pfec & PFERR_USER_MASK) ? 0 : u;
->  
-> -			/* Not really needed: !nx will cause pte.nx to fault */
-> -			if (!efer_nx)
-> -				ff = 0;
-> +			uf = (pfec & PFERR_USER_MASK) ? (u8)~u : 0;
+> +bool vmx_tdp_has_smep(struct kvm *kvm)
+> +{
+> +	return enable_mbec;
+> +}
 > +
-> +			if (efer_nx)
-> +				ff = (pfec & PFERR_FETCH_MASK) ? (u8)~x : 0;
-
-I still think we should do:
-
-			if (efer_nx)
-				ff |= (pfec & PFERR_FETCH_MASK) ? (u8)~x : 0;
-
-so that the order of the efer_nx and cr4_smep logic doesn't matter.
-
+>  static void vmcs_set_secondary_exec_control(struct vcpu_vmx *vmx, u32 new_ctl)
+>  {
+>  	/*
+> @@ -8622,6 +8634,8 @@ __init int vmx_hardware_setup(void)
 >  
->  			/* Allow supervisor writes if !cr0.wp */
->  			if (!cr0_wp)
-> @@ -5609,7 +5613,7 @@ static void update_permission_bitmask(struct kvm_mmu *mmu, bool ept)
+>  	if (!cpu_has_vmx_ept_ad_bits() || !enable_ept)
+>  		enable_ept_ad_bits = 0;
+> +	if (!cpu_has_ept_mbec() || !enable_ept)
+> +		enable_mbec = 0;
 >  
->  			/* Disallow supervisor fetches of user code if cr4.smep */
->  			if (cr4_smep)
-> -				smepf = (pfec & PFERR_FETCH_MASK) ? kf : 0;
-> +				ff |= (pfec & PFERR_FETCH_MASK) ? kf : 0;
+>  	if (!cpu_has_vmx_unrestricted_guest() || !enable_ept)
+>  		enable_unrestricted_guest = 0;
+> diff --git a/arch/x86/kvm/vmx/vmx.h b/arch/x86/kvm/vmx/vmx.h
+> index db84e8001da5..0a4e263c4095 100644
+> --- a/arch/x86/kvm/vmx/vmx.h
+> +++ b/arch/x86/kvm/vmx/vmx.h
+> @@ -567,6 +567,7 @@ static inline u8 vmx_get_rvi(void)
+>  	 SECONDARY_EXEC_ENABLE_VMFUNC |					\
+>  	 SECONDARY_EXEC_BUS_LOCK_DETECTION |				\
+>  	 SECONDARY_EXEC_NOTIFY_VM_EXITING |				\
+> +	 SECONDARY_EXEC_MODE_BASED_EPT_EXEC |				\
+>  	 SECONDARY_EXEC_ENCLS_EXITING |					\
+>  	 SECONDARY_EXEC_EPT_VIOLATION_VE)
+>  
+> diff --git a/arch/x86/kvm/vmx/x86_ops.h b/arch/x86/kvm/vmx/x86_ops.h
+> index d09abeac2b56..69cf276be88e 100644
+> --- a/arch/x86/kvm/vmx/x86_ops.h
+> +++ b/arch/x86/kvm/vmx/x86_ops.h
+> @@ -103,6 +103,7 @@ void vmx_load_eoi_exitmap(struct kvm_vcpu *vcpu, u64 *eoi_exit_bitmap);
+>  int vmx_set_tss_addr(struct kvm *kvm, unsigned int addr);
+>  int vmx_set_identity_map_addr(struct kvm *kvm, u64 ident_addr);
+>  u8 vmx_get_mt_mask(struct kvm_vcpu *vcpu, gfn_t gfn, bool is_mmio);
+> +bool vmx_tdp_has_smep(struct kvm *kvm);
+
+As suggested in v5, can we do this?
+
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 60dd1b5e9520..cc14a6b96681 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -7839,11 +7839,6 @@ u8 vmx_get_mt_mask(struct kvm_vcpu *vcpu, gfn_t gfn, bool is_mmio)
+        return (MTRR_TYPE_WRBACK << VMX_EPT_MT_EPTE_SHIFT);
+ }
+ 
+-bool vmx_tdp_has_smep(struct kvm *kvm)
+-{
+-       return enable_mbec;
+-}
+-
+ static void vmcs_set_secondary_exec_control(struct vcpu_vmx *vmx, u32 new_ctl)
+ {
+        /*
+diff --git a/arch/x86/kvm/vmx/x86_ops.h b/arch/x86/kvm/vmx/x86_ops.h
+index 69cf276be88e..409858074246 100644
+--- a/arch/x86/kvm/vmx/x86_ops.h
++++ b/arch/x86/kvm/vmx/x86_ops.h
+@@ -4,6 +4,7 @@
+ 
+ #include <linux/kvm_host.h>
+ 
++#include "capabilities.h"
+ #include "x86.h"
+ 
+ __init int vmx_hardware_setup(void);
+@@ -103,7 +104,11 @@ void vmx_load_eoi_exitmap(struct kvm_vcpu *vcpu, u64 *eoi_exit_bitmap);
+ int vmx_set_tss_addr(struct kvm *kvm, unsigned int addr);
+ int vmx_set_identity_map_addr(struct kvm *kvm, u64 ident_addr);
+ u8 vmx_get_mt_mask(struct kvm_vcpu *vcpu, gfn_t gfn, bool is_mmio);
+-bool vmx_tdp_has_smep(struct kvm *kvm);
++
++static inline bool vmx_tdp_has_smep(struct kvm *kvm)
++{
++       return enable_mbec;
++}
+ 
+ void vmx_get_exit_info(struct kvm_vcpu *vcpu, u32 *reason,
+                       u64 *info1, u64 *info2, u32 *intr_info, u32 *error_code);
