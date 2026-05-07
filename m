@@ -1,66 +1,79 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABD06382F10;
-	Thu,  7 May 2026 14:54:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FC5D392814;
+	Thu,  7 May 2026 14:54:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778165667; cv=none; b=lIjmVtQpT+CUi7BO23IRWdJ6Ea3o+k58wsactsv2LoYoOaXnucE6cht3N4+qDYSNC0qVoH1FhCS8mNfnffJNtL6v4pgAJtC3HmlSSuHWOxjNQu9jXiRZfoagPlC9KO9OkQW1MbZPkhTk5ZKmrSyryBX/4/qv6J5wSPtDeb5WCo4=
+	t=1778165692; cv=none; b=Pytqi5zZhor1k4dZR/jWWiTKYACc2UXu8l6C54cwBY8iWFT4rhhPjUmhO4W01hLsZjAdDKncNOxUrBIc6pv1gcxKvJ3xsDpqLUpPyfe7ztSAnqzl4GnippkzjMrofkYUIgqCApZ2fW7LY/95coMfWwKCmENVUBRBIZ3bsRC34LQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778165667; c=relaxed/simple;
-	bh=5XfS55EN4bj5QPY46V6t4BYAo27rzcuYqURs6dSESCE=;
+	s=arc-20240116; t=1778165692; c=relaxed/simple;
+	bh=3dV2KsxwgF+DByhdtsxyvMvYXs+PAWCkuZa76FJ7a88=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fBlUolkbxW/AoMyWNsXJH1jyvVq+y9xVOMR/fLUpKw96EYMMhqowNyiIMS01nojI7Nf4JkS8CQEMhAdoImkKfLXP2m8SGjEzxpzV/SjIRGu6XzkBi7pTo/v3/aEZTTLap9uIx7RsPfFKxqhdtE/zT53hSXjlycjw/ahHTS37F8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1nB2eI3+; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=YvM0Voub; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZJ5DElrs3WzbvQcivSspaFjRdbnW3NILR6WYCSsSRNRSm5+1nBjBQSzbG/hAdjxsrXam8VJkMBEENe/rDGqGUSnpdfCQY93CQVE/bpz254BHiWS7lJKCDM3S4LDTspU6uJj6/NTrxH0hEoIkOkGZPa59oOpCJ3B+R75eEuwUJBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=XWm9Jy50; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1nB2eI3+";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="YvM0Voub"
-Date: Thu, 7 May 2026 16:54:16 +0200
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1778165658;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8VqblXCRKNyHMLImrYpvFEMT1rA3y4jTKAga3t+zUXo=;
-	b=1nB2eI3+qiu8j9YmpTCDVRTbPlZ51QhAvP3f5+t3HkbYLisL0ElREzuEyjh0IS9X//d2q8
-	IrICM2NhTxJoPfpVIlYnFTJX8fX/LXtke8Yv/+Eko+Qf6OHc9shfG50db+riN9Ir3bca+a
-	97XCh0dpKvG5WzaR2+ecGC4bGBWBExWPSvAFf1WdAlptV/RjfcnVFB2ZqNFuAlO9bjs20o
-	IL7qdACrARROx0cAYLpzo+nndwcIn9e8TEZ0RCQUtKDloJYBjd+Wh94+r+Ug8gUK+ZGhbI
-	b/VrarlPbMTPJDeM+BCYh6a2H4LznFwd35W8CdtrIGtAH+GwkLM0WpEG38Gs7g==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1778165658;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=8VqblXCRKNyHMLImrYpvFEMT1rA3y4jTKAga3t+zUXo=;
-	b=YvM0VoubD8doF3g4uqGlJStfDKllP4Ks9G2jZRmF9svFmHiBK6qSBsGal4puY+/sJtyTys
-	SHXYWlmREO43PMDw==
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Mauricio Faria de Oliveira <mfo@igalia.com>,
-	Paul Durrant <paul@xen.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>, kernel-dev@igalia.com,
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev,
-	syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com
-Subject: Re: [PATCH] KVM: x86/xen: bail in IRQ context on PREEMPT_RT in
- kvm_xen_set_evtchn_fast()
-Message-ID: <20260507145416.55hJZOWT@linutronix.de>
-References: <20260506-xen-rt-sleep-v1-1-53b6b60a671d@igalia.com>
- <8e7bc66a7994ca06f164a5d5f7ceb3f07d3a1357.camel@infradead.org>
- <20260507071235.rdb4aGeE@linutronix.de>
- <f0f447dea6c8f2deb7f153f745add15d3ecadd19.camel@infradead.org>
- <20260507132115.w1nOBvlS@linutronix.de>
- <e082f19aecf2d2acd30782ea9220aedac3d3f990.camel@infradead.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="XWm9Jy50"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 647BwbhR3053960;
+	Thu, 7 May 2026 14:54:37 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=kz6P/c
+	TXNPwJg82hPrz81dbLJxMLFsVHrvIaK6Y73wo=; b=XWm9Jy50dGh+oCqZ4EZmdH
+	yEb/ULX8x2ARHeuHlCuxEIK462RWxAOUyO2SoucAJfB2wh2alUguvzJnVlA5JXQk
+	1tmzJquGYFZ9zT4nnNTI0p4OKQkM9mE/JmPlTy+ScI1cnZM3g/m5TiWfsK6xu3IK
+	HnMTYXKMikrAuGMqDYdMUsmc7RahTVEuLHIerYMAKKxr4RyVb+Yc7SvuK1vV6dtr
+	xvtt4J/Icjl/Be+ZpoNFw4PPH0cK4Lt+2YfT9xlm0rzONCGnXWaVDMf1t/3dqGz0
+	BGCVzTugF8sPdEBiY6NVxdg7pat60RXlqdMNtmlSiPtFeWlITzL3sUS3qanPALDw
+	==
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9xxx5y4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 May 2026 14:54:36 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 647EddCg004623;
+	Thu, 7 May 2026 14:54:36 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dww3hc2eu-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 07 May 2026 14:54:36 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 647EsWpp40632710
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 7 May 2026 14:54:32 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 39F892004B;
+	Thu,  7 May 2026 14:54:32 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C079E20040;
+	Thu,  7 May 2026 14:54:28 +0000 (GMT)
+Received: from Amits-MacBook-Pro.local (unknown [9.124.211.112])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Thu,  7 May 2026 14:54:28 +0000 (GMT)
+Date: Thu, 7 May 2026 20:24:22 +0530
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 4/6] KVM: PPC: Book3S HV: Implement compat CPU capability
+ retrieval for KVM on PowerVM
+Message-ID: <20260507195732.48b03c43-2b-amachhiw@linux.ibm.com>
+Mail-Followup-To: Harsh Prateek Bora <harshpb@linux.ibm.com>, 
+	linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Vaibhav Jain <vaibhav@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
+	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260430054906.94431-1-amachhiw@linux.ibm.com>
+ <20260430054906.94431-5-amachhiw@linux.ibm.com>
+ <52c78fd5-e987-4140-bb37-f358fc25c7e6@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -69,41 +82,135 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <e082f19aecf2d2acd30782ea9220aedac3d3f990.camel@infradead.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <52c78fd5-e987-4140-bb37-f358fc25c7e6@linux.ibm.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA3MDE0NiBTYWx0ZWRfX1nB6EcY/pjyW
+ MiP4TZuap/Ge31LzZU/fOXKE8m54IaFJtFo906Fw7kyiYSNgIM7fJ8Kr8jEZNgMSQluK/+FCK4M
+ Aeqoq27grQhbOHMV61Rc6e/W+3Gl5R76NDN390wWex4Vqk6OrHCqMQ5uckGqxaPUnFtoThqULqt
+ Rt2zrNpCUN0QIHlRmlgi6UuadqcXqh9YffnZZpSyrCqCZQ22dn1WqcfpDXlfasB5mVy7t+1CJ+P
+ zUoTOhDV7eZARYSZ0hbXRvwP3N79oVKVyeZWl1MVzhXSGwP8dY1nGmeIRZ/yJDLArgl0TY2hfiP
+ z0r1hPQVTxMbTRHurCiHqr/5e7DED6ciwIzKsp1jR7mtZ8QEiYE5LOknRdviCNfy1xXjZ9kfJPc
+ dmflGOBKbJKq8NgTF0dGyP5FMYXFvucLUDLdeGQwcwRAFuzIickPLg2z/6XOxvRWJ5drYjxXxLl
+ ifCMDw2LrAWYsmKYAOg==
+X-Proofpoint-ORIG-GUID: YcDSgLB1tgONo6bmiLOGfFjYmJk5_FeL
+X-Proofpoint-GUID: kYy46AwlE31DofFwqAU9AESoFaPM8M35
+X-Authority-Analysis: v=2.4 cv=ctWrVV4i c=1 sm=1 tr=0 ts=69fca7ad cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
+ a=YJwquTfWpi-7YPPFYTYA:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-07_01,2026-05-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 lowpriorityscore=0 adultscore=0 clxscore=1015
+ suspectscore=0 impostorscore=0 spamscore=0 malwarescore=0 phishscore=0
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2605070146
 
-On 2026-05-07 14:43:20 [+0100], David Woodhouse wrote:
-> Thanks. Something like this?
-
-Yes. If you could stuff the below into the patch so it does not look
-like fixing symptoms.
-
-> From 7199173d543d25333418537bcf07d6b2fce18ff1 Mon Sep 17 00:00:00 2001
-> From: David Woodhouse <dwmw@amazon.co.uk>
-> Date: Thu, 7 May 2026 14:39:22 +0100
-> Subject: [PATCH] locking/rt: Use raw_spin_lock_irqsave() in
->  __rwbase_read_unlock()
+On 2026/05/05 02:55 PM, Harsh Prateek Bora wrote:
 > 
-> __rwbase_read_unlock() uses raw_spin_lock_irq()/raw_spin_unlock_irq()
-> which unconditionally disables and re-enables interrupts. When
-> read_unlock() is called from hardirq context (e.g. after a successful
-> read_trylock() in a timer callback), the raw_spin_unlock_irq()
-> incorrectly re-enables interrupts within the hardirq handler.
 > 
-> This causes lockdep warnings ('hardirqs_on_prepare' from hardirq
-> context) and can lead to IRQ state corruption.
+> On 30/04/26 11:19 am, Amit Machhiwal wrote:
+> > On POWER systems, the host CPU may run in a compatibility mode (e.g., a
+> > Power11 processor operating in Power10 compatibility mode). In such
+> > cases, the effective CPU level exposed to guests differs from the
+> > physical processor generation.
+> > 
+> > When running nested KVM guests, QEMU derives the host CPU type using
+> > mfpvr(), which reflects the physical processor version. This can result
+> > in a mismatch between the CPU model selected by QEMU and the
+> > compatibility mode enforced by the host, leading to guest boot failures.
+> > 
+> > For example, booting a nested guest on a Power11 LPAR configured in
+> > Power10 compatibility mode fails with:
+> > 
+> >    KVM-NESTEDv2: couldn't set guest wide elements
+> >    [..KVM reg dump..]
+> > 
+> > This occurs because QEMU selects a CPU model corresponding to the
+> > physical processor (via mfpvr()), while the host operates in a lower
+> > compatibility mode. As a result, KVM rejects the requested compatibility
+> > level during guest initialization.
+> > 
+> > Add support for retrieving host CPU compatibility capabilities for
+> > nested guests on PowerVM (PAPR nested API v2). The hypervisor provides
+> > the effective compatibility levels via the H_GUEST_GET_CAPABILITIES
+> > hcall, which reflects the processor modes negotiated between the Power
+> > hypervisor (L0) and the host partition (L1).
+> > 
+> > On pseries systems, obtain the capability bitmap using
+> > plpar_guest_get_capabilities() and return it via struct
+> > kvm_ppc_compat_caps. This information is then exposed to userspace
+> > through the KVM_PPC_GET_COMPAT_CAPS ioctl.
+> > 
+> > Hook the implementation into the Book3S HV kvmppc_ops so that it can be
+> > invoked by the generic KVM ioctl handling code.
+> > 
+> > Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+> > ---
+> >   arch/powerpc/kvm/book3s_hv.c | 17 +++++++++++++++++
+> >   1 file changed, 17 insertions(+)
+> > 
+> > diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> > index 948c6b099a29..d602d90111d1 100644
+> > --- a/arch/powerpc/kvm/book3s_hv.c
+> > +++ b/arch/powerpc/kvm/book3s_hv.c
+> > @@ -6516,6 +6516,22 @@ static bool kvmppc_hash_v3_possible(void)
+> >   	return true;
+> >   }
+> > +
+> > +static int kvmppc_get_compat_cpu_caps(struct kvm_ppc_compat_caps *host_caps)
+> > +{
+> > +
+> > +	unsigned long capabilities = 0;
+> > +	long rc = -EINVAL;
+> > +
+> > +	if (kvmhv_on_pseries()) {
+> > +		if (kvmhv_is_nestedv2())
+> 
+> If this is only intended for nested APIv2, it should reflect in commit
+> log/title, otherwise, we need to return success with capabilities set to 0
+> for non-nestedv2 case.
 
-Using read_trylock() in hardirq context on PREEMPT_RT is safe because it
-does not record the lock owner. The read_unlock() acquires the wait_lock
-which is hardirq safe. This change additionally allows rwlock_t during
-early boot.
+This patch is specific to nested API v2. I tried to convey that through the “KVM
+on PowerVM” in the commit title, and I also described the API v2 scope in the
+commit log. If that is still not explicit enough, I can update the title and
+commit log in the next revision to make the limitation clearer.
 
 > 
-> Switch to raw_spin_lock_irqsave()/raw_spin_unlock_irqrestore() to
-> preserve the caller's IRQ state, matching the pattern already used
-> for rt_spin_lock/unlock.
+> Also, better to have combined check for pseries and nestedv2 if we are not
+> handling other cases.
+
+We are, in the next patch.
+
 > 
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> > +			rc = plpar_guest_get_capabilities(0, &capabilities);
+> > +		host_caps->compat_capabilities = capabilities;
+> 
+> Do we need to take care of PowerNV case ?
 
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Next patch takes care of it.
 
-Sebastian
+Thanks,
+Amit
+
+> > +	}
+> > +
+> > +	return rc;
+> > +}
+> > +
+> >   static struct kvmppc_ops kvm_ops_hv = {
+> >   	.get_sregs = kvm_arch_vcpu_ioctl_get_sregs_hv,
+> >   	.set_sregs = kvm_arch_vcpu_ioctl_set_sregs_hv,
+> > @@ -6558,6 +6574,7 @@ static struct kvmppc_ops kvm_ops_hv = {
+> >   	.hash_v3_possible = kvmppc_hash_v3_possible,
+> >   	.create_vcpu_debugfs = kvmppc_arch_create_vcpu_debugfs_hv,
+> >   	.create_vm_debugfs = kvmppc_arch_create_vm_debugfs_hv,
+> > +	.get_compat_cpu_ver = kvmppc_get_compat_cpu_caps,
+> >   };
+> >   static int kvm_init_subcore_bitmap(void)
+> 
