@@ -1,267 +1,163 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C55C727B35F;
-	Thu,  7 May 2026 02:10:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1EA5224234;
+	Thu,  7 May 2026 02:37:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778119820; cv=none; b=JC6+F2D4GaotV+XJFJwBAc6NISEysnh5SWAw57nHz6RweuICVi3rbr7ZNNeJbNxIikpgOrZOVwU6OfvkLVtBD6YzRddq6WhBXJa9DOv/Qbxgw5dy5MEjeehamHxxY4QBXn6C2CtU+h9WxkEXlfIhLbWBa6B5AemQjDxMSS5Tyyw=
+	t=1778121450; cv=none; b=AFqGPulTf0W2uRKu/6ANhzLEnWNjM+SaQ7QKYhQNHdgnCTolpCofpHxFXbvqLd4Jkv4QbTOp6BFtjik7DHlKtXoubm3P42MQ5XUbZ9robnZbDkGc2qgNSx2dnAldgBwEoLlXGMT+oIqqJyLz7wzZNMBNDQ7bGdiNDO/3YdpYtJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778119820; c=relaxed/simple;
-	bh=NyepB9a27hAykCXi2WMNR4qwpLX6uQ5expv6FydGVTg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rgTqLio+Mc9+UBcike+vGnQWp8pIaAdOSyb5EGR0VsPQejAfCA0Ow2aSsSiQl8DJ4/9HZpVzIKCbE9x8oZNOmKTEpSnXrP404KKbzDuNh4bqFutISeNoKhlKEXd2fopBW3TBKGCnTnPDqFEjbB4l+I0Kp0+gPTEzVD2ethfE+mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Dp95X6ub; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1778121450; c=relaxed/simple;
+	bh=x4OZxVVa7XuFeQ5NIz/1eEAUFe9OyoXfnPlSCrrsrgo=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=e6WH8ftLcDUaWF3WlZM7xDD661eWmY2hjWx6eJ32ssGaFnNmAWbgn5PApFL47MSyP39MuETogk3r8zd0Ov8N41s0GvEzGhKlvP8LkxHjfvK57hY0zh50E4ady6EbK3E+D4veoE5tmSdY+Z8dEf24jOseF7oPVnRIuW7vAG6N1yU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=kSwqf2eJ; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Dp95X6ub"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778119817; x=1809655817;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=NyepB9a27hAykCXi2WMNR4qwpLX6uQ5expv6FydGVTg=;
-  b=Dp95X6ubd9wHxg0C7yGioEk8fAp1b2WeFh+el8XIEmvrOs30k8g7+s+I
-   I+A/7asFDIOYAYAXti9ar5v0ABLVtgoOVbiN0hgju9EWHI1WB+gpOrveC
-   BJPD9mkF5Ziq0srVWhudwxpDffcvio1i1l6Rq3KsiO3Se8aC5OtR8prap
-   SYSVKQlpHHB08mt2d/+F/2dYsnApW/7EJNj7/uyMFYRL9f9NDMiriview
-   47/p0kHC9w+fcEoyc1I0Y40QETSyGDh7LqWM6ntfYtxek/fJ7FUiKIlB2
-   NbA3lJ1XuXyf1EdPuvd9bqzmpSsLcIpSkj+ciGNtNwGO/C1PE8lvEgaZh
-   A==;
-X-CSE-ConnectionGUID: mV9Wq0ksRvinzjfq+S55Jg==
-X-CSE-MsgGUID: AbN5nNfjR/WKwe+a+FMjHg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="79172187"
-X-IronPort-AV: E=Sophos;i="6.23,220,1770624000"; 
-   d="scan'208";a="79172187"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 19:10:17 -0700
-X-CSE-ConnectionGUID: mpXeGnDjQ6Ow/ME69xlzVg==
-X-CSE-MsgGUID: idbu0OcjTZer6CMXENe4+A==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,220,1770624000"; 
-   d="scan'208";a="236241780"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 19:10:12 -0700
-Message-ID: <3874a086-98ae-4b94-8c1b-20e13f5a92fb@linux.intel.com>
-Date: Thu, 7 May 2026 10:07:43 +0800
+	dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="kSwqf2eJ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=Cc:To:Message-Id:Content-Transfer-Encoding:Content-Type:
+	MIME-Version:Subject:Date:From:Sender:Reply-To:Content-ID:Content-Description
+	:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+	In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=9S1WGdndtZGFNHWYXQ4+xkbiY7A2wvAjhcJYFVSrbYU=; b=kSwqf2eJbwf16dBZopSNAF+AGi
+	8oHhPzgX9wfNxNjIdylz47I+Kc3CO4gTcvdH0y3OJ6t1BZ1/1/+ep24voT6Vz6mDWDcdP3nKrmQ9m
+	fHAekLGoAwq2YKvwZiE0cUC+IiDkpgT4Rj8thdZRWfPIpTNEij613gBYb0pGrVIEu716aMzU/+PIq
+	VNPr5qGCqHH+WPX3Le6cAZt9Nj44fO+c/CW3IXTkLG46gEXmpCBq5I2j9vLvQ8HLL/aPC0oromucA
+	UzeQdiI08SAHzWeIAzcjQhMwBDSN+wEMeULte4eNMkdsHxcZbLufPQDt4/G7Qno/gbP9lHpX8xOBS
+	pkhUB33A==;
+Received: from 186-249-147-124.shared.desktop.com.br ([186.249.147.124] helo=[192.168.1.66])
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1wKobn-007Avi-0E; Thu, 07 May 2026 04:37:02 +0200
+From: Mauricio Faria de Oliveira <mfo@igalia.com>
+Date: Wed, 06 May 2026 23:36:45 -0300
+Subject: [PATCH] KVM: x86/xen: bail in IRQ context on PREEMPT_RT in
+ kvm_xen_set_evtchn_fast()
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 04/16] iommu: Implement device and IOMMU HW
- preservation
-To: Samiullah Khawaja <skhawaja@google.com>,
- David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
- Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Saeed Mahameed <saeedm@nvidia.com>,
- Adithya Jayachandran <ajayachandra@nvidia.com>,
- Parav Pandit <parav@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>,
- William Tu <witu@nvidia.com>, Pratyush Yadav <pratyush@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- David Matlack <dmatlack@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>,
- YiFei Zhu <zhuyifei@google.com>
-References: <20260427175633.1978233-1-skhawaja@google.com>
- <20260427175633.1978233-5-skhawaja@google.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20260427175633.1978233-5-skhawaja@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260506-xen-rt-sleep-v1-1-53b6b60a671d@igalia.com>
+X-B4-Tracking: v=1; b=H4sIALz6+2kC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIzMDUwMz3YrUPN2iEt3inNTUAt1Uc8MkSyMDS/M0Q0sloJaCotS0zAqwcdG
+ xtbUAflQHKl4AAAA=
+X-Change-ID: 20260506-xen-rt-sleep-e71b92097f19
+To: David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>, 
+ Sean Christopherson <seanjc@google.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>, 
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>, 
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
+Cc: kernel-dev@igalia.com, kvm@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev, 
+ syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com, 
+ Mauricio Faria de Oliveira <mfo@igalia.com>
+X-Mailer: b4 0.14.2
 
-On 4/28/26 01:56, Samiullah Khawaja wrote:
-> Add IOMMU ops to preserve/unpreserve a device. These can be implemented
-> by the IOMMU drivers that support preservation of devices that have
-> their IOMMU domains preserved. During device preservation the state of
-> the associated IOMMU is also preserved as dependency.
-> 
-> Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
-> ---
->   drivers/iommu/liveupdate.c       | 162 +++++++++++++++++++++++++++++++
->   include/linux/iommu-liveupdate.h |  33 +++++++
->   include/linux/iommu.h            |  20 ++++
->   3 files changed, 215 insertions(+)
-> 
-> diff --git a/drivers/iommu/liveupdate.c b/drivers/iommu/liveupdate.c
-> index f71f14518248..765d042e22e3 100644
-> --- a/drivers/iommu/liveupdate.c
-> +++ b/drivers/iommu/liveupdate.c
-> @@ -11,6 +11,7 @@
->   #include <linux/liveupdate.h>
->   #include <linux/iommu-liveupdate.h>
->   #include <linux/iommu.h>
-> +#include <linux/pci.h>
->   #include <linux/errno.h>
->   
->   #define iommu_max_objs_per_page(_array) \
-> @@ -293,3 +294,164 @@ void iommu_domain_unpreserve(struct iommu_domain *domain)
->   	domain->preserved_state = NULL;
->   }
->   EXPORT_SYMBOL_GPL(iommu_domain_unpreserve);
-> +
-> +static struct iommu_hw_ser *alloc_iommu_hw_ser(struct iommu_flb_obj *flb)
-> +{
-> +	int idx;
-> +
-> +	idx = alloc_object_ser((struct iommu_array_hdr_ser **)&flb->curr_iommu_array,
-> +			       iommu_max_objs_per_page(flb->curr_iommu_array));
-> +	if (idx < 0)
-> +		return ERR_PTR(idx);
-> +
-> +	flb->curr_iommu_array->objects[idx].hdr.ref_count = 1;
-> +	return &flb->curr_iommu_array->objects[idx];
-> +}
-> +
-> +static int iommu_preserve_locked(struct iommu_device *iommu,
-> +				 struct iommu_flb_obj *flb_obj)
-> +{
-> +	struct iommu_hw_ser *iommu_hw_ser;
-> +	int ret;
-> +
-> +	if (!iommu->ops->preserve)
-> +		return -EOPNOTSUPP;
-> +
-> +	lockdep_assert_held(&flb_obj->lock);
-> +	if (iommu->outgoing_preserved_state) {
-> +		iommu->outgoing_preserved_state->hdr.ref_count++;
-> +		return 0;
-> +	}
-> +
-> +	iommu_hw_ser = alloc_iommu_hw_ser(flb_obj);
-> +	if (IS_ERR(iommu_hw_ser))
-> +		return PTR_ERR(iommu_hw_ser);
-> +
-> +	ret = iommu->ops->preserve(iommu, iommu_hw_ser);
-> +	if (ret) {
-> +		iommu_hw_ser->hdr.deleted = true;
-> +		return ret;
-> +	}
-> +
-> +	iommu->outgoing_preserved_state = iommu_hw_ser;
-> +	return ret;
-> +}
-> +
-> +static void iommu_unpreserve_locked(struct iommu_device *iommu,
-> +				    struct iommu_flb_obj *flb_obj)
-> +{
-> +	struct iommu_hw_ser *iommu_hw_ser = iommu->outgoing_preserved_state;
-> +
-> +	lockdep_assert_held(&flb_obj->lock);
-> +	iommu_hw_ser->hdr.ref_count--;
-> +	if (iommu_hw_ser->hdr.ref_count)
-> +		return;
-> +
-> +	iommu->outgoing_preserved_state = NULL;
-> +	iommu->ops->unpreserve(iommu, iommu_hw_ser);
-> +	iommu_hw_ser->hdr.deleted = true;
-> +}
-> +
-> +static struct iommu_device_ser *alloc_iommu_device_ser(struct iommu_flb_obj *flb)
-> +{
-> +	int idx;
-> +
-> +	idx = alloc_object_ser((struct iommu_array_hdr_ser **)&flb->curr_device_array,
-> +			       iommu_max_objs_per_page(flb->curr_device_array));
-> +	if (idx < 0)
-> +		return ERR_PTR(idx);
-> +
-> +	flb->curr_device_array->objects[idx].hdr.ref_count = 1;
-> +	return &flb->curr_device_array->objects[idx];
-> +}
-> +
-> +int iommu_preserve_device(struct iommu_domain *domain,
-> +			  struct device *dev, u64 *preserved_state)
-> +{
-> +	struct iommu_flb_obj *flb_obj;
-> +	struct iommu_device_ser *device_ser;
-> +	struct dev_iommu *iommu;
-> +	struct pci_dev *pdev;
-> +	int ret;
-> +
-> +	if (!dev_is_pci(dev))
-> +		return -EOPNOTSUPP;
-> +
-> +	if (!domain->preserved_state)
-> +		return -EINVAL;
-> +
-> +	if (!iommu_group_dma_owner_claimed(dev->iommu_group))
-> +		return -EINVAL;
-> +
-> +	pdev = to_pci_dev(dev);
-> +	iommu = dev->iommu;
-> +	if (!iommu->iommu_dev->ops->preserve_device ||
-> +	    !iommu->iommu_dev->ops->preserve)
-> +		return -EOPNOTSUPP;
-> +
-> +	ret = liveupdate_flb_get_outgoing(&iommu_flb, (void **)&flb_obj);
-> +	if (ret)
-> +		return ret;
-> +
-> +	guard(mutex)(&flb_obj->lock);
-> +	device_ser = alloc_iommu_device_ser(flb_obj);
-> +	if (IS_ERR(device_ser))
-> +		return PTR_ERR(device_ser);
-> +
-> +	ret = iommu_preserve_locked(iommu->iommu_dev, flb_obj);
-> +	if (ret) {
-> +		device_ser->hdr.deleted = true;
-> +		return ret;
-> +	}
-> +
-> +	device_ser->domain_iommu_ser.domain_phys = __pa(domain->preserved_state);
-> +	device_ser->domain_iommu_ser.iommu_phys = __pa(iommu->iommu_dev->outgoing_preserved_state);
-> +	device_ser->devid = pci_dev_id(pdev);
-> +	device_ser->pci_domain_nr = pci_domain_nr(pdev->bus);
-> +
-> +	ret = iommu->iommu_dev->ops->preserve_device(dev, device_ser);
-> +	if (ret) {
-> +		device_ser->hdr.deleted = true;
-> +		iommu_unpreserve_locked(iommu->iommu_dev, flb_obj);
-> +		return ret;
-> +	}
-> +
-> +	dev->iommu->device_ser = device_ser;
-> +	*preserved_state = virt_to_phys(device_ser);
-> +	return 0;
-> +}
-> +
-> +void iommu_unpreserve_device(struct iommu_domain *domain, struct device *dev)
-> +{
-> +	struct iommu_flb_obj *flb_obj;
-> +	struct iommu_device_ser *iommu_device_ser;
-> +	struct dev_iommu *iommu;
-> +	struct pci_dev *pdev;
-> +	int ret;
-> +
-> +	if (!dev_is_pci(dev))
-> +		return;
-> +
-> +	if (!iommu_group_dma_owner_claimed(dev->iommu_group))
-> +		return;
-> +
-> +	pdev = to_pci_dev(dev);
-> +	iommu = dev->iommu;
-> +	if (!iommu->iommu_dev->ops->unpreserve_device ||
-> +	    !iommu->iommu_dev->ops->unpreserve)
-> +		return;
+kvm_xen_set_evtchn_fast() calls read_lock_irqsave(), which might block
+on PREEMPT_RT, but that is invalid in IRQ context, as when it's called
+by xen_timer_callback() (even on PREEMPT_RT per HRTIMER_MODE_ABS_HARD).
 
-Is it considered a driver bug if it implements the preserve hooks but
-not unpreserve ones? This would at least cause a silent memory leak. How
-about adding a WARN like this?
+Check for that case, and bail out early.
 
-     if (WARN_ON_ONCE(!iommu->iommu_dev->ops->unpreserve_device ||
-                      !iommu->iommu_dev->ops->unpreserve))
-         return;
+Note: there is previous work and discussion on this [1] (~2 years ago),
+which involved continuing to execute the function with changes, but it
+was not merged. That was a different, more complex approach.
 
-?
+[1] https://lore.kernel.org/lkml/ZdPQVP7eejq3eFjc@google.com/
 
-Thanks,
-baolu
+This is quickly hit while booting a Xen guest in a KVM Xen host.
+With this patch, it boots quietly and runs timer stress without issues
+(e.g., stress-ng --quiet --timer 1 --timer-freq 19000 --timer-slack 0).
+Tested with/without CONFIG_PREEMPT_RT.
+
+Test case:
+=========
+
+Configure a host kernel (CONFIG_KVM_XEN) like,
+
+    $ make x86_64_defconfig
+    $ ./scripts/config \
+      -e EXPERT -e PREEMPT_RT -e DEBUG_ATOMIC_SLEEP \
+      -e KVM -e KVM_INTEL -e KVM_AMD -e KVM_XEN
+    $ make olddefconfig
+
+and boot a Xen guest kernel (CONFIG_XEN) with:
+
+    # qemu-system-x86_64 \
+       -accel kvm,xen-version=0x40011,kernel-irqchip=split \
+       -cpu host,+xen-vapic -smp 1 -m 1024 \
+       -nodefaults -nographic -serial stdio \
+       -kernel arch/x86/boot/bzImage -append 'console=ttyS0'
+
+See dmesg in the host:
+
+    [   27.643129] BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:231
+    [   27.643134] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 284, name: qemu-system-x86
+    [   27.643137] preempt_count: 10000, expected: 0
+    [   27.643138] RCU nest depth: 0, expected: 0
+    [   27.643146] CPU: 1 UID: 0 PID: 284 Comm: qemu-system-x86 Not tainted 7.1.0-rc2 #5 PREEMPT_{RT,(lazy)}
+    [   27.643150] Hardware name: QEMU Ubuntu 25.10 PC v2 (i440FX + PIIX, + 10.1 machine, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+    [   27.643152] Call Trace:
+    [   27.643155]  <TASK>
+    [   27.643157]  dump_stack_lvl+0x64/0x80
+    [   27.643165]  __might_resched+0x131/0x180
+    [   27.643171]  rt_read_lock+0x47/0x210
+    [   27.643176]  kvm_xen_set_evtchn_fast+0xa5/0x3f0
+    [   27.643184]  xen_timer_callback+0x88/0xc0
+    [   27.643188]  __hrtimer_run_queues+0x10b/0x280
+    [   27.643193]  hrtimer_interrupt+0xf6/0x1b0
+    [   27.643196]  __sysvec_apic_timer_interrupt+0x55/0x130
+    [   27.643200]  sysvec_apic_timer_interrupt+0x39/0x80
+    [   27.643204]  asm_sysvec_apic_timer_interrupt+0x1a/0x20
+    [   27.643208] RIP: 0033:0x7f069721a8db
+    ...
+    [   27.643226]  </TASK>
+
+Reported-by: syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com
+Closes: https://syzbot.org/bug?extid=208f7f3e5f59c11aeb90
+Signed-off-by: Mauricio Faria de Oliveira <mfo@igalia.com>
+---
+ arch/x86/kvm/xen.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+index 91fd3673c09a2ef3dc154050e01df608182e59e5..76782191043b56c581f89c3861979236662cdbd7 100644
+--- a/arch/x86/kvm/xen.c
++++ b/arch/x86/kvm/xen.c
+@@ -1814,6 +1814,10 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+ 
+ 	rc = -EWOULDBLOCK;
+ 
++	/* Bail in IRQ context on PREEMPT_RT; read_lock_irqsave() might block */
++	if (IS_ENABLED(CONFIG_PREEMPT_RT) && in_hardirq())
++		goto out;
++
+ 	idx = srcu_read_lock(&kvm->srcu);
+ 
+ 	read_lock_irqsave(&gpc->lock, flags);
+@@ -1892,6 +1896,7 @@ int kvm_xen_set_evtchn_fast(struct kvm_xen_evtchn *xe, struct kvm *kvm)
+ 		kvm_vcpu_kick(vcpu);
+ 	}
+ 
++ out:
+ 	return rc;
+ }
+ 
+
+---
+base-commit: 7fd2df204f342fc17d1a0bfcd474b24232fb0f32
+change-id: 20260506-xen-rt-sleep-e71b92097f19
+
+Best regards,
+-- 
+Mauricio Faria de Oliveira <mfo@igalia.com>
+
