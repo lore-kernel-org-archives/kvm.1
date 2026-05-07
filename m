@@ -1,310 +1,323 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a5-smtp.messagingengine.com (fhigh-a5-smtp.messagingengine.com [103.168.172.156])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05FDE32F748
-	for <kvm@vger.kernel.org>; Thu,  7 May 2026 20:34:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C11B02C0F81;
+	Thu,  7 May 2026 21:09:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778186084; cv=none; b=t/UH4pKTY+bfYW+ED7KNSMl48UJ4aqXTSx1UmMUcMKZRvlJ6WvwEp50npmyiLry0KjLg7r0yN7ae9tTKGuJyXiywj+1ZWDT1JGtlVNfOeWzSl44n/hdCVkq0JAvy1jw0mViCOpeWlEqvO/Xt55+QDsPkB9lKmBg3SI4FAYPPhP8=
+	t=1778188173; cv=none; b=FVZsFq5r8Int3F1HcHomt9i+gVLumby3WEgFDAVVJ5Kk/c3L4aUiTtyMrV9w3vwoFbwE/muzYCKJQbNhqlzYodYOHsX9rGe6yGmVRMVCJMALlfwl1uX7+jofcx/MBNRNa+7ZC4eo4YRvQszO7dQ8x/qQ4fk+iddNx7BTua0sLLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778186084; c=relaxed/simple;
-	bh=jZG/0FBlpQu4GQm6uEGJ6DPNXY8HyxzLrxN+MqpPshU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=IeuHrf4ZSaSqzRZ4fWlGN0WIVEQGhxIm5rdlz1fJq/T+LqAXvA/CT4xZTDSRFugaNEXVWKkyoz38mDxKmmWYAq5LQzwEEEJsXmGdk6P8JA4jJT4BBgyFs4ugixE895OODYuPP/IuOCY63Cwgc+TVq9lKwmPIo9XsahhKeoG0Auo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RP/U1/aZ; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ackerleytng.bounces.google.com
+	s=arc-20240116; t=1778188173; c=relaxed/simple;
+	bh=Md0iZenqALnfrYUoZIoxKeiMqdfNuTrVs/uy9p+FnO4=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=pfdL+NF+wFtGHdZKyyxS+UshhUFbR8L99ZJnFnF0emWS28IUOeQrPkPzQfAaspkt6Gk5pNsy0d4TJX/mMB9gmuc+gkA6Cv4CkojlARhT2XFcJPN40bx80p/OORh5qziOxVpUBsWCoMPN5tAHqWPtYv3XRc0HeKvt2xj9QYZ0oZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=FR90nUBP; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=VCnmOBa2; arc=none smtp.client-ip=103.168.172.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RP/U1/aZ"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82fa1c94b37so1999866b3a.0
-        for <kvm@vger.kernel.org>; Thu, 07 May 2026 13:34:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778186079; x=1778790879; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dvz8VPqH3W+uwpeYUY0LX4HhcQuQ485hz2JT5vwb8Uc=;
-        b=RP/U1/aZgZqAZr3iZ5DelPqmQJzg00jPp/XwbUtf9828azrupB7L4mkd1WLN+SIlXP
-         hg6LBv8155KzfgbngD9+bFcQ3xilo7Go4nHSQJg/a70wGQMFwRrqxs+JhKXonqUsMtx0
-         sJYlHy8L9HclYbU6T58UPqcOHCaZkwNAJI8rqFyYaebhi+k6G7lghFlrip29hhhnbHm8
-         BAliWv1mL2jihqvE8EU8CbTeFhdTcHCM3dLvre1LVGieFEWjonFj4JqGs5MUBTZ9Y7ZD
-         BtgK1aK2Izj/A7xI4n6Y7DvNJA/jcgO4Pd8Kde5HhgCIhxsweUWzo+ZEvkNs4SnjuI9U
-         QHOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778186079; x=1778790879;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Dvz8VPqH3W+uwpeYUY0LX4HhcQuQ485hz2JT5vwb8Uc=;
-        b=PjugtWNCMbaPRO1hxlvgl4bvNVVZ6IHKI5AX6WNCqb4FamY20UcXZVCFyNV/RLKZCA
-         LEHe08pa9etppaMdidPxesDDzRL+q+3FdzXiOJZw7vjPf5o3P1Z0DWez9rUqA23lFe02
-         MwbBxpWSkIREQ2DN4/MlXfaq52VDqzTP0JgQy5ntbDvGuWKJWCQHV9o6jawtI8dpQAWX
-         jA3sDd7jClR2DhJv665eK6vZNsXeFVegChr2B9uW9tB4SopCQDwhI7wn6TZ+dmcd7qzX
-         7QvqmsktiTQzTEJCyPZOJTdslcA84DJSGJLv8LWnq83F5ZbcmMLpLE190C7CMjX3w/7r
-         SViA==
-X-Forwarded-Encrypted: i=1; AFNElJ/YaF3AK0E632KwTTDECuQqvPjN+THg5axuxvZW2vrvVgsX90O1FYp0H3QiQLv5aTQEshM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTEbDuKtoN8emWKUyG1uPmPti688qOtI4X/a1NoTOAidZ+l4SH
-	SU8d6UFrf9hBkL6Xg1Q6DX+L+bpxZ3RcMZYR3qzMUwNggQdbZPN+Yf92t8AXYyy9tVhDBmvoQAC
-	CIauq0NEUhwXKVi+VurAcNLxXQA==
-X-Received: from pgam24.prod.google.com ([2002:a05:6a02:2b58:b0:c74:42:8984])
- (user=ackerleytng job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6a20:6a08:b0:3a0:9052:c005 with SMTP id adf61e73a8af0-3aa8be1f13cmr3709197637.3.1778186078908;
- Thu, 07 May 2026 13:34:38 -0700 (PDT)
-Date: Thu,  7 May 2026 13:34:26 -0700
-In-Reply-To: <cover.1778185936.git.ackerleytng@google.com>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="FR90nUBP";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="VCnmOBa2"
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id B820E140014B;
+	Thu,  7 May 2026 17:09:28 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Thu, 07 May 2026 17:09:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1778188168;
+	 x=1778274568; bh=QF+qFyFGOyNEQ6REEJHK4AG1uL4TjH3keTHPubIon2M=; b=
+	FR90nUBP7nupQEghoqlJh8AK2xfProbtuUaQ3OoCncZsT2NlNNret74gJ9W5CRsR
+	K+WsyUUW7dyQuc4l/cf0EN0rJ6viB/4ehV7hRYcp3cA2mWHvcCUCFVXllJ14u4E3
+	coBVDOjI5eWlG1HZ27cNj624RuCWgJuRh/WydtGMm8I7QYeWUTj/8hlrfYzeByQc
+	iDFZTpjoqgTDs0Xkyh3/BM820WUg2yUNa77FiO+VT525z/g49fIqFZXxPoSmCfA8
+	F8zW4zlsXfNz8AqxoxN5vVc6MFwC7SqqcFFGUxusDA3r1gJMAN98L09Xcm0hS5Ec
+	qPGtxQBg+hSY2VSl18aYZg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1778188168; x=
+	1778274568; bh=QF+qFyFGOyNEQ6REEJHK4AG1uL4TjH3keTHPubIon2M=; b=V
+	CnmOBa24D0ozL6kiKssoLBvWRww8ey2cQ6pesydlIwlZuhGQNWcfN3L58c4vjmne
+	r1ld9kzodstdjJI2n487iVs6sSMaQd2LTIFXNVUvj+0Og8WhAjD7RSBsoZqbE5q+
+	paBI+nrayD2U0wiay1/YNvakzanUapZoWm1S3AT+F/s7sIrZBDFwiwAZwL4x+a2y
+	tSX8SlAp13NLttejpbZvJ94UJRqJ7hQTUniipFgtM9t8KWnwauTfktOZfP/L1Gmj
+	Z1AfIvmoma/qCWqHOEC6YsdNMFDCfwKGEpL074ZvAioux+y5xNXVsQVtgfb+6aQN
+	o9tKKPlR5/WeLnAFnZ6mw==
+X-ME-Sender: <xms:iP_8aXQa_5BVDX58qyckZ_4Fp5RmyfR1PnU1CCHrbnvaUpp2CrzTlg>
+    <xme:iP_8aZMx9PqKNY4pt2OczRwgXlQNlrxxmlmuysXeAd-70Krbk9imUBRpjBTT44hJB
+    w-kmwWrPxE7QLb-389KbBJ4QvFj5W4xrSC9wBru5EMepBJOwsT-TA>
+X-ME-Received: <xmr:iP_8adgpDjWCbjj2MidT8L71yOchJ1TXRF-F5XkEmLhEVKoSfUPsysQ0QuQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddutdekhedvucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
+    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
+    htthgvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudeg
+    veeuueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepledpmhhouggvpehs
+    mhhtphhouhhtpdhrtghpthhtoheprhgrnhgrnhhtrgesghhoohhglhgvrdgtohhmpdhrtg
+    hpthhtohepjhhgghesiihivghpvgdrtggrpdhrtghpthhtohepughmrghtlhgrtghksehg
+    ohhoghhlvgdrtghomhdprhgtphhtthhopehvihhpihhnshhhsehgohhoghhlvgdrtghomh
+    dprhgtphhtthhopehjrhhhihhlkhgvsehgohhoghhlvgdrtghomhdprhgtphhtthhopehk
+    vhhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrh
+    hnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhtrggslhgvsehv
+    ghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigsehshhgriigsohhtrd
+    horhhg
+X-ME-Proxy: <xmx:iP_8aenHi6vYA_DwaYph_YXZGEYlx2Lv1SUnY93CUh2gQSVVLl53Ew>
+    <xmx:iP_8aRitkWyaJvg3e0jKLmC-Pxogl-wDbLbj0psp61nTvP4VBFN6jw>
+    <xmx:iP_8aZFEH65NgNeyS_ZCbWtAty2em_si3OlzQQ7u0elJLfGWxKPMJg>
+    <xmx:iP_8abtPtIozEJqtFqX4EVT-6OsgATfiI3rH6Tq8v-e33vABsc6j9A>
+    <xmx:iP_8acOYuI1_oqBqzWo3D2t7_Hpkm4GV4WWZ_1iUZY3_lFowlWhAhV0D>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 7 May 2026 17:09:27 -0400 (EDT)
+Date: Thu, 7 May 2026 15:09:25 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Raghavendra Rao Ananta <rananta@google.com>
+Cc: Jason Gunthorpe <jgg@ziepe.ca>, David Matlack <dmatlack@google.com>,
+ Vipin Sharma <vipinsh@google.com>, Josh Hilke <jrhilke@google.com>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+ alex@shazbot.org
+Subject: Re: [PATCH] vfio/pci: Use a private flag to prevent power state
+ change with VFs
+Message-ID: <20260507150925.11e9681e@shazbot.org>
+In-Reply-To: <20260504224142.1041477-1-rananta@google.com>
+References: <20260504224142.1041477-1-rananta@google.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com> <cover.1778185936.git.ackerleytng@google.com>
-X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <1edc2c94bf776c8ceee3b92208e6280ef5a50a23.1778185936.git.ackerleytng@google.com>
-Subject: [POC PATCH 5/5] KVM: selftests: Test conversions for SNP
-From: Ackerley Tng <ackerleytng@google.com>
-To: devnull+ackerleytng.google.com@kernel.org
-Cc: ackerleytng@google.com, aik@amd.com, akpm@linux-foundation.org, 
-	andrew.jones@linux.dev, aneesh.kumar@kernel.org, axelrasmussen@google.com, 
-	baohua@kernel.org, bhe@redhat.com, binbin.wu@linux.intel.com, bp@alien8.de, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, chrisl@kernel.org, 
-	corbet@lwn.net, dave.hansen@linux.intel.com, david@kernel.org, 
-	forkloop@google.com, hpa@zytor.com, ira.weiny@intel.com, jgg@ziepe.ca, 
-	jmattson@google.com, jthoughton@google.com, kas@kernel.org, 
-	kasong@tencent.com, kvm@vger.kernel.org, liam@infradead.org, 
-	linux-coco@lists.linux.dev, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-trace-kernel@vger.kernel.org, 
-	mathieu.desnoyers@efficios.com, mhiramat@kernel.org, michael.roth@amd.com, 
-	mingo@redhat.com, nphamcs@gmail.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	pbonzini@redhat.com, pratyush@kernel.org, qi.zheng@linux.dev, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	rostedt@goodmis.org, seanjc@google.com, shakeel.butt@linux.dev, 
-	shikemeng@huaweicloud.com, shivankg@amd.com, shuah@kernel.org, 
-	skhan@linuxfoundation.org, steven.price@arm.com, suzuki.poulose@arm.com, 
-	tabba@google.com, tglx@kernel.org, vannapurve@google.com, vbabka@kernel.org, 
-	weixugc@google.com, willy@infradead.org, wyihan@google.com, x86@kernel.org, 
-	yan.y.zhao@intel.com, youngjun.park@lge.com, yuanchu@google.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
----
- .../selftests/kvm/x86/sev_smoke_test.c        | 198 +++++++++++++++++-
- 1 file changed, 193 insertions(+), 5 deletions(-)
+On Mon,  4 May 2026 22:41:42 +0000
+Raghavendra Rao Ananta <rananta@google.com> wrote:
 
-diff --git a/tools/testing/selftests/kvm/x86/sev_smoke_test.c b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
-index 8b859adf4cf6f..8869cca748879 100644
---- a/tools/testing/selftests/kvm/x86/sev_smoke_test.c
-+++ b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
-@@ -253,17 +253,205 @@ static void test_sev_smoke(void *guest, u32 type, u64 policy)
- 	}
- }
+> The current implementation uses pci_num_vf() while holding the
+> memory_lock to prevent changing the power state of a PF when
+> VFs are enabled. This creates a lockdep circular dependency
+> warning in because memory_lock is held during device probing.
+
+s/in// ?
  
-+#define GHCB_MSR_REG_GPA_REQ		0x012
-+#define GHCB_MSR_REG_GPA_REQ_VAL(v)                \
-+	/* GHCBData[63:12] */                      \
-+	(((u64)((v) & GENMASK_ULL(51, 0)) << 12) | \
-+	 /* GHCBData[11:0] */			   \
-+	 GHCB_MSR_REG_GPA_REQ)
-+
-+#define GHCB_MSR_REG_GPA_RESP		0x013
-+#define GHCB_MSR_REG_GPA_RESP_VAL(v)			\
-+	/* GHCBData[63:12] */				\
-+	(((u64)(v) & GENMASK_ULL(63, 12)) >> 12)
-+
-+#define GHCB_DATA_LOW			12
-+#define GHCB_MSR_INFO_MASK		(BIT_ULL(GHCB_DATA_LOW) - 1)
-+#define GHCB_RESP_CODE(v) ((v) & GHCB_MSR_INFO_MASK)
-+
-+/*
-+ * SNP Page State Change Operation
-+ *
-+ * GHCBData[55:52] - Page operation:
-+ *   0x0001	Page assignment, Private
-+ *   0x0002	Page assignment, Shared
-+ */
-+enum psc_op {
-+	SNP_PAGE_STATE_PRIVATE = 1,
-+	SNP_PAGE_STATE_SHARED,
-+};
-+
-+#define GHCB_MSR_PSC_REQ		0x014
-+#define GHCB_MSR_PSC_REQ_GFN(gfn, op)			\
-+	/* GHCBData[55:52] */				\
-+	(((u64)((op) & 0xf) << 52) |			\
-+	/* GHCBData[51:12] */				\
-+	((u64)((gfn) & GENMASK_ULL(39, 0)) << 12) |	\
-+	/* GHCBData[11:0] */				\
-+	GHCB_MSR_PSC_REQ)
-+
-+#define GHCB_MSR_PSC_RESP		0x015
-+#define GHCB_MSR_PSC_RESP_VAL(val)			\
-+	/* GHCBData[63:32] */				\
-+	(((u64)(val) & GENMASK_ULL(63, 32)) >> 32)
-+
-+static u64 ghcb_gpa;
-+static void snp_register_ghcb(void)
-+{
-+	u64 ghcb_pfn = ghcb_gpa >> PAGE_SHIFT;
-+	u64 val;
-+
-+	GUEST_ASSERT(ghcb_gpa);
-+
-+	wrmsr(MSR_AMD64_SEV_ES_GHCB, GHCB_MSR_REG_GPA_REQ_VAL(ghcb_gpa >> PAGE_SHIFT));
-+	vmgexit();
-+
-+	val = rdmsr(MSR_AMD64_SEV_ES_GHCB);
-+	GUEST_ASSERT_EQ(GHCB_RESP_CODE(val), GHCB_MSR_REG_GPA_RESP);
-+	GUEST_ASSERT_EQ(GHCB_MSR_REG_GPA_RESP_VAL(val), ghcb_pfn);
-+}
-+
-+static void snp_page_state_change(u64 gpa, enum psc_op op)
-+{
-+	u64 val;
-+
-+	wrmsr(MSR_AMD64_SEV_ES_GHCB, GHCB_MSR_PSC_REQ_GFN(gpa >> PAGE_SHIFT, op));
-+	vmgexit();
-+
-+	val = rdmsr(MSR_AMD64_SEV_ES_GHCB);
-+	GUEST_ASSERT_EQ(GHCB_RESP_CODE(val), GHCB_MSR_PSC_RESP);
-+	GUEST_ASSERT_EQ(GHCB_MSR_PSC_RESP_VAL(val), 0);
-+}
-+
-+#define RMP_PG_SIZE_4K			0
-+static inline void pvalidate(void *vaddr, bool validate)
-+{
-+	bool no_rmpupdate;
-+	int rc;
-+
-+	/* "pvalidate" mnemonic support in binutils 2.36 and newer */
-+	asm volatile(".byte 0xF2, 0x0F, 0x01, 0xFF\n\t"
-+		     : "=@ccc"(no_rmpupdate), "=a"(rc)
-+		     : "a"(vaddr), "c"(RMP_PG_SIZE_4K), "d"(validate)
-+		     : "memory", "cc");
-+
-+	GUEST_ASSERT(!no_rmpupdate);
-+	GUEST_ASSERT_EQ(rc, 0);
-+}
-+
-+#define CONVERSION_TEST_VALUE_SHARED_1 0xab
-+#define CONVERSION_TEST_VALUE_SHARED_2 0xcd
-+#define CONVERSION_TEST_VALUE_PRIVATE 0xef
-+#define CONVERSION_TEST_VALUE_SHARED_3 0xbc
-+#define CONVERSION_TEST_VALUE_SHARED_4 0xde
-+static void guest_code_conversion(u8 *test_shared_gva, u8 *test_private_gva, u64 test_gpa)
-+{
-+	snp_register_ghcb();
-+
-+	GUEST_ASSERT_EQ(READ_ONCE(*test_shared_gva), CONVERSION_TEST_VALUE_SHARED_1);
-+	WRITE_ONCE(*test_shared_gva, CONVERSION_TEST_VALUE_SHARED_2);
-+
-+	snp_page_state_change(test_gpa, SNP_PAGE_STATE_PRIVATE);
-+	pvalidate(test_private_gva, true);
-+
-+	WRITE_ONCE(*test_private_gva, CONVERSION_TEST_VALUE_PRIVATE);
-+	GUEST_ASSERT_EQ(READ_ONCE(*test_private_gva), CONVERSION_TEST_VALUE_PRIVATE);
-+
-+	pvalidate(test_private_gva, false);
-+	snp_page_state_change(test_gpa, SNP_PAGE_STATE_SHARED);
-+
-+	GUEST_ASSERT_EQ(READ_ONCE(*test_shared_gva), CONVERSION_TEST_VALUE_SHARED_3);
-+	WRITE_ONCE(*test_shared_gva, CONVERSION_TEST_VALUE_SHARED_4);
-+
-+	wrmsr(MSR_AMD64_SEV_ES_GHCB, GHCB_MSR_TERM_REQ);
-+	vmgexit();
-+}
-+
-+static void test_conversion(u64 policy)
-+{
-+	gva_t test_private_gva;
-+	gva_t test_shared_gva;
-+	struct kvm_vcpu *vcpu;
-+	gva_t ghcb_gva;
-+	gpa_t test_gpa;
-+	struct kvm_vm *vm;
-+	void *ghcb_hva;
-+	void *test_hva;
-+
-+	vm = vm_sev_create_with_one_vcpu(KVM_X86_SNP_VM, guest_code_conversion, &vcpu);
-+
-+	ghcb_gva = vm_alloc_shared(vm, PAGE_SIZE, KVM_UTIL_MIN_VADDR,
-+				   MEM_REGION_TEST_DATA);
-+	ghcb_hva = addr_gva2hva(vm, ghcb_gva);
-+	ghcb_gpa = addr_gva2gpa(vm, ghcb_gva);
-+	sync_global_to_guest(vm, ghcb_gpa);
-+
-+	test_shared_gva = vm_alloc_shared(vm, PAGE_SIZE, KVM_UTIL_MIN_VADDR,
-+					  MEM_REGION_TEST_DATA);
-+	test_hva = addr_gva2hva(vm, test_shared_gva);
-+	test_gpa = addr_gva2gpa(vm, test_shared_gva);
-+
-+	test_private_gva = vm_unused_gva_gap(vm, PAGE_SIZE, KVM_UTIL_MIN_VADDR);
-+	___virt_pg_map(vm, &vm->mmu, test_private_gva, test_gpa, PG_SIZE_4K, true);
-+
-+	vcpu_args_set(vcpu, 3, test_shared_gva, test_private_gva, test_gpa);
-+
-+	vm_sev_launch(vm, policy, NULL);
-+
-+	WRITE_ONCE(*(u8 *)test_hva, CONVERSION_TEST_VALUE_SHARED_1);
-+
-+	fprintf(stderr, "ghcb_hva=%p ghcb_gpa=%lx ghcb_gva=%lx\n", ghcb_hva, ghcb_gpa, ghcb_gva);
-+	fprintf(stderr, "test_hva=%p test_gpa=%lx test_private_gva=%lx test_shared_gva=%lx\n", test_hva, test_gpa, test_private_gva, test_shared_gva);
-+
-+	vcpu_run(vcpu);
-+
-+	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_HYPERCALL);
-+	TEST_ASSERT_EQ(vcpu->run->hypercall.nr, KVM_HC_MAP_GPA_RANGE);
-+	TEST_ASSERT_EQ(vcpu->run->hypercall.args[0], test_gpa);
-+	TEST_ASSERT_EQ(vcpu->run->hypercall.args[1], 1);
-+	TEST_ASSERT_EQ(vcpu->run->hypercall.args[2], KVM_MAP_GPA_RANGE_ENCRYPTED | KVM_MAP_GPA_RANGE_PAGE_SZ_4K);
-+
-+	vm_mem_set_private(vm, test_gpa, PAGE_SIZE);
-+
-+	vcpu_run(vcpu);
-+
-+	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_HYPERCALL);
-+	TEST_ASSERT_EQ(vcpu->run->hypercall.nr, KVM_HC_MAP_GPA_RANGE);
-+	TEST_ASSERT_EQ(vcpu->run->hypercall.args[0], test_gpa);
-+	TEST_ASSERT_EQ(vcpu->run->hypercall.args[1], 1);
-+	TEST_ASSERT_EQ(vcpu->run->hypercall.args[2], KVM_MAP_GPA_RANGE_DECRYPTED | KVM_MAP_GPA_RANGE_PAGE_SZ_4K);
-+
-+	vm_mem_set_shared(vm, test_gpa, PAGE_SIZE);
-+
-+	fprintf(stderr, "test_hva contents = %x\n", READ_ONCE(*(u8 *)test_hva));
-+
-+	WRITE_ONCE(*(u8 *)test_hva, CONVERSION_TEST_VALUE_SHARED_3);
-+	TEST_ASSERT_EQ(*(u8 *)test_hva, CONVERSION_TEST_VALUE_SHARED_3);
-+
-+	vcpu_run(vcpu);
-+
-+	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_SYSTEM_EVENT);
-+	TEST_ASSERT_EQ(vcpu->run->system_event.type, KVM_SYSTEM_EVENT_SEV_TERM);
-+	TEST_ASSERT_EQ(vcpu->run->system_event.ndata, 1);
-+	TEST_ASSERT_EQ(vcpu->run->system_event.data[0], GHCB_MSR_TERM_REQ);
-+
-+	TEST_ASSERT_EQ(*(u8 *)test_hva, CONVERSION_TEST_VALUE_SHARED_4);
-+}
-+
- int main(int argc, char *argv[])
- {
- 	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SEV));
- 
--	test_sev_smoke(guest_sev_code, KVM_X86_SEV_VM, 0);
-+	// test_sev_smoke(guest_sev_code, KVM_X86_SEV_VM, 0);
-+
-+	// if (kvm_cpu_has(X86_FEATURE_SEV_ES))
-+	// 	test_sev_smoke(guest_sev_es_code, KVM_X86_SEV_ES_VM, SEV_POLICY_ES);
- 
--	if (kvm_cpu_has(X86_FEATURE_SEV_ES))
--		test_sev_smoke(guest_sev_es_code, KVM_X86_SEV_ES_VM, SEV_POLICY_ES);
-+	if (kvm_cpu_has(X86_FEATURE_SEV_SNP)) {
-+		test_conversion(snp_default_policy());
- 
--	if (kvm_cpu_has(X86_FEATURE_SEV_SNP))
--		test_sev_smoke(guest_snp_code, KVM_X86_SNP_VM, snp_default_policy());
-+		// test_sev_smoke(guest_snp_code, KVM_X86_SNP_VM, snp_default_policy());
-+	}
- 
- 	return 0;
- }
--- 
-2.54.0.563.g4f69b47b94-goog
+> [  286.997167] ======================================================
+> [  287.003363] WARNING: possible circular locking dependency detected
+> [  287.009562] 7.0.0-dbg-DEV #3 Tainted: G S
+> [  287.015074] ------------------------------------------------------
+> [  287.021270] vfio_pci_sriov_/18636 is trying to acquire lock:
+> [  287.026942] ff45bea2294d4968 (&vdev->memory_lock){+.+.}-{4:4}, at:
+> vfio_pci_core_runtime_resume+0x1f/0xa0
+> [  287.036530]
+> [  287.036530] but task is already holding lock:
+> [  287.042383] ff45bea3a96b8230 (&new_dev_set->lock){+.+.}-{4:4}, at:
+> vfio_group_fops_unl_ioctl+0x44d/0x7b0
+> [  287.051879]
+> [  287.051879] which lock already depends on the new lock.
+> [  287.051879]
+> [  287.060070]
+> [  287.060070] the existing dependency chain (in reverse order) is:
+> [  287.067568]
+> [  287.067568] -> #2 (&new_dev_set->lock){+.+.}-{4:4}:
+> [  287.073941]        __mutex_lock+0x92/0xb80
+> [  287.078058]        vfio_assign_device_set+0x66/0x1b0
+> [  287.083042]        vfio_pci_core_register_device+0xd1/0x2a0
+> [  287.088638]        vfio_pci_probe+0xd2/0x100
+> [  287.092933]        local_pci_probe_callback+0x4d/0xa0
+> [  287.098001]        process_scheduled_works+0x2ca/0x680
+> [  287.103158]        worker_thread+0x1e8/0x2f0
+> [  287.107452]        kthread+0x10c/0x140
+> [  287.111230]        ret_from_fork+0x18e/0x360
+> [  287.115519]        ret_from_fork_asm+0x1a/0x30
+> [  287.119983]
+> [  287.119983] -> #1 ((work_completion)(&arg.work)){+.+.}-{0:0}:
+> [  287.127219]        __flush_work+0x345/0x490
+> [  287.131429]        pci_device_probe+0x2e3/0x490
+> [  287.135979]        really_probe+0x1f9/0x4e0
+> [  287.140180]        __driver_probe_device+0x77/0x100
+> [  287.145079]        driver_probe_device+0x1e/0x110
+> [  287.149803]        __device_attach_driver+0xe3/0x170
+> [  287.154789]        bus_for_each_drv+0x125/0x150
+> [  287.159346]        __device_attach+0xca/0x1a0
+> [  287.163720]        device_initial_probe+0x34/0x50
+> [  287.168445]        pci_bus_add_device+0x6e/0x90
+> [  287.172995]        pci_iov_add_virtfn+0x3c9/0x3e0
+> [  287.177719]        sriov_add_vfs+0x2c/0x60
+> [  287.181838]        sriov_enable+0x306/0x4a0
+> [  287.186038]        vfio_pci_core_sriov_configure+0x184/0x220
+> [  287.191715]        sriov_numvfs_store+0xd9/0x1c0
+> [  287.196351]        kernfs_fop_write_iter+0x13f/0x1d0
+> [  287.201338]        vfs_write+0x2be/0x3b0
+> [  287.205286]        ksys_write+0x73/0x100
+> [  287.209233]        do_syscall_64+0x14d/0x750
+> [  287.213529]        entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> [  287.219120]
+> [  287.219120] -> #0 (&vdev->memory_lock){+.+.}-{4:4}:
+> [  287.225491]        __lock_acquire+0x14c6/0x2800
+> [  287.230048]        lock_acquire+0xd3/0x2f0
+> [  287.234168]        down_write+0x3a/0xc0
+> [  287.238019]        vfio_pci_core_runtime_resume+0x1f/0xa0
+> [  287.243436]        __rpm_callback+0x8c/0x310
+> [  287.247730]        rpm_resume+0x529/0x6f0
+> [  287.251765]        __pm_runtime_resume+0x68/0x90
+> [  287.256402]        vfio_pci_core_enable+0x44/0x310
+> [  287.261216]        vfio_pci_open_device+0x1c/0x80
+> [  287.265947]        vfio_df_open+0x10f/0x150
+> [  287.270148]        vfio_group_fops_unl_ioctl+0x4a4/0x7b0
+> [  287.275476]        __se_sys_ioctl+0x71/0xc0
+> [  287.279679]        do_syscall_64+0x14d/0x750
+> [  287.283975]        entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> [  287.289559]
+> [  287.289559] other info that might help us debug this:
+> [  287.289559]
+> [  287.297582] Chain exists of:
+> [  287.297582]   &vdev->memory_lock --> (work_completion)(&arg.work)
+> --> &new_dev_set->lock  
+> [  287.297582]
+> [  287.310023]  Possible unsafe locking scenario:
+> [  287.310023]
+> [  287.315961]        CPU0                    CPU1
+> [  287.320510]        ----                    ----
+> [  287.325059]   lock(&new_dev_set->lock);
+> [  287.328917]
+> lock((work_completion)(&arg.work));
+> [  287.336153]                                lock(&new_dev_set->lock);
+> [  287.342523]   lock(&vdev->memory_lock);
+> [  287.346382]
+> [  287.346382]  *** DEADLOCK ***
+> [  287.346382]
+> [  287.352315] 2 locks held by vfio_pci_sriov_/18636:
+> [  287.357125]  #0: ff45bea208ed3e18 (&group->group_lock){+.+.}-{4:4},
+> at: vfio_group_fops_unl_ioctl+0x3e3/0x7b0
+> [  287.367048]  #1: ff45bea3a96b8230 (&new_dev_set->lock){+.+.}-{4:4},
+> at: vfio_group_fops_unl_ioctl+0x44d/0x7b0
+> [  287.376976]
+> [  287.376976] stack backtrace:
+> [  287.381353] CPU: 191 UID: 0 PID: 18636 Comm: vfio_pci_sriov_
+> Tainted: G S                  7.0.0-dbg-DEV #3 PREEMPTLAZY
+> [  287.381355] Tainted: [S]=CPU_OUT_OF_SPEC
+> [  287.381356] Call Trace:
+> [  287.381357]  <TASK>
+> [  287.381358]  dump_stack_lvl+0x54/0x70
+> [  287.381361]  print_circular_bug+0x2e1/0x300
+> [  287.381363]  check_noncircular+0xf9/0x120
+> [  287.381364]  ? __lock_acquire+0x5b4/0x2800
+> [  287.381366]  __lock_acquire+0x14c6/0x2800
+> [  287.381368]  ? pci_mmcfg_read+0x4f/0x220
+> [  287.381370]  ? pci_mmcfg_write+0x57/0x220
+> [  287.381371]  ? lock_acquire+0xd3/0x2f0
+> [  287.381373]  ? pci_mmcfg_write+0x57/0x220
+> [  287.381374]  ? lock_release+0xef/0x360
+> [  287.381376]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
+> [  287.381377]  lock_acquire+0xd3/0x2f0
+> [  287.381378]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
+> [  287.381379]  ? lock_is_held_type+0x76/0x100
+> [  287.381382]  down_write+0x3a/0xc0
+> [  287.381382]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
+> [  287.381383]  vfio_pci_core_runtime_resume+0x1f/0xa0
+> [  287.381384]  ? __pfx_pci_pm_runtime_resume+0x10/0x10
+> [  287.381385]  __rpm_callback+0x8c/0x310
+> [  287.381386]  ? ktime_get_mono_fast_ns+0x3d/0xb0
+> [  287.381389]  ? __pfx_pci_pm_runtime_resume+0x10/0x10
+> [  287.381390]  rpm_resume+0x529/0x6f0
+> [  287.381392]  ? lock_is_held_type+0x76/0x100
+> [  287.381394]  __pm_runtime_resume+0x68/0x90
+> [  287.381396]  vfio_pci_core_enable+0x44/0x310
+> [  287.381398]  vfio_pci_open_device+0x1c/0x80
+> [  287.381399]  vfio_df_open+0x10f/0x150
+> [  287.381401]  vfio_group_fops_unl_ioctl+0x4a4/0x7b0
+> [  287.381402]  __se_sys_ioctl+0x71/0xc0
+> [  287.381404]  do_syscall_64+0x14d/0x750
+> [  287.381405]  ? entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> [  287.381406]  ? trace_irq_disable+0x25/0xd0
+> [  287.381409]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> 
+> Introduce a private flag 'sriov_pwr_active' in the vfio_pci_core_device
+> struct. This  allows the driver to track the SR-IOV power state requirement
+> without  relying on pci_num_vf() while holding the memory_lock. The lock is
+> now  only held to set the flag and ensure the device is in D0, after which
+> pci_enable_sriov() can be called without the lock.
+> 
+> Fixes: f4162eb1e2fc ("vfio/pci: Change the PF power state to D0 before enabling VFs")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
+> Suggested-by: Alex Williamson <alex@shazbot.org>
+> Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
+> ---
+>  drivers/vfio/pci/vfio_pci_core.c | 6 ++++--
+>  include/linux/vfio_pci_core.h    | 1 +
+>  2 files changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index 3f8d093aacf8a..0e4a73e541d3a 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -271,7 +271,7 @@ int vfio_pci_set_power_state(struct vfio_pci_core_device *vdev, pci_power_t stat
+>  	int ret;
+>  
+>  	/* Prevent changing power state for PFs with VFs enabled */
+> -	if (pci_num_vf(pdev) && state > PCI_D0)
+> +	if (vdev->sriov_pwr_active && state > PCI_D0)
+>  		return -EBUSY;
+
+AIUI, clearing the flag in the out_del: below can be lockless because
+at worst we'll deny a low power transition, but I think the test here
+for any state >PCI_D0 does expect memory_lock, right?  Maybe this
+should be something like:
+
+	if (state > PCI_D0) {
+		lockdep_assert_held_write(&vdev->memory_lock);
+		if (vdev->sriov_pwr_active)
+			return -EBUSY;
+	}
+
+>  
+>  	if (vdev->needs_pm_restore) {
+> @@ -2292,8 +2292,9 @@ int vfio_pci_core_sriov_configure(struct vfio_pci_core_device *vdev,
+>  
+>  		down_write(&vdev->memory_lock);
+>  		vfio_pci_set_power_state(vdev, PCI_D0);
+> -		ret = pci_enable_sriov(pdev, nr_virtfn);
+> +		vdev->sriov_pwr_active = true;
+>  		up_write(&vdev->memory_lock);
+> +		ret = pci_enable_sriov(pdev, nr_virtfn);
+>  		if (ret) {
+>  			pm_runtime_put(&pdev->dev);
+>  			goto out_del;
+> @@ -2307,6 +2308,7 @@ int vfio_pci_core_sriov_configure(struct vfio_pci_core_device *vdev,
+>  	}
+>  
+>  out_del:
+> +	vdev->sriov_pwr_active = false;
+
+A comment that this is intentionally lockless would be useful.
+
+>  	mutex_lock(&vfio_pci_sriov_pfs_mutex);
+>  	list_del_init(&vdev->sriov_pfs_item);
+>  out_unlock:
+> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+> index 2ebba746c18f7..9a39a13a65766 100644
+> --- a/include/linux/vfio_pci_core.h
+> +++ b/include/linux/vfio_pci_core.h
+> @@ -127,6 +127,7 @@ struct vfio_pci_core_device {
+>  	bool			needs_pm_restore:1;
+>  	bool			pm_intx_masked:1;
+>  	bool			pm_runtime_engaged:1;
+> +	bool			sriov_pwr_active:1;
+
+Just 'sriov_active'?  Adding 'pwr' into it implies the use case rather
+than the state it represents.  Thanks,
+
+Alex
+
+>  	struct pci_saved_state	*pci_saved_state;
+>  	struct pci_saved_state	*pm_save;
+>  	int			ioeventfds_nr;
+> 
+> base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
 
