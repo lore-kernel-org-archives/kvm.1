@@ -1,201 +1,144 @@
-Received: from SN4PR0501CU005.outbound.protection.outlook.com (mail-southcentralusazon11011062.outbound.protection.outlook.com [40.93.194.62])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799AA34C140;
-	Thu,  7 May 2026 21:50:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.93.194.62
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778190616; cv=fail; b=ReUChnexGZlpor7A2hDhZwts+9R2S7XZzj4aXZNOn2gm/VTRXxc/stqxDY3OtqiLA+ooIxDdq5qPhXMvfGVw8UMojqoK7GhvRYP2jJevRIveFlNaGCceqBASoPlluQ91CTNTodsVRPbywW2omhigsSDLslwsiiKYg0z7I3cvtUA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778190616; c=relaxed/simple;
-	bh=Ocmx+XJgtGVVaKlOeDNKWPorPmL6bRsgXbjtevR1kiw=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=NAhMODNUdpVv0x/5KrF6HNWsyrsEfHJEQt3QullGDQXz/7/abBz9yxnB6UB71qOc8efFamcZwEGCfab8UQ2FDXqTVXbnUccIw4rsXf7y1N0aHN/56fPBDAv2F97l4iz/uedtRFtJxK54b2rEDm4BaevJcUOeVSxDjQRivK9Ih/0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=kZnCO3Md; arc=fail smtp.client-ip=40.93.194.62
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0243434D382
+	for <kvm@vger.kernel.org>; Thu,  7 May 2026 21:59:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778191171; cv=none; b=G+y0JvicGEchDjSP9qS2fSnfmbZYDPmmE2bjmVqXxx3NHpZSvAfXpR4IZOJ3b8Ouwc+QjYNPh9/7GIRkOW/SK0fKLszKqKRpKn/2vLjFYkg11UUnbB5TDYKUVv1VvJQM8Z3oih8Ul9O1XvuwuqO3pbieGmzcXG4WrwvEnRcYdaM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778191171; c=relaxed/simple;
+	bh=1YRd41fEFbY+a83nU8GaPMNuby91viU+z5FrzN8MGkc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=OojsxwoDdWYLhTkkQOX/tq0wTH5H+iioLoJg5mP9ZypyS/vGtmSWxdBrdxQG3F2UqZJ4dAVDfVzUEiDl+4F0XzerDvhvfcb/oua3sbNcr1G1t0ZhfdLqIHxvOjatn9QLFG4ZoLZT3OPsMVTIyF3Ic1ya/iYk7KX0weU3n5jLkLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h84sMev/; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="kZnCO3Md"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=K2DOUg5Iwpp2nCas1+qgoEif9d77oNRe4jxcSMMNhUNAz/Y+SiG6fC7BNoA+2NnR1S00YPO7ShB0SJpiL1pXgtN4qtnSEkbgoueD4kqz0E6L3JyTnRaONP8PiVGXJ/Xcw0JseFf85bY+Y60iMTCZRI4l2+qVTMvzZqQsbHR1J72vksSCUaGUmRJgyvCRsrvO/Dn7U6C8NXRhLxFDPTVp5wnw3UsW/zCuwXvgLNHyHTzWxN5z5GIe4b73LvB8VxtN7b4bCM8dqyheH76fz+KCw1UMhJGR3ykweRzBGBBqQAMGcqo7b/UpHaBbrFfMiTfKkv0n3S6xZ0jv2Qrthilx1Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DT/7TBhap3Cesu98d548u1+IG6riXOGevdycXz0ACaU=;
- b=Y+GmhFvO+fUJlNosMyfghhEcSt8r+kk+I0QOhMZ0VF6is+kaTPJVD9BY2xO84x32h+OKLEx+z4DA9cqUw+a0hQ0BwUqRCAgIqm+prBlnRN7L0KnxToyCP7SIWccXyEdf1xgFt8BteUtx+cOrD4agCA09nJkpBzPvf31fFTJdBMLbPB8Hx7GIadEwH+uuz3ppeG8Z0An9JaBVo7ZC9H3aF35RGYCuxw5WdL/71w4vwDlGzduN/QmYvwKxjRT7xFcQ5VRRnyC6bD4+/MA38hahB2RZbKr9VZ2OjaTCQds2ntBt7vN1ejmrs45rN52ua4FPyRgcfnmuHWBAuowUGk9bgQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DT/7TBhap3Cesu98d548u1+IG6riXOGevdycXz0ACaU=;
- b=kZnCO3Md6djaMJQLZKZkjdbHeiMQ+NJiCpMBly3XADh90YvwrDpx5RU8TqY7Dgn897zmJmufNYvOWveHIWnY+8muWJ9p2m28C4nElJ1LWzXZboGwqP6ol5L/WEKRG1ZFQW12AzBVFlKSpFEiaGZluFAV3TTtrypTfoQ3OhRv78g=
-Received: from DS7PR12MB8201.namprd12.prod.outlook.com (2603:10b6:8:ef::13) by
- SJ2PR12MB8181.namprd12.prod.outlook.com (2603:10b6:a03:4f6::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Thu, 7 May
- 2026 21:50:11 +0000
-Received: from DS7PR12MB8201.namprd12.prod.outlook.com
- ([fe80::e5d:5f41:954d:be38]) by DS7PR12MB8201.namprd12.prod.outlook.com
- ([fe80::e5d:5f41:954d:be38%2]) with mapi id 15.20.9870.023; Thu, 7 May 2026
- 21:50:11 +0000
-From: "Kaplan, David" <David.Kaplan@amd.com>
-To: Sean Christopherson <seanjc@google.com>
-CC: kvm list <kvm@vger.kernel.org>, LKML <linux-kernel@vger.kernel.org>,
-	Andrew Cooper <andrew.cooper3@citrix.com>, "Lendacky, Thomas"
-	<Thomas.Lendacky@amd.com>, Paolo Bonzini <pbonzini@redhat.com>
-Subject: RE: Bug with nested PAUSE intercept on SVM
-Thread-Topic: Bug with nested PAUSE intercept on SVM
-Thread-Index: AdzGtpiRjeqXsvC5QHu6t6J5p0N2hwABTvkAAAAZvfAF68uBMA==
-Date: Thu, 7 May 2026 21:50:10 +0000
-Message-ID:
- <DS7PR12MB82010A5DF5F8DE5830CF16F9943C2@DS7PR12MB8201.namprd12.prod.outlook.com>
-References:
- <DS7PR12MB820101CABFA34E85442EA256945AA@DS7PR12MB8201.namprd12.prod.outlook.com>
- <adVL9nqJhJwvu1QO@google.com>
- <DS7PR12MB820106A839105CD9E9E62328945AA@DS7PR12MB8201.namprd12.prod.outlook.com>
-In-Reply-To:
- <DS7PR12MB820106A839105CD9E9E62328945AA@DS7PR12MB8201.namprd12.prod.outlook.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
- MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Enabled=True;MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_SiteId=3dd8961f-e488-4e60-8e11-a82d994e183d;MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_SetDate=2026-04-07T18:27:46.0000000Z;MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Name=AMD
- Internal Distribution
- Only;MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_ContentBits=3;MSIP_Label_dce362fe-1558-4fb5-9f64-8a6240d76441_Method=Standard
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: DS7PR12MB8201:EE_|SJ2PR12MB8181:EE_
-x-ms-office365-filtering-correlation-id: ebf2138e-0825-4abc-51c9-08deac829cdf
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam:
- BCL:0;ARA:13230040|1800799024|376014|366016|56012099003|18002099003|22082099003|38070700021|3023799003;
-x-microsoft-antispam-message-info:
- Mq7K4os5UBowdciZT2iZd8G34RABExujE1hhCJzEQUJECNKj5c69X6fHdVM9GXfzoYU8I6wg3srP90OBqlR2omMGzR6qm1SsPPVKHvYUieeMwCGBY7qlDbrO5GRB/1Vc7PeQt4Atw6trD0gbT9EZxYnsjFBHtPXNP5YDO3JyAOMYOlE3Wd0KXFYYfXiwZy1UQqr7L28BK9xyBJPPrsmWCqIeZG06z6B9RbpbCffQ/Xf5cZaqEwQmEgebqw3YGjNhni+wpVWpNAhXXo4hBnYsj9zttH0ocBco2zdqx1VXo/NLrW/vsmMdHzP4xrhMUdMkMfCdFXXGiqaSbaqMl6sDmF2hGmjO7d76DyZDUpWrj404fKZUTnhfrPQw8Cq+8wBFXkW/TfdgKd+r92w1IsOqdGerKPd0ZWiudCTMciwsCUgcA/K5HLHdXstCdk4LTVJ16ds6kIaBmwtbgDNDfBgGkonxiYMyWGo00NZTeId7Qm1BB98OidQe5Eja35xW6rdWrMtPaeALaLyv+FWAkFrHXbBBCEGpqK2VvW0k5Z8ILTQIJ0NG9tC/fT7VmFgi3/MuQ2OWweP3fNCCp5Cggt5ZFHUu11v8QzXc0GUjVvTY2FWVLUiQDojBeH14mfDI6ooW6DZ+ifnDsrrSh0u6Ir+Q7lo+8FMAkpJlyTQK+ASR1IT+9g+ym3uaVmzB8oDgm62SZ83MnopOVZF9qKffpJi7VKWpq16CK4zeAA5wvnIaRjSmbg7qUzUeSCLbZy9mKQms
-x-forefront-antispam-report:
- CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS7PR12MB8201.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(56012099003)(18002099003)(22082099003)(38070700021)(3023799003);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?DxqQN4EhB4UqOEP08nh3iOrOy/PuBHNoyEWE3xfIXimm0pA+AnHsuIbgPQAP?=
- =?us-ascii?Q?BxSvdP3lBwUqFIy0BkxGgX0UM6Lpd2wgAP370FeDmxjK5oCHTX0GX8NNTxyy?=
- =?us-ascii?Q?U2c+X0vOqdgY9FJsvK2pkd1F7fhRszzQLlLEW9vgMlKOInChs8SQxI8zMZJC?=
- =?us-ascii?Q?nD+a9HnBWKuev08iTOhfTSLPnyKtNUjZabD8QvwPKqXSQj4XNDwN8Fmxh52P?=
- =?us-ascii?Q?ORzUTvrIPdURMvj/Chz0IIAUYboV/LMM5jjnMa4zsMIgpYs/r5uK7CAsM3oo?=
- =?us-ascii?Q?bw7xmDedaSiBspS3c4WL9q59KolbeNy6oEIPlTwgS5XsJI0cPngRe761h/ku?=
- =?us-ascii?Q?qTzhYhGfnwe1il+JJm7itKsWvpL2Zpp/JgJjMPxrxv48jfI7cXl2XsO39R+d?=
- =?us-ascii?Q?z1CVHpGC+pjjcj7ZELe4zD3uMqRiyWWHFt2OxJoaFnkItuo/XnyV1x+/1rRc?=
- =?us-ascii?Q?h1JVi1tTu6r+BVVNkEyj6qXUb1SkWyZIt2t6++nWN6Zkz7irjt9avjAhO4RM?=
- =?us-ascii?Q?iG2aO2RkmgqPRm8yr9e5bQVZLYQyF3UDwXoQBukKpZ/meyN5IoOh9n4G38fE?=
- =?us-ascii?Q?VyZHPtcGiql7HwaVklNROwuueJfPFlJpHwJh6vnpVgnwPRbgfx6Z3Jdhy9oL?=
- =?us-ascii?Q?4PaQsKk1T01p6hN/NY5D5NbLUR1Ocw6CzlC3C6D7tH1tZmfeMSrw8I5lcQtt?=
- =?us-ascii?Q?GmDd1WQTF53FB4WR+/IQsDvSZ0yYTeS5tRxgDAz1VYP27InSHRAhrP5ghlkP?=
- =?us-ascii?Q?6lnztO5IqlFjERMIW5a/wEy5Q2qGOpLByMUvCzjq/n5/KOcyY/qdUAnf4jXS?=
- =?us-ascii?Q?I+XLOGp01KZANP38puVO1ghzR+pJkC6H4w38aiGJURUxEGdOobtvEb5bdgpO?=
- =?us-ascii?Q?AsUDuoua/8MskTk/m/NCcgGt9fRjOb3mtXrVn6TWDsA5fo82quUqU4tmkSK5?=
- =?us-ascii?Q?uq8QEGMTZvPpSLOqB1bZjW0vE8+ncQau3GUGv1a+W2f6xY7Rz3N5qy8UMyDm?=
- =?us-ascii?Q?y1GuIvW+TvsFRTza8tzYtYnWFshzCUN4c+ChxEU42bqoFBdUpVp/zYMwlWJl?=
- =?us-ascii?Q?GNtj/YVEVTqeUn76lBDx8BZm4atxZiPOGaBMOjw2P+uir47vtyYveSCrN2qb?=
- =?us-ascii?Q?iSYUfptIUb4/WtU/vGWltvYU3JNYwZ90vfff1nTlYy59QLtCAiEdD5rh/szB?=
- =?us-ascii?Q?sR3pa3ZLvq9dl9e9Y/lcXdeQRB4UXgDnHf4xGn1hZolzf/9dkfj1NtINg5RU?=
- =?us-ascii?Q?B3zsGwuCCfGOlqrXJtgNla4vzoxoPMxAHRnSBkPPp+LbJnWBCWSd812fwg1c?=
- =?us-ascii?Q?tJ8iqTR9mAPR48kRWYiLsPjMlRom0RLcFrnhFVt7IDNVquYxezZ/cjfdBO6h?=
- =?us-ascii?Q?nHPdV4p74oZ4jbh/erUbDis2ZCoOmtn9vtkyVkVTgKnd1ZpdRG7VszB8o8Aj?=
- =?us-ascii?Q?ZV0S2HpoqiqhU6V/cGuVHpIiD7de4ai5yJ88IsUrdFxtzoE7DA2igg/fVzGd?=
- =?us-ascii?Q?rzk8A2K/6YksWypP8CfYkQJwxx/hbvWBqaB//5hWiI1n2S57KFbDW7yLJcqY?=
- =?us-ascii?Q?KdU7UtXqMInwsCS5C8iIlnX8+GG99tHEYMOTGKT3ML0i2ODtEvdFRYWAbJsd?=
- =?us-ascii?Q?mlcJAneFwcYuQ+va/LIAGTgkQAcKKnDU6ulOO1iQSAWm0B38Ex3R3hYfMC5o?=
- =?us-ascii?Q?ihMFv94YW5woW6F+mJiqlxf7V7vbOq45fEM7G8DGnZPkyTsN?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h84sMev/"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b4530a90fdso34042155ad.1
+        for <kvm@vger.kernel.org>; Thu, 07 May 2026 14:59:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778191169; x=1778795969; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZHU90gqvYifnkG2RCuPg/6CsVL3m7MdxSFaqpK8rgG0=;
+        b=h84sMev/xs1Z2OMWlrj8iU8OrJlZuMgbeVgS5Ie0NWgdYhKvKKa6MdfTJsxRhbdXQU
+         ZzR0e3acfC8xqGmc8ND1SHmJ0bvyGs+yh1gFWgcVijizZoluKDPAgw1i2oM+Jm88BRP/
+         OY5vRkWEk9nFO0y2oqntXd+MEJ6ErjHsWAKX/ykzPO0vQVghmPxx8SSG7Q44F4h4ligL
+         7l3vAZiwE73xpfLWAiYqXsUCwLX3jJg7YpD8owwSQJbZwECdcYgSL9YN66zKVUPhZSX3
+         HdpbdqpzW2v1ycw3nFYwTTlsdt8O7W6BBgJrgm0h+vtEwtpV13e32E0HGsMx07VHdjqh
+         jE0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778191169; x=1778795969;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ZHU90gqvYifnkG2RCuPg/6CsVL3m7MdxSFaqpK8rgG0=;
+        b=WEDrOy96a7NBLyOgKk/9JV6JajrTh2ARALQr2kqxuqNZXzIlw7Icc+MBp4OE7JjD+o
+         PWf2a1Ro97AXnocFZtfMax9zvsHfgSSR/GCetr8XRuoB54IClMYFGkCzEpQ39x/I4CBx
+         BN1ecKC4s1/wpcBnPxOxdmH+8OzTjAhrvk6DjMgaSY8Nbd1E+3pe/n6Fz/GeUdGw5czy
+         KmFfdGjmlyI957JYJ9o/FNueZiRQjonlfqgZ1HvqGK23Rvn1eaIP9/ehTQMqjt2VboO0
+         0nQRexpS7p+8tJzGpdP4qKNRGFQ/VGIx43fD47ffLCaAwPglysWFMvdzTj72Hd7a44cN
+         Vjuw==
+X-Forwarded-Encrypted: i=1; AFNElJ9h1///U5zL5OVVOlULoa4FdeqM2tA1D366bYfWmlNaDjkq4jJcfHWiEXNPhPsBYfHqzDA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxu1qcCtr9q2z+eA64nJW0uFn3Oglu2CK2yCMCRmgdnrjnPwOs+
+	SdlGAmv5aBRR0v+5YuEqiEohVrSFAKgHxQJjGo1j6gLyvd+FWGWN4hf8GQH3YdmXRz/jmvh82UL
+	Xp61Vog==
+X-Received: from plblh8.prod.google.com ([2002:a17:903:2908:b0:2ba:47cc:61b3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:fa07:b0:2b2:549f:7d2b
+ with SMTP id d9443c01a7336-2ba794b9766mr66362135ad.11.1778191169247; Thu, 07
+ May 2026 14:59:29 -0700 (PDT)
+Date: Thu, 7 May 2026 14:59:28 -0700
+In-Reply-To: <20260504235435.90957-1-mikhail.v.gavrilov@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: DS7PR12MB8201.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: ebf2138e-0825-4abc-51c9-08deac829cdf
-X-MS-Exchange-CrossTenant-originalarrivaltime: 07 May 2026 21:50:11.0400
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: CqrWz3ocMGQKQWA/FlfxiMb/lQQNStEuu1/9VCF6J9I0mNvelO1D8b/OmqjkrT7t
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ2PR12MB8181
+Mime-Version: 1.0
+References: <20260503174534.45699-1-mikhail.v.gavrilov@gmail.com> <20260504235435.90957-1-mikhail.v.gavrilov@gmail.com>
+Message-ID: <af0LQNY6IhB0NEWy@google.com>
+Subject: Re: [PATCH v2] x86/virt: Silence RCU lockdep splat in emergency virt
+ callback path
+From: Sean Christopherson <seanjc@google.com>
+To: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Cc: pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, hpa@zytor.com, djbw@kernel.org, 
+	chao.gao@intel.com, x86@kernel.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-[AMD Official Use Only - AMD Internal Distribution Only]
+On Tue, May 05, 2026, Mikhail Gavrilov wrote:
+> x86_virt_invoke_kvm_emergency_callback() reaches rcu_dereference()
+> through machine_crash_shutdown() with IRQs disabled but with RCU not
+> necessarily watching the crashing CPU, which triggers a suspicious
+> RCU usage splat on debug kernels (CONFIG_PROVE_RCU=3Dy) during
+> panic/kdump:
+>=20
+>   WARNING: suspicious RCU usage
+>   arch/x86/virt/hw.c:52 suspicious rcu_dereference_check() usage!
+>=20
+>   rcu_scheduler_active =3D 2, debug_locks =3D 1
+>   1 lock held by tee/11119:
+>    #0: ffff8881fa32c440 (sb_writers#3){.+.+}-{0:0}, at: ksys_write
+>=20
+>   Call Trace:
+>    <TASK>
+>    dump_stack_lvl+0x84/0xd0
+>    lockdep_rcu_suspicious.cold+0x37/0x8f
+>    x86_virt_invoke_kvm_emergency_callback+0x5f/0x70
+>    x86_svm_emergency_disable_virtualization_cpu+0x2a/0x30
+>    x86_virt_emergency_disable_virtualization_cpu+0x6b/0x90
+>    native_machine_crash_shutdown+0x72/0x170
+>    __crash_kexec+0x137/0x280
+>    panic+0xce/0xd0
+>    sysrq_handle_crash+0x1f/0x20
+>    __handle_sysrq.cold+0x192/0x335
+>    write_sysrq_trigger+0x8c/0xc0
+>    proc_reg_write+0x1c3/0x3c0
+>    vfs_write+0x1d0/0xf80
+>    ksys_write+0x116/0x250
+>    do_syscall_64+0x11c/0x1480
+>    entry_SYSCALL_64_after_hwframe+0x76/0x7e
+>    </TASK>
+>=20
+> A truly correct fix is non-trivial: the RCU usage genuinely is wrong in
+> panic context (RCU may ignore the crashing CPU during synchronization),
+> and a concurrent KVM module unload could in principle race with the
+> callback read; see commit 2baa33a8ddd6 ("KVM: x86: Leave user-return
+> notifier registered on reboot/shutdown") which notes that nothing
+> prevents module unload during panic/reboot.
+>=20
+> However, the alternatives are worse:
+>=20
+>   - smp_store_release()/smp_load_acquire() handles ordering but not
+>     liveness; the kernel still needs to keep the module text alive
+>     while the callback is in flight.
+>   - Taking a lock in the panic path is risky =E2=80=94 any lock could be =
+held
+>     by a CPU that has already been NMI'd to a halt.
+>=20
+> Use rcu_dereference_raw() to silence the splat and accept the
+> vanishingly small remaining race. Panic context inherently cannot
+> guarantee complete correctness; the goal here is to keep debug builds
+> quiet on the kdump path so the splat doesn't obscure the actual
+> kernel state being captured.
+>=20
+> Reproducible on a debug kernel (CONFIG_PROVE_LOCKING=3Dy, CONFIG_PROVE_RC=
+U=3Dy)
+> with kvm_amd or kvm_intel loaded by triggering kdump:
+>=20
+>   echo c > /proc/sysrq-trigger
+>=20
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Fixes: 428afac5a8ea ("KVM: x86: Move bulk of emergency virtualizaton logi=
+c to virt subsystem")
+> Signed-off-by: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+> ---
 
-> -----Original Message-----
-> From: Kaplan, David
-> Sent: Tuesday, April 7, 2026 1:30 PM
-> To: 'Sean Christopherson' <seanjc@google.com>
-> Cc: kvm list <kvm@vger.kernel.org>; LKML <linux-kernel@vger.kernel.org>;
-> Andrew Cooper <andrew.cooper3@citrix.com>; Lendacky, Thomas
-> <Thomas.Lendacky@amd.com>; Paolo Bonzini <pbonzini@redhat.com>
-> Subject: RE: Bug with nested PAUSE intercept on SVM
->
->
->
-> > -----Original Message-----
-> > From: Sean Christopherson <seanjc@google.com>
-> > Sent: Tuesday, April 7, 2026 1:25 PM
-> > To: Kaplan, David <David.Kaplan@amd.com>
-> > Cc: kvm list <kvm@vger.kernel.org>; LKML <linux-kernel@vger.kernel.org>=
-;
-> > Andrew Cooper <andrew.cooper3@citrix.com>; Lendacky, Thomas
-> > <Thomas.Lendacky@amd.com>; Paolo Bonzini <pbonzini@redhat.com>
-> > Subject: Re: Bug with nested PAUSE intercept on SVM
-> >
-> > Caution: This message originated from an External Source. Use proper
-> caution
-> > when opening attachments, clicking links, or responding.
-> >
-> >
-> > On Tue, Apr 07, 2026, David Kaplan wrote:
-> > > Hi,
-> > >
-> > > On AMD SVM when the L1 guest is trying to intercept every PAUSE
-> > instruction
-> > > in an L2 guest, the PAUSE intercept sometimes fails to fire.  I have =
-a theory
-> > > on the source of the bug and also included a short reproducer below.
-> > >
-> > > In this scenario, L1 has created a guest with the pause count and thr=
-eshold
-> > > set to 0, and the PAUSE intercept bit set.  I *think* the bug is that=
- if the
-> > > vCPU gets scheduled out on L0 while we're in the L2 guest, then upon
-> > resuming
-> > > the vCPU KVM calls shrink_ple_window() which doesn't appear to take
-> into
-> > > account the fact that svm->vmcb might be for the L2 guest and not the=
- L1.
-> > As
-> > > a result, it looks like it sets the pause count to the default (3000)=
- causing
-> > > many PAUSE instructions in L2 to not be intercepted.
-> >
-> > It's probably even simpler than that: KVM is completely broken.
-> >
-> > https://lore.kernel.org/all/20250131010601.469904-1-
-> seanjc@google.com
-> >
-> > Paolo, can I finally apply that patch?  I brought it up in PUCK a while=
- back,
-> > and IIRC you were resistant to dropping "support" for cpu_pm=3Don setup=
-s.
->
-> Interesting.  But does that patch solve my problem?  It looks like it wou=
-ld still
-> call shrink_ple_window even if L2 was scheduled out and change the
-> page_filter_count in vmcb02, if I'm reading it correctly.
->
+Acked-by: Sean Christopherson <seanjc@google.com>
 
-Ping again on this...
-
---David Kaplan
+(I can also take this through kvm-x86; I have no preference whatsoever)
