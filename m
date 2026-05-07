@@ -1,178 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com [209.85.161.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50764C77A9;
-	Thu,  7 May 2026 20:22:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DE161FC0EA
+	for <kvm@vger.kernel.org>; Thu,  7 May 2026 20:32:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778185373; cv=none; b=PuqsZ5wGenLwZ1UVeJFhyqRnDKNDRqmHFpErvjr1Z101toSN3VEXiivOn43VtfJecZ9TTpD1Qr39Pi2DLKB4WXbTRgkoUjabzOn0TGcP0WuEyCD8lZKw5RhSgvw6v9mFOqu1k4dbUQzubpvG5i/oWkQeYRqIx9GRrsjUoE4qO44=
+	t=1778185946; cv=none; b=uFn1VxTQO2val8jR43fsoJazZPN8kJkALuRKZ6T4/Nsd7oxz2cOF5pmk4kq+q34sx8UJ9EA/9xwYtupNLY5KFOivW0LDzjWOv2m6P2x0igaTVdv9eMUFiFSgLE0A2H3YA94oo0yb01D+sK7vqCj04YjlrB/uvu6m5KsDPt4nCMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778185373; c=relaxed/simple;
-	bh=YsF8COWix+6Yxb8XQMDjxkfCqLW4zILwB+rmik6M5mQ=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hWdWehf0X/hW/0pzaoxriyF71oRyBcMtO8s+2GJW0qOSuAfJcZ87AnU2Pt8IIW7uR7a1B8W9e3N9KYOIoa2sjFpiCPCowRb4WgkjWGUipEUkH3E1I8g6HulILwvv12E59sWVg++ym5uZ/uXrZSORk3xyJgvNffdlJXGWdvDOsC8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XQ0fVhTD; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XQ0fVhTD"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 94EEBC2BCF5;
-	Thu,  7 May 2026 20:22:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778185373;
-	bh=YsF8COWix+6Yxb8XQMDjxkfCqLW4zILwB+rmik6M5mQ=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=XQ0fVhTDhJP6SPeSC4SMnPAACq1rJ+oht5+P74v03LqecI7lrnv0WGsLBrhHbJqlv
-	 Ll4yiSxTGAP3oFJwEwkdvrFr39szvMAu39mOyhBE0MJ3DGMnNCZn+ubaIZ6Qrr6HtO
-	 gho6fLSvZBgHa6+aadC1+c4g6QvcTA4cSnGedwixWa5G3wptq6ReVY5mgich+HYd0c
-	 OmGxPlVRcVgZl9+q2EzxyezbuHWGtDD+V9i2oCnG7A5/YZQctd8Bt0ofoAL6nINofm
-	 iJe0D52FSoUiU5/ef1lsj9YmIjm/2JtywOEyVOfAsIAvFRs2hwPpiFa/PFAKHxseCj
-	 OjIWzW0G2PSUw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 8702FCD343F;
-	Thu,  7 May 2026 20:22:53 +0000 (UTC)
-From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Thu, 07 May 2026 13:23:02 -0700
-Subject: [PATCH v6 43/43] KVM: selftests: Update private memory exits test
- to work with per-gmem attributes
+	s=arc-20240116; t=1778185946; c=relaxed/simple;
+	bh=cKwanJ5PtPUt28AHvo0syC+ZCmyEN/js+LpvcfqHPYE=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=ojLqz6sUV4dJuZ0jghAhArO2CJVIh+frANgDwMHBari3ppYbOkdpzdKXqAD6YPdoYTgcWPdT9s0zj9o0r5QIBIjHsrlN61MoD51e9rSpG9ZW1QlUiohav3PKBnGXGZ4Y4Vi7AuNM8j0RoEYE74KM0J7chnu+Rm1BjTnBMA1rRXQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-6967b799acdso3014853eaf.3
+        for <kvm@vger.kernel.org>; Thu, 07 May 2026 13:32:25 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778185944; x=1778790744;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/M7dmOXUKvCVvTvqfeRm6J1B5s77SXEhgvgZGDmE2PA=;
+        b=ITFnA0jTu/4zX3ZxiVJt9it234euMF1wqRtASVQbMdJTI2etY2TwUSTqLofJp78qkb
+         YdVioP6hS0+o3PNftbXjH12JhJWXo4D09w8jv58XPQA4PGr6Ttv90FkJNzLykeTKe7r+
+         Yr1GRxYe6tuSXwDVFucZndnOW1K/QTS3MiFqcVk3ug1xMr4fkBbtkTz+aDV1X+iHDnXH
+         gBhOnkQcvUDgkXIvth6dvJ6AZo4BS6Teb2wOPbH6LMjnU9lNDqASpp+hd0Go0/Hv9z+a
+         NtIxXEND0z1FnfmUo1giP0Z7xO9RkTmG4hsBboT3BRZTTWi0mre7pQn9osoutZliDA+S
+         +owQ==
+X-Gm-Message-State: AOJu0Yw/8BHB87d9drbuQ24gT6znDZ3jroK7U6G47izbA+b0SZPOzmc/
+	VX0LZcufQzsnZVjUbojBfP+3wB/rdYsNP4d0bi8BxUZuyBFJ+sJYATTMuVhXwRwhowGUKiyObvb
+	pKWBjh9CRL6n7Nvb29NpqehP0yRxNhkD11wOz4zA5Ok2qA6byodzZaETnddw=
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260507-gmem-inplace-conversion-v6-43-91ab5a8b19a4@google.com>
-References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
-In-Reply-To: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
-To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
- brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
- ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
- michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
- qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
- shivankg@amd.com, steven.price@arm.com, tabba@google.com, 
- willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
- forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
- aneesh.kumar@kernel.org, liam@infradead.org, 
- Paolo Bonzini <pbonzini@redhat.com>, 
- Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, 
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
- Masami Hiramatsu <mhiramat@kernel.org>, 
- Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
- Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
- Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
- Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
- Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
- Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
- Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, 
- Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
- Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
- linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1778185365; l=3772;
- i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=ilZNigktr30OWW+44f6wWT3BpvfT+Tlf9WIw7xVQWhA=;
- b=RQQ4ZC6yPw+UZAXfzoD0aKRDxzFge3XopvPgK6qmJWMHQatSwRktfz4EuYp2f+79LWhBgyK0g
- Fz0LXdKV1VPD5JTPG0+IaBIN6RgGKSBh9m0iv9m1sl3WAOpntYe9Zwh
-X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
- pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
- auth_id=649
-X-Original-From: Ackerley Tng <ackerleytng@google.com>
-Reply-To: ackerleytng@google.com
+X-Received: by 2002:a05:6820:200c:b0:696:2cf3:3bdb with SMTP id
+ 006d021491bc7-69998d0dca9mr5110087eaf.37.1778185944423; Thu, 07 May 2026
+ 13:32:24 -0700 (PDT)
+Date: Thu, 07 May 2026 13:32:24 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <69fcf6d8.050a0220.3cf765.035e.GAE@google.com>
+Subject: [syzbot] Monthly kvm report (May 2026)
+From: syzbot <syzbot+list6cfe0aadb72c15b122ef@syzkaller.appspotmail.com>
+To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Sean Christopherson <seanjc@google.com>
+Hello kvm maintainers/developers,
 
-Skip setting memory to private in the private memory exits test when using
-per-gmem memory attributes, as memory is initialized to private by default
-for guest_memfd, and using vm_mem_set_private() on a guest_memfd instance
-requires creating guest_memfd with GUEST_MEMFD_FLAG_MMAP (which is totally
-doable, but would need to be conditional and is ultimately unnecessary).
+This is a 31-day syzbot report for the kvm subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/kvm
 
-Expect an emulated MMIO instead of a memory fault exit when attributes are
-per-gmem, as deleting the memslot effectively drops the private status,
-i.e. the GPA becomes shared and thus supports emulated MMIO.
+During the period, 1 new issues were detected and 1 were fixed.
+In total, 8 issues are still open and 67 have already been fixed.
 
-Skip the "memslot not private" test entirely, as private vs. shared state
-for x86 software-protected VMs comes from the memory attributes themselves,
-and so when doing in-place conversions there can never be a disconnect
-between the expected and actual states.
+Some of the still happening issues:
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Ref Crashes Repro Title
+<1> 98      Yes   WARNING in __kvm_gpc_refresh (3)
+                  https://syzkaller.appspot.com/bug?extid=cde12433b6c56f55d9ed
+<2> 22      Yes   INFO: task hung in kvm_swap_active_memslots (2)
+                  https://syzkaller.appspot.com/bug?extid=5c566b850d6ab6f0427a
+<3> 4       Yes   WARNING in virtio_transport_send_pkt_info (2)
+                  https://syzkaller.appspot.com/bug?extid=28e5f3d207b14bae122a
+
 ---
- .../selftests/kvm/x86/private_mem_kvm_exits_test.c | 36 ++++++++++++++++++----
- 1 file changed, 30 insertions(+), 6 deletions(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-index 10db9fe6d9063..70ed16066c63e 100644
---- a/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-+++ b/tools/testing/selftests/kvm/x86/private_mem_kvm_exits_test.c
-@@ -62,8 +62,9 @@ static void test_private_access_memslot_deleted(void)
- 
- 	virt_map(vm, EXITS_TEST_GVA, EXITS_TEST_GPA, EXITS_TEST_NPAGES);
- 
--	/* Request to access page privately */
--	vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
-+	/* Request to access page privately. */
-+	if (!kvm_has_gmem_attributes)
-+		vm_mem_set_private(vm, EXITS_TEST_GPA, EXITS_TEST_SIZE);
- 
- 	pthread_create(&vm_thread, NULL,
- 		       (void *(*)(void *))run_vcpu_get_exit_reason,
-@@ -74,10 +75,26 @@ static void test_private_access_memslot_deleted(void)
- 	pthread_join(vm_thread, &thread_return);
- 	exit_reason = (u32)(u64)thread_return;
- 
--	TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
--	TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
-+	/*
-+	 * If attributes are tracked per-gmem, deleting the memslot that points
-+	 * at the gmem instance effectively makes the memory shared, and so the
-+	 * read should trigger emulated MMIO.
-+	 *
-+	 * If attributes are tracked per-VM, deleting the memslot shouldn't
-+	 * affect the private attribute, and so KVM should generate a memory
-+	 * fault exit (emulated MMIO on private GPAs is disallowed).
-+	 */
-+	if (kvm_has_gmem_attributes) {
-+		TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MMIO);
-+		TEST_ASSERT_EQ(vcpu->run->mmio.phys_addr, EXITS_TEST_GPA);
-+		TEST_ASSERT_EQ(vcpu->run->mmio.len, sizeof(u64));
-+		TEST_ASSERT_EQ(vcpu->run->mmio.is_write, false);
-+	} else {
-+		TEST_ASSERT_EQ(exit_reason, KVM_EXIT_MEMORY_FAULT);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.flags, KVM_MEMORY_EXIT_FLAG_PRIVATE);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.gpa, EXITS_TEST_GPA);
-+		TEST_ASSERT_EQ(vcpu->run->memory_fault.size, EXITS_TEST_SIZE);
-+	}
- 
- 	kvm_vm_free(vm);
- }
-@@ -88,6 +105,13 @@ static void test_private_access_memslot_not_private(void)
- 	struct kvm_vcpu *vcpu;
- 	u32 exit_reason;
- 
-+	/*
-+	 * Accessing non-private memory as private with a software-protected VM
-+	 * isn't possible when doing in-place conversions.
-+	 */
-+	if (kvm_has_gmem_attributes)
-+		return;
-+
- 	vm = vm_create_shape_with_one_vcpu(protected_vm_shape, &vcpu,
- 					   guest_repeatedly_read);
- 
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
--- 
-2.54.0.563.g4f69b47b94-goog
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
 
-
+You may send multiple commands in a single email message.
