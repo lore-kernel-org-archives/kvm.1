@@ -1,72 +1,71 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 272183BF685;
-	Thu,  7 May 2026 09:42:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9C438C2A5;
+	Thu,  7 May 2026 09:56:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778146978; cv=none; b=qoFXFghZi767juSyWK/VRVv2ksxWk4YQvrM+lJHVyUNGNq8z8DNGw3dc0p5YTn7ws8X02qqrvSUSYqfF9jHknegZ1HlGLqbh748XQwVu8Y1UK81BwqZOF23XTcpj292ZzmV172dgS2THT2LTeSpO080f0jyHeRMKPmcj3Z4hIC4=
+	t=1778147805; cv=none; b=mLZDyrxL7fVgzVmqSo9NAnPKMfQoeu3IFcDeX/ojZr2BSs0rTgN0ufAl8WLvJ+V/DPI8TyNl/inuiNoVHpmf6vTopS3vh4pDrcPBhPt+v2R9WGkSTBdFytZ+f4klMr5FaortXQoklKaddhh3gxZpKvbWqpQYcT9hml75/6xZZ8o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778146978; c=relaxed/simple;
-	bh=lvemOzgsIa001Fj90DJ4Q+Ij0txyPCE+8ajbsSMEXKE=;
+	s=arc-20240116; t=1778147805; c=relaxed/simple;
+	bh=eytBW7NjhWUeKGUKQUFPt9kMyH+xFSA3S79f+YSMQVA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G5I8tcpdhjsdqr2o4909ZD2MGZyJxK6TEa0TC9UCG1Amu5NuwcYxEvWX9SJP6GvbR7QTrT/3n44yo4N2JopXbVrx5gUiliT4vcRQK0N7rwNNcZ/AmhVQa6fJFi9+BySq/HLCYb7T1t1B71W+AD7Gq99P6MKETjkXjyaXXhSgiyY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=r8FD/V6V; arc=none smtp.client-ip=148.163.156.1
+	 Content-Type:Content-Disposition:In-Reply-To; b=MZsXBbOWujPUe9wEqS5hTszS7QeGfeMTYh9r7x6U6goSeuXvKfZb7dBtrqjxXSBotiJSTlKq6FzlMipIDUKIBIOvX77OoO+fitXVQuGcXofERpEmFbpiHPBC7ZPNNvpdxDhBWPfltkQN1htqW2Oyn4FsH1lM/rN92D0ou+nQO9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=mRgBPYZb; arc=none smtp.client-ip=148.163.158.5
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="r8FD/V6V"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6476PYjw1080687;
-	Thu, 7 May 2026 09:42:45 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="mRgBPYZb"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6471MWHB3769724;
+	Thu, 7 May 2026 09:56:36 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=x5m3WN724+RqKd+lGU04+qy9CZXUZk
-	eD4mn6hrB/xws=; b=r8FD/V6VPYj+ZbGYUa/VJT0phU/QO+kGzfbtIKIHmK0i8v
-	dkF+J28nB4Imdi+acuRa7j+9HKWhQtXe7kw+SE8rvA7nQlXMWaffWVLtuHGUhtgY
-	JqIOfb/SR2+G9nZrezxnDKDU1byDxdTOAWiWqEOfxhmzN68B2pvc2ptehrcm2/nI
-	qKStASGJHfZC2tcvx1Z3flQC0rdelO+yfsA0SKUgFbK7ACPvabrljzL4ISH0NAHh
-	maaCz6vOAFJkwvu3aDvcpst+CqmV8EXs5iuXz6HRKUpRm71Xn/InuwxfWFDsJGXq
-	ZzrTI3K57eRvN+DOnfdG6N5f1idecvBvMcuQAPUg==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9y1ncyr-1
+	:references:subject:to; s=pp1; bh=HkcWEmsEog+yppjNnjBNziioU4qu6l
+	6bl+RSsad7Tsw=; b=mRgBPYZbAryZvFum5/MJvIPmmdsgCmonkXkOVTHVDnxTgP
+	kYFM25zAcaAyBvV3J74YZ4zQCsWs8DOEGooBZPyu+/KBvFvzmC/+hlZpuoh7qWUo
+	FuPczCtATTzXk/7l138ZxbXFoYI8o+N+z0eeKJ5uZ6IwiJlUzcqhMS7ZjiUmmNmU
+	Os3Q5mFgyI+RhG55dhdheGYV+RjG+MiowE9yzgqLK0Blr2mcETMgrIukG3yMu1yK
+	Mctl03bPBCcr1FHtaw86pOvaW/aAnOqfmrW0hLZd/kvi29oY/fLqX8rvmxnyB6Kq
+	G3CIYlaw2MUi3zFasqdc3klwh+cOMon/GQw91/nA==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9w6mga5-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 May 2026 09:42:44 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6479dXnK011903;
-	Thu, 7 May 2026 09:42:43 GMT
+	Thu, 07 May 2026 09:56:36 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6479scY6020515;
+	Thu, 7 May 2026 09:56:35 GMT
 Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dwvkk2g43-1
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dwuywam4s-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 May 2026 09:42:43 +0000 (GMT)
+	Thu, 07 May 2026 09:56:35 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6479gdON46137600
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6479uW8T47382798
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 7 May 2026 09:42:39 GMT
+	Thu, 7 May 2026 09:56:32 GMT
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B09AE20049;
-	Thu,  7 May 2026 09:42:39 +0000 (GMT)
+	by IMSVA (Postfix) with ESMTP id EEFE22004D;
+	Thu,  7 May 2026 09:56:31 +0000 (GMT)
 Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D3CC52004B;
-	Thu,  7 May 2026 09:42:37 +0000 (GMT)
-Received: from Amits-MacBook-Pro.local (unknown [9.123.0.51])
+	by IMSVA (Postfix) with ESMTP id BBEC62004B;
+	Thu,  7 May 2026 09:56:31 +0000 (GMT)
+Received: from osiris (unknown [9.52.214.206])
 	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu,  7 May 2026 09:42:37 +0000 (GMT)
-Date: Thu, 7 May 2026 15:12:29 +0530
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: Gautam Menghani <Gautam.Menghani@ibm.com>
-Cc: maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au,
-        chleroy@kernel.org, Gautam Menghani <gautam@linux.ibm.com>,
-        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] KVM: PPC: Book3S HV: Add H_FAC_UNAVAIL mapping for
- tracing exits
-Message-ID: <20260507151014.fd9d5732-0f-amachhiw@linux.ibm.com>
-Mail-Followup-To: Gautam Menghani <Gautam.Menghani@ibm.com>, 
-	maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org, 
-	Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-References: <20260428084534.49781-1-Gautam.Menghani@ibm.com>
+	Thu,  7 May 2026 09:56:31 +0000 (GMT)
+Date: Thu, 7 May 2026 11:56:30 +0200
+From: Heiko Carstens <hca@linux.ibm.com>
+To: Douglas Freimuth <freimuth@linux.ibm.com>
+Cc: borntraeger@linux.ibm.com, imbrenda@linux.ibm.com, frankja@linux.ibm.com,
+        david@kernel.org, gor@linux.ibm.com, agordeev@linux.ibm.com,
+        svens@linux.ibm.com, kvm@vger.kernel.org, linux-s390@vger.kernel.org,
+        linux-kernel@vger.kernel.org, mjrosato@linux.ibm.com
+Subject: Re: [PATCH v5 3/4] KVM: s390: Change the fi->lock to a raw_spinlock
+ for RT case
+Message-ID: <20260507095630.10395Aa0-hca@linux.ibm.com>
+References: <20260505173728.160562-1-freimuth@linux.ibm.com>
+ <20260505173728.160562-4-freimuth@linux.ibm.com>
+ <20260506045734.11230A02-hca@linux.ibm.com>
+ <d39c54bc-1984-490c-9457-5eff63edef56@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -75,69 +74,76 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260428084534.49781-1-Gautam.Menghani@ibm.com>
+In-Reply-To: <d39c54bc-1984-490c-9457-5eff63edef56@linux.ibm.com>
 X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: qfhrqgSmrrHrScBwDerdck2nYq4gJjZ5
-X-Proofpoint-GUID: sVVasQizeNerxqEtffzvIBTvmBulpV0_
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA3MDA5NSBTYWx0ZWRfX00RDdEL7wK9t
- FJa5WH4UpnBJuCSw4CTYinqo3QDyfYyPGWO4Tu/RA6bzj1u1BGr/J3IB+AXBUfZ8p+Bx80UMn+9
- gwEpjDTSvkAKUjeCd+BnHWhKy3EcUCIJnW5jiktafQYaJ89rpsSOd2pg4yl+XjaRyQiHp1yJvSR
- DY1/Bb/wOryI+9FCLa4B3kIT5DZm0l/I7eU4Ti0TAXsyXa8oz9t5Ma2zJ0pt1CYgoESmt5a4CTs
- 0vu5zck44vPpvFOHJBD+i6ZphNphusigaAgJGNresoPtLeNZ5JIgfWlbfmrKtgqPjdVqvIG08ju
- Qo36M6woPz2C42RHLsEVnUFpS1aWiT2Kw106XKqjo2rSJLdccNhdnkByw1YVBMD/AMiwACD7RkB
- 1XdHffdSH/rkHG9z3L1LtJxEM/xnPo8FCTTcHKZXtI8WYie9BQ9UPaRGAVbk/YcPK2BerccFkZ2
- W7/0toV9lKjfVTuopig==
-X-Authority-Analysis: v=2.4 cv=UbFhjqSN c=1 sm=1 tr=0 ts=69fc5e95 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+X-Authority-Analysis: v=2.4 cv=XPQAjwhE c=1 sm=1 tr=0 ts=69fc61d4 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
  a=kj9zAlcOel0A:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=sf-K9OUI_O-0kvPjvxEA:9 a=CjuIK1q_8ugA:10
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8
+ a=VKRDzwYnuGaEOsRBYKYA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: Mv9KWwsjjxuWgf98I6VMkJbZEt_36PGY
+X-Proofpoint-GUID: Mv9KWwsjjxuWgf98I6VMkJbZEt_36PGY
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA3MDA5NSBTYWx0ZWRfX7g8MU1rpJDhy
+ XCv10zWRVPgwGioa1TZTUt7YglOIbpAOLasrvSxfB0rbd7nAV4mjfd8DiQJe9iikic//TZZrNcw
+ EM8XXucV0uXcP2ZNhTOc4oHLpiy43RbxV3xDYnUln8PapGii+oMuY1BuNlqBp3TfimIdO3+dNDv
+ jptkxoA/ITRyW7wOvNpjH/0VFozgH42cAr7DPwJaGBDSe7/9h83OuDdbTVrVmWxNF5g2fm2KkkX
+ X2dGUNhCuj7KeD2rIDmBhf5RUoTMnunpBAwWYZj6WuLMRerYbyeAXs6CbrvtrEXO6JUfM9pT33R
+ nsDKVnpoTyHCrFRvvZiC5U6mGcNcHbJvCKrqOS3UVRKdr/l7W7o2+S/74llgwsTyynmmUHljf7n
+ GeoPAeMMLR+klWGM1eGwgaSXr+i1C7+Byc+fXD2jIG5+f6yOLrAsgpBs8ojH2QxNanscKuSiXD6
+ lren/2g5tbbxGTowl0Q==
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-06_02,2026-05-06_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=0
- adultscore=0 priorityscore=1501 bulkscore=0 phishscore=0 impostorscore=0
+ bulkscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0 spamscore=0
+ priorityscore=1501 impostorscore=0 phishscore=0 malwarescore=0 clxscore=1015
  classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
  reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605070095
 
-On 2026/04/28 02:15 PM, Gautam Menghani wrote:
-> From: Gautam Menghani <gautam@linux.ibm.com>
+On Wed, May 06, 2026 at 10:50:52AM -0400, Douglas Freimuth wrote:
+> On 5/6/26 12:57 AM, Heiko Carstens wrote:
+> > On Tue, May 05, 2026 at 07:37:27PM +0200, Douglas Freimuth wrote:
+> > > s390 needs to maintain support for an RT kernel. This requires the
+> > > floating interrupt lock, fi->lock to be changed to a raw spin lock
+> > > since the fi->lock maybe called with interrupts disabled in __inject_io.
+> > > 
+> > > Signed-off-by: Douglas Freimuth <freimuth@linux.ibm.com>
+> > > ---
+> > >   arch/s390/include/asm/kvm_host.h |  2 +-
+> > >   arch/s390/kvm/intercept.c        |  4 +-
+> > >   arch/s390/kvm/interrupt.c        | 68 ++++++++++++++++----------------
+> > >   arch/s390/kvm/kvm-s390.c         |  2 +-
+> > >   4 files changed, 38 insertions(+), 38 deletions(-)
+> > 
+> > s390 does not support RT, but I guess you are referring to a lockdep splat
+> > which you would see without doing this change, similar like we have seen at
+> > other places.
+> > 
+> > Can you include the relevant parts of the splat for reference, please?
 > 
-> The macro kvm_trace_symbol_exit is used for providing the mappings
-> for the trap vectors and their names. Add mapping for H_FAC_UNAVAIL so that
-> trap reason is displayed as string instead of a vector number when using
-> the kvm_guest_exit tracepoint.
-> 
-> Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-> ---
-> v2:
-> 1. Remove the trailing comma after last element
-> 
->  arch/powerpc/kvm/trace_book3s.h | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/powerpc/kvm/trace_book3s.h b/arch/powerpc/kvm/trace_book3s.h
-> index 9260ddbd557f..5d272c115331 100644
-> --- a/arch/powerpc/kvm/trace_book3s.h
-> +++ b/arch/powerpc/kvm/trace_book3s.h
-> @@ -28,6 +28,7 @@
->  	{0xea0, "H_VIRT"}, \
->  	{0xf00, "PERFMON"}, \
->  	{0xf20, "ALTIVEC"}, \
-> -	{0xf40, "VSX"}
-> +	{0xf40, "VSX"}, \
-> +	{0xf80, "H_FAC_UNAVAIL"}
+> Heiko, thank you for you response. I dont recall trapping it with lockdep
+> (while it was on) but discussion on the mailing list in an earlier version
+> made us look closer (and we saw it across the AI models that reviewed the
+> patch.) It appears that while RT isn't supported it can still be compiled in
+> to the kernel so we wanted to mitigate the issues we would add to if someone
+> does that while not impacting non-RT environments, the main use case.
 
-While we are at it, should we also consider adding 0xf60 for Facility
-Unavailable? Anyways, LGTM.
+RT support cannot be compiled in for s390, because of the missing
+"select ARCH_SUPPORTS_RT", however you can still enable lockdep checks
+for raw_spinlock vs spinlock nesting, which this seems to appear about?
 
-Reviewed-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+See PROVE_RAW_LOCK_NESTING config option for a more detailed description.
 
->  
->  #endif
-> -- 
-> 2.52.0
-> 
-> 
+Therefore my question about a lockdep splat. However I don't see why
+using spin_lock() instead of raw_spin_lock() alone in irq disabled
+context could be problematic. On the other hand this patch does
+introduce a
+
+      raw_spin_lock();
+      spin_lock();
+      spin_unlock();
+      raw_spin_unlock();
+
+sequence in __deliver_machine_check() which seems to be incorrect and
+indeed should generate a lockdep splat iff PROVE_RAW_LOCK_NESTING is
+enabled.
