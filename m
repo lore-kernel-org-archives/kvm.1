@@ -1,50 +1,35 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBDA930E85B;
-	Thu,  7 May 2026 06:27:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1EE32AABC;
+	Thu,  7 May 2026 06:32:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778135270; cv=none; b=KGyoJche2GnkP7CD8kZOayHtizHEFkQT8lWK3zAGqacsWeYqFUXFUayhnnhJnvGPhnwepPPBup3nrI6cq1a0xG361I2MpUCeeTL+W4m1vQweUGcVZKZNCHEWaVPiKgm0e5MqMVSXZzMyiq0zDcgP2rmJSljERfXETk2qROdHrMw=
+	t=1778135560; cv=none; b=f20tW6F4C1zJVeFkg/HBSvXaTwkXd3mIICdJdjZPlI4pGtC/3gkb+MTO3Br4AEy3JaeRXzLiGK73X6deQrN4Z4mhlDqOUP6x6DOehuLA8HE5x/4VrYEaKJboVI0r1qS9ugopwHYx4lviyvJxeffMIxCjRXN/kMIAz7Kw0Zwc7Hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778135270; c=relaxed/simple;
-	bh=jsK1+WQR+y8Tums9Dnu1Xu68OGjHIVSzr1Ob4kW6t10=;
+	s=arc-20240116; t=1778135560; c=relaxed/simple;
+	bh=Ti8yEkrhkt81vSIOjm0xwK4bAht5BORVIbZaPrf40m0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=JaPtfy7LIL+8vyFCLi8oX7GUzhrJdbmQmYma7pnujRLd7yclgpsnLjpSUlYkQfI47UDvnRK90ysQtp5YgxGgSeDm2TZR0gf/spu/WHoZMgQ8bgzXLUR+9CDIGB4aF3i49xr3bM+dFB9OeSSHLXxT+xzRJTw5UGVQaAdQ8ifcjEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ANOf02e2; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 In-Reply-To:Content-Type; b=dfOttXtJAYrVM60PnCXeA+eLGR6F1IT/rlq/E9f6FEWj1Kz7ymi2YEzZG7GdwdpSTeK8xV7OxnIZh5URBHTE+l0WkLWwYqYlScNbCTVxjYFz4sG+mz2blMVBjT3SrqAVzMPYd4a4hdntlCGqjNcRNiSJiSv36Xt+9opURKpsqiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=Uv+XNuwt; arc=none smtp.client-ip=129.217.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ANOf02e2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778135268; x=1809671268;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=jsK1+WQR+y8Tums9Dnu1Xu68OGjHIVSzr1Ob4kW6t10=;
-  b=ANOf02e2IAQG5U1ZrjiD4MKrmYJX+LYPVHvgxdnGdq61gCbVyrIiJlKk
-   KAAxh0YqkUyrZqLwe07gZJ96nnbz7EayELEw58vxORlfEBdY5xsd9d65W
-   0Kx6FYaGK+V8OZsZf2FNQRb850GHFDJogv/iVJyG56YeHoJXJOTqqw9oz
-   26eUvHEA/UVqJ4d8RrWC+r+xJXu5xgI3pgoDSAB7GsrRlZCUZVuMaYVHv
-   e0zouP4Ou41bOSh5TGbxiNvyi4R67ilekmD5WQh0c8VZtvkSFs2jHNuTX
-   ElfOzlujhXINwcYWlLbL7poZE2XhXsZUnME3l5f+bn8Dy4xb7FYZyf52o
-   w==;
-X-CSE-ConnectionGUID: F/T9y1QeTIyRK2Up+lFIRQ==
-X-CSE-MsgGUID: yNeJ7bSBQEWH89ionb2dyg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11778"; a="78226944"
-X-IronPort-AV: E=Sophos;i="6.23,220,1770624000"; 
-   d="scan'208";a="78226944"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 23:27:47 -0700
-X-CSE-ConnectionGUID: L354GLKRT+Cqj+dUY1ZcRA==
-X-CSE-MsgGUID: 2+lg5jHFQeunREI44Sxmkw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,220,1770624000"; 
-   d="scan'208";a="231998408"
-Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 May 2026 23:27:42 -0700
-Message-ID: <a968550d-2cab-47fd-8639-a8747a8a7535@linux.intel.com>
-Date: Thu, 7 May 2026 14:25:14 +0800
+	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="Uv+XNuwt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
+	s=unimail; t=1778135549;
+	bh=Ti8yEkrhkt81vSIOjm0xwK4bAht5BORVIbZaPrf40m0=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=Uv+XNuwtbUeMpiL0iHzDpIOLs6uQ1lSmFxXTFym1g6jJa9dxfubuQC2Rfej538INX
+	 kU/U2fgNiIlCC9C3Wl4vSim/gIANmqOxIVSsEfoeUqKlFIZJ0WeL6xTSKf5e6VoYCv
+	 iRZdCi0CHu2UUHgiai3JyDMZXdGrpyvSzWZDnQDA=
+Received: from [129.217.186.46] ([129.217.186.46])
+	(authenticated bits=0)
+	by unimail.uni-dortmund.de (8.19.0.1/8.19.0.1) with ESMTPSA id 6476WSQi019222
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 7 May 2026 08:32:28 +0200 (CEST)
+Message-ID: <c9fc9e0a-0837-49b4-91b9-4adb54c1a037@tu-dortmund.de>
+Date: Thu, 7 May 2026 08:32:28 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,520 +37,178 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 07/16] iommu/vt-d: Implement device and iommu
- preserve/unpreserve ops
-To: Samiullah Khawaja <skhawaja@google.com>,
- David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>,
- Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
- Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
- iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Saeed Mahameed <saeedm@nvidia.com>,
- Adithya Jayachandran <ajayachandra@nvidia.com>,
- Parav Pandit <parav@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>,
- William Tu <witu@nvidia.com>, Pratyush Yadav <pratyush@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- David Matlack <dmatlack@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>,
- YiFei Zhu <zhuyifei@google.com>
-References: <20260427175633.1978233-1-skhawaja@google.com>
- <20260427175633.1978233-8-skhawaja@google.com>
+Subject: Re: [PATCH net-next v10 4/4] tun/tap & vhost-net: avoid ptr_ring
+ tail-drop when a qdisc is present
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
+        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, eperezma@redhat.com,
+        leiyang@redhat.com, stephen@networkplumber.org, jon@nutanix.com,
+        tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        virtualization@lists.linux.dev
+References: <20260506141033.180450-1-simon.schippers@tu-dortmund.de>
+ <20260506141033.180450-5-simon.schippers@tu-dortmund.de>
+ <20260506181909-mutt-send-email-mst@kernel.org>
+ <20260506185515-mutt-send-email-mst@kernel.org>
 Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <20260427175633.1978233-8-skhawaja@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+From: Simon Schippers <simon.schippers@tu-dortmund.de>
+In-Reply-To: <20260506185515-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 4/28/26 01:56, Samiullah Khawaja wrote:
-> Add implementation of the device and iommu presevation in a separate
-> file. Also set the device and iommu preserve/unpreserve ops in the
-> struct iommu_ops.
+On 5/7/26 00:56, Michael S. Tsirkin wrote:
+> On Wed, May 06, 2026 at 06:28:06PM -0400, Michael S. Tsirkin wrote:
+>> On Wed, May 06, 2026 at 04:10:33PM +0200, Simon Schippers wrote:
+>>> This commit prevents tail-drop when a qdisc is present and the ptr_ring
+>>> becomes full. Once an entry is successfully produced and the ptr_ring
+>>> reaches capacity, the netdev queue is stopped instead of dropping
+>>> subsequent packets. If no qdisc is present, the previous tail-drop
+>>> behavior is preserved.
+>>>
+>>> If producing an entry fails anyways due to a race, tun_net_xmit() drops
+>>> the packet. Such races are expected because LLTX is enabled and the
+>>> transmit path operates without the usual locking.
+>>>
+>>> The __tun_wake_queue() function of the consumer races with the producer
+>>> for waking/stopping the netdev queue, which could result in a stalled
+>>> queue. Therefore, an smp_mb__after_atomic() is introduced that pairs
+>>> with the smp_mb() of the consumer. It follows the principle of store
+>>> buffering described in tools/memory-model/Documentation/recipes.txt:
+>>>
+>>> - The producer in tun_net_xmit() first sets __QUEUE_STATE_DRV_XOFF,
+>>>   followed by an smp_mb__after_atomic() (= smp_mb()), and then reads the
+>>>   ring with __ptr_ring_produce_peek().
+>>>
+>>> - The consumer in __tun_wake_queue() first writes zero to the ring in
+>>>   __ptr_ring_consume(), followed by an smp_mb(), and then reads the queue
+>>>   status with netif_tx_queue_stopped().
+>>>
+>>> => Following the aforementioned principle, it is impossible for the
+>>>    producer to see a full ring (and therefore not wake the queue on the
+>>>    re-check) while the consumer simultaneously fails to see a stopped
+>>>    queue (and therefore also does not wake it).
+>>>
+>>> Benchmarks:
+>>> The benchmarks show a slight regression in raw transmission performance
+>>> when using two sending threads. Packet loss also occurs only in the
+>>> two-thread sending case; no packet loss was observed with a single
+>>> sending thread.
+>>>
+>>> Test setup:
+>>> AMD Ryzen 5 5600X at 4.3 GHz, 3200 MHz RAM, isolated QEMU threads;
+>>> Average over 50 runs @ 100,000,000 packets. SRSO and spectre v2
+>>> mitigations disabled.
+>>>
+>>> Note for tap+vhost-net:
+>>> XDP drop program active in VM -> ~2.5x faster; slower for tap due to
+>>> more syscalls (high utilization of entry_SYSRETQ_unsafe_stack in perf)
+>>>
+>>> +--------------------------+--------------+----------------+----------+
+>>> | 1 thread                 | Stock        | Patched with   | diff     |
+>>> | sending                  |              | fq_codel qdisc |          |
+>>> +------------+-------------+--------------+----------------+----------+
+>>> | TAP        | Received    | 1.132 Mpps   | 1.133 Mpps     | +0.1%    |
+>>> |            +-------------+--------------+----------------+----------+
+>>> |            | Lost/s      | 3.765 Mpps   | 0 pps          |          |
+>>> +------------+-------------+--------------+----------------+----------+
+>>> | TAP        | Received    | 3.857 Mpps   | 3.905 Mpps     | +1.2%    |
+>>> |            +-------------+--------------+----------------+----------+
+>>> | +vhost-net | Lost/s      | 0.802 Mpps   | 0 pps          |          |
+>>> +------------+-------------+--------------+----------------+----------+
+>>>
+>>> +--------------------------+--------------+----------------+----------+
+>>> | 2 threads                | Stock        | Patched with   | diff     |
+>>> | sending                  |              | fq_codel qdisc |          |
+>>> +------------+-------------+--------------+----------------+----------+
+>>> | TAP        | Received    | 1.115 Mpps   | 1.092 Mpps     | -2.1%    |
+>>> |            +-------------+--------------+----------------+----------+
+>>> |            | Lost/s      | 8.490 Mpps   | 359 pps        |          |
+>>> +------------+-------------+--------------+----------------+----------+
+>>> | TAP        | Received    | 3.664 Mpps   | 3.549 Mpps     | -3.1%    |
+>>> |            +-------------+--------------+----------------+----------+
+>>> | +vhost-net | Lost/s      | 5.330 Mpps   | 832 pps        |          |
+>>> +------------+-------------+--------------+----------------+----------+
+>>>
+>>> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+>>> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+>>> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
+>>> ---
+>>>  drivers/net/tun.c | 25 +++++++++++++++++++++++--
+>>>  1 file changed, 23 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+>>> index fc358c4c355b..d9ffbf88cfd8 100644
+>>> --- a/drivers/net/tun.c
+>>> +++ b/drivers/net/tun.c
+>>> @@ -1018,6 +1018,7 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
+>>>  	struct netdev_queue *queue;
+>>>  	struct tun_file *tfile;
+>>>  	int len = skb->len;
+>>> +	int ret;
+>>>  
+>>>  	rcu_read_lock();
+>>>  	tfile = rcu_dereference(tun->tfiles[txq]);
+>>> @@ -1072,13 +1073,33 @@ static netdev_tx_t tun_net_xmit(struct sk_buff *skb, struct net_device *dev)
+>>>  
+>>>  	nf_reset_ct(skb);
+>>>  
+>>> -	if (ptr_ring_produce(&tfile->tx_ring, skb)) {
+>>> +	queue = netdev_get_tx_queue(dev, txq);
+>>> +
+>>> +	spin_lock(&tfile->tx_ring.producer_lock);
+>>> +	ret = __ptr_ring_produce(&tfile->tx_ring, skb);
+>>> +	if (!qdisc_txq_has_no_queue(queue) &&
+>>> +	    (__ptr_ring_produce_peek(&tfile->tx_ring) || ret)) {
+>>> +		netif_tx_stop_queue(queue);
+>>> +		/* Paired with smp_mb() in __tun_wake_queue() */
+>>> +		smp_mb__after_atomic();
+>>> +		if (!__ptr_ring_produce_peek(&tfile->tx_ring))
+>>> +			netif_tx_wake_queue(queue);
+>>> +	}
+>>> +	spin_unlock(&tfile->tx_ring.producer_lock);
+>>> +
+>>
+>> There's a weird corner case here when tx_queue_len is 0
+>> but a qdisc has been configured - it looks like that
+>> currently it just drops all packets, with this change,
+>> the qdisc will get stuck permanently.
+>>
+>> I suspect just checking tx_ring.size should fix it.
+>> Or if you feel adventurous, change return code for __ptr_ring_produce
+>> to distinguish between "no ring" and "no space".
 > 
-> During normal shutdown the iommu translation is disabled. Since the root
-> table is preserved during live update, it needs to be cleaned up and the
-> context entries of the unpreserved devices need to be cleared.
+> 
+> __ptr_ring_produce_peek really.
+> 
 
-This is not related to preserve/unpreserve ops and could be made in a
-separated patch?
+Yes, I like the approach of returning this from
+__ptr_ring_produce_peek(). Then I will do a switch on the return value
+in tun_net_xmit().
+
+Additionally, I should wake up in tun_queue_resize() after calling
+ptr_ring_resize_multiple_bh(). For a new dev->tx_queue_len > 0, it
+should be fine without waking, but for 0 it is not.
 
 > 
-> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-> ---
->   MAINTAINERS                      |   1 +
->   drivers/iommu/intel/Makefile     |   1 +
->   drivers/iommu/intel/iommu.c      |  52 +++++++++++-
->   drivers/iommu/intel/iommu.h      |  28 +++++++
->   drivers/iommu/intel/liveupdate.c | 139 +++++++++++++++++++++++++++++++
->   drivers/iommu/iommu.c            |  18 ++++
->   include/linux/iommu-liveupdate.h |  10 +++
->   include/linux/iommu.h            |  14 ++++
->   include/linux/kho/abi/iommu.h    |  18 ++++
->   9 files changed, 277 insertions(+), 4 deletions(-)
->   create mode 100644 drivers/iommu/intel/liveupdate.c
+>>
+>>> +	if (ret) {
+>>> +		/* This should be a rare case if a qdisc is present, but
+>>> +		 * can happen due to lltx.
+>>> +		 * Since skb_tx_timestamp(), skb_orphan(),
+>>> +		 * run_ebpf_filter() and pskb_trim() could have tinkered
+>>> +		 * with the SKB, returning NETDEV_TX_BUSY is unsafe and
+>>> +		 * we must drop instead.
+>>> +		 */
+>>>  		drop_reason = SKB_DROP_REASON_FULL_RING;
+>>>  		goto drop;
+>>>  	}
+>>>  
+>>>  	/* dev->lltx requires to do our own update of trans_start */
+>>> -	queue = netdev_get_tx_queue(dev, txq);
+>>>  	txq_trans_cond_update(queue);
+>>>  
+>>>  	/* Notify and wake up reader process */
+>>> -- 
+>>> 2.43.0
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 980041955abc..9f5c02c6c8c1 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -13495,6 +13495,7 @@ M:	Samiullah Khawaja <skhawaja@google.com>
->   R:	Pranjal Shrivastava <praan@google.com>
->   L:	iommu@lists.linux.dev
->   S:	Maintained
-> +F:	drivers/iommu/intel/liveupdate.c
-
-This file is deeply integrated into the Intel IOMMU driver. Maintaining
-it separately from the rest of the driver would add unnecessary
-complexity. I suggest merging this entry into the existing Intel IOMMU
-block so they can be managed together.
-
->   F:	drivers/iommu/liveupdate.c
->   F:	include/linux/iommu-liveupdate.h
->   F:	include/linux/kho/abi/iommu.h
-> diff --git a/drivers/iommu/intel/Makefile b/drivers/iommu/intel/Makefile
-> index ada651c4a01b..d38fc101bc35 100644
-> --- a/drivers/iommu/intel/Makefile
-> +++ b/drivers/iommu/intel/Makefile
-> @@ -6,3 +6,4 @@ obj-$(CONFIG_INTEL_IOMMU_DEBUGFS) += debugfs.o
->   obj-$(CONFIG_INTEL_IOMMU_SVM) += svm.o
->   obj-$(CONFIG_IRQ_REMAP) += irq_remapping.o
->   obj-$(CONFIG_INTEL_IOMMU_PERF_EVENTS) += perfmon.o
-> +obj-$(CONFIG_IOMMU_LIVEUPDATE) += liveupdate.o
-> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
-> index c3d18cd77d2f..68fecd4e57fa 100644
-> --- a/drivers/iommu/intel/iommu.c
-> +++ b/drivers/iommu/intel/iommu.c
-> @@ -16,6 +16,7 @@
->   #include <linux/crash_dump.h>
->   #include <linux/dma-direct.h>
->   #include <linux/dmi.h>
-> +#include <linux/iommu-liveupdate.h>
->   #include <linux/memory.h>
->   #include <linux/pci.h>
->   #include <linux/pci-ats.h>
-> @@ -52,6 +53,8 @@ static int rwbf_quirk;
->   
->   #define rwbf_required(iommu)	(rwbf_quirk || cap_rwbf((iommu)->cap))
->   
-> +static void clear_unpreserved_context_entries(struct intel_iommu *iommu);
-> +
->   /*
->    * set to 1 to panic kernel if can't successfully enable VT-d
->    * (used when kernel is launched w/ TXT)
-> @@ -60,8 +63,6 @@ static int force_on = 0;
->   static int intel_iommu_tboot_noforce;
->   static int no_platform_optin;
->   
-> -#define ROOT_ENTRY_NR (VTD_PAGE_SIZE/sizeof(struct root_entry))
-> -
->   /*
->    * Take a root_entry and return the Lower Context Table Pointer (LCTP)
->    * if marked present.
-> @@ -2375,8 +2376,11 @@ void intel_iommu_shutdown(void)
->   		/* Disable PMRs explicitly here. */
->   		iommu_disable_protect_mem_regions(iommu);
->   
-> -		/* Make sure the IOMMUs are switched off */
-> -		iommu_disable_translation(iommu);
-> +		/* Make sure the IOMMUs are switched off if not preserved. */
-> +		if (iommu_preserved_state(&iommu->iommu))
-> +			clear_unpreserved_context_entries(iommu);
-> +		else
-> +			iommu_disable_translation(iommu);
->   	}
->   }
->   
-> @@ -2899,6 +2903,41 @@ static const struct iommu_dirty_ops intel_second_stage_dirty_ops = {
->   	.set_dirty_tracking = intel_iommu_set_dirty_tracking,
->   };
->   
-> +#ifdef CONFIG_IOMMU_LIVEUPDATE
-> +static int clear_unpreserve_context_entry_fn(struct device *dev,
-> +					     struct iommu_device *iommu,
-> +					     void *arg)
-> +{
-> +	struct device_domain_info *info;
-> +
-> +	info = dev_iommu_priv_get(dev);
-> +	if (!info)
-> +		return 0;
-> +
-> +	if (dev_is_pci(dev) && dev_iommu_preserved_state(dev))
-> +		return 0;
-> +
-> +	domain_context_clear(info);
-> +	return 0;
-> +}
-> +
-> +static void clear_unpreserved_context_entries(struct intel_iommu *iommu)
-> +{
-> +	struct iommu_dev_iter iter = {
-> +		.fn = clear_unpreserve_context_entry_fn,
-> +		.iommu = &iommu->iommu,
-> +		.arg = NULL,
-> +
-> +	};
-> +
-> +	iommu_for_each_dev(&iter);
-> +}
-> +#else
-> +static void clear_unpreserved_context_entries(struct intel_iommu *iommu)
-> +{
-> +}
-> +#endif
-> +
->   static struct iommu_domain *
->   intel_iommu_domain_alloc_second_stage(struct device *dev,
->   				      struct intel_iommu *iommu, u32 flags)
-> @@ -3926,6 +3965,11 @@ const struct iommu_ops intel_iommu_ops = {
->   	.is_attach_deferred	= intel_iommu_is_attach_deferred,
->   	.def_domain_type	= device_def_domain_type,
->   	.page_response		= intel_iommu_page_response,
-> +#ifdef CONFIG_IOMMU_LIVEUPDATE
-> +	.preserve_device	= intel_iommu_preserve_device,
-> +	.preserve		= intel_iommu_preserve,
-> +	.unpreserve		= intel_iommu_unpreserve,
-> +#endif
->   };
->   
->   static void quirk_iommu_igfx(struct pci_dev *dev)
-> diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
-> index ef145560aa98..5e0bc17e76bf 100644
-> --- a/drivers/iommu/intel/iommu.h
-> +++ b/drivers/iommu/intel/iommu.h
-> @@ -552,6 +552,8 @@ struct root_entry {
->   	u64     hi;
->   };
->   
-> +#define ROOT_ENTRY_NR (VTD_PAGE_SIZE / sizeof(struct root_entry))
-> +
->   /*
->    * low 64 bits:
->    * 0: present
-> @@ -1284,6 +1286,32 @@ static inline int iopf_for_domain_replace(struct iommu_domain *new,
->   	return 0;
->   }
->   
-> +#ifdef CONFIG_IOMMU_LIVEUPDATE
-> +int intel_iommu_preserve_device(struct device *dev,
-> +				struct iommu_device_ser *device_ser);
-> +int intel_iommu_preserve(struct iommu_device *iommu,
-> +			 struct iommu_hw_ser *iommu_ser);
-> +void intel_iommu_unpreserve(struct iommu_device *iommu,
-> +			    struct iommu_hw_ser *iommu_ser);
-> +#else
-> +static inline int intel_iommu_preserve_device(struct device *dev,
-> +					      struct iommu_device_ser *device_ser)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +
-> +static inline int intel_iommu_preserve(struct iommu_device *iommu,
-> +				       struct iommu_hw_ser *iommu_ser)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
-> +
-> +static inline void intel_iommu_unpreserve(struct iommu_device *iommu,
-> +					  struct iommu_hw_ser *iommu_ser)
-> +{
-> +}
-> +#endif
-> +
->   #ifdef CONFIG_INTEL_IOMMU_SVM
->   void intel_svm_check(struct intel_iommu *iommu);
->   struct iommu_domain *intel_svm_domain_alloc(struct device *dev,
-> diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/liveupdate.c
-> new file mode 100644
-> index 000000000000..75fa68b701bf
-> --- /dev/null
-> +++ b/drivers/iommu/intel/liveupdate.c
-> @@ -0,0 +1,139 @@
-> +// SPDX-License-Identifier: GPL-2.0-only
-> +
-> +/*
-> + * Copyright (C) 2026, Google LLC
-> + * Author: Samiullah Khawaja <skhawaja@google.com>
-> + */
-> +
-> +#define pr_fmt(fmt)    "DMAR: liveupdate: " fmt
-> +
-> +#include <linux/kexec_handover.h>
-> +#include <linux/liveupdate.h>
-> +#include <linux/iommu-liveupdate.h>
-> +#include <linux/module.h>
-> +#include <linux/pci.h>
-> +
-> +#include "iommu.h"
-> +#include "../iommu-pages.h"
-> +
-> +static void unpreserve_iommu_context_table(struct intel_iommu *iommu, int end)
-> +{
-> +	struct context_entry *context;
-> +	int i;
-> +
-> +	for (i = 0; i < end; i++) {
-> +		context = iommu_context_addr(iommu, i, 0, 0);
-> +		if (context)
-> +			iommu_unpreserve_page(context);
-> +
-> +		if (!sm_supported(iommu))
-> +			continue;
-> +
-> +		context = iommu_context_addr(iommu, i, 0x80, 0);
-> +		if (context)
-> +			iommu_unpreserve_page(context);
-> +	}
-> +}
-> +
-> +static int preserve_iommu_context_table(struct intel_iommu *iommu)
-
-Since this function preserves all context tables, should it be renamed
-to preserve_iommu_context_tables()?
-
-> +{
-> +	struct context_entry *context;
-> +	int ret;
-> +	int i;
-> +
-> +	for (i = 0; i < ROOT_ENTRY_NR; i++) {
-> +		/*
-> +		 * Alloc the context tables now to make sure the iommu unit is
-> +		 * properly preserved. These might stay unused and wastes around
-> +		 * 32MB max in scalable mode.
-> +		 */
-
-Instead of allocating and preserving context tables for all root entries
-(as noted, can waste up to 32MB), could we restrict this only to the
-entries possibly in use by active PCI devices?
-
-> +		spin_lock(&iommu->lock);
-> +		context = iommu_context_addr(iommu, i, 0, 1);
-> +		spin_unlock(&iommu->lock);
-> +		if (!context) {
-> +			ret = -ENOMEM;
-> +			goto error;
-> +		}
-> +		ret = iommu_preserve_page(context);
-> +		if (ret)
-> +			goto error;
-> +
-> +		if (!sm_supported(iommu))
-> +			continue;
-> +
-> +		spin_lock(&iommu->lock);
-> +		context = iommu_context_addr(iommu, i, 0x80, 1);
-> +		spin_unlock(&iommu->lock);
-> +		if (!context) {
-> +			ret = -ENOMEM;
-> +			goto error_sm;
-> +		}
-> +		ret = iommu_preserve_page(context);
-> +		if (ret)
-> +			goto error_sm;
-> +	}
-> +
-> +	return 0;
-> +
-> +error_sm:
-> +	context = iommu_context_addr(iommu, i, 0, 0);
-> +	iommu_unpreserve_page(context);
-> +error:
-> +	unpreserve_iommu_context_table(iommu, i);
-> +	return ret;
-> +}
-> +
-> +int intel_iommu_preserve_device(struct device *dev,
-> +				struct iommu_device_ser *device_ser)
-> +{
-> +	struct device_domain_info *info = dev_iommu_priv_get(dev);
-> +
-> +	if (!dev_is_pci(dev)) {
-> +		dev_err(dev, "Cannot preserve non-PCI device\n");
-> +		return -EOPNOTSUPP;
-> +	}
-> +
-> +	if (!info)
-> +		return -EINVAL;
-> +
-> +	device_ser->domain_iommu_ser.attachment_id = domain_id_iommu(info->domain,
-> +								     info->iommu);
-> +	return 0;
-> +}
-> +
-> +int intel_iommu_preserve(struct iommu_device *iommu_dev,
-> +			 struct iommu_hw_ser *ser)
-> +{
-> +	struct intel_iommu *iommu;
-> +	int ret;
-> +
-> +	iommu = container_of(iommu_dev, struct intel_iommu, iommu);
-> +
-> +	ret = preserve_iommu_context_table(iommu);
-> +	if (ret)
-> +		return ret;
-> +
-> +	ret = iommu_preserve_page(iommu->root_entry);
-> +	if (ret) {
-> +		unpreserve_iommu_context_table(iommu, ROOT_ENTRY_NR);
-> +		return ret;
-> +	}
-> +
-> +	ser->intel.phys_addr = iommu->reg_phys;
-> +	ser->intel.root_table = __pa(iommu->root_entry);
-> +	ser->type = IOMMU_INTEL;
-> +	ser->token = ser->intel.phys_addr;
-> +
-> +	return 0;
-> +}
-> +
-> +void intel_iommu_unpreserve(struct iommu_device *iommu_dev,
-> +			    struct iommu_hw_ser *iommu_ser)
-> +{
-> +	struct intel_iommu *iommu;
-> +
-> +	iommu = container_of(iommu_dev, struct intel_iommu, iommu);
-> +
-> +	unpreserve_iommu_context_table(iommu, ROOT_ENTRY_NR);
-> +	iommu_unpreserve_page(iommu->root_entry);
-> +}
-> diff --git a/drivers/iommu/iommu.c b/drivers/iommu/iommu.c
-> index 782e73a9d45f..0561990f46e3 100644
-> --- a/drivers/iommu/iommu.c
-> +++ b/drivers/iommu/iommu.c
-> @@ -307,6 +307,24 @@ void iommu_device_unregister(struct iommu_device *iommu)
->   }
->   EXPORT_SYMBOL_GPL(iommu_device_unregister);
->   
-> +static int _iommu_for_each_dev_cb(struct device *dev, void *data)
-> +{
-> +	struct iommu_dev_iter *iter = data;
-> +
-> +	if (dev->iommu && dev->iommu->iommu_dev == iter->iommu)
-> +		return iter->fn(dev, iter->iommu, iter->arg);
-> +
-> +	return 0;
-> +}
-> +
-> +void iommu_for_each_dev(struct iommu_dev_iter *iter)
-> +{
-> +	for (int i = 0; i < ARRAY_SIZE(iommu_buses); i++)
-> +		bus_for_each_dev(iommu_buses[i], NULL, iter,
-> +				 _iommu_for_each_dev_cb);
-> +}
-> +EXPORT_SYMBOL_GPL(iommu_for_each_dev);
-> +
->   #if IS_ENABLED(CONFIG_IOMMUFD_TEST)
->   void iommu_device_unregister_bus(struct iommu_device *iommu,
->   				 const struct bus_type *bus,
-> diff --git a/include/linux/iommu-liveupdate.h b/include/linux/iommu-liveupdate.h
-> index 279c7ab04f09..c9d75c6b3be9 100644
-> --- a/include/linux/iommu-liveupdate.h
-> +++ b/include/linux/iommu-liveupdate.h
-> @@ -33,6 +33,11 @@ void iommu_domain_unpreserve(struct iommu_domain *domain);
->   int iommu_preserve_device(struct iommu_domain *domain,
->   			  struct device *dev, u64 *preserved_state);
->   void iommu_unpreserve_device(struct iommu_domain *domain, struct device *dev);
-> +
-> +static inline void *iommu_preserved_state(struct iommu_device *iommu)
-> +{
-> +	return iommu->outgoing_preserved_state;
-> +}
->   #else
->   static inline void *dev_iommu_preserved_state(struct device *dev)
->   {
-> @@ -57,6 +62,11 @@ static inline int iommu_preserve_device(struct iommu_domain *domain,
->   static inline void iommu_unpreserve_device(struct iommu_domain *domain, struct device *dev)
->   {
->   }
-> +
-> +static inline void *iommu_preserved_state(struct iommu_device *iommu)
-> +{
-> +	return NULL;
-> +}
->   #endif
->   
->   int iommu_liveupdate_register_flb(struct liveupdate_file_handler *handler);
-> diff --git a/include/linux/iommu.h b/include/linux/iommu.h
-> index 1c424b32c5fc..999be5127c65 100644
-> --- a/include/linux/iommu.h
-> +++ b/include/linux/iommu.h
-> @@ -1207,6 +1207,20 @@ static inline void *dev_iommu_priv_get(struct device *dev)
->   
->   void dev_iommu_priv_set(struct device *dev, void *priv);
->   
-> +typedef int (*iommu_dev_iter_fn)(struct device *dev,
-> +				 struct iommu_device *iommu, void *arg);
-> +
-> +/**
-> + * struct iommu_dev_iter - Iterator for devices attached to an IOMMU
-> + */
-> +struct iommu_dev_iter {
-> +	struct iommu_device *iommu;
-> +	iommu_dev_iter_fn fn;
-> +	void *arg;
-> +};
-> +
-> +void iommu_for_each_dev(struct iommu_dev_iter *iter);
-
-Is a generic helper necessary here? I am concerned about potential races
-with concurrent operations especially probe_device or release_device.
-And also the hot-plug/unplug scenarios?
-
-Since the current preservation logic is limited to PCI devices, it might
-be safer and simpler to use the existing for_each_pci_dev() for this
-specific case instead of introducing a new generic helper?
-
-> +
->   extern struct mutex iommu_probe_device_lock;
->   int iommu_probe_device(struct device *dev);
->   
-> diff --git a/include/linux/kho/abi/iommu.h b/include/linux/kho/abi/iommu.h
-> index 37b967820f14..5ffedf0dbd5a 100644
-> --- a/include/linux/kho/abi/iommu.h
-> +++ b/include/linux/kho/abi/iommu.h
-> @@ -73,6 +73,7 @@
->   
->   enum iommu_type_ser {
->   	IOMMU_INVALID,
-> +	IOMMU_INTEL,
->   };
->   
->   /**
-> @@ -132,16 +133,33 @@ struct iommu_device_ser {
->   	struct iommu_dev_map_ser domain_iommu_ser;
->   } __packed;
->   
-> +/**
-> + * struct iommu_intel_ser - Serialized state of an Intel IOMMU instance
-> + * @restored: Whether IOMMU state is restored
-> + * @phys_addr: Physical address of the IOMMU register base
-> + * @root_table: Physical address of the root entry table
-> + */
-> +struct iommu_intel_ser {
-> +	u8 restored;
-> +	u8 padding[7];
-> +	u64 phys_addr;
-> +	u64 root_table;
-> +};
-> +
->   /**
->    * struct iommu_hw_ser - Serialized state of an IOMMU instance
->    * @hdr: Common object header
->    * @token: Unique token for the IOMMU
->    * @type: IOMMU type serialized state belongs to
-> + * @intel: Intel specific serialization data
->    */
->   struct iommu_hw_ser {
->   	struct iommu_hdr_ser hdr;
->   	u64 token;
->   	u64 type;
-> +	union {
-> +		struct iommu_intel_ser intel;
-> +	};
->   } __packed;
->   
->   /**
-
-Thanks,
-baolu
