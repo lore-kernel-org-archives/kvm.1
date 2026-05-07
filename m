@@ -1,177 +1,239 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C7E3FAE18
-	for <kvm@vger.kernel.org>; Thu,  7 May 2026 16:10:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E5C32D592D;
+	Thu,  7 May 2026 16:16:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778170205; cv=none; b=Bah2fxfMaWfqnzuxdWrO2NbOLjFEX5m9/bTQndh9awlStb6/zvbIvKxIw0vRPa34fIrXg2CJIntXW2dFAEVjXcbFhFQArlrEqhIAh6QnlSwP2dUX6e8XAcIzWbYRwCaFiMDjb8U/zpC4IOgVPJBoPR9mU7o5ye6xpWjpxKAk4TE=
+	t=1778170581; cv=none; b=OboY+FcFHX3o3ffSENCi8k7VM17l2AKyOpq08KEvxi6w/ZWW7pcuj+R5W/nV2y7KBrxVr9R6U2Hv+GVFfXdTowk+DDW9DxhbHnJqWuNEWSAYx3bsW9cY5zCj4zBiXCzt6K3rgSY+BQP4sGxd46dlRWUsp+3gF/DpRqbrrSPWI5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778170205; c=relaxed/simple;
-	bh=xhlnadrHwiFfIWY2g2xSfdQ0B9ev2VRblVYd07DI1c8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Emd4gsB8vbTe9g7Rq+lGKWli3BGrEILWD0vHc0eF0BILt+3qE3EbImbTtY1NFfKn5p8he7WQM4atq9ulyuN+tjuOYeeyyUQ5hOmpcTuw+GHpA8i5xnR0MZ+y9aFVanPehB4bwKcDDp5VlSlLVmvvqqS8ExiOXmlxWOzIo+SNZxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=sC/HxRbj; arc=none smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1778170581; c=relaxed/simple;
+	bh=IamqkOQoiyqA0GmJEg9M9g+OSKJwZMy2KpqsKMvrZew=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=QuzO0xeLqWUmLudCDfq80z2lspffJZohxOnXbvWmVhJ3HAcBvHupTrmbC8B4WnokaSdm5xP3z0+VtNjFFhVC8XURnjfaUtKHFTyl6Fzp4z9KJHsuTw44YO1FYQIEqKYq86vDJ3/wI8qUuE57glzhzntFzEmfhlee+cQYKgexnWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=pZfRiUZS; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="sC/HxRbj"
-Received: from pps.filterd (m0109333.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 647Bmi6b1163058
-	for <kvm@vger.kernel.org>; Thu, 7 May 2026 09:10:03 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=eFG1vBkuGjV5WqwCWdKJSFjXXoeKLNuaVc0SsnohSl0=; b=sC/HxRbj/khP
-	lauwqZ9En1m3PiufFWhk2MVi8NnVzUAemf9bI6F5CBdj1cHPIggkaXe2/+EQOCEU
-	Qfst0vpp73IxZdukxzFpSLZ/U+7vQBDU5pepEIqV/Iud44cWwJgw12gI1g58sTtM
-	KksXYFPHQ8h6CUL6YKHLFFteuLAoXy3X/XAZiCtRuXtKlenAOWQS4xrDbUZ67XKR
-	BAi7ALQLC2NtDOk9eMoLHqLiIEvmiSJgtKCAHe7XRwq5NbKpCcUkRb+O1q4FcLKp
-	jMlfnYMVmysh10DkwwgF9TodXhraCJ5gFNKqgDPilbYYJj3L3jdHUXWSyilWfZwb
-	YMz6VepcRw==
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4e0t6dsqr6-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Thu, 07 May 2026 09:10:03 -0700 (PDT)
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-44f65835b77so607605f8f.2
-        for <kvm@vger.kernel.org>; Thu, 07 May 2026 09:10:03 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778170202; x=1778775002;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=eFG1vBkuGjV5WqwCWdKJSFjXXoeKLNuaVc0SsnohSl0=;
-        b=ELEJC/spkZs1RevaaEqti7O0zQKW21FLQTvLBspvu/xJHBxKSBQ6U3kesFoOBrcLky
-         LaeeGMPWsaoEwjVXU0goT4WMujAc47GOxunpiDeayVdm8c4w2jBBUpByqHVY8ZRnPhdL
-         PRUBYcFxO/Nqn8ncx0w/cs+isNjxUQmdxpzyVDQ5oczVUR7QSZ1+PqsstCb2ie/zlpQE
-         DYSb4zgfI/QbabxYu1OC/DXCqmEEXSisQhy8vkPU2CYjrFN4pJf1JPUM5pqWSQQXJ1OQ
-         KfIIkq/weZwYZNWe4MZIIKtomoO3ia1D4J7NsDXhY17YGPCdHKMI5FIWRfzxr/2TV/TQ
-         9gQA==
-X-Forwarded-Encrypted: i=1; AFNElJ8bxxV00CV9HEoDvRuO3PoV/xJ9G8Vuw62mO0lDhbcM6L8jEX4T3vPG340vIod1BMFhjbw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxkawPbIp1rDDgMrckEB/rXWovkfhp2vgQtEGJ8MsR8OVk0dmhc
-	ezBorstw/izTQGeM9oqoURCk3Eu9AW4lNjc4Vpy2nS8hea3OEZ2RoNYgMZwDfSjb2X2Y3MrLtDZ
-	nhdANvoisoQWHCv4IPsGRU7fVCOvm6RxAIcvX4SjEMaDpj7ZTJEC4
-X-Gm-Gg: AeBDievps1rWT2YxSONMrr/A4ENggs2BLFbvaolmiV2xER/PPa1D44OZEAY2PgM8tmC
-	zCFVdSN1cz1PbP7lhTrvFhS8bkZvFqnZuSrVx6Sk2Th+8vOkAwu5SuVRmsspVR3qqIZ6K7kM9PB
-	z/nrq9A0RI/zETtO+HN/iH1yp+dJ2KHXZMkE7C+czVZ9CEOBwpGhBqaZBfkuh4x/Jsn0zfq40vh
-	xvqJFVzShLPlvkfUvcOH0ALlB2vTTP/8jC+tvcw9NR6x+33tYHSFr2h4q+rnkS0tk4MbdE9i1xs
-	6jHlnV7Z7/bj0CG8TnIfZ+nT8iVMt1+95zDNiRq116Wt+zAZQtRph71teRQs1PzxniuIzXmp4Fb
-	y3YLovAYP1yXs5uuXlpsBQfL0yuhHy+AAUA21RJo4W/egMpVS0MyH8BgLpecq+C0sRN3nLmZX/D
-	LKhGjMF/TUABYt1vwqLYmC+W5sqF4EwZAy2GGKHdtnlBaJ9L8dwb1GAzZjSG9oSC+4btB0xqo8p
-	6Y91EtV+fiytfRcDsLhNnE=
-X-Received: by 2002:a5d:5f47:0:b0:43d:613:33de with SMTP id ffacd0b85a97d-4515cf11d94mr13854419f8f.20.1778170201774;
-        Thu, 07 May 2026 09:10:01 -0700 (PDT)
-X-Received: by 2002:a5d:5f47:0:b0:43d:613:33de with SMTP id ffacd0b85a97d-4515cf11d94mr13854369f8f.20.1778170201226;
-        Thu, 07 May 2026 09:10:01 -0700 (PDT)
-Received: from ?IPV6:2001:8b0:8b6:13d4:102e:f2af:e074:5cde? (e.d.c.5.4.7.0.e.f.a.2.f.e.2.0.1.4.d.3.1.6.b.8.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:8b6:13d4:102e:f2af:e074:5cde])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45412820454sm149530f8f.6.2026.05.07.09.09.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 May 2026 09:10:00 -0700 (PDT)
-Message-ID: <2a75c858-5dfe-4b93-98fc-909a2ee5558d@meta.com>
-Date: Thu, 7 May 2026 17:09:59 +0100
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="pZfRiUZS"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=WE4RckWX8OF480cYS9eU9WY3xvu7lpA6ffwrMs/Rq9c=; b=pZfRiUZSLDtKiPhW0E/q2CBHkT
+	L8KK3j9UbnA+51yWhuLKAM/5gIkEtruXqsm/IcyImOM3g4siKUM7wNuXs12ZtEs6Bytp0l43zXzXL
+	BKo2O33VXgtXkT6B2Nz8lRkrxzpLG/DJsgm7IN9mbc2BNow0r4qJJ5bklpAjFBaogNoWQdBhWAwql
+	DXtuo1XSUX7WscGOJfcf45QJczSB+QNpNnoKd4DqeRMsBEu7tNSAaPm3opLZi2A8Li5gZU0T3rr7w
+	E+BQRPJNgqNxXuskFl717k/e2VocIlQNja144msbQZabFhQiQNbG0HEUjczcD2J2Z/FBvVjiSUCDb
+	zXeq6MBg==;
+Received: from [172.31.31.148] (helo=u09cd745991455d.ant.amazon.com)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wL1OJ-000000042fR-3ZeH;
+	Thu, 07 May 2026 16:16:00 +0000
+Message-ID: <9bc8666e63d7de8b32dd23934fe0097f98d72726.camel@infradead.org>
+Subject: Re: [PATCH] KVM: x86/xen: bail in IRQ context on PREEMPT_RT in
+ kvm_xen_set_evtchn_fast()
+From: David Woodhouse <dwmw2@infradead.org>
+To: Mauricio Faria de Oliveira <mfo@igalia.com>
+Cc: Paul Durrant <paul@xen.org>, Sean Christopherson <seanjc@google.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>,  Borislav Petkov <bp@alien8.de>, Dave
+ Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark
+ Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ kernel-dev@igalia.com,  kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-rt-devel@lists.linux.dev, 
+ syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com
+Date: Thu, 07 May 2026 17:15:59 +0100
+In-Reply-To: <122adcacb2a6ccc3a5b78c750fe85e0b@igalia.com>
+References: <20260506-xen-rt-sleep-v1-1-53b6b60a671d@igalia.com>
+	 <8e7bc66a7994ca06f164a5d5f7ceb3f07d3a1357.camel@infradead.org>
+	 <e23df9d183c2c421946ea73b8053e4c4@igalia.com>
+	 <876c720ab963f550d3166b067f6457fcd78ec415.camel@infradead.org>
+	 <122adcacb2a6ccc3a5b78c750fe85e0b@igalia.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-GPqvui8/ba7ix+o+xJOE"
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 7/9] vfio/pci: Support mmap() of a VFIO DMABUF
-Content-Language: en-GB
-To: Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alex Williamson <alex@shazbot.org>, Leon Romanovsky <leon@kernel.org>,
-        Alex Mastro <amastro@fb.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>,
-        Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
-        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
-        Pranjal Shrivastava <praan@google.com>,
-        Alistair Popple
- <apopple@nvidia.com>,
-        Vivek Kasireddy <vivek.kasireddy@intel.com>,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-        kvm@vger.kernel.org
-References: <20260416131815.2729131-1-mattev@meta.com>
- <20260416131815.2729131-8-mattev@meta.com>
- <20260424183006.GI3444440@nvidia.com>
-From: Matt Evans <mattev@meta.com>
-In-Reply-To: <20260424183006.GI3444440@nvidia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA3MDE2MSBTYWx0ZWRfX5hKDtpjgoD9X
- t4kfrMgsLrqfeO15hCnfsWlyq1SA4W3rj+OAz6bE0q+rGJ1PU9G+rDxwqLJoWt7/OY50MqISehu
- c2j/1zV9EkBIlDkii8LQrvrvEdaIsCYzHtp45rt5pYwj30Lo+Qo8oR7dn8iLgf+xBE3AzAZT3Na
- sTamYH5RFuBCe1qvZhDRflf0xDH8ClWk+17AMcfAbLsuU6FGj1AfZ+EtU4c8Fzf6JldaQ4KjOa9
- fTg4pMqZ1lLUnyi68cOx8AjIYYNvd27JbAs4HRssg4ZmW7b4f9PkiNUWw3wXWe52DKNHw2SlqFD
- FcwAA+2yzLy5m4tIGoHoz4GdGJ9QYatiM9R64tIrYoHBsE6gAevSEqILyynLtBBHRn52rxCCIHf
- T7U4sqEHb4J9FjAZykSRS6dHyb/WFCSg9RGpZaT3bJWXKLVusZb+tYqVkWqNMew2S+kZsM2STgC
- U/40mKsUwvjfdxZp1mQ==
-X-Proofpoint-ORIG-GUID: j4XdOVXnZuT60TlGatdHHpcHFxLsG9b5
-X-Proofpoint-GUID: j4XdOVXnZuT60TlGatdHHpcHFxLsG9b5
-X-Authority-Analysis: v=2.4 cv=F7dnsKhN c=1 sm=1 tr=0 ts=69fcb95b cx=c_pps
- a=pX1sPZUoWPGeQgUnKQNIgA==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=tpM8CJlwf7uhpglF1g9U:22 a=bfFL6uTa8VbwhnMIod8A:9 a=QEXdDO2ut3YA:10
- a=XGGHjNwGSpTZ5T66x7Ix:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-07_01,2026-05-06_01,2025-10-01_01
-
-Hi Jason,
-
-On 24/04/2026 19:30, Jason Gunthorpe wrote:
-> 
-> On Thu, Apr 16, 2026 at 06:17:50AM -0700, Matt Evans wrote:
->> +
->> +	dma_resv_lock(priv->dmabuf->resv, NULL);
->>   	vdev = READ_ONCE(priv->vdev);
->>
->> +	if (READ_ONCE(priv->revoked) || !vdev) {
-> 
-> Why is this read once? It is inside the resv lock so it is stable?
-> 
->> +		pr_debug_ratelimited("%s VA 0x%lx, pgoff 0x%lx: DMABUF revoked/cleaned up\n",
->> +				     __func__, vmf->address, vma->vm_pgoff);
->> +		dma_resv_unlock(priv->dmabuf->resv);
->> +		return VM_FAULT_SIGBUS;
->> +	}
->> +	/* vdev is usable */
->> +
->> +	if (!vfio_device_try_get_registration(&vdev->vdev)) {
->> +		/*
->> +		 * If vdev != NULL (above), the registration should
->> +		 * already be >0 and so this try_get should never
->> +		 * fail.
->> +		 */
->> +		dev_warn(&vdev->pdev->dev, "%s: Unexpected registration failure\n",
->> +			 __func__);
->> +		dma_resv_unlock(priv->dmabuf->resv);
->> +		return VM_FAULT_SIGBUS;
->> +	}
->> +	dma_resv_unlock(priv->dmabuf->resv);
->> +
->>   	scoped_guard(rwsem_read, &vdev->memory_lock) {
->> -		if (!priv->revoked) {
->> +		if (!READ_ONCE(priv->revoked)) {
-> 
-> Same here, it is not read once since you hold the memory_lock it is
-> stable.
-
-I used them more as an 'eyecatcher' to complement the comment.  Although 
-they're not strictly required (compiler barriers at the lock/unlocks), 
-they stand out to say "something's going on here".
-
-Revoked/status is read first holding resv, and _must be read a second 
-time_ once that's released and after memory_lock is taken, so two 
-READ_ONCEs seemed appropriate to show this.
-
-But if you feel strongly, sure, I can remove it (though I'd add, say, a 
-/* Re-read status value */ comment).
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
 
-Matt
+--=-GPqvui8/ba7ix+o+xJOE
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, 2026-05-07 at 13:02 -0300, Mauricio Faria de Oliveira wrote:
+> On 2026-05-07 12:22, David Woodhouse wrote:
+> > On Thu, 2026-05-07 at 11:56 -0300, Mauricio Faria de Oliveira wrote:
+> > > On 2026-05-07 03:58, David Woodhouse wrote:
+> > > > On Wed, 2026-05-06 at 23:36 -0300, Mauricio Faria de Oliveira wrote=
+:
+> > > > > kvm_xen_set_evtchn_fast() calls read_lock_irqsave(), which might =
+block
+> > > > > on PREEMPT_RT, but that is invalid in IRQ context, as when it's c=
+alled
+> > > > > by xen_timer_callback() (even on PREEMPT_RT per HRTIMER_MODE_ABS_=
+HARD).
+> > > > >=20
+> > > > > Check for that case, and bail out early.
+> > > > >=20
+> > > > > Note: there is previous work and discussion on this [1] (~2 years=
+ ago),
+> > > > > which involved continuing to execute the function with changes, b=
+ut it
+> > > > > was not merged. That was a different, more complex approach.
+> > > > >=20
+> > > > > [1] https://lore.kernel.org/lkml/ZdPQVP7eejq3eFjc@google.com/
+> > > >=20
+> > > > ...
+> > > >=20
+> > > > > +	/* Bail in IRQ context on PREEMPT_RT; read_lock_irqsave() might=
+ block */
+> > > > > +	if (IS_ENABLED(CONFIG_PREEMPT_RT) && in_hardirq())
+> > > > > +		goto out;
+> > > >=20
+> > > >=20
+> > > > The approach in Paul's earlier patch was better; we absolutely *wan=
+t*
+> > > > to deliver the interrupt to the guest immediately whenever we can, =
+and
+> > > > only fall back to the workqueue in the rare case that the shared in=
+fo
+> > > > page has been invalidated.
+> > >=20
+> > > Certainly, that was better. This was a simple workaround, but with th=
+is
+> > > clarification, it indeed doesn't fit.
+> > >=20
+> > > > We should switch to plain read_trylock(), *without* the
+> > > > local_irq_save(). And since this was the *only* case where the GPC =
+lock
+> > > > was ever taken under IRQ=C2=B9, all the GPC locking can drop the _i=
+rq part.
+> > >=20
+> > > Ok, I can take a look. Or do you plan to work on it yourself (as you
+> > > hit the issue with read_unlock later in this thread)?
+> >=20
+> > I'm working on it now; thanks.
+>=20
+> Ok, thanks; I'll drop this. Could you please Cc me when you send it out?
+>=20
+> > Currently confused by the fact that the read_trylock() seems to fail
+> > more often than it should under RT, causing the fallback path to be
+> > taken... and the fallback path doesn't seem to work properly...
+> >=20
+> > Your version should have seen this too, surely? Did the selftest in
+> > linux/tools/testing/selftests/kvm/x86/xen_shinfo_test work with your
+> > patch?
+>=20
+> Yes, it works, apparently. Timing is similar with/without PREEMPT_RT.
+
+Huh. Something weird going on for me. Would you mind confirming it
+still works with my version:
+
+https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dshortlog;h=3Drefs/=
+heads/gpc-stealtime
+
+
+--=-GPqvui8/ba7ix+o+xJOE
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUwNzE2MTU1
+OVowLwYJKoZIhvcNAQkEMSIEIOYs5bNWuNpeccGTmEe4XyWmIXWOb8GjFXDZU0gsSma8MGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAeMuZnGsVNgMT
+VTsMNqD7PbDSvN9ahnnC3m8vGVJYHdlw6emIMd29tqwIugLrt09+S65/V05ATyaeQxTev3nVhZ1h
+xCwqbElSY/6iDKkwRkzUnNj7qYI5RAjXQMNWiWnq7D07G1HK6Bx79LLBKo1vnU5ZqoOkrA2fdTdy
+kDwh6fIMnRAUHp/4Tx4F/1lACKfvk7VoHMhEoBc6jaJSj587JOE4zRkjQ/SDg1FPezUt7ClpXSAH
+xHt8upgYo54UH50QGzbVZbJ4q2gCSBSOAkSOeE0aevask9mSFt0QU9I1LuICYo+2XXg0OxoNfejc
+1rVpra1M2CZ9dGFRnOCktp3c2V8gEyOxwVPojt4wQLLjxfAq/iDfB4I0lcBpQrd7w6kULhRqDYU9
+M8gibFxNinAl6hCz26COz2sNXFhUmBJEET8Cb/m+Hdxu8/Z43v4TbDSON2CsfPxCUZC0LRq9Er5p
+jSLQndnQWdMJxkWRgsxPqYX5sm30orJ63EEOgxNr5HvS55kQn1lfKTD/snxKdJmiRTeOR9QchQbM
+KFCmm8WUZuewTLTirqt/DEHVK9qjSWuUE5ieznbr1PFfvPb8llXhATu5prFwg69STpLRohhNtD7K
+2VCWbgz2PNecgRBjHl1VL/Y3f93HeBVkDNxWhwAuTIbw6Uvuwl4KA8dNWYgSutwAAAAAAAA=
+
+
+--=-GPqvui8/ba7ix+o+xJOE--
