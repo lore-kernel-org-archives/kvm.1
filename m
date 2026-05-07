@@ -1,68 +1,63 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012004.outbound.protection.outlook.com [52.101.48.4])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A0843ACEF1;
-	Thu,  7 May 2026 15:39:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.4
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778168358; cv=fail; b=uSpPyNqoQZq/ik+qCyoV9nn+F47STZeC+u/pu7cmwifcZpy1+Zluq3QOMrtgpx8wFLAH8uOCH/hbpbRuEtgwLYRzOEoqvgx8/Gq9R2qM0UWX39ucYzI9Db+oIZM54rMrh7bsRQrRwSb/vHevinrltdEepT1sfii1sMDHu/SvKJg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778168358; c=relaxed/simple;
-	bh=1D5+mVUOMV9cFiMtls02rCq07UPvMZnwnBUUJISDkoA=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WQF/9rgtYk1NMZdRoag85eNzfDEvBYbvvhlDx7myfVof3aZJZYLjPE0WgiyWhgES+NlUdh5PPswttfAyRQQF3hIXjSQOSrOlBVY9098Bm6LCZv4yCudlGYvrOdJ4Xvln36ENa8e3KCvMEf1iY61obfSJnDrr7pawOHNtS3EKb00=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=0LlgvLIa; arc=fail smtp.client-ip=52.101.48.4
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36ABF41B344;
+	Thu,  7 May 2026 15:42:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778168559; cv=none; b=CGVZiFrKzDjJQlIqteT1NnMUj5eEPTgE3sdzjA6OeH9R24+xDB44Ms3GBw7nrYf/puFqr/aTO6rH4uz/omIq0LxLa8fNHvpGtiKdbf/kTckZdA3Y6utO6IGnq36AQ/h0rUHBROgklzUcRPzk1U7gPhpa3rmYjAAjga8X4ftfHHM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778168559; c=relaxed/simple;
+	bh=l1ZPnnUQo3LA7hrPEfFbmz90OUYfRkfGIapw7V4O47Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Hi6lHDOaLiUz1hYfxUEXyf4rMuh4666hnEDO1WotFwihBDUjuSN2o+xVA0mVTKNTgg+MMt8FqNn8D/CXEjzrGqfVWrAy+FJb1jL4xvaGiSsUqVv8eiwijUqtbAxg1MyMBO8YGyDj+i9o7h50XyrTjgQZwTH+ASpBUw4vZZwgCks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IyOMHArE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="0LlgvLIa"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Rw9qfB2RRJwPm+c3wCuPYNocV3+vQIpEGoGkKZ6BVK5FzzW090kkwdI2F/fOvbsMyn4X5RMa13kuTT7JUbDOdfy4FNQR7ylXamVfSKaz2lANwAFpJ/MhUFI/UaCkBsZqdyINVPKkYVv1UHBjStokUGuR0dy5sMS0QtaJO0Vy5Ko1VA8Ww8TMWwEkDa0anO3FV4fp27eyYKqj/hDcl7n79QfW1+l53PpoO9qzXUJIlSZYoreapYCvSKyRq08Ma59gc+qbdmuxyKavf2xO1XNBrJsuK4HmYBeceyJc1f6X5DZguUr4hNziNy8PVHegAZCYrdcHAO1AbOJk3UnqoSW9Gw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=e5c73llqw6my2uTGSFqNY7y62fCbAgMAeEgWphGR5SM=;
- b=Ka8dyixD0NyL39Q8KE1KTtDTMzB9n49SU4UTgb1T1iSbKFXbUs6tfR+X8klvXNllTIFucFouuFzZUB4ZE81zCN6gpDeytJIUM2ne3NKo0e3xL/qcN/UZfGtMpNsWyMjuQX2BhYLh43bu+z8xtSsSc0/2VeP1c2Jhc/InR0XUb3GmdsKAbsqTkoP6GZH/2lIoEDtKEp/yVJmD0J1huHSCupSFwvwYSTMtTXUOpm9MEhwcjHMKILpnYb3i1nugttiYA/0lpP/RAAoL2AoMjCda+zWRcnck651UibK2T8pAIV9mup9CtZk//VqFkN+OJRezCiLhzQRXcbTdn67I+KakvA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=e5c73llqw6my2uTGSFqNY7y62fCbAgMAeEgWphGR5SM=;
- b=0LlgvLIaekyR4G+a9loNXkR6LIXgMDNCXI39nb4fZi/EzhXH2qZj3NX/ncK+hJWp2PSMiUKMPE+PYpmXmgZQn0NH7vdcicQVktjv4UaGF9YU1PVsqUbBSQ2VqXjagTVhCV2vSIgQEynmiMxat/t8PXf+e7PMIv0wKp/JADNcHQA=
-Received: from CH0PR03CA0282.namprd03.prod.outlook.com (2603:10b6:610:e6::17)
- by SN7PR12MB8027.namprd12.prod.outlook.com (2603:10b6:806:32a::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.15; Thu, 7 May
- 2026 15:39:12 +0000
-Received: from DS2PEPF00003443.namprd04.prod.outlook.com
- (2603:10b6:610:e6:cafe::35) by CH0PR03CA0282.outlook.office365.com
- (2603:10b6:610:e6::17) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.20.9891.17 via Frontend Transport; Thu,
- 7 May 2026 15:39:12 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- DS2PEPF00003443.mail.protection.outlook.com (10.167.17.70) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.9891.9 via Frontend Transport; Thu, 7 May 2026 15:39:12 +0000
-Received: from MIKCARGYRISD1.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.17; Thu, 7 May
- 2026 10:39:11 -0500
-From: Costas Argyris <costas.argyris@amd.com>
-To: Sean Christopherson <seanjc@google.com>
-CC: Jim Mattson <jmattson@google.com>, Borislav Petkov <bp@alien8.de>, "Joerg
- Roedel" <joro@8bytes.org>, Tom Lendacky <thomas.lendacky@amd.com>,
-	<kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>
-Subject: [PATCH] KVM: selftests: Add guest-side test for AMD HWCR.McStatusWrEn
-Date: Thu, 7 May 2026 16:38:50 +0100
-Message-ID: <20260507153850.8214-1-costas.argyris@amd.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IyOMHArE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACAEDC2BCB2;
+	Thu,  7 May 2026 15:42:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778168558;
+	bh=l1ZPnnUQo3LA7hrPEfFbmz90OUYfRkfGIapw7V4O47Y=;
+	h=From:To:Cc:Subject:Date:From;
+	b=IyOMHArEmgi0Q5vGh1Du3NDsI2BpGYwYQjALrYGiVjrX+0vCKu09jJ0vFfepHcjo/
+	 xDn90EmBuObaJoFsF9RF/vvl0RY+jG97lmNVMaU+XM56t8NzM4UEa6Y+tg/Epr+Tif
+	 0qyBNhy8eKUSpu26ge9xIi/GlL7fESAHcWZekUS1Q/SrXtKgy+Y7IAlaXqpZfudix0
+	 avkfhEESCpbR6+BNj5UswHve3fUXzMSu+At1soFld57tG8iNa2gq3jJ7wAE5iwufU8
+	 KGlR1ALBLD/o5RvphbioZvPjmuZLsvN3gLvOwIrkY2cq8Fm1Pnq1C6wI396s/Vw6Ps
+	 IKsOcUDc29bXQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=valley-girl.lan)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wL0s0-000000001gn-216s;
+	Thu, 07 May 2026 15:42:36 +0000
+From: Marc Zyngier <maz@kernel.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Alexandru Elisei <alexandru.elisei@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	James Morse <james.morse@arm.com>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mostafa Saleh <smostafa@google.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Sebastian Ott <sebott@redhat.com>,
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Sudeep Holla <sudeep.holla@kernel.org>,
+	Vincent Donnefort <vdonnefort@google.com>,
+	Wei-Lin Chang <weilin.chang@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Yuan Yao <yaoyuan@linux.alibaba.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org
+Subject: [GIT PULL] KVM/arm64 fixes for 7.1, take #2
+Date: Thu,  7 May 2026 16:42:21 +0100
+Message-ID: <20260507154221.2905554-1-maz@kernel.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -70,140 +65,113 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS2PEPF00003443:EE_|SN7PR12MB8027:EE_
-X-MS-Office365-Filtering-Correlation-Id: 951e605f-a405-48be-15d2-08deac4ec9e6
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|36860700016|82310400026|1800799024|56012099003|18002099003;
-X-Microsoft-Antispam-Message-Info:
-	eEBR37izYetKloH3xnhBZKB1wov4uDYjK4CKcs8hwsBAWUQeU59y/+f5CFWWVmOdE2f5LNDGyWI1Z3SJGnRUhVY9QhVfUy2TMf2o6Txdp+WJiLSFlwGYpUnpGyVsEc9VEoiOY/K7NNrO/Wd3ZIRJUntdCu6B37SHcnwitP67uMmDkhmLRkYm1fY6OMDjoT8kOMxSpv1nzxa15ONf6RT9kEhVtTk4DV2UOmEyejDK4Rbkx7n6yOVXQa73iupY4Ctij092/AadZh87tjjMIF6NqqmuEZUH5u+nHoT8gmY3l2jwfi5wXRRM9lsEZ7Sj/xyy70H1Q2zZg3KQgz2BoVwMBtzsehzbYoA0YJysWaMrC3SZ8cuaHKqSFYheFQFWuAjTN1mvlpDJ3RED1arxIZblZJJ1MVFn6odbxfOAXK1N7gWjLlbbM6WGAz5ORABvwXDGo+mo74GwWgDVV9fvjSP5GCE4OViMhoH/8x/35//is733HAH0eEEXhB622OWbuBzxEGIvUyVwprf152IPzMg8/qg1aS2RaUTlVYoRDfW8DmDI6iI7qHNRkMewhyG9cJF4AOlQ9AyXMcipgK30tBo4zXEKdsAqMEX4G2rjYypg3Ay+/BRi3MiBFzLCf4NLrgt696uDiRXezZnslch5phsLH/OmiFAzF78dLJ0+bKVZGdIaUtQUd+gQyUwcVdcFsY6Gnb4KelfUqv+iXndpvnIIJcGUzyZSZXhYVUaGbKSKBDI=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(36860700016)(82310400026)(1800799024)(56012099003)(18002099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	JpCRD9FbomBQv4fILm6Yla1N6nlmPg9pydj1300bKhuWv1PuS30jMvp1jkmFZt5FxXrfPHMZwti0oluEE41zTzT4B/bpq0YRjZyS9EUEI3rmY7/Us7OyQphYh2FOhMOobRpXpQetrWPMMvWz5gXomj3yq6f8rRa0vNNaXd8oZ2JdvhaifS5R3fL7OHXrcOwrvlo8I3RNTYNfce3j5YoPFNUOEbX0aGic3LAvkmcp8HHZBUr/Q/7vzauOa931k8rQ6+BnPxk4owpicE89LMH4rSsPWPQ0u0nCxEG7XJb0ra3UVvwVWfHHmQE71nnnDrtkNqBGeJynUegh1MJ+kZ3oTHWk23QDMYB9+HqbOZpWPbA/sQU6nX1SaPodi5Lc55rjz2OIO6FtD6iOeas+8ssg+9Ln+tZyilFZRu5nJgCg9XXlHYodokf/i9N2gNXtIqEF
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 May 2026 15:39:12.7545
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 951e605f-a405-48be-15d2-08deac4ec9e6
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DS2PEPF00003443.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SN7PR12MB8027
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: pbonzini@redhat.com, alexandru.elisei@arm.com, catalin.marinas@arm.com, tabba@google.com, james.morse@arm.com, lpieralisi@kernel.org, mark.rutland@arm.com, smostafa@google.com, oupton@kernel.org, sebott@redhat.com, seiden@linux.ibm.com, sudeep.holla@kernel.org, vdonnefort@google.com, weilin.chang@arm.com, will@kernel.org, yaoyuan@linux.alibaba.com, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-The existing hwcr_msr_test exercises MSR_K7_HWCR only via KVM_SET_MSRS,
-which sets host_initiated=true in KVM. The gate in set_msr_mce() that
-calls can_set_mci_status() short-circuits when host_initiated=true, so
-can_set_mci_status() is never reached by the existing test.
+Paolo,
 
-Add a guest-side test that verifies HWCR.McStatusWrEn (bit 18) correctly
-gates non-zero writes to MCi_STATUS MSRs. With the bit set, the write
-must succeed and read back unchanged. With the bit clear, the write must
-raise #GP and leave the register unmodified.
+Here's the second set of KVM/arm64 fixes for 7.1. Nothing too horrible
+this time, aside from an ARM erratum workaround that has little impact
+on KVM, but relies on some firmware dealing with the problem. Bleh.
 
-Signed-off-by: Costas Argyris <costas.argyris@amd.com>
----
- .../testing/selftests/kvm/x86/hwcr_msr_test.c | 65 ++++++++++++++++++-
- 1 file changed, 63 insertions(+), 2 deletions(-)
+The rest is a small collection of bug fixes, mostly affecting the MMU
+(permission fault handling with guest_memfd, 52bit VA with NV), and a
+small set of AI-enhanced fixes from Fuad. I guess I'll have to get
+used to that.
 
-diff --git a/tools/testing/selftests/kvm/x86/hwcr_msr_test.c b/tools/testing/selftests/kvm/x86/hwcr_msr_test.c
-index 10b1b0ba374e..4e249bffcbb1 100644
---- a/tools/testing/selftests/kvm/x86/hwcr_msr_test.c
-+++ b/tools/testing/selftests/kvm/x86/hwcr_msr_test.c
-@@ -6,9 +6,9 @@
- 
- #include "test_util.h"
- #include "kvm_util.h"
--#include "vmx.h"
-+#include "processor.h"
- 
--void test_hwcr_bit(struct kvm_vcpu *vcpu, unsigned int bit)
-+static void test_hwcr_bit(struct kvm_vcpu *vcpu, unsigned int bit)
- {
- 	const uint64_t ignored = BIT_ULL(3) | BIT_ULL(6) | BIT_ULL(8);
- 	const uint64_t valid = BIT_ULL(18) | BIT_ULL(24);
-@@ -30,6 +30,61 @@ void test_hwcr_bit(struct kvm_vcpu *vcpu, unsigned int bit)
- 	vcpu_set_msr(vcpu, MSR_K7_HWCR, 0);
- }
- 
-+/*
-+ * AMD-specific: test that HWCR.McStatusWrEn (bit 18) gates guest writes to
-+ * MCi_STATUS MSRs.  With the bit set, a non-zero write to MC0_STATUS must
-+ * succeed and read back unchanged.  With the bit clear, the write must take
-+ * a #GP.
-+ *
-+ * This exercises arch/x86/kvm/x86.c:can_set_mci_status(), which is only
-+ * reachable via the guest WRMSR path (host_initiated=false); test_hwcr_bit()
-+ * uses KVM_SET_MSRS (host_initiated=true) and never triggers it.
-+ */
-+static void guest_code(void)
-+{
-+	uint8_t vector;
-+	uint64_t val;
-+
-+	/* McStatusWrEn=1: non-zero write to MCi_STATUS must succeed. */
-+	wrmsr(MSR_K7_HWCR, BIT_ULL(18));
-+	wrmsr(MSR_IA32_MC0_STATUS, 1);
-+	val = rdmsr(MSR_IA32_MC0_STATUS);
-+	GUEST_ASSERT_EQ(val, 1);
-+
-+	/* Clear the status register before disabling the write-enable bit. */
-+	wrmsr(MSR_IA32_MC0_STATUS, 0);
-+
-+	/* McStatusWrEn=0: non-zero write to MCi_STATUS must #GP. */
-+	wrmsr(MSR_K7_HWCR, 0);
-+	vector = wrmsr_safe(MSR_IA32_MC0_STATUS, 1);
-+	GUEST_ASSERT_EQ(vector, GP_VECTOR);
-+
-+	/* Confirm the failed write left the register at zero. */
-+	val = rdmsr(MSR_IA32_MC0_STATUS);
-+	GUEST_ASSERT_EQ(val, 0);
-+
-+	GUEST_DONE();
-+}
-+
-+static void enter_guest(struct kvm_vcpu *vcpu)
-+{
-+	struct ucall uc;
-+
-+	while (true) {
-+		vcpu_run(vcpu);
-+		TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
-+
-+		switch (get_ucall(vcpu, &uc)) {
-+		case UCALL_DONE:
-+			return;
-+		case UCALL_ABORT:
-+			REPORT_GUEST_ASSERT(uc);
-+		default:
-+			TEST_FAIL("Unexpected ucall %lu", uc.cmd);
-+		}
-+	}
-+}
-+
- int main(int argc, char *argv[])
- {
- 	struct kvm_vm *vm;
-@@ -42,4 +97,10 @@ int main(int argc, char *argv[])
- 		test_hwcr_bit(vcpu, bit);
- 
- 	kvm_vm_free(vm);
-+
-+	if (host_cpu_is_amd_compatible) {
-+		vm = vm_create_with_one_vcpu(&vcpu, guest_code);
-+		enter_guest(vcpu);
-+		kvm_vm_free(vm);
-+	}
- }
--- 
-2.43.0
+And last but not least, Steffen joins the merry band of KVM/arm64
+reviewers in preparation of s390 and arm64 being joined at the hip...
 
+Please pull,
+
+	M.
+
+The following changes since commit 7fd2df204f342fc17d1a0bfcd474b24232fb0f32:
+
+  Linux 7.1-rc2 (2026-05-03 14:21:25 -0700)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm.git kvmarm-fixes-7.1-2
+
+for you to fetch changes up to effc0a39b8e0f30670fe24f51e44329d4324e566:
+
+  KVM: arm64: Pre-check vcpu memcache for host->guest donate (2026-05-07 14:12:42 +0100)
+
+----------------------------------------------------------------
+KVM/arm64 fixes for 7.1, take #2
+
+- Add the pKVM side of the workaround for ARM's erratum 4193714, provided
+  that the EL3 firmware does its part of the job. KVM will refuse to
+  initialise otherwise.
+
+- Correctly handle 52bit VAs for guest EL2 stage-1 translations when
+  running under NV with E2H==0.
+
+- Correctly deal with permission faults in guest_memfd memslots.
+
+- Fix the steal-time selftest after the infrastructure was reworked.
+
+- Make sure the host cannot pass a non-sensical clock update to the
+  EL2 tracing infrastructure.
+
+- Appoint Steffen Eiden as a reviewer in anticipation of the KVM/s390
+  ability to run arm64 guests, which will inevitably lead to arm64
+  code being directly used on s390.
+
+- Make sure that EL2 is configured with both exception entry and exit
+  being Context Synchronization Events.
+
+- Handle the current vcpu being NULL on EL2 panic.
+
+- Fix the selftest_vcpu memcache being empty at the point of donation or
+  sharing.
+
+- Check that the memcache has enough capacity before engaging on the
+  share/donate path.
+
+- Fix __deactivate_fgt() to use its parameter rather than a variable
+  in the macro context.
+
+----------------------------------------------------------------
+Alexandru Elisei (1):
+      KVM: arm64: Handle permission faults with guest_memfd
+
+Fuad Tabba (6):
+      KVM: arm64: Make EL2 exception entry and exit context-synchronization events
+      KVM: arm64: Guard against NULL vcpu on VHE hyp panic path
+      KVM: arm64: Fix __deactivate_fgt macro parameter typo
+      KVM: arm64: Seed pkvm_ownership_selftest vcpu memcache
+      KVM: arm64: Pre-check vcpu memcache for host->guest share
+      KVM: arm64: Pre-check vcpu memcache for host->guest donate
+
+James Morse (1):
+      KVM: arm64: Work around C1-Pro erratum 4193714 for protected guests
+
+Mostafa Saleh (1):
+      KVM: arm64: Remove potential UB on nvhe tracing clock update
+
+Sebastian Ott (1):
+      KVM: selftests: arm64: Fix steal_time test after UAPI refactoring
+
+Steffen Eiden (1):
+      MAINTAINERS: Add Steffen as reviewer for KVM/arm64
+
+Wei-Lin Chang (1):
+      KVM: arm64: nv: Consider the DS bit when translating TCR_EL2
+
+ MAINTAINERS                              |  1 +
+ arch/arm64/include/asm/kvm_nested.h      |  1 +
+ arch/arm64/include/asm/sysreg.h          |  2 +-
+ arch/arm64/kvm/arm.c                     | 21 ++++++++++++++
+ arch/arm64/kvm/hyp/include/hyp/switch.h  |  2 +-
+ arch/arm64/kvm/hyp/nvhe/clock.c          |  3 ++
+ arch/arm64/kvm/hyp/nvhe/mem_protect.c    | 47 +++++++++++++++++++++++++++++++-
+ arch/arm64/kvm/hyp/nvhe/pkvm.c           | 16 ++++++++++-
+ arch/arm64/kvm/hyp/vhe/switch.c          |  3 +-
+ arch/arm64/kvm/mmu.c                     | 29 ++++++++++++++------
+ include/linux/arm-smccc.h                |  6 ++++
+ tools/testing/selftests/kvm/steal_time.c |  2 ++
+ 12 files changed, 120 insertions(+), 13 deletions(-)
