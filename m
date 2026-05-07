@@ -1,60 +1,35 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DAB2D5C7A;
-	Thu,  7 May 2026 05:24:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D96031A06C;
+	Thu,  7 May 2026 06:21:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778131468; cv=none; b=WZaK8vUra9bOtZH0fF6/Yw7fXa4OuozBItb2MyDGfsa3q9RzSrhFX+jpwv5DeXVMYVgVQZv6TMWBaM5dESdA7tlj2VHrFnukEj5Cl0oWg3DNrVtoCLLQvPsRBFE6FF6C6O7AHHRb1WwyJQW7g0MY8VCtfoGRLESFjJhQEd0xhos=
+	t=1778134890; cv=none; b=LhahVKFEx34v36FG1uwqQVcMPo1xVfyl3FfVI4mVMEkWLOpuRRsDYTRSgpu1lgfmXkt+lnaefPTsvZfeRJAwFY+q/QofWhAA1V2vGnyg8ZztePVNnZ0ffy/nFUmlS1LV/FF4jHden2h/9ogmC5SwwPxf21MoVO333I5jXVmoEpo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778131468; c=relaxed/simple;
-	bh=TtGByUFfgFVb/4oaOkU+3mTd5dlepSoS4j9QgvOdAcs=;
+	s=arc-20240116; t=1778134890; c=relaxed/simple;
+	bh=bAfRx8MTP4otvqLdq24l/rWBQ+12/mrECjVG4Qcyxy4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GTDkLX9/rpm/WcUtGqP9Inu8pCxjkZ8L/JVMRsqWD9rG0dVVG+pIBFyieoVG9Y5A9WMUFDzs7MW+NTMnqMbTD/bNabpI5xGGltf/jH/AEoZ9cbjW8odMmrObBq3A7B9h9ATvT7ssoaUQ2YjmtZ+mzM5SXZVdacQNnYMSsQ8FpxI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=YpxmtDkW; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 In-Reply-To:Content-Type; b=EvYi3jlNvkP+jsNakAS4NL99ymVSsG11RV2NHuLXVslwwyDmwndAc61h/8QYwnyDMPmngCKC2Hmw91AUQSdPv0iT6uMggfVqv0aX7O3tY/HviWekUgy+4NENjNOorgvYzv4F52EKOHu/ZrMPeidoywSCUGnOUNQfE2QgpfyNkJE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=IS6LkxaL; arc=none smtp.client-ip=129.217.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="YpxmtDkW"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 646Mo7Dv2210426;
-	Thu, 7 May 2026 05:24:16 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=TucOZ0
-	sBTZFdshtdPDyBxWcOC6Ft10rot4sd8h+52sg=; b=YpxmtDkWv7KWlAHeuJIO8w
-	NqpcEj4tyZZhTrGjZw2q/AfoESH/i2qCJtwg8+M4fOt795pvOBn7pkivmJU4UpG0
-	LPTBXI6OPE7zyaKqnmlJpuwIyiTmz7vX3XU3D1vP0DNJ3mmIxm0jrqZMFuxSv5fS
-	Tqbxr3vaLJP6w78sQE4Qw9dYiN7b6+BHEzfJvc9MTHnC9huExunjQZQElwWga5LL
-	58vdaZH9R6m46YwDu0TXDZLQ4dyB6UAtgHMM2kzAjcMkFgSuWHSmMbD0CNS8R+3k
-	R3QV63bvccBFapddA1nmJAuUNpm5QoqP7LPFNPXWHoNqSaYLRGaE2w6ScH+KqW7w
-	==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9y1m9pa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 May 2026 05:24:16 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64759dwV013557;
-	Thu, 7 May 2026 05:24:15 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dwvkk1jgy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 07 May 2026 05:24:15 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6475ODuj31326914
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 7 May 2026 05:24:13 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A646658053;
-	Thu,  7 May 2026 05:24:13 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 8C02C58059;
-	Thu,  7 May 2026 05:24:10 +0000 (GMT)
-Received: from [9.123.0.169] (unknown [9.123.0.169])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Thu,  7 May 2026 05:24:10 +0000 (GMT)
-Message-ID: <7907d821-b2f0-4f55-9763-6d419f04d01b@linux.ibm.com>
-Date: Thu, 7 May 2026 10:54:09 +0530
+	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="IS6LkxaL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
+	s=unimail; t=1778134875;
+	bh=bAfRx8MTP4otvqLdq24l/rWBQ+12/mrECjVG4Qcyxy4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=IS6LkxaL9dUFmma2OMHGlnWRRRRbJPORdRGQDZS5ZQx3KgJ8BkWGXxmuZ9hcLTKy5
+	 q/kBtemCpgmkfh/+a7jiBAkOqReyVTgrMKnI1Ca05ST2b/v2eWydaorxcLLB/sM6e1
+	 sUyG2zzhNMj60z74+50gBNXVKgKAWumm+E+Jb++w=
+Received: from [129.217.186.46] ([129.217.186.46])
+	(authenticated bits=0)
+	by unimail.uni-dortmund.de (8.19.0.1/8.19.0.1) with ESMTPSA id 6476LEwj008340
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Thu, 7 May 2026 08:21:14 +0200 (CEST)
+Message-ID: <98090610-e389-4b4f-b1a9-6dceadedd372@tu-dortmund.de>
+Date: Thu, 7 May 2026 08:21:14 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -62,77 +37,194 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] KVM: PPC: Book3S HV: Add H_FAC_UNAVAIL mapping for
- tracing exits
-Content-Language: en-GB
-To: Gautam Menghani <Gautam.Menghani@ibm.com>, maddy@linux.ibm.com,
-        npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org
-Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260428084534.49781-1-Gautam.Menghani@ibm.com>
-From: Harsh Prateek Bora <harshpb@linux.ibm.com>
-In-Reply-To: <20260428084534.49781-1-Gautam.Menghani@ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Subject: Re: [PATCH net-next v10 1/4] tun/tap: add ptr_ring consume helper
+ with netdev queue wakeup
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
+        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, eperezma@redhat.com,
+        leiyang@redhat.com, stephen@networkplumber.org, jon@nutanix.com,
+        tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        virtualization@lists.linux.dev
+References: <20260506141033.180450-1-simon.schippers@tu-dortmund.de>
+ <20260506141033.180450-2-simon.schippers@tu-dortmund.de>
+ <20260506181556-mutt-send-email-mst@kernel.org>
+Content-Language: en-US
+From: Simon Schippers <simon.schippers@tu-dortmund.de>
+In-Reply-To: <20260506181556-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: lxxOA8XLE-8Wzx3m7j-fLuNrZphalmWy
-X-Proofpoint-GUID: 4zUHY9eC3UmHz477yT1_bcYfE0X_wwCQ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA3MDA0NyBTYWx0ZWRfX22owosNOeKce
- ROtBVmIOK2zgv5tfJEZyCt03DW0B6P2jT/TSB6I+Bxwz8bLzuKA5uyUgOqqDF8KVrVj3baZyaju
- 9K2J4Yg08sYcCmGylqst4CI1LHaK7cbVpdpZJQ1ndSQppepeQBhEHLTTzhFuhIkrYfJ6sHDYWf5
- tjzUIWmr+4Z51HQms+JfR4M7Sk1eK7TLlJf01E3qqjp8jKFP5R8wa97/IOO/zSVmNgqh3aV8QiO
- fiJmRyJz8Tz7ou0o9PZwAw5f73ABH1jaNZ3O27c6v30rlHr2qCOcunTtWTP6BJLivhPgSj97eDz
- pPM2c+Lu8ghZgZFWuuoM7lte0bW8hlUxYTKt35L6EQAtoq4Gv8Fb2aRGquMGHzQUv01865MOuNt
- hf5S4QN+iaJIF/iHuka0MO2h1CLLsSR0Mu7rkG8qyJBkp6xGfOfmxgQdtn6M+GCzF85BY8+BQY3
- mw2AtK1CMPG1vcFGCpQ==
-X-Authority-Analysis: v=2.4 cv=UbFhjqSN c=1 sm=1 tr=0 ts=69fc2200 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=f7IdgyKtn90A:10
- a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22
- a=VnNF1IyMAAAA:8 a=sf-K9OUI_O-0kvPjvxEA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-06_02,2026-05-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=0
- adultscore=0 priorityscore=1501 bulkscore=0 phishscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605070047
 
-
-
-On 28/04/26 2:15 pm, Gautam Menghani wrote:
-> From: Gautam Menghani <gautam@linux.ibm.com>
+On 5/7/26 00:18, Michael S. Tsirkin wrote:
+> On Wed, May 06, 2026 at 04:10:30PM +0200, Simon Schippers wrote:
+>> Introduce tun_ring_consume() that wraps ptr_ring_consume() and calls
+>> __tun_wake_queue(). The latter wakes the stopped netdev subqueue once
+>> half of the ring capacity has been consumed, tracked via the new
+>> cons_cnt field in tun_file. cons_cnt is updated while holding the ring
+>> consumer lock, avoiding races. As a safety net, the queue is also woken
+>> when the ring becomes empty. The point is to allow the queue to be
+>> stopped when it gets full, which is required for traffic shaping -
+>> implemented by the following "avoid ptr_ring tail-drop when a qdisc
+>> is present". That patch also explains the pairing of the smp_mb()
+>> of __tun_wake_queue().
+>>
+>> Without the corresponding queue stopping, this patch alone causes no
+>> regression for a tap setup sending to a qemu VM: 1.132 Mpps
+>> to 1.144 Mpps.
+>>
+>> Details: AMD Ryzen 5 5600X at 4.3 GHz, 3200 MHz RAM, isolated QEMU
+>> threads, pktgen sender; Avg over 50 runs @ 100,000,000 packets;
+>> SRSO and spectre v2 mitigations disabled.
+>>
+>> Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+>> Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
+>> Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
+>> ---
+>>  drivers/net/tun.c | 54 +++++++++++++++++++++++++++++++++++++++++++----
+>>  1 file changed, 50 insertions(+), 4 deletions(-)
+>>
+>> diff --git a/drivers/net/tun.c b/drivers/net/tun.c
+>> index b183189f1853..00ecf128fe8e 100644
+>> --- a/drivers/net/tun.c
+>> +++ b/drivers/net/tun.c
+>> @@ -145,6 +145,7 @@ struct tun_file {
+>>  	struct list_head next;
+>>  	struct tun_struct *detached;
+>>  	struct ptr_ring tx_ring;
+>> +	int cons_cnt;
+>>  	struct xdp_rxq_info xdp_rxq;
+>>  };
+>>  
+>> @@ -557,6 +558,13 @@ void tun_ptr_free(void *ptr)
+>>  }
+>>  EXPORT_SYMBOL_GPL(tun_ptr_free);
+>>  
+>> +static void tun_reset_cons_cnt(struct tun_file *tfile)
+>> +{
+>> +	spin_lock(&tfile->tx_ring.consumer_lock);
+>> +	tfile->cons_cnt = 0;
+>> +	spin_unlock(&tfile->tx_ring.consumer_lock);
+>> +}
+>> +
+>>  static void tun_queue_purge(struct tun_file *tfile)
+>>  {
+>>  	void *ptr;
+>> @@ -564,6 +572,7 @@ static void tun_queue_purge(struct tun_file *tfile)
+>>  	while ((ptr = ptr_ring_consume(&tfile->tx_ring)) != NULL)
+>>  		tun_ptr_free(ptr);
+>>  
+>> +	tun_reset_cons_cnt(tfile);
+>>  	skb_queue_purge(&tfile->sk.sk_write_queue);
+>>  	skb_queue_purge(&tfile->sk.sk_error_queue);
+>>  }
+>> @@ -730,6 +739,7 @@ static int tun_attach(struct tun_struct *tun, struct file *file,
+>>  		goto out;
+>>  	}
+>>  
+>> +	tun_reset_cons_cnt(tfile);
+>>  	tfile->queue_index = tun->numqueues;
+>>  	tfile->socket.sk->sk_shutdown &= ~RCV_SHUTDOWN;
+>>  
+>> @@ -2115,13 +2125,46 @@ static ssize_t tun_put_user(struct tun_struct *tun,
+>>  	return total;
+>>  }
+>>  
+>> -static void *tun_ring_recv(struct tun_file *tfile, int noblock, int *err)
+>> +/* Callers must hold ring.consumer_lock */
+>> +static void __tun_wake_queue(struct tun_struct *tun,
+>> +			     struct tun_file *tfile, int consumed)
+>> +{
+>> +	struct netdev_queue *txq = netdev_get_tx_queue(tun->dev,
+>> +						tfile->queue_index);
+>> +
+>> +	/* Paired with smp_mb__after_atomic() in tun_net_xmit() */
+>> +	smp_mb();
+>> +	if (netif_tx_queue_stopped(txq)) {
+>> +		tfile->cons_cnt += consumed;
+>> +		if (tfile->cons_cnt >= tfile->tx_ring.size / 2 ||
+>> +		    __ptr_ring_empty(&tfile->tx_ring)) {
+>> +			netif_tx_wake_queue(txq);
+>> +			tfile->cons_cnt = 0;
+>> +		}
+>> +	}
+>> +}
+>> +
+>> +static void *tun_ring_consume(struct tun_struct *tun, struct tun_file *tfile)
+>> +{
+>> +	void *ptr;
+>> +
+>> +	spin_lock(&tfile->tx_ring.consumer_lock);
+>> +	ptr = __ptr_ring_consume(&tfile->tx_ring);
+>> +	if (ptr)
+>> +		__tun_wake_queue(tun, tfile, 1);
+>> +
+>> +	spin_unlock(&tfile->tx_ring.consumer_lock);
+>> +	return ptr;
+>> +}
+>> +
+>> +static void *tun_ring_recv(struct tun_struct *tun, struct tun_file *tfile,
+>> +			   int noblock, int *err)
+>>  {
+>>  	DECLARE_WAITQUEUE(wait, current);
+>>  	void *ptr = NULL;
+>>  	int error = 0;
+>>  
+>> -	ptr = ptr_ring_consume(&tfile->tx_ring);
+>> +	ptr = tun_ring_consume(tun, tfile);
+>>  	if (ptr)
+>>  		goto out;
+>>  	if (noblock) {
+>> @@ -2133,7 +2176,7 @@ static void *tun_ring_recv(struct tun_file *tfile, int noblock, int *err)
+>>  
+>>  	while (1) {
+>>  		set_current_state(TASK_INTERRUPTIBLE);
+>> -		ptr = ptr_ring_consume(&tfile->tx_ring);
+>> +		ptr = tun_ring_consume(tun, tfile);
+>>  		if (ptr)
+>>  			break;
+>>  		if (signal_pending(current)) {
 > 
-> The macro kvm_trace_symbol_exit is used for providing the mappings
-> for the trap vectors and their names. Add mapping for H_FAC_UNAVAIL so that
-> trap reason is displayed as string instead of a vector number when using
-> the kvm_guest_exit tracepoint.
 > 
-> Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
-> ---
-> v2:
-> 1. Remove the trailing comma after last element
+> So based on commit log I expected all calls to ptr_ring_consume to
+> be replaced with tun_ring_consume, but it looks like tun_queue_purge
+> still calls ptr_ring_consume.
+> I suspect that together with patch 4 it can sometimes leave us stuck
+> with a stopped queue and an empty ring, forever.
 > 
->   arch/powerpc/kvm/trace_book3s.h | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+
+I see. I will replace ptr_ring_consume() with tun_ring_consume().
+
 > 
-> diff --git a/arch/powerpc/kvm/trace_book3s.h b/arch/powerpc/kvm/trace_book3s.h
-> index 9260ddbd557f..5d272c115331 100644
-> --- a/arch/powerpc/kvm/trace_book3s.h
-> +++ b/arch/powerpc/kvm/trace_book3s.h
-> @@ -28,6 +28,7 @@
->   	{0xea0, "H_VIRT"}, \
->   	{0xf00, "PERFMON"}, \
->   	{0xf20, "ALTIVEC"}, \
-> -	{0xf40, "VSX"}
-> +	{0xf40, "VSX"}, \
-> +	{0xf80, "H_FAC_UNAVAIL"}
-
-Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
-
-
->   
->   #endif
-
+> 
+> 
+> 
+>> @@ -2170,7 +2213,7 @@ static ssize_t tun_do_read(struct tun_struct *tun, struct tun_file *tfile,
+>>  
+>>  	if (!ptr) {
+>>  		/* Read frames from ring */
+>> -		ptr = tun_ring_recv(tfile, noblock, &err);
+>> +		ptr = tun_ring_recv(tun, tfile, noblock, &err);
+>>  		if (!ptr)
+>>  			return err;
+>>  	}
+>> @@ -3406,6 +3449,8 @@ static int tun_chr_open(struct inode *inode, struct file * file)
+>>  		return -ENOMEM;
+>>  	}
+>>  
+>> +	tun_reset_cons_cnt(tfile);
+>> +
+>>  	mutex_init(&tfile->napi_mutex);
+>>  	RCU_INIT_POINTER(tfile->tun, NULL);
+>>  	tfile->flags = 0;
+>> @@ -3614,6 +3659,7 @@ static int tun_queue_resize(struct tun_struct *tun)
+>>  	for (i = 0; i < tun->numqueues; i++) {
+>>  		tfile = rtnl_dereference(tun->tfiles[i]);
+>>  		rings[i] = &tfile->tx_ring;
+>> +		tun_reset_cons_cnt(tfile);
+>>  	}
+>>  	list_for_each_entry(tfile, &tun->disabled, next)
+>>  		rings[i++] = &tfile->tx_ring;
+>> -- 
+>> 2.43.0
+> 
