@@ -1,130 +1,134 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1AE8D3F0AB9
-	for <kvm@vger.kernel.org>; Thu,  7 May 2026 14:25:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8923F166C
+	for <kvm@vger.kernel.org>; Thu,  7 May 2026 14:27:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778163902; cv=none; b=sis8y1Nc8o8UPJsbQFNJe2hPd9PCTU2HyMzUxhcQZLBWHGPKQMuirrTbNy6mf1B3nRVxFvkrznNUEkrmt76Mu/TlOU1048FQ2hCDDMg6HiJILPSmHgmmGOZ5XDU+9XGd8h0mFTuEp0NebkrMOxKN/VuxJ8hTzCv4lA1OR5IHZcA=
+	t=1778164034; cv=none; b=sPl8PcGiHWKYGYj0lhsDKZM3vofiCm4Gw19/7cHBCd/zIT2iaRoxUVeTOegy0HR+saPdgKT9pnRPT0LBaJAAhTbG+NKLfiO1R/UQPe+GnWKLRCpEFY4yTMgFhlgJfvFdW9Uy4OXRAo4DbbjKmlbpr0b6mMj8HRzx8gZnqzBW96A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778163902; c=relaxed/simple;
-	bh=nZesoX51eLCu95x6PFt0fOyOLMk/se8Or2rzUOjxC2o=;
+	s=arc-20240116; t=1778164034; c=relaxed/simple;
+	bh=ci8etJPJ/SKkrjI2R9pDKrxKQFfdex0fFldGF/HrBzE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LYYW/DloPLcUnYuAL575khdk433+KTxgxeeUyeS4iWHCkqsBCBhXFvODw9Ky8ksZxbA+nNT1fNTSg8YS1R/dt9EeNaXeV/ACsN3eXyP3uhRo4ix8DU5JMMTacjmKQL2CyX/EBkOSnHNvDQCiuaJqQu/N/14WqD+ObeGNKjerDks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vxRL+vIe; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=jMrUCTXyCQS915WksbWQdVE2qQ7c7uYjX0WySSzLLAW3HAvfK0HSlhlg7zRsno6xT5cIk4P8WysalBhzBvkzKVc9mkbCG10a30g0WQYY5T5R4TPqqRcNK28ZkVyHquWoan1O1i27yr8N7uv8BlQMCUplfLTzvwpuUbGN75K8oZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=azkq2zrK; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vxRL+vIe"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3662e7756f0so265792a91.1
-        for <kvm@vger.kernel.org>; Thu, 07 May 2026 07:25:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="azkq2zrK"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ba224c3ffdso17785215ad.0
+        for <kvm@vger.kernel.org>; Thu, 07 May 2026 07:27:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778163900; x=1778768700; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=+F8gFHfd0SizZ9ak5QQB4kjXBe2dj5mD3skrDr2/uBE=;
-        b=vxRL+vIeUrX+71s3+/D3wUXTJqalQFhm2cICQwGLh7PeXzDf/yI0N4J8t5e1eJBYr+
-         PKsLD1kh9mp6VVbTyw4JxU2DU0BQ02AMXc3FUalcfK17uZvpAKN0Vjfc3+jJAjs+1Wnu
-         06mNsgnsh1mDivOe62FyqG7peKA7sJo+B8d/6yU9wB1w5qlpde0zbf1N5oU85ZGjgOjS
-         e3aG9tJAID5DR44529vRrCowDP+5nsz9LoG9vrDsKc+njNwcY+4HuJDR4B2KTpU83F99
-         wTfinEGkAo9Xi2oepkWrB3KfBAOlB/6HnHD+52aucDQbBdQp/e94HF13oGlO9Y6fHuSv
-         8Wyw==
+        d=google.com; s=20251104; t=1778164033; x=1778768833; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Gj82Uzb3ZmW0sa5wefEK60OOe+q9pRxyEiqyx+Qzdqc=;
+        b=azkq2zrKPZCcJ6VYlf4ErhOCgOICygKjVJiEFdZ9k9cWiBLqsEFz4sSyRQFlRccDU+
+         9cznLEDD2azmSKhyuBfPYHr/K0x+9nl1yKYMQangC446Uz2uZNBvrEEz7xxluLodg5Tq
+         RSxwYILZkNzKA9HEShc+bZ27u7MSagFZTLmyKXRvRpceFZBr2ibEyzCzXr65Hot8srzV
+         Ta1TYJwdMlNwBcH+SlJK5pM+LTlwd17FIHuxKbc2jl6nqx2wVIXSx5yy/gse0SZjtSYC
+         686Q2KziVuojrmpSOxexh509ercNhJgm365CFXpoO3TZtazdgo1fCiodlisRZwQoCaDT
+         OaoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778163900; x=1778768700;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=+F8gFHfd0SizZ9ak5QQB4kjXBe2dj5mD3skrDr2/uBE=;
-        b=eCOP4WqvmelDKj7NeBvvnJ8NZBczbdopkganCInCrkBlgnm4tPd3ncakKsImSjsDE2
-         gNgxgHVUoRzIJrpUml4muyvBsulB3zgmEam3Li7VeP95uqOb+HoMvhnxLIuVaImlLqwm
-         GhEQMXBjH6zD5udp6zL6PXZB7Dc+tkCPV9+RKxaWmzYr9j8xk3i+egdJN7YFKyCBmacF
-         jrzDIFh1X/d9exSwRaljBHgaqHLGcPbg5+XVoE8Oxi2u6ldW3qXNd+dyJJikBTjPdUAq
-         YM4QOoYzVW+Rdomf88Kw7H7mkcqRVMRU03D6mqYlD1lOyH9Fja0rWMluUxVl9vd52luu
-         FVkA==
-X-Forwarded-Encrypted: i=1; AFNElJ+pKRVx7hc0U8K0lEXy7Y9qib1lRs1G1avz7oGoO6+1GTTD0pyv02qeUKfdSbT51dYK6hs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzj5BOaongNt8+imfmzzzKyxQhcaYn7vBrby3snsCujJr/xIHkv
-	zYj9tsCEWMdlYZ3FzKcN9hTdXB0dhGnt6YOcQC8DCT9S/+ws0twF6bSZ5AFuvFfA6bhU4dBxzgR
-	xEceByA==
-X-Received: from pjbrm7.prod.google.com ([2002:a17:90b:3ec7:b0:365:c485:83d2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:e18c:b0:361:45df:103
- with SMTP id 98e67ed59e1d1-365abae80cdmr8301469a91.12.1778163900247; Thu, 07
- May 2026 07:25:00 -0700 (PDT)
-Date: Thu, 7 May 2026 07:24:59 -0700
-In-Reply-To: <CAGtprH8kn_mOQuwpoTBgg6WQC==cKh8fuYOpNOih_PjUgcUeGQ@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1778164033; x=1778768833;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Gj82Uzb3ZmW0sa5wefEK60OOe+q9pRxyEiqyx+Qzdqc=;
+        b=GL6xZXz3/be2hej4WMkXTNLaYbalMQjBoOasyeUXXFXSvqxjbWl165ALqxsLVWUOd3
+         n1AcO5GRAL8VXboS+tnlPT65SC+yJWRvV46EZ4cdRkTtTrPQig3egTLox12A+BzZmVvi
+         kl+X6p088NiLpLGVvDAPjwdumKBjp9a90BiC+BFDsX/vGZxTaQi1FRUCCl+QCfSbhoUP
+         cfw34sZ0yPP/P4gPR9gNE0ceE0VunJWaV/1cNJ/5BKOCpVpfzJxi5r0V3ngbXR0GckHF
+         oQQMU+txHzKMTmpkGaNFTO8Pgc2uS20TbTgslU2XJM2/x6KFMvdPzJWdjrNsx3Wy6x/t
+         Jsww==
+X-Forwarded-Encrypted: i=1; AFNElJ/H3JMqMA/EOXjAEgFaRyV5DMmwePKnUma6gnPG3Ou+vxjReDSCNBQtfosGenkQQMcnq38=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1iGyNuqb2CplfPunhlpb3gVghmNjwsHbOg0aq8TuatDQ6z0em
+	asWnMb8Ur3BggOW2H6bONwRIYXy7YctHhdNqj5BVQYwCuHgGRvDVhMonh3Uk3n8eMk9PiHQMnGy
+	L8sf3RA==
+X-Received: from plbh14.prod.google.com ([2002:a17:902:eece:b0:2ba:5fbf:6eb2])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e74b:b0:2ba:5f24:caf8
+ with SMTP id d9443c01a7336-2ba7908c80cmr84772885ad.12.1778164032480; Thu, 07
+ May 2026 07:27:12 -0700 (PDT)
+Date: Thu, 7 May 2026 07:27:11 -0700
+In-Reply-To: <afx7eh2ghy1_Nd34@blrnaveerao1>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260505014118.3783476-1-vannapurve@google.com>
- <20260505014118.3783476-3-vannapurve@google.com> <afvIuEuSYuktmtA2@google.com>
- <3dc2300e50f655e261115099b416c6a1abbb9e9d.camel@intel.com> <CAGtprH8kn_mOQuwpoTBgg6WQC==cKh8fuYOpNOih_PjUgcUeGQ@mail.gmail.com>
-Message-ID: <afygu67KZuyRql_M@google.com>
-Subject: Re: [PATCH 2/2] KVM: TDX: Disable pmu virtualization for TDX VMs
+References: <20260506184746.2719880-1-seanjc@google.com> <20260506184746.2719880-2-seanjc@google.com>
+ <afx7eh2ghy1_Nd34@blrnaveerao1>
+Message-ID: <afyhP1dx7kzUV-D-@google.com>
+Subject: Re: [PATCH v2 1/5] KVM: SVM: Disable x2AVIC RDMSR interception for
+ MSRs KVM actually supports
 From: Sean Christopherson <seanjc@google.com>
-To: Vishal Annapurve <vannapurve@google.com>
-Cc: Kai Huang <kai.huang@intel.com>, "jmattson@google.com" <jmattson@google.com>, 
-	"mizhang@google.com" <mizhang@google.com>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
-	"dapeng1.mi@linux.intel.com" <dapeng1.mi@linux.intel.com>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: Naveen N Rao <naveen@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, May 06, 2026, Vishal Annapurve wrote:
-> On Wed, May 6, 2026 at 4:56=E2=80=AFPM Huang, Kai <kai.huang@intel.com> w=
-rote:
-> >
-> > On Wed, 2026-05-06 at 16:03 -0700, Sean Christopherson wrote:
-> > > The question then becomes, do we keep patch 1 and also clear enable_p=
-mu in tdx.c,
-> > > or do we keep the ordering and have kvm_arch_init_vm() consume has_pr=
-otected_pmu?
-> > > Neither one is particularly awesome :-/
-> >
-> > Maybe keeping patch 1 is slightly better?  This allows the vm_init() to=
- toggle
-> > all the values and flags that the default ones don't fit.  If we go wit=
-h latter,
-> > when there's similar cases where we need more flags, then kvm_arch_init=
-_vm()
-> > needs to consume more flags.
->=20
-> For now I have sent a v2 without moving around the default flags. It's
-> definitely better to move them up as done in patch1,
+On Thu, May 07, 2026, Naveen N Rao wrote:
+> On Wed, May 06, 2026 at 11:47:42AM -0700, Sean Christopherson wrote:
+> > Fix multiple (classes of) bugs with one stone by using KVM's mask of
+> > readable local APIC registers to determine which x2APIC MSRs to pass
+> > through (or not) when toggling x2AVIC on/off.  The existing hand-coded
+> > list of MSRs is wrong on multiple fronts:
+> > 
+> >  - ARBPRI isn't supported by x2APIC, but its unaccelerated AVIC intercept
+> 								  ^^^^^^^^^ 
+> 								  access/exit?
 
-Yes and no.  No matter what we do, we're subtly relying on ordering between
-initialization in kvm_arch_init_vm() and kvm_x86_ops.vm_init().  I don't se=
-e an
-easy way around that.
+Ya, #VMEXIT is a better description here.
 
-For these fields:
+> >    is fault-like; disabling interception is nonsensical and suboptimal as
+> >    the access generates a #VMEXIT that requires decoding the instruction.
+> 
+> As far as I can tell, it looks like ARBPRI is actually "supported" in 
+> x2APIC mode on AMD processors. APM lists this in the x2APIC register 
+> list (Section 16.11.1 x2APIC Register Address Space Table 16-6. x2APIC 
+> Register), as well as in the AVIC chapter (15.29.3.1, table 15-22).
 
-	kvm->arch.default_tsc_khz =3D max_tsc_khz ? : tsc_khz;
-	kvm->arch.apic_bus_cycle_ns =3D APIC_BUS_CYCLE_NS_DEFAULT;
-	kvm->arch.guest_can_read_msr_platform_info =3D true;
+Yeah, agreed.  I missed Table 16-6 (so many things to cross-reference, blech).
 
-and any other fields that KVM initializes with hardcoded values, from globa=
-ls, or
-from local variables (including @type), I 100% agree that they should be in=
-itialized
-before calling kvm_x86_ops.vm_init().
+> This is probably not relevant though, since it looks like KVM has never 
+> supported this.
 
-But with the proposed has_protected_pmu, I'm leaning towards keeping this:
+Definitely worth getting it right in the changelog though.
 
-	kvm->arch.enable_pmu =3D enable_pmu && !kvm->arch.has_protected_pmu;
+> >  - DFR and ICR2 aren't supported by x2APIC and so don't need their
+> >    intercepts disabled for performance reasons.  While the #GP due to
+> >    x2APIC being abled has higher priority than the trap-like #VMEXIT,
+> 		  ^^^^^ enabled
+> 		  
+> >    disabling interception of unsupported MSRs is confusing and 
+> >    unnecessary.
+> > 
+> >  - RRR is completely unsupported.
+> 
+> Would be good to also call out change to EOI and LVTT handling. 
 
-which obviously means keeping it after kvm_x86_ops.vm_init().  Because if w=
-e make
-vendor code responsible for clearing kvm->arch.enable_pmu, then (a) we may =
-end
-up with duplicate code for SEV-ES+ (does SEV-ES/SNP allow for a virtual/emu=
-lated
-PMU?), and (b) the x86 code _looks_ wrong, because kvm_arch_init_vm() will =
-ignore
-kvm->arch.has_protected_pmu, while the KVM_CAP_PMU_CAPABILITY case-statemen=
-t does
-not.
++1.  I either totally missed or forgot that this also impacts LVTT reads, and
+I definitely missed that KVM was allowing EOI reads. 
+
+> LVTT reads will now be allowed and should be returned from the backing page.  
+> I'm guessing this is fine and that the hardware won't validate it as 
+> LVTT may have TSC Deadline enabled (for emulation).
+
+Ya, confirmed via the KUT test:
+
+diff --git x86/apic.c x86/apic.c
+index 0a52e9a4..b91e8500 100644
+--- x86/apic.c
++++ x86/apic.c
+@@ -569,6 +569,9 @@ static inline void apic_change_mode(unsigned long new_mode)
+ 
+        lvtt = apic_read(APIC_LVTT);
+        apic_write(APIC_LVTT, (lvtt & ~APIC_LVT_TIMER_MASK) | new_mode);
++
++       lvtt = apic_read(APIC_LVTT);
++       report((lvtt & APIC_LVT_TIMER_MASK) == new_mode, "LVTT mode switch");
+ }
+ 
+ static void test_apic_change_mode(void)
+
+And given that AVIC (!x2APIC mode) says that reads are allowed, I don't see how
+hardware could do anything differently.
