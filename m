@@ -1,83 +1,161 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A551E344D86;
-	Thu,  7 May 2026 21:26:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4308E3451A6
+	for <kvm@vger.kernel.org>; Thu,  7 May 2026 21:30:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778189203; cv=none; b=NlB73NsClAoEfga9kTyH/qK5TBH/zMxyPPabuHNuQpti7SaKK4V/G2t66armB4oOEHJ7oBhk0MpSKkxqgQGeyxU5XC4dGHu5DqfxuMghy6YeIs++xarm4iAcldMNrs5c85ECX/5+NIuk3kZGlcAyGaE19hKULyq9iy1Rlo30QxM=
+	t=1778189402; cv=none; b=ZFGk1CXm3FNsCuvCb/RaTMmSozQ5g2HuPoZ1qLTzT+/AUb7iu3Iuz8K1JXtiOk5gREG0hBXdE9cXXyQlFInzXtW2uCKBjyGWIfBeXInFcQxIYNNiVJh3Ckj0YA2af6KzsMy0Pi6q+Dwl8KNCiHRHVPrS7XghsUdmfD/4W9Dcgk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778189203; c=relaxed/simple;
-	bh=rVWiIO8GAMs4uV1pDYNtDWy1Here0ynutD/CS72c9WA=;
-	h=Date:From:To:Cc:Subject:Message-ID; b=Jj8mGDMz6o5ejmDG+1sAUGEPWbt5YFfYAmgdK0lLOWq98VdP17jzxfhC6uZMlzSlOiGO7W93kpFcGBpzuV7myzsPpgOCUstuJ69Dx3Vf1CQqJ3V4SCeEl9zZVw+kD8F3iuR/vFTLRERhiK7bxmOiIyDBN3AasS1GyUj188vj0+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=O40zOUYT; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1778189402; c=relaxed/simple;
+	bh=M6TyNLdPCaCX98unTcfZyHhHGFrHlxx9VaXwbnBkCoU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=KvXQYQiwsqt1ngGNfE9/EleMiCdQIi7rPXKKTYdM//svRmuZwlg/lzn0Bm/QfQeCaj0978tTIFAzkBUsUUW9Bu/a1xgkCyh4sYXzIgZe+BPt+Ne2W32Jyf7H+CIesyLuQXL4cQuHHQNSicHnF103X0WJilpnjT9bjr0rx9tB6cA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--vannapurve.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=B9+zuToB; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--vannapurve.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="O40zOUYT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778189201; x=1809725201;
-  h=date:from:to:cc:subject:message-id;
-  bh=rVWiIO8GAMs4uV1pDYNtDWy1Here0ynutD/CS72c9WA=;
-  b=O40zOUYTcH+hms6wjTLccCwrDryO0J/yxxRxEmPF7pSq4q/U7Bp7DGPJ
-   Q+x7gTZg6OmrH8vzLNrGzIy79hMNMUjPWxqvCCENv3aMObYhzuQza2kSP
-   obos6aBg0hAQcsFMd3kP4QWEyVhVcFJsM8UEuPsC4x6Ceqy1iA+wMPFp6
-   C2bBB+wDmR2lIxW0aqLmWQb/J5FZRE5BFS2GLLqkSv1WVVAN8w8qUafOr
-   GP4D8/QPfj7hshiHTjga3mZdIqCsVBL4LrWBteUA5NXAbp0ZLVNDht0+9
-   VVoXYWtFiXvCK7pi55EM/sf3AVuprqR/JxdGYbLPNKno2SrzM8ePXVq/x
-   g==;
-X-CSE-ConnectionGUID: VQwYeBTGShaqK2+iRhMxrg==
-X-CSE-MsgGUID: M4CSJ7vyRaukYiRb+JPlzg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="90613776"
-X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; 
-   d="scan'208";a="90613776"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 14:26:41 -0700
-X-CSE-ConnectionGUID: HAElt25yRx6Li1dwiHrElw==
-X-CSE-MsgGUID: hOQETuFEQCuChI65WnJS2Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,222,1770624000"; 
-   d="scan'208";a="232033842"
-Received: from lkp-server01.sh.intel.com (HELO d6e19f2f5857) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 07 May 2026 14:26:39 -0700
-Received: from kbuild by d6e19f2f5857 with local (Exim 4.98.2)
-	(envelope-from <lkp@intel.com>)
-	id 1wL6Ev-000000000SH-0PAu;
-	Thu, 07 May 2026 21:26:37 +0000
-Date: Fri, 08 May 2026 05:26:30 +0800
-From: kernel test robot <lkp@intel.com>
-To: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: oe-kbuild-all@lists.linux.dev, kvm@vger.kernel.org,
- virtualization@lists.linux-foundation.org, netdev@vger.kernel.org
-Subject: [mst-vhost:balloon 6/30] Warning: mm/mempolicy.c:2444
- function parameter 'user_addr' not described in '__alloc_pages_mpol'
-Message-ID: <202605080515.6jRN5wN7-lkp@intel.com>
-User-Agent: s-nail v14.9.25
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="B9+zuToB"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c82437a0e6bso745436a12.2
+        for <kvm@vger.kernel.org>; Thu, 07 May 2026 14:30:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778189399; x=1778794199; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=jVYfOIn/wYZ2EasvebTsT17mCH8x5s+4HIBAeXMtI/Q=;
+        b=B9+zuToBg/s+oXv9rIgCcFselqu9wTHB2ieOTrtDyVC24N9IuOUXIUmD6RjL4Tdh3Y
+         2pe8AAR/lR/ZtmXI+LEQyZgDSaFBr9cFv6fYIHKFEv4HXe6mMDp/sLznojXajWw+9Z6N
+         Gf8YmqZKDB78zwkorkSeuTzXIY6FeHjRMaB0cIi2V5f1pnqPRoN0VMXHtJHTbgh+3hJe
+         vG00RFPyD+7qPhhxiZQKVWl/BeJTCIsBElLk1V72qi28Q3SxPlJQaBZ3jhE6fQhiXpj1
+         Z/5u0c8G3LkaD2rkLG1pnxuOujKEbXWHhDo0OUYcaFptt1MMKdK1HrrkmR+Zf4pk23Lx
+         xchA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778189399; x=1778794199;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jVYfOIn/wYZ2EasvebTsT17mCH8x5s+4HIBAeXMtI/Q=;
+        b=B4LsTEosJJUKxwV6ZZ6s42JUQSnWKZn+CUHesPLk9ITlX+9Qk6D3dcaQptgHN3YrgX
+         H6WYVhUvR51nAE591TYFF37i4JEFVHAEdZbbcAa5BmlhQQWvHp2BJ/2BmCLpscH8UVnK
+         PYfk00Sgn4OpNdpGoe5XGx2Vmn9aYuP8hA+rjqcazQO7N3kmsyZReR/HWa3nQfVXAwtJ
+         kDWV/NMAwYOx5B/QGgnhZTkAaf3qDDDEOHFc/Jh3yko3JMSD0aSO1y/AUHHbgVpZ7SXT
+         TiIGM9swLBpwMiTctSvtZBz12YIq/uH9YoUufvIzfeRlNyJ+YdZ0dlRVbfNtKKd8udJ1
+         Yv5Q==
+X-Forwarded-Encrypted: i=1; AFNElJ9AuGXpKwx0+J5kwWw2lshBPG9E9saVoyNNi3CdwYHjz6v6LA8teKFtwx7XnCKsmbujSbM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwtPwc2whL+K3YAZnJ17AX7/kPhalTlgVlFsxO/RQ5apfeu1p/L
+	JZiAAOJqvI+v3/xC+uFE0PkAALhaNmbkSjHFvUn/yAgF6OTOpU3wZ+DieEs16VuAUX59HwmIQEy
+	0MSArR2sWS696i1MK3O8oLw==
+X-Received: from pge13.prod.google.com ([2002:a05:6a02:2d0d:b0:c76:6cef:34e7])
+ (user=vannapurve job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a20:7348:b0:398:b178:a53f with SMTP id adf61e73a8af0-3aa5aa79935mr10791548637.40.1778189399312;
+ Thu, 07 May 2026 14:29:59 -0700 (PDT)
+Date: Thu,  7 May 2026 21:29:57 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
+Message-ID: <20260507212957.2629561-1-vannapurve@google.com>
+Subject: [PATCH v4 1/1] KVM: x86: Introduce has_protected_pmu state for TDX VMs
+From: Vishal Annapurve <vannapurve@google.com>
+To: seanjc@google.com, pbonzini@redhat.com, dave.hansen@linux.intel.com
+Cc: rick.p.edgecombe@intel.com, dapeng1.mi@linux.intel.com, mizhang@google.com, 
+	kai.huang@intel.com, jmattson@google.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Vishal Annapurve <vannapurve@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-tree:   https://git.kernel.org/pub/scm/linux/kernel/git/mst/vhost.git balloon
-head:   9f56ee36fbf6a6d336dc6a9eaeb4f8a67cb42a31
-commit: c4289f5a4e563611a468b4b5379025a4aa4a7c12 [6/30] mm: thread user_addr through page allocator for cache-friendly zeroing
-config: powerpc-allmodconfig (https://download.01.org/0day-ci/archive/20260508/202605080515.6jRN5wN7-lkp@intel.com/config)
-compiler: powerpc64-linux-gcc (GCC) 15.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260508/202605080515.6jRN5wN7-lkp@intel.com/reproduce)
+PMU state for TDX VMs is virtualized by TDX Module [1]. Host has following
+toggles to control the PMU functionality exposed to TDX VMs:
+1) Configure TD_PARAMS to allow guests to use performance monitoring.
+2) Restrict the TD to a subset of the PEBS counters if supported.
+3) Limit the TD to setup a certain perfmon events using basic/enhanced
+   event filtering.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202605080515.6jRN5wN7-lkp@intel.com/
+KVM will need to be enlightened to support these toggles. Introduce
+has_protected_pmu state to track the pmu state for such scenarios
+and explicitly set the has_protected_pmu flag for TDX VMs.
 
-All warnings (new ones prefixed by >>):
+If pmu state is protected:
+1) Disable KVM's PMU virtualization framework as additional
+enlightenment is needed within KVM to control/manage the
+visibility of PMU state to such VMs.
+2) Disallow userspace VMM from enabling PMU virtualization state
+using KVM_CAP_PMU_CAPABILITY.
 
->> Warning: mm/mempolicy.c:2444 function parameter 'user_addr' not described in '__alloc_pages_mpol'
->> Warning: mm/mempolicy.c:2444 expecting prototype for alloc_pages_mpol(). Prototype was for __alloc_pages_mpol() instead
-   Warning: mm/mempolicy.c:2547 expecting prototype for vma_alloc_folio(). Prototype was for alloc_frozen_pages() instead
+[1] Section 15.2: https://cdrdv2.intel.com/v1/dl/getContent/733575
 
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+---
+v3 -> v4:
+ - Allow userspace to disable pmu virtualization even if
+   has_protected_pmu is set.
+ - Addressed feedback around enable_pmu initialization in
+   kvm_arch_init_vm().
+
+v3: https://lore.kernel.org/kvm/20260507142402.2175933-1-vannapurve@google.com/
+
+ arch/x86/include/asm/kvm_host.h | 1 +
+ arch/x86/kvm/vmx/tdx.c          | 6 ++++++
+ arch/x86/kvm/x86.c              | 9 ++++++++-
+ 3 files changed, 15 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index c470e40a00aa..8371dcaaed1a 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1422,6 +1422,7 @@ struct kvm_arch {
+ 	bool has_private_mem;
+ 	bool has_protected_state;
+ 	bool has_protected_eoi;
++	bool has_protected_pmu;
+ 	bool pre_fault_allowed;
+ 	struct hlist_head *mmu_page_hash;
+ 	struct list_head active_mmu_pages;
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 1e47c194af53..eb4b4518e6f0 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -638,6 +638,12 @@ int tdx_vm_init(struct kvm *kvm)
+ 	kvm->arch.has_private_mem = true;
+ 	kvm->arch.disabled_quirks |= KVM_X86_QUIRK_IGNORE_GUEST_PAT;
+ 
++	/*
++	 * PMU support is provided by the TDX-Module (if enabled for the VM).
++	 * From KVM's perspective, the VM doesn't have a virtual PMU.
++	 */
++	kvm->arch.has_protected_pmu = true;
++
+ 	/*
+ 	 * Because guest TD is protected, VMM can't parse the instruction in TD.
+ 	 * Instead, guest uses MMIO hypercall.  For unmodified device driver,
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 0a1b63c63d1a..c248abb0e2ab 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -6909,6 +6909,13 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+ 		if (!enable_pmu || (cap->args[0] & ~KVM_CAP_PMU_VALID_MASK))
+ 			break;
+ 
++		if (kvm->arch.has_protected_pmu) {
++			WARN_ON_ONCE(kvm->arch.enable_pmu);
++			if (cap->args[0] == KVM_PMU_CAP_DISABLE)
++				r = 0;
++			break;
++		}
++
+ 		mutex_lock(&kvm->lock);
+ 		if (!kvm->created_vcpus && !kvm->arch.created_mediated_pmu) {
+ 			kvm->arch.enable_pmu = !(cap->args[0] & KVM_PMU_CAP_DISABLE);
+@@ -13375,7 +13382,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+ 	kvm->arch.default_tsc_khz = max_tsc_khz ? : tsc_khz;
+ 	kvm->arch.apic_bus_cycle_ns = APIC_BUS_CYCLE_NS_DEFAULT;
+ 	kvm->arch.guest_can_read_msr_platform_info = true;
+-	kvm->arch.enable_pmu = enable_pmu;
++	kvm->arch.enable_pmu = enable_pmu && !kvm->arch.has_protected_pmu;
+ 
+ #if IS_ENABLED(CONFIG_HYPERV)
+ 	spin_lock_init(&kvm->arch.hv_root_tdp_lock);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.54.0.563.g4f69b47b94-goog
+
