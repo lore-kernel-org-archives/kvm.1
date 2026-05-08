@@ -1,155 +1,351 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3D041324B
-	for <kvm@vger.kernel.org>; Fri,  8 May 2026 17:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A299E41325E;
+	Fri,  8 May 2026 17:45:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778262059; cv=none; b=YsJSK0wqt4KISlbhklsrptJsUEqKJFNkiUXLhER6Jo/MdLBreiIy/P3hiVOGWSgdTR++SlyZdp83Rnrz+tAGEg+XCFTuvTwLpJbY4SCGdq6rG7MZsyRbPurrqh/XfoESd7sIaHAODn1uIqAF6bfcKEJ9/cdub1Q4QZ5kHP8h2JQ=
+	t=1778262360; cv=none; b=JA90DPM4nvLGQe2stu8wP93tSIRz3EcdqyXj+oP5nlwxBELn4Ll+gYDn5kHkwYl3Fqex+G+RXD/POIUVdwvJnIl47A5iFuQC6JYCRgHXjrxq85nphZlIqVO82R4aQD+/NFDJllh+D4BQ9bFonKtLL2kEwrN55CYssQytHSHa2Xs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778262059; c=relaxed/simple;
-	bh=zYlTeDh9G9IT4nS+zWqxNxxmSss2n8WYffkvXEx9Akw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CDDhpzVqDy/Csol29cWTEH3NKWbb+CLqor3Fas8i5WhtXuIMF3lCb904OvSFryq/jircYgExzM+f92mEf6k/sXDNJdiPmpGpcjJmuTFdo746sPhUn1TEMVV1/fgtlQrZJZwu6KC0o1stoJdiFwE+TOw9XxMu8rY4KW2HE7wexBo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XdMv1nBY; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1778262360; c=relaxed/simple;
+	bh=WUcogBBt+16hysVoKsG03e39lN/2nfwARuSyMv7QoWU=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZKTEfqY0Ty/MbSBUova2RxdMe+5YGyILxuZYluJHwEjDgbHWkLoDoMYAw4+V0rpcCdDIl0/GklF/bjAQAkMTZxlBfC5HbWtR3YL+n0VcBS6GUJ/iEF8XwcZRNKOt7dbLcS8honfP7ZovstDJw2Zit2Qba+wXP5l5ksFvSBhyX1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=RuYEtw4p; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jrggMLCq; arc=none smtp.client-ip=103.168.172.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XdMv1nBY"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-835444b6ce1so1713844b3a.1
-        for <kvm@vger.kernel.org>; Fri, 08 May 2026 10:40:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778262057; x=1778866857; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uhr4BNU/ilo4uYM728zx4k0/Id92bF2OOCtFb+maHuk=;
-        b=XdMv1nBYootU71I8CC7idKoT/q4s58ElcQcNrrSb8qo3Lm1TbCwJMn1iT0rT6UhqTi
-         00TqgaGCcfGiiuy5Iq14bMrIc7PAd8gDBc83/luLvScZobTZQlQ7GYukU0Z4Egi3z5Pm
-         hsd5OTUodnJI/xDf+5O9A0yA322l+MmCQnnbdgEVb/0lurgQ1I4dYlZrf7TnjizCi8rC
-         5ffGcnqRAuV1I38RGHEU6GegmWCuql/dqgZA8ypovvpIC26qd2iaxhgKtZaPGlgJVHSy
-         2JJfk9ynavCkyodLfDGapmewkFVtD9eszEkVbKXy3jwo+HzgkWQzTTYB6B9ghlAXatwS
-         S48A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778262057; x=1778866857;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uhr4BNU/ilo4uYM728zx4k0/Id92bF2OOCtFb+maHuk=;
-        b=WqJA2oFutZBATV/YnCsBy0gBsEe4my9jfVAQUpiTWO9fg1f067Bo9Ownr0So3hBn0t
-         8FdSvsILdfoOZM2n4w7c96ycEmVlmGRWag+TtjAFciJFB+/3t15Jn2dcy5LY1+TIX3i4
-         mrpwvCwb8qpytNFfBdGCLKT31gpR9t0nbJkrU/61kedmsG7s0mgKO/RRT+IHSniz1jTm
-         W0scjp0+wtvN3mj1ziOXyLkZSCYC+vsOUCqLVxBndml9/URUNWjhT4GEjJOa1dLHCSjq
-         38gMjSpei/j0RMiUpnZD6lWWngyvB9yjNe9eiR4rpp0dak0+oscenH8FWYvHGb4tnfQe
-         STiw==
-X-Forwarded-Encrypted: i=1; AFNElJ8RLeZhQ+GTCx233t/Qa725YlErkloM7tjJiO7XyJQQ1fufhr6wi8gNJrWw3IUjDW33PPU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMA/UqmT0UFbX9w2ZtzHckkgSvlKhcDnhZWWnaCPn/4vbaLTzb
-	Z9NV/YbBAhn/itd0MwxG+DnuWkDh3G/hS6lxBqI6EpvZfB2uFDYp4FhbSf4ZZI3vsNGaURuU6qC
-	gNuHPIQ==
-X-Received: from pfjg10.prod.google.com ([2002:a05:6a00:b8a:b0:835:62a8:bbc])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2998:b0:839:46b8:86be
- with SMTP id d2e1a72fcca58-83a5d686f07mr13095922b3a.33.1778262056375; Fri, 08
- May 2026 10:40:56 -0700 (PDT)
-Date: Fri, 8 May 2026 10:40:55 -0700
-In-Reply-To: <foi2zvv5qrfdcspnx4fstrvzl74m6xp6zrsw5omlbprxh4jrhx@vxnwk7fr46gu>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="RuYEtw4p";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jrggMLCq"
+Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id F29D81400106;
+	Fri,  8 May 2026 13:45:56 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Fri, 08 May 2026 13:45:57 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1778262356;
+	 x=1778348756; bh=BzQpbfj2gB2hq1kMTUl7hUBczCfNpeCyjSIC66D0Crc=; b=
+	RuYEtw4p3+iPQqwaGpOp1bKL8lSK4PLE6ZfW1yepdy0REMuCtGrpkk23imO61Zll
+	wHwKQFubiaZkC2EfsWyWXzlURRpb6+9a8LzDv5cyIljCCI7XszSpa36KtcyHktjm
+	BhtUnW7qtLXfAde8q3IXKIvVi3k7kZdVHrtsLcThn/J4pq8YLpCC/SuBfwkSXNyg
+	oaANG93BvYhurczW+OoMUEtGzWGImNZ3OJkNfTvbESoucdxlhFSDo5LSn9OM4Nau
+	rZ+YANsZTG3+t0SgrpW9Ihw62ysA+vE9ejYRoBonC6P2TiRA5l9FckgEoQJrK6wM
+	wYNJA0s1JICLpd0b9l2bMw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1778262356; x=
+	1778348756; bh=BzQpbfj2gB2hq1kMTUl7hUBczCfNpeCyjSIC66D0Crc=; b=j
+	rggMLCqABQXTA4Xu+PVcwzI+hS9E27NAJFUEyDGU9UN/onj2q4fIhhmUlA41A90C
+	hGSzYY9toRrxI8TbyFY8w2G5xOCLJEMmiunQHrpGy8CumzR45gcYhri+ub4cSgyc
+	ZaLfDist1/2k88s8HgCuPVDm5dzNR0Aa/5g/aR064NvUWMA82GmLxTgQqjEA29RT
+	gyCbHSOdARwJAJGE/P9NafcddscdLTc5Vs2+W5ZbByr9KomWCWT6By2L1enlsT1F
+	Ob43BWeTe4w3reVRAHQCRYOA7aPXmhgDRR+lCq+oiNr/c5w1BeGDUhL5t88MBoGj
+	jILyavthdJsfNgb7VhiAg==
+X-ME-Sender: <xms:UyH-aTa1ruE-f_oxE9yDQyU9OeP5tRAXkecNMOWkTzrqUlqkzILFTA>
+    <xme:UyH-acpeufwrO57GDCPPumhwH4kOapF6N_stR27q5f7FOyzyrU3HXFh_ukwq0k9dv
+    RcNQatHMPuuc29L9FNK4Ar6ZgUqXH6E7jIqSH3EQfM8RRP7pYuy>
+X-ME-Received: <xmr:UyH-abZzd1FADE5GNMbNN-9kuk0B5HoV1H2eNsfLDxiDqBAgBjTW2BICGqY>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduuddtleekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
+    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
+    htthgvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudeg
+    veeuueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepudekpdhmohguvgep
+    shhmthhpohhuthdprhgtphhtthhopehmrghtthgvvhesmhgvthgrrdgtohhmpdhrtghpth
+    htohepkhgvvhhinhdrthhirghnsehinhhtvghlrdgtohhmpdhrtghpthhtohepjhhgghes
+    iihivghpvgdrtggrpdhrtghpthhtoheprghnkhhithgrsehnvhhiughirgdrtghomhdprh
+    gtphhtthhopegrphhophhplhgvsehnvhhiughirgdrtghomhdprhgtphhtthhopehlvgho
+    nheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhgvvghssehkvghrnhgvlhdrohhrgh
+    dprhgtphhtthhopehskhholhhothhhuhhmthhhohesnhhvihguihgrrdgtohhmpdhrtghp
+    thhtohephihishhhrghihhesnhhvihguihgrrdgtohhm
+X-ME-Proxy: <xmx:UyH-af7nOMyxkdGlWWReCP_TYbyKMIUAE1xeJI4b5RBEzs-dABt8KQ>
+    <xmx:UyH-aWSS65j0c7jBuCCMfQkWQmLO8t0Y338i5Y4-3Loh_r5sV6wZhw>
+    <xmx:UyH-afvruQn0LMwhN3o0jH9HOeHJiO2u1wZD5kenA_X3J8MCgvnVHA>
+    <xmx:UyH-aYayh2c780BvlSPshIwXYUxrRkKjZ7WmREj60dooA7wuY3fk-Q>
+    <xmx:VCH-aY3fA63EJXNXgPxcuZmpNHZKdHF2H-qYvAfoGN6ihPteuP1BTlAe>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 8 May 2026 13:45:53 -0400 (EDT)
+Date: Fri, 8 May 2026 11:45:52 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Matt Evans <mattev@meta.com>
+Cc: Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, Ankit
+ Agrawal <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>, Leon
+ Romanovsky <leon@kernel.org>, Kees Cook <kees@kernel.org>, Shameer Kolothum
+ <skolothumtho@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>, Alexey
+ Kardashevskiy <aik@ozlabs.ru>, Eric Auger <eric.auger@redhat.com>, Peter Xu
+ <peterx@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>, Zhi Wang
+ <zhiw@nvidia.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ virtualization@lists.linux.dev, alex@shazbot.org
+Subject: Re: [PATCH v4 3/3] vfio/pci: Replace vfio_pci_core_setup_barmap()
+ with vfio_pci_core_get_iomap()
+Message-ID: <20260508114552.6f5b99f0@shazbot.org>
+In-Reply-To: <015b1e9c-0a2d-472a-b750-9154800832ee@meta.com>
+References: <20260505173835.2324179-1-mattev@meta.com>
+	<20260505173835.2324179-4-mattev@meta.com>
+	<20260507162141.072483ce@shazbot.org>
+	<015b1e9c-0a2d-472a-b750-9154800832ee@meta.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
- <20260326-gmem-inplace-conversion-v4-10-e202fe950ffd@google.com>
- <2r4mmfiuisw26qymahnbh2oxqkkrywqev477kc4rlkcyx7tels@c7ple7kdgpo3>
- <CAEvNRgFkusZeKxGctUpTTbYjdi7nZL1ZZar-gT7XRUOCZ2xtpw@mail.gmail.com>
- <eiiecl7jvywvqb4drq7cchmcabcrdka25wxr77uavxqineeedm@rfcnhdz6xoxf>
- <3blpenhpvysb2ig7efegedx4v3flppl5ftnz6vhpqlatfk3ycn@vmmhs7mvjieg>
- <CAEvNRgGbMhkX310CkFY_M5x-zod=BDTiuznrZ0XvFPUK7weL1A@mail.gmail.com> <foi2zvv5qrfdcspnx4fstrvzl74m6xp6zrsw5omlbprxh4jrhx@vxnwk7fr46gu>
-Message-ID: <af4gJ6xZ3e7UXOuO@google.com>
-Subject: Re: [PATCH RFC v4 10/44] KVM: guest_memfd: Add support for KVM_SET_MEMORY_ATTRIBUTES2
-From: Sean Christopherson <seanjc@google.com>
-To: Michael Roth <michael.roth@amd.com>
-Cc: Ackerley Tng <ackerleytng@google.com>, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, ira.weiny@intel.com, jmattson@google.com, 
-	jthoughton@google.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, Apr 29, 2026, Michael Roth wrote:
-> On Fri, Apr 24, 2026 at 12:08:45PM -0700, Ackerley Tng wrote:
-> > Michael Roth <michael.roth@amd.com> writes:
-> > 
-> > Thank you for your patches!
-> > 
-> > >
-> > > [...snip...]
-> > >
-> > >>
-> > >> I also did some minor updates (prefixed with a "[squash]" tag) to advertise
-> > >> the KVM_SET_MEMORY_ATTRIBUTES2_PRESERVED flag so it can be used by
-> > >
-> > > Though I'm not sure how we deal with it if SNP/TDX at some point become
-> > > capable of using the PRESERVED flag *after* populate... but maybe that's
-> > > too unlikely to worry about? If we wanted to address it though, we could
-> > > have both PRESERVED and PRESERVED_BEFORE_LAUNCH so they can be
-> > > enumerated separately from the start.
-> > >
-> > 
-> > Not sure how likely it is, but if SNP and TDX can honor PRESERVE
-> > semantics after populate, I think we could implement support under a new
-> > flag like CIPHER.
+On Fri, 8 May 2026 16:30:40 +0100
+Matt Evans <mattev@meta.com> wrote:
+
+> Hi Alex,
 > 
-> That works, but it still makes things *slightly* awkward due to special-casing
-> the PRESERVE semantics for 1 guest type vs. another.
+> On 07/05/2026 23:21, Alex Williamson wrote:
+> > 
+> > On Tue, 5 May 2026 10:38:31 -0700
+> > Matt Evans <mattev@meta.com> wrote:
+> >   
+> >> Since "vfio/pci: Set up barmap in vfio_pci_core_enable()", the
+> >> resource request and iomap for the BARs was performed early, and
+> >> vfio_pci_core_setup_barmap() just checks those actions succeeded.
+> >>
+> >> Move this logic to a new helper that checks success and returns the
+> >> iomap address, replacing the various bare vdev->barmap[] lookups.
+> >> This maintains the error behaviour of the previous on-demand
+> >> vfio_pci_core_setup_barmap() scheme.
+> >>
+> >> Signed-off-by: Matt Evans <mattev@meta.com>
+> >> ---
+> >>   drivers/vfio/pci/nvgrace-gpu/main.c | 11 ++++-------
+> >>   drivers/vfio/pci/vfio_pci_core.c    | 11 +++++------
+> >>   drivers/vfio/pci/vfio_pci_dmabuf.c  |  2 +-
+> >>   drivers/vfio/pci/vfio_pci_rdwr.c    | 30 ++++++++---------------------
+> >>   drivers/vfio/pci/virtio/legacy_io.c | 13 ++++++-------
+> >>   include/linux/vfio_pci_core.h       | 20 ++++++++++++++++++-
+> >>   6 files changed, 43 insertions(+), 44 deletions(-)
+> >>
+> >> diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
+> >> index fa056b69f899..e153002258ce 100644
+> >> --- a/drivers/vfio/pci/nvgrace-gpu/main.c
+> >> +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
+> >> @@ -184,13 +184,10 @@ static int nvgrace_gpu_open_device(struct vfio_device *core_vdev)
+> >>   
+> >>   	/*
+> >>   	 * GPU readiness is checked by reading the BAR0 registers.
+> >> -	 *
+> >> -	 * ioremap BAR0 to ensure that the BAR0 mapping is present before
+> >> -	 * register reads on first fault before establishing any GPU
+> >> -	 * memory mapping.
+> >> +	 * The BAR map was just set up by vfio_pci_core_enable(), so
+> >> +	 * check that was successful and bail early if not:
+> >>   	 */
+> >> -	ret = vfio_pci_core_setup_barmap(vdev, 0);
+> >> -	if (ret)
+> >> +	if (IS_ERR(vfio_pci_core_get_iomap(vdev, 0)))
+> >>   		goto error_exit;  
+> > 
+> > Sashiko notes we're not setting ret here.  The bots are also paranoid
+> > about the unreachable condition that the get_iomap below could return an
+> > ERR_PTR.  Maybe head off both by adding an __iomem pointer to the
+> > nvgrace_gpu_pci_core_device struct and a temporary one here.  Store the
+> > iomap in the temporary variable, use it to test for IS_ERR() and
+> > PTR_ERR(), then set the pointer in the structure after the last error
+> > condition here.  Add one line in the close_device to set it NULL.  Then
+> > just use nvdev->bar0_io below.  
+> 
+> Right about ret.  On the 2nd, the bots could benefit from a comment on
+> the ...get_iomap() below saying that it "cannot fail" if this one
+> passes, but hey.  I can add a struct member to track it (bots can then
+> worry that it might be NULL, if they don't notice that
+> nvgrace_gpu_check_device_ready() can't happen if
+> nvgrace_gpu_open_device() didn't succeed, etc. etc.).
 
-Summarizing this week's PUCK call[*]:
+While I agree that there's always something that can be overlooked, it
+does seem semantically cleaner that the io is tested when it's
+retrieved for the driver structure and used from that structure in a
+fixed lifecycle than retrieved without testing the results at time of
+use.
+ 
+> >>   
+> >>   	if (nvdev->resmem.memlength) {
+> >> @@ -275,7 +272,7 @@ nvgrace_gpu_check_device_ready(struct nvgrace_gpu_pci_core_device *nvdev)
+> >>   	if (!__vfio_pci_memory_enabled(vdev))
+> >>   		return -EIO;
+> >>   
+> >> -	ret = nvgrace_gpu_wait_device_ready(vdev->barmap[0]);
+> >> +	ret = nvgrace_gpu_wait_device_ready(vfio_pci_core_get_iomap(vdev, 0));
+> >>   	if (ret)
+> >>   		return ret;
+> >>   
+> >> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> >> index 62931dc381d8..5c8bd13f10d0 100644
+> >> --- a/drivers/vfio/pci/vfio_pci_core.c
+> >> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> >> @@ -1761,7 +1761,7 @@ int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma
+> >>   	struct pci_dev *pdev = vdev->pdev;
+> >>   	unsigned int index;
+> >>   	u64 phys_len, req_len, pgoff, req_start;
+> >> -	int ret;
+> >> +	void __iomem *bar_io;
+> >>   
+> >>   	index = vma->vm_pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
+> >>   
+> >> @@ -1795,12 +1795,11 @@ int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma
+> >>   		return -EINVAL;
+> >>   
+> >>   	/*
+> >> -	 * Even though we don't make use of the barmap for the mmap,
+> >> -	 * we need to request the region and the barmap tracks that.
+> >> +	 * Ensure the BAR resource region is reserved for use.
+> >>   	 */
+> >> -	ret = vfio_pci_core_setup_barmap(vdev, index);
+> >> -	if (ret)
+> >> -		return ret;
+> >> +	bar_io = vfio_pci_core_get_iomap(vdev, index);
+> >> +	if (IS_ERR(bar_io))
+> >> +		return PTR_ERR(bar_io);
+> >>   
+> >>   	vma->vm_private_data = vdev;
+> >>   	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+> >> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
+> >> index 69a5c2d511e6..46cd44b22c9c 100644
+> >> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
+> >> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+> >> @@ -248,7 +248,7 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
+> >>   	 * else.  Check that PCI resources have been claimed for it.
+> >>   	 */
+> >>   	if (get_dma_buf.region_index >= VFIO_PCI_ROM_REGION_INDEX ||
+> >> -	    vfio_pci_core_setup_barmap(vdev, get_dma_buf.region_index))
+> >> +	    IS_ERR(vfio_pci_core_get_iomap(vdev, get_dma_buf.region_index)))
+> >>   		return -ENODEV;
+> >>   
+> >>   	dma_ranges = memdup_array_user(&arg->dma_ranges, get_dma_buf.nr_ranges,
+> >> diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
+> >> index 3bfbb879a005..7f14dd46de17 100644
+> >> --- a/drivers/vfio/pci/vfio_pci_rdwr.c
+> >> +++ b/drivers/vfio/pci/vfio_pci_rdwr.c
+> >> @@ -198,19 +198,6 @@ ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool test_mem,
+> >>   }
+> >>   EXPORT_SYMBOL_GPL(vfio_pci_core_do_io_rw);
+> >>   
+> >> -/*
+> >> - * The barmap is set up in vfio_pci_core_enable().  Callers use this
+> >> - * function to check that the BAR resources are requested or that the
+> >> - * pci_iomap() was done.
+> >> - */
+> >> -int vfio_pci_core_setup_barmap(struct vfio_pci_core_device *vdev, int bar)
+> >> -{
+> >> -	if (IS_ERR(vdev->barmap[bar]))
+> >> -		return PTR_ERR(vdev->barmap[bar]);
+> >> -	return 0;
+> >> -}
+> >> -EXPORT_SYMBOL_GPL(vfio_pci_core_setup_barmap);
+> >> -
+> >>   ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
+> >>   			size_t count, loff_t *ppos, bool iswrite)
+> >>   {
+> >> @@ -262,13 +249,11 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
+> >>   		 */
+> >>   		max_width = VFIO_PCI_IO_WIDTH_4;
+> >>   	} else {
+> >> -		int ret = vfio_pci_core_setup_barmap(vdev, bar);
+> >> -		if (ret) {
+> >> -			done = ret;
+> >> +		io = vfio_pci_core_get_iomap(vdev, bar);
+> >> +		if (IS_ERR(io)) {
+> >> +			done = PTR_ERR(io);
+> >>   			goto out;
+> >>   		}
+> >> -
+> >> -		io = vdev->barmap[bar];
+> >>   	}
+> >>   
+> >>   	if (bar == vdev->msix_bar) {
+> >> @@ -423,6 +408,7 @@ int vfio_pci_ioeventfd(struct vfio_pci_core_device *vdev, loff_t offset,
+> >>   	loff_t pos = offset & VFIO_PCI_OFFSET_MASK;
+> >>   	int ret, bar = VFIO_PCI_OFFSET_TO_INDEX(offset);
+> >>   	struct vfio_pci_ioeventfd *ioeventfd;
+> >> +	void __iomem *io;
+> >>   
+> >>   	/* Only support ioeventfds into BARs */
+> >>   	if (bar > VFIO_PCI_BAR5_REGION_INDEX)
+> >> @@ -440,9 +426,9 @@ int vfio_pci_ioeventfd(struct vfio_pci_core_device *vdev, loff_t offset,
+> >>   	if (count == 8)
+> >>   		return -EINVAL;
+> >>   
+> >> -	ret = vfio_pci_core_setup_barmap(vdev, bar);
+> >> -	if (ret)
+> >> -		return ret;
+> >> +	io = vfio_pci_core_get_iomap(vdev, bar);
+> >> +	if (IS_ERR(io))
+> >> +		return PTR_ERR(io);  
+> > 
+> > Sashiko seems to note a real existing error here that should also be
+> > pulled out to a separate fix.  Given the right offset, this could
+> > generate a negative BAR value.  
+> 
+> Yuck, loff_t signed, yep.  Isn't the real root of this that it
+> never makes sense for VFIO_PCI_OFFSET_TO_INDEX() to return a negative
+> index here or anywhere else?
 
-Scrap PRESERVE and ZERO, and simply rely on vendor specific semantics.
+Yes
 
-My desire to enforce PRESERVE and ZERO semantics and avoid relying on vendor specific
-behavior (i.e. on trusted firmware semantics) is a pipe dream.  Unless KVM does
-a truly insane amount of per-gfn tracking, KVM can't know the state of memory for
-a given page, and so can't guarantee PRESERVE or ZERO will be honored.
+> I suggest instead, to also avoid this elsewhere in future, something
+> like:
+> 
+>   #define VFIO_PCI_OFFSET_TO_INDEX(off)	((u64)(off) >> VFIO_PCI_OFFSET_SHIFT)
 
-If userspace requests PRESERVE, just because it's _possible_ to preserve contents
-(e.g. during the pre-boot phase on TDX), doesn't mean the contents are _guaranteed_
-to be preserved.  If userspace doesn't actually ADD the memory to the guest's
-initial image, then the contents won't be preserved.  Ditto for SNP.
+Sure, that has better coverage.
 
-To guarantee PRESERVE, KVM would need to track per-gfn information to know if the
-memory was actually preserved.  And enforcing PRESERVE would be all kinds of crazy;
-KVM would have to kill the VM or something?  And that would still require userspace
-to be aware of vendor specific details.
+> > The test at the end of the previous
+> > chunk should should be expanded to `if (bar < 0 || bar > ...BAR5...)`.  
+> 
+> Not necessary if VFIO_PCI_OFFSET_TO_INDEX() can't return < 0 (the
+> magnitude would be 24b so can't overflow the `int bar` it's assigned
+> into).
 
-The same holds true for ZERO.  On a private=>shared conversion, KVM can't guarantee
-the memory is zeroed by trusted firmware unless KVM tracks, per-gfn, whether or
-not the memory was actually fully assigned to the guest.  E.g. if userspace does
-shared=>private and then private=>shared(ZERO), without the memory being faulted
-into the guest, then the TDX-Module won't have "seen" the page and so wont' have
-zeroed it on the private=>shared conversion.
+Yep.
 
-And trying to special case SNP's "validated CPUID" behavior, where memory can be
-preserved on private=>shared after a failed shared=>private, would also require
-tracking that the page was never actually converted to private.
+> > Do you want to pick that up in this series?  I think it's the only case
+> > that lets that slip through.  Thanks,  
+> 
+> Sure, I'll post a fix.  I don't think it needs to be part of this series
+> though if it's just the macro, do you agree?
 
-Note, regarding ZERO, someone (Mike? Ackerley?) pointed out that userspace typically
-doesn't rely on the kernel to zero memory, and so supporting ZERO for private=>shared
-isn't really all that valuable in the first place.
+I was hoping to collect the fixes from this series for v7.1-rc
+regardless, so either way.
 
-[*] https://drive.google.com/file/d/1w0ifzh5PmNViJ1SKru9jK9x52MybXSNa/view?usp=drive_link
+> Do you know why drivers/gpu/drm/i915/gvt/kvmgt.c has copied
+> VFIO_PCI_OFFSET_TO_INDEX() and friends?  Perhaps the shift was different
+> (the reason drivers/vfio/pci/ism/main.c has its own versions).  The same
+> loff_t issue seems to exist in both of those places, unfortunately.
+
+I think because it was previously defined in a drivers/vfio/pci/ header
+that couldn't be cleanly included.  The region shift is implementation,
+not API, so drivers are free to define their own region spacing, see
+for instance the new ISM driver that needs >40bits per region.  We're
+likely going to move to a maple tree for defining regions in the future
+so that we can more easily account for such large BARs as they become
+more common.  Jason linked a branch with a rough draft of this not long
+ago.
+
+> PS: with minor question:
+> Relatedly, I'd made `bar` an int following existing convention in
+> 
+>   vfio_pci_core_get_iomap(struct vfio_pci_core_device *vdev, int bar)
+> 
+> But I'll make this `unsigned int`, please flag if this violates taste
+> and decency.  IMO any BAR/index parameter should be unsigned; most are,
+> some signed remain.
+
+Yep, I think that would make sense and avoids needing two tests to make
+sure it's in range.  Thanks,
+
+Alex
