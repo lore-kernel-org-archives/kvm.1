@@ -1,173 +1,166 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B87593E1D14
-	for <kvm@vger.kernel.org>; Fri,  8 May 2026 13:04:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487101F8691;
+	Fri,  8 May 2026 13:08:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778245458; cv=none; b=RTjEUt9AXMumAlGF1gWXNmsCGEOck8eZIIKhOKPIr9q5ZlfUOQAaPr6BVnKu7lbURmspX0tGaxoWtUg/GBfY0CWgCkQE2VrfmR9D1SvjoqoKMJ8UetDIXnZffV5x53LkDdQaVd/TIs/fOVDByWCOZUDovzZmpGJqGEyVBT5BBMY=
+	t=1778245700; cv=none; b=QNmjertwiYe8t7OobBFwHXwODbd2aHcbNk942ENWamDLJztKDzN7DhYHxPj7KkPiNqMD4dyA/SkTvpkOSCHR9liDLyG+qFEfgwisxToMircYZcGG/aN7R7HI+9DX41SykwLBmBMPx8sLeOMGv815SufNmB0i87/BZ6w67EBpKMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778245458; c=relaxed/simple;
-	bh=g54pH+gaD1TZqO0excEpJIqIyOnOl+SiwXEpOittxX0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sICSTwk9qzKXiWBpTfXRSE4giJmkQxNAcycNCCk4Fij2f4j1r/0VhcSpqGa5TfMJQ+upy0qZKrOXjF2K319UNTm05JgdHSMVdj4HaTj4E16BdV0SVgBMhrG5DDozxZOjmzBYGD141j7T+8DO4ggleZNXm1m1LBeW9froXngKpVs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O2xkC1hH; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778245700; c=relaxed/simple;
+	bh=ITYGj1EjPgggdECL7+NWLs5KvF5gFyktyuXpGKgy1WA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=X7E4OAllILL95lqf5JSzcL9scGXhkrwmQ5rW0kpt5c+vAlGACz9spLICzUswxAC2ZVGQZGdbPc3hUHV7jsQHt4+n9G8fZi5/rpCkwKK9sYDAUEjkLHfFV54PHCbHhVf65+MxYvlzdVHfeEk9fiYne8g/EHHOBD9uFmLZuWSa0dc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=iNwJSew/; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O2xkC1hH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65601C2BCB8
-	for <kvm@vger.kernel.org>; Fri,  8 May 2026 13:04:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778245458;
-	bh=g54pH+gaD1TZqO0excEpJIqIyOnOl+SiwXEpOittxX0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=O2xkC1hHpohmfGe9xgufo+sIkUBAgCjNC1RaaG5HakjrhMh7ifuzEXvJ6Bg4TzbCM
-	 nMxGmGfPhDNnkIyUnGxZVCnePFSg207YfK4kYKVNcC+t6hCuexCwx0cFov6teNZHwQ
-	 hjbEZfSZSGtdCjr77F3MVXM+8h73mwAxluCLQD1MEoJWqepkXRpgImyhGbl6woW4FI
-	 Sf66E9xmCB869zW+37vV+0CyOU3w8t2gvACUOSHJb8X91uTxk4+BauN8p1ogHI7kYd
-	 6iRnaupJRbhYd9ySX6JxB+mbKtVycZPbclB6I+WVLLy/dVS6EwlehbnWnstIFgSK5M
-	 B/PZplwmiANuQ==
-Received: by mail-ej1-f48.google.com with SMTP id a640c23a62f3a-b9d9971d059so305718566b.2
-        for <kvm@vger.kernel.org>; Fri, 08 May 2026 06:04:18 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ9CLIvz3Zp4YvKbSxjPPLB9u6XnZFlOmftrAbV40sZHvpMJCa7JgGYxxCkwm0TJUxArxYE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwjIQFYCwkEWRhEk2nbZ+f6Al5GzxMXIkS/S2v8Vt5108Zmb+qd
-	kk2fOMvcAFO+QnjmK/WBflxFeHWKT1fy73Ge4xNlk30NoQYQbNBqu2MCAgoSESx0ksKeg9Cr6WW
-	Uuzuzxi97SPzYB6vfibxSFbplqorS7ys=
-X-Received: by 2002:a17:907:c084:b0:bc6:4ad0:8822 with SMTP id
- a640c23a62f3a-bc64ad08a4dmr585106266b.2.1778245457005; Fri, 08 May 2026
- 06:04:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="iNwJSew/"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 648124QG2805903;
+	Fri, 8 May 2026 13:08:17 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=EJBZh8
+	NphQAerlQeRvJ0i9+Rxs6rH3UaZ+wSL42Cy6c=; b=iNwJSew/Qu/2PeeoxyTXV1
+	WxzWegktzeQR3exKGrehb9LMHwlI+xsBuGvTrCPliZrOQGrVWZuExtigzy9vUNX9
+	NJhrNQqufSJ+jF6wUNvP3Mj7xbqOHkJ2OV/WLxaNu68qGNeq9bWlzB1A4EoCQ/BZ
+	I58ovpYS6q4BECfbXeBwa0lFVf1hxynttKUGky1mc6RmSmAC5eG0V6lV5PGXLRGC
+	+erZqhD9QKVJ1QTGZ2bHYk6YwYkyjTx1kv38Zp/3fQTND1QAkTTAa2dVEJGKzEH+
+	rkHTWKVLSIDOSCj6M1Aiu0OJoZAhVPBxLX7Na7HlwsqVCzqAknka+2V/Dc+PHcCw
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9v7uu37-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 May 2026 13:08:16 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 648CdcOY018067;
+	Fri, 8 May 2026 13:08:16 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwwtgr32m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 May 2026 13:08:16 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 648D8F8t28705444
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 8 May 2026 13:08:15 GMT
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2FE1758052;
+	Fri,  8 May 2026 13:08:15 +0000 (GMT)
+Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 775245805D;
+	Fri,  8 May 2026 13:08:14 +0000 (GMT)
+Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown [9.61.111.34])
+	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  8 May 2026 13:08:14 +0000 (GMT)
+Message-ID: <66f7c47f9931bfc9be47c7f6d02861bd3f3f37e8.camel@linux.ibm.com>
+Subject: Re: [PATCH v2 0/3] KVM: s390: Toggle operation exception for
+ userspace
+From: Eric Farman <farman@linux.ibm.com>
+To: Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Janosch Frank
+	 <frankja@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David
+ Hildenbrand <david@kernel.org>
+Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org
+Date: Fri, 08 May 2026 09:08:14 -0400
+In-Reply-To: <1ac58dd8-1b06-42b5-9a19-67620b4fdc25@linux.ibm.com>
+References: <20260507200836.3500368-1-farman@linux.ibm.com>
+	 <1ac58dd8-1b06-42b5-9a19-67620b4fdc25@linux.ibm.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260508013001.4107737-1-maobibo@loongson.cn> <CAAhV-H6dHM0GBFCh-6-q0fM3VSa49RTXSDz+YUvM0j7u_was1g@mail.gmail.com>
- <3d3bb8ea-34b7-b4da-deac-677ac272dd76@loongson.cn> <CAAhV-H44v2TcSAeq+mDiHy26k=mE4ykqjrvPsNurgpw4OhnNTg@mail.gmail.com>
- <076bc4bc-54da-efb6-b1d4-e5e754bb580a@loongson.cn>
-In-Reply-To: <076bc4bc-54da-efb6-b1d4-e5e754bb580a@loongson.cn>
-From: Huacai Chen <chenhuacai@kernel.org>
-Date: Fri, 8 May 2026 21:04:05 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H7vCF0=_EdahXSeQBu8r65SJ6t3-FCiWh4TxhoaRnXnMg@mail.gmail.com>
-X-Gm-Features: AVHnY4L-msiTM-MbCmpdh3CE8QJFgYLPxmmdTkP46TEdC6G8QUpTJ6ObCRoftHU
-Message-ID: <CAAhV-H7vCF0=_EdahXSeQBu8r65SJ6t3-FCiWh4TxhoaRnXnMg@mail.gmail.com>
-Subject: Re: [PATCH] LoongArch: KVM: Move some variable declaration to file paravirt.h
-To: Bibo Mao <maobibo@loongson.cn>
-Cc: kernel@xen0n.name, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA4MDEzNiBTYWx0ZWRfX+E+dYpv64FxU
+ mllZkS2TnA+/w+Bapd42mcMurrpBz2rLq6U81Ts7v6FH3eDgySGwEodOpGqbM89maacOruKEtPc
+ ctRwm7ypM/9Ookl27eMZHKHU2lhNgPw3EOVeDICw2JCO1QfreFSKvqDQgR2AgCN5WUliW1hNULI
+ kXWkYuyioWSBOiC8cHoFoiY72/M0ftA4jTkk1+qplidcCPsPwpIfnEIyglTqFT9XCJUmJQmQKNy
+ mVXgapZrQpHh8aeO/1YZfGpFxDHbrGNkXwTh2tsEl7LtTAFbpL97EOlUf09NjLTmd9CqTOsf9dU
+ nVnsrUf9HkJ4ckyDxKLjbh9pnQu/MozVTIGU8loV4eBLBb29iGzv4MY8DM6XzrZTgw2uLCgXthL
+ gFLFMIafIqVdii+Xk5rDqOzehcDOZtZW2Vvw0xIEob65lqGVCuLhjCfaaqKcN659gAnoCjunXYe
+ AI1maRAnty0TK/DsrhA==
+X-Proofpoint-GUID: eYBVaZe1vQyDAXhlrSyLS6dIPjMsYYbX
+X-Proofpoint-ORIG-GUID: eYBVaZe1vQyDAXhlrSyLS6dIPjMsYYbX
+X-Authority-Analysis: v=2.4 cv=eu/vCIpX c=1 sm=1 tr=0 ts=69fde040 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=Jmiu7mG_WmB9V10SlMQA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-07_02,2026-05-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 phishscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0
+ suspectscore=0 malwarescore=0 bulkscore=0 impostorscore=0 spamscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605080136
 
-On Fri, May 8, 2026 at 11:19=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> wrot=
-e:
->
->
->
-> On 2026/5/8 =E4=B8=8A=E5=8D=8811:11, Huacai Chen wrote:
-> > On Fri, May 8, 2026 at 11:08=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> =
-wrote:
-> >>
-> >>
-> >>
-> >> On 2026/5/8 =E4=B8=8A=E5=8D=8810:56, Huacai Chen wrote:
-> >>> Hi, Bibo,
-> >>>
-> >>> On Fri, May 8, 2026 at 9:30=E2=80=AFAM Bibo Mao <maobibo@loongson.cn>=
- wrote:
-> >>>>
-> >>>> Some variables relative with paravirt feature are declared in header=
- file
-> >>>> asm/qspinlock.h, however this file can be included only when option
-> >>>> CONFIG_SMP is on. There is compiling warning if CONFIG_SMP is off si=
-nce
-> >>>> it is not declared.
-> >>>>
-> >>>> Move these variable declaration to header file asm/paravirt.h to avo=
-id
-> >>>> compiling warning.
-> >>> Have you reproduced the warning? I cannot reproduce it in my
-> >>> environment with the config file from lkp report, so I also cannot
-> >>> confirm whether it is fixed.
-> >> yes, I can reproduce this and it is fixed. The warning is reported fro=
-m
-> >> sparse tool, rather than LLVM.
-> >>>
-> >>> Another question:
-> >>> Is paravirt.h a better place than kvm_para.h?
-> >> en, here kvm_para.h seems better, will send V2 version in next time.
-> > Frankly, I don't know the difference between the two files. kvm_para.h
-> > is kvm specific and paravirt.h is generic? Or kvm_para.h is the
-> > hypervisor side and paravirt.h is the guest side?
-> kvm_para.h is shared by hypervisor and guest kernel, paravirt.h is only
-> used by guest kernel. And option CONFIG_PARAVIRT is useful with guest
-> kernel, CONFIG_PARAVIRT has no much meaning with hypervisor.
-If so, paravirt.h seems better to declare these variables.
+On Fri, 2026-05-08 at 12:07 +0200, Christian Borntraeger wrote:
+> Am 07.05.26 um 22:08 schrieb Eric Farman:
+> > Claudio, et al,
+> >=20
+> > Here's an update to the USER_OPEREXEC patch I'd sent the other day.
+> > Besides the addition of Claudio's r-b (thank you!), Patch 1 is identica=
+l.
+> >=20
+> > Patch 2 contains a couple of new selftests. As it stands, they all run
+> > with patch 1 applied, but I put the failing test at the end for if
+> > Patch 1 is missing.
+> >=20
+> > Patch 3 is unrelated, but is a minor typo I stumbled on yesterday while
+> > looking at this. It seems small enough that a second `git send-email`
+> > command seems unnecessary. :)
+> >=20
+> > Eric Farman (3):
+> >    KVM: s390: Toggle operation exception for userspace
+> >    KVM: s390: selftests: Extended user_operexec tests
+> >    KVM: s390: Fix typo in UCONTROL documentation
+> >=20
+> >   Documentation/virt/kvm/api.rst                |   2 +-
+> >   arch/s390/kvm/kvm-s390.c                      |   3 +-
+> >   .../selftests/kvm/include/s390/facility.h     |   6 +
+> >   .../selftests/kvm/s390/user_operexec.c        | 110 +++++++++++++++++=
++
+> >   4 files changed, 119 insertions(+), 2 deletions(-)
+> >=20
+>=20
+> Independent from this series (which makes sense on its own)
+> shouldnt we add another fixup so that we send these kernel injects also t=
+o userspace?
+>=20
 
-Huacai
+Hrm, that's a reasonable idea for the ones in priv.c (intercept.c are alrea=
+dy covered, see below).
+I'll see if I can find a way to unify (and test) them.
 
->
-> Regards
-> Bibo Mao
-> >
-> > Huacai
-> >
-> >>
-> >> Regards
-> >> Bibo Mao
-> >>
-> >>>
-> >>> Huacai
-> >>>
-> >>>>
-> >>>> Fixes: c43dce6f13fb ("LoongArch: KVM: Make vcpu_is_preempted() as a =
-macro rather than function")
-> >>>> Reported-by: kernel test robot <lkp@intel.com>
-> >>>> Closes: https://lore.kernel.org/oe-kbuild-all/202605061313.O8Hswm2b-=
-lkp@intel.com/
-> >>>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-> >>>> ---
-> >>>>    arch/loongarch/include/asm/paravirt.h  | 4 ++++
-> >>>>    arch/loongarch/include/asm/qspinlock.h | 5 +----
-> >>>>    2 files changed, 5 insertions(+), 4 deletions(-)
-> >>>>
-> >>>> diff --git a/arch/loongarch/include/asm/paravirt.h b/arch/loongarch/=
-include/asm/paravirt.h
-> >>>> index 0111f0ad5f73..dbc64908017f 100644
-> >>>> --- a/arch/loongarch/include/asm/paravirt.h
-> >>>> +++ b/arch/loongarch/include/asm/paravirt.h
-> >>>> @@ -3,6 +3,10 @@
-> >>>>    #define _ASM_LOONGARCH_PARAVIRT_H
-> >>>>
-> >>>>    #ifdef CONFIG_PARAVIRT
-> >>>> +#include <linux/jump_label.h>
-> >>>> +DECLARE_STATIC_KEY_FALSE(virt_preempt_key);
-> >>>> +DECLARE_STATIC_KEY_FALSE(virt_spin_lock_key);
-> >>>> +DECLARE_PER_CPU(struct kvm_steal_time, steal_time);
-> >>>>
-> >>>>    int __init pv_ipi_init(void);
-> >>>>    int __init pv_time_init(void);
-> >>>> diff --git a/arch/loongarch/include/asm/qspinlock.h b/arch/loongarch=
-/include/asm/qspinlock.h
-> >>>> index 0ee15b3b3937..fbfc6be82f26 100644
-> >>>> --- a/arch/loongarch/include/asm/qspinlock.h
-> >>>> +++ b/arch/loongarch/include/asm/qspinlock.h
-> >>>> @@ -3,12 +3,9 @@
-> >>>>    #define _ASM_LOONGARCH_QSPINLOCK_H
-> >>>>
-> >>>>    #include <asm/kvm_para.h>
-> >>>> -#include <linux/jump_label.h>
-> >>>> +#include <asm/paravirt.h>
-> >>>>
-> >>>>    #ifdef CONFIG_PARAVIRT
-> >>>> -DECLARE_STATIC_KEY_FALSE(virt_preempt_key);
-> >>>> -DECLARE_STATIC_KEY_FALSE(virt_spin_lock_key);
-> >>>> -DECLARE_PER_CPU(struct kvm_steal_time, steal_time);
-> >>>>
-> >>>>    #define virt_spin_lock virt_spin_lock
-> >>>>
-> >>>>
-> >>>> base-commit: 74fe02ce122a6103f207d29fafc8b3a53de6abaf
-> >>>> --
-> >>>> 2.39.3
-> >>>>
-> >>
->
+>=20
+> git grep PGM_OPERATION linux/master arch/s390/kvm/
+> linux/master:arch/s390/kvm/intercept.c:         return kvm_s390_inject_pr=
+ogram_int(vcpu, PGM_OPERATION);
+
+This is handle_sthyi(), called by handle_operexc(), if stfle.74 is not pres=
+ent.
+
+> linux/master:arch/s390/kvm/intercept.c: return kvm_s390_inject_program_in=
+t(vcpu, PGM_OPERATION);
+
+This is handle_operexc(), if neither user_instr0 nor user_operexec are pres=
+ent.
+
+> linux/master:arch/s390/kvm/priv.c:              return kvm_s390_inject_pr=
+ogram_int(vcpu, PGM_OPERATION);
+> linux/master:arch/s390/kvm/priv.c:              return kvm_s390_inject_pr=
+ogram_int(vcpu, PGM_OPERATION);
+> linux/master:arch/s390/kvm/priv.c:              return kvm_s390_inject_pr=
+ogram_int(vcpu, PGM_OPERATION);
+> linux/master:arch/s390/kvm/priv.c:              return kvm_s390_inject_pr=
+ogram_int(vcpu, PGM_OPERATION);
+> linux/master:arch/s390/kvm/priv.c:              return kvm_s390_inject_pr=
+ogram_int(vcpu, PGM_OPERATION)
