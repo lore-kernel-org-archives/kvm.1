@@ -1,125 +1,190 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B5CF2D8376;
-	Fri,  8 May 2026 22:53:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CE839D6CF
+	for <kvm@vger.kernel.org>; Fri,  8 May 2026 22:57:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778280822; cv=none; b=MYBOnN8hnJHB7hPQf3RYa5wESVvkD5hCcgEhvkzircJvmOSk7Sldg7kUTJFCfCfNQ6FHps055rWWDkGlf46Le1k+sdNmgZLh7Uv+QD5mfmX4izHoMutftq7JNNK6B+hMs7VbMIfPd/3McRUu7CgoTo5ZIe3Nrz+NlIUFiM3gdvk=
+	t=1778281047; cv=none; b=LFR2HolBXgx0lF4sgKhHxDqWaKLjFPv30eJIvVt2WDG9ut6IvLQgv2llapo1qGBRSiPXYbimbvFC3xTctW+jZxOR+3p+6gqnxK7PRfRAH2Nh9RWz0hZ8ZiYbnCFG1PJYs02PFBrz3JO+dwet1WvDNuSiBkxdAjO9YOy2mL7GLPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778280822; c=relaxed/simple;
-	bh=uAPw3L7lLtpXul9mWvAzywjOCxgmQ5Qdhfy9p+xdPsQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TpzPwp0KE1PUCWLKaBDxMp2CqR0qP/flYUNutb9QiiehwoK5KVGUcAz2UUWmKpwT8uLFr7OuJJ8ZvUYEh9CQbZuxZJLszn+1sOI44dgKUyksHY7i37HVcTw1dsRuKyDEHaz2VF+8YBxdnuJnwUPkmtTckNaSp76AfXMdMu33E0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=St4HNRwD; arc=none smtp.client-ip=192.198.163.8
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1778281047; c=relaxed/simple;
+	bh=PhXkz2bexYeFkd5Iu6TUPlzgb73A7DZO37TdKBxv6+U=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=i5qPbCBwHrbSCu7ks54ApgSa4iE9SSAu7p+z6wIqVpY4J5KlhT6UAoH4Xi+uJdtH66uXCJdEYAH0Uxq6wOYVch72I9ZVVj53nxgaj0mUjqR3gh481w3R0DlGQz/k+rDlAbmoVBecgtXIozltVvPMQXYSGw3LdlwSi/R8uwKpgPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LhGGgO3f; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="St4HNRwD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778280820; x=1809816820;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=uAPw3L7lLtpXul9mWvAzywjOCxgmQ5Qdhfy9p+xdPsQ=;
-  b=St4HNRwDUkZAZObfk6SOuHp7ANhD+kT72Soit1O/TY9saPCuG1nLrAyD
-   eYfu1iuIQyT55LSj3lP9EwetXTN7Uj1rUHtSQvcQOVzzStND/HLd/Qdxm
-   AcfxAGBj6liBAUnpFF6yxnX0HHyejf3ggpdiWFvXn0EoMp7LNwTAM4lqa
-   flmAJa0y4TAJXCzk2JzXaFJjdVJ9EoR2Hqrz0tGw3CRIr6kDzCueVFd97
-   1/ML4s3FFkuegb5NpkzB8ysltin3feQl0WQ+zSWxsd1ejFCNW7lzxh3r7
-   qd9BonSLA2oq4Zti26TPID+tJsD2VbDzVQ3FhHFfzi+G9snHIY88pdYET
-   Q==;
-X-CSE-ConnectionGUID: fNWSDk9NR4ibwPM1BEfwFg==
-X-CSE-MsgGUID: 8AaVfTMfTDOuIZVR1jYORw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11780"; a="96829214"
-X-IronPort-AV: E=Sophos;i="6.23,224,1770624000"; 
-   d="scan'208";a="96829214"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2026 15:53:40 -0700
-X-CSE-ConnectionGUID: v0xQEJwPRdufpyZ5Tn6yPQ==
-X-CSE-MsgGUID: kuzkWgHpRK+6XqtSMHjtFg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,224,1770624000"; 
-   d="scan'208";a="275002445"
-Received: from mvcheng-desk2.amr.corp.intel.com (HELO [10.125.111.73]) ([10.125.111.73])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2026 15:53:39 -0700
-Message-ID: <17ecd22b-4bdc-45fe-b7b0-f3dee4c08e66@intel.com>
-Date: Fri, 8 May 2026 15:53:45 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LhGGgO3f"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b79f4b35b7so23567275ad.0
+        for <kvm@vger.kernel.org>; Fri, 08 May 2026 15:57:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778281045; x=1778885845; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wjR7D57JfGZ1jeaZVCslZKEDVUUN8a3SBLn05f05nzk=;
+        b=LhGGgO3f7rjXpIJHq0kdejDDr3kPcz28d9Yc0uZys+1FryiAYSmVtHzyYj4VZXbEz8
+         1SkrA5BKj4I/nbeH0Yp88wYBNIvoqlvhqGv5wDmlzzX7rRn8Oru13lEy/lCQKgRUy+NK
+         UTcNtJNXR89RNZr3qdE6EqPC2dlihK8BFUSmGgSMTvHoV34uY7cp5qwoXkly4pHC+6JK
+         Ga3WpDL/o+zoy7Y/rqCIN2qP6/Va3f8Xim3OpQkxr9Yt478b5y45AaZfOxJHUoY81o2y
+         kyJtxO2FvRROiDt9dOEBR8MNwjg/siFbVRbDjZY8v1rleEU66lPHy/JWNbOpp0idUyiK
+         ewaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778281045; x=1778885845;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wjR7D57JfGZ1jeaZVCslZKEDVUUN8a3SBLn05f05nzk=;
+        b=itkdoCLvHdBah9fE9BiHRq6yT2aDZsnQl99q97QDiowpNL5d0O5EpTJE14PE1SECSW
+         2+rwEhK9t/Wc74S7ol9//6nVD5jq2MVijJDy9JuHt/2kX5syhXGJ34ZKmIbqMAPVpizY
+         RI2Xi6P0LTdTS9uIr0lpP5yAAO30mpk/+X3BTZkEkZfQjs1aBlKegLblBpqTYzS+ZaGW
+         561Kaokip+CovnI+hK5QHy8+UotaicqJlatMiKAIoZ3fONAoI9ivCsqrnWkHmtg4w71F
+         bgL3nvkET2a9Hwl2vCI2kelUsUSeH/3C7aQmVZNfhAHX00RUEMqipIbbhVzIYkSPb6q8
+         TQqQ==
+X-Gm-Message-State: AOJu0YyJCjAkZKaf4gj+0gtoILBHtG5ZJfgrSSQc/UI8aZ5QunYF49LH
+	PJV8tforzRvUAFvpBtjGZaqF+XWzhy9IzK30fB2NsEDEjZsv0S7sqOyYRiykAKEiSbOwDp2M78B
+	0JKKKMw==
+X-Received: from pga9.prod.google.com ([2002:a05:6a02:4f89:b0:c79:8c98:9814])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3390:b0:398:b95c:51f7
+ with SMTP id adf61e73a8af0-3aa5ab27f40mr16463110637.37.1778281045155; Fri, 08
+ May 2026 15:57:25 -0700 (PDT)
+Date: Fri, 8 May 2026 15:57:24 -0700
+In-Reply-To: <20260407063245.2755579-3-nikunj@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/2] x86/tdx: Port I/O emulation fixes
-To: Kiryl Shutsemau <kas@kernel.org>,
- Dave Hansen <dave.hansen@linux.intel.com>
-Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H . Peter Anvin" <hpa@zytor.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Kai Huang <kai.huang@intel.com>,
- Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, stable@vger.kernel.org
-References: <20260428125632.129770-1-kas@kernel.org>
- <af5orHTGMRfD5TxP@thinkstation>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
- oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
- 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
- ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
- VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
- iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
- c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
- pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
- ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
- QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
- c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
- LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
- lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
- MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
- IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
- aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
- I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
- E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
- F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
- CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
- P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
- 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
- GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
- MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
- Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
- lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
- 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
- qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
- BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
- 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
- vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
- FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
- l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
- yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
- +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
- asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
- WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
- sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
- KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
- MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
- hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
- vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <af5orHTGMRfD5TxP@thinkstation>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260407063245.2755579-1-nikunj@amd.com> <20260407063245.2755579-3-nikunj@amd.com>
+Message-ID: <af5qVIXf06WyK4XG@google.com>
+Subject: Re: [PATCH v6 2/7] KVM: x86: Move PML page to common vcpu arch structure
+From: Sean Christopherson <seanjc@google.com>
+To: Nikunj A Dadhania <nikunj@amd.com>
+Cc: kvm@vger.kernel.org, pbonzini@redhat.com, thomas.lendacky@amd.com, 
+	bp@alien8.de, joao.m.martins@oracle.com, kai.huang@intel.com
+Content-Type: text/plain; charset="us-ascii"
 
-On 5/8/26 15:52, Kiryl Shutsemau wrote:
-> On Tue, Apr 28, 2026 at 01:56:30PM +0100, Kiryl Shutsemau (Meta) wrote:
->> Kiryl Shutsemau (Meta) (2):
->>   x86/tdx: Fix off-by-one in port I/O handling
->>   x86/tdx: Fix zero-extension for 32-bit port I/O
-> Dave, could get them applied?
+On Tue, Apr 07, 2026, Nikunj A Dadhania wrote:
+> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> index b77750a2efc2..909085a5dfb3 100644
+> --- a/arch/x86/kvm/vmx/vmx.c
+> +++ b/arch/x86/kvm/vmx/vmx.c
+> @@ -4934,7 +4934,8 @@ int vmx_vcpu_precreate(struct kvm *kvm)
+>  
+>  static void init_vmcs(struct vcpu_vmx *vmx)
+>  {
+> -	struct kvm *kvm = vmx->vcpu.kvm;
+> +	struct kvm_vcpu *vcpu = &vmx->vcpu;
+> +	struct kvm *kvm = vcpu->kvm;
 
-I'll look on Monday. Thanks for the reminder.
+There are 9+ existing uses of "vmx->vcpu" in init_vmcs().  I'd rather insert a
+prep patch to pass @vcpu instead of @vmx, do to_vmx() at the top, and switch all
+existing vmx->vcpu usage.
+
+From: Sean Christopherson <seanjc@google.com>
+Date: Fri, 8 May 2026 15:55:55 -0700
+Subject: [PATCH] KVM: VMX: Pass @vcpu, not @vmx to init_vmcs()
+
+Pass @vcpu instead of @vmx to init_vmcs(), and switch all of the vmx->vcpu
+usage to a simple vcpu.
+
+No functional change intended.
+
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/vmx/vmx.c | 25 +++++++++++++------------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
+
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 5c2c33a5f7dc..b8d517b03bb4 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -4823,10 +4823,11 @@ int vmx_vcpu_precreate(struct kvm *kvm)
+ 
+ #define VMX_XSS_EXIT_BITMAP 0
+ 
+-static void init_vmcs(struct vcpu_vmx *vmx)
++static void init_vmcs(struct kvm_vcpu *vcpu)
+ {
+-	struct kvm *kvm = vmx->vcpu.kvm;
++	struct kvm *kvm = vcpu->kvm;
+ 	struct kvm_vmx *kvm_vmx = to_kvm_vmx(kvm);
++	struct vcpu_vmx *vmx = to_vmx(vcpu);
+ 
+ 	if (nested)
+ 		nested_vmx_set_vmcs_shadowing_bitmap();
+@@ -4851,7 +4852,7 @@ static void init_vmcs(struct vcpu_vmx *vmx)
+ 	if (cpu_has_tertiary_exec_ctrls())
+ 		tertiary_exec_controls_set(vmx, vmx_tertiary_exec_control(vmx));
+ 
+-	if (enable_apicv && lapic_in_kernel(&vmx->vcpu)) {
++	if (enable_apicv && lapic_in_kernel(vcpu)) {
+ 		vmcs_write64(EOI_EXIT_BITMAP0, 0);
+ 		vmcs_write64(EOI_EXIT_BITMAP1, 0);
+ 		vmcs_write64(EOI_EXIT_BITMAP2, 0);
+@@ -4863,7 +4864,7 @@ static void init_vmcs(struct vcpu_vmx *vmx)
+ 		vmcs_write64(POSTED_INTR_DESC_ADDR, __pa((&vmx->vt.pi_desc)));
+ 	}
+ 
+-	if (vmx_can_use_ipiv(&vmx->vcpu)) {
++	if (vmx_can_use_ipiv(vcpu)) {
+ 		vmcs_write64(PID_POINTER_TABLE, __pa(kvm_vmx->pid_table));
+ 		vmcs_write16(LAST_PID_POINTER_INDEX, kvm->arch.max_vcpu_ids - 1);
+ 	}
+@@ -4898,15 +4899,15 @@ static void init_vmcs(struct vcpu_vmx *vmx)
+ 	vmcs_write64(VM_ENTRY_MSR_LOAD_ADDR, __pa(vmx->msr_autoload.guest.val));
+ 
+ 	if (vmcs_config.vmentry_ctrl & VM_ENTRY_LOAD_IA32_PAT)
+-		vmcs_write64(GUEST_IA32_PAT, vmx->vcpu.arch.pat);
++		vmcs_write64(GUEST_IA32_PAT, vcpu->arch.pat);
+ 
+ 	vm_exit_controls_set(vmx, vmx_get_initial_vmexit_ctrl());
+ 
+ 	/* 22.2.1, 20.8.1 */
+ 	vm_entry_controls_set(vmx, vmx_get_initial_vmentry_ctrl());
+ 
+-	vmx->vcpu.arch.cr0_guest_owned_bits = vmx_l1_guest_owned_cr0_bits();
+-	vmcs_writel(CR0_GUEST_HOST_MASK, ~vmx->vcpu.arch.cr0_guest_owned_bits);
++	vcpu->arch.cr0_guest_owned_bits = vmx_l1_guest_owned_cr0_bits();
++	vmcs_writel(CR0_GUEST_HOST_MASK, ~vcpu->arch.cr0_guest_owned_bits);
+ 
+ 	set_cr4_guest_host_mask(vmx);
+ 
+@@ -4921,7 +4922,7 @@ static void init_vmcs(struct vcpu_vmx *vmx)
+ 		vmcs_write16(GUEST_PML_INDEX, PML_HEAD_INDEX);
+ 	}
+ 
+-	vmx_write_encls_bitmap(&vmx->vcpu, NULL);
++	vmx_write_encls_bitmap(vcpu, NULL);
+ 
+ 	if (vmx_pt_mode_is_host_guest()) {
+ 		memset(&vmx->pt_desc, 0, sizeof(vmx->pt_desc));
+@@ -4934,13 +4935,13 @@ static void init_vmcs(struct vcpu_vmx *vmx)
+ 	vmcs_writel(GUEST_SYSENTER_ESP, 0);
+ 	vmcs_writel(GUEST_SYSENTER_EIP, 0);
+ 
+-	vmx_guest_debugctl_write(&vmx->vcpu, 0);
++	vmx_guest_debugctl_write(vcpu, 0);
+ 
+ 	if (cpu_has_vmx_tpr_shadow()) {
+ 		vmcs_write64(VIRTUAL_APIC_PAGE_ADDR, 0);
+-		if (cpu_need_tpr_shadow(&vmx->vcpu))
++		if (cpu_need_tpr_shadow(vcpu))
+ 			vmcs_write64(VIRTUAL_APIC_PAGE_ADDR,
+-				     __pa(vmx->vcpu.arch.apic->regs));
++				     __pa(vcpu->arch.apic->regs));
+ 		vmcs_write32(TPR_THRESHOLD, 0);
+ 	}
+ 
+@@ -4951,7 +4952,7 @@ static void __vmx_vcpu_reset(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+ 
+-	init_vmcs(vmx);
++	init_vmcs(vcpu);
+ 
+ 	if (nested &&
+ 	    kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_STUFF_FEATURE_MSRS))
+
+base-commit: 4c88d35f51436169884ce87bcf26f31e10106e71
+-- 
