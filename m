@@ -1,140 +1,179 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF5C33064A;
-	Fri,  8 May 2026 10:08:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 539E5346FD2
+	for <kvm@vger.kernel.org>; Fri,  8 May 2026 10:11:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778234891; cv=none; b=WJgsEyW9PbjW+oqwmq0DCiE20HBN5YWQujO1ru3o2R5PxCqd9PwsHDLyarJDl3SP+TKgfxuQ4TJQ4LyelfpbZGi0eNGmTmpiHH+4F0VSlB/gG2idjbCb9DWtmHyJZkCbGEFTmDVBobW+2cKn0bQHOCmFebqxL/VwMvMPpM5JD80=
+	t=1778235113; cv=none; b=NOrlubZ5zcuTb0y4sZBAZ7uqCbtQeH7iqrgQ7h8IX+oGu3EQkQ6kfz4Dsf0AEm0gzAXVkMDhbov/a0lR8qs2ilfX+HHl3aLLivwzpAEJMLzUgqNaBzA0ZTWP153emCNBJt8crs+6F9ccwR/OwyF7iX3qFUVYcW8f9WAxvAo2U/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778234891; c=relaxed/simple;
-	bh=oowpiSCkX+oLId3c0YgRMI8IPfRBYasH7FJDbGClctA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gw796fURsWLtIMhHrKRzUc/ioVZaMDHdtuEq1R0L7w7hR4MkvOqQLheHiW/w0kgBraiwDmDvOMukanbxULC9VLTEwrc5gkOZMIjfVFvwUIM7oTfBqcyhevP0B4BQFUlkL3nEq5P+MxpSlsJ1Iqv2jOkbc1UVdcGkRSi2QtQjNqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=H6QFSLxt; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1778235113; c=relaxed/simple;
+	bh=5elEoYj/5z4XlNxRebDQfE/NWKivBbNLq4gq+S9kA1U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XiA3Tg0Cy1+ZD09KMHojR4Yty1SmvvLF6gtlJuGPKF6aMtwer5rqC7pDO8Ryp7c34DFckDG8C6jtg/jMTIrd37IopKjGtC5opOCSaIzB7pMysfORsTFKPHr3F2cbxxXYHcpvIPzkwfdM+g/hyMZqMnZ06MpYprswQbBLF/4GaEM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gWJpfyht; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=eAT+xl3a; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="H6QFSLxt"
-Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64897vfa2197452;
-	Fri, 8 May 2026 10:07:56 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=GSJj2G
-	T94ClYwRuSlXkKx4lW5Zp4vKHmDONAROcqMm8=; b=H6QFSLxtYGhZSgkZL3zqvs
-	CBY+rujt1RL/GK7OvNyeg2EWVlSVnqI2+/ADeDhdAXQKjBp2NxF1Oxipy7Fp4BCd
-	3WHVVBrQt88ARkq7ucAx7JzgupCyg+UVDgX1yDqTokZ14jABtkt1KtFYh5UGyI60
-	geLyusvZRoBYEk/j08Gn/REFoGiE9kQciKEoyfDcWOGezTB0vq6bp4G6oPZXVEtq
-	yYD6VWxSnrwRB3v6mLL8Xax2TePYANZI9EXoTqJwxh/lIBveTiWaYg6H/+P9Rgnh
-	zT8Pzn2wMgi8tEkB1UjRAAo7Hk03PI8F7EL2vDmN+2AEO3nk1DL1PDKMX8m+gqWg
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9w6sv19-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 08 May 2026 10:07:56 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6489sdap031316;
-	Fri, 8 May 2026 10:07:55 GMT
-Received: from smtprelay04.fra02v.mail.ibm.com ([9.218.2.228])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwx9yqf71-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 08 May 2026 10:07:55 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay04.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 648A7qwp15860104
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 8 May 2026 10:07:52 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3CE1720084;
-	Fri,  8 May 2026 10:07:52 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id DA6E620089;
-	Fri,  8 May 2026 10:07:51 +0000 (GMT)
-Received: from [9.52.200.39] (unknown [9.52.200.39])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  8 May 2026 10:07:51 +0000 (GMT)
-Message-ID: <1ac58dd8-1b06-42b5-9a19-67620b4fdc25@linux.ibm.com>
-Date: Fri, 8 May 2026 12:07:51 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gWJpfyht";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="eAT+xl3a"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778235111;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fa/C2+f55nR6HMXUZTO/HqGU3IIvZs20T/G6LNckFSc=;
+	b=gWJpfyhtTQFeZzNIpL4eqbEsrsbK957PfSj5S4zoaxWlN5OTeYnAS2HPdVszzzilTkWNw5
+	8cmT1/6pG7PSVej4lmCNtHYC0bI+wfm0P4YDmBCPSFBmCuW9FSvdIaTY2LD3MbtE7RqPRQ
+	XMFzhjwNDVGqU5zFb2zTbjhDKnYdXGg=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-577-CmbNwL6xNFmcQsMOH21ryg-1; Fri, 08 May 2026 06:11:50 -0400
+X-MC-Unique: CmbNwL6xNFmcQsMOH21ryg-1
+X-Mimecast-MFC-AGG-ID: CmbNwL6xNFmcQsMOH21ryg_1778235109
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-488c2cc0cbaso13309345e9.3
+        for <kvm@vger.kernel.org>; Fri, 08 May 2026 03:11:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1778235109; x=1778839909; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=fa/C2+f55nR6HMXUZTO/HqGU3IIvZs20T/G6LNckFSc=;
+        b=eAT+xl3auvACwYVDWNQ/a/vXSSWf7cexflo1EFIy+uSrTc8FpxbKEpEqpfuWWVsxxX
+         TdliVyhZCqrZUbhqEf8cbaMOzU12zH9lVg7xk7mypnkmmEfsxHsyZKazvvIWtakdDQ6S
+         Hs0OHJmYjVubr/7tgAkJzZbirMrDj5GyjLvJqzFOigNw5NaID9jreA52fXtjBBATKqAF
+         VzwfU/FMfTu3C76ri+atdwSEYnIIyUUstgc1vGwQQSIy5bbYifTis2bbIMX6nZLR1jT5
+         8w1VcjX+PvN/dn6RR16FXKDRxWsJa0v0WtN9z+8lHzGW28UcObahfcfTPbYQ8kLxZoHu
+         CTOw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778235109; x=1778839909;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fa/C2+f55nR6HMXUZTO/HqGU3IIvZs20T/G6LNckFSc=;
+        b=qcBMbJijDur885juZgxvVwos8Bc04VG6e7k0okAeAAfpDn0ld22l4a4xPqVPDTIUyT
+         2BbB8EtEYDIQuaGA/dWir5E+qe7MhUYzpFA83iaIM65bRgvQDlxbdY8zXZSYlXyVbCEN
+         p7UiZSNErMsQ0bMViuv/hdh8XOEtQRvTMCPEaiWUVOj9HRtV+OItZRA9ST09vvLzK8Cn
+         Q4KSHpmrGEIXDdbcMLirl4EMil55dtCLbi6lvEDpmr/EyPPSvnlchKTPLpGbdlevIVMs
+         Z9PkK2gRYaq6whi7VZb1GeXRlnvkZTTtwIvJRJpXtsbZmfuR40CwMGq9mfHs9YDeL6x8
+         QyUA==
+X-Forwarded-Encrypted: i=1; AFNElJ84djhEWbcHrsnbrZmXmJiPeqneWetl3edro7Zzx2wjWgvKJjMZdlK86HXFiEK5uST1sH4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJeJHCEwLrn5bM4l1MFgUt4edcM5fknEdx0NX5GomKiPgNm7ph
+	OSFGSEIFTqiB9H0M0x+jlpubioA9x9Fv55v/bpTVyMDUy8w4orGYubsZmvwks5coaHw7casJomx
+	XRwBBvFPZHCszn9DjFqwLgUBLOUmU0zQLKY5Z8DsK7CUY+MwljuGznQ==
+X-Gm-Gg: AeBDiesaxkVrCGhAvOYH35PDsuO7SowXcn5VfN0Ktbhh320Xq4FfOtd8bptlHL/Xd9V
+	MEpiBe/aHG1kWfEYxIvhIMo0aXpWJc7yOmjiJCBV+QTPX8DOjLpKxm3fN1oBSaHa599kCpsTvK8
+	QvTAi7EmtG4tkRfyMh2FxlSQA00BQ3MIqOnAvLYzC2i/YcVR/fsBNML3KV/m6Q6e9nwWSdvmzxH
+	1OUX7l7IplyO5mitHAWPALz8/t2PVK3mD+XS5EqtQYtu0Nfn/87+Mjj1QC48p4mlUc1JGK9buYT
+	OTGldiuaQK3r3clwOQunW6BzZBrBx+YPoEbkym6McNA2ioE0I1OuMAEL/N3/lR/j6lIS4CDJDhJ
+	M5Wtnqaavtw7XHuMs4NiaXnHz2fdhj+KV9TXdX0ZklMAhQldVkci7/Q5eae3CQBQ=
+X-Received: by 2002:a05:600d:8:b0:48a:58ae:993b with SMTP id 5b1f17b1804b1-48e676a4e03mr30602895e9.16.1778235108727;
+        Fri, 08 May 2026 03:11:48 -0700 (PDT)
+X-Received: by 2002:a05:600d:8:b0:48a:58ae:993b with SMTP id 5b1f17b1804b1-48e676a4e03mr30602315e9.16.1778235108187;
+        Fri, 08 May 2026 03:11:48 -0700 (PDT)
+Received: from sgarzare-redhat (host-87-11-6-2.retail.telecomitalia.it. [87.11.6.2])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4548e6a6470sm2848938f8f.7.2026.05.08.03.11.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 May 2026 03:11:47 -0700 (PDT)
+Date: Fri, 8 May 2026 12:11:42 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Eric Dumazet <edumazet@google.com>, 
+	Arseniy Krasnov <avkrasnov@salutedevices.com>, Bobby Eshleman <bobbyeshleman@meta.com>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, "David S . Miller" <davem@davemloft.net>, 
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
+	netdev@vger.kernel.org, eric.dumazet@gmail.com, 
+	Arseniy Krasnov <AVKrasnov@sberdevices.ru>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	kvm@vger.kernel.org, virtualization@lists.linux.dev
+Subject: Re: [PATCH net] vsock/virtio: fix potential unbounded skb queue
+Message-ID: <af21ZGlANY6UUCKx@sgarzare-redhat>
+References: <afn0ZdvZWswBuDMm@sgarzare-redhat>
+ <CANn89iLs8DOWJwDpf_ARoMrV+6b2tbhEJ=VVzeC8gCm5dRGaig@mail.gmail.com>
+ <afoF_cHfl6ygcupM@sgarzare-redhat>
+ <20260506113554-mutt-send-email-mst@kernel.org>
+ <afxVH2So9BbZ3Gta@sgarzare-redhat>
+ <20260507074113-mutt-send-email-mst@kernel.org>
+ <afyMCyBvZpzWrLtO@sgarzare-redhat>
+ <20260507163710-mutt-send-email-mst@kernel.org>
+ <af2sXvVCBT05XF0D@sgarzare-redhat>
+ <20260508055343-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/3] KVM: s390: Toggle operation exception for
- userspace
-To: Eric Farman <farman@linux.ibm.com>, Janosch Frank
- <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org
-References: <20260507200836.3500368-1-farman@linux.ibm.com>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20260507200836.3500368-1-farman@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=XPQAjwhE c=1 sm=1 tr=0 ts=69fdb5fc cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=IANEE5CLunT1K2rsnZcA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: lfNgwLiYyvFr_2YeCiT83DU2ZXIREa6s
-X-Proofpoint-GUID: lfNgwLiYyvFr_2YeCiT83DU2ZXIREa6s
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA4MDEwNCBTYWx0ZWRfX4DQAX34G+GKU
- kbJtwPpHw9vUfnM/mLDPj04SXkyoM3mL8ZMqnAO7YjuMp5e1t4hUREkv6k5uA4lPNMWkjV+HW9e
- Fbnb6HYXmQO89A4Cy9hSo8qpZvcZSEVSk8u58d8rU4hdDgGENU/Vjhf5xKIEPSEBHfDypC3eEXc
- Gcqs7qOodr9QLSnqWVkvLbp8e7zY4CMqxcajx7jx9Az/BCKsKU5WfpMjLOPAJbz9M2hmVuLi5mi
- TzTEnKX+pqgucKzIHhBQCF/zFOgQ2Him6dEN0tM8EzmYjzrUfv10t/JM/I3KlU78p8i5Ct4/9Gn
- 3bfDzWvlBm+D2oktY7o8QOH5XQ+sGuKof0dPTNZ2b90EcILClQ6I1u6SlgPFP1Yqfif/3qnb2dr
- PcCNEuuEc4ShEeiusfWJphzWaikJkkD6gdFQI+53NEKdau/8Eb+Nx67bybEsPGg2XEgEqMsd46r
- ukE8hoOztgMpb/OEMIw==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-07_02,2026-05-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0 spamscore=0
- priorityscore=1501 impostorscore=0 phishscore=0 malwarescore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605080104
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260508055343-mutt-send-email-mst@kernel.org>
 
-Am 07.05.26 um 22:08 schrieb Eric Farman:
-> Claudio, et al,
-> 
-> Here's an update to the USER_OPEREXEC patch I'd sent the other day.
-> Besides the addition of Claudio's r-b (thank you!), Patch 1 is identical.
-> 
-> Patch 2 contains a couple of new selftests. As it stands, they all run
-> with patch 1 applied, but I put the failing test at the end for if
-> Patch 1 is missing.
-> 
-> Patch 3 is unrelated, but is a minor typo I stumbled on yesterday while
-> looking at this. It seems small enough that a second `git send-email`
-> command seems unnecessary. :)
-> 
-> Eric Farman (3):
->    KVM: s390: Toggle operation exception for userspace
->    KVM: s390: selftests: Extended user_operexec tests
->    KVM: s390: Fix typo in UCONTROL documentation
-> 
->   Documentation/virt/kvm/api.rst                |   2 +-
->   arch/s390/kvm/kvm-s390.c                      |   3 +-
->   .../selftests/kvm/include/s390/facility.h     |   6 +
->   .../selftests/kvm/s390/user_operexec.c        | 110 ++++++++++++++++++
->   4 files changed, 119 insertions(+), 2 deletions(-)
-> 
+On Fri, May 08, 2026 at 05:58:06AM -0400, Michael S. Tsirkin wrote:
+>On Fri, May 08, 2026 at 11:41:21AM +0200, Stefano Garzarella wrote:
+>> On Thu, May 07, 2026 at 06:48:47PM -0400, Michael S. Tsirkin wrote:
+>> > On Thu, May 07, 2026 at 02:59:13PM +0200, Stefano Garzarella wrote:
+>> > > On Thu, May 07, 2026 at 07:45:10AM -0400, Michael S. Tsirkin wrote:
+>> > > > On Thu, May 07, 2026 at 11:09:47AM +0200, Stefano Garzarella wrote:
+>>
+>> [...]
+>>
+>> > > > > For now, we're already doing something:
+>> > > > > merging the skuffs if they don't have EOM set.
+>> > > >
+>> > > >
+>> > > > Right that's good. You could go further and merge with EOM too
+>> > > > if you stick the info about message boundaries somewhere else.
+>> > >
+>> > > This adds a lot of complexity IMO, but we can try.
+>> > >
+>> > > Do you have something in mind?
+>> >
+>> > BER is clearly overkill but here's a POC that claude made for me,
+>> > just to give u an idea. It's clearly has a ton of issues,
+>> > for example I dislike how GFP_ATOMIC is handled.
+>>
+>> Okay, I somewhat understand, but clearly this isn't net material
+>
+>I doubt we have many other options given reverting the regression was
+>ruled out.
 
-Independent from this series (which makes sense on its own)
-shouldnt we add another fixup so that we send these kernel injects also to userspace?
+As Eric pointed out, we can't revert it.
 
+>
+>
+>> so for now
+>> I think the best thing to do is to merge the fixup I sent (or something
+>> similar):
+>> https://lore.kernel.org/netdev/20260508092330.69690-1-sgarzare@redhat.com/
+>
+>I reviewed that one, problem is it's a spec violation/change that we'll
+>have to support forever.
 
-git grep PGM_OPERATION linux/master arch/s390/kvm/
-linux/master:arch/s390/kvm/intercept.c:         return kvm_s390_inject_program_int(vcpu, PGM_OPERATION);
-linux/master:arch/s390/kvm/intercept.c: return kvm_s390_inject_program_int(vcpu, PGM_OPERATION);
-linux/master:arch/s390/kvm/priv.c:              return kvm_s390_inject_program_int(vcpu, PGM_OPERATION);
-linux/master:arch/s390/kvm/priv.c:              return kvm_s390_inject_program_int(vcpu, PGM_OPERATION);
-linux/master:arch/s390/kvm/priv.c:              return kvm_s390_inject_program_int(vcpu, PGM_OPERATION);
-linux/master:arch/s390/kvm/priv.c:              return kvm_s390_inject_program_int(vcpu, PGM_OPERATION);
-linux/master:arch/s390/kvm/priv.c:              return kvm_s390_inject_program_int(vcpu, PGM_OPERATION)
+I have a few points to make on this, but let's discuss them there.
+
+>
+>> This is a major change that should be merged with more caution.
+>> Could this have too much of an impact on performance?
+>>
+>> Thanks,
+>> Stefano
+>
+>It's really a POC, real patch is left as an excersise for the reader 
+>:).
+
+eheh, I see, but honestly, this overcomplication scares me. I'll try to 
+think it over.
+
+>The correct approach IMHO is to only start using this
+>when we wasted a lot of memory on small packets.
+>
+>For example, if sum(truesize) >= buf size.
+>
+>then we'll not see a perf impact unless it's already pathological.
+
+Agree on this, which is similar to what I'm doing in that patch.  
+Reducing the advertised buf_alloc only in pathological cases (e.g.  
+overhead > buf_alloc).
+
+Stefano
+
