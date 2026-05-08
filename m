@@ -1,181 +1,328 @@
-Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC0537C11E
-	for <kvm@vger.kernel.org>; Fri,  8 May 2026 22:30:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53618221DB3;
+	Fri,  8 May 2026 22:40:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778279440; cv=none; b=aiZej+ODN3rDor2fclmSnj1dmiaM3QdS8jWWU6UbD8GW1qaLIHmNJ8OePOc5tGh6dXdBD+s/JJzm9+duaw1QqQ9oForfAiGBnv0sAAK/6P+njtFEvAlQCeBzpXjZONjma1IuivbUd2Pk1y6soKNlVW7+OvO4FaVYNjC2Lyq82i4=
+	t=1778280014; cv=none; b=VBdJsDPRM3dYpZksRwQRMyPb2ehuPjz9Aer25g/XeTk0l4SZiJHkeVskfQT366ZVG1LV9xPEQKQzWv6YGqKdWd80sFMs2lDygqDYNgy8MY8A4z7WkUd9L1ZJZqF7+fZdpK7KPF7WtGexHu0zOh6aEYpea2ockLKW+L38JUZkDaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778279440; c=relaxed/simple;
-	bh=Wu5FDALBvzlDUGj+uhbPz25Y48g8JEEjaRm7yw3xXC4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aKBJAqKNQl9CqUgU2kcc2TiVV1SkRiQTMMm+MzoiwNeLpSUHUf6w0WneOQGJUtz0w2OVdPTOWPhSKJnx0MhZVZe2pcyiumpKgSP+4AAoNIHRj4uOPTkwkNEX9MyfgVXBT+oWwo1JE2X0xTfMHSoLJQGCZ0ZRzFnusoOLJxvuibE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FiYOSPmM; arc=none smtp.client-ip=209.85.222.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778280014; c=relaxed/simple;
+	bh=3U/SufooL3Si7bLRcOBI7bsAVJzUk2gQOQr1d6uTwfg=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aybgsKnZwIvG1wbSR4dgL6BQHoK3OdV4vmijaohJlcfZ4cxVepfkoOLkIf6Lhe+8B2zWYNhR66UU+w955VVxMtZyPglu72vL+UzJymWgJhliOnDiF9p88wDalAk1+ykbN86CWw6jkxVXHupk8XVonShPG0Vrkp82B6rEodS0DVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=Qm8ycKBe; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=lL6hewsN; arc=none smtp.client-ip=202.12.124.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FiYOSPmM"
-Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-8ef2118b478so259193885a.0
-        for <kvm@vger.kernel.org>; Fri, 08 May 2026 15:30:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778279437; x=1778884237; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=2AUaxYCPCqaIbXtU1GhIn25HX53q6rl1plD/MbJsm1Y=;
-        b=FiYOSPmM4YgttiUU3CDnyv9jYdys/B6dBcUX2p1bJ4o1rLQg374U4uXhcjqWjPgOpx
-         BThusN6G8ZUqxLrBJn1eEaExAjlSEF6OkbUwkvWOwVPuEkzD+cKFzcsK7d+9E+pvfPD6
-         HrqdwZVDIvr9N56FOkZlqSMMp9AICF4cCmO3/tX62E0WCO5ZiQslGE9CXCS3oj0x+xWk
-         pxJ52fBB9X0ka02ySEs6NvoctjAeh7jwpvqfl1Ku5iyT6JzZmPo+CO/4+HvWg0KREqsd
-         E+O/wdmtKAUJh7bszODU2m7VW/CZxrF/ubSOhqUlJt8b081HZnhovARdOuOeHtjAYOgx
-         U5EQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778279437; x=1778884237;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2AUaxYCPCqaIbXtU1GhIn25HX53q6rl1plD/MbJsm1Y=;
-        b=OYD4nO5dRs0ahPwSbk/t0Za3md4IoMmoDZy1uyaAPzVRE9Q4wJv/NM8z9yPOq0BEyU
-         ACdcHKWWJliBLaJmTcQDt+9aOIUjanMWHZWzeil4N6RyahO9nsWtGbqd3d1ScH+4sN2o
-         MBkVH3cH95WKgs8Sun8tXMz6hLNAnX2nxcMqw7PVjCDn0k89FIkyKaf7cB4viHB2gIWp
-         KpakueH8BWTSckShi8Yi0wK8Pwi1tTBEBBAXBuzQQ5YUeQNcBpLY1N4oleVir6VNhKEj
-         n7Vpsz1ETyco0k5r49C39ATRdIbXZEpyMmlKc7dIFQ/SpeFvgpPtsriuX86e7Q5EJQnC
-         E3Qw==
-X-Forwarded-Encrypted: i=1; AFNElJ9GV6a04XUqPgQLE57AZF2964ipN/vtwIfSBD6/4UMfZYx3yfDKV5f2mZNE7+cVMmSVrU8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRPh2TzHaOw1ty/CJhgqPp0a/JfNisobl8lT2uRovPOTJ1wlhc
-	hCk0nv8ECeUsx0cfXh4iJ/QAf5QjVMdEto4RHhoVqPY6ZjqzBeNLQdzT
-X-Gm-Gg: AeBDieuWRFgTwHsIY6FrCJleeAC3uY0lZ7QrLnXaGpq0pVmJ2ilxiIWlaA9U5vfqKpc
-	8AFiWbTSVAXhNyL/kN0fkbchSSZ7QPFNEbH/UqU758gwCn/QsS0+ymk/moeETf0/BUoDhrOy1CG
-	7YAX6E/NoCC96g7j5PwUg6BZcUM+6MKkzVOVnQuSCbWHhPNBhEEkZQDnlBuMaTB0dbx7dLxyBeu
-	BqiJDhAqv2N3vdWzN3Ld/2q1xfr3OtbSe4VjXVXLf/U3uxY6r0ByqdJLqri5QKFOpNiRlSyA7ZI
-	BcnzAjce8qBbhwpE4FMJAYMgnoBZE0F3ApY3Zb97PrQQnE93ors52xdnPhaq2t3eoVv0wZgyaaZ
-	vzw+naVOEltwnl3c598O5pqh2IvnRol3Mfp4iHkHy6uJ+tSK9fBOY+mXJ3xiNtevpfz+Nev5jz3
-	tZ4Yap8+GGnYRPUesUVg0NvmP/OUyu5o1f6kp6jxoiJitLsxo=
-X-Received: by 2002:a05:620a:2684:b0:8ee:630e:350a with SMTP id af79cd13be357-904d72c239fmr2149865085a.58.1778279436728;
-        Fri, 08 May 2026 15:30:36 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:f800:38::])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8fc2cd04c68sm2382574385a.46.2026.05.08.15.30.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 May 2026 15:30:36 -0700 (PDT)
-Date: Fri, 8 May 2026 15:30:32 -0700
-From: Bobby Eshleman <bobbyeshleman@gmail.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, Yiqi Sun <sunyiqixm@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>, kvm@vger.kernel.org,
-	Simon Horman <horms@kernel.org>,
-	Bobby Eshleman <bobbyeshleman@meta.com>,
-	Jason Wang <jasowang@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	"David S. Miller" <davem@davemloft.net>,
-	virtualization@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Bobby Eshleman <bobby.eshleman@bytedance.com>
-Subject: Re: [PATCH net 2/2] vsock/virtio: fix empty payload in tap skb for
- non-linear buffers
-Message-ID: <af5kCGWtjwGi4Y2E@devvm29614.prn0.facebook.com>
-References: <20260508164411.261440-1-sgarzare@redhat.com>
- <20260508164411.261440-3-sgarzare@redhat.com>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="Qm8ycKBe";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="lL6hewsN"
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id B60AF7A003D;
+	Fri,  8 May 2026 18:40:09 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Fri, 08 May 2026 18:40:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1778280009;
+	 x=1778366409; bh=Wc3dTDrH7Vx3KTw/aznXnAyEe2c8FMx6eWi4Ve4R5S0=; b=
+	Qm8ycKBeS1hGwW4e+I7uIEDcACwNCXjMVDUrfqyJJNCYwNCXNVsanULGcKUWUWbu
+	aLqHiK5YvlbJizCgxig8xYSyMaR/cZDDQjz6x4d9ZtCOu9zONtVWgL6ITwoCk9p/
+	R48xsEfaSzKi8DyOdn4IHlfQbaoQ6WVpez4WOIhOaIrpBlqcGQGJm+Y2BYue5j4n
+	VWuLST1sOUqfB/RxQHKLv8e4T4D98sqiHcpvGYAzedddYNqzgs8yqHIoQJpgKJPe
+	vkbLwvGnkIKYqSEJXkHoifywkIM4BiXxG1BTCyEz4fv47B53lhhICD3YeMFlY7p6
+	VYxTNfKNb134qchlDU/Kdw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1778280009; x=
+	1778366409; bh=Wc3dTDrH7Vx3KTw/aznXnAyEe2c8FMx6eWi4Ve4R5S0=; b=l
+	L6hewsNFVW7fn722npCcf241T/bS42PLlQmu61d8YKU/gA2VR3jS09oQ6/ZH88qB
+	+Hf6KJJ/IJTtDSYwfsyyVm0ofC/czvL+Mt0CQjuJC78Tdtjm3sWwiNHWFuSCytCr
+	3Y4XUbcM48AWldIygn8RlkOiIDyqao1Y5Itie7YHGQLqMkU8q14a1UUj60w1zoFL
+	CD3RW8K7/lVej1QaqxaHxaJz37FpX4XRh1ux9ByrN8Hlw9UvVaE0dFSZOMQCdqAu
+	uUUXSEtFchMMS0RVQVg4eFIx0O81LAYVcwvXGeEtXIsCqlf1oaUEMxo3CG8taYeY
+	726HIuxZXA4auP6NAVpnA==
+X-ME-Sender: <xms:SGb-aXzHN17j16e--r4VWJWR_xjsOSC-MeCdtNQuST4hq6KVqZAJvA>
+    <xme:SGb-adjdwQvIEyIwkvYBKy4NTuk9_3tbTKUMPO-tyS58e-8CytK0lEu-cazuFEBeO
+    aAXkZxp2v2P6UcJpWgZ3GZ8t1yzsfX0Su7iYa0Hdosd-Megra0_gw>
+X-ME-Received: <xmr:SGb-aarISflQoeHxJ1pxV2dkr9ky007b3YUW8sLNwj65rdecmjQ2KEfjaLM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduudduheejucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
+    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
+    htthgvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudeg
+    veeuueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepuddupdhmohguvgep
+    shhmthhpohhuthdprhgtphhtthhopehfvghnghgthhgvnhhgfigvnheshhhurgifvghird
+    gtohhmpdhrtghpthhtohepjhhgghesiihivghpvgdrtggrpdhrtghpthhtohepfigrthhh
+    shgrlhgrrdhvihhthhgrnhgrghgvsegrrhhmrdgtohhmpdhrtghpthhtohephhgvlhhgrg
+    grsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepfigvihdrhhhurghnghdvsegrmhgu
+    rdgtohhmpdhrtghpthhtohepfigrnhhgiihhohhuudeshhhishhilhhitghonhdrtghomh
+    dprhgtphhtthhopeifrghnghihuhhshhgrnhduvdeshhhurgifvghirdgtohhmpdhrtghp
+    thhtoheplhhiuhihohhnghhlohhngheshhhurgifvghirdgtohhmpdhrtghpthhtohepkh
+    hvmhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:SGb-aUj_T85b8j6-xBHgvujER9Yo1AKuXmCkypS0G_pclvA1dH4lcw>
+    <xmx:SGb-acN8lU1XnZT-js6l8fUDfL_cZryIHvqEZI3aQczsU58bf4y3Ag>
+    <xmx:SGb-aey7sjHdEUUHBNtqWaa0o8zowEqF_2ovQd86pOLdIyH6hnpmTA>
+    <xmx:SGb-aepE0WuI6fB9XlmSptcHVvDw8dHApQfILDWxNDWLBvwVlf4_bA>
+    <xmx:SWb-aVc8ucTlsOHHo2qPkpaqN9he8egKKP6kJaoaV-ZdLFgq8Z8OCQKD>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 8 May 2026 18:40:06 -0400 (EDT)
+Date: Fri, 8 May 2026 16:40:03 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Chengwen Feng <fengchengwen@huawei.com>
+Cc: <jgg@ziepe.ca>, <wathsala.vithanage@arm.com>, <helgaas@kernel.org>,
+ <wei.huang2@amd.com>, <wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
+ <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, alex@shazbot.org
+Subject: Re: [PATCH v8 4/7] vfio/pci: Add PCIe TPH interface with capability
+ query
+Message-ID: <20260508164003.70918c0c@shazbot.org>
+In-Reply-To: <20260508064053.37529-5-fengchengwen@huawei.com>
+References: <20260508064053.37529-1-fengchengwen@huawei.com>
+	<20260508064053.37529-5-fengchengwen@huawei.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260508164411.261440-3-sgarzare@redhat.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, May 08, 2026 at 06:44:11PM +0200, Stefano Garzarella wrote:
-> From: Stefano Garzarella <sgarzare@redhat.com>
+On Fri, 8 May 2026 14:40:50 +0800
+Chengwen Feng <fengchengwen@huawei.com> wrote:
+
+> Add VFIO_DEVICE_PCI_TPH IOCTL to allow userspace to query device TPH
+> capabilities, supported modes, and steering tag table information.
 > 
-> For non-linear skbs, virtio_transport_build_skb() goes through
-> virtio_transport_copy_nonlinear_skb() to copy the original payload
-> in the new skb to be delivered to the vsockmon tap device.
-> This manually initializes an iov_iter but does not set iov_iter.count.
-> Since the iov_iter is zero-initialized, the copy length is zero and no
-> payload is actually copied to the monitor interface, leaving data
-> un-initialized.
+> Add module parameter 'enable_unsafe_tph_ds_mode' to restrict unsafe
+> device-specific TPH mode to trusted userspace only.
 > 
-> Fix this by removing the linear vs non-linear split and using
-> skb_copy_datagram_iter() with iov_iter_kvec() for all cases, as
-> vhost-vsock already does. This handles both linear and non-linear skbs,
-> properly initializes the iov_iter, and removes the now unused
-> virtio_transport_copy_nonlinear_skb().
-> 
-> While touching this code, let's also check the return value of
-> skb_copy_datagram_iter(), even though it's unlikely to fail.
-> 
-> Fixes: 4b0bf10eb077 ("vsock/virtio: non-linear skb handling for tap")
-> Reported-by: Yiqi Sun <sunyiqixm@gmail.com>
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
 > ---
->  net/vmw_vsock/virtio_transport_common.c | 40 ++++++++-----------------
->  1 file changed, 12 insertions(+), 28 deletions(-)
+>  drivers/vfio/pci/vfio_pci.c      |  13 ++-
+>  drivers/vfio/pci/vfio_pci_core.c |  56 ++++++++++++-
+>  include/linux/vfio_pci_core.h    |   3 +-
+>  include/uapi/linux/vfio.h        | 133 +++++++++++++++++++++++++++++++
+>  4 files changed, 202 insertions(+), 3 deletions(-)
 > 
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index a678d5d75704..989cc252d3d3 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
-> @@ -136,27 +136,6 @@ static void virtio_transport_init_hdr(struct sk_buff *skb,
->  	hdr->fwd_cnt	= cpu_to_le32(0);
->  }
+> diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
+> index 0c771064c0b8..40bf5aa9fd0b 100644
+> --- a/drivers/vfio/pci/vfio_pci.c
+> +++ b/drivers/vfio/pci/vfio_pci.c
+> @@ -60,6 +60,12 @@ static bool disable_denylist;
+>  module_param(disable_denylist, bool, 0444);
+>  MODULE_PARM_DESC(disable_denylist, "Disable use of device denylist. Disabling the denylist allows binding to devices with known errata that may lead to exploitable stability or security issues when accessed by untrusted users.");
 >  
-> -static void virtio_transport_copy_nonlinear_skb(const struct sk_buff *skb,
-> -						void *dst,
-> -						size_t len)
-> -{
-> -	struct iov_iter iov_iter = { 0 };
-> -	struct kvec kvec;
-> -	size_t to_copy;
-> -
-> -	kvec.iov_base = dst;
-> -	kvec.iov_len = len;
-> -
-> -	iov_iter.iter_type = ITER_KVEC;
-> -	iov_iter.kvec = &kvec;
-> -	iov_iter.nr_segs = 1;
-> -
-> -	to_copy = min_t(size_t, len, skb->len);
-> -
-> -	skb_copy_datagram_iter(skb, VIRTIO_VSOCK_SKB_CB(skb)->offset,
-> -			       &iov_iter, to_copy);
-> -}
-> -
->  /* Packet capture */
->  static struct sk_buff *virtio_transport_build_skb(void *opaque)
->  {
-> @@ -214,13 +193,18 @@ static struct sk_buff *virtio_transport_build_skb(void *opaque)
->  	skb_put_data(skb, pkt_hdr, sizeof(*pkt_hdr));
->  
->  	if (payload_len) {
-> -		if (skb_is_nonlinear(pkt)) {
-> -			void *data = skb_put(skb, payload_len);
-> -
-> -			virtio_transport_copy_nonlinear_skb(pkt, data, payload_len);
-> -		} else {
-> -			skb_put_data(skb, pkt->data + VIRTIO_VSOCK_SKB_CB(pkt)->offset,
-> -				     payload_len);
-> +		struct iov_iter iov_iter;
-> +		struct kvec kvec;
-> +		void *data = skb_put(skb, payload_len);
+> +#ifdef CONFIG_PCIE_TPH
+> +static bool enable_unsafe_tph_ds_mode;
+> +module_param(enable_unsafe_tph_ds_mode, bool, 0444);
+> +MODULE_PARM_DESC(enable_unsafe_tph_ds_mode, "Enable UNSAFE TPH device-specific (DS) mode. This mode provides weak isolation, cannot be safely used for virtual machines. If you do not know what this is for, step away. (default: false)");
+> +#endif
 > +
-> +		kvec.iov_base = data;
-> +		kvec.iov_len = payload_len;
-> +		iov_iter_kvec(&iov_iter, ITER_DEST, &kvec, 1, payload_len);
-> +
-> +		if (skb_copy_datagram_iter(pkt, VIRTIO_VSOCK_SKB_CB(pkt)->offset,
-> +					   &iov_iter, payload_len)) {
-> +			kfree_skb(skb);
-> +			return NULL;
->  		}
->  	}
->  
-> -- 
-> 2.54.0
-> 
 
-Reviewed-by: Bobby Eshleman <bobbyeshleman@meta.com>
+Why is the "unsafe" aspect of this keyed on mode rather than storage
+location?
+
+Currently the user cannot enable TPH, the capability is read-only, but
+the user does have direct access to the MSI-X table.  We rely on an
+agreement that the user needs to use SET_IRQS to allocate host vectors
+and we use interrupt remapping as protection against abuse, but there's
+no mediation of STs written directly to the MSI-X table.  If the device
+supports IV mode with ST in the MSI-X table, nothing prevents the user
+from writing those ST entries directly to the MSI-X table.  Therefore
+doesn't it have the same security concern as DS mode?
+
+Further, config space lives in the device and various devices are known
+to have alternate means for accessing their config space.
+Virtualization of config space is more to present the device in the VM
+address space and bridge features between guest and host.  It's not
+great as a security barrier.
+
+Maybe it's really neither the mode nor storage location, and we need to
+decide if TPH as a whole introduces any new security considerations.
+It seems arguable whether we can actually prevent a device from
+including arbitrary STs on TLPs in any case and maybe we're really only
+exposing a curated programming interface.
+
+...
+> diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
+> index 5de618a3a5ee..81da2bd0c21b 100644
+> --- a/include/uapi/linux/vfio.h
+> +++ b/include/uapi/linux/vfio.h
+> @@ -1321,6 +1321,139 @@ struct vfio_precopy_info {
+>  
+>  #define VFIO_MIG_GET_PRECOPY_INFO _IO(VFIO_TYPE, VFIO_BASE + 21)
+>  
+> +/**
+> + * struct vfio_pci_tph_cap - PCIe TPH capability information
+> + * @supported_modes: Supported TPH operating modes
+> + * @st_table_sz: Number of entries in ST table; 0 means no ST table
+> + * @reserved: Must be zero
+> + *
+> + * Used with VFIO_PCI_TPH_GET_CAP operation to return device
+> + * TLP Processing Hints (TPH) capabilities to userspace.
+> + */
+> +struct vfio_pci_tph_cap {
+> +	__u8  supported_modes;
+> +#define VFIO_PCI_TPH_MODE_IV	(1u << 0) /* Interrupt vector */
+> +#define VFIO_PCI_TPH_MODE_DS	(1u << 1) /* Device specific */
+> +	__u8  reserved0;
+> +	__u16 st_table_sz;
+> +	__u32 reserved;
+> +};
+> +
+> +/**
+> + * struct vfio_pci_tph_ctrl - TPH enable control structure
+> + * @mode: Selected TPH operating mode (VFIO_PCI_TPH_MODE_*)
+> + * @reserved: Must be zero
+> + *
+> + * Used with VFIO_PCI_TPH_ENABLE operation to specify the
+> + * operating mode when enabling TPH on the device.
+> + */
+> +struct vfio_pci_tph_ctrl {
+> +	__u8 mode;
+> +	__u8 reserved[7];
+> +};
+> +
+> +/**
+> + * struct vfio_pci_tph_entry - Single TPH steering tag entry
+> + * @cpu: CPU identifier for steering tag calculation
+> + * @mem_type: Memory type (VFIO_PCI_TPH_MEM_TYPE_*)
+> + * @reserved0: Must be zero
+> + * @index: ST table index for programming
+> + * @st: Unused for SET_ST
+> + * @reserved1: Must be zero
+> + *
+> + * For VFIO_PCI_TPH_GET_ST:
+> + *   Userspace sets @cpu and @mem_type; kernel returns @st.
+> + *
+> + * For VFIO_PCI_TPH_SET_ST:
+> + *   Userspace sets @index, @cpu, and @mem_type.
+> + *   Kernel internally computes the steering tag and programs
+> + *   it into the specified @index.
+> + *
+> + *   If @cpu == U32_MAX, kernel clears the steering tag at
+> + *   the specified @index.
+> + */
+> +struct vfio_pci_tph_entry {
+> +	__u32 cpu;
+> +	__u8  mem_type;
+> +#define VFIO_PCI_TPH_MEM_TYPE_VM	0
+> +#define VFIO_PCI_TPH_MEM_TYPE_PM	1
+> +	__u8  reserved0;
+> +	__u16 index;
+> +	__u16 st;
+> +	__u16 reserved1;
+> +};
+> +
+> +/**
+> + * struct vfio_pci_tph_st - Batch steering tag request
+> + * @count: Number of entries in the array
+> + * @reserved: Must be zero
+> + * @ents: Flexible array of steering tag entries
+> + *
+> + * Container structure for batch get/set operations.
+> + * Used with both VFIO_PCI_TPH_GET_ST and VFIO_PCI_TPH_SET_ST.
+> + */
+> +struct vfio_pci_tph_st {
+> +	__u32 count;
+> +	__u32 reserved;
+> +	struct vfio_pci_tph_entry ents[];
+> +#define VFIO_PCI_TPH_MAX_ENTRIES    2048
+> +};
+> +
+> +/**
+> + * struct vfio_device_pci_tph_op - Argument for VFIO_DEVICE_PCI_TPH
+> + * @argsz: User allocated size of this structure
+> + * @op: TPH operation (VFIO_PCI_TPH_*)
+> + * @cap: Capability data for GET_CAP
+> + * @ctrl: Control data for ENABLE
+> + * @st: Batch entry data for GET_ST/SET_ST
+> + *
+> + * @argsz must be set by the user to the size of the structure
+> + * being executed. Kernel validates input and returns data
+> + * only within the specified size.
+> + *
+> + * Operations:
+> + * - VFIO_PCI_TPH_GET_CAP: Query device TPH capabilities.
+> + * - VFIO_PCI_TPH_ENABLE:  Enable TPH using mode from &ctrl.
+> + * - VFIO_PCI_TPH_DISABLE: Disable TPH on the device.
+> + * - VFIO_PCI_TPH_GET_ST:  Retrieve CPU steering tags for Device-Specific (DS)
+> + *                         mode. Used when device requires SW to obtain ST
+> + *                         values for programming.
+> + * - VFIO_PCI_TPH_SET_ST:  Program steering tag entries into device ST table.
+> + *                         Valid when ST table resides in TPH Requester
+> + *                         Capability or MSI-X Table.
+> + *                         If any entry fails, all programmed entries are rolled
+> + *                         back to 0 before returning error.
+> + */
+> +struct vfio_device_pci_tph_op {
+> +	__u32 argsz;
+> +	__u32 op;
+> +#define VFIO_PCI_TPH_GET_CAP	0
+> +#define VFIO_PCI_TPH_ENABLE	1
+> +#define VFIO_PCI_TPH_DISABLE	2
+> +#define VFIO_PCI_TPH_GET_ST	3
+> +#define VFIO_PCI_TPH_SET_ST	4
+> +	union {
+> +		struct vfio_pci_tph_cap cap;
+> +		struct vfio_pci_tph_ctrl ctrl;
+> +		struct vfio_pci_tph_st st;
+> +	};
+> +};
+> +
+> +/**
+> + * VFIO_DEVICE_PCI_TPH - _IO(VFIO_TYPE, VFIO_BASE + 22)
+> + *
+> + * IOCTL for managing PCIe TLP Processing Hints (TPH) on
+> + * a VFIO-assigned PCI device. Provides operations to query
+> + * device capabilities, enable/disable TPH, retrieve CPU's
+> + * steering tags, and program steering tag tables.
+> + *
+> + * Return: 0 on success, negative errno on failure.
+> + *         -EOPNOTSUPP: Operation not supported
+> + *         -ENODEV: Device or required functionality not present
+> + *         -EINVAL: Invalid argument or TPH not supported
+> + */
+> +#define VFIO_DEVICE_PCI_TPH	_IO(VFIO_TYPE, VFIO_BASE + 22)
+> +
+
+This seems like the wrong shape to me and introduces yet another ioctl
+multiplexer.  We already have that via the device feature interface.
+I'd propose this only needs one new DEVICE_FEATURE ioctl, TPH_ST.  The
+uAPI would look like:
+
+struct vfio_device_feature_tph_st {
+	__u32 flags;
+#define VFIO_TPH_ST_MEM_TYPE_PM	(1 << 0)
+	__u16 index;
+	__u16 count;
+	__u32 data[]; /* host CPU# on SET, ST value on GET */
+}
+
+The user can SET multiple STs at once that have the same mem_type
+(assuming that's a reasonable limitation).  On SET, each {cpu#,
+mem_type} is translated to a host value and stored internally.  A GET
+returns that translated ST value for DS use cases.
+
+The user can use PROBE to determine if this feature is available.
+
+We already provide the TPH capability read-only in config space, we can
+use that rather than an explicit INFO/GET_CAP interface.
+
+When the feature is available, the TPH control register is virtualized.
+On enabling TPH via config space, vfio will store the translated ST
+values to the appropriate location, or none, and enable TPH.  On SET
+while already enabled, vfio will update both the internal table and the
+device location (or none).  Thanks,
+
+Alex
