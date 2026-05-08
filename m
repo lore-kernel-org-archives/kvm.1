@@ -1,147 +1,170 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E543D813F
-	for <kvm@vger.kernel.org>; Fri,  8 May 2026 16:47:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67DE7374758;
+	Fri,  8 May 2026 16:48:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778258848; cv=none; b=AbY/DDxe2EkcMi4syK0pa6TreMohpXIiarQvczwipYQSdADGc4ZTF3GrCy1o9u/EQeX/GyftGKfepsayi8AdDMvSO/f/OBjw818w/u0MkZ+XCGgKP37cpYyUX9Cvfq5T6OUWJPlJ4skT3DU+LGE340yotVN0wbYX2QbENUvqQ5Y=
+	t=1778258914; cv=none; b=oRUggo3FtCYp99B4l67nVfDyqgmbwf0LfBhWD/Q6wummu7C2Y0bxRl6RDBjQr3gJnYJhsMvxYQsO/hwR33dB6kuGsuY7moyyo8paOTdvDsVc24oHAKWYIy8KyfcuUT6EIOExcUQt+0lqfdF0hTYtIbcNTfXQ/JDeFFUBLaERvKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778258848; c=relaxed/simple;
-	bh=+GlTIpRQZ5vV/lIQfJdZ/NWxJDB5jBGX6KC+RdsOsLw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gJ30FnI3zqKed6sT6pP+WMqBBnVinEuZtgKrXsie3/UhPkZ81T3KEMPLJ08B+OpOASesls3xKVY3+ARBLUX5J/bOsuZeSArLa4XKl8h7YmusGph1LtyxBpP5DdlBXCA2XmtsukkkoUQP0T2BtoYkBDHfJdZEzffSN5jJxJyvsmQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SIK/kCKu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=L3UmYKcU; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1778258914; c=relaxed/simple;
+	bh=pZPC+mlFC7zHFFRvjelepNFijit98+ahrAhP2MdO6h4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KA920Mjv4uiDtwCrUbKSHn2Hcaa1uPRFRUPWNukRJXu4ToIDDnfTFL6FXSPB+BMK11HEiAg3OG2NpEY6Vm6NAqTLD1KJKngKJoa+6gmrxK5ziyh6OPYpD+esHD9+WMf6FGwJriXah1hFiM9bNpgUf+nGU/tbAonOQ5QNmmOUd34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oJznOL2Q; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SIK/kCKu";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="L3UmYKcU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778258846;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=MA8iF/H4+Ea4mWZn+FttEJhotoY2jxN8mx6SClzyAQk=;
-	b=SIK/kCKuAJwyDE8EmbQNQVd7A+FzZri8ZFO2/afWkSJJTDDDhSdcjydd3uyelzVdUz+UqE
-	s2liHW9Up73U3U/SgEY6pInloX7I2NL1W+r8t6zL/Zj6wY/YVSuaYNLTdtlQTvRNAjtKUf
-	wyB4zBV2J+fNx+4bZXsHeBDsMWjhu50=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-662-m6ItE4c1OWu8vEkitznC-g-1; Fri, 08 May 2026 12:47:23 -0400
-X-MC-Unique: m6ItE4c1OWu8vEkitznC-g-1
-X-Mimecast-MFC-AGG-ID: m6ItE4c1OWu8vEkitznC-g_1778258842
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-48d127eb013so13199595e9.1
-        for <kvm@vger.kernel.org>; Fri, 08 May 2026 09:47:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778258842; x=1778863642; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MA8iF/H4+Ea4mWZn+FttEJhotoY2jxN8mx6SClzyAQk=;
-        b=L3UmYKcU8HuqVyTxVg012aNEenn+4LD8ZuawR0RNOZow+ZdHh3rtA0wvz09TLyHyZ0
-         P1S9rBUc8WdhtVukkRlwZ5Sf5WzRbSoix5sELNOPiVAhTUvnTPz9ulkvYZzvwTHBoUJu
-         NZVEqu4CbHfNH9fP/dHnUtzzpRzzLalH8ofmUt1TUebc340kikwBeb4Vh3EU2xjrCO8C
-         KU3NiJedZo9TMH5NRbYyPAyC0tWGpk+rQEgxar02wqdbrJ3Rc9nmaQmpwvksw21pZbX4
-         fpCO9L5b9hCJHFKS2EC+YwkT2Dn7iMqG4SqZicUFdeaFn2Apk93kqgt1xa0w186Rm+Vc
-         z+Bg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778258842; x=1778863642;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MA8iF/H4+Ea4mWZn+FttEJhotoY2jxN8mx6SClzyAQk=;
-        b=qJTp9XnXl5kURcfWRxpXBTAtj1lnnE7a+5wV0b1pRPPGe6JQTJRFkdYvA9bNl0ZBm7
-         jEBAchMDYFu+ayoc0G69T8xG+Xx90CAgGh1iht4YxWdz/Lodrceb8likR3CH+uME1nv1
-         8wKjCtYZi6s8Em1F8g/+3IpFkV7NZ3FYrhtxi86KUwsacns1eFfcE+bt6Ios6EdKXXa9
-         XhhcUEdUltZp8h/sB257u8PlyPNWpeJAs0xG//vtZHZiosHr48Fl2K/fx7x+Z5V0nvCI
-         3BtT9mjjweUkBwSWHl0huUVybN18HM5SyltixeXnxwBpU2Sjoriav9WTu0BlZQxwloLt
-         C9XA==
-X-Gm-Message-State: AOJu0YxRj1GGABVmVk3llY0/8MiEnkigBB1XC6ccbNwG+jnQDh6EM/Hk
-	cNS+I1Q89CUEbGMpASdB7d1mABWwYIkpQAhqMRpeOrWwE9wL3F3M8iDldy31JiVInhN635phjQK
-	McD0xuPKKLXIQ9i/TUQcdP+Carpst8ng1srmnoRcuuooGycEOEfLmAg==
-X-Gm-Gg: AeBDiev5lglvnQ7IHp44ADeeSm+U9iJanGIZWgk7mQCm5TqUTQmnN5OojrV/EyxPj48
-	wl1O2+iCWpFYc+dcj0DAON2PjVd6V7K2v+IwO5F4KTl74nFB7py7MSVOdrbO2AEdIvedrAovekm
-	Ryje+72WvWRh/IyOh/8ABOHW2CYzK07+qPrPWy60BI9revm+5YmJ99psmS4cWp1O9Cb2IRYaH9b
-	0zrAAhjNTXLE+mCdZpWXi9yo4zBC4e6RsuXdDSF3uAypEYevI2Bp4fSasTzuP7u1Ch2F3Dr35ev
-	HVvjVOpDQOD4FK4OxPDhmb4TcIrvKkNhmGpFU4bPsvOq7T6hr7qDkCQZHpJm0gPg0PaVcfzh2fp
-	hdl1Mei3YzYEs2p3US9t5J+0dKFQ//q3d/LBH+Wc11yjgVkJeCun4JUF+3gT26OpvFDDMIhQy+A
-	==
-X-Received: by 2002:a05:600c:45c5:b0:48e:526e:1040 with SMTP id 5b1f17b1804b1-48e676b45eamr54988565e9.23.1778258842219;
-        Fri, 08 May 2026 09:47:22 -0700 (PDT)
-X-Received: by 2002:a05:600c:45c5:b0:48e:526e:1040 with SMTP id 5b1f17b1804b1-48e676b45eamr54987955e9.23.1778258841600;
-        Fri, 08 May 2026 09:47:21 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-11-6-2.retail.telecomitalia.it. [87.11.6.2])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e6dd2c59esm6805945e9.1.2026.05.08.09.47.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 May 2026 09:47:20 -0700 (PDT)
-Date: Fri, 8 May 2026 18:47:07 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Yiqi Sun <sunyiqixm@gmail.com>
-Cc: kvm@vger.kernel.org, virtualization@lists.linux.dev, 
-	netdev@vger.kernel.org, linux-kernel@vger.kernel.org, stefanha@redhat.com, 
-	mst@redhat.com, jasowang@redhat.com, xuanzhuo@linux.alibaba.com, 
-	eperezma@redhat.com, davem@davemloft.net, edumazet@google.com, kuba@kernel.org, 
-	pabeni@redhat.com, horms@kernel.org
-Subject: Re: [PATCH] vsock/virtio: fix vsockmon info leak in non-linear tap
- copy
-Message-ID: <af4TLgAsn8zS7cGs@sgarzare-redhat>
-References: <20260430071110.380509-1-sunyiqixm@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oJznOL2Q"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778258913; x=1809794913;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=pZPC+mlFC7zHFFRvjelepNFijit98+ahrAhP2MdO6h4=;
+  b=oJznOL2QT/R4EGbHVWpUxiVHE3M0U3Hpb7ld+O8RoXPEWKStX6SRUm0i
+   P1U2R87OVqhh6ytcsHWQjZP9syf0OFn3QNxMg/Szt89+NmOIN23J7Yfzo
+   3zXRLqn45qtcMuWFwtiomt4qltXPalIpKSxm1GpF8B9iufGjeGW+cm3qA
+   bHNF435YtuSdovZczJw+AnM9G/e4tQKsUkqR5PKDCoTClqcjqSCsdoFV2
+   cRJO199wa/9ed8U7uoiKQm2r9fxIoYkCSPjKUluDdKvkM68n90lbsQDyW
+   tpCmI9rdxEqLb5mIjBiXhLpfzSeebj8OrO7GJWz9jZaAZWTyBXR00V/E3
+   Q==;
+X-CSE-ConnectionGUID: DctAqC39R8q36xPSCgFm2g==
+X-CSE-MsgGUID: LPlUxwGxQP6sfFoePsoWrg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11780"; a="89934331"
+X-IronPort-AV: E=Sophos;i="6.23,223,1770624000"; 
+   d="scan'208";a="89934331"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2026 09:48:32 -0700
+X-CSE-ConnectionGUID: U7Bm0w8mSN6E+Mwqpx7Rsg==
+X-CSE-MsgGUID: ythbR+snRk+1ou5TooHTmg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,223,1770624000"; 
+   d="scan'208";a="237049767"
+Received: from dnelso2-mobl.amr.corp.intel.com (HELO [10.125.111.18]) ([10.125.111.18])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2026 09:48:32 -0700
+Message-ID: <1bff2e14-e550-4e6f-a819-0e9a851413cc@intel.com>
+Date: Fri, 8 May 2026 09:48:37 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260430071110.380509-1-sunyiqixm@gmail.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v8 08/21] x86/virt/seamldr: Allocate and populate a module
+ update request
+To: Chao Gao <chao.gao@intel.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, x86@kernel.org, binbin.wu@linux.intel.com,
+ dave.hansen@linux.intel.com, djbw@kernel.org, ira.weiny@intel.com,
+ kai.huang@intel.com, kas@kernel.org, nik.borisov@suse.com,
+ paulmck@kernel.org, pbonzini@redhat.com, reinette.chatre@intel.com,
+ rick.p.edgecombe@intel.com, sagis@google.com, seanjc@google.com,
+ tony.lindgren@linux.intel.com, vannapurve@google.com,
+ vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com,
+ yan.y.zhao@intel.com, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ "H. Peter Anvin" <hpa@zytor.com>
+References: <20260427152854.101171-1-chao.gao@intel.com>
+ <20260427152854.101171-9-chao.gao@intel.com>
+ <a52c4701-c99d-48d5-9b63-8eb1c0e589f0@intel.com> <afyReleDP93DSgQa@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <afyReleDP93DSgQa@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, Apr 30, 2026 at 03:11:10PM +0800, Yiqi Sun wrote:
->vsockmon mirrors packets through virtio_transport_build_skb(), which
->builds a new skb and copies the payload into it. For non-linear skbs,
->this goes through virtio_transport_copy_nonlinear_skb().
->
->Helper manually initializes a iov_iter, but leaves iov_iter.count unset.
->As a result, skb_copy_datagram_iter() sees zero writable bytes
->in the destination iterator and copies no payload data.
->
->This becomes an info leak because virtio_transport_build_skb() has
->already reserved payload_len bytes in the new skb with skb_put(). The
->skb is then returned to the tap path with that payload area still
->uninitialized, so userspace reading from a vsockmon device can observe
->heap contents and potentially kernel address.
->
->Fix it by initializing iov_iter.count to the number of bytes to copy.
->
->Fixes: 4b0bf10eb077 ("vsock/virtio: non-linear skb handling for tap")
->Signed-off-by: Yiqi Sun <sunyiqixm@gmail.com>
->---
-> net/vmw_vsock/virtio_transport_common.c | 2 +-
-> 1 file changed, 1 insertion(+), 1 deletion(-)
+On 5/7/26 06:19, Chao Gao wrote:
+...
+>>> +	/*
+>>> +	 * Don't care about user passing the wrong file, but protect
+>>> +	 * kernel ABI by preventing accepting garbage.
+>>> +	 */
+>>> +	if (memcmp(blob->signature, "TDX-BLOB", 8))
+>>> +		return ERR_PTR(-EINVAL);
+>>
+>> Is there really no helper in the kernel anywhere that can safely do the
+>> 8-byte compare against two known-to-the-compiler 8-byte-wide fields
+>> without hard-coding the 8?
+> 
+> I couldn't find a helper that automatically derives the comparison
+> length from the operands.  'strcmp()' is not suitable here because
+> 'blob->signature' is not NUL-terminated.
+> 
+> Do you mean just avoiding the hard-coded 8, e.g.
+> 
+> 	if (memcmp(blob->signature, "TDX-BLOB", sizeof(blob->signature)))
+> 		return ERR_PTR(-EINVAL);
+> 
+> or define the 'u8 signature[8]' as a u64 and compare it with a constant, like
+> 
+> /* Little-endian encoding of "TDX-BLOB" string */
+> #define TDX_IMAGE_SIGNATURE	0x424f4c422d584454ULL
+> 
+> 	if (blob->signature != TDX_IMAGE_SIGNATURE)
+> 		return ERR_PTR(-EINVAL);
 
-Hi Yiqi Sun, thanks for this patch, but as I mentioned in the sub-thread 
-I found another issue and also another way to fix this, please can you 
-test the series I just sent: https://lore.kernel.org/netdev/20260508164411.261440-1-sgarzare@redhat.com/
+Either one of those is fine with me. I'd probably do the sizeof()
+variant, but no strong preference.
 
-Thanks,
-Stefano
+>>> +	struct seamldr_params *params;
+>>> +	int module_pg_cnt, sig_pg_cnt;
+>>> +	const u8 *sig, *module;
+>>> +	int i;
+>>> +
+>>> +	params = (struct seamldr_params *)get_zeroed_page(GFP_KERNEL);
+>>> +	if (!params)
+>>> +		return ERR_PTR(-ENOMEM);
+>>
+>> kzmalloc(PAGE_SIZE, GFP_KERNEL) will save you a cast.
+> 
+> I noticed that 'kzalloc_obj()' can be used here, which avoids spelling out
+> the size and GFP flags explicitly.  So I ended up with:
+> 
+>     params = kzalloc_obj(*params);
 
->
->diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->index 416d533f493d..6b26ee57ccab 100644
->--- a/net/vmw_vsock/virtio_transport_common.c
->+++ b/net/vmw_vsock/virtio_transport_common.c
->@@ -152,7 +152,7 @@ static void virtio_transport_copy_nonlinear_skb(const struct sk_buff *skb,
-> 	iov_iter.nr_segs = 1;
->
-> 	to_copy = min_t(size_t, len, skb->len);
->-
->+	iov_iter.count = to_copy;
-> 	skb_copy_datagram_iter(skb, VIRTIO_VSOCK_SKB_CB(skb)->offset,
-> 			       &iov_iter, to_copy);
-> }
->-- 
->2.34.1
->
-
+That's fine too.
