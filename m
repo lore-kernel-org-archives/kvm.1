@@ -1,56 +1,56 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EB983AC0F9
-	for <kvm@vger.kernel.org>; Fri,  8 May 2026 23:13:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C333B0ADA
+	for <kvm@vger.kernel.org>; Fri,  8 May 2026 23:13:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778282038; cv=none; b=mkbESlnR0LWhI5MiMRopWVg+At1a56LhSaQwLiirO2leYmBdY8er3L5+NNsPj0Ry4Tj/vmW9UFT9beLoXInTZnR+HSt1vzed/uMAjJ0OkPX+JlSbS2f3iFJxj6IEg4dFamxcZz2PbYs7Ec9txtWdWGeh26QjYsceNsexI5kJh3U=
+	t=1778282040; cv=none; b=LaOE8wr9uL3v+61C8K0Xk9R4sUbVDLDahw544UL1o0+ZtixtK6s+XJoSVVEE9aduDLfqpxaTmnFkgiX92Sqckh3voNla1EdSFMQy5fu5PaW2XV/egkHvbplRt+lGJZUl+47bYfiNQu20k4/JAbQKvcK9dZqhRcNZt4YpdUDVzTY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778282038; c=relaxed/simple;
-	bh=yx/8znDbwZackXRIS3uVWDYIbK9dKkMXLjcg4TqN5Us=;
+	s=arc-20240116; t=1778282040; c=relaxed/simple;
+	bh=iJzNfQSCA5VjS8Kr8kZpQXZ0VSjA9HwsvTs8Uq9Dfvo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Tb+5nhNCZ36LfWwn+G7gnQ5s1KNozlmxRO3WX8jgDHnJOhbcLExhq0ihsa2JZ9wAHY3oSN3lPW/RnwyYvkqyCuyImv52MbRf7U6f2IDl+WnW70gHG5CiOQEyQIkkcgJ6pzOBJp9HB/fb1n9I8FT58pOwAXl2qKGuZFZj1vP4PJc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Pzh2WYPB; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=lt7ffJzFp8lAR5SqYJ4kcbQioLy7uPPxO6YKkRRUw3neMopYazE8oGv/OcWyaiLkfooOcYz+ytewQ3gYPbZ8B3/l61Z6Ivv56pxUVIfRu85PmeSiL4rJc7JvadJWzp0OA5A3mEMpl1rNgPCyuOEWYARZ3Q39XHHjV3hypRic+TY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DPefgnhk; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Pzh2WYPB"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-3663cbff31cso3354366a91.2
-        for <kvm@vger.kernel.org>; Fri, 08 May 2026 16:13:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DPefgnhk"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8354503d9acso2868539b3a.1
+        for <kvm@vger.kernel.org>; Fri, 08 May 2026 16:13:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778282037; x=1778886837; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1778282038; x=1778886838; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=+D5quk3d/QgNQ3+BOhnf9E+QRhuhNCjSe9w0CI0JGNM=;
-        b=Pzh2WYPBvEmk9SbutkfErFW52bj9Qstoqx8RBAekfuaODEXCYLQlEPxAYM6d0wrSk6
-         lCmv0fFQ/XLJJX8H3Gf0D42oKh4wht84k7hv0XCsn04G4bK2nPoZJlku/eGnwvpMSZdK
-         nI25FUL3vCONkiFdAe5hfRRqFgYcZ93u3QX41x66q35qV1vkfXkMKMpSAVumn106hMov
-         W/eB5zTredZaduIILTd8t1th/8LqjeCDxAFDidiIpvX43gdZmBImjPseLgEiy2VZyWRF
-         11dAdR1kMIJLiwK8AeN3hRytX2oW2aJpO+kapJK9YrK5rHUyGAUYzeX0uBdOCw6NRhKn
-         Rhrg==
+        bh=nL2nuU0zBSPyTxPi7rivKlYOUZruT8VJE95GVfuQzuo=;
+        b=DPefgnhkR5NDDbYo/PwWMfqwoxdIrExi54zgNbN4GwfKDTgIBusszGsNHnuC6sl4FW
+         vDijxANNFATAy28/ASkOajt85R8Kp2es+TChXb1TvxD8v+Ef/qPgQ4AVvTuumBS1UOmR
+         kHWh8Gq5qD5Mm/y0Jq48Ns8ETdQb4vmW6ciarRu6pYJfCGmk60EjpA3dUgeVEFAa+6/N
+         GK7qG2bUGGxu3vTqTg1b0v1VGhM3sTqEyJRscEGjpsweQkQu6MuwuZ9l3Fdl7qtiFd57
+         2kNmxevUxXfloxWExu7SCxETmWL31sm5VAZ3siscKSYe2/Zt3rYCEOIFbYNtMIv3/A/O
+         cvlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778282037; x=1778886837;
+        d=1e100.net; s=20251104; t=1778282038; x=1778886838;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+D5quk3d/QgNQ3+BOhnf9E+QRhuhNCjSe9w0CI0JGNM=;
-        b=CGSSaLBRUbVesl6ePTiaR0qajocvedGK5TZ7vtJo76pCZOJdO5L+JTDZORLMvZ5vVr
-         k4stEJglKKeRBFUsaVGWEuGNeq/u0bdeKibFW1M+ND93NIMOHji7pLTAVVlUyJeoUfkI
-         m6Il53P97rpt0ZE+KLVfo4XvpE3QTmeL6SVXNHKDmEWrfrrdN1jhUAhCmeFfHTerETDN
-         D+BhzjFJYJMmarXOtXnBc9uy7zWpx4dlNCXsthhYzTta+Js6L8cC1ucB5W8bHJph6Auf
-         cw1kYkidxxvv4u8fUqYU1idkfSCDsZgaw2SB+oq+8cX0Ndhz5OuxJ/w2nevGs6NRxXNO
-         pCxQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+Chsd+DcNxFfbwmBWtR3JrScPVWQuLxorOKXy+nyYZsIJ0anYB8pdrxRHnBRwCUwmqBtU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzG/i9b2hRTFnz07OHj6ByEeXHmqPRST3nX7m6IXm2vmuTlAl2Y
-	vx77eAMrQ19BMUVI34ERc0fFzxFiWQXd3XsEFEgwzqzcs5ErISG8KKUSPsbe3LHtV0S82Unwyek
-	U+vSnuA==
-X-Received: from pfbgg21.prod.google.com ([2002:a05:6a00:6315:b0:838:27b2:c6d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:4324:b0:398:4a1f:8a54
- with SMTP id adf61e73a8af0-3aa5a8308ccmr16370081637.2.1778282036646; Fri, 08
- May 2026 16:13:56 -0700 (PDT)
+        bh=nL2nuU0zBSPyTxPi7rivKlYOUZruT8VJE95GVfuQzuo=;
+        b=nzNx5Dt6WDSxucucpbBHsZaLAJ+H93dPxYm06YoIqVTRKr1P91468O4wJna3hgs/gg
+         AG5LckuaGSQdzOg9v8pvbpL5ban6whjKGosb63kXFoMv8gt/ne92He7F6PovwxsiEMTg
+         Jx5jVF9rP6J2FHY3aWXpIKXC+uSJfNoFcn1Sa9zRqCDHrXalqFchSxyBO3nJ3bPW/vhY
+         KRF0TFEvGyN3NwnXyD5nr/PVczSWFbcbuyeU60sBG4R0Z9tQp4wDbimMMlMMlYPn/vk3
+         RHarR0teSVCCvUEXMgtaRteDy9sRiRIys8RBsKuq4sP5iLxJH85xPW0iD+UtAw345spD
+         qm2Q==
+X-Forwarded-Encrypted: i=1; AFNElJ/q/CP8CmtewAd4VjDslKFh9rFnT6OpCHhNevYSM9qfmQvKBn1qCGmCu4L3TprfvhUUDEo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWJQwQo7qKqUKJDdpLPuMNQcsjgYcUO7wEIXAjdeJwKeszQg+b
+	mTHty6AuM7RUyTrzG052/pvox2R5yOG9gNBi4tLKQYqL396UgQwJ4gwFFpM+5KWnUXL2ptEJCt3
+	jqGegPw==
+X-Received: from pfjt21.prod.google.com ([2002:a05:6a00:21d5:b0:82f:a2bb:a7cf])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:8009:b0:835:cc47:6ff7
+ with SMTP id d2e1a72fcca58-83a5eb3a49bmr14404275b3a.50.1778282037655; Fri, 08
+ May 2026 16:13:57 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri,  8 May 2026 16:13:45 -0700
+Date: Fri,  8 May 2026 16:13:46 -0700
 In-Reply-To: <20260508231353.406465-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260508231353.406465-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260508231353.406465-2-seanjc@google.com>
-Subject: [PATCH v3 1/9] perf/x86/intel: Ensure guest PEBS path doesn't set
- unwanted PERF_GLOBAL_CTRL bits
+Message-ID: <20260508231353.406465-3-seanjc@google.com>
+Subject: [PATCH v3 2/9] perf/x86/intel: Don't write PEBS_ENABLED on
+ host<=>guest xfers if CPU has isolation
 From: Sean Christopherson <seanjc@google.com>
 To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
 	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
@@ -76,30 +76,124 @@ Cc: Mark Rutland <mark.rutland@arm.com>,
 	Stephane Eranian <eranian@google.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-When reinstating PEBS counters into PERF_GLOBAL_CTRL for a KVM guest, mask
-the value with perf's desired/original PERF_GLOBAL_CTRL value to ensure
-KVM doesn't unintentionally enable counters.  This _should_ be a nop, as
-arr[pebs_enable].guest is derived from cpuc->pebs_enabled, which should be
-a subset of x86_pmu.intel_ctrl, but paranoia is cheap in this case.
+When filling the list of MSRs to be loaded by KVM on VM-Enter and VM-Exit,
+*never* insert an entry for PEBS_ENABLED if the CPU properly isolates PEBS
+events, in which case disabling counters via PERF_GLOBAL_CTRL is sufficient
+to prevent unwanted PEBS events in the guest (or host).  Because perf loads
+PEBS_ENABLE with the unfiltered cpu_hw_events.pebs_enabled, i.e. with both
+host and guest masks, there is no need to load different values for the
+guest versus host, perf+KVM can and should simply control which counters
+are enabled/disabled via PERF_GLOBAL_CTRL.
 
+Avoiding touching PEBS_ENABLED "fixes" a bug where PEBS_ENABLED can end up
+with "stuck" bits if a PEBS event is throttled between generating the list
+and actually entering the guest (Intel CPUs can't arbtitrarily block NMIs).
+Fixes in quotes because leaving PEBS_ENABLED as-is doesn't fix the
+underlying problem of perf (via PMIs) being able to modify state after the
+perf<=>KVM handoff.
+
+But not writing PEBS_ENABLED is desirable no matter what, as stating the
+obvious, leaving PEBS_ENABLED as-is avoids three MSR writes on every VMX
+transition: one each on entry/exit, and one more explicit WRMSR to zero
+PEBS_ENABLED before VM-Entry (KVM assumes the only reason PEBS_ENABLED is
+in the load list is if the CPU lacks isolation and thus needs a quiescent
+period).
+
+Opportunistically add comments to (better) explain the rules for generating
+the set of PEBS counters that will be active while the guest is running,
+along with a FIXME for the suspected hack-a-fix where perf disables guest
+PEBS if _any_ PEBS event is configured to count in the host (commit
+854250329c02 ("KVM: x86/pmu: Disable guest PEBS temporarily in two rare
+situations") doesn't explain the motivation, at all).
+
+Fixes: c59a1f106f5c ("KVM: x86/pmu: Add IA32_PEBS_ENABLE MSR emulation for extended PEBS")
+Cc: Jim Mattson <jmattson@google.com>
+Cc: Mingwei Zhang <mizhang@google.com>
+Cc: Stephane Eranian <eranian@google.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/events/intel/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/events/intel/core.c | 55 ++++++++++++++++++++++++------------
+ 1 file changed, 37 insertions(+), 18 deletions(-)
 
 diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index d9488ade0f8e..b70dc35fcceb 100644
+index b70dc35fcceb..13cd12d3eeee 100644
 --- a/arch/x86/events/intel/core.c
 +++ b/arch/x86/events/intel/core.c
-@@ -5066,7 +5066,7 @@ static struct perf_guest_switch_msr *intel_guest_get_msrs(int *nr, void *data)
- 		arr[pebs_enable].guest &= ~kvm_pmu->host_cross_mapped_mask;
- 		arr[global_ctrl].guest &= ~kvm_pmu->host_cross_mapped_mask;
- 		/* Set hw GLOBAL_CTRL bits for PEBS counter when it runs for guest */
--		arr[global_ctrl].guest |= arr[pebs_enable].guest;
-+		arr[global_ctrl].guest |= intel_ctrl & arr[pebs_enable].guest;
+@@ -4999,12 +4999,15 @@ static struct perf_guest_switch_msr *intel_guest_get_msrs(int *nr, void *data)
+ 	struct kvm_pmu *kvm_pmu = (struct kvm_pmu *)data;
+ 	u64 intel_ctrl = hybrid(cpuc->pmu, intel_ctrl);
+ 	u64 pebs_mask = cpuc->pebs_enabled & x86_pmu.pebs_capable;
+-	int global_ctrl, pebs_enable;
++	u64 guest_pebs_mask;
++	int global_ctrl;
+ 
+ 	/*
+ 	 * In addition to obeying exclude_guest/exclude_host, remove bits being
+ 	 * used for PEBS when running a guest, because PEBS writes to virtual
+-	 * addresses (not physical addresses).
++	 * addresses (not physical addresses).  If the guest wants to utilize
++	 * PEBS, and PEBS can safely enabled in the guest, bits for the guest's
++	 * PEBS-enabled counters will be OR'd back in as appropriate.
+ 	 */
+ 	*nr = 0;
+ 	global_ctrl = (*nr)++;
+@@ -5051,24 +5054,40 @@ static struct perf_guest_switch_msr *intel_guest_get_msrs(int *nr, void *data)
+ 		};
  	}
  
+-	pebs_enable = (*nr)++;
+-	arr[pebs_enable] = (struct perf_guest_switch_msr){
+-		.msr = MSR_IA32_PEBS_ENABLE,
+-		.host = cpuc->pebs_enabled & ~cpuc->intel_ctrl_guest_mask,
+-		.guest = pebs_mask & ~cpuc->intel_ctrl_host_mask & kvm_pmu->pebs_enable,
+-	};
++	/*
++	 * Restrict guest PEBS events to counters that (a) perf supports, (b)
++	 * the guest wants to use for PEBS, (c) are not excluded from counting
++	 * in the guest, and (d) _are_ excluded from counting in the host.
++	 */
++	guest_pebs_mask = pebs_mask & intel_ctrl & kvm_pmu->pebs_enable &
++			  ~cpuc->intel_ctrl_host_mask &
++			  cpuc->intel_ctrl_guest_mask;
+ 
+-	if (arr[pebs_enable].host) {
+-		/* Disable guest PEBS if host PEBS is enabled. */
+-		arr[pebs_enable].guest = 0;
+-	} else {
+-		/* Disable guest PEBS thoroughly for cross-mapped PEBS counters. */
+-		arr[pebs_enable].guest &= ~kvm_pmu->host_cross_mapped_mask;
+-		arr[global_ctrl].guest &= ~kvm_pmu->host_cross_mapped_mask;
+-		/* Set hw GLOBAL_CTRL bits for PEBS counter when it runs for guest */
+-		arr[global_ctrl].guest |= intel_ctrl & arr[pebs_enable].guest;
+-	}
++	/*
++	 * Disable counters where the guest PMC is different than the host PMC
++	 * being used on behalf of the guest, as the PEBS record includes
++	 * PERF_GLOBAL_STATUS, i.e. the guest will see overflow status for the
++	 * wrong counter(s).
++	 */
++	guest_pebs_mask &= ~kvm_pmu->host_cross_mapped_mask;
+ 
++	/*
++	 * FIXME: Allow guest and host usage of PEBS events to co-exist instead
++	 *        of disabling guest PEBS entirely if the host is using PEBS.
++	 *        What exactly goes wrong if guest and host are using PEBS is
++	 *        unknown.
++	 */
++	if (pebs_mask & ~cpuc->intel_ctrl_guest_mask)
++		guest_pebs_mask = 0;
++
++	/*
++	 * Do NOT mess with PEBS_ENABLED.  As above, disabling counters via
++	 * PERF_GLOBAL_CTRL is sufficient, and loading a stale PEBS_ENABLED,
++	 * e.g. on VM-Exit, can put the system in a bad state.  Simply enable
++	 * counters in PERF_GLOBAL_CTRL, as perf load PEBS_ENABLED with the
++	 * full value, i.e. perf *also* relies on PERF_GLOBAL_CTRL.
++	 */
++	arr[global_ctrl].guest |= guest_pebs_mask;
  	return arr;
+ }
+ 
 -- 
 2.54.0.563.g4f69b47b94-goog
 
