@@ -1,50 +1,41 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A16F2D0615;
-	Fri,  8 May 2026 17:20:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5EB23ED5B;
+	Fri,  8 May 2026 17:22:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778260838; cv=none; b=IntMlXFb1Rfa6rkj3iXc+iZ7pssluYm2SBkmxwY4A2oJ2+k7N5ruscwdJ9xQjGh7YD/vxbXJYnhXfezf/MH1T/+hHrRTaV5U5VyWmUI4DfyPMaIBPkWMRTnWWZn3XaPTMYRWqsEnTwKutKvXOrr97cPHu2rUxqFXlCKDQK5TNtA=
+	t=1778260961; cv=none; b=hs8SsRei1S3VW/xiL2syihX1tWqrYth+8vRbQC/hx+3PJ6hkQO4rTv8DKTwW0Aqm29M6x19y5iq5AsSyR3X84QhF2n8b/nS5ng8K99lc1HAouTcPHXtvi+scxLmrKTkoG4Lt+dSUEym+g6T0tECQxJs56cwY6WzU7U3pitZcIrA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778260838; c=relaxed/simple;
-	bh=VIpaIdq08wjRpBWfnPXJEwTJDQEICZVJcS3hyR9NLpo=;
+	s=arc-20240116; t=1778260961; c=relaxed/simple;
+	bh=1J98FZNeG0wJh1d24RHpuQ7/4iIzrGiVR0KD0PgvBJM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bijdqjxBZN971rr6OTSk8YuAIvqbQ/4+rrRyxtxoPxyyX7ERGIvPVFnUyffcRrImGYvemvaRC9eHqqDhfukbsICugG7HDe64Hzlgm970HG1JMMpNxzChOADvz4exA5nLBjahBKE0Z3qVeAJ4wMSHZxPGz+mIuH3ixNKts+hLE6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=oZlzpBvM; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=fEqIqayVz8DlahEWIsM+HXUOaOxDV/h3kxynmnUQrLYJXseC233v2lwHa7QD1d3z9vr4JxBsXS87c51y6bv4r3lujjOizN00k+uFyFN71habOIcx/UQvIbe72fOtPByHHW+suarAHqCeExYFw6iD/Pb9xPCMTGOYLNa3t8JASy8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mmT0hdzg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="oZlzpBvM"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 5F3DC22D7;
-	Fri,  8 May 2026 10:20:30 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id A1A783F836;
-	Fri,  8 May 2026 10:20:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1778260835; bh=VIpaIdq08wjRpBWfnPXJEwTJDQEICZVJcS3hyR9NLpo=;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mmT0hdzg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97DD9C2BCB0;
+	Fri,  8 May 2026 17:22:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778260961;
+	bh=1J98FZNeG0wJh1d24RHpuQ7/4iIzrGiVR0KD0PgvBJM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=oZlzpBvM3kB4R3YSBeQz6gKgJmqfggBligCcpTqgEZXTpNWvuOS6tcb8YSZFF1+Fp
-	 kWnWUogxR1+d6Lsf9g9rsdrHZqLJNTKjJ1N1dWhsJRabhzYObA4PglPOeM69C9nq/z
-	 qCOQcg0gdCUWunQoEjjmnB+fLCkzhxF+ZBpNE7M4=
-Date: Fri, 8 May 2026 18:20:27 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
-	Oliver Upton <oupton@kernel.org>, Dave Martin <Dave.Martin@arm.com>,
-	Fuad Tabba <tabba@google.com>, Ben Horgan <ben.horgan@arm.com>,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Eric Auger <eric.auger@redhat.com>
-Subject: Re: [PATCH v10 15/30] KVM: arm64: Support SME control registers
-Message-ID: <af4bWxiOogfPz_dp@J2N7QTR9R3>
-References: <20260306-kvm-arm64-sme-v10-0-43f7683a0fb7@kernel.org>
- <20260306-kvm-arm64-sme-v10-15-43f7683a0fb7@kernel.org>
+	b=mmT0hdzg+nreTvPyyLG/QWl15hwM7epGunXpsI3BkK0hSmEcWeoqEJBoiPuEd2EOr
+	 FmGoKVgUDhoaZNuDMsuOJz9GqjOxv+uZpswq3OKPUZVptu6arPqntx0g2JhJ9W835h
+	 trgxDNrdUcIPwXb1GP4YQ67FA7eq2QHrfC+x+eF50oYsSdiKUT7gszntv9ZKSyVUx9
+	 985WhRQcXXhPIXAqQMJTsQNijbQN1gqbPYmm59V6xjKfQlz85oNM3RbE0dBJZDnomC
+	 z8i3u75JHjDfVwzGGbdW554mWhKdEkv2wl3LsbowMp+gLc1SpH1eFcd9SN4LSlcr1B
+	 kioBsWgEYlUng==
+Date: Fri, 8 May 2026 22:44:06 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 4/5] *** DO NOT MERGE *** KVM: x86: Hack in a stat to
+ track guest-induced exits (for testing)
+Message-ID: <af4YUUCJfp_X-bcu@blrnaveerao1>
+References: <20260506184746.2719880-1-seanjc@google.com>
+ <20260506184746.2719880-5-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -53,104 +44,37 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260306-kvm-arm64-sme-v10-15-43f7683a0fb7@kernel.org>
+In-Reply-To: <20260506184746.2719880-5-seanjc@google.com>
 
-On Fri, Mar 06, 2026 at 05:01:07PM +0000, Mark Brown wrote:
-> SME is configured by the system registers SMCR_EL1 and SMCR_EL2, add
-> definitions and userspace access for them.  These control the SME vector
-> length in a manner similar to that for SVE and also have feature enable
-> bits for SME2 and FA64.  A subsequent patch will add management of them
-> for guests as part of the general floating point context switch, as is
-> done for the equivalent SVE registers.
-> 
-> Signed-off-by: Mark Brown <broonie@kernel.org>
+On Wed, May 06, 2026 at 11:47:45AM -0700, Sean Christopherson wrote:
+> Not-signed-off-by: Sean Christopherson <seanjc@google.com>
 > ---
->  arch/arm64/include/asm/kvm_emulate.h  | 14 ++++++++++++
->  arch/arm64/include/asm/kvm_host.h     |  2 ++
->  arch/arm64/include/asm/vncr_mapping.h |  1 +
->  arch/arm64/kvm/sys_regs.c             | 42 ++++++++++++++++++++++++++++++++++-
->  4 files changed, 58 insertions(+), 1 deletion(-)
+>  arch/x86/include/asm/kvm_host.h |  2 +
+>  arch/x86/kvm/svm/svm.c          | 81 +++++++++++++++++++++++++++++++++
+>  arch/x86/kvm/vmx/vmx.c          | 79 ++++++++++++++++++++++++++++++++
+>  arch/x86/kvm/x86.c              |  2 +
+>  4 files changed, 164 insertions(+)
 > 
-> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
-> index 5bf3d7e1d92c..7a11dd7d554c 100644
-> --- a/arch/arm64/include/asm/kvm_emulate.h
-> +++ b/arch/arm64/include/asm/kvm_emulate.h
-> @@ -89,6 +89,14 @@ static inline void kvm_inject_nested_sve_trap(struct kvm_vcpu *vcpu)
->  	kvm_inject_nested_sync(vcpu, esr);
->  }
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> index c470e40a00aa..bff534bd00dc 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -1703,6 +1703,8 @@ struct kvm_vcpu_stat {
+>  	u64 invlpg;
 >  
-> +static inline void kvm_inject_nested_sme_trap(struct kvm_vcpu *vcpu)
-> +{
-> +	u64 esr = FIELD_PREP(ESR_ELx_EC_MASK, ESR_ELx_EC_SME) |
-> +		  ESR_ELx_IL;
-> +
-> +	kvm_inject_nested_sync(vcpu, esr);
-> +}
+>  	u64 exits;
+> +	u64 guest_induced_exits;
+> +	u64 msr_exits;
+>  	u64 io_exits;
+>  	u64 mmio_exits;
+>  	u64 signal_exits;
 
-This implicilty has the SMTC field as 0b000, which is correct for traps
-of SMCR_EL{1,2} due to SMEN, but wouldn't be right for other traps (e.g.
-traps of ZT0).
+This looks promising. I'm assuming 'hack' in the title is only meant to 
+indicate the PoC nature of this?
 
-If we only use this for traps of SMCR_EL{1,2}, that's ok, but I think
-it's worth a comment, and possibly a more specific name. Perhaps
-kvm_inject_nested_sme_smen_trap() for now.
+Taking this forward, introducing a similar bucket for all AVIC/APICv 
+related exits might help with a few tests.
 
-[...]
 
-> +static bool access_smcr_el2(struct kvm_vcpu *vcpu,
-> +			    struct sys_reg_params *p,
-> +			    const struct sys_reg_desc *r)
-> +{
-> +	unsigned int vq;
-> +	u64 smcr;
-> +
-> +	if (guest_hyp_sme_traps_enabled(vcpu)) {
-> +		kvm_inject_nested_sme_trap(vcpu);
-> +		return false;
-> +	}
-> +
-> +	if (!p->is_write) {
-> +		p->regval = __vcpu_sys_reg(vcpu, SMCR_EL2);
-> +		return true;
-> +	}
-> +
-> +	smcr = p->regval & ~SMCR_ELx_RES0;
-> +	if (!vcpu_has_fa64(vcpu))
-> +		smcr &= ~SMCR_ELx_FA64;
-> +	if (!vcpu_has_sme2(vcpu))
-> +		smcr &= ~SMCR_ELx_EZT0;
-> +
-> +	vq = SYS_FIELD_GET(SMCR_ELx, LEN, smcr) + 1;
-> +	vq = min(vq, vcpu_sme_max_vq(vcpu));
-> +	smcr &= ~SMCR_ELx_LEN_MASK;
-> +	smcr |= SYS_FIELD_PREP(SMCR_ELx, LEN, vq - 1);
+- Naveen
 
-I'm not sure this sanitization is correct or necessary, and the same
-concern applies to ZCR_ELx.LEN.
-
-AFAICT, none of the values for the SMCR_ELx.LEN and ZCR_ELx.LEN fields
-are reserved or unallocated. Thus all the bits of those fields should be
-stateful, and a read should observe the last value written, regardless
-of the effective value of the field.
-
-That means that the following at EL2 or vEL2 shouldn't produce a
-warning:
-		
-	int len_write, len_read;
-
-	for (len_write = 0; len_write < 16; len_write++) {
-		write_sysreg_s(len_write, SYS_SMCR_EL2);
-
-		len_read = read_sysreg_s(SYS_SMCR_EL2) & SMCR_ELx_LEN_MASK;
-		WARN_ON(len_read != len_write);
-	}
-
-Either what we're doing is wrong, or the architcture requires a
-clarification to say that values corresponding to unimplmented vector
-lengths are reserved.
-
-If those bit are always stateful, the the logic to sanitize the LEN
-field shouldn't live here, and that will need to happen when consuming
-the effective value.
-
-Mark.
