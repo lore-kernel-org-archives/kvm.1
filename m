@@ -1,339 +1,243 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7EE2C08DC
-	for <kvm@vger.kernel.org>; Fri,  8 May 2026 15:30:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0FF630EF68
+	for <kvm@vger.kernel.org>; Fri,  8 May 2026 15:50:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778254252; cv=none; b=fqKj/QLc1NT1/93yAqoHvtamcL0etj5xzYIj1t0Brfq8ilbNMckNKm1jJH+eBctPz+ZyfEb96mo5j4UtK4fulb983vpSlMtjQ101Du4vJXl7BjMpU3d6DUw7LqNsZhSW1ZOKHD1s52TLb2uhp2Cjt0OhgVIp3j3ooH977cZWzgg=
+	t=1778255454; cv=none; b=MhBYu1W0jC7+EFC8cnAc3d1lw91g4yd7IbiSfDMyq0aJkItizx22OcWRnkksR0SpSqZ3x6RrcfnGQvj2WxVML2a2+CMI411BdV9c5wE+nXq3gEoWHqP+eOJzvV2HAST+m6UsQRIyQSeHSeXeKF14oWo5RrnoRcBmRiOZSUGQn34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778254252; c=relaxed/simple;
-	bh=EtgD1VNRsK8d4lAzXro19T0Vx6V8jLE24r087m6Qgqk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=nXWmX8lKuqZsJGMQ+bQb3NOKZFrCBUTVFgELuuvfO/i6kHebIHM+ekKNVT1d4MCDq6Jd0qeISl/d8Ob/1wCOWwBDlp5he/F1s42scmOEDBMad5V/orv15rd+TGsXzyb9UVjpxbsVRSvqSCBElTiUl2/is/xjHYRevmbd7LoGqzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=BQwi8Bh8; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1778255454; c=relaxed/simple;
+	bh=rdDtrTgIi+rN4hhDCNeEhPYuXlZ/J2y+H8n1qLpmtsY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TiqIBl1Mokpwf8v7OGBznGbDUvmlm7WX/nuxHh7DwELFsoIZtO5Amre6BdMq+aU3NBjbfUageN7Zg0CkDlS0EMcxVGNkLDg1OsLGYj+EbOCns19KAs5ILhvozUJ4u5c/9ELaaA4hBOkqKfHjnXj1Iw/rlM5QXY0Plyn95/KjL5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aoG6h6uw; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=h/xX9xUM; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="BQwi8Bh8"
-Received: from pps.filterd (m0528006.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6489q90T416571
-	for <kvm@vger.kernel.org>; Fri, 8 May 2026 08:30:48 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=vpkNWOxv2MKVZdyw2YC4ieRyxiQ+NH8A65VfzBl7rQU=; b=BQwi8Bh8NYox
-	b7LJuIr3GvE6TtLB8vNaoKOlW8rcipR+gOoYdRAN1z32fYQhHOo5eO1HD/NEXF3S
-	zxXqZ1n6O1zuSR25f/KVQ8Gx77g8GinFvbAGVh7X945EiNFmeNMtP8ifc567Fy4+
-	Nm+PAjuvCiPE/zYOcAzWdJbpnqPzhDDCSp0dEsaDToXDXNDXgauWSQUDxTJlD6xx
-	/BujEr0VQGxiG1IqiuYPMpQ1CIMH1rWkNco0hTvaONyRLBz9ShO6JLc7uyF3htOq
-	FDzLTBOz7w/D4U/jIAE7xrGQnpM8lStBJQSPiT5VPCoDLX286+TC9pmjo2KKkmIa
-	mRx292hXqg==
-Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4e1dj75wwj-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Fri, 08 May 2026 08:30:47 -0700 (PDT)
-Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-2f525565b33so2810957eec.0
-        for <kvm@vger.kernel.org>; Fri, 08 May 2026 08:30:47 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aoG6h6uw";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="h/xX9xUM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778255449;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZdBAwN+ZE1eYNiJtu0H0OHxl4J/6xgxxgGUcknEIPjk=;
+	b=aoG6h6uwWfwPj4Oa7tfZ84TXZPd6AtyEmI8NiLKu8gKOShX/BqNkcKajnizu4aU/VigkYo
+	O24rQeO9AtgTGt6t2ZzJzbDkAPxxz8O+adKaswWd9quzmy99cz7cF9Xcr2BkZerIRHS18X
+	aSTCZygcYaIzd6WHVJn8MblQGo7ps6w=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-423-z5UDuft_Muekj_ofjhgG2A-1; Fri, 08 May 2026 11:50:48 -0400
+X-MC-Unique: z5UDuft_Muekj_ofjhgG2A-1
+X-Mimecast-MFC-AGG-ID: z5UDuft_Muekj_ofjhgG2A_1778255447
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-441243ba35fso1882884f8f.0
+        for <kvm@vger.kernel.org>; Fri, 08 May 2026 08:50:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1778255447; x=1778860247; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZdBAwN+ZE1eYNiJtu0H0OHxl4J/6xgxxgGUcknEIPjk=;
+        b=h/xX9xUM74SzCTbQX9lL8fxCmC6PCt4VBk+g/rJkH6oufrX7DWFPgLsaXL9Ez+15fM
+         LbfWbE7PczTQWI69WJLC5OQxbxB/utrtJ91C40HEmubhhj1CqeZedJrxYXbr4zTckvoj
+         gqXmoYgZcFy4fL5PVM/F31+8Pr46AtV6MBZ71DPRJ/YVvgALiP5jFVqCGXW7Ym5cpPu7
+         lfUvxmScpW3IpeHhzOzNeqcEf9n/BAqk5zgsVuv5VYIRmpbwdreJYavfOT7IBCfOEsKA
+         8u/Urd/ew/pRWj3ZSN1r+tyhskEGgm4CMORpRygM+uUjbL4T5SD/O90f0jx1vYxQ8yRK
+         hfcg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778254247; x=1778859047;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vpkNWOxv2MKVZdyw2YC4ieRyxiQ+NH8A65VfzBl7rQU=;
-        b=me7Kre92Afyq2YQedy+hJSIIgMN4YLF8ItF8kaY8YN5CKlrp0JFxtdNq+64JuGicIA
-         Qrnp5G4d69/7TI2+F03tQCSZU+MOjLeibpVz5/gOLJWtLZd+yJBr/tt8yvJVEAQnFQ3h
-         yDailbYNIuNI5bZcKnVQbo+N6HdjoIA1Aa6xXRUBhHtuYyIin2gDRXE7vEPL9V9N4tGg
-         EDE9BiCMro5sKvm18/nFv+vAo+W00uphFP4CWnuAKDGmnEGoo4aEcjXKZMtVRm2zOm81
-         4/OZw8S8jNnv8vo2PEzUlqFZiiS9fb7yfSzyRIuYccO5oCtCMQw0/GaZrQKigiapFNgF
-         fvVg==
-X-Forwarded-Encrypted: i=1; AFNElJ+mjToxyzkCcfEUDpBkg1IO2WnRzS/5NllN5xW3wGMkzeMjaMRUotqX9fUTqfOCPc5pw+4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEqGi/tCjjKj5D6Eh1hinMa4HZ6vv8r+LVatvjujnp91/WOr9X
-	nJNlgOsq6Zvi9xVZVkZUbPNSECrWq8Kv7t3Rg97zGz/oS5+Flio5hgAXkivJPwYBc5qTRW0SIBD
-	4QNaCFH7yDrjlRsJtoR3Uy45twIVeM/dZVbDlDczgeDFYUuVB6y57
-X-Gm-Gg: Acq92OEql0xAwVS9bl5RJCVPe68aAfjg+iBmVqqXZvXC1pzmd3PNHlW4zzulwvDNWno
-	TGIS6knJIY+LUnPDzRMVK7etgFkQVMfI9xvqKKFfNvljaajptIc5v9EUnNYizMmCUdZrWZexqIx
-	5cJ4R2pZ/W5dVtbMFaTw2DEn0P5QdGUVBLZ4RxCvKIAKGUCw5W1mWTeRgKEGVEwTYmwCY0yUtp+
-	NjtVlXZfn901D7Un9EFVavQj+9Hd+oTuaurpvXQO61WhaNe6YTk/Imzh3fqjrKDuSHbNRWmUOaD
-	FzNzmXM6+EStasajnyDOFJNOC2iOL0LOaM7hnIIHl3u7ZrU+KmrhmfA2pucTFXF+2K1kGZPCb+P
-	u+vS1QOe6IHHd/avLB4/URF0P
-X-Received: by 2002:a05:7300:cc0e:b0:2f5:285c:4374 with SMTP id 5a478bee46e88-2f55114357bmr6248691eec.35.1778254246594;
-        Fri, 08 May 2026 08:30:46 -0700 (PDT)
-X-Received: by 2002:a05:7300:cc0e:b0:2f5:285c:4374 with SMTP id 5a478bee46e88-2f55114357bmr6248656eec.35.1778254245892;
-        Fri, 08 May 2026 08:30:45 -0700 (PDT)
-Received: from [10.0.40.30] ([51.52.155.79])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f91004b6a2sm1188733eec.0.2026.05.08.08.30.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 08 May 2026 08:30:45 -0700 (PDT)
-Message-ID: <015b1e9c-0a2d-472a-b750-9154800832ee@meta.com>
-Date: Fri, 8 May 2026 16:30:40 +0100
+        d=1e100.net; s=20251104; t=1778255447; x=1778860247;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZdBAwN+ZE1eYNiJtu0H0OHxl4J/6xgxxgGUcknEIPjk=;
+        b=cRhLgF24BozZoeyQOryO9LVJP+mi2RHVg8y16GLQz4fNLslfXToLxMXL8pYcLGM4sC
+         b6jEPZu/sZFbSxSaX6Av6eOHBOS+CpyRVBZc/A4UmwwtRiGaKu9Vh8i875GoOSnvAvO6
+         JvD5uMowURLyn9AJE56VuNven83O1JOBXOBrqOtFGvxC2eJWMVw+bxrZZwjrbgTFFLu/
+         RiV4k8fpMxzIxKxEd0lzFsbKaO8owXfCxFWbQnL/i7IOj4/KdNxg6Uo0VzKdZ01cT28r
+         1teSxr+o3u/b2K1B9C84XfpQMFtQFyG6MMuFeYupX43Xpdl6ICdDg65lmZqJjHa6gqjE
+         pSGQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/+x6DLSamdo2gFWSYz2DXLojU8U2hVdvcJA4GpQNoPJOOx9HRKlOX6t/F0nGwaRLwRLqw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YysVn2QMFDi80jiIEZkmWbGel2Fv0fpHC7q3JgTz6AftxpkOWTo
+	4x2IcRr6IOfi2C9vytJU60psZzNWCc6f9sP6Ms1StVOzQ98Y8zqm5YJsKif41VkCL3L+SUlwcXV
+	Z6Qm8GCPFAqDsSQ5xrzh2+mTGHFcJZbFnEkNhlJ/MeKVogj0q9T6++w==
+X-Gm-Gg: AeBDiesoJPh21e9ExbOyv0H5j/N9sIgYcRcMsZMDvE5s2UcCpMWFob0ND5slI7+6X3V
+	/atPL6f7n2PZB6KEEoHZPOn/2l5XZiSJSTRsCE1gYU0MDoBoGDrdYNnlVyGWl5X9u8vXG7cowiE
+	kbiCWJzH6MrI/8FqkQhX7zhezEdSQiL86G7ZMFay+iLIVhv2UXNcvKFKByloThqpLmqvahxcA1X
+	xFWOBz0QmsXlDdiq0iAXqEXVgK85HW4LrR/V0OXAC1n0H6J+vRDuUAs68gwzShSjBMHntbWCUhj
+	91Q7L/XjeoS9cgdiumsGmXCx/fITAomb/CTOpMFYdshnZf9ZhpvApm8o3zNr97juLaM3ktE564X
+	aFPJpq8PZfK3hoVK5a79keYhxztfeb+DnpAc7axh0lwPRC07Ua0JmDlgqDk3Y/Pk=
+X-Received: by 2002:a05:600c:8485:b0:48a:58ae:9933 with SMTP id 5b1f17b1804b1-48e51f32806mr210416025e9.18.1778255446890;
+        Fri, 08 May 2026 08:50:46 -0700 (PDT)
+X-Received: by 2002:a05:600c:8485:b0:48a:58ae:9933 with SMTP id 5b1f17b1804b1-48e51f32806mr210415475e9.18.1778255446303;
+        Fri, 08 May 2026 08:50:46 -0700 (PDT)
+Received: from sgarzare-redhat (host-87-11-6-2.retail.telecomitalia.it. [87.11.6.2])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e6db11fc4sm2280025e9.27.2026.05.08.08.50.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 May 2026 08:50:45 -0700 (PDT)
+Date: Fri, 8 May 2026 17:50:24 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Cc: Paolo Abeni <pabeni@redhat.com>, 
+	Bobby Eshleman <bobbyeshleman@meta.com>, netdev@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Yiqi Sun <sunyiqixm@gmail.com>, kvm@vger.kernel.org, 
+	virtualization@lists.linux.dev
+Subject: Re: [PATCH] vsock/virtio: fix vsockmon info leak in non-linear tap,
+ copy
+Message-ID: <af4GIeSEQ_65V5C2@sgarzare-redhat>
+References: <afnXIGtswspSEk8x@sgarzare-redhat>
+ <a7b95294-3aa6-4bca-9eab-a4bcd0202ae2@salutedevices.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 3/3] vfio/pci: Replace vfio_pci_core_setup_barmap()
- with vfio_pci_core_get_iomap()
-Content-Language: en-GB
-To: Alex Williamson <alex@shazbot.org>
-Cc: Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Ankit Agrawal <ankita@nvidia.com>,
-        Alistair Popple <apopple@nvidia.com>,
-        Leon Romanovsky <leon@kernel.org>, Kees Cook <kees@kernel.org>,
-        Shameer Kolothum <skolothumtho@nvidia.com>,
-        Yishai Hadas
- <yishaih@nvidia.com>,
-        Alexey Kardashevskiy <aik@ozlabs.ru>,
-        Eric Auger <eric.auger@redhat.com>, Peter Xu <peterx@redhat.com>,
-        Vivek Kasireddy <vivek.kasireddy@intel.com>,
-        Zhi Wang <zhiw@nvidia.com>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, virtualization@lists.linux.dev
-References: <20260505173835.2324179-1-mattev@meta.com>
- <20260505173835.2324179-4-mattev@meta.com>
- <20260507162141.072483ce@shazbot.org>
-From: Matt Evans <mattev@meta.com>
-In-Reply-To: <20260507162141.072483ce@shazbot.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Authority-Analysis: v=2.4 cv=H9rrBeYi c=1 sm=1 tr=0 ts=69fe01a7 cx=c_pps
- a=cFYjgdjTJScbgFmBucgdfQ==:117 a=2UbFsIa4v//lIgRL4kGwwA==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=7x6HtfJdh03M6CCDgxCd:22 a=kkcUborcUVj0H7zxAXTl:22 a=VabnemYjAAAA:8
- a=CeaZP3YjJKAO-qlWyq0A:9 a=QEXdDO2ut3YA:10 a=scEy_gLbYbu1JhEsrz4S:22
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA4MDE1NSBTYWx0ZWRfX7onnsE123FuR
- C5mAVG6VTVbAJszm8EsanjIdmGF4yc0rgb3DzP1gCGmgsQTHkXoyo2Txr2Kr0pcVHZx8ZutdQqA
- DK5v975cfIarodsO3ZIhJpB00FkdNoP+kRC/7tOSfzDKqn+D9Ue5x4cfXczpuDO7wKxVqRtOlCO
- 8V8uofcGdAlgo7phgmkxTObfEEUd1w2mUPplVM+pODiMCxjQRUCAGpU/Dx3sdJZX0zAiZsqttgt
- mSOwpPHtFkewEjnUBaDHTJj4hJqeKkFsowxS3eUwNdSmfr3DoUDIW9jhisdcX+/ct2BPR70tSGP
- IWUgUdXqn7JaNA/pqVpixDQ8UXE/xUe9Zh92AsX5J1C5VS+f9IbpfDx9qiXGX2dc4lgLc2gFg3G
- +S5T3eZz2lzBCzV4CU67jep7xsVRWEVAnij4NuholAJXoeQGu9x6fkRXFHb4sFdbYEVzEfjfPoj
- GrYab0gHPsRn+FTbImA==
-X-Proofpoint-ORIG-GUID: yjrB4qTxMiYteexE3obMhiVqWSTRoaG9
-X-Proofpoint-GUID: yjrB4qTxMiYteexE3obMhiVqWSTRoaG9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-07_02,2026-05-08_02,2025-10-01_01
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <a7b95294-3aa6-4bca-9eab-a4bcd0202ae2@salutedevices.com>
 
-Hi Alex,
-
-On 07/05/2026 23:21, Alex Williamson wrote:
-> 
-> On Tue, 5 May 2026 10:38:31 -0700
-> Matt Evans <mattev@meta.com> wrote:
-> 
->> Since "vfio/pci: Set up barmap in vfio_pci_core_enable()", the
->> resource request and iomap for the BARs was performed early, and
->> vfio_pci_core_setup_barmap() just checks those actions succeeded.
+On Thu, May 07, 2026 at 11:03:57PM +0300, Arseniy Krasnov wrote:
+>>CCing Arseniy and Bobby.
+>
+>Thanks!
+>
 >>
->> Move this logic to a new helper that checks success and returns the
->> iomap address, replacing the various bare vdev->barmap[] lookups.
->> This maintains the error behaviour of the previous on-demand
->> vfio_pci_core_setup_barmap() scheme.
+>>On Tue, May 05, 2026 at 12:26:21PM +0200, Paolo Abeni wrote:
+>>>On 4/30/26 9:11 AM, Yiqi Sun wrote:
+>>>> vsockmon mirrors packets through virtio_transport_build_skb(), which
+>>>> builds a new skb and copies the payload into it. For non-linear skbs,
+>>>> this goes through virtio_transport_copy_nonlinear_skb().
+>>>>
+>>>> Helper manually initializes a iov_iter, but leaves iov_iter.count unset.
+>>>> As a result, skb_copy_datagram_iter() sees zero writable bytes
+>>>> in the destination iterator and copies no payload data.
+>>>>
+>>>> This becomes an info leak because virtio_transport_build_skb() has
+>>>> already reserved payload_len bytes in the new skb with skb_put(). The
+>>>> skb is then returned to the tap path with that payload area still
+>>>> uninitialized, so userspace reading from a vsockmon device can observe
+>>>> heap contents and potentially kernel address.
+>>>>
+>>>> Fix it by initializing iov_iter.count to the number of bytes to copy.
+>>>>
+>>>> Fixes: 4b0bf10eb077 ("vsock/virtio: non-linear skb handling for tap")
+>>>> Signed-off-by: Yiqi Sun <sunyiqixm@gmail.com>
+>>>> ---
+>>>>  net/vmw_vsock/virtio_transport_common.c | 2 +-
+>>>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>>>> index 416d533f493d..6b26ee57ccab 100644
+>>>> --- a/net/vmw_vsock/virtio_transport_common.c
+>>>> +++ b/net/vmw_vsock/virtio_transport_common.c
+>>>> @@ -152,7 +152,7 @@ static void virtio_transport_copy_nonlinear_skb(const struct sk_buff *skb,
+>>>>  	iov_iter.nr_segs = 1;
+>>>>
+>>>>  	to_copy = min_t(size_t, len, skb->len);
+>>>> -
+>>>> +	iov_iter.count = to_copy;
+>>>>  	skb_copy_datagram_iter(skb, VIRTIO_VSOCK_SKB_CB(skb)->offset,
+>>>>  			       &iov_iter, to_copy);
+>>>
+>>>@Stefano, @Stefan, the patch LGTM, but sashiko pointed out to a
+>>>pre-existing issue you should probably want to address:
+>>>
+>>>>  	to_copy = min_t(size_t, len, skb->len);
+>>>Does this length calculation account for the offset when a packet is
+>>>split across multiple transmissions?
+>>>If a packet is requeued, VIRTIO_VSOCK_SKB_CB(skb)->offset is increased,
+>>>but to_copy still evaluates to the full length of the skb.
 >>
->> Signed-off-by: Matt Evans <mattev@meta.com>
->> ---
->>   drivers/vfio/pci/nvgrace-gpu/main.c | 11 ++++-------
->>   drivers/vfio/pci/vfio_pci_core.c    | 11 +++++------
->>   drivers/vfio/pci/vfio_pci_dmabuf.c  |  2 +-
->>   drivers/vfio/pci/vfio_pci_rdwr.c    | 30 ++++++++---------------------
->>   drivers/vfio/pci/virtio/legacy_io.c | 13 ++++++-------
->>   include/linux/vfio_pci_core.h       | 20 ++++++++++++++++++-
->>   6 files changed, 43 insertions(+), 44 deletions(-)
+>>Yep, I just checked and vhost-vsock is the only place where we call
+>>virtio_transport_deliver_tap_pkt() wiht an offset != 0, but I agree that
+>>we should also fix it.
+>
+>Yes, looks like the only place where offset could be non zero is 'vhost_transport_do_send_pkt()'.
+>And we set valid length in header every attempt to send it:
+>
+>                /* Set the correct length in the header */
+>                hdr->len = cpu_to_le32(payload_len);
+>
+>In all other places we call 'virtio_transport_deliver_tap_pkt()' with offset == 0. And thus
+>skb->len == hdr->len.
+>
+>So for me looks ok. E.g. len in header is actual data.
+>
 >>
->> diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
->> index fa056b69f899..e153002258ce 100644
->> --- a/drivers/vfio/pci/nvgrace-gpu/main.c
->> +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
->> @@ -184,13 +184,10 @@ static int nvgrace_gpu_open_device(struct vfio_device *core_vdev)
->>   
->>   	/*
->>   	 * GPU readiness is checked by reading the BAR0 registers.
->> -	 *
->> -	 * ioremap BAR0 to ensure that the BAR0 mapping is present before
->> -	 * register reads on first fault before establishing any GPU
->> -	 * memory mapping.
->> +	 * The BAR map was just set up by vfio_pci_core_enable(), so
->> +	 * check that was successful and bail early if not:
->>   	 */
->> -	ret = vfio_pci_core_setup_barmap(vdev, 0);
->> -	if (ret)
->> +	if (IS_ERR(vfio_pci_core_get_iomap(vdev, 0)))
->>   		goto error_exit;
-> 
-> Sashiko notes we're not setting ret here.  The bots are also paranoid
-> about the unreachable condition that the get_iomap below could return an
-> ERR_PTR.  Maybe head off both by adding an __iomem pointer to the
-> nvgrace_gpu_pci_core_device struct and a temporary one here.  Store the
-> iomap in the temporary variable, use it to test for IS_ERR() and
-> PTR_ERR(), then set the pointer in the structure after the last error
-> condition here.  Add one line in the close_device to set it NULL.  Then
-> just use nvdev->bar0_io below.
+>>Looking better in net/vmw_vsock/virtio_transport_common.c I think this
+>>is a regression, indeed we have this comment in
+>>virtio_transport_build_skb():
+>>
+>>	/* A packet could be split to fit the RX buffer, so we can retrieve
+>>	 * the payload length from the header and the buffer pointer taking
+>>	 * care of the offset in the original packet.
+>>	 */
+>>	pkt_hdr = virtio_vsock_hdr(pkt);
+>>
+>>Before commit 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with
+>>sk_buff") we read the payload lenght from the header that is always set
+>>to the right value before delivering the packet to the tap.
+>>
+>> From that commit, we don't to consider the offset anymore since we
+>>started to use `len` from the skb, so IMO we should go back to what we
+>>did before it, I mean:
+>>
+>>	payload_len = le32_to_cpu(pkt->hdr.len);
+>>
+>>@Bobby do you remember why we did that change? Or if you see any issue
+>>going back to what we did initially?
+>>
+>>
+>>Also IMO we should avoid to set all the iov_iter fields by hand and
+>>start to use iov_iter_kvec(). Plus, we can just use
+>>skb_copy_datagram_iter() in any case, like we already do in vhost-vsock,
+>>since it already handles linear vs non linear.
+>>
+>>At the end I mean something like this:
+>>
+>>@@ -171,7 +150,7 @@ static struct sk_buff *virtio_transport_build_skb(void *opaque)
+>>  	 * care of the offset in the original packet.
+>>  	 */
+>>  	pkt_hdr = virtio_vsock_hdr(pkt);
+>>-	payload_len = pkt->len;
+>>+	payload_len = le32_to_cpu(pkt_hdr->len);
+>>
+>>  	skb = alloc_skb(sizeof(*hdr) + sizeof(*pkt_hdr) + payload_len,
+>>  			GFP_ATOMIC);
+>>@@ -214,13 +193,17 @@ static struct sk_buff *virtio_transport_build_skb(void *opaque)
+>>  	skb_put_data(skb, pkt_hdr, sizeof(*pkt_hdr));
+>>
+>>  	if (payload_len) {
+>>-		if (skb_is_nonlinear(pkt)) {
+>>-			void *data = skb_put(skb, payload_len);
+>>+		struct iov_iter iov_iter;
+>>+		struct kvec kvec;
+>>+		void *data = skb_put(skb, payload_len);
+>>
+>>-			virtio_transport_copy_nonlinear_skb(pkt, data, payload_len);
+>>-		} else {
+>>-			skb_put_data(skb, pkt->data, payload_len);
+>>-		}
+>>+		kvec.iov_base = data;
+>>+		kvec.iov_len = payload_len;
+>>+		iov_iter_kvec(&iov_iter, READ, &kvec, 1, payload_len);
+>>+
+>>+		skb_copy_datagram_iter(pkt,
+>>+				       VIRTIO_VSOCK_SKB_CB(pkt)->offset,
+>>+				       &iov_iter, payload_len);
+>>  	}
+>>
+>>  	return skb;
+>>
+>>And removing virtio_transport_copy_nonlinear_skb().
+>
+>Yes, this looks shorter and better.
 
-Right about ret.  On the 2nd, the bots could benefit from a comment on
-the ...get_iomap() below saying that it "cannot fail" if this one
-passes, but hey.  I can add a struct member to track it (bots can then
-worry that it might be NULL, if they don't notice that
-nvgrace_gpu_check_device_ready() can't happen if
-nvgrace_gpu_open_device() didn't succeed, etc. etc.).
+Thanks for confirming, I'll send a series soon and CC you.
+Please review it :-)
 
->>   
->>   	if (nvdev->resmem.memlength) {
->> @@ -275,7 +272,7 @@ nvgrace_gpu_check_device_ready(struct nvgrace_gpu_pci_core_device *nvdev)
->>   	if (!__vfio_pci_memory_enabled(vdev))
->>   		return -EIO;
->>   
->> -	ret = nvgrace_gpu_wait_device_ready(vdev->barmap[0]);
->> +	ret = nvgrace_gpu_wait_device_ready(vfio_pci_core_get_iomap(vdev, 0));
->>   	if (ret)
->>   		return ret;
->>   
->> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
->> index 62931dc381d8..5c8bd13f10d0 100644
->> --- a/drivers/vfio/pci/vfio_pci_core.c
->> +++ b/drivers/vfio/pci/vfio_pci_core.c
->> @@ -1761,7 +1761,7 @@ int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma
->>   	struct pci_dev *pdev = vdev->pdev;
->>   	unsigned int index;
->>   	u64 phys_len, req_len, pgoff, req_start;
->> -	int ret;
->> +	void __iomem *bar_io;
->>   
->>   	index = vma->vm_pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
->>   
->> @@ -1795,12 +1795,11 @@ int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma
->>   		return -EINVAL;
->>   
->>   	/*
->> -	 * Even though we don't make use of the barmap for the mmap,
->> -	 * we need to request the region and the barmap tracks that.
->> +	 * Ensure the BAR resource region is reserved for use.
->>   	 */
->> -	ret = vfio_pci_core_setup_barmap(vdev, index);
->> -	if (ret)
->> -		return ret;
->> +	bar_io = vfio_pci_core_get_iomap(vdev, index);
->> +	if (IS_ERR(bar_io))
->> +		return PTR_ERR(bar_io);
->>   
->>   	vma->vm_private_data = vdev;
->>   	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
->> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
->> index 69a5c2d511e6..46cd44b22c9c 100644
->> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
->> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
->> @@ -248,7 +248,7 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
->>   	 * else.  Check that PCI resources have been claimed for it.
->>   	 */
->>   	if (get_dma_buf.region_index >= VFIO_PCI_ROM_REGION_INDEX ||
->> -	    vfio_pci_core_setup_barmap(vdev, get_dma_buf.region_index))
->> +	    IS_ERR(vfio_pci_core_get_iomap(vdev, get_dma_buf.region_index)))
->>   		return -ENODEV;
->>   
->>   	dma_ranges = memdup_array_user(&arg->dma_ranges, get_dma_buf.nr_ranges,
->> diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
->> index 3bfbb879a005..7f14dd46de17 100644
->> --- a/drivers/vfio/pci/vfio_pci_rdwr.c
->> +++ b/drivers/vfio/pci/vfio_pci_rdwr.c
->> @@ -198,19 +198,6 @@ ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool test_mem,
->>   }
->>   EXPORT_SYMBOL_GPL(vfio_pci_core_do_io_rw);
->>   
->> -/*
->> - * The barmap is set up in vfio_pci_core_enable().  Callers use this
->> - * function to check that the BAR resources are requested or that the
->> - * pci_iomap() was done.
->> - */
->> -int vfio_pci_core_setup_barmap(struct vfio_pci_core_device *vdev, int bar)
->> -{
->> -	if (IS_ERR(vdev->barmap[bar]))
->> -		return PTR_ERR(vdev->barmap[bar]);
->> -	return 0;
->> -}
->> -EXPORT_SYMBOL_GPL(vfio_pci_core_setup_barmap);
->> -
->>   ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
->>   			size_t count, loff_t *ppos, bool iswrite)
->>   {
->> @@ -262,13 +249,11 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
->>   		 */
->>   		max_width = VFIO_PCI_IO_WIDTH_4;
->>   	} else {
->> -		int ret = vfio_pci_core_setup_barmap(vdev, bar);
->> -		if (ret) {
->> -			done = ret;
->> +		io = vfio_pci_core_get_iomap(vdev, bar);
->> +		if (IS_ERR(io)) {
->> +			done = PTR_ERR(io);
->>   			goto out;
->>   		}
->> -
->> -		io = vdev->barmap[bar];
->>   	}
->>   
->>   	if (bar == vdev->msix_bar) {
->> @@ -423,6 +408,7 @@ int vfio_pci_ioeventfd(struct vfio_pci_core_device *vdev, loff_t offset,
->>   	loff_t pos = offset & VFIO_PCI_OFFSET_MASK;
->>   	int ret, bar = VFIO_PCI_OFFSET_TO_INDEX(offset);
->>   	struct vfio_pci_ioeventfd *ioeventfd;
->> +	void __iomem *io;
->>   
->>   	/* Only support ioeventfds into BARs */
->>   	if (bar > VFIO_PCI_BAR5_REGION_INDEX)
->> @@ -440,9 +426,9 @@ int vfio_pci_ioeventfd(struct vfio_pci_core_device *vdev, loff_t offset,
->>   	if (count == 8)
->>   		return -EINVAL;
->>   
->> -	ret = vfio_pci_core_setup_barmap(vdev, bar);
->> -	if (ret)
->> -		return ret;
->> +	io = vfio_pci_core_get_iomap(vdev, bar);
->> +	if (IS_ERR(io))
->> +		return PTR_ERR(io);
-> 
-> Sashiko seems to note a real existing error here that should also be
-> pulled out to a separate fix.  Given the right offset, this could
-> generate a negative BAR value.
-
-Yuck, loff_t signed, yep.  Isn't the real root of this that it
-never makes sense for VFIO_PCI_OFFSET_TO_INDEX() to return a negative
-index here or anywhere else?
-
-I suggest instead, to also avoid this elsewhere in future, something
-like:
-
-  #define VFIO_PCI_OFFSET_TO_INDEX(off)	((u64)(off) >> VFIO_PCI_OFFSET_SHIFT)
-
-> The test at the end of the previous
-> chunk should should be expanded to `if (bar < 0 || bar > ...BAR5...)`.
-
-Not necessary if VFIO_PCI_OFFSET_TO_INDEX() can't return < 0 (the
-magnitude would be 24b so can't overflow the `int bar` it's assigned
-into).
-
-> Do you want to pick that up in this series?  I think it's the only case
-> that lets that slip through.  Thanks,
-
-Sure, I'll post a fix.  I don't think it needs to be part of this series
-though if it's just the macro, do you agree?
-
-Do you know why drivers/gpu/drm/i915/gvt/kvmgt.c has copied
-VFIO_PCI_OFFSET_TO_INDEX() and friends?  Perhaps the shift was different
-(the reason drivers/vfio/pci/ism/main.c has its own versions).  The same
-loff_t issue seems to exist in both of those places, unfortunately.
-
-
-Matt
-
-PS: with minor question:
-Relatedly, I'd made `bar` an int following existing convention in
-
-  vfio_pci_core_get_iomap(struct vfio_pci_core_device *vdev, int bar)
-
-But I'll make this `unsigned int`, please flag if this violates taste
-and decency.  IMO any BAR/index parameter should be unsigned; most are,
-some signed remain.
+Thanks,
+Stefano
 
