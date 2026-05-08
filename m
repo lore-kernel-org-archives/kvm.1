@@ -1,43 +1,44 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 235F724E4B5;
-	Fri,  8 May 2026 16:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0F4224E4B5;
+	Fri,  8 May 2026 16:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778258616; cv=none; b=P6IjAofvAsGkp5VTGtgFBln+qTENbpHkJ3O9wyt2PymaaebBIyQjdiF+12xQFU1n8HZOYGwh20amPspXYM3plQXvB8GDC5+6l+NpgpiMhllFnBWXjqDVgiuJ4WhLC3OD/SOvXs4tAk4Aghiim404AwaeSdB30Q21CWhk/F5bXM8=
+	t=1778258625; cv=none; b=DzRyaV6KLipcU58bKXmUJCsoAWa0JCdEl9g9bw82SlCaGzX1LDhmvraQRSsi1nlfD0psOJiO5EjNc94LaqTn7fAzRpX1bCLI4huhEJrx3oYn/DI7wi13xiHrm3+6lEYYC1ngilLFBuPjqI1Rk7PqQ6H6FfoEkdkGpT15YYb4KiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778258616; c=relaxed/simple;
-	bh=ge4u/4nqH9HkWbjsfP37zR77jmwBcs7cnA6PiUK6Iuw=;
+	s=arc-20240116; t=1778258625; c=relaxed/simple;
+	bh=SFApJzBeS8AfGIyyHt53Lv9NK+ILx1qlX2/i3FCfaYk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LzodMPvmSyroS4+5klo6fiVqvYc2qFMuZWMilx9QsxFfVdjW24eF5s6EXZwOfE+dCdTpg9wxYLEmQWAK49i+FE8EzPaVPezVcb1UiWj2puE053/G08qf7XamGxx3hTka92DDUSW35UlFyGj3751qiPHRe1gOcEJ5SDCkW0bMtm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WQViXLUk; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=OdpMI92U24UxesnD/FFeJfPyHzhZE9sXyEsyvDizFYLyj21VzFFC3QY4rN9PHi8IgVyl/WCPo91j3DIC1NDD2q1ioNfoyxK3RM5plVkpAjxwH0MCkmt/MRmaVfWTQXwIRkkkK8XGanoyW3MUlMjNipFRaRP5ZMb6e0h5T8tUMaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pkUl1CUw; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WQViXLUk"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 280A9C2BCB0;
-	Fri,  8 May 2026 16:43:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pkUl1CUw"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04E39C2BCB0;
+	Fri,  8 May 2026 16:43:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778258615;
-	bh=ge4u/4nqH9HkWbjsfP37zR77jmwBcs7cnA6PiUK6Iuw=;
+	s=k20201202; t=1778258624;
+	bh=SFApJzBeS8AfGIyyHt53Lv9NK+ILx1qlX2/i3FCfaYk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=WQViXLUk7NWmDTeBmu3Z76GAhbsdP/BlNGKPcQJPpgEpEUgZQeCcNTn33lq75HEhv
-	 ki6TcdJ0cdP/wt2qWlxr85DKYw/G4Inn3mtxP5+ewDXrSst6ByKShU5asP7l4iGea+
-	 cu1dScSKMsWYCNiWF0MIO24EgkOMk4gigbiiFnP7BXD5v10mAhlx+JFuo5OWY7L2Cv
-	 Nl55wbf0krSxG7CtyaYbA4WSo/f+/Pjn3F132r/oVn8hTBUolYFCP554+uYUo5PZtw
-	 eNT//ggrXXAT+MnIGj4hxUmMYQD1GR0eZiZZe1vaDUSPfJOb1AXrXQ2tzfsVJZO0aT
-	 jT+SJpGCZaVjg==
-Date: Fri, 8 May 2026 22:05:28 +0530
+	b=pkUl1CUwBZI0LG0Q0i79gUpxTEcY4bWet5Lbk2qgSvj8B8ltpK1chgHrqra9D5oUp
+	 jEapHL7nNe2BVZyHy7BvxLWdzsL5TG7+OhKvJMo/aJMcGkTwy7SyHOMKPutYqb2KEu
+	 MArNUu4X+iR6d27zlwcRdCDYbMJ+3LksAgyyIXEkg8MoiYdTnwTI84l4UYELuDKd08
+	 8JT1VU8HfQd+11yb9fgZqJfDPmXGGCglsyRipGwV9ArL6gIfkiuEVengXua9sBZIRw
+	 B+f/S/09FzRh+2WJ5/Bky26aWEndvXrQuqdxHea0mfeG2FNx6hMV3d7qofN/fyyFMa
+	 te2joi+Ybxd8g==
+Date: Fri, 8 May 2026 22:11:54 +0530
 From: Naveen N Rao <naveen@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/5] KVM: SVM: Disable x2AVIC RDMSR interception for
- MSRs KVM actually supports
-Message-ID: <af4PfTGfBv1gDTb_@blrnaveerao1>
+Subject: Re: [PATCH v2 2/5] KVM: SVM: Always intercept RDMSR for TMCCT
+ (current APIC timer count)
+Message-ID: <af4Q2wkQPtYhwC1n@blrnaveerao1>
 References: <20260506184746.2719880-1-seanjc@google.com>
- <20260506184746.2719880-2-seanjc@google.com>
- <afx7eh2ghy1_Nd34@blrnaveerao1>
- <afyhP1dx7kzUV-D-@google.com>
+ <20260506184746.2719880-3-seanjc@google.com>
+ <afyfFRkUIHuodvG2@blrnaveerao1>
+ <afyzRvFqb19Kodej@google.com>
+ <afzZR3S43Ebr4khL@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -46,61 +47,46 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <afyhP1dx7kzUV-D-@google.com>
+In-Reply-To: <afzZR3S43Ebr4khL@google.com>
 
-On Thu, May 07, 2026 at 07:27:11AM -0700, Sean Christopherson wrote:
-> On Thu, May 07, 2026, Naveen N Rao wrote:
-> > On Wed, May 06, 2026 at 11:47:42AM -0700, Sean Christopherson wrote:
+On Thu, May 07, 2026 at 11:26:15AM -0700, Sean Christopherson wrote:
+> On Thu, May 07, 2026, Sean Christopherson wrote:
+> > Oh!  Actually, even better!  This is a great opportunity to dedup Intel vs. AMD
+> > (and we can/should do the same for writes).
 > 
-> > LVTT reads will now be allowed and should be returned from the backing page.  
-> > I'm guessing this is fine and that the hardware won't validate it as 
-> > LVTT may have TSC Deadline enabled (for emulation).
+> Scratch the writes idea, the behavior of Intel x2APIC virtualization and AMD x2AVIC
+> are too different.  Intel doesn't trap writes when x2APIC virtualization is
+> enabled, and instead redirects the raw value to the APIC backing page.  Which I
+> guess makes sense since WRMSR interception is about the same overall cost, and
+> it allows the host to safely and fully disable interception for registers it
+> doesn't want/need to interpose on.
 > 
-> Ya, confirmed via the KUT test:
+> AMD on the other hand more or less follows the xAPIC (AVIC) behavior, where regs
+> without "fancy" acceleration generate traps.
+
+Sure, your earlier plan to update the readable registers mask is fine.
+
 > 
-> diff --git x86/apic.c x86/apic.c
-> index 0a52e9a4..b91e8500 100644
-> --- x86/apic.c
-> +++ x86/apic.c
-> @@ -569,6 +569,9 @@ static inline void apic_change_mode(unsigned long new_mode)
->  
->         lvtt = apic_read(APIC_LVTT);
->         apic_write(APIC_LVTT, (lvtt & ~APIC_LVT_TIMER_MASK) | new_mode);
-> +
-> +       lvtt = apic_read(APIC_LVTT);
-> +       report((lvtt & APIC_LVT_TIMER_MASK) == new_mode, "LVTT mode switch");
->  }
->  
->  static void test_apic_change_mode(void)
+> Side topic, handling a trap-like unaccelerated AVIC #VMEXIT is ~10 cycles faster
+> than handling an intercepted WRMSR (out of ~1770+ cycles for a super simple reg
+> like LVT0).  I.e. we _could_ deliberately disable interception of x2AVIC MSRs that
+> get trap-like behavior, but for me, being perfectly consistent between Intel and
+> AMD is more valuable than shaving a few cycles for paths that should rarely be hit
+> (most of the trap-like registers are "configure once and forget about them").
 > 
-> And given that AVIC (!x2APIC mode) says that reads are allowed, I don't see how
-> hardware could do anything differently.
+> The only reg that's at all hot is Timer Initial Count Register, and (a) it's a
+> moot point with TSC Deadline mode, and (b) the cost to program hrtimers is so high
+> than shaving ~10 cycles is completely meaningless.
 
-Indeed, I additionally did:
+Thanks for the checking this - this was something I wanted to check. And 
+I agree with your assessment. None of those registers look to be 
+commonly written to, and ~10 cycles is almost in the noise. If we ever 
+come across a performance issue, it should be fairly simple to pass 
+additional registers through (with good reason, of course).
 
-diff --git a/x86/apic.c b/x86/apic.c
-index b45fc9c1..b0902b2d 100644
---- a/x86/apic.c
-+++ b/x86/apic.c
-@@ -42,11 +42,13 @@ static void __test_tsc_deadline_timer(void)
-
- static int enable_tsc_deadline_timer(void)
- {
--       uint32_t lvtt;
-+       uint32_t lvtt, new_mode;
-
-        if (this_cpu_has(X86_FEATURE_TSC_DEADLINE_TIMER)) {
-                lvtt = APIC_LVT_TIMER_TSCDEADLINE | TSC_DEADLINE_TIMER_VECTOR;
-                apic_write(APIC_LVTT, lvtt);
-+               new_mode = apic_read(APIC_LVTT);
-+               report((new_mode & APIC_LVT_TIMER_MASK) == (lvtt & APIC_LVT_TIMER_MASK), "LVTT TSC Deadline mode");
-                return 1;
-        } else {
-                return 0;
+On a side note, how did you measure this? My naive attempt showed a lot 
+of variation between runs.
 
 
-... and that works fine.
+- Naveen
 
-
-Thanks,
-Naveen
