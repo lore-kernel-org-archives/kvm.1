@@ -1,201 +1,273 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 875BF33121F
-	for <kvm@vger.kernel.org>; Fri,  8 May 2026 05:58:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDB6A3603DF;
+	Fri,  8 May 2026 06:08:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778219916; cv=none; b=lLDJyHrdQcInSzuXAF2PEhLCRe7t5KaraU6+VqQdi9X1sf6nKbMv/VruLXqsNtdXZhAjcEGtnf0GBFfGlYkRexp1A29cgVtzucl1Uli1qqQfaqPT7/scKzavR1nERvzTZFk4H8pKUOpGXTbIECcFXuN45UQm+TfX0j3G0sJPeEI=
+	t=1778220522; cv=none; b=rkrv6NLoTJvm9lt7J5oCpZ8NRcdk1IF6fRgX7RIG6sJf2nF63i7rhx6A7Oswn9qqvYm8jimM89aV4TiH7nW5f9WoxTtLvjQmqWYW6HQ7jj8ylh8Q6t1Xd7BronZey5pIGjZEp1tciLqPY/weE9OkaojCdz2dJ1SiZjaL3PZK0TE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778219916; c=relaxed/simple;
-	bh=mNt8Z2ifgAxyfgqh/vW6oTOZzSNjKEiNg8cRMlT8/RA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XqECsB2trnx0QTaVdYoULYS3rsVsdjR7K8U7EE5AlpuHEjNgD0CRCocLLwuz2s2/GE16enPyZAcFgAVYeOpzVzRzPozsX7FgWkd1PMrX3D1+VFkYQe7NI9/Bqi7ps6TBf27gXgyVepz06uJL6YpyllrhuYFI5ej1TG1t1MOdya0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Wfk65P17; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1778220522; c=relaxed/simple;
+	bh=dC6moos725vN40QiuJsjKokrVFl0dwcanMGIrdErclo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=EMgaaJ7t2vxLN0MfbnpL9x+NxMulMxpIGFFqUtML2bAFAC6n+hggKOk8S+floGvAvKu+FL005/RXM18z9I1PA17QLTNnV7+8h/je6ulOkeSNRz9Unq43aj0v71uwtpSCoUlucyPCjvWQdQI0nSLYuQlIR9azTHjMiGPpZJl5cgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=IVn0fuD4; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Wfk65P17"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6483JfLf3967125;
-	Fri, 8 May 2026 05:58:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=l4L6gyFKPXWS4JtGDTKyu+skuDf9o/
-	+7ZvgjuXgSz84=; b=Wfk65P17gHuHij1nLf2guVA/4jY/TQF9e7FMmQ/BV6K5AY
-	VhA5t+jh/5QYI5smTnUwnrpyZQG9jTX9AN2+PHGNpWnGD2z62MaN/U8QVydfWBjO
-	WO7j5TSPjo9CL/gBCv9RhF+brAIkWwzIwwW8yFAyHbm2hrmmgoVlIsYTS6S4HM+j
-	7mMqVjmFZqSNWCioA7hOHsHcEMst6q7dsOw1chz8oF3KBoGFxzi8tFGCsTkJ5W+X
-	g7lzlS32uO3xAYJVdEzUFqxE3WWEjtU3K4+tNBPdxuYE/VGNJChihClXoGeMLdcp
-	7UbkvUwHiERT6GFRZZh0bsVgUT4misJgtSGlkJ+w==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9v7t9jd-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 08 May 2026 05:58:12 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6485sN9a022767;
-	Fri, 8 May 2026 05:58:11 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwwtgprcx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 08 May 2026 05:58:11 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6485w7Tx20840760
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 8 May 2026 05:58:08 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D9A2120043;
-	Fri,  8 May 2026 05:58:07 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 33EAB20040;
-	Fri,  8 May 2026 05:58:04 +0000 (GMT)
-Received: from Amits-MacBook-Pro.local (unknown [9.39.21.199])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri,  8 May 2026 05:58:03 +0000 (GMT)
-Date: Fri, 8 May 2026 11:27:59 +0530
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: Gautam Menghani <gautam@linux.ibm.com>
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
-        Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org,
-        Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Chinmay Rath <rathc@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
-        kvm@vger.kernel.org
-Subject: Re: [PATCH] target/ppc/kvm: Fix const violation when trimming CPU
- alias suffix
-Message-ID: <20260508110407.6eeeb01e-d6-amachhiw@linux.ibm.com>
-Mail-Followup-To: Gautam Menghani <gautam@linux.ibm.com>, 
-	Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org, Vaibhav Jain <vaibhav@linux.ibm.com>, 
-	Chinmay Rath <rathc@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org, 
-	kvm@vger.kernel.org
-References: <20260504134344.38958-1-amachhiw@linux.ibm.com>
- <af1ynfIuksZKDFau@Gautams-MacBook-Pro.local>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="IVn0fuD4"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778220518; x=1809756518;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=dC6moos725vN40QiuJsjKokrVFl0dwcanMGIrdErclo=;
+  b=IVn0fuD4mTc7Uz6cE+E4jHOY6mmKqYT6Pdo3sVBgpxtzaRwAGAbxFLjy
+   3QSZDsfPiL3k2QOOttBzWt4wwpWrEd4TwkLVsUShLF23SoNw/mVHZggKp
+   tnih5zDjY5RBiFZvlqAQsBelDlsFhLG+pp0bMMJUsFXDp+1KLnTCTmR4L
+   lgih/r9Zhln7v+OjqeSbf9fcEVxrX6SLZpa0Fz8ttZZ0v6fZ8E8evYGQQ
+   hBw5aRZh6q6K5nb0m7u7RsXn/8JVu1XqZ+o3dfSI1T11qne3XXtoALwZ9
+   D7G3OcqO0NhnZq01e5gpPtLFRAholSLMD4ycwb1qoEDmCFvqR7nmIzPfX
+   A==;
+X-CSE-ConnectionGUID: gdCTkaesTDeBKIFJQawdKQ==
+X-CSE-MsgGUID: RTqsAYWaTni24pieT6MTuQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="81747150"
+X-IronPort-AV: E=Sophos;i="6.23,223,1770624000"; 
+   d="scan'208";a="81747150"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 23:08:33 -0700
+X-CSE-ConnectionGUID: P2PrqLbrRAaXU+L+IQa6Tw==
+X-CSE-MsgGUID: SnqLcs45Tty88p3nHthLSA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,223,1770624000"; 
+   d="scan'208";a="274800633"
+Received: from allen-sbox.sh.intel.com (HELO [10.239.159.30]) ([10.239.159.30])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 May 2026 23:08:28 -0700
+Message-ID: <666d749e-c1fd-44e1-bfe8-681ba04862e0@linux.intel.com>
+Date: Fri, 8 May 2026 14:05:58 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <af1ynfIuksZKDFau@Gautams-MacBook-Pro.local>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA4MDA1MyBTYWx0ZWRfX8BjIcEQuF5Gt
- amZFZD6erdK6XIbEVK+0PealQUKf+wRSytqjAJ+lf0vvmD94rwbJ1D26zI1kpcbubf7mS8gYDkr
- C/dWxNZEWS8O2NISaepBuyC/dGasnnPk3EMCRL843ur6is1coAMN/CDd9jcdZoOvTUYNh1x4whA
- 1jIGwKyl5qkkFa22BoiB3avAlI25/vi0qEpJCK0gYIbA4acfQ+qhytHine0jCS8zSLRh+4VdrSB
- b02h/1Bmte1O6iiXN4Rcywg5hXOXRtfymLE38sJbA/eyWC/O9EJbVOHHnuYw2Z4buWNWRzyEtO9
- Vr3MB7Y1oWJNfCeOHtagfMhuz0OBisqaoDnvSnW0haTfoqxSU4UHxCFk9wdI1wYc9LKtT6SO9du
- xphrglEWICQE0SGQLBtrLgbOK1sNHGDywRt7dTJohKJIXouzwsgQNVEnl4rIMsNWYWDnOzQDYp5
- E0g6ANVDb+KANDuqAVQ==
-X-Proofpoint-GUID: nUR91scsPLY2BKqxhXb9i0krL0wJTTKU
-X-Proofpoint-ORIG-GUID: aeTqjDdasM9EArhfYfsmEILMQaREgtXe
-X-Authority-Analysis: v=2.4 cv=eu/vCIpX c=1 sm=1 tr=0 ts=69fd7b74 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=7JIn7IvpgBoFcJ94maEA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-07_02,2026-05-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 phishscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0
- suspectscore=0 malwarescore=0 bulkscore=0 impostorscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605080053
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 11/16] iommu/vt-d: preserve PASID table of preserved
+ device
+To: Samiullah Khawaja <skhawaja@google.com>,
+ David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>,
+ Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>
+Cc: Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>,
+ Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+ iommu@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+ Saeed Mahameed <saeedm@nvidia.com>,
+ Adithya Jayachandran <ajayachandra@nvidia.com>,
+ Parav Pandit <parav@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>,
+ William Tu <witu@nvidia.com>, Pratyush Yadav <pratyush@kernel.org>,
+ Pasha Tatashin <pasha.tatashin@soleen.com>,
+ David Matlack <dmatlack@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
+ Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>,
+ YiFei Zhu <zhuyifei@google.com>
+References: <20260427175633.1978233-1-skhawaja@google.com>
+ <20260427175633.1978233-12-skhawaja@google.com>
+Content-Language: en-US
+From: Baolu Lu <baolu.lu@linux.intel.com>
+In-Reply-To: <20260427175633.1978233-12-skhawaja@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Gautam,
-
-Thanks for taking a look. Please find my response inline below:
-
-On 2026/05/08 10:50 AM, Gautam Menghani wrote:
-> On Mon, May 04, 2026 at 07:13:44PM +0530, Amit Machhiwal wrote:
-> > GCC 16 tightens diagnostics around const correctness and now correctly
-> > rejects attempts to modify strings referenced through const-qualified
-> > pointers. In kvm_ppc_register_host_cpu_type(), ppc_cpu_aliases[i].model
-> > is defined as const char *, but the code was using strstr() on it and
-> > then modifying the returned pointer in-place to strip
-> > POWERPC_CPU_TYPE_SUFFIX.
-> > 
-> > This results in a write through a pointer derived from const data,
-> > triggering a build failure with GCC 16:
-> > 
-> >   error: assignment discards 'const' qualifier from pointer target type [-Werror=discarded-qualifiers]
-> >         suffix = strstr(ppc_cpu_aliases[i].model, POWERPC_CPU_TYPE_SUFFIX);
-> >                ^
-> > 
-> > Fix this by duplicating the model string into a mutable buffer using
-> > g_strdup(), storing it in the alias table, and then performing the
-> > suffix truncation on the mutable copy.
-> > 
-> > This preserves the existing behavior while avoiding modification of
-> > const data and ensures compatibility with newer compilers.
-> > 
-> > No functional change intended.
-> > 
-> > Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-> > ---
-> >  target/ppc/kvm.c | 6 ++++--
-> >  1 file changed, 4 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
-> > index 25c28ad089c6..e71e5c0117da 100644
-> > --- a/target/ppc/kvm.c
-> > +++ b/target/ppc/kvm.c
-> > @@ -2654,10 +2654,12 @@ static int kvm_ppc_register_host_cpu_type(void)
-> >      dc = DEVICE_CLASS(ppc_cpu_get_family_class(pvr_pcc));
-> >      for (i = 0; ppc_cpu_aliases[i].alias != NULL; i++) {
-> >          if (g_ascii_strcasecmp(ppc_cpu_aliases[i].alias, dc->desc) == 0) {
-> > +            char *model;
-> >              char *suffix;
-> >  
-> > -            ppc_cpu_aliases[i].model = g_strdup(object_class_get_name(oc));
-> > -            suffix = strstr(ppc_cpu_aliases[i].model, POWERPC_CPU_TYPE_SUFFIX);
-> > +            model = g_strdup(object_class_get_name(oc));
-> > +            ppc_cpu_aliases[i].model = model;
-> > +            suffix = strstr(model, POWERPC_CPU_TYPE_SUFFIX);
-> >              if (suffix) {
-> >                  *suffix = 0;
-> >              }
-> > 
+On 4/28/26 01:56, Samiullah Khawaja wrote:
+> In scalable mode the PASID table is used to fetch the io page tables.
+> Preserve and restore the PASID table of the preserved devices.
 > 
-> A const char * variable is ideally supposed to point to an immutable
-> string. But even with this fix, the string that
-> "ppc_cpu_aliases[i].model" points to is being changed after assignment.
+> Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
+> ---
+>   drivers/iommu/intel/iommu.c      |   5 +-
+>   drivers/iommu/intel/iommu.h      |  12 +++
+>   drivers/iommu/intel/liveupdate.c | 141 +++++++++++++++++++++++++++++++
+>   drivers/iommu/intel/pasid.c      |   7 +-
+>   drivers/iommu/intel/pasid.h      |   9 ++
+>   include/linux/kho/abi/iommu.h    |  13 +++
+>   6 files changed, 184 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iommu/intel/iommu.c b/drivers/iommu/intel/iommu.c
+> index b90757164cd8..6d42051dcf7c 100644
+> --- a/drivers/iommu/intel/iommu.c
+> +++ b/drivers/iommu/intel/iommu.c
+> @@ -2951,8 +2951,10 @@ static int clear_unpreserve_context_entry_fn(struct device *dev,
+>   	if (!info)
+>   		return 0;
+>   
+> -	if (dev_is_pci(dev) && dev_iommu_preserved_state(dev))
+> +	if (dev_is_pci(dev) && dev_iommu_preserved_state(dev)) {
+> +		pasid_cleanup_preserved_table(dev);
+>   		return 0;
+> +	}
+>   
+>   	domain_context_clear(info);
+>   	return 0;
+> @@ -4013,6 +4015,7 @@ const struct iommu_ops intel_iommu_ops = {
+>   	.page_response		= intel_iommu_page_response,
+>   #ifdef CONFIG_IOMMU_LIVEUPDATE
+>   	.preserve_device	= intel_iommu_preserve_device,
+> +	.unpreserve_device	= intel_iommu_unpreserve_device,
+>   	.preserve		= intel_iommu_preserve,
+>   	.unpreserve		= intel_iommu_unpreserve,
+>   #endif
+> diff --git a/drivers/iommu/intel/iommu.h b/drivers/iommu/intel/iommu.h
+> index 8e37acf7de12..62076a1a0b4d 100644
+> --- a/drivers/iommu/intel/iommu.h
+> +++ b/drivers/iommu/intel/iommu.h
+> @@ -1290,12 +1290,15 @@ static inline int iopf_for_domain_replace(struct iommu_domain *new,
+>   #ifdef CONFIG_IOMMU_LIVEUPDATE
+>   int intel_iommu_preserve_device(struct device *dev,
+>   				struct iommu_device_ser *device_ser);
+> +void intel_iommu_unpreserve_device(struct device *dev,
+> +				   struct iommu_device_ser *device_ser);
+>   int intel_iommu_preserve(struct iommu_device *iommu,
+>   			 struct iommu_hw_ser *iommu_ser);
+>   void intel_iommu_unpreserve(struct iommu_device *iommu,
+>   			    struct iommu_hw_ser *iommu_ser);
+>   void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
+>   					       struct iommu_hw_ser *iommu_ser);
+> +void pasid_cleanup_preserved_table(struct device *dev);
+>   #else
+>   static inline int intel_iommu_preserve_device(struct device *dev,
+>   					      struct iommu_device_ser *device_ser)
+> @@ -1303,6 +1306,11 @@ static inline int intel_iommu_preserve_device(struct device *dev,
+>   	return -EOPNOTSUPP;
+>   }
+>   
+> +static inline void intel_iommu_unpreserve_device(struct device *dev,
+> +						 struct iommu_device_ser *device_ser)
+> +{
+> +}
+> +
+>   static inline int intel_iommu_preserve(struct iommu_device *iommu,
+>   				       struct iommu_hw_ser *iommu_ser)
+>   {
+> @@ -1318,6 +1326,10 @@ static inline void intel_iommu_liveupdate_restore_root_table(struct intel_iommu
+>   							     struct iommu_hw_ser *iommu_ser)
+>   {
+>   }
+> +
+> +static inline void pasid_cleanup_preserved_table(struct device *dev)
+> +{
+> +}
+>   #endif
+>   
+>   #ifdef CONFIG_INTEL_IOMMU_SVM
+> diff --git a/drivers/iommu/intel/liveupdate.c b/drivers/iommu/intel/liveupdate.c
+> index 50a63812533f..404b485e97b9 100644
+> --- a/drivers/iommu/intel/liveupdate.c
+> +++ b/drivers/iommu/intel/liveupdate.c
+> @@ -14,6 +14,7 @@
+>   #include <linux/pci.h>
+>   
+>   #include "iommu.h"
+> +#include "pasid.h"
+>   #include "../iommu-pages.h"
+>   
+>   static void unpreserve_iommu_context_table(struct intel_iommu *iommu, int end)
+> @@ -140,10 +141,96 @@ void intel_iommu_liveupdate_restore_root_table(struct intel_iommu *iommu,
+>   	iommu_for_each_preserved_device(_restore_used_domain_ids, iommu);
+>   }
+>   
+> +enum pasid_lu_op {
+> +	PASID_LU_OP_PRESERVE = 1,
+> +	PASID_LU_OP_UNPRESERVE,
+> +	PASID_LU_OP_RESTORE,
+> +	PASID_LU_OP_FREE,
+> +};
+> +
+> +static int pasid_lu_do_op(void *table, enum pasid_lu_op op)
+> +{
+> +	int ret = 0;
+> +
+> +	switch (op) {
+> +	case PASID_LU_OP_PRESERVE:
+> +		ret = iommu_preserve_page(table);
+> +		break;
+> +	case PASID_LU_OP_UNPRESERVE:
+> +		iommu_unpreserve_page(table);
+> +		break;
+> +	case PASID_LU_OP_RESTORE:
+> +		iommu_restore_page(virt_to_phys(table));
+> +		break;
+> +	case PASID_LU_OP_FREE:
+> +		iommu_free_pages(table);
+> +		break;
+> +	}
+> +
+> +	return ret;
+> +}
+> +
+> +static int pasid_lu_handle_pd(struct pasid_dir_entry *dir, enum pasid_lu_op op)
+> +{
+> +	struct pasid_entry *table;
+> +	int ret;
+> +
+> +	/* Only preserve first table for NO_PASID. */
+> +	table = get_pasid_table_from_pde(&dir[0]);
+> +	if (!table)
+> +		return -EINVAL;
+> +
+> +	ret = pasid_lu_do_op(table, op);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = pasid_lu_do_op(dir, op);
+> +	if (ret)
+> +		goto err;
+> +
+> +	return 0;
+> +err:
+> +	if (op == PASID_LU_OP_PRESERVE)
+> +		pasid_lu_do_op(table, PASID_LU_OP_UNPRESERVE);
+> +
+> +	return ret;
+> +}
+> +
+> +void pasid_cleanup_preserved_table(struct device *dev)
+> +{
+> +	struct pasid_table *pasid_table;
+> +	struct pasid_dir_entry *dir;
+> +	struct pasid_entry *table;
+> +	size_t dir_size;
+> +
+> +	pasid_table = intel_pasid_get_table(dev);
+> +	if (!pasid_table)
+> +		return;
+> +
+> +	dir = pasid_table->table;
+> +	table = get_pasid_table_from_pde(&dir[0]);
+> +	if (!table)
+> +		return;
+> +
+> +	/* Clear everything except the first entry in table. */
+> +	memset(&table[1], 0, SZ_4K - sizeof(*table));
+> +
+> +	/* Use the folio order to calculate the size of Pasid Directory */
+> +	dir_size = (1 << (folio_order(virt_to_folio(dir)) + PAGE_SHIFT));
+> +
+> +	/* Clear everything except the first entry in directory */
+> +	memset(&dir[1], 0, dir_size - sizeof(struct pasid_dir_entry));
+> +
+> +	clflush_cache_range(&table[0], SZ_4K);
+> +	clflush_cache_range(&dir[0], dir_size);
+> +}
 
-Thanks, I get your point. The write in my version is to the mutable buffer
-returned by g_strdup(), so it is not strictly a const write. I had originally
-trimmed the duplicated buffer before assigning it to ppc_cpu_aliases[i].model,
-but later reordered it to stay closer to the existing flow. Still, I agree with
-the suggested cleaner ordering. I will update it in the next revision.
+The PASID table is currently active and in use by the hardware. Clearing
+the entries without the necessary hardware cache invalidation is buggy.
+
+It seems this manual clearing is a workaround because PASID domain
+preservation isn't supported yet. If so, rather than clearing the table
+blindly, the code should verify if any PASIDs (other than
+IOMMU_NO_PASID) are actually in use. If there are, the preserve callback
+should return an error.
+
+Or anything I overlooked here?
 
 Thanks,
-Amit
-
-> Would the below diff (untested) be a better fix?
-> 
-> diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
-> index 41bd03ec2a..a84e4b4636 100644
-> --- a/target/ppc/kvm.c
-> +++ b/target/ppc/kvm.c
-> @@ -2654,13 +2654,14 @@ static int kvm_ppc_register_host_cpu_type(void)
->      dc = DEVICE_CLASS(ppc_cpu_get_family_class(pvr_pcc));
->      for (i = 0; ppc_cpu_aliases[i].alias != NULL; i++) {
->          if (strcasecmp(ppc_cpu_aliases[i].alias, dc->desc) == 0) {
-> -            char *suffix;
-> +            char *suffix, *model;
->  
-> -            ppc_cpu_aliases[i].model = g_strdup(object_class_get_name(oc));
-> -            suffix = strstr(ppc_cpu_aliases[i].model, POWERPC_CPU_TYPE_SUFFIX);
-> +            model = g_strdup(object_class_get_name(oc));
-> +            suffix = strstr(model, POWERPC_CPU_TYPE_SUFFIX);
->              if (suffix) {
->                  *suffix = 0;
->              }
-> +            ppc_cpu_aliases[i].model = model;
->              break;
->          }
->      }
+baolu
