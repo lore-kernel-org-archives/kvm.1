@@ -1,170 +1,134 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67DE7374758;
-	Fri,  8 May 2026 16:48:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 060B2402B84
+	for <kvm@vger.kernel.org>; Fri,  8 May 2026 16:56:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778258914; cv=none; b=oRUggo3FtCYp99B4l67nVfDyqgmbwf0LfBhWD/Q6wummu7C2Y0bxRl6RDBjQr3gJnYJhsMvxYQsO/hwR33dB6kuGsuY7moyyo8paOTdvDsVc24oHAKWYIy8KyfcuUT6EIOExcUQt+0lqfdF0hTYtIbcNTfXQ/JDeFFUBLaERvKI=
+	t=1778259382; cv=none; b=C5N5mmBXsmZFDc34RD/bzdAYqUmpS07x5SGLzlnowW4+YgODYc7DUkKK6tpBRZFvsQ8IdxOKZXClVpNccOvp92ZSfqiUgL15P5ySHdlOrjW7/3Zc156FvqYddQP6yuBFziGogHkS+d5L+3WC2WyWLVmz+504liRAl3Qrp4c6Mv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778258914; c=relaxed/simple;
-	bh=pZPC+mlFC7zHFFRvjelepNFijit98+ahrAhP2MdO6h4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KA920Mjv4uiDtwCrUbKSHn2Hcaa1uPRFRUPWNukRJXu4ToIDDnfTFL6FXSPB+BMK11HEiAg3OG2NpEY6Vm6NAqTLD1KJKngKJoa+6gmrxK5ziyh6OPYpD+esHD9+WMf6FGwJriXah1hFiM9bNpgUf+nGU/tbAonOQ5QNmmOUd34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=oJznOL2Q; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1778259382; c=relaxed/simple;
+	bh=66xQ9hvgPBkJ3px3dbJV8/A2nMv9gis7LD/9zeIwN0s=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=fbzJwGzf6r06lzV2wbQzzEdqwlTr5wzBo2BFzbT+6JAhluXcs6//48rpbAR4KIpvDmLzvhSchwhPaYHsNqVRi+0qKzbJMquogqg0fr9hK4qSDH+EedFSACgiZS6PTCWcMA4DKLV3AzYHlM/KYMwoNf+Z9Y4SGXjZQgZTi+gPfGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oyl7ZXXQ; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="oJznOL2Q"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778258913; x=1809794913;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=pZPC+mlFC7zHFFRvjelepNFijit98+ahrAhP2MdO6h4=;
-  b=oJznOL2QT/R4EGbHVWpUxiVHE3M0U3Hpb7ld+O8RoXPEWKStX6SRUm0i
-   P1U2R87OVqhh6ytcsHWQjZP9syf0OFn3QNxMg/Szt89+NmOIN23J7Yfzo
-   3zXRLqn45qtcMuWFwtiomt4qltXPalIpKSxm1GpF8B9iufGjeGW+cm3qA
-   bHNF435YtuSdovZczJw+AnM9G/e4tQKsUkqR5PKDCoTClqcjqSCsdoFV2
-   cRJO199wa/9ed8U7uoiKQm2r9fxIoYkCSPjKUluDdKvkM68n90lbsQDyW
-   tpCmI9rdxEqLb5mIjBiXhLpfzSeebj8OrO7GJWz9jZaAZWTyBXR00V/E3
-   Q==;
-X-CSE-ConnectionGUID: DctAqC39R8q36xPSCgFm2g==
-X-CSE-MsgGUID: LPlUxwGxQP6sfFoePsoWrg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11780"; a="89934331"
-X-IronPort-AV: E=Sophos;i="6.23,223,1770624000"; 
-   d="scan'208";a="89934331"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2026 09:48:32 -0700
-X-CSE-ConnectionGUID: U7Bm0w8mSN6E+Mwqpx7Rsg==
-X-CSE-MsgGUID: ythbR+snRk+1ou5TooHTmg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,223,1770624000"; 
-   d="scan'208";a="237049767"
-Received: from dnelso2-mobl.amr.corp.intel.com (HELO [10.125.111.18]) ([10.125.111.18])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2026 09:48:32 -0700
-Message-ID: <1bff2e14-e550-4e6f-a819-0e9a851413cc@intel.com>
-Date: Fri, 8 May 2026 09:48:37 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oyl7ZXXQ"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-835444b6ce1so1689641b3a.1
+        for <kvm@vger.kernel.org>; Fri, 08 May 2026 09:56:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778259380; x=1778864180; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kPUg8AJeQU9327pVVJCUJnpHdi/ApUr9lgKthU63V1E=;
+        b=oyl7ZXXQxL7cEC/BHpm6kX0yZ6euVkkg/BIku6ZGQT6by9Wk7sUr11IlZVIiR8OaKt
+         r04KgF4IXP5XDaCt2EvW6mrqE9rZFodSKNe3b5R95pdGyvxS5QHFCHhlVYcFsmaJ0oZy
+         F60KhymSnc5KGI7Aj1Mx+4WOJ7o0v+A5XqpDQURgN47ehh7J/w26gSzBet5YSp9gIZUH
+         QUna5H2AeE4eCSrBPngjOWCxF8knooqMGVXfw58VFd9pa5mTNaTXzAHX6SgGxwC+MCGW
+         dnmwaIs21pqdJGrnXgjx0sL7tyGd69pKKzNaUGwX+UAOtXj7k0Q+8+GJZP4euO/PBE9g
+         W3Cw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778259380; x=1778864180;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kPUg8AJeQU9327pVVJCUJnpHdi/ApUr9lgKthU63V1E=;
+        b=UKGjF/qBK3U1n44P9gpjrCkVOdGSy/tyblDcu6Kd2s3Vzz5+wJ1DA9ZuUt07/AUqH5
+         xfXP3w01NWrH48RB21wQxDzTwZZOCuQv2X46cCt6qcJcDO2vJh2YOeHClAZa5jQx4ia1
+         qEgmR18q7E+ndxhHRqQEPRk+s7m5h9pA7p7duLTkYUvfbGCpcdv7zzy3LIpx/2tc1niM
+         apqwUwdUeKtQQS1DLG1gSeExP9EIL+KGb49cS66M/pi0u7xg2BzlXR9ITsKQQzRNcvhH
+         0mb+fd9Ud7hlYjm8445VanlCDIkNNj8jW79q5gdOSBDPr/sDxHL4zFiOl+vT7QlaWwyb
+         qQnQ==
+X-Forwarded-Encrypted: i=1; AFNElJ//dPYJBsFthQHSRFa0uwmE65T3qBpZDLNI4DbtuWQJqrLXw27hyOaz+6RCfprM9wSgKHU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSMKIGVlQNN73eol3TblghpQ0+Tc/5yQgsjhdod17Hv6noQ3JX
+	ByHdWZPPqdHxRbjN15GLUHLieOS8I7LNSjq3A/KBG4eMtMnXobJEwWwJl//jV+6l0ToNyDk4IwC
+	1QUGF/w==
+X-Received: from pfwy14.prod.google.com ([2002:a05:6a00:1c8e:b0:82f:6658:1e84])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4d98:b0:83d:632e:a8df
+ with SMTP id d2e1a72fcca58-83d632eac6fmr1943881b3a.40.1778259379933; Fri, 08
+ May 2026 09:56:19 -0700 (PDT)
+Date: Fri, 8 May 2026 09:56:19 -0700
+In-Reply-To: <af4Q2wkQPtYhwC1n@blrnaveerao1>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v8 08/21] x86/virt/seamldr: Allocate and populate a module
- update request
-To: Chao Gao <chao.gao@intel.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, x86@kernel.org, binbin.wu@linux.intel.com,
- dave.hansen@linux.intel.com, djbw@kernel.org, ira.weiny@intel.com,
- kai.huang@intel.com, kas@kernel.org, nik.borisov@suse.com,
- paulmck@kernel.org, pbonzini@redhat.com, reinette.chatre@intel.com,
- rick.p.edgecombe@intel.com, sagis@google.com, seanjc@google.com,
- tony.lindgren@linux.intel.com, vannapurve@google.com,
- vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com,
- yan.y.zhao@intel.com, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- "H. Peter Anvin" <hpa@zytor.com>
-References: <20260427152854.101171-1-chao.gao@intel.com>
- <20260427152854.101171-9-chao.gao@intel.com>
- <a52c4701-c99d-48d5-9b63-8eb1c0e589f0@intel.com> <afyReleDP93DSgQa@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <afyReleDP93DSgQa@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260506184746.2719880-1-seanjc@google.com> <20260506184746.2719880-3-seanjc@google.com>
+ <afyfFRkUIHuodvG2@blrnaveerao1> <afyzRvFqb19Kodej@google.com>
+ <afzZR3S43Ebr4khL@google.com> <af4Q2wkQPtYhwC1n@blrnaveerao1>
+Message-ID: <af4Vs5PHGOeFm5DW@google.com>
+Subject: Re: [PATCH v2 2/5] KVM: SVM: Always intercept RDMSR for TMCCT
+ (current APIC timer count)
+From: Sean Christopherson <seanjc@google.com>
+To: Naveen N Rao <naveen@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On 5/7/26 06:19, Chao Gao wrote:
-...
->>> +	/*
->>> +	 * Don't care about user passing the wrong file, but protect
->>> +	 * kernel ABI by preventing accepting garbage.
->>> +	 */
->>> +	if (memcmp(blob->signature, "TDX-BLOB", 8))
->>> +		return ERR_PTR(-EINVAL);
->>
->> Is there really no helper in the kernel anywhere that can safely do the
->> 8-byte compare against two known-to-the-compiler 8-byte-wide fields
->> without hard-coding the 8?
+On Fri, May 08, 2026, Naveen N Rao wrote:
+> On Thu, May 07, 2026 at 11:26:15AM -0700, Sean Christopherson wrote:
+> > The only reg that's at all hot is Timer Initial Count Register, and (a) it's a
+> > moot point with TSC Deadline mode, and (b) the cost to program hrtimers is so high
+> > than shaving ~10 cycles is completely meaningless.
 > 
-> I couldn't find a helper that automatically derives the comparison
-> length from the operands.  'strcmp()' is not suitable here because
-> 'blob->signature' is not NUL-terminated.
+> Thanks for the checking this - this was something I wanted to check. And 
+> I agree with your assessment. None of those registers look to be 
+> commonly written to, and ~10 cycles is almost in the noise. If we ever 
+> come across a performance issue, it should be fairly simple to pass 
+> additional registers through (with good reason, of course).
 > 
-> Do you mean just avoiding the hard-coded 8, e.g.
-> 
-> 	if (memcmp(blob->signature, "TDX-BLOB", sizeof(blob->signature)))
-> 		return ERR_PTR(-EINVAL);
-> 
-> or define the 'u8 signature[8]' as a u64 and compare it with a constant, like
-> 
-> /* Little-endian encoding of "TDX-BLOB" string */
-> #define TDX_IMAGE_SIGNATURE	0x424f4c422d584454ULL
-> 
-> 	if (blob->signature != TDX_IMAGE_SIGNATURE)
-> 		return ERR_PTR(-EINVAL);
+> On a side note, how did you measure this? My naive attempt showed a lot 
+> of variation between runs.
 
-Either one of those is fine with me. I'd probably do the sizeof()
-variant, but no strong preference.
+I hacked the x86/vmexit.c test in KUT, and then ran it with and without x2APIC:
 
->>> +	struct seamldr_params *params;
->>> +	int module_pg_cnt, sig_pg_cnt;
->>> +	const u8 *sig, *module;
->>> +	int i;
->>> +
->>> +	params = (struct seamldr_params *)get_zeroed_page(GFP_KERNEL);
->>> +	if (!params)
->>> +		return ERR_PTR(-ENOMEM);
->>
->> kzmalloc(PAGE_SIZE, GFP_KERNEL) will save you a cast.
-> 
-> I noticed that 'kzalloc_obj()' can be used here, which avoids spelling out
-> the size and GFP flags explicitly.  So I ended up with:
-> 
->     params = kzalloc_obj(*params);
+  ./x86/run x86/vmexit.flat -smp 2 -cpu qemu64,+x2apic -append apic_wr_lvt0
+  ./x86/run x86/vmexit.flat -smp 2 -cpu qemu64,-x2apic -append apic_wr_lvt0
 
-That's fine too.
+That test super useful for micro-benchmarking single instructions and/or short
+sequences.  Even without pinning vCPUs, it does a decent job of generating stable
+results.
+
+diff --git a/x86/vmexit.c b/x86/vmexit.c
+index 5296ed38..1749cbd8 100644
+--- a/x86/vmexit.c
++++ b/x86/vmexit.c
+@@ -22,6 +22,7 @@ struct test {
+ 
+ static int nr_cpus;
+ static u64 cr4_shadow;
++static u32 lvt0;
+ 
+ static void cpuid_test(void)
+ {
+@@ -447,6 +448,11 @@ static void tscdeadline(void)
+        while (x == 0) barrier();
+ }
+ 
++static void apic_wr_lvt0(void)
++{
++       apic_write(APIC_LVT0, lvt0);
++}
++
+ static void wr_tsx_ctrl_msr(void)
+ {
+        wrmsr(MSR_IA32_TSX_CTRL, 0);
+@@ -501,6 +507,7 @@ static struct test tests[] = {
+        { mov_from_cr8, "mov_from_cr8", .parallel = 1, },
+        { mov_to_cr8, "mov_to_cr8" , .parallel = 1, },
+ #endif
++       { apic_wr_lvt0, "apic_wr_lvt0", .parallel = 1, },
+        { inl_pmtimer, "inl_from_pmtimer", .parallel = 1, },
+        { inl_nop_qemu, "inl_from_qemu", .parallel = 1 },
+        { inl_nop_kernel, "inl_from_kernel", .parallel = 1 },
+@@ -618,6 +625,7 @@ int main(int ac, char **av)
+ 
+        setup_vm();
+        cr4_shadow = read_cr4();
++       lvt0 = apic_read(APIC_LVT0);
+        handle_irq(IPI_TEST_VECTOR, self_ipi_isr);
+        nr_cpus = cpu_count();
+ 
+
