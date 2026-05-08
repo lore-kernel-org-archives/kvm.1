@@ -1,351 +1,189 @@
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A299E41325E;
-	Fri,  8 May 2026 17:45:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A702C0303;
+	Fri,  8 May 2026 17:49:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778262360; cv=none; b=JA90DPM4nvLGQe2stu8wP93tSIRz3EcdqyXj+oP5nlwxBELn4Ll+gYDn5kHkwYl3Fqex+G+RXD/POIUVdwvJnIl47A5iFuQC6JYCRgHXjrxq85nphZlIqVO82R4aQD+/NFDJllh+D4BQ9bFonKtLL2kEwrN55CYssQytHSHa2Xs=
+	t=1778262559; cv=none; b=RBxaJ0/gQpO/hVfKhohFD9I2v8D8xUSTbUD7Z7UxWT6E+jq775FTiXWcoEFCf/+MtYuy3yc9q3jNUJeWg7CEUwZlAGZjAMJu1/9mSq4Yp5E3Q4DtRVT1qINOposhQ/sDNQOr83Z07ubOVA8I43HMz38c3jeT1Nq+GpmRKQeT/Ts=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778262360; c=relaxed/simple;
-	bh=WUcogBBt+16hysVoKsG03e39lN/2nfwARuSyMv7QoWU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZKTEfqY0Ty/MbSBUova2RxdMe+5YGyILxuZYluJHwEjDgbHWkLoDoMYAw4+V0rpcCdDIl0/GklF/bjAQAkMTZxlBfC5HbWtR3YL+n0VcBS6GUJ/iEF8XwcZRNKOt7dbLcS8honfP7ZovstDJw2Zit2Qba+wXP5l5ksFvSBhyX1o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=RuYEtw4p; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=jrggMLCq; arc=none smtp.client-ip=103.168.172.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1778262559; c=relaxed/simple;
+	bh=qc0M78YVVzguY/DjHnYban6TsuaFExBIoheNyT2EP0A=;
+	h=Message-ID:Subject:From:To:Cc:In-Reply-To:References:Content-Type:
+	 Date:MIME-Version; b=nMkjmu1gHbs7DgjIHiudl6aesGslc25sVJEsCWDYvbT9e3PDAlpBHQfZhPBJo5OqMiRRfpkRSMDCcg/fhbJcRN0vsUyGknM4sORMXyDZF05oaN+L+AbNol4dsmhtwBn3isIctBQxIr6RRV0isZGfaPHZfmgPDLE2ByLuYauRiiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=GPdDGfkd; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="RuYEtw4p";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="jrggMLCq"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id F29D81400106;
-	Fri,  8 May 2026 13:45:56 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-01.internal (MEProxy); Fri, 08 May 2026 13:45:57 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1778262356;
-	 x=1778348756; bh=BzQpbfj2gB2hq1kMTUl7hUBczCfNpeCyjSIC66D0Crc=; b=
-	RuYEtw4p3+iPQqwaGpOp1bKL8lSK4PLE6ZfW1yepdy0REMuCtGrpkk23imO61Zll
-	wHwKQFubiaZkC2EfsWyWXzlURRpb6+9a8LzDv5cyIljCCI7XszSpa36KtcyHktjm
-	BhtUnW7qtLXfAde8q3IXKIvVi3k7kZdVHrtsLcThn/J4pq8YLpCC/SuBfwkSXNyg
-	oaANG93BvYhurczW+OoMUEtGzWGImNZ3OJkNfTvbESoucdxlhFSDo5LSn9OM4Nau
-	rZ+YANsZTG3+t0SgrpW9Ihw62ysA+vE9ejYRoBonC6P2TiRA5l9FckgEoQJrK6wM
-	wYNJA0s1JICLpd0b9l2bMw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1778262356; x=
-	1778348756; bh=BzQpbfj2gB2hq1kMTUl7hUBczCfNpeCyjSIC66D0Crc=; b=j
-	rggMLCqABQXTA4Xu+PVcwzI+hS9E27NAJFUEyDGU9UN/onj2q4fIhhmUlA41A90C
-	hGSzYY9toRrxI8TbyFY8w2G5xOCLJEMmiunQHrpGy8CumzR45gcYhri+ub4cSgyc
-	ZaLfDist1/2k88s8HgCuPVDm5dzNR0Aa/5g/aR064NvUWMA82GmLxTgQqjEA29RT
-	gyCbHSOdARwJAJGE/P9NafcddscdLTc5Vs2+W5ZbByr9KomWCWT6By2L1enlsT1F
-	Ob43BWeTe4w3reVRAHQCRYOA7aPXmhgDRR+lCq+oiNr/c5w1BeGDUhL5t88MBoGj
-	jILyavthdJsfNgb7VhiAg==
-X-ME-Sender: <xms:UyH-aTa1ruE-f_oxE9yDQyU9OeP5tRAXkecNMOWkTzrqUlqkzILFTA>
-    <xme:UyH-acpeufwrO57GDCPPumhwH4kOapF6N_stR27q5f7FOyzyrU3HXFh_ukwq0k9dv
-    RcNQatHMPuuc29L9FNK4Ar6ZgUqXH6E7jIqSH3EQfM8RRP7pYuy>
-X-ME-Received: <xmr:UyH-abZzd1FADE5GNMbNN-9kuk0B5HoV1H2eNsfLDxiDqBAgBjTW2BICGqY>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduuddtleekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
-    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
-    htthgvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudeg
-    veeuueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepudekpdhmohguvgep
-    shhmthhpohhuthdprhgtphhtthhopehmrghtthgvvhesmhgvthgrrdgtohhmpdhrtghpth
-    htohepkhgvvhhinhdrthhirghnsehinhhtvghlrdgtohhmpdhrtghpthhtohepjhhgghes
-    iihivghpvgdrtggrpdhrtghpthhtoheprghnkhhithgrsehnvhhiughirgdrtghomhdprh
-    gtphhtthhopegrphhophhplhgvsehnvhhiughirgdrtghomhdprhgtphhtthhopehlvgho
-    nheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepkhgvvghssehkvghrnhgvlhdrohhrgh
-    dprhgtphhtthhopehskhholhhothhhuhhmthhhohesnhhvihguihgrrdgtohhmpdhrtghp
-    thhtohephihishhhrghihhesnhhvihguihgrrdgtohhm
-X-ME-Proxy: <xmx:UyH-af7nOMyxkdGlWWReCP_TYbyKMIUAE1xeJI4b5RBEzs-dABt8KQ>
-    <xmx:UyH-aWSS65j0c7jBuCCMfQkWQmLO8t0Y338i5Y4-3Loh_r5sV6wZhw>
-    <xmx:UyH-afvruQn0LMwhN3o0jH9HOeHJiO2u1wZD5kenA_X3J8MCgvnVHA>
-    <xmx:UyH-aYayh2c780BvlSPshIwXYUxrRkKjZ7WmREj60dooA7wuY3fk-Q>
-    <xmx:VCH-aY3fA63EJXNXgPxcuZmpNHZKdHF2H-qYvAfoGN6ihPteuP1BTlAe>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 8 May 2026 13:45:53 -0400 (EDT)
-Date: Fri, 8 May 2026 11:45:52 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Matt Evans <mattev@meta.com>
-Cc: Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>, Ankit
- Agrawal <ankita@nvidia.com>, Alistair Popple <apopple@nvidia.com>, Leon
- Romanovsky <leon@kernel.org>, Kees Cook <kees@kernel.org>, Shameer Kolothum
- <skolothumtho@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>, Alexey
- Kardashevskiy <aik@ozlabs.ru>, Eric Auger <eric.auger@redhat.com>, Peter Xu
- <peterx@redhat.com>, Vivek Kasireddy <vivek.kasireddy@intel.com>, Zhi Wang
- <zhiw@nvidia.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- virtualization@lists.linux.dev, alex@shazbot.org
-Subject: Re: [PATCH v4 3/3] vfio/pci: Replace vfio_pci_core_setup_barmap()
- with vfio_pci_core_get_iomap()
-Message-ID: <20260508114552.6f5b99f0@shazbot.org>
-In-Reply-To: <015b1e9c-0a2d-472a-b750-9154800832ee@meta.com>
-References: <20260505173835.2324179-1-mattev@meta.com>
-	<20260505173835.2324179-4-mattev@meta.com>
-	<20260507162141.072483ce@shazbot.org>
-	<015b1e9c-0a2d-472a-b750-9154800832ee@meta.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="GPdDGfkd"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=MIME-Version:Date:Content-Type:
+	References:In-Reply-To:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=qc0M78YVVzguY/DjHnYban6TsuaFExBIoheNyT2EP0A=; b=GPdDGfkdTpYtbEX1iTQq80Ngkm
+	W/3udDwIIk1WmE3mDyyOcvzhbFVjXqWghiekdHkEyXNouHBsYdlwXroNjpY4YC/frkEx7sL8tM5VB
+	+g6WZkhDShCri/b6nbSD9RyVvMx+fdWOkqYGX2a954hsjuM5EEkbG5WakQ5z6BWwGVLPXyqI6qFQI
+	36u0hRxj1nJm3NhgtCZnZ0HtM7RyMa4IUOKfOhrE2H64X6AuNhmoNC7FA4q0/HqcDunYrGCG3JxRz
+	qqg45l9Kgg8bRX6iUx2VIcDIYaGvdxGf2NByzBxY9USrtpCVcxsIuZQMuucvPhN5d7RX9xWzN84Mz
+	sZkz+rxA==;
+Received: from [172.31.31.148] (helo=u09cd745991455d.lumleys.internal)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wLPJs-00000006zkF-1pIl;
+	Fri, 08 May 2026 17:49:00 +0000
+Message-ID: <14097037094d9b767c04e04db32d0abe8e1a5e86.camel@infradead.org>
+Subject: Re: [PATCH] KVM: x86/xen: bail in IRQ context on PREEMPT_RT in
+ kvm_xen_set_evtchn_fast()
+From: David Woodhouse <dwmw2@infradead.org>
+To: Mauricio Faria de Oliveira <mfo@igalia.com>
+Cc: Paul Durrant <paul@xen.org>, Sean Christopherson <seanjc@google.com>, 
+ Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>,  Borislav Petkov <bp@alien8.de>, Dave
+ Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>, Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Clark
+ Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
+ kernel-dev@igalia.com,  kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-rt-devel@lists.linux.dev, 
+ syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com
+In-Reply-To: <122adcacb2a6ccc3a5b78c750fe85e0b@igalia.com>
+References: <20260506-xen-rt-sleep-v1-1-53b6b60a671d@igalia.com>
+	 <8e7bc66a7994ca06f164a5d5f7ceb3f07d3a1357.camel@infradead.org>
+	 <e23df9d183c2c421946ea73b8053e4c4@igalia.com>
+	 <876c720ab963f550d3166b067f6457fcd78ec415.camel@infradead.org>
+	 <122adcacb2a6ccc3a5b78c750fe85e0b@igalia.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-CA1679MnbQ41HKf6pJ3S"
+Date: Fri, 08 May 2026 18:48:56 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-On Fri, 8 May 2026 16:30:40 +0100
-Matt Evans <mattev@meta.com> wrote:
 
-> Hi Alex,
-> 
-> On 07/05/2026 23:21, Alex Williamson wrote:
-> > 
-> > On Tue, 5 May 2026 10:38:31 -0700
-> > Matt Evans <mattev@meta.com> wrote:
-> >   
-> >> Since "vfio/pci: Set up barmap in vfio_pci_core_enable()", the
-> >> resource request and iomap for the BARs was performed early, and
-> >> vfio_pci_core_setup_barmap() just checks those actions succeeded.
-> >>
-> >> Move this logic to a new helper that checks success and returns the
-> >> iomap address, replacing the various bare vdev->barmap[] lookups.
-> >> This maintains the error behaviour of the previous on-demand
-> >> vfio_pci_core_setup_barmap() scheme.
-> >>
-> >> Signed-off-by: Matt Evans <mattev@meta.com>
-> >> ---
-> >>   drivers/vfio/pci/nvgrace-gpu/main.c | 11 ++++-------
-> >>   drivers/vfio/pci/vfio_pci_core.c    | 11 +++++------
-> >>   drivers/vfio/pci/vfio_pci_dmabuf.c  |  2 +-
-> >>   drivers/vfio/pci/vfio_pci_rdwr.c    | 30 ++++++++---------------------
-> >>   drivers/vfio/pci/virtio/legacy_io.c | 13 ++++++-------
-> >>   include/linux/vfio_pci_core.h       | 20 ++++++++++++++++++-
-> >>   6 files changed, 43 insertions(+), 44 deletions(-)
-> >>
-> >> diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
-> >> index fa056b69f899..e153002258ce 100644
-> >> --- a/drivers/vfio/pci/nvgrace-gpu/main.c
-> >> +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
-> >> @@ -184,13 +184,10 @@ static int nvgrace_gpu_open_device(struct vfio_device *core_vdev)
-> >>   
-> >>   	/*
-> >>   	 * GPU readiness is checked by reading the BAR0 registers.
-> >> -	 *
-> >> -	 * ioremap BAR0 to ensure that the BAR0 mapping is present before
-> >> -	 * register reads on first fault before establishing any GPU
-> >> -	 * memory mapping.
-> >> +	 * The BAR map was just set up by vfio_pci_core_enable(), so
-> >> +	 * check that was successful and bail early if not:
-> >>   	 */
-> >> -	ret = vfio_pci_core_setup_barmap(vdev, 0);
-> >> -	if (ret)
-> >> +	if (IS_ERR(vfio_pci_core_get_iomap(vdev, 0)))
-> >>   		goto error_exit;  
-> > 
-> > Sashiko notes we're not setting ret here.  The bots are also paranoid
-> > about the unreachable condition that the get_iomap below could return an
-> > ERR_PTR.  Maybe head off both by adding an __iomem pointer to the
-> > nvgrace_gpu_pci_core_device struct and a temporary one here.  Store the
-> > iomap in the temporary variable, use it to test for IS_ERR() and
-> > PTR_ERR(), then set the pointer in the structure after the last error
-> > condition here.  Add one line in the close_device to set it NULL.  Then
-> > just use nvdev->bar0_io below.  
-> 
-> Right about ret.  On the 2nd, the bots could benefit from a comment on
-> the ...get_iomap() below saying that it "cannot fail" if this one
-> passes, but hey.  I can add a struct member to track it (bots can then
-> worry that it might be NULL, if they don't notice that
-> nvgrace_gpu_check_device_ready() can't happen if
-> nvgrace_gpu_open_device() didn't succeed, etc. etc.).
+--=-CA1679MnbQ41HKf6pJ3S
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-While I agree that there's always something that can be overlooked, it
-does seem semantically cleaner that the io is tested when it's
-retrieved for the driver structure and used from that structure in a
-fixed lifecycle than retrieved without testing the results at time of
-use.
- 
-> >>   
-> >>   	if (nvdev->resmem.memlength) {
-> >> @@ -275,7 +272,7 @@ nvgrace_gpu_check_device_ready(struct nvgrace_gpu_pci_core_device *nvdev)
-> >>   	if (!__vfio_pci_memory_enabled(vdev))
-> >>   		return -EIO;
-> >>   
-> >> -	ret = nvgrace_gpu_wait_device_ready(vdev->barmap[0]);
-> >> +	ret = nvgrace_gpu_wait_device_ready(vfio_pci_core_get_iomap(vdev, 0));
-> >>   	if (ret)
-> >>   		return ret;
-> >>   
-> >> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> >> index 62931dc381d8..5c8bd13f10d0 100644
-> >> --- a/drivers/vfio/pci/vfio_pci_core.c
-> >> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> >> @@ -1761,7 +1761,7 @@ int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma
-> >>   	struct pci_dev *pdev = vdev->pdev;
-> >>   	unsigned int index;
-> >>   	u64 phys_len, req_len, pgoff, req_start;
-> >> -	int ret;
-> >> +	void __iomem *bar_io;
-> >>   
-> >>   	index = vma->vm_pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
-> >>   
-> >> @@ -1795,12 +1795,11 @@ int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma
-> >>   		return -EINVAL;
-> >>   
-> >>   	/*
-> >> -	 * Even though we don't make use of the barmap for the mmap,
-> >> -	 * we need to request the region and the barmap tracks that.
-> >> +	 * Ensure the BAR resource region is reserved for use.
-> >>   	 */
-> >> -	ret = vfio_pci_core_setup_barmap(vdev, index);
-> >> -	if (ret)
-> >> -		return ret;
-> >> +	bar_io = vfio_pci_core_get_iomap(vdev, index);
-> >> +	if (IS_ERR(bar_io))
-> >> +		return PTR_ERR(bar_io);
-> >>   
-> >>   	vma->vm_private_data = vdev;
-> >>   	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
-> >> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> >> index 69a5c2d511e6..46cd44b22c9c 100644
-> >> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-> >> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> >> @@ -248,7 +248,7 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
-> >>   	 * else.  Check that PCI resources have been claimed for it.
-> >>   	 */
-> >>   	if (get_dma_buf.region_index >= VFIO_PCI_ROM_REGION_INDEX ||
-> >> -	    vfio_pci_core_setup_barmap(vdev, get_dma_buf.region_index))
-> >> +	    IS_ERR(vfio_pci_core_get_iomap(vdev, get_dma_buf.region_index)))
-> >>   		return -ENODEV;
-> >>   
-> >>   	dma_ranges = memdup_array_user(&arg->dma_ranges, get_dma_buf.nr_ranges,
-> >> diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
-> >> index 3bfbb879a005..7f14dd46de17 100644
-> >> --- a/drivers/vfio/pci/vfio_pci_rdwr.c
-> >> +++ b/drivers/vfio/pci/vfio_pci_rdwr.c
-> >> @@ -198,19 +198,6 @@ ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool test_mem,
-> >>   }
-> >>   EXPORT_SYMBOL_GPL(vfio_pci_core_do_io_rw);
-> >>   
-> >> -/*
-> >> - * The barmap is set up in vfio_pci_core_enable().  Callers use this
-> >> - * function to check that the BAR resources are requested or that the
-> >> - * pci_iomap() was done.
-> >> - */
-> >> -int vfio_pci_core_setup_barmap(struct vfio_pci_core_device *vdev, int bar)
-> >> -{
-> >> -	if (IS_ERR(vdev->barmap[bar]))
-> >> -		return PTR_ERR(vdev->barmap[bar]);
-> >> -	return 0;
-> >> -}
-> >> -EXPORT_SYMBOL_GPL(vfio_pci_core_setup_barmap);
-> >> -
-> >>   ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
-> >>   			size_t count, loff_t *ppos, bool iswrite)
-> >>   {
-> >> @@ -262,13 +249,11 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
-> >>   		 */
-> >>   		max_width = VFIO_PCI_IO_WIDTH_4;
-> >>   	} else {
-> >> -		int ret = vfio_pci_core_setup_barmap(vdev, bar);
-> >> -		if (ret) {
-> >> -			done = ret;
-> >> +		io = vfio_pci_core_get_iomap(vdev, bar);
-> >> +		if (IS_ERR(io)) {
-> >> +			done = PTR_ERR(io);
-> >>   			goto out;
-> >>   		}
-> >> -
-> >> -		io = vdev->barmap[bar];
-> >>   	}
-> >>   
-> >>   	if (bar == vdev->msix_bar) {
-> >> @@ -423,6 +408,7 @@ int vfio_pci_ioeventfd(struct vfio_pci_core_device *vdev, loff_t offset,
-> >>   	loff_t pos = offset & VFIO_PCI_OFFSET_MASK;
-> >>   	int ret, bar = VFIO_PCI_OFFSET_TO_INDEX(offset);
-> >>   	struct vfio_pci_ioeventfd *ioeventfd;
-> >> +	void __iomem *io;
-> >>   
-> >>   	/* Only support ioeventfds into BARs */
-> >>   	if (bar > VFIO_PCI_BAR5_REGION_INDEX)
-> >> @@ -440,9 +426,9 @@ int vfio_pci_ioeventfd(struct vfio_pci_core_device *vdev, loff_t offset,
-> >>   	if (count == 8)
-> >>   		return -EINVAL;
-> >>   
-> >> -	ret = vfio_pci_core_setup_barmap(vdev, bar);
-> >> -	if (ret)
-> >> -		return ret;
-> >> +	io = vfio_pci_core_get_iomap(vdev, bar);
-> >> +	if (IS_ERR(io))
-> >> +		return PTR_ERR(io);  
-> > 
-> > Sashiko seems to note a real existing error here that should also be
-> > pulled out to a separate fix.  Given the right offset, this could
-> > generate a negative BAR value.  
-> 
-> Yuck, loff_t signed, yep.  Isn't the real root of this that it
-> never makes sense for VFIO_PCI_OFFSET_TO_INDEX() to return a negative
-> index here or anywhere else?
+On Thu, 2026-05-07 at 13:02 -0300, Mauricio Faria de Oliveira wrote:
+>=20
+> Ok, thanks; I'll drop this. Could you please Cc me when you send it out?
+>=20
+> > Currently confused by the fact that the read_trylock() seems to fail
+> > more often than it should under RT, causing the fallback path to be
+> > taken... and the fallback path doesn't seem to work properly...
+> >=20
+> > Your version should have seen this too, surely? Did the selftest in
+> > linux/tools/testing/selftests/kvm/x86/xen_shinfo_test work with your
+> > patch?
+>=20
+> Yes, it works, apparently. Timing is similar with/without PREEMPT_RT.
 
-Yes
+Turns out my issue wasn't about the locking at all; hrtimer delivery
+was broken by commit 15dd3a948855 and is fixed by
+https://lore.kernel.org/all/20260423155611.216805954@infradead.org/
 
-> I suggest instead, to also avoid this elsewhere in future, something
-> like:
-> 
->   #define VFIO_PCI_OFFSET_TO_INDEX(off)	((u64)(off) >> VFIO_PCI_OFFSET_SHIFT)
+All that staring at the delivery fallback path did lead me to find an
+issue with the latency of the slow path though.
 
-Sure, that has better coverage.
+Patch series incoming.
 
-> > The test at the end of the previous
-> > chunk should should be expanded to `if (bar < 0 || bar > ...BAR5...)`.  
-> 
-> Not necessary if VFIO_PCI_OFFSET_TO_INDEX() can't return < 0 (the
-> magnitude would be 24b so can't overflow the `int bar` it's assigned
-> into).
+--=-CA1679MnbQ41HKf6pJ3S
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-Yep.
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUwODE3NDg0
+OVowLwYJKoZIhvcNAQkEMSIEIPyOWod03PXvmh1FayaR/zbEJ3zN3kWyjh5VsMJrUtASMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAjaXocQriQrx0
+lWv8f+KdMP8HpN3SqN5FT4M4HvjKibXT3XY1VBGMkj0IVZZrWC591qZLo5aSw8IDTCr7dRgAoule
+c6QOTdE4/dWoiTtUHwhLhwBAAVdgDmgTbSYW75ro5m2nWvl1FgAcQD2uuqeoFx0K5tPq1PWa24Hm
+Hk6yR6aThFWg1tG+M06VpOiLHI7w2U4yDH0ifCGOoCS190XkNwfR/flvAusQLlpETLOBm7LujjGh
+nF/iPIFLOLtoL20hC6UfN/dgAM5Olqb9y8Eos2iBUSPbkpSHS44NNGUs/gmPmZiVL2vUDBgjSb9o
+IQKmzljDV3N9Tuqh85NVakWgDITmq7HM815WgYNI/+MTjHL8eiAoUDLn1kbFm2bGenXaMtYB6gjw
+aQk2J3BMwCoip0crD5W0KFiJjZvMJ7xnzmOj+Mkrsp9A6LkC3u1iCSGM0qeAD6w3ukedJsXXbo/A
+r67XNP4Nkx++SGXGJR8VLIJfJ7BAczpw1InQdbIhLHZvJXl62jFOf9YqcTGJ51n3+6EWPj2xJqFP
+dO8Gg9cGzUzOt8M3fJmyQDSOR6Dmsn+9nlV8sKyv+Vnzw0d7RzeK7uP+fJK4VpVGQ63S2Grj31vW
+T5PEL6HqGAiKNdNwwTFRgUjIH2qiryKx9qrh61OwF1nXnuKnQ2bQvPRu6e+WcG4AAAAAAAA=
 
-> > Do you want to pick that up in this series?  I think it's the only case
-> > that lets that slip through.  Thanks,  
-> 
-> Sure, I'll post a fix.  I don't think it needs to be part of this series
-> though if it's just the macro, do you agree?
 
-I was hoping to collect the fixes from this series for v7.1-rc
-regardless, so either way.
-
-> Do you know why drivers/gpu/drm/i915/gvt/kvmgt.c has copied
-> VFIO_PCI_OFFSET_TO_INDEX() and friends?  Perhaps the shift was different
-> (the reason drivers/vfio/pci/ism/main.c has its own versions).  The same
-> loff_t issue seems to exist in both of those places, unfortunately.
-
-I think because it was previously defined in a drivers/vfio/pci/ header
-that couldn't be cleanly included.  The region shift is implementation,
-not API, so drivers are free to define their own region spacing, see
-for instance the new ISM driver that needs >40bits per region.  We're
-likely going to move to a maple tree for defining regions in the future
-so that we can more easily account for such large BARs as they become
-more common.  Jason linked a branch with a rough draft of this not long
-ago.
-
-> PS: with minor question:
-> Relatedly, I'd made `bar` an int following existing convention in
-> 
->   vfio_pci_core_get_iomap(struct vfio_pci_core_device *vdev, int bar)
-> 
-> But I'll make this `unsigned int`, please flag if this violates taste
-> and decency.  IMO any BAR/index parameter should be unsigned; most are,
-> some signed remain.
-
-Yep, I think that would make sense and avoids needing two tests to make
-sure it's in range.  Thanks,
-
-Alex
+--=-CA1679MnbQ41HKf6pJ3S--
