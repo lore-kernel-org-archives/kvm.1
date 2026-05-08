@@ -1,125 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EAA2336EC0;
-	Fri,  8 May 2026 17:03:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B4E43D47B8
+	for <kvm@vger.kernel.org>; Fri,  8 May 2026 17:07:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778259820; cv=none; b=VVzqtyJSnksWPIHG4/yCI45tho1dJUCVFQl/doG87rBfD5Xj+buHoQyNfuhX72ydRQR1lSgIv9otxdZjf/EOpVT08RirB/2Wa/oqoBkNiviYl6kzUzYxAJKd8yRGx5vF0/EctQxgeNavKghBE+ZwkyP//i8TW/37kq40xgOXpWI=
+	t=1778260046; cv=none; b=rYl6bJfnGgv5ZD5feu/Gwo0Sb7swnfsXzurr9yXUjIN5HZxhdyDxcsI/jQ4Scal671JN6pXB8RmR4skdJgvpZlK+fYlTkGd106M/9P2NhaQslRD9S5bFC3Ge8gRWTutsQAX1foNabsT62p8uJsgQUZLaxWgpVYzqFHaYBg/ttZY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778259820; c=relaxed/simple;
-	bh=fhsQnl5gxC/yyIloxdRSyOwQP6yBba3MowPau+9llQo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=t3UfulfdFnbdx4KPgY9ej6a2PBdJqAK5LAX4SN1sY7SzlcNgsDEL+K35c1RqGCbMMWMMXh0HAfBNtJbKRyZ+MLhwlcGvkEpDQsvmWXsZ8lX2yccLRGCm5J3Pgu6uRiTK8mEGTG6ShPnaB0kFQYnb3dEIM5HmEDQdeS2+V2u/1Vs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jmjRm9Sg; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778260046; c=relaxed/simple;
+	bh=pKt6udb9DhZCDMm+rSwFv7SSGEk0dYmbtaPDi5R1FUQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=QFVROI2kelgM1Zn6q0X51j2K2PIrYc3f+Vvawxj4UD4mEp6/Q9v9SlbPoS7pSqW5XTAZVn4PNsdC7VsHjgSjWsZqHQyVk8dtp521tqmhMUnsZCNkgje05cBQNBj4p7FnXXfcU0QfJi3eq8JlUWOWvXOZyj016n2L/cyy43xaL40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IFcqrZhW; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jmjRm9Sg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81B36C2BCB0;
-	Fri,  8 May 2026 17:03:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778259820;
-	bh=fhsQnl5gxC/yyIloxdRSyOwQP6yBba3MowPau+9llQo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jmjRm9Sgf6rZQn+PLNsF8A/EgWs9ehYYkpsmWL7QXSZ2JrTlIFs3YOwdRo0xbOawA
-	 TOfgBpNrC2DkS3OH741kTWTWqIJ+YkGuaotsk1L8qZ1zq7kkkD+XRGYP/85X0wB8mT
-	 58ND7doH6ItUvRSyIboBi55vzuNElKzUoICYV8K7ccPoclkyB3b6YR1Ze3mg9csOdF
-	 bOTcUvXZXSaiveM2+WXJ1BVJPG2pAtmgAmJgrOdv0NsRRmTnsrPb9ww8gh1/UfzZF+
-	 lMlYas55hLJ2vgRAlsyZ8XKFdW04Giu0mE9Tayyb/LlSdr3tNwO3ztYegpCZB/OYSk
-	 u2sFzvazediCw==
-Date: Fri, 8 May 2026 22:29:22 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/5] KVM: SVM: Only disable x2AVIC WRMSR interception
- for MSRs that are accelerated
-Message-ID: <af4SexKS4Z0K2lGE@blrnaveerao1>
-References: <20260506184746.2719880-1-seanjc@google.com>
- <20260506184746.2719880-4-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IFcqrZhW"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c799ee56bd6so1275368a12.2
+        for <kvm@vger.kernel.org>; Fri, 08 May 2026 10:07:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778260043; x=1778864843; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=IQTZZvEcGTueFWxImFGRAerEmmKKzoQOK1gvnU54pxs=;
+        b=IFcqrZhWXqlEoQvyuOvOEazT7kR7wu+miIsjaOspoW6YFBEnw3kqppeVEop/1MI5vu
+         URcYs593vrrvBXZxJtLhLOSla5abpyTai2mx1AS+iDqIAeBePyTZ//UrT+KK2tf/P0Z8
+         oex2I5ecY2mCHuc7nvCt0N4Yw866GTfEbrfz3YVswzNUeiZC5yNiwiTOz2mDMcTPorvx
+         6x9zi6UnzTMfCSY225qkRMFMGabAEeusmmZgKl7SqlFEYK9eO0swZ7xiUJnQsOXbiU0f
+         nS+Xi3B3LkYhfeeVQPLvYeumZgY4495O/Oh+Q23HZ1NsRE3o9yynshiLa3C+Xuxmvax2
+         Kv1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778260043; x=1778864843;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=IQTZZvEcGTueFWxImFGRAerEmmKKzoQOK1gvnU54pxs=;
+        b=R3w2lKpCHoSe3EMma/ubF9qVGtqyT4lPgBJA46ED0F6v2ARifMIAJUVwDdgIeKlRru
+         JLfdo/xpuxiSqm+TwWJNmYaxqsfemTLdC5QEWBT4IZVlkEYV4sktNFGYXo5gYL3TdGXZ
+         dOeCd0Rsd1/tv2u5sdOWxjaloNc/SZXC18lBmGy7st88uyNgeU0t+l+OXiX35860RtY6
+         dzeB1IPmtMFkYNonEWVkmOdvzOFR7HkqXAF1QJj4ukgY5yKVzNaak0WjWcbV8iFQzmZw
+         +ZFQpgoa3Mg25voIWHFniUmhV06yLPB9OXZ/PryFx63N3nSf9Wzr1v0EfZ7Mrc+37Nu7
+         2xDg==
+X-Forwarded-Encrypted: i=1; AFNElJ+tOre2OBKrvtjNIqPYp2QK0iBxQym1K5j/WY3XBQLSjnL28FQc+nJ7yG9DTfOSMs/F4k8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJwSim+Xv4mLlspGQLdeUHKtMhtF26DsU4qrhQdqx9s2m/hzM+
+	BsnNO+OS9eDHoRgC1OmZP5y88vVMkWtBoW10eaV1iTYIpcST41k+xkhQXIoyfKuulBakeSuHzdm
+	7bwa5NkXAz1vt7A==
+X-Received: from pga16.prod.google.com ([2002:a05:6a02:4f90:b0:c6e:1ddf:c9ec])
+ (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6a21:339e:b0:3aa:ca34:61e7 with SMTP id adf61e73a8af0-3aaca346b9fmr810456637.31.1778260043030;
+ Fri, 08 May 2026 10:07:23 -0700 (PDT)
+Date: Fri,  8 May 2026 10:07:01 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260506184746.2719880-4-seanjc@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
+Message-ID: <20260508170714.489136-1-jmattson@google.com>
+Subject: [PATCH v2 0/3] KVM: x86: Virtualize AMD CPUID faulting
+From: Jim Mattson <jmattson@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	Clayton Pence <ctpence@google.com>
+Cc: Jim Mattson <jmattson@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, May 06, 2026 at 11:47:44AM -0700, Sean Christopherson wrote:
-> When x2AVIC is enabled, disable WRMSR interception only for MSRs that are
-> actually accelerated by hardware.  Disabling interception for MSRs that
-> aren't accelerated is functionally "fine", and in some cases a weird "win"
-> for performance, but only for cases that should never be triggered by a
-> well-behaved VM (writes to read-only registers; the #GP will typically
-> occur in the guest without taking a #VMEXIT, even for fault-like exits).
+AMD's "disable CPUID in usermode" feature is analogous to Intel's "CPUID
+faulting" feature, but it is advertised and activated differently.  The AMD
+feature is advertised via CPUID.80000021H:EAX.CpuidUserDis[bit 17] and
+activated by setting HWCR.CpuidUserDis[bit 35].
 
-Doesn't have to be part of this series, but I think we can now also clean 
-up avic_unaccelerated_access_interception() and some of the other 
-functions it calls for updating LDR/DFR. With this change, I believe the 
-only reason we can ever see AVIC_UNACCELERATED_ACCESS when x2AVIC is 
-enabled will be for APIC_EOI writes for level-triggered interrupts.
+Add virtualization support for the AMD feature.
 
-Probably worth a comment/assert in that function.
+v1 -> v2:
+* Remove supports_cpuid_fault() instead of renaming it [Sean]
 
-> 
-> But overall, disabling interception for MSRs that aren't accelerated is at
-> best confusing and unintuitive, and at worst introduces avoidable risk, as
-> the effective guest-visible behavior depends on the whims of the CPU (the
-> behavior of x2APIC MSR writes on at least Zen4 doesn't match the behavior
-> documented in the table in "15.29.3.1 Virtual APIC Register Accesses" of
-> the APM).
+v1: https://lore.kernel.org/kvm/20260402223108.650572-1-jmattson@google.com/
 
-FWIW, I tested the current behavior (with most MSRs passed-through) and 
-the new behavior with your changes, and (had AI) put together a table to 
-capture all of this. It also serves to document what x2AVIC does (except 
-for a few MSRs that were intercepted currently).
+Jim Mattson (3):
+  KVM: x86: Remove supports_cpuid_fault() helper
+  KVM: x86: Virtualize AMD CPUID faulting
+  KVM: selftests: Update hwcr_msr_test for CPUID faulting bit
 
-It is inline with my expectations, no surprises here:
-
-+--------------+---------------+---------------+---------------+---------------+---------------+
-| MSR          | Register      | Current RDMSR | New RDMSR     | Current WRMSR | New WRMSR     |
-+--------------+---------------+---------------+---------------+---------------+---------------+
-| 0x802        | APIC_ID       | HW            | HW            | #GP-direct    | * MSR_INT:#GP |
-| 0x803        | APIC_LVR      | HW            | HW            | #GP-direct    | * MSR_INT:#GP |
-| 0x808        | APIC_TPR      | HW            | HW            | HW            | HW            |
-| 0x809        | APIC_ARBPRI   | UAA(f):#GP    | * MSR_INT:#GP | #GP-direct    | * MSR_INT:#GP |
-| 0x80A        | APIC_PPR      | HW            | HW            | #GP-direct    | * MSR_INT:#GP |
-| 0x80B        | APIC_EOI      | #GP-direct    | * MSR_INT:#GP | HW            | HW            |
-| 0x80C        | APIC_RRR      | #GP-direct    | * MSR_INT:#GP | #GP-direct    | * MSR_INT:#GP |
-| 0x80D        | APIC_LDR      | HW            | HW            | #GP-direct    | * MSR_INT:#GP |
-| 0x80E        | APIC_DFR      | #GP-direct    | * MSR_INT:#GP | #GP-direct    | * MSR_INT:#GP |
-| 0x80F        | APIC_SPIV     | HW            | HW            | UAA(t)        | * MSR_INT:ok  |
-| 0x810        | APIC_ISR0     | HW            | HW            | #GP-direct    | * MSR_INT:#GP |
-| 0x811..0x817 | APIC_ISR1..7  | MSR_INT:ok    | * HW          | MSR_INT:#GP   | MSR_INT:#GP   |
-| 0x818        | APIC_TMR0     | HW            | HW            | #GP-direct    | * MSR_INT:#GP |
-| 0x819..0x81F | APIC_TMR1..7  | MSR_INT:ok    | * HW          | MSR_INT:#GP   | MSR_INT:#GP   |
-| 0x820        | APIC_IRR0     | HW            | HW            | #GP-direct    | * MSR_INT:#GP |
-| 0x821..0x827 | APIC_IRR1..7  | MSR_INT:ok    | * HW          | MSR_INT:#GP   | MSR_INT:#GP   |
-| 0x828        | APIC_ESR      | HW            | HW            | UAA(t)        | * MSR_INT:ok  |
-| 0x830        | APIC_ICR      | HW            | HW            | INC_IPI       | HW / INC_IPI  |
-| 0x831        | APIC_ICR2 [1] | #GP-direct    | * MSR_INT:#GP | #GP-direct    | * MSR_INT:#GP |
-| 0x832        | APIC_LVTT     | MSR_INT:ok    | * HW          | MSR_INT:ok    | MSR_INT:ok    |
-| 0x833        | APIC_LVTTHMR  | HW            | HW            | UAA(t)        | * MSR_INT:ok  |
-| 0x834        | APIC_LVTPC    | HW            | HW            | UAA(t)        | * MSR_INT:ok  |
-| 0x835        | APIC_LVT0     | HW            | HW            | UAA(t)        | * MSR_INT:ok  |
-| 0x836        | APIC_LVT1     | HW            | HW            | UAA(t)        | * MSR_INT:ok  |
-| 0x837        | APIC_LVTERR   | HW            | HW            | UAA(t)        | * MSR_INT:ok  |
-| 0x838        | APIC_TMICT    | HW            | HW            | UAA(t)        | * MSR_INT:ok  |
-| 0x839        | APIC_TMCCT    | UAA(f):0      | * MSR_INT:0   | #GP-direct    | * MSR_INT:#GP |
-| 0x83E        | APIC_TDCR     | HW            | HW            | UAA(t)        | * MSR_INT:ok  |
-| 0x83F        | APIC_SELF_IPI | MSR_INT:#GP   | MSR_INT:#GP   | MSR_INT:ok    | * HW / INC_IPI|
-+--------------+---------------+---------------+---------------+---------------+---------------+
-
-Legend:
-HW           HW-accelerated; no #VMEXIT
-#GP-direct   CPU delivers #GP from microcode; no #VMEXIT
-UAA(f):X     AVIC_UNACCEL_ACCESS exit, fault flavor; KVM emulates, guest sees X
-UAA(t)       AVIC_UNACCEL_ACCESS exit, trap flavor; write completed in vAPIC page, KVM post-processes
-MSR_INT:X    MSR_INTERCEPT (MSR-bitmap) exit; KVM emulates, guest sees X
-INC_IPI      AVIC_INCOMPLETE_IPI exit; KVM emulates IPI delivery
-*            cell value differs from corresponding existing-behavior cell
+ arch/x86/kvm/cpuid.c                          |  2 +-
+ arch/x86/kvm/cpuid.h                          | 11 ++++------
+ arch/x86/kvm/emulate.c                        | 14 +++++++------
+ arch/x86/kvm/x86.c                            | 21 ++++++++++++-------
+ .../testing/selftests/kvm/x86/hwcr_msr_test.c | 10 ++++-----
+ 5 files changed, 32 insertions(+), 26 deletions(-)
 
 
-- Naveen
+base-commit: 85f871f6ba46f20d7fbc0b016b4db648c33220dd
+-- 
+2.54.0.563.g4f69b47b94-goog
 
