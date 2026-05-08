@@ -1,169 +1,97 @@
-Received: from mail-vk1-f175.google.com (mail-vk1-f175.google.com [209.85.221.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A391633D511
-	for <kvm@vger.kernel.org>; Fri,  8 May 2026 23:36:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.175
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778283406; cv=pass; b=Z88BKhXFyxoRLTgMvHYf8gYwyQEUa5FSxwmzLalZFnnnlHLnk2oiW2YvL2ToNNutk1QbYzASnc2DieJQYOIr4sQOzMY9Mlu3mfqP09gmDHlauQQq0dZsr3bH4sxa1h0AH7zXmoZU756jFFBZvBmqGT9ApKocHGGG5gxFlc0NNxE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778283406; c=relaxed/simple;
-	bh=qugc+0Ib7z8RHG2l2I3zLFMp2jsqIX/yclDbZ06fydk=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SIWN7o0LrOR4GZoALhSYirKBojD/kFY91beLc7dmxIcbiG22xrZBytHpl7nCg8MjrpgNtsHDwIgbVksFYw7Vd69ZGsLkg0F81jWK7dlgXt5yUlGIuY8VRtiCunaEPyutWDZ+yibJ/s7/q9DThdaEDUv2Z+1MbVVFZsLAYdC1wNQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IFsr6bod; arc=pass smtp.client-ip=209.85.221.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D9833B6D5;
+	Fri,  8 May 2026 23:52:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778284334; cv=none; b=NeFGzJT+1U247Dm5m6fnbs+01nKRxSfokQ5x8strwebWhOmij5qeW5I5xZaWlmV9G5W3IE0dE2yD+09CoYwp8nR40ua0FcgKs1BimfIWxWVFRkmEfrfD383GBXh0p+M+HnPVow7fsKTWZBPYs8AGeLPaVexWoY4BWIFmhul2r7E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778284334; c=relaxed/simple;
+	bh=2A7cLXV+8i/TgBjrSYIiWz4AFId2IjKQBmgGj/uotSs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=mATXEtUfHPF7tU061QeAueyUV0Iv1QDCag6xWnYOmUkeJllFnq0puLyILC1Kwck2UvmIOYb0zJ9mGKeKeWu6hReSN2+z3HAs3Zy15bWrf1PhSRFj/BgztIHqU9Cqvwmenb5CdkTGaFzcdOB/GqwAhHXT1UDvQaG0PejsKI7/JGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wzlh+gEP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IFsr6bod"
-Received: by mail-vk1-f175.google.com with SMTP id 71dfb90a1353d-56f70865797so1367364e0c.1
-        for <kvm@vger.kernel.org>; Fri, 08 May 2026 16:36:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778283403; cv=none;
-        d=google.com; s=arc-20240605;
-        b=PMaWMoIBub65qSNwVbOLqtkJEpr1y5KWiARTadiL9sY+nfQaZD/auI/XgWqTeSmDKC
-         1He5JXUU5znnCAOMyW9/tsOhIIToFcHvmstVHGnTvB9moqAqR4JkSI6V8U2/zSLuVpwa
-         0GDonBxPlP1CLC3jVC7qiJxIsPlMUPER26Sq/cz5kB14jo7N8YndC+21Pdyk8Fy0PjD3
-         A0uoNzw9uGNBTWE6yCuNY2qAF2XZcX/dKE+++q45Gr1CyEu1A/5HoiktFrPmvKnhkSkW
-         r2YWBrhEOmrKEc6w/qrdlErj8RShUSbGgb6lpasufHxhkFBeQG0fXrsbYPIWDvAkzCHA
-         vhdg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=10imNO/dPWbMThTpLIZ3BPvS8U4RD3Gbc9CIOJSztJQ=;
-        fh=K2s5paTATC47mmzoLaxt/PMGMtJ1VAH9AppzvIVWXr4=;
-        b=RWo6y/NL6hcyL7hEXUGJ2+9Prn0DvaQG14HckCRuAI4HR4lCxaJLYSqt0nTY9qae9h
-         Lmi2tOC2eQF/MDcjviPv/DD87EWqYw7Nm6tL58Pg1tTigNrd8gWR1gboYpf3PQH0LhQy
-         /v+zr0s9HyYvKB3Z+3FmnzOvs3YBo57qFQMKOJXDj+q055EOXTSr32mQDSoP8EaP5PXk
-         sjCJnpsD9iiSSTUf8Gh4vNU9fELxwYkFpuKRMHtTGlAzhH3P9QCwc8JuMzjuTLUeLtYN
-         DAV7NJTLpaVo3npIcHXsmAxLO62r81/6frWVvWfbpq9970EeN76WxbC7djOwCaqPkniE
-         xupg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778283403; x=1778888203; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=10imNO/dPWbMThTpLIZ3BPvS8U4RD3Gbc9CIOJSztJQ=;
-        b=IFsr6bodQZG7r4hxx08grgPMBlY0KlF2AhrFstCEFeDAS1u8eCladLOLiJBmxZdoPV
-         emGB896Sdz9ACDVNOJnEPye4LN+Un4O8PHiwXq5G36QxAM2yxBmX1nIymV2sQNH0umBZ
-         vEvopJLSR7xna833MQcq7BAAVfmlPkjRHMfzO+uOlozGPYomDIg4ZDMNsJxS/RAPgBa5
-         MN9H9/t8cKIlu1V65pSIYmOHXFGV7CMdbbTdOQaBmNF8b+ouXBQipcJeyNeelskJ3G6C
-         WMpaAIprt38Xirk89Q1T1BkaRK8NrIQajrraKWcNAYq2rvG3ItZWTam+SLWVw0hpVmk6
-         O00A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778283403; x=1778888203;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=10imNO/dPWbMThTpLIZ3BPvS8U4RD3Gbc9CIOJSztJQ=;
-        b=oC78dr/+06PVpOnNGjpcsGh1PapR/LUWnruFiiDr4pgMvmWUygDiZK6oraNmFnqjcE
-         6Eh2FtYIOdcXWYNIXNy4H3KjqTSFtXnkEmDn5Gl2nTP9XdwtDD1o5tnv3zarnAAaX6eu
-         LEKClQWRO2gLr0DOWLI+6OQoxavT3/FWCzN85XNz8FY9jKDYG1qKO9eFQepMshAM97tk
-         3yOUyEm6vGkngqU340BMlq3kRKHnCzUsCViDJAi/1Mc4VzLU/s0idyYfrLqeLElymOBI
-         /T4CCiiKV7PFv60q+eXc55SHs9ye+YxzPdUvqiw0ml5njwziHNRhzXxb6u/ZSAkBCKpw
-         sQNA==
-X-Gm-Message-State: AOJu0YzTMDCxaP4SQmTHtiGlqsM9F2otl0aSBC1JwDxSjZB5rmZdAuA2
-	PUvp+MiSFClIdQvWJ5MWfpMhULQEJ1Iq9BK84ZtRhFtoeDxEqcH4JRGpaNmIdTPVdSrgcH2XBs+
-	87BCHJFBbess84jTGtT+A1ed6d7CNWtqyVmJgnms2
-X-Gm-Gg: Acq92OGE5+mWiQOl0F0yD6P76k8fbD1hJQOSYiAabpErU/krWXZwKGrq50QoVxsa39R
-	i6lnsiTaQM93iNzj7dPLQ3LaJ36OFdXUJk5N0Q1O1AKW30AVMB1K6VZsj6F/PAWV9HdU/nawLtM
-	s6uf0+GTQPv9lZlq04E9R5D1AiTYrxD3VLCgj1Zqm85Dn5L9sLrcR0kIg+6J6ESXa+mBbMDmzev
-	4PFhl3wppfB9YHQAFEo4g0HARt/3VczYCevgi6pn/fxEulu0YdSE3Q/PPEWmQs52x35PYy/G/GJ
-	//+aQTrf2PRc/UhAvLL+QLHjKYFSeNo0IMiyYUgyBGJQ3LSdDUqw1UqEilDRceji5hFZrXFZ3Hd
-	mvMQdvUxkOZJimDo=
-X-Received: by 2002:a05:6122:3208:b0:56e:e80c:bb25 with SMTP id
- 71dfb90a1353d-5755963576bmr9165277e0c.13.1778283402011; Fri, 08 May 2026
- 16:36:42 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 8 May 2026 16:36:41 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Fri, 8 May 2026 16:36:41 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260507-gmem-inplace-conversion-v6-1-91ab5a8b19a4@google.com>
-References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com> <20260507-gmem-inplace-conversion-v6-1-91ab5a8b19a4@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wzlh+gEP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A102BC2BCB0;
+	Fri,  8 May 2026 23:52:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778284334;
+	bh=2A7cLXV+8i/TgBjrSYIiWz4AFId2IjKQBmgGj/uotSs=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=Wzlh+gEPH02pq0GYd3kbFX5f87tKrnkHWpp98MiqGJXFfMQfV/FVfxGStq2n1Icxh
+	 at3XXnt4W0X5Z3BEVyZ+zNybdHl56jsrlVGD7IISRFDxSOnOK9tylItg4LH/Dwj+JN
+	 zM8zb1dNuY8edXE0P73MWuuL4CLFssFVFp1U4Sg8OXxbrCtiB/PrKmvvzNLjDYkYw4
+	 5zbeCegoitDyNyLbDmk3XOZkd/N+64K6CRKjLX6xsQPRTQq6n7Z4X4PogvYYrswWtq
+	 73U0PUOs0+g4mN0Bd/S/Qg9eEYGHWSjQbpbYkwx8aZUufBfSBBbnWnnukD3AisI5Nl
+	 so3vCz59vsOgQ==
+From: SeongJae Park <sj@kernel.org>
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Cc: SeongJae Park <sj@kernel.org>,
+	akpm@linux-foundation.org,
+	rppt@kernel.org,
+	peterx@redhat.com,
+	david@kernel.org,
+	ljs@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org,
+	Liam.Howlett@oracle.com,
+	ziy@nvidia.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	jthoughton@google.com,
+	aarcange@redhat.com,
+	usama.arif@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	kvm@vger.kernel.org,
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 02/14] mm: rename uffd-wp PTE bit macros to uffd
+Date: Fri,  8 May 2026 16:52:05 -0700
+Message-ID: <20260508235206.83633-1-sj@kernel.org>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <4ff3508b951ec4879177dd079003c3fa3af0a444.1778254670.git.kas@kernel.org>
+References: 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Fri, 8 May 2026 16:36:41 -0700
-X-Gm-Features: AVHnY4LvPjVICPzN5-_CJPHTIx7ocT885vUY-RO5A-DcMZDUx5r_5g4UegbM0fM
-Message-ID: <CAEvNRgGF-n5gmTR5G7wZqH5gBZsOp6WMR-RSws+=g9tcCkfSiA@mail.gmail.com>
-Subject: Re: [PATCH v6 01/43] KVM: guest_memfd: Introduce per-gmem attributes,
- use to guard user mappings
-To: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>, aik@amd.com, 
-	andrew.jones@linux.dev, binbin.wu@linux.intel.com, brauner@kernel.org, 
-	chao.p.peng@linux.intel.com, david@kernel.org, ira.weiny@intel.com, 
-	jmattson@google.com, jthoughton@google.com, michael.roth@amd.com, 
-	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
-	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
-	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
-	linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-writes:
+On Fri,  8 May 2026 16:55:14 +0100 "Kiryl Shutsemau (Meta)" <kas@kernel.org> wrote:
 
->
-> [...snip...]
->
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 69c9d6d546b28..5011d38820d0d 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -4,6 +4,7 @@
->  #include <linux/falloc.h>
->  #include <linux/fs.h>
->  #include <linux/kvm_host.h>
-> +#include <linux/maple_tree.h>
->  #include <linux/mempolicy.h>
->  #include <linux/pseudo_fs.h>
->  #include <linux/pagemap.h>
-> @@ -33,6 +34,13 @@ struct gmem_inode {
->  	struct list_head gmem_file_list;
->
->  	u64 flags;
-> +	/*
-> +	 * Every index in this inode, whether memory is populated or
-> +	 * not, is tracked in attributes. The entire range of indices,
-> +	 * corresponding to the size of this inode, is represented in
-> +	 * this maple tree.
+> The uffd-wp PTE bit is about to gain a second consumer: userfaultfd
+> RWP will use the same bit to mark access-tracking PTEs, distinct
+> from mprotect(PROT_NONE) or NUMA-hinting PTEs. WP vs RWP semantics
+> come from the VMA flag; the bit is just "uffd has claimed this
+> entry." Drop the "_wp" suffix from the arch-private bit macros so
+> they reflect that.
+> 
+>   x86:   _PAGE_BIT_UFFD_WP  -> _PAGE_BIT_UFFD
+>          _PAGE_UFFD_WP      -> _PAGE_UFFD
+>          _PAGE_SWP_UFFD_WP  -> _PAGE_SWP_UFFD
+>   arm64: PTE_UFFD_WP        -> PTE_UFFD
+>          PTE_SWP_UFFD_WP    -> PTE_SWP_UFFD
+>   riscv: _PAGE_UFFD_WP      -> _PAGE_UFFD
+>          _PAGE_SWP_UFFD_WP  -> _PAGE_SWP_UFFD
+> 
+> Pure mechanical rename -- no behavior change.
+> 
+> Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> Assisted-by: Claude:claude-opus-4-6
+> Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Concretely, if the entire guest_memfd is 2M in size, indices [0, 511] is
-represented with some value, either 0 (SHARED) or
-KVM_MEMORY_ATTRIBUTE_PRIVATE. [512, ULONG_MAX] is also defined in the
-tree, as NULL.
-
-Since guest_memfd uses xa_mk_value(0) to store the value 0 ("SHARED"),
-that makes 0 distinct from NULL, which works for guest_memfd.
+Reviewed-by: SeongJae Park <sj@kernel.org>
 
 
-(Liam and I discussed this off-list due to a email configuration issue)
+Thanks,
+SJ
 
-> +	 */
-> +	struct maple_tree attributes;
->  };
->
->
-> [...snip...]
->
+[...]
