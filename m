@@ -1,166 +1,282 @@
 Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 487101F8691;
-	Fri,  8 May 2026 13:08:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07C913E3DA9;
+	Fri,  8 May 2026 13:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778245700; cv=none; b=QNmjertwiYe8t7OobBFwHXwODbd2aHcbNk942ENWamDLJztKDzN7DhYHxPj7KkPiNqMD4dyA/SkTvpkOSCHR9liDLyG+qFEfgwisxToMircYZcGG/aN7R7HI+9DX41SykwLBmBMPx8sLeOMGv815SufNmB0i87/BZ6w67EBpKMY=
+	t=1778246733; cv=none; b=hQcd5QExWgA6NjlhTYYsIg0QnSHUhP8OfLHRNRjDlQQMmSb+al72aBa/B2LlqSRwYoece79QypfMsvKr4AqovHLramcnfi0eSToc3rbst+yy4LUNH/f7JI7qCFbRYQUPymAPiuhkmQ+rAT0AWFzBPNjRzkPlAMJFkzbFFEvfYrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778245700; c=relaxed/simple;
-	bh=ITYGj1EjPgggdECL7+NWLs5KvF5gFyktyuXpGKgy1WA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=X7E4OAllILL95lqf5JSzcL9scGXhkrwmQ5rW0kpt5c+vAlGACz9spLICzUswxAC2ZVGQZGdbPc3hUHV7jsQHt4+n9G8fZi5/rpCkwKK9sYDAUEjkLHfFV54PHCbHhVf65+MxYvlzdVHfeEk9fiYne8g/EHHOBD9uFmLZuWSa0dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=iNwJSew/; arc=none smtp.client-ip=148.163.156.1
+	s=arc-20240116; t=1778246733; c=relaxed/simple;
+	bh=TbxRhXrZVjXIg2jkCQ+Lj3a0haNTs4sB3Its3VkIoKM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=s4AUzTKGLJ6ACrPF5vg1ayXH7SirjheGcTAqzWK3hP9+vfEzrlyu1KFpKf4dJNTJQ2wHcmQ8u6bDwhVhMnjJ0nDyj+AZJGn02MaFSRrs5act0TI87B57f2rnY4GgX+2zqeo1m5RUkMQvQi6HKda6lN6p1YU5d/WYQPfyDHftBss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=kE4cbQx0; arc=none smtp.client-ip=148.163.156.1
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="iNwJSew/"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 648124QG2805903;
-	Fri, 8 May 2026 13:08:17 GMT
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="kE4cbQx0"
+Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6486Ta1H1531488;
+	Fri, 8 May 2026 13:25:26 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
 	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=EJBZh8
-	NphQAerlQeRvJ0i9+Rxs6rH3UaZ+wSL42Cy6c=; b=iNwJSew/Qu/2PeeoxyTXV1
-	WxzWegktzeQR3exKGrehb9LMHwlI+xsBuGvTrCPliZrOQGrVWZuExtigzy9vUNX9
-	NJhrNQqufSJ+jF6wUNvP3Mj7xbqOHkJ2OV/WLxaNu68qGNeq9bWlzB1A4EoCQ/BZ
-	I58ovpYS6q4BECfbXeBwa0lFVf1hxynttKUGky1mc6RmSmAC5eG0V6lV5PGXLRGC
-	+erZqhD9QKVJ1QTGZ2bHYk6YwYkyjTx1kv38Zp/3fQTND1QAkTTAa2dVEJGKzEH+
-	rkHTWKVLSIDOSCj6M1Aiu0OJoZAhVPBxLX7Na7HlwsqVCzqAknka+2V/Dc+PHcCw
+	:message-id:mime-version:references:subject:to; s=pp1; bh=bcw4Lp
+	xZ5p5qk0ACsnIlB/lvzXcRVMy58Dp00PgHetI=; b=kE4cbQx0tIc25rAobhQB1T
+	mktkStktTFif1CryUTGZ+YzD9XBLh27mXid4mTijCZtSl5dcBYdXZHloDhWzlVkk
+	pOcRoSfI7BQxxaLrijhYCDMKgAjvCL+Cfo+5Merl/DhsFssYdzb0IShtE38pXjsr
+	7JV+NKnKPXXIT6vDZlhJX68FazwdTIVqt+/7tckyzdauvsPpSejkBCYqEWfDWp0D
+	PDnWkzxU83/Rl9v+YvK6xvVdwQ95EgSB0lublXExHot4ppVHEmskjZ/cYMAgpQkK
+	nKolF4GG+PjCTDtyetS6P8o+J1lTXbDEoBoqqm/AczTkrzoaB7MNRwOWIgFVz2kg
 	==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9v7uu37-1
+Received: from ppma23.wdc07v.mail.ibm.com (5d.69.3da9.ip4.static.sl-reverse.com [169.61.105.93])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9x53vk7-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 08 May 2026 13:08:16 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 648CdcOY018067;
-	Fri, 8 May 2026 13:08:16 GMT
-Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwwtgr32m-1
+	Fri, 08 May 2026 13:25:25 +0000 (GMT)
+Received: from pps.filterd (ppma23.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma23.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 648DOTYQ018391;
+	Fri, 8 May 2026 13:25:24 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma23.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4dww3hg8fr-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 08 May 2026 13:08:16 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (smtpav05.dal12v.mail.ibm.com [10.241.53.104])
-	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 648D8F8t28705444
+	Fri, 08 May 2026 13:25:24 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 648DPL2a51904946
 	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 8 May 2026 13:08:15 GMT
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2FE1758052;
-	Fri,  8 May 2026 13:08:15 +0000 (GMT)
-Received: from smtpav05.dal12v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 775245805D;
-	Fri,  8 May 2026 13:08:14 +0000 (GMT)
-Received: from li-479af74c-31f9-11b2-a85c-e4ddee11713b.ibm.com (unknown [9.61.111.34])
-	by smtpav05.dal12v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  8 May 2026 13:08:14 +0000 (GMT)
-Message-ID: <66f7c47f9931bfc9be47c7f6d02861bd3f3f37e8.camel@linux.ibm.com>
-Subject: Re: [PATCH v2 0/3] KVM: s390: Toggle operation exception for
- userspace
-From: Eric Farman <farman@linux.ibm.com>
-To: Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Fri, 8 May 2026 13:25:21 GMT
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 116D720040;
+	Fri,  8 May 2026 13:25:21 +0000 (GMT)
+Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 4BC5B2004F;
+	Fri,  8 May 2026 13:25:20 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.111.47.82])
+	by smtpav02.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Fri,  8 May 2026 13:25:20 +0000 (GMT)
+Date: Fri, 8 May 2026 12:30:09 +0200
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Eric Farman <farman@linux.ibm.com>
+Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
         Janosch Frank
-	 <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David
- Hildenbrand <david@kernel.org>
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org
-Date: Fri, 08 May 2026 09:08:14 -0400
-In-Reply-To: <1ac58dd8-1b06-42b5-9a19-67620b4fdc25@linux.ibm.com>
+ <frankja@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org
+Subject: Re: [PATCH v2 2/3] KVM: s390: selftests: Extended user_operexec
+ tests
+Message-ID: <20260508123009.50b406be@p-imbrenda>
+In-Reply-To: <20260507200836.3500368-3-farman@linux.ibm.com>
 References: <20260507200836.3500368-1-farman@linux.ibm.com>
-	 <1ac58dd8-1b06-42b5-9a19-67620b4fdc25@linux.ibm.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.58.3 (3.58.3-1.fc43) 
+	<20260507200836.3500368-3-farman@linux.ibm.com>
+Organization: IBM
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA4MDEzNiBTYWx0ZWRfX+E+dYpv64FxU
- mllZkS2TnA+/w+Bapd42mcMurrpBz2rLq6U81Ts7v6FH3eDgySGwEodOpGqbM89maacOruKEtPc
- ctRwm7ypM/9Ookl27eMZHKHU2lhNgPw3EOVeDICw2JCO1QfreFSKvqDQgR2AgCN5WUliW1hNULI
- kXWkYuyioWSBOiC8cHoFoiY72/M0ftA4jTkk1+qplidcCPsPwpIfnEIyglTqFT9XCJUmJQmQKNy
- mVXgapZrQpHh8aeO/1YZfGpFxDHbrGNkXwTh2tsEl7LtTAFbpL97EOlUf09NjLTmd9CqTOsf9dU
- nVnsrUf9HkJ4ckyDxKLjbh9pnQu/MozVTIGU8loV4eBLBb29iGzv4MY8DM6XzrZTgw2uLCgXthL
- gFLFMIafIqVdii+Xk5rDqOzehcDOZtZW2Vvw0xIEob65lqGVCuLhjCfaaqKcN659gAnoCjunXYe
- AI1maRAnty0TK/DsrhA==
-X-Proofpoint-GUID: eYBVaZe1vQyDAXhlrSyLS6dIPjMsYYbX
-X-Proofpoint-ORIG-GUID: eYBVaZe1vQyDAXhlrSyLS6dIPjMsYYbX
-X-Authority-Analysis: v=2.4 cv=eu/vCIpX c=1 sm=1 tr=0 ts=69fde040 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=Jmiu7mG_WmB9V10SlMQA:9
- a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA4MDEzNiBTYWx0ZWRfXysqBQtVsjF3x
+ E7r0NR8fR6Umm9nxsYASZT359NaGQBwzxNvdoBTpfqn4ycc+vxzn+SeDUlWiLc4z1FKYMR8Rh1S
+ 0G8zrTZGm+RNAWYcvDgXlhLIu0zaSzI1Pizda7bclMaP45Rwb+bOpYFo5Z9jj/Ih6LyZtqztexG
+ zcv3fDAPtUGwNjMgFM/Ldu+6k2rROHNWHbM++lNX8AJj/qcNmeY7vhE6TuW5EDmbcpfxPsSZ5R3
+ qt65AkHS/nQvgaUF6JRumnR7unN+N+UOv8iZiEibf7Ih6Hk+VgT7e9W2aTLUVTOyu0O4EjcaqpF
+ mQExUwZ8L7+2uThtTsXRvczr9IM15c0uX3jjwPzC3UlrzOfSTmgzV6aqJJHX0UX4FAj8QElfuBY
+ E65GlNqLesvI1JeMGVSNc118PkhYd6Ltkcg0Sse1yKSO4aruyOOypICCHDx52iJWi6Xs2L4lPTs
+ ixTWfVa1vNOL2O7YXfg==
+X-Proofpoint-ORIG-GUID: tCuT2o3cYkuyUChtYvywOYMoUWQJaxez
+X-Proofpoint-GUID: tCuT2o3cYkuyUChtYvywOYMoUWQJaxez
+X-Authority-Analysis: v=2.4 cv=W7UIkxWk c=1 sm=1 tr=0 ts=69fde446 cx=c_pps
+ a=3Bg1Hr4SwmMryq2xdFQyZA==:117 a=3Bg1Hr4SwmMryq2xdFQyZA==:17
+ a=kj9zAlcOel0A:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8
+ a=sPCGW8O3KLxBFVHUMcMA:9 a=CjuIK1q_8ugA:10
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-07_02,2026-05-06_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 phishscore=0 lowpriorityscore=0 clxscore=1015 adultscore=0
- suspectscore=0 malwarescore=0 bulkscore=0 impostorscore=0 spamscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605080136
+ priorityscore=1501 adultscore=0 lowpriorityscore=0 malwarescore=0
+ suspectscore=0 spamscore=0 clxscore=1015 phishscore=0 bulkscore=0
+ impostorscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
+ definitions=main-2605080136
 
-On Fri, 2026-05-08 at 12:07 +0200, Christian Borntraeger wrote:
-> Am 07.05.26 um 22:08 schrieb Eric Farman:
-> > Claudio, et al,
-> >=20
-> > Here's an update to the USER_OPEREXEC patch I'd sent the other day.
-> > Besides the addition of Claudio's r-b (thank you!), Patch 1 is identica=
-l.
-> >=20
-> > Patch 2 contains a couple of new selftests. As it stands, they all run
-> > with patch 1 applied, but I put the failing test at the end for if
-> > Patch 1 is missing.
-> >=20
-> > Patch 3 is unrelated, but is a minor typo I stumbled on yesterday while
-> > looking at this. It seems small enough that a second `git send-email`
-> > command seems unnecessary. :)
-> >=20
-> > Eric Farman (3):
-> >    KVM: s390: Toggle operation exception for userspace
-> >    KVM: s390: selftests: Extended user_operexec tests
-> >    KVM: s390: Fix typo in UCONTROL documentation
-> >=20
-> >   Documentation/virt/kvm/api.rst                |   2 +-
-> >   arch/s390/kvm/kvm-s390.c                      |   3 +-
-> >   .../selftests/kvm/include/s390/facility.h     |   6 +
-> >   .../selftests/kvm/s390/user_operexec.c        | 110 +++++++++++++++++=
-+
-> >   4 files changed, 119 insertions(+), 2 deletions(-)
-> >=20
->=20
-> Independent from this series (which makes sense on its own)
-> shouldnt we add another fixup so that we send these kernel injects also t=
-o userspace?
->=20
+On Thu,  7 May 2026 22:08:35 +0200
+Eric Farman <farman@linux.ibm.com> wrote:
 
-Hrm, that's a reasonable idea for the ones in priv.c (intercept.c are alrea=
-dy covered, see below).
-I'll see if I can find a way to unify (and test) them.
+> There is a possibility that the user_operexec capability
+> only works if facility bit 74 is enabled. This is now fixed,
+> but add a selftest to demonstrate that.
+> 
+> Signed-off-by: Eric Farman <farman@linux.ibm.com>
 
->=20
-> git grep PGM_OPERATION linux/master arch/s390/kvm/
-> linux/master:arch/s390/kvm/intercept.c:         return kvm_s390_inject_pr=
-ogram_int(vcpu, PGM_OPERATION);
+Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-This is handle_sthyi(), called by handle_operexc(), if stfle.74 is not pres=
-ent.
 
-> linux/master:arch/s390/kvm/intercept.c: return kvm_s390_inject_program_in=
-t(vcpu, PGM_OPERATION);
+> ---
+>  .../selftests/kvm/include/s390/facility.h     |   6 +
+>  .../selftests/kvm/s390/user_operexec.c        | 110 ++++++++++++++++++
+>  2 files changed, 116 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/kvm/include/s390/facility.h b/tools/testing/selftests/kvm/include/s390/facility.h
+> index 41a265742666..e5259f63be22 100644
+> --- a/tools/testing/selftests/kvm/include/s390/facility.h
+> +++ b/tools/testing/selftests/kvm/include/s390/facility.h
+> @@ -11,6 +11,7 @@
+>  #ifndef SELFTEST_KVM_FACILITY_H
+>  #define SELFTEST_KVM_FACILITY_H
+>  
+> +#include <linux/atomic.h>
+>  #include <linux/bitops.h>
+>  
+>  /* alt_stfle_fac_list[16] + stfle_fac_list[16] */
+> @@ -19,6 +20,11 @@
+>  extern u64 stfl_doublewords[NB_STFL_DOUBLEWORDS];
+>  extern bool stfle_flag;
+>  
+> +static inline bool clear_bit_inv(unsigned long nr, unsigned long *ptr)
+> +{
+> +	return clear_bit(nr ^ (BITS_PER_LONG - 1), ptr);
+> +}
+> +
+>  static inline bool test_bit_inv(unsigned long nr, const unsigned long *ptr)
+>  {
+>  	return test_bit(nr ^ (BITS_PER_LONG - 1), ptr);
+> diff --git a/tools/testing/selftests/kvm/s390/user_operexec.c b/tools/testing/selftests/kvm/s390/user_operexec.c
+> index 714906c1d12a..b24c1f9dbbe8 100644
+> --- a/tools/testing/selftests/kvm/s390/user_operexec.c
+> +++ b/tools/testing/selftests/kvm/s390/user_operexec.c
+> @@ -6,6 +6,7 @@
+>   * Authors:
+>   *  Janosch Frank <frankja@linux.ibm.com>
+>   */
+> +#include "facility.h"
+>  #include "kselftest.h"
+>  #include "kvm_util.h"
+>  #include "test_util.h"
+> @@ -109,6 +110,111 @@ static void test_user_operexec_combined(void)
+>  	kvm_vm_free(vm);
+>  }
+>  
+> +static struct kvm_vm *create_vm_without_sthyi(void)
+> +{
+> +	struct kvm_s390_vm_cpu_processor info;
+> +	struct kvm_vm *vm;
+> +
+> +	vm = vm_create(1);
+> +
+> +	kvm_device_attr_get(vm->fd, KVM_S390_VM_CPU_MODEL,
+> +			    KVM_S390_VM_CPU_PROCESSOR, &info);
+> +
+> +	clear_bit_inv(74, (unsigned long *)&info.fac_list);
+> +	kvm_device_attr_set(vm->fd, KVM_S390_VM_CPU_MODEL,
+> +			    KVM_S390_VM_CPU_PROCESSOR, &info);
+> +
+> +	return vm;
+> +}
+> +
+> +static void test_user_instr0_no_stfle_74(void)
+> +{
+> +	struct kvm_vcpu *vcpu;
+> +	struct kvm_vm *vm;
+> +	int rc;
+> +
+> +	vm = create_vm_without_sthyi();
+> +
+> +	rc = __vm_enable_cap(vm, KVM_CAP_S390_USER_INSTR0, 0);
+> +	TEST_ASSERT_EQ(0, rc);
+> +
+> +	vcpu = vm_vcpu_add(vm, 0, guest_code_instr0);
+> +
+> +	vcpu_run(vcpu);
+> +	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_S390_SIEIC);
+> +	TEST_ASSERT_EQ(vcpu->run->s390_sieic.icptcode, ICPT_OPEREXC);
+> +	TEST_ASSERT_EQ(vcpu->run->s390_sieic.ipa, 0x0000);
+> +
+> +	kvm_vm_free(vm);
+> +}
+> +
+> +static void test_user_operexec_no_stfle_74(void)
+> +{
+> +	struct kvm_vcpu *vcpu;
+> +	struct kvm_vm *vm;
+> +	int rc;
+> +
+> +	vm = create_vm_without_sthyi();
+> +
+> +	rc = __vm_enable_cap(vm, KVM_CAP_S390_USER_OPEREXEC, 0);
+> +	TEST_ASSERT_EQ(0, rc);
+> +
+> +	vcpu = vm_vcpu_add(vm, 0, guest_code_user_operexec);
+> +
+> +	vcpu_run(vcpu);
+> +	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_S390_SIEIC);
+> +	TEST_ASSERT_EQ(vcpu->run->s390_sieic.icptcode, ICPT_OPEREXC);
+> +	TEST_ASSERT_EQ(vcpu->run->s390_sieic.ipa, 0x0807);
+> +
+> +	kvm_vm_free(vm);
+> +}
+> +
+> +static void test_instr0_combined_no_stfle_74(void)
+> +{
+> +	struct kvm_vcpu *vcpu;
+> +	struct kvm_vm *vm;
+> +	int rc;
+> +
+> +	vm = create_vm_without_sthyi();
+> +
+> +	rc = __vm_enable_cap(vm, KVM_CAP_S390_USER_INSTR0, 0);
+> +	TEST_ASSERT_EQ(0, rc);
+> +	rc = __vm_enable_cap(vm, KVM_CAP_S390_USER_OPEREXEC, 0);
+> +	TEST_ASSERT_EQ(0, rc);
+> +
+> +	vcpu = vm_vcpu_add(vm, 0, guest_code_instr0);
+> +
+> +	vcpu_run(vcpu);
+> +	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_S390_SIEIC);
+> +	TEST_ASSERT_EQ(vcpu->run->s390_sieic.icptcode, ICPT_OPEREXC);
+> +	TEST_ASSERT_EQ(vcpu->run->s390_sieic.ipa, 0x0000);
+> +
+> +	kvm_vm_free(vm);
+> +}
+> +
+> +static void test_operexec_combined_no_stfle_74(void)
+> +{
+> +	struct kvm_vcpu *vcpu;
+> +	struct kvm_vm *vm;
+> +	int rc;
+> +
+> +	vm = create_vm_without_sthyi();
+> +
+> +	rc = __vm_enable_cap(vm, KVM_CAP_S390_USER_INSTR0, 0);
+> +	TEST_ASSERT_EQ(0, rc);
+> +	rc = __vm_enable_cap(vm, KVM_CAP_S390_USER_OPEREXEC, 0);
+> +	TEST_ASSERT_EQ(0, rc);
+> +
+> +	vcpu = vm_vcpu_add(vm, 0, guest_code_user_operexec);
+> +
+> +	vcpu_run(vcpu);
+> +	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_S390_SIEIC);
+> +	TEST_ASSERT_EQ(vcpu->run->s390_sieic.icptcode, ICPT_OPEREXC);
+> +	TEST_ASSERT_EQ(vcpu->run->s390_sieic.ipa, 0x0807);
+> +
+> +	kvm_vm_free(vm);
+> +}
+> +
+>  /*
+>   * Run all tests above.
+>   *
+> @@ -122,6 +228,10 @@ static struct testdef {
+>  	{ "instr0", test_user_instr0 },
+>  	{ "operexec", test_user_operexec },
+>  	{ "operexec_combined", test_user_operexec_combined},
+> +	{ "instr0_no_stfle_74", test_user_instr0_no_stfle_74 },
+> +	{ "instr0_combined_no_stfle_74", test_instr0_combined_no_stfle_74 },
+> +	{ "operexec_combined_no_stfle_74", test_operexec_combined_no_stfle_74 },
+> +	{ "operexec_no_stfle_74", test_user_operexec_no_stfle_74 },
+>  };
+>  
+>  int main(int argc, char *argv[])
 
-This is handle_operexc(), if neither user_instr0 nor user_operexec are pres=
-ent.
-
-> linux/master:arch/s390/kvm/priv.c:              return kvm_s390_inject_pr=
-ogram_int(vcpu, PGM_OPERATION);
-> linux/master:arch/s390/kvm/priv.c:              return kvm_s390_inject_pr=
-ogram_int(vcpu, PGM_OPERATION);
-> linux/master:arch/s390/kvm/priv.c:              return kvm_s390_inject_pr=
-ogram_int(vcpu, PGM_OPERATION);
-> linux/master:arch/s390/kvm/priv.c:              return kvm_s390_inject_pr=
-ogram_int(vcpu, PGM_OPERATION);
-> linux/master:arch/s390/kvm/priv.c:              return kvm_s390_inject_pr=
-ogram_int(vcpu, PGM_OPERATION)
