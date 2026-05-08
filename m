@@ -1,121 +1,112 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f54.google.com (mail-ot1-f54.google.com [209.85.210.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DF2B3D8122;
-	Fri,  8 May 2026 18:17:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778264263; cv=none; b=E6Aj+QUJ+KDqGBkHbbUgUFTQ6VzpD5vpB7T/4SUOfPKTpZLcWOock8LHq0DMVCQDVFA44/t443Zuh+1FKX8HKyGEIV10PJj63ox8qE1awooAbNkgY3DT9BhgepiKwzQEydBXqSWoUGVXCK0tl6qzLeuCHNdYRm976Y8xLvH4t0c=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778264263; c=relaxed/simple;
-	bh=2ACizhkl4W/Aai3iUn5Na6hUxUGCawJ8JBkYrlgzOAQ=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uIS7P1GPtMv37gkdZvIXz+7d+PGq7mAsGJ9j6xPbFNYRdOWqbyxvRX+wK83rAh1U14pOc/tvrkTVSMFQ/eMGDCK9STkj55e+of4gE6PRZk+XUgiDkaQ71POCqamO6ZLlaXqUTHuVsmZCXi4V5//iXn75PKcTFlzitt4sZPvTbBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=a03sg80Y; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE2436D9FA
+	for <kvm@vger.kernel.org>; Fri,  8 May 2026 19:21:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778268075; cv=pass; b=n8seekf0ElqmLX8z1SPATGsAuRq9g+XeuZ4i+5ZXCV7osbpy1z14c0loAsl8HEPyD2ydDjsmPXVVTuolHOfsW2ffLxNEQtYw3m/G62BAFrcoup8eRp+Hy4HM2/3lhFlSNMslkx8QMyAtEpkZf3FMhWgfTGr6z6MMGcYJQxDmoys=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778268075; c=relaxed/simple;
+	bh=o6sIWPBJgGD5HPh74qm87n9kIJwicM4myAA07K3cY8M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WL2mpBra9x4kP+VEGyskFmrDJX3Mq+xTsVnjzm6fnU7Pdt9P9BKP9WYUCFl8fsYAAoqzZiYny4mLLdI4cTDGnSCxbAl5Ft8W/WqPa600ssX2QdR5L17K/uW+2ucXCuamwJMPf32XlAcC3tvgOnWrbcZJTpzOe3ZIUfJrciogJfM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c6kE4vxv; arc=pass smtp.client-ip=209.85.210.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="a03sg80Y"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description;
-	bh=FQOlSxV2N2SZxsJanRrE5lx7UIrWEeyRThnKAatYFck=; b=a03sg80YA+skTAfvvdbx/mOu6c
-	jVfRWw2U0oJJ05+3OFSD/1AjPot4c0pwpTJUN1OgsnPEcSU95vWFaeKVsd7DDBEphoTJK0mzKC9s0
-	/UF+OQl9WyXxmATyBqsIESmPdfwtXG33lziwIH9emTVs2dc+hFZCSxl8QJV0QEe0/zbzPKZ9QBelg
-	s+TQzPlmhcaYDfDEU2HHk1Tv4hcDu9aX8HNVHBit7wk2myTXMRSkG3754eNXd2qj+7YJ9LZxntF8g
-	tKNztP9zzXfZb7rz5U2Ob/qTHWE3Wb/hXlFyI7o4tVbLvdqDT6zIu3uACmwSK5FqbQkgpY5pEQeVR
-	8qLu4eNg==;
-Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wLPlH-00000004XFE-1L2g;
-	Fri, 08 May 2026 18:17:20 +0000
-Received: from dwoodhou by i7.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wLPlH-0000000DYYd-03S5;
-	Fri, 08 May 2026 19:17:19 +0100
-From: David Woodhouse <dwmw2@infradead.org>
-To: Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Paul Durrant <paul@xen.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Will Deacon <will@kernel.org>,
-	Boqun Feng <boqun@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Clark Williams <clrkwllms@kernel.org>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-rt-devel@lists.linux.dev,
-	Mauricio Faria de Oliveira <mfo@igalia.com>,
-	kernel-dev@igalia.com,
-	syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com
-Subject: [PATCH 1/7] locking/rt: Use raw_spin_lock_irqsave() in __rwbase_read_unlock()
-Date: Fri,  8 May 2026 19:10:03 +0100
-Message-ID: <20260508181717.3230988-2-dwmw2@infradead.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260508181717.3230988-1-dwmw2@infradead.org>
-References: <20260508181717.3230988-1-dwmw2@infradead.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c6kE4vxv"
+Received: by mail-ot1-f54.google.com with SMTP id 46e09a7af769-7de7c57b52cso1830209a34.3
+        for <kvm@vger.kernel.org>; Fri, 08 May 2026 12:21:13 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778268072; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Ru0iUHZi7jQG2Pkcb84PmYV/esicj6nmdvdQRo2NebTnPp40NytqDi2eZO9pnzr6I3
+         ITVCAZTSKrQ0eI2+EzjIa0UJCqJdPkd2QcAY6ym5VTueU5kbMrI7HjW0uxI9abk3g+cr
+         +VS0vjPcH/MX3s/ilqAK0OoUl4AGaZ7nyNaoumfAu2kK4/s527J93MOwaO07K8u8Bph2
+         rWuIMPDRgFnP0iHvLlnl0xau9Drm1CkG+HXnc+dDc/eeB1R31ubZJ0We2Yu+rltMBt59
+         1v8dIbNfUMcBdL81QuLctBubv9lLJg4vHkILs7YRbXEK4loT1YL+98yOtZbVY2bcI/sX
+         sfHg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=o6sIWPBJgGD5HPh74qm87n9kIJwicM4myAA07K3cY8M=;
+        fh=1sfC/vVRAcDPuXXsfxdVRPY1qJHGNCGRlLHWluK3ezE=;
+        b=M/EI1OhAlGzb8DmOM6KJjPm56+wESz0Pdbd1xTf42nbEa8vh5JgqIo9R4wL8DvLuIo
+         4CFj69iMvRhmkg2ZJjRqgi3WIBxXaLXqSTvc3qnkcQhRKOd4a7qgr+mdfstFfgwwvOdg
+         +9tKb73ANBJtaylboukcYwb7XhqseBmIOdP3vvb8j5njTjQp7R1XEpwIYz/D88IQVXoM
+         CYT2B45j1gbYRxPaE2fWZLe83pw0T1MnMLF5TZfwYA6TYIRx/s9nVBT/UK4h+CVqWJH4
+         qvQ31XWWYNAV+w2t+zB2pyARPD0GiE3QOxMTOt6Dh5jDH37SyS4ceO4l50Yy2a0/JJ2A
+         1W5w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778268072; x=1778872872; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=o6sIWPBJgGD5HPh74qm87n9kIJwicM4myAA07K3cY8M=;
+        b=c6kE4vxvxbMz/af6hVyeTM9ok5oGb8zy8jE4pWy5IC9Q4CQ3TF9P6L0v4JpMeY3AuV
+         4GQ7t5fhi0Z49CR35uc4Kail7RT0BL9F0WbftAHP5CbYCD1G1R94JRA8OQpIL9bHdfPr
+         LF7n+XCLShJ1Aa1waXmjiO0XG4haAAOUaAU0AS/aTlB2Oz2sRby1ME3jRN+tM4JCv3vA
+         kkhpylsjWPfcylIOWkCdc3RUqaT33tmYrHOk1xS+9GLPVeM27N7q38nAw9gk+luMve87
+         gG6MMKdZr/nQcr+fdMtlmu5e8vdqFnN+UUpwsb/Mpxnda+Av3zb1vINKKRUuQtZvtjEW
+         R8aw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778268072; x=1778872872;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=o6sIWPBJgGD5HPh74qm87n9kIJwicM4myAA07K3cY8M=;
+        b=Qy5ry95NDvSXApoK3lxdeuucnuv3YtWkdE/KV3+OHPIVF6aJHfE0U3210kn6zzldkK
+         fuaUNDyayCrfB4XQeXXPFiWK6YRWwSUr98KjgWrQPMNDEf8dsQkV0ETnU2lETqiJF3xx
+         e2yIh7O6on7gj/8sYCO3RA5I0twQwvgfKBqwhlQ/BeAP6YVe86QKD5Q07r1BkPvrpYIk
+         DXfBclK2fINZkSznzQUkklUiiwnt9MhXEVRrd64+sxUDbtdmZ8p2SB29m6+uisP1cMAa
+         kDwemn1lFVYfQx7urUCOp+bO6GKMsEdPuaMEs71Lnm5XCqMvbbVHYWG2ZXRLfEmISlrO
+         epfw==
+X-Forwarded-Encrypted: i=1; AFNElJ+bsLGc+7QOFe24bNcjg4+Dh6sv4pP2oUJE55mOzYckgX+/lx1YjO5+hYSc14vFpWB/kzY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyi5XJpacNKjBTTsYjla64+F/9MFl+1vFv57WdsOOM0AuCrf7I9
+	qh90bz/9LFm13gdAMvFZ+2zEbGntF05DSGX2wRSdk+maayAg9mZDLIr4gtiyJKzpqX+JgKAZERb
+	EGLgg0M//u74vTdTAAlmOjcejMK3nZKI=
+X-Gm-Gg: AeBDietd6IEHOf5m6VXLgicLCPkMo1v+0GjUtpKlj5CmQgGa6gYusHq4fI0OwwN7aJn
+	X1y5I5MTsri9hI7oh3CYYhCsq875E9gGcCDk6Mo53bZGztbnBab+2eoctFjruspQTBTou1u2DU2
+	O8wyV/V/wdC4hCU0hV5l821FIBtAjHtFnnlq74MwP6y7sFV4ovi3xrYi3rI1ooPWCivWZXtNsX/
+	Mmmjf040lGNHOaXcZUAzwAVqg4cybdLczwCPVNcXB1SQS+x5xTCdEUVZIkKm3e9hxvq4lY3WsRI
+	Cz8VARgRClHKAXs6pjc=
+X-Received: by 2002:a05:6830:3c83:b0:7dc:cd0b:58ac with SMTP id
+ 46e09a7af769-7e1def6a571mr8530777a34.9.1778268072642; Fri, 08 May 2026
+ 12:21:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: David Woodhouse <dwmw2@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+References: <20260503174534.45699-1-mikhail.v.gavrilov@gmail.com>
+ <20260504235435.90957-1-mikhail.v.gavrilov@gmail.com> <af0LQNY6IhB0NEWy@google.com>
+In-Reply-To: <af0LQNY6IhB0NEWy@google.com>
+From: Mikhail Gavrilov <mikhail.v.gavrilov@gmail.com>
+Date: Sat, 9 May 2026 00:21:01 +0500
+X-Gm-Features: AVHnY4K-Xb0w8FtvnBfieJuPoycLgMYtLvqeNeZfLJSpDZz07nQE_kGp58hAe2k
+Message-ID: <CABXGCsMzWuS2Xzm00S_LO66vW0Fytit-_=Smrj7j588tnkZuKw@mail.gmail.com>
+Subject: Re: [PATCH v2] x86/virt: Silence RCU lockdep splat in emergency virt
+ callback path
+To: Sean Christopherson <seanjc@google.com>
+Cc: pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, hpa@zytor.com, djbw@kernel.org, 
+	chao.gao@intel.com, x86@kernel.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+On Fri, May 8, 2026 at 2:59=E2=80=AFAM Sean Christopherson <seanjc@google.c=
+om> wrote:
+>
+> Acked-by: Sean Christopherson <seanjc@google.com>
+>
+> (I can also take this through kvm-x86; I have no preference whatsoever)
 
-__rwbase_read_unlock() uses raw_spin_lock_irq()/raw_spin_unlock_irq()
-which unconditionally disables and re-enables interrupts. When
-read_unlock() is called from hardirq context (e.g. after a successful
-read_trylock() in a timer callback), the raw_spin_unlock_irq()
-incorrectly re-enables interrupts within the hardirq handler.
+Thanks Sean! Whichever path is most convenient works for me.
 
-This causes lockdep warnings ('hardirqs_on_prepare' from hardirq
-context) and can lead to IRQ state corruption.
-
-Using read_trylock() in hardirq context on PREEMPT_RT is safe because
-it does not record the lock owner. The read_unlock() acquires the
-wait_lock which is hardirq safe. This change additionally allows
-rwlock_t during early boot.
-
-Switch to raw_spin_lock_irqsave()/raw_spin_unlock_irqrestore() to
-preserve the caller's IRQ state.
-
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
----
- kernel/locking/rwbase_rt.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/kernel/locking/rwbase_rt.c b/kernel/locking/rwbase_rt.c
-index 82e078c0665a..25744862d627 100644
---- a/kernel/locking/rwbase_rt.c
-+++ b/kernel/locking/rwbase_rt.c
-@@ -153,8 +153,9 @@ static void __sched __rwbase_read_unlock(struct rwbase_rt *rwb,
- 	struct rt_mutex_base *rtm = &rwb->rtmutex;
- 	struct task_struct *owner;
- 	DEFINE_RT_WAKE_Q(wqh);
-+	unsigned long flags;
- 
--	raw_spin_lock_irq(&rtm->wait_lock);
-+	raw_spin_lock_irqsave(&rtm->wait_lock, flags);
- 	/*
- 	 * Wake the writer, i.e. the rtmutex owner. It might release the
- 	 * rtmutex concurrently in the fast path (due to a signal), but to
-@@ -167,7 +168,7 @@ static void __sched __rwbase_read_unlock(struct rwbase_rt *rwb,
- 
- 	/* Pairs with the preempt_enable in rt_mutex_wake_up_q() */
- 	preempt_disable();
--	raw_spin_unlock_irq(&rtm->wait_lock);
-+	raw_spin_unlock_irqrestore(&rtm->wait_lock, flags);
- 	rt_mutex_wake_up_q(&wqh);
- }
- 
--- 
-2.51.0
-
+--=20
+Best Regards,
+Mike Gavrilov.
