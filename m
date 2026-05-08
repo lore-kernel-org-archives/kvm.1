@@ -1,265 +1,339 @@
-Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 665683FAE14;
-	Fri,  8 May 2026 15:11:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A7EE2C08DC
+	for <kvm@vger.kernel.org>; Fri,  8 May 2026 15:30:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778253077; cv=none; b=aqkmVPNt9o+NfMGQtTmon/7v8Fa8aMtI6YAh3HjigoBtzvs1XWc9j9A3/hOvtRJgPQE+QbgcqXwm+2BQykRAQVPmFo881hYGf29YWYoTxJYPx38yFo9Ip9W7Vzq/VrsrCo9zDuIWnefOiYgqIcLtZdgy8i5iefSTDdDv7ruKRf8=
+	t=1778254252; cv=none; b=fqKj/QLc1NT1/93yAqoHvtamcL0etj5xzYIj1t0Brfq8ilbNMckNKm1jJH+eBctPz+ZyfEb96mo5j4UtK4fulb983vpSlMtjQ101Du4vJXl7BjMpU3d6DUw7LqNsZhSW1ZOKHD1s52TLb2uhp2Cjt0OhgVIp3j3ooH977cZWzgg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778253077; c=relaxed/simple;
-	bh=I2O0T2eYFulZKylEoO0v4gBamN5yaUKK+tD29ErWUNQ=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oQKotYkHPCHvtNmIROwvDWNa1j21JkjKIBmZyR5vfMNpDMNtaYzuCJFV83GTDZQOG8qvBEILobGy07gAJ+KbV2JHP6ZXOjOeo1q52d4V0KrkdwkeYcyvjEsDMI7wLi6n6Wy1efWxc2k3sVVRgolR6+PeVNUfl/Edb6STVyOoiiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=q1tZP+Dk; arc=none smtp.client-ip=129.217.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
+	s=arc-20240116; t=1778254252; c=relaxed/simple;
+	bh=EtgD1VNRsK8d4lAzXro19T0Vx6V8jLE24r087m6Qgqk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nXWmX8lKuqZsJGMQ+bQb3NOKZFrCBUTVFgELuuvfO/i6kHebIHM+ekKNVT1d4MCDq6Jd0qeISl/d8Ob/1wCOWwBDlp5he/F1s42scmOEDBMad5V/orv15rd+TGsXzyb9UVjpxbsVRSvqSCBElTiUl2/is/xjHYRevmbd7LoGqzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=BQwi8Bh8; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="q1tZP+Dk"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
-	s=unimail; t=1778253064;
-	bh=I2O0T2eYFulZKylEoO0v4gBamN5yaUKK+tD29ErWUNQ=;
-	h=From:To:Subject:Date:In-Reply-To:References;
-	b=q1tZP+DkfNZfNBIU3ATSMuh9IeG+zoDcPPjaBULS4ITMq9KnFun29T0bwcY3dX4kR
-	 gU1sozq2l1nudBz8M2IU/dqyjz+62XyrvOg5ITrVKi7vSaYXi9SnxnZB6O+V/+3QHh
-	 9adeXhR3KQEpFS/rsQ0/euiAIpRNLWvYbBlPaM18=
-Received: from simon-Latitude-5450.cni.e-technik.tu-dortmund.de ([129.217.186.131])
-	(authenticated bits=0)
-	by unimail.uni-dortmund.de (8.19.0.1/8.19.0.1) with ESMTPSA id 648FB26u013311
-	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
-	Fri, 8 May 2026 17:11:04 +0200 (CEST)
-From: Simon Schippers <simon.schippers@tu-dortmund.de>
-To: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
-        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-        kuba@kernel.org, pabeni@redhat.com, mst@redhat.com,
-        eperezma@redhat.com, leiyang@redhat.com, stephen@networkplumber.org,
-        jon@nutanix.com, tim.gebauer@tu-dortmund.de,
-        simon.schippers@tu-dortmund.de, netdev@vger.kernel.org,
-        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        virtualization@lists.linux.dev
-Subject: [PATCH net-next v11 1/4] tun/tap: add ptr_ring consume helper with netdev queue wakeup
-Date: Fri,  8 May 2026 17:10:45 +0200
-Message-ID: <20260508151048.183125-2-simon.schippers@tu-dortmund.de>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260508151048.183125-1-simon.schippers@tu-dortmund.de>
-References: <20260508151048.183125-1-simon.schippers@tu-dortmund.de>
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="BQwi8Bh8"
+Received: from pps.filterd (m0528006.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6489q90T416571
+	for <kvm@vger.kernel.org>; Fri, 8 May 2026 08:30:48 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=vpkNWOxv2MKVZdyw2YC4ieRyxiQ+NH8A65VfzBl7rQU=; b=BQwi8Bh8NYox
+	b7LJuIr3GvE6TtLB8vNaoKOlW8rcipR+gOoYdRAN1z32fYQhHOo5eO1HD/NEXF3S
+	zxXqZ1n6O1zuSR25f/KVQ8Gx77g8GinFvbAGVh7X945EiNFmeNMtP8ifc567Fy4+
+	Nm+PAjuvCiPE/zYOcAzWdJbpnqPzhDDCSp0dEsaDToXDXNDXgauWSQUDxTJlD6xx
+	/BujEr0VQGxiG1IqiuYPMpQ1CIMH1rWkNco0hTvaONyRLBz9ShO6JLc7uyF3htOq
+	FDzLTBOz7w/D4U/jIAE7xrGQnpM8lStBJQSPiT5VPCoDLX286+TC9pmjo2KKkmIa
+	mRx292hXqg==
+Received: from mail-dy1-f199.google.com (mail-dy1-f199.google.com [74.125.82.199])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4e1dj75wwj-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Fri, 08 May 2026 08:30:47 -0700 (PDT)
+Received: by mail-dy1-f199.google.com with SMTP id 5a478bee46e88-2f525565b33so2810957eec.0
+        for <kvm@vger.kernel.org>; Fri, 08 May 2026 08:30:47 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778254247; x=1778859047;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vpkNWOxv2MKVZdyw2YC4ieRyxiQ+NH8A65VfzBl7rQU=;
+        b=me7Kre92Afyq2YQedy+hJSIIgMN4YLF8ItF8kaY8YN5CKlrp0JFxtdNq+64JuGicIA
+         Qrnp5G4d69/7TI2+F03tQCSZU+MOjLeibpVz5/gOLJWtLZd+yJBr/tt8yvJVEAQnFQ3h
+         yDailbYNIuNI5bZcKnVQbo+N6HdjoIA1Aa6xXRUBhHtuYyIin2gDRXE7vEPL9V9N4tGg
+         EDE9BiCMro5sKvm18/nFv+vAo+W00uphFP4CWnuAKDGmnEGoo4aEcjXKZMtVRm2zOm81
+         4/OZw8S8jNnv8vo2PEzUlqFZiiS9fb7yfSzyRIuYccO5oCtCMQw0/GaZrQKigiapFNgF
+         fvVg==
+X-Forwarded-Encrypted: i=1; AFNElJ+mjToxyzkCcfEUDpBkg1IO2WnRzS/5NllN5xW3wGMkzeMjaMRUotqX9fUTqfOCPc5pw+4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwEqGi/tCjjKj5D6Eh1hinMa4HZ6vv8r+LVatvjujnp91/WOr9X
+	nJNlgOsq6Zvi9xVZVkZUbPNSECrWq8Kv7t3Rg97zGz/oS5+Flio5hgAXkivJPwYBc5qTRW0SIBD
+	4QNaCFH7yDrjlRsJtoR3Uy45twIVeM/dZVbDlDczgeDFYUuVB6y57
+X-Gm-Gg: Acq92OEql0xAwVS9bl5RJCVPe68aAfjg+iBmVqqXZvXC1pzmd3PNHlW4zzulwvDNWno
+	TGIS6knJIY+LUnPDzRMVK7etgFkQVMfI9xvqKKFfNvljaajptIc5v9EUnNYizMmCUdZrWZexqIx
+	5cJ4R2pZ/W5dVtbMFaTw2DEn0P5QdGUVBLZ4RxCvKIAKGUCw5W1mWTeRgKEGVEwTYmwCY0yUtp+
+	NjtVlXZfn901D7Un9EFVavQj+9Hd+oTuaurpvXQO61WhaNe6YTk/Imzh3fqjrKDuSHbNRWmUOaD
+	FzNzmXM6+EStasajnyDOFJNOC2iOL0LOaM7hnIIHl3u7ZrU+KmrhmfA2pucTFXF+2K1kGZPCb+P
+	u+vS1QOe6IHHd/avLB4/URF0P
+X-Received: by 2002:a05:7300:cc0e:b0:2f5:285c:4374 with SMTP id 5a478bee46e88-2f55114357bmr6248691eec.35.1778254246594;
+        Fri, 08 May 2026 08:30:46 -0700 (PDT)
+X-Received: by 2002:a05:7300:cc0e:b0:2f5:285c:4374 with SMTP id 5a478bee46e88-2f55114357bmr6248656eec.35.1778254245892;
+        Fri, 08 May 2026 08:30:45 -0700 (PDT)
+Received: from [10.0.40.30] ([51.52.155.79])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f91004b6a2sm1188733eec.0.2026.05.08.08.30.42
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 08 May 2026 08:30:45 -0700 (PDT)
+Message-ID: <015b1e9c-0a2d-472a-b750-9154800832ee@meta.com>
+Date: Fri, 8 May 2026 16:30:40 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 3/3] vfio/pci: Replace vfio_pci_core_setup_barmap()
+ with vfio_pci_core_get_iomap()
+Content-Language: en-GB
+To: Alex Williamson <alex@shazbot.org>
+Cc: Kevin Tian <kevin.tian@intel.com>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Ankit Agrawal <ankita@nvidia.com>,
+        Alistair Popple <apopple@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>, Kees Cook <kees@kernel.org>,
+        Shameer Kolothum <skolothumtho@nvidia.com>,
+        Yishai Hadas
+ <yishaih@nvidia.com>,
+        Alexey Kardashevskiy <aik@ozlabs.ru>,
+        Eric Auger <eric.auger@redhat.com>, Peter Xu <peterx@redhat.com>,
+        Vivek Kasireddy <vivek.kasireddy@intel.com>,
+        Zhi Wang <zhiw@nvidia.com>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, virtualization@lists.linux.dev
+References: <20260505173835.2324179-1-mattev@meta.com>
+ <20260505173835.2324179-4-mattev@meta.com>
+ <20260507162141.072483ce@shazbot.org>
+From: Matt Evans <mattev@meta.com>
+In-Reply-To: <20260507162141.072483ce@shazbot.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Authority-Analysis: v=2.4 cv=H9rrBeYi c=1 sm=1 tr=0 ts=69fe01a7 cx=c_pps
+ a=cFYjgdjTJScbgFmBucgdfQ==:117 a=2UbFsIa4v//lIgRL4kGwwA==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=7x6HtfJdh03M6CCDgxCd:22 a=kkcUborcUVj0H7zxAXTl:22 a=VabnemYjAAAA:8
+ a=CeaZP3YjJKAO-qlWyq0A:9 a=QEXdDO2ut3YA:10 a=scEy_gLbYbu1JhEsrz4S:22
+ a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA4MDE1NSBTYWx0ZWRfX7onnsE123FuR
+ C5mAVG6VTVbAJszm8EsanjIdmGF4yc0rgb3DzP1gCGmgsQTHkXoyo2Txr2Kr0pcVHZx8ZutdQqA
+ DK5v975cfIarodsO3ZIhJpB00FkdNoP+kRC/7tOSfzDKqn+D9Ue5x4cfXczpuDO7wKxVqRtOlCO
+ 8V8uofcGdAlgo7phgmkxTObfEEUd1w2mUPplVM+pODiMCxjQRUCAGpU/Dx3sdJZX0zAiZsqttgt
+ mSOwpPHtFkewEjnUBaDHTJj4hJqeKkFsowxS3eUwNdSmfr3DoUDIW9jhisdcX+/ct2BPR70tSGP
+ IWUgUdXqn7JaNA/pqVpixDQ8UXE/xUe9Zh92AsX5J1C5VS+f9IbpfDx9qiXGX2dc4lgLc2gFg3G
+ +S5T3eZz2lzBCzV4CU67jep7xsVRWEVAnij4NuholAJXoeQGu9x6fkRXFHb4sFdbYEVzEfjfPoj
+ GrYab0gHPsRn+FTbImA==
+X-Proofpoint-ORIG-GUID: yjrB4qTxMiYteexE3obMhiVqWSTRoaG9
+X-Proofpoint-GUID: yjrB4qTxMiYteexE3obMhiVqWSTRoaG9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-07_02,2026-05-08_02,2025-10-01_01
 
-Introduce tun_ring_consume() that wraps ptr_ring_consume() and calls
-__tun_wake_queue(). The latter wakes the stopped netdev subqueue once
-half of the ring capacity has been consumed, tracked via the new
-cons_cnt field in tun_file. As a safety net, the queue is also woken on
-the last consumed entry if it leaves the ring empty. The point is to
-allow the queue to be stopped when it gets full, which is required for
-traffic shaping - implemented by the following "avoid ptr_ring tail-drop
-when a qdisc is present".
+Hi Alex,
 
-Some implementation details:
-- tun_ring_recv() replaces ptr_ring_consume() with tun_ring_consume()
-  to properly wake the queue on purge.
-- tun_queue_purge() also replaces ptr_ring_consume()
-  with tun_ring_consume().
-- __tun_detach() locks the tx_ring.consumer_lock to avoid races with
-  the consumer on the queue_index.
-- Reset cons_cnt in tun_attach() so the half-ring wake threshold is
-  valid for the new ring size after ptr_ring_resize().
-- The upcoming patch explains the pairing of the smp_mb() of
-  __tun_wake_queue().
-- tun_queue_resize() wakes all queues after resizing with the proper
-  tx_ring.consumer_lock and resets the cons_cnt to avoid a possible
-  stale queue.
+On 07/05/2026 23:21, Alex Williamson wrote:
+> 
+> On Tue, 5 May 2026 10:38:31 -0700
+> Matt Evans <mattev@meta.com> wrote:
+> 
+>> Since "vfio/pci: Set up barmap in vfio_pci_core_enable()", the
+>> resource request and iomap for the BARs was performed early, and
+>> vfio_pci_core_setup_barmap() just checks those actions succeeded.
+>>
+>> Move this logic to a new helper that checks success and returns the
+>> iomap address, replacing the various bare vdev->barmap[] lookups.
+>> This maintains the error behaviour of the previous on-demand
+>> vfio_pci_core_setup_barmap() scheme.
+>>
+>> Signed-off-by: Matt Evans <mattev@meta.com>
+>> ---
+>>   drivers/vfio/pci/nvgrace-gpu/main.c | 11 ++++-------
+>>   drivers/vfio/pci/vfio_pci_core.c    | 11 +++++------
+>>   drivers/vfio/pci/vfio_pci_dmabuf.c  |  2 +-
+>>   drivers/vfio/pci/vfio_pci_rdwr.c    | 30 ++++++++---------------------
+>>   drivers/vfio/pci/virtio/legacy_io.c | 13 ++++++-------
+>>   include/linux/vfio_pci_core.h       | 20 ++++++++++++++++++-
+>>   6 files changed, 43 insertions(+), 44 deletions(-)
+>>
+>> diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
+>> index fa056b69f899..e153002258ce 100644
+>> --- a/drivers/vfio/pci/nvgrace-gpu/main.c
+>> +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
+>> @@ -184,13 +184,10 @@ static int nvgrace_gpu_open_device(struct vfio_device *core_vdev)
+>>   
+>>   	/*
+>>   	 * GPU readiness is checked by reading the BAR0 registers.
+>> -	 *
+>> -	 * ioremap BAR0 to ensure that the BAR0 mapping is present before
+>> -	 * register reads on first fault before establishing any GPU
+>> -	 * memory mapping.
+>> +	 * The BAR map was just set up by vfio_pci_core_enable(), so
+>> +	 * check that was successful and bail early if not:
+>>   	 */
+>> -	ret = vfio_pci_core_setup_barmap(vdev, 0);
+>> -	if (ret)
+>> +	if (IS_ERR(vfio_pci_core_get_iomap(vdev, 0)))
+>>   		goto error_exit;
+> 
+> Sashiko notes we're not setting ret here.  The bots are also paranoid
+> about the unreachable condition that the get_iomap below could return an
+> ERR_PTR.  Maybe head off both by adding an __iomem pointer to the
+> nvgrace_gpu_pci_core_device struct and a temporary one here.  Store the
+> iomap in the temporary variable, use it to test for IS_ERR() and
+> PTR_ERR(), then set the pointer in the structure after the last error
+> condition here.  Add one line in the close_device to set it NULL.  Then
+> just use nvdev->bar0_io below.
 
-Without the corresponding queue stopping, this patch alone causes no
-regression for a tap setup sending to a qemu VM: 1.132 Mpps
-to 1.134 Mpps.
+Right about ret.  On the 2nd, the bots could benefit from a comment on
+the ...get_iomap() below saying that it "cannot fail" if this one
+passes, but hey.  I can add a struct member to track it (bots can then
+worry that it might be NULL, if they don't notice that
+nvgrace_gpu_check_device_ready() can't happen if
+nvgrace_gpu_open_device() didn't succeed, etc. etc.).
 
-Details: AMD Ryzen 5 5600X at 4.3 GHz, 3200 MHz RAM, isolated QEMU
-threads, pktgen sender; Avg over 50 runs @ 100,000,000 packets;
-SRSO and spectre v2 mitigations disabled.
+>>   
+>>   	if (nvdev->resmem.memlength) {
+>> @@ -275,7 +272,7 @@ nvgrace_gpu_check_device_ready(struct nvgrace_gpu_pci_core_device *nvdev)
+>>   	if (!__vfio_pci_memory_enabled(vdev))
+>>   		return -EIO;
+>>   
+>> -	ret = nvgrace_gpu_wait_device_ready(vdev->barmap[0]);
+>> +	ret = nvgrace_gpu_wait_device_ready(vfio_pci_core_get_iomap(vdev, 0));
+>>   	if (ret)
+>>   		return ret;
+>>   
+>> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+>> index 62931dc381d8..5c8bd13f10d0 100644
+>> --- a/drivers/vfio/pci/vfio_pci_core.c
+>> +++ b/drivers/vfio/pci/vfio_pci_core.c
+>> @@ -1761,7 +1761,7 @@ int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma
+>>   	struct pci_dev *pdev = vdev->pdev;
+>>   	unsigned int index;
+>>   	u64 phys_len, req_len, pgoff, req_start;
+>> -	int ret;
+>> +	void __iomem *bar_io;
+>>   
+>>   	index = vma->vm_pgoff >> (VFIO_PCI_OFFSET_SHIFT - PAGE_SHIFT);
+>>   
+>> @@ -1795,12 +1795,11 @@ int vfio_pci_core_mmap(struct vfio_device *core_vdev, struct vm_area_struct *vma
+>>   		return -EINVAL;
+>>   
+>>   	/*
+>> -	 * Even though we don't make use of the barmap for the mmap,
+>> -	 * we need to request the region and the barmap tracks that.
+>> +	 * Ensure the BAR resource region is reserved for use.
+>>   	 */
+>> -	ret = vfio_pci_core_setup_barmap(vdev, index);
+>> -	if (ret)
+>> -		return ret;
+>> +	bar_io = vfio_pci_core_get_iomap(vdev, index);
+>> +	if (IS_ERR(bar_io))
+>> +		return PTR_ERR(bar_io);
+>>   
+>>   	vma->vm_private_data = vdev;
+>>   	vma->vm_page_prot = pgprot_noncached(vma->vm_page_prot);
+>> diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
+>> index 69a5c2d511e6..46cd44b22c9c 100644
+>> --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
+>> +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+>> @@ -248,7 +248,7 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u32 flags,
+>>   	 * else.  Check that PCI resources have been claimed for it.
+>>   	 */
+>>   	if (get_dma_buf.region_index >= VFIO_PCI_ROM_REGION_INDEX ||
+>> -	    vfio_pci_core_setup_barmap(vdev, get_dma_buf.region_index))
+>> +	    IS_ERR(vfio_pci_core_get_iomap(vdev, get_dma_buf.region_index)))
+>>   		return -ENODEV;
+>>   
+>>   	dma_ranges = memdup_array_user(&arg->dma_ranges, get_dma_buf.nr_ranges,
+>> diff --git a/drivers/vfio/pci/vfio_pci_rdwr.c b/drivers/vfio/pci/vfio_pci_rdwr.c
+>> index 3bfbb879a005..7f14dd46de17 100644
+>> --- a/drivers/vfio/pci/vfio_pci_rdwr.c
+>> +++ b/drivers/vfio/pci/vfio_pci_rdwr.c
+>> @@ -198,19 +198,6 @@ ssize_t vfio_pci_core_do_io_rw(struct vfio_pci_core_device *vdev, bool test_mem,
+>>   }
+>>   EXPORT_SYMBOL_GPL(vfio_pci_core_do_io_rw);
+>>   
+>> -/*
+>> - * The barmap is set up in vfio_pci_core_enable().  Callers use this
+>> - * function to check that the BAR resources are requested or that the
+>> - * pci_iomap() was done.
+>> - */
+>> -int vfio_pci_core_setup_barmap(struct vfio_pci_core_device *vdev, int bar)
+>> -{
+>> -	if (IS_ERR(vdev->barmap[bar]))
+>> -		return PTR_ERR(vdev->barmap[bar]);
+>> -	return 0;
+>> -}
+>> -EXPORT_SYMBOL_GPL(vfio_pci_core_setup_barmap);
+>> -
+>>   ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
+>>   			size_t count, loff_t *ppos, bool iswrite)
+>>   {
+>> @@ -262,13 +249,11 @@ ssize_t vfio_pci_bar_rw(struct vfio_pci_core_device *vdev, char __user *buf,
+>>   		 */
+>>   		max_width = VFIO_PCI_IO_WIDTH_4;
+>>   	} else {
+>> -		int ret = vfio_pci_core_setup_barmap(vdev, bar);
+>> -		if (ret) {
+>> -			done = ret;
+>> +		io = vfio_pci_core_get_iomap(vdev, bar);
+>> +		if (IS_ERR(io)) {
+>> +			done = PTR_ERR(io);
+>>   			goto out;
+>>   		}
+>> -
+>> -		io = vdev->barmap[bar];
+>>   	}
+>>   
+>>   	if (bar == vdev->msix_bar) {
+>> @@ -423,6 +408,7 @@ int vfio_pci_ioeventfd(struct vfio_pci_core_device *vdev, loff_t offset,
+>>   	loff_t pos = offset & VFIO_PCI_OFFSET_MASK;
+>>   	int ret, bar = VFIO_PCI_OFFSET_TO_INDEX(offset);
+>>   	struct vfio_pci_ioeventfd *ioeventfd;
+>> +	void __iomem *io;
+>>   
+>>   	/* Only support ioeventfds into BARs */
+>>   	if (bar > VFIO_PCI_BAR5_REGION_INDEX)
+>> @@ -440,9 +426,9 @@ int vfio_pci_ioeventfd(struct vfio_pci_core_device *vdev, loff_t offset,
+>>   	if (count == 8)
+>>   		return -EINVAL;
+>>   
+>> -	ret = vfio_pci_core_setup_barmap(vdev, bar);
+>> -	if (ret)
+>> -		return ret;
+>> +	io = vfio_pci_core_get_iomap(vdev, bar);
+>> +	if (IS_ERR(io))
+>> +		return PTR_ERR(io);
+> 
+> Sashiko seems to note a real existing error here that should also be
+> pulled out to a separate fix.  Given the right offset, this could
+> generate a negative BAR value.
 
-Co-developed-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-Signed-off-by: Tim Gebauer <tim.gebauer@tu-dortmund.de>
-Signed-off-by: Simon Schippers <simon.schippers@tu-dortmund.de>
----
- drivers/net/tun.c | 73 +++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 64 insertions(+), 9 deletions(-)
+Yuck, loff_t signed, yep.  Isn't the real root of this that it
+never makes sense for VFIO_PCI_OFFSET_TO_INDEX() to return a negative
+index here or anywhere else?
 
-diff --git a/drivers/net/tun.c b/drivers/net/tun.c
-index b183189f1853..b24cc899a890 100644
---- a/drivers/net/tun.c
-+++ b/drivers/net/tun.c
-@@ -145,6 +145,8 @@ struct tun_file {
- 	struct list_head next;
- 	struct tun_struct *detached;
- 	struct ptr_ring tx_ring;
-+	/* Protected by tx_ring.consumer_lock */
-+	int cons_cnt;
- 	struct xdp_rxq_info xdp_rxq;
- };
- 
-@@ -557,11 +559,43 @@ void tun_ptr_free(void *ptr)
- }
- EXPORT_SYMBOL_GPL(tun_ptr_free);
- 
--static void tun_queue_purge(struct tun_file *tfile)
-+/* Callers must hold ring.consumer_lock */
-+static void __tun_wake_queue(struct tun_struct *tun,
-+			     struct tun_file *tfile, int consumed)
-+{
-+	struct netdev_queue *txq = netdev_get_tx_queue(tun->dev,
-+						tfile->queue_index);
-+
-+	/* Paired with smp_mb__after_atomic() in tun_net_xmit() */
-+	smp_mb();
-+	if (netif_tx_queue_stopped(txq)) {
-+		tfile->cons_cnt += consumed;
-+		if (tfile->cons_cnt >= tfile->tx_ring.size / 2 ||
-+		    __ptr_ring_empty(&tfile->tx_ring)) {
-+			netif_tx_wake_queue(txq);
-+			tfile->cons_cnt = 0;
-+		}
-+	}
-+}
-+
-+static void *tun_ring_consume(struct tun_struct *tun, struct tun_file *tfile)
-+{
-+	void *ptr;
-+
-+	spin_lock(&tfile->tx_ring.consumer_lock);
-+	ptr = __ptr_ring_consume(&tfile->tx_ring);
-+	if (ptr)
-+		__tun_wake_queue(tun, tfile, 1);
-+
-+	spin_unlock(&tfile->tx_ring.consumer_lock);
-+	return ptr;
-+}
-+
-+static void tun_queue_purge(struct tun_struct *tun, struct tun_file *tfile)
- {
- 	void *ptr;
- 
--	while ((ptr = ptr_ring_consume(&tfile->tx_ring)) != NULL)
-+	while ((ptr = tun_ring_consume(tun, tfile)) != NULL)
- 		tun_ptr_free(ptr);
- 
- 	skb_queue_purge(&tfile->sk.sk_write_queue);
-@@ -588,8 +622,10 @@ static void __tun_detach(struct tun_file *tfile, bool clean)
- 		rcu_assign_pointer(tun->tfiles[index],
- 				   tun->tfiles[tun->numqueues - 1]);
- 		ntfile = rtnl_dereference(tun->tfiles[index]);
-+		spin_lock(&ntfile->tx_ring.consumer_lock);
- 		ntfile->queue_index = index;
- 		ntfile->xdp_rxq.queue_index = index;
-+		spin_unlock(&ntfile->tx_ring.consumer_lock);
- 		rcu_assign_pointer(tun->tfiles[tun->numqueues - 1],
- 				   NULL);
- 
-@@ -605,7 +641,7 @@ static void __tun_detach(struct tun_file *tfile, bool clean)
- 		synchronize_net();
- 		tun_flow_delete_by_queue(tun, tun->numqueues + 1);
- 		/* Drop read queue */
--		tun_queue_purge(tfile);
-+		tun_queue_purge(tun, tfile);
- 		tun_set_real_num_queues(tun);
- 	} else if (tfile->detached && clean) {
- 		tun = tun_enable_queue(tfile);
-@@ -670,14 +706,14 @@ static void tun_detach_all(struct net_device *dev)
- 		tfile = rtnl_dereference(tun->tfiles[i]);
- 		tun_napi_del(tfile);
- 		/* Drop read queue */
--		tun_queue_purge(tfile);
-+		tun_queue_purge(tun, tfile);
- 		xdp_rxq_info_unreg(&tfile->xdp_rxq);
- 		sock_put(&tfile->sk);
- 	}
- 	list_for_each_entry_safe(tfile, tmp, &tun->disabled, next) {
- 		tun_napi_del(tfile);
- 		tun_enable_queue(tfile);
--		tun_queue_purge(tfile);
-+		tun_queue_purge(tun, tfile);
- 		xdp_rxq_info_unreg(&tfile->xdp_rxq);
- 		sock_put(&tfile->sk);
- 	}
-@@ -687,6 +723,13 @@ static void tun_detach_all(struct net_device *dev)
- 		module_put(THIS_MODULE);
- }
- 
-+static void tun_reset_cons_cnt(struct tun_file *tfile)
-+{
-+	spin_lock(&tfile->tx_ring.consumer_lock);
-+	tfile->cons_cnt = 0;
-+	spin_unlock(&tfile->tx_ring.consumer_lock);
-+}
-+
- static int tun_attach(struct tun_struct *tun, struct file *file,
- 		      bool skip_filter, bool napi, bool napi_frags,
- 		      bool publish_tun)
-@@ -730,6 +773,7 @@ static int tun_attach(struct tun_struct *tun, struct file *file,
- 		goto out;
- 	}
- 
-+	tun_reset_cons_cnt(tfile);
- 	tfile->queue_index = tun->numqueues;
- 	tfile->socket.sk->sk_shutdown &= ~RCV_SHUTDOWN;
- 
-@@ -2115,13 +2159,14 @@ static ssize_t tun_put_user(struct tun_struct *tun,
- 	return total;
- }
- 
--static void *tun_ring_recv(struct tun_file *tfile, int noblock, int *err)
-+static void *tun_ring_recv(struct tun_struct *tun, struct tun_file *tfile,
-+			   int noblock, int *err)
- {
- 	DECLARE_WAITQUEUE(wait, current);
- 	void *ptr = NULL;
- 	int error = 0;
- 
--	ptr = ptr_ring_consume(&tfile->tx_ring);
-+	ptr = tun_ring_consume(tun, tfile);
- 	if (ptr)
- 		goto out;
- 	if (noblock) {
-@@ -2133,7 +2178,7 @@ static void *tun_ring_recv(struct tun_file *tfile, int noblock, int *err)
- 
- 	while (1) {
- 		set_current_state(TASK_INTERRUPTIBLE);
--		ptr = ptr_ring_consume(&tfile->tx_ring);
-+		ptr = tun_ring_consume(tun, tfile);
- 		if (ptr)
- 			break;
- 		if (signal_pending(current)) {
-@@ -2170,7 +2215,7 @@ static ssize_t tun_do_read(struct tun_struct *tun, struct tun_file *tfile,
- 
- 	if (!ptr) {
- 		/* Read frames from ring */
--		ptr = tun_ring_recv(tfile, noblock, &err);
-+		ptr = tun_ring_recv(tun, tfile, noblock, &err);
- 		if (!ptr)
- 			return err;
- 	}
-@@ -3622,6 +3667,16 @@ static int tun_queue_resize(struct tun_struct *tun)
- 					  dev->tx_queue_len, GFP_KERNEL,
- 					  tun_ptr_free);
- 
-+	if (!ret) {
-+		for (i = 0; i < tun->numqueues; i++) {
-+			tfile = rtnl_dereference(tun->tfiles[i]);
-+			spin_lock(&tfile->tx_ring.consumer_lock);
-+			netif_wake_subqueue(tun->dev, tfile->queue_index);
-+			tfile->cons_cnt = 0;
-+			spin_unlock(&tfile->tx_ring.consumer_lock);
-+		}
-+	}
-+
- 	kfree(rings);
- 	return ret;
- }
--- 
-2.43.0
+I suggest instead, to also avoid this elsewhere in future, something
+like:
+
+  #define VFIO_PCI_OFFSET_TO_INDEX(off)	((u64)(off) >> VFIO_PCI_OFFSET_SHIFT)
+
+> The test at the end of the previous
+> chunk should should be expanded to `if (bar < 0 || bar > ...BAR5...)`.
+
+Not necessary if VFIO_PCI_OFFSET_TO_INDEX() can't return < 0 (the
+magnitude would be 24b so can't overflow the `int bar` it's assigned
+into).
+
+> Do you want to pick that up in this series?  I think it's the only case
+> that lets that slip through.  Thanks,
+
+Sure, I'll post a fix.  I don't think it needs to be part of this series
+though if it's just the macro, do you agree?
+
+Do you know why drivers/gpu/drm/i915/gvt/kvmgt.c has copied
+VFIO_PCI_OFFSET_TO_INDEX() and friends?  Perhaps the shift was different
+(the reason drivers/vfio/pci/ism/main.c has its own versions).  The same
+loff_t issue seems to exist in both of those places, unfortunately.
+
+
+Matt
+
+PS: with minor question:
+Relatedly, I'd made `bar` an int following existing convention in
+
+  vfio_pci_core_get_iomap(struct vfio_pci_core_device *vdev, int bar)
+
+But I'll make this `unsigned int`, please flag if this violates taste
+and decency.  IMO any BAR/index parameter should be unsigned; most are,
+some signed remain.
 
