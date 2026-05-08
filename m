@@ -1,214 +1,232 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.10])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BC8737BE9F;
-	Fri,  8 May 2026 09:50:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.10
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778233858; cv=fail; b=bAqkPQEBufQiGmMMrbjdsLYxP0wPhFFkT8VKmwk/v99Dv0E+tFSFqCK6HQnrlNYg6YbIzf73sr/o4HhJigL8Uw04zEAt0QJwtRAkr2QYOCM9xXbW+PdYD05S6PLwMwo5ughsnL4xBTDle+jzvnVl35t2KVDgTs2n7u9GmkcWvEU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778233858; c=relaxed/simple;
-	bh=zbYhy4KpXJFDixG+XbLRypMKDD2f3Ch0CJ5uqu/b9oA=;
-	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=eA2dqcaYAjvHpmZHPMcH/OYiJjNquWsCHGJUyKIY1BeliMOtbhlpY7uF0iMkRXWTGJVZj0VqM1REKmNOThCWgbxgnB+f8za47zC5wLa9iyNEGRAFYb0clTp4JEn2QQr1K7exh0AoJ5uXjTAT2CafjhoA3pi7w7bDNEVeUpO2mdE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VMiHaJa+; arc=fail smtp.client-ip=198.175.65.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 996123D3D06
+	for <kvm@vger.kernel.org>; Fri,  8 May 2026 09:53:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778234000; cv=none; b=mS1a2YKoBQckv/JiriJZs36na7QnrdDBNuJ/ilUlVFj1NkumKCUEb7kIB4zGrHKC5t7/27bqBC0/lKJZT3S/iLImdqiVmL4QTuay7dQKxev5NqcXnU9dpYgqS3DZy1cIW/9ifT2UEWkazIrxE3bL/ob/cF8xRPO2KXPGbsOBTNg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778234000; c=relaxed/simple;
+	bh=/OQGL9Ug5guHVsgSUU3ndeXFHMMS3syMhC0ocsSKEXc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DsSRjSuq7tE6IJiCA3DVfbBDMn1Ma8oLvLBjbAPwoX5CHQWYEiQPKoMq3Ebc9PFfah1wmew5+yqCDjkLmRFCxrNsPx6aLyUEBtVCVPAiGnN9b27OLYY8fSmQlDWH0439VYUFNthPQ/X/LcYO4S+82Vgf36PLBJyfO09VSFiNK0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WyBJviON; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Q7IyCD+C; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VMiHaJa+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778233856; x=1809769856;
-  h=date:from:to:cc:subject:message-id:references:
-   content-transfer-encoding:in-reply-to:mime-version;
-  bh=zbYhy4KpXJFDixG+XbLRypMKDD2f3Ch0CJ5uqu/b9oA=;
-  b=VMiHaJa+DxJW92l8LmW2A3FWIAJ8sx4+BcU7stAUrATT91S5IjCcUYFb
-   QIwE71+tPWMbgACtZMKJqhAKDyQ20WAHf8L1/Up7GkJWPzeFkSUmF2UHB
-   J4Q91Dlh6pX3De2qUac47Hdf2Fin1JXOHobFjV9wPDE8H9G22THXeZiP7
-   YfYvTlIxKmkpuNWhXqu57d5R/hcFBe1BstLiIZiTtv3jEarCS2oBLMjh8
-   v19E5rIyi58UHo1jkxi7nN2foLnGfX53wp6RokPN1Id+4FvCl9VYyEqeM
-   PyD0UD9Kviw5cz33juleUk1a9urzEcC5N9Vbk9TaEC/2+tkanZ5uHzRYX
-   A==;
-X-CSE-ConnectionGUID: njIDGLcMQHOBMFBmAr+fmw==
-X-CSE-MsgGUID: coYnR3XQTg+I4re8jD1D8Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11779"; a="96623655"
-X-IronPort-AV: E=Sophos;i="6.23,223,1770624000"; 
-   d="scan'208";a="96623655"
-Received: from orviesa005.jf.intel.com ([10.64.159.145])
-  by orvoesa102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2026 02:50:55 -0700
-X-CSE-ConnectionGUID: ZK335LcIQB6XWlv50Oe0sg==
-X-CSE-MsgGUID: 18nCiuF3St6QHf++dQfeaQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,223,1770624000"; 
-   d="scan'208";a="241728435"
-Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
-  by orviesa005.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 May 2026 02:50:55 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 8 May 2026 02:50:53 -0700
-Received: from ORSEDG903.ED.cps.intel.com (10.7.248.13) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Fri, 8 May 2026 02:50:53 -0700
-Received: from MW6PR02CU001.outbound.protection.outlook.com (52.101.48.43) by
- edgegateway.intel.com (134.134.137.113) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Fri, 8 May 2026 02:50:53 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=mdRk4cdnKBFD0Oik7fy956NkwjkBuX9IvSF6aaAzUhejVo23QZSoRKookEGmcRlCCrxZlAYikm6EjOlSPLBc/kp0Zg79DNbutRykpUzFw/PGAYDZh81e0w8uYmN549zdvK2Zc7IzP+p3+UPL84DUDNjJsDUT6za05yNOhflmy4+I4y+2QO/Ie7vsMGE5qzpmaJGyLUeANsLhc5O3saWzIxQFQYFfFv1t+/bqMILxUHnV2WIQHax0tXCMOsx3bm0btAQiBD73aRc2OieTqiePpE28Zpr9O4ZFgAw9jS2LuOqbKKNIkYSWUV1PvWXP7sSDZYwPJfwAOTosDlE0RKhPZw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kkwMqA0uD4bzqdQfCbwBgFDNa9JkIi6QGeUDvCC0eXA=;
- b=PQ7Cvd2PdJS9jbZ6PUUg6dHWbTWS0t9//seQOZd7AoAxQ84UOWPfIlmaDmhqjIa8GqoV+1iDb09dds73gHMjg5wHOcrtq4CxrUW3CrSoi3LbUojFYNVFSEgU5cX6sbKx0DkUJGyvDlck0NOc5Iy8KnMg0fchocBzukEOZm+1gPu4wzYhVDJAwagTncBDU1Y9dylszqjOiaPN4r7gEJ8aS1sg07DpcttQyJqvVqpKtJCXaqqQ6rOkbtRT05M783LYWhwuDhL/xjNCBpWXwsikswErzmixkHx6yoMAmoYnOxcTVJwszQHvnmtFgZOY2kfBJes+JYD3iHYwMKI0ie802Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com (2603:10b6:610:1ce::13)
- by PH8PR11MB9769.namprd11.prod.outlook.com (2603:10b6:510:3a4::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.18; Fri, 8 May
- 2026 09:50:51 +0000
-Received: from CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf]) by CH3PR11MB8660.namprd11.prod.outlook.com
- ([fe80::fdc2:40ba:101d:40bf%3]) with mapi id 15.20.9891.019; Fri, 8 May 2026
- 09:50:51 +0000
-Date: Fri, 8 May 2026 17:50:39 +0800
-From: Chao Gao <chao.gao@intel.com>
-To: Dave Hansen <dave.hansen@intel.com>
-CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
-	<linux-kernel@vger.kernel.org>, <x86@kernel.org>,
-	<binbin.wu@linux.intel.com>, <dave.hansen@linux.intel.com>,
-	<djbw@kernel.org>, <ira.weiny@intel.com>, <kai.huang@intel.com>,
-	<kas@kernel.org>, <nik.borisov@suse.com>, <paulmck@kernel.org>,
-	<pbonzini@redhat.com>, <reinette.chatre@intel.com>,
-	<rick.p.edgecombe@intel.com>, <sagis@google.com>, <seanjc@google.com>,
-	<tony.lindgren@linux.intel.com>, <vannapurve@google.com>,
-	<vishal.l.verma@intel.com>, <yilun.xu@linux.intel.com>,
-	<xiaoyao.li@intel.com>, <yan.y.zhao@intel.com>, Thomas Gleixner
-	<tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov
-	<bp@alien8.de>, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v8 18/21] coco/tdx-host: Don't expose P-SEAMLDR features
- on CPUs with erratum
-Message-ID: <af2x7yRMx3lXQL06@intel.com>
-References: <20260427152854.101171-1-chao.gao@intel.com>
- <20260427152854.101171-19-chao.gao@intel.com>
- <abd48a30-8d51-4a86-b662-b09afb567dc5@intel.com>
-Content-Type: text/plain; charset="iso-8859-1"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <abd48a30-8d51-4a86-b662-b09afb567dc5@intel.com>
-X-ClientProxiedBy: TP0P295CA0059.TWNP295.PROD.OUTLOOK.COM
- (2603:1096:910:3::12) To CH3PR11MB8660.namprd11.prod.outlook.com
- (2603:10b6:610:1ce::13)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WyBJviON";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Q7IyCD+C"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778233994;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ClGJlcvL8tePgqMC/W/O2L5Yb8uwFAsbIWgSrr8FGUs=;
+	b=WyBJviONYowjwS0T+S5sg2WMb0VuXuU54Ui9vuE0mo3RM27WqYdgIDt6/IaTiwzH+w2W5o
+	VvFz5zWd3KAkoYk2G6MFWrwlTcAwyJXDqmEFXIJQEd0/Tv9UNGaqyovQlQczclI0Zio8Km
+	zqdJc5uPWA9e6CDDlyzTfb6+tC1VT0g=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-248-BpHXqtXaPMGKnY_1JquACw-1; Fri, 08 May 2026 05:53:13 -0400
+X-MC-Unique: BpHXqtXaPMGKnY_1JquACw-1
+X-Mimecast-MFC-AGG-ID: BpHXqtXaPMGKnY_1JquACw_1778233992
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-44cc3c9b2feso1590753f8f.1
+        for <kvm@vger.kernel.org>; Fri, 08 May 2026 02:53:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1778233992; x=1778838792; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ClGJlcvL8tePgqMC/W/O2L5Yb8uwFAsbIWgSrr8FGUs=;
+        b=Q7IyCD+CUyZ8g895Wu2sFa3+JI+jqnAcrSDpEd02FBmshjmRKhw/UOhMhCCLVjXn+K
+         ik+Dw30++0HSdM/Rgcsi5q2YaxPlQeHYdIdYD4M4I9wYtj9JC1SeBQeAfjVJkhGpa5qJ
+         rZ0qDOvtBep/Jm6+0Dr1x6VKor6FNRac2SBQiFq6tSydACZRv79xzPT90mCt/BIDLSvr
+         OQFyjdp8ZV0ZWPpEGO2Dj2ON7hCvONU3NYvf8VALzupN6cNSRhO+rY5/nr8TO7h/uHw4
+         HDwgcpEh3KIYXoe5W17H6KI05dU+xUoX1+ICxEVqMRSwio5dq3/WY9Jgvn/xcj1pxPED
+         LW/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778233992; x=1778838792;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ClGJlcvL8tePgqMC/W/O2L5Yb8uwFAsbIWgSrr8FGUs=;
+        b=Ar31J5c9pBpTd5m0u0e9KdZ2JR0Waosn7Y3uyU0vBJUZ84G2WsTIGlq9a9FNiKjaQb
+         3CPZ3yW07FkuyMbUCm9KsEZaemM59gV0r6w3aKnHQa0+O8eMieVtFKAOHMkWN+eUHgA2
+         N4saBkzgDjvUrz53P1oASsqQ4WNHZyAkZlYQqyuV3XN86GqSGgZA8vR0Ml7b7vJ3YW6E
+         76JRH27JJO3VNEWvvAFpqIcDRQW4qKUap0L8PITp1JRzykIdYOX0Ppjl/jSI2/20Ybsz
+         nfXP1rCDiKWPUdo1dTV5mytqkR+J/LFOvApPU15ZqtZtnVysb1Dsc4teJFl6zzmrG/2A
+         YFDg==
+X-Forwarded-Encrypted: i=1; AFNElJ+aApdq9jWS10154a8ItOcAWy9zJED2u+3m9OEIPLE8L1biuePPCvgROrrz+k+xvlqriSQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwnZgGAyb95PZ+zwlfw/kWi5hofx0Q2LNhKefzT+35nN8z7rtGs
+	zMc4n0xW5NNJLCUHXdGmKr+rH8gDJpceTvyMPRr4TAgKqVF1CCijYDF8lMdMDwUtLu+LoTB8rHp
+	yzKH/Ts3J4An+SxcYYYi8FtEKN+FuFxS73jyOmXQ5PVanp32heGMPWQ==
+X-Gm-Gg: Acq92OGf7sHwU7Y72tQ1zZZ2oMJCS6B8xiA81i3SZCMFaeg5GG+hRET8Ya8lNnj8hW6
+	zdeGF6CH6aLJNUOU7a+1386Thjn9BfEB8Un69uOpM/SLcn8syv1x9bcnxZ8FOU1DuofFzRtA/1g
+	azdpBYLdKLI+789GId7jchGStITk8XfIBLaHw5SNKbuFgAKLC/Dtb3OamTuqcg9u/KlbQCs7DQN
+	tqpwXxe4NSavPtaU4WOz46LfN1sOo193NFUXV6T+8JooQQvoaCkBqLevYtCGoIY2bjbtf5DMJ3+
+	Kb528LNRV4ztFk16mJBlqNtV7U2WKlHyXE/nE9PbMvWjx4cpZVS6cVbKUIuUqbw3rhHAwCpfUSo
+	MgLO4SofZBztqTS8VEHcPVGrYhaBdJUCcuGZHBfio
+X-Received: by 2002:a5d:5f48:0:b0:43f:e43a:f4a6 with SMTP id ffacd0b85a97d-4515b056ca6mr18864528f8f.6.1778233991931;
+        Fri, 08 May 2026 02:53:11 -0700 (PDT)
+X-Received: by 2002:a5d:5f48:0:b0:43f:e43a:f4a6 with SMTP id ffacd0b85a97d-4515b056ca6mr18864455f8f.6.1778233991308;
+        Fri, 08 May 2026 02:53:11 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-4548ec6b071sm3110679f8f.14.2026.05.08.02.53.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 May 2026 02:53:10 -0700 (PDT)
+Date: Fri, 8 May 2026 05:53:07 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: netdev@vger.kernel.org, Eric Dumazet <edumazet@google.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	virtualization@lists.linux.dev,
+	"David S. Miller" <davem@davemloft.net>,
+	Jason Wang <jasowang@redhat.com>, Simon Horman <horms@kernel.org>,
+	linux-kernel@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, kvm@vger.kernel.org,
+	Jakub Kicinski <kuba@kernel.org>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>
+Subject: Re: [PATCH net] vsock/virtio: fix skb overhead accounting to
+ preserve full buf_alloc
+Message-ID: <20260508055125-mutt-send-email-mst@kernel.org>
+References: <20260508092330.69690-1-sgarzare@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR11MB8660:EE_|PH8PR11MB9769:EE_
-X-MS-Office365-Filtering-Correlation-Id: 78e41b6a-38a7-46e8-461d-08deace749eb
-X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|7416014|366016|22082099003|18002099003|56012099003|3023799003;
-X-Microsoft-Antispam-Message-Info: cxTsHwtH6R8mCnvQNgeZToYlDPHQnfCFQ6nmNTKdVjIZ8O5evxzhkaGIPFNFg6wYDiCif4UyKA1+BcC6ESJVr3KWqqEwKMCytvLG/PQD4A455XgzHzeZAqXHngyOAFPfC81nwGW/8+JLmaHo7leyBeiMrc+9JFa4DojCnEgaLL2LQvAvtx3RpFuUfs8oLtIvhY8Uzz7Euunh8KRJDNUNsW2C3AB2zp8JMc56FeLfsLbhSwhz/39F5MQYgqL9jiexmspaA32A/xRrNct5QWT5kFN7QPSVUAz3fdsYSU77uOyEh5o1oe71sU5nR+Ac6A+SVljb7Mp35buBDzAUCwCiL2dUz5jo+FE2I59ZWU3b/8ZwSvE/j2hmZBjHRA3/TzbMV/rPiXD4O7xEhTO5ihtkfXIxGQas4vWuSAZgKUvzmcikqUCNqFvAqyboKig7VpUm2l7xfti2N+81DSTOvhTyDU+STCwKWfXrD56ptTiYF9F8zZMjwaHhe8vmaCVQhrvVkvfcdTQqeTQAnhVpoVm86wCuD3vMax4Y9NuyqD9gpjkNAezQnkySmD/AzSLLKGqJeqkVIsBsXYRXJ5ZsLa8qZtDTmQFQLl3nMQMrduk6IWfxXzMoTkKLOJ8orwJZGx0tulFIZ4Xsa1JEhI8Ico225x/rgSK5jo41uvXzVDoZOn1Gz/i5V+R0DI8HFwJ6nJLn56Tqp9BpSeiWeWDul1w1Yw==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR11MB8660.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(7416014)(366016)(22082099003)(18002099003)(56012099003)(3023799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?iso-8859-1?Q?i16b7KIcxf2LkHl+k7jw7kUH/gRWvVuRlSdyLKYTHmwG2M5XMmILlRUe0G?=
- =?iso-8859-1?Q?02Tk33rpzA5zilOEzeZmfJ8Z8CA183wI798DcVdDNeoGp7ij6dfWYVW00V?=
- =?iso-8859-1?Q?PgoVeuga55IBfGo1JcrPPSLbiNisD1ceFPScWISIwzubb/gM+rGO7sO70g?=
- =?iso-8859-1?Q?Et/L/yepvbCyzwWo9uJkLwZJzakwIRLMEabVZbFRl5jUXto1eTTqHCcEby?=
- =?iso-8859-1?Q?3Oe60Cy3Td5nUl2Q96WOYf8Mzkao1BHRSoxg1p9+ohC8bb6gwKVCEB8x5q?=
- =?iso-8859-1?Q?hK1nfD/yqP6oTscHX6MqCCb++TL8nCin6YD59TRttdIKl05WXNnlp0hEtz?=
- =?iso-8859-1?Q?mkrH4y/3ZpmWDx/n7tVTo5WLM6VDSDsIMGoiC/FfZ0RqngbX0Xuo8Z1HN+?=
- =?iso-8859-1?Q?PGbzqIDq9DH1Y/AUUs6Py2Nwkw+OioAGx492t7hy5WP6tEkgHPagaOuHb8?=
- =?iso-8859-1?Q?ns2p/iDAFdX68bt76rJ+9KtOa5FFxk0iHiOH3qfMPI1D0aMKTunjj2e+ua?=
- =?iso-8859-1?Q?3eBDX2HYCYis+32jd4wCd+xeZ+ZG7PYhzucv2W9mRX01qtj8tRoVMg3vW5?=
- =?iso-8859-1?Q?PkXhsYqDk3ti39wUI/3f4W//UD+nBg9NNyEbAI0zV0hIi3CvdcfF31BXGB?=
- =?iso-8859-1?Q?IJH2Fq+rUJ6Y0YO7AWgcm6TakB0IZ39zdFeR8oxPLXkSBErq53/RB4pjAx?=
- =?iso-8859-1?Q?HPNurXihW8esXJWd9xs+rIJ1GgcyHCoZTCyA6nLmroyKwSg8tLEZNC6fvr?=
- =?iso-8859-1?Q?xjLVSH47QwY9qCPZPhF6cANJmZj5t1qwy9Kf/oDk54C0znnLrEXXVKFhGx?=
- =?iso-8859-1?Q?dSWrXlwclPYXnkU9DBekQzMe7hNkBi8wp8HxnQ/aeXsY2XdcjC4Jf5XMXB?=
- =?iso-8859-1?Q?YGWkDP+rqq0Y9sP0AXy8lsD64XGiC1g10oIMY2ul1zTa6fKcFgZm8TM9H7?=
- =?iso-8859-1?Q?0z1iOXDvlBnJmf/TLK5YbbqflSofaqs0k2kUEnGbPN2M2bv1O2BxftHA5O?=
- =?iso-8859-1?Q?n8YHG7S+U57h7eAVl5d3ZPcWuEk/ylkC2UjdkacxTXkjz7IlKiZErjPGHt?=
- =?iso-8859-1?Q?bw2ghx2VtXS6BK5+I4qa4vupauv2A3OfdUSu3tT5Qpr6+kaJkVJSM6N/6Q?=
- =?iso-8859-1?Q?ercVVvWRlcx8+h6+SJxEHkEY28fguYXPiDr85m0e7V1o0dpopXe+SUZ2ny?=
- =?iso-8859-1?Q?xvxCbaPH+REvwNTxXTOjmDDBu+65yD2UsHU4hMlS6GAZkhyJxrWOE+c8Fc?=
- =?iso-8859-1?Q?2zOa8iNu4xQBjIpY0+ybzph698mklzdnq3r6dAT6Mxy4Yw26lDB7YxgK89?=
- =?iso-8859-1?Q?ghruYhQQh1sNtVWFItMuDihsy3M06k1/8ZFFKFbVpd//1LJ5Ozi6TffD8a?=
- =?iso-8859-1?Q?2dk9mjVoq3gM2RasEr/KDTGxGCBCPC1QSate91qVT/c2HDjcg7pLryLYPT?=
- =?iso-8859-1?Q?2gfQAzWJPQwZ/4SbV7A88gaH6CmKkTSwF+/n3nVjCrZtb7vo8o11X9veES?=
- =?iso-8859-1?Q?KhJJKWDGOJBVJI4fVKBMO/NrbPxubq3zZUs+OL81aZY5mvPd3WrJv+23gR?=
- =?iso-8859-1?Q?q3r/lP7Er9R8JbuimH7zzzSkaIxRAZTzjRxX7t0PtEloLdSfmM9hATv4C9?=
- =?iso-8859-1?Q?kGirWUcpDb/65VGQR3WA//1EDw7MVXNEM6xK0wyG46ZC2JO6yOhj7OGfJC?=
- =?iso-8859-1?Q?MJ10vc3rKN+sJeaTktVhx1FV2iTQwpxF66y+rdf4xSBYim9T5Ppi5UdAPY?=
- =?iso-8859-1?Q?jjRaPkUQDBagHfp5UMuJ6pSqkZ079/gd/a5QjCzcvzrqUfo12wcXoXE+6i?=
- =?iso-8859-1?Q?XVQH5SRDiw=3D=3D?=
-X-Exchange-RoutingPolicyChecked: a+zyf2yUIYRUjIJ2m/VVw2o0RJl46pXLOdSBcT0S2zMWJeMubKMDgMB2j/r93uYq7fGMol8UVlsF3gt6NHtedbf9RJJjRE0tyqI/Sqkj+ONxuELfIWJpE/ZwPaJniosQJGMSryoy/bQGi0Ly+L7Yu9tDCIl1UMNYwrJyjDyJ/MFmbpDAhgLkl2JCk9yeUNmzi5BIzNZ4pZkVJEL05BOm5FkSWH/3avIgs+E0rrxhJZR4RBXOQdIQNUZJBsjtPWq16OMwyK9cYxGGqkNHbef8gd/o+vp/NltAKqDPM6CZbdRXn87vxOcVkGyqeN1DR37yefppc6YGm1Or4FkVb/aG1A==
-X-MS-Exchange-CrossTenant-Network-Message-Id: 78e41b6a-38a7-46e8-461d-08deace749eb
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR11MB8660.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 May 2026 09:50:51.4307
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: X1uzDEh+ym+ixIaD4K+r6a1EvXmhvHbiDDWnGdpp3Nd7I+Ggkxf3efwhBQUBXpK/US8/S28EdVlcdQH5GZFmwg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH8PR11MB9769
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260508092330.69690-1-sgarzare@redhat.com>
 
-On Thu, Apr 30, 2026 at 01:09:30PM -0700, Dave Hansen wrote:
->On 4/27/26 08:28, Chao Gao wrote:
->> Some TDX-capable CPUs have an erratum, as documented in Intel® Trust
->> Domain CPU Architectural Extensions (May 2021 edition) Chapter 2.3:
->> 
->>   SEAMRET from the P-SEAMLDR clears the current VMCS structure pointed
->>   to by the current-VMCS pointer. A VMM that invokes the P-SEAMLDR using
->>   SEAMCALL must reload the current-VMCS, if required, using the VMPTRLD
->>   instruction.
->> 
->> Clearing the current VMCS behind KVM's back will break KVM.
->> 
->> This erratum is not present when IA32_VMX_BASIC[60] is set. Add a CPU
->> bug bit for this erratum and refuse to expose P-SEAMLDR features (e.g.,
->> TDX module updates) on affected CPUs.
->
->This seems totally random.
->
->Shouldn't this be way back when can_expose_seamldr() got defined in the
->first place?
+On Fri, May 08, 2026 at 11:23:30AM +0200, Stefano Garzarella wrote:
+> From: Stefano Garzarella <sgarzare@redhat.com>
+> 
+> After commit 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb
+> queue"), virtio_transport_inc_rx_pkt() subtracts per-skb overhead from
+> buf_alloc when checking whether a new packet fits. This reduces the
+> effective receive buffer below what the user configured via
+> SO_VM_SOCKETS_BUFFER_SIZE, causing legitimate data packets to be
+> silently dropped and applications that rely on the full buffer size
+> to deadlock.
+> 
+> Also, the reduced space is not communicated to the remote peer, so
+> its credit calculation accounts more credit than the receiver will
+> actually accept, causing data loss (there is no retransmission).
+> 
+> This also causes failures in tools/testing/vsock/vsock_test.c.
+> Test 18 sometimes fails, while test 22 always fails in this way:
+>     18 - SOCK_STREAM MSG_ZEROCOPY...hash mismatch
+> 
+>     22 - SOCK_STREAM virtio credit update + SO_RCVLOWAT...send failed:
+>     Resource temporarily unavailable
+> 
+> Fix this by introducing virtio_transport_rx_buf_size() to calculate the
+> size of the RX buffer based on the overhead. Using it in the acceptance
+> check, the advertised buf_alloc, and the credit update decision.
+> Use buf_alloc * 2 as total budget (payload + overhead), similar to how
+> SO_RCVBUF is doubled to reserve space for sk_buff metadata.
+> The function returns buf_alloc as long as overhead fits within the
+> reservation, then gradually reduces toward 0 as overhead exceeds
+> buf_alloc (e.g. under small-packet flooding), informing the peer to
+> slow down.
+> 
+> Fixes: 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue")
+> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 
-I split this out because the erratum needs a longer changelog and some
-discussion of alternatives. I also wanted the initial can_expose_seamldr()
-patch to focus on introducing the gating mechanism, without bundling in
-every detailed check from the start. The update do-while loop and the uABI
-stuff are the core of this series, while this erratum check is not, so I
-placed this patch later.
 
-That said, I am perfectly fine with moving this patch to immediately follow
-the patch that introduces can_expose_seamldr().
+unfortunately, this is a bit of a spec violation and there is no guarantee
+it helps.
 
->> +#define X86_BUG_SEAMRET_INVD_VMCS	X86_BUG( 1*32+11) /* "seamret_invd_vmcs" SEAMRET from P-SEAMLDR clears the current VMCS */
->
->I find myself wondering if this is worth a bug bit.
+a spec violation because the spec says:
+Only payload bytes are counted and header bytes are not
+included
 
-The bug bit was added in v5:
+and the implication is that a side can not reduce its own buf_alloc.
 
-https://lore.kernel.org/all/d664ac9445b1c7cc864dead103086341c374b094.camel@intel.com/#t
+no guarantee because the other side is not required to process your
+packets, so it might not see your buf alloc reduction.
 
-Kai suggested this approach for two reasons:
+as designed in the current spec, you can only increase your buf alloc,
+not decrease it.
 
-1. It is consistent with how X86_BUG_TDX_PW_MCE is handled.
-2. It gives userspace a clue as to why the module update feature is
-   unavailable.
+what can be done:
+- more efficient storage for small packets (poc i posted)
+- reduce buf alloc ahead of the time
 
-That reasoning made sense to me, and I do not see a strong reason not to
-use the "bug bit" infrastructure. If there is no objection to it, I will
-add a short explanation to the changelog.
+> ---
+>  net/vmw_vsock/virtio_transport_common.c | 31 +++++++++++++++++++++----
+>  1 file changed, 27 insertions(+), 4 deletions(-)
+> 
+> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+> index 9b8014516f4f..94a4beb8fd61 100644
+> --- a/net/vmw_vsock/virtio_transport_common.c
+> +++ b/net/vmw_vsock/virtio_transport_common.c
+> @@ -444,12 +444,32 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+>  	return ret;
+>  }
+>  
+> +/* vvs->rx_lock held by the caller */
+> +static u32 virtio_transport_rx_buf_size(struct virtio_vsock_sock *vvs)
+> +{
+> +	u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
+> +	/* Use buf_alloc * 2 as total budget (payload + overhead), similar to
+> +	 * how SO_RCVBUF is doubled to reserve space for sk_buff metadata.
+> +	 */
+> +	u64 total_budget = (u64)vvs->buf_alloc * 2;
+> +
+> +	/* Overhead within buf_alloc: full buf_alloc available for payload */
+> +	if (skb_overhead < vvs->buf_alloc)
+> +		return vvs->buf_alloc;
+> +
+> +	/* Overhead exceeded buf_alloc: gradually reduce to bound skb queue */
+> +	if (skb_overhead < total_budget)
+> +		return total_budget - skb_overhead;
+> +
+> +	return 0;
+> +}
+> +
+>  static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
+>  					u32 len)
+>  {
+> -	u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
+> +	u32 rx_buf_size = virtio_transport_rx_buf_size(vvs);
+>  
+> -	if (skb_overhead + vvs->buf_used + len > vvs->buf_alloc)
+> +	if (!rx_buf_size || vvs->buf_used + len > rx_buf_size)
+>  		return false;
+>  
+>  	vvs->rx_bytes += len;
+> @@ -472,7 +492,7 @@ void virtio_transport_inc_tx_pkt(struct virtio_vsock_sock *vvs, struct sk_buff *
+>  	spin_lock_bh(&vvs->rx_lock);
+>  	vvs->last_fwd_cnt = vvs->fwd_cnt;
+>  	hdr->fwd_cnt = cpu_to_le32(vvs->fwd_cnt);
+> -	hdr->buf_alloc = cpu_to_le32(vvs->buf_alloc);
+> +	hdr->buf_alloc = cpu_to_le32(virtio_transport_rx_buf_size(vvs));
+>  	spin_unlock_bh(&vvs->rx_lock);
+>  }
+>  EXPORT_SYMBOL_GPL(virtio_transport_inc_tx_pkt);
+> @@ -594,6 +614,7 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
+>  	bool low_rx_bytes;
+>  	int err = -EFAULT;
+>  	size_t total = 0;
+> +	u32 rx_buf_size;
+>  	u32 free_space;
+>  
+>  	spin_lock_bh(&vvs->rx_lock);
+> @@ -639,7 +660,9 @@ virtio_transport_stream_do_dequeue(struct vsock_sock *vsk,
+>  	}
+>  
+>  	fwd_cnt_delta = vvs->fwd_cnt - vvs->last_fwd_cnt;
+> -	free_space = vvs->buf_alloc - fwd_cnt_delta;
+> +	rx_buf_size = virtio_transport_rx_buf_size(vvs);
+> +	free_space = rx_buf_size > fwd_cnt_delta ?
+> +		     rx_buf_size - fwd_cnt_delta : 0;
+>  	low_rx_bytes = (vvs->rx_bytes <
+>  			sock_rcvlowat(sk_vsock(vsk), 0, INT_MAX));
+>  
+> -- 
+> 2.54.0
+
