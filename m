@@ -1,93 +1,143 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB39A37BE7F;
-	Fri,  8 May 2026 21:07:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778274480; cv=none; b=CX17ExnSzIddHJKOo5YjziofVnc5fIOoZFHVKhT+4g8moU7pFqFjWd/JbiPiQduFi4tdv/iP7Q4CfBTpQIdoDBRD+FZWhlnvooh9pvTqMIYY0S4eRWeHgz2fALGTVyH+I1/q5elMfqu4yxkPb1gPYYoSy7ayuvMFn1XIcgmogm8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778274480; c=relaxed/simple;
-	bh=snGlCXNdRPdE6D6LIf8+v3R6FDzyG5p6i/lY7VpPi0o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=k8Swpdd0sOey/6DQBrsA/UV6HV4tVxCUB2Bzyml+gBSmdoRE9aOfzvSv+pNT75H71ErD4l9uUIxNi5tC2LE+GEVSeIeXqvBXfhHvcBi3cMjhp8FId/tZVfmO68kRbCSU8f2B4yCoRs0i8DYNtKRhHEG8OyGIs30OOu/47c0SVQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=GWzS6ex3; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31A21381AF0
+	for <kvm@vger.kernel.org>; Fri,  8 May 2026 21:21:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778275301; cv=pass; b=pN3fT6WAPRzSPrTP7ibxhKlaRjCWPQ2XpY6dp7WXLVbDmm23YECBkdSlGQJw8inzQqOXnLuA81oOE2fMnTeIhIb0jTX26GMihZtHrQYHUnIKH0303jLtkb5JdIz7KoLNMxGyWU5rqw1T9YIEx3bWDRx+MKQX8QCb50KzF0hUgrw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778275301; c=relaxed/simple;
+	bh=DwVpQtg2nQbOTA132JfDdSVfFAB6KCJ3Mceieu5x3bI=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=C2YluDpAIz3UapcVWrYMahsCcuLAAjjMfSMrEuu8yrLdEiS8eFfMu/7DEcekdMxVoNDfciUzSrJ1WY4ofc/DKYcWkvTsWyLy5qlSt1QV0rumAWCs9ErRFLJIXzvPZ+z7F+rXnSMHL0/OVz7zD5O3FEGHL1D/X1nmUELRSLMSIzY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UBSIVYV+; arc=pass smtp.client-ip=209.85.217.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="GWzS6ex3"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 0C72440E014B;
-	Fri,  8 May 2026 21:07:56 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id nteMjf7f3Rkz; Fri,  8 May 2026 21:07:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1778274465; bh=dyC6j2Ha8uaqPe40e7AkHw5Pabt9MP7uRNHi7eH1NNI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=GWzS6ex3JDg4ClbFRqVhEu0UmJdDbYXhoPjUaCkA+zf3+CDRrbExoCem77ySlycHd
-	 Jzsb7+nM8kYSDQwc5JCB6VAfhZZH2vjfKlXwjE5SL6Ld+Sk6Nk5Kip7tutiJAtXyf1
-	 g7/kAB4HVSBtXEDeO7yFUFVjy2adOSA1RG6S80wEc971NRdm3hliK8/J6eWOSZ8Rct
-	 4uUo/8PdAlzZbvtPL5XKYbTfOq1f9GxQ/smmJaM8+JPjM2x9RKgeqxjR95bpOi6++t
-	 XY8DUbiiu9oAiNyivvVrDylXo457B0QhCHWjxqCzjU18NFYVqUpMGs9JJh8QPE4L1g
-	 eO55M/KthaPRIox14Bzy+QnzvSO28x529s6zWHTxnwnT3IF1plj+sJ/EyKJot1zTF4
-	 5y0TcTUe9Xg3rL4/NC+541tEYtS+9qs/ysJ//fPnIa1OV2gMkd95tgwfXDWC1JoYF5
-	 xQDxnTzoCVS82D2OefqBcOGuAXzlkfvKKHb0RwIWbrLB35JzVBqSK7vGIy6li7sF1c
-	 WZ+rdw5EM0e2dDV76SINdee/QB1LkwsG+B5EfMfpL/r1/O+ZSTYb1wjisWkVx5349h
-	 5nM7e/1Z9/L0xIDDXOkXxBGqeUkORsJ2ehi1x8K5T4FHuA0nQaZ7COwMfvmIhV8XeI
-	 6Z4nxbcmXgRghBVEF1E8DiUY=
-Received: from zn.tnic (pd953014d.dip0.t-ipconnect.de [217.83.1.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 1A22D40E00C2;
-	Fri,  8 May 2026 21:07:12 +0000 (UTC)
-Date: Fri, 8 May 2026 23:07:11 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Ashish Kalra <Ashish.Kalra@amd.com>
-Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
-	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
-	peterz@infradead.org, thomas.lendacky@amd.com,
-	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
-	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
-	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
-	Nathan.Fontenot@amd.com, jackyli@google.com, pgonda@google.com,
-	rientjes@google.com, jacobhxu@google.com, xin@zytor.com,
-	pawan.kumar.gupta@linux.intel.com, babu.moger@amd.com,
-	dyoung@redhat.com, nikunj@amd.com, john.allen@amd.com,
-	darwi@linutronix.de, linux-kernel@vger.kernel.org,
-	linux-crypto@vger.kernel.org, kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev
-Subject: Re: [PATCH v4 0/7] Add RMPOPT support.
-Message-ID: <20260508210711.GGaf5Qf3xh4e1eoMwS@fat_crate.local>
-References: <cover.1775874970.git.ashish.kalra@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UBSIVYV+"
+Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-628086439b6so1870295137.2
+        for <kvm@vger.kernel.org>; Fri, 08 May 2026 14:21:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778275299; cv=none;
+        d=google.com; s=arc-20240605;
+        b=c3AedL/boLH7XkKAEMaDiLzd/mYgHlq4nsfttPo0xWpAPtsXTo9csgvRDvx8tVHFs6
+         0/bHOd0sbw5Gpt8iHj6iny/B/7frbl3nyrv7tKE6XmS16CWh8EyjLYi8JrnT0C7eM660
+         VfHV0yNkUEb5DfqB1zmEbkU8KiZaNCINbf5nZ3i53se0NnboER7mJoey7/BFr8C4boEU
+         3KCPa3PP5dUMDoK+lsaW0Heh37Ch1yfHDIwc2jciySR5pUPdDyZ4gt8X07fAn34D1LQA
+         0lvP5X4l1CvhdxGnpQa6VgGIA9hHr7eHW6pgQxPPXvb66Manw2iZ1ThzY8epfvJioBsL
+         LmkA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=DwVpQtg2nQbOTA132JfDdSVfFAB6KCJ3Mceieu5x3bI=;
+        fh=1CuTevNMlVA/KEx4V7Rt2iqacguqKSsoEdH5iLhf2bk=;
+        b=CLadGOByFGUKFIHQCV9NRDmqGb82RHYXj2ztL5buYkq4R3YeRuO1sCbES81UyUzpD0
+         S0tqKrEA7G4nvn+4eNjQ57DPuNWzy3muZyPg5usfXQoDcqsSKC+ITFeu7A6H7iTuex8K
+         0L/IZ53nMASvT9NeI86VTjK7zZb0NXbahlS8g3s3VXlVFsLgnq0rHTT2ziyl/DYHDpPl
+         CPqS5BuHB4ColIh4aZuwvS9gok98JGZlsEa+C8THMtidxEZoBgt6D6zMF/m0ERZYr1u6
+         AH1aWPSIk/TWvr3j0rbf66SwvXu7K01gm/L7pHRwkVEjWuQfzAqcNaAetVUGuB2j5KsV
+         7asg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778275299; x=1778880099; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=DwVpQtg2nQbOTA132JfDdSVfFAB6KCJ3Mceieu5x3bI=;
+        b=UBSIVYV+DWGpniUTgfToZNAWd5wYknlbdg+jHa8ib8fuBYefruu53HdoscKhtUpTfF
+         +FIyWQKOigzjLNooN8kmf4/QhFvDUVDYc1DUcEwGtTp4qHY19snvIawBSOEjY9rjxDAW
+         E3hergxglpxvyoFLcNuUevBTJBOMui9j01AzYJ291EqYmksQtJmn1/DabVkI+CKc0zCu
+         Z4YpJuyo1aHi8DACkQxc9lzxhTI2w3n2lp2v8tpBUyXyKIdRR4r/MKldOCN8M50cUoMS
+         4iWjyCjMuorgsaXskKpwTX/0DXt6udn4RiGrk6SX/h/fYRWj7lxKdYbiKdgQcX9bbXJT
+         ZGJQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778275299; x=1778880099;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DwVpQtg2nQbOTA132JfDdSVfFAB6KCJ3Mceieu5x3bI=;
+        b=UxfDAv82kcGAatIN4JnuQdOzkP+U+Qsp6xmXSO6vWTA/0YuSusGt113Qn1QzQM2ivR
+         lfDLQoiUJNIVEgWie3dpgwQjbByQeCCtRcUy/Q7UfDywCZC+whw3+1OO1r6nQiyl1nnF
+         1mgDS1E3yuk+pagwZlilnT9TrIM3NdNPUbsQQ8vIuUOlSy9OB+WVaFXrnV/tPluoF6bq
+         lSqZmPDJbZ+CZWfqcDcAp/WSrV4aOmE94QXNPg43cUChkXA2y5w57wdb/Z4OlXPsQpCM
+         860MagGdl5vthZTywzNdQiL9pUDMH63pX0zH7apzfdBDI79vLhbjyl4UBjIxYwGn4Srp
+         HNrg==
+X-Forwarded-Encrypted: i=1; AFNElJ8YeKw4cjyXXGt/6AoANu0kUGZbHd3N7KomCkVOS+qFcfJmyA97Y5BxGu3x7tTLFEGnPmI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzR45tlfs131qKH/px7WgRrawF8fwQTSEnLONVIBbfsn5xKi3cx
+	qdvvGHUx1lm5G45LDUr5owflZIwPYfZ8n090ze1v+dDDg6dE4S+zihQxxYf4gkTQA35BIoQfbsf
+	55bW0p1w6N/Z9DbXw+TYLYwtuEJNa/pZxn27XyhpW
+X-Gm-Gg: Acq92OEAeGZH7IoIlioF+D6gQHdp/qh2t902GVl2auqz7ZyX4veO+eN8aWAD6XAG1SY
+	kU9c419kJe0BC+lUVAOXEHxn1CAKBrnKumM8GuS9xLc0R/AVyT/jvch9aFm48+6aMwKaLGFl7il
+	fU+XEKwDAGzl6O3nlWF8BvH3H5OcaHvRnkLC9oPoF3vyTFHyYlbqe+8IgwE6sTzx18iVj34kGDY
+	Zfen8KoC/mmKp65a/pUH53gnq/KMGf54CY58B4Ti36qbq2igJLkLMGax+7oYs8x0p4s7Pv9k8CT
+	DtCxQ/I10mQaMOJisyXqnAus/fZReYfjk7onyX378ldmrQ45/LxmMQdC/jcOsMeEWpGOGJnbDak
+	zKURKOBT6gM9HoY8=
+X-Received: by 2002:a05:6102:2ac7:b0:631:8bae:f74d with SMTP id
+ ada2fe7eead31-6318baf205amr901736137.28.1778275298534; Fri, 08 May 2026
+ 14:21:38 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 8 May 2026 14:21:37 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 8 May 2026 14:21:37 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <af4gJ6xZ3e7UXOuO@google.com>
+References: <20260326-gmem-inplace-conversion-v4-0-e202fe950ffd@google.com>
+ <20260326-gmem-inplace-conversion-v4-10-e202fe950ffd@google.com>
+ <2r4mmfiuisw26qymahnbh2oxqkkrywqev477kc4rlkcyx7tels@c7ple7kdgpo3>
+ <CAEvNRgFkusZeKxGctUpTTbYjdi7nZL1ZZar-gT7XRUOCZ2xtpw@mail.gmail.com>
+ <eiiecl7jvywvqb4drq7cchmcabcrdka25wxr77uavxqineeedm@rfcnhdz6xoxf>
+ <3blpenhpvysb2ig7efegedx4v3flppl5ftnz6vhpqlatfk3ycn@vmmhs7mvjieg>
+ <CAEvNRgGbMhkX310CkFY_M5x-zod=BDTiuznrZ0XvFPUK7weL1A@mail.gmail.com>
+ <foi2zvv5qrfdcspnx4fstrvzl74m6xp6zrsw5omlbprxh4jrhx@vxnwk7fr46gu> <af4gJ6xZ3e7UXOuO@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <cover.1775874970.git.ashish.kalra@amd.com>
+Date: Fri, 8 May 2026 14:21:37 -0700
+X-Gm-Features: AVHnY4KoLAXwUd272WSq8KkXYOzbLX3Fym78BjF7-ccyQZ1fkjgts947Mu_AiDo
+Message-ID: <CAEvNRgGOCUL-MzBmXZNZHYEiFdVmeL_K0itPrSRex2f+FazGGQ@mail.gmail.com>
+Subject: Re: [PATCH RFC v4 10/44] KVM: guest_memfd: Add support for KVM_SET_MEMORY_ATTRIBUTES2
+To: Sean Christopherson <seanjc@google.com>, Michael Roth <michael.roth@amd.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
+	oupton@kernel.org, pankaj.gupta@amd.com, qperret@google.com, 
+	rick.p.edgecombe@intel.com, rientjes@google.com, shivankg@amd.com, 
+	steven.price@arm.com, tabba@google.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, Apr 13, 2026 at 07:42:03PM +0000, Ashish Kalra wrote:
-> From: Ashish Kalra <ashish.kalra@amd.com>
-> 
-> In the SEV-SNP architecture, hypervisor and non-SNP guests are subject
-> to RMP checks on writes to provide integrity of SEV-SNP guest memory.
+Sean Christopherson <seanjc@google.com> writes:
 
-Sashiko has comments:
+>
+> [...snip...]
+>
+>
+> Summarizing this week's PUCK call[*]:
+>
+> Scrap PRESERVE and ZERO, and simply rely on vendor specific semantics.
+>
+>
+> [...snip...]
+>
 
-https://sashiko.dev/#/patchset/77153c889934972efcfc3d210251564f29abcf51.1775874970.git.ashish.kalra%40amd.com
+Thanks for the summary! Please see v6 here:
 
-Pls address them.
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
+https://lore.kernel.org/all/20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com/T/
