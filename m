@@ -1,63 +1,63 @@
-Received: from mail-qv1-f48.google.com (mail-qv1-f48.google.com [209.85.219.48])
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D55839DBDD
-	for <kvm@vger.kernel.org>; Fri,  8 May 2026 22:22:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC0537C11E
+	for <kvm@vger.kernel.org>; Fri,  8 May 2026 22:30:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778278966; cv=none; b=BHKeROMRzHbnjIif1r8fwHyuO9OZa3P6ovydtgxkG288CVawPZOZUTc1zLMqTqyNmHS15hwWvdUqymbK365JEx1UsmvplKq/PQLr6OK0ixY1F831A/F4jKSRRheFUUT4D/4dpTPpWShKvqFvcGqM/6Of4RDmu0vwYbi3muMkK9s=
+	t=1778279440; cv=none; b=aiZej+ODN3rDor2fclmSnj1dmiaM3QdS8jWWU6UbD8GW1qaLIHmNJ8OePOc5tGh6dXdBD+s/JJzm9+duaw1QqQ9oForfAiGBnv0sAAK/6P+njtFEvAlQCeBzpXjZONjma1IuivbUd2Pk1y6soKNlVW7+OvO4FaVYNjC2Lyq82i4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778278966; c=relaxed/simple;
-	bh=ybo2HK/PI6PDF5GbqOTLQGuk0Dq2WjaK+tSFJS3Pp9Y=;
+	s=arc-20240116; t=1778279440; c=relaxed/simple;
+	bh=Wu5FDALBvzlDUGj+uhbPz25Y48g8JEEjaRm7yw3xXC4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SF2kMNN/0yHDCMixZO2eUMg2haMNjwOfP+ZI8530pJqEheOcJVQ+F3qk3wuD/jumjS7k5SIigQHrUcEICq1wQqxO5xR0UHVFmSTHrNX2VEzO5RAUZ470N+rD+QwloRc3w/23Ef392UrgoUuxdWB7mYkieDQpXUhv16hRgV5DBpU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cuizcXye; arc=none smtp.client-ip=209.85.219.48
+	 Content-Type:Content-Disposition:In-Reply-To; b=aKBJAqKNQl9CqUgU2kcc2TiVV1SkRiQTMMm+MzoiwNeLpSUHUf6w0WneOQGJUtz0w2OVdPTOWPhSKJnx0MhZVZe2pcyiumpKgSP+4AAoNIHRj4uOPTkwkNEX9MyfgVXBT+oWwo1JE2X0xTfMHSoLJQGCZ0ZRzFnusoOLJxvuibE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FiYOSPmM; arc=none smtp.client-ip=209.85.222.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cuizcXye"
-Received: by mail-qv1-f48.google.com with SMTP id 6a1803df08f44-8aca4e14411so26215816d6.3
-        for <kvm@vger.kernel.org>; Fri, 08 May 2026 15:22:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FiYOSPmM"
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-8ef2118b478so259193885a.0
+        for <kvm@vger.kernel.org>; Fri, 08 May 2026 15:30:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778278962; x=1778883762; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778279437; x=1778884237; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5MQa0UpWFwjb5S8kUnJztiH2lQyqJ0Jvx1ScOQZwHKA=;
-        b=cuizcXyeDI2zPjB6uL1F5Lldbr9PBBUQtUKz/vc8IV0wN7ZABZ0g36M3xkjq5XQyNU
-         w4rBEKFc/VTtOKe6DburFSrQicZX8quIPqnLa+nGjwukyUXGHV2rjQjf4hLVV35sNsEF
-         vmrpXzQzv40NgqcGmFAY4CUcqVMuwyJMUYvgJmJAyCKt0+3oVmoUGmUGeD5FLv9V/WUO
-         I9D2t5eUYDIUMOJ/+dokux8av2rVGvRb87WMJ/CorZLmXvMEmAwaS5hTuOi3VDMVrJLD
-         zvtRdRw9UHZUv/pghA/f+vCVNnbSBWJK2Xb83dBvkoJvsMZTb145g8hNPiIZOOWzY7s0
-         2wsg==
+        bh=2AUaxYCPCqaIbXtU1GhIn25HX53q6rl1plD/MbJsm1Y=;
+        b=FiYOSPmM4YgttiUU3CDnyv9jYdys/B6dBcUX2p1bJ4o1rLQg374U4uXhcjqWjPgOpx
+         BThusN6G8ZUqxLrBJn1eEaExAjlSEF6OkbUwkvWOwVPuEkzD+cKFzcsK7d+9E+pvfPD6
+         HrqdwZVDIvr9N56FOkZlqSMMp9AICF4cCmO3/tX62E0WCO5ZiQslGE9CXCS3oj0x+xWk
+         pxJ52fBB9X0ka02ySEs6NvoctjAeh7jwpvqfl1Ku5iyT6JzZmPo+CO/4+HvWg0KREqsd
+         E+O/wdmtKAUJh7bszODU2m7VW/CZxrF/ubSOhqUlJt8b081HZnhovARdOuOeHtjAYOgx
+         U5EQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778278962; x=1778883762;
+        d=1e100.net; s=20251104; t=1778279437; x=1778884237;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5MQa0UpWFwjb5S8kUnJztiH2lQyqJ0Jvx1ScOQZwHKA=;
-        b=eD4/OlR3O2dCPezFY9XrREBiKnl1s+GNsSba5uAb9gQZ2mAa45y9rynS5vcPykZfAH
-         mqeP3cut+wapbDeaS+0MS1arE7zPMS6mSV/pa63DVVwmGiY7N4PKAndF0ILQMojIsqGC
-         TFJ+ZRF92tsAyF2ljNpYH6XTxGWobsBLdrXacpvQbWgmo7yKDBk82I/K8hSB3lGmCSa2
-         MFWyHayxWbtdRp7TEcdBW8m2LX+j7WsgA6LkgerXsTqW4+ZeAUVq1JKihQWxMHYGUEVC
-         jgGDkU+pAS89N5if9MU+FY+ySKCa0j6MXtk/5K324Ydf6a2i3qz8mkI0iqAwTvYl3EWX
-         X4oA==
-X-Forwarded-Encrypted: i=1; AFNElJ/QMD1KfpcGkvi5keof+Oi1iShB4l9hpS8JFVB1jDOVAlGmWs/SWJ7S3UnnYprLVmh85PI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+RhwhAzB0tag3ATok4tnZKEBksRITYwhMjWZOz4k9jgNpU35K
-	AcZk63uC8y5c6e77Xrjznya6TY8pcM70B05uYdqAy0uTG1+kPcDBAWuV
-X-Gm-Gg: Acq92OFD1spReiSSA3jrmmWwnBOl51GE2yAKdAtDk5Gah9fqq5vTH4xoL/mp29OojY5
-	BO+q6L1bEi2b9avdcAaJ/FV/cF2uR/YILCxdewdX/hoJ9eDs13NnCl4wEmzveUoiYoBDAQxfRR4
-	+g6kuDmI+klZJao3hPWcWE8p0dHJrux1jmIW8P5Za7mcTqvl+YwNz7FPqlIGSWU5R5JAyDrpqkg
-	pZunG5AzC1nOIYtKD8ox+4ry8hmZntz79A6j1X+GfDMpFPG0W25W36a7urf89PVleeM/+L+rUeO
-	yXH/VCqi4gv/+UqNXG9NDVNoxnV2UlbvBl1IaLls5+zxArmz0PTXEAF3hrH4S514nYYOIXOhqy4
-	y4cjrFhmOZXAKEV+MQHa4AYZXbSGX2Fj5HKRE4zUK3Es9KwK9LJ3ZZS4E9GDkOm/1aRPylb3yAC
-	9bN4xn+770w9mBrWIYFxc9t9pEkQD/KgofpvN8335AkieH9mYNARcJd3k=
-X-Received: by 2002:a05:6214:258c:b0:8b0:2ae4:da26 with SMTP id 6a1803df08f44-8bc422a66f5mr208086466d6.10.1778278962004;
-        Fri, 08 May 2026 15:22:42 -0700 (PDT)
-Received: from devvm29614.prn0.facebook.com ([2a03:2880:ff:72::])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8bf39c81b3fsm30363126d6.29.2026.05.08.15.22.39
+        bh=2AUaxYCPCqaIbXtU1GhIn25HX53q6rl1plD/MbJsm1Y=;
+        b=OYD4nO5dRs0ahPwSbk/t0Za3md4IoMmoDZy1uyaAPzVRE9Q4wJv/NM8z9yPOq0BEyU
+         ACdcHKWWJliBLaJmTcQDt+9aOIUjanMWHZWzeil4N6RyahO9nsWtGbqd3d1ScH+4sN2o
+         MBkVH3cH95WKgs8Sun8tXMz6hLNAnX2nxcMqw7PVjCDn0k89FIkyKaf7cB4viHB2gIWp
+         KpakueH8BWTSckShi8Yi0wK8Pwi1tTBEBBAXBuzQQ5YUeQNcBpLY1N4oleVir6VNhKEj
+         n7Vpsz1ETyco0k5r49C39ATRdIbXZEpyMmlKc7dIFQ/SpeFvgpPtsriuX86e7Q5EJQnC
+         E3Qw==
+X-Forwarded-Encrypted: i=1; AFNElJ9GV6a04XUqPgQLE57AZF2964ipN/vtwIfSBD6/4UMfZYx3yfDKV5f2mZNE7+cVMmSVrU8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRPh2TzHaOw1ty/CJhgqPp0a/JfNisobl8lT2uRovPOTJ1wlhc
+	hCk0nv8ECeUsx0cfXh4iJ/QAf5QjVMdEto4RHhoVqPY6ZjqzBeNLQdzT
+X-Gm-Gg: AeBDieuWRFgTwHsIY6FrCJleeAC3uY0lZ7QrLnXaGpq0pVmJ2ilxiIWlaA9U5vfqKpc
+	8AFiWbTSVAXhNyL/kN0fkbchSSZ7QPFNEbH/UqU758gwCn/QsS0+ymk/moeETf0/BUoDhrOy1CG
+	7YAX6E/NoCC96g7j5PwUg6BZcUM+6MKkzVOVnQuSCbWHhPNBhEEkZQDnlBuMaTB0dbx7dLxyBeu
+	BqiJDhAqv2N3vdWzN3Ld/2q1xfr3OtbSe4VjXVXLf/U3uxY6r0ByqdJLqri5QKFOpNiRlSyA7ZI
+	BcnzAjce8qBbhwpE4FMJAYMgnoBZE0F3ApY3Zb97PrQQnE93ors52xdnPhaq2t3eoVv0wZgyaaZ
+	vzw+naVOEltwnl3c598O5pqh2IvnRol3Mfp4iHkHy6uJ+tSK9fBOY+mXJ3xiNtevpfz+Nev5jz3
+	tZ4Yap8+GGnYRPUesUVg0NvmP/OUyu5o1f6kp6jxoiJitLsxo=
+X-Received: by 2002:a05:620a:2684:b0:8ee:630e:350a with SMTP id af79cd13be357-904d72c239fmr2149865085a.58.1778279436728;
+        Fri, 08 May 2026 15:30:36 -0700 (PDT)
+Received: from devvm29614.prn0.facebook.com ([2a03:2880:f800:38::])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8fc2cd04c68sm2382574385a.46.2026.05.08.15.30.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 May 2026 15:22:41 -0700 (PDT)
-Date: Fri, 8 May 2026 15:22:37 -0700
+        Fri, 08 May 2026 15:30:36 -0700 (PDT)
+Date: Fri, 8 May 2026 15:30:32 -0700
 From: Bobby Eshleman <bobbyeshleman@gmail.com>
 To: Stefano Garzarella <sgarzare@redhat.com>
 Cc: netdev@vger.kernel.org, Yiqi Sun <sunyiqixm@gmail.com>,
@@ -74,11 +74,11 @@ Cc: netdev@vger.kernel.org, Yiqi Sun <sunyiqixm@gmail.com>,
 	Arseniy Krasnov <avkrasnov@salutedevices.com>,
 	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
 	Bobby Eshleman <bobby.eshleman@bytedance.com>
-Subject: Re: [PATCH net 1/2] vsock/virtio: fix length and offset in tap skb
- for split packets
-Message-ID: <af5iLWLo4Kz+USum@devvm29614.prn0.facebook.com>
+Subject: Re: [PATCH net 2/2] vsock/virtio: fix empty payload in tap skb for
+ non-linear buffers
+Message-ID: <af5kCGWtjwGi4Y2E@devvm29614.prn0.facebook.com>
 References: <20260508164411.261440-1-sgarzare@redhat.com>
- <20260508164411.261440-2-sgarzare@redhat.com>
+ <20260508164411.261440-3-sgarzare@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -87,59 +87,90 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260508164411.261440-2-sgarzare@redhat.com>
+In-Reply-To: <20260508164411.261440-3-sgarzare@redhat.com>
 
-On Fri, May 08, 2026 at 06:44:10PM +0200, Stefano Garzarella wrote:
+On Fri, May 08, 2026 at 06:44:11PM +0200, Stefano Garzarella wrote:
 > From: Stefano Garzarella <sgarzare@redhat.com>
 > 
-> virtio_transport_build_skb() builds a new skb to be delivered to the
-> vsockmon tap device. To build the new skb, it uses the original skb
-> data length as payload length, but as the comment notes, the original
-> packet stored in the skb may have been split in multiple packets, so we
-> need to use the length in the header, which is correctly updated before
-> the packet is delivered to the tap, and the offset for the data.
+> For non-linear skbs, virtio_transport_build_skb() goes through
+> virtio_transport_copy_nonlinear_skb() to copy the original payload
+> in the new skb to be delivered to the vsockmon tap device.
+> This manually initializes an iov_iter but does not set iov_iter.count.
+> Since the iov_iter is zero-initialized, the copy length is zero and no
+> payload is actually copied to the monitor interface, leaving data
+> un-initialized.
 > 
-> This was also similar to what we did before commit 71dc9ec9ac7d
-> ("virtio/vsock: replace virtio_vsock_pkt with sk_buff") where we probably
-> missed something during the skb conversion.
+> Fix this by removing the linear vs non-linear split and using
+> skb_copy_datagram_iter() with iov_iter_kvec() for all cases, as
+> vhost-vsock already does. This handles both linear and non-linear skbs,
+> properly initializes the iov_iter, and removes the now unused
+> virtio_transport_copy_nonlinear_skb().
 > 
-> Also update the comment above, which was left stale by the skb
-> conversion and still mentioned a buffer pointer that no longer exists.
+> While touching this code, let's also check the return value of
+> skb_copy_datagram_iter(), even though it's unlikely to fail.
 > 
-> Fixes: 71dc9ec9ac7d ("virtio/vsock: replace virtio_vsock_pkt with sk_buff")
+> Fixes: 4b0bf10eb077 ("vsock/virtio: non-linear skb handling for tap")
+> Reported-by: Yiqi Sun <sunyiqixm@gmail.com>
 > Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 > ---
->  net/vmw_vsock/virtio_transport_common.c | 11 ++++++-----
->  1 file changed, 6 insertions(+), 5 deletions(-)
+>  net/vmw_vsock/virtio_transport_common.c | 40 ++++++++-----------------
+>  1 file changed, 12 insertions(+), 28 deletions(-)
 > 
 > diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index 9b8014516f4f..a678d5d75704 100644
+> index a678d5d75704..989cc252d3d3 100644
 > --- a/net/vmw_vsock/virtio_transport_common.c
 > +++ b/net/vmw_vsock/virtio_transport_common.c
-> @@ -166,12 +166,12 @@ static struct sk_buff *virtio_transport_build_skb(void *opaque)
->  	struct sk_buff *skb;
->  	size_t payload_len;
+> @@ -136,27 +136,6 @@ static void virtio_transport_init_hdr(struct sk_buff *skb,
+>  	hdr->fwd_cnt	= cpu_to_le32(0);
+>  }
 >  
-> -	/* A packet could be split to fit the RX buffer, so we can retrieve
-> -	 * the payload length from the header and the buffer pointer taking
-> -	 * care of the offset in the original packet.
-> +	/* A packet could be split to fit the RX buffer, so we use
-> +	 * the payload length from the header, which has been updated
-> +	 * by the sender to reflect the fragment size.
->  	 */
->  	pkt_hdr = virtio_vsock_hdr(pkt);
-> -	payload_len = pkt->len;
-> +	payload_len = le32_to_cpu(pkt_hdr->len);
+> -static void virtio_transport_copy_nonlinear_skb(const struct sk_buff *skb,
+> -						void *dst,
+> -						size_t len)
+> -{
+> -	struct iov_iter iov_iter = { 0 };
+> -	struct kvec kvec;
+> -	size_t to_copy;
+> -
+> -	kvec.iov_base = dst;
+> -	kvec.iov_len = len;
+> -
+> -	iov_iter.iter_type = ITER_KVEC;
+> -	iov_iter.kvec = &kvec;
+> -	iov_iter.nr_segs = 1;
+> -
+> -	to_copy = min_t(size_t, len, skb->len);
+> -
+> -	skb_copy_datagram_iter(skb, VIRTIO_VSOCK_SKB_CB(skb)->offset,
+> -			       &iov_iter, to_copy);
+> -}
+> -
+>  /* Packet capture */
+>  static struct sk_buff *virtio_transport_build_skb(void *opaque)
+>  {
+> @@ -214,13 +193,18 @@ static struct sk_buff *virtio_transport_build_skb(void *opaque)
+>  	skb_put_data(skb, pkt_hdr, sizeof(*pkt_hdr));
 >  
->  	skb = alloc_skb(sizeof(*hdr) + sizeof(*pkt_hdr) + payload_len,
->  			GFP_ATOMIC);
-> @@ -219,7 +219,8 @@ static struct sk_buff *virtio_transport_build_skb(void *opaque)
->  
->  			virtio_transport_copy_nonlinear_skb(pkt, data, payload_len);
->  		} else {
-> -			skb_put_data(skb, pkt->data, payload_len);
-> +			skb_put_data(skb, pkt->data + VIRTIO_VSOCK_SKB_CB(pkt)->offset,
-> +				     payload_len);
+>  	if (payload_len) {
+> -		if (skb_is_nonlinear(pkt)) {
+> -			void *data = skb_put(skb, payload_len);
+> -
+> -			virtio_transport_copy_nonlinear_skb(pkt, data, payload_len);
+> -		} else {
+> -			skb_put_data(skb, pkt->data + VIRTIO_VSOCK_SKB_CB(pkt)->offset,
+> -				     payload_len);
+> +		struct iov_iter iov_iter;
+> +		struct kvec kvec;
+> +		void *data = skb_put(skb, payload_len);
+> +
+> +		kvec.iov_base = data;
+> +		kvec.iov_len = payload_len;
+> +		iov_iter_kvec(&iov_iter, ITER_DEST, &kvec, 1, payload_len);
+> +
+> +		if (skb_copy_datagram_iter(pkt, VIRTIO_VSOCK_SKB_CB(pkt)->offset,
+> +					   &iov_iter, payload_len)) {
+> +			kfree_skb(skb);
+> +			return NULL;
 >  		}
 >  	}
 >  
