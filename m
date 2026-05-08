@@ -1,190 +1,159 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CE839D6CF
-	for <kvm@vger.kernel.org>; Fri,  8 May 2026 22:57:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8473932FC
+	for <kvm@vger.kernel.org>; Fri,  8 May 2026 23:13:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778281047; cv=none; b=LFR2HolBXgx0lF4sgKhHxDqWaKLjFPv30eJIvVt2WDG9ut6IvLQgv2llapo1qGBRSiPXYbimbvFC3xTctW+jZxOR+3p+6gqnxK7PRfRAH2Nh9RWz0hZ8ZiYbnCFG1PJYs02PFBrz3JO+dwet1WvDNuSiBkxdAjO9YOy2mL7GLPY=
+	t=1778282037; cv=none; b=KF0Ac3qh0kwFkwNPPK1sbVWcLBFJHvZOM4ZVlY8X8VJh371OZuXUhOnJt5y7qsNEMoT62jtSDz1Ho1fux/UVsf5dgP2Iwp4dW2x54PG0P6uWkuaajkxePArqhfth08NtSrNDEmGC2e7uHL3qVhPq0HKZyHwzH1sB9iK1q6nTQfk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778281047; c=relaxed/simple;
-	bh=PhXkz2bexYeFkd5Iu6TUPlzgb73A7DZO37TdKBxv6+U=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=i5qPbCBwHrbSCu7ks54ApgSa4iE9SSAu7p+z6wIqVpY4J5KlhT6UAoH4Xi+uJdtH66uXCJdEYAH0Uxq6wOYVch72I9ZVVj53nxgaj0mUjqR3gh481w3R0DlGQz/k+rDlAbmoVBecgtXIozltVvPMQXYSGw3LdlwSi/R8uwKpgPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LhGGgO3f; arc=none smtp.client-ip=209.85.214.201
+	s=arc-20240116; t=1778282037; c=relaxed/simple;
+	bh=rnvoE/xB7a5bFEXpoj9AvEEEt+M9LTp2jfe7XdGzg28=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=lN0bNqg/KgHOoOJMKm0pBPExVRJ5TKKCfl4cqzoZzWDO3IFWGTVgAEFMoHD+BxTs91o0zyw2d/St5kPV4f2NSTJ6H0Jg+LkCSijuA/FXObFWgfafGKztzgZkFOA2SWfXTlrYlfWUiUYURZHrvxhni828nxYlRwV5xmOOd/yy5Bs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JOphXGSh; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LhGGgO3f"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b79f4b35b7so23567275ad.0
-        for <kvm@vger.kernel.org>; Fri, 08 May 2026 15:57:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JOphXGSh"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c81086bf930so2099078a12.1
+        for <kvm@vger.kernel.org>; Fri, 08 May 2026 16:13:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778281045; x=1778885845; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wjR7D57JfGZ1jeaZVCslZKEDVUUN8a3SBLn05f05nzk=;
-        b=LhGGgO3f7rjXpIJHq0kdejDDr3kPcz28d9Yc0uZys+1FryiAYSmVtHzyYj4VZXbEz8
-         1SkrA5BKj4I/nbeH0Yp88wYBNIvoqlvhqGv5wDmlzzX7rRn8Oru13lEy/lCQKgRUy+NK
-         UTcNtJNXR89RNZr3qdE6EqPC2dlihK8BFUSmGgSMTvHoV34uY7cp5qwoXkly4pHC+6JK
-         Ga3WpDL/o+zoy7Y/rqCIN2qP6/Va3f8Xim3OpQkxr9Yt478b5y45AaZfOxJHUoY81o2y
-         kyJtxO2FvRROiDt9dOEBR8MNwjg/siFbVRbDjZY8v1rleEU66lPHy/JWNbOpp0idUyiK
-         ewaA==
+        d=google.com; s=20251104; t=1778282036; x=1778886836; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/+4lRAP9/8mOHdhTtrTDIWQTXnIlr9s4JbegNLLxb7s=;
+        b=JOphXGShk+yuZLsX0Q/LhB5VeJKqUteTXyaAlZdIDu9oZyb7qOESUIKpzbmi2ahRdB
+         LPsU7OhqxiFUQaeN1hrx8kznMNXKDGW/+QoQk26mQkr2gLP+ZBKoEepzMkPck+eXXJ4C
+         B+krKM7rchax+NAz8yuzXJKwVK+k1qeE8PCZHXgkWpm4/sPAvm/zJrThCMmMuTXNA773
+         QkvYpqpZGZrJnlUGwSudWnPZMrPihi0Pj6w30B1DJg2IlUprXL2R4QwyNQq2C4k2wpYE
+         N492DTp9x+pEFNqc7rb0U5rY55MDOag6u9XuywOamBnPrTTLsQ9DBTD6g0ARP3ZUtuha
+         XhWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778281045; x=1778885845;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wjR7D57JfGZ1jeaZVCslZKEDVUUN8a3SBLn05f05nzk=;
-        b=itkdoCLvHdBah9fE9BiHRq6yT2aDZsnQl99q97QDiowpNL5d0O5EpTJE14PE1SECSW
-         2+rwEhK9t/Wc74S7ol9//6nVD5jq2MVijJDy9JuHt/2kX5syhXGJ34ZKmIbqMAPVpizY
-         RI2Xi6P0LTdTS9uIr0lpP5yAAO30mpk/+X3BTZkEkZfQjs1aBlKegLblBpqTYzS+ZaGW
-         561Kaokip+CovnI+hK5QHy8+UotaicqJlatMiKAIoZ3fONAoI9ivCsqrnWkHmtg4w71F
-         bgL3nvkET2a9Hwl2vCI2kelUsUSeH/3C7aQmVZNfhAHX00RUEMqipIbbhVzIYkSPb6q8
-         TQqQ==
-X-Gm-Message-State: AOJu0YyJCjAkZKaf4gj+0gtoILBHtG5ZJfgrSSQc/UI8aZ5QunYF49LH
-	PJV8tforzRvUAFvpBtjGZaqF+XWzhy9IzK30fB2NsEDEjZsv0S7sqOyYRiykAKEiSbOwDp2M78B
-	0JKKKMw==
-X-Received: from pga9.prod.google.com ([2002:a05:6a02:4f89:b0:c79:8c98:9814])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3390:b0:398:b95c:51f7
- with SMTP id adf61e73a8af0-3aa5ab27f40mr16463110637.37.1778281045155; Fri, 08
- May 2026 15:57:25 -0700 (PDT)
-Date: Fri, 8 May 2026 15:57:24 -0700
-In-Reply-To: <20260407063245.2755579-3-nikunj@amd.com>
+        d=1e100.net; s=20251104; t=1778282036; x=1778886836;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=/+4lRAP9/8mOHdhTtrTDIWQTXnIlr9s4JbegNLLxb7s=;
+        b=JtbDTrR9Tgj4Ud7f2NDEx/SfuI0Z6X9uYdgNSqip+JscuKyF3W6Qo+cY0yEIr9IXKc
+         TqrtqVBgcMcWPCqZGeK1xbIXv5XvOFk6TBKVDzrHvhH31B6mkOeDjMdqyPdgXJwpE5bl
+         URL3y/XCke0ksuhICukPX0RdOq7ROG8aTEajSd37jpqow1JYGjbV7DTM0wla4ajKgCq+
+         kS9S6t3TSoK9biKIs/cokVz02MXKJ1w8Bt2aK1GhXupvH0JxYxi5Rd94TCWmbWGmIo4a
+         GtfM1QKSGxdEF4RasUpr91ZTqTmUrJ3WtuFLqiiYMajdw9i9ofTmHmX/fSX8+zoRotTX
+         tU8g==
+X-Forwarded-Encrypted: i=1; AFNElJ/hPICDPFqnSOSc+otbdempeBTxRU8RYLY/BwmYSy3mS1Q8DS3naBTwApuwJ0/YkV6YYP4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGCec+aRve7erkn0M1lyHEU1aLxSs1B4nwlZe7uT2iaabkbL2m
+	TYtsSxPd8VYkskNOTt/JKnl5rTE87EnGrvI9n3dpGfZ8T4kakd2w2MDDwcTBM5ZqgIrGipajQlm
+	CVpQmAQ==
+X-Received: from pgbdo11.prod.google.com ([2002:a05:6a02:e8b:b0:c79:7d5e:795c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:12cf:b0:39c:2d2a:632e
+ with SMTP id adf61e73a8af0-3aa8bebfecdmr8604917637.11.1778282035372; Fri, 08
+ May 2026 16:13:55 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Fri,  8 May 2026 16:13:44 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260407063245.2755579-1-nikunj@amd.com> <20260407063245.2755579-3-nikunj@amd.com>
-Message-ID: <af5qVIXf06WyK4XG@google.com>
-Subject: Re: [PATCH v6 2/7] KVM: x86: Move PML page to common vcpu arch structure
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
+Message-ID: <20260508231353.406465-1-seanjc@google.com>
+Subject: [PATCH v3 0/9] perf/x86: Don't write PEBS_ENABLED on KVM transitions
 From: Sean Christopherson <seanjc@google.com>
-To: Nikunj A Dadhania <nikunj@amd.com>
-Cc: kvm@vger.kernel.org, pbonzini@redhat.com, thomas.lendacky@amd.com, 
-	bp@alien8.de, joao.m.martins@oracle.com, kai.huang@intel.com
-Content-Type: text/plain; charset="us-ascii"
+To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	James Clark <james.clark@linaro.org>, linux-perf-users@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	Jim Mattson <jmattson@google.com>, Mingwei Zhang <mizhang@google.com>, 
+	Stephane Eranian <eranian@google.com>, Dapeng Mi <dapeng1.mi@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Apr 07, 2026, Nikunj A Dadhania wrote:
-> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-> index b77750a2efc2..909085a5dfb3 100644
-> --- a/arch/x86/kvm/vmx/vmx.c
-> +++ b/arch/x86/kvm/vmx/vmx.c
-> @@ -4934,7 +4934,8 @@ int vmx_vcpu_precreate(struct kvm *kvm)
->  
->  static void init_vmcs(struct vcpu_vmx *vmx)
->  {
-> -	struct kvm *kvm = vmx->vcpu.kvm;
-> +	struct kvm_vcpu *vcpu = &vmx->vcpu;
-> +	struct kvm *kvm = vcpu->kvm;
+Rework the handling of PEBS_ENABLED (and related PEBS MSRs) to *never* touch
+PEBS_ENABLED if the CPU provides PEBS isolation, in which case disabling
+counters via PERF_GLOBAL_CTRL is sufficient to prevent generation of unwanted
+PEBS records.  For vCPUs without PEBS enabled, this saves upwards of 7 MSR
+writes on each roundtrip between the guest and host (KVM performs an immediate
+WRMSR to zero out PEBS_ENABLED if it's in the load list).  For vCPUS with PEBS,
+this saves 3 MSR writes per roundtrip.
 
-There are 9+ existing uses of "vmx->vcpu" in init_vmcs().  I'd rather insert a
-prep patch to pass @vcpu instead of @vmx, do to_vmx() at the top, and switch all
-existing vmx->vcpu usage.
+E.g. without PEBS activity in the host, for a guest with a vPMU, this reduces
+the roundtrip time for a fastpath exit from ~1120 => ~860 cycles on EMR.  With
+host PEBS active, the reduction is ~1450 => ~900 cycles.
 
-From: Sean Christopherson <seanjc@google.com>
-Date: Fri, 8 May 2026 15:55:55 -0700
-Subject: [PATCH] KVM: VMX: Pass @vcpu, not @vmx to init_vmcs()
+However, performance isn't the underlying motiviation (well, at least, it
+didn't start that way).  Jim, Mingwei, and Stephane have been chasing issues
+where PEBS_ENABLED bits can get "stuck" in a '1' state when running KVM guests
+while profiling the host with PEBS events.  The working theory is that perf
+throttles PEBS events in NMI context, and thus clears bits in cpuc->pebs_enabled
+and PEBS_ENABLED, after generating the list of PMU MSRs to context switch but
+before VM-Entry.  And so when the host's PEBS_ENABLED is loaded on VM-Exit, the
+CPU ends up with a stale PEBS_ENABLED that doesn't get reset until something
+triggers an explicit reload in perf.
 
-Pass @vcpu instead of @vmx to init_vmcs(), and switch all of the vmx->vcpu
-usage to a simple vcpu.
+Note, as Peter pointed out, more than likely KVM needs to zero PERF_GLOBAL_CTRL
+before invoking perf_guest_get_msrs(), as that's the only way to guarantee
+stable output.  I deliberately didn't include that here, as I want to keep this
+series focused on PEBS.  I also wanted to let Jim and company bottom out on
+their investigation (still ongoing) before pursuing fixes that we'll probably
+want to send to stable@.
 
-No functional change intended.
+v3:
+ - Ensure guest PEBS_ENABLE is a subset of intel_ctrl. [Jim]
+ - Rename intel_ctrl_{guest,host}_mask to be less confusing. [Jim]
+ - Do even more cleanup of the cross-mapped handling, and specifically avoid
+   overhead when PEBS isn't in use. [Sashiko]
+ - Leave behind a FIXME regarding the "disable guest PEBS if host is using
+   PEBS" code.  I still don't know for sure why that restriction is in place,
+   and I'm too scared too change it. :-)
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/vmx/vmx.c | 25 +++++++++++++------------
- 1 file changed, 13 insertions(+), 12 deletions(-)
+v2:
+ - https://lore.kernel.org/all/20260423150340.463896-1-seanjc@google.com
+ - "Load" the host value for the guest when an MSR should remain unchanged,
+    instead of omitting the MSR from the list entirely, as KVM may need to
+    _remove_ the MSR from the list. [Sashiko, Jim]
+ - Collect Jim's reviews. [Jim]
+ - Call out that the bug being fixed is theoretical at this point.
+ - Dropping PEBS_ENABLED from the lists save three MSR writes, not two, as
+   KVM performs an explicit WRMSR prior to VM-Entry to guarantee PEBS is
+   quiesced.
 
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 5c2c33a5f7dc..b8d517b03bb4 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -4823,10 +4823,11 @@ int vmx_vcpu_precreate(struct kvm *kvm)
- 
- #define VMX_XSS_EXIT_BITMAP 0
- 
--static void init_vmcs(struct vcpu_vmx *vmx)
-+static void init_vmcs(struct kvm_vcpu *vcpu)
- {
--	struct kvm *kvm = vmx->vcpu.kvm;
-+	struct kvm *kvm = vcpu->kvm;
- 	struct kvm_vmx *kvm_vmx = to_kvm_vmx(kvm);
-+	struct vcpu_vmx *vmx = to_vmx(vcpu);
- 
- 	if (nested)
- 		nested_vmx_set_vmcs_shadowing_bitmap();
-@@ -4851,7 +4852,7 @@ static void init_vmcs(struct vcpu_vmx *vmx)
- 	if (cpu_has_tertiary_exec_ctrls())
- 		tertiary_exec_controls_set(vmx, vmx_tertiary_exec_control(vmx));
- 
--	if (enable_apicv && lapic_in_kernel(&vmx->vcpu)) {
-+	if (enable_apicv && lapic_in_kernel(vcpu)) {
- 		vmcs_write64(EOI_EXIT_BITMAP0, 0);
- 		vmcs_write64(EOI_EXIT_BITMAP1, 0);
- 		vmcs_write64(EOI_EXIT_BITMAP2, 0);
-@@ -4863,7 +4864,7 @@ static void init_vmcs(struct vcpu_vmx *vmx)
- 		vmcs_write64(POSTED_INTR_DESC_ADDR, __pa((&vmx->vt.pi_desc)));
- 	}
- 
--	if (vmx_can_use_ipiv(&vmx->vcpu)) {
-+	if (vmx_can_use_ipiv(vcpu)) {
- 		vmcs_write64(PID_POINTER_TABLE, __pa(kvm_vmx->pid_table));
- 		vmcs_write16(LAST_PID_POINTER_INDEX, kvm->arch.max_vcpu_ids - 1);
- 	}
-@@ -4898,15 +4899,15 @@ static void init_vmcs(struct vcpu_vmx *vmx)
- 	vmcs_write64(VM_ENTRY_MSR_LOAD_ADDR, __pa(vmx->msr_autoload.guest.val));
- 
- 	if (vmcs_config.vmentry_ctrl & VM_ENTRY_LOAD_IA32_PAT)
--		vmcs_write64(GUEST_IA32_PAT, vmx->vcpu.arch.pat);
-+		vmcs_write64(GUEST_IA32_PAT, vcpu->arch.pat);
- 
- 	vm_exit_controls_set(vmx, vmx_get_initial_vmexit_ctrl());
- 
- 	/* 22.2.1, 20.8.1 */
- 	vm_entry_controls_set(vmx, vmx_get_initial_vmentry_ctrl());
- 
--	vmx->vcpu.arch.cr0_guest_owned_bits = vmx_l1_guest_owned_cr0_bits();
--	vmcs_writel(CR0_GUEST_HOST_MASK, ~vmx->vcpu.arch.cr0_guest_owned_bits);
-+	vcpu->arch.cr0_guest_owned_bits = vmx_l1_guest_owned_cr0_bits();
-+	vmcs_writel(CR0_GUEST_HOST_MASK, ~vcpu->arch.cr0_guest_owned_bits);
- 
- 	set_cr4_guest_host_mask(vmx);
- 
-@@ -4921,7 +4922,7 @@ static void init_vmcs(struct vcpu_vmx *vmx)
- 		vmcs_write16(GUEST_PML_INDEX, PML_HEAD_INDEX);
- 	}
- 
--	vmx_write_encls_bitmap(&vmx->vcpu, NULL);
-+	vmx_write_encls_bitmap(vcpu, NULL);
- 
- 	if (vmx_pt_mode_is_host_guest()) {
- 		memset(&vmx->pt_desc, 0, sizeof(vmx->pt_desc));
-@@ -4934,13 +4935,13 @@ static void init_vmcs(struct vcpu_vmx *vmx)
- 	vmcs_writel(GUEST_SYSENTER_ESP, 0);
- 	vmcs_writel(GUEST_SYSENTER_EIP, 0);
- 
--	vmx_guest_debugctl_write(&vmx->vcpu, 0);
-+	vmx_guest_debugctl_write(vcpu, 0);
- 
- 	if (cpu_has_vmx_tpr_shadow()) {
- 		vmcs_write64(VIRTUAL_APIC_PAGE_ADDR, 0);
--		if (cpu_need_tpr_shadow(&vmx->vcpu))
-+		if (cpu_need_tpr_shadow(vcpu))
- 			vmcs_write64(VIRTUAL_APIC_PAGE_ADDR,
--				     __pa(vmx->vcpu.arch.apic->regs));
-+				     __pa(vcpu->arch.apic->regs));
- 		vmcs_write32(TPR_THRESHOLD, 0);
- 	}
- 
-@@ -4951,7 +4952,7 @@ static void __vmx_vcpu_reset(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
- 
--	init_vmcs(vmx);
-+	init_vmcs(vcpu);
- 
- 	if (nested &&
- 	    kvm_check_has_quirk(vcpu->kvm, KVM_X86_QUIRK_STUFF_FEATURE_MSRS))
+v1: https://lore.kernel.org/all/20260414191425.2697918-1-seanjc@google.com
 
-base-commit: 4c88d35f51436169884ce87bcf26f31e10106e71
+
+Sean Christopherson (9):
+  perf/x86/intel: Ensure guest PEBS path doesn't set unwanted
+    PERF_GLOBAL_CTRL bits
+  perf/x86/intel: Don't write PEBS_ENABLED on host<=>guest xfers if CPU
+    has isolation
+  perf/x86/intel: Don't context switch DS_AREA (and PEBS config) if PEBS
+    is unused
+  perf/x86/intel: Make @data a mandatory param for
+    intel_guest_get_msrs()
+  perf/x86/intel: Invert names of intel_ctrl_{guest,host}_mask
+  perf/x86: KVM: Have perf define a dedicated struct for getting guest
+    PEBS data
+  perf/x86/intel: KVM: Handle cross-mapped PEBS PMCs entirely within KVM
+  KVM: VMX: Drop a redundant pmu->global_ctrl check when processing
+    pebs_enable
+  KVM: VMX: Only tell perf to enable PEBS counters for fully enabled
+    PMCs
+
+ arch/x86/events/core.c            |  5 +-
+ arch/x86/events/intel/core.c      | 92 +++++++++++++++++++------------
+ arch/x86/events/intel/lbr.c       |  2 +-
+ arch/x86/events/perf_event.h      |  7 ++-
+ arch/x86/include/asm/kvm_host.h   |  9 ---
+ arch/x86/include/asm/perf_event.h | 11 +++-
+ arch/x86/kvm/vmx/pmu_intel.c      | 28 +++++++---
+ arch/x86/kvm/vmx/vmx.c            | 10 ++--
+ arch/x86/kvm/vmx/vmx.h            | 15 ++++-
+ 9 files changed, 114 insertions(+), 65 deletions(-)
+
+
+base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
 -- 
+2.54.0.563.g4f69b47b94-goog
+
