@@ -1,144 +1,655 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B027A33263B;
-	Fri,  8 May 2026 09:54:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C842137998A
+	for <kvm@vger.kernel.org>; Fri,  8 May 2026 09:58:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778234071; cv=none; b=KjRvSM24XZEIBnISeMruD9ss+Tu4dwYlbQHeERhjFzQURsGqBfaXQzcPMh2fhszDtU+bigyuXwP05tkJ1Z2jvGS9piokyycgoPZAmNHvuphgnuvvhxKJ/Pew1fGHHwQ5SBDRMqKrjq2410y9Ad3f9tQuohkl4H0LS/PkPzZtTqk=
+	t=1778234298; cv=none; b=G85b9yRrQEHA/vdfaULqV7d5IEPew+XiMIZ5+S6pMTkliTyVw3eDr+06l7Rc3BeJP5LrtWstqilGqXyhHijacwO4QVkYo40G0wC2KkhiVe6A2K1uTpKb7CA5U0X9d4Ly9yNfHS6wK7dXKKOaVWdktP85m42HRLolucVWxU7tcmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778234071; c=relaxed/simple;
-	bh=3UWWu+PmEDiFALmPE4N1tp9tyWVELBHZ2UV2eh3JVJg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=NrD2MVdYs8kqcItJOyZivhq21PMCLFN+duVabcCLroJya8aIKBRZ87V5rQITHwSfNqLnka3u62d32XCA1+fJWtx/j1BPdHXv2h/D5y4MQq+FklZhJNw7GLx/hVOX15udN8Q5ja+YoLu7Bv2YERptItIWqxJkm+CyBLXcz1XJrRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=rWJnC+XO; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1778234298; c=relaxed/simple;
+	bh=x/U9Vj9OeGBiBAoWKCZEkAuhUmY5FG6SfCWRgLrUSec=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KPf7V3fpK8CFXYIBFqnJKM582OZ4lkqvsf/Dda//z8cWhHVDhJeKpEnwLu9EXxp2N6jQLVJDxrR+g/Bn9YmJq/LLoah/t8AElSRW79/PijB2Nwg1BhXst8n3UkDRcpgbhIqsC2pPyzNNhYLNWJ/43NutxvbmLvN8SUo+W11nuYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Gcxc5XxX; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=XRGycAsY; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="rWJnC+XO"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 6486URDX067384;
-	Fri, 8 May 2026 09:54:27 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=xb2zy0
-	u68s8ybmmqnW/cQZFqedf0nqTXc99dMsGGG2M=; b=rWJnC+XOJ1zvjzfjARfyvL
-	+VIPGf8LvXA4yu4N0znX18i9Fyf/5gS1vNhlg5nxVepd/5+wHTSR5cREGRFetnSQ
-	EyNmVunN2ND0lUJ6CqBWdgR57+RMuk/AwoFtjuxx16VRlPPEvVgylV23V2vWkzwk
-	FR7u5kgAJDvgCDsFSpBaDa0tI9m5RwLx13sIMcMOYY2DfDo6vZbQBmbGuG9//+FK
-	vNrx+ifeaCXJdALKFh0+5MCy5zQZt7TuvFjPeytxsBNSwp4oFOWYSMFo50f2ZO/T
-	9CBOaVNLkhZrtRRba04Nr/sxBIUsXOpYI2V3efrYselXSmmYztno3JsqJa21BeQQ
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9y1u1xa-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 08 May 2026 09:54:27 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 6489sQBI016266;
-	Fri, 8 May 2026 09:54:26 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e10072pu8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 08 May 2026 09:54:26 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6489sNX147907298
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 8 May 2026 09:54:23 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2668220075;
-	Fri,  8 May 2026 09:54:23 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EEEFB20074;
-	Fri,  8 May 2026 09:54:22 +0000 (GMT)
-Received: from [9.52.200.39] (unknown [9.52.200.39])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Fri,  8 May 2026 09:54:22 +0000 (GMT)
-Message-ID: <a8a40679-8949-46f3-a268-3952ee409a64@linux.ibm.com>
-Date: Fri, 8 May 2026 11:54:22 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Gcxc5XxX";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="XRGycAsY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778234294;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=AQbNyzvENCAOnuvyW/imX7fC7QNGBUcn3BPu85EGkJk=;
+	b=Gcxc5XxXfXKjMAg587DJyW16VoqkfsNRZ/qvkOGVoBdIDDO08XbC7zZyckgSkRlTo5kdh+
+	HdXp1tIaz+8m41oLwhFbsooLDA4cEml6CToJMJCLnEyxjdBQukSiAMTmc2xsg1T0Vy9Mus
+	o7F2BMNWa/f02WRwTgXiapaHpkuMIME=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-418-cA7ZrfyBP6CmeXmCOB3rEA-1; Fri, 08 May 2026 05:58:12 -0400
+X-MC-Unique: cA7ZrfyBP6CmeXmCOB3rEA-1
+X-Mimecast-MFC-AGG-ID: cA7ZrfyBP6CmeXmCOB3rEA_1778234292
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-48d035e8593so10729165e9.0
+        for <kvm@vger.kernel.org>; Fri, 08 May 2026 02:58:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1778234291; x=1778839091; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=AQbNyzvENCAOnuvyW/imX7fC7QNGBUcn3BPu85EGkJk=;
+        b=XRGycAsYFNglnn8SfpznRP9pYgJJD7LfLa1j7w8yMGLy5ebms9u6iCokdifNNSvxsI
+         TQUGgb4EIeB4mWPVCz+d4LGlWAUPROkN62kUvuXcZvsQchxI7OANh3r7LCgbwBDbxnqP
+         AR9V6u++HglDliLO99MULT/7KpEjKLb1jEVvZYy377XSqb2U0jz3BrqGo11C6syx2YPV
+         83oQ8g79iaRhMK3Ae/epw6L27sb5/ojhLUITEmFB2ZE3aKXyCPxr1ZPY8Q+ASGWII+jj
+         7fYXhpQfJ/V2x5kC7vwiOL+6EtjUd8yBCtcKTVod/aXK+ZsqWlwvoYKb4OlZRJhL742f
+         qYUw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778234291; x=1778839091;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AQbNyzvENCAOnuvyW/imX7fC7QNGBUcn3BPu85EGkJk=;
+        b=tKP9WjAFktjTHmh7JTtGIlG7lqoFPAEqlA0LkZCEQwqGR06W74AGfhhOgaN69Dvy5q
+         MrCbwJVBFKBNtF/O+IgBxif7sr4SqItXHIVuBKgVBBu+WGk/1DtsuobVJmkSNjSeUfuT
+         iG7jwn4gzIpv4VuIgBzUFzPZKC0J9MTyHZh0AIzqEbojbCOgcTL2/DwXoYsfSisgXjkd
+         VLReAWLUb8XKFpFH9Lca7Gxcc/huw+nSvJhVeWPEy5KS4V38/GW2IKrCzS9oKkLiNKya
+         hAd/JIVUIfxHxaItXiOntDPJbMRO+/4jIY/C5svvLdyEv+DWWNAf7x1QhJNiwlo/d0l4
+         faUw==
+X-Forwarded-Encrypted: i=1; AFNElJ+yj2tXPc9PzcQlaSRSRgFtqYG+k5uaviQttAhQMCY1gkFbC0fH4wdljAF+2Agi+ZhpEZ4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7A30WliU0UiVO+9I7t+yS0PGK5PUHULL2SLg852nK9SfOytD+
+	oovWytb29ge2gTD+9YVFiiRxxPXUF3nTQpxMZgbh3jP60se9zN3cYUTu66sxWFdJGZEXGpX+JHW
+	QfZHX34912FYJcLRF7HuHjEsV3IkINkiWS+XSfiSKIgcNs1h6hNEPHA==
+X-Gm-Gg: AeBDiesmEL49BEY0hgrRivLTf5+fy4LTFgy/ugwM1y2WbHQj8nIfrEvqvBO5T7JpW7H
+	DUOwPPK5pQ/E5JPXKf3ib2CPaSJkn1o6JNs0pk56ZstLK7snIofujCXFwJIvmEJ5937RCFPQT/2
+	B1KTu+E5nm7GxPIvBfgFWCquWhgRfAfRW3WhhwFAhaePYkc+OQdw1nRza2kf2Hv76g8Id149y8q
+	ZPnMXUczdvlf0/zVFqqJ4HHiF5RPF+5tilLPuD348BpaZcG7zYKmjVbp+gG4C3BV6izPMSa1iGW
+	D7pW2PmQBTV53jsb5vncgENull2BCMkAf5kZ+O305stCxI0Yzq0KD2lhDt0/EiaASkqQYGLprg2
+	+SGNCdPaV0C21MEBTHRy1UcX21ghyrhDsHnUIvDAL
+X-Received: by 2002:a05:600c:8594:b0:485:39b2:a47c with SMTP id 5b1f17b1804b1-48e676b65a9mr24045925e9.25.1778234291376;
+        Fri, 08 May 2026 02:58:11 -0700 (PDT)
+X-Received: by 2002:a05:600c:8594:b0:485:39b2:a47c with SMTP id 5b1f17b1804b1-48e676b65a9mr24045525e9.25.1778234290655;
+        Fri, 08 May 2026 02:58:10 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e68eaf237sm33043215e9.6.2026.05.08.02.58.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 08 May 2026 02:58:10 -0700 (PDT)
+Date: Fri, 8 May 2026 05:58:06 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Eric Dumazet <edumazet@google.com>,
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	Bobby Eshleman <bobbyeshleman@meta.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>, netdev@vger.kernel.org,
+	eric.dumazet@gmail.com, Arseniy Krasnov <AVKrasnov@sberdevices.ru>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	kvm@vger.kernel.org, virtualization@lists.linux.dev
+Subject: Re: [PATCH net] vsock/virtio: fix potential unbounded skb queue
+Message-ID: <20260508055343-mutt-send-email-mst@kernel.org>
+References: <20260430122653.554058-1-edumazet@google.com>
+ <afn0ZdvZWswBuDMm@sgarzare-redhat>
+ <CANn89iLs8DOWJwDpf_ARoMrV+6b2tbhEJ=VVzeC8gCm5dRGaig@mail.gmail.com>
+ <afoF_cHfl6ygcupM@sgarzare-redhat>
+ <20260506113554-mutt-send-email-mst@kernel.org>
+ <afxVH2So9BbZ3Gta@sgarzare-redhat>
+ <20260507074113-mutt-send-email-mst@kernel.org>
+ <afyMCyBvZpzWrLtO@sgarzare-redhat>
+ <20260507163710-mutt-send-email-mst@kernel.org>
+ <af2sXvVCBT05XF0D@sgarzare-redhat>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/3] KVM: s390: Toggle operation exception for
- userspace
-To: Eric Farman <farman@linux.ibm.com>, Janosch Frank
- <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org
-References: <20260507200836.3500368-1-farman@linux.ibm.com>
- <20260507200836.3500368-2-farman@linux.ibm.com>
-Content-Language: en-US
-From: Christian Borntraeger <borntraeger@linux.ibm.com>
-In-Reply-To: <20260507200836.3500368-2-farman@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-ORIG-GUID: gBAtNf43uLBuwCpTybUbkFgZi433yBDl
-X-Proofpoint-GUID: gBAtNf43uLBuwCpTybUbkFgZi433yBDl
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA4MDA5OCBTYWx0ZWRfX2fqDm7U2QvQd
- XtrNZH7kBzCyGFZkmz7NDkm8glC1v5Yqfj/QQ7TVX5WbYf4ThSfUvSNw3f4g0TDZrQ9rLL1S74f
- gB1Zzdvxmniz41RuMwq5EamH1c/7dhEZEG0iGZPkrbps8N7NktKErQs7Ub6G3Cy3RhYJsVuE6aK
- YqF+T6PFlj6k+NKWRitA6yBiODYThTt+Xo4HmTGjvNdjmgPcENb9TZXWztyovOp8WQ0PYQuo20E
- iOfmD+HJ/wX3y3gg4WvFZihENxk8XBLVyTcLHMXP480P1eG5mi3MZp8Ap8y/YhZp2onmb2AvUB2
- 5FTbjOLeKELJYkIDVnZ8HaYN3LaESDEepVOX30k24Wjbbs5pncSISVQOBdka3E+mAgWTXKxCfJI
- q66KOpzKYFeaD7NpsRaf+O1wSgvsQKj/XL5iSuxJKAW3wUiafQKLX3OPSc3YsH5nMAc/lAK+MDX
- jcnKGdpPk5aSfqQ1JfA==
-X-Authority-Analysis: v=2.4 cv=UbFhjqSN c=1 sm=1 tr=0 ts=69fdb2d3 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=cZKMOd1B8ittd17GYGgA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-07_02,2026-05-06_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 spamscore=0 lowpriorityscore=0 malwarescore=0 suspectscore=0
- adultscore=0 priorityscore=1501 bulkscore=0 phishscore=0 impostorscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605080098
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <af2sXvVCBT05XF0D@sgarzare-redhat>
 
-
-
-Am 07.05.26 um 22:08 schrieb Eric Farman:
-> The KVM_CAP_S390_USER_OPEREXEC capability allows operation exceptions
-> to be forwarded to userspace. But the actual enablement at the hardware
-> level occurs in kvm_arch_vcpu_postcreate(), and only if STFLE.74 or
-> user_instr0 are enabled. The latter is associated with a separate
-> capability (KVM_CAP_S390_USER_INSTR0), so the only way this happens
-> for the USER_OPEREXEC capability is if STFLE.74 is enabled. KVM
-> unconditionally enables this bit in kvm_arch_init_vm(), but the guest
-> could disable it from the CPU model and thus ignore this capability.
+On Fri, May 08, 2026 at 11:41:21AM +0200, Stefano Garzarella wrote:
+> On Thu, May 07, 2026 at 06:48:47PM -0400, Michael S. Tsirkin wrote:
+> > On Thu, May 07, 2026 at 02:59:13PM +0200, Stefano Garzarella wrote:
+> > > On Thu, May 07, 2026 at 07:45:10AM -0400, Michael S. Tsirkin wrote:
+> > > > On Thu, May 07, 2026 at 11:09:47AM +0200, Stefano Garzarella wrote:
 > 
-> Add USER_OPEREXEC to the check in kvm_arch_vcpu_postcreate(), such that
-> either capability would enable this type of exception.
+> [...]
 > 
-> Fixes: 8e8678e740ec ("KVM: s390: Add capability that forwards operation exceptions")
-> Reviewed-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
-> Signed-off-by: Eric Farman <farman@linux.ibm.com>
-
-Reviewed-by: Christian Borntraeger <borntraeger@linux.ibm.com>
-
-
-> ---
->   arch/s390/kvm/kvm-s390.c | 3 ++-
->   1 file changed, 2 insertions(+), 1 deletion(-)
+> > > > > For now, we're already doing something:
+> > > > > merging the skuffs if they don't have EOM set.
+> > > >
+> > > >
+> > > > Right that's good. You could go further and merge with EOM too
+> > > > if you stick the info about message boundaries somewhere else.
+> > > 
+> > > This adds a lot of complexity IMO, but we can try.
+> > > 
+> > > Do you have something in mind?
+> > 
+> > BER is clearly overkill but here's a POC that claude made for me,
+> > just to give u an idea. It's clearly has a ton of issues,
+> > for example I dislike how GFP_ATOMIC is handled.
 > 
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> index e09960c2e6ed..a91a42174302 100644
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-> @@ -3521,7 +3521,8 @@ void kvm_arch_vcpu_postcreate(struct kvm_vcpu *vcpu)
->   		vcpu->arch.gmap = vcpu->kvm->arch.gmap;
->   		sca_add_vcpu(vcpu);
->   	}
-> -	if (test_kvm_facility(vcpu->kvm, 74) || vcpu->kvm->arch.user_instr0)
-> +	if (test_kvm_facility(vcpu->kvm, 74) || vcpu->kvm->arch.user_instr0 ||
-> +	    vcpu->kvm->arch.user_operexec)
->   		vcpu->arch.sie_block->ictl |= ICTL_OPEREXC;
->   }
->   
+> Okay, I somewhat understand, but clearly this isn't net material
+
+I doubt we have many other options given reverting the regression was
+ruled out.
+
+
+> so for now
+> I think the best thing to do is to merge the fixup I sent (or something
+> similar):
+> https://lore.kernel.org/netdev/20260508092330.69690-1-sgarzare@redhat.com/
+
+I reviewed that one, problem is it's a spec violation/change that we'll
+have to support forever. 
+
+> This is a major change that should be merged with more caution.
+> Could this have too much of an impact on performance?
+> 
+> Thanks,
+> Stefano
+
+It's really a POC, real patch is left as an excersise for the reader :).
+The correct approach IMHO is to only start using this
+when we wasted a lot of memory on small packets.
+
+For example, if sum(truesize) >= buf size.
+
+then we'll not see a perf impact unless it's already pathological.
+
+
+> > Yet it seems to work fine in light testing.
+> > 
+> > -->
+> > 
+> > 
+> > vsock/virtio: use DWARF ULEB128 to record EOM boundaries, enable cross-EOM skb coalescing
+> > 
+> > virtio_transport_recv_enqueue() currently refuses to coalesce an
+> > incoming skb with the previous one when the previous skb carries
+> > VIRTIO_VSOCK_SEQ_EOM.  This forces one skb per seqpacket message.
+> > For workloads with many small or zero-byte messages the per-skb
+> > overhead (~960 bytes) dominates, causing unbounded memory growth.
+> > 
+> > Decouple message boundary tracking from the skb structure: store
+> > boundary offsets in a compact side buffer using DWARF ULEB128
+> > encoding with the EOR flag folded into the low bit, then allow
+> > the data of multiple complete messages to be coalesced into a single
+> > skb.
+> > 
+> > Cross-EOM coalescing fires only when:
+> > - both the tail skb and the incoming packet carry EOM (complete msgs)
+> > - the incoming packet fits in the tail skb's tailroom
+> > - no BPF psock is attached (read_skb expects one msg per skb)
+> > 
+> > On allocation failure the code falls back to separate skbs (existing
+> > behaviour).  Credit accounting is unchanged; the boundary buffer is
+> > capped at PAGE_SIZE.
+> > 
+> > Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+> > Co-Authored-By: Claude Opus 4.6 (1M context) <noreply@anthropic.com>
+> > 
+> > diff --git a/include/linux/virtio_vsock.h b/include/linux/virtio_vsock.h
+> > index f91704731057..e36b9ab28372 100644
+> > --- a/include/linux/virtio_vsock.h
+> > +++ b/include/linux/virtio_vsock.h
+> > @@ -12,6 +12,7 @@
+> > struct virtio_vsock_skb_cb {
+> > 	bool reply;
+> > 	bool tap_delivered;
+> > +	bool has_boundary_entries;
+> > 	u32 offset;
+> > };
+> > 
+> > @@ -167,6 +168,12 @@ struct virtio_vsock_sock {
+> > 	u32 buf_used;
+> > 	struct sk_buff_head rx_queue;
+> > 	u32 msg_count;
+> > +
+> > +	/* ULEB128-encoded seqpacket message boundary buffer */
+> > +	u8 *boundary_buf;
+> > +	u32 boundary_len;
+> > +	u32 boundary_alloc;
+> > +	u32 boundary_off;
+> > };
+> > 
+> > struct virtio_vsock_pkt_info {
+> > diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+> > index 416d533f493d..81654f70f72c 100644
+> > --- a/net/vmw_vsock/virtio_transport_common.c
+> > +++ b/net/vmw_vsock/virtio_transport_common.c
+> > @@ -11,6 +11,7 @@
+> > #include <linux/sched/signal.h>
+> > #include <linux/ctype.h>
+> > #include <linux/list.h>
+> > +#include <linux/skmsg.h>
+> > #include <linux/virtio_vsock.h>
+> > #include <uapi/linux/vsockmon.h>
+> > 
+> > @@ -26,6 +27,91 @@
+> > /* Threshold for detecting small packets to copy */
+> > #define GOOD_COPY_LEN  128
+> > 
+> > +#define VSOCK_BOUNDARY_BUF_INIT	64
+> > +#define VSOCK_BOUNDARY_BUF_MAX	PAGE_SIZE
+> > +
+> > +/* ULEB128 boundary encoding: value = (msg_len << 1) | eor.
+> > + * Each byte carries 7 data bits; bit 7 is set on all but the last byte.
+> > + * Max 5 bytes for a u32 msg_len (33 bits with eor shift).
+> > + */
+> > +static int vsock_uleb_encode_boundary(u8 *buf, u32 msg_len, bool eor)
+> > +{
+> > +	u64 val = ((u64)msg_len << 1) | eor;
+> > +	int n = 0;
+> > +
+> > +	do {
+> > +		buf[n] = val & 0x7f;
+> > +		val >>= 7;
+> > +		if (val)
+> > +			buf[n] |= 0x80;
+> > +		n++;
+> > +	} while (val);
+> > +
+> > +	return n;
+> > +}
+> > +
+> > +static int vsock_uleb_decode_boundary(const u8 *buf, u32 avail,
+> > +				      u32 *msg_len, bool *eor)
+> > +{
+> > +	u64 val = 0;
+> > +	int shift = 0;
+> > +	int n = 0;
+> > +
+> > +	do {
+> > +		if (n >= avail || shift >= 35)
+> > +			return -EINVAL;
+> > +		val |= (u64)(buf[n] & 0x7f) << shift;
+> > +		shift += 7;
+> > +	} while (buf[n++] & 0x80);
+> > +
+> > +	*eor = val & 1;
+> > +	*msg_len = val >> 1;
+> > +	return n;
+> > +}
+> > +
+> > +static void vsock_boundary_buf_compact(struct virtio_vsock_sock *vvs)
+> > +{
+> > +	if (vvs->boundary_off == 0)
+> > +		return;
+> > +
+> > +	vvs->boundary_len -= vvs->boundary_off;
+> > +	memmove(vvs->boundary_buf, vvs->boundary_buf + vvs->boundary_off,
+> > +		vvs->boundary_len);
+> > +	vvs->boundary_off = 0;
+> > +}
+> > +
+> > +static int vsock_boundary_buf_ensure(struct virtio_vsock_sock *vvs, u32 needed)
+> > +{
+> > +	u32 new_alloc;
+> > +	u8 *new_buf;
+> > +
+> > +	if (vvs->boundary_alloc >= needed)
+> > +		return 0;
+> > +
+> > +	/* Reclaim consumed space before growing */
+> > +	if (vvs->boundary_off) {
+> > +		needed -= vvs->boundary_off;
+> > +		vsock_boundary_buf_compact(vvs);
+> > +		if (vvs->boundary_alloc >= needed)
+> > +			return 0;
+> > +	}
+> > +
+> > +	new_alloc = max(needed, vvs->boundary_alloc ? vvs->boundary_alloc * 2
+> > +						    : VSOCK_BOUNDARY_BUF_INIT);
+> > +	if (new_alloc > VSOCK_BOUNDARY_BUF_MAX)
+> > +		new_alloc = VSOCK_BOUNDARY_BUF_MAX;
+> > +	if (new_alloc < needed)
+> > +		return -ENOMEM;
+> > +
+> > +	new_buf = krealloc(vvs->boundary_buf, new_alloc, GFP_ATOMIC);
+> > +	if (!new_buf)
+> > +		return -ENOMEM;
+> > +
+> > +	vvs->boundary_buf = new_buf;
+> > +	vvs->boundary_alloc = new_alloc;
+> > +	return 0;
+> > +}
+> > +
+> > static void virtio_transport_cancel_close_work(struct vsock_sock *vsk,
+> > 					       bool cancel_timeout);
+> > static s64 virtio_transport_has_space(struct virtio_vsock_sock *vvs);
+> > @@ -682,41 +768,74 @@ virtio_transport_seqpacket_do_peek(struct vsock_sock *vsk,
+> > 	total = 0;
+> > 	len = msg_data_left(msg);
+> > 
+> > -	skb_queue_walk(&vvs->rx_queue, skb) {
+> > -		struct virtio_vsock_hdr *hdr;
+> > +	skb = skb_peek(&vvs->rx_queue);
+> > +	if (skb && VIRTIO_VSOCK_SKB_CB(skb)->has_boundary_entries) {
+> > +		u32 msg_len, offset;
+> > +		size_t bytes;
+> > +		bool eor;
+> > +		int ret;
+> > 
+> > -		if (total < len) {
+> > -			size_t bytes;
+> > +		ret = vsock_uleb_decode_boundary(
+> > +			vvs->boundary_buf + vvs->boundary_off,
+> > +			vvs->boundary_len - vvs->boundary_off,
+> > +			&msg_len, &eor);
+> > +		if (ret < 0)
+> > +			goto unlock;
+> > +
+> > +		offset = VIRTIO_VSOCK_SKB_CB(skb)->offset;
+> > +		bytes = min(len, (size_t)msg_len);
+> > +
+> > +		if (bytes) {
+> > 			int err;
+> > 
+> > -			bytes = len - total;
+> > -			if (bytes > skb->len)
+> > -				bytes = skb->len;
+> > -
+> > 			spin_unlock_bh(&vvs->rx_lock);
+> > -
+> > -			/* sk_lock is held by caller so no one else can dequeue.
+> > -			 * Unlock rx_lock since skb_copy_datagram_iter() may sleep.
+> > -			 */
+> > -			err = skb_copy_datagram_iter(skb, VIRTIO_VSOCK_SKB_CB(skb)->offset,
+> > +			err = skb_copy_datagram_iter(skb, offset,
+> > 						     &msg->msg_iter, bytes);
+> > 			if (err)
+> > 				return err;
+> > -
+> > 			spin_lock_bh(&vvs->rx_lock);
+> > 		}
+> > 
+> > -		total += skb->len;
+> > -		hdr = virtio_vsock_hdr(skb);
+> > +		total = msg_len;
+> > +		if (eor)
+> > +			msg->msg_flags |= MSG_EOR;
+> > +	} else {
+> > +		skb_queue_walk(&vvs->rx_queue, skb) {
+> > +			struct virtio_vsock_hdr *hdr;
+> > 
+> > -		if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SEQ_EOM) {
+> > -			if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SEQ_EOR)
+> > -				msg->msg_flags |= MSG_EOR;
+> > +			if (total < len) {
+> > +				size_t bytes;
+> > +				int err;
+> > 
+> > -			break;
+> > +				bytes = len - total;
+> > +				if (bytes > skb->len)
+> > +					bytes = skb->len;
+> > +
+> > +				spin_unlock_bh(&vvs->rx_lock);
+> > +
+> > +				err = skb_copy_datagram_iter(
+> > +					skb,
+> > +					VIRTIO_VSOCK_SKB_CB(skb)->offset,
+> > +					&msg->msg_iter, bytes);
+> > +				if (err)
+> > +					return err;
+> > +
+> > +				spin_lock_bh(&vvs->rx_lock);
+> > +			}
+> > +
+> > +			total += skb->len;
+> > +			hdr = virtio_vsock_hdr(skb);
+> > +
+> > +			if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SEQ_EOM) {
+> > +				if (le32_to_cpu(hdr->flags) &
+> > +				    VIRTIO_VSOCK_SEQ_EOR)
+> > +					msg->msg_flags |= MSG_EOR;
+> > +				break;
+> > +			}
+> > 		}
+> > 	}
+> > 
+> > +unlock:
+> > 	spin_unlock_bh(&vvs->rx_lock);
+> > 
+> > 	return total;
+> > @@ -740,57 +859,105 @@ static int virtio_transport_seqpacket_do_dequeue(struct vsock_sock *vsk,
+> > 	}
+> > 
+> > 	while (!msg_ready) {
+> > -		struct virtio_vsock_hdr *hdr;
+> > -		size_t pkt_len;
+> > -
+> > -		skb = __skb_dequeue(&vvs->rx_queue);
+> > +		skb = skb_peek(&vvs->rx_queue);
+> > 		if (!skb)
+> > 			break;
+> > -		hdr = virtio_vsock_hdr(skb);
+> > -		pkt_len = (size_t)le32_to_cpu(hdr->len);
+> > 
+> > -		if (dequeued_len >= 0) {
+> > +		if (VIRTIO_VSOCK_SKB_CB(skb)->has_boundary_entries) {
+> > 			size_t bytes_to_copy;
+> > +			u32 msg_len, offset;
+> > +			bool eor;
+> > +			int ret;
+> > 
+> > -			bytes_to_copy = min(user_buf_len, pkt_len);
+> > +			ret = vsock_uleb_decode_boundary(
+> > +				vvs->boundary_buf + vvs->boundary_off,
+> > +				vvs->boundary_len - vvs->boundary_off,
+> > +				&msg_len, &eor);
+> > +			if (ret < 0)
+> > +				break;
+> > +			vvs->boundary_off += ret;
+> > 
+> > -			if (bytes_to_copy) {
+> > +			offset = VIRTIO_VSOCK_SKB_CB(skb)->offset;
+> > +			bytes_to_copy = min(user_buf_len, (size_t)msg_len);
+> > +
+> > +			if (bytes_to_copy && dequeued_len >= 0) {
+> > 				int err;
+> > 
+> > -				/* sk_lock is held by caller so no one else can dequeue.
+> > -				 * Unlock rx_lock since skb_copy_datagram_iter() may sleep.
+> > -				 */
+> > 				spin_unlock_bh(&vvs->rx_lock);
+> > -
+> > -				err = skb_copy_datagram_iter(skb, 0,
+> > +				err = skb_copy_datagram_iter(skb, offset,
+> > 							     &msg->msg_iter,
+> > 							     bytes_to_copy);
+> > -				if (err) {
+> > -					/* Copy of message failed. Rest of
+> > -					 * fragments will be freed without copy.
+> > -					 */
+> > -					dequeued_len = err;
+> > -				} else {
+> > -					user_buf_len -= bytes_to_copy;
+> > -				}
+> > -
+> > 				spin_lock_bh(&vvs->rx_lock);
+> > +				if (err)
+> > +					dequeued_len = err;
+> > +				else
+> > +					user_buf_len -= bytes_to_copy;
+> > 			}
+> > 
+> > 			if (dequeued_len >= 0)
+> > -				dequeued_len += pkt_len;
+> > -		}
+> > +				dequeued_len += msg_len;
+> > 
+> > -		if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SEQ_EOM) {
+> > +			VIRTIO_VSOCK_SKB_CB(skb)->offset += msg_len;
+> > 			msg_ready = true;
+> > 			vvs->msg_count--;
+> > 
+> > -			if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SEQ_EOR)
+> > +			if (eor)
+> > 				msg->msg_flags |= MSG_EOR;
+> > -		}
+> > 
+> > -		virtio_transport_dec_rx_pkt(vvs, pkt_len, pkt_len);
+> > -		kfree_skb(skb);
+> > +			virtio_transport_dec_rx_pkt(vvs, msg_len, msg_len);
+> > +
+> > +			if (VIRTIO_VSOCK_SKB_CB(skb)->offset >= skb->len) {
+> > +				__skb_unlink(skb, &vvs->rx_queue);
+> > +				kfree_skb(skb);
+> > +			}
+> > +
+> > +			if (vvs->boundary_off >= vvs->boundary_len / 2)
+> > +				vsock_boundary_buf_compact(vvs);
+> > +		} else {
+> > +			struct virtio_vsock_hdr *hdr;
+> > +			size_t pkt_len;
+> > +
+> > +			skb = __skb_dequeue(&vvs->rx_queue);
+> > +			if (!skb)
+> > +				break;
+> > +			hdr = virtio_vsock_hdr(skb);
+> > +			pkt_len = (size_t)le32_to_cpu(hdr->len);
+> > +
+> > +			if (dequeued_len >= 0) {
+> > +				size_t bytes_to_copy;
+> > +
+> > +				bytes_to_copy = min(user_buf_len, pkt_len);
+> > +
+> > +				if (bytes_to_copy) {
+> > +					int err;
+> > +
+> > +					spin_unlock_bh(&vvs->rx_lock);
+> > +					err = skb_copy_datagram_iter(
+> > +						skb, 0, &msg->msg_iter,
+> > +						bytes_to_copy);
+> > +					if (err)
+> > +						dequeued_len = err;
+> > +					else
+> > +						user_buf_len -= bytes_to_copy;
+> > +					spin_lock_bh(&vvs->rx_lock);
+> > +				}
+> > +
+> > +				if (dequeued_len >= 0)
+> > +					dequeued_len += pkt_len;
+> > +			}
+> > +
+> > +			if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SEQ_EOM) {
+> > +				msg_ready = true;
+> > +				vvs->msg_count--;
+> > +
+> > +				if (le32_to_cpu(hdr->flags) &
+> > +				    VIRTIO_VSOCK_SEQ_EOR)
+> > +					msg->msg_flags |= MSG_EOR;
+> > +			}
+> > +
+> > +			virtio_transport_dec_rx_pkt(vvs, pkt_len, pkt_len);
+> > +			kfree_skb(skb);
+> > +		}
+> > 	}
+> > 
+> > 	spin_unlock_bh(&vvs->rx_lock);
+> > @@ -1132,6 +1299,7 @@ void virtio_transport_destruct(struct vsock_sock *vsk)
+> > 
+> > 	virtio_transport_cancel_close_work(vsk, true);
+> > 
+> > +	kfree(vvs->boundary_buf);
+> > 	kfree(vvs);
+> > 	vsk->trans = NULL;
+> > }
+> > @@ -1224,6 +1392,11 @@ static void virtio_transport_remove_sock(struct vsock_sock *vsk)
+> > 	 * removing it.
+> > 	 */
+> > 	__skb_queue_purge(&vvs->rx_queue);
+> > +	kfree(vvs->boundary_buf);
+> > +	vvs->boundary_buf = NULL;
+> > +	vvs->boundary_len = 0;
+> > +	vvs->boundary_alloc = 0;
+> > +	vvs->boundary_off = 0;
+> > 	vsock_remove_sock(vsk);
+> > }
+> > 
+> > @@ -1395,23 +1568,62 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
+> > 	    !skb_is_nonlinear(skb)) {
+> > 		struct virtio_vsock_hdr *last_hdr;
+> > 		struct sk_buff *last_skb;
+> > +		bool last_has_eom;
+> > +		bool has_eom;
+> > 
+> > 		last_skb = skb_peek_tail(&vvs->rx_queue);
+> > 		last_hdr = virtio_vsock_hdr(last_skb);
+> > +		last_has_eom = le32_to_cpu(last_hdr->flags) & VIRTIO_VSOCK_SEQ_EOM;
+> > +		has_eom = le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SEQ_EOM;
+> > 
+> > -		/* If there is space in the last packet queued, we copy the
+> > -		 * new packet in its buffer. We avoid this if the last packet
+> > -		 * queued has VIRTIO_VSOCK_SEQ_EOM set, because this is
+> > -		 * delimiter of SEQPACKET message, so 'pkt' is the first packet
+> > -		 * of a new message.
+> > -		 */
+> > -		if (skb->len < skb_tailroom(last_skb) &&
+> > -		    !(le32_to_cpu(last_hdr->flags) & VIRTIO_VSOCK_SEQ_EOM)) {
+> > -			memcpy(skb_put(last_skb, skb->len), skb->data, skb->len);
+> > -			free_pkt = true;
+> > -			last_hdr->flags |= hdr->flags;
+> > -			le32_add_cpu(&last_hdr->len, len);
+> > -			goto out;
+> > +		if (skb->len < skb_tailroom(last_skb)) {
+> > +			if (!last_has_eom) {
+> > +				/* Same-message coalescing (existing path) */
+> > +				memcpy(skb_put(last_skb, skb->len),
+> > +				       skb->data, skb->len);
+> > +				free_pkt = true;
+> > +				last_hdr->flags |= hdr->flags;
+> > +				le32_add_cpu(&last_hdr->len, len);
+> > +				goto out;
+> > +			}
+> > +
+> > +			/* Cross-EOM: coalesce complete messages into one skb,
+> > +			 * recording message boundaries in a compact BER buffer.
+> > +			 * Only when incoming packet also has EOM (complete msg).
+> > +			 */
+> > +			if (has_eom && !sk_psock(sk_vsock(vsk))) {
+> > +				bool prev_eor, cur_eor;
+> > +				u8 tmp[12];
+> > +				int n = 0;
+> > +
+> > +				cur_eor = le32_to_cpu(hdr->flags) &
+> > +					  VIRTIO_VSOCK_SEQ_EOR;
+> > +
+> > +				if (!VIRTIO_VSOCK_SKB_CB(last_skb)->has_boundary_entries) {
+> > +					u32 prev_len = le32_to_cpu(last_hdr->len);
+> > +
+> > +					prev_eor = le32_to_cpu(last_hdr->flags) &
+> > +						   VIRTIO_VSOCK_SEQ_EOR;
+> > +					n += vsock_uleb_encode_boundary(
+> > +						tmp + n, prev_len, prev_eor);
+> > +				}
+> > +				n += vsock_uleb_encode_boundary(
+> > +					tmp + n, len, cur_eor);
+> > +
+> > +				if (!vsock_boundary_buf_ensure(
+> > +					    vvs, vvs->boundary_len + n)) {
+> > +					memcpy(vvs->boundary_buf +
+> > +					       vvs->boundary_len, tmp, n);
+> > +					vvs->boundary_len += n;
+> > +					VIRTIO_VSOCK_SKB_CB(last_skb)->has_boundary_entries = true;
+> > +					memcpy(skb_put(last_skb, skb->len),
+> > +					       skb->data, skb->len);
+> > +					free_pkt = true;
+> > +					last_hdr->flags |= hdr->flags;
+> > +					le32_add_cpu(&last_hdr->len, len);
+> > +					goto out;
+> > +				}
+> > +			}
+> > 		}
+> > 	}
+> > 
+> > 
 
