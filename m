@@ -1,210 +1,156 @@
-Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A003815ED;
-	Fri,  8 May 2026 07:57:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A29F733B6D9
+	for <kvm@vger.kernel.org>; Fri,  8 May 2026 08:14:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778227074; cv=none; b=kvSs0ossclMX9g9gB7Iz8QkpBiEfI2II64BaA3XsN9h8HBUiz62qkGHwdBSl371nBlrz7R5zCVqlKhBz3HP/N5Bng76GCnDorZp6ArXJ060TTSMtEKeIVCNXwS/hpc0RuQYuSyfpjOUBLHkJUdtN8t6hG0YELPjfRNrzY43niTU=
+	t=1778228078; cv=none; b=XIQy936sI4qpd0CFQSlgSUBG9Q4D64kYYTs3vwEezQ7p+2WyYBwHcglGR+fMlYIvoAuYRPaFVNo9C9YMVae6ZrRB/w/AdDOAPWLvs1T27pLxqWlnelhbA3DvB8jdohbkX4RIXbRLYWxPJA8/m9ecyRncTrUhQ21Op80CnLSuLBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778227074; c=relaxed/simple;
-	bh=Ra6iTdzW+x5/Jh8IurVuQFA4PvWjZD4iqYGsXewW52Q=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=UlyLaEVkCKIO2yel/yTPg8r8WH3kx1quvQ68q6MocxoXK11/FRoGlJhvniltC+juOysaHE1p+UcrzT2ffvuBNPu2Dc0ObWe5U8ZhdnF4hBodi0sf5/x93/ef17Lezbd3JjwjZ1ux9CdEHq7jiwJydC3xWd4kWAfK1234My0ogWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=xITxDAGh; arc=none smtp.client-ip=113.46.200.226
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1778228078; c=relaxed/simple;
+	bh=YDGIrXgKsO3Ei1HKlLtyoOZqzbyT3fE4FDW0LZy7ryI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NBG9LSTtbPDvor40rMCaqM+C2DngHWHeh98jxV3GpttmHuPH7rpL+XY5IST4DBedLGcwO26lCKycOlN5pAy8UzbU8WqpAQhGeXeKDAmz7u6kpjyYEA4L1s/jYYtbHVqv1KGGPk+OjNQJ5CVtpXeAVdE5mi7lmevqoSL3ONGV3vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=NQ22gfZb; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="xITxDAGh"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=LFN5x5Ph+s7wPmuDZH46j3nsp+1HzK7RmBeeYkZkyks=;
-	b=xITxDAGh+rUnt+DrqHW305jkMoIZ2jxTDmBnTMN0DQ5PVFuROaXMRPSfXGsDxdrFMIoWDsZdo
-	1hpNCLVIZ100T237YULco8Rqlmw2kQlpG2em9reOpI8nLTfkrmEwAeO/oJn0YEsMJASUmlGjWPG
-	2zGIsv/9R1+fAnY5NM9rcdo=
-Received: from mail.maildlp.com (unknown [172.19.163.15])
-	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4gBh9Z3tXFzKm97;
-	Fri,  8 May 2026 15:50:10 +0800 (CST)
-Received: from dggpemr200006.china.huawei.com (unknown [7.185.36.167])
-	by mail.maildlp.com (Postfix) with ESMTPS id EC55D40539;
-	Fri,  8 May 2026 15:57:46 +0800 (CST)
-Received: from [10.67.110.145] (10.67.110.145) by
- dggpemr200006.china.huawei.com (7.185.36.167) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 8 May 2026 15:57:46 +0800
-Message-ID: <41da263a-ca8e-4041-8214-b6b9f80edebb@huawei.com>
-Date: Fri, 8 May 2026 15:57:45 +0800
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="NQ22gfZb"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 647LKxnV2062528;
+	Fri, 8 May 2026 08:14:32 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=Z3s9YJUZkkFMwMz3xZUeXBjH3vF93sl7MG2xzNIRg
+	FQ=; b=NQ22gfZbo+UxAeH/LvjdCf23+3J+w6xY6ViAKOrIPprWHe83EXqI4CrwS
+	IBD3PzdwJmJuU5VGrRGHudJH4rOn5st9QFmftPbmy7m9RmNydF9wbOwTw2Cp2OjQ
+	1de20sLpRS7THMLqT336moP8fi+MLofRrv2cUJQt/trre43nGCyTm6umwzqg9Y8/
+	Byj4fU0shtidrz4GVL2wMF7Tzi1hD0bpSlKC5AQWzzrvhb7ntVtLD5spAYbQ4H3c
+	BOi2RP+ltPvfIid6CILG0dBcnEvdp/tvwYWLAZNSo4+QQKIxwpZi10e/utDR5kks
+	k3MpGZQ1B0iWrHzYdOvMcUNA8PesQ==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4dw9w6sfpc-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 May 2026 08:14:32 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64889mof032650;
+	Fri, 8 May 2026 08:14:31 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4dwwtgq637-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 08 May 2026 08:14:31 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 6488ERQa54919582
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 8 May 2026 08:14:28 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id C6572201A6;
+	Fri,  8 May 2026 08:14:27 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 09AAF201A4;
+	Fri,  8 May 2026 08:14:26 +0000 (GMT)
+Received: from mac.bl1-in.ibm.com (unknown [9.123.0.51])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri,  8 May 2026 08:14:25 +0000 (GMT)
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Amit Machhiwal <amachhiw@linux.ibm.com>,
+        Chinmay Rath <rathc@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
+        kvm@vger.kernel.org
+Subject: [PATCH v2] target/ppc/kvm: Fix const violation when trimming CPU alias suffix
+Date: Fri,  8 May 2026 13:44:16 +0530
+Message-ID: <20260508081416.1014-1-amachhiw@linux.ibm.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [BUG REPORT] USE_AFTER_FREE in complete_emulated_mmio found by
- KASAN/Syzkaller fuzz test (v5.10.0)
-To: Sean Christopherson <seanjc@google.com>, Zhangjiaji
-	<zhangjiaji1@huawei.com>
-CC: Paolo Bonzini <pbonzini@redhat.com>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>, "Wangqinxiao (Tom)" <wangqinxiao@huawei.com>,
-	zhangyashu <zhangyashu2@h-partners.com>, "wangyanan (Y)"
-	<wangyanan55@huawei.com>, zouyipeng <zouyipeng@huawei.com>,
-	<wangyanan55@huawei.com>
-References: <67a2f20537354628bcb835586a7c6255@huawei.com>
- <aYuC87rMLlBYIZRc@google.com> <aZYneb7Dvuu-HQsP@google.com>
-Content-Language: en-US
-From: Xinyu Zheng <zhengxinyu6@huawei.com>
-In-Reply-To: <aZYneb7Dvuu-HQsP@google.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
- dggpemr200006.china.huawei.com (7.185.36.167)
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=XPQAjwhE c=1 sm=1 tr=0 ts=69fd9b68 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VnNF1IyMAAAA:8 a=AeOTFisfVSLvIChBu_YA:9
+X-Proofpoint-ORIG-GUID: WaN1AC-txv3OxNEf3wjo66vUuO9DbVsf
+X-Proofpoint-GUID: keBsE2Z7nBSFIVOlkCYr7Ezz-iXBpZYs
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTA4MDA4MSBTYWx0ZWRfX25FqieNcQr7U
+ nFzebQthH1e0+fhjg/oRlVTnf+vbVVCc54Q6OU2eHAFrWHGGZkO9vp3WSXWN/q2yiNhwccvNdO1
+ C0pZXest/AXFYpOy0hqWm25LVwrKUGpI3nPNXD/YMMR5dnv77RtCWvcHIyc3X7Ir5KqrQoJYRfq
+ cL2X8KCwBREX1oO5WS/iECv49VtkGPtsKpZiUZtovyCoRtx3wfiyVvjMKCTKANUpTy7kJwVqiM/
+ QQhfEvo1//hhrGuImhCfSJzqf7/3uCrHcd0FDU+lVFTzM347F8ooMFUuafAl53VgZBwzIPaeof3
+ LytYSRCl53s/kZmOcfdgkO8vHfI5A9ud3LM9ZY2uHn7xJ2srRO/LtbdWpoASjyao67ZT5DrvB4V
+ FV+v6RWfefWJP0Wh3F0xIwJigL2nazFVjScJcQNRMEkkXi8CNtv0tpJkn4PonF7kCoZ8cGWonbb
+ HNSgheyUeClEzkC13Kg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-07_02,2026-05-06_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 lowpriorityscore=0 suspectscore=0 adultscore=0 spamscore=0
+ priorityscore=1501 impostorscore=0 phishscore=0 malwarescore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2604200000 definitions=main-2605080081
 
+GCC 16 tightens diagnostics around const correctness and now correctly
+rejects attempts to modify strings referenced through const-qualified
+pointers. In kvm_ppc_register_host_cpu_type(), ppc_cpu_aliases[i].model
+is declared as const char *, but the code was using strstr() on it and
+then modifying the returned pointer in place to strip
+POWERPC_CPU_TYPE_SUFFIX.
 
+This results in a write through a pointer derived from const data,
+triggering a build failure with GCC 16:
 
-On 2/19/2026 4:56 AM, Sean Christopherson wrote:
-> On Tue, Feb 10, 2026, Sean Christopherson wrote:
->> On Tue, Feb 10, 2026, Zhangjiaji wrote:
->>>> I think there's a not-completely-awful solution buried in this gigantic cesspool.
->>>> The only time KVM uses on-stack variables is for qword or smaller accesses, i.e.
->>>> 8 bytes in size or less.  For larger fragments, e.g. AVX to/from MMIO, the target
->>>> value will always be an operand in the emulator context.  And so rather than
->>>> disallow stack variables, for "small" fragments, we can rework the handling to
->>>> copy the value to/from each fragment on-demand instead of stashing a pointer to
->>>> the value.
->>>
->>> Since we can store the frag->val in struct kvm_mmio_fragment,
->>> why not just point frag->data to it? This Way we can save a lot code about
->>> (frag->data == NULL).
->>
->> It's not quite that simple, because we need to handle reads as well.
->>
->>> Though this patch will block any read-into-stack calls, we can add a special path
->>> in function emulator_read_write handling feasible read-into-stack calls -- the
->>> target is released just after emulator_read_write returns.
->>>
->>> ---
->>>   arch/x86/kvm/x86.c       | 9 ++++++++-
->>>   include/linux/kvm_host.h | 3 ++-
->>>   2 files changed, 10 insertions(+), 2 deletions(-)
->>>
->>> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
->>> index 72d37c8930ad..12d53d441a39 100644
->>> --- a/arch/x86/kvm/x86.c
->>> +++ b/arch/x86/kvm/x86.c
->>> @@ -8197,7 +8197,14 @@ static int emulator_read_write_onepage(unsigned long addr, void *val,
->>>   	WARN_ON(vcpu->mmio_nr_fragments >= KVM_MAX_MMIO_FRAGMENTS);
->>>   	frag = &vcpu->mmio_fragments[vcpu->mmio_nr_fragments++];
->>>   	frag->gpa = gpa;
->>> -	frag->data = val;
->>> +	if (bytes > 8u || ! write) {
->>> +		if (WARN_ON_ONCE(object_is_on_stack(val)))
->>
->> This is user-triggerable, e.g. em_popa(), em_pop_sreg(), emulate_iret_real(),
->> em_ret_near_imm(), em_ret_far(), and em_ret().
-> 
-> *sigh*
-> 
-> And I was wrong.  I finally sat down to write some comments for all of this, and
-> realized that reads _never_ pass an on-stack @val to emulator_read_write_onepage(),
-> because read_emulated() always buffers reads through ctxt->mem_read.
-> 
-> So not only is my fancy, complex code unnecessary, it's actively broken.  If a
-> read splits a page boundary, and the first page is NOT emulated MMIO, trying to
-> fulfill the read on-demand falls apart because the @val points at the start of
-> the operand (technically its cache "entry").  I'm sure that's a solvable problem,
-> but I don't see any point in manufacturing a problem in the first place.
-> 
-> I need to write a changelog, but as Yashu suggested, the fix can more simply be:
-> 
-> --
-> From: Sean Christopherson <seanjc@google.com>
-> Date: Tue, 10 Feb 2026 09:45:37 -0800
-> Subject: [PATCH 01/14] KVM: x86: Use scratch field in MMIO fragment to hold
->   small write values
-> 
-> Fixes: f78146b0f923 ("KVM: Fix page-crossing MMIO")
-> Suggested-by: Yashu Zhang <zhangjiaji1@huawei.com>
-> Reported-by: Yashu Zhang <zhangjiaji1@huawei.com>
-> Closes: https://lore.kernel.org/all/369eaaa2b3c1425c85e8477066391bc7@huawei.com
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->   arch/x86/kvm/x86.c       | 14 +++++++++++++-
->   include/linux/kvm_host.h |  3 ++-
->   2 files changed, 15 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-> index db3f393192d9..ff3a6f86973f 100644
-> --- a/arch/x86/kvm/x86.c
-> +++ b/arch/x86/kvm/x86.c
-> @@ -8226,7 +8226,13 @@ static int emulator_read_write_onepage(unsigned long addr, void *val,
->   	WARN_ON(vcpu->mmio_nr_fragments >= KVM_MAX_MMIO_FRAGMENTS);
->   	frag = &vcpu->mmio_fragments[vcpu->mmio_nr_fragments++];
->   	frag->gpa = gpa;
-> -	frag->data = val;
-> +	if (write && bytes <= 8u) {
-> +		frag->val = 0;
-> +		frag->data = &frag->val;
-> +		memcpy(&frag->val, val, bytes);
-> +	} else {
-> +		frag->data = val;
-> +	}
->   	frag->len = bytes;
->   	return X86EMUL_CONTINUE;
->   }
-> @@ -8241,6 +8247,9 @@ static int emulator_read_write(struct x86_emulate_ctxt *ctxt,
->   	gpa_t gpa;
->   	int rc;
->   
-> +	if (WARN_ON_ONCE((bytes > 8u || !ops->write) && object_is_on_stack(val)))
-> +		return X86EMUL_UNHANDLEABLE;
-> +
->   	if (ops->read_write_prepare &&
->   		  ops->read_write_prepare(vcpu, val, bytes))
->   		return X86EMUL_CONTINUE;
-> @@ -11847,6 +11856,9 @@ static int complete_emulated_mmio(struct kvm_vcpu *vcpu)
->   		frag++;
->   		vcpu->mmio_cur_fragment++;
->   	} else {
-> +		if (WARN_ON_ONCE(frag->data == &frag->val))
-> +			return -EIO;
-> +
->   		/* Go forward to the next mmio piece. */
->   		frag->data += len;
->   		frag->gpa += len;
-> diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> index 2c7d76262898..0bb2a34fb93d 100644
-> --- a/include/linux/kvm_host.h
-> +++ b/include/linux/kvm_host.h
-> @@ -320,7 +320,8 @@ static inline bool kvm_vcpu_can_poll(ktime_t cur, ktime_t stop)
->   struct kvm_mmio_fragment {
->   	gpa_t gpa;
->   	void *data;
-> -	unsigned len;
-> +	u64 val;
+  error: assignment discards 'const' qualifier from pointer target type [-Werror=discarded-qualifiers]
+        suffix = strstr(ppc_cpu_aliases[i].model, POWERPC_CPU_TYPE_SUFFIX);
+               ^
 
-Hi, Jiayi and Sean,
+Fix this by duplicating the model string into a mutable buffer using
+g_strdup(), trimming the suffix on that temporary buffer, and only then
+storing it in the alias table.
 
-Since I met a KABI consistence break problem from this change, I am 
-finding a way to avoid add including kvm_mmio_fragment.val.
+This preserves the existing behavior while avoiding modification of
+const data and ensures compatibility with newer compilers.
 
-Can I try to directly malloc a 8 size buffer for kvm_mmio_fragment.data 
-instead of using kvm_mmio_fragment.val, and free this buffer in 
-complete_emulated_mmio when all fragments is been copied?
+No functional change intended.
 
-Thanks!
+Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+---
+Changes in v2:
+  * trim the duplicated buffer before assigning it to ppc_cpu_aliases[i].model
+---
 
-> +	unsigned int len;
->   };
->   
->   struct kvm_vcpu {
-> 
-> base-commit: 183bb0ce8c77b0fd1fb25874112bc8751a461e49
-> --
+ target/ppc/kvm.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
+diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
+index 25c28ad089c6..c2843b1421cb 100644
+--- a/target/ppc/kvm.c
++++ b/target/ppc/kvm.c
+@@ -2654,13 +2654,14 @@ static int kvm_ppc_register_host_cpu_type(void)
+     dc = DEVICE_CLASS(ppc_cpu_get_family_class(pvr_pcc));
+     for (i = 0; ppc_cpu_aliases[i].alias != NULL; i++) {
+         if (g_ascii_strcasecmp(ppc_cpu_aliases[i].alias, dc->desc) == 0) {
+-            char *suffix;
++            char *model, *suffix;
+ 
+-            ppc_cpu_aliases[i].model = g_strdup(object_class_get_name(oc));
+-            suffix = strstr(ppc_cpu_aliases[i].model, POWERPC_CPU_TYPE_SUFFIX);
++            model = g_strdup(object_class_get_name(oc));
++            suffix = strstr(model, POWERPC_CPU_TYPE_SUFFIX);
+             if (suffix) {
+                 *suffix = 0;
+             }
++            ppc_cpu_aliases[i].model = model;
+             break;
+         }
+     }
+
+base-commit: ee7eb612be8f8886d48c1d0c1f1c65e495138f83
 -- 
-Xinyu
+2.50.1 (Apple Git-155)
 
