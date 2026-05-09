@@ -1,67 +1,38 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9C338CFF8;
-	Sat,  9 May 2026 08:37:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86058221F39;
+	Sat,  9 May 2026 11:41:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778315856; cv=none; b=JqWA/V5T9/fqL2GlUAhwGGtF3r/MAtIae7+o6sOeOWjTgBKSAMqXCBhK+LSb6SPdSZLasofcj0Rox9xmyIotbxmPbHcHbBQZRpzatncUes338n59ydYG0tL/5EUm3Z4NiwqQHkVrq4m51heyBE32Cv8aVDZ2bBSRa9ED8T8nq2Q=
+	t=1778326910; cv=none; b=WxauHODNZvkEhCffgWerKpxPkYQSB6LWjRSxB9kuH8+r8o1JPB+q3XE14UGN1ZA7pNN7iPqWJHjikLaltfMQjQSRC5/2U3hatgRRiEQISVUnwkvNTSbEAWFJsivJXzcV+5A/+a+Pl+jUxOWmYI/9Jm7fwhpOJJjrEQzMkUJUg0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778315856; c=relaxed/simple;
-	bh=VNGptNcnug1Kynfoow7xYKFTwBXMjzkYDEZiM53td6Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KmrApDEH/cqJDBAIiliClMx7GL+EbxfdgUy3yCWNSLBreXCVxO6LpL5Pl8RhgBO5uHXBYF6oWP+R+dMENE0Hz0f3PRat0ekcd+fffRCw2t7OwH/EnoRp54JaDdv31h25XZVJiLXySnaGKw5CzcO/tRfoSF4LMNyW2SKXjdypx+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q0LXPy6l; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q0LXPy6l"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778315855; x=1809851855;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=VNGptNcnug1Kynfoow7xYKFTwBXMjzkYDEZiM53td6Q=;
-  b=Q0LXPy6l1buAUbrvkVZY7uDdAJIXjCxuNOK2gKy9qCk1IhU2vOwRJJ8W
-   jsrW7xjCDC6w7lLBoA6CktvWPZFQYXxZ0F2iPBHuKjjTurSlkGQoOyBxI
-   jSoFXuaTuzLDAjhLqBbK4D+j3e3d92dm3MrXKqZqj+qNhwN1pLEW/Tqjk
-   ITOH9TwPe007S0ii/0FxIoykVBOUSJE+uRpq6+aCvk0Yvpaoy1JrPJW43
-   79yDXdJd3F8GaVOQ5WWUabemhhF5M/udEFi2scAXH0idbmoLtMP3fCNOq
-   7UPxmFEMp680ds3FhEB2bOHqYyYXrw0C2Tq4ggGM/Tbv6vBVtoILi5+js
-   w==;
-X-CSE-ConnectionGUID: HQq9KIx+TKyehk/saQKEgw==
-X-CSE-MsgGUID: scw4E+Q0QgatQ3vkELchIA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11780"; a="79005364"
-X-IronPort-AV: E=Sophos;i="6.23,225,1770624000"; 
-   d="scan'208";a="79005364"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2026 01:37:35 -0700
-X-CSE-ConnectionGUID: Ffebmn3jRpWQjYQpVqfEXQ==
-X-CSE-MsgGUID: Gn750mfYQ5CnXlfBjmQRFQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,225,1770624000"; 
-   d="scan'208";a="238784850"
-Received: from yzhao56-desk.sh.intel.com ([10.239.47.19])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2026 01:37:32 -0700
-From: Yan Zhao <yan.y.zhao@intel.com>
-To: seanjc@google.com,
-	pbonzini@redhat.com,
+	s=arc-20240116; t=1778326910; c=relaxed/simple;
+	bh=bTGWTu+W0+QZJwn0RSSvWnQ6KJKxtjXeqkOZFxyYq3g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=usLqZOitf4dOzbiIfMeFUFucv1tZ8mGQdWs5yb5QK2zYC6kNkhiVbUqkClPguCpEB3+OrMuPMLQnx0t8Dt0nHVPv3Dfg8Qj64MhO98qNBImdKQEfIAfmxNMIriuF6DyhjG6lJrlkLW0nWjWKX7j1mIMVChH/gwyC4Y4pd83LBVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from yzs (unknown [115.199.218.204])
+	by APP-05 (Coremail) with SMTP id zQCowAAHlQhjHf9pbOLKDw--.3401S2;
+	Sat, 09 May 2026 19:41:24 +0800 (CST)
+From: Zishun Yi <vulab@iscas.ac.cn>
+To: Anup Patel <anup@brainfault.org>,
+	Paul Walmsley <pjw@kernel.org>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>
+Cc: Atish Patra <atish.patra@linux.dev>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Andrew Jones <ajones@ventanamicro.com>,
 	kvm@vger.kernel.org,
-	rick.p.edgecombe@intel.com,
-	kas@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	x86@kernel.org,
-	dave.hansen@intel.com,
-	kai.huang@intel.com,
-	binbin.wu@linux.intel.com,
-	xiaoyao.li@intel.com,
-	yan.y.zhao@intel.com
-Subject: [PATCH v2 15/15] KVM: TDX: Move external page table freeing to TDX code
-Date: Sat,  9 May 2026 15:57:40 +0800
-Message-ID: <20260509075740.4371-1-yan.y.zhao@intel.com>
-X-Mailer: git-send-email 2.43.2
-In-Reply-To: <20260509075201.4077-1-yan.y.zhao@intel.com>
-References: <20260509075201.4077-1-yan.y.zhao@intel.com>
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Zishun Yi <vulab@iscas.ac.cn>
+Subject: [PATCH] riscv: KVM: Fix missing TLB flush on HENVCFG.PMM updates
+Date: Sat,  9 May 2026 19:41:22 +0800
+Message-ID: <20260509114122.1868327-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.51.2
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -69,123 +40,64 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowAAHlQhjHf9pbOLKDw--.3401S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7KrWrJF4fXF43CrWktr17GFg_yoW8Ar4UpF
+	W3uF95uaykJF1xGF9rta12gF4jkr4vgasIgr9rA342vrZFyF1Fq3yvg34IyryUC3y8X3yF
+	kr4YqFW5urn0v3JanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9j14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
+	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
+	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
+	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
+	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
+	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
+	C2KfnxnUUI43ZEXa7VUbGQ6JUUUUU==
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiCRACA2n+2gnStgAAs4
 
-From: Sean Christopherson <seanjc@google.com>
+According to the RISC-V Privileged ISA specification, if henvcfg.PMM is
+changed from or to a value where (XLEN-PMLEN) is less than the GPA width
+supported by the hgatp translation mode of that guest, hypervisors must
+execute an HFENCE.GVMA with rs1=x0.
 
-Move the freeing of external page tables into the reclaim operation that
-lives in TDX code.
+Currently, when a guest dynamically changes pointer masking mode via the
+SBI FWFT extension, kvm_sbi_fwft_set_pointer_masking_pmlen() directly
+modifies the hardware CSR_HENVCFG from the non-one-reg-access path
+without issuing the required TLB invalidation
 
-The TDP MMU supports traversing the TDP without holding locks. Page tables
-need to be freed via RCU to prevent walking one that gets freed.
+Fix this by adding an unconditional HFENCE.GVMA after the CSR write.
 
-While none of these lockless walk operations actually happen for the mirror
-page table, the TDP MMU nonetheless frees the mirror page table in the same
-way, and (because it's a handy place to plug it in) the external page table
-as well.
+This vulnerability was discovered and reported by my SpecHunter, an
+AI-driven architecture specification analysis tool.
 
-However, the external page table definitely can't be walked once the page
-table pages are reclaimed from the TDX module. The TDX module releases the
-page for the host VMM to use, so this RCU-time free is unnecessary for the
-external page table.
-
-So move the free_page() call to TDX code. Create an
-tdp_mmu_free_unused_sp() to allow for freeing external page tables that
-have never left the TDP MMU code (i.e. don't need freed in a special way).
-
-Link: https://lore.kernel.org/kvm/aYpjNrtGmogNzqwT@google.com/
-Not-yet-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[Based on a diff by Sean, added log]
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+Link: https://github.com/yizishun/rv-isa-sec/blob/master/output/riscv-isa-manual/pr-2494/linux.txt
+Fixes: 48d67106f4a7 ("RISC-V: KVM: Implement ONE_REG interface for SBI FWFT state")
+Assisted-by: DeepSeek:DeepSeek-V4-Pro
+Signed-off-by: Zishun Yi <vulab@iscas.ac.cn>
 ---
-MMU_refactors v2:
-- Fixed typos in the patch log. (Yan, Kai)
-- Still kept "Not-yet-Signed-off-by" tag. Sean, please change it to SoB if
-  the patch looks good to you.
-- Updated the code comment in tdx_sept_free_private_spt(): invoking
-  free_page() to free S-EPT page in tdx_sept_free_private_spt() is only
-  because RCU-time free is unnecessary, not because it can't be performed
-  from RCU callbacks. (Yan)
----
- arch/x86/kvm/mmu/tdp_mmu.c | 16 +++++++++++-----
- arch/x86/kvm/vmx/tdx.c     | 11 ++++++++++-
- 2 files changed, 21 insertions(+), 6 deletions(-)
+ arch/riscv/kvm/vcpu_sbi_fwft.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-index a847a8f09bc6..bb18e9e61542 100644
---- a/arch/x86/kvm/mmu/tdp_mmu.c
-+++ b/arch/x86/kvm/mmu/tdp_mmu.c
-@@ -53,13 +53,18 @@ void kvm_mmu_uninit_tdp_mmu(struct kvm *kvm)
- 	rcu_barrier();
- }
- 
--static void tdp_mmu_free_sp(struct kvm_mmu_page *sp)
-+static void __tdp_mmu_free_sp(struct kvm_mmu_page *sp)
- {
--	free_page((unsigned long)sp->external_spt);
- 	free_page((unsigned long)sp->spt);
- 	kmem_cache_free(mmu_page_header_cache, sp);
- }
- 
-+static void tdp_mmu_free_unused_sp(struct kvm_mmu_page *sp)
-+{
-+	free_page((unsigned long)sp->external_spt);
-+	__tdp_mmu_free_sp(sp);
-+}
-+
- /*
-  * This is called through call_rcu in order to free TDP page table memory
-  * safely with respect to other kernel threads that may be operating on
-@@ -73,7 +78,8 @@ static void tdp_mmu_free_sp_rcu_callback(struct rcu_head *head)
- 	struct kvm_mmu_page *sp = container_of(head, struct kvm_mmu_page,
- 					       rcu_head);
- 
--	tdp_mmu_free_sp(sp);
-+	WARN_ON_ONCE(sp->external_spt);
-+	__tdp_mmu_free_sp(sp);
- }
- 
- void kvm_tdp_mmu_put_root(struct kvm *kvm, struct kvm_mmu_page *root)
-@@ -1266,7 +1272,7 @@ int kvm_tdp_mmu_map(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
- 		 * failed, e.g. because a different task modified the SPTE.
- 		 */
- 		if (r) {
--			tdp_mmu_free_sp(sp);
-+			tdp_mmu_free_unused_sp(sp);
- 			goto retry;
- 		}
- 
-@@ -1577,7 +1583,7 @@ static int tdp_mmu_split_huge_pages_root(struct kvm *kvm,
- 	 * installs its own sp in place of the last sp we tried to split.
+diff --git a/arch/riscv/kvm/vcpu_sbi_fwft.c b/arch/riscv/kvm/vcpu_sbi_fwft.c
+index 2eab15339694..c2bd3ae699fd 100644
+--- a/arch/riscv/kvm/vcpu_sbi_fwft.c
++++ b/arch/riscv/kvm/vcpu_sbi_fwft.c
+@@ -186,8 +186,10 @@ static long kvm_sbi_fwft_set_pointer_masking_pmlen(struct kvm_vcpu *vcpu,
+ 	 * update here so that VCPU see's pointer masking mode change
+ 	 * immediately.
  	 */
- 	if (sp)
--		tdp_mmu_free_sp(sp);
-+		tdp_mmu_free_unused_sp(sp);
+-	if (!one_reg_access)
++	if (!one_reg_access) {
+ 		csr_write(CSR_HENVCFG, vcpu->arch.cfg.henvcfg);
++		kvm_riscv_local_hfence_gvma_all();
++	}
  
- 	return 0;
+ 	return SBI_SUCCESS;
  }
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 9431bc443d50..2539107e0ad3 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1869,7 +1869,16 @@ static void tdx_sept_free_private_spt(struct kvm *kvm, struct kvm_mmu_page *sp)
- 	 */
- 	if (KVM_BUG_ON(is_hkid_assigned(to_kvm_tdx(kvm)), kvm) ||
- 	    tdx_reclaim_page(virt_to_page(sp->external_spt)))
--		sp->external_spt = NULL;
-+		goto out;
-+
-+	/*
-+	 * Immediately free the S-EPT page because RCU-time free is unnecessary
-+	 * after TDH.PHYMEM.PAGE.RECLAIM ensures there are no outstanding
-+	 * readers.
-+	 */
-+	free_page((unsigned long)sp->external_spt);
-+out:
-+	sp->external_spt = NULL;
- }
- 
- void tdx_deliver_interrupt(struct kvm_lapic *apic, int delivery_mode,
 -- 
-2.43.2
+2.51.2
 
