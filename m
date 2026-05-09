@@ -1,1013 +1,192 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56EEE3890EA
-	for <kvm@vger.kernel.org>; Sat,  9 May 2026 13:10:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94BB3939D2
+	for <kvm@vger.kernel.org>; Sat,  9 May 2026 14:11:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778332260; cv=none; b=C6yJDL8RLStvZC04Z8dSZfQ709f3TvXPjEudfc9mDVo6/Vurm+2/7sqTwtr5z1q/nTZhr29470QhpQMMJGkvqCHXS7MTcr4jqXKdyWtqCdxOEUMOdsGSnLreWS2jk13B8RDW3lbR0JzcE7eOhaEwH3hsukxIRnuC+iu3tBgpo6k=
+	t=1778335887; cv=none; b=OQXFS+kMDS7W8pHKQOc8Jcwv0G5eIqzOPzHvPlmE5fXXjYtt9+8tlhw8lt37IAbXb4wr1lhaeY7nVEfxklc00FCSXfTkZQxb+Kil444PcOrE/2aFhsTOX1XJX1lnPK8lj8KGRJNgEmutz1l2aBnsRvXY+4nk2enc/N/AkahckRc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778332260; c=relaxed/simple;
-	bh=ebCvpVlXYudCqk2oDUSNFMiqT9vZTUFFH6ipMm2gON8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=azjVQ5oDD2uxDO7XDn1SLBCDfzOBpUpHY2syemQQuNFpGn4ZgjO157iooWCZtJR1NYzxVHbMogf0d0b9BjL0Ty/+iAZDs9UsNkh2UYf5BVX2NAAXmSWVkYabz0zVdF4AkRSk+ZMLn0lW1QmPfHxqAx8QNhHYePgcb3qR5FuFYLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=Ye9RrcB3; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
+	s=arc-20240116; t=1778335887; c=relaxed/simple;
+	bh=++fkJcl9vcz0uZyCJnAl6KXcCRI8tvPw7VCGiP5Bbm4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WxHO6aEOEg80zIa/kEwXTBIqSoxXnxJRAO+h9tSf7O229yjr5Dtcv7cmCqD4TQQ96o7cya1fx4sm9uClI8ymMe5Ib9MiCItfUYDiqCm6yqVtWTuLl8sHtLNOnV+XupyJBQgMRLFOUJhSRZ5MifLQb9dnjQwgbvRxDSlspAwaBEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lHKz6piI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="Ye9RrcB3"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-8367df48711so1315684b3a.1
-        for <kvm@vger.kernel.org>; Sat, 09 May 2026 06:10:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1778332256; x=1778937056; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=fXfPGCZUlYh3ML2E5Z35byh0hcud282pgOoFG2gFoW4=;
-        b=Ye9RrcB36JAb76tmG1WfKVjY6nS+oKFIC2uJqy6/gxJVCoPr5DppXkKxbukzgoZSJE
-         6QkdE3euYR61OzKRP0U9kJwRtnVU5t+OpxDZ48iXs2Gh9vmbcPzWKSwXpcbtN7gzDaxa
-         Iu9NO225wVRNBA+izptc0VRMuXu1348xDybml5csdzoXFEtkLmCVAq9efqM9DI4Ay4Xd
-         ruQST9SXUrJlD5NWjkOsJevVWd/nt2tu/Izvoiq7/OxRlk7FSiouU+MDzgBZUw1jkn9o
-         +PXNpoOwnGW6RlS3wJwjTX7IsN9RuZ0PxdlwAZ1xXzEK65vkDMdPlpo7Auf7KI4Fiu0Y
-         EQsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778332256; x=1778937056;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=fXfPGCZUlYh3ML2E5Z35byh0hcud282pgOoFG2gFoW4=;
-        b=jOSjYrnhv3nJGgDAS0IlxYVeZHAmOWT/C2m1XpCIiqYUm6SkiHbt+x33gvoCqrL5fP
-         d6EqTm/f8LwZHOZg7HIeKrJOKLqrrGYhaNCHTXDr3i13d8IGvucs8nvwlh8v56CYf3zl
-         vNCswItL5hjMOd0e4D3NLi1y7X709K955JToq9vO0P4ey7zlqnv8Hiy4RzRChlTJc39B
-         8KCicp1hJULc9YzsyFdf4ZHivb/hKhMaqckp9YZzUBdmcVOaIWzyb9Racs5Lo/n8yQA3
-         ehiYyXzousGWiJqm/V2+Uho5j+V0My/Yw+qvKVQ7oUT3KYcMe0BLCLfo3S+a6UMnM2Az
-         jHMw==
-X-Forwarded-Encrypted: i=1; AFNElJ+b6SB18Z+pbC1u/DpFJnv+fDpPiQXnYhqZ9SONDfwtHzQHactCRzQg6GK6RNg8d38D3Iw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6S01GQadVliwYFLD2aYhY26g7Oe+nW3AGWcSOcraMMRSldcyv
-	oOeQWCqnr0xV9VexZASyV4eD+VIOGHVPNzWk8BA7VaqcDL46iRzFaDA7TnZVCjTLLqs=
-X-Gm-Gg: Acq92OFeLxOsHLMawjCJOOlqcnkHpc185c/cRhCME7uXXjAy5MCMhB6s9BKbYUNea5f
-	U6F6lBsv17Lyi5DgQ0OoG8Yu7NIci8oYLMXdlFqeSIror/urKlBVQeDJuouRbNNDN+LxRu8L+kd
-	HQPlFifJ/pXJD+lKBSiAV8RQA3gB+QmXfCgGaOlSKk1fQlaOEwm3tiDCxSv49yO9WD4IvIhDRRN
-	DuUSfmaJDIN0TyKahNX7Cr8bdsRSuGCAAeaKnNfNki/f4XhFHys/T9ozBF9K/zZclxrzzFqG/Vi
-	mSRZFGxs2cnEYYD+t+Y2EbWlpDxz/mxuN+iC7fgPo1VOK7o0EbbHDezAqRysjDlD7mb34jGU0J8
-	iMyzeKq0rP+hU3OrRLydX5bv2P047yTNvbZfK8mExw5xmwTIPxfjj6citj85e5PhBjodWjyzlI3
-	W5g1SoAQS4BLXf4Liatbd9f3/yyX0wJz+Tr1BkmMKhWF1GbPSyrCOSrmWYuTsqHWwEQQ8=
-X-Received: by 2002:a05:6a00:1411:b0:838:c01a:7a50 with SMTP id d2e1a72fcca58-83a5d68134fmr15695879b3a.30.1778332255468;
-        Sat, 09 May 2026 06:10:55 -0700 (PDT)
-Received: from FJ7FR2JRQ3.bytedance.net ([155.117.34.6])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-839679c86b3sm18552855b3a.28.2026.05.09.06.10.47
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 09 May 2026 06:10:54 -0700 (PDT)
-From: Zhanpeng Zhang <zhangzhanpeng.jasper@bytedance.com>
-To: linux-riscv@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-perf-users@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	kvm@vger.kernel.org,
-	kvm-riscv@lists.infradead.org,
-	Paul Walmsley <pjw@kernel.org>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Conor Dooley <conor@kernel.org>,
-	=?UTF-8?q?Cl=C3=A9ment=20L=C3=A9ger?= <cleger@rivosinc.com>,
-	Himanshu Chauhan <himanshu@thechauhan.dev>,
-	Will Deacon <will@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Atish Patra <atish.patra@linux.dev>,
-	Anup Patel <anup@brainfault.org>,
-	Shuah Khan <shuah@kernel.org>,
-	Yunhui Cui <cuiyunhui@bytedance.com>,
-	Zhu Yuan <yuanzhu@bytedance.com>,
-	Zhanpeng Zhang <zhangzhanpeng.jasper@bytedance.com>
-Subject: [PATCH v9 5/5] selftests/riscv: add SSE test module
-Date: Sat,  9 May 2026 21:10:02 +0800
-Message-ID: <1f66bfb775e8b6658c6f2f2f48aa4f668f911db5.1778331862.5.git.zhangzhanpeng.jasper@bytedance.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1778331862.git.zhangzhanpeng.jasper@bytedance.com>
-References: <cover.1778331862.git.zhangzhanpeng.jasper@bytedance.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lHKz6piI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83ACCC2BCC9
+	for <kvm@vger.kernel.org>; Sat,  9 May 2026 14:11:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778335887;
+	bh=++fkJcl9vcz0uZyCJnAl6KXcCRI8tvPw7VCGiP5Bbm4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=lHKz6piIvaVYWLx/R3sYqGyLTJgdtt22723ikkrS1OOumQxaRA6azHi6E70oA4vup
+	 FGGEPUC9maiAzaGEZyhjq/T/gpK+QhMyvxyBkfBvyTnES+W3qP3BPyt1Vlhca35llW
+	 soKhczJmyQeqQFNc1FBod4CpwN8fNM8EBHm8scNzdNJHb85A9GgEhCT7taX0Ve0eMY
+	 y6Ma1M0o9gbFdR/L44o1qWAN0zdrxmJpRdMtQNpH9JQcl6AaYbsVAgFdsbQHBTAm/4
+	 1/77fDIHDf+yC0DW3wV2zGOfHZY2xZhj/36KrF65elViI/kLe+psO4iTD//pTXuq7f
+	 bH4VWFKRGFRiQ==
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-bcd0111ea98so18289666b.1
+        for <kvm@vger.kernel.org>; Sat, 09 May 2026 07:11:27 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+3eaGBJIJ5UW7pUXlB663VrCJngjdneiEV0puXQDMe5BQFyXkwwqNnBDDkqLm3DEeUXnU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwuqszWj1TJL4dDN8rd2DcKLrAt/7j1UD0ZxWjKaNkphYkWzOAY
+	h5UncYmGqjlBXEoaDIVnmJ+MGLGCEabQkIBN1A9kRzQe/LNPpA36GT4+vFmOh2tnL4Ewzg9Duyb
+	J1YeehTBsqe98PXtvvSMzibzVul2nBOM=
+X-Received: by 2002:a17:907:c27:b0:bcb:8984:15ec with SMTP id
+ a640c23a62f3a-bcb89842ed0mr240730966b.29.1778335886073; Sat, 09 May 2026
+ 07:11:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <20260508013001.4107737-1-maobibo@loongson.cn> <CAAhV-H6dHM0GBFCh-6-q0fM3VSa49RTXSDz+YUvM0j7u_was1g@mail.gmail.com>
+ <3d3bb8ea-34b7-b4da-deac-677ac272dd76@loongson.cn> <CAAhV-H44v2TcSAeq+mDiHy26k=mE4ykqjrvPsNurgpw4OhnNTg@mail.gmail.com>
+ <076bc4bc-54da-efb6-b1d4-e5e754bb580a@loongson.cn> <CAAhV-H7vCF0=_EdahXSeQBu8r65SJ6t3-FCiWh4TxhoaRnXnMg@mail.gmail.com>
+ <3df8e39d-1692-07d2-222c-a68fbfd6ab5a@loongson.cn>
+In-Reply-To: <3df8e39d-1692-07d2-222c-a68fbfd6ab5a@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Sat, 9 May 2026 22:11:16 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4W4z+BXm_hREk+ZSZzK=9UAOav7itAvD6ohYPy0fAsDg@mail.gmail.com>
+X-Gm-Features: AVHnY4JN0veX4hzftGEtE4xPuLDbneVcownbdzUjsM6-g9vbmTQOorwPZ45Sabs
+Message-ID: <CAAhV-H4W4z+BXm_hREk+ZSZzK=9UAOav7itAvD6ohYPy0fAsDg@mail.gmail.com>
+Subject: Re: [PATCH] LoongArch: KVM: Move some variable declaration to file paravirt.h
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: kernel@xen0n.name, kvm@vger.kernel.org, loongarch@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Clément Léger <cleger@rivosinc.com>
+On Sat, May 9, 2026 at 9:34=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> wrote=
+:
+>
+>
+>
+> On 2026/5/8 =E4=B8=8B=E5=8D=889:04, Huacai Chen wrote:
+> > On Fri, May 8, 2026 at 11:19=E2=80=AFAM Bibo Mao <maobibo@loongson.cn> =
+wrote:
+> >>
+> >>
+> >>
+> >> On 2026/5/8 =E4=B8=8A=E5=8D=8811:11, Huacai Chen wrote:
+> >>> On Fri, May 8, 2026 at 11:08=E2=80=AFAM Bibo Mao <maobibo@loongson.cn=
+> wrote:
+> >>>>
+> >>>>
+> >>>>
+> >>>> On 2026/5/8 =E4=B8=8A=E5=8D=8810:56, Huacai Chen wrote:
+> >>>>> Hi, Bibo,
+> >>>>>
+> >>>>> On Fri, May 8, 2026 at 9:30=E2=80=AFAM Bibo Mao <maobibo@loongson.c=
+n> wrote:
+> >>>>>>
+> >>>>>> Some variables relative with paravirt feature are declared in head=
+er file
+> >>>>>> asm/qspinlock.h, however this file can be included only when optio=
+n
+> >>>>>> CONFIG_SMP is on. There is compiling warning if CONFIG_SMP is off =
+since
+> >>>>>> it is not declared.
+> >>>>>>
+> >>>>>> Move these variable declaration to header file asm/paravirt.h to a=
+void
+> >>>>>> compiling warning.
+> >>>>> Have you reproduced the warning? I cannot reproduce it in my
+> >>>>> environment with the config file from lkp report, so I also cannot
+> >>>>> confirm whether it is fixed.
+> >>>> yes, I can reproduce this and it is fixed. The warning is reported f=
+rom
+> >>>> sparse tool, rather than LLVM.
+> >>>>>
+> >>>>> Another question:
+> >>>>> Is paravirt.h a better place than kvm_para.h?
+> >>>> en, here kvm_para.h seems better, will send V2 version in next time.
+> >>> Frankly, I don't know the difference between the two files. kvm_para.=
+h
+> >>> is kvm specific and paravirt.h is generic? Or kvm_para.h is the
+> >>> hypervisor side and paravirt.h is the guest side?
+> >> kvm_para.h is shared by hypervisor and guest kernel, paravirt.h is onl=
+y
+> >> used by guest kernel. And option CONFIG_PARAVIRT is useful with guest
+> >> kernel, CONFIG_PARAVIRT has no much meaning with hypervisor.
+> > If so, paravirt.h seems better to declare these variables.
+> yes, paravirt.h seems better than kvm_para.h :)
+Applied, thanks.
 
-This module, once loaded, will execute a series of tests using the SSE
-framework. The provided script will check for any error reported by the
-test module.
-
-Add stress={0,1,2} modes so the same module can cover repeated handler
-entry, SBI calls from a handler, PMU activity and re-injection.  Also make
-the tests tolerate events that are already registered, and keep the
-attribute read buffer lifetime local to the SBI call.
-
-Signed-off-by: Clément Léger <cleger@rivosinc.com>
-Co-developed-by: Zhanpeng Zhang <zhangzhanpeng.jasper@bytedance.com>
-Signed-off-by: Zhanpeng Zhang <zhangzhanpeng.jasper@bytedance.com>
----
- MAINTAINERS                                   |   1 +
- tools/testing/selftests/riscv/Makefile        |   2 +-
- tools/testing/selftests/riscv/sse/Makefile    |   5 +
- .../selftests/riscv/sse/module/Makefile       |  16 +
- .../riscv/sse/module/riscv_sse_test.c         | 769 ++++++++++++++++++
- .../selftests/riscv/sse/run_sse_test.sh       |  48 ++
- 6 files changed, 840 insertions(+), 1 deletion(-)
- create mode 100644 tools/testing/selftests/riscv/sse/Makefile
- create mode 100644 tools/testing/selftests/riscv/sse/module/Makefile
- create mode 100644 tools/testing/selftests/riscv/sse/module/riscv_sse_test.c
- create mode 100644 tools/testing/selftests/riscv/sse/run_sse_test.sh
-
-diff --git a/MAINTAINERS b/MAINTAINERS
-index c247acc56d1c..e4bb9b880c26 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -22902,6 +22902,7 @@ C:	irc://irc.libera.chat/riscv
- P:	Documentation/arch/riscv/patch-acceptance.rst
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/riscv/linux.git
- F:	arch/riscv/
-+F:	tools/testing/selftests/riscv/
- N:	riscv
- K:	riscv
- 
-diff --git a/tools/testing/selftests/riscv/Makefile b/tools/testing/selftests/riscv/Makefile
-index 5671b4405a12..43c7c8f97676 100644
---- a/tools/testing/selftests/riscv/Makefile
-+++ b/tools/testing/selftests/riscv/Makefile
-@@ -5,7 +5,7 @@
- ARCH ?= $(shell uname -m 2>/dev/null || echo not)
- 
- ifneq (,$(filter $(ARCH),riscv))
--RISCV_SUBTARGETS ?= abi hwprobe mm sigreturn vector cfi
-+RISCV_SUBTARGETS ?= abi hwprobe mm sigreturn vector cfi sse
- else
- RISCV_SUBTARGETS :=
- endif
-diff --git a/tools/testing/selftests/riscv/sse/Makefile b/tools/testing/selftests/riscv/sse/Makefile
-new file mode 100644
-index 000000000000..67eaee06f213
---- /dev/null
-+++ b/tools/testing/selftests/riscv/sse/Makefile
-@@ -0,0 +1,5 @@
-+TEST_GEN_MODS_DIR := module
-+
-+TEST_FILES := run_sse_test.sh
-+
-+include ../../lib.mk
-diff --git a/tools/testing/selftests/riscv/sse/module/Makefile b/tools/testing/selftests/riscv/sse/module/Makefile
-new file mode 100644
-index 000000000000..02018f083456
---- /dev/null
-+++ b/tools/testing/selftests/riscv/sse/module/Makefile
-@@ -0,0 +1,16 @@
-+TESTMODS_DIR := $(realpath $(dir $(abspath $(lastword $(MAKEFILE_LIST)))))
-+KDIR ?= /lib/modules/$(shell uname -r)/build
-+
-+obj-m += riscv_sse_test.o
-+
-+# Ensure that KDIR exists, otherwise skip the compilation
-+modules:
-+ifneq ("$(wildcard $(KDIR))", "")
-+	$(Q)$(MAKE) -C $(KDIR) modules KBUILD_EXTMOD=$(TESTMODS_DIR)
-+endif
-+
-+# Ensure that KDIR exists, otherwise skip the clean target
-+clean:
-+ifneq ("$(wildcard $(KDIR))", "")
-+	$(Q)$(MAKE) -C $(KDIR) clean KBUILD_EXTMOD=$(TESTMODS_DIR)
-+endif
-diff --git a/tools/testing/selftests/riscv/sse/module/riscv_sse_test.c b/tools/testing/selftests/riscv/sse/module/riscv_sse_test.c
-new file mode 100644
-index 000000000000..c0efdfc5467c
---- /dev/null
-+++ b/tools/testing/selftests/riscv/sse/module/riscv_sse_test.c
-@@ -0,0 +1,769 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later
-+/*
-+ * Copyright (C) 2025 Rivos Inc.
-+ */
-+
-+#define pr_fmt(fmt) "riscv_sse_test: " fmt
-+
-+#include <linux/array_size.h>
-+#include <linux/atomic.h>
-+#include <linux/completion.h>
-+#include <linux/delay.h>
-+#include <linux/err.h>
-+#include <linux/hrtimer.h>
-+#include <linux/io.h>
-+#include <linux/jiffies.h>
-+#include <linux/kthread.h>
-+#include <linux/module.h>
-+#include <linux/riscv_sbi_sse.h>
-+#include <linux/sched.h>
-+#include <linux/slab.h>
-+#include <linux/smp.h>
-+
-+#include <asm/sbi.h>
-+#include <asm/sse.h>
-+
-+#define RUN_LOOP_COUNT		1000
-+#define SSE_FAILED_PREFIX	"FAILED: "
-+#define STRESS_DURATION_MS	3000
-+#define STRESS_INJECT_NS	10000
-+#define STRESS_REINJECT_DEPTH	10
-+#define sse_err(...)		pr_err(SSE_FAILED_PREFIX __VA_ARGS__)
-+
-+enum sse_stress_mode {
-+	SSE_STRESS_OFF,
-+	SSE_STRESS_AFTER_SMOKE,
-+	SSE_STRESS_ONLY,
-+};
-+
-+static int stress;
-+module_param(stress, int, 0444);
-+MODULE_PARM_DESC(stress, "Stress mode: 0=off, 1=after smoke, 2=stress only");
-+
-+struct sse_event_desc {
-+	u32 evt_id;
-+	const char *name;
-+	bool can_inject;
-+};
-+
-+static struct sse_event_desc sse_event_descs[] = {
-+	{
-+		.evt_id = SBI_SSE_EVENT_LOCAL_HIGH_PRIO_RAS,
-+		.name = "local_high_prio_ras",
-+	},
-+	{
-+		.evt_id = SBI_SSE_EVENT_LOCAL_DOUBLE_TRAP,
-+		.name = "local_double_trap",
-+	},
-+	{
-+		.evt_id = SBI_SSE_EVENT_GLOBAL_HIGH_PRIO_RAS,
-+		.name = "global_high_prio_ras",
-+	},
-+	{
-+		.evt_id = SBI_SSE_EVENT_LOCAL_PMU_OVERFLOW,
-+		.name = "local_pmu_overflow",
-+	},
-+	{
-+		.evt_id = SBI_SSE_EVENT_LOCAL_LOW_PRIO_RAS,
-+		.name = "local_low_prio_ras",
-+	},
-+	{
-+		.evt_id = SBI_SSE_EVENT_GLOBAL_LOW_PRIO_RAS,
-+		.name = "global_low_prio_ras",
-+	},
-+	{
-+		.evt_id = SBI_SSE_EVENT_LOCAL_SOFTWARE_INJECTED,
-+		.name = "local_software_injected",
-+	},
-+	{
-+		.evt_id = SBI_SSE_EVENT_GLOBAL_SOFTWARE_INJECTED,
-+		.name = "global_software_injected",
-+	}
-+};
-+
-+static struct sse_event_desc *sse_get_evt_desc(u32 evt)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(sse_event_descs); i++) {
-+		if (sse_event_descs[i].evt_id == evt)
-+			return &sse_event_descs[i];
-+	}
-+
-+	return NULL;
-+}
-+
-+static const char *sse_evt_name(u32 evt)
-+{
-+	struct sse_event_desc *desc = sse_get_evt_desc(evt);
-+
-+	return desc ? desc->name : NULL;
-+}
-+
-+static bool sse_test_can_inject_event(u32 evt)
-+{
-+	struct sse_event_desc *desc = sse_get_evt_desc(evt);
-+
-+	return desc ? desc->can_inject : false;
-+}
-+
-+static struct sbiret sbi_sse_ecall(int fid, unsigned long arg0, unsigned long arg1)
-+{
-+	return sbi_ecall(SBI_EXT_SSE, fid, arg0, arg1, 0, 0, 0, 0);
-+}
-+
-+static int sse_event_attr_get(u32 evt, unsigned long attr_id,
-+			      unsigned long *val)
-+{
-+	struct sbiret sret;
-+	unsigned long *attr_buf, phys;
-+
-+	attr_buf = kmalloc_obj(*attr_buf, GFP_KERNEL);
-+	if (!attr_buf)
-+		return -ENOMEM;
-+
-+	phys = virt_to_phys(attr_buf);
-+
-+	sret = sbi_ecall(SBI_EXT_SSE, SBI_SSE_EVENT_ATTR_READ, evt, attr_id, 1,
-+			 phys, 0, 0);
-+	if (sret.error) {
-+		kfree(attr_buf);
-+		return sbi_err_map_linux_errno(sret.error);
-+	}
-+
-+	*val = *attr_buf;
-+	kfree(attr_buf);
-+
-+	return 0;
-+}
-+
-+static int sse_test_signal(u32 evt, unsigned int cpu)
-+{
-+	unsigned int hart_id = cpuid_to_hartid_map(cpu);
-+	struct sbiret ret;
-+
-+	ret = sbi_sse_ecall(SBI_SSE_EVENT_INJECT, evt, hart_id);
-+	if (ret.error) {
-+		sse_err("Failed to signal event %x, error %ld\n", evt, ret.error);
-+		return sbi_err_map_linux_errno(ret.error);
-+	}
-+
-+	return 0;
-+}
-+
-+static int sse_test_inject_event(struct sse_event *event, u32 evt, unsigned int cpu)
-+{
-+	int res;
-+	unsigned long status;
-+
-+	if (sse_event_is_global(evt)) {
-+		/*
-+		 * Due to the fact the completion might happen faster than
-+		 * the call to SBI_SSE_COMPLETE in the handler, if the event was
-+		 * running on another CPU, we need to wait for the event status
-+		 * to be !RUNNING.
-+		 */
-+		do {
-+			res = sse_event_attr_get(evt, SBI_SSE_ATTR_STATUS, &status);
-+			if (res) {
-+				sse_err("Failed to get status for evt %x, error %d\n", evt, res);
-+				return res;
-+			}
-+			status = status & SBI_SSE_ATTR_STATUS_STATE_MASK;
-+		} while (status == SBI_SSE_STATE_RUNNING);
-+
-+		res = sse_event_set_target_cpu(event, cpu);
-+		if (res) {
-+			sse_err("Failed to set cpu for evt %x, error %d\n", evt, res);
-+			return res;
-+		}
-+	}
-+
-+	return sse_test_signal(evt, cpu);
-+}
-+
-+struct fast_test_arg {
-+	u32 evt;
-+	int cpu;
-+	bool completion;
-+};
-+
-+static int sse_test_handler(u32 evt, void *arg, struct pt_regs *regs)
-+{
-+	int ret = 0;
-+	struct fast_test_arg *targ = arg;
-+	u32 test_evt = READ_ONCE(targ->evt);
-+	int cpu = READ_ONCE(targ->cpu);
-+
-+	if (evt != test_evt) {
-+		sse_err("Received SSE event id %x instead of %x\n", test_evt, evt);
-+		ret = -EINVAL;
-+	}
-+
-+	if (cpu != smp_processor_id()) {
-+		sse_err("Received SSE event %d on CPU %d instead of %d\n", evt, smp_processor_id(),
-+			cpu);
-+		ret = -EINVAL;
-+	}
-+
-+	WRITE_ONCE(targ->completion, true);
-+
-+	return ret;
-+}
-+
-+static void sse_run_fast_test(struct fast_test_arg *test_arg, struct sse_event *event, u32 evt)
-+{
-+	unsigned long timeout;
-+	int ret, cpu;
-+
-+	for_each_online_cpu(cpu) {
-+		WRITE_ONCE(test_arg->completion, false);
-+		WRITE_ONCE(test_arg->cpu, cpu);
-+		/* Test arg is used on another CPU */
-+		smp_wmb();
-+
-+		ret = sse_test_inject_event(event, evt, cpu);
-+		if (ret) {
-+			sse_err("event %s injection failed, err %d\n", sse_evt_name(evt), ret);
-+			return;
-+		}
-+
-+		timeout = jiffies + HZ / 100;
-+		/* We can not use <linux/completion.h> since they are not NMI safe */
-+		while (!READ_ONCE(test_arg->completion) &&
-+		       time_before(jiffies, timeout)) {
-+			cpu_relax();
-+		}
-+		if (!time_before(jiffies, timeout)) {
-+			sse_err("Failed to wait for event %s completion on CPU %d\n",
-+				sse_evt_name(evt), cpu);
-+			return;
-+		}
-+	}
-+}
-+
-+static void sse_test_injection_fast(void)
-+{
-+	int i, ret = 0, j;
-+	u32 evt;
-+	struct fast_test_arg test_arg;
-+	struct sse_event *event;
-+
-+	pr_info("Starting SSE test (fast)\n");
-+
-+	for (i = 0; i < ARRAY_SIZE(sse_event_descs); i++) {
-+		evt = sse_event_descs[i].evt_id;
-+		WRITE_ONCE(test_arg.evt, evt);
-+
-+		if (!sse_event_descs[i].can_inject)
-+			continue;
-+
-+		event = sse_event_register(evt, 0, sse_test_handler,
-+					   (void *)&test_arg);
-+		if (IS_ERR(event)) {
-+			if (PTR_ERR(event) == -EEXIST) {
-+				pr_info("Event %s already registered, skipping\n",
-+					sse_evt_name(evt));
-+				continue;
-+			}
-+			sse_err("Failed to register event %s, err %ld\n", sse_evt_name(evt),
-+				PTR_ERR(event));
-+			continue;
-+		}
-+
-+		ret = sse_event_enable(event);
-+		if (ret) {
-+			sse_err("Failed to enable event %s, err %d\n", sse_evt_name(evt), ret);
-+			goto err_unregister;
-+		}
-+
-+		pr_info("Starting testing event %s\n", sse_evt_name(evt));
-+
-+		for (j = 0; j < RUN_LOOP_COUNT; j++)
-+			sse_run_fast_test(&test_arg, event, evt);
-+
-+		pr_info("Finished testing event %s\n", sse_evt_name(evt));
-+
-+		sse_event_disable(event);
-+err_unregister:
-+		sse_event_unregister(event);
-+	}
-+	pr_info("Finished SSE test (fast)\n");
-+}
-+
-+struct priority_test_arg {
-+	unsigned long evt;
-+	struct sse_event *event;
-+	bool called;
-+	u32 prio;
-+	struct priority_test_arg *next_evt_arg;
-+	void (*check_func)(struct priority_test_arg *arg);
-+};
-+
-+static int sse_hi_priority_test_handler(u32 evt, void *arg,
-+					struct pt_regs *regs)
-+{
-+	struct priority_test_arg *targ = arg;
-+	struct priority_test_arg *next = READ_ONCE(targ->next_evt_arg);
-+
-+	WRITE_ONCE(targ->called, 1);
-+
-+	if (next) {
-+		sse_test_signal(next->evt, smp_processor_id());
-+		if (!READ_ONCE(next->called)) {
-+			sse_err("Higher priority event %s was not handled %s\n",
-+				sse_evt_name(next->evt), sse_evt_name(evt));
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static int sse_low_priority_test_handler(u32 evt, void *arg, struct pt_regs *regs)
-+{
-+	struct priority_test_arg *targ = arg;
-+	struct priority_test_arg *next = READ_ONCE(targ->next_evt_arg);
-+
-+	WRITE_ONCE(targ->called, 1);
-+
-+	if (next) {
-+		sse_test_signal(next->evt, smp_processor_id());
-+		if (READ_ONCE(next->called)) {
-+			sse_err("Lower priority event %s was handle before %s\n",
-+				sse_evt_name(next->evt), sse_evt_name(evt));
-+		}
-+	}
-+
-+	return 0;
-+}
-+
-+static void sse_test_injection_priority_arg(struct priority_test_arg *args, unsigned int args_size,
-+					    sse_event_handler_fn handler, const char *test_name)
-+{
-+	unsigned int i;
-+	int ret;
-+	struct sse_event *event;
-+	struct priority_test_arg *arg, *first_arg = NULL, *prev_arg = NULL;
-+
-+	pr_info("Starting SSE priority test (%s)\n", test_name);
-+	for (i = 0; i < args_size; i++) {
-+		arg = &args[i];
-+
-+		if (!sse_test_can_inject_event(arg->evt))
-+			continue;
-+
-+		WRITE_ONCE(arg->called, false);
-+		WRITE_ONCE(arg->next_evt_arg, NULL);
-+		WRITE_ONCE(arg->event, NULL);
-+
-+		event = sse_event_register(arg->evt, arg->prio, handler, (void *)arg);
-+		if (IS_ERR(event)) {
-+			if (PTR_ERR(event) == -EEXIST) {
-+				pr_info("Event %s already registered, skipping\n",
-+					sse_evt_name(arg->evt));
-+				continue;
-+			}
-+			sse_err("Failed to register event %s, err %ld\n", sse_evt_name(arg->evt),
-+				PTR_ERR(event));
-+			goto release_events;
-+		}
-+		arg->event = event;
-+
-+		if (sse_event_is_global(arg->evt)) {
-+			/* Target event at current CPU */
-+			ret = sse_event_set_target_cpu(event, smp_processor_id());
-+			if (ret) {
-+				sse_err("Failed to set event %s target CPU, err %d\n",
-+					sse_evt_name(arg->evt), ret);
-+				goto release_events;
-+			}
-+		}
-+
-+		ret = sse_event_enable(event);
-+		if (ret) {
-+			sse_err("Failed to enable event %s, err %d\n", sse_evt_name(arg->evt), ret);
-+			goto release_events;
-+		}
-+
-+		if (prev_arg)
-+			WRITE_ONCE(prev_arg->next_evt_arg, arg);
-+
-+		prev_arg = arg;
-+
-+		if (!first_arg)
-+			first_arg = arg;
-+	}
-+
-+	if (!first_arg) {
-+		pr_info("No injectable event available for %s priority test\n",
-+			test_name);
-+		return;
-+	}
-+
-+	/* Inject first event, handler should trigger the others in chain. */
-+	ret = sse_test_inject_event(first_arg->event, first_arg->evt, smp_processor_id());
-+	if (ret) {
-+		sse_err("SSE event %s injection failed\n", sse_evt_name(first_arg->evt));
-+		goto release_events;
-+	}
-+
-+	/*
-+	 * Event are injected directly on the current CPU after calling sse_test_inject_event()
-+	 * so that execution is preempted right away, no need to wait for timeout.
-+	 */
-+	arg = first_arg;
-+	while (arg) {
-+		if (!READ_ONCE(arg->called)) {
-+			sse_err("Event %s handler was not called\n",
-+				sse_evt_name(arg->evt));
-+			ret = -EINVAL;
-+		}
-+
-+		event = arg->event;
-+		arg = READ_ONCE(arg->next_evt_arg);
-+	}
-+
-+release_events:
-+
-+	arg = first_arg;
-+	while (arg) {
-+		event = arg->event;
-+		if (!event)
-+			break;
-+
-+		sse_event_disable(event);
-+		sse_event_unregister(event);
-+		arg = READ_ONCE(arg->next_evt_arg);
-+	}
-+
-+	pr_info("Finished SSE priority test (%s)\n", test_name);
-+}
-+
-+static void sse_test_injection_priority(void)
-+{
-+	struct priority_test_arg default_hi_prio_args[] = {
-+		{ .evt = SBI_SSE_EVENT_GLOBAL_SOFTWARE_INJECTED },
-+		{ .evt = SBI_SSE_EVENT_LOCAL_SOFTWARE_INJECTED },
-+		{ .evt = SBI_SSE_EVENT_GLOBAL_LOW_PRIO_RAS },
-+		{ .evt = SBI_SSE_EVENT_LOCAL_LOW_PRIO_RAS },
-+		{ .evt = SBI_SSE_EVENT_LOCAL_PMU_OVERFLOW },
-+		{ .evt = SBI_SSE_EVENT_GLOBAL_HIGH_PRIO_RAS },
-+		{ .evt = SBI_SSE_EVENT_LOCAL_DOUBLE_TRAP },
-+		{ .evt = SBI_SSE_EVENT_LOCAL_HIGH_PRIO_RAS },
-+	};
-+
-+	struct priority_test_arg default_low_prio_args[] = {
-+		{ .evt = SBI_SSE_EVENT_LOCAL_HIGH_PRIO_RAS },
-+		{ .evt = SBI_SSE_EVENT_LOCAL_DOUBLE_TRAP },
-+		{ .evt = SBI_SSE_EVENT_GLOBAL_HIGH_PRIO_RAS },
-+		{ .evt = SBI_SSE_EVENT_LOCAL_PMU_OVERFLOW },
-+		{ .evt = SBI_SSE_EVENT_LOCAL_LOW_PRIO_RAS },
-+		{ .evt = SBI_SSE_EVENT_GLOBAL_LOW_PRIO_RAS },
-+		{ .evt = SBI_SSE_EVENT_LOCAL_SOFTWARE_INJECTED },
-+		{ .evt = SBI_SSE_EVENT_GLOBAL_SOFTWARE_INJECTED },
-+
-+	};
-+	struct priority_test_arg set_prio_args[] = {
-+		{ .evt = SBI_SSE_EVENT_GLOBAL_SOFTWARE_INJECTED, .prio = 5 },
-+		{ .evt = SBI_SSE_EVENT_LOCAL_SOFTWARE_INJECTED, .prio = 10 },
-+		{ .evt = SBI_SSE_EVENT_GLOBAL_LOW_PRIO_RAS, .prio = 15 },
-+		{ .evt = SBI_SSE_EVENT_LOCAL_LOW_PRIO_RAS, .prio = 20 },
-+		{ .evt = SBI_SSE_EVENT_LOCAL_PMU_OVERFLOW, .prio = 25 },
-+		{ .evt = SBI_SSE_EVENT_GLOBAL_HIGH_PRIO_RAS, .prio = 30 },
-+		{ .evt = SBI_SSE_EVENT_LOCAL_DOUBLE_TRAP, .prio = 35 },
-+		{ .evt = SBI_SSE_EVENT_LOCAL_HIGH_PRIO_RAS, .prio = 40 },
-+	};
-+
-+	struct priority_test_arg same_prio_args[] = {
-+		{ .evt = SBI_SSE_EVENT_LOCAL_PMU_OVERFLOW, .prio = 0 },
-+		{ .evt = SBI_SSE_EVENT_LOCAL_HIGH_PRIO_RAS, .prio = 10 },
-+		{ .evt = SBI_SSE_EVENT_LOCAL_SOFTWARE_INJECTED, .prio = 10 },
-+		{ .evt = SBI_SSE_EVENT_GLOBAL_SOFTWARE_INJECTED, .prio = 10 },
-+		{ .evt = SBI_SSE_EVENT_GLOBAL_HIGH_PRIO_RAS, .prio = 20 },
-+	};
-+
-+	sse_test_injection_priority_arg(default_hi_prio_args, ARRAY_SIZE(default_hi_prio_args),
-+					sse_hi_priority_test_handler, "high");
-+
-+	sse_test_injection_priority_arg(default_low_prio_args, ARRAY_SIZE(default_low_prio_args),
-+					sse_low_priority_test_handler, "low");
-+
-+	sse_test_injection_priority_arg(set_prio_args, ARRAY_SIZE(set_prio_args),
-+					sse_low_priority_test_handler, "set");
-+
-+	sse_test_injection_priority_arg(same_prio_args, ARRAY_SIZE(same_prio_args),
-+					sse_low_priority_test_handler, "same_prio_args");
-+}
-+
-+static bool sse_get_inject_status(u32 evt)
-+{
-+	int ret;
-+	unsigned long val;
-+
-+	/* Check if injection is supported */
-+	ret = sse_event_attr_get(evt, SBI_SSE_ATTR_STATUS, &val);
-+	if (ret)
-+		return false;
-+
-+	return !!(val & BIT(SBI_SSE_ATTR_STATUS_INJECT_OFFSET));
-+}
-+
-+static void sse_init_events(void)
-+{
-+	int i;
-+
-+	for (i = 0; i < ARRAY_SIZE(sse_event_descs); i++) {
-+		struct sse_event_desc *desc = &sse_event_descs[i];
-+
-+		desc->can_inject = sse_get_inject_status(desc->evt_id);
-+		if (!desc->can_inject)
-+			pr_info("Can not inject event %s, tests using this event will be skipped\n",
-+				desc->name);
-+	}
-+}
-+
-+struct stress_test_ctx {
-+	struct sse_event *event;
-+	struct hrtimer timer;
-+	struct hrtimer stop_timer;
-+	struct task_struct *monitor_task;
-+	wait_queue_head_t wait_q;
-+	atomic_t inject_count;
-+	atomic_t handler_count;
-+	u32 evt_id;
-+	int layer;
-+	bool running;
-+	bool test_done;
-+};
-+
-+static struct stress_test_ctx stress_ctx;
-+static DEFINE_PER_CPU(int, stress_reinject_cpu_depth);
-+
-+static int stress_handler_empty(u32 evt, void *arg, struct pt_regs *regs)
-+{
-+	struct stress_test_ctx *ctx = arg;
-+
-+	atomic_inc(&ctx->handler_count);
-+
-+	return 0;
-+}
-+
-+static int stress_handler_ecall(u32 evt, void *arg, struct pt_regs *regs)
-+{
-+	struct stress_test_ctx *ctx = arg;
-+
-+	sbi_ecall(SBI_EXT_PMU, SBI_EXT_PMU_NUM_COUNTERS, 0, 0, 0, 0, 0, 0);
-+	atomic_inc(&ctx->handler_count);
-+
-+	return 0;
-+}
-+
-+static int stress_handler_pmu(u32 evt, void *arg, struct pt_regs *regs)
-+{
-+	struct stress_test_ctx *ctx = arg;
-+
-+	sbi_ecall(SBI_EXT_PMU, SBI_EXT_PMU_COUNTER_STOP, 3, 1, 0, 0, 0, 0);
-+	sbi_ecall(SBI_EXT_PMU, SBI_EXT_PMU_COUNTER_START, 3, 1, 0, 0, 0, 0);
-+	atomic_inc(&ctx->handler_count);
-+
-+	return 0;
-+}
-+
-+static int stress_handler_reinject(u32 evt, void *arg, struct pt_regs *regs)
-+{
-+	struct stress_test_ctx *ctx = arg;
-+	int *depth = this_cpu_ptr(&stress_reinject_cpu_depth);
-+
-+	(*depth)++;
-+	if (*depth < STRESS_REINJECT_DEPTH)
-+		sse_test_signal(evt, smp_processor_id());
-+	else
-+		*depth = 0;
-+
-+	atomic_inc(&ctx->handler_count);
-+
-+	return 0;
-+}
-+
-+static sse_event_handler_fn *stress_handlers[] = {
-+	stress_handler_empty,
-+	stress_handler_ecall,
-+	stress_handler_pmu,
-+	stress_handler_reinject,
-+};
-+
-+static const char * const stress_layer_names[] = {
-+	"empty handler",
-+	"SBI ecall in handler",
-+	"PMU stop/start in handler",
-+	"self re-inject",
-+};
-+
-+static enum hrtimer_restart stress_timer_callback(struct hrtimer *timer)
-+{
-+	struct stress_test_ctx *ctx = container_of(timer, struct stress_test_ctx, timer);
-+
-+	if (!READ_ONCE(ctx->running))
-+		return HRTIMER_NORESTART;
-+
-+	sse_test_signal(ctx->evt_id, smp_processor_id());
-+	atomic_inc(&ctx->inject_count);
-+	hrtimer_forward_now(timer, ns_to_ktime(STRESS_INJECT_NS));
-+
-+	return HRTIMER_RESTART;
-+}
-+
-+static enum hrtimer_restart stress_stop_timer_callback(struct hrtimer *timer)
-+{
-+	struct stress_test_ctx *ctx;
-+
-+	ctx = container_of(timer, struct stress_test_ctx, stop_timer);
-+	WRITE_ONCE(ctx->test_done, true);
-+	wake_up(&ctx->wait_q);
-+
-+	return HRTIMER_NORESTART;
-+}
-+
-+static int stress_monitor_thread(void *data)
-+{
-+	struct stress_test_ctx *ctx = data;
-+	unsigned long last_inject = 0, last_handler = 0;
-+
-+	while (!kthread_should_stop() && READ_ONCE(ctx->running)) {
-+		unsigned long inject = atomic_read(&ctx->inject_count);
-+		unsigned long handler = atomic_read(&ctx->handler_count);
-+
-+		pr_info("stress layer %d: inject=%lu (+%lu), handler=%lu (+%lu)\n",
-+			ctx->layer, inject, inject - last_inject,
-+			handler, handler - last_handler);
-+
-+		last_inject = inject;
-+		last_handler = handler;
-+
-+		schedule_timeout_interruptible(HZ);
-+	}
-+
-+	return 0;
-+}
-+
-+static int sse_stress_test_layer(int layer)
-+{
-+	struct sse_event *event;
-+	int ret;
-+
-+	if (layer < 0 || layer >= ARRAY_SIZE(stress_handlers))
-+		return -EINVAL;
-+
-+	pr_info("Starting SSE stress layer %d (%s)\n",
-+		layer, stress_layer_names[layer]);
-+
-+	memset(&stress_ctx, 0, sizeof(stress_ctx));
-+	stress_ctx.evt_id = SBI_SSE_EVENT_LOCAL_SOFTWARE_INJECTED;
-+	stress_ctx.layer = layer;
-+	WRITE_ONCE(stress_ctx.running, true);
-+	atomic_set(&stress_ctx.inject_count, 0);
-+	atomic_set(&stress_ctx.handler_count, 0);
-+	init_waitqueue_head(&stress_ctx.wait_q);
-+
-+	event = sse_event_register(stress_ctx.evt_id, 0,
-+				   stress_handlers[layer], &stress_ctx);
-+	if (IS_ERR(event)) {
-+		sse_err("Failed to register stress event, err %ld\n",
-+			PTR_ERR(event));
-+		return PTR_ERR(event);
-+	}
-+
-+	stress_ctx.event = event;
-+
-+	ret = sse_event_enable(event);
-+	if (ret) {
-+		sse_err("Failed to enable stress event, err %d\n", ret);
-+		goto err_unregister;
-+	}
-+
-+	stress_ctx.monitor_task = kthread_run(stress_monitor_thread,
-+					      &stress_ctx, "sse_stress_mon");
-+	if (IS_ERR(stress_ctx.monitor_task)) {
-+		ret = PTR_ERR(stress_ctx.monitor_task);
-+		sse_err("Failed to create stress monitor thread, err %d\n", ret);
-+		goto err_disable;
-+	}
-+
-+	hrtimer_setup(&stress_ctx.timer, stress_timer_callback,
-+		      CLOCK_MONOTONIC, HRTIMER_MODE_PINNED);
-+	hrtimer_start(&stress_ctx.timer, ns_to_ktime(STRESS_INJECT_NS),
-+		      HRTIMER_MODE_REL_PINNED);
-+
-+	hrtimer_setup(&stress_ctx.stop_timer, stress_stop_timer_callback,
-+		      CLOCK_MONOTONIC, HRTIMER_MODE_REL);
-+	hrtimer_start(&stress_ctx.stop_timer, ms_to_ktime(STRESS_DURATION_MS),
-+		      HRTIMER_MODE_REL);
-+
-+	wait_event(stress_ctx.wait_q, READ_ONCE(stress_ctx.test_done));
-+
-+	WRITE_ONCE(stress_ctx.running, false);
-+	hrtimer_cancel(&stress_ctx.timer);
-+	hrtimer_cancel(&stress_ctx.stop_timer);
-+	kthread_stop(stress_ctx.monitor_task);
-+
-+	pr_info("Finished SSE stress layer %d (%s): inject=%d, handler=%d\n",
-+		layer, stress_layer_names[layer],
-+		atomic_read(&stress_ctx.inject_count),
-+		atomic_read(&stress_ctx.handler_count));
-+
-+err_disable:
-+	sse_event_disable(event);
-+err_unregister:
-+	sse_event_unregister(event);
-+
-+	return ret;
-+}
-+
-+static void sse_stress_test_all_layers(void)
-+{
-+	int i, ret;
-+
-+	pr_info("Starting SSE stress tests: duration=%d ms, interval=%d ns\n",
-+		STRESS_DURATION_MS, STRESS_INJECT_NS);
-+
-+	for (i = 0; i < ARRAY_SIZE(stress_handlers); i++) {
-+		ret = sse_stress_test_layer(i);
-+		if (ret)
-+			sse_err("Stress layer %d failed, err %d\n", i, ret);
-+
-+		msleep(100);
-+	}
-+
-+	pr_info("Finished SSE stress tests\n");
-+}
-+
-+static int __init sse_test_init(void)
-+{
-+	if (stress < SSE_STRESS_OFF || stress > SSE_STRESS_ONLY) {
-+		sse_err("Invalid stress mode %d\n", stress);
-+		return -EINVAL;
-+	}
-+
-+	sse_init_events();
-+
-+	if (stress != SSE_STRESS_ONLY) {
-+		sse_test_injection_fast();
-+		sse_test_injection_priority();
-+	}
-+
-+	if (stress != SSE_STRESS_OFF)
-+		sse_stress_test_all_layers();
-+
-+	return 0;
-+}
-+
-+static void __exit sse_test_exit(void)
-+{
-+}
-+
-+module_init(sse_test_init);
-+module_exit(sse_test_exit);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_AUTHOR("Clément Léger <cleger@rivosinc.com>");
-+MODULE_DESCRIPTION("Test module for SSE");
-diff --git a/tools/testing/selftests/riscv/sse/run_sse_test.sh b/tools/testing/selftests/riscv/sse/run_sse_test.sh
-new file mode 100644
-index 000000000000..c8eb1ce51682
---- /dev/null
-+++ b/tools/testing/selftests/riscv/sse/run_sse_test.sh
-@@ -0,0 +1,48 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Copyright (C) 2025 Rivos Inc.
-+
-+MODULE_NAME=riscv_sse_test
-+DRIVER="./module/${MODULE_NAME}.ko"
-+
-+check_test_failed_prefix() {
-+	if dmesg | grep -q "${MODULE_NAME}: FAILED:";then
-+		echo "${MODULE_NAME} failed, please check dmesg"
-+		exit 1
-+	fi
-+}
-+
-+# Kselftest framework requirement - SKIP code is 4.
-+ksft_skip=4
-+
-+check_test_requirements()
-+{
-+	uid=$(id -u)
-+	if [ $uid -ne 0 ]; then
-+		echo "$0: Must be run as root"
-+		exit $ksft_skip
-+	fi
-+
-+	if ! which insmod > /dev/null 2>&1; then
-+		echo "$0: You need insmod installed"
-+		exit $ksft_skip
-+	fi
-+
-+	if [ ! -f $DRIVER ]; then
-+		echo "$0: You need to compile ${MODULE_NAME} module"
-+		exit $ksft_skip
-+	fi
-+}
-+
-+check_test_requirements
-+
-+if ! insmod $DRIVER "$@" > /dev/null 2>&1; then
-+	echo "${MODULE_NAME}: failed to load, please check dmesg"
-+	exit 1
-+fi
-+
-+rmmod $MODULE_NAME
-+check_test_failed_prefix
-+
-+exit 0
--- 
-2.50.1 (Apple Git-155)
+Huacai
+>
+> Regards
+> Bibo Mao
+> >
+> > Huacai
+> >
+> >>
+> >> Regards
+> >> Bibo Mao
+> >>>
+> >>> Huacai
+> >>>
+> >>>>
+> >>>> Regards
+> >>>> Bibo Mao
+> >>>>
+> >>>>>
+> >>>>> Huacai
+> >>>>>
+> >>>>>>
+> >>>>>> Fixes: c43dce6f13fb ("LoongArch: KVM: Make vcpu_is_preempted() as =
+a macro rather than function")
+> >>>>>> Reported-by: kernel test robot <lkp@intel.com>
+> >>>>>> Closes: https://lore.kernel.org/oe-kbuild-all/202605061313.O8Hswm2=
+b-lkp@intel.com/
+> >>>>>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+> >>>>>> ---
+> >>>>>>     arch/loongarch/include/asm/paravirt.h  | 4 ++++
+> >>>>>>     arch/loongarch/include/asm/qspinlock.h | 5 +----
+> >>>>>>     2 files changed, 5 insertions(+), 4 deletions(-)
+> >>>>>>
+> >>>>>> diff --git a/arch/loongarch/include/asm/paravirt.h b/arch/loongarc=
+h/include/asm/paravirt.h
+> >>>>>> index 0111f0ad5f73..dbc64908017f 100644
+> >>>>>> --- a/arch/loongarch/include/asm/paravirt.h
+> >>>>>> +++ b/arch/loongarch/include/asm/paravirt.h
+> >>>>>> @@ -3,6 +3,10 @@
+> >>>>>>     #define _ASM_LOONGARCH_PARAVIRT_H
+> >>>>>>
+> >>>>>>     #ifdef CONFIG_PARAVIRT
+> >>>>>> +#include <linux/jump_label.h>
+> >>>>>> +DECLARE_STATIC_KEY_FALSE(virt_preempt_key);
+> >>>>>> +DECLARE_STATIC_KEY_FALSE(virt_spin_lock_key);
+> >>>>>> +DECLARE_PER_CPU(struct kvm_steal_time, steal_time);
+> >>>>>>
+> >>>>>>     int __init pv_ipi_init(void);
+> >>>>>>     int __init pv_time_init(void);
+> >>>>>> diff --git a/arch/loongarch/include/asm/qspinlock.h b/arch/loongar=
+ch/include/asm/qspinlock.h
+> >>>>>> index 0ee15b3b3937..fbfc6be82f26 100644
+> >>>>>> --- a/arch/loongarch/include/asm/qspinlock.h
+> >>>>>> +++ b/arch/loongarch/include/asm/qspinlock.h
+> >>>>>> @@ -3,12 +3,9 @@
+> >>>>>>     #define _ASM_LOONGARCH_QSPINLOCK_H
+> >>>>>>
+> >>>>>>     #include <asm/kvm_para.h>
+> >>>>>> -#include <linux/jump_label.h>
+> >>>>>> +#include <asm/paravirt.h>
+> >>>>>>
+> >>>>>>     #ifdef CONFIG_PARAVIRT
+> >>>>>> -DECLARE_STATIC_KEY_FALSE(virt_preempt_key);
+> >>>>>> -DECLARE_STATIC_KEY_FALSE(virt_spin_lock_key);
+> >>>>>> -DECLARE_PER_CPU(struct kvm_steal_time, steal_time);
+> >>>>>>
+> >>>>>>     #define virt_spin_lock virt_spin_lock
+> >>>>>>
+> >>>>>>
+> >>>>>> base-commit: 74fe02ce122a6103f207d29fafc8b3a53de6abaf
+> >>>>>> --
+> >>>>>> 2.39.3
+> >>>>>>
+> >>>>
+> >>
+>
+>
