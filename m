@@ -1,61 +1,64 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D815263F44
-	for <kvm@vger.kernel.org>; Sat,  9 May 2026 13:10:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBE5389DE6
+	for <kvm@vger.kernel.org>; Sat,  9 May 2026 13:10:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778332221; cv=none; b=O/YbAf9y9zpQSEDWFcWppfgvHM0tkfDlROFwMm3qVrcjnTzt5lujiqotCKXRvNOhMaB4jjUoWeuQBKZlKTItGiyUtRb3XngOEE2eDD+DDle4cc4iEd9eWvm7yKls0PurXDml6PQkC3Fw4nQgHPInzsEKgkzkCaP6IibZy5idmLk=
+	t=1778332225; cv=none; b=h+ojTL7PGRH/JbIgTf5D12svdsyQNv3SRVAM+cb8dNtTQVE1wN/ZVF4rcCwJXcfejHu7kTIK255DJhzsIEk5GU/bAU1yrEKrKg4VCx4BmsC7FBTYlvLMFehD+3LzJYA0d9ls/howMgfa3U0UBnu+yOe6/Ju3IxiJHBRRNLJQ1DA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778332221; c=relaxed/simple;
-	bh=UM1YTVWKCXjwkowt3WjEd184ybys8RxDPu1C31uIsnA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=LFrFLTQ/pfhJ0g5/UAgHfmIg/YVRqJbmYUUoXs2arCUIUPe9tQHo+kwM7rSh2fYVNZkERJCGyaq0VYDSfd7pdomurUAU+lkmvoJRyOV+b0+8aJ6wYLdh0IVjTHBOWo25pTtsT8duyh5ZUHWz/6Plln21qrR8QuyucxxW+BAh7PU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=dfWW4Is3; arc=none smtp.client-ip=209.85.210.170
+	s=arc-20240116; t=1778332225; c=relaxed/simple;
+	bh=uZrd32wUvX5SDEU1PWqvgQ3qjQJm8e+VexqImi1d9vM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FTPF6fe0BUlfPhxQlfisJm79XM+CJzLh6YI/t3aekAhDOMgseINCuWaQq0J8ptmca4bqbXNQW04Vm/n/GwNLKVyzi3Z5PTtV/2tZhPbXWZdW72tMNEAZzcnR/AR3nogqZJXP5z9sBuXgmAqY9Ul9hZ0wLhsEUEGF/yeTvVxvPmI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=BBL6CInP; arc=none smtp.client-ip=209.85.210.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="dfWW4Is3"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-836ed29d1e5so1245069b3a.2
-        for <kvm@vger.kernel.org>; Sat, 09 May 2026 06:10:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="BBL6CInP"
+Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-839dc688d6cso1228881b3a.2
+        for <kvm@vger.kernel.org>; Sat, 09 May 2026 06:10:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1778332215; x=1778937015; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=A3NyDBs4ghD74Azq1zzFPGUm5QlcBDwy4o68+WiOzU4=;
-        b=dfWW4Is3N28283+If5USHbp2VAQF9w7mBCsSBT2Umff6F2aCHFvxGTDkSrZN1Pz+0M
-         +tkOG0Ap86At5w3aAKNYPPCM9BqSkQEcQY9HYx3U1JfF/wFltcyztP/nq81r0kVWoeM6
-         DRACsP1SUD95x1z7/YbmVn+a8eOPtQbuLUYy4NtNelFZ9LmakqKmFdLOKZuclayRpeRj
-         99O+pFvwomt6JZcMfciVJiPVxuGq1GzX/Nlxz4zbI94/R92B7PHTk7HQN1SLnbjyQz1q
-         mHLuWKL41I6AQ05XsA7SLX4Tf3hYNeNvFTk9TdBUh1cwo/3juSBeEAtUdye071nfOeww
-         XfRQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778332215; x=1778937015;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=bytedance.com; s=google; t=1778332223; x=1778937023; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=A3NyDBs4ghD74Azq1zzFPGUm5QlcBDwy4o68+WiOzU4=;
-        b=hNamNX+V3RlHM3tlr1qi/0Jptk7Q9RrXERJ+rRQh+ah8UKlBtBBeAhoC6Ij0gzmw99
-         3ohWDEugox7f3y+h37LetcSdBGOqzdu0Cj+NxXQhH5Hdhc+U8EzzmUBBmHzQgANf93Az
-         KEfQggbyutb+NNSRSW3TK+10PrDTPTcT9Dvgh524uO3TpR2WswIFm714hb8Ttg4DEaaL
-         NrpSYcYAymZxQYL8SsEvdcdcWIyt8yfIpJ5tQjilgyDHR23nWnuRPBAgNivbiZ0rSSOH
-         Dbm2A88/P7hDwJJtC//LJUzZgQlOhlfEW8A5pZ5wjrvx6KPuYfMN8Ochvoklbj4RaAHO
-         FlFA==
-X-Forwarded-Encrypted: i=1; AFNElJ+hoUpsharJL/SDFMdvyLF2xxI8aXIL1N2UxOLO9AvRuCbEFP8avbHkVT+wL51L4nnGqPs=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0earw5Wg2cV+mFu1ADNl5Ie/Mkyykp6Tb9sLWdZl5C0M1IXJo
-	h6LYKKZInTPxaF942kjddzTunjSnydySG70r4GOsAmKOpvZAIBlE6xP4hrk9GaIskDg=
-X-Gm-Gg: Acq92OEfhxfCDi7r1QAUwH8GuLDI+dg0uU+57RHp/QkadkbG9wzlfOT55r64rlKaRMa
-	OUAOPczL8+AXtkEJrF+dBO2mXNiNdUlarrpXRurJIXCV2TCh2GiCri8kFWBKNLcn+S86va563e0
-	UOrS4SdctYzf12lq6mcI+5TWO6Kl+ZJNHD921qfZUSDeFFkUidh/e9nWTsmi1KNn/Y3kBO+AF08
-	02Y4n2IuW1IM5m8pqbZq1z+24zzOVJUWUba92xbTMqJ/3a2jy7S4sANRFybGiBQhwDPzcPY8EBO
-	KDDJmVN+WvIW6DmogGY64FzbO7t0cVlG8syVZHtFZTYylsRlQDa3Pnh5QuEjUFiDItdIDn+Dat+
-	cdpJfQZZ8QGVLM+JnCufGb2NOprSJCaxDIeoXrL1eqUTgJ3KTf7BJYm+G5OF37RadpQ4PvdN09k
-	MvzRidWweb8Eq6qWylY8ujTAgslQqfq4SnYuEdgWux/OyuxRPnDm2W6FfGxr0htQGalLY=
-X-Received: by 2002:a05:6a00:2d0c:b0:82f:4f67:1ff6 with SMTP id d2e1a72fcca58-83a5b6c460fmr15827882b3a.4.1778332215217;
-        Sat, 09 May 2026 06:10:15 -0700 (PDT)
+        bh=PAkSYkxsqqTOgdXkwd1wAt3CxX5zO5z0PreuHh3BJZA=;
+        b=BBL6CInPOQv5BnrbcLeRqeSq1XBZF5dcFz4z1kbOPcBoPOFpXgcw4KkwlTGH4evp9U
+         8VHWC7E0v+gzq1YHAU1YpEMNV+kBkrvq0K2g30MuHFakzc1RRJufgp5RgvvlocIJMwoP
+         VEq/JW0SKNY6acywbRlZZ0mhtQdpxbSW/XhXFfqiMnIyVEDcyhAqczgGJxn8GAZqTtfR
+         4tm8dgNapGqYKWY7esRqHf34K9NPMvuP2389Kd+u3Qu2OtcZno+j4P1MMS537n+nwPy2
+         ZPaoRaSXdGVvU6jtkq9vMqvjZa4FqM1YYYTRS7D6zGrLwmIEjalkWPhgVbxC93ccg8gw
+         wvBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778332223; x=1778937023;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=PAkSYkxsqqTOgdXkwd1wAt3CxX5zO5z0PreuHh3BJZA=;
+        b=Znasbx/oC0CD+hGVUbut3LgW4fVGMQ/xmjBWlMEjCAbsnfRHrtQCSed082jY8dYrpz
+         xOc6iJgvx4pLSwlfavgJUhIIK/K2Ej2sGEDHt2+djMMv4bB1+PuM1mO3fHPelgLi4Wds
+         W3FXLl7HM7IT3H46Jt/5DojEw8FdnONgej/d9qrUrKWXYJTceJswmzfFtxfUtnx9jSW6
+         CaW5W+zivGo/nsZosLdVafaMwD+F8IXCoBwO346FOmcgiMq0XcdqiyBufEL0dKVdLEYf
+         Egb7FCC4xbWx5sYtP0RjuWmg9fB+6iwTP8qRyTijGIOJwrBVBw6m+QaAWmcfU7l3lv55
+         rCTQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/P2OtpYfVshwR1DlptS2UjBSwdcTmpXK2nokxbKCPU9HYwNrdUnnFOgZs1CMi4q8jtaV4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx+SNptW/Lrtmwx0YaECLGkzeig9tcUF0jdEoetgVLyCstYAI3+
+	dzvO+g8JUfP/1/2eq6apAhV+sAPslKSYeV9JBm8qn4K1WjfSrXna7MwdMSi/0yUBlHQ=
+X-Gm-Gg: Acq92OFYT56aidbpk95bOcasrYNhaAH4gjmhztUFvn6tyDv91DToKYCTNJ3L7Absm4P
+	6ToMm4kemsRp03Or7PSpO3Z3eHYUJN7Mu6t13qbe1svboYGd3kUX6ygectlxJ8sr7C8iTT5v6fB
+	HpxivcAUnj4Ry36W7ngQ7NDNwI+SVG+QG5Kn9VH81QhXuVecNpIqnvlBi8XZ0paqyuauLTCzfXs
+	ctjQ4ZjxoIbCBz2v0G0E0BovA1Ii9cEgz3l7MCr/12dl2Zig+1z5N38wVkCN2RzFxYkqx99DObr
+	vCYmPLFHUnSzpfnUWeyCrrGoYESWAPSBtY5wqAsAS/N1ZCo/bgEtcwoQNRh671LW+h559Px+wVz
+	TDag/iO5T0fedABsp2TTS5AJNwmmvXDup9MSgsDrRpcKzYoYFImBmSKpZYhMWhTk+J705OPfLSa
+	nIpO+gCQ7rMh3UqttRBt2AK/T2SiTHoPdmec0J7VqnHMN0PBst7XN2oqTEAMHSwqZqHQxsl2yy9
+	p78lA==
+X-Received: by 2002:a05:6a00:8018:b0:82c:249e:a85b with SMTP id d2e1a72fcca58-83a5b7cd0famr17299719b3a.13.1778332222817;
+        Sat, 09 May 2026 06:10:22 -0700 (PDT)
 Received: from FJ7FR2JRQ3.bytedance.net ([155.117.34.6])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-839679c86b3sm18552855b3a.28.2026.05.09.06.10.07
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-839679c86b3sm18552855b3a.28.2026.05.09.06.10.15
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sat, 09 May 2026 06:10:14 -0700 (PDT)
+        Sat, 09 May 2026 06:10:22 -0700 (PDT)
 From: Zhanpeng Zhang <zhangzhanpeng.jasper@bytedance.com>
 To: linux-riscv@lists.infradead.org
 Cc: linux-kernel@vger.kernel.org,
@@ -78,10 +81,12 @@ Cc: linux-kernel@vger.kernel.org,
 	Yunhui Cui <cuiyunhui@bytedance.com>,
 	Zhu Yuan <yuanzhu@bytedance.com>,
 	Zhanpeng Zhang <zhangzhanpeng.jasper@bytedance.com>
-Subject: [PATCH v9 0/5] riscv: add SBI Supervisor Software Events support
-Date: Sat,  9 May 2026 21:09:57 +0800
-Message-ID: <cover.1778331862.git.zhangzhanpeng.jasper@bytedance.com>
+Subject: [PATCH v9 1/5] riscv: add SBI SSE extension definitions
+Date: Sat,  9 May 2026 21:09:58 +0800
+Message-ID: <2a8913d680ccf162d5d697fde1a125c48b2f1d0a.1778331862.1.git.zhangzhanpeng.jasper@bytedance.com>
 X-Mailer: git-send-email 2.50.1
+In-Reply-To: <cover.1778331862.git.zhangzhanpeng.jasper@bytedance.com>
+References: <cover.1778331862.git.zhangzhanpeng.jasper@bytedance.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -91,145 +96,99 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
+From: Clément Léger <cleger@rivosinc.com>
 
-This series continues Clément's SBI Supervisor Software Events (SSE)
-Linux support. Most of the framework is still Clément's work; many
-thanks to him for bringing the series this far. Clément reached out and
-suggested that I could continue the upstream work, so I am picking up
-the series from here.
+Add needed definitions for SBI Supervisor Software Events extension [1].
+This extension enables the SBI to inject events into supervisor software
+much like ARM SDEI.
 
-SSE gives the SBI a firmware-to-S/HS-mode event delivery path that does
-not depend on ordinary S-mode interrupt delivery. This is useful for
-NMI-style platform events and for PMU overflow delivery through firmware.
+[1] https://lists.riscv.org/g/tech-prs/message/515
 
-This respin mainly fixes two issues:
-
-  - KVM Context Corruption
-
-    An SSE can interrupt HS-mode code around guest execution, run a
-    synthetic SSE handler, and then complete back through firmware.  The
-    handler episode must be transparent to Linux-owned trap and
-    virtualization state.  This version folds the stvec and hstatus
-    preservation into the Linux SSE entry wrapper, rather than relying on
-    OpenSBI to keep extra hidden resume state. This follows the earlier
-    discussion [1].
-
-  - SSE Handler's SSTATUS Leakage
-
-    With CONFIG_RISCV_PMU_SBI_SSE, perf can use the local PMU overflow
-    SSE event instead of the ordinary PMU interrupt. This makes the PMU
-    overflow handler a real hot path for SSE: workloads such as
-    "perf top" can enter the SSE handler and completion paths at a high
-    rate. The previous code did not preserve the interrupted
-    sstatus.SIE/SPIE/SPP state separately from the synthetic handler
-    trap-return state, so high-frequency PMU-SSE delivery could quickly
-    expose the leakage. One observed failure mode was an "environment
-    call from U-mode" panic. This series addresses that by making the
-    SSE entry wrapper preserve the live sstatus state around the handler
-    before completing the event.
-
-The selftest has also been extended to cover the high-frequency PMU-SSE
-patterns that exposed these bugs.  The new stress modes exercise repeated
-handler entry and completion, SBI calls from a handler, PMU stop/start
-activity, and re-injection.
-
-How to test:
-
-  Build a kernel with at least:
-
-    CONFIG_RISCV_SBI_SSE=y
-    CONFIG_RISCV_PMU_SBI=y
-    CONFIG_RISCV_PMU_SBI_SSE=y
-
-  Build the selftest module against that kernel and run the smoke test:
-
-    ./run_sse_test.sh
-
-  Then run the stress layers.  Use stress=1 to run them after the smoke
-  test, or stress=2 to run only the stress layers:
-
-    ./run_sse_test.sh stress={0,1,2}
-
-Known limitations and follow-up work:
-
-SSE is a relatively large extension which builds synthetic supervisor
-contexts and then resumes the interrupted context through firmware. This
-series fixes the issues found so far in that entry/completion path, but I
-think it still needs more testing and review. There may still be corner
-cases in the constructed handler context or in the state restored after
-completion that this series does not cover yet.
-
-The next planned area is virtualization support. Follow-up work is
-expected to distinguish host and guest PMU-SSE samples, and to support
-delivering SSE events to guests, i.e. the KVM-SSE work from earlier
-revisions.
-
-[1] https://lore.kernel.org/r/9290f53d-3545-4299-9781-c1c558f71158@rivosinc.com
-
+Signed-off-by: Clément Léger <cleger@rivosinc.com>
+Co-developed-by: Zhanpeng Zhang <zhangzhanpeng.jasper@bytedance.com>
+Signed-off-by: Zhanpeng Zhang <zhangzhanpeng.jasper@bytedance.com>
 ---
+ arch/riscv/include/asm/sbi.h | 61 ++++++++++++++++++++++++++++++++++++
+ 1 file changed, 61 insertions(+)
 
-Changes in v9:
-  - Picked up Clément's v8 series and rebased it onto the current RISC-V
-    for-next branch.
-  - Fixed KVM Context Corruption by keeping stvec and hstatus stable across
-    the synthetic SSE handler episode.
-  - Fixed SSE Handler's SSTATUS Leakage, where interrupted
-    sstatus.SIE/SPIE/SPP state could be confused with the handler
-    trap-return state under high-frequency PMU-SSE delivery.
-  - Extended the SSE selftest with stress={0,1,2} modes that cover repeated
-    handler entry, SBI calls, PMU activity and re-injection, and fixed event
-    registration and attribute-buffer lifetime corner cases.
-  - Updated MAINTAINERS for the RISC-V SSE driver.
-
-Previous versions:
-  v8:
-    https://lore.kernel.org/r/20251105082639.342973-1-cleger@rivosinc.com
-
-Clément Léger (5):
-  riscv: add SBI SSE extension definitions
-  riscv: add support for SBI Supervisor Software Events extension
-  drivers: firmware: add riscv SSE support
-  perf: RISC-V: add support for SSE event
-  selftests/riscv: add SSE test module
-
- MAINTAINERS                                   |  17 +
- arch/riscv/include/asm/asm.h                  |  14 +-
- arch/riscv/include/asm/sbi.h                  |  61 ++
- arch/riscv/include/asm/scs.h                  |   7 +
- arch/riscv/include/asm/sse.h                  |  47 ++
- arch/riscv/include/asm/switch_to.h            |  14 +
- arch/riscv/include/asm/thread_info.h          |   1 +
- arch/riscv/kernel/Makefile                    |   1 +
- arch/riscv/kernel/asm-offsets.c               |  14 +
- arch/riscv/kernel/sbi_sse.c                   | 162 ++++
- arch/riscv/kernel/sbi_sse_entry.S             | 187 +++++
- drivers/firmware/Kconfig                      |   1 +
- drivers/firmware/Makefile                     |   1 +
- drivers/firmware/riscv/Kconfig                |  15 +
- drivers/firmware/riscv/Makefile               |   3 +
- drivers/firmware/riscv/riscv_sbi_sse.c        | 694 ++++++++++++++++
- drivers/perf/Kconfig                          |  10 +
- drivers/perf/riscv_pmu.c                      |  23 +
- drivers/perf/riscv_pmu_sbi.c                  |  71 +-
- include/linux/perf/riscv_pmu.h                |   5 +
- include/linux/riscv_sbi_sse.h                 |  57 ++
- tools/testing/selftests/riscv/Makefile        |   2 +-
- tools/testing/selftests/riscv/sse/Makefile    |   5 +
- .../selftests/riscv/sse/module/Makefile       |  16 +
- .../riscv/sse/module/riscv_sse_test.c         | 769 ++++++++++++++++++
- .../selftests/riscv/sse/run_sse_test.sh       |  48 ++
- 26 files changed, 2231 insertions(+), 14 deletions(-)
- create mode 100644 arch/riscv/include/asm/sse.h
- create mode 100644 arch/riscv/kernel/sbi_sse.c
- create mode 100644 arch/riscv/kernel/sbi_sse_entry.S
- create mode 100644 drivers/firmware/riscv/Kconfig
- create mode 100644 drivers/firmware/riscv/Makefile
- create mode 100644 drivers/firmware/riscv/riscv_sbi_sse.c
- create mode 100644 include/linux/riscv_sbi_sse.h
- create mode 100644 tools/testing/selftests/riscv/sse/Makefile
- create mode 100644 tools/testing/selftests/riscv/sse/module/Makefile
- create mode 100644 tools/testing/selftests/riscv/sse/module/riscv_sse_test.c
- create mode 100644 tools/testing/selftests/riscv/sse/run_sse_test.sh
-
+diff --git a/arch/riscv/include/asm/sbi.h b/arch/riscv/include/asm/sbi.h
+index 5725e0ca4dda..3403b0f706b4 100644
+--- a/arch/riscv/include/asm/sbi.h
++++ b/arch/riscv/include/asm/sbi.h
+@@ -38,6 +38,7 @@ enum sbi_ext_id {
+ 	SBI_EXT_FWFT = 0x46574654,
+ 	SBI_EXT_MPXY = 0x4D505859,
+ 	SBI_EXT_DBTR = 0x44425452,
++	SBI_EXT_SSE = 0x535345,
+ 
+ 	/* Experimentals extensions must lie within this range */
+ 	SBI_EXT_EXPERIMENTAL_START = 0x08000000,
+@@ -506,6 +507,66 @@ enum sbi_mpxy_rpmi_attribute_id {
+ #define SBI_MPXY_CHAN_CAP_SEND_WITHOUT_RESP	BIT(4)
+ #define SBI_MPXY_CHAN_CAP_GET_NOTIFICATIONS	BIT(5)
+ 
++enum sbi_ext_sse_fid {
++	SBI_SSE_EVENT_ATTR_READ = 0,
++	SBI_SSE_EVENT_ATTR_WRITE,
++	SBI_SSE_EVENT_REGISTER,
++	SBI_SSE_EVENT_UNREGISTER,
++	SBI_SSE_EVENT_ENABLE,
++	SBI_SSE_EVENT_DISABLE,
++	SBI_SSE_EVENT_COMPLETE,
++	SBI_SSE_EVENT_INJECT,
++	SBI_SSE_HART_UNMASK,
++	SBI_SSE_HART_MASK,
++};
++
++enum sbi_sse_state {
++	SBI_SSE_STATE_UNUSED     = 0,
++	SBI_SSE_STATE_REGISTERED = 1,
++	SBI_SSE_STATE_ENABLED    = 2,
++	SBI_SSE_STATE_RUNNING    = 3,
++};
++
++/* SBI SSE Event Attributes. */
++enum sbi_sse_attr_id {
++	SBI_SSE_ATTR_STATUS		= 0x00000000,
++	SBI_SSE_ATTR_PRIO		= 0x00000001,
++	SBI_SSE_ATTR_CONFIG		= 0x00000002,
++	SBI_SSE_ATTR_PREFERRED_HART	= 0x00000003,
++	SBI_SSE_ATTR_ENTRY_PC		= 0x00000004,
++	SBI_SSE_ATTR_ENTRY_ARG		= 0x00000005,
++	SBI_SSE_ATTR_INTERRUPTED_SEPC	= 0x00000006,
++	SBI_SSE_ATTR_INTERRUPTED_FLAGS	= 0x00000007,
++	SBI_SSE_ATTR_INTERRUPTED_A6	= 0x00000008,
++	SBI_SSE_ATTR_INTERRUPTED_A7	= 0x00000009,
++
++	SBI_SSE_ATTR_MAX		= 0x0000000A
++};
++
++#define SBI_SSE_ATTR_STATUS_STATE_OFFSET	0
++#define SBI_SSE_ATTR_STATUS_STATE_MASK		0x3
++#define SBI_SSE_ATTR_STATUS_PENDING_OFFSET	2
++#define SBI_SSE_ATTR_STATUS_INJECT_OFFSET	3
++
++#define SBI_SSE_ATTR_CONFIG_ONESHOT	BIT(0)
++
++#define SBI_SSE_ATTR_INTERRUPTED_FLAGS_SSTATUS_SPP	BIT(0)
++#define SBI_SSE_ATTR_INTERRUPTED_FLAGS_SSTATUS_SPIE	BIT(1)
++#define SBI_SSE_ATTR_INTERRUPTED_FLAGS_HSTATUS_SPV	BIT(2)
++#define SBI_SSE_ATTR_INTERRUPTED_FLAGS_HSTATUS_SPVP	BIT(3)
++
++#define SBI_SSE_EVENT_LOCAL_HIGH_PRIO_RAS	0x00000000
++#define SBI_SSE_EVENT_LOCAL_DOUBLE_TRAP		0x00000001
++#define SBI_SSE_EVENT_GLOBAL_HIGH_PRIO_RAS	0x00008000
++#define SBI_SSE_EVENT_LOCAL_PMU_OVERFLOW	0x00010000
++#define SBI_SSE_EVENT_LOCAL_LOW_PRIO_RAS	0x00100000
++#define SBI_SSE_EVENT_GLOBAL_LOW_PRIO_RAS	0x00108000
++#define SBI_SSE_EVENT_LOCAL_SOFTWARE_INJECTED	0xffff0000
++#define SBI_SSE_EVENT_GLOBAL_SOFTWARE_INJECTED	0xffff8000
++
++#define SBI_SSE_EVENT_PLATFORM		BIT(14)
++#define SBI_SSE_EVENT_GLOBAL		BIT(15)
++
+ /* SBI debug triggers function IDs */
+ enum sbi_ext_dbtr_fid {
+ 	SBI_EXT_DBTR_NUM_TRIGGERS = 0,
 -- 
 2.50.1 (Apple Git-155)
