@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8091345CAB;
-	Sat,  9 May 2026 08:35:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BA6338B7D8;
+	Sat,  9 May 2026 08:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778315741; cv=none; b=Wr8z3UFdv65bMJpGNgYfvfyDmO10+Anf4GYqqdVzgPotkxHdYdwPlkNbSnOnwaDXKnMfSAk79y/a49LsClfwNj5csSviYEFev3bdlhzpo0sQVGjb8AHM58xP3kq0Gqn3v+7JeKr4nBZMLLs7Sl9TRq4tRSqXQZAa39U1iWl9Ihc=
+	t=1778315754; cv=none; b=Oa45wRX3EUOWa+6Sgbr1znYLA+ynsvWwp+msQQFyYjqihZKFsYmeGu7gITyZlxyLAm8u7cNYAyjk61NerfOPi4TFBndrbStsusR48u0rt63JmkWWdySoSfPdLGQMpFQaBdCOmmE0IVXlxZQVXNLhkq3PO9QNz3ukx68X9h5lIG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778315741; c=relaxed/simple;
-	bh=1vfdBKn7/QQ7AqLbsv1Df8yInVJjjwRjwAhZQBF6wak=;
+	s=arc-20240116; t=1778315754; c=relaxed/simple;
+	bh=Ceydaom24DfcEFjSJM4tuodGfAHyBHsKt8PnRO0XXh0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uYG3Aw0tg9kH1x6o6sk4N/19Y9Cq4PE3rJcW40KS7HcaOHDF0PS8RM/PNHBq9imfA67VZCW0prTI+DusLQFqQfrg9XYXZ20jOsHkFbxaWt+3VUv+kMHmxWBZ7CAEMhH+peTOwYzWHbZzQJC7wJUDShzOmI3+VwHcPereOpvkNOY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NIDEldud; arc=none smtp.client-ip=198.175.65.12
+	 MIME-Version; b=BbAf1khZPfNgiDIDoTxufT3MJYXcijIoAnKzl8vVy0+vdtw9kU9YsO0RevtXRrJf8KMvfJWOZljzhfmhyNGtnxsQLUp9lntILVZA9FgjSCDhHBa/Dg5OxMExT6KdKPifYCJVuO+sdDHrOzPSMueGl0sRiEWkjEa98lnKmJwQGP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZkF64O9O; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NIDEldud"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZkF64O9O"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778315740; x=1809851740;
+  t=1778315753; x=1809851753;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=1vfdBKn7/QQ7AqLbsv1Df8yInVJjjwRjwAhZQBF6wak=;
-  b=NIDEldudww5jldJsleEEAm+S0jqjBh2vfoqdVTYt0P8vpoFKzAudYcwF
-   RpoJAMrnI7FXzOSr43SuHbDErGQkjiFZq6zyZavPLl1fKgycLqV6OEZ04
-   JwhPS0TJTlwoe/rw6AV1C60YShQYjW0A6rWf77MeVEe3Czr7Aq0HYFG2I
-   YXeALWgT91VVvLsdUrtaWbkoUbK9IGLzqiOQ57FR2bsqyih9mTg9A1h6D
-   hdhrW7tQ/SpisrbXI2VER+9E6ShZgSV82YbxMa+Ow7YjvZ6w1c0uEPjKi
-   oHG7rVqrHpIOQDNNi4obSdif1M/jDT8KYy75MeKghdGC3S7ZYII0xi4H8
+  bh=Ceydaom24DfcEFjSJM4tuodGfAHyBHsKt8PnRO0XXh0=;
+  b=ZkF64O9O4obI+jFowcwZ4scmEimuln9XiVy/vSMU0pcHeFKFLwC+ROTH
+   QOP5v1Yn1Habk3szuS5CRfgLelwaqHS2fHS9cC7QoI+Fly2t1lNOLChH2
+   k0c2ncp8ks1v8OgvPWM7aytXnU/0OM0HHiI4+mnyP/QOg7tiEApVEugj0
+   +MHy1m+s+E/Jc0o4GkJ1HSGMFkWn9KWDi1VpgQVbkKWztdiGqjN0k+4+L
+   evuvhaJ5rR8FQQYDsDCQP4NzQr5ghSkuTFgEycIXjDCIkRSCCd67Uwmcl
+   fb8ZGVb40K08yxmEVg5YjSJROsiq/qiKoKmlySgcmfRFWhMb6g/L8zUIJ
    Q==;
-X-CSE-ConnectionGUID: RQ4TnyzxSbuDDGmcJXsrVg==
-X-CSE-MsgGUID: cNoNqPK1RquKfYANlZfPcA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11780"; a="90748334"
+X-CSE-ConnectionGUID: ahdRaL+8QBuwcSIeRv2LNg==
+X-CSE-MsgGUID: 3QuVGUU/SFKBqS4XIdAmnw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11780"; a="90748339"
 X-IronPort-AV: E=Sophos;i="6.23,225,1770624000"; 
-   d="scan'208";a="90748334"
+   d="scan'208";a="90748339"
 Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2026 01:35:40 -0700
-X-CSE-ConnectionGUID: o5cKGYFkT3mn83IrRBPCoA==
-X-CSE-MsgGUID: K6sCxxJERzyzNCzhkBh+4g==
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2026 01:35:53 -0700
+X-CSE-ConnectionGUID: cdaHKLqsQHGHbMClpWbOpg==
+X-CSE-MsgGUID: IxykrO9YRG21at9gyUNm4w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,225,1770624000"; 
-   d="scan'208";a="237086905"
+   d="scan'208";a="237086908"
 Received: from yzhao56-desk.sh.intel.com ([10.239.47.19])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2026 01:35:37 -0700
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 May 2026 01:35:49 -0700
 From: Yan Zhao <yan.y.zhao@intel.com>
 To: seanjc@google.com,
 	pbonzini@redhat.com,
@@ -56,9 +56,9 @@ Cc: linux-kernel@vger.kernel.org,
 	binbin.wu@linux.intel.com,
 	xiaoyao.li@intel.com,
 	yan.y.zhao@intel.com
-Subject: [PATCH v2 05/15] KVM: TDX: Move KVM_BUG_ON()s in __tdp_mmu_set_spte_atomic() to TDX code
-Date: Sat,  9 May 2026 15:55:44 +0800
-Message-ID: <20260509075544.4210-1-yan.y.zhao@intel.com>
+Subject: [PATCH v2 06/15] KVM: TDX: Move lockdep assert in __tdp_mmu_set_spte_atomic() to TDX code
+Date: Sat,  9 May 2026 15:55:57 +0800
+Message-ID: <20260509075557.4226-1-yan.y.zhao@intel.com>
 X-Mailer: git-send-email 2.43.2
 In-Reply-To: <20260509075201.4077-1-yan.y.zhao@intel.com>
 References: <20260509075201.4077-1-yan.y.zhao@intel.com>
@@ -72,82 +72,54 @@ Content-Transfer-Encoding: 8bit
 
 From: Rick Edgecombe <rick.p.edgecombe@intel.com>
 
-Drop some KVM_BUG_ON()s that are guarding against TDP MMU attempting to
-propagate unsupported changes to the external page table through
-__tdp_mmu_set_spte_atomic(). Have TDX code trigger them instead.
+Move the MMU lockdep assert in __tdp_mmu_set_spte_atomic() into the TDX
+specific op because the assert is TDX specific in intention.
 
-Now that TDP MMU logically allows propagating atomic zapping operation to
-the external page table through the set_external_spte() op in
-__tdp_mmu_set_spte_atomic(). TDX code will trigger the KVM_BUG_ON() on the
-atomic zapping request instead. (Note: non-atomic zapping is not propagated
-via the set_external_spte() op yet).
+The TDP MMU has many lockdep asserts for various scenarios, and in fact
+the callchains that are used for TDX already have a lockdep assert which
+covers the case in __tdp_mmu_set_spte_atomic(). However, these asserts are
+for management of the TDP root owned by KVM. In the
+__tdp_mmu_set_spte_atomic() assert case, it is helping with a scheme to
+avoid contention in the TDX module during zap operations. That is very
+TDX specific.
 
-Despite the generic naming, external page table ops are designed completely
-around TDX. They hook the bare minimum of what is needed, and exclude the
-operations that are not supported by TDX. To help wrangle which operations
-are handleable by various operations, warnings and KVM_BUG_ON()s exist in
-the code. These warnings and KVM_BUG_ON()s put the burden of understanding
-which operations should be forwarded to TDX code on TDP MMU developers, who
-often read the code without TDX context.
-
-Future changes will transition the encapsulation of this domain knowledge
-to TDX code by funneling the external page table updates through a central
-update mechanism. In this paradigm, the central update mechanism can
-encapsulate the special knowledge, but will not have as much knowledge
-about what operation is in progress.
+One option would be to just remove the assert in
+__tdp_mmu_set_spte_atomic() and rely on the other ones in the TDP MMU. But
+that assert is for a different intention, and too far away from the
+SEAMCALL that needs it. So just move it to TDX code.
 
 Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
 Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
 ---
-MMU_refactors v2:
-- Moved this patch after "KVM: TDX: Drop kvm_x86_ops.link_external_spt()"
-  and "KVM: x86/mmu: Plumb param "old_spte" into
-  kvm_x86_ops.set_external_spte()".  (Yan)
-- Added a replacement KVM_BUG_ON() in TDX for the dropped
-  KVM_BUG_ON(was_present, kvm) in __tdp_mmu_set_spte_atomic(). (Yan).
----
- arch/x86/kvm/mmu/tdp_mmu.c | 10 ----------
- arch/x86/kvm/vmx/tdx.c     |  3 +++
- 2 files changed, 3 insertions(+), 10 deletions(-)
+ arch/x86/kvm/mmu/tdp_mmu.c | 2 --
+ arch/x86/kvm/vmx/tdx.c     | 2 ++
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
-index ceb27769bcf6..f55967f8d74a 100644
+index f55967f8d74a..401bb49a91ee 100644
 --- a/arch/x86/kvm/mmu/tdp_mmu.c
 +++ b/arch/x86/kvm/mmu/tdp_mmu.c
-@@ -610,20 +610,10 @@ static inline int __must_check __tdp_mmu_set_spte_atomic(struct kvm *kvm,
- 	WARN_ON_ONCE(iter->yielded || is_frozen_spte(iter->old_spte));
- 
+@@ -612,8 +612,6 @@ static inline int __must_check __tdp_mmu_set_spte_atomic(struct kvm *kvm,
  	if (is_mirror_sptep(iter->sptep) && !is_frozen_spte(new_spte)) {
--		bool was_present = is_shadow_present_pte(iter->old_spte);
  		int ret;
  
--		KVM_BUG_ON(was_present, kvm);
--
- 		lockdep_assert_held(&kvm->mmu_lock);
- 
--		/*
--		 * Users of atomic zapping don't operate on mirror roots,
--		 * so don't handle it and bug the VM if it's seen.
--		 */
--		if (KVM_BUG_ON(!is_shadow_present_pte(new_spte), kvm))
--			return -EBUSY;
+-		lockdep_assert_held(&kvm->mmu_lock);
 -
  		/*
  		 * We need to lock out other updates to the SPTE until the external
  		 * page table has been modified. Use FROZEN_SPTE similar to
 diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 219da92fe8ea..0ded336fbf70 100644
+index 0ded336fbf70..48aa7936a7f7 100644
 --- a/arch/x86/kvm/vmx/tdx.c
 +++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1721,6 +1721,9 @@ static int tdx_sept_map_leaf_spte(struct kvm *kvm, gfn_t gfn, enum pg_level leve
+@@ -1721,6 +1721,8 @@ static int tdx_sept_map_leaf_spte(struct kvm *kvm, gfn_t gfn, enum pg_level leve
  static int tdx_sept_set_private_spte(struct kvm *kvm, gfn_t gfn, u64 old_spte,
  				     u64 new_spte, enum pg_level level)
  {
-+	if (KVM_BUG_ON(is_shadow_present_pte(old_spte), kvm))
-+		return -EIO;
++	lockdep_assert_held(&kvm->mmu_lock);
 +
- 	if (KVM_BUG_ON(!is_shadow_present_pte(new_spte), kvm))
+ 	if (KVM_BUG_ON(is_shadow_present_pte(old_spte), kvm))
  		return -EIO;
  
 -- 
