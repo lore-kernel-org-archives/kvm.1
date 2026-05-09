@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D75389105;
-	Sat,  9 May 2026 12:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD25932B989;
+	Sat,  9 May 2026 12:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778330845; cv=none; b=kz0/Hv+6We+Ayb9yeYWreBOTxEXUPwfdjBRStfhhshZEG3e3+9t7F4QQxpcsaY4KOIDXigI4l/uV8amGeILUJ2pCd0GIs8zyNzYhxPY3w2KiX1BjLlUHLkdQp1gqL7qsGNDkRXvtJ4bi2RJfZNt4XzH7DQY5iFgwbqLN40cYADE=
+	t=1778330846; cv=none; b=ArslaZTDIgPUfaTanKtmwg72HCcQulNK94XZReQFRBW6XVsGh/2gNkblI4aMxTVbMQyWwCMAxDfrcLAcBBJc5RXpOhXKN0ouRPhShrDwEaFarRQSXZBB9NFnOu6DC8VMBzbjagtOkvAQLTE+qfc0EcaX1sgiy9T1iAMnR2vyzcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778330845; c=relaxed/simple;
-	bh=8E5cLeeujLpCwIDAGfrU5hbfbW/01QU2+pLw4doz9jk=;
+	s=arc-20240116; t=1778330846; c=relaxed/simple;
+	bh=XK5mhAUBfu3WjNswiiSxlvINMO13NiggoMGvmD3JwPI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cvZnms7VX7UOlEjzb1suPD7b8uiDiqlajG5YF8r1MYzUCYck6Bfp6KogCU8hBaHU5bcWDoCxEYaHJvkq8h6Af+xLRIs2Mj4PZnKdOx4ECoHODj8tf6D9lIQIYWGGAStggZIeVSMeeJrUUPmF+1qifFChLgkQrEo6JsMmopKbEIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=M8HvroWs; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=Z4EDqdOPNtB4Zqs0HOfEDY6UjJGnfSz96dMBfMLo4zvym35nk+6wxuDgHhmavOEb2GMTsWqg/MkkwcDkrIchCN/xFrC9v6Gol/mWC+/yY/y9lOZD15/1KjSUoy7mfAqWiz35FxhEzfQTAJcJkc/YK45gPHOs39Wrx1cijcNTBmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jFZCRgUt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="M8HvroWs"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D4E4C2BCC9;
-	Sat,  9 May 2026 12:47:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jFZCRgUt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5CB5C2BCB4;
+	Sat,  9 May 2026 12:47:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778330845;
-	bh=8E5cLeeujLpCwIDAGfrU5hbfbW/01QU2+pLw4doz9jk=;
+	s=k20201202; t=1778330846;
+	bh=XK5mhAUBfu3WjNswiiSxlvINMO13NiggoMGvmD3JwPI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M8HvroWs71uc+qcEzo+ALeV+1iNKvgJBcJvm7q0YosgsLC4ruc7fh3OdTRwLKpSM8
-	 0m1yxjKTnMqdTEMu/IPnY1I/bTE67Ewc2iDEA2PLUwFQFVWq5P/RDfSgLNYf1vMobK
-	 6vKRs0qaBGjn54bNUqvLFTODhdMEKJdllGfGhYwnzuU972fXL8nIMJRi7A6d8AhdDy
-	 vQUPj45sSXcrAYGkM33s7wC4oYXY5/Q3V4bGv97p5nX2olw+5JzdO/LBWFq01sFf4Q
-	 IezfU8CbPqPfgxzucXayw7Rc5gkoRnH1cEfJOT09JtqD4FKsayzq0izm5bN+XidF7c
-	 pjTzyfDgfdMQQ==
+	b=jFZCRgUtIv0K1nTk27PZNjynhpbIgfIQFGZCgtNVBiW6a+G4tdrOdr1SEf6Q8Ca86
+	 k8dIA2xxEleOHhC0WMrXI1okEg2p87NPVBIdJgAWSyIFSkyd0eAu22GGQKUZeHsQbh
+	 1535lK1qFLrbGQGPzUathroC51hl70NOrUMB7qtEqMZRimdxN/EUyy+awWqhH+q6IT
+	 TCvRaDgTHiC2PwpQYEoXDCeD0ON80Fif2LrNdaOXxnptAcI5idCIXAfq+12blC/Uv+
+	 DxingG9z2ol50OC0tojwJzjDJSK6cmUcratG8zE4th1dulWGINAWgb79ma7sDv1HYT
+	 Y6giFrnnFzvkw==
 From: Sasha Levin <sashal@kernel.org>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
@@ -35,12 +35,12 @@ Cc: Sasha Levin <sashal@kernel.org>,
 	Fred Griffoul <fgriffo@amazon.co.uk>,
 	stable@vger.kernel.org,
 	Paolo Bonzini <pbonzini@redhat.com>
-Subject: Re: [PATCH 6.6.y] KVM: x86: Fix shadow paging use-after-free due to unexpected GFN
-Date: Sat,  9 May 2026 08:46:49 -0400
-Message-ID: <20260509122858.eaf18d60002c.re-kvm-x86-shadow-paging-uaf-6.6@kernel.org>
+Subject: Re: [PATCH 6.1.y] KVM: x86: Fix shadow paging use-after-free due to unexpected GFN
+Date: Sat,  9 May 2026 08:46:50 -0400
+Message-ID: <20260509122858.475f3b407568.re-kvm-x86-shadow-paging-uaf-6.1@kernel.org>
 X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260505070057.198705-1-pbonzini@redhat.com>
-References: <20260505070057.198705-1-pbonzini@redhat.com>
+In-Reply-To: <20260505070812.221568-1-pbonzini@redhat.com>
+References: <20260505070812.221568-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -49,9 +49,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-> [PATCH 6.6.y] KVM: x86: Fix shadow paging use-after-free due to unexpected GFN
+> [PATCH 6.1.y] KVM: x86: Fix shadow paging use-after-free due to unexpected GFN
 
-Queued for 6.6.y, thanks.
+Queued for 6.1.y, thanks.
 
 --
 Sasha
