@@ -1,71 +1,111 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 081EF208D0;
-	Sat,  9 May 2026 04:02:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 056661DB13A;
+	Sat,  9 May 2026 05:13:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778299328; cv=none; b=sx40tUKksIFWLeJ1l9s0U28XCwKybKT8Vk5Stjtwr93ezgBeppiJ5+kqma/E2qwYSYmtX0blGDH7j++XFYWmpKrAfE4vjRUC7cTE8LlxDLFTXcVpVEi6suFu85rkQoauIcWscXNoOhefaIp1zsumOvsZ2tqP9UM/Y1XYoLxKRps=
+	t=1778303634; cv=none; b=jbF6XG4laY2f17Ax9/AQi1H8fV7TYZXwDDPsEdh15mwdCXwcKFLmEBl4T+Q5ZgqI5VeP4oMEx6uK+0cIcNu1Lp03Bu/RTz5Z029uoXEl/QQIMEiY1WF9Tmb38ntgnTEcjDKRJ5i390psB9PSR1O4lKrdDZPOKUfJwdFxz9jnvUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778299328; c=relaxed/simple;
-	bh=MpJu2PGkahvdKHNbYtsIqlF0BnnmwVMSDHE00fQHtVk=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=V2yb+MavSbvTidPT1gFCsmrVJrYfmpMDjtD5j38gCIFXHMksiV/WChj0XsoYPiMLoaaLmq79jW8Zuj+QbeuspdZGk+xsNUFWYUyhcrnfQ85uoZSu0/ZaStPJYut4I02BkTMn7J0ur7mY+wevTr52uuYdaF+5zFZVgGRqDwId5F0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.2.5.213])
-	by gateway (Coremail) with SMTP id _____8AxAuu5sf5pRR0IAA--.25671S3;
-	Sat, 09 May 2026 12:02:01 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
-	by front1 (Coremail) with SMTP id qMiowJDxB8G4sf5pGFt9AA--.28188S2;
-	Sat, 09 May 2026 12:02:01 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: kernel@xen0n.name,
-	kvm@vger.kernel.org,
-	loongarch@lists.linux.dev,
+	s=arc-20240116; t=1778303634; c=relaxed/simple;
+	bh=n0IS+CQZcuOCZBc8/4rl4+mLZI+0FZq7y6KzL6tUt/s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ymr6ERivG1LC+93MVEUEBCpsidNGkKFRw9CAsJwdduJt+iGKVqUwBxmrvRb3RhyCL8XZLkppZ9kRLhMBQDrzS+tAsQH9Hzdq7pZ8miHpuutabnz+1tK7RKEb32KjgmKZfQ2jTYD+IEACS15b6VQskS3tkC+lNm0cHU99tZd2sgI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NAmXgBhA; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NAmXgBhA"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED1BEC2BCB2;
+	Sat,  9 May 2026 05:13:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778303633;
+	bh=n0IS+CQZcuOCZBc8/4rl4+mLZI+0FZq7y6KzL6tUt/s=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=NAmXgBhAZRu+Omwk1vobdH1UHSoIkihGRSbfU5CxhWF81GjhS23/81ZwJ4ErqA9Z5
+	 UeWMOo2A2zt2jsKDZ5tm0YEBOx+apk8CEKZnMhp5T2STQiZxoX34cjqQKrYWDiDn40
+	 5Gdkub7zjmBhTz/+cJaKzA8ookz3inwjqPj980cUKpf/jUwLMPgeib2a5iecxxfvc7
+	 dIpHeYEk1gii1tdQXW8R3EF2ZaEha4WATBMN5hUmhrvYJJjIcgaeP08YLmvUi+eO3l
+	 CRlRj43bWDQWDKmLAK8pbca+wFHBHHaB0Mi+g90x8GuYdTd8i213g5Ozx6TVAue9Cy
+	 ee+s+CICqXBWQ==
+Date: Sat, 9 May 2026 10:38:49 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
-Subject: [PATCH] LoongArch: KVM: Remove timer interrupt injection with SW timer expired
-Date: Sat,  9 May 2026 12:01:59 +0800
-Message-Id: <20260509040159.338866-1-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
+Subject: Re: [PATCH v2 4/5] *** DO NOT MERGE *** KVM: x86: Hack in a stat to
+ track guest-induced exits (for testing)
+Message-ID: <af7ABspJnR0fdqiz@blrnaveerao1>
+References: <20260506184746.2719880-1-seanjc@google.com>
+ <20260506184746.2719880-5-seanjc@google.com>
+ <af4YUUCJfp_X-bcu@blrnaveerao1>
+ <af4iNmDIW-XCuX-0@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJDxB8G4sf5pGFt9AA--.28188S2
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
-	nUUI43ZEXa7xR_UUUUUUUUU==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <af4iNmDIW-XCuX-0@google.com>
 
-The software timer emulation is to wake up vCPU when vCPU executes
-idle instruction and gives up host CPU, timer interrupt is injected
-in vCPU context switch on and guest CSR timer restore function.
+On Fri, May 08, 2026 at 10:49:42AM -0700, Sean Christopherson wrote:
+> On Fri, May 08, 2026, Naveen N Rao wrote:
+> > On Wed, May 06, 2026 at 11:47:45AM -0700, Sean Christopherson wrote:
+> > > Not-signed-off-by: Sean Christopherson <seanjc@google.com>
+> > > ---
+> > >  arch/x86/include/asm/kvm_host.h |  2 +
+> > >  arch/x86/kvm/svm/svm.c          | 81 +++++++++++++++++++++++++++++++++
+> > >  arch/x86/kvm/vmx/vmx.c          | 79 ++++++++++++++++++++++++++++++++
+> > >  arch/x86/kvm/x86.c              |  2 +
+> > >  4 files changed, 164 insertions(+)
+> > > 
+> > > diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+> > > index c470e40a00aa..bff534bd00dc 100644
+> > > --- a/arch/x86/include/asm/kvm_host.h
+> > > +++ b/arch/x86/include/asm/kvm_host.h
+> > > @@ -1703,6 +1703,8 @@ struct kvm_vcpu_stat {
+> > >  	u64 invlpg;
+> > >  
+> > >  	u64 exits;
+> > > +	u64 guest_induced_exits;
+> > > +	u64 msr_exits;
+> > >  	u64 io_exits;
+> > >  	u64 mmio_exits;
+> > >  	u64 signal_exits;
+> > 
+> > This looks promising. I'm assuming 'hack' in the title is only meant to 
+> > indicate the PoC nature of this?
+> 
+> More that I don't think I'll ever propose merging anything like this.
+> 
+> > Taking this forward, introducing a similar bucket for all AVIC/APICv 
+> > related exits might help with a few tests.
+> 
+> I don't have any plans to take this forward.  guest_induced_exits alone simply
+> isn't useful enough, even for tests.  Outside of tests, I don't think it has any
+> usefulness, at all.
+> 
+> For tests and for real-world usage, we really do need per-exit tracking for it
+> to be useful.  Maybe with some "bundling" allowed for exception vectors?  We can
+> hack in one-off things like MSR exits, but either we'll have to be super hypocritical
+> in choosing which use cases are justified and which are not, or we'll have created
+> a slippery slope by adding a per-exit stat, i.e. we'd just be delaying the inevitable.
 
-It is not necessary to inject timer interrupt when SW timer is expired.
-Here remove it.
+Ack.
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
----
- arch/loongarch/kvm/timer.c | 1 -
- 1 file changed, 1 deletion(-)
+> 
+> For selftests, which is really the only test framework that can utilize stats in
+> this way, BPF is probably a better answer, at least for the kernel, and probably
+> for selftests in the long-run as well.  E.g. if we can make it easy-ish to use BPF
+> in selftests (which is a tall order), then we can write tests that do *very* fancy
+> validation of KVM behavior, e.g. by peeking at other vCPU state in the context of
+> each and every exit.
 
-diff --git a/arch/loongarch/kvm/timer.c b/arch/loongarch/kvm/timer.c
-index 8356fce0043f..9bbf25be3903 100644
---- a/arch/loongarch/kvm/timer.c
-+++ b/arch/loongarch/kvm/timer.c
-@@ -30,7 +30,6 @@ enum hrtimer_restart kvm_swtimer_wakeup(struct hrtimer *timer)
- 	struct kvm_vcpu *vcpu;
- 
- 	vcpu = container_of(timer, struct kvm_vcpu, arch.swtimer);
--	kvm_queue_irq(vcpu, INT_TI);
- 	rcuwait_wake_up(&vcpu->wait);
- 
- 	return HRTIMER_NORESTART;
+That's good to hear - tracing was the alternative I had in mind, so it's 
+good to know that's an option we can look at. Just hooking into the 
+tracepoints should enable a lot of tests to begin with.
 
-base-commit: 917719c412c48687d4a176965d1fa35320ec457c
--- 
-2.39.3
+
+Thanks,
+Naveen
 
