@@ -1,37 +1,37 @@
 Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2896934D3A9;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 882C536E460;
 	Sat,  9 May 2026 22:48:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778366930; cv=none; b=MvmdxwVnvjPizEvmCk32+p5WOoWpJVzw1/4yA1mJHvJ7HJQIbhVOyDa8tsPTYL7q8GN2Qq2KXxI3LonIjL/0179FwD+1GPXApagg+0RYLjG4dUMwiY/FYpIoJ6ZXSwHly6R46R+zpiH++/H1TXMPfdoFte8hiSlPjRYw6MusNtU=
+	t=1778366931; cv=none; b=JQdgy7x1fPtCJE+5U6+2IYkoapMJ5yQOnctxY6YrrxmJA+c6lM641vZ3+fF79zfmSRN/8EMFeDiTUWxTkaS5JkCRTBG8l9CjDnQ6N1L0G/tdWTiQkXAnApZ2tXKr87ESWBF94iVCL+6czGh+2xxae6wXNMqF1r6X8nVTPwc+u80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778366930; c=relaxed/simple;
-	bh=68ZuhRHOpmR44tlPr41ZyQTbnc5yvw6IttFCMGmogW0=;
+	s=arc-20240116; t=1778366931; c=relaxed/simple;
+	bh=b9k9Uie0qnjI5OX6l4VIpFlS3HfJkPehfFu7gJXA8Kk=;
 	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NNCkcBXLRw6fvyHNANq0GRt0OtvNzONhsyqcA1WS6q325o35GPT2n+AX5LE6mUL5PZiOXZEJ9dP2qBufPw41Dd4zi2vDJcENFkXeGMaHtoHRFTm0tum/KL1Ldmei3gVM5vXsiwCCQYYFrguFtwiqUq7IKa+kFiLRRQ+23y5EvA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=NrR9w8Kh; arc=none smtp.client-ip=90.155.92.199
+	 MIME-Version; b=K5cQ4wD2LXVMLHibPiOxdY1TAkZ5Loh8V+nEDpOCkS/1IXEncqW38b1XFTrJP7GYqzPd6qSopeh/B3ZOnfQcPIC9aa9XoF2/Uvkf1+I3KAm7L0etIwCBCdThFnHIlYZSSM0rlLEiv+JHtU8OtmJwexF6F52OlruCooBW1X5tvYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=TIN9a1E8; arc=none smtp.client-ip=90.155.92.199
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="NrR9w8Kh"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="TIN9a1E8"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
 	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
 	Cc:Content-Type:Content-ID:Content-Description;
-	bh=D3ZD9svrsYhkrCggc0KSRTT7FBRjbp88Q/98SjyDptU=; b=NrR9w8Khx8VGuwXJ3A16aybrkh
-	ouMjKpQP6w9R9TcqzykS72xA/q0gH4AnT/doDfI3e5MH+ZYve9uiC4MpDjdR9lV6ySGhrydJumLyu
-	NRE6qOZhbMnyVxh0P9LHfCe6NExErdMqYT1Nw3g8Wv/ITqy9kuvgl0DnJY4N544z/iucLmfyYY4c4
-	YfuyAi3lxDKP1xpkaJePxhXdW73RHEX+f4rOvW6iiVc02rg0BLNX/qjWlRfklA0qK5eTITC9i6vD3
-	6pSwy+DBngCkFGmK2VnZxRsO13YK8EaftPUcsEt0y86xLTVynuB/ogM2Ne36wGplkptXKQWhZVUSB
-	R/Rz284g==;
+	bh=1qL8Ver0eVRy2vup5TVneuXo0fgeLVr0y5FVTqd09W0=; b=TIN9a1E8sNcAlsWC1Aa8d+j4n2
+	ykdU+MKOO6mMS//0nZ9gk/6GtNeig/iy0ktOWfZxfE3Y9oC+BDjozpK+YTRlioH1mCNDrnrIIELfn
+	Dk90c8X8czam38NJuoQCGkKSyonAfsIF0B4Gxy6aAg4JXguhERu1nsTDdjXKIBO+eLUfCrpEUY/KI
+	TvcJr5SlC/FZt8Ny/XRCRRj8ai9g6+Wohw9ZHE3J4GVELHu0tc8Vjezkb9vglY98NiUkuDsAWG3W4
+	8Keg1ENmXJQKCp20kaYBBMtgVeR3RnqtpIwL3rLtS4PlhMLY7MseveZJDp6XxLDLJem5Fzuh0or1E
+	O8puK54w==;
 Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
 	by desiato.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wLqTD-00000008wzH-0U6f;
+	id 1wLqTD-00000008wzG-0XFY;
 	Sat, 09 May 2026 22:48:28 +0000
 Received: from dwoodhou by i7.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wLqTC-0000000DhID-35Yi;
+	id 1wLqTC-0000000DhI9-2vDj;
 	Sat, 09 May 2026 23:48:26 +0100
 From: David Woodhouse <dwmw2@infradead.org>
 To: Paolo Bonzini <pbonzini@redhat.com>,
@@ -61,9 +61,9 @@ To: Paolo Bonzini <pbonzini@redhat.com>,
 	linux-kernel@vger.kernel.org,
 	xen-devel@lists.xenproject.org,
 	linux-kselftest@vger.kernel.org
-Subject: [PATCH v4 15/30] KVM: x86: Fix compute_guest_tsc() to handle negative time deltas
-Date: Sat,  9 May 2026 23:46:41 +0100
-Message-ID: <20260509224824.3264567-16-dwmw2@infradead.org>
+Subject: [PATCH v4 14/30] KVM: x86: Use get_kvmclock() in kvm_get_wall_clock_epoch()
+Date: Sat,  9 May 2026 23:46:40 +0100
+Message-ID: <20260509224824.3264567-15-dwmw2@infradead.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260509224824.3264567-1-dwmw2@infradead.org>
 References: <20260509224824.3264567-1-dwmw2@infradead.org>
@@ -79,54 +79,93 @@ X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato
 
 From: David Woodhouse <dwmw@amazon.co.uk>
 
-The compute_guest_tsc() function computes the guest TSC at a given
-kernel_ns timestamp. When the master clock reference point
-(master_kernel_ns) is earlier than vcpu->arch.this_tsc_nsec, the delta
-is negative. Since pvclock_scale_delta() takes a u64, the negative
-value wraps to a huge positive number, producing a wildly wrong result.
+Now that get_kvmclock() correctly handles TSC scaling and captures both
+wallclock and kvmclock from the same TSC reading,
+kvm_get_wall_clock_epoch()
+can simply call it instead of duplicating the pvclock computation.
 
-Change the return type to s64 and handle negative deltas explicitly by
-negating the delta, scaling it, and subtracting from this_tsc_write.
+This eliminates the last instance of the "definition C" kvmclock
+calculation that computed nanoseconds directly from the host TSC
+without accounting for guest TSC scaling.
 
 Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 ---
- arch/x86/kvm/x86.c | 22 ++++++++++++++++------
- 1 file changed, 16 insertions(+), 6 deletions(-)
+ arch/x86/kvm/x86.c | 58 +++++++---------------------------------------
+ 1 file changed, 8 insertions(+), 50 deletions(-)
 
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 2bbc2c7ac449..e281c49561fa 100644
+index 09b00906b1de..2bbc2c7ac449 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -2586,13 +2586,23 @@ static int kvm_set_tsc_khz(struct kvm_vcpu *vcpu, u32 user_tsc_khz)
- 	return set_tsc_khz(vcpu, user_tsc_khz, use_scaling);
- }
- 
--static u64 compute_guest_tsc(struct kvm_vcpu *vcpu, s64 kernel_ns)
-+static s64 compute_guest_tsc(struct kvm_vcpu *vcpu, s64 kernel_ns)
+@@ -3491,60 +3491,18 @@ int kvm_guest_time_update(struct kvm_vcpu *v)
+  */
+ uint64_t kvm_get_wall_clock_epoch(struct kvm *kvm)
  {
--	u64 tsc = pvclock_scale_delta(kernel_ns-vcpu->arch.this_tsc_nsec,
--				      vcpu->arch.virtual_tsc_mult,
--				      vcpu->arch.virtual_tsc_shift);
--	tsc += vcpu->arch.this_tsc_write;
--	return tsc;
-+	s64 delta_ns = kernel_ns - vcpu->arch.this_tsc_nsec;
-+	u64 tsc;
+-#ifdef CONFIG_X86_64
+-	struct pvclock_vcpu_time_info hv_clock;
+-	struct kvm_arch *ka = &kvm->arch;
+-	unsigned long seq, local_tsc_khz;
+-	struct timespec64 ts;
+-	uint64_t host_tsc;
+-
+-	do {
+-		seq = read_seqcount_begin(&ka->pvclock_sc);
+-
+-		local_tsc_khz = 0;
+-		if (!ka->use_master_clock)
+-			break;
+-
+-		/*
+-		 * The TSC read and the call to get_cpu_tsc_khz() must happen
+-		 * on the same CPU.
+-		 */
+-		get_cpu();
+-
+-		local_tsc_khz = get_cpu_tsc_khz();
+-
+-		if (local_tsc_khz &&
+-		    !kvm_get_walltime_and_clockread(&ts, &host_tsc) &&
+-		    WARN_ON_ONCE(!read_seqcount_retry(&ka->pvclock_sc, seq)))
+-			local_tsc_khz = 0; /* Fall back to old method */
+-
+-		put_cpu();
+-
+-		/*
+-		 * These values must be snapshotted within the seqcount loop.
+-		 * After that, it's just mathematics which can happen on any
+-		 * CPU at any time.
+-		 */
+-		hv_clock.tsc_timestamp = ka->master_cycle_now;
+-		hv_clock.system_time = ka->master_kernel_ns + ka->kvmclock_offset;
++	struct kvm_clock_data data;
+ 
+-	} while (read_seqcount_retry(&ka->pvclock_sc, seq));
++	get_kvmclock(kvm, &data);
+ 
+ 	/*
+-	 * If the conditions were right, and obtaining the wallclock+TSC was
+-	 * successful, calculate the KVM clock at the corresponding time and
+-	 * subtract one from the other to get the guest's epoch in nanoseconds
+-	 * since 1970-01-01.
++	 * If get_kvmclock() captured both wallclock and kvmclock from the
++	 * same TSC reading, use them for a precise epoch calculation.
+ 	 */
+-	if (local_tsc_khz) {
+-		kvm_get_time_scale(NSEC_PER_SEC, local_tsc_khz * NSEC_PER_USEC,
+-				   &hv_clock.tsc_shift,
+-				   &hv_clock.tsc_to_system_mul);
+-		return ts.tv_nsec + NSEC_PER_SEC * ts.tv_sec -
+-			__pvclock_read_cycles(&hv_clock, host_tsc);
+-	}
+-#endif
+-	return ktime_get_real_ns() - get_kvmclock_ns(kvm);
++	if (data.flags & KVM_CLOCK_REALTIME)
++		return data.realtime - data.clock;
 +
-+	/* Handle negative deltas gracefully (master clock ref may be earlier) */
-+	if (delta_ns < 0) {
-+		tsc = pvclock_scale_delta(-delta_ns,
-+					  vcpu->arch.virtual_tsc_mult,
-+					  vcpu->arch.virtual_tsc_shift);
-+		return vcpu->arch.this_tsc_write - tsc;
-+	}
-+
-+	tsc = pvclock_scale_delta(delta_ns,
-+				  vcpu->arch.virtual_tsc_mult,
-+				  vcpu->arch.virtual_tsc_shift);
-+	return vcpu->arch.this_tsc_write + tsc;
++	return ktime_get_real_ns() - data.clock;
  }
  
- #ifdef CONFIG_X86_64
+ /*
 -- 
 2.51.0
 
