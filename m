@@ -1,57 +1,57 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71856128395;
-	Sun, 10 May 2026 21:05:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F0A33DEE9;
+	Sun, 10 May 2026 21:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778447158; cv=none; b=BtGNkgZQl/20qrTKm6g7tGPlpDDBL4xoRy6K4CkTPrB/PrjvpaSeZUxbWKX+t9R51Zev1dYoszvIxRdAudxFKI+K/pmuUEM8NIlvACgXeHv/DdsAOF40Hny2riVYdUUcHRu2SIUnBkbIENurQOv8WBbHvICxEPI2PtBzjGFuIiE=
+	t=1778448541; cv=none; b=f7w8u1RjL4jkCdjg9/t+OEsJ85E0aUhFEfD48rc0HwoUb0YVo7ece1q7ef5SJSIre84yaR4uvJN8I9253jn2fkHUEsJ1VcFlsMf7uGRPnWSLegOYWOGpy1P0CNKpNz7idMC+Zw9yj0YbUNVTd1QNlutAEMy90dzlgsmwHqYqcFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778447158; c=relaxed/simple;
-	bh=fcCIydfNLNpAW8zQ9QSDkJT61um6BZZ49a8aN0wyqq4=;
+	s=arc-20240116; t=1778448541; c=relaxed/simple;
+	bh=SCXS2qavV7b8E9Tk/KxVTm6QT8zvEIuv4twtPdOYGp0=;
 	h=Message-ID:Subject:From:To:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ESVgXGHMAjuwbrIOEaVzsVxO07SAPXk4ZnBKvaxLkt+uoZWOH3n+zQ03XK14Lm+r9GeY5Nor4vwK900geM439dLEdUnigxaM5lbqNan6eh+yRMrDcx1dcxpuAcPSXdk+JbyLV64JbhzWvOdE47ryBb+4LVS6I+ryAjMCsFzRbGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=k3gDaT7v; arc=none smtp.client-ip=90.155.50.34
+	 Content-Type:MIME-Version; b=LfvcQRkQwe3gqaYFjz7sMK0nwWuRQOiJ+Yf8ZfwegtFRL5GF0HEL1EKfoOXLSBTuiENdFU+z0x8+JMsXzJmVypp9gU6lTkdxvuY/vPGRgyNcv/gVk1ToVfIrlAM2KvZDj0rsbM5XVYWr+HLoo3KLyB6eAXncaNrc9stLqbQ7pEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=YmskQ2Aw; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="k3gDaT7v"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="YmskQ2Aw"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
 	In-Reply-To:Date:To:From:Subject:Message-ID:Sender:Reply-To:Cc:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=bhNOFvkH719t7i9pQvqgD9PQhJFs6ir/zUj3G3rKD18=; b=k3gDaT7vBcXRudpVf2JczbIT1q
-	5afuzuA0DX9RyNuKWPIbcFfMzM95N5bcyy38ZIevIkLL9zY4zLoghfyqt5mCgw8RfARtFladk4DRS
-	mhEmCZR0wnj1sMkVgMRew2bzKtPMcrFIMBGzMRto5CiJui/yonAWitgBo7DXOG5JF9RIu1i377M2A
-	pgfSLhdq3rJcC+kwSrgxUxqx9iVfay9FgtA+vIZz0+eZTBiF3uABfmOlRptJ3ez23N83pSvwwqWSb
-	icd8XPttOeADBiZBrMnnQzrvU7QGpB/zx9+imXaF4rhTGXJghLDrx3sI7cbaAI/Qvr8bngLVEixRy
-	87Plb/WQ==;
+	bh=SCXS2qavV7b8E9Tk/KxVTm6QT8zvEIuv4twtPdOYGp0=; b=YmskQ2AwrdmMVKoMOSC6Jfe+Nq
+	YYf1usVqPcs28YCjZ+ZAR0a2oSV0IMaJeVOQZIMdCBufVDnj11ecJU/EURn/YtVH3YCrwdLAYdofy
+	+/Bk8u0b7bMlThqnDvoSv+D/unNgnRLhfusQi/v5EZKHDiws9OWChI7hNqakllQfQXqZrsN3jq4d2
+	d/fNHeWmIn3h3Og7Cl2taPajCn2UwHHgMbo9gTflaDPkfNG3dwXAz3tdu3udpv42iLUmXabHBSw77
+	8XJIR/EEQ+qSyyHc+r7i5vDdZ4xaeLRlg9eD3+MZKUulfRekOAJomR+gPIGBW2TrItBUgio81WfR2
+	/p/eXSfA==;
 Received: from 54-240-197-234.amazon.com ([54.240.197.234] helo=u09cd745991455d.ant.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wMBLA-00000007GmD-1vIF;
-	Sun, 10 May 2026 21:05:36 +0000
-Message-ID: <66458bbc44f98b7f9742007348a9f70ee8086429.camel@infradead.org>
-Subject: [PATCH v4 32/30] KVM: x86: Re-synchronize TSC after KVM_SET_TSC_KHZ
+	id 1wMBhj-00000007Hs2-1eWD;
+	Sun, 10 May 2026 21:28:52 +0000
+Message-ID: <f17a2d66e47fd15fc738d9f4ad89123a31d86eb3.camel@infradead.org>
+Subject: Re: (subset) [PATCH 1/3] KVM: arm64: vgic: Fix IIDR revision field
+ extracted from wrong value
 From: David Woodhouse <dwmw2@infradead.org>
-To: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, Sean Christopherson
- <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,  Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross
- <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, David
- Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>, Jonathan
- Cameron <jic23@kernel.org>, Sascha Bischoff <Sascha.Bischoff@arm.com>, Marc
- Zyngier <maz@kernel.org>, Dongli Zhang <dongli.zhang@oracle.com>, Jack
- Allister <jalliste@amazon.com>, Joe Jin <joe.jin@oracle.com>, Joey Gouly
- <joey.gouly@arm.com>, kvm@vger.kernel.org,  linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org,  xen-devel@lists.xenproject.org,
- linux-kselftest@vger.kernel.org
-Date: Sun, 10 May 2026 22:05:31 +0100
-In-Reply-To: <20260509224824.3264567-1-dwmw2@infradead.org>
-References: <20260509224824.3264567-1-dwmw2@infradead.org>
+To: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Joey
+ Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Paolo Bonzini
+ <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Raghavendra Rao
+ Ananta <rananta@google.com>, Eric Auger <eric.auger@redhat.com>, Kees Cook
+ <kees@kernel.org>, Arnd Bergmann <arnd@arndb.de>, Nathan Chancellor
+ <nathan@kernel.org>,  linux-arm-kernel@lists.infradead.org,
+ kvmarm@lists.linux.dev,  linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+  linux-kselftest@vger.kernel.org
+Date: Sun, 10 May 2026 22:28:50 +0100
+In-Reply-To: <106addd3f78918a9a584c43c181a9609aef1ceca.camel@infradead.org>
+References: <20260407210949.2076251-1-dwmw2@infradead.org>
+	 <20260407210949.2076251-2-dwmw2@infradead.org>
+	 <177702878141.537738.13460155220731277452.b4-ty@kernel.org>
+	 <106addd3f78918a9a584c43c181a9609aef1ceca.camel@infradead.org>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-n1rYoFphXBZk9zIVxw0J"
+	boundary="=-rrdXIzARangiCs7aJ2pU"
 User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -62,72 +62,49 @@ MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
---=-n1rYoFphXBZk9zIVxw0J
+--=-rrdXIzARangiCs7aJ2pU
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+On Fri, 2026-04-24 at 13:24 +0100, David Woodhouse wrote:
+> On Fri, 2026-04-24 at 12:07 +0100, Marc Zyngier wrote:
+> > On Tue, 07 Apr 2026 21:27:02 +0100, David Woodhouse wrote:
+> > > The uaccess write handlers for GICD_IIDR in both GICv2 and GICv3
+> > > extract the revision field from 'reg' (the current IIDR value read ba=
+ck
+> > > from the emulated distributor) instead of 'val' (the value userspace =
+is
+> > > trying to write). This means userspace can never actually change the
+> > > implementation revision =E2=80=94 the extracted value is always the c=
+urrent one.
+> > >=20
+> > > Fix the FIELD_GET to use 'val' so that userspace can select a differe=
+nt
+> > > revision for migration compatibility.
+> > >=20
+> > > [...]
+> >=20
+> > Applied to fixes, thanks!
+> >=20
+> > [1/3] KVM: arm64: vgic: Fix IIDR revision field extracted from wrong va=
+lue
+> > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 commit: a0e6ae45af17e8b27958830595799c70=
+2ffbab8d
+>=20
+> There was a v2 of this series which also cleaned up the weird
+> inconsistency of the IIDR value with the actual behaviour, and which
+> fixed the fact that it's currently not possible to maintain guest
+> compatibility when upgrading from a pre-d53c2c29ae0d kernel to a new
+> one =E2=80=94 despite the fact that that kind of compatibility is *precis=
+ely*
+> what the revision field in the IIDR is designed for.
+>=20
+> https://lore.kernel.org/all/20260408113256.2095505-1-dwmw2@infradead.org/
 
-KVM_SET_TSC_KHZ changes the vCPU's TSC scaling ratio but does not
-update the VM-wide cur_tsc_scaling_ratio used by get_kvmclock().
-This causes get_kvmclock() to use a stale (default 1:1) ratio when
-computing the KVM clock, leading to drift between the host-side
-kvmclock and what the guest observes.
-
-Fix this by calling kvm_synchronize_tsc() after changing the TSC
-frequency. This:
- - Updates cur_tsc_scaling_ratio (consumed by pvclock_update_vm_gtod_copy)
- - Ensures the TSC value is continuous across the frequency change
- - Triggers kvm_track_tsc_matching() for proper masterclock handling
- - Allows subsequent vCPUs to synchronize via the 1-second slop hack
-
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
----
- arch/x86/kvm/x86.c | 16 +++++++++++++++-
- 1 file changed, 15 insertions(+), 1 deletion(-)
-
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index ac982652e5e0..833a4f119e22 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -206,6 +206,7 @@ module_param(mitigate_smt_rsb, bool, 0444);
- #ifdef CONFIG_X86_64
- static bool kvm_get_time_and_clockread(s64 *kernel_ns, u64 *tsc_timestamp)=
-;
- #endif
-+static void kvm_synchronize_tsc(struct kvm_vcpu *vcpu, u64 *user_value);
- #define KVM_MAX_NR_USER_RETURN_MSRS 16
-=20
- struct kvm_user_return_msrs {
-@@ -2611,7 +2612,20 @@ static int kvm_set_tsc_khz(struct kvm_vcpu *vcpu, u3=
-2 user_tsc_khz)
- 			 user_tsc_khz, thresh_lo, thresh_hi);
- 		use_scaling =3D 1;
- 	}
--	return set_tsc_khz(vcpu, user_tsc_khz, use_scaling);
-+	if (set_tsc_khz(vcpu, user_tsc_khz, use_scaling))
-+		return -1;
-+
-+	/*
-+	 * Re-synchronize the TSC after changing frequency. This ensures
-+	 * cur_tsc_scaling_ratio is updated (used by get_kvmclock) and
-+	 * the TSC value is continuous across the frequency change.
-+	 */
-+	{
-+		u64 tsc =3D kvm_read_l1_tsc(vcpu, rdtsc());
-+
-+		kvm_synchronize_tsc(vcpu, &tsc);
-+	}
-+	return 0;
- }
-=20
- static s64 compute_guest_tsc(struct kvm_vcpu *vcpu, s64 kernel_ns)
---=20
-2.43.0
+Is there a reason the rest of these fixes didn't make 7.1?
 
 
-
---=-n1rYoFphXBZk9zIVxw0J
+--=-rrdXIzARangiCs7aJ2pU
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -206,21 +183,21 @@ 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
-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
+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
-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
+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
 
 
---=-n1rYoFphXBZk9zIVxw0J--
+--=-rrdXIzARangiCs7aJ2pU--
