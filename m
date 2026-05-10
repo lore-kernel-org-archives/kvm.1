@@ -1,208 +1,211 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84A13043CE
-	for <kvm@vger.kernel.org>; Sun, 10 May 2026 18:28:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6003302165;
+	Sun, 10 May 2026 18:40:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778437689; cv=none; b=DV0gTyr8MTM14liZZpnOhZWjYy6wXHQaJrHVBVQxM7S6rVZHC4Aa8MTho1NvI0v3k+YGoY/y/qrGa7Qb0+z7r+N/KaDz1DRTn24t6SmamhUJolh+gAiEl/RPHyzAd3GT/H4ipwZhTsEL2VQ2UeNTZT0HIso0Xq8QL7/BlzeqrQA=
+	t=1778438432; cv=none; b=drG5SLBkxoJ6EyRhdiFJIjezzE41V4lVfL2BRF9QbdtiIRGSK4UE5ovq4GlrsEQJQiOVYfx9E1HoKsvLvsDtnQI4iS/b3+KFZcF3VCc+2fvX8805Uk0+Q7uVdQd18IE80KNGmkU1M1RSw7WNGoWMx9f3r6SxgzarydAHYs03CYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778437689; c=relaxed/simple;
-	bh=Nds78ZQv+k1dBd4zeRMpIKfcLCYRSolg2HIQ5VEH2Tg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ulAKpNOGLn3XURXd/N9zIZTl6G+hsoo62cYgt8zOC8Lj+rqikxA8obTfdwNSizKba8bHAOy+fkBvRPG4Ln4DSp6mGre26/FIIZ/Z43bGZeFEYABaxywf431cleG68tuclUs/ZFv71SDg9Ry5pkDMWhoUqoszy2iR8c7A9v7yn0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VHIipxFb; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=jUYWn2x5; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1778438432; c=relaxed/simple;
+	bh=mtbohFG8p6EJ+pFLwRQLKElomixQFZwDszRfzhhCn8o=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=PBUd7sImdZ2P18HWhq5KAXWQZR6soCyDWfgJeTrWYVWplwQMDaRw9O/OwZVvLFQy+4GGlYxOYR47C/BI9dypFe9/lwf8gkNrgHF7QY4nZldbLExp/ocG34IiUHJlFZ+P+hKlFt1+UzWUSbrna576P2RSu+Jx2B8/d+4Uq8QC9Fw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=pxkeih13; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VHIipxFb";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="jUYWn2x5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778437686;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=20vi7jjXaNmaH582QbUJViOW3O2EFOcheWh4ZH6Qnn8=;
-	b=VHIipxFbEHGwZaYI7LqGUZST0hQX1sOmcdJkNyxRVDsx648nS2Md+FUOrIOtj5O3OT5b/i
-	RA2IF6vixT3mBL8etA1N09SOsmWNnSRZ/KxVtDBzVk0ZY525cduC0cF0ljuvlrP1T20laR
-	BoM2vZkgstkqvw7TlVBU5dkXGHWi8TY=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-547-8N_xH_6OO4CdJe7ELT0J3g-1; Sun, 10 May 2026 14:28:05 -0400
-X-MC-Unique: 8N_xH_6OO4CdJe7ELT0J3g-1
-X-Mimecast-MFC-AGG-ID: 8N_xH_6OO4CdJe7ELT0J3g_1778437684
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-48d1bc85bb3so18846885e9.0
-        for <kvm@vger.kernel.org>; Sun, 10 May 2026 11:28:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778437684; x=1779042484; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=20vi7jjXaNmaH582QbUJViOW3O2EFOcheWh4ZH6Qnn8=;
-        b=jUYWn2x55zK57cFeSAZxykm50eMS8bFDjOA4d5YBXMI8up4wp6bli/F6lhyboXoobo
-         B/O3kih40qHBZV/nmFsyq6mPyJ6QP8Lhqx+GSA/O/0QV5Ok84lfhv1E+CjZMUy7RRt1O
-         e6hZz6LDQWw1sH7RXllwPNon8jIecwi2Hcxrjp4kHfR2ZTHzuX2lWia5UqJg8Fqa7prF
-         dBro6dBywQKsEW7kJadgi5EzbQyI69/2Dxg3vPbJ8P0HPx0Vt7PEJCFiIlGDL/RLpoAY
-         2nke5sdNTdnm9AkNilGYK+l1xKN7abpRfltYUqRboftIds5nuADzXotm6xtjgv+visXt
-         aMZg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778437684; x=1779042484;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=20vi7jjXaNmaH582QbUJViOW3O2EFOcheWh4ZH6Qnn8=;
-        b=npBsOv3wEwOdpP7vyuCJxU8bBRCtLmYJDehbeu64riCdXOzu1GgX/W/NA5vxzaFMAw
-         EaXZYd5iEDb+SeX7xlrZ8RBasLt057t9gHx2OBWdjnPx6zWTROMOofcJNoAlKDt0YDMi
-         PZbXZXUc+bgLH/SlCBsAkmkNRZt1FQAxjHts2RqlTG06kOHve17JeI5L0bjEl1U4qgys
-         vkmBcKSF+cPX4ASnexfDyOop2YloRfpBr+fxB6Iy+5tFlVUIxQG50K1BxxQBubHWaPz+
-         h+QU5Tu3vrRcsN1H40hVIgeENTUwsrTovXmqAZ0RNN6y6J7L7c9TalobhtGAPtbma/n5
-         mAPg==
-X-Forwarded-Encrypted: i=1; AFNElJ/zWScxP0DzItMB4vlqZu25hamV0mX/ulc0079GFGsx1omZCq5+qWmGmR5+MdLEX8RuEuw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx82yabrLVmwZDAg7MAx7LBVjHgURr7vTQ36cWc4RnADenP0UzL
-	U4iYZutBtcWVbGLdqyIx9qAJGfWNqs5+JKxTDowfvm+4G5BvI+m9sAKbkpWExA3gczs7WQA+gI1
-	CeVtfIo19A1eaDN0N14L91qckoSTztI3Edo/dERruyUM/ScNsLtkCYQ==
-X-Gm-Gg: Acq92OHBzxeGKRalPXBFbE+JAqlq6xBiDxm9pzdfLQu4mO6lOT1cXnPcdz4th2M39An
-	se+/RHSpASdol03dkDnYwE0w/nQU2UiOMb40BPKLdVWoCn5dWkZ7PJbZb3RP2soZmMkHOlhUIom
-	MdvInLcQfjNAjOqdwZNGiCR1apwus0MXOxMcWyIk3J6NjF804nsO4nIB7QFbcFfnvjtulPjiVQD
-	SDjJw7AW83iW1/YRbsHicRZqSihsY4YqBu5Rftf0rHMLWXB5ymhDabhyTX6Y5/3cw+ug5yefT+f
-	20ZVj5ePzRdtVzGF0AWgbj7F1mfe2gmmZWfkxpXyx5OvA0nV0n58tD6Zu8Lm+bslO78I/Gkd95n
-	MtUw9WJ+0Smve5MNn07PFbkneJykMSYOYhtjfHdab
-X-Received: by 2002:a05:600c:c0d8:b0:486:faa8:9e4 with SMTP id 5b1f17b1804b1-48e5e000c1cmr177492245e9.12.1778437683980;
-        Sun, 10 May 2026 11:28:03 -0700 (PDT)
-X-Received: by 2002:a05:600c:c0d8:b0:486:faa8:9e4 with SMTP id 5b1f17b1804b1-48e5e000c1cmr177491905e9.12.1778437683333;
-        Sun, 10 May 2026 11:28:03 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e7040a9a9sm225839165e9.9.2026.05.10.11.28.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 10 May 2026 11:28:02 -0700 (PDT)
-Date: Sun, 10 May 2026 14:27:59 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Simon Schippers <simon.schippers@tu-dortmund.de>
-Cc: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
-	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, eperezma@redhat.com,
-	leiyang@redhat.com, stephen@networkplumber.org, jon@nutanix.com,
-	tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	virtualization@lists.linux.dev
-Subject: Re: [PATCH net-next v11 1/4] tun/tap: add ptr_ring consume helper
- with netdev queue wakeup
-Message-ID: <20260510142743-mutt-send-email-mst@kernel.org>
-References: <20260508151048.183125-1-simon.schippers@tu-dortmund.de>
- <20260508151048.183125-2-simon.schippers@tu-dortmund.de>
- <dd0a3ef1-d623-4e09-a391-b56fa4bf95af@tu-dortmund.de>
- <20260509183518-mutt-send-email-mst@kernel.org>
- <a14b700a-94e8-44c0-bde0-d8307761c0f1@tu-dortmund.de>
- <9a4458fc-61f2-469b-8260-f144d3827b5d@tu-dortmund.de>
- <20260510094020-mutt-send-email-mst@kernel.org>
- <e5d69f44-4483-49f3-b7fc-aca2cdb24792@tu-dortmund.de>
- <20260510114401-mutt-send-email-mst@kernel.org>
- <5f39493e-b2f0-446b-9896-98a074f5ed6b@tu-dortmund.de>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="pxkeih13"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=mtbohFG8p6EJ+pFLwRQLKElomixQFZwDszRfzhhCn8o=; b=pxkeih13c2VsZdfJDNGys+rZjq
+	Ke5GK4Z2HMs85w1dBV7P1thFBTPVN0McLrw8zJZ4XCN/4StRU/aS2TfX3lrGQnUVifD+eC+BrjcL2
+	/5DTUPtHxAdtxJtx38DfR89dH8RHL1r7AglgHBvxNF7OZiuJ4RI1QNxM1ozfMy3MLpMVhZ9gJTJf8
+	FsIWci7YmHTb2j5sNtlAMkGih9XKLrlKfRq1nkwomyM4fk3Z77zFEMjA/jqgeWkzQo91/VsnJYpxW
+	XhoqXWJt+lGSfTnrRByN9o9s2uFuen3jgA8m1lfD53KoXZFnEAkPxqTyAo8oWPk+18B89971ZOZu9
+	MWeLaG0Q==;
+Received: from [172.31.31.240] (helo=u09cd745991455d.ant.amazon.com)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wM94f-0000000A2uM-1ud5;
+	Sun, 10 May 2026 18:40:21 +0000
+Message-ID: <2b409be867cbd9b83087203302a86594553050e1.camel@infradead.org>
+Subject: Re: [PATCH 2/5] KVM: x86: Reset vcpu->arch.st.last_steal when
+ enabling steal time
+From: David Woodhouse <dwmw2@infradead.org>
+To: Sean Christopherson <seanjc@google.com>, Dongli Zhang
+	 <dongli.zhang@oracle.com>
+Cc: kvm@vger.kernel.org, x86@kernel.org, linux-kselftest@vger.kernel.org, 
+ pbonzini@redhat.com, vkuznets@redhat.com, tglx@kernel.org,
+ mingo@redhat.com,  bp@alien8.de, dave.hansen@linux.intel.com,
+ shuah@kernel.org, hpa@zytor.com,  peterz@infradead.org,
+ juri.lelli@redhat.com, vincent.guittot@linaro.org, 
+ dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+ mgorman@suse.de,  vschneid@redhat.com, kprateek.nayak@amd.com,
+ jgross@suse.com, joe.jin@oracle.com
+Date: Sun, 10 May 2026 19:40:21 +0100
+In-Reply-To: <c5c38b0f7b6ca0da69152698913b0c68e185e5c8.camel@infradead.org>
+References: <20260505003044.78693-1-dongli.zhang@oracle.com>
+	 <20260505003044.78693-3-dongli.zhang@oracle.com>
+	 <af5mbWXpG5ofRdJ2@google.com>
+	 <c5c38b0f7b6ca0da69152698913b0c68e185e5c8.camel@infradead.org>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-vweupjCY5Xu3KF9RW/KD"
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5f39493e-b2f0-446b-9896-98a074f5ed6b@tu-dortmund.de>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
 
-On Sun, May 10, 2026 at 06:22:15PM +0200, Simon Schippers wrote:
-> On 5/10/26 17:44, Michael S. Tsirkin wrote:
-> > On Sun, May 10, 2026 at 04:01:39PM +0200, Simon Schippers wrote:
-> >> On 5/10/26 15:40, Michael S. Tsirkin wrote:
-> >>> On Sun, May 10, 2026 at 10:55:34AM +0200, Simon Schippers wrote:
-> >>>> On 5/10/26 09:03, Simon Schippers wrote:
-> >>>>> On 5/10/26 00:44, Michael S. Tsirkin wrote:
-> >>>>>> On Sat, May 09, 2026 at 06:31:47PM +0200, Simon Schippers wrote:
-> >>>>>>> On 5/8/26 17:10, Simon Schippers wrote:
-> >>>>>>>> +static void tun_queue_purge(struct tun_struct *tun, struct tun_file *tfile)
-> >>>>>>>>  {
-> >>>>>>>>  	void *ptr;
-> >>>>>>>>  
-> >>>>>>>> -	while ((ptr = ptr_ring_consume(&tfile->tx_ring)) != NULL)
-> >>>>>>>> +	while ((ptr = tun_ring_consume(tun, tfile)) != NULL)
-> >>>>>>>>  		tun_ptr_free(ptr);
-> >>>>>>>>  
-> >>>>>>>>  	skb_queue_purge(&tfile->sk.sk_write_queue);
-> >>>>>>>
-> >>>>>>> Sashiko is right once again. tun_ring_consume() in tun_queue_purge()
-> >>>>>>> operates on a tfile that is being torn down. Its queue_index is no
-> >>>>>>> longer valid. After the swap in __tun_detach(), it points to the
-> >>>>>>> netdev subqueue of a different tfile.
-> >>>>>>> --> We should not wake there.
-> >>>>>>
-> >>>>>> Does it not exactly point at ntfile which is what we want to wake?
-> >>>>>>
-> >>>>>
-> >>>>> I see your point. But calling tun_ring_consume() as done here is
-> >>>>> wrong, because it does not wake if the tx_ring of the tfile 
-> >>>>> (that is currently torn down) is empty. We could change
-> >>>>> tun_ring_consume() to call __tun_wake_queue()
-> >>>>> with consumed=0 if !ptr but I think this would slow down the consumer
-> >>>>> path.
-> >>>>>
-> >>>>
-> >>>> My statement is wrong:
-> >>>> There is no way that the tx_ring is empty and the queue is stopped
-> >>>> at the same time. So we do not need to touch tun_ring_consume() and
-> >>>> this works just fine.
-> >>>>
-> >>>>>>
-> >>>>>>> I will swap tun_ring_consume() with ptr_ring_consume() again and
-> >>>>>>> submit a v12 :)
-> >>>>>>
-> >>>>>> If so then maybe
-> >>>>>> netif_tx_wake_queue(netdev_get_tx_queue(tun->dev, index));
-> >>>>>>
-> >>>>>
-> >>>>> But we should only do this if there is space in the ntfile.
-> >>>>> My approach:
-> >>>>>
-> >>>>> @@ -586,12 +588,18 @@ static void __tun_detach(struct tun_file *tfile, bool clean)
-> >>>>>  		BUG_ON(index >= tun->numqueues);
-> >>>>>  
-> >>>>>  		rcu_assign_pointer(tun->tfiles[index],
-> >>>>>  				   tun->tfiles[tun->numqueues - 1]);
-> >>>>>  		ntfile = rtnl_dereference(tun->tfiles[index]);
-> >>>>> +		spin_lock(&ntfile->tx_ring.consumer_lock);
-> >>>>>  		ntfile->queue_index = index;
-> >>>>>  		ntfile->xdp_rxq.queue_index = index;
-> >>>>> +		ntfile->cons_cnt = 0;
-> >>>>> +		if (__ptr_ring_empty(&ntfile->tx_ring)) {
-> >>>>> +			netif_wake_subqueue(tun->dev, index);
-> >>>>> +		}
-> >>>>> +		spin_unlock(&ntfile->tx_ring.consumer_lock);
-> >>>>>  		rcu_assign_pointer(tun->tfiles[tun->numqueues - 1],
-> >>>>>  				   NULL);
-> >>>>>
-> >>>>> ntfile->cons_cnt is unvalid, because the new queue might not be stopped.
-> >>>>> That is the reason why I reset it to 0.
-> >>>>
-> >>>> However, I still prefer this approach because the code is easier to
-> >>>> understand.
-> >>>
-> >>>
-> >>> So do you want me to finish review of this one and ack, or want to
-> >>> post v12?
-> >>>
-> >>
-> >> I will post a v12 with the proposed changes for patch 1.
-> >> No other changes.
-> >>
-> >> Thanks!
-> > 
-> > actually can you clarify? why only when ntfile ring is empty?
-> > 
-> 
-> This avoids waking when ntfile->tx_ring is full. We can not use 
-> __ptr_ring_can_produce() with consumer locks, therefore I chose
-> __ptr_ring_empty() instead.
-> 
-> If there are any elements in ntfile->tx_ring we do not have to wake.
-> This will be done by the consumer in tun_ring_consume() &
-> __tun_wake_queue() after consuming those elements.
 
-worth a code comment if you need to do v13.
+--=-vweupjCY5Xu3KF9RW/KD
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Sun, 2026-05-10 at 18:09 +0100, David Woodhouse wrote:
+> On Fri, 2026-05-08 at 15:40 -0700, Sean Christopherson wrote:
+> > On Mon, May 04, 2026, Dongli Zhang wrote:
+> > > KVM does not support vCPU hotplug. When a vCPU is removed, its
+> > > corresponding data structures are not freed by KVM. Instead, QEMU des=
+troys
+> > > only the userspace state and the vCPU thread, while the KVM vCPU fd r=
+emains
+> > > open and parked in QEMU.
+> > >=20
+> > > As a result, vcpu->arch.st.last_steal is not reset.
+> > >=20
+> > > If the same vCPU is later re-created by QEMU, last_steal retains its =
+old
+> > > value, while current->sched_info.run_delay starts from zero since a n=
+ew
+> > > vCPU thread is created. This causes
+> > > current->sched_info.run_delay - vcpu->arch.st.last_steal to produce a
+> > > large, bogus value.
+> > >=20
+> > > Fix this by resetting vcpu->arch.st.last_steal to
+> > > current->sched_info.run_delay when KVM steal time is enabled.
+> >=20
+> > This is quite arbitrary.=C2=A0 E.g. if userspace hands the vCPU off to =
+a different
+> > task without going through QEMU's hotplug dance, then current->sched_in=
+fo.run_delay
+> > will also change.
+> >=20
+> > Shouldn't x86 hook kvm_arch_vcpu_run_pid_change() and reset last_steal =
+in there?
+>=20
+> I'd like to be sure that we get this right for live update and live migra=
+tion.
+>=20
+> I think we *do* get it right for the Xen runstate info...
+
+Since I'm adding selftests to my kvmclock branch today... I now *know*
+this to be true :)
+
+
+https://git.infradead.org/?p=3Dusers/dwmw2/linux.git;a=3Dcommitdiff;h=3Dd66=
+7349116
+
+Looks like Sean is right about the pid change though.
+
+--=-vweupjCY5Xu3KF9RW/KD
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUxMDE4NDAy
+MVowLwYJKoZIhvcNAQkEMSIEILiU7SeIu66scrqkDy+UPW/i+RWBMH2cn696kw6hPOGXMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIA1LaQHCSwoKK9
+D7XCz4LCd0phwWEpjIcOOfpjKyxSVraqrj6XJys0SY/HE4Pm8oyYJ3bWf98DcgblOOjpk3PPK36k
+ih8/gVODU+5TnT+KUGibwDRPGZcyMrXaDl2d2zITg7Flx1CMR5PXHmHRoJU4PmExzVVr1DZap+Cl
+H4XdMdC5QUeOzn1mKQ2G30Y0xgQOG0RVmptsgNdWvXMopEslB7TqBzyMv3bo5/O3dETx5VA/0+j0
+rpkldGGEnp0qvUAPlfSNa8ItTRVXo3yxiVQBVx9F24Q36F0WDAzFGvp7H28u2yklh1PjHHB+QQdi
+r27+ZtHc9mhkebKEmmhegFr0pO1UJiJZlZdLa+ioiVHues8HhnRWaVrRU8P6e5wiQSvqGBGgrpED
+3WX+52Lc4UDovP7eTFuT/ORGACj+T3n+b2wW0yxroVi/cATeFO/ASL0yvZxlmc+eVX92fWZgS4+m
+5MHHMAbKnAcDLGazW24J1RGN7jxpCRufWcJ9pnQ80zPzon+wotsARzal9XsLwxZqtlFX/q35t78L
+nDO47JYsU4U3Y84HypAGdxKDw+7L4ZToFft/3t57m71dosvM1VnH6L8o4LwP9lQyQIjBf5lY6LF2
+LK4fzLFpr6ZiU9e8SgCOe7h+SnJfy3k2xkQeChYZBreO+Q4O/LjBGMqjaSAdalkAAAAAAAA=
+
+
+--=-vweupjCY5Xu3KF9RW/KD--
