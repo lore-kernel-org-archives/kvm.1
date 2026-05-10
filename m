@@ -1,213 +1,118 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from unimail.uni-dortmund.de (mx1.hrz.uni-dortmund.de [129.217.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 569C73E0C45;
-	Sat,  9 May 2026 22:49:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723CE1E5702;
+	Sun, 10 May 2026 07:04:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=129.217.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778366958; cv=none; b=Qc8FxoCreSn+DIQeuEOGcjX5RlvarC0uP09OHzPa5SrtIxAEXCF/o2Sk+igaofuKoMtEsCOEQYrz9c2LViFeDzPpdSjWK4wdAlUYMacCt0hP/mmfwNpH1RnpS/+a31VKtxksBMX+rbHu4kb7J3DTjflfsNbBL1A7+vUeHPtwQIM=
+	t=1778396643; cv=none; b=awJTmcz3SDgazSNuFrZwY43qi4Sbpo0kp+XyIbTYOGOSBWpmhIfkbV14ziv2WDM9KmZZa0pvtaLZg0imjj3NV1KKRHtmUb6fFVR/6A051hlt9Pms9zXxmDWmkTxXMPFyvWm0Hmeo+HjpjI1yakxj1dj50VquwRnWx3UP7ZnKYtM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778366958; c=relaxed/simple;
-	bh=JDA5+1Tqe0bAUIcEuNpnm50QbTVOp/8UU7ylw2FU3hA=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HmdmbU0NkdMYlWJQnYxUCMt/m+KgYDf0rIqllG+gkAVlbmcnlACUaBq6sVcjI/GXZv5dkYaXwNshYtONImDS0gevF0JR2icEommDAojMstNx8z+xzewyWYgY623nRHE+UaJgMdn00laTgTNlJdyT6La+jQFK4Yidzq8WKs6vov4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=bkTTeIeQ; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+	s=arc-20240116; t=1778396643; c=relaxed/simple;
+	bh=RwH/54gs+YrOj3HXbY9p+I3vMzFonUdHH2SDCWiM39k=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=nhb8ZsUKiyCZTwcqj+pUtbRfYsRY5DuCBIZi6cNd4fwZV5J6lbFe6ifUj5t7IE4p+SyLnAGWpGbemsrWloHSk2uPYK9pdD76elB0gGse773vUVHq++8HDtuhqN2jbb/7zsKNPEVnMlBfVCntja0nDFmX70Sp02bf8nkNORoDS1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de; spf=pass smtp.mailfrom=tu-dortmund.de; dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b=LxqluCcN; arc=none smtp.client-ip=129.217.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=tu-dortmund.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tu-dortmund.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="bkTTeIeQ"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:To:From:Reply-To:
-	Cc:Content-Type:Content-ID:Content-Description;
-	bh=LepzYKC8zChWcqxDUMiFOK7RmizpFH9hCCvlIfnf3aY=; b=bkTTeIeQ6yjciV79dnwOCTS3X8
-	kWPljQM5uuCcLf9xYvOMvxwp0BudJtlKdezBUn+2HsrUtDHGE8X85ygS5I9M1clK6zpm2ifFrsLyI
-	6vHlr9bbTcd192RWw5BeCaycQCXib9QwDp+uVtaExyL6cHh0l//vCGieuOmQt3Zb6k0V42gUmdzy2
-	v+X/RNkqyGK6O828YYwwQwcGi7JC5ICV2+sjdn6xRCbShFs6B4a8UPDR2YF3J0Ue6G7OcdLr2c0KW
-	mS9Em/atYVqzn+EMq4KLzVjs83ETumOZCG//oet13+jOZDJ2WZbahqUjO1qRQftiPO8dK8pbrQTVE
-	zPdP0YPA==;
-Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
-	by desiato.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wLqTD-00000008wzI-0OeQ;
-	Sat, 09 May 2026 22:48:28 +0000
-Received: from dwoodhou by i7.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wLqTC-0000000DhIH-3IBh;
-	Sat, 09 May 2026 23:48:26 +0100
-From: David Woodhouse <dwmw2@infradead.org>
-To: Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Juergen Gross <jgross@suse.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Paul Durrant <paul@xen.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Sascha Bischoff <Sascha.Bischoff@arm.com>,
-	Marc Zyngier <maz@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Jack Allister <jalliste@amazon.com>,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	joe.jin@oracle.com,
-	kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	xen-devel@lists.xenproject.org,
-	linux-kselftest@vger.kernel.org
-Subject: [PATCH v4 16/30] KVM: x86: Restructure kvm_guest_time_update() for TSC upscaling
-Date: Sat,  9 May 2026 23:46:42 +0100
-Message-ID: <20260509224824.3264567-17-dwmw2@infradead.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260509224824.3264567-1-dwmw2@infradead.org>
-References: <20260509224824.3264567-1-dwmw2@infradead.org>
+	dkim=pass (1024-bit key) header.d=tu-dortmund.de header.i=@tu-dortmund.de header.b="LxqluCcN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=tu-dortmund.de;
+	s=unimail; t=1778396629;
+	bh=RwH/54gs+YrOj3HXbY9p+I3vMzFonUdHH2SDCWiM39k=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=LxqluCcND+gz4fdJCOGN198RssBIK4CO2FbMlKLZR3kejds7aFabkYB2q8x17E3Co
+	 izE3+c7g8KktptTbRRkPIV/5N1mMFZvBiZziJRsXp78am9OJuys4jGwZC2JlZiLAAG
+	 zxLGNXEd9l0hydnEZ6B6965bRzkTDOkr+ySVlBnc=
+Received: from [192.168.178.180] (pd9eaa57d.dip0.t-ipconnect.de [217.234.165.125])
+	(authenticated bits=0)
+	by unimail.uni-dortmund.de (8.19.0.1/8.19.0.1) with ESMTPSA id 64A73kXP016859
+	(version=TLSv1.3 cipher=TLS_AES_256_GCM_SHA384 bits=256 verify=NOT);
+	Sun, 10 May 2026 09:03:47 +0200 (CEST)
+Message-ID: <a14b700a-94e8-44c0-bde0-d8307761c0f1@tu-dortmund.de>
+Date: Sun, 10 May 2026 09:03:46 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: David Woodhouse <dwmw2@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net-next v11 1/4] tun/tap: add ptr_ring consume helper
+ with netdev queue wakeup
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
+        andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+        kuba@kernel.org, pabeni@redhat.com, eperezma@redhat.com,
+        leiyang@redhat.com, stephen@networkplumber.org, jon@nutanix.com,
+        tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
+        linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        virtualization@lists.linux.dev
+References: <20260508151048.183125-1-simon.schippers@tu-dortmund.de>
+ <20260508151048.183125-2-simon.schippers@tu-dortmund.de>
+ <dd0a3ef1-d623-4e09-a391-b56fa4bf95af@tu-dortmund.de>
+ <20260509183518-mutt-send-email-mst@kernel.org>
+Content-Language: en-US
+From: Simon Schippers <simon.schippers@tu-dortmund.de>
+In-Reply-To: <20260509183518-mutt-send-email-mst@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+On 5/10/26 00:44, Michael S. Tsirkin wrote:
+> On Sat, May 09, 2026 at 06:31:47PM +0200, Simon Schippers wrote:
+>> On 5/8/26 17:10, Simon Schippers wrote:
+>>> +static void tun_queue_purge(struct tun_struct *tun, struct tun_file *tfile)
+>>>  {
+>>>  	void *ptr;
+>>>  
+>>> -	while ((ptr = ptr_ring_consume(&tfile->tx_ring)) != NULL)
+>>> +	while ((ptr = tun_ring_consume(tun, tfile)) != NULL)
+>>>  		tun_ptr_free(ptr);
+>>>  
+>>>  	skb_queue_purge(&tfile->sk.sk_write_queue);
+>>
+>> Sashiko is right once again. tun_ring_consume() in tun_queue_purge()
+>> operates on a tfile that is being torn down. Its queue_index is no
+>> longer valid. After the swap in __tun_detach(), it points to the
+>> netdev subqueue of a different tfile.
+>> --> We should not wake there.
+> 
+> Does it not exactly point at ntfile which is what we want to wake?
+> 
 
-Restructure kvm_guest_time_update() so that kernel_ns/host_tsc are
-always "now" when doing TSC catchup, then swap in the master clock
-reference values afterward for the hv_clock.
+I see your point. But calling tun_ring_consume() as done here is
+wrong, because it does not wake if the tx_ring of the tfile 
+(that is currently torn down) is empty. We could change
+tun_ring_consume() to call __tun_wake_queue()
+with consumed=0 if !ptr but I think this would slow down the consumer
+path.
 
-This makes the TSC upscaling code considerably simpler: the catchup
-adjustment is computed as the delta between what the guest TSC *should*
-be at "now" and what it actually is, rather than mixing "now" and
-"master clock reference" timestamps.
+> 
+>> I will swap tun_ring_consume() with ptr_ring_consume() again and
+>> submit a v12 :)
+> 
+> If so then maybe
+> netif_tx_wake_queue(netdev_get_tx_queue(tun->dev, index));
+> 
 
-The seqcount loop now also contains the kvm_get_time_and_clockread()
-call (matching get_kvmclock's pattern), with the same WARN for
-unexpected failure.
+But we should only do this if there is space in the ntfile.
+My approach:
 
-Based on a suggestion by Sean Christopherson.
-
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
----
- arch/x86/kvm/x86.c | 67 ++++++++++++++++++++++++++++++++--------------
- 1 file changed, 47 insertions(+), 20 deletions(-)
-
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index e281c49561fa..8e4993ef4f6b 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -3363,39 +3363,51 @@ int kvm_guest_time_update(struct kvm_vcpu *v)
- 	struct kvm_arch *ka = &v->kvm->arch;
- 	s64 kernel_ns;
- 	u64 tsc_timestamp, host_tsc;
-+	u64 master_host_tsc = 0;
-+	s64 master_kernel_ns = 0;
- 	bool use_master_clock;
+@@ -586,12 +588,18 @@ static void __tun_detach(struct tun_file *tfile, bool clean)
+ 		BUG_ON(index >= tun->numqueues);
  
--	kernel_ns = 0;
--	host_tsc = 0;
--
- 	/*
- 	 * If the host uses TSC clock, then passthrough TSC as stable
- 	 * to the guest.
- 	 */
- 	do {
- 		seq = read_seqcount_begin(&ka->pvclock_sc);
-+
- 		use_master_clock = ka->use_master_clock;
--		if (use_master_clock) {
--			host_tsc = ka->master_cycle_now;
--			kernel_ns = ka->master_kernel_ns;
--		}
-+
-+		/*
-+		 * The TSC read and the call to get_cpu_tsc_khz() must happen
-+		 * on the same CPU.
-+		 */
-+		get_cpu();
-+
-+		tgt_tsc_hz = (u64)get_cpu_tsc_khz() * 1000;
-+
-+		if (use_master_clock &&
-+		    !kvm_get_time_and_clockread(&kernel_ns, &host_tsc) &&
-+		    WARN_ON_ONCE(!read_seqcount_retry(&ka->pvclock_sc, seq)))
-+			use_master_clock = false;
-+
-+		put_cpu();
-+
-+		if (!use_master_clock)
-+			break;
-+
-+		master_host_tsc = ka->master_cycle_now;
-+		master_kernel_ns = ka->master_kernel_ns;
- 	} while (read_seqcount_retry(&ka->pvclock_sc, seq));
- 
--	/* Keep irq disabled to prevent changes to the clock */
--	local_irq_save(flags);
--	tgt_tsc_hz = (u64)get_cpu_tsc_khz() * 1000;
- 	if (unlikely(tgt_tsc_hz == 0)) {
--		local_irq_restore(flags);
- 		kvm_make_request(KVM_REQ_CLOCK_UPDATE, v);
- 		return 1;
- 	}
-+
- 	if (!use_master_clock) {
- 		host_tsc = rdtsc();
- 		kernel_ns = get_kvmclock_base_ns();
- 	}
- 
--	tsc_timestamp = kvm_read_l1_tsc(v, host_tsc);
--
- 	/*
- 	 * We may have to catch up the TSC to match elapsed wall clock
- 	 * time for two reasons, even if kvmclock is used.
-@@ -3404,17 +3416,32 @@ int kvm_guest_time_update(struct kvm_vcpu *v)
- 	 *      entry to avoid unknown leaps of TSC even when running
- 	 *      again on the same CPU.  This may cause apparent elapsed
- 	 *      time to disappear, and the guest to stand still or run
--	 *	very slowly.
-+	 *      very slowly.
- 	 */
- 	if (vcpu->tsc_catchup) {
--		u64 tsc = compute_guest_tsc(v, kernel_ns);
--		if (tsc > tsc_timestamp) {
--			adjust_tsc_offset_guest(v, tsc - tsc_timestamp);
--			tsc_timestamp = tsc;
--		}
-+		s64 adjustment;
-+
-+		/*
-+		 * Calculate the delta between what the guest TSC *should* be
-+		 * and what it actually is according to kvm_read_l1_tsc().
-+		 */
-+		adjustment = compute_guest_tsc(v, kernel_ns) -
-+			     kvm_read_l1_tsc(v, host_tsc);
-+		if (adjustment > 0)
-+			adjust_tsc_offset_guest(v, adjustment);
- 	}
- 
--	local_irq_restore(flags);
-+	/*
-+	 * Now that TSC upscaling is out of the way, the remaining calculations
-+	 * are all relative to the reference time that's placed in hv_clock.
-+	 * If the master clock is NOT in use, the reference time is "now".  If
-+	 * master clock is in use, the reference time comes from there.
-+	 */
-+	if (use_master_clock) {
-+		host_tsc = master_host_tsc;
-+		kernel_ns = master_kernel_ns;
-+	}
-+	tsc_timestamp = kvm_read_l1_tsc(v, host_tsc);
- 
- 	/* With all the info we got, fill in the values */
- 
--- 
-2.51.0
+ 		rcu_assign_pointer(tun->tfiles[index],
+ 				   tun->tfiles[tun->numqueues - 1]);
+ 		ntfile = rtnl_dereference(tun->tfiles[index]);
++		spin_lock(&ntfile->tx_ring.consumer_lock);
+ 		ntfile->queue_index = index;
+ 		ntfile->xdp_rxq.queue_index = index;
++		ntfile->cons_cnt = 0;
++		if (__ptr_ring_empty(&ntfile->tx_ring)) {
++			netif_wake_subqueue(tun->dev, index);
++		}
++		spin_unlock(&ntfile->tx_ring.consumer_lock);
+ 		rcu_assign_pointer(tun->tfiles[tun->numqueues - 1],
+ 				   NULL);
 
+ntfile->cons_cnt is unvalid, because the new queue might not be stopped.
+That is the reason why I reset it to 0.
