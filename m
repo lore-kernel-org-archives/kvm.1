@@ -1,211 +1,657 @@
-Received: from mail-dy1-f173.google.com (mail-dy1-f173.google.com [74.125.82.173])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039654D2EE6
-	for <kvm@vger.kernel.org>; Mon, 11 May 2026 21:10:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B580496904
+	for <kvm@vger.kernel.org>; Mon, 11 May 2026 21:19:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778533849; cv=none; b=gdK4y7OJGP5cg1WkQgTEvae8e6Klc5bI9RAtzBntROU4L41D+l6SRyleBOVyDAoojeN3/B/eAcxVUnv7bdo1q5mFY1UOmybmLam1PqSr5d5jzM8YoP+rS4/913tujZne9sLAXCNYIjHQO9pAQdX2seeLLHIJcbfJclwmNsI4JMM=
+	t=1778534361; cv=none; b=P5Z9vPmnr4vH1PbFCwoDxGrC94D7DmeTKQ1wTozKBY3vp+Umglu5PKfbwEwtRb7f0Plmw7gy30M3yYMw+DxJxhVpCjS1h8qoOK7LkvAPVHLuqhgkw4G51bO8Xxuj1N8IMB8hSzHUQjur7JT/VXFe7I8IJLL83nNi52WNsdagdxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778533849; c=relaxed/simple;
-	bh=OicPgjnrqDPLO3PrCx45/s1FF7/nTgJfea0D9L2qSMU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fZuMsKCdwhzTaeASbLFFJzKTzYVZzdk8X1UfuNLcfMK0GJ4nKoG8xQdnbtcz9LmFt48z4Zow6OEmZQgVdLvIKE/IzqhgMSzm9HugVwN2FZODKuJ5w944mZ5Nmlo/FMWj4DS5c83CuOE7FOnWgpI5DotjNMOzn6YyihVzqqFbgvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wfvLf8OZ; arc=none smtp.client-ip=74.125.82.173
+	s=arc-20240116; t=1778534361; c=relaxed/simple;
+	bh=qmkeNBjWMeO99EV3P2jPpeCUABTVhXxMA3K/1i3Ll58=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Uk3UnPS80JjeI4WcjxA5e+CAx+z+gUGB28GB7etpu09MhIMG6YWPHbJr8NtljsG/N+ER1mTaTwE+YXh5/e+KCgdZBEwUQMqlIDbsgmSmc9C41NoRq2X2PVVfwyE4keE323nDGHPfnQRpqhqff4TmHGJ8nB3GznlNl/ClFmBJjiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JAwnvNNK; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wfvLf8OZ"
-Received: by mail-dy1-f173.google.com with SMTP id 5a478bee46e88-2ee990e8597so8326381eec.1
-        for <kvm@vger.kernel.org>; Mon, 11 May 2026 14:10:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JAwnvNNK"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-837cc5bc6deso3240869b3a.3
+        for <kvm@vger.kernel.org>; Mon, 11 May 2026 14:19:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778533847; x=1779138647; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tJUZ+9h7cLwAojaR2mrUsKXNC1lI0aWmSJMdNn306BU=;
-        b=wfvLf8OZByRE1gKDoIEeaOAaNUlVfsFaXi81se45zNgzEZ5xsDb9+tNkShZKNBpUl8
-         mnC4aiT76WjH0e3z8AyRTcxunZ0hd6V12r/NLaC84Lryt1rGdEw5TNn1wiKW1SprL3UQ
-         /aUW+UOjUP5hZadvNgsrfWkGGPRVFtZmQikJJiZA1evw1MWkUg8jF4fG5DU/XAuU7IOd
-         UipidrDciAR1UvgoRXNZxrzr82qZz0wPbEi+UWcDeFFVCKTQvz9sNvgQ+f4F25tgDFBA
-         5VjpYwvBh0DtAwKRmmoJi/I8iesEpIvZRY81VQhTZAWZULkb5eb3aN9LF5xa4APwQ/te
-         gFMQ==
+        d=google.com; s=20251104; t=1778534358; x=1779139158; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=CHR65Pv2Jpuq5p77NQrm1Qt8lZEdVwp6VjZjBEUiuao=;
+        b=JAwnvNNKleKJj9uTHVMqsQt2MApqB9aHTG6bSjYfR1jYOKpnAMZxCKejxf+bEhH3sk
+         j87uPRu2VaRjLXRb/eWugIoclG9XbnCqfGciDgFgwUW+mvyNzdL4hfsXb25rIvbsSoZf
+         iMjHA7hh3aS9Hv2rk/8qE+Y32YxZINWpZo38KZV3WXdJrVFrehCCA0Ld00Lu0unOctW+
+         2+0avoZJKHTQCHrnRXGOvgE65hW8Z5d9VLBrFv347DgTriRkh7YihrauUeGoTjMkDiqY
+         yXdCXpmhPsXjebjmzpNzABfdSmFVm9/tIpYEQWPJ8LQo6HQiD0IOTX0Rt8QQifVImDqR
+         k13Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778533847; x=1779138647;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tJUZ+9h7cLwAojaR2mrUsKXNC1lI0aWmSJMdNn306BU=;
-        b=LBjOGy7Qy0qROjytD98frCLnhGm+3i/iqdSADmpiqdRSGZqnOgM4amuDuOpibpty5N
-         penPvewbhlcxBP6c+jHzaMJpNFHStBe9vxQqi/H879dD8uzOQQZfz/Phdafd1RnKBDM4
-         pWCtL1kM0ooKJzcVxd4/Di4z9wGPsfa7Fm+IPMf7xmmLP4CCg6KIx1+75lQyr4hz0vm+
-         GwEVtOmQfpj5EK/FObRetQP/MiDBaYWxe3HwZu+6K8Vr2mPUqfzo3biPD1jbolSojSIw
-         F5zg+UPaIvUkCyB85jhornWBOWfFG9yt3/1w6mid70wJMKHgQiQ1zVABW/uOwtViqP7T
-         cWUw==
-X-Forwarded-Encrypted: i=1; AFNElJ/PFti/XgJorSZ6MGW6mER4A6GiycTN1HyI+TcOxRoqzNnmK6ZaxjHCh0hjqvCisMjCms8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8e199FkP8UsyU+I9FXJz051na0hkVS3mKru+oxisd8ueM2oz+
-	vm6Wsc+Ft8UEDHkF4S81nXjOKtBaoIByoqs9L0kZ774WrQbguaS7BE0mQddKIhHjvQ==
-X-Gm-Gg: Acq92OGWUDuryJhoe/h1WHnuVZiQNkkbzK9Wbt/Deq+OBKT+LDEJ9qOHBX/V2yzGMLK
-	IXAd4Oup2kyVrd8UdNHeeHWhk7DvE0F4eT615L1jFSX+UAuQGCTPtpWNxZaipWjgd97OajrQatv
-	VqVNYYN+TsiW8AapFRRSzVzTpInCWkszo7AmXH3H+Cg7yeito6/VPhwNYOdMnlDaU4rRjSS+Ru9
-	DQOzwxaxwRBmRone23NQb7438PGAIeGLXf8YT9g5O1IZ/T6TuBC5DZtJ7/z8U+LDeEPd9uFYEmB
-	g9kl8AyixZ2zi1WnyFVdjTWSD5d907lJT0FMxz32WRk5F6TY2TZtrUCeK84mIttrGqDyaUNhUgz
-	N8/EbBVhRy7MInXgHGweEhLyRYwQEVH1F+BDGVez0RSCuj+ZjBf4zIHkREHCtQ60rFg7206sY0U
-	4D3zIvxOL4y+iOMxFFgw74ffVQsZM6MIiuait30i14cApFE1r9Kso8vu04uC+Ep+0fAF+zZU051
-	+v8492beVw=
-X-Received: by 2002:a05:7301:400b:b0:2de:cc07:e99 with SMTP id 5a478bee46e88-2ffd51cd78bmr154725eec.7.1778533846490;
-        Mon, 11 May 2026 14:10:46 -0700 (PDT)
-Received: from google.com (56.149.168.34.bc.googleusercontent.com. [34.168.149.56])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f91004b6a2sm13584757eec.0.2026.05.11.14.10.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 14:10:46 -0700 (PDT)
-Date: Mon, 11 May 2026 21:10:42 +0000
-From: David Matlack <dmatlack@google.com>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: Aex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH 2/2] vfio: selftests: Add iommufd multi iommu test
-Message-ID: <agJF0gY_V-ZWaNK8@google.com>
-References: <20260505221518.619123-1-skhawaja@google.com>
- <20260505221518.619123-3-skhawaja@google.com>
- <af5EEN8PhVz4pTdE@google.com>
- <agI6peKFWDdn939Z@google.com>
+        d=1e100.net; s=20251104; t=1778534358; x=1779139158;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=CHR65Pv2Jpuq5p77NQrm1Qt8lZEdVwp6VjZjBEUiuao=;
+        b=ddyWBuy/84X9HigBecFbU4Vl1/+EdMBCSfb5p94EiMKu4zEwP/x/Gcw6gp4D/oXqc+
+         ispVk3WhbZVFX7f5UsGUnO/BcCnubZIJekhBfSw6v2eRnhfns8mBi8piULZimIKg/ep1
+         6t7GDxYDdEBxAffregIEBIctZrLL3nPUoypa0YiHiA5WCR4qqCgTFL1/GiL2of6THdOy
+         RqC44wJ+4Z+k1V2SmUv0r+UDOE3I+yu3b3RLRTnzQaqPkWgPOu0HVN7oOOQpw57UsAlF
+         bOqxU3bYJv73HuYFtlRBRGxYTIEYJe50e+CpAzdBQjuooQ2hFN5YaWBhhfQ7v2noYZml
+         FxcA==
+X-Forwarded-Encrypted: i=1; AFNElJ+f5NY+QKefFWzpbjXC92+GbrNKvWGqqkPULfykZj3Ozm+6ZKtghxooJV1gcsWTlkDHsGo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWqs3wYO77/Y/ZVIPy2Jy1ITOhKsJWvFTr2QhLo3YvU3jiE9WS
+	9Q9KKg1+eFedk49PNJe6o7Sw0qbmDYWhnaI3b4QqYrvVeVjq4K5tUIuDHvSJPVBU4HLg85R/0xV
+	Dd215Zwd1
+X-Received: from pfmm17.prod.google.com ([2002:a05:6a00:2491:b0:82f:2efd:4159])
+ (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:399a:b0:82f:abc8:ae0
+ with SMTP id d2e1a72fcca58-83eeba1b101mr159155b3a.17.1778534358019; Mon, 11
+ May 2026 14:19:18 -0700 (PDT)
+Date: Mon, 11 May 2026 21:18:39 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <agI6peKFWDdn939Z@google.com>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
+Message-ID: <20260511211839.2781731-1-jrhilke@google.com>
+Subject: [PATCH] vfio: selftests: Add driver for IGB QEMU device
+From: Josh Hilke <jrhilke@google.com>
+To: Alex Williamson <alex@shazbot.org>, David Matlack <dmatlack@google.com>
+Cc: Vipin Sharma <vipinsh@google.com>, Jason Gunthorpe <jgg@nvidia.com>, Shuah Khan <shuah@kernel.org>, 
+	Tony Nguyen <anthony.l.nguyen@intel.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	Josh Hilke <jrhilke@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 2026-05-11 08:53 PM, Samiullah Khawaja wrote:
-> On Fri, May 08, 2026 at 08:14:08PM +0000, David Matlack wrote:
-> > On 2026-05-05 10:14 PM, Samiullah Khawaja wrote:
-> > > Add a test for iommufd to verify creation of multiple iommus using an
-> > > already setup iommufd and switch between them.
-> > > 
-> > > Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-> > > ---
-> > >  tools/testing/selftests/vfio/Makefile         |   1 +
-> > >  .../vfio/vfio_iommufd_multi_iommu_test.c      | 203 ++++++++++++++++++
-> > >  2 files changed, 204 insertions(+)
-> > >  create mode 100644 tools/testing/selftests/vfio/vfio_iommufd_multi_iommu_test.c
-> > > 
-> > > diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
-> > > index 0684932d91bf..24bdeaad590f 100644
-> > > --- a/tools/testing/selftests/vfio/Makefile
-> > > +++ b/tools/testing/selftests/vfio/Makefile
-> > > @@ -8,6 +8,7 @@ else
-> > >  CFLAGS = $(KHDR_INCLUDES)
-> > >  TEST_GEN_PROGS += vfio_dma_mapping_test
-> > >  TEST_GEN_PROGS += vfio_dma_mapping_mmio_test
-> > > +TEST_GEN_PROGS += vfio_iommufd_multi_iommu_test
-> > >  TEST_GEN_PROGS += vfio_iommufd_setup_test
-> > >  TEST_GEN_PROGS += vfio_pci_device_test
-> > >  TEST_GEN_PROGS += vfio_pci_device_init_perf_test
-> > > diff --git a/tools/testing/selftests/vfio/vfio_iommufd_multi_iommu_test.c b/tools/testing/selftests/vfio/vfio_iommufd_multi_iommu_test.c
-> > > new file mode 100644
-> > > index 000000000000..7199c662637c
-> > > --- /dev/null
-> > > +++ b/tools/testing/selftests/vfio/vfio_iommufd_multi_iommu_test.c
-> > > @@ -0,0 +1,203 @@
-> > > +// SPDX-License-Identifier: GPL-2.0-only
-> > > +#include <sys/ioctl.h>
-> > > +#include <sys/mman.h>
-> > > +
-> > > +#include <linux/sizes.h>
-> > > +#include <linux/vfio.h>
-> > > +
-> > > +#include <libvfio.h>
-> > > +
-> > > +#include "kselftest_harness.h"
-> > > +
-> > > +static const char *device_bdf;
-> > > +
-> > > +#define IOMMU_DEFAULT 0
-> > > +#define IOMMU_WITH_PT 1
-> > > +#define IOMMU_WITHOUT_PT 2
-> > > +
-> > > +static void region_setup(struct iommu *iommu,
-> > > +			 struct iova_allocator *iova_allocator,
-> > > +			 struct dma_region *region, u64 size)
-> > > +{
-> > > +	const int flags = MAP_SHARED | MAP_ANONYMOUS;
-> > > +	const int prot = PROT_READ | PROT_WRITE;
-> > > +	void *vaddr;
-> > > +
-> > > +	vaddr = mmap(NULL, size, prot, flags, -1, 0);
-> > > +	VFIO_ASSERT_NE(vaddr, MAP_FAILED);
-> > > +
-> > > +	region->vaddr = vaddr;
-> > > +	region->iova = iova_allocator_alloc(iova_allocator, size);
-> > > +	region->size = size;
-> > > +
-> > > +	iommu_map(iommu, region);
-> > > +}
-> > > +
-> > > +static void region_teardown(struct iommu *iommu, struct dma_region *region)
-> > > +{
-> > > +	iommu_unmap(iommu, region);
-> > > +	VFIO_ASSERT_EQ(munmap(region->vaddr, region->size), 0);
-> > > +}
-> > 
-> > Can you create library helpers in the library to share with
-> > vfio_pci_driver_test.c?
-> > 
-> >  dma_region_setup()
-> >  dma_region_teardown()
-> 
-> I thought it is ok to duplicate this as each test (in future) might have
-> different mapping requirements? we might have memfd, guest_memfd,
-> dma_buf with various mapping strategies for different usecases?
-> 
-> Or you are thinking of a basic helper that can be used by tests if they
-> are not doing anything fancy?
+Add a VFIO selftest driver for the Intel Gigabit Ethernet controller
+(IGB). IGB is fully virtualized in QEMU [1] which makes it easy to run
+VFIO selftests without needing any specific hardware.
 
-We have 2 tests now that need the same code to setup their regions so we
-might as well share it. As new and more complex use-cases arise we can
-figure out how to support them (per-test logic or fancier library
-support).
+IGB does not have a default memcpy operation, and memcpy is required for
+all VFIO selftest drivers. However, IGB has a "loopback" mode which is
+used in this driver to implement memcpy. When IGB is in loopback mode,
+it doesn't send data out to the network. Instead, it sends data from the
+Tx queue directly to the Rx queue which points to the memcpy
+destination, instead of sending the data out to the network.
 
-> > > +TEST_F(vfio_iommufd_multi_iommu_test, memcpy)
-> > > +{
-> > > +	struct dma_region memcpy_region1, driver_region1;
-> > > +	struct dma_region memcpy_region2, driver_region2;
-> > > +	struct iommu *iommu1;
-> > > +	struct iommu *iommu2;
-> > > +
-> > > +	iommu1 = setup_variant_iommu(self->iommu, self->device->dev_id,
-> > > +				     variant->start_iommu);
-> > > +	if (iommu1 != self->iommu) {
-> > > +		memcpy_region1 = self->memcpy_region;
-> > > +		driver_region1 = self->device->driver.region;
-> > > +
-> > > +		iommu_map(iommu1, &memcpy_region1);
-> > 
-> > Can you make a helper to copy dma_region into a new iommu? It should set
-> > up the new struct dma_region based on the old one, re-initialize the
-> > link field, and then call iommu_map().
-> 
-> Can you please clarify, I didn't get it completely. so basically
-> something that can be called like following?
-> 
-> setup_copy_dma_regions(self, iommu1, &memcpy_region1, &driver_region1);
+This driver passes all of the VFIO selftests in
+tools/testing/selftests/vfio/ when running in QEMU. The driver has not
+been tested using a real IGB device since the main goal of writing this
+driver is to run VFIO selftests in QEMU without requiring any hardware.
 
-I was thinking something like this exposed by lib/iommu.c:
+This command is used to test the driver. It runs
+./tools/testing/selftests/vfio/vfio_pci_driver_test using virtme-ng [2],
+which runs a kernel in a virtualized environment using QEMU that has a
+copy-on-write snapshot the host filesystem.
 
-void iommu_copy_mapping(struct iommu *iommu,
-			struct dma_region *new_region,
-			struct dma_region *existing_region)
-{
-	*new_region = *existing_region;
-	INIT_LIST_HEAD(&new_region->link);
-	iommu_map(iommu, new_region);
-}
+vng \
+  --run arch/x86/boot/bzImage \
+  --user root \
+  --disable-microvm \
+  --memory 32G \
+  --cpus 8 \
+  --qemu-opts="-M q35,accel=kvm,kernel-irqchip=split" \
+  --qemu-opts="-device intel-iommu,intremap=on,caching-mode=on,device-iotlb=on" \
+  --qemu-opts="-netdev user,id=net0 -device igb,netdev=net0,addr=09.0" \
+  --append "console=ttyS0 earlyprintk=ttyS0 intel_iommu=on iommu=pt" \
+  --exec "modprobe vfio-pci && \
+          ./tools/testing/selftests/vfio/scripts/setup.sh 0000:00:09.0 && \
+          ./tools/testing/selftests/vfio/scripts/run.sh ./tools/testing/selftests/vfio/vfio_pci_driver_test"
 
-And then in the test you just do:
+Code was written entirely by AI (Gemini) by feeding it the Intel IGB
+specification, the code for the real IGB driver, and the QEMU
+implementation of the IGB device. It took many iterations of prompting
+to get the driver to pass all of the tests, and lot's of de-slopping to
+remove unnecessary code and make the code readable.
 
-if (iommu1 != self->iommu)
-	iommu_copy_mapping(iommu1, memcpy_region1, self->memcpy_region);
+Code comments are also written by Gemini through iterative
+prompting.
+
+This patch is based on the kvm/queue branch.
+
+[1] https://www.qemu.org/docs/master/system/devices/igb.html
+[2] https://github.com/arighi/virtme-ng
+
+Assisted-by: Gemini:gemini-3-pro-preview
+Signed-off-by: Josh Hilke <jrhilke@google.com>
+---
+ .../selftests/vfio/lib/drivers/igb/igb.c      | 381 ++++++++++++++++++
+ .../vfio/lib/drivers/igb/registers.h          | 103 +++++
+ tools/testing/selftests/vfio/lib/libvfio.mk   |   1 +
+ .../selftests/vfio/lib/vfio_pci_driver.c      |   2 +
+ 4 files changed, 487 insertions(+)
+ create mode 100644 tools/testing/selftests/vfio/lib/drivers/igb/igb.c
+ create mode 100644 tools/testing/selftests/vfio/lib/drivers/igb/registers.h
+
+diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
+new file mode 100644
+index 000000000000..13c8429784ac
+--- /dev/null
++++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
+@@ -0,0 +1,381 @@
++// SPDX-License-Identifier: GPL-2.0-only
++#include <unistd.h>
++#include <errno.h>
++#include <stdint.h>
++#include <linux/io.h>
++#include <linux/pci_regs.h>
++#include <libvfio/vfio_pci_device.h>
++
++#include "registers.h"
++
++#define PCI_VENDOR_ID_INTEL 0x8086
++#define PCI_DEVICE_ID_INTEL_IGB 0x10C9
++#define IGB_MAX_CHUNK_SIZE 1024
++#define MSIX_VECTOR 0
++#define RING_SIZE 4096 /* Number of descriptors in ring */
++
++struct igb_tx_desc {
++	union {
++		struct {
++			uint64_t buffer_addr; /* Address of descriptor's data buffer */
++			uint32_t cmd_type_len; /* Command/Type/Length */
++			uint32_t olinfo_status; /* Context/Buffer info */
++		} read;
++
++		struct {
++			uint64_t rsvd;        /* Reserved */
++			uint32_t nxtseq_seed; /* Next sequence seed */
++			uint32_t status;      /* Descriptor status */
++		} wb;
++	};
++};
++
++struct igb_rx_desc {
++	union {
++		struct {
++			uint64_t pkt_addr; /* Packet buffer address */
++			uint64_t hdr_addr; /* Header buffer address */
++		} read;
++		struct {
++			uint16_t pkt_info;     /* RSS type, Packet type */
++			uint16_t hdr_info;     /* Split Head, buf len */
++			uint32_t rss;          /* RSS Hash */
++			uint32_t status_error; /* ext status/error */
++			uint16_t length;       /* Packet length */
++			uint16_t vlan;         /* VLAN tag */
++		} wb; /* writeback */
++	};
++};
++
++struct igb {
++	void *bar0;
++	struct igb_tx_desc *tx_ring;
++	struct igb_rx_desc *rx_ring;
++	uint32_t tx_tail;
++	uint32_t rx_tail;
++};
++
++static inline struct igb *to_igb_state(struct vfio_pci_device *device)
++{
++	return (struct igb *)device->driver.region.vaddr;
++}
++
++static inline void igb_write32(struct igb *igb, uint32_t reg, uint32_t val)
++{
++	writel(val, igb->bar0 + reg);
++}
++
++static inline uint32_t igb_read32(struct igb *igb, uint32_t reg)
++{
++	return readl(igb->bar0 + reg);
++}
++
++static int igb_write_phy(struct igb *igb, uint32_t offset, uint16_t data)
++{
++	uint32_t mdic;
++	int i;
++
++	mdic = (((uint32_t)data) |
++		(offset << IGB_MDIC_REG_SHIFT) |
++		(1 << IGB_MDIC_PHY_SHIFT) |
++		IGB_MDIC_OP_WRITE);
++
++	igb_write32(igb, IGB_MDIC, mdic);
++
++	for (i = 0; i < 1000; i++) {
++		usleep(50);
++		mdic = igb_read32(igb, IGB_MDIC);
++		if (mdic & IGB_MDIC_READY)
++			break;
++	}
++
++	if (!(mdic & IGB_MDIC_READY))
++		return -1;
++
++	if (mdic & IGB_MDIC_ERROR)
++		return -1;
++
++	return 0;
++}
++
++static int igb_read_phy(struct igb *igb, uint32_t offset, uint16_t *data)
++{
++	uint32_t mdic;
++	int i;
++
++	mdic = ((offset << IGB_MDIC_REG_SHIFT) |
++		(1 << IGB_MDIC_PHY_SHIFT) |
++		IGB_MDIC_OP_READ);
++
++	igb_write32(igb, IGB_MDIC, mdic);
++
++	for (i = 0; i < 1000; i++) {
++		usleep(50);
++		mdic = igb_read32(igb, IGB_MDIC);
++		if (mdic & IGB_MDIC_READY)
++			break;
++	}
++
++	if (!(mdic & IGB_MDIC_READY))
++		return -1;
++
++	if (mdic & IGB_MDIC_ERROR)
++		return -1;
++
++	*data = (uint16_t)mdic;
++	return 0;
++}
++
++static int igb_phy_setup_autoneg(struct igb *igb)
++{
++	int timeout_ms = 1000;
++	bool success = false;
++	uint16_t phy_status;
++	int ret;
++	int i;
++
++	/* Trigger auto-negotiation */
++	ret = igb_write_phy(igb, IGB_PHY_CTRL_REG_OFFSET,
++			    IGB_PHY_CTRL_AN_ENABLE | IGB_PHY_CTRL_RESTART_AN);
++	if (ret)
++		return ret;
++
++	for (i = 0; i < timeout_ms; i++) {
++		if (igb_read_phy(igb, IGB_PHY_STATUS_REG_OFFSET, &phy_status) == 0) {
++			success = !!(phy_status & IGB_PHY_STATUS_AN_COMP);
++			if (success)
++				break;
++		}
++		usleep(1000);
++	}
++
++	if (!success) {
++		printf("igb: Auto-negotiation did not complete in time\n");
++		return -ETIMEDOUT;
++	}
++
++	return 0;
++}
++
++static int igb_probe(struct vfio_pci_device *device)
++{
++	if (!vfio_pci_device_match(device, PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_IGB))
++		return -EINVAL;
++
++	return 0;
++}
++
++static void igb_init(struct vfio_pci_device *device)
++{
++	struct igb *igb = to_igb_state(device);
++	uint64_t iova_tx, iova_rx;
++	uint32_t ctrl, rctl;
++	uint16_t cmd_reg;
++	int retries;
++
++	VFIO_ASSERT_GE(device->driver.region.size,
++		       sizeof(struct igb) + 2 * RING_SIZE * sizeof(struct igb_tx_desc));
++
++	/* Set up rings and calculate IOVAs */
++	igb->bar0 = device->bars[0].vaddr;
++
++	igb->tx_ring = (struct igb_tx_desc *)(igb + 1);
++	igb->rx_ring = (struct igb_rx_desc *)(igb->tx_ring + RING_SIZE);
++
++	iova_tx = to_iova(device, igb->tx_ring);
++	iova_rx = to_iova(device, igb->rx_ring);
++
++	/* Reset device and disable all interrupts */
++	igb_write32(igb, IGB_CTRL, igb_read32(igb, IGB_CTRL) | IGB_CTRL_RST);
++	usleep(20000);
++	igb_write32(igb, IGB_IMC, 0xFFFFFFFF);
++
++	/* Signal that the driver is loaded */
++	ctrl = igb_read32(igb, IGB_CTRL_EXT);
++	ctrl |= IGB_CTRL_EXT_DRV_LOAD;
++	ctrl &= ~IGB_CTRL_EXT_LINK_MODE_MASK;
++	igb_write32(igb, IGB_CTRL_EXT, ctrl);
++
++	/* Enable PCI Bus Master. */
++	cmd_reg = vfio_pci_config_readw(device, PCI_COMMAND);
++	if (!(cmd_reg & PCI_COMMAND_MASTER)) {
++		cmd_reg |= (PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY);
++		vfio_pci_config_writew(device, PCI_COMMAND, cmd_reg);
++	}
++
++	/* Trigger autonegotiation. This enables IGB to transmit data. */
++	if (igb_phy_setup_autoneg(igb))
++		return;
++
++	/* Configure TX and RX descriptor rings */
++	igb_write32(igb, IGB_TDBAL0, (uint32_t)iova_tx);
++	igb_write32(igb, IGB_TDBAH0, (uint32_t)(iova_tx >> 32));
++	igb_write32(igb, IGB_TDLEN0, RING_SIZE * sizeof(struct igb_tx_desc));
++	igb_write32(igb, IGB_TDH0, 0);
++	igb_write32(igb, IGB_TDT0, 0);
++	igb_write32(igb, IGB_TXDCTL0, IGB_TXDCTL0_Q_EN);
++
++	igb_write32(igb, IGB_RDBAL0, (uint32_t)iova_rx);
++	igb_write32(igb, IGB_RDBAH0, (uint32_t)(iova_rx >> 32));
++	igb_write32(igb, IGB_RDLEN0, RING_SIZE * sizeof(struct igb_rx_desc));
++	igb_write32(igb, IGB_RDH0, 0);
++	igb_write32(igb, IGB_RDT0, 0);
++	igb_write32(igb, IGB_RXDCTL0, IGB_RXDCTL0_Q_EN);
++
++	/* Wait for TX and RX queues to be enabled */
++	retries = 2000;
++	while (retries-- > 0) {
++		if ((igb_read32(igb, IGB_TXDCTL0) & IGB_TXDCTL0_Q_EN) &&
++		    (igb_read32(igb, IGB_RXDCTL0) & IGB_RXDCTL0_Q_EN))
++			break;
++		usleep(10);
++	}
++
++	/* Enable Receiver and Transmitter */
++	rctl = IGB_RCTL_EN |       /* Receiver Enable */
++	       IGB_RCTL_UPE |      /* Unicast Promiscuous (for dummy MAC) */
++	       IGB_RCTL_LBM_MAC |  /* MAC Loopback Mode */
++	       IGB_RCTL_SECRC;     /* Strip CRC (needed for memcmp) */
++	igb_write32(igb, IGB_RCTL, rctl);
++	igb_write32(igb, IGB_TCTL, IGB_TCTL_EN);
++
++	/* Enable MSI-X with 1 vector for the test */
++	vfio_pci_msix_enable(device, MSIX_VECTOR, 1);
++
++	/* Enable auto-masking of interrupts to avoid storms without a real ISR */
++	igb_write32(igb, IGB_GPIE, IGB_GPIE_EIAME);
++
++	/* Enable interrupts on vector 0 */
++	igb_write32(igb, IGB_EIMS, 1);
++
++	/* Map vector 0 to interrupt cause 0 and mark it valid */
++	igb_write32(igb, IGB_IVAR0, IGB_IVAR_VALID);
++
++	/* Initialize driver state and capability limits */
++	igb->tx_tail = 0;
++	igb->rx_tail = 0;
++
++	device->driver.max_memcpy_size = (RING_SIZE - 1) * IGB_MAX_CHUNK_SIZE;
++	device->driver.max_memcpy_count = RING_SIZE - 1;
++	device->driver.msi = MSIX_VECTOR;
++}
++
++static void igb_remove(struct vfio_pci_device *device)
++{
++	struct igb *igb = to_igb_state(device);
++
++	vfio_pci_msix_disable(device);
++	igb_write32(igb, IGB_RCTL, 0);
++	igb_write32(igb, IGB_TCTL, 0);
++	igb_write32(igb, IGB_CTRL, igb_read32(igb, IGB_CTRL) | IGB_CTRL_RST);
++}
++
++static void igb_irq_disable(struct igb *igb)
++{
++	igb_write32(igb, IGB_EIMC, 1);
++}
++
++static void igb_irq_enable(struct igb *igb)
++{
++	igb_write32(igb, IGB_EIMS, 1);
++}
++
++static void igb_irq_clear(struct igb *igb)
++{
++	igb_read32(igb, IGB_EICR);
++}
++
++static void igb_memcpy_start(struct vfio_pci_device *device, iova_t src,
++			     iova_t dst, u64 size, u64 count)
++{
++	struct igb *igb = to_igb_state(device);
++	iova_t curr_src, curr_dst;
++	struct igb_rx_desc *rx;
++	struct igb_tx_desc *tx;
++	u64 chunk_size;
++	u64 remaining;
++	uint32_t i;
++
++	igb_irq_disable(igb);
++
++	for (i = 0; i < count; i++) {
++		curr_src = src;
++		curr_dst = dst;
++		remaining = size;
++
++		while (remaining > 0) {
++			chunk_size = min_t(u64, remaining, IGB_MAX_CHUNK_SIZE);
++
++			tx = &igb->tx_ring[igb->tx_tail];
++			rx = &igb->rx_ring[igb->rx_tail];
++
++			memset(tx, 0, sizeof(struct igb_tx_desc));
++			memset(rx, 0, sizeof(struct igb_rx_desc));
++
++			rx->read.pkt_addr = curr_dst;
++			rx->read.hdr_addr = 0;
++			rx->wb.status_error = 0;
++
++			tx->read.buffer_addr = curr_src;
++			tx->read.cmd_type_len = (uint32_t)chunk_size;
++			tx->read.cmd_type_len |= (uint32_t)(IGB_TXD_CMD_EOP) << IGB_TXD_CMD_SHIFT;
++
++			/* Set to 0 to disable offloads and avoid needing a context descriptor */
++			tx->read.olinfo_status = 0;
++
++			curr_src += chunk_size;
++			curr_dst += chunk_size;
++			remaining -= chunk_size;
++
++			igb->tx_tail = (igb->tx_tail + 1) % RING_SIZE;
++			igb->rx_tail = (igb->rx_tail + 1) % RING_SIZE;
++		}
++	}
++
++	igb_write32(igb, IGB_RDT0, igb->rx_tail);
++	igb_write32(igb, IGB_TDT0, igb->tx_tail);
++}
++
++static int igb_memcpy_wait(struct vfio_pci_device *device)
++{
++	struct igb *igb = to_igb_state(device);
++	struct igb_rx_desc *rx;
++	uint32_t prev_tail;
++	int retries;
++
++	prev_tail = (igb->rx_tail + RING_SIZE - 1) % RING_SIZE;
++	rx = &igb->rx_ring[prev_tail];
++
++	retries = 100;
++	while (retries-- > 0) {
++		if (rx->wb.status_error & 1)
++			break;
++		usleep(10);
++	}
++
++	igb_irq_clear(igb);
++
++	igb_irq_enable(igb);
++
++	if (rx->wb.status_error & 1)
++		return 0;
++
++	return -ETIMEDOUT;
++}
++
++static void igb_send_msi(struct vfio_pci_device *device)
++{
++	struct igb *igb = to_igb_state(device);
++
++	igb_write32(igb, IGB_EICS, 1);
++}
++
++const struct vfio_pci_driver_ops igb_ops = {
++	.name = "igb",
++	.probe = igb_probe,
++	.init = igb_init,
++	.remove = igb_remove,
++	.memcpy_start = igb_memcpy_start,
++	.memcpy_wait = igb_memcpy_wait,
++	.send_msi = igb_send_msi,
++};
+diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/registers.h b/tools/testing/selftests/vfio/lib/drivers/igb/registers.h
+new file mode 100644
+index 000000000000..e2756be2e9c0
+--- /dev/null
++++ b/tools/testing/selftests/vfio/lib/drivers/igb/registers.h
+@@ -0,0 +1,103 @@
++/* SPDX-License-Identifier: GPL-2.0-only */
++
++#ifndef _IGB_REGISTERS_H_
++#define _IGB_REGISTERS_H_
++
++/* Register Offsets (Intel 82576EB Datasheet) */
++#define IGB_CTRL 0x00000 /* Device Control */
++#define IGB_STATUS 0x00008 /* Device Status */
++#define IGB_CTRL_EXT 0x00018 /* Extended Device Control */
++#define IGB_MDIC 0x00020 /* MDI Control */
++#define IGB_RCTL 0x00100 /* Receive Control */
++#define IGB_TCTL 0x00400 /* Transmit Control */
++#define IGB_SCTL 0x00420 /* SerDes Control */
++
++/* Interrupt Registers */
++#define IGB_IMC 0x0150C /* Interrupt Mask Clear */
++#define IGB_IVAR0 0x01700 /* Interrupt Vector Allocation Register 0 */
++
++/* Rx Ring 0 Registers */
++#define IGB_RDBAL0 0x0C000 /* Rx Desc Base Address Low */
++#define IGB_RDBAH0 0x0C004 /* Rx Desc Base Address High */
++#define IGB_RDLEN0 0x0C008 /* Rx Desc Length */
++#define IGB_RDH0 0x0C010 /* Rx Desc Head */
++#define IGB_RDT0 0x0C018 /* Rx Desc Tail */
++#define IGB_RXDCTL0 0x0C028 /* Rx Desc Control */
++
++/* Tx Ring 0 Registers */
++#define IGB_TDBAL0 0x0E000 /* Tx Desc Base Address Low */
++#define IGB_TDBAH0 0x0E004 /* Tx Desc Base Address High */
++#define IGB_TDLEN0 0x0E008 /* Tx Desc Length */
++#define IGB_TDH0 0x0E010 /* Tx Desc Head */
++#define IGB_TDT0 0x0E018 /* Tx Desc Tail */
++#define IGB_TXDCTL0 0x0E028 /* Tx Desc Control */
++
++/* Control Bit Definitions */
++/* CTRL */
++#define IGB_CTRL_RST (1 << 26) /* Device Reset */
++#define IGB_CTRL_EXT_LINK_MODE_MASK (3 << 22)
++
++/* CTRL_EXT */
++#define IGB_CTRL_EXT_DRV_LOAD (1 << 28) /* Driver Loaded */
++
++/* RCTL */
++#define IGB_RCTL_EN (1 << 1) /* Receiver Enable */
++#define IGB_RCTL_UPE (1 << 3) /* Unicast Promiscuous Enabled */
++#define IGB_RCTL_LPE (1 << 5) /* Long Packet Reception Enable */
++#define IGB_RCTL_LBM_MAC (1 << 6) /* Loopback Mode - MAC */
++#define IGB_RCTL_SECRC (1 << 26) /* Strip Ethernet CRC */
++
++/* TCTL */
++#define IGB_TCTL_EN (1 << 1) /* Transmit Enable */
++
++/* SCTL */
++#define IGB_SCTL_DISABLE_SERDES_LOOPBACK (1 << 6)
++
++/* MDIC */
++#define IGB_MDIC_OP_WRITE (1 << 26)
++#define IGB_MDIC_OP_READ  (2 << 26)
++
++#define IGB_EICR 0x01580 /* Extended Interrupt Cause Read */
++
++#define IGB_RAH0 0x05404 /* Receive Address High 0 */
++#define IGB_VMOLR0 0x05AD0 /* VM Offload Layout Register 0 */
++
++#define IGB_VMOLR_LPE 0x00010000 /* Long Packet Enable */
++#define IGB_VMOLR_BAM 0x08000000 /* Broadcast Accept Mode */
++#define IGB_RAH_POOL_1 0x00040000 /* Pool 1 assignment */
++
++#define IGB_EIMS 0x01524 /* Extended Interrupt Mask Set */
++#define IGB_EICS 0x01520 /* Extended Interrupt Cause Set */
++#define IGB_EIMC 0x01528 /* Extended Interrupt Mask Clear */
++#define IGB_CTRL_GIO_MASTER_DISABLE (1 << 2) /* GIO Master Disable */
++#define IGB_STATUS_GIO_MASTER_ENABLE (1 << 19) /* GIO Master Enable */
++#define IGB_GPIE 0x01514 /* General Purpose Interrupt Enable */
++#define IGB_TXDCTL0_Q_EN (1 << 25) /* Transmit Queue Enable */
++#define IGB_RXDCTL0_Q_EN (1 << 25) /* Receive Queue Enable */
++#define IGB_MRQC 0x05818 /* Multiple Receive Queues Command */
++
++#define IGB_MDIC_PHY_SHIFT 21 /* PHY Address Shift */
++#define IGB_MDIC_REG_SHIFT 16 /* Register Address Shift */
++#define IGB_MDIC_READY (1 << 28) /* MDI Data Ready */
++#define IGB_MDIC_ERROR (1 << 29) /* MDI Error */
++
++#define IGB_PHY_CTRL_REG_OFFSET 0
++#define IGB_PHY_STATUS_REG_OFFSET 1
++#define IGB_PHY_STATUS_AN_COMP 0x0020 /* Auto-negotiation complete */
++#define IGB_PHY_CTRL_AN_ENABLE 0x1000 /* Auto-Negotiation Enable */
++#define IGB_PHY_CTRL_RESTART_AN 0x0200 /* Restart Auto-Negotiation */
++
++#define IGB_PHY_AUTONEG_ADV_REG_OFFSET 4 /* Auto-Negotiation Advertisement */
++#define IGB_PHY_1000T_CTRL_REG_OFFSET 9 /* 1000Base-T Control */
++#define IGB_CR_1000T_FD_CAPS 0x0200 /* Advertise 1000 Mbps Full Duplex */
++
++#define IGB_GPIE_EIAME 0x10 /* Extended Interrupt Auto Mask Enable */
++#define IGB_IVAR_VALID 0x80 /* Valid bit for IVAR register */
++
++#define IGB_TXD_CMD_EOP 0x01 /* End of Packet */
++#define IGB_TXD_CMD_IFCS 0x02 /* Insert FCS */
++#define IGB_TXD_CMD_RS 0x08 /* Report Status */
++#define IGB_TXD_CMD_SHIFT 24 /* Shift for command bits in cmd_type_len */
++#define IGB_TXD_CMD_LEGACY_FORMAT (1 << 20) /* Forces legacy descriptor format in QEMU */
++
++#endif /* _IGB_REGISTERS_H_ */
+diff --git a/tools/testing/selftests/vfio/lib/libvfio.mk b/tools/testing/selftests/vfio/lib/libvfio.mk
+index 9f47bceed16f..1f13cca04348 100644
+--- a/tools/testing/selftests/vfio/lib/libvfio.mk
++++ b/tools/testing/selftests/vfio/lib/libvfio.mk
+@@ -12,6 +12,7 @@ LIBVFIO_C += vfio_pci_driver.c
+ ifeq ($(ARCH:x86_64=x86),x86)
+ LIBVFIO_C += drivers/ioat/ioat.c
+ LIBVFIO_C += drivers/dsa/dsa.c
++LIBVFIO_C += drivers/igb/igb.c
+ endif
+ 
+ LIBVFIO_OUTPUT := $(OUTPUT)/libvfio
+diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
+index 6827f4a6febe..a5d0547132c4 100644
+--- a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
++++ b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
+@@ -5,12 +5,14 @@
+ #ifdef __x86_64__
+ extern struct vfio_pci_driver_ops dsa_ops;
+ extern struct vfio_pci_driver_ops ioat_ops;
++extern struct vfio_pci_driver_ops igb_ops;
+ #endif
+ 
+ static struct vfio_pci_driver_ops *driver_ops[] = {
+ #ifdef __x86_64__
+ 	&dsa_ops,
+ 	&ioat_ops,
++	&igb_ops,
+ #endif
+ };
+ 
+-- 
+2.54.0.563.g4f69b47b94-goog
+
