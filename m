@@ -1,90 +1,226 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA823D1711;
-	Mon, 11 May 2026 23:48:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B83C53CFF41
+	for <kvm@vger.kernel.org>; Mon, 11 May 2026 23:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778543323; cv=none; b=hUx8BvZ1WrOEWaWTfBIyvrv/TFICKd8Nl85jeL9gVTeUKo2Bvw7ZxGFEQOuegj6XDCaJ1FOuvnNAAgRbcb5zTGVitHC4pVxO8GAx0OF4PITNp6ye005Vv8g9FDsQLb0WQnRPoWQ2g0k2QDrOdLYQ4bojeZL2bF2lZFG3X1Qw0vg=
+	t=1778543325; cv=none; b=nKKOyYSkJeic/N43QOelYxAxOzOWbQoW5KzNtWHTKBi2Fs1QZ3S0roWNCiGavVrJhigHB6o90d/Y6R2P+vh56uajDXEbnJvCob3yhYTz8ULYgRa+h5n7an9wDsEItGl3LwkyBY+cf16yI/pSwdxgCVXLet6fGrAWQ8qY67cB67o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778543323; c=relaxed/simple;
-	bh=gWx89j4UXXm2t396CgMExGu+KZuVAbEhqjkwgR181UM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EYHRoAHuzpuT/zket93AB+mo3fdw/Zs8Fx9+hDStkCmUX35ebRKEZMu7/+zSiC2x0VvBYseW8sFZVzlaHWgZNTZkd72aV64zJhxij7euGwsGNc4ZhUvApWLIHIdt7Y08z34bBNXr8OW7JRWK+VtsSaW/d3ehnIjtXa2E5PW/7pQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RSnaXdFN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778543325; c=relaxed/simple;
+	bh=dUEtQv4m1bgdZfAKqo/nHhsJYCn9NG0HmQqPLRiSL/Y=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=sos0gUSlJ55Af5+LVDFMIi2KVVq//wK4ry2US62mKC40yxhZMIiSda62so81+HU4FKUm5veopakFqVis47ew8/cH7Mczl1W5/1ApmYp7IW9QBL6APBcXEH471od6rRFDC7jCMG2kJniWW3ZjwfiDuydyy8TvEK5dcNq128VWvsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--vipinsh.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gkx9oBQM; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--vipinsh.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RSnaXdFN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE1EC4AF0C;
-	Mon, 11 May 2026 23:48:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778543323;
-	bh=gWx89j4UXXm2t396CgMExGu+KZuVAbEhqjkwgR181UM=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=RSnaXdFNA1SR81L0q6fxX31cP0FujjsLUK0Bf6vzT8TuhwEMv0gUmJhoYie9qHFAu
-	 M2U+ZqTDHw8r1X+oL59DwpDXbexrHMulXEhDC5HRI5fiB+qEt0QfVlgu6b1In6+BTD
-	 8/OM2HK13ilwr8qgFB66Y7BC/w2QfQAtVieUeaaen01tg5IvIHmX1HTKjMhz+y7O1N
-	 3tckIVfEfM1upFu2juJpXsct3XzVEbNpBePwqAq62RH8RJ8AG3rC5CrQ5GuwrsWAFH
-	 oT2bCW4qMpgJVh9QHtZsGTF9hpG4uEJTlKvOoe11USRB5WR8RtE1T/3bEcT5rWwFXz
-	 VbnUHyMds/P3Q==
-Date: Mon, 11 May 2026 16:48:41 -0700
-From: Jakub Kicinski <kuba@kernel.org>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, netdev@vger.kernel.org, Eric
- Dumazet <edumazet@google.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- virtualization@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
- Jason Wang <jasowang@redhat.com>, Simon Horman <horms@kernel.org>,
- linux-kernel@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, Xuan Zhuo
- <xuanzhuo@linux.alibaba.com>, kvm@vger.kernel.org, Eugenio =?UTF-8?B?UMOp?=
- =?UTF-8?B?cmV6?= <eperezma@redhat.com>
-Subject: Re: [PATCH net] vsock/virtio: fix skb overhead accounting to
- preserve full buf_alloc
-Message-ID: <20260511164841.7f7ff557@kernel.org>
-In-Reply-To: <CAGxU2F6TPfRxZ7SX20vXiqDM4_sY3yUQBUSfEM=Nr+TKXwT9mA@mail.gmail.com>
-References: <20260508092330.69690-1-sgarzare@redhat.com>
-	<20260508055125-mutt-send-email-mst@kernel.org>
-	<af2y2Fyp7H-om-ur@sgarzare-redhat>
-	<20260508063104-mutt-send-email-mst@kernel.org>
-	<af28MAV0LF4qHVmB@sgarzare-redhat>
-	<CAGxU2F65pw0P1uKOOJpBc4p6KjCz8iePEh9aPybUyECBm1=otg@mail.gmail.com>
-	<20260511084551-mutt-send-email-mst@kernel.org>
-	<CAGxU2F6TPfRxZ7SX20vXiqDM4_sY3yUQBUSfEM=Nr+TKXwT9mA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gkx9oBQM"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2babc42244aso91811905ad.3
+        for <kvm@vger.kernel.org>; Mon, 11 May 2026 16:48:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778543322; x=1779148122; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=f4gqIrYhtwiwQ5vr+LOFB75VLebAVjQ9EvxHYxdiZqo=;
+        b=gkx9oBQMqa9+yB88wMg/S8LgSFCBHYQP5lUBp17/40OHZpQr3nnj2NRfewmyyMSv3/
+         MlUPM5c+luLK7fcQqTQYqNDx/zi2xdACT8F9vm+d5oHIAENeAACjDzUR2Q2PRgC2HWM1
+         R8ltKvgPGIzLTM05r/tCC3PTLiVVEzewIC+etLwew1Gq2R56qDxzbN0fMGiv4vZDFs21
+         Hj0CK0keCWI6JMSidH6HZTvM6qy1jrGxM2xYOu6YfYxcovSQbUz92/7NN6dABS4kCvzZ
+         F5RP/T5bJqZ3ctmjFZLu7vUxoFM2aw2fmsp25ins9ANmt0LQ8zugCAZ/kEJYXtazFNuH
+         Y+5w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778543322; x=1779148122;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=f4gqIrYhtwiwQ5vr+LOFB75VLebAVjQ9EvxHYxdiZqo=;
+        b=bCd0bTSgp7wC4Ll5mkUJ82ElpONXtfHMc2ZSxr9RPRaOmNNiibf/1eoJbtYq+/9huq
+         nNcjJTnKRdPL5IK7zKOUCuLgly0CYKAeH5GbhymYHprSkPIE8eXbUKRKMu1c+WOub13R
+         +3Ot90jAK9w+r87u6WlAfJUsU5HYY5qo3c4Etk75AjxoT5R3y7tSYxNIchufc3n0nJzB
+         +3h2gxDrcpC1tYmREz0hFzaH65km4K9h0w9/FSXgMZQJYXCZST46tTbnFU0t+FTgYQUc
+         5k5OQidkKXK3e4RXAJ3AejSEUaXbSTyLJwsrXlDt8PC1Fx+j+7Fyivcz6OiRpaucg1L7
+         TN8Q==
+X-Gm-Message-State: AOJu0YzwXk4ZIQod2qVMmFVCRpZdy+cZT0ahzI301gJLIMmTx/JIQKeU
+	Jay0nsl/C4HQK2KQeU6EvzRl6ouqOXDUb5uXb4DbzCj0oemyD0f4qeSPvJveNisMFnh4IfFHxiR
+	ZaW2gg4A3lpXWU07ffft91O7+kKKpw6/p//HFnegTOAST4iD/zM6uk7HqesF0awrY2W545b5wW3
+	xVn4w8SVkgA+pzXOy2ESEbFJi0vAWm1pJeWN//jA==
+X-Received: from plmk20.prod.google.com ([2002:a17:903:1814:b0:2ae:c50f:f4ec])
+ (user=vipinsh job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ed8b:b0:2b0:7531:b61e
+ with SMTP id d9443c01a7336-2bd0135ec3bmr5062815ad.41.1778543321102; Mon, 11
+ May 2026 16:48:41 -0700 (PDT)
+Date: Mon, 11 May 2026 16:47:58 -0700
+In-Reply-To: <20260511234802.2280368-1-vipinsh@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260511234802.2280368-1-vipinsh@google.com>
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
+Message-ID: <20260511234802.2280368-13-vipinsh@google.com>
+Subject: [PATCH v4 12/16] vfio: selftests: Add vfio_pci_liveupdate_kexec_test
+From: Vipin Sharma <vipinsh@google.com>
+To: kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-pci@vger.kernel.org
+Cc: ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com, 
+	ankita@nvidia.com, apopple@nvidia.com, chrisl@kernel.org, corbet@lwn.net, 
+	dmatlack@google.com, graf@amazon.com, jacob.pan@linux.microsoft.com, 
+	jgg@nvidia.com, jgg@ziepe.ca, jrhilke@google.com, julianr@linux.ibm.com, 
+	kevin.tian@intel.com, leon@kernel.org, leonro@nvidia.com, lukas@wunner.de, 
+	michal.winiarski@intel.com, parav@nvidia.com, pasha.tatashin@soleen.com, 
+	praan@google.com, pratyush@kernel.org, rananta@google.com, 
+	rientjes@google.com, rodrigo.vivi@intel.com, rppt@kernel.org, 
+	saeedm@nvidia.com, skhan@linuxfoundation.org, skhawaja@google.com, 
+	vipinsh@google.com, vivek.kasireddy@intel.com, witu@nvidia.com, 
+	yanjun.zhu@linux.dev, yi.l.liu@intel.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 11 May 2026 15:17:56 +0200 Stefano Garzarella wrote:
-> > > Okay, I thought it over over the weekend, and I agree that this patch
-> > > still doesn't solve the problem and would still result in packet loss.
-> > > So, until we resolve the issue permanently, and since 059b7dbd20a6 is
-> > > coming to stable, I'd like to rework this patch so that we only start
-> > > dropping packets when the overhead plus the queued bytes exceeds
-> > > `buf_alloc * 2`.
-> > > Removing the other changes to reduce the buf_alloc advertised, but
-> > > terminating the connection so that both peers are aware that something
-> > > went wrong.
-> > >
-> > > Any objections?
-> > >
-> > > Stefano  
-> >
-> > Let's try to first fix it upstream properly please. Discuss backporting
-> > later.  
-> 
-> Commit 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb
-> queue") is already in Linus tree and will land soon on stable. Which
-> issue do you see on having a patch on top of that to close the
-> connection instead of losing data and breaking our test suite?
-> 
-> IMO we need that change in any case, because the previous code also
-> discarded packets without any notification, whereas breaking the
-> connection would be better in that case.
+Add a selftest to exercise preserving a vfio-pci device across a Live
+Update. For now the test is extremely simple and just verifies that the
+device file can be preserved and retrieved. In the future this test will
+be extended to verify more parts about device preservation as they are
+implemented.
 
-Sorry if I'm speaking out of turn or misunderstanding but, like Michael
-says, let's focus on fixing this the way we want it to be fixed?
-IIUC you are trying to minimize the size of the fix, please don't worry
-about the LoC in the diff at this stage.
+This test is added to TEST_GEN_PROGS_EXTENDED since it must be run
+manually along with a kexec.
+
+To run this test manually:
+
+ $ tools/testing/selftests/vfio/scripts/setup.sh 0000:00:04.0
+ $ tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test --stage 1 0000:00:04.0
+
+ $ kexec ...   # NOTE: Exact method will be distro-dependent
+
+ $ tools/testing/selftests/vfio/scripts/setup.sh 0000:00:04.0
+ $ tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test --stage 2 0000:00:04.0
+
+The second call to setup.sh is necessary because preserved devices are
+not bound to a driver after Live Update. Such devices must be manually
+bound by userspace after Live Update via driver_override.
+
+This test is considered passing if all commands exit with 0.
+
+Co-developed-by: David Matlack <dmatlack@google.com>
+Signed-off-by: David Matlack <dmatlack@google.com>
+Signed-off-by: Vipin Sharma <vipinsh@google.com>
+---
+ tools/testing/selftests/vfio/Makefile         |  4 +
+ .../vfio/vfio_pci_liveupdate_kexec_test.c     | 89 +++++++++++++++++++
+ 2 files changed, 93 insertions(+)
+ create mode 100644 tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c
+
+diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
+index ad081ec31fb2..17082a57aa9f 100644
+--- a/tools/testing/selftests/vfio/Makefile
++++ b/tools/testing/selftests/vfio/Makefile
+@@ -14,6 +14,10 @@ TEST_GEN_PROGS += vfio_pci_device_init_perf_test
+ TEST_GEN_PROGS += vfio_pci_driver_test
+ TEST_GEN_PROGS += vfio_pci_liveupdate_uapi_test
+ 
++# This test must be run manually since it requires the user/automation to
++# perform a kexec during the test.
++TEST_GEN_PROGS_EXTENDED += vfio_pci_liveupdate_kexec_test
++
+ TEST_FILES += scripts/cleanup.sh
+ TEST_FILES += scripts/lib.sh
+ TEST_FILES += scripts/run.sh
+diff --git a/tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c b/tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c
+new file mode 100644
+index 000000000000..15b3e3af91d1
+--- /dev/null
++++ b/tools/testing/selftests/vfio/vfio_pci_liveupdate_kexec_test.c
+@@ -0,0 +1,89 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include <libliveupdate.h>
++#include <libvfio.h>
++
++static const char *device_bdf;
++
++static char state_session[LIVEUPDATE_SESSION_NAME_LENGTH];
++static char device_session[LIVEUPDATE_SESSION_NAME_LENGTH];
++
++enum {
++	STATE_TOKEN,
++	DEVICE_TOKEN,
++};
++
++static void before_kexec(int luo_fd)
++{
++	struct vfio_pci_device *device;
++	struct iommu *iommu;
++	int session_fd;
++	int ret;
++
++	iommu = iommu_init("iommufd");
++	device = vfio_pci_device_init(device_bdf, iommu);
++
++	create_state_file(luo_fd, state_session, STATE_TOKEN, /*next_stage=*/2);
++
++	session_fd = luo_create_session(luo_fd, device_session);
++	VFIO_ASSERT_GE(session_fd, 0);
++
++	printf("Preserving device in session\n");
++	ret = luo_session_preserve_fd(session_fd, device->fd, DEVICE_TOKEN);
++	VFIO_ASSERT_EQ(ret, 0);
++
++	close(luo_fd);
++	daemonize_and_wait();
++}
++
++static void after_kexec(int luo_fd, int state_session_fd)
++{
++	struct vfio_pci_device *device;
++	struct iommu *iommu;
++	int session_fd;
++	int device_fd;
++	int stage;
++
++	restore_and_read_stage(state_session_fd, STATE_TOKEN, &stage);
++	VFIO_ASSERT_EQ(stage, 2);
++
++	session_fd = luo_retrieve_session(luo_fd, device_session);
++	VFIO_ASSERT_GE(session_fd, 0);
++
++	printf("Finishing the session before retrieving the device (should fail)\n");
++	VFIO_ASSERT_NE(luo_session_finish(session_fd), 0);
++
++	printf("Retrieving the device FD from LUO\n");
++	device_fd = luo_session_retrieve_fd(session_fd, DEVICE_TOKEN);
++	VFIO_ASSERT_GE(device_fd, 0);
++
++	printf("Finishing the session before binding to iommufd (should fail)\n");
++	VFIO_ASSERT_NE(luo_session_finish(session_fd), 0);
++
++	printf("Binding the device to an iommufd and setting it up\n");
++	iommu = iommu_init("iommufd");
++
++	/*
++	 * This will invoke various ioctls on device_fd such as
++	 * VFIO_DEVICE_GET_INFO. So this is a decent sanity test
++	 * that LUO actually handed us back a valid VFIO device
++	 * file and not something else.
++	 */
++	device = __vfio_pci_device_init(device_bdf, iommu, device_fd);
++
++	printf("Finishing the session\n");
++	VFIO_ASSERT_EQ(luo_session_finish(session_fd), 0);
++
++	vfio_pci_device_cleanup(device);
++	iommu_cleanup(iommu);
++}
++
++int main(int argc, char *argv[])
++{
++	device_bdf = vfio_selftests_get_bdf(&argc, argv);
++
++	sprintf(device_session, "device-%s", device_bdf);
++	sprintf(state_session, "state-%s", device_bdf);
++
++	return luo_test(argc, argv, state_session, before_kexec, after_kexec);
++}
+-- 
+2.54.0.563.g4f69b47b94-goog
+
