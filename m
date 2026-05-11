@@ -1,166 +1,191 @@
-Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b7-smtp.messagingengine.com (fout-b7-smtp.messagingengine.com [202.12.124.150])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682694B8DC7
-	for <kvm@vger.kernel.org>; Mon, 11 May 2026 18:45:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AA9037B02B;
+	Mon, 11 May 2026 20:10:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778525134; cv=none; b=GAKopp8Q0Wi8sc4sU5wcXWufMCjIyiJLBRfMahkIGfuiNwqjhTJkkHIIaFLTgJwl5vt5keN/11YF7M5omddzany3adsFNim41eqidCASdsa00cCrnR8pc9tGxAgqMdCgMv182l9KwUao4Kus3a4S1TuIzh/1yZQJZ1pkhZ8fXBY=
+	t=1778530205; cv=none; b=fh4Qr8ljEnlrgYSKWwT1B066Khdf5iT7sSZ20SIAm4KzpBR1CXOmcdjbpPZOQWZxP3dqeXZ2Dr+Cl9zlGa3VIwOL/V0ek+EuU3c7AlUgqoKYXKP9fOvr8d/G53j+mNL1Ws1fP2SnrUGbgxR+SWvWnZPMyIZntPBlf/SACzO3QnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778525134; c=relaxed/simple;
-	bh=EfTIbAWmLDFDyvNFwjeqvGW6T6qTRBjvePBREiQPCEM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T7lq28CHuzO/XzEvzXCMwrRAHl+7O9dwULDW/Ee9YjKr0W46azm7DC6lDRd627hdfh7F8XhHiC+sqgrtmTZWPBxh4igAapHZml1fuPiE33+PPjNsnZzG596CI4U6PBurrgJ2kk/xA2f8beu7eB1qRdQ8vKNv6H7CNGHUKCsZeCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rHhxcRQA; arc=none smtp.client-ip=74.125.82.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1778530205; c=relaxed/simple;
+	bh=G0v2722C0h0uodYwkYgNAN0oHrh8GL3c7d7feBZLWIk=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=jO5PkERAbYnOlxDDaVZNfJW9u/sF2iasFOho56iqk+DvBccbrxVtjBwcJLabWKIvjGs60piUpzvSJBhR8n0SoDEiC73Fyv4TlSvH9e8f5EQbk9I6FX/QyjtYgJUGFyUJ0MfR5a+9qoUGhOjqZBE5T8vCOEAWr72C3k0C5LukDL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=PwYyRk+0; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=PAAEvCIe; arc=none smtp.client-ip=202.12.124.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rHhxcRQA"
-Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-132cccd3d77so1096c88.1
-        for <kvm@vger.kernel.org>; Mon, 11 May 2026 11:45:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778525131; x=1779129931; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=P4ZVeg+YkmtR9q/2zoKbQ9G/S4IeJPqOrtHp4fCMixU=;
-        b=rHhxcRQAwU1H5iv0XPlL0r5zvNpLhlL+HQ6Ky21p+eirtU8ObwDPgu6RIifuzftslh
-         mYNrvNjvRrMN8BGOUYVUypUxFSKQTCfR9IP74AXSouKo9Ikmdsxg0bXLs+BJIYWZA4jC
-         gDffYLps9k47LlnLx/q8oGJsqlCdi9U/ftNkWDnw0Xit+AFbjLrRX+ro4CHjY2ITatYa
-         Vhq4sDICYtrZO407UEgOHPCmrngQ1D4td8cm3EKY7aZ6fVcoVzTmqwBzia18KKnWho04
-         96CIbD54uNqqutgbbDOLxIaRpvT7mOqpeekkcMCFfE4MJuSi/6AXl+j8E8+jhhq1l+/p
-         nCww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778525131; x=1779129931;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=P4ZVeg+YkmtR9q/2zoKbQ9G/S4IeJPqOrtHp4fCMixU=;
-        b=A1Qgna5do5dHHlu89B7ZejoRf+EXU5zPAvGEFeTqy0xhZKEW2UujBsVikUhXaMxeN5
-         nBZ7LlIMTfkH6Xk/U1G/Ht0s1lpwWakMSHKqAwkz6I0d1ruRggucv1Y4o1xzAb5zFQSG
-         LPpfwcrnASyy3g3UmvMm52TSKbk5NXAePBHKpi4C+GD8eTGcPelYA+7X7P1cwW793p/C
-         vwWSDAhurZKBmGELdxRdW8WAz+hGHOnoKqjdCqhSnOO8GukJeQU06V38IRPlHvueHdIi
-         /mPIvCFRz5hI5Fj/TQTm7YUuUfuMvkXBiRjdDa6ejQYO2y58KCPNSlaRq+2r1BuYkKWh
-         aDZg==
-X-Forwarded-Encrypted: i=1; AFNElJ9ozmILUWolzstOG4BGMrz+KXj1PShTpZmiECnfaHcl7uzKO4yxsrdoI3PkADrPzQWVh+4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMJZrz3Klp3Dumqe3NSiJ7B4m8s04gmF7v4cG2beekQepP28Sn
-	PgB4jcC63ho+c1bA30tPh5YM33vfOjRWSgkKDrBrGvVWBqYo0rAyRX2HXelj+EelDA==
-X-Gm-Gg: Acq92OEbegK0IN0Ej4opW4fM7JXNlZiISIDZzt/3/vqZDSI6NaLzH3hPkSuvkhm2hRN
-	xYOeh95b8lX8385Q+oT/VvycOt84hM1o6lLqYEfhLCr7EWwrunfHcBB2YYOJ+/FlJVLChlZxsV/
-	2xcoSfpsKLtVNxK8Z/4zn7MDfCcsd+SD1kszlPuDxxLBDcgUk407fNerRXqf1TpVEXVXOCqmy1c
-	Pxikh2tjiGfVOGWQzFYFD697D4SFzwp15e2qNdqhvzRYkDxf56HBVTeXS8BV4E76RfXdD1WDz0v
-	Xygb6TwZZ6XlZGmoodnuTaLpQeIxrVt3KLST1ssDDD1K4cxhx3GUiRUN5Jn7aAJThRpVC/PTkOb
-	vU/crzQhl2+l9KcLVDHczyK1AnSEBqpEAH+/iER428sSFG261Tpe7i68oHO6LC4pwcShJiepSfy
-	W+kbp97vOCScAXcZF4TIfsK7nTj39p2akv9YmMkpRC878o9ZbYqd/X3AQGACcRpCcC2KDqXw==
-X-Received: by 2002:a05:7022:b9c:b0:12a:77e6:68d9 with SMTP id a92af1059eb24-1333e4e41dcmr55502c88.16.1778525130642;
-        Mon, 11 May 2026 11:45:30 -0700 (PDT)
-Received: from google.com (153.46.83.34.bc.googleusercontent.com. [34.83.46.153])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f91004b6a2sm13056216eec.0.2026.05.11.11.45.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 11:45:30 -0700 (PDT)
-Date: Mon, 11 May 2026 18:45:26 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, 
-	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Pranjal Shrivastava <praan@google.com>, 
-	Vipin Sharma <vipinsh@google.com>, YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH v2 11/16] iommu/vt-d: preserve PASID table of preserved
- device
-Message-ID: <agIGEyL12Djj2clV@google.com>
-References: <20260427175633.1978233-1-skhawaja@google.com>
- <20260427175633.1978233-12-skhawaja@google.com>
- <666d749e-c1fd-44e1-bfe8-681ba04862e0@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="PwYyRk+0";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="PAAEvCIe"
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfout.stl.internal (Postfix) with ESMTP id CAD7C1D000F5;
+	Mon, 11 May 2026 16:10:00 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Mon, 11 May 2026 16:10:01 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1778530200;
+	 x=1778616600; bh=w/jJechNkW7E0LVurksiul+ndqwmLEWiu+OGwNv1unw=; b=
+	PwYyRk+0iVOdVXuz/8VHbIiLHEoKNhjSddEyaXI4WLxNed4oJB+5Hd6boIDLmO/X
+	/ycckExDBc6GCMDrMGJeYACRebp/v3WoNnPNeQ5YCUHH6lShumpHk/31H/VbuO+W
+	P+tiJDfPWC7vRhvDF3o6CdrHXJ070qqFnVGGub7+/4N/ylteHzNSEyguRiLuT5C7
+	6xH8iee41Z1whvGDzQMnPoMPL+lBQbuuhFBjEnJ1iDGEerCARugWByAkPHE50KFZ
+	yGQBgoJlr+2+LZUAo40GUHNB+vTO182BLawsAfKorM0uE6dL8hVwyJd6F7A6jMZ3
+	3Y+D0PRD2GzL/JrNxHZ6fA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1778530200; x=
+	1778616600; bh=w/jJechNkW7E0LVurksiul+ndqwmLEWiu+OGwNv1unw=; b=P
+	AAEvCIe5WxftUxxaUKTnozoCRpp35QY7xXcr9srqzj2fGvDq3qzi14hsAmIyuPK1
+	OB+HAzH49lwtmxPRVw0eirS8y2facxpbs8ZxjndVz4bDlikMLOrxERUxO03Q9YMq
+	ZzrhKiGZuVqu7YMAFWykSQWwEqHdBUvGhZ+PsKRMDsQGH3yb5jQU53+BdA/TFo4B
+	gt10A6T4pRem/APPpn0c3AUN3Ln6XFI1q8esHyXy1JeajIarBpHPa9xBFqZk1pwd
+	MbCXCGNqd48pdPubwcMH5rLlxj14kksudMP1JHs8ODcSWrQ89ZkfSbBT6fp0q726
+	qianrAnEfxsHjPzWeU+YA==
+X-ME-Sender: <xms:mDcCanwZoBgY94pR6CgGx1aXMsUsiHtVgpAYsgsjUY0a_uGZ4HtnkA>
+    <xme:mDcCator06ysxCDdBhVrXNTBxhoyxhyZoO9b2GFGS4wZWwKaIsc8Wqt4rHWFDwOQm
+    JBc4Bv_-irhL3bMl7h2ZcrzFCEYdoU_3mpqToMXfyNF2JpvrSiIeqU>
+X-ME-Received: <xmr:mDcCatVAs0PIpPycMEDa0aLxKAAYaat1b7iYqOm0xFH4xtZQgPIYVu-zc50>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduudelkeehucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
+    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
+    htthgvrhhnpeekheejieetffefueeiteejtdejffdvleelvdeuvdffvdefteeghfevkeeu
+    vdefvdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhg
+    pdhnsggprhgtphhtthhopedvtddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepmh
+    grthhtvghvsehmvghtrgdrtghomhdprhgtphhtthhopehlvghonheskhgvrhhnvghlrdho
+    rhhgpdhrtghpthhtohepjhhgghesnhhvihguihgrrdgtohhmpdhrtghpthhtoheprghmrg
+    hsthhrohesfhgsrdgtohhmpdhrtghpthhtoheptghhrhhishhtihgrnhdrkhhovghnihhg
+    segrmhgurdgtohhmpdhrtghpthhtohepmhhnghihrggurghmsegrmhgriihonhdruggvpd
+    hrtghpthhtohepughmrghtlhgrtghksehgohhoghhlvgdrtghomhdprhgtphhtthhopegs
+    jhhorhhnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehsuhhmihhtrdhsvghmfigrlh
+    eslhhinhgrrhhordhorhhg
+X-ME-Proxy: <xmx:mDcCakqPSRoKzyPGGXProFqYhH4qYKpgflb8Spsx6bK2Yvak4Gd4uQ>
+    <xmx:mDcCahGgEJbSVtbnpYLanu5mqQCGZRveGu3g79YLyppoXoJCZIjPIw>
+    <xmx:mDcCamshnuz0U_drzHUfOKcWk73kxV1nW7PxZm4wDep0feme0jrxgA>
+    <xmx:mDcCakRquOgmfyzbwC0uVpaxobRtcOQaDFkpxWtGwg4yfJK0yK_Dww>
+    <xmx:mDcCam7wLKey_JuLtJOlx4ChD12laJy6R95rvUhqAlL9MfIcaz87pHbT>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 11 May 2026 16:09:58 -0400 (EDT)
+Date: Mon, 11 May 2026 14:09:57 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Matt Evans <mattev@meta.com>
+Cc: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
+ Alex Mastro <amastro@fb.com>, Christian =?UTF-8?B?S8O2bmln?=
+ <christian.koenig@amd.com>, Mahmoud Adam <mngyadam@amazon.de>, David
+ Matlack <dmatlack@google.com>, =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@kernel.org>, Sumit Semwal <sumit.semwal@linaro.org>, Kevin Tian
+ <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>, Pranjal
+ Shrivastava <praan@google.com>, Alistair Popple <apopple@nvidia.com>, Vivek
+ Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
+ linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org, alex@shazbot.org
+Subject: Re: [PATCH 9/9] vfio/pci: Add mmap() attributes to DMABUF feature
+Message-ID: <20260511140957.25eb5d9d@shazbot.org>
+In-Reply-To: <25a4fc45-1b4d-426b-954a-60bf21e9040f@meta.com>
+References: <20260416131815.2729131-1-mattev@meta.com>
+	<20260416131815.2729131-10-mattev@meta.com>
+	<20260424183153.GJ3444440@nvidia.com>
+	<20260426105215.GA440345@unreal>
+	<20260427083644.4ee174cd@shazbot.org>
+	<25a4fc45-1b4d-426b-954a-60bf21e9040f@meta.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <666d749e-c1fd-44e1-bfe8-681ba04862e0@linux.intel.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, May 08, 2026 at 02:05:58PM +0800, Baolu Lu wrote:
->On 4/28/26 01:56, Samiullah Khawaja wrote:
->>In scalable mode the PASID table is used to fetch the io page tables.
->>Preserve and restore the PASID table of the preserved devices.
->>
->>Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
->>---
->>  drivers/iommu/intel/iommu.c      |   5 +-
->>  drivers/iommu/intel/iommu.h      |  12 +++
->>  drivers/iommu/intel/liveupdate.c | 141 +++++++++++++++++++++++++++++++
->>  drivers/iommu/intel/pasid.c      |   7 +-
->>  drivers/iommu/intel/pasid.h      |   9 ++
->>  include/linux/kho/abi/iommu.h    |  13 +++
->>  6 files changed, 184 insertions(+), 3 deletions(-)
->>
+On Mon, 11 May 2026 16:30:39 +0100
+Matt Evans <mattev@meta.com> wrote:
 
-[snip]
->>+
->>+void pasid_cleanup_preserved_table(struct device *dev)
->>+{
->>+	struct pasid_table *pasid_table;
->>+	struct pasid_dir_entry *dir;
->>+	struct pasid_entry *table;
->>+	size_t dir_size;
->>+
->>+	pasid_table = intel_pasid_get_table(dev);
->>+	if (!pasid_table)
->>+		return;
->>+
->>+	dir = pasid_table->table;
->>+	table = get_pasid_table_from_pde(&dir[0]);
->>+	if (!table)
->>+		return;
->>+
->>+	/* Clear everything except the first entry in table. */
->>+	memset(&table[1], 0, SZ_4K - sizeof(*table));
->>+
->>+	/* Use the folio order to calculate the size of Pasid Directory */
->>+	dir_size = (1 << (folio_order(virt_to_folio(dir)) + PAGE_SHIFT));
->>+
->>+	/* Clear everything except the first entry in directory */
->>+	memset(&dir[1], 0, dir_size - sizeof(struct pasid_dir_entry));
->>+
->>+	clflush_cache_range(&table[0], SZ_4K);
->>+	clflush_cache_range(&dir[0], dir_size);
->>+}
->
->The PASID table is currently active and in use by the hardware. Clearing
->the entries without the necessary hardware cache invalidation is buggy.
->
->It seems this manual clearing is a workaround because PASID domain
->preservation isn't supported yet. If so, rather than clearing the table
->blindly, the code should verify if any PASIDs (other than
->IOMMU_NO_PASID) are actually in use. If there are, the preserve callback
->should return an error.
+> Hi Alex, Leon,
+> 
+> On 27/04/2026 15:36, Alex Williamson wrote:
+> > 
+> > On Sun, 26 Apr 2026 13:52:15 +0300
+> > Leon Romanovsky <leon@kernel.org> wrote:
+> >   
+> >> On Fri, Apr 24, 2026 at 03:31:53PM -0300, Jason Gunthorpe wrote:  
+> >>> On Thu, Apr 16, 2026 at 06:17:52AM -0700, Matt Evans wrote:  
+> >>>> A new field is reserved in vfio_device_feature_dma_buf.flags to
+> >>>> request CPU-facing memory type attributes for mmap()s of the buffer.
+> >>>> Add a flag VFIO_DEVICE_FEATURE_DMA_BUF_ATTR_WC, which results in WC
+> >>>> PTEs for the DMABUF's BAR region.
+> >>>>
+> >>>> Signed-off-by: Matt Evans <mattev@meta.com>
+> >>>> ---
+> >>>>   drivers/vfio/pci/vfio_pci_dmabuf.c | 15 +++++++++++++--
+> >>>>   drivers/vfio/pci/vfio_pci_priv.h   |  1 +
+> >>>>   include/uapi/linux/vfio.h          | 12 +++++++++---
+> >>>>   3 files changed, 23 insertions(+), 5 deletions(-)  
+> >>>
+> >>> Nice and simple
+> >>>
+> >>> Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+> >>>      
+> >>>> @@ -1549,8 +1551,12 @@ struct vfio_region_dma_range {
+> >>>>   struct vfio_device_feature_dma_buf {
+> >>>>   	__u32	region_index;
+> >>>>   	__u32	open_flags;
+> >>>> -	__u32   flags;
+> >>>> -	__u32   nr_ranges;
+> >>>> +	__u32	flags;
+> >>>> +	/* Flags sub-field reserved for attribute enum */
+> >>>> +#define VFIO_DEVICE_FEATURE_DMA_BUF_ATTR_MASK		(0xfU << 28)
+> >>>> +#define VFIO_DEVICE_FEATURE_DMA_BUF_ATTR_UC		(0 << 28)
+> >>>> +#define VFIO_DEVICE_FEATURE_DMA_BUF_ATTR_WC		(1 << 28)
+> >>>> +	__u32	nr_ranges;  
+> >>
+> >> Alex,
+> >>
+> >> The TPH proposal extends the flags field in a similar way, but I suggested
+> >> a different approach to conserve bits. At the moment, we spend three bits
+> >> on a single feature, which feels wasteful.
+> >>
+> >> What do you think?
+> >> https://lore.kernel.org/all/20260409120415.GF86584@unreal/  
+> > 
+> > I already proposed a very different interface for TPH that decouples
+> > the dma-buf creation from setting the TPH values:
+> > 
+> > https://lore.kernel.org/all/20260423132016.4a25e074@shazbot.org/
+> > 
+> > This is overall less intrusive than the TPH change proposed, but it
+> > could still make sense to align this as an operation on the dma-buf,
+> > that can be probed as a separate feature.  Thanks,  
+> 
+> I'll add a VFIO_DEVICE_FEATURE_DMA_BUF_ATTRS in a v2 instead to get in 
+> line with the TPH work, no worries.
+> 
+> For the benefit of future hackers, how would you describe the criteria 
+> for adding flags to this existing field?  What hypothetical feature 
+> characteristics would be appropriate?  (Maybe it's that these attrs & 
+> TPH add scalar fields in several bits rather than a simple boolean.) 
+> Two of us have independently added something that's turned out to be 
+> inapproriate so some guidance would be good.
 
-Thanks for looking into this, I agree and will remove the clearing logic
-here.
+I think the question of how we actually expand an arbitrary grab bag of
+"ATTRS" is the central question in whether we should implement the
+interface.  If we follow the direction I suggested for TPH, maybe this
+is just a VFIO_DEVICE_FEATURE_DMA_BUF_WC, where it supports only PROBE
+and SET, with SET taking only the dma-buf fd to implement the one-way
+promotion from UC -> WC.
 
-Yes, we do this check in iommufd, as it is the dma owner of the device,
-and only DMA owned devices are allowed to be preserved.
+If we support a generic SET ATTRS feature, we really need to map out how
+flag bits are indicated as supported and how a user untangles failures
+from trying to set various attributes.  If we end up with a feature
+indicating each ATTR is available, we might as well have just
+implemented a feature for each attribute.  Thanks,
 
-During preservation iommufd returns an error if the device has PASID
-(non NO_PASID) attachments. And once the device is preserved, any PASID
-attachments are not allowed until the device is unpreserved.
-
-I think I will make this check robust by moving it into core and use
-pasid_array. It will require some plumbing as pasid_array exists in
-iommu.c file.
->
->Or anything I overlooked here?
->
->Thanks,
->baolu
-
-Thanks,
-Sami
+Alex
