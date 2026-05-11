@@ -1,174 +1,194 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BN1PR04CU002.outbound.protection.outlook.com (mail-eastus2azon11010039.outbound.protection.outlook.com [52.101.56.39])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807E12D6E72
-	for <kvm@vger.kernel.org>; Mon, 11 May 2026 23:35:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778542509; cv=none; b=YszDuTYWsloTmde5oTRqTsaLAA/3ubYII7ULQGc+UZqXoBHxSeymXtVBJ2FnwBWwS7ffeRVtrTs0W0TAV6ljT4idLhpjjGxQAFJPu0luaQy57pUv4Kn/YaU/tdjFmg4tovt4uP49FfSWSHnB7F8GNtDJbqz/Q+Ov7itH/+QXpbg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778542509; c=relaxed/simple;
-	bh=Ji/g90BvsHSv60ZUBpCxZ9AKzBdvPAlczFuLYpKfKjs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=C07Waj5JvKmpUUPN1sPAXu9lnLWzC90T8XD4Wr3gwGonG8K6jrFctnhEZpVpil9prGZ52BNy6B+Y0k9TTtPcb+KP5z8DXb5/tuIkt1Cbk1B/bKK+/xDU+BW32Q5i7ANXluqsk2inyFHZ52m65JEdeNMpq9XZxtObP/xaeXLwWBs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Xsw1nCSO; arc=none smtp.client-ip=209.85.210.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCBAE363C7C;
+	Mon, 11 May 2026 23:42:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.56.39
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778542941; cv=fail; b=Gpg7+3IgfDtgXV4tFbQ5NDCrUXnBxdMVFm21u1vor5LbQQCaqTnNSWN6um6uC8OBnZDtCFzUah25dDP9T/ZNVEpvr5IluxqcediNT2F9GjxZkih72Y//bD74c4w2A/fUb/Erp7ALo+ZTg1+PU/zmaBb5SZqNTFT6vhKBM+2o1vE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778542941; c=relaxed/simple;
+	bh=7in+A8mXt2TuFoVpH6Hi8NQGe9lx4QuLDjeuBJmTjwI=;
+	h=Message-ID:Date:Subject:From:To:Cc:References:In-Reply-To:
+	 Content-Type:MIME-Version; b=qWDp8EVUyCa9SFgfV/JjplEDZUz5+ICvQQFnMYLhveOfutCXUFAMgLyDTsUMhp9Hy8i/ht45BjCbeDbIzz7Rea6JPBkHgFF/3ORcjAd9MHP7p6IpT9Ac5CasZiBuD46XlQLXtUsNcqq3FGf3KQcRBbEWCVHjh+JIrZTtvKBgOHs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=1k2ozd5A; arc=fail smtp.client-ip=52.101.56.39
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Xsw1nCSO"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8353df9bc7eso4639717b3a.2
-        for <kvm@vger.kernel.org>; Mon, 11 May 2026 16:35:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778542508; x=1779147308; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=0jrLObVTajcjOJDJF3S4+2X11nmDT/l3IIL/Yw0FiJQ=;
-        b=Xsw1nCSOB6xQlWHSkrX0QQCiJkBxLQYMcBefWiVaxczei465z52tjG37ad7TAWI6Vi
-         48dNZNTjcR5/5JUhrORrCLvs49a6LwyTw8615woOcpUCXwCOFZxBtRANDEDw46LNrtts
-         OpHVZxTHjvCudArqpFIsThyjasPK9ZUJGEa4fErxrmU0d3qKPYhm7kEl6os4BKmqabil
-         DQFjzOV5fLqNoPFqbZ17/vXJFd70JrCDVH80KzXpfWJUvzMLPoVrPWU1zeX9ENjbXwRd
-         pN59yK4Sh5KFfP2lDKTUALPmE8EzoL61RbqMFs2nITrnxoG3hOogXtAI5Bekk9oPXhsN
-         2v0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778542508; x=1779147308;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0jrLObVTajcjOJDJF3S4+2X11nmDT/l3IIL/Yw0FiJQ=;
-        b=nEAeyFqW6z/7npLzxoSHp0khqJiWLsylXLH9FYwwQ2FooBlfIknYQsMzrDBeu+MGw4
-         9iIXcTmKv1wMFu0unCho+TMM2LIRP8WAmGBtveOPCLszna07jcP2VzMiDO12+HlqZLON
-         2I/K1grdYPQyCiG9xNw0f1a/Qu5R78HgHeEZDdgek1/UxtnvtCQbiY8IHmiR6wyBA2nd
-         L/FVlx3L0q5s+yyLuW5dNkW1IR3wyaVR8Sh3N0+zgOqaGLRgQCPL83+6j6518hCPsWqq
-         iJun3aqiSV7lzg2CGVhQiiyt2njcMSF5dSiP2t3KDJvLXDttDcScenSOkphmuzNFhj9l
-         fJdA==
-X-Gm-Message-State: AOJu0YzN9faFbdlq2uszTpn9QtjcxA6VmLC4Ju9FfqlrnStbE48gx1/B
-	/nKM9NbLhea/a8ou5YqU5GeVE8V1IOpJj8JLb/cbc9UXL3UOdnwFsbUAKhhC61IT6t62ZrDlW2V
-	lFjjOKA==
-X-Received: from pfbgo19.prod.google.com ([2002:a05:6a00:3b13:b0:82f:8a3b:87f0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:230a:b0:823:d2c:b156
- with SMTP id d2e1a72fcca58-83a5b6d0a01mr26153297b3a.5.1778542507570; Mon, 11
- May 2026 16:35:07 -0700 (PDT)
-Date: Mon, 11 May 2026 16:35:06 -0700
-In-Reply-To: <20260102142429.896101-5-griffoul@gmail.com>
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="1k2ozd5A"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=SsidSv5LLvBw9xlPCB+v8CuHV4UsEXlqWamZhX4LEhcaM4vjjxo0ngP1+twR2AJrVEru0rsnNCqV057zW32Yr3w5IoahDmGl+67NZMRmYu2Q+CgJkqIJ/4Wbck3ZAvQJOBEyw7PYaXC1MxL2FUrSuELwrFVSDYMdwIs73Dt+LVm18+XSBxfAbSAjcVjbz4Vvx1E6oArf6hr4HEfNMcGa0G7suSQe5pG+XI0WmW9sNGCO3+fDHHalrxCMS8TJpC8uvyaAZJH4X4N37JDftRCDStSCteQcFiA1Stp6su+8k2ufY+Be8XbY/w4vZv5H7gwEGvVq76LGYZY03xeNEUM62A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=wfnCXGVZ97JaPsThADObJGA4Ik9hcs/2KVetzeZr0qA=;
+ b=UmfNo4zxV1y74lM3xf1jbKKYyT5PBa70kQGcGdg5uxodQ9SE/KlUJdc5SMm+Sj3qFD7tLmdyLjM6PAmgQ/XO1tkMzyN38YErIF1DT2Rje6nFrZilmUqa+fGOinD9hc/rGHd6WZhuIN7jn0JA1Y9uuh1oR07aurrcO00mjOPQYvQRMk+4y49zoP84bR8GEJ7GZesd/NXDTWTRzBd1kR+PlHrU0SX2C8nDvUrAX4PeeKcRq+I6CzBqaArpiYxQJ1jpVMquDRAsCqyuAJtVFlkZWz+oX4OT5tAk2HekhF5pfmMS/sUx/5Lt47ks+duGUB22zOAWXyshKtY/kSfxX+u44w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=wfnCXGVZ97JaPsThADObJGA4Ik9hcs/2KVetzeZr0qA=;
+ b=1k2ozd5ACY2haAI0oVPdE70j2LRq5d0KCJjzmvc5Qo5Ti9KW4O7FiovTADctE9yRf5VlG3K9d64yPoJkIc8iei+BmirMRb1UXTqXTewqtC1FJYGKsGD8iPgUW3B0jc+X9VnU0RJse+XNtwOxN/1FIAFLKyBsEVAnePB0+iA28Jc=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com (2603:10b6:610:19f::7)
+ by SA0PR12MB7073.namprd12.prod.outlook.com (2603:10b6:806:2d5::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Mon, 11 May
+ 2026 23:42:15 +0000
+Received: from CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::1e6b:ca8b:7715:6fee]) by CH3PR12MB9194.namprd12.prod.outlook.com
+ ([fe80::1e6b:ca8b:7715:6fee%6]) with mapi id 15.20.9891.021; Mon, 11 May 2026
+ 23:42:15 +0000
+Message-ID: <c166f41e-d983-4a22-95d1-c485a82d1d06@amd.com>
+Date: Tue, 12 May 2026 09:42:01 +1000
+User-Agent: Mozilla Thunderbird Beta
+Subject: Re: [RFC PATCH 04/12] vfio/pci: Allow MMIO regions to be exported
+ through dma-buf
+From: Alexey Kardashevskiy <aik@amd.com>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Xu Yilun <yilun.xu@linux.intel.com>, kvm@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-media@vger.kernel.org,
+ linaro-mm-sig@lists.linaro.org, sumit.semwal@linaro.org,
+ christian.koenig@amd.com, pbonzini@redhat.com, seanjc@google.com,
+ alex.williamson@redhat.com, vivek.kasireddy@intel.com,
+ dan.j.williams@intel.com, yilun.xu@intel.com, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, lukas@wunner.de, yan.y.zhao@intel.com,
+ daniel.vetter@ffwll.ch, leon@kernel.org, baolu.lu@linux.intel.com,
+ zhenzhong.duan@intel.com, tao1.su@intel.com
+References: <20250107142719.179636-1-yilun.xu@linux.intel.com>
+ <20250107142719.179636-5-yilun.xu@linux.intel.com>
+ <c0b160f8-2930-4158-9e50-b4cc4209e2ca@amd.com> <afs/Jamxnj6GGFfM@nvidia.com>
+ <3128deea-95a3-4c36-902b-37f280913f2b@amd.com>
+Content-Language: en-US
+In-Reply-To: <3128deea-95a3-4c36-902b-37f280913f2b@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SY8PR01CA0026.ausprd01.prod.outlook.com
+ (2603:10c6:10:29c::22) To CH3PR12MB9194.namprd12.prod.outlook.com
+ (2603:10b6:610:19f::7)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260102142429.896101-1-griffoul@gmail.com> <20260102142429.896101-5-griffoul@gmail.com>
-Message-ID: <agJnqh7ACEkB-ftx@google.com>
-Subject: Re: [PATCH v4 04/10] KVM: nVMX: Implement cache for L1 APIC pages
-From: Sean Christopherson <seanjc@google.com>
-To: Fred Griffoul <griffoul@gmail.com>
-Cc: kvm@vger.kernel.org, pbonzini@redhat.com, vkuznets@redhat.com, 
-	shuah@kernel.org, dwmw@amazon.co.uk, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Fred Griffoul <fgriffo@amazon.co.uk>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB9194:EE_|SA0PR12MB7073:EE_
+X-MS-Office365-Filtering-Correlation-Id: af9e2ba0-6d25-468f-8f41-08deafb6ee10
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|376014|7416014|1800799024|366016|22082099003|56012099003|18002099003|11063799003;
+X-Microsoft-Antispam-Message-Info:
+	DonMYyCL5psj1Ra5Ta1YXJ9ojiMjfTxTk2ZwUEbj/kQbxGt4Zoglv+ihVWHdcF0V5OKzIyPJg1+TXV2n7wlvypg6yW+hPqicgs3mbOa2MkGkx0YA7EomT7lvZYhi8Q+P+AZmMvDe8slZZHeVpRBe6VDNRA4vh8md5AuAzUehk7Et/hAXVPQYC4PFtFAJ/5lYa7YvN9fzoA67bPGOtPdtFv1sLWkyC4XHCw11yKIDt9IONaWaDsrfp+CHs5XL+v3C7edQYVuVp0ps0bx1/6DH10XWf+X4eXXC8dNSd9X+46AmfzSr6yJGplkOVj64plQmrhlLS2mBSzVEE0UtE+lleDyoVUpl4FQaQ3J5TCV6Rns/fl7aYbZQM8tg9O2TS8SwzEKcbIjrNX0C+oRrc8h/TIRLPyx7uCQaFCdFZ2u2byyz6KMZzaw0ELIjpMl9UYcd8RKe2tRDFjpheOROIq3QLSb3Lvn0OfuM10MXJFqrUbMiWR8F7iS0X7EAsqL7WVOY0Dx1Iymr3P9IQCDP3RU540iojpMyHJDXBhYfJCT04Uugbl2Rhzih06rahb2cbjjjgD/de5kwFi4Reas9alp4UhFC8rexVOmLGct9TzvoipZvh3vYdnATwLzTpPqI2/9dSni3JYDd8F95fYcD5KsvZBqxpwS9YFIvPmEbcc54YKs3kYr50UISwoN8t3X/Jfux
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB9194.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(7416014)(1800799024)(366016)(22082099003)(56012099003)(18002099003)(11063799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UGhDbXUzaFNNZzJQTEZFQ1ZJd3RYcWt5MlQxT1NNeVVlcS93SDFvWWNTT29O?=
+ =?utf-8?B?Z2tCQmN6Ui9yT2pINnJKMTZncTZ6Nm11M2VjazROS2NXbG9iYzdJK0UvRGZX?=
+ =?utf-8?B?a0UwOTV5dy9OdFNsZGM1T0Y3RDJTVHJPQ3JyUGZoaWhWWWdNZEhIT2xNTmlY?=
+ =?utf-8?B?Y0tOTzNXV29TU3p3ZWdzWGVMWnl5MEg0a2MzRWt6M1pxbEVBSWJxOUJHU1Fa?=
+ =?utf-8?B?QjAybVZBYU12c0d3cFd4Tk5aeGRZWXhmWUpiQ1g5UWhPT05xenBuTGttWCtp?=
+ =?utf-8?B?dHg1RGE4SFpwa0xSb0xHaXNyc0dGWTlTeEI5TzJhSWN0MXNOVSs2NlZJaEd1?=
+ =?utf-8?B?RUFtVDZPVVhFU2F6cjdWUjR6ZjFKaDNSUTR6OGNUb1dxMytPVFRKOGw5Wmxs?=
+ =?utf-8?B?TTVjamNyWFlkeVNpR25HdFRLLytvVUZqTUozK3lGQUNCaHoweUtxVHVJQmV4?=
+ =?utf-8?B?RnUzcmNZRXZnMkt3S21MeXhMUlRWdVQ5YzhJeE5RUEN3WWVaRkRzV2xRQWd2?=
+ =?utf-8?B?NE1EeHZaS2RlM0NyTm9VdVIzSGc4TUdRczBFcE5BWVdDcjNabGl6N3gzMzlX?=
+ =?utf-8?B?dWdIQWVuVEFiMDh4SW5kUkVDd1lHNHBRQ3FiUDVZYlAxeFJPQUYwSDlXdEx1?=
+ =?utf-8?B?MXc1WkJicnJwR1hoUmNnMzlXNGJYcGx3YlRISDExSFI2Y2V1RXBFY1ZKTDUy?=
+ =?utf-8?B?bXNQRjhuaTNUb0YxazYyWWVnMUNnSWs0MVBRUEpyNkxiTHhzTkM1bkMwMWNP?=
+ =?utf-8?B?NGE3S0NVa3paUm1ZaHlLemJQY2dvZ0MzYzFyN1dDcWs5VHNZaUZ3SnBWUkNI?=
+ =?utf-8?B?UGplSmtWRUxhczE5bU1DZE4zOWNyajRTUHhUMVQzTUxBbDBpVTBxNElFNFZZ?=
+ =?utf-8?B?U3hYaEZxU3R2a0hqYWRvMlUvZ212OSt4R3NVakdITUxJdUtHc2dvQVJGNkhz?=
+ =?utf-8?B?SlBwVUJmZ21DZXc0eC96cWJGeGhmYSt3dExSclY4MnE2aDdvWUVYaGV6Qy9w?=
+ =?utf-8?B?VDVpVkZqekhKSVJyL2tSU3IxUmVUR0pvLzhkZzg1RUhqK2ZXR1hKaU1oa2Iv?=
+ =?utf-8?B?SmRONzRCWkhRQURGUVZlamdYRTR6UFNHYWJKRUhYOWR4S1F5RUkyWlZrUXA4?=
+ =?utf-8?B?Z00xalRMQ0FmNlo4dHE3QmNESVl3Vm1zRG4wR2hZMjNTa3lSb0Rub2ZHT1FG?=
+ =?utf-8?B?WUdVVzBxMHA2RitFYnlLeklGUFlhVG1ndHpZU1k3ekt2TVlZTU9sTlJrSTBD?=
+ =?utf-8?B?NkFJSFdRT1BEV0d5NGVGRVNFZTk5NWwrTjhJK28xK3hqMTNRK2Z0clpHbGxZ?=
+ =?utf-8?B?QVp2Q0ZPbHJxcjhZdnVzUWZaVkhheHNhU1VtVEpLd0VMbGlnME02Y3ArZG0x?=
+ =?utf-8?B?SGxldTl0ME9ZcXdyNlB6ckl3bUtzMkF6YmxSbmRVa0JIdVFWN0pTajRSUjJy?=
+ =?utf-8?B?UjU5dTROaHhmdTIzMzBNaDdENFl1MkhzeWFPL3d4M0VRd0xmWXlnSy9VZ1hT?=
+ =?utf-8?B?Qzd4OGw4UllvR1kxY2t6S3AwZ3BVcUU2ZkxwaS9pTWp6WSthT2h0ME1zWnJy?=
+ =?utf-8?B?VXdldXg5ZDkwODdTNzhQaEIrUGR5YzdqT2Zmclo1eHBTeE5Mc1pEU3RZVlYr?=
+ =?utf-8?B?ditNRUViWW1KRGtQOGY3T3E2S0NhUktsZjZkdm1jYStod0laR2F0b0pyTjJw?=
+ =?utf-8?B?Y2NhK1IyM1BlZVI3R1VSditWVExBUU1HOFFvZzNJRmFKSkg4bjYwTzlXemQ0?=
+ =?utf-8?B?ZFBjbkVDaHBoK3FHM1VFQ20vTXUrWWwzam5GUnhCY2oraFkwUm1hY2xuVEdM?=
+ =?utf-8?B?eFN1cU5TSGd3bzZYVDZ5MUV0Q2JmTVk3K2JDb003TlFqekdabWVDSXNrWXkx?=
+ =?utf-8?B?UmsvMjkwMVNNN0N2aHZxS1R5UVgycEsvdjZZL1QxdDBURktCL24wOUhCaUdB?=
+ =?utf-8?B?MVhuY0g1N29LYlBSenVuYXVROVIyZmZINExOd2JjYmNrNWVSZ3R4ZWtObld5?=
+ =?utf-8?B?ck5keGx2WXk3eHNEa3pjNTZ2SFo3UGNXa3lVU0JpMVZKTzdMU05DZmU5ckFN?=
+ =?utf-8?B?V0dEeGpoYVU2RHJiQXBrbkx5eEhmMlBxcHpRcHhTS1REdW41b2Nmd1AxS0lC?=
+ =?utf-8?B?NUFTUjRIYnFtblVkcEd6d21rTnVTRVI5K1hWUU1ObmVQakg3SWZsSDc5ck5M?=
+ =?utf-8?B?Y3BiU1M2SGs4bTMyd056OXZDZGVqcDVrb1hEV1dSZE5oYzFvT2VIbmQ3RXdK?=
+ =?utf-8?B?bjBUbEorcGpSZkdQazVaZ0VpeWNiNmZBREJGN0MzWVErM1o5amk1NmVrMkdP?=
+ =?utf-8?B?WWkrNDE3QnQ0NW0weEJ1MWUwUHJaSStpYkhQTk1FQkJkOHYxTkVwQT09?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: af9e2ba0-6d25-468f-8f41-08deafb6ee10
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB9194.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 23:42:14.9915
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: w0vcqpE54gT++RjaYdQ2eadTujuRRVULaIKch8w7kEjZhlVE2wjlz58NotNwHTKg1hntfaXk9W24qLSyNgZxnQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB7073
 
-On Fri, Jan 02, 2026, Fred Griffoul wrote:
-> From: Fred Griffoul <fgriffo@amazon.co.uk>
+
+
+On 7/5/26 17:16, Alexey Kardashevskiy wrote:
+> On 6/5/26 23:16, Jason Gunthorpe wrote:
+>> On Wed, May 06, 2026 at 12:35:42PM +1000, Alexey Kardashevskiy wrote:
+>>> Hi!
+>>>
+>>> Let's reignite this topic.
+>>>
+>>> I've been using these patches + QEMU side hacks for 6+ months. And it's been fine until I got a device where MSIX BAR is in a middle of another BAR marked as TEE in the TDISP interface report. And no trusted MSIX yet.
+>>>
+>>> Every time QEMU mmaps a BAR - I request a dmabuf fd from VFIO in QEMU. Since mapping of an entire MSIX BAR is allowed by default, VFIORegion::nr_mmaps==1 and it is an entire BAR.
+>>>
+>>> Problem: KVM memslot mismatches the dmabuf fd size
+>>
+>> Huh? kvm does not care about dmabuf at all? Are you running other
+>> patches to hook kvm and dmabuf?
 > 
-> Replace kvm_host_map usage with gfn_to_pfn_cache for L1 APIC
-> virtualization pages (APIC access, virtual APIC, and posted interrupt
-> descriptor pages) to improve performance with unmanaged guest memory.
+> yup, 06/12 of this patchset.
 > 
-> The conversion involves several changes:
+>> Putting a slice in a dmabuf is a well understood need for MSI, so I
+>> expect whatever kvm dmabuf interface that gets merged to accomodate
+>> this?
 > 
-> - Page loading in nested_get_vmcs12_pages(): load vmcs02 fields with
->   pfncache PFNs after each cache has been checked and possibly activated
->   or refreshed, during OUTSIDE_GUEST_MODE vCPU mode.
+> good to know.
 > 
-> - Invalidation window handling: since nested_get_vmcs12_pages() runs in
->   OUTSIDE_GUEST_MODE, there's a window where caches can be invalidated
->   by MMU notifications before entering IN_GUEST_MODE. implement
->   is_nested_state_invalid() callback to monitor cache validity between
->   OUTSIDE_GUEST_MODE and IN_GUEST_MODE transitions. This triggers
->   KVM_REQ_GET_NESTED_STATE_PAGES when needed.
+>>> Solution2: modify logic in VFIO dmabuf to allow multiple KVM memory
+>>> slots per dmabuf. Now it is kvm_memory_slot::dmabuf_attach with no
+>>> offset into the dmabuf and one kvm_vfio_dmabuf per dma_buf.
+>>
+>> Yes, when kvm learns to take in a dmabuf it needs to take in a slice,
+>> not the whole buf. Or you need to create multiple dmabufs with the
+>> necessary slices from the VFIO. The upstream vfio dmabuf creation
+>> allows creating it with a slice.
 > 
-> - Cache access in event callbacks: the virtual APIC and posted interrupt
->   descriptor pages are accessed by KVM in has_events() and
->   check_events() nested_ops callbacks. These use the kernel HVA following
->   the pfncache pattern of check/refresh, with both callbacks able to sleep
->   if cache refresh is required.
+> true but either way dmabuf slicing will be directed by QEMU's msix-table emulation MR and this slicing needs to match the TDISP report so I'll have to teach QEMU these reports, right? 
+
+Or TDISP devices are going to align MSIX BARs to 4K, and QEMU will do the same and it should "just work", and if it does not - the host won't crash. Can this work? Thanks,
+
+
+
+
+> I am worried if I miss something obvious, again. Thanks,
 > 
-> This eliminates expensive memremap/memunmap cycles for each L2 VM
-> entry/exit, providing substantial performance improvements when using
-> unmanaged memory.
 > 
-> Signed-off-by: Fred Griffoul <fgriffo@amazon.co.uk>
-> ---
->  arch/x86/kvm/vmx/nested.c | 182 +++++++++++++++++++++++++++++---------
->  arch/x86/kvm/vmx/vmx.h    |   8 +-
->  include/linux/kvm_host.h  |   5 ++
->  3 files changed, 150 insertions(+), 45 deletions(-)
+> ps. I like nntp.lore.kernel.org very much for ability to dig out old stuff and then just reply to it :)
+> 
+>>
+>> Jason
+> 
 
-Please split this up; one "cache" per patch.  It's a bit gratutious, but the usage
-of the vapic and pid structures is just complex enough to make this more than a
-straightforward, "boring" conversion.
+-- 
+Alexey
 
-> @@ -3112,8 +3173,9 @@ static int nested_vmx_check_controls(struct kvm_vcpu *vcpu,
->  static int nested_vmx_check_controls_late(struct kvm_vcpu *vcpu,
->  					  struct vmcs12 *vmcs12)
->  {
-> -	void *vapic = to_vmx(vcpu)->nested.virtual_apic_map.hva;
-> -	u32 vtpr = vapic ? (*(u32 *)(vapic + APIC_TASKPRI)) >> 4 : 0;
-> +	struct vcpu_vmx *vmx = to_vmx(vcpu);
-> +	void *vapic;
-> +	u32 vtpr = 0;
->  
->  	/*
->  	 * Don't bother with the consistency checks if KVM isn't configured to
-> @@ -3130,6 +3192,12 @@ static int nested_vmx_check_controls_late(struct kvm_vcpu *vcpu,
->  	if (!warn_on_missed_cc)
->  		return 0;
->  
-> +	vapic = nested_lock_vapic(vmx);
-> +	if (vapic) {
-> +		vtpr = (*(u32 *)(vapic + APIC_TASKPRI)) >> 4;
-> +		nested_unlock_vapic(vmx);
-
-This is *very* dangerous.  vapic will still be a legal kernel pointer, and the
-code _relies_ on it to be non-NULL, but the pointer could become stale at any time.
-Happily, my CLASS() approach makes this a non-issue.
-
-> +	}
-> +
->  	if ((exec_controls_get(to_vmx(vcpu)) & CPU_BASED_TPR_SHADOW) &&
->  	    nested_cpu_has(vmcs12, CPU_BASED_TPR_SHADOW) &&
->  	    !nested_cpu_has_vid(vmcs12) &&
-
-...
-
-> @@ -3543,7 +3609,16 @@ static bool vmx_get_nested_state_pages(struct kvm_vcpu *vcpu)
->  
->  static bool vmx_is_nested_state_invalid(struct kvm_vcpu *vcpu)
->  {
-> -	return false;
-> +	struct vcpu_vmx *vmx = to_vmx(vcpu);
-> +
-> +	/*
-> +	 * @vcpu is in IN_GUEST_MODE, eliminating the need for individual gpc
-
-This is straight up wrong.
-
-gpc->active is effectively protected by vcpu->mutex.
-
-And for gpc->valid, it's not completely wrong, but it's partially wrong and
-definitely misleading.  It too is protected by vcpu->mutex, but only for %false
-=> %true transitions.  And even for %true => %false transitions, IN_GUEST_MODE
-doesn't exactly provide safety, rather it ensures that KVM will to kick the vCPU
-out of the guest before completing the invalidation.
-
-But that's all moot, because the very existence of this code feels wrong.  KVM
-should be sending a "no action" request and then requiring vendor code to check
-out-of-band data to proxy that into a "real" request.
-
-Presumably older code that you're reverting used KVM_REQ_OUTSIDE_GUEST_MODE;
-that doesn't necessary mean it was a good idea, it got yanked out for a reason :-)
-
-IMO, the least awful way to deal with this is to tag KVM_REQ_GET_NESTED_STATE_PAGES
-with KVM_REQUEST_WAIT | KVM_REQUEST_NO_WAKEUP, and then pass the specific request
-that needs to be made when invalidating a vCPU-mapped gpc as part of
-__kvm_gpc_init() (though maybe call it vcpu_gpc_init() instead?).  That way KVM
-doesn't need this wonky request => kvm_gpc_invalid() => request proxying, and we
-should be avoid to entirely avoid the confusingly-named kvm_gpc_invalid().
