@@ -1,222 +1,216 @@
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90BD2381B19;
-	Mon, 11 May 2026 21:27:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778534848; cv=fail; b=FnaRpSjBlB8lBqSBhvbrxfQGBNNxN6PO8e33ZKmmmiroehyNbeyKjNAy1QV9maPxwosBFZveo2VFlWeQRhd/NEOdsjbRSSDk3k+VeZhtaOU4pAXfazDHFJawjlQSn1uVHLcJy/IZUedLfG5sbCVfMw61y5Q/2bjfcPw3LdPnyHE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778534848; c=relaxed/simple;
-	bh=UZbtYEA34IRPimnfFdxof6tl742gnj3l2znL2kDTNUI=;
-	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=TTRgpqf7Cvhvitd8cHNbh5Rgcj8CB0us7NqPcE4B5YhB5liqbMvy3j2GbaaYqNkK6oEAebb4F7yOvU+3ZAAsjkpfsHrJXK4ac131pWqaUh1GoXDzbS0xvh/mKK3F5NhVUZ+qp3APpipR8eMwMUIBBm91t2PVHqppRorrg61c9do=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=IbK0STRS; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=xhoYX91u; arc=fail smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7C3C381B19
+	for <kvm@vger.kernel.org>; Mon, 11 May 2026 21:27:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778534857; cv=none; b=nTC26G7JSpvTGrozEA+vXkVKj1QmBKtJ8J8r/DinVZsiVOfGHx4oVjkkusOtj5k9NsKwT0tMK0ku+1cT9ukdgp7hiCCDOHH/ZQgONUusfv7kF6wahNdzAVP7dtEscSPjjy0CHsm1/jE9QRk/9NihRYvrf7JRwz5EnfzKBdPdh2Q=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778534857; c=relaxed/simple;
+	bh=GAm3NIG1k+FRmev2iUc3LqoU40KKqJ8zgvi3GQiHRYc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=I3T4DMxNq2tmFK2rBat+91NM/4DYTwbmnUGS2X4X1YsB/uMYuGESoWcJS+5y3xLndbICeWYOAYpmruZb6tmYPgvAls8klZbZ9uyywskDB8ObjDRz6V9CMS5UfEmQ+qCs+KBGbJafnQFI39ZjcXn7Rde6murhiOzgztVK7sie/q8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kCT4Z6az; arc=none smtp.client-ip=209.85.214.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="IbK0STRS";
-	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="xhoYX91u"
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64BK8DO43808355;
-	Mon, 11 May 2026 21:26:47 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=
-	corp-2025-04-25; bh=KjvPoKUkAg+P66aaJIk+KqUyaIIOKgwnn3WAgz3CZu8=; b=
-	IbK0STRSo4j5QifwXK5RTs99NJz/Dg1QG1e1ya7pnA7AJIZNHfUi2ZVI64lYCFtG
-	+rcw0Z5pvyEM48BkTmlmvb+3uQLOfiNkndK/1OFOfiWzVatn/+9FaYtsefw/7CYS
-	u1xztNZqqNM4OK/YwNtXxZro7dowCGHDA0uhT+I44jHHf05K8Ps9GJTWso36PXh5
-	qJXleLCIgfclvngcs9ULzRjyzWo4T5QhRKbyIP9A6GeJ27p9/B8qnmdSBz983m1E
-	UIYo6pACB5j6g1AhYpKuj16quJ5zGZs1k7yl3spt5T8vd9yvjz8zvts1BLHDU4P0
-	tEmol/bbZV+J3cu4h3vJLg==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4e3nv1g4u8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 11 May 2026 21:26:47 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 64BLQGB8018428;
-	Mon, 11 May 2026 21:26:46 GMT
-Received: from mw6pr02cu001.outbound.protection.outlook.com (mail-westus2azon11012018.outbound.protection.outlook.com [52.101.48.18])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4e3ne9bj13-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 11 May 2026 21:26:46 +0000 (GMT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=MoTEvkfZeAeV/dxzTLxzjzsbRzV9khuDGlECg28CiaBPfghVM129rzXQyM3wrJpIbuG3RpcETgq+ZMgPT4CjOjzXo+TSFVsQoXfEb3jv6/GdFophnwDzY+HYbztsrFh9PdiRZqXQYD3495qbKKvWAGgR45xoayR9BbUWhwqeY79p9EoqCalkB8V8UfCUL5zP1hs8YUtUrEJecmi3gltS8xjKPRT8CFAHrsK6vKsYmjrLl7C4+52ONWaWYoywpOYuxyH5+3SCrv28t0bTecU+ZV8bBaaMGFaTdbvjRTyFEL4tyhS4fcQeF+p+B5ZD0LdpBTvWtWPqNI+uiF5subd9/w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KjvPoKUkAg+P66aaJIk+KqUyaIIOKgwnn3WAgz3CZu8=;
- b=kuQzCCS30ooJuLAJYZbUZCFrtif2ohGn2+AVfdmdrnARUhcO1pw2vqNuQ4BBHJn9VzqidzVBcgIno1/SL3IBIg6ka+ENnSv3phsEfdUBbUFpwt3WeEI/Yv6qOokdx9qxVCjgG0a1fSJbGU98wrN8oZaCcOUYfAMlu8fNvrkkUjYHwzopTf69MsDwu9/Iw5ernZOsdcGwJM8qnbdewTbraL/iS3Rv2m+uAdv1O2VyDpKLyzyzkGgbqzHsJHixFjtiqqeBlVcIHdSymsekJqwwq2d4o+jfWy6eiByZ60WmtDAUuqSzYQCdcTFgXkY2CcyRE7rKfpu3iwUCYk7twG8MEQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
- dkim=pass header.d=oracle.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kCT4Z6az"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2b46da8c48eso745ad.1
+        for <kvm@vger.kernel.org>; Mon, 11 May 2026 14:27:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
- d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KjvPoKUkAg+P66aaJIk+KqUyaIIOKgwnn3WAgz3CZu8=;
- b=xhoYX91uD0EEEWuTc9VAJNgY0zdsDrToShb3+58T+vBm6i0pT9JG8iFHd86VVBDAPSWjCvw31iTycUDq5NS4k9mUQeerpMM+MfFpWJP8gavxAscrTsDdGYy1TWafIqrwpYTjL+pwyDA2TjGED4LMC8GwymkFhqSpBWoJdp2S3oI=
-Received: from BN0PR10MB5109.namprd10.prod.outlook.com (2603:10b6:408:124::23)
- by PH3PPF67E073224.namprd10.prod.outlook.com (2603:10b6:518:1::7aa) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Mon, 11 May
- 2026 21:26:41 +0000
-Received: from BN0PR10MB5109.namprd10.prod.outlook.com
- ([fe80::d9fa:7ad2:804b:bb83]) by BN0PR10MB5109.namprd10.prod.outlook.com
- ([fe80::d9fa:7ad2:804b:bb83%6]) with mapi id 15.20.9891.021; Mon, 11 May 2026
- 21:26:41 +0000
-Message-ID: <24295bca-fa63-45bc-95d1-5f45ad1e8eab@oracle.com>
-Date: Mon, 11 May 2026 14:26:37 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/5] KVM: x86: Reset vcpu->arch.st.last_steal when
- enabling steal time
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, x86@kernel.org, linux-kselftest@vger.kernel.org,
-        pbonzini@redhat.com, vkuznets@redhat.com, tglx@kernel.org,
-        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
-        shuah@kernel.org, hpa@zytor.com, peterz@infradead.org,
-        juri.lelli@redhat.com, vincent.guittot@linaro.org,
-        dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
-        mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com,
-        jgross@suse.com, dwmw2@infradead.org, joe.jin@oracle.com
-References: <20260505003044.78693-1-dongli.zhang@oracle.com>
- <20260505003044.78693-3-dongli.zhang@oracle.com>
- <af5mbWXpG5ofRdJ2@google.com>
-Content-Language: en-US
-From: Dongli Zhang <dongli.zhang@oracle.com>
-In-Reply-To: <af5mbWXpG5ofRdJ2@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: BY1P220CA0001.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:a03:59d::14) To BN0PR10MB5109.namprd10.prod.outlook.com
- (2603:10b6:408:124::23)
+        d=google.com; s=20251104; t=1778534855; x=1779139655; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=9GCpB/qlE6YAZPSqlDCGlZlFTz7sxmMbGZ3iIDSDH7o=;
+        b=kCT4Z6azvLwoQ62kG8307YcWx1lxA7RQ3qqY8o6W222Q8+p9mSvStFbeGZTpKrS8Qu
+         HPC1BmdeKPHD+6trN10EHfaqhWX62aEklsmzWftjqRTkPWL1Y3XOQB8ttw4t5nEcVN8A
+         hbKlv69/rXdQxp2EWyOdafXwhpP1VkuTqAa0TqkvtQCNnqp0fn4tcY2Ezr2S2fNDv1Q6
+         bz/B7LqxWlGjPRpKNtR4lIE/Kkk4TqH1dZdXq21g1b96YVZKs5OMK6dp+w9xtddOLF0F
+         Ogap4MsUEuoBcYE9AuOdzqbGExTg65IomvRkVCsPFz5raoSXIGikGDuNqubeJGqo35CD
+         7mIA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778534855; x=1779139655;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9GCpB/qlE6YAZPSqlDCGlZlFTz7sxmMbGZ3iIDSDH7o=;
+        b=n/kBLxVJmRGidunpGwo8UaQW+JkmF4rTVi6QulxsGNv1ZOn4Vic/Kljc+gE6tBt7OQ
+         6HOWrT4czSBUWfl6WiVeLFkqbUWveQsw8ZA31VQESgaKNfa6n7vv4fTDWuJ4UD6hcDbE
+         SA/6QHQnRPCgadc0OxN+XJzeSwJvxtoqadJAOtGsWKsVwa21Tu5HqUdy/5yNT0jIthNn
+         LDYtr5d8Io0NeR5/iZzUKkpkd8rURZeKCloI9re4SyzVQqzHN1L+q1U+TazG/K5PwLfy
+         dwUzuqx8msaOvVj74YIIoQzq3R0XDfYGm2618XjfM3rcMqqSkSNoMgRvxo/c0PmizYhD
+         WYBg==
+X-Forwarded-Encrypted: i=1; AFNElJ+yHmF/fDRG+gtj0T8gLIQ3JmzmsngoRoaTcR+Qq4faB7nwI93LfEBmWLqo7ZeDmZl2mRQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwfoeEyyTe9m9nc9ocrBhnHnzbn6BMfrmT7FuDo0ExAl+/NOeTC
+	lHM619R2GI7Ii4z2wPiJesKAmuTdSWRPwxBtQW5BWJf0ZQxY9RhBI7pqRc1Qu8pSDQ==
+X-Gm-Gg: Acq92OGZcOE0ysu3Vn8qBJ1V6PivhjUZqszdhZUR8m7+os2/Rbl97tYqqpzpXek6zCf
+	JKh+iQJWKsmU4TUie1DMEM9Bxzxd5eAKzE54Hx7+ij5oKoVFjQ61FTphGAS4pkqOQfCelna3Vvp
+	NGYOSuWyZRASgP/7qxFlwxWDkx7fPHwS8y2aMOvX2iw1yDWgmUH+S1+FZlN5SVpU2JMw1o/Jaxz
+	8KmlgJBemEp0IIvrXk/eshg28s5yUN3gnKzu3hU7F6WO1GD6zfp7LtZd4lhBWne4LAhJHgCOZov
+	e/rmGcxgs8H1GfMeuZ976VpAfxPZIad8LQYfURgUiSeUkiWRMdeTq6v/ns9/Az2zI1MRwYQDk1y
+	DZSVcpOEbndmjPuPZ01pwyTbitFbKGNvzbCCo+R9eznldGxaTIp5+pxw/2+ovBJYxnBL4FU2u39
+	KgS9QAK5Pc/FFMrOjJombD4uORFPN8JGWjCuCpoCv0wKxpi60pvrqgFPepBo6MZwP0qtK36Oy6A
+	dYjr18x
+X-Received: by 2002:a17:903:32c4:b0:2b2:70ba:305c with SMTP id d9443c01a7336-2bcfe66d59bmr1559405ad.8.1778534854688;
+        Mon, 11 May 2026 14:27:34 -0700 (PDT)
+Received: from google.com (153.46.83.34.bc.googleusercontent.com. [34.83.46.153])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1e35494sm111136225ad.49.2026.05.11.14.27.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 May 2026 14:27:34 -0700 (PDT)
+Date: Mon, 11 May 2026 21:27:31 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Aex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH 2/2] vfio: selftests: Add iommufd multi iommu test
+Message-ID: <agJJbeg4VlA5kSLB@google.com>
+References: <20260505221518.619123-1-skhawaja@google.com>
+ <20260505221518.619123-3-skhawaja@google.com>
+ <af5EEN8PhVz4pTdE@google.com>
+ <agI6peKFWDdn939Z@google.com>
+ <agJF0gY_V-ZWaNK8@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN0PR10MB5109:EE_|PH3PPF67E073224:EE_
-X-MS-Office365-Filtering-Correlation-Id: a4dc1a3a-7ba2-43b6-1b75-08deafa3fe43
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|18002099003|22082099003|56012099003;
-X-Microsoft-Antispam-Message-Info:
-	RATYFQx4YqmTRbguKsLWfdMiCmkSNUKBErWTfEQUfMh9NLPybjulSB9arXbJnnt4IVHYFOXB3Z+E1WNPqOiDnK+yG2R0/gteciVR7ElrW7Sh1aHizzZvD/w+Tq0Z1kIRG2X2tOHUM/b19JFoH0hM5ZQ70KakVUeqBrKSlQYSAHVVZ4fBPTSJmJU+k8RbDSDoH92Cvtua8G+RjDLAsBbFgqejDmLFHglkgceNh2yqb4U7Of3PfUEFHD095Mj5LEuEOGNQSf7xCbDGt+xYR/Oh3+GMwdL2xAOhnyqcdpyAGXdQtr0FzuYyYzNCdHSaxHF2ZN6svyD76+PENaelIckGDJyqGbcfClr2U0wTIb8twJl4AVRtAUNd2/pbOT/BDm19vYKpQVzgWD0C7fdbwdeLu03oJFjLfxoW+b08KgQkTED83AWHM9EkM/6QduYsNLjVslEEZuc4zFZTpRmMOr29OtpaOqYCsW0vy0ZQTUJGiQTrvNYshG4clPgVF7/SqJm5JeSIMWsTNJL1QlX+XtdBeRXUX0hteZPhrOk+LEttiYoheN8sxe8DKPQ2i6z79fY8VwuGguGKbe8MQwxC7wLhalvONfryx6LKxAGYcfRPYqOS3U6r/Ht5GxEIsSRtbLg4XC84Byujhen6qcWCXU+cYILFeKHieHLeJJH2OmcEwIrHDDVwRQQtDgN3wRebg3Sx
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN0PR10MB5109.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?UDZpRGg3bmlRejYxTC8rNFVTbkZ5TnhzNzhCK21xamhoVFRHTVZpUzBNbFVK?=
- =?utf-8?B?OS92MlFWc2N4TDNYdWhsbStSRlVja25zaTRqY1Z2UzhpRGJPUXRKRkc1TWFj?=
- =?utf-8?B?bzBPc3pxZDkweExCY0kyblZ0NW80eUFFYWppUkRpUUhDLy9SckVjTUFHOFU2?=
- =?utf-8?B?UUxmaWFVZkN1RVhSaWdEak96SFVrWnV3RGttMjFxaHhlalRqVUYvVUpDdWx3?=
- =?utf-8?B?T2dpS2hIVDZNelNTalZRV3RsSndoNlowTUt3UGhGSTl5YnBlSjRIZE5EaVhH?=
- =?utf-8?B?eTVBQzBqcmtqcTBxTjdWNkVMZm04aTByLzErOSsyV1RoMmpvWnk3bTBHMmFP?=
- =?utf-8?B?MHYrMTlpQlNpNmdHYXBUVm9KS0ZySzRZd3daWU5odTdYRVVtcTl3dnMrUnZQ?=
- =?utf-8?B?cTR4M1NuSDJQVmZMOHIyNExDK0lNR3NOdGRqUklkT2o0RXpKY3NwbVhHR0pF?=
- =?utf-8?B?ZkpqTmZucDR4enlmVDRLUU9zYndhaTROUWs5RjJSSkNpK1dJRG1jRHk5Ritu?=
- =?utf-8?B?Njh4Sk1pOVRHWEhHR2RlbmpkdXY0anRYazcxU3o1eEx2QXZzcS80bm5FQmdO?=
- =?utf-8?B?R1FBazdrcjVMSXh4RnRPWDcydkNsTmdPSW5qbDV5azU2dGhBWWplL3VFWnE1?=
- =?utf-8?B?MmhpanozZXptT3l3WncvU01OZjVTMVRaNTRTcnBPMU1RZStNcml4VGZESTRm?=
- =?utf-8?B?WmV3S3JxZW9FcUFlU0wvd0d6OU1NWEF1cWZBZm9yK3RaeWN6TWlPR1ZFMG5J?=
- =?utf-8?B?b2hGbGpaTUl3eVBST3A2MjNYN0t5OHJFdmQvVURYOHB2YlIzZG5kR2lvVXJx?=
- =?utf-8?B?L1JBWm1RamljSGtYb3ptWXRVamRPa1pFUEJ5ZytsaDk0Mm9lVmllQVFWZFhC?=
- =?utf-8?B?YVkybGRvMFUwWVQvY2J0c05LZ0ZLQ1RoTUQ4ZTZJbE5oTVFoTVBFVE9uZ2U2?=
- =?utf-8?B?aW90dEJQVW55eGlvS0hxQ2NCNmJhWjR4WDFXREtJQ3NaZ0JGN0xjekJzV2hZ?=
- =?utf-8?B?R29IYWNvM3JNZGdwOGJXbXBtcnpTNmlPRTl3Z0NkL0JDdCtCTEhRbnlwZVk4?=
- =?utf-8?B?TU9JTjE1MmRaY2c1T092QlF3dnlTUFpndVNkVUR3ZEIyd0FMWFMrMWMxRWM2?=
- =?utf-8?B?SkJVVkhpZlFxcjNoNnhNMi94eWZnQmtSVExUUjVZWVE2cG1pSENZSEIwSHpZ?=
- =?utf-8?B?dSswT2FucnE1Y1hoY3Y0dVNZT1AzYUxESTBEQm1LZlZ4cURpTTRVSVV3S1U0?=
- =?utf-8?B?eWdtMDVnUUZPUUU5bWR5Y3docVNmQzRFbGg2UjE4VHJER0xwWmRLRGpXOFBw?=
- =?utf-8?B?V1VScTRIN282OXpQUE9Sa1VGL0tnbWxXUFVwbXU5YnhqWmdDdC9CTFB6Q0dO?=
- =?utf-8?B?WGdPY3RuWUdPajZYNDltcS9wSVM0V25UNFllVEJtNDVxTVpKRlV6SzI2ek0z?=
- =?utf-8?B?UXpaMTdrSThuWEQ0K3p0NjF2RDNSLzlDUDY0TnN0NXpHbXdxcFpHS2V6VEla?=
- =?utf-8?B?UERETjV0Ymh0eXRxYTNGaUtwUzdEUnY4WXFSaUJCa0ZxV2xSSGNVOCsza3hZ?=
- =?utf-8?B?bnUvRHlBTFVlNzYrSGt4VTdnMmhxbENoUFFHTXQzTkpMS2h4cUFUbTl4N3RL?=
- =?utf-8?B?bmc4eFVWejBLWHQ5dnowU1NEeWhYdng1Vm9QR1ArR1liUFAzVVRnYlM3K1lD?=
- =?utf-8?B?WStUU2c2bnhmcWxNWVg5QmJLdXFPcjc2Um14b1h6YkZSMlR6QTlhelhxSkt4?=
- =?utf-8?B?V0xha1VzR0RJcTlqellzUkRCeFJEVUcwakpIY2FBbmcyWkM4dTI2TEt4bm9W?=
- =?utf-8?B?UzcwYlkvZTNtbVV1aWlVZ29pWExRQ21oZ3VCdWpvVGpSR0VEaVRaTGlBOXZ3?=
- =?utf-8?B?eEdaNkN2cHBjRTgrc0RVVkRYSEtSR1MxaUVuanZERE8rdllVR09MZXlLUEwr?=
- =?utf-8?B?bXhzZ09HRm95bFduVWVsSVAvdDNJQjJrZmo4elZrbkN2b01BSm5OVTIwQm5B?=
- =?utf-8?B?MktVNXFUVzlpN1AxV1VWZzgyVjVsVjA4T2ZCZ1VZY1R4OG5UMGFISmcwbXlp?=
- =?utf-8?B?Q2lyRERGUlRRWHdBNjBUUUZIcWZ6Mjl3elE5aFVwOHJuVXNNSWVNSWM2emhh?=
- =?utf-8?B?ZUxIM0FWS3gxR2VLZGcrWDNBK3psUDJYMGRKQm1PQmpOUWlEWndSaVVjTTFt?=
- =?utf-8?B?K0haazNwUmgyRUlGVWFoQ21hL1Y5cnRtM0FlYU5pTmJYK0gra29IL1hMc0JW?=
- =?utf-8?B?Mi8reVc0UWMwUmlyeUZLZEQ2UUV1ZU1WYlFhOGY4L0Y5dXJNK3c3U3dNUlox?=
- =?utf-8?B?emtDWjB2T0xKbnMzVTYvcVR2dkFNOHc4enhiM045eENYVEJsM0FPdz09?=
-X-Exchange-RoutingPolicyChecked:
-	p98CjNjPfpNYcQi2ek9Sj3tgNUigLRS+re6r4m8NzJ21AX5P0kOvR8IgGpnTQwXlw8GsSD6Z8/R4gmqlgAkBy5S2RYZeAZTZIP+RaGiEuAgECbFag5AN/O9ISsopu4AbG/NGY3FoXnpiP45nBQiTLRACphgkEGpBufgOUxv5fF+MmEXZMKQWPw5bYyPTfcK20apCRAeb6lfnR/L0P96ejIZTlUdqpFUbSiL/Xm3642q84ojW1kgdfK3UBGAv+FVeUft/kHO/XC3OgIJjoRr5rkptMoEOIqxbKl1I9F625MFSimbJXMf8Y4ZamWrxWqE4Sxy52fSBLIzsykqm80lVJQ==
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
-	RU1I1cuE4bXhMptXnXokLPAC2CmYPGAne6y+UIfiRlTpjOjtA6QV3+rLYCE5xuShGJz4xyOLebRIfD25c48lJbO+qRN3676TzRqtDIfXo5Olkx1eF/iy4LFSYuAv9sZsdsa9OclR++SsUEtVndoB1fSpq4FLf5PECDAUdUK3g4KSJ8knmCwQMNcEl0bXF5ZsY5U8yX23LvS1xt5LlHGWvdnTu6QaDnkrIheaPcL2VcSrfK69umWIDLsZweum6UzTUXD99FhySkHTx756HtXKZZys3c5DXrFYgHC3PJi6GdB77ES4DV9pj3TJCvMxdbuwkMawxyyxgpIAlpg+KMOjvapb5R/eeiahGjy48HOMmAnwj9wv8CbgH2v/N+KFVdANffdHRLlx+kDozks0ZDS81lnf7qsZMKpFiUOmRU1adcgKOMK1zLTY1YVHX8Cqj6dze8ZayhGyna4Etr1T2TpDGoVo4JbfjfVt/3Kv49ww0Jz1/X/m0/HUNgnInQ4lmkh00hc6VQFNY/414BwTWt0MtCs5Cj/tJ9URuJEkBN/Uk1nMe9SqtledVr3OO9ZANp6STN34ScR864OPc3LXjFV3kHy4NvXEJkRKMhI48xwU9Rk=
-X-OriginatorOrg: oracle.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a4dc1a3a-7ba2-43b6-1b75-08deafa3fe43
-X-MS-Exchange-CrossTenant-AuthSource: BN0PR10MB5109.namprd10.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 21:26:41.5874
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6KuaU1oRdykA9cHLGkF9iEONmQVmkPMAV2ZXkl/WCF+0QjVXnNUZqB1NZorKBkNZDjuFypsA9kj4FDRdyCLLqw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH3PPF67E073224
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-11_05,2026-05-08_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
- mlxscore=0 suspectscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
- bulkscore=0 adultscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
- scancount=1 engine=8.19.0-2605050000 definitions=main-2605110227
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTExMDIyNyBTYWx0ZWRfXzrN4UpgML+Ri
- sdeL5Qwrc4eD0uBxxiMgae35InALQRKZcQAp6pY2g8VdRFevTRbPisKOGGCwWku1Uw/qT9AxfZm
- r3E8B2c8gr8g2Y8k/lb7g904zTAnoGMcDZW5ICdA/eMEe+qsoGdxD3JwcKUOucUVC7BFsrCELh4
- L+5eKifs9YFgkBeAwOt4swQy/W9EJS1RW8UF1zn/XR3R5HOsKSVtbkzAzQwn90qg2jjqdUnywUq
- RfBbK2mfaVOFhmvdELaZTKf7w9MjrlgwH0MPg2UD0LCMEmquPb7exsKfyxAfOihhGCpQJ63852h
- vo2SWVD9LfFBY5Y5QkIJHZHU/ggGYcpZzABVx9p38RaSoojS6hsXWu1SzYEvsLiaXSzEZW6wiEv
- c/mrS1SguOoLSYGpiyGU+BJRGaaLMV+P+dxZioS+TSdikL82orc9fBa9Rav4ewrczS0t5moCw6v
- eCroQcxPgQankjaMlcQ==
-X-Proofpoint-GUID: A2rimEd220stWB6aoNHlB4w1xS6pByG_
-X-Authority-Analysis: v=2.4 cv=JvbBas4C c=1 sm=1 tr=0 ts=6a024997 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
- a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=NGcC8JguVDcA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=jiCTI4zE5U7BLdzWsZGv:22 a=x4eqshVgHu-cdnggieHk:22 a=pu8Ebr6csyIeW2ug2hEA:9
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: A2rimEd220stWB6aoNHlB4w1xS6pByG_
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <agJF0gY_V-ZWaNK8@google.com>
 
-
-
-On 5/8/26 3:40 PM, Sean Christopherson wrote:
-> On Mon, May 04, 2026, Dongli Zhang wrote:
->> KVM does not support vCPU hotplug. When a vCPU is removed, its
->> corresponding data structures are not freed by KVM. Instead, QEMU destroys
->> only the userspace state and the vCPU thread, while the KVM vCPU fd remains
->> open and parked in QEMU.
+On Mon, May 11, 2026 at 09:10:42PM +0000, David Matlack wrote:
+>On 2026-05-11 08:53 PM, Samiullah Khawaja wrote:
+>> On Fri, May 08, 2026 at 08:14:08PM +0000, David Matlack wrote:
+>> > On 2026-05-05 10:14 PM, Samiullah Khawaja wrote:
+>> > > Add a test for iommufd to verify creation of multiple iommus using an
+>> > > already setup iommufd and switch between them.
+>> > >
+>> > > Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>> > > ---
+>> > >  tools/testing/selftests/vfio/Makefile         |   1 +
+>> > >  .../vfio/vfio_iommufd_multi_iommu_test.c      | 203 ++++++++++++++++++
+>> > >  2 files changed, 204 insertions(+)
+>> > >  create mode 100644 tools/testing/selftests/vfio/vfio_iommufd_multi_iommu_test.c
+>> > >
+>> > > diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
+>> > > index 0684932d91bf..24bdeaad590f 100644
+>> > > --- a/tools/testing/selftests/vfio/Makefile
+>> > > +++ b/tools/testing/selftests/vfio/Makefile
+>> > > @@ -8,6 +8,7 @@ else
+>> > >  CFLAGS = $(KHDR_INCLUDES)
+>> > >  TEST_GEN_PROGS += vfio_dma_mapping_test
+>> > >  TEST_GEN_PROGS += vfio_dma_mapping_mmio_test
+>> > > +TEST_GEN_PROGS += vfio_iommufd_multi_iommu_test
+>> > >  TEST_GEN_PROGS += vfio_iommufd_setup_test
+>> > >  TEST_GEN_PROGS += vfio_pci_device_test
+>> > >  TEST_GEN_PROGS += vfio_pci_device_init_perf_test
+>> > > diff --git a/tools/testing/selftests/vfio/vfio_iommufd_multi_iommu_test.c b/tools/testing/selftests/vfio/vfio_iommufd_multi_iommu_test.c
+>> > > new file mode 100644
+>> > > index 000000000000..7199c662637c
+>> > > --- /dev/null
+>> > > +++ b/tools/testing/selftests/vfio/vfio_iommufd_multi_iommu_test.c
+>> > > @@ -0,0 +1,203 @@
+>> > > +// SPDX-License-Identifier: GPL-2.0-only
+>> > > +#include <sys/ioctl.h>
+>> > > +#include <sys/mman.h>
+>> > > +
+>> > > +#include <linux/sizes.h>
+>> > > +#include <linux/vfio.h>
+>> > > +
+>> > > +#include <libvfio.h>
+>> > > +
+>> > > +#include "kselftest_harness.h"
+>> > > +
+>> > > +static const char *device_bdf;
+>> > > +
+>> > > +#define IOMMU_DEFAULT 0
+>> > > +#define IOMMU_WITH_PT 1
+>> > > +#define IOMMU_WITHOUT_PT 2
+>> > > +
+>> > > +static void region_setup(struct iommu *iommu,
+>> > > +			 struct iova_allocator *iova_allocator,
+>> > > +			 struct dma_region *region, u64 size)
+>> > > +{
+>> > > +	const int flags = MAP_SHARED | MAP_ANONYMOUS;
+>> > > +	const int prot = PROT_READ | PROT_WRITE;
+>> > > +	void *vaddr;
+>> > > +
+>> > > +	vaddr = mmap(NULL, size, prot, flags, -1, 0);
+>> > > +	VFIO_ASSERT_NE(vaddr, MAP_FAILED);
+>> > > +
+>> > > +	region->vaddr = vaddr;
+>> > > +	region->iova = iova_allocator_alloc(iova_allocator, size);
+>> > > +	region->size = size;
+>> > > +
+>> > > +	iommu_map(iommu, region);
+>> > > +}
+>> > > +
+>> > > +static void region_teardown(struct iommu *iommu, struct dma_region *region)
+>> > > +{
+>> > > +	iommu_unmap(iommu, region);
+>> > > +	VFIO_ASSERT_EQ(munmap(region->vaddr, region->size), 0);
+>> > > +}
+>> >
+>> > Can you create library helpers in the library to share with
+>> > vfio_pci_driver_test.c?
+>> >
+>> >  dma_region_setup()
+>> >  dma_region_teardown()
 >>
->> As a result, vcpu->arch.st.last_steal is not reset.
+>> I thought it is ok to duplicate this as each test (in future) might have
+>> different mapping requirements? we might have memfd, guest_memfd,
+>> dma_buf with various mapping strategies for different usecases?
 >>
->> If the same vCPU is later re-created by QEMU, last_steal retains its old
->> value, while current->sched_info.run_delay starts from zero since a new
->> vCPU thread is created. This causes
->> current->sched_info.run_delay - vcpu->arch.st.last_steal to produce a
->> large, bogus value.
+>> Or you are thinking of a basic helper that can be used by tests if they
+>> are not doing anything fancy?
+>
+>We have 2 tests now that need the same code to setup their regions so we
+>might as well share it. As new and more complex use-cases arise we can
+>figure out how to support them (per-test logic or fancier library
+>support).
+
+Ok I will add this as a separate patch.
+>
+>> > > +TEST_F(vfio_iommufd_multi_iommu_test, memcpy)
+>> > > +{
+>> > > +	struct dma_region memcpy_region1, driver_region1;
+>> > > +	struct dma_region memcpy_region2, driver_region2;
+>> > > +	struct iommu *iommu1;
+>> > > +	struct iommu *iommu2;
+>> > > +
+>> > > +	iommu1 = setup_variant_iommu(self->iommu, self->device->dev_id,
+>> > > +				     variant->start_iommu);
+>> > > +	if (iommu1 != self->iommu) {
+>> > > +		memcpy_region1 = self->memcpy_region;
+>> > > +		driver_region1 = self->device->driver.region;
+>> > > +
+>> > > +		iommu_map(iommu1, &memcpy_region1);
+>> >
+>> > Can you make a helper to copy dma_region into a new iommu? It should set
+>> > up the new struct dma_region based on the old one, re-initialize the
+>> > link field, and then call iommu_map().
 >>
->> Fix this by resetting vcpu->arch.st.last_steal to
->> current->sched_info.run_delay when KVM steal time is enabled.
-> 
-> This is quite arbitrary.  E.g. if userspace hands the vCPU off to a different
-> task without going through QEMU's hotplug dance, then current->sched_info.run_delay
-> will also change.
-> 
-> Shouldn't x86 hook kvm_arch_vcpu_run_pid_change() and reset last_steal in there?
+>> Can you please clarify, I didn't get it completely. so basically
+>> something that can be called like following?
+>>
+>> setup_copy_dma_regions(self, iommu1, &memcpy_region1, &driver_region1);
+>
+>I was thinking something like this exposed by lib/iommu.c:
+>
+>void iommu_copy_mapping(struct iommu *iommu,
+>			struct dma_region *new_region,
+>			struct dma_region *existing_region)
+>{
+>	*new_region = *existing_region;
+>	INIT_LIST_HEAD(&new_region->link);
+>	iommu_map(iommu, new_region);
+>}
+>
+>And then in the test you just do:
+>
+>if (iommu1 != self->iommu)
+>	iommu_copy_mapping(iommu1, memcpy_region1, self->memcpy_region);
 
-Thank you very much for suggestion! I will hook kvm_arch_vcpu_run_pid_change()
-and reset last_steal in there.
-
-Dongli Zhang
-
+Yeah that makes sense. I will update this in next revision.
