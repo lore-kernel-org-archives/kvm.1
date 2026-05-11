@@ -1,184 +1,127 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A1537754C
-	for <kvm@vger.kernel.org>; Mon, 11 May 2026 12:18:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AD83EF66D;
+	Mon, 11 May 2026 12:31:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778501886; cv=none; b=bWSCUx7P5EHbSqdRaiMkTvmBQuwh4V+1XcUCn37m9p12W5wSuHvojRe5itkvw57Rnp26eaAqaiApAMVLfv7meBKSGbZNGGoHzaZFOLAxYZyT0iNAHm00AKBY0SIkA7aaD6RqgaGeYIvVIfUMIjW7ZXTy+Bj17bGf2J6oayseu+8=
+	t=1778502669; cv=none; b=j0xJqcL9EhOVs1Nt0J6vFFil77+k8LRE1ZiJo0ycv+L2R1KKbYvX+pJzunsmjIntWQq3YsjO6Mrg4equr++QZGFy03cVeAAtEhLOEG9KGvVXRjbtcC+7DICXSSYUrnvI9ieUSTfk6f2AOeC2Rwl0qo+zjsoEgpDqBJ3Zd6f8U9A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778501886; c=relaxed/simple;
-	bh=05W6cGrgPAuuJG/32MvJZcPtqd8ahr5phfW6wQrqoiY=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=KEskq5NHqgO4tF3ah6HSSCi0hmsNZPxXRjofmYcvSDyFzQMpPm3HvADbESU5sslIx/hv/iqTtGhvvI+NOtMmwwLi2ZdL7CiMG8ux1Ky+CpQ/bUdvpHvqNnllBQa35nQtprOuxAj7pOr4IRxgZzKzqHyEpsnmQCWIV++eHvjCuYA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=kyHNcO7M; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1778502669; c=relaxed/simple;
+	bh=4cj4AFpxR7VfRzsb4XVcpSOKHntygkHpeH2TRzpG76A=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BaP9h9acv2ENAUrKbX9Xh0wBkp//vd3tlosqBR7fhM4tKxVVDZRcnlNjAKlePWsS6Mudzeuo7W0HWhPVU28W0flfJnDJdOg6qIcxiffMfFmQ0JqglyXg/lhZ7LMWQKuUM4+MTPFr1mvXa6WeKRDUxW8EjTVbehNm24rLQ1u2/IY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ik+Jsoeg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="kyHNcO7M"
-Received: from pps.filterd (m0353729.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64B3T7fH411676;
-	Mon, 11 May 2026 12:17:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=0K53jjqfae16cP28A9TaGc3hdifIcE
-	X/yzHPUrsaOSw=; b=kyHNcO7MwOuLE9C4LdEKkokWGy/TP6ai4tDy+k/BRgPtpF
-	NFRM3FeE/IOvFEv6jnyrTdMUt0/OMu/0ksoez899I0icekRbI7B1XoQwqw6eTUdt
-	QrVaMaRWyytKsEUYsXlOoQo1sAiNROC7aUyBJiWOgID8XBaUYxJjtgRzx6P8MGdm
-	Vw1ns08KMZIRmuYfZ9zJhT6BSpY8DGjgrWt5s2SFUOP5d7HDLFaZJfxOOW5+U0ER
-	lA3Du3Hm76t00wwNYXeXH1dRjfpvS6pjfYek6OrDM5XPJwaNa+EcEBK/UvlGqrnu
-	9do1cVXDBa24DtNvBZQZ0tpO2g1rAwreorekCuoA==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e1vkqr4a6-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 May 2026 12:17:54 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64BC9LV2023927;
-	Mon, 11 May 2026 12:17:53 GMT
-Received: from smtprelay06.dal12v.mail.ibm.com ([172.16.1.8])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e2hfg4yxg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 May 2026 12:17:53 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay06.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64BCHqBi30605962
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 11 May 2026 12:17:52 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 674FF5805E;
-	Mon, 11 May 2026 12:17:52 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 24FBA58050;
-	Mon, 11 May 2026 12:17:47 +0000 (GMT)
-Received: from vaibhav?linux.ibm.com (unknown [9.39.25.174])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with SMTP;
-	Mon, 11 May 2026 12:17:46 +0000 (GMT)
-Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Mon, 11 May 2026 17:47:45 +0530
-From: Vaibhav Jain <vaibhav@linux.ibm.com>
-To: Amit Machhiwal <amachhiw@linux.ibm.com>,
-        Harsh Prateek Bora
- <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
-        Chinmay Rath
- <rathc@linux.ibm.com>,
-        Glenn Miles <milesg@linux.ibm.com>,
-        Paolo Bonzini
- <pbonzini@redhat.com>,
-        Nicholas Piggin <npiggin@gmail.com>, qemu-devel@nongnu.org,
-        kvm@vger.kernel.org
-Subject: Re: [PATCH] target/ppc/kvm: Fix const violation when trimming CPU
- alias suffix
-In-Reply-To: <20260504134344.38958-1-amachhiw@linux.ibm.com>
-References: <20260504134344.38958-1-amachhiw@linux.ibm.com>
-Date: Mon, 11 May 2026 17:47:45 +0530
-Message-ID: <87se7yuoly.fsf@vajain21.in.ibm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ik+Jsoeg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C90C2BCB0;
+	Mon, 11 May 2026 12:31:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778502669;
+	bh=4cj4AFpxR7VfRzsb4XVcpSOKHntygkHpeH2TRzpG76A=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Ik+Jsoeg6Q3DJuanPHz1lpNamzmd17Yr5QPCV8lyzZTR8FB/LKe+SXBQRARyF3Q6E
+	 ugGWVkLSx7xQOY2BOpClEh36pzqyfKnvC/6lBvcZNDtCRocKIM4VnXlk2Jk4QSDHY6
+	 fIhnWYrcmxdyarFsFke6+3jj7kE38dPsZIsTKtGv43mZcGCF0tH37wnju55G8vayL1
+	 l5Uj4B7pK9w4MJR2hHx6sIJg37t4GoDh7lquM0WSg6eHo3uGZWmY2DNGWjuA1YB3Pl
+	 5batzUW6ViddTwtV6B7gw53TbJHoAuZBsxoahpSezLjrNCGGgBz6IMl7VUfifq6jz+
+	 o/fVhTzgqoYeA==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id 1B24E1AC58A9; Mon, 11 May 2026 13:31:07 +0100 (BST)
+Date: Mon, 11 May 2026 21:31:07 +0900
+From: Mark Brown <broonie@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
+	Oliver Upton <oupton@kernel.org>, Dave Martin <Dave.Martin@arm.com>,
+	Fuad Tabba <tabba@google.com>, Ben Horgan <ben.horgan@arm.com>,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Eric Auger <eric.auger@redhat.com>
+Subject: Re: [PATCH v10 01/30] arm64/sysreg: Update SMIDR_EL1 to DDI0601
+ 2025-06
+Message-ID: <agHMCyu12-q9qSyI@sirena.co.uk>
+References: <20260306-kvm-arm64-sme-v10-0-43f7683a0fb7@kernel.org>
+ <20260306-kvm-arm64-sme-v10-1-43f7683a0fb7@kernel.org>
+ <af4ZYVFsbYlEfdOu@J2N7QTR9R3>
+ <af6DH_j7pyEm4HyI@sirena.co.uk>
+ <agGyAvutI1GOCQkI@J2N7QTR9R3.cambridge.arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTExMDEzNCBTYWx0ZWRfX1WVo1hcAhzi9
- GmoMSO/ZV/NIEUyE3CzTYXpJ/8bTH/FWCvB38oH+mvVuepfLIvAvX/SWoxWESdG2wRiJYOs0MU/
- rxpgvoCrlJhJPjmDjKkDApJB2Dk9rv7d39EZzWR7qe40p/F1j928wlxhbICbEQ+Gd9B+XUNU4VP
- hjiDWjyeq5CZgJi/60Y14SUybr5LNcXvFw7jfKqs8YeBAwVlWDPDlsrmNox2zHWDgJCGLXoj/Lh
- mURp63j/ql/8GkFxE+90AMm0sXvOvm5MApxvWsM+p+ozcIEnfyVIYl2aacyh07gqHBhEjF/wtpp
- 68I616DQ21cuRighZW5Z4148NCoPO0Qj+Ry00i12E/QiDfB92gcolFBuq6uZUEUbM677Cp5y5jQ
- BWAzsQ+qbwQcrKhawAAi4YMsVZblhONdcWqEm3pwNuqNm8LyVIeW1jmZwgY9vWaYwOo+XqeQMWD
- A6+dJl5E/SOvsHPqdNA==
-X-Authority-Analysis: v=2.4 cv=OaWoyBTY c=1 sm=1 tr=0 ts=6a01c8f2 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=uAbxVGIbfxUO_5tXvNgY:22 a=VnNF1IyMAAAA:8 a=T9yhNPrwiyhr9k64Qx8A:9
-X-Proofpoint-ORIG-GUID: j-v9Gxpy9f7k_K6ifG5sIEFQZ2Z7a2vc
-X-Proofpoint-GUID: 2a_VYNzaguWeEnFp87X4b2HBHanWI1TI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-11_03,2026-05-08_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 suspectscore=0 spamscore=0 clxscore=1011 bulkscore=0
- phishscore=0 lowpriorityscore=0 priorityscore=1501 impostorscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2605110134
-
-Hi Amit,
-
-Thanks for reporting this an proposing a fix. My review comments below:
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="pfCVkcJhE9mTQmhr"
+Content-Disposition: inline
+In-Reply-To: <agGyAvutI1GOCQkI@J2N7QTR9R3.cambridge.arm.com>
+X-Cookie: Truckers welcome.
 
 
-Amit Machhiwal <amachhiw@linux.ibm.com> writes:
+--pfCVkcJhE9mTQmhr
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-> GCC 16 tightens diagnostics around const correctness and now correctly
-> rejects attempts to modify strings referenced through const-qualified
-> pointers. In kvm_ppc_register_host_cpu_type(), ppc_cpu_aliases[i].model
-> is defined as const char *, but the code was using strstr() on it and
-> then modifying the returned pointer in-place to strip
-> POWERPC_CPU_TYPE_SUFFIX.
->
-> This results in a write through a pointer derived from const data,
-> triggering a build failure with GCC 16:
->
->   error: assignment discards 'const' qualifier from pointer target type [-Werror=discarded-qualifiers]
->         suffix = strstr(ppc_cpu_aliases[i].model, POWERPC_CPU_TYPE_SUFFIX);
->                ^
->
-This looks more like an aliasing issue for the pointer returned by
-g_strdup and it being used between const and non-const contexts.
+On Mon, May 11, 2026 at 11:40:02AM +0100, Mark Rutland wrote:
+> On Sat, May 09, 2026 at 09:43:11AM +0900, Mark Brown wrote:
 
+> > We're exposing the affinity fields so there's a build time issue.
 
-> Fix this by duplicating the model string into a mutable buffer using
-> g_strdup(), storing it in the alias table, and then performing the
-> suffix truncation on the mutable copy.
->
-> This preserves the existing behavior while avoiding modification of
-> const data and ensures compatibility with newer compilers.
+> What I'm asking is what is the rationale for updating these definitions?
+> e.g.
 
-I think the better approach would be to avoid modifying the value
-returned by g_strdup before its assigned to 'ppc_cpu_alias[i].model'
-struct member.
+> * Are we planning to use any of the fields in a specific way in the
+>   *host*?
 
->
-> No functional change intended.
->
-> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
-> ---
->  target/ppc/kvm.c | 6 ++++--
->  1 file changed, 4 insertions(+), 2 deletions(-)
->
-> diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
-> index 25c28ad089c6..e71e5c0117da 100644
-> --- a/target/ppc/kvm.c
-> +++ b/target/ppc/kvm.c
-> @@ -2654,10 +2654,12 @@ static int kvm_ppc_register_host_cpu_type(void)
->      dc = DEVICE_CLASS(ppc_cpu_get_family_class(pvr_pcc));
->      for (i = 0; ppc_cpu_aliases[i].alias != NULL; i++) {
->          if (g_ascii_strcasecmp(ppc_cpu_aliases[i].alias, dc->desc) == 0) {
-> +            char *model;
->              char *suffix;
->  
-> -            ppc_cpu_aliases[i].model = g_strdup(object_class_get_name(oc));
-> -            suffix = strstr(ppc_cpu_aliases[i].model, POWERPC_CPU_TYPE_SUFFIX);
-> +            model = g_strdup(object_class_get_name(oc));
-while we are at it lets also handle ENOMEM error and trickle it back to arch_kvm_init()
+> * Are we planning to use any of the fields in a specific way in the
+>   *guest*?
 
-> +            ppc_cpu_aliases[i].model = model;
-> +            suffix = strstr(model, POWERPC_CPU_TYPE_SUFFIX);
->              if (suffix) {
->                  *suffix = 0;
->              }
->
-> base-commit: ac0cc20ad2fe0b8df2e5d9458e90a095ac711ab1
-> -- 
-> 2.50.1 (Apple Git-155)
->
->
+> * Is this updated just out of habit?
 
-I have done the above proposed changes in a separate patch which i will
-post in some time.
+> Knowing the rationale would help with review, even if that rationale is
+> just "it seemed nice to use the latest".
 
--- 
-Cheers
-~ Vaibhav
+The immediate motivation for including this in the current series is the
+above.
+
+> Which people are aware?
+
+Probably a conversation best taken off list.
+
+> > > Do we expect to expose that to VMs, or just hide priorities entirely? I
+> > > suspect we probably want to require that the guest sees
+> > > SMIDR_EL1.SMPS==0, and not care about any of that.
+
+> > Currently we're not exposing priority support to guests so we don't need
+> > to worry about it yet.
+
+> Do we plan to in future?
+
+The plan to evaluate the priority support that hardware implements in
+the context of practical systems and consider if and how to expose it
+for either hosts or guests, we need to ensure we've got a good
+understanding of the system impacts and user needs.  Architecturally the
+priority support is all very implementation defined.
+
+--pfCVkcJhE9mTQmhr
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoBzAoACgkQJNaLcl1U
+h9DPQAf/SInPpjUAtj1bRvp1YePRMRh2qdaVto7ygoI98Dhsvq+5UWD7dCYSDKJt
+2aAm55eLL3hSs4fkLK4HPUnXDsBez6ZxoGQPvFtcuM74FRKPBHuKQ9GvWB6ueO08
+owAzkEPBUqaDWkHup7eQwXwlXtksLw2WaTniQaAaKLprrLIDAr97U30kaLowRMbm
+/1HPUx42NG+yEZs7O0KfEPKzl6WdApz2zxBxRgLYzgs3QHKJDiQZ9g9z1NryLgSK
++QHdfRFhN/iRUaHqgHY50zCrysR8LUXjYSjS/VbSk3c4O1m2AF0GV84j3uwAunYy
+4Y6zZmylTgiqhjTcKPAYWPsp8DKdiQ==
+=Gq3j
+-----END PGP SIGNATURE-----
+
+--pfCVkcJhE9mTQmhr--
