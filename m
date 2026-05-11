@@ -1,73 +1,45 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809C83DC4AE;
-	Mon, 11 May 2026 10:59:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FCF27442
+	for <kvm@vger.kernel.org>; Mon, 11 May 2026 11:03:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778497159; cv=none; b=MNDG+rsN0lo7xLf3c6cjX/bZ/ZnWIhua7iGmju1uVqrNq7lCCqIgD8JCkrcSIaXlwepflccwOIkW5/wVkqx6az6X3/TPe+7E08P3zsiu22aqcMJ1i6/Gz41iSTRYcDcXDfq393xcbjWekWkt4wmAx64+mw87Uz5CqPqNJ6C9zpE=
+	t=1778497418; cv=none; b=DpuzN938LC4p6aQB+oWl84KOYG/rH1p5VVTAFQsI7wwMM/vc098ONnMV6ho1JkDk0FkqAB6+uEWyDXXnk2VDFkNW/CEIDTKkuYMIqNuwBNfE9QSGRfcagmx9gwQe3m+HFvODFazl+eC9wgvfdFJ1izJ6bhhOW1Ytuly4ttvivqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778497159; c=relaxed/simple;
-	bh=gc2DxwpIUHKjBtX1JmA5H7O8FjGN02um1IzQrN/qXJw=;
+	s=arc-20240116; t=1778497418; c=relaxed/simple;
+	bh=FYqnlFCwpb8xs6n1vwK8VK227l3P1BAeHI69gKZCA54=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KpODgvvvndb1lssKs8Ij6T4BONU1MHfMrTeDW4nhma04B08BiSNL7/U2xU4S3NTDuwQbyvNijoq6pWWE3UccwW9mqjCZeW+ZXjDdE8QzLGGTCLXOnbLe+YgpUQ3IvbzlU042u+BH+Re1uuysV9ao+A/vjIIE7I8KaMWvmZX5r5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Lui/AkIR; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=tFPxsHemNnFEq8nFn1xhOQcNDqdstcltc2QfmT2iHT6qid+lQVRmNvrJmPckkF4sJsXrCPKw+oQvsQ89jZTJK5Iu5fm/JKYkjwn6lNJmBaWf6jDTZC9cFgUpKmQDmhKyRB7HjvjuWxN2y6Aist51jgVoHLZEILlsCJunw+/RBck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=r2zIRGl3; arc=none smtp.client-ip=115.124.30.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Lui/AkIR"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64ALFAhJ3864008;
-	Mon, 11 May 2026 10:59:15 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:sender:subject:to; s=pp1; bh=q5kqPWfpG2YwyRciIXrlPmu
-	/OQxVH/67G/Fbf4EwDRI=; b=Lui/AkIRbobUvpuLK5N6C2U/KLqZ2SJJig1IKPI
-	amMJedrYO+Xog0cN9pgIJaTsJDPSSyZxq4fDynUgepcB83Dioyox7BzDMGtaNo7Y
-	jKjY5h36TSSWJCosl5pl5uI/4b6EabXcJKqZMEVUBuCsvZAG6Ag7o20U93MBXel8
-	wTLtj4oWPGLa3GSlmAWuI4svS50W9vGwsrYRDNQNkXHXRauvblJIZ7YVAt5HVbo1
-	B06lJHaMla0jV6zoY1Q12pQXDfVne2CPugSAY9EYpLcOoFmHxUTnH9XlKGgrAgjG
-	Lc14faP+CxQp1v6v8bHNkfuQilwiDdKyZQWtMx6GVGNu6Sw==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e1vn4qv9b-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 May 2026 10:59:15 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64BAsbF4011225;
-	Mon, 11 May 2026 10:59:14 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e2hfg4r43-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 11 May 2026 10:59:14 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64BAxBrj43713022
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 11 May 2026 10:59:11 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id EC64320043;
-	Mon, 11 May 2026 10:59:10 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id D3F7920040;
-	Mon, 11 May 2026 10:59:10 +0000 (GMT)
-Received: from vela (unknown [9.111.77.58])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Mon, 11 May 2026 10:59:10 +0000 (GMT)
-Received: from brueckner by vela with local (Exim 4.99.1)
-	(envelope-from <brueckner@linux.ibm.com>)
-	id 1wMOLu-00000000Sk0-0BHY;
-	Mon, 11 May 2026 12:59:10 +0200
-Date: Mon, 11 May 2026 12:59:10 +0200
-From: Hendrik Brueckner <brueckner@linux.ibm.com>
-To: Eric Farman <farman@linux.ibm.com>
-Cc: Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Janosch Frank <frankja@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] KVM: s390: Fix typo in UCONTROL documentation
-Message-ID: <agG2fncs1hGjFBt8@linux.ibm.com>
-References: <20260507200836.3500368-1-farman@linux.ibm.com>
- <20260507200836.3500368-4-farman@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="r2zIRGl3"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1778497407; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=aa3sqwAfHWDJfAzPcUpQ5Gk/NxgBvpG/vZ758TZknkk=;
+	b=r2zIRGl39mpMi9hphMC6k8Ce++jCTJlvQjcGrnuzhdg5suilDlY3Vk2/QuQztlRfXmjIQN2Q6b8Lnj/cyQulSKS30sp0dQ4E37tNpmm5Ty4pTZVN5y8Da3FtKB1qRom0oU68beRrti2SEOCmWI30iyx14Luso5CGTl4vk7KvI38=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R451e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=yaoyuan@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X2iOJIK_1778497405;
+Received: from localhost(mailfrom:yaoyuan@linux.alibaba.com fp:SMTPD_---0X2iOJIK_1778497405 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 11 May 2026 19:03:26 +0800
+Date: Mon, 11 May 2026 19:03:25 +0800
+From: Yao Yuan <yaoyuan@linux.alibaba.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
+	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Will Deacon <will@kernel.org>, Sascha Bischoff <Sascha.Bischoff@arm.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Jonathan Cameron <jic23@kernel.org>, 
+	Eric Auger <eric.auger@redhat.com>, Raghavendra Rao Ananta <rananta@google.com>, 
+	David Woodhouse <dwmw@amazon.co.uk>, Maxim Levitsky <mlevitsk@redhat.com>, 
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org
+Subject: Re: [RFC PATCH] KVM: arm64: vgic: Skip vCPU trylock for pre-init
+ register access
+Message-ID: <3ijnoudux4iyddpd25yr53s2zqrslplixjqfod225ix43y4z4a@heoklijpq45f>
+References: <6564c8b967948e30a8d3f35b6ef5de79dd5feeb7.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -76,40 +48,123 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260507200836.3500368-4-farman@linux.ibm.com>
-Sender: Hendrik Brueckner <brueckner@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=BM+DalQG c=1 sm=1 tr=0 ts=6a01b683 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=gYbddNRvOjDexA9mkPUA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTExMDExNyBTYWx0ZWRfX8SeI423qxk+4
- F5j/pk4M+yKqIu4orw20E8s6cp5fkyKkKItfe8AGhXsuzfxqnyzx26Oc6l1dMVBfbXdgzzwii6w
- jx1ArhTOi77lo9R+iZgFvUAfgplb4oMiWgh7qoltVrJa70jHTnvzHzpufAfXp4tRPcqqOQNov2Z
- RmFd5zyElwY+PrEEu+dZzMJoNVNyzD9pIJ8JZtySrWkyIwxtRNnnJAt7ka0lOJFcS95wpX9uI6w
- jBaww79M1k5KwsYD+d/lou+1XRmfeFkStSLDUBlJkR9Q9K1kMCZ4Z5AGaIlvH70f25p1NFuNCPr
- ojx3b7fVX55d+TD+bTc5olGj+yXDq9kml+62vxnybOEr/SaRYwjpUiv0wkdfjsPWFcjTUO7eFZZ
- sAhwiD3BAE+mCjWe9l/rknY6eYcBxyWE6tcA4szZcMIou3OuArRn9idiHe2qvKgOMGeFfJfoDL6
- lS4zXEfyOFviP0zpf2A==
-X-Proofpoint-GUID: 0MBUeMW35Vumj6wgKIzEGGQTAKnxU5T5
-X-Proofpoint-ORIG-GUID: 0MBUeMW35Vumj6wgKIzEGGQTAKnxU5T5
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-11_03,2026-05-08_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- clxscore=1015 impostorscore=0 suspectscore=0 bulkscore=0 spamscore=0
- lowpriorityscore=0 priorityscore=1501 adultscore=0 malwarescore=0
- phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2604200000
- definitions=main-2605110117
+In-Reply-To: <6564c8b967948e30a8d3f35b6ef5de79dd5feeb7.camel@infradead.org>
 
-On Thu, May 07, 2026 at 10:08:36PM +0200, Eric Farman wrote:
-> Small typo noticed while writing the USER_OPEREXEC selftest.
-> 
-> Signed-off-by: Eric Farman <farman@linux.ibm.com>
+On Sun, May 10, 2026 at 11:11:43PM +0800, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+>
+> When creating a VM, userspace sets pre-init distributor registers such
+> as GICD_IIDR before the VGIC is initialized.
+>
+> Strictly speaking there's no reason this couldn't be done at VM creation
+> time before any vCPUs exist at all, but the design of the userspace API
+> does require vCPU0 to have been created, as the system-wide registers
+> are effectively accessed via vCPU0.
+>
+> So a VMM can't just set the IIDR at startup before spawning vCPU threads;
+> it has to be done once the vCPUs are being created.
+>
+> However, kvm_trylock_all_vcpus() makes it unreliable by causing spurious
+> -EBUSY failures if any vCPU cannot be locked. So userspace is forced to
+> create the vCPUs (well, at least vCPU0), and is then forced to have a
+> full synchronization point and quiesce them all in order to reliably set
+> the IIDR.
+>
+> To slightly reduce the pain of all this, skip the trylock when the VGIC
+> is not yet initialized. There is no need to lock the vCPUs if they can't
+> be accessing it anyway.
+>
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
 > ---
->  Documentation/virt/kvm/api.rst | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-Reviewed-by: Hendrik Brueckner <brueckner@linux.ibm.com>
+> Other options would include making it possible to set the IIDR before
+> creating any vCPUs, either by creating a new device-level attribute or
+> special-casing it not to require vCPU0 for DIST_REGS that aren't really
+> associated to a vCPU.
+>
+> Deprecating kvm_trylock_all_vcpus() and killing every user of it with
+> fire would also be a good option, perhaps... :)
+>
+>  arch/arm64/kvm/vgic/vgic-kvm-device.c | 38 ++++++++++++++++++++-------
+>  1 file changed, 29 insertions(+), 9 deletions(-)
+>
+> diff --git a/arch/arm64/kvm/vgic/vgic-kvm-device.c b/arch/arm64/kvm/vgic/vgic-kvm-device.c
+> index a96c77dccf35..e17ea9f07f5f 100644
+> --- a/arch/arm64/kvm/vgic/vgic-kvm-device.c
+> +++ b/arch/arm64/kvm/vgic/vgic-kvm-device.c
+> @@ -540,7 +540,7 @@ static int vgic_v3_attr_regs_access(struct kvm_device *dev,
+>  	struct vgic_reg_attr reg_attr;
+>  	gpa_t addr;
+>  	struct kvm_vcpu *vcpu;
+> -	bool uaccess;
+> +	bool uaccess, vcpus_locked = false;
+>  	u32 val;
+>  	int ret;
+>
+> @@ -566,18 +566,37 @@ static int vgic_v3_attr_regs_access(struct kvm_device *dev,
+>  			return -EFAULT;
+>  	}
+>
+> +	if (!vgic_initialized(dev->kvm) && !reg_allowed_pre_init(attr))
+> +		return -EBUSY;
+> +
+>  	mutex_lock(&dev->kvm->lock);
+>
+> -	if (kvm_trylock_all_vcpus(dev->kvm)) {
+> -		mutex_unlock(&dev->kvm->lock);
+> -		return -EBUSY;
+> +	/*
+> +	 * Pre-init registers (e.g. GICD_IIDR) don't need vCPU quiescence
+> +	 * since the VGIC isn't live yet.  Skip the trylock to avoid spurious
+> +	 * -EBUSY when vCPU threads happen to be running.
+> +	 */
+> +	if (vgic_initialized(dev->kvm)) {
+> +		if (kvm_trylock_all_vcpus(dev->kvm)) {
+> +			mutex_unlock(&dev->kvm->lock);
+> +			return -EBUSY;
+> +		}
+> +		vcpus_locked = true;
+>  	}
+> -
+>  	mutex_lock(&dev->kvm->arch.config_lock);
+>
+> -	if (!(vgic_initialized(dev->kvm) || reg_allowed_pre_init(attr))) {
+> -		ret = -EBUSY;
+> -		goto out;
+
+Hi David,
+
+> +	/*
+> +	 * If the VGIC becomes initialized between the above check and taking
+> +	 * config_lock, drop config_lock to lock the VCPUS.
+> +	 */
+> +	if (vgic_initialized(dev->kvm) && !vcpus_locked) {
+> +		mutex_unlock(&dev->kvm->arch.config_lock);
+> +		if (kvm_trylock_all_vcpus(dev->kvm)) {
+> +			mutex_unlock(&dev->kvm->lock);
+> +			return -EBUSY;
+> +		}
+> +		mutex_lock(&dev->kvm->arch.config_lock);
+> +		vcpus_locked = true;
+
+Question: Why not do vgic_initialized(dev->kvm) and
+reg_allowed_pre_init(attr) checking after take config_lock,
+and depends on the checking result to decide trylocak all
+vcpus or not ?
+
+>  	}
+>
+>  	switch (attr->group) {
+> @@ -612,7 +631,8 @@ static int vgic_v3_attr_regs_access(struct kvm_device *dev,
+>
+>  out:
+>  	mutex_unlock(&dev->kvm->arch.config_lock);
+> -	kvm_unlock_all_vcpus(dev->kvm);
+> +	if (vcpus_locked)
+> +		kvm_unlock_all_vcpus(dev->kvm);
+>  	mutex_unlock(&dev->kvm->lock);
+>
+>  	if (!ret && uaccess && !is_write) {
+> --
+> 2.43.0
+>
+>
