@@ -1,201 +1,166 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f49.google.com (mail-dl1-f49.google.com [74.125.82.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2C429D287;
-	Mon, 11 May 2026 18:12:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682694B8DC7
+	for <kvm@vger.kernel.org>; Mon, 11 May 2026 18:45:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778523174; cv=none; b=orbc+I68V/itDY44WJjju6sbn0fGLfhcN+643aEBFnvEJUFVQS1J1ao1Xs65/MMmfsTHpqt87VKShOj3+Z8IxPKySXRAt5xBXLFweanJNmN9agArUVYO+M1XO2MeVi3UOIO3f6jmfQrJafLUMBVtsiUE5MGJG5nWs9o7GNCAoQQ=
+	t=1778525134; cv=none; b=GAKopp8Q0Wi8sc4sU5wcXWufMCjIyiJLBRfMahkIGfuiNwqjhTJkkHIIaFLTgJwl5vt5keN/11YF7M5omddzany3adsFNim41eqidCASdsa00cCrnR8pc9tGxAgqMdCgMv182l9KwUao4Kus3a4S1TuIzh/1yZQJZ1pkhZ8fXBY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778523174; c=relaxed/simple;
-	bh=7CKwJxI3bFLm3PFuh9AaFsTZTrTKlPGrPO8xNlZ51xA=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=IGy2raaSz2m7bu+wjtEz8Hz765rPooY5FssYoJ9s6kkHzYr/P9L/7SwqVT5+X/mjZ0kJZATLTUjCRq/m1IKpfFD0cz/qBK6FuST0k65WrnCa/7kLq+2hUxPgaW8sJ+b1EP4MctjMwkjVmMHgF0F1EZhNkpKv+WxEjBhllNBjyGk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=dzRWjlmj; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1778525134; c=relaxed/simple;
+	bh=EfTIbAWmLDFDyvNFwjeqvGW6T6qTRBjvePBREiQPCEM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=T7lq28CHuzO/XzEvzXCMwrRAHl+7O9dwULDW/Ee9YjKr0W46azm7DC6lDRd627hdfh7F8XhHiC+sqgrtmTZWPBxh4igAapHZml1fuPiE33+PPjNsnZzG596CI4U6PBurrgJ2kk/xA2f8beu7eB1qRdQ8vKNv6H7CNGHUKCsZeCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rHhxcRQA; arc=none smtp.client-ip=74.125.82.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="dzRWjlmj"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=7CKwJxI3bFLm3PFuh9AaFsTZTrTKlPGrPO8xNlZ51xA=; b=dzRWjlmj2KmbQuiyCKcsh6RceF
-	kcbEiOSX3NxMRfU9rbYVG/uuULEPj/xowMa/YSyMmjB3vyBZH549WFyce/jvR3LMtW7VVCe7JzhQi
-	ogM9DY2YhM6WgXaLyfU90yuJLt2r8bJsdKGy2Wv+vAAA+hGUbfpRwXmOJep7lGgfGNsNbg+iNpmbR
-	ptjoyEv7VY5nK25EQZ0XGv1R4VmD2re928LiN7lT/XhjmVMTkMtuxVd+htcQcakfzuTF8XF3lt84B
-	kurwj9CTiCIMUFOUfPUI7D1117mrcxeYhvayMVIkR8KpilPZh2mrig3Y9vMyBtxywVFjsOSvT0t5S
-	KupScbkQ==;
-Received: from 54-240-197-239.amazon.com ([54.240.197.239] helo=edge-cache-179.e-lhr50.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wMV7P-00000008ady-0Mnz;
-	Mon, 11 May 2026 18:12:39 +0000
-Message-ID: <177d33b213c71c965da8ccf43f042264656dc99d.camel@infradead.org>
-Subject: Re: [PATCH 4/7] KVM: x86/xen: Remove unnecessary irqsave from GPC
- lock usage in xen.c
-From: David Woodhouse <dwmw2@infradead.org>
-To: Sean Christopherson <seanjc@google.com>, "Griffoul, Fred"
-	 <fgriffo@amazon.com>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter
- Anvin" <hpa@zytor.com>, Paul Durrant <paul@xen.org>, Peter Zijlstra
- <peterz@infradead.org>, Will Deacon <will@kernel.org>, Boqun Feng
- <boqun@kernel.org>, Waiman Long <longman@redhat.com>, Sebastian Andrzej
- Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org,  linux-rt-devel@lists.linux.dev, Mauricio
- Faria de Oliveira <mfo@igalia.com>,  kernel-dev@igalia.com,
- syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com
-Date: Mon, 11 May 2026 19:12:37 +0100
-In-Reply-To: <agIWbNDUgrpmD4VT@google.com>
-References: <20260508181717.3230988-1-dwmw2@infradead.org>
-	 <20260508181717.3230988-5-dwmw2@infradead.org>
-	 <agII-2_f_gYMdPzL@google.com>
-	 <28709d77abbecdd156c830fbef3c706431d2082a.camel@infradead.org>
-	 <agIWbNDUgrpmD4VT@google.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-HzePcSBQrEs8fgoH568w"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rHhxcRQA"
+Received: by mail-dl1-f49.google.com with SMTP id a92af1059eb24-132cccd3d77so1096c88.1
+        for <kvm@vger.kernel.org>; Mon, 11 May 2026 11:45:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778525131; x=1779129931; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=P4ZVeg+YkmtR9q/2zoKbQ9G/S4IeJPqOrtHp4fCMixU=;
+        b=rHhxcRQAwU1H5iv0XPlL0r5zvNpLhlL+HQ6Ky21p+eirtU8ObwDPgu6RIifuzftslh
+         mYNrvNjvRrMN8BGOUYVUypUxFSKQTCfR9IP74AXSouKo9Ikmdsxg0bXLs+BJIYWZA4jC
+         gDffYLps9k47LlnLx/q8oGJsqlCdi9U/ftNkWDnw0Xit+AFbjLrRX+ro4CHjY2ITatYa
+         Vhq4sDICYtrZO407UEgOHPCmrngQ1D4td8cm3EKY7aZ6fVcoVzTmqwBzia18KKnWho04
+         96CIbD54uNqqutgbbDOLxIaRpvT7mOqpeekkcMCFfE4MJuSi/6AXl+j8E8+jhhq1l+/p
+         nCww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778525131; x=1779129931;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=P4ZVeg+YkmtR9q/2zoKbQ9G/S4IeJPqOrtHp4fCMixU=;
+        b=A1Qgna5do5dHHlu89B7ZejoRf+EXU5zPAvGEFeTqy0xhZKEW2UujBsVikUhXaMxeN5
+         nBZ7LlIMTfkH6Xk/U1G/Ht0s1lpwWakMSHKqAwkz6I0d1ruRggucv1Y4o1xzAb5zFQSG
+         LPpfwcrnASyy3g3UmvMm52TSKbk5NXAePBHKpi4C+GD8eTGcPelYA+7X7P1cwW793p/C
+         vwWSDAhurZKBmGELdxRdW8WAz+hGHOnoKqjdCqhSnOO8GukJeQU06V38IRPlHvueHdIi
+         /mPIvCFRz5hI5Fj/TQTm7YUuUfuMvkXBiRjdDa6ejQYO2y58KCPNSlaRq+2r1BuYkKWh
+         aDZg==
+X-Forwarded-Encrypted: i=1; AFNElJ9ozmILUWolzstOG4BGMrz+KXj1PShTpZmiECnfaHcl7uzKO4yxsrdoI3PkADrPzQWVh+4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMJZrz3Klp3Dumqe3NSiJ7B4m8s04gmF7v4cG2beekQepP28Sn
+	PgB4jcC63ho+c1bA30tPh5YM33vfOjRWSgkKDrBrGvVWBqYo0rAyRX2HXelj+EelDA==
+X-Gm-Gg: Acq92OEbegK0IN0Ej4opW4fM7JXNlZiISIDZzt/3/vqZDSI6NaLzH3hPkSuvkhm2hRN
+	xYOeh95b8lX8385Q+oT/VvycOt84hM1o6lLqYEfhLCr7EWwrunfHcBB2YYOJ+/FlJVLChlZxsV/
+	2xcoSfpsKLtVNxK8Z/4zn7MDfCcsd+SD1kszlPuDxxLBDcgUk407fNerRXqf1TpVEXVXOCqmy1c
+	Pxikh2tjiGfVOGWQzFYFD697D4SFzwp15e2qNdqhvzRYkDxf56HBVTeXS8BV4E76RfXdD1WDz0v
+	Xygb6TwZZ6XlZGmoodnuTaLpQeIxrVt3KLST1ssDDD1K4cxhx3GUiRUN5Jn7aAJThRpVC/PTkOb
+	vU/crzQhl2+l9KcLVDHczyK1AnSEBqpEAH+/iER428sSFG261Tpe7i68oHO6LC4pwcShJiepSfy
+	W+kbp97vOCScAXcZF4TIfsK7nTj39p2akv9YmMkpRC878o9ZbYqd/X3AQGACcRpCcC2KDqXw==
+X-Received: by 2002:a05:7022:b9c:b0:12a:77e6:68d9 with SMTP id a92af1059eb24-1333e4e41dcmr55502c88.16.1778525130642;
+        Mon, 11 May 2026 11:45:30 -0700 (PDT)
+Received: from google.com (153.46.83.34.bc.googleusercontent.com. [34.83.46.153])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f91004b6a2sm13056216eec.0.2026.05.11.11.45.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 May 2026 11:45:30 -0700 (PDT)
+Date: Mon, 11 May 2026 18:45:26 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Pranjal Shrivastava <praan@google.com>, 
+	Vipin Sharma <vipinsh@google.com>, YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH v2 11/16] iommu/vt-d: preserve PASID table of preserved
+ device
+Message-ID: <agIGEyL12Djj2clV@google.com>
+References: <20260427175633.1978233-1-skhawaja@google.com>
+ <20260427175633.1978233-12-skhawaja@google.com>
+ <666d749e-c1fd-44e1-bfe8-681ba04862e0@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <666d749e-c1fd-44e1-bfe8-681ba04862e0@linux.intel.com>
 
+On Fri, May 08, 2026 at 02:05:58PM +0800, Baolu Lu wrote:
+>On 4/28/26 01:56, Samiullah Khawaja wrote:
+>>In scalable mode the PASID table is used to fetch the io page tables.
+>>Preserve and restore the PASID table of the preserved devices.
+>>
+>>Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
+>>---
+>>  drivers/iommu/intel/iommu.c      |   5 +-
+>>  drivers/iommu/intel/iommu.h      |  12 +++
+>>  drivers/iommu/intel/liveupdate.c | 141 +++++++++++++++++++++++++++++++
+>>  drivers/iommu/intel/pasid.c      |   7 +-
+>>  drivers/iommu/intel/pasid.h      |   9 ++
+>>  include/linux/kho/abi/iommu.h    |  13 +++
+>>  6 files changed, 184 insertions(+), 3 deletions(-)
+>>
 
---=-HzePcSBQrEs8fgoH568w
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+[snip]
+>>+
+>>+void pasid_cleanup_preserved_table(struct device *dev)
+>>+{
+>>+	struct pasid_table *pasid_table;
+>>+	struct pasid_dir_entry *dir;
+>>+	struct pasid_entry *table;
+>>+	size_t dir_size;
+>>+
+>>+	pasid_table = intel_pasid_get_table(dev);
+>>+	if (!pasid_table)
+>>+		return;
+>>+
+>>+	dir = pasid_table->table;
+>>+	table = get_pasid_table_from_pde(&dir[0]);
+>>+	if (!table)
+>>+		return;
+>>+
+>>+	/* Clear everything except the first entry in table. */
+>>+	memset(&table[1], 0, SZ_4K - sizeof(*table));
+>>+
+>>+	/* Use the folio order to calculate the size of Pasid Directory */
+>>+	dir_size = (1 << (folio_order(virt_to_folio(dir)) + PAGE_SHIFT));
+>>+
+>>+	/* Clear everything except the first entry in directory */
+>>+	memset(&dir[1], 0, dir_size - sizeof(struct pasid_dir_entry));
+>>+
+>>+	clflush_cache_range(&table[0], SZ_4K);
+>>+	clflush_cache_range(&dir[0], dir_size);
+>>+}
+>
+>The PASID table is currently active and in use by the hardware. Clearing
+>the entries without the necessary hardware cache invalidation is buggy.
+>
+>It seems this manual clearing is a workaround because PASID domain
+>preservation isn't supported yet. If so, rather than clearing the table
+>blindly, the code should verify if any PASIDs (other than
+>IOMMU_NO_PASID) are actually in use. If there are, the preserve callback
+>should return an error.
 
-On Mon, 2026-05-11 at 10:48 -0700, Sean Christopherson wrote:
-> On Mon, May 11, 2026, David Woodhouse wrote:
-> > On Mon, 2026-05-11 at 09:51 -0700, Sean Christopherson wrote:
-> > > On Fri, May 08, 2026, David Woodhouse wrote:
-> > > > From: David Woodhouse <dwmw@amazon.co.uk>
-> > > >=20
-> > > > Now that the hardirq path (xen_timer_callback and set_evtchn_fast) =
-uses
-> > > > read_trylock() instead of read_lock_irqsave(), the remaining GPC lo=
-ck
-> > > > users in xen.c are only called from process context (vcpu_run, ioct=
-ls).
-> > > > There is no need to disable interrupts to prevent concurrent access=
- from
-> > > > a hardirq user, since the hardirq path no longer takes the lock.
-> > >=20
-> > > No longer _waits_ on the lock, correct?=C2=A0 I.e. the hardirq path c=
-an still take the
-> > > lock, but only ever does so using trylock.
-> >=20
-> > Indeed so. Want me to fix that?
->=20
-> Nah, at least not yet.=C2=A0 I'm in the process of wrapping my head aroun=
-d all of the
-> in-flight gpc series (namely yours and Fred's), just wanted to make sure =
-I wasn't
-> missing something.
+Thanks for looking into this, I agree and will remove the clearing logic
+here.
 
-I think Fred has a few performance fixes and is due to send another
-version once he can find the cycles to do so.
+Yes, we do this check in iommufd, as it is the dma owner of the device,
+and only DMA owned devices are allowed to be preserved.
 
-My assumption (without actually *talking* to Fred about it) was that he
-would be able to rebase fairly trivially on top of this series.
+During preservation iommufd returns an error if the device has PASID
+(non NO_PASID) attachments. And once the device is preserved, any PASID
+attachments are not allowed until the device is unpreserved.
 
---=-HzePcSBQrEs8fgoH568w
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+I think I will make this check robust by moving it into core and use
+pasid_array. It will require some plumbing as pasid_array exists in
+iommu.c file.
+>
+>Or anything I overlooked here?
+>
+>Thanks,
+>baolu
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUxMTE4MTIz
-N1owLwYJKoZIhvcNAQkEMSIEIH9gP1GfphwNu9bnXnD5uUoxvn1rb+cKWBLhymQMDCBUMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAtMWUKSgEk5Wj
-p++pZB+EXzx0Gn8jvmp0JMA9QrS/DwOegLufT4XMi+ER8L6F/zTuevvkB4G+zgNKhw7K7tSvSGIu
-j9pM7m7gpzWjIoKJrxVFlLS8EqKHoZmtYv9BB6rygnhE77PgSvrlw3yv33fsKCHpfoJYlMZ+k5f5
-eICB91TVLfQbYtuyDFLCJxHjb1xwooTw3KwNOIf8wN1Y6mvlTJTOR8rHn1hid4rUBpJRdFFpN7K2
-h7tYyLqiUlxqZkVyQW/XdxWgQz/T72tXniZ6L3AtcTcRVhh7CrXmAj6RA+fdA4wsZMOVEKkFFf2M
-r+gXgJD6Yna3g+E3J0xEhrmfBRSi3IdB34Bw65R5vnyy2Www7wZDLVg3aD/fJUlhBdH0/nArNent
-u7HWyb/3eP8aJT9ihrWHecLvneMwGu3aoitW5eVeb0+QuoYZiPm0iIJXnrkNR/frtDNLVcqzbP8i
-YTsDV27OGQSpN+Dk100p5/wYW8mM/U1WAAOiS3ZqCAFCSrOJ1Nr+6VGSeT65IYWriLp+6deqSynV
-3Yaa9Fg1ZXk8DBkA+q1HLGbMvQ7WhtUib7BN198id3r+2jtHyb5PNCHzfIBJQhlvOI/7b8l6a1Yo
-lrE+LC7D0m/UB6Bv35tXIa3Od+oh1hlc3gAlziDnJEPUcbY5EOD6JEOaGEJ7hDwAAAAAAAA=
-
-
---=-HzePcSBQrEs8fgoH568w--
+Thanks,
+Sami
