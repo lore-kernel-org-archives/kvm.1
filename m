@@ -1,171 +1,176 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D1F6402435
-	for <kvm@vger.kernel.org>; Mon, 11 May 2026 15:56:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778515017; cv=none; b=h24FH7V1EzyqVLB6UVBCLSsosw0V3LZO9kzD5n/LoqdwdNdOk45nC43xa3qO13ceAYYxz7WpHfMQW8nkcpuDODz4ZshLmdKVeNLsbG36B6SecJNqXHCAZ2yj96AFQlYphp6gUCQYf/2F+qmTmZINB/r9S3bvnO2jT0VyMelVbqI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778515017; c=relaxed/simple;
-	bh=t7ET0rqXtYU0UPQXZE9zBjWgK/qB8ssf7YiQJM1pUe8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=M4apDXE96XMQJRIYzeieOTEzseirONIXDTBW3SBX6TDAVWbxfHRHzV3TB1YBHCuukYXd9sqxH/OE04UbXk4Ji5cL3uR1OKFK215eZAPqoD05Hr2XOvzaibC60sZiHyjJ3JHqcqhs+/m8yZqcZDj9tTs1hdLUWKMTARb119+vKas=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZNnkr7R4; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=qzW4s5wn; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC9293CF660
+	for <kvm@vger.kernel.org>; Mon, 11 May 2026 16:12:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778515967; cv=pass; b=R3Uw6k/l+f/ODLGf3nj3p7/nSO1vhst3ccOaDz/RBP2YHfXAz2ANOYmM7QVod8FxTrjTQOneTec/x5KrtoEu+Ps8gZm4Pwb075L1GHtdeJbvNzDMm8yGb6Jy8EMjO9TuIR2VNb4PweR0JLx7ekmIsrCHtVVDTyWTCrLb0VJXN6o=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778515967; c=relaxed/simple;
+	bh=ErZWr3wkhTCS0rgDSDnZN3J2yBKYi0K22iPd6Jyuuyw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TzeT1URllXIi1llz3ZrBsgt92gvDOunAnHF31bA+sWFWPFpZ+ONB71HAW7h/6dF7W/gK15MY+dpPgSSxTl9hNzTEt+Q0onqQ6rd8qWckkC4lS+VtnGdBLCFhKUD+mND+rS2yLbG8aYhKdNgCQsaLKRfu21raINhuVOaGw1/fn5E=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BsY3xL7K; arc=pass smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZNnkr7R4";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="qzW4s5wn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778515015;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Mqh8HANASsg1dE58rfi+aWvc9+OWR8qHCZSV5rhehOc=;
-	b=ZNnkr7R4Xv7+hmqGjPhucsvV2xvhDukqZZNPEZ5CZhL/ZPICFTO5btrp9ZOAxjPGzPPo56
-	GcoVosrzTZIU/4+H6hr0c6hfaoEg82MQNPaHj0dvzP0FmDcnUet9KVQqr5ckaLQIPXTIiL
-	IHjMHfihSF/jNfsWnlxMtDJ5NBoecxE=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-351-GtRDMzQNOeCDLpQfOYm-6Q-1; Mon, 11 May 2026 11:56:53 -0400
-X-MC-Unique: GtRDMzQNOeCDLpQfOYm-6Q-1
-X-Mimecast-MFC-AGG-ID: GtRDMzQNOeCDLpQfOYm-6Q_1778515013
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-48e86e6c6b7so5628985e9.1
-        for <kvm@vger.kernel.org>; Mon, 11 May 2026 08:56:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BsY3xL7K"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-50e61648f10so1561cf.1
+        for <kvm@vger.kernel.org>; Mon, 11 May 2026 09:12:44 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778515964; cv=none;
+        d=google.com; s=arc-20240605;
+        b=JDZKW6oPAgiKt/886bUweFUIfUNzYylMEwwSQ5CTw5a3ekfncljCLZFRrfPYhX+0vg
+         6Oxcz+Cq2oeOmICgLfk0vfoCICEEyw2sqCIikbsTE04Dye8nDuzumJJX5Q9cWKsd1GSl
+         308zS7mnLvYvMLJVaaMP8Ka/6rpJuNn4mQHbU7fEFPUX9zdifRb0XpH4fjGDHda9/MwL
+         tbPSj2uJhFENnGx9jFEm2TZmnC90i60PtNLkx0R7SWrh0cDvQ28SesP7YPUSd9e42dft
+         /QtXJYa9+0NEwjQ0bQLWQkyEjm60G2Kc9bMvFiBoInDsaV71yqp1bny/UYh6LzimdfvF
+         8B2Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=4rNfhoFx9xojUGq9ciF+uUtzvbjXhUhlWCaPwy7RkMg=;
+        fh=+FU6X/LPcxLErLrq9MDiZ1DwjROzV5NlzUkF4Oz+nYM=;
+        b=XSiNkuaurC6bYgK5st1t1FQXN2bFC5MWkQ1LYxY2C+O9PZp2dkAicxievtcKG997LN
+         NcrYy0KCKZPTMA+pdauCMtmtZeOpx5ICAtAe9d5Buboets87kKcCgh7eSYRyr1y1F1w0
+         Uwp6UXf+3s+ovlqlG5nKFYdWJotFMtjX/LZDGYAZgJbMJXCBj9EMQivrHRX/WXTXYjR7
+         MIbYkfxGoyVIN9hFIlvZOglQm6JPTxCCUqECxAlznH+aAdO4VSWNwuSFOCmdfzIK+kW6
+         gZXgTk6ka+clc96+gUSwvPKUXkF5Gn7ijHuiSGas7PwcAN9BVXPxl8FpXnilqjyxdHfM
+         pG7Q==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778515013; x=1779119813; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Mqh8HANASsg1dE58rfi+aWvc9+OWR8qHCZSV5rhehOc=;
-        b=qzW4s5wnUwhQ30VLWLHFtq5hINYu6kplsupgMOvEnLS/YYGmWg9P9QbXtnw78pcg6d
-         hczTl6HOxC2G4aj1nj1Omq7eOExJzG1f4e6QpwuLcfRFUEWjjEkh2huQd7Bx+KjkH+51
-         7KINkTu2nKjDi3C0Il+W6bXlDZQvU18vGP3CcIZcZUtXWv6g5SPTAIYfqAmHSs7yse4R
-         M1xdPh3FKDaVYYUULayLN5qc1Oswx3emVQKA2BffDiE3hZAwNbaLDDWoWkkBiBF5llm1
-         /dbDlKAG4+kaWU9r55dz/7+8liA5/R8CbaRjhZOOsDleRnocSizCv0CxwwXw+oEPQOyd
-         pe6Q==
+        d=google.com; s=20251104; t=1778515964; x=1779120764; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4rNfhoFx9xojUGq9ciF+uUtzvbjXhUhlWCaPwy7RkMg=;
+        b=BsY3xL7KNfed7qCjiaWgQLxa2WsUD/BoD8spWpMVUUT5VXadwaz9ZuXIYNIpIwoqur
+         iWJTHcp05rm+mM1pGMf/Xq1dqr+WyMRFUxj3EnPsalldJElb1XGtLgCUd6s/naeC+lAQ
+         FuW5oQZq6/BoGFvZPjwonfc7ntsNg0IH13GXVCLosTq9B5RL25ynDc9Vx8faGkiEI7j+
+         ICJ814Hr0mBcsiITLa6hE6HRxrmw4Zv2ocOnUVImssZIP0lcANa5zvkRB5DHpHnRZ+MI
+         kAVGA9ceDLrH3fV8N3yCFl77hKZi2QJv6Rn63SwEvho7yQX+gzt+bLM1EZTN73C/THW3
+         Zc6A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778515013; x=1779119813;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Mqh8HANASsg1dE58rfi+aWvc9+OWR8qHCZSV5rhehOc=;
-        b=Q0GBXIp/3RuXGBD1MvuaPl3m+vKociA4YpwKFR6jZJRo4dF1MXqHsBvpXyb01V2UfP
-         WwovxJsys5QkJn168xbCkwLGnfX99FXx/uRsut3EsYiCftb20hpEb5e5lAovIWrfgWuu
-         OApoUWHc92wyD4iowMo+YglF6ha2Bl0vZkuuelyqDun8yA72RZWvc4A5kHKkZDqT9FIx
-         BiiOFyJr9u7WuE4oR0XEMMWSNJ726FGmuCa1wHVKR1tZQ27d/scVftogJhjtNOZbZHiH
-         svU/GlXq4i48zVNXhd1CyLP5huFpY2skOz+FwcRmAsLwgkEo/VebYFJSxzm9aP0WfbqI
-         Q90w==
-X-Forwarded-Encrypted: i=1; AFNElJ8B8zTzc7f0LiXlmv4jn/YjttJwRecZR3JT8mU9WIs2ud32QeVbl+9v+vnXEIf4e+gDwBQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMNIRAowd36Wk+sQIzXp3x/G0WskKukw9/CAC4UKAa7T9grE7R
-	+1GPLi6KeP22Ss7RLLDaBekFP2vFDBgjn58m3JkMdhaaobDstlGFoOXPX8GQWLlxIKV9JpTKABp
-	LIrFS8SxOIk+upSBdwu49h15k2bTNDcv910ecABiuyNccUuyWiZB+VA==
-X-Gm-Gg: Acq92OHO4p7gnU7eWBOgqAoq29NmxEIYaUjVA1WUo7v1uuz1t3GMm9dF3vVmZvtaRv2
-	Fs2k0nJJz8dAKqQ01Fn9bTduPU7iP3aQWDz0eTAiAC+R4z21dp1mwVElOpnu0g0X8UaX8+eYiXL
-	UzyOojPKON4tjNQeDTO0ii88XRn1qL5YXC9xIjxzZ2KezIedDvPXhZ8fhYjOB27Sh+dGEZfEafA
-	oPNjE94h2anBf7sWFjdZeBGIJgfU5NfnZTGrlwMGldGdu1frl86OkGvkZH48QO6jyn+zF+qbaLz
-	rozWq2uha7pkZgDQv79Rfu+7vW2Tfuq9Xn7wQ1UltVNyny5swmWgti6YdVpCIw09/k7UEo073WH
-	gV55leCLB9XMwEdkrbAptRxia5WEHTrMLGsG1dB/IhDU8qr6iTZgb83eFNKEywJrirDcZlrH4eY
-	iQCUpax5kP
-X-Received: by 2002:a05:600c:47d3:b0:48d:c0a:3813 with SMTP id 5b1f17b1804b1-48e51e0bb62mr256258155e9.3.1778515012660;
-        Mon, 11 May 2026 08:56:52 -0700 (PDT)
-X-Received: by 2002:a05:600c:47d3:b0:48d:c0a:3813 with SMTP id 5b1f17b1804b1-48e51e0bb62mr256257845e9.3.1778515012100;
-        Mon, 11 May 2026 08:56:52 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-16-204-231.retail.telecomitalia.it. [87.16.204.231])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e6daf911asm100865105e9.5.2026.05.11.08.56.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 08:56:51 -0700 (PDT)
-Date: Mon, 11 May 2026 17:56:41 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Polina Vishneva <polina.vishneva@virtuozzo.com>
-Cc: linux-kernel@vger.kernel.org, netdev@vger.kernel.org, 
-	virtualization@lists.linux.dev, kvm@vger.kernel.org, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Jason Wang <jasowang@redhat.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
-	"Denis V . Lunev" <den@openvz.org>
-Subject: Re: [PATCH] vhost/vsock: Refuse the connection immediately when
- guest isn't ready
-Message-ID: <agH3WvJtAsQ_5zx4@sgarzare-redhat>
-References: <20260511145610.413210-1-polina.vishneva@virtuozzo.com>
+        d=1e100.net; s=20251104; t=1778515964; x=1779120764;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=4rNfhoFx9xojUGq9ciF+uUtzvbjXhUhlWCaPwy7RkMg=;
+        b=UwEF/pzQHkEdXHWFosNdBdtGIzY0KWG7MxbG52ja6v7aQ/q66NZ9eNtnN2wiojfIhz
+         XK9bdYghcf9Nteh5KnQwaZEYH0OfoifjkyGe87mQHNXDW4npQVokrBdmtO2mvCElmb5O
+         H6l18MRvNvK2TkSbLv1oiZbEfMluFAOUqnt+U2nLg6c8K7Qm274KnqC4dkBROLv5fJHz
+         IyWbC6Y49IGdTHYtWJibVYkcHEflHJVzkS6V10yp08JQDITXdE0PB3k3isQdYrB9qU/g
+         H+EuOp7c0dXHwWDTOFZvj2VZJ4AWnhN67JsP0KFGm7HgBCqKk6smnE2+T5emeSLA86fU
+         gErA==
+X-Forwarded-Encrypted: i=1; AFNElJ+Zbn716GliTBFQpWRp8Ag9RgZhxHp1R0zGb4MVHrPIyrRe6AnZqWYev/WbofWpwcuzfLk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/6mxqB1vvgfiA5Gp+4u2HqVT5UuN5FV8LwDe9A6ekM7bCO4BK
+	LvQz2GeUEC31ZaX+bi07hxT/EjMkwFtu4bEetbPPNjhwI96UQUm8nqAmB22sq4ElAkrwMJIYsFr
+	sGYuAD2LXqNeYTTdfvL8l2Qsnv8ArROvUCfF9ZB4=
+X-Gm-Gg: Acq92OFKsgawVAlh04zEVtaFewga35q3YacVBYu2eZKqpUoegIdCMDgROmafi5NgMhk
+	3ftglcrLv/R2z8kMt66vkMdVja1Wbm1Fv9O9W5R/71t6rdQlDxVFcZM3wyZgRUeAkqhvh+FVquZ
+	LKQ/y5oftdBgpi/VWlbBQa7nG6srYMqIgAgG+rQgeDbfc5vx+DRqDOvONWKHjnK6BzjOo18Iisk
+	81UVpQpjdz05zKCto5Not/kSXo/JsWmd049NTltq5fIWeYu6p0gIRHR3wQ0aywvT2zXaT4mZnHW
+	Y48a1VS43txsow==
+X-Received: by 2002:a05:622a:4c12:b0:50f:bea3:9485 with SMTP id
+ d75a77b69052e-5149f2aa66amr32297791cf.2.1778515962359; Mon, 11 May 2026
+ 09:12:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260511145610.413210-1-polina.vishneva@virtuozzo.com>
+References: <20260414230943.41198-1-jrhilke@google.com> <20260414230943.41198-2-jrhilke@google.com>
+ <af4oqOB-zXgVgkLf@google.com> <CAAdrzjtvG2XrzjxFqGPOyiFL0QWeg-cY3TMdsj77ZdLivO8R1g@mail.gmail.com>
+ <af5hqRVaI04EG019@google.com> <CALzav=fhgJwdk512Xzr94woo_7JsOwNNZs-E43HOP6+e0sda0A@mail.gmail.com>
+In-Reply-To: <CALzav=fhgJwdk512Xzr94woo_7JsOwNNZs-E43HOP6+e0sda0A@mail.gmail.com>
+From: Josh Hilke <jrhilke@google.com>
+Date: Mon, 11 May 2026 09:12:29 -0700
+X-Gm-Features: AVHnY4JKv7wXd1j7JX5SdHHGr0ywcROEE4fu7h3gMwCdMq91MHBf3ViFowG1qpQ
+Message-ID: <CAAdrzju9p4tcTXh6OFJtwnphUAM__=CG0qbTaNa3gMxgLFMiag@mail.gmail.com>
+Subject: Re: [PATCH v2 1/1] vfio: selftests: Find devices that have VFIO
+ selftest drivers
+To: David Matlack <dmatlack@google.com>
+Cc: Sean Christopherson <seanjc@google.com>, Alex Williamson <alex@shazbot.org>, 
+	Vipin Sharma <vipinsh@google.com>, Raghavendra Rao Ananta <rananta@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 11, 2026 at 04:56:10PM +0200, Polina Vishneva wrote:
->From: "Denis V. Lunev" <den@openvz.org>
+On Fri, May 8, 2026 at 3:50=E2=80=AFPM David Matlack <dmatlack@google.com> =
+wrote:
 >
->When the host initiates an AF_VSOCK connect() to a guest that has not
->yet loaded the virtio-vsock transport (i.e. still booting), the caller
->blocks for VSOCK_DEFAULT_CONNECT_TIMEOUT (2 seconds), because
->vhost_transport_do_send_pkt() silently exits when
->vhost_vq_get_backend(vq) returns NULL.
+> On Fri, May 8, 2026 at 3:20=E2=80=AFPM Sean Christopherson <seanjc@google=
+.com> wrote:
+> >
+> > On Fri, May 08, 2026, Josh Hilke wrote:
+> > > On Fri, May 8, 2026 at 11:17=E2=80=AFAM Sean Christopherson <seanjc@g=
+oogle.com> wrote:
+> > > >
+> > > > On Tue, Apr 14, 2026, Josh Hilke wrote:
+> > > > > +# Print the segment:bus:device.function numbers of PCI devices t=
+hat can be used
+> > > > > +# to run VFIO selftests.
+> > > > > +function main() {
+> > > > > +     local vendor_device_id
+> > > > > +
+> > > > > +     for vendor_device_id in "${DEVICES[@]}"; do
+> > > > > +             lspci -D -d "${vendor_device_id}" | awk '{print $1}=
+'
+> > > >
+> > > > For ignorant people like me, it would be helpful to capture what de=
+vice was actually
+> > > > found.  I mean, I don't necessarily know exactly what these devices=
+ do, but as the
+> > > > list grows, at least having a general sense of what device I'm goin=
+g to be feeding
+> > > > into VFIO would be helpful.
+> > > >
+> > >
+> > > Sure I can do that.
+> > >
+> > > > # ./devices.sh
+> > > > Intel SPR DSA (8086:0b25) Device IDs:
+> > > > 0000:6a:01.0
+> > > > 0000:6f:01.0
+> > > > 0000:74:01.0
+> > > > 0000:79:01.0
+> > > > 0000:e7:01.0
+> > > > 0000:ec:01.0
+> > > > 0000:f1:01.0
+> > > > 0000:f6:01.0
+> > >
+> > > How about a "-v" (verbose) option which prints the device name
+> > > alongside the BDF?
+> > > Works for me.
+> >
+> > > $ ./list_devices.sh -v
+> > > 0000:6a:01.0 Intel SPR DSA (8086:0b25)
+> > > 0000:6f:01.0 Intel SPR DSA (8086:0b25)
+> >
+> > Maybe add a dash to visually separate things?  E.g.
+> >
+> >   0000:6a:01.0 - Intel SPR DSA (8086:0b25)
+> >
+> > > This approach preserves the ability to pipe the script output into
+> > > /tools/testing/selftests/vfio/scripts/setup.sh to automate binding th=
+e
+> > > devices to VFIO by excluding the -v arg since the setup script expect=
+s
+> > > a list of BDFs.
+> >
+> > Alternatively, -q for quiet?  Or:
+> >
+> >   ./devices.sh | cut -f 1 -d ' ' | setup.sh
+> >
+> > Or have setup.h do the cutting?  I'm a-ok with a -v, but if the script =
+is mostly
+> > going to be run by humans (no idea if this is true), it seems like it s=
+hould use
+> > the more verbose version by default.
+>
+> Let's do -q. That makes the default (no arguments) usable by humans.
+> For scripting, it's easy enough to pass in -q.
 
-Can SO_VM_SOCKETS_CONNECT_TIMEOUT helps on this?
-
->
->If the guest doesn't start listening within this timeout, connect()
->returns ETIMEDOUT.
->
->This delay is usually pointless and it doesn't well align with our
->behavior at other initialization stages: for example, if a connection is
->attempted when the guest driver is already loaded, but when nothing is
->listening yet, it returns ECONNRESET immediately without any wait.
->
->Fix this by checking the RX virtqueue backend in
->vhost_transport_send_pkt() before queuing. If the backend is NULL,
->return -ECONNREFUSED immediately.
->
->Signed-off-by: Denis V. Lunev <den@openvz.org>
->Co-developed-by: Polina Vishneva <polina.vishneva@virtuozzo.com>
->Signed-off-by: Polina Vishneva <polina.vishneva@virtuozzo.com>
->---
-> drivers/vhost/vsock.c | 10 ++++++++++
-> 1 file changed, 10 insertions(+)
->
->diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
->index 1d8ec6bed53e..a3f218292c3a 100644
->--- a/drivers/vhost/vsock.c
->+++ b/drivers/vhost/vsock.c
->@@ -302,6 +302,16 @@ vhost_transport_send_pkt(struct sk_buff *skb, struct net *net)
-> 		return -ENODEV;
-> 	}
->
->+	/* Fast-fail if the guest hasn't enabled the RX vq yet. Reading
->+	 * private_data without vq->mutex is deliberate: even if the backend becomes
->+	 * NULL right after that check, do_send_pkt() checks it under the mutex.
->+	 */
->+	if (!data_race(READ_ONCE(vsock->vqs[VSOCK_VQ_RX].private_data))) 
-
-Why not using vhost_vq_get_backend() ?
-
-Also is READ_ONCE() okay without WRITE_ONCE() where it is set ?
-
->{
->+		rcu_read_unlock();
->+		kfree_skb(skb);
->+		return -ECONNREFUSED;
-
-This is a generic send_pkt, is it okay to return ECONNREFUSED in any 
-case?
-
-Thanks,
-Stefano
-
->+	}
->+
-> 	if (virtio_vsock_skb_reply(skb))
-> 		atomic_inc(&vsock->queued_replies);
->
->
->base-commit: 8ab992f815d6736b5c7a6f5fd7bfe7bc106bb3dc
->-- 
->2.53.0
->
-
+-q sounds good to me. Will do in v3.
