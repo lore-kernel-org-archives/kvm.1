@@ -1,74 +1,47 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3256F370D52
-	for <kvm@vger.kernel.org>; Mon, 11 May 2026 14:36:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9EA3FADE9;
+	Mon, 11 May 2026 14:47:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778510210; cv=none; b=BJypEL2AFQd3PZT8jT5NGZ+PJB9rRN/A+AZjA2qzkaW9N9p+qQ2qoIMwHjlb/aJiA0M6keg6OFHz4SP+SQ75DwWcZwLBS4Oig9mIkA4rlc7y+mErfoufcpUgtRwX0+Q1pG24eicLttVfJxpTygAPa3FdGUO5RqGl8u0uuYvwh68=
+	t=1778510824; cv=none; b=t8iEtmuSQZH88rZ9RU1Sa8ZYpj/WYp3PqcqIfXq8KaS7lllKx1Kuv1SWil9XC1/57Oodo4yWI15SJGjierFKL0AT5qm0iu2o8gj8WF3SdSBZMGhmn5CXVdOb7JolyPGaQ7YPqK549mvftvhToEOVyfeV625aPTjRHRODc/2lrDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778510210; c=relaxed/simple;
-	bh=OCWkO9kiaVtlkjvw4jaBUr/0GwYS4dSFaaNA889cWuI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ac+qoUYTg2Qd/IdHKCd9hg9gNT3F9LjxDvmtjOaeRf/vdnZllUmnrDp9o7yeYAJAVH9nffxqIxXeN/FWwXYgBZRrgbQ2s3gqoVA4JQUSRBTqApVmSbCGGDTYuo62aWTaJZIrIt2nxklcWdDgGO/H43bRzKYwmNniOgwnmFuyTLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qVwyXVXD; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778510824; c=relaxed/simple;
+	bh=vWb+gFw4kEMiYXes3fXKejYbzghgQQCItnjWAGcfj4I=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=rbe+/0Ufo/UuHozcHpMSeAZbCkEaQjGX251raatftmNCbC7xTtIBnjRtt1vlQKjxmP6QnEd82sbRBN1yg3IpHQcUjtZyRc0mAPiDP7075QPBXWmefWbDg62PmAoTEBKnBbMvOpE7ExzN7aJBjg1EclLikQe+3Ff72uBIlVFQZWM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=NSMT7rAR; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qVwyXVXD"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-67e9b3037dcso5963756a12.0
-        for <kvm@vger.kernel.org>; Mon, 11 May 2026 07:36:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778510207; x=1779115007; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=OvCAfW/ab6cqkSL7XlF/lvlNJfGaNVLCaQnRtMsWK2M=;
-        b=qVwyXVXDXjOa+6c6PwSXZJxOkTjw/lPS7mWwagdfLA2KQrGISLN2rec/57KMU/o2I5
-         ifAlrcfsU59+Qg03Xp7nYuZzPm6dWn9Mg++MhRM/6kADpxa/K4mYTEY+icnLoaIKo+7x
-         cIO+chUzyLebYOxwmbNFm0RDZ6eq5ZweDWcsROX+PlFbboxI2vJS2va8tleDO1+r2Rq6
-         7LZYDFAKAAjP6bEX1BvsJl058ZCog3KAvZdSSdAvi/JXY23hQ9ywYjeZFOfVLeJEAkX2
-         T+w7PlT/Bc8oCLZdJntfBKLC8odkmQz4xyeonwcvvFJV56kDKM5BPR+DQcbKbn6mZLLu
-         rTMg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778510207; x=1779115007;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OvCAfW/ab6cqkSL7XlF/lvlNJfGaNVLCaQnRtMsWK2M=;
-        b=EpX4ZO4J3NhwiCzGxhEQAQxD5gj5Gv3Wh4T0/FKTDRZvdMJupfzdnJwinszccMEAmH
-         xdoqDngA74sPkChsLPzV9UBKk9xtMFjSpkuQ7vVi034EaINHX/Z0VhLGn5D13xPArmYC
-         bNs+el9p3cacXkKbAHtWPSn8ccFL9UUmwYIe4svcK+Q+GCF3Dq26R2HTXotGibacA8Fx
-         dMzlik5LKj4M5KQ+jMXUaj2p8zei4GI/4g0nRcqrBRTfIlYtvUp2wTuApGsbUSIEbqv6
-         BKU4kmTJUGWmcH8tytzKAITrgBad2WWQJA3Ol8I6kEiGt/dut8x630j4X1iBNi24VYFJ
-         lzlw==
-X-Forwarded-Encrypted: i=1; AFNElJ9eMlk1BBObu3aIvUWuTNopl7O5gkGCbjnnd0/00HKB4YWEG1QPkj2SsObK6gbgZrUUMBI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwZ8Ih1JLSrj7h+K9jz2Cy/2uc2FeQsFX5fxTQXyJUKVCOxlK8
-	9MEtFnS7JN2tElLFiGOv9lEIAp9EL0hunhnvEjO7BZqWxda9W51PTBSL
-X-Gm-Gg: Acq92OGLwDs4OMc5KEi43nW/z2PFND7SMXDg68BZEH/jbuBONkahqBeyXzriwAVcNTd
-	Xego4hz5resY+48Bw77HCF3QWPCqvRBbCdEfAub9aBnJiro2dywLnf1LDvcl5YK+d/TMbnTTNCi
-	nMzEMfl0Dx3lpcuUNdzN1zg1Ct/SiDzUKmrLEJbarURfxSEWRvDWYDgwjcoLk5/D1vJM9n2l3hU
-	HybPv1mHj+VZ5TcxJAQSubVDTosEZGs+JDRabwUtrISWfBBg5QRn4knRWglCBSZhLjQbS4R5c/W
-	YyyDcn9y757h3exyhN4wHi98IJ7uFi12Mq2H59Vn+NVxBCo2iYZKQN7WeByam8xE/808PeXgR5c
-	xbp+sKIFdYhdw9IQrLV7Zz7enXx1QHb7WZMm4wv7jeTitrHot2LpscVcAo7As0FDYTC5O73ffRe
-	dzqvrpP+yCay0+55LJSo7dqC7Q95WleYq2ZvEEX3HR6N2R7njY1J/gvuaooQQ9VcpnuPWsmmKdS
-	X2Au53Tm4WqM3jX4i/plvzxzy8=
-X-Received: by 2002:a05:6402:3809:b0:670:8add:2b98 with SMTP id 4fb4d7f45d1cf-67ef07ba8f0mr7220503a12.14.1778510207251;
-        Mon, 11 May 2026 07:36:47 -0700 (PDT)
-Received: from arch-piotr.tailb7ebba.ts.net (226.55.classcom.pl. [195.150.55.226])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-67ef0e1c044sm3651347a12.27.2026.05.11.07.36.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 May 2026 07:36:46 -0700 (PDT)
-From: Piotr Zarycki <piotr.zarycki@gmail.com>
-To: seanjc@google.com,
-	pbonzini@redhat.com
-Cc: shuah@kernel.org,
-	kvm@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Piotr Zarycki <piotr.zarycki@gmail.com>
-Subject: [PATCH] KVM: selftests: sync_regs_test: use KVM_SYNC_X86_VALID_FIELDS
-Date: Mon, 11 May 2026 16:34:26 +0200
-Message-ID: <20260511143426.1242013-1-piotr.zarycki@gmail.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="NSMT7rAR"
+Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64AN0u0U2460008;
+	Mon, 11 May 2026 07:47:00 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:message-id
+	:mime-version:subject:to; s=s2048-2025-q2; bh=ZiTHqkqZMghjlfU1eR
+	Tgg1uVuRxiTy+WlHuVBC4Fy1w=; b=NSMT7rARKqbX1+uaK5p0Nfo+3AoFn5cI7P
+	H8173UcDln5c7dVSFIC2ulm7+v23pMkku8X1F06709CbKvW3QAijDCIr2CBUAq/v
+	4yGb140NWl9kCLOGzupkCa6vEy0BzXbxRH7kvh7KMSp9rwEj3yERlfBlxfohovM9
+	tSYn6kUkHiYAVB968XlozsmKKukdUlk8ZAN6V1ybvS5bZVNi07sjUTGVrE1tyPVh
+	AtIs9xd4suBJlYW1j/KYp6bCpiGs9bVJEsxvWT0hhPicuBRZmaEIhzX0k7aFXKMp
+	KNSgE7tC0WxaY+jENQRBFlqzzC1WQ5NqEUhHFczlf+QevKBVPOwA==
+Received: from maileast.thefacebook.com ([163.114.135.16])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4e22ebtf2e-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Mon, 11 May 2026 07:46:59 -0700 (PDT)
+Received: from localhost (2620:10d:c0a8:1b::8e35) by mail.thefacebook.com
+ (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.37; Mon, 11 May
+ 2026 14:46:59 +0000
+From: Matt Evans <mattev@meta.com>
+To: Alex Williamson <alex@shazbot.org>
+CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH] vfio/pci: Make VFIO_PCI_OFFSET_TO_INDEX() return unsigned
+Date: Mon, 11 May 2026 07:46:42 -0700
+Message-ID: <20260511144642.2926799-1-mattev@meta.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -76,36 +49,61 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTExMDE2MyBTYWx0ZWRfX2Fmysf2Dt/BG
+ Q7gMxapb/jHuaVfzH/gvUYiG0bSVI7sS6zDupU+wSFqGOsgNnKh7uGPg0E7a4hGhSOb8vsxqnK/
+ mqn0i+S55A+Pq+ZlZMo0xksqfxoeIZVBAWev1scF8WxKY5ooP175jX2qakfXM1ko8ir0acRoLQ0
+ nJdQl99pT1ryAutyWMjIA3kDbiSzjssO5tht+S+m8zCCEHpSC2cgGvLslY5JAEZ4A0xQjSSBmOB
+ dbuWojNCFS3f1kRFpxftR6hPE07hHIUt1dfCmXQEOjornbsWvn2BRJ0kQdFpHKnX3P93ToGHAyS
+ SxA4Fow4x4MH8ByRQ/aSoKlXR8Pdgt6Z2kMl6UyX/tFTmQKGPoudaso/0v7AvdA24IgMPgr4uVg
+ 9Dl5JGcIuIAGh37a1Olai8MSVsSFNpUSlFd+J2S5A7ml8DUjFSqRF8/dFaWdAd2Lbn5Cm2meHnM
+ ppDBQMb0EMHOIPeZ9hQ==
+X-Authority-Analysis: v=2.4 cv=FesHAp+6 c=1 sm=1 tr=0 ts=6a01ebe4 cx=c_pps
+ a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
+ a=JnKecZnUtZousrUlYMGU:22 a=VwQbUJbxAAAA:8 a=r1p2_3pzAAAA:8 a=VabnemYjAAAA:8
+ a=WMeaP-Si3NigN2-QYpwA:9 a=r_pkcD-q9-ctt7trBg_g:22 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-ORIG-GUID: NHFMvgY43cl_QBpSICVu4lbrhgK202yB
+X-Proofpoint-GUID: NHFMvgY43cl_QBpSICVu4lbrhgK202yB
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-11_04,2026-05-08_02,2025-10-01_01
 
-Use KVM_SYNC_X86_VALID_FIELDS instead of open-coding the same three
-flags, ensuring the test stays in sync with any future additions.
+VFIO_PCI_OFFSET_TO_INDEX() is used in several places with a signed
+parameter (e.g. loff_t).  Because it makes no sense for a BAR/resource
+index to be negative, enforce this in the macro.
 
-Signed-off-by: Piotr Zarycki <piotr.zarycki@gmail.com>
+This fixes at least one current issue, where vfio_pci_ioeventfd() uses
+this macro with an unvalidated signed loff_t returned into a signed
+type, leading to a possible negative array access.  This instance does
+test against an out-of-bounds positive value, so treating the index as
+unsigned fixes this issue.
+
+Fixes: 89e1f7d4c66d8 ("vfio: Add PCI device driver")
+Signed-off-by: Matt Evans <mattev@meta.com>
 ---
- tools/testing/selftests/kvm/x86/sync_regs_test.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/x86/sync_regs_test.c b/tools/testing/selftests/kvm/x86/sync_regs_test.c
-index e0c52321f87c..8f9239f9d357 100644
---- a/tools/testing/selftests/kvm/x86/sync_regs_test.c
-+++ b/tools/testing/selftests/kvm/x86/sync_regs_test.c
-@@ -79,7 +79,7 @@ static void compare_vcpu_events(struct kvm_vcpu_events *left,
- {
- }
+This patch follows up on a nearby issue found during review, discussed
+here:
+
+https://lore.kernel.org/kvm/20260508114552.6f5b99f0@shazbot.org/
+
+ include/linux/vfio_pci_core.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+index 2ebba746c18f..89165b769e5c 100644
+--- a/include/linux/vfio_pci_core.h
++++ b/include/linux/vfio_pci_core.h
+@@ -21,7 +21,7 @@
+ #define VFIO_PCI_CORE_H
  
--#define TEST_SYNC_FIELDS   (KVM_SYNC_X86_REGS|KVM_SYNC_X86_SREGS|KVM_SYNC_X86_EVENTS)
-+#define TEST_SYNC_FIELDS   KVM_SYNC_X86_VALID_FIELDS
- #define INVALID_SYNC_FIELD 0x80000000
+ #define VFIO_PCI_OFFSET_SHIFT   40
+-#define VFIO_PCI_OFFSET_TO_INDEX(off)	(off >> VFIO_PCI_OFFSET_SHIFT)
++#define VFIO_PCI_OFFSET_TO_INDEX(off)	((u64)(off) >> VFIO_PCI_OFFSET_SHIFT)
+ #define VFIO_PCI_INDEX_TO_OFFSET(index)	((u64)(index) << VFIO_PCI_OFFSET_SHIFT)
+ #define VFIO_PCI_OFFSET_MASK	(((u64)(1) << VFIO_PCI_OFFSET_SHIFT) - 1)
  
- /*
-@@ -255,7 +255,6 @@ KVM_ONE_VCPU_TEST(sync_regs_test, req_and_verify_all_valid, guest_code)
- 	struct kvm_regs regs;
- 
- 	/* Request and verify all valid register sets. */
--	/* TODO: BUILD TIME CHECK: TEST_ASSERT(KVM_SYNC_X86_NUM_FIELDS != 3); */
- 	run->kvm_valid_regs = TEST_SYNC_FIELDS;
- 	vcpu_run(vcpu);
- 	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
 -- 
-2.54.0
+2.47.3
 
