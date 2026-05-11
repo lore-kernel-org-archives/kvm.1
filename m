@@ -1,170 +1,115 @@
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
+Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91FCF27442
-	for <kvm@vger.kernel.org>; Mon, 11 May 2026 11:03:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6371B3630A9;
+	Mon, 11 May 2026 11:07:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778497418; cv=none; b=DpuzN938LC4p6aQB+oWl84KOYG/rH1p5VVTAFQsI7wwMM/vc098ONnMV6ho1JkDk0FkqAB6+uEWyDXXnk2VDFkNW/CEIDTKkuYMIqNuwBNfE9QSGRfcagmx9gwQe3m+HFvODFazl+eC9wgvfdFJ1izJ6bhhOW1Ytuly4ttvivqU=
+	t=1778497657; cv=none; b=PlD78KzGEw3SyrSK/ZLRX7hI500Ac/JbYkZKo8Oj7MFCdCqEbXaxk7K7wU+eBxi69gVTHHpbX8+3NJIYQT0VD4KzwrWLPnXvAXhPfwqeyd/yETM6RA5ZpeweqaVdVx5+i+fACO2RWHY5nFRDHmPtNydcbpGf3ZUofBVkCCHNEu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778497418; c=relaxed/simple;
-	bh=FYqnlFCwpb8xs6n1vwK8VK227l3P1BAeHI69gKZCA54=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tFPxsHemNnFEq8nFn1xhOQcNDqdstcltc2QfmT2iHT6qid+lQVRmNvrJmPckkF4sJsXrCPKw+oQvsQ89jZTJK5Iu5fm/JKYkjwn6lNJmBaWf6jDTZC9cFgUpKmQDmhKyRB7HjvjuWxN2y6Aist51jgVoHLZEILlsCJunw+/RBck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=r2zIRGl3; arc=none smtp.client-ip=115.124.30.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="r2zIRGl3"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1778497407; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=aa3sqwAfHWDJfAzPcUpQ5Gk/NxgBvpG/vZ758TZknkk=;
-	b=r2zIRGl39mpMi9hphMC6k8Ce++jCTJlvQjcGrnuzhdg5suilDlY3Vk2/QuQztlRfXmjIQN2Q6b8Lnj/cyQulSKS30sp0dQ4E37tNpmm5Ty4pTZVN5y8Da3FtKB1qRom0oU68beRrti2SEOCmWI30iyx14Luso5CGTl4vk7KvI38=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R451e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=yaoyuan@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X2iOJIK_1778497405;
-Received: from localhost(mailfrom:yaoyuan@linux.alibaba.com fp:SMTPD_---0X2iOJIK_1778497405 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 11 May 2026 19:03:26 +0800
-Date: Mon, 11 May 2026 19:03:25 +0800
-From: Yao Yuan <yaoyuan@linux.alibaba.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, 
-	Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Sascha Bischoff <Sascha.Bischoff@arm.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Jonathan Cameron <jic23@kernel.org>, 
-	Eric Auger <eric.auger@redhat.com>, Raghavendra Rao Ananta <rananta@google.com>, 
-	David Woodhouse <dwmw@amazon.co.uk>, Maxim Levitsky <mlevitsk@redhat.com>, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org
-Subject: Re: [RFC PATCH] KVM: arm64: vgic: Skip vCPU trylock for pre-init
- register access
-Message-ID: <3ijnoudux4iyddpd25yr53s2zqrslplixjqfod225ix43y4z4a@heoklijpq45f>
-References: <6564c8b967948e30a8d3f35b6ef5de79dd5feeb7.camel@infradead.org>
+	s=arc-20240116; t=1778497657; c=relaxed/simple;
+	bh=RxzH+EXWg7sNkh+Jw4RKdgjG2euIJI/hXWLWOnjuMJ4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qVPmxjRjUO38yTRMOG7K69MSbRUYP+iljvJEtgKmy9SmPZPxKC3CPLf2645f0IbJXTuFvgHukj84mlWNvkJobbwti3aynGaYp26FAhbsoTqkD6GVYyG0YxSE0grc7PXACNcnwHh4bklE+llDFKSW3ticXEl/u3dVhouy1Us/tuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id 7C714A0FCF;
+	Mon, 11 May 2026 13:07:34 +0200 (CEST)
+Message-ID: <8ebbfb3d-69a0-42d0-83cd-78e163e3acdf@proxmox.com>
+Date: Mon, 11 May 2026 13:07:33 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6564c8b967948e30a8d3f35b6ef5de79dd5feeb7.camel@infradead.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 00/28] KVM: combined patchset for MBEC/GMET support
+To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org
+Cc: jon@nutanix.com
+References: <20260505195226.563317-1-pbonzini@redhat.com>
+ <85548beb-1486-40f9-beb4-632c78e3360b@proxmox.com>
+ <251c6f2c-6a6b-4a7b-b0d6-330611bb12c6@redhat.com>
+Content-Language: en-US
+From: David Riley <d.riley@proxmox.com>
+In-Reply-To: <251c6f2c-6a6b-4a7b-b0d6-330611bb12c6@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
+X-Bm-Transport-Timestamp: 1778497542140
 
-On Sun, May 10, 2026 at 11:11:43PM +0800, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
->
-> When creating a VM, userspace sets pre-init distributor registers such
-> as GICD_IIDR before the VGIC is initialized.
->
-> Strictly speaking there's no reason this couldn't be done at VM creation
-> time before any vCPUs exist at all, but the design of the userspace API
-> does require vCPU0 to have been created, as the system-wide registers
-> are effectively accessed via vCPU0.
->
-> So a VMM can't just set the IIDR at startup before spawning vCPU threads;
-> it has to be done once the vCPUs are being created.
->
-> However, kvm_trylock_all_vcpus() makes it unreliable by causing spurious
-> -EBUSY failures if any vCPU cannot be locked. So userspace is forced to
-> create the vCPUs (well, at least vCPU0), and is then forced to have a
-> full synchronization point and quiesce them all in order to reliably set
-> the IIDR.
->
-> To slightly reduce the pain of all this, skip the trylock when the VGIC
-> is not yet initialized. There is no need to lock the vCPUs if they can't
-> be accessing it anyway.
->
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> ---
-> Other options would include making it possible to set the IIDR before
-> creating any vCPUs, either by creating a new device-level attribute or
-> special-casing it not to require vCPU0 for DIST_REGS that aren't really
-> associated to a vCPU.
->
-> Deprecating kvm_trylock_all_vcpus() and killing every user of it with
-> fire would also be a good option, perhaps... :)
->
->  arch/arm64/kvm/vgic/vgic-kvm-device.c | 38 ++++++++++++++++++++-------
->  1 file changed, 29 insertions(+), 9 deletions(-)
->
-> diff --git a/arch/arm64/kvm/vgic/vgic-kvm-device.c b/arch/arm64/kvm/vgic/vgic-kvm-device.c
-> index a96c77dccf35..e17ea9f07f5f 100644
-> --- a/arch/arm64/kvm/vgic/vgic-kvm-device.c
-> +++ b/arch/arm64/kvm/vgic/vgic-kvm-device.c
-> @@ -540,7 +540,7 @@ static int vgic_v3_attr_regs_access(struct kvm_device *dev,
->  	struct vgic_reg_attr reg_attr;
->  	gpa_t addr;
->  	struct kvm_vcpu *vcpu;
-> -	bool uaccess;
-> +	bool uaccess, vcpus_locked = false;
->  	u32 val;
->  	int ret;
->
-> @@ -566,18 +566,37 @@ static int vgic_v3_attr_regs_access(struct kvm_device *dev,
->  			return -EFAULT;
->  	}
->
-> +	if (!vgic_initialized(dev->kvm) && !reg_allowed_pre_init(attr))
-> +		return -EBUSY;
-> +
->  	mutex_lock(&dev->kvm->lock);
->
-> -	if (kvm_trylock_all_vcpus(dev->kvm)) {
-> -		mutex_unlock(&dev->kvm->lock);
-> -		return -EBUSY;
-> +	/*
-> +	 * Pre-init registers (e.g. GICD_IIDR) don't need vCPU quiescence
-> +	 * since the VGIC isn't live yet.  Skip the trylock to avoid spurious
-> +	 * -EBUSY when vCPU threads happen to be running.
-> +	 */
-> +	if (vgic_initialized(dev->kvm)) {
-> +		if (kvm_trylock_all_vcpus(dev->kvm)) {
-> +			mutex_unlock(&dev->kvm->lock);
-> +			return -EBUSY;
-> +		}
-> +		vcpus_locked = true;
->  	}
-> -
->  	mutex_lock(&dev->kvm->arch.config_lock);
->
-> -	if (!(vgic_initialized(dev->kvm) || reg_allowed_pre_init(attr))) {
-> -		ret = -EBUSY;
-> -		goto out;
+is that enough?
 
-Hi David,
+dmesg | grep -A 50 "soft lockup - CPU#11"
 
-> +	/*
-> +	 * If the VGIC becomes initialized between the above check and taking
-> +	 * config_lock, drop config_lock to lock the VCPUS.
-> +	 */
-> +	if (vgic_initialized(dev->kvm) && !vcpus_locked) {
-> +		mutex_unlock(&dev->kvm->arch.config_lock);
-> +		if (kvm_trylock_all_vcpus(dev->kvm)) {
-> +			mutex_unlock(&dev->kvm->lock);
-> +			return -EBUSY;
-> +		}
-> +		mutex_lock(&dev->kvm->arch.config_lock);
-> +		vcpus_locked = true;
+[ 5565.326572] watchdog: BUG: soft lockup - CPU#11 stuck for 28s! [CPU 0/KVM:16105]
+[ 5565.326576] Modules linked in: tcp_diag(E) inet_diag(E) veth(E) rpcsec_gss_krb5(E) auth_rpcgss(E) nfsv4(E) nfs(E) lockd(E) grace(E) netfs(E) ebtable_filter(E) ebtables(E) ip_set(E) ip6table_raw(E) iptable_raw(E) ip6table_filter(E) ip6_tables(E) iptable_filter(E) sunrpc(E) nf_tables(E) softdog(E) bonding(E) tls(E) binfmt_misc(E) nfnetlink_log(E) intel_rapl_msr(E) intel_rapl_common(E) intel_uncore_frequency(E) intel_uncore_frequency_common(E) intel_ifs(E) i10nm_edac(E) skx_edac_common(E) nfit(E) x86_pkg_temp_thermal(E) intel_powerclamp(E) coretemp(E) cxl_pci(E) cxl_mem(E) kvm_intel(E) acpi_power_meter(E) ipmi_ssif(E) cxl_acpi(E) cxl_port(E) cxl_pmem(E) kvm(E) pmt_telemetry(E) dax_hmem(E) pmt_discovery(E) irqbypass(E) pmt_class(E) intel_sdsi(E) bnxt_re(E) cxl_core(E) aesni_intel(E) ib_uverbs(E) gf128mul(E) isst_if_mmio(E) isst_if_mbox_pci(E) fwctl(E) rapl(E) cmdlinepart(E) intel_cstate(E) einj(E) pcspkr(E) wmi_bmof(E) spi_nor(E) iaa_crypto(E) isst_if_common(E) ib_core(E) 
+intel_vsec(E) mei_me(E) ast(E) mtd(E) spd5118(E)
+[ 5565.326599]  i2c_algo_bit(E) mei(E) ipmi_si(E) acpi_ipmi(E) ipmi_devintf(E) ipmi_msghandler(E) acpi_pad(E) joydev(E) input_leds(E) mac_hid(E) sch_fq_codel(E) msr(E) vhost_net(E) vhost(E) vhost_iotlb(E) tap(E) efi_pstore(E) nfnetlink(E) dmi_sysfs(E) ip_tables(E) x_tables(E) autofs4(E) btrfs(E) libblake2b(E) raid6_pq(E) xor(E) hid_generic(E) usbmouse(E) usbkbd(E) usbhid(E) hid(E) cdc_ether(E) usbnet(E) mii(E) uas(E) usb_storage(E) dm_thin_pool(E) dm_persistent_data(E) dm_bio_prison(E) dm_bufio(E) nvme(E) nvme_core(E) xhci_pci(E) i40e(E) nvme_keyring(E) i2c_i801(E) idxd(E) tg3(E) ahci(E) i2c_mux(E) libie(E) idxd_bus(E) spi_intel_pci(E) bnxt_en(E) nvme_auth(E) libie_adminq(E) xhci_hcd(E) i2c_smbus(E) spi_intel(E) libahci(E) i2c_ismt(E) wmi(E) pinctrl_emmitsburg(E)
+[ 5565.326618] CPU: 11 UID: 0 PID: 16105 Comm: CPU 0/KVM Tainted: G            EL      7.1.0-rc2-v6-mbec-gmet-00028-g1e3b074acc33 #24 PREEMPT(lazy)
+[ 5565.326620] Tainted: [E]=UNSIGNED_MODULE, [L]=SOFTLOCKUP
+[ 5565.326620] Hardware name: ****, BIOS 3001 07/03/2025
+[ 5565.326621] RIP: 0010:kvm_arch_vcpu_ioctl_run+0x78d/0x18e0 [kvm]
+[ 5565.326680] Code: 07 00 48 83 bb 28 08 00 00 00 0f 85 69 0a 00 00 0f 1f 44 00 00 65 c6 05 08 d7 08 c7 01 c6 83 e2 0a 00 00 01 fb 0f 1f 44 00 00 <48> 83 83 48 19 00 00 01 fa 0f 1f 44 00 00 c6 83 e2 0a 00 00 00 0f
+[ 5565.326681] RSP: 0018:ff6afb0ed454b9e0 EFLAGS: 00000246
+[ 5565.326682] RAX: 0000000000000000 RBX: ff2a147c1758a480 RCX: 0000000000000000
+[ 5565.326683] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+[ 5565.326683] RBP: ff6afb0ed454ba90 R08: 0000000000000000 R09: 0000000000000000
+[ 5565.326684] R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000000
+[ 5565.326684] R13: ff2a147c12163000 R14: 0000000000000000 R15: ff2a147c20d2b140
+[ 5565.326685] FS:  00007503727ef6c0(0000) GS:ff2a147bf748a000(0000) knlGS:fffff8013ee33000
+[ 5565.326685] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 5565.326686] CR2: 00007fffffff0000 CR3: 00000020948ed006 CR4: 0000000000f73ef0
+[ 5565.326687] PKRU: 55555554
+[ 5565.326687] Call Trace:
+[ 5565.326688]  <TASK>
+[ 5565.326689]  ? trace_event_buffer_reserve+0xa5/0xe0
+[ 5565.326692]  ? trace_event_raw_event_kvm_userspace_exit+0x6c/0xc0 [kvm]
+[ 5565.326727]  kvm_vcpu_ioctl+0x312/0xba0 [kvm]
+[ 5565.326762]  ? __rb_reserve_next.constprop.0+0x5c/0x420
+[ 5565.326765]  ? ring_buffer_lock_reserve+0x155/0x410
+[ 5565.326767]  __x64_sys_ioctl+0xa5/0x100
+[ 5565.326769]  x64_sys_call+0x103b/0x2390
+[ 5565.326771]  do_syscall_64+0xe6/0x14c0
+[ 5565.326774]  ? trace_event_buffer_reserve+0xa5/0xe0
+[ 5565.326775]  ? trace_event_raw_event_kvm_userspace_exit+0x6c/0xc0 [kvm]
+[ 5565.326807]  ? kvm_vcpu_ioctl+0x2a7/0xba0 [kvm]
+[ 5565.326841]  ? trace_event_buffer_reserve+0xa5/0xe0
+[ 5565.326842]  ? trace_event_raw_event_kvm_userspace_exit+0x6c/0xc0 [kvm]
+[ 5565.326874]  ? __x64_sys_ioctl+0xbf/0x100
+[ 5565.326875]  ? kvm_on_user_return+0x4a/0x90 [kvm]
+[ 5565.326916]  ? fire_user_return_notifiers+0x37/0x70
+[ 5565.326918]  ? do_syscall_64+0x396/0x14c0
+[ 5565.326920]  ? do_syscall_64+0x396/0x14c0
+[ 5565.326922]  ? __x64_sys_ioctl+0xbf/0x100
+[ 5565.326923]  ? kvm_on_user_return+0x4a/0x90 [kvm]
+[ 5565.326962]  ? fire_user_return_notifiers+0x37/0x70
+[ 5565.326963]  ? do_syscall_64+0x396/0x14c0
+[ 5565.326965]  ? kvm_on_user_return+0x4a/0x90 [kvm]
+[ 5565.327002]  ? fire_user_return_notifiers+0x37/0x70
+[ 5565.327004]  ? do_syscall_64+0x396/0x14c0
+[ 5565.327005]  ? do_syscall_64+0x396/0x14c0
+[ 5565.327007]  ? do_syscall_64+0x396/0x14c0
+[ 5565.327008]  ? do_syscall_64+0x396/0x14c0
+[ 5565.327009]  ? do_syscall_64+0x9b/0x14c0
+[ 5565.327011]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+[ 5565.327012] RIP: 0033:0x75037650f91b
 
-Question: Why not do vgic_initialized(dev->kvm) and
-reg_allowed_pre_init(attr) checking after take config_lock,
-and depends on the checking result to decide trylocak all
-vcpus or not ?
 
->  	}
+On 5/11/26 12:54 PM, Paolo Bonzini wrote:
+> On 5/11/26 12:53, David Riley wrote:
+>>
+>> watchdog: CPU11: Watchdog detected hard LOCKUP on cpu 11
+>> watchdog: BUG: soft lockup - CPU#11 stuck for 28s [CPU 0/KVM:16105]
 >
->  	switch (attr->group) {
-> @@ -612,7 +631,8 @@ static int vgic_v3_attr_regs_access(struct kvm_device *dev,
+> What is the backtrace here?
 >
->  out:
->  	mutex_unlock(&dev->kvm->arch.config_lock);
-> -	kvm_unlock_all_vcpus(dev->kvm);
-> +	if (vcpus_locked)
-> +		kvm_unlock_all_vcpus(dev->kvm);
->  	mutex_unlock(&dev->kvm->lock);
+> Thanks,
 >
->  	if (!ret && uaccess && !is_write) {
-> --
-> 2.43.0
+> Paolo
 >
 >
+
