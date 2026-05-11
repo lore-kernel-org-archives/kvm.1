@@ -1,55 +1,55 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7E5364045
-	for <kvm@vger.kernel.org>; Mon, 11 May 2026 15:07:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 281AB3D811C
+	for <kvm@vger.kernel.org>; Mon, 11 May 2026 15:07:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778512025; cv=none; b=Xk1ddSod3SsOy5M5KrV4gSqlNdut6jgFzrQTvj4sX9d48T68mMRTB1Rcoxi/I1+Q5tALAFPK66mYsl2GV57odOaPmcKABC9GN635/hZguXCwrj8LmPO9DSrm4i0lhleFe65diqiIFxxg1LlyMIESFsAN+Oj3BB6oo/13J6R2ICw=
+	t=1778512027; cv=none; b=KM80pPFUZZV7sIhMeL5DsZXQb68b2c2O+D5l2kQd/+UDl5YASo2N5o+8IgFvCwsZzfskgGGAiU7ffo6wBqXWtHzIOH42D+dCrvfhpeppmpHHwjGfNiv4ksPTQf/XoJv6pHhpDblGF6y1lim//PrM8ht0qmDHz1vBtleP9zmhmOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778512025; c=relaxed/simple;
-	bh=rbA4BCpxgGIsjxB95BpebFtdscfxFM+181bgADt/2gw=;
+	s=arc-20240116; t=1778512027; c=relaxed/simple;
+	bh=0dQSFK9LjTBMEOYdhizcosh+ydHJ764WMFdiHiIUYpc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gjWI4mG7UUn70CRG5qETxB0bYRWlfgtsBEzKy9wp/Jk4CNjtDcTphaHzU79CXonEHNK8tq75WqCaJSU4QtxmOSbG/4Au8WMZtP4Th81w9DT+g3lnu/HNKtwOutj4bjdMl99PDotxrWSpwfLx6huWPLxZhjseB3UgzTfbinsxr9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Kkr3ccGQ; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=nFld7OuA6LhrNBn92O++jHT5g8CKb8VHZqsupW4uiFoh8p0b8s1+wdxgcgbmNfbSTw/7f9tVrXuScTZUR4tg0SyhFWlaDOypvY8CZk21Ap16tMZUJZs298Oq/pOYLLQuvGHScV/0sedI8MITi7A8eM6AYkcQQB9C5FO7/wNIJbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GlS/KLSc; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Kkr3ccGQ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GlS/KLSc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778512023;
+	s=mimecast20190719; t=1778512024;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=HoRgVZ/kapo97NlGfnz9p/Dwj+dMEeOUU5QCO8nQoSY=;
-	b=Kkr3ccGQhZYMRkb48q1655rPMx8jD3srmyZyVtwtNWFOIdz3E1Hn5X3Dq/rxuzYSXu1mDh
-	f9KXP49E86p8L+tFOB794e4MWnyDOa0rjOJH2jqzjCi2HrRNMydSxlN4IcYwCDtM1dOEHT
-	vGLob6a/bOWPtd4lJBLk3D/EPtYUlOU=
+	bh=xEssg3xMy+HeTd/RvSqnTuw1vCIXQm+kT38m2953+gM=;
+	b=GlS/KLScUROPUotRqSdfz0g5eAdW9rCbjenDvQ81zjULCap9DmYWCulyi3Yt3y9GoG+cZw
+	zg0AObTVUtALy+/m2bwmSVX+fn7UZBvlYeX1btXtPnN94AICeHZ6Q9u+3S+qOtUSzTbl0Q
+	gqo0vHjZJFpMUWbXCJs818pq0jDdmbw=
 Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-320-uZq_YvqdPv2X_atqLkvoDQ-1; Mon,
- 11 May 2026 11:06:59 -0400
-X-MC-Unique: uZq_YvqdPv2X_atqLkvoDQ-1
-X-Mimecast-MFC-AGG-ID: uZq_YvqdPv2X_atqLkvoDQ_1778512018
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-59-IqSUN42gMCWxDlGXZZ_DJg-1; Mon,
+ 11 May 2026 11:07:01 -0400
+X-MC-Unique: IqSUN42gMCWxDlGXZZ_DJg-1
+X-Mimecast-MFC-AGG-ID: IqSUN42gMCWxDlGXZZ_DJg_1778512020
 Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 886DF1800619;
-	Mon, 11 May 2026 15:06:58 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 320561800753;
+	Mon, 11 May 2026 15:07:00 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 028FE1800673;
-	Mon, 11 May 2026 15:06:57 +0000 (UTC)
+	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 705C91800762;
+	Mon, 11 May 2026 15:06:59 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: jon@nutanix.com,
 	mtosatti@redhat.com
-Subject: [PATCH 11/22] KVM: x86/mmu: change CPU-role accessor fields to take struct kvm_pagewalk
-Date: Mon, 11 May 2026 11:06:37 -0400
-Message-ID: <20260511150648.685374-12-pbonzini@redhat.com>
+Subject: [PATCH 13/22] KVM: x86/mmu: pass struct kvm_pagewalk to kvm_mmu_invalidate_addr
+Date: Mon, 11 May 2026 11:06:39 -0400
+Message-ID: <20260511150648.685374-14-pbonzini@redhat.com>
 In-Reply-To: <20260511150648.685374-1-pbonzini@redhat.com>
 References: <20260511150648.685374-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -62,199 +62,115 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
 
-With this change, walk_addr_generic and its callees do not need to use
-container_of() anymore.
+kvm_mmu_invalidate_addr only needs to know if what's being invalidated
+is a GVA or GPA.  This will ultimately be represented by two different
+kvm_pagewalk structs, so adjust the type of the parameter.
 
-The next step is removing it from permission_fault() and
-kvm_mmu_refresh_passthrough_bits().
+For now the GVA case is represented by both root_mmu and nested_mmu.
+Since nested_mmu never has a sync_spte callback, it would exit at its
+check; but really nested_mmu should not be a kvm_mmu in the first place
+and the container_of() would be bogus, so introduce a separate check
+for whether the invalidation is happening for a nested GVA.  In that
+case there's nothing needed beyond kvm_x86_call(flush_tlb_gva).
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/kvm/mmu/mmu.c         | 44 +++++++++++++++++-----------------
- arch/x86/kvm/mmu/paging_tmpl.h | 11 ++++-----
- 2 files changed, 27 insertions(+), 28 deletions(-)
+ arch/x86/include/asm/kvm_host.h |  2 +-
+ arch/x86/kvm/mmu/mmu.c          | 12 ++++++++----
+ arch/x86/kvm/vmx/nested.c       |  2 +-
+ arch/x86/kvm/x86.c              |  2 +-
+ 4 files changed, 11 insertions(+), 7 deletions(-)
 
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 3172aaff6744..a1a09b59ac0b 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -2384,7 +2384,7 @@ int kvm_mmu_page_fault(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa, u64 error_code,
+ 		       void *insn, int insn_len);
+ void kvm_mmu_print_sptes(struct kvm_vcpu *vcpu, gpa_t gpa, const char *msg);
+ void kvm_mmu_invlpg(struct kvm_vcpu *vcpu, gva_t gva);
+-void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
++void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_pagewalk *w,
+ 			     u64 addr, unsigned long roots);
+ void kvm_mmu_invpcid_gva(struct kvm_vcpu *vcpu, gva_t gva, unsigned long pcid);
+ void kvm_mmu_new_pgd(struct kvm_vcpu *vcpu, gpa_t new_pgd);
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index e2bfecf655d9..2ef04d8c6f95 100644
+index cc58b6157118..967c2226cba0 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -224,9 +224,9 @@ BUILD_MMU_ROLE_REGS_ACCESSOR(efer, lma, EFER_LMA);
-  * and the vCPU may be incorrect/irrelevant.
-  */
- #define BUILD_MMU_ROLE_ACCESSOR(base_or_ext, reg, name)		\
--static inline bool __maybe_unused is_##reg##_##name(struct kvm_mmu *mmu)	\
-+static inline bool __maybe_unused is_##reg##_##name(struct kvm_pagewalk *w)	\
- {								\
--	return !!(mmu->w.cpu_role. base_or_ext . reg##_##name);	\
-+	return !!(w->cpu_role. base_or_ext . reg##_##name);	\
+@@ -6596,22 +6596,26 @@ static void __kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu
+ 	write_unlock(&vcpu->kvm->mmu_lock);
  }
- BUILD_MMU_ROLE_ACCESSOR(base, cr0, wp);
- BUILD_MMU_ROLE_ACCESSOR(ext,  cr4, pse);
-@@ -237,19 +237,19 @@ BUILD_MMU_ROLE_ACCESSOR(ext,  cr4, la57);
- BUILD_MMU_ROLE_ACCESSOR(base, efer, nx);
- BUILD_MMU_ROLE_ACCESSOR(ext,  efer, lma);
  
--static inline bool has_pferr_fetch(struct kvm_mmu *mmu)
-+static inline bool has_pferr_fetch(struct kvm_pagewalk *w)
+-void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_mmu *mmu,
++void kvm_mmu_invalidate_addr(struct kvm_vcpu *vcpu, struct kvm_pagewalk *w,
+ 			     u64 addr, unsigned long roots)
  {
--	return mmu->w.cpu_role.ext.has_pferr_fetch;
-+	return w->cpu_role.ext.has_pferr_fetch;
++	struct kvm_mmu *mmu;
+ 	int i;
+ 
+ 	WARN_ON_ONCE(roots & ~KVM_MMU_ROOTS_ALL);
+ 
+ 	/* It's actually a GPA for vcpu->arch.guest_mmu.  */
+-	if (mmu != &vcpu->arch.guest_mmu) {
++	if (w != &vcpu->arch.guest_mmu.w) {
+ 		/* INVLPG on a non-canonical address is a NOP according to the SDM.  */
+ 		if (is_noncanonical_invlpg_address(addr, vcpu))
+ 			return;
+ 
+ 		kvm_x86_call(flush_tlb_gva)(vcpu, addr);
++		if (w == &vcpu->arch.nested_mmu.w)
++			return;
+ 	}
+ 
++	mmu = container_of(w, struct kvm_mmu, w);
+ 	if (!mmu->sync_spte)
+ 		return;
+ 
+@@ -6637,7 +6641,7 @@ void kvm_mmu_invlpg(struct kvm_vcpu *vcpu, gva_t gva)
+ 	 * be synced when switching to that new cr3, so nothing needs to be
+ 	 * done here for them.
+ 	 */
+-	kvm_mmu_invalidate_addr(vcpu, vcpu->arch.walk_mmu, gva, KVM_MMU_ROOTS_ALL);
++	kvm_mmu_invalidate_addr(vcpu, &vcpu->arch.walk_mmu->w, gva, KVM_MMU_ROOTS_ALL);
+ 	++vcpu->stat.invlpg;
  }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_mmu_invlpg);
+@@ -6659,7 +6663,7 @@ void kvm_mmu_invpcid_gva(struct kvm_vcpu *vcpu, gva_t gva, unsigned long pcid)
+ 	}
  
--static inline bool is_cr0_pg(struct kvm_mmu *mmu)
-+static inline bool is_cr0_pg(struct kvm_pagewalk *w)
- {
--        return mmu->w.cpu_role.base.level > 0;
-+        return w->cpu_role.base.level > 0;
- }
- 
--static inline bool is_cr4_pae(struct kvm_mmu *mmu)
-+static inline bool is_cr4_pae(struct kvm_pagewalk *w)
- {
--        return !mmu->w.cpu_role.base.has_4_byte_gpte;
-+        return !w->cpu_role.base.has_4_byte_gpte;
- }
- 
- static struct kvm_mmu_role_regs vcpu_to_role_regs(struct kvm_vcpu *vcpu)
-@@ -5389,9 +5389,9 @@ static void reset_guest_rsvds_bits_mask(struct kvm_vcpu *vcpu,
- {
- 	__reset_rsvds_bits_mask(&context->w.guest_rsvd_check,
- 				vcpu->arch.reserved_gpa_bits,
--				context->w.cpu_role.base.level, is_efer_nx(context),
-+				context->w.cpu_role.base.level, is_efer_nx(&context->w),
- 				guest_cpu_cap_has(vcpu, X86_FEATURE_GBPAGES),
--				is_cr4_pse(context),
-+				is_cr4_pse(&context->w),
- 				guest_cpuid_is_amd_compatible(vcpu));
- }
- 
-@@ -5573,10 +5573,10 @@ static void update_permission_bitmask(struct kvm_mmu *mmu, bool tdp, bool ept)
- 	const u16 w = ACC_BITS_MASK(ACC_WRITE_MASK);
- 	const u16 r = ACC_BITS_MASK(ACC_READ_MASK);
- 
--	bool cr4_smep = is_cr4_smep(mmu);
--	bool cr4_smap = is_cr4_smap(mmu);
--	bool cr0_wp = is_cr0_wp(mmu);
--	bool efer_nx = is_efer_nx(mmu);
-+	bool cr4_smep = is_cr4_smep(&mmu->w);
-+	bool cr4_smap = is_cr4_smap(&mmu->w);
-+	bool cr0_wp = is_cr0_wp(&mmu->w);
-+	bool efer_nx = is_efer_nx(&mmu->w);
+ 	if (roots)
+-		kvm_mmu_invalidate_addr(vcpu, mmu, gva, roots);
++		kvm_mmu_invalidate_addr(vcpu, &mmu->w, gva, roots);
+ 	++vcpu->stat.invlpg;
  
  	/*
- 	 * In hardware, page fault error codes are generated (as the name
-@@ -5699,10 +5699,10 @@ static void update_pkru_bitmask(struct kvm_mmu *mmu)
- 
- 	mmu->pkru_mask = 0;
- 
--	if (!is_cr4_pke(mmu))
-+	if (!is_cr4_pke(&mmu->w))
- 		return;
- 
--	wp = is_cr0_wp(mmu);
-+	wp = is_cr0_wp(&mmu->w);
- 
- 	for (bit = 0; bit < ARRAY_SIZE(mmu->permissions); ++bit) {
- 		unsigned pfec, pkey_bits;
-@@ -5739,7 +5739,7 @@ static void update_pkru_bitmask(struct kvm_mmu *mmu)
- static void reset_guest_paging_metadata(struct kvm_vcpu *vcpu,
- 					struct kvm_mmu *mmu)
- {
--	if (!is_cr0_pg(mmu))
-+	if (!is_cr0_pg(&mmu->w))
- 		return;
- 
- 	reset_guest_rsvds_bits_mask(vcpu, mmu);
-@@ -5810,7 +5810,7 @@ void __kvm_mmu_refresh_passthrough_bits(struct kvm_vcpu *vcpu,
- 	BUILD_BUG_ON((KVM_MMU_CR0_ROLE_BITS & KVM_POSSIBLE_CR0_GUEST_BITS) != X86_CR0_WP);
- 	BUILD_BUG_ON((KVM_MMU_CR4_ROLE_BITS & KVM_POSSIBLE_CR4_GUEST_BITS));
- 
--	if (is_cr0_wp(mmu) == cr0_wp)
-+	if (is_cr0_wp(&mmu->w) == cr0_wp)
- 		return;
- 
- 	mmu->w.cpu_role.base.cr0_wp = cr0_wp;
-@@ -5885,9 +5885,9 @@ static void init_kvm_tdp_mmu(struct kvm_vcpu *vcpu,
- 	context->w.get_pdptr = kvm_pdptr_read;
- 	context->w.get_guest_pgd = get_guest_cr3;
- 
--	if (!is_cr0_pg(context))
-+	if (!is_cr0_pg(&context->w))
- 		context->w.gva_to_gpa = nonpaging_gva_to_gpa;
--	else if (is_cr4_pae(context))
-+	else if (is_cr4_pae(&context->w))
- 		context->w.gva_to_gpa = paging64_gva_to_gpa;
- 	else
- 		context->w.gva_to_gpa = paging32_gva_to_gpa;
-@@ -5907,9 +5907,9 @@ static void shadow_mmu_init_context(struct kvm_vcpu *vcpu, struct kvm_mmu *conte
- 	context->w.cpu_role.as_u64 = cpu_role.as_u64;
- 	context->root_role.word = root_role.word;
- 
--	if (!is_cr0_pg(context))
-+	if (!is_cr0_pg(&context->w))
- 		nonpaging_init_context(context);
--	else if (is_cr4_pae(context))
-+	else if (is_cr4_pae(&context->w))
- 		paging64_init_context(context);
- 	else
- 		paging32_init_context(context);
-diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
-index 10b1e7a08e90..99a0e1c95223 100644
---- a/arch/x86/kvm/mmu/paging_tmpl.h
-+++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -134,7 +134,7 @@ static inline int FNAME(is_present_gpte)(struct kvm_pagewalk *w,
- 	 * For EPT, an entry is present if any of bits 2:0 are set.
- 	 * With mode-based execute control, bit 10 also indicates presence.
- 	 */
--	return pte & (7 | (w->cpu_role.base.cr4_smep ? VMX_EPT_USER_EXECUTABLE_MASK : 0));
-+	return pte & (7 | (is_cr4_smep(w) ? VMX_EPT_USER_EXECUTABLE_MASK : 0));
- #endif
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 50edd7ffac24..af773b4e008b 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -407,7 +407,7 @@ static void nested_ept_invalidate_addr(struct kvm_vcpu *vcpu, gpa_t eptp,
+ 			roots |= KVM_MMU_ROOT_PREVIOUS(i);
+ 	}
+ 	if (roots)
+-		kvm_mmu_invalidate_addr(vcpu, vcpu->arch.mmu, addr, roots);
++		kvm_mmu_invalidate_addr(vcpu, &vcpu->arch.guest_mmu.w, addr, roots);
  }
  
-@@ -316,7 +316,6 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
- 				    struct kvm_vcpu *vcpu, struct kvm_pagewalk *w,
- 				    gpa_t addr, u64 access)
- {
--	struct kvm_mmu *mmu = container_of(w, struct kvm_mmu, w);
- 	int ret;
- 	pt_element_t pte;
- 	pt_element_t __user *ptep_user;
-@@ -492,7 +491,7 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
- 
- error:
- 	errcode |= write_fault | user_fault;
--	if (fetch_fault && has_pferr_fetch(mmu))
-+	if (fetch_fault && has_pferr_fetch(w))
- 		errcode |= PFERR_FETCH_MASK;
- 
- 	walker->fault.vector = PF_VECTOR;
-@@ -536,7 +535,7 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
- 		 * ACC_*_MASK flags!
- 		 */
- 		walker->fault.exit_qualification |= EPT_VIOLATION_RWX_TO_PROT(pte_access);
--		if (mmu_has_mbec(mmu))
-+		if (is_cr4_smep(w))
- 			walker->fault.exit_qualification |=
- 				EPT_VIOLATION_USER_EXEC_TO_PROT(pte_access);
- 	}
-@@ -840,7 +839,7 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
- 	 * otherwise KVM will cache incorrect access information in the SPTE.
+ static void nested_ept_inject_page_fault(struct kvm_vcpu *vcpu,
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index c53d954e6367..c2de39ad7595 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -1002,7 +1002,7 @@ void kvm_inject_emulated_page_fault(struct kvm_vcpu *vcpu,
  	 */
- 	if (fault->write && !(walker.pte_access & ACC_WRITE_MASK) &&
--	    !is_cr0_wp(vcpu->arch.mmu) && !fault->user && fault->slot) {
-+	    !is_cr0_wp(&vcpu->arch.mmu->w) && !fault->user && fault->slot) {
- 		walker.pte_access |= ACC_WRITE_MASK;
- 		walker.pte_access &= ~ACC_USER_MASK;
+ 	if ((fault->error_code & PFERR_PRESENT_MASK) &&
+ 	    !(fault->error_code & PFERR_RSVD_MASK))
+-		kvm_mmu_invalidate_addr(vcpu, fault_mmu, fault->address,
++		kvm_mmu_invalidate_addr(vcpu, &fault_mmu->w, fault->address,
+ 					KVM_MMU_ROOT_CURRENT);
  
-@@ -850,7 +849,7 @@ static int FNAME(page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault
- 		 * then we should prevent the kernel from executing it
- 		 * if SMEP is enabled.
- 		 */
--		if (is_cr4_smep(vcpu->arch.mmu))
-+		if (is_cr4_smep(&vcpu->arch.mmu->w))
- 			walker.pte_access &= ~ACC_EXEC_MASK;
- 	}
- #endif
+ 	fault_mmu->w.inject_page_fault(vcpu, fault);
 -- 
 2.52.0
 
