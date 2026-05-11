@@ -1,168 +1,106 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A92C6379EDF;
-	Mon, 11 May 2026 11:36:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 556D937266C
+	for <kvm@vger.kernel.org>; Mon, 11 May 2026 11:38:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778499377; cv=none; b=ZmA6uhqnbfLK/3aLbuKpqTVeBZOMNkC8+a/9wp4YHZ2dqmtHoCqw5kHHxR/yeJ/skHFvhe5zcxySTsRvIbiWCczpREjVFV3KMKcXnD5/5jRf0ckfM+v3cME/76znNjlt1CJ5lDKQjNvDB55v0166cZlF2aIG4ttqjQVgj3gUzhk=
+	t=1778499483; cv=none; b=Shx5IGYZno8rdsYjJhKqwjy5P8z1zQh21rMRcfGXzOrR6AarKHilSTy06iD+LkWkl2WTAtfTyrFUvYC3x0+SropWvhrYc0H+8jV4nFibimW5QlQS8KVtKvRjk2rLd6VZ9fXCOjhfeWkEuWCB2mQdNvTM8TZM3laYfzZnUZlRNQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778499377; c=relaxed/simple;
-	bh=DegH9MkiFeBJE4SexquMCZk24MzaVK8LsfzEy+mui64=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ulCHJkODvcFJ9IEw9rHNTay1L+9YxpUt2UDwbTGmYPdpxK4AGIeHzY9cRbdGj5bOPfWOuWNQyAAinhwTcluxJwNE3tXeDQjG9QRsUfE9s0pAElWnzJSmDaApWzimxZSnbwc69x0mL+KdKNHC8S8ZVNJE36lV7tCfMqo+OGvocw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=desiato.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=BLRc22X8; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=desiato.srs.infradead.org
+	s=arc-20240116; t=1778499483; c=relaxed/simple;
+	bh=0P+T7rPCjs7iIgf5SQUmV9PTFlEQbO/0gyt8XtRwZXs=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=PYXx0P6xnUII5OgPTj/4pIkmTGeJp1M/+yZ4hjYkHY+Sd+eJgFhXMv/v7V5BQgNz2tygrQvOTiHKc2/Wc7DJ/yCqugSquNSsR+1dNIlIzeUZxkWlWGJ2nx1EF48DROooK8AUXw38d/zEeIkcqxmkbWRZEAPPw7tp5wHeXUdy7r8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DYEyEQcm; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tabba.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="BLRc22X8"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=Sender:Content-Transfer-Encoding:
-	MIME-Version:References:In-Reply-To:Message-ID:Date:Subject:Cc:To:From:
-	Reply-To:Content-Type:Content-ID:Content-Description;
-	bh=wvcz1NQ1762dWyW3ikY0T2Hu3cBKQuR9OWUU0jS07tQ=; b=BLRc22X8JobnVWQx1+w28cGjTs
-	P1+3b1A6VDdwLivNi/8y4wi33PZq9BlyUH+hxqjqPGRkD5bEskzLCIUva597dRmJJf5ENwTtNMGhM
-	e48FcpfH11lIXmG1/+gDixtEVjCkZDP8c3db+s67jZA07VRzP4Ahdbo3oqnhMCLajZnmFDfz1hHB2
-	Ufw3J1fc/Quz5MlvlRJ2niZ4vCb8MOmiv+268PXylNSqQQ6IfTJsWcqJdXY7O1RIZ3wBfiyL3I6eK
-	+73Go0bqEsS5w3Uewv1iSXLdk+aoicmZywLC6nqN9jVAs3EnKUyjyBjEV+pCNm+AutV0hTkrFZI8Y
-	ktN2IYBQ==;
-Received: from [2001:8b0:10b:1::425] (helo=i7.infradead.org)
-	by desiato.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wMOvZ-0000000BUT9-285J;
-	Mon, 11 May 2026 11:36:02 +0000
-Received: from dwoodhou by i7.infradead.org with local (Exim 4.98.2 #2 (Red Hat Linux))
-	id 1wMOvY-0000000Dx0c-14Kk;
-	Mon, 11 May 2026 12:36:00 +0100
-From: David Woodhouse <dwmw2@infradead.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oupton@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Jonathan Cameron <jic23@kernel.org>,
-	Sascha Bischoff <Sascha.Bischoff@arm.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	David Woodhouse <dwmw@amazon.co.uk>,
-	Kees Cook <kees@kernel.org>,
-	Timothy Hayes <timothy.hayes@arm.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-kselftest@vger.kernel.org,
-	Peter Maydell <peter.maydell@linaro.org>,
-	qemu-arm@nongnu.org,
-	qemu-devel@nongnu.org
-Subject: [PATCH v3 3/4] KVM: arm64: vgic: Remove v2_groups_user_writable and use IIDR revision directly
-Date: Mon, 11 May 2026 12:30:45 +0100
-Message-ID: <20260511113558.3325004-4-dwmw2@infradead.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260511113558.3325004-1-dwmw2@infradead.org>
-References: <20260511113558.3325004-1-dwmw2@infradead.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DYEyEQcm"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-48e5dfa8ec7so22510875e9.2
+        for <kvm@vger.kernel.org>; Mon, 11 May 2026 04:38:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778499481; x=1779104281; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=fboe0jcENvd9dSVpqW0NTYIFHtH+nnd298gI3HalAZs=;
+        b=DYEyEQcms/cRq1l3AIHofOMy1lNk0pE4Kjzr/clmFZyKRY0VvYbUi5gYIV1E+4Sta6
+         oSXLmj9wIwDwbuXIdttNb1ezrGzcWkqHoH4IgQJxbYwpN+FQ87nmGb6RZqgkPcHrmgbl
+         seNKWxuAqGq0JxssBJdN1zfbDuoEQb4EuMaxvT88c9owiko61T12MmJLhXHbx7p3t7TA
+         oCfgnk6kR0iAHof3AfI4eCtVVmoCkH9VUlkiFRPuaRLaAtEVM3b0VBqlpRWcta6H4Okb
+         /UQGly6/tkgvRoleBnBICjFbHS8d9vBrjsWqyLlQwXid6L4E1hSJ7rJy2P1I3njNHOq/
+         tzJg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778499481; x=1779104281;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=fboe0jcENvd9dSVpqW0NTYIFHtH+nnd298gI3HalAZs=;
+        b=fUgsOOoFbnFD5mxkeLYcGEs1MbO/BLxZr4WtdSq5YnO/pgNohq3uQVO2J0FwB2BYBz
+         gWPFU8S4tznrfahlYtI24ELoj8UkhfqwlQPRD2Sq6c0hobxcrqFiHYjFwiaNDzob8TiA
+         1DXO0V2JJvlLJgk8HJkROld3u2Iy+00O2rXPN3ZoP83aRszpN6nSTG4s4YV9z2rCm6Ge
+         N5Us4EhgBIJp7AcPIVuZFfc8u7vcK+F/PUCiWSQfVfteyiaQ3//xqx02WA/aaXKZ6y8X
+         bA8Seg/tNRyZWr8Jm0RsGt+2sLVnCeM5SzzOE964oVJlM13ORAX0MbEjEO1R7YY5+C68
+         wWWg==
+X-Forwarded-Encrypted: i=1; AFNElJ9I42N9QkNf09yZ7ORhBOoYg2vcITPISCb6aPIphlRWLMg9iAGT58L+0wItKagwJ81adB8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyLypzX6DuXNadknuHbNXTz8V2VibwKabHDpe8xUZ9Ybexp53vv
+	DhkNQMo+Wm+ZQtmVZcxUM2Y9cMxtvKPi3H06msTjumTjreogDv26MBX+O6flkR16rgNc83JN/dq
+	Ynw==
+X-Received: from wmow11.prod.google.com ([2002:a05:600c:474b:b0:48d:e8d:3bce])
+ (user=tabba job=prod-delivery.src-stubby-dispatcher) by 2002:a05:600c:c094:b0:48a:8b02:ae91
+ with SMTP id 5b1f17b1804b1-48e51e20638mr261622845e9.11.1778499480533; Mon, 11
+ May 2026 04:38:00 -0700 (PDT)
+Date: Mon, 11 May 2026 12:37:57 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Sender: David Woodhouse <dwmw2@infradead.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by desiato.infradead.org. See http://www.infradead.org/rpr.html
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
+Message-ID: <20260511113759.610924-1-tabba@google.com>
+Subject: [PATCH 0/2] KVM: selftests: Fixes for guest_memfd_test and FD double-close
+From: Fuad Tabba <tabba@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson <seanjc@google.com>, 
+	Shuah Khan <shuah@kernel.org>
+Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Will Deacon <will@kernel.org>, 
+	Ackerley Tng <ackerleytng@google.com>, David Matlack <dmatlack@google.com>, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+Hi folks,
 
-The v2_groups_user_writable flag was introduced to gate GICv2 userspace
-IGROUPR writes until userspace explicitly wrote the IIDR, signalling
-awareness of the group semantics. However, the guest write path through
-vgic_mmio_write_group() was never gated by this flag, allowing a GICv2
-guest to modify interrupt groups regardless of whether userspace had
-opted in.
+Two more patches, standalone KVM selftests fixes that I'd like to
+land before posting a pKVM selftests series, a follow-up to Will's
+pKVM infrastructure series [1].
 
-Rather than adding the same flag check to the guest path, remove the
-flag entirely and make both guest and userspace IGROUPR writability
-follow the IIDR implementation revision directly. Groups are writable
-when the revision is >= 2, which is the case when userspace explicitly
-sets the IIDR to revision 2 or 3. When userspace does not write the
-IIDR, vgic_init() defaults to KVM_VGIC_IMP_REV_LATEST (currently 3),
-so the behaviour is unchanged for userspace that doesn't set the IIDR.
+The first patch fixes a build failure I ran into on Debian Bookworm
+(glibc 2.36): guest_memfd_test.c uses MADV_COLLAPSE unconditionally,
+but the constant was only exposed in glibc 2.37. The fix follows the
+established selftest idiom of providing a compile-time fallback to
+the kernel-ABI value when the libc header does not define it.
 
-This also fixes the inconsistency where GICv2 userspace could not write
-IGROUPR at the default revision, even though the guest could.
+The second patch fixes an FD double-close in kvm_vm_release().
+kvm_vm_free() calls kvm_vm_release() internally, so a test that
+calls kvm_vm_release() and then kvm_vm_free() without reopening the
+VM in between double-closes vmp->fd and vmp->kvm_fd. Existing
+in-tree callers reopen via vm_recreate_with_one_vcpu() and do not
+hit this today. The double-close becomes a hard test failure for
+the pKVM selftests I will submit, which release the VM and then
+inspect host-mapped memory before freeing.
 
-As far as I can tell, QEMU commit eb8b9530b0c ("hw/intc/arm_gic_kvm.c:
-Save and restore GICD_IGROUPRn state") made QEMU attempt to save/restore
-the GICD_IGROUPR registers (which, again, are guest-writable but not
-userspace-writable by default) without ever actually setting GICD_IIDR.
+Based on Linux 7.1-rc3.
 
-Fixes: 32f8777ed92d ("KVM: arm/arm64: vgic: Let userspace opt-in to writable v2 IGROUPR")
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
----
- arch/arm64/kvm/vgic/vgic-mmio-v2.c | 16 +++++-----------
- include/kvm/arm_vgic.h             |  3 ---
- 2 files changed, 5 insertions(+), 14 deletions(-)
+Cheers,
+/fuad
 
-diff --git a/arch/arm64/kvm/vgic/vgic-mmio-v2.c b/arch/arm64/kvm/vgic/vgic-mmio-v2.c
-index e5714f7fd2ec..e5fc673a1ea9 100644
---- a/arch/arm64/kvm/vgic/vgic-mmio-v2.c
-+++ b/arch/arm64/kvm/vgic/vgic-mmio-v2.c
-@@ -84,21 +84,15 @@ static int vgic_mmio_uaccess_write_v2_misc(struct kvm_vcpu *vcpu,
- 			return -EINVAL;
- 
- 		/*
--		 * If we observe a write to GICD_IIDR we know that userspace
--		 * has been updated and has had a chance to cope with older
--		 * kernels (VGICv2 IIDR.Revision == 0) incorrectly reporting
--		 * interrupts as group 1, and therefore we now allow groups to
--		 * be user writable.  Doing this by default would break
--		 * migration from old kernels to new kernels with legacy
--		 * userspace.
-+		 * Allow userspace to select the GICv2 IIDR revision.
-+		 * Group writability follows the revision directly:
-+		 * groups are guest/user writable for revision >= 2.
- 		 */
- 		reg = FIELD_GET(GICD_IIDR_REVISION_MASK, val);
- 		switch (reg) {
-+		case KVM_VGIC_IMP_REV_1:
- 		case KVM_VGIC_IMP_REV_2:
- 		case KVM_VGIC_IMP_REV_3:
--			vcpu->kvm->arch.vgic.v2_groups_user_writable = true;
--			fallthrough;
--		case KVM_VGIC_IMP_REV_1:
- 			dist->implementation_rev = reg;
- 			return 0;
- 		default:
-@@ -114,7 +108,7 @@ static int vgic_mmio_uaccess_write_v2_group(struct kvm_vcpu *vcpu,
- 					    gpa_t addr, unsigned int len,
- 					    unsigned long val)
- {
--	if (vcpu->kvm->arch.vgic.v2_groups_user_writable)
-+	if (vgic_get_implementation_rev(vcpu) >= KVM_VGIC_IMP_REV_2)
- 		vgic_mmio_write_group(vcpu, addr, len, val);
- 
- 	return 0;
-diff --git a/include/kvm/arm_vgic.h b/include/kvm/arm_vgic.h
-index 16811ec03d54..a9490e43d98d 100644
---- a/include/kvm/arm_vgic.h
-+++ b/include/kvm/arm_vgic.h
-@@ -377,9 +377,6 @@ struct vgic_dist {
- #define KVM_VGIC_IMP_REV_3	3 /* GICv3 GICR_CTLR.{IW,CES,RWP} */
- #define KVM_VGIC_IMP_REV_LATEST	KVM_VGIC_IMP_REV_3
- 
--	/* Userspace can write to GICv2 IGROUPR */
--	bool			v2_groups_user_writable;
--
- 	/* Do injected MSIs require an additional device ID? */
- 	bool			msis_require_devid;
- 
+[1] https://lore.kernel.org/all/20260105154939.11041-1-will@kernel.org/
+
+Fuad Tabba (2):
+  KVM: selftests: Fix MADV_COLLAPSE build failure on older toolchains
+  KVM: selftests: Fix FD double-close in kvm_vm_release()
+
+ tools/testing/selftests/kvm/guest_memfd_test.c |  4 ++++
+ tools/testing/selftests/kvm/lib/kvm_util.c     | 10 ++++++++--
+ 2 files changed, 12 insertions(+), 2 deletions(-)
+
 -- 
-2.51.0
+2.54.0.563.g4f69b47b94-goog
 
