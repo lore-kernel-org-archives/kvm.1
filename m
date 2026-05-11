@@ -1,657 +1,222 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B580496904
-	for <kvm@vger.kernel.org>; Mon, 11 May 2026 21:19:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778534361; cv=none; b=P5Z9vPmnr4vH1PbFCwoDxGrC94D7DmeTKQ1wTozKBY3vp+Umglu5PKfbwEwtRb7f0Plmw7gy30M3yYMw+DxJxhVpCjS1h8qoOK7LkvAPVHLuqhgkw4G51bO8Xxuj1N8IMB8hSzHUQjur7JT/VXFe7I8IJLL83nNi52WNsdagdxw=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778534361; c=relaxed/simple;
-	bh=qmkeNBjWMeO99EV3P2jPpeCUABTVhXxMA3K/1i3Ll58=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Uk3UnPS80JjeI4WcjxA5e+CAx+z+gUGB28GB7etpu09MhIMG6YWPHbJr8NtljsG/N+ER1mTaTwE+YXh5/e+KCgdZBEwUQMqlIDbsgmSmc9C41NoRq2X2PVVfwyE4keE323nDGHPfnQRpqhqff4TmHGJ8nB3GznlNl/ClFmBJjiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JAwnvNNK; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90BD2381B19;
+	Mon, 11 May 2026 21:27:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.177.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778534848; cv=fail; b=FnaRpSjBlB8lBqSBhvbrxfQGBNNxN6PO8e33ZKmmmiroehyNbeyKjNAy1QV9maPxwosBFZveo2VFlWeQRhd/NEOdsjbRSSDk3k+VeZhtaOU4pAXfazDHFJawjlQSn1uVHLcJy/IZUedLfG5sbCVfMw61y5Q/2bjfcPw3LdPnyHE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778534848; c=relaxed/simple;
+	bh=UZbtYEA34IRPimnfFdxof6tl742gnj3l2znL2kDTNUI=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=TTRgpqf7Cvhvitd8cHNbh5Rgcj8CB0us7NqPcE4B5YhB5liqbMvy3j2GbaaYqNkK6oEAebb4F7yOvU+3ZAAsjkpfsHrJXK4ac131pWqaUh1GoXDzbS0xvh/mKK3F5NhVUZ+qp3APpipR8eMwMUIBBm91t2PVHqppRorrg61c9do=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=IbK0STRS; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=xhoYX91u; arc=fail smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JAwnvNNK"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-837cc5bc6deso3240869b3a.3
-        for <kvm@vger.kernel.org>; Mon, 11 May 2026 14:19:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="IbK0STRS";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="xhoYX91u"
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64BK8DO43808355;
+	Mon, 11 May 2026 21:26:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=KjvPoKUkAg+P66aaJIk+KqUyaIIOKgwnn3WAgz3CZu8=; b=
+	IbK0STRSo4j5QifwXK5RTs99NJz/Dg1QG1e1ya7pnA7AJIZNHfUi2ZVI64lYCFtG
+	+rcw0Z5pvyEM48BkTmlmvb+3uQLOfiNkndK/1OFOfiWzVatn/+9FaYtsefw/7CYS
+	u1xztNZqqNM4OK/YwNtXxZro7dowCGHDA0uhT+I44jHHf05K8Ps9GJTWso36PXh5
+	qJXleLCIgfclvngcs9ULzRjyzWo4T5QhRKbyIP9A6GeJ27p9/B8qnmdSBz983m1E
+	UIYo6pACB5j6g1AhYpKuj16quJ5zGZs1k7yl3spt5T8vd9yvjz8zvts1BLHDU4P0
+	tEmol/bbZV+J3cu4h3vJLg==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4e3nv1g4u8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 11 May 2026 21:26:47 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 64BLQGB8018428;
+	Mon, 11 May 2026 21:26:46 GMT
+Received: from mw6pr02cu001.outbound.protection.outlook.com (mail-westus2azon11012018.outbound.protection.outlook.com [52.101.48.18])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4e3ne9bj13-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 11 May 2026 21:26:46 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=MoTEvkfZeAeV/dxzTLxzjzsbRzV9khuDGlECg28CiaBPfghVM129rzXQyM3wrJpIbuG3RpcETgq+ZMgPT4CjOjzXo+TSFVsQoXfEb3jv6/GdFophnwDzY+HYbztsrFh9PdiRZqXQYD3495qbKKvWAGgR45xoayR9BbUWhwqeY79p9EoqCalkB8V8UfCUL5zP1hs8YUtUrEJecmi3gltS8xjKPRT8CFAHrsK6vKsYmjrLl7C4+52ONWaWYoywpOYuxyH5+3SCrv28t0bTecU+ZV8bBaaMGFaTdbvjRTyFEL4tyhS4fcQeF+p+B5ZD0LdpBTvWtWPqNI+uiF5subd9/w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KjvPoKUkAg+P66aaJIk+KqUyaIIOKgwnn3WAgz3CZu8=;
+ b=kuQzCCS30ooJuLAJYZbUZCFrtif2ohGn2+AVfdmdrnARUhcO1pw2vqNuQ4BBHJn9VzqidzVBcgIno1/SL3IBIg6ka+ENnSv3phsEfdUBbUFpwt3WeEI/Yv6qOokdx9qxVCjgG0a1fSJbGU98wrN8oZaCcOUYfAMlu8fNvrkkUjYHwzopTf69MsDwu9/Iw5ernZOsdcGwJM8qnbdewTbraL/iS3Rv2m+uAdv1O2VyDpKLyzyzkGgbqzHsJHixFjtiqqeBlVcIHdSymsekJqwwq2d4o+jfWy6eiByZ60WmtDAUuqSzYQCdcTFgXkY2CcyRE7rKfpu3iwUCYk7twG8MEQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778534358; x=1779139158; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=CHR65Pv2Jpuq5p77NQrm1Qt8lZEdVwp6VjZjBEUiuao=;
-        b=JAwnvNNKleKJj9uTHVMqsQt2MApqB9aHTG6bSjYfR1jYOKpnAMZxCKejxf+bEhH3sk
-         j87uPRu2VaRjLXRb/eWugIoclG9XbnCqfGciDgFgwUW+mvyNzdL4hfsXb25rIvbsSoZf
-         iMjHA7hh3aS9Hv2rk/8qE+Y32YxZINWpZo38KZV3WXdJrVFrehCCA0Ld00Lu0unOctW+
-         2+0avoZJKHTQCHrnRXGOvgE65hW8Z5d9VLBrFv347DgTriRkh7YihrauUeGoTjMkDiqY
-         yXdCXpmhPsXjebjmzpNzABfdSmFVm9/tIpYEQWPJ8LQo6HQiD0IOTX0Rt8QQifVImDqR
-         k13Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778534358; x=1779139158;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CHR65Pv2Jpuq5p77NQrm1Qt8lZEdVwp6VjZjBEUiuao=;
-        b=ddyWBuy/84X9HigBecFbU4Vl1/+EdMBCSfb5p94EiMKu4zEwP/x/Gcw6gp4D/oXqc+
-         ispVk3WhbZVFX7f5UsGUnO/BcCnubZIJekhBfSw6v2eRnhfns8mBi8piULZimIKg/ep1
-         6t7GDxYDdEBxAffregIEBIctZrLL3nPUoypa0YiHiA5WCR4qqCgTFL1/GiL2of6THdOy
-         RqC44wJ+4Z+k1V2SmUv0r+UDOE3I+yu3b3RLRTnzQaqPkWgPOu0HVN7oOOQpw57UsAlF
-         bOqxU3bYJv73HuYFtlRBRGxYTIEYJe50e+CpAzdBQjuooQ2hFN5YaWBhhfQ7v2noYZml
-         FxcA==
-X-Forwarded-Encrypted: i=1; AFNElJ+f5NY+QKefFWzpbjXC92+GbrNKvWGqqkPULfykZj3Ozm+6ZKtghxooJV1gcsWTlkDHsGo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWqs3wYO77/Y/ZVIPy2Jy1ITOhKsJWvFTr2QhLo3YvU3jiE9WS
-	9Q9KKg1+eFedk49PNJe6o7Sw0qbmDYWhnaI3b4QqYrvVeVjq4K5tUIuDHvSJPVBU4HLg85R/0xV
-	Dd215Zwd1
-X-Received: from pfmm17.prod.google.com ([2002:a05:6a00:2491:b0:82f:2efd:4159])
- (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:399a:b0:82f:abc8:ae0
- with SMTP id d2e1a72fcca58-83eeba1b101mr159155b3a.17.1778534358019; Mon, 11
- May 2026 14:19:18 -0700 (PDT)
-Date: Mon, 11 May 2026 21:18:39 +0000
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KjvPoKUkAg+P66aaJIk+KqUyaIIOKgwnn3WAgz3CZu8=;
+ b=xhoYX91uD0EEEWuTc9VAJNgY0zdsDrToShb3+58T+vBm6i0pT9JG8iFHd86VVBDAPSWjCvw31iTycUDq5NS4k9mUQeerpMM+MfFpWJP8gavxAscrTsDdGYy1TWafIqrwpYTjL+pwyDA2TjGED4LMC8GwymkFhqSpBWoJdp2S3oI=
+Received: from BN0PR10MB5109.namprd10.prod.outlook.com (2603:10b6:408:124::23)
+ by PH3PPF67E073224.namprd10.prod.outlook.com (2603:10b6:518:1::7aa) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Mon, 11 May
+ 2026 21:26:41 +0000
+Received: from BN0PR10MB5109.namprd10.prod.outlook.com
+ ([fe80::d9fa:7ad2:804b:bb83]) by BN0PR10MB5109.namprd10.prod.outlook.com
+ ([fe80::d9fa:7ad2:804b:bb83%6]) with mapi id 15.20.9891.021; Mon, 11 May 2026
+ 21:26:41 +0000
+Message-ID: <24295bca-fa63-45bc-95d1-5f45ad1e8eab@oracle.com>
+Date: Mon, 11 May 2026 14:26:37 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 2/5] KVM: x86: Reset vcpu->arch.st.last_steal when
+ enabling steal time
+To: Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, x86@kernel.org, linux-kselftest@vger.kernel.org,
+        pbonzini@redhat.com, vkuznets@redhat.com, tglx@kernel.org,
+        mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
+        shuah@kernel.org, hpa@zytor.com, peterz@infradead.org,
+        juri.lelli@redhat.com, vincent.guittot@linaro.org,
+        dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com,
+        mgorman@suse.de, vschneid@redhat.com, kprateek.nayak@amd.com,
+        jgross@suse.com, dwmw2@infradead.org, joe.jin@oracle.com
+References: <20260505003044.78693-1-dongli.zhang@oracle.com>
+ <20260505003044.78693-3-dongli.zhang@oracle.com>
+ <af5mbWXpG5ofRdJ2@google.com>
+Content-Language: en-US
+From: Dongli Zhang <dongli.zhang@oracle.com>
+In-Reply-To: <af5mbWXpG5ofRdJ2@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY1P220CA0001.NAMP220.PROD.OUTLOOK.COM
+ (2603:10b6:a03:59d::14) To BN0PR10MB5109.namprd10.prod.outlook.com
+ (2603:10b6:408:124::23)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260511211839.2781731-1-jrhilke@google.com>
-Subject: [PATCH] vfio: selftests: Add driver for IGB QEMU device
-From: Josh Hilke <jrhilke@google.com>
-To: Alex Williamson <alex@shazbot.org>, David Matlack <dmatlack@google.com>
-Cc: Vipin Sharma <vipinsh@google.com>, Jason Gunthorpe <jgg@nvidia.com>, Shuah Khan <shuah@kernel.org>, 
-	Tony Nguyen <anthony.l.nguyen@intel.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Josh Hilke <jrhilke@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN0PR10MB5109:EE_|PH3PPF67E073224:EE_
+X-MS-Office365-Filtering-Correlation-Id: a4dc1a3a-7ba2-43b6-1b75-08deafa3fe43
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|7416014|1800799024|18002099003|22082099003|56012099003;
+X-Microsoft-Antispam-Message-Info:
+	RATYFQx4YqmTRbguKsLWfdMiCmkSNUKBErWTfEQUfMh9NLPybjulSB9arXbJnnt4IVHYFOXB3Z+E1WNPqOiDnK+yG2R0/gteciVR7ElrW7Sh1aHizzZvD/w+Tq0Z1kIRG2X2tOHUM/b19JFoH0hM5ZQ70KakVUeqBrKSlQYSAHVVZ4fBPTSJmJU+k8RbDSDoH92Cvtua8G+RjDLAsBbFgqejDmLFHglkgceNh2yqb4U7Of3PfUEFHD095Mj5LEuEOGNQSf7xCbDGt+xYR/Oh3+GMwdL2xAOhnyqcdpyAGXdQtr0FzuYyYzNCdHSaxHF2ZN6svyD76+PENaelIckGDJyqGbcfClr2U0wTIb8twJl4AVRtAUNd2/pbOT/BDm19vYKpQVzgWD0C7fdbwdeLu03oJFjLfxoW+b08KgQkTED83AWHM9EkM/6QduYsNLjVslEEZuc4zFZTpRmMOr29OtpaOqYCsW0vy0ZQTUJGiQTrvNYshG4clPgVF7/SqJm5JeSIMWsTNJL1QlX+XtdBeRXUX0hteZPhrOk+LEttiYoheN8sxe8DKPQ2i6z79fY8VwuGguGKbe8MQwxC7wLhalvONfryx6LKxAGYcfRPYqOS3U6r/Ht5GxEIsSRtbLg4XC84Byujhen6qcWCXU+cYILFeKHieHLeJJH2OmcEwIrHDDVwRQQtDgN3wRebg3Sx
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN0PR10MB5109.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024)(18002099003)(22082099003)(56012099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?UDZpRGg3bmlRejYxTC8rNFVTbkZ5TnhzNzhCK21xamhoVFRHTVZpUzBNbFVK?=
+ =?utf-8?B?OS92MlFWc2N4TDNYdWhsbStSRlVja25zaTRqY1Z2UzhpRGJPUXRKRkc1TWFj?=
+ =?utf-8?B?bzBPc3pxZDkweExCY0kyblZ0NW80eUFFYWppUkRpUUhDLy9SckVjTUFHOFU2?=
+ =?utf-8?B?UUxmaWFVZkN1RVhSaWdEak96SFVrWnV3RGttMjFxaHhlalRqVUYvVUpDdWx3?=
+ =?utf-8?B?T2dpS2hIVDZNelNTalZRV3RsSndoNlowTUt3UGhGSTl5YnBlSjRIZE5EaVhH?=
+ =?utf-8?B?eTVBQzBqcmtqcTBxTjdWNkVMZm04aTByLzErOSsyV1RoMmpvWnk3bTBHMmFP?=
+ =?utf-8?B?MHYrMTlpQlNpNmdHYXBUVm9KS0ZySzRZd3daWU5odTdYRVVtcTl3dnMrUnZQ?=
+ =?utf-8?B?cTR4M1NuSDJQVmZMOHIyNExDK0lNR3NOdGRqUklkT2o0RXpKY3NwbVhHR0pF?=
+ =?utf-8?B?ZkpqTmZucDR4enlmVDRLUU9zYndhaTROUWs5RjJSSkNpK1dJRG1jRHk5Ritu?=
+ =?utf-8?B?Njh4Sk1pOVRHWEhHR2RlbmpkdXY0anRYazcxU3o1eEx2QXZzcS80bm5FQmdO?=
+ =?utf-8?B?R1FBazdrcjVMSXh4RnRPWDcydkNsTmdPSW5qbDV5azU2dGhBWWplL3VFWnE1?=
+ =?utf-8?B?MmhpanozZXptT3l3WncvU01OZjVTMVRaNTRTcnBPMU1RZStNcml4VGZESTRm?=
+ =?utf-8?B?WmV3S3JxZW9FcUFlU0wvd0d6OU1NWEF1cWZBZm9yK3RaeWN6TWlPR1ZFMG5J?=
+ =?utf-8?B?b2hGbGpaTUl3eVBST3A2MjNYN0t5OHJFdmQvVURYOHB2YlIzZG5kR2lvVXJx?=
+ =?utf-8?B?L1JBWm1RamljSGtYb3ptWXRVamRPa1pFUEJ5ZytsaDk0Mm9lVmllQVFWZFhC?=
+ =?utf-8?B?YVkybGRvMFUwWVQvY2J0c05LZ0ZLQ1RoTUQ4ZTZJbE5oTVFoTVBFVE9uZ2U2?=
+ =?utf-8?B?aW90dEJQVW55eGlvS0hxQ2NCNmJhWjR4WDFXREtJQ3NaZ0JGN0xjekJzV2hZ?=
+ =?utf-8?B?R29IYWNvM3JNZGdwOGJXbXBtcnpTNmlPRTl3Z0NkL0JDdCtCTEhRbnlwZVk4?=
+ =?utf-8?B?TU9JTjE1MmRaY2c1T092QlF3dnlTUFpndVNkVUR3ZEIyd0FMWFMrMWMxRWM2?=
+ =?utf-8?B?SkJVVkhpZlFxcjNoNnhNMi94eWZnQmtSVExUUjVZWVE2cG1pSENZSEIwSHpZ?=
+ =?utf-8?B?dSswT2FucnE1Y1hoY3Y0dVNZT1AzYUxESTBEQm1LZlZ4cURpTTRVSVV3S1U0?=
+ =?utf-8?B?eWdtMDVnUUZPUUU5bWR5Y3docVNmQzRFbGg2UjE4VHJER0xwWmRLRGpXOFBw?=
+ =?utf-8?B?V1VScTRIN282OXpQUE9Sa1VGL0tnbWxXUFVwbXU5YnhqWmdDdC9CTFB6Q0dO?=
+ =?utf-8?B?WGdPY3RuWUdPajZYNDltcS9wSVM0V25UNFllVEJtNDVxTVpKRlV6SzI2ek0z?=
+ =?utf-8?B?UXpaMTdrSThuWEQ0K3p0NjF2RDNSLzlDUDY0TnN0NXpHbXdxcFpHS2V6VEla?=
+ =?utf-8?B?UERETjV0Ymh0eXRxYTNGaUtwUzdEUnY4WXFSaUJCa0ZxV2xSSGNVOCsza3hZ?=
+ =?utf-8?B?bnUvRHlBTFVlNzYrSGt4VTdnMmhxbENoUFFHTXQzTkpMS2h4cUFUbTl4N3RL?=
+ =?utf-8?B?bmc4eFVWejBLWHQ5dnowU1NEeWhYdng1Vm9QR1ArR1liUFAzVVRnYlM3K1lD?=
+ =?utf-8?B?WStUU2c2bnhmcWxNWVg5QmJLdXFPcjc2Um14b1h6YkZSMlR6QTlhelhxSkt4?=
+ =?utf-8?B?V0xha1VzR0RJcTlqellzUkRCeFJEVUcwakpIY2FBbmcyWkM4dTI2TEt4bm9W?=
+ =?utf-8?B?UzcwYlkvZTNtbVV1aWlVZ29pWExRQ21oZ3VCdWpvVGpSR0VEaVRaTGlBOXZ3?=
+ =?utf-8?B?eEdaNkN2cHBjRTgrc0RVVkRYSEtSR1MxaUVuanZERE8rdllVR09MZXlLUEwr?=
+ =?utf-8?B?bXhzZ09HRm95bFduVWVsSVAvdDNJQjJrZmo4elZrbkN2b01BSm5OVTIwQm5B?=
+ =?utf-8?B?MktVNXFUVzlpN1AxV1VWZzgyVjVsVjA4T2ZCZ1VZY1R4OG5UMGFISmcwbXlp?=
+ =?utf-8?B?Q2lyRERGUlRRWHdBNjBUUUZIcWZ6Mjl3elE5aFVwOHJuVXNNSWVNSWM2emhh?=
+ =?utf-8?B?ZUxIM0FWS3gxR2VLZGcrWDNBK3psUDJYMGRKQm1PQmpOUWlEWndSaVVjTTFt?=
+ =?utf-8?B?K0haazNwUmgyRUlGVWFoQ21hL1Y5cnRtM0FlYU5pTmJYK0gra29IL1hMc0JW?=
+ =?utf-8?B?Mi8reVc0UWMwUmlyeUZLZEQ2UUV1ZU1WYlFhOGY4L0Y5dXJNK3c3U3dNUlox?=
+ =?utf-8?B?emtDWjB2T0xKbnMzVTYvcVR2dkFNOHc4enhiM045eENYVEJsM0FPdz09?=
+X-Exchange-RoutingPolicyChecked:
+	p98CjNjPfpNYcQi2ek9Sj3tgNUigLRS+re6r4m8NzJ21AX5P0kOvR8IgGpnTQwXlw8GsSD6Z8/R4gmqlgAkBy5S2RYZeAZTZIP+RaGiEuAgECbFag5AN/O9ISsopu4AbG/NGY3FoXnpiP45nBQiTLRACphgkEGpBufgOUxv5fF+MmEXZMKQWPw5bYyPTfcK20apCRAeb6lfnR/L0P96ejIZTlUdqpFUbSiL/Xm3642q84ojW1kgdfK3UBGAv+FVeUft/kHO/XC3OgIJjoRr5rkptMoEOIqxbKl1I9F625MFSimbJXMf8Y4ZamWrxWqE4Sxy52fSBLIzsykqm80lVJQ==
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	RU1I1cuE4bXhMptXnXokLPAC2CmYPGAne6y+UIfiRlTpjOjtA6QV3+rLYCE5xuShGJz4xyOLebRIfD25c48lJbO+qRN3676TzRqtDIfXo5Olkx1eF/iy4LFSYuAv9sZsdsa9OclR++SsUEtVndoB1fSpq4FLf5PECDAUdUK3g4KSJ8knmCwQMNcEl0bXF5ZsY5U8yX23LvS1xt5LlHGWvdnTu6QaDnkrIheaPcL2VcSrfK69umWIDLsZweum6UzTUXD99FhySkHTx756HtXKZZys3c5DXrFYgHC3PJi6GdB77ES4DV9pj3TJCvMxdbuwkMawxyyxgpIAlpg+KMOjvapb5R/eeiahGjy48HOMmAnwj9wv8CbgH2v/N+KFVdANffdHRLlx+kDozks0ZDS81lnf7qsZMKpFiUOmRU1adcgKOMK1zLTY1YVHX8Cqj6dze8ZayhGyna4Etr1T2TpDGoVo4JbfjfVt/3Kv49ww0Jz1/X/m0/HUNgnInQ4lmkh00hc6VQFNY/414BwTWt0MtCs5Cj/tJ9URuJEkBN/Uk1nMe9SqtledVr3OO9ZANp6STN34ScR864OPc3LXjFV3kHy4NvXEJkRKMhI48xwU9Rk=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: a4dc1a3a-7ba2-43b6-1b75-08deafa3fe43
+X-MS-Exchange-CrossTenant-AuthSource: BN0PR10MB5109.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 21:26:41.5874
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6KuaU1oRdykA9cHLGkF9iEONmQVmkPMAV2ZXkl/WCF+0QjVXnNUZqB1NZorKBkNZDjuFypsA9kj4FDRdyCLLqw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH3PPF67E073224
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-11_05,2026-05-08_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 mlxlogscore=999
+ mlxscore=0 suspectscore=0 spamscore=0 phishscore=0 lowpriorityscore=0
+ bulkscore=0 adultscore=0 malwarescore=0 classifier=spam adjust=0 reason=mlx
+ scancount=1 engine=8.19.0-2605050000 definitions=main-2605110227
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTExMDIyNyBTYWx0ZWRfXzrN4UpgML+Ri
+ sdeL5Qwrc4eD0uBxxiMgae35InALQRKZcQAp6pY2g8VdRFevTRbPisKOGGCwWku1Uw/qT9AxfZm
+ r3E8B2c8gr8g2Y8k/lb7g904zTAnoGMcDZW5ICdA/eMEe+qsoGdxD3JwcKUOucUVC7BFsrCELh4
+ L+5eKifs9YFgkBeAwOt4swQy/W9EJS1RW8UF1zn/XR3R5HOsKSVtbkzAzQwn90qg2jjqdUnywUq
+ RfBbK2mfaVOFhmvdELaZTKf7w9MjrlgwH0MPg2UD0LCMEmquPb7exsKfyxAfOihhGCpQJ63852h
+ vo2SWVD9LfFBY5Y5QkIJHZHU/ggGYcpZzABVx9p38RaSoojS6hsXWu1SzYEvsLiaXSzEZW6wiEv
+ c/mrS1SguOoLSYGpiyGU+BJRGaaLMV+P+dxZioS+TSdikL82orc9fBa9Rav4ewrczS0t5moCw6v
+ eCroQcxPgQankjaMlcQ==
+X-Proofpoint-GUID: A2rimEd220stWB6aoNHlB4w1xS6pByG_
+X-Authority-Analysis: v=2.4 cv=JvbBas4C c=1 sm=1 tr=0 ts=6a024997 b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=NGcC8JguVDcA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=jiCTI4zE5U7BLdzWsZGv:22 a=x4eqshVgHu-cdnggieHk:22 a=pu8Ebr6csyIeW2ug2hEA:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-ORIG-GUID: A2rimEd220stWB6aoNHlB4w1xS6pByG_
 
-Add a VFIO selftest driver for the Intel Gigabit Ethernet controller
-(IGB). IGB is fully virtualized in QEMU [1] which makes it easy to run
-VFIO selftests without needing any specific hardware.
 
-IGB does not have a default memcpy operation, and memcpy is required for
-all VFIO selftest drivers. However, IGB has a "loopback" mode which is
-used in this driver to implement memcpy. When IGB is in loopback mode,
-it doesn't send data out to the network. Instead, it sends data from the
-Tx queue directly to the Rx queue which points to the memcpy
-destination, instead of sending the data out to the network.
 
-This driver passes all of the VFIO selftests in
-tools/testing/selftests/vfio/ when running in QEMU. The driver has not
-been tested using a real IGB device since the main goal of writing this
-driver is to run VFIO selftests in QEMU without requiring any hardware.
+On 5/8/26 3:40 PM, Sean Christopherson wrote:
+> On Mon, May 04, 2026, Dongli Zhang wrote:
+>> KVM does not support vCPU hotplug. When a vCPU is removed, its
+>> corresponding data structures are not freed by KVM. Instead, QEMU destroys
+>> only the userspace state and the vCPU thread, while the KVM vCPU fd remains
+>> open and parked in QEMU.
+>>
+>> As a result, vcpu->arch.st.last_steal is not reset.
+>>
+>> If the same vCPU is later re-created by QEMU, last_steal retains its old
+>> value, while current->sched_info.run_delay starts from zero since a new
+>> vCPU thread is created. This causes
+>> current->sched_info.run_delay - vcpu->arch.st.last_steal to produce a
+>> large, bogus value.
+>>
+>> Fix this by resetting vcpu->arch.st.last_steal to
+>> current->sched_info.run_delay when KVM steal time is enabled.
+> 
+> This is quite arbitrary.  E.g. if userspace hands the vCPU off to a different
+> task without going through QEMU's hotplug dance, then current->sched_info.run_delay
+> will also change.
+> 
+> Shouldn't x86 hook kvm_arch_vcpu_run_pid_change() and reset last_steal in there?
 
-This command is used to test the driver. It runs
-./tools/testing/selftests/vfio/vfio_pci_driver_test using virtme-ng [2],
-which runs a kernel in a virtualized environment using QEMU that has a
-copy-on-write snapshot the host filesystem.
+Thank you very much for suggestion! I will hook kvm_arch_vcpu_run_pid_change()
+and reset last_steal in there.
 
-vng \
-  --run arch/x86/boot/bzImage \
-  --user root \
-  --disable-microvm \
-  --memory 32G \
-  --cpus 8 \
-  --qemu-opts="-M q35,accel=kvm,kernel-irqchip=split" \
-  --qemu-opts="-device intel-iommu,intremap=on,caching-mode=on,device-iotlb=on" \
-  --qemu-opts="-netdev user,id=net0 -device igb,netdev=net0,addr=09.0" \
-  --append "console=ttyS0 earlyprintk=ttyS0 intel_iommu=on iommu=pt" \
-  --exec "modprobe vfio-pci && \
-          ./tools/testing/selftests/vfio/scripts/setup.sh 0000:00:09.0 && \
-          ./tools/testing/selftests/vfio/scripts/run.sh ./tools/testing/selftests/vfio/vfio_pci_driver_test"
-
-Code was written entirely by AI (Gemini) by feeding it the Intel IGB
-specification, the code for the real IGB driver, and the QEMU
-implementation of the IGB device. It took many iterations of prompting
-to get the driver to pass all of the tests, and lot's of de-slopping to
-remove unnecessary code and make the code readable.
-
-Code comments are also written by Gemini through iterative
-prompting.
-
-This patch is based on the kvm/queue branch.
-
-[1] https://www.qemu.org/docs/master/system/devices/igb.html
-[2] https://github.com/arighi/virtme-ng
-
-Assisted-by: Gemini:gemini-3-pro-preview
-Signed-off-by: Josh Hilke <jrhilke@google.com>
----
- .../selftests/vfio/lib/drivers/igb/igb.c      | 381 ++++++++++++++++++
- .../vfio/lib/drivers/igb/registers.h          | 103 +++++
- tools/testing/selftests/vfio/lib/libvfio.mk   |   1 +
- .../selftests/vfio/lib/vfio_pci_driver.c      |   2 +
- 4 files changed, 487 insertions(+)
- create mode 100644 tools/testing/selftests/vfio/lib/drivers/igb/igb.c
- create mode 100644 tools/testing/selftests/vfio/lib/drivers/igb/registers.h
-
-diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-new file mode 100644
-index 000000000000..13c8429784ac
---- /dev/null
-+++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-@@ -0,0 +1,381 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+#include <unistd.h>
-+#include <errno.h>
-+#include <stdint.h>
-+#include <linux/io.h>
-+#include <linux/pci_regs.h>
-+#include <libvfio/vfio_pci_device.h>
-+
-+#include "registers.h"
-+
-+#define PCI_VENDOR_ID_INTEL 0x8086
-+#define PCI_DEVICE_ID_INTEL_IGB 0x10C9
-+#define IGB_MAX_CHUNK_SIZE 1024
-+#define MSIX_VECTOR 0
-+#define RING_SIZE 4096 /* Number of descriptors in ring */
-+
-+struct igb_tx_desc {
-+	union {
-+		struct {
-+			uint64_t buffer_addr; /* Address of descriptor's data buffer */
-+			uint32_t cmd_type_len; /* Command/Type/Length */
-+			uint32_t olinfo_status; /* Context/Buffer info */
-+		} read;
-+
-+		struct {
-+			uint64_t rsvd;        /* Reserved */
-+			uint32_t nxtseq_seed; /* Next sequence seed */
-+			uint32_t status;      /* Descriptor status */
-+		} wb;
-+	};
-+};
-+
-+struct igb_rx_desc {
-+	union {
-+		struct {
-+			uint64_t pkt_addr; /* Packet buffer address */
-+			uint64_t hdr_addr; /* Header buffer address */
-+		} read;
-+		struct {
-+			uint16_t pkt_info;     /* RSS type, Packet type */
-+			uint16_t hdr_info;     /* Split Head, buf len */
-+			uint32_t rss;          /* RSS Hash */
-+			uint32_t status_error; /* ext status/error */
-+			uint16_t length;       /* Packet length */
-+			uint16_t vlan;         /* VLAN tag */
-+		} wb; /* writeback */
-+	};
-+};
-+
-+struct igb {
-+	void *bar0;
-+	struct igb_tx_desc *tx_ring;
-+	struct igb_rx_desc *rx_ring;
-+	uint32_t tx_tail;
-+	uint32_t rx_tail;
-+};
-+
-+static inline struct igb *to_igb_state(struct vfio_pci_device *device)
-+{
-+	return (struct igb *)device->driver.region.vaddr;
-+}
-+
-+static inline void igb_write32(struct igb *igb, uint32_t reg, uint32_t val)
-+{
-+	writel(val, igb->bar0 + reg);
-+}
-+
-+static inline uint32_t igb_read32(struct igb *igb, uint32_t reg)
-+{
-+	return readl(igb->bar0 + reg);
-+}
-+
-+static int igb_write_phy(struct igb *igb, uint32_t offset, uint16_t data)
-+{
-+	uint32_t mdic;
-+	int i;
-+
-+	mdic = (((uint32_t)data) |
-+		(offset << IGB_MDIC_REG_SHIFT) |
-+		(1 << IGB_MDIC_PHY_SHIFT) |
-+		IGB_MDIC_OP_WRITE);
-+
-+	igb_write32(igb, IGB_MDIC, mdic);
-+
-+	for (i = 0; i < 1000; i++) {
-+		usleep(50);
-+		mdic = igb_read32(igb, IGB_MDIC);
-+		if (mdic & IGB_MDIC_READY)
-+			break;
-+	}
-+
-+	if (!(mdic & IGB_MDIC_READY))
-+		return -1;
-+
-+	if (mdic & IGB_MDIC_ERROR)
-+		return -1;
-+
-+	return 0;
-+}
-+
-+static int igb_read_phy(struct igb *igb, uint32_t offset, uint16_t *data)
-+{
-+	uint32_t mdic;
-+	int i;
-+
-+	mdic = ((offset << IGB_MDIC_REG_SHIFT) |
-+		(1 << IGB_MDIC_PHY_SHIFT) |
-+		IGB_MDIC_OP_READ);
-+
-+	igb_write32(igb, IGB_MDIC, mdic);
-+
-+	for (i = 0; i < 1000; i++) {
-+		usleep(50);
-+		mdic = igb_read32(igb, IGB_MDIC);
-+		if (mdic & IGB_MDIC_READY)
-+			break;
-+	}
-+
-+	if (!(mdic & IGB_MDIC_READY))
-+		return -1;
-+
-+	if (mdic & IGB_MDIC_ERROR)
-+		return -1;
-+
-+	*data = (uint16_t)mdic;
-+	return 0;
-+}
-+
-+static int igb_phy_setup_autoneg(struct igb *igb)
-+{
-+	int timeout_ms = 1000;
-+	bool success = false;
-+	uint16_t phy_status;
-+	int ret;
-+	int i;
-+
-+	/* Trigger auto-negotiation */
-+	ret = igb_write_phy(igb, IGB_PHY_CTRL_REG_OFFSET,
-+			    IGB_PHY_CTRL_AN_ENABLE | IGB_PHY_CTRL_RESTART_AN);
-+	if (ret)
-+		return ret;
-+
-+	for (i = 0; i < timeout_ms; i++) {
-+		if (igb_read_phy(igb, IGB_PHY_STATUS_REG_OFFSET, &phy_status) == 0) {
-+			success = !!(phy_status & IGB_PHY_STATUS_AN_COMP);
-+			if (success)
-+				break;
-+		}
-+		usleep(1000);
-+	}
-+
-+	if (!success) {
-+		printf("igb: Auto-negotiation did not complete in time\n");
-+		return -ETIMEDOUT;
-+	}
-+
-+	return 0;
-+}
-+
-+static int igb_probe(struct vfio_pci_device *device)
-+{
-+	if (!vfio_pci_device_match(device, PCI_VENDOR_ID_INTEL, PCI_DEVICE_ID_INTEL_IGB))
-+		return -EINVAL;
-+
-+	return 0;
-+}
-+
-+static void igb_init(struct vfio_pci_device *device)
-+{
-+	struct igb *igb = to_igb_state(device);
-+	uint64_t iova_tx, iova_rx;
-+	uint32_t ctrl, rctl;
-+	uint16_t cmd_reg;
-+	int retries;
-+
-+	VFIO_ASSERT_GE(device->driver.region.size,
-+		       sizeof(struct igb) + 2 * RING_SIZE * sizeof(struct igb_tx_desc));
-+
-+	/* Set up rings and calculate IOVAs */
-+	igb->bar0 = device->bars[0].vaddr;
-+
-+	igb->tx_ring = (struct igb_tx_desc *)(igb + 1);
-+	igb->rx_ring = (struct igb_rx_desc *)(igb->tx_ring + RING_SIZE);
-+
-+	iova_tx = to_iova(device, igb->tx_ring);
-+	iova_rx = to_iova(device, igb->rx_ring);
-+
-+	/* Reset device and disable all interrupts */
-+	igb_write32(igb, IGB_CTRL, igb_read32(igb, IGB_CTRL) | IGB_CTRL_RST);
-+	usleep(20000);
-+	igb_write32(igb, IGB_IMC, 0xFFFFFFFF);
-+
-+	/* Signal that the driver is loaded */
-+	ctrl = igb_read32(igb, IGB_CTRL_EXT);
-+	ctrl |= IGB_CTRL_EXT_DRV_LOAD;
-+	ctrl &= ~IGB_CTRL_EXT_LINK_MODE_MASK;
-+	igb_write32(igb, IGB_CTRL_EXT, ctrl);
-+
-+	/* Enable PCI Bus Master. */
-+	cmd_reg = vfio_pci_config_readw(device, PCI_COMMAND);
-+	if (!(cmd_reg & PCI_COMMAND_MASTER)) {
-+		cmd_reg |= (PCI_COMMAND_MASTER | PCI_COMMAND_MEMORY);
-+		vfio_pci_config_writew(device, PCI_COMMAND, cmd_reg);
-+	}
-+
-+	/* Trigger autonegotiation. This enables IGB to transmit data. */
-+	if (igb_phy_setup_autoneg(igb))
-+		return;
-+
-+	/* Configure TX and RX descriptor rings */
-+	igb_write32(igb, IGB_TDBAL0, (uint32_t)iova_tx);
-+	igb_write32(igb, IGB_TDBAH0, (uint32_t)(iova_tx >> 32));
-+	igb_write32(igb, IGB_TDLEN0, RING_SIZE * sizeof(struct igb_tx_desc));
-+	igb_write32(igb, IGB_TDH0, 0);
-+	igb_write32(igb, IGB_TDT0, 0);
-+	igb_write32(igb, IGB_TXDCTL0, IGB_TXDCTL0_Q_EN);
-+
-+	igb_write32(igb, IGB_RDBAL0, (uint32_t)iova_rx);
-+	igb_write32(igb, IGB_RDBAH0, (uint32_t)(iova_rx >> 32));
-+	igb_write32(igb, IGB_RDLEN0, RING_SIZE * sizeof(struct igb_rx_desc));
-+	igb_write32(igb, IGB_RDH0, 0);
-+	igb_write32(igb, IGB_RDT0, 0);
-+	igb_write32(igb, IGB_RXDCTL0, IGB_RXDCTL0_Q_EN);
-+
-+	/* Wait for TX and RX queues to be enabled */
-+	retries = 2000;
-+	while (retries-- > 0) {
-+		if ((igb_read32(igb, IGB_TXDCTL0) & IGB_TXDCTL0_Q_EN) &&
-+		    (igb_read32(igb, IGB_RXDCTL0) & IGB_RXDCTL0_Q_EN))
-+			break;
-+		usleep(10);
-+	}
-+
-+	/* Enable Receiver and Transmitter */
-+	rctl = IGB_RCTL_EN |       /* Receiver Enable */
-+	       IGB_RCTL_UPE |      /* Unicast Promiscuous (for dummy MAC) */
-+	       IGB_RCTL_LBM_MAC |  /* MAC Loopback Mode */
-+	       IGB_RCTL_SECRC;     /* Strip CRC (needed for memcmp) */
-+	igb_write32(igb, IGB_RCTL, rctl);
-+	igb_write32(igb, IGB_TCTL, IGB_TCTL_EN);
-+
-+	/* Enable MSI-X with 1 vector for the test */
-+	vfio_pci_msix_enable(device, MSIX_VECTOR, 1);
-+
-+	/* Enable auto-masking of interrupts to avoid storms without a real ISR */
-+	igb_write32(igb, IGB_GPIE, IGB_GPIE_EIAME);
-+
-+	/* Enable interrupts on vector 0 */
-+	igb_write32(igb, IGB_EIMS, 1);
-+
-+	/* Map vector 0 to interrupt cause 0 and mark it valid */
-+	igb_write32(igb, IGB_IVAR0, IGB_IVAR_VALID);
-+
-+	/* Initialize driver state and capability limits */
-+	igb->tx_tail = 0;
-+	igb->rx_tail = 0;
-+
-+	device->driver.max_memcpy_size = (RING_SIZE - 1) * IGB_MAX_CHUNK_SIZE;
-+	device->driver.max_memcpy_count = RING_SIZE - 1;
-+	device->driver.msi = MSIX_VECTOR;
-+}
-+
-+static void igb_remove(struct vfio_pci_device *device)
-+{
-+	struct igb *igb = to_igb_state(device);
-+
-+	vfio_pci_msix_disable(device);
-+	igb_write32(igb, IGB_RCTL, 0);
-+	igb_write32(igb, IGB_TCTL, 0);
-+	igb_write32(igb, IGB_CTRL, igb_read32(igb, IGB_CTRL) | IGB_CTRL_RST);
-+}
-+
-+static void igb_irq_disable(struct igb *igb)
-+{
-+	igb_write32(igb, IGB_EIMC, 1);
-+}
-+
-+static void igb_irq_enable(struct igb *igb)
-+{
-+	igb_write32(igb, IGB_EIMS, 1);
-+}
-+
-+static void igb_irq_clear(struct igb *igb)
-+{
-+	igb_read32(igb, IGB_EICR);
-+}
-+
-+static void igb_memcpy_start(struct vfio_pci_device *device, iova_t src,
-+			     iova_t dst, u64 size, u64 count)
-+{
-+	struct igb *igb = to_igb_state(device);
-+	iova_t curr_src, curr_dst;
-+	struct igb_rx_desc *rx;
-+	struct igb_tx_desc *tx;
-+	u64 chunk_size;
-+	u64 remaining;
-+	uint32_t i;
-+
-+	igb_irq_disable(igb);
-+
-+	for (i = 0; i < count; i++) {
-+		curr_src = src;
-+		curr_dst = dst;
-+		remaining = size;
-+
-+		while (remaining > 0) {
-+			chunk_size = min_t(u64, remaining, IGB_MAX_CHUNK_SIZE);
-+
-+			tx = &igb->tx_ring[igb->tx_tail];
-+			rx = &igb->rx_ring[igb->rx_tail];
-+
-+			memset(tx, 0, sizeof(struct igb_tx_desc));
-+			memset(rx, 0, sizeof(struct igb_rx_desc));
-+
-+			rx->read.pkt_addr = curr_dst;
-+			rx->read.hdr_addr = 0;
-+			rx->wb.status_error = 0;
-+
-+			tx->read.buffer_addr = curr_src;
-+			tx->read.cmd_type_len = (uint32_t)chunk_size;
-+			tx->read.cmd_type_len |= (uint32_t)(IGB_TXD_CMD_EOP) << IGB_TXD_CMD_SHIFT;
-+
-+			/* Set to 0 to disable offloads and avoid needing a context descriptor */
-+			tx->read.olinfo_status = 0;
-+
-+			curr_src += chunk_size;
-+			curr_dst += chunk_size;
-+			remaining -= chunk_size;
-+
-+			igb->tx_tail = (igb->tx_tail + 1) % RING_SIZE;
-+			igb->rx_tail = (igb->rx_tail + 1) % RING_SIZE;
-+		}
-+	}
-+
-+	igb_write32(igb, IGB_RDT0, igb->rx_tail);
-+	igb_write32(igb, IGB_TDT0, igb->tx_tail);
-+}
-+
-+static int igb_memcpy_wait(struct vfio_pci_device *device)
-+{
-+	struct igb *igb = to_igb_state(device);
-+	struct igb_rx_desc *rx;
-+	uint32_t prev_tail;
-+	int retries;
-+
-+	prev_tail = (igb->rx_tail + RING_SIZE - 1) % RING_SIZE;
-+	rx = &igb->rx_ring[prev_tail];
-+
-+	retries = 100;
-+	while (retries-- > 0) {
-+		if (rx->wb.status_error & 1)
-+			break;
-+		usleep(10);
-+	}
-+
-+	igb_irq_clear(igb);
-+
-+	igb_irq_enable(igb);
-+
-+	if (rx->wb.status_error & 1)
-+		return 0;
-+
-+	return -ETIMEDOUT;
-+}
-+
-+static void igb_send_msi(struct vfio_pci_device *device)
-+{
-+	struct igb *igb = to_igb_state(device);
-+
-+	igb_write32(igb, IGB_EICS, 1);
-+}
-+
-+const struct vfio_pci_driver_ops igb_ops = {
-+	.name = "igb",
-+	.probe = igb_probe,
-+	.init = igb_init,
-+	.remove = igb_remove,
-+	.memcpy_start = igb_memcpy_start,
-+	.memcpy_wait = igb_memcpy_wait,
-+	.send_msi = igb_send_msi,
-+};
-diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/registers.h b/tools/testing/selftests/vfio/lib/drivers/igb/registers.h
-new file mode 100644
-index 000000000000..e2756be2e9c0
---- /dev/null
-+++ b/tools/testing/selftests/vfio/lib/drivers/igb/registers.h
-@@ -0,0 +1,103 @@
-+/* SPDX-License-Identifier: GPL-2.0-only */
-+
-+#ifndef _IGB_REGISTERS_H_
-+#define _IGB_REGISTERS_H_
-+
-+/* Register Offsets (Intel 82576EB Datasheet) */
-+#define IGB_CTRL 0x00000 /* Device Control */
-+#define IGB_STATUS 0x00008 /* Device Status */
-+#define IGB_CTRL_EXT 0x00018 /* Extended Device Control */
-+#define IGB_MDIC 0x00020 /* MDI Control */
-+#define IGB_RCTL 0x00100 /* Receive Control */
-+#define IGB_TCTL 0x00400 /* Transmit Control */
-+#define IGB_SCTL 0x00420 /* SerDes Control */
-+
-+/* Interrupt Registers */
-+#define IGB_IMC 0x0150C /* Interrupt Mask Clear */
-+#define IGB_IVAR0 0x01700 /* Interrupt Vector Allocation Register 0 */
-+
-+/* Rx Ring 0 Registers */
-+#define IGB_RDBAL0 0x0C000 /* Rx Desc Base Address Low */
-+#define IGB_RDBAH0 0x0C004 /* Rx Desc Base Address High */
-+#define IGB_RDLEN0 0x0C008 /* Rx Desc Length */
-+#define IGB_RDH0 0x0C010 /* Rx Desc Head */
-+#define IGB_RDT0 0x0C018 /* Rx Desc Tail */
-+#define IGB_RXDCTL0 0x0C028 /* Rx Desc Control */
-+
-+/* Tx Ring 0 Registers */
-+#define IGB_TDBAL0 0x0E000 /* Tx Desc Base Address Low */
-+#define IGB_TDBAH0 0x0E004 /* Tx Desc Base Address High */
-+#define IGB_TDLEN0 0x0E008 /* Tx Desc Length */
-+#define IGB_TDH0 0x0E010 /* Tx Desc Head */
-+#define IGB_TDT0 0x0E018 /* Tx Desc Tail */
-+#define IGB_TXDCTL0 0x0E028 /* Tx Desc Control */
-+
-+/* Control Bit Definitions */
-+/* CTRL */
-+#define IGB_CTRL_RST (1 << 26) /* Device Reset */
-+#define IGB_CTRL_EXT_LINK_MODE_MASK (3 << 22)
-+
-+/* CTRL_EXT */
-+#define IGB_CTRL_EXT_DRV_LOAD (1 << 28) /* Driver Loaded */
-+
-+/* RCTL */
-+#define IGB_RCTL_EN (1 << 1) /* Receiver Enable */
-+#define IGB_RCTL_UPE (1 << 3) /* Unicast Promiscuous Enabled */
-+#define IGB_RCTL_LPE (1 << 5) /* Long Packet Reception Enable */
-+#define IGB_RCTL_LBM_MAC (1 << 6) /* Loopback Mode - MAC */
-+#define IGB_RCTL_SECRC (1 << 26) /* Strip Ethernet CRC */
-+
-+/* TCTL */
-+#define IGB_TCTL_EN (1 << 1) /* Transmit Enable */
-+
-+/* SCTL */
-+#define IGB_SCTL_DISABLE_SERDES_LOOPBACK (1 << 6)
-+
-+/* MDIC */
-+#define IGB_MDIC_OP_WRITE (1 << 26)
-+#define IGB_MDIC_OP_READ  (2 << 26)
-+
-+#define IGB_EICR 0x01580 /* Extended Interrupt Cause Read */
-+
-+#define IGB_RAH0 0x05404 /* Receive Address High 0 */
-+#define IGB_VMOLR0 0x05AD0 /* VM Offload Layout Register 0 */
-+
-+#define IGB_VMOLR_LPE 0x00010000 /* Long Packet Enable */
-+#define IGB_VMOLR_BAM 0x08000000 /* Broadcast Accept Mode */
-+#define IGB_RAH_POOL_1 0x00040000 /* Pool 1 assignment */
-+
-+#define IGB_EIMS 0x01524 /* Extended Interrupt Mask Set */
-+#define IGB_EICS 0x01520 /* Extended Interrupt Cause Set */
-+#define IGB_EIMC 0x01528 /* Extended Interrupt Mask Clear */
-+#define IGB_CTRL_GIO_MASTER_DISABLE (1 << 2) /* GIO Master Disable */
-+#define IGB_STATUS_GIO_MASTER_ENABLE (1 << 19) /* GIO Master Enable */
-+#define IGB_GPIE 0x01514 /* General Purpose Interrupt Enable */
-+#define IGB_TXDCTL0_Q_EN (1 << 25) /* Transmit Queue Enable */
-+#define IGB_RXDCTL0_Q_EN (1 << 25) /* Receive Queue Enable */
-+#define IGB_MRQC 0x05818 /* Multiple Receive Queues Command */
-+
-+#define IGB_MDIC_PHY_SHIFT 21 /* PHY Address Shift */
-+#define IGB_MDIC_REG_SHIFT 16 /* Register Address Shift */
-+#define IGB_MDIC_READY (1 << 28) /* MDI Data Ready */
-+#define IGB_MDIC_ERROR (1 << 29) /* MDI Error */
-+
-+#define IGB_PHY_CTRL_REG_OFFSET 0
-+#define IGB_PHY_STATUS_REG_OFFSET 1
-+#define IGB_PHY_STATUS_AN_COMP 0x0020 /* Auto-negotiation complete */
-+#define IGB_PHY_CTRL_AN_ENABLE 0x1000 /* Auto-Negotiation Enable */
-+#define IGB_PHY_CTRL_RESTART_AN 0x0200 /* Restart Auto-Negotiation */
-+
-+#define IGB_PHY_AUTONEG_ADV_REG_OFFSET 4 /* Auto-Negotiation Advertisement */
-+#define IGB_PHY_1000T_CTRL_REG_OFFSET 9 /* 1000Base-T Control */
-+#define IGB_CR_1000T_FD_CAPS 0x0200 /* Advertise 1000 Mbps Full Duplex */
-+
-+#define IGB_GPIE_EIAME 0x10 /* Extended Interrupt Auto Mask Enable */
-+#define IGB_IVAR_VALID 0x80 /* Valid bit for IVAR register */
-+
-+#define IGB_TXD_CMD_EOP 0x01 /* End of Packet */
-+#define IGB_TXD_CMD_IFCS 0x02 /* Insert FCS */
-+#define IGB_TXD_CMD_RS 0x08 /* Report Status */
-+#define IGB_TXD_CMD_SHIFT 24 /* Shift for command bits in cmd_type_len */
-+#define IGB_TXD_CMD_LEGACY_FORMAT (1 << 20) /* Forces legacy descriptor format in QEMU */
-+
-+#endif /* _IGB_REGISTERS_H_ */
-diff --git a/tools/testing/selftests/vfio/lib/libvfio.mk b/tools/testing/selftests/vfio/lib/libvfio.mk
-index 9f47bceed16f..1f13cca04348 100644
---- a/tools/testing/selftests/vfio/lib/libvfio.mk
-+++ b/tools/testing/selftests/vfio/lib/libvfio.mk
-@@ -12,6 +12,7 @@ LIBVFIO_C += vfio_pci_driver.c
- ifeq ($(ARCH:x86_64=x86),x86)
- LIBVFIO_C += drivers/ioat/ioat.c
- LIBVFIO_C += drivers/dsa/dsa.c
-+LIBVFIO_C += drivers/igb/igb.c
- endif
- 
- LIBVFIO_OUTPUT := $(OUTPUT)/libvfio
-diff --git a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
-index 6827f4a6febe..a5d0547132c4 100644
---- a/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
-+++ b/tools/testing/selftests/vfio/lib/vfio_pci_driver.c
-@@ -5,12 +5,14 @@
- #ifdef __x86_64__
- extern struct vfio_pci_driver_ops dsa_ops;
- extern struct vfio_pci_driver_ops ioat_ops;
-+extern struct vfio_pci_driver_ops igb_ops;
- #endif
- 
- static struct vfio_pci_driver_ops *driver_ops[] = {
- #ifdef __x86_64__
- 	&dsa_ops,
- 	&ioat_ops,
-+	&igb_ops,
- #endif
- };
- 
--- 
-2.54.0.563.g4f69b47b94-goog
+Dongli Zhang
 
