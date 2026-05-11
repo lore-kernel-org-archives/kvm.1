@@ -1,55 +1,55 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9676840F8F8
-	for <kvm@vger.kernel.org>; Mon, 11 May 2026 15:07:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 446AA40FD92
+	for <kvm@vger.kernel.org>; Mon, 11 May 2026 15:07:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778512036; cv=none; b=HFWgeMNwKEBbZ60IHCaoYwWEsWeMR+8TasJ5HipXH71UGPrtJwUaiUzpq+0j4Ek19hz1XjeisZL1KzGkk81as1C9JmUKF2M+yzwlvkjtJ3qpHod/2Lv+q5IrW1bkQY4xJ+o9Sn8YZNZoMhBhxI4wB+TonmOgGn8ub/Hxe8eNEHg=
+	t=1778512036; cv=none; b=nmZOt8CHyaFzLdsMacSvkwDLgCGDGacSg3GM4D+DkhexBybNHQfaHQEQLtYRcAV7YZ3OUw7hBr95z5xqWnffhpHenNWllJlN0/YZn+6NuPEuiYIgeyAZioabeWSa1GbGjxPQPkNkRbc8e+qT3OD/uB/MpzTdokvqe6L57HPQ3hY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778512036; c=relaxed/simple;
-	bh=1yums6E9NMuxWLkxlNJ8+Rso4MO6GWsrB41/9GtsDyc=;
+	bh=2xhf+sqt9qA9IiRs09sSRCqPxKe8VL0b7E6PtTQTVfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MOJOUK4cAxY1Q74gu+mwZdxX8DZUUdupXRItsQVLgn8hi9amCBAfXPb+qIztqikMQWWh5JG17rowLmLJ/dXUYWPlt5WP+rUTyLWNpR+hcc1Hz6V/l3d3ecmBFjUs9Wl78K5HO+37avy/OkKhPjIp3r4a9ZyeqFFRiZ55wMpjFrY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JVo+qMX6; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=i3+g6kb2eb3/BoUmJUJLgozqYx8vv9F4hT/33ZIr0j2xKGHw7R7D585pSG/8i1Eo8wDT/UL1HESm7Fo8tkxO1Nl8XZbKSkynYLnT0Z9oeSG6QGiB+aMrQqTF/3JxRmV7Pd1j7/q77tTMNCSZ6JLqra6r7s1+zV7r47rxQEiScGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YOCy74VT; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JVo+qMX6"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YOCy74VT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778512032;
+	s=mimecast20190719; t=1778512033;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=9BexBaVoSDZYHIHHF/JUPa+Xgxmaj3FpgjOsaCT1oOw=;
-	b=JVo+qMX65oUyEwPet9sZOY2kYSmgZn3sI6v1vRJkXoAEH6TuLHYhdqrIt/MV2uPmi0B0fk
-	6g/m/4QvqTN/HqL95n4F/+8ePu4dvn1Xv0C7gdkNi4b7PPTZCaFclP5RyOQqP9qeC7rj2u
-	UnSJ+02MVMk718wmq/1/e7FbFbpZJU4=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+	bh=R+ZFR557O1hPSqROZwa9DnoaZlfXFn9f4HfAOh9Rjhc=;
+	b=YOCy74VTFs8o/S5lhH5QVVmtMNhhuZuznyJYh2HtzD7SCafElHlWhdf6t9Hi3Vv7BuRBkU
+	dr/3X7Z4eDivER8uIbnt/UskOKNrk5TULeKnTeaINugsSlYDdFXVplb/lxn/je2JOQn+fa
+	m/P05QOzn/srqoyCdGuBf8cGbD1MsEg=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-645-NtK44vlqM9KF4JARC2gKhQ-1; Mon,
- 11 May 2026 11:07:06 -0400
-X-MC-Unique: NtK44vlqM9KF4JARC2gKhQ-1
-X-Mimecast-MFC-AGG-ID: NtK44vlqM9KF4JARC2gKhQ_1778512025
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-118-ZJzQ9-qMNHKzKvsye3Q0AA-1; Mon,
+ 11 May 2026 11:07:08 -0400
+X-MC-Unique: ZJzQ9-qMNHKzKvsye3Q0AA-1
+X-Mimecast-MFC-AGG-ID: ZJzQ9-qMNHKzKvsye3Q0AA_1778512027
 Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C5F2F1956063;
-	Mon, 11 May 2026 15:07:05 +0000 (UTC)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 3BC7F180047F;
+	Mon, 11 May 2026 15:07:07 +0000 (UTC)
 Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 3D5F41953952;
-	Mon, 11 May 2026 15:07:05 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A76061944B20;
+	Mon, 11 May 2026 15:07:06 +0000 (UTC)
 From: Paolo Bonzini <pbonzini@redhat.com>
 To: linux-kernel@vger.kernel.org,
 	kvm@vger.kernel.org
 Cc: jon@nutanix.com,
 	mtosatti@redhat.com
-Subject: [PATCH 20/22] KVM: x86/mmu: merge struct rsvd_bits_validate into struct kvm_page_format
-Date: Mon, 11 May 2026 11:06:46 -0400
-Message-ID: <20260511150648.685374-21-pbonzini@redhat.com>
+Subject: [PATCH 22/22] KVM: x86/mmu: use kvm_page_format to test SPTEs
+Date: Mon, 11 May 2026 11:06:48 -0400
+Message-ID: <20260511150648.685374-23-pbonzini@redhat.com>
 In-Reply-To: <20260511150648.685374-1-pbonzini@redhat.com>
 References: <20260511150648.685374-1-pbonzini@redhat.com>
 Precedence: bulk
@@ -62,453 +62,198 @@ Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Remove one level of indirection, and prepare for using the permission bitmask
-machinery for shadow pages as well.
+is_access_allowed(), and is_executable_pte() within it, are effectively
+a special version of permission_fault() that only supports a subset
+of roles.  In particular it does not allow SMEP, SMAP and PKE.
+
+Replace its implementation with a modified version of permission_fault();
+the new version will support SMEP (and hence AMD GMET) for free as soon
+as update_spte_permission_bitmask() stops hardcoding cr4_smep == false.
+
+This prepares for a possible future where TDP entries could have XS!=XU,
+for example as part of implementing Hyper-V VSM natively inside KVM.
 
 Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
 ---
- arch/x86/include/asm/kvm_host.h |  38 +++++------
- arch/x86/kvm/mmu/mmu.c          | 116 ++++++++++++++++----------------
- arch/x86/kvm/mmu/paging_tmpl.h  |   8 +--
- arch/x86/kvm/mmu/spte.c         |   4 +-
- arch/x86/kvm/mmu/spte.h         |  18 ++---
- arch/x86/kvm/vmx/vmx.c          |   2 +-
- 6 files changed, 91 insertions(+), 95 deletions(-)
+ arch/x86/kvm/mmu/mmu.c     | 18 ++++++++++++---
+ arch/x86/kvm/mmu/spte.h    | 46 +++++++++++++++++++++-----------------
+ arch/x86/kvm/mmu/tdp_mmu.c |  3 ++-
+ 3 files changed, 42 insertions(+), 25 deletions(-)
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index 8191f20b87a7..c015d0e492ed 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -447,9 +447,24 @@ struct kvm_pio_request {
- 
- #define PT64_ROOT_MAX_LEVEL 5
- 
--struct rsvd_bits_validate {
-+struct kvm_page_format {
- 	u64 rsvd_bits_mask[2][PT64_ROOT_MAX_LEVEL];
- 	u64 bad_mt_xwr;
-+
-+	/*
-+	* The pkru_mask indicates if protection key checks are needed.  It
-+	* consists of 16 domains indexed by page fault error code bits [4:1],
-+	* with PFEC.RSVD replaced by ACC_USER_MASK from the page tables.
-+	* Each domain has 2 bits which are ANDed with AD and WD from PKRU.
-+	*/
-+	u32 pkru_mask;
-+
-+	/*
-+	 * Bitmap; bit set = permission fault
-+	 * Array index: page fault error code [4:1]
-+	 * Bit index: pte permissions in ACC_* format
-+	 */
-+	u16 permissions[16];
- };
- 
- struct kvm_mmu_root_info {
-@@ -476,25 +491,6 @@ struct kvm_page_fault;
-  * and 2-level 32-bit).  The kvm_pagewalk structure abstracts the details of the
-  * current mmu mode.
-  */
--struct kvm_page_format {
--	struct rsvd_bits_validate guest_rsvd_check;
--
--	/*
--	* The pkru_mask indicates if protection key checks are needed.  It
--	* consists of 16 domains indexed by page fault error code bits [4:1],
--	* with PFEC.RSVD replaced by ACC_USER_MASK from the page tables.
--	* Each domain has 2 bits which are ANDed with AD and WD from PKRU.
--	*/
--	u32 pkru_mask;
--
--	/*
--	 * Bitmap; bit set = permission fault
--	 * Array index: page fault error code [4:1]
--	 * Bit index: pte permissions in ACC_* format
--	 */
--	u16 permissions[16];
--};
--
- struct kvm_pagewalk {
- 	unsigned long (*get_guest_pgd)(struct kvm_vcpu *vcpu);
- 	u64 (*get_pdptr)(struct kvm_vcpu *vcpu, int index);
-@@ -529,7 +525,7 @@ struct kvm_mmu {
- 	 * bits include not only hardware reserved bits but also
- 	 * the bits spte never used.
- 	 */
--	struct rsvd_bits_validate shadow_zero_check;
-+	struct kvm_page_format fmt;
- };
- 
- enum pmc_type {
 diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index ac2abd86a7c6..58a98bae75e6 100644
+index ddda1f1be686..0ec8c9dc2c33 100644
 --- a/arch/x86/kvm/mmu/mmu.c
 +++ b/arch/x86/kvm/mmu/mmu.c
-@@ -4422,7 +4422,7 @@ static int get_sptes_lockless(struct kvm_vcpu *vcpu, u64 addr, u64 *sptes,
- static bool get_mmio_spte(struct kvm_vcpu *vcpu, u64 addr, u64 *sptep)
+@@ -3670,6 +3670,7 @@ static u64 *fast_pf_get_last_sptep(struct kvm_vcpu *vcpu, gpa_t gpa, u64 *spte)
+  */
+ static int fast_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
  {
- 	u64 sptes[PT64_ROOT_MAX_LEVEL + 1];
--	struct rsvd_bits_validate *rsvd_check;
-+	struct kvm_page_format *rsvd_check;
- 	int root, leaf, level;
- 	bool reserved = false;
++	struct kvm_mmu *mmu;
+ 	struct kvm_mmu_page *sp;
+ 	int ret = RET_PF_INVALID;
+ 	u64 spte;
+@@ -3679,6 +3680,7 @@ static int fast_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+ 	if (!page_fault_can_be_fast(vcpu->kvm, fault))
+ 		return ret;
  
-@@ -4443,7 +4443,7 @@ static bool get_mmio_spte(struct kvm_vcpu *vcpu, u64 addr, u64 *sptep)
- 	if (!is_shadow_present_pte(sptes[leaf]))
- 		leaf++;
++	mmu = vcpu->arch.mmu;
+ 	walk_shadow_page_lockless_begin(vcpu);
  
--	rsvd_check = &vcpu->arch.mmu->shadow_zero_check;
-+	rsvd_check = &vcpu->arch.mmu->fmt;
- 
- 	for (level = root; level >= leaf; level--)
- 		reserved |= is_rsvd_spte(rsvd_check, sptes[level], level);
-@@ -5298,7 +5298,7 @@ static bool sync_mmio_spte(struct kvm_vcpu *vcpu, u64 *sptep, gfn_t gfn,
- #include "paging_tmpl.h"
- #undef PTTYPE
- 
--static void __reset_rsvds_bits_mask(struct rsvd_bits_validate *rsvd_check,
-+static void __reset_rsvds_bits_mask(struct kvm_page_format *fmt,
- 				    u64 pa_bits_rsvd, int level, bool nx,
- 				    bool gbpages, bool pse, bool amd)
- {
-@@ -5306,7 +5306,7 @@ static void __reset_rsvds_bits_mask(struct rsvd_bits_validate *rsvd_check,
- 	u64 nonleaf_bit8_rsvd = 0;
- 	u64 high_bits_rsvd;
- 
--	rsvd_check->bad_mt_xwr = 0;
-+	fmt->bad_mt_xwr = 0;
- 
- 	if (!gbpages)
- 		gbpages_bit_rsvd = rsvd_bits(7, 7);
-@@ -5330,59 +5330,59 @@ static void __reset_rsvds_bits_mask(struct rsvd_bits_validate *rsvd_check,
- 	switch (level) {
- 	case PT32_ROOT_LEVEL:
- 		/* no rsvd bits for 2 level 4K page table entries */
--		rsvd_check->rsvd_bits_mask[0][1] = 0;
--		rsvd_check->rsvd_bits_mask[0][0] = 0;
--		rsvd_check->rsvd_bits_mask[1][0] =
--			rsvd_check->rsvd_bits_mask[0][0];
-+		fmt->rsvd_bits_mask[0][1] = 0;
-+		fmt->rsvd_bits_mask[0][0] = 0;
-+		fmt->rsvd_bits_mask[1][0] =
-+			fmt->rsvd_bits_mask[0][0];
- 
- 		if (!pse) {
--			rsvd_check->rsvd_bits_mask[1][1] = 0;
-+			fmt->rsvd_bits_mask[1][1] = 0;
+ 	do {
+@@ -3714,7 +3716,7 @@ static int fast_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+ 		 * Need not check the access of upper level table entries since
+ 		 * they are always ACC_ALL.
+ 		 */
+-		if (is_access_allowed(fault, spte)) {
++		if (!spte_permission_fault(mmu, spte, fault)) {
+ 			ret = RET_PF_SPURIOUS;
  			break;
  		}
+@@ -3737,7 +3739,7 @@ static int fast_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
+ 		 * that were write-protected for dirty-logging or access
+ 		 * tracking are handled here.  Don't bother checking if the
+ 		 * SPTE is writable to prioritize running with A/D bits enabled.
+-		 * The is_access_allowed() check above handles the common case
++		 * The spte_permission_fault() check above handles the common case
+ 		 * of the fault being spurious, and the SPTE is known to be
+ 		 * shadow-present, i.e. except for access tracking restoration
+ 		 * making the new SPTE writable, the check is wasteful.
+@@ -3762,7 +3764,7 @@ static int fast_page_fault(struct kvm_vcpu *vcpu, struct kvm_page_fault *fault)
  
- 		if (is_cpuid_PSE36())
- 			/* 36bits PSE 4MB page */
--			rsvd_check->rsvd_bits_mask[1][1] = rsvd_bits(17, 21);
-+			fmt->rsvd_bits_mask[1][1] = rsvd_bits(17, 21);
- 		else
- 			/* 32 bits PSE 4MB page */
--			rsvd_check->rsvd_bits_mask[1][1] = rsvd_bits(13, 21);
-+			fmt->rsvd_bits_mask[1][1] = rsvd_bits(13, 21);
- 		break;
- 	case PT32E_ROOT_LEVEL:
--		rsvd_check->rsvd_bits_mask[0][2] = rsvd_bits(63, 63) |
-+		fmt->rsvd_bits_mask[0][2] = rsvd_bits(63, 63) |
- 						   high_bits_rsvd |
- 						   rsvd_bits(5, 8) |
- 						   rsvd_bits(1, 2);	/* PDPTE */
--		rsvd_check->rsvd_bits_mask[0][1] = high_bits_rsvd;	/* PDE */
--		rsvd_check->rsvd_bits_mask[0][0] = high_bits_rsvd;	/* PTE */
--		rsvd_check->rsvd_bits_mask[1][1] = high_bits_rsvd |
-+		fmt->rsvd_bits_mask[0][1] = high_bits_rsvd;	/* PDE */
-+		fmt->rsvd_bits_mask[0][0] = high_bits_rsvd;	/* PTE */
-+		fmt->rsvd_bits_mask[1][1] = high_bits_rsvd |
- 						   rsvd_bits(13, 20);	/* large page */
--		rsvd_check->rsvd_bits_mask[1][0] =
--			rsvd_check->rsvd_bits_mask[0][0];
-+		fmt->rsvd_bits_mask[1][0] =
-+			fmt->rsvd_bits_mask[0][0];
- 		break;
- 	case PT64_ROOT_5LEVEL:
--		rsvd_check->rsvd_bits_mask[0][4] = high_bits_rsvd |
-+		fmt->rsvd_bits_mask[0][4] = high_bits_rsvd |
- 						   nonleaf_bit8_rsvd |
- 						   rsvd_bits(7, 7);
--		rsvd_check->rsvd_bits_mask[1][4] =
--			rsvd_check->rsvd_bits_mask[0][4];
-+		fmt->rsvd_bits_mask[1][4] =
-+			fmt->rsvd_bits_mask[0][4];
- 		fallthrough;
- 	case PT64_ROOT_4LEVEL:
--		rsvd_check->rsvd_bits_mask[0][3] = high_bits_rsvd |
-+		fmt->rsvd_bits_mask[0][3] = high_bits_rsvd |
- 						   nonleaf_bit8_rsvd |
- 						   rsvd_bits(7, 7);
--		rsvd_check->rsvd_bits_mask[0][2] = high_bits_rsvd |
-+		fmt->rsvd_bits_mask[0][2] = high_bits_rsvd |
- 						   gbpages_bit_rsvd;
--		rsvd_check->rsvd_bits_mask[0][1] = high_bits_rsvd;
--		rsvd_check->rsvd_bits_mask[0][0] = high_bits_rsvd;
--		rsvd_check->rsvd_bits_mask[1][3] =
--			rsvd_check->rsvd_bits_mask[0][3];
--		rsvd_check->rsvd_bits_mask[1][2] = high_bits_rsvd |
-+		fmt->rsvd_bits_mask[0][1] = high_bits_rsvd;
-+		fmt->rsvd_bits_mask[0][0] = high_bits_rsvd;
-+		fmt->rsvd_bits_mask[1][3] =
-+			fmt->rsvd_bits_mask[0][3];
-+		fmt->rsvd_bits_mask[1][2] = high_bits_rsvd |
- 						   gbpages_bit_rsvd |
- 						   rsvd_bits(13, 29);
--		rsvd_check->rsvd_bits_mask[1][1] = high_bits_rsvd |
-+		fmt->rsvd_bits_mask[1][1] = high_bits_rsvd |
- 						   rsvd_bits(13, 20); /* large page */
--		rsvd_check->rsvd_bits_mask[1][0] =
--			rsvd_check->rsvd_bits_mask[0][0];
-+		fmt->rsvd_bits_mask[1][0] =
-+			fmt->rsvd_bits_mask[0][0];
- 		break;
- 	}
- }
-@@ -5390,7 +5390,7 @@ static void __reset_rsvds_bits_mask(struct rsvd_bits_validate *rsvd_check,
- static void reset_guest_rsvds_bits_mask(struct kvm_vcpu *vcpu,
- 					struct kvm_pagewalk *w)
- {
--	__reset_rsvds_bits_mask(&w->fmt.guest_rsvd_check,
-+	__reset_rsvds_bits_mask(&w->fmt,
- 				vcpu->arch.reserved_gpa_bits,
- 				w->cpu_role.base.level, is_efer_nx(w),
- 				guest_cpu_cap_has(vcpu, X86_FEATURE_GBPAGES),
-@@ -5398,7 +5398,7 @@ static void reset_guest_rsvds_bits_mask(struct kvm_vcpu *vcpu,
- 				guest_cpuid_is_amd_compatible(vcpu));
+ 		/* Verify that the fault can be handled in the fast path */
+ 		if (new_spte == spte ||
+-		    !is_access_allowed(fault, new_spte))
++		    spte_permission_fault(mmu, new_spte, fault))
+ 			break;
+ 
+ 		/*
+@@ -5675,6 +5677,12 @@ static void update_permission_bitmask(struct kvm_pagewalk *w, bool tdp, bool ept
+ 				    is_cr0_wp(w), is_efer_nx(w));
  }
  
--static void __reset_rsvds_bits_mask_ept(struct rsvd_bits_validate *rsvd_check,
-+static void __reset_rsvds_bits_mask_ept(struct kvm_page_format *fmt,
- 					u64 pa_bits_rsvd, bool execonly,
- 					int huge_page_level)
- {
-@@ -5411,18 +5411,18 @@ static void __reset_rsvds_bits_mask_ept(struct rsvd_bits_validate *rsvd_check,
- 	if (huge_page_level < PG_LEVEL_2M)
- 		large_2m_rsvd = rsvd_bits(7, 7);
++static void update_spte_permission_bitmask(struct kvm_mmu *mmu, bool tdp, bool ept)
++{
++	__update_permission_bitmask(&mmu->fmt, tdp, ept,
++				    mmu->root_role.cr4_smep, false, true, true);
++}
++
+ /*
+ * PKU is an additional mechanism by which the paging controls access to
+ * user-mode addresses based on the value in the PKRU register.  Protection
+@@ -5884,6 +5892,7 @@ static void init_kvm_tdp_mmu(struct kvm_vcpu *vcpu,
+ 	context->page_fault = kvm_tdp_page_fault;
+ 	context->sync_spte = NULL;
  
--	rsvd_check->rsvd_bits_mask[0][4] = high_bits_rsvd | rsvd_bits(3, 7);
--	rsvd_check->rsvd_bits_mask[0][3] = high_bits_rsvd | rsvd_bits(3, 7);
--	rsvd_check->rsvd_bits_mask[0][2] = high_bits_rsvd | rsvd_bits(3, 6) | large_1g_rsvd;
--	rsvd_check->rsvd_bits_mask[0][1] = high_bits_rsvd | rsvd_bits(3, 6) | large_2m_rsvd;
--	rsvd_check->rsvd_bits_mask[0][0] = high_bits_rsvd;
-+	fmt->rsvd_bits_mask[0][4] = high_bits_rsvd | rsvd_bits(3, 7);
-+	fmt->rsvd_bits_mask[0][3] = high_bits_rsvd | rsvd_bits(3, 7);
-+	fmt->rsvd_bits_mask[0][2] = high_bits_rsvd | rsvd_bits(3, 6) | large_1g_rsvd;
-+	fmt->rsvd_bits_mask[0][1] = high_bits_rsvd | rsvd_bits(3, 6) | large_2m_rsvd;
-+	fmt->rsvd_bits_mask[0][0] = high_bits_rsvd;
- 
- 	/* large page */
--	rsvd_check->rsvd_bits_mask[1][4] = rsvd_check->rsvd_bits_mask[0][4];
--	rsvd_check->rsvd_bits_mask[1][3] = rsvd_check->rsvd_bits_mask[0][3];
--	rsvd_check->rsvd_bits_mask[1][2] = high_bits_rsvd | rsvd_bits(12, 29) | large_1g_rsvd;
--	rsvd_check->rsvd_bits_mask[1][1] = high_bits_rsvd | rsvd_bits(12, 20) | large_2m_rsvd;
--	rsvd_check->rsvd_bits_mask[1][0] = rsvd_check->rsvd_bits_mask[0][0];
-+	fmt->rsvd_bits_mask[1][4] = fmt->rsvd_bits_mask[0][4];
-+	fmt->rsvd_bits_mask[1][3] = fmt->rsvd_bits_mask[0][3];
-+	fmt->rsvd_bits_mask[1][2] = high_bits_rsvd | rsvd_bits(12, 29) | large_1g_rsvd;
-+	fmt->rsvd_bits_mask[1][1] = high_bits_rsvd | rsvd_bits(12, 20) | large_2m_rsvd;
-+	fmt->rsvd_bits_mask[1][0] = fmt->rsvd_bits_mask[0][0];
- 
- 	bad_mt_xwr = 0xFFull << (2 * 8);	/* bits 3..5 must not be 2 */
- 	bad_mt_xwr |= 0xFFull << (3 * 8);	/* bits 3..5 must not be 3 */
-@@ -5433,13 +5433,13 @@ static void __reset_rsvds_bits_mask_ept(struct rsvd_bits_validate *rsvd_check,
- 		/* bits 0..2 must not be 100 unless VMX capabilities allow it */
- 		bad_mt_xwr |= REPEAT_BYTE(1ull << 4);
- 	}
--	rsvd_check->bad_mt_xwr = bad_mt_xwr;
-+	fmt->bad_mt_xwr = bad_mt_xwr;
++	update_spte_permission_bitmask(context, true, shadow_xs_mask);
+ 	reset_tdp_shadow_zero_bits_mask(context);
  }
  
- static void reset_rsvds_bits_mask_ept(struct kvm_vcpu *vcpu,
- 		bool execonly, int huge_page_level)
- {
--	__reset_rsvds_bits_mask_ept(&vcpu->arch.tdp_walk.fmt.guest_rsvd_check,
-+	__reset_rsvds_bits_mask_ept(&vcpu->arch.tdp_walk.fmt,
- 				    vcpu->arch.reserved_gpa_bits, execonly,
- 				    huge_page_level);
- }
-@@ -5461,13 +5461,13 @@ static void reset_shadow_zero_bits_mask(struct kvm_vcpu *vcpu,
- 	bool is_amd = true;
- 	/* KVM doesn't use 2-level page tables for the shadow MMU. */
- 	bool is_pse = false;
--	struct rsvd_bits_validate *shadow_zero_check;
-+	struct kvm_page_format *fmt;
- 	int i;
- 
- 	WARN_ON_ONCE(context->root_role.level < PT32E_ROOT_LEVEL);
- 
--	shadow_zero_check = &context->shadow_zero_check;
--	__reset_rsvds_bits_mask(shadow_zero_check, reserved_hpa_bits(),
-+	fmt = &context->fmt;
-+	__reset_rsvds_bits_mask(fmt, reserved_hpa_bits(),
- 				context->root_role.level,
- 				context->root_role.efer_nx,
- 				guest_cpu_cap_has(vcpu, X86_FEATURE_GBPAGES),
-@@ -5483,10 +5483,10 @@ static void reset_shadow_zero_bits_mask(struct kvm_vcpu *vcpu,
- 		 * Bits in shadow_me_mask but not in shadow_me_value are
- 		 * not allowed to be set.
- 		 */
--		shadow_zero_check->rsvd_bits_mask[0][i] |= shadow_me_mask;
--		shadow_zero_check->rsvd_bits_mask[1][i] |= shadow_me_mask;
--		shadow_zero_check->rsvd_bits_mask[0][i] &= ~shadow_me_value;
--		shadow_zero_check->rsvd_bits_mask[1][i] &= ~shadow_me_value;
-+		fmt->rsvd_bits_mask[0][i] |= shadow_me_mask;
-+		fmt->rsvd_bits_mask[1][i] |= shadow_me_mask;
-+		fmt->rsvd_bits_mask[0][i] &= ~shadow_me_value;
-+		fmt->rsvd_bits_mask[1][i] &= ~shadow_me_value;
- 	}
- 
- }
-@@ -5503,18 +5503,18 @@ static inline bool boot_cpu_is_amd(void)
-  */
- static void reset_tdp_shadow_zero_bits_mask(struct kvm_mmu *context)
- {
--	struct rsvd_bits_validate *shadow_zero_check;
-+	struct kvm_page_format *fmt;
- 	int i;
- 
--	shadow_zero_check = &context->shadow_zero_check;
-+	fmt = &context->fmt;
- 
- 	if (boot_cpu_is_amd())
--		__reset_rsvds_bits_mask(shadow_zero_check, reserved_hpa_bits(),
-+		__reset_rsvds_bits_mask(fmt, reserved_hpa_bits(),
- 					context->root_role.level, true,
- 					boot_cpu_has(X86_FEATURE_GBPAGES),
- 					false, true);
+@@ -5902,6 +5911,7 @@ static void shadow_mmu_init_context(struct kvm_vcpu *vcpu, struct kvm_mmu *conte
  	else
--		__reset_rsvds_bits_mask_ept(shadow_zero_check,
-+		__reset_rsvds_bits_mask_ept(fmt,
- 					    reserved_hpa_bits(), false,
- 					    max_huge_page_level);
+ 		paging32_init_context(context);
  
-@@ -5522,8 +5522,8 @@ static void reset_tdp_shadow_zero_bits_mask(struct kvm_mmu *context)
- 		return;
++	update_spte_permission_bitmask(context, context == &vcpu->arch.guest_mmu, false);
+ 	reset_shadow_zero_bits_mask(vcpu, context);
+ }
  
- 	for (i = context->root_role.level; --i >= 0;) {
--		shadow_zero_check->rsvd_bits_mask[0][i] &= ~shadow_me_mask;
--		shadow_zero_check->rsvd_bits_mask[1][i] &= ~shadow_me_mask;
-+		fmt->rsvd_bits_mask[0][i] &= ~shadow_me_mask;
-+		fmt->rsvd_bits_mask[1][i] &= ~shadow_me_mask;
+@@ -6030,6 +6040,8 @@ void kvm_init_shadow_ept_mmu(struct kvm_vcpu *vcpu, bool execonly,
+ 		update_permission_bitmask(tdp_walk, true, true);
+ 		tdp_walk->fmt.pkru_mask = 0;
+ 		reset_rsvds_bits_mask_ept(vcpu, execonly, huge_page_level);
++
++		update_spte_permission_bitmask(context, true, true);
+ 		reset_ept_shadow_zero_bits_mask(context, execonly);
  	}
- }
  
-@@ -5534,7 +5534,7 @@ static void reset_tdp_shadow_zero_bits_mask(struct kvm_mmu *context)
- static void
- reset_ept_shadow_zero_bits_mask(struct kvm_mmu *context, bool execonly)
- {
--	__reset_rsvds_bits_mask_ept(&context->shadow_zero_check,
-+	__reset_rsvds_bits_mask_ept(&context->fmt,
- 				    reserved_hpa_bits(), execonly,
- 				    max_huge_page_level);
- }
-diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
-index c9e2e7a41a4b..e86d5b9a4d6c 100644
---- a/arch/x86/kvm/mmu/paging_tmpl.h
-+++ b/arch/x86/kvm/mmu/paging_tmpl.h
-@@ -138,19 +138,19 @@ static inline int FNAME(is_present_gpte)(struct kvm_pagewalk *w,
- #endif
- }
- 
--static bool FNAME(is_bad_mt_xwr)(struct rsvd_bits_validate *rsvd_check, u64 gpte)
-+static bool FNAME(is_bad_mt_xwr)(struct kvm_page_format *fmt, u64 gpte)
- {
- #if PTTYPE != PTTYPE_EPT
- 	return false;
- #else
--	return __is_bad_mt_xwr(rsvd_check, gpte);
-+	return __is_bad_mt_xwr(fmt, gpte);
- #endif
- }
- 
- static bool FNAME(is_rsvd_bits_set)(struct kvm_page_format *fmt, u64 gpte, int level)
- {
--	return __is_rsvd_bits_set(&fmt->guest_rsvd_check, gpte, level) ||
--	       FNAME(is_bad_mt_xwr)(&fmt->guest_rsvd_check, gpte);
-+	return __is_rsvd_bits_set(fmt, gpte, level) ||
-+	       FNAME(is_bad_mt_xwr)(fmt, gpte);
- }
- 
- static bool FNAME(prefetch_invalid_gpte)(struct kvm_vcpu *vcpu,
-diff --git a/arch/x86/kvm/mmu/spte.c b/arch/x86/kvm/mmu/spte.c
-index d2f5f7dd8fe1..bdf72a98c19c 100644
---- a/arch/x86/kvm/mmu/spte.c
-+++ b/arch/x86/kvm/mmu/spte.c
-@@ -280,9 +280,9 @@ bool make_spte(struct kvm_vcpu *vcpu, struct kvm_mmu_page *sp,
- 	if (prefetch && !synchronizing)
- 		spte = mark_spte_for_access_track(spte);
- 
--	WARN_ONCE(is_rsvd_spte(&vcpu->arch.mmu->shadow_zero_check, spte, level),
-+	WARN_ONCE(is_rsvd_spte(&vcpu->arch.mmu->fmt, spte, level),
- 		  "spte = 0x%llx, level = %d, rsvd bits = 0x%llx", spte, level,
--		  get_rsvd_bits(&vcpu->arch.mmu->shadow_zero_check, spte, level));
-+		  get_rsvd_bits(&vcpu->arch.mmu->fmt, spte, level));
- 
- 	/*
- 	 * Mark the memslot dirty *after* modifying it for access tracking.
 diff --git a/arch/x86/kvm/mmu/spte.h b/arch/x86/kvm/mmu/spte.h
-index 13eea94dd212..918533e61b98 100644
+index 918533e61b98..9bddfa0e02b9 100644
 --- a/arch/x86/kvm/mmu/spte.h
 +++ b/arch/x86/kvm/mmu/spte.h
-@@ -378,33 +378,33 @@ static inline bool is_accessed_spte(u64 spte)
- 	return spte & shadow_accessed_mask;
+@@ -357,17 +357,6 @@ static inline bool is_last_spte(u64 pte, int level)
+ 	return (level == PG_LEVEL_4K) || is_large_pte(pte);
  }
  
--static inline u64 get_rsvd_bits(struct rsvd_bits_validate *rsvd_check, u64 pte,
-+static inline u64 get_rsvd_bits(struct kvm_page_format *fmt, u64 pte,
- 				int level)
+-static inline bool is_executable_pte(u64 spte)
+-{
+-	/*
+-	 * For now, return true if either the XS or XU bit is set
+-	 * This function is only used for fast_page_fault,
+-	 * which never processes shadow EPT, and regular page
+-	 * tables always have XS==XU.
+-	 */
+-	return (spte & (shadow_xs_mask | shadow_xu_mask | shadow_nx_mask)) != shadow_nx_mask;
+-}
+-
+ static inline kvm_pfn_t spte_to_pfn(u64 pte)
  {
- 	int bit7 = (pte >> 7) & 1;
- 
--	return rsvd_check->rsvd_bits_mask[bit7][level-1];
-+	return fmt->rsvd_bits_mask[bit7][level-1];
- }
- 
--static inline bool __is_rsvd_bits_set(struct rsvd_bits_validate *rsvd_check,
-+static inline bool __is_rsvd_bits_set(struct kvm_page_format *fmt,
- 				      u64 pte, int level)
- {
--	return pte & get_rsvd_bits(rsvd_check, pte, level);
-+	return pte & get_rsvd_bits(fmt, pte, level);
- }
- 
--static inline bool __is_bad_mt_xwr(struct rsvd_bits_validate *rsvd_check,
-+static inline bool __is_bad_mt_xwr(struct kvm_page_format *fmt,
- 				   u64 pte)
- {
- 	if (pte & VMX_EPT_USER_EXECUTABLE_MASK)
- 		pte |= VMX_EPT_EXECUTABLE_MASK;
--	return rsvd_check->bad_mt_xwr & BIT_ULL(pte & 0x3f);
-+	return fmt->bad_mt_xwr & BIT_ULL(pte & 0x3f);
- }
- 
--static __always_inline bool is_rsvd_spte(struct rsvd_bits_validate *rsvd_check,
-+static __always_inline bool is_rsvd_spte(struct kvm_page_format *fmt,
- 					 u64 spte, int level)
- {
--	return __is_bad_mt_xwr(rsvd_check, spte) ||
--	       __is_rsvd_bits_set(rsvd_check, spte, level);
-+	return __is_bad_mt_xwr(fmt, spte) ||
-+	       __is_rsvd_bits_set(fmt, spte, level);
+ 	return (pte & SPTE_BASE_ADDR_MASK) >> PAGE_SHIFT;
+@@ -496,20 +485,35 @@ static inline bool is_mmu_writable_spte(u64 spte)
  }
  
  /*
-diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
-index 0717dcd2d37d..76a9ec1b2380 100644
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -8703,7 +8703,7 @@ __init int vmx_hardware_setup(void)
+- * Returns true if the access indicated by @fault is allowed by the existing
+- * SPTE protections.  Note, the caller is responsible for checking that the
+- * SPTE is a shadow-present, leaf SPTE (either before or after).
++ * Returns true if the access indicated by @fault is forbidden by the existing
++ * SPTE protections.
+  */
+-static inline bool is_access_allowed(struct kvm_page_fault *fault, u64 spte)
++static inline bool spte_permission_fault(struct kvm_mmu *mmu, u64 spte,
++					 struct kvm_page_fault *fault)
+ {
+-	if (fault->exec)
+-		return is_executable_pte(spte);
++	unsigned int pfec = fault->error_code;
++	int index = pfec >> 1;
++	int pte_access;
  
- 	/*
- 	 * Setup shadow_me_value/shadow_me_mask to include MKTME KeyID
--	 * bits to shadow_zero_check.
-+	 * bits into the MMU's struct kvm_page_format.
- 	 */
- 	vmx_setup_me_spte_mask();
+-	if (fault->write)
+-		return is_writable_pte(spte);
++	if (!is_shadow_present_pte(spte))
++		return true;
  
+-	/* Fault was on Read access */
+-	return spte & PT_PRESENT_MASK;
++	BUILD_BUG_ON(PT_PRESENT_MASK != ACC_READ_MASK);
++	BUILD_BUG_ON(PT_WRITABLE_MASK != ACC_WRITE_MASK);
++	BUILD_BUG_ON(VMX_EPT_READABLE_MASK != ACC_READ_MASK);
++	BUILD_BUG_ON(VMX_EPT_WRITABLE_MASK != ACC_WRITE_MASK);
++
++	/* strip nested paging fault error codes */
++	pte_access = spte & (PT_PRESENT_MASK | PT_WRITABLE_MASK);
++	if (shadow_nx_mask) {
++		pte_access |= spte & shadow_user_mask ? ACC_USER_MASK : 0;
++		pte_access |= spte & shadow_nx_mask ? 0 : ACC_EXEC_MASK;
++	} else {
++		pte_access |= spte & shadow_xs_mask ? ACC_EXEC_MASK : 0;
++		pte_access |= spte & shadow_xu_mask ? ACC_USER_EXEC_MASK : 0;
++	}
++
++	return (mmu->fmt.permissions[index] >> pte_access) & 1;
+ }
+ 
+ /*
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+index 5a2f8ce9a32b..839a8e416510 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -1169,6 +1169,7 @@ static int tdp_mmu_map_handle_target_level(struct kvm_vcpu *vcpu,
+ 					  struct kvm_page_fault *fault,
+ 					  struct tdp_iter *iter)
+ {
++	struct kvm_mmu *mmu = vcpu->arch.mmu;
+ 	struct kvm_mmu_page *sp = sptep_to_sp(rcu_dereference(iter->sptep));
+ 	u64 new_spte;
+ 	int ret = RET_PF_FIXED;
+@@ -1178,7 +1179,7 @@ static int tdp_mmu_map_handle_target_level(struct kvm_vcpu *vcpu,
+ 		return RET_PF_RETRY;
+ 
+ 	if (is_shadow_present_pte(iter->old_spte) &&
+-	    (fault->prefetch || is_access_allowed(fault, iter->old_spte)) &&
++	    (fault->prefetch || !spte_permission_fault(mmu, iter->old_spte, fault)) &&
+ 	    is_last_spte(iter->old_spte, iter->level)) {
+ 		WARN_ON_ONCE(fault->pfn != spte_to_pfn(iter->old_spte));
+ 		return RET_PF_SPURIOUS;
 -- 
 2.52.0
-
 
