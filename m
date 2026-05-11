@@ -1,60 +1,59 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15F38441037;
-	Mon, 11 May 2026 17:53:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F2C429D287;
+	Mon, 11 May 2026 18:12:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778522000; cv=none; b=QzdD90YJG3cehgVJCOLf1gxEJWCtle7fwledJaKcmH7YXgm8UepaBWYIfX2TlsSXanWc2YO0dXuyLEHZAMJh4ebI/T3KvsXTrPXu0nUbKMDUAC5fSaHYZ08gWGGbBbpQOOCldCXLphNA1hjvTjsOWc3NtMIWWDp2kBopHCW38iQ=
+	t=1778523174; cv=none; b=orbc+I68V/itDY44WJjju6sbn0fGLfhcN+643aEBFnvEJUFVQS1J1ao1Xs65/MMmfsTHpqt87VKShOj3+Z8IxPKySXRAt5xBXLFweanJNmN9agArUVYO+M1XO2MeVi3UOIO3f6jmfQrJafLUMBVtsiUE5MGJG5nWs9o7GNCAoQQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778522000; c=relaxed/simple;
-	bh=bEerhIEewmfT/YDQQReJK1JTsyW1j7y6PqxaMsqRbsk=;
+	s=arc-20240116; t=1778523174; c=relaxed/simple;
+	bh=7CKwJxI3bFLm3PFuh9AaFsTZTrTKlPGrPO8xNlZ51xA=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=T1SeZDat9kZ6Y+m1RdeWlfUbxY5zFbsOsxU6iPZcZN5U18BPClbDQNm0+7xGGVppTy5Vyo1KjIpoUI0D0bxylaYTWQLDm73r7j1bLOsmG4lXHYIkFeSmnVuUmmbyhNFCns5r6new5vVfNNmlrGmb6loA0t2lxDKfq/5ZS7eEt30=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=UIIZ9gg9; arc=none smtp.client-ip=90.155.50.34
+	 Content-Type:MIME-Version; b=IGy2raaSz2m7bu+wjtEz8Hz765rPooY5FssYoJ9s6kkHzYr/P9L/7SwqVT5+X/mjZ0kJZATLTUjCRq/m1IKpfFD0cz/qBK6FuST0k65WrnCa/7kLq+2hUxPgaW8sJ+b1EP4MctjMwkjVmMHgF0F1EZhNkpKv+WxEjBhllNBjyGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=dzRWjlmj; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="UIIZ9gg9"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="dzRWjlmj"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
 	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=bEerhIEewmfT/YDQQReJK1JTsyW1j7y6PqxaMsqRbsk=; b=UIIZ9gg9UVcpKnhAA2NPSRwT8t
-	HELpMdpiEur3G0zUlIi8SbMec4UcZ78FqZqN/5aBiT36Djyj7Jpia0GCRo/oAwZQpbeYhlcfZ8O0M
-	2+jXSO2gHjawMEKrw/PFyVvgPY0G2Z57MUtVPNjPHDVg0JNWRZVsCNpSCP6c0LWNDsIhSoRog7i+K
-	PzpgNC4WHY5zJadr/WUYHd918d2EVDJkETSx4SGQYnaKST5XEqiUZa0rdIQ1GQPGbjDrFE9l8vyaD
-	MID0WWQODjz+0HvWee0uHjDo0s5tkC43X2eCddDN/ZLO82cqHyJJ/HTGRpvaNXljEBbLT8GPJBIPt
-	sVmd68lQ==;
+	bh=7CKwJxI3bFLm3PFuh9AaFsTZTrTKlPGrPO8xNlZ51xA=; b=dzRWjlmj2KmbQuiyCKcsh6RceF
+	kcbEiOSX3NxMRfU9rbYVG/uuULEPj/xowMa/YSyMmjB3vyBZH549WFyce/jvR3LMtW7VVCe7JzhQi
+	ogM9DY2YhM6WgXaLyfU90yuJLt2r8bJsdKGy2Wv+vAAA+hGUbfpRwXmOJep7lGgfGNsNbg+iNpmbR
+	ptjoyEv7VY5nK25EQZ0XGv1R4VmD2re928LiN7lT/XhjmVMTkMtuxVd+htcQcakfzuTF8XF3lt84B
+	kurwj9CTiCIMUFOUfPUI7D1117mrcxeYhvayMVIkR8KpilPZh2mrig3Y9vMyBtxywVFjsOSvT0t5S
+	KupScbkQ==;
 Received: from 54-240-197-239.amazon.com ([54.240.197.239] helo=edge-cache-179.e-lhr50.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wMUoV-00000008ZPr-3uOF;
-	Mon, 11 May 2026 17:53:08 +0000
-Message-ID: <d15070666d0fd52af420494cc18a65acaec7a766.camel@infradead.org>
-Subject: Re: [PATCH] Documentation: KVM: Document guest-visible
- compatibility expectations
+	id 1wMV7P-00000008ady-0Mnz;
+	Mon, 11 May 2026 18:12:39 +0000
+Message-ID: <177d33b213c71c965da8ccf43f042264656dc99d.camel@infradead.org>
+Subject: Re: [PATCH 4/7] KVM: x86/xen: Remove unnecessary irqsave from GPC
+ lock usage in xen.c
 From: David Woodhouse <dwmw2@infradead.org>
-To: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
- linux-doc@vger.kernel.org,  linux-kernel@vger.kernel.org, Sean
- Christopherson <seanjc@google.com>, Jim Mattson <jmattson@google.com>, Marc
- Zyngier <maz@kernel.org>
-Cc: Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, Will
- Deacon <will@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, Eric
- Auger <eric.auger@redhat.com>, Kees Cook <kees@kernel.org>,  Arnd Bergmann
- <arnd@arndb.de>, Nathan Chancellor <nathan@kernel.org>, 
- linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
- linux-kselftest@vger.kernel.org
-Date: Mon, 11 May 2026 18:53:06 +0100
-In-Reply-To: <baff82ca-6321-4b16-aa61-b2d6d60b6535@redhat.com>
-References: <6856b269d2af706eae397e0cf9c1231f89d9a932.camel@infradead.org>
-	 <6afc4b95-3c15-4d71-877d-19b84e91ce05@redhat.com>
-	 <57bc082f4824d6114d3156744c25986effc29aca.camel@infradead.org>
-	 <baff82ca-6321-4b16-aa61-b2d6d60b6535@redhat.com>
+To: Sean Christopherson <seanjc@google.com>, "Griffoul, Fred"
+	 <fgriffo@amazon.com>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter
+ Anvin" <hpa@zytor.com>, Paul Durrant <paul@xen.org>, Peter Zijlstra
+ <peterz@infradead.org>, Will Deacon <will@kernel.org>, Boqun Feng
+ <boqun@kernel.org>, Waiman Long <longman@redhat.com>, Sebastian Andrzej
+ Siewior <bigeasy@linutronix.de>, Clark Williams <clrkwllms@kernel.org>,
+ Steven Rostedt <rostedt@goodmis.org>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org,  linux-rt-devel@lists.linux.dev, Mauricio
+ Faria de Oliveira <mfo@igalia.com>,  kernel-dev@igalia.com,
+ syzbot+208f7f3e5f59c11aeb90@syzkaller.appspotmail.com
+Date: Mon, 11 May 2026 19:12:37 +0100
+In-Reply-To: <agIWbNDUgrpmD4VT@google.com>
+References: <20260508181717.3230988-1-dwmw2@infradead.org>
+	 <20260508181717.3230988-5-dwmw2@infradead.org>
+	 <agII-2_f_gYMdPzL@google.com>
+	 <28709d77abbecdd156c830fbef3c706431d2082a.camel@infradead.org>
+	 <agIWbNDUgrpmD4VT@google.com>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-enZD6RcTNRAVwt9lhRh7"
+	boundary="=-HzePcSBQrEs8fgoH568w"
 User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -65,62 +64,45 @@ MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
---=-enZD6RcTNRAVwt9lhRh7
+--=-HzePcSBQrEs8fgoH568w
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, 2026-05-11 at 18:56 +0200, Paolo Bonzini wrote:
-> On 5/11/26 18:38, David Woodhouse wrote:
-> > Not *everything* is in CPUID; one recent exception that comes to mind
-> > is the SUPPRESS_EOI_BROADCAST quirk. But on x86 we preserve the
-> > existing behaviour of older kernels =E2=80=94 even when that behaviour =
-doesn't
-> > make much sense, as with SUPPRESS_EOI_BROADCAST where older KVM would
-> > *advertise* the feature, but not actually *implement* it. Nevertheless,
-> > that remains the default behaviour of future kernels unless userspace
-> > explicitly opts in to fully enable (or disable) the feature.
+On Mon, 2026-05-11 at 10:48 -0700, Sean Christopherson wrote:
+> On Mon, May 11, 2026, David Woodhouse wrote:
+> > On Mon, 2026-05-11 at 09:51 -0700, Sean Christopherson wrote:
+> > > On Fri, May 08, 2026, David Woodhouse wrote:
+> > > > From: David Woodhouse <dwmw@amazon.co.uk>
+> > > >=20
+> > > > Now that the hardirq path (xen_timer_callback and set_evtchn_fast) =
+uses
+> > > > read_trylock() instead of read_lock_irqsave(), the remaining GPC lo=
+ck
+> > > > users in xen.c are only called from process context (vcpu_run, ioct=
+ls).
+> > > > There is no need to disable interrupts to prevent concurrent access=
+ from
+> > > > a hardirq user, since the hardirq path no longer takes the lock.
+> > >=20
+> > > No longer _waits_ on the lock, correct?=C2=A0 I.e. the hardirq path c=
+an still take the
+> > > lock, but only ever does so using trylock.
 > >=20
-> > But this documentation update isn't even asking for that compatible-by-
-> > default behaviour, even though that is the right thing to do. It's only
-> > asking that it be *possible* to reinstate the old behaviour, for
-> > userspace that *knows* about the change and explicitly wants to go back
-> > to the old way to remain compatible.
+> > Indeed so. Want me to fix that?
 >=20
-> Yep, these are the "quirks"---if it's too early for Arm to commit to=20
-> that, I guess it's fine.
->=20
-> However, independent of this patch which I (obviously) believe is a good=
-=20
-> idea, I'd like to understand how far it is, assuming 1) no quirks 2)=20
-> same CPU host.
+> Nah, at least not yet.=C2=A0 I'm in the process of wrapping my head aroun=
+d all of the
+> in-flight gpc series (namely yours and Fred's), just wanted to make sure =
+I wasn't
+> missing something.
 
-It generally works out on arm64, although it's obviously a lot more
-work than x86 which makes an effort to get this stuff right.
+I think Fred has a few performance fixes and is due to send another
+version once he can find the cycles to do so.
 
-When we upgrade the kernel we do a lot of in-guest testing to find the
-stuff that=C2=A0"broke", like cache reporting:
-https://lore.kernel.org/all/254ca48a67779ccf9b9f60e2bb5796a305c03f95.camel@=
-infradead.org/
-... and the GICD_IIDR thing which I reposted today:
-https://lore.kernel.org/all/20260511113558.3325004-2-dwmw2@infradead.org/
+My assumption (without actually *talking* to Fred about it) was that he
+would be able to rebase fairly trivially on top of this series.
 
-Those are the ones I came up against recently because someone had just
-*reverted* the offending commits local in a previous kernel upgrade,
-and I'm trying to fix it *properly* this time around and not carry the
-reverts forward for ever.
-
-And fix the expectations too, of course. Being told that we shouldn't
-*expect* to be able to upgrade and roll back the kernel while remaining
-compatible is... not OK.
-
-> By the way, you didn't Cc Marc...
-
-Ah crap, I meant to. Thanks for spotting that!
-
-I must have screwed up when I combined and dedeuplicated the
-get_maintainer.pl output with the recipients of the IIDR patch series.
-
---=-enZD6RcTNRAVwt9lhRh7
+--=-HzePcSBQrEs8fgoH568w
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -199,21 +181,21 @@ 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
-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
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUxMTE4MTIz
+N1owLwYJKoZIhvcNAQkEMSIEIH9gP1GfphwNu9bnXnD5uUoxvn1rb+cKWBLhymQMDCBUMGQGCSsG
 AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
 cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
 VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-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
+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
 
 
---=-enZD6RcTNRAVwt9lhRh7--
+--=-HzePcSBQrEs8fgoH568w--
