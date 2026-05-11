@@ -1,124 +1,90 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5573CEBB9
-	for <kvm@vger.kernel.org>; Mon, 11 May 2026 23:48:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA823D1711;
+	Mon, 11 May 2026 23:48:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778543323; cv=none; b=B7/qgDsS4FWWQb9FRfHwgsm2ob/e3IVdJ/o9/lBWjpPt1xZnLkYUL3uZqsp/4BU4n0GWON5jAsTMfcyVVWAlPTJAprVO4ed3zJ3s7P9Ty3CqJK0yx5eNfpxw3QhXUWB7iDHleWBnlsNHbMNRhOECmoLtS/Vuhay5EDxB2EOelm4=
+	t=1778543323; cv=none; b=hUx8BvZ1WrOEWaWTfBIyvrv/TFICKd8Nl85jeL9gVTeUKo2Bvw7ZxGFEQOuegj6XDCaJ1FOuvnNAAgRbcb5zTGVitHC4pVxO8GAx0OF4PITNp6ye005Vv8g9FDsQLb0WQnRPoWQ2g0k2QDrOdLYQ4bojeZL2bF2lZFG3X1Qw0vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778543323; c=relaxed/simple;
-	bh=nkhAcR/a501eLQKC6FcCHdjPYtswgNMRUI2YsbdltG8=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=exBZi5qmA3TZbPKPB+6+X9iOkzP2a6Nipv5hv8Poq9lCMWYlOF360c1kUbm2xN/ERpuZdloCU5qZ+Ju1G9JI0LpL5SXh3zDkOaM4sTXtIFWlzQgDq7yvN8yWhWK5RKMwLuYweCjIlhLTYXxuD1tbrKHfZ7NjTaSFd+VwcdMjeL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--vipinsh.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Us9uC6Eg; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--vipinsh.bounces.google.com
+	bh=gWx89j4UXXm2t396CgMExGu+KZuVAbEhqjkwgR181UM=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EYHRoAHuzpuT/zket93AB+mo3fdw/Zs8Fx9+hDStkCmUX35ebRKEZMu7/+zSiC2x0VvBYseW8sFZVzlaHWgZNTZkd72aV64zJhxij7euGwsGNc4ZhUvApWLIHIdt7Y08z34bBNXr8OW7JRWK+VtsSaW/d3ehnIjtXa2E5PW/7pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RSnaXdFN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Us9uC6Eg"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ba268cb5e6so38269225ad.1
-        for <kvm@vger.kernel.org>; Mon, 11 May 2026 16:48:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778543321; x=1779148121; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=UlR7sP3TmIVuCVXTiNbI5bhyf9pBSqUWeLZMdRUzyiQ=;
-        b=Us9uC6EgoALj9/Kv6lzR8kR3yWheHUSKyJA/Q4I6oMcjcDSTsWQ8BtKkDprmJP+sLF
-         tTxRRHchETetEfItbg1JN4UnypExqBhBSTlYVCRFUDu9QXmlBG9v5pHr/C+95jIk/UQl
-         G0wRVrNvCU+EAdjrC4HLWmVvSQtmJ7BKrvCi/w+Y/nSA2VRMflWc9WDFsqX7U9SX0W4N
-         G+0XLZPfDLAtYULSUo8HzhDid9YzFlfRZkfRrZJblAz3liNR5sVdDdMVW3xk3clZKHOY
-         pTdXBh0RpZPeOMPKPfXq3Gs/4/dZe9WT24DMg1Pe+okrrQtN6CgX7HBoOgiGDxMvwRmL
-         NpiQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778543321; x=1779148121;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=UlR7sP3TmIVuCVXTiNbI5bhyf9pBSqUWeLZMdRUzyiQ=;
-        b=UXHlh/bJ4JaaQ4taz4Cf6fjC2BiNXRlGIxywidZyuOfxB8nPa1K9ykWXRYxMxRO2gi
-         KKb3S4bFjUzYeaQx2HvldzlJHVT0EWk8BuoYGz7jtKTkYIehUVDb9NcBmQ6GHQikU1WR
-         Q8Fl0EXuEry7yqpLP5Kmn9kMZWaaVy6Tob1yfvkZBrWNc7CERpshJRL0qm84ofav1h5u
-         UGQsz4LkthZLTNx2RS5yFOsgrVfqvXZKWedArmCXVz4LFoMh7/h8EGQ22miz4RQMzbFz
-         LGlzgzh/lh2ewDfC8uEkGjOLnCfj0wTzL++vyZ0M0bZyqpjYdK4OftKEQdnnDg8ut8Vf
-         mDHA==
-X-Gm-Message-State: AOJu0YwrRsW5dmWB7T6iCw/+Z4Ll2er7EeWv8TQIATDb/qTM8M/CGndn
-	XQKMdaNVzwXeH2A8SM/bymPUDL3FgKah2XWCQWvDscw89xGfQLvQmeDKOT/99xQs3mOba/N3mr7
-	ZdiogG9rUX6iN2XN77Vat/p1USw6/NtiTcBKHXS/yEreW9ukcUA+x6Q8dfvDYk8cY44mgEXwaT7
-	2Si6DZIyTPnjk1ln9dcL3Tpe2NxdQp9jP0vLsU9A==
-X-Received: from pgwb24.prod.google.com ([2002:a65:6698:0:b0:c74:42:899a])
- (user=vipinsh job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:37c5:b0:2ae:cb0e:fd59
- with SMTP id d9443c01a7336-2bd010f3972mr6895335ad.8.1778543320035; Mon, 11
- May 2026 16:48:40 -0700 (PDT)
-Date: Mon, 11 May 2026 16:47:57 -0700
-In-Reply-To: <20260511234802.2280368-1-vipinsh@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RSnaXdFN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE1EC4AF0C;
+	Mon, 11 May 2026 23:48:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778543323;
+	bh=gWx89j4UXXm2t396CgMExGu+KZuVAbEhqjkwgR181UM=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=RSnaXdFNA1SR81L0q6fxX31cP0FujjsLUK0Bf6vzT8TuhwEMv0gUmJhoYie9qHFAu
+	 M2U+ZqTDHw8r1X+oL59DwpDXbexrHMulXEhDC5HRI5fiB+qEt0QfVlgu6b1In6+BTD
+	 8/OM2HK13ilwr8qgFB66Y7BC/w2QfQAtVieUeaaen01tg5IvIHmX1HTKjMhz+y7O1N
+	 3tckIVfEfM1upFu2juJpXsct3XzVEbNpBePwqAq62RH8RJ8AG3rC5CrQ5GuwrsWAFH
+	 oT2bCW4qMpgJVh9QHtZsGTF9hpG4uEJTlKvOoe11USRB5WR8RtE1T/3bEcT5rWwFXz
+	 VbnUHyMds/P3Q==
+Date: Mon, 11 May 2026 16:48:41 -0700
+From: Jakub Kicinski <kuba@kernel.org>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, netdev@vger.kernel.org, Eric
+ Dumazet <edumazet@google.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ virtualization@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
+ Jason Wang <jasowang@redhat.com>, Simon Horman <horms@kernel.org>,
+ linux-kernel@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, Xuan Zhuo
+ <xuanzhuo@linux.alibaba.com>, kvm@vger.kernel.org, Eugenio =?UTF-8?B?UMOp?=
+ =?UTF-8?B?cmV6?= <eperezma@redhat.com>
+Subject: Re: [PATCH net] vsock/virtio: fix skb overhead accounting to
+ preserve full buf_alloc
+Message-ID: <20260511164841.7f7ff557@kernel.org>
+In-Reply-To: <CAGxU2F6TPfRxZ7SX20vXiqDM4_sY3yUQBUSfEM=Nr+TKXwT9mA@mail.gmail.com>
+References: <20260508092330.69690-1-sgarzare@redhat.com>
+	<20260508055125-mutt-send-email-mst@kernel.org>
+	<af2y2Fyp7H-om-ur@sgarzare-redhat>
+	<20260508063104-mutt-send-email-mst@kernel.org>
+	<af28MAV0LF4qHVmB@sgarzare-redhat>
+	<CAGxU2F65pw0P1uKOOJpBc4p6KjCz8iePEh9aPybUyECBm1=otg@mail.gmail.com>
+	<20260511084551-mutt-send-email-mst@kernel.org>
+	<CAGxU2F6TPfRxZ7SX20vXiqDM4_sY3yUQBUSfEM=Nr+TKXwT9mA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260511234802.2280368-1-vipinsh@google.com>
-X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260511234802.2280368-12-vipinsh@google.com>
-Subject: [PATCH v4 11/16] vfio: selftests: Add Makefile support for TEST_GEN_PROGS_EXTENDED
-From: Vipin Sharma <vipinsh@google.com>
-To: kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-pci@vger.kernel.org
-Cc: ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com, 
-	ankita@nvidia.com, apopple@nvidia.com, chrisl@kernel.org, corbet@lwn.net, 
-	dmatlack@google.com, graf@amazon.com, jacob.pan@linux.microsoft.com, 
-	jgg@nvidia.com, jgg@ziepe.ca, jrhilke@google.com, julianr@linux.ibm.com, 
-	kevin.tian@intel.com, leon@kernel.org, leonro@nvidia.com, lukas@wunner.de, 
-	michal.winiarski@intel.com, parav@nvidia.com, pasha.tatashin@soleen.com, 
-	praan@google.com, pratyush@kernel.org, rananta@google.com, 
-	rientjes@google.com, rodrigo.vivi@intel.com, rppt@kernel.org, 
-	saeedm@nvidia.com, skhan@linuxfoundation.org, skhawaja@google.com, 
-	vipinsh@google.com, vivek.kasireddy@intel.com, witu@nvidia.com, 
-	yanjun.zhu@linux.dev, yi.l.liu@intel.com
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: David Matlack <dmatlack@google.com>
+On Mon, 11 May 2026 15:17:56 +0200 Stefano Garzarella wrote:
+> > > Okay, I thought it over over the weekend, and I agree that this patch
+> > > still doesn't solve the problem and would still result in packet loss.
+> > > So, until we resolve the issue permanently, and since 059b7dbd20a6 is
+> > > coming to stable, I'd like to rework this patch so that we only start
+> > > dropping packets when the overhead plus the queued bytes exceeds
+> > > `buf_alloc * 2`.
+> > > Removing the other changes to reduce the buf_alloc advertised, but
+> > > terminating the connection so that both peers are aware that something
+> > > went wrong.
+> > >
+> > > Any objections?
+> > >
+> > > Stefano  
+> >
+> > Let's try to first fix it upstream properly please. Discuss backporting
+> > later.  
+> 
+> Commit 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb
+> queue") is already in Linus tree and will land soon on stable. Which
+> issue do you see on having a patch on top of that to close the
+> connection instead of losing data and breaking our test suite?
+> 
+> IMO we need that change in any case, because the previous code also
+> discarded packets without any notification, whereas breaking the
+> connection would be better in that case.
 
-Add Makefile support for TEST_GEN_PROGS_EXTENDED targets. These tests
-are not run by default.
-
-TEST_GEN_PROGS_EXTENDED will be used for Live Update selftests in
-subsequent commits. These selftests must be run manually because they
-require the user/runner to perform additional actions, such as kexec,
-during the test.
-
-Signed-off-by: David Matlack <dmatlack@google.com>
-Signed-off-by: Vipin Sharma <vipinsh@google.com>
----
- tools/testing/selftests/vfio/Makefile | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
-
-diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
-index df3e44660bd0..ad081ec31fb2 100644
---- a/tools/testing/selftests/vfio/Makefile
-+++ b/tools/testing/selftests/vfio/Makefile
-@@ -32,14 +32,17 @@ LDFLAGS += -pthread
- LIBS_O := $(LIBVFIO_O)
- LIBS_O += $(LIBLIVEUPDATE_O)
- 
--$(TEST_GEN_PROGS): %: %.o $(LIBS_O)
-+$(TEST_GEN_PROGS) $(TEST_GEN_PROGS_EXTENDED): %: %.o $(LIBS_O)
- 	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $(TARGET_ARCH) $< $(LIBS_O) $(LDLIBS) -o $@
- 
--TEST_GEN_PROGS_O = $(patsubst %, %.o, $(TEST_GEN_PROGS))
--TEST_DEP_FILES := $(patsubst %.o, %.d, $(TEST_GEN_PROGS_O))
-+TESTS_O := $(patsubst %, %.o, $(TEST_GEN_PROGS))
-+TESTS_O += $(patsubst %, %.o, $(TEST_GEN_PROGS_EXTENDED))
-+
-+TEST_DEP_FILES := $(patsubst %.o, %.d, $(TESTS_O))
- TEST_DEP_FILES += $(patsubst %.o, %.d, $(LIBS_O))
- -include $(TEST_DEP_FILES)
- 
--EXTRA_CLEAN += $(TEST_GEN_PROGS_O) $(TEST_DEP_FILES)
-+EXTRA_CLEAN += $(TESTS_O)
-+EXTRA_CLEAN += $(TEST_DEP_FILES)
- 
- endif
--- 
-2.54.0.563.g4f69b47b94-goog
-
+Sorry if I'm speaking out of turn or misunderstanding but, like Michael
+says, let's focus on fixing this the way we want it to be fixed?
+IIUC you are trying to minimize the size of the fix, please don't worry
+about the LoC in the diff at this stage.
