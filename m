@@ -1,103 +1,96 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0DEE3DA7E5
-	for <kvm@vger.kernel.org>; Mon, 11 May 2026 14:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3002031195B
+	for <kvm@vger.kernel.org>; Mon, 11 May 2026 15:06:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778511598; cv=none; b=mgfOSMjdFenJo9acbbKlP39JjiH6mB1Xy+8yBruG5E25APjgtURgyoedjG5NnR25QJ5sYOMJppp4OC40QsOVCCq93jXr3CUB9Vuuh+414T3/FI4xaWkfgUhwDjgWvv/EDBSntcKHQZwHIlr72i+98GoYWMjb7RvNGWlH8eJUWbY=
+	t=1778512016; cv=none; b=McV6SV4/kJ5bb+Sc110M4cq9YJ3VlRcJFLDpDQniVcEMs9vEPm/gCHgMlFiXAdrbgVoCVhRsjdLBnmGMz8ho54J7jYc7KV+LeLPE4917QX5R3XBkwewztivSAFRtypJVlISjf0vVZI8urlhe64PmNSJDDhaiU+BQkz1SfDjcUFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778511598; c=relaxed/simple;
-	bh=ZMLJorGRDLuLGDQaifkVphFcd2Gm4O18yI8qmtudl20=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hrpVSRSlzfl02cZW31+DMI4z3WBNeYR3eHmV4kz1c5OQBEuGPfd8buD6a4j6QnpmplmItvu0xNWjhHd/Qa8jptyepaR0CC7w/5OAf3eXUcKDnT6BrxG9CVnyB3gCsoM3acF7f093V36DTt161lGtcod3RFgR8iLFRN2e8XnEtr4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o/hTYTM7; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1778512016; c=relaxed/simple;
+	bh=0auwx32uSZnkYKaPRx8GNEzMiA4MgEnQ5JpHWMraEKY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tZJgrQtlL2d9OF0TtUEHjLx9/r7XAqe+X8QOjhzd+JTotGyz60KXprjoU8tg2cG04N6rl7oWgG/j5FP76O8oCM8LnZpGAFgLkUqiL/CpsTF7o0E/uUEmQapXjAzmsuU4K8l0Zwe0Bcky9w/PPV0kD+QDix8JD0o5zDtJ46CgMyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hoJQmfp0; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o/hTYTM7"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-836d0184333so4278793b3a.0
-        for <kvm@vger.kernel.org>; Mon, 11 May 2026 07:59:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778511596; x=1779116396; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=D1G5BQDNCElQMhRaqBFDq8nj6aplN+o28Im2m1TUiS0=;
-        b=o/hTYTM7iDB0eysqilcKdKexvGqPK1VSMeVvLHf2vB/PrA5zpkJbeTg0hf4JbLIzvD
-         ZLdGdq/TXRmVSv4nuwcNNjIMoR+B2V/dJwGTE+FrMseG33bruNoq0C8IQoW9OsHWX8/J
-         lQ7E5oD0KwmLISMSN+Jcx4Y+fIDG8F1o73s25VmNqs/A8/bFbBxNUwm0oVbyGIFSX61C
-         D0KfYRYFJPm3tHYJRtjPx2JhgkDxgXjtSf2Z/nqBNsH+J3WL00XyWDqFwy85MnU3gRTX
-         FNqtuGj4CWIOr733ZKDSAUmxNp4TUfV54xHIEqexmHzrMP9xdqFmclSPpGCbiLnPcSCr
-         m3hA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778511596; x=1779116396;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=D1G5BQDNCElQMhRaqBFDq8nj6aplN+o28Im2m1TUiS0=;
-        b=jH/Mcs2eD67fBMgiL8P2Ll70e9Fnf27pWj4zRFIjebLzP0LDkeZ0E8X7SrP5Vh6gOm
-         51jMM+5tt+ZSptjlgU3Iu72+qTsNdph7qx+j0nUqTwmfk09eVeGApFA/fWAoAnYR6iPz
-         YFUOYHg07rKJ4UscfNfkx/gbPLI3+DNWI8yLJRggV1g8XoPi8EZ6OErcue6pR8gf+RnF
-         DcXfVv2TPHFKI/rerhMCUzkG7n+C3dDSI6ywuQ8nQsd5I+/FmC8VLU/qdt3vgJDfs5q0
-         zdh9JEkDjOXgldQ/S7oj+kO8VGbherVwKGKMCW8hY5puCBDLlJCyYfLbRThYsZ1TPW8U
-         /hdA==
-X-Forwarded-Encrypted: i=1; AFNElJ8pofwCoHjRhbP3ucDMDKMsgmBSKiRZ7X8YIEPUcEUsx9TiEyXxlypbCS/ebmmR7kw7P5s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyijZylStUWYI3iHD+/5iVvQlw1PwntEIL44rHBpEbdJL6plMG0
-	JQBle8DgsXid9fwAu6ez2eVgC6DjmwR8kuwsYPKlCYehHslZAKGiFi692HP1VQCj7DwYxKV3PXI
-	tZHQTTg==
-X-Received: from pfbmd16.prod.google.com ([2002:a05:6a00:7710:b0:82f:c134:e67c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:198f:b0:838:1ece:9716
- with SMTP id d2e1a72fcca58-83a5c5bd45cmr24637410b3a.22.1778511596079; Mon, 11
- May 2026 07:59:56 -0700 (PDT)
-Date: Mon, 11 May 2026 07:59:55 -0700
-In-Reply-To: <20260511113759.610924-2-tabba@google.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hoJQmfp0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778512012;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=PgYdfeXM9CLAuTMEeSJ9fjZzABhDnraN4XOttb9xDNA=;
+	b=hoJQmfp0frRHm5LCvVfV7vkYvSccbqBZChIlbEr+l3bdvjf+BMbVFymaTbgkqCPy5VV3Rs
+	Z2ck6S+kRhAx5A75qiXHtv9OCqZrsykfCe3c9Y45pEXkQPqDNPoG5KKGPqBA0pI+ThL7iT
+	sU8XwkB2dIlGHq96ZaXpCHLo2OBbY/k=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-588-ZVRoW2m5P2ybtWmDbbE32w-1; Mon,
+ 11 May 2026 11:06:51 -0400
+X-MC-Unique: ZVRoW2m5P2ybtWmDbbE32w-1
+X-Mimecast-MFC-AGG-ID: ZVRoW2m5P2ybtWmDbbE32w_1778512010
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id B6FB119560A5;
+	Mon, 11 May 2026 15:06:50 +0000 (UTC)
+Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 26C851800286;
+	Mon, 11 May 2026 15:06:50 +0000 (UTC)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: jon@nutanix.com,
+	mtosatti@redhat.com
+Subject: [PATCH 01/22] KVM: x86: remove nested_mmu from mmu_is_nested()
+Date: Mon, 11 May 2026 11:06:27 -0400
+Message-ID: <20260511150648.685374-2-pbonzini@redhat.com>
+In-Reply-To: <20260511150648.685374-1-pbonzini@redhat.com>
+References: <20260511150648.685374-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260511113759.610924-1-tabba@google.com> <20260511113759.610924-2-tabba@google.com>
-Message-ID: <agHu666UaLA3PxVe@google.com>
-Subject: Re: [PATCH 1/2] KVM: selftests: Fix MADV_COLLAPSE build failure on
- older toolchains
-From: Sean Christopherson <seanjc@google.com>
-To: Fuad Tabba <tabba@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Will Deacon <will@kernel.org>, 
-	Ackerley Tng <ackerleytng@google.com>, David Matlack <dmatlack@google.com>, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Mon, May 11, 2026, Fuad Tabba wrote:
-> guest_memfd_test.c uses MADV_COLLAPSE unconditionally, but the
-> constant was only exposed in glibc 2.37. Distros still on older glibc
-> (e.g. Debian Bookworm, glibc 2.36) cannot build the test.
-> 
-> Add a compile-time fallback that defines MADV_COLLAPSE to its
-> kernel-ABI value when the libc header does not, matching the
-> established selftest pattern for sometimes-missing libc constants
-> (see selftests/bpf/uprobe_multi.c, selftests/mm/hugetlb-soft-offline.c).
-> 
-> Fixes: 9830209b4ae8 ("KVM: selftests: Test MADV_COLLAPSE on guest_memfd")
-> Signed-off-by: Fuad Tabba <tabba@google.com>
-> ---
->  tools/testing/selftests/kvm/guest_memfd_test.c | 4 ++++
->  1 file changed, 4 insertions(+)
-> 
-> diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-> index d6528c6f5e03..45990ae5f1e5 100644
-> --- a/tools/testing/selftests/kvm/guest_memfd_test.c
-> +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-> @@ -23,6 +23,10 @@
->  #include "test_util.h"
->  #include "ucall_common.h"
->  
-> +#ifndef MADV_COLLAPSE
-> +#define MADV_COLLAPSE	25
-> +#endif
+nested_mmu is always stored into vcpu->arch.walk_mmu at the same time as
+guest_mmu is stored into vcpu->arch.mmu.  But nested_mmu is not even
+a proper MMU, it is only used for page walking; plus the fact that
+walk_mmu has to be switched at all is just an implementation detail.
 
-Fixed by:
+In the end what matters here is whether the guest is using nested
+page tables; vmx/nested.c and svm/nested.c check it to see if they
+are in nEPT or nNPT context respectively.  So switch to checking
+root_mmu vs. guest_mmu, which is a more cogent test.
 
-  https://lore.kernel.org/all/20260428012503.1213654-1-seanjc@google.com
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ arch/x86/kvm/x86.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-I'll get that applied and on its way to Paolo this week.
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index 38a905fa86de..60ff064de12f 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -290,7 +290,7 @@ static inline bool x86_exception_has_error_code(unsigned int vector)
+ 
+ static inline bool mmu_is_nested(struct kvm_vcpu *vcpu)
+ {
+-	return vcpu->arch.walk_mmu == &vcpu->arch.nested_mmu;
++	return vcpu->arch.mmu == &vcpu->arch.guest_mmu;
+ }
+ 
+ static inline bool is_pae(struct kvm_vcpu *vcpu)
+-- 
+2.52.0
+
+
