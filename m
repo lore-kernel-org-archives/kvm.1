@@ -1,265 +1,219 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9353A3B9D9F;
-	Mon, 11 May 2026 08:57:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BCDE268690
+	for <kvm@vger.kernel.org>; Mon, 11 May 2026 09:10:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778489857; cv=none; b=bzMs+dzsPF5L3AiNrgxbd+DcVtPxOJsLuzkVKFoIyjcmwiix3igHNEkb9aU01JCIfKqOyps/A5s7IY3hKkvIdIcdqaHS7VF7Q7MY8LWz4F22FPSJZrRBw5DY6BQSMkZA5joKelw89jDlCmWM4+KYTT4eFKHYl7JWAtqf8LJFYZU=
+	t=1778490661; cv=none; b=Lz88wkmPp9ZAABytrHTJDYalBXAz5crcxkklAi8sNpXW+OqgI5tcAHT8imMZ2A5AkRTMxNPt6QpdLj6CC4nI3NK5976Iss1rdEkpPc0OBXNp4Mc1ab8MrbtppWW3NAmrO98okK7yIy7jY50Vv2Rd6pcqwwbglFKKT3vbGP/ld2Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778489857; c=relaxed/simple;
-	bh=yG1ZQpDp59m7GIi0rClPuRqEcexWJ1Je7cyz4dCBFJo=;
-	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:MIME-Version; b=PkA69LxsItkabxug6wseisrdCSq2t6vQRK+u/DZryDZIN74lxG8EUiVjD4QxttVqrn4q6gzYqO/+i84aLvQ2AF1/ut9ExBOYeRcV8zzflwdykGuFwh080LDgCuIDgnWuN8MKPUNi4ivuYYdpFiE7qdH5b2QxlfK84gZs/uPO9ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ZkLujkeH; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1778490661; c=relaxed/simple;
+	bh=NOVPw0sRFmhs/549yezkhu2bnfPqQ2AHmr7i3bUMSWg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TTEDUXWAeucjZoRVZkItyfgpk7Os3lBsj2Nv86yGO6OAxNVQ/9m2EqwzHnajSi0Gpse5ktmdht/0uHSIZzIVtTOCvfGhbkxQCACbrphzizm9IMhqPeQFc0nXJByVh6p500S7eDY9CeGeifJ1SCGHGuK7b/4CTwoSPbQMigj5dJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HWkYLsRP; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=gUyu9PCk; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ZkLujkeH"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:Date:Cc:To:
-	From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
-	Content-Description:In-Reply-To:References;
-	bh=zhkE8m1bTkpWiqGtlhKzD3LU8FaLp3DU7tLfKoKSNzw=; b=ZkLujkeHAdzl6TVM1LqDRAlsd1
-	ycTRG8fgZlvV/cz+lwdyC1d9MmhT92AvmtvwPDkCSmX/jRcBy8TjWvGuZgpGCSp5rDNl4MtGRfns1
-	rBw/mLxHqnvs7PniVjpXMC/jZQ1GTGxiXrQUWhWpakZpCaSJDJy5xdSeHp0rDDBSvvQLdh7UqAP5Y
-	/BtGilO/fCFyw7GjFxbNWaJlEGjbknfad66mrQ6og6tB5TJsXqe/L4cZTHLpEb5lmW5juzcxW37rB
-	shtNWc8IL2gVJIfKMTRVP+px06FVIJUHDPcZ+c0mOqRsH9d3qXHBcvzeyfOVQsi8Mdy4R5J7FsJZm
-	5FvfZwoA==;
-Received: from 54-240-197-234.amazon.com ([54.240.197.234] helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wMMS8-00000007t91-1uZE;
-	Mon, 11 May 2026 08:57:29 +0000
-Message-ID: <6856b269d2af706eae397e0cf9c1231f89d9a932.camel@infradead.org>
-Subject: [PATCH] Documentation: KVM: Document guest-visible compatibility
- expectations
-From: David Woodhouse <dwmw2@infradead.org>
-To: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
- Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
- linux-doc@vger.kernel.org,  linux-kernel@vger.kernel.org
-Cc: Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
- Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
- <yuzenghui@huawei.com>, Catalin Marinas <catalin.marinas@arm.com>, Will
- Deacon <will@kernel.org>, Raghavendra Rao Ananta <rananta@google.com>, Eric
- Auger <eric.auger@redhat.com>, Kees Cook <kees@kernel.org>,  Arnd Bergmann
- <arnd@arndb.de>, Nathan Chancellor <nathan@kernel.org>, 
- linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
- linux-kselftest@vger.kernel.org
-Date: Mon, 11 May 2026 09:57:27 +0100
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-G9nCGITdCY7OEi2eGNSc"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HWkYLsRP";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="gUyu9PCk"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778490658;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GeXjhbPFcIE2xpoWydu6GqD8aKPwmV5ublK6KJ28nAc=;
+	b=HWkYLsRPaoHz7KxJeITJVNyRa6E5WsVlc16ZlutllRZbbuFHen+MVD8JttVhcgSGaRIsiD
+	oRldV0qbPj6xpMgD2PqQX1yaQ36fidiEJWTB28Th7UTondJ9eIpN+dJDJTK1UM2+lBlNO2
+	0Ses0Vlabd6F+Vr88KrhAH0YGSTXECM=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-515-2KKtsCV1PKO1yGTLMmpFWQ-1; Mon, 11 May 2026 05:10:57 -0400
+X-MC-Unique: 2KKtsCV1PKO1yGTLMmpFWQ-1
+X-Mimecast-MFC-AGG-ID: 2KKtsCV1PKO1yGTLMmpFWQ_1778490656
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-48a5952c635so46989865e9.2
+        for <kvm@vger.kernel.org>; Mon, 11 May 2026 02:10:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1778490656; x=1779095456; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=GeXjhbPFcIE2xpoWydu6GqD8aKPwmV5ublK6KJ28nAc=;
+        b=gUyu9PCkWd2lgQx96I+kGh1XC3gqZO9nAu+qbvim7zG6zlyQZW0FDmUBk9NdAH3f+a
+         MOPpQ5c3gF/MHJSLeZmR4AispSwWGP90lRx70L0T11x1sttkhRCMwEJXkEsyPBad7si1
+         hCUo2MAHhcYjeFohSkq5KRXd/xuM2nujga7ee6jZs8y+9ozs+AN7o08KxBKWI8IS6k8Z
+         YOTt+sMCGgBCNPUqmgvl2VrvikQfPiQEWLwf8+g3Rk7h58J1gaXmbGB7+DRpq8U3kcoh
+         xv4mm2PZ13z7fIsZHMrmLsVqIMjs+w6fO6NDGn2jtKzmABKC0Q2DD/Jp52MxrMlJifh8
+         om9A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778490656; x=1779095456;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GeXjhbPFcIE2xpoWydu6GqD8aKPwmV5ublK6KJ28nAc=;
+        b=PbROKMdACexG1MLRR+H0fFEKksAys1dTD8LA4fr4KgkR6R/FYCttlmPGPua/nSq+x3
+         hqcGM2fXI4bScXnaTJY/0hLS4fPMnca/uLbXM7YclI3LsZDpX6DS9Bux+5Pkd+TkUa6U
+         nx7CsWOsPpAUyC+wjoicsIQGMVmNXsZhjDx2zvDbtFcJoFPIh0sEpBZQTJVeXgkn1UXK
+         HijM2umfffZJnxbFCUw23Xy/tIHEaRPllZKj8iwZXXeQ+ENv7/q6Wx5LNzYE7IYwZPLG
+         QSAq8ng0zB0MwR/QMejokTUpPgUQBz3SYIMFgOBBxD1HWU5BZ4HHsHJzwRuuCGZD15Hc
+         YNoQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9TLrdcOi4t49vbrfEKcabsAHKeHq3Piwaf3FHH70rwX/WyDLDZ3GzywaqOG8gKG1KcRPo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPlc1/5k1Te9GOeLHRZoc29NKm9bcAMQtU/2oZYfladArmFK4o
+	pMBd1zXMXcdL0Ds38xZOVa00RUEVfUbnmpTCpBI+GH/xzKwHyknf8fgChpNtfTfPxXBq2/PA6RY
+	mtmUMb4BKv02eFjOcba2lIxfu1HIZGrfIt++pTQIy09yxKpZjE2Q0WRSEtGP+ZXO6
+X-Gm-Gg: Acq92OFQX5nIwGmjQpVJhXmb9x9oGpHog0dxeIPWynpaHTWwEVZ9m0ZSgkVtFs1NgSQ
+	lu26fcs8s+89MEAYJNORYKq3ySBMRCLHoWEJBuR/VMP5b47nep8/Xm+oJOUXEc8bLZIxXOupjeS
+	yBExAjOoiJQ4/MQidhTff7t5iM0iqsj+zCMAPyTgMpwIXm16R/dplcH+Us4xpYEUkiPWhY1eS9G
+	EFXR4ZPuiRNGdb5UBEY3xBTx5wbqIvAg2hk6FXvdjDotocCH6m4vJ2E0f1ckDSYO20z8/tgwgKP
+	fiqo0vJyj/A/nyEEW18dywRm2/10+j0sSaUoPyIy+4K1lMUGMgsf149fYm3VpYE5UC2p2p7pwcX
+	Azr2IkFfqo8X6M3ZCmvOnyTM5V1KGi6Odtxf3qQRc
+X-Received: by 2002:a05:600c:628d:b0:48e:82b4:b54 with SMTP id 5b1f17b1804b1-48e82b40ba4mr52289665e9.23.1778490655515;
+        Mon, 11 May 2026 02:10:55 -0700 (PDT)
+X-Received: by 2002:a05:600c:628d:b0:48e:82b4:b54 with SMTP id 5b1f17b1804b1-48e82b40ba4mr52288725e9.23.1778490654837;
+        Mon, 11 May 2026 02:10:54 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e6db09cb6sm58109535e9.22.2026.05.11.02.10.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 May 2026 02:10:54 -0700 (PDT)
+Date: Mon, 11 May 2026 05:10:50 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Simon Schippers <simon.schippers@tu-dortmund.de>
+Cc: willemdebruijn.kernel@gmail.com, jasowang@redhat.com,
+	andrew+netdev@lunn.ch, davem@davemloft.net, edumazet@google.com,
+	kuba@kernel.org, pabeni@redhat.com, eperezma@redhat.com,
+	leiyang@redhat.com, stephen@networkplumber.org, jon@nutanix.com,
+	tim.gebauer@tu-dortmund.de, netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	virtualization@lists.linux.dev
+Subject: Re: [PATCH net-next v12 0/4] tun/tap & vhost-net: apply qdisc
+ backpressure on full ptr_ring to reduce TX drops
+Message-ID: <20260511051037-mutt-send-email-mst@kernel.org>
+References: <20260510151529.43895-1-simon.schippers@tu-dortmund.de>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260510151529.43895-1-simon.schippers@tu-dortmund.de>
 
+On Sun, May 10, 2026 at 05:15:25PM +0200, Simon Schippers wrote:
+> This patch series deals with tun/tap & vhost-net which drop incoming
+> SKBs whenever their internal ptr_ring buffer is full. Instead, with this 
+> patch series, the associated netdev queue is stopped - but only when a
+> qdisc is attached. If no qdisc is present the existing behavior is
+> preserved. The XDP transmit path is not affected. This patch series
+> touches tun/tap and vhost-net, as they share common logic and must be
+> updated together. Modifying only one of them would break the other.
+> 
+> By applying proper backpressure, this change allows the connected qdisc to 
+> operate correctly, as reported in [1], and significantly improves
+> performance in real-world scenarios, as demonstrated in our paper [2]. For 
+> example, we observed a 36% TCP throughput improvement for an OpenVPN 
+> connection between Germany and the USA.
+> 
+> Synthetic pktgen benchmarks indicate a slight regression, and packet
+> loss is reduced to near zero. Pktgen benchmarks are provided per commit,
+> with the final commit showing the overall performance.
 
---=-G9nCGITdCY7OEi2eGNSc
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+at v12, time to merge this.
 
-From: David Woodhouse <dwmw@amazon.co.uk>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 
-Document the expectation that KVM maintains guest-visible compatibility
-across host kernel upgrades and rollbacks.  Specifically:
+> Thanks!
+> 
+> [1] Link: https://unix.stackexchange.com/questions/762935/traffic-shaping-ineffective-on-tun-device
+> [2] Link: https://cni.etit.tu-dortmund.de/storages/cni-etit/r/Research/Publications/2025/Gebauer_2025_VTCFall/Gebauer_VTCFall2025_AuthorsVersion.pdf
+> 
+> ---
+> Changelog:
+> v12:
+> Patch 1: 
+> - Revert tun_queue_purge() to plain ptr_ring_consume() and instead
+>   explicitly wake the queue in __tun_detach() for the ntfile taking
+>   over the queue slot (if its ring is empty).
+> - Inlined tun_reset_cons_cnt(), because only tun_attach() uses it.
+> 
+> - Patches 2-4 and cover letter unchanged.
+> - Compiled and short pktgen test.
+> 
+> v11:
+> - Renamed __ptr_ring_produce_peek() to __ptr_ring_check_produce()
+>   (Sashiko)
+> - Add return code -EINVAL to __ptr_ring_check_produce() which lets
+>   tun_net_xmit() stop the queue only on -ENOSPC. (MST)
+> - Resolve race on tfile->queue_index by locking tx_ring.consumer_lock
+>   in __tun_detach(). (Sashiko)
+> - Wake the queue in tun_queue_resize() to avoid possible stalls.
+> - Other minor adjustments & reran the benchmarks.
+> 
+> v10: https://lore.kernel.org/netdev/20260506141033.180450-1-simon.schippers@tu-dortmund.de/
+> - Changed the term "Transmitted" to "Received" in the benchmarks,
+>   as correctly pointed out by MST, and reran the benchmarks.
+> 
+> Addressed the Sashiko AI review:
+> - Avoid a data race on tfile->cons_cnt by always locking.
+> - Correctly count the number of consumed packets for vhost-net.
+> - Corrected a typo in the commit message of commit 3.
+> - Added a missing barrier on the consumer side.
+> --> The barriers now follow the "store buffering" principle.
+> - No longer return NETDEV_TX_BUSY at all, because it is unsafe.
+> --> Result: There are still a few drops with multiple senders, which
+>             would be avoided by disabling LLTX.
+> 
+> V9: https://lore.kernel.org/netdev/20260428123859.19578-1-simon.schippers@tu-dortmund.de/
+> - Addressed minor nit by MST in patches 1 and 2.
+> - Rebased patch 3 because of commit d748047
+>   ("ptr_ring: disable KCSAN warnings").
+> - Documented the pair of the smp_mb__after_atomic() in tun_net_xmit()
+>   with tun_ring_consume().
+>   --> It simply pairs with the test_and_clear_bit() inside of
+>       netif_wake_subqueue().
+> - Use 1 ptr_ring consumer spinlock instead of 2.
+> - Ran pktgen benchmarks with pg_set SHARED for 50 iterations on
+>   latest kernel
+>   --> No significant performance difference noticed
+> 
+> V8: https://lore.kernel.org/netdev/20260312130639.138988-1-simon.schippers@tu-dortmund.de/
+> - Drop code changes in drivers/net/tap.c; The code there deals with
+>   ipvtap/macvtap which are unrelated to the goal of this patch series
+>   and I did not realize that before
+> -> Greatly simplified logic, 4 instead of 9 commits
+> -> No more duplicated logics and distinction in vhost required
+> - Only wake after the queue stopped and half of the ring was consumed
+>   as suggested by MST
+> -> Performance improvements for TAP, but still slightly slower
+> - Better benchmarking with pinned threads, XDP drop program for
+>   tap+vhost-net and disabling CPU mitigations (and newer Ryzen 5 5600X
+>   processor) as suggested by Jason Wang
+> 
+> V7: https://lore.kernel.org/netdev/20260107210448.37851-1-simon.schippers@tu-dortmund.de/
+> - Switch to an approach similar to veth (excluding the recently fixed 
+> variant), as suggested by MST, with minor adjustments discussed in V6
+> - Rename the cover-letter title
+> - Add multithreaded pktgen and iperf3 benchmarks, as suggested by Jason 
+> Wang
+> - Rework __ptr_ring_consume_created_space() so it can also be used after 
+> batched consume
+> 
+> ...
+> 
+> ---
+> 
+> Simon Schippers (4):
+>   tun/tap: add ptr_ring consume helper with netdev queue wakeup
+>   vhost-net: wake queue of tun/tap after ptr_ring consume
+>   ptr_ring: move free-space check into separate helper
+>   tun/tap & vhost-net: avoid ptr_ring tail-drop when a qdisc is present
+> 
+>  drivers/net/tun.c        | 109 ++++++++++++++++++++++++++++++++++++---
+>  drivers/vhost/net.c      |  21 +++++---
+>  include/linux/if_tun.h   |   3 ++
+>  include/linux/ptr_ring.h |  20 ++++++-
+>  4 files changed, 139 insertions(+), 14 deletions(-)
+> 
+> -- 
+> 2.43.0
 
- - State saved/restored via KVM ioctls must be sufficient for live
-   migration (and live update) between kernel versions.
-
- - Where a new kernel introduces a guest-visible change, it provides a
-   mechanism for userspace to select the previous behaviour.
-
- - This allows both forward migration (upgrade) and backward migration
-   (rollback) of guests.
-
-These expectations have been implicitly required on x86 but were not
-explicitly documented. Harmonise the expectations across all of KVM.
-
-Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
----
- Documentation/virt/kvm/api.rst              | 14 ++++++++++++++
- Documentation/virt/kvm/review-checklist.rst | 20 ++++++++++++++------
- 2 files changed, 28 insertions(+), 6 deletions(-)
-
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rs=
-t
-index 269970221797..864f3daa7acb 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -97,6 +97,20 @@ Instead, kvm defines extension identifiers and a facilit=
-y to query
- whether a particular extension identifier is available.  If it is, a
- set of ioctls is available for application use.
-=20
-+KVM will ensure that the state that can be saved and restored via the
-+KVM ioctls is sufficient to allow migration of a running guest between
-+host kernels while maintaining full compatibility of the guest-visible
-+device model.  This includes migration to newer kernels (upgrade) and
-+to older kernels (rollback), provided that the older kernel supports
-+the set of features exposed to the guest.  Where a new kernel version
-+introduces a guest-visible change, it will provide a mechanism (such
-+as a capability or a device attribute) that allows userspace to select
-+the previous behaviour.  This serves two purposes: guests migrated
-+from an older kernel can continue to run with their original
-+observable environment, and new guests launched on the newer kernel
-+can be configured to match the feature set of the older kernel, so
-+that they remain migratable to the older kernel in case of rollback.
-+
-=20
- 4. API description
- =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-diff --git a/Documentation/virt/kvm/review-checklist.rst b/Documentation/vi=
-rt/kvm/review-checklist.rst
-index 053f00c50d66..f0fbe1577a90 100644
---- a/Documentation/virt/kvm/review-checklist.rst
-+++ b/Documentation/virt/kvm/review-checklist.rst
-@@ -18,22 +18,30 @@ Review checklist for kvm patches
- 5.  New features must default to off (userspace should explicitly request =
-them).
-     Performance improvements can and should default to on.
-=20
--6.  New cpu features should be exposed via KVM_GET_SUPPORTED_CPUID2,
-+6.  Guest-visible changes must not break migration compatibility.  A guest
-+    migrated from an older kernel must be able to run with its original
-+    observable environment, and a guest launched on a newer kernel must be
-+    configurable to match the older kernel's feature set for rollback.
-+    Where a change alters guest-visible behaviour, provide a mechanism
-+    (capability, device attribute, etc.) for userspace to select the
-+    previous behaviour.
-+
-+7.  New cpu features should be exposed via KVM_GET_SUPPORTED_CPUID2,
-     or its equivalent for non-x86 architectures
-=20
--7.  The feature should be testable (see below).
-+8.  The feature should be testable (see below).
-=20
--8.  Changes should be vendor neutral when possible.  Changes to common cod=
-e
-+9.  Changes should be vendor neutral when possible.  Changes to common cod=
-e
-     are better than duplicating changes to vendor code.
-=20
--9.  Similarly, prefer changes to arch independent code than to arch depend=
-ent
-+10. Similarly, prefer changes to arch independent code than to arch depend=
-ent
-     code.
-=20
--10. User/kernel interfaces and guest/host interfaces must be 64-bit clean
-+11. User/kernel interfaces and guest/host interfaces must be 64-bit clean
-     (all variables and sizes naturally aligned on 64-bit; use specific typ=
-es
-     only - u64 rather than ulong).
-=20
--11. New guest visible features must either be documented in a hardware man=
-ual
-+12. New guest visible features must either be documented in a hardware man=
-ual
-     or be accompanied by documentation.
-=20
- Testing of KVM code
---=20
-2.43.0
-
-
-
---=-G9nCGITdCY7OEi2eGNSc
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUxMTA4NTcy
-N1owLwYJKoZIhvcNAQkEMSIEILuqqeGsDMy8i+DSdQZhMFBb7wVvHxqewC+yF95XciBUMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAQFRU02bseifG
-jLfYVzy1o4gcfJwYzr49oCGmvjRlw/kXB4Hj8fbl5jY/1SgQmphTQsqgx2b4zpAlJeuuYx0qj2+j
-fyvjD81gl+r+ESymz1+kEVh3s66nLpP7lI/PbMtkE726vvpJP68lS51kSBjQ/nma56FPRo6gClVd
-NipYrnCiYqk2G2QatSMxBM7q3864ENSphqDm39AXhOfIvOBZZUh841hDB68VT9MFoqDp8DcWQvaz
-ubtNpqm75ZqLOI7+XlSPp6Fdr65ojpp2XpUJiLfHS/Ts62HjYGFaT3QPfbSHTXNAUlxajAQCMntF
-yMfd9DE009goZu+6aKUF17GnSV2FyTuBrNPX21R1KeMnjAKqP5/loD6IWkHa5tJSGBHfnTtzPwet
-YUo5YNEFlg3APxbHyVqZJbfYxsaQmSRWCODjk4rIzE8gbloNRl7TSC7t2Fvfvz++4lAIBfuXvIzp
-VgV3kug2AKxLkNzklo8FrRmVZZOCY8raP0+86MzbeBRasMVzCAYEh1lAjOgXLm9VitGnqnWPr5CT
-2IpR+as+YMePwA+Lv4BVadF7h6/uuJFSngm+6anIOc7qoQlrf+nlmkGyBibyeKgxYz9wfNW0uD/X
-HSCwAFoKlDe4TIRdoPhXd5yiYgwRsbY7CoiefhAsmOQLnmofp3hhdSI6MbJ2xTMAAAAAAAA=
-
-
---=-G9nCGITdCY7OEi2eGNSc--
