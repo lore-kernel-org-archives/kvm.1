@@ -1,176 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5D1B3FBEBB;
-	Mon, 11 May 2026 14:17:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3256F370D52
+	for <kvm@vger.kernel.org>; Mon, 11 May 2026 14:36:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778509072; cv=none; b=I8wLJDuegZ65e/FJpmJD4KnDdqj0lsA9eXQzgiEbpBvrO5VeBCYaYp01YCDqK0IL5NrFP8jBDGcZDKS2UoaVZG48cCZOiEki3SEriK0fzNQy2bcNAgbmX5DRU7cyVPyj8fsioe+SrVDftwwriwf6xY4oFTtzQ35Y+e2TgLOFVZM=
+	t=1778510210; cv=none; b=BJypEL2AFQd3PZT8jT5NGZ+PJB9rRN/A+AZjA2qzkaW9N9p+qQ2qoIMwHjlb/aJiA0M6keg6OFHz4SP+SQ75DwWcZwLBS4Oig9mIkA4rlc7y+mErfoufcpUgtRwX0+Q1pG24eicLttVfJxpTygAPa3FdGUO5RqGl8u0uuYvwh68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778509072; c=relaxed/simple;
-	bh=PoPH1hLv2jxdj4u9FglKmzcibTYxjvZi2FCP3Jj0JyI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=c/CWAKwKgeoW5Jl2BCGi0qPkn1fehlEfaurXCu0s2by202jhL+KI8GKTEZ9MYc6wjcjr26WRBbTzQ5mQ4rJCyC+g1Pro/YEBeI+l3ivNskVCcDTgT/e6PspvIBZ0/CtfTwkX9aQqMdN+A357iEAn1w3CXv2qbcxt26CHrqrQu3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LgCm463B; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778510210; c=relaxed/simple;
+	bh=OCWkO9kiaVtlkjvw4jaBUr/0GwYS4dSFaaNA889cWuI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ac+qoUYTg2Qd/IdHKCd9hg9gNT3F9LjxDvmtjOaeRf/vdnZllUmnrDp9o7yeYAJAVH9nffxqIxXeN/FWwXYgBZRrgbQ2s3gqoVA4JQUSRBTqApVmSbCGGDTYuo62aWTaJZIrIt2nxklcWdDgGO/H43bRzKYwmNniOgwnmFuyTLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=qVwyXVXD; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LgCm463B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A694C2BCB0;
-	Mon, 11 May 2026 14:17:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778509071;
-	bh=PoPH1hLv2jxdj4u9FglKmzcibTYxjvZi2FCP3Jj0JyI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LgCm463B1qty6DCjJAOJs85JT4vLLtvrDpRPW1sSuWDjZEyg7Ri9VM8Jk01nX7fhD
-	 Usx66rHpvka2awfNbISJaY1bU8ynX6Q4kApa2H6SEkAzi7B23Gjb/rI2td98JaTdWj
-	 9DFjwzCt4RrO+Uwd7dk5Z5jZSbvfJsRhn0kxCguNimqnHtyTkXoje7a08zQ39Oa4qA
-	 vEoDOOGgOwd9WE3Xq3tWF6KNWlXNDpXBYJjFsIyXWan2CqpubqvUtkDu+7pv9PyMZR
-	 5xC7MnuTldIsP0F91VO/XyyZrSDjhX8jbzQueQsk+JiEAk7Xz9fbP3mDYLLWOAE43s
-	 n7Au8uXjO0ruw==
-Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
-	id 3F5471AC58A9; Mon, 11 May 2026 15:17:49 +0100 (BST)
-Date: Mon, 11 May 2026 23:17:49 +0900
-From: Mark Brown <broonie@kernel.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
-	Oliver Upton <oupton@kernel.org>, Dave Martin <Dave.Martin@arm.com>,
-	Fuad Tabba <tabba@google.com>, Ben Horgan <ben.horgan@arm.com>,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Eric Auger <eric.auger@redhat.com>
-Subject: Re: [PATCH v10 15/30] KVM: arm64: Support SME control registers
-Message-ID: <agHlDeXRNjutoTV7@sirena.co.uk>
-References: <20260306-kvm-arm64-sme-v10-0-43f7683a0fb7@kernel.org>
- <20260306-kvm-arm64-sme-v10-15-43f7683a0fb7@kernel.org>
- <af4bWxiOogfPz_dp@J2N7QTR9R3>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="qVwyXVXD"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-67e9b3037dcso5963756a12.0
+        for <kvm@vger.kernel.org>; Mon, 11 May 2026 07:36:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778510207; x=1779115007; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=OvCAfW/ab6cqkSL7XlF/lvlNJfGaNVLCaQnRtMsWK2M=;
+        b=qVwyXVXDXjOa+6c6PwSXZJxOkTjw/lPS7mWwagdfLA2KQrGISLN2rec/57KMU/o2I5
+         ifAlrcfsU59+Qg03Xp7nYuZzPm6dWn9Mg++MhRM/6kADpxa/K4mYTEY+icnLoaIKo+7x
+         cIO+chUzyLebYOxwmbNFm0RDZ6eq5ZweDWcsROX+PlFbboxI2vJS2va8tleDO1+r2Rq6
+         7LZYDFAKAAjP6bEX1BvsJl058ZCog3KAvZdSSdAvi/JXY23hQ9ywYjeZFOfVLeJEAkX2
+         T+w7PlT/Bc8oCLZdJntfBKLC8odkmQz4xyeonwcvvFJV56kDKM5BPR+DQcbKbn6mZLLu
+         rTMg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778510207; x=1779115007;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=OvCAfW/ab6cqkSL7XlF/lvlNJfGaNVLCaQnRtMsWK2M=;
+        b=EpX4ZO4J3NhwiCzGxhEQAQxD5gj5Gv3Wh4T0/FKTDRZvdMJupfzdnJwinszccMEAmH
+         xdoqDngA74sPkChsLPzV9UBKk9xtMFjSpkuQ7vVi034EaINHX/Z0VhLGn5D13xPArmYC
+         bNs+el9p3cacXkKbAHtWPSn8ccFL9UUmwYIe4svcK+Q+GCF3Dq26R2HTXotGibacA8Fx
+         dMzlik5LKj4M5KQ+jMXUaj2p8zei4GI/4g0nRcqrBRTfIlYtvUp2wTuApGsbUSIEbqv6
+         BKU4kmTJUGWmcH8tytzKAITrgBad2WWQJA3Ol8I6kEiGt/dut8x630j4X1iBNi24VYFJ
+         lzlw==
+X-Forwarded-Encrypted: i=1; AFNElJ9eMlk1BBObu3aIvUWuTNopl7O5gkGCbjnnd0/00HKB4YWEG1QPkj2SsObK6gbgZrUUMBI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwZ8Ih1JLSrj7h+K9jz2Cy/2uc2FeQsFX5fxTQXyJUKVCOxlK8
+	9MEtFnS7JN2tElLFiGOv9lEIAp9EL0hunhnvEjO7BZqWxda9W51PTBSL
+X-Gm-Gg: Acq92OGLwDs4OMc5KEi43nW/z2PFND7SMXDg68BZEH/jbuBONkahqBeyXzriwAVcNTd
+	Xego4hz5resY+48Bw77HCF3QWPCqvRBbCdEfAub9aBnJiro2dywLnf1LDvcl5YK+d/TMbnTTNCi
+	nMzEMfl0Dx3lpcuUNdzN1zg1Ct/SiDzUKmrLEJbarURfxSEWRvDWYDgwjcoLk5/D1vJM9n2l3hU
+	HybPv1mHj+VZ5TcxJAQSubVDTosEZGs+JDRabwUtrISWfBBg5QRn4knRWglCBSZhLjQbS4R5c/W
+	YyyDcn9y757h3exyhN4wHi98IJ7uFi12Mq2H59Vn+NVxBCo2iYZKQN7WeByam8xE/808PeXgR5c
+	xbp+sKIFdYhdw9IQrLV7Zz7enXx1QHb7WZMm4wv7jeTitrHot2LpscVcAo7As0FDYTC5O73ffRe
+	dzqvrpP+yCay0+55LJSo7dqC7Q95WleYq2ZvEEX3HR6N2R7njY1J/gvuaooQQ9VcpnuPWsmmKdS
+	X2Au53Tm4WqM3jX4i/plvzxzy8=
+X-Received: by 2002:a05:6402:3809:b0:670:8add:2b98 with SMTP id 4fb4d7f45d1cf-67ef07ba8f0mr7220503a12.14.1778510207251;
+        Mon, 11 May 2026 07:36:47 -0700 (PDT)
+Received: from arch-piotr.tailb7ebba.ts.net (226.55.classcom.pl. [195.150.55.226])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-67ef0e1c044sm3651347a12.27.2026.05.11.07.36.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 May 2026 07:36:46 -0700 (PDT)
+From: Piotr Zarycki <piotr.zarycki@gmail.com>
+To: seanjc@google.com,
+	pbonzini@redhat.com
+Cc: shuah@kernel.org,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Piotr Zarycki <piotr.zarycki@gmail.com>
+Subject: [PATCH] KVM: selftests: sync_regs_test: use KVM_SYNC_X86_VALID_FIELDS
+Date: Mon, 11 May 2026 16:34:26 +0200
+Message-ID: <20260511143426.1242013-1-piotr.zarycki@gmail.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="n8F9ND23WpqrUELD"
-Content-Disposition: inline
-In-Reply-To: <af4bWxiOogfPz_dp@J2N7QTR9R3>
-X-Cookie: Truckers welcome.
+Content-Transfer-Encoding: 8bit
 
+Use KVM_SYNC_X86_VALID_FIELDS instead of open-coding the same three
+flags, ensuring the test stays in sync with any future additions.
 
---n8F9ND23WpqrUELD
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Signed-off-by: Piotr Zarycki <piotr.zarycki@gmail.com>
+---
+ tools/testing/selftests/kvm/x86/sync_regs_test.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-On Fri, May 08, 2026 at 06:20:27PM +0100, Mark Rutland wrote:
-
-> > +static bool access_smcr_el2(struct kvm_vcpu *vcpu,
-> > +			    struct sys_reg_params *p,
-> > +			    const struct sys_reg_desc *r)
-> > +{
-
-> > +	vq =3D SYS_FIELD_GET(SMCR_ELx, LEN, smcr) + 1;
-> > +	vq =3D min(vq, vcpu_sme_max_vq(vcpu));
-> > +	smcr &=3D ~SMCR_ELx_LEN_MASK;
-> > +	smcr |=3D SYS_FIELD_PREP(SMCR_ELx, LEN, vq - 1);
-
-> I'm not sure this sanitization is correct or necessary, and the same
-> concern applies to ZCR_ELx.LEN.
-
-> AFAICT, none of the values for the SMCR_ELx.LEN and ZCR_ELx.LEN fields
-> are reserved or unallocated. Thus all the bits of those fields should be
-> stateful, and a read should observe the last value written, regardless
-> of the effective value of the field.
-
-=2E..
-
-> Either what we're doing is wrong, or the architcture requires a
-> clarification to say that values corresponding to unimplmented vector
-> lengths are reserved.
-
-> If those bit are always stateful, the the logic to sanitize the LEN
-> field shouldn't live here, and that will need to happen when consuming
-> the effective value.
-
-Your understanding of how these fields work matches mine, and writing
-unimplemented values is part of the documented procedure for enumerating
-the set of supported vector lengths.
-
-As you note this is duplicated from the handling of ZCR_ELx, it's not
-clear to me why the code does this but I figured there must be some good
-reason for doing things this way that I just wasn't seeing and that it
-was safer to fit in with the existing code.  The handling for vector
-lengths in general and especially with NV was quite unclear,
-particularly prior to your fixes in 59419f10045b (KVM: arm64: Eagerly
-switch ZCR_EL{1,2}).
-
-The changelog for b3d29a823099 ("KVM: arm64: nv: Handle ZCR_EL2 traps")
-which introduced this for ZCR_ELx has a mention of mapping the requested
-VL but it's not entirely clear to me what it means by that.  It does
-mean that we can just load guest ZCR_EL2 and get the correct behaviour
-for guest EL1 and EL0 when loading the guest state so perhaps that might
-be all there is to it.
-
-My expectation would have been to restrict the guest EL1/0 VL when we
-load state into the registers as you allude to, something more like the
-below (off the top of my head and completely untested, I'll pull this
-into a proper patch later):
-
-diff --git a/arch/arm64/kvm/hyp/include/hyp/switch.h b/arch/arm64/kvm/hyp/i=
-nclude/hyp/switch.h
-index 98b2976837b1..ddf8c2246139 100644
---- a/arch/arm64/kvm/hyp/include/hyp/switch.h
-+++ b/arch/arm64/kvm/hyp/include/hyp/switch.h
-@@ -501,11 +501,11 @@ static inline void fpsimd_lazy_switch_to_guest(struct=
- kvm_vcpu *vcpu)
- 		return;
-=20
- 	if (vcpu_has_sve(vcpu)) {
-+		zcr_el2 =3D vcpu_sve_max_vq(vcpu) - 1;
-+
- 		/* A guest hypervisor may restrict the effective max VL. */
--		if (is_nested_ctxt(vcpu))
--			zcr_el2 =3D __vcpu_sys_reg(vcpu, ZCR_EL2);
--		else
--			zcr_el2 =3D vcpu_sve_max_vq(vcpu) - 1;
-+		if (is_nested_ctxt(vcpu) && !is_hyp_ctxt(vcpu))
-+			zcr_el2 =3D min(zcr_el2, __vcpu_sys_reg(vcpu, ZCR_EL2));
-=20
- 		write_sysreg_el2(zcr_el2, SYS_ZCR);
-=20
-diff --git a/arch/arm64/kvm/sys_regs.c b/arch/arm64/kvm/sys_regs.c
-index 148fc3400ea8..b48f41acff82 100644
---- a/arch/arm64/kvm/sys_regs.c
-+++ b/arch/arm64/kvm/sys_regs.c
-@@ -2874,9 +2874,7 @@ static bool access_zcr_el2(struct kvm_vcpu *vcpu,
- 		return true;
- 	}
-=20
--	vq =3D SYS_FIELD_GET(ZCR_ELx, LEN, p->regval) + 1;
--	vq =3D min(vq, vcpu_sve_max_vq(vcpu));
--	__vcpu_assign_sys_reg(vcpu, ZCR_EL2, vq - 1);
-+	__vcpu_assign_sys_reg(vcpu, ZCR_EL2, p->regval);
- 	return true;
+diff --git a/tools/testing/selftests/kvm/x86/sync_regs_test.c b/tools/testing/selftests/kvm/x86/sync_regs_test.c
+index e0c52321f87c..8f9239f9d357 100644
+--- a/tools/testing/selftests/kvm/x86/sync_regs_test.c
++++ b/tools/testing/selftests/kvm/x86/sync_regs_test.c
+@@ -79,7 +79,7 @@ static void compare_vcpu_events(struct kvm_vcpu_events *left,
+ {
  }
-=20
+ 
+-#define TEST_SYNC_FIELDS   (KVM_SYNC_X86_REGS|KVM_SYNC_X86_SREGS|KVM_SYNC_X86_EVENTS)
++#define TEST_SYNC_FIELDS   KVM_SYNC_X86_VALID_FIELDS
+ #define INVALID_SYNC_FIELD 0x80000000
+ 
+ /*
+@@ -255,7 +255,6 @@ KVM_ONE_VCPU_TEST(sync_regs_test, req_and_verify_all_valid, guest_code)
+ 	struct kvm_regs regs;
+ 
+ 	/* Request and verify all valid register sets. */
+-	/* TODO: BUILD TIME CHECK: TEST_ASSERT(KVM_SYNC_X86_NUM_FIELDS != 3); */
+ 	run->kvm_valid_regs = TEST_SYNC_FIELDS;
+ 	vcpu_run(vcpu);
+ 	TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
+-- 
+2.54.0
 
---n8F9ND23WpqrUELD
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoB5QwACgkQJNaLcl1U
-h9C9fQf9EqPdViWDz4IqJr6p68k3C3Z9Tjk45s2BXBpgqwuYzVNxhjJ2wpZtNfoV
-wRug/tY+UgfK/E8k3S+qgR6o9mni0kBYMtlZ/7C3i7OcmzX/5UouYWRwsDSC351L
-ajfvCDNbXL83nGeIqewq5MZ9RomdG/iGuyZg32KDA1UpdqUgCasVQbCzcfJ79SVW
-5t5e6jJPONe7OpWNCrfkNmuo1Fxp4klcuEes5RLuo9d/BL6vgaeyhPth4c1LRgSJ
-oOZ2M2oEoUFrypqwaRBh9bZFuLGl/eYoa6fPVPAHDQs/jEkHRDyhq4S3HcmJjAsz
-Z+OUomQf7zJidan7Czxc4ASuGKSu6Q==
-=zHz8
------END PGP SIGNATURE-----
-
---n8F9ND23WpqrUELD--
