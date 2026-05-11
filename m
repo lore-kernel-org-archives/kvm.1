@@ -1,187 +1,226 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011027.outbound.protection.outlook.com [52.101.62.27])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583A03CB2FD;
-	Mon, 11 May 2026 22:16:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.27
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778537815; cv=fail; b=QioJkb3bzlSo4cjOgI13cGqO7fneRwpFgLMRRe1SjrjD6AvswUUTC+Rt/WlXSebJkH4p5EKh8KmH49hDFD5GlHx77ckLZHV3WLP4ZrC2vdtQFvoMv3GdlExq/z2Ww+wcOK4lnv3FwLan8qOogC8mPSzZXh70n+tiAENPQuPnM6s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778537815; c=relaxed/simple;
-	bh=WT6XdtABcM6qpeW1fmJnt9m48jTOU9/WezB+CdIW23s=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=GryBLbdgOD0bl/mmR+kgpAwazc9TwqGv7zktz40+d9MpS3FlAV61luTmfDzzaPUmwganD4cWKm1f9AdaE1vRecs6kwzVvoBgUlto4yO1P3vQuwiQ5+z4139ivT1KneqiM71JmpiFfZjtkcchQn89Fww/k9t1kY5LhCqVO7hT1jg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=DlmP9YOF; arc=fail smtp.client-ip=52.101.62.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 244941A9F90
+	for <kvm@vger.kernel.org>; Mon, 11 May 2026 23:08:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778540922; cv=none; b=gPQ84z6qY6CfQ/HGp7JGNxL1MSGprwjvlpjJI9wLERaN6cT+yumXxbmsxwN4WjWkeqfFwHx7+E4q30+cg/OwtfxoURsccz4/4SNJnpKQ1/cIpeGJGVZoalrhBqJdNa8xSx6d6WPiF09Sg6cwVmOdwtGviAYEo2zHUrZHyLVKIhE=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778540922; c=relaxed/simple;
+	bh=G1mQvkoxnhBMAelHXekybPuseqqwEwf6vkZtOwuclyY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Y8+UrGcSO52MFsDu9Ab+nQkzXLAqVFQMvtHOK2xbUGFEbEubuf3EhdrxEoftSWMNPQgfjqtmS4nl1KucS4RMjrwaVF+kooIHtLCWjFNamgGmQSIW0l/GNao5zXT3m4P/8Bfuy32hIF7YceghRZLkIc+QYfmmI+W7ZGQ4zaupEBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t8j++DFk; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="DlmP9YOF"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=bTaZKwyJB0KI0ZKeSiV/EHckErlc0ZhxlXVNObRqxeDZUR00Wlshmw59h9f7RG09T/OQbGxURjrwmqXuafJCbDXkkCJ5hjqCXjMZytadf1C96jEJvgY+3pezLc3xvPiUEdi0rC/1sC+CUfLRTA3OzZvbJ/oj5vzC2ELnNHfTrwwaMnwAEzFFyHB0V0nP0/vwyqVMSpm9sr9UdTN6XoLzm2lWTLyv0RO1rQJlUtNA5EYzOyLlFuXdqjK7XkmEI2ZYjvVeox2y2Fv3LZzo32ox/LqGqv+j6miKwnPyVqbC2bJYpxPh8x4loQvbWU/X1T6HzDMkc30/1s9Mp1PLrBlwmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dPpoyFXRGcYcd8vm5fTAbnjlvB8triHJU6M5VM4itrI=;
- b=WmIU52z59xkIE00+nQxCUXLtyL+uqIpLnvQRaVA+Mjyyd1H7SoFG5KGLOp+70fBfKpBgHMM7gA7qHgAen35HnlsA7MswAQY8I4TRDUHDRpI+MOyGANOorKgzK1Qtld3lmElP3YoqizcyrafU39/97GxmkvvjUFOdlEp6vFFro4lLMZsAHwJ7duE7msNPFI0eaTAeyZ+COiMu9IVEB7q0kBz2nVcu5BgPhoqKVx5G2VSTnx+lWFE6tKQ+2z+i/O6WlkAYUwyf7hur8JkUosotiWj8VAGu6u5WjMgaBhWLE2TYgMu/XXgxx/uN3xP1AJyJOdX69x7KPhrZFIIMIbZM9Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dPpoyFXRGcYcd8vm5fTAbnjlvB8triHJU6M5VM4itrI=;
- b=DlmP9YOFXOMivkjw1PR6rMMuVhBlfOcVATm7dSxtCvf7Z4Lh8GvbSfkeTwRbWV02nJGD7d03dAuHR3fv5vx9h5qIh8KjCYXP+U4+2laqLe9oOeslXPY+bIXQIPFKN/VZcc6rNsMZOOxhKlEfRZOwPY6fChFgHnD8VqAA5gwOv8Kh9lHw7WL5uVxsopHSY4ojepRwPab6ANTpS7X/tLla1e4dfaeoMTclUjWugxSPiYn4h+dAm8qlDeG/lIb2Ez7L+o17srfm1rO3IdyxLKedtCwVeQZK0issKcJxr5MkqdXurZTOTWO3go+V7CGijbVGpS+WJR3ZoHWb0hlBG7zLkQ==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV3PR12MB9411.namprd12.prod.outlook.com (2603:10b6:408:215::20)
- by DS0PR12MB9321.namprd12.prod.outlook.com (2603:10b6:8:1b8::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Mon, 11 May
- 2026 22:16:49 +0000
-Received: from LV3PR12MB9411.namprd12.prod.outlook.com
- ([fe80::98b7:86de:b69:2a15]) by LV3PR12MB9411.namprd12.prod.outlook.com
- ([fe80::98b7:86de:b69:2a15%4]) with mapi id 15.20.9891.021; Mon, 11 May 2026
- 22:16:49 +0000
-From: Alex Williamson <alex.williamson@nvidia.com>
-To: Alex Williamson <alex@shazbot.org>,
-	kvm <kvm@vger.kernel.org>
-Cc: Alex Williamson <alex.williamson@nvidia.com>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	rananta@google.com,
-	stable@vger.kernel.org
-Subject: [PATCH v2 2/2] vfio/mlx5: Fix racy bitfields and tighten struct layout
-Date: Mon, 11 May 2026 16:16:03 -0600
-Message-ID: <20260511221609.3837652-3-alex.williamson@nvidia.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260511221609.3837652-1-alex.williamson@nvidia.com>
-References: <20260511221609.3837652-1-alex.williamson@nvidia.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: DS7P220CA0003.NAMP220.PROD.OUTLOOK.COM
- (2603:10b6:8:1ca::17) To LV3PR12MB9411.namprd12.prod.outlook.com
- (2603:10b6:408:215::20)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t8j++DFk"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8386367b23cso3719594b3a.3
+        for <kvm@vger.kernel.org>; Mon, 11 May 2026 16:08:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778540919; x=1779145719; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=d6F91VktWIrzJzxcoSjKYEjnbKw+CYYK81uTkWYDis4=;
+        b=t8j++DFkGKLez3CNhettP5dOv+ASQMIilqtUDHor1UiRXmj6c8b3hvhnF8YRUSBXBl
+         2oPZSh3dDj4W61XHg3f7jFckGwOmOFbAsYNblqVOHEk2fTbyduXkQyv4rNz1abGXM0zg
+         3EgQFf3z9ia5XQA8daGMup0iXYHvSsn3Ge9cfltEIY8+V9Cjq1Nc82uPOCAXZKLuXkfk
+         5VG3S3Ibh09c6d3v8H7Un7V59SqqaWFQ9IyMIjIUC3SF9tzv6FLs6g0b6u5azSy6IIZK
+         duuWQxpbnKIpoOG0nkfkQ4i8VWR3316MEsyWHFEBWpxEVZqu6YIbh9QupYtGLRrPOWEv
+         /PQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778540919; x=1779145719;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=d6F91VktWIrzJzxcoSjKYEjnbKw+CYYK81uTkWYDis4=;
+        b=cdPAgrS/wT0zWERUJJm949j3Cny3GZ4H69DLerwBNpTyYom8kIMNY705rfJiIDPL5C
+         DtofCJTx1acxsUUpO8hjll6T/ujaC3/3oKAwm3GzRi/7HM8bjnLEyN+ZVFlLfF1q5l8M
+         AKhyIdv+vwEX4bvT8HOxFPPSg8hVJFdPqXvEK1+P9ti8Qjus9lNkzkj6ct3cUkRKIxI7
+         tqtaeoEX8Gc5982Jj/hpDJ93IHwuJ8WlST0D8jwmOTqB9tIVCD1fUEEZnOIhEgt42Yjj
+         1uIhekhGYCoQ1Hnek+d5PRvtYiaIuMQf3nPhmAzv1qZompwVHqJwKMjPj9ZVoB0Sqg4P
+         HQUg==
+X-Gm-Message-State: AOJu0YywFlHRLpHWcfFaX0xQzuaTt1bJA0YKXbWpih0SzbbuBrOftrMw
+	pOGpomivYaHPmRYxERwa7ECtLdmlEdz2EqIbe6ij1EAsjRuKp19UBt7DkLuLmDP6kmy/T5K3Ehl
+	ibYGCxA==
+X-Received: from pfgs5.prod.google.com ([2002:a05:6a00:1785:b0:835:4c30:5576])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:aa7:9312:0:b0:82f:4191:da10
+ with SMTP id d2e1a72fcca58-83e39550346mr11144361b3a.6.1778540919246; Mon, 11
+ May 2026 16:08:39 -0700 (PDT)
+Date: Mon, 11 May 2026 16:08:38 -0700
+In-Reply-To: <20260102142429.896101-2-griffoul@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV3PR12MB9411:EE_|DS0PR12MB9321:EE_
-X-MS-Office365-Filtering-Correlation-Id: fc949ab9-6188-49b0-f816-08deafaaff53
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|11063799003|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	LBK8mWrmH3RqG3AH4TOOdxCSLe7/pSXrsa4bxAfOAu69b6zaBz/60t8GphEgrZiwOALepcC1U+ArUYZ51iMQi1bw1yA16IsP0FdTRVWbFEkDHAJFJR3qFj75AL8MDpQsNkvCyhDjd5OQn06ucGNCZMspWqpvHTwaGcpSfYSpvkiTMkoEOsWT1dTunnewcPoRrwueKcnIXqNZEs+PnIgbkjiovDK7Wczr1nVZdLUtp5tNjPc8dTkqsPvOoA1llUOwHQ5RMwkNreKDTBpeuJq8xgse6M9fNTPaolLXps49vX6hX3LxOC+KYQFKxsyJfOfn6Wl5niga5mRWjF4k238zE1pNXYQKE6VIGPEO1ukX0DNYbw3W06AJfTjY3gM2NjgGGnzyYD4ayFrQgNIXCgHi7zvDdJ+3r2BWkPN8oJUemDrwjzNmbI5yg9gHBYCEPJG+hhqx3tHGZgRJrJOvKJEmFxYaEdSbbzGcD4XY6Yi+Ki+dSAACEGUPWejrs9jBHM55Zp5JU6rvTYv7Z14SZaOR4KJ4xpzNSN69tbBkLTXmxdxSjMbtFVm5yXFTa+5UPp7ELf7ty3nAJm5P2F65LMsVnb2gU0GQTbxYaZ6Y1DA3/yBdIytjh2hHfJEO3BTF1L7p3QvrqwxlZIUNNrhiTwkEcn8TZPQEgLjj+49rv7awqVh9clfrjNECQpxcUnoFozhS
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9411.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(11063799003)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?29PDov8EdzG/cNFAqqGwRC578M+9dK1EhjfZ5hZx9YbMwhml/AB26rHRSZ69?=
- =?us-ascii?Q?5nibABQcVOQAJpqHE3zo4lRyJl9q5ktQ8rRXPbLEifPS8YLXQhj842u7ePgs?=
- =?us-ascii?Q?Gk8o3YjVpr2fxNbkKiYxJJOhBX1LEvC2eMpZ2YtYrXLleSg/5kYauuM5dFuK?=
- =?us-ascii?Q?gQwyN5kpHiCrG+wzCTS/VT56OgdhF3q0bzWw0hmPnERvzqY7gJ5LgqPKV9YX?=
- =?us-ascii?Q?ukhqxUREA2LZ+lVX12oQO/VJqqzwrI7XCAvCjhzdn5Zu8VVKJB2YB+Ve14S+?=
- =?us-ascii?Q?leMRsM76JLAfMGkMrYMgTILna7T3FxhHDkk7n4y1NlNL+DN75KwnaUG+jONa?=
- =?us-ascii?Q?euDeuSqa5W0rkXTBRbutVp1P4pjfI57egPuQ6nCk+YOs/yLaPbQ28qjfpIPl?=
- =?us-ascii?Q?oTBVHc+aomqTT7f/jIAaaH+pgU2j3h7ravHyI9wwvajXfsqTnQEP3L2ktFLE?=
- =?us-ascii?Q?PxehgzL3ORlLaEqPuHdH5Btt4TYlmLh9AE1TdIOYvZSLovRpMcK5ypxPRZwR?=
- =?us-ascii?Q?bRlzJuZoJxrBwBpF9xUIVBd2DCZMFBJlbReT0/gPQrqU5Igr5tbg6YvwXD/e?=
- =?us-ascii?Q?TftDwwFoQW/FmNwD1mEJt/jkJllSzdnPopffp46ekUkgf9W0lTpcn/Qt9YzN?=
- =?us-ascii?Q?aNQNyBRLS8Ljfq+Pzg8QfGjuIExb7GjyMThZjYMZTPQpzVi9gLt/+WSOMAC0?=
- =?us-ascii?Q?sqaE8lNzkuEIw3bZaFHKXnGQKNupEumu89rIsFaZTrhSuy2D2Bjd3q2mcRgR?=
- =?us-ascii?Q?PBdf+vttDTUk1fbRGi3snLYBX4ntKKBBb/YnDfqlDAX9HphnPjpWJFEXiJ4E?=
- =?us-ascii?Q?m57bNErDD+mLGDp3LboO4MkGNFrnQGdG2lNwCmINcsxAMXmbkq/8gMlQqs/c?=
- =?us-ascii?Q?Qx4BM03/MS9xOMVKLwsMZnMG3FcNDmbviCe3av4kzltIuEJ64qAD4U50pc2Q?=
- =?us-ascii?Q?kLHFQfBOvRBbde2W8p0NzUNDdkagYXv8+SlTUQhzLeW83FSlhWLMM/cvDOF2?=
- =?us-ascii?Q?4hWaBE2cHnHIqz48BMmhDWxLTmNQWOK9FPwTm2tVlt2FhdhUaF99BqTP4TZf?=
- =?us-ascii?Q?WrxDH2XvKCloj8Rz7COFx6GA18IhfWXZ3L4425VM3GrNUv7UP2jgpVu7KQzz?=
- =?us-ascii?Q?QXTeEbVU1iNl+dP0bUvPLpUPBLCzLg3aMucGQwZ4D9zIJScZrJqkX9S59HNJ?=
- =?us-ascii?Q?Ca3uMCIYzoOQuFy4fpBMtXMtG3Ay4B5E6zyC2AGyNO/qjQbnFQXFAiEFEAIU?=
- =?us-ascii?Q?5tM+wRQ03u46ZDM45PwjuuNSM2IqHtl2ypmL2VZy+m69bfGotCKEhVisKHwy?=
- =?us-ascii?Q?4mipSTuLE8c0fdeDsX8FUcwbHyTP7lFiNVP4SlXre1oEZfJptoIJutOfe1/R?=
- =?us-ascii?Q?SBgLealoMM3pkO5gGK33tPf8Q+nhuqarsWx+G/4zVpHgb6SC2fx/jb8irVsl?=
- =?us-ascii?Q?uLzMYRn+zVLvCbSd5kSFRrt5WzzC/Sb7KJKvfa6SOPuv+mReeCUbm7x2ugnP?=
- =?us-ascii?Q?70b6tgZZM0dNFUCRZluZw/CfDXZM7FTeLt6+3HSeqNrYy0oFblrtBULm6ORz?=
- =?us-ascii?Q?dLfWFwx3tRrAbxEnbC4sMPZ4jUrBeXjqslbe0v74hjuiUOFdbk/nfNq3sOHl?=
- =?us-ascii?Q?LxuSRYH3jPf/5A55gKZ98HscxU+TYYSdn7ofG9yZ/fSxhwTaA2P4GaL3/jUQ?=
- =?us-ascii?Q?WuVa5OwVdvKKQJroU2hQzFwZBXi6t/4G9VS/RQ0oNmTNxk2xA5yMRiUUC0pD?=
- =?us-ascii?Q?hBuqgWl4ow=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: fc949ab9-6188-49b0-f816-08deafaaff53
-X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9411.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 11 May 2026 22:16:49.7385
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: fC/TMiMEtBRLVSLqydp0pTtVb7PyfQOCuQS68/7fabKb3cEdPkJTZKUdqRfXYLv64I9ZjWRnURZD0LZFlgfAgg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB9321
+Mime-Version: 1.0
+References: <20260102142429.896101-1-griffoul@gmail.com> <20260102142429.896101-2-griffoul@gmail.com>
+Message-ID: <agJhdkVOPcGVvfjP@google.com>
+Subject: Re: [PATCH v4 01/10] KVM: nVMX: Implement cache for L1 MSR bitmap
+From: Sean Christopherson <seanjc@google.com>
+To: Fred Griffoul <griffoul@gmail.com>
+Cc: kvm@vger.kernel.org, pbonzini@redhat.com, vkuznets@redhat.com, 
+	shuah@kernel.org, dwmw@amazon.co.uk, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Fred Griffoul <fgriffo@amazon.co.uk>
+Content-Type: text/plain; charset="us-ascii"
 
-Bitfield operations are not atomic, they use a read-modify-write
-pattern, therefore we should be careful not to pack bitfields that
-can be concurrently updated into the same storage unit.
+On Fri, Jan 02, 2026, Fred Griffoul wrote:
+> From: Fred Griffoul <fgriffo@amazon.co.uk>
+> 
+> Introduce a gfn_to_pfn_cache to optimize L1 MSR bitmap access by
+> replacing map/unmap operations. This optimization reduces overhead
+> during L2 VM-entry where nested_vmx_prepare_msr_bitmap() merges L1's MSR
+> intercepts with L0's requirements.
+> 
+> Current implementation using kvm_vcpu_map_readonly() and
+> kvm_vcpu_unmap() creates significant performance impact, mostly with
+> unmanaged guest memory.
+> 
+> The cache is initialized when entering VMX operation and deactivated
+> when VMX operation ends.
+> 
+> Signed-off-by: Fred Griffoul <fgriffo@amazon.co.uk>
+> ---
+>  arch/x86/kvm/vmx/nested.c | 42 +++++++++++++++++++++++++++++++++++----
+>  arch/x86/kvm/vmx/vmx.h    |  2 ++
+>  2 files changed, 40 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+> index 6137e5307d0f..f05828aca7e5 100644
+> --- a/arch/x86/kvm/vmx/nested.c
+> +++ b/arch/x86/kvm/vmx/nested.c
+> @@ -316,6 +316,34 @@ static void vmx_switch_vmcs(struct kvm_vcpu *vcpu, struct loaded_vmcs *vmcs)
+>  	vcpu->arch.regs_dirty = 0;
+>  }
+>  
+> +/*
+> + * Maps a single guest page starting at @gpa and lock the cache for access.
+> + */
+> +static int nested_gpc_lock(struct gfn_to_pfn_cache *gpc, gpa_t gpa)
 
-The split fields (is_err and object_changed in mlx5_vhca_page_tracker,
-deferred_reset in mlx5vf_pci_core_device) are mutated from contexts
-that don't serialize against the other writers in the same storage
-unit, so a bitfield RMW could drop an adjacent field's update.  The
-remaining bitfields are either probe-only or share a single writer
-context, so they stay packed.
+These helpers belong in virt/kvm/pfncache.c, not in vmx/nested.c.  The names also
+need to be changed (which is super obvious when they land in pfncache.c).  Nested
+locks are very much a thing in the kernel; even with the nVXM context, these read
+as "lock a GPC within another GPC critical section".
 
-The page tracker's status field is also relocated to fill the
-alignment hole the split exposes.
+And this does waaaay more than just "lock" the gpc.  E.g. by the end of the series
+this picks up:
 
-Fixes: f886473071d6 ("vfio/mlx5: Add support for tracker object change event")
-Fixes: 61a2f1460fd0 ("vfio/mlx5: Manage the VF attach/detach callback from the PF")
-Cc: stable@vger.kernel.org
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
----
- drivers/vfio/pci/mlx5/cmd.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+		err = kvm_gpc_activate(gpc, gpa, PAGE_SIZE);
+		if (err) {
+			/*
+			 * Deactivate nested state caches to prevent
+			 * kvm_gpc_invalid() from returning true in subsequent
+			 * is_nested_state_invalid() calls. This prevents an
+			 * infinite loop while entering guest mode.
+			 */
+			if (gpc->vcpu)
+				kvm_gpc_deactivate(gpc);
 
-diff --git a/drivers/vfio/pci/mlx5/cmd.h b/drivers/vfio/pci/mlx5/cmd.h
-index deed0f132f39..b782139eb8be 100644
---- a/drivers/vfio/pci/mlx5/cmd.h
-+++ b/drivers/vfio/pci/mlx5/cmd.h
-@@ -158,14 +158,14 @@ struct mlx5_vhca_qp {
- struct mlx5_vhca_page_tracker {
- 	u32 id;
- 	u32 pdn;
--	u8 is_err:1;
--	u8 object_changed:1;
-+	u8 is_err;
-+	u8 object_changed;
-+	int status;
- 	struct mlx5_uars_page *uar;
- 	struct mlx5_vhca_cq cq;
- 	struct mlx5_vhca_qp *host_qp;
- 	struct mlx5_vhca_qp *fw_qp;
- 	struct mlx5_nb nb;
--	int status;
- };
- 
- struct mlx5vf_pci_core_device {
-@@ -173,11 +173,11 @@ struct mlx5vf_pci_core_device {
- 	int vf_id;
- 	u16 vhca_id;
- 	u8 migrate_cap:1;
--	u8 deferred_reset:1;
- 	u8 mdev_detach:1;
- 	u8 log_active:1;
- 	u8 chunk_mode:1;
- 	u8 mig_state_cap:1;
-+	u8 deferred_reset;
- 	struct completion tracker_comp;
- 	/* protect migration state */
- 	struct mutex state_mutex;
--- 
-2.51.0
+			return err;
+		}
 
+That's a pretty gross hack, as is the addition and use of kvm_gpc_invalid() to
+detect that a vmcs12 page has been invalidated (though that may just be a naming
+issue).
+
+The use of nested_gpc_lock() in nested_vmx_prepare_msr_bitmap() and
+nested_vmx_handle_enlightened_vmptrld() also feels forced.  The usage there is
+_much_ more aligned with nested_gpc_lock_if_active(), in the sense that it's a
+temporary establishing a host mapping versus grabbing a pfn that gets shoved into
+a non-MMU structure.
+
+> +{
+> +	int err;
+> +
+> +	if (!PAGE_ALIGNED(gpa))
+> +		return -EINVAL;
+> +retry:
+> +	read_lock(&gpc->lock);
+> +	if (!kvm_gpc_check(gpc, PAGE_SIZE) || (gpc->gpa != gpa)) {
+
+This order of thsese checks is bizarre.  It's not problematic per se, but it's
+jarring to read.
+
+
+> +		read_unlock(&gpc->lock);
+> +		err = kvm_gpc_activate(gpc, gpa, PAGE_SIZE);
+
+And the use of kvm_gpc_activate() in the retry loop is also bizarre.  It's "fine",
+but it makes the lifecycle of the code hard to follow.
+
+The other thing that stands out in later patches is the error handling.  I really
+dislike the number of unlock() calls that are being added.
+
+The good news is, I think pretty much all of my complaints are symptoms of major
+gaps in the core gpc APIs.  E.g. you're smushing largely unrelated things into
+nested_gpc_lock() because the retry loop is fugly.  If we add better APIs, then
+the nVMX code shouldn't need to combine different concepts in weird ways, just
+to avoid copy+pasting an ugly loop.
+
+Happily, the majority of that can be sorted out in advance of converting nVMX.
+E.g. instead of the stealtime conversion looking like so:
+
+	if (!read_trylock(&gpc->lock))
+		return;
+
+	if (!kvm_gpc_check(gpc, sizeof(*st)))
+		goto out_unlock_gpc;
+
+	st = (struct kvm_steal_time *)gpc->khva;
+	WRITE_ONCE(st->preempted, preempted);
+	vcpu->arch.st.preempted = KVM_VCPU_PREEMPTED;
+
+	kvm_gpc_mark_dirty_in_slot(gpc);
+
+  out_unlock_gpc:
+	read_unlock(&gpc->lock);
+
+
+it can instead be something like:
+
+	CLASS(gpc_try_map_local, st_map)(gpc, sizeof(st->preempted));
+	if (IS_ERR(st_map))
+		return;
+
+	st = *st_map;
+	WRITE_ONCE(st->preempted, KVM_VCPU_PREEMPTED);
+	vcpu->arch.st.preempted = KVM_VCPU_PREEMPTED;
+
+
+I have patches that appear to work.  I'll post a new version of David's series[*]
+with the new APIs, and we can go from there (dropping the IRQ interactions makes
+adding the CLASS() stuff easier, and you'll have to rebase regardless).
+
+[*] https://lore.kernel.org/all/20260508181717.3230988-1-dwmw2@infradead.org
+
+> +		if (err)
+> +			return err;
+> +
+> +		goto retry;
+> +	}
+> +
+> +	return 0;
+> +}
+> +
+> +static void nested_gpc_unlock(struct gfn_to_pfn_cache *gpc)
+
+This is a completely superfluous helper.  Looking ahead, many of the wrappers are
+similarly useless, and IMO do more harm than good.  E.g. having bounce through
+multiple implementations for something like this:
+
+	if (!pi_test_and_clear_on(pi_desc)) {
+		nested_unlock_pi_desc(vmx);
+		return 0;
+	}
+
+is *really* frustrating when it's nothing more than:
+
+	if (!pi_test_and_clear_on(pi_desc)) {
+		read_unlock(&vmx->nested.pi_desc_cache->lock);
+		return 0;
+	}
+
+All of that should be a moot point with better APIs, so this really "in the
+future..." type of feedback.
