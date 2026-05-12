@@ -1,302 +1,173 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4620528C2A1;
-	Tue, 12 May 2026 07:19:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBDB3C454E
+	for <kvm@vger.kernel.org>; Tue, 12 May 2026 07:20:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778570392; cv=none; b=Qulri0MndqqXloSaXzGC6wIEplmsKkUAgsAGAPovGA3zhV5s4AcIt22OboZ0Mn+AhyocyWiQEmIh9w2XpdK8+KGb8KY/V0WUijeKTqqk9eghKIztUq96dV1LgApmFOqWEuaUR9wbBSLdhDsW6TH3HwizMgPUW2EA/TuGMlZLCN8=
+	t=1778570411; cv=none; b=B7djGDaBCmCYfmqE7Y+I2ht/sscDq5jR4qOiCEBQuYmMEiRC8lZS3DbfwDjGsU6mWMfRVOqZ5ZyNLpGWhnvcCMk9PBZYTrmAeG5N5azp1guC2D2rfF9bhrXH6hSfWUNxV5A+5c2bNnOLUqsOGtXjHmDpmib027GO8ZQtyycx1VA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778570392; c=relaxed/simple;
-	bh=wXZeqiM6Z1TbiTyk/nGA1XS+9uz1jIEUwLky+cTGv6Q=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iSgePgwkxlqO+VrMqizM7xcRI/U+rUEkPY/MF9mORtWavsKswuPsyrRujfbd0qFbvzs4ygmzFza5ohpr72az04B4V+bVv63yZlBlu05McoV8u4ftslLEILf9HDuX7n9d4sUy+J1+ZpmNQw4aYf1rAltaUUJoQc0Oj1PmXZA1izQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=OsI0EDnC; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1778570411; c=relaxed/simple;
+	bh=C9nOtZphHGvpRbbB1mh095pYAR4HXW7ByitF0l7nAq0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=QqoGOPgOHMpegCCLuWuWlfSj+EaiSQ6lWOtuvlLaNOCi5y9TL6lYkWu3lCIa/5CqOhscefUxW3AEPKOzLcTDaOReW2IfxJSfQuzyduyP0sKUtSqxiprZ3NAQoKITq5xdTYpGMrshyGbiWVUws/+ZHEHLrohWqMVIdpLyjuNUEvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=a/qLRcRr; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cP9wZRSx; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="OsI0EDnC"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=XbiblmVv2C1yyit7uRTwkkPYjfSmMffWSysQctajfik=; b=OsI0EDnC81ERAS5wcN5ex7qRw1
-	QbJS2A2KZPBQgeY4GG50Vi7v/vXVpZfHNiZI9yEmxAYX5cBF8IZvPUHUNcHemdrmFUcxaXJ7HPQX3
-	7ZLXef9Ux2YybPWg5IN7NX1wfuouNOZzjNVQ3WxIBOx0QiXaZxfTSv/O07OShV4aW81yrm0lItwTN
-	K80Eli/Hx3V/BJaCTd9OWlYOYc3fyy3wSf27LsCZ9oReId8IGDaSIWZFRDmZC8BHNsTKScTCrKVqq
-	mxhvYE2XXYZqLjvYDO2fY75iFQtGXLJ/sYtretOSzB9Xf7z1JUHHwNYxmp07PTUh/7YsqBsawO8Cx
-	P4V16Wvg==;
-Received: from 54-240-197-236.amazon.com ([54.240.197.236] helo=u09cd745991455d.ant.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wMhP2-00000009M1n-3lJl;
-	Tue, 12 May 2026 07:19:41 +0000
-Message-ID: <a1ab80b4fb24677e1007f3be411e2954e88a36cf.camel@infradead.org>
-Subject: Re: [PATCH 2/3] KVM: x86: conditionally clear
- KVM_REQ_MASTERCLOCK_UPDATE at the end of KVM_SET_CLOCK
-From: David Woodhouse <dwmw2@infradead.org>
-To: Dongli Zhang <dongli.zhang@oracle.com>, kvm@vger.kernel.org
-Cc: seanjc@google.com, pbonzini@redhat.com, paul@xen.org, tglx@kernel.org, 
- mingo@redhat.com, bp@alien8.de, dave.hansen@linux.intel.com,
- x86@kernel.org,  hpa@zytor.com, linux-kernel@vger.kernel.org,
- joe.jin@oracle.com
-Date: Tue, 12 May 2026 08:19:39 +0100
-In-Reply-To: <3363ed64-75f9-4a5c-93b9-882d72bfb7f2@oracle.com>
-References: <20260115202256.119820-1-dongli.zhang@oracle.com>
-	 <20260115202256.119820-3-dongli.zhang@oracle.com>
-	 <f37f0ae0ae1dfce3ad3c6fce653f5df34adecc0a.camel@infradead.org>
-	 <3363ed64-75f9-4a5c-93b9-882d72bfb7f2@oracle.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-Gh3fBTu6fLXPt5fN2Il3"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a/qLRcRr";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cP9wZRSx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778570406;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=QjTia8hEEWTMEUzJIZRRaWOPCFQqnc9xnPKI05ARaEw=;
+	b=a/qLRcRrpV7bC6S1euMGgPpBYOi/lVZ3WoGPZefAZ5arSzWMlsi/v9pIopdBvpcRqqOsTP
+	TazwQYW0Act/DJuN4vxWi4FXbT/tYIXvZHaha03usQakdu6yE0SPyIhAvEiO/yKfOUeNSy
+	BeL0j7jroPSe/yLV0hVlv6meuGDacrk=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-271-Hp5YI3PEPyyOVjbGfjIeXw-1; Tue, 12 May 2026 03:20:05 -0400
+X-MC-Unique: Hp5YI3PEPyyOVjbGfjIeXw-1
+X-Mimecast-MFC-AGG-ID: Hp5YI3PEPyyOVjbGfjIeXw_1778570404
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-488bd1ee9e7so56932015e9.1
+        for <kvm@vger.kernel.org>; Tue, 12 May 2026 00:20:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1778570404; x=1779175204; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=QjTia8hEEWTMEUzJIZRRaWOPCFQqnc9xnPKI05ARaEw=;
+        b=cP9wZRSxRq8qvPmqlHHwVZQSEVFNWuYPiFxG6iNVSMEjb1K27TVa5fm4HpT3pZASoc
+         GLh8Zb3BOB3M7ty4wevx8EJ2pZIfeHEuKy+w+I37/JGJw4hbNmei+W6YmIkJOo8pPKGJ
+         y2M/xhsDhCihHUE7hWw/jqofFw4JrOhl6oPyM5pxDVR7ubSsj4cf7l2eRJniry9k8juT
+         GSIxRBFFmMXFMmnGdMVYQsUltfpo3xLlt8jmQZkv+rtkMboXg2TxwiVLO8TvzpV2EYM6
+         mWlFOGJ5vyavE1lUAWs20qj4RQnAJPm3Mj/vpswFkuFjsXSCvd4iIvVIS1JT1rlkfeOX
+         Zygw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778570404; x=1779175204;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=QjTia8hEEWTMEUzJIZRRaWOPCFQqnc9xnPKI05ARaEw=;
+        b=GEPAuHgPYy1fTFTKz/axROuxXuCsy/T0QMD2CBlaTmJ1c+zAKhZh6sXlw3zKgDX7QE
+         RaYOwEyrQheF9KD57F4QLSTV88W6ULLlrRSUDHMYuv/dP/Ms+3gOkl3T/X9FgkZEcuT3
+         IQo0Ta77plz9WRGs85ChR5FbL0txLuISvf2SIvHzjUqL6G+Fe3U3PDMQd1WqPhkX4APy
+         0vrJh4sk3npl4l4TCgeFsUg42K5+Rs8XngIRF1t/0Tawa1iXabOxB36NOrUKCwTokc8w
+         b6XuKCvrE7RlOOzoO1LMM478sCRQALovlrfNf/tisdXjWKOmlBHj2fw4kSM/bikm745e
+         vYdw==
+X-Forwarded-Encrypted: i=1; AFNElJ+BI3GZEZ3EB3cvt1niGx1J8rVx3+RZbUUmHJQqBeUy5o7cvBuyQ+oRRNzKuI01bH9vfrg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywf/RZ421ELpJ2u1x8hbUps/lKrEOjqn4nSTNjtKUbcAbcfXERF
+	/s0mYVK3uvzorKwjIE25yslzxE1q+gdO+FyETslEhaSx3YrO91Li1Ty0LuAugbid+Zp7fZ5Rw1b
+	Vu+PhEYAEfrx1p6SCZUAVqLLejIJHxNecnQ/tNL0/BQGUNh4XtFUWcg==
+X-Gm-Gg: Acq92OHJtf/bMV5P+tX5Sa8qJQjmFFXoRjEzARSitYn3zjctXO3SjMa5zaWwxE1xr5m
+	1sSQsngm80fXJjNyOGs11drzig7Mbv743tYRnt6VItY+0YlCI3HZOYr1vedZuGWHv3p4DjrvQVI
+	o+jVdHyc3lfhcoATg2kIKUSFYZlUrCvLAoFm4yNB+mRnky18QE5Mcx5a/Uqo/LfNYBOjJnODHV1
+	6mSjEox0/0Bzma5sUQAARhlV9S/eorxS0KwL94Y/yn2rHWPEOcZ3t7LHJ+nWWcS4ZK2QEqZZge9
+	qx9bGkjE11OQmPG4alfx8m9DtGGZdTsEfB80iUkJPmxfNN8qhgJGBbYWoSDP3ySvtCLvWMHKvOP
+	uoRFgls7ZZKb3L1e5gWuQyqzg/99dzYj9VNN0Y6awSEvNALK80pCEUTKnpkEIQixujtnUuQDIuw
+	==
+X-Received: by 2002:a05:600c:3ba8:b0:48a:97b6:7420 with SMTP id 5b1f17b1804b1-48e707fbac7mr215489035e9.24.1778570403954;
+        Tue, 12 May 2026 00:20:03 -0700 (PDT)
+X-Received: by 2002:a05:600c:3ba8:b0:48a:97b6:7420 with SMTP id 5b1f17b1804b1-48e707fbac7mr215488205e9.24.1778570403394;
+        Tue, 12 May 2026 00:20:03 -0700 (PDT)
+Received: from sgarzare-redhat (host-87-16-204-231.retail.telecomitalia.it. [87.16.204.231])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e906ae8b5sm44119615e9.6.2026.05.12.00.20.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2026 00:20:02 -0700 (PDT)
+Date: Tue, 12 May 2026 09:19:58 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: Jakub Kicinski <kuba@kernel.org>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, netdev@vger.kernel.org, 
+	Eric Dumazet <edumazet@google.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
+	virtualization@lists.linux.dev, "David S. Miller" <davem@davemloft.net>, 
+	Jason Wang <jasowang@redhat.com>, Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, 
+	Paolo Abeni <pabeni@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, kvm@vger.kernel.org, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>
+Subject: Re: [PATCH net] vsock/virtio: fix skb overhead accounting to
+ preserve full buf_alloc
+Message-ID: <agLR7RkX_3kvL_qw@sgarzare-redhat>
+References: <20260508092330.69690-1-sgarzare@redhat.com>
+ <20260508055125-mutt-send-email-mst@kernel.org>
+ <af2y2Fyp7H-om-ur@sgarzare-redhat>
+ <20260508063104-mutt-send-email-mst@kernel.org>
+ <af28MAV0LF4qHVmB@sgarzare-redhat>
+ <CAGxU2F65pw0P1uKOOJpBc4p6KjCz8iePEh9aPybUyECBm1=otg@mail.gmail.com>
+ <20260511084551-mutt-send-email-mst@kernel.org>
+ <CAGxU2F6TPfRxZ7SX20vXiqDM4_sY3yUQBUSfEM=Nr+TKXwT9mA@mail.gmail.com>
+ <20260511164841.7f7ff557@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260511164841.7f7ff557@kernel.org>
 
+On Mon, May 11, 2026 at 04:48:41PM -0700, Jakub Kicinski wrote:
+>On Mon, 11 May 2026 15:17:56 +0200 Stefano Garzarella wrote:
+>> > > Okay, I thought it over over the weekend, and I agree that this patch
+>> > > still doesn't solve the problem and would still result in packet loss.
+>> > > So, until we resolve the issue permanently, and since 059b7dbd20a6 is
+>> > > coming to stable, I'd like to rework this patch so that we only start
+>> > > dropping packets when the overhead plus the queued bytes exceeds
+>> > > `buf_alloc * 2`.
+>> > > Removing the other changes to reduce the buf_alloc advertised, but
+>> > > terminating the connection so that both peers are aware that something
+>> > > went wrong.
+>> > >
+>> > > Any objections?
+>> > >
+>> > > Stefano
+>> >
+>> > Let's try to first fix it upstream properly please. Discuss backporting
+>> > later.
+>>
+>> Commit 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb
+>> queue") is already in Linus tree and will land soon on stable. Which
+>> issue do you see on having a patch on top of that to close the
+>> connection instead of losing data and breaking our test suite?
+>>
+>> IMO we need that change in any case, because the previous code also
+>> discarded packets without any notification, whereas breaking the
+>> connection would be better in that case.
+>
+>Sorry if I'm speaking out of turn or misunderstanding but, like Michael
+>says, let's focus on fixing this the way we want it to be fixed?
 
---=-Gh3fBTu6fLXPt5fN2Il3
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+IMHO, these are two separate issues (related but still separated):
 
-On Mon, 2026-05-11 at 17:21 -0700, Dongli Zhang wrote:
->=20
->=20
-> On 5/9/26 1:04 PM, David Woodhouse wrote:
-> > On Thu, 2026-01-15 at 12:22 -0800, Dongli Zhang wrote:
-> > > The KVM_SET_CLOCK command calls pvclock_update_vm_gtod_copy() to upda=
-te the
-> > > masterclock data.
-> > >=20
-> > > Many vCPUs may already have KVM_REQ_MASTERCLOCK_UPDATE pending before
-> > > KVM_SET_CLOCK is invoked. If pvclock_update_vm_gtod_copy() decides to=
- use
-> > > the masterclock, there is no need to update the masterclock multiple =
-times
-> > > afterward. As noted in commit c52ffadc65e2 ("KVM: x86: Don't unnecess=
-arily
-> > > force masterclock update on vCPU hotplug"), each unnecessary
-> > > KVM_REQ_MASTERCLOCK_UPDATE can cause the kvm-clock time to jump.
-> > >=20
-> > > Therefore, clear KVM_REQ_MASTERCLOCK_UPDATE for each vCPU at the end =
-of
-> > > KVM_SET_CLOCK when the master clock is active. The 'tsc_write_lock' e=
-nsures
-> > > that only requests issued before KVM_SET_CLOCK are cleared.
-> >=20
-> > Hm, I think we should do this in kvm_make_mclock_inprogress_request()
-> > instead.
-> >=20
-> > Currently, things like pvclock_gtod_update_fn() and one or two others
-> > set KVM_REQ_MASTERCLOCK_UPDATE for all vCPUs. Not just one, because we
-> > don't want *any* vCPU going back into guest mode before doing the work.
-> >=20
-> > So they could *all* end up calling into kvm_masterclock_update() at the
-> > same time. I have a vague recollection there was once a mutex there,
-> > but now there isn't.
-> >=20
-> > So all vCPUs can each, in parallel, set KVM_REQ_MCLOCK_INPROGRESS on
-> > all other vCPUs. That's an unhandled request which just makes a vCPU
-> > spin (preventing it from entering the guest until the clock update
-> > completes).
-> >=20
-> > Then each vCPU tries to take the kvm->arch.tsc_write_lock in
-> > kvm_start_pvclock_update(), and from this point they'll be
-> > serialized... but every vCPU will go through the whole of
-> > pvclock_update_vm_gtod_copy() for itself, updating the masterclock one
-> > more time for each vCPU in the system?
-> >=20
-> > I came here to say that kvm_make_mclock_inprogress_request() should
-> > probably clear KVM_REQ_MASTERCLOCK_UPDATE on all other vCPUs, since
-> > it's about to do the work, and the other vCPUs will no longer need to.
-> >=20
-> > But... it's more broken than that now.=20
-> >=20
-> > I think maybe vcpu_enter_guest() should call kvm_update_masterclock()
-> > if *kvm_test_request(KVM_REQ_MASTERCLOCK_UPDATE)* (i.e. not *clear* the
-> > bit by using kvm_check_request()).
-> >=20
-> > And then after getting ->arch.tsc_write_lock,
-> > kvm_start_pvclock_update() should check if KVM_REQ_MASTERCLOCK_UPDATE
-> > is *still* set, and only proceed with the update if it is?
-> >=20
-> > I'll play with it some more... something like this perhaps?
-> >=20
-> > From 91e37d74ee267c722bc2c8f26754fcdfbc040e29 Mon Sep 17 00:00:00 2001
-> > From: David Woodhouse <dwmw@amazon.co.uk>
-> > Date: Sat, 9 May 2026 16:54:01 +0100
-> > Subject: [PATCH] KVM: x86: Avoid redundant masterclock updates from mul=
-tiple
-> > =C2=A0vCPUs
-> >=20
-> > When a masterclock update is triggered (e.g. by the clocksource change
-> > notifier), KVM_REQ_MASTERCLOCK_UPDATE is set on all vCPUs. Without this
-> > fix, each vCPU independently processes the request and redundantly
-> > re-executes the entire pvclock_update_vm_gtod_copy() sequence, serializ=
-ed
-> > only by tsc_write_lock. Each redundant re-snapshot of the master clock
-> > reference point introduces potential clock drift.
-> >=20
-> > Fix this by having __kvm_start_pvclock_update() check, after acquiring
-> > the lock, whether the requesting vCPU's KVM_REQ_MASTERCLOCK_UPDATE is
-> > still set. If another vCPU already did the update and cleared it, bail
-> > out. Otherwise, clear the request on all other vCPUs before proceeding.
-> >=20
-> > The caller in vcpu_enter_guest() now uses kvm_test_request() (non-clear=
-ing)
-> > since the clearing is done inside __kvm_start_pvclock_update() under th=
-e
-> > lock.
-> >=20
-> > Suggested-by: Dongli Zhang <dongli.zhang@oracle.com>
-> > Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
->=20
->=20
-> Thank you very much! Feel free to add me as Suggested-by or Reported-by.
+1. taking overhead into account and setting a limit (which Eric started 
+doing in 059b7dbd20a6)
 
-Already did!
+2. reducing overhead by also merging SEQPACKET as Michael proposed (we 
+already do this for STREAM).
 
-> I will also help test your large patch series.
+Even with option 2, the overhead won’t disappear, and we should maintain 
+a limit as Eric rightly pointed out, especially since the initial 
+problem was a flood of EOMs with 0 or 1 bytes, which option 2 doesn’t 
+solve, since the overhead will eventually explode.
 
-Thanks.
+So I agree that we should implement 2 as Michael proposed, but I think 
+we also need to fix 1 by improving it slightly (as I’ve tried here, and 
+would like to do in v2).
 
-> Regarding the issue, I would like to confirm whether there can still be a=
-ny
-> KVM_REQ_MASTERCLOCK_UPDATE after KVM_SET_CLOCK_GUEST.
->=20
-> Per my understanding, I would expect KVM_SET_CLOCK_GUEST to be the last p=
-oint
-> where the masterclock can be updated (during live migration or live updat=
-e).
->=20
-> After KVM_SET_CLOCK_GUEST, any further masterclock change may cause kvm-c=
-lock drift.
+Since I have v2 ready and tested, I'll send it because I think we should 
+have it in any case, even with option 2 implemented.
 
-I believe that for a guest with ->use_master_clock, there should be no
-further masterclock change once it's running. We trigger
-KVM_REQ_MASTER_CLOCK update only in exceptional cases:=20
+>IIUC you are trying to minimize the size of the fix, please don't worry
+>about the LoC in the diff at this stage.
+>
 
- =E2=80=A2 kvm_set_guest_paused() =E2=80=94 vCPU 0 writes kvmclock MSR swit=
-ching
-   between old/new MSR (boot_vcpu_runs_old_kvmclock changes)
+Okay, I'll try to work on it, but this week is a nightmare. I hope to 
+come up with something by building on Michael's idea.
 
- =E2=80=A2 kvm_track_tsc_matching() =E2=80=94 TSC matching state changes: e=
-ither a new
-   TSC generation starts, or master clock needs to be toggled on/off
+Thanks,
+Stefano
 
- =E2=80=A2 pvclock_gtod_notify() via irq_work =E2=80=94 host clocksource st=
-ops being
-   TSC-based (e.g., TSC marked unstable, clocksource switched to HPET)
-
- =E2=80=A2 kvm_arch_hardware_enable() =E2=80=94 host TSC went backwards dur=
-ing CPU
-   online (suspend/resume, CPU hotplug) setting backwards_tsc_observed
-
-IIRC the timekeeping code does call pvclock_gtod_notify *all* the time
-even when the clock rate is stable and NTP isn't applying any skew,
-because a cycle rate of e.g. 333333=E2=85=93 cycles per tick will result in=
- it
-counting 333333, 333333, then 333334 cycles in consecutive ticks. And
-calling all the notifiers whenever it flips between 333333 and 333334.
-But KVM only updates the master clock if it becomes non-TSC-based, so
-it doesn't hurt.
-
---=-Gh3fBTu6fLXPt5fN2Il3
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUxMjA3MTkz
-OVowLwYJKoZIhvcNAQkEMSIEIIHkGH2Wdt279n1jTI0mB73NzeLTQm71+VjSgcn7Lm/lMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAEJvVCduSHXv3
-FeZzZtNiJ+V4NE/EoOTsIFOb95R8/p8aEwBcPtfpLGzxVjcq2hn8F6wAfwzH0grI1IEUrnjBZ+ZA
-JiQqXx7j+LhhVuGuwYcJV5w7/RCrYpCSMGTviVsHRZIpwuFOno9FFp+8OPOGllk/RQC/sBXvU0i8
-NjfujdJu1dPYoLgovY759GaBv+IY1EJRBjXZSDbAMAXxljWwDdUK0ddQdvZW1yESbqp3L5wUi7s0
-AAT0cGOXbzQX/d7bMKryhsTurNT06t9Zom+HNNdDeO2wzue18b18m5vy2Vc5argg5C16BBiLdMbg
-ahvyEGuW4PHs/VFgtOy0egRLiST0rPoWmcgtILCxweo0cHgegV8epABDmwo44GoVwhpz1trGcsN2
-zbHLcUC1yAHJNPxaOPnpoLBzs8snk8rRmWuKDk6kh1NAieV9Dr9Hovh/q1dzEB4+XiSiwYulAcCG
-4ke7hz5+p5bWYetQn3WrNV/1wtUAgnUvN6V6/0KUaUEuYW9fukdTng4z7oofJ9RbU8PVIZoGJlJ7
-vNupbJkhjAUkJC8krr+wKmnFlfPIYpGm/bBRc+YYeGpjE/PkrEcPog2x2mI+bBeOK59989MHZza9
-Sv8aA/rW4Mg96pGFXnd47Oq0OSZVlz7AhvEZnSfInfWRMXwldZJO1mqG8mqdf2gAAAAAAAA=
-
-
---=-Gh3fBTu6fLXPt5fN2Il3--
