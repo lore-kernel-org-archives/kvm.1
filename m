@@ -1,118 +1,104 @@
-Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49185332EA0;
-	Tue, 12 May 2026 07:28:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 944E8410D08;
+	Tue, 12 May 2026 07:41:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778570909; cv=none; b=OVPC0B3GWaOjoBNO9jHZ/RoxsZnvtMQ0k6gK+z3oIy9nGPu9AyMtZCPgg4uLWlfLusyXx9bbLbqRJiAMDa5YtS8iaJjtYMbzJZFEtnQq/So6enrGnGzEcs024n3c6hN32AhKM4e/IApYqLahOViYFFWNyAVKytSZ+3QDhl7vwjE=
+	t=1778571721; cv=none; b=AOC0bPo4Mhr48nWhCKZ8Lbd7kflfpXObWZFivxZruh1gOgSqKckQvHdxJ6Ldl+gJlOP5plLBc8QbSAWmhXZbfRITcapTHbog1AKObA75V/PVe21Ht2Wq9TFftPY6M25fR6RB2iQ/0spcXfK3YbNBYKaOOSDuDo835OouWe1NBpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778570909; c=relaxed/simple;
-	bh=BF1h7d3QFH3gs3GCJRmEVg8aCTgCY+D4Jfh7Gj1jblo=;
-	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=Da2xqiTMeaP2Fzyxw7PUCR2Q3YlYfyT6S3atIlJVkRrwwMZJhWa7eE9LLNW7tq2FI8+Xph0txGAaHMDzpfl6ZnC0Stwt+gcMEYmE+zAML+wcYwVCUNx+tGJ1mXoPnFmuAmrIjv26gMe3+9uX6/GOR0GEM0sMBgcpTFDTeHSZLg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=jDz5xt+7; arc=none smtp.client-ip=113.46.200.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1778571721; c=relaxed/simple;
+	bh=kmAC7beraB5lHR1DgYB/DZuEs9utuUEPmLdsGUjAoxE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sYuruZiUPQfxAwdFxYDtsC4IswGthSBu4RpWvdQ6ngoGBrv7uxGzOHx/Cpbaai7wSHg4ljr2LjP2CgBk8eFdeGFXgkkVJ2GgB5HidgS+AfqLe1TIjadkhWnLCYTV7A2GsHwu/zvX1rBBZyEjixz1Nb7GM0cKEX3osBACkUeRLfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=hGOKuetY; arc=none smtp.client-ip=115.124.30.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="jDz5xt+7"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=0nYwTUDHswJFeRsm/3KU6Cy6V8aaaXNHXn0IsdxK2KM=;
-	b=jDz5xt+7E9Lxfqur4EwzYh7d4J68ycyVgDFhfjX+3kufj3THHFvpmx0rAgUJs7I3IvBvS/xhN
-	kRmNigPk/3bor01beAWpkIif/AtEHZ2SkATpOewgHbf9yewe0lajQKkW0+LLDeh9Udesbzl1aZw
-	0kHXJRz4zkGulG4lwkrqlWc=
-Received: from mail.maildlp.com (unknown [172.19.163.163])
-	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4gF7Kk28hxz1K96d;
-	Tue, 12 May 2026 15:20:42 +0800 (CST)
-Received: from kwepemk200017.china.huawei.com (unknown [7.202.194.83])
-	by mail.maildlp.com (Postfix) with ESMTPS id 5A6B34056E;
-	Tue, 12 May 2026 15:28:17 +0800 (CST)
-Received: from [10.174.178.219] (10.174.178.219) by
- kwepemk200017.china.huawei.com (7.202.194.83) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 12 May 2026 15:28:16 +0800
-Subject: Re: [PATCH v17 24/24] KVM: selftests: Add guest_memfd testcase to
- fault-in on !mmap()'d memory
-To: Sean Christopherson <seanjc@google.com>
-CC: Zenghui Yu <zenghui.yu@linux.dev>, Paolo Bonzini <pbonzini@redhat.com>,
-	Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
-	<kvm@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
-	<kvmarm@lists.linux.dev>, <linux-kernel@vger.kernel.org>, Ira Weiny
-	<ira.weiny@intel.com>, Gavin Shan <gshan@redhat.com>, Shivank Garg
-	<shivankg@amd.com>, Vlastimil Babka <vbabka@suse.cz>, Xiaoyao Li
-	<xiaoyao.li@intel.com>, David Hildenbrand <david@redhat.com>, Fuad Tabba
-	<tabba@google.com>, Ackerley Tng <ackerleytng@google.com>, Tao Chan
-	<chentao@kylinos.cn>, James Houghton <jthoughton@google.com>
-References: <20250729225455.670324-1-seanjc@google.com>
- <20250729225455.670324-25-seanjc@google.com>
- <0064952b-048c-455d-ad89-e27e5cb82591@linux.dev>
- <aeJkCGwsrRmuBikT@google.com>
-From: Zenghui Yu <yuzenghui@huawei.com>
-Message-ID: <c17d864a-42fc-afbe-345e-c728e2735d0c@huawei.com>
-Date: Tue, 12 May 2026 15:28:15 +0800
-User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
- Thunderbird/68.12.1
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="hGOKuetY"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1778571713; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=iGZ65kdo1hvMwcfP8gimQwDdAcnQW+BXaCkGVek8pE8=;
+	b=hGOKuetYkTqckxM7S3qM2EKdu5GNwTZF6bgFqOPBLBlKMNwG0jNSvK9GdMsc+1IbRdVvJ2vATHPCO4UN1eQN5Flupl2pxqdqReqRg1zpBZM7PSUQObeqjmFqwAfbqXbajJJ8QLqnj8B/D37l5ad9F+s4TRXCYSR0VbnjDeTEego=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R721e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037009110;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=25;SR=0;TI=SMTPD_---0X2puQM0_1778571710;
+Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X2puQM0_1778571710 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Tue, 12 May 2026 15:41:52 +0800
+From: fangyu.yu@linux.alibaba.com
+To: joro@8bytes.org,
+	will@kernel.org,
+	robin.murphy@arm.com,
+	pjw@kernel.org,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	alex@ghiti.fr,
+	tjeznach@rivosinc.com,
+	jgg@ziepe.ca,
+	kevin.tian@intel.com,
+	baolu.lu@linux.intel.com,
+	vasant.hegde@amd.com,
+	anup@brainfault.org,
+	atish.patra@linux.dev,
+	skhawaja@google.com,
+	jgg@nvidia.com,
+	nutty.liu@hotmail.com
+Cc: guoren@kernel.org,
+	andrew.jones@oss.qualcomm.com,
+	kvm@vger.kernel.org,
+	iommu@lists.linux.dev,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Fangyu Yu <fangyu.yu@linux.alibaba.com>
+Subject: [PATCH v4 0/2] iommu/riscv: Support Svpbmt memory types in generic_pt
+Date: Tue, 12 May 2026 15:41:40 +0800
+Message-Id: <20260512074142.16356-1-fangyu.yu@linux.alibaba.com>
+X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <aeJkCGwsrRmuBikT@google.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Language: en-US
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
- kwepemk200017.china.huawei.com (7.202.194.83)
+Content-Transfer-Encoding: 8bit
 
-Hi Sean,
+From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 
-On 2026/4/18 0:47, Sean Christopherson wrote:
-> 
-> Does this fix things for you?  If so, I'll send a proper patch.
-> 
-> diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-> index ec7644aae999..c682bda722f9 100644
-> --- a/tools/testing/selftests/kvm/guest_memfd_test.c
-> +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-> @@ -510,9 +510,15 @@ static void test_guest_memfd_guest(void)
->                     "Default VM type should support INIT_SHARED, supported flags = 0x%x",
->                     vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS));
->  
-> +       /*
-> +        * Use the guest's page size for all accesses, e.g. to avoid having to
-> +        * map multiple pages, but create the guest_memfd instance with the max
-> +        * of the host or guest page size, as KVM requires gmem files to be
-> +        * aligned to the host page size.
-> +        */
->         size = vm->page_size;
-> -       fd = vm_create_guest_memfd(vm, size, GUEST_MEMFD_FLAG_MMAP |
-> -                                            GUEST_MEMFD_FLAG_INIT_SHARED);
-> +       fd = vm_create_guest_memfd(vm, max(size, page_size), GUEST_MEMFD_FLAG_MMAP |
-> +                                                            GUEST_MEMFD_FLAG_INIT_SHARED);
->         vm_set_user_memory_region2(vm, slot, KVM_MEM_GUEST_MEMFD, gpa, size, NULL, fd, 0);
->  
->         mem = kvm_mmap(size, PROT_READ | PROT_WRITE, MAP_SHARED, fd);
+RISC-V Svpbmt adds page-based memory types (PBMT) to PTEs, allowing
+mappings to be tagged as e.g. normal memory, non-cacheable memory, or
+I/O.
 
-This results in another failure at
+This series wires the RISC-V IOMMU Svpbmt capability into generic_pt
+and uses PBMT to encode device memory attributes for IOMMU mappings.
 
-|	vm_set_user_memory_region2(vm, slot, KVM_MEM_GUEST_MEMFD, gpa, size,
-NULL, fd, 0);
+---
+Changes in v4:
+    - Fix build warning on 32-bit configurations by using BIT_ULL() for RISCVPT_NC and RISCVPT_IO. 
+    - Link to v3:
+      https://lore.kernel.org/linux-riscv/20260417140746.97817-1-fangyu.yu@linux.alibaba.com/
+---
+Changes in v3:
+    - Include RISCVPT_NC and RISCVPT_IO in riscvpt_attr_from_entry()
+      so iommupt KUnit tests preserve these descriptor bits..
+    - Link to v2:
+      https://lore.kernel.org/linux-riscv/20260414110212.79526-1-fangyu.yu@linux.alibaba.com
+---
+Changes in v2:
+    - Add a comment for PT_FEAT_RISCV_SVPBMT (per Kevin and Jason).
+    - Clarify PBMT encoding condition, sort PBMT-related bits by
+      position, and drop the redundant PBMT clear(per Kevin).
+    - Link to v1:
+      https://lore.kernel.org/linux-iommu/20260411022223.91029-1-fangyu.yu@linux.alibaba.com/
 
-# ./guest_memfd_test
-Random seed: 0x6b8b4567
-__vm_create: mode='PA-bits:40,  VA-bits:48,  4K pages' type='0', pages='672'
-==== Test Assertion Failure ====
-  lib/kvm_util.c:974: !ret
-  pid=284539 tid=284539 errno=22 - Invalid argument
-     1	0x00000000004008fb: test_guest_memfd_guest at guest_memfd_test.c:522
-     2	 (inlined by) main at guest_memfd_test.c:561
-     3	0x0000000000417623: __libc_start_call_main at libc-start.o:?
-     4	0x000000000041796b: __libc_start_main_impl at ??:?
-     5	0x0000000000400cef: _start at ??:?
-  KVM_SET_USER_MEMORY_REGION2 failed, errno = 22 (Invalid argument)
+Fangyu Yu (2):
+  iommu/riscv: Advertise Svpbmt support to generic page table
+  iommupt: Encode IOMMU_MMIO/IOMMU_CACHE via RISC-V Svpbmt bits
 
-Thanks,
-Zenghui
+ drivers/iommu/generic_pt/fmt/riscv.h | 11 ++++++++++-
+ drivers/iommu/riscv/iommu.c          |  2 ++
+ include/linux/generic_pt/common.h    |  4 ++++
+ 3 files changed, 16 insertions(+), 1 deletion(-)
+
+-- 
+2.50.1
+
