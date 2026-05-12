@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E44AC3C416B;
-	Tue, 12 May 2026 16:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3666632BF52;
+	Tue, 12 May 2026 17:01:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778605157; cv=none; b=VzDt936DPLXuiMA9w/P/rbxVwxKCX8sAt1rXD87lSwYY/725n0jZ5VhKzFaTDgbvwfifF1SfSKS57yKac0eGQW2yPoasZliFRcS5+fwu6ob1+Q9n5KIOOzfs1GlQHvK5Ox6SsD6f6t1z3sa8Sd6IZQXaWGv2tpx8Eqz9AaqIOjI=
+	t=1778605271; cv=none; b=eB487ofyvtrWUdBcH6bFxv2lB61LVarKoZMm1/Lbh4KzXZdbZmED7RZfAuleyJ1iiz+/ebA3Zs5373ZElSNaAfcrE0wCDUVIryinMPhk9mjsvgVAcDClFMFHztmiL+pCLckWLTVxDCY697ATNyN5cyzMXipv1IE1f7bh7wpHp8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778605157; c=relaxed/simple;
-	bh=6gCNGvciQzZwGHqAygXudz2Ik6trRiCjCYuMDC1DRqQ=;
+	s=arc-20240116; t=1778605271; c=relaxed/simple;
+	bh=DtlyNiMrzWusjB1ZJ021vGTLZ2HqkR9/Z/A1b8oXmgU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=T9dqYQLEEymYSfI/Nzq4tq86lqiw+i7IrtfjECJOXM3wHJCvEfCutHJtgwQd/RX9m3O15xjTX6cIRs088zAX34pvG2NGJNvpZMQKdfRYypM+jJ+lMWLH4rRA76lI5NLbSVQuhr/+8NZ8H2TScydPNEA7EdnZROn21QL2EKI1AxA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k5XpMV+T; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=JS6IzDJ6YiwbmgReC9XhIUY9/88phHyrymkpWsHTECKWsHXfIsMvMsNyFQbQwbjlnHwHglZyVOKH3lZiQY9jxn2URGBK2sWeU19nc0d/BgwVXl5swdVUsMqvXAj2LHGOrYvQ6hLYqTayssjnc/VeeS7jfF49mMLJKvCEhW+9IPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sReN+8sz; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k5XpMV+T"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A49C3C2BCB0;
-	Tue, 12 May 2026 16:59:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sReN+8sz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98D66C2BCB0;
+	Tue, 12 May 2026 17:01:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778605156;
-	bh=6gCNGvciQzZwGHqAygXudz2Ik6trRiCjCYuMDC1DRqQ=;
+	s=k20201202; t=1778605270;
+	bh=DtlyNiMrzWusjB1ZJ021vGTLZ2HqkR9/Z/A1b8oXmgU=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k5XpMV+TvoWyI5gdUlzINx6yhtCYFQclHKyxzwVDwcilYTFr0VfzwOYwy0J8ORMLh
-	 EC9e3ggrzGdqNkeJ2fYFElamu/WcZ5Swxy33tf2mxb+xzgpAXMP9O0jkiXf5CLlsQI
-	 HLYIBqSkpcj6D6uNuw4odNi9aIVCL6gw6kLLwgEjEosu+ZC6vBX9e51kBkviEkSX5d
-	 Br6KdEJXjcyw6Q47SPmHaVOnCbefRS4dP2/E0eHglKjfxmCKrFz8v3NDubpP3oPdyH
-	 dYN8HpXHYKjaqaIJE7qSy6IxCu7YlffTryv6eTZUM6pgxTUpVcvFCqrknWVWaT54QM
-	 jU6Xtn8v003gg==
-Date: Tue, 12 May 2026 19:59:05 +0300
+	b=sReN+8szSUR0SdVUx+BPZZp6hbx/FJdb5E/n17whXNc8v21K2GEzYJYVCoMGNYXVM
+	 Nf6C4YAOyhFhxHJaeem/Vja3XOhGyKm/p/U+iE6txnRmvOOcPtXVZhVeE2Z3RjJZAR
+	 wDhqq5sqxAeVGNpdlYhGs9xR4iay1KE3bK8X2fKyT0zJZDLh3gcBiC8sEuN9xheKT1
+	 zZaOU+Qo98ajxpv6pxDoXFtFQ/5vcUN/UDI1S7UpuB4jqx/+tFPzSBazqdAcLefJsG
+	 lyvdB4elld7Y/3AQ+vlBxaFTNGGAaYEKzkTwvIpq18BQ401Sk4t0k/mWrSfVA4JGkv
+	 4+He74wa4NfRg==
+Date: Tue, 12 May 2026 20:00:59 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org,
@@ -38,46 +38,45 @@ Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org,
 	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
 	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
 	kernel-team@meta.com
-Subject: Re: [PATCH v2 06/14] mm: preserve RWP marker across PTE rewrites
-Message-ID: <agNcWW58T-rB-1PD@kernel.org>
+Subject: Re: [PATCH v2 07/14] mm: handle VM_UFFD_RWP in khugepaged, rmap, and
+ GUP
+Message-ID: <agNcywWC3bnZiSHX@kernel.org>
 References: <cover.1778254670.git.kas@kernel.org>
- <197efcdbb1ba5be7911afdccfd0b5a0610d9497f.1778254670.git.kas@kernel.org>
+ <c88e78ffb2cc5ca81f5a6319b7e3c4ffd8baefe1.1778254670.git.kas@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <197efcdbb1ba5be7911afdccfd0b5a0610d9497f.1778254670.git.kas@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c88e78ffb2cc5ca81f5a6319b7e3c4ffd8baefe1.1778254670.git.kas@kernel.org>
 
-On Fri, May 08, 2026 at 04:55:18PM +0100, Kiryl Shutsemau (Meta) wrote:
-> The uffd PTE bit must survive any kernel path that rewrites a PTE
-> on a VM_UFFD_RWP VMA, otherwise the marker that carries PAGE_NONE
-> semantics is silently dropped and the next access leaks past RWP
-> tracking. Wire the preservation through every path that rewrites a
-> VM_UFFD_RWP PTE.
+On Fri, May 08, 2026 at 04:55:19PM +0100, Kiryl Shutsemau (Meta) wrote:
+> Three mm paths outside the fault handler gate on the uffd PTE bit
+> today: khugepaged (skip collapse on ranges carrying markers), rmap
+> (cap unmap batching), and GUP (force a fault through
+> gup_can_follow_protnone). Extend each to treat VM_UFFD_RWP the same
+> as VM_UFFD_WP; otherwise per-PTE RWP state is silently destroyed or
+> bypassed.
 > 
-> Swap and device-exclusive: do_swap_page(), restore_exclusive_pte(),
-> and unuse_pte() (swapoff()) re-apply PAGE_NONE when the swap PTE
-> carries the uffd bit and the VMA has VM_UFFD_RWP.
+> khugepaged: try_collapse_pte_mapped_thp() and
+> file_backed_vma_is_retractable() already refuse to collapse or
+> retract page tables on ranges carrying the uffd PTE bit. Broaden the
+> VMA predicate from userfaultfd_wp() to userfaultfd_protected() so
+> VM_UFFD_RWP ranges get the same protection. hpage_collapse_scan_pmd()
+> needs no change — its existing pte_uffd() check already catches an
+> RWP PTE because it carries the uffd bit.
 > 
-> Migration: remove_migration_pte() and remove_migration_pmd() do the
-> same after the migration entry is replaced with a real PTE/PMD.
+> rmap: folio_unmap_pte_batch() caps batching at 1 for VM_UFFD_RWP so
+> the restore path handles each PTE with its own marker.
 > 
-> Fork: __copy_present_ptes(), copy_present_page(), copy_nonpresent_pte(),
-> copy_huge_pmd(), copy_huge_non_present_pmd(), and
-> copy_hugetlb_page_range() keep the uffd bit on the child when the
-> destination VMA has VM_UFFD_RWP, matching the existing VM_UFFD_WP
-> handling. Add VM_UFFD_RWP to VM_COPY_ON_FORK so the flag itself
-> propagates.
-> 
-> mprotect(): change_pte_range() and change_huge_pmd() restore PAGE_NONE
-> after pte_modify()/pmd_modify() have recomputed the base protection
-> from a (possibly user-changed) vm_page_prot. pte_modify() preserves
-> _PAGE_UFFD, so the bit stays; we just have to force PAGE_NONE back
-> on top.
+> GUP: gup_can_follow_protnone() forces a fault on VM_UFFD_RWP VMAs
+> regardless of FOLL_HONOR_NUMA_FAULT. RWP uses protnone as an
+> access-tracking marker, not for NUMA hinting, so any GUP — read or
+> write — must go through the userfaultfd fault path.
 > 
 > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 > Assisted-by: Claude:claude-opus-4-6
@@ -85,17 +84,10 @@ On Fri, May 08, 2026 at 04:55:18PM +0100, Kiryl Shutsemau (Meta) wrote:
 Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 > ---
->  include/linux/mm.h |  3 ++-
->  mm/huge_memory.c   | 47 ++++++++++++++++++++++++++++++++++++++++++----
->  mm/hugetlb.c       | 40 ++++++++++++++++++++++++++++++---------
->  mm/memory.c        | 47 +++++++++++++++++++++++++++++++++++++++-------
->  mm/migrate.c       |  8 ++++++++
->  mm/mprotect.c      | 10 ++++++++++
->  mm/mremap.c        | 13 +++++++++++--
->  mm/swapfile.c      |  5 +++++
->  mm/userfaultfd.c   | 14 ++++++++++++++
->  9 files changed, 164 insertions(+), 23 deletions(-)
-> 
+>  include/linux/mm.h | 10 +++++++++-
+>  mm/khugepaged.c    | 18 +++++++++++-------
+>  mm/rmap.c          |  2 +-
+>  3 files changed, 21 insertions(+), 9 deletions(-)
 
 -- 
 Sincerely yours,
