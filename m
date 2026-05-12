@@ -1,264 +1,167 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 583CB1DF75B
-	for <kvm@vger.kernel.org>; Tue, 12 May 2026 21:33:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04F32E542C
+	for <kvm@vger.kernel.org>; Tue, 12 May 2026 21:37:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778621638; cv=none; b=buyOhKtFt8nja2rwyK1n/9yZpPMo3zzMVrBVJ7/APDDHkWSpXROGWX7Maxn8LLstqMif9EyxZJZWgeOITJBijh5knSiJMPJpPoa5/t37nKqXMwN18Yre1FoEL0DQSzcUXKcHm7ZBt5SiPkozkNbLdvdle0uAbAOmrVhEaaKUsgk=
+	t=1778621858; cv=none; b=OSRwaBuvJSc7uRTSzzzvy+HCoQlWRwPF6eF3uwlThP8Fbu7TXX8sqYUQ909uLbNQU/UOsW2mqsz+kRdw9bAgdBZxLL3d+VJ36xiWyEBI8wAAwhSo+vvhBc+G1bYccDehyrNJ9FFIBe1r6/tQjigYeYxXAVJ8vS35dlf1hSFYjCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778621638; c=relaxed/simple;
-	bh=nf5LaBv/q1yBV2WRernYjv6lnDcXTDPc+W5b1NXMv3E=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=PpogvvGCzRCirHvAh42QQd5cmUdui0Pb7RmHs88VXrnZyEZOZ00hNMvkxXGktqEmW5x1YL7Qdr35STtLJClZQ52qYql8snzx6cgHgsMJ0jbGBvBqj7vVAv+mNG2lRUB38iv9wKyvEqphvfwDaASJLLsS03iFy7jBZ42vlWBDqAA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=p5ldaXJs; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1778621858; c=relaxed/simple;
+	bh=qGhetvw8/qiNI22y8XLXztl/MOWRXxK7B8fh7ij6z9Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oqQaHLMMeFkcHb5U79VE7V3WCsy8f4k/tZQhHGeZxf3t04H2IuCsCMSry3eVQFMLJHCja2pV7LSY7od8auwZLE+D0ltpuRC3B0Vl9+FQJ2sQj8A90E6E9Rj2FZX/cv64gSN19jixygs5Sc89Pg7TTAfrrh4ar7drczHYv4z9ohY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=k/JrJtlD; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=oCegvFLV; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=DwWCaDSd; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/oXPBfFy; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="p5ldaXJs"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c8291230235so3115697a12.2
-        for <kvm@vger.kernel.org>; Tue, 12 May 2026 14:33:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778621636; x=1779226436; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wUyDM/wX4+q24OYtylEh1N7LuXBizzR7BVDWaiwz87k=;
-        b=p5ldaXJs4vL3fyNZrTY2GJF/mE4FtZRREghulMCnkFExaBvp6WOoeaafi3Ay4jWDpJ
-         z3nY/ZAd9uFcbjiCcvsxOMSyD/Hk2G9Ac/5J9KWl2O0wvxdT38Bt7MSnDJmkCEmTsvdE
-         Ijsy1q9GcTksyC1ByZf1f0hFuytBwEUN6Mst/vlFTwZOmdnS2F50Z9wv0ycuhUqa24ig
-         EpG7ToEyXt2C7lwEdI9gCTfPta4GARRWfv+3CE3ID6X0iB+mMKRCi2iL/VpvOKcVnAiW
-         NJwLEsLRkG+hCDqh5FO1Lv7XHToeicSh5we3rLTQ7dZ0Oqv2wcj/hzqbrqougnEoXBgV
-         3t3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778621636; x=1779226436;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=wUyDM/wX4+q24OYtylEh1N7LuXBizzR7BVDWaiwz87k=;
-        b=TAwePhlECXDOD8bf1zWr3xs2wQpMHm9ZH5SbjDJyHq0Hl7LX53sz834B6yWyxrYRYu
-         KTvCOorlkr6+U5tYom2xUv6PW52xTW8kFSJBC3I6xoMnTr7MN97CaarK/+pdItjb4k21
-         nHhamkyXIpKXAKWZMy+sI4aFub0VA6y0BeSqwwnFkAb+GCKvn2l1MVvzuM/FTOAwcR47
-         yXJ7EqVZ85QJ/1h0CM81kgzdEE9SSNOJNwZUO5YOMONOA/senRNeD4SzjnGj94ubyxIV
-         tKtwvpRnXfioks+d485MDLLPDs6Hdr0CVfiUaJqDc0o6zLCbzVoCuaPuUiey30JKrTOt
-         LLSA==
-X-Forwarded-Encrypted: i=1; AFNElJ8ERapKtAXP+7wTsobiYqfJF4uniuwn72imhPYTiCUzT4i+PbKU/VjPvJJcrsesyIyhVGM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx9Qy9baD+7sE0qEjSN0uYZhlPqHDInveiISsk+W/+28N4uBNwn
-	HdZOnQpDvoOV4Qrle8i0mXlOh+SA5IUR4oFx9KjBaVdJMlVW5ooYNQLJXgN42tf4zZNw1toqmT5
-	YS0B6Wg==
-X-Received: from pfbem37.prod.google.com ([2002:a05:6a00:3765:b0:82f:b53f:40d7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3286:b0:3a2:c685:f9b0
- with SMTP id adf61e73a8af0-3af83e43fa0mr313442637.49.1778621636348; Tue, 12
- May 2026 14:33:56 -0700 (PDT)
-Date: Tue, 12 May 2026 14:33:55 -0700
-In-Reply-To: <20260508170714.489136-3-jmattson@google.com>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="k/JrJtlD";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="oCegvFLV";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="DwWCaDSd";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/oXPBfFy"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 7BCF66AAF8;
+	Tue, 12 May 2026 21:37:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778621855; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=oBAYXJUrFg63Z6RvOCmvjgi5tAtmT8m7Pzftepqd5aA=;
+	b=k/JrJtlD/NsIePuwTQzI4rEy1mBYisPW4AZOqyt1UoORyg/S2l2Lm4bK6PWM9pH6LcEh4d
+	ev7qvSUy3Yay/FWdSUGAlp7iKJJFnUmUcxi7Mcd3dmBXEcNXf6QKJ1yPMf2HCt789ei1zt
+	5hf6Fbed6Li9KxpRy4yUU37znJS9YTw=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778621855;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=oBAYXJUrFg63Z6RvOCmvjgi5tAtmT8m7Pzftepqd5aA=;
+	b=oCegvFLVRawbDU3Bg7vneUP0SR3TBJsgo4QGYcuqvzQyNQ9iNHSnHvl+m1ZLjnSslepg3p
+	OexTajrtOffS95AA==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DwWCaDSd;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/oXPBfFy"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778621854; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=oBAYXJUrFg63Z6RvOCmvjgi5tAtmT8m7Pzftepqd5aA=;
+	b=DwWCaDSdZWWxp+ygnkSg0WlLNYgtRV12MqurvwNSF6zacncgQDwhAO1Z8Zy1ol7dJVaPrK
+	/G+QbMdKnupG7je2BeBANAqYaClYXPp2SezorOPoOLiUE3AijjixUGW9sJx7V4tUNI+B4W
+	pDtl3vYtTpHqHUr7WJEg+XjHOrOK3N4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778621854;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=oBAYXJUrFg63Z6RvOCmvjgi5tAtmT8m7Pzftepqd5aA=;
+	b=/oXPBfFy4y2IOUmLsKnMctUnnRGalFPQHrzbGs7fNVcLOKtzP3WhmuUANMmukySaMAOQCJ
+	30/uXm/oKCCwNFBQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ABB38593A9;
+	Tue, 12 May 2026 21:37:33 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id bYI2J52dA2p6OQAAD6G6ig
+	(envelope-from <clopez@suse.de>); Tue, 12 May 2026 21:37:33 +0000
+From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
+To: kas@kernel.org,
+	rick.p.edgecombe@intel.com,
+	x86@kernel.org,
+	linux-coco@lists.linux.dev
+Cc: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
+	stable@vger.kernel.org,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Andi Kleen <ak@linux.intel.com>,
+	Tony Luck <tony.luck@intel.com>,
+	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+	kvm@vger.kernel.org (open list:X86 TRUST DOMAIN EXTENSIONS (TDX))
+Subject: [PATCH] x86/tdx: Fix zero-extension for CPUID emulation
+Date: Tue, 12 May 2026 23:37:19 +0200
+Message-ID: <20260512213719.20974-1-clopez@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260508170714.489136-1-jmattson@google.com> <20260508170714.489136-3-jmattson@google.com>
-Message-ID: <agOcw9ZIXALKrs_a@google.com>
-Subject: Re: [PATCH v2 2/3] KVM: x86: Virtualize AMD CPUID faulting
-From: Sean Christopherson <seanjc@google.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Clayton Pence <ctpence@google.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-3.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	ARC_NA(0.00)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCPT_COUNT_TWELVE(0.00)[14];
+	MIME_TRACE(0.00)[0:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:email,suse.de:mid];
+	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:email,suse.de:mid];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Queue-Id: 7BCF66AAF8
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Score: -3.51
 
-On Fri, May 08, 2026, Jim Mattson wrote:
->  static __always_inline void kvm_cpu_cap_clear(unsigned int x86_feature)
-> diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-> index c8c6cc0406d6..127d031d3310 100644
-> --- a/arch/x86/kvm/emulate.c
-> +++ b/arch/x86/kvm/emulate.c
-> @@ -3593,13 +3593,15 @@ static int em_sti(struct x86_emulate_ctxt *ctxt)
->  static int em_cpuid(struct x86_emulate_ctxt *ctxt)
->  {
->  	u32 eax, ebx, ecx, edx;
-> -	u64 msr = 0;
-> +	u64 msr[2] = {};
->  
-> -	ctxt->ops->get_msr(ctxt, MSR_MISC_FEATURES_ENABLES, &msr);
-> -	if (!ctxt->ops->is_smm(ctxt) &&
-> -	    (msr & MSR_MISC_FEATURES_ENABLES_CPUID_FAULT) &&
-> -	    ctxt->ops->cpl(ctxt))
-> -		return emulate_gp(ctxt, 0);
-> +	if (!ctxt->ops->is_smm(ctxt) && ctxt->ops->cpl(ctxt)) {
-> +		ctxt->ops->get_msr(ctxt, MSR_MISC_FEATURES_ENABLES, &msr[0]);
-> +		ctxt->ops->get_msr(ctxt, MSR_K7_HWCR, &msr[1]);
-> +		if ((msr[0] & MSR_MISC_FEATURES_ENABLES_CPUID_FAULT) ||
-> +		    (msr[1] & BIT_ULL(MSR_K7_HWCR_CPUID_USER_DIS_BIT)))
+In the x86 architecture, 32-bit operations zero-extend the result in the
+destination register to 64 bits. This includes the CPUID instruction,
+which writes 32-bit values EAX/EBX/ECX/EDX.
 
-Hrm, this is all rather ugly (definitely not your fault).  What do you think about
-adding x86_emulate_ops.cpuid_fault_enabled() to at least get deduplicate the MSR
-lookups?
+When handling the CPUID instruction via #VE, copy only the lower 32-bits
+provided by the hypervisor for the output registers, and zero out the
+upper half.
 
-Gah, we should do more than that.  I was going to say, "If it weren't for
-kvm_emulate_cpuid() using kvm_require_cpl(), we could roll *all* of the checks
-into cpuid_fault_enabled()".  But that's a rather stupid reason to duplicate the
-code, because kvm_emulate_cpuid() is literally the only user of kvm_require_cpl().
-
-Pulling smm.h into cpuid.h isn't great, but the code is much nicer, especially
-the next patch to add AMD CPUID faulting.
-
-Compile tested only...
-
+Fixes: c141fa2c2bba ("x86/tdx: Handle CPUID via #VE")
+Cc: stable@vger.kernel.org
+Signed-off-by: Carlos López <clopez@suse.de>
 ---
-From: Sean Christopherson <seanjc@google.com>
-Date: Tue, 12 May 2026 14:20:47 -0700
-Subject: [PATCH 1/3] KVM: x86: Consolidate CPUID fault handling for emulator
- and interception logic
+ arch/x86/coco/tdx/tdx.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-Extract the logic for emulating CPUID faulting (where CPUID #GPs at CPL>0
-outside of SMM) into a dedicated helper and use the helper for both the
-full emulator and the intercepted-CPUID paths.
-
-Opportunistically drop kvm_require_cpl(), as kvm_require_cpl() was the one
-and only user.
-
-No functional change intended.
-
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/include/asm/kvm_host.h |  1 -
- arch/x86/kvm/cpuid.c            |  5 +++--
- arch/x86/kvm/cpuid.h            |  8 ++++++++
- arch/x86/kvm/emulate.c          |  6 +-----
- arch/x86/kvm/kvm_emulate.h      |  1 +
- arch/x86/kvm/x86.c              | 18 ++++++------------
- 6 files changed, 19 insertions(+), 20 deletions(-)
-
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index c470e40a00aa..a9005c61619b 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -2285,7 +2285,6 @@ void kvm_requeue_exception(struct kvm_vcpu *vcpu, unsigned int nr,
- void kvm_inject_page_fault(struct kvm_vcpu *vcpu, struct x86_exception *fault);
- void kvm_inject_emulated_page_fault(struct kvm_vcpu *vcpu,
- 				    struct x86_exception *fault);
--bool kvm_require_cpl(struct kvm_vcpu *vcpu, int required_cpl);
- bool kvm_require_dr(struct kvm_vcpu *vcpu, int dr);
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index c8b9e86d0488..a2fe1ae019bd 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -543,10 +543,10 @@ static int handle_cpuid(struct pt_regs *regs, struct ve_info *ve)
+ 	 * EAX, EBX, ECX, EDX registers after the CPUID instruction execution.
+ 	 * So copy the register contents back to pt_regs.
+ 	 */
+-	regs->ax = args.r12;
+-	regs->bx = args.r13;
+-	regs->cx = args.r14;
+-	regs->dx = args.r15;
++	regs->ax = lower_32_bits(args.r12);
++	regs->bx = lower_32_bits(args.r13);
++	regs->cx = lower_32_bits(args.r14);
++	regs->dx = lower_32_bits(args.r15);
  
- static inline int __kvm_irq_line_state(unsigned long *irq_state,
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index e69156b54cff..1c95d1fa3ead 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -2161,9 +2161,10 @@ int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
- {
- 	u32 eax, ebx, ecx, edx;
- 
--	if (!is_smm(vcpu) && cpuid_fault_enabled(vcpu) &&
--	    !kvm_require_cpl(vcpu, 0))
-+	if (!kvm_is_cpuid_allowed(vcpu)) {
-+		kvm_queue_exception_e(vcpu, GP_VECTOR, 0);
- 		return 1;
-+	}
- 
- 	eax = kvm_rax_read(vcpu);
- 	ecx = kvm_rcx_read(vcpu);
-diff --git a/arch/x86/kvm/cpuid.h b/arch/x86/kvm/cpuid.h
-index 8b64d863e19c..95d09ccbf951 100644
---- a/arch/x86/kvm/cpuid.h
-+++ b/arch/x86/kvm/cpuid.h
-@@ -7,6 +7,8 @@
- #include <asm/processor.h>
- #include <uapi/asm/kvm_para.h>
- 
-+#include "smm.h"
-+
- extern u32 kvm_cpu_caps[NR_KVM_CPU_CAPS] __read_mostly;
- extern bool kvm_is_configuring_cpu_caps __read_mostly;
- 
-@@ -187,6 +189,12 @@ static inline bool cpuid_fault_enabled(struct kvm_vcpu *vcpu)
- 		  MSR_MISC_FEATURES_ENABLES_CPUID_FAULT;
+ 	return ve_instr_len(ve);
  }
- 
-+static inline bool kvm_is_cpuid_allowed(struct kvm_vcpu *vcpu)
-+{
-+	return !cpuid_fault_enabled(vcpu) || is_smm(vcpu) ||
-+	       !kvm_x86_call(get_cpl)(vcpu);
-+}
-+
- static __always_inline void kvm_cpu_cap_clear(unsigned int x86_feature)
- {
- 	unsigned int x86_leaf = __feature_leaf(x86_feature);
-diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index c8c6cc0406d6..3ba09093b5ab 100644
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -3593,12 +3593,8 @@ static int em_sti(struct x86_emulate_ctxt *ctxt)
- static int em_cpuid(struct x86_emulate_ctxt *ctxt)
- {
- 	u32 eax, ebx, ecx, edx;
--	u64 msr = 0;
- 
--	ctxt->ops->get_msr(ctxt, MSR_MISC_FEATURES_ENABLES, &msr);
--	if (!ctxt->ops->is_smm(ctxt) &&
--	    (msr & MSR_MISC_FEATURES_ENABLES_CPUID_FAULT) &&
--	    ctxt->ops->cpl(ctxt))
-+	if (!ctxt->ops->is_cpuid_allowed(ctxt))
- 		return emulate_gp(ctxt, 0);
- 
- 	eax = reg_read(ctxt, VCPU_REGS_RAX);
-diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
-index 0abff36d0994..45d4a03b202e 100644
---- a/arch/x86/kvm/kvm_emulate.h
-+++ b/arch/x86/kvm/kvm_emulate.h
-@@ -225,6 +225,7 @@ struct x86_emulate_ops {
- 			 struct x86_instruction_info *info,
- 			 enum x86_intercept_stage stage);
- 
-+	bool (*is_cpuid_allowed)(struct x86_emulate_ctxt *ctxt);
- 	bool (*get_cpuid)(struct x86_emulate_ctxt *ctxt, u32 *eax, u32 *ebx,
- 			  u32 *ecx, u32 *edx, bool exact_only);
- 	bool (*guest_has_movbe)(struct x86_emulate_ctxt *ctxt);
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 7d5b66287593..c60773349f35 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -1021,18 +1021,6 @@ void kvm_queue_exception_e(struct kvm_vcpu *vcpu, unsigned nr, u32 error_code)
- }
- EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_queue_exception_e);
- 
--/*
-- * Checks if cpl <= required_cpl; if true, return true.  Otherwise queue
-- * a #GP and return false.
-- */
--bool kvm_require_cpl(struct kvm_vcpu *vcpu, int required_cpl)
--{
--	if (kvm_x86_call(get_cpl)(vcpu) <= required_cpl)
--		return true;
--	kvm_queue_exception_e(vcpu, GP_VECTOR, 0);
--	return false;
--}
--
- bool kvm_require_dr(struct kvm_vcpu *vcpu, int dr)
- {
- 	if ((dr != 4 && dr != 5) || !kvm_is_cr4_bit_set(vcpu, X86_CR4_DE))
-@@ -8819,6 +8807,11 @@ static int emulator_intercept(struct x86_emulate_ctxt *ctxt,
- 					     &ctxt->exception);
- }
- 
-+static bool emulator_is_cpuid_allowed(struct x86_emulate_ctxt *ctxt)
-+{
-+	return kvm_is_cpuid_allowed(emul_to_vcpu(ctxt));
-+}
-+
- static bool emulator_get_cpuid(struct x86_emulate_ctxt *ctxt,
- 			      u32 *eax, u32 *ebx, u32 *ecx, u32 *edx,
- 			      bool exact_only)
-@@ -8955,6 +8948,7 @@ static const struct x86_emulate_ops emulate_ops = {
- 	.wbinvd              = emulator_wbinvd,
- 	.fix_hypercall       = emulator_fix_hypercall,
- 	.intercept           = emulator_intercept,
-+	.is_cpuid_allowed    = emulator_is_cpuid_allowed,
- 	.get_cpuid           = emulator_get_cpuid,
- 	.guest_has_movbe     = emulator_guest_has_movbe,
- 	.guest_has_fxsr      = emulator_guest_has_fxsr,
+-- 
+2.51.0
 
-base-commit: 41a2602f2947b91e237cd1ce85afcd162274470a
---
