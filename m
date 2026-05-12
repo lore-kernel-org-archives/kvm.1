@@ -1,122 +1,135 @@
-Received: from mail-vk1-f180.google.com (mail-vk1-f180.google.com [209.85.221.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF0F3C3421
-	for <kvm@vger.kernel.org>; Tue, 12 May 2026 20:24:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778617501; cv=pass; b=jcgTApu7npPOaTCnU3rHDNoZySHV9inmTxO0IV+ByYTe7saFsU/WmBPMsy3QT3KWRHPXh+bSNmB/h4ppgUalA92jHeA2Scea51sZeYKM2qgODO1FYOehPKSEfIVrO6XdiF5kBU+aDYsybel71Tbraoq43CW1VVt+oa/QHRPD7lo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778617501; c=relaxed/simple;
-	bh=p1Dt2Pau45+gr9BBZWBbRM+0pqU8mWL0SwtrndPS4cI=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qBzkY/+YylNEFdWlHxyMT55jiqubOQRxqH9dzcUO/seFCe8+CChgNN1hip827zIH2Xl+iUjcZLY8qBfQoDAzZ9V7JmtH4J9Rzom9sbW4HxY3ndd3urBMEnQ1151vV0Fff3DZzxppj71C/5q0segqtpWZO5ZEEXnl90LDCqOL2Ak=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ke+HVRC5; arc=pass smtp.client-ip=209.85.221.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79BC3C1970
+	for <kvm@vger.kernel.org>; Tue, 12 May 2026 20:26:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778617615; cv=none; b=Leuf5ytTLTh5gj9rZcEqWeog7AqB8aqmFg0bl9Vu/3MNud+U9DELj+8XIu8R/xn3pxq65VhHYs74djYbVJJIh7+cVZhDzMgp5LipEgA2uBGPZ1ORn+NGjU1N2qKNF3XmF8VxxcauaUN/lhLIXGMgRl4RXXl67gM0pmPbAOH6Qnc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778617615; c=relaxed/simple;
+	bh=ZkAqUSLBLLghmuczFbLlmEifeuByeu9FETpip9wySoE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=qaHc7fKx86BQO0Ac1UFaYUtOqObiVMi+ZvmA+DVJv4zVCdw3B7zqb3tjCLA0wXXvt4e1VEGTR5bc2tarZcUb7FV7yoXWedj4z1ySTFpUkfADXm9G9JYVcUYTt+QEk2p6lgva3I2B6MwhYAot4Iv1yucMKTKXVR0R7gMmN2z/wKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ImHDg9+J; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ke+HVRC5"
-Received: by mail-vk1-f180.google.com with SMTP id 71dfb90a1353d-575212eb419so4177087e0c.1
-        for <kvm@vger.kernel.org>; Tue, 12 May 2026 13:24:59 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778617499; cv=none;
-        d=google.com; s=arc-20240605;
-        b=fwkrtzEAeIoHocx5Ubhi2YiUkqGNxyoiTwk0xIShZGyJdsAPKFrYcdKZzn6OIaG1a/
-         oSiDD5LnfGbhOJGvA2BcjIQAr+8mzZbuQU1cVvktv+EFiJnVbX6n+4WKX8ZWEYZPQVWi
-         Tf/8lTgMpo8F0/AhGWwGtHvBgDC4VOwwVhUztEanfE8fYVZC3OQayHQXYYXy7Na3wirR
-         VEQm2QBV95wSSdWu7XWDdYU4NSYeTpHRA1Ocmd468BDv1FZVO32r5BATCmTHQAnX2DtG
-         KgvTGeD/29Zub8w6d0n9UOC0+mU99tiRKMU76mUZkF4urkG99NBXNTrQbQ3Q/abNMNbZ
-         evrg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=6A32fFSH9OPwjkkpWNRgZBSlRVvMKc+ege6TQRAjjbc=;
-        fh=asIdoflnLiJWzf54775ya7ch8uBJ1avB1St/C8QpTBo=;
-        b=Oa1MTngeaqwB9pD1QeIm2qG/4vaap4QdJR+qPq9mUbpS9eQhkGaM2IF0I0nt6uL5XP
-         uxMqdpgZzPdXQ79IhnWQDu8TNoOCceXFOmumCSBF+oe3quQXIehZAG10G1OTJ94lsaU+
-         SEOg+tm6pzEaBWCsuiksqonhDml53ym0WE68bu8+GpRcMSM9HJZwbi2lKKX618C3XyWV
-         rkmt7yRjKTEan1y+GObYSukZ7QuUE4pNIaG3ll8b/PDR2ttdWdMZw4JdEKkEXzGAUR8D
-         Yb0mEdYny/49jhTJMiVFRlTwXNZ1Kmm6DTibZ2nLUE1G7gwa0Od+2ZwWz252LhDtEHXD
-         Eukg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778617499; x=1779222299; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6A32fFSH9OPwjkkpWNRgZBSlRVvMKc+ege6TQRAjjbc=;
-        b=Ke+HVRC5Axson/fPx69NHKv1kMSMzrBpU0e/d8rzsJbl7KnfxHHJQ9SlxHQyvDViHR
-         +11AAD7I1vH2/gOvjo/2wd4kAb58+JYxrHOm+9uFEufz3M5YjiyoEoH9lwE9yuGfPCC6
-         HJ9jgzjz9SMi39dtgoO2zO4CPHYf3arg6EgHlLPeR3MbXRx9wQ73Q1u/jO310MRQMap6
-         L+jcJ392bfxrlA5Vka1/+YRACksqbijC/+jnvxncFnlO+Z4i9Bqr06KBXUACrdUBvSJ0
-         ja6+F3xGmkRERBsdjYrhqUM8K6aqJAyAhD5uojYQ02o4mmST2HrIKBz5F7HSp4rBaTgc
-         RNhA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778617499; x=1779222299;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6A32fFSH9OPwjkkpWNRgZBSlRVvMKc+ege6TQRAjjbc=;
-        b=kwVIwHJvagFll/ZT0tlCrl0lhKeSnDNw+LpEOXnMgp4olQ/ZT+kcsEu/M+vhueSXqu
-         mMqLr+RDyGBgup7jCPsWb6UMjsgnyeVRFw84Kl5QOZC6qrgknIWLB/qDRlBR+Xk7r7li
-         MbuDVXk0tBOPOwnDWG7DNlhbWwSiIqJPqwJlqQ9RG1vh9cpJNlq1Qn+IzxTCID0MfbMV
-         ht9/TGw+TCwi8VDtngmOwndYjhCpc/BjwIMSwQc8l73QwozmwJDd0Qnfl1T5inuIPAPR
-         G6ir7fyD5jcmyvPc0DA1W6Smk1u1lggmy89CrlEtt3dQ11fuanhFXQ8o97C0LWqEH5gR
-         YYww==
-X-Forwarded-Encrypted: i=1; AFNElJ83TL/9iBq7Or+BoXoOxg4KpHWowsk5yzL2p2172E4X/zKgWjEghZlFtZ+BaBvxw3F2smk=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0lLsxl6bKUhjxWLqvp1kLLGcOgH5A6iPRWsN9ZObAVp3SGnh7
-	y2FmHBV6NavfCc2Jt4YqJ3t46ibOfujAnve2vkkIJCu8LZaBJfep6aVaXIPw610rnhohHPyPTnX
-	VK3bqCVgXXi+NM5c9l7v8+G8kDZUyYfTycRRFwhsK
-X-Gm-Gg: Acq92OH8ZopPneHUSPQzcFIip0i4aor5Vl73G7OVN6Jfv5SBJVYWAmDDIl7XnxASQdY
-	rGUu6Yn3cTgR8x7PYMMr3tMLalt5LuomfQbPSYSQBec1lUYtGmiTZSE2lsBthztAaBBchQOz4OZ
-	B8s8EdI/+bS07ngTArTCi5E3Np9FjlT59wgI7hp+UECV1RDjERUpZl28GwF3wYnhUw0Tdq3MyXo
-	Td281jYupi3DFfVPeAT+5SVl7ahuZCUZo98ThsK3eZPNG0TFn6kdcQTVVpsdvihFFd28q+O3tWT
-	79wlRKlwLVPUaWG7UXpOsY5POHXaGfRKzc9BNDf3LotipS4RReoCF5eMqH4Vf+1BvFKDlBHWZhO
-	78Uba
-X-Received: by 2002:a05:6122:814:b0:575:9cb5:a87d with SMTP id
- 71dfb90a1353d-575cfc6f98bmr1737434e0c.2.1778617498178; Tue, 12 May 2026
- 13:24:58 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 12 May 2026 13:24:57 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 12 May 2026 13:24:57 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260511113759.610924-3-tabba@google.com>
-References: <20260511113759.610924-1-tabba@google.com> <20260511113759.610924-3-tabba@google.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ImHDg9+J"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778617611;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=PeaPwxj6CE2jWtwEguCT34VqbzG7tuL668TllqlmsLQ=;
+	b=ImHDg9+JteBrsQPWfNYOEGWrp9OMqgm+UrGeqh8iSoU7BMElnaPAJj+t6+0zgr4M2sXZjW
+	eOSdShQoMlm7J3kRZW/33NpVTXJPE5QhakniM47AugEh0mVuBdPyxjx8Y8R8mbH9m5zXSX
+	7kvntRcAGbhxvncWlt0nSBanXBvg+A0=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-529-gJ2ljXNJOdWsrddMWfyePQ-1; Tue,
+ 12 May 2026 16:26:48 -0400
+X-MC-Unique: gJ2ljXNJOdWsrddMWfyePQ-1
+X-Mimecast-MFC-AGG-ID: gJ2ljXNJOdWsrddMWfyePQ_1778617606
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 25C2B180044D;
+	Tue, 12 May 2026 20:26:46 +0000 (UTC)
+Received: from [10.44.48.5] (unknown [10.44.48.5])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 1A6781955D84;
+	Tue, 12 May 2026 20:26:41 +0000 (UTC)
+Message-ID: <3e819925-b83f-4c2f-a67b-03d534016558@redhat.com>
+Date: Tue, 12 May 2026 22:26:40 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 12 May 2026 13:24:57 -0700
-X-Gm-Features: AVHnY4JAG5WXg_aVbHSnEQMcpSlet0iZdAsV7gUZdzLesUHy1Hns5TF1STKi8r4
-Message-ID: <CAEvNRgHfBqqC1K7enCPX3jqWE0smJ3E0NE=kUPSX7N7g5KQrvg@mail.gmail.com>
-Subject: Re: [PATCH 2/2] KVM: selftests: Fix FD double-close in kvm_vm_release()
-To: Fuad Tabba <tabba@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Will Deacon <will@kernel.org>, 
-	David Matlack <dmatlack@google.com>, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Documentation: kvm: update links in the references
+ section of AMD Memory Encryption
+To: Ninad Naik <ninadnaik07@gmail.com>, corbet@lwn.net,
+ skhan@linuxfoundation.org, seanjc@google.com, michael.roth@amd.com,
+ liam.merwick@oracle.com, vannapurve@google.com
+Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, me@brighamcampbell.com,
+ linux-kernel-mentees@lists.linux.dev
+References: <20260511174302.811918-1-ninadnaik07@gmail.com>
+Content-Language: en-US
+From: Paolo Bonzini <pbonzini@redhat.com>
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <20260511174302.811918-1-ninadnaik07@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-Fuad Tabba <tabba@google.com> writes:
+On 5/11/26 19:43, Ninad Naik wrote:
+> Replace non-working links in the reference section with the working ones.
+> 
+> Signed-off-by: Ninad Naik <ninadnaik07@gmail.com>
 
-I agree that perhaps in this case manually setting up the memslot after
-mmap()-ing anonymous memory is better since it's more explicit about
-what is being tested.
+Applied, thanks.
 
-> kvm_vm_release() closes vmp->fd and vmp->kvm_fd unconditionally, and
-> kvm_vm_free() calls kvm_vm_release() at teardown.  A test that calls
-> kvm_vm_release() and then kvm_vm_free() without a
-> vm_recreate_with_one_vcpu() in between double-closes both FDs.  Since
-> kvm_close() asserts on close() failure, the second close trips
-> TEST_ASSERT and aborts the test, or, if the FD was recycled, silently
-> closes an unrelated file.
->
+Paolo
 
-Never thought about this fd-recycling case, I think this change still
-has value in avoiding the silent closing of some other file.
+> ---
+>   Documentation/virt/kvm/x86/amd-memory-encryption.rst | 8 ++++----
+>   1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/Documentation/virt/kvm/x86/amd-memory-encryption.rst b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+> index b2395dd4769d..bd04a908a8db 100644
+> --- a/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+> +++ b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+> @@ -656,8 +656,8 @@ References
+>   See [white-paper]_, [api-spec]_, [amd-apm]_, [kvm-forum]_, and [snp-fw-abi]_
+>   for more info.
+>   
+> -.. [white-paper] https://developer.amd.com/wordpress/media/2013/12/AMD_Memory_Encryption_Whitepaper_v7-Public.pdf
+> -.. [api-spec] https://support.amd.com/TechDocs/55766_SEV-KM_API_Specification.pdf
+> -.. [amd-apm] https://support.amd.com/TechDocs/24593.pdf (section 15.34)
+> +.. [white-paper] https://docs.amd.com/v/u/en-US/memory-encryption-white-paper
+> +.. [api-spec] https://docs.amd.com/v/u/en-US/55766_PUB_3.24_SEV_API
+> +.. [amd-apm] https://docs.amd.com/v/u/en-US/24593_3.44_APM_Vol2 (section 15.34)
+>   .. [kvm-forum]  https://www.linux-kvm.org/images/7/74/02x08A-Thomas_Lendacky-AMDs_Virtualizatoin_Memory_Encryption_Technology.pdf
+> -.. [snp-fw-abi] https://www.amd.com/system/files/TechDocs/56860.pdf
+> +.. [snp-fw-abi] https://www.amd.com/content/dam/amd/en/documents/developer/56860.pdf
 
->
-> [...snip...]
->
