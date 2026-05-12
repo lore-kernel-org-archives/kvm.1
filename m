@@ -1,122 +1,146 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1DE43A2E21
-	for <kvm@vger.kernel.org>; Tue, 12 May 2026 12:40:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778589606; cv=pass; b=ukv00IMkM5HNAvJhc0n7my7Qu2y75hiGj6vg/n62fFyAmw326CGoz2F67uXSYTNWSk9le0dUBhe9yLYO5GDy9Y0c8eGhE5WnixR5tVecK5wt6lNnhtKQfzydzVltpZ0PMAJE89cofb+aMqU/gBqxkrth4xfU6CnEMbyMcEFXbpw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778589606; c=relaxed/simple;
-	bh=ZjnY8vIhRprJOct81kjjG0QGweHvVimxLsEl6GOTCtM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PHaOkJR9Q152qXZfi1J07IBOSffD2+RhVAexFYBzxKu/GnzfXAAIHuCM2uDzmp26KMoZZe7Ib7b++SWXm2phRCMVdt1a+Rpk6dwotuUa0jrhm4KuCdY0dFVMHN3yN18CX6gDgfMBi6KhPLZeVHNdng5g5cMkDF8WCyS+/j8hJpY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t+WQjrAU; arc=pass smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BB51372049
+	for <kvm@vger.kernel.org>; Tue, 12 May 2026 13:17:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778591837; cv=none; b=hq4pgVPzLVlOwgTiDNo3iTYCJBp7VArvQ8Z/3iBv3NsRiAhFaPIAQoG9SUbaDQIpJ5h7Kjl9hgo5PEQC4SAh27AaUNH1aWz6XulelF0Q/21qCO8QFJGDPhVIYVUtOy1c24HT7c2eStZ+Dd4OnAAM9Owr9MNBxwqNDTr/1pYMlG0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778591837; c=relaxed/simple;
+	bh=wwNRLIF1JFp5xt9HeapzPaIKxk407Y01fVL/BIECwnY=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=V0zUuXNGNlcwdGHvojP+ssoI2DKKmd2i+CDkzsCPmTAcw7gaVJfTkbmnUMrCz6IAv8h5qKz8tjIMUVvhx9VDpfDO5+54G3rVLVw5YrErIbTn1pc8ioc47zIOkgWAesHqJQ/xz5EZLtLSJARELjvceeythSqxJ6sbTSElaGYmevU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KqGiBWlv; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t+WQjrAU"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-671f1a0d0c5so71a12.0
-        for <kvm@vger.kernel.org>; Tue, 12 May 2026 05:40:01 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778589598; cv=none;
-        d=google.com; s=arc-20240605;
-        b=QR4C2+wvAbWt0fEWdQx7PzkH7H1ho74XFC5ULwem7iY+wYx3MPCRAH14wwLzkjgIVq
-         UcHpmWyMo9gQLE7lXkY9EoCtGIwKJSt7iopBcQVpVdik7R1PJHworiLsxPw4ACy9Hsgj
-         pPO6uikBLpBm+Slf3dHkIVspnEVqDRevn4DWA+osW4vtQlihBX2gT5OhW42bheFMluSE
-         hwGjpPL4EtZwojIr9keW2xhLYKV1fVzsjTlHcz1K04WJck12EehjI13r7zEPk4Qtb8Wl
-         HscsA3vH7kflKK7FcaebG6UpJW4+pEseEipqv6yNWsehwmwsUDUzrwK5X9zCwoUAjuvG
-         QDvw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=GZKiNWlWL2FAZflKzAl5phrZCGRQJtgrE7BPel69owI=;
-        fh=IKrFi+sBNnZ0PtoQvj4SFECUyrOOcbovWnd2PY0zfQE=;
-        b=TkSY3Bpav+7nxvvK3L/BHzwYfTfAn7wXpWd0ufPfe+kx/oT9Fj+AxZnhiz0S0Yvk+S
-         MfFpvP5UhvbO8PnNkZ51b25Yu91DSdZVYhGBIlix9qJsb5QTHGDB0Mgdd3uGkZ/RKlKH
-         J1pKUKTlLbZoDH6sknm4NsSdlHiN0l4BIWBAzdSAthQXnokj5hRH0BwdLguYl+SjpRtD
-         55Wh48jDqDUj9tzFggUTvnSmWx+xsS9BdR0Z6J1y18hNoQ6deQ6XMbjiLHV6CmDZ4LOt
-         IUSQJ/c9cFytgTC74fjWyn1pCPkUm5WFvZPABsGZp0C/E9EIsSGUmwWXRBjLUP8QLeb/
-         Kgkg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KqGiBWlv"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-48374014a77so50826365e9.3
+        for <kvm@vger.kernel.org>; Tue, 12 May 2026 06:17:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778589598; x=1779194398; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1778591833; x=1779196633; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GZKiNWlWL2FAZflKzAl5phrZCGRQJtgrE7BPel69owI=;
-        b=t+WQjrAU0yMoz/73MBtW2am2mOoXDtdLZCwevLTkPiHNM8X/5GJwcJwg8PW8Rox4DW
-         qAENuuO7gLDo384Ek26I/EgF5e9zNcHykCsDRhj3CDhLKe8bGM3gBZbXV2RTCfj6PW2z
-         UwF13tI0SMf/WyOipLXntPNmX/eieX6lqFdcr47lEGnh69pfCPt5aJQ7z5qFtWEzJArn
-         lQdWEiAoNNKL1RFhkbBsYUcqRSFvDk+pz4qiT2p7Ci6UoXziZ+gxpxHytYaFJmebz7hm
-         Cccq7U4+uZp9rirmjhJh1z2Mz43QL9cW6ycqb56CJJFC9AIax2hYzUUimYwEL4epiWcD
-         r0bA==
+        bh=qSTTjErtCCV7PDluuTX4InQQCaNvPmqczetdbYZrylo=;
+        b=KqGiBWlvJ97L0+fCiJN2zFlQUEtHbxwmSSaIiI9BZw0QSZZdWxwf6xfhEoGYFtFqvJ
+         MluAmPRVS4y1+rbAk9nlVmf5byTvQHLYsr1+cTlywgRFgfyUQV5Ak4z4ylIQElAkAfbA
+         iZkJHoMVX5RgJXfXDI990SZo1g1Lzz5zjCIbV+CDrisEegNQCHuqveQq58KwzrJLWAig
+         1ouhNbypuJKjFscYnw0iMAWbAWZ4KIdYBYaBIdJvwDd1L+1bIrF3e+Bt++4QZ5mr6B95
+         iBlU0oSzui1Xc2rFJ0J4fCIuYE4mu9+lVbgpbtiJHKCHC2hZv/v54uuiMff9t2lnc27n
+         1nww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778589598; x=1779194398;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+        d=1e100.net; s=20251104; t=1778591833; x=1779196633;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=GZKiNWlWL2FAZflKzAl5phrZCGRQJtgrE7BPel69owI=;
-        b=YpA2Z9cOYGXc1STLlAKpqhxtZ17JzYvUnFmZycS7VOaZXFnLi96ATftgWWUahEOOv+
-         Rl9TD/yrdV5dVJ3DxPiDZSoXE8u6dA/V0LPOISxKEmX8pO85IAsQfCzOuVC5TiD0wbUh
-         kxWbZTijOz8nd0I5Nw4aeZThcuV3HZ66BSuoCsdt4e2NsO/2VSeybbT/ItCgOsh7rrW7
-         XPkBS1D9OZmbmWSDl/yuLEqcVJZjwD7rvEan58dfl+CGSWuwteWELMj8RZyPDEWaqJXC
-         M3ZB9zzPiBplEAkIjp/jieOVyQRMkrikbYmRi+YhOnhD2tyYn7pPPO/oh0WHBumP/Xng
-         tKQA==
-X-Forwarded-Encrypted: i=1; AFNElJ/WN2E9JnmyiGdpVBfvhFBfcgcIy/6AOwk4Z6Quyjo82Y/Sn+6iufPJbWvt1g9R3eH6LXM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxHKhfenrs9igYYXOV1s/tdaY0oey46Z9oCHqdroodY9h2Sdlwg
-	BpiBGC7EusL5FhP1cVAUYg312iEd1mNvzCxwBTBMsOxCxLYOCssL4G411HY666CFpP2r0xCQ9gL
-	/g8MhnmDu2lXxH2Pxk1EYluaSBqz5sYTNn7HZjZr3
-X-Gm-Gg: Acq92OG4yKfYo1NJhDBa1B+RCcHjwcSXvcoJcny0AL4wmGHYVILz2DJ2NhvTBJrrYAO
-	5wo1qCMqOC8r5YJ+m5Abkm8oXM8bry3233BGPaLtzMPxFOjHsIMK7DyDGTpBIPeAhbwP+Q+UMND
-	ZUrPYTEnDs7cFaybQ9ZLEKSaDY7aIwBFyMEMe3AByLm+TAtCMK47HUfMGrhGZYM5mHdtJYxENq9
-	D7gm1YsaUblU23JnyRWaavR8BSKJm7QECpyeHrC8aEVs30YVkBY3HHG5JsIZF/i1QbsoE+dJPjI
-	pmHXn0K/QRlZkcofcQ==
-X-Received: by 2002:a05:6402:160a:b0:66b:e078:5934 with SMTP id
- 4fb4d7f45d1cf-680daf097a1mr34294a12.12.1778589597723; Tue, 12 May 2026
- 05:39:57 -0700 (PDT)
+        bh=qSTTjErtCCV7PDluuTX4InQQCaNvPmqczetdbYZrylo=;
+        b=FuAQDI2YL3wo5O7gv2t7vjK3U9XXW8UokxmOWPQyM3Vt6E/OxAfFYMTiVwceakT3K0
+         P9Cbdrin7gfxUQFqDLg3X/yeOUZAD4+UHsMv0XN9eMKoENizuyKMi2Tu/pC+d1pFGVls
+         CbeN/fJOiryF4UEDdvuQ9vvDuo8zynCDJDhN7ZKjNWisfSwOh3O4yXajAQCN7bQeDkgu
+         90xbwesWMHNOf5x3HYG2r5pNshZ7WBi9Y3IZhIgRvsFbCbZmxy0JEve6CuCBh48xlk3k
+         BA8+kBL5d1SiS8OsQXTypjm7VSzGoJw+q0qUBYVJ9tZEYuzxGryCRtn5XC6LXiwg0L8Q
+         u6hQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9boNeON4KE/fy8kK6eW6AKoS7lRlrDti7yhbflfuChTXMdxi3wR2rIkOtIJbU6dpmwNxA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzos3PWGZ+W889odEzR8rGdAl9Clip41L2uB//Ash3U8nkVLn29
+	T4K5rrtjSKMmkAmZ4TGzpTC/h/bcEPj0hnt+Grvr0Ul8pqsIstvB0AIy
+X-Gm-Gg: Acq92OFvmERG+2RHbNZREwVG12faaIRwhmXgzTUdXJl7eg8j4/h9F5dekvitbF18LE+
+	XgrefRorQRoSlYQJ9a8iIt1+pmuHwULqqpTOw+Hqqv1/11vCbCURixn9MxsFO/4Rze1teyEOEeX
+	9tFZs9yk1GCAhYdIu6oJa5Zg/lS1uOJh9ASxEAKdqPzz8hNW3Nsg3HjXkTh05u2vI0/zydphv27
+	SXDsN+jHO/gQjvnAEkJWhgS5xUzkBfAols9dMVl3WoT29ef5a9h5i5NwlLaSPRp59w/pvctgaEg
+	VBu8aWdOaIg4cYXq9FyFBNvXCnMM8w1b1kfMI9ZKeI5sFw3Hq+q7AhXvWNxiPyHFHefQp8tsgv3
+	4hU9MHwXErjhRumIzGhawzx1gB/+o44L+n3lZog/S0UGjZUcq0nj83p5J6BsP+xq7IUhdiTFdYm
+	MdpmVAX23n6/uGWn3yYveShKuWBOwyanzxBRyUDreU6pYAwoskknqDGxQ1t2/3
+X-Received: by 2002:a05:600c:6299:b0:486:d76c:fa57 with SMTP id 5b1f17b1804b1-48e706f11d0mr232288505e9.17.1778591832718;
+        Tue, 12 May 2026 06:17:12 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e8f42a845sm17282245e9.20.2026.05.12.06.17.12
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2026 06:17:12 -0700 (PDT)
+Date: Tue, 12 May 2026 14:17:11 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Alex Williamson <alex.williamson@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm <kvm@vger.kernel.org>, Jason
+ Gunthorpe <jgg@nvidia.com>, Kevin Tian <kevin.tian@intel.com>, linux-kernel
+ <linux-kernel@vger.kernel.org>, Yishai Hadas <yishaih@nvidia.com>,
+ rananta@google.com, stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] vfio/pci: Fix racy bitfields and tighten struct
+ layout
+Message-ID: <20260512141711.70c49471@pumpkin>
+In-Reply-To: <20260511221609.3837652-2-alex.williamson@nvidia.com>
+References: <20260511221609.3837652-1-alex.williamson@nvidia.com>
+	<20260511221609.3837652-2-alex.williamson@nvidia.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260508231353.406465-1-seanjc@google.com> <20260508231353.406465-5-seanjc@google.com>
-In-Reply-To: <20260508231353.406465-5-seanjc@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Tue, 12 May 2026 05:39:45 -0700
-X-Gm-Features: AVHnY4LX6uhXx_8fzCenS_BE6k3foQYYVMRhYxLYCauWDZIM_aClZOiuzSgeNIc
-Message-ID: <CALMp9eRcOMSrrtp0SR+hVLAKaOu2AWKJnpGT_51mQ2vJOJpzfA@mail.gmail.com>
-Subject: Re: [PATCH v3 4/9] perf/x86/intel: Make @data a mandatory param for intel_guest_get_msrs()
-To: Sean Christopherson <seanjc@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	James Clark <james.clark@linaro.org>, linux-perf-users@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	Mingwei Zhang <mizhang@google.com>, Stephane Eranian <eranian@google.com>, 
-	Dapeng Mi <dapeng1.mi@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Fri, May 8, 2026 at 4:14=E2=80=AFPM Sean Christopherson <seanjc@google.c=
-om> wrote:
->
-> Drop "support" for passing a NULL @data/@kvm_pmu param when getting guest
-> MSRs.  KVM, the only in-tree user, unconditionally passes a non-NULL
-> pointer, and carrying code that suggests @data may be NULL is confusing,
-> e.g. incorrectly implies that there are scenarios where KVM doesn't pass
-> a PMU context.
->
-> Fixes: 8183a538cd95 ("KVM: x86/pmu: Add IA32_DS_AREA MSR emulation to sup=
-port guest DS")
-> Cc: Jim Mattson <jmattson@google.com>
-> Cc: Mingwei Zhang <mizhang@google.com>
-> Cc: Stephane Eranian <eranian@google.com>
-> Reviewed-by: Jim Mattson <jmattson@google.com>
-> Reviewed-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+On Mon, 11 May 2026 16:16:02 -0600
+Alex Williamson <alex.williamson@nvidia.com> wrote:
+
+> Bitfield operations are not atomic, they use a read-modify-write
+> pattern, therefore we should be careful not to pack bitfields that
+> can be concurrently updated into the same storage unit.
+> 
+> The split fields (virq_disabled, bardirty, pm_intx_masked,
+> pm_runtime_engaged, sriov_pwr_active) are mutated post-init from
+> contexts that don't serialize against the other writers in the same
+> storage unit, so a bitfield RMW could drop an adjacent field's
+> update.  The remaining bitfields are touched only during probe or
+> close where no concurrent writer exists, so they stay packed.
+> 
+> While reordering, place virq_disabled and bardirty earlier to fill
+> an existing alignment hole.
+> 
+> Fixes: 9cd0f6d5cbb6 ("vfio/pci: Use bitfield for struct vfio_pci_core_device flags")
+> Cc: stable@vger.kernel.org
+> Assisted-by: Claude:claude-opus-4-7
+> Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
 > ---
-Reviewed-by: Jim Mattson <jmattson@google.com>
+>  include/linux/vfio_pci_core.h | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+> 
+> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+> index 2ebba746c18f..24e8db5b1c0d 100644
+> --- a/include/linux/vfio_pci_core.h
+> +++ b/include/linux/vfio_pci_core.h
+> @@ -101,6 +101,8 @@ struct vfio_pci_core_device {
+>  	const struct vfio_pci_device_ops *pci_ops;
+>  	void __iomem		*barmap[PCI_STD_NUM_BARS];
+>  	bool			bar_mmap_supported[PCI_STD_NUM_BARS];
+> +	bool			virq_disabled;
+> +	bool			bardirty;
+
+I'd put those two after the :1 fields to avoid an extra hole.
+
+-- David
+
+>  	u8			*pci_config_map;
+>  	u8			*vconfig;
+>  	struct perm_bits	*msi_perm;
+> @@ -117,16 +119,14 @@ struct vfio_pci_core_device {
+>  	u32			rbar[7];
+>  	bool			has_dyn_msix:1;
+>  	bool			pci_2_3:1;
+> -	bool			virq_disabled:1;
+>  	bool			reset_works:1;
+>  	bool			extended_caps:1;
+> -	bool			bardirty:1;
+>  	bool			has_vga:1;
+>  	bool			needs_reset:1;
+>  	bool			nointx:1;
+>  	bool			needs_pm_restore:1;
+> -	bool			pm_intx_masked:1;
+> -	bool			pm_runtime_engaged:1;
+> +	bool			pm_intx_masked;
+> +	bool			pm_runtime_engaged;
+>  	struct pci_saved_state	*pci_saved_state;
+>  	struct pci_saved_state	*pm_save;
+>  	int			ioeventfds_nr;
+
