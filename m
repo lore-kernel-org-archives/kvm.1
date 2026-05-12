@@ -1,115 +1,125 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74AB2E413;
-	Tue, 12 May 2026 01:58:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8B5728F948;
+	Tue, 12 May 2026 01:59:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778551085; cv=none; b=LbRBYZw16MBtFAOH71NtLcjHmaU8XGxtElTwsqlKoOg1jo0HoKUOP3re0GAnPcBOi7hHLSu4GGo5wm+V3tcLjHyUDhbAevMffDCi69fzE8sKQW0wHalFGojvlMDjgawjSqHVQEU8yt0NrUmxsmj4Nfpf6qqfQG/9Ewy9fZBJv1I=
+	t=1778551199; cv=none; b=jCmNRybeY+p7KKPk6kl8UGlmXfBZbdctU1sn1j16tZcneqqMfZKwLAZXanDjbkiLRmUO9EWGPaiz5mCzdH4XLrIIr+zjP1q6m/PpVRb24QyuYKK5LkFZU70LzFsSVT+OaPM+eDXq6MZyYP9IkDFdT/MMXTtOLPAJtHo0ibw+Ojk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778551085; c=relaxed/simple;
-	bh=EgMDJ590uo9KLyq5nyrnIP1cOHLNirC5KhAQf/i55sM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ewnz00iwBP5xf1IgXoLn4L5hlzd5g7bmgUETW6XoWel9WI9XWjlaLcC0NBk+RKRSIsb1PrbPOdqT8I5TTTdaiUiY3JxwyK2jzXqb54ijaUyIvGKN7mUInXCRnWUlBkAj9qI+FGxppPaswVB0tsH71zOm2RD6B7joAZCW4F+vv4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZuwAfqq0; arc=none smtp.client-ip=198.175.65.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1778551199; c=relaxed/simple;
+	bh=JqUKm1zabpCzOKVv8zteO3eSNVnNbK68AaZt1Yo4LwM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i6bF5NJyWf1hTuKT1toPfiCkpknNdHvLAvyc7P/bzla+kZrIYCNm9yqBXNq7ljivILm971DJjK31Ygakn95yNw6hGRDMFS4xynOegB7nqG7ALPozRm0tLlEUGP1gxN1UrZLX20fY87CHeKuQDHbojqb7Uq7egAfJ2GaAVqDYH/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=amiXDQpl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZuwAfqq0"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778551084; x=1810087084;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=EgMDJ590uo9KLyq5nyrnIP1cOHLNirC5KhAQf/i55sM=;
-  b=ZuwAfqq0UAeQsm4hnMcDiKoPonEedOg3rSjdk48W/D+eSikN/plX6De5
-   Gsr3nGUPS2n7sjk/T1z5P42QviovrZ/haqZ755oQz6QgJTxbHm6LoEDxZ
-   cJmaGLA+Q3rmWcYnggu8k+vl0OIZgt8ozK8FjDhdGlduWjZ9gROXqaDsj
-   HVSay1pyAsfuZq7u1KlFFy1smrvLcHAbKujDOWlG3haPsxiXjeyan3+g8
-   3qV5oVE3WSE04j381gPDx15zJGj4dJM1yOajV2INhK95ZDYnCkvdzrgf6
-   6TWaTNDXTov9ioJt8ZHft4KKT2P6+rMGedHJHu3+F6+ll/NJecklVfWR3
-   Q==;
-X-CSE-ConnectionGUID: DyqKJRiUS26shAPq11tSBg==
-X-CSE-MsgGUID: 7kEAoL/aQdGruv8lDgUoCg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="102113675"
-X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
-   d="scan'208";a="102113675"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 18:58:04 -0700
-X-CSE-ConnectionGUID: vDojhQ9TQoa9HlXOEugagw==
-X-CSE-MsgGUID: GCtHKsvMR0uKcuKPVxRKVw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
-   d="scan'208";a="237711383"
-Received: from fanlilin-mobl.ccr.corp.intel.com (HELO [10.238.1.228]) ([10.238.1.228])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 18:58:00 -0700
-Message-ID: <d88d19f5-0a96-4115-97f7-8daf1edd625a@linux.intel.com>
-Date: Tue, 12 May 2026 09:57:58 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="amiXDQpl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E25CC2BCB0;
+	Tue, 12 May 2026 01:59:59 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778551199;
+	bh=JqUKm1zabpCzOKVv8zteO3eSNVnNbK68AaZt1Yo4LwM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=amiXDQplOjPOrSnNOBF7LEJ+/6eh4XlQI5wNiRtAo0rNSJnfQpzdCEiNMqMkyEfNV
+	 sS2bW8JA4ZmxPBy2K3vglpLXfjButk5eoxbQBK7hz64jRaxN14hoDlaNthKBAdDcgI
+	 08YexPxrpbj6dHvIC2fVi9oETcXGuLc1vWV0sZGIaI93m97o/XVgCaapDU0NrA40aP
+	 kKgMwmdV9yRret4upPWBVeK5B1NA+U7xGJHGNl7BXz/f2PhixazkJPHWBff5LgC70P
+	 prKwEC0Car3L0JhQZXIe3WFY1AiU4fRi0m4KkPozM3/7MrJFYTGdRV6fy6vjsPSAA5
+	 5LUvHHJk4ykgQ==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id B02A11AC5843; Tue, 12 May 2026 02:59:56 +0100 (BST)
+Date: Tue, 12 May 2026 10:59:56 +0900
+From: Mark Brown <broonie@kernel.org>
+To: Paolo Bonzini <pbonzini@redhat.com>, Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>, Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>
+Cc: Jiakai Xu <xujiakai2025@iscas.ac.cn>, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	Andrew Jones <andrew.jones@oss.qualcomm.com>,
+	Anup Patel <anup@brainfault.org>,
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+	Jiakai Xu <jiakaiPeanut@gmail.com>, kvm-riscv@lists.infradead.org,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [PATCH] KVM: arm64: Add memslot for ST_GPA_BASE in
+ check_steal_time_uapi()
+Message-ID: <agKJnKOcvbPZ5cgA@sirena.co.uk>
+References: <20260501021639.2563219-1-xujiakai2025@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] x86/cpu: Skip reading MSR_IA32_PLATFORM_ID in
- virtualized environment
-To: Borislav Petkov <bp@alien8.de>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
- dave.hansen@intel.com, seanjc@google.com, pbonzini@redhat.com,
- kas@kernel.org, rick.p.edgecombe@intel.com, vishal.l.verma@intel.com,
- xiaoyao.li@intel.com, chao.gao@intel.com
-References: <20260430020953.1405535-1-binbin.wu@linux.intel.com>
- <20260511100451.GBagGpw7jRBDdHkBgp@fat_crate.local>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260511100451.GBagGpw7jRBDdHkBgp@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="uWRoW7NMniSf8PmN"
+Content-Disposition: inline
+In-Reply-To: <20260501021639.2563219-1-xujiakai2025@iscas.ac.cn>
+X-Cookie: Truckers welcome.
 
 
+--uWRoW7NMniSf8PmN
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 5/11/2026 6:04 PM, Borislav Petkov wrote:
-> On Thu, Apr 30, 2026 at 10:09:53AM +0800, Binbin Wu wrote:
->> diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
->> index 37ac4afe0972..1bc0c350726c 100644
->> --- a/arch/x86/kernel/cpu/microcode/intel.c
->> +++ b/arch/x86/kernel/cpu/microcode/intel.c
->> @@ -147,6 +147,10 @@ u32 intel_get_platform_id(void)
->>  	if (intel_cpuid_vfm() <= INTEL_PENTIUM_II_KLAMATH)
->>  		return 0;
->>  
->> +	/* Don't try to read microcode bits when virtualized. */
->> +	if (cpuid_ecx(1) & BIT(X86_FEATURE_HYPERVISOR & 0x1f))
->> +		return 0;
->> +
->>  	/* get processor flags from MSR 0x17 */
->>  	native_rdmsr(MSR_IA32_PLATFORM_ID, val[0], val[1]);
->>  
->>
->> base-commit: 9974969c14031a097d6b45bcb7a06bb4aa525c40
->> -- 
-> 
-> Does that work too?
-> 
-> diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
-> index 18d2eff7a4b7..1b24de94bdd5 100644
-> --- a/arch/x86/kernel/cpu/microcode/intel.c
-> +++ b/arch/x86/kernel/cpu/microcode/intel.c
-> @@ -139,6 +139,9 @@ u32 intel_get_platform_id(void)
->  {
->  	unsigned int val[2];
->  
-> +	if (hypervisor_present)
+On Fri, May 01, 2026 at 02:16:39AM +0000, Jiakai Xu wrote:
+> The refactored check_steal_time_uapi() creates a temporary VM via
+> vm_create_with_one_vcpu(), whose default memslot0 only covers GPA
+> 0..~2MB.  Setting st_ipa to ST_GPA_BASE (1 << 30) causes
+> kvm_arm_pvtime_set_attr() to fail with EINVAL because gfn_to_hva()
+> cannot find a valid memslot at the target GFN.
+>=20
+> Add a memslot at ST_GPA_BASE in the temporary VM, mirroring what
+> the main test already does.
 
-hypervisor_present could be uninitialized if dis_ucode_ldr is true.
-intel_get_platform_id() is also called during the normal cpu initialization.
+The regression in Linus' tree that is fixed by this patch is still
+present today.  Adding Marc and Oliver since this bug manifests on
+arm64, adding Anup and Atish since the patch introducing the regression
+was merged via RISC-V.
 
-
-> +		return 0;
+> Reported-by: Mark Brown <broonie@kernel.org>
+> Closes: https://lore.kernel.org/lkml/afM8WEe4gG5tL4fH@sirena.co.uk
+> Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+> Signed-off-by: Jiakai Xu <jiakaiPeanut@gmail.com>
+> Fixes: 40351ed924dd30 ("KVM: selftests: Refactor UAPI tests into dedicate=
+d function")
+> ---
+>  tools/testing/selftests/kvm/steal_time.c | 4 ++++
+>  1 file changed, 4 insertions(+)
+>=20
+> diff --git a/tools/testing/selftests/kvm/steal_time.c b/tools/testing/sel=
+ftests/kvm/steal_time.c
+> index 7df2bc8eec02..2b01b466ddc1 100644
+> --- a/tools/testing/selftests/kvm/steal_time.c
+> +++ b/tools/testing/selftests/kvm/steal_time.c
+> @@ -213,6 +213,10 @@ static void check_steal_time_uapi(void)
+> =20
+>  	vm =3D vm_create_with_one_vcpu(&vcpu, NULL);
+> =20
+> +	/* ST_GPA_BASE needs a valid memslot for gfn_to_hva() to succeed */
+> +	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS, ST_GPA_BASE,
+> +				    1, 1, 0);
 > +
->  	/*
->  	 * This can be called early. Use CPUID directly instead of
->  	 * relying on cpuinfo_x86 which may not be fully initialized.
-> 
+>  	struct kvm_device_attr dev =3D {
+>  		.group =3D KVM_ARM_VCPU_PVTIME_CTRL,
+>  		.attr =3D KVM_ARM_VCPU_PVTIME_IPA,
+> --=20
+> 2.34.1
+>=20
 
+--uWRoW7NMniSf8PmN
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoCiZsACgkQJNaLcl1U
+h9Aztwf/TJOL07dodf+kbqHGMGanbVGP2UgWLGXE9K1upoIUu6EOLDb52Qn10qVt
+Uiq0EHGtwmhChGZqkdaP7GRRUuP2/3UbVC2O7Ts/m4RWs9AtBdmr3pn0pxwUNtg6
+w4wYmTNV1Czs782mzaa+ad0VcEXjdY3uirSYPMbDgwTEL+IHbrVs2SS20fTH8i/V
+BAi4DqyDVCRnu49QmGRqa0HvwrmNzP+5fBnJXauS5bbQqxBb18ePzLNKQ9fypFP5
+NEZvRAiRn/hwhWa/zh3YCqYrm3lFaR3uh0y+ndMHoD2BiPNPZzkVqF0/rzEZ//V2
+T5msZhZHP8j1DVjINnNAFjQ8p07K/w==
+=toXn
+-----END PGP SIGNATURE-----
+
+--uWRoW7NMniSf8PmN--
