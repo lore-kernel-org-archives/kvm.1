@@ -1,198 +1,147 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 600E63B9D8D
-	for <kvm@vger.kernel.org>; Tue, 12 May 2026 21:08:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE2B3C09F0
+	for <kvm@vger.kernel.org>; Tue, 12 May 2026 21:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778620134; cv=none; b=AUgHQekAFoJ4nhHUizuQ5KlhMY1Qb2uqGEOk3AkTODou2teAWpSKIOi2wgtLjSnpkaF0xO0wG9LND6gB2E++D1lZQm4O14QFowIAlsKL8irHs43lKOano9Qo8GzIu8D8hIDCxTeoihvGl99xvqgzJY6E7wdbZz4drZmHW9KIXMI=
+	t=1778620236; cv=none; b=MdmpUf+/bvT79pwRXQGM2pXkQY69N7t+N1axf2zNTpfeb9zYZodF1jsSg5ao4zDJGiEQ+9FD54bW7gWti/aK4JlBWpmApch74L2YOmKME58n+dhxOjqPA8hWXETWssWY8Ki2OHCmxBOle69lHUTJBPSOObQxjoiHo2DnvO4WRXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778620134; c=relaxed/simple;
-	bh=lVQULdD/A4RjT0zUZMk3M8iSFtlqF65QiAkLantxi7A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=D7DADtoqHQDaFCDzcbb9wOs/aKkhRwAOZqyMcfi0MaNW//OPhveKPQ7EH7FvXU73I/GojJXYx8UwhneC0oHwY2WUPTem+4aymzs+udbfX2XwGYiyN2E+fkPI2j3sarVFvwg+QJuZcl1elRwJCekGGfh+a6FlSQiX3bhoBlkM1Mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QO/TzThk; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=f9N3OjJ4; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1778620236; c=relaxed/simple;
+	bh=uBHMCskfBSaYnyaqioWhzZvzpVDQIOeEvV9K2NZ5eoQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=loM5/poz/rRg+YGRKaVxrr/pVYhweNXMK8YYMX4BNKcQLKC8xH62SaDla6BA206bqpMC+jYMZ7uPhqTa8iNcc23fIp5bfxcwe53iJqZBuWomnQVpqylo4WVQBlM91/pm26m8GM//wlxBQBimGD/wFEEVyk57Q+p/tSYak+jgrhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Jx9V9F+u; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QO/TzThk";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="f9N3OjJ4"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Jx9V9F+u"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778620132;
+	s=mimecast20190719; t=1778620234;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=g/8gnhE1UQWtU4rtDGjUph1rzOQHdUIwoTJ2mkb4wrw=;
-	b=QO/TzThkBmSEXgZFCgNgXuxjvjqRNmM7eCIioIHaW9g7XyOT/wg/wNdowr34R1xoYzCCOr
-	jbLp5VtcTFXQ560WznQ+FFOPN+Nn1kSdAWEB+GLvNPhyf37Z4ZVr04UCjrpeFiblEVbyaG
-	UI2USTHbs/JCW3C8KL9gJlMwCrtIUIY=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-655-PIRi6-TqMm6xfMi31Ln2GA-1; Tue, 12 May 2026 17:08:51 -0400
-X-MC-Unique: PIRi6-TqMm6xfMi31Ln2GA-1
-X-Mimecast-MFC-AGG-ID: PIRi6-TqMm6xfMi31Ln2GA_1778620130
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-4411a1f9601so4550373f8f.0
-        for <kvm@vger.kernel.org>; Tue, 12 May 2026 14:08:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778620130; x=1779224930; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=g/8gnhE1UQWtU4rtDGjUph1rzOQHdUIwoTJ2mkb4wrw=;
-        b=f9N3OjJ4enGAae7MXij+G6Z03o/7EphAoEtbxFgZ5PcKApSvGEGXCgXAP1egCGe7IF
-         hB/Ga9tA8WG14hQrxxLyBAze0Awt3oiqK6+6zLn+ZCU33On1v7pCs9VCiby8hvbP+u1Y
-         5pD0xTBRdkk4un9j7dYABvlm+3cw7EXbqq+DUEnxsBmlA4mRQq2NeykN9sbFuGa7wMcn
-         k3aBwXn81kChoWdOwiFsmhNKbiR2wVtz3VbkEmM9TUWng3jtn6/vFgJ305fcwXuYRbVM
-         55pjoDCbNqHGwIFvAlF+Aj0Skwn58SQuwCQbVsexc4ehY5xA5gMao2IJ1YgIQKoSlYbW
-         pNKg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778620130; x=1779224930;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=g/8gnhE1UQWtU4rtDGjUph1rzOQHdUIwoTJ2mkb4wrw=;
-        b=Cx2WUeVXJDoEzBEUWUVqI76FfBQ0IFgQzVOH32ZmeAyUfeo8AP4OOd8R8W3Q+UZNK3
-         pV/ChjMpUcG/fvbSrdEEgCkDWqQaJuqs6EYxBEk2s/AOy9MLKV8Gw10QNe4jyVWw2h7W
-         fi3E+Va4vIKsI9ugV9/rjhb5DJw4uDVxS1j7vdx6mt+8QtxanNNSSzHQeZe5iP8NOTvF
-         Qh1b8//Uw2fR25IFSh1xlpgnME5RE6ddq+qGS/J4DTw/kEqvLEJXtj1FzOesbHSdi7TQ
-         Ik7No+eFuyFQuuMlxFczT0iFBU7DfI2zauoGSiAUhyQa8Aj/y4nW3+m0yBOaXK+PZq/B
-         Th2Q==
-X-Gm-Message-State: AOJu0YzLOUeNrbaHBC+RZ/h/U3xFYVtBM38I4VXwbi/4tOj+4F/yuncv
-	wGkCkY+EtGTUZQo/gZBzuNdl+vwaDagZ+MAS0FeA8uDXM5rinm8Yovb0opSgpuZhyN/4fAJPujM
-	TodHWrpxSHGe/7ey6pnSFr3jGi8TPJ73mJjM7Y9i3yTbjnw//DrIz34wQWNOrmfqOi2YbIBJof9
-	kESVPw3yVyXYkF92K59wC+4y9F1n77/8wZmciOZA==
-X-Gm-Gg: Acq92OECp0nSVwSqsxYLV7xbTguVCpNgvXv4DxTPkMZDEdL1EnPffs8YHPNbh0iV/7X
-	lp6jbGck5bKWSaqwgSUWf9HV7yvkyehFyGRS3UPnt8pyHfVHAJTk3GUAPRJRS0ciR9KCxtPYdow
-	SztmxDTo3etEBSbZHOqtsj1N7an6cwhUxUgrxg7Ab/SK/81FKl9Ndle3Hida22qTiHrZgdOQh5r
-	hi9S7+Axw6LuCJ/evZ8ajlEObqxExFVzoPuw5KDOPjMEtqL59y8B75OPX3JfNukqAQl+ksscWes
-	H7Sui09X6r6qFdf/ZzF1WrCCDRHhIkXgWlqPXkg0YPCAGx/bpj3Vpg5ZThUQ2K1PpznNWwIOTh1
-	VTNhQqCtEqMfgxdX6FlV/KDXbiyrF1eoWPp51zgxPK9adimHjHlLwnFXFCCv0xGqjUDVe7UOZQg
-	rFnmcZUjstALIgnnSajT8GGupjMWL3
-X-Received: by 2002:a05:600c:8b5c:b0:48a:7f90:2231 with SMTP id 5b1f17b1804b1-48fc9a3c5e9mr6096405e9.19.1778620129745;
-        Tue, 12 May 2026 14:08:49 -0700 (PDT)
-X-Received: by 2002:a05:600c:8b5c:b0:48a:7f90:2231 with SMTP id 5b1f17b1804b1-48fc9a3c5e9mr6096105e9.19.1778620129264;
-        Tue, 12 May 2026 14:08:49 -0700 (PDT)
-Received: from [192.168.10.48] ([176.206.106.181])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e8e5efe71sm29289205e9.1.2026.05.12.14.08.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 14:08:48 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: kvm@vger.kernel.org
-Cc: dwmw@amazon.co.uk
-Subject: [PATCH kvm-unit-tests] taskswitch: add test for ICEBP delivery via taskgate
-Date: Tue, 12 May 2026 23:08:47 +0200
-Message-ID: <20260512210847.3039048-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.54.0
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=U3+iT7cntS6UopIIR+ZaGFcviAq70fCD9O0+QvEgzZQ=;
+	b=Jx9V9F+uUb+p1nIxRk/ugNFVFOl28QxIPe3bNGgukFtTUbajgglVDOYLosKIZDhvQhzn9o
+	kFm5fs7PAr31034igCFLsIe7KU8Qvbkb8LlmsVOF51WtnHfLG6oj40pYzg1TCjQGkhuFyE
+	stwbe3JNTATsei1rvubrfMuVvw32+Yg=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-669-FrgLGK-CMVSXh1sRy7yfWA-1; Tue,
+ 12 May 2026 17:10:32 -0400
+X-MC-Unique: FrgLGK-CMVSXh1sRy7yfWA-1
+X-Mimecast-MFC-AGG-ID: FrgLGK-CMVSXh1sRy7yfWA_1778620230
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 27FA318002CB;
+	Tue, 12 May 2026 21:10:30 +0000 (UTC)
+Received: from [10.44.48.5] (unknown [10.44.48.5])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 816A719560A7;
+	Tue, 12 May 2026 21:10:23 +0000 (UTC)
+Message-ID: <9b76002a-dbd4-4f8f-8279-96ea0ff3966a@redhat.com>
+Date: Tue, 12 May 2026 23:10:20 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: SVM: Always intercept ICEBP, add INT1 selftests
+To: David Woodhouse <dwmw2@infradead.org>,
+ Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>,
+ "Saenz Julienne, Nicolas" <nsaenz@amazon.es>,
+ Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+References: <e03f092dfbb7d391a6bf2797ba01e122ba080bcd.camel@infradead.org>
+Content-Language: en-US
+From: Paolo Bonzini <pbonzini@redhat.com>
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <e03f092dfbb7d391a6bf2797ba01e122ba080bcd.camel@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-ICEBP (INT1, opcode 0xF1) generates #DB as a trap, and this
-triggers a corner case in SVM.
+On 5/7/26 13:22, David Woodhouse wrote:
+> From: David Woodhouse <dwmw@amazon.co.uk>
+> 
+> ICEBP (INT1, opcode 0xF1) generates a #DB that is architecturally a
+> trap, but on SVM it was not always intercepted. Unconditionally
+> intercept ICEBP on SVM to match VMX behaviour and ensure correct
+> event delivery semantics.
+> 
+> Add two selftests exercising ICEBP:
+> 
+>   - int1_ept_test: verifies that ICEBP works correctly when the
+>     exception stack page is not present (EPT/NPT fault during #DB
+>     delivery). The IST stack is evicted via MADV_DONTNEED before
+>     executing INT1.
+> 
+>   - int1_task_gate_test: verifies ICEBP delivery through a 32-bit
+>     task gate, exercising the legacy task-switch path for #DB.
+> 
+> Tested on Intel Sapphire Rapids and AMD Genoa. Without the SVM fix,
+> int1_task_gate_test fails on AMD with EIP pointing at ICEBP instead
+> of after it. With the fix, both tests pass on both platforms.
+> 
+> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
+> ---
+>   arch/x86/kvm/svm/svm.c                        |  21 ++
+>   tools/testing/selftests/kvm/Makefile.kvm      |   2 +
+>   .../testing/selftests/kvm/x86/int1_ept_test.c | 116 +++++++
+>   .../selftests/kvm/x86/int1_task_gate_test.c   | 298 ++++++++++++++++++
 
-When you get TASK_SWITCH (which always has fault semantics), you look at
-the vectoring event type to decide whether it was logically caused by a
-trap, and therefore whether to move %rip forwards before entering the
-new task.
+y u no like kvm-unit-tests?  For the task gate test it's much simpler, 
+as all the infrastructure for 32-bit IDT and GDT is already there, and 
+there is no real KVM corner case being tested.
 
-AMD CPUs don't distinguish instruction-induced #DBs (i.e. ICEBP) from
-exception-induced #DBs (all others), and also don't report an
-instruction length for an ICEBP-induced TASK_SWITCH.  For this
-reason hypervisors have to intercept ICEBP unconditionally, handle the
-FAULT->TRAP conversion in the hypervisor, at which point the #DB-induced
-TASK_SWITCH occurs with %rip on the correct instruction boundary whether
-it was instruction-induced or exception-induced.
+See 
+https://lore.kernel.org/r/20260512210847.3039048-1-pbonzini@redhat.com/ 
+for a conversion, which is about 1/6th of the size of int1_task_gate_test.c.
 
-[description by Andrew Cooper]
+Paolo
 
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- x86/taskswitch.c | 46 ++++++++++++++++++++++++++++++++++++++++++++--
- 1 file changed, 44 insertions(+), 2 deletions(-)
-
-diff --git a/x86/taskswitch.c b/x86/taskswitch.c
-index 0d311498..7f5df7fe 100644
---- a/x86/taskswitch.c
-+++ b/x86/taskswitch.c
-@@ -7,11 +7,13 @@
- 
- #include "libcflat.h"
- #include "x86/desc.h"
-+#include "x86/processor.h"
- #include "vmalloc.h"
- 
- #define TSS_RETURN		(FIRST_SPARE_SEL)
- 
- void fault_entry(void);
-+void icebp_entry(void);
- 
- static __attribute__((used, regparm(1))) void
- fault_handler(unsigned long error_code)
-@@ -33,19 +35,59 @@ asm (
- 	"	jmp $" xstr(TSS_RETURN) ", $0\n"
- );
- 
-+/*
-+ * Handler invoked via a #DB task gate.  When the CPU switches to this task
-+ * via the IDT task gate, the outgoing task's CS:EIP is saved to the main
-+ * TSS, so reading tss[0].eip yields the saved EIP at the point of #DB.
-+ */
-+static volatile u32 icebp_eip;
-+
-+static __attribute__((used)) void
-+icebp_handler(void)
-+{
-+	print_current_tss_info();
-+        icebp_eip = tss[0].eip;
-+
-+	/* catch invalid AMD behavior */
-+	if (*(unsigned char *)icebp_eip == 0xf1)
-+		tss[0].eip++;
-+}
-+
-+asm (
-+	"icebp_entry:\n"
-+	"	call icebp_handler\n"
-+	"	iret\n"
-+);
-+
- int main(int ac, char **av)
- {
- 	const long invalid_segment = 0x1234;
- 
- 	setup_tss32();
--	set_intr_task_gate(13, fault_entry);
-+	set_intr_task_gate(GP_VECTOR, fault_entry);
- 
- 	asm (
- 		"mov %0,%%es\n"
- 		: : "r" (invalid_segment) : "edi"
- 	);
- 
--	printf("post fault\n");
-+	report(1, "jump to task gate");
-+
-+	/*
-+	 * ICEBP causes a trap-like #DB, so the saved EIP must point past the
-+	 * 0xF1 byte regardless of how #DB is delivered.  On SVM, when #DB is
-+	 * delivered via a task gate the hardware-saved EIP points at the
-+	 * ICEBP instruction; the hypervisor has to fix this up by advancing
-+	 * RIP before the task switch.
-+	 */
-+	extern unsigned char after_icebp;
-+
-+	set_intr_task_gate(DB_VECTOR, icebp_entry);
-+	icebp_eip = 0;
-+	asm volatile(".byte 0xf1; after_icebp:");
-+	report(icebp_eip == (u32)&after_icebp,
-+	       "ICEBP via #DB task gate: saved EIP %#x, expected %#x",
-+	       icebp_eip, (u32)&after_icebp);
- 
- 	return 0;
- }
--- 
-2.54.0
 
