@@ -1,190 +1,226 @@
-Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5813E379C4B
-	for <kvm@vger.kernel.org>; Tue, 12 May 2026 08:06:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778573212; cv=pass; b=CyCwV/lvAmBsi9Q+lMjuViTp6MhtImOLlnm205T8i9MPsUDHyTNr1G5WHLkmjJzZlOqYrGNphbGn/8EACJ5WL86RUH5J28cGQbk0cKDvpZbL/MJUE/wYQY8/Q3Z5cwivDj2KSbvtjfDmPO0I2rsdX6GtjF5XyCoPTT4RgNpB7AY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778573212; c=relaxed/simple;
-	bh=CEPI/IQy+YJsaCiP6F0+ttkRfE9DuAoAzIjprwjhmd4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uXeX8NKh4bKHwaJ7Bizi0gUxcVGDvVGpEWZjWd2elms+CFkHF24SrrIBaemOMEUsb5/NE/mfU7DUTZg4R6sj2GCyTM+TWeHls5pyHCQrt7mCLC5uVQMJaZUCXu19g70oiITM1MzTgtFK2SKrZmtmYHvwTHI+rP+/AjCMUCyHnt8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=q/OiResI; arc=pass smtp.client-ip=209.85.160.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24B0480DEE
+	for <kvm@vger.kernel.org>; Tue, 12 May 2026 08:07:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778573266; cv=none; b=W8RzGdqjtokFK0lSQdqT9vAmKYmIu0lQIGYNfqVNji7NX/nbExP699zSHVr63RZpbtd+HaV014OBDsD53rBb71HZyaAsiaiWKzmPTEeGXh4J0WdjgH+GF1bxKnxgR8Y79uDmmgrV4PpwmmS1PC0fdoRiSBbWUA2vjhfgWUcGjis=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778573266; c=relaxed/simple;
+	bh=sDobT2Y3suLHnIc3YUUU79mcvRr9manOsYeGpx1/XLs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bxbwhU6FBmZvScB9pKsRPAugD9maoIxngxn7XqB0QMRMh/vbz+Y4oztxSbKCLQT/YC+OX/bj71Ai98JJ66i9mNCS3u1MeWzirZBDAVpbJCPYOfjelyRcyI0muTPf1uJf8M+c5Q1pC9kyykNMCK4zXCB+x5kRNvZlPQNCo6WCEvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B/jGe/Jv; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=s/8bvbAi; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="q/OiResI"
-Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-50d864c23bdso13271cf.1
-        for <kvm@vger.kernel.org>; Tue, 12 May 2026 01:06:51 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778573210; cv=none;
-        d=google.com; s=arc-20240605;
-        b=icyZA7dup1rgGzqKCkyEnS+EqEDAyIawgj0WMPySPz/Uhj51ldwaZBjz/Ax3hhfeVf
-         cs5aaxN/wk7rFGq+sZJztxcHw0ST9CidSOY5GU+AtvCHhwsqFGHW+4vz16tQ5l9JHZlq
-         AxxlQVy5+ayy3Oa87bYgaL3/YHSIT2pgQdNA3Nugl2ztxVYHIBOsxkPigZAAzj5ag0LS
-         Uh6roVIMgM9xPUVhvZUJ3z46UCdKpybh2+fHYCoL1YDQ2x9G9+cESe38qyVVuuRISJhG
-         WEBJMxxTMyzQ4p6JjsEzfZgbzhP+1vCSZj1Ik3V8QVcwlhYXV1OHaRZ9MS6OOjwhl7wm
-         R0KQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=UcX628tp7zp2ETdFQrXxdl3RL6TmG7KIBWzuiytzzfA=;
-        fh=cCdTFcvI8XBv9HfFSl8ApUimSk0XDF9OLF2/uXnB+38=;
-        b=HjBkMHcZ8/XiXFadzXil/suGzP9ywfMqlCF95Ocne3BwgmQ2koavxqPxpTRiFv3twK
-         SnlfNKVIlFVdUzznNURFJNU8mmy5LopqUbWaAbxfGmK7vuc4DfXwRHv+mseF4JS7W5U5
-         H6nu+K1Viqh10VDTH6UAIn8uwvpozV5jUnp1hM4YLZHfRAl7lSS9FN8vSCxuDVREIsot
-         yTCFw5MWn/p8Ab8rVqgkvtkjZnejfQQIcAoEk+mCs5LT6+MTDOGdu/cm9w2qAbphn/BW
-         2fZAsYcV/QGE0o8uHxFUa739N/GXhgPWMJfmzWJlv2yBD0ppSozsDElJdJHKVaSwU0dt
-         9c4g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B/jGe/Jv";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="s/8bvbAi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778573264;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=aAlloYEZDF1UlqHHhoebVA5d4jsXxGoTRkEIcdVVNEs=;
+	b=B/jGe/Jvz2N+KdyNQqYdlDMCUqtBJgiqS1Y0MhPOReGCl1syduBXR9S/ozurKeImILj+MK
+	Fl9Vq97kT1NjpiPQnfQevb60yISPJM7gvCganj1iK+xoDYmPF4PKZ+EBqBu0HiUwHXHxj+
+	gHgPKl2SekKnoer39gj88Fii7JeWXw4=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-223-CT_rNiF3PNGsQh_oQPe1UQ-1; Tue, 12 May 2026 04:07:42 -0400
+X-MC-Unique: CT_rNiF3PNGsQh_oQPe1UQ-1
+X-Mimecast-MFC-AGG-ID: CT_rNiF3PNGsQh_oQPe1UQ_1778573261
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-48e79219704so15096715e9.1
+        for <kvm@vger.kernel.org>; Tue, 12 May 2026 01:07:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778573210; x=1779178010; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=UcX628tp7zp2ETdFQrXxdl3RL6TmG7KIBWzuiytzzfA=;
-        b=q/OiResIaDUq5Dt2h59sPjwruHV3s24oa4TChS6rP4f9Oqz1k+/ATPP9i+cf4Hxmoa
-         uMFqNpWxRv3HAQNuY0hYBcLrtdid6U9Z/gpeJvzkCxY3Jf2/l49fpodUk4PC6ire32Dp
-         DBhoKn5plMFGCCk7adii53eKN9T/6RXJmvAGca7EtKotNUAmvpVVB8q7kWR6ghis5uVd
-         mJOlbcqTMk8lK/TM2OmDQA/EY8htueCJyVep2YjZCFqYWprVmrRWeGjmmu3L2vQ/CVig
-         NKqgKgMdM5lk4ix5DubPHe0v1NF8+mgHJLDmAKZ6XbAZwqIbIZs3FyEavKGfKFYCULD7
-         a9rA==
+        d=redhat.com; s=google; t=1778573261; x=1779178061; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=aAlloYEZDF1UlqHHhoebVA5d4jsXxGoTRkEIcdVVNEs=;
+        b=s/8bvbAiTgWHzqMFzO5LCTsm4ttElr/944xDpNhCjj+PW1zi31G2o6J/esr5RcvYH7
+         rJVR9yEHwd5cukHjZe97Xykb8aw9UPIAjB68EjhGH0H8+lxZHG4ZfPIZM6ZGG9ZRE0+d
+         /f5DOzcR9xFFWHeCoMJM4Pi4Td95ezD7uE6QRahUaZQhpIZxouTZQG6z9DTAVsl7Mihz
+         qDOs7kOBUvRAsk8sS8mIYOsuSzGCVcDM7fGVJXjfgWtA7bbySdkID9zXRo8jOv5vRhGB
+         rqZQ78AjVCjAZBOhJeY6CZsswQmg5g7P/RN/aD3KGFt7kXd1gD2B35NqAfnT0TvP5/At
+         JjmA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778573210; x=1779178010;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1778573261; x=1779178061;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UcX628tp7zp2ETdFQrXxdl3RL6TmG7KIBWzuiytzzfA=;
-        b=i0z92XIdNIAf9en6gExgn+BC+P1eg4M307/f9vvcUszt3u3TvsbcY4oDVyvZXPDrrs
-         47m9C+yo2lxno5b6/mxOBX6qK+akfhLsqmmI0eM5ZIfDSnzJZIiwcK2RrXOBmF2Gk7WZ
-         /T6mQj3RpFUtzkFy9d5Nn+N3yh+2Wl2pxrQ9Tonh0mG0oI95JFsiSL6nQZfwjy29ZJ/9
-         AzLWtq+Ud+EJu5GlAexG4B3ooDAvHeh8ewqzepdsPsuOHYMqnjMVXL+k6qQ8APQ1H4rr
-         D1HJG+fVbvaUJKEAhaQA7C7mK11Av11Yfq2h9hzTYM67RXelC9OnVmpFoVCZ4V3tgBvA
-         hekQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+QfzqO9Nxufn/pD4WzKlb9CCGm0G9Ssz8qzb/efw8RcoKc8NnaIIGQ+xI0CpggavRCXqo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQwmwvqkkBN+rAlv9GCMkJ4vCXJpysT17Ith4sJALlKoa55I4I
-	zZujnRdfpdqw4jmDpwaR7M46e+kCvJdRvSW0RRt055zBkIJ/zwvTtWff/dtcWSvULbsnlCa/mlb
-	vZHog/zO+iFyhPHxh391Nx9HMvCWB+0JHn9mUrzqh
-X-Gm-Gg: Acq92OEPCqMoasesVGaewxy5LrCgCJYJOwTFoeXChtM7xrbk8j670aRYMiNbLyG9DWv
-	uz7ogeVoQUxY9Flq6D28a/z69wc2i+Qam9AaspWX8A5Jljh6wZKvuUMCaXYBzIZqQHQ+1zP2IzN
-	2+Ojbcf5cWRbq+upsenHsAKe9BECX2oLRSuXAtVOqaPr1V3fazzxck+gmfmPQwzoF7b5yODJPEL
-	hxF62uJQNPc1by+Fbspr+4hpUTPyLLqW2EQkC3eL5s4+xcehJIqNmKBPKk55iQzDPMiv3yu3a5j
-	AXlA/YCUu5RoD+mYpnacBTb7DnYdf4bBrAE/sDeTwe593/xi
-X-Received: by 2002:a05:622a:4c85:b0:50e:5eba:cadd with SMTP id
- d75a77b69052e-514d44cc15amr7418571cf.2.1778573209581; Tue, 12 May 2026
- 01:06:49 -0700 (PDT)
+        bh=aAlloYEZDF1UlqHHhoebVA5d4jsXxGoTRkEIcdVVNEs=;
+        b=c2mMpHMgVeebmlULXnHfPjBGFT2XczHgJZRZ9D5x4SFJ7PShvlMijHHP0QS3IfBkbE
+         2ZTj8VASarigH27yY/SvyA2ooimsHI+tzvAKMJzltqH43tmWoPpiZ+lmTa3gwEy9casQ
+         w/ozO4Qxommg7Oy0P82Q/v/tQWG07otXabH4xAvrccXFAF8Gq/Qquv/qBYGXTb8CAWAE
+         KNyYKsYEgHXC0jM1Y/QrbrkRJ1Z482uAfu33Ac6soAEby41/mz2iWXxMqim6jH/ZmZX6
+         CysdbB6fXONupdXAN5AYDweoVvbQvA7xxHeP8KKHIBXeQbZwjq+NxABhBsZ9K/xlVOAD
+         IPAA==
+X-Forwarded-Encrypted: i=1; AFNElJ8fDDy5iJCI8kuzABHydcrTbG9PJK4uFmS7Gi2SHf2VB9vhGoyuYjklCbtfKDUTXGvOowQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8w5PaOmMCH6ITHnySu8YKg60mjpghqUysOXMWwKqJ2cNb3Gto
+	dexkluUOLU+2pSUSwZ8qW8yUcF0F0qhxhsvt/0NanFYBVnl18AUCjRiDOtUjrMwquGBAUw8alkL
+	teCGp/gHFnqVzcG4XiffxU2pOlqim2Bd7MPiOfpEYUlgKtJI2IW3rgQ==
+X-Gm-Gg: Acq92OElcmjgHGuo1iI40bp/hupqhNxEnIH+roCDNShdahZql4iwJRt5FnPdPrlGGXJ
+	S1UrggAIPS+CcB0LpmAB/boXT/ZHKQslid1Ae1oKpL3yc4YsPDbOiLXIwgtT68l5NnpM4lc1Pii
+	1ezRLRnocwXsgzz8eUChGiu8Om45ymANvC1v95bakxla2IJbTt4/BaS3yQaSKl64kc/G1thd4B9
+	QEhTOZBnY9v2IAn5Yo8e5W7CnxyB35ErsUqyhWTJntQWCI3UeRN65aWLIUzC6qqUBxN/ST8UskC
+	OdqjYdBrhPatra321i8dVP1T7OD7O13GKhL1o490EmqlbiB6Pp60zDnc6AaOEZ+jFicpkR3dp7h
+	acpTKqsbs9FAktmh4nOB49EDen2aGStXQI3VfptbJK6WhH4NFCFF9Ij/VJVjN
+X-Received: by 2002:a05:600c:83c5:b0:488:9fb7:376d with SMTP id 5b1f17b1804b1-48e8fe834f0mr28133935e9.28.1778573260825;
+        Tue, 12 May 2026 01:07:40 -0700 (PDT)
+X-Received: by 2002:a05:600c:83c5:b0:488:9fb7:376d with SMTP id 5b1f17b1804b1-48e8fe834f0mr28133145e9.28.1778573260301;
+        Tue, 12 May 2026 01:07:40 -0700 (PDT)
+Received: from stex1 (host-87-16-204-231.retail.telecomitalia.it. [87.16.204.231])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e90677b04sm26948005e9.11.2026.05.12.01.07.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2026 01:07:39 -0700 (PDT)
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: netdev@vger.kernel.org
+Cc: "Michael S. Tsirkin" <mst@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Eric Dumazet <edumazet@google.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	kvm@vger.kernel.org,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	virtualization@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Stefan Hajnoczi <stefanha@redhat.com>
+Subject: [PATCH net v2] vsock/virtio: fix skb overhead accounting to preserve full buf_alloc
+Date: Tue, 12 May 2026 10:07:37 +0200
+Message-ID: <20260512080737.36787-1-sgarzare@redhat.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260511113759.610924-1-tabba@google.com> <20260511113759.610924-3-tabba@google.com>
- <agHugdIrptaXZW-2@google.com> <CA+EHjTw1z7ROF7u0fKqxDGao7S1kELxNWtyWhLoPQx5uwVfuWQ@mail.gmail.com>
- <agI7M7rZ_NZJyjhj@google.com>
-In-Reply-To: <agI7M7rZ_NZJyjhj@google.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Tue, 12 May 2026 09:06:12 +0100
-X-Gm-Features: AVHnY4KIFSvZuGyoufiD2HkBfoHCrSG6pWS-dmqt_3tBMtmR-2r50gULg7YpqJU
-Message-ID: <CA+EHjTxDvkDGyd-uyAqW7ErVxcKnUBpCYAgmnYfCdh+CCSq=3g@mail.gmail.com>
-Subject: Re: [PATCH 2/2] KVM: selftests: Fix FD double-close in kvm_vm_release()
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Will Deacon <will@kernel.org>, 
-	Ackerley Tng <ackerleytng@google.com>, David Matlack <dmatlack@google.com>, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-On Mon, 11 May 2026 at 21:25, Sean Christopherson <seanjc@google.com> wrote:
->
-> On Mon, May 11, 2026, Fuad Tabba wrote:
-> > On Mon, 11 May 2026 at 15:58, Sean Christopherson <seanjc@google.com> wrote:
-> > >
-> > > On Mon, May 11, 2026, Fuad Tabba wrote:
-> > > > kvm_vm_release() closes vmp->fd and vmp->kvm_fd unconditionally, and
-> > > > kvm_vm_free() calls kvm_vm_release() at teardown.  A test that calls
-> > > > kvm_vm_release() and then kvm_vm_free() without a
-> > > > vm_recreate_with_one_vcpu() in between double-closes both FDs.
-> > >
-> > > That's a test bug, no?
-> >
-> > Fair point.  Let me describe the actual use case and then I'd like
-> > your guidance on which way to fix it.
-> >
-> > The pKVM selftests I'm preparing need to verify that protected guest
-> > memory is zeroed when the VM is destroyed before the host regains
-> > visibility of those pages.  The test pattern is:
-> >
-> >   vm_userspace_mem_region_add(vm, ..., GPA_BASE, 1, GPA_PAGES, 0);
-> >   /* run protected guest, which writes/shares/unshares its memory */
-> >   ...
-> >   TEST_ASSERT(get_proc_locked_vm_size() > GPA_SIZE);   /* still pinned */
-> >
-> >   kvm_vm_release(vm);                                  /* trigger destroy */
-> >
-> >   /* host_mem is still mmap'd in the test process; pKVM should have
-> >    * zeroed it before unpinning */
-> >   TEST_ASSERT(is_zero(region->host_mem, GPA_PAGES * PAGE_SIZE));
-> >
-> >   kvm_vm_free(vm);                                     /* tidy up */
-> >   TEST_ASSERT(get_proc_locked_vm_size() == 0);
-> >
-> > I used kvm_vm_release() because it's the only public API that closes
-> > vm->fd to trigger kernel-side destruction.  But the existing callers
-> > follow it with vm_recreate_with_one_vcpu(), so the "release + later
-> > kvm_vm_free()" path isn't exercised today.
-> >
-> > I see three ways to make this clean:
-> >   a) This patch: kvm_vm_release() becomes idempotent for its three
-> >      FDs, matching the kvm_stats_release() idiom it already invokes.
-> >   b) Leave kvm_vm_release() as-is and add a dedicated helper, e.g.
-> >      kvm_vm_destroy_kernel(), that closes vm->fd to trigger kernel
-> >      destruction while leaving the kvm_vm struct intact for
-> >      post-destruction inspection.  kvm_vm_free() learns to handle the
-> >      half-released state.
-> >   c) Something else entirely, e.g., the test should manage vm->fd
-> >      directly and not rely on library helpers for this pattern.
->
->     d) Fully kill the VM; validate the semantics with an explict mmap().
->
-> The entire point of the test you are writing is to verfiy that a guest_memfd VMA
-> doesn't somehow cause KVM to leak state.  So, make that obvious instead of abusing
-> APIs that kinda sorta do what you want, but not really.
->
->         mem = kvm_mmap(region->mmap_size, PROT_READ | PROT_WRITE, MAP_SHARED,
->                        region->guest_memfd);
->
->         ...
->
->         kvm_vm_free(vm);
->
->         TEST_ASSERT(is_zero(mem, ...));
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-The test isn't about guest_memfd.  The pKVM support that just landed
-via Will's series [1] is built on anonymous host memory, and that's
-the only backing this selftest exercises (VM_MEM_SRC_ANONYMOUS and
-VM_MEM_SRC_ANONYMOUS_THP).  The property under test is the one
-documented by the same series in Documentation/virt/kvm/arm/pkvm.rst:
+After commit 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb
+queue"), virtio_transport_inc_rx_pkt() subtracts per-skb overhead from
+buf_alloc when checking whether a new packet fits. This reduces the
+effective receive buffer below what the user configured via
+SO_VM_SOCKETS_BUFFER_SIZE, causing legitimate data packets to be
+silently dropped and applications that rely on the full buffer size
+to deadlock.
 
-  Status: Isolation of anonymous memory and metadata pages.
-  ...
-  Reclaimed memory is zeroed by the hypervisor ...
+Also, the reduced space is not communicated to the remote peer, so
+its credit calculation accounts more credit than the receiver will
+actually accept, causing data loss (there is no retransmission).
 
-The test mirrors that contract: assert VmLck > donated size before
-teardown (pages pinned), trigger kernel-side destruction, assert the
-host VMA reads as zero (hypervisor scrubbed on reclaim), then assert
-VmLck == 0 (pages unpinned).
+With this approach we currently have failures in
+tools/testing/vsock/vsock_test.c. Test 18 sometimes fails, while
+test 22 always fails in this way:
+    18 - SOCK_STREAM MSG_ZEROCOPY...hash mismatch
 
-kvm_mmap() + kvm_vm_free() + is_zero() doesn't translate here.  The only
-host view of the donated pages is the memslot mmap, and kvm_vm_free()
-munmaps it on the way out, so inspection has to happen between
-kernel-side destruction and userspace free.  kvm_vm_release() is the
-only library primitive that does that today.
+    22 - SOCK_STREAM virtio credit update + SO_RCVLOWAT...send failed:
+    Resource temporarily unavailable
 
-What do you suggest?
+Fix this by using `buf_alloc * 2` as the total budget for payload plus
+skb overhead in virtio_transport_inc_rx_pkt(), similar to how SO_RCVBUF
+is doubled to reserve space for sk_buff metadata. This preserves the
+full buf_alloc for payload under normal operation, while still bounding
+the skb queue growth.
 
-Cheers,
-/fuad
+When the total budget (buf_alloc * 2) is exceeded (e.g. under small-packet
+flooding where overhead dominates), the connection is reset and local
+socket error set to ENOBUFS, so both peers are explicitly notified of
+the failure rather than silently losing data.
 
-[1] https://lore.kernel.org/all/20260105154939.11041-1-will@kernel.org/
+With this patch, all tests in tools/testing/vsock/vsock_test.c are
+now passing again.
+
+A solution to handle small-packet overhead efficiently also for
+SEQPACKET (we already do that for STREAM) is planned as follow-up work.
+This patch is needed in any case to prevent silent data loss, because
+even if we reduce the overhead, we can't eliminate it entirely.
+
+Fixes: 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue")
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+---
+v2:
+- Close the connection when we can no longer queue new packets instead
+  of losing data.
+- No longer announce the reduced buf_alloc to avoid violating the
+  spec. [MST]
+
+v1: https://lore.kernel.org/netdev/20260508092330.69690-1-sgarzare@redhat.com/
+---
+ net/vmw_vsock/virtio_transport_common.c | 24 ++++++++++++++++++------
+ 1 file changed, 18 insertions(+), 6 deletions(-)
+
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 9b8014516f4f..f23bf8a11319 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -449,7 +449,10 @@ static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
+ {
+ 	u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
+ 
+-	if (skb_overhead + vvs->buf_used + len > vvs->buf_alloc)
++	/* Use buf_alloc * 2 as total budget (payload + overhead), similar to
++	 * how SO_RCVBUF is doubled to reserve space for sk_buff metadata.
++	 */
++	if (skb_overhead + vvs->buf_used + len > (u64)vvs->buf_alloc * 2)
+ 		return false;
+ 
+ 	vvs->rx_bytes += len;
+@@ -1365,7 +1368,7 @@ virtio_transport_recv_connecting(struct sock *sk,
+ 	return err;
+ }
+ 
+-static void
++static bool
+ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
+ 			      struct sk_buff *skb)
+ {
+@@ -1380,10 +1383,8 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
+ 	spin_lock_bh(&vvs->rx_lock);
+ 
+ 	can_enqueue = virtio_transport_inc_rx_pkt(vvs, len);
+-	if (!can_enqueue) {
+-		free_pkt = true;
++	if (!can_enqueue)
+ 		goto out;
+-	}
+ 
+ 	if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SEQ_EOM)
+ 		vvs->msg_count++;
+@@ -1423,6 +1424,8 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
+ 	spin_unlock_bh(&vvs->rx_lock);
+ 	if (free_pkt)
+ 		kfree_skb(skb);
++
++	return can_enqueue;
+ }
+ 
+ static int
+@@ -1435,7 +1438,16 @@ virtio_transport_recv_connected(struct sock *sk,
+ 
+ 	switch (le16_to_cpu(hdr->op)) {
+ 	case VIRTIO_VSOCK_OP_RW:
+-		virtio_transport_recv_enqueue(vsk, skb);
++		if (!virtio_transport_recv_enqueue(vsk, skb)) {
++			/* There is no more space to queue the packet, so let's
++			 * close the connection; otherwise, we'll lose data.
++			 */
++			(void)virtio_transport_reset(vsk, skb);
++			sk->sk_state = TCP_CLOSE;
++			sk->sk_err = ENOBUFS;
++			sk_error_report(sk);
++			break;
++		}
+ 		vsock_data_ready(sk);
+ 		return err;
+ 	case VIRTIO_VSOCK_OP_CREDIT_REQUEST:
+-- 
+2.54.0
+
