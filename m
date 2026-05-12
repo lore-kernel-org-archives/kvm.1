@@ -1,243 +1,139 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF37730C62E
-	for <kvm@vger.kernel.org>; Tue, 12 May 2026 21:15:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778620528; cv=pass; b=mtpcmnQq0kBH6e37UjPOcU9fj8UWt05iaA/foMBS63epq1hAuGigqTvTUpg3zPAxrvgcBNUhm7o4aZEeG9L0vh6KpkVc8M7HgOi3ueS075iAiiqjNk3TTUSLeuFH/QXsgw1IHNHUYMeEh9T+eysZorqN2XukMUSzZeSNLBzSbOk=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778620528; c=relaxed/simple;
-	bh=+JKCMld8UNzRIbAQbh8pc2a5fr0ofGgHNla20BPsQjU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ERGChzGjZdubLjMROlCJPZdpfvzuDw3kNhLBROath9F+a5S+DWxuGi4+2j/VuDclLsy4c62EP5KdmrxOTAb5BjoNbyDIoVI8Y68Zuxl3rwwA4KGHogwHXJNxFzOBa0t2xVR33Lr3+9UwUQMEdEZB2I9qdPKdbI1tr0Keto6zIe4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c8wwO90K; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ToRK85/J; arc=pass smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B588236F90D
+	for <kvm@vger.kernel.org>; Tue, 12 May 2026 21:29:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.46
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778621367; cv=none; b=cKAWf19QgRq5YBvVv79f6ja3xWowvHuuq6ieasDTdCV5wcI72RjK9RHdmJCVl4AibE+A51ZEXpqZD6gcfGQSUpy1JLHmd3P141Idb54c271mrxbc2Q9DOo9U6zfyuLJInaX17Hjzc0TrTm/SBcfWXxepqYn4Uh8PL3ekBtx+4Mk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778621367; c=relaxed/simple;
+	bh=PVEZ6lDsqfrkheYFwj2coqzGfYHxktZ0uXkER3yjEWc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RG50KcMaMw3mwJ09xFdCFH72Q++3jiGRn9/qm3cIq11dwCXTDX+yA+2Wl3jkMdtza4gsgRkp0jF/WgOl7RQS8SI2rAUUJFiSKfxAaz5AtDPnuXcRFUOXUm/2bv0mgvcn+aLgwnV9YLCVYM88ZWrAcGyp/wuRpW3hKtIqFbL31vg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O2TqEeYx; arc=none smtp.client-ip=74.125.82.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c8wwO90K";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ToRK85/J"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778620525;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BCaf028xC5s+DMoM0w5jJSQ23tua+iloa6oIupqhPqU=;
-	b=c8wwO90Klp+kfNojUel0TeCa5A4QeA3RfGTOITEfnEjeS8cmmb+HzYNugTl2GPC3Nqx9ib
-	U63RyV5qaZkfNBHCpCQ1A9ubFGkTT9duOw4KD7PAEtF1dvSJZqgFCzECfRdqB+2tsuAKJx
-	JpN2dPkkSA43PsLd6zoI4KmnzbVPpdI=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-642-hEgEfiPXMKGvOLcnsfkq-w-1; Tue, 12 May 2026 17:15:19 -0400
-X-MC-Unique: hEgEfiPXMKGvOLcnsfkq-w-1
-X-Mimecast-MFC-AGG-ID: hEgEfiPXMKGvOLcnsfkq-w_1778620517
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-48e60b55de2so53031575e9.3
-        for <kvm@vger.kernel.org>; Tue, 12 May 2026 14:15:18 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778620517; cv=none;
-        d=google.com; s=arc-20240605;
-        b=aNyG007C3M2W8nm+OKE5sjn6AkZ40rt5SIa09rIpUCwJTncgHi+S2PC81M50CJh8NG
-         F0j8VbCZiJ4T5OyZn5atzTArJj8Z3XJtuLCvpb7t1t01U+xqtoJPo4l6Hd/WDcVUpMES
-         DoYnqZ3SR+B3pm8x9n5tF33OvGf5KhRl3CYmv98iix4FrfdaG+maWp6SXOxDmJ7/eIl/
-         0dEZ60sZAQeCbaLCYyN29O7DwHeGd8jrmqya5lbHeqzK5o/e5BROM9aC0o9HTrZiGliz
-         XnZeLf50kImNbU1g3E+MnsgacY4cXy61kX5cjlwYGQcnaAbBLY2Vw1WcdT/cjwD0u3ZU
-         4VEw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=BCaf028xC5s+DMoM0w5jJSQ23tua+iloa6oIupqhPqU=;
-        fh=Ru6qho+9O2eTpcKikZkQYb1LNzy6hG0NPOMifQ4yMKA=;
-        b=berYfoNCpUQIQT5cJ8aotwqUi5brLUwZyYdossQ8GOilTRf06W/AHmlJ+rAxVuVWKK
-         0Ig3kCl65mNBtNr6DH0pKLMdx0f+7vnG09dgoT3fQp3fVB+dF6ShzPILucbim1RLa7bR
-         NYilrxU2LAPHcCKFw6Q3Ysta2Mx5QjLwxkXMgY+tJs1PReF2yMluh/xpEByIWaNimWt8
-         e27WXmQtfcYCWnfibrKNxC1CBKIjPVMRxHuEBQp9emtBCdPecvrS/w8UQhwuZv2CzqHK
-         OxXRzaXXVbukubVas7BJAvtdTVQ98rT5bP1rjSQn4b1HePwycFj830Jebv8sXUXHH53/
-         pjuw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O2TqEeYx"
+Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-1336742714fso103c88.1
+        for <kvm@vger.kernel.org>; Tue, 12 May 2026 14:29:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778620517; x=1779225317; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BCaf028xC5s+DMoM0w5jJSQ23tua+iloa6oIupqhPqU=;
-        b=ToRK85/JK/fYOmFKMM3j226a+s4FKJzcpgbcvOj+jCVI1j/wM90M719yy3KKRI9QQq
-         kVfKmkfCjRuHzrUd/fdK/l9sySc+4wDpntJyIJHosVpKnODqNUIwXJhy7LcXhy8ngU9C
-         J8j74Y/l96MZahnZgld9Cw88cN05Dct9J/cS3K0eJNn7ntXqx7UX2oKEIk/1ev3sLokj
-         jHHjENxxMGcVmzFn9Lbh87X+Yt7ZTqDIlBaTs0Atu6pK5mpvhUYF+qv8JrNOGCja8hs3
-         76p5dM8r/VTlKfeD14TUAHyxx6ksQ+Rj8ejC7ujalNGdljX+0GraVuGoG50vzwXq+vu+
-         S85w==
+        d=google.com; s=20251104; t=1778621366; x=1779226166; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=9as17r1aSDL1/IjkeK3rxFdLzhg/o+IZ2HDHZMfPp0s=;
+        b=O2TqEeYxQ++uEzCuAjSrp9S4rZXfnp3qCMLVHPDxioCo48GoTxdEgkrstQufcqRGl2
+         5ugnERzU6ErV4dQjNB2XQbZVFCBoI62CIUqgsheQA3GuF8LNEuQIQHObJ48N1rW5bxBn
+         p1VUyj9oN/kW8j7kutMQ2q/PtDM1bSRSErzS5XBXPs/J3JALkHzf7dFwE59NTSfuZQZ8
+         BvDqmSJMaPdZ7+EqH+kSF0Q/I5Yuuc3X8tw4JhqU9w5umF1bPiJC8sq+Yxs10c8zEm/j
+         2HzL7yJ/A4DOrx2RS3k1dt1nwUg6KaO9RE10N46u7bVIHJmPnql+qBD8hqmRPrOBP8ZW
+         WHOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778620517; x=1779225317;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=BCaf028xC5s+DMoM0w5jJSQ23tua+iloa6oIupqhPqU=;
-        b=m1R6GKjk8HvGkClBu9slqj5XK54yEPalHk7mlltoc0wdeVvN13bKfO2ojl/Gz98IUh
-         hbL0Hh3lQvBIjSiALyJvaaMQ0zLXZKcVkgIe1jGMlLUvnKkeyVht6mHXlXsG4uVdhwwV
-         nYl8QWWrwsUIMdS+401CjfVqT+W94sBC/aCcpZB9ukp8s9Z47k8Q0qh8wkogt6lDqq5D
-         am0iCpGNM5TWzVA9SV/fpNAhaPAxQfFyWtzb9yvvczWgsgslXZ+esZ5AaNhpyrSuahXm
-         ztL22Pn3FKacva4mYJBwk3/HJrgcD3EQncEy17TXK1ZlqKUT3kG8WLswpfCnvim4Tk2c
-         NsxA==
-X-Forwarded-Encrypted: i=1; AFNElJ+0KIJYarcTMtdv/M/GUcciVeKTc9bzU1emmjyDAJtdzkAEoRWCdIABEmPELtSj/K7QJeU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwwPUlig6AWlAbjAMgGno/wjyFe1dQSaWZlygb3g5kTcSqj2jtn
-	Kh2sJYSkusG6r5GmU+vSxPcByooHWE5a4nWiVawSezn/2KokKJD18EvTFKZ2f1TJVcUJ9httZns
-	ZLzQ2uh3D02ccnssJZOjmNhEQnTQ71t8UMEMHEbGtTtTAzzAkB6BcYB/6neR7uet9ZPlIr4hjAu
-	S2h0J7xerkgejVeVv3DDBtoIOjP83n
-X-Gm-Gg: Acq92OHHsyfoDoC1/zCLzAWvN87tcDFeBnlABxalXHUG6tmJ/lsBKCx8ZqALCwWvGps
-	Hdl4gItiRXS4VLpcmrolTyGpKNNWE3pIS9B5kap5tS+LbUC3gANKx8j3jNAedSSVessoApWKEP4
-	ywnk4YXaUlHvhB2+hRXePUEErtdCTkZKaQodlM3t69snApF5Lpu7OU38w18gNWKE7aejdth14k5
-	YYPoFqExZkpusR1aSGEoAxpcmgxEXhQ/UruKVFnzsx9DFyF8T1THhb75zBZy6FG1ArpJ5741rHn
-	chwaw85E
-X-Received: by 2002:a05:600c:19c9:b0:489:1a63:509c with SMTP id 5b1f17b1804b1-48fc999e736mr7208105e9.0.1778620517219;
-        Tue, 12 May 2026 14:15:17 -0700 (PDT)
-X-Received: by 2002:a05:600c:19c9:b0:489:1a63:509c with SMTP id
- 5b1f17b1804b1-48fc999e736mr7207685e9.0.1778620516761; Tue, 12 May 2026
- 14:15:16 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1778621366; x=1779226166;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9as17r1aSDL1/IjkeK3rxFdLzhg/o+IZ2HDHZMfPp0s=;
+        b=VVA8kvyWXMKdLmnobkACn8yXjtRb8vYkI33k78xxdsFxSDE96KBiyyny5KkyFLBUVe
+         yp1UGuJpek14frNxOQADEqgTnR4BkacAuOPyuRWm4mSpwYrXWxqpKt2/V4zvPq39SODI
+         i7VM4tGzQyWo1Abqcvhof6WPL3OdMhwvnTugj5sAzDxMe0mwiluGwnkitepHmdI0Nra6
+         DhDOpywDETzQkC2Fz0J9W0UuyXOuckDPyCSj0It69mxFTziq/PWPuLoFTVxCpEbmzMHe
+         nZJQ+KBXxiOyiVUVXnjbl7hFndd+pco1Rp5pWESZHYQLixmOXzXbRf729eaQ9rBCg4/D
+         p/DA==
+X-Gm-Message-State: AOJu0Yw860Nt/CRlxVuqrE3IIcPzArnOeQtt4D63Xn9DsCMmZf3AmXC8
+	HjjSLB1+gPc9//Bi1UctZxYxe4ntM91TvQyCr+TmcWv1/sZpxibcV3bM54FkHkkuwg==
+X-Gm-Gg: Acq92OEeIdZdZvcYlVM319UE2hQ83mrJUN/iWdfHrHDDdIMvnzy49/lgwu1fOPB7xv+
+	CGYZCJq0HOr+n1q9lWx8EyRqEP+n7fIsYhFo0cGeGdSFPmxzq58sH4iGZYlC+086PlavV8gjtPo
+	fc8SKwZybQKyNRxJ2N+CWmKT+S5ghdH0MgSxYafHbN/X3lDt9e35Otrs76H8nojBWfzlJ2oQj53
+	qX2FvmFWwbha2uPw9zgfeEiQgEnN1HvlPZrcXFAyI4ER9ISUdQvEWjr2BNU5IrU9n1A8haiYQd4
+	ZGNmiDcC41OpJRodfqR8tQPBDpD2e8JcD2d7pe1lRJTQ9bn4/EylYIyNHH+IIWE8m6dpquk2RMF
+	DcBvRKCn+kzA4YGxN9a2s7s0mrzGrSvYCMFBsijHEAGT7CimeV/ZccxGFB9BUXZGKaA2twIknX0
+	4iVpJumOpSjj5jhvU9ofmHCC8P4+hJYT7Lteme/XuJdFyI5XWxTb+ha7GbLSlESAP6FWbg/MJE
+X-Received: by 2002:a05:7022:699a:b0:132:1e01:2d6d with SMTP id a92af1059eb24-13401ba684emr108868c88.2.1778621364956;
+        Tue, 12 May 2026 14:29:24 -0700 (PDT)
+Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1327821fc59sm23087120c88.7.2026.05.12.14.29.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2026 14:29:24 -0700 (PDT)
+Date: Tue, 12 May 2026 14:29:19 -0700
+From: Vipin Sharma <vipinsh@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org, 
+	ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com, ankita@nvidia.com, 
+	apopple@nvidia.com, chrisl@kernel.org, corbet@lwn.net, graf@amazon.com, 
+	jacob.pan@linux.microsoft.com, jgg@nvidia.com, jgg@ziepe.ca, jrhilke@google.com, 
+	julianr@linux.ibm.com, kevin.tian@intel.com, leon@kernel.org, leonro@nvidia.com, 
+	lukas@wunner.de, michal.winiarski@intel.com, parav@nvidia.com, 
+	pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org, rananta@google.com, 
+	rientjes@google.com, rodrigo.vivi@intel.com, rppt@kernel.org, saeedm@nvidia.com, 
+	skhan@linuxfoundation.org, skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com, 
+	yanjun.zhu@linux.dev, yi.l.liu@intel.com
+Subject: Re: [PATCH v4 02/16] vfio/pci: Preserve vfio-pci device files across
+ Live Update
+Message-ID: <20260512211412.GA2819150.vipinsh@google.com>
+References: <20260511234802.2280368-1-vipinsh@google.com>
+ <20260511234802.2280368-3-vipinsh@google.com>
+ <CALzav=fR8c2tYj9jeOc_K=xoupxAfWMHmk0ipDniSXg6uGiFYA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260507154221.2905554-1-maz@kernel.org>
-In-Reply-To: <20260507154221.2905554-1-maz@kernel.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Tue, 12 May 2026 23:15:04 +0200
-X-Gm-Features: AVHnY4KtwnsJxjKodfXT2l49vyk4PWU8NRQcHeq925qaoxrCk6J9wCnG0t9SADY
-Message-ID: <CABgObfY+qCh3_j+ykf_5aU_FwWAKjnauby_AjXndkTAROKpFeQ@mail.gmail.com>
-Subject: Re: [GIT PULL] KVM/arm64 fixes for 7.1, take #2
-To: Marc Zyngier <maz@kernel.org>
-Cc: Alexandru Elisei <alexandru.elisei@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Fuad Tabba <tabba@google.com>, James Morse <james.morse@arm.com>, 
-	Lorenzo Pieralisi <lpieralisi@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
-	Mostafa Saleh <smostafa@google.com>, Oliver Upton <oupton@kernel.org>, 
-	Sebastian Ott <sebott@redhat.com>, Steffen Eiden <seiden@linux.ibm.com>, 
-	Sudeep Holla <sudeep.holla@kernel.org>, Vincent Donnefort <vdonnefort@google.com>, 
-	Wei-Lin Chang <weilin.chang@arm.com>, Will Deacon <will@kernel.org>, 
-	Yuan Yao <yaoyuan@linux.alibaba.com>, Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, kvmarm@lists.linux.dev, 
-	linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CALzav=fR8c2tYj9jeOc_K=xoupxAfWMHmk0ipDniSXg6uGiFYA@mail.gmail.com>
 
-On Thu, May 7, 2026 at 5:42=E2=80=AFPM Marc Zyngier <maz@kernel.org> wrote:
->
-> Paolo,
->
-> Here's the second set of KVM/arm64 fixes for 7.1. Nothing too horrible
-> this time, aside from an ARM erratum workaround that has little impact
-> on KVM, but relies on some firmware dealing with the problem. Bleh.
->
-> The rest is a small collection of bug fixes, mostly affecting the MMU
-> (permission fault handling with guest_memfd, 52bit VA with NV), and a
-> small set of AI-enhanced fixes from Fuad. I guess I'll have to get
-> used to that.
->
-> And last but not least, Steffen joins the merry band of KVM/arm64
-> reviewers in preparation of s390 and arm64 being joined at the hip...
->
-> Please pull,
+On Tue, May 12, 2026 at 01:59:51PM -0700, David Matlack wrote:
+> On Mon, May 11, 2026 at 4:48 PM Vipin Sharma <vipinsh@google.com> wrote:
+> 
+> > diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
+> > index c12d614fc6c4..019de053f116 100644
+> > --- a/drivers/vfio/pci/Kconfig
+> > +++ b/drivers/vfio/pci/Kconfig
+> > @@ -45,13 +45,15 @@ config VFIO_PCI_IGD
+> >
+> >  config VFIO_PCI_LIVEUPDATE
+> >         bool "VFIO PCI support for Live Update (EXPERIMENTAL)"
+> > -       depends on PCI_LIVEUPDATE
+> > +       depends on PCI_LIVEUPDATE && VFIO_DEVICE_CDEV
+> >         help
+> >           Support for preserving devices bound to vfio-pci across a Live
+> >           Update. This option should only be enabled by developers working on
+> >           implementing this support. Once enough support has landed in the
+> >           kernel, this option will no longer be marked EXPERIMENTAL.
+> >
+> > +         Enabling this will disable support for VFIO PCI DMA buffer.
+> > +
+> >           If you don't know what to do here, say N.
+> >
+> >  endif
+> > @@ -68,7 +70,7 @@ config VFIO_PCI_ZDEV_KVM
+> >           To enable s390x KVM vfio-pci extensions, say Y.
+> >
+> >  config VFIO_PCI_DMABUF
+> > -       def_bool y if VFIO_PCI_CORE && PCI_P2PDMA && DMA_SHARED_BUFFER
+> > +       def_bool y if VFIO_PCI_CORE && PCI_P2PDMA && DMA_SHARED_BUFFER && !VFIO_PCI_LIVEUPDATE
+> 
+> Why does enabling VFIO_PCI_LIVEUPDATE require disabling
+> VFIO_PCI_DMABUF? I saw the cover letter says "to keep things simple",
+> but what specific problem does this solve or simplify?
 
-Done, thanks.
+I should have provided more details there.
 
-Paolo
+When device is getting reset in vfio_pci_liveupdate_freeze(), we are
+zapping userspace mapped bars, we also need to use
+vfio_pci_dma_buf_move() to revoke dma buffer access or
+vfio_pci_dma_buf_cleanup() combination. Cleanup takes the memory lock
+which freeze already takes, and there are some refcounts which are
+managed in both of these APIs. This was causing complexities with code
+flow based on result of pci_load_saved_state(). All this was adding more
+refactoring than I wanted in the series.
 
->
->         M.
->
-> The following changes since commit 7fd2df204f342fc17d1a0bfcd474b24232fb0f=
-32:
->
->   Linux 7.1-rc2 (2026-05-03 14:21:25 -0700)
->
-> are available in the Git repository at:
->
->   git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm.git kvmarm-=
-fixes-7.1-2
->
-> for you to fetch changes up to effc0a39b8e0f30670fe24f51e44329d4324e566:
->
->   KVM: arm64: Pre-check vcpu memcache for host->guest donate (2026-05-07 =
-14:12:42 +0100)
->
-> ----------------------------------------------------------------
-> KVM/arm64 fixes for 7.1, take #2
->
-> - Add the pKVM side of the workaround for ARM's erratum 4193714, provided
->   that the EL3 firmware does its part of the job. KVM will refuse to
->   initialise otherwise.
->
-> - Correctly handle 52bit VAs for guest EL2 stage-1 translations when
->   running under NV with E2H=3D=3D0.
->
-> - Correctly deal with permission faults in guest_memfd memslots.
->
-> - Fix the steal-time selftest after the infrastructure was reworked.
->
-> - Make sure the host cannot pass a non-sensical clock update to the
->   EL2 tracing infrastructure.
->
-> - Appoint Steffen Eiden as a reviewer in anticipation of the KVM/s390
->   ability to run arm64 guests, which will inevitably lead to arm64
->   code being directly used on s390.
->
-> - Make sure that EL2 is configured with both exception entry and exit
->   being Context Synchronization Events.
->
-> - Handle the current vcpu being NULL on EL2 panic.
->
-> - Fix the selftest_vcpu memcache being empty at the point of donation or
->   sharing.
->
-> - Check that the memcache has enough capacity before engaging on the
->   share/donate path.
->
-> - Fix __deactivate_fgt() to use its parameter rather than a variable
->   in the macro context.
->
-> ----------------------------------------------------------------
-> Alexandru Elisei (1):
->       KVM: arm64: Handle permission faults with guest_memfd
->
-> Fuad Tabba (6):
->       KVM: arm64: Make EL2 exception entry and exit context-synchronizati=
-on events
->       KVM: arm64: Guard against NULL vcpu on VHE hyp panic path
->       KVM: arm64: Fix __deactivate_fgt macro parameter typo
->       KVM: arm64: Seed pkvm_ownership_selftest vcpu memcache
->       KVM: arm64: Pre-check vcpu memcache for host->guest share
->       KVM: arm64: Pre-check vcpu memcache for host->guest donate
->
-> James Morse (1):
->       KVM: arm64: Work around C1-Pro erratum 4193714 for protected guests
->
-> Mostafa Saleh (1):
->       KVM: arm64: Remove potential UB on nvhe tracing clock update
->
-> Sebastian Ott (1):
->       KVM: selftests: arm64: Fix steal_time test after UAPI refactoring
->
-> Steffen Eiden (1):
->       MAINTAINERS: Add Steffen as reviewer for KVM/arm64
->
-> Wei-Lin Chang (1):
->       KVM: arm64: nv: Consider the DS bit when translating TCR_EL2
->
->  MAINTAINERS                              |  1 +
->  arch/arm64/include/asm/kvm_nested.h      |  1 +
->  arch/arm64/include/asm/sysreg.h          |  2 +-
->  arch/arm64/kvm/arm.c                     | 21 ++++++++++++++
->  arch/arm64/kvm/hyp/include/hyp/switch.h  |  2 +-
->  arch/arm64/kvm/hyp/nvhe/clock.c          |  3 ++
->  arch/arm64/kvm/hyp/nvhe/mem_protect.c    | 47 ++++++++++++++++++++++++++=
-+++++-
->  arch/arm64/kvm/hyp/nvhe/pkvm.c           | 16 ++++++++++-
->  arch/arm64/kvm/hyp/vhe/switch.c          |  3 +-
->  arch/arm64/kvm/mmu.c                     | 29 ++++++++++++++------
->  include/linux/arm-smccc.h                |  6 ++++
->  tools/testing/selftests/kvm/steal_time.c |  2 ++
->  12 files changed, 120 insertions(+), 13 deletions(-)
->
-
+I decided to just drop the change and disable the support of DMA Buffer for
+now to keep number of patches less in the series. This will go away once
+we remove reset condition in freeze.
