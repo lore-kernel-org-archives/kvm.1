@@ -1,226 +1,148 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E24B0480DEE
-	for <kvm@vger.kernel.org>; Tue, 12 May 2026 08:07:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16F95384CEA;
+	Tue, 12 May 2026 08:37:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778573266; cv=none; b=W8RzGdqjtokFK0lSQdqT9vAmKYmIu0lQIGYNfqVNji7NX/nbExP699zSHVr63RZpbtd+HaV014OBDsD53rBb71HZyaAsiaiWKzmPTEeGXh4J0WdjgH+GF1bxKnxgR8Y79uDmmgrV4PpwmmS1PC0fdoRiSBbWUA2vjhfgWUcGjis=
+	t=1778575045; cv=none; b=HKPaNkqddqDOZeOYMEwJ93LU7wdihdD1iIfGGeVoZhjcNElaIHYNYtK7B5zdQy5Wn5iwb9QpLiHHBWycsysUwFDlDOYH83H9JYSvZaS0qxAaysWylqdAU+wy3ISzg4t1w/bMGBqdoAzrIOkzz1Ika5o29CUZHXFfWNQODwucNGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778573266; c=relaxed/simple;
-	bh=sDobT2Y3suLHnIc3YUUU79mcvRr9manOsYeGpx1/XLs=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bxbwhU6FBmZvScB9pKsRPAugD9maoIxngxn7XqB0QMRMh/vbz+Y4oztxSbKCLQT/YC+OX/bj71Ai98JJ66i9mNCS3u1MeWzirZBDAVpbJCPYOfjelyRcyI0muTPf1uJf8M+c5Q1pC9kyykNMCK4zXCB+x5kRNvZlPQNCo6WCEvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=B/jGe/Jv; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=s/8bvbAi; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1778575045; c=relaxed/simple;
+	bh=CxI3hTEN9P2Vac3nRPnVuEbRdVThzgjwwPJjqKfx2Us=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lFglfxhGJqBgRhnwC/U1oQDYaJDR3KxfdVxEIL/ZAro2qUoEOrqY9rsyKLVulj86ymo2l+CLNB38o58ooYsOGKSSPdrIv+13PtnOnuR4Z3/tjiwcfC+EkVMSAwujEdksRQha72HOGIe8j1l7OiBATRcTZHVVqWHp8pBldh4bvXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JFKfrhPq; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="B/jGe/Jv";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="s/8bvbAi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778573264;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=aAlloYEZDF1UlqHHhoebVA5d4jsXxGoTRkEIcdVVNEs=;
-	b=B/jGe/Jvz2N+KdyNQqYdlDMCUqtBJgiqS1Y0MhPOReGCl1syduBXR9S/ozurKeImILj+MK
-	Fl9Vq97kT1NjpiPQnfQevb60yISPJM7gvCganj1iK+xoDYmPF4PKZ+EBqBu0HiUwHXHxj+
-	gHgPKl2SekKnoer39gj88Fii7JeWXw4=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-223-CT_rNiF3PNGsQh_oQPe1UQ-1; Tue, 12 May 2026 04:07:42 -0400
-X-MC-Unique: CT_rNiF3PNGsQh_oQPe1UQ-1
-X-Mimecast-MFC-AGG-ID: CT_rNiF3PNGsQh_oQPe1UQ_1778573261
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-48e79219704so15096715e9.1
-        for <kvm@vger.kernel.org>; Tue, 12 May 2026 01:07:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778573261; x=1779178061; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=aAlloYEZDF1UlqHHhoebVA5d4jsXxGoTRkEIcdVVNEs=;
-        b=s/8bvbAiTgWHzqMFzO5LCTsm4ttElr/944xDpNhCjj+PW1zi31G2o6J/esr5RcvYH7
-         rJVR9yEHwd5cukHjZe97Xykb8aw9UPIAjB68EjhGH0H8+lxZHG4ZfPIZM6ZGG9ZRE0+d
-         /f5DOzcR9xFFWHeCoMJM4Pi4Td95ezD7uE6QRahUaZQhpIZxouTZQG6z9DTAVsl7Mihz
-         qDOs7kOBUvRAsk8sS8mIYOsuSzGCVcDM7fGVJXjfgWtA7bbySdkID9zXRo8jOv5vRhGB
-         rqZQ78AjVCjAZBOhJeY6CZsswQmg5g7P/RN/aD3KGFt7kXd1gD2B35NqAfnT0TvP5/At
-         JjmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778573261; x=1779178061;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aAlloYEZDF1UlqHHhoebVA5d4jsXxGoTRkEIcdVVNEs=;
-        b=c2mMpHMgVeebmlULXnHfPjBGFT2XczHgJZRZ9D5x4SFJ7PShvlMijHHP0QS3IfBkbE
-         2ZTj8VASarigH27yY/SvyA2ooimsHI+tzvAKMJzltqH43tmWoPpiZ+lmTa3gwEy9casQ
-         w/ozO4Qxommg7Oy0P82Q/v/tQWG07otXabH4xAvrccXFAF8Gq/Qquv/qBYGXTb8CAWAE
-         KNyYKsYEgHXC0jM1Y/QrbrkRJ1Z482uAfu33Ac6soAEby41/mz2iWXxMqim6jH/ZmZX6
-         CysdbB6fXONupdXAN5AYDweoVvbQvA7xxHeP8KKHIBXeQbZwjq+NxABhBsZ9K/xlVOAD
-         IPAA==
-X-Forwarded-Encrypted: i=1; AFNElJ8fDDy5iJCI8kuzABHydcrTbG9PJK4uFmS7Gi2SHf2VB9vhGoyuYjklCbtfKDUTXGvOowQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw8w5PaOmMCH6ITHnySu8YKg60mjpghqUysOXMWwKqJ2cNb3Gto
-	dexkluUOLU+2pSUSwZ8qW8yUcF0F0qhxhsvt/0NanFYBVnl18AUCjRiDOtUjrMwquGBAUw8alkL
-	teCGp/gHFnqVzcG4XiffxU2pOlqim2Bd7MPiOfpEYUlgKtJI2IW3rgQ==
-X-Gm-Gg: Acq92OElcmjgHGuo1iI40bp/hupqhNxEnIH+roCDNShdahZql4iwJRt5FnPdPrlGGXJ
-	S1UrggAIPS+CcB0LpmAB/boXT/ZHKQslid1Ae1oKpL3yc4YsPDbOiLXIwgtT68l5NnpM4lc1Pii
-	1ezRLRnocwXsgzz8eUChGiu8Om45ymANvC1v95bakxla2IJbTt4/BaS3yQaSKl64kc/G1thd4B9
-	QEhTOZBnY9v2IAn5Yo8e5W7CnxyB35ErsUqyhWTJntQWCI3UeRN65aWLIUzC6qqUBxN/ST8UskC
-	OdqjYdBrhPatra321i8dVP1T7OD7O13GKhL1o490EmqlbiB6Pp60zDnc6AaOEZ+jFicpkR3dp7h
-	acpTKqsbs9FAktmh4nOB49EDen2aGStXQI3VfptbJK6WhH4NFCFF9Ij/VJVjN
-X-Received: by 2002:a05:600c:83c5:b0:488:9fb7:376d with SMTP id 5b1f17b1804b1-48e8fe834f0mr28133935e9.28.1778573260825;
-        Tue, 12 May 2026 01:07:40 -0700 (PDT)
-X-Received: by 2002:a05:600c:83c5:b0:488:9fb7:376d with SMTP id 5b1f17b1804b1-48e8fe834f0mr28133145e9.28.1778573260301;
-        Tue, 12 May 2026 01:07:40 -0700 (PDT)
-Received: from stex1 (host-87-16-204-231.retail.telecomitalia.it. [87.16.204.231])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e90677b04sm26948005e9.11.2026.05.12.01.07.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 01:07:39 -0700 (PDT)
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: netdev@vger.kernel.org
-Cc: "Michael S. Tsirkin" <mst@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	kvm@vger.kernel.org,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	virtualization@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Stefan Hajnoczi <stefanha@redhat.com>
-Subject: [PATCH net v2] vsock/virtio: fix skb overhead accounting to preserve full buf_alloc
-Date: Tue, 12 May 2026 10:07:37 +0200
-Message-ID: <20260512080737.36787-1-sgarzare@redhat.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JFKfrhPq"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64BK7H352760537;
+	Tue, 12 May 2026 08:37:04 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=H8gZvhDiJcfPj4izdPoeTyKzYez876
+	PA3k9XPRRUrF0=; b=JFKfrhPq8nUkfghkSxPLnz3TlK6envyHBf7rktLvSsXHmy
+	iH1t0d6K4J710TpSKiT8tF9xje+oiyMy8ICvD6VMeIcSTcCn7NCtgOA0mj70X+Bl
+	SDP6eWNiQ6MOqJ37gRiXulrHHDWpjKnmelcjgVSxmGkdynJ3AzQ7j6sBtuJJT4eK
+	NntESoFIr/UIYKAe4aVr8qNbn/IB/MoR8M7KEN5ydLcAuet5pbAJgwSxazRbuq1l
+	CdDSzaXZS8UacvRj3C/IQJf5dUikwWKwGPZfvA1MuoCqH2AA4zNG5vkYFLY88ddF
+	UhbhTD5RaGfpLjM/k7jHyd+uK+IOxAMXs+OYBD/Q==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e3nv6j24w-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 May 2026 08:37:04 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64C8OXsn028662;
+	Tue, 12 May 2026 08:37:03 GMT
+Received: from smtprelay07.dal12v.mail.ibm.com ([172.16.1.9])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e3nfgjb95-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 May 2026 08:37:03 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay07.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64C8b2S325821758
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 12 May 2026 08:37:02 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 3CD3A58059;
+	Tue, 12 May 2026 08:37:02 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id D5EF458043;
+	Tue, 12 May 2026 08:36:57 +0000 (GMT)
+Received: from vaibhav?linux.ibm.com (unknown [9.124.208.192])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with SMTP;
+	Tue, 12 May 2026 08:36:57 +0000 (GMT)
+Received: by vaibhav@linux.ibm.com (sSMTP sendmail emulation); Tue, 12 May 2026 14:06:55 +0530
+From: Vaibhav Jain <vaibhav@linux.ibm.com>
+To: Gautam Menghani <Gautam.Menghani@ibm.com>, maddy@linux.ibm.com,
+        npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org
+Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] KVM: PPC: Book3S HV: Add H_FAC_UNAVAIL mapping for
+ tracing exits
+In-Reply-To: <20260428084534.49781-1-Gautam.Menghani@ibm.com>
+References: <20260428084534.49781-1-Gautam.Menghani@ibm.com>
+Date: Tue, 12 May 2026 14:06:55 +0530
+Message-ID: <87pl31uiqg.fsf@vajain21.in.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: nU0nISuR4Dqqy-ix_PCeP0TTyaIL8XvG
+X-Proofpoint-GUID: KMAjbdqZw1a388q652BZ71xGUDq0AL35
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTEyMDA4NiBTYWx0ZWRfX21zcGlj/4oYi
+ +mHmsCfhLL7CRqOq08J+bp0jRQxj2DZRsLgEdY2C0yOhPCupP7StLghLuZt24lFKu88cYDEFNYN
+ djDl4gbF4nwyUdZf52QOLQRwOmK2EMpqWqPBLPmPhzQQYI291SOP+xWTZS0pWvjP/1+/kUxluR8
+ +Qrq7zMHBSddBRIo58gtVOWmMpGGIofs7rgre+LFASvPyDXtdfP14Xh47vklkDbN0l37zt0byWP
+ CItPw2cdJOE2sk9czVpq45oRgpBej1dY8x57TQxOFllQBMspXtsoKCaPvpoq5OHISKoPhoGBIEI
+ 3bVO+IGRTsr6JH39wzILWTvV6rFH1GEt+5uYg3ei22BpjPYeewEO1gQ6GsEuFWbJ3RK6OLRvtdO
+ TyshK9C+55j4tWHXSEC/6sI1XfLaG3zfN9viq+LdoIcpmgsKwikwYweqkWfRiARqrJ6stPYZKSW
+ XhR8QpQozFN3Qf/+0Lg==
+X-Authority-Analysis: v=2.4 cv=P8UKQCAu c=1 sm=1 tr=0 ts=6a02e6b0 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=ycv1Ynx4oPle2U8RHYcA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-11_05,2026-05-08_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 phishscore=0 bulkscore=0 clxscore=1011
+ malwarescore=0 spamscore=0 lowpriorityscore=0 suspectscore=0 impostorscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605050000 definitions=main-2605120086
 
-From: Stefano Garzarella <sgarzare@redhat.com>
 
-After commit 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb
-queue"), virtio_transport_inc_rx_pkt() subtracts per-skb overhead from
-buf_alloc when checking whether a new packet fits. This reduces the
-effective receive buffer below what the user configured via
-SO_VM_SOCKETS_BUFFER_SIZE, causing legitimate data packets to be
-silently dropped and applications that rely on the full buffer size
-to deadlock.
+Thanks Gautam catching this and proposing this patch.
+Minor review comments below:
 
-Also, the reduced space is not communicated to the remote peer, so
-its credit calculation accounts more credit than the receiver will
-actually accept, causing data loss (there is no retransmission).
+Gautam Menghani <Gautam.Menghani@ibm.com> writes:
 
-With this approach we currently have failures in
-tools/testing/vsock/vsock_test.c. Test 18 sometimes fails, while
-test 22 always fails in this way:
-    18 - SOCK_STREAM MSG_ZEROCOPY...hash mismatch
+> From: Gautam Menghani <gautam@linux.ibm.com>
+>
+> The macro kvm_trace_symbol_exit is used for providing the mappings
+> for the trap vectors and their names. Add mapping for H_FAC_UNAVAIL so that
+> trap reason is displayed as string instead of a vector number when using
+> the kvm_guest_exit tracepoint.
+>
+> Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+> ---
+> v2:
+> 1. Remove the trailing comma after last element
+>
+>  arch/powerpc/kvm/trace_book3s.h | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>
+> diff --git a/arch/powerpc/kvm/trace_book3s.h b/arch/powerpc/kvm/trace_book3s.h
+> index 9260ddbd557f..5d272c115331 100644
+> --- a/arch/powerpc/kvm/trace_book3s.h
+> +++ b/arch/powerpc/kvm/trace_book3s.h
+> @@ -28,6 +28,7 @@
+>  	{0xea0, "H_VIRT"}, \
+>  	{0xf00, "PERFMON"}, \
+>  	{0xf20, "ALTIVEC"}, \
+> -	{0xf40, "VSX"}
+> +	{0xf40, "VSX"}, \
+> +	{0xf80, "H_FAC_UNAVAIL"}
+Also add trap of 0x000 indicating "RETURN_TO_HOST"
 
-    22 - SOCK_STREAM virtio credit update + SO_RCVLOWAT...send failed:
-    Resource temporarily unavailable
+Also sychronize the contents of the proposed changes for this header with the
+libtraceevent header file tools/perf/util/kvm-stat-arch/book3s_hv_exits.h
 
-Fix this by using `buf_alloc * 2` as the total budget for payload plus
-skb overhead in virtio_transport_inc_rx_pkt(), similar to how SO_RCVBUF
-is doubled to reserve space for sk_buff metadata. This preserves the
-full buf_alloc for payload under normal operation, while still bounding
-the skb queue growth.
+>  
+>  #endif
+> -- 
+> 2.52.0
+>
+>
 
-When the total budget (buf_alloc * 2) is exceeded (e.g. under small-packet
-flooding where overhead dominates), the connection is reset and local
-socket error set to ENOBUFS, so both peers are explicitly notified of
-the failure rather than silently losing data.
+With above minor fixes done, feel free to add:
 
-With this patch, all tests in tools/testing/vsock/vsock_test.c are
-now passing again.
-
-A solution to handle small-packet overhead efficiently also for
-SEQPACKET (we already do that for STREAM) is planned as follow-up work.
-This patch is needed in any case to prevent silent data loss, because
-even if we reduce the overhead, we can't eliminate it entirely.
-
-Fixes: 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue")
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
----
-v2:
-- Close the connection when we can no longer queue new packets instead
-  of losing data.
-- No longer announce the reduced buf_alloc to avoid violating the
-  spec. [MST]
-
-v1: https://lore.kernel.org/netdev/20260508092330.69690-1-sgarzare@redhat.com/
----
- net/vmw_vsock/virtio_transport_common.c | 24 ++++++++++++++++++------
- 1 file changed, 18 insertions(+), 6 deletions(-)
-
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 9b8014516f4f..f23bf8a11319 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -449,7 +449,10 @@ static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
- {
- 	u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
- 
--	if (skb_overhead + vvs->buf_used + len > vvs->buf_alloc)
-+	/* Use buf_alloc * 2 as total budget (payload + overhead), similar to
-+	 * how SO_RCVBUF is doubled to reserve space for sk_buff metadata.
-+	 */
-+	if (skb_overhead + vvs->buf_used + len > (u64)vvs->buf_alloc * 2)
- 		return false;
- 
- 	vvs->rx_bytes += len;
-@@ -1365,7 +1368,7 @@ virtio_transport_recv_connecting(struct sock *sk,
- 	return err;
- }
- 
--static void
-+static bool
- virtio_transport_recv_enqueue(struct vsock_sock *vsk,
- 			      struct sk_buff *skb)
- {
-@@ -1380,10 +1383,8 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
- 	spin_lock_bh(&vvs->rx_lock);
- 
- 	can_enqueue = virtio_transport_inc_rx_pkt(vvs, len);
--	if (!can_enqueue) {
--		free_pkt = true;
-+	if (!can_enqueue)
- 		goto out;
--	}
- 
- 	if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SEQ_EOM)
- 		vvs->msg_count++;
-@@ -1423,6 +1424,8 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
- 	spin_unlock_bh(&vvs->rx_lock);
- 	if (free_pkt)
- 		kfree_skb(skb);
-+
-+	return can_enqueue;
- }
- 
- static int
-@@ -1435,7 +1438,16 @@ virtio_transport_recv_connected(struct sock *sk,
- 
- 	switch (le16_to_cpu(hdr->op)) {
- 	case VIRTIO_VSOCK_OP_RW:
--		virtio_transport_recv_enqueue(vsk, skb);
-+		if (!virtio_transport_recv_enqueue(vsk, skb)) {
-+			/* There is no more space to queue the packet, so let's
-+			 * close the connection; otherwise, we'll lose data.
-+			 */
-+			(void)virtio_transport_reset(vsk, skb);
-+			sk->sk_state = TCP_CLOSE;
-+			sk->sk_err = ENOBUFS;
-+			sk_error_report(sk);
-+			break;
-+		}
- 		vsock_data_ready(sk);
- 		return err;
- 	case VIRTIO_VSOCK_OP_CREDIT_REQUEST:
+Reviewed-by: Vaibhav Jain (IBM) <vaibhav@linux.ibm.com>
 -- 
-2.54.0
-
+Cheers
+~ Vaibhav
