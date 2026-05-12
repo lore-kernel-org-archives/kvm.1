@@ -1,62 +1,52 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA3A377567;
-	Tue, 12 May 2026 01:40:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8DF6383329;
+	Tue, 12 May 2026 01:57:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778550043; cv=none; b=bob4StwDcEdynqbZGyehtH1uY3kVCQ0iOvc+KQXDOm04z8OhU35n6lUkb/cTyEh/pcf1kBXcYCKrZegKVccuuEqKKbAUhWn4axhJjW/3ik0n/eC9WwldLBEKTP7AIUn/hiS76qWr5idqbhE2MnxloQZs/8dizQ3qlU0hYqr5Il8=
+	t=1778551039; cv=none; b=puizCT8WLZPgXsiLNinol7lrlASZ2q4ZGfUX28E4C8Tz62oUc83Ed+ZfqMqdXqoON+FEot/4zhqvjRfdKrk2QEEwjhZHkQdVnUSo51hFtpXR0M92NBO4P8+8c+b6uH05WGYChkHO8kX7yMEh2dGX+8BJUf9f4PmYeE9k2yBigCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778550043; c=relaxed/simple;
-	bh=kDBtMaYWjk5NvmUllhFtCoGexQHRWExwMpcbE6sdArs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AyF5k+LdxP1Gl2owfUoxNNYBzOFEioFXMbOiAVevZBehAhQn73/SwZFn3VrY7+yyRpDZlr0FFaMwg9EFa3tzDtcrqBZGIGL1m+nKDLDcu4rDDDKR98iGjvU51MJzAZz418fDSoImIV3yHJ2brAzyIkpsO8v3ntSQOzF32hO+1R8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MDsawDBx; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1778551039; c=relaxed/simple;
+	bh=hH8q+kk/6fDuIClmCBGB/tnhDHuWXgv3foSMvJnMT/M=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mLf3m8AoPjrf0A3r1Xc8H/TFgiqKZPyLdIVRv3ZXf47uGQaIICUbNewyvHLIsutpiePv24Zni3AP5B6b7Lyjnp6OzP6AMZiDQbTo32vVROeW65dQb2GO/lRxznA37ISwQJFqufyyLR7F5uRdsLt3fh97lru/+JhZZgEZG8zUKkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=bO8i/LCw; arc=none smtp.client-ip=54.207.19.206
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MDsawDBx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778550042; x=1810086042;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=kDBtMaYWjk5NvmUllhFtCoGexQHRWExwMpcbE6sdArs=;
-  b=MDsawDBxxtFJVAQXtMbC0tjsVxwWQQHv02jb+D10+XJneBUWU2WSPPTe
-   KlRMSTBvulMj1ZckebH30Uqugg5LPLyxGyISmUiP+MqVPDxBl2RZ72Pn6
-   ufjH0lwZYOCe++4YySkpMyrPLVkOZfEGsatvOJz8lx93tZ7hb7EzKp9cu
-   OuH/DyqFnAx4dBAwqD7IAjL8ID4PgMcTaZ7ex5cYYNU7ufDBGvQlfhVud
-   60moEXEteUwJUChvsJOAIZisfskYESD0acGi97+ZG+kDYtKMqHHVKa6P6
-   FoEgM9zCu0puU2h3GdtdTxmY+Ln3jy/5vvUJMdff5kM9iJgnf7SyQDK1C
-   Q==;
-X-CSE-ConnectionGUID: 0QMAGANoT9GDK7EUafuECg==
-X-CSE-MsgGUID: pS2XXzEETfSZVc1k7yOVMQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="83322203"
-X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
-   d="scan'208";a="83322203"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 18:40:34 -0700
-X-CSE-ConnectionGUID: dEJbdrG1TiGEoLvKFLLgQw==
-X-CSE-MsgGUID: 0yFJeiXCSmOuwkOWyUiqWQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
-   d="scan'208";a="234572843"
-Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.106])
-  by fmviesa007.fm.intel.com with ESMTP; 11 May 2026 18:40:34 -0700
-From: "Chang S. Bae" <chang.seok.bae@intel.com>
-To: pbonzini@redhat.com,
-	seanjc@google.com
-Cc: kvm@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="bO8i/LCw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1778550876;
+	bh=KsiEnrtCJSWQlZjaZuSHiHrbCjbRIa7B5vpGcWsVJHQ=;
+	h=From:To:Subject:Date:Message-Id:MIME-Version;
+	b=bO8i/LCwQ8vhXKJcE+AwRXZuAPJsQgSI3q7Fo/jKwL0/H1GTTk72Ckqw9Bf8fIqRF
+	 tbm14+0sxh410rZ6Ju2JaNqzpU5mOxQleeRR4X1XCNT262QcBZlL1be15c65Xr/chU
+	 Y25d24+qGQshSN16w/vSvGm85a5j3ipE8B4rdb3M=
+X-QQ-mid: esmtpgz16t1778550857tc0037d88
+X-QQ-Originating-IP: Jz09QHrjMI7WcqW2jGUJaqYXFSIwCf6TlpnCaoahsmg=
+Received: from localhost.localdomain ( [123.114.60.34])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 12 May 2026 09:54:15 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 1
+X-BIZMAIL-ID: 6620034291447723813
+EX-QQ-RecipientCnt: 11
+From: Qiang Ma <maqianga@uniontech.com>
+To: seanjc@google.com,
+	pbonzini@redhat.com,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
 	x86@kernel.org,
+	hpa@zytor.com
+Cc: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	chao.gao@intel.com,
-	chang.seok.bae@intel.com
-Subject: [PATCH v4 21/21] KVM: x86: selftests: Add APX state handling and XCR0 sanity checks
-Date: Tue, 12 May 2026 01:15:02 +0000
-Message-ID: <20260512011502.53072-22-chang.seok.bae@intel.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260512011502.53072-1-chang.seok.bae@intel.com>
-References: <20260512011502.53072-1-chang.seok.bae@intel.com>
+	Qiang Ma <maqianga@uniontech.com>
+Subject: [PATCH] KVM: x86: Fix Xen hypercall tracepoint argument assignment
+Date: Tue, 12 May 2026 09:53:13 +0800
+Message-Id: <20260512015313.1685784-1-maqianga@uniontech.com>
+X-Mailer: git-send-email 2.20.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -64,74 +54,51 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz3b-0
+X-QQ-XMAILINFO: OfSYiviZO9YdrV3nQxC66+2vYP0f/OFUOeWsKSElW4429Vi6GEygCM2n
+	mgHDoV6ceAp+gUkdjbBQm8kyND/s7Dx0Emlbk2xeq3eX0rqbrpRQzTmQ9DnEmZuNsMU3SOK
+	EBgaTRBU7pMTWCuzvt25e+KyhJockazWiqwWDdXhY0Alz3yMo55AVCRjlQRSiX21UC7MQSW
+	Pd3zHU4vcoAUbFfLOcunKgc+EW58NsPifb9R+8nGxPRmTCMI8Bl+ddat4Lx6AWM2ydzxzTs
+	1O8Zv+E06nv1DXM3l4gZCMfjp0igkMLsxGVeC6a3y52pq8h8DUXzi5KApjX2C2dSAttznlf
+	iS62icwdlwpecQMrIefzbXpVaeVlQOt3gOiMhsfPkKTZdq3u1DrFX2pfNIyy1sRbNb/N7hu
+	z5db2Ip7ycRYzWIXRjftqnzva1K2g3WD4hkqlXWQgXlAOdlgSKOwa0Vr6LJTbDpxaaagTg+
+	3UViGU6vYyinFhWZRtwfPrm4NbUxZtO2+fxAuVFVDvb6n9qyhIzZxUiTrnG+4EtzhIVicxQ
+	kqNq0HKItAxtKh+9g7XZt+9mgSYlhAjyfsDlyUQy4KAuXdpW0Qf30bJskgqmtz+BiAc5EAM
+	UZ/rFj1bG0IepJcjbXzOwUubLaI14uneWv+6G0lV8czXwjAceWd7/w/GqV3AbwxymUB5JXW
+	mGNzwnr5s3Suh+de5lLlI7q1EYtxNASIYET1kPppyTFNy93g/WOvvrVZAhGa+FLsEfuuPjy
+	ABvXpLaKxc4LhVrtoVfNhCrf8NrktaXSn9Qw5jfUKW0ayF+hLSKKAW7+tKX2qVAcyiL2eEf
+	QY2IfJ0lVJLvaT1EBc7JpUXmpppnLSW/n7GpFuCFLUtYm2YTh5T4fLEsRFdDp1pwFgBquZW
+	98DY/MqH80DXLlCogIdn40nuphOun6s92ViD0qzA/dcDFclzc0Bz8Y7NaDJ9d/FUnxDKbka
+	2WyqRiumHitqEls/dqZ3mkz4UHsa0ojBUcxe+RcfdLeYLwq0IK6k0vmeC6lautCEdPnT6Tl
+	KcBg2GW7M/oKt2B0aE
+X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
+X-QQ-RECHKSPAM: 0
 
-Now that KVM exposes the APX feature to guests, extend some existing
-selftests to validate XCR0 configuration and state management.
+TRACE_EVENT(kvm_xen_hypercall) stores a5 in __entry->a4 instead of
+__entry->a5.
 
-Since APX repurposes the XSAVE area previously used by MPX in the
-non-compacted format, add a check to ensure that MPX states are not set
-when APX is enabled.
+That overwrites the recorded a4 argument and leaves a5 unset in the
+trace entry. Fix the typo so both arguments are captured correctly.
 
-Also, load non-init APX state data in the guest so that XSTATE_BV[APX] is
-set, allowing validation of APX state testing.
-
-Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+Signed-off-by: Qiang Ma <maqianga@uniontech.com>
 ---
- tools/testing/selftests/kvm/x86/state_test.c  |  3 +++
- .../selftests/kvm/x86/xcr0_cpuid_test.c       | 19 +++++++++++++++++++
- 2 files changed, 22 insertions(+)
+ arch/x86/kvm/trace.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/kvm/x86/state_test.c b/tools/testing/selftests/kvm/x86/state_test.c
-index 409c6cc9f921..7d93d62fc6a5 100644
---- a/tools/testing/selftests/kvm/x86/state_test.c
-+++ b/tools/testing/selftests/kvm/x86/state_test.c
-@@ -171,6 +171,9 @@ static void __attribute__((__flatten__)) guest_code(void *arg)
- 			asm volatile ("vmovupd %0, %%zmm16" :: "m" (buffer));
- 		}
+diff --git a/arch/x86/kvm/trace.h b/arch/x86/kvm/trace.h
+index e7fdbe9efc90..0db25bba17f6 100644
+--- a/arch/x86/kvm/trace.h
++++ b/arch/x86/kvm/trace.h
+@@ -154,7 +154,7 @@ TRACE_EVENT(kvm_xen_hypercall,
+ 		__entry->a2 = a2;
+ 		__entry->a3 = a3;
+ 		__entry->a4 = a4;
+-		__entry->a4 = a5;
++		__entry->a5 = a5;
+ 	),
  
-+		if (supported_xcr0 & XFEATURE_MASK_APX)
-+			write_egpr(16, 0xcccccccc);
-+
- 		if (this_cpu_has(X86_FEATURE_MPX)) {
- 			u64 bounds[2] = { 10, 0xffffffffull };
- 			u64 output[2] = { };
-diff --git a/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c b/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c
-index 40dc9e6b3fad..f74978ef5951 100644
---- a/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c
-+++ b/tools/testing/selftests/kvm/x86/xcr0_cpuid_test.c
-@@ -46,6 +46,20 @@ do {									\
- 		       __supported, (xfeatures));			\
- } while (0)
- 
-+/*
-+ * Verify that mutually exclusive architectural features do not overlap.
-+ * For example, APX and MPX must never be reported as supported together.
-+ */
-+#define ASSERT_XFEATURE_CONFLICT(supported_xcr0, xfeatures, conflicts)			\
-+do {											\
-+	uint64_t __supported = (supported_xcr0) & ((xfeatures) | (conflicts));		\
-+											\
-+	__GUEST_ASSERT((__supported & (xfeatures)) != (xfeatures) ||			\
-+		       !(__supported & (conflicts)),					\
-+		       "supported = 0x%lx, xfeatures = 0x%llx, conflicts = 0x%llx",	\
-+		       __supported, (xfeatures), (conflicts));				\
-+} while (0)
-+
- static void guest_code(void)
- {
- 	u64 initial_xcr0;
-@@ -79,6 +93,11 @@ static void guest_code(void)
- 	ASSERT_ALL_OR_NONE_XFEATURE(supported_xcr0,
- 				    XFEATURE_MASK_XTILE);
- 
-+	/* Check APX by ensuring MPX is not exposed concurrently */
-+	ASSERT_XFEATURE_CONFLICT(supported_xcr0,
-+				 XFEATURE_MASK_APX,
-+				 XFEATURE_MASK_BNDREGS | XFEATURE_MASK_BNDCSR);
-+
- 	vector = xsetbv_safe(0, XFEATURE_MASK_FP);
- 	__GUEST_ASSERT(!vector,
- 		       "Expected success on XSETBV(FP), got %s",
+ 	TP_printk("cpl %d nr 0x%lx a0 0x%lx a1 0x%lx a2 0x%lx a3 0x%lx a4 0x%lx a5 %lx",
 -- 
-2.51.0
+2.20.1
 
