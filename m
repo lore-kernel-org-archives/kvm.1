@@ -1,30 +1,30 @@
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74AAC368D41;
-	Tue, 12 May 2026 07:42:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.110
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26BA379C28;
+	Tue, 12 May 2026 07:42:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778571723; cv=none; b=mwuvr67VuX96nIZN0RZ95f1ki3/F0mR5A4WMUxYE7dk++zjdwll9Z0/t32ksAytmNwWCpPVWY/3jRLvvq0h5KHQINtcNWEoPEA6d+X3dIK3nopx3lmD3IDRYbKW+bKapIEgEh4QygD8rWM2Lrz4jVZW9yCoBQFj3y4r0qIYQWXA=
+	t=1778571729; cv=none; b=CBIwQzXTF5zFJ5unbwcmUhIWA1CPINuf/iIH2HIGs2OpGJCpaCoeGCK1mVaNhrSz//qP9nurkNdoeaxXJpy+3qWKz4rOyJmBOGx6eKZYMKcT9ezSOxyfGCgD/RH4cg0ay355zcMQXjz3MihG4/Yqu4su8j4dM9QQeOK/CqmxWdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778571723; c=relaxed/simple;
-	bh=f7BjFLEDmKzCfcaI0RT94K69Drl++QNC56ZYMtUEJwo=;
+	s=arc-20240116; t=1778571729; c=relaxed/simple;
+	bh=S1KAa2hsg2t5OftD1qgj3EN+hxREsBlG2ozkwRkJzto=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=moL6IiV8GGhZeZiL3+MtBHg/u4Reb5+KLX9suCSRnoqniqpqQM69NqHc40W99ZNEWBZEeRsTTfoqHiR6RZZfHRVZTUQrrr+9haP7MW9BRpu6iqUBIHaoao4Dr3F86+fNevCDsxt89qBr4GGX27vclVlJ8JxNEBJHq1U/5RWj7Ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=kj/80AVg; arc=none smtp.client-ip=115.124.30.110
+	 MIME-Version; b=G7SNfU+uBPOiC80E5/QrwDDndh6EtuS8H6XLRS+Jpoc6I1LQj3aSBmmCwT+Ck8VahUk+QLCtmaqGhs5CduOM+oxL1l5+a95ZqtyAwIeZIAOuurg2lUlxS2/xgGnCqExM8JZRHw/I3fizONSFVW7dgc6zhaKMulg/91FdYg2gtdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Y9GUNCON; arc=none smtp.client-ip=115.124.30.132
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="kj/80AVg"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Y9GUNCON"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1778571717; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=+9HQQIBfEhfwMc3uGZK7qS8juRrVA4rZdGkcmvlp+jQ=;
-	b=kj/80AVgiDQzMz/SjYsQiMh0Q2hmBTI+VfJcze4M5oav5vRcBV5N/LETmGuQAZcPtYMYiWfkjSEQrdncb8DqV1TnBiL3S2bl029D7M7rU9OHDZdW2pTRv6PvBJfwl1IKCrXwvVY5C49toKx9BORSHI54dN7izSmO8kzOyYMlkvs=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=25;SR=0;TI=SMTPD_---0X2puQNT_1778571714;
-Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X2puQNT_1778571714 cluster:ay36)
+	t=1778571715; h=From:To:Subject:Date:Message-Id:MIME-Version;
+	bh=i04ZuxIi3jt4m8VWianwNO2YFQpZ5BInIfUiKWtaoro=;
+	b=Y9GUNCONnLHKa7y/tKpkzm8dCjA0cu1wlRnPZXcVPeJ2u8VkuFheFi5ZdszceNBovGGOT6r65F7QikU5lf6uoGarlOBp3NW8PcSh3RRah63qoHBfoJBVym/r8FuA0ZaK6+rEQihrMX5mACpbfXcG/rHYv/WNlbxUuVNdNbdXb50=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=25;SR=0;TI=SMTPD_---0X2puQMt_1778571712;
+Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X2puQMt_1778571712 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Tue, 12 May 2026 15:41:55 +0800
+          Tue, 12 May 2026 15:41:53 +0800
 From: fangyu.yu@linux.alibaba.com
 To: joro@8bytes.org,
 	will@kernel.org,
@@ -51,9 +51,9 @@ Cc: guoren@kernel.org,
 	linux-riscv@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
 	Fangyu Yu <fangyu.yu@linux.alibaba.com>
-Subject: [PATCH v4 2/2] iommupt: Encode IOMMU_MMIO/IOMMU_CACHE via RISC-V Svpbmt bits
-Date: Tue, 12 May 2026 15:41:42 +0800
-Message-Id: <20260512074142.16356-3-fangyu.yu@linux.alibaba.com>
+Subject: [PATCH v4 1/2] iommu/riscv: Advertise Svpbmt support to generic page table
+Date: Tue, 12 May 2026 15:41:41 +0800
+Message-Id: <20260512074142.16356-2-fangyu.yu@linux.alibaba.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
 In-Reply-To: <20260512074142.16356-1-fangyu.yu@linux.alibaba.com>
 References: <20260512074142.16356-1-fangyu.yu@linux.alibaba.com>
@@ -67,15 +67,10 @@ Content-Transfer-Encoding: 8bit
 
 From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 
-When the RISC-V IOMMU page table format support Svpbmt, PBMT provides
-a way to tag mappings with page-based memory types. Encode memory type
-via PBMT in RISC-V IOMMU PTEs:
-
-  - IOMMU_MMIO   -> PBMT=IO
-  - !IOMMU_MMIO && !IOMMU_CACHE -> PBMT=NC
-  - otherwise    -> PBMT=Normal (PBMT=0)
-
-Only touch PBMT when PT_FEAT_RISCV_SVPBMT is advertised.
+The RISC-V IOMMU can optionally support Svpbmt page-based memory types
+in its page table format. When present,the generic page table code can
+use this capability to encode memory attributes (e.g. MMIO vs normal
+memory) in PTEs.
 
 Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 Reviewed-by: Anup Patel <anup@brainfault.org>
@@ -84,45 +79,38 @@ Reviewed-by: Nutty Liu <nutty.liu@hotmail.com>
 Reviewed-by: Kevin Tian <kevin.tian@intel.com>
 Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 ---
- drivers/iommu/generic_pt/fmt/riscv.h | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/iommu/riscv/iommu.c       | 2 ++
+ include/linux/generic_pt/common.h | 4 ++++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/drivers/iommu/generic_pt/fmt/riscv.h b/drivers/iommu/generic_pt/fmt/riscv.h
-index a7fef6266a36..ae9a76514416 100644
---- a/drivers/iommu/generic_pt/fmt/riscv.h
-+++ b/drivers/iommu/generic_pt/fmt/riscv.h
-@@ -64,6 +64,8 @@ enum {
- 	RISCVPT_PPN64 = GENMASK_ULL(53, 10),
- 	RISCVPT_PPN64_64K = GENMASK_ULL(53, 14),
- 	RISCVPT_PBMT = GENMASK_ULL(62, 61),
-+	RISCVPT_NC = BIT_ULL(61),
-+	RISCVPT_IO = BIT_ULL(62),
- 	RISCVPT_N = BIT_ULL(63),
+diff --git a/drivers/iommu/riscv/iommu.c b/drivers/iommu/riscv/iommu.c
+index a31f50bbad35..6c324f9fdc53 100644
+--- a/drivers/iommu/riscv/iommu.c
++++ b/drivers/iommu/riscv/iommu.c
+@@ -1268,6 +1268,8 @@ static struct iommu_domain *riscv_iommu_alloc_paging_domain(struct device *dev)
+ 	cfg.common.features = BIT(PT_FEAT_SIGN_EXTEND) |
+ 			      BIT(PT_FEAT_FLUSH_RANGE) |
+ 			      BIT(PT_FEAT_RISCV_SVNAPOT_64K);
++	if (iommu->caps & RISCV_IOMMU_CAPABILITIES_SVPBMT)
++		cfg.common.features |= BIT(PT_FEAT_RISCV_SVPBMT);
+ 	domain->riscvpt.iommu.nid = dev_to_node(iommu->dev);
+ 	domain->domain.ops = &riscv_iommu_paging_domain_ops;
  
- 	/* Svnapot encodings for ppn[0] */
-@@ -201,7 +203,8 @@ static inline void riscvpt_attr_from_entry(const struct pt_state *pts,
- {
- 	attrs->descriptor_bits =
- 		pts->entry & (RISCVPT_R | RISCVPT_W | RISCVPT_X | RISCVPT_U |
--			      RISCVPT_G | RISCVPT_A | RISCVPT_D);
-+			      RISCVPT_G | RISCVPT_A | RISCVPT_D | RISCVPT_NC |
-+			      RISCVPT_IO);
- }
- #define pt_attr_from_entry riscvpt_attr_from_entry
+diff --git a/include/linux/generic_pt/common.h b/include/linux/generic_pt/common.h
+index fc5d0b5edadc..2683e5b38998 100644
+--- a/include/linux/generic_pt/common.h
++++ b/include/linux/generic_pt/common.h
+@@ -188,6 +188,10 @@ enum {
+ 	 * Support the 64k contiguous page size following the Svnapot extension.
+ 	 */
+ 	PT_FEAT_RISCV_SVNAPOT_64K = PT_FEAT_FMT_START,
++	/*
++	 * Support Svpbmt extension: encode page-based memory type (PBMT) in PTEs.
++	 */
++	PT_FEAT_RISCV_SVPBMT,
  
-@@ -237,6 +240,12 @@ static inline int riscvpt_iommu_set_prot(struct pt_common *common,
- 		pte |= RISCVPT_R;
- 	if (!(iommu_prot & IOMMU_NOEXEC))
- 		pte |= RISCVPT_X;
-+	if (common->features & BIT(PT_FEAT_RISCV_SVPBMT)) {
-+		if (iommu_prot & IOMMU_MMIO)
-+			pte |= RISCVPT_IO;
-+		else if (!(iommu_prot & IOMMU_CACHE))
-+			pte |= RISCVPT_NC;
-+	}
+ };
  
- 	/* Caller must specify a supported combination of flags */
- 	if (unlikely((pte & (RISCVPT_X | RISCVPT_W | RISCVPT_R)) == 0))
 -- 
 2.50.1
 
