@@ -1,104 +1,115 @@
-Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8DF6383329;
-	Tue, 12 May 2026 01:57:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74AB2E413;
+	Tue, 12 May 2026 01:58:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778551039; cv=none; b=puizCT8WLZPgXsiLNinol7lrlASZ2q4ZGfUX28E4C8Tz62oUc83Ed+ZfqMqdXqoON+FEot/4zhqvjRfdKrk2QEEwjhZHkQdVnUSo51hFtpXR0M92NBO4P8+8c+b6uH05WGYChkHO8kX7yMEh2dGX+8BJUf9f4PmYeE9k2yBigCw=
+	t=1778551085; cv=none; b=LbRBYZw16MBtFAOH71NtLcjHmaU8XGxtElTwsqlKoOg1jo0HoKUOP3re0GAnPcBOi7hHLSu4GGo5wm+V3tcLjHyUDhbAevMffDCi69fzE8sKQW0wHalFGojvlMDjgawjSqHVQEU8yt0NrUmxsmj4Nfpf6qqfQG/9Ewy9fZBJv1I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778551039; c=relaxed/simple;
-	bh=hH8q+kk/6fDuIClmCBGB/tnhDHuWXgv3foSMvJnMT/M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=mLf3m8AoPjrf0A3r1Xc8H/TFgiqKZPyLdIVRv3ZXf47uGQaIICUbNewyvHLIsutpiePv24Zni3AP5B6b7Lyjnp6OzP6AMZiDQbTo32vVROeW65dQb2GO/lRxznA37ISwQJFqufyyLR7F5uRdsLt3fh97lru/+JhZZgEZG8zUKkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=bO8i/LCw; arc=none smtp.client-ip=54.207.19.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+	s=arc-20240116; t=1778551085; c=relaxed/simple;
+	bh=EgMDJ590uo9KLyq5nyrnIP1cOHLNirC5KhAQf/i55sM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Ewnz00iwBP5xf1IgXoLn4L5hlzd5g7bmgUETW6XoWel9WI9XWjlaLcC0NBk+RKRSIsb1PrbPOdqT8I5TTTdaiUiY3JxwyK2jzXqb54ijaUyIvGKN7mUInXCRnWUlBkAj9qI+FGxppPaswVB0tsH71zOm2RD6B7joAZCW4F+vv4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZuwAfqq0; arc=none smtp.client-ip=198.175.65.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="bO8i/LCw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
-	s=onoh2408; t=1778550876;
-	bh=KsiEnrtCJSWQlZjaZuSHiHrbCjbRIa7B5vpGcWsVJHQ=;
-	h=From:To:Subject:Date:Message-Id:MIME-Version;
-	b=bO8i/LCwQ8vhXKJcE+AwRXZuAPJsQgSI3q7Fo/jKwL0/H1GTTk72Ckqw9Bf8fIqRF
-	 tbm14+0sxh410rZ6Ju2JaNqzpU5mOxQleeRR4X1XCNT262QcBZlL1be15c65Xr/chU
-	 Y25d24+qGQshSN16w/vSvGm85a5j3ipE8B4rdb3M=
-X-QQ-mid: esmtpgz16t1778550857tc0037d88
-X-QQ-Originating-IP: Jz09QHrjMI7WcqW2jGUJaqYXFSIwCf6TlpnCaoahsmg=
-Received: from localhost.localdomain ( [123.114.60.34])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 12 May 2026 09:54:15 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 1
-X-BIZMAIL-ID: 6620034291447723813
-EX-QQ-RecipientCnt: 11
-From: Qiang Ma <maqianga@uniontech.com>
-To: seanjc@google.com,
-	pbonzini@redhat.com,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Qiang Ma <maqianga@uniontech.com>
-Subject: [PATCH] KVM: x86: Fix Xen hypercall tracepoint argument assignment
-Date: Tue, 12 May 2026 09:53:13 +0800
-Message-Id: <20260512015313.1685784-1-maqianga@uniontech.com>
-X-Mailer: git-send-email 2.20.1
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZuwAfqq0"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778551084; x=1810087084;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=EgMDJ590uo9KLyq5nyrnIP1cOHLNirC5KhAQf/i55sM=;
+  b=ZuwAfqq0UAeQsm4hnMcDiKoPonEedOg3rSjdk48W/D+eSikN/plX6De5
+   Gsr3nGUPS2n7sjk/T1z5P42QviovrZ/haqZ755oQz6QgJTxbHm6LoEDxZ
+   cJmaGLA+Q3rmWcYnggu8k+vl0OIZgt8ozK8FjDhdGlduWjZ9gROXqaDsj
+   HVSay1pyAsfuZq7u1KlFFy1smrvLcHAbKujDOWlG3haPsxiXjeyan3+g8
+   3qV5oVE3WSE04j381gPDx15zJGj4dJM1yOajV2INhK95ZDYnCkvdzrgf6
+   6TWaTNDXTov9ioJt8ZHft4KKT2P6+rMGedHJHu3+F6+ll/NJecklVfWR3
+   Q==;
+X-CSE-ConnectionGUID: DyqKJRiUS26shAPq11tSBg==
+X-CSE-MsgGUID: 7kEAoL/aQdGruv8lDgUoCg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="102113675"
+X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
+   d="scan'208";a="102113675"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 18:58:04 -0700
+X-CSE-ConnectionGUID: vDojhQ9TQoa9HlXOEugagw==
+X-CSE-MsgGUID: GCtHKsvMR0uKcuKPVxRKVw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
+   d="scan'208";a="237711383"
+Received: from fanlilin-mobl.ccr.corp.intel.com (HELO [10.238.1.228]) ([10.238.1.228])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 18:58:00 -0700
+Message-ID: <d88d19f5-0a96-4115-97f7-8daf1edd625a@linux.intel.com>
+Date: Tue, 12 May 2026 09:57:58 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: esmtpgz:uniontech.com:qybglogicsvrsz:qybglogicsvrsz3b-0
-X-QQ-XMAILINFO: OfSYiviZO9YdrV3nQxC66+2vYP0f/OFUOeWsKSElW4429Vi6GEygCM2n
-	mgHDoV6ceAp+gUkdjbBQm8kyND/s7Dx0Emlbk2xeq3eX0rqbrpRQzTmQ9DnEmZuNsMU3SOK
-	EBgaTRBU7pMTWCuzvt25e+KyhJockazWiqwWDdXhY0Alz3yMo55AVCRjlQRSiX21UC7MQSW
-	Pd3zHU4vcoAUbFfLOcunKgc+EW58NsPifb9R+8nGxPRmTCMI8Bl+ddat4Lx6AWM2ydzxzTs
-	1O8Zv+E06nv1DXM3l4gZCMfjp0igkMLsxGVeC6a3y52pq8h8DUXzi5KApjX2C2dSAttznlf
-	iS62icwdlwpecQMrIefzbXpVaeVlQOt3gOiMhsfPkKTZdq3u1DrFX2pfNIyy1sRbNb/N7hu
-	z5db2Ip7ycRYzWIXRjftqnzva1K2g3WD4hkqlXWQgXlAOdlgSKOwa0Vr6LJTbDpxaaagTg+
-	3UViGU6vYyinFhWZRtwfPrm4NbUxZtO2+fxAuVFVDvb6n9qyhIzZxUiTrnG+4EtzhIVicxQ
-	kqNq0HKItAxtKh+9g7XZt+9mgSYlhAjyfsDlyUQy4KAuXdpW0Qf30bJskgqmtz+BiAc5EAM
-	UZ/rFj1bG0IepJcjbXzOwUubLaI14uneWv+6G0lV8czXwjAceWd7/w/GqV3AbwxymUB5JXW
-	mGNzwnr5s3Suh+de5lLlI7q1EYtxNASIYET1kPppyTFNy93g/WOvvrVZAhGa+FLsEfuuPjy
-	ABvXpLaKxc4LhVrtoVfNhCrf8NrktaXSn9Qw5jfUKW0ayF+hLSKKAW7+tKX2qVAcyiL2eEf
-	QY2IfJ0lVJLvaT1EBc7JpUXmpppnLSW/n7GpFuCFLUtYm2YTh5T4fLEsRFdDp1pwFgBquZW
-	98DY/MqH80DXLlCogIdn40nuphOun6s92ViD0qzA/dcDFclzc0Bz8Y7NaDJ9d/FUnxDKbka
-	2WyqRiumHitqEls/dqZ3mkz4UHsa0ojBUcxe+RcfdLeYLwq0IK6k0vmeC6lautCEdPnT6Tl
-	KcBg2GW7M/oKt2B0aE
-X-QQ-XMRINFO: NyFYKkN4Ny6FuXrnB5Ye7Aabb3ujjtK+gg==
-X-QQ-RECHKSPAM: 0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] x86/cpu: Skip reading MSR_IA32_PLATFORM_ID in
+ virtualized environment
+To: Borislav Petkov <bp@alien8.de>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
+ dave.hansen@intel.com, seanjc@google.com, pbonzini@redhat.com,
+ kas@kernel.org, rick.p.edgecombe@intel.com, vishal.l.verma@intel.com,
+ xiaoyao.li@intel.com, chao.gao@intel.com
+References: <20260430020953.1405535-1-binbin.wu@linux.intel.com>
+ <20260511100451.GBagGpw7jRBDdHkBgp@fat_crate.local>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260511100451.GBagGpw7jRBDdHkBgp@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-TRACE_EVENT(kvm_xen_hypercall) stores a5 in __entry->a4 instead of
-__entry->a5.
 
-That overwrites the recorded a4 argument and leaves a5 unset in the
-trace entry. Fix the typo so both arguments are captured correctly.
 
-Signed-off-by: Qiang Ma <maqianga@uniontech.com>
----
- arch/x86/kvm/trace.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+On 5/11/2026 6:04 PM, Borislav Petkov wrote:
+> On Thu, Apr 30, 2026 at 10:09:53AM +0800, Binbin Wu wrote:
+>> diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
+>> index 37ac4afe0972..1bc0c350726c 100644
+>> --- a/arch/x86/kernel/cpu/microcode/intel.c
+>> +++ b/arch/x86/kernel/cpu/microcode/intel.c
+>> @@ -147,6 +147,10 @@ u32 intel_get_platform_id(void)
+>>  	if (intel_cpuid_vfm() <= INTEL_PENTIUM_II_KLAMATH)
+>>  		return 0;
+>>  
+>> +	/* Don't try to read microcode bits when virtualized. */
+>> +	if (cpuid_ecx(1) & BIT(X86_FEATURE_HYPERVISOR & 0x1f))
+>> +		return 0;
+>> +
+>>  	/* get processor flags from MSR 0x17 */
+>>  	native_rdmsr(MSR_IA32_PLATFORM_ID, val[0], val[1]);
+>>  
+>>
+>> base-commit: 9974969c14031a097d6b45bcb7a06bb4aa525c40
+>> -- 
+> 
+> Does that work too?
+> 
+> diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
+> index 18d2eff7a4b7..1b24de94bdd5 100644
+> --- a/arch/x86/kernel/cpu/microcode/intel.c
+> +++ b/arch/x86/kernel/cpu/microcode/intel.c
+> @@ -139,6 +139,9 @@ u32 intel_get_platform_id(void)
+>  {
+>  	unsigned int val[2];
+>  
+> +	if (hypervisor_present)
 
-diff --git a/arch/x86/kvm/trace.h b/arch/x86/kvm/trace.h
-index e7fdbe9efc90..0db25bba17f6 100644
---- a/arch/x86/kvm/trace.h
-+++ b/arch/x86/kvm/trace.h
-@@ -154,7 +154,7 @@ TRACE_EVENT(kvm_xen_hypercall,
- 		__entry->a2 = a2;
- 		__entry->a3 = a3;
- 		__entry->a4 = a4;
--		__entry->a4 = a5;
-+		__entry->a5 = a5;
- 	),
- 
- 	TP_printk("cpl %d nr 0x%lx a0 0x%lx a1 0x%lx a2 0x%lx a3 0x%lx a4 0x%lx a5 %lx",
--- 
-2.20.1
+hypervisor_present could be uninitialized if dis_ucode_ldr is true.
+intel_get_platform_id() is also called during the normal cpu initialization.
+
+
+> +		return 0;
+> +
+>  	/*
+>  	 * This can be called early. Use CPUID directly instead of
+>  	 * relying on cpuinfo_x86 which may not be fully initialized.
+> 
 
