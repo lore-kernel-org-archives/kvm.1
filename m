@@ -1,162 +1,104 @@
-Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
+Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92921348883
-	for <kvm@vger.kernel.org>; Tue, 12 May 2026 15:06:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.179
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778598405; cv=pass; b=LIKulG/ME8NuigHbFFh6wyfjaMPNsGQdCBGgBXFJwFSz2eEWMziqsa3BdGcyO+eZDi74ZAHm5dK1fnehcXlJEb2MyfhSIx+r6gYaD5IcrnoBocsO8zto6bo5AnuQdxZXWcdtGhWSjg3teX+JoGciSbUTcAdEfcFJGGVd2bdDcYQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778598405; c=relaxed/simple;
-	bh=gcNBDheFBgH8XihHbSk3EkYFkn6fIMIdXTND3WNAdzE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VkN3T/P3qcopdZH4NnS3cuovpP/FuxopmrhFQxZ+8K6ei7Ibq2z6arr0qSkD/Ze9azF8zDhOHvNd6KqBIhlpHs28O43ghdJs/C4ifaSH67S/N8+BUCvkR3fukcgE3jMx5L/GAizF7m1nuTHAkeZX6+rXtEytGnWrgNlTgAGorrg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sbEReKWp; arc=pass smtp.client-ip=209.85.160.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AAC23B1ECC
+	for <kvm@vger.kernel.org>; Tue, 12 May 2026 15:12:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778598742; cv=none; b=uS2vLZ30rdK2oodkJsEXqS0OJGLRM2Ao7Ad4QDyRSTqbWFE3kcZVZ4PCLzceRlYunZ2bKq/aobhlJdpYVcZSpEU/ue+YPWqo0QcilaDwovMxldmBg965y+sCXeV1VOjA+IYJiWIcXSb488ktiZIztoViorFLNfaEissZhpN6k14=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778598742; c=relaxed/simple;
+	bh=jMSK8dzwc4SayPadFvopl7Cutk1+Oj8G3x7GLFF5VWQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G1EYPdje8OUoKFZiE51Jnphkzdm/xuc6GHK24IrnfFTGrKeyNaXaqGAJkh8WfyYUtVjtkY6wbQKvbOeqG6cVzFT6EemBhAzKJ048UrzBj/2iwUDQ3cYD1z9axqY7LzY50FoZPThRF+xRqNPsGuG+OvUhZDRca+Zgs7X2YJEm950=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=MEoygFRF; arc=none smtp.client-ip=209.85.222.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sbEReKWp"
-Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-515548f390fso7531cf.0
-        for <kvm@vger.kernel.org>; Tue, 12 May 2026 08:06:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778598402; cv=none;
-        d=google.com; s=arc-20240605;
-        b=BgfOq8bnuUm9iTNgv2JCnSRK4kdFLx9lE6urU9SJ/u+H6u3OHS0xm05fJNe3k1mNaC
-         ATat1HH5YvKhlC7rC0AfX4mPuFfw2ZkO0ygz0t4WcI3omCZC6UII0sYeOJlEFRDYDCfH
-         +vOKKVRZBvAhCiN1jyax2FL245v6O/OiJvHCBiL1kEZKn5nCOCMc6Hxq9mAfM/g30axC
-         xaiO4yjISULW1OtNV0iaqgJtnHM09xagFJ5CpbyTVaNLeMS12+z4PfksM3uKtTpRmGx0
-         3Vg4ASbDmiyU5PYHvfZ5CVPvaFYGdRQJlQeAGLQE3dNLJRLREOQ53a2uThEojkbcXHTM
-         0gaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=K3beaZW1jplvB3FYWIrdXKEVFakjYTyE58XRCIOhPFc=;
-        fh=S9d+bQpHol54BhdWYrNfQksRfYcQAZSjbyPQzQdh4oI=;
-        b=dpdBHo4JLsNr3Vx2vmikoja4yLd2jd8PgQAyP3CfGxkaWOQwxsfw3BQ4wODM6YToTH
-         ayuAihyGAnSAivhbgYgbn1cDHqOEQN3M5PBUyVnaQ0tYzspBb0SFhDZqcYxm8Bm59Mk4
-         as0WZI5T0PspebBN0kZD7/JavP6woDKjlGhY4W0qkGWYDZ4Z2A2L8fOKsD1EReNYcmtv
-         2Y7wI08O0tNwyNW9dXrbxJvkkhG1mPm06HF7ip3jaDzKI/mcBu5+uF7WPLKW/vZooTs4
-         n531GWiuI31WsBMKT6QzPoVaZK5KomVpDrcGOSDSCratYwSjOCFChQAA8EVK6vlJpdzk
-         sKfQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="MEoygFRF"
+Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-8d65f4073bfso775424085a.3
+        for <kvm@vger.kernel.org>; Tue, 12 May 2026 08:12:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778598402; x=1779203202; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=K3beaZW1jplvB3FYWIrdXKEVFakjYTyE58XRCIOhPFc=;
-        b=sbEReKWpiei+zg1mTeU9/7uDaNr6TIm45Qzum7v7WyBfs+YfRv0NQ9KBHh2mLeaWN8
-         gUNue+wVp/+IFw9po3NWR/ne2YMl1uLhbh5rKcoWUC/CF/h7FdrnZ05l3q1X8nUlp6/Q
-         2HvbKG31gQKc+OtaTiPz7WFwblKYDRtyu8R7WGH9rWTWoen0aLHvqfxFJQ9i6ox8+Lwx
-         rEBJhtX4X4A3fKVB5IPQ7SmcFt4gdhWFJaR90W0J8ghATgUshrH2LjnqwywEvabbi942
-         Yt86Og4k10NaScTR612B6Gin28N9BVof0tvuBhkh3FZR+CQzTl0tmkvO9buPjkA/BSxE
-         gA0A==
+        d=ziepe.ca; s=google; t=1778598739; x=1779203539; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=f5QZGcD1HP6wx7LkGFPePizbOfmssvqTnXeHIaO3M7c=;
+        b=MEoygFRFsmf9SqPzdgAPAIGIcJsdCrpALhBgbNvqOan3jgtDPBlivRUlrf92N2QeNB
+         R12ZHfBudAuBPrHeglIcwQQn/hGXbEPFS2QP+IeA5BOwKXuAY2CAK+z0XRAa4GB6hL9H
+         ZVwSA2ZZm61/rwv/3AJ51QxrwjM//XazqOPTWMkLMpCM7zOIy+IRd9EGkgsxphvnxAI/
+         cMwkuuxNY5I+uBlLWyTuMW04oLwEMxs/kU5l33l9yjvlWiZfkLJmJOvzvq1xbcA+/5VV
+         v6meFpe467ypNe9tYcaUzBUX+laL+89yw2A8S4LDOm2IGzunSpJymwAnizX77EOp6zl/
+         KbAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778598402; x=1779203202;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K3beaZW1jplvB3FYWIrdXKEVFakjYTyE58XRCIOhPFc=;
-        b=LgKH9PisJkMPVw5zRim1paZfwp10OM3/z9BmdUixIfSU45jwqJaJryVOx6djQiC3hS
-         l7RdILjcrpyW4CFzKbQmH0x1Vd5NNTfpU5HyFLVR3kktK+AdlFS0pOpZmwEM6e22SZIk
-         Mt7stwezNBgGEzIoOuqMTl6wUJVflMSDj0bmRCmzjiyffUoVBnYKqRLzhiemU9/6J15J
-         n79lUhgCfO0MGt04bK5cu+4rR+P4g0Fnasmuj1/KnVfx4dC3Dja4esvlfDB7XdsnhFff
-         tFuRFc1DVnqC7cRd0Fz9E54RyCpGDfmCx7GQiBF99RmrVvbYpiT9Q0p29q0kxOnHi0J4
-         JoVg==
-X-Forwarded-Encrypted: i=1; AFNElJ80HgOeHF/svkko5YIWdOUyrqnJt51ITtXJHJ/pf7g2Y2IWv4JsslDRYQIbYoMMRxo6wq0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yyv+wDgnJbudBdoflLqkU0FEsKlf/A++YmUHj/+poHRI0d6e0m0
-	byJG7qyeGiR8JRzH1aMtWt9wrfaqPvjjcoWGUrnfkQftlEeOO0zrGtOwxQOAsydG1K2YW81L9u7
-	cNWw2WQ8FqrbFK/fKX9tU7qJ4DgK42b3PKbRcG326
-X-Gm-Gg: Acq92OHoYLumS9Qez9hhpP+AP1jemKbBKClBkMzhOe7UhZYSYMsc9hXSkvmcb/OtnHZ
-	G1dA8cFt4gYc1gie3fudmVA0Ebz7PDauDf/0RYpFL6EaU/VU8PRxv5kBxIR99Hr6gZz+iQBFPas
-	Z4tJudHCfbXXciYSjiTgcDj83closBZQi1k2UOS+IPDlZtFr6QNc5wSxKkXv+HEI6z6iPKSOI33
-	DfUbNHgJT1NcjZgLTIS1jbQ99xRsJs7OFe1L4JjH+rClUjJSgJV7Nxwuyp5hRaI0rWYZwzOLU5i
-	ltA43BLsupziLjd9DWFxUneJSzw0pPQR1huVKxPj9wpR+Ihw
-X-Received: by 2002:a05:622a:a9d3:20b0:4f3:5475:6b10 with SMTP id
- d75a77b69052e-514d454198bmr12180171cf.8.1778598401986; Tue, 12 May 2026
- 08:06:41 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1778598739; x=1779203539;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=f5QZGcD1HP6wx7LkGFPePizbOfmssvqTnXeHIaO3M7c=;
+        b=XKnvY/CRXYUx6aDNAP1e3NbrDSH5IHIdv2+mlJdt1Cnra0jFqxTc+ITOajzvCXJD7q
+         yuduJWkqhYRSUSGxc4Md799nLgEhhmedOp5F3TrCQdbDHnEGudWlt8IFcz0UrVBRsj1c
+         +4Cye1yG4K8pTIjO5gTMeKgz4i3CqoEslN2QUq9V0kRfmDGtirgHTLfTnBy1iohcfAga
+         WIGR0ifWytIKXT1XuL2j08QiQ7mR7CINz3/nZeib+aa//tExJO+zc/bXiEw70mb31ZEt
+         XJTMq6+ZNI8LzrYg9x75gywq87RuKpRuoIH4Pe+P2aXUD21BUEXoeQp7ua+fOgb2MyMP
+         E0QQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8rt36zZI3gJTKWa7LABtTcdgANdicevvNyaq8ofpbbKLjAfgrCSa0rIyJgdEveDw99jpA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy/5NTTOB7d/Fuxucabdz1ask1FeNxT9+RW1NOVGUCEG4Uin5l6
+	bGD/9WV6Q3bGawoDaY2r+k0TNGeNUlQAcekMZEBXf6UoixxE9Vk88ojRvQgP7+qSL2o=
+X-Gm-Gg: Acq92OH2NMUF5Ilnxy5xqUjFLZVKLf5dJ4WEqnEiCwAUloA4oJBf6ANwAj1sw/9NAit
+	bXZHtAq0XnByNd9BuKIPsepQj4dlFI0QkYImfetBXi8ObwMAUJrF6H5J4Cy0xdIdbt93ZH8mZXP
+	1Yu5VBNmscCTgY4As0yk+E8cV5XtMAN1jNK3v5uNvp/mb5KpXY2yySI9xBhp/a4UYaGpkgP5wPw
+	obWxFPsU1vwTQlfMqHEHaj+1HjLzcyPYYIPp83Bhfa8iLzpZHr2iwlG2qSvsaER4dBk9+g7wEJv
+	2ujTrc87zECwFkD0By8ylHnnccIiw8ba6YciCAi1MUgz4v8AQWl7eS0g11qdrgmgmvm4VjbtFFL
+	wK00jXDCVEqcx8sTtSOUJrS5YACgc6xJXT8W6H1HAFS//3g0aaiVQ+Qmye8tEAM+BRsR5RVOr+T
+	N8z54cfUS/7qzxTplA8u//uXKDYPUutzdnSCtHLX0Aid5Oo3E1AJYfpgb2QV6kTGQ6XbQmVK7Nl
+	3jwsg==
+X-Received: by 2002:a05:620a:29cf:b0:8ef:ba6:1a42 with SMTP id af79cd13be357-90cfd34cbb9mr453281585a.29.1778598738983;
+        Tue, 12 May 2026 08:12:18 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-907b9286171sm1410125485a.12.2026.05.12.08.12.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2026 08:12:18 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wMomP-00000000AVF-3i1q;
+	Tue, 12 May 2026 12:12:17 -0300
+Date: Tue, 12 May 2026 12:12:17 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: fangyu.yu@linux.alibaba.com
+Cc: joro@8bytes.org, will@kernel.org, robin.murphy@arm.com, pjw@kernel.org,
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
+	kevin.tian@intel.com, nutty.liu@hotmail.com, guoren@kernel.org,
+	kvm@vger.kernel.org, iommu@lists.linux.dev,
+	linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+	kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH] iommupt: Fixup build warning by using BIT_ULL() for
+ RISCVPT_NC/IO
+Message-ID: <20260512151217.GF7702@ziepe.ca>
+References: <20260512144330.91113-1-fangyu.yu@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260511113759.610924-1-tabba@google.com> <20260511113759.610924-3-tabba@google.com>
- <agHugdIrptaXZW-2@google.com> <CA+EHjTw1z7ROF7u0fKqxDGao7S1kELxNWtyWhLoPQx5uwVfuWQ@mail.gmail.com>
- <agI7M7rZ_NZJyjhj@google.com> <CA+EHjTxDvkDGyd-uyAqW7ErVxcKnUBpCYAgmnYfCdh+CCSq=3g@mail.gmail.com>
- <agMqc7Zub3fqToxp@google.com>
-In-Reply-To: <agMqc7Zub3fqToxp@google.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Tue, 12 May 2026 16:06:05 +0100
-X-Gm-Features: AVHnY4IZcdb2DMJvh3qvpivj5i9gaNVVhOQykEAmW1saq1LKEVextu79Cahx9XY
-Message-ID: <CA+EHjTwrfGnBa5UXdLgV2FPga7=HM0wCZ9F7nL6PjHurh2kP+w@mail.gmail.com>
-Subject: Re: [PATCH 2/2] KVM: selftests: Fix FD double-close in kvm_vm_release()
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oupton@kernel.org>, Will Deacon <will@kernel.org>, 
-	Ackerley Tng <ackerleytng@google.com>, David Matlack <dmatlack@google.com>, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260512144330.91113-1-fangyu.yu@linux.alibaba.com>
 
-On Tue, 12 May 2026 at 14:30, Sean Christopherson <seanjc@google.com> wrote:
->
-> On Tue, May 12, 2026, Fuad Tabba wrote:
-> > On Mon, 11 May 2026 at 21:25, Sean Christopherson <seanjc@google.com> wrote:
-> > > > I used kvm_vm_release() because it's the only public API that closes
-> > > > vm->fd to trigger kernel-side destruction.  But the existing callers
-> > > > follow it with vm_recreate_with_one_vcpu(), so the "release + later
-> > > > kvm_vm_free()" path isn't exercised today.
-> > > >
-> > > > I see three ways to make this clean:
-> > > >   a) This patch: kvm_vm_release() becomes idempotent for its three
-> > > >      FDs, matching the kvm_stats_release() idiom it already invokes.
-> > > >   b) Leave kvm_vm_release() as-is and add a dedicated helper, e.g.
-> > > >      kvm_vm_destroy_kernel(), that closes vm->fd to trigger kernel
-> > > >      destruction while leaving the kvm_vm struct intact for
-> > > >      post-destruction inspection.  kvm_vm_free() learns to handle the
-> > > >      half-released state.
-> > > >   c) Something else entirely, e.g., the test should manage vm->fd
-> > > >      directly and not rely on library helpers for this pattern.
-> > >
-> > >     d) Fully kill the VM; validate the semantics with an explict mmap().
-> > >
-> > > The entire point of the test you are writing is to verfiy that a guest_memfd VMA
-> > > doesn't somehow cause KVM to leak state.  So, make that obvious instead of abusing
-> > > APIs that kinda sorta do what you want, but not really.
-> > >
-> > >         mem = kvm_mmap(region->mmap_size, PROT_READ | PROT_WRITE, MAP_SHARED,
-> > >                        region->guest_memfd);
-> > >
-> > >         ...
-> > >
-> > >         kvm_vm_free(vm);
-> > >
-> > >         TEST_ASSERT(is_zero(mem, ...));
-> >
-> > The test isn't about guest_memfd.  The pKVM support that just landed
-> > via Will's series [1]
->
-> Landed where?  Is pKVM actually going upstream with anonymous memory?  I thought
-> the inability to protect against page faults in the untrusted kernel was a
-> non-starter?
->
-> > kvm_mmap() + kvm_vm_free() + is_zero() doesn't translate here.  The only
-> > host view of the donated pages is the memslot mmap, and kvm_vm_free()
-> > munmaps it on the way out, so inspection has to happen between
-> > kernel-side destruction and userspace free.  kvm_vm_release() is the
-> > only library primitive that does that today.
-> >
-> > What do you suggest?
->
-> Manually allocate the memory and expose it to the guest via
-> vm_set_user_memory_region2() vm_set_user_memory_region().
->
+On Tue, May 12, 2026 at 10:43:30PM +0800, fangyu.yu@linux.alibaba.com wrote:
+> From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+> 
+> Fix build warning on 32-bit configurations by using BIT_ULL() for
+> RISCVPT_NC and RISCVPT_IO.
+> 
+> Fixes: 6c21eb174c6c ("iommupt: Encode IOMMU_MMIO/IOMMU_CACHE via RISC-V Svpbmt bits")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202605121350.wZxB51k0-lkp@intel.com/
+> Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+> ---
+>  drivers/iommu/generic_pt/fmt/riscv.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-That works for this test and is cleaner.  I'll restructure: mmap the
-backing in the test, vm_set_user_memory_region2() it in, then
-kvm_vm_free() -> is_zero() through the test-owned VMA -> munmap().
-That drops the motivation for the kvm_vm_release() fd-guard patch
-in this series; happy to drop it, or to keep it as a standalone
-"match the kvm_stats_release() idiom" cleanup, whichever you prefer.
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
 
-Thanks,
-/fuad
+Jason
