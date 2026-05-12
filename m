@@ -1,46 +1,46 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53E75361658;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54445362138;
 	Tue, 12 May 2026 01:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778550039; cv=none; b=sAfwxDkjs9wSH5BHDGYArLlrcOGhvuU4dpXui6f3RS1DOcX72CxOXcPIpc8HKzxPTnL6NELkr0jOvCgalu4ZxrxdjXXLEtWZrERg1BJvQlpU4LpwVm1Xe2Er+WA1DSxuAQAYTkao/0lcmcyfRHuGcZSw641loTH2BUfiOQlV0aM=
+	t=1778550040; cv=none; b=bHfxafS341SjZqCfhvGAg6NgaHH61ULS+V64NQS+Yd6b9qyzx4p/PxR+GH+hy2FGpEBJsqPT2Xsj0S5hzGRd/pwov3LCMmAHT4yz8nBQmH0zkNJx7OS3vqgeZcRQ2/u31VuEml0CmrHuBbcSkzDcyHPlOrFgRKVK1blOS5vPIXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778550039; c=relaxed/simple;
-	bh=bq3gC4SDa9NJv2wNWIJJzCLv/ofuVSA47dA3c9nxxxE=;
+	s=arc-20240116; t=1778550040; c=relaxed/simple;
+	bh=XGCinmsiaPR3O0fki8p/XHJGLGrJzZGZbj5i794FOHg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eNDIMP5cO13hNc+iusv4VJaG2U1w4xPbgYZ9Rg+yrYoAizRICYD907UEZc9ZS9cBBWcQCnYa7Dmi4Zh4q461SQO1UejabW9tncPIKPHXMxM3xP1Od6jTOkIK127up0ICr4+ptCq4QUsPv1+eA5LBwVWsYvXAzE7ityZ6l3vrmSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ATLaedC5; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version; b=iXR3yDJvyR/snDDNhUMV8IoOFBqw/Pa40rDoLU5UvPnJMRkVsA35Oa3ub+o3A9+goaxEsA/CBCE3CkQGz8ZphtZ1RcHvdqtPlkFeBzg+9Q8yO9G7IljiCgNU3QP+fO7fsdMR1n6F67s7+YBfgRrCJFxP9L8fWxjPDDQz5SuZLiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bI+DOido; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ATLaedC5"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bI+DOido"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
   t=1778550035; x=1810086035;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=bq3gC4SDa9NJv2wNWIJJzCLv/ofuVSA47dA3c9nxxxE=;
-  b=ATLaedC5L7uwBl3Begyx44DFh4fhCa2PDBVlbP6gjb/nEW90a40Nt/1Q
-   6tfJpyC7LdnuWyPI/5NnWUrQJ546yVeAkn7S8uENU/DQEqL8mMnPIHrIM
-   FtPdCmKNku0WXNxTdiNqxESadDDkTgvV2ZPYRuW6zLeN1v97dK0BCQkoU
-   dBx+phU3wyjPgIB+j0EiBn776r3el6U31WyD7OF27WWkfB3xubGgtEccp
-   eL1+CrVTOsIsrd0E52hIGar3kE+cASB8QKrznuNaDHw0sCtTpKO9otMej
-   JAGAmgpcp3AeIQb4oG5SBxZ9jY4+EGm0eHLxsz1zEBMmD0btYHcB+uBnl
+  bh=XGCinmsiaPR3O0fki8p/XHJGLGrJzZGZbj5i794FOHg=;
+  b=bI+DOidoGo504h8quVvRBKt6Y5vinRjQ7iuy56xM8WR1J9p9ERmbrjUT
+   4of3ho5ZiB4GI8z5/rATGaFAdgBIRr5qupaMKYa27EKoYT6o9240FywwV
+   C4Wu8w6bg7VOVJmSzEKRfoTbNliWi17yVkzdUcS96qd2Lt9ngciBuOdKt
+   UBG0hQZhkHvFGJo6d411BDWbtOJOkyQsHcFvU7bQ7BCi5kA2693JUozoC
+   Ay8xBKtADhkC2Myug79Ua6l2s5vYZN37ouelQT+T9pCsNxbRt+U6/4BS0
+   XP80/ZRyF5hzqzWOQT/2ZV1LWvuhR8lVEO7AITmr8f4f7kpm9sN2ZrCiQ
    g==;
-X-CSE-ConnectionGUID: KQwLk3xxRjW/LIgU1Cdy0Q==
-X-CSE-MsgGUID: k/ioZpV+QyWkwloRpLQezA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="83322177"
+X-CSE-ConnectionGUID: fQATLBoGRE6nfQYXThZCzw==
+X-CSE-MsgGUID: +IgFyrOwQqKSajKT0cGmtg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="83322182"
 X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
-   d="scan'208";a="83322177"
+   d="scan'208";a="83322182"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 18:40:30 -0700
-X-CSE-ConnectionGUID: nzERAiUeQnSQUJz5NMZWoQ==
-X-CSE-MsgGUID: 5Oj/urJ0QBicOaIreLNrsw==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 18:40:31 -0700
+X-CSE-ConnectionGUID: 69oaYYO1RbWzwenvG++f6g==
+X-CSE-MsgGUID: y2KZahThQf6cJGDWihgArQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
-   d="scan'208";a="234572821"
+   d="scan'208";a="234572825"
 Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.106])
   by fmviesa007.fm.intel.com with ESMTP; 11 May 2026 18:40:30 -0700
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
@@ -51,9 +51,9 @@ Cc: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	chao.gao@intel.com,
 	chang.seok.bae@intel.com
-Subject: [PATCH v4 16/21] KVM: x86: Reject EVEX-prefixed instructions
-Date: Tue, 12 May 2026 01:14:57 +0000
-Message-ID: <20260512011502.53072-17-chang.seok.bae@intel.com>
+Subject: [PATCH v4 17/21] KVM: x86: Guard valid XCR0.APX settings
+Date: Tue, 12 May 2026 01:14:58 +0000
+Message-ID: <20260512011502.53072-18-chang.seok.bae@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260512011502.53072-1-chang.seok.bae@intel.com>
 References: <20260512011502.53072-1-chang.seok.bae@intel.com>
@@ -65,29 +65,61 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Explicitly mark EVEX-prefixed opcodes (0x62) as unsupported.
+Prevent invalid XCR0.APX configurations in two cases: conflict with MPX
+and lack of SVM support.
 
+In the non-compacted XSAVE format, APX and MPX conflict on the same
+offset. Although MPX is being deprecated in practice, KVM should
+explicitly reject such configurations that set both bits.
+
+At this point, only VMX supports EGPRs. SVM will require corresponding
+extensions to handle EGPR indices.
+
+Updating the supported XCR0 mask will be done separately with CPUID
+exposure.
+
+Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
+Link: https://lore.kernel.org/ab3f4937-38f5-4354-8850-bf773c159bbe@redhat.com
 ---
- arch/x86/kvm/emulate.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/x86/kvm/svm/svm.c | 7 ++++++-
+ arch/x86/kvm/x86.c     | 4 ++++
+ 2 files changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index efe8adca1317..31118ae3b6a1 100644
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -5052,6 +5052,11 @@ int x86_decode_insn(struct x86_emulate_ctxt *ctxt, void *insn, int insn_len, int
- 	if (ctxt->d & NoRex2 && ctxt->rex_prefix == REX2_PREFIX)
- 		opcode.flags = Undefined;
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index b78dd8805ebb..85d4087ea927 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -5573,8 +5573,13 @@ static __init int svm_hardware_setup(void)
+ 		return -EOPNOTSUPP;
+ 	}
  
-+	/* EVEX-prefixed instructions are not implemented */
-+	if (ctxt->opcode_len == 1 && ctxt->b == 0x62 &&
-+	    (mode == X86EMUL_MODE_PROT64 || (ctxt->modrm & 0xc0) == 0xc0))
-+		opcode.flags = NotImpl;
++	/*
++	 * APX introduces EGPRs, which require additional VMCB support.
++	 * Disable APX until the necessary extensions are handled.
++	 */
+ 	kvm_caps.supported_xcr0 &= ~(XFEATURE_MASK_BNDREGS |
+-				     XFEATURE_MASK_BNDCSR);
++				     XFEATURE_MASK_BNDCSR  |
++				     XFEATURE_MASK_APX);
+ 
+ 	if (tsc_scaling) {
+ 		if (!boot_cpu_has(X86_FEATURE_TSCRATEMSR)) {
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 3f029f9272a2..f5f27e7b00b6 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -1291,6 +1291,10 @@ int __kvm_set_xcr(struct kvm_vcpu *vcpu, u32 index, u64 xcr)
+ 	    (!(xcr0 & XFEATURE_MASK_BNDCSR)))
+ 		return 1;
+ 
++	/* MPX and APX conflict in the non-compacted XSAVE format */
++	if (xcr0 & XFEATURE_MASK_BNDREGS && xcr0 & XFEATURE_MASK_APX)
++		return 1;
 +
- 	if (opcode.flags & ModRM)
- 		ctxt->modrm = insn_fetch(u8, ctxt);
- 
+ 	if (xcr0 & XFEATURE_MASK_AVX512) {
+ 		if (!(xcr0 & XFEATURE_MASK_YMM))
+ 			return 1;
 -- 
 2.51.0
 
