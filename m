@@ -1,157 +1,141 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBB024D2EFC;
-	Tue, 12 May 2026 11:32:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D5A360ECD;
+	Tue, 12 May 2026 11:57:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778585554; cv=none; b=jbAEoUFTdgSILcWngNiQBNQp1+a9IBct9af1I9+ZOMRmTC1omqkdR8KrxAH+mMGZVcQYIPLdAYDA/c7N2LLbJ/iZqQuQaXhCfsaEzg5XkSulg001fpVFrLUZVVqPyX00QO7QvyPeddmLQwRuT3EJ01SANKb7DgdtSBOyq680tqA=
+	t=1778587078; cv=none; b=XoqzeI0HLNjfVoRCmuMbyDHEUmNK9sarG1Z/tMBxGXa4gGBR7QBhZ55NPeRxToyhI0A6aZcdX/tBXBP/4fYPDa6SQ6AC7bwV1vYmqcdF8uMV6ScwpjyLsiQdUEiI/cqBKQt7Q/eU/5sl0wJCigJQ0wNdzFpbFBqV+j45kmq0qmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778585554; c=relaxed/simple;
-	bh=0g+LZ2kMg+kPXVAn2V9YPYRNhs9vfvuABqAmQrCxlNs=;
-	h=Message-ID:Date:MIME-Version:Cc:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=ARtnnBmLS13dbdS5z0tK4aWvZzu+lmbKCwzhf+3f8BPKsnmutQ7992gvDpfWPDj4nrKBaBsXnZWkislm7mYt3StAAMWE0+EY/p3Iehx0yFnODYjcg1bKes3OSjBEO0pCVp8LF8lgUkesICiIgE2Gfnq2/AggOq+kn3z/7nU5bHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XA4nJupf; arc=none smtp.client-ip=198.175.65.19
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1778587078; c=relaxed/simple;
+	bh=m4IInpJUY2vS0JYvKQQ4wHMmbIKFyNQXyGwz0G+hPks=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=kJsdjrOpWq7Oa+TCE1tdB1VTVIwUZw4KI2HtrSFvCvCQkA7aemWNyiJxy9fGYgjwIyea+EtVq9DM4ZRRv6r6h7gD6TFDSblClaM/Z0mMjs+PRpw7g8AL209/VwQ29dPT0sDi5Ld3BXGG3nSRzCO2oO9rRhF5sd/94qR+wvztAXU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=NEmYxGRz; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XA4nJupf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778585553; x=1810121553;
-  h=message-id:date:mime-version:cc:subject:to:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=0g+LZ2kMg+kPXVAn2V9YPYRNhs9vfvuABqAmQrCxlNs=;
-  b=XA4nJupf/2sbjCadIyBDCjbQB5ldtlFd0oj5eVpe86uRtB8W9PrXtIhS
-   6tMfRG0hItgHqtU23E+4YFs/8AgD1FTYV9OHA2VgRJN0r3r72z2rFsDJH
-   GogWKiUW+f/39GhGmIyT46InV0ZapiKMMVt9AZo+k5yH39J+02a66gZpd
-   +TMBD1Nv+X1PuvzWCxXvPYVgzr2dTU7QTsDw0Vu8ir8urqXcS/wWs+Hnf
-   pQXBSyppaAxhsrKrESf6Xnvq331yNFSXQoPel2Dc/X5C3SjaloaJD9S/t
-   vvQ1FcExmiAMh8HUpePrH2I23wgui+7bu3tsUX5Hwi5ui/OlFIO9Sq6fh
-   Q==;
-X-CSE-ConnectionGUID: +umB6mkCRk6fFwv0fOG/7Q==
-X-CSE-MsgGUID: Mx7S6VjlTvC4Z/QhwqzBZQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="79440286"
-X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
-   d="scan'208";a="79440286"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 04:32:33 -0700
-X-CSE-ConnectionGUID: QxbpYteZSwe/mxUyHTcZ0A==
-X-CSE-MsgGUID: +FmBxDedTeCTMbaEO1ogcA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
-   d="scan'208";a="261494861"
-Received: from blu2-mobl.ccr.corp.intel.com (HELO [10.124.248.249]) ([10.124.248.249])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 04:32:26 -0700
-Message-ID: <416088c2-b1b9-4011-bd72-4368647cb2a1@linux.intel.com>
-Date: Tue, 12 May 2026 19:32:08 +0800
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="NEmYxGRz"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64BK7I0A3775829;
+	Tue, 12 May 2026 11:57:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=jn0Ex3hGuYGLoizWFQHUBB1PfFzdzYTIkAWRpisqv
+	TE=; b=NEmYxGRzDmM9Uty0imaNRelwQ6Br0sgJ6NuzXFN6Rio4hjiDjuDJWd8lx
+	ana2pzX5NY0JgB9sD947NI4siLNIR4zDxJv56wJRt+KkVh7Bd467IOc2THRCa4NX
+	e1EVqck+qdkmMgj+kLfaWZePjj196mnGhp6vgHDxRGkYOcZh/jIMpWDE0S6VwiIX
+	a8g9Lyn1Jpb8iWjuHQotBhFtORq7GlHHs9sawvOcL6LipGqZW7H9u8NX7dT5+RR7
+	PFU2d2i7rP3Wr3vkfLgfQ9a8FGzhl9HrNGOUaskIVEv9JmNp28gjthHnjGrZj/9O
+	aRojP/eNfNXmZymxUer8N1oyDj4eQ==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e3nv6jqar-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 May 2026 11:57:42 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64CBsUv5021224;
+	Tue, 12 May 2026 11:57:42 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e3nfgk01s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 12 May 2026 11:57:42 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64CBvcH746006560
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 12 May 2026 11:57:38 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5455620043;
+	Tue, 12 May 2026 11:57:38 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id F128B20040;
+	Tue, 12 May 2026 11:57:35 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.43.72.48])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 12 May 2026 11:57:35 +0000 (GMT)
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au,
+        chleroy@kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>,
+        Harsh Prateek Bora <harshpb@linux.ibm.com>,
+        Amit Machhiwal <amachhiw@linux.ibm.com>,
+        "Vaibhav Jain (IBM)" <vaibhav@linux.ibm.com>
+Subject: [PATCH v3]  KVM: PPC: Book3S HV: Add missing mappings for tracing exits
+Date: Tue, 12 May 2026 17:27:24 +0530
+Message-ID: <20260512115724.59299-1-gautam@linux.ibm.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc: baolu.lu@linux.intel.com, David Woodhouse <dwmw2@infradead.org>,
- Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>,
- Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>,
- Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- Saeed Mahameed <saeedm@nvidia.com>,
- Adithya Jayachandran <ajayachandra@nvidia.com>,
- Parav Pandit <parav@nvidia.com>, Leon Romanovsky <leonro@nvidia.com>,
- William Tu <witu@nvidia.com>, Pratyush Yadav <pratyush@kernel.org>,
- Pasha Tatashin <pasha.tatashin@soleen.com>,
- David Matlack <dmatlack@google.com>,
- Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>,
- Pranjal Shrivastava <praan@google.com>, Vipin Sharma <vipinsh@google.com>,
- YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH v2 11/16] iommu/vt-d: preserve PASID table of preserved
- device
-To: Samiullah Khawaja <skhawaja@google.com>
-References: <20260427175633.1978233-1-skhawaja@google.com>
- <20260427175633.1978233-12-skhawaja@google.com>
- <666d749e-c1fd-44e1-bfe8-681ba04862e0@linux.intel.com>
- <agIGEyL12Djj2clV@google.com>
-Content-Language: en-US
-From: Baolu Lu <baolu.lu@linux.intel.com>
-In-Reply-To: <agIGEyL12Djj2clV@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=KbvidwYD c=1 sm=1 tr=0 ts=6a0315b7 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=xmqxItbY3JyJ2VEz8ywA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTEyMDEyMCBTYWx0ZWRfX19OlzG8a5wmU
+ zCMlsmHj+T5nMRLXlwMTxcU35P/4rPXgrQQ3zdeolV0PbExvMMesNpKuM6epiNzsVH23c7Xdct2
+ JDhS5FXj8xyaXz9ld9iwDEBy3SE6d7ftEadETVZcWSpY4s7d+qdMNrMIVsaU7mnVxx4G2jDAeHR
+ 3MD7Lp29BN5S8sq6EuuGqz3OpZGmecvV1NucAMgC7GNmIqvxWPODc8prR3zaW35s/bfQb7SYsT8
+ t9Cw2byBTbec7KeBjmJls6gUrGIFi4VxlfUIZhZbBN/72Dh2X1CUHyDS1oCak+IekdpohVktmAd
+ onY6eW+gFfyo27AFJAQXzsOM/ZefYEiy+eaWc3u76LKY8pGyy/6aEFAZ3Lmo/VBnd0BOCPxCgt1
+ 5a08IEYKEl6flnu0LrEc485Up9dCk9I1973p1KESXr/X2fm/zaiYiCj2YYulJFIi1HZEclO3LIJ
+ QSPuH0mkLnj46NaF5vQ==
+X-Proofpoint-GUID: UBJ75RrSkKtQ9p1kcyvx6dqEZWGPd48S
+X-Proofpoint-ORIG-GUID: q17DBdulbzxBw15UHCo0O4d-4c5IpvB9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-11_05,2026-05-08_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 bulkscore=0 impostorscore=0 malwarescore=0
+ lowpriorityscore=0 phishscore=0 spamscore=0 suspectscore=0 clxscore=1015
+ adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605050000
+ definitions=main-2605120120
 
-On 5/12/2026 2:45 AM, Samiullah Khawaja wrote:
-> On Fri, May 08, 2026 at 02:05:58PM +0800, Baolu Lu wrote:
->> On 4/28/26 01:56, Samiullah Khawaja wrote:
->>> In scalable mode the PASID table is used to fetch the io page tables.
->>> Preserve and restore the PASID table of the preserved devices.
->>>
->>> Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
->>> ---
->>>  drivers/iommu/intel/iommu.c      |   5 +-
->>>  drivers/iommu/intel/iommu.h      |  12 +++
->>>  drivers/iommu/intel/liveupdate.c | 141 +++++++++++++++++++++++++++++++
->>>  drivers/iommu/intel/pasid.c      |   7 +-
->>>  drivers/iommu/intel/pasid.h      |   9 ++
->>>  include/linux/kho/abi/iommu.h    |  13 +++
->>>  6 files changed, 184 insertions(+), 3 deletions(-)
->>>
-> 
-> [snip]
->>> +
->>> +void pasid_cleanup_preserved_table(struct device *dev)
->>> +{
->>> +    struct pasid_table *pasid_table;
->>> +    struct pasid_dir_entry *dir;
->>> +    struct pasid_entry *table;
->>> +    size_t dir_size;
->>> +
->>> +    pasid_table = intel_pasid_get_table(dev);
->>> +    if (!pasid_table)
->>> +        return;
->>> +
->>> +    dir = pasid_table->table;
->>> +    table = get_pasid_table_from_pde(&dir[0]);
->>> +    if (!table)
->>> +        return;
->>> +
->>> +    /* Clear everything except the first entry in table. */
->>> +    memset(&table[1], 0, SZ_4K - sizeof(*table));
->>> +
->>> +    /* Use the folio order to calculate the size of Pasid Directory */
->>> +    dir_size = (1 << (folio_order(virt_to_folio(dir)) + PAGE_SHIFT));
->>> +
->>> +    /* Clear everything except the first entry in directory */
->>> +    memset(&dir[1], 0, dir_size - sizeof(struct pasid_dir_entry));
->>> +
->>> +    clflush_cache_range(&table[0], SZ_4K);
->>> +    clflush_cache_range(&dir[0], dir_size);
->>> +}
->>
->> The PASID table is currently active and in use by the hardware. Clearing
->> the entries without the necessary hardware cache invalidation is buggy.
->>
->> It seems this manual clearing is a workaround because PASID domain
->> preservation isn't supported yet. If so, rather than clearing the table
->> blindly, the code should verify if any PASIDs (other than
->> IOMMU_NO_PASID) are actually in use. If there are, the preserve callback
->> should return an error.
-> 
-> Thanks for looking into this, I agree and will remove the clearing logic
-> here.
-> 
-> Yes, we do this check in iommufd, as it is the dma owner of the device,
-> and only DMA owned devices are allowed to be preserved.
-> 
-> During preservation iommufd returns an error if the device has PASID
-> (non NO_PASID) attachments. And once the device is preserved, any PASID
-> attachments are not allowed until the device is unpreserved.
-> 
-> I think I will make this check robust by moving it into core and use
-> pasid_array. It will require some plumbing as pasid_array exists in
-> iommu.c file.
+The macro kvm_trace_symbol_exit is used for providing the mappings
+for the trap vectors and their names. Add mappings for H_FAC_UNAVAIL and
+RETURN_TO_HOST so that trap reasons are displayed as string instead of
+vector numbers when using the kvm_guest_exit tracepoint.
 
-Yeah, that would be better.
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
+Reviewed-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+Reviewed-by: Vaibhav Jain (IBM) <vaibhav@linux.ibm.com>
+Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+---
+v2:
+1. Remove the trailing comma after last element
 
-Thanks,
-baolu
+v3:
+1. Add the mapping for 0x0
+
+ arch/powerpc/kvm/trace_book3s.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/arch/powerpc/kvm/trace_book3s.h b/arch/powerpc/kvm/trace_book3s.h
+index 9260ddbd557f..4ee35c6d01aa 100644
+--- a/arch/powerpc/kvm/trace_book3s.h
++++ b/arch/powerpc/kvm/trace_book3s.h
+@@ -7,6 +7,7 @@
+  */
+ 
+ #define kvm_trace_symbol_exit \
++	{0x0, "RETURN_TO_HOST"}, \
+ 	{0x100, "SYSTEM_RESET"}, \
+ 	{0x200, "MACHINE_CHECK"}, \
+ 	{0x300, "DATA_STORAGE"}, \
+@@ -28,6 +29,7 @@
+ 	{0xea0, "H_VIRT"}, \
+ 	{0xf00, "PERFMON"}, \
+ 	{0xf20, "ALTIVEC"}, \
+-	{0xf40, "VSX"}
++	{0xf40, "VSX"}, \
++	{0xf80, "H_FAC_UNAVAIL"}
+ 
+ #endif
+-- 
+2.53.0
+
