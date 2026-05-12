@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54445362138;
-	Tue, 12 May 2026 01:40:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369E035CB6F;
+	Tue, 12 May 2026 01:40:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778550040; cv=none; b=bHfxafS341SjZqCfhvGAg6NgaHH61ULS+V64NQS+Yd6b9qyzx4p/PxR+GH+hy2FGpEBJsqPT2Xsj0S5hzGRd/pwov3LCMmAHT4yz8nBQmH0zkNJx7OS3vqgeZcRQ2/u31VuEml0CmrHuBbcSkzDcyHPlOrFgRKVK1blOS5vPIXA=
+	t=1778550040; cv=none; b=Kf5gqFWDvUiY1n9ucYjGpUCBo8xY7Eyq3R7jsSYzFKkcrtDC2kKPpfeTHDxFQpH9tYj4gQ2YwVmhtMhcuVkz9lY0K0rRPn7INxGpwFRHAI0d51MEaDIAapkmwOHYNLBmJRUGbQr3CNbQHRLleQ7ClXFJGstS4OCyVvyAUpj3cZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778550040; c=relaxed/simple;
-	bh=XGCinmsiaPR3O0fki8p/XHJGLGrJzZGZbj5i794FOHg=;
+	bh=lB/qY73XNhWXxo81nxg83MPuSWJniQSRIaDEFvvkeTo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iXR3yDJvyR/snDDNhUMV8IoOFBqw/Pa40rDoLU5UvPnJMRkVsA35Oa3ub+o3A9+goaxEsA/CBCE3CkQGz8ZphtZ1RcHvdqtPlkFeBzg+9Q8yO9G7IljiCgNU3QP+fO7fsdMR1n6F67s7+YBfgRrCJFxP9L8fWxjPDDQz5SuZLiw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bI+DOido; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version:Content-Type; b=dZPch3a5Qx6EF8WuCYiYyhq6+G79oEVeOIKy4a8NvuKTJd0StMD6F0UTsM/jNl/ruQDb3fn61peEJcoQ1ssobd9tx969zUsAyADaEyTXbjV+d59D0JAKJl4Fr45qFfE28feEL56GzB+7FY6+gfU67RNjNsOQvlDV1h25tyI7HU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lvJkwL3m; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bI+DOido"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lvJkwL3m"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778550035; x=1810086035;
+  t=1778550034; x=1810086034;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=XGCinmsiaPR3O0fki8p/XHJGLGrJzZGZbj5i794FOHg=;
-  b=bI+DOidoGo504h8quVvRBKt6Y5vinRjQ7iuy56xM8WR1J9p9ERmbrjUT
-   4of3ho5ZiB4GI8z5/rATGaFAdgBIRr5qupaMKYa27EKoYT6o9240FywwV
-   C4Wu8w6bg7VOVJmSzEKRfoTbNliWi17yVkzdUcS96qd2Lt9ngciBuOdKt
-   UBG0hQZhkHvFGJo6d411BDWbtOJOkyQsHcFvU7bQ7BCi5kA2693JUozoC
-   Ay8xBKtADhkC2Myug79Ua6l2s5vYZN37ouelQT+T9pCsNxbRt+U6/4BS0
-   XP80/ZRyF5hzqzWOQT/2ZV1LWvuhR8lVEO7AITmr8f4f7kpm9sN2ZrCiQ
-   g==;
-X-CSE-ConnectionGUID: fQATLBoGRE6nfQYXThZCzw==
-X-CSE-MsgGUID: +IgFyrOwQqKSajKT0cGmtg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="83322182"
+  bh=lB/qY73XNhWXxo81nxg83MPuSWJniQSRIaDEFvvkeTo=;
+  b=lvJkwL3mVcHo2yEDh65wqx52Me0o5S9jm/lLme7mCfdopyq4SmY6s3vp
+   Qw3YmUcYHfsu0aojmNophaFN8oSwjlLrZPnv71PtsEAMGJZHMMZ247mP4
+   cjG4UJGBd4L2tmKLPazBg6Hs5MEiJNyppzg3ov9xKm2BAMtt0AnA0qmcZ
+   zk1KWy14udmSbTaMGE6B7n6uTwaaWZiw0eNrGMkks8joI3M0RweplzC16
+   PmGxJM52PaqV0Sdgx2/S/dyLdQI1h+1fK4Ruk0UU3/564fWU3SrCHiQ6z
+   8xWpdHhMHoD3AmU4aCoCOXV/ZB5UNgfX+a3IxSfLPtA9+rmI7xponpaMe
+   w==;
+X-CSE-ConnectionGUID: gMlRjX/wThms9MImJK6Q6Q==
+X-CSE-MsgGUID: d+HwkmuSQvSD/zCZhg5P5A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="83322171"
 X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
-   d="scan'208";a="83322182"
+   d="scan'208";a="83322171"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 18:40:31 -0700
-X-CSE-ConnectionGUID: 69oaYYO1RbWzwenvG++f6g==
-X-CSE-MsgGUID: y2KZahThQf6cJGDWihgArQ==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 18:40:29 -0700
+X-CSE-ConnectionGUID: s8zdRRArRp6cORtaSa/Kcg==
+X-CSE-MsgGUID: SMsKLiZBS9SnUeYEtzOG+A==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
-   d="scan'208";a="234572825"
+   d="scan'208";a="234572814"
 Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.106])
-  by fmviesa007.fm.intel.com with ESMTP; 11 May 2026 18:40:30 -0700
+  by fmviesa007.fm.intel.com with ESMTP; 11 May 2026 18:40:29 -0700
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
 To: pbonzini@redhat.com,
 	seanjc@google.com
@@ -51,9 +51,9 @@ Cc: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	chao.gao@intel.com,
 	chang.seok.bae@intel.com
-Subject: [PATCH v4 17/21] KVM: x86: Guard valid XCR0.APX settings
-Date: Tue, 12 May 2026 01:14:58 +0000
-Message-ID: <20260512011502.53072-18-chang.seok.bae@intel.com>
+Subject: [PATCH v4 15/21] KVM: x86: Support REX2-prefixed opcode decode
+Date: Tue, 12 May 2026 01:14:56 +0000
+Message-ID: <20260512011502.53072-16-chang.seok.bae@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260512011502.53072-1-chang.seok.bae@intel.com>
 References: <20260512011502.53072-1-chang.seok.bae@intel.com>
@@ -63,63 +63,127 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Prevent invalid XCR0.APX configurations in two cases: conflict with MPX
-and lack of SVM support.
+Extend the instruction decoder to recognize and handle the REX2 prefix,
+including validation of prefix sequences and correct opcode table
+selection.
 
-In the non-compacted XSAVE format, APX and MPX conflict on the same
-offset. Although MPX is being deprecated in practice, KVM should
-explicitly reject such configurations that set both bits.
+REX2 is a terminal prefix: once 0xD5 is encountered, the following byte
+is the opcode. When REX.M=0, most prefix bytes are invalid after REX2,
+including REX, VEX, EVEX, and another REX2. Also, REX2-prefixed
+instructions are only valid in 64-bit mode.
 
-At this point, only VMX supports EGPRs. SVM will require corresponding
-extensions to handle EGPR indices.
+All of the invalid prefix combinations after REX2 coincide with opcodes
+that are architecturally invalid in 64-bit mode. Thus, marking such
+opcodes with No64 in opcode_table[] naturally disallows those illegal
+prefix sequences.
 
-Updating the supported XCR0 mask will be done separately with CPUID
-exposure.
+The 0x40–0x4F opcode row was missing the No64 flag. While NoRex2 already
+invalidates REX2 for these opcodes, adding No64 makes opcode attributes
+explicit and complete.
 
 Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-Link: https://lore.kernel.org/ab3f4937-38f5-4354-8850-bf773c159bbe@redhat.com
+Link: https://lore.kernel.org/CABgObfYYGTvkYpeyqLSr9JgKMDA_STSff2hXBNchLZuKFU+MMA@mail.gmail.com
 ---
- arch/x86/kvm/svm/svm.c | 7 ++++++-
- arch/x86/kvm/x86.c     | 4 ++++
- 2 files changed, 10 insertions(+), 1 deletion(-)
+ arch/x86/kvm/emulate.c | 38 ++++++++++++++++++++++++++++++++++----
+ 1 file changed, 34 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
-index b78dd8805ebb..85d4087ea927 100644
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -5573,8 +5573,13 @@ static __init int svm_hardware_setup(void)
- 		return -EOPNOTSUPP;
- 	}
+diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
+index 0fef9416cb4d..efe8adca1317 100644
+--- a/arch/x86/kvm/emulate.c
++++ b/arch/x86/kvm/emulate.c
+@@ -4268,7 +4268,7 @@ static const struct opcode opcode_table[256] = {
+ 	/* 0x38 - 0x3F */
+ 	I6ALU(NoWrite, em_cmp), N, N,
+ 	/* 0x40 - 0x4F */
+-	X8(I(DstReg | NoRex2, em_inc)), X8(I(DstReg | NoRex2, em_dec)),
++	X8(I(DstReg | NoRex2 | No64, em_inc)), X8(I(DstReg | NoRex2 | No64, em_dec)),
+ 	/* 0x50 - 0x57 */
+ 	X8(I(SrcReg | Stack, em_push)),
+ 	/* 0x58 - 0x5F */
+@@ -4862,6 +4862,17 @@ static int x86_decode_avx(struct x86_emulate_ctxt *ctxt,
+ 	return rc;
+ }
  
-+	/*
-+	 * APX introduces EGPRs, which require additional VMCB support.
-+	 * Disable APX until the necessary extensions are handled.
-+	 */
- 	kvm_caps.supported_xcr0 &= ~(XFEATURE_MASK_BNDREGS |
--				     XFEATURE_MASK_BNDCSR);
-+				     XFEATURE_MASK_BNDCSR  |
-+				     XFEATURE_MASK_APX);
- 
- 	if (tsc_scaling) {
- 		if (!boot_cpu_has(X86_FEATURE_TSCRATEMSR)) {
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 3f029f9272a2..f5f27e7b00b6 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -1291,6 +1291,10 @@ int __kvm_set_xcr(struct kvm_vcpu *vcpu, u32 index, u64 xcr)
- 	    (!(xcr0 & XFEATURE_MASK_BNDCSR)))
- 		return 1;
- 
-+	/* MPX and APX conflict in the non-compacted XSAVE format */
-+	if (xcr0 & XFEATURE_MASK_BNDREGS && xcr0 & XFEATURE_MASK_APX)
-+		return 1;
++static inline bool rex2_invalid(struct x86_emulate_ctxt *ctxt)
++{
++	const struct x86_emulate_ops *ops = ctxt->ops;
++	u64 xcr = 0;
 +
- 	if (xcr0 & XFEATURE_MASK_AVX512) {
- 		if (!(xcr0 & XFEATURE_MASK_YMM))
- 			return 1;
++	return ctxt->rex_prefix == REX_PREFIX ||
++	       !(ops->get_cr(ctxt, 4) & X86_CR4_OSXSAVE) ||
++	       ops->get_xcr(ctxt, 0, &xcr) ||
++	       !(xcr & XFEATURE_MASK_APX);
++}
++
+ int x86_decode_insn(struct x86_emulate_ctxt *ctxt, void *insn, int insn_len, int emulation_type)
+ {
+ 	int rc = X86EMUL_CONTINUE;
+@@ -4915,7 +4926,7 @@ int x86_decode_insn(struct x86_emulate_ctxt *ctxt, void *insn, int insn_len, int
+ 	ctxt->op_bytes = def_op_bytes;
+ 	ctxt->ad_bytes = def_ad_bytes;
+ 
+-	/* Legacy prefixes. */
++	/* Legacy and REX/REX2 prefixes. */
+ 	for (;;) {
+ 		switch (ctxt->b = insn_fetch(u8, ctxt)) {
+ 		case 0x66:	/* operand-size override */
+@@ -4961,6 +4972,17 @@ int x86_decode_insn(struct x86_emulate_ctxt *ctxt, void *insn, int insn_len, int
+ 			ctxt->rex_prefix = REX_PREFIX;
+ 			ctxt->rex_bits   = ctxt->b & 0xf;
+ 			continue;
++		case 0xd5: /* REX2 */
++			if (mode != X86EMUL_MODE_PROT64)
++				goto done_prefixes;
++			if (rex2_invalid(ctxt)) {
++				opcode = ud;
++				goto done_modrm;
++			}
++			ctxt->rex_prefix = REX2_PREFIX;
++			ctxt->rex_bits   = insn_fetch(u8, ctxt);
++			ctxt->b          = insn_fetch(u8, ctxt);
++			goto done_prefixes;
+ 		case 0xf0:	/* LOCK */
+ 			ctxt->lock_prefix = 1;
+ 			break;
+@@ -4983,6 +5005,12 @@ int x86_decode_insn(struct x86_emulate_ctxt *ctxt, void *insn, int insn_len, int
+ 	if (ctxt->rex_bits & REX_W)
+ 		ctxt->op_bytes = 8;
+ 
++	/* REX2 opcode is one byte unless M-bit selects the two-byte map */
++	if (ctxt->rex_bits & REX_M)
++		goto decode_twobytes;
++	else if (ctxt->rex_prefix == REX2_PREFIX)
++		goto decode_onebyte;
++
+ 	/* Opcode byte(s). */
+ 	if (ctxt->b == 0xc4 || ctxt->b == 0xc5) {
+ 		/* VEX or LDS/LES */
+@@ -5000,17 +5028,19 @@ int x86_decode_insn(struct x86_emulate_ctxt *ctxt, void *insn, int insn_len, int
+ 			goto done;
+ 	} else if (ctxt->b == 0x0f) {
+ 		/* Two- or three-byte opcode */
+-		ctxt->opcode_len = 2;
+ 		ctxt->b = insn_fetch(u8, ctxt);
++decode_twobytes:
++		ctxt->opcode_len = 2;
+ 		opcode = twobyte_table[ctxt->b];
+ 
+ 		/* 0F_38 opcode map */
+-		if (ctxt->b == 0x38) {
++		if (ctxt->b == 0x38 && ctxt->rex_prefix != REX2_PREFIX) {
+ 			ctxt->opcode_len = 3;
+ 			ctxt->b = insn_fetch(u8, ctxt);
+ 			opcode = opcode_map_0f_38[ctxt->b];
+ 		}
+ 	} else {
++decode_onebyte:
+ 		/* Opcode byte(s). */
+ 		opcode = opcode_table[ctxt->b];
+ 	}
 -- 
 2.51.0
 
