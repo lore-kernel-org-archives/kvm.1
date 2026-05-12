@@ -1,103 +1,193 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D584C3A255F
-	for <kvm@vger.kernel.org>; Tue, 12 May 2026 22:32:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2BC38642A
+	for <kvm@vger.kernel.org>; Tue, 12 May 2026 22:33:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778625167; cv=none; b=AJ5ImPldmkxN0N3RyOE8viYifz4bmK9R1EAAo8MnJFaNtmjwGFLxvKvQGjM7zFX3hfBZsC5LCKI+I6y/uOzuNAvh1ditJLv25qUHu2zXS4U/2XQupYNPn8we598ICEfpHrzZedHRJp1eGkTQ/qKhy+5VHWZWwaC8SLEb0510dHo=
+	t=1778625212; cv=none; b=t+/zDBe908qV89jYkt4+yEecoxKRWlDbiooYOtwF0Ml6KDLoJD0aZOITVtFa8R7HWpCXW+UAsvJgKbrozrXDC1ZdYWMBMBDK+luP/WRaaajzqgD9PDVi7Tbnco46etMXb4x/xQqVflF8M8kpfk+7buySn60po4H4F50RPOdlYKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778625167; c=relaxed/simple;
-	bh=cOnjEHkKMFpSoDE2r3XBUdHb+gmw+uj+vIqk7L+R3+k=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=nW3NG68kk8azs/+p/Zk8+o/u/DDZ1hxuvM48xXdUfpakvLCnLJo8Xw9aimWj3ArAsElGhol/GTZpMW9ij/YAAlHUpew3j5iq6lgOWWAl34lkU7IG5Bis/Jpz0F8P5m37CS/z1YOi3MojfxnWI4PRlWNz1ck7o826SBjmaL2vjAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PzqZp98E; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1778625212; c=relaxed/simple;
+	bh=53wmpcPfrKQ0zFGCoerDj8Qv22zPlfWlMoWBAuUW8yU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=DQqS2nQKFO0fKaxM+rTRSLR1A0WRccFjl2f0PxRR+wfzIx0fvaA86I8LAM10Ib6461AxLz3VTq/M1aGN88QAjLmFNF1H9vumxR0CQ+KLJbUoqRK2haVb+Pal+BXWZ1rOCgpfoVEL2qmye3Let9De7IicfQlv2oj2SWQQOfsy8YA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=clGrhNtv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=DDwcESNJ; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=clGrhNtv; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=DDwcESNJ; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PzqZp98E"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-83836443305so3467040b3a.1
-        for <kvm@vger.kernel.org>; Tue, 12 May 2026 15:32:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778625165; x=1779229965; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=HW+R3TRETD3DPPcAIs+gc8XoOJGHnJ5Jf4G2TvPsYAE=;
-        b=PzqZp98EPgy/gwpw0gI7iWjwdcj0mCU8tmRpglC13Ph4Yg8qy/95y88bqYdwXqQ/gs
-         2rjB0lYmzUV+yg3dRMwapKfof9HKUScbwcy9oR9/dyDNUILxKbWrqGjN5uK1cQ42ePLg
-         d+afdu1vapDkz4Dx84PuwEcmyIF+uElt3eKw+oDGTI7OLwncJwh583AUqG2Hn7dyFhKY
-         QMHhxPbEvBQO3w2Pfg6E9z84OGBsFZNZBwpDFJuCcliu3Ycs2qj7OiAyychhBpS/cnXJ
-         ulhDu+/QRIFpc8+G5ycECSwDQYIo3hrZx1JnusHIwaioAtKdyMHBrjv7KnoH2e96ZWe1
-         8hzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778625165; x=1779229965;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=HW+R3TRETD3DPPcAIs+gc8XoOJGHnJ5Jf4G2TvPsYAE=;
-        b=bESULnzyuK8cLjlq+7qRItrI4ZAWpTpVHnmamW6DYQMAPbPQVz2gRRJ/KR5rG7JSiy
-         d+sQR+SwEvnyJyaeAmkLfo4GV0yNcxcfnPe18FOLt5/Rf+YrGlofFWDsRqquA9o29TNA
-         tfo/Jnnpx7Twi/4RPmeR0zdUUluUKEBk8aqAbtIW1nfnqcwmfFNYDLgMaKg25anzDktH
-         ortpXHUZpCUUn5laKs915V1XcjO2YxDP4TN/CS+qMHp6DmErXmNUqpvEOwANNK2fRK5E
-         h32I1Gd25/+0LBicIxx+n8r+WhGNvlAARUwlzc63Qq4nuYvhtjcfGGrAnrwjGre6xYTp
-         pXcw==
-X-Forwarded-Encrypted: i=1; AFNElJ9UrZI2XpmuWhgzWaIxjlCQMz68s/bA6HVJwaCE8lfM95vPoX7nZxi5ADK0QlS171y64E8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YySRWYLZgBdclPlxEU5n2/pam8vL2AuvkpdfNc+EyIWRk0IvylC
-	PRWbrK7zaoKYdwX2B+As/9rT3dkX8+xs5XzRNNu+ICQn++ZKihuO/rAhliwSe2cWUL5JZ2yCGUe
-	mt8tCyg==
-X-Received: from pfbgd24.prod.google.com ([2002:a05:6a00:8318:b0:82f:9e73:207b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:bd08:b0:837:666f:8fcb
- with SMTP id d2e1a72fcca58-83f0547afdbmr236260b3a.5.1778625164805; Tue, 12
- May 2026 15:32:44 -0700 (PDT)
-Date: Tue, 12 May 2026 15:32:43 -0700
-In-Reply-To: <24df4dabec1328591f9996f00a298660bc0860e3.camel@infradead.org>
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="clGrhNtv";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="DDwcESNJ";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="clGrhNtv";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="DDwcESNJ"
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 183127644A;
+	Tue, 12 May 2026 22:33:28 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778625208; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WFkmO9/Hg46T4+uOWPRO9VbdMs4vEsM2bHlhcsm3ln4=;
+	b=clGrhNtvMXQ9MLzLZtfYlwDDB5s1nizYRqiAdH3GWzk9aK2uTtHt4m5jx3nibKo6o+gIn/
+	NtOJS2gpq0530cY6RGiRQI7W9iKuQcHHqKFHITvvzrhBglMYMcknGiA7U1B5Ici5b4ppxW
+	IB6EE0Ng4zWkfHcCwS5mkb4O4dFMESc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778625208;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WFkmO9/Hg46T4+uOWPRO9VbdMs4vEsM2bHlhcsm3ln4=;
+	b=DDwcESNJ0kmeKzCZUTaOcA267pC7NJWIvfxuUS8uhol9cHVYjnIPIwqNqsRd+ic/1iDgXL
+	NazkMDqH46HrQHAQ==
+Authentication-Results: smtp-out2.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778625208; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WFkmO9/Hg46T4+uOWPRO9VbdMs4vEsM2bHlhcsm3ln4=;
+	b=clGrhNtvMXQ9MLzLZtfYlwDDB5s1nizYRqiAdH3GWzk9aK2uTtHt4m5jx3nibKo6o+gIn/
+	NtOJS2gpq0530cY6RGiRQI7W9iKuQcHHqKFHITvvzrhBglMYMcknGiA7U1B5Ici5b4ppxW
+	IB6EE0Ng4zWkfHcCwS5mkb4O4dFMESc=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778625208;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=WFkmO9/Hg46T4+uOWPRO9VbdMs4vEsM2bHlhcsm3ln4=;
+	b=DDwcESNJ0kmeKzCZUTaOcA267pC7NJWIvfxuUS8uhol9cHVYjnIPIwqNqsRd+ic/1iDgXL
+	NazkMDqH46HrQHAQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 57DDE593A9;
+	Tue, 12 May 2026 22:33:27 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id ZPLAEreqA2o5bgAAD6G6ig
+	(envelope-from <clopez@suse.de>); Tue, 12 May 2026 22:33:27 +0000
+Message-ID: <9c82ba06-ed70-4914-829d-f5d9f8e35ff1@suse.de>
+Date: Wed, 13 May 2026 00:33:26 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260423155611.216805954@infradead.org> <20260423155936.957351833@infradead.org>
- <24df4dabec1328591f9996f00a298660bc0860e3.camel@infradead.org>
-Message-ID: <agOqi22wsB8S4-aS@google.com>
-Subject: Re: [PATCH 2/2] x86/kvm/vmx: Fix VMX vs hrtimer_rearm_deferred()
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Peter Zijlstra <peterz@infradead.org>, tglx@kernel.org, linux-kernel@vger.kernel.org, 
-	Jim Mattson <jmattson@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
-	Vishal L Verma <vishal.l.verma@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	Rick P Edgecombe <rick.p.edgecombe@intel.com>, Binbin Wu <binbin.wu@intel.com>, 
-	"x86@kernel.org" <x86@kernel.org>, Paolo Bonzini <bonzini@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] x86/tdx: Fix zero-extension for CPUID emulation
+To: Dave Hansen <dave.hansen@intel.com>,
+ "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "kas@kernel.org" <kas@kernel.org>, "x86@kernel.org" <x86@kernel.org>
+Cc: "ak@linux.intel.com" <ak@linux.intel.com>, "bp@alien8.de" <bp@alien8.de>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "Luck, Tony" <tony.luck@intel.com>, "tglx@kernel.org" <tglx@kernel.org>,
+ "stable@vger.kernel.org" <stable@vger.kernel.org>,
+ "kvm@vger.kernel.org" <kvm@vger.kernel.org>
+References: <20260512213719.20974-1-clopez@suse.de>
+ <81343db56b8df8f70a2e13a17e62c620bee36897.camel@intel.com>
+ <7f7b8bfd-f39e-417c-991f-d224d58cb52a@intel.com>
+From: =?UTF-8?Q?Carlos_L=C3=B3pez?= <clopez@suse.de>
+Content-Language: en-US
+In-Reply-To: <7f7b8bfd-f39e-417c-991f-d224d58cb52a@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	ARC_NA(0.00)[];
+	TO_DN_EQ_ADDR_SOME(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	RCPT_COUNT_TWELVE(0.00)[15];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	FROM_EQ_ENVFROM(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.de:mid]
+X-Spam-Flag: NO
+X-Spam-Score: -4.30
 
-On Mon, May 11, 2026, David Woodhouse wrote:
-> On Thu, 2026-04-23 at 17:56 +0200, Peter Zijlstra wrote:
-> > Vishal reported that KVM unit test 'x2apic' started failing after commit
-> > 0e98eb14814e ("entry: Prepare for deferred hrtimer rearming").
-> > 
-> > The reason is that KVM/VMX is injecting interrupts while it has IRQs disabled,
-> > for a context that will enable IRQs, this means that regs->flags.X86_EFLAGS_IF
-> > == 0 and the irqentry_exit() will not DTRT.
-> > 
-> > Notably, irqentry_exit() must not call hrtimer_rearm_deferred() when the return
-> > context does not have IF set, because this will cause problems vs NMIs.
-> > 
-> > Therefore, fix up the state after the injection.
-> > 
-> > Fixes: 0e98eb14814e ("entry: Prepare for deferred hrtimer rearming")
-> > Reported-by: Vishal L Verma <vishal.l.verma@intel.com>
-> > Closes: https://lore.kernel.org/r/70cd3e97fbb796e2eb2ff8cd4b7614ada05a5f24.camel%40intel.com
-> > Suggested-by: Thomas Gleixner <tglx@kernel.org>
-> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> > Tested-by: Vishal L Verma <vishal.l.verma@intel.com>
+On 5/13/26 12:14 AM, Dave Hansen wrote:
+> On 5/12/26 14:48, Edgecombe, Rick P wrote:
+>>> -	regs->ax = args.r12;
+>>> -	regs->bx = args.r13;
+>>> -	regs->cx = args.r14;
+>>> -	regs->dx = args.r15;
+>>> +	regs->ax = lower_32_bits(args.r12);
+>>> +	regs->bx = lower_32_bits(args.r13);
+>>> +	regs->cx = lower_32_bits(args.r14);
+>>> +	regs->dx = lower_32_bits(args.r15);
+>>>  
+>> Can you explain the impact here? Why should the guest fixup what the VMM
+>> emulates?
 > 
-> Tested-by: David Woodhouse <dwmw@amazon.co.uk>
-
-Tested-by: Sean Christopherson <seanjc@google.com>
-
-> I don't see this being merged yet?
+> Oh boy.
 > 
-> Without this, Xen timer delivery (tested by the xen_shinfo_test KVM
-> selftest) is failing.
+> args.r12-15 come from the VMM, right? So the VMM Can put whatever it
+> wants in there.
 
-And many, many other issues with KVM.  I.e. we need this or something like it
-in 7.1.
+Yes, exactly.
+
+> CPUID (the instruction) is defined to fill in eax/ebx/ecx/edx. Those are
+> 32-bit registers so the normal register rules apply: "32-bit operands
+> generate a 32-bit result, zero-extended to a 64-bit result in the
+> destination general-purpose register."
+> 
+> So a properly-behaving CPUID implementation will always end up with the
+> top 32 bits empty on the four CPUID registers after a CPUID is executed.
+> 
+> The VMM here obviously might be naughty and might put gunk in
+> args.r12/r13/r14/r15 that gets copied to ptregs->ax/bx/cx/dx which are
+> 'unsigned long' on 64-bit.
+> 
+> The end result is that a TDX guest can use CPUID and end up having bits
+> set in rax/rbx/rcx/rdx that are architecturally impossible. This patch
+> is effectively fixing up the VMM naughtiness before the guest CPUID
+> instance can see it.
+> 
+> Does anybody disagree with any of that?
+> 
+> Do we *want* to fix this up silently? If we catch a malicious VMM trying
+> to stuff garbage into the guest, shouldn't we be a bit more upset than
+> silently papering over it?
+
+Okay, how about this (on top of the changes I already sent)?
+
+diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
+index 831475cf4313..cd33781c8d61 100644
+--- a/arch/x86/coco/tdx/tdx.c
++++ b/arch/x86/coco/tdx/tdx.c
+@@ -538,6 +538,13 @@ static int handle_cpuid(struct pt_regs *regs, struct ve_info *ve)
+        if (__tdx_hypercall(&args))
+                return -EIO;
+ 
++       /* Emit a warning if the hypervisor tries to inject architecturally
++        * invalid (non-zero-extended) output values for CPUID */
++       if (upper_32_bits(args.r12) || upper_32_bits(args.r13)
++           || upper_32_bits(args.r14) || upper_32_bits(args.r15))
++               pr_warn("detected invalid CPUID result from VMM: eax=%lld ebx=%lld ecx=%lld edx=%lld",
++                                       args.r12, args.r13, args.r14, args.r15);
++
+        /*
+         * As per TDX GHCI CPUID ABI, r12-r15 registers contain contents of
+         * EAX, EBX, ECX, EDX registers after the CPUID instruction execution.
+
