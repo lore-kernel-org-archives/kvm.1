@@ -1,88 +1,86 @@
 Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E473C397338;
-	Tue, 12 May 2026 14:43:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B89235D5E2;
+	Tue, 12 May 2026 14:50:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778597028; cv=none; b=Rc0w9oP0JP4iu9P9fDDNigoeOw1/pmpCJo/0tDm+deWvxG52vGbaKGzrbOL+MYa78zQZkeeotW/AG3SStC3SHzuefCLyAmCCGyYNPSKL/RcITCbRiXE3h8rcmYvZ5JwxFgvmcVw3lQkH/oZaoVqlEWyVeQwcPUu1Juv5DkjSaQA=
+	t=1778597458; cv=none; b=AlqxMcYIpUsRjkPJEJkjDkjh66kvasLr1Ka122kO8fbmfnr+UZhkLNCgfWKoZUxKpIWR+BBIBvqEUj+nbsGhZv0BOVqw3zIiDptngxHr5JSNuOlU8z+Rz7bMcvLzN2xBXVKoq3cNwzwBVMQjIkVFbt07qa9NU03tp8mYK/pPOj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778597028; c=relaxed/simple;
-	bh=zoHZ7UHQoDpxjF4aFyfEOg/0NtSuC+QVM9Bivg8ckgo=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=nMb7V4Y1CqS39vx25clFIJogOzJBg4XNWBgVKhrKjG6RE1V0MJg6KLURwuMltjx5NppfzrEAveHJj1O9Swn24FIMS6GmPn6xq+TSWFqXPOZyBSuRSH5QUAN3JLp461ZGpKkZ+c6/sqXokkfT8obiOCMaObFBA87oTNAaKJXl0Bg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=HKL6lNNb; arc=none smtp.client-ip=115.124.30.112
+	s=arc-20240116; t=1778597458; c=relaxed/simple;
+	bh=ibRcrrNUX1YQVaKyCkEgXgQu163NPrN298u0jYV89ps=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QngH67dipGLdhFikD4sT6w8Mvfksnqvkq9gGv7zsK0+p/UjT0fLJZc9LhVwcxAXKOgMo09RS0Gzo9dAu4g7TVviFkAlYQTWRI4Dy7WaHUZ+SQW83UdwntHftICXRliRuf1H+99x3EIxvRz8Bmw86k466MzF5qEwH6vQvVm6U1ZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=NlFRLrht; arc=none smtp.client-ip=115.124.30.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="HKL6lNNb"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="NlFRLrht"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1778597019; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=rGf7I8/6d+oaxOH3iQMKwENVJqvQ7e/ZZfEuXFJcHxM=;
-	b=HKL6lNNbfTRKjzAlGFvyT6TPdqJ2TBW6jnKTaJsvmZqoBjoTYQD1Bq4yyPWeTSZKFxGXxIaNXx4x2fgP/qxblKj0bzZPcx8nX+mUkzIsGmWsn20MkcbEnAgAJChDq7NwBKN1odk2uHuWRmNkWv7gQIGGzWXB4CYOkNS7pUnOv0o=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R921e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=18;SR=0;TI=SMTPD_---0X2qqOSF_1778597016;
-Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X2qqOSF_1778597016 cluster:ay36)
+	t=1778597451; h=From:To:Subject:Date:Message-Id:MIME-Version:Content-Type;
+	bh=oA/BXvxtFGaJxDC1eZNxER6QIuAZ16AAMSjiGsJs4uo=;
+	b=NlFRLrhtkQNuwN0twIFkq1HBF43D7pFSkOLem9QwZgR2/+YsU8HKbQrFOuuhxYPCPHvOBKa+EldJBjy7TIY1JCdbvXFbuKsBe/trtBakicx/Z9zjCDUHcuHtum4429eU6EdxHw9qtwJYqT1t62WCtHT3XCR+71MjoRiTp/c31dA=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R171e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=25;SR=0;TI=SMTPD_---0X2qnRBI_1778597447;
+Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X2qnRBI_1778597447 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Tue, 12 May 2026 22:43:37 +0800
+          Tue, 12 May 2026 22:50:49 +0800
 From: fangyu.yu@linux.alibaba.com
-To: joro@8bytes.org,
-	will@kernel.org,
-	robin.murphy@arm.com,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
+To: joro@8bytes.org
+Cc: alex@ghiti.fr,
+	andrew.jones@oss.qualcomm.com,
+	anup@brainfault.org,
 	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
+	atish.patra@linux.dev,
+	baolu.lu@linux.intel.com,
+	fangyu.yu@linux.alibaba.com,
+	guoren@kernel.org,
+	iommu@lists.linux.dev,
+	jgg@nvidia.com,
 	jgg@ziepe.ca,
 	kevin.tian@intel.com,
-	jgg@nvidia.com,
-	nutty.liu@hotmail.com
-Cc: guoren@kernel.org,
+	kvm-riscv@lists.infradead.org,
 	kvm@vger.kernel.org,
-	iommu@lists.linux.dev,
-	linux-riscv@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
-	Fangyu Yu <fangyu.yu@linux.alibaba.com>,
-	kernel test robot <lkp@intel.com>
-Subject: [PATCH] iommupt: Fixup build warning by using BIT_ULL() for RISCVPT_NC/IO
-Date: Tue, 12 May 2026 22:43:30 +0800
-Message-Id: <20260512144330.91113-1-fangyu.yu@linux.alibaba.com>
+	linux-riscv@lists.infradead.org,
+	nutty.liu@hotmail.com,
+	palmer@dabbelt.com,
+	pjw@kernel.org,
+	robin.murphy@arm.com,
+	skhawaja@google.com,
+	tjeznach@rivosinc.com,
+	vasant.hegde@amd.com,
+	will@kernel.org
+Subject: Re: Re: [PATCH v4 0/2] iommu/riscv: Support Svpbmt memory types in generic_pt  
+Date: Tue, 12 May 2026 22:50:43 +0800
+Message-Id: <20260512145043.92214-1-fangyu.yu@linux.alibaba.com>
 X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+In-Reply-To: <3jtnhvij7vv2wjep42sijdwy6ax4fr4q6w4fwpyh2cpgzvbpel@w42zuvjl5cy7>
+References: <3jtnhvij7vv2wjep42sijdwy6ax4fr4q6w4fwpyh2cpgzvbpel@w42zuvjl5cy7>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+>> Changes in v4:
+>>     - Fix build warning on 32-bit configurations by using BIT_ULL() for RISCVPT_NC and RISCVPT_IO.
+>>     - Link to v3:
+>>       https://lore.kernel.org/linux-riscv/20260417140746.97817-1-fangyu.yu@linux.alibaba.com/
+>
+>Please send this as a diff to the patches which are already in the IOMMU tree.
+>
 
-Fix build warning on 32-bit configurations by using BIT_ULL() for
-RISCVPT_NC and RISCVPT_IO.
+Hi Joerg,
 
-Fixes: 6c21eb174c6c ("iommupt: Encode IOMMU_MMIO/IOMMU_CACHE via RISC-V Svpbmt bits")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202605121350.wZxB51k0-lkp@intel.com/
-Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
----
- drivers/iommu/generic_pt/fmt/riscv.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Thanks, I’ll resend the fixup diff [1] based on the current IOMMU tree `riscv` branch.
 
-diff --git a/drivers/iommu/generic_pt/fmt/riscv.h b/drivers/iommu/generic_pt/fmt/riscv.h
-index 2648bb57953e..ae9a76514416 100644
---- a/drivers/iommu/generic_pt/fmt/riscv.h
-+++ b/drivers/iommu/generic_pt/fmt/riscv.h
-@@ -64,8 +64,8 @@ enum {
- 	RISCVPT_PPN64 = GENMASK_ULL(53, 10),
- 	RISCVPT_PPN64_64K = GENMASK_ULL(53, 14),
- 	RISCVPT_PBMT = GENMASK_ULL(62, 61),
--	RISCVPT_NC = BIT(61),
--	RISCVPT_IO = BIT(62),
-+	RISCVPT_NC = BIT_ULL(61),
-+	RISCVPT_IO = BIT_ULL(62),
- 	RISCVPT_N = BIT_ULL(63),
- 
- 	/* Svnapot encodings for ppn[0] */
--- 
-2.50.1
+[1] https://lore.kernel.org/linux-riscv/20260512144330.91113-1-fangyu.yu@linux.alibaba.com/
 
+Thanks,
+Fangyu
+
+>-Joerg
