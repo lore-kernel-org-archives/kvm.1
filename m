@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 369E035CB6F;
-	Tue, 12 May 2026 01:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B036E314A6B;
+	Tue, 12 May 2026 01:40:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778550040; cv=none; b=Kf5gqFWDvUiY1n9ucYjGpUCBo8xY7Eyq3R7jsSYzFKkcrtDC2kKPpfeTHDxFQpH9tYj4gQ2YwVmhtMhcuVkz9lY0K0rRPn7INxGpwFRHAI0d51MEaDIAapkmwOHYNLBmJRUGbQr3CNbQHRLleQ7ClXFJGstS4OCyVvyAUpj3cZ4=
+	t=1778550042; cv=none; b=ckKTpVVd+IDpvolfDFVMQ/pMVA4N2+sLEn6aY1Vb7/p5a4C1rsjwClXu3wOyk36kqBj3qCfGO/rzd3mPfTPQktt1PKFc/cgVHWVH78fQ7TQKirLMXJLhI8daE45La4jT/1ZGh08yHnGbTcnIQdtMpwmJm+ReKax4eLmRSbD95cA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778550040; c=relaxed/simple;
-	bh=lB/qY73XNhWXxo81nxg83MPuSWJniQSRIaDEFvvkeTo=;
+	s=arc-20240116; t=1778550042; c=relaxed/simple;
+	bh=IFs7raVRlz6MfOCkvw6GAvEiddY/1kgglL22vGA0GeU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dZPch3a5Qx6EF8WuCYiYyhq6+G79oEVeOIKy4a8NvuKTJd0StMD6F0UTsM/jNl/ruQDb3fn61peEJcoQ1ssobd9tx969zUsAyADaEyTXbjV+d59D0JAKJl4Fr45qFfE28feEL56GzB+7FY6+gfU67RNjNsOQvlDV1h25tyI7HU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lvJkwL3m; arc=none smtp.client-ip=198.175.65.14
+	 MIME-Version; b=dGeMUw1Ru0Z44++dBKJ30P+9EwSR8XdtZkI+JJuAouD/FCEs+RQtoKyxG+qVM55zz/m+7i851p20cIqEPzjwAtOu4ZIXvQVZcTDfFp9Alue2hVktYdSVlxNkHosUCARyduV3TBZuLkUv1JshWchIukzxAm+xqFvpx7DlgDPjQks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mv2qnfoT; arc=none smtp.client-ip=198.175.65.14
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lvJkwL3m"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mv2qnfoT"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778550034; x=1810086034;
+  t=1778550041; x=1810086041;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=lB/qY73XNhWXxo81nxg83MPuSWJniQSRIaDEFvvkeTo=;
-  b=lvJkwL3mVcHo2yEDh65wqx52Me0o5S9jm/lLme7mCfdopyq4SmY6s3vp
-   Qw3YmUcYHfsu0aojmNophaFN8oSwjlLrZPnv71PtsEAMGJZHMMZ247mP4
-   cjG4UJGBd4L2tmKLPazBg6Hs5MEiJNyppzg3ov9xKm2BAMtt0AnA0qmcZ
-   zk1KWy14udmSbTaMGE6B7n6uTwaaWZiw0eNrGMkks8joI3M0RweplzC16
-   PmGxJM52PaqV0Sdgx2/S/dyLdQI1h+1fK4Ruk0UU3/564fWU3SrCHiQ6z
-   8xWpdHhMHoD3AmU4aCoCOXV/ZB5UNgfX+a3IxSfLPtA9+rmI7xponpaMe
-   w==;
-X-CSE-ConnectionGUID: gMlRjX/wThms9MImJK6Q6Q==
-X-CSE-MsgGUID: d+HwkmuSQvSD/zCZhg5P5A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="83322171"
+  bh=IFs7raVRlz6MfOCkvw6GAvEiddY/1kgglL22vGA0GeU=;
+  b=mv2qnfoTZd8NnSeskGIgqJxvwtOs3wzLEDga51GB122P6s9E2OGClP5Y
+   bU22EbPgUMpp90Kxth2avGUxx83LOLF1e9nEhjnLHPGokTpvLDDx7xFve
+   AQuH/Ud0wSSXJy+QUJBHUopHDKFhfoIIsJLObu3OwgWM+ObJxZnRjSdvR
+   3GEnYpr6HRX4fAysWfAdtmt8O7kNlghFLU1uoSEVH9GbgJsYpvoLaDDk2
+   FoS2jSqXQ2JToy86A9PetV8AVy7B3ZKxHFa0cvvlppS1GIgP1carTJQKN
+   hIDbruFEEYigSuiEgZ5hrQGMTvj1rZH/iWsHB27uIl46f3srUJdNZR6ue
+   Q==;
+X-CSE-ConnectionGUID: kmLhvTyoQkCFI3zJM/IPug==
+X-CSE-MsgGUID: bn5tItu+SwK4cY0fA82zDA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11783"; a="83322192"
 X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
-   d="scan'208";a="83322171"
+   d="scan'208";a="83322192"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 18:40:29 -0700
-X-CSE-ConnectionGUID: s8zdRRArRp6cORtaSa/Kcg==
-X-CSE-MsgGUID: SMsKLiZBS9SnUeYEtzOG+A==
+  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 May 2026 18:40:32 -0700
+X-CSE-ConnectionGUID: pFAxI7n9T7K++OihSZ1M7g==
+X-CSE-MsgGUID: 4s+1vI0KR5KDkVFcF0XTlw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,230,1770624000"; 
-   d="scan'208";a="234572814"
+   d="scan'208";a="234572832"
 Received: from chang-linux-3.sc.intel.com (HELO chang-linux-3) ([172.25.66.106])
-  by fmviesa007.fm.intel.com with ESMTP; 11 May 2026 18:40:29 -0700
+  by fmviesa007.fm.intel.com with ESMTP; 11 May 2026 18:40:32 -0700
 From: "Chang S. Bae" <chang.seok.bae@intel.com>
 To: pbonzini@redhat.com,
 	seanjc@google.com
@@ -51,9 +51,9 @@ Cc: kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	chao.gao@intel.com,
 	chang.seok.bae@intel.com
-Subject: [PATCH v4 15/21] KVM: x86: Support REX2-prefixed opcode decode
-Date: Tue, 12 May 2026 01:14:56 +0000
-Message-ID: <20260512011502.53072-16-chang.seok.bae@intel.com>
+Subject: [PATCH v4 19/21] KVM: x86: Expose APX sub-features to guests
+Date: Tue, 12 May 2026 01:15:00 +0000
+Message-ID: <20260512011502.53072-20-chang.seok.bae@intel.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260512011502.53072-1-chang.seok.bae@intel.com>
 References: <20260512011502.53072-1-chang.seok.bae@intel.com>
@@ -63,127 +63,83 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Extend the instruction decoder to recognize and handle the REX2 prefix,
-including validation of prefix sequences and correct opcode table
-selection.
+Add CPUID leaf 0x29 sub-leaf 0 to expose these APX sub-features, if the
+APX foundation is available:
 
-REX2 is a terminal prefix: once 0xD5 is encountered, the following byte
-is the opcode. When REX.M=0, most prefix bytes are invalid after REX2,
-including REX, VEX, EVEX, and another REX2. Also, REX2-prefixed
-instructions are only valid in 64-bit mode.
+  * New Conditional Instructions (NCI)
+  * New Data Destination (NDD)
+  * Flags Suppression (NF)
 
-All of the invalid prefix combinations after REX2 coincide with opcodes
-that are architecturally invalid in 64-bit mode. Thus, marking such
-opcodes with No64 in opcode_table[] naturally disallows those illegal
-prefix sequences.
-
-The 0x40–0x4F opcode row was missing the No64 flag. While NoRex2 already
-invalidates REX2 for these opcodes, adding No64 makes opcode attributes
-explicit and complete.
-
-Suggested-by: Paolo Bonzini <pbonzini@redhat.com>
 Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-Link: https://lore.kernel.org/CABgObfYYGTvkYpeyqLSr9JgKMDA_STSff2hXBNchLZuKFU+MMA@mail.gmail.com
 ---
- arch/x86/kvm/emulate.c | 38 ++++++++++++++++++++++++++++++++++----
- 1 file changed, 34 insertions(+), 4 deletions(-)
+ arch/x86/include/asm/kvm_host.h | 1 +
+ arch/x86/kvm/cpuid.c            | 9 ++++++++-
+ arch/x86/kvm/reverse_cpuid.h    | 4 ++++
+ 3 files changed, 13 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index 0fef9416cb4d..efe8adca1317 100644
---- a/arch/x86/kvm/emulate.c
-+++ b/arch/x86/kvm/emulate.c
-@@ -4268,7 +4268,7 @@ static const struct opcode opcode_table[256] = {
- 	/* 0x38 - 0x3F */
- 	I6ALU(NoWrite, em_cmp), N, N,
- 	/* 0x40 - 0x4F */
--	X8(I(DstReg | NoRex2, em_inc)), X8(I(DstReg | NoRex2, em_dec)),
-+	X8(I(DstReg | NoRex2 | No64, em_inc)), X8(I(DstReg | NoRex2 | No64, em_dec)),
- 	/* 0x50 - 0x57 */
- 	X8(I(SrcReg | Stack, em_push)),
- 	/* 0x58 - 0x5F */
-@@ -4862,6 +4862,17 @@ static int x86_decode_avx(struct x86_emulate_ctxt *ctxt,
- 	return rc;
- }
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 76c91efca722..05b7a68b2708 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -824,6 +824,7 @@ enum kvm_only_cpuid_leafs {
+ 	CPUID_7_1_ECX,
+ 	CPUID_1E_1_EAX,
+ 	CPUID_24_1_ECX,
++	CPUID_29_0_EBX,
+ 	NR_KVM_CPU_CAPS,
  
-+static inline bool rex2_invalid(struct x86_emulate_ctxt *ctxt)
-+{
-+	const struct x86_emulate_ops *ops = ctxt->ops;
-+	u64 xcr = 0;
+ 	NKVMCAPINTS = NR_KVM_CPU_CAPS - NCAPINTS,
+diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+index 21dd3dac4211..e570411f3a43 100644
+--- a/arch/x86/kvm/cpuid.c
++++ b/arch/x86/kvm/cpuid.c
+@@ -1111,6 +1111,10 @@ void kvm_initialize_cpu_caps(void)
+ 		F(AVX10_VNNI_INT),
+ 	);
+ 
++	kvm_cpu_cap_init(CPUID_29_0_EBX,
++		F(APX_NCI_NDD_NF),
++	);
 +
-+	return ctxt->rex_prefix == REX_PREFIX ||
-+	       !(ops->get_cr(ctxt, 4) & X86_CR4_OSXSAVE) ||
-+	       ops->get_xcr(ctxt, 0, &xcr) ||
-+	       !(xcr & XFEATURE_MASK_APX);
-+}
-+
- int x86_decode_insn(struct x86_emulate_ctxt *ctxt, void *insn, int insn_len, int emulation_type)
- {
- 	int rc = X86EMUL_CONTINUE;
-@@ -4915,7 +4926,7 @@ int x86_decode_insn(struct x86_emulate_ctxt *ctxt, void *insn, int insn_len, int
- 	ctxt->op_bytes = def_op_bytes;
- 	ctxt->ad_bytes = def_ad_bytes;
- 
--	/* Legacy prefixes. */
-+	/* Legacy and REX/REX2 prefixes. */
- 	for (;;) {
- 		switch (ctxt->b = insn_fetch(u8, ctxt)) {
- 		case 0x66:	/* operand-size override */
-@@ -4961,6 +4972,17 @@ int x86_decode_insn(struct x86_emulate_ctxt *ctxt, void *insn, int insn_len, int
- 			ctxt->rex_prefix = REX_PREFIX;
- 			ctxt->rex_bits   = ctxt->b & 0xf;
- 			continue;
-+		case 0xd5: /* REX2 */
-+			if (mode != X86EMUL_MODE_PROT64)
-+				goto done_prefixes;
-+			if (rex2_invalid(ctxt)) {
-+				opcode = ud;
-+				goto done_modrm;
-+			}
-+			ctxt->rex_prefix = REX2_PREFIX;
-+			ctxt->rex_bits   = insn_fetch(u8, ctxt);
-+			ctxt->b          = insn_fetch(u8, ctxt);
-+			goto done_prefixes;
- 		case 0xf0:	/* LOCK */
- 			ctxt->lock_prefix = 1;
- 			break;
-@@ -4983,6 +5005,12 @@ int x86_decode_insn(struct x86_emulate_ctxt *ctxt, void *insn, int insn_len, int
- 	if (ctxt->rex_bits & REX_W)
- 		ctxt->op_bytes = 8;
- 
-+	/* REX2 opcode is one byte unless M-bit selects the two-byte map */
-+	if (ctxt->rex_bits & REX_M)
-+		goto decode_twobytes;
-+	else if (ctxt->rex_prefix == REX2_PREFIX)
-+		goto decode_onebyte;
-+
- 	/* Opcode byte(s). */
- 	if (ctxt->b == 0xc4 || ctxt->b == 0xc5) {
- 		/* VEX or LDS/LES */
-@@ -5000,17 +5028,19 @@ int x86_decode_insn(struct x86_emulate_ctxt *ctxt, void *insn, int insn_len, int
- 			goto done;
- 	} else if (ctxt->b == 0x0f) {
- 		/* Two- or three-byte opcode */
--		ctxt->opcode_len = 2;
- 		ctxt->b = insn_fetch(u8, ctxt);
-+decode_twobytes:
-+		ctxt->opcode_len = 2;
- 		opcode = twobyte_table[ctxt->b];
- 
- 		/* 0F_38 opcode map */
--		if (ctxt->b == 0x38) {
-+		if (ctxt->b == 0x38 && ctxt->rex_prefix != REX2_PREFIX) {
- 			ctxt->opcode_len = 3;
- 			ctxt->b = insn_fetch(u8, ctxt);
- 			opcode = opcode_map_0f_38[ctxt->b];
- 		}
- 	} else {
-+decode_onebyte:
- 		/* Opcode byte(s). */
- 		opcode = opcode_table[ctxt->b];
+ 	kvm_cpu_cap_init(CPUID_8000_0001_ECX,
+ 		F(LAHF_LM),
+ 		F(CMP_LEGACY),
+@@ -1718,7 +1722,10 @@ static inline int __do_cpuid_func(struct kvm_cpuid_array *array, u32 function)
  	}
+ 	/* APX sub-features */
+ 	case 0x29: {
+-		entry->eax = entry->ebx = entry->ecx = entry->edx = 0;
++		if (!kvm_cpu_cap_has(X86_FEATURE_APX)) {
++			entry->eax = entry->ebx = entry->ecx = entry->edx = 0;
++			break;
++		}
+ 		break;
+ 	}
+ 	case KVM_CPUID_SIGNATURE: {
+diff --git a/arch/x86/kvm/reverse_cpuid.h b/arch/x86/kvm/reverse_cpuid.h
+index de90697c4e5a..cff071ccf926 100644
+--- a/arch/x86/kvm/reverse_cpuid.h
++++ b/arch/x86/kvm/reverse_cpuid.h
+@@ -67,6 +67,9 @@
+ /* Intel-defined sub-features, CPUID level 0x00000024:1 (ECX) */
+ #define X86_FEATURE_AVX10_VNNI_INT	KVM_X86_FEATURE(CPUID_24_1_ECX, 2)
+ 
++/* Intel-defined sub-features, CPUID level 0x00000029:0 (EBX) */
++#define X86_FEATURE_APX_NCI_NDD_NF	KVM_X86_FEATURE(CPUID_29_0_EBX, 0)
++
+ /* CPUID level 0x80000007 (EDX). */
+ #define KVM_X86_FEATURE_CONSTANT_TSC	KVM_X86_FEATURE(CPUID_8000_0007_EDX, 8)
+ 
+@@ -110,6 +113,7 @@ static const struct cpuid_reg reverse_cpuid[] = {
+ 	[CPUID_7_1_ECX]       = {         7, 1, CPUID_ECX},
+ 	[CPUID_1E_1_EAX]      = {      0x1e, 1, CPUID_EAX},
+ 	[CPUID_24_1_ECX]      = {      0x24, 1, CPUID_ECX},
++	[CPUID_29_0_EBX]      = {      0x29, 0, CPUID_EBX},
+ };
+ 
+ /*
 -- 
 2.51.0
 
