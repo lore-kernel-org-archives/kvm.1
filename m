@@ -1,116 +1,251 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C1283B1ED1
-	for <kvm@vger.kernel.org>; Tue, 12 May 2026 15:56:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A8631ACEDE
+	for <kvm@vger.kernel.org>; Tue, 12 May 2026 16:02:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778601397; cv=none; b=rDKbT5Z5sX1dUhLpfWoHStDRT30xy8bjz0b5wFQTcCuEZxBtRy1ji79cqvnq5kb2reY7qcuE0sbcXCAZtNxrR6/oKcopxAFRhMLIrJwMvEC3nZNVwCIOdG2cG/KEzgEpWA6hM1t7iMNqPm4QTCPP/+BuTpdOtWykqw/iqEhPRWQ=
+	t=1778601732; cv=none; b=NOQG7qGkJDKfIrP0oKe0OO9JLuOsm8HayPChkzouw9k8JG49yJWyTZtQD7NnQTip2nAVac9ujW8Wf+JTUkbB64DcoMe/1ueUi8Zs2KDn21bBz90IFrG9ktKSwXkveQC2TenTo4Q2P1/2ubO31Ii6n+LXHLgs9g5a5sOPO7yUI9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778601397; c=relaxed/simple;
-	bh=yljjG8l8B69MlqrY+w1gCcEq2SscDsa0PKnhEBZTGA0=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Wj6yTpiU2Lpd/HFSDYH0cJ7//CdQfUag3MYGZlnmuhR0irim7fxn2lb4b1+zIG9wFs7d/3RdhUQ+jzb9bDdNKtRyMNyVNl6cVlo6oSjNJRYCgJDgN78rR4O/ae+hpYooDXbO41qZ6rY02auNohvzq9KQePbpygnVOoWIVzxscyI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BSOhWgfA; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1778601732; c=relaxed/simple;
+	bh=vWr9cfyQCOSfH7IJmIj+myZeDwfb59BivVN4VpsvMRA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AJVb66GLd3P+ewR9Hzjyhb6zsHzxt7Ej+6blJ6FqI1LltD3lwJ+YS8D/NHPiVKy3YQN5WNEhIq+5YFyliA/JfyzKjOoCVAbaV4C7tdS1FXhEAYi+cCFmr+0lgQvj1PitpZBNgcJyLfhFZbnAdEyKX4MB+8Q5xt9+rwKbXgB1sT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y2tRKbwh; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=atvtpASn; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BSOhWgfA"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82fa2165c3eso3987059b3a.0
-        for <kvm@vger.kernel.org>; Tue, 12 May 2026 08:56:36 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y2tRKbwh";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="atvtpASn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778601729;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=FIUiJKhl00kL6+7DmOinctS+OWNE7gekD3egzsDj+sI=;
+	b=Y2tRKbwhv/iGLQ4ixjTnBtskmyP51cAB2YAu+2IWl0E3wFL8mzGbPQV7mxOxtxfS4iLCYz
+	ON9UPYrXlB57PuKQUi/t73F7eaA14L8TpEE9/KzfvhlvQVtdXSDmz5VXWZ9P7mb/dUOU/0
+	OypRvEwZSJj18AjmjqrpLSm1slybf4U=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-588-kt-1skqaOLyy6qI5UxuEkw-1; Tue, 12 May 2026 12:02:07 -0400
+X-MC-Unique: kt-1skqaOLyy6qI5UxuEkw-1
+X-Mimecast-MFC-AGG-ID: kt-1skqaOLyy6qI5UxuEkw_1778601727
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-48e60b55de2so50625585e9.3
+        for <kvm@vger.kernel.org>; Tue, 12 May 2026 09:02:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778601396; x=1779206196; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=x4hiTjnHHAawTA+YjwYcN9iXdJb4DuQurxNnuEC+t9M=;
-        b=BSOhWgfAKNRCMIWFgECaMHGu9oA6fhkORaBO8OVfSJfqarLqlhROd7wvb9LdGalqvT
-         b1mUG4OW6648W7Wkm6WwXiQVEHshcHj3oUtqRsoAlXMPe6d1Noy8X0uc0c6SfJ+dRNBR
-         kTwV4YCSQ/WKTUFTZdhrnihcbyUPHf3sN/y9hIWnLKMYbDVbi/LdQkmz33YVK/KfeZJp
-         tY/QoMi+sHo/S0odTqFgQor4xS0YRLa9y8ZZdqtAzfABmZvCmMjLJm41Fr3oYRClBbXa
-         I2v+QgvXxE0WfY9kRPMjysh7u2OAm/4Qx2+yW61T9hmWoAxCV+fS316eIV5VKj2D870A
-         9x5w==
+        d=redhat.com; s=google; t=1778601726; x=1779206526; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FIUiJKhl00kL6+7DmOinctS+OWNE7gekD3egzsDj+sI=;
+        b=atvtpASn5Dfk/7FGVkodl5WTDAnbYKqjdEck4Y0kJDEvRsdXPeLad4OVT9vBDzt2NT
+         a8YgJE6130o3Oh/3iwTa3rLnDyI+m2uOO4ADx2wY9baugbbB01lHy8NhA37ao3tCMZOp
+         PoLyHJIrux79wUq9fuseSjoovEm4bzUVAbB2WdZSvFvHPUe7F4DOQBpp974rk7K0QCZ6
+         bG1xgip9lKdnIeugkPaP7bzIF9fXyHNqUVMFk1D5SbTJYVwQfOvGpGuuE76JlBDp7cey
+         zbhXdJNhrxs0+rj/fDhtYhw2iRkDG47zHDmsQApID29xIVl80twXXGXEL7ruYRilKkkB
+         54UQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778601396; x=1779206196;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=x4hiTjnHHAawTA+YjwYcN9iXdJb4DuQurxNnuEC+t9M=;
-        b=JoL7NZAfwzAsYTu1GkUHp692LUyd+TQiE5kDN4CitmTTk00sMF9t1SMT1r8W5tHD2U
-         H6FoHUdDXa/69Bf9xSnCJLNOvnY33JDYds4pL1wTTyK3neaoqgcHNhnln9mg4TXntsu3
-         Pkr94ujevQGJgnifbQGsHMMl5DH6Vdc6/huu/vM0N6XeeOXedbjWO0wKDfLH70mtgxCy
-         aiMLewcM8NzCB2KRHbEsBHcnhCOZxZFchP1Dp4/DXr7w8sSwgh6F7xALAJqXyOLnN2Q5
-         corx9MhNPXLhc6Se9CvVG7NbkRUfxpv2eSJS1jEPIKDEeWhqT+XXrTpPN6pNwNbVeGX7
-         NUrQ==
-X-Gm-Message-State: AOJu0YyMEWL4V8CRdiXGamCN1D+9SzOU0DEURU3F97aC8s5Y88G+rv/g
-	BzwVjfmxFRAUSFTQrBVrpmIn6wydJjjoAOe7lgPs54vGDlEJExJ/Xg07otcNohBsJLK7vIDqC/q
-	KW6XlUw==
-X-Received: from pfbkw5.prod.google.com ([2002:a05:6a00:94f5:b0:839:5556:c979])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a90f:b0:838:af72:fb44
- with SMTP id d2e1a72fcca58-83cf4f760e7mr22440518b3a.2.1778601395691; Tue, 12
- May 2026 08:56:35 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 12 May 2026 08:56:34 -0700
+        d=1e100.net; s=20251104; t=1778601726; x=1779206526;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FIUiJKhl00kL6+7DmOinctS+OWNE7gekD3egzsDj+sI=;
+        b=EJxzpGMQ+8ZZoaWXSzdZBZ0cXqlilPE0tkFSlmZjW3nZvAVEV717/88o5Akww0/50Q
+         LabCDnSZRvv2kjbHJ4fjoWePcijdmYGzyGbfpps5qlYcVnkwbMYuPj7KtUHCW7MXxFmJ
+         LAodJpjXL3DrbmS0a/XR2qILzGabHQ6EFddmd0BXPwI1dptDeGakHL1OyeNNRQepfQSc
+         jx1gYDDW4XcUYomPl55q3mTBh8yO8OSP2S/kYaU+AulAB8ig+VCh9nJmRCFloEmunrhF
+         GTgoKIatCk7aMMZoLLoodg+sXkHSzd+OLxF7KfI9xUDSoOfRmbXHdi1jGizneMdcverF
+         Nuog==
+X-Forwarded-Encrypted: i=1; AFNElJ+b/D0BiVIj/PLgZpTf2fpqMJIuSuYIYSEP+rmIIbGDPJWaR/DUxIeRKOd+pRW7qTE4d70=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5amVcI7zLbVM4cEYdyI8AAGxpbG7/4zNSVPs7uyVMoY8qHwdl
+	VmTpjnZpLu7AXrX+8ogjylgVyVMUgYcSR1abjbs1SZYQ3aZ+pyduMDypPeq7BtuUeRKW6Mag33T
+	I9CODERM918DAdkfKlAYc13WRIZaT6QFukgqz3D0mZf8qDCcauDer0A==
+X-Gm-Gg: Acq92OHrcE1h2FirFyMU3Fhifqrt+OSql4J9sq/0dBQcf7fQrMBxYIjkMQfVba7v1Pj
+	kX1EBbxBUOBpZb1HRvIF/uDs09BvMfld0YTgRD3AVuGWP6xB7FYXHUJF9iHOOsyu5Aex/ZYC8hm
+	E2GbBj/5197uEuCj9KZO5HfC9cMHlwpRqDIGRa7GYrCJb10k0jUb5RIQ61RUUgFwz8lIXhfLcft
+	jhbWjA+AaMQCcZNedON1BiCdk576aVvtnCAky40EFL38kFxbAhirPyXsj4FFmzj4bGgtEdy/uK3
+	xkX+2MNjUIE4Twsh16V4f/4wkXPwRHquWNT01D1387AnWE7YKm2QxatUXZRsndbyMFb+onhKpuX
+	VqKu0bRMqUAUt+IcXXUlpBQ0kEnIP8UwGt2wSyCQ/
+X-Received: by 2002:a05:600c:444f:b0:488:9439:880d with SMTP id 5b1f17b1804b1-48e8fe84e0bmr59315735e9.29.1778601726357;
+        Tue, 12 May 2026 09:02:06 -0700 (PDT)
+X-Received: by 2002:a05:600c:444f:b0:488:9439:880d with SMTP id 5b1f17b1804b1-48e8fe84e0bmr59313645e9.29.1778601724684;
+        Tue, 12 May 2026 09:02:04 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e8e64385bsm22758065e9.12.2026.05.12.09.02.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2026 09:02:03 -0700 (PDT)
+Date: Tue, 12 May 2026 12:02:00 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: Polina Vishneva <polina.vishneva@virtuozzo.com>,
+	"den@openvz.org" <den@openvz.org>,
+	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
+	"stefanha@redhat.com" <stefanha@redhat.com>,
+	"eperezma@redhat.com" <eperezma@redhat.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	"jasowang@redhat.com" <jasowang@redhat.com>
+Subject: Re: [PATCH] vhost/vsock: Refuse the connection immediately when
+ guest isn't ready
+Message-ID: <20260512120019-mutt-send-email-mst@kernel.org>
+References: <20260511145610.413210-1-polina.vishneva@virtuozzo.com>
+ <agH3WvJtAsQ_5zx4@sgarzare-redhat>
+ <962b26d2d1daa9411fb71efab6af2c75d1c5f0d0.camel@virtuozzo.com>
+ <agM8cxqUCJNjBDlm@sgarzare-redhat>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260512155634.772602-1-seanjc@google.com>
-Subject: [PATCH] KVM: selftests: Ensure gmem file sizes are multiple of host
- page size
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Zenghui Yu <zenghui.yu@linux.dev>, Sean Christopherson <seanjc@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <agM8cxqUCJNjBDlm@sgarzare-redhat>
 
-When creating a guest_memfd file and associated memslot to validate shared
-guest memory, size the file+memslot to the maximum of the host or guest
-page size.  Attempting to allocate a single guest page will fail if the
-host page size is greater than the guest page size, as KVM requires that
-the size of memslots and guest_memfd files are a multiple of the host page
-size.
+On Tue, May 12, 2026 at 05:39:48PM +0200, Stefano Garzarella wrote:
+> On Tue, May 12, 2026 at 02:32:14PM +0000, Polina Vishneva wrote:
+> > On Mon, 2026-05-11 at 17:56 +0200, Stefano Garzarella wrote:
+> > > On Mon, May 11, 2026 at 04:56:10PM +0200, Polina Vishneva wrote:
+> > > > From: "Denis V. Lunev" <den@openvz.org>
+> > > >
+> > > > When the host initiates an AF_VSOCK connect() to a guest that has not
+> > > > yet loaded the virtio-vsock transport (i.e. still booting), the caller
+> > > > blocks for VSOCK_DEFAULT_CONNECT_TIMEOUT (2 seconds), because
+> > > > vhost_transport_do_send_pkt() silently exits when
+> > > > vhost_vq_get_backend(vq) returns NULL.
+> > > 
+> > > Can SO_VM_SOCKETS_CONNECT_TIMEOUT helps on this?
+> > 
+> > It can, but it might be difficult to find a correct timeout.
+> > 
+> > And, generally, there's no way to distinguish "the guest hasn't yet initialized
+> > the vq" from "the guest is up and running, but didn't reply to connect() in
+> > time". That's exactly what this patch is attempting to fix.
+> 
+> Okay, so please mention this in the commit message, I mean why
+> SO_VM_SOCKETS_CONNECT_TIMEOUT can't really help.
+> 
+> > 
+> > > 
+> > > >
+> > > > If the guest doesn't start listening within this timeout, connect()
+> > > > returns ETIMEDOUT.
+> > > >
+> > > > This delay is usually pointless and it doesn't well align with our
+> 
+> I still don't understand why this is pointless. If an application wants to
+> wait while sleeping, it can simply increase the timeout long enough to wait
+> for the VM to start up and use a single `connect()` call, instead of
+> continuing to try and wasting CPU cycles unnecessarily.
+> 
+> Hmm, or maybe not, because the driver will definitely be initialized before
+> the application that wants to listen on that port, so it will respond that
+> no one is listening, and the `connect()` call will fail with an `ECONNRESET`
+> error in any case. Right?
+> 
+> If it is the case, is the following line in the commit description correct?
+> 
+>     If the guest doesn't start listening within this timeout, connect()
+>     returns ETIMEDOUT.
+> 
+> I mean, also if the application starts to listen within the timeout, I think
+> the connect() will fail in any case as I pointed out above (this should be
+> another point in favour of this change)
+> 
+> 
+> BTW, I think we should explain this more clearly both here and briefly in
+> the code as well.
+> 
+> > > > behavior at other initialization stages: for example, if a connection is
+> > > > attempted when the guest driver is already loaded, but when nothing is
+> > > > listening yet, it returns ECONNRESET immediately without any wait.
+> > > >
+> > > > Fix this by checking the RX virtqueue backend in
+> > > > vhost_transport_send_pkt() before queuing. If the backend is NULL,
+> > > > return -ECONNREFUSED immediately.
+> > > >
+> > > > Signed-off-by: Denis V. Lunev <den@openvz.org>
+> > > > Co-developed-by: Polina Vishneva <polina.vishneva@virtuozzo.com>
+> > > > Signed-off-by: Polina Vishneva <polina.vishneva@virtuozzo.com>
+> > > > ---
+> > > > drivers/vhost/vsock.c | 10 ++++++++++
+> > > > 1 file changed, 10 insertions(+)
+> > > >
+> > > > diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+> > > > index 1d8ec6bed53e..a3f218292c3a 100644
+> > > > --- a/drivers/vhost/vsock.c
+> > > > +++ b/drivers/vhost/vsock.c
+> > > > @@ -302,6 +302,16 @@ vhost_transport_send_pkt(struct sk_buff *skb, struct net *net)
+> > > > 		return -ENODEV;
+> > > > 	}
+> > > >
+> > > > +	/* Fast-fail if the guest hasn't enabled the RX vq yet. Reading
+> > > > +	 * private_data without vq->mutex is deliberate: even if the backend becomes
+> > > > +	 * NULL right after that check, do_send_pkt() checks it under the mutex.
+> > > > +	 */
+> > > > +	if (!data_race(READ_ONCE(vsock->vqs[VSOCK_VQ_RX].private_data)))
+> > > 
+> > > Why not using vhost_vq_get_backend() ?
+> > 
+> > Because it locks the mutex, which is slow and unacceptable in this hot
+> > path.
+> 
+> ehm, sorry, which mutex are you talking about?
+> 
+> I see just a comment about the mutex to be acquired by the caller, but I
+> don't see any lock there.
+> 
+> > 
+> > > 
+> > > Also is READ_ONCE() okay without WRITE_ONCE() where it is set ?
+> > 
+> > It's racy, but as described here in the comment and in the commit message,
+> > any possible race outcome is covered by the subsequent checks.
+> 
+> Okay, so what is the point to call READ_ONCE()?
+> 
+> > 
+> > > > {
+> > > > +		rcu_read_unlock();
+> > > > +		kfree_skb(skb);
+> > > > +		return -ECONNREFUSED;
+> > > 
+> > > This is a generic send_pkt, is it okay to return ECONNREFUSED in any
+> > > case?
+> > 
+> > EHOSTUNREACH would probably be better.
+> > All the current send_pkt functions only return ENODEV, but it has different
+> > semantics: they mean that the local device isn't yet ready, while there we're
+> > dealing with the opposite end not being ready.
+> 
+> In the AF_VSOCK prespective, I see ENODEV like the transport is not ready,
+> so I think it can eventually fit here too, but also EHOSTUNREACH is fine,
+> for sure better than ECONNREFUSED.
+> 
+> Thanks,
+> Stefano
 
-For simplicity, verify the entire file can be shared between guest and host,
-e.g. instead of trying to validate "partial" mappings.
+I think it's worth trying to do the same thing with e.g. TCP
+and see what error, if any, we get. Match that.
 
-Fixes: 42188667be38 ("KVM: selftests: Add guest_memfd testcase to fault-in on !mmap()'d memory")
-Reported-by: Zenghui Yu <zenghui.yu@linux.dev>
-Closes: https://lore.kernel.org/all/0064952b-048c-455d-ad89-e27e5cb82591@linux.dev
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- tools/testing/selftests/kvm/guest_memfd_test.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
-index d6528c6f5e03..253e748c1d4a 100644
---- a/tools/testing/selftests/kvm/guest_memfd_test.c
-+++ b/tools/testing/selftests/kvm/guest_memfd_test.c
-@@ -510,7 +510,12 @@ static void test_guest_memfd_guest(void)
- 		    "Default VM type should support INIT_SHARED, supported flags = 0x%x",
- 		    vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS));
- 
--	size = vm->page_size;
-+	/*
-+	 * Use the max of the host or guest page size for all operations, as
-+	 * KVM requires guest_memfd files and memslots to be sized to multiples
-+	 * of the host page size.
-+	 */
-+	size = max_t(size_t, vm->page_size, page_size);
- 	fd = vm_create_guest_memfd(vm, size, GUEST_MEMFD_FLAG_MMAP |
- 					     GUEST_MEMFD_FLAG_INIT_SHARED);
- 	vm_set_user_memory_region2(vm, slot, KVM_MEM_GUEST_MEMFD, gpa, size, NULL, fd, 0);
-@@ -519,7 +524,7 @@ static void test_guest_memfd_guest(void)
- 	memset(mem, 0xaa, size);
- 	kvm_munmap(mem, size);
- 
--	virt_pg_map(vm, gpa, gpa);
-+	virt_map(vm, gpa, gpa, size / vm->page_size);
- 	vcpu_args_set(vcpu, 2, gpa, size);
- 	vcpu_run(vcpu);
- 
-
-base-commit: 6d35786de28116ecf78797a62b84e6bf3c45aa5a
--- 
-2.54.0.563.g4f69b47b94-goog
+> > 
+> > Best regards, Polina.
+> > 
+> > > 
+> > > Thanks,
+> > > Stefano
+> > > 
+> > > > +	}
+> > > > +
+> > > > 	if (virtio_vsock_skb_reply(skb))
+> > > > 		atomic_inc(&vsock->queued_replies);
+> > > >
+> > > >
+> > > > base-commit: 8ab992f815d6736b5c7a6f5fd7bfe7bc106bb3dc
+> > > > --
+> > > > 2.53.0
+> > > >
 
