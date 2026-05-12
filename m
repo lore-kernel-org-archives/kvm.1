@@ -1,108 +1,103 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC33D3A63E1
-	for <kvm@vger.kernel.org>; Tue, 12 May 2026 22:31:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D584C3A255F
+	for <kvm@vger.kernel.org>; Tue, 12 May 2026 22:32:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778625099; cv=none; b=Aa4KMO8+JhMa9vhD9ICDhKqLmTgnx9EprEspTAeuy15607eWF73gqOt7z/sQjrh8tP3kFYoKlQ8nO11xuxYx1ktu0PbHLJzsShL0DnDMEdrBkreyZS3bioDwJW8v8K/0/i4ZZiTeMIhPihy4dLBztB8Zj6x9ye2YXMtlRWGfLrU=
+	t=1778625167; cv=none; b=AJ5ImPldmkxN0N3RyOE8viYifz4bmK9R1EAAo8MnJFaNtmjwGFLxvKvQGjM7zFX3hfBZsC5LCKI+I6y/uOzuNAvh1ditJLv25qUHu2zXS4U/2XQupYNPn8we598ICEfpHrzZedHRJp1eGkTQ/qKhy+5VHWZWwaC8SLEb0510dHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778625099; c=relaxed/simple;
-	bh=bcVfxasbit4U2yzziAt1k9ONFCXfeXaWbNjOlT3ECP8=;
+	s=arc-20240116; t=1778625167; c=relaxed/simple;
+	bh=cOnjEHkKMFpSoDE2r3XBUdHb+gmw+uj+vIqk7L+R3+k=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hEka4eMaEqLBVbcnfVyiflo6/gtmSToGGf4bmnzvHDveAcRPAHn62z+K3y+LNHad90c1Rzhm7QN4XTsVJv0uTlgzzjSJhfU/wp47axUR0nVS3rN+aQTriP6s1fzCVBcC9j1qgxeTMhK3iI87+kJ73odQyyzDOSQQDLmwofkd0BU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=joSHRhIC; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=nW3NG68kk8azs/+p/Zk8+o/u/DDZ1hxuvM48xXdUfpakvLCnLJo8Xw9aimWj3ArAsElGhol/GTZpMW9ij/YAAlHUpew3j5iq6lgOWWAl34lkU7IG5Bis/Jpz0F8P5m37CS/z1YOi3MojfxnWI4PRlWNz1ck7o826SBjmaL2vjAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PzqZp98E; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="joSHRhIC"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-367fd7b8825so3698190a91.0
-        for <kvm@vger.kernel.org>; Tue, 12 May 2026 15:31:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PzqZp98E"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-83836443305so3467040b3a.1
+        for <kvm@vger.kernel.org>; Tue, 12 May 2026 15:32:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778625097; x=1779229897; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1778625165; x=1779229965; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=M7/ckcGX/26EFOsM99Da2/PEjvZTD7dt6PJubXtrn78=;
-        b=joSHRhIC+/nH+3vJN0zqUJSQ4gysMKvBeXtMDR7EW93hOYfyrNVjI+W6H8wvfxEIeQ
-         8rAJX7Yxyo3VXvHssz1yZzDwmnpJeS7Phoffu8mXIq192RbVHYqD/BcIWogqNqBy0sm/
-         c+ts+GU7879UjxZZpXNzEjtCkltwwnm/JA2M9qq8au9qcaRTMEmF8SYuM4YZfG8GcE/w
-         FXc4U6S13TyGH5NnxnFW6ac55pR0pL1+p5SgtM7R7uTx40USQ9C9vkniGDLlSKCMczZv
-         aSIS3jfIsj8kDkJtZcDJ7jCJfSvRsQ5pJWCO0ASJncaO7OJ+EvfjNxm/mr5NNQ0Phdx9
-         TiPg==
+        bh=HW+R3TRETD3DPPcAIs+gc8XoOJGHnJ5Jf4G2TvPsYAE=;
+        b=PzqZp98EPgy/gwpw0gI7iWjwdcj0mCU8tmRpglC13Ph4Yg8qy/95y88bqYdwXqQ/gs
+         2rjB0lYmzUV+yg3dRMwapKfof9HKUScbwcy9oR9/dyDNUILxKbWrqGjN5uK1cQ42ePLg
+         d+afdu1vapDkz4Dx84PuwEcmyIF+uElt3eKw+oDGTI7OLwncJwh583AUqG2Hn7dyFhKY
+         QMHhxPbEvBQO3w2Pfg6E9z84OGBsFZNZBwpDFJuCcliu3Ycs2qj7OiAyychhBpS/cnXJ
+         ulhDu+/QRIFpc8+G5ycECSwDQYIo3hrZx1JnusHIwaioAtKdyMHBrjv7KnoH2e96ZWe1
+         8hzw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778625097; x=1779229897;
+        d=1e100.net; s=20251104; t=1778625165; x=1779229965;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=M7/ckcGX/26EFOsM99Da2/PEjvZTD7dt6PJubXtrn78=;
-        b=PL72/f1Y0D52mvGxplznC8r5Fjzr21ueoel1L2D+AKCkyYhMhk0nEBQte0SSiX9bv8
-         00mawdqCSZJTibF5qaBon51lBZjDkcUHmpr4ZzRmnpPnGfKvTP4MlOCeSdHFS+aKy+zE
-         ceTd5zgzqr7GDuISJI3tk4Pj6ODZXGXQK2dLFUtkfdxWH5Mpbz0Sn6nvMg+/dYtd/5ht
-         Pq6I1ulGIiS5NZTR3snM2F0+b4CiFV477L1GvLg5gqkvzfUxVrN1qgZeg7q5uhC2u3YX
-         4eiXAko71k1+nBcsqXOfSUicMgkQmX6v6ptqQVBuShjDRQMPKYo1z8syZpSaGm27i6zP
-         vLLw==
-X-Forwarded-Encrypted: i=1; AFNElJ81ybea4zTIHn2FzV2KLoB9QiuaufmjPmAeSMyVoOu9GHngDmIu550no5Nq4Q5TyP5drB8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwvCFaHFEbn+pAIqw578/Y8msPgHdvOMsb16VFz/+/oCEWFMkXS
-	faAT8KMRHbUtDqHCAyaXZoSLjB7EgLOm7Ba95QvS9IYa8qA4zCAhoF1mZv3ZSKOQVua6b7XG3YZ
-	li8JtEg==
-X-Received: from pjbsb13.prod.google.com ([2002:a17:90b:50cd:b0:368:a71f:a24a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3c8a:b0:35d:a0b7:9608
- with SMTP id 98e67ed59e1d1-368f3aa426fmr918102a91.7.1778625096688; Tue, 12
- May 2026 15:31:36 -0700 (PDT)
-Date: Tue, 12 May 2026 15:31:36 -0700
-In-Reply-To: <20260508091829.GO3126523@noisy.programming.kicks-ass.net>
+        bh=HW+R3TRETD3DPPcAIs+gc8XoOJGHnJ5Jf4G2TvPsYAE=;
+        b=bESULnzyuK8cLjlq+7qRItrI4ZAWpTpVHnmamW6DYQMAPbPQVz2gRRJ/KR5rG7JSiy
+         d+sQR+SwEvnyJyaeAmkLfo4GV0yNcxcfnPe18FOLt5/Rf+YrGlofFWDsRqquA9o29TNA
+         tfo/Jnnpx7Twi/4RPmeR0zdUUluUKEBk8aqAbtIW1nfnqcwmfFNYDLgMaKg25anzDktH
+         ortpXHUZpCUUn5laKs915V1XcjO2YxDP4TN/CS+qMHp6DmErXmNUqpvEOwANNK2fRK5E
+         h32I1Gd25/+0LBicIxx+n8r+WhGNvlAARUwlzc63Qq4nuYvhtjcfGGrAnrwjGre6xYTp
+         pXcw==
+X-Forwarded-Encrypted: i=1; AFNElJ9UrZI2XpmuWhgzWaIxjlCQMz68s/bA6HVJwaCE8lfM95vPoX7nZxi5ADK0QlS171y64E8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YySRWYLZgBdclPlxEU5n2/pam8vL2AuvkpdfNc+EyIWRk0IvylC
+	PRWbrK7zaoKYdwX2B+As/9rT3dkX8+xs5XzRNNu+ICQn++ZKihuO/rAhliwSe2cWUL5JZ2yCGUe
+	mt8tCyg==
+X-Received: from pfbgd24.prod.google.com ([2002:a05:6a00:8318:b0:82f:9e73:207b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:bd08:b0:837:666f:8fcb
+ with SMTP id d2e1a72fcca58-83f0547afdbmr236260b3a.5.1778625164805; Tue, 12
+ May 2026 15:32:44 -0700 (PDT)
+Date: Tue, 12 May 2026 15:32:43 -0700
+In-Reply-To: <24df4dabec1328591f9996f00a298660bc0860e3.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260423155611.216805954@infradead.org> <20260423155936.843498069@infradead.org>
- <20260508091829.GO3126523@noisy.programming.kicks-ass.net>
-Message-ID: <agOqSCgHy7VSMvNl@google.com>
-Subject: Re: [PATCH v3 1/2] x86/kvm/vmx: Move IRQ/NMI dispatch from KVM into
- x86 core
+References: <20260423155611.216805954@infradead.org> <20260423155936.957351833@infradead.org>
+ <24df4dabec1328591f9996f00a298660bc0860e3.camel@infradead.org>
+Message-ID: <agOqi22wsB8S4-aS@google.com>
+Subject: Re: [PATCH 2/2] x86/kvm/vmx: Fix VMX vs hrtimer_rearm_deferred()
 From: Sean Christopherson <seanjc@google.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: tglx@kernel.org, linux-kernel@vger.kernel.org, 
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Peter Zijlstra <peterz@infradead.org>, tglx@kernel.org, linux-kernel@vger.kernel.org, 
 	Jim Mattson <jmattson@google.com>, Binbin Wu <binbin.wu@linux.intel.com>, 
 	Vishal L Verma <vishal.l.verma@intel.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
 	Rick P Edgecombe <rick.p.edgecombe@intel.com>, Binbin Wu <binbin.wu@intel.com>, 
 	"x86@kernel.org" <x86@kernel.org>, Paolo Bonzini <bonzini@redhat.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Fri, May 08, 2026, Peter Zijlstra wrote:
+On Mon, May 11, 2026, David Woodhouse wrote:
+> On Thu, 2026-04-23 at 17:56 +0200, Peter Zijlstra wrote:
+> > Vishal reported that KVM unit test 'x2apic' started failing after commit
+> > 0e98eb14814e ("entry: Prepare for deferred hrtimer rearming").
+> > 
+> > The reason is that KVM/VMX is injecting interrupts while it has IRQs disabled,
+> > for a context that will enable IRQs, this means that regs->flags.X86_EFLAGS_IF
+> > == 0 and the irqentry_exit() will not DTRT.
+> > 
+> > Notably, irqentry_exit() must not call hrtimer_rearm_deferred() when the return
+> > context does not have IF set, because this will cause problems vs NMIs.
+> > 
+> > Therefore, fix up the state after the injection.
+> > 
+> > Fixes: 0e98eb14814e ("entry: Prepare for deferred hrtimer rearming")
+> > Reported-by: Vishal L Verma <vishal.l.verma@intel.com>
+> > Closes: https://lore.kernel.org/r/70cd3e97fbb796e2eb2ff8cd4b7614ada05a5f24.camel%40intel.com
+> > Suggested-by: Thomas Gleixner <tglx@kernel.org>
+> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > Tested-by: Vishal L Verma <vishal.l.verma@intel.com>
 > 
-> Move the VMX interrupt dispatch magic into the x86 core code. This
-> isolates KVM from the FRED/IDT decisions and reduces the amount of
-> EXPORT_SYMBOL_FOR_KVM().
+> Tested-by: David Woodhouse <dwmw@amazon.co.uk>
+
+Tested-by: Sean Christopherson <seanjc@google.com>
+
+> I don't see this being merged yet?
 > 
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Tested-by: Vishal L Verma <vishal.l.verma@intel.com>
-> ---
+> Without this, Xen timer delivery (tested by the xen_shinfo_test KVM
+> selftest) is failing.
 
-Acked-by: Sean Christopherson <seanjc@google.com>
-
-> @@ -7152,17 +7149,9 @@ static void handle_external_interrupt_ir
->  	    "unexpected VM-Exit interrupt info: 0x%x", intr_info))
->  		return;
->  
-> -	/*
-> -	 * Invoke the kernel's IRQ handler for the vector.  Use the FRED path
-> -	 * when it's available even if FRED isn't fully enabled, e.g. even if
-> -	 * FRED isn't supported in hardware, in order to avoid the indirect
-> -	 * CALL in the non-FRED path.
-> -	 */
-> +	/* For the IRQ to the core kernel for processing. */
-
-Forward?  Or just delete this comment entirely, either way works for me.
-
->  	kvm_before_interrupt(vcpu, KVM_HANDLING_IRQ);
-> -	if (IS_ENABLED(CONFIG_X86_FRED))
-> -		fred_entry_from_kvm(EVENT_TYPE_EXTINT, vector);
-> -	else
-> -		vmx_do_interrupt_irqoff(gate_offset((gate_desc *)host_idt_base + vector));
-> +	x86_entry_from_kvm(EVENT_TYPE_EXTINT, vector);
->  	kvm_after_interrupt(vcpu);
->  
->  	vcpu->arch.at_instruction_boundary = true;
+And many, many other issues with KVM.  I.e. we need this or something like it
+in 7.1.
