@@ -1,167 +1,79 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04F32E542C
-	for <kvm@vger.kernel.org>; Tue, 12 May 2026 21:37:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D284F38657D
+	for <kvm@vger.kernel.org>; Tue, 12 May 2026 21:43:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778621858; cv=none; b=OSRwaBuvJSc7uRTSzzzvy+HCoQlWRwPF6eF3uwlThP8Fbu7TXX8sqYUQ909uLbNQU/UOsW2mqsz+kRdw9bAgdBZxLL3d+VJ36xiWyEBI8wAAwhSo+vvhBc+G1bYccDehyrNJ9FFIBe1r6/tQjigYeYxXAVJ8vS35dlf1hSFYjCM=
+	t=1778622184; cv=none; b=WhXSNp46ta57Aww45tADhcdDIRiEgcYcpdK00OODqEc9Oxy7fmPZmqyE0yaEg2T7N87ZnXHKdZmPFjBcFcr/QQn/QqHI/XZdsj8/hTT7HYpIPp1/7qC7xEPv+NyMb9WE5QjxwIWrhXbMzfdVkYW/dDeHji5/GG8xMAfL8XEN+oU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778621858; c=relaxed/simple;
-	bh=qGhetvw8/qiNI22y8XLXztl/MOWRXxK7B8fh7ij6z9Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=oqQaHLMMeFkcHb5U79VE7V3WCsy8f4k/tZQhHGeZxf3t04H2IuCsCMSry3eVQFMLJHCja2pV7LSY7od8auwZLE+D0ltpuRC3B0Vl9+FQJ2sQj8A90E6E9Rj2FZX/cv64gSN19jixygs5Sc89Pg7TTAfrrh4ar7drczHYv4z9ohY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=k/JrJtlD; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=oCegvFLV; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=DwWCaDSd; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=/oXPBfFy; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1778622184; c=relaxed/simple;
+	bh=ldiMr/jTgzTdGMeoBI2w86wn+gSPvhUxkb0okNLJePA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=QnqCn2L+Z39aY2SId3bB7jsUSxof8gLFFm0sbXiHpJU2DQF7Z6Wj8+FPOQYQuVdtZ4IpEjSJ6n/kq/f0vTRv+9N5ESIwRxeBw6VJREcKPf6E42JqW9KnEH3sEhvcCcZbzCN9rCLBd512USSLpvS+NFfH30no4W8J5k+LJIxH0Iw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qEIYJzLg; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="k/JrJtlD";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="oCegvFLV";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="DwWCaDSd";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="/oXPBfFy"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7BCF66AAF8;
-	Tue, 12 May 2026 21:37:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778621855; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oBAYXJUrFg63Z6RvOCmvjgi5tAtmT8m7Pzftepqd5aA=;
-	b=k/JrJtlD/NsIePuwTQzI4rEy1mBYisPW4AZOqyt1UoORyg/S2l2Lm4bK6PWM9pH6LcEh4d
-	ev7qvSUy3Yay/FWdSUGAlp7iKJJFnUmUcxi7Mcd3dmBXEcNXf6QKJ1yPMf2HCt789ei1zt
-	5hf6Fbed6Li9KxpRy4yUU37znJS9YTw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778621855;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oBAYXJUrFg63Z6RvOCmvjgi5tAtmT8m7Pzftepqd5aA=;
-	b=oCegvFLVRawbDU3Bg7vneUP0SR3TBJsgo4QGYcuqvzQyNQ9iNHSnHvl+m1ZLjnSslepg3p
-	OexTajrtOffS95AA==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=DwWCaDSd;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b="/oXPBfFy"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778621854; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oBAYXJUrFg63Z6RvOCmvjgi5tAtmT8m7Pzftepqd5aA=;
-	b=DwWCaDSdZWWxp+ygnkSg0WlLNYgtRV12MqurvwNSF6zacncgQDwhAO1Z8Zy1ol7dJVaPrK
-	/G+QbMdKnupG7je2BeBANAqYaClYXPp2SezorOPoOLiUE3AijjixUGW9sJx7V4tUNI+B4W
-	pDtl3vYtTpHqHUr7WJEg+XjHOrOK3N4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778621854;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oBAYXJUrFg63Z6RvOCmvjgi5tAtmT8m7Pzftepqd5aA=;
-	b=/oXPBfFy4y2IOUmLsKnMctUnnRGalFPQHrzbGs7fNVcLOKtzP3WhmuUANMmukySaMAOQCJ
-	30/uXm/oKCCwNFBQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id ABB38593A9;
-	Tue, 12 May 2026 21:37:33 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id bYI2J52dA2p6OQAAD6G6ig
-	(envelope-from <clopez@suse.de>); Tue, 12 May 2026 21:37:33 +0000
-From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
-To: kas@kernel.org,
-	rick.p.edgecombe@intel.com,
-	x86@kernel.org,
-	linux-coco@lists.linux.dev
-Cc: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
-	stable@vger.kernel.org,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Andi Kleen <ak@linux.intel.com>,
-	Tony Luck <tony.luck@intel.com>,
-	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
-	kvm@vger.kernel.org (open list:X86 TRUST DOMAIN EXTENSIONS (TDX))
-Subject: [PATCH] x86/tdx: Fix zero-extension for CPUID emulation
-Date: Tue, 12 May 2026 23:37:19 +0200
-Message-ID: <20260512213719.20974-1-clopez@suse.de>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qEIYJzLg"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-83836443305so3447486b3a.1
+        for <kvm@vger.kernel.org>; Tue, 12 May 2026 14:43:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778622182; x=1779226982; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bj9D1BDvzoYZj1BL80BFHCMOi9+t7uJndAu3/Hrv+98=;
+        b=qEIYJzLgSaP51g+DDtvzYZVvnO54ZZpdeCy99IYYqNI+ZQ3QnHIyD4NCqa6AJesRyj
+         mZlwuP7/cb4w7L/Z9P7GqFHG6yV1+MYjWx76IBtqCFsoKtcOWgozoo7UbgJCU9j0oH+e
+         n0fkHzTqXZOhT7y3VSEHMh0ib4peFa+5YpiDHnsC/1/XZdyaGE04rp6gWFpIaBSacjwg
+         7bHC+BXgiAA21hB4JpYsBRyQA2KleMWTE9E5HHYFWh0svBJCXCwbear3jCLEomeua3/F
+         10UevhwMEzedvW/STvwhl1mCt+N55Rq8X+9/wF6k3UbAe0CFXcTo2rf+l/CXSjr1eoPv
+         rKjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778622182; x=1779226982;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bj9D1BDvzoYZj1BL80BFHCMOi9+t7uJndAu3/Hrv+98=;
+        b=Ha6KC0v2w3FPzCL8NUNaDJtX7TlcnNnFbH1XNZaZfrx/tmVYwTyi99Nj3GAJHfr6fq
+         Uk0/WIAJQjec6HrC51oQcdqchRevGeCQFUJrr/jXNlLxKqSXV3NQhRl5agKB+s6ZmzLK
+         DyUQqNBo/Mp+8GDtegvqB9OKgJoI/bKMgMTwJs19rifOSHrKNCbIBzQm+ftRDdI/+GRM
+         ZkYVH7iPwBU+0Q9x5tEVXhiep4FRExGKRZSdxThxwqJLx82KU+3zMplkUgEPYb2c9n5o
+         LdLTtS0sd+4u9lF8KGpMmvrzje0FSGBJTiS0OcUIFx6gbc39GPFf0j3rZyAZSOwZIWbR
+         /Itw==
+X-Forwarded-Encrypted: i=1; AFNElJ8NrZwatzenrIUfA9yHRoMu4VFRNPIaCl/AcL2hb5we2HJq2oQ3KOnmWIPXtWyG/vKSkUA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJXcQjDcGDyyyKO8xHe7Y7O5jlg1SiG6TfXpGmd6Whnjmd4q99
+	GR9zLh06J/JkzWRTqIRI5G7h/4Djwh+KhLHxA7YnpPOiv7+baqoN9bYMCx4cWohh9rNhr1fg/so
+	o9HTcSA==
+X-Received: from pfxx23.prod.google.com ([2002:a05:6a00:117:b0:82f:c180:a882])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1741:b0:82c:9f7e:518c
+ with SMTP id d2e1a72fcca58-83f05bf569bmr64985b3a.25.1778622181819; Tue, 12
+ May 2026 14:43:01 -0700 (PDT)
+Date: Tue, 12 May 2026 14:43:01 -0700
+In-Reply-To: <20260512203545.3031339-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	ARC_NA(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCPT_COUNT_TWELVE(0.00)[14];
-	MIME_TRACE(0.00)[0:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:email,suse.de:mid];
-	URIBL_BLOCKED(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:email,suse.de:mid];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Queue-Id: 7BCF66AAF8
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Score: -3.51
+Mime-Version: 1.0
+References: <20260512203545.3031339-1-pbonzini@redhat.com>
+Message-ID: <agOe5WU8-wV6CMJt@google.com>
+Subject: Re: [PATCH v2] KVM: x86: use again the flush argument of __link_shadow_page()
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-In the x86 architecture, 32-bit operations zero-extend the result in the
-destination register to 64 bits. This includes the CPUID instruction,
-which writes 32-bit values EAX/EBX/ECX/EDX.
+On Tue, May 12, 2026, Paolo Bonzini wrote:
+> Except in the case of parentless nested-TDP pages, mmu_page_zap_pte()
+> clears the SPTE but leaves the invalid_list empty.  In this case, using
+> kvm_flush_remote_tlbs() as kvm_mmu_remote_flush_or_zap() does is overkill.
+> Avoid flushing the entirety of the remote TLBs unless the invalid_list
+> was populated: instead, use a more efficient gfn-targeting flush (if
+> available) and skip it altogether if the caller guarantees that a TLB
+> flush is not necessary.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
 
-When handling the CPUID instruction via #VE, copy only the lower 32-bits
-provided by the hypervisor for the output registers, and zero out the
-upper half.
-
-Fixes: c141fa2c2bba ("x86/tdx: Handle CPUID via #VE")
-Cc: stable@vger.kernel.org
-Signed-off-by: Carlos López <clopez@suse.de>
----
- arch/x86/coco/tdx/tdx.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-index c8b9e86d0488..a2fe1ae019bd 100644
---- a/arch/x86/coco/tdx/tdx.c
-+++ b/arch/x86/coco/tdx/tdx.c
-@@ -543,10 +543,10 @@ static int handle_cpuid(struct pt_regs *regs, struct ve_info *ve)
- 	 * EAX, EBX, ECX, EDX registers after the CPUID instruction execution.
- 	 * So copy the register contents back to pt_regs.
- 	 */
--	regs->ax = args.r12;
--	regs->bx = args.r13;
--	regs->cx = args.r14;
--	regs->dx = args.r15;
-+	regs->ax = lower_32_bits(args.r12);
-+	regs->bx = lower_32_bits(args.r13);
-+	regs->cx = lower_32_bits(args.r14);
-+	regs->dx = lower_32_bits(args.r15);
- 
- 	return ve_instr_len(ve);
- }
--- 
-2.51.0
-
+Reviewed-by: Sean Christopherson <seanjc@google.com>
