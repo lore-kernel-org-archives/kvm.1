@@ -1,49 +1,49 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EC0C3D25A7
-	for <kvm@vger.kernel.org>; Tue, 12 May 2026 16:31:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 212003CF96D
+	for <kvm@vger.kernel.org>; Tue, 12 May 2026 16:34:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778603497; cv=none; b=PZ0sAR5s0v2yrCSTV+/euIWUKf77TuV+SiYfFswpDsayAYN2x9htOpGYtJuE/89baHO4MOGfMfsK3y9ZopFA3Bhjq3ygDpfwCselnxr5JWsJ2o1uMynYpqQpUz/ZZFmDTfWDXGinmnKYhH/691sX33xIOuwCJHzC044wftLVq94=
+	t=1778603659; cv=none; b=XXMcSz/h4pGym0L5faqLBn+1DnisMyPh/csffhrCJXGvs0L39+qSkT9LHAHe6pVctXj+fR4E2b//FiVQhXxU0Y85fAugv1EaWntE2N+5qE4LDmw2lf/vc9wk/4IiQS4iwykDLhI0TsnNeLQKYr5QpzxLz+t2zFnTUKRmrsV8/v0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778603497; c=relaxed/simple;
-	bh=Mp2VAgvfcJ8Q26nGrB1ac2kzLj+QBhp2qe8WGRsh+Tw=;
+	s=arc-20240116; t=1778603659; c=relaxed/simple;
+	bh=AMPs021IOLM19tgxvI/u21IzrVMAenSfk4Og2CvBOho=;
 	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=HJPlLPthuezxHJWuUuncEy6452fGIKuZqaEJ1oIAuHwaRUQLStKxjzIlBmsp9QSWpXkDyvrltyEFzxWaPddxlgAejp0dFEVPuoSr4hD5R+qdShIAtu3gSwtpzxvYk2mIYiDBVhLdrx3kcp1FaOf5Q2rwNPARReA2sjzgSFtRE5Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c00qApek; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=WvhpmyTVtepZhBP5YL9KTQ67mawROuhzE7080q0UmS0H0qrTWeqqu77EboBLf1HVcSITFnpPVGkd/EIPqhrW0UxliIsw9xnL/aGIbyeXbQqYmXSszX9U8Sr0DOUFEOtYLU31MfE4SAGm4DZXUlagIo0760R+lIISJlRyXKi7vlM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZGTfd+tH; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c00qApek"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZGTfd+tH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778603495;
+	s=mimecast20190719; t=1778603656;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=l2blyJKcDxQo1TeX51MfqWjeGlAjCutzmptdrPxJcm4=;
-	b=c00qApekyrfMNBl22EovBKbbjmY3seGvyzu84rcrpnkOMvo3Z72kyokc6/e9U21kK3fNz3
-	m2VsQACDSFm+pkiBodgL8PONPD/1zpDnZAq37OJJwTfPj8O89C92pg+iZlji3M7GWkfFLD
-	6Z7XCxGeFCEVWqA0N31zekd9hWY8WlI=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+	bh=+j+EDk3PqU7zShLYl+C1OtT3b/AcW4wapeMIOiSceRM=;
+	b=ZGTfd+tH5R8UuxBLggI7REkAP1vwgL1ef7LqjG3i89W0W4ccKSEh7RcGcAK/jkbGZBAhBk
+	N7z4Fs52U8uducyyeAkCb31CuSZyN+ZhHmXEix8Kec9uwKa5ao6xQBboHLeicaOB5xRfZR
+	yRZMX31kq8/DNxiesm6ww5LNbsxnvA0=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-212-7VyX3ZKRNMaXcgeVQDGnOQ-1; Tue,
- 12 May 2026 12:31:28 -0400
-X-MC-Unique: 7VyX3ZKRNMaXcgeVQDGnOQ-1
-X-Mimecast-MFC-AGG-ID: 7VyX3ZKRNMaXcgeVQDGnOQ_1778603486
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-641-DQk1tlW8O2632RXPaMubFA-1; Tue,
+ 12 May 2026 12:34:13 -0400
+X-MC-Unique: DQk1tlW8O2632RXPaMubFA-1
+X-Mimecast-MFC-AGG-ID: DQk1tlW8O2632RXPaMubFA_1778603651
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A37D61800612;
-	Tue, 12 May 2026 16:31:26 +0000 (UTC)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 41B02195609E;
+	Tue, 12 May 2026 16:34:11 +0000 (UTC)
 Received: from [10.44.34.100] (unknown [10.44.34.100])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CCE05180058F;
-	Tue, 12 May 2026 16:31:24 +0000 (UTC)
-Message-ID: <8de38fc4-cc07-4171-8d81-6191a4602bcb@redhat.com>
-Date: Tue, 12 May 2026 18:31:22 +0200
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 093041955D84;
+	Tue, 12 May 2026 16:34:09 +0000 (UTC)
+Message-ID: <e0fe1c94-9823-4945-ba36-d46bdd85b646@redhat.com>
+Date: Tue, 12 May 2026 18:34:08 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -51,12 +51,13 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/22] KVM: x86: move pdptrs out of the MMU
+Subject: Re: [PATCH v6 00/28] KVM: combined patchset for MBEC/GMET support
 From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org, kvm@vger.kernel.org
-Cc: jon@nutanix.com, mtosatti@redhat.com
-References: <20260511150648.685374-1-pbonzini@redhat.com>
- <20260511150648.685374-3-pbonzini@redhat.com>
+To: David Riley <d.riley@proxmox.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, jon@nutanix.com
+References: <20260505195226.563317-1-pbonzini@redhat.com>
+ <85548beb-1486-40f9-beb4-632c78e3360b@proxmox.com>
+ <CABgObfZ-UOjO4q3e9o5JGXXCO8VZ50vEZkjNMB44rdcCVxEHxg@mail.gmail.com>
 Content-Language: en-US
 Autocrypt: addr=pbonzini@redhat.com; keydata=
  xsEhBFRCcBIBDqDGsz4K0zZun3jh+U6Z9wNGLKQ0kSFyjN38gMqU1SfP+TUNQepFHb/Gc0E2
@@ -93,31 +94,54 @@ Autocrypt: addr=pbonzini@redhat.com; keydata=
  JBrdmNZSQDz0iKmSrx8xkoXYfA3bgtFN8WJH2xgFL28XnqY4M6dLhJwV3z08tPSRqYFm4NMP
  dRsn0/7oymhneL8RthIvjDDQ5ktUjMe8LtHr70OZE/TT88qvEdhiIVUogHdo4qBrk41+gGQh
  b906Dudw5YhTJFU3nC6bbF2nrLlB4C/XSiH76ZvqzV0Z/cAMBo5NF/w=
-In-Reply-To: <20260511150648.685374-3-pbonzini@redhat.com>
+In-Reply-To: <CABgObfZ-UOjO4q3e9o5JGXXCO8VZ50vEZkjNMB44rdcCVxEHxg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-On 5/11/26 17:06, Paolo Bonzini wrote:
-> PDPTRs are part of the CPU state.  A bit unconventionally, they are
-> reached via vcpu->arch.walk_mmu instead of being stored in vcpu->arch
-> directly.  That is nice in principle---it would allow TDP shadow paging
-> to have its own PDPTRs---but it is not necessary, because EPT has no
-> PDPTRs and NPT does not cache them.
+On 5/12/26 16:32, Paolo Bonzini wrote:
+The trace shows that CET is not used at all unless MBEC is
+> present. In particular (after "trace-cmd record -e kvm ...") I can do:
 > 
-> Since kvm_pdptr_read does not otherwise need the MMU, drop the pdptrs
-> from the MMU altogether.  There is however a negative effect, in that
-> they are now not stored separately in root_mmu and nested_mmu for L1
-> and L2 guests.  This means that they are overwritten by nested VM entry
-> and exit, and need to be manually marked dirty.
+> $ trace-cmd report |grep  -e msr_write.*da0| sed 's/.*kvm_/kvm_/' | sort -u
 > 
-> Note that page table PDPTRs are not affected, since they are stored
-> in pae_root.
+> and it shows as expected this with +vmx-mbec,+cet-ss,+cet-ibt:
+> 
+> kvm_msr:              msr_write da0 = 0x800
+> 
+> but not with -vmx-mbec,+cet-ss,+cet-ibt.  This initialization is
+> performed by Hyper-V even before VMXON, and the breakage happens even
+> if Memory Integrity is disabled inside Windows.
+> 
+> Knowing that Hyper-V was not running any nested guest at the time of
+> the hang, I changed __vmcs_writel() to have
+> 
+>          if (field == SECONDARY_VM_EXEC_CONTROL) value &=
+> ~SECONDARY_EXEC_MODE_BASED_EPT_EXEC;
 
-The vmx/nested.c and svm/nested.c changes here are untested and 
-completely broken - I mentioned this in the cover letter but should have 
-done it here too in case anyone reviews this.  But there are some 
-cleanup opportunities now that I looked at it more closely.
+I have now reproduced the guest hang with a one line change on top of 
+kvm/master:
+
+diff --git a/arch/x86/kvm/vmx/nested.c b/arch/x86/kvm/vmx/nested.c
+index 937aeb474af7..43e0f20e4e26 100644
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -7231,6 +7231,7 @@ static void nested_vmx_setup_secondary_ctls(u32 
+ept_caps,
+         if (enable_ept) {
+                 /* nested EPT: emulate EPT also to L1 */
+                 msrs->secondary_ctls_high |=
++                       SECONDARY_EXEC_MODE_BASED_EPT_EXEC | /* hem hem */
+                         SECONDARY_EXEC_ENABLE_EPT;
+                 msrs->ept_caps =
+                         VMX_EPT_PAGE_WALK_4_BIT |
+
+(which would break very badly if Hyper-V were to start a nested guest, 
+but the trace says it doesn't).
+
+Can you check what behavior you get from this (actually silly) change? 
+It should allow you to exercise Hyper-V's CET paths without the burden 
+of the MMU changes.
 
 Paolo
 
