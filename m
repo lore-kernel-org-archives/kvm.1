@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD9792DE6E3;
-	Tue, 12 May 2026 17:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C39CD385D6E;
+	Tue, 12 May 2026 17:41:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778606954; cv=none; b=AbEm/TpnG2pVKNm34LRkpZrYDZX1O96s6QKEQ5dDq5dQczYseOqoj2LKal/c9iOGBtiiZ3rGPu/BSPcXIApB8PbO/4e0TYR3gvnChLekxpaDsAVhxIq7yEvA2uNq+rVhteb7DtX3IVp7I1ZkEB8Oqm2Yy480MBgQQAn7dKNYLWg=
+	t=1778607716; cv=none; b=ZHkndqTjo+0LHpISWls1La2TXp3/2Iu1AHhjDBNM631IZorfTOGpOhOOPoYEIz/LBqq7yDqAQqmxiVuLFMmtM4WdUD9/e30C1o+Gq0NFWfCgqhhN4/wfIp5/HWvPadh8tblB3rHkzJec7A4omm+32eG9KzuLy6ePs4o5+hxdVoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778606954; c=relaxed/simple;
-	bh=MSjMy5bmTzDizOb+S9K6KUopbtT/uS4r6RDPEY3RoL4=;
+	s=arc-20240116; t=1778607716; c=relaxed/simple;
+	bh=gjIHcTn2SNVbfTdFwDqfeJDol/cMiaN3wAL/qdYHzDA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=iRBJgr9xL2Tj7FfyNM+q2/yJqkGCMH2fu9fv3vcMd+GgawlntNlgyv7tS/2zXWvi3wIqGacKhU4guxeE3vKnIVgST+BXKCc/jCn+0u6+0so9Llb5OAAlWRyY3JsVG07hvXmrVVBNyJOaVInopE7i2ahtUgRoZbqtRC+Aw5t5hOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fCP36D6h; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=sgwhPmlrsZDB4pj+/aPmTg2MOgXeA1d2lX3WS7xFGAggfaki66g5MK+vWhHpAsjZA77cZPXg/ErmJMjeVbkQ8f7LJ2Ra/A59mYSv4f0+VI0mUlxBgJ9nXu7nwVSG6wqeI1nMincuHIJZsaJZm5b+LIavaJWiB2rYkTXacWlVqH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d9oJ3s7+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fCP36D6h"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D4FBC2BCB0;
-	Tue, 12 May 2026 17:29:06 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d9oJ3s7+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E8B2C2BCB0;
+	Tue, 12 May 2026 17:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778606953;
-	bh=MSjMy5bmTzDizOb+S9K6KUopbtT/uS4r6RDPEY3RoL4=;
+	s=k20201202; t=1778607716;
+	bh=gjIHcTn2SNVbfTdFwDqfeJDol/cMiaN3wAL/qdYHzDA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fCP36D6hGBoyDeRJn/Dc1qzoW9BtL6Ojle5dETY8KsAJvmYKrQYVDOd5WXHLNHV7C
-	 4Eod8bk+3W+Q70RCUd3tzETjDsNitvvnW+5Cg82IhFOYpCmDxj7Rr7ccrmK2IRNc+t
-	 5IaZS3UIEbEafkUCWfZptmDD3+FTDp2Nj/PCzybHGcZ3ebmTPI/Gs+09wqGexreFkL
-	 7H0ReV35a+jcmVhvUl+jFMkBHS22NO/4vKhC+HT2hILD4350RqMyY7DlzrSbZZcsWu
-	 O2wj3nQwjt3cD/hKEh5TONcnwywnwAtzzmadmQU44xkaxP3ex2wV94BnHwbjEm3iov
-	 CFAEFin2mdUeA==
-Date: Tue, 12 May 2026 20:29:02 +0300
+	b=d9oJ3s7+soX7DYUyP0ESJXspaTPr/B47iWffX9FN8OBabt/l9iSOyTpR9uJ9+XaNS
+	 IlnC7UL1NcTV73iIbeiayXFZP3AjjaJnWQWjduFuRpElSp6QJmlTtANDaATUIxQiB5
+	 xWl1vUW+5u820yiGZaCnwMNgiuTXNYg7Y77csk35pMuVxlBq4F3NBCu5jUT5PQeCYq
+	 0nxM2HF9q1cW5tjceh+u7lxbOzzlQ6JcSV8pTf6VJHKI7wFB9/5qmQ0Tw5uAvpDbE2
+	 cOraQLUE0qHVrlC/IM9838zgCjXQj00KtdwWOTmeSaXrIrq6CBfbGyXWua3l0J8Xno
+	 fCg7HUOF45JKg==
+Date: Tue, 12 May 2026 20:41:45 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org,
@@ -38,82 +38,58 @@ Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org,
 	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
 	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
 	kernel-team@meta.com
-Subject: Re: [PATCH v2 09/14] mm/userfaultfd: add RWP fault delivery and
- expose UFFDIO_REGISTER_MODE_RWP
-Message-ID: <agNjXmuEHSaWKrv9@kernel.org>
+Subject: Re: [PATCH v2 10/14] mm/pagemap: add PAGE_IS_ACCESSED for RWP
+ tracking
+Message-ID: <agNmWUl-_6HE2yPh@kernel.org>
 References: <cover.1778254670.git.kas@kernel.org>
- <454b3381cb7ead65291b2d7e24c0bff62e55c41b.1778254670.git.kas@kernel.org>
+ <c076bf8d482e80512b0b1db0e107ef0c822c5ddf.1778254670.git.kas@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <454b3381cb7ead65291b2d7e24c0bff62e55c41b.1778254670.git.kas@kernel.org>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <c076bf8d482e80512b0b1db0e107ef0c822c5ddf.1778254670.git.kas@kernel.org>
 
-On Fri, May 08, 2026 at 04:55:21PM +0100, Kiryl Shutsemau (Meta) wrote:
-> Wire the fault side of read-write protection tracking and turn the
-> userspace interface on.
+On Fri, May 08, 2026 at 04:55:22PM +0100, Kiryl Shutsemau (Meta) wrote:
+> PAGEMAP_SCAN already reports PAGE_IS_WRITTEN from the inverted uffd
+> PTE bit, targeting the UFFDIO_WRITEPROTECT workflow. UFFDIO_RWPROTECT
+> reuses the same PTE bit as a marker for read-write protection, but
+> "has been written" and "has been accessed" are distinct semantic
+> signals — they happen to share one PTE bit today only because the two
+> implementations share infrastructure.
 > 
-> An RWP-protected PTE is PAGE_NONE with the uffd bit set. The
-> PROT_NONE triggers a fault on any access; the uffd bit distinguishes
-> it from plain mprotect(PROT_NONE) or NUMA hinting.
+> Give RWP its own pagemap category so the UAPI does not conflate them:
 > 
-> Fault dispatch, per level:
+>   PAGE_IS_WRITTEN   reported on VM_UFFD_WP VMAs,  !pte_uffd(pte)
+>   PAGE_IS_ACCESSED  reported on VM_UFFD_RWP VMAs, !pte_uffd(pte)
 > 
->   PTE     handle_pte_fault()    -> do_uffd_rwp()
->   PMD     __handle_mm_fault()   -> do_huge_pmd_uffd_rwp()
->   hugetlb hugetlb_fault()       -> hugetlb_handle_userfault()
+> Both still read the same PTE bit today, but each is scoped to the VMA
+> whose registered mode makes the bit meaningful. If a future
+> implementation moves RWP to a separate PTE bit, only PAGE_IS_ACCESSED
+> switches over.
 > 
-> The RWP branches gate on userfaultfd_pte_rwp() / userfaultfd_huge_pmd_rwp()
-> (VM_UFFD_RWP plus the uffd bit) and fall through to do_numa_page() /
-> do_huge_pmd_numa_page() otherwise. Each delivers a
-> UFFD_PAGEFAULT_FLAG_RWP message through handle_userfault(); the handler
-> resolves it with UFFDIO_RWPROTECT clearing MODE_RWP.
+> This is a UAPI narrowing. Outside VM_UFFD_WP VMAs the uffd bit is
+> always clear, so PAGEMAP_SCAN used to flag PAGE_IS_WRITTEN on every
+> present PTE there — a meaningless duplicate of PAGE_IS_PRESENT. Now
+> PAGE_IS_WRITTEN fires only inside VM_UFFD_WP VMAs.
 > 
-> userfaultfd_must_wait() and userfaultfd_huge_must_wait() add matching
-> protnone+uffd waiters so sync-mode fault handlers block correctly.
-> 
-> Expose the UAPI:
-> 
->   UFFDIO_REGISTER_MODE_RWP   -> UFFD_API_REGISTER_MODES
->   UFFD_FEATURE_RWP           -> UFFD_API_FEATURES
->   _UFFDIO_RWPROTECT          -> UFFD_API_RANGE_IOCTLS
->                                 UFFD_API_RANGE_IOCTLS_BASIC
-> 
-> UFFD_FEATURE_RWP is masked out at UFFDIO_API time when PROT_NONE is
-> not available or VM_UFFD_RWP aliases VM_NONE (32-bit), so userspace
-> never sees an advertised-but-broken feature.
-> 
-> Works on anonymous, shmem, and hugetlb memory.
+> pagemap_hugetlb_category() now takes the vma like its PTE/PMD peers.
 > 
 > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 > Assisted-by: Claude:claude-opus-4-6
 
-A small nit below, other than that
+Acked-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-
-> @@ -347,6 +359,14 @@ static inline bool userfaultfd_must_wait(struct userfaultfd_ctx *ctx,
->  	 */
->  	if (!pte_write(ptent) && (reason & VM_UFFD_WP))
->  		goto out;
-> +	/*
-> +	 * PTE is still RW-protected (protnone with uffd bit), wait for
-> +	 * userspace to resolve. Plain PROT_NONE without the marker is not
-> +	 * an RWP fault.
-> +	 */
-> +	if (pte_protnone(ptent) && pte_uffd(ptent) &&
-> +	    (reason & VM_UFFD_RWP))
-
-Nit: this fits even in 80-chars line
-
-> +		goto out;
->  
->  	ret = false;
->  out:
+> ---
+>  Documentation/admin-guide/mm/pagemap.rst | 13 ++++-
+>  fs/proc/task_mmu.c                       | 73 ++++++++++++++++++------
+>  include/uapi/linux/fs.h                  |  1 +
+>  tools/include/uapi/linux/fs.h            |  1 +
+>  4 files changed, 67 insertions(+), 21 deletions(-)
 
 -- 
 Sincerely yours,
