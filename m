@@ -1,147 +1,243 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBE2B3C09F0
-	for <kvm@vger.kernel.org>; Tue, 12 May 2026 21:10:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778620236; cv=none; b=MdmpUf+/bvT79pwRXQGM2pXkQY69N7t+N1axf2zNTpfeb9zYZodF1jsSg5ao4zDJGiEQ+9FD54bW7gWti/aK4JlBWpmApch74L2YOmKME58n+dhxOjqPA8hWXETWssWY8Ki2OHCmxBOle69lHUTJBPSOObQxjoiHo2DnvO4WRXg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778620236; c=relaxed/simple;
-	bh=uBHMCskfBSaYnyaqioWhzZvzpVDQIOeEvV9K2NZ5eoQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=loM5/poz/rRg+YGRKaVxrr/pVYhweNXMK8YYMX4BNKcQLKC8xH62SaDla6BA206bqpMC+jYMZ7uPhqTa8iNcc23fIp5bfxcwe53iJqZBuWomnQVpqylo4WVQBlM91/pm26m8GM//wlxBQBimGD/wFEEVyk57Q+p/tSYak+jgrhM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Jx9V9F+u; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF37730C62E
+	for <kvm@vger.kernel.org>; Tue, 12 May 2026 21:15:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778620528; cv=pass; b=mtpcmnQq0kBH6e37UjPOcU9fj8UWt05iaA/foMBS63epq1hAuGigqTvTUpg3zPAxrvgcBNUhm7o4aZEeG9L0vh6KpkVc8M7HgOi3ueS075iAiiqjNk3TTUSLeuFH/QXsgw1IHNHUYMeEh9T+eysZorqN2XukMUSzZeSNLBzSbOk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778620528; c=relaxed/simple;
+	bh=+JKCMld8UNzRIbAQbh8pc2a5fr0ofGgHNla20BPsQjU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ERGChzGjZdubLjMROlCJPZdpfvzuDw3kNhLBROath9F+a5S+DWxuGi4+2j/VuDclLsy4c62EP5KdmrxOTAb5BjoNbyDIoVI8Y68Zuxl3rwwA4KGHogwHXJNxFzOBa0t2xVR33Lr3+9UwUQMEdEZB2I9qdPKdbI1tr0Keto6zIe4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c8wwO90K; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=ToRK85/J; arc=pass smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Jx9V9F+u"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c8wwO90K";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="ToRK85/J"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778620234;
+	s=mimecast20190719; t=1778620525;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=U3+iT7cntS6UopIIR+ZaGFcviAq70fCD9O0+QvEgzZQ=;
-	b=Jx9V9F+uUb+p1nIxRk/ugNFVFOl28QxIPe3bNGgukFtTUbajgglVDOYLosKIZDhvQhzn9o
-	kFm5fs7PAr31034igCFLsIe7KU8Qvbkb8LlmsVOF51WtnHfLG6oj40pYzg1TCjQGkhuFyE
-	stwbe3JNTATsei1rvubrfMuVvw32+Yg=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-669-FrgLGK-CMVSXh1sRy7yfWA-1; Tue,
- 12 May 2026 17:10:32 -0400
-X-MC-Unique: FrgLGK-CMVSXh1sRy7yfWA-1
-X-Mimecast-MFC-AGG-ID: FrgLGK-CMVSXh1sRy7yfWA_1778620230
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 27FA318002CB;
-	Tue, 12 May 2026 21:10:30 +0000 (UTC)
-Received: from [10.44.48.5] (unknown [10.44.48.5])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 816A719560A7;
-	Tue, 12 May 2026 21:10:23 +0000 (UTC)
-Message-ID: <9b76002a-dbd4-4f8f-8279-96ea0ff3966a@redhat.com>
-Date: Tue, 12 May 2026 23:10:20 +0200
+	 in-reply-to:in-reply-to:references:references;
+	bh=BCaf028xC5s+DMoM0w5jJSQ23tua+iloa6oIupqhPqU=;
+	b=c8wwO90Klp+kfNojUel0TeCa5A4QeA3RfGTOITEfnEjeS8cmmb+HzYNugTl2GPC3Nqx9ib
+	U63RyV5qaZkfNBHCpCQ1A9ubFGkTT9duOw4KD7PAEtF1dvSJZqgFCzECfRdqB+2tsuAKJx
+	JpN2dPkkSA43PsLd6zoI4KmnzbVPpdI=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-642-hEgEfiPXMKGvOLcnsfkq-w-1; Tue, 12 May 2026 17:15:19 -0400
+X-MC-Unique: hEgEfiPXMKGvOLcnsfkq-w-1
+X-Mimecast-MFC-AGG-ID: hEgEfiPXMKGvOLcnsfkq-w_1778620517
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-48e60b55de2so53031575e9.3
+        for <kvm@vger.kernel.org>; Tue, 12 May 2026 14:15:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778620517; cv=none;
+        d=google.com; s=arc-20240605;
+        b=aNyG007C3M2W8nm+OKE5sjn6AkZ40rt5SIa09rIpUCwJTncgHi+S2PC81M50CJh8NG
+         F0j8VbCZiJ4T5OyZn5atzTArJj8Z3XJtuLCvpb7t1t01U+xqtoJPo4l6Hd/WDcVUpMES
+         DoYnqZ3SR+B3pm8x9n5tF33OvGf5KhRl3CYmv98iix4FrfdaG+maWp6SXOxDmJ7/eIl/
+         0dEZ60sZAQeCbaLCYyN29O7DwHeGd8jrmqya5lbHeqzK5o/e5BROM9aC0o9HTrZiGliz
+         XnZeLf50kImNbU1g3E+MnsgacY4cXy61kX5cjlwYGQcnaAbBLY2Vw1WcdT/cjwD0u3ZU
+         4VEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=BCaf028xC5s+DMoM0w5jJSQ23tua+iloa6oIupqhPqU=;
+        fh=Ru6qho+9O2eTpcKikZkQYb1LNzy6hG0NPOMifQ4yMKA=;
+        b=berYfoNCpUQIQT5cJ8aotwqUi5brLUwZyYdossQ8GOilTRf06W/AHmlJ+rAxVuVWKK
+         0Ig3kCl65mNBtNr6DH0pKLMdx0f+7vnG09dgoT3fQp3fVB+dF6ShzPILucbim1RLa7bR
+         NYilrxU2LAPHcCKFw6Q3Ysta2Mx5QjLwxkXMgY+tJs1PReF2yMluh/xpEByIWaNimWt8
+         e27WXmQtfcYCWnfibrKNxC1CBKIjPVMRxHuEBQp9emtBCdPecvrS/w8UQhwuZv2CzqHK
+         OxXRzaXXVbukubVas7BJAvtdTVQ98rT5bP1rjSQn4b1HePwycFj830Jebv8sXUXHH53/
+         pjuw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1778620517; x=1779225317; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BCaf028xC5s+DMoM0w5jJSQ23tua+iloa6oIupqhPqU=;
+        b=ToRK85/JK/fYOmFKMM3j226a+s4FKJzcpgbcvOj+jCVI1j/wM90M719yy3KKRI9QQq
+         kVfKmkfCjRuHzrUd/fdK/l9sySc+4wDpntJyIJHosVpKnODqNUIwXJhy7LcXhy8ngU9C
+         J8j74Y/l96MZahnZgld9Cw88cN05Dct9J/cS3K0eJNn7ntXqx7UX2oKEIk/1ev3sLokj
+         jHHjENxxMGcVmzFn9Lbh87X+Yt7ZTqDIlBaTs0Atu6pK5mpvhUYF+qv8JrNOGCja8hs3
+         76p5dM8r/VTlKfeD14TUAHyxx6ksQ+Rj8ejC7ujalNGdljX+0GraVuGoG50vzwXq+vu+
+         S85w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778620517; x=1779225317;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=BCaf028xC5s+DMoM0w5jJSQ23tua+iloa6oIupqhPqU=;
+        b=m1R6GKjk8HvGkClBu9slqj5XK54yEPalHk7mlltoc0wdeVvN13bKfO2ojl/Gz98IUh
+         hbL0Hh3lQvBIjSiALyJvaaMQ0zLXZKcVkgIe1jGMlLUvnKkeyVht6mHXlXsG4uVdhwwV
+         nYl8QWWrwsUIMdS+401CjfVqT+W94sBC/aCcpZB9ukp8s9Z47k8Q0qh8wkogt6lDqq5D
+         am0iCpGNM5TWzVA9SV/fpNAhaPAxQfFyWtzb9yvvczWgsgslXZ+esZ5AaNhpyrSuahXm
+         ztL22Pn3FKacva4mYJBwk3/HJrgcD3EQncEy17TXK1ZlqKUT3kG8WLswpfCnvim4Tk2c
+         NsxA==
+X-Forwarded-Encrypted: i=1; AFNElJ+0KIJYarcTMtdv/M/GUcciVeKTc9bzU1emmjyDAJtdzkAEoRWCdIABEmPELtSj/K7QJeU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwwPUlig6AWlAbjAMgGno/wjyFe1dQSaWZlygb3g5kTcSqj2jtn
+	Kh2sJYSkusG6r5GmU+vSxPcByooHWE5a4nWiVawSezn/2KokKJD18EvTFKZ2f1TJVcUJ9httZns
+	ZLzQ2uh3D02ccnssJZOjmNhEQnTQ71t8UMEMHEbGtTtTAzzAkB6BcYB/6neR7uet9ZPlIr4hjAu
+	S2h0J7xerkgejVeVv3DDBtoIOjP83n
+X-Gm-Gg: Acq92OHHsyfoDoC1/zCLzAWvN87tcDFeBnlABxalXHUG6tmJ/lsBKCx8ZqALCwWvGps
+	Hdl4gItiRXS4VLpcmrolTyGpKNNWE3pIS9B5kap5tS+LbUC3gANKx8j3jNAedSSVessoApWKEP4
+	ywnk4YXaUlHvhB2+hRXePUEErtdCTkZKaQodlM3t69snApF5Lpu7OU38w18gNWKE7aejdth14k5
+	YYPoFqExZkpusR1aSGEoAxpcmgxEXhQ/UruKVFnzsx9DFyF8T1THhb75zBZy6FG1ArpJ5741rHn
+	chwaw85E
+X-Received: by 2002:a05:600c:19c9:b0:489:1a63:509c with SMTP id 5b1f17b1804b1-48fc999e736mr7208105e9.0.1778620517219;
+        Tue, 12 May 2026 14:15:17 -0700 (PDT)
+X-Received: by 2002:a05:600c:19c9:b0:489:1a63:509c with SMTP id
+ 5b1f17b1804b1-48fc999e736mr7207685e9.0.1778620516761; Tue, 12 May 2026
+ 14:15:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: SVM: Always intercept ICEBP, add INT1 selftests
-To: David Woodhouse <dwmw2@infradead.org>,
- Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>,
- kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org
-Cc: Andrew Cooper <andrew.cooper3@citrix.com>,
- "Saenz Julienne, Nicolas" <nsaenz@amazon.es>,
- Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
-References: <e03f092dfbb7d391a6bf2797ba01e122ba080bcd.camel@infradead.org>
-Content-Language: en-US
+References: <20260507154221.2905554-1-maz@kernel.org>
+In-Reply-To: <20260507154221.2905554-1-maz@kernel.org>
 From: Paolo Bonzini <pbonzini@redhat.com>
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <e03f092dfbb7d391a6bf2797ba01e122ba080bcd.camel@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Date: Tue, 12 May 2026 23:15:04 +0200
+X-Gm-Features: AVHnY4KtwnsJxjKodfXT2l49vyk4PWU8NRQcHeq925qaoxrCk6J9wCnG0t9SADY
+Message-ID: <CABgObfY+qCh3_j+ykf_5aU_FwWAKjnauby_AjXndkTAROKpFeQ@mail.gmail.com>
+Subject: Re: [GIT PULL] KVM/arm64 fixes for 7.1, take #2
+To: Marc Zyngier <maz@kernel.org>
+Cc: Alexandru Elisei <alexandru.elisei@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Fuad Tabba <tabba@google.com>, James Morse <james.morse@arm.com>, 
+	Lorenzo Pieralisi <lpieralisi@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Mostafa Saleh <smostafa@google.com>, Oliver Upton <oupton@kernel.org>, 
+	Sebastian Ott <sebott@redhat.com>, Steffen Eiden <seiden@linux.ibm.com>, 
+	Sudeep Holla <sudeep.holla@kernel.org>, Vincent Donnefort <vdonnefort@google.com>, 
+	Wei-Lin Chang <weilin.chang@arm.com>, Will Deacon <will@kernel.org>, 
+	Yuan Yao <yaoyuan@linux.alibaba.com>, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, kvmarm@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 5/7/26 13:22, David Woodhouse wrote:
-> From: David Woodhouse <dwmw@amazon.co.uk>
-> 
-> ICEBP (INT1, opcode 0xF1) generates a #DB that is architecturally a
-> trap, but on SVM it was not always intercepted. Unconditionally
-> intercept ICEBP on SVM to match VMX behaviour and ensure correct
-> event delivery semantics.
-> 
-> Add two selftests exercising ICEBP:
-> 
->   - int1_ept_test: verifies that ICEBP works correctly when the
->     exception stack page is not present (EPT/NPT fault during #DB
->     delivery). The IST stack is evicted via MADV_DONTNEED before
->     executing INT1.
-> 
->   - int1_task_gate_test: verifies ICEBP delivery through a 32-bit
->     task gate, exercising the legacy task-switch path for #DB.
-> 
-> Tested on Intel Sapphire Rapids and AMD Genoa. Without the SVM fix,
-> int1_task_gate_test fails on AMD with EIP pointing at ICEBP instead
-> of after it. With the fix, both tests pass on both platforms.
-> 
-> Signed-off-by: David Woodhouse <dwmw@amazon.co.uk>
-> ---
->   arch/x86/kvm/svm/svm.c                        |  21 ++
->   tools/testing/selftests/kvm/Makefile.kvm      |   2 +
->   .../testing/selftests/kvm/x86/int1_ept_test.c | 116 +++++++
->   .../selftests/kvm/x86/int1_task_gate_test.c   | 298 ++++++++++++++++++
+On Thu, May 7, 2026 at 5:42=E2=80=AFPM Marc Zyngier <maz@kernel.org> wrote:
+>
+> Paolo,
+>
+> Here's the second set of KVM/arm64 fixes for 7.1. Nothing too horrible
+> this time, aside from an ARM erratum workaround that has little impact
+> on KVM, but relies on some firmware dealing with the problem. Bleh.
+>
+> The rest is a small collection of bug fixes, mostly affecting the MMU
+> (permission fault handling with guest_memfd, 52bit VA with NV), and a
+> small set of AI-enhanced fixes from Fuad. I guess I'll have to get
+> used to that.
+>
+> And last but not least, Steffen joins the merry band of KVM/arm64
+> reviewers in preparation of s390 and arm64 being joined at the hip...
+>
+> Please pull,
 
-y u no like kvm-unit-tests?  For the task gate test it's much simpler, 
-as all the infrastructure for 32-bit IDT and GDT is already there, and 
-there is no real KVM corner case being tested.
-
-See 
-https://lore.kernel.org/r/20260512210847.3039048-1-pbonzini@redhat.com/ 
-for a conversion, which is about 1/6th of the size of int1_task_gate_test.c.
+Done, thanks.
 
 Paolo
 
+>
+>         M.
+>
+> The following changes since commit 7fd2df204f342fc17d1a0bfcd474b24232fb0f=
+32:
+>
+>   Linux 7.1-rc2 (2026-05-03 14:21:25 -0700)
+>
+> are available in the Git repository at:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm.git kvmarm-=
+fixes-7.1-2
+>
+> for you to fetch changes up to effc0a39b8e0f30670fe24f51e44329d4324e566:
+>
+>   KVM: arm64: Pre-check vcpu memcache for host->guest donate (2026-05-07 =
+14:12:42 +0100)
+>
+> ----------------------------------------------------------------
+> KVM/arm64 fixes for 7.1, take #2
+>
+> - Add the pKVM side of the workaround for ARM's erratum 4193714, provided
+>   that the EL3 firmware does its part of the job. KVM will refuse to
+>   initialise otherwise.
+>
+> - Correctly handle 52bit VAs for guest EL2 stage-1 translations when
+>   running under NV with E2H=3D=3D0.
+>
+> - Correctly deal with permission faults in guest_memfd memslots.
+>
+> - Fix the steal-time selftest after the infrastructure was reworked.
+>
+> - Make sure the host cannot pass a non-sensical clock update to the
+>   EL2 tracing infrastructure.
+>
+> - Appoint Steffen Eiden as a reviewer in anticipation of the KVM/s390
+>   ability to run arm64 guests, which will inevitably lead to arm64
+>   code being directly used on s390.
+>
+> - Make sure that EL2 is configured with both exception entry and exit
+>   being Context Synchronization Events.
+>
+> - Handle the current vcpu being NULL on EL2 panic.
+>
+> - Fix the selftest_vcpu memcache being empty at the point of donation or
+>   sharing.
+>
+> - Check that the memcache has enough capacity before engaging on the
+>   share/donate path.
+>
+> - Fix __deactivate_fgt() to use its parameter rather than a variable
+>   in the macro context.
+>
+> ----------------------------------------------------------------
+> Alexandru Elisei (1):
+>       KVM: arm64: Handle permission faults with guest_memfd
+>
+> Fuad Tabba (6):
+>       KVM: arm64: Make EL2 exception entry and exit context-synchronizati=
+on events
+>       KVM: arm64: Guard against NULL vcpu on VHE hyp panic path
+>       KVM: arm64: Fix __deactivate_fgt macro parameter typo
+>       KVM: arm64: Seed pkvm_ownership_selftest vcpu memcache
+>       KVM: arm64: Pre-check vcpu memcache for host->guest share
+>       KVM: arm64: Pre-check vcpu memcache for host->guest donate
+>
+> James Morse (1):
+>       KVM: arm64: Work around C1-Pro erratum 4193714 for protected guests
+>
+> Mostafa Saleh (1):
+>       KVM: arm64: Remove potential UB on nvhe tracing clock update
+>
+> Sebastian Ott (1):
+>       KVM: selftests: arm64: Fix steal_time test after UAPI refactoring
+>
+> Steffen Eiden (1):
+>       MAINTAINERS: Add Steffen as reviewer for KVM/arm64
+>
+> Wei-Lin Chang (1):
+>       KVM: arm64: nv: Consider the DS bit when translating TCR_EL2
+>
+>  MAINTAINERS                              |  1 +
+>  arch/arm64/include/asm/kvm_nested.h      |  1 +
+>  arch/arm64/include/asm/sysreg.h          |  2 +-
+>  arch/arm64/kvm/arm.c                     | 21 ++++++++++++++
+>  arch/arm64/kvm/hyp/include/hyp/switch.h  |  2 +-
+>  arch/arm64/kvm/hyp/nvhe/clock.c          |  3 ++
+>  arch/arm64/kvm/hyp/nvhe/mem_protect.c    | 47 ++++++++++++++++++++++++++=
++++++-
+>  arch/arm64/kvm/hyp/nvhe/pkvm.c           | 16 ++++++++++-
+>  arch/arm64/kvm/hyp/vhe/switch.c          |  3 +-
+>  arch/arm64/kvm/mmu.c                     | 29 ++++++++++++++------
+>  include/linux/arm-smccc.h                |  6 ++++
+>  tools/testing/selftests/kvm/steal_time.c |  2 ++
+>  12 files changed, 120 insertions(+), 13 deletions(-)
+>
 
