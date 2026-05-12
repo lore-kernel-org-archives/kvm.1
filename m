@@ -1,139 +1,180 @@
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B588236F90D
-	for <kvm@vger.kernel.org>; Tue, 12 May 2026 21:29:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A22738228C;
+	Tue, 12 May 2026 21:33:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778621367; cv=none; b=cKAWf19QgRq5YBvVv79f6ja3xWowvHuuq6ieasDTdCV5wcI72RjK9RHdmJCVl4AibE+A51ZEXpqZD6gcfGQSUpy1JLHmd3P141Idb54c271mrxbc2Q9DOo9U6zfyuLJInaX17Hjzc0TrTm/SBcfWXxepqYn4Uh8PL3ekBtx+4Mk=
+	t=1778621622; cv=none; b=mBULYJS5A7DEx1OPaUwWzN+kyetqTvWKvQCXuPg+YEEanwaCGGAT+u9rOxz+IPYQjdUfyDPS10LMl+P9ixHXNBy3ryce4Sdi+m/xatoFK1Ke3f5glEVeKU2be2l2En+0hwm6gjGJYqjnVsjtO/m7Yz3Oljve0ycl8xCvvmoV5co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778621367; c=relaxed/simple;
-	bh=PVEZ6lDsqfrkheYFwj2coqzGfYHxktZ0uXkER3yjEWc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=RG50KcMaMw3mwJ09xFdCFH72Q++3jiGRn9/qm3cIq11dwCXTDX+yA+2Wl3jkMdtza4gsgRkp0jF/WgOl7RQS8SI2rAUUJFiSKfxAaz5AtDPnuXcRFUOXUm/2bv0mgvcn+aLgwnV9YLCVYM88ZWrAcGyp/wuRpW3hKtIqFbL31vg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O2TqEeYx; arc=none smtp.client-ip=74.125.82.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1778621622; c=relaxed/simple;
+	bh=Ea2OMLh2G8O2+ZHyDi3qhug0bi+n3sc2g2ey2HR4lJA=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=km84FlToZFcZ5bVfr2yeVZQ2okwd1qKlUHxEn/fXcVDYE1fJ4Y/tk3t5HdDnu/hDj4vAxTm7w1bHRRaVdyfIrmrzRzPqqVGL0NLahwhhDMsbFMafuPQmG5PdGhA5FaivQEMSwQnoWPhM06K55aoQvK9sLHX5RM/yZAqtrfXl78s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=p06oBDvW; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O2TqEeYx"
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-1336742714fso103c88.1
-        for <kvm@vger.kernel.org>; Tue, 12 May 2026 14:29:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778621366; x=1779226166; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=9as17r1aSDL1/IjkeK3rxFdLzhg/o+IZ2HDHZMfPp0s=;
-        b=O2TqEeYxQ++uEzCuAjSrp9S4rZXfnp3qCMLVHPDxioCo48GoTxdEgkrstQufcqRGl2
-         5ugnERzU6ErV4dQjNB2XQbZVFCBoI62CIUqgsheQA3GuF8LNEuQIQHObJ48N1rW5bxBn
-         p1VUyj9oN/kW8j7kutMQ2q/PtDM1bSRSErzS5XBXPs/J3JALkHzf7dFwE59NTSfuZQZ8
-         BvDqmSJMaPdZ7+EqH+kSF0Q/I5Yuuc3X8tw4JhqU9w5umF1bPiJC8sq+Yxs10c8zEm/j
-         2HzL7yJ/A4DOrx2RS3k1dt1nwUg6KaO9RE10N46u7bVIHJmPnql+qBD8hqmRPrOBP8ZW
-         WHOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778621366; x=1779226166;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9as17r1aSDL1/IjkeK3rxFdLzhg/o+IZ2HDHZMfPp0s=;
-        b=VVA8kvyWXMKdLmnobkACn8yXjtRb8vYkI33k78xxdsFxSDE96KBiyyny5KkyFLBUVe
-         yp1UGuJpek14frNxOQADEqgTnR4BkacAuOPyuRWm4mSpwYrXWxqpKt2/V4zvPq39SODI
-         i7VM4tGzQyWo1Abqcvhof6WPL3OdMhwvnTugj5sAzDxMe0mwiluGwnkitepHmdI0Nra6
-         DhDOpywDETzQkC2Fz0J9W0UuyXOuckDPyCSj0It69mxFTziq/PWPuLoFTVxCpEbmzMHe
-         nZJQ+KBXxiOyiVUVXnjbl7hFndd+pco1Rp5pWESZHYQLixmOXzXbRf729eaQ9rBCg4/D
-         p/DA==
-X-Gm-Message-State: AOJu0Yw860Nt/CRlxVuqrE3IIcPzArnOeQtt4D63Xn9DsCMmZf3AmXC8
-	HjjSLB1+gPc9//Bi1UctZxYxe4ntM91TvQyCr+TmcWv1/sZpxibcV3bM54FkHkkuwg==
-X-Gm-Gg: Acq92OEeIdZdZvcYlVM319UE2hQ83mrJUN/iWdfHrHDDdIMvnzy49/lgwu1fOPB7xv+
-	CGYZCJq0HOr+n1q9lWx8EyRqEP+n7fIsYhFo0cGeGdSFPmxzq58sH4iGZYlC+086PlavV8gjtPo
-	fc8SKwZybQKyNRxJ2N+CWmKT+S5ghdH0MgSxYafHbN/X3lDt9e35Otrs76H8nojBWfzlJ2oQj53
-	qX2FvmFWwbha2uPw9zgfeEiQgEnN1HvlPZrcXFAyI4ER9ISUdQvEWjr2BNU5IrU9n1A8haiYQd4
-	ZGNmiDcC41OpJRodfqR8tQPBDpD2e8JcD2d7pe1lRJTQ9bn4/EylYIyNHH+IIWE8m6dpquk2RMF
-	DcBvRKCn+kzA4YGxN9a2s7s0mrzGrSvYCMFBsijHEAGT7CimeV/ZccxGFB9BUXZGKaA2twIknX0
-	4iVpJumOpSjj5jhvU9ofmHCC8P4+hJYT7Lteme/XuJdFyI5XWxTb+ha7GbLSlESAP6FWbg/MJE
-X-Received: by 2002:a05:7022:699a:b0:132:1e01:2d6d with SMTP id a92af1059eb24-13401ba684emr108868c88.2.1778621364956;
-        Tue, 12 May 2026 14:29:24 -0700 (PDT)
-Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1327821fc59sm23087120c88.7.2026.05.12.14.29.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 14:29:24 -0700 (PDT)
-Date: Tue, 12 May 2026 14:29:19 -0700
-From: Vipin Sharma <vipinsh@google.com>
-To: David Matlack <dmatlack@google.com>
-Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org, 
-	ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com, ankita@nvidia.com, 
-	apopple@nvidia.com, chrisl@kernel.org, corbet@lwn.net, graf@amazon.com, 
-	jacob.pan@linux.microsoft.com, jgg@nvidia.com, jgg@ziepe.ca, jrhilke@google.com, 
-	julianr@linux.ibm.com, kevin.tian@intel.com, leon@kernel.org, leonro@nvidia.com, 
-	lukas@wunner.de, michal.winiarski@intel.com, parav@nvidia.com, 
-	pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org, rananta@google.com, 
-	rientjes@google.com, rodrigo.vivi@intel.com, rppt@kernel.org, saeedm@nvidia.com, 
-	skhan@linuxfoundation.org, skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com, 
-	yanjun.zhu@linux.dev, yi.l.liu@intel.com
-Subject: Re: [PATCH v4 02/16] vfio/pci: Preserve vfio-pci device files across
- Live Update
-Message-ID: <20260512211412.GA2819150.vipinsh@google.com>
-References: <20260511234802.2280368-1-vipinsh@google.com>
- <20260511234802.2280368-3-vipinsh@google.com>
- <CALzav=fR8c2tYj9jeOc_K=xoupxAfWMHmk0ipDniSXg6uGiFYA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="p06oBDvW"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Ea2OMLh2G8O2+ZHyDi3qhug0bi+n3sc2g2ey2HR4lJA=; b=p06oBDvWKkg6pR91AI6uC0Tajg
+	+i2gxVHy8t23er8St9m6k0W9oUsJss26pfawHUauQ5t4A6xi9nwyogm1SFugO/Dvh7qK4mKAq7Xto
+	lyq6gsAiw+W6u0w60KktGQALbZ8mkCsWuvj+OxMiA0gtu3rfYCBmF5Tyl5ccLSa/y8q3ZlJFc+tB7
+	TAAQKckwmUb3gKoOKvH6pVmDUSB4JV1wMuFYeONvWRJVJyYHK//WHqpXrxqrQuUdgdtYOwK8GDB7N
+	H43JgrRA94GadIWNcpO6cEHCTYvt+dtOQaSmfkJYSG0upDzLTjzOfcE5gvMupbl4P7aCeh4GDeMeF
+	gKqqfoYw==;
+Received: from 54-240-197-228.amazon.com ([54.240.197.228] helo=edge-cache-147.e-maa3.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wMuj6-0000000ASvg-0bfJ;
+	Tue, 12 May 2026 21:33:18 +0000
+Message-ID: <200cdc7d05df9ce1b99e5806c48ad3b022efba96.camel@infradead.org>
+Subject: Re: [PATCH] KVM: SVM: Always intercept ICEBP, add INT1 selftests
+From: David Woodhouse <dwmw2@infradead.org>
+To: Paolo Bonzini <pbonzini@redhat.com>, Sean Christopherson
+ <seanjc@google.com>,  Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,  Dave Hansen
+ <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org,  linux-kselftest@vger.kernel.org
+Cc: Andrew Cooper <andrew.cooper3@citrix.com>, "Saenz Julienne, Nicolas"
+ <nsaenz@amazon.es>, Maciej Wieczor-Retman <maciej.wieczor-retman@intel.com>
+Date: Tue, 12 May 2026 22:33:15 +0100
+In-Reply-To: <9b76002a-dbd4-4f8f-8279-96ea0ff3966a@redhat.com>
+References: <e03f092dfbb7d391a6bf2797ba01e122ba080bcd.camel@infradead.org>
+	 <9b76002a-dbd4-4f8f-8279-96ea0ff3966a@redhat.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-pGkEDEXs8kw5m9bxGdHs"
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CALzav=fR8c2tYj9jeOc_K=xoupxAfWMHmk0ipDniSXg6uGiFYA@mail.gmail.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On Tue, May 12, 2026 at 01:59:51PM -0700, David Matlack wrote:
-> On Mon, May 11, 2026 at 4:48 PM Vipin Sharma <vipinsh@google.com> wrote:
-> 
-> > diff --git a/drivers/vfio/pci/Kconfig b/drivers/vfio/pci/Kconfig
-> > index c12d614fc6c4..019de053f116 100644
-> > --- a/drivers/vfio/pci/Kconfig
-> > +++ b/drivers/vfio/pci/Kconfig
-> > @@ -45,13 +45,15 @@ config VFIO_PCI_IGD
-> >
-> >  config VFIO_PCI_LIVEUPDATE
-> >         bool "VFIO PCI support for Live Update (EXPERIMENTAL)"
-> > -       depends on PCI_LIVEUPDATE
-> > +       depends on PCI_LIVEUPDATE && VFIO_DEVICE_CDEV
-> >         help
-> >           Support for preserving devices bound to vfio-pci across a Live
-> >           Update. This option should only be enabled by developers working on
-> >           implementing this support. Once enough support has landed in the
-> >           kernel, this option will no longer be marked EXPERIMENTAL.
-> >
-> > +         Enabling this will disable support for VFIO PCI DMA buffer.
-> > +
-> >           If you don't know what to do here, say N.
-> >
-> >  endif
-> > @@ -68,7 +70,7 @@ config VFIO_PCI_ZDEV_KVM
-> >           To enable s390x KVM vfio-pci extensions, say Y.
-> >
-> >  config VFIO_PCI_DMABUF
-> > -       def_bool y if VFIO_PCI_CORE && PCI_P2PDMA && DMA_SHARED_BUFFER
-> > +       def_bool y if VFIO_PCI_CORE && PCI_P2PDMA && DMA_SHARED_BUFFER && !VFIO_PCI_LIVEUPDATE
-> 
-> Why does enabling VFIO_PCI_LIVEUPDATE require disabling
-> VFIO_PCI_DMABUF? I saw the cover letter says "to keep things simple",
-> but what specific problem does this solve or simplify?
 
-I should have provided more details there.
+--=-pGkEDEXs8kw5m9bxGdHs
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When device is getting reset in vfio_pci_liveupdate_freeze(), we are
-zapping userspace mapped bars, we also need to use
-vfio_pci_dma_buf_move() to revoke dma buffer access or
-vfio_pci_dma_buf_cleanup() combination. Cleanup takes the memory lock
-which freeze already takes, and there are some refcounts which are
-managed in both of these APIs. This was causing complexities with code
-flow based on result of pci_load_saved_state(). All this was adding more
-refactoring than I wanted in the series.
+On Tue, 2026-05-12 at 23:10 +0200, Paolo Bonzini wrote:
+>=20
+> y u no like kvm-unit-tests?=C2=A0 For the task gate test it's much simple=
+r,=20
+> as all the infrastructure for 32-bit IDT and GDT is already there, and=
+=20
+> there is no real KVM corner case being tested.
 
-I decided to just drop the change and disable the support of DMA Buffer for
-now to keep number of patches less in the series. This will go away once
-we remove reset condition in freeze.
+No good reason; I just find the selftests a bit more convenient to run
+on a barebones test instance, or sometimes even throw in an initramfs
+and spawn a kernel just to run them.
+
+> See=20
+> https://lore.kernel.org/r/20260512210847.3039048-1-pbonzini@redhat.com/=
+=C2=A0
+> for a conversion, which is about 1/6th of the size of int1_task_gate_test=
+.c.
+
+
+
+--=-pGkEDEXs8kw5m9bxGdHs
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUxMjIxMzMx
+NVowLwYJKoZIhvcNAQkEMSIEIDFEPJgAMLCHamr00XbgKsiF6Ky9CSWD3PlEY0AKoMMmMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAP94V6KLeQsBF
+4EiYTqcXXMbcWm1OEgIxP3eMeLNY5COJNDJNr9+1aq5LKjUqc8skG/RPY2K+fGd1/ptIXzEwpyFd
+S8TiuWABPrJYSek9zUMD5ibGz5L87NGrXaf7u9RIXBtDVkrvjlKSQP/gd4y32eOCHW9yCCopI5n2
+VZpGrN2wxEYphhVRCt/oQHKE97IFyyPM4w8bqYKfllbzmlRvTlcNPVU3Z16e59QFOn7jzjsxafSi
+iTH7bSRjgGFqXzYVPwlJp1twnd0VQcnV/BRg80rqqsNTkncbswawL2o3hLHYpTFO+yad6ArqzpTz
+9kIm95OodbMxp8DinAZYYVxxI++L6MRZYZ5dNSXC7g28sPufEk1WoSsnv3Huq9K2HSZsr5dMrsvy
+8BkfgFCC4g+uzdOquaN4GXvsmab9pvZQoGL2JcrVQxopVWTR0wv2ZwHx7PDQwBT4/RxNkqACX9NX
+giUiA6jLQ8ksnDnLUzPkxY5Jh+LV/dHwxL4QZkkctN7CrP24v0jvLOvGKEdag8eUOhjr1QYDssZq
+ETjB0iTmIDQZYJMNmiyRsbUtaMzxRAgzOZuhnwgy3IAf8EnD/zw0JfmOGS3nmiwodw/sKCra5sMr
+wbonSXKhQbn9qC+FCw7BagCim78ecN/IQMXmHv6bgcM48NDt+A0BGr3pUGRxFU0AAAAAAAA=
+
+
+--=-pGkEDEXs8kw5m9bxGdHs--
