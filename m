@@ -1,116 +1,112 @@
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E26BA379C28;
-	Tue, 12 May 2026 07:42:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F54448C41E;
+	Tue, 12 May 2026 08:03:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778571729; cv=none; b=CBIwQzXTF5zFJ5unbwcmUhIWA1CPINuf/iIH2HIGs2OpGJCpaCoeGCK1mVaNhrSz//qP9nurkNdoeaxXJpy+3qWKz4rOyJmBOGx6eKZYMKcT9ezSOxyfGCgD/RH4cg0ay355zcMQXjz3MihG4/Yqu4su8j4dM9QQeOK/CqmxWdo=
+	t=1778573027; cv=none; b=eqLP9VHojnxO+lvAHIhGh4ButvL2tHnu9lBDqpie5q85wEtjL3aJbQTRbDjNgh8tA11rk/zlwcbVy6jWBY1ghWmGMzyd7a91Yyrdv07Ffw5zGZKITIFai7kejBstvgZpLhd583MRKWyKtfCMh6oVyqMv8JjL5g8VfE5eZp2EbJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778571729; c=relaxed/simple;
-	bh=S1KAa2hsg2t5OftD1qgj3EN+hxREsBlG2ozkwRkJzto=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=G7SNfU+uBPOiC80E5/QrwDDndh6EtuS8H6XLRS+Jpoc6I1LQj3aSBmmCwT+Ck8VahUk+QLCtmaqGhs5CduOM+oxL1l5+a95ZqtyAwIeZIAOuurg2lUlxS2/xgGnCqExM8JZRHw/I3fizONSFVW7dgc6zhaKMulg/91FdYg2gtdk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=Y9GUNCON; arc=none smtp.client-ip=115.124.30.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1778573027; c=relaxed/simple;
+	bh=Jl36QBFaB1npZ4nQkXnLfLEiPBTpWQe0eZV5jvbLvV0=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=FnTDMZqFz8s9mQKZ8pf77wHJ3loFTz8M0IC7lOdVNOkkbAZRQ2LV3va8R9LD+8b9FoEWAR5d9QyB0c3J+5t7Ufn7IU4tGex+mPpScDsZyPO2GwLoMIYNQbyZISXSIw+rnt2PnYnwIBstEqjCjt2lyz/9DsFYxR9J4FDFUtzBH7U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Akaxkqx8; arc=none smtp.client-ip=113.46.200.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="Y9GUNCON"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1778571715; h=From:To:Subject:Date:Message-Id:MIME-Version;
-	bh=i04ZuxIi3jt4m8VWianwNO2YFQpZ5BInIfUiKWtaoro=;
-	b=Y9GUNCONnLHKa7y/tKpkzm8dCjA0cu1wlRnPZXcVPeJ2u8VkuFheFi5ZdszceNBovGGOT6r65F7QikU5lf6uoGarlOBp3NW8PcSh3RRah63qoHBfoJBVym/r8FuA0ZaK6+rEQihrMX5mACpbfXcG/rHYv/WNlbxUuVNdNbdXb50=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R111e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam011083073210;MF=fangyu.yu@linux.alibaba.com;NM=1;PH=DS;RN=25;SR=0;TI=SMTPD_---0X2puQMt_1778571712;
-Received: from localhost.localdomain(mailfrom:fangyu.yu@linux.alibaba.com fp:SMTPD_---0X2puQMt_1778571712 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Tue, 12 May 2026 15:41:53 +0800
-From: fangyu.yu@linux.alibaba.com
-To: joro@8bytes.org,
-	will@kernel.org,
-	robin.murphy@arm.com,
-	pjw@kernel.org,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	alex@ghiti.fr,
-	tjeznach@rivosinc.com,
-	jgg@ziepe.ca,
-	kevin.tian@intel.com,
-	baolu.lu@linux.intel.com,
-	vasant.hegde@amd.com,
-	anup@brainfault.org,
-	atish.patra@linux.dev,
-	skhawaja@google.com,
-	jgg@nvidia.com,
-	nutty.liu@hotmail.com
-Cc: guoren@kernel.org,
-	andrew.jones@oss.qualcomm.com,
-	kvm@vger.kernel.org,
-	iommu@lists.linux.dev,
-	kvm-riscv@lists.infradead.org,
-	linux-riscv@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	Fangyu Yu <fangyu.yu@linux.alibaba.com>
-Subject: [PATCH v4 1/2] iommu/riscv: Advertise Svpbmt support to generic page table
-Date: Tue, 12 May 2026 15:41:41 +0800
-Message-Id: <20260512074142.16356-2-fangyu.yu@linux.alibaba.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
-In-Reply-To: <20260512074142.16356-1-fangyu.yu@linux.alibaba.com>
-References: <20260512074142.16356-1-fangyu.yu@linux.alibaba.com>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Akaxkqx8"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=uIqZ4KBp1zO/lcRi0QiZxRKpi2g0llki1FIHFBCdG/E=;
+	b=Akaxkqx8YW51TvNdywk7oh0bPH5uf6mDumcJvdyulTx6oabACOmULwGQFrdI9zSaGr29esOxj
+	X2t8S71U3c27u1dqr+jgYHcovil0MDb090JE8YTVZ0wf+MkazxHApk6fozi3Zr2QUjDShl5BJHv
+	EvO7cjxyiRqqUm1gylpmEhs=
+Received: from mail.maildlp.com (unknown [172.19.162.92])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4gF8780YK8znTV8;
+	Tue, 12 May 2026 15:56:36 +0800 (CST)
+Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id 700EE40562;
+	Tue, 12 May 2026 16:03:39 +0800 (CST)
+Received: from localhost.localdomain (10.50.163.32) by
+ kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 12 May 2026 16:03:38 +0800
+From: Chengwen Feng <fengchengwen@huawei.com>
+To: <alex@shazbot.org>, <jgg@ziepe.ca>
+CC: <wathsala.vithanage@arm.com>, <helgaas@kernel.org>, <wei.huang2@amd.com>,
+	<wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
+	<liuyonglong@huawei.com>, <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
+Subject: [PATCH v9 1/5] PCI/TPH: Fix pcie_tph_get_st_table_loc() field extraction
+Date: Tue, 12 May 2026 16:03:25 +0800
+Message-ID: <20260512080329.42593-2-fengchengwen@huawei.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20260512080329.42593-1-fengchengwen@huawei.com>
+References: <20260512080329.42593-1-fengchengwen@huawei.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ kwepemk500009.china.huawei.com (7.202.194.94)
 
-From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+pcie_tph_get_st_table_loc() incorrectly uses FIELD_GET(), which shifts the
+field value to bit 0. But the function is designed to return raw
+PCI_TPH_LOC_* values as defined in the function comment.
 
-The RISC-V IOMMU can optionally support Svpbmt page-based memory types
-in its page table format. When present,the generic page table code can
-use this capability to encode memory attributes (e.g. MMIO vs normal
-memory) in PTEs.
+This causes incorrect ST table location detection. Fix it by using bitwise
+AND with PCI_TPH_CAP_LOC_MASK to return the unshifted field value matching
+the function specification.
 
-Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
-Reviewed-by: Anup Patel <anup@brainfault.org>
-Reviewed-by: Guo Ren <guoren@kernel.org>
-Reviewed-by: Nutty Liu <nutty.liu@hotmail.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+This doesn't make a difference to mlx5_st_create(), the lone external
+caller, because it only checks for PCI_TPH_LOC_NONE (0), but will be needed
+for callers that check for PCI_TPH_LOC_CAP or PCI_TPH_LOC_MSIX.
+
+Fixes: d2e8a34876ce ("PCI/TPH: Add Steering Tag support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
+Reviewed-by: Alex Williamson <alex.williamson@nvidia.com>
+Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
 ---
- drivers/iommu/riscv/iommu.c       | 2 ++
- include/linux/generic_pt/common.h | 4 ++++
- 2 files changed, 6 insertions(+)
+ drivers/pci/tph.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/iommu/riscv/iommu.c b/drivers/iommu/riscv/iommu.c
-index a31f50bbad35..6c324f9fdc53 100644
---- a/drivers/iommu/riscv/iommu.c
-+++ b/drivers/iommu/riscv/iommu.c
-@@ -1268,6 +1268,8 @@ static struct iommu_domain *riscv_iommu_alloc_paging_domain(struct device *dev)
- 	cfg.common.features = BIT(PT_FEAT_SIGN_EXTEND) |
- 			      BIT(PT_FEAT_FLUSH_RANGE) |
- 			      BIT(PT_FEAT_RISCV_SVNAPOT_64K);
-+	if (iommu->caps & RISCV_IOMMU_CAPABILITIES_SVPBMT)
-+		cfg.common.features |= BIT(PT_FEAT_RISCV_SVPBMT);
- 	domain->riscvpt.iommu.nid = dev_to_node(iommu->dev);
- 	domain->domain.ops = &riscv_iommu_paging_domain_ops;
+diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
+index 91145e8d9d95..877cf556242b 100644
+--- a/drivers/pci/tph.c
++++ b/drivers/pci/tph.c
+@@ -170,7 +170,7 @@ u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev)
  
-diff --git a/include/linux/generic_pt/common.h b/include/linux/generic_pt/common.h
-index fc5d0b5edadc..2683e5b38998 100644
---- a/include/linux/generic_pt/common.h
-+++ b/include/linux/generic_pt/common.h
-@@ -188,6 +188,10 @@ enum {
- 	 * Support the 64k contiguous page size following the Svnapot extension.
- 	 */
- 	PT_FEAT_RISCV_SVNAPOT_64K = PT_FEAT_FMT_START,
-+	/*
-+	 * Support Svpbmt extension: encode page-based memory type (PBMT) in PTEs.
-+	 */
-+	PT_FEAT_RISCV_SVPBMT,
+ 	pci_read_config_dword(pdev, pdev->tph_cap + PCI_TPH_CAP, &reg);
  
- };
+-	return FIELD_GET(PCI_TPH_CAP_LOC_MASK, reg);
++	return reg & PCI_TPH_CAP_LOC_MASK;
+ }
+ EXPORT_SYMBOL(pcie_tph_get_st_table_loc);
  
+@@ -185,9 +185,6 @@ u16 pcie_tph_get_st_table_size(struct pci_dev *pdev)
+ 
+ 	/* Check ST table location first */
+ 	loc = pcie_tph_get_st_table_loc(pdev);
+-
+-	/* Convert loc to match with PCI_TPH_LOC_* defined in pci_regs.h */
+-	loc = FIELD_PREP(PCI_TPH_CAP_LOC_MASK, loc);
+ 	if (loc != PCI_TPH_LOC_CAP)
+ 		return 0;
+ 
+@@ -316,8 +313,6 @@ int pcie_tph_set_st_entry(struct pci_dev *pdev, unsigned int index, u16 tag)
+ 	set_ctrl_reg_req_en(pdev, PCI_TPH_REQ_DISABLE);
+ 
+ 	loc = pcie_tph_get_st_table_loc(pdev);
+-	/* Convert loc to match with PCI_TPH_LOC_* */
+-	loc = FIELD_PREP(PCI_TPH_CAP_LOC_MASK, loc);
+ 
+ 	switch (loc) {
+ 	case PCI_TPH_LOC_MSIX:
 -- 
-2.50.1
+2.17.1
 
