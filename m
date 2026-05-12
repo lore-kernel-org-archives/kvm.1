@@ -1,173 +1,118 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from canpmsgout10.his.huawei.com (canpmsgout10.his.huawei.com [113.46.200.225])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EBDB3C454E
-	for <kvm@vger.kernel.org>; Tue, 12 May 2026 07:20:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49185332EA0;
+	Tue, 12 May 2026 07:28:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778570411; cv=none; b=B7djGDaBCmCYfmqE7Y+I2ht/sscDq5jR4qOiCEBQuYmMEiRC8lZS3DbfwDjGsU6mWMfRVOqZ5ZyNLpGWhnvcCMk9PBZYTrmAeG5N5azp1guC2D2rfF9bhrXH6hSfWUNxV5A+5c2bNnOLUqsOGtXjHmDpmib027GO8ZQtyycx1VA=
+	t=1778570909; cv=none; b=OVPC0B3GWaOjoBNO9jHZ/RoxsZnvtMQ0k6gK+z3oIy9nGPu9AyMtZCPgg4uLWlfLusyXx9bbLbqRJiAMDa5YtS8iaJjtYMbzJZFEtnQq/So6enrGnGzEcs024n3c6hN32AhKM4e/IApYqLahOViYFFWNyAVKytSZ+3QDhl7vwjE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778570411; c=relaxed/simple;
-	bh=C9nOtZphHGvpRbbB1mh095pYAR4HXW7ByitF0l7nAq0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QqoGOPgOHMpegCCLuWuWlfSj+EaiSQ6lWOtuvlLaNOCi5y9TL6lYkWu3lCIa/5CqOhscefUxW3AEPKOzLcTDaOReW2IfxJSfQuzyduyP0sKUtSqxiprZ3NAQoKITq5xdTYpGMrshyGbiWVUws/+ZHEHLrohWqMVIdpLyjuNUEvc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=a/qLRcRr; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cP9wZRSx; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1778570909; c=relaxed/simple;
+	bh=BF1h7d3QFH3gs3GCJRmEVg8aCTgCY+D4Jfh7Gj1jblo=;
+	h=Subject:To:CC:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=Da2xqiTMeaP2Fzyxw7PUCR2Q3YlYfyT6S3atIlJVkRrwwMZJhWa7eE9LLNW7tq2FI8+Xph0txGAaHMDzpfl6ZnC0Stwt+gcMEYmE+zAML+wcYwVCUNx+tGJ1mXoPnFmuAmrIjv26gMe3+9uX6/GOR0GEM0sMBgcpTFDTeHSZLg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=jDz5xt+7; arc=none smtp.client-ip=113.46.200.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="a/qLRcRr";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cP9wZRSx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778570406;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=QjTia8hEEWTMEUzJIZRRaWOPCFQqnc9xnPKI05ARaEw=;
-	b=a/qLRcRrpV7bC6S1euMGgPpBYOi/lVZ3WoGPZefAZ5arSzWMlsi/v9pIopdBvpcRqqOsTP
-	TazwQYW0Act/DJuN4vxWi4FXbT/tYIXvZHaha03usQakdu6yE0SPyIhAvEiO/yKfOUeNSy
-	BeL0j7jroPSe/yLV0hVlv6meuGDacrk=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-271-Hp5YI3PEPyyOVjbGfjIeXw-1; Tue, 12 May 2026 03:20:05 -0400
-X-MC-Unique: Hp5YI3PEPyyOVjbGfjIeXw-1
-X-Mimecast-MFC-AGG-ID: Hp5YI3PEPyyOVjbGfjIeXw_1778570404
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-488bd1ee9e7so56932015e9.1
-        for <kvm@vger.kernel.org>; Tue, 12 May 2026 00:20:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778570404; x=1779175204; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=QjTia8hEEWTMEUzJIZRRaWOPCFQqnc9xnPKI05ARaEw=;
-        b=cP9wZRSxRq8qvPmqlHHwVZQSEVFNWuYPiFxG6iNVSMEjb1K27TVa5fm4HpT3pZASoc
-         GLh8Zb3BOB3M7ty4wevx8EJ2pZIfeHEuKy+w+I37/JGJw4hbNmei+W6YmIkJOo8pPKGJ
-         y2M/xhsDhCihHUE7hWw/jqofFw4JrOhl6oPyM5pxDVR7ubSsj4cf7l2eRJniry9k8juT
-         GSIxRBFFmMXFMmnGdMVYQsUltfpo3xLlt8jmQZkv+rtkMboXg2TxwiVLO8TvzpV2EYM6
-         mWlFOGJ5vyavE1lUAWs20qj4RQnAJPm3Mj/vpswFkuFjsXSCvd4iIvVIS1JT1rlkfeOX
-         Zygw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778570404; x=1779175204;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=QjTia8hEEWTMEUzJIZRRaWOPCFQqnc9xnPKI05ARaEw=;
-        b=GEPAuHgPYy1fTFTKz/axROuxXuCsy/T0QMD2CBlaTmJ1c+zAKhZh6sXlw3zKgDX7QE
-         RaYOwEyrQheF9KD57F4QLSTV88W6ULLlrRSUDHMYuv/dP/Ms+3gOkl3T/X9FgkZEcuT3
-         IQo0Ta77plz9WRGs85ChR5FbL0txLuISvf2SIvHzjUqL6G+Fe3U3PDMQd1WqPhkX4APy
-         0vrJh4sk3npl4l4TCgeFsUg42K5+Rs8XngIRF1t/0Tawa1iXabOxB36NOrUKCwTokc8w
-         b6XuKCvrE7RlOOzoO1LMM478sCRQALovlrfNf/tisdXjWKOmlBHj2fw4kSM/bikm745e
-         vYdw==
-X-Forwarded-Encrypted: i=1; AFNElJ+BI3GZEZ3EB3cvt1niGx1J8rVx3+RZbUUmHJQqBeUy5o7cvBuyQ+oRRNzKuI01bH9vfrg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywf/RZ421ELpJ2u1x8hbUps/lKrEOjqn4nSTNjtKUbcAbcfXERF
-	/s0mYVK3uvzorKwjIE25yslzxE1q+gdO+FyETslEhaSx3YrO91Li1Ty0LuAugbid+Zp7fZ5Rw1b
-	Vu+PhEYAEfrx1p6SCZUAVqLLejIJHxNecnQ/tNL0/BQGUNh4XtFUWcg==
-X-Gm-Gg: Acq92OHJtf/bMV5P+tX5Sa8qJQjmFFXoRjEzARSitYn3zjctXO3SjMa5zaWwxE1xr5m
-	1sSQsngm80fXJjNyOGs11drzig7Mbv743tYRnt6VItY+0YlCI3HZOYr1vedZuGWHv3p4DjrvQVI
-	o+jVdHyc3lfhcoATg2kIKUSFYZlUrCvLAoFm4yNB+mRnky18QE5Mcx5a/Uqo/LfNYBOjJnODHV1
-	6mSjEox0/0Bzma5sUQAARhlV9S/eorxS0KwL94Y/yn2rHWPEOcZ3t7LHJ+nWWcS4ZK2QEqZZge9
-	qx9bGkjE11OQmPG4alfx8m9DtGGZdTsEfB80iUkJPmxfNN8qhgJGBbYWoSDP3ySvtCLvWMHKvOP
-	uoRFgls7ZZKb3L1e5gWuQyqzg/99dzYj9VNN0Y6awSEvNALK80pCEUTKnpkEIQixujtnUuQDIuw
-	==
-X-Received: by 2002:a05:600c:3ba8:b0:48a:97b6:7420 with SMTP id 5b1f17b1804b1-48e707fbac7mr215489035e9.24.1778570403954;
-        Tue, 12 May 2026 00:20:03 -0700 (PDT)
-X-Received: by 2002:a05:600c:3ba8:b0:48a:97b6:7420 with SMTP id 5b1f17b1804b1-48e707fbac7mr215488205e9.24.1778570403394;
-        Tue, 12 May 2026 00:20:03 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-16-204-231.retail.telecomitalia.it. [87.16.204.231])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e906ae8b5sm44119615e9.6.2026.05.12.00.20.01
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 12 May 2026 00:20:02 -0700 (PDT)
-Date: Tue, 12 May 2026 09:19:58 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Jakub Kicinski <kuba@kernel.org>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, netdev@vger.kernel.org, 
-	Eric Dumazet <edumazet@google.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
-	virtualization@lists.linux.dev, "David S. Miller" <davem@davemloft.net>, 
-	Jason Wang <jasowang@redhat.com>, Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org, 
-	Paolo Abeni <pabeni@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, kvm@vger.kernel.org, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>
-Subject: Re: [PATCH net] vsock/virtio: fix skb overhead accounting to
- preserve full buf_alloc
-Message-ID: <agLR7RkX_3kvL_qw@sgarzare-redhat>
-References: <20260508092330.69690-1-sgarzare@redhat.com>
- <20260508055125-mutt-send-email-mst@kernel.org>
- <af2y2Fyp7H-om-ur@sgarzare-redhat>
- <20260508063104-mutt-send-email-mst@kernel.org>
- <af28MAV0LF4qHVmB@sgarzare-redhat>
- <CAGxU2F65pw0P1uKOOJpBc4p6KjCz8iePEh9aPybUyECBm1=otg@mail.gmail.com>
- <20260511084551-mutt-send-email-mst@kernel.org>
- <CAGxU2F6TPfRxZ7SX20vXiqDM4_sY3yUQBUSfEM=Nr+TKXwT9mA@mail.gmail.com>
- <20260511164841.7f7ff557@kernel.org>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="jDz5xt+7"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=0nYwTUDHswJFeRsm/3KU6Cy6V8aaaXNHXn0IsdxK2KM=;
+	b=jDz5xt+7E9Lxfqur4EwzYh7d4J68ycyVgDFhfjX+3kufj3THHFvpmx0rAgUJs7I3IvBvS/xhN
+	kRmNigPk/3bor01beAWpkIif/AtEHZ2SkATpOewgHbf9yewe0lajQKkW0+LLDeh9Udesbzl1aZw
+	0kHXJRz4zkGulG4lwkrqlWc=
+Received: from mail.maildlp.com (unknown [172.19.163.163])
+	by canpmsgout10.his.huawei.com (SkyGuard) with ESMTPS id 4gF7Kk28hxz1K96d;
+	Tue, 12 May 2026 15:20:42 +0800 (CST)
+Received: from kwepemk200017.china.huawei.com (unknown [7.202.194.83])
+	by mail.maildlp.com (Postfix) with ESMTPS id 5A6B34056E;
+	Tue, 12 May 2026 15:28:17 +0800 (CST)
+Received: from [10.174.178.219] (10.174.178.219) by
+ kwepemk200017.china.huawei.com (7.202.194.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 12 May 2026 15:28:16 +0800
+Subject: Re: [PATCH v17 24/24] KVM: selftests: Add guest_memfd testcase to
+ fault-in on !mmap()'d memory
+To: Sean Christopherson <seanjc@google.com>
+CC: Zenghui Yu <zenghui.yu@linux.dev>, Paolo Bonzini <pbonzini@redhat.com>,
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>,
+	<kvm@vger.kernel.org>, <linux-arm-kernel@lists.infradead.org>,
+	<kvmarm@lists.linux.dev>, <linux-kernel@vger.kernel.org>, Ira Weiny
+	<ira.weiny@intel.com>, Gavin Shan <gshan@redhat.com>, Shivank Garg
+	<shivankg@amd.com>, Vlastimil Babka <vbabka@suse.cz>, Xiaoyao Li
+	<xiaoyao.li@intel.com>, David Hildenbrand <david@redhat.com>, Fuad Tabba
+	<tabba@google.com>, Ackerley Tng <ackerleytng@google.com>, Tao Chan
+	<chentao@kylinos.cn>, James Houghton <jthoughton@google.com>
+References: <20250729225455.670324-1-seanjc@google.com>
+ <20250729225455.670324-25-seanjc@google.com>
+ <0064952b-048c-455d-ad89-e27e5cb82591@linux.dev>
+ <aeJkCGwsrRmuBikT@google.com>
+From: Zenghui Yu <yuzenghui@huawei.com>
+Message-ID: <c17d864a-42fc-afbe-345e-c728e2735d0c@huawei.com>
+Date: Tue, 12 May 2026 15:28:15 +0800
+User-Agent: Mozilla/5.0 (Windows NT 10.0; WOW64; rv:68.0) Gecko/20100101
+ Thunderbird/68.12.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260511164841.7f7ff557@kernel.org>
+In-Reply-To: <aeJkCGwsrRmuBikT@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: kwepems500002.china.huawei.com (7.221.188.17) To
+ kwepemk200017.china.huawei.com (7.202.194.83)
 
-On Mon, May 11, 2026 at 04:48:41PM -0700, Jakub Kicinski wrote:
->On Mon, 11 May 2026 15:17:56 +0200 Stefano Garzarella wrote:
->> > > Okay, I thought it over over the weekend, and I agree that this patch
->> > > still doesn't solve the problem and would still result in packet loss.
->> > > So, until we resolve the issue permanently, and since 059b7dbd20a6 is
->> > > coming to stable, I'd like to rework this patch so that we only start
->> > > dropping packets when the overhead plus the queued bytes exceeds
->> > > `buf_alloc * 2`.
->> > > Removing the other changes to reduce the buf_alloc advertised, but
->> > > terminating the connection so that both peers are aware that something
->> > > went wrong.
->> > >
->> > > Any objections?
->> > >
->> > > Stefano
->> >
->> > Let's try to first fix it upstream properly please. Discuss backporting
->> > later.
->>
->> Commit 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb
->> queue") is already in Linus tree and will land soon on stable. Which
->> issue do you see on having a patch on top of that to close the
->> connection instead of losing data and breaking our test suite?
->>
->> IMO we need that change in any case, because the previous code also
->> discarded packets without any notification, whereas breaking the
->> connection would be better in that case.
->
->Sorry if I'm speaking out of turn or misunderstanding but, like Michael
->says, let's focus on fixing this the way we want it to be fixed?
+Hi Sean,
 
-IMHO, these are two separate issues (related but still separated):
+On 2026/4/18 0:47, Sean Christopherson wrote:
+> 
+> Does this fix things for you?  If so, I'll send a proper patch.
+> 
+> diff --git a/tools/testing/selftests/kvm/guest_memfd_test.c b/tools/testing/selftests/kvm/guest_memfd_test.c
+> index ec7644aae999..c682bda722f9 100644
+> --- a/tools/testing/selftests/kvm/guest_memfd_test.c
+> +++ b/tools/testing/selftests/kvm/guest_memfd_test.c
+> @@ -510,9 +510,15 @@ static void test_guest_memfd_guest(void)
+>                     "Default VM type should support INIT_SHARED, supported flags = 0x%x",
+>                     vm_check_cap(vm, KVM_CAP_GUEST_MEMFD_FLAGS));
+>  
+> +       /*
+> +        * Use the guest's page size for all accesses, e.g. to avoid having to
+> +        * map multiple pages, but create the guest_memfd instance with the max
+> +        * of the host or guest page size, as KVM requires gmem files to be
+> +        * aligned to the host page size.
+> +        */
+>         size = vm->page_size;
+> -       fd = vm_create_guest_memfd(vm, size, GUEST_MEMFD_FLAG_MMAP |
+> -                                            GUEST_MEMFD_FLAG_INIT_SHARED);
+> +       fd = vm_create_guest_memfd(vm, max(size, page_size), GUEST_MEMFD_FLAG_MMAP |
+> +                                                            GUEST_MEMFD_FLAG_INIT_SHARED);
+>         vm_set_user_memory_region2(vm, slot, KVM_MEM_GUEST_MEMFD, gpa, size, NULL, fd, 0);
+>  
+>         mem = kvm_mmap(size, PROT_READ | PROT_WRITE, MAP_SHARED, fd);
 
-1. taking overhead into account and setting a limit (which Eric started 
-doing in 059b7dbd20a6)
+This results in another failure at
 
-2. reducing overhead by also merging SEQPACKET as Michael proposed (we 
-already do this for STREAM).
+|	vm_set_user_memory_region2(vm, slot, KVM_MEM_GUEST_MEMFD, gpa, size,
+NULL, fd, 0);
 
-Even with option 2, the overhead won’t disappear, and we should maintain 
-a limit as Eric rightly pointed out, especially since the initial 
-problem was a flood of EOMs with 0 or 1 bytes, which option 2 doesn’t 
-solve, since the overhead will eventually explode.
-
-So I agree that we should implement 2 as Michael proposed, but I think 
-we also need to fix 1 by improving it slightly (as I’ve tried here, and 
-would like to do in v2).
-
-Since I have v2 ready and tested, I'll send it because I think we should 
-have it in any case, even with option 2 implemented.
-
->IIUC you are trying to minimize the size of the fix, please don't worry
->about the LoC in the diff at this stage.
->
-
-Okay, I'll try to work on it, but this week is a nightmare. I hope to 
-come up with something by building on Michael's idea.
+# ./guest_memfd_test
+Random seed: 0x6b8b4567
+__vm_create: mode='PA-bits:40,  VA-bits:48,  4K pages' type='0', pages='672'
+==== Test Assertion Failure ====
+  lib/kvm_util.c:974: !ret
+  pid=284539 tid=284539 errno=22 - Invalid argument
+     1	0x00000000004008fb: test_guest_memfd_guest at guest_memfd_test.c:522
+     2	 (inlined by) main at guest_memfd_test.c:561
+     3	0x0000000000417623: __libc_start_call_main at libc-start.o:?
+     4	0x000000000041796b: __libc_start_main_impl at ??:?
+     5	0x0000000000400cef: _start at ??:?
+  KVM_SET_USER_MEMORY_REGION2 failed, errno = 22 (Invalid argument)
 
 Thanks,
-Stefano
-
+Zenghui
