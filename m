@@ -1,44 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1383F2D12ED;
-	Wed, 13 May 2026 07:01:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29BA83D1A8A;
+	Wed, 13 May 2026 07:34:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778655667; cv=none; b=uuEsWhZ5e+ZiYAEc+3ciPKGL3xQJF8bcGcVKQtbOiAWcwhZa227lmYzfG8Y6diFfa0wRX6m5YhHkSP4LvPAkGl0jgwrPWQN/aNZy9oo+LzyM64mRNdLva22aZb4SOM13BpIr3WChHGGKZ98T83h3b59p/LO/qdu35KCqy2JfiyI=
+	t=1778657649; cv=none; b=hvLNIEe1Xhc6YCwPxB2Q1PV6WYCOxqgyfaXRrj1Pu6TFHDzk+MgqDpEemlkS2WVz6n76lHmGnWACS+LTPcVGekck4Bg85YukUQ1iLevDZOCSN3yrpYhNDXawASflzB6itJussAjD13PKk9usG3YNZmoqFkVQJKBI+FDJDJT/G2U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778655667; c=relaxed/simple;
-	bh=c/6nC5w5T/aAJxpIk6wRl+kP7ERq5HuXfNpn+R4tDh8=;
+	s=arc-20240116; t=1778657649; c=relaxed/simple;
+	bh=i70caX1Yr5xAdjGQu0SXobJw2EJJdoR0JSUg6QLPi5A=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Uo4v9uyFfvoogSx/aA946GVLPfrpxo6V/9A+imrEzLfnY2L6gY61teH/lMELOVgxQ3wH4FYe/C1+A37TD9EswL+G4XNpJTSOLQF0mov0xMUI+RpNl0TVTz1ndqa6d/t4TLRep6MORcdrM/s9jM/nEhP4szB+GavhhJOM8b9vaTk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=K4ZsjtHj; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=mLeUp4Ehh4GovC1Q+xc3xo1YD/5gCRYpYrFlCYWnz/eHxpHOmi7M8yGrrYoidOSqKEMjbN0a8tLUPclv3nYrXAiz7Iu/DalSbDcr7HZykArE32nCpeRj1fKQmvKTvk0DmHmiZfief8INDQYtRNkkPJoJqu8ZlO7uYb+7ceQ1V6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XmwXSozt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="K4ZsjtHj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 309E6C2BCB7;
-	Wed, 13 May 2026 07:01:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XmwXSozt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB0AC2BCB7;
+	Wed, 13 May 2026 07:34:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778655666;
-	bh=c/6nC5w5T/aAJxpIk6wRl+kP7ERq5HuXfNpn+R4tDh8=;
+	s=k20201202; t=1778657648;
+	bh=i70caX1Yr5xAdjGQu0SXobJw2EJJdoR0JSUg6QLPi5A=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=K4ZsjtHjeWw2XgOumoWuIaDjGj3qSxoIo4VMFbMJvElG8ASRzn07TEmFQ2/78jNN5
-	 kEK+BUz/EfpDPW6qLnPbYJlmrohqqrril+AG0dQUXlYDUlLUqDazGadOaklQG9raH+
-	 iCpY9A4Lz7zRjlUHOClwUu0HIwM/u1O4+Wks5Y1Dj0OD8eHPTiVJdEYGVcsp+xirAS
-	 UjK0b1hD+y8hXdhBjVlvFM/+TR52WNgakcNPRCY/Vw8wHnoHSDvKqvuhJp4WdRfAsC
-	 7WZWEEyoB2qgBUImFOy5QxVGnRfX9ImGVl2Zxmz7Grlosatn5as6m5N06z+mNoGDSw
-	 30BYyf0ChPmWQ==
-Date: Wed, 13 May 2026 10:01:01 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Bjorn Helgaas <helgaas@kernel.org>
-Cc: Chengwen Feng <fengchengwen@huawei.com>, alex@shazbot.org, jgg@ziepe.ca,
-	wathsala.vithanage@arm.com, wei.huang2@amd.com,
-	wangzhou1@hisilicon.com, wangyushan12@huawei.com,
-	liuyonglong@huawei.com, kvm@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [PATCH v6 1/6] PCI/TPH: Fix pcie_tph_get_st_table_loc() field
- extraction
-Message-ID: <20260513070101.GD15586@unreal>
-References: <20260506094623.29327-2-fengchengwen@huawei.com>
- <20260506155418.GA790442@bhelgaas>
+	b=XmwXSoztVYi0JmtDTF/XDCIcWyHqle3fQy8GbLdpa7GwP7KTGVNBfb3T8L+pqoKdT
+	 Jseo6mKI2e0vaGaMiw01h9ZdhNcgpKbB+2yFWnBnMlZ9mgujkMCkgSVrggkSTMZGrQ
+	 ZpHTMWWa607c+IJAEvbirha6JAHVkIiSf10SoJ77c60Nw/AUFI8MkXdDKZ5Epx4uLJ
+	 +ng7sEf14h+pQUidmmgiVXyql3Nqi1xKaPOSqIwRjpWnR7MUA0RwSG2BPMtlmGLeD/
+	 sYZlKWzHE78JsgTUbxsz5yYPlOhD38S6iZlh480kqGJ8XKNBrw4DWHJlH2KDeQ/Sre
+	 Tksnt5laoe59g==
+Date: Wed, 13 May 2026 00:34:06 -0700
+From: Oliver Upton <oupton@kernel.org>
+To: Colton Lewis <coltonlewis@google.com>
+Cc: kvm@vger.kernel.org, Alexandru Elisei <alexandru.elisei@arm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Mingwei Zhang <mizhang@google.com>, Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Mark Rutland <mark.rutland@arm.com>, Shuah Khan <shuah@kernel.org>,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	James Clark <james.clark@linaro.org>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev, linux-perf-users@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v7 07/20] KVM: arm64: Set up FGT for Partitioned PMU
+Message-ID: <agQpbiD8Fi6fzomf@kernel.org>
+References: <20260504211813.1804997-1-coltonlewis@google.com>
+ <20260504211813.1804997-8-coltonlewis@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -47,44 +57,90 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260506155418.GA790442@bhelgaas>
+In-Reply-To: <20260504211813.1804997-8-coltonlewis@google.com>
 
-On Wed, May 06, 2026 at 10:54:18AM -0500, Bjorn Helgaas wrote:
-> On Wed, May 06, 2026 at 05:46:18PM +0800, Chengwen Feng wrote:
-> > pcie_tph_get_st_table_loc() incorrectly uses FIELD_GET(), which shifts the
-> > field value to bit 0. But the function is designed to return raw
-> > PCI_TPH_LOC_* values as defined in the function comment.
-> > 
-> > This causes incorrect ST table location detection. Fix it by using bitwise
-> > AND with PCI_TPH_CAP_LOC_MASK to return the unshifted field value matching
-> > the function specification.
-> > 
-> > While this change appears to be a no-op within tph.c, the external caller
-> > mlx5_st_create() relies on the documented function behavior, making this
-> > fix necessary.
-> 
-> Previously, pcie_tph_get_st_table_loc() returned 0x0 (for
-> PCI_TPH_LOC_NONE), 0x2 (for PCI_TPH_LOC_CAP), or 0x4 (for
-> PCI_TPH_LOC_MSIX).
-> 
-> mlx5_st_create() is currently the only external caller.  It only
-> checks for PCI_TPH_LOC_NONE, which is 0 regardless of the FIELD_GET(),
-> so I don't think this actually fixes mlx5_st_create().
-> 
-> Probably still worth a stable backport because other drivers may call
-> pcie_tph_get_st_table_loc() in the future, and if they depend on
-> PCI_TPH_LOC_CAP or PCI_TPH_LOC_MSIX, and are backported to stable
-> kernels, they will need this.
-> 
-> I might reword that last paragraph to avoid the implication that this
-> actually fixes something in mlx5:
-> 
->   This doesn't make a difference to mlx5_st_create(), the lone
->   external caller, because it only checks for PCI_TPH_LOC_NONE (0),
->   but will be needed for callers that check for PCI_TPH_LOC_CAP or
->   PCI_TPH_LOC_MSIX.
+On Mon, May 04, 2026 at 09:18:00PM +0000, Colton Lewis wrote:
+> +static void __compute_hdfgrtr(struct kvm_vcpu *vcpu)
+> +{
+> +	__compute_fgt(vcpu, HDFGRTR_EL2);
+> +
+> +	*vcpu_fgt(vcpu, HDFGRTR_EL2) |=
+> +		HDFGRTR_EL2_PMOVS
+> +		| HDFGRTR_EL2_PMCCFILTR_EL0
+> +		| HDFGRTR_EL2_PMEVTYPERn_EL0
+> +		| HDFGRTR_EL2_PMCEIDn_EL0
+> +		| HDFGRTR_EL2_PMMIR_EL1;
+> +}
+> +
 
-Right, we are running TPH in mlx5 regression and it works perfectly
-without "the fix".
+I've given this feedback at least twice already...
 
-Thanks
+Operators go on the preceding line in the case of line continuations.
+
+> +
+> +/**
+> + * kvm_pmu_is_partitioned() - Determine if given PMU is partitioned
+> + * @pmu: Pointer to arm_pmu struct
+> + *
+> + * Determine if given PMU is partitioned by looking at hpmn field. The
+> + * PMU is partitioned if this field is less than the number of
+> + * counters in the system.
+> + *
+> + * Return: True if the PMU is partitioned, false otherwise
+> + */
+> +bool kvm_pmu_is_partitioned(struct arm_pmu *pmu)
+> +{
+> +	if (!pmu)
+> +		return false;
+> +
+> +	return pmu->max_guest_counters >= 0 &&
+> +		pmu->max_guest_counters <= *host_data_ptr(nr_event_counters);
+> +}
+> +
+> +/**
+> + * kvm_vcpu_pmu_is_partitioned() - Determine if given VCPU has a partitioned PMU
+> + * @vcpu: Pointer to kvm_vcpu struct
+> + *
+> + * Determine if given VCPU has a partitioned PMU by extracting that
+> + * field and passing it to :c:func:`kvm_pmu_is_partitioned`
+> + *
+> + * Return: True if the VCPU PMU is partitioned, false otherwise
+> + */
+> +bool kvm_vcpu_pmu_is_partitioned(struct kvm_vcpu *vcpu)
+> +{
+> +	return kvm_pmu_is_partitioned(vcpu->kvm->arch.arm_pmu) &&
+> +		false;
+> +}
+
+Ok, I'm thoroughly confused about these predicates.
+
+Whether or not a vCPU is using a partitioned PMU is a per-VM property.
+This is separate from whether or not the backing arm_pmu has a range of
+available counters for the guest to use.
+
+It is entirely possible that a VM *isn't* using the partitioned PMU
+feature (i.e. backed with perf events) yet the supporting arm_pmu has a
+guest counter range.
+
+ 
+> +#if !defined(__KVM_NVHE_HYPERVISOR__)
+> +bool kvm_vcpu_pmu_is_partitioned(struct kvm_vcpu *vcpu);
+> +bool kvm_vcpu_pmu_use_fgt(struct kvm_vcpu *vcpu);
+> +#else
+> +static inline bool kvm_vcpu_pmu_is_partitioned(struct kvm_vcpu *vcpu)
+> +{
+> +	return false;
+> +}
+> +
+> +static inline bool kvm_vcpu_pmu_use_fgt(struct kvm_vcpu *vcpu)
+> +{
+> +	return false;
+> +}
+> +#endif
+> +
+
+Don't use ifdeffery for this. Aim to have a single definition and rely
+on has_vhe() to do the rest of the work.
+ 
+Thanks,
+Oliver
