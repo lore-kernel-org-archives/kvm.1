@@ -1,255 +1,170 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6264DB57A
-	for <kvm@vger.kernel.org>; Wed, 13 May 2026 17:52:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778694769; cv=none; b=VDfDkWa9oV9JkSAmNHv3t6XZnlVIz20h6gV1Rp7qDZPsyPV6JKFl0y67XSh9TuRzaVqG/+X5DqHiuwTgjPGO5/DfNo3PppYNh+P1PHqaAdkEqi4L2FNssJdi18UtckK6MABKcdXWTQTQe/Tr4S0wmvv83wu6Bry6YTNf9jn8X/w=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778694769; c=relaxed/simple;
-	bh=9W+890ujBXwwVpQJQ8zKRCFTTdvxYay4Jdn5hyLyHjg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=MMqLhAYSNKN1X0f0Hx9U71lYwzVlSvPjhwyp4fmElgmbz6B0WKAien0aNaUpgnUQ5FgiDkPailoezAus9bu/+aomjENwdJLhWc9qMMBsOeqK6Ngtq6QY949pZcruVDdEoudq++mWbchK/QfzdVXW/f84oel/4ikUgnjCTv6iSFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BgVxb1wD; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FA33A7580
+	for <kvm@vger.kernel.org>; Wed, 13 May 2026 18:26:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.177
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778696771; cv=pass; b=ra13vbwuHlNIDP7vvq8K1COXVlXmzjXARGSKGRX6W5cNro4Gp1ou0GXz9f1ZyS5PXAGAvmY5N/NaDZPvMrPJXsPV7MOZiPHvSloNryuhc34n3SCAWH5OSFzIM834vr1+JlUSp6652j8rB3lIWRIeUwaMCpZuf8S5p0e5fYpYo9I=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778696771; c=relaxed/simple;
+	bh=bOQ2be8fkGeTMC2f/z+7+JkbBQdoeMHHpb43YTxSNbg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MkS9zeEmVDmB8bkfeOOtpwRA4pitl+nMJbF6K15MiHkv/I2KOnLVP/R0RB9ZRFx5Kz1ZcHfVEReAfdLjEoqznoAQ6lyVlaYKZ9jXWNbfSdxUA8+M+I3/dg26LC/P/SntEI0hAR8FSy6KURTmZsheFqE1MSgcLuaVgyaOQ3/+hv4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LJk/E68/; arc=pass smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BgVxb1wD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778694767;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=Fg3GMEPHYejBQ9ioJAer/Jnm06fBGw+OHIcN8h472II=;
-	b=BgVxb1wD3DdFZMS2yQlx68rNVSaiM2x25bmjD7odpjPGnO0CeWo1I5Vk651uvFDW76F/UC
-	5mwhicXdGq5xtQkZu2OvAOeEUwPVQ/Seiu08FLBfuWoQtangYyMbrE1fMsKoy1Sm2Kojfs
-	Q3R5sT5nCUOcrw+YMhFMWrxRQjiec7Y=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-172-B0nhTHzCOYeRsjMv31quBA-1; Wed,
- 13 May 2026 13:52:43 -0400
-X-MC-Unique: B0nhTHzCOYeRsjMv31quBA-1
-X-Mimecast-MFC-AGG-ID: B0nhTHzCOYeRsjMv31quBA_1778694762
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6B74F18002D0;
-	Wed, 13 May 2026 17:52:42 +0000 (UTC)
-Received: from [10.44.50.86] (unknown [10.44.50.86])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9E6ED195394A;
-	Wed, 13 May 2026 17:52:40 +0000 (UTC)
-Message-ID: <9d3618a8-1927-40aa-87dc-a0bcc2c0f6c1@redhat.com>
-Date: Wed, 13 May 2026 19:52:39 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LJk/E68/"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-50d864c23bdso25911cf.1
+        for <kvm@vger.kernel.org>; Wed, 13 May 2026 11:26:10 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778696769; cv=none;
+        d=google.com; s=arc-20240605;
+        b=FPB/zQcL0+K94ZBY/y1kwzsLfEXya30pfZUdxjz0S/8Nw0iBAjYn1XkQmKBokSyI0I
+         JmzgNQPMOBfKl/tmHe9z/3sUtsWqKO45hRIsvbXDfpEFYPtSp4+a/wI5l68rfMUikRTy
+         YMApFflsGmLbvvSklcOwiZgvj0r5hiYRCXbP987ZqvkfpGJt+LlP5mIhAVoAWqLhkkyt
+         glclNlXztweek97uJotXZ7G3wj9RLBJWOK4KFW3r9EI5IzN0kWbnFw/Yfks9uppG9YsK
+         DPPNG/CvZok75tkS358FI3nazHfoxVzELzvokYm17hNAhpye4gkMh9Ng2rWvlD7Z8Nyd
+         mx+A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=DMg8Xr7ID4ZghjoDyYMxZT52uWzZZhVb6ew/isp6U0w=;
+        fh=MrG47Zlqw/GLttGgFZN7SOl71EaT8mjKKsEc+RW/SrE=;
+        b=XxbW5I/9rrJ98IwnJR3OlVuijud/SAkf1p89Ey/dBhO1S/m7LWB89KXC7KU/Ee9F/e
+         y2cyBQ4b54j524zlSwps1TcQVXFx5XZSR2Alfaaeh433YDUkbq51vtPbgMMPoumJCchv
+         z7uWZArcCu7jYg9i4B1ZAyMgiu+1WBVRUGfw15RMpsUCDV4u220MaYqhWrnoA2oCeIbP
+         FMnmnnd4tAQgJgDit/Mz5AzVr/LGLG0Ds9mv9jdlTFak51gP5BQfJky7zDgdsE6rAGCO
+         R25hZZSphwoX0K5AVKffa2Hjr2lVyZt0DdBHmPVGop3qcliFyeOGJNQwqOqjTh50EP40
+         zEvA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778696769; x=1779301569; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=DMg8Xr7ID4ZghjoDyYMxZT52uWzZZhVb6ew/isp6U0w=;
+        b=LJk/E68/LhaHe/KpQSZAHAoZBD9DPTaPVzH1j7WKqv3aebe8Zqn+k1OTJJqD6EVfa0
+         7CBB5ou1ro5OpARBdiFINTKi0oWZY6FfXgjYP9e8tL6hoT9yHHqOjYwORh88DVVGU95W
+         3cIY4Iyku5ejIyEgV5yZKhRuWaNbhgbNDMyEhmCG7Kj64U/E/kR8b+WgMWvGkvDoQ9+7
+         j7fT4BCrKR9P2PkNm6Yge3xaaLmFttX1csz/iAnQOusmc0qRvPu1Sgm0bG3+2lkdQV2E
+         1t9yoiScWG6YVOg4amTZib2WgDPdD1Bhuk///tyxIZCnG0rCKP2l11CYAehn1QwTC1R8
+         8CYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778696769; x=1779301569;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=DMg8Xr7ID4ZghjoDyYMxZT52uWzZZhVb6ew/isp6U0w=;
+        b=eiqA1ZOt0cTrD0x9//ktTCksk2GFZFT+MztKtE5r1ajZKTDgTihAoZ9vZtkUci3Df5
+         yCmJ1iZR5a6CiP2AH5A5d7GSTuCwxuKbiWN+WP3/0CuZQWPXAnVF4Q8BwgBQhSQkFar5
+         FJ4LxzXkKSftf+z2VfOF02X4vfzizm6rOxvMmyhh/JgLtBKdT+UXTgyS/xfIy0xtqKY5
+         LPSya78Sk4FgUMsTpoiDO8on8uPMHrR2yNIqN64Rqp2CUMkfHqwx1sZsP3L9YbE69RWc
+         y70Vr/fy6bDq0xRLIWjgTn3pBj96CYA2iwTAIa7jCpL9Iz3geeiXiu3/N/JBc+KU0DZp
+         N/VQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+xHd4aMQor5nc+oYbJ5gGCI/5bB3mRg3Qhyrxtg1e7H9wtA/W77i88O9QG9AZNGPmlhAA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyg7zDpI+3axul6b4pAMmp5JrO8eUz/xizS+11UmTY7KHFR3ZKs
+	aKHvuoCmHZ7gIAKjyaYmgbp8Q7+KYb7skDX/MnYpY7z5/ZBJWC0S7/W7DvB+UCPig01w5j9AXlT
+	bFOG1m4agwp9w5Jvk4uR679qJUbnOWWHuUCqPkBbx
+X-Gm-Gg: Acq92OFIuc+mgebqtG570SLTAR7ZTGr+S+XK8d/K4C8LUExAq/+qS5nmuo/Ln6+oquW
+	PbBhTW7iQEr40WHXwbb1ZfPrgFiiTKHqX7olcEyLwNjHnFCCc1cjmLHaGxF+AVm85OUFXA7GlWl
+	lqIbvTCJKt3WGJ40DRIqkhqZW0pofFbPfAI5BU3qzIfJodf+3lzaGeIOpID9Kk51RGZVbRdNoAy
+	QxAwW8UKBFbv8gzIrQWkJ18ZijMJZmbeosiJvIKiIZ/XMYej7z8GjjtNRMruPldMXGpC1JOcVKi
+	4sPy8Lgj2r5//4GBy681UfJFvGAsLvDXTn7ty3WWOs8SioQUbw==
+X-Received: by 2002:ac8:490d:0:b0:516:3f51:81cb with SMTP id
+ d75a77b69052e-516430080demr382411cf.13.1778696768595; Wed, 13 May 2026
+ 11:26:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 00/21] KVM: x86: Enable APX for guests
-To: "Chang S. Bae" <chang.seok.bae@intel.com>, seanjc@google.com
-Cc: kvm@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
- chao.gao@intel.com
-References: <20260512011502.53072-1-chang.seok.bae@intel.com>
-Content-Language: en-US
-From: Paolo Bonzini <pbonzini@redhat.com>
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <20260512011502.53072-1-chang.seok.bae@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+References: <20260505014118.3783476-1-vannapurve@google.com>
+ <20260505014118.3783476-3-vannapurve@google.com> <afvIuEuSYuktmtA2@google.com>
+ <3dc2300e50f655e261115099b416c6a1abbb9e9d.camel@intel.com>
+ <CAGtprH8kn_mOQuwpoTBgg6WQC==cKh8fuYOpNOih_PjUgcUeGQ@mail.gmail.com> <afygu67KZuyRql_M@google.com>
+In-Reply-To: <afygu67KZuyRql_M@google.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Wed, 13 May 2026 11:25:56 -0700
+X-Gm-Features: AVHnY4KfkfUNd9f7re3wULZmLvPEsHjGwx-FOQlzDpULgQm8l1AnYY9zodO7e0Y
+Message-ID: <CAGtprH-3+oLAf=cMfST4hVrHJWuDJ601K+TqzQ7y2RKnKkrQxA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] KVM: TDX: Disable pmu virtualization for TDX VMs
+To: Sean Christopherson <seanjc@google.com>, Michael Roth <michael.roth@amd.com>
+Cc: Kai Huang <kai.huang@intel.com>, "jmattson@google.com" <jmattson@google.com>, 
+	"mizhang@google.com" <mizhang@google.com>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
+	"dapeng1.mi@linux.intel.com" <dapeng1.mi@linux.intel.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 5/12/26 03:14, Chang S. Bae wrote:
-> Hi all,
-> 
-> This round contains relatively smaller changes compared to previous
-> versions:
-> 
->    * Generalize the load/store sequences to cover all GPRs (PATCH1-3)
->    * Clarify APX exclusion from the x86 xstate copy functions (PATCH6)
-> 
-> A few notes for the x86-side changes:
-> 
->    * Move the previously deprecated arch/x86/include/asm/inst.h into KVM
->    * PATCH6 since x86 changes is better to gain an ACK from the x86
->      maintainers before going anywhere
-> 
-> The patchset still depends on these in-flight series:
-> 
->    * Paolo's SPEC_CTRL refactoring
->      https://git.kernel.org/pub/scm/virt/kvm/kvm.git/commit/?h=queue&id=fcaf986d10768dddb23598d6f0560006dad0c8bd
->    * Sean's preparatory series
->      https://lore.kernel.org/kvm/20260409224236.2021562-1-seanjc@google.com/
-> 
-> A few notes are also worth retaining in the cover letter:
-> 
-> == State Management Design ==
-> 
->    The initial approach (before V3) was access physical EGPRs directly
->    similar to vector registers, but this introduces non-uniform access
->    patterns against directly accessing VCPU regs[]. Sean thus gave his
->    feedback to shift away from it.
-> 
->    To maintain uniformity, EGPRs need to be stored in regs[]. Sean's reg
->    accessor infra updates makes this feasible. It was also realized that
->    saving EGPRs outside of the fastpath is not viable, as fastpath
->    handlers may access EGPRs as well.
-> 
->    Then, saving EGPRs on entry code appears to be the choice. This also
->    looks to provide some degree of robustness (but not completely yet
->    though [*]) for when the kernel clobbers those registers. The VCPU XCR0
->    can gate this path to avoid #UD from non-APX guests.
-> 
->    The conditional path should be also under speculation-safety, rather
->    than wild guest control. Paolo's rework on entry code will establish a
->    SPEC_CTRL macro which allows a finer control.
-> 
->    For userspace interactions, the EGPR state in regs[] can be copied
->    directly to/from the userspace buffer at the boundary of ABI handlers.
-> 
-> == Series Structure and Test Note ==
-> 
->    * Part1, PATCH 01-03: Prepare entry code by macrofying GPR handling
->      Most KVM test will capture any regression out of it. I also tested it
->      more explicitly with tweaking the posted patch [1].
-> 
->    * Part2, PATCH 04-07: Establish EGPR state management
->      These new state management flow is rather unique compared to other
->      XSTATEs. This fact leads to new test cases (patch20), in addition to
->      state_test (patch21).
-> 
->    * Part3, PATCH 08-12: Update VMX handlers for extended reg. indices
->      Previously I tweaked to test an exit case like LGDT with an extended
->      ID. But this part leans into VMX unless KVM is paranoid.
-> 
->    * Part4, PATCH 13-16: Add emulator support for REX2
->      KVM unit test patch [1] covers emulator changes.
-> 
->    * Part5, PATCH 17-21: Expose features and add selftests
->      XCR0 tests basically covers the exposition.
-> 
-> This series is currently based Sean's preparatory series on top of the
-> KVM's queue branch, which already includes Paolo's SPEC_CTRL rework. The
-> full set is also available at:
-> 
->    git://github.com/intel/apx.git apx-kvm_v4
+On Thu, May 7, 2026 at 7:25=E2=80=AFAM Sean Christopherson <seanjc@google.c=
+om> wrote:
+>
+> On Wed, May 06, 2026, Vishal Annapurve wrote:
+> > On Wed, May 6, 2026 at 4:56=E2=80=AFPM Huang, Kai <kai.huang@intel.com>=
+ wrote:
+> > >
+> > > On Wed, 2026-05-06 at 16:03 -0700, Sean Christopherson wrote:
+> > > > The question then becomes, do we keep patch 1 and also clear enable=
+_pmu in tdx.c,
+> > > > or do we keep the ordering and have kvm_arch_init_vm() consume has_=
+protected_pmu?
+> > > > Neither one is particularly awesome :-/
+> > >
+> > > Maybe keeping patch 1 is slightly better?  This allows the vm_init() =
+to toggle
+> > > all the values and flags that the default ones don't fit.  If we go w=
+ith latter,
+> > > when there's similar cases where we need more flags, then kvm_arch_in=
+it_vm()
+> > > needs to consume more flags.
+> >
+> > For now I have sent a v2 without moving around the default flags. It's
+> > definitely better to move them up as done in patch1,
+>
+> Yes and no.  No matter what we do, we're subtly relying on ordering betwe=
+en
+> initialization in kvm_arch_init_vm() and kvm_x86_ops.vm_init().  I don't =
+see an
+> easy way around that.
+>
+> For these fields:
+>
+>         kvm->arch.default_tsc_khz =3D max_tsc_khz ? : tsc_khz;
+>         kvm->arch.apic_bus_cycle_ns =3D APIC_BUS_CYCLE_NS_DEFAULT;
+>         kvm->arch.guest_can_read_msr_platform_info =3D true;
+>
+> and any other fields that KVM initializes with hardcoded values, from glo=
+bals, or
+> from local variables (including @type), I 100% agree that they should be =
+initialized
+> before calling kvm_x86_ops.vm_init().
+>
+> But with the proposed has_protected_pmu, I'm leaning towards keeping this=
+:
+>
+>         kvm->arch.enable_pmu =3D enable_pmu && !kvm->arch.has_protected_p=
+mu;
+>
+> which obviously means keeping it after kvm_x86_ops.vm_init().  Because if=
+ we make
+> vendor code responsible for clearing kvm->arch.enable_pmu, then (a) we ma=
+y end
+> up with duplicate code for SEV-ES+ (does SEV-ES/SNP allow for a virtual/e=
+mulated
 
-Placed in kvm/queue while waiting for arch/x86/kernel/ acks, thanks!
+Michael,
 
-Paolo
+I believe has_protected_pmu should be set for SNP VMs as well based on
+my read of AMD SNP spec which suggests PMC virtualization managed by
+hardware for SNP VMs and not by KVM.
 
-> Thanks,
-> Chang
-> 
-> References:
-> [1] KVM unit tests:
->      https://lore.kernel.org/kvm/20260420212355.507827-1-chang.seok.bae@intel.com
-> [2] Previous version (V3):
->      https://lore.kernel.org/lkml/20260428050111.39323-1-chang.seok.bae@intel.com
-> [3] APX specification:
->      https://cdrdv2.intel.com/v1/dl/getContent/784266
-> [*] E.g. NMIs at entry code could mess up with APX-clobbering handlers
->      when XCR0[APX]=0. VMX extension to afford XCR0 switching by hardware
->      itself could be an option to avoid the issue.
-> 
-> Chang S. Bae (20):
->    KVM: VMX: Macrofy GPR swapping in __vmx_vcpu_run()
->    KVM: SVM: Macrofy GPR swapping in __svm_vcpu_run()
->    KVM: SEV: Macrofy GPR swapping in __svm_sev_es_vcpu_run()
->    KVM: x86: Extend VCPU registers for EGPRs
->    KVM: VMX: Save guest EGPRs in VCPU cache
->    KVM: x86: Support APX state for XSAVE ABI
->    KVM: VMX: Refactor VMX instruction information access
->    KVM: VMX: Refactor instruction information decoding
->    KVM: VMX: Refactor register index retrieval from exit qualification
->    KVM: VMX: Support instruction information extension
->    KVM: nVMX: Propagate the extended instruction info field
->    KVM: x86: Support EGPR accessing and tracking for emulator
->    KVM: x86: Handle EGPR index and REX2-incompatible opcodes
->    KVM: x86: Support REX2-prefixed opcode decode
->    KVM: x86: Reject EVEX-prefixed instructions
->    KVM: x86: Guard valid XCR0.APX settings
->    KVM: x86: Expose APX foundation feature to guests
->    KVM: x86: Expose APX sub-features to guests
->    KVM: x86: selftests: Add APX state and ABI test
->    KVM: x86: selftests: Add APX state handling and XCR0 sanity checks
-> 
-> Paolo Bonzini (1):
->    x86/fpu: Ignore APX when copying from/to guest FPU
-> 
->   arch/x86/Kconfig.assembler                    |   5 +
->   arch/x86/include/asm/fpu/api.h                |   2 +-
->   arch/x86/include/asm/kvm_host.h               |  52 +++--
->   arch/x86/include/asm/kvm_vcpu_regs.h          |  25 ---
->   arch/x86/include/asm/vmx.h                    |   2 +
->   arch/x86/kernel/fpu/core.c                    |   9 +-
->   arch/x86/kvm/Kconfig                          |   4 +
->   arch/x86/kvm/cpuid.c                          |  28 ++-
->   arch/x86/kvm/cpuid.h                          |   2 +
->   arch/x86/kvm/emulate.c                        | 121 +++++++----
->   arch/x86/{include/asm => kvm}/inst.h          |  88 +++++---
->   arch/x86/kvm/kvm_emulate.h                    |  13 +-
->   arch/x86/kvm/reverse_cpuid.h                  |   6 +
->   arch/x86/kvm/svm/svm.c                        |   8 +-
->   arch/x86/kvm/svm/vmenter.S                    | 107 ++--------
->   arch/x86/kvm/vmenter.h                        |  44 ++++
->   arch/x86/kvm/vmx/nested.c                     |  74 +++----
->   arch/x86/kvm/vmx/nested.h                     |   2 +-
->   arch/x86/kvm/vmx/vmcs12.c                     |   1 +
->   arch/x86/kvm/vmx/vmcs12.h                     |   3 +-
->   arch/x86/kvm/vmx/vmenter.S                    | 120 +++++------
->   arch/x86/kvm/vmx/vmx.c                        |  26 ++-
->   arch/x86/kvm/vmx/vmx.h                        |  77 ++++++-
->   arch/x86/kvm/x86.c                            |  70 ++++++-
->   tools/testing/selftests/kvm/Makefile.kvm      |   1 +
->   .../selftests/kvm/include/x86/processor.h     | 120 +++++++++++
->   tools/testing/selftests/kvm/x86/apx_test.c    | 191 ++++++++++++++++++
->   tools/testing/selftests/kvm/x86/state_test.c  |   3 +
->   .../selftests/kvm/x86/xcr0_cpuid_test.c       |  19 ++
->   29 files changed, 905 insertions(+), 318 deletions(-)
->   delete mode 100644 arch/x86/include/asm/kvm_vcpu_regs.h
->   rename arch/x86/{include/asm => kvm}/inst.h (62%)
->   create mode 100644 tools/testing/selftests/kvm/x86/apx_test.c
-> 
-> 
-> base-commit: 98bfa4c89d413dfc69beedd1d3414d5bf15db5b9
-
+> PMU?), and (b) the x86 code _looks_ wrong, because kvm_arch_init_vm() wil=
+l ignore
+> kvm->arch.has_protected_pmu, while the KVM_CAP_PMU_CAPABILITY case-statem=
+ent does
+> not.
