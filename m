@@ -1,117 +1,191 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B74133909AC;
-	Wed, 13 May 2026 12:20:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13AD93FBEC2
+	for <kvm@vger.kernel.org>; Wed, 13 May 2026 12:29:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778674809; cv=none; b=BBRbHbTGzWScsF64trNA6KiNKKtYtaSLZYt0QDerjpZu4lQGpECcCRyfYHG+Z/fUn5sbbTK4Xw4HVvmfnRtgfWVUO1Mo89LG4Jg4XYO/+6m1hEMKdx5VJb479K8tojP0+qLQ09kWvzZ5X2G5k/mKuVFNzx7nuaio5RnRyKLwg0Y=
+	t=1778675347; cv=none; b=GzND/ZEGxdWqHsNQtq2MLcKeMglrsPPIvBT8iqrMXAuQOtZ8Sxgu1cpLMqR4NJsCiWkm+zMPUl0kD9WfR9vCwqKoqxz/+pi6ag6/mq/TD4APlOX5gFh+JR4e9EX4LnxKdEO7Uqukb0AX6fNIxj2SmCGgcI3KuRWZbAco6TQV12Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778674809; c=relaxed/simple;
-	bh=ilTLn9hFirZTlDt1M/PjcaUpolcNqVrg7Z/KqucVhq8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Yw5eRw0FPU0a+lIOVIB44yoF4sZbksABWgLh93r7sk4+E8vIHPKRXgfcs7gy59K7iNLC0xJEgA4caMbv8xt00rrSQQEGGOWhjYWkW9LzHdT7fFra+UtpH5Zq9ebKERXJTBSa+nuoOS5YIV7IjzXp3aZz2cyh4scGJBZdQLHVR2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=S1a01a0D; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1778675347; c=relaxed/simple;
+	bh=8MAloSmMAMMd4l/G/g/2yUICqF0/LT/W/Bue6X2uJOo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fCQmMnNeevU/hiUPGPHhITR4BToL+qQERo2ujS8qWLkTGi1Pfl31MUzDU5+XPag+Id7DU/l0FYjgg2re6ID1mOrd69EELH4advVBY3zHoEuJlfpd2HnjcdnLXWzV798E078MIc5C5LskwjFqb79TG+ctzx7l+FgyoLNB/kcZQRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=tOxuLBMW; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="S1a01a0D"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778674807; x=1810210807;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ilTLn9hFirZTlDt1M/PjcaUpolcNqVrg7Z/KqucVhq8=;
-  b=S1a01a0DHF5umWhjsn5wejA4ZyDOB3yWlPhPfkcEJsqBCxJ33wt1BE2k
-   8RCBA4VNSn8GgTKLixvqVCFVmLr3GLt2EKtwkY+uyZA0QD4cg6sukMagX
-   rOx2NnKRUJjKsiqGAx0mpetoTvATuuxCXGqvYlU8nzpSz5l0G8ov2H+UA
-   ElOh+pEM00T1colaRcrTqJ9IoMJHdrKS7zOEB8Hd+bsUvAFiqfLBQHHXG
-   vtCpWy1iat0MhhOFDKPwelBFIjyl+xWBPI/7hIU7ZxiA1Bg9vtglxky2+
-   o12dMXQ3Y+U56aXzesFaBZhrzhbA6PxRHmML73j6lxloO8pnmaX7wd8Gw
-   w==;
-X-CSE-ConnectionGUID: 4MpMVQNjT42I8Oq3XuYCWw==
-X-CSE-MsgGUID: CDpvFHcVRR6G6ruZ0NRzvw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79631108"
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="79631108"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 05:20:07 -0700
-X-CSE-ConnectionGUID: olTkcd/rS2SDtOMZgvAUjQ==
-X-CSE-MsgGUID: 6CqpcZ0/Ta+41KSNHST6Ig==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="238174767"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.240.207]) ([10.124.240.207])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 05:20:04 -0700
-Message-ID: <0ade3fe5-4834-44a8-a0d4-eae088c4aade@linux.intel.com>
-Date: Wed, 13 May 2026 20:20:01 +0800
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="tOxuLBMW"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 466EF165C;
+	Wed, 13 May 2026 05:28:59 -0700 (PDT)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 13EC63F7B4;
+	Wed, 13 May 2026 05:29:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1778675344; bh=8MAloSmMAMMd4l/G/g/2yUICqF0/LT/W/Bue6X2uJOo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=tOxuLBMWjuVKvUJwvt6sg+sZg7VuI/aVrYvZYaRm2ztF/5yBmwIjwwPc4VEbn5Dbj
+	 FHE1xGMqksAu4sLf3v102nT1j/sWILjF11x/y6CCqYOd2LYl0ET9yghwCD0qJGJ6A9
+	 cXS5ZM3SzTGUcjIMhlnKP31YKmdCXqI7/d2ceOrQ=
+Date: Wed, 13 May 2026 13:28:56 +0100
+From: Mark Rutland <mark.rutland@arm.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org, Steffen Eiden <seiden@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
+	Will Deacon <will@kernel.org>, Fuad Tabba <tabba@google.com>
+Subject: Re: [PATCH 2/2] KVM: arm64: nv: Don't save/restore FP register
+ during a nested ERET or exception
+Message-ID: <agRuiKHWWn_88YzT@J2N7QTR9R3>
+References: <20260512140755.3676306-1-maz@kernel.org>
+ <20260512140755.3676306-3-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] x86/cpu: Skip reading MSR_IA32_PLATFORM_ID in
- virtualized environment
-To: Borislav Petkov <bp@alien8.de>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
- dave.hansen@intel.com, seanjc@google.com, pbonzini@redhat.com,
- kas@kernel.org, rick.p.edgecombe@intel.com, vishal.l.verma@intel.com,
- xiaoyao.li@intel.com, chao.gao@intel.com
-References: <20260430020953.1405535-1-binbin.wu@linux.intel.com>
- <20260511100451.GBagGpw7jRBDdHkBgp@fat_crate.local>
- <d88d19f5-0a96-4115-97f7-8daf1edd625a@linux.intel.com>
- <20260513101436.GAagRPDAryWZ5hGqFO@fat_crate.local>
- <4365e457-3d3d-4bc0-ac11-b3d4dfe8ccab@linux.intel.com>
- <20260513110805.GBagRblQVSjxemzwsQ@fat_crate.local>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260513110805.GBagRblQVSjxemzwsQ@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260512140755.3676306-3-maz@kernel.org>
 
-
-
-On 5/13/2026 7:08 PM, Borislav Petkov wrote:
-> On Wed, May 13, 2026 at 07:02:53PM +0800, Binbin Wu wrote:
->> My version treated it as a bug fix, so I tried to minimize the code change.
+On Tue, May 12, 2026 at 03:07:55PM +0100, Marc Zyngier wrote:
+> When switching between L1 and L2, we diligently use a non-preemptible
+> put/load sequence in order to make sure that the old state is saved,
+> while the new state is brought in. Crucially, this includes the FP
+> registers.
 > 
-> I didn't like
+> However, this is a bit silly. The FP registers are completely shared
+> between the various ELs (just like the GPRs, really), and eagerly
+> save/restoring those in a non-preemptible section is just overhead.
+> Not to mention that the next access will end-up trapping, something
+> that becomes exponentially expensive as we nest deeper.
 > 
-> 	BIT(X86_FEATURE_HYPERVISOR & 0x1f))
-> 
-> in your patch. I'd use BIT(31) as it does.
+> The temptation is therefore to completely drop this save/restore thing.
+> Why is it valid to do so? By analogy, the hypervisor doesn't try to
+> poloce things between EL1 and EL0, or between EL2 and EL0. Why should
+> it do so between EL2 and EL1 (or EL2 and L2 EL0)?
+>
+> Once you admit that the FP (and by extension SVE) registers are EL-agnostic,
+> the things that matter are:
 
-It was suggested by Dave in the v1 comment.
-https://lore.kernel.org/kvm/1a1b0f7c-aa3f-4758-8e17-bc2176c52952@intel.com/
+s/poloce/police/ ?
 
-> 
-> But, more importantly, it added yet another place where we test whether we run
-> on a HV. And it is high time we unified those because we run more and more on
-> HVs nowadays.
+The above is a bit flowery; it would be nice to remove the rhetorical
+questions and just state that (aside from some control registers) the
+FPSIMD/SVE/SME state is shared between exception levels and doesn't need
+to be saved/restored.
 
-Agree.
+How about:
 
-> 
->> There is one case not covered by setting the global x86_hypervisor_present at this point.
->> Xen PV guest will not go this path, so Xen PV guest will not see the hypervisor bit.
->>
->> But maybe we can just ignore Xen PV guest case today?
-> 
-> Nothing changes before or after this fix. So Xen PV can be handled
-> completely separated from this.
+  When switching between L1 and L2, we save the old state using
+  kvm_arch_vcpu_put(), mutate the state in memory, then load the new
+  state using kvm_arch_vcpu_load(). Any live FPSIMD/SVE state is saved
+  and unbound, such that it can be lazily restored on a subsequent trap.
 
-intel_get_platform_id() can be called in Xen PV guest during normal boot.
-Using x86_hypervisor_present just doesn't cover the case.
+  The FPSIMD/SVE state is shared by exception levels, and only a handful
+  of related control registers need to be changed when transitioning
+  between L1 and L2. The save/restore of the common state is needless
+  overhead, especially as trapping becomes exponentially more expensive
+  with nesting.
+
+  Avoid this overhead by leaving the common FPSIMD/SVE state live on the
+  CPU, and only switching the state that is distinct for L1 and L2:
  
-My fix was intended to skip reading MSR_IA32_PLATFORM_ID if hypervisor is
-detected, I used cpuid_ecx() instead of cpuid_ecx_native() so that Xen PV
-guest can also read the hypervisor bit using xen_cpuid() (Xen PV guest has
-overwritten the pv ops) to make the coverage complete.
-
-
+> - the trap controls: the effective values are recomputed on each entry
+>   into the guest to take the EL into account and merge the L0 and L1
+>   configuration if in a nested context, or directly use the L0 configuration
+>   in non-nested context (see __activate_traps()).
 > 
-> Thx.
-> 
+> - the VL settings: the effective values are are also recomputed on each
+>   entry into the guest (see fpsimd_lazy_switch_to_guest()).
 
+This is true for FPSIMD+SVE today. For SME, SMCR_ELx also contains other
+controls, and will need to be dealt with similarly. It might be worth
+noting that (and that ZCR_ELx could gain new controls in future).
+
+> Since we appear to cover all bases, use the vcpu flags indicating the
+> handling of a nested ERET or exception delivery to avoid the whole FP
+> save/restore shenanigans.
+> 
+> For an EL1 L3 guest where L1 and L2 have this optimisation, this
+> results in at least a 10% wall clock reduction when running an I/O
+> heavy workload, generating a high rate of nested exceptions.
+> 
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> ---
+>  arch/arm64/kvm/fpsimd.c | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> diff --git a/arch/arm64/kvm/fpsimd.c b/arch/arm64/kvm/fpsimd.c
+> index 15e17aca1dec0..73eda0f46b127 100644
+> --- a/arch/arm64/kvm/fpsimd.c
+> +++ b/arch/arm64/kvm/fpsimd.c
+> @@ -28,6 +28,10 @@ void kvm_arch_vcpu_load_fp(struct kvm_vcpu *vcpu)
+>  	if (!system_supports_fpsimd())
+>  		return;
+>  
+> +	if (vcpu_get_flag(vcpu, IN_NESTED_ERET) ||
+> +	    vcpu_get_flag(vcpu, IN_NESTED_EXCEPTION))
+> +		return;
+> +
+
+I think we need a comment as to why this is safe, with some other detail
+from the commit message. It would also be good to have asserts here to
+catch if something goes wrong.
+
+How about:
+
+	/*
+	 * Avoid needless save/restore of the guest's common
+	 * FPSIMD/SVE/SME regs during transitions between L1/L2.
+	 *
+	 * These transitions only happens in a non-preemptible context
+	 * where the host regs have already been saved and unbound. The
+	 * live registers are either free or owned by the guest.
+	 */
+	if (vcpu_get_flag(vcpu, IN_NESTED_ERET) ||
+	    vcpu_get_flag(vcpu, IN_NESTED_EXCEPTION) {
+		WARN_ON_ONCE(host_owns_fp_regs());
+		return;
+	}
+
+... ?
+
+Note: I didn't add WARN_ON_ONCE(preemptible()), since
+kvm_arch_vcpu_load_fp() should *never* be called in a preemptible
+context.
+
+>  	/*
+>  	 * Ensure that any host FPSIMD/SVE/SME state is saved and unbound such
+>  	 * that the host kernel is responsible for restoring this state upon
+> @@ -102,6 +106,10 @@ void kvm_arch_vcpu_put_fp(struct kvm_vcpu *vcpu)
+>  {
+>  	unsigned long flags;
+>  
+> +	if (vcpu_get_flag(vcpu, IN_NESTED_ERET) ||
+> +	    vcpu_get_flag(vcpu, IN_NESTED_EXCEPTION))
+> +		return;
+
+Likewise here, but we can reduce the comment, e.g.
+
+	/*
+	 * See comment in kvm_arch_vcpu_load_fp().
+	 */
+	if (vcpu_get_flag(vcpu, IN_NESTED_ERET) ||
+	    vcpu_get_flag(vcpu, IN_NESTED_EXCEPTION) {
+		WARN_ON_ONCE(host_owns_fp_regs());
+		return;
+	}
+
+Thanks,
+Mark.
+
+> +
+>  	local_irq_save(flags);
+>  
+>  	if (guest_owns_fp_regs()) {
+> -- 
+> 2.47.3
+> 
