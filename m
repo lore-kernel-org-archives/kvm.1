@@ -1,88 +1,257 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9DD2423A7F;
-	Wed, 13 May 2026 13:12:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 840DB31E82E;
+	Wed, 13 May 2026 13:18:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778677938; cv=none; b=s9Mhtlr/Ou8+5mgr8o1wN7CEtGIJ/GhJnBdxKqJfhnVlF7Hvcwf5iY9Ab6BcCSt2ksefJvlafAWxpo19Z5sqjkHKpaIoMzOzu6qy88bVdf5CXm7sMlKnkaNH87iU7cEFosLqSe2yqO+OC5rf+rJY2h3wXAH7Dy9uJdvIUcJasoE=
+	t=1778678302; cv=none; b=M7VH8rKoytrGJnahb6XvFtxe/gBSD6bvhPpmowPwDAM7qDDqzzbHD8XTnH6pbLLFeW1oU6/Mt/0d4INdqUIsROCB84yc+SzSBE9CHDdtWGiB4yBCg+mnXEyDNrFld8cUnCmW78fo3HdjFIPfqzUdeT9Tzw47WDvghHgyQaIxH3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778677938; c=relaxed/simple;
-	bh=iCpxvNQX2QRchxRRcav3/dDScMh7AbO9nXWT2wbP6/g=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=H+twc9NQm2nm+pOE2sBdxDfc6RLQI5ab3xW4gIOME2iLHOIQtyFv3kYzXKPxgzqTL5mT0OAr+AE49C9nqtjBeBpuUieNtY4Uyvmgs32/SzSFqqaZ3AJmxCV4/pGxJqk2HmfaiAlhZaoSs8F2YLXAJnZ2d1WC8P1BRFHOJi4pNrk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=IF9cL5xL; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1778678302; c=relaxed/simple;
+	bh=mPzCcDED60bjX6A2Gwx//sNfCouiSOsEZUW1a9b8vxY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=ZsebbZ3L5E8hSAqQymhzEOvM32uj4M039/2s5/2/7SzLAwE6Eka/4f99uheUUWh27Pu0Y0RfAbtL3ImTcktNbq6maw1q5e1qe3N9gMXt5FRMb+KO8dJTu7e2vlLiLfvLHq1GvPFWK3LBu8rPk/+cEbNlu1UgoK0/fIO+jtfNybo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=L0vxWiwp; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="IF9cL5xL"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 31E9C40E01A1;
-	Wed, 13 May 2026 13:12:14 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id aXYNBOPSziOK; Wed, 13 May 2026 13:12:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1778677922; bh=iCpxvNQX2QRchxRRcav3/dDScMh7AbO9nXWT2wbP6/g=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=IF9cL5xL/wOF2qWuzfJdNvAmYyGRcLLQaPnb6Hin1JmkrWhtgLmKWxhqBCljy72fb
-	 LcnSc7tU+ZYWu5NeRZULEnLgTI66xW6II2g1w/oJJGDtGkQEhJSzgBm1xMfWID2ttH
-	 J5rtln44lnZP2ZPotW6HKovFtJw9C+kR28k8JVzx2DyexPMnR4hbmSHBKvtRSU4u8r
-	 YKUjHqXUZz+a+FK+mFcafJEgPbLjOcMfbaWG+p33jG3vZzWD7mWT9LmVwTo+8eiQOp
-	 483BKt1UviBM7V4x5HjC5G9daK32S/JQpiZtCZUISi7KFmNChFXZOsLq4WRnPh9Ou3
-	 w3NvZ4myTH5SMBf0ngvn/uhtRysWujldi3gkY1VeHA4pslFjZG2lnsOclhRx00UcWH
-	 s4ivftcBjzK/STKs/rz9yA3vuvsZjzsnlvXfNuuv6Ne1MyNZTf7nLv4TFEnEU0QDhT
-	 eOLxInqRfrVgs/EyOGc0NWTgwYAEWca0wVzx+0Df3QT54N5yYrn2i9VE60rlJvsqjO
-	 rMYII9OTnkJhPqDHRoClAJJhEyUeYblu80i5WUNcsJic1A/3hrnwH+RAvK/5uqqfbI
-	 ca+NZUl2EmWb236Ykhi9n1wxjm6U1Ik2zci5/h/MlmnSZo1JuYoPWbykAjUiUL6FkH
-	 WUOkt993ideqldzFq26MkjJA=
-Received: from ehlo.thunderbird.net (unknown [IPv6:2a02:3033:26b:33f2:2529:b5d9:a881:2128])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 4A4CA40E00C2;
-	Wed, 13 May 2026 13:11:50 +0000 (UTC)
-Date: Wed, 13 May 2026 13:11:45 +0000
-From: Borislav Petkov <bp@alien8.de>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-CC: linux-kernel@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
- dave.hansen@intel.com, seanjc@google.com, pbonzini@redhat.com,
- kas@kernel.org, rick.p.edgecombe@intel.com, vishal.l.verma@intel.com,
- xiaoyao.li@intel.com, chao.gao@intel.com
-Subject: =?US-ASCII?Q?Re=3A_=5BPATCH_v2=5D_x86/cpu=3A_Skip_reading_MSR=5FI?=
- =?US-ASCII?Q?A32=5FPLATFORM=5FID_in_virtualized_environment?=
-User-Agent: K-9 Mail for Android
-In-Reply-To: <0ade3fe5-4834-44a8-a0d4-eae088c4aade@linux.intel.com>
-References: <20260430020953.1405535-1-binbin.wu@linux.intel.com> <20260511100451.GBagGpw7jRBDdHkBgp@fat_crate.local> <d88d19f5-0a96-4115-97f7-8daf1edd625a@linux.intel.com> <20260513101436.GAagRPDAryWZ5hGqFO@fat_crate.local> <4365e457-3d3d-4bc0-ac11-b3d4dfe8ccab@linux.intel.com> <20260513110805.GBagRblQVSjxemzwsQ@fat_crate.local> <0ade3fe5-4834-44a8-a0d4-eae088c4aade@linux.intel.com>
-Message-ID: <D568CD6F-0DC7-4388-82A4-A36AB8E82FFA@alien8.de>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="L0vxWiwp"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8BDAD1C14;
+	Wed, 13 May 2026 06:18:14 -0700 (PDT)
+Received: from e122027.arm.com (unknown [10.57.68.187])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C4CE13F836;
+	Wed, 13 May 2026 06:18:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1778678299; bh=mPzCcDED60bjX6A2Gwx//sNfCouiSOsEZUW1a9b8vxY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=L0vxWiwpUToB4RBVYmCN7+mrMNQwwq+zoXksV9iqAHHWX8lJyscPEbEXuzsc3Fq1p
+	 wCFm4oUALrTsFIAy77GTSfeK6Tk+Uj84gmjq+NDKj88TfEocgwoItQc9CA0pS/fxJ4
+	 rJx5jml5cyHNk9YhVUC/CBkY8CmH5lTjkfDiW6Bo=
+From: Steven Price <steven.price@arm.com>
+To: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: Steven Price <steven.price@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	WeiLin.Chang@arm.com,
+	Lorenzo.Pieralisi2@arm.com
+Subject: [PATCH v14 00/44] arm64: Support for Arm CCA in KVM
+Date: Wed, 13 May 2026 14:17:08 +0100
+Message-ID: <20260513131757.116630-1-steven.price@arm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On May 13, 2026 12:20:01 PM UTC, Binbin Wu <binbin=2Ewu@linux=2Eintel=2Ecom=
-> wrote:
->My fix was intended to skip reading MSR_IA32_PLATFORM_ID if hypervisor is
->detected, I used cpuid_ecx() instead of cpuid_ecx_native() so that Xen PV
->guest can also read the hypervisor bit using xen_cpuid() (Xen PV guest ha=
-s
->overwritten the pv ops) to make the coverage=20
+This series adds support for running protected VMs using KVM under the
+Arm Confidential Compute Architecture (CCA).
 
+This is rebased on v7.1-rc1, but still targets RMM v2.0-bet1[1].
 
-Which part of "can be handled completely separated from this" wasn't clear=
-?
+The major updates from v13 remain but have been more fully implemented:
+the RMM uses the host's page size, range based RMI APIs mean we don't
+have to break everything down to base page sizes, the GIC state is
+passed via system registers, and the uAPI has been simplified.
 
-The current code uses the native cpuid variant=2E If you want to fix Xen, =
-send a patch ontop please=2E
+The main changes since v13 are:
 
+ * The RMI definitions and wrappers have been fully updated for RMM
+   v2.0-bet1. In particular the temporary RMM v1.0 SMC compatibility
+   patch has been dropped.
 
---=20
-Small device=2E Typos and formatting crap
+ * The PSCI completion ioctl has been removed. RMM v2.0-bet1 still
+   requires the host to provide the target REC for PSCI calls which
+   name another vCPU, but KVM now performs the RMI PSCI completion
+   automatically before entering the REC again. Userspace no longer
+   needs to issue KVM_ARM_VCPU_RMI_PSCI_COMPLETE. A future spec should
+   remove the need for the host to provide the MPIDR mapping.
+
+ * The generic RMI init, RMM configuration, GPT setup,
+   delegate/undelegate helpers and SRO infrastructure have moved out of
+   KVM into arch/arm64/kernel/rmi.c. RMI is expected to be used by
+   features outside KVM, so this code should be available even when KVM
+   is not built.
+
+ * RMI_GRANULE_TRACKING_GET has been updated to work on a range, this
+   allows it to work when the region is not aligned to the tracking
+   size. Solves the problem reported by Mathieu[2].
+
+ * SRO support has been moved earlier in the series and improved. It
+   provides a cleaner way for the host to provide the RMM with the extra
+   memory it requires. However support is still incomplete where the
+   TF-RMM code does not yet implement it. This is noted by FIXMEs in the
+   code.
+
+ * The ARM VM type encoding has been reworked to coexist with the
+   upstream pKVM KVM_VM_TYPE_ARM_PROTECTED bit.
+
+ * The private-memory documentation now notes that arm64 uses
+   KVM_CAP_MEMORY_ATTRIBUTES.
+
+ * PMU support is dropped for now. It will be added later in a separate
+   series. Similarly for selecting the hash algorithm and RPV.
+
+There are also the usual rebase updates and smaller fixes, including
+changes to the RMM v2.0-bet1 range APIs, removal of REC auxiliary
+granule handling, fixes to the address range descriptor encoding, and
+cleanups around realm stage-2 teardown.
+
+Stateful RMI Operations
+-----------------------
+
+The RMM v2.0 spec introduces Stateful RMI Operations (SROs), which allow
+the RMM to complete an operation over several SMC calls while requesting
+or returning memory to the host. This allows interrupts to be handled in
+the middle of an operation and lets the RMM dynamically allocate memory
+for internal tracking purposes. For example, RMI_REC_CREATE no longer
+needs auxiliary granules to be provided up front, and can instead
+request memory during the operation.
+
+This series includes the generic SRO infrastructure in
+arch/arm64/kernel/rmi.c and uses it for REC create/destroy. The other
+cases are not yet used by TF-RMM and a future revision will be needed to
+finish those paths in Linux.
+
+This series is based on v7.1-rc1. It is also available as a git
+repository:
+
+https://gitlab.arm.com/linux-arm/linux-cca cca-host/v14
+
+Work in progress changes for kvmtool are available from the git
+repository below:
+
+https://gitlab.arm.com/linux-arm/kvmtool-cca cca/v12
+
+The TF-RMM has not yet merged the RMM v2.0 support, so you will need to
+use a branch with RMM v2.0-bet1 support. At the time of writing the
+following branch is being used:
+
+https://git.trustedfirmware.org/TF-RMM/tf-rmm.git topics/rmm-v2.0-poc_2
+(tested on commit 3340667a291a)
+
+There is a kvm-unit-test branch which has been updated to support the
+attestation used in RMMv2.0 available here:
+
+https://gitlab.arm.com/linux-arm/kvm-unit-tests-cca cca/v4
+
+[1] https://developer.arm.com/documentation/den0137/2-0bet1/
+[2] https://lore.kernel.org/all/acrj-cKphy4hJsEG@p14s/
+
+Jean-Philippe Brucker (6):
+  arm64: RMI: Propagate number of breakpoints and watchpoints to
+    userspace
+  arm64: RMI: Set breakpoint parameters through SET_ONE_REG
+  arm64: RMI: Propagate max SVE vector length from RMM
+  arm64: RMI: Configure max SVE vector length for a Realm
+  arm64: RMI: Provide register list for unfinalized RMI RECs
+  arm64: RMI: Provide accurate register list
+
+Joey Gouly (2):
+  arm64: RMI: allow userspace to inject aborts
+  arm64: RMI: support RSI_HOST_CALL
+
+Steven Price (33):
+  kvm: arm64: Avoid including linux/kvm_host.h in kvm_pgtable.h
+  arm64: RME: Handle Granule Protection Faults (GPFs)
+  arm64: RMI: Add SMC definitions for calling the RMM
+  arm64: RMI: Add wrappers for RMI calls
+  arm64: RMI: Check for RMI support at init
+  arm64: RMI: Configure the RMM with the host's page size
+  arm64: RMI: Ensure that the RMM has GPT entries for memory
+  arm64: RMI: Provide functions to delegate/undelegate ranges of memory
+  arm64: RMI: Add support for SRO
+  arm64: RMI: Check for RMI support at KVM init
+  arm64: RMI: Check for LPA2 support
+  arm64: RMI: Define the user ABI
+  arm64: RMI: Basic infrastructure for creating a realm.
+  KVM: arm64: Allow passing machine type in KVM creation
+  arm64: RMI: RTT tear down
+  arm64: RMI: Activate realm on first VCPU run
+  arm64: RMI: Allocate/free RECs to match vCPUs
+  arm64: RMI: Support for the VGIC in realms
+  KVM: arm64: Support timers in realm RECs
+  arm64: RMI: Handle realm enter/exit
+  arm64: RMI: Handle RMI_EXIT_RIPAS_CHANGE
+  KVM: arm64: Handle realm MMIO emulation
+  KVM: arm64: Expose support for private memory
+  arm64: RMI: Allow populating initial contents
+  arm64: RMI: Set RIPAS of initial memslots
+  arm64: RMI: Create the realm descriptor
+  arm64: RMI: Runtime faulting of memory
+  KVM: arm64: Handle realm VCPU load
+  KVM: arm64: Validate register access for a Realm VM
+  KVM: arm64: Handle Realm PSCI requests
+  KVM: arm64: WARN on injected undef exceptions
+  arm64: RMI: Prevent Device mappings for Realms
+  arm64: RMI: Enable realms to be created
+
+Suzuki K Poulose (3):
+  kvm: arm64: Include kvm_emulate.h in kvm/arm_psci.h
+  kvm: arm64: Don't expose unsupported capabilities for realm guests
+  arm64: RMI: Allow checking SVE on VM instance
+
+ Documentation/virt/kvm/api.rst       |   62 +-
+ arch/arm64/include/asm/kvm_emulate.h |   37 +
+ arch/arm64/include/asm/kvm_host.h    |   13 +-
+ arch/arm64/include/asm/kvm_pgtable.h |    5 +-
+ arch/arm64/include/asm/kvm_pkvm.h    |    2 +-
+ arch/arm64/include/asm/kvm_rmi.h     |  127 +++
+ arch/arm64/include/asm/rmi_cmds.h    |  680 +++++++++++++
+ arch/arm64/include/asm/rmi_smc.h     |  448 ++++++++
+ arch/arm64/include/asm/virt.h        |    1 +
+ arch/arm64/kernel/Makefile           |    2 +-
+ arch/arm64/kernel/cpufeature.c       |    1 +
+ arch/arm64/kernel/rmi.c              |  605 +++++++++++
+ arch/arm64/kvm/Kconfig               |    2 +
+ arch/arm64/kvm/Makefile              |    2 +-
+ arch/arm64/kvm/arch_timer.c          |   28 +-
+ arch/arm64/kvm/arm.c                 |  140 ++-
+ arch/arm64/kvm/guest.c               |   93 +-
+ arch/arm64/kvm/hyp/pgtable.c         |    1 +
+ arch/arm64/kvm/hypercalls.c          |    4 +-
+ arch/arm64/kvm/inject_fault.c        |    5 +-
+ arch/arm64/kvm/mmio.c                |   16 +-
+ arch/arm64/kvm/mmu.c                 |  197 +++-
+ arch/arm64/kvm/psci.c                |   15 +-
+ arch/arm64/kvm/reset.c               |   13 +-
+ arch/arm64/kvm/rmi-exit.c            |  215 ++++
+ arch/arm64/kvm/rmi.c                 | 1401 ++++++++++++++++++++++++++
+ arch/arm64/kvm/sys_regs.c            |   47 +-
+ arch/arm64/kvm/vgic/vgic-init.c      |    2 +-
+ arch/arm64/mm/fault.c                |   28 +-
+ include/kvm/arm_arch_timer.h         |    2 +
+ include/kvm/arm_psci.h               |    2 +
+ include/uapi/linux/kvm.h             |   20 +-
+ 32 files changed, 4122 insertions(+), 94 deletions(-)
+ create mode 100644 arch/arm64/include/asm/kvm_rmi.h
+ create mode 100644 arch/arm64/include/asm/rmi_cmds.h
+ create mode 100644 arch/arm64/include/asm/rmi_smc.h
+ create mode 100644 arch/arm64/kernel/rmi.c
+ create mode 100644 arch/arm64/kvm/rmi-exit.c
+ create mode 100644 arch/arm64/kvm/rmi.c
+
+-- 
+2.43.0
+
