@@ -1,145 +1,224 @@
-Received: from mail-dl1-f43.google.com (mail-dl1-f43.google.com [74.125.82.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFD0442EED9
-	for <kvm@vger.kernel.org>; Wed, 13 May 2026 12:49:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E14944C77A5;
+	Wed, 13 May 2026 12:49:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778676549; cv=none; b=OKtbus9Mc/e+8MfDdiI4XwwikE88WBZy3DXdQ4Uwtzfv/xtf2N5LSshlZOyxcdo8uiBvDxpxqjhiuBqGmx1+gKx9sEtJhVI3enOE1+CYkdTafdA2eCo8hxjiacSAayXzCWwzigfIwOMkXsZucMirrRUWk7+Uj5H10OjxDVxX6WM=
+	t=1778676593; cv=none; b=WrwA6CEeMkytUpCixZK6wtYNBy/9MdYfVvxdl3+jJjjY41MUzeDYsD4U1vBdwC0o8x57jVAS020eriE1CLM61hHIS/+JUPpfp5Fzud+I2BISiGMMXiarFrvfRG9UDKXfa3qrb2gvGtBuFZsONh/VODIX4kmPrI8TRSsAM7QU1BE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778676549; c=relaxed/simple;
-	bh=msb6kSwfYjtLrK6yh4A/4jW6Efwpn03Z7DhCQJ9v1j8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=qNuV8NVN6So0mJabyZstt4/OuvylSMF+nDoCbvKGrK16+GACc3sFw9GPRf5tdP6u2Z8rJgjPIgHLav1Y2dN1AKOqcoDUlnorf46HP2mfwvQ+tYJf67/dYPkZA0atAygl75taDDakPZti9jcxA/TRX8V7CkpywVLWjFFCJfa4hqY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Uo9s1RH1; arc=none smtp.client-ip=74.125.82.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778676593; c=relaxed/simple;
+	bh=oqqsZPRIOAYF1RAVvp5pmi6HIhUQ2sGPQHoiMdrWBPU=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rmtCkmyT2PcIg/tjvgcQ6jOJY2Rw5uB+MDkoDakNb74n2sdJDNg3H89FHR4F3FNGOxdn/mPCipro9diBZ6R3EVW4uauMdTdVpn3nQ13FjQQGggmJmxoFSV8axuu5cc4A56KgLt4fJlh2EhRFZDEfT5+LNy8lenIFUcjGBLxkYnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=c8V6U82l; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Uo9s1RH1"
-Received: by mail-dl1-f43.google.com with SMTP id a92af1059eb24-132c338a537so2695956c88.0
-        for <kvm@vger.kernel.org>; Wed, 13 May 2026 05:49:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778676547; x=1779281347; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Yuxzue6n4LxKbQsyok/03Qurt5Jav9jZzMMI1LVz9Kw=;
-        b=Uo9s1RH1Xd9WvH2CrmzbqCt9I7sYNknx7zujdeOkKh6i90STCYPqXZl5al2mp+FEs5
-         VHS2lZlbKEC4FAYQTzIzvd0vUxtPNMjJupvF/mWsZKpgtEf3VSWk3hTnwAhUFBcdXr79
-         7DxezbONgQxnWTZ3ORYWJirkMutiuzNMECOFLJdlndaRcoCzNNEeVEuSNLLxz5F/fEtF
-         tE8RbhjFcR9ihd411xUk74D5725ga8yLPG9UNJy4R9sCI+rmEepz1SMu1dDM/wuK1pv/
-         QQBgnUz7AsadUD8Xkqj/6JPzi8nUy5FQsjy1dQ/NFQZlVdlV+BP/yEqQVWi/Oi6QGZC1
-         K6LA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778676547; x=1779281347;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Yuxzue6n4LxKbQsyok/03Qurt5Jav9jZzMMI1LVz9Kw=;
-        b=coMCJPUFAhpskg7FZ1vb/y575vQMBAVTohzIhfJO5ShD3sC7dnpUDJswShahE3c07w
-         O5NKfGiirXW0P/hu+q+sSAT8K0wOtSVa65KaN0TY8A8AC6vvGYqgJTmw5St1JIhMGpUK
-         TYFXKNFDuMzXpGTxdnYdNoXSStJKH3LXZzShUsMoaYxHRvxzo4mNy3HcpLZgAn9QfN1D
-         bvG5hhs4d5SsmWyS94c4dwmEQWFnjFHfK69XcMQsf+0nRqWMtAptfYq4xoEXtD4pAbo6
-         X08OdppNZd0dGqE5cRykP4N++x0mrP3xOK7J113V+fWTZHQitVPHAjg1L26CVfkoGCOP
-         bUaw==
-X-Forwarded-Encrypted: i=1; AFNElJ8NuzMCYIM53jTZQoj4fQzIJUKqNpDhaF7tZgWSSdl8JqvWKAVN8embe4PCc1JVTTEGCOU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz8xLJNlhzcQl4TLNf11cjmtKkZsQToB+igBwpYwFLUmUpssjNP
-	wYCAD6ZWLH/ljW1bDmbyaUVppBFpzf0h4EIBnhEIbedxLQ/ezKc9kdIg
-X-Gm-Gg: Acq92OEsvHMjpcVSmhBNu6pDcbktkNqzGiFVxziT1Txjtrw3YeT0NuwYBmRekS+BB5J
-	5YGq0Ktnph7pU2/ZBZTKm+gIVRQeussbk+1pU7PXPjsLblP+58W3XxYVU3wV9wTVAmCBxiY/XoN
-	q05SXm0Q28emBazxuwaPeECbcgR/sqlsTtwU5ZbH8C4Uj/lTbKVgzTScmPUh7xu0dff1O9m8797
-	81zCLfskoBSOEDIayMCzN0iSqqxsHqYvHLPADZ761ubxjwhamzmSToOZVjyB+RwT5f579W/jMYX
-	lOa9F88AM9OzZ2sI/6cD7QdC4uSMhNEUOF4X45DwJY3knaVM536wpYzRvdCsHgTVmUwEv9CEVJc
-	uOo400X0CffLqlVedhWk2ZsydzkrgiU/ZwvhwJrjToHd98ew5X5CBZaWFEb/1cRy2bfTAD1axrJ
-	/XN89bZAW1NGzihhmD7O+45bqsafMkGa/7ptskH2Fn
-X-Received: by 2002:a05:701b:2303:b0:134:74a6:7db1 with SMTP id a92af1059eb24-13474a67ecdmr911411c88.20.1778676546790;
-        Wed, 13 May 2026 05:49:06 -0700 (PDT)
-Received: from ewan-server.zhaoxin.com ([154.26.185.247])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-134b4e153dbsm1066142c88.12.2026.05.13.05.49.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2026 05:49:06 -0700 (PDT)
-From: Ewan Hai <ewandevelop@gmail.com>
-To: seanjc@google.com,
-	pbonzini@redhat.com,
-	tglx@kernel.org,
-	mingo@redhat.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	hpa@zytor.com,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="c8V6U82l"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D063C32781;
+	Wed, 13 May 2026 12:49:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778676592;
+	bh=oqqsZPRIOAYF1RAVvp5pmi6HIhUQ2sGPQHoiMdrWBPU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=c8V6U82lodLIaCCCqqXhTEnJJDB60lziNiL/BKaOSyMllAXdLmmwu4MhGMOdQJ53d
+	 41wh5HbFrWhozWTC4oiPv3U3vBZG0dfdUJcYf9BQX5XXLnJfEaUTpBEoWcNYe3eBWT
+	 8qwFvWZLtFt0/p440elC97hcmGDNhT70RTqa3HumZXQBM58E+BoOJ/0Jns+Pl1u66d
+	 3itfPDTJ5BjuwW4ZxCe+qn0APckd8fzvcQdmwE0dQcZwfk3E1Wu3w0dnZQWTyPpxuK
+	 lrjhF5sL8Usff+i8FAEUdXRrIDfpSPq3OLdbVbysNdNrGU+KhsJg/bUB6xCB0MkVKV
+	 WotvW480QMeoQ==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wN925-00000001ycI-320H;
+	Wed, 13 May 2026 12:49:49 +0000
+Date: Wed, 13 May 2026 13:49:49 +0100
+Message-ID: <86cxyzxymq.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: kvmarm@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
 	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: cobechen@zhaoxin.com,
-	tonywwang@zhaoxin.com
-Subject: [PATCH v1 5/5] KVM: x86: Expose Zhaoxin RSA CPUID feature
-Date: Wed, 13 May 2026 20:48:46 +0800
-Message-Id: <20260513124846.1622462-6-ewandevelop@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20260513124846.1622462-1-ewandevelop@gmail.com>
-References: <20260513124846.1622462-1-ewandevelop@gmail.com>
+	Steffen Eiden <seiden@linux.ibm.com>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Will Deacon <will@kernel.org>,
+	Fuad Tabba <tabba@google.com>
+Subject: Re: [PATCH 2/2] KVM: arm64: nv: Don't save/restore FP register during a nested ERET or exception
+In-Reply-To: <agRuiKHWWn_88YzT@J2N7QTR9R3>
+References: <20260512140755.3676306-1-maz@kernel.org>
+	<20260512140755.3676306-3-maz@kernel.org>
+	<agRuiKHWWn_88YzT@J2N7QTR9R3>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: mark.rutland@arm.com, kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org, seiden@linux.ibm.com, joey.gouly@arm.com, suzuki.poulose@arm.com, oupton@kernel.org, yuzenghui@huawei.com, will@kernel.org, tabba@google.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-Advertise the Zhaoxin big-number arithmetic engine to guests via
-CPUID 0xC0000001 EDX bits 27 (RSA) and 28 (RSA_EN). The RSA feature
-provides two user-mode instructions for modular arithmetic on big
-integers, documented in the Zhaoxin PadLock Instruction Reference,
-chapter 4 ("Modular Multiplication and Exponentiation Engine"). Both
-support operand sizes from 256 to 32768 bits (in 128-bit increments):
+Hi Mark,
 
-  - REP XMODEXP  (encoding F3 0F A6 F8, subsection 4.1) computes
-    A^B mod M
-  - REP MONTMUL2 (encoding F3 0F A6 F0, subsection 4.2) computes
-    A*B mod M
+Thanks for looking into this.
 
-REP MONTMUL2 is the long-mode replacement of legacy REP MONTMUL, which
-is restricted to compatibility and 32-bit protected modes. These
-primitives accelerate RSA and related public-key operations.
+On Wed, 13 May 2026 13:28:56 +0100,
+Mark Rutland <mark.rutland@arm.com> wrote:
+> 
+> On Tue, May 12, 2026 at 03:07:55PM +0100, Marc Zyngier wrote:
+> > When switching between L1 and L2, we diligently use a non-preemptible
+> > put/load sequence in order to make sure that the old state is saved,
+> > while the new state is brought in. Crucially, this includes the FP
+> > registers.
+> > 
+> > However, this is a bit silly. The FP registers are completely shared
+> > between the various ELs (just like the GPRs, really), and eagerly
+> > save/restoring those in a non-preemptible section is just overhead.
+> > Not to mention that the next access will end-up trapping, something
+> > that becomes exponentially expensive as we nest deeper.
+> > 
+> > The temptation is therefore to completely drop this save/restore thing.
+> > Why is it valid to do so? By analogy, the hypervisor doesn't try to
+> > poloce things between EL1 and EL0, or between EL2 and EL0. Why should
+> > it do so between EL2 and EL1 (or EL2 and L2 EL0)?
+> >
+> > Once you admit that the FP (and by extension SVE) registers are EL-agnostic,
+> > the things that matter are:
+> 
+> s/poloce/police/ ?
 
-Both instructions are user-mode and available in all CPU modes, with no
-associated MSR control. The RSA and RSA_EN bits are redundant by
-hardware design (set or cleared together) and both serve purely as
-CPUID-level feature-presence reporting flags requiring no KVM
-emulation. Both bits are advertised because different software may
-probe either one when checking for RSA availability.
+That.
 
-Signed-off-by: Ewan Hai <ewandevelop@gmail.com>
----
- arch/x86/kvm/cpuid.c         | 2 ++
- arch/x86/kvm/reverse_cpuid.h | 2 ++
- 2 files changed, 4 insertions(+)
+> 
+> The above is a bit flowery; it would be nice to remove the rhetorical
+> questions and just state that (aside from some control registers) the
+> FPSIMD/SVE/SME state is shared between exception levels and doesn't need
+> to be saved/restored.
+> 
+> How about:
+> 
+>   When switching between L1 and L2, we save the old state using
+>   kvm_arch_vcpu_put(), mutate the state in memory, then load the new
+>   state using kvm_arch_vcpu_load(). Any live FPSIMD/SVE state is saved
+>   and unbound, such that it can be lazily restored on a subsequent trap.
+> 
+>   The FPSIMD/SVE state is shared by exception levels, and only a handful
+>   of related control registers need to be changed when transitioning
+>   between L1 and L2. The save/restore of the common state is needless
+>   overhead, especially as trapping becomes exponentially more expensive
+>   with nesting.
+> 
+>   Avoid this overhead by leaving the common FPSIMD/SVE state live on the
+>   CPU, and only switching the state that is distinct for L1 and L2:
+>
 
-diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index 3fb81f7a6107..94ea9abae566 100644
---- a/arch/x86/kvm/cpuid.c
-+++ b/arch/x86/kvm/cpuid.c
-@@ -1290,6 +1290,8 @@ void kvm_initialize_cpu_caps(void)
- 		F(RNG2_EN),
- 		F(PHE2),
- 		F(PHE2_EN),
-+		F(RSA),
-+		F(RSA_EN),
- 	);
- 
- 	/*
-diff --git a/arch/x86/kvm/reverse_cpuid.h b/arch/x86/kvm/reverse_cpuid.h
-index f28300c2d5e0..0df96ff9515c 100644
---- a/arch/x86/kvm/reverse_cpuid.h
-+++ b/arch/x86/kvm/reverse_cpuid.h
-@@ -85,6 +85,8 @@
- #define X86_FEATURE_RNG2_EN		KVM_X86_FEATURE(CPUID_C000_0001_EDX, 23)
- #define X86_FEATURE_PHE2		KVM_X86_FEATURE(CPUID_C000_0001_EDX, 25)
- #define X86_FEATURE_PHE2_EN		KVM_X86_FEATURE(CPUID_C000_0001_EDX, 26)
-+#define X86_FEATURE_RSA			KVM_X86_FEATURE(CPUID_C000_0001_EDX, 27)
-+#define X86_FEATURE_RSA_EN		KVM_X86_FEATURE(CPUID_C000_0001_EDX, 28)
- 
- struct cpuid_reg {
- 	u32 function;
+Sold. Do you offer a CMAAS (Commit Message As A Service)? Asking for a
+friend... ;-)
+
+> > - the trap controls: the effective values are recomputed on each entry
+> >   into the guest to take the EL into account and merge the L0 and L1
+> >   configuration if in a nested context, or directly use the L0 configuration
+> >   in non-nested context (see __activate_traps()).
+> > 
+> > - the VL settings: the effective values are are also recomputed on each
+> >   entry into the guest (see fpsimd_lazy_switch_to_guest()).
+> 
+> This is true for FPSIMD+SVE today. For SME, SMCR_ELx also contains other
+> controls, and will need to be dealt with similarly. It might be worth
+> noting that (and that ZCR_ELx could gain new controls in future).
+>
+
+Yeah. I tried not to worry too much about SME, but given that it is on
+people's radar, I'll drop a comment here.
+
+> > Since we appear to cover all bases, use the vcpu flags indicating the
+> > handling of a nested ERET or exception delivery to avoid the whole FP
+> > save/restore shenanigans.
+> > 
+> > For an EL1 L3 guest where L1 and L2 have this optimisation, this
+> > results in at least a 10% wall clock reduction when running an I/O
+> > heavy workload, generating a high rate of nested exceptions.
+> > 
+> > Signed-off-by: Marc Zyngier <maz@kernel.org>
+> > ---
+> >  arch/arm64/kvm/fpsimd.c | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> > 
+> > diff --git a/arch/arm64/kvm/fpsimd.c b/arch/arm64/kvm/fpsimd.c
+> > index 15e17aca1dec0..73eda0f46b127 100644
+> > --- a/arch/arm64/kvm/fpsimd.c
+> > +++ b/arch/arm64/kvm/fpsimd.c
+> > @@ -28,6 +28,10 @@ void kvm_arch_vcpu_load_fp(struct kvm_vcpu *vcpu)
+> >  	if (!system_supports_fpsimd())
+> >  		return;
+> >  
+> > +	if (vcpu_get_flag(vcpu, IN_NESTED_ERET) ||
+> > +	    vcpu_get_flag(vcpu, IN_NESTED_EXCEPTION))
+> > +		return;
+> > +
+> 
+> I think we need a comment as to why this is safe, with some other detail
+> from the commit message. It would also be good to have asserts here to
+> catch if something goes wrong.
+> 
+> How about:
+> 
+> 	/*
+> 	 * Avoid needless save/restore of the guest's common
+> 	 * FPSIMD/SVE/SME regs during transitions between L1/L2.
+> 	 *
+> 	 * These transitions only happens in a non-preemptible context
+> 	 * where the host regs have already been saved and unbound. The
+> 	 * live registers are either free or owned by the guest.
+> 	 */
+> 	if (vcpu_get_flag(vcpu, IN_NESTED_ERET) ||
+> 	    vcpu_get_flag(vcpu, IN_NESTED_EXCEPTION) {
+> 		WARN_ON_ONCE(host_owns_fp_regs());
+> 		return;
+> 	}
+> 
+> ... ?
+> 
+> Note: I didn't add WARN_ON_ONCE(preemptible()), since
+> kvm_arch_vcpu_load_fp() should *never* be called in a preemptible
+> context.
+> 
+> >  	/*
+> >  	 * Ensure that any host FPSIMD/SVE/SME state is saved and unbound such
+> >  	 * that the host kernel is responsible for restoring this state upon
+> > @@ -102,6 +106,10 @@ void kvm_arch_vcpu_put_fp(struct kvm_vcpu *vcpu)
+> >  {
+> >  	unsigned long flags;
+> >  
+> > +	if (vcpu_get_flag(vcpu, IN_NESTED_ERET) ||
+> > +	    vcpu_get_flag(vcpu, IN_NESTED_EXCEPTION))
+> > +		return;
+> 
+> Likewise here, but we can reduce the comment, e.g.
+> 
+> 	/*
+> 	 * See comment in kvm_arch_vcpu_load_fp().
+> 	 */
+> 	if (vcpu_get_flag(vcpu, IN_NESTED_ERET) ||
+> 	    vcpu_get_flag(vcpu, IN_NESTED_EXCEPTION) {
+> 		WARN_ON_ONCE(host_owns_fp_regs());
+> 		return;
+> 	}
+
+Yup, that all looks good to me. I'll repost that next week with these
+changes.
+
+Thanks again,
+
+	M.
+
 -- 
-2.34.1
-
+Without deviation from the norm, progress is not possible.
