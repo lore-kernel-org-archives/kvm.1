@@ -1,333 +1,90 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C81383314D9;
-	Wed, 13 May 2026 03:13:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B14939021B
+	for <kvm@vger.kernel.org>; Wed, 13 May 2026 03:57:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778641986; cv=none; b=nscUtMp3nlnV5hJLPITZzoBle67wl+0xX3zOXMQFa8HajQKEuOTt8T28N1zHlb+hTbi1hAcMd2TP1eLW7it8sxDYU1C4jid2PMaGcZ91rECiHAZsa9UGE/lGLewOcxA9Yd9eMKFU5t3sSN1ijeouNHrIXzzSWk+90r93tc9gpLA=
+	t=1778644674; cv=none; b=KlxeIqk2cE4VYunOyeeVGg+5YwZ9eh8emm0bRs8Wgp9bfcPMdHNYoYVfX0BvZU9DUgECDpE2xatSa8KyZbgw2BSAl3jv0Qr0nF4m4QWDSn9KdGzWr/AT/udLqb22wcq2AUAn48727L2kUCzaTk7ZMM9cnk/6VvagtF34vjlXS/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778641986; c=relaxed/simple;
-	bh=Y4Yrac6ZPe/TgKOOj4TCF7k9yx2DhqGjFqPUAK0TEUU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ecRvBbnYrsiArhPFRgrEtBjEmcipStsD28QMEcBTM26U6CAjx49hv3x9QEqqAdWGP3jNfjGclXHYso53R0TlBoA+ojVxcZuH1rrzope8wogQqnOziVl1Iu4kJSNtUk1Wum1Yw630vAkQHbDB2PLdmg1T1BvkeoJtrwJz7eouajg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [223.64.68.59])
-	by gateway (Coremail) with SMTP id _____8DxFOg87ANqjl4JAA--.22618S3;
-	Wed, 13 May 2026 11:13:00 +0800 (CST)
-Received: from kernelserver (unknown [223.64.68.59])
-	by front1 (Coremail) with SMTP id qMiowJAxlsA37ANq7M6AAA--.48424S2;
-	Wed, 13 May 2026 11:12:59 +0800 (CST)
-From: Huacai Chen <chenhuacai@loongson.cn>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Huacai Chen <chenhuacai@kernel.org>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>,
-	Bibo Mao <maobibo@loongson.cn>
-Cc: Xuerui Wang <kernel@xen0n.name>,
-	stable@vger.kernel.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Xianglai Li <lixianglai@loongson.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH for 6.18] LoongArch: KVM: Compile switch.S directly into the kernel
-Date: Wed, 13 May 2026 11:12:49 +0800
-Message-ID: <20260513031249.2122316-1-chenhuacai@loongson.cn>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1778644674; c=relaxed/simple;
+	bh=4KA02clBr2THgONP7amZfI1GsHfy0Il6SChMfUIqYZ8=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=Ntf7279xbb91teMzyC0HbFnQlhAnlmBDcc6x2+1O+3MQ9hTAtEkj4c4SUnU5GcNbyFed6KoozYJBgNXyjELALeewNDnlCEGBsllBSyHfp1nfDMx9FBTpJMH2V/+qxlwt23tbARHpEEkV9Pfv15fSv3nEoctqo14E9PZAyXW1qgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RvgW4Cii; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RvgW4Cii"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2b9fcf7c91bso63085745ad.0
+        for <kvm@vger.kernel.org>; Tue, 12 May 2026 20:57:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778644673; x=1779249473; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=4KA02clBr2THgONP7amZfI1GsHfy0Il6SChMfUIqYZ8=;
+        b=RvgW4Ciim1SX220fqVLkpRSWa8F8rGrsVdDVTvVtTFpfAbMUpumV2eDrS2zjiz4u5A
+         zYUtwtHfM6Nk83vDDcVcFCqm1BFuKqWY2FC1I3iV2X+5TXcL7Jk+4tnW+P4WTAzEDSOF
+         0bNipdM4ZFYlb9odNzAyKQhLQIgtNXCwJCVWFfJKGXVR1hmKELpted0ZvkBphUUS1Q56
+         sWmfjGOHGHNgQ81v+jejovN8vpPQ0rWAzPIPD1wd2vGGSvwEcIvgd+zfgULcLdfJ3pCe
+         dl1xc4IpgeGH3D6SxPr4KYxPiVb1Cs6492NB4K98jNNlhxjfgcwN2j6wIwfPprIL6/pn
+         BZnw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778644673; x=1779249473;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4KA02clBr2THgONP7amZfI1GsHfy0Il6SChMfUIqYZ8=;
+        b=qnRFOLm35N1uF+Wtvt7iIwA/MkEoxZNJ3+rB+3uswrUQhqCKlzc7sYJuZyk4aMAvzg
+         1FgJB7DPSYvxrKYSTJFgoXsr2nEuOqrVWFzGlUNb5epJfBtA8MQj/WgwQvDWk4M9uOq8
+         uWgst9Jvza+CwCn0fiCPFwc7Q3QB2tuDCYa8xJElC31iFTnllvxns5RsvcztNSN9LO4H
+         4TIbDYPRAc333rHG5PCby2W0d8FT+PKLJxVGSzEp/e/sxSxrNIrywzrqOJwF7NimBDer
+         Ee6tp5IfoA+zThPAMNAveWh8gns2/rR4uYgeDf1/815Sb3+JCBbrOiczABSthVCS9MW5
+         bYuQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9jt3U3n1/Wj/Bo9CMYVrjFUPUZob6MPDwNs7zOIt6/Bb73mPK9Q59Cp/2E6lIa+TOqtXc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCNZ4iq0WeFwSpGaV1DnubiCod4rhFyZNmGUI1oJtgQfxSH6uc
+	XM0I4utNOid5fYF7t5OaNdxCn68ipl0+H/8OE9TYX5rnRo4XO3PaRi+v
+X-Gm-Gg: Acq92OG1X7UCf/0sVDZXpWWt5rwmNmEDUFqHkPUFup1VdWAiH5dVO7iA/GdxIlV7ukl
+	3Q3/NUiG5k3aoUqkP9wDnI2UT43uB2N2MbA2aR9OyqA6svGTHTqVpXZgti34ewLvIKzEI0t4LM0
+	JtRb8M0Reg1f7K8XLq7Tx0ChtUn6ZzEhTiWEhY+8KT78Y/Fe6kwhDirubzx/LqUMeqZZr07atDh
+	2UjznAnpmxL06kC/HlrtmstAxN3KmsILMO8VFeufrQh9sje0SmO4phc4if9lAZHakkuZdV+Ivxb
+	EGzXJ9Nea4dGUmuwJSlYKaNFRG5KkGMp9ypnvKEizFoi1YG6wSlkOV8JxUqgSn2t0YrKtNV5PkH
+	Rv0X2MMP7ba4yBpovGSZh7IwslhC3k7GgvaxSaGoKSGAdSeSDadNNypYnWzEHmovF/Y76CjihK+
+	3Psqw1Bc7PEu/MSz8r828raFE8VPFxy5VD
+X-Received: by 2002:a17:902:ea12:b0:2ba:6ca2:bca with SMTP id d9443c01a7336-2bd302267e1mr11964095ad.26.1778644672563;
+        Tue, 12 May 2026 20:57:52 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2baf1eac6bcsm143075685ad.70.2026.05.12.20.57.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 12 May 2026 20:57:51 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Gautam Menghani <gautam@linux.ibm.com>, maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org
+Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, Gautam Menghani <gautam@linux.ibm.com>, Harsh Prateek Bora <harshpb@linux.ibm.com>, Amit Machhiwal <amachhiw@linux.ibm.com>, "Vaibhav Jain (IBM)" <vaibhav@linux.ibm.com>
+Subject: Re: [PATCH v3]  KVM: PPC: Book3S HV: Add missing mappings for tracing exits
+In-Reply-To: <20260512115724.59299-1-gautam@linux.ibm.com>
+Date: Wed, 13 May 2026 09:22:26 +0530
+Message-ID: <tsscq83p.ritesh.list@gmail.com>
+References: <20260512115724.59299-1-gautam@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAxlsA37ANq7M6AAA--.48424S2
-X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
-X-Coremail-Antispam: 1Uk129KBj93XoW3WF45Ar48ZrW3JF17Cr18CrX_yoWfXF13pa
-	sxArs5tF4rGFn3XryDJ3WDXr98Xw4vgr1I9Fy2y3yrCr129ry5ZF1ktrWDXFy0kw4kJF4F
-	vFyrXwnavFyDJabCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUkYb4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r106r15M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6r4UJVWxJr1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27w
-	Aqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JF0_Jw1lYx0Ex4A2jsIE
-	14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwCF04k20xvY0x
-	0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
-	7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcV
-	C0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF
-	04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7
-	CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8wNVDUUUUU==
 
-From: Xianglai Li <lixianglai@loongson.cn>
+Gautam Menghani <gautam@linux.ibm.com> writes:
 
-commit 5203012fa6045aac4b69d4e7c212e16dcf38ef10 upstream.
+> The macro kvm_trace_symbol_exit is used for providing the mappings
+> for the trap vectors and their names. Add mappings for H_FAC_UNAVAIL and
+> RETURN_TO_HOST so that trap reasons are displayed as string instead of
+> vector numbers when using the kvm_guest_exit tracepoint.
+>
 
-If we directly compile the switch.S file into the kernel, the address of
-the kvm_exc_entry function will definitely be within the DMW memory area.
-Therefore, we will no longer need to perform a copy relocation of the
-kvm_exc_entry.
+LGTM. Please feel free to add:
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-So this patch compiles switch.S directly into the kernel, and then remove
-the copy relocation execution logic for the kvm_exc_entry function.
+Minor nit: It's generally simpler for everyone to keep the related
+patches belonging to a common maintainer tree in one series. For
+example, we could have grouped patch [1] with the current patch into one
+series to keep them together.
 
-Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
----
- arch/loongarch/Kbuild                       |  2 +-
- arch/loongarch/include/asm/asm-prototypes.h | 20 ++++++++++++
- arch/loongarch/include/asm/kvm_host.h       |  3 --
- arch/loongarch/kvm/Makefile                 |  3 +-
- arch/loongarch/kvm/main.c                   | 35 ++-------------------
- arch/loongarch/kvm/switch.S                 | 20 +++++++++---
- 6 files changed, 41 insertions(+), 42 deletions(-)
+[1]: https://lore.kernel.org/linuxppc-dev/20260511080412.50722-1-Gautam.Menghani@ibm.com/
 
-diff --git a/arch/loongarch/Kbuild b/arch/loongarch/Kbuild
-index beb8499dd8ed..1c7a0dbe5e72 100644
---- a/arch/loongarch/Kbuild
-+++ b/arch/loongarch/Kbuild
-@@ -3,7 +3,7 @@ obj-y += mm/
- obj-y += net/
- obj-y += vdso/
- 
--obj-$(CONFIG_KVM) += kvm/
-+obj-$(subst m,y,$(CONFIG_KVM)) += kvm/
- 
- # for cleaning
- subdir- += boot
-diff --git a/arch/loongarch/include/asm/asm-prototypes.h b/arch/loongarch/include/asm/asm-prototypes.h
-index 704066b4f736..de0c17f3f49c 100644
---- a/arch/loongarch/include/asm/asm-prototypes.h
-+++ b/arch/loongarch/include/asm/asm-prototypes.h
-@@ -20,3 +20,23 @@ asmlinkage void noinstr __no_stack_protector ret_from_kernel_thread(struct task_
- 								    struct pt_regs *regs,
- 								    int (*fn)(void *),
- 								    void *fn_arg);
-+
-+struct kvm_run;
-+struct kvm_vcpu;
-+struct loongarch_fpu;
-+
-+void kvm_exc_entry(void);
-+int  kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu *vcpu);
-+
-+void kvm_save_fpu(struct loongarch_fpu *fpu);
-+void kvm_restore_fpu(struct loongarch_fpu *fpu);
-+
-+#ifdef CONFIG_CPU_HAS_LSX
-+void kvm_save_lsx(struct loongarch_fpu *fpu);
-+void kvm_restore_lsx(struct loongarch_fpu *fpu);
-+#endif
-+
-+#ifdef CONFIG_CPU_HAS_LASX
-+void kvm_save_lasx(struct loongarch_fpu *fpu);
-+void kvm_restore_lasx(struct loongarch_fpu *fpu);
-+#endif
-diff --git a/arch/loongarch/include/asm/kvm_host.h b/arch/loongarch/include/asm/kvm_host.h
-index 130cedbb6b39..776bc487a705 100644
---- a/arch/loongarch/include/asm/kvm_host.h
-+++ b/arch/loongarch/include/asm/kvm_host.h
-@@ -87,7 +87,6 @@ struct kvm_context {
- struct kvm_world_switch {
- 	int (*exc_entry)(void);
- 	int (*enter_guest)(struct kvm_run *run, struct kvm_vcpu *vcpu);
--	unsigned long page_order;
- };
- 
- #define MAX_PGTABLE_LEVELS	4
-@@ -359,8 +358,6 @@ void kvm_exc_entry(void);
- int  kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu *vcpu);
- 
- extern unsigned long vpid_mask;
--extern const unsigned long kvm_exception_size;
--extern const unsigned long kvm_enter_guest_size;
- extern struct kvm_world_switch *kvm_loongarch_ops;
- 
- #define SW_GCSR		(1 << 0)
-diff --git a/arch/loongarch/kvm/Makefile b/arch/loongarch/kvm/Makefile
-index ae469edec99c..a4d044da3aa7 100644
---- a/arch/loongarch/kvm/Makefile
-+++ b/arch/loongarch/kvm/Makefile
-@@ -7,11 +7,12 @@ include $(srctree)/virt/kvm/Makefile.kvm
- 
- obj-$(CONFIG_KVM) += kvm.o
- 
-+obj-y += switch.o
-+
- kvm-y += exit.o
- kvm-y += interrupt.o
- kvm-y += main.o
- kvm-y += mmu.o
--kvm-y += switch.o
- kvm-y += timer.o
- kvm-y += tlb.o
- kvm-y += vcpu.o
-diff --git a/arch/loongarch/kvm/main.c b/arch/loongarch/kvm/main.c
-index a75c9b9e53ff..24553fe34979 100644
---- a/arch/loongarch/kvm/main.c
-+++ b/arch/loongarch/kvm/main.c
-@@ -348,8 +348,7 @@ void kvm_arch_disable_virtualization_cpu(void)
- 
- static int kvm_loongarch_env_init(void)
- {
--	int cpu, order, ret;
--	void *addr;
-+	int cpu, ret;
- 	struct kvm_context *context;
- 
- 	vmcs = alloc_percpu(struct kvm_context);
-@@ -365,30 +364,8 @@ static int kvm_loongarch_env_init(void)
- 		return -ENOMEM;
- 	}
- 
--	/*
--	 * PGD register is shared between root kernel and kvm hypervisor.
--	 * So world switch entry should be in DMW area rather than TLB area
--	 * to avoid page fault reenter.
--	 *
--	 * In future if hardware pagetable walking is supported, we won't
--	 * need to copy world switch code to DMW area.
--	 */
--	order = get_order(kvm_exception_size + kvm_enter_guest_size);
--	addr = (void *)__get_free_pages(GFP_KERNEL, order);
--	if (!addr) {
--		free_percpu(vmcs);
--		vmcs = NULL;
--		kfree(kvm_loongarch_ops);
--		kvm_loongarch_ops = NULL;
--		return -ENOMEM;
--	}
--
--	memcpy(addr, kvm_exc_entry, kvm_exception_size);
--	memcpy(addr + kvm_exception_size, kvm_enter_guest, kvm_enter_guest_size);
--	flush_icache_range((unsigned long)addr, (unsigned long)addr + kvm_exception_size + kvm_enter_guest_size);
--	kvm_loongarch_ops->exc_entry = addr;
--	kvm_loongarch_ops->enter_guest = addr + kvm_exception_size;
--	kvm_loongarch_ops->page_order = order;
-+	kvm_loongarch_ops->exc_entry = (void *)kvm_exc_entry;
-+	kvm_loongarch_ops->enter_guest = (void *)kvm_enter_guest;
- 
- 	vpid_mask = read_csr_gstat();
- 	vpid_mask = (vpid_mask & CSR_GSTAT_GIDBIT) >> CSR_GSTAT_GIDBIT_SHIFT;
-@@ -428,16 +405,10 @@ static int kvm_loongarch_env_init(void)
- 
- static void kvm_loongarch_env_exit(void)
- {
--	unsigned long addr;
--
- 	if (vmcs)
- 		free_percpu(vmcs);
- 
- 	if (kvm_loongarch_ops) {
--		if (kvm_loongarch_ops->exc_entry) {
--			addr = (unsigned long)kvm_loongarch_ops->exc_entry;
--			free_pages(addr, kvm_loongarch_ops->page_order);
--		}
- 		kfree(kvm_loongarch_ops);
- 	}
- 
-diff --git a/arch/loongarch/kvm/switch.S b/arch/loongarch/kvm/switch.S
-index f1768b7a6194..6fa5928b3ca6 100644
---- a/arch/loongarch/kvm/switch.S
-+++ b/arch/loongarch/kvm/switch.S
-@@ -4,9 +4,11 @@
-  */
- 
- #include <linux/linkage.h>
-+#include <linux/kvm_types.h>
- #include <asm/asm.h>
- #include <asm/asmmacro.h>
- #include <asm/loongarch.h>
-+#include <asm/page.h>
- #include <asm/regdef.h>
- #include <asm/unwind_hints.h>
- 
-@@ -100,8 +102,13 @@
- 	 *  -        is still in guest mode, such as pgd table/vmid registers etc,
- 	 *  -        will fix with hw page walk enabled in future
- 	 * load kvm_vcpu from reserved CSR KVM_VCPU_KS, and save a2 to KVM_TEMP_KS
-+	 *
-+	 * PGD register is shared between root kernel and kvm hypervisor.
-+	 * So world switch entry should be in DMW area rather than TLB area
-+	 * to avoid page fault re-enter.
- 	 */
- 	.text
-+	.p2align PAGE_SHIFT
- 	.cfi_sections	.debug_frame
- SYM_CODE_START(kvm_exc_entry)
- 	UNWIND_HINT_UNDEFINED
-@@ -190,8 +197,8 @@ ret_to_host:
- 	kvm_restore_host_gpr    a2
- 	jr      ra
- 
--SYM_INNER_LABEL(kvm_exc_entry_end, SYM_L_LOCAL)
- SYM_CODE_END(kvm_exc_entry)
-+EXPORT_SYMBOL_GPL(kvm_exc_entry)
- 
- /*
-  * int kvm_enter_guest(struct kvm_run *run, struct kvm_vcpu *vcpu)
-@@ -215,8 +222,8 @@ SYM_FUNC_START(kvm_enter_guest)
- 	/* Save kvm_vcpu to kscratch */
- 	csrwr	a1, KVM_VCPU_KS
- 	kvm_switch_to_guest
--SYM_INNER_LABEL(kvm_enter_guest_end, SYM_L_LOCAL)
- SYM_FUNC_END(kvm_enter_guest)
-+EXPORT_SYMBOL_GPL(kvm_enter_guest)
- 
- SYM_FUNC_START(kvm_save_fpu)
- 	fpu_save_csr	a0 t1
-@@ -224,6 +231,7 @@ SYM_FUNC_START(kvm_save_fpu)
- 	fpu_save_cc	a0 t1 t2
- 	jr              ra
- SYM_FUNC_END(kvm_save_fpu)
-+EXPORT_SYMBOL_GPL(kvm_save_fpu)
- 
- SYM_FUNC_START(kvm_restore_fpu)
- 	fpu_restore_double a0 t1
-@@ -231,6 +239,7 @@ SYM_FUNC_START(kvm_restore_fpu)
- 	fpu_restore_cc	   a0 t1 t2
- 	jr                 ra
- SYM_FUNC_END(kvm_restore_fpu)
-+EXPORT_SYMBOL_GPL(kvm_restore_fpu)
- 
- #ifdef CONFIG_CPU_HAS_LSX
- SYM_FUNC_START(kvm_save_lsx)
-@@ -239,6 +248,7 @@ SYM_FUNC_START(kvm_save_lsx)
- 	lsx_save_data   a0 t1
- 	jr              ra
- SYM_FUNC_END(kvm_save_lsx)
-+EXPORT_SYMBOL_GPL(kvm_save_lsx)
- 
- SYM_FUNC_START(kvm_restore_lsx)
- 	lsx_restore_data a0 t1
-@@ -246,6 +256,7 @@ SYM_FUNC_START(kvm_restore_lsx)
- 	fpu_restore_csr  a0 t1 t2
- 	jr               ra
- SYM_FUNC_END(kvm_restore_lsx)
-+EXPORT_SYMBOL_GPL(kvm_restore_lsx)
- #endif
- 
- #ifdef CONFIG_CPU_HAS_LASX
-@@ -255,6 +266,7 @@ SYM_FUNC_START(kvm_save_lasx)
- 	lasx_save_data  a0 t1
- 	jr              ra
- SYM_FUNC_END(kvm_save_lasx)
-+EXPORT_SYMBOL_GPL(kvm_save_lasx)
- 
- SYM_FUNC_START(kvm_restore_lasx)
- 	lasx_restore_data a0 t1
-@@ -262,10 +274,8 @@ SYM_FUNC_START(kvm_restore_lasx)
- 	fpu_restore_csr   a0 t1 t2
- 	jr                ra
- SYM_FUNC_END(kvm_restore_lasx)
-+EXPORT_SYMBOL_GPL(kvm_restore_lasx)
- #endif
--	.section ".rodata"
--SYM_DATA(kvm_exception_size, .quad kvm_exc_entry_end - kvm_exc_entry)
--SYM_DATA(kvm_enter_guest_size, .quad kvm_enter_guest_end - kvm_enter_guest)
- 
- #ifdef CONFIG_CPU_HAS_LBT
- STACK_FRAME_NON_STANDARD kvm_restore_fpu
--- 
-2.52.0
-
+-ritesh
