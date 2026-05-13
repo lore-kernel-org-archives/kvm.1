@@ -1,164 +1,78 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FD57083C;
-	Wed, 13 May 2026 06:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FD23D3D15;
+	Wed, 13 May 2026 06:35:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778653906; cv=none; b=WsVKmwB8lzeXLIOW3nhdwQySiy9J/M48XBvIeZwVN8MW45G2naBVdjzEoNFIdoLdGsxyVWildy/BKmrtwngrE56m1892KVg9+8//7Bpbkt2/u7Kd+fpaM2ZaQ4o1s4hDq/TQcPFpzqZQOdpD3BaWSVweyn8GHqlRLtUdPZWaa7Q=
+	t=1778654136; cv=none; b=YjbjTJy+GPSXYej9W5WN4zTMEgeO17nUILEzhTh/71ejBb+BKk/PyYIsQH5ljpJ9A9FJkuXreaHm7lCLrhcQu/URadWBVxK1LzP9xlIqhxHA0H1mHgXSSDVxUrbcVQiDE9KDW68mmZUgnxI+RATSbmzubwFrASCheSfe4CtX3h0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778653906; c=relaxed/simple;
-	bh=dVOFz/bl1fNPd0bokrJcl/tAwN7bpIUq/3LFpzWp43Y=;
+	s=arc-20240116; t=1778654136; c=relaxed/simple;
+	bh=IAtQt9XJAxWCq1fOQbZ3l8tlNnaOP8cqwO/8STamx2M=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rVpjs27UKJkpJ22k5Ib9h1vYjWVZiF1hMSFsseVN7QS9fItJFvT6/qerCKa8JyDi5T6KcBiEUFbknPL7Vu7+dIOeSNUH5d5DYbzlrwlrKgBQV4Ykkq2KHBodPgli6z9ehmnBJFeJvkhFeU+Komf/eZfybaLniIT2O0GqZKTpf6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uqdZ45UX; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=WE5XTPiqiTPX1qQne1rVcJv3W1gkPIQpoSkSzXNuMuWZIR7+2zuIyhdK4StNDTLC2lCeLcDR+rNo7E/BBGyk23KYUbVIyVSeFi2TIBZQq1487SVaWYDZHWHq/99I31pR/fDImNOQiRl6xsW5xjrT58OsfhFo7iSJYTE9o88tnkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gvlntJBx; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uqdZ45UX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F359C2BCB7;
-	Wed, 13 May 2026 06:31:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gvlntJBx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A3FC2BCB7;
+	Wed, 13 May 2026 06:35:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778653906;
-	bh=dVOFz/bl1fNPd0bokrJcl/tAwN7bpIUq/3LFpzWp43Y=;
+	s=k20201202; t=1778654136;
+	bh=IAtQt9XJAxWCq1fOQbZ3l8tlNnaOP8cqwO/8STamx2M=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uqdZ45UXAX1WAlZgKRMy0HztMJ7Bdo6H23kfG1Whj8GIFyR5UFFzqD0wF96AALbn2
-	 vzWEVoeaF5HNiu6zoy8+UpVk2pCgEy8Ilm+Om3XBiPq17bi/3Q+f86U6dB+XZUwz0Q
-	 sY/IiNQDMMnW5KQKuJQtzdFi86MrtfXTn1ZaOyFYof+QG5XRPsU9ojAbP0cedXUj2Z
-	 Biqu1EVdKMgwKlN0GDy37F0FxemOLyCn9HXCFY05bF257zs09G9nQnekx+/mY6+18A
-	 v6QBVgJqZ1whX1koob6aDDsbx1mFUDt4NrPxgBHO8EYgE+x3xOEwXAXFqSY/AdLCOg
-	 ZCqRoM7ND7KMA==
-Date: Wed, 13 May 2026 09:31:41 +0300
-From: Leon Romanovsky <leon@kernel.org>
-To: Zhiping Zhang <zhipingz@meta.com>
-Cc: fengchengwen <fengchengwen@huawei.com>,
-	Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Bjorn Helgaas <helgaas@kernel.org>, linux-rdma@vger.kernel.org,
-	linux-pci@vger.kernel.org, netdev@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, Keith Busch <kbusch@kernel.org>,
-	Yochai Cohen <yochai@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] vfio: add dma-buf get_tph callback and
- DMA_BUF_TPH feature
-Message-ID: <20260513063141.GC15586@unreal>
-References: <20260430200704.352228-1-zhipingz@meta.com>
- <20260430200704.352228-2-zhipingz@meta.com>
- <09995589-b81d-4cb7-a313-15a943d8b28d@huawei.com>
- <CAH3zFs2x2QebpqDC0qwQg_GP2FVs-qqNxPupck40cEHNrBMEsA@mail.gmail.com>
+	b=gvlntJBxEylbcwwc/qBvqoGrcHgelWU8QiX0aoEAp2Z2WNu1Ov1pRKbOF5oG2Ksbb
+	 npWiUUP6+t4AnEd60tOCLk3gpdgUj1qk4Z6AUQo+nTjRw+i0INnVNT39P33TP5HUAp
+	 K85i09ROj+EcMItGmlb2SbwYeLkOuOqY6gb22nN4BEWaaBk4lsYId/9rsQMywbyHm8
+	 JmCpyMOMGpFT3e9/QPfwPbg7tdJglyTFVAV0tZrr3UVhhArN1T+aCGOHKABsh9si7+
+	 IqYtFeYgYhTsmBhQOL2IUYHaDKgRMJaDsjAc3VF0Wud9Ge9PEZvDSZISXZQsfRIw1U
+	 vHKcq6qWpedmA==
+Date: Wed, 13 May 2026 11:59:13 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 3/5] KVM: SVM: Only disable x2AVIC WRMSR interception
+ for MSRs that are accelerated
+Message-ID: <agQKffJ5Mp-5ussq@blrnaveerao1>
+References: <20260506184746.2719880-1-seanjc@google.com>
+ <20260506184746.2719880-4-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH3zFs2x2QebpqDC0qwQg_GP2FVs-qqNxPupck40cEHNrBMEsA@mail.gmail.com>
+In-Reply-To: <20260506184746.2719880-4-seanjc@google.com>
 
-On Wed, May 06, 2026 at 11:23:19AM -0700, Zhiping Zhang wrote:
-> On Tue, May 5, 2026 at 11:58 PM fengchengwen <fengchengwen@huawei.com> wrote:
-> >
-> > >
-> > On 5/1/2026 4:06 AM, Zhiping Zhang wrote:
-> > > Add a dma-buf callback that returns raw TPH metadata from the exporter
-> > > so peer devices can reuse the steering tag and processing hint
-> > > associated with a VFIO-exported buffer.
-> > >
-> > > Add a new VFIO_DEVICE_FEATURE_DMA_BUF_TPH ioctl that takes the fd from
-> > > VFIO_DEVICE_FEATURE_DMA_BUF along with a steering tag and processing
-> > > hint, validates the fd is a vfio-exported dma-buf belonging to this
-> > > device, and stores the TPH values under memory_lock. This keeps the
-> > > existing VFIO_DEVICE_FEATURE_DMA_BUF uAPI completely unchanged.
-> > >
-> > > The user sequences setting TPH on the dma-buf before the importer
-> > > consumes it.
-> > >
-> > > Add an st_width parameter to get_tph() so the exporter can reject
-> > > steering tags that exceed the consumer's supported width (8 vs 16 bit).
-> > > When no TPH metadata was supplied, get_tph() returns -EOPNOTSUPP.
-> > >
-> > > Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
-> > >
-> > > diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> > > --- a/drivers/vfio/pci/vfio_pci_core.c
-> > > +++ b/drivers/vfio/pci/vfio_pci_core.c
-> > > @@ -1534,6 +1534,9 @@ int vfio_pci_core_ioctl_feature(struct vfio_device *device, u32 flags,
-> > >               return vfio_pci_core_feature_token(vdev, flags, arg, argsz);
-> > >       case VFIO_DEVICE_FEATURE_DMA_BUF:
-> > >               return vfio_pci_core_feature_dma_buf(vdev, flags, arg, argsz);
-> > > +     case VFIO_DEVICE_FEATURE_DMA_BUF_TPH:
-> > > +             return vfio_pci_core_feature_dma_buf_tph(vdev, flags, arg,
-> > > +                                                      argsz);
-> > >       default:
-> > >               return -ENOTTY;
-> > >       }
-> > > diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> > > --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-> > > +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> > > @@ -19,6 +19,9 @@ struct vfio_pci_dma_buf {
-> > >       u32 nr_ranges;
-> > >       struct kref kref;
-> > >       struct completion comp;
-> > > +     u16 steering_tag;
-> > > +     u8 ph;
-> > > +     u8 tph_present : 1;
-> > >       u8 revoked : 1;
-> > >  };
-> > >
-> > > @@ -69,6 +72,22 @@ vfio_pci_dma_buf_map(struct dma_buf_attachment *attachment,
-> > >       return ret;
-> > >  }
-> > >
-> > > +static int vfio_pci_dma_buf_get_tph(struct dma_buf *dmabuf, u16 *steering_tag,
-> > > +                                 u8 *ph, u8 st_width)
-> > > +{
-> > > +     struct vfio_pci_dma_buf *priv = dmabuf->priv;
-> > > +
-> > > +     if (!priv->tph_present)
-> > > +             return -EOPNOTSUPP;
-> > > +
-> > > +     if (st_width < 16 && priv->steering_tag > ((1U << st_width) - 1))
-> > > +             return -EINVAL;
-> >
-> > The checker will failed in following cases:
-> > 1. If the exporter passed 8bit st, and importer support 16bit st, then it will pass
-> >    the checker.
-> > 2. The exporter enabled 16bit st and its st is < 256 (note: the pcie protocol doesn't
-> >    restrict 16bit-st must >=256), and importer only support 8bit st, then it will also
-> >    pass the checker
-> >
-> > Suggest userspace passing both st(8bit) and extend-st(16bit), and importer chose the
-> > right one.
-> >
+On Wed, May 06, 2026 at 11:47:44AM -0700, Sean Christopherson wrote:
+> When x2AVIC is enabled, disable WRMSR interception only for MSRs that are
+> actually accelerated by hardware.  Disabling interception for MSRs that
+> aren't accelerated is functionally "fine", and in some cases a weird "win"
+> for performance, but only for cases that should never be triggered by a
+> well-behaved VM (writes to read-only registers; the #GP will typically
+> occur in the guest without taking a #VMEXIT, even for fault-like exits).
 > 
->  Agreed — 8-bit ST and 16-bit Extended ST are distinct namespaces
-> (firmware returns
-> them as separate fields with separate validity bits), so a numeric
-> range check is insufficient.
-> For v3 I'll change the uAPI to carry both, gated by a flags field:
-> 
->   #define VFIO_DMA_BUF_TPH_ST (1 << 0)  /* steering_tag valid */
->   #define VFIO_DMA_BUF_TPH_ST_EXT (1 << 1)  /* steering_tag_ext valid
-> */
->   struct vfio_device_feature_dma_buf_tph {
->       __s32 dmabuf_fd;
->       __u32 flags;
->       __u16 steering_tag;       /* 8-bit ST */
->       __u16 steering_tag_ext;   /* 16-bit Extended ST */
+> But overall, disabling interception for MSRs that aren't accelerated is at
+> best confusing and unintuitive, and at worst introduces avoidable risk, as
+> the effective guest-visible behavior depends on the whims of the CPU (the
+> behavior of x2APIC MSR writes on at least Zen4 doesn't match the behavior
+> documented in the table in "15.29.3.1 Virtual APIC Register Accesses" of
+> the APM).
 
-I wonder whether `steering_tag` and `steering_tag_ext` can coexist  
-and hold different values at the same time.
+Revisiting this:
+- As far as I can tell, the guest-visible behavior looks to be the same 
+  with/without MSR interception? Did you see different behavior for 
+  specific APIC MSRs or across Zen processor families?
+- The main difference with x2AVIC looks to be about invalid APIC MSR 
+  accesses generating #GP directly in the guest (but that wouldn't be 
+  guest-visible). I was pointed to this statement in the APM Section 
+  15.29.10 x2AVIC:
+	x2APIC MSR intercept checks and access checks have higher 
+	priority than AVIC access permission checks.
 
-BTW, please send your patches with diffstat.
+Note the "access checks" qualifier, which covers the #GP seen for 
+invalid MSR accesses.
 
-Thanks
-
->       __u8  ph;
->       __u8  reserved[3];
->   };
-> 
-> get_tph() then picks the field matching the importer's st_width and
-> returns -EOPNOTSUPP
-> if that one isn't valid.
-> 
-> Thanks,
-> Zhiping
+- Naveen
