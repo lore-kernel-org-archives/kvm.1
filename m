@@ -1,146 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.35])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29BA83D1A8A;
-	Wed, 13 May 2026 07:34:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D7C374E5A;
+	Wed, 13 May 2026 07:37:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.35
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778657649; cv=none; b=hvLNIEe1Xhc6YCwPxB2Q1PV6WYCOxqgyfaXRrj1Pu6TFHDzk+MgqDpEemlkS2WVz6n76lHmGnWACS+LTPcVGekck4Bg85YukUQ1iLevDZOCSN3yrpYhNDXawASflzB6itJussAjD13PKk9usG3YNZmoqFkVQJKBI+FDJDJT/G2U=
+	t=1778657845; cv=none; b=r1n6wWu1FhLbtFGJN67I1v8tLxqnjcZsA7MALc5PY/heyMri7HQIrUpalvw1ctTo+5vZ7ucM8skmZkTIi/kthfyfzclrRPgnXEBIzBktzcCoAx8RrTSUhGv1W15n/Fms7E5iwjzpBbOHZd1qq7saqiw+FuL23ZpKcvMWnbkK7aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778657649; c=relaxed/simple;
-	bh=i70caX1Yr5xAdjGQu0SXobJw2EJJdoR0JSUg6QLPi5A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mLeUp4Ehh4GovC1Q+xc3xo1YD/5gCRYpYrFlCYWnz/eHxpHOmi7M8yGrrYoidOSqKEMjbN0a8tLUPclv3nYrXAiz7Iu/DalSbDcr7HZykArE32nCpeRj1fKQmvKTvk0DmHmiZfief8INDQYtRNkkPJoJqu8ZlO7uYb+7ceQ1V6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XmwXSozt; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XmwXSozt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AB0AC2BCB7;
-	Wed, 13 May 2026 07:34:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778657648;
-	bh=i70caX1Yr5xAdjGQu0SXobJw2EJJdoR0JSUg6QLPi5A=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=XmwXSoztVYi0JmtDTF/XDCIcWyHqle3fQy8GbLdpa7GwP7KTGVNBfb3T8L+pqoKdT
-	 Jseo6mKI2e0vaGaMiw01h9ZdhNcgpKbB+2yFWnBnMlZ9mgujkMCkgSVrggkSTMZGrQ
-	 ZpHTMWWa607c+IJAEvbirha6JAHVkIiSf10SoJ77c60Nw/AUFI8MkXdDKZ5Epx4uLJ
-	 +ng7sEf14h+pQUidmmgiVXyql3Nqi1xKaPOSqIwRjpWnR7MUA0RwSG2BPMtlmGLeD/
-	 sYZlKWzHE78JsgTUbxsz5yYPlOhD38S6iZlh480kqGJ8XKNBrw4DWHJlH2KDeQ/Sre
-	 Tksnt5laoe59g==
-Date: Wed, 13 May 2026 00:34:06 -0700
-From: Oliver Upton <oupton@kernel.org>
-To: Colton Lewis <coltonlewis@google.com>
-Cc: kvm@vger.kernel.org, Alexandru Elisei <alexandru.elisei@arm.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Russell King <linux@armlinux.org.uk>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Mingwei Zhang <mizhang@google.com>, Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Mark Rutland <mark.rutland@arm.com>, Shuah Khan <shuah@kernel.org>,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	James Clark <james.clark@linaro.org>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev, linux-perf-users@vger.kernel.org,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v7 07/20] KVM: arm64: Set up FGT for Partitioned PMU
-Message-ID: <agQpbiD8Fi6fzomf@kernel.org>
-References: <20260504211813.1804997-1-coltonlewis@google.com>
- <20260504211813.1804997-8-coltonlewis@google.com>
+	s=arc-20240116; t=1778657845; c=relaxed/simple;
+	bh=jwAcNZsXvRPBa7UE4TNjEvuBfzwEZgXz2yVt83l7Yn8=;
+	h=Message-ID:Date:Mime-Version:From:To:Cc:Subject:Content-Type; b=hJVr3E9xBcJYTVe48ZilMr/8K08fTmbcYEb4S8dM3FbC0CTu92q9J2Z6fwFZrqYIhr3beJsHl+Yy1l907I2LQAammX3W9huBdq/yOn577lGLQJDzyvDg5Z78z+9bmJCCD9+wrgFMFq09fm2tYBQO7kImkYzT24m/uB8zM94TWkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.35
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
+Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gFlfG2Kmkz8Xs7X;
+	Wed, 13 May 2026 15:37:10 +0800 (CST)
+Received: from szxl2zmapp07.zte.com.cn ([10.1.32.52])
+	by mse-fl2.zte.com.cn with SMTP id 64D7askB083926;
+	Wed, 13 May 2026 15:36:54 +0800 (+08)
+	(envelope-from wang.yechao255@zte.com.cn)
+Received: from mapi (szxlzmapp02[null])
+	by mapi (Zmail) with MAPI id mid12;
+	Wed, 13 May 2026 15:36:56 +0800 (CST)
+X-Zmail-TransId: 2b046a042a18452-b7a1c
+X-Mailer: Zmail v1.0
+Message-ID: <20260513153656847l3c4fI5hBsAyoIZi8aGIs@zte.com.cn>
+Date: Wed, 13 May 2026 15:36:56 +0800 (CST)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260504211813.1804997-8-coltonlewis@google.com>
+Mime-Version: 1.0
+From: <wang.yechao255@zte.com.cn>
+To: <anup@brainfault.org>, <atish.patra@linux.dev>, <pjw@kernel.org>,
+        <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>, <alex@ghiti.fr>
+Cc: <kvm@vger.kernel.org>, <kvm-riscv@lists.infradead.org>,
+        <linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
+        <wang.yechao255@zte.com.cn>
+Subject: =?UTF-8?B?W1BBVENIIDAvNF0gSW1wbGVtZW50IEVhZ2VyIFBhZ2UgU3BsaXR0aW5nIGZvciBSSVNDLVY=?=
+Content-Type: text/plain;
+	charset="UTF-8"
+X-MAIL:mse-fl2.zte.com.cn 64D7askB083926
+X-TLS: YES
+X-SPF-DOMAIN: zte.com.cn
+X-ENVELOPE-SENDER: wang.yechao255@zte.com.cn
+X-SPF: None
+X-SOURCE-IP: 10.5.228.133 unknown Wed, 13 May 2026 15:37:10 +0800
+X-Fangmail-Anti-Spam-Filtered: true
+X-Fangmail-MID-QID: 6A042A25.003/4gFlfG2Kmkz8Xs7X
 
-On Mon, May 04, 2026 at 09:18:00PM +0000, Colton Lewis wrote:
-> +static void __compute_hdfgrtr(struct kvm_vcpu *vcpu)
-> +{
-> +	__compute_fgt(vcpu, HDFGRTR_EL2);
-> +
-> +	*vcpu_fgt(vcpu, HDFGRTR_EL2) |=
-> +		HDFGRTR_EL2_PMOVS
-> +		| HDFGRTR_EL2_PMCCFILTR_EL0
-> +		| HDFGRTR_EL2_PMEVTYPERn_EL0
-> +		| HDFGRTR_EL2_PMCEIDn_EL0
-> +		| HDFGRTR_EL2_PMMIR_EL1;
-> +}
-> +
+From: Wang Yechao <wang.yechao255@zte.com.cn>
 
-I've given this feedback at least twice already...
+Eager Page Splitting is implemented on x86 and ARM. It improves the
+performance of dirty logging (used in live migrations) when guest memory
+is backed by huge pages.
 
-Operators go on the preceding line in the case of line continuations.
+This series implement Eager Page Splitting for RISC-V. The Implementation
+similar to x86 and ARM. It provides two ways to split huge pages in ioctl
+context instead of on fault in vCPU context:
 
-> +
-> +/**
-> + * kvm_pmu_is_partitioned() - Determine if given PMU is partitioned
-> + * @pmu: Pointer to arm_pmu struct
-> + *
-> + * Determine if given PMU is partitioned by looking at hpmn field. The
-> + * PMU is partitioned if this field is less than the number of
-> + * counters in the system.
-> + *
-> + * Return: True if the PMU is partitioned, false otherwise
-> + */
-> +bool kvm_pmu_is_partitioned(struct arm_pmu *pmu)
-> +{
-> +	if (!pmu)
-> +		return false;
-> +
-> +	return pmu->max_guest_counters >= 0 &&
-> +		pmu->max_guest_counters <= *host_data_ptr(nr_event_counters);
-> +}
-> +
-> +/**
-> + * kvm_vcpu_pmu_is_partitioned() - Determine if given VCPU has a partitioned PMU
-> + * @vcpu: Pointer to kvm_vcpu struct
-> + *
-> + * Determine if given VCPU has a partitioned PMU by extracting that
-> + * field and passing it to :c:func:`kvm_pmu_is_partitioned`
-> + *
-> + * Return: True if the VCPU PMU is partitioned, false otherwise
-> + */
-> +bool kvm_vcpu_pmu_is_partitioned(struct kvm_vcpu *vcpu)
-> +{
-> +	return kvm_pmu_is_partitioned(vcpu->kvm->arch.arm_pmu) &&
-> +		false;
-> +}
+- Split huge pages when dirty logging is enabled when
+  KVM_DIRTY_LOG_INITIALLY_SET is not set. This happens when enabling the
+  KVM_MEM_LOG_DIRTY_PAGES flag of a memslot, and splits the whole memslot
+  into 4K mappings.
 
-Ok, I'm thoroughly confused about these predicates.
+- Split huge pages during KVM_CLEAR_DIRTY_LOG when
+  KVM_DIRTY_LOG_INITIALLY_SET is set. This happens when enabling dirty log
+  in small chunks. It does not split the whole memslot, but only the
+  requested chunk range.
 
-Whether or not a vCPU is using a partitioned PMU is a per-VM property.
-This is separate from whether or not the backing arm_pmu has a range of
-available counters for the guest to use.
+Wang Yechao (4):
+  RISC-V: KVM: Add the split page cache for ioctl context
+  RISC-V: KVM: Split huge pages when dirty logging is enabled
+  RISC-V: KVM: Split huge pages during KVM_CLEAR_DIRTY_LOG
+  RISC-V: KVM: Add the eager_page_split module parameter
 
-It is entirely possible that a VM *isn't* using the partitioned PMU
-feature (i.e. backed with perf events) yet the supporting arm_pmu has a
-guest counter range.
+ arch/riscv/include/asm/kvm_host.h |  2 +
+ arch/riscv/kvm/mmu.c              | 75 +++++++++++++++++++++++++++++++
+ 2 files changed, 75 insertions(+)
 
- 
-> +#if !defined(__KVM_NVHE_HYPERVISOR__)
-> +bool kvm_vcpu_pmu_is_partitioned(struct kvm_vcpu *vcpu);
-> +bool kvm_vcpu_pmu_use_fgt(struct kvm_vcpu *vcpu);
-> +#else
-> +static inline bool kvm_vcpu_pmu_is_partitioned(struct kvm_vcpu *vcpu)
-> +{
-> +	return false;
-> +}
-> +
-> +static inline bool kvm_vcpu_pmu_use_fgt(struct kvm_vcpu *vcpu)
-> +{
-> +	return false;
-> +}
-> +#endif
-> +
-
-Don't use ifdeffery for this. Aim to have a single definition and rely
-on has_vhe() to do the rest of the work.
- 
-Thanks,
-Oliver
+-- 
+2.43.5
