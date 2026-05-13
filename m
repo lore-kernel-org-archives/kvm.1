@@ -1,141 +1,169 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D97EA3EDE40
-	for <kvm@vger.kernel.org>; Wed, 13 May 2026 00:04:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778630683; cv=none; b=NWjVXggfFbOyUdlCOzf4NLU2ej5sbQa74CFNWv3/BrpPBMxtdEqm58zSoKqF3pOpKa5VxA27nEnSguKMd/FB7meU6LN+HcoQWTlZF97/vaZCZP8YtPheoI752vleVwKo/t+/SUa2VEMU3YEMNIS20tbiOkN5WvgMUUHKN2u1nus=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778630683; c=relaxed/simple;
-	bh=97nVmo+h/AxHEBO2Elc9q4CH+vTfbG4Nezgh8zmJN+I=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=rJaEs+wbIOh+TNkhUkXWwKy4HO6m9gqAf/IYC+u+N7y3372Po6VNCHjxsNyZkFLaPjKeu3pxmff6S8+2AANptLpcDF1vkeqSqvcYwK2tjMwhN5NOLX16zuAOyQUizeNIpf0jg7jbYHK4jFrzus/lHuE4OU8qceBc70Xs8FWt8G4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SVmamAz+; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71B76189B84
+	for <kvm@vger.kernel.org>; Wed, 13 May 2026 00:15:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.179
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778631336; cv=pass; b=KwzkP320iuCtRibM+GWXryFve8og/UI+nNByBDXWF0gnH8X/YS92M+mFI+9lnXELMf3CZm0EbqUfPyHywL3fnDbETktmXRBY1oboGb9BYhZ64g/b9qWfXEB9mGZIsdKp7HhSXC8Tsyd+LTEaYFZfMaig9OQnuvoQsFtBY6ZRl94=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778631336; c=relaxed/simple;
+	bh=jqF9yWl+8+e8UGoQerj+SOqhMnIaD1YKPDSoW7SSxyo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ojmjs76ttbKXd9YE9bcAQbXcKidjCUhuxEE9tkVAuq6DmTrALtvzhqsXS4ir6j6RAWklLyOCHP6LIJxfPn3vXvHGSI5W00oFLB4yCh6m6HK8jPGjo3tQzkHDUQMtouG2f5/noqXuZ/S8ZtNDWSMJ8PblWbJaGK+LPnAmWfrYitI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lHwDeSYY; arc=pass smtp.client-ip=209.85.160.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SVmamAz+"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82fd55bf6cdso3983715b3a.3
-        for <kvm@vger.kernel.org>; Tue, 12 May 2026 17:04:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lHwDeSYY"
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-50d6b393d60so811cf.0
+        for <kvm@vger.kernel.org>; Tue, 12 May 2026 17:15:33 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778631332; cv=none;
+        d=google.com; s=arc-20240605;
+        b=eYwPHOFgkRIww551cRQznItrzbhiSIp1+m5F7RfepK0zSjWULQzzi/LrGBxn4Zy2b3
+         9G0T8g08PKI3TGOtE/3wzGGm14SajxEkol2qltf0AEG3B5Q/MpjNhW99VQNIUnM3VUuw
+         BCzcmXgVWMIK25OzklrKeWvWlCesr4HRqxZfnP1DnjR11+A/nckWHDFprUD0gFLUCScy
+         x8A1I0xa2s002PS3nJ3n5bDE2AHwMYewfpXjfXigHZ15yTKLwFyLbO5HsjuVgYjJiYN9
+         uMMvEA3uFYf20KzU40MYHXxWNAFbJN617hz9lSCB20SM0VN+q9/R4Xe9rF49LKvw2aCm
+         uI3Q==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VQkRC/cGw/oCczwr3Ag9cPWTCPAnlFtom+KfBvvio8Y=;
+        fh=skR0W6Wxzeke0Zlijg63qxLmHuxZ/n0yy2SsJ5nuzBQ=;
+        b=ghtmQdUvwWqjgmVOq2XxIHZkO6LV5z6LL7d6hQAkYpYThbkSB4CKBQ0Hm8QzqcX66N
+         jX210A2OWJZ8ppPa2fXL/Onf9POGFHu4pqOdGRz/uESsCAVu2SprlNZO9NPwL2szdzBf
+         QrQmiB94PjuWVNSpmcWnUgoSEwcokXBvyaJ7Bszi9ZAvj9k5mlrBgKiqUJcjZ+Z1k3D0
+         tbVRCyQgOm3r+Gw607Xb4x6FvAX8o/fOBrK1sFKKiUuAtc1/DzPWY27uWbl3P+ymAJB5
+         9cEsYxDvGyIXehc4WoBVLZgX/Clqv5ILaJf9qP35BQpPuGrfU3NiYB4aEWPi43vJbYjc
+         iIUQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778630681; x=1779235481; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=SkWtLCoSBKlAv+D7sGTQEygi2ipXCKA/B0WwjzpqiDU=;
-        b=SVmamAz+uShyuZpG0vMdbroSmsxyuZ+q8mKUdcdX743Q9n99QfFpyMZ+YMwj2T7Sr6
-         nblZo3mQIrsuprf0Hrg7Xjd5Vsw7lNpRR+kV+mG4MIbwpKcx3iYY+BVKqPdDG0tUVbBb
-         T0SYIZ7oFVB5rRLwqGahjh8aSDthCN7HgE7qcUwqRqS0C0bJk6N0uPaNyxDWz2rSGuIb
-         +iatVoKaACZIpX8kk0a9XuvSohQI+m85jmRp7LR5qB1UrkldALoZNXj5Qwd4RfvqwP1t
-         b2iGg/1PjRqya1w++iFq4eVwXoLo7sscHADo3BuR8Y3ojItyQh4eanSn4/hFDf3sGxk8
-         sn6w==
+        d=google.com; s=20251104; t=1778631332; x=1779236132; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VQkRC/cGw/oCczwr3Ag9cPWTCPAnlFtom+KfBvvio8Y=;
+        b=lHwDeSYYiIt0NVW18L80cgNz40OaJrN3G76ImQNdTC4E4YN/oqZCXG9H7UD6vrurXn
+         Xs+m3yI2jDpaIdNjuGw/ICto83J54uPbi/cUHrfkZEIYtIzmby9zq7xOc1cevA97yOwa
+         MLXMFaVFduwOwZcrWOPQpu8leIBL/LxEfVE0vzhdbmb7rRKvW67BEKtBj2drRigzADc9
+         /4A9dmLltOaiTn+LMDufi+MPzqTTiNw8CPsztudfbweAAVAZrP98fqxyir/x3XdKk8gD
+         KWseFgjBZJ+wYOBcwYHfZKiCCGjww+jhBg1PGK9y59tR08O36t+J7zyfECeLkTBIKa4c
+         w1Bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778630681; x=1779235481;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=SkWtLCoSBKlAv+D7sGTQEygi2ipXCKA/B0WwjzpqiDU=;
-        b=ZVnoIUTCeQyTVS5JcoNpoRMPiWGSiqWfsskIy88uTYpD7EEfbD+wy9/rK+T/fts1OP
-         l6f0w4/5aNSrCcpWVZybDTU+W6WILIT8V32690daOh9Ss1kaDaaRk5d5P/YS+ILy3NKi
-         gkhqtuN1WQGnN9KIJvYLO//Et+E8sylUBK92rNltaxI6tz0uEW8u2SCueJd+2gzTnBoC
-         Pb043IU6yttGoebBvFPZYncOz62hYkROlttS9hoaSWtzWUdK4jW/edWV1HBamydvIq28
-         hkLn+Q3iIe8mlKpmYLK5WIIn9WqkDXQKxfsMnnmcljGHtid/UST2L/xf2IiayKuKUN3o
-         b4MQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+lrMDUjQXUQrihHI42ts13W0HbLreyFoMkxik1pBgZ4RlwsO7WKI7VxgiK00I729g5B8I=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz3ctPZuJACTvIbr5innMKV8wdVJTX2IdicutSs8hIkztajCWGO
-	yS0Y+devXpy77ymnHVNHxrDNLqFoCqH5WfY7NiYjIGtp8mFRd6o/LUVLN2HzkglfnzroCeMT9hg
-	UeBtikA==
-X-Received: from pfbml25.prod.google.com ([2002:a05:6a00:3d99:b0:82f:a2bb:a7cf])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:6c82:b0:83e:6fde:54d3
- with SMTP id d2e1a72fcca58-83f05c100c4mr398197b3a.50.1778630680985; Tue, 12
- May 2026 17:04:40 -0700 (PDT)
-Date: Tue, 12 May 2026 17:04:40 -0700
-In-Reply-To: <CALMp9eRKcNpLxVBEg8RF6tSqndRFpLW_Q-rcXazPR9HYFJcdag@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1778631332; x=1779236132;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=VQkRC/cGw/oCczwr3Ag9cPWTCPAnlFtom+KfBvvio8Y=;
+        b=sDOOtGNso7kRQ+IVaBEMEAipAbfxVvQGQRJqqeZeM0exMaHTTVNqL5wWsdxkI4ve59
+         j5ZNzDa7e7TgwdE2kuiicOlSS1jTxCP6RVh9LSK1CELU/5DWP3dQci1AjEWPahzXh7oL
+         PWXmMiD/TerBosfI+DyBBf0Y59dcZFfaL3I4JS4MmjNudL9lWhWQOvLoqY8jDzkATNaN
+         4g6VZ86hlHgKuuv7a07bt7KnGvLX+4fd2X5nWAAum44oxPGBaBEguXZFTVD2mvIwXGst
+         sZRVvSKDokhmHbAZgY7b5e39pfzlz7GpbfrcIDbp+z5ITM9oRAg2avS9Od5zDDuAIo74
+         NAuA==
+X-Forwarded-Encrypted: i=1; AFNElJ911r3msmmYi3De3yUXGGGI/7yvZ9aBYwAtlx/FpczGgDRPbk/RT99Qyok+dEv9i0hxpy8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKgURtQmfpLtSL6AgNhs7QDtOEzj5Kq5qS3MAdK8eM06Fx6MWr
+	Vwpwh9KirEoFuKQ6/T6kBlJH7uvVrdwf1HmOsck/krtL3E03SlsPM4SnHBOUaof6ATMuBxeugrl
+	voryZm7Jud/TLRi1OJ33OnEwGQ6b08UK/LFCrTHl9
+X-Gm-Gg: Acq92OHF5IbkIXw1URNkHyULcJCtwlFzjD0yiZJ4Qz3zFbZhUfa4F4dYssDOJCqSBMy
+	bNBuuYFer08yV7TNKgvrkL/cp9Djj50wrfFzJNt4H+1NiLjzEOaWDmcIp7dHMIS0pAdMRxY2tOO
+	Z5rLfdKFsZiplsT6a8/25C8V02+TRP3k6b9mn4XF99N7PQtJFTj9nTlWfKc+kbIi3BlkYF1dmXK
+	QAv6cCIi+HtKCwdqI9ew2px2LVJQmse8zwTvt+54xMzu5PPCZogwqTLp3FCiddW/rDRv06tb73I
+	6uChjBajb2IUaj1tOaFmR9NfjSMfy8aCYfjYbaL9eUBJtY4Y
+X-Received: by 2002:ac8:5996:0:b0:509:1d4b:f86f with SMTP id
+ d75a77b69052e-5162b156ecemr6249871cf.14.1778631331686; Tue, 12 May 2026
+ 17:15:31 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260508170714.489136-1-jmattson@google.com> <20260508170714.489136-3-jmattson@google.com>
- <agOcw9ZIXALKrs_a@google.com> <CALMp9eRKcNpLxVBEg8RF6tSqndRFpLW_Q-rcXazPR9HYFJcdag@mail.gmail.com>
-Message-ID: <agPAGOxjALgvPwAY@google.com>
-Subject: Re: [PATCH v2 2/3] KVM: x86: Virtualize AMD CPUID faulting
-From: Sean Christopherson <seanjc@google.com>
-To: Jim Mattson <jmattson@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Clayton Pence <ctpence@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+References: <20260507212957.2629561-1-vannapurve@google.com> <agOt5nzP6pm5yyOZ@google.com>
+In-Reply-To: <agOt5nzP6pm5yyOZ@google.com>
+From: Vishal Annapurve <vannapurve@google.com>
+Date: Tue, 12 May 2026 17:15:20 -0700
+X-Gm-Features: AVHnY4KKpe94ZXp8N3WrNd8R5iDQPPRXzPKs8OHnL-oJfKDcOYWY0tznc4jkfJs
+Message-ID: <CAGtprH9kZubz1=VvrRxN+ucFOqnvFKs8HM7TPUvNCtn8RUsTrw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/1] KVM: x86: Introduce has_protected_pmu state for
+ TDX VMs
+To: Sean Christopherson <seanjc@google.com>
+Cc: pbonzini@redhat.com, dave.hansen@linux.intel.com, 
+	rick.p.edgecombe@intel.com, dapeng1.mi@linux.intel.com, mizhang@google.com, 
+	kai.huang@intel.com, jmattson@google.com, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 12, 2026, Jim Mattson wrote:
-> On Tue, May 12, 2026 at 2:33=E2=80=AFPM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> > From: Sean Christopherson <seanjc@google.com>
-> > Date: Tue, 12 May 2026 14:20:47 -0700
-> > Subject: [PATCH 1/3] KVM: x86: Consolidate CPUID fault handling for emu=
-lator
-> >  and interception logic
+On Tue, May 12, 2026 at 3:47=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> On Thu, May 07, 2026, Vishal Annapurve wrote:
+> > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> > index 0a1b63c63d1a..c248abb0e2ab 100644
+> > --- a/arch/x86/kvm/x86.c
+> > +++ b/arch/x86/kvm/x86.c
+> > @@ -6909,6 +6909,13 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+> >               if (!enable_pmu || (cap->args[0] & ~KVM_CAP_PMU_VALID_MAS=
+K))
+> >                       break;
 > >
-> > Extract the logic for emulating CPUID faulting (where CPUID #GPs at CPL=
->0
-> > outside of SMM) into a dedicated helper and use the helper for both the
-> > full emulator and the intercepted-CPUID paths.
-> >
-> > Opportunistically drop kvm_require_cpl(), as kvm_require_cpl() was the =
-one
-> > and only user.
-> >
-> > No functional change intended.
-> >
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > ---
-> >  arch/x86/include/asm/kvm_host.h |  1 -
-> >  arch/x86/kvm/cpuid.c            |  5 +++--
-> >  arch/x86/kvm/cpuid.h            |  8 ++++++++
-> >  arch/x86/kvm/emulate.c          |  6 +-----
-> >  arch/x86/kvm/kvm_emulate.h      |  1 +
-> >  arch/x86/kvm/x86.c              | 18 ++++++------------
-> >  6 files changed, 19 insertions(+), 20 deletions(-)
-> >
-> > diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm=
-_host.h
-> > index c470e40a00aa..a9005c61619b 100644
-> > --- a/arch/x86/include/asm/kvm_host.h
-> > +++ b/arch/x86/include/asm/kvm_host.h
-> > @@ -2285,7 +2285,6 @@ void kvm_requeue_exception(struct kvm_vcpu *vcpu,=
- unsigned int nr,
-> >  void kvm_inject_page_fault(struct kvm_vcpu *vcpu, struct x86_exception=
- *fault);
-> >  void kvm_inject_emulated_page_fault(struct kvm_vcpu *vcpu,
-> >                                     struct x86_exception *fault);
-> > -bool kvm_require_cpl(struct kvm_vcpu *vcpu, int required_cpl);
-> >  bool kvm_require_dr(struct kvm_vcpu *vcpu, int dr);
-> >
-> >  static inline int __kvm_irq_line_state(unsigned long *irq_state,
-> > diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-> > index e69156b54cff..1c95d1fa3ead 100644
-> > --- a/arch/x86/kvm/cpuid.c
-> > +++ b/arch/x86/kvm/cpuid.c
-> > @@ -2161,9 +2161,10 @@ int kvm_emulate_cpuid(struct kvm_vcpu *vcpu)
-> >  {
-> >         u32 eax, ebx, ecx, edx;
-> >
-> > -       if (!is_smm(vcpu) && cpuid_fault_enabled(vcpu) &&
-> > -           !kvm_require_cpl(vcpu, 0))
-> > +       if (!kvm_is_cpuid_allowed(vcpu)) {
-> > +               kvm_queue_exception_e(vcpu, GP_VECTOR, 0);
-> >                 return 1;
-> > +       }
->=20
-> That's so much better!
->=20
-> Will you drop this in when applying, or should I send a V3?
+> > +             if (kvm->arch.has_protected_pmu) {
+> > +                     WARN_ON_ONCE(kvm->arch.enable_pmu);
+> > +                     if (cap->args[0] =3D=3D KVM_PMU_CAP_DISABLE)
+> > +                             r =3D 0;
+> > +                     break;
+>
+> Sashiko: 3, Sean: 0
+>
+>  : Does this code bypass standard lifecycle validation?
+>  :
+>  : For standard VMs, KVM strictly enforces that PMU capabilities can only=
+ be
+>  : configured before any vCPUs are created, returning -EINVAL otherwise. =
+The newly
+>  : added block for TDX VMs short-circuits this logic, returning 0 uncondi=
+tionally
+>  : when disabling the PMU, regardless of whether vCPUs have been created.
+>  : Could this introduce a UAPI inconsistency where the same userspace seq=
+uence
+>  : could fail on standard VMs but silently succeed on TDX VMs, potentiall=
+y
+>  : hiding VMM initialization order bugs?
+>
+> That potential issue crossed my mind when first trying to figure out how =
+to allow
+> KVM_PMU_CAP_DISABLE for protected PMUs, but then SQUIRREL!!!
+>
+> I think my original reaction is the way to go: add extra validation for p=
+rotected
+> PMUs (reject everything except CAP_DISABLE), but otherwise let the normal=
+ flow do
+> it's thing.
+>
+> Completely untested, but I think this would do what we want?
 
-Go ahead and send a v3.  It slots in easy enough, but I'm trying not to get=
- into
-the habit of applying pseudo-posted patches.
+SGTM. Will include this suggestion in the next version.
+
+>
+>         case KVM_CAP_PMU_CAPABILITY:
+>                 r =3D -EINVAL;
+>                 if (!enable_pmu || (cap->args[0] & ~KVM_CAP_PMU_VALID_MAS=
+K))
+>                         break;
+>
+>                 if (kvm->arch.has_protected_pmu &&
+>                     cap->args[0] !=3D KVM_PMU_CAP_DISABLE)
+>                         break;
+>
+>                 mutex_lock(&kvm->lock);
+>                 if (!kvm->created_vcpus && !kvm->arch.created_mediated_pm=
+u) {
+>                         kvm->arch.enable_pmu =3D !(cap->args[0] & KVM_PMU=
+_CAP_DISABLE);
+>                         r =3D 0;
+>                 }
+>                 mutex_unlock(&kvm->lock);
+>                 break;
