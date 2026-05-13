@@ -1,63 +1,63 @@
-Received: from mail-dy1-f177.google.com (mail-dy1-f177.google.com [74.125.82.177])
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2C6C3E9C0F
-	for <kvm@vger.kernel.org>; Wed, 13 May 2026 09:36:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5111E3E9C27
+	for <kvm@vger.kernel.org>; Wed, 13 May 2026 09:36:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778665014; cv=none; b=JmMx2PXuonveqpitpdvvqX6noIsdFljWiHTEkPf0ZrRAwgZ7d5y9PK44eI5yrgToGqvIggLEdaHs/7bMYeCursSlOjhiC0/IL6CK2Bag0epCmimllW0h+Fu6ZyOeToMuYfoUtsHOYzM3KNHvafP/2PypQz4rrqI9NMnCfJyq5Cg=
+	t=1778665018; cv=none; b=kX7xJSWBRnxxI3ku+bbpwvFoLVVoX02ZqyCIB3Jp3Zbz53GtGm7v+WFJcnXHimgWB5Xhi8xnH1kTVqc39d0FGNVah8s6lpVOTFl/S8nSczzX7/GVGLG7iLIJfKB/sQwk/oKOOG/eFVzBdpizyzCl/wPloGfEkbaAKVSrIK4Mdtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778665014; c=relaxed/simple;
-	bh=jRvKpxoAIl60/V1P+VTJHEK99Z/0YiaHhUBAFANty0Q=;
+	s=arc-20240116; t=1778665018; c=relaxed/simple;
+	bh=msb6kSwfYjtLrK6yh4A/4jW6Efwpn03Z7DhCQJ9v1j8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=Sr1f/bfxJkl8f98LydpCIcXhus226MxBE4cdDWtBAJ+uktkUUlS0mkanB+EbyivUuM2iTyhIoslghPKW5ptiepNci+nMkJME5tdxLj89EayNytDZR2nTIHWruS37N1/knqzlXqPFVqtcaKmPmScbgLIv1dwxH1FrXKBIos2DLcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BFxTVHaW; arc=none smtp.client-ip=74.125.82.177
+	 MIME-Version; b=GIQXPJ2pcJolUaFn4UyA6ijvvKL3viawvzzD8dG6h4UUcBea+lsmMnTXKavyVuhVtFtjEZW5h/qJIFs2722/Lu5emOBxsmN91cfo/JRcoSIUxJxYOF2YqPoZn/Y2+YXKhIzOmHyZBzB0MtSmhkReD5SN9I1DVXPf0jLLJqtlqRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mJF15GFs; arc=none smtp.client-ip=74.125.82.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BFxTVHaW"
-Received: by mail-dy1-f177.google.com with SMTP id 5a478bee46e88-2ff5472f263so2646045eec.1
-        for <kvm@vger.kernel.org>; Wed, 13 May 2026 02:36:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mJF15GFs"
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-2f03d6cf77bso7376558eec.0
+        for <kvm@vger.kernel.org>; Wed, 13 May 2026 02:36:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778665012; x=1779269812; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778665015; x=1779269815; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LtWmrYOKzZ6UotIe01yj+lYhNEkXI+QSLpIqgQNFL98=;
-        b=BFxTVHaWIoJ+dvaar61jZAw6E6uczN4do0S2jk4xjrvtGdyKtZP+VNOkSYg2EICPc3
-         ieLANU/WM6jlCCdbIl1+yzU7nU87afXVn+9zDsp2ulkk5PlMJWh6zuOMQn+bMYvlWAH1
-         U+AMGjqH5uibv5ZW7ObAU487Qw8A/8NBk1oDaANZmclzMC0njGpmSF5emUw0PNn6KY1P
-         nurQJnxpA8+LWXLNOf3RawUsSnRLgBiptbOGqmizgLjtoqnY/e1G1coCoDhs7BtTzigR
-         zWBtI5/NH5XHHPX50TXurok5nQaozwKbZTWg56y4F3mu7SLJhxVvQLhZIlx9oUqfPvfB
-         QPYw==
+        bh=Yuxzue6n4LxKbQsyok/03Qurt5Jav9jZzMMI1LVz9Kw=;
+        b=mJF15GFsjYuSijZ+XJsWbgGd/MZH3IyCGS0HfmuzdD20DuQhJ+y3dzsa7ZcSGb0OuU
+         r/sMmIhsqIFu/RvMMXTZRpHaZKLQG5rPZnc2mxDLAUaz4tqZvRGpauW0CbZDxir5QgLH
+         XGdf0vF1L3phAhrJNNLFSpVfhwSyhStS2RPmxFHMnpo5P97bgyq7pqPSiQyliqWyFtbW
+         J8zH3AMqoUfi9j/LTenNp3fzJx4Pih3wALS6tcPeJJ0cdBwCJNM90eUtuiW0DLC1I6ij
+         6o/4qyZneRqZ1PKuPrG7lO9eUdsSEUY8OT4zrNEyUgbLcRfnJu3SmP+J0o4fyQO2tS7Y
+         QTvg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778665012; x=1779269812;
+        d=1e100.net; s=20251104; t=1778665015; x=1779269815;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=LtWmrYOKzZ6UotIe01yj+lYhNEkXI+QSLpIqgQNFL98=;
-        b=VKuQ0zba7UMA/VktqczxFi78EuA92aeJT/QHnIHFUq1M6Dkh2Wyl/WEewFF2UBf8Qz
-         Bh4Gy6KUGmXPseeL7wYDp4aXm9acFVMK6v2mYOj0v5gBh96Pql1KX851zbKDRi37StgA
-         DyAyDB4nU6+rPBh4RHUrSJKByik2OiGKy9SQpbGoWkywzWY3kYZKIbYtDVJ5XbycrlNu
-         1tz1yr9EX1AEw3MZXjlScMn6rla5sB6Io/HmMEuEHvBEtzSwLprw8sBHgAu08ZjOw5Gg
-         mLAG/fCnDDV5pBqZBmjzYz/sv7pAyEw/QRziDafqYD7SZ+0FYohOzJ0BRZOYddG88FMm
-         Volw==
-X-Forwarded-Encrypted: i=1; AFNElJ8aYjxevNq4tFeSm1UZJcpyR/+YtY3rO6NeoeBvRDnyDSlKlPgtIzIq7uSMlU1pj/3G/Wc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyV06JDwsV7BsBSu9qSVoaLfl9Qp4pHoRqqO9MBW6ZW4b4sCIhy
-	UZW/dshHqUwL4tNPFrjT5ECb6w2RoJydbDsAChe29inPgojn+m0gVS9uNWrBbachvsc=
-X-Gm-Gg: Acq92OGfXbQgY57hbJLciN9UA5Bg6kEvACIBU12r5Y5t6LgAEp4eoFdLMHAJhlTcjRv
-	l6E7BPwv4TXZFA6jLiziQO1u+elEDlvexGhWaTQhcMmp/TeFpw77JEttDJXUcZ7d1rfkpEEyiZC
-	/2xzOxhi2BDAUM2YyU6oVER2658jZKOvzdCj1eI52aGV7G9dDB6PFbI+EdMjxToFtOSg63wkwd/
-	viZIOk7lXPvl9JMOc7raMre6wFxobCiz4kimrykE3+ourXv2v02CSyq0Fpk0nBwS0xfMRKhvVDA
-	5/sCMXFjShm+F3pjWJUx1SMH9aRBFsOSDUW9K/lPNA6AmwBxkGrJznn7EasxhMqlF2KKr1JvA7U
-	3Ur68rf92N5QlC8wspdDhtYs7ZOy9icVSgdWmKEsg2Lw9K+vcP4uLEWDazAElvPUVue2BygGXhV
-	jhQ6rPspnthriXPNCRKgZGweq5+65njVBqSvccqAva
-X-Received: by 2002:a05:7300:e7a4:b0:2d4:94cc:eebb with SMTP id 5a478bee46e88-30117480740mr1458096eec.13.1778665012111;
-        Wed, 13 May 2026 02:36:52 -0700 (PDT)
+        bh=Yuxzue6n4LxKbQsyok/03Qurt5Jav9jZzMMI1LVz9Kw=;
+        b=LAhXBNl7v1e3L7g7Hs9xr4zdsvOkzVNVXouUNGXcCIhJtaHcHvPEOcv6TamX0vW8ku
+         tlKx91ALZ4PsanNdJqJ6ufLoxrtTMQmb4zU+BHtDOGSdl1LrInbJj7r1wzQdALgmLOxY
+         DAQWRh7l5M1kJsQgGArJV3l3ze/3/JBFW2p3JDHgIhkiEnyz8lAB9IRSjhJykCoO4Ko9
+         tMv6akAWO/eP8OVg2zykeZZLaomiRY6PNdL8FwolIkii08SYee4DNPCKJBtKIvyLVntb
+         1akoCiPmhTCQqBjU9pER6K0CBBRw2aRXEShDk42bhNJg1Ql5HLwO0GIj4rx1BaEr+8dL
+         igAg==
+X-Forwarded-Encrypted: i=1; AFNElJ/+DWMHoR3pwr0kZrXTlX3iyVbtE88Ztvzif+OqqvxV2T1HrB1WkfZ3OaI8eWhwS3evLqI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw42HtstsRP3wIzRs7l5oD28yS/AJhZMN4IAeGq3Pf/t1M2Q1RT
+	RWLQ1xamTtGcM4QcunsDrJzO8ebgprS1JvIGa1apegD2K+mXZEGS4xbf
+X-Gm-Gg: Acq92OGRwYkeH66DuyZnfr34JHXSLQ/bORciuAgHJmx8lHvXIInUdfTJPQWyYpcRsZI
+	nKVIbsTgn5tQQhej3tYYBK79oFM3ug2JwUAC6T2C9YhfB3gGeqkY1CR3xKj5hMhL1eNJlIgBcWz
+	UgVEKBQ7/6jL+p2o2cJi6QNzNRUIiFWE/6pSM5yKS2i8ueKxUCMmboCdX1VWAzSSIbjmifVA37a
+	wJHxcpqKQd5Qf4BXCu1eg1jX2k1WITAkROjAkVuH6ugMwi5AGFdax/YdnJW0rQy4KhOR+rJZCoQ
+	UOMzuJ00JwG7a1eld2UxwkGg+x6lJ2MiOHzDUxPiG6eJNP7jH7dgqYr/Iu0x+23myjJxjZpQdFg
+	3VU1CdXxmksrMUlJrsZSJ5QohWngktb667x1ehy8399L9FuPcfjCYgR1plnlyuo8xsfo0mfosWr
+	+q5N+UtWcO11lT+19rlNA/+89LoE41SOkX6ThW5Z287NMDw64bs2s=
+X-Received: by 2002:a05:693c:2d96:b0:2c1:7793:7bbb with SMTP id 5a478bee46e88-30119f60607mr1454106eec.27.1778665015458;
+        Wed, 13 May 2026 02:36:55 -0700 (PDT)
 Received: from ewan-server.zhaoxin.com ([154.26.185.247])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f8859eb4b7sm22100439eec.2.2026.05.13.02.36.49
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2f8859eb4b7sm22100439eec.2.2026.05.13.02.36.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2026 02:36:51 -0700 (PDT)
+        Wed, 13 May 2026 02:36:55 -0700 (PDT)
 From: Ewan Hai <ewandevelop@gmail.com>
 To: seanjc@google.com,
 	pbonzini@redhat.com,
@@ -71,9 +71,9 @@ To: seanjc@google.com,
 	linux-kernel@vger.kernel.org
 Cc: cobechen@zhaoxin.com,
 	tonywwang@zhaoxin.com
-Subject: [PATCH 4/5] KVM: x86: Expose Zhaoxin PHE2 CPUID feature
-Date: Wed, 13 May 2026 17:36:32 +0800
-Message-Id: <20260513093633.1608334-5-ewandevelop@gmail.com>
+Subject: [PATCH 5/5] KVM: x86: Expose Zhaoxin RSA CPUID feature
+Date: Wed, 13 May 2026 17:36:33 +0800
+Message-Id: <20260513093633.1608334-6-ewandevelop@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260513093633.1608334-1-ewandevelop@gmail.com>
 References: <20260513093633.1608334-1-ewandevelop@gmail.com>
@@ -85,26 +85,28 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Advertise the Zhaoxin PadLock Hash Engine v2 to guests via CPUID
-0xC0000001 EDX bits 25 (PHE2) and 26 (PHE2_EN). PHE2 extends the
-PadLock hash family with SHA-384 and SHA-512 support per FIPS 180-3,
-complementing the existing PHE feature (SHA-1 and SHA-256).
+Advertise the Zhaoxin big-number arithmetic engine to guests via
+CPUID 0xC0000001 EDX bits 27 (RSA) and 28 (RSA_EN). The RSA feature
+provides two user-mode instructions for modular arithmetic on big
+integers, documented in the Zhaoxin PadLock Instruction Reference,
+chapter 4 ("Modular Multiplication and Exponentiation Engine"). Both
+support operand sizes from 256 to 32768 bits (in 128-bit increments):
 
-Two user-mode instructions are exposed, documented in the Zhaoxin
-PadLock Instruction Reference, chapter 3 ("Hash Engine"):
+  - REP XMODEXP  (encoding F3 0F A6 F8, subsection 4.1) computes
+    A^B mod M
+  - REP MONTMUL2 (encoding F3 0F A6 F0, subsection 4.2) computes
+    A*B mod M
 
-  - REP XSHA384 (encoding F3 0F A6 D8, subsection 3.3)
-  - REP XSHA512 (encoding F3 0F A6 E0, subsection 3.4)
-
-Both consume software-padded 128-byte blocks (RCX = block count, RSI =
-input, RDI = state) and produce hash output in the state buffer.
+REP MONTMUL2 is the long-mode replacement of legacy REP MONTMUL, which
+is restricted to compatibility and 32-bit protected modes. These
+primitives accelerate RSA and related public-key operations.
 
 Both instructions are user-mode and available in all CPU modes, with no
-associated MSR control. The PHE2 and PHE2_EN bits are redundant by
+associated MSR control. The RSA and RSA_EN bits are redundant by
 hardware design (set or cleared together) and both serve purely as
 CPUID-level feature-presence reporting flags requiring no KVM
 emulation. Both bits are advertised because different software may
-probe either one when checking for PHE2 availability.
+probe either one when checking for RSA availability.
 
 Signed-off-by: Ewan Hai <ewandevelop@gmail.com>
 ---
@@ -113,28 +115,28 @@ Signed-off-by: Ewan Hai <ewandevelop@gmail.com>
  2 files changed, 4 insertions(+)
 
 diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index 087c41341240..3fb81f7a6107 100644
+index 3fb81f7a6107..94ea9abae566 100644
 --- a/arch/x86/kvm/cpuid.c
 +++ b/arch/x86/kvm/cpuid.c
-@@ -1288,6 +1288,8 @@ void kvm_initialize_cpu_caps(void)
- 		F(PMM_EN),
- 		F(RNG2),
+@@ -1290,6 +1290,8 @@ void kvm_initialize_cpu_caps(void)
  		F(RNG2_EN),
-+		F(PHE2),
-+		F(PHE2_EN),
+ 		F(PHE2),
+ 		F(PHE2_EN),
++		F(RSA),
++		F(RSA_EN),
  	);
  
  	/*
 diff --git a/arch/x86/kvm/reverse_cpuid.h b/arch/x86/kvm/reverse_cpuid.h
-index 859ba43126d8..f28300c2d5e0 100644
+index f28300c2d5e0..0df96ff9515c 100644
 --- a/arch/x86/kvm/reverse_cpuid.h
 +++ b/arch/x86/kvm/reverse_cpuid.h
-@@ -83,6 +83,8 @@
- #define X86_FEATURE_CCS_EN		KVM_X86_FEATURE(CPUID_C000_0001_EDX, 5)
- #define X86_FEATURE_RNG2		KVM_X86_FEATURE(CPUID_C000_0001_EDX, 22)
+@@ -85,6 +85,8 @@
  #define X86_FEATURE_RNG2_EN		KVM_X86_FEATURE(CPUID_C000_0001_EDX, 23)
-+#define X86_FEATURE_PHE2		KVM_X86_FEATURE(CPUID_C000_0001_EDX, 25)
-+#define X86_FEATURE_PHE2_EN		KVM_X86_FEATURE(CPUID_C000_0001_EDX, 26)
+ #define X86_FEATURE_PHE2		KVM_X86_FEATURE(CPUID_C000_0001_EDX, 25)
+ #define X86_FEATURE_PHE2_EN		KVM_X86_FEATURE(CPUID_C000_0001_EDX, 26)
++#define X86_FEATURE_RSA			KVM_X86_FEATURE(CPUID_C000_0001_EDX, 27)
++#define X86_FEATURE_RSA_EN		KVM_X86_FEATURE(CPUID_C000_0001_EDX, 28)
  
  struct cpuid_reg {
  	u32 function;
