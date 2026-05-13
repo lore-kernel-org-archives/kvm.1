@@ -1,137 +1,108 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667D6357CEA;
-	Wed, 13 May 2026 01:14:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5F7436493C;
+	Wed, 13 May 2026 01:23:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778634859; cv=none; b=IbJJ8tSXuncFv0P720vahrahtzzcAI9uVo9xjS0Xduq6TSGBPuy0LmmXiE/vjvdfl0SAQQOZziU0nhGPdLZ0R00pV7kp+QvI6MPYTrNSHd5XG2kQ+TPuMlR8J6bKEGY7SNMX/0sfQgVl8RGDxMeGHuDeVHIXJvT+srrfIW+F50c=
+	t=1778635395; cv=none; b=LTZAj5K6XvVweyvFYt/DX8Ugw4ptJeQorkHMsrzbjVoSszCAvL2/c3tdItyKGf146HHDRH/XRtrrZU6i2AKFGTtL6EoxiUXiPGLu0Q+bZ/uQZ/i93ICIQgSgwyRJf9KvNd5pJyMyYda3D9093I7wOeUwxP+oXuOspdgNdiIWh1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778634859; c=relaxed/simple;
-	bh=FU2ILKRpRtG6dnEOsQC0n7PNp/hPFcLs2D3fDHxUb84=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=GaxdS4KlM6blnYXC4vCLAHlOMrpsdsTk3x2T5lky2ZtRUbh26eKpUB9pZ7gf1c7iX6m3J4u5/uUW9V4seCyS7wz4gMpVziQ0BX/WkDcnpcT5hs3G7R7MylAfHE80hpqGzczFldgtL+etzfCjeZW0EtGe8s260FB31o5y136/JRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L7TvQDkG; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L7TvQDkG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778634856; x=1810170856;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=FU2ILKRpRtG6dnEOsQC0n7PNp/hPFcLs2D3fDHxUb84=;
-  b=L7TvQDkGgp0V39kLn/zjDipUHpGlqfsIZZuHHkwBILLGPCV9qBDfofJJ
-   02+3+qC60Fg/vQ0M0OzXUKLZz+tZy/oB0Pd3mX4dLCyD6OXhdDcqonqaI
-   VytQPWjV5cMn3xJLQch1ojhztHtrcmjoo0k1YXrpVTVsBcHzPhJJJHR7u
-   yX1zsDnEAHGOh2zcYEFHcqiTMeT9bCBFfzDPaU7jiul8EdDNVh97vHDM1
-   Ed8nXc41UJRWNUA6RQ/jazp9rkFdpxe2O8QSzzz/+y63l7WEmKXYzmPNH
-   RM9a1TcfjoZzzkHJ6jHG03Y3E6RRDfbgCiNjAy1q9VYrJgKkgXr/9NFVT
-   A==;
-X-CSE-ConnectionGUID: FFQaQOpFQgC3i+3zmqxmrQ==
-X-CSE-MsgGUID: VhYcaOeyTSiRbCWeQUM5EQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="82123247"
-X-IronPort-AV: E=Sophos;i="6.23,231,1770624000"; 
-   d="scan'208";a="82123247"
-Received: from orviesa007.jf.intel.com ([10.64.159.147])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 18:14:15 -0700
-X-CSE-ConnectionGUID: Rt5d8lv1T5iZ6ZPBEYe4TA==
-X-CSE-MsgGUID: J9zyCEBWQ1yr1OmhhEqe6w==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,231,1770624000"; 
-   d="scan'208";a="238181695"
-Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.108.11]) ([10.125.108.11])
-  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 18:14:15 -0700
-Message-ID: <bf92ebbf-8d70-406a-aea1-c11ca576de90@intel.com>
-Date: Tue, 12 May 2026 18:14:13 -0700
+	s=arc-20240116; t=1778635395; c=relaxed/simple;
+	bh=v7pYWV/sVqY+f7alZ/9m+Vq1Jk4Dp+eb8BUdsvSm2io=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=Hd8g81BiT4jFVYkUcF9V1dnuiX12OS4nen4JdbAu7F4STELdnHorJBUJbjlavSMLNa/iIKjkdEWF09B+QQtWejlsCHNmPNCieCuoqwC6yzvLhZFKl3j36ulpZht3kyGISS3kApqAAUhcL1bSAU78Lqn07Y294CFi3ca/dLVM8l8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8BxNehz0gNqmlcJAA--.22671S3;
+	Wed, 13 May 2026 09:22:59 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJDxysFq0gNqd7aAAA--.45860S3;
+	Wed, 13 May 2026 09:22:50 +0800 (CST)
+Subject: Re: [PATCH] KVM: selftests: Check guest memfd validity with flags
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Oliver Upton <oupton@kernel.org>,
+ Marc Zyngier <maz@kernel.org>, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260508015013.4108345-1-maobibo@loongson.cn>
+ <agO6oLqQYQG14x6D@google.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <1a5a115e-3bf3-e2bf-475a-b49f5b6e308f@loongson.cn>
+Date: Wed, 13 May 2026 09:19:52 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] x86/tdx: Fix zero-extension for 32-bit port I/O
-To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- x86@kernel.org
-Cc: "H . Peter Anvin" <hpa@zytor.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
- Kai Huang <kai.huang@intel.com>,
- Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>,
- linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, stable@vger.kernel.org
-References: <20260428125632.129770-1-kas@kernel.org>
- <20260428125632.129770-3-kas@kernel.org>
-From: Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <agO6oLqQYQG14x6D@google.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260428125632.129770-3-kas@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJDxysFq0gNqd7aAAA--.45860S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj93XoW7tw4xtw1kXryfJFWkur47WrX_yoW8Aw4kp3
+	y8GFn5Kr1ktF1xZryI9rnFqasY9FZ7Kr1xCw4UCr15uwn3tw1IyF4xKa1YkF93ZrZ3tF13
+	ZF97KF93Z3WrJabCm3ZEXasCq-sJn29KB7ZKAUJUUUU5529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUUv0b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr0_Gr1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I
+	8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1Y6r17McIj6I8E87Iv67AK
+	xVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7I2V7IY0VAS07AlzV
+	AYIcxG8wCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E
+	14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_JF0_Jw1lIx
+	kGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAF
+	wI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r
+	4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Jr0_GrUvcSsGvfC2KfnxnUUI43ZEXa7IU8zwZ7UU
+	UUU==
 
-On 4/28/26 05:56, Kiryl Shutsemau (Meta) wrote:
-> +	if (size == 4)
-> +		regs->ax = 0;
-> +	else
-> +		regs->ax &= ~mask;
 
-I haven't thought about this _that_ much, but this feels wrong. Why is
-is 4 so special cased?
 
-Also, what _are_ the limits on the registers that 'in' can be used on?
+On 2026/5/13 上午7:41, Sean Christopherson wrote:
+> On Fri, May 08, 2026, Bibo Mao wrote:
+>> The type of guest_memfd in structure kvm_userspace_memory_region2
+>> is __u32, it is not correct to assign it with -1 and check whether
+>> it is smaller than 0. Here check flags with KVM_MEM_GUEST_MEMFD
+>> set.
+>>
+>> Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+>> ---
+>>   tools/testing/selftests/kvm/lib/kvm_util.c | 4 +---
+>>   1 file changed, 1 insertion(+), 3 deletions(-)
+>>
+>> diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+>> index 2a76eca7029d..9d3553f7e6a5 100644
+>> --- a/tools/testing/selftests/kvm/lib/kvm_util.c
+>> +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+>> @@ -817,7 +817,7 @@ static void __vm_mem_region_delete(struct kvm_vm *vm,
+>>   		kvm_munmap(region->mmap_alias, region->mmap_size);
+>>   		close(region->fd);
+>>   	}
+>> -	if (region->region.guest_memfd >= 0)
+>> +	if (region->region.flags & KVM_MEM_GUEST_MEMFD)
+> 
+> Hmm, it's a bit gross, but this is probably more robust?
+> 
+> 	if ((int)region->region.guest_memfd < 0)
+yes, this is more direct, only that some guys in the community do not 
+like type conversion. Both are ok for me.
 
-RAX - n/a, no 64-bit I/O
-EAX - size=4
-AX  - size=2
-AH  - n/a no encoding for inb
-AL  - size=1
+> 
+> E.g. if we somehow end up in a state where KVM_MEM_GUEST_MEMFD is either stale
+> or the guest_memfd file was already closed.  I highly doubt either of those things
+> will happen, but logically it's the correct fix (the only reason guest_memfd is
+> a u32 is being it's part of the kernel's uAPI).
+Actually it probably will happen, how about something like this:
+-       if (region->region.guest_memfd >= 0)
++       if ((int)region->region.guest_memfd >= 0) {
+                 close(region->region.guest_memfd);
++               region->region.guest_memfd = -1;
++       }
 
-I'd find this much easier to grasp if there was a nice table of what the
-registers, sizes, and masks ended up being usable. As usual, x86 is
-"fun" here.
+Regards
+Bibo Mao
+
