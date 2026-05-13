@@ -1,78 +1,195 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40FD23D3D15;
-	Wed, 13 May 2026 06:35:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778654136; cv=none; b=YjbjTJy+GPSXYej9W5WN4zTMEgeO17nUILEzhTh/71ejBb+BKk/PyYIsQH5ljpJ9A9FJkuXreaHm7lCLrhcQu/URadWBVxK1LzP9xlIqhxHA0H1mHgXSSDVxUrbcVQiDE9KDW68mmZUgnxI+RATSbmzubwFrASCheSfe4CtX3h0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778654136; c=relaxed/simple;
-	bh=IAtQt9XJAxWCq1fOQbZ3l8tlNnaOP8cqwO/8STamx2M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WE5XTPiqiTPX1qQne1rVcJv3W1gkPIQpoSkSzXNuMuWZIR7+2zuIyhdK4StNDTLC2lCeLcDR+rNo7E/BBGyk23KYUbVIyVSeFi2TIBZQq1487SVaWYDZHWHq/99I31pR/fDImNOQiRl6xsW5xjrT58OsfhFo7iSJYTE9o88tnkM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gvlntJBx; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87A0F3D45D4
+	for <kvm@vger.kernel.org>; Wed, 13 May 2026 06:37:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.153.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778654272; cv=fail; b=B0MEPFTpgMQkqY6Q9pYBpfCKzrJDno22lkuzTBJdD6z3p/Hjfow9dDaFsUZMePmW2R7VSR3sHVsEW83r2/DDpU08/WVR5j3kGObgkYccSq8xTFZqB8EjjOdwFBgqs3QxSRK9s8N68W8KIexkl6gb+PiVCApZ55ciBjGlR253UCM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778654272; c=relaxed/simple;
+	bh=ldUUL5LvKKg8pO0Cs/L34kXovzIocX5yA8E+TJKLni0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=eRZyBQ6YDQmeVoq8aP0pi9ayaLwAp7fdsOVw73bUJfg8apublZ001JgTYkG+WNTMazxJ2bl+riD6Cur78vQzyfHCf0d3QoKvU8GR/m3qoPZ1cSPZFPtRb75SY+vxqRyCceNHKBTIjp/5ABf1C4HKuztpXkhSDZB1t0z1VO4oSTU=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=vpMyG/0T; arc=fail smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gvlntJBx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8A3FC2BCB7;
-	Wed, 13 May 2026 06:35:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778654136;
-	bh=IAtQt9XJAxWCq1fOQbZ3l8tlNnaOP8cqwO/8STamx2M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=gvlntJBxEylbcwwc/qBvqoGrcHgelWU8QiX0aoEAp2Z2WNu1Ov1pRKbOF5oG2Ksbb
-	 npWiUUP6+t4AnEd60tOCLk3gpdgUj1qk4Z6AUQo+nTjRw+i0INnVNT39P33TP5HUAp
-	 K85i09ROj+EcMItGmlb2SbwYeLkOuOqY6gb22nN4BEWaaBk4lsYId/9rsQMywbyHm8
-	 JmCpyMOMGpFT3e9/QPfwPbg7tdJglyTFVAV0tZrr3UVhhArN1T+aCGOHKABsh9si7+
-	 IqYtFeYgYhTsmBhQOL2IUYHaDKgRMJaDsjAc3VF0Wud9Ge9PEZvDSZISXZQsfRIw1U
-	 vHKcq6qWpedmA==
-Date: Wed, 13 May 2026 11:59:13 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/5] KVM: SVM: Only disable x2AVIC WRMSR interception
- for MSRs that are accelerated
-Message-ID: <agQKffJ5Mp-5ussq@blrnaveerao1>
-References: <20260506184746.2719880-1-seanjc@google.com>
- <20260506184746.2719880-4-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="vpMyG/0T"
+Received: from pps.filterd (m0109332.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64CFmtI92088545
+	for <kvm@vger.kernel.org>; Tue, 12 May 2026 23:37:48 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=LAM65dsmKstrNrOI5lpRjp6+6YUiNRddRB1paFn5Tj4=; b=vpMyG/0TqYlK
+	FWur0gKHVAvJLoyN0BSGdH/as0387H96++tNCUt3QXLPzIH8p4iQVhoAWfqG5rIL
+	PJ8R14LbD6TgPnBJVBKbPpbdVILQkJgwZKS+0j92/oMcMMWJ6YSQw55sVRvWsjnv
+	BK/NZREMWIfqkQkozj9BcGNXRWm9pg4/DgAPmrQfwhM3YcV7+5PrtgRlcs0tQ6Iv
+	2sv9r9VJfHH/yIJi1TSk1Tg8YBNDS6675+5PvwhHEKsVCveXe4BTBOJndjzhI9G3
+	GBkVoYXXxprMnmmG/IdN4YW+qAjnw0hImptu3z2Tk3hWF9aSB5AQvuc7ytezl1l/
+	OsvLiBRgJQ==
+Received: from mail-oa1-f70.google.com (mail-oa1-f70.google.com [209.85.160.70])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4e3nvrx78w-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Tue, 12 May 2026 23:37:48 -0700 (PDT)
+Received: by mail-oa1-f70.google.com with SMTP id 586e51a60fabf-40f25e55f20so8891966fac.0
+        for <kvm@vger.kernel.org>; Tue, 12 May 2026 23:37:48 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778654267; cv=none;
+        d=google.com; s=arc-20240605;
+        b=PdwH7MgOqLKfkphfiA/IRzWoS5yxryVwxPJtjRW6g7Pxku18DhqsbWMOp++TP5VOfn
+         mOYBSd7yBsMqVFj6aD+9/m8FZQHKdZBKQtoubGp/RMfIa3RIJc4CnwzrcwMshQFFXGbk
+         veUTaOQuOu2guXV6DNM1ehxSr1TWwCfQ1oxNTWJsJ0MA3FrICOEYKjAGeKWOQeUA1jl6
+         6Gq4nuE0NyCfsCH4eD10mC4q31QzFvhtum6yTrM6cSSEKsmYGnjG9fOxXimG0s7E1E7s
+         KeHyP7f2TxVWzXnKRYnqvIVWKWdsgYY3/cjMLmvBdE1Vf7JKe6WerQEjdoACcLLVBGjb
+         CU5w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version;
+        bh=P9w2oPSXP1dmZeF210Jp6h9CK0SajjpVEjMBSbv21rw=;
+        fh=q+Ls1m21h5giTCD3FkrE4GqUSexq5tNS/PVfYlmxEEM=;
+        b=j4peC+Qkh7TZOOaRjLAMiSXwfKrA9jeDGfr5qcmjrbJFha1+UB5YWIMvrJy2Pu9pCV
+         2CoAJok/A/ALNlGUqGRBl8tOALVZRb9Ru1DCaMdmK3rlIhU09tRuAEoMMQtBkDxbM7Bd
+         H2fX/JAs60bE7y+kXHTBVQ/dUWT40JtGO2ZgzRxf7KvONQmgd9S4iKFcl+4ZQo6xPn+s
+         z3mRWclPKGNcfbprn3YeNNDUiizDWVw3zOY807geNr90jJ4mtnF6M9XBeSGVb1NJCny3
+         yOX6qos3lMznvrKpaVWoqWCvL0nidD60PmzfEkJum0wzjdBvR7WXAtorMfKsYG3p3ULC
+         e+LA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778654267; x=1779259067;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=P9w2oPSXP1dmZeF210Jp6h9CK0SajjpVEjMBSbv21rw=;
+        b=SS0QMvZMIh/ikJmASwuVAydWA6AD6u2XNj1PSONvKHMoLTYJg66jwf2W2542W/s6sB
+         mkVwgp41ijBgRQM236o1rx8rpWV8CcivRgKgaQ5hKcJmMbQgyDrxWCu9eot00dmXf+LD
+         2xT9r5pVe5pcTnH4WTrJrr0VL4tHRbe+BFUbwW8lGxvWEsRNP9qEunzacbG/scJjwnqt
+         d7UatGmCHyZiwM9NJSasXGwHUUmWkxrhUCV754UyariUebXaaSMmUORrKUn11QC35iqs
+         W21ehp1xX1/Iwuo+kWMBNJFSyea9CSapt/niRPk54RiJQZNxub9IWCjwPoTci+UtiYlS
+         vWCw==
+X-Forwarded-Encrypted: i=1; AFNElJ9JNxI+wLhU6ptd1tFlI5QC12g5nVY6mO14tEL0CpCTQnA/5SenjUxW4dOWIbd9Px/Jkqo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzhhVq+sJBxXkIUoK+kPHbYZekRrjzHe1pAN00uYBkXj9E92ZyD
+	nuWv78nhNcmf2S0wJfvPHPeJH4xcTtnEE2c+FzCQ/RAm78YhmR8zO3yAgj46KvT3oBOsPVHLkDk
+	290kC60LzPYQjHv7mVbJ8cqhfa12wd2rCvoCtOWIDbFlEvTmLV6M5Fa9nIIEgkBxKhJ23UMbCIR
+	hqrnS+i0/3NsYyEbTjY0QVBEwPQEM=
+X-Gm-Gg: Acq92OGoDUVhHu1vZAeJkl0Ge8hdpeywNg1Q6g+zKqf4vtyUVGMCmA8142UXIzQfCOT
+	Trkb5xHnvq79/tYP4eGJ2TW/VPy8PxfeoOgLnDapM4tm29zSjQeB7gD/To0ymMIOjqsuzHOvuRD
+	OmohKN+gbAzj8FgVF76stJu4NOxyAoaWqrC16FOIk07w3d6H8LJxzdWp3gjt4Z+UlG7qmJ0RtEf
+	8U2KvSbJm5m4iYAT7f1MSooO9isVYeI1UK6ZZ2y
+X-Received: by 2002:a05:6808:1492:b0:45f:13fe:4a3d with SMTP id 5614622812f47-482b28c375cmr1554318b6e.7.1778654267582;
+        Tue, 12 May 2026 23:37:47 -0700 (PDT)
+X-Received: by 2002:a05:6808:1492:b0:45f:13fe:4a3d with SMTP id
+ 5614622812f47-482b28c375cmr1554304b6e.7.1778654267114; Tue, 12 May 2026
+ 23:37:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260506184746.2719880-4-seanjc@google.com>
+References: <20260512184755.4137227-1-zhipingz@meta.com> <20260512184755.4137227-3-zhipingz@meta.com>
+ <d5b26695-f1fd-4cb6-8e19-201f689eceaf@huawei.com>
+In-Reply-To: <d5b26695-f1fd-4cb6-8e19-201f689eceaf@huawei.com>
+From: Zhiping Zhang <zhipingz@meta.com>
+Date: Tue, 12 May 2026 23:37:36 -0700
+X-Gm-Features: AVHnY4KQd48YcOfbXPjFCGlTijSz26BhC9fVFq41RkqL4K2-2maS91GmCZxuWQI
+Message-ID: <CAH3zFs2V_EENYzq+MRbSV_XPqz99xzA1V=Yc_GpgjGxxt41quw@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] RDMA/mlx5: get tph for p2p access when registering
+ dma-buf mr
+To: fengchengwen <fengchengwen@huawei.com>
+Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <helgaas@kernel.org>,
+        kvm@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-pci@vger.kernel.org, netdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, Keith Busch <kbusch@kernel.org>,
+        Yochai Cohen <yochai@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Authority-Analysis: v=2.4 cv=BMKDalQG c=1 sm=1 tr=0 ts=6a041c3c cx=c_pps
+ a=nSjmGuzVYOmhOUYzIAhsAg==:117 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=xtH7KyWI9dI7BmFOsl-x:22
+ a=i0EeH86SAAAA:8 a=VabnemYjAAAA:8 a=xwbcgjOLmlna_7dmNJkA:9 a=QEXdDO2ut3YA:10
+ a=1zu1i0D7hVQfj8NKfPKu:22 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-GUID: -GRD4uz9YQ_ks3wOo2D4ggPYA3A4mks0
+X-Proofpoint-ORIG-GUID: -GRD4uz9YQ_ks3wOo2D4ggPYA3A4mks0
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTEzMDA2NiBTYWx0ZWRfX8yECs7soP9wf
+ shfRmp3k+x0OB8R5voa2RVI4NYInRf+yxurpDwdFz/gfsJcA0ji1gGox9mcwjye6f8MFVf8IqG1
+ 6AUyuerEepRLrqjN5nUcxhTeRqvShoO+Hkn0+BvxdvhXqw79beWRnrjbkpdxdUEGL+vSet4Nqhj
+ AvVdclMf5vodQIkXCZ+3YL/jj6MYFlPvvomGmRjfLjmLoONez7Nyo3Jg2QdUMCAFWM6FkEAAPHN
+ BP4miIHZ7nlr3borkLwED6ENbDsVfQYiFul1fXnuhWQp5RfrgO+MpF+VhMKJuTeqVaARNOhi4DY
+ vXNEBNZd0zbv8++tXjOXdG/CH8S/1Pay8TqtGHIDIL8EywkzLjevi9jpSioeEy6FMu/Le8VL9vR
+ btPEtwzEtexEjE9IO9n/hQ0v4iqLQEpGZg5LBN6tXjOrEMVow56GyNCKW/R/COMkHns2IqmMam4
+ 3ZPOqBarTp+0qX3igxQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-11_05,2026-05-08_02,2025-10-01_01
 
-On Wed, May 06, 2026 at 11:47:44AM -0700, Sean Christopherson wrote:
-> When x2AVIC is enabled, disable WRMSR interception only for MSRs that are
-> actually accelerated by hardware.  Disabling interception for MSRs that
-> aren't accelerated is functionally "fine", and in some cases a weird "win"
-> for performance, but only for cases that should never be triggered by a
-> well-behaved VM (writes to read-only registers; the #GP will typically
-> occur in the guest without taking a #VMEXIT, even for fault-like exits).
-> 
-> But overall, disabling interception for MSRs that aren't accelerated is at
-> best confusing and unintuitive, and at worst introduces avoidable risk, as
-> the effective guest-visible behavior depends on the whims of the CPU (the
-> behavior of x2APIC MSR writes on at least Zen4 doesn't match the behavior
-> documented in the table in "15.29.3.1 Virtual APIC Register Accesses" of
-> the APM).
+On Tue, May 12, 2026 at 6:49=E2=80=AFPM fengchengwen <fengchengwen@huawei.c=
+om> wrote:
+>
+> >
+> On 5/13/2026 2:47 AM, Zhiping Zhang wrote:
+> > Query dma-buf TPH metadata when registering a dma-buf MR for peer to
+> > peer access and translate the raw steering tag into an mlx5 steering
+> > tag index. Factor mlx5_st_alloc_index() so callers that already have a
+> > raw steering tag can allocate the corresponding mlx5 index directly.
+> > Keep the DMAH path as the first priority and only fall back to dma-buf
+> > metadata when no DMAH is supplied.
+> >
+> > Add pcie_tph_get_st_width() so the mlx5 IB driver can query the
+> > device's negotiated ST width without poking pci_dev::tph_req_type
+> > directly (that field is gated by CONFIG_PCIE_TPH and would otherwise
+> > break !CONFIG_PCIE_TPH builds). Pass the width to the dma-buf
+> > get_tph() callback so the exporter can return the value that matches
+> > the consumer's capability.
+>
+> 1\ Recommend the PCI/TPH modification be committed separately.
+> 2\ How about rename it to pcie_tph_enabled_req_type() ? so we could
+>    use already defined macro:
+> #define   PCI_TPH_REQ_DISABLE           0x0 /* No TPH requests allowed */
+> #define   PCI_TPH_REQ_TPH_ONLY          0x1 /* TPH only requests allowed =
+*/
+> #define   PCI_TPH_REQ_EXT_TPH           0x3 /* Extended TPH requests allo=
+wed */
+>
 
-Revisiting this:
-- As far as I can tell, the guest-visible behavior looks to be the same 
-  with/without MSR interception? Did you see different behavior for 
-  specific APIC MSRs or across Zen processor families?
-- The main difference with x2AVIC looks to be about invalid APIC MSR 
-  accesses generating #GP directly in the guest (but that wouldn't be 
-  guest-visible). I was pointed to this statement in the APM Section 
-  15.29.10 x2AVIC:
-	x2APIC MSR intercept checks and access checks have higher 
-	priority than AVIC access permission checks.
+Hi Chengwen,
+  Thanks for the great suggestions.
+  1. Splitting the PCI/TPH helper change into a separate prep patch
+sounds reasonable.
+  2. I see your point about exposing the enabled TPH request type! I
+want to take one
+      more pass over the overall flow and switch to that if I don=E2=80=99t
+find any issues.
 
-Note the "access checks" qualifier, which covers the #GP seen for 
-invalid MSR accesses.
+  Zhiping
 
-- Naveen
+> >
+> > Pass the dma_buf pointer that the umem already resolved into
+> > get_tph_mr_dmabuf() instead of re-resolving the user-supplied fd.
+> > Re-resolving opens a TOCTOU where a concurrent dup2() can substitute a
+> > different dma_buf between umem creation and TPH lookup.
+> >
+> > Track the per-MR ownership of the allocated mlx5 ST index on
+> > mlx5_ib_mr (dmabuf_st_index / dmabuf_st_owned) and release it once the
+> > firmware mkey no longer references it. Both the cached path
+> > (mlx5r_umr_revoke_mr_with_lock + ib_frmr_pool_push) and the
+> > destroy_mkey path call mlx5_ib_mr_put_dmabuf_st() so the ST index does
+> > not leak when the MR is reused from the FRMR pool.
+> >
+> > Initialize ret in mlx5_st_create() so the cached steering-tag path
+> > returns success cleanly under clang builds.
+> >
+> > Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
+> > ---
+> >  drivers/infiniband/hw/mlx5/mlx5_ib.h          |  6 ++
+> >  drivers/infiniband/hw/mlx5/mr.c               | 72 ++++++++++++++++++-
+> >  .../net/ethernet/mellanox/mlx5/core/lib/st.c  | 27 ++++---
+> >  drivers/pci/tph.c                             | 20 ++++++
+> >  include/linux/mlx5/driver.h                   |  7 ++
+> >  include/linux/pci-tph.h                       |  2 +
+> >  6 files changed, 124 insertions(+), 10 deletions(-)
+> >
+>
+> ...
