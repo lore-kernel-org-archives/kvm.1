@@ -1,191 +1,116 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13AD93FBEC2
-	for <kvm@vger.kernel.org>; Wed, 13 May 2026 12:29:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D433A6F1C;
+	Wed, 13 May 2026 12:29:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778675347; cv=none; b=GzND/ZEGxdWqHsNQtq2MLcKeMglrsPPIvBT8iqrMXAuQOtZ8Sxgu1cpLMqR4NJsCiWkm+zMPUl0kD9WfR9vCwqKoqxz/+pi6ag6/mq/TD4APlOX5gFh+JR4e9EX4LnxKdEO7Uqukb0AX6fNIxj2SmCGgcI3KuRWZbAco6TQV12Q=
+	t=1778675393; cv=none; b=emuoPJEAz7H/wu9ZR2hxKnW+owULNRWMgJsnBZV6seTe2y6JS1W0KsOdT9AaEUPuNE6S31VDU/t190DT76WEOR3LFnG/F1zGCQyNHFW4NRZGZLEsYWWPbu0m+s/t4yOflCghzSxIxoof3U5s/JJ+Zt5hakwlE6l9n+eqLUNxQpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778675347; c=relaxed/simple;
-	bh=8MAloSmMAMMd4l/G/g/2yUICqF0/LT/W/Bue6X2uJOo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fCQmMnNeevU/hiUPGPHhITR4BToL+qQERo2ujS8qWLkTGi1Pfl31MUzDU5+XPag+Id7DU/l0FYjgg2re6ID1mOrd69EELH4advVBY3zHoEuJlfpd2HnjcdnLXWzV798E078MIc5C5LskwjFqb79TG+ctzx7l+FgyoLNB/kcZQRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=tOxuLBMW; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1778675393; c=relaxed/simple;
+	bh=DZ2OfVSZNWzcDeOlCkMkhsQOXtb39i1nLzzbsSZuXRU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HtPdicHorCXp/rsoq7y1tuY+h56aPHZPshJHjhaFzcEYypS1lT7nUZKkhZf4oDssXAfI131mvDh9wUAIB8qd6UrBN841Uw4F2h6tCQBytmtN3GyCpT6xwwsy8VZZXmBUeXaThW4P+ddW2mzbuEiCzFxS2xrSEs4yVnf/3ZW13OQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=QhTKJVHK; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="tOxuLBMW"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 466EF165C;
-	Wed, 13 May 2026 05:28:59 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 13EC63F7B4;
-	Wed, 13 May 2026 05:29:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1778675344; bh=8MAloSmMAMMd4l/G/g/2yUICqF0/LT/W/Bue6X2uJOo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tOxuLBMWjuVKvUJwvt6sg+sZg7VuI/aVrYvZYaRm2ztF/5yBmwIjwwPc4VEbn5Dbj
-	 FHE1xGMqksAu4sLf3v102nT1j/sWILjF11x/y6CCqYOd2LYl0ET9yghwCD0qJGJ6A9
-	 cXS5ZM3SzTGUcjIMhlnKP31YKmdCXqI7/d2ceOrQ=
-Date: Wed, 13 May 2026 13:28:56 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org, Steffen Eiden <seiden@linux.ibm.com>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
-	Will Deacon <will@kernel.org>, Fuad Tabba <tabba@google.com>
-Subject: Re: [PATCH 2/2] KVM: arm64: nv: Don't save/restore FP register
- during a nested ERET or exception
-Message-ID: <agRuiKHWWn_88YzT@J2N7QTR9R3>
-References: <20260512140755.3676306-1-maz@kernel.org>
- <20260512140755.3676306-3-maz@kernel.org>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="QhTKJVHK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=rki0N/LpUp9snFOn/spm1BVi6skoI5EoYdbrvY3VzsA=;
+	b=QhTKJVHKC4yJSk2JANCGSgPcBKawo7jIM5dU9QNbsX6C0x5LcyI0TQ+6CCWKzi
+	dE6n7uy/laAWFIAC4D+WaYZybda87AJsM0oVnZScdNjo5LQBHWa5QeSe0gRlDeEh
+	qjCp7NlN11g7uIQswjYgZhNqOr5VK5zNqMO3a6F2vwQWU=
+Received: from [IPV6:240e:38c:8516:b200:c068:c931:3eaf:6c76] (unknown [])
+	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wB30cdFbgRqe32jBA--.12714S2;
+	Wed, 13 May 2026 20:27:50 +0800 (CST)
+Message-ID: <f64029bf-1f4c-40a7-860a-eb04fbe5317b@163.com>
+Date: Wed, 13 May 2026 20:27:49 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260512140755.3676306-3-maz@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] KVM: selftests: Add unit to dirty_log_test
+To: Sean Christopherson <seanjc@google.com>, wu.fei9@sanechips.com.cn
+Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
+ kvm-riscv@lists.infradead.org, anup@brainfault.org, atish.patra@linux.dev,
+ pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
+ pbonzini@redhat.com, shuah@kernel.org
+References: <202605111849442561v1a0B_7W1L2Z-ENusLaP@zte.com.cn>
+ <202605111130.64BBUXDN013040@mse-fl2.zte.com.cn>
+ <agO_0ejKd0x38_-E@google.com>
+Content-Language: en-US
+From: Wu Fei <atwufei@163.com>
+In-Reply-To: <agO_0ejKd0x38_-E@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:_____wB30cdFbgRqe32jBA--.12714S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7tw13JFy8CryDCFW3Zr13urg_yoW8Kr4UpF
+	WSgFyjkr1kAFyrC3Z2ya1YqF1FyFW5ArWUJa4rt345ua98WrsrWr1xKa4rZasrCr1fXr12
+	yrWDK347Gwn7uaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UonQUUUUUU=
+X-CM-SenderInfo: pdwz3wlhl6il2tof0z/xtbCzQlJ6moEbklR1wAA3o
 
-On Tue, May 12, 2026 at 03:07:55PM +0100, Marc Zyngier wrote:
-> When switching between L1 and L2, we diligently use a non-preemptible
-> put/load sequence in order to make sure that the old state is saved,
-> while the new state is brought in. Crucially, this includes the FP
-> registers.
+On 5/13/26 08:03, Sean Christopherson wrote:
+> On Mon, May 11, 2026, wu.fei9@sanechips.com.cn wrote:
+>> Currently dirty_log_test hardcodes usleep 1ms in each interval, which
+>> could be too short for guest to write and fault in enough pages, then
+>> there is less chance to test the write protection mechanism, especially
+>> in the case of (log_mode != LOG_MODE_DIRTY_RING).
 > 
-> However, this is a bit silly. The FP registers are completely shared
-> between the various ELs (just like the GPRs, really), and eagerly
-> save/restoring those in a non-preemptible section is just overhead.
-> Not to mention that the next access will end-up trapping, something
-> that becomes exponentially expensive as we nest deeper.
+> But when log_mode != LOG_MODE_DIRTY_RING, the individual sleep time is largely
+> meaningless, because the test won't reap the bitmaps for iterations > 0.
 > 
-> The temptation is therefore to completely drop this save/restore thing.
-> Why is it valid to do so? By analogy, the hypervisor doesn't try to
-> poloce things between EL1 and EL0, or between EL2 and EL0. Why should
-> it do so between EL2 and EL1 (or EL2 and L2 EL0)?
->
-> Once you admit that the FP (and by extension SVE) registers are EL-agnostic,
-> the things that matter are:
-
-s/poloce/police/ ?
-
-The above is a bit flowery; it would be nice to remove the rhetorical
-questions and just state that (aside from some control registers) the
-FPSIMD/SVE/SME state is shared between exception levels and doesn't need
-to be saved/restored.
-
-How about:
-
-  When switching between L1 and L2, we save the old state using
-  kvm_arch_vcpu_put(), mutate the state in memory, then load the new
-  state using kvm_arch_vcpu_load(). Any live FPSIMD/SVE state is saved
-  and unbound, such that it can be lazily restored on a subsequent trap.
-
-  The FPSIMD/SVE state is shared by exception levels, and only a handful
-  of related control registers need to be changed when transitioning
-  between L1 and L2. The save/restore of the common state is needless
-  overhead, especially as trapping becomes exponentially more expensive
-  with nesting.
-
-  Avoid this overhead by leaving the common FPSIMD/SVE state live on the
-  CPU, and only switching the state that is distinct for L1 and L2:
- 
-> - the trap controls: the effective values are recomputed on each entry
->   into the guest to take the EL into account and merge the L0 and L1
->   configuration if in a nested context, or directly use the L0 configuration
->   in non-nested context (see __activate_traps()).
+> 			if (i && host_log_mode != LOG_MODE_DIRTY_RING)
+> 				continue;
 > 
-> - the VL settings: the effective values are are also recomputed on each
->   entry into the guest (see fpsimd_lazy_switch_to_guest()).
+The first usleep  matters in the case of KVM_DIRTY_LOG_INITIALLY_SET. 
+The dirty bitmap is not precise in the first get_dirty_log, all pages 
+are marked as dirty but most of them are not populated in page table, 
+this creates the situation I mentioned in the cover letter.
 
-This is true for FPSIMD+SVE today. For SME, SMCR_ELx also contains other
-controls, and will need to be dealt with similarly. It might be worth
-noting that (and that ZCR_ELx could gain new controls in future).
+"when the range to wp is
+[0xfffff01fc000, 0xfffff023c000) , if found_leaf of 0xfffff01fc000
+returns false and page_size is 2MB, it skips the whole range, but it's
+possible to have valid entries in [0xfffff0200000, 0xfffff023c000), so
+only [0xfffff01fc000, 0xfffff0200000) can be skipped safely."
 
-> Since we appear to cover all bases, use the vcpu flags indicating the
-> handling of a nested ERET or exception delivery to avoid the whole FP
-> save/restore shenanigans.
+>>
+>> Unit is introduced to replace the default 1ms if specified in command
+>> line. The following test can't trigger failure on my riscv vm:
 > 
-> For an EL1 L3 guest where L1 and L2 have this optimisation, this
-> results in at least a 10% wall clock reduction when running an I/O
-> heavy workload, generating a high rate of nested exceptions.
+> Failure of what?  And does the failure really not reproduce with a higher interval?
+
+On riscv, it fails to write protect some pages with valid page table 
+entry then loses track of dirty pages. Higher interval doesn't help 
+because only the first usleep matters, after the first 
+collect_dirty_pages, all dirty pages are tracked precisely then there is 
+no such problem.
+
 > 
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> ---
->  arch/arm64/kvm/fpsimd.c | 8 ++++++++
->  1 file changed, 8 insertions(+)
+>>
+>>    # ./dirty_log_test -m 21 -M clear-log
+>>
+>> By enlarging unit, it fails every time:
 > 
-> diff --git a/arch/arm64/kvm/fpsimd.c b/arch/arm64/kvm/fpsimd.c
-> index 15e17aca1dec0..73eda0f46b127 100644
-> --- a/arch/arm64/kvm/fpsimd.c
-> +++ b/arch/arm64/kvm/fpsimd.c
-> @@ -28,6 +28,10 @@ void kvm_arch_vcpu_load_fp(struct kvm_vcpu *vcpu)
->  	if (!system_supports_fpsimd())
->  		return;
->  
-> +	if (vcpu_get_flag(vcpu, IN_NESTED_ERET) ||
-> +	    vcpu_get_flag(vcpu, IN_NESTED_EXCEPTION))
-> +		return;
-> +
+> "unit" is way too vague.   Even looking at the code, it's not clear to me what
+> you intended a "unit" to be.  I'm not entirely opposed to providing the user with
+> more control over the innards of the test, but the interface needs to be somewhat
+> intuitive.
 
-I think we need a comment as to why this is safe, with some other detail
-from the commit message. It would also be good to have asserts here to
-catch if something goes wrong.
-
-How about:
-
-	/*
-	 * Avoid needless save/restore of the guest's common
-	 * FPSIMD/SVE/SME regs during transitions between L1/L2.
-	 *
-	 * These transitions only happens in a non-preemptible context
-	 * where the host regs have already been saved and unbound. The
-	 * live registers are either free or owned by the guest.
-	 */
-	if (vcpu_get_flag(vcpu, IN_NESTED_ERET) ||
-	    vcpu_get_flag(vcpu, IN_NESTED_EXCEPTION) {
-		WARN_ON_ONCE(host_owns_fp_regs());
-		return;
-	}
-
-... ?
-
-Note: I didn't add WARN_ON_ONCE(preemptible()), since
-kvm_arch_vcpu_load_fp() should *never* be called in a preemptible
-context.
-
->  	/*
->  	 * Ensure that any host FPSIMD/SVE/SME state is saved and unbound such
->  	 * that the host kernel is responsible for restoring this state upon
-> @@ -102,6 +106,10 @@ void kvm_arch_vcpu_put_fp(struct kvm_vcpu *vcpu)
->  {
->  	unsigned long flags;
->  
-> +	if (vcpu_get_flag(vcpu, IN_NESTED_ERET) ||
-> +	    vcpu_get_flag(vcpu, IN_NESTED_EXCEPTION))
-> +		return;
-
-Likewise here, but we can reduce the comment, e.g.
-
-	/*
-	 * See comment in kvm_arch_vcpu_load_fp().
-	 */
-	if (vcpu_get_flag(vcpu, IN_NESTED_ERET) ||
-	    vcpu_get_flag(vcpu, IN_NESTED_EXCEPTION) {
-		WARN_ON_ONCE(host_owns_fp_regs());
-		return;
-	}
+Basically, a unit is the time of one usleep(), any suggestions?
 
 Thanks,
-Mark.
+Fei.
 
-> +
->  	local_irq_save(flags);
->  
->  	if (guest_owns_fp_regs()) {
-> -- 
-> 2.47.3
 > 
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
+
