@@ -1,201 +1,110 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7E3413240
-	for <kvm@vger.kernel.org>; Wed, 13 May 2026 12:44:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCD7423A61
+	for <kvm@vger.kernel.org>; Wed, 13 May 2026 12:48:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778676245; cv=none; b=R1WYs4CG9ByuIUzfYgv2JkYQ1gRyTT/uS3K68XMPsVK7L0Urpty0v6uN79xAI0FccM1sYQQ1Gk6r/5975fy5aSlcnfJTndFtKMbcZQ0F5QibVPlOKmB808PML0Ks5K57uYSXFzpxyKexxSNIqXQ5gpy34ACszOurIDXrEC5+v0c=
+	t=1778676510; cv=none; b=vGNLubyIkBpCiicS2oL/b/lUYBpImFMDuf6j0fMYQXpfwGzJZkRXJa51FwQwmu5F0HKow027jUz80C+bHkOS85iiQp69v1xR1VvLKQH1FSbAu68RFnHf9unw+2npVVcF0hqAzVM3r2GlMIG390cXCBhmGsnn8elwzWVZ6UJdZYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778676245; c=relaxed/simple;
-	bh=U1yovwocJyt4iBBN2hMuvWGhooDrsAQSGxPcJ2jhBZU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=e48EfTxyLGugEZihDmoETy1ahQ0U0Wor20YtYH7CbH9szG+t8gy9EPrmO5KfyZ+ZxA5NLfSYm+nSmby2u3+uotOswe/c0baxw1YWOMSQR+m4vif6oB9PZIegoYf9howvMDqDMjrlv4cW1216ipzcveAqLwOAOVPDct6e5cKawVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JWtp/0S5; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1778676510; c=relaxed/simple;
+	bh=+GsX+CdK0ydxnGXslSMT5BS3MNBH9LFYKOpievZvUwc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=IZhR6SPzzwyrtd2ld0VZWvOOQXHF7CYrhhTQ9xxk+oSlXGHA7/qOcanJBj9BqvPdyCvw1pE+i9WnnElygU/WcCpqZuQ6MAzRgR5MzDKlv845B072ViFCx/DZ6J+brjojrB3aLRjvitZC2PFASvZIQLz9zPNU6NBTuPagVlIul0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mnej4WuZ; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JWtp/0S5"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778676243;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=qCqqmvyfBRoByfly7X2wP/YX/5z+CJ5QvZWJz06fuzM=;
-	b=JWtp/0S5kzELVJv24wpWTq1ON/Bmy+NsKHEo4MnR+lScDiNfDFGg5kuEbdeEQu/H6EteFA
-	EeqBScWwTLviz8/+dNcj6vrXn9mB24BKezpx9aiBjU/HZlBNuaFHDi+LqfUT51pDWLQEh5
-	gHodEIci0ledTH4K8u6Bm4JLIPx3Amg=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-223-V10L4c38NFm5JVp7kK65ow-1; Wed,
- 13 May 2026 08:43:58 -0400
-X-MC-Unique: V10L4c38NFm5JVp7kK65ow-1
-X-Mimecast-MFC-AGG-ID: V10L4c38NFm5JVp7kK65ow_1778676234
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 66C65180034E;
-	Wed, 13 May 2026 12:43:53 +0000 (UTC)
-Received: from [10.44.50.86] (unknown [10.44.50.86])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 070DE180034E;
-	Wed, 13 May 2026 12:43:44 +0000 (UTC)
-Message-ID: <ba08dfe9-932b-40c3-9fdf-fc891d52e1d8@redhat.com>
-Date: Wed, 13 May 2026 14:43:42 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mnej4WuZ"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-83544d05c5aso3674046b3a.2
+        for <kvm@vger.kernel.org>; Wed, 13 May 2026 05:48:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778676508; x=1779281308; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+5eHMVfb/Er3xuFGOIw7f+q4SdOyV+C6CS8hVi39b+g=;
+        b=mnej4WuZcLYu2spTIG5qsYwOGpRrFVWUh1G6pwOf2Mx5QM6vOMiV6D30zRyvyQEdfq
+         PmxYTNYJRFI5MvXCCvaQ4eQx1ZYsdyPJW2Y/X1NN/Jzf5q0SLrhvqB2sgUAoBAVoVIr8
+         fBx9mmJ/FdusAKWtzQmEWYCb9txBI9RwHIO8TMLJCHfzBCj1ffWFXKqM4Z613nojbOl1
+         V1NbzgsMF8zmpmkph2/+n+uQGeicHvVjPt24LoGDs0URNtZrRasEtNLbm0Ul+yDxJqH/
+         lc7yY4iIL1Ru0STc+UcnNdS3NukWypz3OdoHdRzBNkmDYUIz2P9UYbDZNeyM9celjfnV
+         RwBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778676508; x=1779281308;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=+5eHMVfb/Er3xuFGOIw7f+q4SdOyV+C6CS8hVi39b+g=;
+        b=BffvE3LxiOU4N8QIQaEVLXy5LWx6yuNo5FmAFaiDKjuYsLzQXssVNJJVNeDfMxftYH
+         Qfkxsb8DQmemXvT1V969GCRgPJGYGOZz/D5eriYav+7k1O8cV13FOnTRxl/ZCRGoqWRD
+         p0pzhrtOyQKMd6UmvOInzTZKM+2I5YV6RA2joCBuVx9u7U4HTtVcwMzplMt4tH6vCPQP
+         qRbK7Gh6JPVPxUrYzeVclYGfVJePU1XLl0/884Gkk3rdTgZoLQ6Z8wuSDEig66xeY9js
+         WpjL/e6Y/IzOFsqH2pRNcwAb78NV7eRSpAB4P7rGk+Y5zWlvq42o3a+2IdhtiHKaFASb
+         IjiA==
+X-Forwarded-Encrypted: i=1; AFNElJ9NJqQH+smReAlB0Z6X7b9wBEX0DuMu6zIyE3U7P7Cys2YgsTelodbLfjObELXvObSSf0o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yygi5eDeivECNolVr6QuTuC4hnf1EJ/xy3UZiddTZuXE6neL7N3
+	hmr0ZD5OHMlT84+7HzFua9B+zD27RJeQ0ywBHlnF0bpVliHm6YyeNRIR1fyTk7IKsdfP2FvbpHp
+	FvvCLQw==
+X-Received: from pfnn24.prod.google.com ([2002:a05:6a00:2b98:b0:835:4568:a5a0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:aa7:8887:0:b0:837:b5b6:1b97
+ with SMTP id d2e1a72fcca58-83f03fcc53amr3291170b3a.12.1778676507889; Wed, 13
+ May 2026 05:48:27 -0700 (PDT)
+Date: Wed, 13 May 2026 05:48:27 -0700
+In-Reply-To: <B8D6B43E-4C3D-4E1F-BD07-5632E1BBECEA@zytor.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Documentation: KVM: Document guest-visible compatibility
- expectations
-To: David Woodhouse <dwmw2@infradead.org>, Marc Zyngier <maz@kernel.org>
-Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
- kvm@vger.kernel.org, linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
- Jim Mattson <jmattson@google.com>, Oliver Upton <oupton@kernel.org>,
- Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
- Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas
- <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
- Raghavendra Rao Ananta <rananta@google.com>,
- Eric Auger <eric.auger@redhat.com>, Kees Cook <kees@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>, Nathan Chancellor <nathan@kernel.org>,
- linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
- linux-kselftest@vger.kernel.org
-References: <6856b269d2af706eae397e0cf9c1231f89d9a932.camel@infradead.org>
- <6afc4b95-3c15-4d71-877d-19b84e91ce05@redhat.com>
- <57bc082f4824d6114d3156744c25986effc29aca.camel@infradead.org>
- <baff82ca-6321-4b16-aa61-b2d6d60b6535@redhat.com>
- <86h5obya2r.wl-maz@kernel.org>
- <48b06e5655d56ff6eda30e563b34894fa0eb2f07.camel@infradead.org>
-Content-Language: en-US
-From: Paolo Bonzini <pbonzini@redhat.com>
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <48b06e5655d56ff6eda30e563b34894fa0eb2f07.camel@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Mime-Version: 1.0
+References: <20260428125632.129770-1-kas@kernel.org> <20260428125632.129770-3-kas@kernel.org>
+ <bf92ebbf-8d70-406a-aea1-c11ca576de90@intel.com> <B8D6B43E-4C3D-4E1F-BD07-5632E1BBECEA@zytor.com>
+Message-ID: <agRzBsoQG2C0sHxe@google.com>
+Subject: Re: [PATCH v2 2/2] x86/tdx: Fix zero-extension for 32-bit port I/O
+From: Sean Christopherson <seanjc@google.com>
+To: "H. Peter Anvin" <hpa@zytor.com>
+Cc: Dave Hansen <dave.hansen@intel.com>, "Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
+	Kai Huang <kai.huang@intel.com>, Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>, 
+	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On 5/13/26 11:24, David Woodhouse wrote:
-> On Wed, 2026-05-13 at 09:42 +0100, Marc Zyngier wrote:
->> If userspace is not a total joke, it will read all the ID registers,
->> and configure what it wants to see, assuming it is a feature that can
->> be configured (not everything can, because the architecture itself is
->> not fully backward compatible).
->>
->> Yes, this is buggy at times, because the combinatorial explosion of
->> CPU capabilities and supported features makes it pretty hard to test
->> (and really nobody actually does). But overall, it works, and QEMU is
->> growing an infrastructure to manage it in a "user friendly" way.
+On Tue, May 12, 2026, H. Peter Anvin wrote:
+> On May 12, 2026 6:14:13 PM PDT, Dave Hansen <dave.hansen@intel.com> wrote:
+> >On 4/28/26 05:56, Kiryl Shutsemau (Meta) wrote:
+> >> +	if (size == 4)
+> >> +		regs->ax = 0;
+> >> +	else
+> >> +		regs->ax &= ~mask;
+> >
+> >I haven't thought about this _that_ much, but this feels wrong. Why is
+> >is 4 so special cased?
+> >
+> >Also, what _are_ the limits on the registers that 'in' can be used on?
+> >
+> >RAX - n/a, no 64-bit I/O
+> >EAX - size=4
+> >AX  - size=2
+> >AH  - n/a no encoding for inb
+> >AL  - size=1
+> >
+> >I'd find this much easier to grasp if there was a nice table of what the
+> >registers, sizes, and masks ended up being usable. As usual, x86 is
+> >"fun" here.
 > 
-> Yes, that is precisely what I'm asking for. I'm prepared to deal with
-> the fact that KVM/Arm64 is not a stable and mature platform like x86
-> is, and that userspace has to find all the random changes from one
-> version to the next, and explicitly pin things down to be compatible.
+> Because zero extension only applies to dwords.
 > 
-> All I'm asking for is that KVM makes it *possible* to pin things down
-> to the behaviour of previously released Linux/KVM kernels.
-> 
->> But really, this isn't what David is asking. He's demanding "bug for
->> bug" compatibility. For that, we have two possible cases:
-> 
-> No, I am not asking you to meet that bar. I merely observed that x86
-> does and that it would be nice. But we are a *long* way from that.
+> x86-64 has three subregisters per GPR:
 
-x86 doesn't do bug-for-bug compatibility, thankfully - we have quirks 
-but only 11 of them, or about one per year since we started adding them. 
-  We only add quirks, generally speaking, when 1) we change the way file 
-descriptors are initialized, 2) guests in the wild were relying on it, 
-or 3) it prevends restoring state saved from an old kernel.  Is there 
-anything else?
+Aren't there four?  The fourth being 31:0, which is the one that is zero-extended
+and so "clobbers" 63:32.
 
-So you're asking something not really far from this:
+> Bits 7-0
+> Bits 15-8
+> Bits 63-16
 
->> - this is a behaviour that is not allowed by the architecture: we fix
->>    it for good. We do that on every release. Some minor, some much more
->>    visible. And there is no way we will add this sort of "bring the
->>    bugs back" type of behaviours. Specially when it is really obvious
->>    that no SW can make any reasonable use of the defect. We allow
->>    userspace to keep behaving as before, but the guest will not see a
->>    non-compliant behaviour.
-
-... where for example 
-https://lore.kernel.org/kvm/e03f092dfbb7d391a6bf2797ba01e122ba080bcd.camel@infradead.org/ 
-is an example of a bug that "no SW can make any reasonable use of".
-
-> Marc, this is complete nonsense and you should know better.
-> Once a behaviour is present in a released version of Linux/KVM, we
-> can't just declare it "wrong" and unilaterally impose a change in
-> guest-visible behaviour on *running* guests as a side-effect of a
-> kernel upgrade.
-> 
-> The criterion for *KVM* to remain compatible is "once it has been in a
-> released version of the kernel". Not "once it is in the architecture".
-
-That is *also* obviously nonsense though, isn't it (see example above)? 
-The truth is in the middle, "once it is in the architecture" is likely 
-too narrow but "once it is in a Linux release" is way too broad.  And 
-besides, both miss the point of *configurability* which is the basis of 
-it all.
-
-The main difference between x86 and Arm is the default state at 
-creation; x86 defaults to a blank slate, mostly; and when we didn't do 
-that, we regretted it later (cue the STUFF_FEATURE_MSRS quirk).  It's 
-too late to change the behavior for Arm, but I think we can agree that 
-patches such as 
-https://lore.kernel.org/kvm/20260511113558.3325004-2-dwmw2@infradead.org/ 
-("KVM: arm64: vgic: Allow userspace to set IIDR revision 1") are what 
-the letter and spirit of this proposal is about.
-
-Marc did not mention having to deal with guests in the wild.  Let's 
-ignore it for now because even defining "guests in the wild" is hard; 
-and anyway it's not related to the patch that triggered the discussion.
-
-So we have the third case, "restoring state saved from an old kernel". 
-If this case arises, I do believe that Arm will have to deal with it and 
-introduce quirks or KVM_GET/SET_REG hacks.  Maybe it hasn't happened 
-yet, lucky you.
-
-Overall, even if we may disagree about the details, are we really on 
-terribly distant grounds, or are we not?
-
-Paolo
-
+I assume you mean 15:0?  63:16 isn't addressable.  And these are the ones that
+aren't zero-extended, i.e. don't "clobber" other bits.
