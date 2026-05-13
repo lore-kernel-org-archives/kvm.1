@@ -1,219 +1,253 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A03644A724
-	for <kvm@vger.kernel.org>; Wed, 13 May 2026 16:24:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778689493; cv=pass; b=gctOH6l+5cSTxnq7GSc51a4cBh4JIueO6fbGmdEO3pRtDphgqpnicmUYpGq3fErAttnw2Ek1UGi2Ngq7V22XjBu37/DRGrm0OnO/2qCoUDStfVmYDwl7ZjmncmzQyY+kPieuK7xFXYpwswHueapDHmF/66g9Hkt53RmaBG1bMwI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778689493; c=relaxed/simple;
-	bh=dFqjGcDESPJs1sYvvaTVqiEjpmMW73N7IioLhMndVnk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I1vUfKmHxI7wAkIoq1keIoOqUHpClK1z2Pyx/mVdkZe2L12Kph8G5uQPSedy/EGrOFQkrRX3/E5JC7Yor5VObrJYPTsiWz1OPMV0z+FGPdMy2nZfV0xCondJaUPUvs19MXNin5nuBFB64Jy1WQJ1vUQ3JYTI+qbcx7G3fLRTGvE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=IJf3EkUf; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=mek9Z9pm; arc=pass smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF3544C9576
+	for <kvm@vger.kernel.org>; Wed, 13 May 2026 16:31:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778689920; cv=none; b=GNP39eJZoreBWpsPfxN4kxjNJ/rWT8S1waTGGQGvHuKMxmqA2oTHulYLx+xf4Q4cVAVv7xjRymmUVdFwyCtHUkGdNlWtRQc7OySLAaukyACAxbhJTwaX8oj1GTCMJ7bRm9EQ+cBAPhEmrT3b9SLeOkvgszbcZk7EWdUI6VKWHtw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778689920; c=relaxed/simple;
+	bh=PCkuTE3kzglsbJ0uEeEavFEWuyZvRl6QbZmbHebTB38=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=NjL7ytEL4OfGR0sp24pUMfBa+jmYpql6U9Fv6K71YrEyM/xc+pb4p7I6MEXLWdN1MbEhMCUGvxcyegaJBaOAVI0KwxLdmeo6uaC2Fozk4mO/KRxs/x1l7pkUZ/9nsfep88koJkGWJ8h2Ob73b5F9g398m998tuPIrBiLeFbQhBM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=d+YTqMvv; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=UUNYZ2Jd; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="IJf3EkUf";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="mek9Z9pm"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="d+YTqMvv";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="UUNYZ2Jd"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778689490;
+	s=mimecast20190719; t=1778689917;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LFP7K7Lzf/qFmjwBHFqhDwhsq/kaKAVcEgRqthL+0Is=;
-	b=IJf3EkUfuVP4EsPAtaDOgkireDU7uR4TstpDJDtLqAIjeCV3hsTLkJnWAZzSPqyCkxmaUD
-	efp5MASCG2R0mob1qdxgpjp8EB5Cy1RAD+2tPEXSyLmAOtEBM4OfRdNEdVYch1lWII7yQ2
-	FvLLFilFz3HDyNe+AnDPAgLbhQjmsNs=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=WUQmNk+fWpt5MA/saxUrRE5RNIqOH/01kEZMZjjxs/w=;
+	b=d+YTqMvvsHcrDkGctUvznK6KJFKkVpToX3qoLkOATxlXuJvSmdmw2NeGs4FtFC6lir9Ub0
+	1wPdKwmXSl9RYWE/3o5nPW2iU2w8olOWb3i+utPwcWn3FePh8CzgV8AXETJ1am5l9ARhvu
+	3ONAssUUJegmM1h9Tup0v1bbcdhMFYc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-150-Y7nIuPnYOmufTu_BMI19eA-1; Wed, 13 May 2026 12:24:48 -0400
-X-MC-Unique: Y7nIuPnYOmufTu_BMI19eA-1
-X-Mimecast-MFC-AGG-ID: Y7nIuPnYOmufTu_BMI19eA_1778689487
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-44a71109b94so5675161f8f.3
-        for <kvm@vger.kernel.org>; Wed, 13 May 2026 09:24:47 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778689487; cv=none;
-        d=google.com; s=arc-20240605;
-        b=CTRdHPsNuOpJ1ePEZ8flJLcjcOJBX7WBqrrttbHlhoy9dg/uckIgLzSRtsrztebIAP
-         VzW7N67d/fzYMEE7GUJXKZwLLOj8WSuYv8iZIyidyQRjmxYqTqpxmjOS4e9rqqSuxHUN
-         MmptbTgeoJmGK5HWpY1aYWxMGgvvQstUxfndbcwRKS2F+/J5w4j+Kyxn0YSxHSFpcBC/
-         ICrsvbzVfhinU1zqs0kedLMGcGh0g8YjFIy7G7qCfvLMa/nKJLkgRDRi8b/ha3iUx9uz
-         SRWQoobDa77B/geeJlMx9kBufjeiZ9To4IAN2hpAxNqDx0U1UHczL4PdsJH+jVshK/ri
-         WoNQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=LFP7K7Lzf/qFmjwBHFqhDwhsq/kaKAVcEgRqthL+0Is=;
-        fh=pdzhkm2ci1evDkfLEhZk910/iNMt2ojf3gohcctDSIA=;
-        b=AL0xOsj8jYKvytMzoEBvAvfOylViv0HC9ppuu6DxL52aPiK816aZhLMBnslrMxg1Eu
-         ZMXeBlDjJtXd+VO1vhPSiwaTvvn4EOIw3GInWbu6dsjjWytLz9obRlsY4bEsJDQrnEEJ
-         SiZ6lfkH4MBmzNV36YPw8w+1gKLZqMhtxMv5G+j25Xp249Autz+bukgMDChTsZXXuM88
-         63QiFEtqf4F4X65gfajVi9enJ40/mDMeDAF6TA2NtNQz1k6AvSUuAmxitHs3sw/FQS8m
-         UjmNC8/ZdmUxvtimbeHdDyHrPu2fTzuId7Re7e9HHqmgmtzAar7ZbTnpivorR+1W0O/C
-         rO3w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+ us-mta-371-UypTkgqmMwuhRg2XQ6wPLg-1; Wed, 13 May 2026 12:31:53 -0400
+X-MC-Unique: UypTkgqmMwuhRg2XQ6wPLg-1
+X-Mimecast-MFC-AGG-ID: UypTkgqmMwuhRg2XQ6wPLg_1778689912
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-48e89faa62eso16983725e9.1
+        for <kvm@vger.kernel.org>; Wed, 13 May 2026 09:31:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778689487; x=1779294287; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=LFP7K7Lzf/qFmjwBHFqhDwhsq/kaKAVcEgRqthL+0Is=;
-        b=mek9Z9pmWWemhhRiws8b56KjPTzk/e5aY5vRWjHJ7gHJBU7hbcAtvNyMr+YWbsK7xl
-         nMBoIriFopCFF9rV3KiRL7RCSMqGM1d0nxju3lTq9hvDGyfRaOtHhFRnLrhhHnJVt6xu
-         XVBdXPHVtc2xhz/CJKb8+wJ7cS/Aw1CtDi5uuuQMbZhl/Ul4zRxf7wmGkFVkzLr8n9Uh
-         DRTqwyLYdJ9QM2T3Bcz66QfNHiT6e4Q8hJWRKpAJzUM2UPKPXttkIVOHIoV89tK4cJLW
-         YOoVtCiPLBq+RGmZ3Xxcjxo/ZWR4yN7/0MZe83frKyOb3S8eLdAXQrten/otu0KEF7fA
-         AMMA==
+        d=redhat.com; s=google; t=1778689912; x=1779294712; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=WUQmNk+fWpt5MA/saxUrRE5RNIqOH/01kEZMZjjxs/w=;
+        b=UUNYZ2JdUivPRbJ9+8uncQwBT4pBIAwEiy6SKg+xvDNmkkRdgHCzby0CSQ458NNiJ/
+         DpZFIrydhf6ObHFDriNu7Qe5HPVgvZ0hKC2wUDI/oibWJu8aB8AAxeNb9OaPknor7YVp
+         ItQ7zSNjA2NMd+iMpGeHfvS8r8av1qxSVT4TL7kSjURlNbasg6/XagVdiV0DAFg3xnsb
+         8Gn0Zn/Be7CcTRNUcwikLaTJy6vywpwI9vyNt9fwA5P7Te6et0MoqPbdTHK4iXwz1fl/
+         iMxsVnNeJ1LpvryTpkdKuvb+k/9dOGFw8QvKQGkWrugZdVlbeFjyI0zOid2GOFVnlEL7
+         cOdw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778689487; x=1779294287;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20251104; t=1778689912; x=1779294712;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=LFP7K7Lzf/qFmjwBHFqhDwhsq/kaKAVcEgRqthL+0Is=;
-        b=AP5kyF3qhRDEU8kAt3bHqjOGGa4YQdsPqYq2I3vPCaC5Ef0jVVjlSRT32rZAWR6seq
-         yQhtu4eDrJcxcNoygD5/gc7FZzUoTBR6NqNJYD2PHPdPFLxaGIenaWxYlAgvkFJodBMb
-         rchT4gZN/n+hSQzsOCRacx6+TfGE6BZiETffH434/19nrFndU8TkuOi+GTL8ZLj5EYds
-         quSqRlN2q4EKMugeP9jyMwJMl+/XnIsL1VjJfwfdAj6mHOXVK1cORPB77iagINQsy/AC
-         4p8VV0fZF4pb2EcGxYCW+bnzvo/rDqNLnzz3z48IpmomkLTiuRBBEAWhnKUXFJvClf6O
-         +X4g==
-X-Forwarded-Encrypted: i=1; AFNElJ8Yy1FlLsDRfKr8f6iJY6lIXIo7KTmIgMMm43kkrGJhBJIN7Lt1xf5CniWHyOUdBnJWyR8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywz4VGMUdFFaI3wUgHOPa1brMXtsl3MOAEVfDvKjrGIeWCDlug5
-	y5Lr1xKA19Jduo6/4V2LOC+PsRUbNeVSZvK7LbgC3IM5hpFLFKRPIW0xPOFzOMt4UOl4zI7IXiQ
-	egHU/DmIc2KOIJm63p57NuA1QiITlfhsZnhmxcKMkcamLJ6wlm1ku4diDpVbFYyh1s0jwYm9xLe
-	vY7eLvByu2/+YEig43EWQ+qElq6WXl
-X-Gm-Gg: Acq92OFSCisNN+EJqh5pPtbKrWKawVXugvQulTp/ml8xKCFs7PRRp3s7Gml6i2xvNaI
-	iNhjNpsgf3BCYg9+v9ExNxwfUJvDAUPfDBpgKAFyAZ/7nNd+grKA+S+w0DCIXyPOE4PeaTWFQgp
-	ho6eVn22c6l0z1aodFKeMBDOqfe7Rsw3/8ySGzu/2SSSF3RvNa2SqCUcALD8gZKDLq56g/sVkhq
-	Ciq5bUf7Jefuky0ifAPphv2sZUi3ejy4b6JAWsxvxEOFYR3ZyPCEHB9iEzphh40yyu3Da20wp+t
-	Qi7bYosA
-X-Received: by 2002:a5d:5d0b:0:b0:43d:7d24:b4ff with SMTP id ffacd0b85a97d-45c7b85de69mr5836117f8f.40.1778689486838;
-        Wed, 13 May 2026 09:24:46 -0700 (PDT)
-X-Received: by 2002:a5d:5d0b:0:b0:43d:7d24:b4ff with SMTP id
- ffacd0b85a97d-45c7b85de69mr5836059f8f.40.1778689486387; Wed, 13 May 2026
- 09:24:46 -0700 (PDT)
+        bh=WUQmNk+fWpt5MA/saxUrRE5RNIqOH/01kEZMZjjxs/w=;
+        b=P214SuvPII1iDu0V6DorPARvTJqii0F1W8DMNn+VA7xZMF9YkTywU7EPahevpXBQLL
+         0hP+P/wi6LqHre5bcAB3OeH34pDCxK+iolrNL2qps+7SOH/vE8N8LOEbzWWKsUbNIejZ
+         iVsBLgMT7gQp5F/aSSRVhO/uqA2+RNJLvP965dDbrv46OhUhsLWs4Hw+x267DjzT3SxX
+         rrJ0rUmdBN/PpBMQ8YPb2sN+WepyxyGOkDRtlmrIrVfyclKdXwYxWrTVXeyqRZ7GYnJS
+         7IAfaZv41FGepHzqkiVx89DHEbcJ8U7BrxNpfhST09dcT3QK5+maXPwG1Hbem9ze6FPF
+         Qk7A==
+X-Forwarded-Encrypted: i=1; AFNElJ/Xs3MQ6lYCICnLONcTW3+EqBGJJZzDTcyw/1fVumNwSCKZNHzRjrZC8cmmt6N2+UETMmI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyr8u1CtmgtMgXXeNHlPdQzq8cGws9wOEcld2EsasV7q5pOMSyd
+	wECD71WbFLCk8nqfk3lcqT+lY+mUMEvZ2cmldaK2s8sKyLCmm8g5jK0Y/Tfn8kXnn2IYISePJ3L
+	ppq9vyvAn0k5RS8kSHjUJ2dYwran3x4DCxiFg+LAhpkJpz45+UoWvGA==
+X-Gm-Gg: Acq92OEBwJFh1h+RaCZC+HMZC1UmkWFz4AHaM/vq68q+1JPd2NbCGQzY0+6zwgiFItT
+	GjOIphGeDq+WZusNqIul6SQVKslgNR53R2seDD0uURdZlRH+EdYbz4g8RaUboKhzUnzG3qXmayl
+	jnyhuOGWpYTWrZoL/XAw72cc6V+UW0rMZ4SAWv1nCuT152JDPjxfMRMdwKg0xtfcta2EezgHXgI
+	DWjjjQvu0SeACEzntDiCkUr0Fw7qewulcIi3v0TESwYILxgsorVZ7hHQk8x6DaZyVeYXinLKcD2
+	m7kPSHuh7bn10RbU9pNsDv4EuHkq2dRLmT06FIlGQKGqMjEW/8EKr9t6oyN7WgXikO9qFDV7XkN
+	+y1vuxp9ue+8WgB1SlyEYnitW0cV1vhrm1edLMwasCZUy2Jshs6dKjJGEJ87+AgMp0SYZ1neaov
+	01ytRn9CI1oZ6zT2ppZZJE+1fxHeyc
+X-Received: by 2002:a05:600c:5010:b0:48d:366:b962 with SMTP id 5b1f17b1804b1-48fc9a02512mr56268665e9.6.1778689912128;
+        Wed, 13 May 2026 09:31:52 -0700 (PDT)
+X-Received: by 2002:a05:600c:5010:b0:48d:366:b962 with SMTP id 5b1f17b1804b1-48fc9a02512mr56268125e9.6.1778689911488;
+        Wed, 13 May 2026 09:31:51 -0700 (PDT)
+Received: from [192.168.10.48] ([176.206.106.181])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fd64a017esm2124065e9.9.2026.05.13.09.31.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 13 May 2026 09:31:50 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: torvalds@linux-foundation.org
+Cc: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Subject: [GIT PULL] KVM changes for Linux 7.1-rc4
+Date: Wed, 13 May 2026 18:31:50 +0200
+Message-ID: <20260513163150.3440901-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <6856b269d2af706eae397e0cf9c1231f89d9a932.camel@infradead.org>
- <6afc4b95-3c15-4d71-877d-19b84e91ce05@redhat.com> <57bc082f4824d6114d3156744c25986effc29aca.camel@infradead.org>
- <baff82ca-6321-4b16-aa61-b2d6d60b6535@redhat.com> <86h5obya2r.wl-maz@kernel.org>
- <48b06e5655d56ff6eda30e563b34894fa0eb2f07.camel@infradead.org>
- <ba08dfe9-932b-40c3-9fdf-fc891d52e1d8@redhat.com> <d9d4471a7f5ec1e297b3ca07f42a59090aa91e15.camel@infradead.org>
-In-Reply-To: <d9d4471a7f5ec1e297b3ca07f42a59090aa91e15.camel@infradead.org>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Wed, 13 May 2026 18:24:32 +0200
-X-Gm-Features: AVHnY4JneGWlgI2TZN3pA0snVaHMgFYvSCN-3eBEab4JAE5jQOEAQHtyebNrVkM
-Message-ID: <CABgObfaM-JtNn2MuYXaiadQnLfAhTEaoHAcTG9=J6LkMcQCJ3A@mail.gmail.com>
-Subject: Re: [PATCH] Documentation: KVM: Document guest-visible compatibility expectations
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Marc Zyngier <maz@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, kvm <kvm@vger.kernel.org>, 
-	Linux Doc Mailing List <linux-doc@vger.kernel.org>, 
-	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, Sean Christopherson <seanjc@google.com>, 
-	Jim Mattson <jmattson@google.com>, Oliver Upton <oupton@kernel.org>, Joey Gouly <joey.gouly@arm.com>, 
-	Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Raghavendra Rao Ananta <rananta@google.com>, Eric Auger <eric.auger@redhat.com>, Kees Cook <kees@kernel.org>, 
-	Arnd Bergmann <arnd@arndb.de>, Nathan Chancellor <nathan@kernel.org>, 
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>, kvmarm@lists.linux.dev, 
-	linux-kselftest <linux-kselftest@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Il mer 13 mag 2026, 15:57 David Woodhouse <dwmw2@infradead.org> ha scritto:
-> > x86 doesn't do bug-for-bug compatibility, thankfully - we have quirks
-> > but only 11 of them, or about one per year since we started adding them.
-> >   We only add quirks, generally speaking, when 1) we change the way file
-> > descriptors are initialized, 2) guests in the wild were relying on it,
-> > or 3) it prevends restoring state saved from an old kernel.  Is there
-> > anything else?
-> >
-> > https://lore.kernel.org/kvm/e03f092dfbb7d391a6bf2797ba01e122ba080bcd.camel@infradead.org/
-> > is an example of a bug that "no SW can make any reasonable use of".
->
-> I actually believe that the focus on ICEBP was triggered by some weird
-> gaming software's anti-DRM mechanism, and that it *did* affect actual
-> guests in the wild?
->
-> But yeah, *fixing* it should not have any adverse effects. That's the
-> key.
+Linus,
 
-Yep, so "bug for bug" is not it.
+The following changes since commit 6d35786de28116ecf78797a62b84e6bf3c45aa5a:
 
-> > That is *also* obviously nonsense though, isn't it (see example above)?
-> > The truth is in the middle, "once it is in the architecture" is likely
-> > too narrow but "once it is in a Linux release" is way too broad.
->
-> How about "once it is in a Linux release and guest visible, and unless
-> we *know* that changing it in either direction underneath running
-> guests cannot cause problems".
->
-> > And besides, both miss the point of *configurability* which is the basis of
-> > it all.
->
-> Hm, configurability *is* the point, I thought.
+  Merge tag 'for-linus' of git://git.kernel.org/pub/scm/virt/kvm/kvm (2026-05-03 15:25:47 -0700)
 
-Yes, and configurability goes way beyond bugs/quirks, which are to
-some extent a red herring. Configurability for example says that "KVM:
-arm64: vgic: Allow userspace to set IIDR revision 1" shouldn't be
-controversial at all.
+are available in the Git repository at:
 
-> > So we have the third case, "restoring state saved from an old kernel".
-> > If this case arises, I do believe that Arm will have to deal with it and
-> > introduce quirks or KVM_GET/SET_REG hacks.  Maybe it hasn't happened
-> > yet, lucky you.
->
-> We literally have those mechanisms already.
+  https://git.kernel.org/pub/scm/virt/kvm/kvm.git tags/for-linus
 
-I am not talking about guest-visible changes across save/restore here,
-but rather about round-trips through userspace. For example, see the
-effect of KVM_X2APIC_API_USE_32BIT_IDS on KVM_GET/SET_LAPIC: it
-couldn't be made the default, because userspace expects to take old
-data returned by KVM_GET_LAPIC and shove it into KVM_SET_LAPIC. Sucks
-but can't be avoided.
+for you to fetch changes up to 2d5d3fc593c9b7e41bee86175d7b9e11f470072e:
 
-> See commit https://git.kernel.org/torvalds/c/49a1a2c70a7f which adds a
-> new guest-visible feature in revision 3, but allowed userspace to
-> restore the old behaviour by setting it to revision 2. All my patch above does, is make it possible to set it to revision 1 as
-> well. Because https://git.kernel.org/torvalds/c/d53c2c29ae0d previously
-> changed the behaviour and bumped the default to 2 *without* allowing
-> userspace to restore the prior behaviour, and we've been carrying a
-> *revert* of that patch.
->
-> Why would we *not* accept such a patch?
+  KVM: VMX: introduce module parameter to disable CET (2026-05-13 15:38:22 +0200)
 
-Agreed. Even ignoring your revert, there's no reason why any upgrade
-past 49a1a2c70a7f has to be from after d53c2c29ae0d.
+----------------------------------------------------------------
+Arm:
 
-> Marc seems terribly insistent that we SHOULD NOT
-> restore the behaviour that older KVM offered to guests, and we MUST
-> change it unconditionally underneath running guests, making these
-> registers writable on upgrade... and reverting them to read-only for
-> running guests on a rollback.
->
-> And there we do have a very different viewpoint.
+* Add the pKVM side of the workaround for ARM's erratum 4193714, provided
+  that the EL3 firmware does its part of the job. KVM will refuse to
+  initialise otherwise.
 
-That's the design decision I mentioned, of not starting the guest
-configuration from a clean slate. I believe it complicates things
-because you have to design from the beginning with the ability to
-rollback to old versions and to potentially detect conflicts
-introduced by the rollback. This is exactly why
-KVM_X86_QUIRK_STUFF_FEATURE_MSRS was introduced: "KVM's initialization
-of feature MSRs during vCPU creation results in a failed save/restore
-of PERF_CAPABILITIES. If userspace configures the VM to _not_ have a
-PMU, because KVM initializes the vCPU's PERF_CAPABILITIES, trying to
-save/restore the non-zero value will be rejected by the destination."
-(https://lkml.org/lkml/2024/8/2/1032)
+- Correctly handle 52bit VAs for guest EL2 stage-1 translations when
+  running under NV with E2H==0.
 
-For Arm, however, it may be too late to change it; if not, I'll
-happily watch you argue with Marc about it. But even without that,
-this doc patch (and the idea that "Where a new kernel introduces a
-guest-visible change, it provides a mechanism for userspace to select
-the previous behaviour") should be uncontroversial.
+* Correctly deal with permission faults in guest_memfd memslots.
 
-Paolo
+* Fix the steal-time selftest after the infrastructure was reworked.
+
+* Make sure the host cannot pass a non-sensical clock update to the
+  EL2 tracing infrastructure.
+
+* Appoint Steffen Eiden as a reviewer in anticipation of the KVM/s390
+  ability to run arm64 guests, which will inevitably lead to arm64
+  code being directly used on s390.
+
+* Make sure that EL2 is configured with both exception entry and exit
+  being Context Synchronization Events.
+
+* Handle the current vcpu being NULL on EL2 panic.
+
+* Fix the selftest_vcpu memcache being empty at the point of donation or
+  sharing.
+
+* Check that the memcache has enough capacity before engaging on the
+  share/donate path.
+
+* Fix __deactivate_fgt() to use its parameter rather than a variable
+  in the macro context.
+
+s390:
+
+* Fix array overrun with large amounts of PCI devices.
+
+x86:
+
+* Never use L0's PAUSE loop exiting while L2 is running, since it's
+  unlikely that a nested guest will help solving the hypervisor's
+  spinlock contention
+
+* Fix emulation of MOVNTDQA.
+
+* Fix typo in Xen hypercall tracepoint
+
+* Add back an optimization that was left behind when recently
+  fixing a bug.
+
+* Add module parameter to disable CET, whose implementation seems
+  to have issues.  For now it remains enabled by default.
+
+Generic:
+
+* Reject offset causing an unsigned overflow in kvm_reset_dirty_gfn()
+
+Documentation:
+
+* Update stale links
+
+Selftests:
+
+* Fix guest_memfd_test with host page size > guest page size.
+
+----------------------------------------------------------------
+Aaron Sacks (1):
+      KVM: Reject wrapped offset in kvm_reset_dirty_gfn()
+
+Alexandru Elisei (1):
+      KVM: arm64: Handle permission faults with guest_memfd
+
+Fuad Tabba (6):
+      KVM: arm64: Make EL2 exception entry and exit context-synchronization events
+      KVM: arm64: Guard against NULL vcpu on VHE hyp panic path
+      KVM: arm64: Fix __deactivate_fgt macro parameter typo
+      KVM: arm64: Seed pkvm_ownership_selftest vcpu memcache
+      KVM: arm64: Pre-check vcpu memcache for host->guest share
+      KVM: arm64: Pre-check vcpu memcache for host->guest donate
+
+James Morse (1):
+      KVM: arm64: Work around C1-Pro erratum 4193714 for protected guests
+
+Junrui Luo (1):
+      KVM: s390: pci: fix GAIT table indexing due to double-scaling pointer arithmetic
+
+Matthew Rosato (1):
+      KVM: s390: pci: Fix aisb calculation
+
+Mostafa Saleh (1):
+      KVM: arm64: Remove potential UB on nvhe tracing clock update
+
+Ninad Naik (1):
+      Documentation: kvm: update links in the references section of AMD Memory Encryption
+
+Paolo Bonzini (4):
+      Merge tag 'kvmarm-fixes-7.1-2' of git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm into HEAD
+      KVM: x86: use again the flush argument of __link_shadow_page()
+      Merge tag 'kvm-s390-master-7.1-1' of git://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux into HEAD
+      KVM: VMX: introduce module parameter to disable CET
+
+Qiang Ma (1):
+      KVM: x86: Fix Xen hypercall tracepoint argument assignment
+
+Sean Christopherson (3):
+      KVM: nSVM: Never use L0's PAUSE loop exiting while L2 is running
+      KVM: selftests: Ensure gmem file sizes are multiple of host page size
+      KVM: x86: Swap the dst and src operand for MOVNTDQA
+
+Sebastian Ott (1):
+      KVM: selftests: arm64: Fix steal_time test after UAPI refactoring
+
+Steffen Eiden (1):
+      MAINTAINERS: Add Steffen as reviewer for KVM/arm64
+
+Wei-Lin Chang (1):
+      KVM: arm64: nv: Consider the DS bit when translating TCR_EL2
+
+ .../virt/kvm/x86/amd-memory-encryption.rst         |  8 ++--
+ MAINTAINERS                                        |  1 +
+ arch/arm64/include/asm/kvm_nested.h                |  1 +
+ arch/arm64/include/asm/sysreg.h                    |  2 +-
+ arch/arm64/kvm/arm.c                               | 21 ++++++++++
+ arch/arm64/kvm/hyp/include/hyp/switch.h            |  2 +-
+ arch/arm64/kvm/hyp/nvhe/clock.c                    |  3 ++
+ arch/arm64/kvm/hyp/nvhe/mem_protect.c              | 47 +++++++++++++++++++++-
+ arch/arm64/kvm/hyp/nvhe/pkvm.c                     | 16 +++++++-
+ arch/arm64/kvm/hyp/vhe/switch.c                    |  3 +-
+ arch/arm64/kvm/mmu.c                               | 29 +++++++++----
+ arch/s390/kvm/interrupt.c                          |  3 +-
+ arch/s390/kvm/pci.c                                | 10 ++---
+ arch/x86/kvm/emulate.c                             |  2 +-
+ arch/x86/kvm/mmu/mmu.c                             | 23 ++++++++++-
+ arch/x86/kvm/svm/nested.c                          | 43 +++++++-------------
+ arch/x86/kvm/svm/svm.c                             | 15 ++++++-
+ arch/x86/kvm/trace.h                               |  2 +-
+ arch/x86/kvm/vmx/capabilities.h                    |  1 +
+ arch/x86/kvm/vmx/vmx.c                             | 17 +++++++-
+ include/linux/arm-smccc.h                          |  6 +++
+ tools/testing/selftests/kvm/guest_memfd_test.c     |  9 ++++-
+ tools/testing/selftests/kvm/steal_time.c           |  2 +
+ virt/kvm/dirty_ring.c                              |  3 +-
+ 24 files changed, 204 insertions(+), 65 deletions(-)
 
