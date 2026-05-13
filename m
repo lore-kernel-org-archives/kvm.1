@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4D5348AE32;
-	Wed, 13 May 2026 15:11:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A7DA47ECCA;
+	Wed, 13 May 2026 15:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778685104; cv=none; b=uF5pIHVqtjqtvuny1zc2XRCeehPJoH+K0FFGQk2XtV752d9YmBhhNDsm+Ix8T708uHWmPAoCl5ZI8AmzzOV4rSAmRvW1b2l5Lk+pZjuGyuT27sAUnlOUMS6qFkAuN4MIwgEBzACCVBrBoDHLyk9OmiY7fXXiKzwT8JPeJBFIEoU=
+	t=1778685105; cv=none; b=CMG7s5rYotyFjnIdTin7s9CCnqvaz4Ja1SC+89q1Fv3ZH3r+fgRbqDC6CczhcQ1HckTErTU1Vx5xwPT0K5ypuvqSKH4mrmDiKm6RtytOJP9ixZcFRfOOaApwmVOn7gGLACpbqLDEjZIqqomfbrG5hOg7pAqSWLl8YIWUnZYQwAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778685104; c=relaxed/simple;
-	bh=cg8SSqDBv4OUaZrITmhuTemfdL/3RKhSlXE7vmCYkus=;
+	s=arc-20240116; t=1778685105; c=relaxed/simple;
+	bh=zBGe14IW9iWe8WWpwh+0JIynUX5NdF3El/gNiGITGcA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jfw7qcFjjwDDCHZaEmZNxRqOUh5h0rBgC0n36C54DL3E94vWExDHIGqqCORg4am7F1Uwj47IrW2pDg1EfssjTvK3hkL7Mjq8n6DMl/jEQ2lWXNoiIkfWHiBgMfLSfPTMa1bEdz21ikDhuVEA5AyeIETUPhIj29P4EO2GziSC/Fw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gtDLvBEl; arc=none smtp.client-ip=198.175.65.11
+	 MIME-Version; b=EVv2lZebugQ6L0ITy8k7lalO5iVvtksQQjXpUfR36Fsiz3yx5jvaWq6s/sx1DVDsYLkHbip09o3MzV2Nx2DRQyf+o96xqPQpZ91PwkrH9AKuZQJ3sU7K4bBwBfPE/4YDZEP6RRLXwwAoZBDn5UTuOAPgW4ATZZjqFip+HqGyDww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Oq6pjAMk; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gtDLvBEl"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Oq6pjAMk"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778685102; x=1810221102;
+  t=1778685101; x=1810221101;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=cg8SSqDBv4OUaZrITmhuTemfdL/3RKhSlXE7vmCYkus=;
-  b=gtDLvBElsq6w9H9Epe4MsX43867qcAM8FcKdLDIzZe3U3FTLWGXM1+6d
-   kfdxWNEdtm7I+ySs1MixaOiTzjO3fDwZnVW0zuiITQbhumNHx+ifX9iB4
-   rE9lTWRvC01QNQu6dvhWqgqcwWSViEV1MJZY4+YX85hSD9jkJnbCYB5b8
-   LMLiVwXW/+9ttaJVw1w4G7XHOIvVRL/os4OapHHXpUGOD7Iy1ZX8K83Ve
-   HsXSHpJ2dIzBib6ArHNo0LKMjTLwUUNxyC7h0ngzEV2jnT11I+iNRILlg
-   tO+B+dSZIgPGskw/5p5S2T2S+eUZE07CulVL7tm3rTMvMGWipubvJtkUp
-   A==;
-X-CSE-ConnectionGUID: 78OHivT9RPWFz2V3ADCuJA==
-X-CSE-MsgGUID: FBLesWjvSZW2TO0lLBJKEg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="89921629"
+  bh=zBGe14IW9iWe8WWpwh+0JIynUX5NdF3El/gNiGITGcA=;
+  b=Oq6pjAMkGxpTemcvk10Usgb/lU4uWuCHPTUftocJ3Jaob6ShwZO1EEqO
+   nosD1LLOxZ504tJ3WwF3IwIcqRxO0PMGynn0Jq7lgFnl8LrlLH8ikacZ6
+   cp+qsLRgvJnIBcv+oCEKMP/axVLJBl//Y0u8aECjMPZ5UcJhdk5vav+Y8
+   Y0k/hs9hqoRlExUxfYfJDB+fbHfqy/dhmh1PvNpNY5qKy95FLQoMMMlv0
+   fEEHYZ78OUOTmbcO1XNEvjiRYtUcnMSuPoIjUy4I43tyrw+t2RZ0L2SdI
+   Ccm8qaUdx8KEoED5Ug6fJ/rrjOlMqsOyItdi7qGCXsf9dTqnDfxS45n3C
+   w==;
+X-CSE-ConnectionGUID: MkPHV+lWR6uqsukVkISY7w==
+X-CSE-MsgGUID: wKDOvjZDRaqCT2+/bxIZvA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="89921618"
 X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="89921629"
+   d="scan'208";a="89921618"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 08:11:42 -0700
-X-CSE-ConnectionGUID: p/TXb/9IR+q9ZITHZb7Yqw==
-X-CSE-MsgGUID: L2pAa+C8SxqTOVzhidq4wQ==
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 08:11:40 -0700
+X-CSE-ConnectionGUID: sL131AszSFKOd+Xwh7LJUg==
+X-CSE-MsgGUID: sE+bIgOkTWyM9slmCGp+Rg==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="231716781"
+   d="scan'208";a="231716771"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 08:11:41 -0700
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 08:11:40 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: kvm@vger.kernel.org,
 	linux-coco@lists.linux.dev,
@@ -67,14 +67,16 @@ Cc: binbin.wu@linux.intel.com,
 	xiaoyao.li@intel.com,
 	yan.y.zhao@intel.com,
 	Chao Gao <chao.gao@intel.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
 	Thomas Gleixner <tglx@kernel.org>,
 	Ingo Molnar <mingo@redhat.com>,
 	Borislav Petkov <bp@alien8.de>,
 	x86@kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v9 05/23] coco/tdx-host: Expose TDX module version
-Date: Wed, 13 May 2026 08:09:48 -0700
-Message-ID: <20260513151045.1420990-6-chao.gao@intel.com>
+Subject: [PATCH v9 04/23] coco/tdx-host: Introduce a "tdx_host" device
+Date: Wed, 13 May 2026 08:09:47 -0700
+Message-ID: <20260513151045.1420990-5-chao.gao@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260513151045.1420990-1-chao.gao@intel.com>
 References: <20260513151045.1420990-1-chao.gao@intel.com>
@@ -86,45 +88,44 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-For TDX module updates, userspace needs to select compatible update
-versions based on the current module version. This design delegates
-module selection complexity to userspace because TDX module update
-policies are complex and version series are platform-specific.
+TDX depends on a platform firmware module that is invoked via instructions
+similar to vmenter (i.e. enter into a new privileged "root-mode" context to
+manage private memory and private device mechanisms). It is a software
+construct that depends on the CPU vmxon state to enable invocation of
+TDX module ABIs. Unlike other Trusted Execution Environment (TEE) platform
+implementations that employ a firmware module running on a PCI device with
+an MMIO mailbox for communication, TDX has no hardware device to point to
+as the TEE Secure Manager (TSM).
 
-For example, the 1.5.x series is for certain platform generations, while
-the 2.0.x series is intended for others. And TDX module 1.5.x may be
-updated to 1.5.y but not to 1.5.y+1.
+Create a virtual device not only to align with other implementations but
+also to make it easier to
 
-Expose the TDX module version to userspace via sysfs to aid module
-selection. Since the TDX faux device will drive module updates, expose
-the version as its attribute.
+ - expose metadata (e.g., TDX module version, seamldr version etc) to
+   the userspace as device attributes
 
-One bonus of exposing TDX module version via sysfs is: TDX module
-version information remains available even after dmesg logs are cleared.
+ - implement firmware uploader APIs which are tied to a device. This is
+   needed to support TDX module runtime updates
 
-Define TDX_VERSION_FMT macro for the TDX version format since it will be
-used multiple times. Also convert an existing print statement to use it.
+ - enable TDX Connect which will share a common infrastructure with other
+   platform implementations. In the TDX Connect context, every
+   architecture has a TSM, represented by a PCIe or virtual device. The
+   new "tdx_host" device will serve the TSM role.
 
-== Background ==
+A faux device is used for TDX because the TDX module is singular within
+the system and lacks associated platform resources. Using a faux device
+eliminates the need to create a stub bus.
 
-The "faux device + device attribute" approach compares to other update
-mechanisms as follows:
+The call to tdx_get_sysinfo() ensures that the TDX module is ready to
+provide services.
 
-1. AMD SEV leverages an existing PCI device for the PSP to expose
-   metadata. TDX uses a faux device as it doesn't have PCI device
-   in its architecture.
+Note that AMD has a PCI device for the PSP for SEV and ARM CCA will
+likely have a faux device [1].
 
-2. Microcode uses per-CPU virtual devices to report microcode revisions
-   because CPUs can have different revisions. But, there is only a
-   single TDX module, so exposing the TDX module version through a global
-   TDX faux device is appropriate
-
-3. ARM's CCA implementation isn't in-tree yet, but will likely follow a
-   similar faux device approach, though it's unclear whether they need
-   to expose firmware version information
-
+Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
+Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
 Signed-off-by: Chao Gao <chao.gao@intel.com>
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
 Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
 Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
 Reviewed-by: Kai Huang <kai.huang@intel.com>
@@ -132,106 +133,126 @@ Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 Link: https://lore.kernel.org/all/2025073035-bulginess-rematch-b92e@gregkh/ # [1]
 ---
- .../ABI/testing/sysfs-devices-faux-tdx-host   |  6 +++++
- arch/x86/include/asm/tdx.h                    |  6 +++++
- arch/x86/virt/vmx/tdx/tdx_global_metadata.c   |  2 +-
- drivers/virt/coco/tdx-host/tdx-host.c         | 26 ++++++++++++++++++-
- 4 files changed, 38 insertions(+), 2 deletions(-)
- create mode 100644 Documentation/ABI/testing/sysfs-devices-faux-tdx-host
+ arch/x86/virt/vmx/tdx/tdx.c           |  2 +-
+ drivers/virt/coco/Kconfig             |  2 ++
+ drivers/virt/coco/Makefile            |  1 +
+ drivers/virt/coco/tdx-host/Kconfig    | 10 +++++++
+ drivers/virt/coco/tdx-host/Makefile   |  1 +
+ drivers/virt/coco/tdx-host/tdx-host.c | 43 +++++++++++++++++++++++++++
+ 6 files changed, 58 insertions(+), 1 deletion(-)
+ create mode 100644 drivers/virt/coco/tdx-host/Kconfig
+ create mode 100644 drivers/virt/coco/tdx-host/Makefile
+ create mode 100644 drivers/virt/coco/tdx-host/tdx-host.c
 
-diff --git a/Documentation/ABI/testing/sysfs-devices-faux-tdx-host b/Documentation/ABI/testing/sysfs-devices-faux-tdx-host
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index a0f8cf5e10d7..837e9b36e1ea 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1520,7 +1520,7 @@ const struct tdx_sys_info *tdx_get_sysinfo(void)
+ 
+ 	return (const struct tdx_sys_info *)&tdx_sysinfo;
+ }
+-EXPORT_SYMBOL_FOR_KVM(tdx_get_sysinfo);
++EXPORT_SYMBOL_FOR_MODULES(tdx_get_sysinfo, "kvm-intel,tdx-host");
+ 
+ u32 tdx_get_nr_guest_keyids(void)
+ {
+diff --git a/drivers/virt/coco/Kconfig b/drivers/virt/coco/Kconfig
+index df1cfaf26c65..f7691f64fbe3 100644
+--- a/drivers/virt/coco/Kconfig
++++ b/drivers/virt/coco/Kconfig
+@@ -17,5 +17,7 @@ source "drivers/virt/coco/arm-cca-guest/Kconfig"
+ source "drivers/virt/coco/guest/Kconfig"
+ endif
+ 
++source "drivers/virt/coco/tdx-host/Kconfig"
++
+ config TSM
+ 	bool
+diff --git a/drivers/virt/coco/Makefile b/drivers/virt/coco/Makefile
+index cb52021912b3..b323b0ae4f82 100644
+--- a/drivers/virt/coco/Makefile
++++ b/drivers/virt/coco/Makefile
+@@ -6,6 +6,7 @@ obj-$(CONFIG_EFI_SECRET)	+= efi_secret/
+ obj-$(CONFIG_ARM_PKVM_GUEST)	+= pkvm-guest/
+ obj-$(CONFIG_SEV_GUEST)		+= sev-guest/
+ obj-$(CONFIG_INTEL_TDX_GUEST)	+= tdx-guest/
++obj-$(CONFIG_INTEL_TDX_HOST)	+= tdx-host/
+ obj-$(CONFIG_ARM_CCA_GUEST)	+= arm-cca-guest/
+ obj-$(CONFIG_TSM) 		+= tsm-core.o
+ obj-$(CONFIG_TSM_GUEST)		+= guest/
+diff --git a/drivers/virt/coco/tdx-host/Kconfig b/drivers/virt/coco/tdx-host/Kconfig
 new file mode 100644
-index 000000000000..2cf682b65acf
+index 000000000000..d35d85ef91c0
 --- /dev/null
-+++ b/Documentation/ABI/testing/sysfs-devices-faux-tdx-host
-@@ -0,0 +1,6 @@
-+What:		/sys/devices/faux/tdx_host/version
-+Contact:	linux-coco@lists.linux.dev
-+Description:	(RO) Report the version of the loaded TDX module. The TDX module
-+		version is formatted as x.y.z, where "x" is the major version,
-+		"y" is the minor version and "z" is the update version. Versions
-+		are used for bug reporting, TDX module updates etc.
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 8b739ac01479..b7f4396b5cc5 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -41,6 +41,12 @@
- #include <asm/tdx_global_metadata.h>
- #include <linux/pgtable.h>
- 
-+/*
-+ * TDX module and P-SEAMLDR version convention: "major.minor.update"
-+ * (e.g., "1.5.08") with zero-padded two-digit update field.
-+ */
-+#define TDX_VERSION_FMT "%u.%u.%02u"
++++ b/drivers/virt/coco/tdx-host/Kconfig
+@@ -0,0 +1,10 @@
++config TDX_HOST_SERVICES
++	tristate "TDX Host Services Driver"
++	depends on INTEL_TDX_HOST
++	default m
++	help
++	  Enable access to TDX host services like module update and
++	  extensions (e.g. TDX Connect).
 +
- /*
-  * Used by the #VE exception handler to gather the #VE exception
-  * info from the TDX module. This is a software only structure
-diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-index c7db393a9cfb..d54d4227990c 100644
---- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-+++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-@@ -106,7 +106,7 @@ static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
- 
- 	ret = ret ?: get_tdx_sys_info_version(&sysinfo->version);
- 
--	pr_info("Module version: %u.%u.%02u\n",
-+	pr_info("Module version: " TDX_VERSION_FMT "\n",
- 		sysinfo->version.major_version,
- 		sysinfo->version.minor_version,
- 		sysinfo->version.update_version);
++	  Say y or m if enabling support for confidential virtual machine
++	  support (CONFIG_INTEL_TDX_HOST). The module is called tdx_host.ko.
+diff --git a/drivers/virt/coco/tdx-host/Makefile b/drivers/virt/coco/tdx-host/Makefile
+new file mode 100644
+index 000000000000..e61e749a8dff
+--- /dev/null
++++ b/drivers/virt/coco/tdx-host/Makefile
+@@ -0,0 +1 @@
++obj-$(CONFIG_TDX_HOST_SERVICES) += tdx-host.o
 diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
-index c77885392b09..ef117a836b3a 100644
---- a/drivers/virt/coco/tdx-host/tdx-host.c
+new file mode 100644
+index 000000000000..c77885392b09
+--- /dev/null
 +++ b/drivers/virt/coco/tdx-host/tdx-host.c
-@@ -8,6 +8,7 @@
- #include <linux/device/faux.h>
- #include <linux/module.h>
- #include <linux/mod_devicetable.h>
-+#include <linux/sysfs.h>
- 
- #include <asm/cpu_device_id.h>
- #include <asm/tdx.h>
-@@ -18,6 +19,29 @@ static const struct x86_cpu_id tdx_host_ids[] = {
- };
- MODULE_DEVICE_TABLE(x86cpu, tdx_host_ids);
- 
-+static ssize_t version_show(struct device *dev, struct device_attribute *attr,
-+			    char *buf)
-+{
-+	const struct tdx_sys_info *tdx_sysinfo = tdx_get_sysinfo();
-+	const struct tdx_sys_info_version *ver;
+@@ -0,0 +1,43 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * TDX host user interface driver
++ *
++ * Copyright (C) 2025 Intel Corporation
++ */
 +
-+	if (!tdx_sysinfo)
-+		return -ENXIO;
++#include <linux/device/faux.h>
++#include <linux/module.h>
++#include <linux/mod_devicetable.h>
 +
-+	ver = &tdx_sysinfo->version;
++#include <asm/cpu_device_id.h>
++#include <asm/tdx.h>
 +
-+	return sysfs_emit(buf, TDX_VERSION_FMT "\n", ver->major_version,
-+						     ver->minor_version,
-+						     ver->update_version);
-+}
-+static DEVICE_ATTR_RO(version);
-+
-+static struct attribute *tdx_host_attrs[] = {
-+	&dev_attr_version.attr,
-+	NULL,
++static const struct x86_cpu_id tdx_host_ids[] = {
++	X86_MATCH_FEATURE(X86_FEATURE_TDX_HOST_PLATFORM, NULL),
++	{}
 +};
-+ATTRIBUTE_GROUPS(tdx_host);
++MODULE_DEVICE_TABLE(x86cpu, tdx_host_ids);
 +
- static struct faux_device *fdev;
- 
- static int __init tdx_host_init(void)
-@@ -25,7 +49,7 @@ static int __init tdx_host_init(void)
- 	if (!x86_match_cpu(tdx_host_ids) || !tdx_get_sysinfo())
- 		return -ENODEV;
- 
--	fdev = faux_device_create(KBUILD_MODNAME, NULL, NULL);
-+	fdev = faux_device_create_with_groups(KBUILD_MODNAME, NULL, NULL, tdx_host_groups);
- 	if (!fdev)
- 		return -ENODEV;
- 
++static struct faux_device *fdev;
++
++static int __init tdx_host_init(void)
++{
++	if (!x86_match_cpu(tdx_host_ids) || !tdx_get_sysinfo())
++		return -ENODEV;
++
++	fdev = faux_device_create(KBUILD_MODNAME, NULL, NULL);
++	if (!fdev)
++		return -ENODEV;
++
++	return 0;
++}
++module_init(tdx_host_init);
++
++static void __exit tdx_host_exit(void)
++{
++	faux_device_destroy(fdev);
++}
++module_exit(tdx_host_exit);
++
++MODULE_DESCRIPTION("TDX Host Services");
++MODULE_LICENSE("GPL");
 -- 
 2.52.0
 
