@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 256814963D8;
-	Wed, 13 May 2026 15:11:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794E44B8DFE;
+	Wed, 13 May 2026 15:11:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778685109; cv=none; b=flDTSHXc1bqIDKZCVa8rt84G67T7BXFollHM/D+SKh/tPfPgUCDXf5bFq0Npw45NARNgVt9bMdL2M4UhUcEoTBPSJsmKsUCngugz2xU6DcoZfksWyRdrMaFZLJyDdbGoJkaKjDJQT8MuOlUrxXLd7cWtvzPZJyv8ZYBMaOyPciE=
+	t=1778685111; cv=none; b=KtuUuUN092fraMWw9rklImYpjNtRj5s/7Pm2+L6jd3lpOEf+wlw1MGHFMY5via2fLcD94XbTTUnjZdNPWT5NLkTW7QsdIrxZy3hyYtfOblTaFEQM64AxSp3S5Arr6qVt84Xa2zR+Ybab774mmOf2BA3nbUhjMtVg1ls0P/tdhlw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778685109; c=relaxed/simple;
-	bh=7Vlp2XDtMoqkUwxL5/QuIk6s5vFKWwuAnnEzUQ72jSs=;
+	s=arc-20240116; t=1778685111; c=relaxed/simple;
+	bh=LURwXxL3ZES66KefMxpDI/LyPCZOYuRnZoQInq//gkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Jj5iavddH4r8+mgvjV/HuiG8RtsoIAQiikMG0hsQawW/lUkYGk6xigSF3583Lc9yb9i9M1Rcm7pbuc1tEXqRGhk/2plK13rkqPsU1XTKltBmEkcSe0oSaN7Lvt3Pql2LzbhGr032ECxbl109xfvRpKHrbJMbjRC9TqaMKPWzJxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=iyhFMl9v; arc=none smtp.client-ip=198.175.65.11
+	 MIME-Version; b=pwX5mTWcTRCmCcF23uV2ik6ZbJw4ihX6z75nPWPmLVAcy/gfKUorQExvCqUjXLmsxEbcPgBih/XyOUJm8ohAoutvqeuCAU4eQ5c6ANmfuzjd8qv/6viGpsgYAVnCma1iuGPCWAIBR7K5XfjVs2uwnTfemK7/Nq1C/qs38hHBquA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dV6egZ3Q; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="iyhFMl9v"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dV6egZ3Q"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778685107; x=1810221107;
+  t=1778685109; x=1810221109;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=7Vlp2XDtMoqkUwxL5/QuIk6s5vFKWwuAnnEzUQ72jSs=;
-  b=iyhFMl9v8mddUuHqJie9JwFlxlMaUJKxd2+jj44sdCDtnc2WteL+V87Y
-   jSdx3JTAmCavxA5U2HDCdO8d/ys1D3H9Pc8jmdYF7Lvj3enILdrurbtFt
-   rpRvQ3dMH3VP8LvK9wvJFiVLU8isaArrYX72K4FsTG4r5+bim5Llsjh9P
-   /xnclNdLbyT996Nfb551c8HFq5ufInJBuKJjaAYpHskQFTc+5xnosIxlW
-   uLkpKBS51mT/PSxIiAgHqUhirY/cDq/6GA9/2pOgqmvXjasPes2lMX9Hs
-   MyNxO3dNYqHudMLF6FpdO+HGSynnQzUNzM+k4fBTfyeTuEqED9+y/t4Ct
-   g==;
-X-CSE-ConnectionGUID: oCpMOI+TRCG6UDE62A7iVQ==
-X-CSE-MsgGUID: FSltLez4Ty+GdMYZJmGnQA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="89921675"
+  bh=LURwXxL3ZES66KefMxpDI/LyPCZOYuRnZoQInq//gkk=;
+  b=dV6egZ3QXZbYGLr/tKum2Os69Vf7tBXjuJ6inHSSuJmOe3M7R97dGOb4
+   GT7xfKAz4Mn7q7TQ7WfkN8vpqGf9I85ZnIMwCgTYFsdScUgmHrBfR4lFU
+   qk9HJq4MuUZS+Upd47vH9bW8rCR/y5uL+jH5ikdFi5dXANzUQDTv5nl3h
+   m0wnw4m3MwnbOR3GbKZZo+f3cY2WEEZakDTmw9mpf2tNNTkgyw016uvBK
+   PlTjnFUGflQYpg7sYCm3MszPSd9O/uwuQER5wU9Q/cL47Tpz0XxMoUQGY
+   vAQKvs5HGPS0o25+IP/Ff3W2OiSWT7JQ/UTEftqHnhea0P/qI7kwDFMZ6
+   Q==;
+X-CSE-ConnectionGUID: oGEPKBQ+S26YnliykcO25Q==
+X-CSE-MsgGUID: oQM+2mM/SSqMvlyT8rCTug==
+X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="89921698"
 X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="89921675"
+   d="scan'208";a="89921698"
 Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 08:11:46 -0700
-X-CSE-ConnectionGUID: H/rXTBBVSv+PCPqLMTprBQ==
-X-CSE-MsgGUID: mzLpvv8oRvqZOvJKiwbgZw==
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 08:11:49 -0700
+X-CSE-ConnectionGUID: YXnmXjqRSMiD80Dv8jQ8Rw==
+X-CSE-MsgGUID: oyJ1H6rFQYmsHbJDr8dLbA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="231716811"
+   d="scan'208";a="231716827"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 08:11:46 -0700
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 08:11:48 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: kvm@vger.kernel.org,
 	linux-coco@lists.linux.dev,
@@ -72,9 +72,9 @@ Cc: binbin.wu@linux.intel.com,
 	Borislav Petkov <bp@alien8.de>,
 	x86@kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v9 09/23] coco/tdx-host: Don't expose P-SEAMLDR information on CPUs with erratum
-Date: Wed, 13 May 2026 08:09:52 -0700
-Message-ID: <20260513151045.1420990-10-chao.gao@intel.com>
+Subject: [PATCH v9 11/23] x86/virt/seamldr: Allocate and populate a module update request
+Date: Wed, 13 May 2026 08:09:54 -0700
+Message-ID: <20260513151045.1420990-12-chao.gao@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260513151045.1420990-1-chao.gao@intel.com>
 References: <20260513151045.1420990-1-chao.gao@intel.com>
@@ -84,133 +84,205 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Some TDX-capable CPUs have an erratum, as documented in Intel® Trust
-Domain CPU Architectural Extensions (May 2021 edition) Chapter 2.3:
+There are two important ABIs here:
 
-  SEAMRET from the P-SEAMLDR clears the current VMCS structure pointed
-  to by the current-VMCS pointer. A VMM that invokes the P-SEAMLDR using
-  SEAMCALL must reload the current-VMCS, if required, using the VMPTRLD
-  instruction.
+'struct tdx_image'	- The on-disk and in-memory format for a TDX
+			  module update image.
+'struct seamldr_params'	- The in-memory ABI passed to the TDX module
+			  loader. Points to a single 'struct tdx_image'
 
-Clearing the current VMCS behind KVM's back will break KVM.
+Userspace supplies the update image in struct tdx_image format. The image
+consists of a header followed by a sigstruct and the module binary.
 
-This erratum is not present when IA32_VMX_BASIC[60] is set. Add a CPU
-bug bit for this erratum and refuse to expose P-SEAMLDR information
-on affected CPUs, because even reading the P-SEAMLDR sysfs knobs would
-enter and exit P-SEAMLDR.
+P-SEAMLDR, however, consumes struct seamldr_params rather than the image
+directly. Parse the struct tdx_image provided by userspace and populate a
+matching struct seamldr_params.
 
-Use a CPU bug bit to stay consistent with X86_BUG_TDX_PW_MCE. As a bonus,
-the bug bit is visible to userspace, which allows userspace to determine
-why these sysfs files are not exposed, and it can also be checked by other
-kernel components in the future if needed.
-
-== Alternatives ==
-Two workarounds were considered but both were rejected:
-
-1. Save/restore the current VMCS around P-SEAMLDR calls. This produces ugly
-   assembly code [1] and doesn't play well with #MCE or #NMI if they
-   need to use the current VMCS.
-
-2. Move KVM's VMCS tracking logic to the TDX core code, which would break
-   the boundary between KVM and the TDX core code [2].
+Validate the struct tdx_image header before using it, because the header is
+consumed solely by the kernel to locate the sigstruct and module within
+the image. Do not validate the payload itself. The sigstruct and module
+pages are passed through to P-SEAMLDR, which validates them as part of the
+update flow.
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Link: https://lore.kernel.org/kvm/fedb3192-e68c-423c-93b2-a4dc2f964148@intel.com/ # [1]
-Link: https://lore.kernel.org/kvm/aYIXFmT-676oN6j0@google.com/ # [2]
 ---
-This is split into a separate patch rather than folded into the previous one,
-because the erratum handling warrants a longer changelog and discussion of
-the alternatives.
----
- arch/x86/include/asm/cpufeatures.h    |  1 +
- arch/x86/include/asm/vmx.h            |  1 +
- arch/x86/virt/vmx/tdx/tdx.c           | 11 +++++++++++
- drivers/virt/coco/tdx-host/tdx-host.c |  8 ++++++++
- 4 files changed, 21 insertions(+)
+sigstruct_pages_pa_list currently has only one entry, but it will grow to
+four pages in the future. Keep it as an array for symmetry with
+module_pages_pa_list and for extensibility.
 
-diff --git a/arch/x86/include/asm/cpufeatures.h b/arch/x86/include/asm/cpufeatures.h
-index 1d506e5d6f46..7b572bc24265 100644
---- a/arch/x86/include/asm/cpufeatures.h
-+++ b/arch/x86/include/asm/cpufeatures.h
-@@ -573,4 +573,5 @@
- #define X86_BUG_ITS_NATIVE_ONLY		X86_BUG( 1*32+ 8) /* "its_native_only" CPU is affected by ITS, VMX is not affected */
- #define X86_BUG_TSA			X86_BUG( 1*32+ 9) /* "tsa" CPU is affected by Transient Scheduler Attacks */
- #define X86_BUG_VMSCAPE			X86_BUG( 1*32+10) /* "vmscape" CPU is affected by VMSCAPE attacks from guests */
-+#define X86_BUG_SEAMRET_INVD_VMCS	X86_BUG( 1*32+11) /* "seamret_invd_vmcs" SEAMRET from P-SEAMLDR clears the current VMCS */
- #endif /* _ASM_X86_CPUFEATURES_H */
-diff --git a/arch/x86/include/asm/vmx.h b/arch/x86/include/asm/vmx.h
-index 37080382df54..49d8551d285d 100644
---- a/arch/x86/include/asm/vmx.h
-+++ b/arch/x86/include/asm/vmx.h
-@@ -147,6 +147,7 @@ struct vmcs {
- #define VMX_BASIC_INOUT				BIT_ULL(54)
- #define VMX_BASIC_TRUE_CTLS			BIT_ULL(55)
- #define VMX_BASIC_NO_HW_ERROR_CODE_CC		BIT_ULL(56)
-+#define VMX_BASIC_NO_SEAMRET_INVD_VMCS		BIT_ULL(60)
+v9:
+ - define a new format, basically don't use offset_of_module but use
+   sigstruct/module_nr_pages if the offset should be paged-aligned. this
+   saves alignment checks and bound checks.
+ - add a tdx_image_header struct to avoid using sizeof() for a struct with
+   variable array.
+ - rewrite the changelog to call out that this patch is to convert an ABI from
+   what userspace provides to an ABI the P-SEAMLDR consums.
+ - minimize casts and shifts and weird math
+---
+ arch/x86/virt/vmx/tdx/seamldr.c | 126 +++++++++++++++++++++++++++++++-
+ 1 file changed, 125 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
+index 7b345000d7c3..929203ec96f2 100644
+--- a/arch/x86/virt/vmx/tdx/seamldr.c
++++ b/arch/x86/virt/vmx/tdx/seamldr.c
+@@ -7,6 +7,7 @@
+ #define pr_fmt(fmt)	"seamldr: " fmt
  
- static inline u32 vmx_basic_vmcs_revision_id(u64 vmx_basic)
- {
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 837e9b36e1ea..1621695d7561 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -42,6 +42,7 @@
- #include <asm/processor.h>
- #include <asm/mce.h>
- #include <asm/virt.h>
-+#include <asm/vmx.h>
+ #include <linux/mm.h>
++#include <linux/slab.h>
+ #include <linux/spinlock.h>
  
- #include "seamcall_internal.h"
- #include "tdx.h"
-@@ -1443,6 +1444,8 @@ static struct notifier_block tdx_memory_nb = {
+ #include <asm/seamldr.h>
+@@ -16,6 +17,33 @@
+ /* P-SEAMLDR SEAMCALL leaf function */
+ #define P_SEAMLDR_INFO			0x8000000000000000
  
- static void __init check_tdx_erratum(void)
- {
-+	u64 basic_msr;
++#define SEAMLDR_MAX_NR_MODULE_PAGES	496
++#define SEAMLDR_MAX_NR_SIG_PAGES	1
 +
- 	/*
- 	 * These CPUs have an erratum.  A partial write from non-TD
- 	 * software (e.g. via MOVNTI variants or UC/WC mapping) to TDX
-@@ -1454,6 +1457,14 @@ static void __init check_tdx_erratum(void)
- 	case INTEL_EMERALDRAPIDS_X:
- 		setup_force_cpu_bug(X86_BUG_TDX_PW_MCE);
- 	}
++/*
++ * The seamldr_params "scenario" field specifies the operation mode:
++ * 0: Install TDX module from scratch (not used by kernel)
++ * 1: Update existing TDX module to a compatible version
++ */
++#define SEAMLDR_SCENARIO_UPDATE		1
++
++/*
++ * This is called the "SEAMLDR_PARAMS" data structure and is defined
++ * in "SEAM Loader (SEAMLDR) Interface Specification".
++ *
++ * It describes the TDX module that will be installed.
++ */
++struct seamldr_params {
++	u32	version;
++	u32	scenario;
++	u64	sigstruct_pages_pa_list[SEAMLDR_MAX_NR_SIG_PAGES];
++	u8	reserved[104];
++	u64	module_nr_pages;
++	u64	module_pages_pa_list[SEAMLDR_MAX_NR_MODULE_PAGES];
++} __packed;
++
++static_assert(sizeof(struct seamldr_params) == 4096);
++
+ /*
+  * Serialize P-SEAMLDR calls since the hardware only allows a single CPU to
+  * interact with P-SEAMLDR simultaneously. Use raw version as the calls can
+@@ -43,6 +71,89 @@ int seamldr_get_info(struct seamldr_info *seamldr_info)
+ }
+ EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
+ 
++#define TDX_IMAGE_VERSION_2		0x200
++
++struct tdx_image_header {
++	u16	version; // This ABI is always 0x200
++	u16	checksum;
++	u8	signature[8];
++	u32	sigstruct_nr_pages;
++	u32	module_nr_pages;
++	u8	reserved[4076];
++} __packed;
++
++#define HEADER_SIZE sizeof(struct tdx_image_header)
++static_assert(HEADER_SIZE == 4096);
++
++/* Intel TDX module update ABI structure. aka. "TDX module blob". */
++struct tdx_image {
++	struct tdx_image_header header;
++	u8 payload[]; // Contains sigstruct pages followed by module pages
++};
++
++static void populate_pa_list(u64 *pa_list, u32 max_entries, const u8 *start, u32 nr_pages)
++{
++	int i;
++
++	nr_pages = MIN(nr_pages, max_entries);
++	for (i = 0; i < nr_pages; i++) {
++		pa_list[i] = vmalloc_to_pfn(start) << PAGE_SHIFT;
++		start += PAGE_SIZE;
++	}
++}
++
++static void populate_seamldr_params(struct seamldr_params *params,
++				    const u8 *sig, u32 sig_nr_pages,
++				    const u8 *mod, u32 mod_nr_pages)
++{
++	params->version			= 0;
++	params->scenario		= SEAMLDR_SCENARIO_UPDATE;
++	params->module_nr_pages		= mod_nr_pages;
++
++	populate_pa_list(params->sigstruct_pages_pa_list, SEAMLDR_MAX_NR_SIG_PAGES,
++			 sig, sig_nr_pages);
++	populate_pa_list(params->module_pages_pa_list, SEAMLDR_MAX_NR_MODULE_PAGES,
++			 mod, mod_nr_pages);
++}
++
++static int init_seamldr_params(struct seamldr_params *params, const u8 *data, u32 size)
++{
++	const struct tdx_image *image		= (const void *)data;
++	const struct tdx_image_header *header	= &image->header;
++
++	u32 sigstruct_len	= header->sigstruct_nr_pages * PAGE_SIZE;
++	u32 module_len		= header->module_nr_pages * PAGE_SIZE;
++
++	u8 *header_start	= (u8 *)header;
++	u8 *header_end		= header_start + HEADER_SIZE;
++
++	u8 *sigstruct_start	= header_end;
++	u8 *sigstruct_end	= sigstruct_start + sigstruct_len;
++
++	u8 *module_start	= sigstruct_end;
++
++	/* Check the calculated payload size against the data size. */
++	if (HEADER_SIZE + sigstruct_len + module_len != size)
++		return -EINVAL;
 +
 +	/*
-+	 * Some TDX-capable CPUs have an erratum where the current VMCS is
-+	 * cleared after calling into P-SEAMLDR.
++	 * Don't care about user passing the wrong file, but protect
++	 * kernel ABI by preventing accepting garbage.
 +	 */
-+	rdmsrq(MSR_IA32_VMX_BASIC, basic_msr);
-+	if (!(basic_msr & VMX_BASIC_NO_SEAMRET_INVD_VMCS))
-+		setup_force_cpu_bug(X86_BUG_SEAMRET_INVD_VMCS);
- }
- 
- void __init tdx_init(void)
-diff --git a/drivers/virt/coco/tdx-host/tdx-host.c b/drivers/virt/coco/tdx-host/tdx-host.c
-index 079913dcc888..a540d658757b 100644
---- a/drivers/virt/coco/tdx-host/tdx-host.c
-+++ b/drivers/virt/coco/tdx-host/tdx-host.c
-@@ -91,6 +91,14 @@ static umode_t seamldr_group_visible(struct kobject *kobj, struct attribute *att
- 	if (!sysinfo)
- 		return 0;
- 
-+	/*
-+	 * Calling P-SEAMLDR on CPUs with the seamret_invd_vmcs bug clears
-+	 * the current VMCS, which breaks KVM. Verify the erratum is not
-+	 * present before exposing P-SEAMLDR features.
-+	 */
-+	if (boot_cpu_has_bug(X86_BUG_SEAMRET_INVD_VMCS))
-+		return 0;
++	if (header->version != TDX_IMAGE_VERSION_2)
++		return -EINVAL;
 +
- 	return tdx_supports_runtime_update(sysinfo) ? attr->mode : 0;
++	if (memcmp(header->signature, "TDX-BLOB", sizeof(header->signature)))
++		return -EINVAL;
++
++	if (memchr_inv(header->reserved, 0, sizeof(header->reserved)))
++		return -EINVAL;
++
++	populate_seamldr_params(params, sigstruct_start, header->sigstruct_nr_pages,
++				module_start, header->module_nr_pages);
++	return 0;
++}
++
+ /**
+  * seamldr_install_module - Install a new TDX module.
+  * @data: Pointer to the TDX module image.
+@@ -52,7 +163,20 @@ EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
+  */
+ int seamldr_install_module(const u8 *data, u32 size)
+ {
++	struct seamldr_params *params;
++	int ret;
++
++	params = kzalloc_obj(*params);
++	if (!params)
++		return -ENOMEM;
++
++	ret = init_seamldr_params(params, data, size);
++	if (ret)
++		goto out;
++
+ 	/* TODO: Update TDX module here */
+-	return 0;
++out:
++	kfree(params);
++	return ret;
  }
- 
+ EXPORT_SYMBOL_FOR_MODULES(seamldr_install_module, "tdx-host");
 -- 
 2.52.0
 
