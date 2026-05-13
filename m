@@ -1,155 +1,118 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mx2.zhaoxin.com (mx2.zhaoxin.com [61.152.208.219])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60D473D88F2;
-	Wed, 13 May 2026 08:42:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3EF73DD864
+	for <kvm@vger.kernel.org>; Wed, 13 May 2026 08:49:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=61.152.208.219
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778661761; cv=none; b=N2Ij63777qvXLBJjN0VCNLY6zVeAJQez72KQ4PSEmKDQDoj6uaVaUa51rlTkKs5e1YRNOpKTQhC81oyMpBpwy/NLWF7G5oAMjBaoQ0rbXuhIgJSWSnPvf54U9rUQ2PvJPKVmnQQWEhkPqrMt5HfWQdlbTOptmUhjFjXWPjISvzs=
+	t=1778662198; cv=none; b=lPln+NBzwjnjKyxIwcgru+rTwtfnxg8AJ3AwZhk7+QkauNafH5d19bM73pzdRALIKArnr6PfoO+9eIz4gO2N53HHfE4Ait7mk+rSODrPmBx3aUEvr+hnqvL5yyp6myNGPJANepO3ws4I09ONQXfR6IlgBvPEXEaS7RPFF5DvCu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778661761; c=relaxed/simple;
-	bh=wFcKZ8r+riP6MbTu1qKedhOQzdDog9eWtDtPnYzMQ3M=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f23OkHI8J4/OGbFtunfG2XFa9RjZXNjUFgvFP/Ob6imDdWEMdjQAYPz9ADyYwwvmmOIM8UPl7QRwbQwOVc5nwodxDI3uY6oQ3sG6ULsFmmoORCN+Ped1VkoJA4GXkCzi/epVPP0oEag13+9Wnm256SWk49TV2PfjJ7XrRLwXZEg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dL+mOThU; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dL+mOThU"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84068C2BCB7;
-	Wed, 13 May 2026 08:42:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778661759;
-	bh=wFcKZ8r+riP6MbTu1qKedhOQzdDog9eWtDtPnYzMQ3M=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=dL+mOThUrXXyro0zysDBR2vEzgp8njYPG1rem/bvEEarfzI4iharQP8kiFEIKGWaO
-	 BHC2NCndirUymlaSj6KAce8B5EZxGXgzcfRa+OZ31J5WQ/9sdMZj04KRg8N/0hViDM
-	 BiYRDaGtS7PSjr/2AZSYl1pbysNuRImlxZmCLm/iJygUT75bszXrPh40/kbhpG2xVg
-	 W/4pZTcI3aTR2oNvh9IMHpKk8dcE9XaDVTHHiiEzHR/szG1HNqvxTIUKl8GRm38PrK
-	 vhLQTJINE+wstMdsHbuNTyEGAUSqg+6yLOHCDFGOo/AKESMMycUcs2RijMsMGULODX
-	 nIVCQR0pSPbpg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wN5Ar-00000001tMH-0Xjc;
-	Wed, 13 May 2026 08:42:37 +0000
-Date: Wed, 13 May 2026 09:42:36 +0100
-Message-ID: <86h5obya2r.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: David Woodhouse <dwmw2@infradead.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	s=arc-20240116; t=1778662198; c=relaxed/simple;
+	bh=V4vKMmSGZ/tuiDmN0Nv5FHmqqKROR/7Q7uP7nUxNEW0=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=M98G4ljD7GNGYxyDTo05Htq9dsbGQqhwpXCzvLoxDfUHzBuwcEr3E/bO8uSaLmdjvqS+uI5tedbFOA10YfXL33S80l7WxmzETL6GzBwpffGdw9qgOAJCjJrDU/Hx4WSTbm0z5F5BELghFPfRg+qYF8WodPCw+n3bSozyZGP+Hks=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com; spf=pass smtp.mailfrom=zhaoxin.com; arc=none smtp.client-ip=61.152.208.219
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=zhaoxin.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zhaoxin.com
+X-ASG-Debug-ID: 1778661044-1eb14e680b4ed40001-HEqcsx
+Received: from zhaoxin.com (zxmail.zhaoxin.com [10.28.208.166]) by mx2.zhaoxin.com with ESMTP id smm0C6gL2260vf6t; Wed, 13 May 2026 16:30:44 +0800 (CST)
+X-Barracuda-Envelope-From: ewanhai-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.208.166
+X-ASG-Whitelist: Client
+X-Append-Disclaimer: 1
+Received: from ewan-server.zhaoxin.com (ewan-server.zhaoxin.com [10.28.24.2])
+	by zhaoxin.com (8.30) with ESMTPd1ba5f8d9f4b2c603dd1b3e89954506a
+	Wed, 13 May 2026 16:30:43 +0800
+X-Eyou-Smtpauth: ewanhai-oc@zhaoxin.com
+X-Barracuda-RBL-Trusted-Forwarder: 10.28.24.2
+X-Eyou-EnvelopeSender: ewanhai-oc@zhaoxin.com
+From: Ewan Hai <ewanhai-oc@zhaoxin.com>
+To: seanjc@google.com,
+	pbonzini@redhat.com,
+	tglx@kernel.org,
+	mingo@redhat.com,
+	bp@alien8.de,
+	dave.hansen@linux.intel.com,
+	x86@kernel.org,
+	hpa@zytor.com,
 	kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Jim Mattson <jmattson@google.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu
- <yuzenghui@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Kees Cook <kees@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH] Documentation: KVM: Document guest-visible compatibility expectations
-In-Reply-To: <baff82ca-6321-4b16-aa61-b2d6d60b6535@redhat.com>
-References: <6856b269d2af706eae397e0cf9c1231f89d9a932.camel@infradead.org>
-	<6afc4b95-3c15-4d71-877d-19b84e91ce05@redhat.com>
-	<57bc082f4824d6114d3156744c25986effc29aca.camel@infradead.org>
-	<baff82ca-6321-4b16-aa61-b2d6d60b6535@redhat.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	linux-kernel@vger.kernel.org
+Cc: cobechen@zhaoxin.com,
+	tonywwang@zhaoxin.com
+Subject: [PATCH 1/5] KVM: x86: Expose Zhaoxin SM2 CPUID feature
+Date: Wed, 13 May 2026 16:30:38 +0800
+X-ASG-Orig-Subj: [PATCH 1/5] KVM: x86: Expose Zhaoxin SM2 CPUID feature
+Message-Id: <20260513083042.1603237-2-ewanhai-oc@zhaoxin.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260513083042.1603237-1-ewanhai-oc@zhaoxin.com>
+References: <20260513083042.1603237-1-ewanhai-oc@zhaoxin.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: pbonzini@redhat.com, dwmw2@infradead.org, corbet@lwn.net, skhan@linuxfoundation.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, seanjc@google.com, jmattson@google.com, oupton@kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, will@kernel.org, rananta@google.com, eric.auger@redhat.com, kees@kernel.org, arnd@arndb.de, nathan@kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kselftest@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: base64
+X-Eyou-Sender: <ewanhai-oc@zhaoxin.com>
+X-Barracuda-Connect: zxmail.zhaoxin.com[10.28.208.166]
+X-Barracuda-Start-Time: 1778661044
+X-Barracuda-URL: https://10.28.252.36:4443/cgi-mod/mark.cgi
+X-Virus-Scanned: by bsmtpd at zhaoxin.com
+X-Barracuda-Scan-Msg-Size: 2722
+X-Barracuda-BRTS-Status: 1
 
-On Mon, 11 May 2026 17:56:15 +0100,
-Paolo Bonzini <pbonzini@redhat.com> wrote:
->=20
-> On 5/11/26 18:38, David Woodhouse wrote:
-> > Not *everything* is in CPUID; one recent exception that comes to mind
-> > is the SUPPRESS_EOI_BROADCAST quirk. But on x86 we preserve the
-> > existing behaviour of older kernels =E2=80=94 even when that behaviour =
-doesn't
-> > make much sense, as with SUPPRESS_EOI_BROADCAST where older KVM would
-> > *advertise* the feature, but not actually *implement* it. Nevertheless,
-> > that remains the default behaviour of future kernels unless userspace
-> > explicitly opts in to fully enable (or disable) the feature.
-> >=20
-> > But this documentation update isn't even asking for that compatible-by-
-> > default behaviour, even though that is the right thing to do. It's only
-> > asking that it be *possible* to reinstate the old behaviour, for
-> > userspace that *knows* about the change and explicitly wants to go back
-> > to the old way to remain compatible.
->=20
-> Yep, these are the "quirks"---if it's too early for Arm to commit to
-> that, I guess it's fine.
+QWR2ZXJ0aXNlIHRoZSBaaGFveGluIFNNMiBpbnN0cnVjdGlvbiBzdXBwb3J0IHRvIGd1
+ZXN0cyB2aWEgQ1BVSUQweEMwMDAwMDAxIEVEWCBiaXRzIDAgKFNNMikgYW5kIDEgKFNN
+Ml9FTikuVGhlIFNNMiBpbnN0cnVjdGlvbiAoZW5jb2RpbmcgRjIgMEYgQTYgQzApIGlt
+cGxlbWVudHMgdGhlIFNNMmVsbGlwdGljLWN1cnZlIHB1YmxpYy1rZXkgY3J5cHRvZ3Jh
+cGh5IGFsZ29yaXRobSBzcGVjaWZpZWQgaW5HTS9UIDAwMDMtMjAxMjsgdGhlIGhhcmR3
+YXJlLWxldmVsIGJlaGF2aW9yIGlzIGRvY3VtZW50ZWQgaW4gdGhlWmhhb3hpbiBHTUkg
+SW5zdHJ1Y3Rpb24gU2V0IFJlZmVyZW5jZSwgY2hhcHRlciAxICgiU00yIikuIFRoZWlu
+c3RydWN0aW9uIG11bHRpcGxleGVzIGl0cyBzdWItZnVuY3Rpb25zIG9uIHRoZSBSRFhb
+NTowXSBjb250cm9sd29yZDogZW5jcnlwdGlvbiAoc3Vic2VjdGlvbiAxLjEpLCBkZWNy
+eXB0aW9uICgxLjIpLCBzaWduaW5nICgxLjMpLHNpZ25hdHVyZSB2ZXJpZmljYXRpb24g
+KDEuNCksIHRoZSB0aHJlZSBrZXktZXhjaGFuZ2Ugc3ViLW9wZXJhdGlvbnNvZiBzZWN0
+aW9uIDEuNSAoMS41LjEgU00yIGtleS1wYWlyIGdlbmVyYXRpb24sIHdoaWNoIHRoZSBz
+cGVjIGFsc291c2VzIGZvciB0aGUgaW5pdGlhdG9yJ3MgZXBoZW1lcmFsIGtleTsgMS41
+LjIgcmVzcG9uZGVyIHNoYXJlZC1rZXlkZXJpdmF0aW9uOyAxLjUuMyBpbml0aWF0b3Ig
+c2hhcmVkLWtleSBkZXJpdmF0aW9uKSwgYW5kIHR3b3ByZXByb2Nlc3Mgc3RlcHMgZm9y
+IGlkZW50aXR5IGFuZCBtZXNzYWdlIGhhc2hpbmcgKDEuNi4xIGFuZCAxLjYuMikuVGhl
+IGluc3RydWN0aW9uIGlzIHVzZXItbW9kZSBhbmQgYXZhaWxhYmxlIGluIGFsbCBDUFUg
+bW9kZXMsIHdpdGggbm9hc3NvY2lhdGVkIE1TUiBjb250cm9sLiBUaGUgU00yIGFuZCBT
+TTJfRU4gYml0cyBhcmUgcmVkdW5kYW50IGJ5aGFyZHdhcmUgZGVzaWduIChzZXQgb3Ig
+Y2xlYXJlZCB0b2dldGhlcikgYW5kIGJvdGggc2VydmUgcHVyZWx5IGFzQ1BVSUQtbGV2
+ZWwgZmVhdHVyZS1wcmVzZW5jZSByZXBvcnRpbmcgZmxhZ3MgcmVxdWlyaW5nIG5vIEtW
+TWVtdWxhdGlvbi4gQm90aCBiaXRzIGFyZSBhZHZlcnRpc2VkIGJlY2F1c2UgZGlmZmVy
+ZW50IHNvZnR3YXJlIG1heXByb2JlIGVpdGhlciBvbmUgd2hlbiBjaGVja2luZyBmb3Ig
+U00yIGF2YWlsYWJpbGl0eS5TaWduZWQtb2ZmLWJ5OiBFd2FuIEhhaSA8ZXdhbmhhaS1v
+Y0B6aGFveGluLmNvbT4tLS0gYXJjaC94ODYva3ZtL2NwdWlkLmMgICAgICAgICB8IDIg
+KysgYXJjaC94ODYva3ZtL3JldmVyc2VfY3B1aWQuaCB8IDQgKysrKyAyIGZpbGVzIGNo
+YW5nZWQsIDYgaW5zZXJ0aW9ucygrKWRpZmYgLS1naXQgYS9hcmNoL3g4Ni9rdm0vY3B1
+aWQuYyBiL2FyY2gveDg2L2t2bS9jcHVpZC5jaW5kZXggZTY5MTU2YjU0Y2ZmLi4xZWI0
+Yjg4YWFhODAgMTAwNjQ0LS0tIGEvYXJjaC94ODYva3ZtL2NwdWlkLmMrKysgYi9hcmNo
+L3g4Ni9rdm0vY3B1aWQuY0BAIC0xMjcyLDYgKzEyNzIsOCBAQCB2b2lkIGt2bV9pbml0
+aWFsaXplX2NwdV9jYXBzKHZvaWQpIAkJa3ZtX2NwdV9jYXBfc2V0KFg4Nl9GRUFUVVJF
+X05VTExfU0VMX0NMUl9CQVNFKTsgIAlrdm1fY3B1X2NhcF9pbml0KENQVUlEX0MwMDBf
+MDAwMV9FRFgsKwkJRihTTTIpLCsJCUYoU00yX0VOKSwgCQlGKFhTVE9SRSksIAkJRihY
+U1RPUkVfRU4pLCAJCUYoWENSWVBUKSxkaWZmIC0tZ2l0IGEvYXJjaC94ODYva3ZtL3Jl
+dmVyc2VfY3B1aWQuaCBiL2FyY2gveDg2L2t2bS9yZXZlcnNlX2NwdWlkLmhpbmRleCA2
+NTdmNWY3NDNlZDkuLjdiNTUxMTBjYzA0NiAxMDA2NDQtLS0gYS9hcmNoL3g4Ni9rdm0v
+cmV2ZXJzZV9jcHVpZC5oKysrIGIvYXJjaC94ODYva3ZtL3JldmVyc2VfY3B1aWQuaEBA
+IC03Niw2ICs3NiwxMCBAQCAjZGVmaW5lIEtWTV9YODZfRkVBVFVSRV9UU0FfU1FfTk8J
+S1ZNX1g4Nl9GRUFUVVJFKENQVUlEXzgwMDBfMDAyMV9FQ1gsIDEpICNkZWZpbmUgS1ZN
+X1g4Nl9GRUFUVVJFX1RTQV9MMV9OTwlLVk1fWDg2X0ZFQVRVUkUoQ1BVSURfODAwMF8w
+MDIxX0VDWCwgMikgKy8qIFpoYW94aW4vQ2VudGF1ciBzdWItZmVhdHVyZXMsIENQVUlE
+IGxldmVsIDB4QzAwMDAwMDEgKEVEWCkgKi8rI2RlZmluZSBYODZfRkVBVFVSRV9TTTIJ
+CQlLVk1fWDg2X0ZFQVRVUkUoQ1BVSURfQzAwMF8wMDAxX0VEWCwgMCkrI2RlZmluZSBY
+ODZfRkVBVFVSRV9TTTJfRU4JCUtWTV9YODZfRkVBVFVSRShDUFVJRF9DMDAwXzAwMDFf
+RURYLCAxKSsgc3RydWN0IGNwdWlkX3JlZyB7IAl1MzIgZnVuY3Rpb247IAl1MzIgaW5k
+ZXg7LS0gMi4zNC4xCgoKCgrkv53lr4blo7DmmI4K5pys6YKu5Lu25ZCr5pyJ5L+d5a+G
+5oiW5LiT5pyJ5L+h5oGv77yM5LuF5L6b5oyH5a6a5pS25Lu25Lq65L2/55So44CC5Lil
+56aB5a+55pys6YKu5Lu25oiW5YW25YaF5a655YGa5Lu75L2V5pyq57uP5o6I5p2D55qE
+5p+l6ZiF44CB5L2/55So44CB5aSN5Yi25oiW6L2s5Y+R44CCCgpUaGlzIGVtYWlsIGNv
+bnRhaW5zIGNvbmZpZGVudGlhbCBvciBsZWdhbGx5IHByaXZpbGVnZWQgaW5mb3JtYXRp
+b24gYW5kIGlzIGZvciB0aGUgc29sZSB1c2Ugb2YgaXRzIGludGVuZGVkIHJlY2lwaWVu
+dC4gQW55IHVuYXV0aG9yaXplZCByZXZpZXcsIHVzZSwgY29weWluZyBvciBmb3J3YXJk
+aW5nIG9mIHRoaXMgZW1haWwgb3IgdGhlIGNvbnRlbnQgb2YgdGhpcyBlbWFpbCBpcyBz
+dHJpY3RseSBwcm9oaWJpdGVkLg==
 
-Compatible by default means nothing, because userspace needs to
-discover the combined capabilities of the host and KVM. This is not a
-"CPU model" architecture.
-
-If userspace is not a total joke, it will read all the ID registers,
-and configure what it wants to see, assuming it is a feature that can
-be configured (not everything can, because the architecture itself is
-not fully backward compatible).
-
-Yes, this is buggy at times, because the combinatorial explosion of
-CPU capabilities and supported features makes it pretty hard to test
-(and really nobody actually does). But overall, it works, and QEMU is
-growing an infrastructure to manage it in a "user friendly" way.
-
-But really, this isn't what David is asking. He's demanding "bug for
-bug" compatibility. For that, we have two possible cases:
-
-- this is a behaviour that, while undesirable, is allowed by the
-  architecture: fine, we preserve the behaviour and add another way to
-  expose the one we really want. it is ugly, but we manage.
-
-- this is a behaviour that is not allowed by the architecture: we fix
-  it for good. We do that on every release. Some minor, some much more
-  visible. And there is no way we will add this sort of "bring the
-  bugs back" type of behaviours. Specially when it is really obvious
-  that no SW can make any reasonable use of the defect. We allow
-  userspace to keep behaving as before, but the guest will not see a
-  non-compliant behaviour.
-
-That being said, there is a way out of that: convince people in charge
-of the architecture that the non-compliant KVM behaviour is actually
-valuable, and deserves to be tolerated. This has happened before (VHE
-only and NV2 only, just to name two recent changes).
-
-Other terrible hacks (such as GICv3's GICD_TYPER.num_LPIs which KVM
-doesn't support) were added at the request of cloud vendors that David
-might be familiar with, so it isn't like it is a brand new process.
-
-And once it is in the architecture, it becomes a behaviour that is
-allowed to be exposed to a guest, for better or worse.
-
-These are the rules we have followed since we started KVM/arm, and I
-intend to stick to them.
-
-Thanks,
-
-	M.
-
---=20
-Without deviation from the norm, progress is not possible.
