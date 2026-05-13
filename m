@@ -1,63 +1,63 @@
-Received: from mail-dl1-f45.google.com (mail-dl1-f45.google.com [74.125.82.45])
+Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2171429830
-	for <kvm@vger.kernel.org>; Wed, 13 May 2026 12:49:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF0A289E13
+	for <kvm@vger.kernel.org>; Wed, 13 May 2026 12:49:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778676544; cv=none; b=G3kTB0JOFX5GOHV3OmmCn7eik3N3BMqO/BsJsVti1QlYATF1SN9SrNaJN/wyxzB7zx5meOQuO+cgJK8DSnjHk0AG0ppaW/Go2mW5t0yQKqaV7yokOdWTI2yKwLUBlFVNWmzmSitOUJpB9zx+HEzC9BSiuDf7/ZjwncEfwb5XXS8=
+	t=1778676547; cv=none; b=govSUwPquLRbh81zP3B2uej4Neh7jRbpO+GEVNOZURv4icNucWCDXxVda5GOcgCha907ViTdi3MVJZBueI05MmFyfxbu65uatlayM+pY3ZBnKQKUO47ytI2SbT761XSx0qKJLBxRq7eO0NE3+tjyOLeA/CPpFSdhsmlUXGkPhcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778676544; c=relaxed/simple;
-	bh=wZJWjnqIbm8WDtqhSpFj+q2nylcM9L473xSd9G+0pUI=;
+	s=arc-20240116; t=1778676547; c=relaxed/simple;
+	bh=jRvKpxoAIl60/V1P+VTJHEK99Z/0YiaHhUBAFANty0Q=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=tClY23W5CJ+Q8SYTXWL8nxUogHQH5zai+7L9FJzC+ykWbc9mCMzmWJjr1EcCR2vv+Cl/VDgcu+H9Tg3mpvNtLR9eWVsP760pC1UD+6EkOQBBp9sLT8lZSbyC5hAZITjV6Drw1RN4QAE1TZ2I6/GaZR4C2P5Tyf2dHq4nQX3PTiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HQfilCM6; arc=none smtp.client-ip=74.125.82.45
+	 MIME-Version; b=CfiJBLyRxSDt00tZZkExqSedE+QMDElZH26/EqG5az3KoNlPaDuke16Xz6yGYQIGHYHvP4IxaufSL1D0V9eSf9pHbCjyGn0pVoNfPyTGCsHuhARLxUPM0EWqS/9O+T9EGQh3fG/ZMLCvoaAfVoyuMtS5cLkgiuSs0tIBz5a2ZNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yc2jiWDc; arc=none smtp.client-ip=74.125.82.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HQfilCM6"
-Received: by mail-dl1-f45.google.com with SMTP id a92af1059eb24-133466cf955so884665c88.0
-        for <kvm@vger.kernel.org>; Wed, 13 May 2026 05:49:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yc2jiWDc"
+Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-12c1a170a50so9163973c88.0
+        for <kvm@vger.kernel.org>; Wed, 13 May 2026 05:49:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778676541; x=1779281341; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1778676544; x=1779281344; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oMLcF3QpmorqUOiR9XBa4GuV1rXFYpYVsToIbq6Xxoo=;
-        b=HQfilCM68J/eWCYUMA3s0j8nPkJkfeOn6Mnx7BvPDCIGc4/g8A0rYItyO5D75GJbbN
-         9djdaKs5sFaIIkXSQZWTzRn2tPEMGArVhr2QWS5qNSOlD9lgei0dOTM39NejwJ0/S9Fq
-         6hVdFOOgNFmmwOQz4WXTu56H2UNtUnf85s0PCzMsnl/wBoaTZ+wk4ceOhGQ5L0YIq0ez
-         jKZwzlk92PTKVibTmIJkep0FBzk91Ub1Jy/A1UxjBspFI7ICuBMEDSj4Q8zmLzx0w2Jb
-         2AINdRBgwdfr27713hIu2Ow9WQbUSAxa6DZtqTk3KI6GwPpozXc6N/LAZnvMK22lOiTz
-         Cq/g==
+        bh=LtWmrYOKzZ6UotIe01yj+lYhNEkXI+QSLpIqgQNFL98=;
+        b=Yc2jiWDckooVMN+B5kNeu7FEdv1hUApLztH7fLQHUWgmQMSE2UAJd82NAZNIFv16H7
+         zmcKpmLlf2s5Y4uWFetTFr74RI/EsWpd32xLcs5xuHpmS9fk9Ak0puAnB4BXoXa2XlGr
+         UAh1VpkJyT2w35tXfxJctbbyJjyRqtSYT3e3gH65wU+PjQD7WbTBaQRlMVAmyCt9yR6h
+         IV0HnyTV+zbAWT1mPXawLYve9HXCbTc7hac9Jf+Jwv1UIubet9JNPr7F32VAsMuw9t7x
+         ZNemkzbJ/OgozE2yRXWFUl8KsnnZ+ESH6c6i9E0nsK4Ghb0uVUKlM/I5DIU62Y07F0jt
+         4sUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778676541; x=1779281341;
+        d=1e100.net; s=20251104; t=1778676544; x=1779281344;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=oMLcF3QpmorqUOiR9XBa4GuV1rXFYpYVsToIbq6Xxoo=;
-        b=Ip7E2sSc+D9yA8Z1Yu3yPjfAufh5lARkwQLZMmIaBcH/nHI2SDCqmdlMCSlEGSYWak
-         tC3HBnGkbP1Cb16VHZL75pjPms858aLKD8PdqEbtgDvTTeNoN0JDSwEWoYwiWo+cfsya
-         UW5S2/Oz5B9M+rrwIJ3tPBw20Sb2qqiHDdRFLSxIp30lpe28fS8dYZTVDmgP1HVcV6Vq
-         NoQiScJ/nqEmk3qCEx2sad21zpjjTSHN4zuPUD6SCqyBptn2inw31fv68yI0crIvb6Au
-         l5wiQxa4g5wabCpCCmIFFgbZJpMOt4shovE/Dqq82DCs/IYpcdkCwaZhvzIf8Z0tAyQE
-         wh/Q==
-X-Forwarded-Encrypted: i=1; AFNElJ9ZpGnDu/d+iqppuKuyNxfbfnveKsvQRRNMZjYQp8JleHL5MPGHwe58HFxoeTYBijB3uyI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzu7Oey+tgc2ZZ2pAo25L7sP46qvvcmVr+oIuCtRPPq7NT67bB3
-	lnMzs2nmDio4HBxeVmbKdmsobfPi7+Q0MIAyNWk12hTsC/0F0A2z79qf
-X-Gm-Gg: Acq92OFOCicZl3YnKHnL/nQGcmKU5uwKxud5Z2AemzuI7HovUTfR/GFRU0lnF557bX0
-	10fetEmQ01gzRMaQ3pkKv90Y7WL1sYIRrJhmYAkj/6IF+hR2wVYqs3dgPG0LmuBT7tFB0xteGky
-	Pzl1cPLwhuuRHT6c3NQ0ZZx5J78grekvMzqG2ua8uGF7KZ5PM/sgWqsDCo48AwqFoWUlbKw/wdQ
-	ayI5lEhj2IZPwEGdxpM5diHZevip4o6BBZcjcD2Z6Ke/aiesyLbLhdWMuEuwzQfUuZgaCIR0E0q
-	mzn9g5SeehHL9tB8JzfuJwrf4q8i4oGiBaPYqWku/BxOpNy0jU0QrmpPPwpbdH+HmS5TMIR1YRB
-	gRimOv1RT4AuL33b8eGQME3F+m9/n6TGBQVQK0jdwHDd4JupA5up1lNyiQUMw573AEI/fY0zLw4
-	KMfGhIMTXFYXIYvex98kKlSE8ZVXhoFeFcrdF3HqrW
-X-Received: by 2002:a05:7022:43:b0:128:d4be:7428 with SMTP id a92af1059eb24-13436781e9bmr2245229c88.19.1778676541014;
-        Wed, 13 May 2026 05:49:01 -0700 (PDT)
+        bh=LtWmrYOKzZ6UotIe01yj+lYhNEkXI+QSLpIqgQNFL98=;
+        b=J2umaZiPRS4tG1VlZwlS5DrTYNJGai66i/NsIqSwIroQnlCXa8R4UzMf3oayLVuTxB
+         X9i7EZ+awfvPftjw4VlOk641xFYuAY8TpNmgYwuIdR3Mz7A7ZUAXSimlpU2ZArdYJu+V
+         SIbIM/PfWiIIOQbhem8AUk79+2jXF7ZTOYEIN4JhaCitLNxAgcy9SKr8HfW+U4tcVDSe
+         hOVIfdRcMMfuhoIgo/pQP16a2j2vU9r6MHpcD1MFh6qneV6pb2J59iIhPaNGIzko5nmZ
+         p7QF3FytoR+bMtAO+zh7EhWnL1i0i0c6RdyUoC1RqfJAPkp9lgok+MHe51WqfQdY/EO+
+         h9jA==
+X-Forwarded-Encrypted: i=1; AFNElJ/KC/rM8rML8Ss6wWp/Rs/U8rVtg4aHIzsuXlQEhtTstOO4cAppSh9b/gqnq4i4GbLJPDw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxMSYNqmGOn1eH1zwQHVoSvGeDeE+pde9qHOwgSOM6qKwm+stJg
+	UFOeDWkzk4wgknPHybAVjhwSQxIp67tm57kVeepc4rKT+VsWNvpgV5uIn/gRr1eM6qg=
+X-Gm-Gg: Acq92OGtfj0BJ+nSfMZclhUyj8ATdlAP2z6B62gfMMteipMOUYrGylvqZO/BL1uPlLY
+	8jdzf8uoL0u9kO0Uaj0hU+tolP8y458foAFWoGjlSfdFDFyeZ4wneeKchRyxvLNnAJZoW4qClqe
+	8W2Q+rhV+mDtKp8SX/nrXdqD5r8vZiJrOTgQeo7B/qt1wP5YY3Pd618I/yUmKEXXTA5QMc1xnZX
+	NZMOfy81eO3SkpERPyXhfE+4tdZ74STXXv2xekmIqkF4IBQuNemVmKYxJTJEE/qo1XzDJq41hiO
+	/ti0pcHzNbgSht0m9Nnh3Kd+KUaA+GBG4bZOUxYceGLcUGFwQzmOXvwsg6mqbO4NCvRCDt3N70s
+	zKnubFNnLcfAeI+ttsGn2mAu1msLsb6WslpTL6qaEL1jP3ceywiDt5gNC8dQoX4DcUODD6bqAy7
+	k1ov8QZlXL/+Uy45Db39Pdm8Z51xTGRxzrRJsMJYXN
+X-Received: by 2002:a05:7022:ead3:b0:133:3bb1:8e43 with SMTP id a92af1059eb24-1349a938025mr1465669c88.19.1778676543906;
+        Wed, 13 May 2026 05:49:03 -0700 (PDT)
 Received: from ewan-server.zhaoxin.com ([154.26.185.247])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-134b4e153dbsm1066142c88.12.2026.05.13.05.48.58
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-134b4e153dbsm1066142c88.12.2026.05.13.05.49.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2026 05:49:00 -0700 (PDT)
+        Wed, 13 May 2026 05:49:03 -0700 (PDT)
 From: Ewan Hai <ewandevelop@gmail.com>
 To: seanjc@google.com,
 	pbonzini@redhat.com,
@@ -71,9 +71,9 @@ To: seanjc@google.com,
 	linux-kernel@vger.kernel.org
 Cc: cobechen@zhaoxin.com,
 	tonywwang@zhaoxin.com
-Subject: [PATCH v1 3/5] KVM: x86: Expose Zhaoxin RNG2 CPUID feature
-Date: Wed, 13 May 2026 20:48:44 +0800
-Message-Id: <20260513124846.1622462-4-ewandevelop@gmail.com>
+Subject: [PATCH v1 4/5] KVM: x86: Expose Zhaoxin PHE2 CPUID feature
+Date: Wed, 13 May 2026 20:48:45 +0800
+Message-Id: <20260513124846.1622462-5-ewandevelop@gmail.com>
 X-Mailer: git-send-email 2.34.1
 In-Reply-To: <20260513124846.1622462-1-ewandevelop@gmail.com>
 References: <20260513124846.1622462-1-ewandevelop@gmail.com>
@@ -85,22 +85,26 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Advertise the Zhaoxin second-generation hardware RNG to guests via
-CPUID 0xC0000001 EDX bits 22 (RNG2) and 23 (RNG2_EN).
+Advertise the Zhaoxin PadLock Hash Engine v2 to guests via CPUID
+0xC0000001 EDX bits 25 (PHE2) and 26 (PHE2_EN). PHE2 extends the
+PadLock hash family with SHA-384 and SHA-512 support per FIPS 180-3,
+complementing the existing PHE feature (SHA-1 and SHA-256).
 
-RNG2 is exposed by the REP XRNG2 instruction (encoding F3 0F A7 F8),
-documented in the Zhaoxin PadLock Instruction Reference, subsection 1.3
-("REP XRNG2"). It produces random bytes from two on-die RNG sources
-selectable via RAX bits[10:9] and an output mode (raw vs post-processed)
-controlled by RDX bits[1:0], providing high-quality entropy intended
-for cryptographic operations.
+Two user-mode instructions are exposed, documented in the Zhaoxin
+PadLock Instruction Reference, chapter 3 ("Hash Engine"):
 
-REP XRNG2 is user-mode and available in all CPU modes, with no
-associated MSR control. The RNG2 and RNG2_EN bits are redundant by
+  - REP XSHA384 (encoding F3 0F A6 D8, subsection 3.3)
+  - REP XSHA512 (encoding F3 0F A6 E0, subsection 3.4)
+
+Both consume software-padded 128-byte blocks (RCX = block count, RSI =
+input, RDI = state) and produce hash output in the state buffer.
+
+Both instructions are user-mode and available in all CPU modes, with no
+associated MSR control. The PHE2 and PHE2_EN bits are redundant by
 hardware design (set or cleared together) and both serve purely as
 CPUID-level feature-presence reporting flags requiring no KVM
 emulation. Both bits are advertised because different software may
-probe either one when checking for RNG2 availability.
+probe either one when checking for PHE2 availability.
 
 Signed-off-by: Ewan Hai <ewandevelop@gmail.com>
 ---
@@ -109,28 +113,28 @@ Signed-off-by: Ewan Hai <ewandevelop@gmail.com>
  2 files changed, 4 insertions(+)
 
 diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-index 8aaa3f20670e..087c41341240 100644
+index 087c41341240..3fb81f7a6107 100644
 --- a/arch/x86/kvm/cpuid.c
 +++ b/arch/x86/kvm/cpuid.c
-@@ -1286,6 +1286,8 @@ void kvm_initialize_cpu_caps(void)
- 		F(PHE_EN),
- 		F(PMM),
+@@ -1288,6 +1288,8 @@ void kvm_initialize_cpu_caps(void)
  		F(PMM_EN),
-+		F(RNG2),
-+		F(RNG2_EN),
+ 		F(RNG2),
+ 		F(RNG2_EN),
++		F(PHE2),
++		F(PHE2_EN),
  	);
  
  	/*
 diff --git a/arch/x86/kvm/reverse_cpuid.h b/arch/x86/kvm/reverse_cpuid.h
-index a1cd9116ef63..859ba43126d8 100644
+index 859ba43126d8..f28300c2d5e0 100644
 --- a/arch/x86/kvm/reverse_cpuid.h
 +++ b/arch/x86/kvm/reverse_cpuid.h
-@@ -81,6 +81,8 @@
- #define X86_FEATURE_SM2_EN		KVM_X86_FEATURE(CPUID_C000_0001_EDX, 1)
- #define X86_FEATURE_CCS			KVM_X86_FEATURE(CPUID_C000_0001_EDX, 4)
+@@ -83,6 +83,8 @@
  #define X86_FEATURE_CCS_EN		KVM_X86_FEATURE(CPUID_C000_0001_EDX, 5)
-+#define X86_FEATURE_RNG2		KVM_X86_FEATURE(CPUID_C000_0001_EDX, 22)
-+#define X86_FEATURE_RNG2_EN		KVM_X86_FEATURE(CPUID_C000_0001_EDX, 23)
+ #define X86_FEATURE_RNG2		KVM_X86_FEATURE(CPUID_C000_0001_EDX, 22)
+ #define X86_FEATURE_RNG2_EN		KVM_X86_FEATURE(CPUID_C000_0001_EDX, 23)
++#define X86_FEATURE_PHE2		KVM_X86_FEATURE(CPUID_C000_0001_EDX, 25)
++#define X86_FEATURE_PHE2_EN		KVM_X86_FEATURE(CPUID_C000_0001_EDX, 26)
  
  struct cpuid_reg {
  	u32 function;
