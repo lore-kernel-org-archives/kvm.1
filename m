@@ -1,38 +1,38 @@
-Received: from mxct.zte.com.cn (mxct.zte.com.cn [183.62.165.209])
+Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9C43D5657;
-	Wed, 13 May 2026 07:43:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=183.62.165.209
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1DA3D45C3;
+	Wed, 13 May 2026 07:45:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778658194; cv=none; b=T+KMMXMtVtH4S6R6DEOXiFfUWLsbmjbT/0AGqj5xl5sbxvqTE8eX0RPiQRyFiNZMADmf40WCuZn0h5+SUTDIsup3LuytgyxabGcMBhEGVQbWm93r0QL/X9e8qSfl7PCpl8v7n5xqRSZwp+Xt0vjNsXu12ArAoxDHbibd/JpTEvw=
+	t=1778658312; cv=none; b=BNfFWLEPQxabE+Wo6l7EZP/rhdfSlfWELD2kvzwfElpe71kZPb0OOLFdS9Gwl5WYkXd4UHgVL/PNdPwEM03JQ/+Afnc6lFMDnwSgAz8vi/ZL48AJVRCSVsUteud6jb++rTE5NeqPi1AmLEVoO/MbzfLfXYQtBTxIaSCiklAhotY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778658194; c=relaxed/simple;
-	bh=Q7+dH9r8ieB47YeoC2uoVnB++45yBafVa+0WR9+P8TM=;
+	s=arc-20240116; t=1778658312; c=relaxed/simple;
+	bh=EVdAGi81ZFC4AJFt/PU8LxFuun9yKB9WVVWC/0TRdpI=;
 	h=Message-ID:In-Reply-To:References:Date:Mime-Version:From:To:Cc:
-	 Subject:Content-Type; b=mfVSZi0GHZy+PCk7WOPIPs9X9FxmUyQPz+0t3yiQU77ER0eFqYxIQpX5xIFjDf39pZPeMjWIU9KZDjntcEltMTPqArnuEaHL+8LbQVCu82wKwoiP4KfYkOodMyAoln8jANLgxE1jTyLzjysSSszrySOh0tdsDzVDZjyvccJNFAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=183.62.165.209
+	 Subject:Content-Type; b=ufQHxXtJCpShnWqWVc3u4kb5n5XJndvfuWY7XuWkaG4dFRER0FRigAQzA1+KPh63oYT8lmvTgt3vGnT2/3a53yi1CBQ495ibladz8fl13e0eWQDfTa4K9S/1Ml/ha2MzioaX9DQUY72u9DwYYAebXXeddxVV4t4l7vudykg4jss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
 Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mxct.zte.com.cn (FangMail) with ESMTPS id 4gFlmw7479z51Sjv;
-	Wed, 13 May 2026 15:42:56 +0800 (CST)
-Received: from szxl2zmapp07.zte.com.cn ([10.1.32.52])
-	by mse-fl2.zte.com.cn with SMTP id 64D7gnL4098084;
-	Wed, 13 May 2026 15:42:49 +0800 (+08)
+	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gFlqT5v4cz57DCm;
+	Wed, 13 May 2026 15:45:09 +0800 (CST)
+Received: from szxl2zmapp05.zte.com.cn ([10.1.32.37])
+	by mse-fl2.zte.com.cn with SMTP id 64D7iwAc002188;
+	Wed, 13 May 2026 15:44:58 +0800 (+08)
 	(envelope-from wang.yechao255@zte.com.cn)
-Received: from mapi (szxlzmapp04[null])
+Received: from mapi (szxl2zmapp07[null])
 	by mapi (Zmail) with MAPI id mid12;
-	Wed, 13 May 2026 15:42:51 +0800 (CST)
-X-Zmail-TransId: 2b066a042b7b6c7-fcc10
+	Wed, 13 May 2026 15:45:00 +0800 (CST)
+X-Zmail-TransId: 2b096a042bfcf82-db4ed
 X-Mailer: Zmail v1.0
-Message-ID: <20260513154251861FBOlxl8ySih_oqyoJL1iA@zte.com.cn>
+Message-ID: <20260513154500183qjAlxzbei98Q4B5HjLpMx@zte.com.cn>
 In-Reply-To: <20260513153656847l3c4fI5hBsAyoIZi8aGIs@zte.com.cn>
 References: 20260513153656847l3c4fI5hBsAyoIZi8aGIs@zte.com.cn
-Date: Wed, 13 May 2026 15:42:51 +0800 (CST)
+Date: Wed, 13 May 2026 15:45:00 +0800 (CST)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -45,42 +45,72 @@ To: <anup@brainfault.org>, <atish.patra@linux.dev>, <pjw@kernel.org>,
 Cc: <kvm@vger.kernel.org>, <kvm-riscv@lists.infradead.org>,
         <linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
         <wang.yechao255@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIDMvNF0gUklTQy1WOiBLVk06IFNwbGl0IGh1Z2UgcGFnZXMgZHVyaW5nIEtWTV9DTEVBUl9ESVJUWV9MT0c=?=
+Subject: =?UTF-8?B?W1BBVENIIDQvNF0gUklTQy1WOiBLVk06IEFkZCB0aGUgZWFnZXJfcGFnZV9zcGxpdCBtb2R1bGUgcGFyYW1ldGVy?=
 Content-Type: text/plain;
 	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 64D7gnL4098084
+X-MAIL:mse-fl2.zte.com.cn 64D7iwAc002188
 X-TLS: YES
 X-SPF-DOMAIN: zte.com.cn
 X-ENVELOPE-SENDER: wang.yechao255@zte.com.cn
 X-SPF: None
-X-SOURCE-IP: 10.5.228.133 unknown Wed, 13 May 2026 15:42:57 +0800
+X-SOURCE-IP: 10.5.228.133 unknown Wed, 13 May 2026 15:45:09 +0800
 X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A042B80.000/4gFlmw7479z51Sjv
+X-Fangmail-MID-QID: 6A042C05.003/4gFlqT5v4cz57DCm
 
 From: Wang Yechao <wang.yechao255@zte.com.cn>
 
-Split huge pages on the range specified using KVM_CLEAR_DIRTY_LOG.
-And do not split when enabling dirty logging if
-KVM_DIRTY_LOG_INITIALLY_SET is set.
+Add an eager_page_split module parameter for RISC-V KVM, following
+the same approach as on x86. This parameter controls whether eager
+page splitting is enabled. The default value is on.
+
+When eager page splitting is enabled, KVM proactively splits large
+pages (huge pages) into smaller pages when needed for dirty logging
+or other operations. Disabling it can be beneficial for VM workloads
+that rarely perform writes, or that only write to a small region of
+memory, as it allows huge pages to remain intact for read accesses.
 
 Signed-off-by: Wang Yechao <wang.yechao255@zte.com.cn>
 ---
- arch/riscv/kvm/mmu.c | 3 +++
- 1 file changed, 3 insertions(+)
+ arch/riscv/kvm/mmu.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
 diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-index 14c558ee5f15..2cdea3e3ed4b 100644
+index 2cdea3e3ed4b..2af03c48aff3 100644
 --- a/arch/riscv/kvm/mmu.c
 +++ b/arch/riscv/kvm/mmu.c
-@@ -147,6 +147,9 @@ void kvm_arch_mmu_enable_log_dirty_pt_masked(struct kvm *kvm,
- 	kvm_riscv_gstage_init(&gstage, kvm);
+@@ -16,6 +16,9 @@
+ #include <asm/kvm_mmu.h>
+ #include <asm/kvm_nacl.h>
+
++bool __read_mostly eager_page_split = true;
++module_param(eager_page_split, bool, 0644);
++
+ static void mmu_wp_memory_region(struct kvm *kvm, int slot)
+ {
+ 	struct kvm_memslots *slots = kvm_memslots(kvm);
+@@ -148,8 +151,10 @@ void kvm_arch_mmu_enable_log_dirty_pt_masked(struct kvm *kvm,
 
  	kvm_riscv_gstage_wp_range(&gstage, start, end);
-+
-+	if (kvm_dirty_log_manual_protect_and_init_set(kvm))
-+		kvm_riscv_split_huge_pages(&gstage, start, end, true);
+
+-	if (kvm_dirty_log_manual_protect_and_init_set(kvm))
+-		kvm_riscv_split_huge_pages(&gstage, start, end, true);
++	if (kvm_dirty_log_manual_protect_and_init_set(kvm)) {
++		if (READ_ONCE(eager_page_split))
++			kvm_riscv_split_huge_pages(&gstage, start, end, true);
++	}
  }
 
  void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *memslot)
+@@ -214,7 +219,9 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
+ 		if (kvm_dirty_log_manual_protect_and_init_set(kvm))
+ 			return;
+ 		mmu_wp_memory_region(kvm, new->id);
+-		kvm_riscv_split_memory_region(kvm, new->id);
++
++		if (READ_ONCE(eager_page_split))
++			kvm_riscv_split_memory_region(kvm, new->id);
+ 	}
+ }
+
 -- 
 2.27.0
