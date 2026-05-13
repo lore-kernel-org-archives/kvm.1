@@ -1,165 +1,135 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9803C3FB7FA
-	for <kvm@vger.kernel.org>; Wed, 13 May 2026 10:54:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22291357D04;
+	Wed, 13 May 2026 11:02:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778669676; cv=none; b=AdQJZYXzpsCfNK4qu/iM+vhGkNiEDSX0vv9S7NSCbgqPwWcmdcwBdJIIrXdc08Kmx7dV5kDBKDrLV4OL/Ze61faJ4yZy/6ebGsh7hj5+KfhO09b8zWH5DfnyaZ4p35vnuZp/W/kSgt9XKyyqUA74SNPn+Mox88RmhEFR8+VMJwI=
+	t=1778670181; cv=none; b=TL8cB60m7sWZCl/j3vop9t4VdZbgPuWEx0Ao8/EHkqjMJRV4psrFvGN6BIoylNwMFGoBk+ROvBqva6OCWnhOd19xRzC+oLNW83OIie1MAKsan6jEgTnZaRDBAyPaDS3jV1nhRKbKCWeuJyjKdeGWV8QOVI3gyGAp1hZi6PoDUAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778669676; c=relaxed/simple;
-	bh=IvdEZvwln3zcfx+cvlKQindvsy3EmR5EckwkcdVQXFY=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GHpWrcA4Si2FNxoI2u30T3ScH6WjgA/ElGR198VEOJ7LTPjOuOOLDRzvdCQO9Katb2tofw4WVEyAF2vE9BV2VxZLEqzClYhHJFFXNekfhOoyYZ/M+gqeQgkJCB4cDSFxq+6C/ERehDqSb4OnWJT+b8ce8ezrU8GrzSYYrST2EoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VXcAco1F; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=juwA71bu; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1778670181; c=relaxed/simple;
+	bh=2R61fqNPCzpBcZ/nHkgNVU+bazmBf8PJ695F17PhxTw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R1JEsqWxewwHYZ8QrhuRvjr+xjwKwB83LtoVhDL9qOSYkqZWqUsjCf/A+tXY8lmH2Ap34Rwa1IvnOlHXqRoTXHGMZ9jn+F8vD83PGRwAohP6tj/BIXIYOtZACThpVDSam9dsOydy4hU5JcgB3Sn6vN4KDUZmjxDobZk3sG0coP0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Lh7i3ISM; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VXcAco1F";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="juwA71bu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778669673;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=aGSDbvLykcv2buTIXBcK0yd8xK4cY9P0ZJuiRfh0cTI=;
-	b=VXcAco1FPQATQIBfMJUIYOUU0DKWvk/VXKWjBHqPkTiLZwhqZWI/1+E6U5d8TenW3GszP+
-	cxK/m+e1fDrStXaoLR9JwFkewqLASsQLXJ8F8u7KGNsqTG6AuefQhuDDeIyH+akGgEcg0g
-	L8370jTIbbtc+hUsiPT7rkpGjPEekx4=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-609-1LCKcHRjPpuDxa67F6vWDA-1; Wed, 13 May 2026 06:54:32 -0400
-X-MC-Unique: 1LCKcHRjPpuDxa67F6vWDA-1
-X-Mimecast-MFC-AGG-ID: 1LCKcHRjPpuDxa67F6vWDA_1778669671
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-441243ba35fso5228875f8f.0
-        for <kvm@vger.kernel.org>; Wed, 13 May 2026 03:54:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778669671; x=1779274471; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aGSDbvLykcv2buTIXBcK0yd8xK4cY9P0ZJuiRfh0cTI=;
-        b=juwA71bu3+DpWVxkvtaiE8MriHnjhdawBICKnY8HPizQRezQBhtVv40XfPXy8NrZ/b
-         2EQZtv5O8frk3ZtOqBqC/KPEa+TiW5OPpqpFPRzhaUGTj6VS4NtN7pedKVzJUlFWZI6q
-         GYayXwyqIN3Ll062TTyrHI7K39rmaWS37KK6m4WgRjWv6yTyZIMGVRtHolI1j1xAjUD0
-         rEQw4hqIjShs3YjNGoUZ5PzPRKLT5yVU4GFaId5CGi1VnaUUFklq5QFPUa7EVLgc+uB0
-         3BingDRsYYl3AFV+zLmhdUi936ixDnhgMcJx049m0eT+cEJg/mzCKUi05pRgkhsNzJz/
-         tP1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778669671; x=1779274471;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=aGSDbvLykcv2buTIXBcK0yd8xK4cY9P0ZJuiRfh0cTI=;
-        b=b97BqyHux5ibfR7A/r80Pso/nj8oyBFA/aTP2q/pIFG/ImPH7WGd5PE+n/4AePHyps
-         G2x496AT59ladUZa/tuz4nybQobdUGghhrkyVdIrC9muYbytfv6utUsZ/Q0XgBenqxoB
-         +I5g9Oxhj/xzSTdM3zjZBDU+gCk6P0EDnYmZTbzDDUtAEq4sGqyoaMupBfuMq9IX5ew3
-         6H5F4JPr2ntuS5Th55KE+wZ4HbQWGRAp0glFXxqO/mK4v8kryJ1DW5ZUz2YfwnQnRBGK
-         xaGPnFNGQ/P2W9026jzyAqwRnoxurg/fd2bcv0epd0Sd6YNDS1NQHrW4pcinRhZ6QbS7
-         VfqQ==
-X-Forwarded-Encrypted: i=1; AFNElJ90ALZWL8/uM75GIEIdlt8PGHyycfu3VvTYnpUENjWoadpVJnaO0M3nrMvXo1gTtj9+434=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzXgACtqUwcfZTjfD9NmadccuHMIeSwGrNeIaOvcK+3pldRSN9j
-	QEh7ouNWxrfgULrK7qLkH0el1dKSiTdA5yCEga5sSXDjMIFIzVXeuM8sjeoJJQUu8gsc1QRXnaM
-	FLnxBgoXsoViXFbyXLVXcVgMaTGpUtVvawKyxLaX9f8LF3GhEDtOwS6QOBI7v4w==
-X-Gm-Gg: Acq92OF9Brj9gxYqzjWzsT5rUN1a4gIWq6rD5IS82u1HW2Nje2BSIPgS/SbGdbuqiJX
-	AvrwzR8f46sxZ2RKytQXO54aj6pdEyuqGfnavqiilHokSVv2B9VSDGZ23IwhdwPPE3UWzRtoch0
-	th8YepF56OPZ1LvToHLsyAgopu2kZ7a4gaXo70d7OGnb4NGIv+fPKq75ofRoEgM4y8s7DdEWp2x
-	I+5s3NfHLVVoEh7BBMyoGoXOVAQAx38cQVpm0Lq5RcRCixHj0JJanHROr/0bR51DBSaTSD7gtb1
-	OrM6rm40VVLPGSbSaZWjTE+Qm158GF7Eitn1ci40XhRLxWDBzzoG7ysQ0uNk6AbmDkAi7KdjLJP
-	OfMaQAasdHhcVsXeswBC8oP1rTWJSlyKgoWmbMHqDDSHNh7866opiiS5+i1bs
-X-Received: by 2002:a5d:64c7:0:b0:43d:68ad:3b7f with SMTP id ffacd0b85a97d-45c59228b05mr4395322f8f.21.1778669670749;
-        Wed, 13 May 2026 03:54:30 -0700 (PDT)
-X-Received: by 2002:a5d:64c7:0:b0:43d:68ad:3b7f with SMTP id ffacd0b85a97d-45c59228b05mr4395279f8f.21.1778669670260;
-        Wed, 13 May 2026 03:54:30 -0700 (PDT)
-Received: from stex1 (host-87-16-204-231.retail.telecomitalia.it. [87.16.204.231])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-454917d57aesm40237869f8f.26.2026.05.13.03.54.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2026 03:54:29 -0700 (PDT)
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	kvm@vger.kernel.org,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	virtualization@lists.linux.dev,
-	Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: [PATCH net v3 2/2] vsock/virtio: fix skb overhead accounting to preserve full buf_alloc
-Date: Wed, 13 May 2026 12:54:17 +0200
-Message-ID: <20260513105417.56761-3-sgarzare@redhat.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260513105417.56761-1-sgarzare@redhat.com>
-References: <20260513105417.56761-1-sgarzare@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Lh7i3ISM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778670180; x=1810206180;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=2R61fqNPCzpBcZ/nHkgNVU+bazmBf8PJ695F17PhxTw=;
+  b=Lh7i3ISMO0XT9RajOp4+A1+0R5GaK4ogLf/8XV6n6aFPUxSp6Cf28tFm
+   DO75Q5MHk9NlpaaEJJFTPKsYcLC4jMSd9cZ/F46J/+sb0B8Fsc6dTXIzb
+   5GH9Z4JQrFtbeenxb7oNtA4kBwG6xw8tE4HGmrlvlpCEpSnFp+UCS8zZk
+   RuP6q/klm90HRn79EA+HxfKRckThw+EpWfwS8Rau5Ijw06tCXo90bfOmr
+   wTwZaXtNk0nn+sMzT4bLIfq79eS+5TVAkBHoe1OTKPp5eOYJCDwiHgKij
+   jyZ7BXm7/VYzX/2Cc9oXkrWKLOijPZG2BZWlWXYv118Fq4dzwfjbBiC+A
+   Q==;
+X-CSE-ConnectionGUID: QDOR78JsTFWws1tK0AyK6A==
+X-CSE-MsgGUID: 77qxwAn7S8uKYgHXQiNmiQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="79706970"
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
+   d="scan'208";a="79706970"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 04:02:59 -0700
+X-CSE-ConnectionGUID: Rys882sfRLGtOP/u0wJptw==
+X-CSE-MsgGUID: Znw0lnbVTXyzYaElOvQyBA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
+   d="scan'208";a="243042703"
+Received: from fanlilin-mobl.ccr.corp.intel.com (HELO [10.238.1.228]) ([10.238.1.228])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 04:02:57 -0700
+Message-ID: <4365e457-3d3d-4bc0-ac11-b3d4dfe8ccab@linux.intel.com>
+Date: Wed, 13 May 2026 19:02:53 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] x86/cpu: Skip reading MSR_IA32_PLATFORM_ID in
+ virtualized environment
+To: Borislav Petkov <bp@alien8.de>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
+ dave.hansen@intel.com, seanjc@google.com, pbonzini@redhat.com,
+ kas@kernel.org, rick.p.edgecombe@intel.com, vishal.l.verma@intel.com,
+ xiaoyao.li@intel.com, chao.gao@intel.com
+References: <20260430020953.1405535-1-binbin.wu@linux.intel.com>
+ <20260511100451.GBagGpw7jRBDdHkBgp@fat_crate.local>
+ <d88d19f5-0a96-4115-97f7-8daf1edd625a@linux.intel.com>
+ <20260513101436.GAagRPDAryWZ5hGqFO@fat_crate.local>
+Content-Language: en-US
+From: Binbin Wu <binbin.wu@linux.intel.com>
+In-Reply-To: <20260513101436.GAagRPDAryWZ5hGqFO@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Stefano Garzarella <sgarzare@redhat.com>
 
-After commit 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb
-queue"), virtio_transport_inc_rx_pkt() subtracts per-skb overhead from
-buf_alloc when checking whether a new packet fits. This reduces the
-effective receive buffer below what the user configured via
-SO_VM_SOCKETS_BUFFER_SIZE, causing legitimate data packets to be
-silently dropped and applications that rely on the full buffer size
-to deadlock.
 
-Also, the reduced space is not communicated to the remote peer, so
-its credit calculation accounts more credit than the receiver will
-actually accept, causing data loss (there is no retransmission).
+On 5/13/2026 6:14 PM, Borislav Petkov wrote:
+> On Tue, May 12, 2026 at 09:57:58AM +0800, Binbin Wu wrote:
+>> hypervisor_present could be uninitialized if dis_ucode_ldr is true.
+>> intel_get_platform_id() is also called during the normal cpu initialization.
+> 
+> Right, that needs more surgery. See if the below works instead pls.
+> 
+> We might as well do it - the question whether we run on a HV comes very often
+> recenly - might as well make it an "official" variable.
 
-With this approach we currently have failures in
-tools/testing/vsock/vsock_test.c. Test 18 sometimes fails, while
-test 22 always fails in this way:
-    18 - SOCK_STREAM MSG_ZEROCOPY...hash mismatch
+Make sense.
+My version treated it as a bug fix, so I tried to minimize the code change. 
 
-    22 - SOCK_STREAM virtio credit update + SO_RCVLOWAT...send failed:
-    Resource temporarily unavailable
+[...]
 
-Fix this by using `buf_alloc * 2` as the total budget for payload plus
-skb overhead in virtio_transport_inc_rx_pkt(), similar to how SO_RCVBUF
-is doubled to reserve space for sk_buff metadata. This preserves the
-full buf_alloc for payload under normal operation, while still bounding
-the skb queue growth.
+>  
+> @@ -179,6 +172,11 @@ void __init load_ucode_bsp(void)
+>  
+>  	early_parse_cmdline();
+>  
+> +	if (!cpuid_feature())
+> +		dis_ucode_ldr = true;
+> +	else
+> +		x86_hypervisor_present = native_cpuid_ecx(1) & BIT(31);
+> +
 
-With this patch, all tests in tools/testing/vsock/vsock_test.c are
-now passing again.
+There is one case not covered by setting the global x86_hypervisor_present at this point.
+Xen PV guest will not go this path, so Xen PV guest will not see the hypervisor bit.
 
-Fixes: 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue")
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
----
- net/vmw_vsock/virtio_transport_common.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+But maybe we can just ignore Xen PV guest case today?
 
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 4a4ac69d1ad1..e22117bf5dcd 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -434,7 +434,10 @@ static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
- {
- 	u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
- 
--	if (skb_overhead + vvs->buf_used + len > vvs->buf_alloc)
-+	/* Use buf_alloc * 2 as total budget (payload + overhead), similar to
-+	 * how SO_RCVBUF is doubled to reserve space for sk_buff metadata.
-+	 */
-+	if (skb_overhead + vvs->buf_used + len > (u64)vvs->buf_alloc * 2)
- 		return false;
- 
- 	vvs->rx_bytes += len;
--- 
-2.54.0
+
+>  	if (microcode_loader_disabled())
+>  		return;
+>  
+> diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
+> index 37ac4afe0972..a4c0a0cf928b 100644
+> --- a/arch/x86/kernel/cpu/microcode/intel.c
+> +++ b/arch/x86/kernel/cpu/microcode/intel.c
+> @@ -138,6 +138,9 @@ u32 intel_get_platform_id(void)
+>  {
+>  	unsigned int val[2];
+>  
+> +	if (x86_hypervisor_present)
+> +		return 0;
+> +
+>  	/*
+>  	 * This can be called early. Use CPUID directly instead of
+>  	 * relying on cpuinfo_x86 which may not be fully initialized.
+> diff --git a/arch/x86/kernel/cpu/microcode/internal.h b/arch/x86/kernel/cpu/microcode/internal.h
+> index 3b93c0676b4f..a10b547eda1e 100644
+> --- a/arch/x86/kernel/cpu/microcode/internal.h
+> +++ b/arch/x86/kernel/cpu/microcode/internal.h
+> @@ -48,7 +48,6 @@ extern struct early_load_data early_data;
+>  extern struct ucode_cpu_info ucode_cpu_info[];
+>  extern u32 microcode_rev[NR_CPUS];
+>  extern u32 base_rev;
+> -extern bool hypervisor_present;
+>  
+>  struct cpio_data find_microcode_in_initrd(const char *path);
+>  
 
