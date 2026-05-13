@@ -1,203 +1,203 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+Received: from AM0PR83CU005.outbound.protection.outlook.com (mail-westeuropeazon11020083.outbound.protection.outlook.com [52.101.69.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 496C63F412D;
-	Wed, 13 May 2026 14:41:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778683287; cv=none; b=WohOiKydCtS/RFdrTg9LsNu1WkBG9rzKikTDnYkNfFW6b4WS5yLLBVkFtln5dBm6/sit9oVrIvVi7/SdPOGWy4VVP0wM2brfHyuhMIbsS6J26n4jeqgiS4PYspBr2/Dk/lzOgRDHxmp4WswMVGtBS8kAtRgeiPOtcC+wH1GljeM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778683287; c=relaxed/simple;
-	bh=sob6UMVPhuyiYaiXAZTac+hxeGFivuTVD/QWJuxOyZk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=o0blS2LYK8QToRrowDvdrNiLqiVppswaneLsIGxdMVrVLg80CgoeEC0xeGKlt3dgUFCB47e6mternDx27Mav2KG9kvQu5gtlkwQkTsbX0jklbImHoGgMi70FiNNVy3pKYjz+pPZ7d2irBy0DlWJnOtaLkTtJMLnlnoEU8sQ1tew=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=g8aMWKAI; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDABE3FFAB7;
+	Wed, 13 May 2026 14:59:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.69.83
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778684348; cv=fail; b=KUHzgrMtlwPTAr3wDSPp/0mCHkqFD9DWUUfLFiU3EX9lZUGzdO3cIbGmkDxU230sRORthzUzLyypWzi1SMKNBxCT16M5stGrNu/fOclh5XSa3MPg8yZbK/z0a32zh3B4UHL+46Ymy/5Uh+8KIUZd63U082GW+eBsFFCnz7pinGw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778684348; c=relaxed/simple;
+	bh=k50an/bzxA24sXgrQXvagovMHQyUnplpYZVKxL3mO14=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=aJkBKbM4mGBsxm9TwLEqz9TV9bvu0QFr7hW6yBLVX0hTsgE7mzIlYK0txq3c4Mj+YDdRZ8gUZPG1MXwBElP0odesrCVHeCeN+OLTUtTR54UPeyy0B/mwvLvuCaykJlJxR844fjmzZyAEFkp6Lp/cmQqX8EeQPeZxjdC3CkK1H9s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com; spf=pass smtp.mailfrom=virtuozzo.com; dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b=MKzKOFBh; arc=fail smtp.client-ip=52.101.69.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=virtuozzo.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=virtuozzo.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="g8aMWKAI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778683284; x=1810219284;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=sob6UMVPhuyiYaiXAZTac+hxeGFivuTVD/QWJuxOyZk=;
-  b=g8aMWKAIHf69NKF9duOSCHnNtoi+tXWoaUpCzOSl0UBMZaSS7FCESHHc
-   Uefsr4BIP+vFN7waHQHr2Fk4R5qetkP+Nbo6SNxK15N1ujJXRDYTzpUOd
-   z2GkkA+U0QvmPshSI4o2JtwsVarz/KrpHdWv+0Cdp7oDbGIzAQieCdIaj
-   8v5xX3RbXLlJy0OfgMTbOIgFv6NSouH92va+0yMkWyzkU4pyuSq/18Kk+
-   ZLtE4mPGxKe4+uWGkX2qbjL608PG0jNLt8/FMNVaE+wVFk7dWZFQ+a3eE
-   IHXT09JqwvkG7GvdfVQCE1haM9R0JEDWfJ5IF/mWK8uiaIghfFAwkXeAw
-   g==;
-X-CSE-ConnectionGUID: F2xE+6iNTXCLgiqMCCMk/Q==
-X-CSE-MsgGUID: Cc6WcmJlR5OiQpPHqEMCUw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="78757097"
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="78757097"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 07:41:22 -0700
-X-CSE-ConnectionGUID: Gh63vDGzS0adsC8b/O4hTw==
-X-CSE-MsgGUID: oyiVVFn1RrOpnqAYDDhMTQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="235425946"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.240.207]) ([10.124.240.207])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 07:41:20 -0700
-Message-ID: <89d52fff-ec3b-420e-9f01-5cd2bc8ce5cb@linux.intel.com>
-Date: Wed, 13 May 2026 22:41:18 +0800
+	dkim=pass (2048-bit key) header.d=virtuozzo.com header.i=@virtuozzo.com header.b="MKzKOFBh"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=dioxhRuKAENiZ3ls86Guij7svAjVOj25iQi86RFIQOaYw9f180LY4S9z/PoeNeK/LRJQxjmUlqxJJMJZvL6yeVPRuzABt0QWdQAk2zx2LfgDLL2G96UI2gV0pKatnEe+3Qts9L4NlYwyur2t/UhMwr4W0imnKwtu5/f+7muZAmNRtisjKRWlh2GkruF3Jar570GPQBrj4zAFBmkIcK0f23DTK49Nd1wS1FIEF/N9rRqOwLgW4ueBVrU8plk3NRDRkFac2VEgGoCz57WQoU2p6dhIhjrvaB/SiTOJ0GTY4nn+laZzzN47wCpJvTUrPRM2M2GLUeSUgKOyHy7fviY7FQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=F1WWIBmF231KEPRcdyUPH0TFIY8CYw/rtqxljMtCITU=;
+ b=o5WGmJADSpGVxa1Bjq5ESCBglbBATG5CtljBHdbvOGGS/DdLJQ2teocfxEEbo5t9KPjKKqvhCueU+v1hQX5MCgkaej5Qr/7u2SC6siDshlN8Jmv11ZxzHaqc9t4LNUBJmamAryrS5Oy+720AI76sn+U2CYixPlx+G/d29yCnCQ31Iz7s++vWtMtAu9BSvc2NfJfSs4i5g8MpnG33XqRcDWo3uESPssG7A514TN/gZ7sRbvG9lNbkpdl/JxbG2BgIKFrOknJYULLKIRi+SWdQK0NNcdaLUXvjmV5Uojjij8+HGnsPNd4EXKVcXIQeHyx+5IJYn7fFez89Lba7lSvqwQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=virtuozzo.com; dmarc=pass action=none
+ header.from=virtuozzo.com; dkim=pass header.d=virtuozzo.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=virtuozzo.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=F1WWIBmF231KEPRcdyUPH0TFIY8CYw/rtqxljMtCITU=;
+ b=MKzKOFBhShDV9bRJaIK/Sb5PL10nBErLIM3f64fwvBo285DDVUWwTBqiq7tTV7ElmfgFE2Et5x3BLb6C+OwhplaQmDr0EvwrwAk17owysTxiKziQlDVDwQnvqrOlxRNHKDs5ys2/2ZUZyRVXc5v2NYrR5v4f8XrJ0DJKJBHsEjO9r+KebyjohSwdj6ZjQtHYrPXDOkfyu0jBII2jY0zvCmi2eKRBq3p6pbQSd+vtJaahpqHyerWsVbnSI7HcEsXIwf1vtnulD/WWNPIF4yoHTB1nENEaH7AahUndV4r40rpLgXoe04jpdE7fYjCuDIVutvuoHzqPGMg7OYeNPKQ1Dw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=virtuozzo.com;
+Received: from VI0PR08MB10828.eurprd08.prod.outlook.com
+ (2603:10a6:800:204::20) by PA4PR08MB6255.eurprd08.prod.outlook.com
+ (2603:10a6:102:f1::6) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.11; Wed, 13 May
+ 2026 14:59:02 +0000
+Received: from VI0PR08MB10828.eurprd08.prod.outlook.com
+ ([fe80::2a8a:fe48:6ba2:f774]) by VI0PR08MB10828.eurprd08.prod.outlook.com
+ ([fe80::2a8a:fe48:6ba2:f774%4]) with mapi id 15.20.9913.009; Wed, 13 May 2026
+ 14:59:02 +0000
+From: Polina Vishneva <polina.vishneva@virtuozzo.com>
+To: linux-kernel@vger.kernel.org
+Cc: netdev@vger.kernel.org,
+	virtualization@lists.linux.dev,
+	kvm@vger.kernel.org,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Polina Vishneva <polina.vishneva@virtuozzo.com>,
+	"Denis V . Lunev" <den@openvz.org>
+Subject: [PATCH v2] vhost/vsock: Refuse the connection immediately when guest isn't ready
+Date: Wed, 13 May 2026 16:50:04 +0200
+Message-ID: <20260513145842.809404-1-polina.vishneva@virtuozzo.com>
+X-Mailer: git-send-email 2.53.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: FR4P281CA0195.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:ca::20) To VI0PR08MB10828.eurprd08.prod.outlook.com
+ (2603:10a6:800:204::20)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] x86/cpu: Skip reading MSR_IA32_PLATFORM_ID in
- virtualized environment
-To: Borislav Petkov <bp@alien8.de>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
- dave.hansen@intel.com, seanjc@google.com, pbonzini@redhat.com,
- kas@kernel.org, rick.p.edgecombe@intel.com, vishal.l.verma@intel.com,
- xiaoyao.li@intel.com, chao.gao@intel.com
-References: <20260430020953.1405535-1-binbin.wu@linux.intel.com>
- <20260511100451.GBagGpw7jRBDdHkBgp@fat_crate.local>
- <d88d19f5-0a96-4115-97f7-8daf1edd625a@linux.intel.com>
- <20260513101436.GAagRPDAryWZ5hGqFO@fat_crate.local>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260513101436.GAagRPDAryWZ5hGqFO@fat_crate.local>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: VI0PR08MB10828:EE_|PA4PR08MB6255:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9f9d6540-7b61-4692-e636-08deb1002b7f
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|7416014|366016|56012099003|18002099003;
+X-Microsoft-Antispam-Message-Info:
+	kESsNHiuSlvgr4bhxDlIF+fk+FVQCHt8mhrUVqVWkBpEdZcifs8hCmZ6X0WK6sgkql+RN8+kFux0o3UDecrqC0URqAn9eiKogwnLsfqow3HpSIJYyP0qObJF3Uw5on+5ZiChkVHKOFWaZyVO7lwlK3+LVh6f0ygvze2xzbK5qwgwnFu3EtieeRs3I9Uf6VwpHPBMcBNZAMdbMybCRGYgrDc4j4MEv3cmn6O0AZ82BSVgMjmieO4EXi+07SdE2FZSbpEfj5cC+TPwpt49Js8nVe4eSYHShtENpQf8hsLGy5A7ld13cgscGFkATRs/g2/Jbl/gSInfJAlYjM3Cyi3BRMrjb4s29CrTpYHOQWfkwx6MeJd9bjeOdn/B58W/oEBdmMEa6PWAdkW0+54H1gFx6Fp4tCk+oIyAyC72Pxd/GN9Ii864ib8+CaCfuudmsZ394sYI1hL2eB+FrQzAoXLsswkdXyb02cZdG6/vaW7cZGhErdiOVJNG/764OGHBxt1CiroQxL9CIihDDHrPpNmyHjbkkD1QoSwrhTufWYL3h1DBGqsnGyuHzHQjXg7+u292wDq4HcqOeJ5V9nMzXSR4pftO6RYc+cdAZkCsiX6RR1wTcmO3kguFXBBNWSduOKiuZVQQnemtx265N4ZC+hyGQNUK+8Qpphr2hsQJvzOmkoUBWX7xL70/HpYPxyBJdW1A
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:VI0PR08MB10828.eurprd08.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016)(56012099003)(18002099003);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?Ik7LG6PDfUxiaTEt03utlDbBbe9kWnhl0bwTfjVJJxPetbMXTwt83U6AXsym?=
+ =?us-ascii?Q?ZqnNQx5qAS7+QlU/4Z3wkfXDkSSWI2fyLzmCibU8lld1m6u8H4+WBbzNQSW1?=
+ =?us-ascii?Q?01a9gANiDopf4X5z0EsaKcDH21PeQm5wDbC3TCLWNuObMMkMHPnkujDNLm0B?=
+ =?us-ascii?Q?89AFQl6XuTT+XGLLg+ufZUIhHS6hk/VOW4fMuLemkVQBj6OcJ4Jbyfat9z3z?=
+ =?us-ascii?Q?T3IRuVND6T9r+NLL8pVfzGIB6b5AnvvloSqEMUFdYNQAb1476u9n4W90iuvW?=
+ =?us-ascii?Q?Lt4Xpl7U0bQ5Xa8F5rFLAU5Ed0CvWqxvM8O4XKg0i2lv96/bl91ylc9iQm4W?=
+ =?us-ascii?Q?2L8Cm+WUzxYLi3Mzs5SLy9R4R9k6ic0MlUsqxGr4kWtO23PbVpd2HxSiMkVc?=
+ =?us-ascii?Q?lTHhPTdXfLT6J2k0fYjLKaLXVO3WjEHpvnNytzkXtgqkabQgAT0uUIRzn+4C?=
+ =?us-ascii?Q?qICJJ7YDDFt8fm3WBGFnMkuSqKn31lTOZH2q06gETuWOIHAPYlb0elI1RmDD?=
+ =?us-ascii?Q?HzxNdDb293thxehFViU50ciX+BzG4noKpJGxauCjkvmtZrYOxBubXPD9NMqj?=
+ =?us-ascii?Q?ccs4qj7oqp+HEjcyVg6vG+MDEC8dD8dT04+tFzp4Qf1JEofUbxPcOHYm6erZ?=
+ =?us-ascii?Q?WF2SsJcNRb0urPEy1WNj103Rkh/RlFJ2gqPtgdISdPnHGtzu+bN01pv72JOY?=
+ =?us-ascii?Q?krLl5EewoWcl5CnFiLOtxazNO7ldE3+EK6VUQEAUJ9ae473vj/vCfXhujK4b?=
+ =?us-ascii?Q?H9bKUz5KvtRXXxW0veQeAfdd99F9drVkSWfJZAeNHx8/CkgUNL3s8M20hkWk?=
+ =?us-ascii?Q?BdOJVzLbROoV30f7aWY/k/Y+gm2U2cnlw87BZNRvsqVXq6w6zzqMDfpz4viT?=
+ =?us-ascii?Q?l3xH97f/NKNDP/J/U4RoIpYzN/v43ck8lLJAu//ERWg2WwJW1Tt4scPfHSGE?=
+ =?us-ascii?Q?l2tOuKk8+l6n1m/C8uzq8ENCeRpGPkxL1A1Pi4TW4RtucbWzbZIFlzkcXleo?=
+ =?us-ascii?Q?XC7Luq6K4t+8gkou9P2Rnk958rkIR/Cv6ZApYNlkBWuT5St8yBfiubx5bgfR?=
+ =?us-ascii?Q?e52+Tr9whmmJi8bTdCA8oXE/QIQycb9jt/CGbgwfpN1Hrq3n01rVUoE7U5Bt?=
+ =?us-ascii?Q?ZOxUfa1Xy9feIluflS9f0MohcxgxZr21sEUvbe9OES0U4/UUMiCS7NP8bZnW?=
+ =?us-ascii?Q?7+KqUH6niqmCM4jTBXv/ylCYhynfK9PahRftH9+QUo8Zkmx9Q4c6KouA6MGB?=
+ =?us-ascii?Q?VJJrBsOOW1NzUTwyPak6zlgj7spE2knVwr7evtX1xvmPHva6TOROBe1p2ybg?=
+ =?us-ascii?Q?qb5knhMwXtqIWi2D7WqUtJyrvmwjpw7xpOwhZEYIoXt02WcDJVMNuxdh9joV?=
+ =?us-ascii?Q?SJxASVydTHUEGdYSzcb87YBxV5vc8fG/X+yTKxHumLfSmOMZKIyVEkuXlmDL?=
+ =?us-ascii?Q?GNMvDKlqtNJKGEMNXj3CHKj16y2mSRq3ecc34QaLou2WZlgoysrMtV09DD4l?=
+ =?us-ascii?Q?dCUOQ/eOa5A1V+glK0Zo/+gew7OmNe/z7raCeILf1dQHQcfBt8zACBUy45iM?=
+ =?us-ascii?Q?EE6OcIq1McL2QCtxf+r4UW7PU68gP2O8red8p2Zgu+XSNylSQblAg8kwDN3h?=
+ =?us-ascii?Q?oSp2YIi8NnqMZa1vuUY8u8ruVjjnrc8kv6Srg9ep7WvrvUVCC9vfdjtilyIe?=
+ =?us-ascii?Q?e95HsN0eDG34XYky4FZuL4qMEiIGt5s2v9qrWGzakVahMplGO8lqDn2244j2?=
+ =?us-ascii?Q?LkKsVz4QJF3QrzaYHeiiyNXdWZJULMQ=3D?=
+X-OriginatorOrg: virtuozzo.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9f9d6540-7b61-4692-e636-08deb1002b7f
+X-MS-Exchange-CrossTenant-AuthSource: VI0PR08MB10828.eurprd08.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2026 14:59:02.2819
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 0bc7f26d-0264-416e-a6fc-8352af79c58f
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 6gCmM9W9e0hXKnqfbSh2kKazavrCfZmAqQE8TepG6IYU/osb7Yp7s1ijPs+Dx9D3GG65R1LZfKNAXUmlOmX+tjbcvyoSrQgisu8JXLGslaE=
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PA4PR08MB6255
 
+From: "Denis V. Lunev" <den@openvz.org>
 
+When the host initiates an AF_VSOCK connect() to a guest that has not
+yet loaded the virtio-vsock transport (i.e. still booting), the caller
+blocks for VSOCK_DEFAULT_CONNECT_TIMEOUT.
 
-On 5/13/2026 6:14 PM, Borislav Petkov wrote:
-> On Tue, May 12, 2026 at 09:57:58AM +0800, Binbin Wu wrote:
->> hypervisor_present could be uninitialized if dis_ucode_ldr is true.
->> intel_get_platform_id() is also called during the normal cpu initialization.
-> 
-> Right, that needs more surgery. See if the below works instead pls.
-> 
-> We might as well do it - the question whether we run on a HV comes very often
-> recenly - might as well make it an "official" variable.
+A caller that wants to know if the guest is up yet instead of waiting
+could theoretically tune SO_VM_SOCKETS_CONNECT_TIMEOUT, but it's tricky
+to find the right timeout, if not impossible: there's no way to
+distinguish "guest won't reply because it's not up yet" vs "guest is up
+and tried to reply, but was too slow".
 
-Tested the diff by running as a TDX guest and it fixed the unchecked MSR access error.
+Furthermore, this delay is pointless:
+- If the guest doesn't initialize within this timeout, connect()
+  returns ETIMEDOUT.
+- If the guest **does** initialize, it'll reply with RST immediately,
+  because there won't be a listener on the port yet; connect() returns
+  ECONNRESET.
 
-Tested-by: Binbin Wu <binbin.wu@linux.intel.com>
+That's also inconsistent with the behavior at other initialization
+stages: if a connection is attempted when the guest driver is already
+loaded, but nothing is listening yet, we return ECONNRESET immediately
+without waiting.
 
-> 
-> diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-> index 10b5355b323e..67dd932305db 100644
-> --- a/arch/x86/include/asm/processor.h
-> +++ b/arch/x86/include/asm/processor.h
-> @@ -733,6 +733,7 @@ bool xen_set_default_idle(void);
->  #endif
->  
->  void __noreturn stop_this_cpu(void *dummy);
-> +extern bool x86_hypervisor_present;
->  void microcode_check(struct cpuinfo_x86 *prev_info);
->  void store_cpu_caps(struct cpuinfo_x86 *info);
->  
-> diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
-> index e533881284a1..5c0afae75e9f 100644
-> --- a/arch/x86/kernel/cpu/microcode/amd.c
-> +++ b/arch/x86/kernel/cpu/microcode/amd.c
-> @@ -322,7 +322,7 @@ static u32 get_patch_level(void)
->  {
->  	u32 rev, dummy __always_unused;
->  
-> -	if (IS_ENABLED(CONFIG_MICROCODE_DBG) && hypervisor_present) {
-> +	if (IS_ENABLED(CONFIG_MICROCODE_DBG) && x86_hypervisor_present) {
->  		int cpu = smp_processor_id();
->  
->  		if (!microcode_rev[cpu]) {
-> @@ -714,7 +714,7 @@ static bool __apply_microcode_amd(struct microcode_amd *mc, u32 *cur_rev,
->  			invlpg(p_addr_end);
->  	}
->  
-> -	if (IS_ENABLED(CONFIG_MICROCODE_DBG) && hypervisor_present)
-> +	if (IS_ENABLED(CONFIG_MICROCODE_DBG) && x86_hypervisor_present)
->  		microcode_rev[smp_processor_id()] = mc->hdr.patch_id;
->  
->  	/* verify patch application was successful */
-> diff --git a/arch/x86/kernel/cpu/microcode/core.c b/arch/x86/kernel/cpu/microcode/core.c
-> index 68a1a893246c..f6722c9618e0 100644
-> --- a/arch/x86/kernel/cpu/microcode/core.c
-> +++ b/arch/x86/kernel/cpu/microcode/core.c
-> @@ -57,7 +57,7 @@ bool force_minrev = IS_ENABLED(CONFIG_MICROCODE_LATE_FORCE_MINREV);
->  u32 base_rev;
->  u32 microcode_rev[NR_CPUS] = {};
->  
-> -bool hypervisor_present;
-> +bool __ro_after_init x86_hypervisor_present;
->  
->  /*
->   * Synchronization.
-> @@ -118,14 +118,9 @@ bool __init microcode_loader_disabled(void)
->  	/*
->  	 * Disable when:
->  	 *
-> -	 * 1) The CPU does not support CPUID.
-> -	 */
-> -	if (!cpuid_feature()) {
-> -		dis_ucode_ldr = true;
-> -		return dis_ucode_ldr;
-> -	}
-> -
-> -	/*
-> +	 * 1) The CPU does not support CPUID detected below in
-> +	 *    load_ucode_bsp().
-> +	 *
->  	 * 2) Bit 31 in CPUID[1]:ECX is set
->  	 *    The bit is reserved for hypervisor use. This is still not
->  	 *    completely accurate as XEN PV guests don't see that CPUID bit
-> @@ -135,9 +130,7 @@ bool __init microcode_loader_disabled(void)
->  	 * 3) Certain AMD patch levels are not allowed to be
->  	 *    overwritten.
->  	 */
-> -	hypervisor_present = native_cpuid_ecx(1) & BIT(31);
-> -
-> -	if ((hypervisor_present && !IS_ENABLED(CONFIG_MICROCODE_DBG)) ||
-> +	if ((x86_hypervisor_present && !IS_ENABLED(CONFIG_MICROCODE_DBG)) ||
->  	    amd_check_current_patch_level())
->  		dis_ucode_ldr = true;
->  
-> @@ -179,6 +172,11 @@ void __init load_ucode_bsp(void)
->  
->  	early_parse_cmdline();
->  
-> +	if (!cpuid_feature())
-> +		dis_ucode_ldr = true;
-> +	else
-> +		x86_hypervisor_present = native_cpuid_ecx(1) & BIT(31);
-> +
->  	if (microcode_loader_disabled())
->  		return;
->  
-> diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
-> index 37ac4afe0972..a4c0a0cf928b 100644
-> --- a/arch/x86/kernel/cpu/microcode/intel.c
-> +++ b/arch/x86/kernel/cpu/microcode/intel.c
-> @@ -138,6 +138,9 @@ u32 intel_get_platform_id(void)
->  {
->  	unsigned int val[2];
->  
-> +	if (x86_hypervisor_present)
-> +		return 0;
-> +
->  	/*
->  	 * This can be called early. Use CPUID directly instead of
->  	 * relying on cpuinfo_x86 which may not be fully initialized.
-> diff --git a/arch/x86/kernel/cpu/microcode/internal.h b/arch/x86/kernel/cpu/microcode/internal.h
-> index 3b93c0676b4f..a10b547eda1e 100644
-> --- a/arch/x86/kernel/cpu/microcode/internal.h
-> +++ b/arch/x86/kernel/cpu/microcode/internal.h
-> @@ -48,7 +48,6 @@ extern struct early_load_data early_data;
->  extern struct ucode_cpu_info ucode_cpu_info[];
->  extern u32 microcode_rev[NR_CPUS];
->  extern u32 base_rev;
-> -extern bool hypervisor_present;
->  
->  struct cpio_data find_microcode_in_initrd(const char *path);
->  
+Fix this by checking the RX virtqueue backend in
+vhost_transport_send_pkt() before queuing. If it's NULL, return
+-EHOSTUNREACH immediately.
+
+Callers that used to get ETIMEDOUT will now usually get EHOSTUNREACH.
+
+Signed-off-by: Denis V. Lunev <den@openvz.org>
+Co-developed-by: Polina Vishneva <polina.vishneva@virtuozzo.com>
+Signed-off-by: Polina Vishneva <polina.vishneva@virtuozzo.com>
+---
+v2:
+- ECONNREFUSED -> EHOSTUNREACH.
+- Use vhost_transport_do_send_pkt() instead of raw .private_data access.
+- Removed READ_ONCE().
+- Wrapped the condition with unlikely().
+- Updated the comment and the commit message.
+
+v1: https://lore.kernel.org/netdev/20260511145610.413210-1-polina.vishneva@virtuozzo.com
+
+ drivers/vhost/vsock.c | 16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
+
+diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+index 1d8ec6bed53e..9aaab6bb8061 100644
+--- a/drivers/vhost/vsock.c
++++ b/drivers/vhost/vsock.c
+@@ -302,6 +302,22 @@ vhost_transport_send_pkt(struct sk_buff *skb, struct net *net)
+ 		return -ENODEV;
+ 	}
+ 
++	/* Fast-fail if the guest hasn't enabled the RX vq yet. Queuing the packet
++	 * and making the caller wait is pointless: even if the guest manages to init
++	 * within the timeout, it'll immediately reply with RST, because there's no
++	 * listener on the port yet.
++	 *
++	 * vhost_vq_get_backend() without vq->mutex is acceptable here: locking
++	 * the mutex would be too expensive in this hot path, and we already have
++	 * all the outcomes covered: if the backend becomes NULL right after the check,
++	 * vhost_transport_do_send_pkt() will check it under the mutex anyway.
++	 */
++	if (unlikely(!data_race(vhost_vq_get_backend(&vsock->vqs[VSOCK_VQ_RX])))) {
++		rcu_read_unlock();
++		kfree_skb(skb);
++		return -EHOSTUNREACH;
++	}
++
+ 	if (virtio_vsock_skb_reply(skb))
+ 		atomic_inc(&vsock->queued_replies);
+ 
+
+base-commit: 8ab992f815d6736b5c7a6f5fd7bfe7bc106bb3dc
+-- 
+2.53.0
 
