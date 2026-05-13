@@ -1,116 +1,85 @@
-Received: from mxhk.zte.com.cn (mxhk.zte.com.cn [160.30.148.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F1DA3D45C3;
-	Wed, 13 May 2026 07:45:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=160.30.148.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D9223EA89;
+	Wed, 13 May 2026 07:45:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778658312; cv=none; b=BNfFWLEPQxabE+Wo6l7EZP/rhdfSlfWELD2kvzwfElpe71kZPb0OOLFdS9Gwl5WYkXd4UHgVL/PNdPwEM03JQ/+Afnc6lFMDnwSgAz8vi/ZL48AJVRCSVsUteud6jb++rTE5NeqPi1AmLEVoO/MbzfLfXYQtBTxIaSCiklAhotY=
+	t=1778658357; cv=none; b=sgoxXXmGYcuy3S1SeHGuyDRMveivpA964IUzb9Zg5tYqnxxV7muvCVEL8jeo5dOjK0y4bIwy9qX5XZ20Tzetd+4I/u5lxicWOOejpHVjnCqEI5xnTJ8kMDWke2ycmQ0tpCNx8frKA54JDcgKbaS9PdZmdGIUxt6fwZGw5CPoRE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778658312; c=relaxed/simple;
-	bh=EVdAGi81ZFC4AJFt/PU8LxFuun9yKB9WVVWC/0TRdpI=;
-	h=Message-ID:In-Reply-To:References:Date:Mime-Version:From:To:Cc:
-	 Subject:Content-Type; b=ufQHxXtJCpShnWqWVc3u4kb5n5XJndvfuWY7XuWkaG4dFRER0FRigAQzA1+KPh63oYT8lmvTgt3vGnT2/3a53yi1CBQ495ibladz8fl13e0eWQDfTa4K9S/1Ml/ha2MzioaX9DQUY72u9DwYYAebXXeddxVV4t4l7vudykg4jss=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn; spf=pass smtp.mailfrom=zte.com.cn; arc=none smtp.client-ip=160.30.148.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zte.com.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=zte.com.cn
-Received: from mse-fl2.zte.com.cn (unknown [10.5.228.133])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mxhk.zte.com.cn (FangMail) with ESMTPS id 4gFlqT5v4cz57DCm;
-	Wed, 13 May 2026 15:45:09 +0800 (CST)
-Received: from szxl2zmapp05.zte.com.cn ([10.1.32.37])
-	by mse-fl2.zte.com.cn with SMTP id 64D7iwAc002188;
-	Wed, 13 May 2026 15:44:58 +0800 (+08)
-	(envelope-from wang.yechao255@zte.com.cn)
-Received: from mapi (szxl2zmapp07[null])
-	by mapi (Zmail) with MAPI id mid12;
-	Wed, 13 May 2026 15:45:00 +0800 (CST)
-X-Zmail-TransId: 2b096a042bfcf82-db4ed
-X-Mailer: Zmail v1.0
-Message-ID: <20260513154500183qjAlxzbei98Q4B5HjLpMx@zte.com.cn>
-In-Reply-To: <20260513153656847l3c4fI5hBsAyoIZi8aGIs@zte.com.cn>
-References: 20260513153656847l3c4fI5hBsAyoIZi8aGIs@zte.com.cn
-Date: Wed, 13 May 2026 15:45:00 +0800 (CST)
+	s=arc-20240116; t=1778658357; c=relaxed/simple;
+	bh=4LEL2I02ZNcYBvdRSq6ZKXzxViElK+3D8okdJW4tWaU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CDZEMErrMy9bZkLoQrXs1m2PZqgELBVvYB6fRz8mfmotP9KHvuY92+egjQsDHuy42cX7Z4gCUeDoS8dA3GXQToqlzktIznW5erSGbaHBIPP6Xf5jh6DutFj1xiFDDssIKmpR13Apwdc3x+xoHFfpMRlLiZcmj1GJGuj7mBYYWJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JcmzwXJo; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JcmzwXJo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8E23C2BCB7;
+	Wed, 13 May 2026 07:45:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778658357;
+	bh=4LEL2I02ZNcYBvdRSq6ZKXzxViElK+3D8okdJW4tWaU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=JcmzwXJoOLz0s9/QXfUAL87bTvpMBs+SpVCsKRsXEsJPMUgjJ+74KkiMp315a4v4u
+	 N8HSvEa/jlN8MMNHG4YgW4hGjEC2CZykvVEBTh7PSfzwLybzsJYdPrBbit2g2e3j1Q
+	 Q1Y4a8+8LZKppLGWhI6TAf/e3SPIhpFcY7ZxdhsBv3tcSPVKb6orlxt8Gn83IuftPd
+	 XJIXUnazS71GUEOT0jtvA+IpCEG5zwk8AIqSxYjla909ZkQ3RJRhFTSah/HHutKGfy
+	 Fr/OPxJvx76L5Lic6jk1UoSQThATSTwac24yXFynsEF2/00LZyrw5sg8b/9t13lIec
+	 URFGDSi9SzN4A==
+Date: Wed, 13 May 2026 00:45:55 -0700
+From: Oliver Upton <oupton@kernel.org>
+To: Colton Lewis <coltonlewis@google.com>
+Cc: kvm@vger.kernel.org, Alexandru Elisei <alexandru.elisei@arm.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Russell King <linux@armlinux.org.uk>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Mingwei Zhang <mizhang@google.com>, Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Mark Rutland <mark.rutland@arm.com>, Shuah Khan <shuah@kernel.org>,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	James Clark <james.clark@linaro.org>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev, linux-perf-users@vger.kernel.org,
+	linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v7 08/20] KVM: arm64: Add Partitioned PMU register trap
+ handlers
+Message-ID: <agQsM7XFsbxbFRLO@kernel.org>
+References: <20260504211813.1804997-1-coltonlewis@google.com>
+ <20260504211813.1804997-9-coltonlewis@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-From: <wang.yechao255@zte.com.cn>
-To: <anup@brainfault.org>, <atish.patra@linux.dev>, <pjw@kernel.org>,
-        <palmer@dabbelt.com>, <aou@eecs.berkeley.edu>, <alex@ghiti.fr>
-Cc: <kvm@vger.kernel.org>, <kvm-riscv@lists.infradead.org>,
-        <linux-riscv@lists.infradead.org>, <linux-kernel@vger.kernel.org>,
-        <wang.yechao255@zte.com.cn>
-Subject: =?UTF-8?B?W1BBVENIIDQvNF0gUklTQy1WOiBLVk06IEFkZCB0aGUgZWFnZXJfcGFnZV9zcGxpdCBtb2R1bGUgcGFyYW1ldGVy?=
-Content-Type: text/plain;
-	charset="UTF-8"
-X-MAIL:mse-fl2.zte.com.cn 64D7iwAc002188
-X-TLS: YES
-X-SPF-DOMAIN: zte.com.cn
-X-ENVELOPE-SENDER: wang.yechao255@zte.com.cn
-X-SPF: None
-X-SOURCE-IP: 10.5.228.133 unknown Wed, 13 May 2026 15:45:09 +0800
-X-Fangmail-Anti-Spam-Filtered: true
-X-Fangmail-MID-QID: 6A042C05.003/4gFlqT5v4cz57DCm
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260504211813.1804997-9-coltonlewis@google.com>
 
-From: Wang Yechao <wang.yechao255@zte.com.cn>
+On Mon, May 04, 2026 at 09:18:01PM +0000, Colton Lewis wrote:
+> We may want a partitioned PMU but not have FEAT_FGT to untrap the
+> specific registers that would normally be untrapped. Add handling for
+> those trapped register accesses that does the right thing if the PMU
+> is partitioned.
+> 
+> For registers that shouldn't be written to hardware because they
+> require special handling (PMEVTYPER and PMOVS), write to the virtual
+> register. A later patch will ensure these are handled correctly at
+> vcpu_load time.
+> 
+> Signed-off-by: Colton Lewis <coltonlewis@google.com>
 
-Add an eager_page_split module parameter for RISC-V KVM, following
-the same approach as on x86. This parameter controls whether eager
-page splitting is enabled. The default value is on.
+I'd prefer an approach that provides a single accessor helper that takes
+a vcpu_sysreg enum as an argument and internally handles the dispatch
+between partitioned and emulated PMUs. That goes for all of the PMU
+sysregs.
 
-When eager page splitting is enabled, KVM proactively splits large
-pages (huge pages) into smaller pages when needed for dirty logging
-or other operations. Disabling it can be beneficial for VM workloads
-that rarely perform writes, or that only write to a small region of
-memory, as it allows huge pages to remain intact for read accesses.
+This will help you reuse some of the PMU emuation code that you'll still
+need for things like nested...
 
-Signed-off-by: Wang Yechao <wang.yechao255@zte.com.cn>
----
- arch/riscv/kvm/mmu.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
-
-diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-index 2cdea3e3ed4b..2af03c48aff3 100644
---- a/arch/riscv/kvm/mmu.c
-+++ b/arch/riscv/kvm/mmu.c
-@@ -16,6 +16,9 @@
- #include <asm/kvm_mmu.h>
- #include <asm/kvm_nacl.h>
-
-+bool __read_mostly eager_page_split = true;
-+module_param(eager_page_split, bool, 0644);
-+
- static void mmu_wp_memory_region(struct kvm *kvm, int slot)
- {
- 	struct kvm_memslots *slots = kvm_memslots(kvm);
-@@ -148,8 +151,10 @@ void kvm_arch_mmu_enable_log_dirty_pt_masked(struct kvm *kvm,
-
- 	kvm_riscv_gstage_wp_range(&gstage, start, end);
-
--	if (kvm_dirty_log_manual_protect_and_init_set(kvm))
--		kvm_riscv_split_huge_pages(&gstage, start, end, true);
-+	if (kvm_dirty_log_manual_protect_and_init_set(kvm)) {
-+		if (READ_ONCE(eager_page_split))
-+			kvm_riscv_split_huge_pages(&gstage, start, end, true);
-+	}
- }
-
- void kvm_arch_sync_dirty_log(struct kvm *kvm, struct kvm_memory_slot *memslot)
-@@ -214,7 +219,9 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
- 		if (kvm_dirty_log_manual_protect_and_init_set(kvm))
- 			return;
- 		mmu_wp_memory_region(kvm, new->id);
--		kvm_riscv_split_memory_region(kvm, new->id);
-+
-+		if (READ_ONCE(eager_page_split))
-+			kvm_riscv_split_memory_region(kvm, new->id);
- 	}
- }
-
--- 
-2.27.0
+Thanks,
+Oliver
