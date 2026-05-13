@@ -1,200 +1,255 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F4DD4DBD97
-	for <kvm@vger.kernel.org>; Wed, 13 May 2026 17:50:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A6264DB57A
+	for <kvm@vger.kernel.org>; Wed, 13 May 2026 17:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778694602; cv=none; b=OHHmuA8EbtCIaZQ/DfLzuqd/2bWb07hObkUgO3k/1g11kutUI6Qi1gIg4nVDxUErN+rKYP25EiA5j0fkb97G1ofSBmf2B2PSiFxr/DeJwV/MVYoDHmfTryJP2JJOdCST6VMr4i+Zf3HOlNVKkv3fdht+bbu5fLZHvfA9ZelRNoU=
+	t=1778694769; cv=none; b=VDfDkWa9oV9JkSAmNHv3t6XZnlVIz20h6gV1Rp7qDZPsyPV6JKFl0y67XSh9TuRzaVqG/+X5DqHiuwTgjPGO5/DfNo3PppYNh+P1PHqaAdkEqi4L2FNssJdi18UtckK6MABKcdXWTQTQe/Tr4S0wmvv83wu6Bry6YTNf9jn8X/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778694602; c=relaxed/simple;
-	bh=Asx4CbDeoQNaVBflhH/DgL7P82NBTmCMRqActH4SVDM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TUhczrMQUbxEkfGgsMaBiXcHp1Y/pvPqZDvq6DpEfdJqkBkf/UQAbwySUsi37BPZ4Xo1Ful+grEQ2UfByt56aFNibhggBtwT8+bXPGeF3OVp7xenY/z/AbpMKnJBnO8OkAdnu3PYRo8wgC3I92/6XRPhkeNCsTqrIcEiWb0+1gs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FVstTyax; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1778694769; c=relaxed/simple;
+	bh=9W+890ujBXwwVpQJQ8zKRCFTTdvxYay4Jdn5hyLyHjg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=MMqLhAYSNKN1X0f0Hx9U71lYwzVlSvPjhwyp4fmElgmbz6B0WKAien0aNaUpgnUQ5FgiDkPailoezAus9bu/+aomjENwdJLhWc9qMMBsOeqK6Ngtq6QY949pZcruVDdEoudq++mWbchK/QfzdVXW/f84oel/4ikUgnjCTv6iSFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BgVxb1wD; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FVstTyax"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BgVxb1wD"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778694599;
+	s=mimecast20190719; t=1778694767;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=btxhEf51VljzVAv8aq3fb6k/+9IZCVa7nvJNowL5EDs=;
-	b=FVstTyax6w1/m+tp+w4TXeYkMkiUQZtb5MwZUfpEAE16bqKFvYQ/0ur+JoJkEYpxrBtB/H
-	kDE8+5Bbn2W7xNcOTTVcMtOZnKJ5ZehPjpb2t3erysucdyU071W+wAKNo3CM2DtdbjHgp5
-	kAle34GsdWsHVvj4b5wIEZ1cazCN2wg=
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=Fg3GMEPHYejBQ9ioJAer/Jnm06fBGw+OHIcN8h472II=;
+	b=BgVxb1wD3DdFZMS2yQlx68rNVSaiM2x25bmjD7odpjPGnO0CeWo1I5Vk651uvFDW76F/UC
+	5mwhicXdGq5xtQkZu2OvAOeEUwPVQ/Seiu08FLBfuWoQtangYyMbrE1fMsKoy1Sm2Kojfs
+	Q3R5sT5nCUOcrw+YMhFMWrxRQjiec7Y=
 Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-312-oyWurn_uPNG6mZ3-MklaYw-1; Wed,
- 13 May 2026 13:49:54 -0400
-X-MC-Unique: oyWurn_uPNG6mZ3-MklaYw-1
-X-Mimecast-MFC-AGG-ID: oyWurn_uPNG6mZ3-MklaYw_1778694591
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-172-B0nhTHzCOYeRsjMv31quBA-1; Wed,
+ 13 May 2026 13:52:43 -0400
+X-MC-Unique: B0nhTHzCOYeRsjMv31quBA-1
+X-Mimecast-MFC-AGG-ID: B0nhTHzCOYeRsjMv31quBA_1778694762
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EF6E318002C9;
-	Wed, 13 May 2026 17:49:50 +0000 (UTC)
-Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 77FF0180034E;
-	Wed, 13 May 2026 17:49:50 +0000 (UTC)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Cc: chang.seok.bae@intel.com
-Subject: [PATCH 2/3] KVM: SVM: Macrofy GPR swapping in __svm_vcpu_run()
-Date: Wed, 13 May 2026 13:49:47 -0400
-Message-ID: <20260513174948.726812-3-pbonzini@redhat.com>
-In-Reply-To: <20260513174948.726812-1-pbonzini@redhat.com>
-References: <20260513174948.726812-1-pbonzini@redhat.com>
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 6B74F18002D0;
+	Wed, 13 May 2026 17:52:42 +0000 (UTC)
+Received: from [10.44.50.86] (unknown [10.44.50.86])
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9E6ED195394A;
+	Wed, 13 May 2026 17:52:40 +0000 (UTC)
+Message-ID: <9d3618a8-1927-40aa-87dc-a0bcc2c0f6c1@redhat.com>
+Date: Wed, 13 May 2026 19:52:39 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 00/21] KVM: x86: Enable APX for guests
+To: "Chang S. Bae" <chang.seok.bae@intel.com>, seanjc@google.com
+Cc: kvm@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ chao.gao@intel.com
+References: <20260512011502.53072-1-chang.seok.bae@intel.com>
+Content-Language: en-US
+From: Paolo Bonzini <pbonzini@redhat.com>
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <20260512011502.53072-1-chang.seok.bae@intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
-From: "Chang S. Bae" <chang.seok.bae@intel.com>
+On 5/12/26 03:14, Chang S. Bae wrote:
+> Hi all,
+> 
+> This round contains relatively smaller changes compared to previous
+> versions:
+> 
+>    * Generalize the load/store sequences to cover all GPRs (PATCH1-3)
+>    * Clarify APX exclusion from the x86 xstate copy functions (PATCH6)
+> 
+> A few notes for the x86-side changes:
+> 
+>    * Move the previously deprecated arch/x86/include/asm/inst.h into KVM
+>    * PATCH6 since x86 changes is better to gain an ACK from the x86
+>      maintainers before going anywhere
+> 
+> The patchset still depends on these in-flight series:
+> 
+>    * Paolo's SPEC_CTRL refactoring
+>      https://git.kernel.org/pub/scm/virt/kvm/kvm.git/commit/?h=queue&id=fcaf986d10768dddb23598d6f0560006dad0c8bd
+>    * Sean's preparatory series
+>      https://lore.kernel.org/kvm/20260409224236.2021562-1-seanjc@google.com/
+> 
+> A few notes are also worth retaining in the cover letter:
+> 
+> == State Management Design ==
+> 
+>    The initial approach (before V3) was access physical EGPRs directly
+>    similar to vector registers, but this introduces non-uniform access
+>    patterns against directly accessing VCPU regs[]. Sean thus gave his
+>    feedback to shift away from it.
+> 
+>    To maintain uniformity, EGPRs need to be stored in regs[]. Sean's reg
+>    accessor infra updates makes this feasible. It was also realized that
+>    saving EGPRs outside of the fastpath is not viable, as fastpath
+>    handlers may access EGPRs as well.
+> 
+>    Then, saving EGPRs on entry code appears to be the choice. This also
+>    looks to provide some degree of robustness (but not completely yet
+>    though [*]) for when the kernel clobbers those registers. The VCPU XCR0
+>    can gate this path to avoid #UD from non-APX guests.
+> 
+>    The conditional path should be also under speculation-safety, rather
+>    than wild guest control. Paolo's rework on entry code will establish a
+>    SPEC_CTRL macro which allows a finer control.
+> 
+>    For userspace interactions, the EGPR state in regs[] can be copied
+>    directly to/from the userspace buffer at the boundary of ABI handlers.
+> 
+> == Series Structure and Test Note ==
+> 
+>    * Part1, PATCH 01-03: Prepare entry code by macrofying GPR handling
+>      Most KVM test will capture any regression out of it. I also tested it
+>      more explicitly with tweaking the posted patch [1].
+> 
+>    * Part2, PATCH 04-07: Establish EGPR state management
+>      These new state management flow is rather unique compared to other
+>      XSTATEs. This fact leads to new test cases (patch20), in addition to
+>      state_test (patch21).
+> 
+>    * Part3, PATCH 08-12: Update VMX handlers for extended reg. indices
+>      Previously I tweaked to test an exit case like LGDT with an extended
+>      ID. But this part leans into VMX unless KVM is paranoid.
+> 
+>    * Part4, PATCH 13-16: Add emulator support for REX2
+>      KVM unit test patch [1] covers emulator changes.
+> 
+>    * Part5, PATCH 17-21: Expose features and add selftests
+>      XCR0 tests basically covers the exposition.
+> 
+> This series is currently based Sean's preparatory series on top of the
+> KVM's queue branch, which already includes Paolo's SPEC_CTRL rework. The
+> full set is also available at:
+> 
+>    git://github.com/intel/apx.git apx-kvm_v4
 
-Convert the register save/restore sequences in the SVM entry into macros,
-following the VMX code. Drop the now-redundant register offset defines.
+Placed in kvm/queue while waiting for arch/x86/kernel/ acks, thanks!
 
-No functional change intended.
+Paolo
 
-Signed-off-by: Chang S. Bae <chang.seok.bae@intel.com>
-Message-ID: <20260512011502.53072-3-chang.seok.bae@intel.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
----
- arch/x86/kvm/svm/vmenter.S | 83 +++++++++-----------------------------
- 1 file changed, 19 insertions(+), 64 deletions(-)
-
-diff --git a/arch/x86/kvm/svm/vmenter.S b/arch/x86/kvm/svm/vmenter.S
-index 6a91e1383e8f..06a8cb58f187 100644
---- a/arch/x86/kvm/svm/vmenter.S
-+++ b/arch/x86/kvm/svm/vmenter.S
-@@ -8,26 +8,6 @@
- #include "kvm-asm-offsets.h"
- #include "vmenter.h"
- 
--/* Intentionally omit RAX as it's context switched by hardware */
--#define VCPU_RCX	(SVM_vcpu_arch_regs + __VCPU_REGS_RCX * WORD_SIZE)
--#define VCPU_RDX	(SVM_vcpu_arch_regs + __VCPU_REGS_RDX * WORD_SIZE)
--#define VCPU_RBX	(SVM_vcpu_arch_regs + __VCPU_REGS_RBX * WORD_SIZE)
--/* Intentionally omit RSP as it's context switched by hardware */
--#define VCPU_RBP	(SVM_vcpu_arch_regs + __VCPU_REGS_RBP * WORD_SIZE)
--#define VCPU_RSI	(SVM_vcpu_arch_regs + __VCPU_REGS_RSI * WORD_SIZE)
--#define VCPU_RDI	(SVM_vcpu_arch_regs + __VCPU_REGS_RDI * WORD_SIZE)
--
--#ifdef CONFIG_X86_64
--#define VCPU_R8		(SVM_vcpu_arch_regs + __VCPU_REGS_R8  * WORD_SIZE)
--#define VCPU_R9		(SVM_vcpu_arch_regs + __VCPU_REGS_R9  * WORD_SIZE)
--#define VCPU_R10	(SVM_vcpu_arch_regs + __VCPU_REGS_R10 * WORD_SIZE)
--#define VCPU_R11	(SVM_vcpu_arch_regs + __VCPU_REGS_R11 * WORD_SIZE)
--#define VCPU_R12	(SVM_vcpu_arch_regs + __VCPU_REGS_R12 * WORD_SIZE)
--#define VCPU_R13	(SVM_vcpu_arch_regs + __VCPU_REGS_R13 * WORD_SIZE)
--#define VCPU_R14	(SVM_vcpu_arch_regs + __VCPU_REGS_R14 * WORD_SIZE)
--#define VCPU_R15	(SVM_vcpu_arch_regs + __VCPU_REGS_R15 * WORD_SIZE)
--#endif
--
- #define SVM_vmcb01_pa	(SVM_vmcb01 + KVM_VMCB_pa)
- 
- .section .noinstr.text, "ax"
-@@ -108,23 +88,17 @@ SYM_FUNC_START(__svm_vcpu_run)
- 	mov SVM_current_vmcb(%_ASM_DI), %_ASM_AX
- 	mov KVM_VMCB_pa(%_ASM_AX), %_ASM_AX
- 
--	/* Load guest registers. */
--	mov VCPU_RCX(%_ASM_DI), %_ASM_CX
--	mov VCPU_RDX(%_ASM_DI), %_ASM_DX
--	mov VCPU_RBX(%_ASM_DI), %_ASM_BX
--	mov VCPU_RBP(%_ASM_DI), %_ASM_BP
--	mov VCPU_RSI(%_ASM_DI), %_ASM_SI
-+	/*
-+	 * Load guest registers. Intentionally omit %_ASM_AX and %_ASM_SP as
-+	 * context switched by hardware
-+	 */
-+	LOAD_REGS %_ASM_DI, SVM_vcpu_arch_regs, \
-+		  %_ASM_CX, %_ASM_DX, %_ASM_BX, %_ASM_BP, %_ASM_SI
- #ifdef CONFIG_X86_64
--	mov VCPU_R8 (%_ASM_DI),  %r8
--	mov VCPU_R9 (%_ASM_DI),  %r9
--	mov VCPU_R10(%_ASM_DI), %r10
--	mov VCPU_R11(%_ASM_DI), %r11
--	mov VCPU_R12(%_ASM_DI), %r12
--	mov VCPU_R13(%_ASM_DI), %r13
--	mov VCPU_R14(%_ASM_DI), %r14
--	mov VCPU_R15(%_ASM_DI), %r15
-+	LOAD_REGS %_ASM_DI, SVM_vcpu_arch_regs, \
-+		  %r8, %r9, %r10, %r11, %r12, %r13, %r14, %r15
- #endif
--	mov VCPU_RDI(%_ASM_DI), %_ASM_DI
-+	LOAD_REGS %_ASM_DI, SVM_vcpu_arch_regs, %_ASM_DI
- 
- 	/* Clobbers EFLAGS.ZF */
- 	SVM_CLEAR_CPU_BUFFERS
-@@ -135,22 +109,15 @@ SYM_FUNC_START(__svm_vcpu_run)
- 	/* Pop @svm to RAX while it's the only available register. */
- 	pop %_ASM_AX
- 
--	/* Save all guest registers.  */
--	mov %_ASM_CX,   VCPU_RCX(%_ASM_AX)
--	mov %_ASM_DX,   VCPU_RDX(%_ASM_AX)
--	mov %_ASM_BX,   VCPU_RBX(%_ASM_AX)
--	mov %_ASM_BP,   VCPU_RBP(%_ASM_AX)
--	mov %_ASM_SI,   VCPU_RSI(%_ASM_AX)
--	mov %_ASM_DI,   VCPU_RDI(%_ASM_AX)
-+	/*
-+	 * Save all guest registers. Intentionally omit %_ASM_AX and %_ASM_SP as
-+	 * context switched by hardware
-+	 */
-+	STORE_REGS %_ASM_AX, SVM_vcpu_arch_regs, \
-+		   %_ASM_CX, %_ASM_DX, %_ASM_BX, %_ASM_BP, %_ASM_SI, %_ASM_DI
- #ifdef CONFIG_X86_64
--	mov %r8,  VCPU_R8 (%_ASM_AX)
--	mov %r9,  VCPU_R9 (%_ASM_AX)
--	mov %r10, VCPU_R10(%_ASM_AX)
--	mov %r11, VCPU_R11(%_ASM_AX)
--	mov %r12, VCPU_R12(%_ASM_AX)
--	mov %r13, VCPU_R13(%_ASM_AX)
--	mov %r14, VCPU_R14(%_ASM_AX)
--	mov %r15, VCPU_R15(%_ASM_AX)
-+	STORE_REGS %_ASM_AX, SVM_vcpu_arch_regs, \
-+		   %r8, %r9, %r10, %r11, %r12, %r13, %r14, %r15
- #endif
- 
- 	/* @svm can stay in RDI from now on.  */
-@@ -193,21 +160,9 @@ SYM_FUNC_START(__svm_vcpu_run)
- 	 * free.  RSP and RAX are exempt as they are restored by hardware
- 	 * during VM-Exit.
- 	 */
--	xor %ecx, %ecx
--	xor %edx, %edx
--	xor %ebx, %ebx
--	xor %ebp, %ebp
--	xor %esi, %esi
--	xor %edi, %edi
-+	CLEAR_REGS %ecx, %edx, %ebx, %ebp, %esi, %edi
- #ifdef CONFIG_X86_64
--	xor %r8d,  %r8d
--	xor %r9d,  %r9d
--	xor %r10d, %r10d
--	xor %r11d, %r11d
--	xor %r12d, %r12d
--	xor %r13d, %r13d
--	xor %r14d, %r14d
--	xor %r15d, %r15d
-+	CLEAR_REGS %r8d, %r9d, %r10d, %r11d, %r12d, %r13d, %r14d, %r15d
- #endif
- 
- 	/* "Pop" @enter_flags.  */
--- 
-2.52.0
-
+> Thanks,
+> Chang
+> 
+> References:
+> [1] KVM unit tests:
+>      https://lore.kernel.org/kvm/20260420212355.507827-1-chang.seok.bae@intel.com
+> [2] Previous version (V3):
+>      https://lore.kernel.org/lkml/20260428050111.39323-1-chang.seok.bae@intel.com
+> [3] APX specification:
+>      https://cdrdv2.intel.com/v1/dl/getContent/784266
+> [*] E.g. NMIs at entry code could mess up with APX-clobbering handlers
+>      when XCR0[APX]=0. VMX extension to afford XCR0 switching by hardware
+>      itself could be an option to avoid the issue.
+> 
+> Chang S. Bae (20):
+>    KVM: VMX: Macrofy GPR swapping in __vmx_vcpu_run()
+>    KVM: SVM: Macrofy GPR swapping in __svm_vcpu_run()
+>    KVM: SEV: Macrofy GPR swapping in __svm_sev_es_vcpu_run()
+>    KVM: x86: Extend VCPU registers for EGPRs
+>    KVM: VMX: Save guest EGPRs in VCPU cache
+>    KVM: x86: Support APX state for XSAVE ABI
+>    KVM: VMX: Refactor VMX instruction information access
+>    KVM: VMX: Refactor instruction information decoding
+>    KVM: VMX: Refactor register index retrieval from exit qualification
+>    KVM: VMX: Support instruction information extension
+>    KVM: nVMX: Propagate the extended instruction info field
+>    KVM: x86: Support EGPR accessing and tracking for emulator
+>    KVM: x86: Handle EGPR index and REX2-incompatible opcodes
+>    KVM: x86: Support REX2-prefixed opcode decode
+>    KVM: x86: Reject EVEX-prefixed instructions
+>    KVM: x86: Guard valid XCR0.APX settings
+>    KVM: x86: Expose APX foundation feature to guests
+>    KVM: x86: Expose APX sub-features to guests
+>    KVM: x86: selftests: Add APX state and ABI test
+>    KVM: x86: selftests: Add APX state handling and XCR0 sanity checks
+> 
+> Paolo Bonzini (1):
+>    x86/fpu: Ignore APX when copying from/to guest FPU
+> 
+>   arch/x86/Kconfig.assembler                    |   5 +
+>   arch/x86/include/asm/fpu/api.h                |   2 +-
+>   arch/x86/include/asm/kvm_host.h               |  52 +++--
+>   arch/x86/include/asm/kvm_vcpu_regs.h          |  25 ---
+>   arch/x86/include/asm/vmx.h                    |   2 +
+>   arch/x86/kernel/fpu/core.c                    |   9 +-
+>   arch/x86/kvm/Kconfig                          |   4 +
+>   arch/x86/kvm/cpuid.c                          |  28 ++-
+>   arch/x86/kvm/cpuid.h                          |   2 +
+>   arch/x86/kvm/emulate.c                        | 121 +++++++----
+>   arch/x86/{include/asm => kvm}/inst.h          |  88 +++++---
+>   arch/x86/kvm/kvm_emulate.h                    |  13 +-
+>   arch/x86/kvm/reverse_cpuid.h                  |   6 +
+>   arch/x86/kvm/svm/svm.c                        |   8 +-
+>   arch/x86/kvm/svm/vmenter.S                    | 107 ++--------
+>   arch/x86/kvm/vmenter.h                        |  44 ++++
+>   arch/x86/kvm/vmx/nested.c                     |  74 +++----
+>   arch/x86/kvm/vmx/nested.h                     |   2 +-
+>   arch/x86/kvm/vmx/vmcs12.c                     |   1 +
+>   arch/x86/kvm/vmx/vmcs12.h                     |   3 +-
+>   arch/x86/kvm/vmx/vmenter.S                    | 120 +++++------
+>   arch/x86/kvm/vmx/vmx.c                        |  26 ++-
+>   arch/x86/kvm/vmx/vmx.h                        |  77 ++++++-
+>   arch/x86/kvm/x86.c                            |  70 ++++++-
+>   tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+>   .../selftests/kvm/include/x86/processor.h     | 120 +++++++++++
+>   tools/testing/selftests/kvm/x86/apx_test.c    | 191 ++++++++++++++++++
+>   tools/testing/selftests/kvm/x86/state_test.c  |   3 +
+>   .../selftests/kvm/x86/xcr0_cpuid_test.c       |  19 ++
+>   29 files changed, 905 insertions(+), 318 deletions(-)
+>   delete mode 100644 arch/x86/include/asm/kvm_vcpu_regs.h
+>   rename arch/x86/{include/asm => kvm}/inst.h (62%)
+>   create mode 100644 tools/testing/selftests/kvm/x86/apx_test.c
+> 
+> 
+> base-commit: 98bfa4c89d413dfc69beedd1d3414d5bf15db5b9
 
