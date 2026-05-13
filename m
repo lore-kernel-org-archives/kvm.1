@@ -1,110 +1,86 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFCD7423A61
-	for <kvm@vger.kernel.org>; Wed, 13 May 2026 12:48:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A52E9421EE2
+	for <kvm@vger.kernel.org>; Wed, 13 May 2026 12:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778676510; cv=none; b=vGNLubyIkBpCiicS2oL/b/lUYBpImFMDuf6j0fMYQXpfwGzJZkRXJa51FwQwmu5F0HKow027jUz80C+bHkOS85iiQp69v1xR1VvLKQH1FSbAu68RFnHf9unw+2npVVcF0hqAzVM3r2GlMIG390cXCBhmGsnn8elwzWVZ6UJdZYU=
+	t=1778676523; cv=none; b=EyoOrY2MSsmmuECq6c9nel0Xr1MKqtvG4ejYtqE0xJtfNVM9XSrRoiQSTyrhPqLS6N9x2OlZDNlPeBRNBpojOQk5Onl5CMS6ybU9W+GnJ4oLJTd8KXDbs1j3W2/FF3S73DGPaxqwNOq9QaqBE7Dhv5EAkOALxi6FUX5UP+5vPNU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778676510; c=relaxed/simple;
-	bh=+GsX+CdK0ydxnGXslSMT5BS3MNBH9LFYKOpievZvUwc=;
+	s=arc-20240116; t=1778676523; c=relaxed/simple;
+	bh=mmyRi+Zx/6q2gDvD/t17nESFmxjkc5pSHHo05OFL0dA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=IZhR6SPzzwyrtd2ld0VZWvOOQXHF7CYrhhTQ9xxk+oSlXGHA7/qOcanJBj9BqvPdyCvw1pE+i9WnnElygU/WcCpqZuQ6MAzRgR5MzDKlv845B072ViFCx/DZ6J+brjojrB3aLRjvitZC2PFASvZIQLz9zPNU6NBTuPagVlIul0k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mnej4WuZ; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=N0qf4CqBXhyC5zV+aeBrq108JwsHfcSLH9jJhJxu5kJD9/SgbyGTROWmorwWWLLc0hakLghtSP1XERDNQToHDjyHfyssoXR+IByP8w7TG/zHU3psTNpzN+937nM/1S3gaFTsZFDuJl8M+Wy1wEekE1EP93LfJ+5Nfm/4HP4rI+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S2yL7q9J; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mnej4WuZ"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-83544d05c5aso3674046b3a.2
-        for <kvm@vger.kernel.org>; Wed, 13 May 2026 05:48:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S2yL7q9J"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-bce224720d8so3814061a12.1
+        for <kvm@vger.kernel.org>; Wed, 13 May 2026 05:48:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778676508; x=1779281308; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1778676522; x=1779281322; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+5eHMVfb/Er3xuFGOIw7f+q4SdOyV+C6CS8hVi39b+g=;
-        b=mnej4WuZcLYu2spTIG5qsYwOGpRrFVWUh1G6pwOf2Mx5QM6vOMiV6D30zRyvyQEdfq
-         PmxYTNYJRFI5MvXCCvaQ4eQx1ZYsdyPJW2Y/X1NN/Jzf5q0SLrhvqB2sgUAoBAVoVIr8
-         fBx9mmJ/FdusAKWtzQmEWYCb9txBI9RwHIO8TMLJCHfzBCj1ffWFXKqM4Z613nojbOl1
-         V1NbzgsMF8zmpmkph2/+n+uQGeicHvVjPt24LoGDs0URNtZrRasEtNLbm0Ul+yDxJqH/
-         lc7yY4iIL1Ru0STc+UcnNdS3NukWypz3OdoHdRzBNkmDYUIz2P9UYbDZNeyM9celjfnV
-         RwBQ==
+        bh=MK1gTGxtPYOlCCins8M0QHXqM2NhJUagixEFgmK4yWM=;
+        b=S2yL7q9Jkl5OGMjP6y3HQBI7BiJmFeZgbnHXuw76QgyYzfgc6cllHznt5Nw7W7pS2C
+         +q39Iskjzi5yKrGRSQzBXrjV1xGW+xhVI6SyHpFYMIf+ir+jqcS/S/lgM+0/LDSkAaRc
+         mkCHISXHbkidKDSPZXHeMyr0mpacjJVId/xnSMGEK3HpU7MSwcwtlA4gAsTET/qiNEQv
+         TyhhqroCKKhMJOdhPiJj83lOXo2QYQaHSUMyRtRIYiCl/Jhf7FLiHINwnsTBFntFRoNZ
+         BW1ShZXwEe61Yb75w37imODFhoebYE7dSQsLCcAQM+sJ75AdDW0b9cpFdvNadKdcThb8
+         13NQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778676508; x=1779281308;
+        d=1e100.net; s=20251104; t=1778676522; x=1779281322;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+5eHMVfb/Er3xuFGOIw7f+q4SdOyV+C6CS8hVi39b+g=;
-        b=BffvE3LxiOU4N8QIQaEVLXy5LWx6yuNo5FmAFaiDKjuYsLzQXssVNJJVNeDfMxftYH
-         Qfkxsb8DQmemXvT1V969GCRgPJGYGOZz/D5eriYav+7k1O8cV13FOnTRxl/ZCRGoqWRD
-         p0pzhrtOyQKMd6UmvOInzTZKM+2I5YV6RA2joCBuVx9u7U4HTtVcwMzplMt4tH6vCPQP
-         qRbK7Gh6JPVPxUrYzeVclYGfVJePU1XLl0/884Gkk3rdTgZoLQ6Z8wuSDEig66xeY9js
-         WpjL/e6Y/IzOFsqH2pRNcwAb78NV7eRSpAB4P7rGk+Y5zWlvq42o3a+2IdhtiHKaFASb
-         IjiA==
-X-Forwarded-Encrypted: i=1; AFNElJ9NJqQH+smReAlB0Z6X7b9wBEX0DuMu6zIyE3U7P7Cys2YgsTelodbLfjObELXvObSSf0o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yygi5eDeivECNolVr6QuTuC4hnf1EJ/xy3UZiddTZuXE6neL7N3
-	hmr0ZD5OHMlT84+7HzFua9B+zD27RJeQ0ywBHlnF0bpVliHm6YyeNRIR1fyTk7IKsdfP2FvbpHp
-	FvvCLQw==
-X-Received: from pfnn24.prod.google.com ([2002:a05:6a00:2b98:b0:835:4568:a5a0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:aa7:8887:0:b0:837:b5b6:1b97
- with SMTP id d2e1a72fcca58-83f03fcc53amr3291170b3a.12.1778676507889; Wed, 13
- May 2026 05:48:27 -0700 (PDT)
-Date: Wed, 13 May 2026 05:48:27 -0700
-In-Reply-To: <B8D6B43E-4C3D-4E1F-BD07-5632E1BBECEA@zytor.com>
+        bh=MK1gTGxtPYOlCCins8M0QHXqM2NhJUagixEFgmK4yWM=;
+        b=BSHys+UYJTuvBKf5AeRffoSSOqQhn++ZGmUV15UcnQkt0F98Zr1cp2XCqNxCy7EglT
+         A5ax1ewQLRbsREizz9edAGVpILDA+rsJA8FE+XrhAfx0H1vTFBzgb/wNxyubNPV2laOg
+         YD20LDTOZDYqP+fiNp7WfGJVxPxdKhsHkFmgtQPBBmCiMheOsGOBRHBShXku6TXpfG2g
+         VCAHEFTPSRXBhlKqSfFxVCWstB4UFOyuejGd1HSWvJZd+AKwD3fTlP5PZOcz/e8tXF6c
+         DKoCQtG72tir7yBWhbgb70eMwcdWdkcPY8H3cW4f2tbw1eHybly+9r5pMc2ZZ6SvtNHw
+         E7AA==
+X-Forwarded-Encrypted: i=1; AFNElJ9NTJql0UVDQg1gKdgf69Uv9dJM1IOO59nAMDqjoPvtyqCAq4Sg97wqtKqhR+bSPNNgrsA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2sQW6ZQrUcxqN/Bu36wN8g8JLlSo/G3hIfoIIQQNpEMk2HdWa
+	N9hYjcSsISTIXfDBx5QsRHl9fFbUg1srdjlxf82VdNEFp4IvYKLVSbSnf1ygjBjbEZbFe0ViCAE
+	yfkl4Tg==
+X-Received: from pgch29.prod.google.com ([2002:a05:6a02:509d:b0:c74:664d:4080])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:a107:b0:3a2:d0ed:f1f8
+ with SMTP id adf61e73a8af0-3af81372d5fmr3545884637.30.1778676521573; Wed, 13
+ May 2026 05:48:41 -0700 (PDT)
+Date: Wed, 13 May 2026 05:48:41 -0700
+In-Reply-To: <CAEvNRgHfBqqC1K7enCPX3jqWE0smJ3E0NE=kUPSX7N7g5KQrvg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260428125632.129770-1-kas@kernel.org> <20260428125632.129770-3-kas@kernel.org>
- <bf92ebbf-8d70-406a-aea1-c11ca576de90@intel.com> <B8D6B43E-4C3D-4E1F-BD07-5632E1BBECEA@zytor.com>
-Message-ID: <agRzBsoQG2C0sHxe@google.com>
-Subject: Re: [PATCH v2 2/2] x86/tdx: Fix zero-extension for 32-bit port I/O
+References: <20260511113759.610924-1-tabba@google.com> <20260511113759.610924-3-tabba@google.com>
+ <CAEvNRgHfBqqC1K7enCPX3jqWE0smJ3E0NE=kUPSX7N7g5KQrvg@mail.gmail.com>
+Message-ID: <agRzKWDH4lpN1rJv@google.com>
+Subject: Re: [PATCH 2/2] KVM: selftests: Fix FD double-close in kvm_vm_release()
 From: Sean Christopherson <seanjc@google.com>
-To: "H. Peter Anvin" <hpa@zytor.com>
-Cc: Dave Hansen <dave.hansen@intel.com>, "Kiryl Shutsemau (Meta)" <kas@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, 
-	Kai Huang <kai.huang@intel.com>, Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>, 
-	linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, kvm@vger.kernel.org, 
-	stable@vger.kernel.org
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Fuad Tabba <tabba@google.com>, Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, 
+	Marc Zyngier <maz@kernel.org>, Oliver Upton <oupton@kernel.org>, Will Deacon <will@kernel.org>, 
+	David Matlack <dmatlack@google.com>, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="us-ascii"
 
-On Tue, May 12, 2026, H. Peter Anvin wrote:
-> On May 12, 2026 6:14:13 PM PDT, Dave Hansen <dave.hansen@intel.com> wrote:
-> >On 4/28/26 05:56, Kiryl Shutsemau (Meta) wrote:
-> >> +	if (size == 4)
-> >> +		regs->ax = 0;
-> >> +	else
-> >> +		regs->ax &= ~mask;
+On Tue, May 12, 2026, Ackerley Tng wrote:
+> Fuad Tabba <tabba@google.com> writes:
+> > kvm_vm_release() closes vmp->fd and vmp->kvm_fd unconditionally, and
+> > kvm_vm_free() calls kvm_vm_release() at teardown.  A test that calls
+> > kvm_vm_release() and then kvm_vm_free() without a
+> > vm_recreate_with_one_vcpu() in between double-closes both FDs.  Since
+> > kvm_close() asserts on close() failure, the second close trips
+> > TEST_ASSERT and aborts the test, or, if the FD was recycled, silently
+> > closes an unrelated file.
 > >
-> >I haven't thought about this _that_ much, but this feels wrong. Why is
-> >is 4 so special cased?
-> >
-> >Also, what _are_ the limits on the registers that 'in' can be used on?
-> >
-> >RAX - n/a, no 64-bit I/O
-> >EAX - size=4
-> >AX  - size=2
-> >AH  - n/a no encoding for inb
-> >AL  - size=1
-> >
-> >I'd find this much easier to grasp if there was a nice table of what the
-> >registers, sizes, and masks ended up being usable. As usual, x86 is
-> >"fun" here.
 > 
-> Because zero extension only applies to dwords.
-> 
-> x86-64 has three subregisters per GPR:
+> Never thought about this fd-recycling case, I think this change still
+> has value in avoiding the silent closing of some other file.
 
-Aren't there four?  The fourth being 31:0, which is the one that is zero-extended
-and so "clobbers" 63:32.
-
-> Bits 7-0
-> Bits 15-8
-> Bits 63-16
-
-I assume you mean 15:0?  63:16 isn't addressable.  And these are the ones that
-aren't zero-extended, i.e. don't "clobber" other bits.
+I have no objection to invalidating the fds, I just don't want to make
+kvm_vm_release() and kvm_vm_free() idempotent.  The caller needs to not mess up.
