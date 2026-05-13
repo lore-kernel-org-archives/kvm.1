@@ -1,268 +1,195 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB1CF38C2D1
-	for <kvm@vger.kernel.org>; Wed, 13 May 2026 10:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D161391835;
+	Wed, 13 May 2026 10:08:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778666596; cv=none; b=jLymt2r0I86dhykrPWteCQWKeRirUcVy8/qdKHm/WJs8/AUd9xp1oknFdLODFN8r8V1MUfC+RhpJA9rWlOU+ykjY1idPvSTLISnRlWvMZFqPZFaXtaaA/gNebNrJ9jVrwqwW+oqvTURs1sBwivXsS+qKNPSaF0s4DRhn2nnuwNU=
+	t=1778666915; cv=none; b=OUErzeXRQ2j8F6kuSb3zVaPPX5OX/BtdZupAkfDnsA0+DaHxoR4ltbO7cxAaCv/xu35pTx61KkZwcPrZiKsHhD2CZ0V1Co1uuiJr1Fd3yPDw5Oj5g84jVDQ06ZBDVEwyeBx2U32/oZmkmjo/9eH9gJZFYRhHD1b+LeYalxLwEY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778666596; c=relaxed/simple;
-	bh=Exx69UliEats+vm276UOMHgD4bfAdRTp7+mcrKpptDs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CAGGI2XOlbkIJgmTv8NHAUwQH342yGf7VwIioUKOPGeuablog00A+vJgmKa3j28cLeFtaLprquuB5GYh2v9TO+4Rtg6tOSUb97qB/RtnXahf1Lg5FKJqdj79IXmnMtVrqhW9JHxPi3gbLrBG/bkP/L663kzaSpEYgQnH79vgnJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fHxcSLtM; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=MLhqRy8y; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1778666915; c=relaxed/simple;
+	bh=zX5q8J35rJJ3wufK31RGOmkFHzv3IBIaIDRgeLga1tQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=HOxZapjzgQfsovto5Oct4rchRiRHtz5uMSLXO8F/4is+Hi9DOuwuhMUXnY6uGN3CrUzliW2RXi/KSB6f4NPjdaXClfXfZqMK44N4ovI3szTdRvP32nQ4vROmoEaz2uDz6YuluMQLwep1uwNu5FLOSop9aXOHMCaSQw5CqYRCG00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=hvSJ6WrI; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fHxcSLtM";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="MLhqRy8y"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778666593;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=xzQE32mx93ylvQsX4/nZCp5JUmWcvqaEWi0cOhGyU/Q=;
-	b=fHxcSLtMR/1SVEYJoly6h0z6yopwDk9qI2ewkAJLOfQkmktNLjKYc/mZOMcOlZVeh3FV+z
-	ISnaKXfOhJ9P925C8hin4JpYVeh96JZ9LHcL3eEO+kqgfUpwZreKLgVDdWOQ6fm/f8APtf
-	qRr6z67BbKJMqYPISlYs03TYnUDMTu8=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-465-zYT_lV4XO_qUyc2MAZUbXA-1; Wed, 13 May 2026 06:03:09 -0400
-X-MC-Unique: zYT_lV4XO_qUyc2MAZUbXA-1
-X-Mimecast-MFC-AGG-ID: zYT_lV4XO_qUyc2MAZUbXA_1778666589
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-48a589c7879so57282235e9.1
-        for <kvm@vger.kernel.org>; Wed, 13 May 2026 03:03:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778666588; x=1779271388; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xzQE32mx93ylvQsX4/nZCp5JUmWcvqaEWi0cOhGyU/Q=;
-        b=MLhqRy8yoI900fZzXwFq6bh8VD+hqdk8luL7JyJ7d64Bu8jfNT6dhUZ/yJAlbK0A87
-         7Z4B/mW9dBH2u7p1xOEp0H8d+E9Q9FZCN4gtQY0YTFcB4z4gFyAH4Rd85KO33vVyy+Fm
-         VZvfUCakYrtnmVMopO752vSL/ZiIw5dMsRIKsvSK0v3IsFilR6Blyg/p4fqJAZzhU7vd
-         CJaLw9NfB9O3nuLgNlILpj2LNc3kKQXTVWuFf9HUNKXikBMNXUUBVJ+GG3zlDJ0vF7TS
-         o2oVvaP0poscuwoRq5hAs8rr1H1WjcFdSghKsrcIy2vhaFeSOWKDNwiR+K4yy29Mh4kv
-         VTbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778666588; x=1779271388;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xzQE32mx93ylvQsX4/nZCp5JUmWcvqaEWi0cOhGyU/Q=;
-        b=Vwka8uhJyZ0TOV75CszD0j5qTxRdcnNuNOKtaRbiGaTqa44iQjo5CJ2ZroBRx7Vjii
-         cDRvk38Px1FtKS6/hLQ8r4dsTJaQo5geyTs4eGpcn57rBmZk3trJ/ZxANDH3LHwF8xJR
-         A5+M9JCR/8RdYFHcem3WWx0XDSGX208+InAdOOojVbSuwk+c7vSI1yHQ8FhfUIUNe611
-         Vw4UP9IIP4hABZt78QtTmD5ShhfI5O1AajoyFbSjbLx2Gs871G4jVD7JMKhFp3EnOyXE
-         O3V/NmG9TpCuj2hoFNQ7Xf8Nq8du3yI7rG8WgKNL2aokxVI27M7siHHqcZGos30NURu0
-         keJw==
-X-Forwarded-Encrypted: i=1; AFNElJ+8r3+XnirxbZ8ECbSnCvTAIlPwud3XPUyfTzv3bfiZKcDRrECKBXVjDo+MZbxFiShUQno=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywz3gbbs8gkogecKPIMB8JzEFYV6A1HYwkHaL+1MafHLObd8T6k
-	kqCLJENXBb/UeEGRZupnbeafwHhk0WPgo3kpYd0Qz+yOw8rywkuPLwhXV9KMtumMu+X2PftpAs/
-	mk/QczGxuVEL6HZ6Bqvpop6U6zDUGvcJZbbnuBD/nMiOi2FN3LkaG2g==
-X-Gm-Gg: Acq92OEEY6t+f8F1Ngm1LAJYkOszhx+ViJPabcTivZy4n6EymVCAThEahP46zCG8d7U
-	3ATV7naXoezv/KeEyqrpUFw1b7V3fC/xcuREjRFD8fiq32X3PN9HeOeHv2wn4F7s9TESbmjubfZ
-	WrD9OVMPnhbSUN4puAYm3ruPvf+vLQRWZ3K2yVkeiqhL8Lqqk6IjvUQ4mvnkumGvNZvVzPAAlen
-	32pbPOoNDRhqmHYDmYpfD3ldFOETypIDk6Hpx7OVqzHIW2puEEP+CMe3t5xc071jouG4E//X/u/
-	l+zyGr1OSoRJN8AQF7tYf3izH2Abp0CxP+aONHh/mPPdIhodOSLOet9/vkkc3xLy2vcq+/Omsr3
-	32hWDsD5kiMUR34xC1bX1hIpnxMyqjo8pQ/GGomQB
-X-Received: by 2002:a05:600c:4ed1:b0:488:aa33:dc8f with SMTP id 5b1f17b1804b1-48fc95a5989mr35259075e9.0.1778666588291;
-        Wed, 13 May 2026 03:03:08 -0700 (PDT)
-X-Received: by 2002:a05:600c:4ed1:b0:488:aa33:dc8f with SMTP id 5b1f17b1804b1-48fc95a5989mr35258125e9.0.1778666587521;
-        Wed, 13 May 2026 03:03:07 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48e8f3e174fsm59587075e9.3.2026.05.13.03.03.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 13 May 2026 03:03:06 -0700 (PDT)
-Date: Wed, 13 May 2026 06:03:02 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Polina Vishneva <polina.vishneva@virtuozzo.com>
-Cc: "sgarzare@redhat.com" <sgarzare@redhat.com>,
-	"den@openvz.org" <den@openvz.org>,
-	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
-	"stefanha@redhat.com" <stefanha@redhat.com>,
-	"eperezma@redhat.com" <eperezma@redhat.com>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"jasowang@redhat.com" <jasowang@redhat.com>
-Subject: Re: [PATCH] vhost/vsock: Refuse the connection immediately when
- guest isn't ready
-Message-ID: <20260513060124-mutt-send-email-mst@kernel.org>
-References: <20260511145610.413210-1-polina.vishneva@virtuozzo.com>
- <agH3WvJtAsQ_5zx4@sgarzare-redhat>
- <962b26d2d1daa9411fb71efab6af2c75d1c5f0d0.camel@virtuozzo.com>
- <agM8cxqUCJNjBDlm@sgarzare-redhat>
- <20260512120019-mutt-send-email-mst@kernel.org>
- <8ae7e443034026eda016322d22da52700e432f09.camel@virtuozzo.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="hvSJ6WrI"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64D1e3Js3185798;
+	Wed, 13 May 2026 10:08:14 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=fMpRHD3ruO3rnNVYkCmn+4bpnMn6HHOvClfCzfzd1
+	ls=; b=hvSJ6WrIktf5wdd67uizxJQYfkNVLLV9x0imB3u6Q6D4KDO/u25DjTzbh
+	Irs5Wmr03vatTCaXNJdAE9q2JgM/Fr5tP9QzTNbA/IeZajd4iEdrB7jKlun4QjBf
+	rSoXTne21H6cU1bdFnW/LnPJMOHzPFWH/cwFPUXjOljJMGisdYk2UC/N/n9yhb4K
+	k1ObEaIIzwpjYc7fm4NO8bdnZCT0Tv2O2xnqOjrzubhvl76DlRhOg/dzCWl+kQsi
+	dQU+3+LcpLAQjySzwk/NFNLdFpD++dM37psChZ7F32yh/Ha8AsvZfFLYDjfp1GDG
+	wpxrLRNYM1E45SxD0P+iAYNym/+5A==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e3nv5f64m-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 13 May 2026 10:08:13 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64D9sQLB024102;
+	Wed, 13 May 2026 10:08:12 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e3nfgy9t0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 13 May 2026 10:08:12 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64DA885P27722054
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 13 May 2026 10:08:09 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CFB0720065;
+	Wed, 13 May 2026 10:08:08 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 72FEC2004E;
+	Wed, 13 May 2026 10:08:06 +0000 (GMT)
+Received: from mac.bl1-in.ibm.com (unknown [9.123.0.51])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Wed, 13 May 2026 10:08:06 +0000 (GMT)
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
+        Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: [PATCH v2 0/5] KVM: PPC: Handle CPU compatibility mode for nested guests
+Date: Wed, 13 May 2026 15:37:49 +0530
+Message-ID: <20260513100755.83215-1-amachhiw@linux.ibm.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <8ae7e443034026eda016322d22da52700e432f09.camel@virtuozzo.com>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=cPHQdFeN c=1 sm=1 tr=0 ts=6a044d8e cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=iQ6ETzBq9ecOQQE5vZCe:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=3pgwaEq9XIEntMmap7EA:9
+X-Proofpoint-ORIG-GUID: y9-KWnxWXJWbYLPCLwWH5rwCgeT8vksM
+X-Proofpoint-GUID: ruOk59LsWJi6Zq5oNzltl2S6mCEuC3We
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTEzMDEwNSBTYWx0ZWRfX3Edk23Lte1t/
+ KYgIUg4m38Yl6C+5yWQDFlW1cnh474TSrRelxGmMWVLvcaWFdNUJuKuBYSSkedFvVqu0aXn9wMP
+ lFc8ea1UMiwmYnaPk++Iqkko/TpDpksiUq1YkQNnR9Lbww6sfCpXEt9Z3QKk7RCh5Zix7yt3jGs
+ bxmkLQgXreI/ana6nf+ncbKL1iIVfyr0rqKP6Ig76nmymVG9RC8YGQE8aj431YahFgD1kFFNk5e
+ 7OnU1mHXghPueBNWy4gNmTnsQ6FU1b1X3KQmQbjmBho9BobE2kEtT4tAB4XONU/lg0kdfU4tFNC
+ otg/+uCcuxWfOqZbqf9hnLjkSE8rlyKH7HK8IQd2p5rLo5wXjgkkaJcelkoadhIzkTlvlBpOXKL
+ Sf3/9+Gvp2A1SS30eGouWaOJE6DLpwZ2oz/nKgxi6XscN2O4oTuMAotvBLD8Pvu12/ftNhDaofE
+ 0bXfk4e2BmNQf8shz4g==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-11_05,2026-05-08_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 bulkscore=0 phishscore=0 clxscore=1015 spamscore=0
+ impostorscore=0 lowpriorityscore=0 adultscore=0 suspectscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605050000 definitions=main-2605130105
 
-On Wed, May 13, 2026 at 09:44:49AM +0000, Polina Vishneva wrote:
-> On Tue, 2026-05-12 at 12:02 -0400, Michael S. Tsirkin wrote:
-> > On Tue, May 12, 2026 at 05:39:48PM +0200, Stefano Garzarella wrote:
-> > > On Tue, May 12, 2026 at 02:32:14PM +0000, Polina Vishneva wrote:
-> > > > On Mon, 2026-05-11 at 17:56 +0200, Stefano Garzarella wrote:
-> > > > > On Mon, May 11, 2026 at 04:56:10PM +0200, Polina Vishneva wrote:
-> > > > > > From: "Denis V. Lunev" <den@openvz.org>
-> > > > > > 
-> > > > > > When the host initiates an AF_VSOCK connect() to a guest that has not
-> > > > > > yet loaded the virtio-vsock transport (i.e. still booting), the caller
-> > > > > > blocks for VSOCK_DEFAULT_CONNECT_TIMEOUT (2 seconds), because
-> > > > > > vhost_transport_do_send_pkt() silently exits when
-> > > > > > vhost_vq_get_backend(vq) returns NULL.
-> > > > > 
-> > > > > Can SO_VM_SOCKETS_CONNECT_TIMEOUT helps on this?
-> > > > 
-> > > > It can, but it might be difficult to find a correct timeout.
-> > > > 
-> > > > And, generally, there's no way to distinguish "the guest hasn't yet initialized
-> > > > the vq" from "the guest is up and running, but didn't reply to connect() in
-> > > > time". That's exactly what this patch is attempting to fix.
-> > > 
-> > > Okay, so please mention this in the commit message, I mean why
-> > > SO_VM_SOCKETS_CONNECT_TIMEOUT can't really help.
-> > > 
-> > > > 
-> > > > > 
-> > > > > > 
-> > > > > > If the guest doesn't start listening within this timeout, connect()
-> > > > > > returns ETIMEDOUT.
-> > > > > > 
-> > > > > > This delay is usually pointless and it doesn't well align with our
-> > > 
-> > > I still don't understand why this is pointless. If an application wants to
-> > > wait while sleeping, it can simply increase the timeout long enough to wait
-> > > for the VM to start up and use a single `connect()` call, instead of
-> > > continuing to try and wasting CPU cycles unnecessarily.
-> > > 
-> > > Hmm, or maybe not, because the driver will definitely be initialized before
-> > > the application that wants to listen on that port, so it will respond that
-> > > no one is listening, and the `connect()` call will fail with an `ECONNRESET`
-> > > error in any case. Right?
-> > > 
-> > > If it is the case, is the following line in the commit description correct?
-> > > 
-> > >     If the guest doesn't start listening within this timeout, connect()
-> > >     returns ETIMEDOUT.
-> > > 
-> > > I mean, also if the application starts to listen within the timeout, I think
-> > > the connect() will fail in any case as I pointed out above (this should be
-> > > another point in favour of this change)
-> > > 
-> > > 
-> > > BTW, I think we should explain this more clearly both here and briefly in
-> > > the code as well.
-> > > 
-> > > > > > behavior at other initialization stages: for example, if a connection is
-> > > > > > attempted when the guest driver is already loaded, but when nothing is
-> > > > > > listening yet, it returns ECONNRESET immediately without any wait.
-> > > > > > 
-> > > > > > Fix this by checking the RX virtqueue backend in
-> > > > > > vhost_transport_send_pkt() before queuing. If the backend is NULL,
-> > > > > > return -ECONNREFUSED immediately.
-> > > > > > 
-> > > > > > Signed-off-by: Denis V. Lunev <den@openvz.org>
-> > > > > > Co-developed-by: Polina Vishneva <polina.vishneva@virtuozzo.com>
-> > > > > > Signed-off-by: Polina Vishneva <polina.vishneva@virtuozzo.com>
-> > > > > > ---
-> > > > > > drivers/vhost/vsock.c | 10 ++++++++++
-> > > > > > 1 file changed, 10 insertions(+)
-> > > > > > 
-> > > > > > diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
-> > > > > > index 1d8ec6bed53e..a3f218292c3a 100644
-> > > > > > --- a/drivers/vhost/vsock.c
-> > > > > > +++ b/drivers/vhost/vsock.c
-> > > > > > @@ -302,6 +302,16 @@ vhost_transport_send_pkt(struct sk_buff *skb, struct net *net)
-> > > > > > 		return -ENODEV;
-> > > > > > 	}
-> > > > > > 
-> > > > > > +	/* Fast-fail if the guest hasn't enabled the RX vq yet. Reading
-> > > > > > +	 * private_data without vq->mutex is deliberate: even if the backend becomes
-> > > > > > +	 * NULL right after that check, do_send_pkt() checks it under the mutex.
-> > > > > > +	 */
-> > > > > > +	if (!data_race(READ_ONCE(vsock->vqs[VSOCK_VQ_RX].private_data)))
-> > > > > 
-> > > > > Why not using vhost_vq_get_backend() ?
-> > > > 
-> > > > Because it locks the mutex, which is slow and unacceptable in this hot
-> > > > path.
-> > > 
-> > > ehm, sorry, which mutex are you talking about?
-> > > 
-> > > I see just a comment about the mutex to be acquired by the caller, but I
-> > > don't see any lock there.
-> > > 
-> > > > 
-> > > > > 
-> > > > > Also is READ_ONCE() okay without WRITE_ONCE() where it is set ?
-> > > > 
-> > > > It's racy, but as described here in the comment and in the commit message,
-> > > > any possible race outcome is covered by the subsequent checks.
-> > > 
-> > > Okay, so what is the point to call READ_ONCE()?
-> > > 
-> > > > 
-> > > > > > {
-> > > > > > +		rcu_read_unlock();
-> > > > > > +		kfree_skb(skb);
-> > > > > > +		return -ECONNREFUSED;
-> > > > > 
-> > > > > This is a generic send_pkt, is it okay to return ECONNREFUSED in any
-> > > > > case?
-> > > > 
-> > > > EHOSTUNREACH would probably be better.
-> > > > All the current send_pkt functions only return ENODEV, but it has different
-> > > > semantics: they mean that the local device isn't yet ready, while there we're
-> > > > dealing with the opposite end not being ready.
-> > > 
-> > > In the AF_VSOCK prespective, I see ENODEV like the transport is not ready,
-> > > so I think it can eventually fit here too, but also EHOSTUNREACH is fine,
-> > > for sure better than ECONNREFUSED.
-> > > 
-> > > Thanks,
-> > > Stefano
-> > 
-> > I think it's worth trying to do the same thing with e.g. TCP
-> > and see what error, if any, we get. Match that.
-> 
-> This case is not directly applicable to TCP: in TCP, there's no out-of-band way
-> to detect the "host up, but not initialized yet and not ready for connections"
-> state: this could theoretically be ENOPROTOOPT, but no real TCP stack implement
-> this, because replying with ICMP_PROT_UNREACH requires a TCP stack, which is
-> exactly the thing that isn't up.
-> 
-> So, in real world, a similar situation with TCP would result in ETIMEDOUT.
+On POWER systems, newer processor generations can operate in compatibility
+modes corresponding to earlier generations (e.g., a Power11 system running
+in Power10 compatibility mode). In such cases, the effective CPU level
+exposed to guests differs from the physical processor generation.
 
-Then it just might be best to keep the current behaviour which seems
-to match that pretty closely?
+This creates a problem for nested virtualization. When booting a nested KVM
+guest (L2) inside a host KVM guest (L1) running in a compatibility mode,
+userspace (e.g., QEMU) may derive the CPU model from the raw hardware PVR
+and attempt to configure the nested guest accordingly. However, the L1
+partition is constrained by the compatibility level negotiated with the
+hypervisor (L0), and requests exceeding that level are rejected, leading to
+guest boot failures such as:
+
+  KVM-NESTEDv2: couldn't set guest wide elements
+
+This series addresses the issue in two steps:
+
+1. Detect and reject invalid compatibility requests early in KVM to avoid
+   late failures.
+
+2. Provide a mechanism for userspace to query the effective CPU
+   compatibility modes supported by the host, so it can select an
+   appropriate CPU model for nested guests.
+
+To achieve this, the series introduces a new KVM capability and ioctl
+(KVM_CAP_PPC_COMPAT_CAPS / KVM_PPC_GET_COMPAT_CAPS) that expose the
+compatibility modes supported by the host.
+
+The implementation supports both:
+
+  - PowerVM (nested API v2), where compatibility information is obtained
+    via the H_GUEST_GET_CAPABILITIES hypercall.
+  - PowerNV (nested API v1), where compatibility is derived from the device
+    tree ("cpu-version") representing the effective processor compatibility
+    level.
+
+This allows userspace (e.g., QEMU) to select a CPU model consistent with
+the host compatibility mode, avoiding mismatches and enabling successful
+nested guest boot.
+
+Changes in v2:
+  - Squashed patches 2 and 3 from v1 (capability introduction and ioctl
+    wiring) into a single patch for better logical grouping
+  - Changed kvm_ppc_compat_caps.flags from __u32 to __u64 for consistency
+    and future extensibility
+  - Addressed other review comments
+  - Improved commit messages with clearer explanations of the changes
+
+Patch summary:
+  [1/5] Validate arch_compat against host compatibility mode
+  [2/5] Introduce KVM_CAP_PPC_COMPAT_CAPS and wire up ioctl
+  [3/5] Implement capability retrieval for PowerVM (API v2)
+  [4/5] Add PowerNV support (API v1)
+  [5/5] Document the new ioctl
+
+Tested on:
+  - Power11 pSeries LPAR in Power10 compatibility mode (nested API v2)
+  - Power10 PowerNV system (and QEMU TCG PowerNV 11) with nested
+    virtualization (API v1) with various combinations of KVM L1/L2 guests
+    in various supported compatibility modes.
+
+With this series, nested guests boot successfully in configurations where
+they previously failed due to compatibility mismatches.
+
+Related QEMU series:
+  A corresponding QEMU series adds support for querying and using these
+  compatibility capabilities when configuring nested KVM guests:
+  https://lore.kernel.org/all/20260502140021.69712-1-amachhiw@linux.ibm.com/
+
+v1: https://lore.kernel.org/linuxppc-dev/20260430054906.94431-1-amachhiw@linux.ibm.com/
+
+Amit Machhiwal (5):
+  KVM: PPC: Book3S HV: Validate arch_compat against host compatibility
+    mode
+  KVM: PPC: Introduce KVM_CAP_PPC_COMPAT_CAPS and wire up ioctl
+  KVM: PPC: Book3S HV: Implement compat CPU capability retrieval for KVM
+    on PowerVM
+  KVM: PPC: Book3S HV: Add support for compat CPU capabilities for KVM
+    on PowerNV
+  KVM: PPC: Document KVM_PPC_GET_COMPAT_CAPS ioctl
+
+ Documentation/virt/kvm/api.rst      | 35 ++++++++++++++++
+ arch/powerpc/include/asm/kvm_ppc.h  |  1 +
+ arch/powerpc/include/uapi/asm/kvm.h |  6 +++
+ arch/powerpc/kvm/book3s_hv.c        | 63 +++++++++++++++++++++++++++++
+ arch/powerpc/kvm/powerpc.c          | 21 ++++++++++
+ include/uapi/linux/kvm.h            |  4 ++
+ 6 files changed, 130 insertions(+)
 
 
-> > 
-> > 
-> > > > 
-> > > > Best regards, Polina.
-> > > > 
-> > > > > 
-> > > > > Thanks,
-> > > > > Stefano
-> > > > > 
-> > > > > > +	}
-> > > > > > +
-> > > > > > 	if (virtio_vsock_skb_reply(skb))
-> > > > > > 		atomic_inc(&vsock->queued_replies);
-> > > > > > 
-> > > > > > 
-> > > > > > base-commit: 8ab992f815d6736b5c7a6f5fd7bfe7bc106bb3dc
-> > > > > > --
-> > > > > > 2.53.0
-> > > > > > 
+base-commit: 1d5dcaa3bd65f2e8c9baa14a393d3a2dc5db7524
+-- 
+2.50.1 (Apple Git-155)
 
