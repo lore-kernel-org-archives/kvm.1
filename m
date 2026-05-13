@@ -1,155 +1,120 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D69274CA287;
-	Wed, 13 May 2026 15:12:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4717429800;
+	Wed, 13 May 2026 15:29:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778685125; cv=none; b=i2DU/MKwEGZA532t1uG4m05Qo+Q4p+KIjHrLFKr3VbuiS+yGd2GxkkJEvqZZUeTzJR/HzEkHpK75s2lRcQI8O5Mb9XHy6rjDAog9KCwJ9MSxzM3UvUH8ut2stMze77eLnAW6sxs50sqrn++Jyn8CxopLa5MKW9kkoRktXZtorrI=
+	t=1778686175; cv=none; b=tdopI2yIWzh7hzeuyKpF3q0uu+aJ4tWHhlQSQLjpvYv7TQH/fjg9/u/oH0T4WjsbCiqvOzIgcIlWWqizsx8VbRPJfV2mV4nkGlrebUpuBFct1eW3hxU0TJAD40NLkIxPW60aci+a246aY2v6r/PpFlaLEMD0JqO8dwkm/c9fpD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778685125; c=relaxed/simple;
-	bh=g7DBKzISsVeAPEr5fRf6vFci06L9JPnHLfj1n6CF7wg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HJgoJ8QkqoMlAZ1PyjCEa/d+u5Tj0UuwRyRLQ/93sTbFsgDf9qFCo7lL6VBLmiYvO9VM6e+xIxvBdo08us7vXAPQD2tPhZPJYI4/00UiKfQmH3xDvUZEq7bDmt/jW7/2xyZsClKrIfcW3e1Mp/xQqO+eAghOq8rUV+FiQLVSWyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ePpBJbLT; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1778686175; c=relaxed/simple;
+	bh=+GTyIVYo4BpoFl3JfjZgmVQ0TxTdr6v5vKx444qp0oM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mDMeAIXrjtu9mad8DCQ71HFs5d/eUh5zMolY0cby2QDGZKz2LfHkwDeDLbWclMpl9I65zirGw7hEm+8JE3sEmtoErLTFJxp41P4FI++6HxzrLiBOtyvMER11SCP/dK64RO5IShNAw9FEexqNEwqEKDnwj+kJUaWp9pjwnO+RbHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yprRugyj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ePpBJbLT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778685124; x=1810221124;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=g7DBKzISsVeAPEr5fRf6vFci06L9JPnHLfj1n6CF7wg=;
-  b=ePpBJbLTJ+t/0cGMMe9aNv4M4mwkO9NiunZj2re+4bru6G/P+rF51is9
-   2huSSPLOIuZip9k+tO2b5WGyxYxt4BVYo6g2L/X02uQBSlvlLj6+RAGDM
-   CA6Uj/ZJihZbNeY69TecuYxGSTP7e4SFGCpi2ryEWTN7NC4C/VTz5I/Id
-   ZwPPIMcsBJUUVnFCjKGjNIwgN6DUjKgKbD+9/vWL+Qg2yEPuADqdIbKy2
-   s4NJ3Kuep2c7x5FJ4sEEP7Tlblufmil7A7n33/YUwO5zcESEaMW5u5kCi
-   T5Y+g3DC9GSNDCfwPScK3xM7j+CaxNRZJdTDb8DnhTRa2oXa/VPl7SnmL
-   w==;
-X-CSE-ConnectionGUID: YNMzsG2pQ1CsfjChsnRDmQ==
-X-CSE-MsgGUID: JU8csZH3Ru2yWe88fWqMgQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="89921830"
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="89921830"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 08:12:02 -0700
-X-CSE-ConnectionGUID: gA4HYUfQQd62goYNWsZYTg==
-X-CSE-MsgGUID: 1fW5cWnpS/eV6H0ihhBZvg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,232,1770624000"; 
-   d="scan'208";a="231716934"
-Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 May 2026 08:12:01 -0700
-From: Chao Gao <chao.gao@intel.com>
-To: kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Cc: binbin.wu@linux.intel.com,
-	dave.hansen@linux.intel.com,
-	djbw@kernel.org,
-	ira.weiny@intel.com,
-	kai.huang@intel.com,
-	kas@kernel.org,
-	nik.borisov@suse.com,
-	paulmck@kernel.org,
-	pbonzini@redhat.com,
-	reinette.chatre@intel.com,
-	rick.p.edgecombe@intel.com,
-	sagis@google.com,
-	seanjc@google.com,
-	tony.lindgren@linux.intel.com,
-	vannapurve@google.com,
-	vishal.l.verma@intel.com,
-	yilun.xu@linux.intel.com,
-	xiaoyao.li@intel.com,
-	yan.y.zhao@intel.com,
-	Chao Gao <chao.gao@intel.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>
-Subject: [PATCH v9 23/23] x86/virt/tdx: Document TDX module update
-Date: Wed, 13 May 2026 08:10:06 -0700
-Message-ID: <20260513151045.1420990-24-chao.gao@intel.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260513151045.1420990-1-chao.gao@intel.com>
-References: <20260513151045.1420990-1-chao.gao@intel.com>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yprRugyj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F1AC2BCB3;
+	Wed, 13 May 2026 15:29:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1778686175;
+	bh=+GTyIVYo4BpoFl3JfjZgmVQ0TxTdr6v5vKx444qp0oM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=yprRugyjWyD7Np2aCMHVnxx9Ro+o2+2DV1/A2AIMWWTO7j3s21pMJWt4r9XOu5Jts
+	 L8dvn5iP4JIPl3D/8vSUxJ2Co0RKTdjmRXrfXd9u/PhbfpfYI9SHkqCvKeKBW7TYOK
+	 wFODeG+QWl5jL9gYeXq5cLANetTgr2Ntwa684lt0=
+Date: Wed, 13 May 2026 17:29:40 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Wentao Guan <guanwentao@uniontech.com>
+Cc: chenhuacai@kernel.org, chenhuacai@loongson.cn,
+	dave.hansen@linux.intel.com, kvm@vger.kernel.org,
+	lixianglai@loongson.cn, loongarch@lists.linux.dev,
+	maobibo@loongson.cn, ojeda@kernel.org, patches@lists.linux.dev,
+	seanjc@google.com, stable@vger.kernel.org, zhaotianrui@loongson.cn
+Subject: Re: Re: [PATCH 6.18 091/270] LoongArch: KVM: Compile switch.S
+ directly into the kernel
+Message-ID: <2026051357-unmasked-economic-2a46@gregkh>
+References: <2026051311-lullaby-wrecker-7d23@gregkh>
+ <20260513120808.339792-1-guanwentao@uniontech.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260513120808.339792-1-guanwentao@uniontech.com>
 
-Document TDX module update as a subsection of "TDX Host Kernel Support" to
-provide background information and cover key points that developers and
-users may need to know, for example:
+On Wed, May 13, 2026 at 08:08:08PM +0800, Wentao Guan wrote:
+> > On Wed, May 13, 2026 at 07:58:10PM +0800, Wentao Guan wrote:
+> > > Hello,
+> > > 
+> > > > On Wed, May 13, 2026 at 11:06:20AM +0800, Huacai Chen wrote:
+> > > > > On Wed, May 13, 2026 at 5:53 AM Sean Christopherson <seanjc@google.com> wrote:
+> > > > > >
+> > > > > > On Tue, May 12, 2026, Miguel Ojeda wrote:
+> > > > > > > On Tue, 12 May 2026 19:38:12 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
+> > > > > > > >
+> > > > > > > > 6.18-stable review patch.  If anyone has any objections, please let me know.
+> > > > > > > >
+> > > > > > > > ------------------
+> > > > > > > >
+> > > > > > > > From: Xianglai Li <lixianglai@loongson.cn>
+> > > > > > > >
+> > > > > > > > commit 5203012fa6045aac4b69d4e7c212e16dcf38ef10 upstream.
+> > > > > > > >
+> > > > > > > > If we directly compile the switch.S file into the kernel, the address of
+> > > > > > > > the kvm_exc_entry function will definitely be within the DMW memory area.
+> > > > > > > > Therefore, we will no longer need to perform a copy relocation of the
+> > > > > > > > kvm_exc_entry.
+> > > > > > > >
+> > > > > > > > So this patch compiles switch.S directly into the kernel, and then remove
+> > > > > > > > the copy relocation execution logic for the kvm_exc_entry function.
+> > > > > > > >
+> > > > > > > > Cc: stable@vger.kernel.org
+> > > > > > > > Signed-off-by: Xianglai Li <lixianglai@loongson.cn>
+> > > > > > > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> > > > > > > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > > > > >
+> > > > > > > For loongarch64, I am seeing a bunch of errors like:
+> > > > > > >
+> > > > > > >     arch/loongarch/kvm/switch.S:201:1: error: unrecognized instruction mnemonic
+> > > > > > >     EXPORT_SYMBOL_FOR_KVM(kvm_exc_entry)
+> > > > > > >     ^
+> > > > > > >
+> > > > > > > `EXPORT_SYMBOL_FOR_KVM` does not exist in 6.18. Does this need a subset
+> > > > > > > of commit 6276c67f2bc4 ("x86: Restrict KVM-induced symbol exports to KVM
+> > > > > > > modules where obvious/possible")?
+> > > > > >
+> > > > > > Either that or just convert EXPORT_SYMBOL_FOR_KVM() => EXPORT_SYMBOL_GPL().  If
+> > > > > > that's somewhat scriptable for ongoing LTS backports, that's probably the best
+> > > > > > option.  EXPORT_SYMBOL_FOR_KVM() will only work for 6.18, and the list of backports
+> > > > > > needed to get EXPORT_SYMBOL_FOR_MODULES() working on older LTS kernels looks to
+> > > > > > be non-trivial
+> > > > > >
+> > > > > > If we do end up backporting EXPORT_SYMBOL_FOR_KVM() and others, we might as well
+> > > > > > also grab a subset of 01122b89361e ("perf: Use EXPORT_SYMBOL_FOR_KVM() for the
+> > > > > > mediated APIs") to ensure a kvm_types.h stub is present on all archs.  That way
+> > > > > > EXPORT_SYMBOL_FOR_KVM() usage in arch-neutral code will also work.
+> > > > > I have already noticed Greg about this before.
+> > > > 
+> > > > You did?  Where?
+> > > 
+> > > Small problem, I guess where he means is 'stable-commits@vger.kernel.org', is a
+> > > not public maillist? I want to find it in 'lore.kernel.org' but not found... 
+> > 
+> > It's a public list, anyone can sign up for it.  Don't know if lore
+> > archives it, but I'm sure that someone does...
+> 
+> Thanks for your reply. It is interesting that now i found them in
+> https://marc.info/?l=linux-stable-commits&m=177859589029820&w=2,
+> and https://marc.info/?l=linux-stable-commits&m=177859840800303
 
- - update is done in stop_machine() context
- - update instructions and results
- - update policy and tooling
+Ah, yeah, I had to delete that message due to that footer, and didn't
+even look at it on request of the sender as it was confidental
+information which is not allowed here.
 
-Signed-off-by: Chao Gao <chao.gao@intel.com>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
----
- Documentation/arch/x86/tdx.rst | 34 ++++++++++++++++++++++++++++++++++
- 1 file changed, 34 insertions(+)
+thanks,
 
-diff --git a/Documentation/arch/x86/tdx.rst b/Documentation/arch/x86/tdx.rst
-index 1a3b5bac1021..9d2b7db166b5 100644
---- a/Documentation/arch/x86/tdx.rst
-+++ b/Documentation/arch/x86/tdx.rst
-@@ -73,6 +73,40 @@ initialize::
- 
-   [..] virt/tdx: TDX-Module initialization failed ...
- 
-+TDX module Runtime Update
-+-------------------------
-+
-+The TDX architecture includes a persistent SEAM loader (P-SEAMLDR) that
-+runs in SEAM mode separately from the TDX module. The kernel can
-+communicate with P-SEAMLDR to perform runtime updates of the TDX module.
-+
-+During updates, the TDX module becomes unresponsive to other TDX
-+operations. To prevent components using TDX (such as KVM) from
-+experiencing unexpected errors during updates, updates are performed in
-+stop_machine() context.
-+
-+TDX module updates have complex compatibility requirements; the new module
-+must be compatible with the current CPU, P-SEAMLDR, and running TDX module.
-+Rather than implementing complex module selection and policy enforcement
-+logic in the kernel, userspace is responsible for auditing and selecting
-+appropriate updates.
-+
-+Updates use the standard firmware upload interface. See
-+Documentation/driver-api/firmware/fw_upload.rst for detailed instructions.
-+
-+If updates failed, running TDs may be killed and further TDX operations may
-+not be possible until reboot. For detailed error information, see
-+Documentation/ABI/testing/sysfs-devices-faux-tdx-host.
-+
-+Given the risk of losing existing TDs, userspace should verify that the
-+update is compatible with the current system and properly validated before
-+applying it.
-+
-+A reference userspace tool that implements necessary checks is available
-+at:
-+
-+  https://github.com/intel/tdx-module-binaries
-+
- TDX Interaction to Other Kernel Components
- ------------------------------------------
- 
--- 
-2.52.0
-
+greg k-h
