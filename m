@@ -1,116 +1,139 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010054.outbound.protection.outlook.com [52.101.193.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00D433A6F1C;
-	Wed, 13 May 2026 12:29:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778675393; cv=none; b=emuoPJEAz7H/wu9ZR2hxKnW+owULNRWMgJsnBZV6seTe2y6JS1W0KsOdT9AaEUPuNE6S31VDU/t190DT76WEOR3LFnG/F1zGCQyNHFW4NRZGZLEsYWWPbu0m+s/t4yOflCghzSxIxoof3U5s/JJ+Zt5hakwlE6l9n+eqLUNxQpg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778675393; c=relaxed/simple;
-	bh=DZ2OfVSZNWzcDeOlCkMkhsQOXtb39i1nLzzbsSZuXRU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HtPdicHorCXp/rsoq7y1tuY+h56aPHZPshJHjhaFzcEYypS1lT7nUZKkhZf4oDssXAfI131mvDh9wUAIB8qd6UrBN841Uw4F2h6tCQBytmtN3GyCpT6xwwsy8VZZXmBUeXaThW4P+ddW2mzbuEiCzFxS2xrSEs4yVnf/3ZW13OQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=QhTKJVHK; arc=none smtp.client-ip=220.197.31.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF912402BA3;
+	Wed, 13 May 2026 12:31:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778675483; cv=fail; b=MPYyMkYSuWx85H7L3OBElawE0IUzQq3HkDSSZLt9U9TbIVQvG5pfp7ReYjKKrYbxdnAkutzpyhrU+/oej1XmVxTMZZCGEl43mLeV+STOR08NrZtapLlRYZ058XFIc4w8W2i8JEQHwHB+02LJPbSI1BGXJiUhNmaTxsbatuQoi6s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778675483; c=relaxed/simple;
+	bh=JE8KXEQrTAoks7lycDICZuC9QBK9LvrG2PTMXqRX/XY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=cVDBNwYClIjFGBS2fnGtoEwjZfoaw5VlZBJjV5XRq0d5lEqgqQSq5+9pMCtC+xxHgZwBZzfcatoCecA2iGbX8lwoiuinRWNV0Hg1IW03w1It/L4/P5pTa5UYOzyTBJvgHbFcDOwcA+aY9IC6bZI1Xy6HlUnQJF0iIDVaqpZip/M=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ViZxXrhi; arc=fail smtp.client-ip=52.101.193.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="QhTKJVHK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
-	Content-Type; bh=rki0N/LpUp9snFOn/spm1BVi6skoI5EoYdbrvY3VzsA=;
-	b=QhTKJVHKC4yJSk2JANCGSgPcBKawo7jIM5dU9QNbsX6C0x5LcyI0TQ+6CCWKzi
-	dE6n7uy/laAWFIAC4D+WaYZybda87AJsM0oVnZScdNjo5LQBHWa5QeSe0gRlDeEh
-	qjCp7NlN11g7uIQswjYgZhNqOr5VK5zNqMO3a6F2vwQWU=
-Received: from [IPV6:240e:38c:8516:b200:c068:c931:3eaf:6c76] (unknown [])
-	by gzga-smtp-mtada-g0-4 (Coremail) with SMTP id _____wB30cdFbgRqe32jBA--.12714S2;
-	Wed, 13 May 2026 20:27:50 +0800 (CST)
-Message-ID: <f64029bf-1f4c-40a7-860a-eb04fbe5317b@163.com>
-Date: Wed, 13 May 2026 20:27:49 +0800
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ViZxXrhi"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=XTSzNlFAjgM0q3hs2WP4mNeWG3Mr5Z+DRiu6n8bP68KNk2fPoPwykjhLe9Od4+ICkIczwC1YmCOVq5NJT+h/IKVI0n10ud+0O5WHngI8AbZioyFrVk2e5LVbUug07+uzXsFRzw7cp6Qt51EC3noqhEkj1wYkz/u3o14wPED/Y4Fg4FBHUVX+rND+/73YqcX+/L2zkVGKkaBTncVtOWmFS2bo8B1lznnsmw4Hd03O2vJqdqDszDHherkz54d7wzu3qfMZzQ/IqPUrZIM7Sv2F0tsqj9Ol53vpfk0kUjDkuRIamBCF2eJ9Xp9SBLj9HhF4dkuVsqGXm+Q45+Wqvpkffg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=JE8KXEQrTAoks7lycDICZuC9QBK9LvrG2PTMXqRX/XY=;
+ b=X23RTrts7nyrG4Ygm0oTOmxeG70xfPk3j7iHZMJBqYeRPhxsenbkTFKrUoxOrGGf3r2eNXVD7PA1aAqvSOY7gy+14b95VdcXduONMoJdQC3aPeD9klUf2T5TP8jra/UIu6JKbAYvdwckCyB0+4hkoZB3xexVK2FdXSy+sB+Sql4Cw2HxYoJ8a1KFbl/NhPVGRWSXOXK3ZjX5f3RFtpyWj1PjxSn0KuLF6OZmEfirX7Y5ALrWH7GkDhYsQc2QAeREWA00gw+nUbLz3WG5m68PSFhr8VUwLse4zFG9e63rca/l/VnP0MJhgYnBtxaGiNRGsEaVCUNpOCHOuQxH3KOYXg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=JE8KXEQrTAoks7lycDICZuC9QBK9LvrG2PTMXqRX/XY=;
+ b=ViZxXrhi/a/bM1qMAMpkWPfwDqDRLrYVuln+JqdqCZct1mtGIyhTDdiSmJEDTw2GftYAlLKpAtKiNtLdZBzPA0pPozlXiP5mdByQtuvCFoYOV77/CkNBdB9aacA+BtK5wYTuM7VJwRabHOHdmt3KRY00CBOx9cLiB7A7uQpfUfuY4vbARFARWYJdDno1XINeQGg/+q7SpkoegHrRpr8IT3OH2Z7g5hjzkGl7Zr48ADADSY5F/PQQpu8YSWmROiyTranaC5GvVZRuy92FA6L/EbKV5QdLXrUjSDHW3ixgrateFipK+wxi+anNL57aCv8R1YZ9EeUdx9xPjxtXnICKHg==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
+ by IA1PR12MB7759.namprd12.prod.outlook.com (2603:10b6:208:420::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Wed, 13 May
+ 2026 12:31:17 +0000
+Received: from LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
+ ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9913.009; Wed, 13 May 2026
+ 12:31:17 +0000
+Date: Wed, 13 May 2026 09:31:16 -0300
+From: Jason Gunthorpe <jgg@nvidia.com>
+To: Alex Williamson <alex.williamson@nvidia.com>
+Cc: Alex Williamson <alex@shazbot.org>, kvm <kvm@vger.kernel.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	linux-kernel <linux-kernel@vger.kernel.org>,
+	Yishai Hadas <yishaih@nvidia.com>, rananta@google.com,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] vfio/pci: Fix racy bitfields and tighten struct
+ layout
+Message-ID: <20260513123116.GH7655@nvidia.com>
+References: <20260511221609.3837652-1-alex.williamson@nvidia.com>
+ <20260511221609.3837652-2-alex.williamson@nvidia.com>
+ <20260512131812.GA7655@nvidia.com>
+ <20260512122355.22132e61@nvidia.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260512122355.22132e61@nvidia.com>
+X-ClientProxiedBy: MN0P221CA0025.NAMP221.PROD.OUTLOOK.COM
+ (2603:10b6:208:52a::17) To LV8PR12MB9620.namprd12.prod.outlook.com
+ (2603:10b6:408:2a1::19)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/3] KVM: selftests: Add unit to dirty_log_test
-To: Sean Christopherson <seanjc@google.com>, wu.fei9@sanechips.com.cn
-Cc: linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
- linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
- kvm-riscv@lists.infradead.org, anup@brainfault.org, atish.patra@linux.dev,
- pjw@kernel.org, palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr,
- pbonzini@redhat.com, shuah@kernel.org
-References: <202605111849442561v1a0B_7W1L2Z-ENusLaP@zte.com.cn>
- <202605111130.64BBUXDN013040@mse-fl2.zte.com.cn>
- <agO_0ejKd0x38_-E@google.com>
-Content-Language: en-US
-From: Wu Fei <atwufei@163.com>
-In-Reply-To: <agO_0ejKd0x38_-E@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:_____wB30cdFbgRqe32jBA--.12714S2
-X-Coremail-Antispam: 1Uf129KBjvJXoW7tw13JFy8CryDCFW3Zr13urg_yoW8Kr4UpF
-	WSgFyjkr1kAFyrC3Z2ya1YqF1FyFW5ArWUJa4rt345ua98WrsrWr1xKa4rZasrCr1fXr12
-	yrWDK347Gwn7uaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UonQUUUUUU=
-X-CM-SenderInfo: pdwz3wlhl6il2tof0z/xtbCzQlJ6moEbklR1wAA3o
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|IA1PR12MB7759:EE_
+X-MS-Office365-Filtering-Correlation-Id: b97c11c0-8bb4-4c9b-f980-08deb0eb8783
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|366016|376014|11063799003|56012099003|18002099003|22082099003;
+X-Microsoft-Antispam-Message-Info:
+	N4hLG85ltX8wnMNzMued9ZzOVWdSCzJcBNjBj83jFgaTbjvr2eKozkt57tZfQTLrBRurSYCwUyitHVZcPRySCi+CzgQVyzQdcR0lPs4tmG/C21cTIAfTVDnSVcYR1NPDA4LiIZixCIW8W/3E+VnFjiygFQb+On5fFHAqjpPkVO2SWehQfU4Mp5bDotKlndnaNKUROVG53jd0xWX2fVnlrndQoWhZt/7dKfLHLhlO3WqFP3NfQqOa2dwnfWX9Wrlsu/8WpA7Zd1lvO6NtZ+PCtWSeGMfv1SrDVVwGxjkA61Cs7CB+UIyGAVSH2PUL9l0GQP1rNu1flk/NsonlJ/h0PLPeMN6S/n/ucleTUgkxAZETEZHWv6F1A+BGsG8GgqhfvpL8I36oSD3dghUKNRpkvuKBFBUbRdNWXXDrEs1YLwpJPf/atv2uoMhaByj0mmFG0Yy7W+ny5HatVBqxExe7O2X84PXbPkla7I7qVNzo9dYU4LHs2u8nk3qV9DeYc9Bwj1bQ0tbeDimpvWW1xckRf+FqpAHCsp2P8ooZOvhWMP2Tf5vNFnE4Oktsl7EzC53c1MYfx42OMPkrsoHQfIiMXSZgQyUy2Eb//d6U72PSBUg3YECCIKI26MfyWN2tbJH52Ay2ZH8ykKpiK6KuiRLeyi4YeTc4aU/zwb87D6PfCvSZZeSXotpiE0zwPek2Fjyh
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(11063799003)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?rT0bkSI1kGY/YkcgUnHskuRUaTdGwgPOeVvdoQQBvMp+XO7cN4pWM/uCwOJN?=
+ =?us-ascii?Q?qRbF66s+LwCR31flHDlNmfTUtDTzpu91n676fpO1e0wLrnUOt2b/lM6p+0Z5?=
+ =?us-ascii?Q?+ucBfAwZEBEC7qlckiARAEDn/qibmj2xBzGYmgO1awuSQhGLUuWQf4Pn1Poz?=
+ =?us-ascii?Q?aKCly5Riu/6fKEy/Qn1zAA5RvbxDmIEx/Y8La+RkTUUfexHqxSILq6XNG0yd?=
+ =?us-ascii?Q?GYd1NTuuwHLJFTHb17D3GqIcsbYy/6m5wWVRidqU1NxptOu3NXo2Vmbu7bdZ?=
+ =?us-ascii?Q?i3jqjlyDiZl0YG+tYxsQ5w+rqB1BKMkJhqkZvmKuzB7JFLDAKxTNQyiQPKtD?=
+ =?us-ascii?Q?vM1sChYdkKTmt1AVWLEeMxnXJXovT9DM74Ir13iTJ2Zce0MnLBdW6pgDXTgu?=
+ =?us-ascii?Q?wFKsAfRO9UMF0VkTOMc274h/lL98iWOxa34inyhPdLZM5cbidXJR1GFRKRHT?=
+ =?us-ascii?Q?tP1/k1kTiZ+WmR2hyOYxyNpBow7pQWbyic0h837VocR2CzMIL8cgpk3IsMj3?=
+ =?us-ascii?Q?PvuCrWxQJGzcTI5YlbNlkQXaRwJtsY92o5kfe1XBES+5Z+xdW9XSZ3LEGyXy?=
+ =?us-ascii?Q?skGncC3WGLpp0G5Gh+iV+45fydcCfrX0f6q6yTDLxeD6SQRRN5oKsuE4W0ga?=
+ =?us-ascii?Q?2x6rTF4HJLOfodO4526v01hjZ9NxppXuESUXV5kLqtxVXD9roXD75ZsnZ+TB?=
+ =?us-ascii?Q?02ckxLdmguLjoK2H10SnOahZSd0qj0/Ty9uF2h4qm4V7rJ45ZgjqlM+IZ6Uz?=
+ =?us-ascii?Q?64A1c/AArjMDy8R5oOF5cr0ZSduuCGq1UnLdAyUrEqxWpHemrHIjHlX1pE27?=
+ =?us-ascii?Q?aoNX1iV0OoVkm/L3qCrfyW0dpMrL0XqQNIyEplNv/TF7wrPVIi5qR/Bwp/Y+?=
+ =?us-ascii?Q?xCOf3HhTKfEdYtJDgJ67KqqPD+GmqUYu0mz/QQjg7RgXTV4u3t0g6DZrwRr0?=
+ =?us-ascii?Q?lw7V/A/IzQ6J3xskYFNW02KWi7/UpsNK5db3zJE11ecCnnWREzOXtDkr5zid?=
+ =?us-ascii?Q?wDsa91Dc4mgXT9bod4H9d8GRp5xcWkoh3JSb+JXvB1lbedvyjUq+gGSMJf8J?=
+ =?us-ascii?Q?Mn/FIz7VjQbzh9VaBULoog/q/3LAvuUfNRbrPCqVnAxnGGlEAI8Rw/jL3Klm?=
+ =?us-ascii?Q?juitxQ971CYDA8aie3tpEW0t2Hxix5P84k7bIO29S5QJ/FNsfsbEcCZ2/vEE?=
+ =?us-ascii?Q?rR97nwVKq3mGkbRbF7TuM2pj6ERi5tWi6BFm05uF/tedXMkgLlSW3RdLiqgx?=
+ =?us-ascii?Q?AkbGyGb5k1C8Ne7UGcJ/zykgh0CBdEc7rz9o2qNh7IghSLjOWMrLyVDtf6IW?=
+ =?us-ascii?Q?xibh9gMawLO4/KWk9/1GGuf3EAQgNAxHID2vTFdxiS2vgdMlDJ8JJeQxZ8MU?=
+ =?us-ascii?Q?//N9tWdzhfwUYBi8IesZjJJxBBHwT3yTRIttFAMn1kWDmQmHQgi0K0Wzqotg?=
+ =?us-ascii?Q?42gLnSOo+soX8CgpuwpWqaS+t8yR0FIOFNWnmceKxmQdhgpddHvsGVQfOYHu?=
+ =?us-ascii?Q?qSasUrQqvyWU4p/x7h/k66CrsGXh5VxkNiIzLrmBjLvelc4JoFxxtJ9Nesm4?=
+ =?us-ascii?Q?vyxEhem0qXEjrUSKLXOX6GkLkJl4COVjbYw3YAyxheElTN+ytgD4M5whNFBp?=
+ =?us-ascii?Q?4zxf0sy8XX8iWfY93I6Q2GizHE9X6FYdun0c7Ritd1xpoRXkxLelxRaXCBA2?=
+ =?us-ascii?Q?sN+RQwupEBewfffqNbg2Us+Z7UFl0W2P5UaomATgBQMuPEGG?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b97c11c0-8bb4-4c9b-f980-08deb0eb8783
+X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2026 12:31:17.2044
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 79w+z/QrUjPhezUVq/1V0sft+m8MavDKL2KZ0OPY5RfuE/1WNNInDCEOeLCozSO+
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7759
 
-On 5/13/26 08:03, Sean Christopherson wrote:
-> On Mon, May 11, 2026, wu.fei9@sanechips.com.cn wrote:
->> Currently dirty_log_test hardcodes usleep 1ms in each interval, which
->> could be too short for guest to write and fault in enough pages, then
->> there is less chance to test the write protection mechanism, especially
->> in the case of (log_mode != LOG_MODE_DIRTY_RING).
-> 
-> But when log_mode != LOG_MODE_DIRTY_RING, the individual sleep time is largely
-> meaningless, because the test won't reap the bitmaps for iterations > 0.
-> 
-> 			if (i && host_log_mode != LOG_MODE_DIRTY_RING)
-> 				continue;
-> 
-The first usleep  matters in the case of KVM_DIRTY_LOG_INITIALLY_SET. 
-The dirty bitmap is not precise in the first get_dirty_log, all pages 
-are marked as dirty but most of them are not populated in page table, 
-this creates the situation I mentioned in the cover letter.
+On Tue, May 12, 2026 at 12:23:55PM -0600, Alex Williamson wrote:
 
-"when the range to wp is
-[0xfffff01fc000, 0xfffff023c000) , if found_leaf of 0xfffff01fc000
-returns false and page_size is 2MB, it skips the whole range, but it's
-possible to have valid entries in [0xfffff0200000, 0xfffff023c000), so
-only [0xfffff01fc000, 0xfffff0200000) can be skipped safely."
+> It's not clear the bit compaction is worth the subtle RMW scenarios.
+> What do you think, should we reserve bitfields for setup/release-time to
+> avoid this class of issue or handle these as individual point fixes?
 
->>
->> Unit is introduced to replace the default 1ms if specified in command
->> line. The following test can't trigger failure on my riscv vm:
-> 
-> Failure of what?  And does the failure really not reproduce with a higher interval?
+I think one patch is fine, just that every group of bitfields should
+have a description what the locking rule is to write to
+it. 'setup/release only' is a fine rule too
 
-On riscv, it fails to write protect some pages with valid page table 
-entry then loses track of dirty pages. Higher interval doesn't help 
-because only the first usleep matters, after the first 
-collect_dirty_pages, all dirty pages are tracked precisely then there is 
-no such problem.
+Otherwise the next person to add a bitfield will randomly select a
+group and we will be back to this again..
 
-> 
->>
->>    # ./dirty_log_test -m 21 -M clear-log
->>
->> By enlarging unit, it fails every time:
-> 
-> "unit" is way too vague.   Even looking at the code, it's not clear to me what
-> you intended a "unit" to be.  I'm not entirely opposed to providing the user with
-> more control over the innards of the test, but the interface needs to be somewhat
-> intuitive.
-
-Basically, a unit is the time of one usleep(), any suggestions?
-
-Thanks,
-Fei.
-
-> 
-> _______________________________________________
-> linux-riscv mailing list
-> linux-riscv@lists.infradead.org
-> http://lists.infradead.org/mailman/listinfo/linux-riscv
-
+Jason
