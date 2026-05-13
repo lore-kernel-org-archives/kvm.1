@@ -1,139 +1,201 @@
-Received: from CH1PR05CU001.outbound.protection.outlook.com (mail-northcentralusazon11010054.outbound.protection.outlook.com [52.101.193.54])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF912402BA3;
-	Wed, 13 May 2026 12:31:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.193.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778675483; cv=fail; b=MPYyMkYSuWx85H7L3OBElawE0IUzQq3HkDSSZLt9U9TbIVQvG5pfp7ReYjKKrYbxdnAkutzpyhrU+/oej1XmVxTMZZCGEl43mLeV+STOR08NrZtapLlRYZ058XFIc4w8W2i8JEQHwHB+02LJPbSI1BGXJiUhNmaTxsbatuQoi6s=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778675483; c=relaxed/simple;
-	bh=JE8KXEQrTAoks7lycDICZuC9QBK9LvrG2PTMXqRX/XY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=cVDBNwYClIjFGBS2fnGtoEwjZfoaw5VlZBJjV5XRq0d5lEqgqQSq5+9pMCtC+xxHgZwBZzfcatoCecA2iGbX8lwoiuinRWNV0Hg1IW03w1It/L4/P5pTa5UYOzyTBJvgHbFcDOwcA+aY9IC6bZI1Xy6HlUnQJF0iIDVaqpZip/M=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=ViZxXrhi; arc=fail smtp.client-ip=52.101.193.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7E3413240
+	for <kvm@vger.kernel.org>; Wed, 13 May 2026 12:44:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778676245; cv=none; b=R1WYs4CG9ByuIUzfYgv2JkYQ1gRyTT/uS3K68XMPsVK7L0Urpty0v6uN79xAI0FccM1sYQQ1Gk6r/5975fy5aSlcnfJTndFtKMbcZQ0F5QibVPlOKmB808PML0Ks5K57uYSXFzpxyKexxSNIqXQ5gpy34ACszOurIDXrEC5+v0c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778676245; c=relaxed/simple;
+	bh=U1yovwocJyt4iBBN2hMuvWGhooDrsAQSGxPcJ2jhBZU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=e48EfTxyLGugEZihDmoETy1ahQ0U0Wor20YtYH7CbH9szG+t8gy9EPrmO5KfyZ+ZxA5NLfSYm+nSmby2u3+uotOswe/c0baxw1YWOMSQR+m4vif6oB9PZIegoYf9howvMDqDMjrlv4cW1216ipzcveAqLwOAOVPDct6e5cKawVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JWtp/0S5; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="ViZxXrhi"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=XTSzNlFAjgM0q3hs2WP4mNeWG3Mr5Z+DRiu6n8bP68KNk2fPoPwykjhLe9Od4+ICkIczwC1YmCOVq5NJT+h/IKVI0n10ud+0O5WHngI8AbZioyFrVk2e5LVbUug07+uzXsFRzw7cp6Qt51EC3noqhEkj1wYkz/u3o14wPED/Y4Fg4FBHUVX+rND+/73YqcX+/L2zkVGKkaBTncVtOWmFS2bo8B1lznnsmw4Hd03O2vJqdqDszDHherkz54d7wzu3qfMZzQ/IqPUrZIM7Sv2F0tsqj9Ol53vpfk0kUjDkuRIamBCF2eJ9Xp9SBLj9HhF4dkuVsqGXm+Q45+Wqvpkffg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=JE8KXEQrTAoks7lycDICZuC9QBK9LvrG2PTMXqRX/XY=;
- b=X23RTrts7nyrG4Ygm0oTOmxeG70xfPk3j7iHZMJBqYeRPhxsenbkTFKrUoxOrGGf3r2eNXVD7PA1aAqvSOY7gy+14b95VdcXduONMoJdQC3aPeD9klUf2T5TP8jra/UIu6JKbAYvdwckCyB0+4hkoZB3xexVK2FdXSy+sB+Sql4Cw2HxYoJ8a1KFbl/NhPVGRWSXOXK3ZjX5f3RFtpyWj1PjxSn0KuLF6OZmEfirX7Y5ALrWH7GkDhYsQc2QAeREWA00gw+nUbLz3WG5m68PSFhr8VUwLse4zFG9e63rca/l/VnP0MJhgYnBtxaGiNRGsEaVCUNpOCHOuQxH3KOYXg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=JE8KXEQrTAoks7lycDICZuC9QBK9LvrG2PTMXqRX/XY=;
- b=ViZxXrhi/a/bM1qMAMpkWPfwDqDRLrYVuln+JqdqCZct1mtGIyhTDdiSmJEDTw2GftYAlLKpAtKiNtLdZBzPA0pPozlXiP5mdByQtuvCFoYOV77/CkNBdB9aacA+BtK5wYTuM7VJwRabHOHdmt3KRY00CBOx9cLiB7A7uQpfUfuY4vbARFARWYJdDno1XINeQGg/+q7SpkoegHrRpr8IT3OH2Z7g5hjzkGl7Zr48ADADSY5F/PQQpu8YSWmROiyTranaC5GvVZRuy92FA6L/EbKV5QdLXrUjSDHW3ixgrateFipK+wxi+anNL57aCv8R1YZ9EeUdx9xPjxtXnICKHg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com (2603:10b6:408:2a1::19)
- by IA1PR12MB7759.namprd12.prod.outlook.com (2603:10b6:208:420::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9891.23; Wed, 13 May
- 2026 12:31:17 +0000
-Received: from LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528]) by LV8PR12MB9620.namprd12.prod.outlook.com
- ([fe80::299d:f5e0:3550:1528%5]) with mapi id 15.20.9913.009; Wed, 13 May 2026
- 12:31:17 +0000
-Date: Wed, 13 May 2026 09:31:16 -0300
-From: Jason Gunthorpe <jgg@nvidia.com>
-To: Alex Williamson <alex.williamson@nvidia.com>
-Cc: Alex Williamson <alex@shazbot.org>, kvm <kvm@vger.kernel.org>,
-	Kevin Tian <kevin.tian@intel.com>,
-	linux-kernel <linux-kernel@vger.kernel.org>,
-	Yishai Hadas <yishaih@nvidia.com>, rananta@google.com,
-	stable@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] vfio/pci: Fix racy bitfields and tighten struct
- layout
-Message-ID: <20260513123116.GH7655@nvidia.com>
-References: <20260511221609.3837652-1-alex.williamson@nvidia.com>
- <20260511221609.3837652-2-alex.williamson@nvidia.com>
- <20260512131812.GA7655@nvidia.com>
- <20260512122355.22132e61@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260512122355.22132e61@nvidia.com>
-X-ClientProxiedBy: MN0P221CA0025.NAMP221.PROD.OUTLOOK.COM
- (2603:10b6:208:52a::17) To LV8PR12MB9620.namprd12.prod.outlook.com
- (2603:10b6:408:2a1::19)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JWtp/0S5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778676243;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=qCqqmvyfBRoByfly7X2wP/YX/5z+CJ5QvZWJz06fuzM=;
+	b=JWtp/0S5kzELVJv24wpWTq1ON/Bmy+NsKHEo4MnR+lScDiNfDFGg5kuEbdeEQu/H6EteFA
+	EeqBScWwTLviz8/+dNcj6vrXn9mB24BKezpx9aiBjU/HZlBNuaFHDi+LqfUT51pDWLQEh5
+	gHodEIci0ledTH4K8u6Bm4JLIPx3Amg=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-223-V10L4c38NFm5JVp7kK65ow-1; Wed,
+ 13 May 2026 08:43:58 -0400
+X-MC-Unique: V10L4c38NFm5JVp7kK65ow-1
+X-Mimecast-MFC-AGG-ID: V10L4c38NFm5JVp7kK65ow_1778676234
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 66C65180034E;
+	Wed, 13 May 2026 12:43:53 +0000 (UTC)
+Received: from [10.44.50.86] (unknown [10.44.50.86])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 070DE180034E;
+	Wed, 13 May 2026 12:43:44 +0000 (UTC)
+Message-ID: <ba08dfe9-932b-40c3-9fdf-fc891d52e1d8@redhat.com>
+Date: Wed, 13 May 2026 14:43:42 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LV8PR12MB9620:EE_|IA1PR12MB7759:EE_
-X-MS-Office365-Filtering-Correlation-Id: b97c11c0-8bb4-4c9b-f980-08deb0eb8783
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|11063799003|56012099003|18002099003|22082099003;
-X-Microsoft-Antispam-Message-Info:
-	N4hLG85ltX8wnMNzMued9ZzOVWdSCzJcBNjBj83jFgaTbjvr2eKozkt57tZfQTLrBRurSYCwUyitHVZcPRySCi+CzgQVyzQdcR0lPs4tmG/C21cTIAfTVDnSVcYR1NPDA4LiIZixCIW8W/3E+VnFjiygFQb+On5fFHAqjpPkVO2SWehQfU4Mp5bDotKlndnaNKUROVG53jd0xWX2fVnlrndQoWhZt/7dKfLHLhlO3WqFP3NfQqOa2dwnfWX9Wrlsu/8WpA7Zd1lvO6NtZ+PCtWSeGMfv1SrDVVwGxjkA61Cs7CB+UIyGAVSH2PUL9l0GQP1rNu1flk/NsonlJ/h0PLPeMN6S/n/ucleTUgkxAZETEZHWv6F1A+BGsG8GgqhfvpL8I36oSD3dghUKNRpkvuKBFBUbRdNWXXDrEs1YLwpJPf/atv2uoMhaByj0mmFG0Yy7W+ny5HatVBqxExe7O2X84PXbPkla7I7qVNzo9dYU4LHs2u8nk3qV9DeYc9Bwj1bQ0tbeDimpvWW1xckRf+FqpAHCsp2P8ooZOvhWMP2Tf5vNFnE4Oktsl7EzC53c1MYfx42OMPkrsoHQfIiMXSZgQyUy2Eb//d6U72PSBUg3YECCIKI26MfyWN2tbJH52Ay2ZH8ykKpiK6KuiRLeyi4YeTc4aU/zwb87D6PfCvSZZeSXotpiE0zwPek2Fjyh
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV8PR12MB9620.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(11063799003)(56012099003)(18002099003)(22082099003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?rT0bkSI1kGY/YkcgUnHskuRUaTdGwgPOeVvdoQQBvMp+XO7cN4pWM/uCwOJN?=
- =?us-ascii?Q?qRbF66s+LwCR31flHDlNmfTUtDTzpu91n676fpO1e0wLrnUOt2b/lM6p+0Z5?=
- =?us-ascii?Q?+ucBfAwZEBEC7qlckiARAEDn/qibmj2xBzGYmgO1awuSQhGLUuWQf4Pn1Poz?=
- =?us-ascii?Q?aKCly5Riu/6fKEy/Qn1zAA5RvbxDmIEx/Y8La+RkTUUfexHqxSILq6XNG0yd?=
- =?us-ascii?Q?GYd1NTuuwHLJFTHb17D3GqIcsbYy/6m5wWVRidqU1NxptOu3NXo2Vmbu7bdZ?=
- =?us-ascii?Q?i3jqjlyDiZl0YG+tYxsQ5w+rqB1BKMkJhqkZvmKuzB7JFLDAKxTNQyiQPKtD?=
- =?us-ascii?Q?vM1sChYdkKTmt1AVWLEeMxnXJXovT9DM74Ir13iTJ2Zce0MnLBdW6pgDXTgu?=
- =?us-ascii?Q?wFKsAfRO9UMF0VkTOMc274h/lL98iWOxa34inyhPdLZM5cbidXJR1GFRKRHT?=
- =?us-ascii?Q?tP1/k1kTiZ+WmR2hyOYxyNpBow7pQWbyic0h837VocR2CzMIL8cgpk3IsMj3?=
- =?us-ascii?Q?PvuCrWxQJGzcTI5YlbNlkQXaRwJtsY92o5kfe1XBES+5Z+xdW9XSZ3LEGyXy?=
- =?us-ascii?Q?skGncC3WGLpp0G5Gh+iV+45fydcCfrX0f6q6yTDLxeD6SQRRN5oKsuE4W0ga?=
- =?us-ascii?Q?2x6rTF4HJLOfodO4526v01hjZ9NxppXuESUXV5kLqtxVXD9roXD75ZsnZ+TB?=
- =?us-ascii?Q?02ckxLdmguLjoK2H10SnOahZSd0qj0/Ty9uF2h4qm4V7rJ45ZgjqlM+IZ6Uz?=
- =?us-ascii?Q?64A1c/AArjMDy8R5oOF5cr0ZSduuCGq1UnLdAyUrEqxWpHemrHIjHlX1pE27?=
- =?us-ascii?Q?aoNX1iV0OoVkm/L3qCrfyW0dpMrL0XqQNIyEplNv/TF7wrPVIi5qR/Bwp/Y+?=
- =?us-ascii?Q?xCOf3HhTKfEdYtJDgJ67KqqPD+GmqUYu0mz/QQjg7RgXTV4u3t0g6DZrwRr0?=
- =?us-ascii?Q?lw7V/A/IzQ6J3xskYFNW02KWi7/UpsNK5db3zJE11ecCnnWREzOXtDkr5zid?=
- =?us-ascii?Q?wDsa91Dc4mgXT9bod4H9d8GRp5xcWkoh3JSb+JXvB1lbedvyjUq+gGSMJf8J?=
- =?us-ascii?Q?Mn/FIz7VjQbzh9VaBULoog/q/3LAvuUfNRbrPCqVnAxnGGlEAI8Rw/jL3Klm?=
- =?us-ascii?Q?juitxQ971CYDA8aie3tpEW0t2Hxix5P84k7bIO29S5QJ/FNsfsbEcCZ2/vEE?=
- =?us-ascii?Q?rR97nwVKq3mGkbRbF7TuM2pj6ERi5tWi6BFm05uF/tedXMkgLlSW3RdLiqgx?=
- =?us-ascii?Q?AkbGyGb5k1C8Ne7UGcJ/zykgh0CBdEc7rz9o2qNh7IghSLjOWMrLyVDtf6IW?=
- =?us-ascii?Q?xibh9gMawLO4/KWk9/1GGuf3EAQgNAxHID2vTFdxiS2vgdMlDJ8JJeQxZ8MU?=
- =?us-ascii?Q?//N9tWdzhfwUYBi8IesZjJJxBBHwT3yTRIttFAMn1kWDmQmHQgi0K0Wzqotg?=
- =?us-ascii?Q?42gLnSOo+soX8CgpuwpWqaS+t8yR0FIOFNWnmceKxmQdhgpddHvsGVQfOYHu?=
- =?us-ascii?Q?qSasUrQqvyWU4p/x7h/k66CrsGXh5VxkNiIzLrmBjLvelc4JoFxxtJ9Nesm4?=
- =?us-ascii?Q?vyxEhem0qXEjrUSKLXOX6GkLkJl4COVjbYw3YAyxheElTN+ytgD4M5whNFBp?=
- =?us-ascii?Q?4zxf0sy8XX8iWfY93I6Q2GizHE9X6FYdun0c7Ritd1xpoRXkxLelxRaXCBA2?=
- =?us-ascii?Q?sN+RQwupEBewfffqNbg2Us+Z7UFl0W2P5UaomATgBQMuPEGG?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: b97c11c0-8bb4-4c9b-f980-08deb0eb8783
-X-MS-Exchange-CrossTenant-AuthSource: LV8PR12MB9620.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 May 2026 12:31:17.2044
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 79w+z/QrUjPhezUVq/1V0sft+m8MavDKL2KZ0OPY5RfuE/1WNNInDCEOeLCozSO+
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR12MB7759
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] Documentation: KVM: Document guest-visible compatibility
+ expectations
+To: David Woodhouse <dwmw2@infradead.org>, Marc Zyngier <maz@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>,
+ kvm@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, Sean Christopherson <seanjc@google.com>,
+ Jim Mattson <jmattson@google.com>, Oliver Upton <oupton@kernel.org>,
+ Joey Gouly <joey.gouly@arm.com>, Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Zenghui Yu <yuzenghui@huawei.com>, Catalin Marinas
+ <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Raghavendra Rao Ananta <rananta@google.com>,
+ Eric Auger <eric.auger@redhat.com>, Kees Cook <kees@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, Nathan Chancellor <nathan@kernel.org>,
+ linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+ linux-kselftest@vger.kernel.org
+References: <6856b269d2af706eae397e0cf9c1231f89d9a932.camel@infradead.org>
+ <6afc4b95-3c15-4d71-877d-19b84e91ce05@redhat.com>
+ <57bc082f4824d6114d3156744c25986effc29aca.camel@infradead.org>
+ <baff82ca-6321-4b16-aa61-b2d6d60b6535@redhat.com>
+ <86h5obya2r.wl-maz@kernel.org>
+ <48b06e5655d56ff6eda30e563b34894fa0eb2f07.camel@infradead.org>
+Content-Language: en-US
+From: Paolo Bonzini <pbonzini@redhat.com>
+Autocrypt: addr=pbonzini@redhat.com; keydata=
+ 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
+In-Reply-To: <48b06e5655d56ff6eda30e563b34894fa0eb2f07.camel@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Tue, May 12, 2026 at 12:23:55PM -0600, Alex Williamson wrote:
+On 5/13/26 11:24, David Woodhouse wrote:
+> On Wed, 2026-05-13 at 09:42 +0100, Marc Zyngier wrote:
+>> If userspace is not a total joke, it will read all the ID registers,
+>> and configure what it wants to see, assuming it is a feature that can
+>> be configured (not everything can, because the architecture itself is
+>> not fully backward compatible).
+>>
+>> Yes, this is buggy at times, because the combinatorial explosion of
+>> CPU capabilities and supported features makes it pretty hard to test
+>> (and really nobody actually does). But overall, it works, and QEMU is
+>> growing an infrastructure to manage it in a "user friendly" way.
+> 
+> Yes, that is precisely what I'm asking for. I'm prepared to deal with
+> the fact that KVM/Arm64 is not a stable and mature platform like x86
+> is, and that userspace has to find all the random changes from one
+> version to the next, and explicitly pin things down to be compatible.
+> 
+> All I'm asking for is that KVM makes it *possible* to pin things down
+> to the behaviour of previously released Linux/KVM kernels.
+> 
+>> But really, this isn't what David is asking. He's demanding "bug for
+>> bug" compatibility. For that, we have two possible cases:
+> 
+> No, I am not asking you to meet that bar. I merely observed that x86
+> does and that it would be nice. But we are a *long* way from that.
 
-> It's not clear the bit compaction is worth the subtle RMW scenarios.
-> What do you think, should we reserve bitfields for setup/release-time to
-> avoid this class of issue or handle these as individual point fixes?
+x86 doesn't do bug-for-bug compatibility, thankfully - we have quirks 
+but only 11 of them, or about one per year since we started adding them. 
+  We only add quirks, generally speaking, when 1) we change the way file 
+descriptors are initialized, 2) guests in the wild were relying on it, 
+or 3) it prevends restoring state saved from an old kernel.  Is there 
+anything else?
 
-I think one patch is fine, just that every group of bitfields should
-have a description what the locking rule is to write to
-it. 'setup/release only' is a fine rule too
+So you're asking something not really far from this:
 
-Otherwise the next person to add a bitfield will randomly select a
-group and we will be back to this again..
+>> - this is a behaviour that is not allowed by the architecture: we fix
+>>    it for good. We do that on every release. Some minor, some much more
+>>    visible. And there is no way we will add this sort of "bring the
+>>    bugs back" type of behaviours. Specially when it is really obvious
+>>    that no SW can make any reasonable use of the defect. We allow
+>>    userspace to keep behaving as before, but the guest will not see a
+>>    non-compliant behaviour.
 
-Jason
+... where for example 
+https://lore.kernel.org/kvm/e03f092dfbb7d391a6bf2797ba01e122ba080bcd.camel@infradead.org/ 
+is an example of a bug that "no SW can make any reasonable use of".
+
+> Marc, this is complete nonsense and you should know better.
+> Once a behaviour is present in a released version of Linux/KVM, we
+> can't just declare it "wrong" and unilaterally impose a change in
+> guest-visible behaviour on *running* guests as a side-effect of a
+> kernel upgrade.
+> 
+> The criterion for *KVM* to remain compatible is "once it has been in a
+> released version of the kernel". Not "once it is in the architecture".
+
+That is *also* obviously nonsense though, isn't it (see example above)? 
+The truth is in the middle, "once it is in the architecture" is likely 
+too narrow but "once it is in a Linux release" is way too broad.  And 
+besides, both miss the point of *configurability* which is the basis of 
+it all.
+
+The main difference between x86 and Arm is the default state at 
+creation; x86 defaults to a blank slate, mostly; and when we didn't do 
+that, we regretted it later (cue the STUFF_FEATURE_MSRS quirk).  It's 
+too late to change the behavior for Arm, but I think we can agree that 
+patches such as 
+https://lore.kernel.org/kvm/20260511113558.3325004-2-dwmw2@infradead.org/ 
+("KVM: arm64: vgic: Allow userspace to set IIDR revision 1") are what 
+the letter and spirit of this proposal is about.
+
+Marc did not mention having to deal with guests in the wild.  Let's 
+ignore it for now because even defining "guests in the wild" is hard; 
+and anyway it's not related to the patch that triggered the discussion.
+
+So we have the third case, "restoring state saved from an old kernel". 
+If this case arises, I do believe that Arm will have to deal with it and 
+introduce quirks or KVM_GET/SET_REG hacks.  Maybe it hasn't happened 
+yet, lucky you.
+
+Overall, even if we may disagree about the details, are we really on 
+terribly distant grounds, or are we not?
+
+Paolo
+
