@@ -1,60 +1,137 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D160D3168FB;
-	Wed, 13 May 2026 01:01:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667D6357CEA;
+	Wed, 13 May 2026 01:14:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778634091; cv=none; b=WNF3etvMuZUeaW27h+7d65Fdd1TNGuRo8h9+kiC3eaAGGiYR93w//l5rzX/JyC2xK9dtbMiUPc1qx5csDHj6GprQgjv0vUCefueVTKIzbVpqJajPlti8bClZItkC7axutaxB09wCnur/34SjBHgPD7i8YWDCdWaKwR8DiTKDO+I=
+	t=1778634859; cv=none; b=IbJJ8tSXuncFv0P720vahrahtzzcAI9uVo9xjS0Xduq6TSGBPuy0LmmXiE/vjvdfl0SAQQOZziU0nhGPdLZ0R00pV7kp+QvI6MPYTrNSHd5XG2kQ+TPuMlR8J6bKEGY7SNMX/0sfQgVl8RGDxMeGHuDeVHIXJvT+srrfIW+F50c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778634091; c=relaxed/simple;
-	bh=pEZu/teuWxyBpzRYir8exGFyRrq6ovu7WHGnOCsrTPg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IBHIs8bJ8++moH4P2ZuSpss9i5eDy/8vzPr00zm2sz3nSz2b3Q9REm2MKl8SbJKd56qwMfrMcz/0Vb64yZ4xDUj/19v0M1JGG/kfIg1v/RbQ+5d+/B55O8e2eZLf85EqKWbpgltnyAcmRgX08CSUqTM8n0aktTwViqaiaA0USRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=khDs/Wwe; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1778634859; c=relaxed/simple;
+	bh=FU2ILKRpRtG6dnEOsQC0n7PNp/hPFcLs2D3fDHxUb84=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GaxdS4KlM6blnYXC4vCLAHlOMrpsdsTk3x2T5lky2ZtRUbh26eKpUB9pZ7gf1c7iX6m3J4u5/uUW9V4seCyS7wz4gMpVziQ0BX/WkDcnpcT5hs3G7R7MylAfHE80hpqGzczFldgtL+etzfCjeZW0EtGe8s260FB31o5y136/JRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=L7TvQDkG; arc=none smtp.client-ip=192.198.163.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="khDs/Wwe"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4570C2BCB0;
-	Wed, 13 May 2026 01:01:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778634090;
-	bh=pEZu/teuWxyBpzRYir8exGFyRrq6ovu7WHGnOCsrTPg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=khDs/WweQokhaXm59QjnVizjXmM+2v6i7Gz++6bUK/T7qBaVfn+iNQZqxHQGzrBz7
-	 +pNw0f37oFO7yXEvYpZoPMKHoWx1/yKux7pS349y3pf7ddzgtICF645LrwMRsji4Lr
-	 LXHkfAQAZHMU6EIAFFzMhfknAKOEZTtblvIGaSQVcH2A/I3udBJes6VuREjDI8aQeF
-	 sHaVrzIfU8chojh+5tXYW6dOkf4MLuTDEpclw+4PWoWxf1MT4289OiDZXEHAjevdYj
-	 oIELp7GiuXsqsZ6Ig8IncmUUV5fZwAS+OMYTRXzjdaLpnaHIvlyZtpS/O8k34FSy3u
-	 vlTDBjn5vSojA==
-Date: Tue, 12 May 2026 18:01:30 -0700
-From: Kees Cook <kees@kernel.org>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Andy Lutomirski <luto@amacapital.net>, Will Drewry <wad@chromium.org>,
-	Shuah Khan <shuah@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-	Sean Christopherson <seanjc@google.com>,
-	thomas.weissschuh@linutronix.de, linux@weissschuh.net,
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	kvm@vger.kernel.org
-Subject: Re: [PATCH RFC 0/4] selftests: harness: Provide global metadata
- pointer to allow clean teardown from selftest libraries
-Message-ID: <202605121800.46695B565@keescook>
-References: <20260414-selftest-global-metadata-v1-0-fd223922bc57@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="L7TvQDkG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778634856; x=1810170856;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=FU2ILKRpRtG6dnEOsQC0n7PNp/hPFcLs2D3fDHxUb84=;
+  b=L7TvQDkGgp0V39kLn/zjDipUHpGlqfsIZZuHHkwBILLGPCV9qBDfofJJ
+   02+3+qC60Fg/vQ0M0OzXUKLZz+tZy/oB0Pd3mX4dLCyD6OXhdDcqonqaI
+   VytQPWjV5cMn3xJLQch1ojhztHtrcmjoo0k1YXrpVTVsBcHzPhJJJHR7u
+   yX1zsDnEAHGOh2zcYEFHcqiTMeT9bCBFfzDPaU7jiul8EdDNVh97vHDM1
+   Ed8nXc41UJRWNUA6RQ/jazp9rkFdpxe2O8QSzzz/+y63l7WEmKXYzmPNH
+   RM9a1TcfjoZzzkHJ6jHG03Y3E6RRDfbgCiNjAy1q9VYrJgKkgXr/9NFVT
+   A==;
+X-CSE-ConnectionGUID: FFQaQOpFQgC3i+3zmqxmrQ==
+X-CSE-MsgGUID: VhYcaOeyTSiRbCWeQUM5EQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11784"; a="82123247"
+X-IronPort-AV: E=Sophos;i="6.23,231,1770624000"; 
+   d="scan'208";a="82123247"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 18:14:15 -0700
+X-CSE-ConnectionGUID: Rt5d8lv1T5iZ6ZPBEYe4TA==
+X-CSE-MsgGUID: J9zyCEBWQ1yr1OmhhEqe6w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,231,1770624000"; 
+   d="scan'208";a="238181695"
+Received: from rchatre-mobl4.amr.corp.intel.com (HELO [10.125.108.11]) ([10.125.108.11])
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 May 2026 18:14:15 -0700
+Message-ID: <bf92ebbf-8d70-406a-aea1-c11ca576de90@intel.com>
+Date: Tue, 12 May 2026 18:14:13 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260414-selftest-global-metadata-v1-0-fd223922bc57@google.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] x86/tdx: Fix zero-extension for 32-bit port I/O
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org
+Cc: "H . Peter Anvin" <hpa@zytor.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Kai Huang <kai.huang@intel.com>,
+ Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, stable@vger.kernel.org
+References: <20260428125632.129770-1-kas@kernel.org>
+ <20260428125632.129770-3-kas@kernel.org>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260428125632.129770-3-kas@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Apr 14, 2026 at 11:07:47AM -0700, Ackerley Tng wrote:
-> Would maintainers be open to having the kselftest harness expose a pointer
-> to the metadata globally?
+On 4/28/26 05:56, Kiryl Shutsemau (Meta) wrote:
+> +	if (size == 4)
+> +		regs->ax = 0;
+> +	else
+> +		regs->ax &= ~mask;
 
-I would like this, yes. It's been a real pain sometimes having to pass
-_metadata down into various deep helper functions.
+I haven't thought about this _that_ much, but this feels wrong. Why is
+is 4 so special cased?
 
--- 
-Kees Cook
+Also, what _are_ the limits on the registers that 'in' can be used on?
+
+RAX - n/a, no 64-bit I/O
+EAX - size=4
+AX  - size=2
+AH  - n/a no encoding for inb
+AL  - size=1
+
+I'd find this much easier to grasp if there was a nice table of what the
+registers, sizes, and masks ended up being usable. As usual, x86 is
+"fun" here.
