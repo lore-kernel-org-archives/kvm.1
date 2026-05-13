@@ -1,213 +1,120 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f73.google.com (mail-oo1-f73.google.com [209.85.161.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47FFE2253FC;
-	Wed, 13 May 2026 20:07:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51F023AC0CB
+	for <kvm@vger.kernel.org>; Wed, 13 May 2026 21:16:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778702861; cv=none; b=k3N+1k4FTpDzqPEkT1jWmE0JvERX7zlIJwtY2g5ijwtpK92rhZW+M2ltct6pwqcGkrFD33OTaDROerOhZnLM6iqhUwZYuooU82hlDaz0nS/76GkGZ7+J5bW9M+sQZXv7zRto9eSLqZMdL73AkjKTmF3XEcK5Zu9C27IeM6T6co8=
+	t=1778706990; cv=none; b=XOzoIdGzN5tggsS+y0NPmY5Z30awMQL4250kPvDW7THQMNDz00qxGo31jmcFHu7IYryUBXrR7hZqIaeCgrdBTYQLBPzFG4WWvWzX9NdZV625hjZ2r0JmxprJ+/5SDzEBPxKtaV8+hBC7c0jp4yM58ZGLcqocPW8pI8T+ws1Zwq4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778702861; c=relaxed/simple;
-	bh=J0mAqijFNFLdUWPYIh1s2gKwT8l8nyInIiB+eSjjdoY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XoXhi0jgDXoTFD9M49NE6RHh36A4yhSFvHR+Mg2eBiaYVpbD38LG/eoUH/WOQLjyWqI1I6gN/VuLMyCbMpxcx0ifIu/4M64EiTNROXQj2yYj796DMifsm0bFs5C4Kg2BmtbEwfwUHBGKQQYVhdVRu5PyHUEwiTnYeHvgmaxQYbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=YMozGyFQ; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1778706990; c=relaxed/simple;
+	bh=jKQ8iuhXGvRDVAnzj1gC6DLK91R18lf4SB4H8czhV5A=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Sh6AgrHmnsNewQoYbpZEa8cvMfl40BuwMZYbhlmAOrKh5uGBcH+8ED2kq50IZobzMjzcnxU0mcQqhfgmWUqehbSItO2BQpVrkprRC2rAxkRot55HXqduSc4Hmgndc6a3XzoNJXG9BzkM2efb+0f8RjJhu72ujIEApkksXnzayoE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KmFDD/4X; arc=none smtp.client-ip=209.85.161.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="YMozGyFQ"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 73E9040E00C2;
-	Wed, 13 May 2026 20:07:37 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id Yphsx2uLLhQl; Wed, 13 May 2026 20:07:27 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1778702846; bh=uhqod7nMzIBOmkzPYgOCMxxE1tt8dwN2H4ulv7fvVDo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YMozGyFQcWL9VF58/+OM/R6BRC7Dq8XFu++f8Llq3gWHHU2HglcMhltVxNJj6tzKk
-	 AGoK6P7DAWc6HTFYzPJlCpD3EtYZ87x7TFIXibQ1P5bTsfKgWsA5vEWftOozHPzQG0
-	 RRkQSyksF/avHOmGT1s74ZPqqbG1psZTcYDyvp9iU61le928TewMutyCP8BCezSnpP
-	 eihGKythF25xtF18lY64g1y6svjmDVYgKnYZgbGqAj/Q9UWj2DxMIQobEnyza6OeFn
-	 MzCSxJ6NYndUwfM/C/eIlF7Jbxukkp3kMuMRajSmXRMCy2jZ5JSnVm1wgOMJR+K4Cg
-	 +onH2EskYuO4msgH0CKGlA7FbhW76/iSJrIMPSjQ18uFfM+0P1BOAzm+LYmWf/Qa1/
-	 BLFwNZgUYL82gqR21y1F89B+7A+8ffJd8SbnmhCe6zhFOS9AM8SYeq/ratMsekJZ7g
-	 J7i3ptuUoNBIHmTydnzaLIfGyp0dvzj1g6WrOwZzrLaqJxWMMBh2/C98+kSHFi9Qqc
-	 8ql0FjTxe5pus+6CpKrm6k86lpThHXhiQy7Eu0Af7ae6dvgFkPrfNLXSAxst+IhVJH
-	 vq4GHvGnJTEYx0Ul0Nt0FCKIDUqlSSTSquNHgIRDrQQXXcCkN1tz2f8ApdB848f4VW
-	 q6f5nSI3nbpJdJOGHWQAEFTs=
-Received: from zn.tnic (pd953014d.dip0.t-ipconnect.de [217.83.1.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id C3DBD40E00BA;
-	Wed, 13 May 2026 20:07:14 +0000 (UTC)
-Date: Wed, 13 May 2026 22:07:13 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: linux-kernel@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
-	dave.hansen@intel.com, seanjc@google.com, pbonzini@redhat.com,
-	kas@kernel.org, rick.p.edgecombe@intel.com,
-	vishal.l.verma@intel.com, xiaoyao.li@intel.com, chao.gao@intel.com
-Subject: [PATCH 2/2] x86/cpu: Move intel_get_platform_id() to cpu/intel.c
-Message-ID: <20260513200713.GNagTZ8QI_BHBeZXXr@fat_crate.local>
-References: <20260430020953.1405535-1-binbin.wu@linux.intel.com>
- <20260511100451.GBagGpw7jRBDdHkBgp@fat_crate.local>
- <d88d19f5-0a96-4115-97f7-8daf1edd625a@linux.intel.com>
- <20260513101436.GAagRPDAryWZ5hGqFO@fat_crate.local>
- <89d52fff-ec3b-420e-9f01-5cd2bc8ce5cb@linux.intel.com>
- <20260513200017.GLagTYUe_TGXnFVh7I@fat_crate.local>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KmFDD/4X"
+Received: by mail-oo1-f73.google.com with SMTP id 006d021491bc7-6966f1f4490so16575675eaf.1
+        for <kvm@vger.kernel.org>; Wed, 13 May 2026 14:16:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778706985; x=1779311785; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=6JXnGk6v8vsVrC7dHkuW3HoXav5Obr9bfPUm82eBukk=;
+        b=KmFDD/4XuyzgwaOH+WPWLxh0bVjCL92UIfskkaJr4zM0F8YeYsaYLPLbtCNmTULWec
+         yfa3W+eowHMCIjMJ4ml/YUygFG98EytKLbIx1sXcsMt/WkCVgOz9ujdyd86xcqs0s2Qn
+         ykrSzVa+JVlnBUj3okfcLpwi+eR6mxgAAaQnLx/fEk51rHDGIBcUm8lOzM2cwYwjiqZ6
+         60GzNQ41B2mZWM7ma3VztPLjo+7TJZlfldNwbjNtp819/FsKKEvN91SMQhLLnWAWs80m
+         obxq4tFXxiMqczlfMssT9NOeV1jzvqSoltDi5sPITLiG3x/om6V2ON6C1hgLPjM5YMSB
+         3MtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778706985; x=1779311785;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6JXnGk6v8vsVrC7dHkuW3HoXav5Obr9bfPUm82eBukk=;
+        b=rG2SwmTQPepkPfcwOSNK1G6JtqOTMofbbSrHIdp0MxM1QvHiR57iwMJKRmk4HzshbY
+         n7errWKqUlxx0qRE/Ao5Bx5IJiYRwN6y13bt4/PGfoYTP9czZFVbAtHVmj2De44II8Va
+         vtESZCsnfbWkg9XOpvI+fDLJEDKr7VU18n3gRLifoMIemNVLJ1fs41soA8kkU6TqmYQy
+         v70ocKzvlYiFvfkhHvRaGXcCZWie2qCGBJ4y5EPFfSVBT7PC29FKeX8D4Bd4pPT9ogX4
+         aI4kAOF7iOWysLzraGE7QQm8w9F+5GJSd/8hESsnLC0ttUiYPta2cdwVWbsNL/5ogJwT
+         pqdg==
+X-Forwarded-Encrypted: i=1; AFNElJ+pe874fqM/GGHNqwhwEqY9gPvrQnqG952UhO4mcFIOjadn3+o5ZrO/mPErKhuMERqt+4I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyR80+7tMbTIqxtkaux5Ce1yRXENOihDJdXZVTK4dfOg+SZhJXj
+	2VjlozIiZxon08dPPpUnhttbRUFDI47H/tCEoDJPvDTT+w6hRNrPABYfeQ9pLOlC+iHNswFM9+X
+	Hy9eX9tDODrZ0I6n0i//3p5kPLw==
+X-Received: from iln3.prod.google.com ([2002:a92:d03:0:b0:4fb:4caf:c442])
+ (user=coltonlewis job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a4a:da01:0:b0:694:95ae:c546 with SMTP id 006d021491bc7-69b87d2fec1mr592304eaf.2.1778706985183;
+ Wed, 13 May 2026 14:16:25 -0700 (PDT)
+Date: Wed, 13 May 2026 21:16:24 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260513200017.GLagTYUe_TGXnFVh7I@fat_crate.local>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
+Message-ID: <20260513211624.2416284-1-coltonlewis@google.com>
+Subject: [kvm-unit-tests PATCH] arm: io: Set is_pl011_uart flag in ACPI initialization
+From: Colton Lewis <coltonlewis@google.com>
+To: Andrew Jones <andrew.jones@linux.dev>
+Cc: Alexandru Elisei <alexandru.elisei@arm.com>, Eric Auger <eric.auger@redhat.com>, 
+	Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev, Colton Lewis <coltonlewis@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-It is not only used in the microcode loader anymore and the platform ID
-is cached in the cpuindo_x86 structure so move the getter to
-Intel CPU-specific code.
+When booting via ACPI on ARM64, the SPCR table is parsed to initialize
+the console UART. However, the code was neglecting to set the
+is_pl011_uart flag. This caused __getchar() to fall back to treating
+the UART as a 16550A device, which fails on systems with a PL011.
 
-No functional changes.
+Tests that wait for serial input (like its-migration) would hang
+indefinitely because __getchar() would always return -1.
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Update uart0_init_acpi() to inspect the SPCR interface_type and set
+is_pl011_uart accordingly. Also define macros for the first four SPCR
+interface types in lib/acpi.h based on the Microsoft specification.
+
+Link: https://learn.microsoft.com/en-us/windows-hardware/drivers/bringup/acpi-debug-port-table#table-3-debug-port-types-and-subtypes
+Assisted-by: Gemini:gemini-3.1-pro
+Signed-off-by: Colton Lewis <coltonlewis@google.com>
 ---
- arch/x86/include/asm/microcode.h      |  2 --
- arch/x86/include/asm/processor.h      |  1 +
- arch/x86/kernel/cpu/intel.c           | 35 ++++++++++++++++++++++++++
- arch/x86/kernel/cpu/microcode/intel.c | 36 ---------------------------
- 4 files changed, 36 insertions(+), 38 deletions(-)
+ lib/acpi.h   | 6 ++++++
+ lib/arm/io.c | 3 +++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/arch/x86/include/asm/microcode.h b/arch/x86/include/asm/microcode.h
-index 3c317d155771..8b41f26f003b 100644
---- a/arch/x86/include/asm/microcode.h
-+++ b/arch/x86/include/asm/microcode.h
-@@ -61,8 +61,6 @@ static inline int intel_microcode_get_datasize(struct microcode_header_intel *hd
- 	return hdr->datasize ? : DEFAULT_UCODE_DATASIZE;
+diff --git a/lib/acpi.h b/lib/acpi.h
+index 66e3062d..29b3edd5 100644
+--- a/lib/acpi.h
++++ b/lib/acpi.h
+@@ -251,6 +251,12 @@ enum acpi_madt_type {
+ /* MADT Local APIC flags */
+ #define ACPI_MADT_ENABLED		(1)	/* 00: Processor is usable if set */
+ 
++/* Values for interface_type field in struct spcr_descriptor */
++#define ACPI_SPCR_INTERFACE_TYPE_16550		0x0000
++#define ACPI_SPCR_INTERFACE_TYPE_16450		0x0001
++#define ACPI_SPCR_INTERFACE_TYPE_16550_32BIT	0x0002
++#define ACPI_SPCR_INTERFACE_TYPE_ARM_PL011	0x0003
++
+ struct spcr_descriptor {
+ 	ACPI_TABLE_HEADER_DEF	/* ACPI common table header */
+ 	u8 interface_type;	/* 0=full 16550, 1=subset of 16550 */
+diff --git a/lib/arm/io.c b/lib/arm/io.c
+index 836fa854..55102bd7 100644
+--- a/lib/arm/io.c
++++ b/lib/arm/io.c
+@@ -81,6 +81,9 @@ static void uart0_init_acpi(void)
+ 
+ 	assert_msg(spcr, "Unable to find ACPI SPCR");
+ 	uart0_base = ioremap(spcr->serial_port.address, spcr->serial_port.bit_width);
++
++	if (spcr->interface_type == ACPI_SPCR_INTERFACE_TYPE_ARM_PL011)
++		is_pl011_uart = true;
  }
+ #else
  
--extern u32 intel_get_platform_id(void);
--
- static inline u32 intel_get_microcode_revision(void)
- {
- 	u32 rev, dummy;
-diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/processor.h
-index 67dd932305db..1a68a955863d 100644
---- a/arch/x86/include/asm/processor.h
-+++ b/arch/x86/include/asm/processor.h
-@@ -237,6 +237,7 @@ extern void early_cpu_init(void);
- extern void identify_secondary_cpu(unsigned int cpu);
- extern void print_cpu_info(struct cpuinfo_x86 *);
- void print_cpu_msr(struct cpuinfo_x86 *);
-+extern u32 intel_get_platform_id(void);
- 
- /*
-  * Friendlier CR3 helpers.
-diff --git a/arch/x86/kernel/cpu/intel.c b/arch/x86/kernel/cpu/intel.c
-index f28c0efb7c8f..3473b89e6907 100644
---- a/arch/x86/kernel/cpu/intel.c
-+++ b/arch/x86/kernel/cpu/intel.c
-@@ -199,6 +199,41 @@ void intel_unlock_cpuid_leafs(struct cpuinfo_x86 *c)
- 		c->cpuid_level = cpuid_eax(0);
- }
- 
-+/*
-+ * Use CPUID to generate a "vfm" value. Useful before cpuinfo_x86
-+ * structures are populated.
-+ */
-+static u32 intel_cpuid_vfm(void)
-+{
-+	u32 eax   = cpuid_eax(1);
-+	u32 fam   = x86_family(eax);
-+	u32 model = x86_model(eax);
-+
-+	return IFM(fam, model);
-+}
-+
-+u32 intel_get_platform_id(void)
-+{
-+	unsigned int val[2];
-+
-+	if (x86_hypervisor_present)
-+		return 0;
-+
-+	/*
-+	 * This can be called early. Use CPUID directly instead of
-+	 * relying on cpuinfo_x86 which may not be fully initialized.
-+	 * The PII does not have MSR_IA32_PLATFORM_ID. Everything
-+	 * before _it_ has no microcode (for Linux at least).
-+	 */
-+	if (intel_cpuid_vfm() <= INTEL_PENTIUM_II_KLAMATH)
-+		return 0;
-+
-+	/* get processor flags from MSR 0x17 */
-+	native_rdmsr(MSR_IA32_PLATFORM_ID, val[0], val[1]);
-+
-+	return (val[1] >> 18) & 7;
-+}
-+
- static void early_init_intel(struct cpuinfo_x86 *c)
- {
- 	u64 misc_enable;
-diff --git a/arch/x86/kernel/cpu/microcode/intel.c b/arch/x86/kernel/cpu/microcode/intel.c
-index a4c0a0cf928b..f55ff81682e5 100644
---- a/arch/x86/kernel/cpu/microcode/intel.c
-+++ b/arch/x86/kernel/cpu/microcode/intel.c
-@@ -120,42 +120,6 @@ static inline unsigned int exttable_size(struct extended_sigtable *et)
- 	return et->count * EXT_SIGNATURE_SIZE + EXT_HEADER_SIZE;
- }
- 
--
--/*
-- * Use CPUID to generate a "vfm" value. Useful before cpuinfo_x86
-- * structures are populated.
-- */
--static u32 intel_cpuid_vfm(void)
--{
--	u32 eax   = cpuid_eax(1);
--	u32 fam   = x86_family(eax);
--	u32 model = x86_model(eax);
--
--	return IFM(fam, model);
--}
--
--u32 intel_get_platform_id(void)
--{
--	unsigned int val[2];
--
--	if (x86_hypervisor_present)
--		return 0;
--
--	/*
--	 * This can be called early. Use CPUID directly instead of
--	 * relying on cpuinfo_x86 which may not be fully initialized.
--	 * The PII does not have MSR_IA32_PLATFORM_ID. Everything
--	 * before _it_ has no microcode (for Linux at least).
--	 */
--	if (intel_cpuid_vfm() <= INTEL_PENTIUM_II_KLAMATH)
--		return 0;
--
--	/* get processor flags from MSR 0x17 */
--	native_rdmsr(MSR_IA32_PLATFORM_ID, val[0], val[1]);
--
--	return (val[1] >> 18) & 7;
--}
--
- void intel_collect_cpu_info(struct cpu_signature *sig)
- {
- 	sig->sig = cpuid_eax(1);
 -- 
-2.51.0
+2.54.0.563.g4f69b47b94-goog
 
-
--- 
-Regards/Gruss,
-    Boris.
-
-https://people.kernel.org/tglx/notes-about-netiquette
