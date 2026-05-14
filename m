@@ -1,263 +1,185 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C333A542A
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 09:29:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47B343A3800;
+	Thu, 14 May 2026 09:33:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778750998; cv=none; b=ZjRj/xP5WKS4M/o8Lg2nvze6cfsrWk7Refz9V/swLnihdk8womE6YhbX99TIWOurDEkfhG8X7H2O36THdYJ/Nnf6pJV1zqqNu4ZWozSU1g5GfRrNoxRxnDwz/lNc4ZzcGdIsyhbG6NKpQliAiaHqKE3itMBGyiHE0PRCReWSpeU=
+	t=1778751225; cv=none; b=caRhBYqTNrjjIIjINy2wfR0OIrFTwmKi0CkIFKr3UEt7ZtkjQaOip7RjPpi+gtVm1sYclRY5SlAlG5vb3nSFzsLZSMV2mzx8EgzY/p7HPNAakYHVoK3WUJb7yn5K5hMremLhjyTI+U6GNkqcTwEfHu4QH9ahV8U9ZQqFDhCBnh4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778750998; c=relaxed/simple;
-	bh=giBrJRQN2VMMjCh/yoL5SJRMxEqzegUg6O8u4pivPpg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QasvQPtSykUL+8jovh3ADfPVWIYgB0crHCHataW7t8UfQPpkqkhopKWWKSVBfbgB3g5XL/u9mGXWh9tawm5AWsf7xdqm4pn2hiLyYkK0QAmHxsrrc6SrqOomQmyk6PTLOuXkVxwzCpjGvsIjw5qhAnNJpZCHzOX6nXj9JLv/FPI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CqHmrock; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=OzhzmzkI; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1778751225; c=relaxed/simple;
+	bh=15IYn3iLfZXckiqY4v2WG/U+nBEKAauifaebzvl2v8U=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=HTRBhM7sgUEP3nuq3uxq7HaiIFLihhjAzuEbwdtVbMTfNBKjiVDxzrm6E6FJ7h7Fe8C/cv3go+MFx3pJOe+9N0f52KRO9EyYeP3IYNo3wizSVYhzMa40fhfug4SHllj2KMyEJPy2tXmwAf8JwqADinhajlGtOejp2a4u23ViGNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=TrJFW2FE; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CqHmrock";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="OzhzmzkI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778750994;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=X7d0CywKsZQfA/8iHBsstOBzlQ/bG9Xhxh5p1dy0nCs=;
-	b=CqHmrockUf/NL4EU8+A9D6jsxXFfXxgSLQEnH2nSjjk71gVOh+J2/wunMfFLVkCNFSauvx
-	bqDJ53zI0qyvZYcyVqTzQ9VNojCgIjwaRoXo7A6/0LRxxVTz1c5juy9FoMwb5BspUvLYSL
-	dI0bnWOg3ESd6NW+EmhQjg+Jyf655Nw=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-118-XcoLjy-3P0CTKWwc3IzGGA-1; Thu, 14 May 2026 05:29:53 -0400
-X-MC-Unique: XcoLjy-3P0CTKWwc3IzGGA-1
-X-Mimecast-MFC-AGG-ID: XcoLjy-3P0CTKWwc3IzGGA_1778750992
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-48d1bc85bb3so38851445e9.0
-        for <kvm@vger.kernel.org>; Thu, 14 May 2026 02:29:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778750992; x=1779355792; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=X7d0CywKsZQfA/8iHBsstOBzlQ/bG9Xhxh5p1dy0nCs=;
-        b=OzhzmzkI+J9OzBIERCrgLc7zkdxsS+Jnx0q2QIrIDnwfmsZ3CJDGapprCN8gJXAbGh
-         W30pTa+BBTNoL20DvZHYJupUsT8x7rNdQhkXddKbRLBxGhbn07unB2JcqlkOjKyFTtZL
-         sWrhyVQ3se4gdTBo5e7kARVWvGMt7vKLCpSomROyuJ4v0SjhX5Y1PTx3wDlFnEGtzYWw
-         /XdgC3hEypLZqI6YJnJqF8SU3B3qKVo0JSSPwQilOtCfyYsJ/15OSnauUjGHf3PxuTb9
-         bF3yKynoebOnygYyVE6wlDwiNEIruHb+cZuRt/rmULoJZKszsAWfsXp7zaurayFd7eH2
-         BNcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778750992; x=1779355792;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X7d0CywKsZQfA/8iHBsstOBzlQ/bG9Xhxh5p1dy0nCs=;
-        b=KBDQqe/bc8fnZ4In819emHXfwTn/xN/z9bkfDLau9g/h4Bo02LLCpL66+lhiL+8OBh
-         Wv44yHxFMzcdDXdETqjfN376GJqHxoyBkQwwIeZHWnosfl2H9YXfKUstIo2KQt7WUFg1
-         +sWZPXqkpbVxh9nqPLhh1Gx3nJ/3gT4Eif+SxOWQxBpugd/WF9Kz4xdGqVgpZjq4C8Jz
-         hYwCd9MkwX0PMJs3O7DArVEQ2oMjGF1w5mySB2Cjq+j0MZv33BcwasOfuMpDIri0D5nR
-         7zxGDqgM996lwGDuMjTzkq0lg98RNhcF3BBCEYnvhcsJtok8pg46afXAGD/ula7KO+My
-         2/BQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+X3IsCptbi0/zX2Q5+9+JBk5vkWK0XsdfF5hj+xafgKQMWmBEZUil5k15h4XHWIrMQXAY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxg8p6PVzjZyw5DjGZ0tOFd9wcD21S7C5IqoSotu8IiBD48Dk15
-	NjxBxODf4EesVqmnkcPIqEUJ1lbROozYriFYKkxKFL5hsjOIGRgpg1+lUdDICVZUvqRwhGvRuhb
-	nHbSzs6dBJXC7DSJQ1a7HlRw4C5Emdz3ChQW/78XEQPpGJTOn0PxRKg==
-X-Gm-Gg: Acq92OFOs+yRuqPxZNDRKFSffNDgzkN1gn9bG43dZT4mL5YpSTwAjSaeeoOpBFTFTxF
-	YECeIMU8O8qc4I7Ht/YAhErIL3bvYQen1XfOvNtuHvQhodBWHBR+9Jk0NoVOSKHaBZsb85KqxRY
-	BzgN4QH3pbNkDac33kfY8OkfX+F2hAvKgYTFvB9tjP2HuAevkdgMnRQ4VSGmnOLwEZRyoxSHmK8
-	uIudapLZMnZzSVZSYqUAldqtEqnq8jTHWXSxtC9Cj5dYcNei6rP2UktVmRiJeSVeSL2tknyXWk5
-	6xt6En6qEqpAcjIlNbhne6COohAjgZG97KueCcoPjItaECwGAY7bRPeV5UIghlw0sYIlNxGCUCG
-	zDvdgtG16NhetcnerWNCPxyAGrvEsdO/ae3nPjrvrIFpJzIl5Y10/cswE/8HTookVnbdFapY=
-X-Received: by 2002:a05:600c:a305:b0:485:3cef:d6ea with SMTP id 5b1f17b1804b1-48fe24960bemr2343555e9.13.1778750991753;
-        Thu, 14 May 2026 02:29:51 -0700 (PDT)
-X-Received: by 2002:a05:600c:a305:b0:485:3cef:d6ea with SMTP id 5b1f17b1804b1-48fe24960bemr2343285e9.13.1778750991254;
-        Thu, 14 May 2026 02:29:51 -0700 (PDT)
-Received: from stex1 (host-87-16-204-231.retail.telecomitalia.it. [87.16.204.231])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fd7672ae9sm19873735e9.6.2026.05.14.02.29.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 14 May 2026 02:29:50 -0700 (PDT)
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: netdev@vger.kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	kvm@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	virtualization@lists.linux.dev,
-	"David S. Miller" <davem@davemloft.net>,
-	Jason Wang <jasowang@redhat.com>,
-	linux-kernel@vger.kernel.org,
-	Maher Azzouzi <maherazz04@gmail.com>
-Subject: [PATCH net] vsock/virtio: fix zerocopy completion for multi-skb sends
-Date: Thu, 14 May 2026 11:29:48 +0200
-Message-ID: <20260514092948.268720-1-sgarzare@redhat.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="TrJFW2FE"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6A7C03502;
+	Thu, 14 May 2026 02:33:37 -0700 (PDT)
+Received: from [10.1.37.28] (e122027.cambridge.arm.com [10.1.37.28])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id C0D2F3F85F;
+	Thu, 14 May 2026 02:33:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1778751222; bh=15IYn3iLfZXckiqY4v2WG/U+nBEKAauifaebzvl2v8U=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=TrJFW2FE7DK1dKESIWBDe4IoPEqOi52Xs5k+YIeEW8bac5xeRkCBiGICFhWFFd8uv
+	 vCK4kCAoGx/O73KOo79kmau7br4yf19Ge4m7WFcUWYEVgAwX6liLi0xrV3L5aDHlrk
+	 MQ8oFeuLm/txVMFOmUezID+d4euoxwT3zcB89z54=
+Message-ID: <cc21ea56-827f-4077-b6f7-3ef00c0b9408@arm.com>
+Date: Thu, 14 May 2026 10:33:35 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 10/44] arm64: RMI: Add support for SRO
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Gavin Shan <gshan@redhat.com>, Shanker Donthineni <sdonthineni@nvidia.com>,
+ Alper Gun <alpergun@google.com>, Emi Kisanuki <fj0570is@fujitsu.com>,
+ Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+ Lorenzo.Pieralisi2@arm.com
+References: <20260513131757.116630-1-steven.price@arm.com>
+ <20260513131757.116630-11-steven.price@arm.com> <yq5a8q9ma08r.fsf@kernel.org>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <yq5a8q9ma08r.fsf@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+On 14/05/2026 09:01, Aneesh Kumar K.V wrote:
+> Steven Price <steven.price@arm.com> writes:
+> 
+>> +unsigned long rmi_sro_execute(struct rmi_sro_state *sro, gfp_t gfp)
+>> +{
+>> +	unsigned long sro_handle;
+>> +	struct arm_smccc_1_2_regs regs;
+>> +	struct arm_smccc_1_2_regs *regs_in = &sro->regs;
+>> +
+>> +	rmi_smccc_invoke(regs_in, &regs);
+>> +
+>> +	sro_handle = regs.a1;
+>> +
+>> +	while (RMI_RETURN_STATUS(regs.a0) == RMI_INCOMPLETE) {
+>> +		bool can_cancel = RMI_RETURN_CAN_CANCEL(regs.a0);
+>> +		int ret;
+>> +
+>> +		switch (RMI_RETURN_MEMREQ(regs.a0)) {
+>> +		case RMI_OP_MEM_REQ_NONE:
+>> +			regs = (struct arm_smccc_1_2_regs){
+>> +				SMC_RMI_OP_CONTINUE, sro_handle, 0
+>> +			};
+>> +			rmi_smccc_invoke(&regs, &regs);
+>> +			break;
+>> +		case RMI_OP_MEM_REQ_DONATE:
+>> +			ret = rmi_sro_donate(sro, sro_handle, regs.a2, &regs,
+>> +					     gfp);
+>> +			break;
+>> +		case RMI_OP_MEM_REQ_RECLAIM:
+>> +			ret = rmi_sro_reclaim(sro, sro_handle, &regs);
+>> +			break;
+>> +		default:
+>> +			ret = WARN_ON(1);
+>> +			break;
+>> +		}
+>> +
+>> +		if (ret) {
+>> +			if (can_cancel) {
+>> +				/*
+>> +				 * FIXME: Handle cancelling properly!
+>> +				 *
+>> +				 * If the operation has failed due to memory
+>> +				 * allocation failure then the information on
+>> +				 * the memory allocation should be saved, so
+>> +				 * that the allocation can be repeated outside
+>> +				 * of any context which prevented the
+>> +				 * allocation.
+>> +				 */
+>> +			}
+>> +			if (WARN_ON(ret))
+>> +				return ret;
+>> +		}
+>> +	}
+>> +
+>> +	return regs.a0;
+>> +}
+> 
+> Can you also add support to return x1,x2 etc
 
-When a large message is fragmented into multiple skbs, the zerocopy
-uarg is only allocated and attached to the last skb in the loop.
-Non-final skbs carry pinned user pages with no completion tracking,
-so the kernel has no way to notify userspace when those pages are safe
-to reuse. If the loop breaks early the uarg is never allocated at all,
-leaking pinned pages with no completion notification.
+Indeed that's going to be needed. Looking at this function again I don't 
+think we actually need the on-stack 'regs' any more. So the below (very 
+lightly tested) diff would use the regs from sro which also means they 
+will be there for the caller if it needs them.
 
-Fix this by following the approach used by TCP: allocate the zerocopy
-uarg (if not provided by the caller) before the send loop and attach
-it to every skb via skb_zcopy_set(), which takes a reference per skb.
-Each skb's completion properly decrements the refcount, and the
-notification only fires after the last skb is freed.
-On failure, if no data was sent, the uarg is cleanly aborted via
-net_zcopy_put_abort().
+Thanks,
+Steve
 
-This issue was initially discovered by sashiko while reviewing commit
-1cb36e252211 ("vsock/virtio: fix MSG_ZEROCOPY pinned-pages accounting")
-but was pre-existing.
-
-Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
-Cc: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Closes: https://sashiko.dev/#/patchset/20260420132051.217589-1-sgarzare%40redhat.com
-Reported-by: Maher Azzouzi <maherazz04@gmail.com>
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
----
- net/vmw_vsock/virtio_transport_common.c | 83 ++++++++++---------------
- 1 file changed, 34 insertions(+), 49 deletions(-)
-
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index 989cc252d3d3..1e3409d28164 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -70,34 +70,6 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
- 	return true;
- }
+---8<---
+diff --git a/arch/arm64/kernel/rmi.c b/arch/arm64/kernel/rmi.c
+index a8107ca9bb6d..58a0216be409 100644
+--- a/arch/arm64/kernel/rmi.c
++++ b/arch/arm64/kernel/rmi.c
+@@ -356,30 +356,29 @@ void rmi_sro_free(struct rmi_sro_state *sro)
+ unsigned long rmi_sro_execute(struct rmi_sro_state *sro, gfp_t gfp)
+ {
+ 	unsigned long sro_handle;
+-	struct arm_smccc_1_2_regs regs;
+-	struct arm_smccc_1_2_regs *regs_in = &sro->regs;
++	struct arm_smccc_1_2_regs *regs = &sro->regs;
  
--static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
--					   struct sk_buff *skb,
--					   struct msghdr *msg,
--					   size_t pkt_len,
--					   bool zerocopy)
--{
--	struct ubuf_info *uarg;
--
--	if (msg->msg_ubuf) {
--		uarg = msg->msg_ubuf;
--		net_zcopy_get(uarg);
--	} else {
--		struct ubuf_info_msgzc *uarg_zc;
--
--		uarg = msg_zerocopy_realloc(sk_vsock(vsk),
--					    pkt_len, NULL, false);
--		if (!uarg)
--			return -1;
--
--		uarg_zc = uarg_to_msgzc(uarg);
--		uarg_zc->zerocopy = zerocopy ? 1 : 0;
--	}
--
--	skb_zcopy_init(skb, uarg);
--
--	return 0;
--}
--
- static int virtio_transport_fill_skb(struct sk_buff *skb,
- 				     struct virtio_vsock_pkt_info *info,
- 				     size_t len,
-@@ -317,8 +289,10 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 	u32 src_cid, src_port, dst_cid, dst_port;
- 	const struct virtio_transport *t_ops;
- 	struct virtio_vsock_sock *vvs;
-+	struct ubuf_info *uarg = NULL;
- 	u32 pkt_len = info->pkt_len;
- 	bool can_zcopy = false;
-+	bool have_uref = false;
- 	u32 rest_len;
- 	int ret;
+-	rmi_smccc_invoke(regs_in, &regs);
++	rmi_smccc_invoke(regs, regs);
  
-@@ -360,6 +334,25 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 		if (can_zcopy)
- 			max_skb_len = min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
- 					    (MAX_SKB_FRAGS * PAGE_SIZE));
-+
-+		if (info->msg->msg_flags & MSG_ZEROCOPY &&
-+		    info->op == VIRTIO_VSOCK_OP_RW) {
-+			uarg = info->msg->msg_ubuf;
-+
-+			if (!uarg) {
-+				uarg = msg_zerocopy_realloc(sk_vsock(vsk),
-+							    pkt_len, NULL, false);
-+				if (!uarg) {
-+					virtio_transport_put_credit(vvs, pkt_len);
-+					return -ENOMEM;
-+				}
-+
-+				if (!can_zcopy)
-+					uarg_to_msgzc(uarg)->zerocopy = 0;
-+
-+				have_uref = true;
-+			}
-+		}
+-	sro_handle = regs.a1;
++	sro_handle = regs->a1;
+ 
+-	while (RMI_RETURN_STATUS(regs.a0) == RMI_INCOMPLETE) {
+-		bool can_cancel = RMI_RETURN_CAN_CANCEL(regs.a0);
++	while (RMI_RETURN_STATUS(regs->a0) == RMI_INCOMPLETE) {
++		bool can_cancel = RMI_RETURN_CAN_CANCEL(regs->a0);
+ 		int ret;
+ 
+-		switch (RMI_RETURN_MEMREQ(regs.a0)) {
++		switch (RMI_RETURN_MEMREQ(regs->a0)) {
+ 		case RMI_OP_MEM_REQ_NONE:
+-			regs = (struct arm_smccc_1_2_regs){
++			*regs = (struct arm_smccc_1_2_regs){
+ 				SMC_RMI_OP_CONTINUE, sro_handle, 0
+ 			};
+-			rmi_smccc_invoke(&regs, &regs);
++			rmi_smccc_invoke(regs, regs);
+ 			break;
+ 		case RMI_OP_MEM_REQ_DONATE:
+-			ret = rmi_sro_donate(sro, sro_handle, regs.a2, &regs,
++			ret = rmi_sro_donate(sro, sro_handle, regs->a2, regs,
+ 					     gfp);
+ 			break;
+ 		case RMI_OP_MEM_REQ_RECLAIM:
+-			ret = rmi_sro_reclaim(sro, sro_handle, &regs);
++			ret = rmi_sro_reclaim(sro, sro_handle, regs);
+ 			break;
+ 		default:
+ 			ret = WARN_ON(1);
+@@ -404,7 +403,7 @@ unsigned long rmi_sro_execute(struct rmi_sro_state *sro, gfp_t gfp)
+ 		}
  	}
  
- 	rest_len = pkt_len;
-@@ -378,27 +371,7 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 			break;
- 		}
+-	return regs.a0;
++	return regs->a0;
+ }
  
--		/* We process buffer part by part, allocating skb on
--		 * each iteration. If this is last skb for this buffer
--		 * and MSG_ZEROCOPY mode is in use - we must allocate
--		 * completion for the current syscall.
--		 *
--		 * Pass pkt_len because msg iter is already consumed
--		 * by virtio_transport_fill_skb(), so iter->count
--		 * can not be used for RLIMIT_MEMLOCK pinned-pages
--		 * accounting done by msg_zerocopy_realloc().
--		 */
--		if (info->msg && info->msg->msg_flags & MSG_ZEROCOPY &&
--		    skb_len == rest_len && info->op == VIRTIO_VSOCK_OP_RW) {
--			if (virtio_transport_init_zcopy_skb(vsk, skb,
--							    info->msg,
--							    pkt_len,
--							    can_zcopy)) {
--				kfree_skb(skb);
--				ret = -ENOMEM;
--				break;
--			}
--		}
-+		skb_zcopy_set(skb, uarg, NULL);
- 
- 		virtio_transport_inc_tx_pkt(vvs, skb);
- 
-@@ -422,6 +395,18 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- 
- 	virtio_transport_put_credit(vvs, rest_len);
- 
-+	/* msg_zerocopy_realloc() initializes the ubuf_info refcnt to 1.
-+	 * skb_zcopy_set() increases it for each skb, so we can drop that
-+	 * initial reference to keep it balanced.
-+	 */
-+	if (have_uref) {
-+		if (rest_len == pkt_len)
-+			/* No data sent, abort the notification. */
-+			net_zcopy_put_abort(uarg, true);
-+		else
-+			net_zcopy_put(uarg);
-+	}
-+
- 	/* Return number of bytes, if any data has been sent. */
- 	if (rest_len != pkt_len)
- 		ret = pkt_len - rest_len;
--- 
-2.54.0
+ static int rmi_check_version(void)
 
