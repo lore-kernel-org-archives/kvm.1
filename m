@@ -1,226 +1,92 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA7E638AC8C;
-	Thu, 14 May 2026 10:05:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E6F237FF46;
+	Thu, 14 May 2026 10:41:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778753132; cv=none; b=rsR3FCoSBKg2nPgIDzNoFmNcy5ItqGk/pcjCfcSl1njSB4ZJsv8HX7yPsfyLiL1c0qnV4AFhLPUPknKfrjv5dijNlv7khysGp/ROQjlTAGusZauNXafFRvOj0svPjsobfS8Ga1r5tG3rWdWCYLgTpdHqlJS6PAYhT3gyi3k7Pfg=
+	t=1778755266; cv=none; b=dD09qwclWF3w8VcLz96g7bqvu4EWnTAi5tJgV0okNSVxjeIATIxtPIUbS49puIK8q+KtaBplURL/HtD2MQ1vatS2OzkS80qvlmnb4kLSqR4MQoXTSgbTI1Dud9ylWyUwhkqwxo+GsYu4TnDXAuMNMkFTa9cQlm+D8RJWX4etDsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778753132; c=relaxed/simple;
-	bh=9s4U+9gD84rWu/S2Cv3hs/0JRx2/rylUGgBRuH4NEas=;
+	s=arc-20240116; t=1778755266; c=relaxed/simple;
+	bh=vPuorauXMl/h/wg2FEzLaOHOzC5siIsj/mMvD5/A2Tg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j2JcUypHVD0obgq/HNVBFIYdfpFq+DlCqmlPSbqCA3T40i9usDok+DK80fz83Pndx4CFt8XGkoCNkNg8YpOG01rr4X8QDQ6TPnQ7JVXS2OpevPftRMFSVIqX+AWO1hkZVtgYEpiooOMYLMJhetZlVVHDNEDublM/mgz0LA213gQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=TRwJYUiR; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=njAmYmbeRPqbZFCZw6X19X8bBdx/u8w/WKRUfN1EOo79zOYJpQvYOQ6k45IcdjyTjK22sGGJV+IU3M5sFJpkpTFaS2XA+8fFHQMvRfbumLTbnPWinc8CjjhzMk+e7bYT+R1+GQU5JHt3RYO9Wy1Ivbz+gYwL787KIebsQRnkOnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=HDLsR3vW; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="TRwJYUiR"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64E6bNxr3773759;
-	Thu, 14 May 2026 10:05:13 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=Af/BdJqD45t8qNOLx315vRMVFrP03J
-	VrShiBq1i949A=; b=TRwJYUiRt883EuwdI2JIPQrLychxHyIoCjmifxevnrR9Om
-	1qPj9pTDCIJc2vFS3Op28hz4O7DDcoDgY3Yp29ggv9RcC76TsNMrluR6rL+QBGTP
-	egpC9CTHfLFjbmQcuS+n9q2goqvZLJNkdJbinXo20+efUeYFYS6YjwjIC5+YSI7O
-	BmfGJCH5E0kgruJ4PX3Du5C63loVZX0BXGSYq2yyTpMLJZLWV49RMITTcEgRdCw+
-	YClY8i/N/4DkH9gtljpPafAjdpT4wIAnsemoHznDHGXaR0oibdc3aeUp2Jucm3uG
-	7Y6RvNavxhbD+iucYzN13lHRbYLP1lJMa/42R9GA==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e3nv6ubr7-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 May 2026 10:05:12 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64E9safm006877;
-	Thu, 14 May 2026 10:05:11 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e3nfh3w5j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 14 May 2026 10:05:11 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64EA57gC49021370
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 14 May 2026 10:05:07 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id A4F7020067;
-	Thu, 14 May 2026 10:05:07 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id C34B920063;
-	Thu, 14 May 2026 10:05:03 +0000 (GMT)
-Received: from mac.bl1-in.ibm.com (unknown [9.124.209.153])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Thu, 14 May 2026 10:05:03 +0000 (GMT)
-Date: Thu, 14 May 2026 15:34:58 +0530
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: Ritesh Harjani <ritesh.list@gmail.com>
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
-        Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
-Subject: Re: [PATCH v2 0/5] KVM: PPC: Handle CPU compatibility mode for
- nested guests
-Message-ID: <20260514151719.b7ea3fdd-9b-amachhiw@linux.ibm.com>
-Mail-Followup-To: Ritesh Harjani <ritesh.list@gmail.com>, 
-	linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>, 
-	Vaibhav Jain <vaibhav@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, 
-	"Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org
-References: <20260513100755.83215-1-amachhiw@linux.ibm.com>
- <o6iir82o.ritesh.list@gmail.com>
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="HDLsR3vW"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 2B3BC40E00BA;
+	Thu, 14 May 2026 10:40:57 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id igv4gu8lMZmr; Thu, 14 May 2026 10:40:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1778755247; bh=xFTtoNONN/I495zdy7edaPKgEVX47wy7ElthomCpSK4=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HDLsR3vWcA8CQzy2uEvhHkmIu7C2GYjD/CdxZFV59UnwzY22z79H0eINAdY1UjblX
+	 bev135MA3yxGGXw6tQ9e5Da05veFkSAsCQQvHDHg08vCagAtYbej9RqI9Mc1/8S6bp
+	 SGy/s6ZTcXFrE+nmSkhs/AgMGGJiwRPEAXyi4G4VsbTsABiBQaGp9461YpVKLRdwpT
+	 jmRIB92QtHrk5bmf4Iq1jDXD/5klYYoptfzDYvG1rwml0dyntxIqEGoQ7gDZtULcEC
+	 cgOrWZJl6hBabV/K+kvxr0SgWpICg3IOHwvNqJQuPxB9GL1U1AYmUJB0vtQtcmU0/Q
+	 pfFEXRQk5ExZ/FVsltI10fSPYzwLhPcrTCYPigNyfgZmjYCsbJhCmGS9Ll5rtxQjxD
+	 Feo+g78EOuhvqqrf5DikjDaklbknHbW7XaFmS2Cn7ArbS0pvcFYvUC1RAbslpxOqbm
+	 3oM2XdWSQ8oWjpl6+Yrw/b4c3QC499ySJEMXG1PZ8/m810Y2P7fRpMe44p8OogFXwF
+	 45vDS+0FnO1Np8bn9696JnBjhsazjKCd8BW1vtJ765u4yzSq6mgRHjz2xGWANpdAzU
+	 YkHRmjk5kXESikrQgYObUDtxsmMogIxCkEpwkkhl5Rp3ExfrNco2AOlmAWdkwAm1Fn
+	 VqVROoyNXrA+sdykFR6JdDCA=
+Received: from zn.tnic (pd953014d.dip0.t-ipconnect.de [217.83.1.77])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 1264640E0031;
+	Thu, 14 May 2026 10:40:35 +0000 (UTC)
+Date: Thu, 14 May 2026 12:40:28 +0200
+From: Borislav Petkov <bp@alien8.de>
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
+	dave.hansen@intel.com, seanjc@google.com, pbonzini@redhat.com,
+	kas@kernel.org, rick.p.edgecombe@intel.com,
+	vishal.l.verma@intel.com, xiaoyao.li@intel.com, chao.gao@intel.com
+Subject: Re: [PATCH 1/2] x86/microcode: Do not access MSR_IA32_PLATFORM_ID
+ when running as a guest
+Message-ID: <20260514104028.GAagWmnJiOUrfTkZmN@fat_crate.local>
+References: <20260430020953.1405535-1-binbin.wu@linux.intel.com>
+ <20260511100451.GBagGpw7jRBDdHkBgp@fat_crate.local>
+ <d88d19f5-0a96-4115-97f7-8daf1edd625a@linux.intel.com>
+ <20260513101436.GAagRPDAryWZ5hGqFO@fat_crate.local>
+ <89d52fff-ec3b-420e-9f01-5cd2bc8ce5cb@linux.intel.com>
+ <20260513200017.GLagTYUe_TGXnFVh7I@fat_crate.local>
+ <20260513200601.GMagTZqT_CT6EvN1Uz@fat_crate.local>
+ <7e8c7907-5237-4287-9ccc-ec22e15a7415@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <o6iir82o.ritesh.list@gmail.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=KbvidwYD c=1 sm=1 tr=0 ts=6a059e58 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=kj9zAlcOel0A:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=i22HGULVa775TzVH9QoA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE0MDA5NSBTYWx0ZWRfX918kfqsQK0XT
- fQqlTF2/LIFYk8ExLBawLpcm4t4wXs8AkLFlxbdlNQEcBD7eCWVT1lgUhhUqxoX4NwZIew2uQuS
- W+D6qCdBSjUv8X8mViguKluejCRHqzqP/2gs1E5OX1vpgadmDmNZLtViLobZH9GGF3o0wiszLCk
- esYh6An9EccbFhjN2neQQpaTarwIdaUq93aM2KEedj7mNoGBgCrVnVDXy7WXs9DGMSecmR+5ZaB
- +ICQL9T3qnpHEteApyH9ZhLHBQzJK3RtO70/fm0DaLqEKK2bKBLWVtKRNIxEnhHUvgFrQEWNd6C
- QT2cykrqq81znxY+h2mA28TZzlRRzNU8HZRaFP3Vn26sJfWh7YN9nVDC6BdpSG3jsF7EIxuef0b
- +/RPvFA/npwBqg3Ico5x2w6gqNmwNR6QJgLH5djXZ181GadCbcyfcZ7Au6Uuq8dLe0fo5v9zBY5
- wV4AFBbbm9fJW42Rz2g==
-X-Proofpoint-GUID: mWigg6i4TIUXe3RphRc177hdpIWcF7QH
-X-Proofpoint-ORIG-GUID: OCds5ZSKTFOuOWVRRk572-yCfhIyWWJg
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-14_02,2026-05-13_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 bulkscore=0 impostorscore=0 malwarescore=0
- lowpriorityscore=0 phishscore=0 spamscore=0 suspectscore=0 clxscore=1015
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605050000
- definitions=main-2605140095
+In-Reply-To: <7e8c7907-5237-4287-9ccc-ec22e15a7415@linux.intel.com>
 
-Hi Ritesh,
-
-Thanks for taking a look at this series. Please find my comment inline below:
-
-On 2026/05/14 08:49 AM, Ritesh Harjani wrote:
+On Thu, May 14, 2026 at 02:22:04PM +0800, Binbin Wu wrote:
+> > -	/*
+> > +	 * 1) The CPU does not support CPUID, detected below in
+>                                                          ^
+> Nit: 
+> "below" is a bit ambiguous, maybe "earlier"?
 > 
-> Hi Amit,
-> 
-> Amit Machhiwal <amachhiw@linux.ibm.com> writes:
-> 
-> > On POWER systems, newer processor generations can operate in compatibility
-> > modes corresponding to earlier generations (e.g., a Power11 system running
-> > in Power10 compatibility mode). In such cases, the effective CPU level
-> > exposed to guests differs from the physical processor generation.
-> >
-> > This creates a problem for nested virtualization. When booting a nested KVM
-> > guest (L2) inside a host KVM guest (L1) running in a compatibility mode,
-> > userspace (e.g., QEMU) may derive the CPU model from the raw hardware PVR
-> > and attempt to configure the nested guest accordingly. However, the L1
-> > partition is constrained by the compatibility level negotiated with the
-> > hypervisor (L0), and requests exceeding that level are rejected, leading to
-> > guest boot failures such as:
-> >
-> >   KVM-NESTEDv2: couldn't set guest wide elements
-> >
-> > This series addresses the issue in two steps:
-> >
-> > 1. Detect and reject invalid compatibility requests early in KVM to avoid
-> >    late failures.
-> >
-> > 2. Provide a mechanism for userspace to query the effective CPU
-> >    compatibility modes supported by the host, so it can select an
-> >    appropriate CPU model for nested guests.
-> >
->
-> Do we really need to add a uapi change for this? Tools like Qemu can
-> read the device tree info of the host, isn't it?
+> > +	 *    load_ucode_bsp().
 
-While cpu-version is available in /proc/device-tree/cpus/<cpu#>/cpu-version on
-both L1 booted on PowerNV and PowerVM LPARs, I believe the UAPI change is still
-preferable for several reasons:
+The sentence says "... below in load_ucode_bsp()." It can't any clearer than
+that.
 
-1. We would want to rely on the capabilities negotiated with pHYP (L0) in KVM on
-   PowerVM case instead of device tree property. Also, the cpu-version property
-   only depicts the current compat mode host (L1) is booted in but doesn't
-   really point to what all compat modes are supported for the nested guest
-   (L2).
+-- 
+Regards/Gruss,
+    Boris.
 
-2. procfs dependency: Not all systems run with procfs enabled (CONFIG_PROC_FS is
-   optional). For example, minimal configurations (like buildroot) might disable
-   it. The KVM ioctl works regardless of procfs availability since it accesses
-   kernel data structures directly.
-
-3. Kernel validation: The kernel validates and normalizes the compatibility
-   information. For example, patch 1 adds validation logic that rejects invalid
-   compatibility requests early. The ioctl ensures userspace gets validated,
-   consistent data.
-
-4. Abstraction & stability: While /proc/device-tree works today, it's an
-   implementation detail. The UAPI provides a stable interface that won't break
-   if the underlying mechanism changes.
-
-5. Semantic clarity: KVM_PPC_GET_COMPAT_CAPS clearly expresses what
-   compatibility modes can I use for KVM guests vs. parsing device tree which
-   requires understanding the semantic meaning of cpu-version.
-
->
-> > To achieve this, the series introduces a new KVM capability and ioctl
-> > (KVM_CAP_PPC_COMPAT_CAPS / KVM_PPC_GET_COMPAT_CAPS) that expose the
-> > compatibility modes supported by the host.
-> >
-> > The implementation supports both:
-> >
-> >   - PowerVM (nested API v2), where compatibility information is obtained
-> >     via the H_GUEST_GET_CAPABILITIES hypercall.
-> >   - PowerNV (nested API v1), where compatibility is derived from the device
-> >     tree ("cpu-version") representing the effective processor compatibility
-> >     level.
-> 
-> See there you go, for PowerNV if this info is provided in the device
-> tree, then Qemu could as well just read that info, no?
->
-> ... yup, kvmppc_read_int_dt() can do that I guess.
-> 
-> So, my request is, can we look into this to see, if there is a possible
-> alternative to this? maybe we already have a mechanism which Qemu could
-> use to get this info already?
-
-You're right that QEMU could read the device tree from procfs. We had discussed
-this approach internally as well. However, we believe the UAPI approach offers
-additional benefits and looks more robust and future proof as outlined above.
-
-> 
-> btw - I haven't given a full read of the patch series, but reading the
-> cover letter, I felt  we should atleast add this info to the cover
-> letter on, why a uapi change is really needed here, why can't the
-> existing alternatives work for us.
-
-I have described above why we did the UAPI change for the approach followed in
-this series. Could you please suggest what else can be added?
-
-Thanks,
-Amit
-
-> -ritesh
-> 
-> >
-> > This allows userspace (e.g., QEMU) to select a CPU model consistent with
-> > the host compatibility mode, avoiding mismatches and enabling successful
-> > nested guest boot.
-> >
+https://people.kernel.org/tglx/notes-about-netiquette
