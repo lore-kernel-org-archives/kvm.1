@@ -1,55 +1,55 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA7A3CF69C
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 21:05:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8F83CF960
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 21:05:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778792723; cv=none; b=Ylj/MmEKsbWpoWMxcHaZBIb/pbubcxH8qog9oo0hI7QgqxhqIJOXzeSWAIv55MfEaIHoYnraJCyHDLh4R6KKUvxnBB/J0M2nSWK1gAN3knan/+0F/2x25y89m3kMwLay/Auj7NA/Z7vVgSp9iLsldSr/S0sFfjitBkSTLvB06Es=
+	t=1778792724; cv=none; b=EwKIUcgCByleYojd0QbFAAGmjQDGZ9T6XKezKPKd3nlGSO7Ohtw0sEWgr8RDFNhQ7ytEkdBhjkxo1I886Mk3Z4z5FdjGZXdAozLZN4w8KYFQQnXWzo7xFL9AWoF/wD5hdB/BmeH69bXEhQATvzMw07/NDkBeNysaKOXS6L1Y9h0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778792723; c=relaxed/simple;
-	bh=OYekk1EH5NcmtvUhqTFSEum3+N2bK0MfWVLEvq36g0U=;
+	s=arc-20240116; t=1778792724; c=relaxed/simple;
+	bh=ZiwP9jdCjnsjMvDj9YYxtXYRMmV/hbaMlL3FeWM4X1Y=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CxvifWG0mGd7e3Sr/pEgULZSeoUZIuWYoueTY/s9ZumCoZizQ9r4azHUlveB/x2cXDz6xos7NNtfcm+KaG2OE68fSxh0RpAHGKna0uiBsqaBnjF5kjGunk9WFZ0FKsezN/trdDA1hSClcvTo4Fi7G8A3MIBysjbxHC6jrsPv288=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nbz/5ewQ; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=EEeBaGUcAwoDoJQMRaKoeo+f4N0IXJdX8NXz1Air6h0kNeIhB3Zyd8PdfhKxe5PP6IrWdnMyEgnoemG6BPw3Xs8l8UlKlUDYIsZuOvdbvKSvjb9YqmTxc2oxh4561L04u2erc6xHgkxi8Bdq7cp2HtGS2F36aAvjPqJhsho+JHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dLuk94fe; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nbz/5ewQ"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b9b8137828so89952895ad.0
-        for <kvm@vger.kernel.org>; Thu, 14 May 2026 14:05:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dLuk94fe"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8354503d9acso10671897b3a.1
+        for <kvm@vger.kernel.org>; Thu, 14 May 2026 14:05:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778792721; x=1779397521; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1778792722; x=1779397522; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=ksRWCd9wVpXXedmzgp+8zq/d+VDqKQBk5H/4tem2ZDI=;
-        b=nbz/5ewQu2MuEDtc4Q+bc1PAZZ6Eg+xumZSJt8M+hOiX+SMWnooWFdS87dO7Rwf7N2
-         R8CeVM8f5UZKVlM0QGpZCEXYyo3pGvEbttdLQhVtmXUEGmDP2T15d+6UbQf2SPPC4DXJ
-         hKyk/ig4TCZVrHKM5PBrLJ/jxa6FupbofEqX3J308ijpJL6fBecvP6peps2GBXFOS7Ht
-         svbaujWmyOcVL7G1QRDj0vDfm9eI4x7XN+n61yQunYDqNqUCs6lM78UZFhPWOHSIjddy
-         YCLVbZM0ZMOUb/dhQNTJ4spviHVmWh8MyHViLfcuzBZgfWQXXvuxNgrzUkPpCJD299xk
-         F94A==
+        bh=oBvkAOfb+oGsqMeud56xyHfv3sELwdW549T+sWexK0g=;
+        b=dLuk94fedx4Ya5JEhTu85pC/iDDfamt5ddPvfCEeAT/YohlR3I3oEkIRX3v3n6W3qt
+         qllbHkYDa7dxD7iyLjJZ0ZlYOeuskGMZvUISgL8rtLOz7rCAhh92reUOqoDW6TzrAS8g
+         gmoIDmMuCehqu1FjAGNJYRXu6OupW6Po4DnL7AKka7H4VZAnFaRtfY9qKpbKlEUcWO9Y
+         pGbozvIhNldn8ogU+9dOUno92+kd6CJxv//zAS+36GyD+ecMCh9Qyb8pR6OH4Lcn1I/K
+         tNjulSF4dTyGWj1n1I1A+hvlTCv5QTNyyOAWlBDTdRQukNgbx+Uaup8iwX1qqoZ1PQt6
+         ydSA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778792721; x=1779397521;
+        d=1e100.net; s=20251104; t=1778792722; x=1779397522;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ksRWCd9wVpXXedmzgp+8zq/d+VDqKQBk5H/4tem2ZDI=;
-        b=mPzZnFmImjUIgXqOtvLofQ36KoKLLBTYwSJ6zaO4wBSp6/sxdQYnoF3BThBuQm/FIO
-         2HJ1le4bFx8k7sl6eHSDFvXUdpLbdi/DWr/AE6dZ4uCQwpCO9PPFEfCxrAkbn/mvgpdn
-         aWe7PK4/gtpPYYVyjPpgPFUtYyS+SmhA8kD5rL8tBN9f2sqZo+W0pSgzrlaQW1zGueOU
-         sPGTmkNociWcra4Zw1NzUrDGlnAHhkbCfs4x//JIjWqMyuUNnJRWuMszIpBGwKo9Ah4v
-         cR7+/Sw8gvW+1Czr02cUgszvt7YusJDYELBkX7c7RS8T71oK82c8vAMuLeRKHTYNhRMK
-         QfGw==
-X-Gm-Message-State: AOJu0YxcK0Nfi8VcRYA8ucGLWY0DjBjZRdSC7pllbIocMA6KdER3HPaG
-	iNjX+KQihYAsrIzlQKS909EonpkVVsFRNhVP+gbGpYg2vFnz+mJ+yJ2xERV/5S+lnRo2OUavWue
-	hU5FX3Q==
-X-Received: from plbb3.prod.google.com ([2002:a17:903:c03:b0:2bd:508b:a806])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:fae:b0:2bd:a5f:1d04
- with SMTP id d9443c01a7336-2bd7e8aad34mr11686145ad.9.1778792721105; Thu, 14
- May 2026 14:05:21 -0700 (PDT)
+        bh=oBvkAOfb+oGsqMeud56xyHfv3sELwdW549T+sWexK0g=;
+        b=bKMAcLr+QkoBRnUU0XgmZtl1BO2btV1tQpB0iW4AB4PFfYAXOKU9Hy7vQYg5WBjgJD
+         C8h9RSYzgk0yk85G27kKlf6YqNuL6E56Z92AeVMBCj7/uFWbqCswz9k2WcUUNDBReUDE
+         +BrHW11Qlnx37zr5Z1G4FlCcMT7pOoSn7i3n3/IwBG8X9hKpsbrtxDYw1vxs4Tq/d8g0
+         tEMX5zAR/XsEJXfuuUxhucAoWIaFVQviU/AUAmqzoi/IQ012cU7VlPmM10qgh22mK3DC
+         pqJlhzGnrZrBiCXEukjzeGQ0uaTkRkIQ7jzb9Q4wpz0SMFYa7f/RscqSSW1GQcWYW7J0
+         1yLA==
+X-Gm-Message-State: AOJu0Yyds9kCx/d/DqFFcbiPK1uUVwmPo5nMvTOO5IyzSFv5XcnqbUOj
+	uZL4YsSj9DKx9ybGiwHn8tKzbIc/fn1LQNN3AldfVkjc5rBQ4QfUvBUk5wKKxmXSLXUfJB7D/qC
+	o1SX4/Q==
+X-Received: from pfbcm24.prod.google.com ([2002:a05:6a00:3398:b0:82f:a139:b084])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:bd8c:b0:82f:4f63:31e1
+ with SMTP id d2e1a72fcca58-83f33aebdb9mr1322561b3a.8.1778792722177; Thu, 14
+ May 2026 14:05:22 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 14 May 2026 14:04:56 -0700
+Date: Thu, 14 May 2026 14:04:57 -0700
 In-Reply-To: <20260514210500.1626871-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,37 +59,60 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260514210500.1626871-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260514210500.1626871-17-seanjc@google.com>
-Subject: [kvm-unit-tests PATCH v3 16/20] x86/vmx: Tag "struct vmx_msr_entry"
- as needing to be 16-byte aligned
+Message-ID: <20260514210500.1626871-18-seanjc@google.com>
+Subject: [kvm-unit-tests PATCH v3 17/20] x86/smp: Align the stack to a 16-byte
+ boundary when invoking SMP function calls
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>, 
 	Mathias Krause <minipli@grsecurity.net>, Andrew Jones <andrew.jones@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 
-Mark "struct vmx_msr_entry" as 16-byte aligned so that it can be used in
-static definitions without generating random VM-Entry failures due to an
-unaligned MSR load/store list.
+Align RSP to a 16-byte boundary in the IPI handler for SMP function calls
+before calling into C code, as required by the x86-64 ABI.  Failure to
+ensure the stack is properly aligned leads to obscure failures if a struct
+(or any other object) tagged with __attribute__((aligned(16))) (or any
+alignment greater than 16) is place on the stack.  E.g. VM-Enter will fail
+on VMX if a vmx_msr_entry structure is placed on the stack.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- x86/vmx_tests.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/x86/smp.c | 21 ++++++++++++++++-----
+ 1 file changed, 16 insertions(+), 5 deletions(-)
 
-diff --git a/x86/vmx_tests.c b/x86/vmx_tests.c
-index 6161f451..31c7672c 100644
---- a/x86/vmx_tests.c
-+++ b/x86/vmx_tests.c
-@@ -1973,7 +1973,7 @@ struct vmx_msr_entry {
- 	u32 index;
- 	u32 reserved;
- 	u64 value;
--} __attribute__((packed));
-+} __attribute__((packed)) __attribute__((aligned(16)));
+diff --git a/lib/x86/smp.c b/lib/x86/smp.c
+index 366e184c..0cd44cdc 100644
+--- a/lib/x86/smp.c
++++ b/lib/x86/smp.c
+@@ -58,12 +58,23 @@ static __attribute__((used)) void ipi(void)
+ }
  
- #define MSR_MAGIC 0x31415926
- struct vmx_msr_entry *exit_msr_store, *entry_msr_load, *exit_msr_load;
+ asm (
+-	 "ipi_entry: \n"
+-	 "   call ipi \n"
+-#ifndef __x86_64__
+-	 "   iret"
++	"ipi_entry: \n"
++#ifdef __x86_64__
++	/*
++	 * Align the stack on a 16-byte boundary (as per x86_64 ABI) before
++	 * calling into C code.  Make sure not to clobber any regs!
++	 */
++	"	push %rbp\n"
++	"	mov %rsp, %rbp\n"
++	"	and $-0x10, %rsp\n"
++#endif
++	"	call ipi\n"
++#ifdef __x86_64__
++	"	mov %rbp, %rsp\n"
++	"	pop %rbp\n"
++	"	iretq"
+ #else
+-	 "   iretq"
++	"	iret"
+ #endif
+ 	 );
+ 
 -- 
 2.54.0.563.g4f69b47b94-goog
 
