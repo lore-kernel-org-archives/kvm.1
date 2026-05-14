@@ -1,94 +1,118 @@
-Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2FA12F8E81;
-	Thu, 14 May 2026 14:14:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5B9407564
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 14:28:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778768054; cv=none; b=Ops64lQCzQdi+rNwZ2lMNgLtNNHLbLiSaxzGQ2jydG2in9ShZ4bbDOTOU7MJZxiu7ONoHx0gqMvPHj5aJck5u8cH6uYpNfUoEG61xwO1MzqQoIvQp0LAzE08sN0PyFsP8zvYRfrtEapaxgFoZhHFSudEWAvrG3ofCgWFxtsFqvM=
+	t=1778768939; cv=none; b=XFnUd/yK2R6cNC6DmfxHPElv3kh+jEBPytof7QYwBAy45vrl3xrxs3knR+ItGq64IOGAZH5LmQi/l5VGfHYyIfMt613CoGLHn4UvDU+A/MpgNF8SpcRJC3s9Y/x1D1i/VBYeQvrmAusgAkcy0tNsvividhu4rwY4orn0ONIK1os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778768054; c=relaxed/simple;
-	bh=nwAJF6Q2H8BQAkWwrUjLoQuk8hUkJLWS5HRex86Eeac=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QQWj1goGCF8jVb5Z1eMU13Ll9GwGwdd+e4KBJ0Bv4bUpXuPzt3Wb3J9fKqChuKC+72SeL8bQj+SS4W9dYeO9tJK1aFKMS+S0K7PVTQ0Tc+NnNCSm8GEyEpc8/tIq2zXvZ/tLKb71C1DWYXY2L5KWfsTX1BUHNTaVRxIhQd2OEqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=G7l7K/GF; arc=none smtp.client-ip=65.109.113.108
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
+	s=arc-20240116; t=1778768939; c=relaxed/simple;
+	bh=cE2lkLmKq0IcZdV/Mrh7n/fH686ncFoZwuoKXAn37F0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=bLd1NrkrgOz3fLqw174n5Y8l3Y6yyO9Pwvf89Ckskvz0JfodgFiX5Zm4VKbmWd6JWZ7nT8Fylucbk/5raGJMjCuEZMEl6rvQR/tYiaNAS/j9rQVYla2Q9t3HfTJTsk31w7aUYo6drESH0DOsO2Y66p5novNyNVbxg5OW9g8Cbyc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IPURNUCu; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="G7l7K/GF"
-Received: from localhost (localhost.localdomain [127.0.0.1])
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id 9C66D40E0032;
-	Thu, 14 May 2026 14:14:09 +0000 (UTC)
-X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
-Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
-	header.d=alien8.de
-Received: from mail.alien8.de ([127.0.0.1])
-	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
-	with ESMTP id rzE9NUAoGQq5; Thu, 14 May 2026 14:14:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
-	t=1778768045; bh=zChUe5zV2SaQC8GKfrzs0S2CgI0sa9KFW/41eR36i7M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=G7l7K/GFIPoLcDnty2G3QF8gJC+qRW+3M3Ky80Ssj6Cc6ETqOzNV1PT+oOSRCfPKl
-	 DRxDLiSFLKyJTnGf9Rw4h+xZPIoJyhlgIa3BV1sQqPvVbPfc1n8xN1vyqHqIULM2/C
-	 Bz4RJNYOuYkfIr1SOJSD3JqwY/jvHTqPpnkixtvtY7UyzIhclf4QALPUddYfs1/8IF
-	 VJvAucVkkXaGpMXoS/fjDqAu20AGXWAYDee8xowivWnkkghkbrGplgJYvbVtMJ9ZMd
-	 rlPs+sbyximWEauSzLxCwaf43R1TnzByMRCzZ2YNK8+XCpOGyM3/hnktDrkBhaWccM
-	 EDbNE8+XvV64f409oGaOTXudzQHp+tTDk+D7uFnh3+yuTJtyLkF6I0bS6hFxb5rIbK
-	 Lt0St9E3WfHL4p9Mk2xu4yLqLLnmllbLAcKRbg0sedzQ41HmWAsrJ55ICAnFpBW4px
-	 rJxq7T04ailzUOe6vGyOthQs2SCeiSCZgEwj7mr5lZt83klgJVsWK8RtbmZUixA0zN
-	 4R4QCGMqRd3FpJYNmJnEe+rVmSP0H+5pSWXrWmm+808tpBvpyb1Z+1WesRbjdUf12C
-	 lFEgbIESKb7PMR0jL8m10bPOLL9/u7ogmskcKwak9SSO7DQgfwssjIaW3wpVVEndII
-	 3x12WukWptCGH/t2gFq3jUZ0=
-Received: from zn.tnic (pd953014d.dip0.t-ipconnect.de [217.83.1.77])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
-	(No client certificate requested)
-	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with UTF8SMTPSA id 03C9140E00C2;
-	Thu, 14 May 2026 14:13:52 +0000 (UTC)
-Date: Thu, 14 May 2026 16:13:46 +0200
-From: Borislav Petkov <bp@alien8.de>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Binbin Wu <binbin.wu@linux.intel.com>, linux-kernel@vger.kernel.org,
-	x86@kernel.org, kvm@vger.kernel.org, dave.hansen@intel.com,
-	seanjc@google.com, pbonzini@redhat.com, kas@kernel.org,
-	rick.p.edgecombe@intel.com, vishal.l.verma@intel.com,
-	chao.gao@intel.com
-Subject: Re: [PATCH 1/2] x86/microcode: Do not access MSR_IA32_PLATFORM_ID
- when running as a guest
-Message-ID: <20260514141321.GEagXYgTRSkuc2tQSb@fat_crate.local>
-References: <20260430020953.1405535-1-binbin.wu@linux.intel.com>
- <20260511100451.GBagGpw7jRBDdHkBgp@fat_crate.local>
- <d88d19f5-0a96-4115-97f7-8daf1edd625a@linux.intel.com>
- <20260513101436.GAagRPDAryWZ5hGqFO@fat_crate.local>
- <89d52fff-ec3b-420e-9f01-5cd2bc8ce5cb@linux.intel.com>
- <20260513200017.GLagTYUe_TGXnFVh7I@fat_crate.local>
- <20260513200601.GMagTZqT_CT6EvN1Uz@fat_crate.local>
- <2df97245-c1e7-4d72-9ab3-6c186b6c030f@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IPURNUCu"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-83544d05c5aso4365856b3a.2
+        for <kvm@vger.kernel.org>; Thu, 14 May 2026 07:28:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778768937; x=1779373737; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7LCeT1NsI569FTnrt0qFrtZYhyjYrpE+ZVg188rcut0=;
+        b=IPURNUCua3A3uJ1fpwifjzs9ly9D0GCgd5TAPMU69Il4r56cRDMF9WhsAa39yqnxLH
+         nH00yYo74tHC5mpyBWKbgQcjCP5RHbN3rJ5uW7mgq2K6jnHMdwKPV+8FXnBa06K/utnG
+         qIuKb6AZi56YLZQ0ACxgGQspfUCQonUmYJJdHBhRwbZ2RgLRgxi8dDxGO1qGJ+yij+VK
+         Q1PS5YxCYyzVQH3iz4Mot1AlubmAddEwkLgDqPsKd8dynRRHDbd9ePlj+YdA7iE383DE
+         XgQXRCXYJotrl1k5Dmc7Y6Wfjmvz6OtXbso/zgHTnUCE5EN3qxl7OFJHcRaCwjgXVbJM
+         zEjw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778768937; x=1779373737;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7LCeT1NsI569FTnrt0qFrtZYhyjYrpE+ZVg188rcut0=;
+        b=XKgR4g0A8uZU6q7IAYGoZYSU0NNS4e0TiCqFiiI0yFEYTW6q0Ffq0gu0CSYBinG51Y
+         LPre64oirI9SMfrwME2MoiViIVj3NqvjPxJwY0xxZ11Vs/jML+MnM7tQkqpAD6yNalMf
+         3bMA7gD2zNjUtUtleFoRPJRYN+8aUlhlDJf6jadCVDxImgtsbnko/mbzP4F7nU/pgmxR
+         a7fMg1STtRD9FQNVWnUbiQrAJ1gcGjinqB2U1+43T/Y54hDl7y2o7E8OGZbMiGOW6yZu
+         l2qwFpx3EFXXn9HtVFnpT8QRQD8LQnF8zmsjrceULDsNMWXy7Q5TRxSnx+3PSBogocAI
+         4Kaw==
+X-Forwarded-Encrypted: i=1; AFNElJ+v6GEpaO84VPJQeZ4muUu3vAfZiHf4D6N++ZjUhng0b1MTmV9y7OcY4nxzYohfHygLDpM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLDUhHKvjJnxJCgnJ4DvFXALuFPITaPEVp6BffzMwptE4Kdjz1
+	mdRn/Ae/+jdh4XkSxwank5sxr+x/rplaY1h1MCxXJlxBLkNcYYzNF3asQx1/QhNOFVF0V38SRU2
+	DZ9Fp4A==
+X-Received: from pfbmd16.prod.google.com ([2002:a05:6a00:7710:b0:82f:c134:e67c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:ad8f:b0:839:dd77:34fb
+ with SMTP id d2e1a72fcca58-83f041eff94mr10426507b3a.22.1778768936700; Thu, 14
+ May 2026 07:28:56 -0700 (PDT)
+Date: Thu, 14 May 2026 07:28:56 -0700
+In-Reply-To: <CALMp9eS4s9tsOmvDUDeqS7oph0mSHyhxBiULQdwHVaG+7gXLSQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <2df97245-c1e7-4d72-9ab3-6c186b6c030f@intel.com>
+Mime-Version: 1.0
+References: <20260513224608.1859737-1-jmattson@google.com> <20260513224608.1859737-4-jmattson@google.com>
+ <CALMp9eS4s9tsOmvDUDeqS7oph0mSHyhxBiULQdwHVaG+7gXLSQ@mail.gmail.com>
+Message-ID: <agXcKDjnJc9DPcyr@google.com>
+Subject: Re: [PATCH v3 3/4] KVM: x86: Virtualize AMD CPUID faulting
+From: Sean Christopherson <seanjc@google.com>
+To: Jim Mattson <jmattson@google.com>
+Cc: pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, shuah@kernel.org, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, ctpence@google.com
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, May 14, 2026 at 08:38:20PM +0800, Xiaoyao Li wrote:
-> But initializing x86_hypervisor_present by load_ucode_bsp() depends on
-> CONFIG_MICROCODE, which depends on CPU_SUP_AMD || CPU_SUP_INTEL. So when
-> both CPU_SUP_AMD and CPU_SUP_INTEL are not enabled,
+On Thu, May 14, 2026, Jim Mattson wrote:
+> > diff --git a/arch/x86/kvm/cpuid.h b/arch/x86/kvm/cpuid.h
+> > index 95d09ccbf951..fc96ba86c644 100644
+> > --- a/arch/x86/kvm/cpuid.h
+> > +++ b/arch/x86/kvm/cpuid.h
+> > @@ -185,8 +185,9 @@ static inline int guest_cpuid_stepping(struct kvm_vcpu *vcpu)
+> >
+> >  static inline bool cpuid_fault_enabled(struct kvm_vcpu *vcpu)
+> >  {
+> > -       return vcpu->arch.msr_misc_features_enables &
+> > -                 MSR_MISC_FEATURES_ENABLES_CPUID_FAULT;
+> > +       return (vcpu->arch.msr_misc_features_enables &
+> > +               MSR_MISC_FEATURES_ENABLES_CPUID_FAULT) ||
+> > +               (vcpu->arch.msr_hwcr & MSR_K7_HWCR_CPUID_USER_DIS);
+> >  }
+> 
+> Sashiko raises a good point here about a pre-existing issue that
 
-... you don't need microcode loader either.
+Calling this pre-existing is a bit of a stretch.  I'm guessing VMX doesn't check
+the #GP before the VM-Exit (checking #GP before a VM-Exit is so stupid).
 
-> x86_hypervisor_present will always be 0. It's not a problem for now, we can
-> solve it when x86_hypervisor_present is going to be used by CENTAUR or
-> ZHAOXIN.
+Yes, KVM technically emulates MSR_MISC_FEATURES_ENABLES_CPUID_FAULT for AMD, but
+we're firmly in "making shit up" territory when reasoning about the interactions
+between SVM and a feature that doesn't exist on real AMD CPUs.
 
-Yes, we'll cross that bridge when we get to it.
+> probably warrants a fix before propagating it further:
+> 
+> > Does this emulation of CPUID faulting respect architectural fault
+> > priorities in a nested virtualization scenario?
+> >
+> > According to the AMD APM, if CPUID faulting is enabled, a #GP fault takes
+> > precedence over a CPUID VM-exit intercept.
 
--- 
-Regards/Gruss,
-    Boris.
+Where in the APM?  I can't find anything in the description of CPUID or CpuidUserDis
+that specifies the priority, and "Table 15-7. Instruction Intercepts" is flat out
+wrong because it just says:
 
-https://people.kernel.org/tglx/notes-about-netiquette
+   CPUID  CPUID  No exceptions to check.
+
+> > Because KVM emulates CPUID faulting in kvm_emulate_cpuid(), the fault check
+> > happens after nested VM-exit intercept checks. If an L1 hypervisor enables
+> > both CPUID faulting and a CPUID VM-exit intercept, L0's nested exit
+> > handlers will observe L1's intercept request and immediately reflect the
+> > VM-exit to L1.
+> >
+> > Since this reflection happens before evaluating kvm_emulate_cpuid(), does
+> > this allow L2 guests to completely bypass the CPUID faulting restrictions
+> > imposed by L1?
