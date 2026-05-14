@@ -1,171 +1,225 @@
-Received: from mail-oa1-f74.google.com (mail-oa1-f74.google.com [209.85.160.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C79C43644DE
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 17:49:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B45C38F248
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 17:52:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778780946; cv=none; b=P/ULuhnHjH0su0V2N5hNrY5mOxzpaqU1C5O/pwubQezwZ79G+iyt3ahlZy0+2NkdQQAhDOSqQHY15GH4oj8lp1vieVGgwwWDbpT+BqZxN64mMUrt6hze8AuSsjKAgR9CyRSk2+4hXd1xgFlI00X6GlVQjIRl4Gu+UN4qO2194gQ=
+	t=1778781176; cv=none; b=aw3dZ8017jqoclAts4zVRZaDUJm07xRZD5ywJ7UF2js2wj3YdueX5JCoJtDTPkBflGBI4IDLlc20DSwxcvsfgnChi9M3WcjfZXcS6l7BDsvGZ7/Kjr6rFY803z4hDOBIpAUFEJOUq55PMQr3NlIC8iL4bUve9qrDYBqZ/qpXnYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778780946; c=relaxed/simple;
-	bh=GoRDUmjwts98H2GxjEyrtGopYG2FlUX43PGMqIqINsM=;
-	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=F/R5XcEPjfij4Wz38tOCHkdlZ6pTsx/oYZfQV361ImjPHnSYPZqZptwC1dek08aA0My/u8C2jKg6q0nsJr4XWQvc2ERyaHJ7buUqEguS0LfeF0viOq+vrp8zpzurFem7Sw+n9ZT3zQLe8At+EkvhxRyaWT7iG241sURLtvVCceg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fyhzYkEA; arc=none smtp.client-ip=209.85.160.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com
+	s=arc-20240116; t=1778781176; c=relaxed/simple;
+	bh=6Lsiopp+gOlTgIhuJUtI3u2C7QdWhtAwDrbE0I7bAro=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hAFXmx0uEgoDXsDujH/CTM6tS4qYhbapb18FperEtKUscB0hLUAVRM/YNSIHTw4aS0Gvt2UaRCHHDSZRR8uvcOmEt094xcO0N/6NJ2QFPXJdOw+J/bT/xJDGYaq4tFZJ9riDLRniJzJT5x3+3OvYAQto9Gt5/5wOSezLHDJoYd4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=uID4L/RT; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fyhzYkEA"
-Received: by mail-oa1-f74.google.com with SMTP id 586e51a60fabf-40ee506cf49so10689816fac.2
-        for <kvm@vger.kernel.org>; Thu, 14 May 2026 10:49:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778780944; x=1779385744; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=lvf58REysbafuiio+PHgzYPPOXJAU2S7yZkdP1X1Ak4=;
-        b=fyhzYkEAbiuipPqf7gx5+RdaCXwMfqmpjczIhbMY7cBnUFd+IALqIrwDlL+CkfOy8R
-         POeCtYJ2bwwX21dIaWHEIoGEC7/PqWd/riNRFOHYVtq6YMSjTzRC3Tk2Fn765Y945gVa
-         rvuJ+BzJH9Zml+P0kNSQYCFbq5ELx6g/fPtmJOd6y1MpZxuoA+oSsdBKBv7jOT7weB5K
-         wUzPs2RbvNHqK8/Ip8vQY1twzb1P7xV8fVyqGMC3pZRMqYQ3e9YxWW5XxlHL0aZhcq6B
-         88+ZKGsu1+ejYtPjxrj6uLGDISrx4Bvy4E6ZAc5I44MpgeuTxoFepMV8Fn1DofCbarXq
-         nqvw==
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="uID4L/RT"
+Received: from pps.filterd (m0109331.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64EFYo2S2986103
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 10:52:54 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=i7CC6BqBBL9skWarpnUsM1vRDVhAGp/lgIIkSrH6DrI=; b=uID4L/RTFdpM
+	ym5kuxwAZGXnMvm5RC/hAqjahIGR4X97DZNauwiy3+2qdGeLwon1A2giOFCwt250
+	p2DDOFCJbt9Xw927M+aXcmNFZurvTU6m7SIy/PDM/fiVkf7NqG6TpGzja1cpG9MB
+	oTwuC4fhNj9UVZMTydsFMZmhDJ/rrspbDs+/u3Ko5yH+4iTRpMG6q0zdA+yDi3Md
+	tcjYwnReCHshyKmsj+AJkYVjYTAYGsJnOGhPIjZevNDHjlHO3kIJTYdOvoyyMEyt
+	xMAEBJM041u78SHl6dC35/Cnr/q8/tjegsMQIjHnAXNRAxTU9Av7XNoZtpSdIjkC
+	VOZpBcrPXw==
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com [209.85.221.72])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4e3nvt96y1-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 10:52:53 -0700 (PDT)
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-45d95cba6f1so806700f8f.0
+        for <kvm@vger.kernel.org>; Thu, 14 May 2026 10:52:53 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778780944; x=1779385744;
-        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=lvf58REysbafuiio+PHgzYPPOXJAU2S7yZkdP1X1Ak4=;
-        b=RNoNxJlRWE7+NFQVZwBSRMtjFTHKbz0nC+WJVO0WIIBEZ5I9tOm/eAn1giKhlrNSdO
-         LHvm717Ftzcgl90b7eI4WdyqDbHWrrPUROWzYRtRe45iotKxtQ38MLnsMOgovj8iR2JB
-         6bdHDBAbJ6ZlQrjQmMyPx4bKUhTpoQNk+imB9Fug8PlJ4/pBjzkrEPegaT51+ZRKMofv
-         4UASUXPKAis/KEdvD2jwuf4AiwX0bfOPxbfWDbrrtPk2+f0Lkdg4MaQyLBQ7iUy8pFYd
-         QTv+m9kN79z/QssCrntOQYQ1M/N8bY658ot/9a3kz6NnifzNDohwC84Dsovhhtyy7IV+
-         BmPA==
-X-Gm-Message-State: AOJu0YzsL8G2qgRNfbxBF4wB7UowRs03ZLOvcXQdrVdzF5dv84sYTDJ2
-	Cl1bpIdFjYLX8Hf176xwRHr2Xlm9C0ZZ3t7xPnGaz+NJfP4769Kt2d8fCf+78jdJ4+0VKl81xM5
-	vFkNssgplHjg0+Vc119Uil3si4w==
-X-Received: from oaao19.prod.google.com ([2002:a05:6870:f013:b0:43a:1a0e:c45b])
- (user=coltonlewis job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6870:a793:b0:434:efa3:9bd5 with SMTP id 586e51a60fabf-43a2ddcfbbamr377060fac.27.1778780943565;
- Thu, 14 May 2026 10:49:03 -0700 (PDT)
-Date: Thu, 14 May 2026 17:49:02 +0000
-In-Reply-To: <agQpbiD8Fi6fzomf@kernel.org> (message from Oliver Upton on Wed,
- 13 May 2026 00:34:06 -0700)
+        d=1e100.net; s=20251104; t=1778781173; x=1779385973;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=i7CC6BqBBL9skWarpnUsM1vRDVhAGp/lgIIkSrH6DrI=;
+        b=loXqV60Tpy6+FjbS1FZwypNSC2KkI6TLSd2InFSKlL6FXj8/5aVgWUzZhKESUkDYyz
+         ru3xRzjD5GqAcIjZtZRQ+5tRtKMfUbiEcSw62TYKiTC2F+LYm14LuR7hyZ8LuV6f/i0h
+         JVAMmhU2aBce/DLJu8V+FTwI4TMBurt7jIva6obIaoJg2kwvprL+7h4jj6YQoeRhOC+o
+         W65eELby5YhSy5DLsyqE49zZaUpVu8E0F8Dx1tVTO6y8xdNu94kVDCx4IZNKqMb+dAnC
+         gAqMDr840xYG3Ve1tP4e81IxTCiIqHqVb3AyMtE2U3GjFLQx29NIAicjaGSZBP1sJ4dP
+         IWpA==
+X-Forwarded-Encrypted: i=1; AFNElJ8A//F0bscvOHpfPk2IRP/if9Hp3NLQ6f8Vdsgqej5lsytO+cwx/aWq2Ct2v+xH5O4EXzU=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9GEgGBvokJA8gzgI594O1iIKYkEHwk+7hFvLuwqOsku11WEeb
+	JgEoVsBwv3+AE+S6q0ans4+wpujvFu73VwEgnehvHJTFErTyHguV614qPSo8nDy/fPnfe7CRroG
+	koQIoNbgBKa7jyfJOPdqSJtBPxq804CTokPqaN2sC1LThdq07bvVV
+X-Gm-Gg: Acq92OE75KN+a/QMzXde2wg9TiFaKdch1DhfjsyVQu8w8zulI5F5mBkDuUMmaVnrB/Y
+	i2YJ0iqXLZq2wNGRC/x+wUGCqSd//vt7oLdtnQDxpox6SMqylunbX+X3nhbkqRFI6HddbWDCaEY
+	B96t+see/2/qUnkzaPvi22rytPmJsf8Tq1zH/JuKF920yK5qFahfhknZwsAXfbfAGfG3T5sZDWT
+	rEn8+XKGS9Zx0I+tUTBwj094KABLaLK5wJtTeSRNrxkYPHztVhI1FpcB1OoBecbhs1E2MiLMIuV
+	xRoan/iAXGirXrNkSV/oclnRwe4T6Tn1QZS3QisfvqyPfYt4DeP8AIJ9yuT2xfwsHb2GSakqD6H
+	EA1afZc4XlncTJmwdiOgEdZYh4iIRz2ZZvrmRnUMUM93EsZZjpDDkiZFLTwDTSDHKrpxsr6XbO+
+	gg9GEz8r/3lv2RRlGOhdIQAf/Lm+ldSYK2T8ZegVGsEhnTRnc+zpfnAMs8mvm8TOcq20r6+qBOM
+	9rZamHSSHhtzoBx/rTOLj8=
+X-Received: by 2002:a05:6000:2f87:b0:452:c246:ab7a with SMTP id ffacd0b85a97d-45e5c5beb43mr98795f8f.14.1778781172713;
+        Thu, 14 May 2026 10:52:52 -0700 (PDT)
+X-Received: by 2002:a05:6000:2f87:b0:452:c246:ab7a with SMTP id ffacd0b85a97d-45e5c5beb43mr98748f8f.14.1778781172259;
+        Thu, 14 May 2026 10:52:52 -0700 (PDT)
+Received: from ?IPV6:2001:8b0:8b6:13d4:102e:f2af:e074:5cde? (e.d.c.5.4.7.0.e.f.a.2.f.e.2.0.1.4.d.3.1.6.b.8.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:8b6:13d4:102e:f2af:e074:5cde])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da15a6449sm7910203f8f.37.2026.05.14.10.52.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 14 May 2026 10:52:51 -0700 (PDT)
+Message-ID: <c2601b9c-9265-43da-9321-66db57446807@meta.com>
+Date: Thu, 14 May 2026 18:52:50 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Message-ID: <gsntwlx5c25t.fsf@coltonlewis-kvm.c.googlers.com>
-Subject: Re: [PATCH v7 07/20] KVM: arm64: Set up FGT for Partitioned PMU
-From: Colton Lewis <coltonlewis@google.com>
-To: Oliver Upton <oupton@kernel.org>
-Cc: kvm@vger.kernel.org, alexandru.elisei@arm.com, pbonzini@redhat.com, 
-	corbet@lwn.net, linux@armlinux.org.uk, catalin.marinas@arm.com, 
-	will@kernel.org, maz@kernel.org, oliver.upton@linux.dev, mizhang@google.com, 
-	joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
-	mark.rutland@arm.com, shuah@kernel.org, gankulkarni@os.amperecomputing.com, 
-	james.clark@linaro.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	kvmarm@lists.linux.dev, linux-perf-users@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 4/9] vfio/pci: Convert BAR mmap() to use a DMABUF
+Content-Language: en-GB
+To: Leon Romanovsky <leon@kernel.org>, Alex Williamson <alex@shazbot.org>,
+        Jason Gunthorpe <jgg@nvidia.com>
+Cc: Alex Mastro <amastro@fb.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?=
+ <christian.koenig@amd.com>,
+        Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
+        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
+ <bjorn@kernel.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
+        Pranjal Shrivastava <praan@google.com>,
+        Alistair Popple
+ <apopple@nvidia.com>,
+        Vivek Kasireddy <vivek.kasireddy@intel.com>,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+        kvm@vger.kernel.org
+References: <20260416131815.2729131-1-mattev@meta.com>
+ <20260416131815.2729131-5-mattev@meta.com>
+ <20260501161915.75525c15@shazbot.org> <afhNeYS174EW7RYp@nvidia.com>
+ <20260505104911.GB11063@unreal> <20260505085058.74c34290@shazbot.org>
+ <20260506053511.GG11063@unreal>
+From: Matt Evans <mattev@meta.com>
+In-Reply-To: <20260506053511.GG11063@unreal>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Authority-Analysis: v=2.4 cv=bsp8wkai c=1 sm=1 tr=0 ts=6a060bf5 cx=c_pps
+ a=C8Sa+zVB7PeSwznsLr31Mw==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
+ a=wpfVPzegXHpEFt3DAXn9:22 a=VwQbUJbxAAAA:8 a=QhZvmJRm3SQzdzbRGmYA:9
+ a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=eYhU8IiCvE_ms1W8Tcak:22
+X-Proofpoint-ORIG-GUID: 7YT56C2iW3ryXYqWMAzwrstHFuEURmIJ
+X-Proofpoint-GUID: 7YT56C2iW3ryXYqWMAzwrstHFuEURmIJ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE0MDE3OSBTYWx0ZWRfX4eLBn0ci8HrW
+ SD4GsJqveqodZglSbApoMwmrCJlp07aHhyGPzMZhhxz8gc5F/e6S3niI/hNH84Rxb8262cYnn6P
+ E8Odc0CzYj8S7E+6SKzJyICaDfBO6MJvUxRS4LQHnCv29ZO+V9u/m5eNZMqz/ajggLhNISDrUpY
+ Btft4Mmy1hzWd5W/47GI3FvbLbWnqed2asgf5j9YmLdgQbitdElMaytnwXE/z90bkuuhb0ngito
+ l4u3D9U9ayX319xSOCJvkhzDcpQm1dN3erunrj/gUDzCI93RqVWN+8fd2weyjlFa5oOOKYLCq7D
+ oaJV3CBIPwonNjADpLn1Ws6EifcDrHS6JB1EnlfGsE/zkIMcLtORdpAtR7IFLve/tVHIY0wsmvo
+ uJb9bRcXZ0J3TG2oJvsKVzdx4XT/3ClSS1ECNTbqIL4VynG+hio/su2LMncwVlWBqe9nyaGYssr
+ m03qKKLzFnWutfYyL7Q==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-14_04,2026-05-13_01,2025-10-01_01
 
-Hi Oliver. Thanks for the review.
+Hi Leon, Alex, Jason,
 
-Oliver Upton <oupton@kernel.org> writes:
+On 06/05/2026 06:35, Leon Romanovsky wrote:
+> 
+> On Tue, May 05, 2026 at 08:50:58AM -0600, Alex Williamson wrote:
+>> On Tue, 5 May 2026 13:49:11 +0300
+>> Leon Romanovsky <leon@kernel.org> wrote:
+>>
+>>> On Mon, May 04, 2026 at 04:40:41AM -0300, Jason Gunthorpe wrote:
+>>>> On Fri, May 01, 2026 at 04:19:15PM -0600, Alex Williamson wrote:
+>>>>    
+>>>>> Exporting dma-bufs from vfio-pci is a feature, but mmap of MMIO BARs is
+>>>>> a legacy requirement.  That legacy requirement now depends on
+>>>>> PCI_P2PDMA, which depends on 64BIT and ZONE_DEVICE.
+>>>>
+>>>> That should be split up now, Leon missed it when he added the new
+>>>> APIs that didn't require ZONE_DEVICE..
+>>>
+>>> Sorry, what did I miss here?
+>>> VFIO_DMABUF is an optional feature and is enabled only when P2P support is
+>>> available. It does not affect legacy systems where P2P cannot be enabled.
+>>
+>> If we look at the long term view of moving exclusively to cdev/iommufd,
+>> where VFIO_DMABUF becomes the mechanism for implementing P2P DMA
+>> mappings, VFIO_DMABUF may be optional, but it's highly desirable for
+>> legacy compatibility.  There's an argument though that providing P2P
+>> compatibility on platforms that support PCI_P2PDMA is probably
+>> sufficient.
+>>
+>> However, in providing mmap of dmabufs as a feature, this series is
+>> wiring all mmaps through dmabufs and therefore that dependency becomes
+>> fundamental to the use of vfio-pci.  Thus the discussion whether the
+>> noted config requirements could be lifted.  Thanks,
+> 
+> Right, there was no need to remove ZONE_DEVICE when I added my code, and I
+> left the task of cleaning it out of is_pci_p2pdma_page() for another day.
+> Without ZONE_DEVICE, all pages are treated as non‑P2P.
+Just checking I'm following the deps correctly...
 
-> On Mon, May 04, 2026 at 09:18:00PM +0000, Colton Lewis wrote:
->> +static void __compute_hdfgrtr(struct kvm_vcpu *vcpu)
->> +{
->> +	__compute_fgt(vcpu, HDFGRTR_EL2);
->> +
->> +	*vcpu_fgt(vcpu, HDFGRTR_EL2) |=
->> +		HDFGRTR_EL2_PMOVS
->> +		| HDFGRTR_EL2_PMCCFILTR_EL0
->> +		| HDFGRTR_EL2_PMEVTYPERn_EL0
->> +		| HDFGRTR_EL2_PMCEIDn_EL0
->> +		| HDFGRTR_EL2_PMMIR_EL1;
->> +}
->> +
+If we remove the PCI_P2PDMA dependency on ZONE_DEVICE then (without) 
+it's present with P2P hard-disabled (as Leon says).  Already 
+`is_pci_p2pdma_page() == false` because folio_is_zone_device() is always 
+false in that config.
 
-> I've given this feedback at least twice already...
+The only dependency this series adds is for pcim_p2pdma_provider() (and 
+support).  We can select PCI_P2PDMA for provider purposes (VFIO!) but if 
+!ZONE_DEVICE there's no P2P.
 
-> Operators go on the preceding line in the case of line continuations.
+Nothing in PCI_P2PDMA depends on 64BIT and that dependency can be 
+removed [1].  (ZONE_DEVICE depends on 64BIT.)
 
-I apologize for letting that slip through again.
+That seems a path to VFIO operating unchanged on 32-bit platforms and 
+others without ZONE_DEVICE.
 
->> +
->> +/**
->> + * kvm_pmu_is_partitioned() - Determine if given PMU is partitioned
->> + * @pmu: Pointer to arm_pmu struct
->> + *
->> + * Determine if given PMU is partitioned by looking at hpmn field. The
->> + * PMU is partitioned if this field is less than the number of
->> + * counters in the system.
->> + *
->> + * Return: True if the PMU is partitioned, false otherwise
->> + */
->> +bool kvm_pmu_is_partitioned(struct arm_pmu *pmu)
->> +{
->> +	if (!pmu)
->> +		return false;
->> +
->> +	return pmu->max_guest_counters >= 0 &&
->> +		pmu->max_guest_counters <= *host_data_ptr(nr_event_counters);
->> +}
->> +
->> +/**
->> + * kvm_vcpu_pmu_is_partitioned() - Determine if given VCPU has a  
->> partitioned PMU
->> + * @vcpu: Pointer to kvm_vcpu struct
->> + *
->> + * Determine if given VCPU has a partitioned PMU by extracting that
->> + * field and passing it to :c:func:`kvm_pmu_is_partitioned`
->> + *
->> + * Return: True if the VCPU PMU is partitioned, false otherwise
->> + */
->> +bool kvm_vcpu_pmu_is_partitioned(struct kvm_vcpu *vcpu)
->> +{
->> +	return kvm_pmu_is_partitioned(vcpu->kvm->arch.arm_pmu) &&
->> +		false;
->> +}
-
-> Ok, I'm thoroughly confused about these predicates.
-
-> Whether or not a vCPU is using a partitioned PMU is a per-VM property.
-> This is separate from whether or not the backing arm_pmu has a range of
-> available counters for the guest to use.
-
-> It is entirely possible that a VM *isn't* using the partitioned PMU
-> feature (i.e. backed with perf events) yet the supporting arm_pmu has a
-> guest counter range.
-
-Yes and I add that to this predicate in a later patch when I introduce
-the flag. I can always reorder to introduce the flag before (or along
-with) this predicate.
-
->> +#if !defined(__KVM_NVHE_HYPERVISOR__)
->> +bool kvm_vcpu_pmu_is_partitioned(struct kvm_vcpu *vcpu);
->> +bool kvm_vcpu_pmu_use_fgt(struct kvm_vcpu *vcpu);
->> +#else
->> +static inline bool kvm_vcpu_pmu_is_partitioned(struct kvm_vcpu *vcpu)
->> +{
->> +	return false;
->> +}
->> +
->> +static inline bool kvm_vcpu_pmu_use_fgt(struct kvm_vcpu *vcpu)
->> +{
->> +	return false;
->> +}
->> +#endif
->> +
-
-> Don't use ifdeffery for this. Aim to have a single definition and rely
-> on has_vhe() to do the rest of the work.
-
-Will do.
+(PCI_P2PDMA currently also depends on NEED_SG_DMA_FLAGS, which seems to 
+be unnecessary if !ZONE_DEVICE is preventing P2P pages (no 
+sg_dma_mark_bus_address() would happen for example), is that right?)
 
 
-> Thanks,
-> Oliver
+Then VFIO_PCI depends on a subset of PCI_P2PDMA configuation:
+
+"Diet" PCI_P2PDMA_CORE available even when !ZONE_DEVICE:
+  - Compatible with 32-bit platforms; doesn't need to depend on 64BIT
+  - Returns a provider, which allows VFIO mmap(), DMABUF mmap().
+  - Doesn't allow P2P DMA (eg. via DMABUFs).
+  - Doesn't need to select NEED_SG_DMA_FLAGS.
+
+"Classic" PCI_P2PDMA depending on ZONE_DEVICE:
+  - Behaves as PCI_P2PDMA does today
+  - If ZONE_DEVICE then PCI_P2PDMA enabled, which enables VFIO_PCI_DMABUF
+
+Meaning:
+
+32-bit configs (or 64-bit without ZONE_DEVICE):
+  - No P2P anyway
+  - VFIO mmap() works
+  - VFIO_PCI_DMABUF is disabled (no point enabling DMABUF export since it
+    can't be used for its original P2P purpose)
+
+64-bit configs that support ZONE_DEVICE:
+  - As today, DMABUF P2P, mmap() of BARs via VFIO or DMABUF
+
+
+Just added PCI_P2PDMA_CORE and (functionally) ~no code changes are 
+needed since disabling P2P just falls out of !ZONE_DEVICE.  But most of 
+p2pdma.c does nothing in that config (except for pcim_p2pdma_provider() 
+and its support) so benefits from some #ifdef to reduce it.  WDYT about 
+a pcip2pdma_core.c containing just the provider management?
+
+
+Thanks,
+
+Matt
+
+[1]:  The drivers/pci/Kconfig's PCI_P2PDMA states:
+   # The need for the scatterlist DMA bus address flag means PCI P2PDMA
+   # requires 64bit
+I think this isn't quite right as AFAICT the flags are usable on 32b 
+too, and actually it's ZONE_DEVICE that requires 64bit.
