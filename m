@@ -1,56 +1,56 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 066D13D0BFB
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 21:53:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 224FA3D1716
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 21:54:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778795641; cv=none; b=fJ/8U28m6yVRCrD/9I5ho3dCsvS4MpjA8RspL/5jkUSVE2izfmIoPooqQfRhqGmjFEtNkWtZjktpV4LtyGCldndJY7GGaV4QF6+tqNS3JxkjVEsht85CFHXor7Zo2HJtiqgXTu4e46bm42PMr+k10BfhNvLe7tz3HTjl2Uf8d4k=
+	t=1778795642; cv=none; b=Tej6zegr50VeGZ0WdSU1XObg/1c16v74mL75DhPbne3NjI0QdHtf0EOPxwXqzU7fYUKlIKsPXohBOsb11YJ1a2QMRFgUpO/i7C48z4G2CZB1OGO648Tgu+HEjZiEBzayIW+2yIjFL+uS9IxV9KswfZqtVNT+KlSjktaa8RLQS8Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778795641; c=relaxed/simple;
-	bh=GvpQ3pTchK+W71vrs1lzAcwN2FhY6JiRsu+aYrsO2y8=;
+	s=arc-20240116; t=1778795642; c=relaxed/simple;
+	bh=alOj0ulkorrTMebS435FX8VSWcJfgxZS2VP50saGg/c=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=G5u9cSH5zadzDKnI9N+8aZXFJ1IrgleyOvzPlrd/BSXWpJZlAbYi2vkYp4wKxNlIacLiUDvp6w6MEMaxqTTX0U7Wa4AoCfVQD+mH1/3Ss3S5Cbdf1RNOl3NNM9bB7LY6HQZmL6uz820tN1GctgAjcLdegpHYiD5CrrDHIBE3Rjg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ibZKTRd8; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=Cu3vkJsXP5hTJ4C+AVJP0zydgr8+mvF7Uclk91PBKdYStzUDznHdxVnRTXw9vFmMwYO7LLVBAh5c7D9vJVGRT7GNwIw647rGfmzRW+Cw26+84wdV0UIUCk6rrolKlRJoLEKMANq866Dn5acoXv5jofulkOyJH9GJyBPuShP0vqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BAKVKFXr; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ibZKTRd8"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b458add85aso88920775ad.2
-        for <kvm@vger.kernel.org>; Thu, 14 May 2026 14:53:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BAKVKFXr"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-836d0184333so8284242b3a.0
+        for <kvm@vger.kernel.org>; Thu, 14 May 2026 14:54:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778795639; x=1779400439; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1778795640; x=1779400440; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=g2qOpbXP0VS/5/XuoZ/aUTxf2CmnbBXQvkx3/ML8B9c=;
-        b=ibZKTRd8Iz6ZjnMN7o+8dn41kItXMavo/kbCMI/6TrFpOWDVLSTJX7WM6dT8nhxLQK
-         jpU3rQohRpdUlRUEAfkWrLqhfJYS6pOTqythHmyTFmXodGMmXrgK62tPoY09lUHxx4Bo
-         Eyli2f9A6PhIg3itzs7vLo98lYquRZ/lJ8tn/AdqRkGWPDWIL8zokU0PfscYQ8s9Dc7U
-         ehNqYjLvIyY1mqgaCVChAoN9hTgE0CGR/fJj6cpQ0TPDNf//TCwpUNR8DHw9ORgVs/iX
-         HzwuSHPRNsLFoJ16sQD8YDKqFg5vN2o7SOkm6ErqmaDMsG/u7DJyjIt30GTBRMsrVUuU
-         YjHw==
+        bh=OSIIeDvi5cUuvLPtbPSIJ0wDOFHmUc0VllK+0XWeleY=;
+        b=BAKVKFXr5kMm11OUaGbZK+Yu0SKersIp2codoWihh5yDxxjmr6aTQetszrD8ngytgS
+         aCN2cAjLsnWryhltZvgCswV5ryjrmUbjKaNIdn3O7KPPYE3rb4JilBTrVNTyC9404wwR
+         Zcd8FsieMcBDAOeuHr37eEQDsgpmZx+YFfeXZlVabq2oKMkfb99q8TPY3Pm2cKQRXaK/
+         UyMYQhAQp414LnLy76HgohfGAjxjqFC7xjAdVTfSzE+pcVNoAyqUZ9O6fiNglAyDZQxM
+         i/TcL1c2emC+SVPWVzAeGoeprlNGdHs0ovZp6J/2o8IIig+sdKoWpkzAfSUnDA8WBwEV
+         C6ZA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778795639; x=1779400439;
+        d=1e100.net; s=20251104; t=1778795640; x=1779400440;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=g2qOpbXP0VS/5/XuoZ/aUTxf2CmnbBXQvkx3/ML8B9c=;
-        b=myAqdF0rwh6imVy5yDg46FIpeYKMWXNKqeq02LyijEndYp8VPn5kVh9tQSZETwE/J0
-         1RCoY7EcBO41v0ocHxROv/F9iFftS5gJ9SIKFcscl8S63F0X1mRXjXcxWQBgWYliKp2J
-         4Ht5ElEclvDNP5N1hAMAj+V3kVhgBFxs5I0/OHENg+GKBKxF2nxQ1lze0iMH2eVMRVKm
-         FyA9P3dleQ676LY2eOcRs/jeVx+9zdnMBIgXP1/4I+pdtmEenHuIV0Rg9y4Gu8eEwz/y
-         oH92Pq3EPYYoKfDX4VZmiiJH3szIR7PGZkvdFdyhC9sl0YGG6c6mzxk9YzX4kXBOEw89
-         OJXg==
-X-Forwarded-Encrypted: i=1; AFNElJ/i65sXFHKuU/+LrAPhYmPJ0y7y4AVbsldDL1ZkDUJywsIeVImBb7oDiSNYPqnHcV7Bm24=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwQ+u6WPUJjyNSWau1T30p5HLMGN0nIEg/SG/74qNuR37UNTK8I
-	Ks2pwUg4A2tf5ULQwdYLiJ8OD34UUe0per60uAaJP6zu2xnU6W4s6i1awIJw80BmNz9lXq3scUJ
-	TM+xUpQ==
-X-Received: from pldt9.prod.google.com ([2002:a17:903:40c9:b0:2b4:62bc:c2a9])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1ae7:b0:2b2:49a7:a5bc
- with SMTP id d9443c01a7336-2bd7e9e5458mr11350815ad.39.1778795639070; Thu, 14
- May 2026 14:53:59 -0700 (PDT)
+        bh=OSIIeDvi5cUuvLPtbPSIJ0wDOFHmUc0VllK+0XWeleY=;
+        b=S0QN/WpSihiLiQtP8kQoyF/53phqvvHOags5xrMKeEEZSB9F3YG8mSz7ox/jojtyty
+         VvhbT7JMldCImL9ux49U3JXqf35uGvA+KMz5MFnTK9vBboZ2I1gsdLInvsFetGrQscVZ
+         m24ab3UItW42y2vla6kQAVUWDk5N6QxntFHSO7XewyKrcoaPcQ4BtUX06DX+34Ov7gd5
+         FSqZ5iNnsi0dT5wNVU86ISsD2Q3ygS0ntzKGxEsk88zaWgBFCk0KGkUqhr5LANxGd2UT
+         xyS5falqnUI8cSJJF+7I639L7PV2vlH3hTggx/NnDkVkkxopq38cp93/Hd58ryFGaWgl
+         f4yQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+voHFksfpf4EuJYf/m4Dcs1aoI8b0n/tiT/4Sl7tBAjJLh098+cxRKvvRpS5y+6V2B36Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDGFGH7NhEr8h61itqld3cLuTxoXLMhpC07uOHhTyyOYo9YuJE
+	nFC865Kj+xWWo0wcYFzFIhG7PqoKAMZKo8iXeI5glipauDVKbb3oda5sCtBfibb0CDo1RHblBWY
+	Qc8Z+Nw==
+X-Received: from pflb19.prod.google.com ([2002:a05:6a00:a93:b0:835:4315:3453])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3e22:b0:823:d2c:b156
+ with SMTP id d2e1a72fcca58-83f33c4f71cmr1244822b3a.5.1778795640146; Thu, 14
+ May 2026 14:54:00 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 14 May 2026 14:53:42 -0700
+Date: Thu, 14 May 2026 14:53:43 -0700
 In-Reply-To: <20260514215355.1648463-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260514215355.1648463-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260514215355.1648463-3-seanjc@google.com>
-Subject: [PATCH v2 02/15] KVM: x86/xen: Bug the VM if 32-bit KVM observes a
- 64-bit mode hypercall
+Message-ID: <20260514215355.1648463-4-seanjc@google.com>
+Subject: [PATCH v2 03/15] KVM: x86/xen: Don't truncate RAX when handling
+ hypercall from protected guest
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, 
@@ -74,60 +74,47 @@ Cc: Dave Hansen <dave.hansen@linux.intel.com>,
 	Binbin Wu <binbin.wu@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Bug the VM if 32-bit KVM attempts to handle a 64-bit hypercall, primarily
-so that a future change to set "input" in mode-specific code doesn't
-trigger a false positive warn=>error:
+Don't truncate RAX when handling a Xen hypercall for a guest with protected
+state, as KVM's ABI is to assume the guest is in 64-bit for such cases
+(the guest leaving garbage in 63:32 after a transition to 32-bit mode is
+far less likely than 63:32 being necessary to complete the hypercall).
 
-  arch/x86/kvm/xen.c:1687:6: error: variable 'input' is used uninitialized
-                                    whenever 'if' condition is false [-Werror,-Wsometimes-uninitialized]
-   1687 |         if (!longmode) {
-        |             ^~~~~~~~~
-  arch/x86/kvm/xen.c:1708:31: note: uninitialized use occurs here
-   1708 |         trace_kvm_xen_hypercall(cpl, input, params[0], params[1], params[2],
-        |                                      ^~~~~
-  x86/kvm/xen.c:1687:2: note: remove the 'if' if its condition is always true
-   1687 |         if (!longmode) {
-        |         ^~~~~~~~~~~~~~
-  arch/x86/kvm/xen.c:1677:11: note: initialize the variable 'input' to silence this warning
-   1677 |         u64 input, params[6], r = -ENOSYS;
-        |                  ^
-  1 error generated.
-
-Note, params[] also has the same flaw, but -Wsometimes-uninitialized
-doesn't seem to be enforced for arrays, presumably because it's difficult
-to avoid false positives on specific entries.
-
+Fixes: b5aead0064f3 ("KVM: x86: Assume a 64-bit hypercall for guests with protected state")
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/xen.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/x86/kvm/xen.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-index 91fd3673c09a..6d9be74bb673 100644
+index 6d9be74bb673..895095dc684e 100644
 --- a/arch/x86/kvm/xen.c
 +++ b/arch/x86/kvm/xen.c
-@@ -1694,16 +1694,19 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
- 		params[4] = (u32)kvm_rdi_read(vcpu);
- 		params[5] = (u32)kvm_rbp_read(vcpu);
+@@ -1678,15 +1678,14 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
+ 	bool handled = false;
+ 	u8 cpl;
+ 
+-	input = (u64)kvm_register_read(vcpu, VCPU_REGS_RAX);
+-
+ 	/* Hyper-V hypercalls get bit 31 set in EAX */
+-	if ((input & 0x80000000) &&
++	if ((kvm_rax_read(vcpu) & 0x80000000) &&
+ 	    kvm_hv_hypercall_enabled(vcpu))
+ 		return kvm_hv_hypercall(vcpu);
+ 
+ 	longmode = is_64_bit_hypercall(vcpu);
+ 	if (!longmode) {
++		input = (u32)kvm_rax_read(vcpu);
+ 		params[0] = (u32)kvm_rbx_read(vcpu);
+ 		params[1] = (u32)kvm_rcx_read(vcpu);
+ 		params[2] = (u32)kvm_rdx_read(vcpu);
+@@ -1696,6 +1695,7 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
  	}
--#ifdef CONFIG_X86_64
  	else {
-+#ifdef CONFIG_X86_64
+ #ifdef CONFIG_X86_64
++		input = (u64)kvm_rax_read(vcpu);
  		params[0] = (u64)kvm_rdi_read(vcpu);
  		params[1] = (u64)kvm_rsi_read(vcpu);
  		params[2] = (u64)kvm_rdx_read(vcpu);
- 		params[3] = (u64)kvm_r10_read(vcpu);
- 		params[4] = (u64)kvm_r8_read(vcpu);
- 		params[5] = (u64)kvm_r9_read(vcpu);
--	}
-+#else
-+		KVM_BUG_ON(1, vcpu->kvm);
-+		return -EIO;
- #endif
-+	}
- 	cpl = kvm_x86_call(get_cpl)(vcpu);
- 	trace_kvm_xen_hypercall(cpl, input, params[0], params[1], params[2],
- 				params[3], params[4], params[5]);
 -- 
 2.54.0.563.g4f69b47b94-goog
 
