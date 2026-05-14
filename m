@@ -1,196 +1,205 @@
-Received: from mail-oa1-f74.google.com (mail-oa1-f74.google.com [209.85.160.74])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A84139A075
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 19:05:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61283932DB
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 19:06:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778785551; cv=none; b=VMyWuAoaBVGP+0hf9jC7+mGOsuyR5s9HRa2gMMAbFtosEgz7qb83iUlPHuFWAoXsGRWPva5uHIt1Yhae8dKSEmcIaiglqm0Pt1z2fZ5Ainr+ZiwjKv/phuVEh/GSPoNy1ZEca/jQi3B/UxJXgagw7oHlOSJLCu3rz9R90BdnJkY=
+	t=1778785564; cv=none; b=a6WJ6cSE2it5Iy22ZJ7zcZJKOO5fATM+uTnnAblV+u9NAh7DhfEhg2sVnEnhXiAxJUzMA9e8Mq7vdoKI9x3w4JiiRAXn6IokVQdyhlaVqrnongX+TYlD4VVrhWTKJAZKMky3j+UUGiBA2W8uWZtrRQvZOnCxmj8d7htdULineOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778785551; c=relaxed/simple;
-	bh=sQcHMqWClhWoLs/AGdSMEcZmnhEkmnp9dBbRrLle6qk=;
-	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
-	 Content-Type; b=pwzPmRTmCYRktm+5pcKtUbHPEPfQsOkstqnynxvzG6IuECfJ1M+BEnUvvW7tolqARGOCnjQexCxZShr1FooYw25v7TTz29a12CF9Mp2VlQ7GDCxrOC9Xhv1AMj587hPc8SFpuEEK89LOynvy+TKvRWM0h26mREMfebbXQ5W6DPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dbWKkL7X; arc=none smtp.client-ip=209.85.160.74
+	s=arc-20240116; t=1778785564; c=relaxed/simple;
+	bh=06L80zTV+NdjS7sNG98AUMMAX8mgAl55ufvME5+4vRA=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Nb5P/RIsnhRILg9iB7nM74jlDhS8jN7U295RqnBHxzQsf3Di9iA1RHQ3HHU3PmMu2xT1AJ4LqxlQsT/geGdWlW10HKxvhPK9ri0rUoc04kiTpdOTIlfCJUUSA0QoeAQpmPDVV+IJE+D8eZpmKcKOuBsONCVPk2mVVMQe/O1Zbs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=W3Z2+RcI; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dbWKkL7X"
-Received: by mail-oa1-f74.google.com with SMTP id 586e51a60fabf-42343e87c3aso9117082fac.0
-        for <kvm@vger.kernel.org>; Thu, 14 May 2026 12:05:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="W3Z2+RcI"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c82c4772950so79137a12.1
+        for <kvm@vger.kernel.org>; Thu, 14 May 2026 12:06:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778785548; x=1779390348; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=sQcHMqWClhWoLs/AGdSMEcZmnhEkmnp9dBbRrLle6qk=;
-        b=dbWKkL7XSFJId5WJR9FQIW964W3jMi7frwBrtMepuaRE7xZuVOzdGXs8F0vBgbAW7F
-         yrhfcazon8YbL+xt1q1DdVgqZH9v9irdebmYByhx0AcHn91wHjzPylSGCOw3Pvu+o6aM
-         /PrNAtzMiNays3Hhqfy6KM7CRRnK7l1/o+J5yECw/Ij1Oig+mXZyW4yxLpxihkAR+fVV
-         45P0yGdmZUS+7PjNjq2Gf5MzPhDlPSPA34FQ0wC6XIpBKN9cHLHd31LvaFotMzztePcl
-         WXF865XEy8isskThsOxs/vQEEkRTH9+A+W3/NbOG5zYXwW8cMzRFP/obxt9qKmuOmyIS
-         bUsQ==
+        d=google.com; s=20251104; t=1778785562; x=1779390362; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pWjyG1HkoGKtGPT13xyGbGBxQorSUcxyFUT7ogVrZaE=;
+        b=W3Z2+RcIsLzPwcQtmX8w5XjuCAM2YeDT7OQAHC37c+pOtJYp0R/fD1MrWi83I4IGxg
+         1ehx8cNLIfq6snfrDWX4jTu6j3m/m4pjJdROS4junx9wH1qASnZtH27msabw5N9F0ZC0
+         h594aCCSktIXeA2EDGo1KTZ+QEFwVJ9ZIKarLWDbC+5wSDM0c97D/aiYFSoinrPyg+Sp
+         t8SgT6ghChjj1Jf0+bee2qn0VcbIUxMxP5jEsxYGO10kZUgKf+OzRPth001rryuC/cMM
+         Ao+NjhzeeGdApLXRHNtCiZBHC9PbLs3qQ5HMmlAc63qHPHotg999/gYglmkudYuwST7J
+         lKaA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778785548; x=1779390348;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=sQcHMqWClhWoLs/AGdSMEcZmnhEkmnp9dBbRrLle6qk=;
-        b=XtTBW1GuthdF4uvDFeNKreH3dxrYlyH4XH5phry/Nijuv/NZZHqe7r7NfK6pDffkHr
-         4xdD2AqYqEA326Xg3g4hT+Rss3jzvCrcEB7ujEL262977qFGjH+ObGu6965sTUcFcJn/
-         Sqle1xAitwIDjJ1U/ADXd39mqZfunryix3eGcAbiqbj6ROojKPXZEWTSoyuEbicRqCQi
-         uXQgXgUBAAQrNPuiseLvJnHEKXNwn7PY225UAK2ROJ+HId/xo+Ztmtmkef7vWuyyzPEr
-         Uq5BJbZT8vLc7JMiN0l2EeIPRPmUh3FmLlPQvIVnPTu/iisPEFJ6yks5IVNACQhYP1uk
-         lkgA==
-X-Forwarded-Encrypted: i=1; AFNElJ/WYcsVQs/Q/7H8lTXPAa89eJJX0BopjNfzvxxT1n/7SGNY+3ytT4El2g3GnAupEX72NzA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDYIkhdk10ZYo059rts7ypvKLPrpisr3MyKIRakhgs1PvO/WdT
-	2HmTjzRU2EcsQ3OhhloeYSpTpzRxobVgOX5LcQABUryDZnzUPRHwRr9LPw3NSjbaJnefAVGshqt
-	VsYP5ldigCjtwdj9lgkH0/PNNvw==
-X-Received: from iohl17.prod.google.com ([2002:a6b:7511:0:b0:96b:8e45:e183])
- (user=coltonlewis job=prod-delivery.src-stubby-dispatcher) by
- 2002:a05:6820:f023:b0:696:77e2:a78 with SMTP id 006d021491bc7-69c94301c1emr515355eaf.23.1778785547975;
- Thu, 14 May 2026 12:05:47 -0700 (PDT)
-Date: Thu, 14 May 2026 19:05:47 +0000
-In-Reply-To: <66797cb2-18f7-4782-9370-68d0c10c35f4@linaro.org> (message from
- James Clark on Thu, 14 May 2026 10:10:02 +0100)
+        d=1e100.net; s=20251104; t=1778785562; x=1779390362;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=pWjyG1HkoGKtGPT13xyGbGBxQorSUcxyFUT7ogVrZaE=;
+        b=HIKCQBr8LEBrHrhxflSnrCFg7K2dFm5VzHQJy72XS54HDpfPlWegCpEApHPv5TI4kK
+         b4bGc8Gs8qkMkZZK8Mxepr25UtAHHMtKHYWjqGvxDuDts+MDzojh/ejzWE+wOxlTqI2e
+         U79ZYpkaDP6kAFR0rK3y4iEpcBP95uzCbeOH9K+SqauQp/YJ7G8446PBwlQR7Zep53L8
+         SF/2qNLrJIImVplkoYcmebcrnuv00DeBw1jE5b2NuLR7TrcwYYKTMtsTnQfdCET69xde
+         N4X2p7bygMib7tZ4haypZ9C5s7zmXGONMlj0MHLemxDJMubVnWrHb68djw1Gx4LXEH88
+         hMcQ==
+X-Gm-Message-State: AOJu0YyVWr7JxoU6kMu5SAvp27WWjEstJnYDATnLFkPpt8qZx8PP91BR
+	NSqLk8AgbvOi6twCpSUIWn8GxZoT9mAAcGm0JyNC57C/rkpDKN9a+WxpoAs3/VFKc16EvDYyg1J
+	80Y8HhA==
+X-Received: from pfr22.prod.google.com ([2002:a05:6a00:94d6:b0:82f:2a0d:b24c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a907:b0:837:f111:b70
+ with SMTP id d2e1a72fcca58-83f18d5b89cmr4607372b3a.4.1778785561899; Thu, 14
+ May 2026 12:06:01 -0700 (PDT)
+Date: Thu, 14 May 2026 12:06:01 -0700
+In-Reply-To: <5e667a338a27ef2392143962466d77432fcd5441.1766066076.git.houwenlong.hwl@antgroup.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Message-ID: <gsntlddlbylw.fsf@coltonlewis-kvm.c.googlers.com>
-Subject: Re: [PATCH v7 13/20] KVM: arm64: Apply dynamic guest counter reservations
-From: Colton Lewis <coltonlewis@google.com>
-To: James Clark <james.clark@linaro.org>
-Cc: alexandru.elisei@arm.com, pbonzini@redhat.com, corbet@lwn.net, 
-	linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org, 
-	maz@kernel.org, oliver.upton@linux.dev, mizhang@google.com, 
-	joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
-	mark.rutland@arm.com, shuah@kernel.org, gankulkarni@os.amperecomputing.com, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, 
-	linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
-Content-Transfer-Encoding: base64
+References: <cover.1766066076.git.houwenlong.hwl@antgroup.com> <5e667a338a27ef2392143962466d77432fcd5441.1766066076.git.houwenlong.hwl@antgroup.com>
+Message-ID: <agYdGRM6a8eKDL0b@google.com>
+Subject: Re: [PATCH v2 7/9] KVM: VMX: Refresh 'PENDING_DBG_EXCEPTIONS.BS' bit
+ during instruction emulation
+From: Sean Christopherson <seanjc@google.com>
+To: Hou Wenlong <houwenlong.hwl@antgroup.com>
+Cc: kvm@vger.kernel.org, Lai Jiangshan <jiangshan.ljs@antgroup.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-SmFtZXMgQ2xhcmsgPGphbWVzLmNsYXJrQGxpbmFyby5vcmc+IHdyaXRlczoNCg0KPiBPbiAxMy8w
-NS8yMDI2IDU6NDUgcG0sIENvbHRvbiBMZXdpcyB3cm90ZToNCj4+IEphbWVzIENsYXJrIDxqYW1l
-cy5jbGFya0BsaW5hcm8ub3JnPiB3cml0ZXM6DQoNCj4+PiBPbiAwNC8wNS8yMDI2IDEwOjE4IHBt
-LCBDb2x0b24gTGV3aXMgd3JvdGU6DQo+Pj4+IEFwcGx5IGR5bmFtaWMgZ3Vlc3QgY291bnRlciBy
-ZXNlcnZhdGlvbnMgYnkgY2hlY2tpbmcgaWYgdGhlIHJlcXVlc3RlZA0KPj4+PiBndWVzdCBtYXNr
-IGNvbGxpZGVzIHdpdGggYW55IGV2ZW50cyB0aGUgaG9zdCBoYXMgc2NoZWR1bGVkIGFuZCBjYWxs
-aW5nDQo+Pj4+IHBtdV9wZXJmX3Jlc2NoZWRfdXBkYXRlKCkgd2l0aCBhIGhvb2sgdGhhdCB1cGRh
-dGVzIHRoZSBtYXNrIG9mDQo+Pj4+IGF2YWlsYWJsZSBjb3VudGVycyBpbiBiZXR3ZWVuIHNjaGVk
-dWxlIG91dCBhbmQgc2NoZWR1bGUgaW4uDQoNCj4+Pj4gU2lnbmVkLW9mZi1ieTogQ29sdG9uIExl
-d2lzIDxjb2x0b25sZXdpc0Bnb29nbGUuY29tPg0KPj4+PiAtLS0NCj4+Pj4gwqDCoCBhcmNoL2Fy
-bTY0L2t2bS9wbXUtZGlyZWN0LmPCoCB8IDY5ICsrKysrKysrKysrKysrKysrKysrKysrKysrKysr
-KysrDQo+Pj4+ICsrKysNCj4+Pj4gwqDCoCBpbmNsdWRlL2xpbnV4L3BlcmYvYXJtX3BtdS5oIHzC
-oCAxICsNCj4+Pj4gwqDCoCAyIGZpbGVzIGNoYW5nZWQsIDcwIGluc2VydGlvbnMoKykNCg0KPj4+
-PiBkaWZmIC0tZ2l0IGEvYXJjaC9hcm02NC9rdm0vcG11LWRpcmVjdC5jIGIvYXJjaC9hcm02NC9r
-dm0vcG11LWRpcmVjdC5jDQo+Pj4+IGluZGV4IDIyNTJkM2I5MDVkYjkuLjE0Y2M0MTlkYmFmYWQg
-MTAwNjQ0DQo+Pj4+IC0tLSBhL2FyY2gvYXJtNjQva3ZtL3BtdS1kaXJlY3QuYw0KPj4+PiArKysg
-Yi9hcmNoL2FybTY0L2t2bS9wbXUtZGlyZWN0LmMNCj4+Pj4gQEAgLTEwMCw2ICsxMDAsNzMgQEAg
-dTgga3ZtX3BtdV9ocG1uKHN0cnVjdCBrdm1fdmNwdSAqdmNwdSkNCj4+Pj4gwqDCoMKgwqDCoMKg
-IHJldHVybiAqaG9zdF9kYXRhX3B0cihucl9ldmVudF9jb3VudGVycyk7DQo+Pj4+IMKgwqAgfQ0K
-DQo+Pj4+ICsvKiBDYWxsYmFjayB0byB1cGRhdGUgY291bnRlciBtYXNrIGJldHdlZW4gcGVyZiBz
-Y2hlZHVsaW5nICovDQo+Pj4+ICtzdGF0aWMgdm9pZCBrdm1fcG11X3VwZGF0ZV9tYXNrKHN0cnVj
-dCBwbXUgKnBtdSwgdm9pZCAqZGF0YSkNCj4+Pj4gK3sNCj4+Pj4gK8KgwqDCoCBzdHJ1Y3QgYXJt
-X3BtdSAqYXJtX3BtdSA9IHRvX2FybV9wbXUocG11KTsNCj4+Pj4gK8KgwqDCoCB1bnNpZ25lZCBs
-b25nICpuZXdfbWFzayA9IGRhdGE7DQo+Pj4+ICsNCj4+Pj4gK8KgwqDCoCBiaXRtYXBfY29weShh
-cm1fcG11LT5jbnRyX21hc2ssIG5ld19tYXNrLCBBUk1QTVVfTUFYX0hXRVZFTlRTKTsNCj4+Pj4g
-K30NCj4+Pj4gKw0KPj4+PiArLyoqDQo+Pj4+ICsgKiBrdm1fcG11X3NldF9ndWVzdF9jb3VudGVy
-cygpIC0gSGFuZGxlIGR5bmFtaWMgY291bnRlciByZXNlcnZhdGlvbnMNCj4+Pj4gKyAqIEBjcHVf
-cG11OiBzdHJ1Y3QgYXJtX3BtdSB0byBwb3RlbnRpYWxseSBtb2RpZnkNCj4+Pj4gKyAqIEBndWVz
-dF9tYXNrOiBuZXcgZ3Vlc3QgbWFzayBmb3IgdGhlIHBtdQ0KPj4+PiArICoNCj4+Pj4gKyAqIENo
-ZWNrIGlmIGd1ZXN0IGNvdW50ZXJzIHdpbGwgaW50ZXJmZXJlIHdpdGggY3VycmVudCBob3N0IGV2
-ZW50cyBhbmQNCj4+Pj4gKyAqIGNhbGwgaW50byBwZXJmX3BtdV9yZXNjaGVkX3VwZGF0ZSBpZiBh
-IHJlc2NoZWR1bGUgaXMgcmVxdWlyZWQuDQo+Pj4+ICsgKi8NCj4+Pj4gK3N0YXRpYyB2b2lkIGt2
-bV9wbXVfc2V0X2d1ZXN0X2NvdW50ZXJzKHN0cnVjdCBhcm1fcG11ICpjcHVfcG11LCB1NjQNCj4+
-Pj4gZ3Vlc3RfbWFzaykNCj4+Pj4gK3sNCj4+Pj4gK8KgwqDCoCBzdHJ1Y3QgcG11X2h3X2V2ZW50
-cyAqY3B1YyA9IHRoaXNfY3B1X3B0cihjcHVfcG11LT5od19ldmVudHMpOw0KPj4+PiArwqDCoMKg
-IERFQ0xBUkVfQklUTUFQKGd1ZXN0X2JpdG1hcCwgQVJNUE1VX01BWF9IV0VWRU5UUyk7DQo+Pj4+
-ICvCoMKgwqAgREVDTEFSRV9CSVRNQVAobmV3X21hc2ssIEFSTVBNVV9NQVhfSFdFVkVOVFMpOw0K
-Pj4+PiArwqDCoMKgIGJvb2wgbmVlZF9yZXNjaGVkID0gZmFsc2U7DQo+Pj4+ICsNCj4+Pj4gK8Kg
-wqDCoCBiaXRtYXBfZnJvbV9hcnI2NChndWVzdF9iaXRtYXAsICZndWVzdF9tYXNrLCBBUk1QTVVf
-TUFYX0hXRVZFTlRTKTsNCj4+Pj4gK8KgwqDCoCBiaXRtYXBfY29weShuZXdfbWFzaywgY3B1X3Bt
-dS0+aHdfY250cl9tYXNrLCBBUk1QTVVfTUFYX0hXRVZFTlRTKTsNCj4+Pj4gKw0KPj4+PiArwqDC
-oMKgIGlmIChndWVzdF9tYXNrKSB7DQo+Pj4+ICvCoMKgwqDCoMKgwqDCoCAvKiBTdWJ0cmFjdCBn
-dWVzdCBjb3VudGVycyBmcm9tIGF2YWlsYWJsZSBob3N0IG1hc2sgKi8NCj4+Pj4gK8KgwqDCoMKg
-wqDCoMKgIGJpdG1hcF9hbmRub3QobmV3X21hc2ssIG5ld19tYXNrLCBndWVzdF9iaXRtYXAsDQo+
-Pj4+IEFSTVBNVV9NQVhfSFdFVkVOVFMpOw0KPj4+PiArDQo+Pj4+ICvCoMKgwqDCoMKgwqDCoCAv
-KiBEaWQgd2UgY29sbGlkZSB3aXRoIGFuIGFjdGl2ZSBob3N0IGV2ZW50PyAqLw0KPj4+PiArwqDC
-oMKgwqDCoMKgwqAgaWYgKGJpdG1hcF9pbnRlcnNlY3RzKGNwdWMtPnVzZWRfbWFzaywgZ3Vlc3Rf
-Yml0bWFwLA0KPj4+PiBBUk1QTVVfTUFYX0hXRVZFTlRTKSkgew0KPj4+PiArwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoCBpbnQgaWR4Ow0KPj4+PiArDQo+Pj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-IG5lZWRfcmVzY2hlZCA9IHRydWU7DQo+Pj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGNwdWMt
-Pmhvc3Rfc3F1ZWV6ZWQgPSB0cnVlOw0KPj4+PiArDQo+Pj4+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgIC8qIExvb2sgZm9yIHBpbm5lZCBldmVudHMgdGhhdCBhcmUgYWJvdXQgdG8gYmUgcHJlZW1w
-dGVkICANCj4+Pj4gKi8NCj4+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqAgZm9yX2VhY2hfc2V0
-X2JpdChpZHgsIGd1ZXN0X2JpdG1hcCwgQVJNUE1VX01BWF9IV0VWRU5UUykgew0KPj4+PiArwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGlmICh0ZXN0X2JpdChpZHgsIGNwdWMtPnVzZWRf
-bWFzaykgJiYgY3B1Yy0NCj4+Pj4gPmV2ZW50c1tpZHhdICYmDQo+Pj4+ICvCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBjcHVjLT5ldmVudHNbaWR4XS0+YXR0ci5waW5uZWQp
-IHsNCj4+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHByX3dhcm5f
-cmF0ZWxpbWl0ZWQoInBlcmY6IFBpbm5lZCBob3N0IGV2ZW50DQo+Pj4+IHNxdWVlemVkIG91dCBi
-eSBLVk0gZ3Vlc3QgUE1VIHBhcnRpdGlvblxuIik7DQoNCj4+PiBIaSBDb2x0b24sDQoNCj4+PiBJ
-IGdldCAicGVyZjogUGlubmVkIGhvc3QgZXZlbnQgc3F1ZWV6ZWQgb3V0IGJ5IEtWTSBndWVzdCBQ
-TVUgcGFydGl0aW9uIg0KPj4+IGV2ZW4gd2l0aCBhcm1fcG11djMucmVzZXJ2ZWRfaG9zdF9jb3Vu
-dGVycz0zIGZvciBleGFtcGxlLiBJIHdvdWxkIGhhdmUNCj4+PiBleHBlY3RlZCBhbnkgbm9uIHpl
-cm8gdmFsdWUgdG8gc3RvcCB0aGUgd2FybmluZy4NCg0KPj4+IEkgdGhpbmsgYXJtdjhwbXVfZ2V0
-X3NpbmdsZV9pZHgoKSBuZWVkcyB0byBiZSBjaGFuZ2VkIHRvIGFsbG9jYXRlIGZyb20NCj4+PiB0
-aGUgaGlnaCBlbmQgaG9zdCBjb3VudGVycyBmaXJzdC4gQSBtb3JlIGNvbXBsaWNhdGVkIG9wdGlv
-biB3b3VsZCBiZQ0KPj4+IGNoZWNraW5nIHRvIHNlZSBpZiB0aGVyZSBhcmUgYW55IG5vbi1waW5u
-ZWQgY291bnRlcnMgaW4gdGhlIGhvc3QNCj4+PiByZXNlcnZlZCBoYWxmIHdoZW4gYSBuZXcgcGlu
-bmVkIGNvdW50ZXIgaXMgb3BlbmVkLCB0aGVuIHN3YXBwaW5nIHRoZQ0KPj4+IHBsYWNlcyBvZiB0
-aGUgbmV3IHBpbm5lZCBhbmQgZXhpc3Rpbmcgbm9uLXBpbm5lZCBjb3VudGVycyBzbyBwaW5uZWQN
-Cj4+PiBhbHdheXMgcHJlZmVyIGJlaW5nIHB1dCBpbnRvIHRoZSBob3N0IGhhbGYuIEJ1dCBpdCdz
-IHByb2JhYmx5IG5vdCB3b3J0aA0KPj4+IGRvaW5nIHRoYXQuDQoNCj4+PiBKYW1lcw0KDQoNCj4+
-IEkgYWdyZWUgaXQgbWFrZXMgdGhlIG1vc3Qgc2Vuc2UgdG8gYWxsb2NhdGUgZnJvbSB0aGUgdG9w
-LCBidXQgSSdtIGhhcHB5DQo+PiB0aGUgYmFzaWMgaWRlYSB3b3Jrcy4NCg0KDQo+IEFub3RoZXIg
-dGhpbmcgSSBmb3Jnb3QgdG8gbWVudGlvbiBpcyB0aGF0IGV2ZW4gd2l0aCB0aGUgcmF0ZWxpbWl0
-ZWQNCj4gd2FybmluZywgdGhpcyBzcGFtcyB0aGUgbG9ncyBhbnkgdGltZSB0aGUgaG9zdCBhbmQg
-Z3Vlc3QgYXJlIGJvdGggdXNpbmcNCj4gdGhlIFBNVSBhbmQgSSdtIG5vdCBzdXJlIGhvdyB1c2Vm
-dWwgdGhhdCBpcy4NCg0KSSdtIHN1cmUgaXQgZG9lcy4gSSdsbCBkZWxldGUgaXQuDQoNCj4+Pj4g
-K8KgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGJyZWFrOw0KPj4+PiArwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIH0NCj4+Pj4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
-wqAgfQ0KPj4+PiArwqDCoMKgwqDCoMKgwqAgfQ0KPj4+PiArwqDCoMKgIH0gZWxzZSB7DQo+Pj4+
-ICvCoMKgwqDCoMKgwqDCoCAvKg0KPj4+PiArwqDCoMKgwqDCoMKgwqDCoCAqIFJlc3RvcmluZyB0
-byBod19jbnRyX21hc2suDQo+Pj4+ICvCoMKgwqDCoMKgwqDCoMKgICogT25seSByZXNjaGVkIGlm
-IHdlIHByZXZpb3VzbHkgc3F1ZWV6ZWQgYW4gZXZlbnQuDQo+Pj4+ICvCoMKgwqDCoMKgwqDCoMKg
-ICovDQo+Pj4+ICvCoMKgwqDCoMKgwqDCoCBpZiAoY3B1Yy0+aG9zdF9zcXVlZXplZCkgew0KPj4+
-PiArwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBuZWVkX3Jlc2NoZWQgPSB0cnVlOw0KPj4+PiArwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoCBjcHVjLT5ob3N0X3NxdWVlemVkID0gZmFsc2U7DQo+Pj4+ICvC
-oMKgwqDCoMKgwqDCoCB9DQo+Pj4+ICvCoMKgwqAgfQ0KPj4+PiArDQo+Pj4+ICvCoMKgwqAgaWYg
-KG5lZWRfcmVzY2hlZCkgew0KPj4+PiArwqDCoMKgwqDCoMKgwqAgLyogQ29sbGlzaW9uOiBydW4g
-ZnVsbCBwZXJmIHJlc2NoZWR1bGUgKi8NCj4+Pj4gK8KgwqDCoMKgwqDCoMKgIHBlcmZfcG11X3Jl
-c2NoZWRfdXBkYXRlKCZjcHVfcG11LT5wbXUsIGt2bV9wbXVfdXBkYXRlX21hc2ssDQo+Pj4+IG5l
-d19tYXNrKTsNCj4+Pj4gK8KgwqDCoCB9IGVsc2Ugew0KPj4+PiArwqDCoMKgwqDCoMKgwqAgLyog
-SG9zdCB3YXMgbmV2ZXIgdXNpbmcgZ3Vlc3QgY291bnRlcnMgYW55d2F5ICovDQo+Pj4+ICvCoMKg
-wqDCoMKgwqDCoCBiaXRtYXBfY29weShjcHVfcG11LT5jbnRyX21hc2ssIG5ld19tYXNrLCAgDQo+
-Pj4+IEFSTVBNVV9NQVhfSFdFVkVOVFMpOw0KPj4+PiArwqDCoMKgIH0NCj4+Pj4gK30NCj4+Pj4g
-Kw0KPj4+PiDCoMKgIC8qKg0KPj4+PiDCoMKgwqAgKiBrdm1fcG11X2hvc3RfY291bnRlcl9tYXNr
-KCkgLSBDb21wdXRlIGJpdG1hc2sgb2YgaG9zdC1yZXNlcnZlZA0KPj4+PiBjb3VudGVycw0KPj4+
-PiDCoMKgwqAgKiBAcG11OiBQb2ludGVyIHRvIGFybV9wbXUgc3RydWN0DQo+Pj4+IEBAIC0yMTgs
-NiArMjg1LDcgQEAgdm9pZCBrdm1fcG11X2xvYWQoc3RydWN0IGt2bV92Y3B1ICp2Y3B1KQ0KDQo+
-Pj4+IMKgwqDCoMKgwqDCoCBwbXUgPSB2Y3B1LT5rdm0tPmFyY2guYXJtX3BtdTsNCj4+Pj4gwqDC
-oMKgwqDCoMKgIGd1ZXN0X2NvdW50ZXJzID0ga3ZtX3BtdV9ndWVzdF9jb3VudGVyX21hc2socG11
-KTsNCj4+Pj4gK8KgwqDCoCBrdm1fcG11X3NldF9ndWVzdF9jb3VudGVycyhwbXUsIGd1ZXN0X2Nv
-dW50ZXJzKTsNCj4+Pj4gwqDCoMKgwqDCoMKgIGt2bV9wbXVfYXBwbHlfZXZlbnRfZmlsdGVyKHZj
-cHUpOw0KDQo+Pj4+IMKgwqDCoMKgwqDCoCBmb3JfZWFjaF9zZXRfYml0KGksICZndWVzdF9jb3Vu
-dGVycywgQVJNUE1VX01BWF9IV0VWRU5UUykgew0KPj4+PiBAQCAtMzE5LDUgKzM4Nyw2IEBAIHZv
-aWQga3ZtX3BtdV9wdXQoc3RydWN0IGt2bV92Y3B1ICp2Y3B1KQ0KPj4+PiDCoMKgwqDCoMKgwqAg
-dmFsID0gcmVhZF9zeXNyZWcocG1pbnRlbnNldF9lbDEpOw0KPj4+PiDCoMKgwqDCoMKgwqAgX192
-Y3B1X2Fzc2lnbl9zeXNfcmVnKHZjcHUsIFBNSU5URU5TRVRfRUwxLCB2YWwgJiBtYXNrKTsNCg0K
-Pj4+PiArwqDCoMKgIGt2bV9wbXVfc2V0X2d1ZXN0X2NvdW50ZXJzKHBtdSwgMCk7DQo+Pj4+IMKg
-wqDCoMKgwqDCoCBwcmVlbXB0X2VuYWJsZSgpOw0KPj4+PiDCoMKgIH0NCj4+Pj4gZGlmZiAtLWdp
-dCBhL2luY2x1ZGUvbGludXgvcGVyZi9hcm1fcG11LmggIA0KPj4+PiBiL2luY2x1ZGUvbGludXgv
-cGVyZi9hcm1fcG11LmgNCj4+Pj4gaW5kZXggZjdiMDAwYmIzZWNhOC4uNjNmODhmZWM1ZTgwZiAx
-MDA2NDQNCj4+Pj4gLS0tIGEvaW5jbHVkZS9saW51eC9wZXJmL2FybV9wbXUuaA0KPj4+PiArKysg
-Yi9pbmNsdWRlL2xpbnV4L3BlcmYvYXJtX3BtdS5oDQo+Pj4+IEBAIC03NSw2ICs3NSw3IEBAIHN0
-cnVjdCBwbXVfaHdfZXZlbnRzIHsNCg0KPj4+PiDCoMKgwqDCoMKgwqAgLyogQWN0aXZlIGV2ZW50
-cyByZXF1ZXN0aW5nIGJyYW5jaCByZWNvcmRzICovDQo+Pj4+IMKgwqDCoMKgwqDCoCB1bnNpZ25l
-ZCBpbnTCoMKgwqDCoMKgwqDCoCBicmFuY2hfdXNlcnM7DQo+Pj4+ICvCoMKgwqAgYm9vbCBob3N0
-X3NxdWVlemVkOw0KPj4+PiDCoMKgIH07DQoNCj4+Pj4gwqDCoCBlbnVtIGFybXBtdV9hdHRyX2dy
-b3VwcyB7DQo=
+On Thu, Dec 18, 2025, Hou Wenlong wrote:
+> The VM-Entry has a consistency check that when the 'STI' or 'MOVSS'
+> blocking is active, the 'PENDING_DBG_EXCEPTIONS.BS' bit must be set if
+> 'RFLAGS.TF' is set; otherwise, a VM-Fail is triggered during VM-entry.
+> However, when 'STI' or 'MOV SS' is emulated (e.g., using the 'force
+> emulation' prefix), the emulator only refreshes interruptibility state
+> but pending debug exception state is not refreshed. Since the force
+> emulation prefix causes a VM-Exit due to #UD interception, which clears
+> the 'PENDING_DBG_EXCEPTIONS' bits, the emulator should refresh the
+> 'PENDING_DBG_EXCEPTIONS.BS' bit when the 'RFLAGS.TF' bit is set to
+> ensure the success of VM-Entry.
+
+After (way too) much thought, it's not just (forced) emulation that's flawed;
+save/restore also needs similar treatment.  E.g. if userspace gains control of
+the vCPU on a single-step #DB exit with STI-blocking, then KVM will save/restore
+the pending #DB, RFLAGS.TF, and STI-blocking, but not PENDING_DBG_EXCEPTIONS.BS.
+When the target resumes, VM-Entry will fail due to the "bad" state.
+
+So AFAICT, we can handle both by moving the fixup logic to vmx_inject_exception()
+(because it's just fixup for a consistency check, e.g. the state doesn't need to
+be saved/restored).  I'm not entirely convinced this fixes *all* the flows that
+can run afoul of the consistency check, but I think it gets the legimiate ones?
+And if not, we can always continue playing whack-a-mole...
+
+I'll send a v3 of the whole series, because with this approach there's no need to
+commit RFLAGS before queuing the #DB in the emulator writeback path, and we can
+drop kvm_vcpu_do_singlestep() entirely.
+
+---
+ arch/x86/kvm/vmx/vmx.c | 35 ++++++++++++++++++-----------------
+ 1 file changed, 18 insertions(+), 17 deletions(-)
+
+diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+index 1701db1b2e18..a0a0ccf342d3 100644
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -1909,6 +1909,24 @@ void vmx_inject_exception(struct kvm_vcpu *vcpu)
+ 	u32 intr_info = ex->vector | INTR_INFO_VALID_MASK;
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+ 
++	/*
++	 * When injecting a #DB, single-stepping is enabled in RFLAGS, and STI
++	 * or MOV-SS blocking is active, set vmcs.PENDING_DBG_EXCEPTIONS.BS to
++	 * prevent a false positive from VM-Entry consistency check.  VM-Entry
++	 * asserts that a single-step #DB _must_ be pending in this scenario,
++	 * as the previous instruction cannot have toggled RFLAGS.TF 0=>1
++	 * (because STI and POP/MOV don't modify RFLAGS), therefore the one
++	 * instruction delay when activating single-step breakpoints must have
++	 * already expired.  However, the CPU isn't smart enough to peek at
++	 * vmcs.VM_ENTRY_INTR_INFO_FIELD and so doesn't realize that yes, there
++	 * is indeed a #DB pending/imminent.
++	 */
++	if (ex->vector == DB_VECTOR &&
++	    (vmx_get_rflags(vcpu) & X86_EFLAGS_TF) &&
++	    vmx_get_interrupt_shadow(vcpu))
++		vmcs_writel(GUEST_PENDING_DBG_EXCEPTIONS,
++			    vmcs_readl(GUEST_PENDING_DBG_EXCEPTIONS) | DR6_BS);
++
+ 	kvm_deliver_exception_payload(vcpu, ex);
+ 
+ 	if (ex->has_error_code) {
+@@ -5485,26 +5503,9 @@ static int handle_exception_nmi(struct kvm_vcpu *vcpu)
+ 			 * avoid single-step #DB and MTF updates, as ICEBP is
+ 			 * higher priority.  Note, skipping ICEBP still clears
+ 			 * STI and MOVSS blocking.
+-			 *
+-			 * For all other #DBs, set vmcs.PENDING_DBG_EXCEPTIONS.BS
+-			 * if single-step is enabled in RFLAGS and STI or MOVSS
+-			 * blocking is active, as the CPU doesn't set the bit
+-			 * on VM-Exit due to #DB interception.  VM-Entry has a
+-			 * consistency check that a single-step #DB is pending
+-			 * in this scenario as the previous instruction cannot
+-			 * have toggled RFLAGS.TF 0=>1 (because STI and POP/MOV
+-			 * don't modify RFLAGS), therefore the one instruction
+-			 * delay when activating single-step breakpoints must
+-			 * have already expired.  Note, the CPU sets/clears BS
+-			 * as appropriate for all other VM-Exits types.
+ 			 */
+ 			if (is_icebp(intr_info))
+ 				WARN_ON(!skip_emulated_instruction(vcpu));
+-			else if ((vmx_get_rflags(vcpu) & X86_EFLAGS_TF) &&
+-				 (vmcs_read32(GUEST_INTERRUPTIBILITY_INFO) &
+-				  (GUEST_INTR_STATE_STI | GUEST_INTR_STATE_MOV_SS)))
+-				vmcs_writel(GUEST_PENDING_DBG_EXCEPTIONS,
+-					    vmcs_readl(GUEST_PENDING_DBG_EXCEPTIONS) | DR6_BS);
+ 
+ 			kvm_queue_exception_p(vcpu, DB_VECTOR, dr6);
+ 			return 1;
+
+base-commit: b7fbe9a1bf9ee6c967ef77d366ca58c35fcf1887
+-- 
+
+> +void vmx_refresh_pending_dbg_exceptions(struct kvm_vcpu *vcpu)
+> +{
+> +	if ((vmx_get_rflags(vcpu) & X86_EFLAGS_TF) &&
+> +	    vmx_get_interrupt_shadow(vcpu))
+> +		vmcs_writel(GUEST_PENDING_DBG_EXCEPTIONS,
+> +			    vmcs_readl(GUEST_PENDING_DBG_EXCEPTIONS) | DR6_BS);
+> +}
+> +
+>  static int handle_tpr_below_threshold(struct kvm_vcpu *vcpu)
+>  {
+>  	kvm_apic_update_ppr(vcpu);
+> diff --git a/arch/x86/kvm/vmx/x86_ops.h b/arch/x86/kvm/vmx/x86_ops.h
+> index d09abeac2b56..2978b6506ac6 100644
+> --- a/arch/x86/kvm/vmx/x86_ops.h
+> +++ b/arch/x86/kvm/vmx/x86_ops.h
+> @@ -74,6 +74,7 @@ void vmx_set_idt(struct kvm_vcpu *vcpu, struct desc_ptr *dt);
+>  void vmx_get_gdt(struct kvm_vcpu *vcpu, struct desc_ptr *dt);
+>  void vmx_set_gdt(struct kvm_vcpu *vcpu, struct desc_ptr *dt);
+>  void vmx_set_dr7(struct kvm_vcpu *vcpu, unsigned long val);
+> +void vmx_refresh_pending_dbg_exceptions(struct kvm_vcpu *vcpu);
+>  void vmx_sync_dirty_debug_regs(struct kvm_vcpu *vcpu);
+>  void vmx_cache_reg(struct kvm_vcpu *vcpu, enum kvm_reg reg);
+>  unsigned long vmx_get_rflags(struct kvm_vcpu *vcpu);
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 7352c2114bab..9167393cc0cc 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -9232,7 +9232,12 @@ static int kvm_vcpu_check_hw_bp(unsigned long addr, u32 type, u32 dr7,
+>  
+>  static int kvm_vcpu_do_singlestep(struct kvm_vcpu *vcpu)
+>  {
+> -	return kvm_inject_emulated_db(vcpu, DR6_BS);
+> +	int r;
+> +
+> +	r = kvm_inject_emulated_db(vcpu, DR6_BS);
+> +	if (r)
+> +		kvm_x86_call(refresh_pending_dbg_exceptions)(vcpu);
+> +	return r;
+>  }
+>  
+>  int kvm_skip_emulated_instruction(struct kvm_vcpu *vcpu)
+> -- 
+> 2.31.1
+> 
