@@ -1,169 +1,423 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1256410D37
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 14:45:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.50
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778769947; cv=pass; b=V0Oj6v7n+eczz27f6NYzxEXjQuG7zIZBoo5qN3WdovWQB8M/XmtiUW+2WTvlTZ0Jk2UEbqaA0BvJvRWmyT+tzD74ha+HBqicGN7w4JhKTx34UrxkCVnCUQXZSid2DElT1F8x8+nQ34lTAD71jFIJqzB8TKrMMZ3lEEPjmxJTc+I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778769947; c=relaxed/simple;
-	bh=AOuL4P8rcB/w4m3MQYbAMxJmPtiyHVkS+oqVWDnYxGg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=eQ2DOgYP3e7cfMartlFLTzNd8QyoAbR+JaBkKrtsKO0zmmqP3C5RSFnW7Ya3RpikthYwpZG3AobXyllRdbI5qLFMCcWT0Q3h9C6IFTzV9zlHDLqG6j1EodtIHhrHwiJ01WMPcXTWSf/uRKmUGL9Xm2+LOtUtph4Gse6T4V6GXjI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lSvGb2l7; arc=pass smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EE7542316B
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 14:49:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778770191; cv=none; b=f5w61KmC/x0pEWaauBQewN7rV3fxRZyrnPm9aeyJN7A+keGVVvK7MpDbq8/YQJ/6EMvFCuNDmX5g/B8NhKbUnpg1w+eVfZwAtv/47WFJ+sX6GrcEXASxxmiSI+3JrN6OAwVppNXCnVhDcvGIAD/WCA+VF0V5Xun+oKm/fiR7kVU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778770191; c=relaxed/simple;
+	bh=YCL/VHQ90LyUyRjdeHCENY4SvRDHXBXlF0yxW4LxsLk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lNk3N7FUlqNzfR+H4Z0r87nkdKWwpxDzuWTbBoKe9zoL4OkkaRtZDsxpWckhATJF32oEQAjzLwkRlefzT6MkOqQr4OgcMIs50Mwo5XQ6LnQCwbkFOqpR4QAOCSnURDAEscUqOd4Se0nJ3D9WwFZcDBCQFUnZhHKGyjoT/2xneHE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=m+46fwj0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lSvGb2l7"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-67c1eea6b4dso8473a12.1
-        for <kvm@vger.kernel.org>; Thu, 14 May 2026 07:45:43 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778769942; cv=none;
-        d=google.com; s=arc-20240605;
-        b=loO41e41PA7YqN4gJByNZrRrJteE8zuDf4BAOZboBTc9bZI5shqHDOcN2mEGHmUlvs
-         6Bf9dOw0UbzXDakjRM+SImOePP1Vis4UV4WruW8xTY4+qMd0HzU/Aab5q6F6eS6ky9QS
-         fr5YjxpXnZDYR/AhIU7U1/EI0fDjcD6RXbUjb38Jzx7QenqiycGGLcMv51clmMFlXoXD
-         n9rMRnJqt+RrGDsSy7P1Wixt6u2BtCIvB1d5gBcvpa156LJSLXKMMIInWKK1Z7guSZUH
-         D/nWEeU1G0HOZ/7SEIvc4AKD+jH/2r6wTEg+d6CrQ5MeOjjNTNDWE1WQ/uqTLRcwkL8J
-         4BLw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=mHlWFCWo35g49/Oc5J271s5rFVq6NRF9U1sIaUKt4Qo=;
-        fh=GZKWt4aR/gxia6X8fd7N4EswGTFJqdQCA8NHqYwbqek=;
-        b=QrjDfeal4M5ICrq35fRKoSxXOapnOWOvbhUaAF38DwNngOGU5V/qp4QC4ohauyFdv4
-         56mVvE38b+dMtnTy8cEiP2LrFSxXbR8QPN2Knj2Gmwc2a2h0FcebbPa4ETyoQvjJGCKY
-         hlfq5r+H2sDIvIr48JSLUtcpJ2B3Wgl1uAfpRo98vD0bAaZ8zu33yjQ3WEWKIPe05TRc
-         BEb7l+IeYTi0eHHKEa1KPzj8hFQ00h2WMec5Y71YojAug8/lvBkooDahahU+f60pBxOJ
-         CSlzICgX13FfR9yI5x5RyAvXGBHznG/t2xTiLk2mHJwdmircMlSPDA7nc9Pgx+2X6RBk
-         Giog==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778769942; x=1779374742; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mHlWFCWo35g49/Oc5J271s5rFVq6NRF9U1sIaUKt4Qo=;
-        b=lSvGb2l7TF43sTuMVzAqrV4mup+TcU+k7NEykRZPR3mJ0Dr9KNoGTMbHrYNvZJ9a+S
-         hyiD+m+dxpgD/5Hnh/Nucwd7qdstiGt1bkKCSDi4xTdpAHvXSFdiTKR/1oD6ADTWvPJ7
-         CpymscLz3eIwJSxp2AX+AitLyK5hZn/+0u72ow4Ze4r31Uq2RDoSdzI8p6aY76QWNxuC
-         Fb3/QyCuHiO0xCOfTZD/FAAP5kUNfhkcwMA289MlK88gifV7AhO+hjKZKqqMxhK7gNuF
-         SutjaEQMMX+UBPwee29+GogPVlKSTl0sJv9f4K8SNovn9208Sx+/7wAzzt/5pIz5F/wg
-         bh6w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778769942; x=1779374742;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=mHlWFCWo35g49/Oc5J271s5rFVq6NRF9U1sIaUKt4Qo=;
-        b=VEYkwQLG6cSFbShYf3d4omQN1weBQMksdIPIGDQFBBmy9O10t6ZjkDnHRup+W/Z3VS
-         /M3QkE7LH/pDf2nH5bVkPRsvdQ//2F+kKvHWfZWclEOJ7K2oT2M8V/h47LEvTYuD9IMV
-         JYCpeXEuqjlQHZrlv9Ky01bGzSccWD2qbNd4h0mDxnUZybmZH+cgjjmPkWm7abZB7G+n
-         A8Vnz1fRQx4TEGMDCB8vSQfrq8tt1yMe+01PlRvRMPHO+RhfpYWK7yM770IoRRgFh3qq
-         uvMmLRxlEE2e74VzaaoORKKN7DQK3cCoUGZCTPRcPOjG/kPjGxdqRhTuxA6T5x9FkksO
-         45cg==
-X-Forwarded-Encrypted: i=1; AFNElJ++fDlyKAFHwQteEQB/ThFzUCbXOUek5Pu34zD1i1m8sVko6Oo6DWxyCr28+O0Di34rAeY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzvR6MK5smJCslVSxy5qR5WiFWhOjjzZZOI5VCob+v4rCflsM17
-	e/XIDgpkuwbJSVfifzuUHGwkP99vXcl1Ek1sxTQrC30VHH7f7yMUYrwxuKgJ7uzs7gJuACoZ8T0
-	bOvr+VQEwYZ4we0Y+hgPLG1TtwQdFDS188VtzBrE+
-X-Gm-Gg: Acq92OFQ/pp4Qb7WdZfN2hngKvUjgCFabz9hJyctG2wfW/gMek8N8/wxA5CMw0IxLSA
-	phJpKimsczNi3h4e5EsPZ0ARL8TBoMblN6/QxoeNcWDqxfaQlfW0TWFiES4Oj5HbQm3JTqa5DkC
-	rYwC1EOfuGDaTG/jjWKiYlhXheNOT3IT5lK6o52gt15HRVGVgEDUOLWnGQsaSxiahjLkmTvClFc
-	5OmK8+lm6fL4QMIHRzGwdquJ3XuRtNkXbKt09lTwo8DAdLl16SRuC1MmUUiwikNEzw2m1olVCWB
-	tqzh3C8X9ufUicH7wg==
-X-Received: by 2002:a05:6402:10cf:b0:682:a2f:a15c with SMTP id
- 4fb4d7f45d1cf-683271a79d3mr59165a12.11.1778769941669; Thu, 14 May 2026
- 07:45:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="m+46fwj0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15338C2BCB3;
+	Thu, 14 May 2026 14:49:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778770190;
+	bh=YCL/VHQ90LyUyRjdeHCENY4SvRDHXBXlF0yxW4LxsLk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=m+46fwj0/3KepJ3IvcNLxsruDcOxb/yyT//NlR14Stzk6yfx4+GiZbOgzUuBRywf6
+	 faLv9weL+BS08nK2Tn5LEfX5lYBORl5YkAJKIKKA93Lr05RoxqtvsyncY02vOoAxFA
+	 4qLgNhaiR4LZQORy5YWYmPunK4w2xO2dsckiRBswluQxO+glHi2Ykl6WSJ+BWk5gNS
+	 krTF+ENf+40+NP0vLTwgdBlLEWth1EZrC2/W5DUZ6T16TpXlrw4dG+TH4xbtjZy/nO
+	 AJlMrxIVm+aDat8YlJzyjLvzSwGkpeWdbs7Yd2Lqcr7mZvIKgrn64Ek7cML82vNw6h
+	 JWfII+VXghf/Q==
+Date: Thu, 14 May 2026 20:11:09 +0530
+From: Naveen N Rao <naveen@kernel.org>
+To: Manali Shukla <manali.shukla@amd.com>
+Cc: seanjc@google.com, pbonzini@redhat.com, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, kvm@vger.kernel.org, x86@kernel.org, santosh.shukla@amd.com, 
+	nikunj.dadhania@amd.com, dapeng1.mi@linux.intel.com
+Subject: Re: [PATCH v1 6/9] KVM: Add KVM_GET_LAPIC2 and KVM_SET_LAPIC2 for
+ extended APIC
+Message-ID: <agXeBPq5nTUxuxcS@blrnaveerao1>
+References: <20260204074452.55453-1-manali.shukla@amd.com>
+ <20260204074452.55453-7-manali.shukla@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260513224608.1859737-1-jmattson@google.com> <20260513224608.1859737-4-jmattson@google.com>
- <CALMp9eS4s9tsOmvDUDeqS7oph0mSHyhxBiULQdwHVaG+7gXLSQ@mail.gmail.com> <agXcKDjnJc9DPcyr@google.com>
-In-Reply-To: <agXcKDjnJc9DPcyr@google.com>
-From: Jim Mattson <jmattson@google.com>
-Date: Thu, 14 May 2026 07:45:29 -0700
-X-Gm-Features: AVHnY4JYNiOdZV1RRg0bwZU9VVOOCRJGJfNWSac97RU4N7K2DxmR7r5ouTnF8Qk
-Message-ID: <CALMp9eS831M153QmAgjzJcR2dFY_wCCCzDisd7_T6GyS3-gAFw@mail.gmail.com>
-Subject: Re: [PATCH v3 3/4] KVM: x86: Virtualize AMD CPUID faulting
-To: Sean Christopherson <seanjc@google.com>
-Cc: pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, shuah@kernel.org, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, ctpence@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260204074452.55453-7-manali.shukla@amd.com>
 
-On Thu, May 14, 2026 at 7:28=E2=80=AFAM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> On Thu, May 14, 2026, Jim Mattson wrote:
-> > > diff --git a/arch/x86/kvm/cpuid.h b/arch/x86/kvm/cpuid.h
-> > > index 95d09ccbf951..fc96ba86c644 100644
-> > > --- a/arch/x86/kvm/cpuid.h
-> > > +++ b/arch/x86/kvm/cpuid.h
-> > > @@ -185,8 +185,9 @@ static inline int guest_cpuid_stepping(struct kvm=
-_vcpu *vcpu)
-> > >
-> > >  static inline bool cpuid_fault_enabled(struct kvm_vcpu *vcpu)
-> > >  {
-> > > -       return vcpu->arch.msr_misc_features_enables &
-> > > -                 MSR_MISC_FEATURES_ENABLES_CPUID_FAULT;
-> > > +       return (vcpu->arch.msr_misc_features_enables &
-> > > +               MSR_MISC_FEATURES_ENABLES_CPUID_FAULT) ||
-> > > +               (vcpu->arch.msr_hwcr & MSR_K7_HWCR_CPUID_USER_DIS);
-> > >  }
-> >
-> > Sashiko raises a good point here about a pre-existing issue that
->
-> Calling this pre-existing is a bit of a stretch.  I'm guessing VMX doesn'=
-t check
-> the #GP before the VM-Exit (checking #GP before a VM-Exit is so stupid).
+On Wed, Feb 04, 2026 at 07:44:49AM +0000, Manali Shukla wrote:
+> Add KVM_GET_LAPIC2 and KVM_SET_LAPIC2 ioctls to save and restore APIC
+> state using a 4KB buffer (kvm_lapic_state2).  The larger buffer allows
+> saving additional APIC registers beyond the standard APIC registers
+> supported by the existing 1KB KVM_GET/SET_LAPIC ioctls.
+> 
+> The 4KB buffer size matches the LAPIC2 capability, which enables the
+> full APIC register page including extended APIC registers for AMD
+> processors.
+> 
+> KVM_GET/SET_LAPIC continue to work as before for backward compatibility.
+> Document the new ioctls in Documentation/virt/kvm/api.rst.
+> 
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Manali Shukla <manali.shukla@amd.com>
+> ---
+>  Documentation/virt/kvm/api.rst  | 45 +++++++++++++++++++++++++
+>  arch/x86/include/uapi/asm/kvm.h |  5 +++
+>  arch/x86/kvm/x86.c              | 59 +++++++++++++++++++++++++++++++++
+>  include/uapi/linux/kvm.h        |  2 ++
+>  4 files changed, 111 insertions(+)
+> 
+> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+> index 71b4d24f009a..c49cf3104b2c 100644
+> --- a/Documentation/virt/kvm/api.rst
+> +++ b/Documentation/virt/kvm/api.rst
+> @@ -6517,6 +6517,51 @@ the capability to be present.
+>  
+>  `flags` must currently be zero.
+>  
+> +4.144 KVM_GET_LAPIC2
+> +----------------------
+> +
+> +:Capability: KVM_CAP_LAPIC2
+> +:Architectures: x86
+> +:Type: vcpu ioctl
+> +:Parameters: struct kvm_lapic_state2 (out)
+> +:Returns: 0 on success, negative on failure
+> +
+> +Reads the extended Local APIC registers, including both the standard APIC
+> +register space (offsets 0h-3FFh) and the extended APIC register space (offsets
+> +400h-500h and beyond).
+> +
+> +This ioctl is similar to KVM_GET_LAPIC but operates on a 4KB APIC
+> +register space that includes extended LVT registers available on AMD processors
+> +with the ExtApicSpace feature.
+> +
+> +::
+> +
+> +  #define KVM_APIC_EXT_REG_SIZE 0x1000
+> +  struct kvm_lapic_state2 {
+> +      char regs[KVM_APIC_EXT_REG_SIZE];
+> +  };
+> +
+> +4.145 KVM_SET_LAPIC2
+> +----------------------
+> +
+> +:Capability: KVM_CAP_LAPIC2
+> +:Architectures: x86
+> +:Type: vcpu ioctl
+> +:Parameters: struct kvm_lapic_state2 (in)
+> +:Returns: 0 on success, negative on failure
+> +
+> +Sets the extended Local APIC registers, including both the standard APIC
+> +register space and the extended APIC register space.
+> +
+> +This ioctl is similar to KVM_SET_LAPIC but operates on a 4KB APIC register space
+> +that includes extended LVT registers for AMD processors.
+> +
+> +::
+> +
+> +  #define KVM_APIC_EXT_REG_SIZE 0x1000
+> +  struct kvm_lapic_stat2 {
+> +      char regs[KVM_APIC_EXT_REG_SIZE];
+> +  };
+>  
+>  .. _kvm_run:
+>  
+> diff --git a/arch/x86/include/uapi/asm/kvm.h b/arch/x86/include/uapi/asm/kvm.h
+> index 7ceff6583652..516d4a0be25a 100644
+> --- a/arch/x86/include/uapi/asm/kvm.h
+> +++ b/arch/x86/include/uapi/asm/kvm.h
+> @@ -129,6 +129,11 @@ struct kvm_lapic_state {
+>  	char regs[KVM_APIC_REG_SIZE];
+>  };
+>  
+> +#define KVM_APIC_EXT_REG_SIZE 0x1000
+> +struct kvm_lapic_state2 {
+> +	char regs[KVM_APIC_EXT_REG_SIZE];
+> +};
+> +
+>  struct kvm_segment {
+>  	__u64 base;
+>  	__u32 limit;
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 669c894f1061..ccd16bdff56a 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -5331,6 +5331,17 @@ static int kvm_vcpu_ioctl_get_lapic(struct kvm_vcpu *vcpu,
+>  	return kvm_apic_get_state(vcpu, s->regs, sizeof(*s));
+>  }
+>  
+> +static int kvm_vcpu_ioctl_get_lapic2(struct kvm_vcpu *vcpu,
+> +				    struct kvm_lapic_state2 *s)
+> +{
+> +	if (vcpu->arch.apic->guest_apic_protected)
+> +		return -EINVAL;
+> +
+> +	kvm_x86_call(sync_pir_to_irr)(vcpu);
+> +
+> +	return kvm_apic_get_state(vcpu, s->regs, sizeof(*s));
+> +}
+> +
 
-Per the SDM, volume 3, section 27.1.1: Relative Priority of Faults and VM E=
-xits
+Instead of introducing additional functions/helpers, I think we should 
+unify handling of the existing and the new IOCTLs.
 
-> Certain exceptions have priority over VM exits. These include invalid-opc=
-ode exceptions, faults based on
-privilege level,1 and general-protection exceptions that are based on
-checking I/O permission bits in the task-
-state segment (TSS). For example, execution of RDMSR with CPL =3D 3
-generates a general-protection exception
-and not a VM exit.2
+Along with a change to revert the previous patch, how about the below on 
+top of your series (completely untested, so likely buggy but should 
+hopefully give a sense of the approach):
 
-> Yes, KVM technically emulates MSR_MISC_FEATURES_ENABLES_CPUID_FAULT for A=
-MD, but
-> we're firmly in "making shit up" territory when reasoning about the inter=
-actions
-> between SVM and a feature that doesn't exist on real AMD CPUs.
+diff --git a/arch/x86/kvm/lapic.h b/arch/x86/kvm/lapic.h
+index 552d416e5fc6..c7a9687bdd7f 100644
+--- a/arch/x86/kvm/lapic.h
++++ b/arch/x86/kvm/lapic.h
+@@ -136,8 +136,8 @@ static inline int kvm_irq_delivery_to_apic(struct kvm *kvm,
+ void kvm_apic_send_ipi(struct kvm_lapic *apic, u32 icr_low, u32 icr_high);
+ 
+ int kvm_apic_set_base(struct kvm_vcpu *vcpu, u64 value, bool host_initiated);
+-int kvm_apic_get_state(struct kvm_vcpu *vcpu, void *regs, unsigned int size);
+-int kvm_apic_set_state(struct kvm_vcpu *vcpu, void *regs, unsigned int size);
++int kvm_apic_get_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state2 *s);
++int kvm_apic_set_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state2 *s, bool is_lapic2);
+ int kvm_lapic_find_highest_irr(struct kvm_vcpu *vcpu);
+ 
+ u64 kvm_get_lapic_tscdeadline_msr(struct kvm_vcpu *vcpu);
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index ed20e0b21be7..434607374423 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -3236,12 +3236,12 @@ void kvm_apic_ack_interrupt(struct kvm_vcpu *vcpu, int vector)
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_apic_ack_interrupt);
+ 
+ static int kvm_apic_state_fixup(struct kvm_vcpu *vcpu,
+-		void *regs, bool set)
++		struct kvm_lapic_state2 *s, bool set)
+ {
+ 	if (apic_x2apic_mode(vcpu->arch.apic)) {
+ 		u32 x2apic_id = kvm_x2apic_id(vcpu->arch.apic);
+-		u32 *id = (u32 *)(regs + APIC_ID);
+-		u32 *ldr = (u32 *)(regs + APIC_LDR);
++		u32 *id = (u32 *)(s->regs + APIC_ID);
++		u32 *ldr = (u32 *)(s->regs + APIC_LDR);
+ 		u64 icr;
+ 
+ 		if (vcpu->kvm->arch.x2apic_format) {
+@@ -3274,12 +3274,12 @@ static int kvm_apic_state_fixup(struct kvm_vcpu *vcpu,
+ 
+ 		if (!kvm_x86_ops.x2apic_icr_is_split) {
+ 			if (set) {
+-				icr = apic_get_reg(regs, APIC_ICR) |
+-				      (u64)apic_get_reg(regs, APIC_ICR2) << 32;
+-				apic_set_reg64(regs, APIC_ICR, icr);
++				icr = apic_get_reg(s->regs, APIC_ICR) |
++				      (u64)apic_get_reg(s->regs, APIC_ICR2) << 32;
++				apic_set_reg64(s->regs, APIC_ICR, icr);
+ 			} else {
+-				icr = apic_get_reg64(regs, APIC_ICR);
+-				apic_set_reg(regs, APIC_ICR2, icr >> 32);
++				icr = apic_get_reg64(s->regs, APIC_ICR);
++				apic_set_reg(s->regs, APIC_ICR2, icr >> 32);
+ 			}
+ 		}
+ 	}
+@@ -3287,20 +3287,20 @@ static int kvm_apic_state_fixup(struct kvm_vcpu *vcpu,
+ 	return 0;
+ }
+ 
+-int kvm_apic_get_state(struct kvm_vcpu *vcpu, void *regs, unsigned int size)
++int kvm_apic_get_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state2 *s)
+ {
+-	memcpy(regs, vcpu->arch.apic->regs, size);
++	memcpy(s->regs, vcpu->arch.apic->regs, sizeof(*s));
+ 
+ 	/*
+ 	 * Get calculated timer current count for remaining timer period (if
+ 	 * any) and store it in the returned register set.
+ 	 */
+-	apic_set_reg(regs, APIC_TMCCT, __apic_read(vcpu->arch.apic, APIC_TMCCT));
++	apic_set_reg(s->regs, APIC_TMCCT, __apic_read(vcpu->arch.apic, APIC_TMCCT));
+ 
+-	return kvm_apic_state_fixup(vcpu, regs, false);
++	return kvm_apic_state_fixup(vcpu, s, false);
+ }
+ 
+-int kvm_apic_set_state(struct kvm_vcpu *vcpu, void *regs, unsigned int size)
++int kvm_apic_set_state(struct kvm_vcpu *vcpu, struct kvm_lapic_state2 *s, bool is_lapic2)
+ {
+ 	struct kvm_lapic *apic = vcpu->arch.apic;
+ 	int r;
+@@ -3308,14 +3308,16 @@ int kvm_apic_set_state(struct kvm_vcpu *vcpu, void *regs, unsigned int size)
+ 	kvm_x86_call(apicv_pre_state_restore)(vcpu);
+ 
+ 	/* set SPIV separately to get count of SW disabled APICs right */
+-	apic_set_spiv(apic, *((u32 *)(regs + APIC_SPIV)));
++	apic_set_spiv(apic, *((u32 *)(s->regs + APIC_SPIV)));
+ 
+-	r = kvm_apic_state_fixup(vcpu, regs, true);
++	r = kvm_apic_state_fixup(vcpu, s, true);
+ 	if (r) {
+ 		kvm_recalculate_apic_map(vcpu->kvm);
+ 		return r;
+ 	}
+-	memcpy(vcpu->arch.apic->regs, regs, size);
++	memcpy(vcpu->arch.apic->regs, s->regs, is_lapic2 ?
++					       sizeof(struct kvm_lapic_state2) :
++					       sizeof(struct kvm_lapic_state));
+ 
+ 	atomic_set_release(&apic->vcpu->kvm->arch.apic_map_dirty, DIRTY);
+ 	kvm_recalculate_apic_map(vcpu->kvm);
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index f8a115f50f8e..2e66a1bc94a7 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -5326,17 +5326,6 @@ void kvm_arch_vcpu_put(struct kvm_vcpu *vcpu)
+ }
+ 
+ static int kvm_vcpu_ioctl_get_lapic(struct kvm_vcpu *vcpu,
+-				    struct kvm_lapic_state *s)
+-{
+-	if (vcpu->arch.apic->guest_apic_protected)
+-		return -EINVAL;
+-
+-	kvm_x86_call(sync_pir_to_irr)(vcpu);
+-
+-	return kvm_apic_get_state(vcpu, s->regs, sizeof(*s));
+-}
+-
+-static int kvm_vcpu_ioctl_get_lapic2(struct kvm_vcpu *vcpu,
+ 				    struct kvm_lapic_state2 *s)
+ {
+ 	if (vcpu->arch.apic->guest_apic_protected)
+@@ -5344,34 +5333,19 @@ static int kvm_vcpu_ioctl_get_lapic2(struct kvm_vcpu *vcpu,
+ 
+ 	kvm_x86_call(sync_pir_to_irr)(vcpu);
+ 
+-	return kvm_apic_get_state(vcpu, s->regs, sizeof(*s));
++	return kvm_apic_get_state(vcpu, s);
+ }
+ 
+ static int kvm_vcpu_ioctl_set_lapic(struct kvm_vcpu *vcpu,
+-				    struct kvm_lapic_state *s)
++				    struct kvm_lapic_state2 *s,
++				    bool is_lapic2)
+ {
+ 	int r;
+ 
+ 	if (vcpu->arch.apic->guest_apic_protected)
+ 		return -EINVAL;
+ 
+-	r = kvm_apic_set_state(vcpu, s->regs, sizeof(*s));
+-	if (r)
+-		return r;
+-	update_cr8_intercept(vcpu);
+-
+-	return 0;
+-}
+-
+-static int kvm_vcpu_ioctl_set_lapic2(struct kvm_vcpu *vcpu,
+-				    struct kvm_lapic_state2 *s)
+-{
+-	int r;
+-
+-	if (vcpu->arch.apic->guest_apic_protected)
+-		return -EINVAL;
+-
+-	r = kvm_apic_set_state(vcpu, s->regs, sizeof(*s));
++	r = kvm_apic_set_state(vcpu, s, is_lapic2);
+ 	if (r)
+ 		return r;
+ 	update_cr8_intercept(vcpu);
+@@ -6251,7 +6225,6 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 	int r;
+ 	union {
+ 		struct kvm_sregs2 *sregs2;
+-		struct kvm_lapic_state *lapic;
+ 		struct kvm_lapic_state2 *lapic2;
+ 		struct kvm_xsave *xsave;
+ 		struct kvm_xcrs *xcrs;
+@@ -6262,37 +6235,7 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 
+ 	u.buffer = NULL;
+ 	switch (ioctl) {
+-	case KVM_GET_LAPIC: {
+-		r = -EINVAL;
+-		if (!lapic_in_kernel(vcpu))
+-			goto out;
+-		u.lapic = kzalloc_obj(struct kvm_lapic_state);
+-
+-		r = -ENOMEM;
+-		if (!u.lapic)
+-			goto out;
+-		r = kvm_vcpu_ioctl_get_lapic(vcpu, u.lapic);
+-		if (r)
+-			goto out;
+-		r = -EFAULT;
+-		if (copy_to_user(argp, u.lapic, sizeof(struct kvm_lapic_state)))
+-			goto out;
+-		r = 0;
+-		break;
+-	}
+-	case KVM_SET_LAPIC: {
+-		r = -EINVAL;
+-		if (!lapic_in_kernel(vcpu))
+-			goto out;
+-		u.lapic = memdup_user(argp, sizeof(*u.lapic));
+-		if (IS_ERR(u.lapic)) {
+-			r = PTR_ERR(u.lapic);
+-			goto out_nofree;
+-		}
+-
+-		r = kvm_vcpu_ioctl_set_lapic(vcpu, u.lapic);
+-		break;
+-	}
++	case KVM_GET_LAPIC:
+ 	case KVM_GET_LAPIC2: {
+ 		r = -EINVAL;
+ 		if (!lapic_in_kernel(vcpu))
+@@ -6302,26 +6245,33 @@ long kvm_arch_vcpu_ioctl(struct file *filp,
+ 		r = -ENOMEM;
+ 		if (!u.lapic2)
+ 			goto out;
+-		r = kvm_vcpu_ioctl_get_lapic2(vcpu, u.lapic2);
++		r = kvm_vcpu_ioctl_get_lapic(vcpu, u.lapic2);
+ 		if (r)
+ 			goto out;
+ 		r = -EFAULT;
+-		if (copy_to_user(argp, u.lapic2, sizeof(struct kvm_lapic_state2)))
++		if (copy_to_user(argp, u.lapic2, ioctl == KVM_GET_LAPIC2 ?
++						 sizeof(struct kvm_lapic_state2) :
++						 sizeof(struct kvm_lapic_state)))
+ 			goto out;
+ 		r = 0;
+ 		break;
+ 	}
++	case KVM_SET_LAPIC:
+ 	case KVM_SET_LAPIC2: {
+ 		r = -EINVAL;
+ 		if (!lapic_in_kernel(vcpu))
+ 			goto out;
+-		u.lapic2 = memdup_user(argp, sizeof(*u.lapic2));
+-		if (IS_ERR(u.lapic2)) {
+-			r = PTR_ERR(u.lapic2);
+-			goto out_nofree;
+-		}
++		u.lapic2 = kzalloc(sizeof(struct kvm_lapic_state2), GFP_KERNEL);
++		r = -ENOMEM;
++		if (!u.lapic2)
++			goto out;
++		r = -EINVAL;
++		if (copy_from_user(u.lapic2, argp, ioctl == KVM_SET_LAPIC2 ?
++						   sizeof(struct kvm_lapic_state2) :
++						   sizeof(struct kvm_lapic_state)))
++			goto out;
+ 
+-		r = kvm_vcpu_ioctl_set_lapic2(vcpu, u.lapic2);
++		r = kvm_vcpu_ioctl_set_lapic(vcpu, u.lapic2, ioctl == KVM_SET_LAPIC2);
+ 		break;
+ 	}
+ 	case KVM_INTERRUPT: {
 
-True.
 
-> > probably warrants a fix before propagating it further:
-> >
-> > > Does this emulation of CPUID faulting respect architectural fault
-> > > priorities in a nested virtualization scenario?
-> > >
-> > > According to the AMD APM, if CPUID faulting is enabled, a #GP fault t=
-akes
-> > > precedence over a CPUID VM-exit intercept.
->
-> Where in the APM?  I can't find anything in the description of CPUID or C=
-puidUserDis
-> that specifies the priority, and "Table 15-7. Instruction Intercepts" is =
-flat out
-> wrong because it just says:
->
->    CPUID  CPUID  No exceptions to check.
+- Naveen
 
-APM volume 2, section 15.7: Intercept Operation
-
-> Generally, instruction intercepts are checked after simple exceptions
-(such as #GP=E2=80=94when CPL is incorrect=E2=80=94or #UD) have been checke=
-d, but
-before exceptions related to
-memory accesses (such as page faults) and exceptions based on specific
-operand values.
