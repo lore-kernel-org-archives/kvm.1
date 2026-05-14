@@ -1,131 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f50.google.com (mail-ot1-f50.google.com [209.85.210.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019363C277F
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 13:09:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778764192; cv=none; b=B+Yy+2d3OUuOidjzoBrWZQu9q3GFI0oE5H9c9detVN8o0Z00Y9manf6bbM00+P/FigShQGOvNzf6ImXCGFl1yaoA1hCV4UCVFHss8s6IMWyMRzg/zzELYcidVBuD/XQRvXiOg++LSr0iU7nyTMY8ic9Qyln4sPGL1cWadD8bzms=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778764192; c=relaxed/simple;
-	bh=FnTw4gkh/aMEPEFibFib7E8fab8othFzaK/43ijCVHk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pl+gNQ9x9bsggfw9eNtqiNNLmRgSfFNa5+9jFOEDfMwmzFzcrLTJucuYSOkUN5llPx9TdrChcSeuW6LhZmyQH+dAji+pybIAhZUDrPTtT11NE8+09koIVm3Z+rB3zgoeFjb525z2aK4zsi0eBIYxlL00ryg+QFMb/rNR1puhFb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ANxPZGN9; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D96D21018A
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 13:16:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.50
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778764574; cv=pass; b=GIam4p9rgeDJkqatF/DrJAljBixDniCOdelPG1lRfCG3HRW3THwFSNvjvA4M+9Yp4zDMTL3enGpoodFzUk9aj/uAi8KreKRtGLoAGIkGNfV5aHfbwSdyAWoHcTFQZpM2EGeeExBjI5zu4ys+FSrhwFyGWb/Jlfa0xQhAbv1m0Yg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778764574; c=relaxed/simple;
+	bh=DwLJG7mqdmml+mZ7S7nowmXhI93LCzcqjMV9ypSd5wM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ea5TULY0qiRaylQfyHSpjvK0u5j0h6lH0KwY78P0A8n/2s2dhc1sbGa9sEY+/lxiVBelaENVgcoLX5qNfR5NeycJusVrWFosXA/q6RJd0pxFkTNmcjtVbBmm6V2LhR/iwoz0cRKnEvsLkFbmuaR3jwpj20h8zRqEk/2YEeqAd/g=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=kAn+Ms0q; arc=pass smtp.client-ip=209.85.210.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ANxPZGN9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C156C2BCB3;
-	Thu, 14 May 2026 13:09:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778764191;
-	bh=FnTw4gkh/aMEPEFibFib7E8fab8othFzaK/43ijCVHk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ANxPZGN92Di3TGZw6/3a6diXF1dDnHsPJ8SIAQLySFg3ylzL1PLgA/buFniTNLMsN
-	 GM2j8NJK1+C/ArwdxL+IS3DaDPOJRWdg8dVEED/BpVyEzh5gRL3UplU1fzLM89XCmq
-	 mHfs1ckUs3wUni+aWwkCoJ5RO47Dmp/iTOeGQaXjriWnDwmtF6+9r767SZQPNnUgJs
-	 uk2Xj7kIpqjfiVhkbXkpfy8J86Nwusrom02cCDX0XdwEOea/0It80ijT1D2FYg1N2p
-	 utbMx7odBSVLT0OpVTaaikaAY7GSuJExj7iA5czOBThSqrd8Z5TSIfHg8MfYoixP66
-	 ORFw8bbzBlpRA==
-Date: Thu, 14 May 2026 18:38:15 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Manali Shukla <manali.shukla@amd.com>
-Cc: seanjc@google.com, pbonzini@redhat.com, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, kvm@vger.kernel.org, x86@kernel.org, santosh.shukla@amd.com, 
-	nikunj.dadhania@amd.com, dapeng1.mi@linux.intel.com
-Subject: Re: [PATCH v1 4/9] KVM: x86: Introduce KVM_CAP_LAPIC2 for 4KB APIC
- register space support
-Message-ID: <agXHsttHBB6XQLMg@blrnaveerao1>
-References: <20260204074452.55453-1-manali.shukla@amd.com>
- <20260204074452.55453-5-manali.shukla@amd.com>
+	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="kAn+Ms0q"
+Received: by mail-ot1-f50.google.com with SMTP id 46e09a7af769-7d55b97f358so5461303a34.3
+        for <kvm@vger.kernel.org>; Thu, 14 May 2026 06:16:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778764571; cv=none;
+        d=google.com; s=arc-20240605;
+        b=g0C2RKwnq3G1q7J8f+H5tiMcKFLfpd3d2U53Feveb19T1EHQh9AApC8FOGDgTzH836
+         ADJjKpsDK6S/ek6/TY4xYAGmiIzlqKoty5oxfSGWca8mVx4qm9N+vbACuFw7JN2qVBcb
+         FEoBQd7fNTgUM0/Pf/U8fW5444pPncy1eMhPyDwdf5RmwTqHtCh2G0xbEFJjNd3FEHgZ
+         nfEbSe8tMnmrojEUKtjw6IFDBO2/o18kFtq7+EMKf/8nBFe7TJXXYPp3ThcM3bW7eqWj
+         oM9xqgBwwCECjmd0i64e0epGyF6U6gKPMlP26Am/l2lIGNXiLiuK6+elfIrDacb/CETq
+         KMYA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=2L0wvqc81PCyDXrG7skbGOKy477Mis33owEkB25SlXA=;
+        fh=IHkDubCyYxs3jEBLSI1mB0z6JFp91WA7AU978ps4Q7U=;
+        b=ljWFPdrOYV3NoBMJpxq5V0FUC3rBXydvymIo37Y3Ztafm05VbWeEQbiouck5Xf8tMP
+         CP476IWjQn107OH0pdoiGurbTcR8nftGSS+wfXl3mW52OjJlRXeCs2nnET7twcaoNlm1
+         +I0SsJ7EDVPVx4iSVNomzwsfEqTcra1LEmslJUNIE0Ah9EdLYkM/QjssKLOwurYspL5u
+         MhK/sa33SjiBq42BU4vxdZniB4iBLSxjXafry0PQ9hQaL/OhQr68LSZGAyq1v/bUzvLu
+         tAUVyqzbPWTbqkMQ23SmdhGVzruYIgmj7mCHxUgvLkgEXNf1g6FTQEAAuIV5BkIpbBqz
+         BfJQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1778764571; x=1779369371; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2L0wvqc81PCyDXrG7skbGOKy477Mis33owEkB25SlXA=;
+        b=kAn+Ms0qF18Bgfh6ypJOb87ZfdGvbyCYNo8nze90N9U/x6mMV9nXzb51AramRwGLRa
+         5o0m+mXS3h7A8o0WypSpd6X/sp82QS9dCtlWsSl1L9uCqPFNJXCBXMXknAUCI38ldGS+
+         0IcjpFTwUht7i8RPgdbXCNcrXI2sdFOXPlut5fnSLPdZTJwbjxLqL/a9kQJI8kin6U/e
+         LT/X3eFgSu4NB5YoZuVC8RHUrltwZRrvqfyY5bJGjClf9msnUjLGamlY9OjRQJ7d1BIU
+         0zOnMmEbzhrzmimm4D9W4EJ7BlRqUAk7kjtWQCaA1214ScdZuQVdZqnok4S3uP/Hp1qs
+         BHQQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778764571; x=1779369371;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=2L0wvqc81PCyDXrG7skbGOKy477Mis33owEkB25SlXA=;
+        b=CwZOf3r1dZ3GO2CQsLehbnqnZTs7dUJxK7qPKKtke4IDan9kqVkqLIUgEkldc5hLhC
+         KZhtjPdy6va6B+L3zX9dJhcMxnvIEmvBzkCBjq+uredFZ2VHl9rYFHbbovFXQfdJn2IC
+         MLtkLu/uSDcC7sLmq1TRhwePFw+5Q94/8DMWz/lqE23xhJU3Oc0lNtp2Ngq177OmHmOB
+         xyQQws01WAIw90Ah8QKOvcQ2dAqqOJc0nwtEmttTnQeGVYN3YNVmadGkM6lbgzXA/g1/
+         GIPOyAlJUByVA6fNmgDtmtuSfxQC9MwC9cPKuXfo3aztD3wokiAa30vAQFeMyqUDAAnd
+         u7Mw==
+X-Forwarded-Encrypted: i=1; AFNElJ/QHazXcDbnauY0CdYUZArLZOX/SuJDHNPqtzG0GNCkweogiESHVdwQ3UxLtUhTAdD+1EE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPi37SRR4a57m7kj79IfnWCIPVwA546Z15xs6ULuDADJPN6MRd
+	YCN0KC13mKCDSE/w3tZAy8t8jX7gd4PyJHm+bagOivKiNHTSP6nemXlYCaQScB8J4pEmePjzX/h
+	hqloqVW5M92y1NjPY8FHKXsMXQR10WeutLN0pyf6+PA==
+X-Gm-Gg: Acq92OH81icdHcIIbDlHHbjSAI0p4OIUaYAIOcKOo5myiIheF+Sz/2Q3vcgt+4+357H
+	WYess5Gz5p9rL/Cafs4BODmVrhzw1/Do1WvjjK8y/UYUGph/JsQprDC9EKknQjO/6kMisX/u9VQ
+	8/hRGudnlKpNHPatHDWpCevPrqGsi5AbSLiT2OixhRae7b/AV4CJ7mF6u31Xz8aOHD7pFcAkHpk
+	IkOUuQ1ZSyLf+B+XxQtLcPiOEcwwrqPsa7lU+svs8Fgi2FVmch73x1qcOPnx3DAqVLrRxFkeeLa
+	lITg5ANghUwZXWPOmTV8NZiBuCbU3DPZCZO9+6btDdDxIv+VJSx4wMXXino4ihoGEnqWTi43Q3j
+	JwrSgO8UtcnZINN2cLRryHjBMolA=
+X-Received: by 2002:a05:6830:6209:b0:7e1:e832:c8a2 with SMTP id
+ 46e09a7af769-7e3dc905429mr4793888a34.19.1778764571356; Thu, 14 May 2026
+ 06:16:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260204074452.55453-5-manali.shukla@amd.com>
+References: <20260415075216.2757427-1-xujiakai2025@iscas.ac.cn>
+In-Reply-To: <20260415075216.2757427-1-xujiakai2025@iscas.ac.cn>
+From: Anup Patel <anup@brainfault.org>
+Date: Thu, 14 May 2026 18:45:58 +0530
+X-Gm-Features: AVHnY4JeoNYVJt-e7SmR0Mdkf1NGWqjoq_KVrwu0L02Ywar886al5DcZ-0R7w5o
+Message-ID: <CAAhSdy0CSbsmdjCu36F-8-CD4A2Sfz4Q4OYa3i=9o1MJeVT8=w@mail.gmail.com>
+Subject: Re: [PATCH] RISC-V: KVM: Fix invalid HVA warning in steal-time recording
+To: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Andrew Jones <ajones@ventanamicro.com>, Atish Patra <atish.patra@linux.dev>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>, Jiakai Xu <jiakaiPeanut@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Feb 04, 2026 at 07:44:47AM +0000, Manali Shukla wrote:
-> Add KVM_CAP_LAPIC2 to allow userspace to opt into extended APIC register
-> space, i.e. to expose the full 4KB APIC page to the guest.  Extended LVT
-> registers are part of the 4KB APIC page and are AMD-specific. Extended
-> APIC registers provide additional interrupt vectors for hardware features
-> like Instruction Based Sampling (IBS).
-> 
-> Use a capability negotiation model to allow for future extensibility.
-> KVM_CHECK_EXTENSION returns a bitmask of supported capabilities, and
-> userspace enables the intersection of KVM and VMM support via
-> KVM_ENABLE_CAP.  This allows KVM and userspace to independently add
-> support for new APIC configurations without breaking compatibility.
-> 
-> Define two capability flags:
->   - KVM_LAPIC2_DEFAULT: full 4KB APIC page support
->   - KVM_LAPIC2_AMD_DEFAULT: extended LVT registers are supported
+On Wed, Apr 15, 2026 at 1:22=E2=80=AFPM Jiakai Xu <xujiakai2025@iscas.ac.cn=
+> wrote:
+>
+> kvm_riscv_vcpu_record_steal_time() assumes that the steal-time shared
+> memory GPA (vcpu->arch.sta.shmem) is always backed by a valid guest
+> memory slot. However, this assumption is not guaranteed by the KVM
+> userspace ABI.
+>
+> A malicious or buggy userspace can set the STA shared memory GPA via
+> KVM_SET_ONE_REG without establishing a corresponding memory region via
+> KVM_SET_USER_MEMORY_REGION. In such cases, the GPA cannot be translated
+> to a valid HVA and kvm_vcpu_gfn_to_hva() returns an error address.
+>
+> The current implementation incorrectly treats this as a kernel warning
+> using WARN_ON(), which may escalate to a kernel panic when panic_on_warn
+> is enabled.
+>
+> This is not a kernel bug condition but a normal invalid configuration
+> from userspace, and should be handled gracefully.
+>
+> Fix it by removing WARN_ON() and treating invalid HVA as a normal
+> failure case, resetting the STA shared memory state.
+>
+> Fixes: e9f12b5fff8ad0 ("RISC-V: KVM: Implement SBI STA extension")
+> Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+> Signed-off-by: Jiakai Xu <jiakaiPeanut@gmail.com>
+> Assisted-by: OpenClaw:DeepSeek-V3.2
 
-This should be split into two patches to separate out the AMD bits. The 
-base patch should introduce KVM_CAP_LAPIC2 and either also introduce 
-KVM_GET_LAPIC2/KVM_SET_LAPIC2, or should be after the patch adding 
-support for KVM_GET_LAPIC2/KVM_SET_LAPIC2.
+Queued this as fix for Linux-7.1-rcX
 
-> 
-> Require that the capability be enabled before vCPUs are created to avoid
-> the need to handle runtime changes to the APIC page size.
-> 
-> When KVM_LAPIC2_AMD_DEFAULT is enabled, set kvm->arch.nr_extlvt to
-> KVM_X86_NR_EXTLVT_DEFAULT (4) to track the number of extended LVT
-> registers available to the guest.  Future patches will use nr_extlvt to
-> emulate guest accesses to extended LVT registers at APIC offset 0x500.
-> 
-> Suggested-by: Naveen N Rao (AMD) <naveen@kernel.org>
-> Signed-off-by: Manali Shukla <manali.shukla@amd.com>
+Thanks,
+Anup
+
 > ---
->  Documentation/virt/kvm/api.rst  | 31 +++++++++++++++++++++++++++++++
->  arch/x86/include/asm/kvm_host.h |  1 +
->  arch/x86/kvm/x86.c              | 30 ++++++++++++++++++++++++++++++
->  include/uapi/linux/kvm.h        |  5 +++++
->  4 files changed, 67 insertions(+)
-> 
-> diff --git a/Documentation/virt/kvm/api.rst 
-> b/Documentation/virt/kvm/api.rst
-> index 01a3abef8abb..71b4d24f009a 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-> @@ -9291,6 +9291,37 @@ KVM exits with the register state of either the L1 or L2 guest
->  depending on which executed at the time of an exit. Userspace must
->  take care to differentiate between these cases.
->  
-> +8.46 KVM_CAP_LAPIC2
-> +---------------------------
-> +
-> +:Architectures: x86
-> +:Target: VM
-> +:Parameters: args[0] is a bitmask of LAPIC2 capabilities
-> +:Returns: 0 on success, -EINVAL when arg[0] contains invalid bits
-> +
-> +This capability indicates that KVM supports extended APIC register space of the
-> +whole 4KB page.
-> +
-> +Calling KVM_CHECK_EXTENSION for this capability returns a bitmask of LAPIC2
-> +capabilities that can be enabled on a VM.
-> +
-> +The argument to KVM_ENABLE_CAP is also a bitmask that selects which LAPIC2
-> +capabilities to enable for the VM.  Userspace should enable the intersection
-> +of capabilities supported by KVM (from KVM_CHECK_EXTENSION) and capabilities
-> +supported by the VMM.  This must be called before creating any VCPUs.
-> +
-> +At this time, KVM_LAPIC2_DEFAULT and KVM_LAPIC2_AMD_DEFAULT are the supported
-> +capabilities:
-> +
-> +  - KVM_LAPIC2_DEFAULT: Full 4KB APIC page support
-> +  - KVM_LAPIC2_AMD_DEFAULT: Extended LVT registers are supported (they are part
-> +    of 4KB APIC page)
-
-I don't think KVM_ENABLE_CAP should be necessary for the base LAPIC2 
-capability (i.e., for using the full 4k space). That will make it easy 
-for userspace to default to LAPIC2: it will only need to query for the 
-capability and can use the LAPIC2 get/set ioctls always.
-
-- Naveen
-
+>  arch/riscv/kvm/vcpu_sbi_sta.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/arch/riscv/kvm/vcpu_sbi_sta.c b/arch/riscv/kvm/vcpu_sbi_sta.=
+c
+> index 3b834709b429f..60e50296a0085 100644
+> --- a/arch/riscv/kvm/vcpu_sbi_sta.c
+> +++ b/arch/riscv/kvm/vcpu_sbi_sta.c
+> @@ -46,7 +46,7 @@ void kvm_riscv_vcpu_record_steal_time(struct kvm_vcpu *=
+vcpu)
+>         gfn =3D shmem >> PAGE_SHIFT;
+>         hva =3D kvm_vcpu_gfn_to_hva(vcpu, gfn);
+>
+> -       if (WARN_ON(kvm_is_error_hva(hva))) {
+> +       if (kvm_is_error_hva(hva)) {
+>                 vcpu->arch.sta.shmem =3D INVALID_GPA;
+>                 return;
+>         }
+> --
+> 2.34.1
+>
