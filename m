@@ -1,171 +1,279 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f74.google.com (mail-ot1-f74.google.com [209.85.210.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB3117A2EA
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 17:33:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778780025; cv=pass; b=IQN1fX2iWnyKy4SHnq41LWvPAs1hHcXPxDqqJtlM+9xVi3BEftsqtAUENWFw9Knzd5N2oZo3aChdyvq60XWH4jFuECk1zZiIEEFmP0ajam98ojOYRMk1aaEUhKrHBRry/NAaH6JCvh7XAKtacXSU8DDoDY0L8avTT6QttjI623k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778780025; c=relaxed/simple;
-	bh=LxANhLw80KN8Y+NFL726n+5RSykYC9D4dEjWowgMZlM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CFxZWdjF3VEy514/hDlCQnrG29SGIfcCemXO0J1VRsn8RdJncQQwuXMoDetPBdTi99wndsUzucf+1XCnla7a7qbuNIg6WPbKF3LX1cgwA9flwF+r3vx4auzvb0cCCekz6G//MSNrxLO/eNLCUwb4vkcd/GawGO4U9rNNmibm8Wo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=N3QoyFXY; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=UB95qbhb; arc=pass smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77C78391829
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 17:34:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.74
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778780098; cv=none; b=RauLHI57hh96Tw+ii5zWrKbqaNGzIXaeIcbC9BRagAD+bbDL1rESMCuL+yIVv4aqjpY2tKjWpAP8pwG8Vd4nHN1egrHqOftUpWgFi73pgKhMISu0WQEbkDN6dMreWohWPvyveAt+YY6+NB7Lm5LrP3+XyR9uNBU8TVk02QIO/CQ=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778780098; c=relaxed/simple;
+	bh=YTDNd6I6jxgC4FyzfyUFd/DKlyJTkC9SaUZkjawUs5Y=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=KeP+1wMv8fpOBU+eMYG/CjLOYhyf3V1ho152s5xVfi+R9HvYSariQWW9t0niwi8O/2vjQGm7jpoQNN4/YSyjsu3GL51see9yonkojwyf4sApZlAb7dUZlW8ALM/yH+ZE++8YG7a3ezFj7JcPR69ysm5jw486FQH8FOdB/ODpIq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--rananta.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PM6QD87x; arc=none smtp.client-ip=209.85.210.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--rananta.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="N3QoyFXY";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="UB95qbhb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778780023;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=K8IboQfLLwmc/2a3atjk6g14pcOvaqj+fayzbJ77BXs=;
-	b=N3QoyFXYETMv3YvJUt+ajZwSqqhgqYtddHELVY6xlVkyWWj6NRE1kJLIWgywATzF/jxS1s
-	Bf8q6Amqv4rSPEY334bbHvQ8FTGKOyuKRhXe3d7qCBd3n0JVmB+wd7mCbO3vfuVhbJ8nMz
-	41FYO3oZNthV4nf7QGD+wsEMusuSSgI=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-136-Jmw1y_oXPyWoyws83yDaoQ-1; Thu, 14 May 2026 13:33:41 -0400
-X-MC-Unique: Jmw1y_oXPyWoyws83yDaoQ-1
-X-Mimecast-MFC-AGG-ID: Jmw1y_oXPyWoyws83yDaoQ_1778780021
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-44cc3c9b2feso7386489f8f.1
-        for <kvm@vger.kernel.org>; Thu, 14 May 2026 10:33:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778780020; cv=none;
-        d=google.com; s=arc-20240605;
-        b=h31algOrNtKRV1V8NzD5AnJFdV8PLow1SmK62d6TXz+4fBE82sIcYfiIf1VEZRXtJl
-         XJGImtvMNG/79M1KR+Kd5Luh4pZcoRODHDKEIXRgcIf8v5SQJcHtnVM1MwvsrIN5e24B
-         Ge6QlByTEM4AKMPDBrxFMkJVE7yF57IdWodYhEi0vbDNMh6LaPksoU0aJ27xy163+Lzg
-         rv14sU5oGjJ9tSRj66f4bG00oGSGCI3BAJTjGwebOTn3wlzx+FVT4MlpUmJYpGCwid4S
-         3JxGqhVAXR1Jnuu5Jfop3Fy9OcxZ+AsnAMBX4V78Vw6DXc5pgF4o7/Kse1xgsC3gqYK2
-         cxWg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=K8IboQfLLwmc/2a3atjk6g14pcOvaqj+fayzbJ77BXs=;
-        fh=c32Ip6MBZ1sDZExTsnqWNgSaLsJ1max1WSA/ApEnYZQ=;
-        b=hGFDSgfjhdy7C4VG5HXPtKksI+8kA36WzQ/HhIZJ6YTbV1bHBwtTevl+qMcTuIsw9J
-         +El8t32w239P+v8HzGEy+ddswIKR2ZeRzDUaW5DC2NU++CdrcFxZcIvjP+V/QLVexHGj
-         wzRcapzPRlpvmSxZQks5SRkqZ2IIAys1nUqOjTTSTYZYb6By6hWT2cvFgXYljGfMCKF0
-         m/qhExIu72PHebHCPnYdHYDeG5vN/xS+djkXtz9ok3tD9qB5pqBqBI7hctxKlShw3mjd
-         wz5J8sqsxxA2jhpVNRLdkI1xM8Qxi1MY2DmO9jxr1rb3N2/533pdzgXQPhkICxsr0SCT
-         WpLA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PM6QD87x"
+Received: by mail-ot1-f74.google.com with SMTP id 46e09a7af769-7dbd60b7ecbso15899528a34.1
+        for <kvm@vger.kernel.org>; Thu, 14 May 2026 10:34:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778780020; x=1779384820; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=K8IboQfLLwmc/2a3atjk6g14pcOvaqj+fayzbJ77BXs=;
-        b=UB95qbhb5D3VlloQGxAPFDn9whtcSERNIHpjR2LcUWSz6JLvIwWnpcznYb8zYi4nTh
-         dXIrGraVS1LBUQDAAVnxYzRGIn3NG5/5rwhFz2DlxTvXCDEiwwOKjtcvKc8toqUnXMbL
-         ddUaQKRwTF34fwimaH8IWRKXgEmywpVwa6m9Ln3AhOCKc+6d/larcWLWMrGox9zFRuYz
-         /YuTQg5aBXBbu2Njxs209T7I1pQtg7MaOnNc++qhH3kuqOQIyEuaL1bckLGdwijnn0mE
-         U4WGZg2/NEKafaCUroEVQFuh6L8FhDWOOVJ1rApqvHu4pH5MEk8xq11X9Inc/tYf6wKP
-         gryQ==
+        d=google.com; s=20251104; t=1778780093; x=1779384893; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=bJZSwJgHW1qi/veTVjOv8141CX4bdbJfqSMVtdsHeyA=;
+        b=PM6QD87xXJFM5re42QK2hkHQHvmrbevmt6HVrgr4GrCML4dBrdu5TgS1vKwogpEmLo
+         w59iD+auuxd8BjKc9VLnmQfMT2Nb77Nz/d0hAyUO0WSnMgxRNh8mNk+PwWlaRvhqPskB
+         B08e58y1m46zgfm2jn2vAffn6xZUlL8MBQbCqcYxHV15VwABwA50WS2u64as8Xs2gP9E
+         XS6yfItRERgD5t53rLM1cgT54pqmxO1WAwaWcA0V81JdgqnFCO5Lt4UlJMbGrqfzgzHJ
+         9+SSMJJcFdc22W6ylGUkSPzjOoTslP+feVMIe0DgnwUYE0p4ByGZm30MmUphPQtS9mTv
+         Kpmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778780020; x=1779384820;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=K8IboQfLLwmc/2a3atjk6g14pcOvaqj+fayzbJ77BXs=;
-        b=KbR9ZZc7FleBZ0j40KJzSBwhTfErCX5jlkItINlQTd5+2vctDscInP++CMR2j7od2J
-         0uo7IY+RqKw0LkXPZhSElSr1ck66GYflWM7pEE1vyZdiCj+ScQb1pUKtz71FfgqiM9+1
-         tqrysrm4Ms9tZDWlz2mqMxN26SwJSmqC+se6V0LYXeaCL1vgbN0sIfJVO75HlZ9X5SYy
-         vs/geXDsBWiWS6Kyz7/o1hboLE6TL+MInNgkltqpSlJp+IcCpCPGbgSYXgJM7OtTJvI+
-         0ibsFH7PA0o2GZs4XBvHmHjdXd7g/pHjz8QvXAReuxoW+JmFv6TyOvNtO+4HHZ+qO53W
-         lXBw==
-X-Forwarded-Encrypted: i=1; AFNElJ+03Wl2IEhtCyIkjQ9lZKSbhnH2V8MpXCDrGjkbBTzYFSYYeysaGmn9fEa8AjlQQccQjj8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdtMpz3OJ0gqS3UN/DEgql6wJbW2y8sQEPksDC7JCUeBzVyrhY
-	aPMMVWoIhiprGD2tlDEWjExYMuzgCD8bmUzp4gKz7rXw7F6yJr7FOCVh+sxZSpH6uBfNZFvP2Z5
-	/N9gahrZJtsJLG3VyZtRr4VCci338XMLe2HRoRZyRhoq2SpQ9DJ8NIEFqxeZdMacM1gJN9eggVf
-	wwy54grYh7MLPtFofgGi3eS3i70ngP
-X-Gm-Gg: Acq92OGlYtz3BMJ5iluRQ0Ak5y0J0vMI7y89fa3CerYDX36UPbVB3gUiAMpi1MUjRoP
-	u+ebGRGWVcm91cnCxd3HLvXF29dWAMA3M1Ljw9MO5YMNlfMqti39tH9k+cCly5BfomDpXTrPgkq
-	KTmZCOgmCunRn4jkPDsVzi8Wv6HvzudBCVI1Lu+sJL2bOFGcqaXPJ1sFGzdjyZW3GY5tTVWbX76
-	1T3A1BhiOy/B1LaJ7v/wk6BBlj5XRs39areDvajBwQ72w4NOdKZVuznTlUb80oqZbwWuiPdrMD8
-	/3BxAFbHo2bOWew=
-X-Received: by 2002:a05:6000:268a:b0:43d:68dc:9ca6 with SMTP id ffacd0b85a97d-45e5c367ademr105418f8f.18.1778780020598;
-        Thu, 14 May 2026 10:33:40 -0700 (PDT)
-X-Received: by 2002:a05:6000:268a:b0:43d:68dc:9ca6 with SMTP id
- ffacd0b85a97d-45e5c367ademr105403f8f.18.1778780020271; Thu, 14 May 2026
- 10:33:40 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1778780093; x=1779384893;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=bJZSwJgHW1qi/veTVjOv8141CX4bdbJfqSMVtdsHeyA=;
+        b=EEJmARDqBlE9T8paz6zG5bqRsQKwJpFsoAbi8CMb5lG381IEpkJlTzzGEUDzDr61rR
+         ughoGplYR3HO/wYRsH+YV9zlMWywHnq4mYYBA8H727ye5esfLl+I+CmrEVQ5F8d9s67h
+         EYgYsSdHze4ED1SZ/nN0yDb5A7+UUj1IxJUngEQwVd3RhgkJK7N2+cK1CohipRYR9MgY
+         hFpRlCS/9ltSZCJGhkQKcp7VocahKYxTqD+Nwchal7kv+Aq/v64f3z9NNW1hhzb01oub
+         qF7qmPQVUmw4gTYzFya0jLb8YWLpybo4J2In2LExdmzgu+k8vns90HrnBvuU51IDcm84
+         2Oqw==
+X-Forwarded-Encrypted: i=1; AFNElJ8fHyR6y62E6+76ZjGxF1c6hDFQfDhQ8RvGRqytTPekib9hsP1f0c4amUYa7IaNpKynry8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2/plpF8Wg//lTHcC9xsuXNQBaKFGxLt0AQukddw+8Ew0xmbRG
+	sLQNMC3Douzr1qZFvOD7X3347AYS3NC/oDkwd6rds4USnqQHcnUTMzVD7i+FPU3lJPkDKpC+K9J
+	Xcq36WzNGnA==
+X-Received: from ilqa16.prod.google.com ([2002:a05:6e02:1210:b0:4fa:a7a5:6571])
+ (user=rananta job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6820:1511:b0:699:900d:7caf
+ with SMTP id 006d021491bc7-69c9b433008mr233081eaf.47.1778780093121; Thu, 14
+ May 2026 10:34:53 -0700 (PDT)
+Date: Thu, 14 May 2026 17:34:49 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260512011502.53072-1-chang.seok.bae@intel.com>
- <20260512011502.53072-7-chang.seok.bae@intel.com> <6adbdfb5-c4fa-455b-b427-2f8350bc9c2e@intel.com>
- <CABgObfZmFLDZPLEeLW5=yk8oyO8ibXr48JSVXaF7cKfz2SQw4A@mail.gmail.com> <eacff6d2-50eb-4ac1-93cf-f5652651df70@intel.com>
-In-Reply-To: <eacff6d2-50eb-4ac1-93cf-f5652651df70@intel.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 14 May 2026 19:33:28 +0200
-X-Gm-Features: AVHnY4Llo-UOt4DvtdyAfQfc91T7Ic5c4KUdMvtDcTAiuTDjNEGDQPW4yLh_fKg
-Message-ID: <CABgObfa8A5xxr0kPT_r4p1cCokW2OXgeHySN80ALOSM-B65d5g@mail.gmail.com>
-Subject: Re: [PATCH v4 06/21] x86/fpu: Ignore APX when copying from/to guest FPU
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: "Chang S. Bae" <chang.seok.bae@intel.com>, seanjc@google.com, kvm@vger.kernel.org, 
-	x86@kernel.org, linux-kernel@vger.kernel.org, chao.gao@intel.com
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.631.ge1b05301d1-goog
+Message-ID: <20260514173449.3282188-1-rananta@google.com>
+Subject: [PATCH v2] vfio/pci: Use a private flag to prevent power state change
+ with VFs
+From: Raghavendra Rao Ananta <rananta@google.com>
+To: David Matlack <dmatlack@google.com>, Alex Williamson <alex@shazbot.org>
+Cc: Vipin Sharma <vipinsh@google.com>, Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Raghavendra Rao Ananta <rananta@google.com>, stable@vger.kernel.org, 
+	Jason Gunthorpe <jgg@ziepe.ca>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 14, 2026 at 7:17=E2=80=AFPM Dave Hansen <dave.hansen@intel.com>=
- wrote:
-> I think we're getting into the weeds a bit. Maybe we should focus on how
-> this affects the ABIs and work in from there. Like you mentioned, we
-> might or might not have kernel APX support and the ABI should make sense
-> no matter what we do inside the kernel.
->
-> The functions we're discussing for this patch [...]
-> implement the meat of the functionality of these IOCTLs:
->
->         KVM_SET_XSAVE
->         KVM_GET_XSAVE
->
-> So the question, visible to userspace, is whether the
-> KVM_{GET,SET}_XSAVE should APIs should be able to manage XFEATURE_APX
-> data or not. If we decide *not* to manage them there, there needs to be
-> a _separate_ ABI.
->
-> Are we on the same page so far?
+The current implementation uses pci_num_vf() while holding the
+memory_lock to prevent changing the power state of a PF when
+VFs are enabled. This creates a lockdep circular dependency
+warning because memory_lock is held during device probing.
 
-So far yes, but the next paragraph is the kicker. :)
+[  286.997167] ======================================================
+[  287.003363] WARNING: possible circular locking dependency detected
+[  287.009562] 7.0.0-dbg-DEV #3 Tainted: G S
+[  287.015074] ------------------------------------------------------
+[  287.021270] vfio_pci_sriov_/18636 is trying to acquire lock:
+[  287.026942] ff45bea2294d4968 (&vdev->memory_lock){+.+.}-{4:4}, at:
+vfio_pci_core_runtime_resume+0x1f/0xa0
+[  287.036530]
+[  287.036530] but task is already holding lock:
+[  287.042383] ff45bea3a96b8230 (&new_dev_set->lock){+.+.}-{4:4}, at:
+vfio_group_fops_unl_ioctl+0x44d/0x7b0
+[  287.051879]
+[  287.051879] which lock already depends on the new lock.
+[  287.051879]
+[  287.060070]
+[  287.060070] the existing dependency chain (in reverse order) is:
+[  287.067568]
+[  287.067568] -> #2 (&new_dev_set->lock){+.+.}-{4:4}:
+[  287.073941]        __mutex_lock+0x92/0xb80
+[  287.078058]        vfio_assign_device_set+0x66/0x1b0
+[  287.083042]        vfio_pci_core_register_device+0xd1/0x2a0
+[  287.088638]        vfio_pci_probe+0xd2/0x100
+[  287.092933]        local_pci_probe_callback+0x4d/0xa0
+[  287.098001]        process_scheduled_works+0x2ca/0x680
+[  287.103158]        worker_thread+0x1e8/0x2f0
+[  287.107452]        kthread+0x10c/0x140
+[  287.111230]        ret_from_fork+0x18e/0x360
+[  287.115519]        ret_from_fork_asm+0x1a/0x30
+[  287.119983]
+[  287.119983] -> #1 ((work_completion)(&arg.work)){+.+.}-{0:0}:
+[  287.127219]        __flush_work+0x345/0x490
+[  287.131429]        pci_device_probe+0x2e3/0x490
+[  287.135979]        really_probe+0x1f9/0x4e0
+[  287.140180]        __driver_probe_device+0x77/0x100
+[  287.145079]        driver_probe_device+0x1e/0x110
+[  287.149803]        __device_attach_driver+0xe3/0x170
+[  287.154789]        bus_for_each_drv+0x125/0x150
+[  287.159346]        __device_attach+0xca/0x1a0
+[  287.163720]        device_initial_probe+0x34/0x50
+[  287.168445]        pci_bus_add_device+0x6e/0x90
+[  287.172995]        pci_iov_add_virtfn+0x3c9/0x3e0
+[  287.177719]        sriov_add_vfs+0x2c/0x60
+[  287.181838]        sriov_enable+0x306/0x4a0
+[  287.186038]        vfio_pci_core_sriov_configure+0x184/0x220
+[  287.191715]        sriov_numvfs_store+0xd9/0x1c0
+[  287.196351]        kernfs_fop_write_iter+0x13f/0x1d0
+[  287.201338]        vfs_write+0x2be/0x3b0
+[  287.205286]        ksys_write+0x73/0x100
+[  287.209233]        do_syscall_64+0x14d/0x750
+[  287.213529]        entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[  287.219120]
+[  287.219120] -> #0 (&vdev->memory_lock){+.+.}-{4:4}:
+[  287.225491]        __lock_acquire+0x14c6/0x2800
+[  287.230048]        lock_acquire+0xd3/0x2f0
+[  287.234168]        down_write+0x3a/0xc0
+[  287.238019]        vfio_pci_core_runtime_resume+0x1f/0xa0
+[  287.243436]        __rpm_callback+0x8c/0x310
+[  287.247730]        rpm_resume+0x529/0x6f0
+[  287.251765]        __pm_runtime_resume+0x68/0x90
+[  287.256402]        vfio_pci_core_enable+0x44/0x310
+[  287.261216]        vfio_pci_open_device+0x1c/0x80
+[  287.265947]        vfio_df_open+0x10f/0x150
+[  287.270148]        vfio_group_fops_unl_ioctl+0x4a4/0x7b0
+[  287.275476]        __se_sys_ioctl+0x71/0xc0
+[  287.279679]        do_syscall_64+0x14d/0x750
+[  287.283975]        entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[  287.289559]
+[  287.289559] other info that might help us debug this:
+[  287.289559]
+[  287.297582] Chain exists of:
+[  287.297582]   &vdev->memory_lock --> (work_completion)(&arg.work)
+--> &new_dev_set->lock
+[  287.297582]
+[  287.310023]  Possible unsafe locking scenario:
+[  287.310023]
+[  287.315961]        CPU0                    CPU1
+[  287.320510]        ----                    ----
+[  287.325059]   lock(&new_dev_set->lock);
+[  287.328917]
+lock((work_completion)(&arg.work));
+[  287.336153]                                lock(&new_dev_set->lock);
+[  287.342523]   lock(&vdev->memory_lock);
+[  287.346382]
+[  287.346382]  *** DEADLOCK ***
+[  287.346382]
+[  287.352315] 2 locks held by vfio_pci_sriov_/18636:
+[  287.357125]  #0: ff45bea208ed3e18 (&group->group_lock){+.+.}-{4:4},
+at: vfio_group_fops_unl_ioctl+0x3e3/0x7b0
+[  287.367048]  #1: ff45bea3a96b8230 (&new_dev_set->lock){+.+.}-{4:4},
+at: vfio_group_fops_unl_ioctl+0x44d/0x7b0
+[  287.376976]
+[  287.376976] stack backtrace:
+[  287.381353] CPU: 191 UID: 0 PID: 18636 Comm: vfio_pci_sriov_
+Tainted: G S                  7.0.0-dbg-DEV #3 PREEMPTLAZY
+[  287.381355] Tainted: [S]=CPU_OUT_OF_SPEC
+[  287.381356] Call Trace:
+[  287.381357]  <TASK>
+[  287.381358]  dump_stack_lvl+0x54/0x70
+[  287.381361]  print_circular_bug+0x2e1/0x300
+[  287.381363]  check_noncircular+0xf9/0x120
+[  287.381364]  ? __lock_acquire+0x5b4/0x2800
+[  287.381366]  __lock_acquire+0x14c6/0x2800
+[  287.381368]  ? pci_mmcfg_read+0x4f/0x220
+[  287.381370]  ? pci_mmcfg_write+0x57/0x220
+[  287.381371]  ? lock_acquire+0xd3/0x2f0
+[  287.381373]  ? pci_mmcfg_write+0x57/0x220
+[  287.381374]  ? lock_release+0xef/0x360
+[  287.381376]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
+[  287.381377]  lock_acquire+0xd3/0x2f0
+[  287.381378]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
+[  287.381379]  ? lock_is_held_type+0x76/0x100
+[  287.381382]  down_write+0x3a/0xc0
+[  287.381382]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
+[  287.381383]  vfio_pci_core_runtime_resume+0x1f/0xa0
+[  287.381384]  ? __pfx_pci_pm_runtime_resume+0x10/0x10
+[  287.381385]  __rpm_callback+0x8c/0x310
+[  287.381386]  ? ktime_get_mono_fast_ns+0x3d/0xb0
+[  287.381389]  ? __pfx_pci_pm_runtime_resume+0x10/0x10
+[  287.381390]  rpm_resume+0x529/0x6f0
+[  287.381392]  ? lock_is_held_type+0x76/0x100
+[  287.381394]  __pm_runtime_resume+0x68/0x90
+[  287.381396]  vfio_pci_core_enable+0x44/0x310
+[  287.381398]  vfio_pci_open_device+0x1c/0x80
+[  287.381399]  vfio_df_open+0x10f/0x150
+[  287.381401]  vfio_group_fops_unl_ioctl+0x4a4/0x7b0
+[  287.381402]  __se_sys_ioctl+0x71/0xc0
+[  287.381404]  do_syscall_64+0x14d/0x750
+[  287.381405]  ? entry_SYSCALL_64_after_hwframe+0x77/0x7f
+[  287.381406]  ? trace_irq_disable+0x25/0xd0
+[  287.381409]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-> If we _just_ look at making a good, consistent ABI, I don't think
-> XFEATURE_APX is special. The registers can be managed by XSAVE. There's
-> a KVM XSAVE ABI. Why would *this* feature be special from all of the othe=
-rs?
+Introduce a private flag 'sriov_active' in the vfio_pci_core_device
+struct. This  allows the driver to track the SR-IOV power state requirement
+without  relying on pci_num_vf() while holding the memory_lock. The lock is
+now  only held to set the flag and ensure the device is in D0, after which
+pci_enable_sriov() can be called without the lock.
 
-Indeed, it's not special from the userspace point of view.
-KVM_GET_XSAVE and KVM_SET_XSAVE *do* include APX, but the copy needs
-to be done from struct kvm_vcpu rather than from the guest FPU state
-(which as of this series means arch/x86/kvm/ instead of
-arch/x86/fpu/core/).
+Fixes: f4162eb1e2fc ("vfio/pci: Change the PF power state to D0 before enabling VFs")
+Cc: stable@vger.kernel.org
+Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
+Suggested-by: Alex Williamson <alex@shazbot.org>
+Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
+---
+ drivers/vfio/pci/vfio_pci_core.c | 17 ++++++++++++++---
+ include/linux/vfio_pci_core.h    |  1 +
+ 2 files changed, 15 insertions(+), 3 deletions(-)
 
-This is in the commit message, but it might be easy to miss:
-"Therefore, let KVM handle the APX feature on its own *when executing
-ioctls to get and set the virtual machine's XSAVE state*" (emphasis
-added).
+diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+index 3f8d093aacf8a..2fb95f54a1e26 100644
+--- a/drivers/vfio/pci/vfio_pci_core.c
++++ b/drivers/vfio/pci/vfio_pci_core.c
+@@ -271,8 +271,11 @@ int vfio_pci_set_power_state(struct vfio_pci_core_device *vdev, pci_power_t stat
+ 	int ret;
+ 
+ 	/* Prevent changing power state for PFs with VFs enabled */
+-	if (pci_num_vf(pdev) && state > PCI_D0)
+-		return -EBUSY;
++	if (state > PCI_D0) {
++		lockdep_assert_held_write(&vdev->memory_lock);
++		if (vdev->sriov_active)
++			return -EBUSY;
++	}
+ 
+ 	if (vdev->needs_pm_restore) {
+ 		if (pdev->current_state < PCI_D3hot && state >= PCI_D3hot) {
+@@ -2292,8 +2295,9 @@ int vfio_pci_core_sriov_configure(struct vfio_pci_core_device *vdev,
+ 
+ 		down_write(&vdev->memory_lock);
+ 		vfio_pci_set_power_state(vdev, PCI_D0);
+-		ret = pci_enable_sriov(pdev, nr_virtfn);
++		vdev->sriov_active = true;
+ 		up_write(&vdev->memory_lock);
++		ret = pci_enable_sriov(pdev, nr_virtfn);
+ 		if (ret) {
+ 			pm_runtime_put(&pdev->dev);
+ 			goto out_del;
+@@ -2307,6 +2311,13 @@ int vfio_pci_core_sriov_configure(struct vfio_pci_core_device *vdev,
+ 	}
+ 
+ out_del:
++	/*
++	 * Avoid taking the memory_lock intentionally. A race with a power
++	 * state transition would at most result in an -EBUSY, leaving the
++	 * device in PCI_D0.
++	 */
++	vdev->sriov_active = false;
++
+ 	mutex_lock(&vfio_pci_sriov_pfs_mutex);
+ 	list_del_init(&vdev->sriov_pfs_item);
+ out_unlock:
+diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+index 2ebba746c18f7..f1451ee4744ac 100644
+--- a/include/linux/vfio_pci_core.h
++++ b/include/linux/vfio_pci_core.h
+@@ -127,6 +127,7 @@ struct vfio_pci_core_device {
+ 	bool			needs_pm_restore:1;
+ 	bool			pm_intx_masked:1;
+ 	bool			pm_runtime_engaged:1;
++	bool			sriov_active:1;
+ 	struct pci_saved_state	*pci_saved_state;
+ 	struct pci_saved_state	*pm_save;
+ 	int			ioeventfds_nr;
 
-> I don't think the fact that the kernel is using those registers as GPRs
-> changes what makes a good ABI. That's a kernel-internal implementation
-> detail.
->
-> Now, that's not to say we should ignore kernel complexity. Maybe making
-> a nice ABI is so nasty to the kernel internals that we shouldn't bother.
-> I _think_ that's what you're suggesting.
-
-No no, I'm only suggesting to keep the complexity out of FPU code
-until we have an idea of what the needs are for non-guest FPU state.
-
-Hope this helps,
-
-Paolo
+base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+-- 
+2.54.0.631.ge1b05301d1-goog
 
