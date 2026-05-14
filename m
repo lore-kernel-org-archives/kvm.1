@@ -1,225 +1,147 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B45C38F248
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 17:52:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778781176; cv=none; b=aw3dZ8017jqoclAts4zVRZaDUJm07xRZD5ywJ7UF2js2wj3YdueX5JCoJtDTPkBflGBI4IDLlc20DSwxcvsfgnChi9M3WcjfZXcS6l7BDsvGZ7/Kjr6rFY803z4hDOBIpAUFEJOUq55PMQr3NlIC8iL4bUve9qrDYBqZ/qpXnYQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778781176; c=relaxed/simple;
-	bh=6Lsiopp+gOlTgIhuJUtI3u2C7QdWhtAwDrbE0I7bAro=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=hAFXmx0uEgoDXsDujH/CTM6tS4qYhbapb18FperEtKUscB0hLUAVRM/YNSIHTw4aS0Gvt2UaRCHHDSZRR8uvcOmEt094xcO0N/6NJ2QFPXJdOw+J/bT/xJDGYaq4tFZJ9riDLRniJzJT5x3+3OvYAQto9Gt5/5wOSezLHDJoYd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=uID4L/RT; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B953362120
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 18:01:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.51
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778781710; cv=pass; b=F52KgmokQWAn5pBKTfe4sjNoJGYg8A0wvw7wAUyLMPKuPyYe/D1PPiehOuc2D+Sx/gJJkOpCS/rp+RtBo+uGGR0yBJv/cMEfBR7H3yVQkidHqjKpyMtHslQLOM5vJY4yWI9k801BREBaBmBY5DQUEXOFa1xbXaK6C6w4yn2GTik=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778781710; c=relaxed/simple;
+	bh=bz7VCAlC3pS/IeMmBV0BkER+XEA2HS4Ltbcv/N+3xv8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Qh/wKBU6pVWpuR7e9tGNK1RIxHPBmU1Hny4vjjNmcaxKy6If4xkdVYsldphcJjJKmFUUj+U07o0X0TWSel1Wu9i+h3EH+KjSBTm4ARheGzUUvEMe987u287bn0sokjx34k5mWWcmoiPMMAvh3kVXX391ja310EKfwwSFaTOtJa8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fYWdx6Fu; arc=pass smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="uID4L/RT"
-Received: from pps.filterd (m0109331.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64EFYo2S2986103
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 10:52:54 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=i7CC6BqBBL9skWarpnUsM1vRDVhAGp/lgIIkSrH6DrI=; b=uID4L/RTFdpM
-	ym5kuxwAZGXnMvm5RC/hAqjahIGR4X97DZNauwiy3+2qdGeLwon1A2giOFCwt250
-	p2DDOFCJbt9Xw927M+aXcmNFZurvTU6m7SIy/PDM/fiVkf7NqG6TpGzja1cpG9MB
-	oTwuC4fhNj9UVZMTydsFMZmhDJ/rrspbDs+/u3Ko5yH+4iTRpMG6q0zdA+yDi3Md
-	tcjYwnReCHshyKmsj+AJkYVjYTAYGsJnOGhPIjZevNDHjlHO3kIJTYdOvoyyMEyt
-	xMAEBJM041u78SHl6dC35/Cnr/q8/tjegsMQIjHnAXNRAxTU9Av7XNoZtpSdIjkC
-	VOZpBcrPXw==
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com [209.85.221.72])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4e3nvt96y1-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 10:52:53 -0700 (PDT)
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-45d95cba6f1so806700f8f.0
-        for <kvm@vger.kernel.org>; Thu, 14 May 2026 10:52:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fYWdx6Fu"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-67bf769704eso140a12.0
+        for <kvm@vger.kernel.org>; Thu, 14 May 2026 11:01:49 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778781708; cv=none;
+        d=google.com; s=arc-20240605;
+        b=GWTzzTjIJAb/gy7b7j7jVk5+05LJ59fsxdgWrUxOuQ7UoERxJ0CZbJmQaKbmF3jz+/
+         Ib8lwSRLnHh39S8jsG4QYUlHhFihWtMXxAiV5OMdYQxzRiQeCG9qlWUjb+C3D3K2k/lB
+         GVo/oL/HZ4B4jVB6/pPtvUSoqO7+8cHvs8uytmQUPbstjfaRFIRin3kKz7my2xOLpyym
+         Fez3Sp1LNEAL9s9r35EJwzUDeQ23yGEKTGNmY/tLWHi4Wg7W6Fhzv3m0jbbWcgFxiaTW
+         vHpjqb5M/5+Wet3vloptM5txT1bm224k7Wm2R9TogPrj+p172/ZBnYQlU27vgQ78zhXH
+         0JuA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=EuQv+2Xkz0PPaxnC48IjSJx36n2gfqEKQS5cw1hUKio=;
+        fh=sU+r7rgoIhi2q5mjG517P5Dr4cUxpXLRDS2t9ZeRqB0=;
+        b=NoQFQUQdfl3P6cuy3/WAXlFJIeMBlW/TeUtGO5NdFQ0xlDSqNa0CczDkaXrRGs8T/F
+         9p7zycaHAn46tY+yaKalDIB304fDskOEAsiZAcII8CQTWpjQEsv4PPFn+A3AiiJl9CdE
+         cLcxXHBuDM4kOVnASEkaUkobVhxStI7cZ3KxO8ARhRNU29e16paJbT6AVloqIY68ysha
+         aEHa5oV5UpXWvWIOlqemJkVnskUTTOKtoSzzWGRAObBotjNd0aYOrmNnTvpeUQN8ydti
+         QK2ub/KGf498RGVJ34wGaJl++vB2vbf7y3LRzDReJqWapTNPZjplT2M/rJaLNoptpexg
+         sHyg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778781708; x=1779386508; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EuQv+2Xkz0PPaxnC48IjSJx36n2gfqEKQS5cw1hUKio=;
+        b=fYWdx6FuylmeL6AEPs1v1BZCWiwwYRGNMJU298q5jhhvA8uXhRsfXdKi1i2wubCysF
+         iGPfzgB72+ms/uYUjkUiYdJ1ZSWCv4yGhvnCHwrVcTviS22DtMwIPCTA0a8l4MYk/03/
+         EGvi744rELnAciy7Ribin1jZifIHnapJqmFNEI7teKXjV/pYgFSh1t8R5F4A3Zp9HOCo
+         jEyIFEewpolulBuL747Uo03+Yb0gP7YMDDM6lNmEpKSYpiea+w4KI2ZtyqTH2wvcveK1
+         bKMOur80bD6BhMdpA0/Myc3wKcWuzb7NS90Vj+ornrcEgMg5/l4l0Iie5c0SA22g5rnP
+         1aQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778781173; x=1779385973;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=i7CC6BqBBL9skWarpnUsM1vRDVhAGp/lgIIkSrH6DrI=;
-        b=loXqV60Tpy6+FjbS1FZwypNSC2KkI6TLSd2InFSKlL6FXj8/5aVgWUzZhKESUkDYyz
-         ru3xRzjD5GqAcIjZtZRQ+5tRtKMfUbiEcSw62TYKiTC2F+LYm14LuR7hyZ8LuV6f/i0h
-         JVAMmhU2aBce/DLJu8V+FTwI4TMBurt7jIva6obIaoJg2kwvprL+7h4jj6YQoeRhOC+o
-         W65eELby5YhSy5DLsyqE49zZaUpVu8E0F8Dx1tVTO6y8xdNu94kVDCx4IZNKqMb+dAnC
-         gAqMDr840xYG3Ve1tP4e81IxTCiIqHqVb3AyMtE2U3GjFLQx29NIAicjaGSZBP1sJ4dP
-         IWpA==
-X-Forwarded-Encrypted: i=1; AFNElJ8A//F0bscvOHpfPk2IRP/if9Hp3NLQ6f8Vdsgqej5lsytO+cwx/aWq2Ct2v+xH5O4EXzU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9GEgGBvokJA8gzgI594O1iIKYkEHwk+7hFvLuwqOsku11WEeb
-	JgEoVsBwv3+AE+S6q0ans4+wpujvFu73VwEgnehvHJTFErTyHguV614qPSo8nDy/fPnfe7CRroG
-	koQIoNbgBKa7jyfJOPdqSJtBPxq804CTokPqaN2sC1LThdq07bvVV
-X-Gm-Gg: Acq92OE75KN+a/QMzXde2wg9TiFaKdch1DhfjsyVQu8w8zulI5F5mBkDuUMmaVnrB/Y
-	i2YJ0iqXLZq2wNGRC/x+wUGCqSd//vt7oLdtnQDxpox6SMqylunbX+X3nhbkqRFI6HddbWDCaEY
-	B96t+see/2/qUnkzaPvi22rytPmJsf8Tq1zH/JuKF920yK5qFahfhknZwsAXfbfAGfG3T5sZDWT
-	rEn8+XKGS9Zx0I+tUTBwj094KABLaLK5wJtTeSRNrxkYPHztVhI1FpcB1OoBecbhs1E2MiLMIuV
-	xRoan/iAXGirXrNkSV/oclnRwe4T6Tn1QZS3QisfvqyPfYt4DeP8AIJ9yuT2xfwsHb2GSakqD6H
-	EA1afZc4XlncTJmwdiOgEdZYh4iIRz2ZZvrmRnUMUM93EsZZjpDDkiZFLTwDTSDHKrpxsr6XbO+
-	gg9GEz8r/3lv2RRlGOhdIQAf/Lm+ldSYK2T8ZegVGsEhnTRnc+zpfnAMs8mvm8TOcq20r6+qBOM
-	9rZamHSSHhtzoBx/rTOLj8=
-X-Received: by 2002:a05:6000:2f87:b0:452:c246:ab7a with SMTP id ffacd0b85a97d-45e5c5beb43mr98795f8f.14.1778781172713;
-        Thu, 14 May 2026 10:52:52 -0700 (PDT)
-X-Received: by 2002:a05:6000:2f87:b0:452:c246:ab7a with SMTP id ffacd0b85a97d-45e5c5beb43mr98748f8f.14.1778781172259;
-        Thu, 14 May 2026 10:52:52 -0700 (PDT)
-Received: from ?IPV6:2001:8b0:8b6:13d4:102e:f2af:e074:5cde? (e.d.c.5.4.7.0.e.f.a.2.f.e.2.0.1.4.d.3.1.6.b.8.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:8b6:13d4:102e:f2af:e074:5cde])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da15a6449sm7910203f8f.37.2026.05.14.10.52.51
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 May 2026 10:52:51 -0700 (PDT)
-Message-ID: <c2601b9c-9265-43da-9321-66db57446807@meta.com>
-Date: Thu, 14 May 2026 18:52:50 +0100
+        d=1e100.net; s=20251104; t=1778781708; x=1779386508;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=EuQv+2Xkz0PPaxnC48IjSJx36n2gfqEKQS5cw1hUKio=;
+        b=J4oApYTo+s3an32v1TACXNFXLBpomErHI0LfpqlMLZ8ynN9Et2r+ieECaKg//uirOz
+         d8bXMPCeF4k6TR7QO7QyhdMEwJB3JBTY5zAVvxc7zkDU+A9VCfU0NG09WKCijj9TMTyG
+         OsYUjse98VdIscc249OfpJ3mg1xIkXF/lJpItFttxbRZnlxdLg1fTgChlfwfr8cUb063
+         MHCJAqMjwez8aeTftrfP2NvOuvwO3Et+cT32cx9qkeRpQT77rJO/msJFex34/SkX5hfp
+         +GSareFup0Q+dce1HhgYHmpba54xN9i2CS6ml9oRg9ADZcnw8L+vz/gWrrjoVI2LkWjS
+         ofWQ==
+X-Forwarded-Encrypted: i=1; AFNElJ824FTtAJuNhp7xCUYusIREairEA2u5M5vle2zRjviltvDUJ8LeiKlX3kVYxVLSDs/wLzY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YydKhTW+eBH9qFOGMqJbcZnEsr2/YH0HtE76A9twvr3/fHkP+ad
+	0AdW9QG9C9I2DaPbq+r3PjY/zwEHWF5jgJ4OGMcIpNH5kmIIR1gxN52R5Rr9ZqMG1/aqUy2jR3z
+	dTg4bOt8d1zl7STJ8wGM2L6Byi82xqG9DzA4wmBIz
+X-Gm-Gg: Acq92OGzl+SBo1nj+lA83j+hgfVqBsPS+sJCdGoWqrGGBEfMmFrSetmYm9811qRsqiH
+	aMHizUGPhulvbaHjHlWkZEsRyBg+h3i2H6NF58/9IJO2HNfsZWF3tBtnzTZipc7ssrbIbnWGJ9x
+	Rib3CWeKRYt1KwEayxK7q7Pjr/wC+ayCpc9LS0SgbS+GM8P+Q/2VfN9rfSsobRIILbzJDRjfoEN
+	gaGZLvm9Powr09gZ7ECJoiS+GtoAMjozcIRoGIl9xwOVMB7Xg+btUkMxD5E6yigkFr9ikvPCbMG
+	46aBgpGkalHR/VC2zAUhQ9i+BVOa
+X-Received: by 2002:a05:6402:46c9:b0:67b:6d1c:9585 with SMTP id
+ 4fb4d7f45d1cf-683c02f0f2amr4920a12.8.1778781707399; Thu, 14 May 2026 11:01:47
+ -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 4/9] vfio/pci: Convert BAR mmap() to use a DMABUF
-Content-Language: en-GB
-To: Leon Romanovsky <leon@kernel.org>, Alex Williamson <alex@shazbot.org>,
-        Jason Gunthorpe <jgg@nvidia.com>
-Cc: Alex Mastro <amastro@fb.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>,
-        Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
-        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
-        Pranjal Shrivastava <praan@google.com>,
-        Alistair Popple
- <apopple@nvidia.com>,
-        Vivek Kasireddy <vivek.kasireddy@intel.com>,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-        kvm@vger.kernel.org
-References: <20260416131815.2729131-1-mattev@meta.com>
- <20260416131815.2729131-5-mattev@meta.com>
- <20260501161915.75525c15@shazbot.org> <afhNeYS174EW7RYp@nvidia.com>
- <20260505104911.GB11063@unreal> <20260505085058.74c34290@shazbot.org>
- <20260506053511.GG11063@unreal>
-From: Matt Evans <mattev@meta.com>
-In-Reply-To: <20260506053511.GG11063@unreal>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Authority-Analysis: v=2.4 cv=bsp8wkai c=1 sm=1 tr=0 ts=6a060bf5 cx=c_pps
- a=C8Sa+zVB7PeSwznsLr31Mw==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=wpfVPzegXHpEFt3DAXn9:22 a=VwQbUJbxAAAA:8 a=QhZvmJRm3SQzdzbRGmYA:9
- a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10 a=eYhU8IiCvE_ms1W8Tcak:22
-X-Proofpoint-ORIG-GUID: 7YT56C2iW3ryXYqWMAzwrstHFuEURmIJ
-X-Proofpoint-GUID: 7YT56C2iW3ryXYqWMAzwrstHFuEURmIJ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE0MDE3OSBTYWx0ZWRfX4eLBn0ci8HrW
- SD4GsJqveqodZglSbApoMwmrCJlp07aHhyGPzMZhhxz8gc5F/e6S3niI/hNH84Rxb8262cYnn6P
- E8Odc0CzYj8S7E+6SKzJyICaDfBO6MJvUxRS4LQHnCv29ZO+V9u/m5eNZMqz/ajggLhNISDrUpY
- Btft4Mmy1hzWd5W/47GI3FvbLbWnqed2asgf5j9YmLdgQbitdElMaytnwXE/z90bkuuhb0ngito
- l4u3D9U9ayX319xSOCJvkhzDcpQm1dN3erunrj/gUDzCI93RqVWN+8fd2weyjlFa5oOOKYLCq7D
- oaJV3CBIPwonNjADpLn1Ws6EifcDrHS6JB1EnlfGsE/zkIMcLtORdpAtR7IFLve/tVHIY0wsmvo
- uJb9bRcXZ0J3TG2oJvsKVzdx4XT/3ClSS1ECNTbqIL4VynG+hio/su2LMncwVlWBqe9nyaGYssr
- m03qKKLzFnWutfYyL7Q==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-14_04,2026-05-13_01,2025-10-01_01
+References: <20260513224608.1859737-1-jmattson@google.com> <20260513224608.1859737-4-jmattson@google.com>
+ <CALMp9eS4s9tsOmvDUDeqS7oph0mSHyhxBiULQdwHVaG+7gXLSQ@mail.gmail.com>
+ <agXcKDjnJc9DPcyr@google.com> <CALMp9eS831M153QmAgjzJcR2dFY_wCCCzDisd7_T6GyS3-gAFw@mail.gmail.com>
+ <agX2SJF3rJSkIqDe@google.com> <CALMp9eQTSxFkVf4vV83yNYvv2AjseHYiD3M68mcc951L4U1Jxw@mail.gmail.com>
+ <agX5v1utAfyMadPm@google.com>
+In-Reply-To: <agX5v1utAfyMadPm@google.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Thu, 14 May 2026 11:01:33 -0700
+X-Gm-Features: AVHnY4LLIpTGXClPtZ3NIuJ5IjxRpd6GGNfBMTLD-JMB8crD1vsnQ7OTTrR2bno
+Message-ID: <CALMp9eQqbHrcV1_WM+5xUR16OpGk+unxoZGi+=t55cqVhFgAfQ@mail.gmail.com>
+Subject: Re: [PATCH v3 3/4] KVM: x86: Virtualize AMD CPUID faulting
+To: Sean Christopherson <seanjc@google.com>, "Kaplan, David" <David.Kaplan@amd.com>
+Cc: pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, shuah@kernel.org, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, ctpence@google.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Leon, Alex, Jason,
+On Thu, May 14, 2026 at 9:35=E2=80=AFAM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> On Thu, May 14, 2026, Jim Mattson wrote:
+> > On Thu, May 14, 2026 at 9:20=E2=80=AFAM Sean Christopherson <seanjc@goo=
+gle.com> wrote:
+> > > Oooh, this is based on the generic CPL rules.  I didn't think about i=
+t from that
+> > > perspective.  So yeah, addressing that does make sense.  What a pain.
+> >
+> > When I fix this in version 4, what's the correct footer for Sashiko att=
+ribution:
+> >
+> > Assisted-by: Sashiko:gemini/gemini-3.1-pro-preview
+> >
+> > or
+> >
+> > Reported-by: Sashiko:gemini/gemini-3.1-pro-preview
+>
+> This, or even just:
+>
+>   Reported-by: Sashiko
+>
+> is good enough for me.  I don't expect random developers to know or care =
+what
+> model was used, at least not when it comes to reporting bugs.  If you use=
+ AI to
+> help write the code, then maybe I'd care?
 
-On 06/05/2026 06:35, Leon Romanovsky wrote:
-> 
-> On Tue, May 05, 2026 at 08:50:58AM -0600, Alex Williamson wrote:
->> On Tue, 5 May 2026 13:49:11 +0300
->> Leon Romanovsky <leon@kernel.org> wrote:
->>
->>> On Mon, May 04, 2026 at 04:40:41AM -0300, Jason Gunthorpe wrote:
->>>> On Fri, May 01, 2026 at 04:19:15PM -0600, Alex Williamson wrote:
->>>>    
->>>>> Exporting dma-bufs from vfio-pci is a feature, but mmap of MMIO BARs is
->>>>> a legacy requirement.  That legacy requirement now depends on
->>>>> PCI_P2PDMA, which depends on 64BIT and ZONE_DEVICE.
->>>>
->>>> That should be split up now, Leon missed it when he added the new
->>>> APIs that didn't require ZONE_DEVICE..
->>>
->>> Sorry, what did I miss here?
->>> VFIO_DMABUF is an optional feature and is enabled only when P2P support is
->>> available. It does not affect legacy systems where P2P cannot be enabled.
->>
->> If we look at the long term view of moving exclusively to cdev/iommufd,
->> where VFIO_DMABUF becomes the mechanism for implementing P2P DMA
->> mappings, VFIO_DMABUF may be optional, but it's highly desirable for
->> legacy compatibility.  There's an argument though that providing P2P
->> compatibility on platforms that support PCI_P2PDMA is probably
->> sufficient.
->>
->> However, in providing mmap of dmabufs as a feature, this series is
->> wiring all mmaps through dmabufs and therefore that dependency becomes
->> fundamental to the use of vfio-pci.  Thus the discussion whether the
->> noted config requirements could be lifted.  Thanks,
-> 
-> Right, there was no need to remove ZONE_DEVICE when I added my code, and I
-> left the task of cleaning it out of is_pci_p2pdma_page() for another day.
-> Without ZONE_DEVICE, all pages are treated as non‑P2P.
-Just checking I'm following the deps correctly...
+I had Jetski write an empirical test to see how the hardware behaves.
+On the first userspace CPUID VM-exit, temporarily set #GP on userspace
+CPUID per the appropriate vendor's mechanism, make sure that we
+intercept #GP, and re-enter the guest without advancing RIP. Then, see
+what the next VM-exit is.
 
-If we remove the PCI_P2PDMA dependency on ZONE_DEVICE then (without) 
-it's present with P2P hard-disabled (as Leon says).  Already 
-`is_pci_p2pdma_page() == false` because folio_is_zone_device() is always 
-false in that config.
+Surprise!
 
-The only dependency this series adds is for pcim_p2pdma_provider() (and 
-support).  We can select PCI_P2PDMA for provider purposes (VFIO!) but if 
-!ZONE_DEVICE there's no P2P.
+kvm_intel: KVM: EMPIRICAL TEST RESULT: #GP took precedence over CPUID VM-ex=
+it
+kvm_amd: KVM: EMPIRICAL TEST RESULT (SVM): CPUID VM-exit took
+precedence over #GP!
 
-Nothing in PCI_P2PDMA depends on 64BIT and that dependency can be 
-removed [1].  (ZONE_DEVICE depends on 64BIT.)
+LOL!
 
-That seems a path to VFIO operating unchanged on 32-bit platforms and 
-others without ZONE_DEVICE.
-
-(PCI_P2PDMA currently also depends on NEED_SG_DMA_FLAGS, which seems to 
-be unnecessary if !ZONE_DEVICE is preventing P2P pages (no 
-sg_dma_mark_bus_address() would happen for example), is that right?)
-
-
-Then VFIO_PCI depends on a subset of PCI_P2PDMA configuation:
-
-"Diet" PCI_P2PDMA_CORE available even when !ZONE_DEVICE:
-  - Compatible with 32-bit platforms; doesn't need to depend on 64BIT
-  - Returns a provider, which allows VFIO mmap(), DMABUF mmap().
-  - Doesn't allow P2P DMA (eg. via DMABUFs).
-  - Doesn't need to select NEED_SG_DMA_FLAGS.
-
-"Classic" PCI_P2PDMA depending on ZONE_DEVICE:
-  - Behaves as PCI_P2PDMA does today
-  - If ZONE_DEVICE then PCI_P2PDMA enabled, which enables VFIO_PCI_DMABUF
-
-Meaning:
-
-32-bit configs (or 64-bit without ZONE_DEVICE):
-  - No P2P anyway
-  - VFIO mmap() works
-  - VFIO_PCI_DMABUF is disabled (no point enabling DMABUF export since it
-    can't be used for its original P2P purpose)
-
-64-bit configs that support ZONE_DEVICE:
-  - As today, DMABUF P2P, mmap() of BARs via VFIO or DMABUF
-
-
-Just added PCI_P2PDMA_CORE and (functionally) ~no code changes are 
-needed since disabling P2P just falls out of !ZONE_DEVICE.  But most of 
-p2pdma.c does nothing in that config (except for pcim_p2pdma_provider() 
-and its support) so benefits from some #ifdef to reduce it.  WDYT about 
-a pcip2pdma_core.c containing just the provider management?
-
-
-Thanks,
-
-Matt
-
-[1]:  The drivers/pci/Kconfig's PCI_P2PDMA states:
-   # The need for the scatterlist DMA bus address flag means PCI P2PDMA
-   # requires 64bit
-I think this isn't quite right as AFAICT the flags are usable on 32b 
-too, and actually it's ZONE_DEVICE that requires 64bit.
+David: Is this intentional or a bug?
