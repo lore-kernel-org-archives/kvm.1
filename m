@@ -1,124 +1,112 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDFB03C4168
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 21:09:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 874A43F413B
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 21:12:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778793001; cv=none; b=AuXm+d7aBdOags9NEUTs5NowD2x2FRjo5DtG3d2V0HSgg+NV1OaqHD5573vdteqcFCSFm2Xe/JaD/g12T0ux/E21nO6ROMYPLhcBMdeSGAafs+lL3ePOr64wDUwIggi0JNoOW28FCnaRtU2tz7ohU1eqjHIJFsvybV+3VnJapNY=
+	t=1778793160; cv=none; b=Uq3dHRqxw4owN3Q/MOFaCS46ysZRnmqrHFaoyxAFaLRiQ8UuvxECtJQq2IK7CZzdn+8g9xgHa5SafP9VfP1cBK2QdS74gxVU4bEQMWy4skxzcBw7kxKQdLxkkMHiryjCxYfWXTRAmmQRTY5ZKamBDORRLC7CUJKfiLnj+1KXUi0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778793001; c=relaxed/simple;
-	bh=QB5wm3xXK5dICUHnaN7pbl8wf8LXXJdLhbRTbVK8gXM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=BSrByBJ8lt3N1cBiECBcyZj94f4SVHJ3YhtY+crV01wXhY05ErD/oF6ciFFMnxY/OssBQgUZVmsDGFoT0KAITVQz59YS2ZfhxIdNevP7htKqNNJzwfi/Z6JsV5higuRZaz4agkC1CAdGehVbshQS/X5kgl+FUrlepIRnQGAHsYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KyrOgUCw; arc=none smtp.client-ip=209.85.210.201
+	s=arc-20240116; t=1778793160; c=relaxed/simple;
+	bh=VD3wdqBkDbkDC1XQeLl3ZChUK4YoYUZRNOttfDG+cH0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=a/mhatbV4WUq94LG+irc/wXxMP2oygCoe16ltip5UqahxHziahELVjDsGTFX8erI7wsAOf1ddgBdKWNKp25i/yHJ4uaVsty2Ovn6ut8ZW5rD/3hU3IVj6GD56ghVtwKxQQ2ggVIg57llxytwmJCvJ8bqIPzwjwHt/vq+k7KJaYs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bL883Y9i; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KyrOgUCw"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-83565161a6eso126007b3a.1
-        for <kvm@vger.kernel.org>; Thu, 14 May 2026 14:09:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bL883Y9i"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c82894155ceso6491907a12.1
+        for <kvm@vger.kernel.org>; Thu, 14 May 2026 14:12:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778792999; x=1779397799; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VV9v0q+Mx90211JcKlwR5dAkL0GPpC06G6QGntY1+Sc=;
-        b=KyrOgUCwUIfMoEfAQ/cMbckMcCc8Ryfr58qn2Pl4pXKLzwoxptRmmKSR/dNrm7WOxO
-         s54gHEpUXNmupCKkSc/ULe9zGtsw43Ic9GzVuKmTh7Kcr2HG5K8f2VlXAtr58cL+6Ef4
-         dmxmVqd5WtBJDpoJ6IwXEiCvts8sWQpjou8tpLRtuFASA7xeDcaaUTQITecgsCM2OtE3
-         bX/Z5z/ekGjQ8JY+GIg+XNsTk04MRpME3sCNXzUg3AuB0/eX2KWPe8Kvu6XS28/5qTrb
-         l36HI6XvpBhgzilFTGwuW9NfQPJ9tO3iio76jkC8N7Aj5Ee0UfahE+PlcfcKHzt6Dian
-         NZGw==
+        d=google.com; s=20251104; t=1778793159; x=1779397959; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TY5wQT0+AR8B9aqpdnfkWWpcF2oSSO/yovQtnMcY/AQ=;
+        b=bL883Y9iyFzGXZs64qb2jfvHAooTylX0/6e4jfz1TFlsHhu8R9lzhrXhtS75V7gUw3
+         6GuAzGciVicRlb7FjxioHc7HKUDndseeZOvHqDiUnCYUFPe9VZvXFNiZvO2W4ZmZxWYx
+         8Fa3yDMPSUVHJFbBeBFCjWLKTcXinzFe9PAcV9xcyrEp33fOIX3bOK87jJObeU5ipNXi
+         DVz+uRc5caCgBB4lIJy5BsYkFKIW/bM1oEOQKt+P3fR0COueNDQg4nrqpvbvVk3i8Bsl
+         9yG8RdYhxdIpILaSvYsxoj0BLA1Ur64nj9SiruQdbaXdC2oe1/L6mRfPvoQdIabZ00Kg
+         OY7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778792999; x=1779397799;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=VV9v0q+Mx90211JcKlwR5dAkL0GPpC06G6QGntY1+Sc=;
-        b=Y5ao7qqR54HgnEFPBdgynjETY4bNxM+YLUZHek1cYJ/KZWZw5uB7hLXT9dQZ1g5dbk
-         EVmla+qDRxLgkqG6S1EV2CzYEis7d4I3eMExUv2KpaoNuqz2jz7kpGWC1w4vB1yOJYxE
-         69OTBAjMZBHDu6wK1EI6ACcEiDZoxIqir5ePwGRj8D4QsDgxKvWoufhzOutAW+RM4xO8
-         hrrBKzt1BbMND/SbKAuSeAkUVt6cjAAm9ba1wl1g/bAZy30BmfqA9t0HeOD6qlvIHb1h
-         UEg8Gj0ZbfbtC174H7RInxId6rGzqd1R0aozsqiecYr8f0UczPkBFDSYgGAyhMaxCmaV
-         Dedw==
-X-Forwarded-Encrypted: i=1; AFNElJ+iA5oAhlfuIgqZRziNtWdmQEKOKhgeN/mxSAJSaM2QHaV0fMzyKxlai9gMzW1F7pCgqio=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yywq4PLfIgoccY6Bpt7xALXkuHpz2IOo1SvjG3rRZSM0E3lLn4E
-	W2KTYThtZTEaokDrCl+MhJkMw9rN+TXJ1dLVBYEOW0Z66bpaCSo6KkxdqiJesU5X9535uHuMoBH
-	8C3RHXA==
-X-Received: from pfhh2.prod.google.com ([2002:a05:6a00:2302:b0:82f:7163:35c4])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:882:b0:82f:4725:f6d0
- with SMTP id d2e1a72fcca58-83f18ec292amr5190059b3a.29.1778792998614; Thu, 14
- May 2026 14:09:58 -0700 (PDT)
-Date: Thu, 14 May 2026 14:09:58 -0700
-In-Reply-To: <agPUfzbMzTU1ebii@intel.com>
+        d=1e100.net; s=20251104; t=1778793159; x=1779397959;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=TY5wQT0+AR8B9aqpdnfkWWpcF2oSSO/yovQtnMcY/AQ=;
+        b=qP44BdWfIKMcu0kVkaCI3oFxFBREWm6TltSSUz/IjwYn1yZI3wG+uzxWkGSShVdFAw
+         8k4p8lIO7X0UipyjBog3+FicuX7s2hLyBf+DvXBjO4ACr9j60u3lnik1fIZpBjw2moYU
+         gT87IqCOqBF8cQtPHEkIeOcQLqAcdMdrWfuQWlLWkRhV0aA8GPSJb4nUzb2bwNwgjNqB
+         1WXmQuy5ohdH3SjpkR2MHF3nOkNyNRYq1UFg7vNQ5vB7KxreWWMID0WwzW6+wyAHcNs4
+         9GYInXkcbDDAdHYEOIfcwpGAgHH1c1Q0fGQGlWLxydr+JplQGNncIz6Px1CNNpv4DJv7
+         Z0uA==
+X-Gm-Message-State: AOJu0YzZYnT3n0kKjamL78STm0MkyXpfZQCwYxM3CA40qBYAO6Rvr7Rh
+	P0afy3HOXVYdu1cV8T2eFrVy/l9WpxZvjAlwlwh8HGfE++PpkG+zdmgmk21Y5EkFKWX76nTlcBW
+	f7DRKWA==
+X-Received: from pfde26.prod.google.com ([2002:aa7:8c5a:0:b0:835:4037:1869])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3a06:b0:82c:9c90:54cf
+ with SMTP id d2e1a72fcca58-83f33f14de3mr1166232b3a.43.1778793158452; Thu, 14
+ May 2026 14:12:38 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Thu, 14 May 2026 14:12:37 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <cover.1718214999.git.reinette.chatre@intel.com>
- <2fccf35715b5ba8aec5e5708d86ad7015b8d74e6.1718214999.git.reinette.chatre@intel.com>
- <Zn9X0yFxZi_Mrlnt@google.com> <agPUfzbMzTU1ebii@intel.com>
-Message-ID: <agY6JuEJRhwpwlRL@google.com>
-Subject: Re: VMX Preemption Timer appears to be buggy on SKX, CLX, and ICX
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
+Message-ID: <20260514211237.1629774-1-seanjc@google.com>
+Subject: [kvm-unit-tests PATCH] x86/debug: Verify DR6 is always empty on an
+ INT1/ICEBP #DB
 From: Sean Christopherson <seanjc@google.com>
-To: Chao Gao <chao.gao@intel.com>
-Cc: Reinette Chatre <reinette.chatre@intel.com>, isaku.yamahata@intel.com, 
-	pbonzini@redhat.com, erdemaktas@google.com, vkuznets@redhat.com, 
-	vannapurve@google.com, jmattson@google.com, mlevitsk@redhat.com, 
-	xiaoyao.li@intel.com, rick.p.edgecombe@intel.com, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, chenyi.qiang@intel.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, May 13, 2026, Chao Gao wrote:
-> On Fri, Jun 28, 2024 at 05:39:47PM -0700, Sean Christopherson wrote:
-> >This test fails on our SKX, CLX, and ICX systems due to what appears to =
-be a CPU
-> >bug.  It looks like something APICv related is clobbering internal VMX t=
-imer state?
-> >Or maybe there's a tearing or truncation issue?
-> >
-> >As mentioned ad nauseum at this point, I'm offline all of next week, so =
-hopefully
-> >there's enough info here to get a root cause...
-> >
-> >
-> >A spurious VM-Exit will occur after programming a vmcs.PREEMPTION_TIMER_=
-VALUE that
-> >shouldn't exit.  Every observed failure occurs when bits 27:16 are zero,=
- with a
-> >small value in bits 15:0, e.g. VM-Enter with a timer value of 0xe0003bf7=
- or
-> >0xa0006db6 will cause a near-immediate VM-Exit.
->=20
-> This behavior is documented as a CPU erratum. See
-> https://cdrdv2.intel.com/v1/dl/getContent/793902
+Extend the single-step + INT/ICEBP #DB testcase to verify that DR6.BS==0
+on the ICEBP #DB, even when single-step is fully enabled.  Per the SDM:
 
-Ha!
+  The INT1 instruction also uses a one-byte opcode (F1) and generates a
+  debug exception (#DB) without setting any bits in DR6.
 
-> EMR158. VMX-Preemption Timer May Expire Earlier With Certain Large Timer =
-Values
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ x86/debug.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-I assume the same erratum applies to previous generations as well?
+diff --git a/x86/debug.c b/x86/debug.c
+index 09f06ef5..36235370 100644
+--- a/x86/debug.c
++++ b/x86/debug.c
+@@ -281,11 +281,12 @@ static noinline unsigned long singlestep_with_movss_blocking(void)
+ static void report_singlestep_with_movss_blocking_and_icebp(unsigned long start,
+ 							    const char *usermode)
+ {
+-	report(n == 4 &&
++	report(n == 5 &&
+ 	       is_icebp_db(dr6[0]) && db_addr[0] == start &&
+-	       is_single_step_db(dr6[1]) && db_addr[1] == start + 6 &&
+-	       is_single_step_db(dr6[2]) && db_addr[2] == start + 6 + 1 &&
+-	       is_single_step_db(dr6[3]) && db_addr[3] == start + 6 + 1 + 1,
++	       is_icebp_db(dr6[1]) && db_addr[1] == start + 1 &&
++	       is_single_step_db(dr6[2]) && db_addr[2] == start + 1 + 6 &&
++	       is_single_step_db(dr6[3]) && db_addr[3] == start + 1 + 6 + 1 &&
++	       is_single_step_db(dr6[4]) && db_addr[4] == start + 1 + 6 + 1 + 1,
+ 	       "%sSingle-Step + ICEBP #DB w/ MOVSS blocking", usermode);
+ }
+ 
+@@ -311,7 +312,8 @@ static noinline unsigned long singlestep_with_movss_blocking_and_icebp(void)
+ 		"popf\n\t"
+ 		"mov %%ax, %%ss\n\t"
+ 		".byte 0xf1;"
+-		"1:and $~(1<<8),%%rax\n\t"
++		"1:.byte 0xf1;"
++		"and $~(1<<8),%%rax\n\t"
+ 		"push %%rax\n\t"
+ 		"popf\n\t"
+ 		"lea 1b(%%rip),%0\n\t"
 
-Thanks much for following up on this!
+base-commit: 9eb6c57313060d34f7e5b2ac6f90bb5873bbe2ff
+-- 
+2.54.0.563.g4f69b47b94-goog
 
-> Problem: When the VMX-preemption timer is programmed with certain large v=
-alues,
-> the timer may expire earlier than expected. Actual values vary by platfor=
-m and Time
-> Stamp Counter (TSC) frequency.
->=20
-> Implication: Due to this erratum, software that relies on long duration V=
-MXpreemption
-> timers may observe VM exits significantly earlier than the programmed
-> interval. Intel has not observed this erratum with any commercially avail=
-able software.
->=20
-> Workaround: A mitigation for this erratum is for software to program the =
-VMXpreemption
-> timer for values below 2^25 =C3=97 CPUID.15H:EBX[31:0] / CPUID.15H:EAX[31=
-:0].
