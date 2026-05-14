@@ -1,114 +1,167 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-yx1-f74.google.com (mail-yx1-f74.google.com [74.125.224.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D38A33ADB1
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 18:52:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F01E3A63EC
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 18:59:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778784722; cv=none; b=HHQjn9NkeTzIENxlY0F9QOS1yOOVp6HroWNIQd4MsfCf8pRy8fxhSorIVYtMWh/dZpvUfPIojxNbJE+Bg54875b7D2xW52ekViS6to4FVUQFto43U24cBEOK/Yiq7kyCjPrL3cxlHTe2i11fTbkEfbdKZ3qwOb/qrK1jGyWFNHM=
+	t=1778785148; cv=none; b=dKxdozcjrJQG0it0KJ1m2ZbUsLBjug7ol8hJ08N6sKh95SKTCVEQy6MDy9Nvm5SkGUIspIBqqRPGoCtXeZdQmxuzCCei+IS6kaehMB8zJcf+jooCcODQlCXvLE/SC+ms1GupQLdVGEoqHaGug7w7pM1NHoCrD40MdDCFG1mG1oI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778784722; c=relaxed/simple;
-	bh=ipknFUVY08c/OyZgQ4DVl3qiLBlNgpQ78duTHUZvTDw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=abUPrx9tZ3KXZGjrD7QRNGOg2YNVpdIVRV/7ADKCZxNLfCkIv+XFD0KzeBd3ixFPTVylDGqZ5RvQD0HK7gcvBhOW0QHC7SYJ8UdSlkq/YEZKzY5+jLAPuczq9AxieOOh0tZwKiOcLo2/OGZQR+1Ta1hwOVhGz3qUHFRBvACUSQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ezo0sdPj; arc=none smtp.client-ip=209.85.210.201
+	s=arc-20240116; t=1778785148; c=relaxed/simple;
+	bh=gWP1ILhyScXHyRSOIDBKSyeHHxNav78NvuyAhfFN1Eg=;
+	h=Date:In-Reply-To:Mime-Version:Message-ID:Subject:From:To:Cc:
+	 Content-Type; b=sFYYTq3d9WaJflDNf4C0SPT3nfMNJJzaXy6gySfVaazwnqKXdcMHb5dWq6+rwN23mBCNa6Dw430aGzERw7c7reLMGn1EFIxp49PxFo4G98MmHlWPAvWoFI7YtB2Pw76wGeL/n1xIRgd7Ht+U229v16MiuAwVn/njSif3LO0knm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=szgDulrt; arc=none smtp.client-ip=74.125.224.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--coltonlewis.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ezo0sdPj"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-83cecc22d5fso4360300b3a.2
-        for <kvm@vger.kernel.org>; Thu, 14 May 2026 11:52:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="szgDulrt"
+Received: by mail-yx1-f74.google.com with SMTP id 956f58d0204a3-65c364b8683so18359024d50.2
+        for <kvm@vger.kernel.org>; Thu, 14 May 2026 11:59:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778784721; x=1779389521; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=JrX8LRwW1PSowT2YAxKZhUffJgpdoyd8g+oYXgBSXz4=;
-        b=ezo0sdPjEesNfcNDiRWi19y1QjRyAlFa6HsxnuJR6+kJe5sOJrW0GRDGe9J4tI8wF4
-         6kLMH6j3WGld2TmcpHKjjL8yvtVZo8StGn5yh2Gtbqrfb/gYNDbKB4t2XSEKCWb8uR6t
-         V46Is7xqShPpgsHD++wPb4hGahqJ1BjzjNmLnAZ3OKl64bTswuLWu7tRtR/fJNhQ5kaA
-         kOU69StJYybPj0KyCQebbw4n1V+uSPgNSO2Zb2Yeal8txhIWb2Nb1eC5qpM+q3ncQzYl
-         Qap1TpbFZzhr3CMGPdUgRc9JsoJpQB5RYpEsfEwwIIc1NKGIEKrZkFSeGJIU0qgESlim
-         1+hA==
+        d=google.com; s=20251104; t=1778785146; x=1779389946; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=ODwOeawQeH9yG3JQIK6jfQJAoFNmQmpkBT15tfR0sa0=;
+        b=szgDulrtDxMVE5tSvtnkTmoUoLOAxKYJJOQKpAZc8aOYgqtnmRNPq57joKeIqeG3UE
+         aFvrnbvJoZZ1tiZDkkgc9vrfiKmhZJHidBgk45gjGf7lbQb46amB1pFcEV5nPPuwXm9Q
+         Z8+7WuQZuK4322EPFoJ4N7b9gtxI1HYpCAFXIH6EJoL/XnBcEnZFuxHnAe2cADcQrZ8f
+         XCHp8b4xHouZmlLpGndwyyc0UE+NRhl9VOAJjP9XU0gVnbK1MvF9kXph9j4M7d9pceQ3
+         s6KtJ9D/dSEPwab7G6ZIh2izXW+Xb8ZTZg0IfcrJ2u0jNlU2NOomjC60QuL0e9Vgdgqi
+         qWeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778784721; x=1779389521;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=JrX8LRwW1PSowT2YAxKZhUffJgpdoyd8g+oYXgBSXz4=;
-        b=Arc/ZFsw+AMtI/q7PZw7GxMU0uFvSl8N54ecHGuLdaSvb2VwUBD++NcT+khv1+0NlW
-         wk2QzuEtPaL6Tr2jVJ60YnTJxt6lWlcjhJ1V1xHXmOtofqJCtSnD7j2hAn6m7eDPqULQ
-         0ZPlQIuv/no2p6sZUA0wBRM6WliF8Yq+Ah1HkYtNGXdivcT3W5+yCwBAJf3ylB9Yi8aB
-         jqo+/j27oViS3FsFhxIw4UH+W/zMnueSAyn1Kpiwu/geKr7yu4L6H3DvqV67d0b/761K
-         CZWGkSYwUCu+RKKdjUsHU5HcTY5x52IHoQfn84LMgBNs9L+a8xtgszzZrT5J0IUs+ImY
-         AySA==
-X-Gm-Message-State: AOJu0YxHlf8hpkOCsh6gVBBYO3U8Jwmgm6LVgmCWnw5gJWsML02imMRB
-	JRo3OmPeS9uQYiIJ0snhXl/sYXgrvyUz/v+dW7ffZt4u+Z9XPSd6aLW0y7FvgvC4GQT9vlOcYiB
-	Hi1niHg==
-X-Received: from pfnc7.prod.google.com ([2002:aa7:81c7:0:b0:83e:d99d:7c4b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:cd4:b0:82f:5d4f:7355
- with SMTP id d2e1a72fcca58-83f33cbcc50mr861095b3a.33.1778784720342; Thu, 14
- May 2026 11:52:00 -0700 (PDT)
-Date: Thu, 14 May 2026 11:51:59 -0700
-In-Reply-To: <20260514053105.GA109150@k08j02272.eu95sqa>
+        d=1e100.net; s=20251104; t=1778785146; x=1779389946;
+        h=cc:to:from:subject:message-id:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ODwOeawQeH9yG3JQIK6jfQJAoFNmQmpkBT15tfR0sa0=;
+        b=eBOXzkuq27hPWUSdj1xU9hvqYwI0W3eCCtsRyFLobNtLdv3XT2TufAB30vzdQOBPCo
+         dWUYj+QOOTwrlsizav9xLx8ivUX305VOfr8ua6cdyABz4Spl1x3qlUlGBxlVTYVMOZ+2
+         Ic/TKljXS1a2VOr0uVrxYfWHkDVbi662X8lJLiQhXm7w5aO+S//hH0qFPUKGH+q1vlpX
+         tXOhVho5RAkZoPa9AJDFYjM7ZpZbYNMJ7MWy8bmtZS2t9LUM9ECiulIMrXRhMOtCBfpf
+         CXn1Wyj5EBnrn9jm8m5QCdR6AS9iSkOI5kkhL7yvXM04PhKB3iJvDz+qMVtCR9hkZVCr
+         TekA==
+X-Gm-Message-State: AOJu0YwJ+Tp+pnEU4XTAhd+0Gth5N11X58dHItBeKeSpt6mNkUHEAzNl
+	EDBxo1Yz3PKkD0zkT3Sinarbqhfu3JyFvDnYXd+o7ZBrgOcm1kXnTE246WHAPKJ4ZcyPeCaFrun
+	8LOsLiRrUaSBeV8rZQppQf4/8Vg==
+X-Received: from yxxr14.prod.google.com ([2002:a53:aece:0:b0:651:c562:b43b])
+ (user=coltonlewis job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:690e:191d:b0:651:b7e2:6835 with SMTP id 956f58d0204a3-65e227be0e1mr578484d50.35.1778785145996;
+ Thu, 14 May 2026 11:59:05 -0700 (PDT)
+Date: Thu, 14 May 2026 18:59:05 +0000
+In-Reply-To: <agRBzkVcR-qZZdx2@kernel.org> (message from Oliver Upton on Wed,
+ 13 May 2026 02:18:06 -0700)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <cover.1766066076.git.houwenlong.hwl@antgroup.com>
- <e0df5d6812da0f508cdf697ac7627693199c8293.1766066076.git.houwenlong.hwl@antgroup.com>
- <agUFxrpUhBRv54ZV@google.com> <20260514053105.GA109150@k08j02272.eu95sqa>
-Message-ID: <agYZz7D6OXsEIEYF@google.com>
-Subject: Re: [PATCH v2 9/9] KVM: selftests: Verify 'BS' bit checking in
- pending debug exception state during VM-Entry
-From: Sean Christopherson <seanjc@google.com>
-To: Hou Wenlong <houwenlong.hwl@antgroup.com>
-Cc: kvm@vger.kernel.org, Lai Jiangshan <jiangshan.ljs@antgroup.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+Message-ID: <gsnto6ihbyx2.fsf@coltonlewis-kvm.c.googlers.com>
+Subject: Re: [PATCH v7 10/20] KVM: arm64: Context swap Partitioned PMU guest registers
+From: Colton Lewis <coltonlewis@google.com>
+To: Oliver Upton <oupton@kernel.org>
+Cc: kvm@vger.kernel.org, alexandru.elisei@arm.com, pbonzini@redhat.com, 
+	corbet@lwn.net, linux@armlinux.org.uk, catalin.marinas@arm.com, 
+	will@kernel.org, maz@kernel.org, oliver.upton@linux.dev, mizhang@google.com, 
+	joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, 
+	mark.rutland@arm.com, shuah@kernel.org, gankulkarni@os.amperecomputing.com, 
+	james.clark@linaro.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	kvmarm@lists.linux.dev, linux-perf-users@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"; format=flowed; delsp=yes
 
-On Thu, May 14, 2026, Hou Wenlong wrote:
-> On Wed, May 13, 2026 at 04:14:14PM -0700, Sean Christopherson wrote:
-> > On Thu, Dec 18, 2025, Hou Wenlong wrote:
-> > > +static void guest_irq_handler(struct ex_regs *regs)
-> > > +{
-> > > +	unsigned long target_rip =3D CAST_TO_RIP(fep_bd_start);
-> > > +
-> > > +	__GUEST_ASSERT(regs->rip =3D=3D target_rip, "IRQ: unexpected rip 0x=
-%lx (should be 0x%lx)",
-> > > +		       regs->rip, target_rip);
-> >=20
-> > This is wrong, and the test fails with your series applied verbatim.  T=
-he IRQ
-> > will arrive at fep_sti_start, because RFLAGS.IF=3D0 from the CLI at the=
- end of the
-> > ss_start block, and remains that way across fep_bd_start.   And to make=
- things
-> > even more confusing, the IRQ arrives on the CLI even though it's in an =
-STI shadow
-> > due to #DBs not being subjected to _STI_ shadows on Intel, only to MOV-=
-SS/POP-SS
-> > shadows.  I.e. the #DB lands on CLI, pushes RFLAGS.IF=3D1 on the stack,=
- and then
-> > the subsequent IRET from guest_db_handler() fully unmasks IRQs, and voi=
-la.
->=20
-> Yes, the RIP here should be 'fep_sti_start'. This was a stupid mistake,
-> and I=E2=80=99m very sorry about that. In my reply to v1[0] I explained w=
-hy an IRQ
-> handler is needed, so in v2 I added comments and an additional check,
-> and I tested it before sending. However, it looks like the patch differs
-> from what I had locally=E2=80=94my code management was a bit messy.
+Oliver Upton <oupton@kernel.org> writes:
 
-...
+> On Mon, May 04, 2026 at 09:18:03PM +0000, Colton Lewis wrote:
+>> +
+>> +/**
+>> + * kvm_pmu_host_counter_mask() - Compute bitmask of host-reserved  
+>> counters
+>> + * @pmu: Pointer to arm_pmu struct
+>> + *
+>> + * Compute the bitmask that selects the host-reserved counters in the
+>> + * {PMCNTEN,PMINTEN,PMOVS}{SET,CLR} registers. These are the counters
+>> + * in HPMN..N
+>> + *
+>> + * Return: Bitmask
+>> + */
+>> +u64 kvm_pmu_host_counter_mask(struct arm_pmu *pmu)
+>> +{
+>> +	u8 nr_counters = *host_data_ptr(nr_event_counters);
+>> +
+>> +	if (kvm_pmu_is_partitioned(pmu))
+>> +		return GENMASK(nr_counters - 1, pmu->max_guest_counters);
+>> +
+>> +	return ARMV8_PMU_CNT_MASK_ALL;
+>> +}
+>> +
+>> +/**
+>> + * kvm_pmu_guest_counter_mask() - Compute bitmask of guest-reserved  
+>> counters
+>> + * @pmu: Pointer to arm_pmu struct
+>> + *
+>> + * Compute the bitmask that selects the guest-reserved counters in the
+>> + * {PMCNTEN,PMINTEN,PMOVS}{SET,CLR} registers. These are the counters
+>> + * in 0..HPMN and the cycle and instruction counters.
+>> + *
+>> + * Return: Bitmask
+>> + */
+>> +u64 kvm_pmu_guest_counter_mask(struct arm_pmu *pmu)
+>> +{
+>> +	if (kvm_pmu_is_partitioned(pmu))
+>> +		return ARMV8_PMU_CNT_MASK_C | GENMASK(pmu->max_guest_counters - 1, 0);
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +/**
+>> + * kvm_pmu_load() - Load untrapped PMU registers
+>> + * @vcpu: Pointer to struct kvm_vcpu
+>> + *
+>> + * Load all untrapped PMU registers from the VCPU into the PCPU. Mask
+>> + * to only bits belonging to guest-reserved counters and leave
+>> + * host-reserved counters alone in bitmask registers.
+>> + */
+>> +void kvm_pmu_load(struct kvm_vcpu *vcpu)
+>> +{
+>> +	struct arm_pmu *pmu;
+>> +	unsigned long guest_counters;
+>> +	u64 mask;
+>> +	u8 i;
+>> +	u64 val;
+>> +
+>> +	/*
+>> +	 * If we aren't guest-owned then we know the guest isn't using
+>> +	 * the PMU anyway, so no need to bother with the swap.
+>> +	 */
+>> +	if (!kvm_vcpu_pmu_is_partitioned(vcpu))
+>> +		return;
+>> +
+>> +	preempt_disable();
+>> +
+>> +	pmu = vcpu->kvm->arch.arm_pmu;
+>> +	guest_counters = kvm_pmu_guest_counter_mask(pmu);
+>> +
+>> +	for_each_set_bit(i, &guest_counters, ARMPMU_MAX_HWEVENTS) {
+>> +		val = __vcpu_sys_reg(vcpu, PMEVCNTR0_EL0 + i);
+>> +
+>> +		if (i == ARMV8_PMU_CYCLE_IDX) {
+>> +			write_sysreg(val, pmccntr_el0);
+>> +		} else {
+>> +			write_sysreg(i, pmselr_el0);
+>> +			write_sysreg(val, pmxevcntr_el0);
 
-> I have tested it on both Intel and AMD. Please let me know if I should
-> resend a v3 of this patch.
+> This is wrong, you would need an intervening ISB. It'd be better to
+> avoid the ISB altogether and just use {read,write}_pmevcntrn().
 
-No need, I'm actually going to send a v3 of the entire series (beleated fee=
-dback
-on patch 6 incoming...).
+Good catch, I was using {read,write}_pmevcntrn here before but changed
+it after your feedback that:
+
+> I'd prefer KVM directly accessed the PMU registers to
+> avoid the possibility of taking some instrumented codepath in the
+> future.
+
+https://lore.kernel.org/kvm/aUH7oC41XaEMsXf_@kernel.org/
+
+I assume this is a compromise with that.
