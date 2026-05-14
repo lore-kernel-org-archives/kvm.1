@@ -1,55 +1,54 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4EB6253359
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 22:30:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCE893D1CB5
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 22:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778797831; cv=none; b=cZUNDMrlaewB+VER6pgSVziwZER+zLZXUR/VSE88SAda5qHvit5nglB91Juq2oRg63WSUCbe4VM/QcpRjFrVKGmewzFWxz7t5urFOdp44IxOI5vIOnV2aKGA2foGM36TjSBjkLfL6PuQfcEbgF74be9cAgkm+g/J7k/zYb0gQgw=
+	t=1778797898; cv=none; b=ShT005BQ+X6fGYrc8fxH1q3JwkWkA95vM7TBm/3cCIKpvdcOUGAmB2+PqCspwg4w1i+/h2bxhqoQx3QonraE9HcjaFTX8NRyNB/KEOMMzqGNL29nOf7wuRFsSVyN+ONWKePed5Gf6/yLVjFsrKjVm5hb3JmQOwZmcnqWXH2Q5EY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778797831; c=relaxed/simple;
-	bh=TzsJfr7pCIntQMSaDmlkEoArEx7G8FjtiVdDOqi3N8k=;
+	s=arc-20240116; t=1778797898; c=relaxed/simple;
+	bh=kYpL3KO6nhgGxbaCQUv495cG5madHk3ngqS80dVPgRw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YG9ZqvglESKDHOdoIEmOiA1hnobdEEmi2/aF6cjHelFBzy6WcDbM3fbeFVaVfZtkG3T5KOnalv3LsUi5qlCNjzgnFm8A7K6X7CFFg2cQZG6Scrp5hI1ZkjiPG2heHVjfmEuA/DDtkpvtgAdZgwh0ylWXJEvp/9C++Pv1XCWCEx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=IRa3YNQj; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=R+cyujNJGYrIZCzjA7gz5qQLlKvXKdE9foLAUbkfdfjK5zRrTFHmR6RIxOTYhgoER9M/20gVYkTxUKF6hIGUfe5yDf2tPpcMPttbbe4m1Iip5ozpsRJWoUZ5j2SKeL8dARYXqSE7iJ15CQTB4UTXRSDqkEB98KE42pXMmYkX9ZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A2eVK/n6; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="IRa3YNQj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C00C2BCFB
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 22:30:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A2eVK/n6"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80339C4AF0C
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 22:31:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778797830;
-	bh=TzsJfr7pCIntQMSaDmlkEoArEx7G8FjtiVdDOqi3N8k=;
+	s=k20201202; t=1778797898;
+	bh=kYpL3KO6nhgGxbaCQUv495cG5madHk3ngqS80dVPgRw=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=IRa3YNQjfipd46N24kj7o6S9emSMmJwLf0A52bZcUO4muZ2iNcnSknZT/rK0+7j0Q
-	 iC66jO4n/ao1NAIQzlyVi0cVqFQpJNFikHom/DAqxC/dvNxYedS5ySvGiK5GxGbvWB
-	 HNDP7cBmrWuVPhGxUGrnFdYgbghZkhf11p10jSRDqZUq7xKwaBTvLipEGqnxwOlBgd
-	 JUjCUr69wT36qIlSpjnQ4tNDZcaNYqOcHxsaWEOBk+jEs0qgAZ4rsn58zmMgm4gPmg
-	 SjNlAh6ClFHOFuYWvJeX9DmvZORCMU2FtiHbFauw7RjJN/VlgknSPPyhn1DsIBOFY6
-	 30bXQ0h24aUZw==
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-bd01481e592so669502866b.2
-        for <kvm@vger.kernel.org>; Thu, 14 May 2026 15:30:30 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8ChVQXiCN0AnXvm07xXpxRskb/ZGWyFvvEN27L8eFBCs6CRumFpjVizprkEmbu9tWdJyE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzkPaUIdRYCWSogyix/SmbpWka+gKm4p7oE/3jv+L/+CuwDi5BP
-	hi1YJiWsr3PZ/LS235cBln7gEtSny2iUvFcJxL3Urqn7e5cVH/FSYdYCv7VSlbDJzZjQ+ZWuZcN
-	9W2FBlfUMifHsy41y1htMk1j84rWrmK4=
-X-Received: by 2002:a17:906:6a26:b0:bcc:855c:52f2 with SMTP id
- a640c23a62f3a-bd51796ead6mr65733266b.35.1778797829527; Thu, 14 May 2026
- 15:30:29 -0700 (PDT)
+	b=A2eVK/n6R1tYHdFhawtQgosqpzzpmws8s1xqiUOevSIExOIIFU/mHLogC3MF2Nqnz
+	 KVnnSLrAkdeTXrW8/F33CO83DNPJgJw9kMw1nHAKiB6rWgvswWNoAOaTz4+oBZf8Rt
+	 koFCHpqbVShQa32LpaeIRIzoG4BJosIFeRymjcYzI3Heb1Kstgfm29HEoKhvCZi5Z4
+	 ODRC/wfCEpoOV9/xkFVyNFVAcPVuNYRA07dTN3afSl2bP6PT8eejXE4eEtHekKV+Nc
+	 N+NRlKuRHekwpI30PYFhhaTzrjT37dv1jsIg6gxCfpUiVpNKow765dJR1xl5IjxTfl
+	 9/uUr1suhlI3g==
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-bcc2b199c17so814028866b.3
+        for <kvm@vger.kernel.org>; Thu, 14 May 2026 15:31:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8iPlU8PK/8685Qgzmg30uY2yKwx+2gV7/Dn9rOXlDDkc9ck7O7wBXZ4s9Ro0YFxJClxco=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzmwF6+gPT8ssr1JkIws0A7N+NZorwf+MkZrZFltyWTU4vMJV9J
+	O2goEjNOQUZGSwcQ/rl/5v3RPpCJH17Z3bdeAe+POG/XEglHc+HT68UwNmGMiYvSosdRlpavcbX
+	8a1DI18FNI33ZqjVNvhF0Bq9hs6Mw/5E=
+X-Received: by 2002:a17:907:6d01:b0:bd2:b983:96b with SMTP id
+ a640c23a62f3a-bd5178652bdmr60705366b.20.1778797897454; Thu, 14 May 2026
+ 15:31:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260514215355.1648463-1-seanjc@google.com> <20260514215355.1648463-8-seanjc@google.com>
-In-Reply-To: <20260514215355.1648463-8-seanjc@google.com>
+References: <20260514215355.1648463-1-seanjc@google.com>
+In-Reply-To: <20260514215355.1648463-1-seanjc@google.com>
 From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 14 May 2026 15:30:17 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMh2rN2m8D=oqJxiv=gN=0u+UNEYgaLK7qVvXQ5NL=b+A@mail.gmail.com>
-X-Gm-Features: AVHnY4KZbMVe9dnMDdA0kUfzVaX2MkYo7jUJeVdOmLXOdkVvTDjCPSCowhae9jY
-Message-ID: <CAO9r8zMh2rN2m8D=oqJxiv=gN=0u+UNEYgaLK7qVvXQ5NL=b+A@mail.gmail.com>
-Subject: Re: [PATCH v2 07/15] KVM: x86: Move inlined CR and DR helpers from
- x86.h to regs.h
+Date: Thu, 14 May 2026 15:31:25 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPGgwH76o7QqzrO1qrDn52G+R2LCb2ivCNTSbffakpZdg@mail.gmail.com>
+X-Gm-Features: AVHnY4JmoYbQLWYguYWzsi2Oufy2BIlerhJ-f8lbLjqtQn5MV-AXjynQUh5yMdM
+Message-ID: <CAO9r8zPGgwH76o7QqzrO1qrDn52G+R2LCb2ivCNTSbffakpZdg@mail.gmail.com>
+Subject: Re: [PATCH v2 00/15] KVM: x86: Clean up kvm_<reg>_{read,write}() mess
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
 	Kiryl Shutsemau <kas@kernel.org>, David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>, 
@@ -63,64 +62,39 @@ Content-Transfer-Encoding: quoted-printable
 On Thu, May 14, 2026 at 2:54=E2=80=AFPM Sean Christopherson <seanjc@google.=
 com> wrote:
 >
-> Move inlined Control Register and Debug Register helpers from x86.h to th=
-e
-> aptly named regs.h, to help trim down x86.h (and x86.c in the future).
+> Add proper, explicit "raw" versions of kvm_<reg>_{read,write}(), along
+> with "e" versions (for hardcoded 32-bit accesses), and convert the
+> existing kvm_<reg>_{read,write}() APIs into mode-aware variants.
 >
-> Move select EFER functionality, but leave behind all other MSR handling,
-> There is more than enough MSR code to carve out msr.{c,h} in the future.
-> Give EFER special treatment as it's an "MSR" in name only, e.g. it's has
-> far more in common with CR4 than it does with any MSR.
+> This was prompted by commit 435741a4e766 ("KVM: SVM: Properly check RAX
+> on #GP intercept of SVM instructions"), where using kvm_rax_read() to
+> get EAX/RAX would have (*very* surprisingly) been wrong as it's actually
+> a "raw" variant that doesn't truncate accesses when the guest is in 32-bi=
+t
+> mode.
 >
-> No functional change intended.
+> Aside from my dislike of inconsistent APIs, I really want to avoid carryi=
+ng
+> code that's subtly relying on using kvm_register_read(...) when accessing=
+ a
+> hardcoded register.
 >
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  arch/x86/kvm/regs.h | 108 ++++++++++++++++++++++++++++++++++++++++++--
->  arch/x86/kvm/x86.h  | 102 -----------------------------------------
->  2 files changed, 105 insertions(+), 105 deletions(-)
+> Fix a handful of minor warts along the way.
 >
-> diff --git a/arch/x86/kvm/regs.h b/arch/x86/kvm/regs.h
-> index 4440f3992fce..ecc66b577e82 100644
-> --- a/arch/x86/kvm/regs.h
-> +++ b/arch/x86/kvm/regs.h
-> @@ -16,6 +16,37 @@
+> Oh, and introduce regs.{c,h}, which just a "minor" addendum.  Yosry point=
+ed
+> out that moving _more_ code into x86.h was rather gross (especially since=
+ the
+> code split was super arbitrary), and it turns out that create regs.{c,h} =
+isn't
+> all that hard.  In the future, I think we can also add msr.{c,h}, so I ve=
+ry
+> deliberately didn't include that functionality in regs.{c,h}.
 >
->  static_assert(!(KVM_POSSIBLE_CR0_GUEST_BITS & X86_CR0_PDPTR_BITS));
->
-> +static inline bool is_long_mode(struct kvm_vcpu *vcpu)
-> +{
-> +#ifdef CONFIG_X86_64
-> +       return !!(vcpu->arch.efer & EFER_LMA);
-> +#else
-> +       return false;
-> +#endif
-> +}
-> +
-> +static inline bool is_64_bit_mode(struct kvm_vcpu *vcpu)
-> +{
-> +       int cs_db, cs_l;
-> +
-> +       WARN_ON_ONCE(vcpu->arch.guest_state_protected);
-> +
-> +       if (!is_long_mode(vcpu))
-> +               return false;
-> +       kvm_x86_call(get_cs_db_l_bits)(vcpu, &cs_db, &cs_l);
-> +       return cs_l;
-> +}
-> +
-> +static inline bool is_64_bit_hypercall(struct kvm_vcpu *vcpu)
-> +{
-> +       /*
-> +        * If running with protected guest state, the CS register is not
-> +        * accessible. The hypercall register values will have had to bee=
-n
-> +        * provided in 64-bit mode, so assume the guest is in 64-bit.
-> +        */
-> +       return vcpu->arch.guest_state_protected || is_64_bit_mode(vcpu);
-> +}
+> v2:
+>  - Collect tags. [Yosry, Kai
+>  - Fix some truly egregious goofs. [Binbin]
+>  - Rename kvm_cache_regs.h =3D> regs.h, add regs.c. [Yosry, though he'll
+>    probably yell at me for saying this was his suggestion :-) ]
 
-This is really stretching the meaning of 'regs', but it's not that
-much worse than 'x86'..
-
-Reviewed-by: Yosry Ahmed <yosry@kernel.org>
+This is kinda sorta the opposite of what I suggested, but sure :P
