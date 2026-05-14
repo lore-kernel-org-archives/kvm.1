@@ -1,147 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC203F413B;
-	Thu, 14 May 2026 08:01:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36E56271443;
+	Thu, 14 May 2026 08:18:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778745681; cv=none; b=WLKeQ26SJTxd2+ULFtszQcrLbFpAeeI23chM5ZMuE/V7cvAVfn+NEWL9z5bbXki21gu0n+JmRQklI17NLUrrDzwdpFw98BhoVmKXT6WzItAAhq67Ax8srXPfZ+BQNi252K1e+Q2X09z4s/lgbZeqA+525EbP7TiVPlWN/pVPT2k=
+	t=1778746704; cv=none; b=OJfuEZaaPMrQl6iOBodcB8wnb6zUzk4rTQ2FbI0A0rMS5qFAAc1lpdxLWwYyiG4RIp60v2FLei8vXM4Td2GvkHJ8nimbtPCnbLspddt+m7/4gti+flCFr55zRgji9AXqic5nPSEisRIpTNRuOq4hPtl/6ERi/NCENL2EuIQDToA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778745681; c=relaxed/simple;
-	bh=YTT3wpiFKK2siKn7VB9xMRxwfCKefIy+RDPtffN3pIg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=YEcl9IqaP6SNrScq0r7RQLfWHAkb+V0PT9f2mWjDj+4m3GiOjH6aSD1FYkPK+GwBRJcG7wAX1tvoXDS1cxUyzRKTML1zk+O63p7jQnyiSreiWFPZgxvwRB7XdHpCzMKDFZlm5xgh5abo/wq5Z1859jqaBQ2Qwj/IRKATHgYiWSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KfuT90G2; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KfuT90G2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 873E2C2BCC7;
-	Thu, 14 May 2026 08:01:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778745681;
-	bh=YTT3wpiFKK2siKn7VB9xMRxwfCKefIy+RDPtffN3pIg=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=KfuT90G2ESMWQbmWA7EwQ+PxsLgj/Ta0NabGR6iGez+3gbJJ8F6mlQ13yKjbvA+WJ
-	 uw3uv6k+KUBUmNSACOZ8BgnFzfKaXoiFX+o49MPEZfegdjPqJv75rmMTA+cpMTx9Rr
-	 pZmrEw2U1EAGmfEUbuI/CpEk1QfZQzJjBDVsSDyACzpFmbD6gDQlr4xuItiqqmzvqW
-	 xQwDijnGx6/3fan8w5F5COM3fI58wYFJwSKVjPIabnbKGbyzMkDoCZPvUgYGjwoiWn
-	 ziTb4MKhIuBt19SCK/WqPQJxBRasw9psTnM9Ruj9zAE4E2HDyH9VR/dZvKMxRmDZ0M
-	 2kjUJ85XtKh9Q==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Cc: Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
-	Lorenzo.Pieralisi2@arm.com
-Subject: Re: [PATCH v14 10/44] arm64: RMI: Add support for SRO
-In-Reply-To: <20260513131757.116630-11-steven.price@arm.com>
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-11-steven.price@arm.com>
-Date: Thu, 14 May 2026 13:31:08 +0530
-Message-ID: <yq5a8q9ma08r.fsf@kernel.org>
+	s=arc-20240116; t=1778746704; c=relaxed/simple;
+	bh=6ySggTMjTg6FCOLRzCgcVak+5mPWjv9PsuvGN5jf3vc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MOhqvJm6fMIY+iYtWhF5/0+2MSF3KTonsg/h9WbiaudAkunZrW4sBDFHBMpexGefGF7I8epOkQCiuj23Jo2yYYMSfgzGygD9F9S0XVQu9aZfQ/gsgCetsAVG3kEccjcNQB6Zz1JxA949Yh9/NVCl64ujMxzsQ30c3Nvbmv3d1J4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from fric.. (unknown [36.110.52.2])
+	by APP-05 (Coremail) with SMTP id zQCowAAHlgkyhQVqs4A7EA--.41408S2;
+	Thu, 14 May 2026 16:17:54 +0800 (CST)
+From: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+To: kvm-riscv@lists.infradead.org,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org
+Cc: Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Jiakai Xu <xujiakai2025@iscas.ac.cn>,
+	Jiakai Xu <jiakaiPeanut@gmail.com>
+Subject: [PATCH] RISC-V: KVM: Fix sign extension for MMIO loads
+Date: Thu, 14 May 2026 08:17:51 +0000
+Message-Id: <20260514081752.472987-1-xujiakai2025@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:zQCowAAHlgkyhQVqs4A7EA--.41408S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxuF1xCry5WF18tF4UXw13Jwb_yoW5Gw4xpF
+	W8G34YqFWxXr1Y9F1Ykr409rs09wsYkF1rXrWqg34fKw4jvFy5AFWvg3s5AryUJF1xZr1F
+	kFWSqa45ZF1kAa7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUBY14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
+	0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI
+	64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJw
+	Am72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAG
+	YxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7V
+	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
+	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6x
+	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAI
+	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
+	0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUjEoGDUUUUU==
+X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiDAYHCWoFRNPz8gAAs9
 
-Steven Price <steven.price@arm.com> writes:
+The kvm_riscv_vcpu_mmio_return() function handles MMIO read results
+by writing the data back to the guest register. For signed load
+instructions (LB, LH, LW on RV64), the value needs sign-extension
+from a smaller integer to unsigned long.
 
-> +unsigned long rmi_sro_execute(struct rmi_sro_state *sro, gfp_t gfp)
-> +{
-> +	unsigned long sro_handle;
-> +	struct arm_smccc_1_2_regs regs;
-> +	struct arm_smccc_1_2_regs *regs_in = &sro->regs;
-> +
-> +	rmi_smccc_invoke(regs_in, &regs);
-> +
-> +	sro_handle = regs.a1;
-> +
-> +	while (RMI_RETURN_STATUS(regs.a0) == RMI_INCOMPLETE) {
-> +		bool can_cancel = RMI_RETURN_CAN_CANCEL(regs.a0);
-> +		int ret;
-> +
-> +		switch (RMI_RETURN_MEMREQ(regs.a0)) {
-> +		case RMI_OP_MEM_REQ_NONE:
-> +			regs = (struct arm_smccc_1_2_regs){
-> +				SMC_RMI_OP_CONTINUE, sro_handle, 0
-> +			};
-> +			rmi_smccc_invoke(&regs, &regs);
-> +			break;
-> +		case RMI_OP_MEM_REQ_DONATE:
-> +			ret = rmi_sro_donate(sro, sro_handle, regs.a2, &regs,
-> +					     gfp);
-> +			break;
-> +		case RMI_OP_MEM_REQ_RECLAIM:
-> +			ret = rmi_sro_reclaim(sro, sro_handle, &regs);
-> +			break;
-> +		default:
-> +			ret = WARN_ON(1);
-> +			break;
-> +		}
-> +
-> +		if (ret) {
-> +			if (can_cancel) {
-> +				/*
-> +				 * FIXME: Handle cancelling properly!
-> +				 *
-> +				 * If the operation has failed due to memory
-> +				 * allocation failure then the information on
-> +				 * the memory allocation should be saved, so
-> +				 * that the allocation can be repeated outside
-> +				 * of any context which prevented the
-> +				 * allocation.
-> +				 */
-> +			}
-> +			if (WARN_ON(ret))
-> +				return ret;
-> +		}
-> +	}
-> +
-> +	return regs.a0;
-> +}
+The current code uses:
+    (ulong)data << shift >> shift
+but (ulong) makes the right shift a logical shift (zero-extend)
+rather than an arithmetic shift (sign-extend), causing incorrect
+results when the MMIO device returns a negative value. For example,
+LB reading 0x80 would return 128 instead of -128.
 
-Can you also add support to return x1,x2 etc
+Fix this by casting to (long) after the left shift so that the
+subsequent right shift is arithmetic and correctly propagates
+the sign bit:
+    (long)((ulong)data << shift) >> shift
 
-This would help things like
+Additionally, remove the unnecessary shift assignment for LBU
+(unsigned byte load) since it does not need sign extension.
+This makes LBU consistent with LHU and LWU which already keep
+shift = 0.
 
-static int rmi_rtt_dev_unmap(unsigned long rd_phys,
-		unsigned long base, unsigned long top,
-		unsigned long *out_ipa, unsigned long *out_desc,
-		unsigned long *rmi_ret)
-{
-	unsigned long flags = RMI_ADDR_TYPE_SINGLE;
-	struct rmi_sro_state *sro __free(sro) =
-		rmi_sro_init(SMC_RMI_RTT_DEV_UNMAP, rd_phys, base, top, flags, NULL);
-	if (!sro)
-		return -ENOMEM;
+Fixes: b91f0e4cb8a3 ("RISC-V: KVM: Factor-out instruction emulation into separate sources")
+Signed-off-by: Jiakai Xu <jiakaiPeanut@gmail.com>
+Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+Assisted-by: OpenClaw:DeepSeek-V3.2
+---
+ arch/riscv/kvm/vcpu_insn.c | 9 ++++-----
+ 1 file changed, 4 insertions(+), 5 deletions(-)
 
-	*rmi_ret = rmi_sro_execute(sro);
-	if (*rmi_ret)
-		return 0;
+diff --git a/arch/riscv/kvm/vcpu_insn.c b/arch/riscv/kvm/vcpu_insn.c
+index 4d89b94128aea..f09f9251d1f0a 100644
+--- a/arch/riscv/kvm/vcpu_insn.c
++++ b/arch/riscv/kvm/vcpu_insn.c
+@@ -415,7 +415,6 @@ int kvm_riscv_vcpu_mmio_load(struct kvm_vcpu *vcpu, struct kvm_run *run,
+ 		shift = 8 * (sizeof(ulong) - len);
+ 	} else if ((insn & INSN_MASK_LBU) == INSN_MATCH_LBU) {
+ 		len = 1;
+-		shift = 8 * (sizeof(ulong) - len);
+ #ifdef CONFIG_64BIT
+ 	} else if ((insn & INSN_MASK_LD) == INSN_MATCH_LD) {
+ 		len = 8;
+@@ -649,22 +648,22 @@ int kvm_riscv_vcpu_mmio_return(struct kvm_vcpu *vcpu, struct kvm_run *run)
+ 	case 1:
+ 		data8 = *((u8 *)run->mmio.data);
+ 		SET_RD(insn, &vcpu->arch.guest_context,
+-			(ulong)data8 << shift >> shift);
++			(long)((ulong)data8 << shift) >> shift);
+ 		break;
+ 	case 2:
+ 		data16 = *((u16 *)run->mmio.data);
+ 		SET_RD(insn, &vcpu->arch.guest_context,
+-			(ulong)data16 << shift >> shift);
++			(long)((ulong)data16 << shift) >> shift);
+ 		break;
+ 	case 4:
+ 		data32 = *((u32 *)run->mmio.data);
+ 		SET_RD(insn, &vcpu->arch.guest_context,
+-			(ulong)data32 << shift >> shift);
++			(long)((ulong)data32 << shift) >> shift);
+ 		break;
+ 	case 8:
+ 		data64 = *((u64 *)run->mmio.data);
+ 		SET_RD(insn, &vcpu->arch.guest_context,
+-			(ulong)data64 << shift >> shift);
++			(long)((ulong)data64 << shift) >> shift);
+ 		break;
+ 	default:
+ 		return -EOPNOTSUPP;
+-- 
+2.34.1
 
-	*out_ipa = sro->regs.a1;
-	*out_desc = sro->regs.a2;
-
-	return 0;
-}
-
--aneesh
