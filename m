@@ -1,164 +1,85 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 702AA3CEB98
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 21:31:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 966DE3B840F
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 21:38:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778794283; cv=none; b=P0dpi37WS7EzxeD1L8YpFKexX9EreICrLAqzpfm7izmhS+w4pyg7abVvSeTibswhyVdoiKmfpFLCsshsrcN6w2XzjiD7UpdRmAGEToKAETtqYYOnKt1PQ3cKbs1JBfEsk5C+N0DTJXJRPMpZNO23H309bdIv+SzoIWLNl02n9Lk=
+	t=1778794688; cv=none; b=DF7ccxbzL5ra7VhrcueJH6C4LeGtBDPkzczsKdlGdWIGQmPZWiSyQxF4MuDp41k4T4x63ygvq92qEMLzqty8NaDYnBOA9mzWqkEJV+Y6159sHKiJn+nj4WsEFRgBtbTPdvVCYOUugmQcq3tP/mA08EZalEOqcOaB/vskalgA3M8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778794283; c=relaxed/simple;
-	bh=jL5IYb03hmKidFINs/UfB/2dGQeYQJrV/+wNelGTthQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MKC6dGrZUvi4BYitoErRVrqJ0Y/fpXGNVyvsFaH/NQ4blfdMcrCf/Qs35Rn+2fdOVRD+dtghX4SNl9nIlXSF5mD2nzhDUwJjAA5M1X1NZjSv1KwpD26iQsk0ccQhFqVRk+0oYpIVbIGlJniyUvjygG+WNWqXBK3ihyukKCWQMHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Xqs7WrN0; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1778794688; c=relaxed/simple;
+	bh=BhtDoD82EsstFYlFd3Ho/OX9ol+Yd/PPLxlia6eLFBs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=u84HSXmL/baLCTY1/c2vzszFTTdn545H3zEngoh3UkNznl6hclhu2t8WHulbKH5pYer62/gemJzRsZb3W4rtVij5eAkA1CHW74BH4Vex+/xo/MLEUjirav8OoXw6xJDFzkzGC1bo/W+5cC9kABmFortu+3K/Qz9tqUnLcI/m/sI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eX1OxO+7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Xqs7WrN0"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3663cbff31cso15132649a91.2
-        for <kvm@vger.kernel.org>; Thu, 14 May 2026 14:31:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778794281; x=1779399081; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=NPbCmXIxeXWQqxNfYcnl9k3H40V4UxyT19ETB/rfsj0=;
-        b=Xqs7WrN077fyeHOHRvVgNEk1ZuHw4VvWKLKrLUNi2sdLT87OEIMnFRiNu2DzszGmjX
-         PR6jBjTyK0f6EKQ+h4Bt1ZtdbCsdBxiEZEFqah8oafgNJVbEegfF/4zCkS1QAj5d1ywn
-         aErbMHdbo1sabgIeZslCZLD43s99cC5KCtGwLZgQDIquq54ugaMG8St6jbGVLtjDRJYV
-         XHH9yF0RpVZeKke6MANuTBgvnLOqeOeZzfddRQvbqKHzNd4yfVTmCu0KKRefs1OXXvrZ
-         HAGnno7PYkNjODRfYasFOYBWA41SJg7MklDl8N4MCbOZ5pY3L3WA50MYJUsxTqzzrHCy
-         HGdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778794281; x=1779399081;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NPbCmXIxeXWQqxNfYcnl9k3H40V4UxyT19ETB/rfsj0=;
-        b=MeNTOcjDvZgmv3kywDxH7EYmSfQ3Tgz39r/eazcDrK5GB+qUGMeM8VV8RAMtaK4s7J
-         CKa3+tN0qwF1cYUEr7qtTMVfVFszyYbLlEItHgYCOLLYbPSr7gyek2tk4l2ga2cRPulM
-         AbvXA7Y8ns3NcrSy4ZpuveHTsVx2SYGyRYixCBiIG8yjHuGF7Bu00zeqhpiX0M6XRjSK
-         M2qmfi8SgTmn2E5oteGQBAzMHtxlYNwyYxfa5BWOsBdDZ59231BvIyZdZ+YoOHcTXqF0
-         C5EAJCA1sHPv33bTTQVgHgJ6JJz/f4LCB2WgJ2GPhXeZt+d2jLGW9Zc5iGhzKiDm7R43
-         lvZw==
-X-Gm-Message-State: AOJu0Yz13CI4Pqd43U7o+XG79z4awm39V4L6C59f8dMRVwkvInSYjKVM
-	/+oau/jLgIOigdBurLEogFqEfh6NhEXTd0GIUAWoWmBJYA/kLfzSKJHJq+0P1LVDc9mOdZXjSZ/
-	pHyqr9w==
-X-Received: from pjuv11.prod.google.com ([2002:a17:90a:d58b:b0:368:f2e1:2bc2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3dc4:b0:365:fca2:8bdd
- with SMTP id 98e67ed59e1d1-36951778509mr1083170a91.0.1778794280643; Thu, 14
- May 2026 14:31:20 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 14 May 2026 14:31:15 -0700
-In-Reply-To: <20260514213115.1637082-1-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eX1OxO+7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36064C2BCB3
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 21:38:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1778794688;
+	bh=BhtDoD82EsstFYlFd3Ho/OX9ol+Yd/PPLxlia6eLFBs=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=eX1OxO+7XsDNOMjC3hUPxzT1daGNTJChvt9WWp3Ti1mVGtajpiFwtOVEH4DWJFhNj
+	 ODNWoUky6yuhot/CFBfydhlNYME10fz1N5lem5XRfxvofYyxGfzT3tXKjIOFqWo6Ad
+	 8LXCuVmZkYxYnwNtl1Jnpn3/BAaBD0HJvet8f2r6y+FzkGHHy6g5GGRisdMwpXDcYC
+	 S4EQFzSZF/hc9t9JIsHx9HxRPCUubo84V22Zc1vphsxkVOsHujeSmDEuGSpIA4+0ZA
+	 zUJ5OR/ZfBwzZ9Lrc39uzY15nQsVEqjxD+A8o/adu3FsqN6u+QyeYiucswFfULegyC
+	 4/1I2s/cWZ+lw==
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-bccd251d622so897163966b.3
+        for <kvm@vger.kernel.org>; Thu, 14 May 2026 14:38:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/ddEozEPh/MepWzwT7xIgZgM9fGDKyyVpV9931heUdNFuV/vALXnHB1dVI80RjQsjFahs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxJyek4uTW57x5EmJW93VrRJVh1qd3bHdrSMnERgxA0MgUIUenT
+	qnlZSW7wcV2/kpepFrbRuhAogRHcAGRX9ulNlrjSCblNHr1tul+GQnSzUPV/Wawkbq+2/YxWB8k
+	1mx3AWhLGd8HNRjBCXBEZ3tKiTqSRrD8=
+X-Received: by 2002:a17:907:c248:b0:bcb:d9c7:c6f with SMTP id
+ a640c23a62f3a-bd51780cf97mr62101966b.7.1778794687157; Thu, 14 May 2026
+ 14:38:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260514213115.1637082-1-seanjc@google.com>
-X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260514213115.1637082-4-seanjc@google.com>
-Subject: [PATCH v3 3/3] KVM: SVM: Only disable x2AVIC WRMSR interception for
- MSRs that are accelerated
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Naveen N Rao <naveen@kernel.org>
+MIME-Version: 1.0
+References: <20260514200536.1603737-1-seanjc@google.com>
+In-Reply-To: <20260514200536.1603737-1-seanjc@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 14 May 2026 14:37:54 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zMStovFvh9rEYJGopKNpe4zaS+33FpXtZUUTd0T+x+KQw@mail.gmail.com>
+X-Gm-Features: AVHnY4JJ50c3yhabNUs8ezTiUVfbdQc3FycrCEQmBmEmjgKCIJtRwgzn4QDNQ6Y
+Message-ID: <CAO9r8zMStovFvh9rEYJGopKNpe4zaS+33FpXtZUUTd0T+x+KQw@mail.gmail.com>
+Subject: Re: [kvm-unit-tests PATCH] x86: Disable PKU in vCPU model for vmx_pf_{vpid/no_vpid/invvpid}_test
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	Yosry Ahmed <yosry.ahmed@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When x2AVIC is enabled, disable WRMSR interception only for MSRs that are
-actually accelerated by hardware.  Disabling interception for MSRs that
-aren't accelerated is functionally "fine", and in some cases a weird "win"
-for performance, but only for cases that should never be triggered by a
-well-behaved VM (writes to read-only registers; the #GP will typically
-occur in the guest without taking a #VMEXIT, even for fault-like exits).
+On Thu, May 14, 2026 at 1:05=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> Run the vmx_pf_{vpid/no_vpid/invvpid}_test VMX tests with -pku, i.e. with
+> Protection Keys disabled in the (v)CPU model, to reduce the number of
+> testcases by an order of magnitude, which in turn reduces the runtime by
+> roughly the same factor.  As is, even the 240 seconds timeout is
+> insufficient, e.g. each test can take upwards of 300 seconds when run on
+> Skylake-era hardware with a debug kernel.
+>
+> Simply disable PKU in the config as the purpose of the VMX #PF tests is
+> primarily to validate #PF routing (to L1 vs. L0), and secondarily to
+> validate alternative TLB flushing mechanisms, e.g. INVVPID.  The only
+> novelty provided by PKU with respect to those goals is an additional
+> flag in the #PF error code, and the odds of KVM botching _only the PKU
+> flag when routing #PFs is very low.
+>
+> Disable PKU in the config, e.g. instead of passing a param from the test,
+> so that the test can be run with PKU enabled simply by tweaking the QEMU
+> command line, e.g. without recompiling.
+>
+> Reported-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-But overall, disabling interception for MSRs that aren't accelerated is at
-best confusing and unintuitive, and at worst introduces avoidable risk, as
-the APM's documentation is imperfect and contradictory.  The table in
-"15.29.3.1 Virtual APIC Register Accesses" of simply states that such
-writes generate exits, where as "Section 15.29.10 x2AVIC" says:
+Reviewed-by: Yosry Ahmed <yosry@kernel.org>
 
-  x2APIC MSR intercept checks and access checks have higher priority than
-  AVIC access permission checks.
-
-CPU behavior follows the latter (which makes perfect sense), but all in
-all there's simply no reason to disable interception just to make a #GP
-faster.
-
-Note, the set of MSRs that are passed through for write is identical to
-VMX's set when IPI virtualization is enabled.  This is not a coincidence,
-and is another motiviating factor for cleaning up the intercepts, as x2AVIC
-is functionally equivalent to APICv+IPIv.
-
-Fixes: 4d1d7942e36a ("KVM: SVM: Introduce logic to (de)activate x2AVIC mode")
-Cc: stable@vger.kernel.org
-Reviewed-by: Naveen N Rao (AMD) <naveen@kernel.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/svm/avic.c | 40 ++++------------------------------------
- 1 file changed, 4 insertions(+), 36 deletions(-)
-
-diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
-index 8e4926c7b8dc..724a45c2aa23 100644
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -124,39 +124,6 @@ static void avic_set_x2apic_msr_interception(struct vcpu_svm *svm,
- {
- 	struct kvm_vcpu *vcpu = &svm->vcpu;
- 	u64 rd_regs;
--
--	static const u32 x2avic_passthrough_msrs[] = {
--		X2APIC_MSR(APIC_ID),
--		X2APIC_MSR(APIC_LVR),
--		X2APIC_MSR(APIC_TASKPRI),
--		X2APIC_MSR(APIC_ARBPRI),
--		X2APIC_MSR(APIC_PROCPRI),
--		X2APIC_MSR(APIC_EOI),
--		X2APIC_MSR(APIC_RRR),
--		X2APIC_MSR(APIC_LDR),
--		X2APIC_MSR(APIC_DFR),
--		X2APIC_MSR(APIC_SPIV),
--		X2APIC_MSR(APIC_ISR),
--		X2APIC_MSR(APIC_TMR),
--		X2APIC_MSR(APIC_IRR),
--		X2APIC_MSR(APIC_ESR),
--		X2APIC_MSR(APIC_ICR),
--		X2APIC_MSR(APIC_ICR2),
--
--		/*
--		 * Note!  Always intercept LVTT, as TSC-deadline timer mode
--		 * isn't virtualized by hardware, and the CPU will generate a
--		 * #GP instead of a #VMEXIT.
--		 */
--		X2APIC_MSR(APIC_LVTTHMR),
--		X2APIC_MSR(APIC_LVTPC),
--		X2APIC_MSR(APIC_LVT0),
--		X2APIC_MSR(APIC_LVT1),
--		X2APIC_MSR(APIC_LVTERR),
--		X2APIC_MSR(APIC_TMICT),
--		X2APIC_MSR(APIC_TMCCT),
--		X2APIC_MSR(APIC_TDCR),
--	};
- 	int i;
- 
- 	if (intercept == svm->x2avic_msrs_intercepted)
-@@ -171,9 +138,10 @@ static void avic_set_x2apic_msr_interception(struct vcpu_svm *svm,
- 		svm_set_intercept_for_msr(vcpu, APIC_BASE_MSR + i,
- 					  MSR_TYPE_R, intercept);
- 
--	for (i = 0; i < ARRAY_SIZE(x2avic_passthrough_msrs); i++)
--		svm_set_intercept_for_msr(vcpu, x2avic_passthrough_msrs[i],
--					  MSR_TYPE_W, intercept);
-+	svm_set_intercept_for_msr(vcpu, X2APIC_MSR(APIC_TASKPRI), MSR_TYPE_W, intercept);
-+	svm_set_intercept_for_msr(vcpu, X2APIC_MSR(APIC_EOI), MSR_TYPE_W, intercept);
-+	svm_set_intercept_for_msr(vcpu, X2APIC_MSR(APIC_SELF_IPI), MSR_TYPE_W, intercept);
-+	svm_set_intercept_for_msr(vcpu, X2APIC_MSR(APIC_ICR), MSR_TYPE_W, intercept);
- 
- 	svm->x2avic_msrs_intercepted = intercept;
- }
--- 
-2.54.0.563.g4f69b47b94-goog
-
+Feel free to update the Reported-by email if you want it to match Reviewed-=
+by.
