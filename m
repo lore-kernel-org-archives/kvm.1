@@ -1,182 +1,161 @@
-Received: from fhigh-a1-smtp.messagingengine.com (fhigh-a1-smtp.messagingengine.com [103.168.172.152])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A93EC328B62
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 17:17:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B9A24DCF6;
+	Thu, 14 May 2026 17:17:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778779057; cv=none; b=N8tTd0u8VwAiJn1c78UHodn5XPplrdyR7E4K2Q0jROFWrtDzwPWgDw8TxCs3Krqv51mq7EbJVNjst9Q6V/HBm39vQpy0tCP8PbofOq3IoWzsqIN2jrKsVtHh8iisMk+P59Lf+B5GLgXurj4iYrp5a3KiFBTmaWhM1g+tLIcRXUY=
+	t=1778779069; cv=none; b=WES2lMobpr8FGTcjOZQYBg8t18LFVD/wizvk5BXqPWPT75ZQyqMZxQpIFtF5YnbvVgxaEa2l5CAAYN5ZScoHPsAyPBJeCQU7+z9tjrY5UCjIkoq+Z4rCk3lYaNBzKkcFSYuHfORzxR8R20cECoM2m2g20hVW8ZNpEk0YQFYdDoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778779057; c=relaxed/simple;
-	bh=oRhC9ap/DPR+LRmOACS5BSfZvO0w8NpryTqtekTnKcg=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=moYqVfTB569Yx0SQHRweIpMKi4UQNUHp7leFDqki9SSZ3dO/r9HytzCvCcD54t+DNydFF7g4JkIs4SeLDOsrSp3aEDwOXtFLp4w9Bl8KfyBTGp1kvQq21nz3L41y6sQTeZu0u221ZuCARfB3wAR0Ddh2NdpbFjcfcztTUUvRGjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=URyjX9Cb; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=TdIuaa6r; arc=none smtp.client-ip=103.168.172.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1778779069; c=relaxed/simple;
+	bh=SgR0N2Ki5fBA5Ifg838B48wUNmKlbgf7iRjRF2QdGaw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RqlbqmKzDP/ViANs84i2/nyPHLi16+B3rrz83irw4cMfbtvYRtOqtIb5/Fh28hi/uA1MUVApR3AUPC8QqhCBTBNTCjLuDBZXSJ7zQATqFZH/xgToOAlUi1asth6QYwbh+BUa/IYfufhHexdSXxnAau3vU4sJy2FiQpSP+br8VNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=haOa3zyM; arc=none smtp.client-ip=192.198.163.15
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="URyjX9Cb";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="TdIuaa6r"
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 04C871400126;
-	Thu, 14 May 2026 13:17:34 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Thu, 14 May 2026 13:17:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1778779054;
-	 x=1778865454; bh=PO56KD/Hrd384ZARZTR9tTuUmx9BraACvzCmjYWDAoE=; b=
-	URyjX9CbOXF3dH5H1BMyNctpglO9ILQ9pJT7wV8CCffrCa+y+lS040Kj+K2bkFdi
-	k7va9Uo8Lq/duhQKjwdgZt7IEonKk0+K1+E+8gEmXYQ2KrCXmPE0Z1F6BR3qYew3
-	YOmvl9nD2BfnreITpzn/2VPAlZeK60V0f+adYUUDN74pXue4ei4K8FMmIb1zr9sw
-	qf/RM9FUEcYntvJAfWSu3DwzY+GoOXRzBCNJmKgfxrOALma//mEeLEQ7E2vrsaJq
-	v0gzRes55MLihObG7S0u7mS/r6ccuu1xfXBlBYBpheybMfcOJaolIKoHMS32Zav+
-	x1WRWcdoPC1ufpNqzI/9Gg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1778779054; x=
-	1778865454; bh=PO56KD/Hrd384ZARZTR9tTuUmx9BraACvzCmjYWDAoE=; b=T
-	dIuaa6rCGV+BgQ86sfPqUvs37OZv3VLY/xkpwTlpMUh0l0sCxJCuKguUxczxnXsu
-	bsHxFitwdrqyQpk93OnMrZC8cQtIwMd6IhL1TpeqePVXte+uUhKj0WqHRoyaBG08
-	8dWjbPD1OG6stu6DRTsy3B78rNlR8BOAnPIFoZYOKf5fErGR2Fud4HmzSlDq/A9+
-	O+hdKW5dsBNnoHpCgbJBGdLXSnLWZwSQFrfuwTc+7DTVp2b3aXrGhimnRtTzKd3L
-	vJLYeXCvx+r7VzV0+XWukZz1xCT0OWcLUDYvI5WWwQ7Yg6nawUcp5SAnX3wxj0+6
-	n6T19N8nFhxZ5C3x5IlBQ==
-X-ME-Sender: <xms:rQMGakIOhm3NtYkf3Z2ZrYKNYdjToKoenvEZzI5nEzumm-5TAPuQNQ>
-    <xme:rQMGalqIXPkjpHuJvFPrjNv5nOhZL3p1RWJ9lhyZzjl3xf1RakDQFowQ4hbBqWO1U
-    GXE2K-byvNhemp5XyuM3ycPPX-ftJGcM1zR-RovBOQcV5vSrAOpC58>
-X-ME-Received: <xmr:rQMGakyn9EKOJGWSp9u-edG42j0OTNuCD2wrNeUMVXQbRKtvR0DBa6jiYkI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduvdekuddtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
-    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
-    htthgvrhhnpeettdehhefguedtkedthfehvddtgeejffevvdeuvdeileffkeefffevhefh
-    tdejteenucffohhmrghinhepghhithhhuhgsrdgtohhmpddtuddrohhrghdpkhgvrhhnvg
-    hlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhho
-    mheprghlvgigsehshhgriigsohhtrdhorhhgpdhnsggprhgtphhtthhopeehpdhmohguvg
-    epshhmthhpohhuthdprhgtphhtthhopehlkhhpsehinhhtvghlrdgtohhmpdhrtghpthht
-    ohepmhgrthhtvghvsehmvghtrgdrtghomhdprhgtphhtthhopehovgdqkhgsuhhilhguqd
-    grlhhlsehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepkhhvmhesvhhgvghr
-    rdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgiesshhhrgiisghothdrohhrgh
-X-ME-Proxy: <xmx:rQMGahPdhXYp4YgXE-ADBUnEojpOWqq48zHXO6HJXAnkLSlG77nJug>
-    <xmx:rQMGah57W1kJDKX3yB-lvtSle41j5QwZchLsenb1gHXfcxu2BwX3hQ>
-    <xmx:rQMGaimhqbcUyrJzzVblpcnDiUDYyvj2d1BSXwdIfs-rUWuIJLUieQ>
-    <xmx:rQMGaiTPkwKpng16eXFAs77jMXVkHGU9KMNfPeqwV0yHLCkvS3QkWQ>
-    <xmx:rgMGamWzF-9R7po88eAlzGoQ15DD15LwVlyf6b5inCClY0DCWOEQzZQ1>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 14 May 2026 13:17:32 -0400 (EDT)
-Date: Thu, 14 May 2026 11:17:31 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Matt Evans <mattev@meta.com>
-Cc: kernel test robot <lkp@intel.com>, oe-kbuild-all@lists.linux.dev,
- kvm@vger.kernel.org, alex@shazbot.org
-Subject: Re: [awilliam-vfio:for-linus 3/4]
- drivers/vfio/pci/vfio_pci_core.c:499:35: sparse: sparse: incorrect type in
- assignment (different address spaces)
-Message-ID: <20260514111731.5ef8faa4@shazbot.org>
-In-Reply-To: <202605150023.lXFibOM0-lkp@intel.com>
-References: <202605150023.lXFibOM0-lkp@intel.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="haOa3zyM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778779068; x=1810315068;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=SgR0N2Ki5fBA5Ifg838B48wUNmKlbgf7iRjRF2QdGaw=;
+  b=haOa3zyMlYiMQqKi7qbN0LW//qJPLlyBzY7Hs5C4+puA3w86tdSja9eR
+   H9+C7BbeK3N4hGzM05bg7QxigZyxEE17Ibn0SwCkKLPFjY7T2Z5Upxsvh
+   dj8hK6MUEuci0JYxy/eOyOuwAq/jBRxNRU4Fr3FdxNU8gTKa9cFIYWEAC
+   oZOiqKhgE4kn5F75G3BmYf+OZqrGIAWhr6TrgXn7oCT0TzelPa8rUpZqh
+   8T8i6P5szuOQrX0AtJArqG34105WOdzcmgY4FRVPurNzVGSF5ZUbK+pqJ
+   oj08LC9cgjpxbrdHrRt2aW1gqRvqzHUW83/ozSzh2DRjWpqofjPEDrLlZ
+   Q==;
+X-CSE-ConnectionGUID: 5h3MZcabQu2YVBmBWJMvBQ==
+X-CSE-MsgGUID: oU0WVfOeTHqZ9bsQUgMJuA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="79847444"
+X-IronPort-AV: E=Sophos;i="6.23,235,1770624000"; 
+   d="scan'208";a="79847444"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 10:17:47 -0700
+X-CSE-ConnectionGUID: SMnq6oI6QOWHO1evqDbfcw==
+X-CSE-MsgGUID: 06y3Diu1QN+I5NrEjNYudQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,235,1770624000"; 
+   d="scan'208";a="240271431"
+Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.108.103]) ([10.125.108.103])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 10:17:46 -0700
+Message-ID: <eacff6d2-50eb-4ac1-93cf-f5652651df70@intel.com>
+Date: Thu, 14 May 2026 10:17:46 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 06/21] x86/fpu: Ignore APX when copying from/to guest
+ FPU
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Chang S. Bae" <chang.seok.bae@intel.com>, seanjc@google.com,
+ kvm@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org,
+ chao.gao@intel.com
+References: <20260512011502.53072-1-chang.seok.bae@intel.com>
+ <20260512011502.53072-7-chang.seok.bae@intel.com>
+ <6adbdfb5-c4fa-455b-b427-2f8350bc9c2e@intel.com>
+ <CABgObfZmFLDZPLEeLW5=yk8oyO8ibXr48JSVXaF7cKfz2SQw4A@mail.gmail.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <CABgObfZmFLDZPLEeLW5=yk8oyO8ibXr48JSVXaF7cKfz2SQw4A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On Fri, 15 May 2026 00:39:50 +0800
-kernel test robot <lkp@intel.com> wrote:
-
-> tree:   https://github.com/awilliam/linux-vfio.git for-linus
-> head:   a8a3ce989a94db08f77968a4e75b34eaa6d40c9a
-> commit: a975fd177726e110f30b561dd0707b78f21ffe66 [3/4] vfio/pci: Set up BAR resources and maps in vfio_pci_core_enable()
-> config: parisc-randconfig-r134-20260514 (https://download.01.org/0day-ci/archive/20260515/202605150023.lXFibOM0-lkp@intel.com/config)
-> compiler: hppa-linux-gcc (GCC) 8.5.0
-> sparse: v0.6.5-rc1
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260515/202605150023.lXFibOM0-lkp@intel.com/reproduce)
+On 5/14/26 09:04, Paolo Bonzini wrote:
+...
+>> Couldn't we, for instance, just let the APX registers use the "fpu"
+>> ABIs? PKRU is weird too, but it still gets to use those ABIs.
 > 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202605150023.lXFibOM0-lkp@intel.com/
-> 
-> sparse warnings: (new ones prefixed by >>)
->    drivers/vfio/pci/vfio_pci_core.c:274:33: sparse: sparse: restricted pci_power_t degrades to integer
->    drivers/vfio/pci/vfio_pci_core.c:274:41: sparse: sparse: restricted pci_power_t degrades to integer
->    drivers/vfio/pci/vfio_pci_core.c:278:25: sparse: sparse: restricted pci_power_t degrades to integer
->    drivers/vfio/pci/vfio_pci_core.c:278:43: sparse: sparse: restricted pci_power_t degrades to integer
->    drivers/vfio/pci/vfio_pci_core.c:278:56: sparse: sparse: restricted pci_power_t degrades to integer
->    drivers/vfio/pci/vfio_pci_core.c:278:65: sparse: sparse: restricted pci_power_t degrades to integer
->    drivers/vfio/pci/vfio_pci_core.c:283:25: sparse: sparse: restricted pci_power_t degrades to integer
->    drivers/vfio/pci/vfio_pci_core.c:283:44: sparse: sparse: restricted pci_power_t degrades to integer
->    drivers/vfio/pci/vfio_pci_core.c:283:57: sparse: sparse: restricted pci_power_t degrades to integer
->    drivers/vfio/pci/vfio_pci_core.c:283:66: sparse: sparse: restricted pci_power_t degrades to integer
->    drivers/vfio/pci/vfio_pci_core.c:291:39: sparse: sparse: restricted pci_power_t degrades to integer
->    drivers/vfio/pci/vfio_pci_core.c:291:58: sparse: sparse: restricted pci_power_t degrades to integer
-> >> drivers/vfio/pci/vfio_pci_core.c:499:35: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected void [noderef] __iomem * @@     got void * @@  
->    drivers/vfio/pci/vfio_pci_core.c:499:35: sparse:     expected void [noderef] __iomem *
->    drivers/vfio/pci/vfio_pci_core.c:499:35: sparse:     got void *
->    drivers/vfio/pci/vfio_pci_core.c:506:43: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected void [noderef] __iomem * @@     got void * @@
->    drivers/vfio/pci/vfio_pci_core.c:506:43: sparse:     expected void [noderef] __iomem *
->    drivers/vfio/pci/vfio_pci_core.c:506:43: sparse:     got void *
->    drivers/vfio/pci/vfio_pci_core.c:514:43: sparse: sparse: incorrect type in assignment (different address spaces) @@     expected void [noderef] __iomem * @@     got void * @@
->    drivers/vfio/pci/vfio_pci_core.c:514:43: sparse:     expected void [noderef] __iomem *
->    drivers/vfio/pci/vfio_pci_core.c:514:43: sparse:     got void *
->    drivers/vfio/pci/vfio_pci_core.c:1736:9: sparse: sparse: cast from restricted vm_fault_t
-> 
-> vim +499 drivers/vfio/pci/vfio_pci_core.c
-> 
->    484	
->    485	/*
->    486	 * Eager-request BAR resources, and iomap them.  Soft failures are
->    487	 * allowed, and consumers must check the barmap before use in order to
->    488	 * give compatible user-visible behaviour with the previous on-demand
->    489	 * allocation method.
->    490	 */
->    491	static void vfio_pci_core_map_bars(struct vfio_pci_core_device *vdev)
->    492	{
->    493		struct pci_dev *pdev = vdev->pdev;
->    494		int i;
->    495	
->    496		for (i = 0; i < PCI_STD_NUM_BARS; i++) {
->    497			int bar = i + PCI_STD_RESOURCES;
->    498	
->  > 499			vdev->barmap[bar] = ERR_PTR(-ENODEV);  
+> For PKRU it makes sense because it is not kept in the FPU even for the
+> non-guest case. This is not the case for EGPRs, but I guess it would
+> be the same if the kernel was compiled with APX? If the kernel entry
+> code would have to stash r16-r31 from userspace before entering C
+> code, then we can add similar "unsigned long *egprs" arguments to
+> copy_uabi_from_kernel_to_xstate, copy_uabi_to_xstate, and likewise in
+> the other direction.
 
-I think we just need to convert these three ERR_PTR()s to
-IOMEM_ERR_PTR().  Agree?  I can fix it in the branch.  Thanks,
+I think we're getting into the weeds a bit. Maybe we should focus on how
+this affects the ABIs and work in from there. Like you mentioned, we
+might or might not have kernel APX support and the ABI should make sense
+no matter what we do inside the kernel.
 
-Alex
+The functions we're discussing for this patch are:
 
->    500	
->    501			if (!pci_resource_len(pdev, i))
->    502				continue;
->    503	
->    504			if (pci_request_selected_regions(pdev, 1 << bar, "vfio")) {
->    505				pci_dbg(pdev, "Failed to reserve region %d\n", bar);
->    506				vdev->barmap[bar] = ERR_PTR(-EBUSY);
->    507				continue;
->    508			}
->    509	
->    510			vdev->barmap[bar] = pci_iomap(pdev, bar, 0);
->    511			if (!vdev->barmap[bar]) {
->    512				pci_dbg(pdev, "Failed to iomap region %d\n", bar);
->    513				pci_release_selected_regions(pdev, 1 << bar);
->    514				vdev->barmap[bar] = ERR_PTR(-ENOMEM);
->    515			}
->    516		}
->    517	}
->    518	
-> 
-> --
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
+	fpu_copy_uabi_to_guest_fpstate()
+	fpu_copy_guest_fpstate_to_uabi()
 
+which implement the meat of the functionality of these IOCTLs:
+
+	KVM_SET_XSAVE
+	KVM_GET_XSAVE
+
+So the question, visible to userspace, is whether the
+KVM_{GET,SET}_XSAVE should APIs should be able to manage XFEATURE_APX
+data or not. If we decide *not* to manage them there, there needs to be
+a _separate_ ABI.
+
+Are we on the same page so far?
+
+If we _just_ look at making a good, consistent ABI, I don't think
+XFEATURE_APX is special. The registers can be managed by XSAVE. There's
+a KVM XSAVE ABI. Why would *this* feature be special from all of the others?
+
+I don't think the fact that the kernel is using those registers as GPRs
+changes what makes a good ABI. That's a kernel-internal implementation
+detail.
+
+Now, that's not to say we should ignore kernel complexity. Maybe making
+a nice ABI is so nasty to the kernel internals that we shouldn't bother.
+I _think_ that's what you're suggesting.
+
+Is that right?
