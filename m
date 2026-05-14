@@ -1,237 +1,192 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7984426D0A
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 14:49:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 829C842846E
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 14:57:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778770194; cv=none; b=nzPSM0OTD5o8y4UGvsjn3xA/SYwiw6NNcglu1YGMNP2xa690nph7ktPQRD3jcAw/DVeoTmJQGZoGW335JoDveHPPno5D3ndc5Z0cs9l7DBv+a9MtPTV8gmwoOsRkke/xF7VxO7b4U/IeyDtc0mXhDBh3yd6hlEhDItbtpCSiGhA=
+	t=1778770650; cv=none; b=RIm7FWNI6QafhjF7INrNyNBGk8FDbSxt0cHlFI11GruVC6lhp7tRveabURjie73PpMc7lw/SWx/23gNx8MwJk1EHAbl4az6O6TSIo8tgS6tyhkXaCiBbfVCVv1B4BbPB0+Kk59GvVxDZOoXnWUHTm/siKtBfTV0oGrd1YrB9hsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778770194; c=relaxed/simple;
-	bh=/3hUJWqSjrgt6H2/5pLiezpPh0BF+4h08jBSKJG3X9Y=;
+	s=arc-20240116; t=1778770650; c=relaxed/simple;
+	bh=nLXZoA7D/cDYw43SD85/ZPvjSgooaZlgPDLded852xo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=f7Q29pfI38j6mcFEx9k2wGVqMC3JtGBbDuc/F3mxZj/IdAYaQ3E2JpsElLFr8lPiQ0dEBmCthp0ahk4+h0YxlnOvrcpvF7Nb+26CYaVkx2Eb2GFUigC2QubOyi7D4aYhhCmi2t6OZf24Fvab1ytN8ElTg4VDkZe42Z5Bo64UPuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bvvky2eA; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=HDul9Aza2etgj3cmGFcTmPqTSpLJ60PLfoVt6nQWJWVVseCoXRWrqkAbn9tnkDzOEl7vxo+Be3SDl2ftKiWjOQrvEy3QRqs14ljnHNWi44gzOrVsMmgbtYUwXgykv+XEq1FEMD+6F9ggosfXyVJeSeI/4ia/8+Ir+85wrPVfP7c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aHn1xgRM; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=iDVuhKSM; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bvvky2eA"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF279C2BCB3;
-	Thu, 14 May 2026 14:49:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1778770194;
-	bh=/3hUJWqSjrgt6H2/5pLiezpPh0BF+4h08jBSKJG3X9Y=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=bvvky2eAnsaxxqzONOe0nE4EhzXjaP/JNzUe6UkCg7yttWQJmffxohC7u7Oqxkw3Y
-	 rI2r8DkMjbqgoCzOcgAOXHodOBQ0XWCVRx7NG3cNhCu+jjaiBke1VpRU8606xwnuk6
-	 LUsgoDmswezPlDXw5XQbeXzi4JhDAxN3gvF46bTSpvjJHwdT8rmvFwNNXITmmqskGR
-	 w1FefOAV2OvFnbB7rROjWTSXobQiwrQlq1m34NdivgoQ/+ZNa4ooG9bJCx5ItAZbNZ
-	 ZXl9nhPkRF5r58vJuLvVKXAya9SP0LqtXE9tfb0nDEpJ8P4239DP0Wx6eGZMU6T1+u
-	 49ommb083/fhw==
-Date: Thu, 14 May 2026 20:18:28 +0530
-From: Naveen N Rao <naveen@kernel.org>
-To: Manali Shukla <manali.shukla@amd.com>
-Cc: seanjc@google.com, pbonzini@redhat.com, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, kvm@vger.kernel.org, x86@kernel.org, santosh.shukla@amd.com, 
-	nikunj.dadhania@amd.com, dapeng1.mi@linux.intel.com
-Subject: Re: [PATCH v1 7/9] KVM: x86: Emulate Extended LVT registers for AMD
- guests
-Message-ID: <agXfdJ_gnujR3k8Z@blrnaveerao1>
-References: <20260204074452.55453-1-manali.shukla@amd.com>
- <20260204074452.55453-8-manali.shukla@amd.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aHn1xgRM";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="iDVuhKSM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778770648;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=bmItK0Q0jR1/wvpM4sGWwy0Jc78483wKM/DFC7tKXoQ=;
+	b=aHn1xgRMqkHy0TFJzaUkXA9Tu/UGtyKdlTO+N2jo9nk9uFj4RcZU+ex9ogxXUSWC0wU/gC
+	i2upyMaoQPPBag7Quh1cHAbJ+ZupEMHAXjydn4Qj9Uysj0gOC7LBBv6Rpk3I0sibHjxgwy
+	XRIZbHs0LAa2zvUZ4iY8dVrWBHk4MCg=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-636-ZD3J9FZAN52jW8iKwrPwqw-1; Thu, 14 May 2026 10:57:25 -0400
+X-MC-Unique: ZD3J9FZAN52jW8iKwrPwqw-1
+X-Mimecast-MFC-AGG-ID: ZD3J9FZAN52jW8iKwrPwqw_1778770644
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-48fd233d1e2so15293765e9.1
+        for <kvm@vger.kernel.org>; Thu, 14 May 2026 07:57:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1778770644; x=1779375444; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bmItK0Q0jR1/wvpM4sGWwy0Jc78483wKM/DFC7tKXoQ=;
+        b=iDVuhKSM9t5MgrSgxZi+p2hWSo7fsdgj6B1hoHDHxuw9CRMIPC/muKehai7nM+OPHe
+         FTM4Xva8X2gfTuCj9PPMvSOnf2ttzvBMsHOfqMCorpQ5zbCOphjA7p2KnWepZJGKFdr6
+         Pi5PO9Q94eOrUqpHwO+eTRPv2bYw13VH83V8raZnBekj8kpWG/6Kxoi+5VGxzvI6NB0v
+         Feo9jiTMWVwqMcbg3lYo1+8DSy7fBdw60E26XJVme2WpW/+jCf42LYShRW19IMyIV/j0
+         mTjURLxh3ApRHG/wkB3zfaD0tNkQ3ZH4YOiy8YC2Ddcq4R6aQnCjwX9SvVjWa6tl7r+5
+         F0CA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778770644; x=1779375444;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=bmItK0Q0jR1/wvpM4sGWwy0Jc78483wKM/DFC7tKXoQ=;
+        b=n9w0IUUQVk05LiJ8r3kZTqhS+bSFaRbwrz1/h1smaKAgA3JpVlhc6dJTxqLOn3B5Tn
+         PTGvvP8aZKWy4jxXKFAvGNnN2NZK2GEboz7jyJO2mQ59XEmgaIzoAcokjqn9SIJJT7uY
+         r9t6/tUdeqIXz/K5oJpNB/zuvqIQkBgS61PZX54hjacaa7DNZu6QrrwMBRxbhm1k26i5
+         fYCM7DBHanVxzU/GRYreTPdYLokjHd22TcRD+7EHdW7KptLEPPCNstCR587dCJAjNqo0
+         PJO1hQbMKgrh950x6FtEaqaCZyIJSJMfYWDYKo6HuP3CoqK3COdOLaQRwzfklUmP7JY0
+         qKjw==
+X-Forwarded-Encrypted: i=1; AFNElJ+/tWOHSzk7XFt/PlIp2DQ2rdD/5bQgbbW2BzAV39o+0FIsXWWlnr3BkUOk+SSYygmw7D0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwobMoMjTFwrvvG7w/LrILcgud5mxJ7Xvk56MedRBkHWx21yvly
+	BCXXhO87IQ6IKLsnW5oL4MROOe5oCjJ02hit35Yh/Ngmn751u9k8IF4Np/CK0xyTc9JJYsgt1Mn
+	IBQQp1ruTMo2KLUlLLVMkPOZJ0vpOgM4/HylpgbDDxosF5Ny7Kqh0LA==
+X-Gm-Gg: Acq92OG5yTiGwOTxZ+JBGWlpoXA4k73YltXQGlnX9Xw7USox0Twt9L1sgACHecn1/Uv
+	XUZAbHjm/8ARx9z/lhX5wKcvlZO85rgya2WzVDQX0WwanSZJtgGTx/kgrjrOhImtF7i+Mik6zud
+	c+I+AP1hwpYldTPCFS5D1kTlumkH+v3xwAHo/mhhvdX6IBtr7EenmVDBEDoWLOeiiwQGayrsc3S
+	zlrXmfAU1h4Vne1p72yjtbeh2fXE2mMeN5JBKxq91tYqxnQ1LMOMvn3zURZvPJ2RV22Gw4s3fWz
+	BquizHTkmudGmfHdI7j4ifwvafkHOlPMqn4AvYjzidUtbWS2deoGOlbxVLBH1tQxXoK/KYbE0OM
+	SndEPCg4Wi9oEbixj+E8HNKKORwZqBSkEL3cZZQslBIJK9RSnXX/vIcrokoeDfpJnej2S6ukJ+Q
+	==
+X-Received: by 2002:a05:600c:4e0d:b0:48a:5c23:cab with SMTP id 5b1f17b1804b1-48fc9a3abb0mr125552815e9.19.1778770643881;
+        Thu, 14 May 2026 07:57:23 -0700 (PDT)
+X-Received: by 2002:a05:600c:4e0d:b0:48a:5c23:cab with SMTP id 5b1f17b1804b1-48fc9a3abb0mr125552375e9.19.1778770643409;
+        Thu, 14 May 2026 07:57:23 -0700 (PDT)
+Received: from sgarzare-redhat (host-87-16-204-231.retail.telecomitalia.it. [87.16.204.231])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe4657f3fsm3313895e9.6.2026.05.14.07.57.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 May 2026 07:57:22 -0700 (PDT)
+Date: Thu, 14 May 2026 16:57:16 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	"Michael S. Tsirkin" <mst@redhat.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
+	linux-kernel@vger.kernel.org, Simon Horman <horms@kernel.org>, Paolo Abeni <pabeni@redhat.com>, 
+	Jakub Kicinski <kuba@kernel.org>, Jason Wang <jasowang@redhat.com>, kvm@vger.kernel.org, 
+	Stefan Hajnoczi <stefanha@redhat.com>, virtualization@lists.linux.dev, 
+	Eric Dumazet <edumazet@google.com>, "David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH net v3 1/2] vsock/virtio: reset connection on receiving
+ queue overflow
+Message-ID: <agXh36gUe1K6__Bk@sgarzare-redhat>
+References: <20260513105417.56761-1-sgarzare@redhat.com>
+ <20260513105417.56761-2-sgarzare@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20260204074452.55453-8-manali.shukla@amd.com>
+In-Reply-To: <20260513105417.56761-2-sgarzare@redhat.com>
 
-On Wed, Feb 04, 2026 at 07:44:50AM +0000, Manali Shukla wrote:
-> From: Santosh Shukla <santosh.shukla@amd.com>
-> 
-> Emulate reads and writes to AMD Extended APIC registers: APIC_EFEAT
-> (0x400), APIC_ECTRL (0x410), and APIC_EILVTn (0x500-0x530).  Without
-> emulation, Instruction Based Sampling (IBS) driver fails to initialize
-> when it tries to access APIC_EILVT(0).
-> 
-> Extend the LAPIC register read and write paths to allow accesses beyond
-> the standard 0x3f0 offset when the guest has X86_FEATURE_EXTAPIC.  The
-> valid range is determined by kvm->arch.nr_extlvt, which userspace
-> configures via KVM_CAP_LAPIC2.
-> 
-> Initialize extended APIC registers in both kvm_vcpu_after_set_cpuid()
-> and kvm_lapic_reset().  The initial kvm_lapic_reset() occurs before
-> userspace configures CPUID via KVM_SET_CPUID2, so extended LVT registers
-> can't be initialized until X86_FEATURE_EXTAPIC is set.  Handle the
-> initial setup in kvm_vcpu_after_set_cpuid() and subsequent resets in
-> kvm_lapic_reset().
-> 
-> Initialize APIC_EFEAT to report the number of extended LVTs (read-only).
-> Initialize APIC_ECTRL to zero (read-write).  Initialize APIC_EILVTn
-> entries to masked (bit 16 set), matching hardware reset behavior.
-> 
-> Please refer to Section 16.4.5 in AMD Programmer's Manual Volume 2 at
-> https://bugzilla.kernel.org/attachment.cgi?id=306250 for more details
-> on Extended LVT.
-> 
-> Signed-off-by: Santosh Shukla <santosh.shukla@amd.com>
-> Co-developed-by: Manali Shukla <manali.shukla@amd.com>
-> Signed-off-by: Manali Shukla <manali.shukla@amd.com>
-> ---
->  arch/x86/include/asm/apicdef.h | 18 ++++++++++++++
->  arch/x86/kvm/cpuid.c           | 10 +++++++-
->  arch/x86/kvm/lapic.c           | 43 ++++++++++++++++++++++++++++++++++
->  arch/x86/kvm/lapic.h           |  8 +++++++
->  4 files changed, 78 insertions(+), 1 deletion(-)
-> 
-> diff --git a/arch/x86/include/asm/apicdef.h b/arch/x86/include/asm/apicdef.h
-> index be39a543fbe5..5c5e9db1e27d 100644
-> --- a/arch/x86/include/asm/apicdef.h
-> +++ b/arch/x86/include/asm/apicdef.h
-> @@ -148,6 +148,24 @@
->  #define		APIC_EILVT_MSG_EXT	0x7
->  #define		APIC_EILVT_MASKED	(1 << 16)
->  
-> +/*
-> + * Initialize extended APIC registers to the default value when guest
-> + * is started and EXTAPIC feature is enabled on the guest.
-> + *
-> + * APIC_EFEAT is a read only Extended APIC feature register, whose bits
-> + * 0, 1, and 2 represent features that are not currently emulated by KVM.
-> + * Therefore, these bits must be cleared during initialization. As a result, the
-> + * default value used for APIC_EFEAT in KVM is set based on number of extended
-> + * LVT registers supported by the guest.
-> + *
-> + * APIC_ECTRL is a read-write Extended APIC control register, whose
-> + * default value is 0x0.
-> + */
-> +
-> +#define		APIC_EFEAT_MASK		0x00FF0000
-> +#define		APIC_EFEAT_DEFAULT(n)	((n << 16) & APIC_EFEAT_MASK)
-> +#define		APIC_ECTRL_DEFAULT	0x0
-> +
+On Wed, May 13, 2026 at 12:54:16PM +0200, Stefano Garzarella wrote:
+>From: Stefano Garzarella <sgarzare@redhat.com>
+>
+>When there is no more space to queue an incoming packet, the packet is
+>silently dropped. This causes data loss without any notification to
+>either peer, since there is no retransmission.
+>
+>Under normal circumstances, this should never happen. However, it could
+>happen if the other peer doesn't respect the credit, or if the skb
+>overhead, which we recently began to take into account with commit
+>059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue"),
+>is too high.
+>
+>Fix this by resetting the connection and setting the local socket error
+>to ENOBUFS when virtio_transport_recv_enqueue() can no longer queue a
+>packet, so both peers are explicitly notified of the failure rather than
+>silently losing data.
+>
+>Fixes: ae6fcfbf5f03 ("vsock/virtio: discard packets if credit is not respected")
+>Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+>---
+> net/vmw_vsock/virtio_transport_common.c | 19 ++++++++++++++-----
+> 1 file changed, 14 insertions(+), 5 deletions(-)
+>
+>diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>index 989cc252d3d3..4a4ac69d1ad1 100644
+>--- a/net/vmw_vsock/virtio_transport_common.c
+>+++ b/net/vmw_vsock/virtio_transport_common.c
+>@@ -1350,7 +1350,7 @@ virtio_transport_recv_connecting(struct sock *sk,
+> 	return err;
+> }
+>
+>-static void
+>+static bool
+> virtio_transport_recv_enqueue(struct vsock_sock *vsk,
+> 			      struct sk_buff *skb)
+> {
+>@@ -1365,10 +1365,8 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
+> 	spin_lock_bh(&vvs->rx_lock);
+>
+> 	can_enqueue = virtio_transport_inc_rx_pkt(vvs, len);
+>-	if (!can_enqueue) {
+>-		free_pkt = true;
+>+	if (!can_enqueue)
+> 		goto out;
+>-	}
+>
+> 	if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SEQ_EOM)
+> 		vvs->msg_count++;
+>@@ -1408,6 +1406,8 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
+> 	spin_unlock_bh(&vvs->rx_lock);
+> 	if (free_pkt)
+> 		kfree_skb(skb);
+>+
+>+	return can_enqueue;
+> }
+>
+> static int
+>@@ -1420,7 +1420,16 @@ virtio_transport_recv_connected(struct sock *sk,
+>
+> 	switch (le16_to_cpu(hdr->op)) {
+> 	case VIRTIO_VSOCK_OP_RW:
+>-		virtio_transport_recv_enqueue(vsk, skb);
+>+		if (!virtio_transport_recv_enqueue(vsk, skb)) {
+>+			/* There is no more space to queue the packet, so let's
+>+			 * close the connection; otherwise, we'll lose data.
+>+			 */
+>+			(void)virtio_transport_reset(vsk, skb);
+>+			sk->sk_state = TCP_CLOSE;
+>+			sk->sk_err = ENOBUFS;
+>+			sk_error_report(sk);
 
-This probably belongs in the KVM headers.
+sashiko reported some issues related to setting TCP_CLOSE state and not 
+removing the socket from the connect table:
+https://sashiko.dev/#/patchset/20260513105417.56761-1-sgarzare%40redhat.com
 
->  #define APIC_BASE (fix_to_virt(FIX_APIC_BASE))
->  #define APIC_BASE_MSR		0x800
->  #define APIC_X2APIC_ID_MSR	0x802
-> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
-> index baa1cf473d45..4574149d137b 100644
-> --- a/arch/x86/kvm/cpuid.c
-> +++ b/arch/x86/kvm/cpuid.c
-> @@ -435,6 +435,14 @@ void kvm_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu)
->  		kvm_apic_set_version(vcpu);
->  	}
->  
-> +	/*
-> +	 * Initialize extended APIC registers after CPUID is set.  The initial
-> +	 * reset occurs before userspace configures CPUID, so extended LVT
-> +	 * registers (which require X86_FEATURE_EXTAPIC) can't be initialized
-> +	 * until after KVM_SET_CPUID2.
-> +	 */
-> +	kvm_apic_init_extlvt_regs(vcpu);
-> +
->  	vcpu->arch.guest_supported_xcr0 = cpuid_get_supported_xcr0(vcpu);
->  	vcpu->arch.guest_supported_xss = cpuid_get_supported_xss(vcpu);
->  
-> @@ -1076,7 +1084,7 @@ void kvm_set_cpu_caps(void)
->  		F(LAHF_LM),
->  		F(CMP_LEGACY),
->  		VENDOR_F(SVM),
-> -		/* ExtApicSpace */
-> +		F(EXTAPIC),
+I'll change this by calling virtio_transport_do_close() and 
+vsock_remove_sock() in the next version.
 
-Shouldn't this be VENDOR_F()?
+Stefano
 
->  		F(CR8_LEGACY),
->  		F(ABM),
->  		F(SSE4A),
-> diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-> index 4ed6abb414e4..a04c808289c3 100644
-> --- a/arch/x86/kvm/lapic.c
-> +++ b/arch/x86/kvm/lapic.c
-> @@ -1687,6 +1687,7 @@ static inline struct kvm_lapic *to_lapic(struct kvm_io_device *dev)
->  	test_bit(APIC_REG_TO_BIT(reg), (unsigned long *)(mask))
->  
->  #define APIC_LAST_REG_OFFSET		0x3f0
-> +#define APIC_EXT_LAST_REG_OFFSET(n)	APIC_EILVTn((n))
->  
->  void kvm_lapic_readable_reg_mask(struct kvm_lapic *apic, u64 mask[2])
->  {
-> @@ -1722,6 +1723,12 @@ void kvm_lapic_readable_reg_mask(struct kvm_lapic *apic, u64 mask[2])
->  		APIC_REG_MASK(APIC_DFR, mask);
->  		APIC_REG_MASK(APIC_ICR2, mask);
->  	}
-> +
-> +	if (guest_cpu_cap_has(apic->vcpu, X86_FEATURE_EXTAPIC)) {
-> +		APIC_REG_MASK(APIC_EFEAT, mask);
-> +		APIC_REG_MASK(APIC_ECTRL, mask);
-> +		APIC_REGS_MASK(APIC_EILVTn(0), apic->vcpu->kvm->arch.nr_extlvt, mask);
-> +	}
->  }
->  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_lapic_readable_reg_mask);
->  
-> @@ -1739,6 +1746,13 @@ static int kvm_lapic_reg_read(struct kvm_lapic *apic, u32 offset, int len,
->  	 */
->  	WARN_ON_ONCE(apic_x2apic_mode(apic) && offset == APIC_ICR);
->  
-> +	if (guest_cpu_cap_has(apic->vcpu, X86_FEATURE_EXTAPIC)) {
-> +		u8 nr_extlvt = apic->vcpu->kvm->arch.nr_extlvt;
-> +
-> +		if (nr_extlvt > 0)
-> +			last_reg = APIC_EXT_LAST_REG_OFFSET(nr_extlvt - 1);
-> +	}
-> +
-
-We should be able to eliminate the need for this if we have 
-kvm_lapic_readable_reg_mask() work with the full 4k APIC page:
-
-diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
-index 8f4b63c9807b..ed20e0b21be7 100644
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -1736,9 +1736,6 @@ static inline struct kvm_lapic *to_lapic(struct kvm_io_device *dev)
- #define APIC_REGS_MASK(first, count, mask)     bitmap_set(mask, APIC_REG_TO_BIT(first), (count))
- #define APIC_REG_TEST(reg, mask)       test_bit(APIC_REG_TO_BIT(reg), (unsigned long *)(mask))
- 
--#define APIC_LAST_REG_OFFSET           0x3f0
--#define APIC_EXT_LAST_REG_OFFSET(n)    APIC_EILVTn((n))
--
- void kvm_lapic_readable_reg_mask(struct kvm_lapic *apic, unsigned long *mask)
- {
-        bitmap_zero(mask, APIC_REG_BITMAP_BITS);
-@@ -1785,7 +1782,6 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_lapic_readable_reg_mask);
- static int kvm_lapic_reg_read(struct kvm_lapic *apic, u32 offset, int len,
-                              void *data)
- {
--       unsigned int last_reg = APIC_LAST_REG_OFFSET;
-        DECLARE_BITMAP(mask, APIC_REG_BITMAP_BITS);
-        unsigned char alignment = offset & 0xf;
-        u32 result;
-@@ -1796,19 +1792,12 @@ static int kvm_lapic_reg_read(struct kvm_lapic *apic, u32 offset, int len,
-         */
-        WARN_ON_ONCE(apic_x2apic_mode(apic) && offset == APIC_ICR);
- 
--       if (guest_cpu_cap_has(apic->vcpu, X86_FEATURE_EXTAPIC)) {
--               u8 nr_extlvt = apic->vcpu->kvm->arch.nr_extlvt;
--
--               if (nr_extlvt > 0)
--                       last_reg = APIC_EXT_LAST_REG_OFFSET(nr_extlvt - 1);
--       }
--
-        if (alignment + len > 4)
-                return 1;
- 
-        kvm_lapic_readable_reg_mask(apic, mask);
- 
--       if (offset > last_reg || !APIC_REG_TEST(offset, mask))
-+       if (APIC_REG_TO_BIT(offset) >= APIC_REG_BITMAP_BITS || !APIC_REG_TEST(offset, mask))
-                return 1;
- 
-	result = __apic_read(apic, offset & ~0xf);
-
-
-- Naveen
+>+			break;
+>+		}
+> 		vsock_data_ready(sk);
+> 		return err;
+> 	case VIRTIO_VSOCK_OP_CREDIT_REQUEST:
+>-- 
+>2.54.0
+>
 
