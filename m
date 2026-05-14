@@ -1,241 +1,266 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758E5401A36
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 13:55:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.145.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585AF3FBEB1
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 14:08:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778766945; cv=none; b=Ejumc/YaRqH+Gx5cJxOZWcNdI2Jig1vleEidgvtcn0ucGf4qomgILm2YHKw5oLT7u3FWLANmmjxbbsKRa9pwrnl6/3B/mSSAlya6gyu/wbrhBxK5Tk3bL93HFAg/rVppQlVMTXSuEq9DNiT0PDq9id5qDZKwB03erXwzvLf/PjQ=
+	t=1778767690; cv=none; b=bz9xffN3YxnP6fOD1hMziyfgoz7xmol13I4+tVxAGng4YlI6lH+ffNskXGc4fILOGrpgioKqmnlCq0v28fPrFcgB4RT91kHWuMODEGoepEamJzr1POHZ2XN9BncsUs1/z+HLzjrszaILRTgRvXhouD1Rdx80broy4kb9J2V3Qz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778766945; c=relaxed/simple;
-	bh=srPu2T221McHXTkQSH9Oejgv5+62Emrh2FOZ3YXu77c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=SzSegLBKbs5c3jqRqAIgXxTViptDPHDnraQ6twWTJHI+9F94NM0YTGwyC6w6PhWLgPWMg4GLWPJ2Y9TrvkhL2RbwAXPLSoNIuUBCPKVKZj1ZYimiCWc2z84oKEvEpIT49j89gAorlIUS4zskAvkFbZ08hOr0Mgjwc7VGZJBcivQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=LxtRhAqK; arc=none smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1778767690; c=relaxed/simple;
+	bh=zmu7aRd64dS4ZKw6Wk+/frG+xsLmxSMAdItjKBGOrdU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n7Z9QqfdwVs03vLimtH7VyCm7ltOebc9Jcei+B7MCIIDOH0qz8LzhWkZ7jQS0x8ImZW2SpbmnaWGnr3EzjjVjB4zV3H76qKePY4XVhFE8gMx2ls0P1tV5sqNdGavgzIpfeXkrYalabkqujvduaz/gzR6PF88hc5f7s6si07xxm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KoTZtSQu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tPxPaDw7; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="LxtRhAqK"
-Received: from pps.filterd (m0528009.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64E4s1sL1958100
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 06:55:41 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=IkkxRlEVU+3w+Yl34MPIFikE3yFUtB8xK/F28U9hrPg=; b=LxtRhAqK961K
-	Qx6NyNdgt1AOhTAfIWUL4hMXnHS0598SipoJSDn2iWyvAzTrQJAJzUw+9sZxRwsw
-	AR4HU5bIdSM3bPtuqkEL4/XZroyBkRJFBb8S4iq2p6k3Q3kBLqi2SZyuut/I+7yv
-	xUXa521SbV2iscLIYd/hlxRNxClEJY5FzzABKnHYbLU/H96TcElBWFWztKhlJ7aG
-	ud5pmNFXYCBdVjukCE9qns8eC2TSH3FWbtOqLsrdfRLV+ZPg5rKJK7KkrwX6S2cJ
-	o1yla90oO9Hn4h6L0GpgkLL95NEIbYr1lnodaxhfyrHlbKjK8GwSA0mYBX8DYX/V
-	TqTnTTC9EQ==
-Received: from mail-ej1-f72.google.com (mail-ej1-f72.google.com [209.85.218.72])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4e3nvqqfcd-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 06:55:41 -0700 (PDT)
-Received: by mail-ej1-f72.google.com with SMTP id a640c23a62f3a-b8f848ebcbbso667483666b.0
-        for <kvm@vger.kernel.org>; Thu, 14 May 2026 06:55:41 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KoTZtSQu";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tPxPaDw7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778767682;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8A0YZSg/W/8L4/eAOnDT46SJMA7wk53CPNNj0OoZovs=;
+	b=KoTZtSQuwvttzEj7KMTle0V5ZKAu3CLJa1Xg6PJtpk9t4H1fz2+1bXDenuPKJ95jGJvz7W
+	lUb8rVbW18OtkgZVNxixuQipEmQWE4yLLqmGoME+5ELYiIUBDp/vvnIutLDyvFKICTPPNi
+	okwkW10BwwT+8bOCJ3xwNZYQTd/Q2GQ=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-658-F1vtNMXkPRC7Zvfej4aFNg-1; Thu, 14 May 2026 10:08:01 -0400
+X-MC-Unique: F1vtNMXkPRC7Zvfej4aFNg-1
+X-Mimecast-MFC-AGG-ID: F1vtNMXkPRC7Zvfej4aFNg_1778767680
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-43ff19e54beso5624993f8f.2
+        for <kvm@vger.kernel.org>; Thu, 14 May 2026 07:08:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1778767680; x=1779372480; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8A0YZSg/W/8L4/eAOnDT46SJMA7wk53CPNNj0OoZovs=;
+        b=tPxPaDw76R7Jdi/7J194lnT//uEjlYQw2oEK4n8a7DeX/1WxIBI16GX2IVBnba72fX
+         /D3p3f0lgQOgiUZe9caX7dUQhDS03xSYHXUpvpkgt4gAxkHLP1bVto2AYujsBTDoSYS+
+         hxYOB/c8TbJH0KZVMo+iLZAF5iTf+xzPpE/lo+YVlbVeaDPJ3DwvTcG7iRJ67Oya5d3r
+         K7j1gtNlTIP0t5A+xVuKs3newsyFhDGHneG3fihxhEyjcmifIWJrgq2JerV61VwrzJ/d
+         Z7MMdM1kCNTrulka678246jzU4Ri3tP1JjGz4XCgFErqDj+fpWXw2B1OW3Flbfp8b/CG
+         wcrg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778766940; x=1779371740;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IkkxRlEVU+3w+Yl34MPIFikE3yFUtB8xK/F28U9hrPg=;
-        b=n4JyPP/vy6HYYcZaFLogzbXnEd0XtV+g7E4d0InieF3KqkK5RheqV1a0qp2itC6pG6
-         mOBGcRW/VaQ58OW3VQosJjIwrbstK2ykmzZ+Q2ZSjO3xEww6nOsdSKlyiNmcZuTCmygt
-         H3RXU6aZPj0+gQg3x8w6iep/WSqFrpsZxKLudHUwiG/QJ6aibztIYlFq0qqK89lhoGNA
-         +5gJkwH2fH7yfd7pJAWiCZUClnFhJSdZytpRFq4BAO2ME1FGYWyRP8cKOtzchci7P0to
-         gZG8iBfu2N9jNTBoy7FzD5bh/OwAkCkfKpQL3jhkaqFQHWlpDMGq/Qv+NZVr99U7K19S
-         8M3w==
-X-Forwarded-Encrypted: i=1; AFNElJ9YP+z4v9K4Xn9KgXBlEDcadUNLyTRzybJ8nMl5TsIhU9ToMO05FE42trhFu3QOCJhw6MU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0mBnUUynkuKUsY8WQT48vL6hesZ7amTu4pXB9sMskfkrAkyP4
-	KV8bW6fYfrgT39xAYUQRZgCORi3WGjj2qDB74PcPeXu0Ex6FYDxBrrK0buRDlX1/49lVV9fD8nv
-	qjZPD8aMyUNxC82XF8wzsTNo/2u5GZPxo+1cUBzcYaCbSO2oPqHfM
-X-Gm-Gg: Acq92OHmHLdUn4dBUL5GmOSmW4op3JIrdSa3Q9a9Cxwy2OmWW2Sxuy0NMM/Yk8ZfmBk
-	Wygis0QR/UL/WYlu+Y8qFkghZK7kCJak5D/dcQ5zRR80aj4nq+IpVuMGLcclvihwXHcwaQ+7TA8
-	2ASP3JEApoHluwddpx5Bsvo+dS48NeOOzleD/fh0Ay/lDKaNqFBY2EL0Nc9gKPYDsWM7ik4G8EA
-	GHMuSvoaTwR8tHwGYAgsCggAs1vf4EZh0pbiah1dCPCFkNPz5WaT3Och35u3kSgtY92/bFCRz+8
-	6mwFbrzDwWcIlMuANzIA+9U7WAjrdie4K+1f+V8jIUk/IbHy9jcdMyz3HFV1r4lffEPsvoTAXbJ
-	5kB+5BIdoYvwmBW9G4Hl5gOj7JuunoZhLbeudowconwrpyo4L8jt8sqcCYyyrQGrrxG2QsdLtkZ
-	jTSF67ayJNqWi9AOlKCS1aCk37JKHCzyPJz4vvpk2C6IcQneq218O+B0+ADz6nEp7LIGDk/9doo
-	CXr4gLC3g6G0NqbRwJjNVs=
-X-Received: by 2002:a17:906:4786:b0:bd3:2b8a:2164 with SMTP id a640c23a62f3a-bd3bfb9f635mr526850066b.16.1778766939833;
-        Thu, 14 May 2026 06:55:39 -0700 (PDT)
-X-Received: by 2002:a17:906:4786:b0:bd3:2b8a:2164 with SMTP id a640c23a62f3a-bd3bfb9f635mr526848066b.16.1778766939261;
-        Thu, 14 May 2026 06:55:39 -0700 (PDT)
-Received: from ?IPV6:2001:8b0:8b6:13d4:102e:f2af:e074:5cde? (e.d.c.5.4.7.0.e.f.a.2.f.e.2.0.1.4.d.3.1.6.b.8.0.0.b.8.0.1.0.0.2.ip6.arpa. [2001:8b0:8b6:13d4:102e:f2af:e074:5cde])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bd4f4bd0a24sm94246766b.11.2026.05.14.06.55.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 May 2026 06:55:38 -0700 (PDT)
-Message-ID: <5c64e13a-2d41-4e5e-addf-9a76f08ae172@meta.com>
-Date: Thu, 14 May 2026 14:55:37 +0100
+        d=1e100.net; s=20251104; t=1778767680; x=1779372480;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8A0YZSg/W/8L4/eAOnDT46SJMA7wk53CPNNj0OoZovs=;
+        b=jWmrf/GwwMSULsEuZUGVjq9+2eOm/Dshpzo5of6ZODB7xDo4QMI14EJH/9hB0D+K6E
+         W1m9weajBtCrMu55s6YwpuoSRHnD4DSuONr0AtpdrnRFCPrnKMVm9gIPK4INvAdZt3by
+         A4w2wtsTjsI74D3FsJZ6IKrlrFoLn7fmzyw9a/baD8Va/FLVo0dU/F5cEF96aBgyxBuj
+         /Ofd8mkPPVPHbO6EKXsjpGyOXc9D+2eCRNWRFtaj59jFfePx59YgrPRy5hZqwBUU7XkP
+         OopqhZHz/eGJtUDnlfQyaGQtuc2xuPPd2VB7Tu/WWtm4DRo5+u91eaSeD3av16mPcJCF
+         Zc6g==
+X-Forwarded-Encrypted: i=1; AFNElJ+gfKzk2tmhDxwB7SePGWQ0DuOZo03Kn79eGQ+Vf5fi2JNFa6lUxJ4mhcfryXMTxA+mMw0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw01zCrSZOb02WK70CJuA5BG99He8nnqR48qly9vWUeS+TZh4/A
+	EpM3oCDtYygwIYYcowRPvcK4B0G2yTtVP7tQ/zeHmgXNF234xw8gFqdNiUu8QfZCe8eY3bAsjiu
+	95PAyFlkxlanIX7uH1RyJTnOzT0OxstyEKQjl6qHL5o52x7kjgXLqlw==
+X-Gm-Gg: Acq92OGPnNRYAS5LAbrGsL4o4CW5E+HlVd2wE7iSkyIFywa5aEF0EMa8YvBmwZc98ME
+	lTIgkppDYtjkHy3ke17UdRkzO6vibdYyDPvL6g3J1DUdQojMU8oKY24U3cBnqnlvkBq4GRX7+7e
+	i76F5CIng/XxRpMlAZBqhHqZiCuR8To/INj+mkIDLUfUkCVfU/ayYdDpEU9bVgQXtJt8jNMgmZS
+	EvsXcthybAgE5a17AoLM+QO6gI/0LhgFMSGW6pKqGplHkO5dTnPm0kE+diDr6CDoXcbu62/6J7n
+	EsYQESePyBNWjxLBNjV0HBgzIM370mllB8qfcMh67EspvHZZAca5znFsTRuiaEeo9e/aga7x9SW
+	NhO00jsxVt1DlX0tvRDzHbwC8YPCzCWsJe+gCx1iz
+X-Received: by 2002:a05:6000:2486:b0:451:bee9:17c8 with SMTP id ffacd0b85a97d-45c580ce320mr12909342f8f.6.1778767680091;
+        Thu, 14 May 2026 07:08:00 -0700 (PDT)
+X-Received: by 2002:a05:6000:2486:b0:451:bee9:17c8 with SMTP id ffacd0b85a97d-45c580ce320mr12909290f8f.6.1778767679530;
+        Thu, 14 May 2026 07:07:59 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da0a19b1dsm6741686f8f.17.2026.05.14.07.07.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 May 2026 07:07:58 -0700 (PDT)
+Date: Thu, 14 May 2026 10:07:53 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>, kvm@vger.kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	virtualization@lists.linux.dev,
+	"David S. Miller" <davem@davemloft.net>,
+	Jason Wang <jasowang@redhat.com>, linux-kernel@vger.kernel.org,
+	Maher Azzouzi <maherazz04@gmail.com>
+Subject: Re: [PATCH net] vsock/virtio: fix zerocopy completion for multi-skb
+ sends
+Message-ID: <20260514100747-mutt-send-email-mst@kernel.org>
+References: <20260514092948.268720-1-sgarzare@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 9/9] vfio/pci: Add mmap() attributes to DMABUF feature
-Content-Language: en-GB
-To: Alex Williamson <alex@shazbot.org>
-Cc: Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
-        Alex Mastro <amastro@fb.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>,
-        Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
-        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?=
- <bjorn@kernel.org>,
-        Sumit Semwal <sumit.semwal@linaro.org>,
-        Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
-        Pranjal Shrivastava <praan@google.com>,
-        Alistair Popple
- <apopple@nvidia.com>,
-        Vivek Kasireddy <vivek.kasireddy@intel.com>,
-        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
-        kvm@vger.kernel.org
-References: <20260416131815.2729131-1-mattev@meta.com>
- <20260416131815.2729131-10-mattev@meta.com>
- <20260424183153.GJ3444440@nvidia.com> <20260426105215.GA440345@unreal>
- <20260427083644.4ee174cd@shazbot.org>
- <25a4fc45-1b4d-426b-954a-60bf21e9040f@meta.com>
- <20260511140957.25eb5d9d@shazbot.org>
- <4af0c788-22cc-4fb1-9276-ab35439fb7c8@meta.com>
- <20260513122734.44ce8a68@shazbot.org>
-From: Matt Evans <mattev@meta.com>
-In-Reply-To: <20260513122734.44ce8a68@shazbot.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE0MDE0MCBTYWx0ZWRfX4Yi3nXuN8Af4
- eyl8M6wXwdHh0h2t4UukYDzYeBuT/sm8FDSe/Dp71zOqLXQ8tSh9EIrMYCMqC3qxuIrDgt6VEtb
- cIXEZiQwi3WSIES5pX+/9pxLjmjnWuAqEGrFUhlnXYRWSJhkyfOE0PXPVTU8gy/V9aNtHUH4X2w
- xey4pmfLt1DkGferV5W0Fl0sbeYQkO50kZimj1M6K5WXlOnLcYoPMm4Eo/jnNeyFCgfEmVqNdrc
- +/S+/4Ja2I/xOduhcCevi5l9qW4L0969qsgV3mETPnPq3aMwF16NP0dnU++4kl0WPDuqP6Hsaty
- 73WTKjMcKi/EfDd73Q1FUhxiLoRkF3pm2qB1v79pbyhQiU8RBX5jh9LNqldNZBzY7iw9ynKIhaa
- CCoEljp/I48NuNRjPAyKtmiKEuFskJRXpxP78IIg0erWEfRMoNz7daOJ1IRm0APT/Bk3l5ruN7c
- uBjxAOu94IFbl6RMbiw==
-X-Proofpoint-ORIG-GUID: QDhu1pRF5bHHJdml66Hh7EUJuBqqmih_
-X-Proofpoint-GUID: QDhu1pRF5bHHJdml66Hh7EUJuBqqmih_
-X-Authority-Analysis: v=2.4 cv=XMkAjwhE c=1 sm=1 tr=0 ts=6a05d45d cx=c_pps
- a=D+UBI74RbQA8i2EYnbuvxw==:117 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=U_y8lYiYyhHBU5rMqhb2:22 a=VabnemYjAAAA:8 a=QlOCKlcsugFDnh0twowA:9
- a=QEXdDO2ut3YA:10 a=PsfoTyiJ_72bb7xyA04f:22 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-14_03,2026-05-13_01,2025-10-01_01
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260514092948.268720-1-sgarzare@redhat.com>
 
-Hi Alex,
-
-On 13/05/2026 19:27, Alex Williamson wrote:
+On Thu, May 14, 2026 at 11:29:48AM +0200, Stefano Garzarella wrote:
+> From: Stefano Garzarella <sgarzare@redhat.com>
 > 
-> On Tue, 12 May 2026 18:51:40 +0100
-> Matt Evans <mattev@meta.com> wrote:
->> On 11/05/2026 21:09, Alex Williamson wrote:
->>> I think the question of how we actually expand an arbitrary grab bag of
->>> "ATTRS" is the central question in whether we should implement the
->>> interface.
->>
->>> If we follow the direction I suggested for TPH, maybe this
->>> is just a VFIO_DEVICE_FEATURE_DMA_BUF_WC, where it supports only PROBE
->>> and SET, with SET taking only the dma-buf fd to implement the one-way
->>> promotion from UC -> WC.
->>>
->>> If we support a generic SET ATTRS feature, we really need to map out how
->>> flag bits are indicated as supported and how a user untangles failures
->>> from trying to set various attributes.  If we end up with a feature
->>> indicating each ATTR is available, we might as well have just
->>> implemented a feature for each attribute.  Thanks,
->>
->> Agreed, that's key.  Alhough, the aim of this patch is for attrs to be a
->> memory type enum rather than a bag of possibly-concurrent and
->> possibly-conflicting boolean flags.  Maybe 'memory attributes' would be
->> a better feature name.
->>
->> I'm not sure about the feature-per-attribute.  Say we do a
->> VFIO_DEVICE_FEATURE_DMA_BUF_WC and then later support a second,
->> VFIO_DEVICE_FEATURE_DMA_BUF_UC_WEAK (like, say, Arm Device-nGRE).  Then
->> we have to specify that these two VFIO feature types actually
->> interact/override somehow.  I doubt we'll end up with a dozen but it's a
->> bit tiresome having a few features that interact.
->>
->> At least if it's a single DMA_BUF_MEMATTR feature taking an enum, we
->> just encode the N different (mutually-exclusive!) valid states and done.
->>    I don't feel having a new feature for each keeps things simpler.
->>
->> Discovery of support for a specific future attribute is OK with a single
->> ATTR too; we can take an enum attribute argument to a GET and -ENOTSUPP
->> for any we don't like.
->>
->> (We could also add orthogonal DMABUF flags (can't think of a good
->> example...) but I'd suggest _those_ as semantically-grouped different
->> features, with the same issues of specifying conflicting cases versus
->> existing features.)
+> When a large message is fragmented into multiple skbs, the zerocopy
+> uarg is only allocated and attached to the last skb in the loop.
+> Non-final skbs carry pinned user pages with no completion tracking,
+> so the kernel has no way to notify userspace when those pages are safe
+> to reuse. If the loop breaks early the uarg is never allocated at all,
+> leaking pinned pages with no completion notification.
 > 
-> I think the GET behavior you're proposing is a bit counter-intuitive, if
-> not abusive of the interface, but I do agree that if the feature is
-> SET'ing a single value and not a group of independent flags, that we
-> can probably rely more on a try-and-fail model rather than advertising
-> each supported value as a separate feature.
->
-> For example, the user has some list of compatible attributes ordered
-> from most to least desirable, they try each in order until one works,
-> or none work and they decide whether that's ok.
+> Fix this by following the approach used by TCP: allocate the zerocopy
+> uarg (if not provided by the caller) before the send loop and attach
+> it to every skb via skb_zcopy_set(), which takes a reference per skb.
+> Each skb's completion properly decrements the refcount, and the
+> notification only fires after the last skb is freed.
+> On failure, if no data was sent, the uarg is cleanly aborted via
+> net_zcopy_put_abort().
 > 
-> For GET, if we implement it, I think it should report the current
-> attribute, mirroring SET.  We could almost get away without implementing
-> it, but I do worry about the case of nvgrace-gpu, where it might be
-> interesting for the user to see that the default attribute could be WB
-> rather than UC.
+> This issue was initially discovered by sashiko while reviewing commit
+> 1cb36e252211 ("vsock/virtio: fix MSG_ZEROCOPY pinned-pages accounting")
+> but was pre-existing.
+> 
+> Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
+> Cc: Arseniy Krasnov <avkrasnov@salutedevices.com>
+> Closes: https://sashiko.dev/#/patchset/20260420132051.217589-1-sgarzare%40redhat.com
+> Reported-by: Maher Azzouzi <maherazz04@gmail.com>
+> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 
-I'd come to the same conclusion yesterday when implementing it. :)
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
 
-GET just returns the current value, SET gives ENOTSUPP if the provided 
-value isn't supported.
-
-I haven't done much thinking on mechanisms for overriding the default 
-value, but a sub-driver could add that via some hook from 
-vfio_pci_core_feature_dma_buf().
-
-> Where does the user derive the enum value?  Are we defining our own or
-> is it a system header defined enum?  I'm curious if/how we're going to
-> handle architecture specific attributes.  Thanks,
-
-Good question.  There doesn't seem to be a suitable existing enum so I 
-defined a new set (mirroring existing pgprot_*() semantics), in the same 
-vfio.h/UAPI place as this patch.
-
-The set could be extended in future to add some kind of "base vs 
-arch-specific" grouping if we want to support arch-specific types like 
-that hypothetical example arm64 'UC_WEAK' above.  (The feature param's a 
-u32, so steal top byte for extension group_id?)
-
-For the base set of types, they should at most follow the set of 
-IO-related pgprot_*() types (whose names are a bit of an awkward fit 
-across architectures but they're used consistently).  I've revisited the 
-names to make them consistent with pgprot_*().  For sake of keeping the 
-huge enum names smaller, abbreviated slightly:
-
-pgprot_noncached()    -> VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_NC (*)
-pgprot_writecombine() -> VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_WC
-pgprot_device()       -> VFIO_DEVICE_FEATURE_DMA_BUF_MEMATTR_DEV
-
-  *: Was UC in the v1 patch, which makes more sense as a memory type
-     name, but consistency with pgprot_* is better.
-
-But, I was thinking to support just the NC default and WC option in this 
-series.  Does anyone feel strongly about needing pgprot_device() right 
-now?  For external PCIe functions it'll behave the same as the NC type 
-(even on arm64) so I don't think it's critical to add yet.
-
-At this stage feels like we should get more field experience before 
-adding more values/a scheme for arch-specific values so I'm keen on NC + 
-WC for now, WDYT?
-
-
-Matt
-
-
+> ---
+>  net/vmw_vsock/virtio_transport_common.c | 83 ++++++++++---------------
+>  1 file changed, 34 insertions(+), 49 deletions(-)
+> 
+> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+> index 989cc252d3d3..1e3409d28164 100644
+> --- a/net/vmw_vsock/virtio_transport_common.c
+> +++ b/net/vmw_vsock/virtio_transport_common.c
+> @@ -70,34 +70,6 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
+>  	return true;
+>  }
+>  
+> -static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
+> -					   struct sk_buff *skb,
+> -					   struct msghdr *msg,
+> -					   size_t pkt_len,
+> -					   bool zerocopy)
+> -{
+> -	struct ubuf_info *uarg;
+> -
+> -	if (msg->msg_ubuf) {
+> -		uarg = msg->msg_ubuf;
+> -		net_zcopy_get(uarg);
+> -	} else {
+> -		struct ubuf_info_msgzc *uarg_zc;
+> -
+> -		uarg = msg_zerocopy_realloc(sk_vsock(vsk),
+> -					    pkt_len, NULL, false);
+> -		if (!uarg)
+> -			return -1;
+> -
+> -		uarg_zc = uarg_to_msgzc(uarg);
+> -		uarg_zc->zerocopy = zerocopy ? 1 : 0;
+> -	}
+> -
+> -	skb_zcopy_init(skb, uarg);
+> -
+> -	return 0;
+> -}
+> -
+>  static int virtio_transport_fill_skb(struct sk_buff *skb,
+>  				     struct virtio_vsock_pkt_info *info,
+>  				     size_t len,
+> @@ -317,8 +289,10 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+>  	u32 src_cid, src_port, dst_cid, dst_port;
+>  	const struct virtio_transport *t_ops;
+>  	struct virtio_vsock_sock *vvs;
+> +	struct ubuf_info *uarg = NULL;
+>  	u32 pkt_len = info->pkt_len;
+>  	bool can_zcopy = false;
+> +	bool have_uref = false;
+>  	u32 rest_len;
+>  	int ret;
+>  
+> @@ -360,6 +334,25 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+>  		if (can_zcopy)
+>  			max_skb_len = min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
+>  					    (MAX_SKB_FRAGS * PAGE_SIZE));
+> +
+> +		if (info->msg->msg_flags & MSG_ZEROCOPY &&
+> +		    info->op == VIRTIO_VSOCK_OP_RW) {
+> +			uarg = info->msg->msg_ubuf;
+> +
+> +			if (!uarg) {
+> +				uarg = msg_zerocopy_realloc(sk_vsock(vsk),
+> +							    pkt_len, NULL, false);
+> +				if (!uarg) {
+> +					virtio_transport_put_credit(vvs, pkt_len);
+> +					return -ENOMEM;
+> +				}
+> +
+> +				if (!can_zcopy)
+> +					uarg_to_msgzc(uarg)->zerocopy = 0;
+> +
+> +				have_uref = true;
+> +			}
+> +		}
+>  	}
+>  
+>  	rest_len = pkt_len;
+> @@ -378,27 +371,7 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+>  			break;
+>  		}
+>  
+> -		/* We process buffer part by part, allocating skb on
+> -		 * each iteration. If this is last skb for this buffer
+> -		 * and MSG_ZEROCOPY mode is in use - we must allocate
+> -		 * completion for the current syscall.
+> -		 *
+> -		 * Pass pkt_len because msg iter is already consumed
+> -		 * by virtio_transport_fill_skb(), so iter->count
+> -		 * can not be used for RLIMIT_MEMLOCK pinned-pages
+> -		 * accounting done by msg_zerocopy_realloc().
+> -		 */
+> -		if (info->msg && info->msg->msg_flags & MSG_ZEROCOPY &&
+> -		    skb_len == rest_len && info->op == VIRTIO_VSOCK_OP_RW) {
+> -			if (virtio_transport_init_zcopy_skb(vsk, skb,
+> -							    info->msg,
+> -							    pkt_len,
+> -							    can_zcopy)) {
+> -				kfree_skb(skb);
+> -				ret = -ENOMEM;
+> -				break;
+> -			}
+> -		}
+> +		skb_zcopy_set(skb, uarg, NULL);
+>  
+>  		virtio_transport_inc_tx_pkt(vvs, skb);
+>  
+> @@ -422,6 +395,18 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+>  
+>  	virtio_transport_put_credit(vvs, rest_len);
+>  
+> +	/* msg_zerocopy_realloc() initializes the ubuf_info refcnt to 1.
+> +	 * skb_zcopy_set() increases it for each skb, so we can drop that
+> +	 * initial reference to keep it balanced.
+> +	 */
+> +	if (have_uref) {
+> +		if (rest_len == pkt_len)
+> +			/* No data sent, abort the notification. */
+> +			net_zcopy_put_abort(uarg, true);
+> +		else
+> +			net_zcopy_put(uarg);
+> +	}
+> +
+>  	/* Return number of bytes, if any data has been sent. */
+>  	if (rest_len != pkt_len)
+>  		ret = pkt_len - rest_len;
+> -- 
+> 2.54.0
 
