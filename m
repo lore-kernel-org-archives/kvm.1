@@ -1,196 +1,263 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A7039D6E7
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 09:25:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63C333A542A
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 09:29:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778750737; cv=none; b=D91EkappqJ0ENxDWxxzonLF5+D6z46vCIwJedM3fGypR46GN0uAqGM0AtNQ+0Z8meNhqzm9jILIJTH/B+oSKZySZMo/G2r07fHKDEnhRVaNtwksM0xyyEk5afCz/T3n+M9+x5CrBWm5Rk2Kpii41VRBCwVk1RZfGKpywWZy45Aw=
+	t=1778750998; cv=none; b=ZjRj/xP5WKS4M/o8Lg2nvze6cfsrWk7Refz9V/swLnihdk8womE6YhbX99TIWOurDEkfhG8X7H2O36THdYJ/Nnf6pJV1zqqNu4ZWozSU1g5GfRrNoxRxnDwz/lNc4ZzcGdIsyhbG6NKpQliAiaHqKE3itMBGyiHE0PRCReWSpeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778750737; c=relaxed/simple;
-	bh=S9H6MRusD6avBUInDfJE8IczOr92FcNXoIC2QmNtaOM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=J0G9bQyHGGdjlQxl5bfQUcuihNoxDSmhgDJLIGmlXmHaN/5roD/8o5FasZEMOWAWbg2taBUO4b29UypTKO22a4FP10ye6511pW6gnbj8NDnE/gxxkm+LiHEZSV8hHER8YebibGxM5zis+tB8xVv0z4Gd0o5s0NsGcQ0fHQkCblQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=KKY7GCV1; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1778750998; c=relaxed/simple;
+	bh=giBrJRQN2VMMjCh/yoL5SJRMxEqzegUg6O8u4pivPpg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QasvQPtSykUL+8jovh3ADfPVWIYgB0crHCHataW7t8UfQPpkqkhopKWWKSVBfbgB3g5XL/u9mGXWh9tawm5AWsf7xdqm4pn2hiLyYkK0QAmHxsrrc6SrqOomQmyk6PTLOuXkVxwzCpjGvsIjw5qhAnNJpZCHzOX6nXj9JLv/FPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CqHmrock; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=OzhzmzkI; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="KKY7GCV1"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CqHmrock";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="OzhzmzkI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778750735;
+	s=mimecast20190719; t=1778750994;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=zZf/XNv2Ho4cOk0XPWos/XPF8krPk3jxMhgxhH5/NPI=;
-	b=KKY7GCV15NjqI4U60xBdMV/gjPF3VoHCMgz6xeIHSZJGghO6rT5L3i9P3uKebPbLBFzJ3A
-	DWY+yWhdPRDa+5uYE1SK+bzMatFzkIpSYtjAqLEviq5ory48FP33nxQCHOnuxNfKv9toQA
-	NYRjyBSy6JqCiAjsa2fOf3310Cw7fFc=
-Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-601-okzCN3x8NZu7wUfk_sCCmQ-1; Thu,
- 14 May 2026 05:25:31 -0400
-X-MC-Unique: okzCN3x8NZu7wUfk_sCCmQ-1
-X-Mimecast-MFC-AGG-ID: okzCN3x8NZu7wUfk_sCCmQ_1778750730
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 44E5E1800343;
-	Thu, 14 May 2026 09:25:30 +0000 (UTC)
-Received: from [10.44.34.0] (unknown [10.44.34.0])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2A59B30001A2;
-	Thu, 14 May 2026 09:25:19 +0000 (UTC)
-Message-ID: <a57836aa-2644-4e6c-881c-83e26402a235@redhat.com>
-Date: Thu, 14 May 2026 11:25:17 +0200
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=X7d0CywKsZQfA/8iHBsstOBzlQ/bG9Xhxh5p1dy0nCs=;
+	b=CqHmrockUf/NL4EU8+A9D6jsxXFfXxgSLQEnH2nSjjk71gVOh+J2/wunMfFLVkCNFSauvx
+	bqDJ53zI0qyvZYcyVqTzQ9VNojCgIjwaRoXo7A6/0LRxxVTz1c5juy9FoMwb5BspUvLYSL
+	dI0bnWOg3ESd6NW+EmhQjg+Jyf655Nw=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-118-XcoLjy-3P0CTKWwc3IzGGA-1; Thu, 14 May 2026 05:29:53 -0400
+X-MC-Unique: XcoLjy-3P0CTKWwc3IzGGA-1
+X-Mimecast-MFC-AGG-ID: XcoLjy-3P0CTKWwc3IzGGA_1778750992
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-48d1bc85bb3so38851445e9.0
+        for <kvm@vger.kernel.org>; Thu, 14 May 2026 02:29:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1778750992; x=1779355792; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=X7d0CywKsZQfA/8iHBsstOBzlQ/bG9Xhxh5p1dy0nCs=;
+        b=OzhzmzkI+J9OzBIERCrgLc7zkdxsS+Jnx0q2QIrIDnwfmsZ3CJDGapprCN8gJXAbGh
+         W30pTa+BBTNoL20DvZHYJupUsT8x7rNdQhkXddKbRLBxGhbn07unB2JcqlkOjKyFTtZL
+         sWrhyVQ3se4gdTBo5e7kARVWvGMt7vKLCpSomROyuJ4v0SjhX5Y1PTx3wDlFnEGtzYWw
+         /XdgC3hEypLZqI6YJnJqF8SU3B3qKVo0JSSPwQilOtCfyYsJ/15OSnauUjGHf3PxuTb9
+         bF3yKynoebOnygYyVE6wlDwiNEIruHb+cZuRt/rmULoJZKszsAWfsXp7zaurayFd7eH2
+         BNcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778750992; x=1779355792;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=X7d0CywKsZQfA/8iHBsstOBzlQ/bG9Xhxh5p1dy0nCs=;
+        b=KBDQqe/bc8fnZ4In819emHXfwTn/xN/z9bkfDLau9g/h4Bo02LLCpL66+lhiL+8OBh
+         Wv44yHxFMzcdDXdETqjfN376GJqHxoyBkQwwIeZHWnosfl2H9YXfKUstIo2KQt7WUFg1
+         +sWZPXqkpbVxh9nqPLhh1Gx3nJ/3gT4Eif+SxOWQxBpugd/WF9Kz4xdGqVgpZjq4C8Jz
+         hYwCd9MkwX0PMJs3O7DArVEQ2oMjGF1w5mySB2Cjq+j0MZv33BcwasOfuMpDIri0D5nR
+         7zxGDqgM996lwGDuMjTzkq0lg98RNhcF3BBCEYnvhcsJtok8pg46afXAGD/ula7KO+My
+         2/BQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+X3IsCptbi0/zX2Q5+9+JBk5vkWK0XsdfF5hj+xafgKQMWmBEZUil5k15h4XHWIrMQXAY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxg8p6PVzjZyw5DjGZ0tOFd9wcD21S7C5IqoSotu8IiBD48Dk15
+	NjxBxODf4EesVqmnkcPIqEUJ1lbROozYriFYKkxKFL5hsjOIGRgpg1+lUdDICVZUvqRwhGvRuhb
+	nHbSzs6dBJXC7DSJQ1a7HlRw4C5Emdz3ChQW/78XEQPpGJTOn0PxRKg==
+X-Gm-Gg: Acq92OFOs+yRuqPxZNDRKFSffNDgzkN1gn9bG43dZT4mL5YpSTwAjSaeeoOpBFTFTxF
+	YECeIMU8O8qc4I7Ht/YAhErIL3bvYQen1XfOvNtuHvQhodBWHBR+9Jk0NoVOSKHaBZsb85KqxRY
+	BzgN4QH3pbNkDac33kfY8OkfX+F2hAvKgYTFvB9tjP2HuAevkdgMnRQ4VSGmnOLwEZRyoxSHmK8
+	uIudapLZMnZzSVZSYqUAldqtEqnq8jTHWXSxtC9Cj5dYcNei6rP2UktVmRiJeSVeSL2tknyXWk5
+	6xt6En6qEqpAcjIlNbhne6COohAjgZG97KueCcoPjItaECwGAY7bRPeV5UIghlw0sYIlNxGCUCG
+	zDvdgtG16NhetcnerWNCPxyAGrvEsdO/ae3nPjrvrIFpJzIl5Y10/cswE/8HTookVnbdFapY=
+X-Received: by 2002:a05:600c:a305:b0:485:3cef:d6ea with SMTP id 5b1f17b1804b1-48fe24960bemr2343555e9.13.1778750991753;
+        Thu, 14 May 2026 02:29:51 -0700 (PDT)
+X-Received: by 2002:a05:600c:a305:b0:485:3cef:d6ea with SMTP id 5b1f17b1804b1-48fe24960bemr2343285e9.13.1778750991254;
+        Thu, 14 May 2026 02:29:51 -0700 (PDT)
+Received: from stex1 (host-87-16-204-231.retail.telecomitalia.it. [87.16.204.231])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fd7672ae9sm19873735e9.6.2026.05.14.02.29.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 14 May 2026 02:29:50 -0700 (PDT)
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: netdev@vger.kernel.org
+Cc: Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Arseniy Krasnov <avkrasnov@salutedevices.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	kvm@vger.kernel.org,
+	Eric Dumazet <edumazet@google.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	virtualization@lists.linux.dev,
+	"David S. Miller" <davem@davemloft.net>,
+	Jason Wang <jasowang@redhat.com>,
+	linux-kernel@vger.kernel.org,
+	Maher Azzouzi <maherazz04@gmail.com>
+Subject: [PATCH net] vsock/virtio: fix zerocopy completion for multi-skb sends
+Date: Thu, 14 May 2026 11:29:48 +0200
+Message-ID: <20260514092948.268720-1-sgarzare@redhat.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm:queue 4/24] arch/x86/kvm/vmx/vmenter.S:98: Error: invalid
- operands (*UND* and *ABS* sections) for `*'
-To: kernel test robot <lkp@intel.com>, "Chang S. Bae"
- <chang.seok.bae@intel.com>
-Cc: oe-kbuild-all@lists.linux.dev, kvm@vger.kernel.org,
- Farrah Chen <farrah.chen@intel.com>
-References: <202605141102.53Vk824r-lkp@intel.com>
-Content-Language: en-US
-From: Paolo Bonzini <pbonzini@redhat.com>
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <202605141102.53Vk824r-lkp@intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Transfer-Encoding: 8bit
 
-On 5/14/26 05:20, kernel test robot wrote:
-> Hi Chang,
-> 
-> FYI, the error/warning was bisected to this commit, please ignore it if it's irrelevant.
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-This is my fault, the 32-bit macros needs to use __VCPU_REG_RAX rather 
-than __VCPU_REG_EAX (and so on so forth).
+When a large message is fragmented into multiple skbs, the zerocopy
+uarg is only allocated and attached to the last skb in the loop.
+Non-final skbs carry pinned user pages with no completion tracking,
+so the kernel has no way to notify userspace when those pages are safe
+to reuse. If the loop breaks early the uarg is never allocated at all,
+leaking pinned pages with no completion notification.
 
-Paolo
+Fix this by following the approach used by TCP: allocate the zerocopy
+uarg (if not provided by the caller) before the send loop and attach
+it to every skb via skb_zcopy_set(), which takes a reference per skb.
+Each skb's completion properly decrements the refcount, and the
+notification only fires after the last skb is freed.
+On failure, if no data was sent, the uarg is cleanly aborted via
+net_zcopy_put_abort().
 
-> tree:   https://git.kernel.org/pub/scm/virt/kvm/kvm.git queue
-> head:   2b5e4245e1d31fd0858bb7abbd82af85a6457c33
-> commit: d1d1534a7ef4694a6a7b079c80e661dd66d04e9c [4/24] KVM: VMX: Macrofy GPR swapping in __vmx_vcpu_run()
-> config: i386-buildonly-randconfig-001-20260514 (https://download.01.org/0day-ci/archive/20260514/202605141102.53Vk824r-lkp@intel.com/config)
-> compiler: gcc-14 (Debian 14.2.0-19) 14.2.0
-> reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20260514/202605141102.53Vk824r-lkp@intel.com/reproduce)
-> 
-> If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202605141102.53Vk824r-lkp@intel.com/
-> 
-> All errors (new ones prefixed by >>):
-> 
->     arch/x86/kvm/vmx/vmenter.S: Assembler messages:
->>> arch/x86/kvm/vmx/vmenter.S:98: Error: invalid operands (*UND* and *ABS* sections) for `*'
->>> arch/x86/kvm/vmx/vmenter.S:98: Error: invalid operands (*UND* and *ABS* sections) for `*'
->>> arch/x86/kvm/vmx/vmenter.S:98: Error: invalid operands (*UND* and *ABS* sections) for `*'
->>> arch/x86/kvm/vmx/vmenter.S:98: Error: invalid operands (*UND* and *ABS* sections) for `*'
->>> arch/x86/kvm/vmx/vmenter.S:98: Error: invalid operands (*UND* and *ABS* sections) for `*'
->>> arch/x86/kvm/vmx/vmenter.S:98: Error: invalid operands (*UND* and *ABS* sections) for `*'
->     arch/x86/kvm/vmx/vmenter.S:105: Error: invalid operands (*UND* and *ABS* sections) for `*'
->     arch/x86/kvm/vmx/vmenter.S:164: Error: invalid operands (*UND* and *ABS* sections) for `*'
->     arch/x86/kvm/vmx/vmenter.S:164: Error: invalid operands (*UND* and *ABS* sections) for `*'
->     arch/x86/kvm/vmx/vmenter.S:164: Error: invalid operands (*UND* and *ABS* sections) for `*'
->     arch/x86/kvm/vmx/vmenter.S:164: Error: invalid operands (*UND* and *ABS* sections) for `*'
->     arch/x86/kvm/vmx/vmenter.S:164: Error: invalid operands (*UND* and *ABS* sections) for `*'
->     arch/x86/kvm/vmx/vmenter.S:164: Error: invalid operands (*UND* and *ABS* sections) for `*'
->     arch/x86/kvm/vmx/vmenter.S:166: Error: invalid operands (*UND* and *ABS* sections) for `*'
-> 
-> 
-> vim +98 arch/x86/kvm/vmx/vmenter.S
-> 
->      88	
->      89		/*
->      90		 * Since vmentry is serializing on affected CPUs, there's no need for
->      91		 * an LFENCE to stop speculation from skipping the wrmsr.
->      92		 */
->      93	
->      94		/*
->      95		 * Load guest registers.  Don't clobber flags. Intentionally omit
->      96		 * %_ASM_SP as it's context switched by hardware
->      97		 */
->    > 98		LOAD_REGS %_ASM_DI, VMX_vcpu_arch_regs, \
->      99			  %_ASM_AX, %_ASM_CX, %_ASM_DX, %_ASM_BX, %_ASM_BP, %_ASM_SI
->     100	#ifdef CONFIG_X86_64
->     101		LOAD_REGS %_ASM_DI, VMX_vcpu_arch_regs, \
->     102			  %r8, %r9, %r10, %r11, %r12, %r13, %r14, %r15
->     103	#endif
->     104		/* Load guest RDI.  This kills the @vmx pointer! */
->     105		LOAD_REGS %_ASM_DI, VMX_vcpu_arch_regs, %_ASM_DI
->     106	
->     107		/*
->     108		 * Note, ALTERNATIVE_2 works in reverse order.  If CLEAR_CPU_BUF_VM is
->     109		 * enabled, do VERW unconditionally.  If CPU_BUF_VM_MMIO is enabled,
->     110		 * check @flags to see if the vCPU has access to host MMIO, and if so,
->     111		 * do VERW.  Else, do nothing (no mitigations needed/enabled).
->     112		 */
->     113		ALTERNATIVE_2 "",									  \
->     114			      __stringify(testl $KVM_ENTER_CLEAR_CPU_BUFFERS_FOR_MMIO, (%_ASM_SP);	  \
->     115					  jz .Lskip_mmio_verw;						  \
->     116					  VERW;								  \
->     117					  .Lskip_mmio_verw:),					  	  \
->     118			      X86_FEATURE_CLEAR_CPU_BUF_VM_MMIO,					  \
->     119			      __stringify(VERW), X86_FEATURE_CLEAR_CPU_BUF_VM
->     120	
->     121		/* Check @flags to see if VMLAUNCH or VMRESUME is needed. */
->     122		testl $KVM_ENTER_VMRESUME, (%_ASM_SP)
->     123		jz .Lvmlaunch
->     124	
->     125		/*
->     126		 * After a successful VMRESUME/VMLAUNCH, control flow "magically"
->     127		 * resumes below at 'vmx_vmexit' due to the VMCS HOST_RIP setting.
->     128		 * So this isn't a typical function and objtool needs to be told to
->     129		 * save the unwind state here and restore it below.
->     130		 */
->     131		UNWIND_HINT_SAVE
->     132	
-> 
-> --
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
-> 
+This issue was initially discovered by sashiko while reviewing commit
+1cb36e252211 ("vsock/virtio: fix MSG_ZEROCOPY pinned-pages accounting")
+but was pre-existing.
+
+Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
+Cc: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Closes: https://sashiko.dev/#/patchset/20260420132051.217589-1-sgarzare%40redhat.com
+Reported-by: Maher Azzouzi <maherazz04@gmail.com>
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+---
+ net/vmw_vsock/virtio_transport_common.c | 83 ++++++++++---------------
+ 1 file changed, 34 insertions(+), 49 deletions(-)
+
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index 989cc252d3d3..1e3409d28164 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -70,34 +70,6 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
+ 	return true;
+ }
+ 
+-static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
+-					   struct sk_buff *skb,
+-					   struct msghdr *msg,
+-					   size_t pkt_len,
+-					   bool zerocopy)
+-{
+-	struct ubuf_info *uarg;
+-
+-	if (msg->msg_ubuf) {
+-		uarg = msg->msg_ubuf;
+-		net_zcopy_get(uarg);
+-	} else {
+-		struct ubuf_info_msgzc *uarg_zc;
+-
+-		uarg = msg_zerocopy_realloc(sk_vsock(vsk),
+-					    pkt_len, NULL, false);
+-		if (!uarg)
+-			return -1;
+-
+-		uarg_zc = uarg_to_msgzc(uarg);
+-		uarg_zc->zerocopy = zerocopy ? 1 : 0;
+-	}
+-
+-	skb_zcopy_init(skb, uarg);
+-
+-	return 0;
+-}
+-
+ static int virtio_transport_fill_skb(struct sk_buff *skb,
+ 				     struct virtio_vsock_pkt_info *info,
+ 				     size_t len,
+@@ -317,8 +289,10 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+ 	u32 src_cid, src_port, dst_cid, dst_port;
+ 	const struct virtio_transport *t_ops;
+ 	struct virtio_vsock_sock *vvs;
++	struct ubuf_info *uarg = NULL;
+ 	u32 pkt_len = info->pkt_len;
+ 	bool can_zcopy = false;
++	bool have_uref = false;
+ 	u32 rest_len;
+ 	int ret;
+ 
+@@ -360,6 +334,25 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+ 		if (can_zcopy)
+ 			max_skb_len = min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
+ 					    (MAX_SKB_FRAGS * PAGE_SIZE));
++
++		if (info->msg->msg_flags & MSG_ZEROCOPY &&
++		    info->op == VIRTIO_VSOCK_OP_RW) {
++			uarg = info->msg->msg_ubuf;
++
++			if (!uarg) {
++				uarg = msg_zerocopy_realloc(sk_vsock(vsk),
++							    pkt_len, NULL, false);
++				if (!uarg) {
++					virtio_transport_put_credit(vvs, pkt_len);
++					return -ENOMEM;
++				}
++
++				if (!can_zcopy)
++					uarg_to_msgzc(uarg)->zerocopy = 0;
++
++				have_uref = true;
++			}
++		}
+ 	}
+ 
+ 	rest_len = pkt_len;
+@@ -378,27 +371,7 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+ 			break;
+ 		}
+ 
+-		/* We process buffer part by part, allocating skb on
+-		 * each iteration. If this is last skb for this buffer
+-		 * and MSG_ZEROCOPY mode is in use - we must allocate
+-		 * completion for the current syscall.
+-		 *
+-		 * Pass pkt_len because msg iter is already consumed
+-		 * by virtio_transport_fill_skb(), so iter->count
+-		 * can not be used for RLIMIT_MEMLOCK pinned-pages
+-		 * accounting done by msg_zerocopy_realloc().
+-		 */
+-		if (info->msg && info->msg->msg_flags & MSG_ZEROCOPY &&
+-		    skb_len == rest_len && info->op == VIRTIO_VSOCK_OP_RW) {
+-			if (virtio_transport_init_zcopy_skb(vsk, skb,
+-							    info->msg,
+-							    pkt_len,
+-							    can_zcopy)) {
+-				kfree_skb(skb);
+-				ret = -ENOMEM;
+-				break;
+-			}
+-		}
++		skb_zcopy_set(skb, uarg, NULL);
+ 
+ 		virtio_transport_inc_tx_pkt(vvs, skb);
+ 
+@@ -422,6 +395,18 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+ 
+ 	virtio_transport_put_credit(vvs, rest_len);
+ 
++	/* msg_zerocopy_realloc() initializes the ubuf_info refcnt to 1.
++	 * skb_zcopy_set() increases it for each skb, so we can drop that
++	 * initial reference to keep it balanced.
++	 */
++	if (have_uref) {
++		if (rest_len == pkt_len)
++			/* No data sent, abort the notification. */
++			net_zcopy_put_abort(uarg, true);
++		else
++			net_zcopy_put(uarg);
++	}
++
+ 	/* Return number of bytes, if any data has been sent. */
+ 	if (rest_len != pkt_len)
+ 		ret = pkt_len - rest_len;
+-- 
+2.54.0
 
