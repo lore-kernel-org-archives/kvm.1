@@ -1,56 +1,56 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72BB93D4128
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 21:54:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 694913D16EA
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 21:54:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778795653; cv=none; b=bQX/W2R5h/hMtO982yM3ABETBGRbFMn9X8qZH029mAdPDgjXYfGoZjMbzyTVW4rNrAHmBj+ihOUU4bcCZGPCXGMY1Nx2/XwLDAFmZJ62S42Cm7crWxxLthrtO/KryGWIIj1cvPU5xpfpjdeuC5VcgmBXyi+VpoGA+vO8j6GqfrA=
+	t=1778795654; cv=none; b=HFLbMfpasPW/8frPkTI7iThxlT4+zsZ59w85YbXlEe9S6D0Isyrq6Mba1tVDXDUvPi+ooUHgVyz/k+4flCvsrl3DsbCurvI0hSDP5vBv+VeEHrs7KTUocfHlnbAeip5XFhWqJOaNQRF669Jmi/jraZElXd1Ddhe5ISiWmFya+Mc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778795653; c=relaxed/simple;
-	bh=kPzayqgTX4AYKj05HSSQLjERNpIEzXUE+TYLElLBau0=;
+	s=arc-20240116; t=1778795654; c=relaxed/simple;
+	bh=KrQzVOQV563oIUJ/VEU8+6nkqUmBj6iF52H6K+QKjMQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=L4nL5AkS1zVZqojwCzF0B7773pDQsz78MIVLP+cxjL2KGjM9YDANU1j0qQAv54DuD1+PmL1+Ctwd4vbxSrjkq/oQxKFgRNk44FVBMQ89cQmrfphm4IaGQk08pzu+PqmlZfVqTdD8SRZ/TfGuas8E3MMip2bqk2QO/KLxUVVO2AE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=oBRYB03I; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=XDXZo8pnT3v7Be9E5ZlJahn172+RD8t4fjoysUK/6zPtDHBf/pJxgIbzkH82VhdwbkwP/hO2lozYyg3k8xfcklFjv8E4vyIHHfpzL4D6ta5S96qAddwwLMgro10NaxBBc47T7hyXNHs18Vtc3oisbBDnVFa+SJOGRIft69zEOWk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uPvE02p4; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="oBRYB03I"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82fa2165c3eso5749761b3a.0
-        for <kvm@vger.kernel.org>; Thu, 14 May 2026 14:54:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uPvE02p4"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-83565161a6eso139985b3a.1
+        for <kvm@vger.kernel.org>; Thu, 14 May 2026 14:54:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778795650; x=1779400450; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1778795652; x=1779400452; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=LhpTli2hbTyfQzA9vyBgyGyJFOk8w+Rac8Zy54UhAOk=;
-        b=oBRYB03IbWkiuAdyITc7VfVBAxwdxEjmOKUdwv0f51j5TXFJImuceM8LqgVdIhA1Km
-         CTeiOOdlsdKeo9gapDtvijjgEKpQSog5vpPgj8xwvjbvOWkxUZKch7WzxXrWIQ3/jamE
-         4vdPZLvBf4tkZaYtovqXOMo97jpK8uGHOgmc5JJZS39i8Qe+p2dp+l4KIuakFS9+HMgf
-         XHuEL8O942FP+AiLA0fGU3pXT4pMoVbpvjjGY9ynsp8xpnMdrEbXr8kuloWbbA8M4b45
-         0wHtI4bK5AbXPV/ybPaeziAFM+SwujD8r0dl+xiz4tekgjpHJl2hNlSiAatI2to9YJxe
-         smzA==
+        bh=PkJ0oOSgDIB4In8kN5PJvcBuLqM4XeIONdFdM8EJTow=;
+        b=uPvE02p4vfBu15gmndiBLJfRSMClma2TVGrcvSq7BST8Agi4lEUT4NYTJCcbD4xxQY
+         CEP6jw3zb62TFkHCmXVVp979sHIReQuIYJCLlt7T4JdsVYf9AUv3hn+ypmVcfR5d9Dmz
+         3nPD4JBqz7cN0h2CQLcsA5JYmNCDrhcFbRwqDf3PWzKAMVufghg0BrEKRJ9ys8q2NlE/
+         Soxqzp8quWriHLFhu3VVHk+AVBj3IdAlh4FKSVoLNebopQKdGggeBxdBome8nnKkuO/d
+         ZVXtTWMIIz/gABF2VhETL7mwEVcVopoZVi7EYgbuKrj4a1hJlf2mj8DWVEBpNKUKSP4I
+         hxZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778795650; x=1779400450;
+        d=1e100.net; s=20251104; t=1778795652; x=1779400452;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=LhpTli2hbTyfQzA9vyBgyGyJFOk8w+Rac8Zy54UhAOk=;
-        b=QwaT+QhqeUfOXF1EDh/c9fVW058fxiwmQrSmCIQXcn3xRgyqJiFDLpp5WLJE5cG+BS
-         sSkafqxQBBoXjelo+1dUD6dEe1dFeYOdPv5xdKMnB4IvVSmT44kDDZJrRkXgt6G8lQMv
-         bXr9ypMZ7qust3XLIxPsCzlSy7hsg+LKjYspm261x8ZZKTbM/ferWi18KMPWuAbslb1u
-         flNlCkKrt19qdL+BVVekwQN+4QUX5wVXagy9uzVqAgRyDbwC0u3gay5+6okX4OktruUm
-         UhLKnMLSweC4CYeTnHedZAPYFDgUm0N3gNWZxlEshkJInJenG3qHzRdOuEmZO99JbSz5
-         PXQQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9bnwnQblyZFxwP1mvCqRaAxDmat6L1WljOWwnmOLVE+FXOWrVnH6HDJMXKbmw/IamQf98=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxqxzEfQdX3LvZixiDaKpc8stDCdPsX3r6gqPV1ASXGe0KHfrTG
-	+AmPEhd0jJV6tcZYDURY+OFZx5ouzfPh2e9fgA0rVCs1HoRkZuhz04iEnVRqytwzzCUkpw5zzCQ
-	YQkLwAQ==
-X-Received: from pfmy21.prod.google.com ([2002:aa7:8055:0:b0:83f:2ce7:48ce])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1954:b0:835:366f:5da2
- with SMTP id d2e1a72fcca58-83f33d80937mr1240198b3a.37.1778795649298; Thu, 14
- May 2026 14:54:09 -0700 (PDT)
+        bh=PkJ0oOSgDIB4In8kN5PJvcBuLqM4XeIONdFdM8EJTow=;
+        b=daPYh340RSBmi7k5u57GAhDlvDYNKs8mLsoMJjdt/RZKf/EPIsuZCoH0BUrfh7hC92
+         hvWHvR0+rdh/Aw4R5kfjY3PMbGdTVtaBuy7Crxa6CaZS2xyxPZmx5f1ZxVxW9Onogs52
+         gVO7ziDRlXcvtNMBxny051DLhD3FsnCsswWJUj6jfI5qevHXxo+hVQ+ZNxlRKjpQBQTe
+         jgqDR2rG+EFTCILuxc1rt1IGN5Zftn6cgzrJrL70ecn9GwqdDFOkWcobcYWLmQQD1HMg
+         kazbTLMkNvx0HNiv/0x66lFH7qOaAkOSfQHjFFKu5R+RilCA7hqMR1lUPVaoHCfWdiQT
+         1gIw==
+X-Forwarded-Encrypted: i=1; AFNElJ9NuSFCkHmNUt3mKobzsrT76WjKYW20M/9VhRGCrLahRSulV8vKuAVg+eLfcMb1bYmjm+0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy+9XqrqwYAy+xhHGTrTDcoXJd6ArPj250Eec5aiCF9pT+lyOSc
+	NfEyEXK+THvgiYXiDRYjKRlpXR1uR4dJnm3OsVh2D7XprxxcfES4sqfsmH+AcRo8VcXVYKswQlu
+	bEosCEQ==
+X-Received: from pfhh2.prod.google.com ([2002:a05:6a00:2302:b0:82f:7163:35c4])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:240e:b0:82f:6d4a:df3e
+ with SMTP id d2e1a72fcca58-83f33ad8a57mr1146074b3a.5.1778795651528; Thu, 14
+ May 2026 14:54:11 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 14 May 2026 14:53:51 -0700
+Date: Thu, 14 May 2026 14:53:53 -0700
 In-Reply-To: <20260514215355.1648463-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260514215355.1648463-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260514215355.1648463-12-seanjc@google.com>
-Subject: [PATCH v2 11/15] Revert "KVM: VMX: Read 32-bit GPR values for ENCLS
- instructions outside of 64-bit mode"
+Message-ID: <20260514215355.1648463-14-seanjc@google.com>
+Subject: [PATCH v2 13/15] KVM: x86: Move update_cr8_intercept() to lapic.c
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Vitaly Kuznetsov <vkuznets@redhat.com>, Kiryl Shutsemau <kas@kernel.org>, 
@@ -74,47 +73,142 @@ Cc: Dave Hansen <dave.hansen@linux.intel.com>,
 	Binbin Wu <binbin.wu@linux.intel.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Now that kvm_<reg>_read() are mode aware, i.e. are functionally equivalent
-to kvm_register_read(), revert aback to the less verbose versions.
+Move update_cr8_intercept() to lapic.c so that it's globally visible
+in anticipation of extracting most of the register-specific code out of
+x86.c and into a new compilation unit.  Opportunistically prefix the
+helper kvm_lapic_ to make its role/scope more obvious.
 
 No functional change intended.
 
-This reverts commit 60919eccf6764c71cef31a1afeaa1a36b8e5ab85.
-
-Acked-by: Kai Huang <kai.huang@intel.com>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/vmx/sgx.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ arch/x86/kvm/lapic.c | 26 ++++++++++++++++++++++++++
+ arch/x86/kvm/lapic.h |  1 +
+ arch/x86/kvm/x86.c   | 34 +++-------------------------------
+ 3 files changed, 30 insertions(+), 31 deletions(-)
 
-diff --git a/arch/x86/kvm/vmx/sgx.c b/arch/x86/kvm/vmx/sgx.c
-index 2f5a1c58f3c5..876dc2814108 100644
---- a/arch/x86/kvm/vmx/sgx.c
-+++ b/arch/x86/kvm/vmx/sgx.c
-@@ -225,8 +225,8 @@ static int handle_encls_ecreate(struct kvm_vcpu *vcpu)
- 	struct x86_exception ex;
- 	int r;
+diff --git a/arch/x86/kvm/lapic.c b/arch/x86/kvm/lapic.c
+index d8dbfb107bfb..27cca31308bd 100644
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -2744,6 +2744,32 @@ u64 kvm_lapic_get_cr8(struct kvm_vcpu *vcpu)
+ 	return (tpr & 0xf0) >> 4;
+ }
  
--	if (sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RBX), 32, 32, &pageinfo_gva) ||
--	    sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RCX), 4096, 4096, &secs_gva))
-+	if (sgx_get_encls_gva(vcpu, kvm_rbx_read(vcpu), 32, 32, &pageinfo_gva) ||
-+	    sgx_get_encls_gva(vcpu, kvm_rcx_read(vcpu), 4096, 4096, &secs_gva))
- 		return 1;
++void kvm_lapic_update_cr8_intercept(struct kvm_vcpu *vcpu)
++{
++	int max_irr, tpr;
++
++	if (!kvm_x86_ops.update_cr8_intercept)
++		return;
++
++	if (!lapic_in_kernel(vcpu))
++		return;
++
++	if (vcpu->arch.apic->apicv_active)
++		return;
++
++	if (!vcpu->arch.apic->vapic_addr)
++		max_irr = kvm_lapic_find_highest_irr(vcpu);
++	else
++		max_irr = -1;
++
++	if (max_irr != -1)
++		max_irr >>= 4;
++
++	tpr = kvm_lapic_get_cr8(vcpu);
++
++	kvm_x86_call(update_cr8_intercept)(vcpu, tpr, max_irr);
++}
++
+ static void __kvm_apic_set_base(struct kvm_vcpu *vcpu, u64 value)
+ {
+ 	u64 old_value = vcpu->arch.apic_base;
+diff --git a/arch/x86/kvm/lapic.h b/arch/x86/kvm/lapic.h
+index 274885af4ebc..533581d06151 100644
+--- a/arch/x86/kvm/lapic.h
++++ b/arch/x86/kvm/lapic.h
+@@ -100,6 +100,7 @@ int kvm_apic_accept_events(struct kvm_vcpu *vcpu);
+ void kvm_lapic_reset(struct kvm_vcpu *vcpu, bool init_event);
+ u64 kvm_lapic_get_cr8(struct kvm_vcpu *vcpu);
+ void kvm_lapic_set_tpr(struct kvm_vcpu *vcpu, unsigned long cr8);
++void kvm_lapic_update_cr8_intercept(struct kvm_vcpu *vcpu);
+ void kvm_lapic_set_eoi(struct kvm_vcpu *vcpu);
+ void kvm_apic_set_version(struct kvm_vcpu *vcpu);
+ void kvm_apic_after_set_mcg_cap(struct kvm_vcpu *vcpu);
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index b958521bc81f..1113a31978dd 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -128,7 +128,6 @@ static u64 __read_mostly efer_reserved_bits = ~((u64)EFER_SCE);
+ 				    KVM_X2APIC_ENABLE_SUPPRESS_EOI_BROADCAST	| \
+ 				    KVM_X2APIC_DISABLE_SUPPRESS_EOI_BROADCAST)
  
- 	/*
-@@ -302,9 +302,9 @@ static int handle_encls_einit(struct kvm_vcpu *vcpu)
- 	gpa_t sig_gpa, secs_gpa, token_gpa;
- 	int ret, trapnr;
+-static void update_cr8_intercept(struct kvm_vcpu *vcpu);
+ static void process_nmi(struct kvm_vcpu *vcpu);
+ static void __kvm_set_rflags(struct kvm_vcpu *vcpu, unsigned long rflags);
+ static void store_regs(struct kvm_vcpu *vcpu);
+@@ -5342,7 +5341,7 @@ static int kvm_vcpu_ioctl_set_lapic(struct kvm_vcpu *vcpu,
+ 	r = kvm_apic_set_state(vcpu, s);
+ 	if (r)
+ 		return r;
+-	update_cr8_intercept(vcpu);
++	kvm_lapic_update_cr8_intercept(vcpu);
  
--	if (sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RBX), 1808, 4096, &sig_gva) ||
--	    sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RCX), 4096, 4096, &secs_gva) ||
--	    sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RDX), 304, 512, &token_gva))
-+	if (sgx_get_encls_gva(vcpu, kvm_rbx_read(vcpu), 1808, 4096, &sig_gva) ||
-+	    sgx_get_encls_gva(vcpu, kvm_rcx_read(vcpu), 4096, 4096, &secs_gva) ||
-+	    sgx_get_encls_gva(vcpu, kvm_rdx_read(vcpu), 304, 512, &token_gva))
- 		return 1;
+ 	return 0;
+ }
+@@ -10583,33 +10582,6 @@ static void post_kvm_run_save(struct kvm_vcpu *vcpu)
+ 		kvm_run->flags |= KVM_RUN_X86_GUEST_MODE;
+ }
  
- 	/*
+-static void update_cr8_intercept(struct kvm_vcpu *vcpu)
+-{
+-	int max_irr, tpr;
+-
+-	if (!kvm_x86_ops.update_cr8_intercept)
+-		return;
+-
+-	if (!lapic_in_kernel(vcpu))
+-		return;
+-
+-	if (vcpu->arch.apic->apicv_active)
+-		return;
+-
+-	if (!vcpu->arch.apic->vapic_addr)
+-		max_irr = kvm_lapic_find_highest_irr(vcpu);
+-	else
+-		max_irr = -1;
+-
+-	if (max_irr != -1)
+-		max_irr >>= 4;
+-
+-	tpr = kvm_lapic_get_cr8(vcpu);
+-
+-	kvm_x86_call(update_cr8_intercept)(vcpu, tpr, max_irr);
+-}
+-
+-
+ int kvm_check_nested_events(struct kvm_vcpu *vcpu)
+ {
+ 	if (kvm_test_request(KVM_REQ_TRIPLE_FAULT, vcpu)) {
+@@ -11350,7 +11322,7 @@ static int vcpu_enter_guest(struct kvm_vcpu *vcpu)
+ 			kvm_x86_call(enable_irq_window)(vcpu);
+ 
+ 		if (kvm_lapic_enabled(vcpu)) {
+-			update_cr8_intercept(vcpu);
++			kvm_lapic_update_cr8_intercept(vcpu);
+ 			kvm_lapic_sync_to_vapic(vcpu);
+ 		}
+ 	}
+@@ -12496,7 +12468,7 @@ static int __set_sregs_common(struct kvm_vcpu *vcpu, struct kvm_sregs *sregs,
+ 	kvm_set_segment(vcpu, &sregs->tr, VCPU_SREG_TR);
+ 	kvm_set_segment(vcpu, &sregs->ldt, VCPU_SREG_LDTR);
+ 
+-	update_cr8_intercept(vcpu);
++	kvm_lapic_update_cr8_intercept(vcpu);
+ 
+ 	/* Older userspace won't unhalt the vcpu on reset. */
+ 	if (kvm_vcpu_is_bsp(vcpu) && kvm_rip_read(vcpu) == 0xfff0 &&
 -- 
 2.54.0.563.g4f69b47b94-goog
 
