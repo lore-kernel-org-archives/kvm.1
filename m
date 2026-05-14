@@ -1,123 +1,135 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA303C1412
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 11:34:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 241BC23BD06;
+	Thu, 14 May 2026 12:38:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778758474; cv=none; b=OvpNTUEgDGyh2TNhblU+1OH38UBUa4pp1kBd8Vuofm7Ih/vQg3v79CvKrWR+xz8QZ7vtpDN72EWekNKNQRSGrLx07Gu1cMK9+NZfmqRdR3rp1axBzeKJdDmusCJizSIwFWfa3rf5h2TCKvYwKAwTf0LOdhJVTnn6eHE7uB9P73w=
+	t=1778762311; cv=none; b=QjpFYMVz7K4FDXzS1sMfenJoLv84TSNVcapmBUbIVYsrb4SSlPifrEgSrF9d6pMXfzfD4NP5TDnrlClX7Yg9zUbf3vgKSbSao8RxHlyeEeRVWOm7MzJ3WwblSp1Q9Hiv9Aul5W8tJUUmGo0ht7PfPMWnhFmoB7Wx+5a6EjX2uGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778758474; c=relaxed/simple;
-	bh=ofCW++KAESexwh4tkjW5bjlpehw4m5zS4NZeez/ElTM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=GC2gYAnKm2GvuWQvYMg0jubW697qea5rOA7++Y5uBVQM30cZu5o2UE2bWkk1hDPVWZQ8NbwWZNnSBENgpQkFob/nF5Om6N2gY/0juwCF4qzW3zFA8C7OFHbQc6wyUuiLK9skcZf2zgA3yMxkl8Cgo5oi0YU4KZsGnzC7xLW1nd0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Mys6Q3TD; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1778762311; c=relaxed/simple;
+	bh=xpMPJvehGCdhSRvGdDBmO4yx2QxFdpqiaaj9bFMRkKU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IWy2hfIiIhvdbPi3Z6DFEdtMTyBMCgnUs52oZgld3gcRIOKM0oa5+MIrnXSpp+8J0s27/VV1pGUFulCQiruZa2ci14Gcwi07CfZAfPlTHK4bhSDRqRy5JsJzI1ZdTSkEnSKwsVBIv2qWlASn0GYDMJz++NQGw6hmps7kpMQvstQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=egpJZHXY; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Mys6Q3TD"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778758471;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=U5Pyrdd5WFDrMrYLVsOZnMoWs8/udWCnIMpQl5TdOP8=;
-	b=Mys6Q3TDaOdKnpxa0qqnGTMbl3xt8WMtoO6wAHtL7XOeW+cIb/0/eEXCub0pFdKUtOkoib
-	mgSqgOC4hAvzUT8FWqm2RKrdIKUsIVUjs7mCab+v/CpVzvNq3Dm4tz8dLdMHrMxFNqFDdR
-	pqJ7t6uni+Ki9m6TAFpQFg+uBSJM8GQ=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-588-pNZg7o4pOBSz__KkhVmMOg-1; Thu,
- 14 May 2026 07:34:28 -0400
-X-MC-Unique: pNZg7o4pOBSz__KkhVmMOg-1
-X-Mimecast-MFC-AGG-ID: pNZg7o4pOBSz__KkhVmMOg_1778758467
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 8C72119560AA;
-	Thu, 14 May 2026 11:34:27 +0000 (UTC)
-Received: from dell-r430-03.lab.eng.brq2.redhat.com (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 89E441800576;
-	Thu, 14 May 2026 11:34:26 +0000 (UTC)
-From: Igor Mammedov <imammedo@redhat.com>
-To: kvm@vger.kernel.org
-Cc: pbonzini@redhat.com,
-	babu.moger@amd.com
-Subject: [PATCH] x86/svm: work around Virtual VMLOAD/VMSAVE bug on Naples and Rome
-Date: Thu, 14 May 2026 13:34:24 +0200
-Message-ID: <20260514113424.4136527-1-imammedo@redhat.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="egpJZHXY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778762309; x=1810298309;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=xpMPJvehGCdhSRvGdDBmO4yx2QxFdpqiaaj9bFMRkKU=;
+  b=egpJZHXYyD1qzcOV4GUWCvjO8M4D2GGcXKx8OmliQ/pkHNPDbXpkbO/U
+   E0SMwPUfyVRtHeDDbqbkTOWvChnDaTrjQxEp5mWYQGpgnHxD94D7x4UUn
+   CROw1w7brpk/WDu8kujaoVC863tHSCBWU4VtSPPq0c0KIURTzlvA/JhcD
+   2kilLxnBuhs1q/OWTXKFcufkYg95Ad15T5C78c9ew2/MJrAlyNTUTkJ+I
+   uypgcWZrwrQ/+BAI6uA/2wvc2E6cVNzeOqppDRBPxQEeJCJ3+hqJ0HLYv
+   +HAqVHuMwA5pypMDJ3ekSEWA43BtW6AF+WZU7ebXX/MIJbkfPxbJv/i24
+   A==;
+X-CSE-ConnectionGUID: na4FhYfFTXS8dipeqVlgUg==
+X-CSE-MsgGUID: Pxu2k89oTwOL3kRuU9F+lg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11785"; a="78727200"
+X-IronPort-AV: E=Sophos;i="6.23,234,1770624000"; 
+   d="scan'208";a="78727200"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 05:38:28 -0700
+X-CSE-ConnectionGUID: YnPB+F/hQWqJpLIteSKxEQ==
+X-CSE-MsgGUID: 6DTJYTAgTpSTzrvqxh4yuQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,234,1770624000"; 
+   d="scan'208";a="276454061"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.18]) ([10.124.240.18])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 05:38:24 -0700
+Message-ID: <2df97245-c1e7-4d72-9ab3-6c186b6c030f@intel.com>
+Date: Thu, 14 May 2026 20:38:20 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] x86/microcode: Do not access MSR_IA32_PLATFORM_ID
+ when running as a guest
+To: Borislav Petkov <bp@alien8.de>, Binbin Wu <binbin.wu@linux.intel.com>
+Cc: linux-kernel@vger.kernel.org, x86@kernel.org, kvm@vger.kernel.org,
+ dave.hansen@intel.com, seanjc@google.com, pbonzini@redhat.com,
+ kas@kernel.org, rick.p.edgecombe@intel.com, vishal.l.verma@intel.com,
+ chao.gao@intel.com
+References: <20260430020953.1405535-1-binbin.wu@linux.intel.com>
+ <20260511100451.GBagGpw7jRBDdHkBgp@fat_crate.local>
+ <d88d19f5-0a96-4115-97f7-8daf1edd625a@linux.intel.com>
+ <20260513101436.GAagRPDAryWZ5hGqFO@fat_crate.local>
+ <89d52fff-ec3b-420e-9f01-5cd2bc8ce5cb@linux.intel.com>
+ <20260513200017.GLagTYUe_TGXnFVh7I@fat_crate.local>
+ <20260513200601.GMagTZqT_CT6EvN1Uz@fat_crate.local>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260513200601.GMagTZqT_CT6EvN1Uz@fat_crate.local>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-AMD Family 17h models 0x00-0x0f (Naples/Zen+) and 0x30-0x3f (Rome/Zen2)
-have a hardware bug where Virtual VMLOAD/VMSAVE causes spurious VMEXITs
-on VMLOAD/VMSAVE even with intercepts disabled, when the VMCB physical
-address as seen by L1 falls in [0x78000000, 0x80000000) range.
-Reserve this range on affected CPUs so the page allocator would never
-alocate the VMCB there.
+On 5/14/2026 4:06 AM, Borislav Petkov wrote:
+> Patch in Fixes: causes the usual:
+> 
+>    unchecked MSR access error: RDMSR from 0x17 at ... (intel_get_platform_id)
+>    Call Trace:
+>     early_init_intel
+>     early_cpu_init
+>     setup_arch
+>     _printk
+>     start_kernel
+>     x86_64_start_reservations
+>     x86_64_start_kernel
+>     common_startup_64
+> 
+> because the kernel is booted in a guest.
+> 
+> In order to avoid it, this MSR access needs to be prevented when running
+> virtualized. That is usually done by checking X86_FEATURE_HYPERVISOR but
+> for this particular case it is too early yet.
+> 
+> The platform ID needs to be read as early as when microcode is loaded on
+> the BSP:
+> 
+>    load_ucode_bsp ... -> get_microcode_blob ... -> intel_find_matching_signature
+> 
+> and by that time, CPUID leafs haven't been parsed yet.
+> 
+> The microcode loader already has logic to check early whether the kernel
+> is running virtualized so make that globally available to arch/x86/. The
+> query whether running virtualized is getting more and more prominent in
+> recent times so might as well make it an arch-global var which the rest
+> of the code can use.
+> 
+> Fixes: d8630b67ca1ed ("x86/cpu: Add platform ID to CPU info structure")
+> Reported-by: Vishal Verma <vishal.l.verma@intel.com>
+> Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+> Tested-by: Binbin Wu <binbin.wu@linux.intel.com>
+> Link: https://lore.kernel.org/r/20260430020953.1405535-1-binbin.wu@linux.intel.com
 
-Given that it's relative old CPUs + nested env + only performance
-impact, it's not worth fixing on KVM side (which could involve
-messing with allocator or reallocating VMCB, until it's not
-in affected range). Hence a quirk here, to prevent tests
-failures where we can't do anything about them.
+Reviewed-by: Xiaoyao Li <xiaoyao.li@intel.com>
 
-Signed-off-by: Igor Mammedov <imammedo@redhat.com>
----
-there is not official EOL dates on both, but using a newer
-generation(s) release dates it appears that both are effectively
-discontinued for ~3-5 yeas
----
- x86/svm.c | 22 ++++++++++++++++++++++
- 1 file changed, 22 insertions(+)
+> @@ -179,6 +172,11 @@ void __init load_ucode_bsp(void)
+>   
+>   	early_parse_cmdline();
+>   
+> +	if (!cpuid_feature())
+> +		dis_ucode_ldr = true;
+> +	else
+> +		x86_hypervisor_present = native_cpuid_ecx(1) & BIT(31);
+> +
 
-diff --git a/x86/svm.c b/x86/svm.c
-index a85da905..706ff2ef 100644
---- a/x86/svm.c
-+++ b/x86/svm.c
-@@ -334,6 +334,21 @@ static void setup_npt(void)
- 	__setup_mmu_range(pml4e, 0, size, X86_MMU_MAP_USER);
- }
- 
-+#define VLS_BUG_START	0x78000000ULL
-+#define VLS_BUG_END	0x80000000ULL
-+
-+static bool has_vls_bug(void)
-+{
-+	u32 sig = cpuid(1).a;
-+	u32 fam = x86_family(sig);
-+	u32 model = x86_model(sig);
-+
-+	if (fam != 0x17)
-+		return false;
-+
-+	return model <= 0x0f || (model >= 0x30 && model <= 0x3f);
-+}
-+
- static void setup_svm(void)
- {
- 	void *hsave = alloc_page();
-@@ -413,6 +428,13 @@ int run_svm_tests(int ac, char **av, struct svm_test *svm_tests)
- 		return report_summary();
- 	}
- 
-+	if (has_vls_bug()) {
-+		phys_addr_t addr;
-+
-+		for (addr = VLS_BUG_START; addr < VLS_BUG_END; addr += PAGE_SIZE)
-+			reserve_pages(addr, 1);
-+	}
-+
- 	setup_svm();
- 
- 	vmcb = alloc_page();
--- 
-2.43.0
+IIUC, the reason why move the initialization of x86_hypervisor_present 
+from microcode_loader_disabled to here is to make sure 
+x86_hypervisor_present is always initialized, right?
 
+But initializing x86_hypervisor_present by load_ucode_bsp() depends on 
+CONFIG_MICROCODE, which depends on CPU_SUP_AMD || CPU_SUP_INTEL. So when 
+both CPU_SUP_AMD and CPU_SUP_INTEL are not enabled, 
+x86_hypervisor_present will always be 0. It's not a problem for now, we 
+can solve it when x86_hypervisor_present is going to be used by CENTAUR 
+or ZHAOXIN.
