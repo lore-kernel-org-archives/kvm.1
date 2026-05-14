@@ -1,246 +1,141 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout11.his.huawei.com (canpmsgout11.his.huawei.com [113.46.200.226])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B6A3D7D79
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 09:10:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0276623EA94;
+	Thu, 14 May 2026 09:24:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.226
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778749807; cv=none; b=KPbtGoVCD+AMdPTUQHKRL/eEVZpJnh2o3wnDC8Le4PAxVD/2Bu0HmwMwq+peXYgLbgX6mbIR5tLaEGkf8RnHx9E3kAzFoP/zhsvHgQCMAsAvMXRhOqltQ/rLlPIg39bvKtYgsyi90gpw7Xfexndvf+4+aB83nU9oT7//bdQSWlU=
+	t=1778750703; cv=none; b=s3oWmQwxpzXenSX3IC/Mn1GCKDndxoBj2eaxCA+xp9eKS7FoFLGeEQkjl9oxFE0WkvHWdwomVXe5P1FiDEcO00xO0F1sa03zbr412bZAiftYwxxTX+NbqlIggHaXEh++6Z3vUFlKbyb2FRN4fom/tVfRzcsvY+BkyVgs4/3erws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778749807; c=relaxed/simple;
-	bh=C3Lb5cvFAMNlyCIVl8ipWcR3gjPB2vdBwhDFk2jz4H0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DIVdIIU+0Kwkva63F2xXif2AqDQmvMIB4h5YoEvfVWHqFGrW+QeU4haZkXdHvJ81+33iJMFf00Flqs7sAJETHRXQhS4ZSsZ3ExXaMjsOq8MqCx9G95hGMzgoKpOoqdD7jeNO8cK1KmFW7T3wSAqgsrp5Kg3hhqFqO5aLXQHrjmo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NUaaeNab; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1778750703; c=relaxed/simple;
+	bh=u+bCzUWOSTUbMI8I86RWyQMGx5xfcq5zPC/vw5WQ2nI=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=R6i/fgzZNnIMp+i08OQO2//IMk3dGJ20MCk3wqSdc26ZtbinTVgih2yQJnno/MmyGPlNZsQSm3Xz+F/pjh7+qTKs/25nju3/3HG7beWIf0D9bPQdk+CzQZZpoaSExo5nnuL8Iy9pE9GttVFeHmRnI7/NcuH8ucUu56d9eZ6BHrw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=jdZSnmMv; arc=none smtp.client-ip=113.46.200.226
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NUaaeNab"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-48909558b3aso75089915e9.0
-        for <kvm@vger.kernel.org>; Thu, 14 May 2026 02:10:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1778749804; x=1779354604; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/zJBoYCXvN5LO7DBit1Ku7VesIuEtdWFZWxNt6CCQH0=;
-        b=NUaaeNab7oLY0hdE+In7wT4Mp52ctILg34IevAQUIqU+F5Bn5Kp2Y5M8YFecG+dywY
-         OHQuIdMqUpv3MTgXjrCcTxBwgl92Z4G7XKUFkRxUFrdhsahSDqixjTDjbDboOOwy0Fzu
-         0/Ld+P7GUDmBnQGRO6L0x3yNE8oBcqB/iJ9+c+EWt5E3a1ROGvmyYLekT3YTbw7kt8d6
-         S1H4gQdfZiA17GOBdeVJYRyBVYam19M3PBXSDwzBc11fPdBQPbsHd+ytklHMoalPGEQo
-         gdgOoBZt7FCpoAVjhfKrgu1/nwolVDgoExTNfgxcgkBA4m81UIcyuzXkSHVo2gFvW9mV
-         faSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778749804; x=1779354604;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/zJBoYCXvN5LO7DBit1Ku7VesIuEtdWFZWxNt6CCQH0=;
-        b=LSBImiPRf+69QSSgazQ/JotPrM0/djRPiBtVXBwVRY9U806AR+4U09G63cIFuukXMX
-         PPOhWZwlU1ntn1NKfN4ELkDKYx5FggzzpIaR9CyXZBMDpB4fx+5OuflF5LZkRM34ZDsf
-         k0GljciwjC6LpQKQxzB5S5rAaeTgAirMoPYhdRl0MqI6gwZCSIDX0yGQaqJRmtwbyTgB
-         WX94hu/13iurhM4PUR6Coa0f1606KX0aWtrUdrFv44a6fVTCOpLJUqm0LI1GAIkruAQz
-         N5GvJzI8WfIjgTCav5JXrZyoBHQXu3WNBD8Ml3NcqMo6o0NyhgF/oavxLn5jAVRDBtvR
-         J6xA==
-X-Forwarded-Encrypted: i=1; AFNElJ9JZWNy34XzSB47Tn+hqy8gzQaoHzAN6/ARkhIVCtkPfaK7w4ljUUwf473HdtGlw80mX2w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YweQpeOIOXCN2u9thQozkU/EFRPanQS+H0FDIC2D/LV7/RIxNN7
-	y85weAPVJsJ8HsGSSlrjl3z+qbbJEV5cvqFrkjkHIizzrqihESwEQ+x6ouTdOhf1COE=
-X-Gm-Gg: Acq92OGvJXtuSCZug+OGVhgCUfoFMbJkymlUtDfsrgO3xBPWWDoKhWFeNWqo8lt+3LN
-	agC6FgaR3xz2JfhP+M6woFOzT0xHmAw38PLCPYJtytF63XcVg544kZl5lOkNwuu5X8mUBlfNKbG
-	ELXUK9u6Zh0sJm/HvSmifWPWa67OmpuXg91Ky1JW4kRCAttC5FsKIYT5TqDb8Ms9ZpojvLSO4rM
-	1yxz0s58m5bwrrLH3SDGdP0qMRdES81ovAnH55/puvwYQiLZ8TdOBZNbgr7Lx43PVNLQV+USjOB
-	FIMnsjnnBRKbAkaCxAgtOs3diLKEtHMOQQ7Gujz7Ed/ohs46IKNBV/8oBWBFq/afjD7OWsZ8TNj
-	8BjX4e9qmQHFzDjHVE1lOr0yeKFic24+2L0FacV1qC6xwsfmnP9ItUMZ+smZ/JkiKq4vXbgYeMV
-	gmwkV9TZ0J+UeEEYERekVwBSTrXdMX
-X-Received: by 2002:a05:600c:19d1:b0:48e:8499:4be0 with SMTP id 5b1f17b1804b1-48fdc714b8amr23783895e9.15.1778749804059;
-        Thu, 14 May 2026 02:10:04 -0700 (PDT)
-Received: from [192.168.1.3] ([185.48.77.170])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fdb2788eesm34097965e9.7.2026.05.14.02.10.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 14 May 2026 02:10:03 -0700 (PDT)
-Message-ID: <66797cb2-18f7-4782-9370-68d0c10c35f4@linaro.org>
-Date: Thu, 14 May 2026 10:10:02 +0100
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="jdZSnmMv"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=02m5FN5q+yEsYLSIU1JMe2YQFTMdG6tEAVvPUKXqtPE=;
+	b=jdZSnmMvOdX+AmUQECbzn8ylHkRjEfSwYP1ufyIji+TyUISSzFm96LbXiXS08zMJNPUHFqpdM
+	/IDneeNC66AOfwdEZrsm6EWT5m2Yr2+UZLQmBAIkMqmErdMHA2JjOAlMsGmGKCYKcgqurpEvDbg
+	Jicfy1wKu9TfBnut3Qwx4b0=
+Received: from mail.maildlp.com (unknown [172.19.163.127])
+	by canpmsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4gGPqB4cc1zKm75;
+	Thu, 14 May 2026 17:17:10 +0800 (CST)
+Received: from dggpemf500015.china.huawei.com (unknown [7.185.36.143])
+	by mail.maildlp.com (Postfix) with ESMTPS id C314B402AB;
+	Thu, 14 May 2026 17:24:50 +0800 (CST)
+Received: from huawei.com (10.50.163.32) by dggpemf500015.china.huawei.com
+ (7.185.36.143) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 14 May
+ 2026 17:24:50 +0800
+From: Longfang Liu <liulongfang@huawei.com>
+To: <alex.williamson@redhat.com>, <jgg@nvidia.com>
+CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<liulongfang@huawei.com>
+Subject: [PATCH] hisi_acc_vfio_pci: simplify the command for reading device information.
+Date: Thu, 14 May 2026 17:20:26 +0800
+Message-ID: <20260514092026.2018844-1-liulongfang@huawei.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 13/20] KVM: arm64: Apply dynamic guest counter
- reservations
-To: Colton Lewis <coltonlewis@google.com>
-Cc: alexandru.elisei@arm.com, pbonzini@redhat.com, corbet@lwn.net,
- linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org,
- maz@kernel.org, oliver.upton@linux.dev, mizhang@google.com,
- joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com,
- mark.rutland@arm.com, shuah@kernel.org, gankulkarni@os.amperecomputing.com,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
- linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org,
- kvm@vger.kernel.org
-References: <gsntzf23b6m2.fsf@coltonlewis-kvm.c.googlers.com>
-Content-Language: en-US
-From: James Clark <james.clark@linaro.org>
-In-Reply-To: <gsntzf23b6m2.fsf@coltonlewis-kvm.c.googlers.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
+ dggpemf500015.china.huawei.com (7.185.36.143)
 
+From: Weili Qian <qianweili@huawei.com>
 
+      The mailbox operation for the Hisi accelerator device now
+provides a new read function that supports direct information retrieval
+by specifying commands, thereby simplifying the related mailbox command
+handling in the driver.
 
-On 13/05/2026 5:45 pm, Colton Lewis wrote:
-> James Clark <james.clark@linaro.org> writes:
-> 
->> On 04/05/2026 10:18 pm, Colton Lewis wrote:
->>> Apply dynamic guest counter reservations by checking if the requested
->>> guest mask collides with any events the host has scheduled and calling
->>> pmu_perf_resched_update() with a hook that updates the mask of
->>> available counters in between schedule out and schedule in.
-> 
->>> Signed-off-by: Colton Lewis <coltonlewis@google.com>
->>> ---
->>>    arch/arm64/kvm/pmu-direct.c  | 69 ++++++++++++++++++++++++++++++++ 
->>> ++++
->>>    include/linux/perf/arm_pmu.h |  1 +
->>>    2 files changed, 70 insertions(+)
-> 
->>> diff --git a/arch/arm64/kvm/pmu-direct.c b/arch/arm64/kvm/pmu-direct.c
->>> index 2252d3b905db9..14cc419dbafad 100644
->>> --- a/arch/arm64/kvm/pmu-direct.c
->>> +++ b/arch/arm64/kvm/pmu-direct.c
->>> @@ -100,6 +100,73 @@ u8 kvm_pmu_hpmn(struct kvm_vcpu *vcpu)
->>>        return *host_data_ptr(nr_event_counters);
->>>    }
-> 
->>> +/* Callback to update counter mask between perf scheduling */
->>> +static void kvm_pmu_update_mask(struct pmu *pmu, void *data)
->>> +{
->>> +    struct arm_pmu *arm_pmu = to_arm_pmu(pmu);
->>> +    unsigned long *new_mask = data;
->>> +
->>> +    bitmap_copy(arm_pmu->cntr_mask, new_mask, ARMPMU_MAX_HWEVENTS);
->>> +}
->>> +
->>> +/**
->>> + * kvm_pmu_set_guest_counters() - Handle dynamic counter reservations
->>> + * @cpu_pmu: struct arm_pmu to potentially modify
->>> + * @guest_mask: new guest mask for the pmu
->>> + *
->>> + * Check if guest counters will interfere with current host events and
->>> + * call into perf_pmu_resched_update if a reschedule is required.
->>> + */
->>> +static void kvm_pmu_set_guest_counters(struct arm_pmu *cpu_pmu, u64 
->>> guest_mask)
->>> +{
->>> +    struct pmu_hw_events *cpuc = this_cpu_ptr(cpu_pmu->hw_events);
->>> +    DECLARE_BITMAP(guest_bitmap, ARMPMU_MAX_HWEVENTS);
->>> +    DECLARE_BITMAP(new_mask, ARMPMU_MAX_HWEVENTS);
->>> +    bool need_resched = false;
->>> +
->>> +    bitmap_from_arr64(guest_bitmap, &guest_mask, ARMPMU_MAX_HWEVENTS);
->>> +    bitmap_copy(new_mask, cpu_pmu->hw_cntr_mask, ARMPMU_MAX_HWEVENTS);
->>> +
->>> +    if (guest_mask) {
->>> +        /* Subtract guest counters from available host mask */
->>> +        bitmap_andnot(new_mask, new_mask, guest_bitmap, 
->>> ARMPMU_MAX_HWEVENTS);
->>> +
->>> +        /* Did we collide with an active host event? */
->>> +        if (bitmap_intersects(cpuc->used_mask, guest_bitmap, 
->>> ARMPMU_MAX_HWEVENTS)) {
->>> +            int idx;
->>> +
->>> +            need_resched = true;
->>> +            cpuc->host_squeezed = true;
->>> +
->>> +            /* Look for pinned events that are about to be preempted */
->>> +            for_each_set_bit(idx, guest_bitmap, ARMPMU_MAX_HWEVENTS) {
->>> +                if (test_bit(idx, cpuc->used_mask) && cpuc- 
->>> >events[idx] &&
->>> +                    cpuc->events[idx]->attr.pinned) {
->>> +                    pr_warn_ratelimited("perf: Pinned host event 
->>> squeezed out by KVM guest PMU partition\n");
-> 
->> Hi Colton,
-> 
->> I get "perf: Pinned host event squeezed out by KVM guest PMU partition"
->> even with arm_pmuv3.reserved_host_counters=3 for example. I would have
->> expected any non zero value to stop the warning.
-> 
->> I think armv8pmu_get_single_idx() needs to be changed to allocate from
->> the high end host counters first. A more complicated option would be
->> checking to see if there are any non-pinned counters in the host
->> reserved half when a new pinned counter is opened, then swapping the
->> places of the new pinned and existing non-pinned counters so pinned
->> always prefer being put into the host half. But it's probably not worth
->> doing that.
-> 
->> James
-> 
-> 
-> I agree it makes the most sense to allocate from the top, but I'm happy
-> the basic idea works.
-> 
+Signed-off-by: Weili Qian <qianweili@huawei.com>
+Signed-off-by: Longfang Liu <liulongfang@huawei.com>
+---
+ .../vfio/pci/hisilicon/hisi_acc_vfio_pci.c    | 39 ++-----------------
+ 1 file changed, 3 insertions(+), 36 deletions(-)
 
-Another thing I forgot to mention is that even with the ratelimited 
-warning, this spams the logs any time the host and guest are both using 
-the PMU and I'm not sure how useful that is.
-
->>> +                    break;
->>> +                }
->>> +            }
->>> +        }
->>> +    } else {
->>> +        /*
->>> +         * Restoring to hw_cntr_mask.
->>> +         * Only resched if we previously squeezed an event.
->>> +         */
->>> +        if (cpuc->host_squeezed) {
->>> +            need_resched = true;
->>> +            cpuc->host_squeezed = false;
->>> +        }
->>> +    }
->>> +
->>> +    if (need_resched) {
->>> +        /* Collision: run full perf reschedule */
->>> +        perf_pmu_resched_update(&cpu_pmu->pmu, kvm_pmu_update_mask, 
->>> new_mask);
->>> +    } else {
->>> +        /* Host was never using guest counters anyway */
->>> +        bitmap_copy(cpu_pmu->cntr_mask, new_mask, ARMPMU_MAX_HWEVENTS);
->>> +    }
->>> +}
->>> +
->>>    /**
->>>     * kvm_pmu_host_counter_mask() - Compute bitmask of host-reserved 
->>> counters
->>>     * @pmu: Pointer to arm_pmu struct
->>> @@ -218,6 +285,7 @@ void kvm_pmu_load(struct kvm_vcpu *vcpu)
-> 
->>>        pmu = vcpu->kvm->arch.arm_pmu;
->>>        guest_counters = kvm_pmu_guest_counter_mask(pmu);
->>> +    kvm_pmu_set_guest_counters(pmu, guest_counters);
->>>        kvm_pmu_apply_event_filter(vcpu);
-> 
->>>        for_each_set_bit(i, &guest_counters, ARMPMU_MAX_HWEVENTS) {
->>> @@ -319,5 +387,6 @@ void kvm_pmu_put(struct kvm_vcpu *vcpu)
->>>        val = read_sysreg(pmintenset_el1);
->>>        __vcpu_assign_sys_reg(vcpu, PMINTENSET_EL1, val & mask);
-> 
->>> +    kvm_pmu_set_guest_counters(pmu, 0);
->>>        preempt_enable();
->>>    }
->>> diff --git a/include/linux/perf/arm_pmu.h b/include/linux/perf/arm_pmu.h
->>> index f7b000bb3eca8..63f88fec5e80f 100644
->>> --- a/include/linux/perf/arm_pmu.h
->>> +++ b/include/linux/perf/arm_pmu.h
->>> @@ -75,6 +75,7 @@ struct pmu_hw_events {
-> 
->>>        /* Active events requesting branch records */
->>>        unsigned int        branch_users;
->>> +    bool host_squeezed;
->>>    };
-> 
->>>    enum armpmu_attr_groups {
+diff --git a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+index bb121f635b9f..86362ec424a5 100644
+--- a/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
++++ b/drivers/vfio/pci/hisilicon/hisi_acc_vfio_pci.c
+@@ -81,13 +81,10 @@ static int qm_get_vft(struct hisi_qm *qm, u32 *base)
+ 	u32 qp_num;
+ 	int ret;
+ 
+-	ret = hisi_qm_mb(qm, QM_MB_CMD_SQC_VFT_V2, 0, 0, 1);
++	ret = hisi_qm_mb_read(qm, &sqc_vft, QM_MB_CMD_SQC_VFT_V2, 0);
+ 	if (ret)
+ 		return ret;
+ 
+-	sqc_vft = readl(qm->io_base + QM_MB_CMD_DATA_ADDR_L) |
+-		  ((u64)readl(qm->io_base + QM_MB_CMD_DATA_ADDR_H) <<
+-		  QM_XQC_ADDR_OFFSET);
+ 	*base = QM_SQC_VFT_BASE_MASK_V2 & (sqc_vft >> QM_SQC_VFT_BASE_SHIFT_V2);
+ 	qp_num = (QM_SQC_VFT_NUM_MASK_V2 &
+ 		  (sqc_vft >> QM_SQC_VFT_NUM_SHIFT_V2)) + 1;
+@@ -95,36 +92,6 @@ static int qm_get_vft(struct hisi_qm *qm, u32 *base)
+ 	return qp_num;
+ }
+ 
+-static int qm_get_sqc(struct hisi_qm *qm, u64 *addr)
+-{
+-	int ret;
+-
+-	ret = hisi_qm_mb(qm, QM_MB_CMD_SQC_BT, 0, 0, 1);
+-	if (ret)
+-		return ret;
+-
+-	*addr = readl(qm->io_base + QM_MB_CMD_DATA_ADDR_L) |
+-		  ((u64)readl(qm->io_base + QM_MB_CMD_DATA_ADDR_H) <<
+-		  QM_XQC_ADDR_OFFSET);
+-
+-	return 0;
+-}
+-
+-static int qm_get_cqc(struct hisi_qm *qm, u64 *addr)
+-{
+-	int ret;
+-
+-	ret = hisi_qm_mb(qm, QM_MB_CMD_CQC_BT, 0, 0, 1);
+-	if (ret)
+-		return ret;
+-
+-	*addr = readl(qm->io_base + QM_MB_CMD_DATA_ADDR_L) |
+-		  ((u64)readl(qm->io_base + QM_MB_CMD_DATA_ADDR_H) <<
+-		  QM_XQC_ADDR_OFFSET);
+-
+-	return 0;
+-}
+-
+ static void qm_xqc_reg_offsets(struct hisi_qm *qm,
+ 			       u32 *eqc_addr, u32 *aeqc_addr)
+ {
+@@ -575,13 +542,13 @@ static int vf_qm_read_data(struct hisi_qm *vf_qm, struct acc_vf_data *vf_data)
+ 	vf_data->aeqe_dma |= vf_data->qm_aeqc_dw[QM_XQC_ADDR_LOW];
+ 
+ 	/* Through SQC_BT/CQC_BT to get sqc and cqc address */
+-	ret = qm_get_sqc(vf_qm, &vf_data->sqc_dma);
++	ret = hisi_qm_mb_read(vf_qm, &vf_data->sqc_dma, QM_MB_CMD_SQC_BT, 0);
+ 	if (ret) {
+ 		dev_err(dev, "failed to read SQC addr!\n");
+ 		return ret;
+ 	}
+ 
+-	ret = qm_get_cqc(vf_qm, &vf_data->cqc_dma);
++	ret = hisi_qm_mb_read(vf_qm, &vf_data->cqc_dma, QM_MB_CMD_CQC_BT, 0);
+ 	if (ret) {
+ 		dev_err(dev, "failed to read CQC addr!\n");
+ 		return ret;
+-- 
+2.43.0
 
