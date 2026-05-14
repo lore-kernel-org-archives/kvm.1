@@ -1,35 +1,32 @@
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 845573BE15C;
-	Thu, 14 May 2026 06:28:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F7083C8195;
+	Thu, 14 May 2026 06:28:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778740112; cv=none; b=upOS1W4dR80XAnfQcSBsPOXyBdPCNpMAek7h7xOpk9ZxKHwictoWuvUuKCmKFUfc4VOlO5oJZZZd/SDAbEpXV6TxAq0m9uq2gIUcnydIBHQypY9Q33kuCxjZ3VkCopy9k2Z8ehaOjkrbL0kM22xatKXmqkixoCWfQ/roNdbTvHU=
+	t=1778740113; cv=none; b=YJvMyfCuP3csxIZxkNBBaJgsYo5NIJ4lO+I5yNMHLDFpZSFND6ZFkj+3+/4GCp8IcMLytRO76VmuBTw8CgdLtNEw1tD3uNc6GWkgC+ldwBQaaGociCzrMkImHIZdKyFf/B+vKN4tMKpv0Fyce3f/aqrhZoMhr3NVQOEH1rA3o2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778740112; c=relaxed/simple;
-	bh=YhjnOYMa/9tgKeawi7kAJ7iHfJj/jWCQwkIAZ+JxuIg=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=gaebxCniAPzdCvPbEmQdKyEQQXFHNXx8dAsxT1CileYQLmLTeEAXU+MyDTuhEJpPsihzu9//ZG5L33puZ1LQTpEMJZpFr0iT3V5OAjWhR7sT6qAXMxBEmpkI58FuymbFPDGnt/5/vFj0TvmHR/m3w9C/M838KgHLPbZmMe/RkpA=
+	s=arc-20240116; t=1778740113; c=relaxed/simple;
+	bh=NtDOYVGDcFGIKdJA0BPWXhiQeZya8ybIOGQ7MAlFeRY=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=s2xMj/AuytOhq8VxyExbb4Maq53gmwoJxc2YEJQEZlJJeVYhriT718+ZCOSXutvoaQAv0j8fO7ShbdMbTgh9d20PaKgVcNyLp/z9UcNlIKfjvmBd/Eun90WcBYb1SRpE5Z6/iWWIvzFF/N12HJu0rU6huBd2hcEMMdVaIPbf3U0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [10.2.5.213])
-	by gateway (Coremail) with SMTP id _____8Bx+HiNawVqWLwJAA--.4996S3;
-	Thu, 14 May 2026 14:28:29 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8CxRXiKawVqR7wJAA--.4990S3;
+	Thu, 14 May 2026 14:28:26 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
-	by front1 (Coremail) with SMTP id qMiowJAxHMKMawVqJAqCAA--.49521S2;
-	Thu, 14 May 2026 14:28:28 +0800 (CST)
+	by front1 (Coremail) with SMTP id qMiowJCxfcKJawVqIQqCAA--.48503S2;
+	Thu, 14 May 2026 14:28:25 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Huacai Chen <chenhuacai@kernel.org>
 Cc: kernel@xen0n.name,
 	kvm@vger.kernel.org,
 	loongarch@lists.linux.dev,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 4/5] LoongArch: KVM: Add valid bit check when set ESTAT CSR register
-Date: Thu, 14 May 2026 14:28:23 +0800
-Message-Id: <20260514062824.1378373-5-maobibo@loongson.cn>
+Subject: [PATCH v2 0/5] LoongArch: KVM: Small enhancement about interrupt injection
+Date: Thu, 14 May 2026 14:28:19 +0800
+Message-Id: <20260514062824.1378373-1-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20260514062824.1378373-1-maobibo@loongson.cn>
-References: <20260514062824.1378373-1-maobibo@loongson.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -37,74 +34,39 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAxHMKMawVqJAqCAA--.49521S2
+X-CM-TRANSID:qMiowJCxfcKJawVqIQqCAA--.48503S2
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
 	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
 	nUUI43ZEXa7xR_UUUUUUUUU==
 
-When set ESTAT CSR register in function _kvm_setcsr(), valid bit check
-is added here. Also interrupt CPU_AVEC is checked by msgint feature.
+Here make interrupt status acquire interface simpler, add new interface
+kvm_vcpu_sync_intr() to sync pending interrupt to software ESTAT
+register, and remove expensive vcpu_load() and vcpu_put() function call.
 
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
+Also interrupt inject is handled with batch method, rather one by one.
+
 ---
- arch/loongarch/kvm/vcpu.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+v1 ... v2:
+  1. Add irq validility check in function kvm_vcpu_ioctl_interrupt().
+  2. Add valid bit check when set ESTAT CSR register.
+  3. Merge two patches about interrupt clear and set with batch method into
+     one.
+---
+Bibo Mao (5):
+  LoongArch: KVM: Check irq validility in kvm_vcpu_ioctl_interrupt()
+  LoongArch: KVM: Use existing macro about interrupt bit mask
+  LoongArch: KVM: Inject interrupt with batch method
+  LoongArch: KVM: Add valid bit check when set ESTAT CSR register
+  LoongArch: KVM: Simple interrupt status acquire interface
 
-diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
-index dc2a1f56650b..2f4fd6fa5b0e 100644
---- a/arch/loongarch/kvm/vcpu.c
-+++ b/arch/loongarch/kvm/vcpu.c
-@@ -602,7 +602,7 @@ struct kvm_vcpu *kvm_get_vcpu_by_cpuid(struct kvm *kvm, int cpuid)
- 
- static int _kvm_getcsr(struct kvm_vcpu *vcpu, unsigned int id, u64 *val)
- {
--	unsigned long gintc;
-+	unsigned long gintc, estat;
- 	struct loongarch_csrs *csr = vcpu->arch.csr;
- 
- 	if (get_gcsr_flag(id) & INVALID_GCSR)
-@@ -621,8 +621,9 @@ static int _kvm_getcsr(struct kvm_vcpu *vcpu, unsigned int id, u64 *val)
- 		preempt_enable();
- 
- 		/* ESTAT IP0~IP7 get from GINTC */
--		gintc = kvm_read_sw_gcsr(csr, LOONGARCH_CSR_GINTC) & 0xff;
--		*val = kvm_read_sw_gcsr(csr, LOONGARCH_CSR_ESTAT) | (gintc << 2);
-+		gintc = kvm_read_sw_gcsr(csr, LOONGARCH_CSR_GINTC) & KVM_GINTC_IRQ_MASK;
-+		estat = kvm_read_sw_gcsr(csr, LOONGARCH_CSR_ESTAT) & ~KVM_ESTAT_HWI_MASK;
-+		*val = estat | (gintc << 2);
- 		return 0;
- 	}
- 
-@@ -637,7 +638,8 @@ static int _kvm_getcsr(struct kvm_vcpu *vcpu, unsigned int id, u64 *val)
- 
- static int _kvm_setcsr(struct kvm_vcpu *vcpu, unsigned int id, u64 val)
- {
--	int ret = 0, gintc;
-+	int ret = 0;
-+	unsigned long gintc, estat;
- 	struct loongarch_csrs *csr = vcpu->arch.csr;
- 
- 	if (get_gcsr_flag(id) & INVALID_GCSR)
-@@ -648,11 +650,15 @@ static int _kvm_setcsr(struct kvm_vcpu *vcpu, unsigned int id, u64 val)
- 
- 	if (id == LOONGARCH_CSR_ESTAT) {
- 		/* ESTAT IP0~IP7 inject through GINTC */
--		gintc = (val >> 2) & 0xff;
-+		gintc = (val >> 2) & KVM_GINTC_IRQ_MASK;
- 		kvm_set_sw_gcsr(csr, LOONGARCH_CSR_GINTC, gintc);
- 
--		gintc = val & ~(0xffUL << 2);
--		kvm_set_sw_gcsr(csr, LOONGARCH_CSR_ESTAT, gintc);
-+		/* only set valid ESTAT bits */
-+		estat = val & ~KVM_ESTAT_HWI_MASK;
-+		estat &= CSR_ESTAT_IS | CSR_ESTAT_EXC | CSR_ESTAT_ESUBCODE;
-+		if (!kvm_guest_has_msgint(&vcpu->arch))
-+			estat &= ~CPU_AVEC;
-+		kvm_set_sw_gcsr(csr, LOONGARCH_CSR_ESTAT, estat);
- 
- 		return ret;
- 	}
+ arch/loongarch/include/asm/kvm_vcpu.h |  44 +++++---
+ arch/loongarch/kvm/interrupt.c        | 140 +++++++++++++-------------
+ arch/loongarch/kvm/vcpu.c             |  57 +++++++----
+ 3 files changed, 136 insertions(+), 105 deletions(-)
+
+
+base-commit: 5d6919055dec134de3c40167a490f33c74c12581
 -- 
 2.39.3
 
