@@ -1,174 +1,156 @@
-Received: from out28-3.mail.aliyun.com (out28-3.mail.aliyun.com [115.124.28.3])
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ABF83559F2;
-	Thu, 14 May 2026 05:31:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.3
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778736679; cv=none; b=ioBM8wIIkmYkc0mbN728pUIBfc2/nTMKMzysqnDtLVSCKgxw1DZdVYbnZaBgz2uN1vURbuRQcfwPtRnCkDRVQAg2RAixp3/9F0pDOmjOBTF+yQ6rHfV5r4vxluP51iadW8blzOnysl1BthlYFcHZUKyANyEDbspktTp9BF5aI3o=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778736679; c=relaxed/simple;
-	bh=bMuGIsTJEwYfknkuZSZnipqnNI+dfrHy/4PqUGcks0k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PYh5FpqHhqPYWX2clJcdhENkAkSD1JVcb6j931mE4X9WLSB9RmzPRA/a177XsQHlCEHuF7QJw5KnNRfmlC3Crpme/u8WLlBilYy9YlWEiAGLUw+pxnCBUsU8rtNVNKdj9riX9JlBh3ORTjdhCCUjqyRaL4wwllkz7sazgCwUDus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com; spf=pass smtp.mailfrom=antgroup.com; dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b=pvPU55jP; arc=none smtp.client-ip=115.124.28.3
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antgroup.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B95D3F411B
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 05:52:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=67.231.153.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778737972; cv=pass; b=sS8srPh9aAQQum3ZSJ3G+9wlVa5QqrR6U2fqW48CJDpCbolPfsodtFMHZm9cEJwbl20+gq1aB5OLpw+8gcRzIrU9xpK29HDgXQVhMW/RcKS3alSGJj9lZY9QCv5OqSXx6i1qTqD82W0OFxXRjN0dS3RdfBZ+XaZItyFmBKNedzw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778737972; c=relaxed/simple;
+	bh=jNKZ4zNOiJapN2UCQkJ7YsxiCTXnQMvJQjELnoY502w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=mjFfnEDxt7FJN2opYJ91JIe7cCeS0mOCtE9OwB3TxsFI5OJj9vgqCRmyJetOMlaWqQFsygq0iCABedXDtsI4CKzcNrjAYz5i7Deu9tAdc9OUjwwPJCDGh1+7I/2djgNHQNK9mx5wU0iDmNLFIx4DzOOoaYH8ch4f+dwm9hLoByQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=fsyf2ung; arc=pass smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b="pvPU55jP"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=antgroup.com; s=default;
-	t=1778736666; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
-	bh=K+ikfnKl77O2B1qPK6+Voix1zQj84xcmMX2VlX4NtWY=;
-	b=pvPU55jPQ9m5DUT3we5vSrfU3aB1jStF/bq34cxAfyHpoeH42YjaxKn89jZIezW60TncXEA1z1Ty1id2AB4wDEPFjzZ55MYyFQuQ3Fn47e41doT8j5Kg46MCT827AwkAZO5BMa6tuiUgwVsBxUrpy/ON19gIJR6TqtwcRWR5NV8=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R101e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037028158;MF=houwenlong.hwl@antgroup.com;NM=1;PH=DS;RN=7;SR=0;TI=SMTPD_---.hWhXXso_1778736665;
-Received: from localhost(mailfrom:houwenlong.hwl@antgroup.com fp:SMTPD_---.hWhXXso_1778736665 cluster:ay29)
-          by smtp.aliyun-inc.com;
-          Thu, 14 May 2026 13:31:05 +0800
-Date: Thu, 14 May 2026 13:31:05 +0800
-From: Hou Wenlong <houwenlong.hwl@antgroup.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, Lai Jiangshan <jiangshan.ljs@antgroup.com>,
-	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 9/9] KVM: selftests: Verify 'BS' bit checking in
- pending debug exception state during VM-Entry
-Message-ID: <20260514053105.GA109150@k08j02272.eu95sqa>
-References: <cover.1766066076.git.houwenlong.hwl@antgroup.com>
- <e0df5d6812da0f508cdf697ac7627693199c8293.1766066076.git.houwenlong.hwl@antgroup.com>
- <agUFxrpUhBRv54ZV@google.com>
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="fsyf2ung"
+Received: from pps.filterd (m0109332.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64DLiQcb828510
+	for <kvm@vger.kernel.org>; Wed, 13 May 2026 22:52:50 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=uPcBPEjsltb6cCR8nYMfRID/9nwc2fCBltEgFyYw4tk=; b=fsyf2ungMeq6
+	yshHRzeQ4U6BrRrLOw2m5LnpTLwWNRFjtrke7zVSXSFihlkGIGQqF9ZGo3jGgRXv
+	2rFeRHThXTMGtORk281jxrE4gu3k+yTDpZgaO0RXgdCq1N5vftBndt64eqJWuKnS
+	+qFgwbyeb4nBJPMKSoH2gapTvLOVcXTpgpJbzNuSuxsG6wL6MDQuJFxJqBTW1JNi
+	IVV9KnN8WwJIC23O9zBqlSvbZlQqGkv8pX6J8DxJKQRvwoU15pvU+KJVRC+Shz/1
+	pdRz08JIRHpjjYq3PaY5+SYfamSp6mY3XF0mgHmyOf5/MBFj0ETZ9P3+2Z1Vr68E
+	ax4mD3GJvw==
+Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com [209.85.210.69])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4e3nvs5dkj-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Wed, 13 May 2026 22:52:50 -0700 (PDT)
+Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-7dca6ecdd85so10594587a34.1
+        for <kvm@vger.kernel.org>; Wed, 13 May 2026 22:52:50 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778737970; cv=none;
+        d=google.com; s=arc-20240605;
+        b=cL4ASbF5VZFNDm0MAOUeKDS7a88ShHORvaS1rp2YLcd+7N3Uj2SvNmRhUU5B4IuT1p
+         l+rXfAqSLKeW/Ze0qMm8Cs9MAPllougixEkg6ggFvWdFR9raAmIJ6Qkj3u1M28uIfKKt
+         9sMmaG9zKYW0YDp+YsMtsSie3dNI2G6lmK3eCatOus0CWtIjfmmZKDTgjDFxi6VZY9Hn
+         CNnVmExIjGIlOqOGx8BrvOZKACNlM56kskC8p9il10owgIUtdHR20NfGVixeGUEeNqov
+         njwdwKQkpf9trbRL5jiR+flAGUElz7aKCIGvBV4GG4QjsXOEXS4r7CiDa7KAAY6/k8W1
+         yFvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version;
+        bh=uPcBPEjsltb6cCR8nYMfRID/9nwc2fCBltEgFyYw4tk=;
+        fh=forlvb1riOdpz8heU5NMlmncjdfiZGuVou8nHPPd5tA=;
+        b=jQfgPomnbPYeJ258shZBlbzfMwh7hCd7LSZmp43i/ic8sQZdluFdY2j4blWooTEvR6
+         4h/ovjU9QZLQ4iP8QIz8nS/+DAS1mCR/DQbHMsUEhKjSNRNXKxXQlLRN7/USEzhWH7lI
+         lFKzK4hLzrsSxfpFqqGb4Fnt+0gNWfW1vSjgYodCaCxIf/opvxUiO2uR1EfuvT/Kc5pe
+         NNWduuqJrZkXx4QXoMajZn1MigxdOfCXWIJddyfCu5cjMY1rrXnRQ/UqijJiVSJwB1vt
+         sdqZswyhZEHJbue1TCRxlaBD1df4+cwv/SlONYTYfhJtZHR9bXmUJuXy6kVBo3MX1wHP
+         ZxZA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778737970; x=1779342770;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=uPcBPEjsltb6cCR8nYMfRID/9nwc2fCBltEgFyYw4tk=;
+        b=TZkCQ/7EtuUvqNpndhfFEoBSrJxZnt+cYwf4k65zG5YQEOOQLw6SLoeM4iN4VsSn7v
+         DU0im3rUNEqFhx1t9c5wMRP2sdqfXRi1lGUQvWlEga8dmEu5rQXlpdLGqmGuQwoME8qY
+         AzofDoG9BFxm7ea70CIeuKjDZmqn6oH7xb2f46gABrURwMygxv2YGeZHmgOeRBLd8lZc
+         ADiM1kuuQfu11boyFORziQLppYJdyzyDZtAwqsTWS5S2elu4RsWghvnWlWuRDbUJTV05
+         fIHwLrB/jvaAKOagZ1cljHdFaNGgx2US/is+w94Hi9kp9vvFWoZNiM3o2j7zJSe788hs
+         og0A==
+X-Forwarded-Encrypted: i=1; AFNElJ9/Mwv5oJ0+oGDdcV8Wq+PMhpCpJiwJYqk5l1rPUqiaMHhD1IsZrQEveyXEEcdw0uWAw/k=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxun4ep9I+SB0lugmvwp/QqRZ7nzfuD6aym1iFN4j9UsGEfY0u+
+	YEiigwYKI30GDgCc+6gsIgAlO6n2AHVb6ILZM+tbNJkrCWLUF/OMYXqNzPbNL2qvjK9kIsBPBkX
+	NlOM7YB2zYTQq8pZB+yomK77x2D2586VO6HMVda7ukSD+hp9wYT2Ip2Jppq6MO1v5ryqwStO1MH
+	bxQvyEx/t5NcY4eDpcVCJmApvxyP8=
+X-Gm-Gg: Acq92OEO87VNYqQ3x0UWMj/WMxiHuvgWTc4yp4TX9yu6zfgH8tPRcf5WdbjmENnE+Ss
+	1Ntzunt+5tNdLCeGLpKwe8FvxNgc9bTTV8rb0KNMnk3zSHEYqOPvLJldY4q8U6zFYoYJuxnoP8n
+	H1LNb37oREqGcNS1opzbBBjQntjnXUJP/sIAj2PBV/tWNhfZUvhZas0DaWXl2rX68f6bvXkuyq+
+	zmLi4Yk3ujxjgtoaNwRWeB0QeIBVkWOAl1e7gr6zdiYFEWjUXs=
+X-Received: by 2002:a05:6830:2a06:b0:7dc:da80:42b8 with SMTP id 46e09a7af769-7e3da47a167mr4289740a34.18.1778737969734;
+        Wed, 13 May 2026 22:52:49 -0700 (PDT)
+X-Received: by 2002:a05:6830:2a06:b0:7dc:da80:42b8 with SMTP id
+ 46e09a7af769-7e3da47a167mr4289722a34.18.1778737969331; Wed, 13 May 2026
+ 22:52:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <agUFxrpUhBRv54ZV@google.com>
-User-Agent: Mutt/1.5.21 (2010-09-15)
+References: <20260430200704.352228-1-zhipingz@meta.com> <20260430200704.352228-2-zhipingz@meta.com>
+ <09995589-b81d-4cb7-a313-15a943d8b28d@huawei.com> <CAH3zFs2x2QebpqDC0qwQg_GP2FVs-qqNxPupck40cEHNrBMEsA@mail.gmail.com>
+ <20260513063141.GC15586@unreal>
+In-Reply-To: <20260513063141.GC15586@unreal>
+From: Zhiping Zhang <zhipingz@meta.com>
+Date: Wed, 13 May 2026 22:52:38 -0700
+X-Gm-Features: AVHnY4L9mpkzt-pRZEvg5JzN0p2zqJY8w2-rDz2pv9D7N-e0Agw9sPJQbQsXATM
+Message-ID: <CAH3zFs2XyXxzVwru2gYZn-9ioyvy44HMmfppf7shTn8Qop-4iw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] vfio: add dma-buf get_tph callback and DMA_BUF_TPH feature
+To: Leon Romanovsky <leon@kernel.org>
+Cc: fengchengwen <fengchengwen@huawei.com>, Alex Williamson <alex@shazbot.org>,
+        Jason Gunthorpe <jgg@ziepe.ca>, Bjorn Helgaas <helgaas@kernel.org>,
+        linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
+        netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
+        Yishai Hadas <yishaih@nvidia.com>, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Authority-Analysis: v=2.4 cv=BMKDalQG c=1 sm=1 tr=0 ts=6a056332 cx=c_pps
+ a=z9lCQkyTxNhZyzAvolXo/A==:117 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=xtH7KyWI9dI7BmFOsl-x:22
+ a=VwQbUJbxAAAA:8 a=hJXI5Qx6rLfdTxNNxg4A:9 a=QEXdDO2ut3YA:10 a=ZXulRonScM0A:10
+ a=EyFUmsFV_t8cxB2kMr4A:22
+X-Proofpoint-GUID: yVSf2HAYdRsxtRT6Utyx5qp71FI6_ESZ
+X-Proofpoint-ORIG-GUID: yVSf2HAYdRsxtRT6Utyx5qp71FI6_ESZ
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE0MDA1NiBTYWx0ZWRfX6349GukjYPLp
+ gJ+QPIJDKekf4NdpRulVZaAvxR/ps/kQdZeQ5Jx2d50TkDxKkNgqAFj+JMOEazrbAkFnInbgYEj
+ hPUPSVRex0GA+Sre2olSHIJZjEkk0MLkWahOFYBXWgyum2HbcrkCN0YCTIFUSq5lQtX5+QxVS9p
+ mYKrLTob5oaV2wCSh/Uaqf70tnNMgglcTXiL+nYOq5FMVS0u91OmMOgHOrnOJzXDP9EFxiOakyL
+ auYx7qeDMDcmPfm7dHmpal/T/AwZDMI6Xqv1JXzd2eB6jyGllDlR2yUm3pi0XBnvTpmeFmSQdBV
+ +8/PnyomGyjq2oaiGBa5Z5EA5ZqGqUs9Xfv+aAiB3qP6sJYRCWtPO34MFo9+qhzwhB9DY4Ok8oq
+ Okz0k9aiWCC13OkIF4PMCWwuTpmzO5hj8Z3zvDYJ/5AopLiVt33jgdCRMHrk3v+fuD0YCfiyDtg
+ VvnbxPN4tc8rxT3Qyxg==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-14_01,2026-05-13_01,2025-10-01_01
 
-On Wed, May 13, 2026 at 04:14:14PM -0700, Sean Christopherson wrote:
-> On Thu, Dec 18, 2025, Hou Wenlong wrote:
-> > In the x86's debug_regs test, add a test case to cover the scenario
-> > where single-step with STI in VMX sets the 'BS' bit in pending debug
-> > exceptions state for #DB interception and instruction emulation in both
-> > cases.
-> 
-> ...
-> 
-> > +static void guest_db_handler(struct ex_regs *regs)
-> > +{
-> > +	static int count;
-> > +	unsigned long target_rips[2] = {
-> > +		CAST_TO_RIP(fep_sti_start),
-> > +		CAST_TO_RIP(fep_sti_end),
-> > +	};
-> > +
-> > +	__GUEST_ASSERT(regs->rip == target_rips[count], "STI: unexpected rip 0x%lx (should be 0x%lx)",
-> > +		       regs->rip, target_rips[count]);
-> > +	regs->rflags &= ~X86_EFLAGS_TF;
-> > +	count++;
-> > +}
-> > +
-> > +static void guest_irq_handler(struct ex_regs *regs)
-> > +{
-> > +	unsigned long target_rip = CAST_TO_RIP(fep_bd_start);
-> > +
-> > +	__GUEST_ASSERT(regs->rip == target_rip, "IRQ: unexpected rip 0x%lx (should be 0x%lx)",
-> > +		       regs->rip, target_rip);
-> 
-> This is wrong, and the test fails with your series applied verbatim.  The IRQ
-> will arrive at fep_sti_start, because RFLAGS.IF=0 from the CLI at the end of the
-> ss_start block, and remains that way across fep_bd_start.   And to make things
-> even more confusing, the IRQ arrives on the CLI even though it's in an STI shadow
-> due to #DBs not being subjected to _STI_ shadows on Intel, only to MOV-SS/POP-SS
-> shadows.  I.e. the #DB lands on CLI, pushes RFLAGS.IF=1 on the stack, and then
-> the subsequent IRET from guest_db_handler() fully unmasks IRQs, and voila.
+On Tue, May 12, 2026 at 11:31=E2=80=AFPM Leon Romanovsky <leon@kernel.org> =
+wrote:
+...
+> >   #define VFIO_DMA_BUF_TPH_ST (1 << 0)  /* steering_tag valid */
+> >   #define VFIO_DMA_BUF_TPH_ST_EXT (1 << 1)  /* steering_tag_ext valid
+> > */
+> >   struct vfio_device_feature_dma_buf_tph {
+> >       __s32 dmabuf_fd;
+> >       __u32 flags;
+> >       __u16 steering_tag;       /* 8-bit ST */
+> >       __u16 steering_tag_ext;   /* 16-bit Extended ST */
+>
+> I wonder whether `steering_tag` and `steering_tag_ext` can coexist
+> and hold different values at the same time.
+>
+> BTW, please send your patches with diffstat.
+>
+> Thanks
 
-Yes, the RIP here should be 'fep_sti_start'. This was a stupid mistake,
-and I’m very sorry about that. In my reply to v1[0] I explained why an IRQ
-handler is needed, so in v2 I added comments and an additional check,
-and I tested it before sending. However, it looks like the patch differs
-from what I had locally—my code management was a bit messy.
+Yes, firmware can report both `steering_tag` (8-bit ST) and
+`steering_tag_ext` (16-bit Extended ST), they may differ. An importer
+can consume only the one matching its width. I=E2=80=99ll clarify that in t=
+he
+next revision.
 
-As you pointed out, this pending interrupt can make the test somewhat
-confusing. So it might be better to consume the IRQ before running the
-test, e.g.:
+I=E2=80=99ll also make sure the next posting is sent with diffstat.
 
-```
-diff --git a/tools/testing/selftests/kvm/x86/debug_regs.c
-b/tools/testing/selftests/kvm/x86/debug_regs.c
-index 3ec2724697de..030d5cb58cc2 100644
---- a/tools/testing/selftests/kvm/x86/debug_regs.c
-+++ b/tools/testing/selftests/kvm/x86/debug_regs.c
-@@ -21,7 +21,7 @@
- u32 guest_value;
-
- extern unsigned char sw_bp, hw_bp, write_data, ss_start, bd_start;
--extern unsigned char fep_bd_start, fep_sti_start, fep_sti_end;
-+extern unsigned char fep_irq, fep_bd_start, fep_sti_start, fep_sti_end;
-
- static void guest_db_handler(struct ex_regs *regs)
- {
-@@ -39,7 +39,7 @@ static void guest_db_handler(struct ex_regs *regs)
-
- static void guest_irq_handler(struct ex_regs *regs)
- {
--       unsigned long target_rip = CAST_TO_RIP(fep_bd_start);
-+       unsigned long target_rip = CAST_TO_RIP(fep_irq);
-
-        __GUEST_ASSERT(regs->rip == target_rip, "IRQ: unexpected rip
-0x%lx (should be 0x%lx)",
-                       regs->rip, target_rip);
-@@ -93,6 +93,14 @@ static void guest_code(void)
-        if (is_forced_emulation_enabled) {
-                asm volatile(KVM_FEP "fep_bd_start: mov %%dr0, %%rax" :
-: : "rax");
-
-+               /*
-+                * Consume the pending interrupt, as the single-step #DB
-delivery after
-+                * STI removes the interrupt shadow, so the pending
-interrupt will be
-+                * delivered after guest #DB handling.
-+                */
-+               asm volatile("sti; nop\n\t"
-+                            "fep_irq:");
-+
-                /* pending debug exceptions for emulation */
-                asm volatile("pushf\n\t"
-                             "orq $" __stringify(X86_EFLAGS_TF) ",
-(%rsp)\n\t"
-@@ -264,13 +272,10 @@ int main(void)
-        memset(&debug, 0, sizeof(debug));
-        vcpu_guest_debug_set(vcpu, &debug);
-
--       vm_install_exception_handler(vm, DB_VECTOR, guest_db_handler);
--       /*
--        * Install a dummy IRQ handler, as the single-step #DB delivery
-         after
--        * STI removes the interrupt shadow, so the pending interrupt
-         will be
--        * delivered after #DB handling.
--        */
--       vm_install_exception_handler(vm, IRQ_VECTOR, guest_irq_handler);
-+       if (is_forced_emulation_enabled) {
-+               vm_install_exception_handler(vm, DB_VECTOR,
-guest_db_handler);
-+               vm_install_exception_handler(vm, IRQ_VECTOR,
-guest_irq_handler);
-+       }
-
-        vcpu_run(vcpu);
-        TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
-```
-
-I have tested it on both Intel and AMD. Please let me know if I should
-resend a v3 of this patch.
-
-[0]: https://lore.kernel.org/kvm/20251218134026.GA118671@k08j02272.eu95sqa/
-
-Thanks!
-
+Thanks,
+Zhiping
