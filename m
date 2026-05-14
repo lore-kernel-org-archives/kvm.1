@@ -1,53 +1,53 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B68131F99F
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 20:40:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 739FD3939AE
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 21:05:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778791224; cv=none; b=Aqj3AKMAT8gCnScCn2fTr1X+J9k6x76yxswbE7wRjUg/mF4E9Fbx7nwMHwfpIcE2yBlyPQQhzc2B3Ymw+BdbfkzlcHnGQwEk+q2EJZMx7QQIrnHUtEGktz05CP8SE2TS5KopbvmGLltJfy0hCgAXDZFN6ZH8YtZr/EID4Lxe0ig=
+	t=1778792709; cv=none; b=kaWS1mP7SJYeeAJoz4l40o5bZRFloZuK8S8jSMXlxFgfRJlB+0vc3vX7E3M7PGljRS2gjft/pBBEWO4yDxCj654ANIwnMrFzi/DCaotCMk4ey1dJjf7Mc0/EsMlxnsDEY+NegOyJ0mkixdMoTvrwCmMI2SmILJrtdXH7TbWN35Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778791224; c=relaxed/simple;
-	bh=ZenW5OoUrZmp90yF1Y1NwaHJt5/PKApKqVaLLk4C6qA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=p97jAeZK05ARCDvwenAvwFp1lrvIROhDLFsNiA5SbOEVWaKFWvm7pD3/k9xw1BpfkZNYwaBAl9AQeHHc8QDkrXQ/CT+t9gT/ddqszYodaxcAxrVBa6p+9IQkNABkxTCRX6HOZa+fowvFjSjFrMKEqWgHbAMeOH6vkAmBGF+Nh2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sUPbj+t+; arc=none smtp.client-ip=209.85.210.201
+	s=arc-20240116; t=1778792709; c=relaxed/simple;
+	bh=EkJrMVM4C5NDtn989HSXLbfudhv9P5xgOzpU9LAk858=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=i+Phiugq9wMTtUBDNT1rnyTRg06h6zhlbohulAIiO5Udi/sPQo5bMrxkiUSKtz81TU7uo1n5CggEE0JQJ1sUu8X80iiw5hzqv4gKSlk/EwSZiaAX+3+/gaJHKaV+M0fMX1TRACeB0q0Y0dfJJFtj6ofiCtt1R/LcnASAlctiPiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YjYXJtG6; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sUPbj+t+"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-837cc5bc6deso5754267b3a.3
-        for <kvm@vger.kernel.org>; Thu, 14 May 2026 13:40:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YjYXJtG6"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c828659ecd4so2977540a12.0
+        for <kvm@vger.kernel.org>; Thu, 14 May 2026 14:05:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778791222; x=1779396022; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1778792703; x=1779397503; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TUhInrlFypsdtpltXopXp70F7zR6hdFoXnOPVPVgU8w=;
-        b=sUPbj+t+xc9/lZquBY1xUhcm2CRQKfvmUlqg8ML9bRKvYMmHq04BNSRFtIe2FEMHb6
-         KHlrtx0HTq4e7OEVIAhuOozJqOjeyYT+TPDXKBCKsFDEJZ9onIof0jJsV6K+X9xL2cw6
-         S5paUlyUq3PtL/aHgVrp4Qx8F67A+ow4hI18sxjRllvrUCqplW0BjjPCZqlxUKuX8xDL
-         aeDj1xIV50WbfAb5xUFR5CbEg82q/AIIQkRyWBhQekmcREFiNngQG9RVuHvuVM7ZIKvm
-         zJPg+vIOysYQy/Dh64g7gvxMBCtvCf7hwCTC3/5Ehv2E0LwPwaOgiXDklpwWQPeA87ly
-         V5+g==
+        bh=e65qMpURTIdyADOt8aDhoKIC0tvo+oNi92UOq2sRobs=;
+        b=YjYXJtG64vfNPqYu6zoCR+JKb+sx7ljt4R1uD0dHbJAZTOtmRJxBdBSotbPUyKc4La
+         tgD350/w9uTTh3DngXWWZIHDAtB6WiuB4WwA6RYuCl5L+7xlYT+lDXm9yorioKzfbXqX
+         /AhQCF6YCVzjmW5NOjaCHWwVbKNt9rRUd83xVOEGoYpYKmhR5/NH0E1O8v3iuMcw0dxE
+         81zY7JnwxT8uykljP4nZ4vCcIVX6W+89B7TQdJnn0ZCRp6VwkZpWg6nCR4xg0lf8v81k
+         3ZxI4iU7ZYtE5eSpbo9ICFGtYD9feO7O9xXWkY4C5f/4OuZi/FInLy8vya+tnZKBsoEa
+         ynyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778791222; x=1779396022;
+        d=1e100.net; s=20251104; t=1778792703; x=1779397503;
         h=cc:to:from:subject:message-id:mime-version:date:reply-to
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=TUhInrlFypsdtpltXopXp70F7zR6hdFoXnOPVPVgU8w=;
-        b=laXTRRzhgkuCgURo4hrnaaFmLkzr/DYsGVpM/5E+QkR+OyGjsS89LKN4diFZc5XdpZ
-         /P6YVUZskzSqPKMpm9+LvyIQ5AjsGbhm/1Y6/1P/H1j2erSDIfddYv7ELn6TEV1xIc/E
-         FCKns+c2pXVo5ywdNFyIjEW5vIZve+oDho9HCrIAbfQWeBcIYc3whuCaf2pNI1Vz7mWV
-         vHUHmJPGh18X6ei2NQXDPRPFlOTQEDFAx3gNefkZ6gGU3ZO7Hl9Ce7U9b3BQMiVWPgfk
-         GjCqJiPQObT36CVs78dpN2zPSpnZ0xxUaR+Vs/Giwyg6E8vGSwWBrDaGzFdGYHt7iIl4
-         8LCg==
-X-Gm-Message-State: AOJu0YwHp9F3GwRYAOkoUoRzO9josqBqQH0IZGDuETCQ55dFsxB3aS+0
-	P5jGlSOQTt772gEHsLXCfwkmS4GALMTWJbHPvKczoStXuwuJeg9+IPw6cMWQ5N66BZcSGfjNuVP
-	dZrXUug==
-X-Received: from pfll21.prod.google.com ([2002:a05:6a00:1595:b0:82f:93e5:c64c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:21ca:b0:83e:c8fb:54dc
- with SMTP id d2e1a72fcca58-83f33b36821mr1134115b3a.19.1778791221932; Thu, 14
- May 2026 13:40:21 -0700 (PDT)
+        bh=e65qMpURTIdyADOt8aDhoKIC0tvo+oNi92UOq2sRobs=;
+        b=p4tC0E1PDrqPs9addCdbuQjD9bseRUcuaUwFbJYqoJQ95eBJEIxnroMoJ2Ui80vZD3
+         8zAiKxUPri6x4jDkvBt4zXG5gsm/lIZEEnptIvN52s8wsqhVOGg00f+S5A32vXimrY/K
+         O26LRmwufOSdlm6Nq206lkaBk2R6gZOraUBesImQIcRRhQyeTEsHMnDS6fitgBP9Naec
+         FQpXq1JD8H6fQBKLcqHkPbXgwwU/O2l1fRjp6owE2kGN5QLvmGOBS1O7NNURUfgGSDTG
+         /WtGQrNUfLy298kA7WLOy0F83eMULce4+3B8tN1dJUYhdeF/IBH8ne1vsagyz7YhW0tV
+         FLeQ==
+X-Gm-Message-State: AOJu0Yw2jFOdGK3HikyXrEIiF99o/JlPD7Gzuu304PTQzWf4oEmJUTnf
+	F5W9QRm2xHkPRb/WCZbhPp/lDcuntkQVZ8QLb6l2ESW8S4QRcE3Z7KmHcrTqBia9dMel6KC2SRx
+	HaLU77A==
+X-Received: from pfbkq4.prod.google.com ([2002:a05:6a00:4b04:b0:839:4a33:c35d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3490:b0:82c:6b23:6d10
+ with SMTP id d2e1a72fcca58-83f33c539a4mr1103587b3a.3.1778792702500; Thu, 14
+ May 2026 14:05:02 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 14 May 2026 13:40:20 -0700
+Date: Thu, 14 May 2026 14:04:40 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -55,113 +55,77 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260514204020.1614792-1-seanjc@google.com>
-Subject: [kvm-unit-tests PATCH] x86/xsave: Extend VMOVDQA testing to also
- cover VMOVNTDQA
+Message-ID: <20260514210500.1626871-1-seanjc@google.com>
+Subject: [kvm-unit-tests PATCH v3 00/20] x86: Better backtraces for leaf functions
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>, 
+	Mathias Krause <minipli@grsecurity.net>, Andrew Jones <andrew.jones@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 
-Extend the XSAVE test's VMOVDQA coverage to also validate KVM's recently
-added (and initially broken) emulation of VMOVNTDQA instructions.  Despite
-the seemingly generic and all-too-similar names, VMOVNTDQ and VMOVNTDQA
-are unidirectional instructions with opposite semantics: VMOVNTDQ *always*
-stores to memory, whereas VMOVNTDQA *always* loads from memory.
+Finally re-posting Mathias' work to provide better backtraces on x86, which
+was blocked by a fatal bug in the nVMX SIPI test that was exposed by the
+stack frame side effects.  This has been sitting on my local system(s) for
+something like 5 months, and I all but forgot I hadn't posted it.
 
-Rework the checking to use a buffer that is never written as part of the
-testcase itself for the source of truth.  KVM's bug was that it mixed up
-the direction of VMOVNTDQA, i.e. KVM was loading from registers and storing
-to memory.  Comparing the src and dst buffers on a:
+Most of this series is cleaning up the nVMX and nSVM to play nice with
+multi-CPU tests.  Then to fix the race in the problematic SIPI, abuse the
+VM-Entry MSR load list to atomically detect VM-Enter (I'm still proud of
+that hack).
 
-  src => reg => dst
+For gory details:
 
-sequence won't detect mismatches due to such bugs, i.e. if KVM wrongly
-does:
+https://lore.kernel.org/all/3bac29b9-4c49-4e5d-997e-9e4019a2fceb@grsecurity.net
 
-  reg => src, reg => dst
+Mathias Krause (3):
+  x86/vmx: Initialize test stage in SIPI test *before* launching AP
+    thread
+  x86: Better backtraces for leaf functions
+  x86: Prevent realmode test code instrumentation with nop-mcount
 
-ecause by the end, src == dst, but with the wrong values.
+Sean Christopherson (17):
+  x86/vmx: Drop unused SYSENTER "support" in nested VMX infrastructure
+  x86/vmx: Drop unused guest_regs "support" in nested VMX infrastructure
+  x86/svm: Sort (and swap) GPRs by their index, not alphabetically
+  x86: Dedup guest/host context switch of registers across SVM and VMX
+  x86/virt: Use macro shenanigans to get reg offsets when swapping
+    guest/host regs
+  x86/virt: Track "guest regs" using per-CPU variable
+  x86/svm: Don't VMLOAD/VMSAVE "guest" state around VMRUN
+  x86/vmx: Use separate VMCSes for BSP vs. AP in INIT test
+  x86/vmx: Swap GPRs after checking "launched" status
+  x86/vmx: Track VMCS "launched" state per-CPU
+  x86/vmx: Track "is this CPU in guest mode" per-CPU
+  x86/vmx: Communicate hypercalls via RAX, not a global field
+  x86/kvmclock: Replace spaces with tabs
+  x86/kvmclock: Skip kvmclock test when not running on KVM with
+    CLOCKSOURCE2
+  x86/vmx: Tag "struct vmx_msr_entry" as needing to be 16-byte aligned
+  x86/smp: Align the stack to a 16-byte boundary when invoking SMP
+    function calls
+  x86/vmx: Write to KVM's WALL_CLOCK MSR via VM-Entry load list sync in
+    SIPI test
 
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- x86/xsave.c | 36 +++++++++++++++++++++++++++++++++---
- 1 file changed, 33 insertions(+), 3 deletions(-)
+ lib/x86/processor.h |  15 +++
+ lib/x86/smp.c       |  21 ++++-
+ lib/x86/smp.h       |  32 +++++++
+ lib/x86/virt.h      |  61 ++++++++++++
+ x86/Makefile.common |  14 +++
+ x86/kvmclock.c      |  42 ++++-----
+ x86/kvmclock.h      |   2 +
+ x86/kvmclock_test.c | 225 +++++++++++++++++++++++---------------------
+ x86/realmode.c      |   3 +
+ x86/svm.c           |  19 ++--
+ x86/svm.h           |  61 ++----------
+ x86/svm_tests.c     |   5 +-
+ x86/vmx.c           | 121 +++++++++++-------------
+ x86/vmx.h           |  72 +-------------
+ x86/vmx_tests.c     | 134 ++++++++++++++++----------
+ 15 files changed, 443 insertions(+), 384 deletions(-)
+ create mode 100644 lib/x86/virt.h
 
-diff --git a/x86/xsave.c b/x86/xsave.c
-index 254f9fde..0a40f466 100644
---- a/x86/xsave.c
-+++ b/x86/xsave.c
-@@ -2,6 +2,7 @@
- #include "desc.h"
- #include "processor.h"
- 
-+char __attribute__((aligned(32))) v32_0[32];
- char __attribute__((aligned(32))) v32_1[32];
- char __attribute__((aligned(32))) v32_2[32];
- char __attribute__((aligned(32))) v32_3[32];
-@@ -11,14 +12,40 @@ static void initialize_avx_buffers(void)
- 	int i;
- 
- 	for (i = 0; i < ARRAY_SIZE(v32_1); i++)
--		v32_1[i] = (char)rdtsc();
-+		v32_0[i] = (char)rdtsc();
- 
-+	memcpy(v32_1, v32_0, sizeof(v32_2));
- 	memset(v32_2, 0, sizeof(v32_2));
- 	memset(v32_3, 0, sizeof(v32_3));
-+
-+	asm volatile("vzeroall" ::: "memory");
- }
- 
-+#define __TEST_VMOVNTDQA(reg1, reg2, FEP)				\
-+do {									\
-+	initialize_avx_buffers();					\
-+									\
-+	asm volatile(FEP "vmovntdqa v32_1(%%rip), %%" #reg1 "\n"	\
-+		     FEP "vmovdqa %%" #reg1 ", %%" #reg2 "\n"		\
-+		     FEP "vmovntdq %%" #reg2 ", v32_2(%%rip)\n"		\
-+		     "vmovdqa %%" #reg2 ", v32_3(%%rip)\n"		\
-+		     ::: "memory", #reg1, #reg2);			\
-+									\
-+	report(!memcmp(v32_0, v32_1, sizeof(v32_0)),			\
-+	       "%s VMOVNTDQ{A} original memory, " #reg1 " and " #reg2,	\
-+	       strlen(FEP) ? "Emulated" : "Native");			\
-+	report(!memcmp(v32_0, v32_2, sizeof(v32_0)),			\
-+	       "%s VMOVNTDQ{A} using " #reg1 " and " #reg2,		\
-+	       strlen(FEP) ? "Emulated" : "Native");			\
-+	report(!memcmp(v32_0, v32_3, sizeof(v32_0)),			\
-+	       "%s VMOVNTDQ{A} using " #reg1 " and " #reg2,		\
-+	       strlen(FEP) ? "Emulated+Native" : "Native");		\
-+} while (0)
-+
- #define __TEST_VMOVDQA(reg1, reg2, FEP)					\
- do {									\
-+	initialize_avx_buffers();					\
-+									\
- 	asm volatile(FEP "vmovdqa v32_1(%%rip), %%" #reg1 "\n"		\
- 		     FEP "vmovdqa %%" #reg1 ", %%" #reg2 "\n"		\
- 		     FEP "vmovdqa %%" #reg2 ", v32_2(%%rip)\n"		\
-@@ -35,12 +62,15 @@ do {									\
- 
- #define TEST_VMOVDQA(r1, r2)						\
- do {									\
--	initialize_avx_buffers();					\
--									\
- 	__TEST_VMOVDQA(ymm##r1, ymm##r2, "");				\
- 									\
- 	if (is_fep_available)						\
- 		__TEST_VMOVDQA(ymm##r1, ymm##r2, KVM_FEP);		\
-+									\
-+	__TEST_VMOVNTDQA(ymm##r1, ymm##r2, "");				\
-+									\
-+	if (is_fep_available)						\
-+		__TEST_VMOVNTDQA(ymm##r1, ymm##r2, KVM_FEP);		\
- } while (0)
- 
- static void test_write_xcr0(u64 val)
 
-base-commit: 9eb6c57313060d34f7e5b2ac6f90bb5873bbe2ff
+base-commit: 4d60e2429d63dc0c24990114a8afc89e86c187cc
 -- 
 2.54.0.563.g4f69b47b94-goog
 
