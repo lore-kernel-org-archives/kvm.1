@@ -1,135 +1,117 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25AB73358CA
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 16:20:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778775627; cv=none; b=nVNoIeKWlg1SerQozogB94rxpDhZqiGJOmun1725WjGLg7qykCeMtuviZX8gLvZ01jsPNeDNrsnQh5khXh7U+j2FrsY9wzt2crOUKFKJepZ8Y3TCCx4vTXnsGqw+oTcrjkLxsV8dVtTzZjkHVdm4BjtiBKbR9p7Bn9/fPnGpzvQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778775627; c=relaxed/simple;
-	bh=bRPXR+XoAWGyM027fV86uSKqBM6jbUbGdYB+tgBt/1Q=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=NtJWDbNE0goMwgbqA5KcuqUa7XOvKczmqRteR0ykGhbGGumMC2YWcV3rQ/LEjWl7EP33mXr6HCsN+KeB0s9IQtD2h80S2kBcNr8rj9Gm/Bpfp6ckth07VxdMAY+8QD0WmeQlRNr0Gnp88Dhh34pzlkOotKpCYX1YmdunK2MU8hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vKFEPJvF; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B222FE04E
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 16:23:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778775793; cv=pass; b=pn4TkMBXsbXc87nBmR88rz7xhwWYFSMnT79OrBPWxtniYKNo0MWV3u+BG1LZciK+9FADs70eX56vIJy43x7j1LAqENiRH39NjoCy1t8rRvGvq73/R926Lez+NXTP5LQiUqbZwIqCpYO/b9Qm2qm4e9EzxsDkFbkzrHW0hB1Fd4k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778775793; c=relaxed/simple;
+	bh=Q0ib4SDX/P+VFF7eKBzjA1FdrcNeZGq2xss6Iv0jB3A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=rvrqs8a+9ug676aNpYDzGRxXrtadoLnKkn+ka5uMn0Vigw6D9iETf6NLhUmV5ULVjH0aRJSHbwuRwwFJmBPftBzKQcIIrs0ds3JmpsCjZ32uN2NZe2p26fSi8fSBmq3lTZTq2SlV0yDdJzWgtqG5ztMVFAMdKaV4gLi36FSqCOo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qG/rwtGA; arc=pass smtp.client-ip=209.85.208.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vKFEPJvF"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ba838d3fa4so88930335ad.3
-        for <kvm@vger.kernel.org>; Thu, 14 May 2026 09:20:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qG/rwtGA"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-671588ab0cfso10684a12.1
+        for <kvm@vger.kernel.org>; Thu, 14 May 2026 09:23:12 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778775791; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Ftnpw0jY07+MGWKnpxY3J+orEWPnS3NbUNdMwVVhsR6EMarbKeBe7CrOlIGrFrB1TR
+         KUnuelv4eHLRORmoO38fuZB2cOSr/X+i75h/HffCV3CxM4LTVVzmp73tn6qgLeQhV1c2
+         rGxfx7+DisBL6Gz6UYQdc/nwDh7nBxIrZQTpExsD41oLe7XuyNQXHI5LmOLH7Xlo/C8S
+         e5gCKB77MtThvXCC9twB7Pa1Z+XtTd1xtEa5OZdq9tYCNGH8AJICCGG/i2/yZ34ZHDFb
+         DNWWAK+7lJ2l9LXc3PXJrxTAx3w0vo3AHw5j45xiGB1qQp62H4mzu/Mg9ipfZ+mLPLc4
+         aJSA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=eBe4adX/bnjRGKzW5ohsf4TCpEbTJmEdSDad4e+lcVc=;
+        fh=CaX0qZ9i1RTkpMi5wjDBmoVZHI/rMr/rqutgWeqaQ68=;
+        b=gxA+l8ICMv2Zx7En3+PQZg4Le4RrK3oBugS7jdEe8+G5/+jgpIfDFDMQTCHT8uGpk4
+         zKdGs+I+TmkJfDNS/AFFLHhS8ldPiyINgvYf9c0FAo3b90wy3E+XBKkdjoS2dxPMcsY5
+         S+IiXjpB22AJ28jX+kwQRBdz8Gxlg9gzG7lWqxP3ELen642gO6/kDmvkxW9Lm+Dt/7BP
+         MXV/naJN+XTWkmSqecGUwJPBr75tGkhxSuml7P7xYBaDilaBIxMR2KZJsCUXf8w7gTkM
+         6luSfcXlDzXMk20k+tj9Gve8sOdNOZV2NEV7UBhDlxGCXpEJRzCnkywLqGBjM+oqJtyt
+         SLqg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778775625; x=1779380425; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fZMTbfY/E3jzMdSXTa2jqc1Caj39SJ60tMJ4eJGTiXI=;
-        b=vKFEPJvFPOo2E74KeqG8JLqhp9xHiqOnZ3+geHv/T4A2Fc2wz6552roU8SRdLDHavV
-         JjUlEp3e8Tf6SONq/uJijrl2fPpf85nhYLg6HqCGTu5Dz4P4jmdSSEylhhUgv7GZHhj9
-         /58aiHZzwY8yxP+wPYSH3cyohi7BxprY76dZXwwrUEYQbGShCrx63er+MoISzxvO8EWp
-         amNk11UJQev6/KQSzabP7miRKGf+/+s2a5YJYgkWcZhBxzomgGhqMLv879+vjiefDGL7
-         FjB6LKmnIbQ9HHd6gkd1Tsn8hmbew5FQgE3b5DHGLFSfXQk8XKRUoyarJA+76XCqGyz7
-         6Drw==
+        d=google.com; s=20251104; t=1778775791; x=1779380591; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eBe4adX/bnjRGKzW5ohsf4TCpEbTJmEdSDad4e+lcVc=;
+        b=qG/rwtGAqKhn34ASB85AlOnVO+EbKJgG5JBDFa24VWPFjqpOHwbvPXYHo8UXhpJYYk
+         7py9jdjUj0HG6N/uYxR5nKVyS01JJxRQ4OLegjQmwr7u7dZ1zXdbZ5c3E92KYQuI1ia1
+         HFKzuRrFagbioZ5doli6J8A5yJ7fyQC9LEZ6CD0mhNTx4oBAhHYuck01dRwgmHmNxB/s
+         Fhi1G8ZsyiQRe809Iz9/P/WBWHRJ23ICcqSmPzjeq9dzafSTxgZ3Bq7raNcE6x0uCqyi
+         QEWmnZ8U1j1eyzQtEvi9mOoWMEiT4V6+civTHH2giGccDFe2xxqI414KkpY8qVXz5VRO
+         C5tA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778775625; x=1779380425;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=fZMTbfY/E3jzMdSXTa2jqc1Caj39SJ60tMJ4eJGTiXI=;
-        b=RY4THODJmLFIitHwyIbABuuuWJpUJD1S+Mvbzz0A0+JvKtzxGY1ar1tOvL6MBezp6k
-         +y9LBvdgUkuKsdI/imeGluQadAOiqg6ChrVbZ8aGwpPUXLrfuobvZP+JArbPkx4Craqz
-         JRgfP78I9scp1+/+En533SWYMy5ZxSXLscXpnp0c3dH0hUqdKJVQJHgsUbj0UNpKRQFA
-         pGW3d8nqOlURaqfXZYtP86vFfHrrZLDRtt/C4tdk6cS1VmGNnJriu9nVoKcBCg7SZsc3
-         9toe4VBitC7r3otOzKcfYIM4yMal0N6mqTiPZdGP71fUp6v7ue1ysEIFygBq1aW4pksK
-         mI7Q==
-X-Forwarded-Encrypted: i=1; AFNElJ/vg+zf4sVm6Zm80qTkDWu5a3bIudyocL2u5akt0Fe2mpKYvPP+FDbkOwPij/oF/V55R90=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxSHj37R6nL3kF6eIut0VuxO6oXXd3IpbYn2XNvM5lN//glYSqU
-	cSwlv/Vo0LLxAT5amgtS7JiPb4TGppHG9rGHZESgjGp1QvG6Nb82uD110zv7r2Wa/+tR0Eb2Dg1
-	0Sgixow==
-X-Received: from pfblu4.prod.google.com ([2002:a05:6a00:7484:b0:83a:58c1:f5e2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a27:b0:398:9ae9:7110
- with SMTP id adf61e73a8af0-3aface18cb0mr9516909637.11.1778775625044; Thu, 14
- May 2026 09:20:25 -0700 (PDT)
-Date: Thu, 14 May 2026 09:20:24 -0700
-In-Reply-To: <CALMp9eS831M153QmAgjzJcR2dFY_wCCCzDisd7_T6GyS3-gAFw@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1778775791; x=1779380591;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=eBe4adX/bnjRGKzW5ohsf4TCpEbTJmEdSDad4e+lcVc=;
+        b=FY4WpdfsarYqbVqLD6UBJyoKnY9yZS40CwwNNzSeF0WAMydG0kcVqnrEqh0kQABvuP
+         DdSE6vDdzRD64Rqf3Q8SByCbyyR22LUpvfk5YHzP/ZQcaVBLpiGtfTfBUCahB33kevEB
+         nZRbQsPfGOSUjjhkePyXpkNKtaSz9FXQ2H0cB9LPlSptrlaH3SWXv8Ftk7Ar721ZPlu8
+         6koNraoXtw3FhqLxqg2pbM4dp5lGF82MMdJ9/MzpAuBFvGq0jBfXmVzwIgd52vTrGahm
+         gUTcHH7cQxPOG4S0PqA++WrNC3NlmZqzIadb4hOsa4G+yo3+3Xt6CQFHA7vWEFMBMTxW
+         KGBA==
+X-Forwarded-Encrypted: i=1; AFNElJ87BDGOcTb8eOqz6lvHrvg2AN2ch41YzUw/lT91iQz3uFiPy20sEK85b/xYwzG8eIZNbbU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwSWE4htnkKiJkOLWXLedLL2rLo+FG52TrN58DiDuuGmT83fEbe
+	2Z50+uV+byNBE2UUoLQJIvueymAjbxeGvowbh92C3VtExfdGq/TFQPvFtMEBXarr04FCk2N2gC4
+	rM9PfzNM9fgwJoHr93JlMsJweR37in4ZMhXJoyOkN
+X-Gm-Gg: Acq92OFLWe2LIqPBNvhk+vVEvlvhtMayUtnf/I6AVRdjvJ3vAJLXU0p8tPZaKHDX5r+
+	F34g4dgeyQp71NSOwYzRucKu3t5UZ9QnNjOMfJUBPh67+VHANHsl1t2htyrinmOf3wcP2+SLR8+
+	YWLQ8xYq1fLuurs7gPaO0tBPzPhCzhZK7Ya/u9Xa5FedylDsYRukM7IT7hWlJTFpyZCdvHPpK7Z
+	iiemjEsfqM1M8LREs/7zh/zX8s/wr5VjPz+nwFGAE11HxHQFnQDuUM45CCrdnOGV2ZMidWI1mN4
+	WDgAoncLrga1fdcOmg==
+X-Received: by 2002:a05:6402:a547:10b0:668:c2b6:9fa2 with SMTP id
+ 4fb4d7f45d1cf-68326bd4ba1mr41151a12.7.1778775790450; Thu, 14 May 2026
+ 09:23:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
 References: <20260513224608.1859737-1-jmattson@google.com> <20260513224608.1859737-4-jmattson@google.com>
  <CALMp9eS4s9tsOmvDUDeqS7oph0mSHyhxBiULQdwHVaG+7gXLSQ@mail.gmail.com>
  <agXcKDjnJc9DPcyr@google.com> <CALMp9eS831M153QmAgjzJcR2dFY_wCCCzDisd7_T6GyS3-gAFw@mail.gmail.com>
-Message-ID: <agX2SJF3rJSkIqDe@google.com>
+ <agX2SJF3rJSkIqDe@google.com>
+In-Reply-To: <agX2SJF3rJSkIqDe@google.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Thu, 14 May 2026 09:22:57 -0700
+X-Gm-Features: AVHnY4Lsmqlfaqp7hEXV3B-RlTugrnhObbgCElgWlD60p-logKCtI0xa4Zqrmow
+Message-ID: <CALMp9eQTSxFkVf4vV83yNYvv2AjseHYiD3M68mcc951L4U1Jxw@mail.gmail.com>
 Subject: Re: [PATCH v3 3/4] KVM: x86: Virtualize AMD CPUID faulting
-From: Sean Christopherson <seanjc@google.com>
-To: Jim Mattson <jmattson@google.com>
+To: Sean Christopherson <seanjc@google.com>
 Cc: pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com, bp@alien8.de, 
 	dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, shuah@kernel.org, 
 	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	linux-kselftest@vger.kernel.org, ctpence@google.com
-Content-Type: text/plain; charset="utf-8"
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 14, 2026, Jim Mattson wrote:
-> On Thu, May 14, 2026 at 7:28=E2=80=AFAM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> >
-> > On Thu, May 14, 2026, Jim Mattson wrote:
-> > > > diff --git a/arch/x86/kvm/cpuid.h b/arch/x86/kvm/cpuid.h
-> > > > index 95d09ccbf951..fc96ba86c644 100644
-> > > > --- a/arch/x86/kvm/cpuid.h
-> > > > +++ b/arch/x86/kvm/cpuid.h
-> > > > @@ -185,8 +185,9 @@ static inline int guest_cpuid_stepping(struct k=
-vm_vcpu *vcpu)
-> > > >
-> > > >  static inline bool cpuid_fault_enabled(struct kvm_vcpu *vcpu)
-> > > >  {
-> > > > -       return vcpu->arch.msr_misc_features_enables &
-> > > > -                 MSR_MISC_FEATURES_ENABLES_CPUID_FAULT;
-> > > > +       return (vcpu->arch.msr_misc_features_enables &
-> > > > +               MSR_MISC_FEATURES_ENABLES_CPUID_FAULT) ||
-> > > > +               (vcpu->arch.msr_hwcr & MSR_K7_HWCR_CPUID_USER_DIS);
-> > > >  }
-> > >
-> > > Sashiko raises a good point here about a pre-existing issue that
-> >
-> > Calling this pre-existing is a bit of a stretch.  I'm guessing VMX does=
-n't check
-> > the #GP before the VM-Exit (checking #GP before a VM-Exit is so stupid)=
-.
->=20
-> Per the SDM, volume 3, section 27.1.1: Relative Priority of Faults and VM=
- Exits
->=20
-> Certain exceptions have priority over VM exits. These include invalid-opc=
-ode
-> exceptions, faults based on privilege level,1 and general-protection
-> exceptions that are based on checking I/O permission bits in the task- st=
-ate
-> segment (TSS). For example, execution of RDMSR with CPL =3D 3 generates a
-> general-protection exception and not a VM exit.2
+On Thu, May 14, 2026 at 9:20=E2=80=AFAM Sean Christopherson <seanjc@google.=
+com> wrote:
+> Oooh, this is based on the generic CPL rules.  I didn't think about it fr=
+om that
+> perspective.  So yeah, addressing that does make sense.  What a pain.
 
-...
+When I fix this in version 4, what's the correct footer for Sashiko attribu=
+tion:
 
-> > Where in the APM?  I can't find anything in the description of CPUID or=
- CpuidUserDis
-> > that specifies the priority, and "Table 15-7. Instruction Intercepts" i=
-s flat out
-> > wrong because it just says:
-> >
-> >    CPUID  CPUID  No exceptions to check.
->=20
-> APM volume 2, section 15.7: Intercept Operation
->=20
-> > Generally, instruction intercepts are checked after simple exceptions
-> (such as #GP=E2=80=94when CPL is incorrect=E2=80=94or #UD) have been chec=
-ked, but
-> before exceptions related to
-> memory accesses (such as page faults) and exceptions based on specific
-> operand values.
+Assisted-by: Sashiko:gemini/gemini-3.1-pro-preview
 
-Oooh, this is based on the generic CPL rules.  I didn't think about it from=
- that
-perspective.  So yeah, addressing that does make sense.  What a pain.
+or
+
+Reported-by: Sashiko:gemini/gemini-3.1-pro-preview
+
+or something else?
