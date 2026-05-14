@@ -1,55 +1,55 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C8F83CF960
-	for <kvm@vger.kernel.org>; Thu, 14 May 2026 21:05:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85DE73CF69C
+	for <kvm@vger.kernel.org>; Thu, 14 May 2026 21:05:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778792724; cv=none; b=EwKIUcgCByleYojd0QbFAAGmjQDGZ9T6XKezKPKd3nlGSO7Ohtw0sEWgr8RDFNhQ7ytEkdBhjkxo1I886Mk3Z4z5FdjGZXdAozLZN4w8KYFQQnXWzo7xFL9AWoF/wD5hdB/BmeH69bXEhQATvzMw07/NDkBeNysaKOXS6L1Y9h0=
+	t=1778792725; cv=none; b=bWmRAJb9Xa+pDt41a5KXr3KVt3smAZNVZerKmRR7NCu0VN77D1mnaGv/AOjlWqn0afVjRa+Zk8zIkm/UOhfSfqKUWT6bIGqgE5zdgJVr4A389nShjswknJdoF9rpdd//TU5RORC+8SWmomuHGj8NBwXusi0Z4CgAOLrjPvUu5jU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778792724; c=relaxed/simple;
-	bh=ZiwP9jdCjnsjMvDj9YYxtXYRMmV/hbaMlL3FeWM4X1Y=;
+	s=arc-20240116; t=1778792725; c=relaxed/simple;
+	bh=9NiAGFD6fc9+GqxizoCZND1kvjkTRFGhZAVcgu9n7xE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=EEeBaGUcAwoDoJQMRaKoeo+f4N0IXJdX8NXz1Air6h0kNeIhB3Zyd8PdfhKxe5PP6IrWdnMyEgnoemG6BPw3Xs8l8UlKlUDYIsZuOvdbvKSvjb9YqmTxc2oxh4561L04u2erc6xHgkxi8Bdq7cp2HtGS2F36aAvjPqJhsho+JHE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dLuk94fe; arc=none smtp.client-ip=209.85.210.202
+	 To:Cc:Content-Type; b=W6iex2L9MQbzE/GDz/GIxaVRPTY+5CtGOisQA1YI+4hc14bHz1CYS7+xxx45mwJbLFyICgb+ZpG64uYNd9Ht9FvwDmgsP8KtejB83lU9BcmUtIWnx5V9+hpqzYwPGJduksVPa6qQNFJ0mrAlNk84FcxH7eWmGV1OCmBnaJkv4mM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gB+AUqqZ; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dLuk94fe"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8354503d9acso10671897b3a.1
-        for <kvm@vger.kernel.org>; Thu, 14 May 2026 14:05:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gB+AUqqZ"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82fa860e71eso4795710b3a.0
+        for <kvm@vger.kernel.org>; Thu, 14 May 2026 14:05:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778792722; x=1779397522; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1778792724; x=1779397524; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=oBvkAOfb+oGsqMeud56xyHfv3sELwdW549T+sWexK0g=;
-        b=dLuk94fedx4Ya5JEhTu85pC/iDDfamt5ddPvfCEeAT/YohlR3I3oEkIRX3v3n6W3qt
-         qllbHkYDa7dxD7iyLjJZ0ZlYOeuskGMZvUISgL8rtLOz7rCAhh92reUOqoDW6TzrAS8g
-         gmoIDmMuCehqu1FjAGNJYRXu6OupW6Po4DnL7AKka7H4VZAnFaRtfY9qKpbKlEUcWO9Y
-         pGbozvIhNldn8ogU+9dOUno92+kd6CJxv//zAS+36GyD+ecMCh9Qyb8pR6OH4Lcn1I/K
-         tNjulSF4dTyGWj1n1I1A+hvlTCv5QTNyyOAWlBDTdRQukNgbx+Uaup8iwX1qqoZ1PQt6
-         ydSA==
+        bh=vRbHNla8IFW1HB3HQkxE0Wf2iPARUBWXsUP0btJ7pIA=;
+        b=gB+AUqqZv8N7hEm3c+farKVtva7HZn07Ij5FG61+iS2gQwIpPiby8+QOoOy9Eh54Pp
+         ZcBEHXdatX3M+r+Z/QfLUn6o6nvvbdqcD5cL0QOEnHv9dPfcsdT7Z7swCQqgHqZgt2dK
+         n36piXyMZgd9ZdXdZRiWxK7jq5iEb/mwdQkLKdorb4yffqWC48OlniDIqA9AGJppB7nn
+         u8j1jqNw/4RR5u9XVzHc8zUic0fZSHWZJ+lf6LiEnK0unL4rkH+sjQgOmMUX+cUx21Y/
+         A0qK0G7kJMcR8+cv72doehkg9B8nEZ4EBBKT0XXQDzeo7vqn6t3DZ5RGNTAMfDdaBCHV
+         itqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778792722; x=1779397522;
+        d=1e100.net; s=20251104; t=1778792724; x=1779397524;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=oBvkAOfb+oGsqMeud56xyHfv3sELwdW549T+sWexK0g=;
-        b=bKMAcLr+QkoBRnUU0XgmZtl1BO2btV1tQpB0iW4AB4PFfYAXOKU9Hy7vQYg5WBjgJD
-         C8h9RSYzgk0yk85G27kKlf6YqNuL6E56Z92AeVMBCj7/uFWbqCswz9k2WcUUNDBReUDE
-         +BrHW11Qlnx37zr5Z1G4FlCcMT7pOoSn7i3n3/IwBG8X9hKpsbrtxDYw1vxs4Tq/d8g0
-         tEMX5zAR/XsEJXfuuUxhucAoWIaFVQviU/AUAmqzoi/IQ012cU7VlPmM10qgh22mK3DC
-         pqJlhzGnrZrBiCXEukjzeGQ0uaTkRkIQ7jzb9Q4wpz0SMFYa7f/RscqSSW1GQcWYW7J0
-         1yLA==
-X-Gm-Message-State: AOJu0Yyds9kCx/d/DqFFcbiPK1uUVwmPo5nMvTOO5IyzSFv5XcnqbUOj
-	uZL4YsSj9DKx9ybGiwHn8tKzbIc/fn1LQNN3AldfVkjc5rBQ4QfUvBUk5wKKxmXSLXUfJB7D/qC
-	o1SX4/Q==
-X-Received: from pfbcm24.prod.google.com ([2002:a05:6a00:3398:b0:82f:a139:b084])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:bd8c:b0:82f:4f63:31e1
- with SMTP id d2e1a72fcca58-83f33aebdb9mr1322561b3a.8.1778792722177; Thu, 14
- May 2026 14:05:22 -0700 (PDT)
+        bh=vRbHNla8IFW1HB3HQkxE0Wf2iPARUBWXsUP0btJ7pIA=;
+        b=KOl2hS7qi+psd18tLthOw966AE3ltL/OcjBiTkjG4Ai4W4zr1nyQGkted7ai/vI2Cp
+         BqCdP7eVW0rORex4w23pqxuhEJbt+lJDZ6O7erEQcVotYlrI5HkbhnS+7rJg1R4CXYqg
+         somyjQd0X1OvjwY2TQ0TKy266fLx2F1rg61nWn6ONT4xn6k1+pQvNtu7dFWjoSWBxbeI
+         YcgFh+JeQ8GZ/fbuT+2qH5WYGeysiqSfZulHtFGkn+OR6guGDZ6kHuDh+/W6ZJOedHyj
+         3+ceKc4LVPxBlU11Gyp/7H2ZlcGAJqPyzP1vQfPHwLIpcOkPJua47zUF8U1CBEoDZ+g6
+         tS+A==
+X-Gm-Message-State: AOJu0YwVHDZoxhf1n4IDDoRP1aX7LCUjaiJOt6rsvPLiEPDxBtZLW92X
+	FRCBVUc75r/RZmH7YPpYOV2CT+6/RrZ7yUlpq59F3Mr1MUxI96QQAq6A0qgNakuh6NQWE6zM/an
+	4gb+YaQ==
+X-Received: from pfbgo19.prod.google.com ([2002:a05:6a00:3b13:b0:82f:8a3b:87f0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:94f7:b0:83e:b22f:373a
+ with SMTP id d2e1a72fcca58-83f33b0aba9mr1298313b3a.11.1778792723431; Thu, 14
+ May 2026 14:05:23 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Thu, 14 May 2026 14:04:57 -0700
+Date: Thu, 14 May 2026 14:04:58 -0700
 In-Reply-To: <20260514210500.1626871-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,60 +59,109 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260514210500.1626871-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260514210500.1626871-18-seanjc@google.com>
-Subject: [kvm-unit-tests PATCH v3 17/20] x86/smp: Align the stack to a 16-byte
- boundary when invoking SMP function calls
+Message-ID: <20260514210500.1626871-19-seanjc@google.com>
+Subject: [kvm-unit-tests PATCH v3 18/20] x86/vmx: Write to KVM's WALL_CLOCK
+ MSR via VM-Entry load list sync in SIPI test
 From: Sean Christopherson <seanjc@google.com>
 To: Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, Sean Christopherson <seanjc@google.com>, 
 	Mathias Krause <minipli@grsecurity.net>, Andrew Jones <andrew.jones@linux.dev>
 Content-Type: text/plain; charset="UTF-8"
 
-Align RSP to a 16-byte boundary in the IPI handler for SMP function calls
-before calling into C code, as required by the x86-64 ABI.  Failure to
-ensure the stack is properly aligned leads to obscure failures if a struct
-(or any other object) tagged with __attribute__((aligned(16))) (or any
-alignment greater than 16) is place on the stack.  E.g. VM-Enter will fail
-on VMX if a vmx_msr_entry structure is placed on the stack.
+In the VMX Wait-for-SIPI => SIPI VM-Exit test, signal that the AP has
+entered the guest by writing to MSR_KVM_WALL_CLOCK_NEW (when supported)
+via the VM-Entry MSR load list instead of writing to memory from the AP
+_before_ actually doing VM-Enter.  Abusing the MSR load list ensures that
+the AP's "ready" signal to the BSP happens atomically with respect to
+VM-Enter, and thus fixes a race where the BSP can see "ready" and send the
+SIPI before the AP has executed VM-Enter.  E.g. with a delay inserted on
+the AP, and no delay on the BSP, the test will hang 100% of the time.
+
+Use MSR_KVM_WALL_CLOCK_NEW as it is pretty much the only MSR that KVM
+emulates as a per-VM MSR, and that has a high likelihood of being
+available.
+
+Keep the BSP's delay before send the SIPI so that the test continues to
+work if MSR_KVM_WALL_CLOCK_NEW isn't available, e.g. in bare metal (and
+most KVM) setups, hitting the race is practically impossible.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- lib/x86/smp.c | 21 ++++++++++++++++-----
- 1 file changed, 16 insertions(+), 5 deletions(-)
+ x86/vmx_tests.c | 26 +++++++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
 
-diff --git a/lib/x86/smp.c b/lib/x86/smp.c
-index 366e184c..0cd44cdc 100644
---- a/lib/x86/smp.c
-+++ b/lib/x86/smp.c
-@@ -58,12 +58,23 @@ static __attribute__((used)) void ipi(void)
+diff --git a/x86/vmx_tests.c b/x86/vmx_tests.c
+index 31c7672c..ac0250b7 100644
+--- a/x86/vmx_tests.c
++++ b/x86/vmx_tests.c
+@@ -6,6 +6,7 @@
+ 
+ #include <asm/debugreg.h>
+ 
++#include "kvmclock.h"
+ #include "vmx.h"
+ #include "msr.h"
+ #include "processor.h"
+@@ -10155,6 +10156,8 @@ static void vmx_init_signal_test(void)
+ 	 */
  }
  
- asm (
--	 "ipi_entry: \n"
--	 "   call ipi \n"
--#ifndef __x86_64__
--	 "   iret"
-+	"ipi_entry: \n"
-+#ifdef __x86_64__
-+	/*
-+	 * Align the stack on a 16-byte boundary (as per x86_64 ABI) before
-+	 * calling into C code.  Make sure not to clobber any regs!
-+	 */
-+	"	push %rbp\n"
-+	"	mov %rsp, %rbp\n"
-+	"	and $-0x10, %rsp\n"
-+#endif
-+	"	call ipi\n"
-+#ifdef __x86_64__
-+	"	mov %rbp, %rsp\n"
-+	"	pop %rbp\n"
-+	"	iretq"
- #else
--	 "   iretq"
-+	"	iret"
- #endif
- 	 );
++static bool use_kvm_wall_clock;
++
+ #define SIPI_SIGNAL_TEST_DELAY	100000000ULL
  
+ static void vmx_sipi_test_guest(void)
+@@ -10199,6 +10202,11 @@ static void vmx_sipi_test_guest(void)
+ 
+ static void sipi_test_ap_thread(void *data)
+ {
++	const struct vmx_msr_entry msr_load_wall_clock = {
++		.index = MSR_KVM_WALL_CLOCK_NEW,
++		.reserved = 0,
++		.value = 1,
++	};
+ 	struct guest_regs *regs = this_cpu_guest_regs();
+ 	struct vmcs *ap_vmcs;
+ 	u64 *ap_vmxon_region;
+@@ -10231,7 +10239,13 @@ static void sipi_test_ap_thread(void *data)
+ 	/* Set guest activity state to wait-for-SIPI state */
+ 	vmcs_write(GUEST_ACTV_STATE, ACTV_WAIT_SIPI);
+ 
+-	vmx_set_test_stage(1);
++	if (use_kvm_wall_clock) {
++		wrmsr(MSR_KVM_WALL_CLOCK_NEW, 0);
++		vmcs_write(ENT_MSR_LD_CNT, 1);
++		vmcs_write(ENTER_MSR_LD_ADDR, virt_to_phys(&msr_load_wall_clock));
++	} else {
++		vmx_set_test_stage(1);
++	}
+ 
+ 	/* AP enter guest */
+ 	enter_guest();
+@@ -10274,6 +10288,9 @@ static void vmx_sipi_signal_test(void)
+ 	u64 cpu_ctrl_0 = CPU_SECONDARY;
+ 	u64 cpu_ctrl_1 = 0;
+ 
++	use_kvm_wall_clock = this_cpu_has_kvm() &&
++			     this_cpu_has(KVM_FEATURE_CLOCKSOURCE2);
++
+ 	/* passthrough lapic to L2 */
+ 	disable_intercept_for_x2apic_msrs();
+ 	vmcs_write(PIN_CONTROLS, vmcs_read(PIN_CONTROLS) & ~PIN_EXTINT);
+@@ -10290,6 +10307,13 @@ static void vmx_sipi_signal_test(void)
+ 	/* start AP */
+ 	on_cpu_async(1, sipi_test_ap_thread, NULL);
+ 
++	if (use_kvm_wall_clock) {
++		while (rdmsr(MSR_KVM_WALL_CLOCK_NEW) != 1)
++			cpu_relax();
++
++		vmx_set_test_stage(1);
++	}
++
+ 	/* BSP enter guest */
+ 	enter_guest();
+ }
 -- 
 2.54.0.563.g4f69b47b94-goog
 
