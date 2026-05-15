@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A7833DA7CF;
-	Fri, 15 May 2026 17:23:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC663DA5C1;
+	Fri, 15 May 2026 17:26:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778865811; cv=none; b=L/FgpGHeFMEjboETH07W7gO+wBtveFnfHi2Wop7LC/qWO9+WsvHm62R1HUlsmKym4g2vMAwFJClCY75oIcA3oVf2JDUilFfWJph18hmsGJm0BB6sF0jBrPcn7pihP4Z51xLMngVoLQyoSlqRUcbjUmglH7RtPCyVNFcZRrrvwQg=
+	t=1778865982; cv=none; b=AzoOtt42ll/DZCofwH/q5ZWGlGVDYJhbDteRvFWqV9QvSlCxUsQrBeVo0g0O3s0A0bEjy3IqUFqFXsczPYWeWchmhEK8eCP2aJ6f0fKrNP/bevxPjm6NO4k9YJQdclOvTK4hmTRxQEbwY8V4ufnVIBrj7gg2mNO/XlcONDXhHgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778865811; c=relaxed/simple;
-	bh=BErLgv0DALh1qRbYJCzQUrD5/I8a9/gkIJGFZMCtcWI=;
+	s=arc-20240116; t=1778865982; c=relaxed/simple;
+	bh=jQqfoSMmdIEVqWnROu0O4GgLmGhkZYd/KOm8BNecBko=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=oWMJ5+KPhodMwkD6xmBULVnrTBO0S+iJFjICsZaX4nm63wMdmvzJlRfUD4Nu7iImKR/JEOnRigS1Wd1lmVZ/WCLM/x/8oSXC3LeTK6JksV9SbmwAHwJHJCXpo5z91MBAFweyvSdBqq6ObbplU64YAn5HzzXZtg6ZU28XU1iaytA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FwT0PnEZ; arc=none smtp.client-ip=198.175.65.20
+	 In-Reply-To:Content-Type; b=lk6Blt+XPmwv8o414D6SkRwATn4VJmAFp8rFtuytRl+o8jFl9R3297jgitVDe8GOdWfzohkdvR41jKHGaw/Unq9JNIE5/N8a8DpEOso5/UM4O1zRqC8xFwMhGLsV9Tn+jeRG5sMzU04WAN+gV3yG4hfhP/d4CZivN9Oi0Bvf+ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FCafFRak; arc=none smtp.client-ip=198.175.65.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FwT0PnEZ"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FCafFRak"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778865810; x=1810401810;
+  t=1778865981; x=1810401981;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=BErLgv0DALh1qRbYJCzQUrD5/I8a9/gkIJGFZMCtcWI=;
-  b=FwT0PnEZ5Y/FYGH22VSSKSTdSnvBVxrW8lZz22ie3+O+dPcr/dbekBNV
-   zplKwZzkWhKAjMtSlgUBdD1sF05V7j7nwcf2tbtMAc5DMMI9vXyBUmITZ
-   2/quiFgemnOTYM31fphegV4slIEKoPVE1yCxrkZY3hNd3cd2nU4RwIT1K
-   N9bb2ph3A9dzl1YbuqmsQlZb1OXIB+Jo8VeWCwqjFC52IjVO3JWNRYIgf
-   TKE4P4R9sFZ+gU8u9w9iTh9vBWVnsyK2/3tY4cyPU/tE7ak5XKr4W/NE6
-   DW6mKmLyl7//+dncliuQxHpiHlW/+E6gPMbsYlXaqIlXa+TzBMkY24bb8
+  bh=jQqfoSMmdIEVqWnROu0O4GgLmGhkZYd/KOm8BNecBko=;
+  b=FCafFRak3QycNTivI/HziHQLiL8h5SsCkO8xrxdGm2GsgNQxSnrwfe+x
+   TR4mh0reqV1xNvjUXWcwaSdTv10njBHG48fphKIexx+1K5PXA3UskYJJy
+   iX1VqpvEJqlludjLKmIppxWcNqhT0wrkC6bgzkaFLthH7I2OVfKIXMg2s
+   GIGEKy4JuixzvYmtr+HeMGFikkEjkjHl3hWWa+as7gIQo8hXRWXEbxJkj
+   4sAdFOE80AxmexeaCE8OS6BOW7SfRdGF3ncg1fgHUZo040JpK9gDIO/Tl
+   or4d8k55ur7yjNtmtrx6t8/6MQiJ8gTzpJ5TVE1OnXW9e7Wb4EB0xLZEj
    w==;
-X-CSE-ConnectionGUID: Wl0VI71MT+mWhoMu1X8zcA==
-X-CSE-MsgGUID: SPercRcYQZyiDEuGCh9mGw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="79542194"
+X-CSE-ConnectionGUID: Cc6ZXvSYSyOui9yLZDIQHA==
+X-CSE-MsgGUID: M1u949ZxQGG7RysOfj/lMw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="79867409"
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="79542194"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 10:23:30 -0700
-X-CSE-ConnectionGUID: TGDTg4RlSaWBezP+kLEh7Q==
-X-CSE-MsgGUID: Nzy6BpG5RUu0ZK7yZemxsQ==
+   d="scan'208";a="79867409"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 10:26:20 -0700
+X-CSE-ConnectionGUID: wBEEY9PnRQyQkwAwXNBO9g==
+X-CSE-MsgGUID: trm8xmjhTk6B3fA2aI6G/Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="276842976"
+   d="scan'208";a="234308932"
 Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.108.201]) ([10.125.108.201])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 10:23:30 -0700
-Message-ID: <e2ec0efe-2248-4823-ab3f-5d87835db3c5@intel.com>
-Date: Fri, 15 May 2026 10:23:29 -0700
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 10:26:18 -0700
+Message-ID: <f1057429-4918-4b02-ae17-9bd6cc38a3c1@intel.com>
+Date: Fri, 15 May 2026 10:26:19 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 08/23] coco/tdx-host: Expose P-SEAMLDR information via
- sysfs
+Subject: Re: [PATCH v9 09/23] coco/tdx-host: Don't expose P-SEAMLDR
+ information on CPUs with erratum
 To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
@@ -66,9 +66,9 @@ Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
  x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
 References: <20260513151045.1420990-1-chao.gao@intel.com>
- <20260513151045.1420990-9-chao.gao@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
+ <20260513151045.1420990-10-chao.gao@intel.com>
 Content-Language: en-US
+From: Dave Hansen <dave.hansen@intel.com>
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
  oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
@@ -112,65 +112,42 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260513151045.1420990-9-chao.gao@intel.com>
+In-Reply-To: <20260513151045.1420990-10-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 
-> +What:		/sys/devices/faux/tdx_host/seamldr_version
-> +Contact:	linux-coco@lists.linux.dev
-> +Description:	(RO) Report the version of the loaded P-SEAMLDR. The P-SEAMLDR
-> +		version is formatted as x.y.z, where "x" is the major version,
-> +		"y" is the minor version and "z" is the update version. Versions
-> +		are used for bug reporting and compatibility checks.
+On 5/13/26 08:09, Chao Gao wrote:
+> Some TDX-capable CPUs have an erratum, as documented in Intel® Trust
+> Domain CPU Architectural Extensions (May 2021 edition) Chapter 2.3:
 
-Rather than a copy/paste, I'd just say the format is the same as the
-main module version.
+2021, eh?
 
-...
-> +static ssize_t num_remaining_updates_show(struct device *dev,
-> +					  struct device_attribute *attr,
-> +					  char *buf)
-> +{
-> +	struct seamldr_info info;
-> +	int ret;
-> +
-> +	ret = seamldr_get_info(&info);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return sysfs_emit(buf, "%u\n", info.num_remaining_updates);
-> +}
-> +
-> +static DEVICE_ATTR_ADMIN_RO(seamldr_version);
-> +static DEVICE_ATTR_ADMIN_RO(num_remaining_updates);
-> +
-> +static struct attribute *seamldr_attrs[] = {
-> +	&dev_attr_seamldr_version.attr,
-> +	&dev_attr_num_remaining_updates.attr,
-> +	NULL,
-> +};
-> +
-> +static umode_t seamldr_group_visible(struct kobject *kobj, struct attribute *attr, int idx)
-> +{
-> +	const struct tdx_sys_info *sysinfo = tdx_get_sysinfo();
-> +
-> +	if (!sysinfo)
-> +		return 0;
-> +
-> +	return tdx_supports_runtime_update(sysinfo) ? attr->mode : 0;
-> +}
-> +
-> +static const struct attribute_group seamldr_group = {
-> +	.attrs = seamldr_attrs,
-> +	.is_visible = seamldr_group_visible,
-> +};
-
-I feel like we need to mention *somewhere* that these are kinda nasty.
-tdx_get_sysinfo() is slow and single-threaded. These very much are and
-need to stay 0400 for good reason.
-
-Talk about the DEVICE_ATTR_ADMIN_RO() choice _somewhere_, please.
-
-With those fixed:
+>   SEAMRET from the P-SEAMLDR clears the current VMCS structure pointed
+>   to by the current-VMCS pointer. A VMM that invokes the P-SEAMLDR using
+>   SEAMCALL must reload the current-VMCS, if required, using the VMPTRLD
+>   instruction.
+> 
+> Clearing the current VMCS behind KVM's back will break KVM.
+> 
+> This erratum is not present when IA32_VMX_BASIC[60] is set. Add a CPU
+> bug bit for this erratum and refuse to expose P-SEAMLDR information
+> on affected CPUs, because even reading the P-SEAMLDR sysfs knobs would
+> enter and exit P-SEAMLDR.
+> 
+> Use a CPU bug bit to stay consistent with X86_BUG_TDX_PW_MCE. As a bonus,
+> the bug bit is visible to userspace, which allows userspace to determine
+> why these sysfs files are not exposed, and it can also be checked by other
+> kernel components in the future if needed.
+> 
+> == Alternatives ==
+> Two workarounds were considered but both were rejected:
+> 
+> 1. Save/restore the current VMCS around P-SEAMLDR calls. This produces ugly
+>    assembly code [1] and doesn't play well with #MCE or #NMI if they
+>    need to use the current VMCS.
+> 
+> 2. Move KVM's VMCS tracking logic to the TDX core code, which would break
+>    the boundary between KVM and the TDX core code [2].
 
 Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+
