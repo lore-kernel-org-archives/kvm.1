@@ -1,55 +1,55 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA3C53F5BFE
-	for <kvm@vger.kernel.org>; Fri, 15 May 2026 22:26:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00CA53F788A
+	for <kvm@vger.kernel.org>; Fri, 15 May 2026 22:26:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778884005; cv=none; b=ba1Hd8pTFvdQIWlUgu0B4BD6tRzE0N1QY97rSrbSCatwiwHvUkdO/k/p3doFePvwj3S3+EJZLjUQERkCg+jgKOak+Peft/0TEaeqBUlx32ffjaXPQ38q7IsnouLfFWZik5IUrRexpK8rPbYAP4e1NDJvca/3UPUmXmbChcmoFao=
+	t=1778884008; cv=none; b=lzQBZelqTErGzbDnPBPQysTE4SYLEMXgwwFQ+xffhn+7rEdp+mmHJo3SJj8Rk+xPrzM6ptsRbsLu+H45tBzGp8WDZpNFoWfT7rJ+jRM1w9aGw1VVKra4w7t4lIXxE+goq0KhT+XkrmVaMGIvTvbywEpY85MKJQX3txMEIEgE2C0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778884005; c=relaxed/simple;
-	bh=jqCUnAqyL81M4kBExO5xbTXvD8p/BANrb5UK56gpGsg=;
+	s=arc-20240116; t=1778884008; c=relaxed/simple;
+	bh=gjrJfPZjzhQ4ULgHXz7xKpU7NK6WzO2sZbl4EXGLNjo=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=azp0VPBX2jySKblDvkb50un5FpgBMHJupkuP2rQPQS4li6Wtg6XcH01GXWsYB2d67MSNc8zl1wzVhO0CPVH0PtsGqrx+H5H2GyiOdXAYC4YLhXsrfKP1UrEngmRnpPF/y0uSujVircBbJLfIbzW0ZT/tGOOEvglP7fWe76k5sAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=M2AcBPIt; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=pf1Yscn6+1I5hqiEVq2FlfO6iIA0wQ0tAI6t8ucRQmZCcrNsQFgolQifiBMx7VnHqOtrTJR3ZmqWhEXp3RLeAy06jYvm2q7oNwdOypQ8koMze5cZ57CGZ3Lo2PCHJ0L9E4L7+a+e0MZWUz4MU+nmxKAAKINbTYIuPUqQnxwFOfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ej/KFD6Z; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="M2AcBPIt"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b7aba0af02so4555915ad.2
-        for <kvm@vger.kernel.org>; Fri, 15 May 2026 15:26:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ej/KFD6Z"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82f85179263so441520b3a.3
+        for <kvm@vger.kernel.org>; Fri, 15 May 2026 15:26:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778884003; x=1779488803; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1778884004; x=1779488804; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=QKbnE6rd81y7hUrM+ehlz5d1YI3KnWTK03MZ9lCKq6s=;
-        b=M2AcBPItnKOZivRecvUxUD2tKNsd54R6ENgeDM8XEE20rCQ6BdqMHURMa/HOj3erTc
-         uhBafHdyGsTMmY52XWAOLTupM4ZOmUZrCxuj/yQHbkPNDXUQARqotmm1iia7/7DUl8g4
-         m3ELuTn+dR6lA2gE63udpIrlDOA16VT1cRGA4SbjTQpmYVcJO0fF5O6akg2VCWdrAGpJ
-         yXRMrQVT0yjdrxpRnKvIBCjgpcgBADks2hXRkhEoRXlm7WbvV4HncLd/0DtV3CMJABJ5
-         N/rT9qWgn7m7HYTM478HHOjAUAcGoZpTY0B1ORqM8oIC/QOadjyfnpxjUNBFznqnSM85
-         KZLA==
+        bh=/ST410FWBR8XeDDgTjdEJIxkuKYadmvMFEj7n/DilPs=;
+        b=ej/KFD6ZsA5h+9OR3cRwwJxYf73MFImswHu8otNuRQKPuJR/wOhg0xoYRlIrH10awT
+         PavaALl4pd0PO1/evRVbuBlC++HBpmxmd7lXGm9M28yaOdGXN5tKL36zOhHEsUmoyp0r
+         UPRG1HTiJSyCoY4fhwFO3NYCHdjNHaEzJI/S1I4tX8Tnrf13itr7PbGfrVlM4ybRVMdP
+         23rUQDSXqbvM7jT3l+2W/HRZNuyBdvpD4Wd21xmblmK6UCxXCNCJjtvOa+WRvjW6va/H
+         EkuGpc47ZjgKIwbRCjkfUDkvg43aOTBWxzYyGGXFw2uZhkYVijG6iy+ULP864ERbvgJp
+         ZnYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778884003; x=1779488803;
+        d=1e100.net; s=20251104; t=1778884004; x=1779488804;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=QKbnE6rd81y7hUrM+ehlz5d1YI3KnWTK03MZ9lCKq6s=;
-        b=sUx1JKivbwgcVDXMLiS7uvi2Jahe+1jVO808iqUQ0AEf20+28rnSKUcBDTcU3oikAi
-         j7rmEcroB7EEMbpwtJYVFB8JJrMBXBQC3faZqrSgaJXC0mqJjPcUMYSy5IFPjCtA/3+0
-         a4gEUbqQ/vKfofQCkhG+fMhUFpy4CAaW1mtgTw/jAd5c7DI9jOETnCySQRG5s+71zhjM
-         AR+lFoIuqOkloFLctiK0apAydNpq9H/rCbxjFwI71DLRhV+HPZPrab98LwdrH8w/ewjt
-         PUa429T80IQRBEIHuoeaHHIRjouio4WHi4itWgGFlt3kGteDWB0U9lE1qzah4KtDGzv3
-         Md8g==
-X-Gm-Message-State: AOJu0YySUOmzwT6HzQfyVpTBNq0iz5k1qsKjG/zr41aI76KSVreBJA1y
-	LKa2kieHQRozLpRitnqvVcV5d2xcS2bMb03+iCQH9th/i5DsxviJ0P63q52/ZaW4mifLjBuSpsX
-	kcQFBlw==
-X-Received: from pgbcq9.prod.google.com ([2002:a05:6a02:4089:b0:c76:6a98:b777])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3d95:b0:3a3:aeb2:73c9
- with SMTP id adf61e73a8af0-3b22e773031mr6641847637.22.1778884003051; Fri, 15
- May 2026 15:26:43 -0700 (PDT)
+        bh=/ST410FWBR8XeDDgTjdEJIxkuKYadmvMFEj7n/DilPs=;
+        b=abof27qzd1fSF4egtJ3d/4Wdo8QRO9CzPfb1bW5vN1QIHpSyB+NMCNTGnwCf0eRfzn
+         /t/Ma/xhp5ospEGsAboG+69dipRaxky/jN2XS1TyfoMhEIjGqZdfdjCYfe5Wxere+FVn
+         cG2BwQ18xokHwNvbngVKFlGluoWHmFkk1qrpsYoFvuMi1VFsIJ4A6DwbYPzD97DkjDqF
+         Frms2lnOO/7f3F6TKl24jIctXNgGOKGWoXRBmQ9K30QSf/UejIdZrDZJtpvqt6HSQE3A
+         fIhOfxvX/dqUXMdPE3wkt4sufENvL+D2O8JA0MGTibnAXF7Y7dFKOi1ZOOUE9qGDyfUs
+         4/WQ==
+X-Gm-Message-State: AOJu0YzeT9iuXKkmUm5DMbJQgJs2FK0xaAuVGVPApUFVu7DEKuRqJseJ
+	6z2xEVwtk3wLon74YfyKBQg8f0Bli0X7OOc9E+lXImSc0BI37zl/6oHF93Cgh79wksi3kh9h6ys
+	jQpE1LQ==
+X-Received: from pfam20.prod.google.com ([2002:aa7:8a14:0:b0:835:687a:d19d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:340c:b0:82c:6b46:271d
+ with SMTP id d2e1a72fcca58-83f33d0a2e5mr6269542b3a.48.1778884004123; Fri, 15
+ May 2026 15:26:44 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 15 May 2026 15:26:31 -0700
+Date: Fri, 15 May 2026 15:26:32 -0700
 In-Reply-To: <20260515222638.1949982-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260515222638.1949982-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260515222638.1949982-4-seanjc@google.com>
-Subject: [PATCH v3 03/10] KVM: x86: Set guest DR6 by kvm_queue_exception_p()
- in instruction emulation
+Message-ID: <20260515222638.1949982-5-seanjc@google.com>
+Subject: [PATCH v3 04/10] KVM: x86: Honor KVM_GUESTDBG_USE_HW_BP when
+ emulating MOV DR (in emulator)
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -70,103 +70,148 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Hou Wenlong <houwenlong.hwl@antgroup.com>
 
-Record DR6 in emulate_db() and use kvm_queue_exception_p() to set DR6
-instead of directly using kvm_set_dr6() in emulation, which keeps the
-handling of DR6 during #DB injection consistent with other code paths.
+When emulating a MOV DR instruction, honor KVM_GUESTDBG_USE_HW_BP when
+checking DR7.GD, and if there is a general-detect #DB, route it to host
+userspace as appropriate.  Consulting only the guest's actual DR7 causes
+KVM to fail to report a DR access to userspace (assuming the guest itself
+doesn't have DR7.GD=1).
 
-No functional change intended.
-
+Fixes: ae675ef01cd8 ("KVM: x86: Wire-up hardware breakpoints for guest debugging")
+Suggested-by: Lai Jiangshan <jiangshan.ljs@antgroup.com>
 Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
-[sean: fix e vs. p goof, add kvm_inject_emulated_db() right away]
+[sean: only expose effective DR7 to emulator, massage changelog]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/emulate.c     | 14 ++++----------
- arch/x86/kvm/kvm_emulate.h |  6 +++++-
- arch/x86/kvm/x86.c         | 10 +++++++++-
- 3 files changed, 18 insertions(+), 12 deletions(-)
+ arch/x86/kvm/emulate.c     |  2 +-
+ arch/x86/kvm/kvm_emulate.h |  1 +
+ arch/x86/kvm/x86.c         | 41 ++++++++++++++++++++++++++++++--------
+ 3 files changed, 35 insertions(+), 9 deletions(-)
 
 diff --git a/arch/x86/kvm/emulate.c b/arch/x86/kvm/emulate.c
-index c8c6cc0406d6..510244555a74 100644
+index 510244555a74..917a521c299f 100644
 --- a/arch/x86/kvm/emulate.c
 +++ b/arch/x86/kvm/emulate.c
-@@ -540,8 +540,9 @@ static int emulate_exception(struct x86_emulate_ctxt *ctxt, int vec,
- 	return X86EMUL_PROPAGATE_FAULT;
- }
- 
--static int emulate_db(struct x86_emulate_ctxt *ctxt)
-+static int emulate_db(struct x86_emulate_ctxt *ctxt, unsigned long dr6)
- {
-+	ctxt->exception.dr6 = dr6;
- 	return emulate_exception(ctxt, DB_VECTOR, 0, false);
- }
- 
-@@ -3847,15 +3848,8 @@ static int check_dr_read(struct x86_emulate_ctxt *ctxt)
+@@ -3848,7 +3848,7 @@ static int check_dr_read(struct x86_emulate_ctxt *ctxt)
  	if ((cr4 & X86_CR4_DE) && (dr == 4 || dr == 5))
  		return emulate_ud(ctxt);
  
--	if (ctxt->ops->get_dr(ctxt, 7) & DR7_GD) {
--		ulong dr6;
--
--		dr6 = ctxt->ops->get_dr(ctxt, 6);
--		dr6 &= ~DR_TRAP_BITS;
--		dr6 |= DR6_BD | DR6_ACTIVE_LOW;
--		ctxt->ops->set_dr(ctxt, 6, dr6);
--		return emulate_db(ctxt);
--	}
-+	if (ctxt->ops->get_dr(ctxt, 7) & DR7_GD)
-+		return emulate_db(ctxt, DR6_BD);
+-	if (ctxt->ops->get_dr(ctxt, 7) & DR7_GD)
++	if (ctxt->ops->get_eff_dr7(ctxt) & DR7_GD)
+ 		return emulate_db(ctxt, DR6_BD);
  
  	return X86EMUL_CONTINUE;
- }
 diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
-index 0abff36d0994..bb2a2aee0e13 100644
+index bb2a2aee0e13..33bfc9aa948e 100644
 --- a/arch/x86/kvm/kvm_emulate.h
 +++ b/arch/x86/kvm/kvm_emulate.h
-@@ -24,7 +24,11 @@ struct x86_exception {
- 	bool error_code_valid;
- 	u16 error_code;
- 	bool nested_page_fault;
--	u64 address; /* cr2 or nested page fault gpa */
-+	union {
-+		u64 address; /* cr2 or nested page fault gpa */
-+		unsigned long dr6;
-+		u64 payload;
-+	};
- 	u8 async_page_fault;
- 	unsigned long exit_qualification;
- };
+@@ -215,6 +215,7 @@ struct x86_emulate_ops {
+ 	ulong (*get_cr)(struct x86_emulate_ctxt *ctxt, int cr);
+ 	int (*set_cr)(struct x86_emulate_ctxt *ctxt, int cr, ulong val);
+ 	int (*cpl)(struct x86_emulate_ctxt *ctxt);
++	ulong (*get_eff_dr7)(struct x86_emulate_ctxt *ctxt);
+ 	ulong (*get_dr)(struct x86_emulate_ctxt *ctxt, int dr);
+ 	int (*set_dr)(struct x86_emulate_ctxt *ctxt, int dr, ulong value);
+ 	int (*set_msr_with_filter)(struct x86_emulate_ctxt *ctxt, u32 msr_index, u64 data);
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 8ddb878934ed..8a862d39302c 100644
+index 8a862d39302c..8b07bd2f8310 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -8976,11 +8976,18 @@ static void toggle_interruptibility(struct kvm_vcpu *vcpu, u32 mask)
+@@ -1601,6 +1601,14 @@ unsigned long kvm_get_dr(struct kvm_vcpu *vcpu, int dr)
+ }
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_get_dr);
+ 
++static unsigned long kvm_get_eff_dr7(struct kvm_vcpu *vcpu)
++{
++	if (vcpu->guest_debug & KVM_GUESTDBG_USE_HW_BP)
++		return vcpu->arch.guest_debug_dr7;
++
++	return vcpu->arch.dr7;
++}
++
+ int kvm_emulate_rdpmc(struct kvm_vcpu *vcpu)
+ {
+ 	u32 pmc = kvm_rcx_read(vcpu);
+@@ -8548,6 +8556,11 @@ static void emulator_wbinvd(struct x86_emulate_ctxt *ctxt)
+ 	kvm_emulate_wbinvd_noskip(emul_to_vcpu(ctxt));
+ }
+ 
++static unsigned long emulator_get_eff_dr7(struct x86_emulate_ctxt *ctxt)
++{
++	return kvm_get_eff_dr7(emul_to_vcpu(ctxt));
++}
++
+ static unsigned long emulator_get_dr(struct x86_emulate_ctxt *ctxt, int dr)
+ {
+ 	return kvm_get_dr(emul_to_vcpu(ctxt), dr);
+@@ -8930,6 +8943,7 @@ static const struct x86_emulate_ops emulate_ops = {
+ 	.get_cr              = emulator_get_cr,
+ 	.set_cr              = emulator_set_cr,
+ 	.cpl                 = emulator_get_cpl,
++	.get_eff_dr7         = emulator_get_eff_dr7,
+ 	.get_dr              = emulator_get_dr,
+ 	.set_dr              = emulator_set_dr,
+ 	.set_msr_with_filter = emulator_set_msr_with_filter,
+@@ -8976,23 +8990,36 @@ static void toggle_interruptibility(struct kvm_vcpu *vcpu, u32 mask)
  	}
  }
  
-+static void kvm_inject_emulated_db(struct kvm_vcpu *vcpu, unsigned long dr6)
-+{
-+	kvm_queue_exception_p(vcpu, DB_VECTOR, dr6);
-+}
+-static void kvm_inject_emulated_db(struct kvm_vcpu *vcpu, unsigned long dr6)
++static int kvm_inject_emulated_db(struct kvm_vcpu *vcpu, unsigned long dr6)
+ {
++	struct kvm_run *kvm_run = vcpu->run;
 +
- static void inject_emulated_exception(struct kvm_vcpu *vcpu)
++	if (vcpu->guest_debug & KVM_GUESTDBG_USE_HW_BP) {
++		kvm_run->debug.arch.dr6 = dr6 | DR6_ACTIVE_LOW;
++		kvm_run->debug.arch.pc = kvm_get_linear_rip(vcpu);
++		kvm_run->debug.arch.exception = DB_VECTOR;
++		kvm_run->exit_reason = KVM_EXIT_DEBUG;
++		return 0;
++	}
++
+ 	kvm_queue_exception_p(vcpu, DB_VECTOR, dr6);
++	return 1;
+ }
+ 
+-static void inject_emulated_exception(struct kvm_vcpu *vcpu)
++static int inject_emulated_exception(struct kvm_vcpu *vcpu)
  {
  	struct x86_exception *ex = &vcpu->arch.emulate_ctxt->exception;
  
--	if (ex->vector == PF_VECTOR)
-+	if (ex->vector == DB_VECTOR)
-+		kvm_inject_emulated_db(vcpu, ex->dr6);
-+	else if (ex->vector == PF_VECTOR)
+ 	if (ex->vector == DB_VECTOR)
+-		kvm_inject_emulated_db(vcpu, ex->dr6);
+-	else if (ex->vector == PF_VECTOR)
++		return kvm_inject_emulated_db(vcpu, ex->dr6);
++
++	if (ex->vector == PF_VECTOR)
  		kvm_inject_emulated_page_fault(vcpu, ex);
  	else if (ex->error_code_valid)
  		kvm_queue_exception_e(vcpu, ex->vector, ex->error_code);
-@@ -9025,6 +9032,7 @@ static void init_emulate_ctxt(struct kvm_vcpu *vcpu)
- 	ctxt->interruptibility = 0;
- 	ctxt->have_exception = false;
- 	ctxt->exception.vector = -1;
-+	ctxt->exception.payload = 0;
- 	ctxt->perm_ok = false;
+ 	else
+ 		kvm_queue_exception(vcpu, ex->vector);
++	return 1;
+ }
  
- 	init_decode_cache(ctxt);
+ static struct x86_emulate_ctxt *alloc_emulate_ctxt(struct kvm_vcpu *vcpu)
+@@ -9501,8 +9528,7 @@ int x86_emulate_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+ 				 */
+ 				WARN_ON_ONCE(ctxt->exception.vector == UD_VECTOR ||
+ 					     exception_type(ctxt->exception.vector) == EXCPT_TRAP);
+-				inject_emulated_exception(vcpu);
+-				return 1;
++				return inject_emulated_exception(vcpu);
+ 			}
+ 			return handle_emulation_failure(vcpu, emulation_type);
+ 		}
+@@ -9597,8 +9623,7 @@ int x86_emulate_instruction(struct kvm_vcpu *vcpu, gpa_t cr2_or_gpa,
+ 	if (ctxt->have_exception) {
+ 		WARN_ON_ONCE(vcpu->mmio_needed && !vcpu->mmio_is_write);
+ 		vcpu->mmio_needed = false;
+-		r = 1;
+-		inject_emulated_exception(vcpu);
++		r = inject_emulated_exception(vcpu);
+ 	} else if (vcpu->arch.pio.count) {
+ 		if (!vcpu->arch.pio.in) {
+ 			/* FIXME: return into emulator if single-stepping.  */
 -- 
 2.54.0.563.g4f69b47b94-goog
 
