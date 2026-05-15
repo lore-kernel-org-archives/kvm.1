@@ -1,166 +1,160 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D94E380FDD
-	for <kvm@vger.kernel.org>; Fri, 15 May 2026 17:06:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778864786; cv=pass; b=lM2zTWFr1/7PVyQBIPXTA9+YZrgtyD7oOOL9uFv7efHY8M2FTjIR4iQqlm+7DfgHwQmXiCqJB2S0+/CIOZHGTjxbLTboJKfEd7Pw/m015fkTNmpRs8XwxRjclSmvFgJ0ZI0HtAgpixTMr2dANqoXw8/xMR64COhrMQEfxsSmtzA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778864786; c=relaxed/simple;
-	bh=lqUqDVLjxlyvI4+IYr/wIjm6iDGhMzEfuVsVuO+6rh0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iGO8alb5eOuZcQn2BWfJzGVz7wx2zgZS/w4HH791Bc9MjmYd8vJG+chPEoYpXwjzZqWOJRgkFCvy2EeWans5OkUggRp2QbivMQqzyEk9R3yvUpzEj4vESrgYuIPUSW5DI5sHdDr78q2jVvGnpJAt48z0n38QxpZsR53K76j2ODo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hWKUzibl; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=BdCy40V1; arc=pass smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F208D380FFE;
+	Fri, 15 May 2026 17:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778864853; cv=none; b=o70NZ4m4YLi1hHZL8ojq/YC1aVzmt9xLz0JjLtfYz+sF27jOLGFKtmRhKVbCdtTsr9bm3xJKCeFKZtuUdXm17Wvrx/BKs3Y2DVkI0j3jH+x34D6ZCMK9oIbnoHjDgytyFIUoxkX0l50qEjlsJZ8PXb7SJSRnELR5aATb/gw/5mc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778864853; c=relaxed/simple;
+	bh=39lve1qd5GHhKudxaoQqdZfvVoQUMOHO5sM1M3CGWW0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=NIs7cpL+dllxGxmYBDiB6ieCHBo2Li1dy0i9SsMFpySY+LlHxsONu+qzMT30kFjOV/bplTK3RWXY+9hs3/ZqcNVxJc2JMypnnbZGuvz9fKoku9eetTM6QggmSRtI6kNHn3jwueLx5Dk4vG1MSv9j2QWRb9y9Mj4MrnUTfyiWa/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=e1SpugQd; arc=none smtp.client-ip=192.198.163.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hWKUzibl";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="BdCy40V1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778864784;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=iVoN6gZjiPtoPMWPDHhoDBkPrb0CWAvlW8FRBzCBYkk=;
-	b=hWKUzibleiBwVVf1DMncTWrfQTfPRBgUODvidfQ11NNnzXfIGH1VAE1VaZFykhzitKDx3a
-	HWGMZy6Ec/51Cygr+beDdi9u+ymMILGKBBtQegusuWy4/nVen6LjU5plP/mA3YT2EY9p4J
-	pc0+LlF2R02iBxNiH8WpTxOoVNXK9lI=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-647-AnNKzEmIOJCbVsmH4pqJTg-1; Fri, 15 May 2026 13:06:22 -0400
-X-MC-Unique: AnNKzEmIOJCbVsmH4pqJTg-1
-X-Mimecast-MFC-AGG-ID: AnNKzEmIOJCbVsmH4pqJTg_1778864781
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-43d789cebcfso774529f8f.1
-        for <kvm@vger.kernel.org>; Fri, 15 May 2026 10:06:21 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1778864781; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IUyV4hlQjx/BhCL9/WzGl3WtNNWsXKQ3Ss0ut6giumxKchQ7gcLyrk/pKKISqEU9m2
-         vrU3XjgojHwUnCjXFwmOPvKmmvXnFAlC7scpi4eWZDLHGi19Z5FdsTW7m7p3VsQsG/rm
-         EbKLb6xnO9gH7G3Gz/dgmbIrPtX5vx39i1HzCXl/Tsg8vEjoP2XrZB4SB6jVNhgr4FnN
-         a9iI5l4F2onq8zxcD7B7C06TyHtzI8PM7HXeovx6R+/D3k2FmaVXkBY9nhelFBpXsq/l
-         dTbAScJMOLgQRW+Z2L9PUBMTmKhlwUErtDXCfeh6Yn/MJ+ZAxsQS1JSw12RT9wKYnuIx
-         TV+A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=iVoN6gZjiPtoPMWPDHhoDBkPrb0CWAvlW8FRBzCBYkk=;
-        fh=by5amsj26I+1TOCyiIl3lgYnL/ljkwhqLVmILn7eya8=;
-        b=MoCbc/cQhrbyT/OtvSQqPfAdTs6NCvT2eGyVs0i887G2UVPQtoX39fKvQU2q8tYOxa
-         /iQBUx+LVcRH5XaMhwCDR92M+EyaCNFsVgCaj4QbUTflmElRUffoTBdwcwz/ICSWA0nu
-         3+I9O6CWpo9L2IrCrrEFHuhvqVJF3DPuWc1+l5VDd3PjDsNzYOmRiu2N7xdPN4jakNTC
-         b+pTF/0UQiOLWdiR50hJ/9baF9oJ6oJzYCj2BlA45v/N/7h8zVweOOk28GSIRMPPWp8m
-         yhwJXz+yPEnFXTsG3ZlK7t/h3DMSl2VZIm0MRcsIIl+QIOo8ouK0hHJFgkx/kgWUWnJg
-         kv9w==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778864781; x=1779469581; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iVoN6gZjiPtoPMWPDHhoDBkPrb0CWAvlW8FRBzCBYkk=;
-        b=BdCy40V1YyDK6ojPH1tzENj0xO/s5JKi4xzuxzNnPTJ50x42MRjWAw/mvHivdSvBHR
-         CZE389lK/D90E9kFwyG7k6ccRw1aP0ByeAdRCzo77S/774SjOz6HvUc++M5dWUAPLCMu
-         r8Lps3QfUFjO4mIlqQLEcmEB+zExfnmICYJZq1CU9kO+LSsy2BSFYAggtMg2wHVAuNNI
-         FoUF2yr4COH0mSH1I+dBJKi1cC4O5Uy3yW+WECUHfqWmc9C5pMdfZpXpKhCP5XMd4n0C
-         rkeWZGWDuuCOsi5aHL/0a+cpXY1quMOIqptoYJzBIBedWhwVzHy2TXaaltNMDx13hHpH
-         SEsg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778864781; x=1779469581;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=iVoN6gZjiPtoPMWPDHhoDBkPrb0CWAvlW8FRBzCBYkk=;
-        b=AsPuUStwoXOO9HEjKU+AP3yf0o8TpqALM+C5Wf36c6kVj6K+L0+08GuRqLpKY80QFO
-         GchNk5JzarmrUWUHV4GHOWuk/XhiQDGUi0mHxDszEDvc98EPTbqQkDXdANzA0OKScOkH
-         W8ZWAJLLRcQ7LUfHCk6djwiGtE47gBFdwvqtnSWNe/pL0idZK6BmgLc4DHOlD2Ckh49K
-         2WcxGVNTlzYA/AQbADKhynIJYWMyMmgAewVQmoBp7WjHSz/TWDGMintzyBP/VZC95Q2+
-         1GbOuUEKb5DmIeWC+abnm+jzY9DwatYwfL0gp/ujI7icDuRO+/cpQ9AWiA27tHhBtzZK
-         zj4w==
-X-Forwarded-Encrypted: i=1; AFNElJ9dr6txe8pq0P9ThetL3ohKDztlF09/uo7Ks2NxDoa09obfvQpBSXGUfWyEfR6qOL6hGYY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHpU1JPTlM+7hESjLsPM8FTe0rjA/nwKl3nAlEQ/2+EK3HKwiN
-	eDXR2nY1bZxuWcE28DYdDXxZ3b3JU7WX5YIkO2IbfDQ+gz1uYOPHzstNb7zMmHBGxJpp1IEj9c3
-	D1m77HC68JiK9rjOZr17hIQDywPR7ZK/EQxNkNqWGAlkVknbd8kXgML1Y0jLdlqysWPp0vV92Iw
-	ODRzRZ2IXtTFliBBWQ3HgOtLP4e62S
-X-Gm-Gg: Acq92OHAeZBl4aPIod0pO+Dm/cRZH21lA5jmfhbSy8mxf3JBeKvivxwUo3YSGxvOF5B
-	HMJvsLubDj3h6jylIlc5hQfaEthMhOCO5POhDWcSD7Yp3ZVieyCEiczDiN45jQY0hNbcqkhyT3W
-	wNePDl9ZQJgn77R0Hioso7mZcZXMJ4w9ULnx7t1KuSTRn77bGbG8am9C0AGYEDeIacy0TyY/1is
-	P2PYbgYj+IfezjWIf/Qq82g2ZrAdDcDqy4j1mj0/pol5xuCKu72mYakuXbgxqqswqlbzaQfoggV
-	wn5oNGOH
-X-Received: by 2002:a05:600c:570a:b0:48f:c649:e6fa with SMTP id 5b1f17b1804b1-48fd636a2f4mr92612245e9.15.1778864781015;
-        Fri, 15 May 2026 10:06:21 -0700 (PDT)
-X-Received: by 2002:a05:600c:570a:b0:48f:c649:e6fa with SMTP id
- 5b1f17b1804b1-48fd636a2f4mr92611925e9.15.1778864780572; Fri, 15 May 2026
- 10:06:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="e1SpugQd"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778864852; x=1810400852;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=39lve1qd5GHhKudxaoQqdZfvVoQUMOHO5sM1M3CGWW0=;
+  b=e1SpugQdqTZOc8yAZAOy0CUYoXt5vesSgU9yBfuCfL/YWudPcWo1CgSW
+   V9ckeSM2TaLpJp6QvJm5iCFnRa9R/vCB4h+NsTTm6W6oQ6TXlh5lW+4yd
+   bMRzjeIQz9jgh0oB/pT4xaxhRpClAUjkZwHuUKYrU7LWQ3xI4UFUzbjyW
+   LB8NHZ3B2u306S8Ehdl4dznVHw+ZYE6XjmjLPaSBxBehprHFDLUq+yj0d
+   QGmn8e+cliLM16sOCxmoAH9ftm2qOhTVPOKuesI7Nd7RT7UQ6gs401t9t
+   EKI/u5Jp0kzYf38bsEPpKROOAgvWeGwWDWKnuOui4QLlL0dbiarB/pEw5
+   A==;
+X-CSE-ConnectionGUID: EyWSZjxKQEeYyh7uMFpAxw==
+X-CSE-MsgGUID: g92T8WYiQXW6AeqGkyN3tQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="67353591"
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
+   d="scan'208";a="67353591"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 10:07:31 -0700
+X-CSE-ConnectionGUID: Z1hic7hUSda7XeybceUR4Q==
+X-CSE-MsgGUID: F8YRZUOLTM+DfUaTHTg0Ww==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
+   d="scan'208";a="234488612"
+Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.108.201]) ([10.125.108.201])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 10:07:29 -0700
+Message-ID: <6f2ea784-3fb2-4e91-ab8c-b8f26d591f38@intel.com>
+Date: Fri, 15 May 2026 10:07:30 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260513174948.726812-1-pbonzini@redhat.com> <20260513174948.726812-2-pbonzini@redhat.com>
- <agYi2Lc7UbGiw_zL@google.com>
-In-Reply-To: <agYi2Lc7UbGiw_zL@google.com>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Fri, 15 May 2026 19:06:09 +0200
-X-Gm-Features: AVHnY4JIx06im2uj2tehz4wrt_yn17jb6nWdM9LHLcU-NhmELFsRS4h7mRzeRoQ
-Message-ID: <CABgObfZk5mx1SLf-WgehYckSAoFvnCdWL=Xpt_fHFJu2jVVj6A@mail.gmail.com>
-Subject: Re: [PATCH 1/3] KVM: VMX: Macrofy GPR swapping in __vmx_vcpu_run()
-To: Sean Christopherson <seanjc@google.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	chang.seok.bae@intel.com, x86@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 06/23] x86/virt/seamldr: Introduce a wrapper for
+ P-SEAMLDR SEAMCALLs
+To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ linux-rt-devel@lists.linux.dev
+Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
+ ira.weiny@intel.com, kai.huang@intel.com, kas@kernel.org,
+ nik.borisov@suse.com, paulmck@kernel.org, pbonzini@redhat.com,
+ reinette.chatre@intel.com, rick.p.edgecombe@intel.com, sagis@google.com,
+ seanjc@google.com, tony.lindgren@linux.intel.com, vannapurve@google.com,
+ vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com,
+ yan.y.zhao@intel.com, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>
+References: <20260513151045.1420990-1-chao.gao@intel.com>
+ <20260513151045.1420990-7-chao.gao@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260513151045.1420990-7-chao.gao@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Thu, May 14, 2026 at 9:30=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
->
-> On Wed, May 13, 2026, Paolo Bonzini wrote:
-> > From: "Chang S. Bae" <chang.seok.bae@intel.com>
-> >
-> > Convert the repeated register save/restore sequences into macros to
-> > simplify the VM entry code.
->
-> This is not simpler.  Maybe it ends up being less verbose, but I don't se=
-e how
-> anyone can claim this is simpler.
+On 5/13/26 08:09, Chao Gao wrote:
+> The TDX architecture uses the "SEAMCALL" instruction to communicate with
+> SEAM mode software. Right now, the only SEAM mode software that the kernel
+> communicates with is the TDX module. But, there is actually another
+> component that runs in SEAM mode but it is separate from the TDX module:
+> the persistent SEAM loader or "P-SEAMLDR". Right now, the only component
+> that communicates with it is the BIOS which loads the TDX module itself at
+> boot. But, to support updating the TDX module, the kernel now needs to be
+> able to talk to it.
+> 
+> P-SEAMLDR SEAMCALLs differ from TDX module SEAMCALLs in areas such as
+> concurrency requirements. Add a P-SEAMLDR wrapper to handle these
+> differences and prepare for implementing concrete functions.
+> 
+> Use seamcall_prerr() (not '_ret') because current P-SEAMLDR calls do not
+> use any output registers other than RAX.
+> 
+> Note that unlike P-SEAMLDR, there is also a non-persistent SEAM loader
+> ("NP-SEAMLDR"). This is an authenticated code module (ACM) that is not
+> callable at runtime. Only BIOS launches it to load P-SEAMLDR at boot;
+> the kernel does not need to interact with it for runtime update.
 
-Right - it is not simpler but it is (a lot) more compact and
-especially less error prone.
+Nit: the "main act" solution statement for this changelog is:
 
-BTW, this part:
+	Add a P-SEAMLDR wrapper to handle these differences and prepare
+	for implementing concrete functions.
 
-> > +#ifdef CONFIG_X86_64
-> > +     .ifc \r32,%r8d
-> > +     \opd =3D 8
-> > +     .endif
-> > +     .ifc \r32,%r9d
-> > +     \opd =3D 9
-> > +     .endif
-> > +     .ifc \r32,%r10d
-> > +     \opd =3D 10
-> > +     .endif
-> > +     .ifc \r32,%r11d
-> > +     \opd =3D 11
-> > +     .endif
-> > +     .ifc \r32,%r12d
-> > +     \opd =3D 12
-> > +     .endif
-> > +     .ifc \r32,%r13d
-> > +     \opd =3D 13
-> > +     .endif
-> > +     .ifc \r32,%r14d
-> > +     \opd =3D 14
-> > +     .endif
-> > +     .ifc \r32,%r15d
-> > +     \opd =3D 15
-> > +     .endif
-> > +#endif
+What's more important, that ^?
 
-is dead and can be removed.
+Or:
 
-Paolo
+	Use seamcall_prerr() (not '_ret') because current P-SEAMLDR
+	calls do not use any output registers other than RAX.
 
+?
+
+Now, what is in a more prominent place in the changelog?
+
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
