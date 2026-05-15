@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE4FD3D646D;
-	Fri, 15 May 2026 09:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3316C311979;
+	Fri, 15 May 2026 09:31:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778837192; cv=none; b=skfjnGoll3KEgfhkpr28xUB0VVHUzTFOyWNORHPviTxDN0HWEwHFygR3Xo2K4jeJDrDpppJdmQBti/FlCWwupqG9dt+PFF4KSriKPAbwcdw818U3+FlRc+nbplh96qaxoyzTvTX7ZW7+xMHSBzpG/E4v6dhEa/SHZzpspBM/DUU=
+	t=1778837500; cv=none; b=Y9/S3q1tul90GbwfZb8SItx5w173+3Z7ons7IcsDe7FtQHXE4vngunJ+VBCznN4H0WheLPe2c3QNTD93ArOM7S2+tWEDbG3zzM2tteW2EWQzA4aBI/hZQcWk1eanKMmfBu96KX+C3183ta1Zw09m1yo4Idsg75v0VAv9hSRSsgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778837192; c=relaxed/simple;
-	bh=7E11nnfPn4JbqJmKnXNMEf6zZwxy967QlJeMvDKWHUs=;
+	s=arc-20240116; t=1778837500; c=relaxed/simple;
+	bh=uCrBN2i8MRNXIZzYEXBbFXHwxmGM2py31n2aAD0Qz/A=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AEQAKQSG+zkxNP6zPOD5lkp48zZWhQzGur865DaVRKLLSmlUb3r8mPWSsGMedccLNRMMoYVMoCQRvgGIdjJphU1wVCXv2I/XIIhHvQh/yPHcIvIJpbC+xyAtLhe6KnxKxoGT6JVYu6XwMbkFenAGuOWE5gK0WvvRNops77J3R/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YoZCQ8De; arc=none smtp.client-ip=192.198.163.8
+	 In-Reply-To:Content-Type; b=R2sRYsEN10vSIe967kY4orY+BRwsY+WHEL4A2BZM/UhK3FA5R168XWLs8OKMbuoXIegnnZmyAxFvdFZ0g+Dvtrg78MKelEU8xErV17fGpFGsOtu3BaKaXCSy+Uy3xKMrGa2xrBhw9a+auOcja73bQydWj0YoaZIsEcI8adtMKsc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ehMozInE; arc=none smtp.client-ip=192.198.163.8
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YoZCQ8De"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ehMozInE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778837191; x=1810373191;
+  t=1778837499; x=1810373499;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=7E11nnfPn4JbqJmKnXNMEf6zZwxy967QlJeMvDKWHUs=;
-  b=YoZCQ8DeRoZRbTHUinvqozaCXjPBLj2rj/U81TBFDIlGVP4YIlRMnRIO
-   j6dJM1TsBS/I5OB7CJm6bN5z+otVJzRf7HABnXRckr0WOa8vN5uYRVuIZ
-   Jr6541X6CprygWgpbeYIihwvAxS9St3BEAmxuXjAj+DGGNQg2zpryuNW1
-   cOF/Ou7cv3ywc+Z8SKzp5e7upRvUffDaeF/VNqcgsM1YIFhTpKZOg6X9+
-   JcQQ5ZrUHF+xu8JYNpwCk7R0sEGkRWSTRfgL8nLAFaSNctdsWXBopYDYY
-   4/SayPGP80K5efObPYzqX3KT22dFXyCSmJoGUmwOIyuY+gGkDWEW8vxip
-   w==;
-X-CSE-ConnectionGUID: rBnzmt0rS4abOXaFTRNxPg==
-X-CSE-MsgGUID: shlcTVFRRsSbAM5GHCUTkQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="97364957"
+  bh=uCrBN2i8MRNXIZzYEXBbFXHwxmGM2py31n2aAD0Qz/A=;
+  b=ehMozInECR5/13lBoQsDZc4EyxR9SFK7mj7nhHj7/8JCrGXILeF2ICJQ
+   6j0DG3gVs+RJiSb9IyH2C0WjRmXZQ9dvEhw0FGTzlJ+ttoPUGJHQ8/5m6
+   F5FWuBl1W7L+6AMtFZlHBKQl/MwP/QUOQG5Zp+iLmreTX6JKjUrLVedNt
+   qLGiLpMMKYOToEFSNAurrsd+sNa+mANvk+trMOITDtywhDNNuC/4GdpTP
+   pXw9BhWM+qNhH7esbQBdluOI7RilJzJqgBswwAS5TeCySGb6lys+Az2In
+   JyGlLM6DNQrDrPbhljqhEE95NC+Vny/UQmGqXMvrfxjlGNSXJZkW4bel+
+   g==;
+X-CSE-ConnectionGUID: VpGfTs8bQYqaE86OLZXgGg==
+X-CSE-MsgGUID: Xv8zlgzQRISK+PruiWnu6w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="97365247"
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="97364957"
+   d="scan'208";a="97365247"
 Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 02:26:30 -0700
-X-CSE-ConnectionGUID: 3lMQwoCUTYukRwTZmgXYHA==
-X-CSE-MsgGUID: V45DRmfKRiq0X9827hNd3w==
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 02:31:39 -0700
+X-CSE-ConnectionGUID: PiRg6vWSRm+o+6fbqS2aOg==
+X-CSE-MsgGUID: +TKPNNNMRSeNtMfLmGwIsQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="268993390"
+   d="scan'208";a="268994395"
 Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.240.207]) ([10.124.240.207])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 02:26:27 -0700
-Message-ID: <07568ad3-f629-46a8-9ff7-a5551a7e30fc@linux.intel.com>
-Date: Fri, 15 May 2026 17:26:24 +0800
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 02:31:35 -0700
+Message-ID: <a4392de4-16ab-4a4d-a79f-966ab9e5061e@linux.intel.com>
+Date: Fri, 15 May 2026 17:31:32 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,8 +52,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 11/15] Revert "KVM: VMX: Read 32-bit GPR values for
- ENCLS instructions outside of 64-bit mode"
+Subject: Re: [PATCH v2 12/15] KVM: x86: Harden is_64_bit_hypercall() against
+ bugs on 32-bit kernels
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
  Vitaly Kuznetsov <vkuznets@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
@@ -63,57 +63,48 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
  x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
  Yosry Ahmed <yosry@kernel.org>, Kai Huang <kai.huang@intel.com>
 References: <20260514215355.1648463-1-seanjc@google.com>
- <20260514215355.1648463-12-seanjc@google.com>
+ <20260514215355.1648463-13-seanjc@google.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260514215355.1648463-12-seanjc@google.com>
+In-Reply-To: <20260514215355.1648463-13-seanjc@google.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 
 On 5/15/2026 5:53 AM, Sean Christopherson wrote:
-> Now that kvm_<reg>_read() are mode aware, i.e. are functionally equivalent
-> to kvm_register_read(), revert aback to the less verbose versions.
+> Unconditionally return %false for is_64_bit_hypercall() on 32-bit kernels
+> to guard against incorrectly setting guest_state_protected, and because
+> in a (very) hypothetical world where 32-bit KVM supports protected guests,
+> assuming a hypercall was made in 64-bit mode is flat out wrong.
 > 
-> No functional change intended.
-> 
-> This reverts commit 60919eccf6764c71cef31a1afeaa1a36b8e5ab85.
-> 
-> Acked-by: Kai Huang <kai.huang@intel.com>
+> Reviewed-by: Kai Huang <kai.huang@intel.com>
 > Signed-off-by: Sean Christopherson <seanjc@google.com>
 
 Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
 
 > ---
->  arch/x86/kvm/vmx/sgx.c | 10 +++++-----
->  1 file changed, 5 insertions(+), 5 deletions(-)
+>  arch/x86/kvm/regs.h | 4 ++++
+>  1 file changed, 4 insertions(+)
 > 
-> diff --git a/arch/x86/kvm/vmx/sgx.c b/arch/x86/kvm/vmx/sgx.c
-> index 2f5a1c58f3c5..876dc2814108 100644
-> --- a/arch/x86/kvm/vmx/sgx.c
-> +++ b/arch/x86/kvm/vmx/sgx.c
-> @@ -225,8 +225,8 @@ static int handle_encls_ecreate(struct kvm_vcpu *vcpu)
->  	struct x86_exception ex;
->  	int r;
+> diff --git a/arch/x86/kvm/regs.h b/arch/x86/kvm/regs.h
+> index 52bed14f43e3..d4d2a47a4968 100644
+> --- a/arch/x86/kvm/regs.h
+> +++ b/arch/x86/kvm/regs.h
+> @@ -39,12 +39,16 @@ static inline bool is_64_bit_mode(struct kvm_vcpu *vcpu)
 >  
-> -	if (sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RBX), 32, 32, &pageinfo_gva) ||
-> -	    sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RCX), 4096, 4096, &secs_gva))
-> +	if (sgx_get_encls_gva(vcpu, kvm_rbx_read(vcpu), 32, 32, &pageinfo_gva) ||
-> +	    sgx_get_encls_gva(vcpu, kvm_rcx_read(vcpu), 4096, 4096, &secs_gva))
->  		return 1;
->  
+>  static inline bool is_64_bit_hypercall(struct kvm_vcpu *vcpu)
+>  {
+> +#ifdef CONFIG_X86_64
 >  	/*
-> @@ -302,9 +302,9 @@ static int handle_encls_einit(struct kvm_vcpu *vcpu)
->  	gpa_t sig_gpa, secs_gpa, token_gpa;
->  	int ret, trapnr;
+>  	 * If running with protected guest state, the CS register is not
+>  	 * accessible. The hypercall register values will have had to been
+>  	 * provided in 64-bit mode, so assume the guest is in 64-bit.
+>  	 */
+>  	return vcpu->arch.guest_state_protected || is_64_bit_mode(vcpu);
+> +#else
+> +	return false;
+> +#endif
+>  }
 >  
-> -	if (sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RBX), 1808, 4096, &sig_gva) ||
-> -	    sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RCX), 4096, 4096, &secs_gva) ||
-> -	    sgx_get_encls_gva(vcpu, kvm_register_read(vcpu, VCPU_REGS_RDX), 304, 512, &token_gva))
-> +	if (sgx_get_encls_gva(vcpu, kvm_rbx_read(vcpu), 1808, 4096, &sig_gva) ||
-> +	    sgx_get_encls_gva(vcpu, kvm_rcx_read(vcpu), 4096, 4096, &secs_gva) ||
-> +	    sgx_get_encls_gva(vcpu, kvm_rdx_read(vcpu), 304, 512, &token_gva))
->  		return 1;
->  
->  	/*
+>  static __always_inline unsigned long kvm_reg_mode_mask(struct kvm_vcpu *vcpu)
 
