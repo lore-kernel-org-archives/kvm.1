@@ -1,183 +1,69 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6193B3CC31A
-	for <kvm@vger.kernel.org>; Fri, 15 May 2026 03:08:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+Received: from mail.8bytes.org (mail.8bytes.org [85.214.250.239])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F28A33F4132;
+	Fri, 15 May 2026 05:33:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=85.214.250.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778814516; cv=none; b=jaQ9Ol3IR4pj8rdHvSit7ybrVNuhWwKn4NgM/AYjPDSOPJyPwiRYwYqvV7yFaipyFDDQkjMjcf307PpVjbGI510l/n+RUh3t3oEx/K9nG3YVmmAcvrYD4LnU5er33raf8mkR6M2wLWXBwq9FKGQXbSqh2jAFyg9u5znMz835ES4=
+	t=1778823220; cv=none; b=E9jdLd8T5ENf6FvjBkNju5Rh5ykawqL4RyzW4SIRUMNOCqq4Jk6VgsUdY/5o8vrTm2RFEVBJdOkcHYeGtkfpBDMmTKLZQuf2QZmrYUxw3N0VbwB1KTOnaNEAisciAnzgfHr2Brwwv9RBzGMCZdg1MxBLc7o+gZ1uXovueCQCLSU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778814516; c=relaxed/simple;
-	bh=kLD+I9eo33kRG3PDWnTOLFZSKdMcfzGS2L+Jr9+NWSs=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=fPuguJSHr6IPcpy3zga7Pw8DAIYaUUMuJXO8S3YLbyEjKu89QlpjtTr3Sh8dQguWQkdttIxFcvmB3dA3WHfVwaSaQTSbsxTIprFxAEyq+bfdE/FNC/qjn4PQhrfpsmx30ZEFrIETSJluC1LMY8Heq6DZAT7bNvZbJKBSqwS0rGY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DwA/cypy; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
+	s=arc-20240116; t=1778823220; c=relaxed/simple;
+	bh=IdE+5QckUKJsOY0SqFgq0B6ndKFhdOzLoIpIy9ewB1Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bkuebsJQR5WlDMN1ma8+ocsZ27CnptYzb673FFAO0pKlHPkd2mmzHx4TinXx5GHyOlvv6nQzqSUUrwt/PQ4Q80UMCRPvCElIyjB1JJHlqy0y4mK24vMruv/2i3gkQKGSctJbZxiwK7/x+Fum8U6HloTP4kxe804FX5R9ykibWac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org; spf=pass smtp.mailfrom=8bytes.org; dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b=OXfvDGUC; arc=none smtp.client-ip=85.214.250.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=8bytes.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=8bytes.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DwA/cypy"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82fa860e71eso4950670b3a.0
-        for <kvm@vger.kernel.org>; Thu, 14 May 2026 20:08:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778814513; x=1779419313; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=YP6404agzADDEKIjhMvd9oZfk6uB23Yv+vcEpGou2q4=;
-        b=DwA/cypyfizFXHCj32EGfIZMDr9JaZ1jX+LgnOJ33tITJA4ccRo5b7SYwr3PLlqbcS
-         w2XSHu2sO/2eTvicFn9UuE9ghfMz6MPljCo4b4pgHNrHVZQQnre58jN6KpN9kXYLLxAK
-         LHckqX4kFVID03UymJw7WLojnfsOsrCYCtrIN2nDoeQYi+ElutslUv04Pz9wUtKlhLx9
-         O32LnXgZE8X9CbbixgOwauehnhrYDP++PY61KreUPflADnvGFemXaNIqhPaGkp0eSV8c
-         IpGjtUjK+As/rWpJZWdQVKG0M1Cya5VB7Q/w5aRhUzNgs0sZnJEpf/OZUY0rAWVhhZmn
-         8krA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778814513; x=1779419313;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=YP6404agzADDEKIjhMvd9oZfk6uB23Yv+vcEpGou2q4=;
-        b=dl0IAqdEZJBMDK3Q4245FLOSoZ3zuD1ffmu4A91iJqy6wr26p7VjFmJLGOv6/Vhofl
-         fNKGar4NzoaTwvD6ip+FoU9T1t5bqujYNHBR04WZBFp47hEpgN08R4ahxv51hov9x5L+
-         7eaZchs9QhKg6vjFOmenhIp5usqHPe0VeHG0rZyNPXKPWUdQMro/nEiZvaHjsgnM8XdS
-         SKXIh80YlGC/Hfv02MnYBdI0kAiiQEXQF0ddCREfKHV+z+awP1aNwOIIHUlCezGN+Lv7
-         mkBWuHSo7d+5yEk5ND/apq1ThlqFc8vKcSnYRm7fEBAThV1FUbofbHzUpnPzZvmy0BAd
-         ciYw==
-X-Forwarded-Encrypted: i=1; AFNElJ9Wa3yTx5Qu/IPGHuD71+FGvikc1NWjKnc8R3ZUPNKeKNXvJ/0Nd2HuBzN9BImtbdCmZM8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJo9RlkZclhFblwR4iI+Lj+/01z6MsjbDHYgbRJJ53DMs8g70F
-	SRmKeVKyu4jua92u8onT1lDvoEyhClYmlCYLqNNlqrYkGBchN03ZHPlfDcRtTXeKhnVYGZiJblc
-	QIVBBHNLO
-X-Received: from pfqp7.prod.google.com ([2002:aa7:9e87:0:b0:835:429c:76df])
- (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1709:b0:82f:9aa:d63d
- with SMTP id d2e1a72fcca58-83f33d3337amr2108146b3a.49.1778814512769; Thu, 14
- May 2026 20:08:32 -0700 (PDT)
-Date: Fri, 15 May 2026 03:07:58 +0000
+	dkim=pass (2048-bit key) header.d=8bytes.org header.i=@8bytes.org header.b="OXfvDGUC"
+Received: from 8bytes.org (p4ffe1d30.dip0.t-ipconnect.de [79.254.29.48])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mail.8bytes.org (Postfix) with ESMTPSA id 141E31C4468;
+	Fri, 15 May 2026 07:33:38 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=8bytes.org;
+	s=default; t=1778823218;
+	bh=IdE+5QckUKJsOY0SqFgq0B6ndKFhdOzLoIpIy9ewB1Y=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OXfvDGUCpdzhSStQ+5FNvvKVKIb5bfI/tra6RxWRl0Fr2cYISLt/6jKIL/8zFFMUw
+	 vWsx/uVSMjivtppJdFHNbmf+jv4wMl9AhP9Qx7u1fu63p/02JLQPWoQqnZSwbLsO1E
+	 cq+s6oAEbTMsFV3FwtxlK7Ql6h72snP3f6N0WpBbnRAnIXZBke5ErYsyAkVNjy9Chk
+	 doFiCUTBPkwDzwfXcwwrkSfvBt1w/faR29lPievpO6aqHngZX3zZu1nZArv9LmwKoo
+	 x6BReTY5Lde7ZIuxqYXMOqAwIp9qSU4+y9gzQ71IMATyL/PSBipmyuCrT18rqYd2qd
+	 olhFsvpT6ZoNg==
+Date: Fri, 15 May 2026 07:33:37 +0200
+From: =?utf-8?B?SsO2cmcgUsO2ZGVs?= <joro@8bytes.org>
+To: fangyu.yu@linux.alibaba.com
+Cc: will@kernel.org, robin.murphy@arm.com, pjw@kernel.org, 
+	palmer@dabbelt.com, aou@eecs.berkeley.edu, alex@ghiti.fr, jgg@ziepe.ca, 
+	kevin.tian@intel.com, jgg@nvidia.com, nutty.liu@hotmail.com, guoren@kernel.org, 
+	kvm@vger.kernel.org, iommu@lists.linux.dev, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, kernel test robot <lkp@intel.com>
+Subject: Re: [PATCH] iommupt: Fixup build warning by using BIT_ULL() for
+ RISCVPT_NC/IO
+Message-ID: <yol3yy64tafo77wp25mrvsehceovq5radmt6wdoc4jz5alsoqj@awpnkmdnzxox>
+References: <20260512144330.91113-1-fangyu.yu@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260515030758.1203256-1-jrhilke@google.com>
-Subject: [PATCH v3] vfio: selftests: Find devices that have VFIO selftest drivers
-From: Josh Hilke <jrhilke@google.com>
-To: Alex Williamson <alex@shazbot.org>, David Matlack <dmatlack@google.com>
-Cc: Sean Christopherson <seanjc@google.com>, Vipin Sharma <vipinsh@google.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Josh Hilke <jrhilke@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260512144330.91113-1-fangyu.yu@linux.alibaba.com>
 
-Add a new script, list_devices.sh, which prints out the
-segment:bus:device.function (SBDF) numbers and names of devices on a machine that have a
-VFIO selftest driver. This makes it easier to determine if the system is
-capable of running VFIO selftests.
+On Tue, May 12, 2026 at 10:43:30PM +0800, fangyu.yu@linux.alibaba.com wrote:
+> From: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+> 
+> Fix build warning on 32-bit configurations by using BIT_ULL() for
+> RISCVPT_NC and RISCVPT_IO.
+> 
+> Fixes: 6c21eb174c6c ("iommupt: Encode IOMMU_MMIO/IOMMU_CACHE via RISC-V Svpbmt bits")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202605121350.wZxB51k0-lkp@intel.com/
+> Signed-off-by: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+> ---
+>  drivers/iommu/generic_pt/fmt/riscv.h | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Includes a -q (quiet) argument which prints just the SBDFs so that the
-output can be piped into tools/testing/selftests/vfio/script/setup.sh to
-bind the devices to VFIO to use in VFIO selftests.
-
-Examples:
-
-$ ./list_devices.sh
-0000:6a:01.0 - Intel SPR DSA (8086:0b25)
-0000:6f:01.0 - Intel SPR DSA (8086:0b25)
-0000:74:01.0 - Intel SPR DSA (8086:0b25)
-0000:79:01.0 - Intel SPR DSA (8086:0b25)
-0000:e7:01.0 - Intel SPR DSA (8086:0b25)
-0000:ec:01.0 - Intel SPR DSA (8086:0b25)
-0000:f1:01.0 - Intel SPR DSA (8086:0b25)
-0000:f6:01.0 - Intel SPR DSA (8086:0b25)
-
-$ ./list_devices.sh -q
-0000:6a:01.0
-0000:6f:01.0
-0000:74:01.0
-0000:79:01.0
-0000:e7:01.0
-0000:ec:01.0
-0000:f1:01.0
-0000:f6:01.0
-
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Josh Hilke <jrhilke@google.com>
----
-Changelog:
-
-v3:
-- Show the names of the devices (Sean)
-
-v2:
-- Move the functionality to discover devices from setup.sh into its own script (Sean)
-- Omit the patch which automates binding devices to VFIO (Sean, David)
-
-v2: https://lore.kernel.org/kvm/20260414230943.41198-2-jrhilke@google.com/
-v1: https://lore.kernel.org/kvm/20260409015139.2800185-1-jrhilke@google.com/
-
- tools/testing/selftests/vfio/Makefile         |  1 +
- .../selftests/vfio/scripts/list_devices.sh    | 46 +++++++++++++++++++
- 2 files changed, 47 insertions(+)
- create mode 100755 tools/testing/selftests/vfio/scripts/list_devices.sh
-
-diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
-index 0684932d91bf..777f91f09057 100644
---- a/tools/testing/selftests/vfio/Makefile
-+++ b/tools/testing/selftests/vfio/Makefile
-@@ -15,6 +15,7 @@ TEST_GEN_PROGS += vfio_pci_driver_test
- 
- TEST_FILES += scripts/cleanup.sh
- TEST_FILES += scripts/lib.sh
-+TEST_FILES += scripts/list_devices.sh
- TEST_FILES += scripts/run.sh
- TEST_FILES += scripts/setup.sh
- 
-diff --git a/tools/testing/selftests/vfio/scripts/list_devices.sh b/tools/testing/selftests/vfio/scripts/list_devices.sh
-new file mode 100755
-index 000000000000..8e7cbe5b7449
---- /dev/null
-+++ b/tools/testing/selftests/vfio/scripts/list_devices.sh
-@@ -0,0 +1,46 @@
-+#!/bin/bash
-+# SPDX-License-Identifier: GPL-2.0-or-later
-+
-+# List of devices which have a VFIO selftest driver
-+readonly DEVICES=(
-+	"8086:0b25,Intel SPR DSA"
-+	"8086:11fb,Intel GNR-D DSA"
-+	"8086:1212,Intel DR DSA"
-+	"8086:0cf8,Intel CBDMA"
-+)
-+
-+QUIET=false
-+while getopts "q" opt; do
-+	case $opt in
-+		q) QUIET=true ;;
-+		\?) echo "Usage: $0 [-q]" >&2; exit 1 ;;
-+	esac
-+done
-+
-+# Print the segment:bus:device.function numbers of PCI devices that can be used
-+# to run VFIO selftests.
-+function main() {
-+	local id_name
-+	local name
-+	local bdfs
-+	local bdf
-+	local id
-+
-+	for id_name in "${DEVICES[@]}"; do
-+		IFS=',' read -r id name <<< "$id_name"
-+		bdfs=$(lspci -D -d "${id}" | awk '{print $1}')
-+
-+		[[ -z $bdfs ]] && continue
-+
-+		if [ "$QUIET" = true ]; then
-+			echo "${bdfs}"
-+			continue
-+		fi
-+
-+		while read -r bdf; do
-+			echo "${bdf} - ${name} (${id})"
-+		done <<< "$bdfs"
-+	done
-+}
-+
-+main
--- 
-2.54.0.563.g4f69b47b94-goog
-
+Applied, thanks.
