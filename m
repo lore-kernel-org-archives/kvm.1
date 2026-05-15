@@ -1,50 +1,34 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+Received: from mail.rulkc.org (mail.rulkc.org [155.212.184.193])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB0F3D47D0;
-	Fri, 15 May 2026 17:18:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37CA3D88EC;
+	Fri, 15 May 2026 17:18:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=155.212.184.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778865508; cv=none; b=poar5L96McUlGN0pg7QpLstBJkVW3BV0FKjDTHYqQ4b8UfmuS7VJX83h9kBGV79D71OVd210uCkTAtpNTtFlwUYQrBJ5wNb1coQThIMugk0dk4+DmXFd9+q3HV/42uXOy7slYyi0sXImuiM5p0NJN17GjQxxQhDUm7nsii5WHQ0=
+	t=1778865526; cv=none; b=Kc8w4U8lvvvEXh1wYTW96/eDgCmViUeHX7rZEeCnm0afxVFOByE5PDOuLJYPpuG1mMSL3CrcGhu9LsSc3i23I8DLKn6VrGP1375dePSAhw3oy7rVnlpAhYpx5+JUWKnYuforRc7BsFa4c+bt9KZriTnUApaERsze9LZZLpL2GA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778865508; c=relaxed/simple;
-	bh=7aV60BVH0C4EFUOcXtBRLrL0Rle+HYVsJvsv4Vl/noI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=C6F77XGtAdMh2WBcHFyddBKObnbt+v2507y70tkXvQt2XP3JV4up3VGBxoX+dVQdQLToeADfJOCeDPXiORf1qBzy+My6rD+MdUM/6C6TS3OFEAChDOUNtDtribUs2r02He7qom7qXbRnMfi7gpBoQYRvrv6M7pdFgi3Cd8Vn/zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gj/bE4Xi; arc=none smtp.client-ip=192.198.163.9
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1778865526; c=relaxed/simple;
+	bh=AThb4VcvVIl2q1HLSzrRx+pOQEogMqaBF6o78sY7O9k=;
+	h=Message-ID:Date:MIME-Version:In-Reply-To:To:Cc:From:Subject:
+	 Content-Type; b=gdcErAGZDc+f4cenwtMCTl+Hedle1W+fCSHJZrMGgo74xIJfQ3VwaYzxIHxH4xnkv5rKe9QOJnmsyQUnO9uqDoKwTurs+tQQ8s9GARFMRzKmwYaGIUMX2ll5LDEtyFjyO39HYu8ipwfPwRF4PAMiNdytMHumcts7AuYEzBUyuzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org; spf=pass smtp.mailfrom=rulkc.org; dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b=bMjmi7p3; arc=none smtp.client-ip=155.212.184.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rulkc.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gj/bE4Xi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778865507; x=1810401507;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=7aV60BVH0C4EFUOcXtBRLrL0Rle+HYVsJvsv4Vl/noI=;
-  b=Gj/bE4Xiu0Bo9MESEllsCLeYbfZY3so2AYY8kpls+SK9CVsc+9sV+jJv
-   OIPByP1c7EUNbww53kP1J+h1jeZQXqx4mg8FEWFtYebL3qA22pecQRDhm
-   VNDhVee07iv0+dBhxaUcvei0KJDvUYAnbF0GgTmS1GGats6Ym+M2SKcdO
-   SJhEh+F0nZVZhzVc42NkO5jd3i2sHE8rkDEno0FLjxCVBBUKc9vnPRL+w
-   T/FXnMtP5GRsHROIjVMTlUfbV8nZB2cgdPcLIxq32zA0VJfeRNQ4GMsyK
-   qpRQ+xpoNu9wcLhtVj/DgBV1F1xDBuXHdVavHqULkJYsyEMpM5hmKvXdn
-   g==;
-X-CSE-ConnectionGUID: s9xyqoKPR7+TTxZ0BLK1CQ==
-X-CSE-MsgGUID: XvUxZk1RSYqdlGMM2hS57A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="90519793"
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="90519793"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 10:18:26 -0700
-X-CSE-ConnectionGUID: cuJh/grWQ32AdKRRLEntxg==
-X-CSE-MsgGUID: NzO0YrqVTuOxR4Vluej4YA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="234490973"
-Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.108.201]) ([10.125.108.201])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 10:18:25 -0700
-Message-ID: <e54e9647-18ec-4691-a979-c67798a7d85f@intel.com>
-Date: Fri, 15 May 2026 10:18:25 -0700
+	dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b="bMjmi7p3"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 18E0310113F;
+	Fri, 15 May 2026 20:18:26 +0300 (MSK)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rulkc.org; s=dkim;
+	t=1778865514; h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:content-language:in-reply-to;
+	bh=y4uy4Pn148gEWMp6CsBHAvnIqyb+WyfkRqF4BSbh4/E=;
+	b=bMjmi7p3G3dFTYfn9vrSaMz3B4xgHlRxlpV/RN1261UCXil+PYgyODOy8Fsdo0qFG2p9hQ
+	ykboWeIQBNEhnUTG1AIrWpk1KPoB8bbx2KnpXNKUQI3wohBPlA9m34jr9d63oe3kEapVaZ
+	jSyV2bNO9YKyQhkDgjJKvyAsN++/CAjnkjEPU54gIwUi+qPhDF5J/EqOmLG8od0x4MpvSp
+	mQLOoCCekeefOpefQCWsqXBuMnAYrqezaDw0sycVuFNct/RA/vxir36l35FeAQZIwe70VL
+	WlJoS0AxqtjZ6kzufsdF+KOqaJ2cCcj1NY+e9crweb8KF62BsTeB10kSc06gZQ==
+Message-ID: <1546ca10-e85b-4a67-a5b9-cf2623d11e7c@rulkc.org>
+Date: Fri, 15 May 2026 20:18:18 +0300
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,146 +36,185 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 07/23] x86/virt/seamldr: Add a helper to retrieve
- P-SEAMLDR information
-To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
- ira.weiny@intel.com, kai.huang@intel.com, kas@kernel.org,
- nik.borisov@suse.com, paulmck@kernel.org, pbonzini@redhat.com,
- reinette.chatre@intel.com, rick.p.edgecombe@intel.com, sagis@google.com,
- seanjc@google.com, tony.lindgren@linux.intel.com, vannapurve@google.com,
- vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com,
- yan.y.zhao@intel.com, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-References: <20260513151045.1420990-1-chao.gao@intel.com>
- <20260513151045.1420990-8-chao.gao@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260513151045.1420990-8-chao.gao@intel.com>
+Content-Language: ru
+In-Reply-To: <20260514092948.268720-1-sgarzare@redhat.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
+ "Paolo Abeni," <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
+ Stefan Hajnoczi <stefanha@redhat.com>, kvm@vger.kernel.org,
+ Eric Dumazet <edumazet@google.com>, "Xuan Zhuo,"
+ <xuanzhuo@linux.alibaba.com>, virtualization@lists.linux.dev,
+ "David S., Miller" <davem@davemloft.net>, Jason Wang <jasowang@redhat.com>,
+ linux-kernel@vger.kernel.org, Maher Azzouzi <maherazz04@gmail.com>,
+ eperezma@redhat.com
+From: Arseniy Krasnov <avkrasnov@rulkc.org>
+Subject: Re: [PATCH net] vsock/virtio: fix zerocopy completion for multi-skb
+ sends
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 5/13/26 08:09, Chao Gao wrote:
-> P-SEAMLDR reports its state via SEAMLDR.INFO, including its version and
-> the number of remaining runtime updates.
-> 
-> This information is useful for userspace. For example, the admin can use
-> the P-SEAMLDR version to determine whether a candidate TDX module is
-> compatible with the running loader, and can use the remaining update count
-> to determine whether another runtime update is still possible.
-> 
-> Add a helper to retrieve P-SEAMLDR information in preparation for
-> exposing P-SEAMLDR version and other necessary information to userspace.
-> Export the new kAPI for use by tdx-host.ko.
+> From: Stefano Garzarella <sgarzare@redhat.com>
+>
+> When a large message is fragmented into multiple skbs, the zerocopy
+> uarg is only allocated and attached to the last skb in the loop.
+> Non-final skbs carry pinned user pages with no completion tracking,
+> so the kernel has no way to notify userspace when those pages are safe
+> to reuse. If the loop breaks early the uarg is never allocated at all,
+> leaking pinned pages with no completion notification.
+>
+> Fix this by following the approach used by TCP: allocate the zerocopy
+> uarg (if not provided by the caller) before the send loop and attach
+> it to every skb via skb_zcopy_set(), which takes a reference per skb.
+> Each skb's completion properly decrements the refcount, and the
+> notification only fires after the last skb is freed.
+> On failure, if no data was sent, the uarg is cleanly aborted via
+> net_zcopy_put_abort().
+>
+> This issue was initially discovered by sashiko while reviewing commit
+> 1cb36e252211 ("vsock/virtio: fix MSG_ZEROCOPY pinned-pages accounting")
+> but was pre-existing.
+>
+> Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
+> Cc: Arseniy Krasnov <avkrasnov@salutedevices.com>
+> Closes: https://sashiko.dev/#/patchset/20260420132051.217589-1-sgarzare%40redhat.com
+> Reported-by: Maher Azzouzi <maherazz04@gmail.com>
+> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 
-What is "tdx-host.ko"? My kernel doesn't have that. Remember a few
-patches ago, the "tristate" in Kconfig? ;)
 
-You also called in the "tdx_host" device. Please be consistent with the
-naming.
+Acked-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
 
-> Note that there are two distinct P-SEAMLDR APIs with similar names:
-> 
->   SEAMLDR.INFO: Returns a SEAMLDR_INFO structure containing SEAMLDR
->                 information such as version and remaining updates.
-> 
->   SEAMLDR.SEAMINFO: Returns a SEAMLDR_SEAMINFO structure containing SEAM
->                     and system information such as Convertible Memory
-> 		    Regions (CMRs) and number of CPUs and sockets.
-> 
-> The former is used here.
-This doesn't help.
 
-"SEAMLDR.INFO" is metadata about the loader. It's metadata for the
-update process.
-
-"SEAMLDR.SEAMINFO" is metadata about the module. It is for the module
-init process, not for the update process.
-
-Right? Isn't that a billion times more useful and actually helps
-differentiate them?
-
-Also, more nits: I hate former/latter too. It makes me stop reading and
-have to go back *EVER* *TIME*. I hate that particular english construct.
-It's horrid.
-
-Just say:
-
-	Use SEAMLDR.INFO here.
-
-It's even shorter than the passive "is used" and doesn't require me
-going back and re-read the text.
-
-> +++ b/arch/x86/include/asm/seamldr.h
-> @@ -0,0 +1,36 @@
-> +/* SPDX-License-Identifier: GPL-2.0 */
-> +#ifndef _ASM_X86_SEAMLDR_H
-> +#define _ASM_X86_SEAMLDR_H
+> ---
+>  net/vmw_vsock/virtio_transport_common.c | 83 ++++++++++---------------
+>  1 file changed, 34 insertions(+), 49 deletions(-)
+>
+> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+> index 989cc252d3d3..1e3409d28164 100644
+> --- a/net/vmw_vsock/virtio_transport_common.c
+> +++ b/net/vmw_vsock/virtio_transport_common.c
+> @@ -70,34 +70,6 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
+>  	return true;
+>  }
+>  
+> -static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
+> -					   struct sk_buff *skb,
+> -					   struct msghdr *msg,
+> -					   size_t pkt_len,
+> -					   bool zerocopy)
+> -{
+> -	struct ubuf_info *uarg;
+> -
+> -	if (msg->msg_ubuf) {
+> -		uarg = msg->msg_ubuf;
+> -		net_zcopy_get(uarg);
+> -	} else {
+> -		struct ubuf_info_msgzc *uarg_zc;
+> -
+> -		uarg = msg_zerocopy_realloc(sk_vsock(vsk),
+> -					    pkt_len, NULL, false);
+> -		if (!uarg)
+> -			return -1;
+> -
+> -		uarg_zc = uarg_to_msgzc(uarg);
+> -		uarg_zc->zerocopy = zerocopy ? 1 : 0;
+> -	}
+> -
+> -	skb_zcopy_init(skb, uarg);
+> -
+> -	return 0;
+> -}
+> -
+>  static int virtio_transport_fill_skb(struct sk_buff *skb,
+>  				     struct virtio_vsock_pkt_info *info,
+>  				     size_t len,
+> @@ -317,8 +289,10 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+>  	u32 src_cid, src_port, dst_cid, dst_port;
+>  	const struct virtio_transport *t_ops;
+>  	struct virtio_vsock_sock *vvs;
+> +	struct ubuf_info *uarg = NULL;
+>  	u32 pkt_len = info->pkt_len;
+>  	bool can_zcopy = false;
+> +	bool have_uref = false;
+>  	u32 rest_len;
+>  	int ret;
+>  
+> @@ -360,6 +334,25 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+>  		if (can_zcopy)
+>  			max_skb_len = min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
+>  					    (MAX_SKB_FRAGS * PAGE_SIZE));
 > +
-> +#include <linux/types.h>
+> +		if (info->msg->msg_flags & MSG_ZEROCOPY &&
+> +		    info->op == VIRTIO_VSOCK_OP_RW) {
+> +			uarg = info->msg->msg_ubuf;
 > +
-> +/*
-> + * This is called the "SEAMLDR_INFO" data structure and is defined
-> + * in "SEAM Loader (SEAMLDR) Interface Specification".
+> +			if (!uarg) {
+> +				uarg = msg_zerocopy_realloc(sk_vsock(vsk),
+> +							    pkt_len, NULL, false);
+> +				if (!uarg) {
+> +					virtio_transport_put_credit(vvs, pkt_len);
+> +					return -ENOMEM;
+> +				}
+> +
+> +				if (!can_zcopy)
+> +					uarg_to_msgzc(uarg)->zerocopy = 0;
+> +
+> +				have_uref = true;
+> +			}
+> +		}
+>  	}
+>  
+>  	rest_len = pkt_len;
+> @@ -378,27 +371,7 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+>  			break;
+>  		}
+>  
+> -		/* We process buffer part by part, allocating skb on
+> -		 * each iteration. If this is last skb for this buffer
+> -		 * and MSG_ZEROCOPY mode is in use - we must allocate
+> -		 * completion for the current syscall.
+> -		 *
+> -		 * Pass pkt_len because msg iter is already consumed
+> -		 * by virtio_transport_fill_skb(), so iter->count
+> -		 * can not be used for RLIMIT_MEMLOCK pinned-pages
+> -		 * accounting done by msg_zerocopy_realloc().
+> -		 */
+> -		if (info->msg && info->msg->msg_flags & MSG_ZEROCOPY &&
+> -		    skb_len == rest_len && info->op == VIRTIO_VSOCK_OP_RW) {
+> -			if (virtio_transport_init_zcopy_skb(vsk, skb,
+> -							    info->msg,
+> -							    pkt_len,
+> -							    can_zcopy)) {
+> -				kfree_skb(skb);
+> -				ret = -ENOMEM;
+> -				break;
+> -			}
+> -		}
+> +		skb_zcopy_set(skb, uarg, NULL);
+>  
+>  		virtio_transport_inc_tx_pkt(vvs, skb);
+>  
+> @@ -422,6 +395,18 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+>  
+>  	virtio_transport_put_credit(vvs, rest_len);
+>  
+> +	/* msg_zerocopy_realloc() initializes the ubuf_info refcnt to 1.
+> +	 * skb_zcopy_set() increases it for each skb, so we can drop that
+> +	 * initial reference to keep it balanced.
+> +	 */
+> +	if (have_uref) {
+> +		if (rest_len == pkt_len)
+> +			/* No data sent, abort the notification. */
+> +			net_zcopy_put_abort(uarg, true);
+> +		else
+> +			net_zcopy_put(uarg);
+> +	}
+> +
+>  	/* Return number of bytes, if any data has been sent. */
+>  	if (rest_len != pkt_len)
+>  		ret = pkt_len - rest_len;
+> -- 
+> 2.54.0
+>
+>
 
-More succinct:
-
-    * This is the "SEAMLDR_INFO" data structure defined in the
-      "SEAM Loader (SEAMLDR) Interface Specification".
-
-> + * The SEAMLDR.INFO documentation requires this to be aligned to a
-> + * 256-byte boundary.
-> + */
-
-Just say:
-
- * Must be aligned to a 256-byte boundary.
-
-With those fixed:
-
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
