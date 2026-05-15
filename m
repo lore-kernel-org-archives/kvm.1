@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023753EFFA0;
-	Fri, 15 May 2026 16:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABFA13FF1D8;
+	Fri, 15 May 2026 16:15:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861644; cv=none; b=JPfP2zquLU2FPZXcqA/mG3AO7FTYSJWoHu9gtHwfbv0GjfBEoLd/8YJr80YUu/icPRqyl8VDG0k43NOHfc4SP2C8b4IIIkLWx/GV+BIb0rfSwlmH7ywtRsRmg9ahv/y2Vlml+oB0ua8Iys1GJoiiFef6Cs1bfWPbNAPotAkWny4=
+	t=1778861750; cv=none; b=X1nUxc3XYyxX7gf98mHKPpyw55QRJlzHZrTz3y0r6ZhX9mx93Hdv2bkRQOi6szc3Ev4ajwNlOnX79xlsPF4ObVWmhtbuRtQOcOyCr8uWF1/sqOdeD8vBxDsvbeMOBJLWHnAwzkzihKVu9VNEwmiQqVVAXI7Zg/pCrnSML4n7vM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861644; c=relaxed/simple;
-	bh=fyddQj6Z8OcTojvZRdt3X3pwAGr6uTLUzmMeZzRR6cg=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=n7CH2j9lxtq9duqFNf/vZPJm6P+sYyissuZZDoYiZ781KUG3HcZmz4R27eNRyHq5iSo/SHsquVUeIKzrJFQEM99eFoOBPiThmhbfLrS7k+WlIRw9yCY/FtVQsQ0lFJrj9gZySRGtajBJKjoQTs/FFUc+KMbJ3SODFVYtYcM6ibY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C3WBr/hf; arc=none smtp.client-ip=198.175.65.20
+	s=arc-20240116; t=1778861750; c=relaxed/simple;
+	bh=DtS4LuhKLIkKhqy5WiWPTaQRV15Fh4ZyefiGYuDGPDg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mvbcC922zHJlkmxhVhxLhaRUbubQbyXapVw+CgQAEP6QC4j1+L4UW3Q4ngbR1d9Nvc4oc6TVlIw8UXTzcIMWwNHJh3YoYXPWKElrPDY/slveNluWTixTSJfbLJgVD3uyIwZwz5WKy6qJIPLkPHKUpitQBPLswvZw1fpK322R+RM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kA92kKIF; arc=none smtp.client-ip=198.175.65.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C3WBr/hf"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kA92kKIF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778861643; x=1810397643;
-  h=message-id:date:mime-version:from:subject:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=fyddQj6Z8OcTojvZRdt3X3pwAGr6uTLUzmMeZzRR6cg=;
-  b=C3WBr/hfFXa7fTr5WaMv2/fK5Dxc1SzO5yk70X0wwahjlzQFeDu+Ff/Y
-   HSjpvhqXuQ173R1wFgyBiaLyJYQzUaYxnXagQMtnh+vkZPaVSKBq+badw
-   u7KdoWasXSsdgY8E+v4UdIp4PlwiS5kuhzXKGhQTX4pMaVXiOSz6PfLCT
-   ExHloO7PZ3jSr21zksKL7mmCRhpF/GmAa8Suj8E3ltWGv9ouObZC0OTcX
-   4YLnwrXGjFtENj769x2UIKXBJK5C1W51q9bssOGo8R5PAN6V7AFs/9Ild
-   s8f5NlUsiNyN88y5hZyIsZpz5xFKOzSREtt5BQhaQBWdVqB+LOEvZnb+M
+  t=1778861750; x=1810397750;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=DtS4LuhKLIkKhqy5WiWPTaQRV15Fh4ZyefiGYuDGPDg=;
+  b=kA92kKIFNfWp02H9tE7CwQ/bbkiWcDlVsmKw2jW9Kl0SQqo2/zfs6lxL
+   k0slemnnxwrg4jc2qow4zdCNeul3QTJwhzED0eYNnGKBP/vemrlhllOKO
+   rTE/OihhGA93CGpD69Fd2WwnhQAKWDPsg3hQVzWucQ5mj3aAc6D4vVEm1
+   HsMKrDdnJ07zq5pXkXUR5FLwyktduP+oHH+oBLVnkvPI3rVyeZRLA/jR+
+   yljU6L9qooMzD2pST6ehKkXJp7JV4+t2iJVDVuGFfYOoL1Xcp2weiztiH
+   Wq35FUfvZHVdasTVp9mYtfey0mMyi6AZ+CrjR2xJ475UkTuUEQFlVAmOn
    g==;
-X-CSE-ConnectionGUID: NnnPA0tnQuyaibdBghgVnw==
-X-CSE-MsgGUID: +waCprJCTe+3b5LWKzYapg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="79536028"
+X-CSE-ConnectionGUID: BiDL/fbLRmeqcQaHeBCOzQ==
+X-CSE-MsgGUID: irvliUStTlmQg6Haeg4rog==
+X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="79536245"
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="79536028"
+   d="scan'208";a="79536245"
 Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 09:14:02 -0700
-X-CSE-ConnectionGUID: 9Onvsll+RZ6CBpTA9VNYrA==
-X-CSE-MsgGUID: hUKZ1DN4SWOi0HcUGJfIrQ==
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 09:15:49 -0700
+X-CSE-ConnectionGUID: h/qOtgDWTJKlDA2cIkdEYA==
+X-CSE-MsgGUID: h9b2iKM1RxGAUNI3ChFX7g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="234294528"
+   d="scan'208";a="234294921"
 Received: from dwoodwor-mobl2.amr.corp.intel.com (HELO [10.125.108.157]) ([10.125.108.157])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 09:14:01 -0700
-Message-ID: <ab35e6e4-b57a-4d49-8521-ca69a9135d3c@intel.com>
-Date: Fri, 15 May 2026 09:14:02 -0700
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 09:15:47 -0700
+Message-ID: <c7d64460-d03c-4198-9320-8afceafcecb5@intel.com>
+Date: Fri, 15 May 2026 09:15:47 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,9 +52,8 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Dave Hansen <dave.hansen@intel.com>
-Subject: Re: [PATCH v9 01/23] x86/virt/tdx: Consolidate TDX global
- initialization states
+Subject: Re: [PATCH v9 02/23] x86/virt/tdx: Move TDX_FEATURES0 bits to
+ asm/tdx.h
 To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
@@ -67,7 +66,8 @@ Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
  x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
 References: <20260513151045.1420990-1-chao.gao@intel.com>
- <20260513151045.1420990-2-chao.gao@intel.com>
+ <20260513151045.1420990-3-chao.gao@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
@@ -112,94 +112,16 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260513151045.1420990-2-chao.gao@intel.com>
+In-Reply-To: <20260513151045.1420990-3-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 5/13/26 08:09, Chao Gao wrote:
-...
-> Group the states into a single structure so they can be reset together, for
-> example with memset(), and so a newly added state won't be missed.
-...
-> +struct tdx_module_state {
-> +	bool initialized;
-> +	bool sysinit_done;
-> +	int sysinit_ret;
-> +};
-...
-> @@ -113,30 +119,28 @@ static int try_init_module_global(void)
->  {
->  	struct tdx_module_args args = {};
->  	static DEFINE_RAW_SPINLOCK(sysinit_lock);
-> -	static bool sysinit_done;
-> -	static int sysinit_ret;
+> This prepares for TDX module update [1] and Dynamic PAMT [2] support. Both
+> add new TDX_FEATURES0 capability bits, and both need those capabilities to
+> be queried from code outside arch/x86/virt. The corresponding feature-query
+> helpers therefore need to live in the public asm/tdx.h header, so move the
+> existing bit definitions there first.
 
-This doesn't look right to me.
-
->  	raw_spin_lock(&sysinit_lock);
->  
-> -	if (sysinit_done)
-> +	if (tdx_module_state.sysinit_done)
->  		goto out;
->  
->  	/* RCX is module attributes and all bits are reserved */
->  	args.rcx = 0;
-> -	sysinit_ret = seamcall_prerr(TDH_SYS_INIT, &args);
-> +	tdx_module_state.sysinit_ret = seamcall_prerr(TDH_SYS_INIT, &args);
->  
->  	/*
->  	 * The first SEAMCALL also detects the TDX module, thus
->  	 * it can fail due to the TDX module is not loaded.
->  	 * Dump message to let the user know.
->  	 */
-> -	if (sysinit_ret == -ENODEV)
-> +	if (tdx_module_state.sysinit_ret == -ENODEV)
->  		pr_err("module not loaded\n");
->  
-> -	sysinit_done = true;
-> +	tdx_module_state.sysinit_done = true;
->  out:
->  	raw_spin_unlock(&sysinit_lock);
-> -	return sysinit_ret;
-> +	return tdx_module_state.sysinit_ret;
->  }
-
-But I think it's because 'sysinit_ret' is really a funky thing. It's
-just here so that the module only _tries_ to be initialized once. That
-one-time init records its error code in sysinit_ret and then secondary
-callers pick it up.
-
-Here's how you do that in a non-confusing way (some context chopped out):
-
-static int try_init_module_global(void)
-{
-        struct tdx_module_args args = {};
-        static DEFINE_RAW_SPINLOCK(sysinit_lock);
-        int ret;
-
-        raw_spin_lock(&sysinit_lock);
-
-	/* Return the "cached" return code: */
-        if (tdx_module_state.sysinit_done) {
-		ret = tdx_module_state.sysinit_ret;
-                goto out;
-	}
-
-        ret = seamcall_prerr(TDH_SYS_INIT, &args);
-
-	/* Save the return code for later callers: */
-	tdx_module_state.sysinit_ret  = ret;
-        tdx_module_state.sysinit_done = true;
-out:
-        raw_spin_unlock(&sysinit_lock);
-        return ret;
-}
-
-See how it sets the module state in _one_ place? It also only touches
-the module state under the lock so it's more obvious that it is correct
-and there are no races or tearing or other nonsense.
-
-*That* is a proper refactoring.
-
-I'm also not sure we need to be saving the return code. It seems a bit
-much, but we don't have to fix that now.
+Please don't add unnecessary changelog cruft. If you need this move for
+this series, that's enough.
