@@ -1,130 +1,172 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-vs1-f52.google.com (mail-vs1-f52.google.com [209.85.217.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DDF372ECA
-	for <kvm@vger.kernel.org>; Fri, 15 May 2026 18:31:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778869904; cv=none; b=JmUg2+pOJIgxJp7DL/qAlmmTNnGFaPUgfq/p6mPP4ET6f81lAfg66LLhiEefqYr9hphcnu8auEFPESE2W0qUtlEoSvtysSDSik8xYNhXJRa7tt3yCrURHiD22bYqfF53KLWnTeJk0Oownla1wdfXZIPhAaMHOo7G4wR3c71LXmM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778869904; c=relaxed/simple;
-	bh=MnaL2juFBIzZpHllXA1PhuDbHaeHWPtqxmlaIne4D2E=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=XNcAy5/edxqtTPZawICg0N4DDthrboQVrZPxVGjODlE5NbiQy+yAB1qyXDFtHDqFnNOaVn2rs50epF+n/Qn4TSPD1SojOnQRyyToB2sINUb7wEIBkzON/U/Ri1jXF/SpiGrhXuQjdUwxSnjO6zVBS2jrkk6qC9iRGxFD1vzwMis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ub9PKCos; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E1FA3F88A2
+	for <kvm@vger.kernel.org>; Fri, 15 May 2026 18:34:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778870079; cv=pass; b=RM8+mNIrrvDnLPIcj1LyQd7eVG9YqPIwLTMyoLgYE7A1sIDf3Mfj45aqFknzeuDCgwfptWaEkWsMfXuubVQxerfAMslLlbpLWf9TIkSdvr+jkhw4Y9xZQU5yEIjEcykDEK59Ux5bKIqnXNx7IN2KFQV8hiS+7Zzt/zWyX7TLtr0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778870079; c=relaxed/simple;
+	bh=DA2Wy9smkUrOgGLD5EcQ7iMKHSUE3cp9ttCFreanAWA=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gBnNYRbUP+xuVmUO/ZLO0btFYtDEy3jTpu+Urd1sxWXpwPDilAx42FWjg4XFdPUcldnZGR5Hp62ZrpB0yw4KRxZRFV0hvCvPkXPMI9J2q5UNShlcboPHQriSCrLtZLSnL5od+VOZKz5kNZgMQ6SVMugpcixFvphxNaUfc/QJdVY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YYS73nz/; arc=pass smtp.client-ip=209.85.217.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ub9PKCos"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-836cfd84728so21799b3a.0
-        for <kvm@vger.kernel.org>; Fri, 15 May 2026 11:31:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YYS73nz/"
+Received: by mail-vs1-f52.google.com with SMTP id ada2fe7eead31-6313b7e3d03so62409137.3
+        for <kvm@vger.kernel.org>; Fri, 15 May 2026 11:34:36 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778870075; cv=none;
+        d=google.com; s=arc-20240605;
+        b=JP9JJnFCTXyJllNZqcnghC/Wm19/9m+Syv8/AOrY1Yyru2fQ9WUSgw1Mn0QDNAP4Rd
+         LlEf3xyA++9RrSAeFjmAVdWuG6Z2OxSi7jmvscosj+lFXnGNZvxVfJPC6QwVVHNvAsks
+         27YtQyWTgSUQiE/+0IasAG/BGjZ/sxp0h0zdgis3E97irxm29yWP/CUPqI4Ow6oyy9DT
+         z/hOVo+QQG84Hr1zFEi0xDmiDmIyAlOOQiOWA/W7hz9l8lNmOgRDnXSqN1fZpZIP0rg1
+         E7tmrWqBNazbVvZ5Xvr3oZN31rZ42LzXlEV2R5FQ0vmwJ4cKhm1XwZeUEdt4PGUwPdFm
+         Kv5g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=hXzcL4Si7AoDz7U9pqlgIyMQAxFIyNef25XFajpPNe4=;
+        fh=lrIWIvq0UgFg7QdOZpUJVbyjcCjdA0HklBeWbP9PnyU=;
+        b=Rm6WP16inV4knGkpggvXwQFwbQJOXdprwY1atQw94avVCadbT2+5z3syETyDQTw1Qq
+         YmROtcNx5g3KTFTw4v7Mn827qtm6W/KzYxmQzV2j2Hfc6x1g5ohdqQyY4v6+3jReiKlm
+         FbzhcLChxFfCNqHUin5jhkegXlljx4vTn4xDyO9ogPBXGKp8h0PwO2imveewIOGTrOMu
+         F7r54DHr0Sq5cyvkryJCJXJwO1ppDulSysLCkLof9fgHzwhIVIutOqfFnMT5B6GuS652
+         axQW4PGXhzbITT4IYXT6cOTvJVXqfMzDSuwwLPQLH67rik2+EXriH5j0JjGrrWaAqkg6
+         YsVA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778869900; x=1779474700; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9hw5jloQawziddDYmkqU/RP2qgURiMQ5GP8Bs+BRVUA=;
-        b=ub9PKCosN0Vmu6WW5RadqLxMLwQeTr9pUFB/5BNi+ysnwauQjB6+6zMk1GKvACTfIA
-         ibmFRn3ZWj0l0eJGlmotdMqTXmG/8UvwDXEspwCx1S6AFbk2fBtt9+zDDFOtF4CLYHf6
-         G6OPgi98C7AfmbO6Otn5KCTuGxtXxzVAKieKyK7pgeCTqqP+CVLH+rg21XeHgo3Rr4YO
-         zHl79xcbf3L0p43/X87nva0qk5QVHn1i7RziyCRE6oMZBtocgFKp1znYgb4YT8MPZnRU
-         NLhTgh670juwx35ecazDPxJmRX+nJOXmi62oQ8RlmtLmFK/u0wPxR5m59JefUqvSm4oy
-         pFRg==
+        d=google.com; s=20251104; t=1778870075; x=1779474875; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hXzcL4Si7AoDz7U9pqlgIyMQAxFIyNef25XFajpPNe4=;
+        b=YYS73nz/xIcDnIoNXHbg5GJ4s1o3X29GnkFEut9rfuxgQk3TQRUsu6RVLw+uqTtc/v
+         d2z1AxB2eSs4RV3oGINb/D2mPrEtUN+TCkSDpWobhMFO0HR0hbo5L8yeD9O8iU/IcRJH
+         sa7VwaOXROWEEexJ+1HCXnKsA1naMryFUYh/MiAvcrarKYPHzupdMRSlAWyR8eOetR3b
+         Sxe8w+/PVbeVsIw96r/jOUejGQ71sBO0mVt543KBlOXhuQ8VzTtMl4oO9u8I8KxBxyia
+         EK+Q8RFlfe1ZHyYZaqOa1j0zPOMaJsKMfLjG/nF5Rn7Z23Kd8k2b0hBAblYntqprLt5m
+         Klbw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778869900; x=1779474700;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=9hw5jloQawziddDYmkqU/RP2qgURiMQ5GP8Bs+BRVUA=;
-        b=ErUxvpDt7hSOh12wgdNhDn/Vl1Kqs7pf2SdTdtwRaT6k2gKqORvlVY+AeM9De9w81Z
-         1+VA6VQ8F00ZVY4aLHgby9eiZpEwr43LbQ9dMeVXMg/oRLkV+7rRS8fl9iDe0Ew9Q+gc
-         0Xd+G+DweUm6Fn9XIOYM5oSzogIIEDVKyi+ORb4WnApr06RKUc/eA+oJ+gQenplksNbj
-         /4IezQMw2E3e9lxfFykYCvxgglc4zwSMr2gU0Jz+OwsZn9wsB2OqDpUvYwRChNasjlfB
-         dkhVibYmwZ5kcSUNWIaLgBlVU9ly57v8VKExAUoNRiJIFNBHO3sWfk4V6Zn2uZbVlKse
-         fc/Q==
-X-Forwarded-Encrypted: i=1; AFNElJ+p4zL7A+Bpplq86WY8wau0tKDIxrl6U0lJpuDWmt3YM20gpQgGPwfT7bYHdHlgeVkG8MU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7owUSBvnzR8nb9px5UEzWQmBpBsyCtqeHcI46gRB5sdiWN1RK
-	281VspOqGkrh7fEn1vl623OBNb1laR2JQ6JijvBeJssdycl4Y3YnyTmLes0Ej3dcq9qRRzpomVX
-	wErRxtg==
-X-Received: from pfblx15.prod.google.com ([2002:a05:6a00:754f:b0:82f:7833:9aa9])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1908:b0:838:5145:c1c5
- with SMTP id d2e1a72fcca58-83f18e76d73mr8331271b3a.21.1778869899947; Fri, 15
- May 2026 11:31:39 -0700 (PDT)
-Date: Fri, 15 May 2026 11:31:39 -0700
-In-Reply-To: <c5b71519-a129-4711-8f98-f05b3178a96d@proxmox.com>
+        d=1e100.net; s=20251104; t=1778870075; x=1779474875;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hXzcL4Si7AoDz7U9pqlgIyMQAxFIyNef25XFajpPNe4=;
+        b=B2DGWQwxwSKFVYIhCCuTRyR+1TkvUoNdPgeySX2ACS4k5+oKwqW5GzMD5zteJArJlN
+         r+OlzStNEiRO7nKsd1giY1YxxbnAJB7wuhpIQyIqrV6aP3B6NuJ2gOpgWgSGRKDlRiL1
+         EAeZvPDhKtrac0UBlli6z52pBcLaFPZATvGTEHqOcTxKjGwdyEsA4NsUs1o4CMURHocR
+         5TSCWRX9F4gOBURmZkurJPZ0y0aw7hZlM5RpSZVKr3bFuyW6HhGwbB4x+GRIgAUku2Kd
+         NNtUXpdVFUie7K2B3hn4YpDhPjfqGYJ7rF8joOhRD2/ceKDpr9wpAsVj09V9BfR3fcvu
+         G8XQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+T46ue+0BX2QO5CJm0muq/8LXthHvl5RiLPA8Q4L86TihrNJRi+VAQ6CbuygYgIgvzrX4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwN15rZNkYnrtbiUdZpCYfu3Lb1/pD1GABviP8pbD11tnZjyt11
+	JxDMEIhWRmqnKzLr+v6X0t7CYOjmAWzkR6tJD20uLBcSgrA5E2laKKsu5Rsx/sv7X0lKtuF57vb
+	yYV4JBavcYY/PPDXPQQd6vGFHcV0BEqp3ZEPdoWDC
+X-Gm-Gg: Acq92OH9sXeRc5G6bfoh19wJik/CuCd5hzO2UBKSajr2s76njI5l7N/vs6uL4Z7EWD1
+	8Vr57lCKidOb6bEk0GJnYkcBI0J/OMGAYk3daPuXLXwvwQaw0u4TRzDiYpVjNsviAlSYqAu7tEP
+	LpdLVriKmKp+jVmseOGmDfdGSiA31aO9jNK+n5H9vCWZEc7UqPvp2/OvNmF1bhOr2Tae/qHgK0Y
+	aR9tOne8CLLD4zS2Rb6EngxI06jZLDW7fbTpt7eH7+hUYwi+s53EettHFFNHd+gZoxMrg0c/YtM
+	6Xvw82wRhEJVxtibURxrvp6Kcr6856AHMuGfmSVQoz/gNNBzNJ/zgzHHyNhqh6MXN8RFK2Ee4qK
+	bgaMJAyo6YlFxqg==
+X-Received: by 2002:a05:6102:f13:b0:5ff:f4ae:a154 with SMTP id
+ ada2fe7eead31-63a3ca1ab64mr3398396137.1.1778870074886; Fri, 15 May 2026
+ 11:34:34 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 15 May 2026 11:34:34 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Fri, 15 May 2026 11:34:33 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <ac7oE_1j6gxf8OKT@google.com>
+References: <20260402041156.1377214-1-rppt@kernel.org> <20260402041156.1377214-14-rppt@kernel.org>
+ <ac7oE_1j6gxf8OKT@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260505195226.563317-1-pbonzini@redhat.com> <85548beb-1486-40f9-beb4-632c78e3360b@proxmox.com>
- <CABgObfZ-UOjO4q3e9o5JGXXCO8VZ50vEZkjNMB44rdcCVxEHxg@mail.gmail.com> <c5b71519-a129-4711-8f98-f05b3178a96d@proxmox.com>
-Message-ID: <agdmi9wv8yOpgTpb@google.com>
-Subject: Re: [PATCH v6 00/28] KVM: combined patchset for MBEC/GMET support
-From: Sean Christopherson <seanjc@google.com>
-To: David Riley <d.riley@proxmox.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	jon@nutanix.com, chao.gao@intel.com
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Date: Fri, 15 May 2026 11:34:33 -0700
+X-Gm-Features: AVHnY4IEbHvurLDEpAdcz2fUdNtakQtGECOPGI7q3-EkzXTSsmoe5CSHOnLeDQk
+Message-ID: <CAEvNRgHd4azPaMddvqnSG+Z5fmg+LWd+pz=LSB3PrJTW618dww@mail.gmail.com>
+Subject: Re: [PATCH v4 13/15] KVM: guest_memfd: implement userfaultfd operations
+To: Sean Christopherson <seanjc@google.com>, Mike Rapoport <rppt@kernel.org>
+Cc: Andrew Morton <akpm@linux-foundation.org>, Andrea Arcangeli <aarcange@redhat.com>, 
+	Andrei Vagin <avagin@google.com>, Axel Rasmussen <axelrasmussen@google.com>, 
+	Baolin Wang <baolin.wang@linux.alibaba.com>, David Hildenbrand <david@kernel.org>, 
+	Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>, 
+	James Houghton <jthoughton@google.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, 
+	Muchun Song <muchun.song@linux.dev>, Nikita Kalyazin <kalyazin@amazon.com>, 
+	Oscar Salvador <osalvador@suse.de>, Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, tarunsahu@google.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, May 15, 2026, David Riley wrote:
-> Hi Paolo, Hi Chao, Hi Sean,
->=20
-> I have been testing the v6 patchset (up to 22/28) this time on Arrow
-> Lake hardware. My results suggest a kernel version dependent regression
-> regarding host stability.
->=20
-> Environment:
-> * Host CPU: Intel(R) Core(TM) Ultra 7 265K (Arrow Lake)
-> * Motherboard: Gigabyte Z890 EAGLE (BIOS F18)
-> * Host OS: Proxmox VE based on Debian Trixie
-> * Host Kernel: mainline with patches 1-22/28 applied.
-> * Guest OS: Windows Server 2026 (24H2, Build 26100.1742) with VBS/Hyper-V
-> =C2=A0 enabled.
-> * QEMU Command: -cpu host,level=3D30,+vmx-mbec,+cet-ss,+cet-ibt
->=20
-> Results for Kernel 7.1.0-rc3 + v6 patches 1-22:
-> I can reproduce the guest failing to boot. This setup causes host lockups=
- on
-> my Arrow Lake machine. In some cases, the guest manages to reach Windows
-> Recovery, but most of the time it does not.
->=20
-> @Chao, in the first line you can see the hard lockup. Also have a look at=
- the
-> hrtimer trap I tested below.
->=20
-> dmesg output:
-> [Fri May 15 13:07:37 2026] watchdog: CPU1: Watchdog detected hard LOCKUP =
-on cpu 1
+Sean Christopherson <seanjc@google.com> writes:
 
-...
+>
+> [...snip...]
+>
+>> +#ifdef CONFIG_USERFAULTFD
+>> +static bool kvm_gmem_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags)
+>> +{
+>> +	struct inode *inode = file_inode(vma->vm_file);
+>> +
+>> +	/*
+>> +	 * Only support userfaultfd for guest_memfd with INIT_SHARED flag.
+>> +	 * This ensures the memory can be mapped to userspace.
+>> +	 */
 
-> If I run:
-> sudo modprobe -r kvm_intel
-> sudo modprobe kvm_intel preemption_timer=3D0
->=20
-> I am able to boot into windows sometimes.
+Is the principle here that any memory that is allowed to be mapped to
+userspace can be userfault-ed?
 
-Hmm, this probably confirms its the hrtimer issue?  When using the VMX pree=
-mption
-timer, KVM (on Intel) doesn't use an hrtimer to emulate L1's APIC timer.  I=
- _think_
-forcing KVM to use an hrtimer would cause result in hrtimers being reprogra=
-mmed
-in response to KVM's usage, and thus mask the deferred reprogramming bug?  =
-That
-sounds plausible-ish?
+>> +	if (!(GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED))
+>> +		return false;
+>
+> I'm not comfortable with this change.  It works for now, but it's going to be
+> wildly wrong when in-place conversion comes along.  While I agree with the "Let's
+> solve each problem in it's time :)"[*], the time for in-place conversion is now.
+> In-place conversion isn't landing this cycle or next, but it's been in development
+> for longer than UFFD support, and I'm not willing to punt solvable problems to
+> that series, because it's plenty fat as is.
+>
 
-> Results for Kernel 7.1.0-rc3 + v6 patches 1-22 + hrtimer trap:
->=20
-> I used the mentioned trap from [0]
+Thanks :)
 
-Can you try Peter's fixes?  AIUI, the reporter's hack-a-fix was very far fr=
-om a
-complete fix.  Note, there's a v3 of patch 1 (b4 should take care of that f=
-or you,
-if you're using b4).
+> Happily, IIUC, this is an easy problem to solve, and will have a nice side effect
+> for the common UFFD code.
+>
+> My objection to an early, global "can_userfault()" check is that it's guaranteed
+> to cause TOCTOU issues.  E.g. for VM_UFFD_MISSING and VM_UFFD_MINOR, the check on
+> whether or not a given address can be faulted in needs to happen in __do_userfault(),
+> not broadly when VM_UFFD_MINOR is added to a VMA.  Conceptually, that also better
+> aligns the code with the "normal" user fault path in kvm_gmem_fault_user_mapping().
+>
+> I'm definitely not asking to fully prep for in-place conversion, I just want to
+> set us up for success and also to not have to churn a pile of code.  Concretely,
+> again IIUC, I think we just need to move the INIT_SHARED check to ->alloc_folio()
+> and ->get_folio_noalloc().  And if we extract kvm_gmem_is_shared_mem() now instead
+> of waiting for in-place conversion, then we'll avoid a small amount of churn when
+> in-place conversion comes along.
+>
 
-https://lore.kernel.org/all/20260423155611.216805954@infradead.org
+I think it would help if we do some refactoring of existing allocation
+functions to provide guest_memfd's uffd ->alloc_folio and
+->get_folio_noalloc callbacks instead of having new functions.
+
+Perhaps uffd ->alloc_folio and ->get_folio_noalloc can call an alloc
+function refactored out of kvm_gmem_get_folio(), and also do the
+kvm_gmem_is_shared_mem() check.
+
++tarunsahu@google.com, who is starting work on guest_memfd preservation
+(as in LUO/KHO).
+
+>
+> [...snip...]
+>
