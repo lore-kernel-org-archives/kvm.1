@@ -1,248 +1,119 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7962423A8E
-	for <kvm@vger.kernel.org>; Fri, 15 May 2026 08:57:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3E9C42B726
+	for <kvm@vger.kernel.org>; Fri, 15 May 2026 09:03:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778835473; cv=none; b=iCqlSkwMak12Mt9RQnwdfcyrPLZuCGTilyoHDG7QzlY4Qi/rIX35BKZTM6kXA774N74HnzJdrLX8Bm4Jxz5dXanLmzBSroFWCsDtZwOk5JBV9xegrvbm+CIV1VALlSwCioV9mT1RiDmvCdJZRNCllxP6tXLAKoa43QzeAlCF540=
+	t=1778835805; cv=none; b=TmZOJzBbSQ0B69ut0E3kZTXtgQs1VQnJ6OSxd6hJa2SiZ2mUpTQqaQUv4qYjWy5wlu68PK2+pYThad9Hgmm6UgquCbREYrAsyHPJkkv6ZWvj8Ld1c/vNDceBq7hiFKm9M/fyNufFO+utoxmNnFVHkUSvWOp+u+i+veNlcD3u+5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778835473; c=relaxed/simple;
-	bh=yiJc4Nt7lDDJQvZBzjmQQRrY7ovUUA6spxCpoO5M6TA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oHzFCTCtt9jSfEArs31vjUO8NApQYu8SxfiHRE9sQ1n7OkrwAlf+NWi6v3f+qeue1VDi+P+DkInWJ+AoSpWlKmM78mpKFAQuUYx14PJ0sryexa04Gpzn++56qVoRlH8hMzoeaeQcOxbSHlC6CW3j8BlcqtCQvbJYrL0Wkir24M4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gygJ0w/V; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=BjwrBKlT; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1778835805; c=relaxed/simple;
+	bh=jf2+E4yIw5mc26mWM18tpZZpHRQcEN8PIN7/Ab9CcDk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=hJc+I/zwMdxEsI8OknVUrsvnq41iruRJztSmO7lt5fyGysRyYJPn+cK3F0gW0c5KL7Xp1zIR1aBL9OgI24V+xIPw5aMHWEPZRxdnRmhv+hJj8WFuxIHQM5wC2jiXgJ/6byi9w7XqrbZHZ9CpA8ce5et529+2rgK/x4cTZ++Zja8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=akDB14aY; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gygJ0w/V";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="BjwrBKlT"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778835470;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=76MGKo7laS3q15QwVBANhPivXoLiqDoqFX8CsnX+SSM=;
-	b=gygJ0w/VovbCONG2uFPuk6JAGNPdXV8sInFrQbAX830aWP047npaj276JK8r734ehqROx5
-	8cJj9FoijFfy6KMbllFwkY1pMQUGXLwe2qZDD3qWAXn+VvcdcS3f5c5L68kmdBlNrm0YZx
-	GR3UVFNn4CmPClhjSQgsTFnrF/Cw9gw=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-208-ZULngBWOPMaeAvlfjZZV8g-1; Fri, 15 May 2026 04:57:47 -0400
-X-MC-Unique: ZULngBWOPMaeAvlfjZZV8g-1
-X-Mimecast-MFC-AGG-ID: ZULngBWOPMaeAvlfjZZV8g_1778835466
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-44f56d5523eso7335702f8f.1
-        for <kvm@vger.kernel.org>; Fri, 15 May 2026 01:57:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1778835466; x=1779440266; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=76MGKo7laS3q15QwVBANhPivXoLiqDoqFX8CsnX+SSM=;
-        b=BjwrBKlTCxL/58XE00cE1fkaBhtzGi2Rz11zf70pMP7pjafnMH5e5CdJXhw2Ug5+He
-         Ngsb9jHf2Bs3e95c7lcaKcK3rgA9D5GnL/p+kxCoC7RjEVJcjNcJE+Un2RihsCldWSNG
-         QzGfqzGGE6xprpsnk0bR5+NRzDIpJt+JrwXyGwLjewuJmq3uNEc2WnfFT2x55OF+oCWU
-         EHRS/cLo3wusti1PAunCkr2Prc3oM5zMNofWdGkPvcd7dZZCT/osGLxB6mQF5pdpC2pU
-         oU7K62+TfHdgonHUH96Zf6pOUmP6W/pK3oCxJCDcV9TCvvTbQEcAk5OWWyDKGHGab++F
-         gzPg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778835466; x=1779440266;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=76MGKo7laS3q15QwVBANhPivXoLiqDoqFX8CsnX+SSM=;
-        b=tZdiCNNdMoG7mOkAKtItLOyzPnvt4vH9uSdmb2vgKp49tfQHh7KeTT5Hc1D4w8ZKOd
-         TM/8RWsJtBvyEm17rucRxbpV0KeYJJ2ug52oEryEJ1oaGhp5/7/Bh9FoQqm6D+FWgcjx
-         sshqwxhxgsWkoohpmUHid1Idf24JiqkmXulVcpyyQ0JzrS87oi+NYWQ1Kp1E14rriau8
-         SFM+GhEA7+n4H9gbxGci3OyWGxNhFZ5hothK1/CDDnBmozF24RnoBqWNoy7Go3Od5WYA
-         8E/E5eg6N4DchyffQNkRsXgHuVQwuPKIYrI6kau6S+5D5fnTtAXo1o5JeVBsEHc/ZuLp
-         9fxA==
-X-Forwarded-Encrypted: i=1; AFNElJ9GMkIitsrvKz15BeQXvvcTwBb5OhLbgVq9tdhwE5AcE3rlml/Xkh+dqHU7QCmUFK72B84=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPLfvRS6u8xZT2seKv//MgAi08tJf2opL1IgLUGKR0Vamt8IiQ
-	36nYe+n13XKYdv7ciiqWBqTm7EZjhQowth66EuOnbyWIJAwveEF86AkcVMa+I0CVafrzUrqr/6Q
-	0oMHiWVGbw+uj5QXAZCcOuO0iHL3MjcNZavVmvEKvwXuo4YFiSQMuKw==
-X-Gm-Gg: Acq92OELnzyuUhtEiaEsDE6q5rwPD2dDh8Y5hba+DWYlXpZZf4BwUvwtDhaDXk94/Cm
-	wwWn2pIrOzeAq/dFEoMIdvJfWLTXNVvw/izvuCNdMRLMukPSjd2VhvhtuihqYqGjzTnqFLgWaib
-	x5d/S78neILSu8D9MJ00xVd9Kqz7sfI6oLUmFU0fdfxhHYp1AywC9Rp1HY11pnwuBkiZXHsc/X0
-	WxhiLHeHzmv1aMpBspQTaO1Whl9VZyhGZL9bTJ14GtQzY+qIm2U80I1F0QLeUSEvvDmedo/amcR
-	tY+VXrv+RWNgNj37Ir4Sy2+vtszVrt727MTuAJn8Gxlfg4Xbs4SWVSJm77QCY7lFGV3C9mPCBhe
-	w8MkDRZALU3x8
-X-Received: by 2002:a05:6000:240b:b0:43c:f1a5:56f6 with SMTP id ffacd0b85a97d-45e5c5a8dc8mr4021854f8f.43.1778835465831;
-        Fri, 15 May 2026 01:57:45 -0700 (PDT)
-X-Received: by 2002:a05:6000:240b:b0:43c:f1a5:56f6 with SMTP id ffacd0b85a97d-45e5c5a8dc8mr4021803f8f.43.1778835465227;
-        Fri, 15 May 2026 01:57:45 -0700 (PDT)
-Received: from redhat.com ([31.187.78.101])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9ec3ac86sm13294048f8f.14.2026.05.15.01.57.43
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 15 May 2026 01:57:44 -0700 (PDT)
-Date: Fri, 15 May 2026 04:57:41 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	linux-kernel@vger.kernel.org, Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>,
-	Jason Wang <jasowang@redhat.com>, kvm@vger.kernel.org,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	virtualization@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-	"David S. Miller" <davem@davemloft.net>
-Subject: Re: [PATCH net v3 1/2] vsock/virtio: reset connection on receiving
- queue overflow
-Message-ID: <20260515043940-mutt-send-email-mst@kernel.org>
-References: <20260513105417.56761-1-sgarzare@redhat.com>
- <20260513105417.56761-2-sgarzare@redhat.com>
- <agXh36gUe1K6__Bk@sgarzare-redhat>
- <20260514111513-mutt-send-email-mst@kernel.org>
- <CAGxU2F4qWcQTmXnH74V8xZKADLiEMUmCc0+ktW5fZOXdTP4Bdw@mail.gmail.com>
- <20260514134347-mutt-send-email-mst@kernel.org>
- <agbWNqhzvEHVBvC2@sgarzare-redhat>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="akDB14aY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778835804; x=1810371804;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=jf2+E4yIw5mc26mWM18tpZZpHRQcEN8PIN7/Ab9CcDk=;
+  b=akDB14aY2cNjtqBmNpMMSgGZuum1JbMRmlznPjwUQuvohUK+8NjLrFkk
+   L4ayXEyLr4dJGM+IZoJhxHjZunGUpvufWyD1tPCOvBUnd8O0oraXMXiBJ
+   chRuN6PN3R6Py0VBYHLbwh+5QpHa6IfnW2F3BzjxcubrK1GgWOJAlNkmT
+   V1+N8E4PaGBKLcfJm/fPllw3vNLyPdUWZR9R5F03JihjX7M7fx+jtHRnJ
+   +79kKjd7IKRYd716CIE4ND6skLeFUw1oap5CEZDt022bTFthjuRcJ9Wjl
+   312JV+byJSvo15unswZM8cJ4PEK2VcNgZIInKbAFLJPlt+vF+faIujgbf
+   A==;
+X-CSE-ConnectionGUID: dmx3uoxQTdqYM6TlUHdwxw==
+X-CSE-MsgGUID: K4mVMPV6SRe8IWEfa50SLw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="105247144"
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
+   d="scan'208";a="105247144"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 02:03:22 -0700
+X-CSE-ConnectionGUID: 3ivDejnJTdePN6ZVon+jyQ==
+X-CSE-MsgGUID: vj1wAF3XTMyIu9pOd6SU2g==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
+   d="scan'208";a="240453564"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.124.240.18]) ([10.124.240.18])
+  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 02:03:20 -0700
+Message-ID: <db11b4df-d5f8-49b5-91dc-daa103f94223@intel.com>
+Date: Fri, 15 May 2026 17:03:18 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <agbWNqhzvEHVBvC2@sgarzare-redhat>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 01/27] KVM: x86: Fix emulated CPUID features being
+ applied to wrong sub-leaf
+To: Binbin Wu <binbin.wu@linux.intel.com>, kvm@vger.kernel.org
+Cc: pbonzini@redhat.com, seanjc@google.com, rick.p.edgecombe@intel.com,
+ chao.gao@intel.com, kai.huang@intel.com
+References: <20260417073610.3246316-1-binbin.wu@linux.intel.com>
+ <20260417073610.3246316-2-binbin.wu@linux.intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260417073610.3246316-2-binbin.wu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, May 15, 2026 at 10:29:55AM +0200, Stefano Garzarella wrote:
-> On Thu, May 14, 2026 at 01:44:53PM -0400, Michael S. Tsirkin wrote:
-> > On Thu, May 14, 2026 at 06:45:00PM +0200, Stefano Garzarella wrote:
-> > > On Thu, 14 May 2026 at 17:16, Michael S. Tsirkin <mst@redhat.com> wrote:
-> > > >
-> > > > On Thu, May 14, 2026 at 04:57:16PM +0200, Stefano Garzarella wrote:
-> > > > > On Wed, May 13, 2026 at 12:54:16PM +0200, Stefano Garzarella wrote:
-> > > > > > From: Stefano Garzarella <sgarzare@redhat.com>
-> > > > > >
-> > > > > > When there is no more space to queue an incoming packet, the packet is
-> > > > > > silently dropped. This causes data loss without any notification to
-> > > > > > either peer, since there is no retransmission.
-> > > > > >
-> > > > > > Under normal circumstances, this should never happen. However, it could
-> > > > > > happen if the other peer doesn't respect the credit, or if the skb
-> > > > > > overhead, which we recently began to take into account with commit
-> > > > > > 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue"),
-> > > > > > is too high.
-> > > > > >
-> > > > > > Fix this by resetting the connection and setting the local socket error
-> > > > > > to ENOBUFS when virtio_transport_recv_enqueue() can no longer queue a
-> > > > > > packet, so both peers are explicitly notified of the failure rather than
-> > > > > > silently losing data.
-> > > > > >
-> > > > > > Fixes: ae6fcfbf5f03 ("vsock/virtio: discard packets if credit is not respected")
-> > > > > > Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> > > > > > ---
-> > > > > > net/vmw_vsock/virtio_transport_common.c | 19 ++++++++++++++-----
-> > > > > > 1 file changed, 14 insertions(+), 5 deletions(-)
-> > > > > >
-> > > > > > diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> > > > > > index 989cc252d3d3..4a4ac69d1ad1 100644
-> > > > > > --- a/net/vmw_vsock/virtio_transport_common.c
-> > > > > > +++ b/net/vmw_vsock/virtio_transport_common.c
-> > > > > > @@ -1350,7 +1350,7 @@ virtio_transport_recv_connecting(struct sock *sk,
-> > > > > >     return err;
-> > > > > > }
-> > > > > >
-> > > > > > -static void
-> > > > > > +static bool
-> > > > > > virtio_transport_recv_enqueue(struct vsock_sock *vsk,
-> > > > > >                           struct sk_buff *skb)
-> > > > > > {
-> > > > > > @@ -1365,10 +1365,8 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
-> > > > > >     spin_lock_bh(&vvs->rx_lock);
-> > > > > >
-> > > > > >     can_enqueue = virtio_transport_inc_rx_pkt(vvs, len);
-> > > > > > -   if (!can_enqueue) {
-> > > > > > -           free_pkt = true;
-> > > > > > +   if (!can_enqueue)
-> > > > > >             goto out;
-> > > > > > -   }
-> > > > > >
-> > > > > >     if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SEQ_EOM)
-> > > > > >             vvs->msg_count++;
-> > > > > > @@ -1408,6 +1406,8 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
-> > > > > >     spin_unlock_bh(&vvs->rx_lock);
-> > > > > >     if (free_pkt)
-> > > > > >             kfree_skb(skb);
-> > > > > > +
-> > > > > > +   return can_enqueue;
-> > > > > > }
-> > > > > >
-> > > > > > static int
-> > > > > > @@ -1420,7 +1420,16 @@ virtio_transport_recv_connected(struct sock *sk,
-> > > > > >
-> > > > > >     switch (le16_to_cpu(hdr->op)) {
-> > > > > >     case VIRTIO_VSOCK_OP_RW:
-> > > > > > -           virtio_transport_recv_enqueue(vsk, skb);
-> > > > > > +           if (!virtio_transport_recv_enqueue(vsk, skb)) {
-> > > > > > +                   /* There is no more space to queue the packet, so let's
-> > > > > > +                    * close the connection; otherwise, we'll lose data.
-> > > > > > +                    */
-> > > > > > +                   (void)virtio_transport_reset(vsk, skb);
-> > > > > > +                   sk->sk_state = TCP_CLOSE;
-> > > > > > +                   sk->sk_err = ENOBUFS;
-> > > > > > +                   sk_error_report(sk);
-> > > > >
-> > > > > sashiko reported some issues related to setting TCP_CLOSE state and not
-> > > > > removing the socket from the connect table:
-> > > > > https://sashiko.dev/#/patchset/20260513105417.56761-1-sgarzare%40redhat.com
-> > > > >
-> > > > > I'll change this by calling virtio_transport_do_close() and
-> > > > > vsock_remove_sock() in the next version.
-> > > > >
-> > > > > Stefano
-> > > > >
-> > > > > > +                   break;
-> > > > > > +           }
-> > > > > >             vsock_data_ready(sk);
-> > > > > >             return err;
-> > > > > >     case VIRTIO_VSOCK_OP_CREDIT_REQUEST:
-> > > > > > --
-> > > > > > 2.54.0
-> > > > > >
-> > > >
-> > > >
-> > > > And so the bag of hacks grows. I feel this is energy not well spent.
-> > > > Please, let us fix this properly *first*. And then worry about how to
-> > > > backport.  Maybe it will not be so terrible to backport after all.
-> > > >
-> > > 
-> > > TBH I don't think this is an hack, but an issue we should fix in any case.
-> > > Regarding the second patch, I see your point, but it's a big change
-> > > that worries me. I'd like some more time to fix it properly without
-> > > rushing. Staying calm without realizing that userspace is broken like
-> > > we are now without this series :-(
-> > > 
-> > > That said, evaluating further, I think we have a similar issue also
-> > > with STREAM on the host side where the skb usually doesn't free space,
-> > > so we need a merge strategy also there.
-> > > 
-> > > So, I'd like to have time to fix both definitely. If you have time and
-> > > want to go ahead, please do.
-> > > 
-> > > Thanks,
-> > > Stefano
-> > 
-> > Well my patch was a start, we just need a strategy how to avoid copying
-> > everything, right?
+On 4/17/2026 3:35 PM, Binbin Wu wrote:
+> Guard the use of cpuid_func_emulated() with a check that the CPUID
+> sub-leaf index is 0, as cpuid_func_emulated() unconditionally returns
+> emulated features for index 0 and does not account for indexed leaves.
 > 
-> Yep, and then there's the question of how to handle EOM without a payload,
-> but I think that's a special case. In theory, we don't support sending it,
-> but I'm not sure if POSIX allows it or not.
-
-It seems to, but given we didn't allow it in the past, we probably
-should not start now without a good solution.
-Really we should add a feature bit for EOM to steal a byte from
-buf_alloc. Or several bytes)
-
-> That said, is it okay if I send a v4 of this series?
+> Without the guard, when iterating over reverse_cpuid[] entries that
+> share the same CPUID function but have a non-zero index, e.g.
+> CPUID_7_1_ECX (function=7, index=1), the emulated features for index 0
+> are incorrectly OR'd into the wrong capability word.  For example,
+> RDPID (CPUID.7.0:ECX[22]) gets erroneously applied to CPUID_7_1_ECX,
+> which would allow userspace to set bit 22 of CPUID.7.1:ECX in the vCPU's
+> capabilities.
 > 
-> (I'm not sure if I'll be able to work on the merging next week)
+> This is currently benign as the affected bits in the non-zero index
+> words happen to not correspond to meaningful features, but it could
+> cause problems as new features are defined in those positions.
 > 
-> Stefano
+> Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
+> ---
+>   arch/x86/kvm/cpuid.c | 9 +++++----
+>   1 file changed, 5 insertions(+), 4 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+> index e69156b54cff..25f582a8d795 100644
+> --- a/arch/x86/kvm/cpuid.c
+> +++ b/arch/x86/kvm/cpuid.c
+> @@ -399,15 +399,16 @@ void kvm_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu)
+>   		if (!entry)
+>   			continue;
+>   
+> -		cpuid_func_emulated(&emulated, cpuid.function, true);
+> -
+>   		/*
+>   		 * A vCPU has a feature if it's supported by KVM and is enabled
+>   		 * in guest CPUID.  Note, this includes features that are
+>   		 * supported by KVM but aren't advertised to userspace!
+>   		 */
+> -		vcpu->arch.cpu_caps[i] = kvm_cpu_caps[i] |
+> -					 cpuid_get_reg_unsafe(&emulated, cpuid.reg);
+> +		vcpu->arch.cpu_caps[i] = kvm_cpu_caps[i];
+> +		if (!cpuid.index) {
 
+Instead of such a temporary fix, I would prefer adding the index 
+parameter to cpuid_func_emulated() and split this patch separately.
 
-I do worry we are piling up hacks and we'll end up with races
-for all our troubles. That said, up to you.
+> +			cpuid_func_emulated(&emulated, cpuid.function, true);
+> +			vcpu->arch.cpu_caps[i] |= cpuid_get_reg_unsafe(&emulated, cpuid.reg);
+> +		}
+>   		vcpu->arch.cpu_caps[i] &= cpuid_get_reg_unsafe(entry, cpuid.reg);
+>   	}
+>   
 
