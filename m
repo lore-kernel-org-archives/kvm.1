@@ -1,55 +1,55 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E99F3F6C3C
-	for <kvm@vger.kernel.org>; Fri, 15 May 2026 22:26:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 336273EFFBD
+	for <kvm@vger.kernel.org>; Fri, 15 May 2026 22:26:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778884014; cv=none; b=awnvGRSVESFXb6J62fgbAKiTbDXfFP++hXexSNC6dlNBwMR+47gtWe8uVfuXRji6s0uPgHFyi1qXDgLjDXe/faGQo49/uSEY4wpUl1V5igeaAB+nr8OPoGUB0mfe1FYsZCtAIT4lDmdkq0YEyi2cSBvkAn4Xi95iKcLcgWz6c1Q=
+	t=1778884015; cv=none; b=QeyL0YGNEiGfEiutQaFmEYO3neymp3Y182AyuQBaPoBXsFwYxRfwPH1dAzVtVHd0dzcOclAn2PLjQwVb2YbSj7e29QSHPp1MFT8kSt5i5JVcmNytutMAx9NGsY92fuFPOGptffndCBHtIvt3lLRAd43kou1j1QvF8SZmhN5CYR4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778884014; c=relaxed/simple;
-	bh=c90x4WHZtR7+o6rsOgPAW2lJDgKJtgYmMh9gOe13CKU=;
+	s=arc-20240116; t=1778884015; c=relaxed/simple;
+	bh=ozPMGZO67UVsKM6SPGXeGE/qEN8w826I6bzKhOGXIkQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=UU7med53CxkcEPU1j+MvWZUUrm/iWh1Oxn0OxkN4DuOux+gLhulD8m6wlBnemkk0cSrehGW6B/Mf2eGxP9BGIP+fSDF4uVOYI7PDO0w5EaMUuBiDOeBo3m7rnjRBd4/GYrqtpIWx2zWqYZXdIpqwGbvA4e4VdHd9U5UYP6Wyho0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AkvUy47i; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=jCF/kTWBv0r3W92f7w/NXHl1NqW26Ue1TbidmN22cETTbl5nOnKhPQsPvw6HDapcBKHFpPVZfigrT04nigq6jYfrZ2Ni2VbWUuu3T+OTK4iyB7yWKtysiSXn9Mk/HFsfyn+ybfCIXxWA4Du0D2kXpXumZFE4skzTfTL4cHsoKRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aDp7kn/P; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AkvUy47i"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-368edd5fec4so272565a91.0
-        for <kvm@vger.kernel.org>; Fri, 15 May 2026 15:26:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aDp7kn/P"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-8397b14a689so272360b3a.2
+        for <kvm@vger.kernel.org>; Fri, 15 May 2026 15:26:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778884005; x=1779488805; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1778884010; x=1779488810; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=O7BaysVjYfeQMwfIaz0v/GGnMbpQx9jR4E3VGys+xrI=;
-        b=AkvUy47iTz5tzea0ZfGGq9GoyQqVe43/saEz0G4U5RplVTSOZZ95YNycsmJ/RvYPwJ
-         HkS+f4sYC1hDXMgHGOyVO3dHVPXyHMPvEWVyBQ3hbvHw4Vu2bVmBy+qyY+VkBB+iL/B2
-         PZUE6B95TWT4IVWg10bHVgSXnayyh0j19NSmNFDjTO5Kptyf00HCRtnMQqxu3BoQjQ5N
-         hrSDBivrzpjXHcYCobZt4K6uchTJZ9kLC3bUNebjwVtacD7q8qo0thO4/amBN92/QW1x
-         ZWRZTvlprr+wAEestVPF6mJ+7s91+1Aq6GmynMxIXNyDCG9fzb1R06tsslvrLBe4yljO
-         Cyuw==
+        bh=4W/o+Gk1JIoJUBX8jQkrO28lcANwiD+MfgzBj8mdJc0=;
+        b=aDp7kn/PmrunoA2iwOWj5GYt6JFdt9Cjt97+Tg7NnmV8nbzrtWz4fKmY8eY8LXsnay
+         oacw6NGAPHGLWgbafLG2PROyj+hxzQSkblgvZi8lWromLFLgEq/N7IHLyJbnVf4LHdvv
+         NlF8r/fPTZ6Ts5PVL8cTtapvwMOYRh2+s3Y5D4pbuXZBkJIjXXaPEm+yxC1VYW6c4ktz
+         s+FQSJwhCGdzaDlPUAt2ZOpE1BRzTigelkm3XHgzeayg7MDHGTeN6etfUHZmIq14uMux
+         nAmuIc8T9cT0VdhE2QXWydi2XZFQn6Kda/rEuDkAzsPCwprGP8UKx7MVqrZa3cmRDiRZ
+         JOvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778884005; x=1779488805;
+        d=1e100.net; s=20251104; t=1778884010; x=1779488810;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=O7BaysVjYfeQMwfIaz0v/GGnMbpQx9jR4E3VGys+xrI=;
-        b=VBrkszoqrG49iqN5J5SAv8hfbpqqV8WSf/PudRIcbR4HuGBr4Y7lBrHVZ02dLQCXik
-         eGfkFFiISJLOoTFKTgRtNEVQUJQoPMQ1GliqDCNMhQGvc1cz55HQ/yuVZwO3tDmCTDJz
-         ZarN/Hz659hdRg8hT7mU5dmeXyK/h1oeb9R0o2hfn2g1GdyCA1tlmF8DwXWW0yU+Jnl4
-         Z/YHzMjG6qn1d+AKk8Mrh6EzKfJEDzaX208glwVgp2JSz7roGPbRBEdeQj6r7QclGDTK
-         sFUbPZe7L7TXhzquFNFlbAqFkYjUVvl9wc0HUhRfp6Koc9OkXUexpBeLJnYURSCIDt8A
-         DNMw==
-X-Gm-Message-State: AOJu0YzVQ8l4rF2pidoAWAr6/1TGAuwzTLFLe00PFuQ6ROu1V9uhdD6P
-	6Qq/s9qhOqpuF1HmAm0XeMeyMMRWVeLrLVMKWI/h0FcY2F9Y4iqJ/pt12GRNLpa/Pz7BMAN//LC
-	C9LehsQ==
-X-Received: from pjyl14.prod.google.com ([2002:a17:90a:ec0e:b0:366:4bcb:9926])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1dc5:b0:367:d9cb:fdb3
- with SMTP id 98e67ed59e1d1-36951b8a727mr6217367a91.24.1778884005210; Fri, 15
- May 2026 15:26:45 -0700 (PDT)
+        bh=4W/o+Gk1JIoJUBX8jQkrO28lcANwiD+MfgzBj8mdJc0=;
+        b=SmBHqi4FguMK4RKVFYRw27olfMNxTOSKYrN4YS17OtOUu4CSkrIFJMvVCGvPqvh4b6
+         OfnyNRPITPDVgMq8l1QKULBBHObiV92zqLfIQX9774V44ZDOUztpEBY3Y7s+9hrZ06oW
+         +mfloZB0AeLaxwiLYuuBwQB05Jy6nZ97SpGOt3iRWugxT/42o57w5a/SI5J0EDgVh0/z
+         1fq0wuUOZ3w8Fl1MNSeOxUGPU3+I+0MWh2nhOXvX+2Vqa73MHNDAu45GrM5E6r0ilUnc
+         h33PuBjXeAnRHydhWYw4Uzvk3RxIxRc66412fUsyHJT83NyhSHOmybv1jffrbDw9WngD
+         hFsQ==
+X-Gm-Message-State: AOJu0YzIAXbOnji6ZVCtbQq6zZrBL2ID6S59PrxSrj4v25HJPel/JyS/
+	T82HFt8be7HjakJsLoE5scDYLF3jfCY85Pz6VL32I/FsH7KEJtSsL9ZCvcvmOPgBoHRC2QaHKC5
+	6mUxJRQ==
+X-Received: from pfoo19.prod.google.com ([2002:a05:6a00:1a13:b0:82f:49f6:76e])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:4b0b:b0:82f:316:3206
+ with SMTP id d2e1a72fcca58-83f33dcc06cmr6273940b3a.34.1778884010239; Fri, 15
+ May 2026 15:26:50 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 15 May 2026 15:26:33 -0700
+Date: Fri, 15 May 2026 15:26:37 -0700
 In-Reply-To: <20260515222638.1949982-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,9 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260515222638.1949982-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260515222638.1949982-6-seanjc@google.com>
-Subject: [PATCH v3 05/10] KVM: x86: Honor KVM_GUESTDBG_USE_HW_BP when checking
- for code breakpoints in emulation
+Message-ID: <20260515222638.1949982-10-seanjc@google.com>
+Subject: [PATCH v3 09/10] KVM: selftests: Verify guest debug DR7.GD checking
+ during instruction emulation
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -70,89 +70,71 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Hou Wenlong <houwenlong.hwl@antgroup.com>
 
-When KVM_GUESTDBG_USE_HW_BP is enabled, i.e. userspace is usurping the
-guest's hardware debug registers, the guest's effective breakpoints are
-controlled by userspace rather than by the guest itself.  Honor the
-KVM_GUESTDBG_USE_HW_BP behavior when handling code #DBs in the emulator so
-that userspace (and the guest) gets consistent behavior for code #DBs
-regardless of whether an instruction is executed natively or emulated by
-KVM.
+Similar to the global disable test case in x86's debug_regs test, use
+'KVM_FEP' to trigger instruction emulation in order to verify the guest
+debug DR7.GD checking during instruction emulation.
 
-To aid in userspace debug, don't treat code breakpoints as inhibited if
-KVM_GUESTDBG_USE_HW_BP is enabled as accurately emulating x86 architecture
-is obviously a non-goal of guest-debug.
-
-Fixes: 4a1e10d5b5d8 ("KVM: x86: handle hardware breakpoints during emulation")
 Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
-[sean: massage changelog]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c | 35 ++++++++++-------------------------
- 1 file changed, 10 insertions(+), 25 deletions(-)
+ tools/testing/selftests/kvm/x86/debug_regs.c | 23 +++++++++++++++++++-
+ 1 file changed, 22 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 8b07bd2f8310..279e2734e088 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -9319,6 +9319,9 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_skip_emulated_instruction);
+diff --git a/tools/testing/selftests/kvm/x86/debug_regs.c b/tools/testing/selftests/kvm/x86/debug_regs.c
+index 0dfaf03cd0a0..ee9d0f3a5807 100644
+--- a/tools/testing/selftests/kvm/x86/debug_regs.c
++++ b/tools/testing/selftests/kvm/x86/debug_regs.c
+@@ -19,6 +19,7 @@
+ u32 guest_value;
  
- static bool kvm_is_code_breakpoint_inhibited(struct kvm_vcpu *vcpu)
+ extern unsigned char sw_bp, hw_bp, write_data, ss_start, bd_start;
++extern unsigned char fep_bd_start;
+ 
+ static void guest_code(void)
  {
-+	if (vcpu->guest_debug & KVM_GUESTDBG_USE_HW_BP)
-+		return false;
+@@ -64,6 +65,10 @@ static void guest_code(void)
+ 
+ 	/* DR6.BD test */
+ 	asm volatile("bd_start: mov %%dr0, %%rax" : : : "rax");
 +
- 	if (kvm_get_rflags(vcpu) & X86_EFLAGS_RF)
- 		return true;
- 
-@@ -9335,6 +9338,8 @@ static bool kvm_is_code_breakpoint_inhibited(struct kvm_vcpu *vcpu)
- static bool kvm_vcpu_check_code_breakpoint(struct kvm_vcpu *vcpu,
- 					   int emulation_type, int *r)
- {
-+	unsigned long dr7 = kvm_get_eff_dr7(vcpu);
++	if (is_forced_emulation_enabled)
++		asm volatile(KVM_FEP "fep_bd_start: mov %%dr0, %%rax" : : : "rax");
 +
- 	WARN_ON_ONCE(emulation_type & EMULTYPE_NO_DECODE);
+ 	GUEST_DONE();
+ }
  
- 	/*
-@@ -9355,34 +9360,14 @@ static bool kvm_vcpu_check_code_breakpoint(struct kvm_vcpu *vcpu,
- 			      EMULTYPE_TRAP_UD | EMULTYPE_VMWARE_GP | EMULTYPE_PF))
- 		return false;
- 
--	if (unlikely(vcpu->guest_debug & KVM_GUESTDBG_USE_HW_BP) &&
--	    (vcpu->arch.guest_debug_dr7 & DR7_BP_EN_MASK)) {
--		struct kvm_run *kvm_run = vcpu->run;
--		unsigned long eip = kvm_get_linear_rip(vcpu);
--		u32 dr6 = kvm_vcpu_check_hw_bp(eip, 0,
--					   vcpu->arch.guest_debug_dr7,
--					   vcpu->arch.eff_db);
--
--		if (dr6 != 0) {
--			kvm_run->debug.arch.dr6 = dr6 | DR6_ACTIVE_LOW;
--			kvm_run->debug.arch.pc = eip;
--			kvm_run->debug.arch.exception = DB_VECTOR;
--			kvm_run->exit_reason = KVM_EXIT_DEBUG;
--			*r = 0;
--			return true;
--		}
--	}
--
--	if (unlikely(vcpu->arch.dr7 & DR7_BP_EN_MASK) &&
-+	if (unlikely(dr7 & DR7_BP_EN_MASK) &&
- 	    !kvm_is_code_breakpoint_inhibited(vcpu)) {
- 		unsigned long eip = kvm_get_linear_rip(vcpu);
--		u32 dr6 = kvm_vcpu_check_hw_bp(eip, 0,
--					   vcpu->arch.dr7,
--					   vcpu->arch.db);
-+		u32 dr6 = kvm_vcpu_check_hw_bp(eip, 0, dr7,
-+					       vcpu->arch.eff_db);
- 
--		if (dr6 != 0) {
--			kvm_queue_exception_p(vcpu, DB_VECTOR, dr6);
--			*r = 1;
-+		if (dr6) {
-+			*r = kvm_inject_emulated_db(vcpu, dr6);
- 			return true;
- 		}
+@@ -185,7 +190,7 @@ int main(void)
+ 			    target_dr6);
  	}
+ 
+-	/* Finally test global disable */
++	/* test global disable */
+ 	memset(&debug, 0, sizeof(debug));
+ 	debug.control = KVM_GUESTDBG_ENABLE | KVM_GUESTDBG_USE_HW_BP;
+ 	debug.arch.debugreg[7] = 0x400 | DR7_GD;
+@@ -202,6 +207,22 @@ int main(void)
+ 			    run->debug.arch.pc, target_rip, run->debug.arch.dr6,
+ 			    target_dr6);
+ 
++	/* test global disable in emulation */
++	if (is_forced_emulation_enabled) {
++		/* Skip the 3-bytes "mov dr0" */
++		vcpu_skip_insn(vcpu, 3);
++		vcpu_run(vcpu);
++		TEST_ASSERT(run->exit_reason == KVM_EXIT_DEBUG &&
++			    run->debug.arch.exception == DB_VECTOR &&
++			    run->debug.arch.pc == CAST_TO_RIP(fep_bd_start) &&
++			    run->debug.arch.dr6 == target_dr6,
++			    "DR7.GD: exit %d exception %d rip 0x%llx "
++			    "(should be 0x%llx) dr6 0x%llx (should be 0x%llx)",
++			    run->exit_reason, run->debug.arch.exception,
++			    run->debug.arch.pc, target_rip, run->debug.arch.dr6,
++			    target_dr6);
++	}
++
+ 	/* Disable all debug controls, run to the end */
+ 	memset(&debug, 0, sizeof(debug));
+ 	vcpu_guest_debug_set(vcpu, &debug);
 -- 
 2.54.0.563.g4f69b47b94-goog
 
