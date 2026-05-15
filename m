@@ -1,262 +1,236 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8833FF8A1
-	for <kvm@vger.kernel.org>; Fri, 15 May 2026 08:28:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0AC33E958A
+	for <kvm@vger.kernel.org>; Fri, 15 May 2026 08:30:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778833726; cv=none; b=C73e30XZ/ELVbnVxtrROD1aw0ZuGGWC3gSrSlZZijl3FAnxrEmZIq4r6+ZXAL/mxvHHsPqsgM7IzT1VrZoG9olpv7cjBySq3ebRk/Vizqo3GwCRX0WQlGucwJUlbHsjrjgFtAjVdYuApZhip8UzgK9//LY+qqc9vIwRNDWDIZ74=
+	t=1778833806; cv=none; b=amo25OxVK07Umu4otag44m5r0cm9wVSI/66xP2kQm/IlM/wSJwicWEJXWhCXEVs/+b10A4bk/LKI9MNzU5SwulcOd1w6rir3dTGws28UU9vTgmCu/K3SidL5x2Su5Y1khrCmE/QtSwOlMwd9RNHzahnFVF8rKMTF+CS29SGTZYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778833726; c=relaxed/simple;
-	bh=VjM1sDIwoUP6qi68BiA3PqSUNQtFlaJkLbn2w6NF95w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=T6HDKJKj7+x/gDtxBkgbSrE9RWXIufXfJS+Sln3sF/tQSaD+mMctY8Nvzo6ZKYessYquQaPoyA/+o+dDF+Rvl/WCcWawk5UlhF7HL+TcI+bqD12Q118HWqKifrEXwlZC3/NNNkQlWll3Xf9t3xsbrO7wf8vrsOyvBtxC1xYYeNs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BatIa1gc; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1778833806; c=relaxed/simple;
+	bh=EQ7IwlxGHE0J1foFsB+9uj3saln4eg27mwKY3T8VjcA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=P9ViGEd10yBEdd63j7dq04dooBaSb2MuzKUW/xdIBtlwGh4/g9AV+WpJa0Dm3+kJjF7vYgIwhOmS9saIrxcaA6uREciFuj2KJrjQTbPW1ajZ3+xWWN0cUtnnRbQU5LOM1Vb0trA5YHYAeo1bFP4Vsm+MJSgQb1cfLJqlkuKUx1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eC6BFrrM; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=IgWTBIDi; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BatIa1gc"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-44509921fbcso4554477f8f.3
-        for <kvm@vger.kernel.org>; Fri, 15 May 2026 01:28:43 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eC6BFrrM";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="IgWTBIDi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778833803;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=muOsFm1ckUowqiVN5FPZIYRSKzSTI/TAawbrF7fG7TI=;
+	b=eC6BFrrMAF5RbAbw/Cv/noKRjsrpVWQdNh7st4y0EodZcwgHVL1rT8i4bOV/wznTyxlbl3
+	dDGB0wIyBxMRJkya+0/c1ti+mTMQJbpIiFPTxuDm1hZDbir+opTB2OqiPsitYXBVKmZgdj
+	zEFxZ01TPslLeJefQQ782qqn5PjKTi4=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-528-f2T8vOPONL2ZZtIw4vUuQg-1; Fri, 15 May 2026 04:30:02 -0400
+X-MC-Unique: f2T8vOPONL2ZZtIw4vUuQg-1
+X-Mimecast-MFC-AGG-ID: f2T8vOPONL2ZZtIw4vUuQg_1778833801
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-48fdc746a8bso8522475e9.0
+        for <kvm@vger.kernel.org>; Fri, 15 May 2026 01:30:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1778833722; x=1779438522; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=x9sH8Q4QjX83trp+YQQ6QbWlIhiR2CnSj4K2FVOvEtA=;
-        b=BatIa1gcYN/3Pq5VcVtdUgifJqGYkH8EXs7wEMcfSL5IljTl4Cq1uQ2lk5wehbA5wQ
-         fOyx3eOCodmJtBRnZUZXu8b+pGptsXS773Mpx7zjWj0pEUpMeppRDVqGRff3f6YetNs9
-         kVzjkgM/aEupCWlq/JPLJ3/ywwVhAz4rsqdW0X5STQaZn2LxO/ZMR/1fQn4rFL77YYyS
-         Rfi/+H4+GfeI28z9Sx7yqZdKnuQN9+DC/9tk6ZotXzT7aQiJPla3Yj6He/gufKrYl+6Y
-         NvpY+Cmwi5jaYfiVPnDRM/pNSeyzQm32GRCLxRRLEVIJcaFtIK/XBOlhooiKqCgWJP6D
-         S0SQ==
+        d=redhat.com; s=google; t=1778833801; x=1779438601; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=muOsFm1ckUowqiVN5FPZIYRSKzSTI/TAawbrF7fG7TI=;
+        b=IgWTBIDi/E1uCRoGQuyD1yP5NwUy29f8pRSJdpQiME8xfowzRGMEDe8+3kvITs/E/I
+         c2wo3o51eaoVv1mi0sr90dbLT9pbJHr+fsBwj8Ru7Zrn2mbMiyqFKJcpwCVFrDSXrKFW
+         9BTGC0jksBY9BSCOeYVi6AqfyBzR0GP4qWISDiKAnL7L0XSviggO/P5B5oefidDHuuQK
+         U/YGMQhdWYmZISkFLM6bYVpu/+1j9h1fCZdTN47j48a0tIRuDgo/jiC6PBlNufaASDQ5
+         mv0Ge8Qq4R625j3/yayiGID3WzbJzX8C6TiYyPqs+cacC80WFVAWp3u3AEx1R60dwY4e
+         fBpQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778833722; x=1779438522;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=x9sH8Q4QjX83trp+YQQ6QbWlIhiR2CnSj4K2FVOvEtA=;
-        b=ajwpILASLTEBiVDyhh9ktcuzlbxYfoNYqoqT+OuQ7OGBf6oLtLS3V12HvTAbxjBou+
-         VskGmlxvF2DhS/tm2/JBxUP+sZiMtLnlTSn6liKBr29CHXdZnocwJLMl7gVI3FfTOKsN
-         w9gpvpZj+9q4tI51TJYT1ogz2UTFD1xwIZeKzZG1lPXzGqHMNIrGyWHf4krR0d7ua/rI
-         cVCRV4ZJsHds1MJYPZ8QiZHR5AhTwStGaduw6RpCw/TswqXvoU/dgXZZ3tA3V2K8TQHf
-         YGDueQd2no23h8D1G01+DXa+4ayMtMNKc4TXQhbaIVBRjjkwlHELv+67afPsQCT9sdvc
-         tkBw==
-X-Forwarded-Encrypted: i=1; AFNElJ+kYeSrpT59y6ITsBtFpIcbK1yzYrSVfME1HSf0xw+8R/ER4Sj3dez/+sOEK7Hn/vQYRxA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwpUS5E4Vzi9cZaS1zoNy0pLoaDCzWKFrvjTG+LgL4tfiu9fz+9
-	G0KoM8K43BXKJZ4EQEmdSBLzVCTGf5YR0AOcHUrtsfUmxvdWG37MNBJHFWNwaAMj+O8=
-X-Gm-Gg: Acq92OEhm1lrGB8ERLhpjjE9cn1r9ZxY8+HC690vPOOMDMAkyUyzQHthlV91R22WNS3
-	IjHyMVw7I2PuG0kWUDMU2z1puZvw7Ydt9ghujgr/mTBcUH1yydcFWO526baxxjg8v+78likfvHa
-	HQNSwMKgzKAJgnZqPKv+kqsLgj8ag5KX+7ThhEAE2jQAs79eou2gUHCN6/jlZKFwZFDSetkltc2
-	Emzy5iwDzL1PghfULPwtwfEk7N1BtGbqCP0GZEfi7/4Afm/FWYJkbx2LY8eVcpL8JDhRWE/OuWy
-	bfLxjyfqjkVaUIGKcZ52DxaUEdFRR3wUB2W8RLK4SyLbqf/Qo9uHhcuFEt+Xg+xFWddvO43eHU4
-	wY0SrMwYHQKPqsAP6y7aj+B80yLKzKoS4ZtnAo9xrNNzV5voORlU17ivokdcGcQxrryN2jYcIs2
-	EyzYRTLt7VqTyu5gqVTcs5xlKCuk6k
-X-Received: by 2002:a05:6000:1787:b0:455:fbb:28bb with SMTP id ffacd0b85a97d-45e5c5dd6famr3551750f8f.35.1778833722379;
-        Fri, 15 May 2026 01:28:42 -0700 (PDT)
-Received: from [192.168.1.3] ([185.48.77.170])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da0a19c2dsm12770884f8f.21.2026.05.15.01.28.40
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 15 May 2026 01:28:41 -0700 (PDT)
-Message-ID: <c7a68965-88e5-4808-9a75-d58c4986a3b6@linaro.org>
-Date: Fri, 15 May 2026 09:28:40 +0100
+        d=1e100.net; s=20251104; t=1778833801; x=1779438601;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=muOsFm1ckUowqiVN5FPZIYRSKzSTI/TAawbrF7fG7TI=;
+        b=lJ1vVb+4ZpwD4wYrqieZXZ7u2KI9quy++V/h+olT6/VrgoV0zz1UBi4aY8OS09sPkG
+         BoQbTWDXVi3skd7Cjm3vVNag8miAHrbSk5Gy0LS3xYUuRwc5v0djxz7boLZ+ObUGeP/9
+         qDZZMGccmeeEkE/hhIQ37yiKJv7NnB6CIbzKNOA6IoGNJpKesMw/mkYHYTm2lux8yVAK
+         enFID9YPgrBlRxFZuforZ1FEbRwtK8RjQ9rR+umJFj2UQysvuVS84O2opZOxoprJ8RyB
+         MYuRLSRM5qAibByo81hnXV8orACYoZhGMeZSK9xwVAUE7/oLb1qwSk+Lg+LFMwaiu4vo
+         Bhrg==
+X-Forwarded-Encrypted: i=1; AFNElJ82ivCDKAu1FLuv88HoQjwATO5VO866Lg9rdULxUzwul7XUWe0M2YkvgIQDiHvLIryLgeo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpozFB2t1UaIJtjrSg9m9sGycgEwny1fQcrJsW0C+utIBj2Wtl
+	hXb8XG5p4TW3EDEdJtYv7JTLrZfDdkFKVtQ+XtzwWHY2UQtLuEByBjh/PMKfU5plAki77S0A0HB
+	/rcavUDEN/0PUtLdSVclVP/5PfTwMHCrixrk+9UCBnSLSL33ydw9zgg==
+X-Gm-Gg: Acq92OHNHLpQ21iZdaQkKH2uQV/FWkTsYhTUIuTp8EIVe5NmN58nRjtfd3Pkt5f73n3
+	XWJ7spOg80L7nN64PCq2Z7d/hwO+T6zZ24TLn6ub0ZiCu2A8sQ75JQaCyuYJFPcjiUYlv1B45F4
+	NMnE7BWAfAVRSmFq6QdPcuUSDV0fOQF85YydnrhQGPPU+BVueb742dWpa4Hd+iofdek/AvpL4aC
+	NBjyucYsFWn7TAWuNoqhVVgd5kbKdzzEZN2CWPwGszO674TUfddU7Gyw5d4QpLHWv2GJfYQYv4o
+	B4msHc+jEu8mrAs/Gt3whRkzjloapcLt7BSaBbuIhsfgzCQFczmdHBuN+V/xp8p4tkuLut4hgzp
+	zZdqGP6TK0CW5+BM4lANmIZlGY6VVoedBL7TIOIXZNBLq2vqxY/N+6D62CX3GKVv68InK/yaH9g
+	==
+X-Received: by 2002:a05:600c:a11c:b0:48a:5970:2003 with SMTP id 5b1f17b1804b1-48fe5fd483amr29432175e9.3.1778833800732;
+        Fri, 15 May 2026 01:30:00 -0700 (PDT)
+X-Received: by 2002:a05:600c:a11c:b0:48a:5970:2003 with SMTP id 5b1f17b1804b1-48fe5fd483amr29431715e9.3.1778833800267;
+        Fri, 15 May 2026 01:30:00 -0700 (PDT)
+Received: from sgarzare-redhat (host-87-16-204-231.retail.telecomitalia.it. [87.16.204.231])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da0fe2464sm13729817f8f.32.2026.05.15.01.29.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 15 May 2026 01:29:59 -0700 (PDT)
+Date: Fri, 15 May 2026 10:29:55 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: netdev@vger.kernel.org, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, linux-kernel@vger.kernel.org, Simon Horman <horms@kernel.org>, 
+	Paolo Abeni <pabeni@redhat.com>, Jakub Kicinski <kuba@kernel.org>, 
+	Jason Wang <jasowang@redhat.com>, kvm@vger.kernel.org, Stefan Hajnoczi <stefanha@redhat.com>, 
+	virtualization@lists.linux.dev, Eric Dumazet <edumazet@google.com>, 
+	"David S. Miller" <davem@davemloft.net>
+Subject: Re: [PATCH net v3 1/2] vsock/virtio: reset connection on receiving
+ queue overflow
+Message-ID: <agbWNqhzvEHVBvC2@sgarzare-redhat>
+References: <20260513105417.56761-1-sgarzare@redhat.com>
+ <20260513105417.56761-2-sgarzare@redhat.com>
+ <agXh36gUe1K6__Bk@sgarzare-redhat>
+ <20260514111513-mutt-send-email-mst@kernel.org>
+ <CAGxU2F4qWcQTmXnH74V8xZKADLiEMUmCc0+ktW5fZOXdTP4Bdw@mail.gmail.com>
+ <20260514134347-mutt-send-email-mst@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 13/20] KVM: arm64: Apply dynamic guest counter
- reservations
-To: Colton Lewis <coltonlewis@google.com>
-Cc: alexandru.elisei@arm.com, pbonzini@redhat.com, corbet@lwn.net,
- linux@armlinux.org.uk, catalin.marinas@arm.com, will@kernel.org,
- maz@kernel.org, oliver.upton@linux.dev, mizhang@google.com,
- joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com,
- mark.rutland@arm.com, shuah@kernel.org, gankulkarni@os.amperecomputing.com,
- linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
- linux-perf-users@vger.kernel.org, linux-kselftest@vger.kernel.org,
- kvm@vger.kernel.org
-References: <gsntlddlbylw.fsf@coltonlewis-kvm.c.googlers.com>
-Content-Language: en-US
-From: James Clark <james.clark@linaro.org>
-In-Reply-To: <gsntlddlbylw.fsf@coltonlewis-kvm.c.googlers.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260514134347-mutt-send-email-mst@kernel.org>
 
+On Thu, May 14, 2026 at 01:44:53PM -0400, Michael S. Tsirkin wrote:
+>On Thu, May 14, 2026 at 06:45:00PM +0200, Stefano Garzarella wrote:
+>> On Thu, 14 May 2026 at 17:16, Michael S. Tsirkin <mst@redhat.com> wrote:
+>> >
+>> > On Thu, May 14, 2026 at 04:57:16PM +0200, Stefano Garzarella wrote:
+>> > > On Wed, May 13, 2026 at 12:54:16PM +0200, Stefano Garzarella wrote:
+>> > > > From: Stefano Garzarella <sgarzare@redhat.com>
+>> > > >
+>> > > > When there is no more space to queue an incoming packet, the packet is
+>> > > > silently dropped. This causes data loss without any notification to
+>> > > > either peer, since there is no retransmission.
+>> > > >
+>> > > > Under normal circumstances, this should never happen. However, it could
+>> > > > happen if the other peer doesn't respect the credit, or if the skb
+>> > > > overhead, which we recently began to take into account with commit
+>> > > > 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue"),
+>> > > > is too high.
+>> > > >
+>> > > > Fix this by resetting the connection and setting the local socket error
+>> > > > to ENOBUFS when virtio_transport_recv_enqueue() can no longer queue a
+>> > > > packet, so both peers are explicitly notified of the failure rather than
+>> > > > silently losing data.
+>> > > >
+>> > > > Fixes: ae6fcfbf5f03 ("vsock/virtio: discard packets if credit is not respected")
+>> > > > Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+>> > > > ---
+>> > > > net/vmw_vsock/virtio_transport_common.c | 19 ++++++++++++++-----
+>> > > > 1 file changed, 14 insertions(+), 5 deletions(-)
+>> > > >
+>> > > > diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+>> > > > index 989cc252d3d3..4a4ac69d1ad1 100644
+>> > > > --- a/net/vmw_vsock/virtio_transport_common.c
+>> > > > +++ b/net/vmw_vsock/virtio_transport_common.c
+>> > > > @@ -1350,7 +1350,7 @@ virtio_transport_recv_connecting(struct sock *sk,
+>> > > >     return err;
+>> > > > }
+>> > > >
+>> > > > -static void
+>> > > > +static bool
+>> > > > virtio_transport_recv_enqueue(struct vsock_sock *vsk,
+>> > > >                           struct sk_buff *skb)
+>> > > > {
+>> > > > @@ -1365,10 +1365,8 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
+>> > > >     spin_lock_bh(&vvs->rx_lock);
+>> > > >
+>> > > >     can_enqueue = virtio_transport_inc_rx_pkt(vvs, len);
+>> > > > -   if (!can_enqueue) {
+>> > > > -           free_pkt = true;
+>> > > > +   if (!can_enqueue)
+>> > > >             goto out;
+>> > > > -   }
+>> > > >
+>> > > >     if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SEQ_EOM)
+>> > > >             vvs->msg_count++;
+>> > > > @@ -1408,6 +1406,8 @@ virtio_transport_recv_enqueue(struct vsock_sock *vsk,
+>> > > >     spin_unlock_bh(&vvs->rx_lock);
+>> > > >     if (free_pkt)
+>> > > >             kfree_skb(skb);
+>> > > > +
+>> > > > +   return can_enqueue;
+>> > > > }
+>> > > >
+>> > > > static int
+>> > > > @@ -1420,7 +1420,16 @@ virtio_transport_recv_connected(struct sock *sk,
+>> > > >
+>> > > >     switch (le16_to_cpu(hdr->op)) {
+>> > > >     case VIRTIO_VSOCK_OP_RW:
+>> > > > -           virtio_transport_recv_enqueue(vsk, skb);
+>> > > > +           if (!virtio_transport_recv_enqueue(vsk, skb)) {
+>> > > > +                   /* There is no more space to queue the packet, so let's
+>> > > > +                    * close the connection; otherwise, we'll lose data.
+>> > > > +                    */
+>> > > > +                   (void)virtio_transport_reset(vsk, skb);
+>> > > > +                   sk->sk_state = TCP_CLOSE;
+>> > > > +                   sk->sk_err = ENOBUFS;
+>> > > > +                   sk_error_report(sk);
+>> > >
+>> > > sashiko reported some issues related to setting TCP_CLOSE state and not
+>> > > removing the socket from the connect table:
+>> > > https://sashiko.dev/#/patchset/20260513105417.56761-1-sgarzare%40redhat.com
+>> > >
+>> > > I'll change this by calling virtio_transport_do_close() and
+>> > > vsock_remove_sock() in the next version.
+>> > >
+>> > > Stefano
+>> > >
+>> > > > +                   break;
+>> > > > +           }
+>> > > >             vsock_data_ready(sk);
+>> > > >             return err;
+>> > > >     case VIRTIO_VSOCK_OP_CREDIT_REQUEST:
+>> > > > --
+>> > > > 2.54.0
+>> > > >
+>> >
+>> >
+>> > And so the bag of hacks grows. I feel this is energy not well spent.
+>> > Please, let us fix this properly *first*. And then worry about how to
+>> > backport.  Maybe it will not be so terrible to backport after all.
+>> >
+>>
+>> TBH I don't think this is an hack, but an issue we should fix in any case.
+>> Regarding the second patch, I see your point, but it's a big change
+>> that worries me. I'd like some more time to fix it properly without
+>> rushing. Staying calm without realizing that userspace is broken like
+>> we are now without this series :-(
+>>
+>> That said, evaluating further, I think we have a similar issue also
+>> with STREAM on the host side where the skb usually doesn't free space,
+>> so we need a merge strategy also there.
+>>
+>> So, I'd like to have time to fix both definitely. If you have time and
+>> want to go ahead, please do.
+>>
+>> Thanks,
+>> Stefano
+>
+>Well my patch was a start, we just need a strategy how to avoid copying
+>everything, right?
 
+Yep, and then there's the question of how to handle EOM without a 
+payload, but I think that's a special case. In theory, we don't support 
+sending it, but I'm not sure if POSIX allows it or not.
 
-On 14/05/2026 8:05 pm, Colton Lewis wrote:
-> James Clark <james.clark@linaro.org> writes:
-> 
->> On 13/05/2026 5:45 pm, Colton Lewis wrote:
->>> James Clark <james.clark@linaro.org> writes:
-> 
->>>> On 04/05/2026 10:18 pm, Colton Lewis wrote:
->>>>> Apply dynamic guest counter reservations by checking if the requested
->>>>> guest mask collides with any events the host has scheduled and calling
->>>>> pmu_perf_resched_update() with a hook that updates the mask of
->>>>> available counters in between schedule out and schedule in.
-> 
->>>>> Signed-off-by: Colton Lewis <coltonlewis@google.com>
->>>>> ---
->>>>>    arch/arm64/kvm/pmu-direct.c  | 69 ++++++++++++++++++++++++++++++++
->>>>> ++++
->>>>>    include/linux/perf/arm_pmu.h |  1 +
->>>>>    2 files changed, 70 insertions(+)
-> 
->>>>> diff --git a/arch/arm64/kvm/pmu-direct.c b/arch/arm64/kvm/pmu-direct.c
->>>>> index 2252d3b905db9..14cc419dbafad 100644
->>>>> --- a/arch/arm64/kvm/pmu-direct.c
->>>>> +++ b/arch/arm64/kvm/pmu-direct.c
->>>>> @@ -100,6 +100,73 @@ u8 kvm_pmu_hpmn(struct kvm_vcpu *vcpu)
->>>>>        return *host_data_ptr(nr_event_counters);
->>>>>    }
-> 
->>>>> +/* Callback to update counter mask between perf scheduling */
->>>>> +static void kvm_pmu_update_mask(struct pmu *pmu, void *data)
->>>>> +{
->>>>> +    struct arm_pmu *arm_pmu = to_arm_pmu(pmu);
->>>>> +    unsigned long *new_mask = data;
->>>>> +
->>>>> +    bitmap_copy(arm_pmu->cntr_mask, new_mask, ARMPMU_MAX_HWEVENTS);
->>>>> +}
->>>>> +
->>>>> +/**
->>>>> + * kvm_pmu_set_guest_counters() - Handle dynamic counter reservations
->>>>> + * @cpu_pmu: struct arm_pmu to potentially modify
->>>>> + * @guest_mask: new guest mask for the pmu
->>>>> + *
->>>>> + * Check if guest counters will interfere with current host events 
->>>>> and
->>>>> + * call into perf_pmu_resched_update if a reschedule is required.
->>>>> + */
->>>>> +static void kvm_pmu_set_guest_counters(struct arm_pmu *cpu_pmu, u64
->>>>> guest_mask)
->>>>> +{
->>>>> +    struct pmu_hw_events *cpuc = this_cpu_ptr(cpu_pmu->hw_events);
->>>>> +    DECLARE_BITMAP(guest_bitmap, ARMPMU_MAX_HWEVENTS);
->>>>> +    DECLARE_BITMAP(new_mask, ARMPMU_MAX_HWEVENTS);
->>>>> +    bool need_resched = false;
->>>>> +
->>>>> +    bitmap_from_arr64(guest_bitmap, &guest_mask, 
->>>>> ARMPMU_MAX_HWEVENTS);
->>>>> +    bitmap_copy(new_mask, cpu_pmu->hw_cntr_mask, 
->>>>> ARMPMU_MAX_HWEVENTS);
->>>>> +
->>>>> +    if (guest_mask) {
->>>>> +        /* Subtract guest counters from available host mask */
->>>>> +        bitmap_andnot(new_mask, new_mask, guest_bitmap,
->>>>> ARMPMU_MAX_HWEVENTS);
->>>>> +
->>>>> +        /* Did we collide with an active host event? */
->>>>> +        if (bitmap_intersects(cpuc->used_mask, guest_bitmap,
->>>>> ARMPMU_MAX_HWEVENTS)) {
->>>>> +            int idx;
->>>>> +
->>>>> +            need_resched = true;
->>>>> +            cpuc->host_squeezed = true;
->>>>> +
->>>>> +            /* Look for pinned events that are about to be 
->>>>> preempted */
->>>>> +            for_each_set_bit(idx, guest_bitmap, 
->>>>> ARMPMU_MAX_HWEVENTS) {
->>>>> +                if (test_bit(idx, cpuc->used_mask) && cpuc-
->>>>> >events[idx] &&
->>>>> +                    cpuc->events[idx]->attr.pinned) {
->>>>> +                    pr_warn_ratelimited("perf: Pinned host event
->>>>> squeezed out by KVM guest PMU partition\n");
-> 
->>>> Hi Colton,
-> 
->>>> I get "perf: Pinned host event squeezed out by KVM guest PMU partition"
->>>> even with arm_pmuv3.reserved_host_counters=3 for example. I would have
->>>> expected any non zero value to stop the warning.
-> 
->>>> I think armv8pmu_get_single_idx() needs to be changed to allocate from
->>>> the high end host counters first. A more complicated option would be
->>>> checking to see if there are any non-pinned counters in the host
->>>> reserved half when a new pinned counter is opened, then swapping the
->>>> places of the new pinned and existing non-pinned counters so pinned
->>>> always prefer being put into the host half. But it's probably not worth
->>>> doing that.
-> 
->>>> James
-> 
-> 
->>> I agree it makes the most sense to allocate from the top, but I'm happy
->>> the basic idea works.
-> 
-> 
->> Another thing I forgot to mention is that even with the ratelimited
->> warning, this spams the logs any time the host and guest are both using
->> the PMU and I'm not sure how useful that is.
-> 
-> I'm sure it does. I'll delete it.
-> 
+That said, is it okay if I send a v4 of this series?
 
-A warn_once might save someone a few hours of debugging, but we probably 
-don't need more than that.
+(I'm not sure if I'll be able to work on the merging next week)
 
->>>>> +                    break;
->>>>> +                }
->>>>> +            }
->>>>> +        }
->>>>> +    } else {
->>>>> +        /*
->>>>> +         * Restoring to hw_cntr_mask.
->>>>> +         * Only resched if we previously squeezed an event.
->>>>> +         */
->>>>> +        if (cpuc->host_squeezed) {
->>>>> +            need_resched = true;
->>>>> +            cpuc->host_squeezed = false;
->>>>> +        }
->>>>> +    }
->>>>> +
->>>>> +    if (need_resched) {
->>>>> +        /* Collision: run full perf reschedule */
->>>>> +        perf_pmu_resched_update(&cpu_pmu->pmu, kvm_pmu_update_mask,
->>>>> new_mask);
->>>>> +    } else {
->>>>> +        /* Host was never using guest counters anyway */
->>>>> +        bitmap_copy(cpu_pmu->cntr_mask, new_mask, 
->>>>> ARMPMU_MAX_HWEVENTS);
->>>>> +    }
->>>>> +}
->>>>> +
->>>>>    /**
->>>>>     * kvm_pmu_host_counter_mask() - Compute bitmask of host-reserved
->>>>> counters
->>>>>     * @pmu: Pointer to arm_pmu struct
->>>>> @@ -218,6 +285,7 @@ void kvm_pmu_load(struct kvm_vcpu *vcpu)
-> 
->>>>>        pmu = vcpu->kvm->arch.arm_pmu;
->>>>>        guest_counters = kvm_pmu_guest_counter_mask(pmu);
->>>>> +    kvm_pmu_set_guest_counters(pmu, guest_counters);
->>>>>        kvm_pmu_apply_event_filter(vcpu);
-> 
->>>>>        for_each_set_bit(i, &guest_counters, ARMPMU_MAX_HWEVENTS) {
->>>>> @@ -319,5 +387,6 @@ void kvm_pmu_put(struct kvm_vcpu *vcpu)
->>>>>        val = read_sysreg(pmintenset_el1);
->>>>>        __vcpu_assign_sys_reg(vcpu, PMINTENSET_EL1, val & mask);
-> 
->>>>> +    kvm_pmu_set_guest_counters(pmu, 0);
->>>>>        preempt_enable();
->>>>>    }
->>>>> diff --git a/include/linux/perf/arm_pmu.h b/include/linux/perf/ 
->>>>> arm_pmu.h
->>>>> index f7b000bb3eca8..63f88fec5e80f 100644
->>>>> --- a/include/linux/perf/arm_pmu.h
->>>>> +++ b/include/linux/perf/arm_pmu.h
->>>>> @@ -75,6 +75,7 @@ struct pmu_hw_events {
-> 
->>>>>        /* Active events requesting branch records */
->>>>>        unsigned int        branch_users;
->>>>> +    bool host_squeezed;
->>>>>    };
-> 
->>>>>    enum armpmu_attr_groups {
+Stefano
 
