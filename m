@@ -1,145 +1,133 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035B747ECF3
-	for <kvm@vger.kernel.org>; Fri, 15 May 2026 12:44:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51053250C06
+	for <kvm@vger.kernel.org>; Fri, 15 May 2026 12:55:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778849089; cv=none; b=MXx1pTWZb1ZNj1W7jq+2Fc1BiBvjJ5YZQx16aNb9tWIiaixaIpDutIlAicduVat0stYNj1vlSj+wvLXgG03ct+CdwKCiReyVOJXldEzongOiTdBTuQvUAdS0ccbpedGQlYAsTK8/7Is0lWr1LWF3Ay9kMcxo5og58R3WRbb7ZgI=
+	t=1778849727; cv=none; b=YMJFS6e/9SqaBiZjZjiQAOInfTrZy96MH1DOq/d1bZpgS8yWJYCY2YCxklLoVg3CfG70FlClKYgJOckyy5lH6TqI2N+R0f99ldXJWTLg2RMMhWO0lEme6S5RRGtI9M9cCvmpP/CnF0+PzaZQAyot2uNFyHcApySHkM4gWaxCRyE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778849089; c=relaxed/simple;
-	bh=D0qkVSYtfJLlZ8TOrEivIn1n5QyAk3fpgbYhnjCMr6s=;
+	s=arc-20240116; t=1778849727; c=relaxed/simple;
+	bh=44RP69sPTtq9JEi9bpgbdn/yGIvfT4t9nmIg1PVAgfs=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=BRLBWMGvFE6ElzI4d6nq8tu16nU/7OO2QASryc0PfuLJgZ2G6VHWTdEkBsXEDnD10PICTnm5SzB99f61zKMCZNJIRygHeP+kw4rCONiijmJuW1h6AlhTshupg8Pf9asrgXcmPsEya7nPZJGOkwtvOvsbHrtayhTEziQRojrP3bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tmtFCt/s; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=cxwBFJ2UyzcZYmgj7wKwyv2QXIeoV3LmFxL9yppC7aCobSVf++hr6q/Fo7v7t5ixyHB1SME89rmZJJ7QMkgHV4feTaHUboiRyV2N4fV4chFCUjciC6Sd4AWpC8xb2935cJcE5mVykrBbnWtWfmxrIX2HDjUwGvKn6VPsEo4OUMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jnfIDeW3; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tmtFCt/s"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-366344513a3so17226777a91.3
-        for <kvm@vger.kernel.org>; Fri, 15 May 2026 05:44:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jnfIDeW3"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-83544d05c5aso4946487b3a.2
+        for <kvm@vger.kernel.org>; Fri, 15 May 2026 05:55:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778849087; x=1779453887; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1778849724; x=1779454524; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=47Kj2f2F+IbQfpuhTArKbj0jkRV+0wrodEyOzmIpXTk=;
-        b=tmtFCt/s2y0SsLie9k444Aa4RjffaDrYWfdlDhkBZvBCOQn3fuYscZKFTxh1kZ4LRA
-         I455vmrY3Z9E1cBSfJWFQvgvOIQT8ilvgpkAZXNAk7LM0p0W6wRJW3K/H7jDIdiNBBbF
-         I+BWynzsNNeVVdS8wI4IpP8wSxvsM8/EF8PctWvGnL31jl4mfvju3DHtU/Ucc3Xp7j2b
-         SeYZ9sWOBXagcG3u3DBOmRgH/zXu0n7z8sjBVxk1yKRsFFkjUNqu9kw09IGkVfIit00G
-         RelN7dB7bljGSbyI4nTVsje61bvg/60c4Hzlky9UXHtUeHGCLphSHSKvQW9wR2ZHrPWq
-         N7Sg==
+        bh=o8R1ixx0UWdwtZn2mIf1Xzrj0hOLehMAvsgFWFCX8EE=;
+        b=jnfIDeW3Cg8ws/dlTrm5rGglseFkQztINryzUvskBfQ+RHyh1Qo1O/XvNVepidqEHA
+         pePzP8yvhCEqFHZAv2fcqn9Tz/ybtFf0AOnD9zsD4GKr6NO+p6gZajuk3eT2l73PnlGw
+         J+viLnEB8D+x6hTab9ZTQZfKiVyWGLvp7RmfGEzTAm3HrEs4UhnExEG2HbSfO6ReOAQl
+         fnEKc8fWW6JGbbRECnwHedGUE5veEzugllNUCAG1kPQdZcZaWxF1a8E1XvAVedDJ4m42
+         526PCBR4FS/nFPDICqmkxwCQxwd593jQUIZEZslLh+yrT4DGoskpSbGQmbRT8XO7vkzU
+         rBLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778849087; x=1779453887;
+        d=1e100.net; s=20251104; t=1778849724; x=1779454524;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=47Kj2f2F+IbQfpuhTArKbj0jkRV+0wrodEyOzmIpXTk=;
-        b=q+UxlAstmDG7Zek0WBXtHR2KjWrT8mShNvIauj55s37rs7cD3udKI5AGlL315/hPkv
-         Jy8x4TAK52oImEnCVer4KosX3g9Jy1X7lWKCxVuFhGupTwBBcvmGjLuuye6p3dz8Youz
-         8aFYHO794oexyLY9hU34m2KokfFQsfBPA7USrUmUJKjh2lTNVu7Aro418taNlG0bHNy/
-         sjMxxkrDAWM6FGE2pijd0Bo2M3SmUMS9Xz7GRq3nNNr3wyB0y5Ujaou0XDV5iN343IsJ
-         KPzyQtxsCXx6uIfeN5p8ng5w0wdGGQYi/8un4wdGQ2SmXfTxBTCA6+pz0Fw0TVsYMcQs
-         BIwQ==
-X-Gm-Message-State: AOJu0Yz41/WsOs1JTGu8G14eWde5K3uZAxrLAIIZUw53b86idRWUQXU+
-	ptn2pUM5aVw/jYxYSLUNXqQs77ZPGiHrcixGT3Yp1qlQnzZOBusZnGLAXWDao4J3fBjdIeBdmMl
-	2WYh9sA==
-X-Received: from pjbsh4.prod.google.com ([2002:a17:90b:5244:b0:368:9dc2:8e1c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1d8d:b0:35e:3e86:e2d1
- with SMTP id 98e67ed59e1d1-369519df5d5mr3963391a91.7.1778849086696; Fri, 15
- May 2026 05:44:46 -0700 (PDT)
-Date: Fri, 15 May 2026 05:44:37 -0700
-In-Reply-To: <20260515111957.4188366-1-imammedo@redhat.com>
+        bh=o8R1ixx0UWdwtZn2mIf1Xzrj0hOLehMAvsgFWFCX8EE=;
+        b=rffWso2LrcTTy8Q7mqTBNOexzLtswnoz4DojMiAcFD75K5RO8Y6SNXXWMrKKv6L8FF
+         yzevV6M76ETHilUbhqlwTvlBrZmukMhwPu0We1/2l1hjyk3j6/e6f5WxUfthoFVRyPhD
+         jOCZfd8VzLiRwCwJyWufO2uPMXmn+nM20VmM55or2sh0jVsw/wtwoO9X4SYnYFuZ+V1a
+         oisqEA+wje74AFeOOEHyfnC9fmbO8mA2Y9DMuqwLrxD3mwDbriR77uxg58omA7PSSoVq
+         ggW3r6r137x7menPx2cThKVqJJb5SYu637n03pm9xwsw+wMIFLcOMWsSLV3wb7nOb/b5
+         qluw==
+X-Forwarded-Encrypted: i=1; AFNElJ8b/DZUvM18NS/bmOcXzVFCPAPnubKLn7Xb13UizJRox9yUlFvQcvqFqEQq4vx8ckwrNbs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwUZi+kgq5fBcUyiQwi5c8Rj2tctoew0ST0gbEBG2udCF3U+Ipn
+	+hsW8/7m+3XuQw1rsxDaKVNPpL4bjfzksI5KfAa3gq5n2NLUYDoDd9z8nGqohxlBwAgVaDKlnlG
+	ofrJ6RQ==
+X-Received: from pfde26.prod.google.com ([2002:aa7:8c5a:0:b0:82f:dd9:c650])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2449:b0:82c:21af:a7bf
+ with SMTP id d2e1a72fcca58-83f33c25127mr4255212b3a.13.1778849724212; Fri, 15
+ May 2026 05:55:24 -0700 (PDT)
+Date: Fri, 15 May 2026 05:55:11 -0700
+In-Reply-To: <27ba35fd-5563-4bbd-8f95-2285b50efa7a@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260515111957.4188366-1-imammedo@redhat.com>
-Message-ID: <agcVNezX5lf1_3O7@google.com>
-Subject: Re: [kvm-unit-tests PATCH] x86/svm: work around Virtual VMLOAD/VMSAVE
- bug on Naples and Rome
+References: <20260514215355.1648463-1-seanjc@google.com> <20260514215355.1648463-4-seanjc@google.com>
+ <27ba35fd-5563-4bbd-8f95-2285b50efa7a@linux.intel.com>
+Message-ID: <agcXr2FP4C3I_jbQ@google.com>
+Subject: Re: [PATCH v2 03/15] KVM: x86/xen: Don't truncate RAX when handling
+ hypercall from protected guest
 From: Sean Christopherson <seanjc@google.com>
-To: Igor Mammedov <imammedo@redhat.com>
-Cc: kvm@vger.kernel.org, pbonzini@redhat.com, babu.moger@amd.com
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	kvm@vger.kernel.org, x86@kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>, 
+	Kai Huang <kai.huang@intel.com>
 Content-Type: text/plain; charset="us-ascii"
 
-On Fri, May 15, 2026, Igor Mammedov wrote:
-> AMD Family 17h models 0x00-0x0f (Naples/Zen+) and 0x30-0x3f (Rome/Zen2)
-> have a hardware bug where Virtual VMLOAD/VMSAVE causes spurious VMEXITs
-> on VMLOAD/VMSAVE even with intercepts disabled, when the VMCB physical
-> address as seen by L1 falls in [0x78000000, 0x80000000) range.
-> Reserve this range on affected CPUs so the page allocator would never
-> alocate the VMCB there.
+On Fri, May 15, 2026, Binbin Wu wrote:
 > 
-> Given that it's relative old CPUs + nested env + only performance
-> impact, it's not worth fixing on KVM side (which could involve
-> messing with allocator or reallocating VMCB, until it's not
-> in affected range). And since test acts here as L1 it's not possible to fix
-> issue in kernel (L0) anyway. Hence a quirk here, to prevent tests
-> failures where we can't do anything about them.
 > 
-> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-> ---
-> CCed: AMD folks for awaraness and in case they would be willing
-> to look into fixing issue on CPU side.
-
-LOL.  Don't hold your breath.  According to AMD, Zen4 erratum 1454 is a firmware
-issue.
-
-https://lore.kernel.org/all/20241105160234.1300702-1-superm1@kernel.org
-
-> there is not official EOL dates on both, but using a newer
-> generation(s) release dates it appears that both are effectively
-> discontinued for ~3-5 yeas
-> ---
->  x86/svm.c | 22 ++++++++++++++++++++++
->  1 file changed, 22 insertions(+)
+> On 5/15/2026 5:53 AM, Sean Christopherson wrote:
+> > Don't truncate RAX when handling a Xen hypercall for a guest with protected
+> > state, as KVM's ABI is to assume the guest is in 64-bit for such cases
+> > (the guest leaving garbage in 63:32 after a transition to 32-bit mode is
+> > far less likely than 63:32 being necessary to complete the hypercall).
+> > 
+> > Fixes: b5aead0064f3 ("KVM: x86: Assume a 64-bit hypercall for guests with protected state")
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
 > 
-> diff --git a/x86/svm.c b/x86/svm.c
-> index a85da905..706ff2ef 100644
-> --- a/x86/svm.c
-> +++ b/x86/svm.c
-> @@ -334,6 +334,21 @@ static void setup_npt(void)
->  	__setup_mmu_range(pml4e, 0, size, X86_MMU_MAP_USER);
->  }
->  
-> +#define VLS_BUG_START	0x78000000ULL
-> +#define VLS_BUG_END	0x80000000ULL
-> +
-> +static bool has_vls_bug(void)
+> The patch looks good to me, but one question below.
+> 
+> > ---
+> >  arch/x86/kvm/xen.c | 6 +++---
+> >  1 file changed, 3 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+> > index 6d9be74bb673..895095dc684e 100644
+> > --- a/arch/x86/kvm/xen.c
+> > +++ b/arch/x86/kvm/xen.c
+> > @@ -1678,15 +1678,14 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
+> >  	bool handled = false;
+> >  	u8 cpl;
+> >  
+> > -	input = (u64)kvm_register_read(vcpu, VCPU_REGS_RAX);
+> > -
+> >  	/* Hyper-V hypercalls get bit 31 set in EAX */
+> > -	if ((input & 0x80000000) &&
+> > +	if ((kvm_rax_read(vcpu) & 0x80000000) &&
+> >  	    kvm_hv_hypercall_enabled(vcpu))
+> >  		return kvm_hv_hypercall(vcpu);
+> >  
+> >  	longmode = is_64_bit_hypercall(vcpu);
+> 
+> Is the variable name misleading?
 
-Probably need to be more specific, because there appear to be multiple flavors
-of vls bugs.  :-/
+It most definitely is.  However, @longmode is passed around quite a few locations
+in xen.c, and so I don't want to opportunistically fix this one variable.  Though
+I'm definitely not opposed to a separate patch to rename them all to is_64bit or
+something.
 
-> +{
-> +	u32 sig = cpuid(1).a;
-> +	u32 fam = x86_family(sig);
-> +	u32 model = x86_model(sig);
-> +
-> +	if (fam != 0x17)
-> +		return false;
-> +
-> +	return model <= 0x0f || (model >= 0x30 && model <= 0x3f);
-> +}
-> +
->  static void setup_svm(void)
->  {
->  	void *hsave = alloc_page();
-> @@ -413,6 +428,13 @@ int run_svm_tests(int ac, char **av, struct svm_test *svm_tests)
->  		return report_summary();
->  	}
->  
-> +	if (has_vls_bug()) {
-> +		phys_addr_t addr;
-> +
-> +		for (addr = VLS_BUG_START; addr < VLS_BUG_END; addr += PAGE_SIZE)
-> +			reserve_pages(addr, 1);
-> +	}
-> +
->  	setup_svm();
->  
->  	vmcb = alloc_page();
-> -- 
-> 2.43.0
+> If the vcpu is in compatible mode (when guest state is not protected),
+> it's in long mode, but the code goes to !longmode path.
+> 
+> >  	if (!longmode) {
+> > +		input = (u32)kvm_rax_read(vcpu);
+> >  		params[0] = (u32)kvm_rbx_read(vcpu);
+> >  		params[1] = (u32)kvm_rcx_read(vcpu);
+> >  		params[2] = (u32)kvm_rdx_read(vcpu);
+> > @@ -1696,6 +1695,7 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
+> >  	}
+> >  	else {
+> >  #ifdef CONFIG_X86_64
+> > +		input = (u64)kvm_rax_read(vcpu);
+> >  		params[0] = (u64)kvm_rdi_read(vcpu);
+> >  		params[1] = (u64)kvm_rsi_read(vcpu);
+> >  		params[2] = (u64)kvm_rdx_read(vcpu);
 > 
