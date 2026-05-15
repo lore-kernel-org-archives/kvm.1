@@ -1,153 +1,88 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CC663DA5C1;
-	Fri, 15 May 2026 17:26:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5772D3DA7FC
+	for <kvm@vger.kernel.org>; Fri, 15 May 2026 17:27:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778865982; cv=none; b=AzoOtt42ll/DZCofwH/q5ZWGlGVDYJhbDteRvFWqV9QvSlCxUsQrBeVo0g0O3s0A0bEjy3IqUFqFXsczPYWeWchmhEK8eCP2aJ6f0fKrNP/bevxPjm6NO4k9YJQdclOvTK4hmTRxQEbwY8V4ufnVIBrj7gg2mNO/XlcONDXhHgA=
+	t=1778866063; cv=none; b=h3E4hZs5VsHq9dpD3JZq1H2SJhYzbSItYixA1pwtOP5e5+ZULZfVlFFD6HJ4is2dvN4KjiXGeIlz13w4HFIWZk/yBDNi8EP/czYC9lqn2C91bVGGC6FWdrOWpeQ/R5LbyRpxKICmx81D7jGZzBAYBRUB34x2t1ZSFgcRAEWpA0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778865982; c=relaxed/simple;
-	bh=jQqfoSMmdIEVqWnROu0O4GgLmGhkZYd/KOm8BNecBko=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lk6Blt+XPmwv8o414D6SkRwATn4VJmAFp8rFtuytRl+o8jFl9R3297jgitVDe8GOdWfzohkdvR41jKHGaw/Unq9JNIE5/N8a8DpEOso5/UM4O1zRqC8xFwMhGLsV9Tn+jeRG5sMzU04WAN+gV3yG4hfhP/d4CZivN9Oi0Bvf+ZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=FCafFRak; arc=none smtp.client-ip=198.175.65.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1778866063; c=relaxed/simple;
+	bh=/3iHUapJvWn61p6DQJDxJ17dJ3h002p3tatqXia+mUM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=RYT3HSWRExr3fEtsLpL59MeYPe43EB6kRfaA7Ey+qiQS4lyp4cGW/L68TfjUMnn9ut2fp+yCZyMv6zxTVtt/sya7JKTx2FsWKfGtAQCgEFtXm3R1/2Zg+rnAHJKsufUzf9nzYurwOu+MoX4In0ao/sHL3cjeDeXYhpx9OshjJSw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LBBP2dV1; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="FCafFRak"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778865981; x=1810401981;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=jQqfoSMmdIEVqWnROu0O4GgLmGhkZYd/KOm8BNecBko=;
-  b=FCafFRak3QycNTivI/HziHQLiL8h5SsCkO8xrxdGm2GsgNQxSnrwfe+x
-   TR4mh0reqV1xNvjUXWcwaSdTv10njBHG48fphKIexx+1K5PXA3UskYJJy
-   iX1VqpvEJqlludjLKmIppxWcNqhT0wrkC6bgzkaFLthH7I2OVfKIXMg2s
-   GIGEKy4JuixzvYmtr+HeMGFikkEjkjHl3hWWa+as7gIQo8hXRWXEbxJkj
-   4sAdFOE80AxmexeaCE8OS6BOW7SfRdGF3ncg1fgHUZo040JpK9gDIO/Tl
-   or4d8k55ur7yjNtmtrx6t8/6MQiJ8gTzpJ5TVE1OnXW9e7Wb4EB0xLZEj
-   w==;
-X-CSE-ConnectionGUID: Cc6ZXvSYSyOui9yLZDIQHA==
-X-CSE-MsgGUID: M1u949ZxQGG7RysOfj/lMw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="79867409"
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="79867409"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa110.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 10:26:20 -0700
-X-CSE-ConnectionGUID: wBEEY9PnRQyQkwAwXNBO9g==
-X-CSE-MsgGUID: trm8xmjhTk6B3fA2aI6G/Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="234308932"
-Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.108.201]) ([10.125.108.201])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 10:26:18 -0700
-Message-ID: <f1057429-4918-4b02-ae17-9bd6cc38a3c1@intel.com>
-Date: Fri, 15 May 2026 10:26:19 -0700
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LBBP2dV1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1778866061;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=PF2iRi/KlSWZ9i+kjBhBpDki8b5kFb+LIiunlQS+7Vc=;
+	b=LBBP2dV1WryMaAPnrCyRPKJeNSP7S1JEN0RWEZKhdYFSlddIHgFIdJ7cgQLF68XDygSGU0
+	Rgadiqo8Ok12RALgYczgRnhS1XyT1IRVicJbnhDHBmz6PwMbLkgVRpKf1ZWprf38ZvXRq+
+	GwoyXB7WLgSMwlxNJcvxaYgfRs5Kl4o=
+Received: from mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-343-DUKNSCQXOwm0ub9sSuJePg-1; Fri,
+ 15 May 2026 13:27:38 -0400
+X-MC-Unique: DUKNSCQXOwm0ub9sSuJePg-1
+X-Mimecast-MFC-AGG-ID: DUKNSCQXOwm0ub9sSuJePg_1778866056
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 01DE718002C7;
+	Fri, 15 May 2026 17:27:36 +0000 (UTC)
+Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4420D30001A2;
+	Fri, 15 May 2026 17:27:35 +0000 (UTC)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: seanjc@google.com,
+	chang.seok.bae@intel.com
+Subject: [PATCH v2 0/3] KVM: Macrofy GPR swapping in assembly code
+Date: Fri, 15 May 2026 13:27:31 -0400
+Message-ID: <20260515172734.745763-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 09/23] coco/tdx-host: Don't expose P-SEAMLDR
- information on CPUs with erratum
-To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
- ira.weiny@intel.com, kai.huang@intel.com, kas@kernel.org,
- nik.borisov@suse.com, paulmck@kernel.org, pbonzini@redhat.com,
- reinette.chatre@intel.com, rick.p.edgecombe@intel.com, sagis@google.com,
- seanjc@google.com, tony.lindgren@linux.intel.com, vannapurve@google.com,
- vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com,
- yan.y.zhao@intel.com, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-References: <20260513151045.1420990-1-chao.gao@intel.com>
- <20260513151045.1420990-10-chao.gao@intel.com>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260513151045.1420990-10-chao.gao@intel.com>
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-On 5/13/26 08:09, Chao Gao wrote:
-> Some TDX-capable CPUs have an erratum, as documented in Intel® Trust
-> Domain CPU Architectural Extensions (May 2021 edition) Chapter 2.3:
+A small change to Chang's patches from the APX series.
+The main change is keeping __VCPU_REGS_* constants to avoid
+relying on the ordering of constants in kvm_host.h, but I also
+cleaned up the macros a bit to reduce the line code count
+and clarify what is going on.
 
-2021, eh?
+Paolo
 
->   SEAMRET from the P-SEAMLDR clears the current VMCS structure pointed
->   to by the current-VMCS pointer. A VMM that invokes the P-SEAMLDR using
->   SEAMCALL must reload the current-VMCS, if required, using the VMPTRLD
->   instruction.
-> 
-> Clearing the current VMCS behind KVM's back will break KVM.
-> 
-> This erratum is not present when IA32_VMX_BASIC[60] is set. Add a CPU
-> bug bit for this erratum and refuse to expose P-SEAMLDR information
-> on affected CPUs, because even reading the P-SEAMLDR sysfs knobs would
-> enter and exit P-SEAMLDR.
-> 
-> Use a CPU bug bit to stay consistent with X86_BUG_TDX_PW_MCE. As a bonus,
-> the bug bit is visible to userspace, which allows userspace to determine
-> why these sysfs files are not exposed, and it can also be checked by other
-> kernel components in the future if needed.
-> 
-> == Alternatives ==
-> Two workarounds were considered but both were rejected:
-> 
-> 1. Save/restore the current VMCS around P-SEAMLDR calls. This produces ugly
->    assembly code [1] and doesn't play well with #MCE or #NMI if they
->    need to use the current VMCS.
-> 
-> 2. Move KVM's VMCS tracking logic to the TDX core code, which would break
->    the boundary between KVM and the TDX core code [2].
+v1->v2: remove unused r8d-r15d cases, clarify commit message,
+	add comment, centralize .error usage in kvm_vcpu_regs.h
 
-Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+
+
+Chang S. Bae (3):
+  KVM: VMX: Macrofy GPR swapping in __vmx_vcpu_run()
+  KVM: SVM: Macrofy GPR swapping in __svm_vcpu_run()
+  KVM: SEV: Macrofy GPR swapping in __svm_sev_es_vcpu_run()
+
+ arch/x86/include/asm/kvm_host.h      |  16 ++--
+ arch/x86/include/asm/kvm_vcpu_regs.h | 109 +++++++++++++++++++++++++--
+ arch/x86/kvm/svm/vmenter.S           | 107 ++++++--------------------
+ arch/x86/kvm/vmenter.h               |  31 ++++++++
+ arch/x86/kvm/vmx/vmenter.S           |  89 +++++-----------------
+ 5 files changed, 181 insertions(+), 171 deletions(-)
+
+-- 
+2.52.0
 
