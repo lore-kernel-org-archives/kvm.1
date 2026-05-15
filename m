@@ -1,56 +1,56 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D44793E3175
-	for <kvm@vger.kernel.org>; Fri, 15 May 2026 19:20:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8DDB38F629
+	for <kvm@vger.kernel.org>; Fri, 15 May 2026 19:20:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778872856; cv=none; b=Dx03VG0FX3Xn3L+S0ctk53uS/v+efE9v9HoQ2/YyDUkFPsksEuKGZGAXxtHrHM6c7+eXk99tVxOrzZTyo2DrAKr9F80t0U9lGecGa+TAc2Rlmulvsnxj+uijSx/q9Hf82rXn8lDomQnhME+etbzKtHkRiozd0MstTuaS96Bpg6M=
+	t=1778872856; cv=none; b=lg0Ebnao8VH/ERzCT7ZjrIsGX6aWBxAjtFGDMvcOtfDbFGzvxu4EeE5zJqNupLUaKBy2t4+2v8rKaUQN0BVDMiLvNWYCzbiOmEnK8IK/DfgjkaH+1LpAx26/9xbUZB8meOB+zU2MaESDNjLSJY87adrM2tVcl51SYxij2SCQLGA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1778872856; c=relaxed/simple;
-	bh=xUpUGQiJgAA1ZwmKSf8xfquX01gunhdqbyqPreoYY78=;
+	bh=JoZRC/hW+tKnKrEAUcORKk9q7uPs7dRukf9wHei9sJ4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=sedIQ1byR4tVFGdC0hm4ydka6Oq3Wyh4vXgsDTvrR8mXBPmx/LYfPZxdk//AErD33rURst/6TMa8fyKOoZaof2+khSneqS80p2hWL4sTdHwkBhSo/CHmtRvjJEZwIcSkC5iJmM3dJT79BfNK1CGKshsLNrUeZuo0hE0cDrlnkaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lWE5+zrE; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=NX16Ajfk9DCB4QsnV6ywWXv1CzMqIpmdO7AGecxKz0eQ9ZVmJ97kiTcx3bdu8vxOQbGIeBKwMH/OyZvrFAbta6AZHJF2P1hyMHoSCj2x4p2SMCjAho584W/MltJqQMpYNnbHdadpMHkxfEG2wUqMo6Ed52xAbb4FBWY6vejV3LM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZP6BnW8v; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lWE5+zrE"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b461b36990so1563915ad.3
-        for <kvm@vger.kernel.org>; Fri, 15 May 2026 12:20:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZP6BnW8v"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c8279604464so193693a12.1
+        for <kvm@vger.kernel.org>; Fri, 15 May 2026 12:20:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778872853; x=1779477653; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1778872854; x=1779477654; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=KhBZEy0/QKSWfL+Tze5jxYQtO7z6AVGLrSR5LBAuSZ4=;
-        b=lWE5+zrE+getZ+4F8eR1KgiFAruihoO9kkdcxqOq0hvIFT9fFUuKKaL1WY06PArdfl
-         6Vo4M5Wn9Kqay9z3iUP30BndhCOn8KUdMFD4S+sdaeUS1LoCNV4HHM17gpSC3Qbbd8OO
-         OU0WFhXIH2pq7N1DB7Q1qIVfJRuD/sZN/Y3vvDJP/HL0creCyeQRoVhsCnkadDmhPmJX
-         3VOZ+MDq/2Zf/V1v6b99x6otVvqV3GhJEO6yjHPK/FtbHeH8TT50IqOZ28R1Vc14H6x4
-         bQfIfqDaLiWuH5p1dBRTTh9UA7pCt+e2JmC7TnRwUfaoTbhOsX4DvQkPdS3mw+JsJeQj
-         5KeA==
+        bh=0xIKAIujVCN543pIVJIG4PCsIsqHFXWMUqZ1keR+hJo=;
+        b=ZP6BnW8vmtVwvLfKqROWOvk3QlFK8JlWuoa8dSK3i31GyTk/3g+daN2qBfmhzzZOsA
+         GyL2EH4eaXLsIQ4bAN6mm1FsO/TlsJZWUUNJIl8TEnr3lhbj3YTOn+wSRlyUr99sdyf/
+         I8v+F60kWw+xDWt1OyH+QsY+7yRRlbqXJEFfAjQLnI8QUQyZQ31kzmst/RXDFqnCf6yD
+         3o4MN38X2A8xHcyVpsjAxFZIuTcNgaYdgYNhSmAMTqp0M6bwOmdCX8O7lipHsmoNTFOo
+         9qtM9qcfl2kfdN0M0h+toFbBSiAM6WMbtxs1/XMmuOFmzahwhcHkBKnQi81eXkDSwqCD
+         SG2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778872853; x=1779477653;
+        d=1e100.net; s=20251104; t=1778872854; x=1779477654;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=KhBZEy0/QKSWfL+Tze5jxYQtO7z6AVGLrSR5LBAuSZ4=;
-        b=SoToAv7p0sDUtIE3uDsYx9N6foMBQ+C0rL9nqQwy8boCwTgZgz6JJFl9I/sfD0Gd4v
-         +EaWf/2xqBKU6GW8Y6SZoBTq3ZJMxhefDseALFZjc1D+rl3yFdY8ThdDu3Mn6cUfHuU3
-         yAjvMrO5JPbSQpHd235aSl+94VoEXzZAdR4JMTTz9UWT9RWhdPcphX0F7l5uHYThy9sO
-         ONRiKm1L3jE0u8F5OHG2IVzcu1GxOM1464T+lBg0iG+20bavz5aeGF9vZXi02xixSRun
-         Z0T84xJaDQWlQurMgk17f0Mbj7e5RQcA7GFga7qRUqtWgaqLFFKEy/tyxJkRBfCNfDpw
-         Wpkw==
-X-Forwarded-Encrypted: i=1; AFNElJ/uuwlgUgp+ah1TiB+2Rmuw+3D6o000kJVQGYClT76FqYz3NI9k80tXq2ZXsTZE92lxD+w=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywbhu5HPnfo2r/z7wKJmbqSCM6AZvmWr9Px2fBTh1mWhuUabd+T
-	XcGngtUMIJgqOauBIYUnw/QVxSqHal+BJrg0ki/udtECTHh1D4Li4mj1XgeSj7/HcNL+XsoJmWb
-	cNEMS0w==
-X-Received: from plbmo16.prod.google.com ([2002:a17:903:a90:b0:2ab:194e:4d54])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3c28:b0:2ba:bfb5:9cc
- with SMTP id d9443c01a7336-2bd7e8d3b9fmr61656605ad.26.1778872852484; Fri, 15
- May 2026 12:20:52 -0700 (PDT)
+        bh=0xIKAIujVCN543pIVJIG4PCsIsqHFXWMUqZ1keR+hJo=;
+        b=WPk2PyD4+F9NuAMjoFxUEhu87nasRD4HvB0Ydner+yTJ1AnpbKGO3984P0adciB8X4
+         gtod+7kCUwDNMp7GphrdjpQWuEKARROZlC3DIGWMpKtItUto84wv+U+bENnUGumTDIwA
+         30lvp4QA8IOxqV6nRVkOIuO8a80OIpJK4aMFJirKY1kM+exdlhXMfTd28rs4JSQooC2G
+         FYnFEy0f1vHuMuj+Ji30Nluy6CT5BazljcZswtqyEACiELdRwP2jpIVXTzCHHRdEF5L/
+         xLDyP4lZbajlZ379sk6N+6UH4yjwI1J6C3GIVyLMi7E/f5Mf5Gr2wyVgrOTG81NrnoVJ
+         eRWg==
+X-Forwarded-Encrypted: i=1; AFNElJ/aw9ikQKW+IDZqntBEZEftY2jjUfZmAJTE//8S5BER8UtPrgwiSXr+ZgolccrhmTqAyas=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVFqEYWWF2uEDBjgMHGLeEve1XhKwZ8KmSm9UxbVGZZcb2oF+t
+	8QdyqSL0vreWTJsbIeaaNVuTXx+QK+fX8dKGjNhFmmo7keQepYY8s4igSpGD/H0Rq3f3G1641aQ
+	bCd7J8Q==
+X-Received: from pfbbd18.prod.google.com ([2002:a05:6a00:2792:b0:82f:75de:5da4])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1908:b0:82f:50cd:e586
+ with SMTP id d2e1a72fcca58-83f33cb2c40mr5886702b3a.13.1778872853499; Fri, 15
+ May 2026 12:20:53 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 15 May 2026 12:19:21 -0700
+Date: Fri, 15 May 2026 12:19:22 -0700
 In-Reply-To: <20260515191942.1892718-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,8 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260515191942.1892718-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260515191942.1892718-21-seanjc@google.com>
-Subject: [PATCH v3 20/41] x86/xen/time: Mark xen_setup_vsyscall_time_info() as __init
+Message-ID: <20260515191942.1892718-22-seanjc@google.com>
+Subject: [PATCH v3 21/41] x86/pvclock: Mark setup helpers and related various
+ as __init/__ro_after_init
 From: Sean Christopherson <seanjc@google.com>
 To: Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Sean Christopherson <seanjc@google.com>, "K. Y. Srinivasan" <kys@microsoft.com>, 
@@ -82,28 +83,42 @@ Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>, Vitaly Kuznetsov <vkuznets@redh
 	Thomas Gleixner <tglx@linutronix.de>, David Woodhouse <dwmw@amazon.co.uk>
 Content-Type: text/plain; charset="UTF-8"
 
-Annotate xen_setup_vsyscall_time_info() as being used only during kernel
-initialization; it's called only by xen_time_init(), which is already
-tagged __init.
+Now that Xen PV clock and kvmclock explicitly do setup only during init,
+tag the common PV clock flags/vsyscall variables and their mutators with
+__init.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/xen/time.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kernel/pvclock.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/xen/time.c b/arch/x86/xen/time.c
-index ee7095febfd1..f087bb76457d 100644
---- a/arch/x86/xen/time.c
-+++ b/arch/x86/xen/time.c
-@@ -444,7 +444,7 @@ void xen_restore_time_memory_area(void)
- 	xen_sched_clock_offset = xen_clocksource_read() - xen_clock_value_saved;
+diff --git a/arch/x86/kernel/pvclock.c b/arch/x86/kernel/pvclock.c
+index b3f81379c2fc..a51adce67f92 100644
+--- a/arch/x86/kernel/pvclock.c
++++ b/arch/x86/kernel/pvclock.c
+@@ -16,10 +16,10 @@
+ #include <asm/pvclock.h>
+ #include <asm/vgtod.h>
+ 
+-static u8 valid_flags __read_mostly = 0;
+-static struct pvclock_vsyscall_time_info *pvti_cpu0_va __read_mostly;
++static u8 valid_flags __ro_after_init = 0;
++static struct pvclock_vsyscall_time_info *pvti_cpu0_va __ro_after_init;
+ 
+-void pvclock_set_flags(u8 flags)
++void __init pvclock_set_flags(u8 flags)
+ {
+ 	valid_flags = flags;
+ }
+@@ -153,7 +153,7 @@ void pvclock_read_wallclock(struct pvclock_wall_clock *wall_clock,
+ 	set_normalized_timespec64(ts, now.tv_sec, now.tv_nsec);
  }
  
--static void xen_setup_vsyscall_time_info(void)
-+static void __init xen_setup_vsyscall_time_info(void)
+-void pvclock_set_pvti_cpu0_va(struct pvclock_vsyscall_time_info *pvti)
++void __init pvclock_set_pvti_cpu0_va(struct pvclock_vsyscall_time_info *pvti)
  {
- 	struct vcpu_register_time_memory_area t;
- 	struct pvclock_vsyscall_time_info *ti;
+ 	WARN_ON(vclock_was_used(VDSO_CLOCKMODE_PVCLOCK));
+ 	pvti_cpu0_va = pvti;
 -- 
 2.54.0.563.g4f69b47b94-goog
 
