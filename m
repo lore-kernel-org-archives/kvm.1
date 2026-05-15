@@ -1,46 +1,47 @@
 Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012065.outbound.protection.outlook.com [52.101.48.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D39B3EEADE;
-	Fri, 15 May 2026 22:04:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085463ED127;
+	Fri, 15 May 2026 22:04:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.65
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778882648; cv=fail; b=BmQO5jav4lIasc4mRSvWClIFnIKEYROMtTlIlVltJ/Ef/jBlEjt2ZZrzlpvTe3sOPaYvhdWveolYdEt+71tluuLyZrY0wQrzkGtCtjRvcUpo0HyEXAo1d6J0TmAAeq1gblVUCl1laEKpSgwylnaK6imy8nAbrhBbJTcGc5FC6t0=
+	t=1778882650; cv=fail; b=AH+2bmagmBviwvdgNy6N5iHZDfnls7i0EfV8rizLH7S8aoXfPGFkbCujLehv8AYrkJRt9Ifsj2zXEvQnXhckWMnog9hOVB+uGerx8K7tjgsxh3JLTsbm/xnU3bFPWXC6gO12FiYMHFq4LnoVgiRau6U84p7+c6FIe7aWC/Yztow=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778882648; c=relaxed/simple;
-	bh=0OT6cEEySTMBsVKjZ1t7exidqd037Ts0ISI/crjmk9I=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=a6Vq9Oyuq9k9RQR/wIBsq7FUphqlVABK2oPrw+hTFDYYjN9dsxv9ZJmxkTECyiLyXH+DPCq9cF0UKZY+KMeWdrf2GcFW8q0q6Q2/OFWTnGU53CIyUoP1fCidYxs4UMegPEuEuPhh7aueSGUNlJUZJL0DQ18Hp0KXoQtEfQJWl80=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=QK9wi2mM; arc=fail smtp.client-ip=52.101.48.65
+	s=arc-20240116; t=1778882650; c=relaxed/simple;
+	bh=DflzomXxj7xOVzhZgJK+9msazINxgOg8d1cbJiZazkY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=gJkk+UPnEe1h22TtDz6DSs2gS7M82BWwzGOj0CNx4nnUKEjObndOQqG762FJ7EFpnXRMhQx99W02gL8kfiMy2VnDyOGrpo+1zxX8+f/ZcKxOcvRETPxlLF2KAEB5nB6UDOW4MwLuuMsMAkBTsQhG11vH8/LlCTqnw1a9/R2bdvE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=YKTAnhaz; arc=fail smtp.client-ip=52.101.48.65
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="QK9wi2mM"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="YKTAnhaz"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=lu2JRRDas3FKshLZuP+VfJ0T0FRvNd9+1UV++smkqE5ApmqnXSSxdRJ6aIzArK1V84w+LIyRcDmW9Nptkh58oH2/n8tHwVBRAQbDatA/i7mDuFLQDP0TGatite2D+27670941MyGMIyxQr8FPFFlF8S8uKw2atmIrdRBwUIUslRlm6/bjGL4E7eOAowYs7XHVN/O7zDGUN0yfXV6FdXYt6kiKTIGW+UywuAQQp4Ov2yiNtZZua1DuoXxxDa6NVDOIJYH+Ai5nJpNnZjkZ0Z0h9tNT9s09TUAxQEgRW4sKWelFdjhc3PEqErqHmI0QO81f1HBXyulxKA26pi7uOphLQ==
+ b=j0Fb28MfjjUWRCRlv5NhDJwNW9Gys9+UzacDUFVc32tChV4+wLq9hrDmtA5/z6qt4AJg9vbY8PDGEpmT8ZUJYF2zudJyYl9Y1ATNiGNSe1iQw3cGJNJWAv4BJbUemKyTh/uj646fDpkc1cHg1ewI40gxo/mtQurymvaovHxDOY7RttUvcM1x28tIxRqY1OrrIFboaTRbdjhJAMFkfChs3TfFy53KBeD2nk5HtfPdulVET5YqgkHXXl9f5rq0iuMCYKkJYrSS9RoBqMFoodHVYJbeXBPowuW01u0EkgqqG33ju/9DnYEzfoyLQvGBHn8vpVVEhlnQRBVeQ7kYW0/mlA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MsHZm3ngPSRp4ouFFYwsmS1HdffylYqTfJ5BkNx08mQ=;
- b=eFzC0oEypPo0PvD44N63fQyMAKv7R4S4PM5os9d8HiwS3FfdZtRFPn+2GPFUhLhvLfppKPbMICyiaCPMJ364IiQjbfbIXIxHYKyC4lg2lmeP1nr1UNwGxCGtxJfcc0XyH12NMBBN1fD7aCBjCSle1Xgpb7dsQycyJlqAEzXmfYIgOk3ia8fRXwySGPgbpZZYWypTpVUGEBH4039FqUValep5YwNAnaI4zmCgG3EbSrb2My7KrjVuXvoUVeHo2YwYeuAq4L39Ixt6L5n00o9c5ox1o66U3zXX2OWhEHk1MApQMOdbHd5/kHs4t8K7RXUoC8gCGCEDSwNEMwHabnQeOA==
+ bh=2xd3dk88egimFxgjVyqlS5kUZH9qHoUiQJ1N6+pEHH8=;
+ b=TYKNuMTVxiEgBcR41S5lIwiymDfJkCUqiGai8GEN7bN0H+jG/vUW191FK3sTkkfwwoO/jrqqQSuEhex0qFPbkltNXcmGvzfkLqzNPtb4DPheu4wkEyIHjBXvPX3KGcd1j4C9vAwhn8uxpMNAYLaz45OoBMElWuZeNMjUmUSha3xDvBoGm+JGYYikd6Wnf7oTaFChSyA9ebwuzHOCSYAERL0JyPPxjvdZRaOjBzX6Qvx6jXNTwhffFeu6kOG/YWKMd5Koz1kKsKhYTAn5OGovp9rCF5Dy3iMLgL0E6mImA9U43a9w/h+RYa1uTcVpXA4Fgp+ICrJCP3gwzHhUpOcLsw==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MsHZm3ngPSRp4ouFFYwsmS1HdffylYqTfJ5BkNx08mQ=;
- b=QK9wi2mMXXf5E5KVJT6PjBWqhNPvquN59pklrQW5E5BzZ1ayxfeIGSzAcepjXxKpyadep3nta5Y4q/T07wwjJLeufDnfU1aKLdHuNhyT4CAQxZClJwQASSM1vqvWnD424Tc9wwDKO9zMmj87yLnYgSy+PThXYdjC91esE7F+GFGwv+jYBme18g9RhORpifirNtULMZTT+LmxchYYW5YHQLw/z4AfI49dT4brkOp9UG8ndooWqnLvy1klLSXXneecWs6CcbE3kHc8y2EQCOSPZiIBpeBK47Orrh9Vgh9+7vyVjo6UnzNuzlLijIINb01RVV5+x6xU8s2/h3iFm2v6aQ==
+ bh=2xd3dk88egimFxgjVyqlS5kUZH9qHoUiQJ1N6+pEHH8=;
+ b=YKTAnhazSEQ3qEMC9Kw7fyHaTp21Yos3mWIM2IkIgLicVBkIrpzVDJsYZvsjG1CzKny1sLEVhaE0wCoPzcD49lDueMkHl6NfoAoJfS7t+e9Z7s2zVwSIw+c2TWM1uyTs6/X9sx5IB94qy+8QDydxAeug1UMbISeXyUdXKCjXbdxxYbbTs+GpHRfi0XVUZ2dFzby5kYr1+ThonIVcnvRgQL3Kz0RGt2WhzRTmGGLTvZtlbimGFnZrU/0daKGEr2fkAJ3uOH9GaXJfge6cbKgSfduKWkt/GBlcyPZ+/TQZEP3IaAkhPIdeetdHc6LrAg6lPts/V4QfCUsgSeTNPlmLTA==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from LV3PR12MB9411.namprd12.prod.outlook.com (2603:10b6:408:215::20)
  by IA0PR12MB7751.namprd12.prod.outlook.com (2603:10b6:208:430::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.20; Fri, 15 May
- 2026 22:04:04 +0000
+ 2026 22:04:05 +0000
 Received: from LV3PR12MB9411.namprd12.prod.outlook.com
  ([fe80::98b7:86de:b69:2a15]) by LV3PR12MB9411.namprd12.prod.outlook.com
  ([fe80::98b7:86de:b69:2a15%4]) with mapi id 15.20.9913.009; Fri, 15 May 2026
- 22:04:04 +0000
+ 22:04:05 +0000
 From: Alex Williamson <alex.williamson@nvidia.com>
 To: jrhilke@google.com
 Cc: Alex Williamson <alex.williamson@nvidia.com>,
@@ -49,10 +50,12 @@ Cc: Alex Williamson <alex.williamson@nvidia.com>,
 	David Matlack <dmatlack@google.com>,
 	linux-kernel <linux-kernel@vger.kernel.org>,
 	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 0/8] selftests/vfio: igb: 82576 hardware compatibility
-Date: Fri, 15 May 2026 16:03:07 -0600
-Message-ID: <20260515220330.565792-1-alex.williamson@nvidia.com>
+Subject: [PATCH 2/8] selftests/vfio: igb: Use advanced TX and RX descriptors
+Date: Fri, 15 May 2026 16:03:09 -0600
+Message-ID: <20260515220330.565792-3-alex.williamson@nvidia.com>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260515220330.565792-1-alex.williamson@nvidia.com>
+References: <20260515220330.565792-1-alex.williamson@nvidia.com>
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-ClientProxiedBy: CY8PR19CA0009.namprd19.prod.outlook.com
@@ -66,171 +69,187 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LV3PR12MB9411:EE_|IA0PR12MB7751:EE_
-X-MS-Office365-Filtering-Correlation-Id: 9ec6b122-a17f-490f-f0a1-08deb2cde09c
+X-MS-Office365-Filtering-Correlation-Id: ef830616-c41e-4090-97e0-08deb2cde198
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|1800799024|366016|18002099003|56012099003|11063799003;
+	BCL:0;ARA:13230040|376014|1800799024|366016|18002099003|22082099003|56012099003|11063799003;
 X-Microsoft-Antispam-Message-Info:
-	ZyN8tngcOjIkufm8vpqkKnPIYL237Te6J7gqwV52TAUj2zoH46oYHywe+g70UG1YDwuneAKABOWWJP1qK/3Om++ieDQ/JK2K5ZjU7i/cKD3AGSkIpbQ5PCHdXLwvkawXBRMIbqu3wM+4l9dOgn0zzcSx/37/6pgI+17XKPdsoQE1nEHzalMt3cNsz9QAQuOoAIwWhk2DPQxmC/hc+NzWx6VcsrBCsla1PS8QXDCCbIHq+5IDjRw//Gr7B8fjEVugVIhzLKYuyQbrmmws1Xzgjp/NU7mt483vZpFobJGf9sDBOEBS9FCOXezvzoujElvT0KadBitI/5JDNQ2GNbt0lX9R4Y9/fgUKW+l9zjM5kxXxsRE/dbSKV/xrURr4gnfubx99XbhMs9Jjr7NPsgACAOX68YsMEjwPbToT/GL9686lYkT8Gnkulxo8qqTdRfzEYIHIL+wBUxn/dSt5LeQ4LK2yGIKxm77YY/yHC6f0Xx3lcU1ad5EymERCj9PlMYL0zOzFqFc7sfJE4tJYBTpmHZqkWINLDqAviPpHVfbRIP/pw6SmnNTncVuKV+yjVsmdBRtcIX01KlqgiNmgGs1kSFV7N7gGgDeNdl7H6lfsfiTZJqcETskgbDvmGKTfzndwh0eS8iR9TtEoocDumiAhQtcNR50gtF8CSPImAr4/saaS/KOz5b6BzuBvqnADPy0r8rZEmRwCwMQKX/Ly+zVe4A==
+	0FRDOjWK37FRD4C0FwVW0kIoAaOik6QsxS0UlQPC7sidHCuQfotxZclPgzGPempNJ17nWkq8/fHAXZNr3kxuxrvNwOY7Ww3q7veDIMxBKFEUY7RF3rSbW0mj7hEEowvg8GgHUyyRrTXVe+AJKMfN28gQuwfU3Fhj1FRVyvytekwNsPsy+pru6jLs93y7patOsLCP0mkMk4iAKPzzapNaVi/5KBRIRKEOkUItDlZ4ifUiDH2j6bZH7dWUWNK7pwFbUBLA9A/VpIMILnMQ5sYj6quexVgRNlg9sOdhZZwJ8/STYb+ba+lUmselyCsdTLriWxea5uoRsyQvgUx8UeonwkStbOvg67HtI0t0HkjfaMLNiSt8NJljQXRLMNdGZtA8Hy2rssvvuhlFgS5XC+5Td/7vatdLmvaRt2w15EgzP0GmrWoeYAzT6IkZAQfEn2Rw4OavkEH6qQ0YPXqncIElXHYjxn3UKdjSR5i4bO91++eu9+1HquH/6Uyo57IiodUbHerGt+EOpVHdhsap3mtRs9JJZWsXT6DM3r5tFURcrP5Fv5ZNfaZ3KNOvGk1C1cyh21ohN2t5hQjFEeCssPDfQNTvfX4fmaJSyzH2E0d93vYv4CTZd4+rcSw7TuDpz4i93X0unUcL6Tt6RQBAv2I7RYN1YLIl3frRO2EmLfz2pjvmycT//2SJQ/wn2h83ZbaQ
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9411.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(18002099003)(56012099003)(11063799003);DIR:OUT;SFP:1101;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9411.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(18002099003)(22082099003)(56012099003)(11063799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?l2ds2YZux/zQKr08iQ4JQYt0ySenFn2se9tN3OOwddChGa6DfBKIl5NLCFnT?=
- =?us-ascii?Q?w8sQp/pcXQWlVGFGLWc07ui/LD+J0FPl2NwJiJoaN0tTdljR1tXZOQ8djG/P?=
- =?us-ascii?Q?UUkb5n87DNLuIm8iwdWFTkFuO3gDeYgNh97w2mRisd22yAwv+sNPonLPvJHh?=
- =?us-ascii?Q?1LaGxG/cFg203utMjL2ovsVAPfbxPVE2ldnO9rDI1XhgEFz0B1hIt8XndukN?=
- =?us-ascii?Q?t3IjG/hbTCdgeogI42SLC20IZzspTFlhP++dYTFZ5dGlJgbVxOHdOLuz4/Tz?=
- =?us-ascii?Q?xG2AJ9aL1fUR6WyHwjgixfiESvK1glkdpRzpxSXEx67/CSKFdecpEM4EQAZ1?=
- =?us-ascii?Q?9I58orunkH0CaslwT7EyyQdvOiK6CoK9e1W/L2yqksONuVP2vry/ZWVlKCt0?=
- =?us-ascii?Q?Mk5HZ1DnHJAMYzR9peRwVetWOzRW9fIo1LoyPHBvIwor9sW2fq4oTXkdwO2G?=
- =?us-ascii?Q?1UG/XTOM0jktrG0IY+ePc6dlIdWqKyP8OpOP3YRnrbW+yMOg6VT+Vid6RE9D?=
- =?us-ascii?Q?bsPULNCqZqXgjYPPX1H7OUh2de8qSMfK/bjN+GJAT2F7XB7fPJEiPm/vkLrS?=
- =?us-ascii?Q?y4B0vMBYWHnMUXbMLZLIdtLT0r96uYAkI8yuWNrCzvs/PXG7gRntF5yLo5Wv?=
- =?us-ascii?Q?BF5+PdkBK8adiiSD0an3iNZ2NACIx17QHSUDKpTsw+4pZGIsT8zieRhYi1P8?=
- =?us-ascii?Q?BtsxPWE89dcTGVkmOgvKpMgWrJdyktC1nKYIN7LA6OCsAf8YVfguG9hnR3uJ?=
- =?us-ascii?Q?8S4PUazu3Lxu0lZyoN8efcVtvYXhhInf452fCw7k4c0yC29O1zbE/59qan7Q?=
- =?us-ascii?Q?vkx6c+qEbv9njOG4Oy1yZz4SWZFvO1lJ3KTVF+bzjiel+oiQolAEyBsuOt8/?=
- =?us-ascii?Q?7U3Aq9klhaCJcd6nIdc0Bx+yJYkl8oaXzL7M3B6svkTR8sgYa137y5Xe2q39?=
- =?us-ascii?Q?hIi2Wazmu17q/qaFKcbelBOR8jBaI3lHkTLiNQuk6vefvuip/rmEK7ptkMru?=
- =?us-ascii?Q?chKYlVCP8xxypUxFERj5jBZtnNdXCkkOWi9pMj6ovtW1dwyeWDY112VPy+ib?=
- =?us-ascii?Q?/iPgEvcSRFgHF5X0lKmHKpZ6mqdoPL2ypjwrCSgubgVZCV35XJqtRECaS07k?=
- =?us-ascii?Q?8uMxRsNztq5yfkUEgG3ReRlFeHCh/iCHDZjbeCUPc5yilWTFaWOBorTXlM76?=
- =?us-ascii?Q?omA8A9ZLzoZKgS4f3XtwlQ+6MmS5Nu4a+DM8HxQmkN0I3xUvKzE7pAMFHa36?=
- =?us-ascii?Q?G+3EQr0PW88t6zE6eTw/DWpBRKpN4TbxiKAvDK91EWNWLXo5+0qA7uGqqH/X?=
- =?us-ascii?Q?mO9c9RMIm8zmVh6I/okVaQD/mnGSmich4WfhxwBbuMPxNGxBIqqPEfYSbJ+D?=
- =?us-ascii?Q?6V8gEEDJR8PmgQlI5UbkvvKHVupPZ1V96k31LL0PO4GVJHWqKmnwsXfIWc7g?=
- =?us-ascii?Q?Ffv7E7/LsDOpUd1XY6wxHu9639WzBBDOALxkckTYjNgFPm3dAFylGtaSCAZF?=
- =?us-ascii?Q?RX3XrXwFeuzJcRWC0GRCJXWsvbGaTgwPeXXtbiz/iJaLmIEvcZG6vohzz9Az?=
- =?us-ascii?Q?Z1+5xOXrBAQqwmaml7NbSapVrqjAQ/7a3YlIQvYLjegBMjmltAcQ9xCMehQh?=
- =?us-ascii?Q?i7rNEv03OL8aeBkKMwUuHycq2xMbCWUbN5SoAYc0jWsaNcQOCYQPGo34Oaxa?=
- =?us-ascii?Q?/xSmYLJfdIYKs5YaB2YeuC4IkNC6BmaKs9+CL1SZiNPfAwk0m998/Z3Ts04f?=
- =?us-ascii?Q?effKSe7HTg=3D=3D?=
+	=?us-ascii?Q?Ki1mZn5fDhvWXa5tBOR+fsJNyLKYKuXsExK8Vmrkzz/0R/836aMiPcUufnpB?=
+ =?us-ascii?Q?ZRsaB9n83GGue8lJLyUprg1mCnJrD+H43ze2kWnRfBOtnv/LJW1LV525BcET?=
+ =?us-ascii?Q?Jk22X0MDqgDVOVpJj41w/m/FSZuKayNhNSYQWGiRb/+r8KXXwHqiJ6TPXgnp?=
+ =?us-ascii?Q?Sb2J+P/gl8rU09A7EMvBBA0d9q+KWsNHGnUqMlb6Kr0ygrrZ993UjCuPmNHS?=
+ =?us-ascii?Q?7M59pxv5DNaGNKAKMG/Uy8JKo56SZE4JeN/iO5uQh2lmliiUFItR4vxiI339?=
+ =?us-ascii?Q?EtUGiP6RYlep5MpwZtwahp/oRl0GQ5Ta+Kg289BQg5hsaJMLG+G4wR2vKRIZ?=
+ =?us-ascii?Q?rpkmaUQXvao6A8UEATLsSyx/hs8YHpPBIdrrTF0JQBfOSfcRVf5haR6Bdw38?=
+ =?us-ascii?Q?T5+f2aqWDJyLIguNRLiNP6B+aB7oZ+B71KgsvS4X+TszdekklFoTaZbpiSZG?=
+ =?us-ascii?Q?KwcU5CS1WWwpmsziCHWdSFF4hXSO5uTNW48c52CdjYBmCndyDl5ETGzyL9mA?=
+ =?us-ascii?Q?QKVQ0b5ILkkewSGoNhveeviRI8uaO2Zz/w1qFzyYuwTIHcG1mNCvKmB7rAiS?=
+ =?us-ascii?Q?ZLbdyhdTOcr8AZthDXWLFSp2FPZjFLUBjFU3PwTqBIIL7f+HLx2xrWBFqzqM?=
+ =?us-ascii?Q?w6IqULwscxaflERGBbHcyIwQQWgZfgScfBiDPjw3gePEhXKuNNJLJz7vuKkb?=
+ =?us-ascii?Q?Bb5S9t7tQj2OLZ08roiH/UNqVUSh3VjjY6Pu7ZHq8lnS7yAr0l9F4mds+OVD?=
+ =?us-ascii?Q?cgVJp0iCbrEunBDf+ncBVEO7E/D9ZuBskOn0LcQhAUSlLFaS4USSdX8pq3Av?=
+ =?us-ascii?Q?xHv6qIhSp9VPT8/7IBucicJxwOV2B17bdMrMzeJaei7PwM3sv4OL+d62aP71?=
+ =?us-ascii?Q?H2/3hGu3N8tKM3tDf2XyA+lDIRRjcu2BV3CdJr6zfNqSlD5mDBYV0hZ62qyG?=
+ =?us-ascii?Q?B/JpOI53pVvY90ev71glKuDmtPwoiFK14S2MvtPczzGgjMm4W51NH06v1XD8?=
+ =?us-ascii?Q?VZF9lt/Yi5kZouypMJ+qDSkWUsld+VuBJUqohSpLaNzQhMBzPDlOnWt6Tcin?=
+ =?us-ascii?Q?xhHsknh2Nbspt9D23EHIw0IAE+QQIHy0TzAo451GZ6VqGB7Zs9dsrL2mDiPb?=
+ =?us-ascii?Q?XbomHZFdyBoPPC/bkw9Y3EkXidhyHmGP6nKvNJ2p3u6Ufyjvfu7eTngGwdMU?=
+ =?us-ascii?Q?J9W2Zchk7T+KbVFDCeK19lF4iDdS5naoQzvRO5iaDWM6j9JwYZC+5S5zIk77?=
+ =?us-ascii?Q?j8/2j87JHH+A0z53WEu9PB6IOd+tOWQDsaN5j94qThESu4j3BoaqA/em6r1r?=
+ =?us-ascii?Q?5/pdn/27HibeP+/xR9ZouZhxsGYPG3Ny6XlNqv86n1pCpSc/s36GnyuqoWi2?=
+ =?us-ascii?Q?I3Gt2kp27lqqgNIzT9xeJlQHrI6IlA+VHHDKEVxy/5abs6rMZp04vcW+WB2P?=
+ =?us-ascii?Q?E902NogLXGADIZtGEXnSJxt8aDnna4OmKFBZf0t4HeiCbPIvEf0wBthF5G0/?=
+ =?us-ascii?Q?fBSktQHqE9c/U4ZPwQT9FSP6cJrWQMndxyEUXVA5Umk1bB7NNyhZb8JaIVYM?=
+ =?us-ascii?Q?DlYMGgA5U7y9eH+JF24BiXvc1chzXmgxErE1nd8gVCtBXltRcS8CSff21w9A?=
+ =?us-ascii?Q?D9b6WbMcu1W3p1+IN0fOJ37szdxAH5zTmKq+F29jcykFKes1y/QDI5MO8LJp?=
+ =?us-ascii?Q?gGrf+e7ztdx5m/12mIykPmWrhnMhR7o1s6Kp3+5A22h8uUT+3bXEV5ajUxNU?=
+ =?us-ascii?Q?u33lFLcuYA=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 9ec6b122-a17f-490f-f0a1-08deb2cde09c
+X-MS-Exchange-CrossTenant-Network-Message-Id: ef830616-c41e-4090-97e0-08deb2cde198
 X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9411.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2026 22:04:04.0924
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2026 22:04:05.7428
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: XIduaA9tY/Vh4/nL7bGUnAv3q799pEheJEDbDQnb2jL0dN9QUP7xKX7SeYitGODERyli9MI745x6Pe4wq7U6mg==
+X-MS-Exchange-CrossTenant-UserPrincipalName: +GfKrqIsLRGrHf2aACXXVuskUhvFagD1JBAX5ve40Qb7XzMOAU6XwGuk+eOcEs65gEwi/jJYF0PEbmFRNWCpAA==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7751
 
-This series is based on Josh Hilke's initial igb selftest driver
-posted as:
+The submitted driver builds a partial legacy TX descriptor (just
+DTALEN | CMD_EOP) and never programs SRRCTL.DESCTYPE.  QEMU's emulated
+igb tolerates this by treating descriptors as advanced regardless of
+DESCTYPE, but real 82576 hardware does not.
 
-  https://lore.kernel.org/all/20260511211839.2781731-1-jrhilke@google.com/
+For receive, 82576 datasheet section 7.1.5.2 states: "SRRCTL[n].DESCTYPE
+must be set to a value other than 000b for the 82576 to write back the
+special descriptors."  struct igb_rx_desc matches the advanced
+one-buffer writeback layout, so the test polls rx.wb.status_error,
+which is only written in that layout.  Section 8.10.2 places DESCTYPE
+in SRRCTL bits 27:25; program it with 001b (advanced one-buffer).
 
-That posting validated the driver against QEMU's emulated igb only; it
-has not been tested on physical 82576 hardware.  Real 82576 silicon
-rejects several of the shortcuts the submitted driver relies on (MAC
-loopback, legacy TX descriptors, read-to-clear EICR, autoneg-based
-link bring-up, and an unbounded fault-recovery story), and adding
-real-hardware coverage is the goal here.
+For transmit, datasheet section 7.2.2.3 describes the advanced data
+descriptor with DEXT (DCMD bit 5) marking the descriptor as advanced,
+DTYP=0011b selecting the data descriptor, IFCS (DCMD bit 1) asking the
+MAC to append the Ethernet FCS (without it the frame is dropped as
+malformed), EOP (DCMD bit 0) marking end of packet, and PAYLEN in
+olinfo_status[31:14] carrying the total payload size.  Build this
+descriptor in igb_memcpy_start().
 
-Two of the patches add accommodations specifically for QEMU's emulated
-igb (which does not implement PHY-register-0 bit 14 and does not drive
-STATUS.LU from CTRL.SLU) so that Josh's "run selftests without
-hardware" workflow continues to work.  One of these (RCTL.LBM_MAC)
-deviates from datasheet 8.10.1 guidance; empirically the bit has no
-observable effect on real 82576 because MAC loopback is not
-implemented (3.5.6.2).  See patch 1 for both rationales.
+Remove the legacy CMD macros (IGB_TXD_CMD_EOP, IGB_TXD_CMD_IFCS,
+IGB_TXD_CMD_RS, IGB_TXD_CMD_SHIFT, IGB_TXD_CMD_LEGACY_FORMAT) that
+become unused, and add the SRRCTL register offset, DESCTYPE encoding,
+and advanced TX descriptor field macros.
 
-  1) selftests/vfio: igb: Use PHY internal loopback on 82576
+Assisted-by: Claude:claude-opus-4-7
+Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
+---
+ .../selftests/vfio/lib/drivers/igb/igb.c      | 36 ++++++++++++++++---
+ .../vfio/lib/drivers/igb/registers.h          | 21 ++++++++---
+ 2 files changed, 47 insertions(+), 10 deletions(-)
 
-     Replace MAC-loopback-via-RCTL.LBM_MAC and PHY autonegotiation with
-     PHY internal loopback per datasheet 3.5.6.3.1.  Force the MAC link
-     state via CTRL.FRCSPD/FRCDPX/SLU since the descriptor engine
-     otherwise waits for a real negotiated link.  Keep RCTL.LBM_MAC
-     (deviates from 8.10.1 guidance but empirically inert on real
-     hardware per 3.5.6.2) and prefix the loopback setup with a
-     one-shot autoneg-restart PHY write (the next PHY write clears
-     autoneg-enable before autoneg can start, so this is a no-op on
-     real silicon); both are required by QEMU's emulation.  Drop the
-     dead igb_read_phy() and its now-unused macros.
-
-  2) selftests/vfio: igb: Use advanced TX and RX descriptors
-
-     Program SRRCTL.DESCTYPE for advanced one-buffer receive
-     descriptors (datasheet 7.1.5.2, 8.10.2) and build advanced TX data
-     descriptors with DEXT/DTYP/IFCS/EOP/PAYLEN (7.2.2.3) rather than
-     the simplified legacy format the submitted driver used.  Drop the
-     unused legacy TX descriptor macros.
-
-  3) selftests/vfio: igb: Program MSI-X interrupt routing
-
-     Configure GPIE.Multiple_MSIX and GPIE.EIAME (Table 7-47), EIAC
-     and EIAM for vector 0 (8.8.5, 8.8.6), and switch EICR clearing
-     from read-to-clear to write-to-clear (7.3.4.2 / 8.8.5 forbid
-     reading EICR while EIAC is programmed).
-
-  4) selftests/vfio: igb: Extend memcpy completion timeout for line-rate
-     hardware
-
-     The submitted 1 ms cap is well below the 32 ms line-rate floor for
-     a 4 MB transfer at 1 Gb/s.  Bump to ~200 ms (6x margin).
-
-  5) selftests/vfio: igb: Disable PCIe completion timeout retries
-
-     Clear GCR.Completion_Timeout_Resend (datasheet 8.6.1) so the
-     intentional unmapped-IOVA tests do not generate an unbounded
-     stream of retried reads on real hardware.
-
-  6) selftests/vfio: Add vfio_pci_irq_reenable() helper
-
-     New libvfio helper that re-issues VFIO_DEVICE_SET_IRQS against
-     existing eventfds, for drivers that recover from
-     VFIO_DEVICE_RESET without disturbing user-side eventfds (and any
-     fd a test fixture may have cached).
-
-  7) selftests/vfio: igb: Factor hardware programming into igb_hw_init()
-
-     Pure refactor splitting igb_init() into a one-shot outer
-     (region-size check, BAR map, CTRL.RST, IMC, vfio_pci_msix_enable)
-     and a reusable inner that programs the registers CTRL.RST clears.
-
-  8) selftests/vfio: igb: Recover after DMA-read faults
-
-     Add igb_error_reset_and_reinit() and call it from
-     igb_memcpy_wait() on completion timeout.  Datasheet 4.2.1.6.1
-     describes CTRL.RST as the recovery mechanism, but empirically
-     CTRL.RST alone leaves the descriptor engine wedged after a
-     DMA-read fault; the 82576 advertises PCIe FLR (datasheet
-     4.2.1.5.1) and VFIO_DEVICE_RESET drives it.
-
-Testing:
-
-  - Selftest builds clean at every commit (verified bisect-buildable).
-  - QEMU emulated igb via vng on a host kernel built with VFIO and
-    Intel IOMMU enabled: vfio_pci_driver_test 35/35 pass across all
-    four IOMMU mode permutations.
-  - Physical 82576 on Intel Alderlake platform: vfio_pci_driver_test
-    35/35 pass across all four IOMMU mode permutations.
-
-Assisted:
-
-  - Series developed primarily with Claude Opus 4.7 with additional
-    assistance from GPT 5.5.  Spec references spot checked and cross
-    checked against multiple models.
-
-Alex Williamson (8):
-  selftests/vfio: igb: Use PHY internal loopback on 82576
-  selftests/vfio: igb: Use advanced TX and RX descriptors
-  selftests/vfio: igb: Program MSI-X interrupt routing
-  selftests/vfio: igb: Extend memcpy completion timeout for line-rate hardware
-  selftests/vfio: igb: Disable PCIe completion timeout retries
-  selftests/vfio: Add vfio_pci_irq_reenable() helper
-  selftests/vfio: igb: Factor hardware programming into igb_hw_init()
-  selftests/vfio: igb: Recover after DMA-read faults
-
- .../selftests/vfio/lib/drivers/igb/igb.c      | 318 +++++++++++++-----
- .../vfio/lib/drivers/igb/registers.h          |  58 +++-
- .../lib/include/libvfio/vfio_pci_device.h     |   2 +
- .../selftests/vfio/lib/vfio_pci_device.c      |  22 ++
- 4 files changed, 302 insertions(+), 98 deletions(-)
-
+diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
+index ce2e2c90315e..594e51ba29f5 100644
+--- a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
++++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
+@@ -230,6 +230,17 @@ static void igb_init(struct vfio_pci_device *device)
+ 	igb_write32(igb, IGB_RDLEN0, RING_SIZE * sizeof(struct igb_rx_desc));
+ 	igb_write32(igb, IGB_RDH0, 0);
+ 	igb_write32(igb, IGB_RDT0, 0);
++
++	/*
++	 * Select the advanced one-buffer descriptor format.  Per 82576
++	 * datasheet section 7.1.5.2: "SRRCTL[n].DESCTYPE must be set to a
++	 * value other than 000b for the 82576 to write back the special
++	 * descriptors."  struct igb_rx_desc matches the advanced one-buffer
++	 * writeback layout (section 7.1.5.2), so polling rx.wb.status_error
++	 * requires this format.  Section 8.10.2 specifies DESCTYPE[27:25].
++	 */
++	igb_write32(igb, IGB_SRRCTL0, IGB_SRRCTL_DESCTYPE_ADV_ONEBUF);
++
+ 	igb_write32(igb, IGB_RXDCTL0, IGB_RXDCTL0_Q_EN);
+ 
+ 	/* Wait for TX and RX queues to be enabled */
+@@ -339,11 +350,26 @@ static void igb_memcpy_start(struct vfio_pci_device *device, iova_t src,
+ 			rx->wb.status_error = 0;
+ 
+ 			tx->read.buffer_addr = curr_src;
+-			tx->read.cmd_type_len = (uint32_t)chunk_size;
+-			tx->read.cmd_type_len |= (uint32_t)(IGB_TXD_CMD_EOP) << IGB_TXD_CMD_SHIFT;
+-
+-			/* Set to 0 to disable offloads and avoid needing a context descriptor */
+-			tx->read.olinfo_status = 0;
++			/*
++			 * Build an advanced data descriptor per 82576 datasheet
++			 * section 7.2.2.3.  DEXT marks the descriptor as advanced
++			 * (required by hardware); DTYP=data selects the data
++			 * descriptor; IFCS asks the MAC to append the Ethernet
++			 * FCS (without it the frame is dropped as malformed);
++			 * EOP marks end of packet.  DTALEN is the buffer length
++			 * in bits 15:0 of cmd_type_len.
++			 */
++			tx->read.cmd_type_len = (uint32_t)chunk_size |
++				IGB_ADVTXD_DTYP_DATA |
++				IGB_ADVTXD_DCMD_DEXT |
++				IGB_ADVTXD_DCMD_IFCS |
++				IGB_ADVTXD_DCMD_EOP;
++			/*
++			 * PAYLEN (section 7.2.2.3.11) is the total payload size
++			 * in olinfo_status[31:14].
++			 */
++			tx->read.olinfo_status =
++				(uint32_t)chunk_size << IGB_ADVTXD_PAYLEN_SHIFT;
+ 
+ 			curr_src += chunk_size;
+ 			curr_dst += chunk_size;
+diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/registers.h b/tools/testing/selftests/vfio/lib/drivers/igb/registers.h
+index c00b5ae83ccb..c44788642522 100644
+--- a/tools/testing/selftests/vfio/lib/drivers/igb/registers.h
++++ b/tools/testing/selftests/vfio/lib/drivers/igb/registers.h
+@@ -22,10 +22,14 @@
+ #define IGB_RDBAL0 0x0C000 /* Rx Desc Base Address Low */
+ #define IGB_RDBAH0 0x0C004 /* Rx Desc Base Address High */
+ #define IGB_RDLEN0 0x0C008 /* Rx Desc Length */
++#define IGB_SRRCTL0 0x0C00C /* Split and Replication Receive Control Q0 */
+ #define IGB_RDH0 0x0C010 /* Rx Desc Head */
+ #define IGB_RDT0 0x0C018 /* Rx Desc Tail */
+ #define IGB_RXDCTL0 0x0C028 /* Rx Desc Control */
+ 
++/* SRRCTL fields per 82576 datasheet section 8.10.2 */
++#define IGB_SRRCTL_DESCTYPE_ADV_ONEBUF (1u << 25) /* 001b: advanced one-buffer */
++
+ /* Tx Ring 0 Registers */
+ #define IGB_TDBAL0 0x0E000 /* Tx Desc Base Address Low */
+ #define IGB_TDBAH0 0x0E004 /* Tx Desc Base Address High */
+@@ -100,10 +104,17 @@
+ #define IGB_GPIE_EIAME 0x10 /* Extended Interrupt Auto Mask Enable */
+ #define IGB_IVAR_VALID 0x80 /* Valid bit for IVAR register */
+ 
+-#define IGB_TXD_CMD_EOP 0x01 /* End of Packet */
+-#define IGB_TXD_CMD_IFCS 0x02 /* Insert FCS */
+-#define IGB_TXD_CMD_RS 0x08 /* Report Status */
+-#define IGB_TXD_CMD_SHIFT 24 /* Shift for command bits in cmd_type_len */
+-#define IGB_TXD_CMD_LEGACY_FORMAT BIT(20) /* Forces legacy descriptor format in QEMU */
++/*
++ * Advanced TX Data Descriptor fields per 82576 datasheet section 7.2.2.3.
++ * The cmd_type_len word holds: DTALEN[15:0], MAC[19:18], DTYP[23:20],
++ * DCMD[31:24].  The olinfo_status word holds: STA[3:0], IDX[6:4],
++ * POPTS[13:8], PAYLEN[31:14].
++ */
++#define IGB_ADVTXD_DTYP_DATA	(0x3u << 20) /* DTYP=0011b: advanced data */
++#define IGB_ADVTXD_DCMD_EOP	(1u << 24)   /* DCMD bit 0: End of Packet */
++#define IGB_ADVTXD_DCMD_IFCS	(1u << 25)   /* DCMD bit 1: Insert FCS */
++#define IGB_ADVTXD_DCMD_RS	(1u << 27)   /* DCMD bit 3: Report Status */
++#define IGB_ADVTXD_DCMD_DEXT	(1u << 29)   /* DCMD bit 5: 1b for advanced */
++#define IGB_ADVTXD_PAYLEN_SHIFT	14           /* PAYLEN bit position */
+ 
+ #endif /* _IGB_REGISTERS_H_ */
 -- 
 2.51.0
+
