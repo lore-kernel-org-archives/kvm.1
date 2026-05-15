@@ -1,133 +1,152 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f45.google.com (mail-ot1-f45.google.com [209.85.210.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9F2E387378;
-	Fri, 15 May 2026 06:46:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778827585; cv=none; b=bcfnmvDTFUMspQVmPNlHOd/WWVW+OyW094uStE5hSC5Nh12819+LthPVsKJWYWOttAzQkPFhTdscUTAGDq8ZyXKUMDKWvG3MouPorh7Rc46uFGY0sQzhFyQOyb30X+Q7XvNMYrP/V0KVjl9nG8snG3uwkleIg6l6xhGwGBC+g3A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778827585; c=relaxed/simple;
-	bh=EDy7WM2EPZMdkVajN/C+7NtSFN1OXHBuRnNXGvFYtfg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=cPftFE8f8jd1Fe5J7cba/bjO4ztMr8JGymGlvGVLvMafyz3u+TIiOVkqB+7NnWbQZWp7dOpB1jrQhXld3gNnVWuct1bkRWoH/eVp/w2eCr8spdHj83OQ0PdNFP8rzOEwLtCD5F6kNE/uPffkaXxIHPAsryAX0t0kF5Hhupz2fLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=gfJzE7cC; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D84F43890F7
+	for <kvm@vger.kernel.org>; Fri, 15 May 2026 06:48:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1778827741; cv=pass; b=SivKdD61PmIEAWokFo73/ZgODExQKvcehlK8vMqicVr9IQjDK9BP0p5XV55ZqBe2QVPsTY1Fh5p7ySrIgUpSk2JeUEdEekVXVAcbdONPgL6iHsjkO6CqCZTizzbyk5OoLlAy9OtAGwDvcrk/FNziqe5S1KseY5sot1VeBWRLaVQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1778827741; c=relaxed/simple;
+	bh=E9V+J9hi7Arb7De8BmQ9YEa/mNzSRMFI2i3CqjTC1XA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Eqwewq016Z5oRTLEcT7BL+P1hWDgzPGvV/msJfOKIxC6DG5SnDi9YoufXxDJCt1VCIt7U2Oipl8zfRR+UrtdY2coKf0RYUl/p6n9TW6zAhaCkJPiZ9Jd/8jzMQXmIvzDrbOteyQhuDIq3xf2su+liUjC0Szs+WXExPlCKScCBdc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=koHsNHUM; arc=pass smtp.client-ip=209.85.210.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="gfJzE7cC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778827583; x=1810363583;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=EDy7WM2EPZMdkVajN/C+7NtSFN1OXHBuRnNXGvFYtfg=;
-  b=gfJzE7cCzcPaEB7bhBD9lUAaXBFa7WcNmmwTi4rW/iHtjKbXaNp3MNTX
-   c5leWdmXB/krgG/delfg8cv0U5OMSxlY4cRrbRxqdPkhhVYWurKM9fpmS
-   Fc8iREqh+X+n+hcoYcnsLcc+GGjfkWe2U0bLB0tF+HvElDzLdAdT8UT6L
-   /sO6Ju+2g1vqgzd+3w4RIsUe4tazbA4Hh4VK5m2lpEH5tpkJgviYAGQLa
-   VJWmSVwpLpqrYh5fpjFG5qm3V1DmxjYoIsUP9ISG+xinb1TzMWkYsAfw/
-   y9uW8SEZsSyaw3duk6DyYzlQYxcZS/cV3cKBlKCHxmvN/5ihQ5+8X+gmf
-   A==;
-X-CSE-ConnectionGUID: AZGnF0JWShGjfUc9noCcgA==
-X-CSE-MsgGUID: N+NRhVC0SKKXneyQv8F7gA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11786"; a="79674105"
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="79674105"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 23:46:23 -0700
-X-CSE-ConnectionGUID: 234uUvIkTV+YfgBeTmh5FQ==
-X-CSE-MsgGUID: e/SZAEWjRwmj6Pi0YKa5PA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="232219352"
-Received: from binbinwu-mobl.ccr.corp.intel.com (HELO [10.124.240.207]) ([10.124.240.207])
-  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 May 2026 23:46:20 -0700
-Message-ID: <90011488-83ba-4aa5-a753-28fa5fd4024d@linux.intel.com>
-Date: Fri, 15 May 2026 14:46:17 +0800
+	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="koHsNHUM"
+Received: by mail-ot1-f45.google.com with SMTP id 46e09a7af769-7dca4debedaso8445015a34.2
+        for <kvm@vger.kernel.org>; Thu, 14 May 2026 23:48:59 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1778827739; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Y5KAHZCbXD3P7Y+VhPguPnMdnL1K6xR2HgDcsmrvWn3ozNTLDL3ersOTBihZSUA79x
+         eHHbgjbmpa9jjXj7d9X4pIj8/mi4koAHUshGPlYztLaxKUv14i885/iSD/L7rpJOAery
+         PEAAqE+hAfR4P/xLqA6w5HqyJdSlMhCeRKy78rchy0ftnWw3eW8us5SWBCz59w2a41lL
+         3CbHOsG4NBL6la9MPgbdCwbZEq7WHhLHx++Dd31JpqLVJz3EzTiiehlKq575bujwvDlZ
+         moEMMlE5AkuFYoIa0j/dS1IUyXi8cy3PtlsXSsi0AA3fKot7BTEfjp39yonQ0wA7UnM3
+         hmRA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=MJZeZoi3lwfWnxM/Nl8ZViqM1Fkj9v9XGZB4s5D/a8M=;
+        fh=qlr0zq4qiQ/8a3g2EgeSrz8hUPrn8tKkTC2blItW0Ag=;
+        b=FCdLkF0Oq2HFj486aZccvYR48uhd7Y3G6mCK7p/QbxnFlPj1VvHrNe/7qJwKG+sajH
+         w2MABVrrE2+TXy9Y+4z47/snZ734LPlqHrFuQ1aR6WzNYo4PBOL/5F331+OYUyT/0+Bg
+         S37dgWtQcwkKTSpXPydxRGpfAkn0H6XfY5twab6C1fbz1kOlhhexN7EKmDPboOiGWNCP
+         VX6jzP40QHIdnSrp+0SAlXSsH+TGy/R5tJ2v2NT5jMjyK4Pr0ikmolYOzCbNV1l023de
+         SExttaISSKHWiFhliLZOhvpxSNaNTW44SxjBvdHNA2x2Af4X+3eFR6zXbBY4L358jMjZ
+         y8zQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1778827739; x=1779432539; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=MJZeZoi3lwfWnxM/Nl8ZViqM1Fkj9v9XGZB4s5D/a8M=;
+        b=koHsNHUMGgkk8JaCgt/Gul9wYhDvrT6uOoY8hVOustGCMDXeoRtJTXDc3zR4g0cyK/
+         DkQtitzRvt7BrsYx+q4mqHoexyaliGHUbbuMl+h79r1gFh+AdXU7sOW6Hk7ZuMSL35u0
+         yI9nRDlHYQBCx2IgnhssitWiqaLv4gUZ6jGxdPdXvYeWcrHWOdd7D/vfsCbmUnl9tGu7
+         JKLc82WJswAL2JY3s23ky7Q71ydhWwdJSUz754loBX/xeC8bZ/k8TIRY4NZPXmIKtwyH
+         7p2lzTqBuPeFJl+omF2/L62nIDbVWo+t3SWzziwHnUCmdVWv/LGs3Rr8Tbnt7yKvrqnd
+         ZF4A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778827739; x=1779432539;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=MJZeZoi3lwfWnxM/Nl8ZViqM1Fkj9v9XGZB4s5D/a8M=;
+        b=ZzZTqmvw0VvG01voEuNzXdg6CN8QPEWT0imGPQ/AiDa8IUK6Mpw3TYGDEKMPoT1FJQ
+         FM4TdUCz3KxWL+Nv5EloM0kZnaAxYlnANHRrkz7mOagAPpG6PE1+x39+ywKdeMhXdB8R
+         MGIMAKWkSzUXfbzb/NTSYp7H+MbbRjborJ87QduKeDG633LStpRoUS8elGvniyQf0oqF
+         ZVHPsEHXJOh5Ms/QGDDFVC3GRdUjwAeG6ZI5xE5B6Re/23JjZGTtUrLjmYG5yREMXKj0
+         L69n3IYcj2EN959+pGmQfopuKuJ+BrsKSFd0ajLOeo89WHTU1C1FD7HM1BB5NstHTHPJ
+         YTMw==
+X-Forwarded-Encrypted: i=1; AFNElJ/bt+S+doCsapGFuxwTm9VOz0SCCjov2PVpTJvb657dKKTyV0WIc1gFo5Hjm16UeH+Bf8E=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytaGgQ3TznTgmcuwmzISsMI04lFqAO4q0hpKcnZxLUl+eX2u5S
+	gAL9+SZfHfEjS3eMxvDXEjxZ/MtSLvFRWVX3t3OHg1JfgnrLBPTYOZxjLy8vvfbVkIRqNtsNgYO
+	Z6cDvIshMda2leISXxiC0fcKLjs5w+wcV/QxCe8eBm0yFc6aGE2vx
+X-Gm-Gg: Acq92OFxPwzhtAbU5WqvBz9d1OuwInu8YvuxvuoKR9eeNMlhRU5N3n+Y7OHg9NYxk+Z
+	GhvIPY8cuzmiDBy4Hn7hq4nxqLDrEeSzlOeiqcTeqndSatdMPrlk/wbMu8ONiQ0w726SESXjKZB
+	G3c7YVyJUDauw7N2C3KqB/4flgTx4zB/OzQ4BuKYbcA7WonJRqIJEnAs0G3wQrzCNKQDeb/jWdR
+	mT6UYAFYLvsj/amf+pmqnJy6qk5S+sib6wT8wU2aheNd5+DKQeFbSoZ9mUZEHb+l7uSkhIMlnkW
+	lI64RNku/A1mIXMzGLyrHNZh3co6SlPNcPhBesKDvLs/HVi+P/HpA5MYuxnLrXL2FaKNOELshsZ
+	WknipYtgAQigwCK8tz4+imgbf22c=
+X-Received: by 2002:a05:6820:174b:b0:696:29cd:bf4b with SMTP id
+ 006d021491bc7-69c94b454admr1633046eaf.51.1778827738723; Thu, 14 May 2026
+ 23:48:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 02/15] KVM: x86/xen: Bug the VM if 32-bit KVM observes
- a 64-bit mode hypercall
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
- David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org,
- x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- Yosry Ahmed <yosry@kernel.org>, Kai Huang <kai.huang@intel.com>
-References: <20260514215355.1648463-1-seanjc@google.com>
- <20260514215355.1648463-3-seanjc@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260514215355.1648463-3-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260514173642.41448-1-osama.abdelkader@gmail.com>
+In-Reply-To: <20260514173642.41448-1-osama.abdelkader@gmail.com>
+From: Anup Patel <anup@brainfault.org>
+Date: Fri, 15 May 2026 12:18:45 +0530
+X-Gm-Features: AVHnY4K8xzqoM5FY20mXX1nYOkYmhUWalyMOR_lK2NDzbN1JIwAiJwlW_5f4ndQ
+Message-ID: <CAAhSdy1W_cQW0NfA6b3hX8CGtShZPgwbk1hhRB0jns6Dm+b9gg@mail.gmail.com>
+Subject: Re: [PATCH 1/2] riscv: kvm: return SBI_ERR_FAILURE for
+ pmu_snapshot_set_shmem OOM
+To: Osama Abdelkader <osama.abdelkader@gmail.com>
+Cc: Atish Patra <atish.patra@linux.dev>, Paul Walmsley <pjw@kernel.org>, 
+	Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, 
+	Alexandre Ghiti <alex@ghiti.fr>, Andrew Jones <ajones@ventanamicro.com>, kvm@vger.kernel.org, 
+	kvm-riscv@lists.infradead.org, linux-riscv@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, May 14, 2026 at 11:06=E2=80=AFPM Osama Abdelkader
+<osama.abdelkader@gmail.com> wrote:
+>
+> kvm_riscv_vcpu_pmu_snapshot_set_shmem() returned -ENOMEM from the
+> SBI extension handler, which caused kvm_riscv_vcpu_sbi_ecall() to
+> abort KVM_RUN and surface the error to userspace instead of
+> ompleting the ECALL with a negative SBI error in a0.
+> Use SBI_ERR_FAILURE and the normal retdata path, matching other PMU
+> handlers and kvm_sbi_ext_pmu_handler comment.
+>
+> Fixes: c2f41ddbcdd7 ("RISC-V: KVM: Implement SBI PMU Snapshot feature")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Osama Abdelkader <osama.abdelkader@gmail.com>
 
+LGTM.
 
-On 5/15/2026 5:53 AM, Sean Christopherson wrote:
-> Bug the VM if 32-bit KVM attempts to handle a 64-bit hypercall, primarily
-> so that a future change to set "input" in mode-specific code doesn't
-> trigger a false positive warn=>error:
-> 
->   arch/x86/kvm/xen.c:1687:6: error: variable 'input' is used uninitialized
->                                     whenever 'if' condition is false [-Werror,-Wsometimes-uninitialized]
->    1687 |         if (!longmode) {
->         |             ^~~~~~~~~
->   arch/x86/kvm/xen.c:1708:31: note: uninitialized use occurs here
->    1708 |         trace_kvm_xen_hypercall(cpl, input, params[0], params[1], params[2],
->         |                                      ^~~~~
->   x86/kvm/xen.c:1687:2: note: remove the 'if' if its condition is always true
->    1687 |         if (!longmode) {
->         |         ^~~~~~~~~~~~~~
->   arch/x86/kvm/xen.c:1677:11: note: initialize the variable 'input' to silence this warning
->    1677 |         u64 input, params[6], r = -ENOSYS;
->         |                  ^
->   1 error generated.
-> 
-> Note, params[] also has the same flaw, but -Wsometimes-uninitialized
-> doesn't seem to be enforced for arrays, presumably because it's difficult
-> to avoid false positives on specific entries.
-> 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Anup Patel <anup@brainfault.org>
 
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Queued this as fix for Linux-7.1-rcX
+
+Thanks,
+Anup
+
 
 > ---
->  arch/x86/kvm/xen.c | 7 +++++--
->  1 file changed, 5 insertions(+), 2 deletions(-)
-> 
-> diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
-> index 91fd3673c09a..6d9be74bb673 100644
-> --- a/arch/x86/kvm/xen.c
-> +++ b/arch/x86/kvm/xen.c
-> @@ -1694,16 +1694,19 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
->  		params[4] = (u32)kvm_rdi_read(vcpu);
->  		params[5] = (u32)kvm_rbp_read(vcpu);
->  	}
-> -#ifdef CONFIG_X86_64
->  	else {
-> +#ifdef CONFIG_X86_64
->  		params[0] = (u64)kvm_rdi_read(vcpu);
->  		params[1] = (u64)kvm_rsi_read(vcpu);
->  		params[2] = (u64)kvm_rdx_read(vcpu);
->  		params[3] = (u64)kvm_r10_read(vcpu);
->  		params[4] = (u64)kvm_r8_read(vcpu);
->  		params[5] = (u64)kvm_r9_read(vcpu);
-> -	}
-> +#else
-> +		KVM_BUG_ON(1, vcpu->kvm);
-> +		return -EIO;
->  #endif
-> +	}
->  	cpl = kvm_x86_call(get_cpl)(vcpu);
->  	trace_kvm_xen_hypercall(cpl, input, params[0], params[1], params[2],
->  				params[3], params[4], params[5]);
-
+>  arch/riscv/kvm/vcpu_pmu.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
+>
+> diff --git a/arch/riscv/kvm/vcpu_pmu.c b/arch/riscv/kvm/vcpu_pmu.c
+> index a935ed96bc17..91aa0155a420 100644
+> --- a/arch/riscv/kvm/vcpu_pmu.c
+> +++ b/arch/riscv/kvm/vcpu_pmu.c
+> @@ -453,8 +453,10 @@ int kvm_riscv_vcpu_pmu_snapshot_set_shmem(struct kvm=
+_vcpu *vcpu, unsigned long s
+>         }
+>
+>         kvpmu->sdata =3D kzalloc(snapshot_area_size, GFP_ATOMIC);
+> -       if (!kvpmu->sdata)
+> -               return -ENOMEM;
+> +       if (!kvpmu->sdata) {
+> +               sbiret =3D SBI_ERR_FAILURE;
+> +               goto out;
+> +       }
+>
+>         /* No need to check writable slot explicitly as kvm_vcpu_write_gu=
+est does it internally */
+>         if (kvm_vcpu_write_guest(vcpu, saddr, kvpmu->sdata, snapshot_area=
+_size)) {
+> --
+> 2.43.0
+>
