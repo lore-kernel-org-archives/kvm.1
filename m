@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.9])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5403A3FD958;
-	Fri, 15 May 2026 16:21:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78FC94C6F09;
+	Fri, 15 May 2026 16:53:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778862098; cv=none; b=LRhbnwD8LgnkUnEI0WEhpfGgT5Nx+h0QlcAx/cHV9i8TQz0IgdZXWsa3B5Au/68SlUKnJeM7OOZiXwpXHHoz4n3104hb1C4lLAj1G4ex+9NAvZMnmvbU4ZxzRwSEDpgJ67HAm5N+xJCGBtFWVy/yam/AA3wxMg6jPWHySODMxwc=
+	t=1778864041; cv=none; b=U7NBdlp8k5Mel8wTN90jhGQjGQVopu9AtwiESrl/CMuJ4LplyZ0NqtBSFkYUakTdToGotLNiapaqAKNqVZ0meY6vTSS8eU83JGjueX1T/xvkVKY3zxF4i0X+fqYmm6vzFC3Jkt0bnkPPlw5I9jDTJypaHc9Ls3/Z5vgBXgLhdwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778862098; c=relaxed/simple;
-	bh=CYockY6l12mxVd8llSwjb6I0KomQ6Lrxos7OFRORSIY=;
+	s=arc-20240116; t=1778864041; c=relaxed/simple;
+	bh=2fBKy8JoQa1+SzE35xDVCNt1VHL4lcANHN+S75ugGHM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Rbwh2oY8QB8SMtF7P8SW2oYIlbtUqYw4S3EXY2BtwDSsqFVDUp5tCwAE600yLDZzSk1Gs7je2ad4PZtilIh+eSWmBh+JFx5zVxDsjqypD/BU2d+SWt2DRFGzyMvAxN5w1C7siTfu/zXWaxaOXJkyC0HwKSO9kNDpr4SCY4mAqL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F6UcH1NW; arc=none smtp.client-ip=198.175.65.19
+	 In-Reply-To:Content-Type; b=SmNI2ekZt2HbGB8/fwwQLnX6uH/UXpww03Ef41CXeyrKoGUEPH3jyFL8QvcycPCp7vfb5WqxKjT/HXk+ZpG1LzMbcV4bo8Yk5Z2IA0F+x7dF7Clmi1zesPrdxTejfd2zGGTQHAsoFwQu2MhwHkdyUfZ4edvAepW3VQR6y658iZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EjaL+ClC; arc=none smtp.client-ip=198.175.65.9
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F6UcH1NW"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EjaL+ClC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778862097; x=1810398097;
+  t=1778864040; x=1810400040;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=CYockY6l12mxVd8llSwjb6I0KomQ6Lrxos7OFRORSIY=;
-  b=F6UcH1NWHbTOQZXR3blG3ENofO8B/tyIwnUvQlHIRtfaF/E1SYQ8iwAq
-   HvEEXLbL+S2SkkyBheh9vP/ADKTVTJk0TgL+4gFSE6w5+sAeb3LX8pqHK
-   kAlmbHZDptmvwetr+HpaOwpoEohVnw/8eO7eW9x0nFU9n1Z2asJgy4BKe
-   UArNJ6NeJDmMZD1Tis2/u2QOsTQ+DRV4Z2A0aRZv1Jd7m6sQQyO/9QUZ8
-   wH98ms0HHKLH1onHhJum7DIVfAQsAe9EvdqmLwHPSSfAZY15LRChBGTIu
-   hv7b3aC5ET4zSfCLHBwTWt5HidLAKTMv9XMQRx0aPj/L6y912GYNUUKCE
+  bh=2fBKy8JoQa1+SzE35xDVCNt1VHL4lcANHN+S75ugGHM=;
+  b=EjaL+ClCGap2AeksdYkqJ58TbvZOvsr7/4VqLTA9M1KxSnoMdwaCyK1D
+   2KFQoTSrwoyTUQ5TZsplw+MQFusIfTupxS+zA9P5uwYACkr9M82FUjUS3
+   5b5G/p13S408WLmcSujEUX1O7vXl8Wz7pRWNQqoDVW4W5/6fiBXlG1C8g
+   8a4/4MN71e4/cNpQcoxdwNYpdb5rKr6G43FMaWBpAMaw2XRWVM/pwWQw0
+   I1Rk7KRRmeTEENR01dSyW+vUnNmvbY54Te2ofYfyxK7kUXHKY8yKOZ60j
+   DC17E0Aq7efoKsKNNgOg62dA8N4WefNUhrt5rEWKCcoSBQbkC9sCrQ1/v
    w==;
-X-CSE-ConnectionGUID: pThCciMJTyWW0e2OUasI9A==
-X-CSE-MsgGUID: 5M2eWtrNSBC0a4rrHX4Lig==
-X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="79784611"
+X-CSE-ConnectionGUID: DuHv7l4YSaa3lgICqpYROQ==
+X-CSE-MsgGUID: R5uT+IVlQICMGR4EHJ0/PA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="102496610"
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="79784611"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 09:21:36 -0700
-X-CSE-ConnectionGUID: 7UKZW/IBTamaIMWxIQBYYA==
-X-CSE-MsgGUID: LxJSuYvHRb25oHcCywe9sA==
+   d="scan'208";a="102496610"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by orvoesa101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 09:53:59 -0700
+X-CSE-ConnectionGUID: OJoC6tu+TDOqr3hiWhzkUQ==
+X-CSE-MsgGUID: 2aw9FUGcTZ+LYB2TOEzRfw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="238854761"
+   d="scan'208";a="238988217"
 Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.108.201]) ([10.125.108.201])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 09:21:36 -0700
-Message-ID: <cc35a467-e978-4e3b-a6ba-17a8bde69bd7@intel.com>
-Date: Fri, 15 May 2026 09:21:36 -0700
+  by orviesa007-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 09:53:59 -0700
+Message-ID: <5e097cb0-362a-4dee-af68-9ce583312c97@intel.com>
+Date: Fri, 15 May 2026 09:53:59 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,7 +52,7 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 04/23] coco/tdx-host: Introduce a "tdx_host" device
+Subject: Re: [PATCH v9 05/23] coco/tdx-host: Expose TDX module version
 To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
@@ -61,13 +61,11 @@ Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
  reinette.chatre@intel.com, rick.p.edgecombe@intel.com, sagis@google.com,
  seanjc@google.com, tony.lindgren@linux.intel.com, vannapurve@google.com,
  vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com,
- yan.y.zhao@intel.com, Dan Williams <dan.j.williams@intel.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>
+ yan.y.zhao@intel.com, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
 References: <20260513151045.1420990-1-chao.gao@intel.com>
- <20260513151045.1420990-5-chao.gao@intel.com>
+ <20260513151045.1420990-6-chao.gao@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -113,31 +111,85 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260513151045.1420990-5-chao.gao@intel.com>
+In-Reply-To: <20260513151045.1420990-6-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 5/13/26 08:09, Chao Gao wrote:
-> Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> For TDX module updates, userspace needs to select compatible update
+> versions based on the current module version. This design delegates
+> module selection complexity to userspace because TDX module update
+> policies are complex and version series are platform-specific.
 
-This SoB chain at _least_ needs a note. It looks quite bizarre.
+I'm not sure exactly what a "version series" is. Do you need to say more
+than that the policy is complex?
 
-> +config TDX_HOST_SERVICES
-> +	tristate "TDX Host Services Driver"
-> +	depends on INTEL_TDX_HOST
-> +	default m
-> +	help
-> +	  Enable access to TDX host services like module update and
-> +	  extensions (e.g. TDX Connect).
-> +
-> +	  Say y or m if enabling support for confidential virtual machine
-> +	  support (CONFIG_INTEL_TDX_HOST). The module is called tdx_host.ko.
+> For example, the 1.5.x series is for certain platform generations, while
+> the 2.0.x series is intended for others. And TDX module 1.5.x may be
+> updated to 1.5.y but not to 1.5.y+1.
 
-In what world will anyone ever set INTEL_TDX_HOST=y, but turn this off?
-Is this even worth a Kconfig prompt?
+That's not much of an example, IMNHO. How about:
 
-I guess we need it for the module or built in choice. But otherwise it
-seems a bit silly.
+	For example, the 1.5.x series runs on Sapphire Rapids but not
+	Granite Rapids, which needs 2.0.x. Updates are also constrained
+	by version distance, so a 1.5.6 module might permit updates to
+	1.5.7 but not to 1.5.20.
+
+> Expose the TDX module version to userspace via sysfs to aid module
+> selection. Since the TDX faux device will drive module updates, expose
+> the version as its attribute.
+> 
+> One bonus of exposing TDX module version via sysfs is: TDX module
+> version information remains available even after dmesg logs are cleared.
+
+I honestly wouldn't even mention this bit. You don't need a bonus.
+
+> +++ b/Documentation/ABI/testing/sysfs-devices-faux-tdx-host
+> @@ -0,0 +1,6 @@
+> +What:		/sys/devices/faux/tdx_host/version
+> +Contact:	linux-coco@lists.linux.dev
+> +Description:	(RO) Report the version of the loaded TDX module. The TDX module
+> +		version is formatted as x.y.z, where "x" is the major version,
+> +		"y" is the minor version and "z" is the update version. Versions
+> +		are used for bug reporting, TDX module updates etc.
+
+The "etc." is silly. Just zap it.
+
+Description:	(RO) Report the version of the loaded TDX module.
+		Formatted as "major.minor.update". Used by TDX module
+		update tooling. Example: "1.2.03"
+
+That's at least a wee bit of warning to folks about the leading 0 so if
+they are parsing it they are a wee bit careful with it.
+
+> diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
+> index 8b739ac01479..b7f4396b5cc5 100644
+> --- a/arch/x86/include/asm/tdx.h
+> +++ b/arch/x86/include/asm/tdx.h
+> @@ -41,6 +41,12 @@
+>  #include <asm/tdx_global_metadata.h>
+>  #include <linux/pgtable.h>
+>  
+> +/*
+> + * TDX module and P-SEAMLDR version convention: "major.minor.update"
+> + * (e.g., "1.5.08") with zero-padded two-digit update field.
+> + */
+> +#define TDX_VERSION_FMT "%u.%u.%02u"
+
+I hate "e.g.". I'm not sure why, but maybe it it often misused, or that
+it isn't allowed by the style guide I had to use in high school. Either
+way, please stop using it.
+
+You don't have to modify this patch for it, but please stop.
+
+Second, this was an opportunity to peel out the creation of
+"TDX_VERSION_FMT". It would have shrunk your series by ~10 lines and
+made this patch more obvious.
+
+Again, you don't have to go do it, but it was a missed opportunity.
+
+
+With those updates:
+
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
+
