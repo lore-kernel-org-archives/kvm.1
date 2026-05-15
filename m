@@ -1,123 +1,205 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA94D3C0607
-	for <kvm@vger.kernel.org>; Fri, 15 May 2026 16:04:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023753EFFA0;
+	Fri, 15 May 2026 16:14:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861096; cv=none; b=cGpDHk9HSNhpjsdQ1GfaOXg1DncKF3V+6sm+6YKx7PZGXFcko42mNsjIoGqjfO6Z3D+bgkd+5SPOcHjcaLP7RGZv15MDosgSBXBdSIybvt1bQ+5nQ/NLMM6no8NbNg0LlndnTu1npZhmLHqhJICwZqLvsZSsJb/kLMxBYZmX3Dw=
+	t=1778861644; cv=none; b=JPfP2zquLU2FPZXcqA/mG3AO7FTYSJWoHu9gtHwfbv0GjfBEoLd/8YJr80YUu/icPRqyl8VDG0k43NOHfc4SP2C8b4IIIkLWx/GV+BIb0rfSwlmH7ywtRsRmg9ahv/y2Vlml+oB0ua8Iys1GJoiiFef6Cs1bfWPbNAPotAkWny4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861096; c=relaxed/simple;
-	bh=hGVAQIOSZVX+OOxyi3w8w+qe9kLA9gh1RSXqVgqXZ5c=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m+5vkCxRZ6fmhbEbPtGmVOH1VedoAwrazJWstbqTvx2lzd8ER8BdfAo7yZ8l+VZkjb2fQj3ffyglusAU7b0seSXjJb2qkyM+9hU9orIlVsCse158g9baQ3uk7Fff9JxuXn3pJqbVML3n/kb/kySqvRn4k6cXga3Ucnoy0VyqLpc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=irnabj42; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778861644; c=relaxed/simple;
+	bh=fyddQj6Z8OcTojvZRdt3X3pwAGr6uTLUzmMeZzRR6cg=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=n7CH2j9lxtq9duqFNf/vZPJm6P+sYyissuZZDoYiZ781KUG3HcZmz4R27eNRyHq5iSo/SHsquVUeIKzrJFQEM99eFoOBPiThmhbfLrS7k+WlIRw9yCY/FtVQsQ0lFJrj9gZySRGtajBJKjoQTs/FFUc+KMbJ3SODFVYtYcM6ibY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=C3WBr/hf; arc=none smtp.client-ip=198.175.65.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="irnabj42"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-83945063f70so592618b3a.0
-        for <kvm@vger.kernel.org>; Fri, 15 May 2026 09:04:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778861094; x=1779465894; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CWSTcJ0lUIenOrMKgCBsi4dMZXBhfxtLdXUWtU/7JTQ=;
-        b=irnabj42CBvDID/L/gPzZTgciPwcTWIx7P8ttBvZ15A/z8mCjq1hAkeGPE54d7E8mm
-         3BWSg+esELXlw+ilIYOD+vXqM/62cxjt9cyo+Y+AdFOHgpGQj3kMvt49i93uZnCjXdfH
-         mNx6YppHT2ElZqjdXZzWNcr7Av3hdcVThU8kDyHBgy6W4TaxtWvYrqKkXDj//rnud3p6
-         GTQhlQzTdxEkSzUkcbn959QbjD5uAR9UuQGLH2xGBPqIU9oBmdYndXB7ZT+u/SbPPEDj
-         4KcVRI7/Iz3hEe6j9RWT4dRFuXisVpf3LQ0bJhXELOns62XTdv58D8/U0RtV4RjI5fcy
-         J3kQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778861094; x=1779465894;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=CWSTcJ0lUIenOrMKgCBsi4dMZXBhfxtLdXUWtU/7JTQ=;
-        b=O/6ITVhg0zHwbf04SoTGiSatzrv1gVe14FtVnyKKJra8UuKDjYuqY8mArqik8SFcyc
-         Nelm0wAsBxR16qTj3eH3mKmIcP3jWUaBqGPF/QzvkVwknEDNYA9zdYEPODeLlpIeQV70
-         9+nCJ9UcoBkBPWEGsBbzRn3qiS+wWrERMU7709z+jZHDq04O8C1J6d18Mc9KN+4Wmfgc
-         Vhn/ssX8mfw8ibAs9qfFN0JUmxXKeMKXwZEtfn7SfG+jaDYDMjyeyihr9zfYIjY3YzoA
-         dxr32V1a5EuLioU/dzDVJEsjsn11jdxIhjV6S4h717uCmSXuPG+c3YwqWzmZv+NKCFJL
-         jqNg==
-X-Gm-Message-State: AOJu0YzKO1s+cSKMborNUU2WfDActx7rM/vug3sEZ5tlR34+TiBgIF/z
-	ir6xZ61voVcnUGxXPTHgr9QA41EltPn058yYl+7BFT8Ht5TIjyxfXkk3CND9lwVV
-X-Gm-Gg: Acq92OFlEbdA761Lt4vSxmzw+BuFZXv2BJIr6JU1QOjLV4IEitT3GwywGgXjqSayAs4
-	bJbi/IhTbSj6O7DjaiJf3DxGFHg/gAJagJzBM5Y5ZFa8wvkoXjJdY1MtmGD+Gp3qNHsFEQCfymi
-	WlPzmHHrm4e7M2ALrg/OqShwBGk0GkMmdRj7+/KJcSo0k9d57u213RWRR+Jo+KG3lDo+qhZFtxX
-	qmikzyv7dIpmtqObvCu8fmWwW8TPDVAP6zGD4BufxFh1bQmabKKFDGHAQ3pojEflfxylqRfucIg
-	js02+lggvp2Pd1DvIeRHT8aPImeNw6Wvg5q8YlhJTu822biC98YHYdr6MLbFtQXmQVGPVdqVgZ/
-	qlwovRLsGHkmJaBQ2FITtPagCvAqQ+UvDjIrubECsyOtS8l0KCf2Nm35HzS39DyVP/+8QF3+Xnb
-	puR84BkQ/4fOdgOpYeUf6nRtseutgUpN/TO+vqWvEtG7vpLwmPZmiL
-X-Received: by 2002:a05:6a00:39a0:b0:829:8083:472b with SMTP id d2e1a72fcca58-83f33ada10cmr4070840b3a.4.1778861094440;
-        Fri, 15 May 2026 09:04:54 -0700 (PDT)
-Received: from localhost.localdomain ([171.76.86.174])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83f19c7c74fsm7920262b3a.49.2026.05.15.09.04.50
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Fri, 15 May 2026 09:04:53 -0700 (PDT)
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-To: kvm@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Harsh Prateek Bora <harshpb@linux.ibm.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [RFC 4/4] KVM: PPC: selftests: powerpc enable kvm_create_max_vcpus test
-Date: Fri, 15 May 2026 21:34:23 +0530
-Message-ID: <0050c451633ae8e22ac80368587aca70e96457d0.1778857539.git.ritesh.list@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1778857539.git.ritesh.list@gmail.com>
-References: <cover.1778857539.git.ritesh.list@gmail.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="C3WBr/hf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778861643; x=1810397643;
+  h=message-id:date:mime-version:from:subject:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=fyddQj6Z8OcTojvZRdt3X3pwAGr6uTLUzmMeZzRR6cg=;
+  b=C3WBr/hfFXa7fTr5WaMv2/fK5Dxc1SzO5yk70X0wwahjlzQFeDu+Ff/Y
+   HSjpvhqXuQ173R1wFgyBiaLyJYQzUaYxnXagQMtnh+vkZPaVSKBq+badw
+   u7KdoWasXSsdgY8E+v4UdIp4PlwiS5kuhzXKGhQTX4pMaVXiOSz6PfLCT
+   ExHloO7PZ3jSr21zksKL7mmCRhpF/GmAa8Suj8E3ltWGv9ouObZC0OTcX
+   4YLnwrXGjFtENj769x2UIKXBJK5C1W51q9bssOGo8R5PAN6V7AFs/9Ild
+   s8f5NlUsiNyN88y5hZyIsZpz5xFKOzSREtt5BQhaQBWdVqB+LOEvZnb+M
+   g==;
+X-CSE-ConnectionGUID: NnnPA0tnQuyaibdBghgVnw==
+X-CSE-MsgGUID: +waCprJCTe+3b5LWKzYapg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="79536028"
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
+   d="scan'208";a="79536028"
+Received: from fmviesa006.fm.intel.com ([10.60.135.146])
+  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 09:14:02 -0700
+X-CSE-ConnectionGUID: 9Onvsll+RZ6CBpTA9VNYrA==
+X-CSE-MsgGUID: hUKZ1DN4SWOi0HcUGJfIrQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
+   d="scan'208";a="234294528"
+Received: from dwoodwor-mobl2.amr.corp.intel.com (HELO [10.125.108.157]) ([10.125.108.157])
+  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 09:14:01 -0700
+Message-ID: <ab35e6e4-b57a-4d49-8521-ca69a9135d3c@intel.com>
+Date: Fri, 15 May 2026 09:14:02 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+From: Dave Hansen <dave.hansen@intel.com>
+Subject: Re: [PATCH v9 01/23] x86/virt/tdx: Consolidate TDX global
+ initialization states
+To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
+ ira.weiny@intel.com, kai.huang@intel.com, kas@kernel.org,
+ nik.borisov@suse.com, paulmck@kernel.org, pbonzini@redhat.com,
+ reinette.chatre@intel.com, rick.p.edgecombe@intel.com, sagis@google.com,
+ seanjc@google.com, tony.lindgren@linux.intel.com, vannapurve@google.com,
+ vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com,
+ yan.y.zhao@intel.com, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+References: <20260513151045.1420990-1-chao.gao@intel.com>
+ <20260513151045.1420990-2-chao.gao@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260513151045.1420990-2-chao.gao@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-From: Nicholas Piggin <npiggin@gmail.com>
+On 5/13/26 08:09, Chao Gao wrote:
+...
+> Group the states into a single structure so they can be reset together, for
+> example with memset(), and so a newly added state won't be missed.
+...
+> +struct tdx_module_state {
+> +	bool initialized;
+> +	bool sysinit_done;
+> +	int sysinit_ret;
+> +};
+...
+> @@ -113,30 +119,28 @@ static int try_init_module_global(void)
+>  {
+>  	struct tdx_module_args args = {};
+>  	static DEFINE_RAW_SPINLOCK(sysinit_lock);
+> -	static bool sysinit_done;
+> -	static int sysinit_ret;
 
-powerpc's maximum permitted vCPU ID depends on the VM's SMT mode, and
-the maximum reported by KVM_CAP_MAX_VCPU_ID exceeds a simple non-SMT
-VM's limit.
+This doesn't look right to me.
 
-The powerpc KVM selftest port uses non-SMT VMs, so add a workaround
-to the kvm_create_max_vcpus test case to limit vCPU IDs to
-KVM_CAP_MAX_VCPUS on powerpc.
+>  	raw_spin_lock(&sysinit_lock);
+>  
+> -	if (sysinit_done)
+> +	if (tdx_module_state.sysinit_done)
+>  		goto out;
+>  
+>  	/* RCX is module attributes and all bits are reserved */
+>  	args.rcx = 0;
+> -	sysinit_ret = seamcall_prerr(TDH_SYS_INIT, &args);
+> +	tdx_module_state.sysinit_ret = seamcall_prerr(TDH_SYS_INIT, &args);
+>  
+>  	/*
+>  	 * The first SEAMCALL also detects the TDX module, thus
+>  	 * it can fail due to the TDX module is not loaded.
+>  	 * Dump message to let the user know.
+>  	 */
+> -	if (sysinit_ret == -ENODEV)
+> +	if (tdx_module_state.sysinit_ret == -ENODEV)
+>  		pr_err("module not loaded\n");
+>  
+> -	sysinit_done = true;
+> +	tdx_module_state.sysinit_done = true;
+>  out:
+>  	raw_spin_unlock(&sysinit_lock);
+> -	return sysinit_ret;
+> +	return tdx_module_state.sysinit_ret;
+>  }
 
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-[Rebased to laest mainline tree]
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
----
- tools/testing/selftests/kvm/kvm_create_max_vcpus.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+But I think it's because 'sysinit_ret' is really a funky thing. It's
+just here so that the module only _tries_ to be initialized once. That
+one-time init records its error code in sysinit_ret and then secondary
+callers pick it up.
 
-diff --git a/tools/testing/selftests/kvm/kvm_create_max_vcpus.c b/tools/testing/selftests/kvm/kvm_create_max_vcpus.c
-index c5310736ed06..a82c13d6cdf5 100644
---- a/tools/testing/selftests/kvm/kvm_create_max_vcpus.c
-+++ b/tools/testing/selftests/kvm/kvm_create_max_vcpus.c
-@@ -56,6 +56,15 @@ int main(int argc, char *argv[])
- 		    "KVM_MAX_VCPU_IDS (%d) must be at least as large as KVM_MAX_VCPUS (%d).",
- 		    kvm_max_vcpu_id, kvm_max_vcpus);
- 
-+#ifdef __powerpc64__
-+	/*
-+	 * powerpc has a particular format for the vcpu ID that depends on
-+	 * the guest SMT mode, and the max ID cap is too large for non-SMT
-+	 * modes, where the maximum ID is the same as the maximum vCPUs.
-+	 */
-+	kvm_max_vcpu_id = kvm_max_vcpus;
-+#endif
-+
- 	test_vcpu_creation(0, kvm_max_vcpus);
- 
- 	if (kvm_max_vcpu_id > kvm_max_vcpus)
--- 
-2.39.5
+Here's how you do that in a non-confusing way (some context chopped out):
 
+static int try_init_module_global(void)
+{
+        struct tdx_module_args args = {};
+        static DEFINE_RAW_SPINLOCK(sysinit_lock);
+        int ret;
+
+        raw_spin_lock(&sysinit_lock);
+
+	/* Return the "cached" return code: */
+        if (tdx_module_state.sysinit_done) {
+		ret = tdx_module_state.sysinit_ret;
+                goto out;
+	}
+
+        ret = seamcall_prerr(TDH_SYS_INIT, &args);
+
+	/* Save the return code for later callers: */
+	tdx_module_state.sysinit_ret  = ret;
+        tdx_module_state.sysinit_done = true;
+out:
+        raw_spin_unlock(&sysinit_lock);
+        return ret;
+}
+
+See how it sets the module state in _one_ place? It also only touches
+the module state under the lock so it's more obvious that it is correct
+and there are no races or tearing or other nonsense.
+
+*That* is a proper refactoring.
+
+I'm also not sure we need to be saving the return code. It seems a bit
+much, but we don't have to fix that now.
