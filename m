@@ -1,145 +1,197 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.9])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 671563D88F1
-	for <kvm@vger.kernel.org>; Fri, 15 May 2026 17:15:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB0F3D47D0;
+	Fri, 15 May 2026 17:18:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.9
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778865340; cv=none; b=bfbS9Xra2DKi8dDXsNbhG/zqPWC61yFrLK0DomxYjpYvMPIPbx9WncaUWLZnbA5L3hIXUqCetEaN2FQT7hMUmv78lOio3xU4Yyn2pamkV6qWf//9r1gigyZDHus4DLzzn5tPVDu63G635025TK9Syn0aLvo+YQ4EosG4zyGqM24=
+	t=1778865508; cv=none; b=poar5L96McUlGN0pg7QpLstBJkVW3BV0FKjDTHYqQ4b8UfmuS7VJX83h9kBGV79D71OVd210uCkTAtpNTtFlwUYQrBJ5wNb1coQThIMugk0dk4+DmXFd9+q3HV/42uXOy7slYyi0sXImuiM5p0NJN17GjQxxQhDUm7nsii5WHQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778865340; c=relaxed/simple;
-	bh=Iy7SrJOHrWMF10VoqMzA4L8S2oZcfVCfMXJj9qvp+U0=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=kkDvv6plH+MhB5EI8nYFPzm79vXEd2zgMDuxZvZj5kKeAx1PLLKwk/55yaZACcotBEkx++WcG3w0DoNEitBYynrWGvVyBGdp1QDz/zMue64SR+tv5id1/ctkYjyNKfxH9vvRYtFT+n6TdkvzjoXe4T1afoWGIcTx2w+uZVmFYQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Bsj4p/0C; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1778865508; c=relaxed/simple;
+	bh=7aV60BVH0C4EFUOcXtBRLrL0Rle+HYVsJvsv4Vl/noI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=C6F77XGtAdMh2WBcHFyddBKObnbt+v2507y70tkXvQt2XP3JV4up3VGBxoX+dVQdQLToeADfJOCeDPXiORf1qBzy+My6rD+MdUM/6C6TS3OFEAChDOUNtDtribUs2r02He7qom7qXbRnMfi7gpBoQYRvrv6M7pdFgi3Cd8Vn/zs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Gj/bE4Xi; arc=none smtp.client-ip=192.198.163.9
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Bsj4p/0C"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-365fd467cf6so623a91.0
-        for <kvm@vger.kernel.org>; Fri, 15 May 2026 10:15:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778865338; x=1779470138; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FXne7n9YlZuhy/YYik1SkDFKzdHy9NFNuwS5NyaEXnA=;
-        b=Bsj4p/0CQQe8A6ynp+XPRGVSfOuK3R7YnbjLkzKwFjc6QzcYAs5g39b5lWW7wotqdI
-         JH7e3WobKg4lbAKviGU2R7BjaBY6e+GXE9ycYZhhioFXX0bPrTjabjaMt9c7yPulHljb
-         vNwPxzGtIp71IgF0NFAksTWwxjggZFKSVb1NjVEQMoE+yamzZGjfUppFaC7U9vx+MEGJ
-         PYIqfoWUc6+I37xRxO7v8OdDGkmlHKqpVJ83ljVDkq94dtaALuHgZS6RpqYwZlOqkV+9
-         NRnQzYQ+Ig+VvS/ExT1FWYjD7565f7WvpvzBlSov/CfLT7KKDv0u9igfdMvPRvXnSiyU
-         YXsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778865338; x=1779470138;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FXne7n9YlZuhy/YYik1SkDFKzdHy9NFNuwS5NyaEXnA=;
-        b=dUMyUqSy4a6QSkHSOT/hGu8fqqMNT8nZDSKHddWnwQ5lFcEjnI/k50aQi9yNpg+LhB
-         laXTxJDIo22+8taLekOgZtCtbJflZpq4jzqbONgb3D4I6KIB7SeMOnRax3OzY25F+OY7
-         o+o0+oVMH6RJ6n7FwZsd15d8XTRRS8dwv+FK+XFqyYPz4I1Q7kuDy+MgZfWLz/jgx/sR
-         FZIsG2jeEz4Jo8uGkDjTd9z9Jso1JsmdcxeElXskbKsS8BKi/G48wjc6qPzqRKHqKp8s
-         dNPEI1i2ydriTih/gLc+KEe4lfmFhouOln/4WcEJ5TTF2nYBgyVNBfb/z9R2MkgRlsSL
-         ZiiQ==
-X-Gm-Message-State: AOJu0YwRtqo3RrgQhS8FHr78MK6bTsqPo/zt0OdA/4P2vWU6Br5Y6yDI
-	NDe3FYPuGrRW//dF9kVGiLdDmyZCfRUEtGok8lp6kLK/ep2Jvx1hQZs6lCBU1y/1K5GngbPxqeL
-	/Q/a1VA==
-X-Received: from pjvf3.prod.google.com ([2002:a17:90a:da83:b0:369:3fa4:a760])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:568d:b0:367:bf0c:54e9
- with SMTP id 98e67ed59e1d1-36951cbd45emr5849335a91.21.1778865338437; Fri, 15
- May 2026 10:15:38 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 15 May 2026 10:15:36 -0700
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Gj/bE4Xi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1778865507; x=1810401507;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=7aV60BVH0C4EFUOcXtBRLrL0Rle+HYVsJvsv4Vl/noI=;
+  b=Gj/bE4Xiu0Bo9MESEllsCLeYbfZY3so2AYY8kpls+SK9CVsc+9sV+jJv
+   OIPByP1c7EUNbww53kP1J+h1jeZQXqx4mg8FEWFtYebL3qA22pecQRDhm
+   VNDhVee07iv0+dBhxaUcvei0KJDvUYAnbF0GgTmS1GGats6Ym+M2SKcdO
+   SJhEh+F0nZVZhzVc42NkO5jd3i2sHE8rkDEno0FLjxCVBBUKc9vnPRL+w
+   T/FXnMtP5GRsHROIjVMTlUfbV8nZB2cgdPcLIxq32zA0VJfeRNQ4GMsyK
+   qpRQ+xpoNu9wcLhtVj/DgBV1F1xDBuXHdVavHqULkJYsyEMpM5hmKvXdn
+   g==;
+X-CSE-ConnectionGUID: s9xyqoKPR7+TTxZ0BLK1CQ==
+X-CSE-MsgGUID: XvUxZk1RSYqdlGMM2hS57A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="90519793"
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
+   d="scan'208";a="90519793"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 10:18:26 -0700
+X-CSE-ConnectionGUID: cuJh/grWQ32AdKRRLEntxg==
+X-CSE-MsgGUID: NzO0YrqVTuOxR4Vluej4YA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
+   d="scan'208";a="234490973"
+Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.108.201]) ([10.125.108.201])
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 10:18:25 -0700
+Message-ID: <e54e9647-18ec-4691-a979-c67798a7d85f@intel.com>
+Date: Fri, 15 May 2026 10:18:25 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260515171536.1841645-1-seanjc@google.com>
-Subject: [PATCH] KVM: SVM: Flush the current TLB when transitioning from xAVIC
- => x2AVIC
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Naveen N Rao <naveen@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v9 07/23] x86/virt/seamldr: Add a helper to retrieve
+ P-SEAMLDR information
+To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
+ ira.weiny@intel.com, kai.huang@intel.com, kas@kernel.org,
+ nik.borisov@suse.com, paulmck@kernel.org, pbonzini@redhat.com,
+ reinette.chatre@intel.com, rick.p.edgecombe@intel.com, sagis@google.com,
+ seanjc@google.com, tony.lindgren@linux.intel.com, vannapurve@google.com,
+ vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com,
+ yan.y.zhao@intel.com, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+References: <20260513151045.1420990-1-chao.gao@intel.com>
+ <20260513151045.1420990-8-chao.gao@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260513151045.1420990-8-chao.gao@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Flush the current TLB when xAVIC *or* x2AVIC is activated, as KVM is
-(apparently) responsible for purging TLB entries when transitioning from
-xAVIC to x2AVIC.  The APM says a whole lot of nothing about TLB flushing
-with respect to (x2)AVIC, but empirical data strongly suggests hardware
-also does a whole lot of nothing.
+On 5/13/26 08:09, Chao Gao wrote:
+> P-SEAMLDR reports its state via SEAMLDR.INFO, including its version and
+> the number of remaining runtime updates.
+> 
+> This information is useful for userspace. For example, the admin can use
+> the P-SEAMLDR version to determine whether a candidate TDX module is
+> compatible with the running loader, and can use the remaining update count
+> to determine whether another runtime update is still possible.
+> 
+> Add a helper to retrieve P-SEAMLDR information in preparation for
+> exposing P-SEAMLDR version and other necessary information to userspace.
+> Export the new kAPI for use by tdx-host.ko.
 
-Failure to flush the TLB when enabling x2AVIC can lead to guest accesses
-to the APIC base address getting incorrectly redirected to the virtual
-APIC page.  The flaw most visibly manifests as failures in KVM-Unit-Test's
-verify_disabled_apic_mmio() testcase when x2APIC is enabled (though for
-reasons unknown, the test only reliably fails with EFI builds).
+What is "tdx-host.ko"? My kernel doesn't have that. Remember a few
+patches ago, the "tristate" in Kconfig? ;)
 
-Fixes: 0ccf3e7cb95a ("KVM: SVM: Flush the "current" TLB when activating AVIC")
-Fixes: 4d1d7942e36a ("KVM: SVM: Introduce logic to (de)activate x2AVIC mode")
-Cc: stable@vger.kernel.org
-Cc: Naveen N Rao (AMD) <naveen@kernel.org>
-Signed-off-by: Sean Christopherson <seanjc@google.com>
----
- arch/x86/kvm/svm/avic.c | 35 +++++++++++++++++++++++++++++------
- 1 file changed, 29 insertions(+), 6 deletions(-)
+You also called in the "tdx_host" device. Please be consistent with the
+naming.
 
-diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
-index adf211860949..e8bd60156941 100644
---- a/arch/x86/kvm/svm/avic.c
-+++ b/arch/x86/kvm/svm/avic.c
-@@ -206,6 +206,35 @@ static void avic_activate_vmcb(struct vcpu_svm *svm)
- 
- 	svm_clr_intercept(svm, INTERCEPT_CR8_WRITE);
- 
-+	/*
-+	 * Flush the TLB when enabling (x2)AVIC and when transitioning between
-+	 * xAVIC and x2AVIC, as the CPU may have inserted a TLB entry for the
-+	 * "wrong" mapping.
-+	 *
-+	 * KVM uses a per-VM "scratch" page to back the APIC memslot, because
-+	 * KVM also uses per-VM page tables *and* maintains the page table (NPT
-+	 * or shadow page) mappings for said memslot even if one or more vCPUs
-+	 * have their local APIC hardware-disabled or are in x2APIC mode, i.e.
-+	 * even if one or more vCPUs' APIC MMIO BAR is effectively disabled.
-+	 *
-+	 * If xAVIC is fully enabled, hardware ignores the physical address in
-+	 * KVM's page tables, i.e. in the leaf SPTE for the APIC memslot, and
-+	 * instead redirects the access to the AVIC backing page, i.e. to the
-+	 * vCPU's virtual APIC page.  If xAVIC is not enabled (APIC is either
-+	 * hardware-disabled or in x2APIC mode), then guest accesses will use
-+	 * the page table mapping verbatim, i.e. will access the per-VM scratch
-+	 * page, as normal memory.
-+	 *
-+	 * In both cases, the CPU is allowed to cache TLB entries for the APIC
-+	 * base GPA.  So, KVM needs to flush the TLB when enabling xAVIC, as
-+	 * accesses need to be redirected to the virtual APIC page, but the TLB
-+	 * may contain entries pointing at the scratch page.  KVM also needs to
-+	 * flush the TLB when enabling x2AVIC, as accesses need to go to the
-+	 * scratch page, but the TLB may contain entries tagged as xAVIC, i.e.
-+	 * entries pointing to the vCPU's virtual APIC page.
-+	 */
-+	kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, &svm->vcpu);
-+
- 	/*
- 	 * Note: KVM supports hybrid-AVIC mode, where KVM emulates x2APIC MSR
- 	 * accesses, while interrupt injection to a running vCPU can be
-@@ -219,12 +248,6 @@ static void avic_activate_vmcb(struct vcpu_svm *svm)
- 		/* Disabling MSR intercept for x2APIC registers */
- 		avic_set_x2apic_msr_interception(svm, false);
- 	} else {
--		/*
--		 * Flush the TLB, the guest may have inserted a non-APIC
--		 * mapping into the TLB while AVIC was disabled.
--		 */
--		kvm_make_request(KVM_REQ_TLB_FLUSH_CURRENT, &svm->vcpu);
--
- 		/* Enabling MSR intercept for x2APIC registers */
- 		avic_set_x2apic_msr_interception(svm, true);
- 	}
+> Note that there are two distinct P-SEAMLDR APIs with similar names:
+> 
+>   SEAMLDR.INFO: Returns a SEAMLDR_INFO structure containing SEAMLDR
+>                 information such as version and remaining updates.
+> 
+>   SEAMLDR.SEAMINFO: Returns a SEAMLDR_SEAMINFO structure containing SEAM
+>                     and system information such as Convertible Memory
+> 		    Regions (CMRs) and number of CPUs and sockets.
+> 
+> The former is used here.
+This doesn't help.
 
-base-commit: a9512a611bd030088f13477258d1f8103cceaa40
--- 
-2.54.0.563.g4f69b47b94-goog
+"SEAMLDR.INFO" is metadata about the loader. It's metadata for the
+update process.
 
+"SEAMLDR.SEAMINFO" is metadata about the module. It is for the module
+init process, not for the update process.
+
+Right? Isn't that a billion times more useful and actually helps
+differentiate them?
+
+Also, more nits: I hate former/latter too. It makes me stop reading and
+have to go back *EVER* *TIME*. I hate that particular english construct.
+It's horrid.
+
+Just say:
+
+	Use SEAMLDR.INFO here.
+
+It's even shorter than the passive "is used" and doesn't require me
+going back and re-read the text.
+
+> +++ b/arch/x86/include/asm/seamldr.h
+> @@ -0,0 +1,36 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +#ifndef _ASM_X86_SEAMLDR_H
+> +#define _ASM_X86_SEAMLDR_H
+> +
+> +#include <linux/types.h>
+> +
+> +/*
+> + * This is called the "SEAMLDR_INFO" data structure and is defined
+> + * in "SEAM Loader (SEAMLDR) Interface Specification".
+
+More succinct:
+
+    * This is the "SEAMLDR_INFO" data structure defined in the
+      "SEAM Loader (SEAMLDR) Interface Specification".
+
+> + * The SEAMLDR.INFO documentation requires this to be aligned to a
+> + * 256-byte boundary.
+> + */
+
+Just say:
+
+ * Must be aligned to a 256-byte boundary.
+
+With those fixed:
+
+Reviewed-by: Dave Hansen <dave.hansen@linux.intel.com>
