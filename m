@@ -1,55 +1,55 @@
 Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8423F5BFE
-	for <kvm@vger.kernel.org>; Fri, 15 May 2026 22:26:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E99F3F6C3C
+	for <kvm@vger.kernel.org>; Fri, 15 May 2026 22:26:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778884011; cv=none; b=df8jXUPYO+qzKa0vMm5x/njl6PX8d7eZ0acpe2JsORhLwNMRGjxseiR1mzp4nIsujPT41dfikf3x1qY9upY9/uq6PNOlVC2bd7bgFYg471k41Y+BPoBijCAnM+V0cO9+OvWFzt7cM7t3mVgeEUPHhF6lvW/U2zwHSvvaZrMAnhY=
+	t=1778884014; cv=none; b=awnvGRSVESFXb6J62fgbAKiTbDXfFP++hXexSNC6dlNBwMR+47gtWe8uVfuXRji6s0uPgHFyi1qXDgLjDXe/faGQo49/uSEY4wpUl1V5igeaAB+nr8OPoGUB0mfe1FYsZCtAIT4lDmdkq0YEyi2cSBvkAn4Xi95iKcLcgWz6c1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778884011; c=relaxed/simple;
-	bh=UF2AcgAreN9t5cQBNksZDPJUbm/IWXoeU07tGghDGxA=;
+	s=arc-20240116; t=1778884014; c=relaxed/simple;
+	bh=c90x4WHZtR7+o6rsOgPAW2lJDgKJtgYmMh9gOe13CKU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oN0nsuD9l4s6bKnJlrmAmjtt2+usKZFJS8Xu7IuV3Q5webHw2oaXV2yh+bhDJ3nUxIU7WvOZw49nFgDYRUyW/T55yMtLa7elqsVQyJ3k2tIvtL1dmKEhYsjxaU74iafRZDMKKVlXTstttOHjgvXHIEM2Y4RKQDQevKOF27qzB7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JrBWGmpg; arc=none smtp.client-ip=209.85.216.73
+	 To:Cc:Content-Type; b=UU7med53CxkcEPU1j+MvWZUUrm/iWh1Oxn0OxkN4DuOux+gLhulD8m6wlBnemkk0cSrehGW6B/Mf2eGxP9BGIP+fSDF4uVOYI7PDO0w5EaMUuBiDOeBo3m7rnjRBd4/GYrqtpIWx2zWqYZXdIpqwGbvA4e4VdHd9U5UYP6Wyho0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AkvUy47i; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JrBWGmpg"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-368b15eeb3bso635577a91.2
-        for <kvm@vger.kernel.org>; Fri, 15 May 2026 15:26:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AkvUy47i"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-368edd5fec4so272565a91.0
+        for <kvm@vger.kernel.org>; Fri, 15 May 2026 15:26:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778884006; x=1779488806; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1778884005; x=1779488805; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=J27Ju2q/+RYx5fEK+7reGgGhOWnL4zngH5mix3OXeJc=;
-        b=JrBWGmpggpyb06yxbsvdmFD7Mvgui4YhemkRFDVfzVuxtcylM4GHkhPgVtRiQNtyO0
-         aYjdoeurfDFM0FziP6VbqHBNHhyVvVxWE/14WIUCUHrxpm8LQaDXzx4Hm9+uXxaxD/UU
-         KJAvDrPnxEL5Qq0BLQZEpMTRWKootzwg04hNsZw2WkxstZ/IM+XPRlnqJt5+jAocw9iw
-         n76PBWGrlYhrw5FwDbiYpPLQjjtchWQoTamYgrFCyylqVgn/LbL2727eebrDpzrViz/Y
-         4xucJdajF2OFzKZC47vNrG+ke5FsRZoAyg0J9+KysFh21BxAMgXK6mhyL7V4b1bX1IhX
-         /6Mg==
+        bh=O7BaysVjYfeQMwfIaz0v/GGnMbpQx9jR4E3VGys+xrI=;
+        b=AkvUy47iTz5tzea0ZfGGq9GoyQqVe43/saEz0G4U5RplVTSOZZ95YNycsmJ/RvYPwJ
+         HkS+f4sYC1hDXMgHGOyVO3dHVPXyHMPvEWVyBQ3hbvHw4Vu2bVmBy+qyY+VkBB+iL/B2
+         PZUE6B95TWT4IVWg10bHVgSXnayyh0j19NSmNFDjTO5Kptyf00HCRtnMQqxu3BoQjQ5N
+         hrSDBivrzpjXHcYCobZt4K6uchTJZ9kLC3bUNebjwVtacD7q8qo0thO4/amBN92/QW1x
+         ZWRZTvlprr+wAEestVPF6mJ+7s91+1Aq6GmynMxIXNyDCG9fzb1R06tsslvrLBe4yljO
+         Cyuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778884006; x=1779488806;
+        d=1e100.net; s=20251104; t=1778884005; x=1779488805;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=J27Ju2q/+RYx5fEK+7reGgGhOWnL4zngH5mix3OXeJc=;
-        b=DN5vqMmEC7lw7Xm1DrtIdkx+yk1vTGr2MKV8CqoUvBbThmlPwxMf+BqBNBMPGVEAvp
-         Ax9R+h10NKJUr07mMe7xl1eKo5AsIwrVb38XSyY/1VelQltPBzhdSdJq1fHeX6OvF98D
-         N64kx+zAlSmh/teBl9OcasfG3YWkq3AkETAFl+h1wBRQqeVl6/EkbjD9mM5MRGguutUI
-         vbgbK40YF0WpyS+IojABYt3H0XMnbEEvDny0ckjtbsJygSEy0FshuAI0BFyzogg28pH+
-         Kq11DheJI9Ic9KYB7UpgJzG7Xs0v36WNVRRkQZA0v+kig1A6pbU6Yc5Kn3/pkVVYblo4
-         8/kw==
-X-Gm-Message-State: AOJu0YyWsNTIW1SFs/Q6Rs/UdFAheySuEzIeb/fCuGM46yGGxjwWp3n8
-	heYrg3VnkgDYxsh67+JAVrFwjxx/j7/7QCZAYTymQr3dMOZSGZnG0LwhKRWYzSUw9MbwPb6l9ef
-	0qxUN6w==
-X-Received: from pgnc6.prod.google.com ([2002:a63:7246:0:b0:c7d:a551:e17b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3c8f:b0:3b1:a9ce:5095
- with SMTP id adf61e73a8af0-3b22ea4ce78mr6643197637.22.1778884006352; Fri, 15
- May 2026 15:26:46 -0700 (PDT)
+        bh=O7BaysVjYfeQMwfIaz0v/GGnMbpQx9jR4E3VGys+xrI=;
+        b=VBrkszoqrG49iqN5J5SAv8hfbpqqV8WSf/PudRIcbR4HuGBr4Y7lBrHVZ02dLQCXik
+         eGfkFFiISJLOoTFKTgRtNEVQUJQoPMQ1GliqDCNMhQGvc1cz55HQ/yuVZwO3tDmCTDJz
+         ZarN/Hz659hdRg8hT7mU5dmeXyK/h1oeb9R0o2hfn2g1GdyCA1tlmF8DwXWW0yU+Jnl4
+         Z/YHzMjG6qn1d+AKk8Mrh6EzKfJEDzaX208glwVgp2JSz7roGPbRBEdeQj6r7QclGDTK
+         sFUbPZe7L7TXhzquFNFlbAqFkYjUVvl9wc0HUhRfp6Koc9OkXUexpBeLJnYURSCIDt8A
+         DNMw==
+X-Gm-Message-State: AOJu0YzVQ8l4rF2pidoAWAr6/1TGAuwzTLFLe00PFuQ6ROu1V9uhdD6P
+	6Qq/s9qhOqpuF1HmAm0XeMeyMMRWVeLrLVMKWI/h0FcY2F9Y4iqJ/pt12GRNLpa/Pz7BMAN//LC
+	C9LehsQ==
+X-Received: from pjyl14.prod.google.com ([2002:a17:90a:ec0e:b0:366:4bcb:9926])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1dc5:b0:367:d9cb:fdb3
+ with SMTP id 98e67ed59e1d1-36951b8a727mr6217367a91.24.1778884005210; Fri, 15
+ May 2026 15:26:45 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 15 May 2026 15:26:34 -0700
+Date: Fri, 15 May 2026 15:26:33 -0700
 In-Reply-To: <20260515222638.1949982-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -59,8 +59,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260515222638.1949982-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260515222638.1949982-7-seanjc@google.com>
-Subject: [PATCH v3 06/10] KVM: x86: Move KVM_GUESTDBG_SINGLESTEP handling into kvm_inject_emulated_db()
+Message-ID: <20260515222638.1949982-6-seanjc@google.com>
+Subject: [PATCH v3 05/10] KVM: x86: Honor KVM_GUESTDBG_USE_HW_BP when checking
+ for code breakpoints in emulation
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -69,52 +70,89 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Hou Wenlong <houwenlong.hwl@antgroup.com>
 
-Move KVM_GUESTDBG_SINGLESTEP handling from kvm_vcpu_do_singlestep() into
-kvm_inject_emulated_db() to dedup the USE_HW_BP vs. SINGLESTEP logic, and
-to allow for removing kvm_vcpu_do_singlestep() entirely.
+When KVM_GUESTDBG_USE_HW_BP is enabled, i.e. userspace is usurping the
+guest's hardware debug registers, the guest's effective breakpoints are
+controlled by userspace rather than by the guest itself.  Honor the
+KVM_GUESTDBG_USE_HW_BP behavior when handling code #DBs in the emulator so
+that userspace (and the guest) gets consistent behavior for code #DBs
+regardless of whether an instruction is executed natively or emulated by
+KVM.
 
-No functional change intended.
+To aid in userspace debug, don't treat code breakpoints as inhibited if
+KVM_GUESTDBG_USE_HW_BP is enabled as accurately emulating x86 architecture
+is obviously a non-goal of guest-debug.
 
-Suggested-by: Lai Jiangshan <jiangshan.ljs@antgroup.com>
+Fixes: 4a1e10d5b5d8 ("KVM: x86: handle hardware breakpoints during emulation")
 Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
 [sean: massage changelog]
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/x86.c | 14 ++------------
- 1 file changed, 2 insertions(+), 12 deletions(-)
+ arch/x86/kvm/x86.c | 35 ++++++++++-------------------------
+ 1 file changed, 10 insertions(+), 25 deletions(-)
 
 diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 279e2734e088..ca30a8987f2f 100644
+index 8b07bd2f8310..279e2734e088 100644
 --- a/arch/x86/kvm/x86.c
 +++ b/arch/x86/kvm/x86.c
-@@ -8994,7 +8994,7 @@ static int kvm_inject_emulated_db(struct kvm_vcpu *vcpu, unsigned long dr6)
- {
- 	struct kvm_run *kvm_run = vcpu->run;
+@@ -9319,6 +9319,9 @@ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_skip_emulated_instruction);
  
--	if (vcpu->guest_debug & KVM_GUESTDBG_USE_HW_BP) {
-+	if (vcpu->guest_debug & (KVM_GUESTDBG_USE_HW_BP | KVM_GUESTDBG_SINGLESTEP)) {
- 		kvm_run->debug.arch.dr6 = dr6 | DR6_ACTIVE_LOW;
- 		kvm_run->debug.arch.pc = kvm_get_linear_rip(vcpu);
- 		kvm_run->debug.arch.exception = DB_VECTOR;
-@@ -9279,17 +9279,7 @@ static int kvm_vcpu_check_hw_bp(unsigned long addr, u32 type, u32 dr7,
- 
- static int kvm_vcpu_do_singlestep(struct kvm_vcpu *vcpu)
+ static bool kvm_is_code_breakpoint_inhibited(struct kvm_vcpu *vcpu)
  {
--	struct kvm_run *kvm_run = vcpu->run;
++	if (vcpu->guest_debug & KVM_GUESTDBG_USE_HW_BP)
++		return false;
++
+ 	if (kvm_get_rflags(vcpu) & X86_EFLAGS_RF)
+ 		return true;
+ 
+@@ -9335,6 +9338,8 @@ static bool kvm_is_code_breakpoint_inhibited(struct kvm_vcpu *vcpu)
+ static bool kvm_vcpu_check_code_breakpoint(struct kvm_vcpu *vcpu,
+ 					   int emulation_type, int *r)
+ {
++	unsigned long dr7 = kvm_get_eff_dr7(vcpu);
++
+ 	WARN_ON_ONCE(emulation_type & EMULTYPE_NO_DECODE);
+ 
+ 	/*
+@@ -9355,34 +9360,14 @@ static bool kvm_vcpu_check_code_breakpoint(struct kvm_vcpu *vcpu,
+ 			      EMULTYPE_TRAP_UD | EMULTYPE_VMWARE_GP | EMULTYPE_PF))
+ 		return false;
+ 
+-	if (unlikely(vcpu->guest_debug & KVM_GUESTDBG_USE_HW_BP) &&
+-	    (vcpu->arch.guest_debug_dr7 & DR7_BP_EN_MASK)) {
+-		struct kvm_run *kvm_run = vcpu->run;
+-		unsigned long eip = kvm_get_linear_rip(vcpu);
+-		u32 dr6 = kvm_vcpu_check_hw_bp(eip, 0,
+-					   vcpu->arch.guest_debug_dr7,
+-					   vcpu->arch.eff_db);
 -
--	if (vcpu->guest_debug & KVM_GUESTDBG_SINGLESTEP) {
--		kvm_run->debug.arch.dr6 = DR6_BS | DR6_ACTIVE_LOW;
--		kvm_run->debug.arch.pc = kvm_get_linear_rip(vcpu);
--		kvm_run->debug.arch.exception = DB_VECTOR;
--		kvm_run->exit_reason = KVM_EXIT_DEBUG;
--		return 0;
+-		if (dr6 != 0) {
+-			kvm_run->debug.arch.dr6 = dr6 | DR6_ACTIVE_LOW;
+-			kvm_run->debug.arch.pc = eip;
+-			kvm_run->debug.arch.exception = DB_VECTOR;
+-			kvm_run->exit_reason = KVM_EXIT_DEBUG;
+-			*r = 0;
+-			return true;
+-		}
 -	}
--	kvm_queue_exception_p(vcpu, DB_VECTOR, DR6_BS);
--	return 1;
-+	return kvm_inject_emulated_db(vcpu, DR6_BS);
- }
+-
+-	if (unlikely(vcpu->arch.dr7 & DR7_BP_EN_MASK) &&
++	if (unlikely(dr7 & DR7_BP_EN_MASK) &&
+ 	    !kvm_is_code_breakpoint_inhibited(vcpu)) {
+ 		unsigned long eip = kvm_get_linear_rip(vcpu);
+-		u32 dr6 = kvm_vcpu_check_hw_bp(eip, 0,
+-					   vcpu->arch.dr7,
+-					   vcpu->arch.db);
++		u32 dr6 = kvm_vcpu_check_hw_bp(eip, 0, dr7,
++					       vcpu->arch.eff_db);
  
- int kvm_skip_emulated_instruction(struct kvm_vcpu *vcpu)
+-		if (dr6 != 0) {
+-			kvm_queue_exception_p(vcpu, DB_VECTOR, dr6);
+-			*r = 1;
++		if (dr6) {
++			*r = kvm_inject_emulated_db(vcpu, dr6);
+ 			return true;
+ 		}
+ 	}
 -- 
 2.54.0.563.g4f69b47b94-goog
 
