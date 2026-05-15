@@ -1,220 +1,133 @@
-Received: from mail.rulkc.org (mail.rulkc.org [155.212.184.193])
+Received: from fout-b8-smtp.messagingengine.com (fout-b8-smtp.messagingengine.com [202.12.124.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D37CA3D88EC;
-	Fri, 15 May 2026 17:18:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=155.212.184.193
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D70A23D9DB2;
+	Fri, 15 May 2026 17:22:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778865526; cv=none; b=Kc8w4U8lvvvEXh1wYTW96/eDgCmViUeHX7rZEeCnm0afxVFOByE5PDOuLJYPpuG1mMSL3CrcGhu9LsSc3i23I8DLKn6VrGP1375dePSAhw3oy7rVnlpAhYpx5+JUWKnYuforRc7BsFa4c+bt9KZriTnUApaERsze9LZZLpL2GA0=
+	t=1778865768; cv=none; b=UFDi0vFp59IckriSGKPYvPwl06H2ED6IzO5u/j0XYukO6OQ2pcMNeF2NtsiYCfmYfCb2Mbk+8YBLpQREfKCt5k8zl5tG7MuwHlVdyRbJmQ/KmaPxUznn2bkyNUEVksphhmCO6MGSWrQroXm2Kz+RgmHme+Y7NEkqWBKgPW8WBgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778865526; c=relaxed/simple;
-	bh=AThb4VcvVIl2q1HLSzrRx+pOQEogMqaBF6o78sY7O9k=;
-	h=Message-ID:Date:MIME-Version:In-Reply-To:To:Cc:From:Subject:
-	 Content-Type; b=gdcErAGZDc+f4cenwtMCTl+Hedle1W+fCSHJZrMGgo74xIJfQ3VwaYzxIHxH4xnkv5rKe9QOJnmsyQUnO9uqDoKwTurs+tQQ8s9GARFMRzKmwYaGIUMX2ll5LDEtyFjyO39HYu8ipwfPwRF4PAMiNdytMHumcts7AuYEzBUyuzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org; spf=pass smtp.mailfrom=rulkc.org; dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b=bMjmi7p3; arc=none smtp.client-ip=155.212.184.193
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=rulkc.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=rulkc.org
+	s=arc-20240116; t=1778865768; c=relaxed/simple;
+	bh=J7jCgCg8v0Ufr1cehI9PBUzxi7Fi0zptSnL4p/q440o=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=b6e1Cazt+gPRXzaxVRsoY9wG5PRv9v3DPM6BltZ8Roh14xL3Gn3aYBBp03dpkTaIzcpsougt+k6H2HCc1+Ppwac4n4/bK4NNM0KPnztCasHgtjKz4aqTm27MHxmCJ863w9Nq2a8BCwlfwK8s39/iIehNp7zcRPjG2gBw0CX4SWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=vq+aRg7f; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=gCNO2bAD; arc=none smtp.client-ip=202.12.124.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rulkc.org header.i=@rulkc.org header.b="bMjmi7p3"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 18E0310113F;
-	Fri, 15 May 2026 20:18:26 +0300 (MSK)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=rulkc.org; s=dkim;
-	t=1778865514; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:content-language:in-reply-to;
-	bh=y4uy4Pn148gEWMp6CsBHAvnIqyb+WyfkRqF4BSbh4/E=;
-	b=bMjmi7p3G3dFTYfn9vrSaMz3B4xgHlRxlpV/RN1261UCXil+PYgyODOy8Fsdo0qFG2p9hQ
-	ykboWeIQBNEhnUTG1AIrWpk1KPoB8bbx2KnpXNKUQI3wohBPlA9m34jr9d63oe3kEapVaZ
-	jSyV2bNO9YKyQhkDgjJKvyAsN++/CAjnkjEPU54gIwUi+qPhDF5J/EqOmLG8od0x4MpvSp
-	mQLOoCCekeefOpefQCWsqXBuMnAYrqezaDw0sycVuFNct/RA/vxir36l35FeAQZIwe70VL
-	WlJoS0AxqtjZ6kzufsdF+KOqaJ2cCcj1NY+e9crweb8KF62BsTeB10kSc06gZQ==
-Message-ID: <1546ca10-e85b-4a67-a5b9-cf2623d11e7c@rulkc.org>
-Date: Fri, 15 May 2026 20:18:18 +0300
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="vq+aRg7f";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="gCNO2bAD"
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfout.stl.internal (Postfix) with ESMTP id 15E401D000A4;
+	Fri, 15 May 2026 13:22:45 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Fri, 15 May 2026 13:22:46 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:message-id:mime-version:reply-to
+	:subject:subject:to:to; s=fm2; t=1778865765; x=1778952165; bh=b1
+	O0vQaggyeaYrggFVOhe0RFihlTVE3EOBHmkdL//W4=; b=vq+aRg7fT+oIOjTY3R
+	VALTN7toED/u1Ytyn/pkWH0Ea/dfShTKtGFuE1dhxS2nqyKNoEDB4vYdJQPDNVmu
+	TKrN/XcMhggpNtj1dT5oxglB8EIvgOcFA+a6kn/FZOM/Y4EOUKTObmG16QbK1HMJ
+	HVNyGfPhFc5huFvoNuvkp/Das6Ks40YPEFIKj2Rvtz1L4XVnlOAYDQTpZdiu7ntw
+	RY83nscrnz1i5s1bAHuoBR7a8FWlSOudoRk0YDDdq2hFSFw0UoYgMTUO2hPf1u9u
+	ubgzv3expY080bugKOuaXg4CKzLLQehXEW+hVeY0fXBp0bRIpoqgRuGBSDKEPHzI
+	sIoQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1778865765; x=1778952165; bh=b1O0vQaggyeaYrggFVOhe0RFihlT
+	VE3EOBHmkdL//W4=; b=gCNO2bAD/B6Xl6W4HFh1KhXphjk5fYOrFV5bFjiFjKF3
+	v9HbWKjS+4sW0mm3nnhq9T9XzaIpDd16tUSSWhC+Zfg4hGNAsZd3IxCXoLQVNH0V
+	x0E1agZS0txbvxn4WaL6WsKzirThjJ1tNlmpQ28v4K2gNRljBpihD1CfECbEL3P2
+	CmSvu461ZXPnj+jQW3UUJklpFXTUGQPAq1FGr7NvB7bVfAvZbCQ6Bz8xGV6zy51b
+	188y0mcYl1CCR9/CeyzGhtRRU6DkgA93Wla2uTAHj6Jqzw1eslihr0OcimaiInd4
+	vzUr59u4MqOSMTCGPOzT/sTBb0NPxEKnR+qSDyaJGA==
+X-ME-Sender: <xms:ZVYHah-QJrG8cQSsZZn4Gx0BQ-VFoLJxVKkHRHnGjscVkcPUkHexMg>
+    <xme:ZVYHajhFm6pnHELkOHBFtcUc40FLv0TdQTXue3NcILUF0fRD0NmAnYJBruV4DCF7g
+    NhTpZLNqXVklUFsmA3mK4DUetmt91Y2qQouOPiU8oNrzeTDnayTdQ>
+X-ME-Received: <xmr:ZVYHapf-LTG5WtpvpZ3LdSSkAdMymeSB0jXy8jkEpQ1sEopVJ88wLInMHO8>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddufedtleelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicuhghi
+    lhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrghtth
+    gvrhhnpeetteelieeffefhffevteeufeektedulefgueekleeiueelveduheffhefhkeeg
+    veenucffohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptd
+    enucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhgpdhn
+    sggprhgtphhtthhopeegpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegrlhgvgi
+    esshhhrgiisghothdrohhrghdprhgtphhtthhopehtohhrvhgrlhgusheslhhinhhugidq
+    fhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtohepkhhvmhesvhhgvghrrdhkvghrnh
+    gvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghr
+    nhgvlhdrohhrgh
+X-ME-Proxy: <xmx:ZVYHaipeGzfuEvUm0ktzqP-LvBOrgJbxb4V49zE3MvVDKqnYkAZwaQ>
+    <xmx:ZVYHamDn48870eI0kmKBXFpkmqYAnxVT-frKeUNNN3eRxrxQ-xlg2g>
+    <xmx:ZVYHanaqlu2Q8fP3HxI1sswJjyY7DtscNxNh2JIYenRpd8xwmyO50A>
+    <xmx:ZVYHah4rJ6Jc4nkPXdw13bYxoB-xx5U_tuAhOx3OUcNXn2agqvooaQ>
+    <xmx:ZVYHapa8H6BEvTEVh53g5DH_dUGsIZ8U3BXtd9MKZYeUu3dGV7Vb2TPL>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 15 May 2026 13:22:44 -0400 (EDT)
+Date: Fri, 15 May 2026 11:22:41 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: alex@shazbot.org, "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+ "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: [GIT PULL] VFIO fixes for v7.1-rc4
+Message-ID: <20260515112241.39f9df48@shazbot.org>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: ru
-In-Reply-To: <20260514092948.268720-1-sgarzare@redhat.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>,
- "Paolo Abeni," <pabeni@redhat.com>, Simon Horman <horms@kernel.org>,
- Stefan Hajnoczi <stefanha@redhat.com>, kvm@vger.kernel.org,
- Eric Dumazet <edumazet@google.com>, "Xuan Zhuo,"
- <xuanzhuo@linux.alibaba.com>, virtualization@lists.linux.dev,
- "David S., Miller" <davem@davemloft.net>, Jason Wang <jasowang@redhat.com>,
- linux-kernel@vger.kernel.org, Maher Azzouzi <maherazz04@gmail.com>,
- eperezma@redhat.com
-From: Arseniy Krasnov <avkrasnov@rulkc.org>
-Subject: Re: [PATCH net] vsock/virtio: fix zerocopy completion for multi-skb
- sends
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Last-TLS-Session-Version: TLSv1.3
 
-> From: Stefano Garzarella <sgarzare@redhat.com>
->
-> When a large message is fragmented into multiple skbs, the zerocopy
-> uarg is only allocated and attached to the last skb in the loop.
-> Non-final skbs carry pinned user pages with no completion tracking,
-> so the kernel has no way to notify userspace when those pages are safe
-> to reuse. If the loop breaks early the uarg is never allocated at all,
-> leaking pinned pages with no completion notification.
->
-> Fix this by following the approach used by TCP: allocate the zerocopy
-> uarg (if not provided by the caller) before the send loop and attach
-> it to every skb via skb_zcopy_set(), which takes a reference per skb.
-> Each skb's completion properly decrements the refcount, and the
-> notification only fires after the last skb is freed.
-> On failure, if no data was sent, the uarg is cleanly aborted via
-> net_zcopy_put_abort().
->
-> This issue was initially discovered by sashiko while reviewing commit
-> 1cb36e252211 ("vsock/virtio: fix MSG_ZEROCOPY pinned-pages accounting")
-> but was pre-existing.
->
-> Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
-> Cc: Arseniy Krasnov <avkrasnov@salutedevices.com>
-> Closes: https://sashiko.dev/#/patchset/20260420132051.217589-1-sgarzare%40redhat.com
-> Reported-by: Maher Azzouzi <maherazz04@gmail.com>
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Hi Linus,
 
+Please include for rc4.  Thanks!
 
-Acked-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+The following changes since commit 5d6919055dec134de3c40167a490f33c74c12581:
 
+  Linux 7.1-rc3 (2026-05-10 14:08:09 -0700)
 
-> ---
->  net/vmw_vsock/virtio_transport_common.c | 83 ++++++++++---------------
->  1 file changed, 34 insertions(+), 49 deletions(-)
->
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index 989cc252d3d3..1e3409d28164 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
-> @@ -70,34 +70,6 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
->  	return true;
->  }
->  
-> -static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
-> -					   struct sk_buff *skb,
-> -					   struct msghdr *msg,
-> -					   size_t pkt_len,
-> -					   bool zerocopy)
-> -{
-> -	struct ubuf_info *uarg;
-> -
-> -	if (msg->msg_ubuf) {
-> -		uarg = msg->msg_ubuf;
-> -		net_zcopy_get(uarg);
-> -	} else {
-> -		struct ubuf_info_msgzc *uarg_zc;
-> -
-> -		uarg = msg_zerocopy_realloc(sk_vsock(vsk),
-> -					    pkt_len, NULL, false);
-> -		if (!uarg)
-> -			return -1;
-> -
-> -		uarg_zc = uarg_to_msgzc(uarg);
-> -		uarg_zc->zerocopy = zerocopy ? 1 : 0;
-> -	}
-> -
-> -	skb_zcopy_init(skb, uarg);
-> -
-> -	return 0;
-> -}
-> -
->  static int virtio_transport_fill_skb(struct sk_buff *skb,
->  				     struct virtio_vsock_pkt_info *info,
->  				     size_t len,
-> @@ -317,8 +289,10 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->  	u32 src_cid, src_port, dst_cid, dst_port;
->  	const struct virtio_transport *t_ops;
->  	struct virtio_vsock_sock *vvs;
-> +	struct ubuf_info *uarg = NULL;
->  	u32 pkt_len = info->pkt_len;
->  	bool can_zcopy = false;
-> +	bool have_uref = false;
->  	u32 rest_len;
->  	int ret;
->  
-> @@ -360,6 +334,25 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->  		if (can_zcopy)
->  			max_skb_len = min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
->  					    (MAX_SKB_FRAGS * PAGE_SIZE));
-> +
-> +		if (info->msg->msg_flags & MSG_ZEROCOPY &&
-> +		    info->op == VIRTIO_VSOCK_OP_RW) {
-> +			uarg = info->msg->msg_ubuf;
-> +
-> +			if (!uarg) {
-> +				uarg = msg_zerocopy_realloc(sk_vsock(vsk),
-> +							    pkt_len, NULL, false);
-> +				if (!uarg) {
-> +					virtio_transport_put_credit(vvs, pkt_len);
-> +					return -ENOMEM;
-> +				}
-> +
-> +				if (!can_zcopy)
-> +					uarg_to_msgzc(uarg)->zerocopy = 0;
-> +
-> +				have_uref = true;
-> +			}
-> +		}
->  	}
->  
->  	rest_len = pkt_len;
-> @@ -378,27 +371,7 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->  			break;
->  		}
->  
-> -		/* We process buffer part by part, allocating skb on
-> -		 * each iteration. If this is last skb for this buffer
-> -		 * and MSG_ZEROCOPY mode is in use - we must allocate
-> -		 * completion for the current syscall.
-> -		 *
-> -		 * Pass pkt_len because msg iter is already consumed
-> -		 * by virtio_transport_fill_skb(), so iter->count
-> -		 * can not be used for RLIMIT_MEMLOCK pinned-pages
-> -		 * accounting done by msg_zerocopy_realloc().
-> -		 */
-> -		if (info->msg && info->msg->msg_flags & MSG_ZEROCOPY &&
-> -		    skb_len == rest_len && info->op == VIRTIO_VSOCK_OP_RW) {
-> -			if (virtio_transport_init_zcopy_skb(vsk, skb,
-> -							    info->msg,
-> -							    pkt_len,
-> -							    can_zcopy)) {
-> -				kfree_skb(skb);
-> -				ret = -ENOMEM;
-> -				break;
-> -			}
-> -		}
-> +		skb_zcopy_set(skb, uarg, NULL);
->  
->  		virtio_transport_inc_tx_pkt(vvs, skb);
->  
-> @@ -422,6 +395,18 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->  
->  	virtio_transport_put_credit(vvs, rest_len);
->  
-> +	/* msg_zerocopy_realloc() initializes the ubuf_info refcnt to 1.
-> +	 * skb_zcopy_set() increases it for each skb, so we can drop that
-> +	 * initial reference to keep it balanced.
-> +	 */
-> +	if (have_uref) {
-> +		if (rest_len == pkt_len)
-> +			/* No data sent, abort the notification. */
-> +			net_zcopy_put_abort(uarg, true);
-> +		else
-> +			net_zcopy_put(uarg);
-> +	}
-> +
->  	/* Return number of bytes, if any data has been sent. */
->  	if (rest_len != pkt_len)
->  		ret = pkt_len - rest_len;
-> -- 
-> 2.54.0
->
->
+are available in the Git repository at:
 
+  https://github.com/awilliam/linux-vfio.git tags/vfio-v7.1-rc4
+
+for you to fetch changes up to 702809dabdecca807bdd50cfdcc1c980feb2ba62:
+
+  vfio/pci: Check BAR resources before exporting a DMABUF (2026-05-14 11:39:03 -0600)
+
+----------------------------------------------------------------
+VFIO fixes for v7.1-rc4
+
+ - Convert vfio-pci BAR resource requests and iomaps initialization
+   from a lazy, on-demand model to an eager pre-allocation model to
+   avoid races while preserving legacy error behavior.  Fix unchecked
+   barmap access in dma-buf export path. (Matt Evans)
+
+ - Introduce an implicit unsigned cast in converting vfio-pci device
+   offsets to region indexes, closing a potential out-of-bounds
+   access through the vfio_pci_ioeventfd() interface. (Matt Evans)
+
+ - Fix a dma-buf kref underflow and stuck wait_for_completion() when
+   closing a previously revoked dma-buf. (Alex Williamson)
+
+----------------------------------------------------------------
+Alex Williamson (1):
+      vfio/pci: fix dma-buf kref underflow after revoke
+
+Matt Evans (3):
+      vfio/pci: Make VFIO_PCI_OFFSET_TO_INDEX() return unsigned
+      vfio/pci: Set up BAR resources and maps in vfio_pci_core_enable()
+      vfio/pci: Check BAR resources before exporting a DMABUF
+
+ drivers/vfio/pci/vfio_pci_core.c   | 37 ++++++++++++++++++++++++++++++++-
+ drivers/vfio/pci/vfio_pci_dmabuf.c | 42 ++++++++++++++++++++------------------
+ drivers/vfio/pci/vfio_pci_rdwr.c   | 26 +++++++----------------
+ include/linux/vfio_pci_core.h      |  2 +-
+ 4 files changed, 66 insertions(+), 41 deletions(-)
