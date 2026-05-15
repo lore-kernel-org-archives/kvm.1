@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABFA13FF1D8;
-	Fri, 15 May 2026 16:15:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5403A3FD958;
+	Fri, 15 May 2026 16:21:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778861750; cv=none; b=X1nUxc3XYyxX7gf98mHKPpyw55QRJlzHZrTz3y0r6ZhX9mx93Hdv2bkRQOi6szc3Ev4ajwNlOnX79xlsPF4ObVWmhtbuRtQOcOyCr8uWF1/sqOdeD8vBxDsvbeMOBJLWHnAwzkzihKVu9VNEwmiQqVVAXI7Zg/pCrnSML4n7vM0=
+	t=1778862098; cv=none; b=LRhbnwD8LgnkUnEI0WEhpfGgT5Nx+h0QlcAx/cHV9i8TQz0IgdZXWsa3B5Au/68SlUKnJeM7OOZiXwpXHHoz4n3104hb1C4lLAj1G4ex+9NAvZMnmvbU4ZxzRwSEDpgJ67HAm5N+xJCGBtFWVy/yam/AA3wxMg6jPWHySODMxwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778861750; c=relaxed/simple;
-	bh=DtS4LuhKLIkKhqy5WiWPTaQRV15Fh4ZyefiGYuDGPDg=;
+	s=arc-20240116; t=1778862098; c=relaxed/simple;
+	bh=CYockY6l12mxVd8llSwjb6I0KomQ6Lrxos7OFRORSIY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=mvbcC922zHJlkmxhVhxLhaRUbubQbyXapVw+CgQAEP6QC4j1+L4UW3Q4ngbR1d9Nvc4oc6TVlIw8UXTzcIMWwNHJh3YoYXPWKElrPDY/slveNluWTixTSJfbLJgVD3uyIwZwz5WKy6qJIPLkPHKUpitQBPLswvZw1fpK322R+RM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kA92kKIF; arc=none smtp.client-ip=198.175.65.20
+	 In-Reply-To:Content-Type; b=Rbwh2oY8QB8SMtF7P8SW2oYIlbtUqYw4S3EXY2BtwDSsqFVDUp5tCwAE600yLDZzSk1Gs7je2ad4PZtilIh+eSWmBh+JFx5zVxDsjqypD/BU2d+SWt2DRFGzyMvAxN5w1C7siTfu/zXWaxaOXJkyC0HwKSO9kNDpr4SCY4mAqL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=F6UcH1NW; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kA92kKIF"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="F6UcH1NW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1778861750; x=1810397750;
+  t=1778862097; x=1810398097;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=DtS4LuhKLIkKhqy5WiWPTaQRV15Fh4ZyefiGYuDGPDg=;
-  b=kA92kKIFNfWp02H9tE7CwQ/bbkiWcDlVsmKw2jW9Kl0SQqo2/zfs6lxL
-   k0slemnnxwrg4jc2qow4zdCNeul3QTJwhzED0eYNnGKBP/vemrlhllOKO
-   rTE/OihhGA93CGpD69Fd2WwnhQAKWDPsg3hQVzWucQ5mj3aAc6D4vVEm1
-   HsMKrDdnJ07zq5pXkXUR5FLwyktduP+oHH+oBLVnkvPI3rVyeZRLA/jR+
-   yljU6L9qooMzD2pST6ehKkXJp7JV4+t2iJVDVuGFfYOoL1Xcp2weiztiH
-   Wq35FUfvZHVdasTVp9mYtfey0mMyi6AZ+CrjR2xJ475UkTuUEQFlVAmOn
-   g==;
-X-CSE-ConnectionGUID: BiDL/fbLRmeqcQaHeBCOzQ==
-X-CSE-MsgGUID: irvliUStTlmQg6Haeg4rog==
-X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="79536245"
+  bh=CYockY6l12mxVd8llSwjb6I0KomQ6Lrxos7OFRORSIY=;
+  b=F6UcH1NWHbTOQZXR3blG3ENofO8B/tyIwnUvQlHIRtfaF/E1SYQ8iwAq
+   HvEEXLbL+S2SkkyBheh9vP/ADKTVTJk0TgL+4gFSE6w5+sAeb3LX8pqHK
+   kAlmbHZDptmvwetr+HpaOwpoEohVnw/8eO7eW9x0nFU9n1Z2asJgy4BKe
+   UArNJ6NeJDmMZD1Tis2/u2QOsTQ+DRV4Z2A0aRZv1Jd7m6sQQyO/9QUZ8
+   wH98ms0HHKLH1onHhJum7DIVfAQsAe9EvdqmLwHPSSfAZY15LRChBGTIu
+   hv7b3aC5ET4zSfCLHBwTWt5HidLAKTMv9XMQRx0aPj/L6y912GYNUUKCE
+   w==;
+X-CSE-ConnectionGUID: pThCciMJTyWW0e2OUasI9A==
+X-CSE-MsgGUID: 5M2eWtrNSBC0a4rrHX4Lig==
+X-IronPort-AV: E=McAfee;i="6800,10657,11787"; a="79784611"
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="79536245"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 09:15:49 -0700
-X-CSE-ConnectionGUID: h/qOtgDWTJKlDA2cIkdEYA==
-X-CSE-MsgGUID: h9b2iKM1RxGAUNI3ChFX7g==
+   d="scan'208";a="79784611"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 09:21:36 -0700
+X-CSE-ConnectionGUID: 7UKZW/IBTamaIMWxIQBYYA==
+X-CSE-MsgGUID: LxJSuYvHRb25oHcCywe9sA==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,236,1770624000"; 
-   d="scan'208";a="234294921"
-Received: from dwoodwor-mobl2.amr.corp.intel.com (HELO [10.125.108.157]) ([10.125.108.157])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 09:15:47 -0700
-Message-ID: <c7d64460-d03c-4198-9320-8afceafcecb5@intel.com>
-Date: Fri, 15 May 2026 09:15:47 -0700
+   d="scan'208";a="238854761"
+Received: from gabaabhi-mobl2.amr.corp.intel.com (HELO [10.125.108.201]) ([10.125.108.201])
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 May 2026 09:21:36 -0700
+Message-ID: <cc35a467-e978-4e3b-a6ba-17a8bde69bd7@intel.com>
+Date: Fri, 15 May 2026 09:21:36 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,8 +52,7 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 02/23] x86/virt/tdx: Move TDX_FEATURES0 bits to
- asm/tdx.h
+Subject: Re: [PATCH v9 04/23] coco/tdx-host: Introduce a "tdx_host" device
 To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
  linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
 Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
@@ -62,11 +61,13 @@ Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
  reinette.chatre@intel.com, rick.p.edgecombe@intel.com, sagis@google.com,
  seanjc@google.com, tony.lindgren@linux.intel.com, vannapurve@google.com,
  vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com,
- yan.y.zhao@intel.com, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+ yan.y.zhao@intel.com, Dan Williams <dan.j.williams@intel.com>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>
 References: <20260513151045.1420990-1-chao.gao@intel.com>
- <20260513151045.1420990-3-chao.gao@intel.com>
+ <20260513151045.1420990-5-chao.gao@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -112,16 +113,31 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260513151045.1420990-3-chao.gao@intel.com>
+In-Reply-To: <20260513151045.1420990-5-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
 On 5/13/26 08:09, Chao Gao wrote:
-> This prepares for TDX module update [1] and Dynamic PAMT [2] support. Both
-> add new TDX_FEATURES0 capability bits, and both need those capabilities to
-> be queried from code outside arch/x86/virt. The corresponding feature-query
-> helpers therefore need to live in the public asm/tdx.h header, so move the
-> existing bit definitions there first.
+> Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
 
-Please don't add unnecessary changelog cruft. If you need this move for
-this series, that's enough.
+This SoB chain at _least_ needs a note. It looks quite bizarre.
+
+> +config TDX_HOST_SERVICES
+> +	tristate "TDX Host Services Driver"
+> +	depends on INTEL_TDX_HOST
+> +	default m
+> +	help
+> +	  Enable access to TDX host services like module update and
+> +	  extensions (e.g. TDX Connect).
+> +
+> +	  Say y or m if enabling support for confidential virtual machine
+> +	  support (CONFIG_INTEL_TDX_HOST). The module is called tdx_host.ko.
+
+In what world will anyone ever set INTEL_TDX_HOST=y, but turn this off?
+Is this even worth a Kconfig prompt?
+
+I guess we need it for the module or built in choice. But otherwise it
+seems a bit silly.
