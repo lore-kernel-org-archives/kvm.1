@@ -1,56 +1,56 @@
 Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C408A41212D
-	for <kvm@vger.kernel.org>; Fri, 15 May 2026 19:21:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09FA63D6498
+	for <kvm@vger.kernel.org>; Fri, 15 May 2026 19:21:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778872884; cv=none; b=YIX8wLbJsRYw207sZH8AmJZZ+zgF5HHbVv4JmOtJfBfqrbzxI5GDGb3ZauowRFPONVy0mtqRmvfyyd8ZjP4lkO9o7ifyy548qCZl0kj06/S8P5C78hcsgRF9oUb6AJRFlOM73MO7Wwt/BmOmXtoTrpCAOr/KhilCd2poNOqCMes=
+	t=1778872885; cv=none; b=Ehp5l9j200M6MT9ohq41gbIwnFexzAyHTUG9zSmfbqS54HabcbHfmDK83ou++eoXsKXCteqRomKPjCnJoPdFpBl4tR/opSJHfAVWI6hvIKxhzR1Fit5Mj6jG4oOjnqilewOvgNSp0HDRH8BU4YA5SJGAxS8Y3+tqBoRkxFq8xuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778872884; c=relaxed/simple;
-	bh=+wUr561K82TnIIpq5POLLP9qm+OKlIkzSL6qT55+ohk=;
+	s=arc-20240116; t=1778872885; c=relaxed/simple;
+	bh=iobt3mMcxUgFyEoOEmLnGtiXka6utk5+xSHE3bisqLw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=p0zECwBorVi7Ri8GXAe5/EwFFd0MkK9IU5b6G6oXulZJ52aG8Cc1EdOQwMGyYZFmq7IUr58hns+m4OpLAIu804htcLg/4TzU/JKPWdc4jMKStEh+7xrGVAIUkmFnUcm8oeAqaOgL4HDzdx43qKE73KpRuBGunsyG64CIZ63Xtuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ta25z2bi; arc=none smtp.client-ip=209.85.210.201
+	 To:Cc:Content-Type; b=ApCP0NRrp4biFD+Gln4lI+T0tTcxQB8066+i2yEyGR+GhZuS5plT+zUX+tmtc0jLRyXOOp3PDYNrYHTZpi2zr9y3sAPenvxw6QOuOoHX617Tov73qKhDUiXJDGoIJ//IARMEppLBGV0eSmQJestMziorFq5kjJFT08BjrBJa944=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YXEMbnvg; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ta25z2bi"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-835444b6ce1so197149b3a.1
-        for <kvm@vger.kernel.org>; Fri, 15 May 2026 12:21:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YXEMbnvg"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82f85179263so251358b3a.3
+        for <kvm@vger.kernel.org>; Fri, 15 May 2026 12:21:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1778872881; x=1779477681; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1778872882; x=1779477682; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
-        bh=rGCW9kF5gS8wHa+YnUvDY3DL62KvWmhRkotZ7eduTfw=;
-        b=Ta25z2bi/E1rNTbhmSno1IWUNLCuO+aK1Y6t/kHmk9LK7KaW8q74FErtbeLvxVdCLv
-         gjFYghKJmudd1vj3medSzcTDBUFt0WUZtmK8VmGJ58JMurKrko1SCC04IKAVhLhDWEkB
-         XYK/dG5Cs+L+ExLY+z//vb+QAAMjjEZ7TtgmZx0AHGlzZVr2JH5AhWKxxsL4KY5DwyM5
-         JO6gspvhBPtDM2hp0lOENIN409lzPzHLEqnUZBn2Wb7lUcx3ERW8kvam2giqyCCaT2qw
-         5yLcn15RyQccNh+vMUkB8u1lfp4qkN4ukcZYhkUkMmA3dIqOwkYuALVdwUd3/LZ9cR45
-         FaUw==
+        bh=CJ9Kqslov6eJXg3tHpdlTt5rxLZvQw1ej96frcIls5c=;
+        b=YXEMbnvgg6l0uKD6wsZPuFH8e21NihcxH9ZlNNKRqFSt0mdPcxMre6Gjjke+3vlKHq
+         mtRhqG6ei8i7WBwUyBvb5tK8+GCLhtT7bTyPNxZn5ixZp6BQr7qLIPYCqYaUd3IZaP6H
+         Q0Qw4UnvbFstDQ1o0jce7lTz3/HtuVBlAQ6aur2jioWFINpDmSMkn4z1JDGzv8LY2lBg
+         tZoqluuSYqQUd6Jfhz/RLiWoSzloQHycgpp18RJ4wtMO8JiPeXgleJCJaDORnpfaPzC2
+         fFz1ArilyKGjicvvI0a4bA4kiyvlsCyFIMU5OP9dCQPn4b0WP5+5gzLEkWolKo03IiO2
+         Z5qA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778872881; x=1779477681;
+        d=1e100.net; s=20251104; t=1778872882; x=1779477682;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=rGCW9kF5gS8wHa+YnUvDY3DL62KvWmhRkotZ7eduTfw=;
-        b=oDXI7Il/zqHTSeNSUKrfZy+Pz1n0asW/bMaCQA10MaibqkEYuHw/jPWthMeJUvi/kD
-         mNy6jAQJlv1WbuaX6UlkALeKeWNT8rw38CFVYF1v2ZexYsTj4jvDGj2rMgkpF8TKHn4N
-         MzaiX2MbWna5vVQ+M7anOEtVm2xPxojvwTSRHba7hs6yVBnngqkxNubBSYlO+83yo7Lm
-         iRunB0AVn3AgNvmaiy+JHLC9hHBZerTxD3IDKDKRNOk1tCAtX7pl5dLVcuGwXyoiGT6w
-         zzO9tzwCAWRODCspP2iK+fWavZIz2uxpokUek2Wbkq3sRA7pEJctJ5KgFfJQTpmGEaP3
-         3elQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9l9FU8e9lza9Hhh6bLmrIC05QJrPZ4wrSshTllsE5WCjJpfkwIM+RKrtp99EY7qVaQVOI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxuMlTuvc4zTEP9s/tdogOGeMJsDVXHMzpFQaemb54AX1UNSNYY
-	xf9JmJMYU++47tV7HplT+nOoYIqhZ4CdyI3qwxemd71zi62rPoR05QWBLrAOxjNNA+R+zB827AR
-	+pkh3Iw==
-X-Received: from pfkq14.prod.google.com ([2002:a05:6a00:84e:b0:839:4a33:c354])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:12e4:b0:835:405a:7e68
- with SMTP id d2e1a72fcca58-83f33d9dd83mr5938852b3a.32.1778872880815; Fri, 15
- May 2026 12:21:20 -0700 (PDT)
+        bh=CJ9Kqslov6eJXg3tHpdlTt5rxLZvQw1ej96frcIls5c=;
+        b=RhYAk1QIOysY6T/ZbZ4cmHkUVu+ubogCUW5YOzraTF/oXC3d+nl+m7yT6Ks4fb65/F
+         hePeGqEk3mNZjzR55Mx1RYfd2jaVcwKxHyjWOgzCakRhU3sFG1GSJLntfOzMVLH1AkBm
+         yKs6GbUZ6Rd4hbmjvswg+bgLQeaKPcBdArAkbyCcSQmyAM8l7DJg5FhdIgQMxn2Ec/1K
+         nN/ukkOwLJLT/OG8prtFtRH7pP5Nx/ViLO/SLvBjPIS3job7DL2i73NRXWXUhd5OQDBr
+         4wz77lRwQzcwZlPuUdnLFzzKc32s1P//VAYjmOnvdcKlIKO4HFWcjMIJt+4RKengNow1
+         Ecyg==
+X-Forwarded-Encrypted: i=1; AFNElJ+I8AhPca5+aJ/5H95mo3m20X7w0FIwFuENhfJybH+TyTD/cdYBzAARgi8yooLYGckNFdY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx7BJefNa/F4+BWLVucH3CYeS+PjQSGQeSaeoeLKmCGLOdQEHEj
+	X6qkZcc7LsqnOEeOOozL1UqzwcKwqD6kyOmGpdzM3umOFjPZkmEgxhcZmmFyK/PhESHhw9RwCwT
+	616zkfA==
+X-Received: from pfmm20.prod.google.com ([2002:a05:6a00:2494:b0:835:43a4:4aaa])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2d19:b0:82f:a89e:e16f
+ with SMTP id d2e1a72fcca58-83f33b2f58fmr5940174b3a.14.1778872881979; Fri, 15
+ May 2026 12:21:21 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 15 May 2026 12:19:39 -0700
+Date: Fri, 15 May 2026 12:19:40 -0700
 In-Reply-To: <20260515191942.1892718-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -60,9 +60,9 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260515191942.1892718-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <20260515191942.1892718-39-seanjc@google.com>
-Subject: [PATCH v3 38/41] x86/paravirt: kvmclock: Setup kvmclock early iff
- it's sched_clock
+Message-ID: <20260515191942.1892718-40-seanjc@google.com>
+Subject: [PATCH v3 39/41] x86/paravirt: Move using_native_sched_clock() stub
+ into timer.h
 From: Sean Christopherson <seanjc@google.com>
 To: Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
 	Sean Christopherson <seanjc@google.com>, "K. Y. Srinivasan" <kys@microsoft.com>, 
@@ -83,178 +83,55 @@ Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>, Vitaly Kuznetsov <vkuznets@redh
 	Thomas Gleixner <tglx@linutronix.de>, David Woodhouse <dwmw@amazon.co.uk>
 Content-Type: text/plain; charset="UTF-8"
 
-Rework the seemingly generic x86_cpuinit_ops.early_percpu_clock_init hook
-into a dedicated PV sched_clock hook, as the only reason the hook exists
-is to allow kvmclock to enable its PV clock on secondary CPUs before the
-kernel tries to reference sched_clock, e.g. when grabbing a timestamp for
-printk.
+Now that timer.h ended up with CONFIG_PARAVIRT #ifdeffery anyways, move the
+PARAVIRT=n using_native_sched_clock() stub into timer.h as a "free"
+optimization.
 
-Rearranging the hook doesn't exactly reduce complexity; arguably it does
-the opposite.  But as-is, it's practically impossible to understand *why*
-kvmclock needs to do early configuration.
+No functional change intended.
 
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/include/asm/timer.h    |  8 ++++++--
- arch/x86/include/asm/x86_init.h |  2 --
- arch/x86/kernel/kvmclock.c      | 13 ++++++-------
- arch/x86/kernel/smpboot.c       |  3 ++-
- arch/x86/kernel/tsc.c           | 16 +++++++++++++++-
- arch/x86/kernel/x86_init.c      |  1 -
- 6 files changed, 29 insertions(+), 14 deletions(-)
+ arch/x86/include/asm/timer.h | 5 +++--
+ arch/x86/kernel/tsc.c        | 2 --
+ 2 files changed, 3 insertions(+), 4 deletions(-)
 
 diff --git a/arch/x86/include/asm/timer.h b/arch/x86/include/asm/timer.h
-index ca5c95d48c03..ab1271bd9c3b 100644
+index ab1271bd9c3b..d8cb9c84f2c7 100644
 --- a/arch/x86/include/asm/timer.h
 +++ b/arch/x86/include/asm/timer.h
-@@ -15,14 +15,18 @@ extern bool using_native_sched_clock(void);
+@@ -11,9 +11,9 @@ extern void recalibrate_cpu_khz(void);
  
+ extern int no_timer_check;
+ 
+-extern bool using_native_sched_clock(void);
+-
  #ifdef CONFIG_PARAVIRT
++extern bool using_native_sched_clock(void);
++
  int __init __paravirt_set_sched_clock(u64 (*func)(void), bool stable,
--				      void (*save)(void), void (*restore)(void));
-+				      void (*save)(void), void (*restore)(void),
-+				      void (*start_secondary));
- 
- static __always_inline void paravirt_set_sched_clock(u64 (*func)(void),
- 						     void (*save)(void),
- 						     void (*restore)(void))
- {
--	(void)__paravirt_set_sched_clock(func, true, save, restore);
-+	(void)__paravirt_set_sched_clock(func, true, save, restore, NULL);
- }
-+void paravirt_sched_clock_start_secondary(void);
-+#else
-+static inline void paravirt_sched_clock_start_secondary(void) { }
+ 				      void (*save)(void), void (*restore)(void),
+ 				      void (*start_secondary));
+@@ -27,6 +27,7 @@ static __always_inline void paravirt_set_sched_clock(u64 (*func)(void),
+ void paravirt_sched_clock_start_secondary(void);
+ #else
+ static inline void paravirt_sched_clock_start_secondary(void) { }
++static inline bool using_native_sched_clock(void) { return true; }
  #endif
  
  /*
-diff --git a/arch/x86/include/asm/x86_init.h b/arch/x86/include/asm/x86_init.h
-index 6c8a6ead84f6..d1b3f18ea41f 100644
---- a/arch/x86/include/asm/x86_init.h
-+++ b/arch/x86/include/asm/x86_init.h
-@@ -187,13 +187,11 @@ struct x86_init_ops {
- /**
-  * struct x86_cpuinit_ops - platform specific cpu hotplug setups
-  * @setup_percpu_clockev:	set up the per cpu clock event device
-- * @early_percpu_clock_init:	early init of the per cpu clock event device
-  * @fixup_cpu_id:		fixup function for cpuinfo_x86::topo.pkg_id
-  * @parallel_bringup:		Parallel bringup control
-  */
- struct x86_cpuinit_ops {
- 	void (*setup_percpu_clockev)(void);
--	void (*early_percpu_clock_init)(void);
- 	void (*fixup_cpu_id)(struct cpuinfo_x86 *c, int node);
- 	bool parallel_bringup;
- };
-diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
-index 0578bc448b1b..62c8ea2e6769 100644
---- a/arch/x86/kernel/kvmclock.c
-+++ b/arch/x86/kernel/kvmclock.c
-@@ -127,12 +127,13 @@ static void kvm_save_sched_clock_state(void)
- 	kvmclock_disable();
- }
- 
--#ifdef CONFIG_SMP
--static void kvm_setup_secondary_clock(void)
-+static void kvm_setup_secondary_sched_clock(void)
- {
-+	if (WARN_ON_ONCE(!IS_ENABLED(CONFIG_SMP)))
-+		return;
-+
- 	kvm_register_clock("secondary cpu, sched_clock setup");
- }
--#endif
- 
- static void kvm_restore_sched_clock_state(void)
- {
-@@ -352,7 +353,8 @@ static __init void kvm_sched_clock_init(bool stable)
- {
- 	if (__paravirt_set_sched_clock(kvm_sched_clock_read, stable,
- 				       kvm_save_sched_clock_state,
--				       kvm_restore_sched_clock_state))
-+				       kvm_restore_sched_clock_state,
-+				       kvm_setup_secondary_sched_clock))
- 		return;
- 
- 	kvm_sched_clock_offset = kvm_clock_read();
-@@ -437,9 +439,6 @@ void __init kvmclock_init(void)
- 
- 	x86_platform.get_wallclock = kvm_get_wallclock;
- 	x86_platform.set_wallclock = kvm_set_wallclock;
--#ifdef CONFIG_SMP
--	x86_cpuinit.early_percpu_clock_init = kvm_setup_secondary_clock;
--#endif
- 	kvm_get_preset_lpj();
- 
- 	clocksource_register_hz(&kvm_clock, NSEC_PER_SEC);
-diff --git a/arch/x86/kernel/smpboot.c b/arch/x86/kernel/smpboot.c
-index 294a8ea60298..318ae70e5e7b 100644
---- a/arch/x86/kernel/smpboot.c
-+++ b/arch/x86/kernel/smpboot.c
-@@ -78,6 +78,7 @@
- #include <asm/io_apic.h>
- #include <asm/fpu/api.h>
- #include <asm/setup.h>
-+#include <asm/timer.h>
- #include <asm/uv/uv.h>
- #include <asm/microcode.h>
- #include <asm/i8259.h>
-@@ -275,7 +276,7 @@ static void notrace __noendbr start_secondary(void *unused)
- 	cpu_init();
- 	fpu__init_cpu();
- 	rcutree_report_cpu_starting(raw_smp_processor_id());
--	x86_cpuinit.early_percpu_clock_init();
-+	paravirt_sched_clock_start_secondary();
- 
- 	ap_starting();
- 
 diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
-index 7a261214fa3e..f78e86494dec 100644
+index f78e86494dec..1b569954ae5e 100644
 --- a/arch/x86/kernel/tsc.c
 +++ b/arch/x86/kernel/tsc.c
-@@ -280,8 +280,19 @@ bool using_native_sched_clock(void)
- 	return static_call_query(pv_sched_clock) == native_sched_clock;
- }
- 
-+#ifdef CONFIG_SMP
-+static void (*pv_sched_clock_start_secondary)(void) __ro_after_init;
-+
-+void paravirt_sched_clock_start_secondary(void)
-+{
-+	if (pv_sched_clock_start_secondary)
-+		pv_sched_clock_start_secondary();
-+}
-+#endif
-+
- int __init __paravirt_set_sched_clock(u64 (*func)(void), bool stable,
--				      void (*save)(void), void (*restore)(void))
-+				      void (*save)(void), void (*restore)(void),
-+				      void (*start_secondary))
- {
- 	/*
- 	 * Don't replace TSC with a PV clock when running as a CoCo guest and
-@@ -298,6 +309,9 @@ int __init __paravirt_set_sched_clock(u64 (*func)(void), bool stable,
- 	static_call_update(pv_sched_clock, func);
- 	x86_platform.save_sched_clock_state = save;
- 	x86_platform.restore_sched_clock_state = restore;
-+#ifdef CONFIG_SMP
-+	pv_sched_clock_start_secondary = start_secondary;
-+#endif
- 	return 0;
+@@ -316,8 +316,6 @@ int __init __paravirt_set_sched_clock(u64 (*func)(void), bool stable,
  }
  #else
-diff --git a/arch/x86/kernel/x86_init.c b/arch/x86/kernel/x86_init.c
-index ebefb77c37bb..cbb5ee613ed5 100644
---- a/arch/x86/kernel/x86_init.c
-+++ b/arch/x86/kernel/x86_init.c
-@@ -128,7 +128,6 @@ struct x86_init_ops x86_init __initdata = {
- };
+ u64 sched_clock_noinstr(void) __attribute__((alias("native_sched_clock")));
+-
+-bool using_native_sched_clock(void) { return true; }
+ #endif
  
- struct x86_cpuinit_ops x86_cpuinit = {
--	.early_percpu_clock_init	= x86_init_noop,
- 	.setup_percpu_clockev		= setup_secondary_APIC_clock,
- 	.parallel_bringup		= true,
- };
+ notrace u64 sched_clock(void)
 -- 
 2.54.0.563.g4f69b47b94-goog
 
