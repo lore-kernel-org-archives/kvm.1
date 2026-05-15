@@ -1,110 +1,145 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 639A4481659;
-	Fri, 15 May 2026 11:51:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 035B747ECF3
+	for <kvm@vger.kernel.org>; Fri, 15 May 2026 12:44:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778845911; cv=none; b=SF8S0I+m4VK2YlLVDv2ClNnanwkCN+/CQ7jIo9Eg24XRtEtandpuVGsEU5GF4zEWZ38Ax8JZI7j5Rf0V1NMg0yZ3JTWEXaQYxMmoWaV63K44NaP9rvj64/PK/APPKmySBK6iJslvH/wDPccloFzPHyz7kUiWPpCZc+CJmAwN2pQ=
+	t=1778849089; cv=none; b=MXx1pTWZb1ZNj1W7jq+2Fc1BiBvjJ5YZQx16aNb9tWIiaixaIpDutIlAicduVat0stYNj1vlSj+wvLXgG03ct+CdwKCiReyVOJXldEzongOiTdBTuQvUAdS0ccbpedGQlYAsTK8/7Is0lWr1LWF3Ay9kMcxo5og58R3WRbb7ZgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778845911; c=relaxed/simple;
-	bh=IA6oFuJ5AoXVALeoE3z81xeRiIabX4iRJZhmWDJOgao=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LI4UxMi7dGc8gniy1nJJAlRmIFrqfgQ8qUYQt5HIna0q/wiBvzJYmePCOIeCx75TDXjLjMDvgyC8hxnXGPDxclmwMtJFDK7tfNUgCX3PipqJlEcEAaweDPwqINsl67rpBsFiNXEmREnlZpkL3WtmoyeE3aY+WTRY4yyuxqanfWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=njNZLYDk; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1778849089; c=relaxed/simple;
+	bh=D0qkVSYtfJLlZ8TOrEivIn1n5QyAk3fpgbYhnjCMr6s=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=BRLBWMGvFE6ElzI4d6nq8tu16nU/7OO2QASryc0PfuLJgZ2G6VHWTdEkBsXEDnD10PICTnm5SzB99f61zKMCZNJIRygHeP+kw4rCONiijmJuW1h6AlhTshupg8Pf9asrgXcmPsEya7nPZJGOkwtvOvsbHrtayhTEziQRojrP3bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tmtFCt/s; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="njNZLYDk"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64EJ6jZq4193819;
-	Fri, 15 May 2026 11:51:49 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=mpvwHfINL6xOH5ideGCzJ3vk44PHop
-	VrE5MJMjqqR5g=; b=njNZLYDkwAetu7Dslrfq36i0uVhTIKc0iVhwp2rfM2WZGo
-	9QbEP+EHMqKNqjPyzmjkyIfuL7Egp1rDsREZzZKz1Lj7q4ogcjS62Cq3P8nIYbW3
-	YdPPbk3gIZ3BfQBAVDGyuvoDVhBvSE9im6Tz5Oj7TRGdPQFyOhpxiBt/fsI7AHAF
-	xyzO30z3Rb0J2Sfih5IXxncu881uPBbx6DR69xUzZXJqco36jRpEOMQ/o8Pprifo
-	R7XIr4vBcJmICC489wF9vLcmIIzDIAbbMbceZ6CZQolASFrUC4/Q5RrDv1LvPSBU
-	jo2wMyU2yXPpmhewjdCVaXs+LvxZV9HOjqb7weCA==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e5m8y2w4j-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 15 May 2026 11:51:49 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64FBd5Um009796;
-	Fri, 15 May 2026 11:51:48 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e5kvckb03-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 15 May 2026 11:51:48 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64FBpjo840042968
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 15 May 2026 11:51:45 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id E6DBD20043;
-	Fri, 15 May 2026 11:51:44 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 54B6520040;
-	Fri, 15 May 2026 11:51:44 +0000 (GMT)
-Received: from osiris (unknown [9.111.88.167])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Fri, 15 May 2026 11:51:44 +0000 (GMT)
-Date: Fri, 15 May 2026 13:51:42 +0200
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
-        frankja@linux.ibm.com, david@kernel.org, nrb@linux.ibm.com,
-        schlameuss@linux.ibm.com, gra@linux.ibm.com
-Subject: Re: [PATCH v2 5/5] KVM: s390: Properly reset zero bit in PGSTE
-Message-ID: <20260515115142.70445-E-seiden@linux.ibm.com>
-References: <20260512175251.300882-1-imbrenda@linux.ibm.com>
- <20260512175251.300882-6-imbrenda@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tmtFCt/s"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-366344513a3so17226777a91.3
+        for <kvm@vger.kernel.org>; Fri, 15 May 2026 05:44:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1778849087; x=1779453887; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=47Kj2f2F+IbQfpuhTArKbj0jkRV+0wrodEyOzmIpXTk=;
+        b=tmtFCt/s2y0SsLie9k444Aa4RjffaDrYWfdlDhkBZvBCOQn3fuYscZKFTxh1kZ4LRA
+         I455vmrY3Z9E1cBSfJWFQvgvOIQT8ilvgpkAZXNAk7LM0p0W6wRJW3K/H7jDIdiNBBbF
+         I+BWynzsNNeVVdS8wI4IpP8wSxvsM8/EF8PctWvGnL31jl4mfvju3DHtU/Ucc3Xp7j2b
+         SeYZ9sWOBXagcG3u3DBOmRgH/zXu0n7z8sjBVxk1yKRsFFkjUNqu9kw09IGkVfIit00G
+         RelN7dB7bljGSbyI4nTVsje61bvg/60c4Hzlky9UXHtUeHGCLphSHSKvQW9wR2ZHrPWq
+         N7Sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778849087; x=1779453887;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=47Kj2f2F+IbQfpuhTArKbj0jkRV+0wrodEyOzmIpXTk=;
+        b=q+UxlAstmDG7Zek0WBXtHR2KjWrT8mShNvIauj55s37rs7cD3udKI5AGlL315/hPkv
+         Jy8x4TAK52oImEnCVer4KosX3g9Jy1X7lWKCxVuFhGupTwBBcvmGjLuuye6p3dz8Youz
+         8aFYHO794oexyLY9hU34m2KokfFQsfBPA7USrUmUJKjh2lTNVu7Aro418taNlG0bHNy/
+         sjMxxkrDAWM6FGE2pijd0Bo2M3SmUMS9Xz7GRq3nNNr3wyB0y5Ujaou0XDV5iN343IsJ
+         KPzyQtxsCXx6uIfeN5p8ng5w0wdGGQYi/8un4wdGQ2SmXfTxBTCA6+pz0Fw0TVsYMcQs
+         BIwQ==
+X-Gm-Message-State: AOJu0Yz41/WsOs1JTGu8G14eWde5K3uZAxrLAIIZUw53b86idRWUQXU+
+	ptn2pUM5aVw/jYxYSLUNXqQs77ZPGiHrcixGT3Yp1qlQnzZOBusZnGLAXWDao4J3fBjdIeBdmMl
+	2WYh9sA==
+X-Received: from pjbsh4.prod.google.com ([2002:a17:90b:5244:b0:368:9dc2:8e1c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1d8d:b0:35e:3e86:e2d1
+ with SMTP id 98e67ed59e1d1-369519df5d5mr3963391a91.7.1778849086696; Fri, 15
+ May 2026 05:44:46 -0700 (PDT)
+Date: Fri, 15 May 2026 05:44:37 -0700
+In-Reply-To: <20260515111957.4188366-1-imammedo@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260512175251.300882-6-imbrenda@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-GUID: B6NsyhI4p6wytRHiUb1erfj1FUANlBxq
-X-Authority-Analysis: v=2.4 cv=RemgzVtv c=1 sm=1 tr=0 ts=6a0708d5 cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8
- a=9DvXnxvuG7zSzAFeCowA:9 a=CjuIK1q_8ugA:10 a=UzISIztuOb4A:10
- a=VxAk22fqlfwA:10
-X-Proofpoint-ORIG-GUID: B6NsyhI4p6wytRHiUb1erfj1FUANlBxq
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE1MDExNyBTYWx0ZWRfX8a0TRFT5URfi
- c51sOHU3ts9qNfLCHyR1gK083oYTKBVZECGZxsjX07tWFqP40pNByfB5t2vpbO2uBFVednz9sb9
- 8L9PFIi3x/HBA5s9DLTnqATAl05W2jJ0wOHK52poWTDu/rpUXB8q/g2pE9lADITV8cTwEkKzbeB
- HFriSoPzMOxmF8ypeP9eGFK51rM2DvAbCCe7lvkTZkB5HS9ChOmuTvercFK2zkawm5zeoiKFp97
- IdWEl5BTZ7qUVsJ9YdcS3B75cl24LlfUaOTvXIYSWlVDvc1j3+Mn5OAEOu10LrjUwtC8vhfbJU7
- mimyfVxwavT+d7cCNDG37O/cfRknn4A8fxphapRicPN/uUzix6emqBHzn74kgLdbB4Y8XrfgS26
- j8oiU8QDU4o9HHIst09DM2agMi49w2OgkvFpxk+SWnPDUl49FwOxcxYkwvop/3Z4sKpzsd7xyEs
- /mFbvMao674IrprA76Q==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-15_02,2026-05-13_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- lowpriorityscore=0 clxscore=1015 suspectscore=0 adultscore=0
- priorityscore=1501 bulkscore=0 phishscore=0 spamscore=0 impostorscore=0
- malwarescore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
- definitions=main-2605150117
+Mime-Version: 1.0
+References: <20260515111957.4188366-1-imammedo@redhat.com>
+Message-ID: <agcVNezX5lf1_3O7@google.com>
+Subject: Re: [kvm-unit-tests PATCH] x86/svm: work around Virtual VMLOAD/VMSAVE
+ bug on Naples and Rome
+From: Sean Christopherson <seanjc@google.com>
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: kvm@vger.kernel.org, pbonzini@redhat.com, babu.moger@amd.com
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, May 12, 2026 at 07:52:51PM +0200, Claudio Imbrenda wrote:
-> When calling _gmap_ptep_xchg(), always clear the pgste.zero bit. This
-> prevents the page from being accidentally discarded when getting
-> unmapped.
+On Fri, May 15, 2026, Igor Mammedov wrote:
+> AMD Family 17h models 0x00-0x0f (Naples/Zen+) and 0x30-0x3f (Rome/Zen2)
+> have a hardware bug where Virtual VMLOAD/VMSAVE causes spurious VMEXITs
+> on VMLOAD/VMSAVE even with intercepts disabled, when the VMCB physical
+> address as seen by L1 falls in [0x78000000, 0x80000000) range.
+> Reserve this range on affected CPUs so the page allocator would never
+> alocate the VMCB there.
 > 
-> Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+> Given that it's relative old CPUs + nested env + only performance
+> impact, it's not worth fixing on KVM side (which could involve
+> messing with allocator or reallocating VMCB, until it's not
+> in affected range). And since test acts here as L1 it's not possible to fix
+> issue in kernel (L0) anyway. Hence a quirk here, to prevent tests
+> failures where we can't do anything about them.
+> 
+> Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+> ---
+> CCed: AMD folks for awaraness and in case they would be willing
+> to look into fixing issue on CPU side.
 
-Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
+LOL.  Don't hold your breath.  According to AMD, Zen4 erratum 1454 is a firmware
+issue.
 
+https://lore.kernel.org/all/20241105160234.1300702-1-superm1@kernel.org
+
+> there is not official EOL dates on both, but using a newer
+> generation(s) release dates it appears that both are effectively
+> discontinued for ~3-5 yeas
+> ---
+>  x86/svm.c | 22 ++++++++++++++++++++++
+>  1 file changed, 22 insertions(+)
+> 
+> diff --git a/x86/svm.c b/x86/svm.c
+> index a85da905..706ff2ef 100644
+> --- a/x86/svm.c
+> +++ b/x86/svm.c
+> @@ -334,6 +334,21 @@ static void setup_npt(void)
+>  	__setup_mmu_range(pml4e, 0, size, X86_MMU_MAP_USER);
+>  }
+>  
+> +#define VLS_BUG_START	0x78000000ULL
+> +#define VLS_BUG_END	0x80000000ULL
+> +
+> +static bool has_vls_bug(void)
+
+Probably need to be more specific, because there appear to be multiple flavors
+of vls bugs.  :-/
+
+> +{
+> +	u32 sig = cpuid(1).a;
+> +	u32 fam = x86_family(sig);
+> +	u32 model = x86_model(sig);
+> +
+> +	if (fam != 0x17)
+> +		return false;
+> +
+> +	return model <= 0x0f || (model >= 0x30 && model <= 0x3f);
+> +}
+> +
+>  static void setup_svm(void)
+>  {
+>  	void *hsave = alloc_page();
+> @@ -413,6 +428,13 @@ int run_svm_tests(int ac, char **av, struct svm_test *svm_tests)
+>  		return report_summary();
+>  	}
+>  
+> +	if (has_vls_bug()) {
+> +		phys_addr_t addr;
+> +
+> +		for (addr = VLS_BUG_START; addr < VLS_BUG_END; addr += PAGE_SIZE)
+> +			reserve_pages(addr, 1);
+> +	}
+> +
+>  	setup_svm();
+>  
+>  	vmcb = alloc_page();
+> -- 
+> 2.43.0
+> 
