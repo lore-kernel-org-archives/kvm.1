@@ -1,47 +1,47 @@
-Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012065.outbound.protection.outlook.com [52.101.48.65])
+Received: from DM1PR04CU001.outbound.protection.outlook.com (mail-centralusazon11010032.outbound.protection.outlook.com [52.101.61.32])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99003F39E5;
-	Fri, 15 May 2026 22:04:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDE813ED5AD;
+	Fri, 15 May 2026 22:04:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.61.32
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778882654; cv=fail; b=KTTaVUYtso0v8FA3QZklqmJ12Sis48A7e/uHd6bjd4tJdHXXRzj/SFWVWHYUu/1UM0/nvQ7vK4I2WyXFw3lIPPQDlL0aHgfvT3oKFwaqrvQIrWnmW96AVQr5S7Pkjr0+Cg1ZP2W0nWqkicp6KUw6zUprKZXMn48aRW/hTe8NPDM=
+	t=1778882655; cv=fail; b=PhYmQ5D0cMKKwVx8xDIzwCunNRwO3RWVurDetJ6pRPqnWS0lAl6SHZaqz0tWLPA0kM26hRw6RCMkoJt3I+6J0j7d5qMfrC456rLo1m+jFLbTkaKL6GUaSAubKlIyi8K8iWbDECy1qtmtKfs0W2QdM+o0DOJ/A40bIdaU/NrW8ws=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778882654; c=relaxed/simple;
-	bh=TTeUfBsHKghQecswPZj66KjdpRj+H5AcDNrppHNuGNk=;
+	s=arc-20240116; t=1778882655; c=relaxed/simple;
+	bh=4FtgZRIy8qz3wJMvaJWRwcfBRe3ZD/Klp0afJ1HJpHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=lroQ670E2TkVt916IKaoCiyYtPHLM2NQ5pKkRseycPLMVUqmsujCY1ptnNtiuExEYv3wnt57ZYKeWkJuJUNev3hvXgqpQ/LsWfHg9VhLTwD7ugSuk5iIO8pOzOBuVpJcJxtF7r3P8Q+0ByiohywMqrhPB5ACNLUPvCFoH+bahZQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=pBMtCfFj; arc=fail smtp.client-ip=52.101.48.65
+	 Content-Type:MIME-Version; b=V5uNxwPS8uxLF3x4XSUJw3RmQLETkhLnm0HqbczwMpdTG7UJJy0+2Mu6qAEjhJ/0sa+G7f9SdbM3zAO4XhD+CW3daXeKsm6YUdfuMucKvsGf9R9cYVGZuVOU3yRAvgb2XtQ7Pb/Gf730idfLfayyjhrqQ97QFU2rbglffdw6184=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ehk9jVJd; arc=fail smtp.client-ip=52.101.61.32
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="pBMtCfFj"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ehk9jVJd"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=nkw3Om/VVwzBm6CXS2Bdlh0uonPRAdhSutnP6xG7yw+l0ORc8DFk3TVRv7Yv2ZVgM/7WujPkepr7jDXFkgiK6xXoUgdgFcbSl7TT9YoZvrq7xN7kEc1FPbwv0es/YYCNNmdMkOjtW74pVm/PWCx7PwtU3EsLwrvyPvVDxVrvomHD84OfSSqqDxVwL5qkELQHt6dU82OzUsYRoGOTRiyzJBGhs7JQ2G2qY4d+k4C/qgJsSU+LrmBIAGqC0EdZhXswz36HlXAnUVqxQP21Gui75EZuaoDBFcawcPvgUdrUjb7YbCf4+2HT7YL8yHJkPwu2Va0phUE+F+xx5V9xGyJXXA==
+ b=OO9USWd/5NB3MgLLBVAZqSn2Ti6theLYgF6IaFGiW/9AcHuAh3aimG2Ea5I31JUj8IumUKekYSqqxRf3nHWIe3B1wvibbeM1aK1Wkt9vxzfOOgmKqTCRkHol0u2FAsb0fV+BXH83fN/hoZTaiEksL+4fZA5j/4Sfr1fESkw0NDQU9g2/tmzjaXkesBqpN8w7ARRcw51KUJvk5Zp68HeM5AQw67uwKDQ8MY3/Ift+LXeRoEl1mjd0a3BTwa6I2/dqsqTcq0Y6djTR4kHnZiH0zvPAYtXhHzKcD1a2XCzEQv7yjELm9g/XgkmFH7XG2sCuvN7lYCf4PyH/JXd1aMlrxg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7U/2wwq5cRige4V/4jq8NgMKi8fthf+EvwHR3GcfmfE=;
- b=UPVAJV/3ap0NyOjW9gCVLYWjpBLoQPbBi9zeMff/zOTA0I5IgXVFkfGLHyqZlvK/rSuNeyHhhWa0cbfAIVlJa9zO9KM4RHh9dm1MAN4oBrnBBQDnJ3LFtiqvQ5MbQl1eTNTWKe7nQ6jB2CkBHOJT7DIaWOJbaur9bGwCUmdjBUYCDtqAWOxg3aVn288X6X3vZ0aVsQfLBc5ZCGafl9I4Vc7FEwYjKOW3KhW7hAzT0tvWOMnt6IfduAavVjzBkKoZnqwq+MRXvaJmBZVtNWd9Sye8gzL2tmG1A2JqI0soXy8NMvY4tdK7m+3URmUf6J5mHyE0yzQO6gVtaI1SmLJUlw==
+ bh=ag5V/+cYFcEdJbqAdJwLw4nkH3CohYGIIk7VYt+NCvM=;
+ b=OFVf2qYpfOtVKmP+lntedCYts/TeENiQgJ8I4ogLHi3a3Cllv7teapM6DoGGMBpRHFtkRRaI+XvpnpGXJ/pw0yd38uxZNxxqC11f/BTopb/up+yd2dBA4V/3MJc0v3IdqkEhOGP1gcKtZ/IGHSnogyBHO040aclnlIj/LjpFgYTG3Wj8fhJMcAwSo6GLozJTNh5kcTcvLkfG4XMhhhs2vqPqY9o1HUWi4febnyZ6fFiJApv2Piv6w3a1lx4Rz2h9z2a/P+YV27IAvseIiZfFkwSvdvHYeK4g/iRWsEjve5Sps7DzrooWP0xS5TUKUDGlxGkaR/sFiTS7hMZ7+fBPKg==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
  dkim=pass header.d=nvidia.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
  s=selector2;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7U/2wwq5cRige4V/4jq8NgMKi8fthf+EvwHR3GcfmfE=;
- b=pBMtCfFjgmaNOeVuL3tFWpA8n1kA2VVxC6V0RC7AZYkzg2c0EU8nyGH8wfCSh6j6iagDeNs7Y53UzCyfdgtHXzcckrmwKwe+vudlqyzsm6LOiP2J7dS5+pJsiKVW6LjJoenzBveHucZVLfgVXd7YtJ3WKY/TKJBtP3TKK/vjaQ+bd1dCE/aQDxlPmsuwxefJlO+YMz0hFaZsn+UFX9EPBC0m4P+b0rgFRPxaWgY3k9EoZC0NqEdgY+XXBrym5iKbSmW3+nh+n/wclLZi5dGAxyJbJCVIlyjFSa/NW7SQto1k6XusQBAoUicpsb0cNi9I/AWCPXzie7vD7bS4DLxEgg==
+ bh=ag5V/+cYFcEdJbqAdJwLw4nkH3CohYGIIk7VYt+NCvM=;
+ b=Ehk9jVJdYwlj6wJauNqS0dWAUKHV4K6q7q+Qctc8W5I6XlDQAPcQyM2CEp94AyaOaFYtZ1fY0mopgWjPRKStYf/3PBhly95jYEi0io8UjyJqLmemuowFD3FYQjRnDHD7BvHBpAXBf+gcsSoMRuUs81qAN05bbevx5EAkZ30Sn2Wyp0NImelqNRcRYhz5XEHHmBMWMdIZrsCphUnC0cuJd2WaBrYSJKqFE6y9Da753I/qxDjNpKCUseFOZgs/Bg+ZG74AF7P87xD+CkIerpR39b/6qqBPpcR+VV/kW7eNXXPQ3SIVBRRt/r7G3fhUx/I3Ok2jhQqQPTi+CPxqzwBUwg==
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=nvidia.com;
 Received: from LV3PR12MB9411.namprd12.prod.outlook.com (2603:10b6:408:215::20)
  by IA0PR12MB7751.namprd12.prod.outlook.com (2603:10b6:208:430::21) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.20; Fri, 15 May
- 2026 22:04:05 +0000
+ 2026 22:04:06 +0000
 Received: from LV3PR12MB9411.namprd12.prod.outlook.com
  ([fe80::98b7:86de:b69:2a15]) by LV3PR12MB9411.namprd12.prod.outlook.com
  ([fe80::98b7:86de:b69:2a15%4]) with mapi id 15.20.9913.009; Fri, 15 May 2026
- 22:04:05 +0000
+ 22:04:06 +0000
 From: Alex Williamson <alex.williamson@nvidia.com>
 To: jrhilke@google.com
 Cc: Alex Williamson <alex.williamson@nvidia.com>,
@@ -50,9 +50,9 @@ Cc: Alex Williamson <alex.williamson@nvidia.com>,
 	David Matlack <dmatlack@google.com>,
 	linux-kernel <linux-kernel@vger.kernel.org>,
 	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 1/8] selftests/vfio: igb: Use PHY internal loopback on 82576
-Date: Fri, 15 May 2026 16:03:08 -0600
-Message-ID: <20260515220330.565792-2-alex.williamson@nvidia.com>
+Subject: [PATCH 3/8] selftests/vfio: igb: Program MSI-X interrupt routing
+Date: Fri, 15 May 2026 16:03:10 -0600
+Message-ID: <20260515220330.565792-4-alex.williamson@nvidia.com>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260515220330.565792-1-alex.williamson@nvidia.com>
 References: <20260515220330.565792-1-alex.williamson@nvidia.com>
@@ -69,339 +69,196 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LV3PR12MB9411:EE_|IA0PR12MB7751:EE_
-X-MS-Office365-Filtering-Correlation-Id: 259f89c0-5eb2-4772-fa89-08deb2cde11a
+X-MS-Office365-Filtering-Correlation-Id: e0697901-836e-4ebe-b479-08deb2cde217
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam:
 	BCL:0;ARA:13230040|376014|1800799024|366016|18002099003|22082099003|56012099003|11063799003;
 X-Microsoft-Antispam-Message-Info:
-	wzFl3cpCylRJQgR29DyO0+5oQdLwhWTeepKzWIE0safvZzIP3RV3mfMasQY9781Ifwimy5poPXvcl5/8rn79Qwc7B8DVxs+rqB5JZPyjzorgjGuihfmWr42mpfH+yVL+mqu38SejiJdY/mVFzx/gjsv7IHTNtvUnKRAmCCnOK8hQlpdCNzUi0/vC0htURuzu2Xe1/7BoFGZZBSCi37mhlwMfID6rIzFZ51nYS22lomonb2ciAcKBNPaTAzzRw2G8ajhDrRDzHqiPYbKUc6rDBHztBNySXPzT+aPsw1wGzeitGG9TqmfHAypyBSOlBPvFPR53/7ORofz3iMLAF5SMl63+Hodtim0Z6yeZP75h8slH/h/VC14EpqgRnk+e8yEN5XdWEKUQ4BY/9GajV08ffR0pZLoJOvseC383aE4Y3T4N+0WPWI5/HTpwAwfyow35BOPWCoqhyJRfJFSAcVhNAiCbHLLzqb+5bKGpshka1zOswdK0Fk/9bMvZb65q1Dla7KfmnCGV40slGp1vauWhoQXDTnWLFYg8hLXt2/NdYTqKBMEn5+bhKasgW538Q04eUK/Uf6AmYPPvpmeu5JaHhhvSzxAfVL9JCIRLFfVtYWb39dzHLE8949h1esOzpZvbpyReStyDd2hIfTs9s/EszvORvUhE0yv6ersujwJlVdsL+dmQuegYYUkN1zmeD3n6
+	MA3C83+ymdis5erVuR3WBGy1ZotjsA2tJEXHPDqP5c0kkgIUsMtH1qMAuk4LUGC8Ea8cUvEI5TxYBFtcOUrs76Z8rwLlzg5gBAY9Z+AXLmEqXIf+f+wI2ryeIDrTTEvDy7Q/OO5Yw2B86NRY18UIByz93xQg1ctpV1uM+i0nGbtCU7v0eF/zQ3aJyJo9kvdGFYEnGlnqTM7kzDKnjR/E7qcf0xTaiR5quua/r2axTfO4UzMWEg5f9rEe4jiTlt8HcSNZFZYVjlaNXkqYQFx/Sg2eAxms2WKK6dLEHTKD/JKF3joaGJK1LGy1X0R8DtlP0Z+TVZUlJPWvE8/6CbhwYGjPVq29ZWQd2QVi4BsJ9s/tHTUrVfElQElE/gbMpwpgpolRNe4p2WP8wBahXfK8XZQUj9ZkLVZwbZdvyWkHJk0JSEtlYAYqywBrCKEycXXAUQ0sH+db7uYdFpJRkhRygRsXGYzpExc/OVuH3ufdjsZkR4rtr1yykjKO7knhMzIjoFxrWyEGyYLNTdlkIY9EChEkTi0QZ+IJ3Yd9rx8LrU95XtjSpc4coKo3xgy4sQOfKspymLB74QenPgvNKeUoWBP2j4VckoW+6MMwB17eOLM5TBYcYSgxilCZOmf2ZXwhWrI2WyHhscm7DXOXdYSg2sbQsrEuOWDE0WE2eujZuqORpA5zMNCknSDpuKDid+o2
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LV3PR12MB9411.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(18002099003)(22082099003)(56012099003)(11063799003);DIR:OUT;SFP:1101;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?pa/wmA+XdB5Wmip+ve2PI9Hj1p+qtu3J596LzvSp7Rzf8jqk25PFkGjDsi+f?=
- =?us-ascii?Q?DEOUP9iYE28ht9yIDo47oXqIcRBsLH1UqquNdMczgApSTpRj8fds83Cy6Dqd?=
- =?us-ascii?Q?DzYr6Yo/uz2OefUq6TqyXHiltWvYflMrhRyWczns/L/wEZ9bKWPQoLbO1hef?=
- =?us-ascii?Q?S/dzY/igZSAeRsFkV2bgIkGVfuOl5LVMWimbGl+da5+TfUodvwMtZwYMQO4f?=
- =?us-ascii?Q?N/2gscSBoHbJdwScqPlCNxlgNG4xWc9gSWSgG0ccpYnRGT8GQmejSzK9h/Qh?=
- =?us-ascii?Q?Fkx/6WxpJTN45azrmSvHzycL2YVA6/cCnlMxQc2ob33l2q6Ke0cDKTnCUnKE?=
- =?us-ascii?Q?fABDIIiUXWFBLGa0jm5fy9uRBo+C1qfIIMmZ8ue2IxnaH9/IUHvGRl3N5Xzx?=
- =?us-ascii?Q?5nWf8AbNFrcjNqmQaF2/5uv6w/HnWTrwQ9wdsQkfTeUdpTecmsnYrHVJrGoq?=
- =?us-ascii?Q?ZGJ9UVT3V7aF9ofikddpGe7SA1cVPBxXc0PClb2IZmraAJ4cZ1O0m0iCEyfA?=
- =?us-ascii?Q?RSFLUdcTfWgjZ8TcPAN6jsi0Yf603jrE/GA0VFv0aOjAckdCjehkw/ySrIjR?=
- =?us-ascii?Q?eVMvBcftbe6PsWTR/esfEK5b+ltlm1pXEPD6ukatfw0yn8iYt6YKUWXwdh1Z?=
- =?us-ascii?Q?n+Pp+Ei92s3gaGRuG8eR/OKQUMPZqfFPZZ+nWKJ65Xxo1e09mY4i4vZ4mcNy?=
- =?us-ascii?Q?YNKnnOPDS7JYCWF99wY8vW84ZdvH/Nl7ySvRuYPogkM638gtzZmYQmnnUJ36?=
- =?us-ascii?Q?QQ/jIfqAXtXOpgg1g+BngYjCAOUq8IWuNry+uLNYMOtaHIuBqWH65Mex4tj8?=
- =?us-ascii?Q?qdGFeU87yfqYMGHT2fO22ehy1S43jS0VhZZQBLqxf2dhflJSn+qcLZddEnwb?=
- =?us-ascii?Q?m3xeNCG+4muKBB7aR9qSBRec1C+EyxMxPfWOJvH2W3c4A04xAn6XaGg5wmwx?=
- =?us-ascii?Q?8yyTJWAhqA6BQrr5dTpa/pZhz8Xas2LXEDJR32KVTA3wnqXvlIQGqPVzhn57?=
- =?us-ascii?Q?WOu/dUItwi/kPJ7ncw5Pn3lEsaD8PGYUAC5DU0nxF9ODclz8J+xAS69/ORw/?=
- =?us-ascii?Q?0z8gt598lhbLt04v/TDKq/CKG+P+qeW2MrZN0hIGbbLb8kOO3Qeaf5kb6tbD?=
- =?us-ascii?Q?QXKMI0aYzJRy2Tov0VrIy1K4MiKZd3aAj4VZhm3inE9P4JyhklYNzR2H45YR?=
- =?us-ascii?Q?p62wwkEc0UF03sl5QhH+gGiLp4NAz+5SdnGsVfV/dRo/ne7CdJQMMCGxAEEo?=
- =?us-ascii?Q?lgh2q2wqo2QReEmz8TrEgaRwB/I7O6w4axu4R75gxOlOp90H+h4X7TvkcI1x?=
- =?us-ascii?Q?FL2whE2amxA8HToOhhXyjoY1qJsS0fR5PHnwOm74ETVSMetYXzxxJ3rxIEaQ?=
- =?us-ascii?Q?VkA2VEruDgMAbEQwtH5K3uVLPYkP22R9WXHTZA3IkMPGooR9snF7HUjEw33x?=
- =?us-ascii?Q?WDyGU/yFO1H1N9a6twRHUHzOI4eRB+C1TslPLvNSpPZeOijsmli84WW8RPSf?=
- =?us-ascii?Q?Ya409AgLG6C0oGDEDwuRS08CluX5Ld7AZjaH6AWk7pbpMN8qC75XbXnE5xzz?=
- =?us-ascii?Q?Akz+J97xeqviiS/ETY8/c4wUPhYEpRy756nFxkYAThIiNR+BgCZ84W0lmO2K?=
- =?us-ascii?Q?KCxto/yRjqsv1Kb6uIhIAEpqcLtElp/sUUhFKKSqoIPkc507OwfnF92PllzH?=
- =?us-ascii?Q?kFa5eliQTwjgddamdx+GpXY65uuZpEHLqHK2GG/arH1CNRaWoL1x3T34VCAd?=
- =?us-ascii?Q?yXoQLWxmqQ=3D=3D?=
+	=?us-ascii?Q?aCHnuanwKIz08HJY4s1+CAhLARqEU4Kp68GV5vidXe7L+TG4sBMF+bpqEavK?=
+ =?us-ascii?Q?wbpMBULX8uOCbHKAnrMgigvsMRim2lFjswmkAw+JRxxQqzgIaIyZdRqfR1fs?=
+ =?us-ascii?Q?lO8ij0U1G1A33YCGAQ1gZU+U7rGff7lI6wAAKnYD9kmwJe2OnrxZYTVYOSuV?=
+ =?us-ascii?Q?mi367ouFYLDtTRW9fZjUD8M3kq7bURieE3n6LBB9/iGZ+t4B4gxWlLqCZ9Is?=
+ =?us-ascii?Q?nhCOb2iuS7RZOlVuq+2v0qzWFLIy6tvYKa1lJvdy/kM+XYr9ergn+SOfN5wN?=
+ =?us-ascii?Q?UP10DCljB+Z1kZJltDR1vLFGHSJhy/pW4BLr8mMpALe9nTcpNMwGGUfoWyvd?=
+ =?us-ascii?Q?EaBLssj9ICxafqTvD385KVp5dUQdPF38b6tx9yXIqJpeeHkwfncVjdnAH7/F?=
+ =?us-ascii?Q?jAirpR6bmKxPppLgd4vHZ9BQhKg8a6QJgZRo81yEJoXufViM+8m/CksKeS6k?=
+ =?us-ascii?Q?jah6nvIicQgFby5ZS6E4XCuousPSDwc8QlILbPOc+qHyGfUXI+FRU8RsZ5ZL?=
+ =?us-ascii?Q?IOUA+JXCtkanWF/aHAorsh/k48JkbwKXRmlJZC94nAVQmqWML7RXTR85wRYq?=
+ =?us-ascii?Q?t7m1qM2+stGhSQ418OKWmbZLFJidD4f5PLb+80lDc5GRiAiSvHb0P0WpPcEk?=
+ =?us-ascii?Q?RmgUASEnDf7Hc323Vy+h/Puawraqmpl7UZU9zaGFDIb2VCUj5NQhU5cLjQrv?=
+ =?us-ascii?Q?tsnfJKSbusWAJWZfiTg0Dn5CGD8kBolZESY/YoZDz+EaBcF4dIvTCRPNwpGc?=
+ =?us-ascii?Q?AmhmyRCQu9jbInA/HghI6eM85Re2MQmmDYo6VchpAPwMuUOoZ8wOZFWld6e8?=
+ =?us-ascii?Q?33Nj61/itvBbZ/d6SYaapyvGb33FV/CK/cPwd4QPuGNaLT6B/WDfb+DJwzZL?=
+ =?us-ascii?Q?yojQSrKZHesNeStydCNmEiDlxJSx42767HQz1j37WHBLZo/oc0u6+yJpMWgz?=
+ =?us-ascii?Q?eNean/X2ScXGdJ5Ov+pjJlg+j5uRxun9oP6QHrdZ7qmaKiFNtzEzcT6hLpaD?=
+ =?us-ascii?Q?JKyP5grsa5C95tYkXTXurJKiEPhm5/zgP2myNCzEktezL+pYIWNLBpFbzPu5?=
+ =?us-ascii?Q?lUXDg7xhajYUsR9eyHi0R9quXnTzQlO5KNFgfbMIeBf2OZyBujCnxez6DuSx?=
+ =?us-ascii?Q?uL0e2g12eywPVi2WMV9eT35OFuTS/T5V31kX/9YC/UCOCETPWofUfNu5nGYC?=
+ =?us-ascii?Q?7UZWUFTfsWphl8rsEbJxN3cOk2xxh4VNw1eb2R/oxZTSWwwbcnxLLaFbyPfn?=
+ =?us-ascii?Q?uMHDtRFBxGc7RK9QQ57MqTDsiMj9YkX0RuIg9Qd+cUaXzl9sb6+++MBqzaP1?=
+ =?us-ascii?Q?PR536TaOZpJUwqaZLR/gXhoamTFd+HzOfuzfTwVi7oyW6bPa/VcPaQH80Y8O?=
+ =?us-ascii?Q?OWIaghpWkFqyMKssRhz8cctH7MbwiLTBaqpT9czFl+TMw/JAcA1zgrVZg2bY?=
+ =?us-ascii?Q?I2qcAHVFUJhytCbTTSgQSaQaU772H8N2Ie4iamXdbPzAVJ23v5//2ZtRYflO?=
+ =?us-ascii?Q?OKJ5bI4PJhs5LakL6k9hoinXRXThsffl2+J6WTezHJPViV/ZwuxZAoJOS3ij?=
+ =?us-ascii?Q?gq7owIqBgkE22wFXkn51hzRpPKuNm5X/4EPjFmtgeGB0JwT2mU/Hf/oIZUxS?=
+ =?us-ascii?Q?R6nXIvf9Sukv9SsYQnntoM28z5NiStN+8sMz5ZLIHlnHWp4TmYnK8YLZWlSs?=
+ =?us-ascii?Q?Cox9n92RbtryQmPwi6j0vykC5QvxURGRFGIo2yPydznJAdaM5Ka+UyWhPD0Y?=
+ =?us-ascii?Q?h9rZOJCUPg=3D=3D?=
 X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 259f89c0-5eb2-4772-fa89-08deb2cde11a
+X-MS-Exchange-CrossTenant-Network-Message-Id: e0697901-836e-4ebe-b479-08deb2cde217
 X-MS-Exchange-CrossTenant-AuthSource: LV3PR12MB9411.namprd12.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2026 22:04:04.9297
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 May 2026 22:04:06.5891
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: E4NkbD5GUi8TzYlpR9n3Iek6/Wd8/9c0e9FBs9vgBDOsjYjd+bcYTG6vxTvzIiOfkmWY4j9n6KzF4KDOeL+XmA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: gcmHmKUdLxfDhecL3CPocvAQUFg51bbhclAZj7kisysLOKghTo329aOCDevYT+r8Rli+XMTcM6M1P3HQslSazg==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR12MB7751
 
-The submitted driver waits for PHY autonegotiation and then enables MAC
-loopback via RCTL.LBM_MAC.  QEMU's emulated igb tolerates this, but the
-82576 datasheet rejects the MAC loopback path on real hardware:
+The submitted driver writes only GPIE.EIAME (with a register value of
+0x10, which is actually GPIE.Multiple_MSIX, bit 4) and clears EICR by
+reading it.  On QEMU this works because the emulated loopback path is
+synchronous and EICR is implemented as read-to-clear unconditionally.
+Real 82576 hardware needs the full MSI-X programming sequence.
 
-  Section 3.5.6.1 (Loopback Support / General): "Use PHY Loopback
-  instead of MAC Loopback on the 82576."
+Per 82576 datasheet section 7.3.2.11 Table 7-47, MSI-X mode requires:
 
-  Section 3.5.6.2 (MAC Loopback): "MAC Loopback is not used on this
-  device."
+  GPIE.Multiple_MSIX (bit 4): route causes through IVAR.
+  GPIE.EIAME (bit 30): apply EIAM on MSI-X assertion.  Without EIAME,
+    section 7.3.2.11 specifies EIAM only takes effect on EICR
+    read/write, which is not the path used here.
 
-  Section 3.5.6.3.1 (Setting the 82576 to PHY loopback Mode): set PHY
-  control register bits 8 (duplex), 14 (loopback), clear bit 12
-  (autoneg enable), set the speed via bits 6 and 13.  For 1Gb/s the
-  register value is 0x4140.
+Configure auto-clear and auto-mask for vector 0:
 
-  Section 8.10.1 (RCTL register): "When using the internal PHY, LBM
-  should remain set to 00b and the PHY instead configured for
-  loopback through the MDIO interface."
+  EIAC (section 8.8.5): auto-clear of EICR cause bit on MSI-X assertion.
+  EIAM (section 8.8.6): with EIAME set, auto-mask of EIMS on MSI-X
+    assertion.  This guarantees one interrupt per memcpy batch and
+    prevents repeat delivery if the cause re-asserts before EIMS is
+    restored.
 
-Replace igb_phy_setup_autoneg() with igb_setup_loopback() which:
+Replace the read-to-clear of EICR with write-to-clear.  Section 8.8.5
+states "If any bits are set in EIAC, the EICR register should not be
+read", and section 7.3.4.3 cautions against read-to-clear in MSI-X
+mode in general.  Write-to-clear (section 7.3.4.2) is unconditional.
 
-  - writes PHY register 0 with LOOPBACK | SPEED_1000 | FULL_DUPLEX
-  - forces the MAC into 1Gb/s full duplex via CTRL.FRCSPD, CTRL.FRCDPX,
-    CTRL.SPD_1000, CTRL.FD, CTRL.SLU; without forcing the MAC link
-    state, the descriptor engine does not run on real hardware
-
-PHY internal loopback (section 3.5.6.3) wraps data at the end of the
-PHY datapath before the MDI, so the physical link state and cable
-speed are irrelevant.  This matches the kernel ethtool selftest path
-in igb_integrated_phy_loopback()
-(drivers/net/ethernet/intel/igb/igb_ethtool.c).
-
-QEMU's igb emulation drives STATUS.LU exclusively from its autoneg-done
-timer or a network-backend link-state change; the guest cannot set
-STATUS.LU through CTRL.SLU.  Its receive path checks STATUS.LU
-(e1000x_hw_rx_enabled in hw/net/e1000x_common.c) and drops every
-loopback frame until LU is set.  Issue a one-shot autoneg-restart PHY
-write at the top of igb_setup_loopback() to kick the timer; the
-subsequent PHY write clears autoneg-enable, so on real hardware
-autoneg never starts and the write is a no-op.
-
-QEMU's igb also does not honor PHY register 0 bit 14 (PHY internal
-loopback) and relies on RCTL.LBM_MAC to wrap TX descriptors back to
-the RX queue.  Datasheet 8.10.1 advises that LBM remain 00b when
-using the internal PHY, but empirically setting LBM_MAC has no
-observable effect on real 82576 (MAC loopback is not implemented per
-3.5.6.2), so set it alongside PHY loopback as the actual loopback
-mechanism under QEMU.  With these two QEMU-only accommodations the
-selftest works in both environments without environment-specific code
-paths.
-
-The submitted driver also wrote bit 14 (link disable) to PHY register
-16 (port control).  Datasheet 3.5.6.3.1 describes this as required for
-10/100Mb/s but explicitly "not a must for 1G", and the kernel ethtool
-selftest omits it.  It is dropped here.  Flagging the removal in case a
-future regression bisects to this commit.
-
-Remove igb_read_phy() and the PHY status macros it served, which become
-unused: IGB_PHY_STATUS_REG_OFFSET, IGB_PHY_STATUS_AN_COMP.  Keep
-IGB_PHY_CTRL_AN_ENABLE and IGB_PHY_CTRL_AN_RESTART for the QEMU-only
-autoneg kick; add the PHY ctrl loopback and CTRL force-link macros.
+Replace the magic '1' values written to EIMS/EIMC with IGB_EICR_VEC0,
+add the GPIE/EIAC/EIAM macros, and drop the wrong-valued IGB_GPIE_EIAME
+macro (the new definition lives next to IGB_GPIE_MULTIPLE_MSIX).
 
 Assisted-by: Claude:claude-opus-4-7
 Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
 ---
- .../selftests/vfio/lib/drivers/igb/igb.c      | 126 ++++++++++--------
- .../vfio/lib/drivers/igb/registers.h          |  26 ++--
- 2 files changed, 89 insertions(+), 63 deletions(-)
+ .../selftests/vfio/lib/drivers/igb/igb.c      | 40 ++++++++++++++++---
+ .../vfio/lib/drivers/igb/registers.h          |  9 ++++-
+ 2 files changed, 41 insertions(+), 8 deletions(-)
 
 diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-index 13c8429784ac..ce2e2c90315e 100644
+index 594e51ba29f5..d44a08a36171 100644
 --- a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
 +++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-@@ -98,61 +98,71 @@ static int igb_write_phy(struct igb *igb, uint32_t offset, uint16_t data)
- 	return 0;
- }
+@@ -275,11 +275,32 @@ static void igb_init(struct vfio_pci_device *device)
+ 	/* Enable MSI-X with 1 vector for the test */
+ 	vfio_pci_msix_enable(device, MSIX_VECTOR, 1);
  
--static int igb_read_phy(struct igb *igb, uint32_t offset, uint16_t *data)
-+/*
-+ * Configure the device for PHY internal loopback per 82576 datasheet
-+ * section 3.5.6.3.1.  Force the PHY to 1Gb/s full duplex with loopback
-+ * enabled, then force the MAC link state to match.  Internal loopback
-+ * wraps data at the end of the PHY datapath (section 3.5.6.3), so the
-+ * physical link state is irrelevant.
-+ *
-+ * Section 3.5.6.1 directs to "Use PHY Loopback instead of MAC Loopback
-+ * on the 82576", and section 3.5.6.2 states "MAC Loopback is not used
-+ * on this device."  RCTL.LBM_MAC is still set elsewhere as a QEMU-only
-+ * accommodation; see the RCTL programming in the caller for the
-+ * rationale.
-+ */
-+static int igb_setup_loopback(struct igb *igb)
+-	/* Enable auto-masking of interrupts to avoid storms without a real ISR */
+-	igb_write32(igb, IGB_GPIE, IGB_GPIE_EIAME);
++	/*
++	 * Program MSI-X interrupt routing per 82576 datasheet:
++	 *
++	 * GPIE (section 7.3.2.11, Table 7-47): set Multiple_MSIX (bit 4) to
++	 * route interrupt causes through IVAR mapping, and EIAME (bit 30)
++	 * to apply EIAM on MSI-X assertion (without EIAME, EIAM only
++	 * applies on EICR read/write).
++	 *
++	 * EIAC (section 8.8.5): enable auto-clear of EICR for vector 0.
++	 * Without auto-clear the cause stays set after delivery and the
++	 * test can see spurious interrupts on the next memcpy batch.
++	 *
++	 * EIAM (section 8.8.6): enable auto-mask of EIMS for vector 0 on
++	 * MSI-X assertion (effective because EIAME is set), so a single
++	 * interrupt is delivered per memcpy batch even if the cause
++	 * re-asserts before software re-enables the mask.
++	 *
++	 * IVAR (section 7.3.1.2, register definition in 8.8.13): map RX
++	 * cause 0 to MSI-X vector 0 and mark the entry valid.
++	 */
++	igb_write32(igb, IGB_GPIE, IGB_GPIE_MULTIPLE_MSIX | IGB_GPIE_EIAME);
++	igb_write32(igb, IGB_EIAC, IGB_EICR_VEC0);
++	igb_write32(igb, IGB_EIAM, IGB_EICR_VEC0);
+ 
+ 	/* Enable interrupts on vector 0 */
+-	igb_write32(igb, IGB_EIMS, 1);
++	igb_write32(igb, IGB_EIMS, IGB_EICR_VEC0);
+ 
+ 	/* Map vector 0 to interrupt cause 0 and mark it valid */
+ 	igb_write32(igb, IGB_IVAR0, IGB_IVAR_VALID);
+@@ -305,17 +326,24 @@ static void igb_remove(struct vfio_pci_device *device)
+ 
+ static void igb_irq_disable(struct igb *igb)
  {
--	uint32_t mdic;
--	int i;
--
--	mdic = ((offset << IGB_MDIC_REG_SHIFT) |
--		(1 << IGB_MDIC_PHY_SHIFT) |
--		IGB_MDIC_OP_READ);
--
--	igb_write32(igb, IGB_MDIC, mdic);
--
--	for (i = 0; i < 1000; i++) {
--		usleep(50);
--		mdic = igb_read32(igb, IGB_MDIC);
--		if (mdic & IGB_MDIC_READY)
--			break;
--	}
--
--	if (!(mdic & IGB_MDIC_READY))
--		return -1;
--
--	if (mdic & IGB_MDIC_ERROR)
--		return -1;
--
--	*data = (uint16_t)mdic;
--	return 0;
--}
--
--static int igb_phy_setup_autoneg(struct igb *igb)
--{
--	int timeout_ms = 1000;
--	bool success = false;
--	uint16_t phy_status;
-+	uint32_t ctrl;
- 	int ret;
--	int i;
- 
--	/* Trigger auto-negotiation */
-+	/*
-+	 * Kick the autoneg machinery solely to bring STATUS.LU up under
-+	 * QEMU's igb emulation: QEMU only updates STATUS.LU via its
-+	 * autoneg-done timer, and without LU set its receive path
-+	 * (e1000x_hw_rx_enabled) drops every loopback frame.  On real
-+	 * hardware autoneg cannot complete before the next PHY write
-+	 * below clears the autoneg-enable bit, so this is effectively a
-+	 * no-op there.
-+	 */
-+	(void)igb_write_phy(igb, IGB_PHY_CTRL_REG_OFFSET,
-+			    IGB_PHY_CTRL_AN_ENABLE | IGB_PHY_CTRL_AN_RESTART);
-+
-+	/* PHY control: loopback + 1Gb/s full duplex, autoneg disabled. */
- 	ret = igb_write_phy(igb, IGB_PHY_CTRL_REG_OFFSET,
--			    IGB_PHY_CTRL_AN_ENABLE | IGB_PHY_CTRL_RESTART_AN);
-+			    IGB_PHY_CTRL_LOOPBACK |
-+			    IGB_PHY_CTRL_SPEED_1000 |
-+			    IGB_PHY_CTRL_FULL_DUPLEX);
- 	if (ret)
- 		return ret;
- 
--	for (i = 0; i < timeout_ms; i++) {
--		if (igb_read_phy(igb, IGB_PHY_STATUS_REG_OFFSET, &phy_status) == 0) {
--			success = !!(phy_status & IGB_PHY_STATUS_AN_COMP);
--			if (success)
--				break;
--		}
--		usleep(1000);
--	}
--
--	if (!success) {
--		printf("igb: Auto-negotiation did not complete in time\n");
--		return -ETIMEDOUT;
--	}
-+	/*
-+	 * Brief delay before forcing the MAC, mirroring the kernel ethtool
-+	 * selftest in igb_integrated_phy_loopback().  Not specified by the
-+	 * datasheet, but empirically required by the kernel driver.
-+	 */
-+	usleep(50000);
-+
-+	/*
-+	 * Force the MAC to 1Gb/s full duplex with link up.  Without forcing
-+	 * the link state the descriptor engine does not run, since the chip
-+	 * normally waits for a real negotiated link.
-+	 */
-+	ctrl = igb_read32(igb, IGB_CTRL);
-+	ctrl &= ~IGB_CTRL_SPD_SEL;
-+	ctrl |= IGB_CTRL_FRCSPD |
-+		IGB_CTRL_FRCDPX |
-+		IGB_CTRL_SPD_1000 |
-+		IGB_CTRL_FD |
-+		IGB_CTRL_SLU;
-+	igb_write32(igb, IGB_CTRL, ctrl);
-+
-+	/*
-+	 * Settling delay matching the kernel ethtool selftest's msleep(500)
-+	 * at the tail of igb_integrated_phy_loopback().  Not specified by
-+	 * the datasheet; empirical, and inherited from the kernel driver.
-+	 */
-+	usleep(500000);
- 
- 	return 0;
+-	igb_write32(igb, IGB_EIMC, 1);
++	igb_write32(igb, IGB_EIMC, IGB_EICR_VEC0);
  }
-@@ -203,8 +213,8 @@ static void igb_init(struct vfio_pci_device *device)
- 		vfio_pci_config_writew(device, PCI_COMMAND, cmd_reg);
- 	}
  
--	/* Trigger autonegotiation. This enables IGB to transmit data. */
--	if (igb_phy_setup_autoneg(igb))
-+	/* Configure PHY internal loopback for testing. */
-+	if (igb_setup_loopback(igb))
- 		return;
+ static void igb_irq_enable(struct igb *igb)
+ {
+-	igb_write32(igb, IGB_EIMS, 1);
++	igb_write32(igb, IGB_EIMS, IGB_EICR_VEC0);
+ }
  
- 	/* Configure TX and RX descriptor rings */
-@@ -231,10 +241,22 @@ static void igb_init(struct vfio_pci_device *device)
- 		usleep(10);
- 	}
- 
--	/* Enable Receiver and Transmitter */
+ static void igb_irq_clear(struct igb *igb)
+ {
+-	igb_read32(igb, IGB_EICR);
 +	/*
-+	 * Enable Receiver and Transmitter.  RCTL.LBM_MAC is set in addition
-+	 * to PHY loopback as a QEMU-only accommodation: QEMU's emulated igb
-+	 * does not honor PHY register 0 bit 14 (PHY internal loopback) and
-+	 * relies on RCTL.LBM_MAC to wrap TX descriptors back to the RX
-+	 * queue.  Datasheet 8.10.1 (RCTL register) advises "When using the
-+	 * internal PHY, LBM should remain set to 00b", so setting LBM_MAC
-+	 * here deviates from datasheet guidance; empirically the bit has
-+	 * no observable effect on real 82576 hardware because MAC loopback
-+	 * is not implemented (datasheet 3.5.6.2).  Setting both lets the
-+	 * selftest work on both real hardware and QEMU without conditional
-+	 * code paths.
++	 * Use write-to-clear (datasheet 7.3.4.2).  In MSI-X mode with EIAC
++	 * programmed, section 8.8.5 explicitly states "If any bits are set
++	 * in EIAC, the EICR register should not be read", which rules out
++	 * the read-to-clear path in 7.3.4.3.  Bits not in EIAC are still
++	 * cleared by writing 1.
 +	 */
- 	rctl = IGB_RCTL_EN |       /* Receiver Enable */
- 	       IGB_RCTL_UPE |      /* Unicast Promiscuous (for dummy MAC) */
--	       IGB_RCTL_LBM_MAC |  /* MAC Loopback Mode */
-+	       IGB_RCTL_LBM_MAC |  /* MAC Loopback - for QEMU emulation only */
- 	       IGB_RCTL_SECRC;     /* Strip CRC (needed for memcmp) */
- 	igb_write32(igb, IGB_RCTL, rctl);
- 	igb_write32(igb, IGB_TCTL, IGB_TCTL_EN);
++	igb_write32(igb, IGB_EICR, 0xFFFFFFFF);
+ }
+ 
+ static void igb_memcpy_start(struct vfio_pci_device *device, iova_t src,
 diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/registers.h b/tools/testing/selftests/vfio/lib/drivers/igb/registers.h
-index d2d402c9bd57..c00b5ae83ccb 100644
+index c44788642522..139f1c2e6fdd 100644
 --- a/tools/testing/selftests/vfio/lib/drivers/igb/registers.h
 +++ b/tools/testing/selftests/vfio/lib/drivers/igb/registers.h
-@@ -36,7 +36,13 @@
+@@ -78,12 +78,18 @@
+ #define IGB_VMOLR_BAM 0x08000000 /* Broadcast Accept Mode */
+ #define IGB_RAH_POOL_1 0x00040000 /* Pool 1 assignment */
  
- /* Control Bit Definitions */
- /* CTRL */
--#define IGB_CTRL_RST BIT(26) /* Device Reset */
-+#define IGB_CTRL_FD		BIT(0)  /* Full Duplex */
-+#define IGB_CTRL_SLU		BIT(6)  /* Set Link Up */
-+#define IGB_CTRL_SPD_SEL	(3 << 8) /* Speed Select Mask */
-+#define IGB_CTRL_SPD_1000	(2 << 8) /* Force 1000 Mb/s */
-+#define IGB_CTRL_FRCSPD		BIT(11) /* Force Speed */
-+#define IGB_CTRL_FRCDPX		BIT(12) /* Force Duplex */
-+#define IGB_CTRL_RST		BIT(26) /* Device Reset */
- #define IGB_CTRL_EXT_LINK_MODE_MASK (3 << 22)
+-#define IGB_EIMS 0x01524 /* Extended Interrupt Mask Set */
+ #define IGB_EICS 0x01520 /* Extended Interrupt Cause Set */
++#define IGB_EIMS 0x01524 /* Extended Interrupt Mask Set */
+ #define IGB_EIMC 0x01528 /* Extended Interrupt Mask Clear */
++#define IGB_EIAC 0x0152C /* Extended Interrupt Auto Clear */
++#define IGB_EIAM 0x01530 /* Extended Interrupt Auto Mask Enable */
++#define IGB_EICR_VEC0 BIT(0) /* MSI-X cause/vector 0 */
+ #define IGB_CTRL_GIO_MASTER_DISABLE BIT(2) /* GIO Master Disable */
+ #define IGB_STATUS_GIO_MASTER_ENABLE BIT(19) /* GIO Master Enable */
+ #define IGB_GPIE 0x01514 /* General Purpose Interrupt Enable */
++/* GPIE fields per 82576 datasheet section 7.3.2.11, Table 7-47 */
++#define IGB_GPIE_MULTIPLE_MSIX BIT(4)  /* Multi-vector MSI-X mode */
++#define IGB_GPIE_EIAME         BIT(30) /* Apply EIAM on MSI-X assertion */
+ #define IGB_TXDCTL0_Q_EN BIT(25) /* Transmit Queue Enable */
+ #define IGB_RXDCTL0_Q_EN BIT(25) /* Receive Queue Enable */
+ #define IGB_MRQC 0x05818 /* Multiple Receive Queues Command */
+@@ -101,7 +107,6 @@
+ #define IGB_PHY_CTRL_FULL_DUPLEX	0x0100 /* bit 8 */
+ #define IGB_PHY_CTRL_LOOPBACK		0x4000 /* bit 14 */
  
- /* CTRL_EXT */
-@@ -46,7 +52,7 @@
- #define IGB_RCTL_EN BIT(1) /* Receiver Enable */
- #define IGB_RCTL_UPE BIT(3) /* Unicast Promiscuous Enabled */
- #define IGB_RCTL_LPE BIT(5) /* Long Packet Reception Enable */
--#define IGB_RCTL_LBM_MAC BIT(6) /* Loopback Mode - MAC */
-+#define IGB_RCTL_LBM_MAC BIT(6) /* Loopback Mode - MAC (set as QEMU-only accommodation) */
- #define IGB_RCTL_SECRC BIT(26) /* Strip Ethernet CRC */
- 
- /* TCTL */
-@@ -83,15 +89,13 @@
- #define IGB_MDIC_READY BIT(28) /* MDI Data Ready */
- #define IGB_MDIC_ERROR BIT(29) /* MDI Error */
- 
--#define IGB_PHY_CTRL_REG_OFFSET 0
--#define IGB_PHY_STATUS_REG_OFFSET 1
--#define IGB_PHY_STATUS_AN_COMP 0x0020 /* Auto-negotiation complete */
--#define IGB_PHY_CTRL_AN_ENABLE 0x1000 /* Auto-Negotiation Enable */
--#define IGB_PHY_CTRL_RESTART_AN 0x0200 /* Restart Auto-Negotiation */
--
--#define IGB_PHY_AUTONEG_ADV_REG_OFFSET 4 /* Auto-Negotiation Advertisement */
--#define IGB_PHY_1000T_CTRL_REG_OFFSET 9 /* 1000Base-T Control */
--#define IGB_CR_1000T_FD_CAPS 0x0200 /* Advertise 1000 Mbps Full Duplex */
-+/* PHY register 0 (Control), per 82576 datasheet section 3.5.6.3.1 */
-+#define IGB_PHY_CTRL_REG_OFFSET		0
-+#define IGB_PHY_CTRL_AN_RESTART		0x0200 /* bit 9 */
-+#define IGB_PHY_CTRL_AN_ENABLE		0x1000 /* bit 12 */
-+#define IGB_PHY_CTRL_SPEED_1000		0x0040 /* bit 6 set, bit 13 clear */
-+#define IGB_PHY_CTRL_FULL_DUPLEX	0x0100 /* bit 8 */
-+#define IGB_PHY_CTRL_LOOPBACK		0x4000 /* bit 14 */
- 
- #define IGB_GPIE_EIAME 0x10 /* Extended Interrupt Auto Mask Enable */
+-#define IGB_GPIE_EIAME 0x10 /* Extended Interrupt Auto Mask Enable */
  #define IGB_IVAR_VALID 0x80 /* Valid bit for IVAR register */
+ 
+ /*
 -- 
 2.51.0
 
