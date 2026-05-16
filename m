@@ -1,229 +1,262 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676C92F7EFE
-	for <kvm@vger.kernel.org>; Sat, 16 May 2026 07:42:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD073D649F
+	for <kvm@vger.kernel.org>; Sat, 16 May 2026 11:53:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778917365; cv=none; b=Vmdq/C3HJlODTu7AZEau/RsjMJIiWpAQQ68QcA5n5K0AmWhuNB/Rro9gbxQbOmCWweETiCnwPdt4tLF983xkGlZmUkSJai3YO8FWME6Dy4mGpLZyjlHxsGPz4yJg03IDkTRICKlJKX7DLWzI9PELMXP84M9cDeXgqpikC4HGSAM=
+	t=1778932415; cv=none; b=h3MXb756DfGAk1v70HoOT0cXeC/gnAO3ynnCFmhecQDWtTkXOJlBQYABfQ3DHokhZOLB8QJ99n029Q94SvvojZH3sWUgylRIPpt1afhGn55W58M70geGVUN54PmR6vseICUiM/xhEZ17WFNPUYSG8koR0a9hxEeuT60IJyAXeiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778917365; c=relaxed/simple;
-	bh=fjfgd+v14zGBl7L8xu1eqInSO4/HBRf2Tumh7X99mpM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lhMdPB0J10dDCqUWcikuSUFLuLx96Db7Z0WADm/nm9qu82qOLdJMouSLhfUOdE/hU6QNg1Id/aGFXEKp/M+Z9P8NMgsTCIfgYpWnl3hePp1/CRNeOV6eMY42TVv3eJAcDfl5fHo2oCxPF3fiWRtKv9Tu0NTllOPSK9GaSrz7+So=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y4yle8AB; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1778932415; c=relaxed/simple;
+	bh=F7j14MGWg5MpaTs46ixVgM5+KDomqLpuWcEipt69nvI=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GNwlwEpWKDuZIcTpM7pcmmy1KZJdh6HXBdLSJVg8mfN01nnscrQrqm+aQaawOrE/M8AfcJ/p2syrxzbqBj+EHg6KxI7V8QWSCFCVpPHCcsfr0577wBldQhqxMb9SEGyZXWIQXBY3XjG2olxlyWo1cBSJguOt2owrhyzA8xXctTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TTwzhsR5; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y4yle8AB"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1778917362;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=ZuYuwk7J/15Ge1PYKnSZO6EKNDeWPqqx6skfRaS0DUA=;
-	b=Y4yle8ABpHncRfbAYwgDeECEjKnVSAGjBsC54sB/92rJi0m7+j+xcewE34gbVa6nsajkKR
-	Z6Z+jdPc88uHC3r1JJQw4GmmD20DI9kCCYbQ0/bFUx5Y7k3gc/JCqZ81wjIke21z/VC31E
-	eNBWIA5AfmjSBjxVoY+YF1BqOTmg/UA=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-111-C2qozkjxOF6c4Hglw-NMVQ-1; Sat,
- 16 May 2026 03:42:38 -0400
-X-MC-Unique: C2qozkjxOF6c4Hglw-NMVQ-1
-X-Mimecast-MFC-AGG-ID: C2qozkjxOF6c4Hglw-NMVQ_1778917355
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 39F2518005B2;
-	Sat, 16 May 2026 07:42:34 +0000 (UTC)
-Received: from [10.44.32.24] (unknown [10.44.32.24])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0353F180034E;
-	Sat, 16 May 2026 07:42:22 +0000 (UTC)
-Message-ID: <3cb683b4-973a-4b3e-a5d5-a8baa8a70eb0@redhat.com>
-Date: Sat, 16 May 2026 09:42:19 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TTwzhsR5"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-45ae6a0e523so302154f8f.1
+        for <kvm@vger.kernel.org>; Sat, 16 May 2026 04:53:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1778932412; x=1779537212; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GMsYPxsGdmOZu2bUf9upWSruFK/hZRv7KGPN8jXsIdE=;
+        b=TTwzhsR5nBzuTE33a4WAvIiwr/EV+I1TVkybF8WTUoYUierI7qMv6v9zrehsSQ6eIS
+         d5J7nnW80F8TPiYRlB5IG4XsvHMyNuAK4pL00yBRNxIrAtHgkCK0foHx1jqkDCKmQ9Fd
+         O7faNAbFNfs/TBuMmiIfnSixME52ODqs2ofPDOSn645g0Mn9fnUV+qkNlilsig2TMYC+
+         VpXjTRaJXZKGPkEntwW+XZGUYb7x0UESFJlrCY0jdA74Kvt/qZ0EpHz5e+RNp3Ec5cMW
+         ZIiS7nf/w0Ks9GI2EsN9wn8Hbr7UBgOslrM7Yfyh1qTf/IYHk6lAP0pKdgklS7VlZ3di
+         u9kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1778932412; x=1779537212;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GMsYPxsGdmOZu2bUf9upWSruFK/hZRv7KGPN8jXsIdE=;
+        b=iDooY+7YkUVrED+lmqLmuU2k4bezuE9QvtgLjZVKV5bTKXzoF8rBaRo8HKdi43Vymu
+         c9F0P+PLmjBX1dbsayCsW84Otfsm+zqBntVdfSl1AQcGLVpk4BrMCQwvRJ7tv5psF4qr
+         N1sQVHx15dOuoKa/ybfiu7XSuEL0XRTZ6onF38gzrdqkpJzT1OeZ0FGFbLE1NjNwixng
+         b5X2SWmDkybx9kMPt8V6w48xMy/xLwL5F+4eJwlpkVPYOUuaqY3t0MyNo+b3OcYS3LoQ
+         KwdEXQzl/+Orhqn3nMxqn4SCUKNjkSJT9B63c1rvDlu+oYSQlnFKZYSJqrLKeD+KkcEm
+         u4RQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+FFyOc89hFJZVW7vaIpGdd+fp0ocQlFVwgE/mrHe9GMO+dpWyF6IG2QtiHwOKx7nJ+F/Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6SkRN9aglSlVxIFbi5sw3PhksG4Vab/QXPG7XtseYL0mPY4pq
+	Xeyyq4KaF4INun+2sNh2knJh0m1OCIRSqaJty5GAojPCOLJv5VW8XOUV
+X-Gm-Gg: Acq92OEKCcEjppG4GlfaUoCoqNc7/RcMmhJv6h7Qo1fcmh7ijz4LgvcPqXicmS7OyiM
+	QXMOtxuLjKShejVuwAiwVI74gNcHTtgskdWPryzDiPfgCqCCyLJsGhqF2jSAqRMiflnqqf4lP2+
+	bkZb8iG1kwQa0yhfcaHDBbHYkhL/hwwUNeM2mMdBy9HoTv355XBpxae3/5pa8TJhwLugSbfo4K/
+	wiGa5XpxG/QXOWWKvf9UTCMdW/5x1W62MzWHVHEQloiR0tBU/WV3WSUFEaFAH0u43PB4MOrTP/o
+	Zvkuv2gZxoczJj7r4dvUsZbeSI8tHeJWNC3zQHytL83ufQstjP04WZtRgohoDLl4mUfXdBMENTR
+	nLOrWgF3UFP042dEIzuu5JvLydFH7r9h66LlMXaHcSuVI6NoGKL2YjPJjamhC9WtUMsAkH/X3pU
+	hg8pCq9BknOTS/NE3DLz7ePZ+naBWfe7GeipUT1IGHelabSlorReb1l/gHyBmN
+X-Received: by 2002:a05:6000:288e:b0:45d:7bf0:c7d3 with SMTP id ffacd0b85a97d-45e5c37122emr10808299f8f.19.1778932411691;
+        Sat, 16 May 2026 04:53:31 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da15a6454sm22250671f8f.34.2026.05.16.04.53.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 16 May 2026 04:53:31 -0700 (PDT)
+Date: Sat, 16 May 2026 12:53:29 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
+ <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Arseniy Krasnov
+ <avkrasnov@salutedevices.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ kvm@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Eugenio
+ =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>, "Michael S. Tsirkin"
+ <mst@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+ virtualization@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
+ Jason Wang <jasowang@redhat.com>, linux-kernel@vger.kernel.org, Maher
+ Azzouzi <maherazz04@gmail.com>
+Subject: Re: [PATCH net] vsock/virtio: fix zerocopy completion for multi-skb
+ sends
+Message-ID: <20260516125329.7b699c6f@pumpkin>
+In-Reply-To: <20260514092948.268720-1-sgarzare@redhat.com>
+References: <20260514092948.268720-1-sgarzare@redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 40/41] x86/tsc: Add standalone helper for getting CPU
- frequency from CPUID
-To: Sean Christopherson <seanjc@google.com>, Kiryl Shutsemau
- <kas@kernel.org>, "K. Y. Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>,
- Ajay Kaher <ajay.kaher@broadcom.com>,
- Alexey Makhalov <alexey.makhalov@broadcom.com>,
- Jan Kiszka <jan.kiszka@siemens.com>,
- Dave Hansen <dave.hansen@linux.intel.com>, Andy Lutomirski
- <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Juergen Gross <jgross@suse.com>, Daniel Lezcano <daniel.lezcano@kernel.org>,
- Thomas Gleixner <tglx@kernel.org>, John Stultz <jstultz@google.com>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>,
- Boris Ostrovsky <boris.ostrovsky@oracle.com>, Stephen Boyd
- <sboyd@kernel.org>, x86@kernel.org, linux-coco@lists.linux.dev,
- kvm@vger.kernel.org, linux-hyperv@vger.kernel.org,
- virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
- xen-devel@lists.xenproject.org, Michael Kelley <mhklinux@outlook.com>,
- Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>,
- Thomas Gleixner <tglx@linutronix.de>, David Woodhouse <dwmw@amazon.co.uk>
-References: <20260515191942.1892718-1-seanjc@google.com>
- <20260515191942.1892718-41-seanjc@google.com>
-Content-Language: en-US
-From: Paolo Bonzini <pbonzini@redhat.com>
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <20260515191942.1892718-41-seanjc@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On 5/15/26 21:19, Sean Christopherson wrote:
-> Extract the guts of cpu_khz_from_cpuid() to a standalone helper that
-> doesn't restrict the usage to Intel CPUs.  This will allow sharing the
-> core logic with kvmclock, as (a) CPUID.0x16 may be enumerated alongside
-> kvmclock, and (b) KVM generally doesn't restrict CPUID based on vendor.
+On Thu, 14 May 2026 11:29:48 +0200
+Stefano Garzarella <sgarzare@redhat.com> wrote:
 
-Even for native there's no real reason to restrict to Intel, I think. 
-native_calibrate_tsc() only limits itself because historically (prior to 
-commit 604dc9170f24, "x86/tsc: Use CPUID.0x16 to calculate missing 
-crystal frequency", 2019-05-09) it used a hardcoded table of crystal 
-frequencies.
-
-Of course paranoia applies, but for virtualization, if the leaf exists 
-there is no reason not to trust it.
-
-Thanks,
-
-Paolo
-
-> No functional change intended.
+> From: Stefano Garzarella <sgarzare@redhat.com>
 > 
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> When a large message is fragmented into multiple skbs, the zerocopy
+> uarg is only allocated and attached to the last skb in the loop.
+> Non-final skbs carry pinned user pages with no completion tracking,
+> so the kernel has no way to notify userspace when those pages are safe
+> to reuse. If the loop breaks early the uarg is never allocated at all,
+> leaking pinned pages with no completion notification.
+> 
+> Fix this by following the approach used by TCP: allocate the zerocopy
+> uarg (if not provided by the caller) before the send loop and attach
+> it to every skb via skb_zcopy_set(), which takes a reference per skb.
+> Each skb's completion properly decrements the refcount, and the
+> notification only fires after the last skb is freed.
+> On failure, if no data was sent, the uarg is cleanly aborted via
+> net_zcopy_put_abort().
+> 
+> This issue was initially discovered by sashiko while reviewing commit
+> 1cb36e252211 ("vsock/virtio: fix MSG_ZEROCOPY pinned-pages accounting")
+> but was pre-existing.
+> 
+> Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
+> Cc: Arseniy Krasnov <avkrasnov@salutedevices.com>
+> Closes: https://sashiko.dev/#/patchset/20260420132051.217589-1-sgarzare%40redhat.com
+> Reported-by: Maher Azzouzi <maherazz04@gmail.com>
+> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
 > ---
->   arch/x86/include/asm/tsc.h |  1 +
->   arch/x86/kernel/tsc.c      | 37 +++++++++++++++++++++++--------------
->   2 files changed, 24 insertions(+), 14 deletions(-)
+>  net/vmw_vsock/virtio_transport_common.c | 83 ++++++++++---------------
+>  1 file changed, 34 insertions(+), 49 deletions(-)
 > 
-> diff --git a/arch/x86/include/asm/tsc.h b/arch/x86/include/asm/tsc.h
-> index f458be688512..c145f5707b52 100644
-> --- a/arch/x86/include/asm/tsc.h
-> +++ b/arch/x86/include/asm/tsc.h
-> @@ -91,6 +91,7 @@ struct cpuid_tsc_info {
->   };
->   extern int cpuid_get_tsc_info(struct cpuid_tsc_info *info);
->   extern int cpuid_get_tsc_freq(struct cpuid_tsc_info *info);
-> +extern int cpuid_get_cpu_freq(unsigned int *cpu_khz);
->   
->   extern void tsc_early_init(void);
->   extern void tsc_init(void);
-> diff --git a/arch/x86/kernel/tsc.c b/arch/x86/kernel/tsc.c
-> index 1b569954ae5e..745fa2052c74 100644
-> --- a/arch/x86/kernel/tsc.c
-> +++ b/arch/x86/kernel/tsc.c
-> @@ -719,6 +719,24 @@ int cpuid_get_tsc_freq(struct cpuid_tsc_info *info)
->   	return 0;
->   }
->   
-> +int cpuid_get_cpu_freq(unsigned int *cpu_khz)
-> +{
-> +	unsigned int eax_base_mhz, ebx, ecx, edx;
-> +
-> +	*cpu_khz = 0;
-> +
-> +	if (boot_cpu_data.cpuid_level < CPUID_LEAF_FREQ)
-> +		return -ENOENT;
-> +
-> +	cpuid(CPUID_LEAF_FREQ, &eax_base_mhz, &ebx, &ecx, &edx);
-> +
-> +	if (!eax_base_mhz)
-> +		return -ENOENT;
-> +
-> +	*cpu_khz = eax_base_mhz * 1000;
-> +	return 0;
-> +}
-> +
->   /**
->    * native_calibrate_tsc - determine TSC frequency
->    * Determine TSC frequency via CPUID, else return 0.
-> @@ -754,13 +772,8 @@ unsigned long native_calibrate_tsc(void)
->   	 * clock, but we can easily calculate it to a high degree of accuracy
->   	 * by considering the crystal ratio and the CPU speed.
->   	 */
-> -	if (!info.crystal_khz && boot_cpu_data.cpuid_level >= CPUID_LEAF_FREQ) {
-> -		unsigned int eax_base_mhz, ebx, ecx, edx;
+> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+> index 989cc252d3d3..1e3409d28164 100644
+> --- a/net/vmw_vsock/virtio_transport_common.c
+> +++ b/net/vmw_vsock/virtio_transport_common.c
+> @@ -70,34 +70,6 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
+>  	return true;
+>  }
+>  
+> -static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
+> -					   struct sk_buff *skb,
+> -					   struct msghdr *msg,
+> -					   size_t pkt_len,
+> -					   bool zerocopy)
+> -{
+> -	struct ubuf_info *uarg;
 > -
-> -		cpuid(CPUID_LEAF_FREQ, &eax_base_mhz, &ebx, &ecx, &edx);
-> -		info.crystal_khz = eax_base_mhz * 1000 *
-> -			info.denominator / info.numerator;
+> -	if (msg->msg_ubuf) {
+> -		uarg = msg->msg_ubuf;
+> -		net_zcopy_get(uarg);
+> -	} else {
+> -		struct ubuf_info_msgzc *uarg_zc;
+> -
+> -		uarg = msg_zerocopy_realloc(sk_vsock(vsk),
+> -					    pkt_len, NULL, false);
+> -		if (!uarg)
+> -			return -1;
+> -
+> -		uarg_zc = uarg_to_msgzc(uarg);
+> -		uarg_zc->zerocopy = zerocopy ? 1 : 0;
 > -	}
-> +	if (!info.crystal_khz && !cpuid_get_cpu_freq(&cpu_khz))
-> +		info.crystal_khz = cpu_khz * info.denominator / info.numerator;
->   
->   	if (!info.crystal_khz)
->   		return 0;
-> @@ -787,19 +800,15 @@ unsigned long native_calibrate_tsc(void)
->   
->   static unsigned long cpu_khz_from_cpuid(void)
->   {
-> -	unsigned int eax_base_mhz, ebx_max_mhz, ecx_bus_mhz, edx;
-> +	unsigned int cpu_khz;
->   
->   	if (boot_cpu_data.x86_vendor != X86_VENDOR_INTEL)
->   		return 0;
->   
-> -	if (boot_cpu_data.cpuid_level < CPUID_LEAF_FREQ)
-> +	if (cpuid_get_cpu_freq(&cpu_khz))
->   		return 0;
->   
-> -	eax_base_mhz = ebx_max_mhz = ecx_bus_mhz = edx = 0;
 > -
-> -	cpuid(CPUID_LEAF_FREQ, &eax_base_mhz, &ebx_max_mhz, &ecx_bus_mhz, &edx);
+> -	skb_zcopy_init(skb, uarg);
 > -
-> -	return eax_base_mhz * 1000;
-> +	return cpu_khz;
->   }
->   
->   /*
+> -	return 0;
+> -}
+> -
+>  static int virtio_transport_fill_skb(struct sk_buff *skb,
+>  				     struct virtio_vsock_pkt_info *info,
+>  				     size_t len,
+> @@ -317,8 +289,10 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+>  	u32 src_cid, src_port, dst_cid, dst_port;
+>  	const struct virtio_transport *t_ops;
+>  	struct virtio_vsock_sock *vvs;
+> +	struct ubuf_info *uarg = NULL;
+>  	u32 pkt_len = info->pkt_len;
+>  	bool can_zcopy = false;
+> +	bool have_uref = false;
+>  	u32 rest_len;
+>  	int ret;
+>  
+> @@ -360,6 +334,25 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+>  		if (can_zcopy)
+>  			max_skb_len = min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
+>  					    (MAX_SKB_FRAGS * PAGE_SIZE));
+> +
+> +		if (info->msg->msg_flags & MSG_ZEROCOPY &&
+> +		    info->op == VIRTIO_VSOCK_OP_RW) {
+> +			uarg = info->msg->msg_ubuf;
+> +
+> +			if (!uarg) {
+> +				uarg = msg_zerocopy_realloc(sk_vsock(vsk),
+> +							    pkt_len, NULL, false);
+> +				if (!uarg) {
+> +					virtio_transport_put_credit(vvs, pkt_len);
+> +					return -ENOMEM;
+> +				}
+> +
+> +				if (!can_zcopy)
+> +					uarg_to_msgzc(uarg)->zerocopy = 0;
+> +
+> +				have_uref = true;
+> +			}
+> +		}
+
+Surely that block should only be done if can_zcopy is true?
+And shouldn't something unset it if info->op != VIRTIO_VSOCK_OP_RW ?
+If the msg_zerocopy_realloc() fails then can't you just set can_zcopy to false.
+
+It info->msg->msg_buf is already set then I think you have to disable zero-copy.
+The caller has already requested a callback - and you can't add another.
+
+In any case by the end of this can_zcopy and have_uref are really the same flag.
+
+>  	}
+>  
+>  	rest_len = pkt_len;
+> @@ -378,27 +371,7 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+>  			break;
+>  		}
+>  
+> -		/* We process buffer part by part, allocating skb on
+> -		 * each iteration. If this is last skb for this buffer
+> -		 * and MSG_ZEROCOPY mode is in use - we must allocate
+> -		 * completion for the current syscall.
+> -		 *
+> -		 * Pass pkt_len because msg iter is already consumed
+> -		 * by virtio_transport_fill_skb(), so iter->count
+> -		 * can not be used for RLIMIT_MEMLOCK pinned-pages
+> -		 * accounting done by msg_zerocopy_realloc().
+> -		 */
+> -		if (info->msg && info->msg->msg_flags & MSG_ZEROCOPY &&
+> -		    skb_len == rest_len && info->op == VIRTIO_VSOCK_OP_RW) {
+> -			if (virtio_transport_init_zcopy_skb(vsk, skb,
+> -							    info->msg,
+> -							    pkt_len,
+> -							    can_zcopy)) {
+> -				kfree_skb(skb);
+> -				ret = -ENOMEM;
+> -				break;
+> -			}
+> -		}
+> +		skb_zcopy_set(skb, uarg, NULL);
+>  
+>  		virtio_transport_inc_tx_pkt(vvs, skb);
+>  
+> @@ -422,6 +395,18 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+>  
+>  	virtio_transport_put_credit(vvs, rest_len);
+>  
+> +	/* msg_zerocopy_realloc() initializes the ubuf_info refcnt to 1.
+> +	 * skb_zcopy_set() increases it for each skb, so we can drop that
+                                                            ^ must
+
+> +	 * initial reference to keep it balanced.
+> +	 */
+> +	if (have_uref) {
+> +		if (rest_len == pkt_len)
+> +			/* No data sent, abort the notification. */
+> +			net_zcopy_put_abort(uarg, true);
+
+Is it worth optimising for the 'nothing sent' case ?
+
+-- David
+
+> +		else
+> +			net_zcopy_put(uarg);
+> +	}
+> +
+>  	/* Return number of bytes, if any data has been sent. */
+>  	if (rest_len != pkt_len)
+>  		ret = pkt_len - rest_len;
 
