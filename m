@@ -1,168 +1,111 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D263E3D99
-	for <kvm@vger.kernel.org>; Sat, 16 May 2026 16:34:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D8C633CEA9;
+	Sat, 16 May 2026 18:30:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778949276; cv=none; b=lEpxw1LOHNdLrAnWboleLiTKqkP30yKnaIoJ4Iga3j95Gpqk1ZaRyhM4XqxlMl+r1haRXTFZdXgbOc+iFpw/n12mAKdwkA/ac9QlGChi/CjC5xQ/wmtB/+KU9IIh4dILSQoDTABYhfLDw2lB5VXr0FIS8ZjH3IxkyAVH7ZgIpiw=
+	t=1778956256; cv=none; b=tAFrpQv5Excvt1kfH4bPgHaUSylPfRGJjgKUixQGRMbZYjmC0Q/5rXikiW44qaYkCsBJAfFBR8iIXHas61KRH653bH7kmos4lPM9vVqLxjJDUtnXLuqPLsZlO9hu88j8sbtiWPYKWi+UnVEpII7wSqgjLNLtLV2miqUiE5i+Cb4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778949276; c=relaxed/simple;
-	bh=ULnw3NN7INb58UYB2pLIPDzzAfwi2mUZCZrZ9Qf2VT8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uP12u6fiL/tr3HR7S75hwdIXL/rtABnv6pn7MSlxRv9pKPbfyVn1Js3YxJJ6dhLvqUkwqgijNtqlVef1ddg2E8AaELtFCjeLr4/fBBsd+i+OZnHrgScr9jiabTbqwEJ9Y/kE+un0frn028WNgEia++iZdUVQeY5juYzXOgtpJhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Sn4mObjY; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=2WudjVMS; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Sn4mObjY; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=2WudjVMS; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+	s=arc-20240116; t=1778956256; c=relaxed/simple;
+	bh=NPq7c3O7m9YoMQfFgefKlCXS40W630c66ivNjwX7VnY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=U9LkFG8h7kll2UjJNHO+qM3Nv7GuKztfdhQ3kw62eoAHjWTjnMDyYrPTLtWAFn57aM8L70qBxue3J0m9nuz/Yd7bTowHVPKjnSwA0tQ7SwMPQYX8Ab5Yva9vf82/KVvjePFIWQXXXcpkEe0qpvE60dnhUxFb4X+ZjxoDYySNftI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=X3AVoYMi; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Sn4mObjY";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="2WudjVMS";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Sn4mObjY";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="2WudjVMS"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 410286BADE;
-	Sat, 16 May 2026 16:34:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778949273; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=BUPDNdf/gbPSEsfuVSYEDFC8szZ6vWKFT58zEEULitA=;
-	b=Sn4mObjY1M/C6pSmtPwFywTYug3GPcRylcJ5S1GWViE4k3yWk+G/Xo4+VpTnkgPipSUPhU
-	tN88wX8CPhEbDRMQgJuaMCOOFzZDhtVKFxTe6dU9cTFnnmgzc3NpNL90SfnZY3PVqWKYmQ
-	BVcsaccVTtzch5O/iEtzN0stz+Vq1no=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778949273;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=BUPDNdf/gbPSEsfuVSYEDFC8szZ6vWKFT58zEEULitA=;
-	b=2WudjVMSdBzrhObjxzSmTwFNb4DuqIwyQsshIiutSq5Amns1W1EA+JIKcH4cACuf5j4dT3
-	B3svI4RTb9aS0dAg==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Sn4mObjY;
-	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2WudjVMS
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1778949273; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=BUPDNdf/gbPSEsfuVSYEDFC8szZ6vWKFT58zEEULitA=;
-	b=Sn4mObjY1M/C6pSmtPwFywTYug3GPcRylcJ5S1GWViE4k3yWk+G/Xo4+VpTnkgPipSUPhU
-	tN88wX8CPhEbDRMQgJuaMCOOFzZDhtVKFxTe6dU9cTFnnmgzc3NpNL90SfnZY3PVqWKYmQ
-	BVcsaccVTtzch5O/iEtzN0stz+Vq1no=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1778949273;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=BUPDNdf/gbPSEsfuVSYEDFC8szZ6vWKFT58zEEULitA=;
-	b=2WudjVMSdBzrhObjxzSmTwFNb4DuqIwyQsshIiutSq5Amns1W1EA+JIKcH4cACuf5j4dT3
-	B3svI4RTb9aS0dAg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8E1C6593A8;
-	Sat, 16 May 2026 16:34:32 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id HGwiH5icCGpyfgAAD6G6ig
-	(envelope-from <clopez@suse.de>); Sat, 16 May 2026 16:34:32 +0000
-From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
-To: kvm@vger.kernel.org,
-	seanjc@google.com,
-	pbonzini@redhat.com
-Cc: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Jue Wang <juew@google.com>,
-	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT))
-Subject: [PATCH] KVM: x86: Fix array_index_nospec() protection in kvm_vcpu_ioctl_x86_set_mce()
-Date: Sat, 16 May 2026 18:34:12 +0200
-Message-ID: <20260516163412.601908-1-clopez@suse.de>
-X-Mailer: git-send-email 2.51.0
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="X3AVoYMi"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 6E9861BF3;
+	Sat, 16 May 2026 11:30:43 -0700 (PDT)
+Received: from workstation-e142269.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 023AD3F85F;
+	Sat, 16 May 2026 11:30:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1778956248; bh=NPq7c3O7m9YoMQfFgefKlCXS40W630c66ivNjwX7VnY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=X3AVoYMic76EhjPA5QnkayYsO/uqgN8aSmHiHRkVLmdd4+gKne8/4SxtqHitV5VIx
+	 dR79teEEA0ZcD5I9q2lArcEV20ly23EVs3HPgOHZ+4qtsomrkBjl7lvv3Q00yg1i4R
+	 60pEIp5GvT2zSy+ff9ZHmAN7EC8SaBkbkzOjSYNo=
+From: Wei-Lin Chang <weilin.chang@arm.com>
+To: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	kvmarm@lists.linux.dev
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Shuah Khan <shuah@kernel.org>,
+	Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oupton@kernel.org>,
+	Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Itaru Kitayama <itaru.kitayama@fujitsu.com>,
+	Wei-Lin Chang <weilin.chang@arm.com>
+Subject: [PATCH v3 0/9] KVM: arm64: selftests: Basic nested guest support
+Date: Sat, 16 May 2026 19:29:54 +0100
+Message-ID: <20260516183003.799058-1-weilin.chang@arm.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Spamd-Result: default: False [-3.51 / 50.00];
-	BAYES_HAM(-3.00)[99.99%];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	ARC_NA(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCPT_COUNT_SEVEN(0.00)[8];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:email,suse.de:mid];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	DKIM_TRACE(0.00)[suse.de:+]
-X-Rspamd-Queue-Id: 410286BADE
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
-X-Spam-Flag: NO
-X-Spam-Score: -3.51
 
-Commit aebc3ca19063 ("KVM: x86: Enable CMCI capability by default and
-handle injected UCNA errors") introduced kvm_vcpu_x86_set_ucna(), which
-accesses @vcpu->arch.mci_ctl2_banks[] using @mce->bank as the index. The
-@mce struct is user-controlled, provided via the KVM_X86_SET_MCE ioctl.
+Hi,
 
-The caller of this function, kvm_vcpu_ioctl_x86_set_mce(), bounds-checks
-@mce->bank and applies array_index_nospec() to advance the @banks
-pointer, but @mce->bank itself is passed through unclamped. On a
-speculative path that bypasses the bounds check, the raw @mce->bank
-value can index mci_ctl2_banks[] out-of-bounds.
+This is v3 of adding basic support for running nested guests (L2) in
+kselftest. This time a framework for enabling stage-2 in the guest is
+added, including the s2_mmu struct, s2 translation control setup, and
+a stage-2 page table generator. Similar to L2 vCPU management, all
+stage-2 work is done in the guest instead of userspace.
 
-In practice this is a very weak gadget, and would at most allow leaking
-a single bit in a 64-bit integer, but prevent potential future issues by
-clamping @mce->bank in place with array_index_nospec(), before passing
-the struct to kvm_vcpu_x86_set_ucna().
+An additional shadow_stage2 test is added which leverages the framework
+to run L2 with stage-2 enabled.
 
-Fixes: aebc3ca19063 ("KVM: x86: Enable CMCI capability by default and handle injected UCNA errors")
-Signed-off-by: Carlos López <clopez@suse.de>
----
- arch/x86/kvm/x86.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+* Changes from v2 [1]:
 
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 209eae67ab18..2d2415031267 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -5497,7 +5497,8 @@ static int kvm_vcpu_ioctl_x86_set_mce(struct kvm_vcpu *vcpu,
- 	if (mce->bank >= bank_num || !(mce->status & MCI_STATUS_VAL))
- 		return -EINVAL;
- 
--	banks += array_index_nospec(4 * mce->bank, 4 * bank_num);
-+	mce->bank = array_index_nospec(mce->bank, bank_num);
-+	banks += 4 * mce->bank;
- 
- 	if (is_ucna(mce))
- 		return kvm_vcpu_x86_set_ucna(vcpu, mce, banks);
+  - Update vm_paddr_t to gpa_t, vm_vaddr_t to gva_t.
 
-base-commit: a9512a611bd030088f13477258d1f8103cceaa40
+  - Added framework for enabling stage-2 in the guest.
+
+  - Added shadow_stage2 test.
+
+Thanks!
+
+[1]: https://lore.kernel.org/kvmarm/20260412142216.3806482-1-weilin.chang@arm.com/
+
+Wei-Lin Chang (9):
+  KVM: arm64: selftests: Add GPR save/restore functions for NV
+  KVM: arm64: selftests: Add helpers for guest hypervisors
+  KVM: arm64: selftests: Add hello_nested basic NV selftest
+  KVM: arm64: selftests: Enhance hello_nested test
+  KVM: arm64: selftests: Add shadow_stage2 test
+  KVM: arm64: selftests: shadow_stage2: Allocate L2 stack from dedicated
+    pool
+  KVM: arm64: selftests: shadow_stage2: Check supported stage-2 granule
+    size
+  KVM: arm64: selftests: Add infrastructure for using stage-2 in guest
+  KVM: arm64: selftests: shadow_stage2: Turn on stage-2 translation for
+    the nested guest
+
+ tools/testing/selftests/kvm/Makefile.kvm      |   5 +
+ .../selftests/kvm/arm64/hello_nested.c        | 134 +++++++++
+ .../selftests/kvm/arm64/shadow_stage2.c       | 165 +++++++++++
+ .../selftests/kvm/include/arm64/nested.h      |  85 ++++++
+ tools/testing/selftests/kvm/lib/arm64/entry.S | 137 +++++++++
+ .../selftests/kvm/lib/arm64/hyp-entry.S       |  77 +++++
+ .../testing/selftests/kvm/lib/arm64/nested.c  | 264 ++++++++++++++++++
+ 7 files changed, 867 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/arm64/hello_nested.c
+ create mode 100644 tools/testing/selftests/kvm/arm64/shadow_stage2.c
+ create mode 100644 tools/testing/selftests/kvm/include/arm64/nested.h
+ create mode 100644 tools/testing/selftests/kvm/lib/arm64/entry.S
+ create mode 100644 tools/testing/selftests/kvm/lib/arm64/hyp-entry.S
+ create mode 100644 tools/testing/selftests/kvm/lib/arm64/nested.c
+
 -- 
-2.51.0
+2.43.0
 
