@@ -1,262 +1,168 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BD073D649F
-	for <kvm@vger.kernel.org>; Sat, 16 May 2026 11:53:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90D263E3D99
+	for <kvm@vger.kernel.org>; Sat, 16 May 2026 16:34:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1778932415; cv=none; b=h3MXb756DfGAk1v70HoOT0cXeC/gnAO3ynnCFmhecQDWtTkXOJlBQYABfQ3DHokhZOLB8QJ99n029Q94SvvojZH3sWUgylRIPpt1afhGn55W58M70geGVUN54PmR6vseICUiM/xhEZ17WFNPUYSG8koR0a9hxEeuT60IJyAXeiU=
+	t=1778949276; cv=none; b=lEpxw1LOHNdLrAnWboleLiTKqkP30yKnaIoJ4Iga3j95Gpqk1ZaRyhM4XqxlMl+r1haRXTFZdXgbOc+iFpw/n12mAKdwkA/ac9QlGChi/CjC5xQ/wmtB/+KU9IIh4dILSQoDTABYhfLDw2lB5VXr0FIS8ZjH3IxkyAVH7ZgIpiw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1778932415; c=relaxed/simple;
-	bh=F7j14MGWg5MpaTs46ixVgM5+KDomqLpuWcEipt69nvI=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GNwlwEpWKDuZIcTpM7pcmmy1KZJdh6HXBdLSJVg8mfN01nnscrQrqm+aQaawOrE/M8AfcJ/p2syrxzbqBj+EHg6KxI7V8QWSCFCVpPHCcsfr0577wBldQhqxMb9SEGyZXWIQXBY3XjG2olxlyWo1cBSJguOt2owrhyzA8xXctTY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TTwzhsR5; arc=none smtp.client-ip=209.85.221.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1778949276; c=relaxed/simple;
+	bh=ULnw3NN7INb58UYB2pLIPDzzAfwi2mUZCZrZ9Qf2VT8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=uP12u6fiL/tr3HR7S75hwdIXL/rtABnv6pn7MSlxRv9pKPbfyVn1Js3YxJJ6dhLvqUkwqgijNtqlVef1ddg2E8AaELtFCjeLr4/fBBsd+i+OZnHrgScr9jiabTbqwEJ9Y/kE+un0frn028WNgEia++iZdUVQeY5juYzXOgtpJhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Sn4mObjY; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=2WudjVMS; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=Sn4mObjY; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=2WudjVMS; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TTwzhsR5"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-45ae6a0e523so302154f8f.1
-        for <kvm@vger.kernel.org>; Sat, 16 May 2026 04:53:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1778932412; x=1779537212; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GMsYPxsGdmOZu2bUf9upWSruFK/hZRv7KGPN8jXsIdE=;
-        b=TTwzhsR5nBzuTE33a4WAvIiwr/EV+I1TVkybF8WTUoYUierI7qMv6v9zrehsSQ6eIS
-         d5J7nnW80F8TPiYRlB5IG4XsvHMyNuAK4pL00yBRNxIrAtHgkCK0foHx1jqkDCKmQ9Fd
-         O7faNAbFNfs/TBuMmiIfnSixME52ODqs2ofPDOSn645g0Mn9fnUV+qkNlilsig2TMYC+
-         VpXjTRaJXZKGPkEntwW+XZGUYb7x0UESFJlrCY0jdA74Kvt/qZ0EpHz5e+RNp3Ec5cMW
-         ZIiS7nf/w0Ks9GI2EsN9wn8Hbr7UBgOslrM7Yfyh1qTf/IYHk6lAP0pKdgklS7VlZ3di
-         u9kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1778932412; x=1779537212;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GMsYPxsGdmOZu2bUf9upWSruFK/hZRv7KGPN8jXsIdE=;
-        b=iDooY+7YkUVrED+lmqLmuU2k4bezuE9QvtgLjZVKV5bTKXzoF8rBaRo8HKdi43Vymu
-         c9F0P+PLmjBX1dbsayCsW84Otfsm+zqBntVdfSl1AQcGLVpk4BrMCQwvRJ7tv5psF4qr
-         N1sQVHx15dOuoKa/ybfiu7XSuEL0XRTZ6onF38gzrdqkpJzT1OeZ0FGFbLE1NjNwixng
-         b5X2SWmDkybx9kMPt8V6w48xMy/xLwL5F+4eJwlpkVPYOUuaqY3t0MyNo+b3OcYS3LoQ
-         KwdEXQzl/+Orhqn3nMxqn4SCUKNjkSJT9B63c1rvDlu+oYSQlnFKZYSJqrLKeD+KkcEm
-         u4RQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+FFyOc89hFJZVW7vaIpGdd+fp0ocQlFVwgE/mrHe9GMO+dpWyF6IG2QtiHwOKx7nJ+F/Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz6SkRN9aglSlVxIFbi5sw3PhksG4Vab/QXPG7XtseYL0mPY4pq
-	Xeyyq4KaF4INun+2sNh2knJh0m1OCIRSqaJty5GAojPCOLJv5VW8XOUV
-X-Gm-Gg: Acq92OEKCcEjppG4GlfaUoCoqNc7/RcMmhJv6h7Qo1fcmh7ijz4LgvcPqXicmS7OyiM
-	QXMOtxuLjKShejVuwAiwVI74gNcHTtgskdWPryzDiPfgCqCCyLJsGhqF2jSAqRMiflnqqf4lP2+
-	bkZb8iG1kwQa0yhfcaHDBbHYkhL/hwwUNeM2mMdBy9HoTv355XBpxae3/5pa8TJhwLugSbfo4K/
-	wiGa5XpxG/QXOWWKvf9UTCMdW/5x1W62MzWHVHEQloiR0tBU/WV3WSUFEaFAH0u43PB4MOrTP/o
-	Zvkuv2gZxoczJj7r4dvUsZbeSI8tHeJWNC3zQHytL83ufQstjP04WZtRgohoDLl4mUfXdBMENTR
-	nLOrWgF3UFP042dEIzuu5JvLydFH7r9h66LlMXaHcSuVI6NoGKL2YjPJjamhC9WtUMsAkH/X3pU
-	hg8pCq9BknOTS/NE3DLz7ePZ+naBWfe7GeipUT1IGHelabSlorReb1l/gHyBmN
-X-Received: by 2002:a05:6000:288e:b0:45d:7bf0:c7d3 with SMTP id ffacd0b85a97d-45e5c37122emr10808299f8f.19.1778932411691;
-        Sat, 16 May 2026 04:53:31 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45da15a6454sm22250671f8f.34.2026.05.16.04.53.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 16 May 2026 04:53:31 -0700 (PDT)
-Date: Sat, 16 May 2026 12:53:29 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, Paolo Abeni
- <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, Arseniy Krasnov
- <avkrasnov@salutedevices.com>, Stefan Hajnoczi <stefanha@redhat.com>,
- kvm@vger.kernel.org, Eric Dumazet <edumazet@google.com>, Eugenio
- =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>, "Michael S. Tsirkin"
- <mst@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
- virtualization@lists.linux.dev, "David S. Miller" <davem@davemloft.net>,
- Jason Wang <jasowang@redhat.com>, linux-kernel@vger.kernel.org, Maher
- Azzouzi <maherazz04@gmail.com>
-Subject: Re: [PATCH net] vsock/virtio: fix zerocopy completion for multi-skb
- sends
-Message-ID: <20260516125329.7b699c6f@pumpkin>
-In-Reply-To: <20260514092948.268720-1-sgarzare@redhat.com>
-References: <20260514092948.268720-1-sgarzare@redhat.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Sn4mObjY";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="2WudjVMS";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="Sn4mObjY";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="2WudjVMS"
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 410286BADE;
+	Sat, 16 May 2026 16:34:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778949273; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=BUPDNdf/gbPSEsfuVSYEDFC8szZ6vWKFT58zEEULitA=;
+	b=Sn4mObjY1M/C6pSmtPwFywTYug3GPcRylcJ5S1GWViE4k3yWk+G/Xo4+VpTnkgPipSUPhU
+	tN88wX8CPhEbDRMQgJuaMCOOFzZDhtVKFxTe6dU9cTFnnmgzc3NpNL90SfnZY3PVqWKYmQ
+	BVcsaccVTtzch5O/iEtzN0stz+Vq1no=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778949273;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=BUPDNdf/gbPSEsfuVSYEDFC8szZ6vWKFT58zEEULitA=;
+	b=2WudjVMSdBzrhObjxzSmTwFNb4DuqIwyQsshIiutSq5Amns1W1EA+JIKcH4cACuf5j4dT3
+	B3svI4RTb9aS0dAg==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.de header.s=susede2_rsa header.b=Sn4mObjY;
+	dkim=pass header.d=suse.de header.s=susede2_ed25519 header.b=2WudjVMS
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1778949273; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=BUPDNdf/gbPSEsfuVSYEDFC8szZ6vWKFT58zEEULitA=;
+	b=Sn4mObjY1M/C6pSmtPwFywTYug3GPcRylcJ5S1GWViE4k3yWk+G/Xo4+VpTnkgPipSUPhU
+	tN88wX8CPhEbDRMQgJuaMCOOFzZDhtVKFxTe6dU9cTFnnmgzc3NpNL90SfnZY3PVqWKYmQ
+	BVcsaccVTtzch5O/iEtzN0stz+Vq1no=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1778949273;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=BUPDNdf/gbPSEsfuVSYEDFC8szZ6vWKFT58zEEULitA=;
+	b=2WudjVMSdBzrhObjxzSmTwFNb4DuqIwyQsshIiutSq5Amns1W1EA+JIKcH4cACuf5j4dT3
+	B3svI4RTb9aS0dAg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8E1C6593A8;
+	Sat, 16 May 2026 16:34:32 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id HGwiH5icCGpyfgAAD6G6ig
+	(envelope-from <clopez@suse.de>); Sat, 16 May 2026 16:34:32 +0000
+From: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>
+To: kvm@vger.kernel.org,
+	seanjc@google.com,
+	pbonzini@redhat.com
+Cc: =?UTF-8?q?Carlos=20L=C3=B3pez?= <clopez@suse.de>,
+	Thomas Gleixner <tglx@kernel.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org (maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)),
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Jue Wang <juew@google.com>,
+	linux-kernel@vger.kernel.org (open list:X86 ARCHITECTURE (32-BIT AND 64-BIT))
+Subject: [PATCH] KVM: x86: Fix array_index_nospec() protection in kvm_vcpu_ioctl_x86_set_mce()
+Date: Sat, 16 May 2026 18:34:12 +0200
+Message-ID: <20260516163412.601908-1-clopez@suse.de>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Spamd-Result: default: False [-3.51 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	MID_CONTAINS_FROM(1.00)[];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	ARC_NA(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	RCPT_COUNT_SEVEN(0.00)[8];
+	RCVD_COUNT_TWO(0.00)[2];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.de:dkim,suse.de:email,suse.de:mid];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	DKIM_TRACE(0.00)[suse.de:+]
+X-Rspamd-Queue-Id: 410286BADE
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spam-Flag: NO
+X-Spam-Score: -3.51
 
-On Thu, 14 May 2026 11:29:48 +0200
-Stefano Garzarella <sgarzare@redhat.com> wrote:
+Commit aebc3ca19063 ("KVM: x86: Enable CMCI capability by default and
+handle injected UCNA errors") introduced kvm_vcpu_x86_set_ucna(), which
+accesses @vcpu->arch.mci_ctl2_banks[] using @mce->bank as the index. The
+@mce struct is user-controlled, provided via the KVM_X86_SET_MCE ioctl.
 
-> From: Stefano Garzarella <sgarzare@redhat.com>
-> 
-> When a large message is fragmented into multiple skbs, the zerocopy
-> uarg is only allocated and attached to the last skb in the loop.
-> Non-final skbs carry pinned user pages with no completion tracking,
-> so the kernel has no way to notify userspace when those pages are safe
-> to reuse. If the loop breaks early the uarg is never allocated at all,
-> leaking pinned pages with no completion notification.
-> 
-> Fix this by following the approach used by TCP: allocate the zerocopy
-> uarg (if not provided by the caller) before the send loop and attach
-> it to every skb via skb_zcopy_set(), which takes a reference per skb.
-> Each skb's completion properly decrements the refcount, and the
-> notification only fires after the last skb is freed.
-> On failure, if no data was sent, the uarg is cleanly aborted via
-> net_zcopy_put_abort().
-> 
-> This issue was initially discovered by sashiko while reviewing commit
-> 1cb36e252211 ("vsock/virtio: fix MSG_ZEROCOPY pinned-pages accounting")
-> but was pre-existing.
-> 
-> Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
-> Cc: Arseniy Krasnov <avkrasnov@salutedevices.com>
-> Closes: https://sashiko.dev/#/patchset/20260420132051.217589-1-sgarzare%40redhat.com
-> Reported-by: Maher Azzouzi <maherazz04@gmail.com>
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> ---
->  net/vmw_vsock/virtio_transport_common.c | 83 ++++++++++---------------
->  1 file changed, 34 insertions(+), 49 deletions(-)
-> 
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index 989cc252d3d3..1e3409d28164 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
-> @@ -70,34 +70,6 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
->  	return true;
->  }
->  
-> -static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
-> -					   struct sk_buff *skb,
-> -					   struct msghdr *msg,
-> -					   size_t pkt_len,
-> -					   bool zerocopy)
-> -{
-> -	struct ubuf_info *uarg;
-> -
-> -	if (msg->msg_ubuf) {
-> -		uarg = msg->msg_ubuf;
-> -		net_zcopy_get(uarg);
-> -	} else {
-> -		struct ubuf_info_msgzc *uarg_zc;
-> -
-> -		uarg = msg_zerocopy_realloc(sk_vsock(vsk),
-> -					    pkt_len, NULL, false);
-> -		if (!uarg)
-> -			return -1;
-> -
-> -		uarg_zc = uarg_to_msgzc(uarg);
-> -		uarg_zc->zerocopy = zerocopy ? 1 : 0;
-> -	}
-> -
-> -	skb_zcopy_init(skb, uarg);
-> -
-> -	return 0;
-> -}
-> -
->  static int virtio_transport_fill_skb(struct sk_buff *skb,
->  				     struct virtio_vsock_pkt_info *info,
->  				     size_t len,
-> @@ -317,8 +289,10 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->  	u32 src_cid, src_port, dst_cid, dst_port;
->  	const struct virtio_transport *t_ops;
->  	struct virtio_vsock_sock *vvs;
-> +	struct ubuf_info *uarg = NULL;
->  	u32 pkt_len = info->pkt_len;
->  	bool can_zcopy = false;
-> +	bool have_uref = false;
->  	u32 rest_len;
->  	int ret;
->  
-> @@ -360,6 +334,25 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->  		if (can_zcopy)
->  			max_skb_len = min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
->  					    (MAX_SKB_FRAGS * PAGE_SIZE));
-> +
-> +		if (info->msg->msg_flags & MSG_ZEROCOPY &&
-> +		    info->op == VIRTIO_VSOCK_OP_RW) {
-> +			uarg = info->msg->msg_ubuf;
-> +
-> +			if (!uarg) {
-> +				uarg = msg_zerocopy_realloc(sk_vsock(vsk),
-> +							    pkt_len, NULL, false);
-> +				if (!uarg) {
-> +					virtio_transport_put_credit(vvs, pkt_len);
-> +					return -ENOMEM;
-> +				}
-> +
-> +				if (!can_zcopy)
-> +					uarg_to_msgzc(uarg)->zerocopy = 0;
-> +
-> +				have_uref = true;
-> +			}
-> +		}
+The caller of this function, kvm_vcpu_ioctl_x86_set_mce(), bounds-checks
+@mce->bank and applies array_index_nospec() to advance the @banks
+pointer, but @mce->bank itself is passed through unclamped. On a
+speculative path that bypasses the bounds check, the raw @mce->bank
+value can index mci_ctl2_banks[] out-of-bounds.
 
-Surely that block should only be done if can_zcopy is true?
-And shouldn't something unset it if info->op != VIRTIO_VSOCK_OP_RW ?
-If the msg_zerocopy_realloc() fails then can't you just set can_zcopy to false.
+In practice this is a very weak gadget, and would at most allow leaking
+a single bit in a 64-bit integer, but prevent potential future issues by
+clamping @mce->bank in place with array_index_nospec(), before passing
+the struct to kvm_vcpu_x86_set_ucna().
 
-It info->msg->msg_buf is already set then I think you have to disable zero-copy.
-The caller has already requested a callback - and you can't add another.
+Fixes: aebc3ca19063 ("KVM: x86: Enable CMCI capability by default and handle injected UCNA errors")
+Signed-off-by: Carlos López <clopez@suse.de>
+---
+ arch/x86/kvm/x86.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-In any case by the end of this can_zcopy and have_uref are really the same flag.
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 209eae67ab18..2d2415031267 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -5497,7 +5497,8 @@ static int kvm_vcpu_ioctl_x86_set_mce(struct kvm_vcpu *vcpu,
+ 	if (mce->bank >= bank_num || !(mce->status & MCI_STATUS_VAL))
+ 		return -EINVAL;
+ 
+-	banks += array_index_nospec(4 * mce->bank, 4 * bank_num);
++	mce->bank = array_index_nospec(mce->bank, bank_num);
++	banks += 4 * mce->bank;
+ 
+ 	if (is_ucna(mce))
+ 		return kvm_vcpu_x86_set_ucna(vcpu, mce, banks);
 
->  	}
->  
->  	rest_len = pkt_len;
-> @@ -378,27 +371,7 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->  			break;
->  		}
->  
-> -		/* We process buffer part by part, allocating skb on
-> -		 * each iteration. If this is last skb for this buffer
-> -		 * and MSG_ZEROCOPY mode is in use - we must allocate
-> -		 * completion for the current syscall.
-> -		 *
-> -		 * Pass pkt_len because msg iter is already consumed
-> -		 * by virtio_transport_fill_skb(), so iter->count
-> -		 * can not be used for RLIMIT_MEMLOCK pinned-pages
-> -		 * accounting done by msg_zerocopy_realloc().
-> -		 */
-> -		if (info->msg && info->msg->msg_flags & MSG_ZEROCOPY &&
-> -		    skb_len == rest_len && info->op == VIRTIO_VSOCK_OP_RW) {
-> -			if (virtio_transport_init_zcopy_skb(vsk, skb,
-> -							    info->msg,
-> -							    pkt_len,
-> -							    can_zcopy)) {
-> -				kfree_skb(skb);
-> -				ret = -ENOMEM;
-> -				break;
-> -			}
-> -		}
-> +		skb_zcopy_set(skb, uarg, NULL);
->  
->  		virtio_transport_inc_tx_pkt(vvs, skb);
->  
-> @@ -422,6 +395,18 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->  
->  	virtio_transport_put_credit(vvs, rest_len);
->  
-> +	/* msg_zerocopy_realloc() initializes the ubuf_info refcnt to 1.
-> +	 * skb_zcopy_set() increases it for each skb, so we can drop that
-                                                            ^ must
-
-> +	 * initial reference to keep it balanced.
-> +	 */
-> +	if (have_uref) {
-> +		if (rest_len == pkt_len)
-> +			/* No data sent, abort the notification. */
-> +			net_zcopy_put_abort(uarg, true);
-
-Is it worth optimising for the 'nothing sent' case ?
-
--- David
-
-> +		else
-> +			net_zcopy_put(uarg);
-> +	}
-> +
->  	/* Return number of bytes, if any data has been sent. */
->  	if (rest_len != pkt_len)
->  		ret = pkt_len - rest_len;
+base-commit: a9512a611bd030088f13477258d1f8103cceaa40
+-- 
+2.51.0
 
