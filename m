@@ -1,143 +1,200 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55D72FFDCB
-	for <kvm@vger.kernel.org>; Sun, 17 May 2026 13:29:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779024553; cv=pass; b=OYn/Yuv1KeU85vru1jJWL6vFfIZ7ZdsJCJmZ+Q8LwCAxYgAiFx4aDyB5a5WGp7DOaOSy/IdMjtciqHzyY4GSX6AqDTbzE6zIsxTk4wI2bbky+lGLv6H2fnuYnNHF9nNuqIyBDpEXMbpocaaiKrbEKmDizSE8e3yKPMDeEuRtT68=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779024553; c=relaxed/simple;
-	bh=yKb7Osmer9sr0Ti7I6iqGMluoqlrfRdk9SK0rDF56Z0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=W5g1PHszmIPUlWGnMCrR2sS9fg9Dp7vRb1o2THOO6+3HlbF1zCUgow9rWn4Tdn2yDxkhxZi5p4QAGGY3YpPG26yvI9uCpJJcktTvi3bwmNibF+8ryGkQlPDLOyQqRhmVvfaaFSIz8ltFD/+/BCRMlgftuiZswnF5ADmBFv95qUs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dkAWy7dp; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=eyQignPj; arc=pass smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8B82405C32;
+	Sun, 17 May 2026 15:37:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.3
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779032259; cv=none; b=myekS9LcKyP66w957q48fGaVdtyZB5u7gpF8io1LCN7+anBhlkU4e9xRe/3iSR2KSyOPl5wYqCeq/mgE+67+qSaeDvNotqZcT4rL2Js7ppP8eEVidjUpOevyJwx0ni+qOF8edITUJSygBBaFRE7h+HNNWtu0d0bb/+YjZJKvhqw=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779032259; c=relaxed/simple;
+	bh=kjWMOo7Pn6qmPuFVc6JV4KnaXbrfUmqodz8+gUYVuFI=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=KUXc+Tuzula7R4PyR3EbKSx8apyL/LhueIxUUVZUDCcRWYWbVZpzjFQ8BD1nrKGP5ldW+fas7LpE4n/QbkByfBIU3QIBIuKedlwn4Uz4ffV4crd6fTYVi7w7Y3RvH2h+Iw2IeEF4f9q00EcyDB/lER06O8oM77gbYIjjYJ0WudM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=FYbpwpwg; arc=none smtp.client-ip=117.135.210.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dkAWy7dp";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="eyQignPj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779024551;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=yKb7Osmer9sr0Ti7I6iqGMluoqlrfRdk9SK0rDF56Z0=;
-	b=dkAWy7dpiWVqrIMlMATOqT2PMrcbozUugB81K4EKGXiqdKD07HNkaON9AWWQhujls4cxjh
-	kEtX46WEndexNVREoGzq2J8BozlitsH+QV3kQ4hYuXaLQ5tlrNwTtTjZnzKnMhRBJRrYVz
-	waZwW8VuonoX+lnBR+wTw83nap21gHM=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-694-OG3GwMuJPo2flYuHe7n1sg-1; Sun, 17 May 2026 09:29:08 -0400
-X-MC-Unique: OG3GwMuJPo2flYuHe7n1sg-1
-X-Mimecast-MFC-AGG-ID: OG3GwMuJPo2flYuHe7n1sg_1779024548
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-43ff19e54beso893040f8f.2
-        for <kvm@vger.kernel.org>; Sun, 17 May 2026 06:29:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779024547; cv=none;
-        d=google.com; s=arc-20240605;
-        b=CdX3lBNxH6nYc8O5x355DbCTe4hBJm8LoMyda/FcMKEdMKC0ibWnTa+OKymkME8uXx
-         Ogipc1lJ8TM6MeWdURm1tVhWLBh7uBhJO0JemhP+zJ/k/UeVoz+0CaCBoRiCK/8/W/ml
-         nxCGXPfZd743RHvRrOcuFSYGRf9n0vQ4u+LfRPuD7DcK+kRuohklYvaaqghb47swdjvn
-         13t3j7HdxmTrX8AgBttVQa7/VcN5r28tQECVNd+v8x3ArRM7s9vXkZa3bicQN8R7+G7H
-         SYX9dUzJ27QxDslxD5SBb1I/nq9slw7EhcGkL/ooI4ML9IyXz1uYlLA/P3qF0C8m0Za/
-         2/qQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=yKb7Osmer9sr0Ti7I6iqGMluoqlrfRdk9SK0rDF56Z0=;
-        fh=s/n3pXbH04czH1AElb2CMAuOKq3pMtGJiC444n4ONIU=;
-        b=cfqkPeQiaNKOcUVMZK960EN3yhRD16KA5qm2GjABgMtE4v9u0m3M26DHVbuIrOfr4o
-         ym31VH0mX4cIDcgT+lX/HpoIMGhwBOI1OIjG7Mbq98GK6DaR8zCgGEGgUh6kwamJO4oQ
-         mXaGGAHLNPNMzzKYj79WpJKBL3yz2PPe/A4VI15D5bmaIIHeJ2rlQgUWeS5dIJ9OEpvR
-         5Kfy+s4NJvPTys7Zl13TcRa3nTOEuxR9rt80D/n8APSroLIhJxCdxNq54+A57znCGUIu
-         JU6ob9DR4Wc4m99M4JJWWrEi32nnihBwspKt0iZA+bGcLoIl2WwscACzS2znz0815PnD
-         oECQ==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779024547; x=1779629347; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yKb7Osmer9sr0Ti7I6iqGMluoqlrfRdk9SK0rDF56Z0=;
-        b=eyQignPjC5u5IuOusKahlihBcQbTFb/NRf5TOKx4j1eanB1bYsC8FogJdVqnAEQprG
-         K9DatOY75BKkjqDKxsj0p6DrMP7Syvu4XxS3PYFvxVlHT85OUT0IfFj3NIwXpNMNeLST
-         q95rMtASOvIs15e7GEFKouHt6LtqJEoafiVAQT+nA7ysUXY8FPU19pnrM46l7d50R8t5
-         R72OEkOX/h987QmmcfwaiH7Yn3NVEuQwnz/2QB25299q90YmVn2tcQ3Wfxi57EF30EH1
-         nndl+SRHS8qVUgPqjpLfJewl3WLutsXHBCaPdEwVa+tzkM10ETQAHXbiDb4VKCKG5eZa
-         5T+g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779024547; x=1779629347;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=yKb7Osmer9sr0Ti7I6iqGMluoqlrfRdk9SK0rDF56Z0=;
-        b=OO1FwZzMYvTRF84pdvB8UgOxRwkFoSjQ91BeIKGGkf/JoXizbMzBV9VBRdZapkLRUQ
-         XSXaMOBbU3kxEHzt2NewEE4EkTXf2EDdnjh5ycmxya6eXEcO0T+KQxo49jiY35X+NceK
-         pdDK0g4K0fCKZ2Es7/Z5eqYLqrK/od/SVMWTkzGRzUVchP6pUXOgJU1Rc52iX5PLx59+
-         W5lunSp3SOH7v1GCUNCaW/nxBKdEES0w0Qwys5DJcDwJMx+UDHIxjAE/ke7xJFidpoIV
-         aaaapkWkhRf+c+qlJ0683+ukmsTS6XhBXgSSiNE4vjwlTZn2krD4Ko0GDGVcnMUhdmDT
-         svZg==
-X-Forwarded-Encrypted: i=1; AFNElJ+arFjx6zpUXed+uATXgTDHmQt6gtvo2y8ZEm8/22j2gtxTGj8j3wUu0yInZxMA+PAMOG0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzFsyvVrlA+8+H6Hx9BQ3WbXoPjAYCb0wRlsGpUkb4uupo7VjtN
-	Ejt+wY/OQZQwb3dYHE/Gb4fAtQnUU44nvnSynSXN/8f/wH/eyzGfaCyT4xMQXz6FAGFoPYI4nKd
-	IpfRWfNKoS4wv6shXtBMDO45n8u17+ASWS4WCygdxC/h99R/tTPAcB33Mu2IIK2UbF37xsNbpOA
-	DbXWqD13zEy/z9yhiXM6SN7C+4fNiu
-X-Gm-Gg: Acq92OHpRcGDQdPwrco7CUZ+4SECOrYVKzoioS2RC9Z71R9ATu+gL4LjjvTOggXMAUm
-	pVCY+VAnPKzNoPeMHDYl6JqAu1EJOAH5Apg2h+EsXwUKaGeQSHbmTeKG3Z8h+iv9l8R4gaQyz0D
-	pp/CBlcJJwl2F50RZq07igybsYzKO2AzXotXlwWZp5KMz0yXkCdEE74nPMoqtE5tXzKayavaPBR
-	WRhgZ8xXlya3KCS5z2m5tr5MNSvf87yiG7fsJNEmpYqkmf9IF/+wq6EBUW23yIqtCKXk2xZ2s5P
-	iNpyqlB5
-X-Received: by 2002:a05:600c:4685:b0:48e:5d91:cfe3 with SMTP id 5b1f17b1804b1-48fe5fd494dmr165423555e9.1.1779024547649;
-        Sun, 17 May 2026 06:29:07 -0700 (PDT)
-X-Received: by 2002:a05:600c:4685:b0:48e:5d91:cfe3 with SMTP id
- 5b1f17b1804b1-48fe5fd494dmr165423205e9.1.1779024547283; Sun, 17 May 2026
- 06:29:07 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="FYbpwpwg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=9R
+	f9BG0sjCh68FBbnMMLHnS9NUGEPuZsSwjCC3kbcqQ=; b=FYbpwpwgIo0lGzFsbz
+	hX6xv1NIJRlP3nRIxVATezqUzgrHq/5A4KXMmIk7VE71SuKpt/Nzxj2A7PWUlEse
+	PEr0Mxx1WzszTftHSwhtgQ5/kl7kfwGRTuI7kppv30J+qA3REcVo7NG3BPzHKnFv
+	WKsylKbvCCwRW7avekh618u8Y=
+Received: from localhost.localdomain (unknown [])
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wA3ylwO4AlqyKW7Bw--.10227S4;
+	Sun, 17 May 2026 23:34:55 +0800 (CST)
+From: Jinyu Tang <tjytimi@163.com>
+To: Anup Patel <apatel@ventanamicro.com>,
+	Anup Patel <anup@brainfault.org>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Sean Christopherson <seanjc@google.com>
+Cc: kvm@vger.kernel.org,
+	kvm-riscv@lists.infradead.org,
+	linux-riscv@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Atish Patra <atish.patra@linux.dev>,
+	Paul Walmsley <pjw@kernel.org>,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	=?UTF-8?q?Radim=20Kr=C4=8Dm=C3=A1=C5=99?= <radim.krcmar@oss.qualcomm.com>,
+	Andrew Jones <andrew.jones@oss.qualcomm.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
+	Nutty Liu <nutty.liu@hotmail.com>,
+	Jinyu Tang <tjytimi@163.com>
+Subject: [PATCH 2/5] KVM: riscv: Use an rwlock for mmu_lock
+Date: Sun, 17 May 2026 23:34:24 +0800
+Message-ID: <20260517153427.94889-3-tjytimi@163.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260517153427.94889-1-tjytimi@163.com>
+References: <20260517153427.94889-1-tjytimi@163.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <177749023441.304242.8022456530166067549.reportbug@mspc2024debian.lan>
- <177902420697.2035014.8796825668567298024@eldamar.lan>
-In-Reply-To: <177902420697.2035014.8796825668567298024@eldamar.lan>
-From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Sun, 17 May 2026 15:28:40 +0200
-X-Gm-Features: AVHnY4L2h8IPRcfmkGoiaF2GGAN48yDsSxx5Sop4dQotSFnSMOz8PMdBSOSPpYA
-Message-ID: <CABgObfaUE6wKKiSXSg78pjo886Yd-L6W3pxkyOd5CpyHv52P8Q@mail.gmail.com>
-Subject: Re: Bug#1135235: linux-image-6.19.13+deb14-amd64: Reoccuring host
- crash "Invalid SPTE change" with gaming win kvm/qemu guest and device passthrough
-To: Salvatore Bonaccorso <carnil@debian.org>
-Cc: Maximilian Senftleben <kernel@0in.de>, Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, 1135235@bugs.debian.org, x86@kernel.org, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wA3ylwO4AlqyKW7Bw--.10227S4
+X-Coremail-Antispam: 1Uf129KBjvJXoWxXFW3uFyfuw1UWw1fXF1DZFb_yoWrZrW7pF
+	4q9FZxur1Sqr4kZFZrKF1DZr1DWw4vgw1fJFy5CF95AF4YyrZxZrn29342qr98Jr1xZFZ3
+	ZF4DJa45Ar40ywUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziGQ6XUUUUU=
+X-CM-SenderInfo: xwm13xlpl6il2tof0z/xtbC0B8clGoJ4B+ytQAA3c
 
-On Sun, May 17, 2026 at 3:24=E2=80=AFPM Salvatore Bonaccorso <carnil@debian=
-.org> wrote:
->
-> Control: forwwarded -1 https://lore.kernel.org/all/177902420697.2035014.8=
-796825668567298024@eldamar.lan
->
-> Hi
->
-> Maximilian Senftleben reported the following in Debian (cf.
-> https://bugs.debian.org/1135235), it should be noted while Maximilian
-> uses the looking-glass application (which is acompanied with dkms
-> modules, they are not loaded and do not tain the kernel). Do you have
-> an idea how to debug this?
+RISC-V KVM currently uses a spinlock for mmu_lock. That serializes all
+G-stage MMU operations, including permission-only updates that do not
+allocate or free page-table pages.
 
-Hi Maximilian,
+Use KVM's rwlock form of mmu_lock, as x86 and arm64 already do. Keep the
+existing map, unmap and teardown paths on the write side. This prepares
+RISC-V for read-side handling of G-stage permission updates.
 
-do you have any idea when this started occurring? Can you try an
-earlier 6.19.x kernel?
+Signed-off-by: Jinyu Tang <tjytimi@163.com>
+---
+ arch/riscv/include/asm/kvm_host.h |  2 ++
+ arch/riscv/kvm/gstage.c           |  2 +-
+ arch/riscv/kvm/mmu.c              | 24 ++++++++++++------------
+ 3 files changed, 15 insertions(+), 13 deletions(-)
 
-Thanks,
-
-Paolo
+diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/kvm_host.h
+index 75b0a951c..60017ceec 100644
+--- a/arch/riscv/include/asm/kvm_host.h
++++ b/arch/riscv/include/asm/kvm_host.h
+@@ -48,6 +48,8 @@
+ 
+ #define __KVM_HAVE_ARCH_FLUSH_REMOTE_TLBS_RANGE
+ 
++#define KVM_HAVE_MMU_RWLOCK
++
+ #define KVM_DIRTY_LOG_MANUAL_CAPS	(KVM_DIRTY_LOG_MANUAL_PROTECT_ENABLE | \
+ 					 KVM_DIRTY_LOG_INITIALLY_SET)
+ 
+diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
+index d9fe8be2a..6f934cb4a 100644
+--- a/arch/riscv/kvm/gstage.c
++++ b/arch/riscv/kvm/gstage.c
+@@ -410,7 +410,7 @@ void kvm_riscv_gstage_unmap_range(struct kvm_gstage *gstage,
+ 		 * to prevent starvation and lockup detector warnings.
+ 		 */
+ 		if (!(gstage->flags & KVM_GSTAGE_FLAGS_LOCAL) && may_block && addr < end)
+-			cond_resched_lock(&gstage->kvm->mmu_lock);
++			cond_resched_rwlock_write(&gstage->kvm->mmu_lock);
+ 	}
+ }
+ 
+diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+index 0197e41fc..48f16e52f 100644
+--- a/arch/riscv/kvm/mmu.c
++++ b/arch/riscv/kvm/mmu.c
+@@ -26,9 +26,9 @@ static void mmu_wp_memory_region(struct kvm *kvm, int slot)
+ 
+ 	kvm_riscv_gstage_init(&gstage, kvm);
+ 
+-	spin_lock(&kvm->mmu_lock);
++	write_lock(&kvm->mmu_lock);
+ 	kvm_riscv_gstage_wp_range(&gstage, start, end);
+-	spin_unlock(&kvm->mmu_lock);
++	write_unlock(&kvm->mmu_lock);
+ 	kvm_flush_remote_tlbs_memslot(kvm, memslot);
+ }
+ 
+@@ -65,9 +65,9 @@ int kvm_riscv_mmu_ioremap(struct kvm *kvm, gpa_t gpa, phys_addr_t hpa,
+ 		if (ret)
+ 			goto out;
+ 
+-		spin_lock(&kvm->mmu_lock);
++		write_lock(&kvm->mmu_lock);
+ 		ret = kvm_riscv_gstage_set_pte(&gstage, &pcache, &map);
+-		spin_unlock(&kvm->mmu_lock);
++		write_unlock(&kvm->mmu_lock);
+ 		if (ret)
+ 			goto out;
+ 
+@@ -85,9 +85,9 @@ void kvm_riscv_mmu_iounmap(struct kvm *kvm, gpa_t gpa, unsigned long size)
+ 
+ 	kvm_riscv_gstage_init(&gstage, kvm);
+ 
+-	spin_lock(&kvm->mmu_lock);
++	write_lock(&kvm->mmu_lock);
+ 	kvm_riscv_gstage_unmap_range(&gstage, gpa, size, false);
+-	spin_unlock(&kvm->mmu_lock);
++	write_unlock(&kvm->mmu_lock);
+ }
+ 
+ void kvm_arch_mmu_enable_log_dirty_pt_masked(struct kvm *kvm,
+@@ -131,9 +131,9 @@ void kvm_arch_flush_shadow_memslot(struct kvm *kvm,
+ 
+ 	kvm_riscv_gstage_init(&gstage, kvm);
+ 
+-	spin_lock(&kvm->mmu_lock);
++	write_lock(&kvm->mmu_lock);
+ 	kvm_riscv_gstage_unmap_range(&gstage, gpa, size, false);
+-	spin_unlock(&kvm->mmu_lock);
++	write_unlock(&kvm->mmu_lock);
+ }
+ 
+ void kvm_arch_commit_memory_region(struct kvm *kvm,
+@@ -504,7 +504,7 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
+ 	if (logging && !is_write)
+ 		writable = false;
+ 
+-	spin_lock(&kvm->mmu_lock);
++	write_lock(&kvm->mmu_lock);
+ 
+ 	if (mmu_invalidate_retry(kvm, mmu_seq))
+ 		goto out_unlock;
+@@ -527,7 +527,7 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
+ 
+ out_unlock:
+ 	kvm_release_faultin_page(kvm, page, ret && ret != -EEXIST, writable);
+-	spin_unlock(&kvm->mmu_lock);
++	write_unlock(&kvm->mmu_lock);
+ 	return ret;
+ }
+ 
+@@ -556,7 +556,7 @@ void kvm_riscv_mmu_free_pgd(struct kvm *kvm)
+ 	struct kvm_gstage gstage;
+ 	void *pgd = NULL;
+ 
+-	spin_lock(&kvm->mmu_lock);
++	write_lock(&kvm->mmu_lock);
+ 	if (kvm->arch.pgd) {
+ 		kvm_riscv_gstage_init(&gstage, kvm);
+ 		kvm_riscv_gstage_unmap_range(&gstage, 0UL,
+@@ -566,7 +566,7 @@ void kvm_riscv_mmu_free_pgd(struct kvm *kvm)
+ 		kvm->arch.pgd_phys = 0;
+ 		kvm->arch.pgd_levels = 0;
+ 	}
+-	spin_unlock(&kvm->mmu_lock);
++	write_unlock(&kvm->mmu_lock);
+ 
+ 	if (pgd)
+ 		free_pages((unsigned long)pgd, get_order(kvm_riscv_gstage_pgd_size));
+-- 
+2.43.0
 
