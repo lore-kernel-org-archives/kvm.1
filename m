@@ -1,41 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6734B33F8C6
-	for <kvm@vger.kernel.org>; Sun, 17 May 2026 08:33:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E95319D071
+	for <kvm@vger.kernel.org>; Sun, 17 May 2026 08:44:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779006828; cv=none; b=PuVCvtMDjxc3bqnuor1y7bwYRv2k1+EsbGnMeaI6eHSPv13BBvy8E2NPPDoJsnXBZ5Tc0+PdY/zMI8pgvbWjeJ1b4EdrsBPi+WsSds3FE98yFzCjn8VBbmOoDkHgqiUErgfvkJ2GvS2K3TKris0rm4kcqNIZBTeQlU2pVDCQn70=
+	t=1779007475; cv=none; b=l85uHY+Q1DCAmH6k/M5E+c7r6Dy0yURXHRYkEYMbXjKV8a0EivdlQ93AaqaJLRpzgYxnSe3PwiqTraI6Yt2WX+ZvZa8STRvGMsWnqYQMGwcb8PcMH1GjoLvXG+1UV+UnvYLDErtkhzGusnKjfau5u47fKdSXk1jjkvlrmNYUKp0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779006828; c=relaxed/simple;
-	bh=jMsUzXbk15u+sEYL9pdsEfOSntHcCFKwbtkNcxW03As=;
+	s=arc-20240116; t=1779007475; c=relaxed/simple;
+	bh=zM1cKM1FUrgDR71HI0ThCgI8mrCsaGkil6Lx2XYtOoM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Tf37Y5GlWlXkUb4Ws1YW62C0vtG7/wyf77eVC/7yAApZZ6tjkmkoMj0xzyJqwUzUKLU7mlYy9CsjT7CBmR7VDilFsN0nBlcQdJalIbvKsW7IzjMP1UmaLf/WhQOejTPAs5qzpIlUpAMnonXOlHL3YTFKeCUtw2fZlUB6QZmEJhs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pxNviKu9; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=YCKpE7ltF3r7Tw8ztJqoqkTyoh6/FTL01FXGDIJTyLQU2m8lnON4SKLmqgYGzL18AtoSlVCm30qROTjrO/I4ZIlGipV54BdPoLP1FrugJCvuy/4rKxt/sjQTgZqCjyhrUF9Fcbq5xGHql7H+SX2W7e+Kor4P/xTTVmEVUM1Ed98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cJ4OTCa/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pxNviKu9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED95FC2BCB0;
-	Sun, 17 May 2026 08:33:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cJ4OTCa/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7873BC2BCB0;
+	Sun, 17 May 2026 08:44:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779006827;
-	bh=jMsUzXbk15u+sEYL9pdsEfOSntHcCFKwbtkNcxW03As=;
+	s=k20201202; t=1779007475;
+	bh=zM1cKM1FUrgDR71HI0ThCgI8mrCsaGkil6Lx2XYtOoM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pxNviKu9Cn97wFZNCO7JbZPk/fSHnbdwXcxrU3+1dJXfoVLVaKoaAWCUaVq9jEe+R
-	 rFaEXXttnWxne1zS8EzG9rc113zhlw9K/C1dT65woU9Td09Do1/LfFshi6u3TqGZ5n
-	 sfScsWw3Q8Y3LqnMghHZTLD5Yz5lM5fhh+VgmBNHLhJkU7t7JzkgswKZ4l5XySEIPS
-	 3yoaEePrioG60FgT6AzbEx1gFaZQXCD/KE9zMeTBJOKjAoOhAwaRWQbjDL8gw0icE+
-	 Sj4+/P8DrL7bZ+Iq53PzB5gGMM40ij/exGFFcasTlKtLZBSraRgFMd3LneGaAoJWXY
-	 aG5RG1xSi6rSQ==
-Date: Sun, 17 May 2026 09:33:42 +0100
+	b=cJ4OTCa/A6UVqm/hZRXjzzJnnUWJ6TcagQVb/sE4UTaOzRO3gD6YGIqFhgTc6B/4a
+	 D7t/KTkU4phaxCwrRtJSePBkYW3eACsqsLE2k3lv1C7vEhP0cyREbX5Lp3XawdEW8w
+	 OaovR2P88DVkh6UwLOnZfpWSJf8J2jBTgJlqBvXTo5ee00DNSAZsENlGBtWkzmngjc
+	 IHOve+KZeHHYBUna5ufm4LHaIt3RB8UoUKB2F7PqTq06EnD3kcg+jRjO7UvcfuZ5jU
+	 rW35qeghqj3mnsu22QvwuUMs7Qgws4iOSUrhy1M/06d4qx/gk9jM+lcfkZCqHyG8tN
+	 iiQYnsAzo5/2Q==
+Date: Sun, 17 May 2026 09:44:30 +0100
 From: Will Deacon <will@kernel.org>
 To: Alexandru Elisei <alexandru.elisei@arm.com>
 Cc: julien.thierry.kdev@gmail.com, maz@kernel.org, oupton@kernel.org,
 	jean-philippe@linaro.org, andre.przywara@arm.com,
 	suzuki.poulose@arm.com, kvm@vger.kernel.org
-Subject: Re: [PATCH kvmtool 3/6] arm64: Initialise the PMU last
-Message-ID: <agl9ZkPWVKSl2tsN@willie-the-truck>
+Subject: Re: [PATCH kvmtool 5/6] util: Allow die_perror() to take a variable
+ list of argument
+Message-ID: <agl_7nDeUfkgHfte@willie-the-truck>
 References: <20260323150221.49256-1-alexandru.elisei@arm.com>
- <20260323150221.49256-4-alexandru.elisei@arm.com>
+ <20260323150221.49256-6-alexandru.elisei@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -44,39 +45,66 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260323150221.49256-4-alexandru.elisei@arm.com>
+In-Reply-To: <20260323150221.49256-6-alexandru.elisei@arm.com>
 
-On Mon, Mar 23, 2026 at 03:02:18PM +0000, Alexandru Elisei wrote:
-> PMU initialisation is done in:
+On Mon, Mar 23, 2026 at 03:02:20PM +0000, Alexandru Elisei wrote:
+> Make die_perror() more similar to die() by allowing the user to specify
+> a format string and arguments.
 > 
-> setup_fdt()
->   vcpu->generate_fdt_nodes()
->     pmu__generate_fdt_nodes()
+> Signed-off-by: Alexandru Elisei <alexandru.elisei@arm.com>
+> ---
+>  include/kvm/util.h |  2 +-
+>  util/util.c        | 17 +++++++++++++++--
+>  2 files changed, 16 insertions(+), 3 deletions(-)
 > 
-> The PMU ioctl KVM_ARM_VCPU_PMU_V3_INIT requires that the GIC has been
-> initialised, which is done in gic__init_gic().
-> 
-> gic__init_gic() and setup_fdt() are part of the same initialisation list.
-> The relative order on the list depends on the order of compilation: gic.c
-> is compiled after fdt.c and this places gic__init_gic() first on the
-> initialisation list.
-> 
-> If the compilation order changes and gic.c is compiled *before* fdt.c,
-> gic__init_gic() will be executed *after* setup_fdt() and PMU initialisation
-> will fail with an error message:
-> 
-> PMU KVM_SET_DEVICE_ATTR: No such device
-> 
-> This is fragile and hard to debug. Improve the situation by creating a new
-> init list, last_init(), execute it after late_init(), and move PMU
-> initialisation on that list.
+> diff --git a/include/kvm/util.h b/include/kvm/util.h
+> index ac8515f8c46b..a6dba1147d68 100644
+> --- a/include/kvm/util.h
+> +++ b/include/kvm/util.h
+> @@ -41,7 +41,7 @@
+>  #define MAP_ANON_NORESERVE (MAP_PRIVATE | MAP_ANONYMOUS | MAP_NORESERVE)
+>  
+>  extern void die(const char *err, ...) NORETURN __attribute__((format (printf, 1, 2)));
+> -extern void die_perror(const char *s) NORETURN;
+> +extern void die_perror(const char *fmt, ...) NORETURN __attribute__((format (printf, 1, 2)));
+>  extern void pr_err(const char *err, ...) __attribute__((format (printf, 1, 2)));
+>  extern void pr_warning(const char *err, ...) __attribute__((format (printf, 1, 2)));
+>  extern void pr_info(const char *err, ...) __attribute__((format (printf, 1, 2)));
+> diff --git a/util/util.c b/util/util.c
+> index fc732200f2dc..0f116e0ac459 100644
+> --- a/util/util.c
+> +++ b/util/util.c
+> @@ -1,6 +1,7 @@
+>  /*
+>   * Taken from perf which in turn take it from GIT
+>   */
+> +#include <stdio.h>
+>  
+>  #include "kvm/util.h"
+>  
+> @@ -98,11 +99,23 @@ void __pr_debug(const char *debug, ...)
+>  	va_end(params);
+>  }
+>  
+> -void die_perror(const char *s)
+> +void die_perror(const char *fmt, ...)
+>  {
+> +	char buf[1024];
+> +	va_list params;
+>  	int e = errno;
+> +	int ret;
+> +
+> +	va_start(params, fmt);
+> +	ret = vsnprintf(buf, sizeof(buf), fmt, params);
+> +	if (ret < 0) {
+> +		e = errno;
+> +		strncpy(buf, "vsnprintf", ARRAY_SIZE(buf) - 1);
 
-Hmm, not a big fan of that. There's always _somebody_ who wants to be
-later/earlier than everybody else (see the CCA probing converstion!).
-
-If the PMU genuinely depends on the GIC, then perhaps we should just
-call the PMU init function from the GIC init function, along with a
-comment to explain the dependency? This is all arm64 code so I think
-that's fine.
+That looks really confusing to me as we're effectively hiding the real
+error that caused us to get here just because we couldn't pretty-print
+the error string! In the unlikely case that vsnprintf() fails, I think
+we should preserve the original errno and either print a string to say
+that the formatting failed _or_ pretty-print the original error with
+strerror().
 
 Will
