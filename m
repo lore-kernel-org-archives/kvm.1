@@ -1,30 +1,29 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.5])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1C113BB119;
-	Sun, 17 May 2026 15:37:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86EF63BAD9B;
+	Sun, 17 May 2026 15:37:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779032269; cv=none; b=Gt4wx9GQqs9+EvIdoIRu10slZHQ0iGf2ocmfYVLhjymvaSCYXcX1GjJIv7/CYZOxAQkoVzRQb7pyYT2U+aO7hfBWGdvh+bzpwJoI2RZUOz4/gIAhwtzlRZKTMlGUtpJm2lrGWelsh64BueIhfv7yoxuLOTv3yeOWUiyspruuFRE=
+	t=1779032275; cv=none; b=Oqvjil7SZl0ORyC/9vHwW/RbXW+LYoj8xaaUGPsjQxaQn3KOu2lu4zDO0yCL7G90l+6Olne05MppmLcT3fMx0itBbS9SHQgga8amGxfkkTIKdj+tfQdkynDAZ80bFZ+Sr7j2qxguMH6O/N9cikbP9t30uXLPO7RBIpA5bMt9mZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779032269; c=relaxed/simple;
-	bh=MvXwo4MOq7Z9CPIBfscObm8YkRPHqvIZywS8JjwD+/A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rGr+BFbLnHqAo9nQoMs5UoyETX8EuFK1X82l9emKGXGHGkaENdYz5s+k6BXao7T+uP+UV8jh3QsM8l5iveqfMTrtdiSsStigt8suU+Z9ijv18HoJl8OrH0gytK8R8NqkBLUblgY/VLxCiOzpMvZomZcdsHg4j1MeWYOoogGYPmA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=ZMfBMTY9; arc=none smtp.client-ip=220.197.31.5
+	s=arc-20240116; t=1779032275; c=relaxed/simple;
+	bh=kNIFaOnoms8vpXrC93aiuCYGyPn+69apiDxwOfb+ZZI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R08MVKDpsUsPQG0Gp5NPbfacKFMlThGf8jwuHDI7tkZFqicO9z+9bxnjiXDMB1VFcE8ys3U9bvQNIGFqXn0WSlhMRh6jSwX3dr3Kia3pctibwdu6U1WShiPKo9MvtpttOcm5WnoKPtX1i/lpEkC+3WHXHvgUAZvACC0JOIQk/QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=J1W7Oelf; arc=none smtp.client-ip=220.197.31.3
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="ZMfBMTY9"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="J1W7Oelf"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=yv
-	8yz9RXAgFGizgcfHyJDXAzm7QLNMoZ9qY4PF80Hvs=; b=ZMfBMTY9h+bhGfNVy8
-	LSsyccecgon5/Mc1EVL7Pyr5bDV/K5q2BsgIdXVpw4liSrzx0e1nB/difk+oW1+O
-	ARpno5X91vLZz4Zk2VOrWk4fUQ5Rzj8AQ9kD7m9UfVSeO8d8qcfP5kKLYTkM9VGN
-	TTbdWwYluw9myipi/e2DMatqc=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=R2
+	vdFoj/uYRCZ7Xe7zmYDyiQkstZgeSKUDsvCleEwA8=; b=J1W7Oelfr8fXM1QOFV
+	OLSE7F3bmId4/hJ3lCuusehbacu3aI22bzz6GSsbxXLsIs7XKmS4WG5w1nzLhrBM
+	+ACz8G2gMKxYu+bGePoOvmLSTY8m/SR7nVIUlTOBPoyiPxxiraNgfArSG8eTgiCD
+	f9aDA5ubkeAsVEBQWMOamO/EI=
 Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wA3ylwO4AlqyKW7Bw--.10227S5;
-	Sun, 17 May 2026 23:34:57 +0800 (CST)
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wA3ylwO4AlqyKW7Bw--.10227S2;
+	Sun, 17 May 2026 23:34:39 +0800 (CST)
 From: Jinyu Tang <tjytimi@163.com>
 To: Anup Patel <apatel@ventanamicro.com>,
 	Anup Patel <anup@brainfault.org>,
@@ -46,12 +45,10 @@ Cc: kvm@vger.kernel.org,
 	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
 	Nutty Liu <nutty.liu@hotmail.com>,
 	Jinyu Tang <tjytimi@163.com>
-Subject: [PATCH 3/5] KVM: riscv: Add a G-stage PTE cmpxchg helper
-Date: Sun, 17 May 2026 23:34:25 +0800
-Message-ID: <20260517153427.94889-4-tjytimi@163.com>
+Subject: [PATCH 0/5] KVM: riscv: Speed up dirty logging write faults
+Date: Sun, 17 May 2026 23:34:22 +0800
+Message-ID: <20260517153427.94889-1-tjytimi@163.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260517153427.94889-1-tjytimi@163.com>
-References: <20260517153427.94889-1-tjytimi@163.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -59,68 +56,66 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wA3ylwO4AlqyKW7Bw--.10227S5
-X-Coremail-Antispam: 1Uf129KBjvJXoW7Cr1UKF1xJF4xWFWDCF1kuFg_yoW8tr4fpF
-	ZrCrn3Cr4rWFn3Xr1ay3yq9rn8Ca1vgr13Jr9Fvr98AF1avrW8Xryvg39Ivry5JFyrJay3
-	uay5Kr1UCr4vywUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziWE_NUUUUU=
-X-CM-SenderInfo: xwm13xlpl6il2tof0z/xtbC0AEdlWoJ4CGzBAAA3M
+X-CM-TRANSID:_____wA3ylwO4AlqyKW7Bw--.10227S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7uF48Cr1DKryUuFy3Ww45Wrg_yoW8Kr1UpF
+	WkWr4Fkws2gryxZ3s3C3WDCr909as3GrW7GF47X34DZFs0kry5Aayvg348XFZrJFyxXw12
+	vFW0y34fu34UA37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziVbyZUUUUU=
+X-CM-SenderInfo: xwm13xlpl6il2tof0z/xtbC0A8YkGoJ4A+wjQAA3m
 
-Permission-only G-stage PTE updates can run in parallel once they are
-moved to the read side of mmu_lock. Plain set_pte() is not enough for
-that case because another CPU may update the same PTE first.
+This series speeds up the common dirty logging write fault path for
+RISC-V KVM.
 
-x86 handles the same class of SPTE races with cmpxchg-based updates in
-its fast page fault and TDP MMU paths. Add a small RISC-V helper for
-atomic G-stage PTE updates. The helper reports contention to the caller
-and flushes the target range only when the PTE value actually changes.
+When dirty logging is enabled, guest writes to write-protected G-stage
+4K leaves currently go through the full fault path and take mmu_lock for
+write.  That is expensive once the leaf already exists and
+only needs its permission and dirty state updated.
 
-Signed-off-by: Jinyu Tang <tjytimi@163.com>
----
- arch/riscv/include/asm/kvm_gstage.h |  4 ++++
- arch/riscv/kvm/gstage.c             | 14 ++++++++++++++
- 2 files changed, 18 insertions(+)
+The series first makes the existing MMU notifier locking contract
+explicit, switches RISC-V KVM to KVM's rwlock form of mmu_lock, adds an
+atomic G-stage PTE update helper, uses it for existing permission
+updates, and finally handles dirty logging write faults under the read
+side of mmu_lock when a 4K G-stage leaf is already present.
 
-diff --git a/arch/riscv/include/asm/kvm_gstage.h b/arch/riscv/include/asm/kvm_gstage.h
-index 9c908432b..afe80e4bf 100644
---- a/arch/riscv/include/asm/kvm_gstage.h
-+++ b/arch/riscv/include/asm/kvm_gstage.h
-@@ -54,6 +54,10 @@ int kvm_riscv_gstage_set_pte(struct kvm_gstage *gstage,
- 			     struct kvm_mmu_memory_cache *pcache,
- 			     const struct kvm_gstage_mapping *map);
- 
-+bool kvm_riscv_gstage_try_update_pte(struct kvm_gstage *gstage, u32 level,
-+				     gpa_t addr, pte_t *ptep,
-+				     pte_t old_pte, pte_t new_pte);
-+
- int kvm_riscv_gstage_map_page(struct kvm_gstage *gstage,
- 			      struct kvm_mmu_memory_cache *pcache,
- 			      gpa_t gpa, phys_addr_t hpa, unsigned long page_size,
-diff --git a/arch/riscv/kvm/gstage.c b/arch/riscv/kvm/gstage.c
-index 6f934cb4a..d70584b9e 100644
---- a/arch/riscv/kvm/gstage.c
-+++ b/arch/riscv/kvm/gstage.c
-@@ -123,6 +123,20 @@ static void gstage_tlb_flush(struct kvm_gstage *gstage, u32 level, gpa_t addr)
- 					       gstage->vmid);
- }
- 
-+bool kvm_riscv_gstage_try_update_pte(struct kvm_gstage *gstage, u32 level,
-+				     gpa_t addr, pte_t *ptep,
-+				     pte_t old_pte, pte_t new_pte)
-+{
-+	if (cmpxchg(&ptep->pte, pte_val(old_pte), pte_val(new_pte)) !=
-+	    pte_val(old_pte))
-+		return false;
-+
-+	if (pte_val(old_pte) != pte_val(new_pte))
-+		gstage_tlb_flush(gstage, level, addr);
-+
-+	return true;
-+}
-+
- int kvm_riscv_gstage_set_pte(struct kvm_gstage *gstage,
- 			     struct kvm_mmu_memory_cache *pcache,
- 			     const struct kvm_gstage_mapping *map)
+The locking and concurrency model follows existing KVM patterns from x86
+and arm64: use an rwlock mmu_lock, keep structural page-table changes on
+the write side, and use atomic PTE updates for permission-only changes
+that may race with another vCPU.
+
+The fast path marks the memslot page dirty before making the PTE writable
+again.  It also sets the PTE dirty bit, so systems that trap when D is
+clear do not fall back to the slow path for a writable-but-clean PTE.
+
+Performance was measured with KVM selftests inside a QEMU RISC-V host.
+
+  dirty_log_perf_test -m 19 -v 4 -b 1G -i 3
+    base dirty memory avg, iterations 2-3: 53.262493s
+    patch 1-4 dirty memory avg, iterations 2-3: 52.735675s
+    patch 1-5 dirty memory avg, iterations 2-3: 26.422964s
+    patch 1-5 improvement over base: 50.4%
+
+  dirty_log_perf_test -m 19 -v 4 -b 64M -i 3
+    base dirty memory avg, iterations 2-3: 3.203170s
+    patch 1-5 dirty memory avg, iterations 2-3: 1.762452s
+    improvement: 45.0%
+
+Patch 1-4 are prerequisites for the read-side fast path. The
+main speedup comes from patch 5 avoiding the full fault path 
+for dirty logging write faults.
+
+Jinyu Tang (5):
+  KVM: riscv: Rely on common MMU notifier locking
+  KVM: riscv: Use an rwlock for mmu_lock
+  KVM: riscv: Add a G-stage PTE cmpxchg helper
+  KVM: riscv: Update G-stage PTE permissions atomically
+  KVM: riscv: Fast-path dirty logging write faults
+
+ arch/riscv/include/asm/kvm_gstage.h |   4 ++
+ arch/riscv/include/asm/kvm_host.h   |   2 +
+ arch/riscv/kvm/gstage.c             |  35 +++++++---
+ arch/riscv/kvm/mmu.c                | 105 +++++++++++++++++++++++-----
+ 4 files changed, 122 insertions(+), 24 deletions(-)
+
 -- 
 2.43.0
 
