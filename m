@@ -1,127 +1,184 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB94D374E48
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 14:40:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23D80261B8D
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 14:46:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779115251; cv=none; b=sZ6XnWj0+/0B0YvxpK1ls0J4Mcrn2DGYxAhfnmAmpBbByoBuVrbRXBHOP9nDHwUKUTlWmd6um8XWb3yR7OnB9OIi6zWxZsv487N2kG4ni1BJ20hJ7IBaGi3MthrImhZRJGMwx7TnPOxYmJ2OhYXtze5AjG9LzgslmPBeA+WnmpI=
+	t=1779115589; cv=none; b=FKRY6uxopSCf0vtMp3SlP21uH8e8cwwQJQQzZkzqfmEgdr5eH/r2OKxSLNTVFeoGWo4CIbye0l6Us/uh6KZrGw21UHc3EmUOGg0Jf9hL5nTm7yyQdSWmzEGJ5XBrC/aMiQvQmcjOYrJ/SRry/vAWW4hhqzf4ct5rEFx6WZqkS7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779115251; c=relaxed/simple;
-	bh=uJdoWf7uP5WFjQzz87wmBTCbqaUGfv7i5Mx98GNa5SY=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UmaTtBJ/ITggqCDTrweCAVKG0k94kRWYssICwO9ryNp0qBPxNQU0xKnO9hwVZ1cXYVHOiT9iz1ZUkGvoMyda5I2rwr0BAZovwOGR8a6aRKpFn2Q2JBD49oW5zADc12FQPGDWFkPcs5sTVxfYm/zfSP7n3UFEkKBzgOKiqUr7pkQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JxhkT5hu; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=dEkr8DTa; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1779115589; c=relaxed/simple;
+	bh=MfYb0w3/0nhNBlzuNw8HHMPhnMM4Ih9dwEmy+okoTvY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=VtUINXQvFXGr58yDl+c9ZuBZytSk/CFIMioDA1q0QZvPagICHy5mR2IEZv4+Ya+WUfk6ZPQa/dIlMu/aVqGqHfB4IuCDyGEwV9zkO+dWTvhj9f3HixQpT9QmvdQuhvButfhI2vCNghCvK2RrL/KVYLgFSREmdP9eyxnQHvTA9BQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ilIOe1sH; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JxhkT5hu";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="dEkr8DTa"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779115248;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=pElHc2+i5XQ0IekejspV3qshzABoy3Ro/TwG7oPKG/8=;
-	b=JxhkT5huIbcN9WHV3Dh1yRjn1V+dNHVs0Awb0U08G2da88YxwxJxT/sXWr+HooJXrZxLOa
-	KWg+s1uXxTQ1zWbQWu2OBz9hqI3gFtqplYV+j1MeAi0hAvtNFuMGY63naUipIBBzm499A6
-	0I4ESxtDYiL9CAWR00FqhJjiarPHbuM=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-343-P0i41WVJMFy27LxBborAHQ-1; Mon, 18 May 2026 10:40:47 -0400
-X-MC-Unique: P0i41WVJMFy27LxBborAHQ-1
-X-Mimecast-MFC-AGG-ID: P0i41WVJMFy27LxBborAHQ_1779115246
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-48fda34ed0aso9323695e9.1
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 07:40:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ilIOe1sH"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-bce224720d8so1057269a12.1
+        for <kvm@vger.kernel.org>; Mon, 18 May 2026 07:46:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779115246; x=1779720046; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pElHc2+i5XQ0IekejspV3qshzABoy3Ro/TwG7oPKG/8=;
-        b=dEkr8DTa04uTusiLp9BVblxKPpF6la1YAqWxX1a6RVgvOf6LbTdOPfGn7MG6L79zib
-         kzgXiGleWG+Nuv6oTlyvRhPlD+mmUIjGiFWLWSSxt+jUbIknLlS8H94BGDKvv7sm7oHn
-         wCpYX02nMql474f92ADBqvFheHwydm+p0i27gSF5vhKDWefL6CO5UAGVY1lfWK4/Yy7X
-         VSTYUr9YnMG7593IW0T5mie7Lo/0JGZp/WpS7D1kJHpGy6hNhsNC5ACDT0oDx8kKMpRt
-         M2NSF25G+rTQwoFToaK+EO7BybnP3OddrrZ5J1g33kgaOKY8Z9cAJGj1rEuZMRMuUBoL
-         FCXA==
+        d=google.com; s=20251104; t=1779115586; x=1779720386; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8SzJCc/VsQGWrBeaOpA/+co8xReZ9jTdJ3oXu1ePILw=;
+        b=ilIOe1sHUMhCXfX3vY9MGFOAGZAppYNvFixcjMTcy/h8qE38V2ovVPAjCvofzqzYjF
+         C2qFAtbYu07RgXuBtWRrLRiZaXElap6g1JS/7HcxPBeJrNZ5p0RyE5dAFpMGF6wLOr3X
+         Mul5kgRXrJVgOUxxpacW8HVUSIgyuyDv+y2beKTIIyncPQWPcM9RaXFtcfcNF/lvbdHd
+         AzlJC3/Zn8wIB9l0YvklnkWWjITXnoDfHkayvQcIvEXkw09VKD7svMlPzob6M4Yu+VY2
+         P3QRaXRKXmboNbGdw9Cp1hUAzXuroth14BUdBFK8SOtPm/tEZ1YcCOsUjrdu8oNH3Dvz
+         ZkCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779115246; x=1779720046;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=pElHc2+i5XQ0IekejspV3qshzABoy3Ro/TwG7oPKG/8=;
-        b=gkSc283M79abqrWV1asXA214l3TI7EdCI+xh4+Cq6y/FkhWVMzuDcMyHY8wbwnpc09
-         w76N6mvIVSwr6EtzyyHEW1IGY/bRxGrAU5L2yCZ5tAxPqzyO4To63jCcAKXTDxnhj4Y8
-         WiIoFXvmOalOUvK8LKKIxHTwIK5FnKlq4ftZQsy0X3l3xGPgMx0ZPQOpsgv7x93JhMXK
-         xyMkxzDxwWG9Agq4UbpLpfY1GQeotZJTVLxF5UYTXf8Lbp4tUsufDa49Rt9TMykTyyHr
-         htsS8SfUQo18qdnbeYI+d9H3e1Rkso1g+US4oDn++BlkzcozCUwn6gfhZqDt2Zb6PSPI
-         LB4g==
-X-Gm-Message-State: AOJu0Yw4rINMoXR3iEsqEYBPjLICP5o9Ai1HHeMAIuxpsx8kIvMJttmr
-	4mbejAbPvopGvfHWJng52ZPBhn/NlHM17CaoDCruKHYeK82QPpyeOJFbqadoP5N8ea5J3+nvFDQ
-	vMaVdSiAAhu/0TnrHbqpw6a9DnvJwrOrRUmbNWobgp6mAZxQitLupuQ==
-X-Gm-Gg: Acq92OGmahvf2FBdmFY1fKRvFcpvRclMSFBiRPhjJ8Sst8tDiOlkoJN2BW+dNRwZJ9t
-	mkiaEP03BEAoSs2xhfym/5GRjl6GrnjEB8/W7MjP3xJjJL2i4asOrGRIiYKWmaEfEZnaXY8Znye
-	BML51Vyyhy3vM5JveZerURa0LalYLdcT/cOwYlhGjXHHO12GQJivQ7mlM+38L8Oq3TpEHrY8YrF
-	WwTGTW6eJlZ9acEvdQ+oX5epra5cOFq0gbJIeScjsaLvv6KL/QnxNgzH6UwBUSVdGE68GtL7KoU
-	N6PPcoKUvIYZT5dgamc65H0fQkRcNNbGYaPUUwBN2Xt1jpiVnSsOIhUcNz7wTZSiBn1QXB5tKti
-	CD441+g==
-X-Received: by 2002:a05:600c:8906:b0:48f:e3e7:3d39 with SMTP id 5b1f17b1804b1-48fe5fdd63fmr183175995e9.11.1779115246087;
-        Mon, 18 May 2026 07:40:46 -0700 (PDT)
-X-Received: by 2002:a05:600c:8906:b0:48f:e3e7:3d39 with SMTP id 5b1f17b1804b1-48fe5fdd63fmr183175705e9.11.1779115245758;
-        Mon, 18 May 2026 07:40:45 -0700 (PDT)
-Received: from imammedo ([213.175.46.86])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe4c8344asm444206845e9.1.2026.05.18.07.40.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 07:40:45 -0700 (PDT)
-Date: Mon, 18 May 2026 16:40:44 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, pbonzini@redhat.com, babu.moger@amd.com
-Subject: Re: [kvm-unit-tests PATCH] x86/svm: work around Virtual
- VMLOAD/VMSAVE bug on Naples and Rome
-Message-ID: <20260518164044.5f06f840@imammedo>
-In-Reply-To: <agsidj11-eY80au1@google.com>
-References: <20260515111957.4188366-1-imammedo@redhat.com>
-	<agcVNezX5lf1_3O7@google.com>
-	<20260518143255.3795625a@imammedo>
-	<agsidj11-eY80au1@google.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+        d=1e100.net; s=20251104; t=1779115586; x=1779720386;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=8SzJCc/VsQGWrBeaOpA/+co8xReZ9jTdJ3oXu1ePILw=;
+        b=KZcSWncttYE0EhbBQq7rojHhEr4P3S+pNVz/87QM4VxMS4tQlwL18K1NN1bmyUM2Tx
+         xT3HzMeRwBRqmcrmv2cpB6aR0MG7KZC3kY4w1ocafgXDDYeDsv/5h/xZSDq3MeNkQEpQ
+         /C2KW+NzDe3+vOquhoprnudPYjGfi2YkgQ2QCIjozh6BaomHA3n7M2wmpJ8J6+OQBDMj
+         p0vH/um2EK+kWhoPcx4e9TA8ilFivhcLJ4JuFCXqGCHcTjncPpFtSx4L650ZmpAaBq/o
+         JnhJ9vZebDbzkPq0RO15H3OqNsSnjLaHqdQN36W9rbawpp2N5Mkhdqkig333nOJoElYr
+         ftWw==
+X-Gm-Message-State: AOJu0YzPzUqektD7Ols2F4uu3asdqSfd5TBvW9JO3H0IOOEtsEeOA2eV
+	SKtWdZs2I04RCFWwchsPH6AubcSxOcVZRGta9snAXFH/WrDOTCTDKK4fmhH/J84QxC5nNCGfQ8m
+	nM3GJaQ==
+X-Received: from pgvd24.prod.google.com ([2002:a65:6218:0:b0:c82:c752:b253])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7f90:b0:39f:82bd:298
+ with SMTP id adf61e73a8af0-3b22e373bffmr17838349637.0.1779115586280; Mon, 18
+ May 2026 07:46:26 -0700 (PDT)
+Date: Mon, 18 May 2026 07:46:25 -0700
+In-Reply-To: <20260516163412.601908-1-clopez@suse.de>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260516163412.601908-1-clopez@suse.de>
+Message-ID: <agsmQaqJ5ShSaV07@google.com>
+Subject: Re: [PATCH] KVM: x86: Fix array_index_nospec() protection in kvm_vcpu_ioctl_x86_set_mce()
+From: Sean Christopherson <seanjc@google.com>
+To: "Carlos =?utf-8?B?TMOzcGV6?=" <clopez@suse.de>
+Cc: kvm@vger.kernel.org, pbonzini@redhat.com, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, 
+	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Jue Wang <juew@google.com>, 
+	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 18 May 2026 07:30:14 -0700
-Sean Christopherson <seanjc@google.com> wrote:
+On Sat, May 16, 2026, Carlos L=C3=B3pez wrote:
+> Commit aebc3ca19063 ("KVM: x86: Enable CMCI capability by default and
+> handle injected UCNA errors") introduced kvm_vcpu_x86_set_ucna(), which
+> accesses @vcpu->arch.mci_ctl2_banks[] using @mce->bank as the index. The
+> @mce struct is user-controlled, provided via the KVM_X86_SET_MCE ioctl.
+>=20
+> The caller of this function, kvm_vcpu_ioctl_x86_set_mce(), bounds-checks
+> @mce->bank and applies array_index_nospec() to advance the @banks
+> pointer, but @mce->bank itself is passed through unclamped. On a
+> speculative path that bypasses the bounds check, the raw @mce->bank
+> value can index mci_ctl2_banks[] out-of-bounds.
+>=20
+> In practice this is a very weak gadget, and would at most allow leaking
+> a single bit in a 64-bit integer, but prevent potential future issues by
+> clamping @mce->bank in place with array_index_nospec(), before passing
+> the struct to kvm_vcpu_x86_set_ucna().
+>=20
+> Fixes: aebc3ca19063 ("KVM: x86: Enable CMCI capability by default and han=
+dle injected UCNA errors")
+> Signed-off-by: Carlos L=C3=B3pez <clopez@suse.de>
+> ---
+>  arch/x86/kvm/x86.c | 3 ++-
+>  1 file changed, 2 insertions(+), 1 deletion(-)
+>=20
+> diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> index 209eae67ab18..2d2415031267 100644
+> --- a/arch/x86/kvm/x86.c
+> +++ b/arch/x86/kvm/x86.c
+> @@ -5497,7 +5497,8 @@ static int kvm_vcpu_ioctl_x86_set_mce(struct kvm_vc=
+pu *vcpu,
+>  	if (mce->bank >=3D bank_num || !(mce->status & MCI_STATUS_VAL))
+>  		return -EINVAL;
+> =20
+> -	banks +=3D array_index_nospec(4 * mce->bank, 4 * bank_num);
+> +	mce->bank =3D array_index_nospec(mce->bank, bank_num);
+> +	banks +=3D 4 * mce->bank;
+> =20
+>  	if (is_ucna(mce))
+>  		return kvm_vcpu_x86_set_ucna(vcpu, mce, banks);
 
-> On Mon, May 18, 2026, Igor Mammedov wrote:
-> > On Fri, 15 May 2026 05:44:37 -0700
-> > Sean Christopherson <seanjc@google.com> wrote:  
-> > > > +static bool has_vls_bug(void)    
-> > > 
-> > > Probably need to be more specific, because there appear to be multiple flavors
-> > > of vls bugs.  :-/  
-> > 
-> > 
-> > would something like this work:
-> > 
-> > -static bool has_vls_bug(void)
-> > +/*
-> > + * Naples (Fam17h/00-0f) and Rome (Fam17h/30-3f) cause spurious VMEXITs
-> > + * on VMLOAD/VMSAVE when the VMCB address falls in [0x78000000, 0x80000000).
-> > + */
-> > +static bool has_vls_spurious_vmexit_bug(void)  
-> 
-> Works for me.  Any chance you have a specific erratum number that we could reference?
-I'll try to find it. That's also was a reason to cc AMD side, for they probably
-know better where/what to look for.
+As a follow-up, I think we should fold kvm_vcpu_x86_set_ucna() into
+kvm_vcpu_ioctl_x86_set_mce().  Splitting it to a separately helper makes it
+unnecessarily difficult to see the usage of mce->bank.
 
-> 
+Hmm, and isn't the handling of UNCA errors misplaced?  Per the SDM, the onl=
+y
+allowed values for IA32_MCG_CTL are -1ull and 0.
 
+  IA32_MCG_CTL controls the reporting of machine-check exceptions. If prese=
+nt,
+  writing 1s to this register enables machine-check features and writing al=
+l 0s
+  disables machine-check features. All other values are undefined and/or
+  implementation specific.
+
+I don't see anything the SDM that exempts UNCA from that logic.  Ditto for =
+the
+similar IA32_MCi_CTL check.  So on top of your fix, over two patches, I thi=
+nk we
+should end up with this?
+
+	mce->bank =3D array_index_nospec(mce->bank, bank_num);
+	banks +=3D 4 * mce->bank;
+
+	/*
+	 * if IA32_MCG_CTL is not all 1s, the uncorrected error
+	 * reporting is disabled
+	 */
+	if ((mce->status & MCI_STATUS_UC) && (mcg_cap & MCG_CTL_P) &&
+	    vcpu->arch.mcg_ctl !=3D ~(u64)0)
+		return 0;
+	/*
+	 * if IA32_MCi_CTL is not all 1s, the uncorrected error
+	 * reporting is disabled for the bank
+	 */
+	if ((mce->status & MCI_STATUS_UC) && banks[0] !=3D ~(u64)0)
+		return 0;
+
+	if (is_ucna(mce)) {
+		banks[1] =3D mce->status;
+		banks[2] =3D mce->addr;
+		banks[3] =3D mce->misc;
+		vcpu->arch.mcg_status =3D mce->mcg_status;
+
+		if (lapic_in_kernel(vcpu) && (mcg_cap & MCG_CMCI_P) &&
+		    (vcpu->arch.mci_ctl2_banks[mce->bank] & MCI_CTL2_CMCI_EN))
+			kvm_apic_local_deliver(vcpu->arch.apic, APIC_LVTCMCI);
+	} else if (mce->status & MCI_STATUS_UC) {
+		if ((vcpu->arch.mcg_status & MCG_STATUS_MCIP) ||
+		    !kvm_is_cr4_bit_set(vcpu, X86_CR4_MCE)) {
+			kvm_make_request(KVM_REQ_TRIPLE_FAULT, vcpu);
+			return 0;
+		}
+		if (banks[1] & MCI_STATUS_VAL)
+			mce->status |=3D MCI_STATUS_OVER;
+		banks[2] =3D mce->addr;
+		banks[3] =3D mce->misc;
+		vcpu->arch.mcg_status =3D mce->mcg_status;
+		banks[1] =3D mce->status;
+		kvm_queue_exception(vcpu, MC_VECTOR);
+	} else if (!(banks[1] & MCI_STATUS_VAL)
+		   || !(banks[1] & MCI_STATUS_UC)) {
+		if (banks[1] & MCI_STATUS_VAL)
+			mce->status |=3D MCI_STATUS_OVER;
+		banks[2] =3D mce->addr;
+		banks[3] =3D mce->misc;
+		banks[1] =3D mce->status;
+	} else
+		banks[1] |=3D MCI_STATUS_OVER;
+	return 0;
+
+Unless I'm wrong, I'll send a v2 with your fix plus two more patches.
