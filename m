@@ -1,228 +1,156 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43FD1382390
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 17:22:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0D6A372ED3
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 17:25:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779124938; cv=none; b=YC+9+iicRVQ93DH9F4YIUygV4GCjGJ0nO6S8WVD/AhI82N0w/iv+hSbIzCAAniQ8TfE3GAh4mGyeOdbER8Em6SpUD+5HGDU/82IcE2Z4yH8ikPzN9bFh1XAQC+ZMOcrmsUtSXtxPaESpv+Ic/yu/MioqWdiGWVJ/ukcROss/eZY=
+	t=1779125156; cv=none; b=NAl6goEIKDByW7UlA279mnNeiC2C/8/BkBmiEckrGuNwpzNtHRNm4iGZTIloG2Py4F+yblSIhRTWjngi8f1DMc9LseOKQ1VObJLuuqjIgb59GBz0dBguntGrBtseLBBxU3lh6W4Sj7cv2R3/VKUUwzkBk6Ps/pegoiq1JULkdVA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779124938; c=relaxed/simple;
-	bh=kvzoRRtRkt99R85TCv6fmYGvBN6W9hGpuH3oahXqcoc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LRo48qaYvTZJlkqq8eNupQktr+ZijDRb/O3b/6uhECPWbnaxyxrd86kMUhgUlR8+lWFN18LGvFGdl8p/zwPHoySailqN08tj70SwUC3tjFmyygvowNDYuX+CGDO161Y+bD0XjxSzJlackq+5mS3tVIN6pBtLcnyoCYoxrdD83MU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VZmLoF/i; arc=none smtp.client-ip=209.85.214.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1779125156; c=relaxed/simple;
+	bh=OrBPmevPl7Bz+JPYx+/UDRTEs966LVdRO5PS0JogsXk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=uUTJKvhEolbl2NPhHBfqLnsZEwcQBP0ucIQ77WtTD//jX5i6ppFIXhEhZg+U9h2sdX6AUO1Nb592dV5NoKkaIjL3Zc/heYEIHf7hKCMDudspfqK0Wq3mdyMAO8sKm1MIM0RLK/6cc+kx78OfbXneCJ5xR/EhuSPw8UvfQZ8Bft0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=KPPTCmth; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VZmLoF/i"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2ba3b9bcf69so1675ad.0
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 10:22:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779124936; x=1779729736; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=GOpQmNzrJoZpllcvwCwLtMCpq7AcJeE0RS7V56u/5aU=;
-        b=VZmLoF/ioIzohyqnmEms/ki5BYdASIN4DRyEFwQfgOJLp7pCRntGYFioiamGfjhyxg
-         g20Jh7wpOcp/TqzVkAcgTxvijSV2GCTkL5V1hOB4SI7fa6MEWCg/JKTxPeunNfC9/4bi
-         uL5DPAdaGCTDpilhBBDkabV+UkWTeumkY6bBjY0ichlN3hBTrwA2X1lTAudU+7j8Gaz3
-         LKz63iHXu+MrAo+PrnXGsGWY/TCp8N3Gia/77GO1a/CT37/N6g5zgPWbkVQzko6j9i6b
-         OTH1xThaOwhop6fuFT36zMgQkUaiDOFClFwpoBexk2DjkgaekALC8X0SGeEBuWYHgW84
-         CbYg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779124936; x=1779729736;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=GOpQmNzrJoZpllcvwCwLtMCpq7AcJeE0RS7V56u/5aU=;
-        b=h4BJ9MuChbEjyK2r/DJKZmjG27Uw0c37B7Wd4UhZOseU0bFyOyAihXVBRKSKoA7+g4
-         7V20smE5IFIIoVH3NJPbAlkqZjIi6Mc8oJKYUldf5/syEewJkAXHmzVubwL6BeWKw4F1
-         N82vegz2NoTr2o6zIwO1WaxDwD/B6qwHqxvMit8YAi6SEkTb3tr1+sHnTntTfvXCEgRP
-         EWfwbclXYMLHDkC9CAajIhEFiexiF/5u8gq/rs11jsiuEFa6EMuCn7cZbWyj2xm9U/4C
-         laENadFo3YW6GRbqMRleNmQOc3goWzodwBvjQQKgGRQxodTQ2NC9XY2Wq9G5Q9ONjW+Y
-         7BlQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/uTlfzwbdRtWuLvG4TQLCGkbQLfpjIAan5RNAPdGd/t+r8w6BB8V4GqRNWbxorVVBZLPg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVA3N4gcoAf5zb91UiHP2mKiX2aY/LerG4vPceuBARH8V527W4
-	XqewrlYOzI9yE/1XHcjUoBCbQMTM9ut+Ssih+fH3jQRbPZpA1GdfakEmdoSqE02Ndg==
-X-Gm-Gg: Acq92OF2ySLaw8XCp8e4M2LKFGOPkzZTSO0/v8ylBAKfWlBbSKDXC26gwzc1veNonF8
-	BuqAOq2IEtuOH+TnhcynTWGiwkciIx3WkZvj4DvZ/TfolMYeZnTuEM1CfrQReaLCTi0duoiqVrA
-	GTt60vSMeuY9UZbnrNtzkKd2Cjxrv2ZrO1sqbOMEPF7zUh/yhrFI4qu5hQDpbcFBOhWWsk1JicX
-	oXWJDPVPBo8cDm2IGYHr+KclGcSI819v5HDF7jQhPju/7R+wYlBP0294OpoCNKfmXni3ZbWchkm
-	RZjrXqazH9EMXcrXlXd2VFSkkXZ3JXQjcrNW3GZ4Gl/lGZTccVsjpNITQr6FxS6Wk54oW3IFeQW
-	esfE08GhBCMqXG6jbdoNDcT5msDpnfBR0z0itbW0Wi6tGTciEo6gYII5vW9hG4lDTI2Zl6W6rfu
-	+Rakl+SbWAR0Kw9+i5qzHr2uvKKJvXWLKDNBaR0GXygHFwiVJmzcCvNE6PiNN4eP5CFAJCHPLtZ
-	sLwJVMD
-X-Received: by 2002:a17:903:228e:b0:2b0:aee4:afe7 with SMTP id d9443c01a7336-2bdb03a197bmr3385745ad.10.1779124935806;
-        Mon, 18 May 2026 10:22:15 -0700 (PDT)
-Received: from google.com (153.46.83.34.bc.googleusercontent.com. [34.83.46.153])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83f1977b779sm15315177b3a.23.2026.05.18.10.22.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 10:22:15 -0700 (PDT)
-Date: Mon, 18 May 2026 17:22:12 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Pranjal Shrivastava <praan@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, 
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
-	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
-	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>, 
-	YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH v2 05/16] iommu/pages: Add APIs to
- preserve/unpreserve/restore iommu pages
-Message-ID: <agtKjY_D2S6I_DVd@google.com>
-References: <20260427175633.1978233-1-skhawaja@google.com>
- <20260427175633.1978233-6-skhawaja@google.com>
- <agsg1esRdKwV3dxB@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="KPPTCmth"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64IB9VHA1950620;
+	Mon, 18 May 2026 17:25:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=pp1; bh=9o+ZPd+Dq5mzDzpO+
+	zbMazocWrqDmu+Ib19Mxw1Xvdk=; b=KPPTCmthLF3UG9amFItvKZSpiUh/1BV5z
+	oo9oXZpY2+HvFlS3abbT8gt7md2Y6Lz9HGbutmv1Qw21gHs4cmNU63n2GM1glRzC
+	4yHe7o+EXtip1SxcU/dyxAkhUob3qkMf+4SLZ/+F5Z9qF/9cdKLI72zguAE+RnY4
+	LpKTP7PYkAIHDpbeZrF+vsusQZcxk/qCaRnQTYnXYxPJJaGZluN1FFLdxtTCZW9f
+	7JyYGrKiS+DKGCBBqpfBtrADvQPHiF8DUC603wEyTj1C0Ly1a9TLRf4T/B4qoT7C
+	j+KF6JMfQALena2Ct+VrrGqVQAcvwTY63WXbvQ2YQasL6W0rx1HHg==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h888rsj-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 May 2026 17:25:44 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64IHO9p0000992;
+	Mon, 18 May 2026 17:25:43 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e739vq3nt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 May 2026 17:25:43 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64IHPdcI38994218
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 18 May 2026 17:25:39 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B50D720043;
+	Mon, 18 May 2026 17:25:39 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CD65120040;
+	Mon, 18 May 2026 17:25:36 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.39.29.56])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 18 May 2026 17:25:36 +0000 (GMT)
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org
+Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
+        Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Chinmay Rath <rathc@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, qemu-devel@nongnu.org,
+        kvm@vger.kernel.org, Shivaprasad G Bhat <sbhat@linux.ibm.com>,
+        Gautam Menghani <gautam@linux.ibm.com>
+Subject: [PATCH v3 1/2] target/ppc/kvm: Fix const violation when trimming CPU alias suffix
+Date: Mon, 18 May 2026 22:55:15 +0530
+Message-ID: <20260518172517.12466-2-amachhiw@linux.ibm.com>
+X-Mailer: git-send-email 2.50.1
+In-Reply-To: <20260518172517.12466-1-amachhiw@linux.ibm.com>
+References: <20260518172517.12466-1-amachhiw@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <agsg1esRdKwV3dxB@google.com>
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: 9mUzMzoX7csFzem3tPuVm1nrS4J8QxBe
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE4MDE2OCBTYWx0ZWRfX+2uxiwIomGgA
+ 8Skn3c4GSv0gU+WCS/rAU1E8JlnVk0S2h5xQpUHSedVWZN7J31cfNWKEgQmp59+7HnzYK2emDXS
+ 4nv9B2oOPsW8vXcvNHL6pjofwzh/LgrBGyWOD0XTLDPssrUmcssHGt1g3gdvD3amMKBPQPubkit
+ cuw679wHdz0oya6S5OI80uUWM4pbY/+A5gYtxwEhJyon3P9Fomcjft4cXwOv2X1vAgr8XhRheWX
+ k0jGITARRv8T7Ome2ja5ZHmBs/md3Vf+h/h/w/8bGkf24e0qzG/M73ZViQpJ+85ieLiyGXQac37
+ 3Y6kvilbm4lulokSdhK/iBvPcxJBQ/Zis4xPvNOGAqpmZOQEdirIS9oFy9Jl0KgroeWOvdJ4lPr
+ 5mL+XxAmYVgrRqCOP7F5+iMJi2kwDsIwJQwC4EH+CqqBKNb/8WsJxVQMm5u2BnI1/4SaOTf740f
+ x/CnAI2OozYVWzy0jwA==
+X-Proofpoint-GUID: amO-cARgsXVXDVNCRP8vYc6cb1FUsc8t
+X-Authority-Analysis: v=2.4 cv=apyCzyZV c=1 sm=1 tr=0 ts=6a0b4b98 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8 a=AeOTFisfVSLvIChBu_YA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-18_03,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 lowpriorityscore=0 priorityscore=1501 impostorscore=0
+ bulkscore=0 suspectscore=0 adultscore=0 spamscore=0 phishscore=0
+ clxscore=1015 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
+ definitions=main-2605180168
 
-On Mon, May 18, 2026 at 02:23:17PM +0000, Pranjal Shrivastava wrote:
->On Mon, Apr 27, 2026 at 05:56:22PM +0000, Samiullah Khawaja wrote:
->> IOMMU pages are allocated/freed using APIs using struct ioptdesc. For
->> the proper preservation and restoration of ioptdesc add helper
->> functions.
->>
->> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
->> ---
->>  drivers/iommu/iommu-pages.c | 108 ++++++++++++++++++++++++++++++++++--
->>  drivers/iommu/iommu-pages.h |  30 ++++++++++
->>  2 files changed, 134 insertions(+), 4 deletions(-)
->>
->> diff --git a/drivers/iommu/iommu-pages.c b/drivers/iommu/iommu-pages.c
->> index 3bab175d8557..b1ffeb930e6d 100644
->> --- a/drivers/iommu/iommu-pages.c
->> +++ b/drivers/iommu/iommu-pages.c
->> @@ -6,6 +6,7 @@
->>  #include "iommu-pages.h"
->>  #include <linux/dma-mapping.h>
->>  #include <linux/gfp.h>
->> +#include <linux/kexec_handover.h>
->>  #include <linux/mm.h>
->>
->
->[snip]
->
->> +
->> +/**
->> + * iommu_unpreserve_pages - Unpreserve pages that were preserved in KHO
->> + * @list: List of pages to unpreserve
->> + */
->> +void iommu_unpreserve_pages(struct iommu_pages_list *list)
->> +{
->> +	struct ioptdesc *iopt;
->> +
->> +	list_for_each_entry(iopt, &list->pages, iopt_freelist_elm)
->> +		kho_unpreserve_folio(ioptdesc_folio(iopt));
->> +}
->> +EXPORT_SYMBOL_GPL(iommu_unpreserve_pages);
->> +
->> +/**
->> + * iommu_restore_page - Restore a page that was preserved in KHO
->> + * @phys: Physical address of a page
->> + */
->> +void iommu_restore_page(u64 phys)
->> +{
->> +	struct ioptdesc *iopt;
->> +	struct folio *folio;
->> +	unsigned long pgcnt;
->> +	unsigned int order;
->> +
->> +	folio = kho_restore_folio(phys);
->> +	BUG_ON(!folio);
->> +
->> +	iopt = folio_ioptdesc(folio);
->> +
->> +	/*
->> +	 * For the restored pages incoherent is set to false as these are not
->> +	 * mapped using the DMA_API. The remapping of these pages using DMA_API
->> +	 * is not needed as these are not going to be written to by the new
->> +	 * kernel.
->> +	 */
->
->Looks good.
->
->> +	iopt->incoherent = false;
->> +
->> +	order = folio_order(folio);
->> +	pgcnt = 1UL << order;
->> +	iommu_folio_update_stats(folio, pgcnt);
->> +}
->> +EXPORT_SYMBOL_GPL(iommu_restore_page);
->> +
->> +/**
->> + * iommu_preserve_pages - Preserve pages during kexec handover
->> + * @list: List of pages to preserve
->> + *
->> + * Returns 0 on success, negative error on failure
->> + */
->> +int iommu_preserve_pages(struct iommu_pages_list *list)
->> +{
->> +	struct ioptdesc *iopt;
->> +	int ret;
->> +
->> +	list_for_each_entry(iopt, &list->pages, iopt_freelist_elm) {
->> +		ret = kho_preserve_folio(ioptdesc_folio(iopt));
->> +		if (ret)
->> +			goto err;
->> +	}
->> +
->> +	return 0;
->> +
->> +err:
->> +	list_for_each_entry_continue_reverse(iopt, &list->pages, iopt_freelist_elm)
->> +		kho_unpreserve_folio(ioptdesc_folio(iopt));
->> +
->
->Looks good.
->
->> +	return ret;
->> +}
->> +EXPORT_SYMBOL_GPL(iommu_preserve_pages);
->> +#endif
->> +
->
->[snip]
->
->> +static inline int iommu_preserve_pages(struct iommu_pages_list *list)
->> +{
->> +	return -EOPNOTSUPP;
->> +}
->> +
->> +static inline void iommu_unpreserve_pages(struct iommu_pages_list *list, int count)
->
->Nit: This is inconsistent from the signature in it's counter part in
->IS_ENABLED(CONFIG_IOMMU_LIVEUPDATE)
+GCC 16 tightens diagnostics around const correctness and now correctly
+rejects attempts to modify strings referenced through const-qualified
+pointers. In kvm_ppc_register_host_cpu_type(), ppc_cpu_aliases[i].model
+is defined as const char *, but the code was using strstr() on it and
+then modifying the returned pointer in-place to strip
+POWERPC_CPU_TYPE_SUFFIX.
 
-Oh. I will update this in next revision
->
->Let's remove `int count` from the arguments to avoid broken builds.
->
->> +{
->> +}
->> +
->> +static inline void iommu_restore_page(u64 phys)
->> +{
->> +}
->> +#endif
->> +
->
->With that stub argument fixed,
->Reviewed-by: Pranjal Shrivastava praan@google.com
+This results in a write through a pointer derived from const data,
+triggering a build failure with GCC 16:
 
-Thanks Pranjal.
->
->Thanks,
->Praan
+  error: assignment discards 'const' qualifier from pointer target type [-Werror=discarded-qualifiers]
+        suffix = strstr(ppc_cpu_aliases[i].model, POWERPC_CPU_TYPE_SUFFIX);
+               ^
+
+Fix this by changing suffix to 'const gchar *' and using g_strstr_len()
+to locate the suffix, then allocating a new string with g_strndup() (to
+copy only the prefix) or g_strdup() (to copy the entire name if no
+suffix exists). This maintains const correctness throughout while
+preserving the original functionality.
+
+No functional change intended.
+
+Signed-off-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+---
+ target/ppc/kvm.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
+
+diff --git a/target/ppc/kvm.c b/target/ppc/kvm.c
+index 25c28ad089c6..b94c2997a07f 100644
+--- a/target/ppc/kvm.c
++++ b/target/ppc/kvm.c
+@@ -2654,13 +2654,12 @@ static int kvm_ppc_register_host_cpu_type(void)
+     dc = DEVICE_CLASS(ppc_cpu_get_family_class(pvr_pcc));
+     for (i = 0; ppc_cpu_aliases[i].alias != NULL; i++) {
+         if (g_ascii_strcasecmp(ppc_cpu_aliases[i].alias, dc->desc) == 0) {
+-            char *suffix;
++            const gchar *suffix, *cname = object_class_get_name(oc);
++
++            suffix = g_strstr_len(cname, -1, POWERPC_CPU_TYPE_SUFFIX);
++            ppc_cpu_aliases[i].model = suffix ?
++                g_strndup(cname, (gsize)(suffix - cname)) : g_strdup(cname);
+ 
+-            ppc_cpu_aliases[i].model = g_strdup(object_class_get_name(oc));
+-            suffix = strstr(ppc_cpu_aliases[i].model, POWERPC_CPU_TYPE_SUFFIX);
+-            if (suffix) {
+-                *suffix = 0;
+-            }
+             break;
+         }
+     }
+-- 
+2.50.1 (Apple Git-155)
+
