@@ -1,146 +1,86 @@
 Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC19A48C8DF
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 14:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CD947884C
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 14:30:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779114563; cv=none; b=cu6VCtgzjfyYAbgj6kkcTXcH5iIvQhu15e474pRzCl3zMCkD3Q5ArIy8EgE3bvhirIFJBTSeNw51aZsL5eRVeU4LTz5Jiiv/DYypA7Q/+MFuaH0X+3czyyPtSbyjo9ahvQXVlXpJ7hdzAuqkS0ebjJWb9/Z8MFGcN9RFA+rnk1s=
+	t=1779114618; cv=none; b=ViGBfhKtl4ke1wYWpZW5OcBIqQKlzcHivRrk/3Z5ASPuLFRWjme+E8mEnLOpzjrvJtJsXp/zLsg1nEEKp67bgJQ0/Bu0rUYAfSJY9/VimKNsYD1I22Da8vp3ltC/xvJco0xJ444fOuDX+dCAkoweqRHeWvVf8NC5XYBgVcgs+os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779114563; c=relaxed/simple;
-	bh=uQxUt9aTdAUFES/ufe+2hLvK/7DjWdNptJkdNT7/DW0=;
+	s=arc-20240116; t=1779114618; c=relaxed/simple;
+	bh=+QqIRMlk35NfFtNSwIIXR0tHqjMN8/7Dy2pT9i6K1QU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=g9XQP2xzUKC5TPLffetwXc0ZD3BzvRYCQjig9VtpiRYFcsXcxobaoYQSs+2mjUph+HKiq8+Wcn4zmPgSwP4JQQjwABWct0KPQYTKEld2P76ywVOF0TMq3UX9oF2XDbgANy2ORXGb2NUfeS8eCVbAQAjk6jGGE8kFGfB5kuEY7xg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eupZewte; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=p250/gc0Lg0aKE53d8IPtphzymxtQygf7avZK6yIKKhX0lfj02MTle5C4dSi+H9jp7crW28DDBKcOu1LDA2Gy7cPUiHJFCqQPC9R94WXfEAqEEuP+rp3Hwc7zshZE8QBnJmqY9Ijh55fPX3aPBfVJ5jjIU2u1BGmqt58losGmwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QIb92z79; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eupZewte"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c828ab3b033so3290228a12.3
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 07:29:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QIb92z79"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c828acf7c1dso3855291a12.3
+        for <kvm@vger.kernel.org>; Mon, 18 May 2026 07:30:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779114561; x=1779719361; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779114616; x=1779719416; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ymuC28dYrYts/hTf1mXmoAxJXflD/PyX4wqZqcbMCVU=;
-        b=eupZewteVioDwMAsTK+3cM/EPLZ+ImkadY97UI24/TSkL42qoDKtGQAd2q9cAuPPAw
-         ImnUVfp5MohocTz+P8OtuCBD5lwECdBR2ND/b3GiEyVmKlQpfZaswJwkbQIGjFLiSeeg
-         AYy51B169i9NTnVn+01JHFLQYWrhgMLBAAJ3OSfNHpt6/mX8VWHvl9ICfMfR31vf7mUB
-         GexObYqndfjB8uUOmP+ZmdaFUm4e+lCy+GItdUwkGlL4qwtlWGYHeYATLOG2dnIOHKDD
-         7Pro0KvlsVVRiJ5SPj+9/hmnRl5jhdQixNVIHiPEgiNnWxlzZq5dzIMxe5n7I3xbKNbd
-         dWfg==
+        bh=0BMZN8DfhHB/P3bRfvTgBvNLjXRHABO/5pnPVGlHVwI=;
+        b=QIb92z79D/2T/eIzgi+OnZRayMt5qAgdMktpTQDzJMkpZ766OcgH4n2XPI0jifGnRM
+         K+fL1xRc7ZpOP0ZBdRnltO3svlVwlkddc3hszOxneSNU8idFLJ9sN3flbOW1OuZNgZIZ
+         scT/rT6kek+NXEyRB28WZn1gkYoDzKxBLU8QtMlMzfOHOLg/t6E03AOcaPC+tFwNXGQQ
+         ePsRCaNIBx9bj0mFr2f275fBMSzG4Q1go3HGhH2aPiod1r/KbLMo+oBnnl2cr7wWbCPP
+         dYejyZaqL75VYNZT6axtsa5zPnkNcQdW2qKTzBpGKS4Jlw7+IbxyQ0NgAI4y8ek2PRhs
+         GhDw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779114561; x=1779719361;
+        d=1e100.net; s=20251104; t=1779114616; x=1779719416;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ymuC28dYrYts/hTf1mXmoAxJXflD/PyX4wqZqcbMCVU=;
-        b=F//ojpJEvedD4WruMe6kajh99Q5ATMh8e8UyqsvZdNK6GqHtxAKhgj9cbOrjoX05Xv
-         6TqCzQI528qlZsM/KiAUbH/o2V9Eip8cx5eB7FInJtY7N36ElE+Ji6BRznZZWNCdovVm
-         ioC3wz6EZ2tVDPYmmeh41NTY4zIfKNAv8sAmR52On0zkd0IiogSjxtY7+P8rjS6GSgtj
-         +Omjdd/zguWTODRHlIqB3JfHLrzjXHAxTkimVzyU77NaXkhvuCfK9WyuYN7PElX05LH8
-         SCVw2B9iZK1y2r7uNK8T9+45r6O1nQHK+OvPkAFbUKDOguDAVym1gnygYu2/TbsZuMaW
-         hXyg==
-X-Forwarded-Encrypted: i=1; AFNElJ82GRjex9IHZjTBZFOKCFgb62HS8yCaJ8jNcD7zw1cetgDRj0sgFhxk8YCGBxmfmc5fSWc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxgRTEdrKbJoXKAfsp46erxcLf+Knxx510JBU8rIH02bm8+7sSc
-	WEORIKB6YLrTIb80jOM0ZL33iZxRnaxaGXkDTa3sQH869OluXMjyM5Sux6RQpsCtzfvdGfFrUo8
-	jw96GcA==
-X-Received: from pgjm24.prod.google.com ([2002:a63:fd58:0:b0:c82:bdf7:482a])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:748b:b0:39c:4e62:b838
- with SMTP id adf61e73a8af0-3b22e829a63mr17058789637.17.1779114560795; Mon, 18
- May 2026 07:29:20 -0700 (PDT)
-Date: Mon, 18 May 2026 07:29:20 -0700
-In-Reply-To: <bf569f46-8690-4f82-a2a0-d196970880de@linux.intel.com>
+        bh=0BMZN8DfhHB/P3bRfvTgBvNLjXRHABO/5pnPVGlHVwI=;
+        b=I8/sm10Njyk1TAETdzIwhqV5XkprB2XHFaMvSuoEuuNzMqQLuo8bJ3IwSKlRyZFe3Q
+         XSMwX1ROngua5mc7YkTs1qQ3X9D81NsfEmjcPzRf867Lg58CexarawwN/sX5BaBzt6rF
+         UsViVUIvfeql6tC2Mxgd/akqAdIes0uhDOLFTPZ83cZa5Bsk8dfjc7jz9i0h0l9cp5xx
+         nSQD9WoQ/sDq8d5EQwN8Mv9wzhq/RnXD5YZ9ChBMUIAnW6ypOYO04WUhzYXIOOrGw85C
+         6gevz+2X5vwGZjmihc21QDz2uu9+ADcLRaZ/WeK+dwnxfdO8FBU964e3hZEMmCRcrKJR
+         1Aqg==
+X-Gm-Message-State: AOJu0YwlU1Yr2ZKzLY/aUnt7L96v0bh2bHgIuwGB93D24PqCE27i4avf
+	0tyo2kjyruDeIEoe2h+Hm1q9LUtJZIcF06G+JnZwnmF5eEElxVQBLn3a4d43s8cBD2AFjEEBl7O
+	OzJSiBQ==
+X-Received: from pgbdo6.prod.google.com ([2002:a05:6a02:e86:b0:c80:e758:dec3])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7d9f:b0:398:7ed3:a001
+ with SMTP id adf61e73a8af0-3b22e7afe34mr16907559637.2.1779114615413; Mon, 18
+ May 2026 07:30:15 -0700 (PDT)
+Date: Mon, 18 May 2026 07:30:14 -0700
+In-Reply-To: <20260518143255.3795625a@imammedo>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260417073610.3246316-1-binbin.wu@linux.intel.com>
- <50ccbe42-4b74-4c2a-b530-a367f7285de6@intel.com> <bf569f46-8690-4f82-a2a0-d196970880de@linux.intel.com>
-Message-ID: <agsiQGikhZA0CGTY@google.com>
-Subject: Re: [RFC PATCH 00/27] KVM: x86: Add a paranoid mode for CPUID verification
+References: <20260515111957.4188366-1-imammedo@redhat.com> <agcVNezX5lf1_3O7@google.com>
+ <20260518143255.3795625a@imammedo>
+Message-ID: <agsidj11-eY80au1@google.com>
+Subject: Re: [kvm-unit-tests PATCH] x86/svm: work around Virtual VMLOAD/VMSAVE
+ bug on Naples and Rome
 From: Sean Christopherson <seanjc@google.com>
-To: Binbin Wu <binbin.wu@linux.intel.com>
-Cc: Xiaoyao Li <xiaoyao.li@intel.com>, kvm@vger.kernel.org, pbonzini@redhat.com, 
-	rick.p.edgecombe@intel.com, chao.gao@intel.com, kai.huang@intel.com
+To: Igor Mammedov <imammedo@redhat.com>
+Cc: kvm@vger.kernel.org, pbonzini@redhat.com, babu.moger@amd.com
 Content-Type: text/plain; charset="us-ascii"
 
-On Mon, May 18, 2026, Binbin Wu wrote:
-> On 5/15/2026 4:08 PM, Xiaoyao Li wrote:
-> > On 4/17/2026 3:35 PM, Binbin Wu wrote:
-> >> Hi,
-> >>
-> >> This RFC series is to allow public capture of feedback from TDX
-> >> developers before we have too much internal conversations on it and to
-> >> initiate code review of Sashiko. It is not yet intended for review by
-> >> KVM maintainers. Sean and Paolo, please feel free to ignore this version.
-> >>
-> >> Originally, we had issues on TDX when a new hardware feature, which is a
-> >> host state clobbering feature, is supported by new TDX modules/platforms.
-> >> A host state clobbering feature requires KVM to save and restore the
-> >> feature's related MSR(s) on host/guest transitions; otherwise, if the
-> >> feature is used by TDs, the host state will be corrupted, leading to
-> >> unexpected behavior on the host.
-> >>
-> >> Currently KVM hardcodes a deny list for unsupported host clobbering
-> >> features for TDX, i.e. HLE, RTM and WAITPKG. However, KVM can't keep a
-> >> list of bits that it may not know about (e.g. the upcoming FRED support
-> >> in TDX).
-> >>
-> >> We had been working internally to propose a TDX specific solution to
-> >> solve the host state clobbering feature issue. But during a PUCK meeting,
-> >> Sean mentioned that KVM had a more permissive CPUID configuration
-> >> interface than desired and there were problems due to it in the past for
-> >> normal VMs as well. 
+On Mon, May 18, 2026, Igor Mammedov wrote:
+> On Fri, 15 May 2026 05:44:37 -0700
+> Sean Christopherson <seanjc@google.com> wrote:
+> > > +static bool has_vls_bug(void)  
 > > 
-> > It will be better if some detailed example of problems on normal VMs can be
-> > provided.
+> > Probably need to be more specific, because there appear to be multiple flavors
+> > of vls bugs.  :-/
 > 
-> Sean mentioned it in PUCK meeting that google internally had some issues before,
-> but he didn't tell the details.
-
-For far too long, our VMM didn't sanity check the vCPU model being presented to
-the guest against KVM_GET_SUPPORTED_CPUID2.  That's what I'm envisioning for KVM:
-something akin to QEMU's default behavior, where QEMU refuses to create a VM if
-the user enables unsupported features, unless the users also enables the "let me
-shoot myself in the foot" flag.
-
-> >> Sean suggested that KVM should introduce a more
-> >> paranoid mode to check CPUID from userspace for VMs in general, as well
-> >> as an opt-in interface for userspace. And TDX should use the
-> >> infrastructure to enforce paranoid mode non-optionally.
-> >>
-> >> This RFC patch series adds a paranoid CPUID verification mode for KVM on>
-> >> x86, where KVM must be explicitly aware of every CPUID feature exposed to
-> >> the guest. When the CPUID paranoid mode is opted-in by userspace or
-> >> enforced, KVM will reject any unknown or unsupported feature from
-> >> userspace. And it starts to enforce paranoid CPUID verification for TDX.
-> > 
-> > Regarding the opt-in interface (for normal VMs), I want to know what the
-> > benefit it brings for normal VMs when it's opted-in.
-
-More or less the same benefits QEMU's default behavior provides.  Whether or not
-the value added, relative to what userspace can/does do, is worth the complexity?
-Dunno.  I haven't looked through the series, but this:
-
-  15 files changed, 1298 insertions(+), 525 deletions(-)
-
-definitely gives me pause.
-
-> > If it can make the host more robust or prevent potential attack from
-> > malicious userspace + guest, then it should certainly be forced on instead
-> > of userspace to opt-in.
-> > 
-> > If no good benefit, I doubt any userspace will opt it in. E.g, I can see
-> > one benefit without the paranoid mode: Userspace can expose the new simple
-> > x86 Instruction to guest before KVM supports it by adding one line of
-> > F(xxx) in kvm_initialize_cpu_caps()
-> > 
 > 
-> As Rick replied, Sean thought for normal VMs, it could be opted-in to do debug
-> or even make it enabled by default.
+> would something like this work:
+> 
+> -static bool has_vls_bug(void)
+> +/*
+> + * Naples (Fam17h/00-0f) and Rome (Fam17h/30-3f) cause spurious VMEXITs
+> + * on VMLOAD/VMSAVE when the VMCB address falls in [0x78000000, 0x80000000).
+> + */
+> +static bool has_vls_spurious_vmexit_bug(void)
 
-I doubt we'll ever enabled it by default.  I can see us providing a module param,
-so that a deployment can effectively enable it by default, but truly enabling it
-by default in KVM will likely never happen.
+Works for me.  Any chance you have a specific erratum number that we could reference?
