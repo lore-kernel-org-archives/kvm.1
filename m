@@ -1,66 +1,67 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011030.outbound.protection.outlook.com [52.101.62.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4657738236A;
-	Mon, 18 May 2026 04:42:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779079338; cv=none; b=bZUAYVOYYBZFR0BgWFhC+pAgGvHUf5jbVrzQLsEBT9faUw2/Mpv9Gh2bfbz7iwsG63iKIQPm9Xu83exZoWRTCgRQBjKCRmYx9BpCDWNyVeqbnuHBjSAwNumeOqcSjK9t69XpqDV+0a8h+0mnU/toRniLmw19594uP0q87iv6Xk0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779079338; c=relaxed/simple;
-	bh=WxO5dQDtSXPtnDcRushc7qgiqYJrUF8J6QNjNtk3YcQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JcRBdYnZLqe9Lt49EwHhd6RIY3JhDknxIy5G4Zx64jjxj0BDteFivP35/nxX/rZJn931YMCcmGgUSTHRGLjgAdi78/Jv25Dzuzoi1I/fgA0WS+E0QWZiICbuAodVXEdjghKDRDske5QrvycCd2Npzarg0RlJyKCgMYD1G2f+meo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Bob+Je/R; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E5637B41C
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 04:59:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.30
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779080387; cv=fail; b=sqHCLT7TmUwxB0dqvB0ugN7qTDEw+f8/OrcuciTRkeHCskxljy/Ee6nnq7Ztlota/OT25wwnCV3bJilf3pDfWcMS1OTq/O8OnpE9+/C1cpOYU51KuZFS3qO2I3s2L75RfCT0woaqob//4yrUyxvwyTnOtruiGMMAVjfQGWMlVgc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779080387; c=relaxed/simple;
+	bh=Azs1j++PbnTjm5mSNSF9J7lmO8rpPPvuEQ+Hk4bH4Xo=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Ke08k6NBFBoWQrvVcedShnaVJISPqmCnOPVbSd/aqAoKaJCaDdd45BiaTc+tlLHeuB/3GtQge/B4EDkSoOX92jDAJ3ap56q7gA4Z7vqrzdC/pZM+SHAcJ5rn0tP7WN+zrKyqdlL02worRgHdm78FE0i0JDFMzpz/wTkK3Zi+OaE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=TZZGIRoS; arc=fail smtp.client-ip=52.101.62.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Bob+Je/R"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64H8j4hW620482;
-	Mon, 18 May 2026 04:42:03 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=bGWUFNUd70rQ8WihNw4jpC4+/xY2vnlDmpGuDw5bx
-	Qg=; b=Bob+Je/Rhd2jPNcblU/JjBGDwT7MN4kL4Tplm6pQwPB/miTo2afP/n6OG
-	ussqWY3Awn/Hs3uhEJIbEoGMixAnflspd4raDJVdeYpGwK/DMaIFcjzyw1z9Efvd
-	b/cp2CZnEFPywiX/WhtIWJxyhT1iKryoEyatzuNYqV4sxBX2FCjymx6xSbTI9wyD
-	fDmfzKV8Vq7ET2a83PnuQ8PLi/jbsm2SQ9uFKwsXAGbjgRAbmklJKDRXARKV36tr
-	wnj5yqhJVq+O2hpVXZkD6eS1CFhdlqtS8Zn++v/FjvX/BvXinoDH0sGc8tkGWah5
-	3Z6m2q4BKwvvLUFD0SAKV+jItocHw==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h885s9v-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 May 2026 04:42:02 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64I4dMfu028251;
-	Mon, 18 May 2026 04:42:02 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e72wpvc1g-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 May 2026 04:42:01 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64I4fwdE45744632
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 18 May 2026 04:41:58 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 79BFB2004D;
-	Mon, 18 May 2026 04:41:58 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 20FC220040;
-	Mon, 18 May 2026 04:41:56 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.43.47.251])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 18 May 2026 04:41:55 +0000 (GMT)
-From: Gautam Menghani <gautam@linux.ibm.com>
-To: maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au,
-        chleroy@kernel.org, atrajeev@linux.ibm.com
-Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH v2] KVM: PPC: Kconfig: Enable CONFIG_VPA_PMU with KVM
-Date: Mon, 18 May 2026 10:11:49 +0530
-Message-ID: <20260518044150.34632-1-gautam@linux.ibm.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="TZZGIRoS"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Vm/Un9uugPL1qi93rIiqB7P/wftBdIMLxoRH2Tn2i0Xzn9rhndgGL0VV6Aql8WfNNmTJP55xiy0JAWDXtz/FhM0+Jxv0zvOYhnBm7cIosEFC884EtItlU0/+M/hPrX3D8bfpBzLG8Czl0tG7obYUWz1bdACmlC8u9P/pxL2DTQAcRQlbdq887V/wUBn9GBWcwrsm3hBJKwUAultMhxuy53bqNAStO+Tka0ImEXVvvubixCn7KRdFo+HDn0ncYdcKvCzGRtjoVinfkRGtyNtlxqFGhX8w4OHMtT3wgPjvkY/uqWoYbkFr+OCcLKrQbjmXexfn/XnKkZh+AGFvqUT3RA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=bBiaeU1SCcu0vgS4x48uv19vK3l1XnaERkQftjQumMA=;
+ b=AaYDjt5GEOyISxRHFIbWXQ2I+ldylKrW7SpC+AgtoKf/u9REFrYk/VaX5wMWktlawKcWx/FQ9JRzK8LsDHkK7y620W00utdyWDXl8NDS8a/7JgNX0fcbIiPHTPburB70Md8UyEiBt/REJGL0JSHmNdk4iZqQwOEj/mtU3e9Y3Q0gBgE78Y1mHb8qb01I9OEsbaeCjQq/WRA9kn5gYBd40ZzAnSdYze+7UA0XnPK11jO++vyfV+vs/DCkkxxm82/e/0+XvvXgSMunYXHBaFtuIhMKcp9y5mDAsx1ZLyY5AQJaGlfMsPqJVHsq3CpDskz2GEdldIqRmIY473JeFHZrkw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=bBiaeU1SCcu0vgS4x48uv19vK3l1XnaERkQftjQumMA=;
+ b=TZZGIRoStqTmoC5KZ1QsY6LYN5G+PLGQ70P6KbYqfGqGIW1mDuIySgZc0I47QuGxGnN+CGpr5ABZSeixkDdUCwodNZNHP8qUENvPktuVCjzln6mPFvlduxEI9ApEdV+mIdf4UmjSqcLEBkJLY1oKCMR82iyMKjMz5wRPf+i6Aco=
+Received: from BL1PR13CA0064.namprd13.prod.outlook.com (2603:10b6:208:2b8::9)
+ by MN2PR12MB4159.namprd12.prod.outlook.com (2603:10b6:208:1da::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.19; Mon, 18 May
+ 2026 04:59:40 +0000
+Received: from BL02EPF0001A0F9.namprd03.prod.outlook.com
+ (2603:10b6:208:2b8:cafe::6d) by BL1PR13CA0064.outlook.office365.com
+ (2603:10b6:208:2b8::9) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.21.48.14 via Frontend Transport; Mon, 18
+ May 2026 04:59:40 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ BL02EPF0001A0F9.mail.protection.outlook.com (10.167.242.100) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.48.11 via Frontend Transport; Mon, 18 May 2026 04:59:40 +0000
+Received: from gomati.amd.com (10.180.168.240) by satlexmb07.amd.com
+ (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Sun, 17 May
+ 2026 23:59:37 -0500
+From: Nikunj A Dadhania <nikunj@amd.com>
+To: <kvm@vger.kernel.org>, <seanjc@google.com>, <pbonzini@redhat.com>
+CC: <thomas.lendacky@amd.com>, <bp@alien8.de>, <joao.m.martins@oracle.com>,
+	<nikunj@amd.com>, <kai.huang@intel.com>, <yosry@kernel.org>
+Subject: [PATCH v7 0/7] KVM: SVM: Add Page Modification Logging (PML) support
+Date: Mon, 18 May 2026 04:59:09 +0000
+Message-ID: <20260518045916.2988667-1-nikunj@amd.com>
+X-Mailer: git-send-email 2.48.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -68,62 +69,102 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-ORIG-GUID: PpjuoOT9BjwOhUhLQsC87Y3Z8qEG--ja
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE4MDA0MSBTYWx0ZWRfX4K9NQFNAFt8/
- StCBKLsWKzJWsfzTJTf593fHSB99oKGv5RSzJeGGO+NuwUR/aMtlisBFKS07qsgHO3JZZEhjKjT
- 76RgwG8NuM3PjW6X1kdfXt2Hv4j3GqovCPrjp1VSbkllo0cujn9WyIEdSrIxXzFoubQRLCYoPKl
- lKPULk4WS8r5B6Xa1zV8q5VvXDbd5+pY92Th4gy90MBYEbtN3ljWppfCU0f3aK+fSA70ztJPLDs
- u0Fnd+cpNo458Mg51J3r/g+3s4WTUkW71uKua6DuOY0KlMsN7smYyQOJqM2fUb7fR/D0A2i1vHA
- WlOVW+069coUCIMoq0D0MfNJTYn2Au8tg1OsehZb/sptSbUUIjLqrluBSK4z9PHWJ+B2Gbh+gAE
- sSXSZWQ0hyLuNLZN7FKjG8bA7hVRcI8hXVvtXA/qnT0Sa54RTiSqk7KGo+GdRVuIWoNxmFeooqj
- n/W3l7UtxFOkPKUwQsg==
-X-Proofpoint-GUID: vjKVfJVpSCIxUrFwZ6gp_3WBDmW1M8qf
-X-Authority-Analysis: v=2.4 cv=apyCzyZV c=1 sm=1 tr=0 ts=6a0a989b cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=cDqL2IBmYfLLLIMnpHoA:9
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-18_01,2026-05-15_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- malwarescore=0 lowpriorityscore=0 priorityscore=1501 impostorscore=0
- bulkscore=0 suspectscore=0 adultscore=0 spamscore=0 phishscore=0
- clxscore=1011 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
- definitions=main-2605180041
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BL02EPF0001A0F9:EE_|MN2PR12MB4159:EE_
+X-MS-Office365-Filtering-Correlation-Id: 75e7b6c4-44ba-4f05-77a8-08deb49a44e0
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700016|1800799024|376014|13003099007|18002099003|56012099003|11063799003;
+X-Microsoft-Antispam-Message-Info:
+	vNvD6djjxg7dohXwIuxqerfqe3b7ZPN/XhTpL54HBbF5B7HGAJ5tkvprEF8BCidFjR4L4SqKGeKll2L+86+0HZl2py68hHCJaPxM9UMbAfsXoT0AFoMt6N745r+kpoLGTxcMHJu0s8TmCupCJLbf9R2PmmUJDJbjUTm0dHEWOY4n1cHTifMoDKRXEcZx8WFsZU+5Z7n7/ou9v4esFaPlePhEB7kEwyt8Mt7UJtx85bmq+4/Ji/OXDQfk4m2gqGnmNrc4kZ9AtkwPc7Umu+hXz7ZKIbibkwbb+RAUNv8BqbMlk1vh7geT+SUQm/cntE4sF7b+Db1Ef5PNbsbLEVyngtRW6KlHqjWTszOMMB8HLviwEtcDlPpaosjf/0xft7s5b6CqH3XZwZ2e7BiFvlE8+NDbDaowTryeBkc6XGQWn87t6+98U+T+AXddAwIdKzIsA5/Rzk1YEr+3v0tckHc6BASLwdo88AFZjZ8/sw1lHVE+PEb1NpbuQ74tPnprIxGvZQuIqRsEVV6cM9J2cr0kMza70oBgU9sq0Fu0JfMQ+keUdaAiEgkn+mnIOLvHbm9MUKDtNRY4LScpHkLEOMZr/SBaNDJj/5y33XkYNDU5b3+/xF5W4Wxdn/lR1j12IaKnUJ/vh8wBOfMu6W3O81ojILe2h+JZy8HxK5m1VWWuS3FfISiSPbU0Q3qNz76IOtLS7fhwMGptnrtv5kp6cTSl6qtqy33Cj6bhbEjFMQ+YGPc=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700016)(1800799024)(376014)(13003099007)(18002099003)(56012099003)(11063799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	Zs1I1KGgTCxUnnPQttcRx5WhLeboTwTJOh8uPJ/LmKdXkvsMa9Tjr0G6+SXfa3qYtHfcEUgkh7LWOYQvky+t/NtsiFzqYPrOlBc0r1gClAKJwYE840MWnyU5O3zTFSwxCib4pVDaLknzBcK1EvurC+0StfAfuZcNUMSkNW3+iVU/1Nr1RzF1ZiCP1DKPpHC9pmX0HURZrNuuIb4jwRukFLg6PgGP9/x96K72Ah94HOhhd2PcsiYJM+6KExZUkvQbCXFBj+n0iStztTEkmudySQOeOgZlcIH0/xMXiXtJjDfy9xVL4FKYxnfp4EV8IbMPJMQZk3P2CpueqKrYasiVoQZnPsxFtNoKTv3i9+mN21DPycpCTFYfbVIS0E3fhNpwkREeYgKUpzKefsNgBIRGLMy0frG/0X6J9vV5GUh22PArs3YgBQ9+daxE1SjYXHmt
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2026 04:59:40.6278
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 75e7b6c4-44ba-4f05-77a8-08deb49a44e0
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BL02EPF0001A0F9.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MN2PR12MB4159
 
-Enable CONFIG_VPA_PMU with KVM to enable its usage. Currently, the
-vpa-pmu driver cannot be used since it is not enabled in distro configs.
+This series implements Page Modification Logging (PML) for guests on select
+AMD Zen6 processors, bringing hardware-assisted dirty logging support. PML
+is designed to track guest modified memory pages. PML enables the
+hypervisor to identify which pages in a guest's memory have been modified
+since the last checkpoint or during live migration. More details can be
+found in the AMD64 Page Modification Logging specification [1].
 
-On fedora kernel 6.13.7, the config option is disabled:
-$ cat /boot/config-6.19.12-200.fc43.ppc64le  | grep VPA_PMU
- # CONFIG_VPA_PMU is not set
+The PML feature uses two new VMCB fields (PML_ADDR and PML_INDEX) and
+generates a VMEXIT when the 4KB log buffer becomes full.
 
-Fixes: 176cda0619b6c ("powerpc/perf: Add perf interface to expose vpa counters")
-Cc: stable@vger.kernel.org # v6.13+
-Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
----
-v1 -> v2:
-1. Rebased on latest master
+The feature is enabled by default when hardware support is detected and can
+be disabled via the 'pml' module parameter.
 
- arch/powerpc/kvm/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+[1] https://docs.amd.com/v/u/en-US/69208_1.00_AMD64_PML_PUB
 
-diff --git a/arch/powerpc/kvm/Kconfig b/arch/powerpc/kvm/Kconfig
-index 9a0d1c1aca6c..56e86b46ff13 100644
---- a/arch/powerpc/kvm/Kconfig
-+++ b/arch/powerpc/kvm/Kconfig
-@@ -82,6 +82,7 @@ config KVM_BOOK3S_64_HV
- 	select KVM_BOOK3S_HV_POSSIBLE
- 	select KVM_BOOK3S_HV_PMU
- 	select CMA
-+	select VPA_PMU if HV_PERF_CTRS
- 	help
- 	  Support running unmodified book3s_64 guest kernels in
- 	  virtual machines on POWER7 and newer processors that have
+Changelog:
+v7:
+* Swap patch order to avoid adding @pml_page parameter only to remove it
+  (Sean)
+* Add Sean's prep patch to pass @vcpu to init_vmcs() instead of @vmx,
+  cleaning up all vmx->vcpu usage (Sean)
+* Drop guard(svm_vmcb01) patch; access vmcb01 directly in
+  svm_update_cpu_dirty_logging() since VMCB is just memory (Sean, Yosry)
+* Only initialize PML index on reset, leave unchanged on INIT to avoid
+  discarding unflushed entries. PML_INDEX in the control area remains valid
+  after intercepted SHUTDOWN (Sashiko, Sean, Kai)
+
+v6: https://lore.kernel.org/kvm/20260407063245.2755579-1-nikunj@amd.com/
+* Collect RoBs
+* Rebase on latest kvm/master
+* Dropped SEV PML selftest (Kai Huang)
+* Added guard(svm_vmcb01) helpers to temporarily switch to vmcb01
+* Use guard(svm_vmcb01) to ensure vmcb01 is targeted during PML updates when L2
+  is active, similar to VMX. Dropped patch moving nested CPU dirty logging to
+  common code; upstream now updates vmcs01 on-demand via temporary VMCS switch
+  instead of deferring updates.
+
+
+Nikunj A Dadhania (6):
+  KVM: x86: Move PML page to common vcpu arch structure
+  KVM: x86: Carve out PML flush routine
+  KVM: VMX: Use cpu_dirty_log_size instead of enable_pml for PML checks
+  x86/cpufeatures: Add Page modification logging
+  KVM: SVM: Use BIT_ULL for 64-bit misc_ctl bit definitions
+  KVM: SVM: Add Page modification logging support
+
+Sean Christopherson (1):
+  KVM: VMX: Pass @vcpu, not @vmx to init_vmcs()
+
+ arch/x86/include/asm/cpufeatures.h |   1 +
+ arch/x86/include/asm/kvm_host.h    |   2 +
+ arch/x86/include/asm/svm.h         |  14 ++--
+ arch/x86/include/uapi/asm/svm.h    |   2 +
+ arch/x86/kernel/cpu/scattered.c    |   1 +
+ arch/x86/kvm/svm/nested.c          |   6 ++
+ arch/x86/kvm/svm/sev.c             |   2 +-
+ arch/x86/kvm/svm/svm.c             | 108 ++++++++++++++++++++++++++++-
+ arch/x86/kvm/svm/svm.h             |   3 +
+ arch/x86/kvm/vmx/vmx.c             |  72 +++++++------------
+ arch/x86/kvm/vmx/vmx.h             |   7 --
+ arch/x86/kvm/x86.c                 |  31 +++++++++
+ arch/x86/kvm/x86.h                 |   8 +++
+ 13 files changed, 195 insertions(+), 62 deletions(-)
+
+
+base-commit: a9512a611bd030088f13477258d1f8103cceaa40
 -- 
-2.53.0
+2.48.1
 
