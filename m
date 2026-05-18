@@ -1,198 +1,172 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D887640C5BD
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 12:33:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DF840DFCC
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 12:33:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779107583; cv=none; b=Ptceqt6WGBgREQwuTuVDl8B7xsRH7TotdwXcMU8X4tqaqBcRpqMAKLJKakrJmJecmV7N2ZimuXFcHd6/bvh4+Uxzlnph2vlXYTOCsEqVsht1zSnw8q02SLHRRz0D5B7HMG3XfD4kbdvqLAR9iJhuoQBbLg7wybOomejxPCou+Hs=
+	t=1779107618; cv=none; b=AKBiWqLpwrWYiiJhdPTCLqzsoD7kmoBk1RVNROJ9DuU9XlPj+jteFJQJKeWl2PReBboAzFBU3BMU4XvClMwB7y1qkHVsFTUjpX/AccaIUvU1fm9EIFtalOjkV/tWOOEXqJTr+772vhPt5G+2znRh3+kVh/cy7fak+IAFR1RZpmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779107583; c=relaxed/simple;
-	bh=C9Xw7GTZRh0407yOk0pU4RmLBCi7oFI/awd3tEWoV0I=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EKsCfBGGkhYHaZSKNdW06bJQ2cA1ClQ7wPh9IMhkHKsSeIkvQPaNnCvZwjxEG/JxGq3HsFkaXAn2TAbGzTOjQW4Bij3SMXUiiniBj2uovkqv9eXPjPoabLo6axxHj3jKBG1G+5PftbwdPL0YaXTO7oL0VZZZPkwoL+afY5rLOjU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MJ7WZI12; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=d6jrBwa4; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1779107618; c=relaxed/simple;
+	bh=eteect+ff8liDAlqaZm03mOtwH8hF75AgpasHuA6duE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BW0OQmJfWTxFUSFcSF7MqcdJ8x7lp+oAowWcAlhtHV1CywaHst+KS1hPEHRFoBxowUqmfDdRuTzLVaWEOOetM3/AG1Kqyuhuw/EMw6EDuOMAFJOJYa9LlJ5/ctqngdh3PswoMg2KzyxXR3NTGf7NQS+pbdE40GJDY08NJyZMFhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HdGEa0Ek; arc=none smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MJ7WZI12";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="d6jrBwa4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779107580;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=0d9WvjLb1PfQrsdDdFrwKtnYPXrqYOrQTlHYnGHntbw=;
-	b=MJ7WZI12A/VTlSXbagel5TG8G0IGyiqKurCtwLc3rwJ4BASC7HyuDFZvRKI5mNdsaNA3dL
-	eq7aOajYrx4jT0+rjqRkOvGOf3BnvgmaY6C2RL442QG6ZA5H47d3o/ezPbV9I0sBdiCjZP
-	k7tMc7CZspmQ+UlQjox1RbepxO5wOEg=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-202-nu2cuhP0NaeN7l_3E_ICMA-1; Mon, 18 May 2026 08:32:59 -0400
-X-MC-Unique: nu2cuhP0NaeN7l_3E_ICMA-1
-X-Mimecast-MFC-AGG-ID: nu2cuhP0NaeN7l_3E_ICMA_1779107578
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-48fe3e73da6so10648175e9.2
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 05:32:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HdGEa0Ek"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-515548f390fso1371cf.0
+        for <kvm@vger.kernel.org>; Mon, 18 May 2026 05:33:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779107578; x=1779712378; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0d9WvjLb1PfQrsdDdFrwKtnYPXrqYOrQTlHYnGHntbw=;
-        b=d6jrBwa4asUhM8wuf4yMnNRxeMNPPfkoTqqpmlYJ1lekSEsZE8DHPoCVyeU+K6FP8w
-         U7kDz9rnmbRjfAHn6GlCTtm+zjfvnKseJqUKthpk0/8v765mSSlNj8lcXXqBBbcBLJm7
-         YHlV6KebdwOMCVQWJWE+oQy7hHG3GOzJtq4kag0RkaCC/RgIMXNe4WSOvhdE+nJr+zRY
-         VGCSXm5mHe/DYKaF+RM76tTod75GLJbYWrlxBowMyXtYhP7SeOBQV7d5swXeq25YZzsg
-         f9Jg/L7OWUt1mInfCH5TtZ2t20ADE7kZKDNHFrLadR6KdG9gXqw4KQBTXl4W8DCCjAkt
-         Rs5Q==
+        d=google.com; s=20251104; t=1779107616; x=1779712416; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pEg290J1ykCPkYwv69V6a2ExyDDaRGL6kITmZSq7l38=;
+        b=HdGEa0EkjLEBR9qsQjmnI2773aUKWIaPWI9cMMb5zq1/1VAp6XaS93mYm9aQQVFMc6
+         LEMl120z/GUEeZQ0Ju2L+txSCUaOvhH7X7j+JscuUnJyiwoKQvH9LeXI/NE9Fs/2aIVI
+         x5gwkoOYv2/jLvAzyigAsQ1POk7328ziZZjZ6j2vGuqbBHklzG/J8qXz2/jChRcHyqow
+         yZFruqGgu6prx5OXdv7or8EXMd6DBdSwWItEkHHn8Rs4AYrQf4PR9e/mMW5bLSmWZtLR
+         CtcBlH2VRiHeLBP7coGtjRSVVj/7gVwkyxVcmH3sHwc/BAOs3oHd/2Rb/sMuMK0w7iG7
+         8S3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779107578; x=1779712378;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=0d9WvjLb1PfQrsdDdFrwKtnYPXrqYOrQTlHYnGHntbw=;
-        b=bdEUbQuXhQQhQDNvMr2ZZHttvaKSqtdofWTDSIaKzt0u7KoYpA26Tt7D+o3ANIFmtj
-         PXfDiF/IAHPX7DFGYRqe/ageG2dZ7GSttQOG15OFEo+P6VP5nNUh8hSJzgp6Oq/7NfX/
-         yr8WkpUqTXbu6o4BS+4+Wv0thyWd4URdTyzuVrS01LpgEEglF+3zxnnqTs9hxnTGK8TR
-         /F9oRVlNmecjXFSWz0Hdr6+miEdlyycGyTFCJGg4foniejtIpIPBBeMHNN6BqIMXtn5V
-         Xg8Y9xAdbVaMvtZlwHjU3sMOPoeMGZF5YBev52+kPwKK1oJoRWYO4wocIIrnwq4M6DCT
-         zn3w==
-X-Gm-Message-State: AOJu0YzsoJhvAjVvp8F08DBUBwS/4jiDrEtg6P7ecVotjvJlOYAh7urE
-	jwYLCo0ih7uncKLpy1H2D2DsU6zEaCa7o7gSPfG4M+Ac3w7ayjwI17QX0kMpCQ18pLf8S/aMPIs
-	krx9dVC1kKIcyLtBd11uUtVEtZB7kcJ/7xLU6g1HP/duyEgko6qyPEg==
-X-Gm-Gg: Acq92OEEChouDdWMCox9WPe7ptOxRL85HLBsTdpEwYqkxFRbi+BR/Ovv4cW57f/I/ma
-	aiRIg7G/ZfhYoyG+Py3GEAm+ZGb+5nGTn6PtW6A7jf0tXq23dY8XQHiSrzwlKvqSHBz5U3+m+eX
-	r2jkeLIe50oVwm+TlWwO2eUWH+jbbo7EmoU6+Ed0yWlyIviGpagM6lTk0O3zq0ktYwwocu0tx8H
-	H8ZKovdwl9VX92ssNN+0UMIRzkSbNN19fo/JcbvRYU6fKxmQ2zagwW4nDa94c85ZAi5/0DPkDGg
-	xfR2ECx7+opOcBxhMRqmOcc7tshhGW4rZqsNq16cOmo38GcJfBh+iHt8/R1KHWfcFkEgiDI3xsM
-	xJiURyQ==
-X-Received: by 2002:a05:600c:c10b:b0:489:1c2d:211e with SMTP id 5b1f17b1804b1-48fe5fcdedemr175576165e9.5.1779107578120;
-        Mon, 18 May 2026 05:32:58 -0700 (PDT)
-X-Received: by 2002:a05:600c:c10b:b0:489:1c2d:211e with SMTP id 5b1f17b1804b1-48fe5fcdedemr175575905e9.5.1779107577705;
-        Mon, 18 May 2026 05:32:57 -0700 (PDT)
-Received: from imammedo ([213.175.46.86])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48febe67688sm101577515e9.5.2026.05.18.05.32.56
+        d=1e100.net; s=20251104; t=1779107616; x=1779712416;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pEg290J1ykCPkYwv69V6a2ExyDDaRGL6kITmZSq7l38=;
+        b=KSPvfJ7wLovn8hiWVPWS1yXb73XHAf6G1HQGmN6Bq/mKWayj1IeQNNwne6fFWoSURZ
+         yCQwdNjg0cekqSB/IxbzuNT19jeXL/NLA8hqTUpAUaJlKNKKix+JIGwj7jArQvWzhKWY
+         YwhwD2LQ+ms7p3uO+Yd93kY014d+3Ol02C22mtBHXYmxAyagamlN/SIfK7/30y+83WGn
+         T8jZTA6WmAwcY2mMPHoXJeF6ImyKDmVA8yarbWCiGaMcHld1YzY5uBNRPOr2bGb1ZyvX
+         hby1JkMv2WAfJ5Ox4Q3Pt6F9PcbSsCkQy4+zyj2/xTPPO2eBs5S/QveM5QZTenXusj6d
+         TUsA==
+X-Forwarded-Encrypted: i=1; AFNElJ/DupMmr27b76PitIogqpavKjTW9Yte5iyDQ/HO5wXOndZrObmS+nuzMsbYoLLoxec/D6o=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwGdRb+ikXvB63erQF6cejb//5yIkQ9y01bTZ2eXtaKmIobxInu
+	IrZtOT8yFSq1uP2iF2OIZXWPoOk0qnDuXcTSLTKVnCaCoEGALrJC4DH/N05EjaOTUQ==
+X-Gm-Gg: Acq92OHIYX4nvVUwYh9uutcVrB8V87+WKQpJGmEihhgE1yMT/uRS3W55+1UrUxenXbz
+	FGLTGWoQ2LM3r380XkLrG+C+/RAyvfo+UDiIyuN52RvJEWRyAh5ESWUv7IlCl4tWdC9OMuzOwaa
+	nFX1pDp7x5wfX+QW1TL7r3FDMjMz+eCCrS8k7sH6htTnIjtXVJJPz7rGVZ0+2LDhWjh9EsCgNFR
+	0Et9oRnFzTPKeNCs8iM5o2n3q9hjwLZMM5xVX8CwhpJIV29FOa+DKacaW8Vi945hMYg6Oc90TKY
+	RTlYF8xynzLB1xfxSB0kpvY3RHj9PNqonPbZ2nC1eTehQp2wj1ku3De2Yv+O5pYTHNc5/+D2AS1
+	4LOHPLRfWJIYjcPJdAKAsnKjTFahL+Pa5upYX/7TDs/khJSXGA05RRpCSyE2E5PBkFf7nzyH6WG
+	SraHm380UgFklnCfDiKqhISqHdpPCMua/m+c7ZksNhnWngY1YzpKyAXCtJal3Fla+cGm5b
+X-Received: by 2002:a05:622a:8c0e:b0:516:3b3c:1df2 with SMTP id d75a77b69052e-5167945fee9mr12767131cf.14.1779107615481;
+        Mon, 18 May 2026 05:33:35 -0700 (PDT)
+Received: from google.com (44.234.124.34.bc.googleusercontent.com. [34.124.234.44])
+        by smtp.gmail.com with ESMTPSA id 00721157ae682-7cc9c6cd4f5sm20692257b3.35.2026.05.18.05.33.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 05:32:57 -0700 (PDT)
-Date: Mon, 18 May 2026 14:32:55 +0200
-From: Igor Mammedov <imammedo@redhat.com>
-To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, pbonzini@redhat.com, babu.moger@amd.com
-Subject: Re: [kvm-unit-tests PATCH] x86/svm: work around Virtual
- VMLOAD/VMSAVE bug on Naples and Rome
-Message-ID: <20260518143255.3795625a@imammedo>
-In-Reply-To: <agcVNezX5lf1_3O7@google.com>
-References: <20260515111957.4188366-1-imammedo@redhat.com>
-	<agcVNezX5lf1_3O7@google.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
+        Mon, 18 May 2026 05:33:35 -0700 (PDT)
+Date: Mon, 18 May 2026 12:33:25 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: David Matlack <dmatlack@google.com>
+Cc: Samiullah Khawaja <skhawaja@google.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>,
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH v2 02/16] iommu: Implement IOMMU Live update FLB callbacks
+Message-ID: <agsHFbI_FQEXiZAA@google.com>
+References: <20260427175633.1978233-1-skhawaja@google.com>
+ <20260427175633.1978233-3-skhawaja@google.com>
+ <afUe71D8JfgmA0BG@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <afUe71D8JfgmA0BG@google.com>
 
-On Fri, 15 May 2026 05:44:37 -0700
-Sean Christopherson <seanjc@google.com> wrote:
-
-> On Fri, May 15, 2026, Igor Mammedov wrote:
-> > AMD Family 17h models 0x00-0x0f (Naples/Zen+) and 0x30-0x3f (Rome/Zen2)
-> > have a hardware bug where Virtual VMLOAD/VMSAVE causes spurious VMEXITs
-> > on VMLOAD/VMSAVE even with intercepts disabled, when the VMCB physical
-> > address as seen by L1 falls in [0x78000000, 0x80000000) range.
-> > Reserve this range on affected CPUs so the page allocator would never
-> > alocate the VMCB there.
+On Fri, May 01, 2026 at 09:45:19PM +0000, David Matlack wrote:
+> On 2026-04-27 05:56 PM, Samiullah Khawaja wrote:
+> > Add liveupdate FLB for IOMMU state preservation. Use KHO preserve memory
+> > alloc/free helper functions to allocate memory for the IOMMU Live update
+> > FLB object and the serialization structs for device, domain and iommu.
 > > 
-> > Given that it's relative old CPUs + nested env + only performance
-> > impact, it's not worth fixing on KVM side (which could involve
-> > messing with allocator or reallocating VMCB, until it's not
-> > in affected range). And since test acts here as L1 it's not possible to fix
-> > issue in kernel (L0) anyway. Hence a quirk here, to prevent tests
-> > failures where we can't do anything about them.
+> > During retrieve, walk through the preserved obj array headers and
+> > restore each folio. Also recreate the FLB obj.
 > > 
-> > Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-> > ---
-> > CCed: AMD folks for awaraness and in case they would be willing
-> > to look into fixing issue on CPU side.  
+> > Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
 > 
-> LOL.  Don't hold your breath.  According to AMD, Zen4 erratum 1454 is a firmware
-> issue.
-> 
-> https://lore.kernel.org/all/20241105160234.1300702-1-superm1@kernel.org
-
-
-The might decide to nuke older server EPYCs, but until then ...
-I'll add a few folks from that thread on respin.
-
-> 
-> > there is not official EOL dates on both, but using a newer
-> > generation(s) release dates it appears that both are effectively
-> > discontinued for ~3-5 yeas
-> > ---
-> >  x86/svm.c | 22 ++++++++++++++++++++++
-> >  1 file changed, 22 insertions(+)
-> > 
-> > diff --git a/x86/svm.c b/x86/svm.c
-> > index a85da905..706ff2ef 100644
-> > --- a/x86/svm.c
-> > +++ b/x86/svm.c
-> > @@ -334,6 +334,21 @@ static void setup_npt(void)
-> >  	__setup_mmu_range(pml4e, 0, size, X86_MMU_MAP_USER);
-> >  }
-> >  
-> > +#define VLS_BUG_START	0x78000000ULL
-> > +#define VLS_BUG_END	0x80000000ULL
-> > +
-> > +static bool has_vls_bug(void)  
-> 
-> Probably need to be more specific, because there appear to be multiple flavors
-> of vls bugs.  :-/
-
-
-would something like this work:
-
--static bool has_vls_bug(void)
-+/*
-+ * Naples (Fam17h/00-0f) and Rome (Fam17h/30-3f) cause spurious VMEXITs
-+ * on VMLOAD/VMSAVE when the VMCB address falls in [0x78000000, 0x80000000).
-+ */
-+static bool has_vls_spurious_vmexit_bug(void)
-
-
+> > +static void *iommu_liveupdate_restore_array(u64 array_phys)
 > > +{
-> > +	u32 sig = cpuid(1).a;
-> > +	u32 fam = x86_family(sig);
-> > +	u32 model = x86_model(sig);
+> > +	struct iommu_array_hdr_ser *array_hdr;
+> > +	void *vaddr = array_phys ? phys_to_virt(array_phys) : NULL;
 > > +
-> > +	if (fam != 0x17)
-> > +		return false;
-> > +
-> > +	return model <= 0x0f || (model >= 0x30 && model <= 0x3f);
-> > +}
-> > +
-> >  static void setup_svm(void)
-> >  {
-> >  	void *hsave = alloc_page();
-> > @@ -413,6 +428,13 @@ int run_svm_tests(int ac, char **av, struct svm_test *svm_tests)
-> >  		return report_summary();
-> >  	}
-> >  
-> > +	if (has_vls_bug()) {
-> > +		phys_addr_t addr;
-> > +
-> > +		for (addr = VLS_BUG_START; addr < VLS_BUG_END; addr += PAGE_SIZE)
-> > +			reserve_pages(addr, 1);
+> > +	while (array_phys) {
+> > +		/*
+> > +		 * Failure to restore preserved IOMMU state is considered fatal.
+> > +		 *
+> > +		 * This is because the IOMMU translations for preserved IOMMUs
+> > +		 * were kept enabled in the previous kernel and the preserved
+> > +		 * devices have their IOMMU domains still present. Not being
+> > +		 * able to restore means that the memory mapped into preserved
+> > +		 * domains might be already corrupted by the preserved devices.
+> > +		 *
+> > +		 * There is no way to confirm the integrity of the memory that
+> > +		 * was mapped. BUG_ON is the safest option at this point.
+> > +		 */
+> > +		BUG_ON(!kho_restore_folio(array_phys));
+> > +		array_hdr = phys_to_virt(array_phys);
+> > +		array_phys = array_hdr->next_array_phys;
 > > +	}
 > > +
-> >  	setup_svm();
-> >  
-> >  	vmcb = alloc_page();
-> > -- 
-> > 2.43.0
-> >   
+> > +	return vaddr;
+> > +}
+> 
+> > +static int iommu_liveupdate_flb_retrieve(struct liveupdate_flb_op_args *argp)
+> > +{
+> > +	struct iommu_flb_obj *obj;
+> > +	struct iommu_flb_ser *ser;
+> > +
+> > +	obj = kzalloc_obj(*obj, GFP_KERNEL);
+> > +	if (!obj)
+> > +		return -ENOMEM;
+> 
+> Should this be considered fatal for the same reason
+> iommu_liveupdate_restore_array() is considered fatal? If anything in
+> iommu_liveupdate_flb_retrieve() fails then the risk of corruption as
+> described in iommu_liveupdate_restore_array() is possible.
 > 
 
+Righ... Nice catch. I suppose we should BUG_ON() this because
+luo_flb_file_finish_one [1] returns void. Thus, if we return -ENOMEM
+here all we get is a WARN_ON without panic.
+
+We can't statically allocate obj in liveupdate_flb_op_args because obj
+is a void ptr. I believe we must add a BUG_ON() here.
+
+> > +
+> > +	/* Data must be present and valid from the previous kernel */
+> > +	BUG_ON(!kho_restore_folio(argp->data));
+> > +
+> > +	mutex_init(&obj->lock);
+> > +	ser = phys_to_virt(argp->data);
+> > +	obj->ser = ser;
+> > +
+> > +	obj->curr_domain_array = iommu_liveupdate_restore_array(ser->iommu_domain_array_phys);
+> > +	obj->curr_device_array = iommu_liveupdate_restore_array(ser->device_array_phys);
+> > +	obj->curr_iommu_array = iommu_liveupdate_restore_array(ser->iommu_array_phys);
+> > +	argp->obj = obj;
+> > +	return 0;
+> > +}
+
+Thanks,
+Praan
+
+[1] https://elixir.bootlin.com/linux/v7.1-rc3/source/kernel/liveupdate/luo_flb.c#L208
