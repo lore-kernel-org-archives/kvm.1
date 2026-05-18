@@ -1,50 +1,50 @@
 Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12A4A34A76E;
-	Mon, 18 May 2026 18:08:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9892F8EB4;
+	Mon, 18 May 2026 18:09:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779127721; cv=none; b=WY2OGWUPu8LyGYx2DKXMSTn7nnqO+7g3OvVtnhf2ox0BTgCnJ9IC6ILSIE88BtW8czI3lSq8pykErWUirk2F4p+MhGb5j/p/3uT4g2ZeJyhtn/7U5ZkwiPPC8P129f41pdHkSgetmhrOruimQOXMFME5TepmuiJZWBfuXFwruiI=
+	t=1779127765; cv=none; b=UN7BrmO3qsD9vJgSDPO7DxxHB+TZzn/vQu4Rf/7Ygp2VDDvMlR3VkflxJ3xmN+FwjDm4p4ceh7J3gAO7B/CoyG37QntipLyRoL+7OEizq30TgQg1kFskYDfb6D0FpEqsWJ2qjjPMyypv8lQZaCHyOOtupTyy1hD0ltlH5A4Fcoc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779127721; c=relaxed/simple;
-	bh=8UtApuS0en5qs4JqC92alTN2uc+KyabW/6fY74mbYSY=;
+	s=arc-20240116; t=1779127765; c=relaxed/simple;
+	bh=9iIOR4RM2wUMI5/WbLi0jICNX9tjhsUogUS0gnPjEWk=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ph3Qo+4+fhpeH0LQaEicX1ftJGLqpvRW3Cl/LORqyvgyosRiuF4c9dqhDpSqq6+EXQPUSm5nPfXUiLIfoPdYLgbrjpm7Lgc55aIMm8LoSJ3Kz94ONjPoF+iq58YHLwM7+5JDg6uTrJuQRp1Om2R2S07JxciNn+r1b0CcdWKoZ5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a0EKiOzg; arc=none smtp.client-ip=192.198.163.18
+	 In-Reply-To:Content-Type; b=jIuW+tW2EXVmSkgUjm/h/EAvNtbEpPv4PmvGfV77sZN05dErBDBOZoXGd+LNcH1M3EUHdTsFXN5oDLLKB4dDhHr1Paqu+qHiYUQjPHEAcZJOGHdS2M7YWFeCNzT6pmK18+QLF4WXg4h9swh8NIB/a55A9Ov3dBedfFcPWDGwbOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mtLXEuVE; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a0EKiOzg"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mtLXEuVE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779127719; x=1810663719;
+  t=1779127764; x=1810663764;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=8UtApuS0en5qs4JqC92alTN2uc+KyabW/6fY74mbYSY=;
-  b=a0EKiOzgqiv8AJPovVoWMasfhdiEc8NESYQuZ2BBbmNf8JhhbbHajntl
-   N3QhYlmtk5nCG398/SL1IBjFO8dR8CO7OmNR/PRKWIhByQA9jvpdjM9zm
-   GqRPhJgdqnZTVR3RhEXqqrco5RU7wjz7oxjkye3oDRvM98Wl+5n9MNB5V
-   GonX2YwpSqrflwW/uadigxILPmSVLBlbOXoSc+QW2lJX35n+RFBoBfku6
-   2eoHuDbDP0T3KABls+ewDHkorG71d/wCgZInBaz/uehRnB1aIVsOQqmQ3
-   YYFtxumJGCXynlL2lsdWnTRNOQBl/7t7OJyki3BmUURogcOdVIuNjkrh/
-   w==;
-X-CSE-ConnectionGUID: lWZ/qfhcQZux3cvxFbK5OQ==
-X-CSE-MsgGUID: RyyjonQgRD6dvn9c8Cyn0A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="79132950"
+  bh=9iIOR4RM2wUMI5/WbLi0jICNX9tjhsUogUS0gnPjEWk=;
+  b=mtLXEuVE2CcQE+pN5Dxcb8xMmOTnf9e760cuzzzouJUXaMvAUV0G+3iJ
+   aj+bdRNDagpJ7CMjnHljoy0m2zzoAioECybu+zqHytIE70S9OQB7BoBfQ
+   dgUt1+I9In1TZzyl3ShbxBLPKE++6uxbTjIuERUoVthocTH8N2iaXTCtm
+   31qi0gqUGyTO8SwdHuGMG1JlKuHxck5sBJuwIcQ5gfeqyNHJa+79ndXhZ
+   iEXQWe+VyFhHUSk3ChMgHxAUeYrg2EyyYkxcoS1d5rqH6Af5mh8ZimXcL
+   j4uPN0quHanJnxX+uq0wuWs1VhSlDK6PFF9kQhEoTmyE+pCgKifZZ6Omv
+   A==;
+X-CSE-ConnectionGUID: 2EL61OXMT8maX1wVJ5SRyQ==
+X-CSE-MsgGUID: 4o7xpDd/S6azsVkHqINgBg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="79132998"
 X-IronPort-AV: E=Sophos;i="6.23,242,1770624000"; 
-   d="scan'208";a="79132950"
+   d="scan'208";a="79132998"
 Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 11:08:38 -0700
-X-CSE-ConnectionGUID: txAl8mDTSo++vqINosCNFg==
-X-CSE-MsgGUID: Fa8ZX920Sh6WrkVxw8IbxA==
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 11:09:24 -0700
+X-CSE-ConnectionGUID: JSxnyK8hQDmSlX4V7XK/+Q==
+X-CSE-MsgGUID: 1dfN9/ojQFOT8A25zDFV/w==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,242,1770624000"; 
-   d="scan'208";a="239372580"
+   d="scan'208";a="239372864"
 Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.109.43]) ([10.125.109.43])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 11:08:38 -0700
-Message-ID: <c1c9bddf-1c00-4625-a915-d545acd67fd0@intel.com>
-Date: Mon, 18 May 2026 11:08:40 -0700
+  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 11:09:23 -0700
+Message-ID: <d9ca771a-6446-4dda-a40c-2444422c1965@intel.com>
+Date: Mon, 18 May 2026 11:09:26 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,24 +52,36 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 04/23] coco/tdx-host: Introduce a "tdx_host" device
-To: Chao Gao <chao.gao@intel.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, binbin.wu@linux.intel.com,
- dave.hansen@linux.intel.com, djbw@kernel.org, ira.weiny@intel.com,
- kai.huang@intel.com, kas@kernel.org, nik.borisov@suse.com,
- paulmck@kernel.org, pbonzini@redhat.com, reinette.chatre@intel.com,
- rick.p.edgecombe@intel.com, sagis@google.com, seanjc@google.com,
- tony.lindgren@linux.intel.com, vannapurve@google.com,
- vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com,
- yan.y.zhao@intel.com, Dan Williams <dan.j.williams@intel.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH v9 01/23] x86/virt/tdx: Consolidate TDX global
+ initialization states
+To: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>,
+ "Gao, Chao" <chao.gao@intel.com>
+Cc: "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+ "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+ "Huang, Kai" <kai.huang@intel.com>, "kvm@vger.kernel.org"
+ <kvm@vger.kernel.org>, "Li, Xiaoyao" <xiaoyao.li@intel.com>,
+ "Zhao, Yan Y" <yan.y.zhao@intel.com>,
+ "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
+ "tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
+ "Chatre, Reinette" <reinette.chatre@intel.com>,
+ "seanjc@google.com" <seanjc@google.com>,
+ "pbonzini@redhat.com" <pbonzini@redhat.com>,
+ "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
+ "Weiny, Ira" <ira.weiny@intel.com>,
+ "nik.borisov@suse.com" <nik.borisov@suse.com>,
+ "mingo@redhat.com" <mingo@redhat.com>,
+ "Verma, Vishal L" <vishal.l.verma@intel.com>, "kas@kernel.org"
+ <kas@kernel.org>, "Shahar, Sagi" <sagis@google.com>,
+ "Annapurve, Vishal" <vannapurve@google.com>,
+ "djbw@kernel.org" <djbw@kernel.org>, "tglx@kernel.org" <tglx@kernel.org>,
+ "paulmck@kernel.org" <paulmck@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
+ "bp@alien8.de" <bp@alien8.de>,
+ "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
+ "x86@kernel.org" <x86@kernel.org>
 References: <20260513151045.1420990-1-chao.gao@intel.com>
- <20260513151045.1420990-5-chao.gao@intel.com>
- <cc35a467-e978-4e3b-a6ba-17a8bde69bd7@intel.com> <agr1oB+IZNCxPuLL@intel.com>
+ <20260513151045.1420990-2-chao.gao@intel.com>
+ <ab35e6e4-b57a-4d49-8521-ca69a9135d3c@intel.com> <agrDIa/foXa2PhCh@intel.com>
+ <f6e9a736d15ec41d23156c8e4e75533e8debf908.camel@intel.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -115,72 +127,11 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <agr1oB+IZNCxPuLL@intel.com>
+In-Reply-To: <f6e9a736d15ec41d23156c8e4e75533e8debf908.camel@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 5/18/26 04:18, Chao Gao wrote:
-> On Fri, May 15, 2026 at 09:21:36AM -0700, Dave Hansen wrote:
->> On 5/13/26 08:09, Chao Gao wrote:
->>> Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
->>> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
->>> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
->>> Signed-off-by: Chao Gao <chao.gao@intel.com>
->>
->> This SoB chain at _least_ needs a note. It looks quite bizarre.
-> 
-> I will add a note.
-> 
-> This patch was originally written by me and then substantially revised
-> by Yilun, hence his Co-developed-by and Signed-off-by.
-> 
-> Then Dan made additional cleanups on top of Yilun's version and was the first
-> to post it at:
-> 
-> https://lore.kernel.org/all/20250919142237.418648-2-dan.j.williams@intel.com/
-> 
-> The current version is based on that posted patch, which is why the SoB
-> chain is unusual.
+On 5/18/26 11:00, Edgecombe, Rick P wrote:
+> This is a great improvement by itself, irrespective of this series.
 
-On some level, I just don't care how this bounced around within Intel or
-any other company. I don't need to hear the tale of woe.
-
-I'd frankly like to just see simplicity in the SoB chain:
-
-	Thanks to Dan and Xu Yilun for all the help on this one.
-
-	Signed-off-by: Chao
-
-IMNHO, SoB should start when it leaves your company.
-
->>> +config TDX_HOST_SERVICES
->>> +	tristate "TDX Host Services Driver"
->>> +	depends on INTEL_TDX_HOST
->>> +	default m
->>> +	help
->>> +	  Enable access to TDX host services like module update and
->>> +	  extensions (e.g. TDX Connect).
->>> +
->>> +	  Say y or m if enabling support for confidential virtual machine
->>> +	  support (CONFIG_INTEL_TDX_HOST). The module is called tdx_host.ko.
->>
->> In what world will anyone ever set INTEL_TDX_HOST=y, but turn this off?
-> 
-> No, I do not think disabling TDX_HOST_SERVICES while INTEL_TDX_HOST=y makes
-> sense.
-> 
->> Is this even worth a Kconfig prompt?
->>
->> I guess we need it for the module or built in choice. But otherwise it
->> seems a bit silly.
-> 
-> Yes. it is for the module vs built-in choice.
-
-Can it just be this, then?
-
-config TDX_HOST_SERVICES
-	tristate
-	depends on INTEL_TDX_HOST
-	default m
-
-That won't prompt people and it will set =m too. I think.
+Agreed. If it came by itself, I'd probably apply it.
