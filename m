@@ -1,145 +1,64 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3088738F927
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 19:14:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D85C380FD4;
+	Mon, 18 May 2026 19:21:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779131681; cv=none; b=OqUtVQ+8xWLN0kxrhtQReZr+7kfCzqK6KdYk37NPsJtg2vVkz+aNd0FjAOyYtzQzmBBsCroDWM5zaJcLliO72OnQaRv6a+BdupssdoABafcr4qzwK+QaeOuqV7rlrcZgyP8HbSmDca4d8tBt8zhiytBGd+JoBzrhxeNLS9mgFKY=
+	t=1779132077; cv=none; b=e9TNaziyTsOSuBqnxk1nqnKJINKh/uy/FEjTmE0Ke7Zfvx0KQAkPMSpmz0eHjEvv7IBY+MKOXh0T86b/tZrE4R4B5H2BVMEyAv3pYy+mrN5Ub+hA0Cyy2hMZIG6boVO6YIWB+p7GjTqlYAYXnOfs3GbkWyeclFxrQsVmhQ5ee/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779131681; c=relaxed/simple;
-	bh=oprmgku8si+OLXrL/12KBtH9ObDkdjBSzOrFL4VhpNY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tb24l7CK18GsSwJsifAZf6Ole5qSceuLQVET04RpVw12kWrHC/vMDqu2bHzT8ID0B7WwnLkL9XMKresHXw90D5RMIlMtekOp29kx8xtqhXg1+cFfNEu2e6OSOaGvQLJaDs1ulfxUe/J15Dbkgfc1eGU9CjyDdpRqdt7vjM/6yfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d2iERGx8; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779132077; c=relaxed/simple;
+	bh=c3uPMQHaEVcm6ipsCrum7wOJd+GaVS/I9igJJ9xAe6c=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jheB7qOjALqe68PFGyorqG8lNq0Y/XFiBmkn0B1mW/1u3DSY0LP5UzZlN4bRWFSQnJpfaPabUxSuEYfvhOs/jxxsS+9ZcmZctjVkUsRT8ECuRPqEOP6QmvD+dFmrqacBxjW/qx0iYSUHYOx7pUomXiEJIpfONZtgCtRnn1bJaWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i50eDcOM; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d2iERGx8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99EEC2BCFB
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 19:14:40 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i50eDcOM"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE22EC2BCC9;
+	Mon, 18 May 2026 19:21:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779131680;
-	bh=oprmgku8si+OLXrL/12KBtH9ObDkdjBSzOrFL4VhpNY=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=d2iERGx8VM1zP3Kb70GnbBexBHwHDS5QMKx2rFEZN+WrwaVAaf9afeH+OdN8+AE0N
-	 ARQQeJuYJkZA1DlCrvIYWAG2Isr90yl6RkZGMaRYzmPU3Gm34/w+kHJWOZJ3F3bRxD
-	 G2vTGnMjQw+6rHC040pcKkmCZpAZuEgXWcRQwUJIYW6v7jBcmiAQG+OzqtwO3u9LQm
-	 gUfGp+iltcrSAZR96m3ANqSLkt163e5wJCq+frgyITWxiMOo38rl3Wed4GJbNnd2n5
-	 msDYdXmvEq7ayUdgSWOGhMTaPkna2rhxjbH82WqLVIttC4TE4lOK64fuzTluRKJL6N
-	 GDCuS7ugzAAEA==
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-67c3cb1433cso5795324a12.0
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 12:14:40 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+/OQJxe/G9inE04tFWTg8dmb58R9jdxzFhaOXxrxaIM/dyGwnOP9evhrZVYxzu7otRbLI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEAvM4LOkeTvOrvwCnExkMF+lQ1AD/DSQ1FWiKEDKA+/GKzGLj
-	Edl62zkm6/K6Hq0OiipJa+Zbr7ydcbsF/gojyht1avMjHocijLjyf0y4ZvimB4yaESAwOyzvl62
-	+ht4dPDPBNu9EYveKAwPTqsrqYtYv768=
-X-Received: by 2002:a17:907:93d4:b0:bd4:c6be:5f2e with SMTP id
- a640c23a62f3a-bd51777c81fmr647770466b.3.1779131679529; Mon, 18 May 2026
- 12:14:39 -0700 (PDT)
+	s=k20201202; t=1779132074;
+	bh=c3uPMQHaEVcm6ipsCrum7wOJd+GaVS/I9igJJ9xAe6c=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=i50eDcOMXJ0mQncE+Ac4kTyy4iA37ZeF0XvTA7g50qDmzlTQ33uveSBBk1NUMG2Sa
+	 8+NMlDJvPlHZg3oLSNlyQlam0qdAEjXKOUWZauUg1Sg5hrBUZDANWsZll6NUHapZi9
+	 woc5cY4vF+ZN0tujru2M0mGf03frTyScFMSFav1E8iuN1J4wQnTZGvMsmC68hSMdXV
+	 xSWTTeBgQuDiAVrWsiOipfrgKNwxRnpqI0G8FBcj6KSHCUhG/4HaYbYAoWztYlBm9M
+	 Dr2KdfvLA55ozYVDkVCPAsnXbWKhmYoc9kTOQX8snJJ5VPwa6m3MfsahCmUWDKB5lF
+	 0VO5QdkoAYNOg==
+From: Sasha Levin <sashal@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Huacai Chen <chenhuacai@kernel.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>,
+	Bibo Mao <maobibo@loongson.cn>
+Cc: Sasha Levin <sashal@kernel.org>,
+	Xuerui Wang <kernel@xen0n.name>,
+	stable@vger.kernel.org,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Xianglai Li <lixianglai@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: Re: [PATCH V2 for 6.12] LoongArch: KVM: Compile switch.S directly into the kernel
+Date: Mon, 18 May 2026 15:20:58 -0400
+Message-ID: <20260518155236.reply-0009@kernel.org>
+X-Mailer: git-send-email 2.53.0
+In-Reply-To: <20260517091855.1023223-1-chenhuacai@loongson.cn>
+References: <20260517091855.1023223-1-chenhuacai@loongson.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260518045916.2988667-1-nikunj@amd.com> <20260518045916.2988667-8-nikunj@amd.com>
- <agtGh82vLu4G6pWI@google.com> <agtgltn2wLNFrS2f@google.com>
-In-Reply-To: <agtgltn2wLNFrS2f@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Mon, 18 May 2026 12:14:27 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zPtZdgo-BKr0Gc8znWvuJksYgSZFTwgB+aaPStU6q5GZQ@mail.gmail.com>
-X-Gm-Features: AVHnY4IvAW1HjTIGgS6qZG99xx51X_nd0jT31RKiPnI3CCQ_h_vVLhu0mdzPrpI
-Message-ID: <CAO9r8zPtZdgo-BKr0Gc8znWvuJksYgSZFTwgB+aaPStU6q5GZQ@mail.gmail.com>
-Subject: Re: [PATCH v7 7/7] KVM: SVM: Add Page modification logging support
-To: Sean Christopherson <seanjc@google.com>
-Cc: Nikunj A Dadhania <nikunj@amd.com>, kvm@vger.kernel.org, pbonzini@redhat.com, 
-	thomas.lendacky@amd.com, bp@alien8.de, joao.m.martins@oracle.com, 
-	kai.huang@intel.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-> > So maybe something like:
-> >       /*
-> >        * PML is never enabled in hardware for L2. Make sure that an
-> >        * unexpected PML write would trigger a PML_FULL VM-Exit.
-> >        */
+On Sun, May 17, 2026, Huacai Chen wrote:
+> From: Xianglai Li <lixianglai@loongson.cn>
 >
-> Hmm, I was going to say we should drop the code entirely, but I do think it makes
-> sense to set PML_INDEX to -1 to ensure a VM-Exit occurs.
->
-> Actually, even better idea, at least for nVMX.  Rather than write '0' for the
-> address, which is what I really dislike (bad past-Sean!), we should write -1ull
-> so that unexpectedly enabling PML in vmcs02 results in VM-Fail, i.e. don't even
-> rely on the WARN for safety.
->
-> If SVM has a consistency check on the address, then do the same, otherwise I
-> guess just go with setting pml_index to -1 and WARNing on PML_FULL?
+> commit 5203012fa6045aac4b69d4e7c212e16dcf38ef10 upstream.
 
-Yeah this makes sense to me.
+Queued for 6.12, thanks.
 
->
-> > Also, the above commit also hanlded a PML_FULL VM-Exit as unexpected,
-> > maybe we want to do that here as well? Or is that too paranoid?
->
-> Not too paranoid.
->
-> > Annoyingly, the unexpected exit reason handling is in
-> > svm_invoke_exit_handler(), but the guest mode check is in
-> > svm_handle_exit(), so if we do that we may need to move some code
-> > around.
->
-> Why's that?  Oh, if we want to reuse the unexpected exit code.  What about this?
-
-I actually had something different in mind, I was going to suggest
-that we move the unexpected exit logic to svm_handle_exit(), and key
-off a specific return value from svm_invoke_exit_handler(). Then we
-can bypass the whole nested_svm_exit_special() logic in
-svm_handle_exit() and jump to unexpected_vmexit.
-
-However, as I was writing a diff, I realized this will get gross
-quickly. So I think your suggestion below works.
-
->
-> We don't even have to document the same thing in two different places, because
-> the reasoning for nested_svm_exit_special() can and is different.  E.g. even if
-> we decided to utilize PML while running L2 (which would be possible, we'd "just"
-> have to translate the GPAs), the exits would still need to be routed to KVM.
-> Ditto for if we did actually enable PML in vmcb02 on behalf of L1: we'd need to
-> remove the check in nested_svm_exit_special(), but not the check in
-> svm_invoke_exit_handler() (though the latter's comment would need to be updated).
->
-> diff --git arch/x86/kvm/svm/nested.c arch/x86/kvm/svm/nested.c
-> index 4ef9bc6a553f..401a0ac44018 100644
-> --- arch/x86/kvm/svm/nested.c
-> +++ arch/x86/kvm/svm/nested.c
-> @@ -1782,6 +1782,13 @@ int nested_svm_exit_special(struct vcpu_svm *svm)
->                 if (nested_svm_is_l2_tlb_flush_hcall(vcpu))
->                         return NESTED_EXIT_HOST;
->                 break;
-> +       case SVM_EXIT_PML_FULL:
-> +               /*
-> +                * All PML full exits are handled by KVM.  KVM emulates PML in
-> +                * software for L1, but never enables PML in hardware on behalf
-> +                * of L1.
-> +                */
-> +               return NESTED_EXIT_HOST;
->         default:
->                 break;
->         }
-> diff --git arch/x86/kvm/svm/svm.c arch/x86/kvm/svm/svm.c
-> index e74fcde6155e..6bcb191d725b 100644
-> --- arch/x86/kvm/svm/svm.c
-> +++ arch/x86/kvm/svm/svm.c
-> @@ -3635,6 +3635,13 @@ int svm_invoke_exit_handler(struct kvm_vcpu *vcpu, u64 __exit_code)
->             (u64)exit_code != __exit_code)
->                 goto unexpected_vmexit;
->
-> +       /*
-> +        * PML is never enabled when running L2, bail immediately if a PML full
-> +        * exit occurs as something is horribly wrong.
-> +        */
-> +       if (unlikely(is_guest_mode(vcpu) && exit_code == SVM_EXIT_PML_FULL))
-> +               goto unexpected_vmexit;
-> +
->  #ifdef CONFIG_MITIGATION_RETPOLINE
->         if (exit_code == SVM_EXIT_MSR)
->                 return msr_interception(vcpu);
->
+--
+Thanks,
+Sasha
