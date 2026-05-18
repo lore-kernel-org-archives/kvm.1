@@ -1,195 +1,206 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49545380FFE
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 20:32:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08F13932F9
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 20:39:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779136369; cv=none; b=Dc2NBR9NiiZPb1W4GPkS/KxmE+aVXMUzftmBfiYGh4Thntoh8rLLW1OLDX46rkJFeBWHzF+l6bArn+H0LKWtibIOZJhyNthXZsFqYVIACufQkw594+17p3pMDmngztZgxK233FwxUdMmlZed8b+5kNpLCjz2hZKwILnUgrq08qM=
+	t=1779136774; cv=none; b=htgy+p/NVIJs7tq0UCWbxF6fnTGvf2+RiXZt8Pmc/3fpCIjUXLjLHXSP/eMaIVpjvGOkudmVpLcG5MlWT5qWMKo/Trc441yslXaDh4r20M3gHhvm0doYW+aBZ66DPII1eYf5vvR6DP8R95aOKZZGAPHZr8iyd5IxXlTAyGdnfxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779136369; c=relaxed/simple;
-	bh=ueB0hMp+FeQZ2rw6x9BVNLt7mojoUSebvdMXIaLRWYA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=epKhbll1VrgVMdSYZuoZCUmqtzmbcXWG+9RIdjJ9fb9JDw493kiVgnoUdfa49d6O2QdxlXXqD4SfKHQKD/y5fcJqaF2xu9NPXYk9iSpjLNAvJIrsq0FAFdjBg5p13wU4ehxRsNIeZG6E2VnYCm89q455ubsWd3t06UlRDSoQkCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VrhT63k5; arc=none smtp.client-ip=209.85.214.169
+	s=arc-20240116; t=1779136774; c=relaxed/simple;
+	bh=1DQgFAuOo/ufJExWgbAin5UszAM9EvUvWON9Wa22hNk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=BkJjYz4ly1EfvgLmkOQJ1m2GmYeGcTMTRBIGo56WF2+A3o9EDKFfRkLJ6E0F7QcPLJPyCBU4Ssa3d0ZXuAGrWK2s5LCPYDODK7mfKecK0C51laNcUt1Q7P+B0yAhV/sixVX56CuHU4qu/pXJldR79x3FEN2bZrXPYGXWXZycPCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rvaCfsmP; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VrhT63k5"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ba180a022dso175ad.1
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 13:32:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rvaCfsmP"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2bc763c7256so67048195ad.3
+        for <kvm@vger.kernel.org>; Mon, 18 May 2026 13:39:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779136367; x=1779741167; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=TNmFlCcVDbEeItJqA64fw5/4nyffyvxzQppQsiHP4dc=;
-        b=VrhT63k5UIyhuFVcy/F9BQ9j29+SBh/bRxyVsiJkFSEbjimpMN1bUNU5nuu8dZkFg2
-         H4+ZIBJEW9RlaAJ4lGhubIWoJahDhQQ96JLI06gixutGHqK63bUNYyrbw78xXgJW/Uhb
-         DEk0VDhn+gc6R+3uDh78g7MIUTDB4akMWY9IJIKlySLzw3rn4VI5XNF/5sUoeIaF1gVL
-         BnhqtHGd6ic3sDNzaG+DtYU3DXFvKXHy+PW75A1qkad5rNNOyCagYq2PlDmKyJAfTolg
-         xNVTDwTqbYUG1nAWaiMJmuzn4ieEgjI7mDTqAV5+FXwNG4ezqlogLRPe4Re+8W3KCoaa
-         2pqQ==
+        d=google.com; s=20251104; t=1779136772; x=1779741572; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=cGd6BbSJy5OvNTaNiXv/yILYTZDNFNlp8vbkFDJsHGY=;
+        b=rvaCfsmPyRHOCOqn7UErpvCXq4cbJbTI7vdDUu5cMfoce4rwkN0w3+oTUM/NbF8YY1
+         ZClhKoXmLgHXv2z2MBZLwC1Q7BOgMz995p6xoXiH1cyAFcfX6V329Qo2tShQ1z3aKb8q
+         ALKJgy8R9Yrjp2NhcmEiZMc4E0WGLbGRTYlLHWdZX0y3NHAH0rKuDWzKgcBs1tNfTatv
+         VfXdbVSJ4yPxPhzhdD6U/XeGby2imNWbz6MZDpI8PmfMNPYs+h+j0CW24QzNsiNOrEvZ
+         G6lPVsj7cIGWblKI4gcuIUt/DcX6jlv4kSYztAD6EveohgVKAw+nRTnRNhs+3EbZlMB7
+         mnFw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779136367; x=1779741167;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=TNmFlCcVDbEeItJqA64fw5/4nyffyvxzQppQsiHP4dc=;
-        b=RdAbTxUnKZK2kvYzOsKJQxxqdUCoJ9fEVDR0U0lohmemS1gI3V4b6bGhQM80afrtik
-         Dm6kLjnc6tgJa1zfVax8iYVmXdHhCWA9AMrIfyjpj35KPWbJSFtzfJ4rytWx+FyNuhvH
-         5hMr4veGM3cj5d0iFyGGFq7jhUXt0UeKYBszoW2kPddoGzh7mRXBeNzRo5EVeMRvkNOT
-         xwpmk/Yr/2HdTR+mo4sg5qoSktK8Qzl0cB1+RH6lwPLiuEnzPt6hS/wntMiUfPXnUseW
-         clyo1Gw/RrhDaaPaJtyL3afW3bFN3rAB98FD5x8FsUYffh1nhxHDUAWO3OUizw1BwLGk
-         gCxw==
-X-Forwarded-Encrypted: i=1; AFNElJ8mUoCcFMvcVQVMZPLhqhBF9BTKVI7JFDt7s3rFITh5BPY9HXxqQ44NH1dOAZzpO511MXs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztwXdQfiQAyz8vRw22vNYOUrbudXtW7WCNg5xfEnKYQJuvGmxO
-	dhvAqBe2H30V14g1w3OOu09w7pXVk/tYFKuHQKoGZLPDLxwEKUzDgLwqucUnR2XjNA==
-X-Gm-Gg: Acq92OFpIK0k6EGNx9e99fznCop3xQiohK7LLOZL4x7rwiSntOkFRZgVahGG06ZHF3+
-	KigYH86mq4OBDqvyn4Z6MRC+El2VgORVIT8fnQ0TwBD4TyFvt9gSYRxfUXHm9ddyzRfd4hHzdQZ
-	M5bfxzBGkZdnfmBLf5tO7Ws4Oxyqr3BttaM5a3gVd/AqdIrQAjI0EgBlN8ZnBD4C97Ku7bQwsoh
-	Sn9NwYWQMTnzGr3mRsbbxgg2UxA/Zikh7l2MXHBnfp32q40PQxBxHL2GFDGcTb8iYbkyy83Aq77
-	GvkVjUxc8rG/mxQpCuJHbIiwmO/sAa0XzqZ5o9o2qHX0e5fhMtywEfKPv6vWufGLWXzQygtVvOQ
-	jpYOdB95dyvZ8ScqsNRFwbpnrHDj1UJvqEtL33hMqxF3E7lcCg978frWzIWNkN+dOyOzDL3WP36
-	EZIro5u0aryowFz5IBJzAQQMeLfG/TFRR2ITEziszWSV798oNgY96rFrNTSxoe/egKY8obKw==
-X-Received: by 2002:a17:903:17c3:b0:2ba:4749:c9a2 with SMTP id d9443c01a7336-2bdb03a17e1mr3609045ad.2.1779136365901;
-        Mon, 18 May 2026 13:32:45 -0700 (PDT)
-Received: from google.com (153.46.83.34.bc.googleusercontent.com. [34.83.46.153])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-369514361b6sm11821958a91.12.2026.05.18.13.32.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 13:32:45 -0700 (PDT)
-Date: Mon, 18 May 2026 20:32:42 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Baolu Lu <baolu.lu@linux.intel.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, 
-	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
-	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Pranjal Shrivastava <praan@google.com>, 
-	Vipin Sharma <vipinsh@google.com>, YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH v2 07/16] iommu/vt-d: Implement device and iommu
- preserve/unpreserve ops
-Message-ID: <agtux6SrjpRYvMit@google.com>
-References: <20260427175633.1978233-1-skhawaja@google.com>
- <20260427175633.1978233-8-skhawaja@google.com>
- <a968550d-2cab-47fd-8639-a8747a8a7535@linux.intel.com>
- <af023TAT1m3oA9ez@google.com>
+        d=1e100.net; s=20251104; t=1779136772; x=1779741572;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cGd6BbSJy5OvNTaNiXv/yILYTZDNFNlp8vbkFDJsHGY=;
+        b=OlyNhKucqyyTlR4EN5+DOINbhdv48lgR2pcSEW6u/33qmvWgs2UoHgsQWuLv2+3nda
+         U2cWXEz+YsnNz9VvlUayuv+FaL6CGjGiv3b0At5b/uv+nTncpONl9ysNHK1r6WH2kGCv
+         xOOaBciADU43eW6bAirUxsPnGiYZFIdcguuAq0c1izXNjbaOJ+9rQ81tMHcf1bkXEpUO
+         E0g3x3P3p9nl+nQZ5FO95QoZ2zElMCgkalY3XZWzvvg6oIFGk3TPIP8cAxOGt/6jeQ91
+         DioLuwRvoKHljrRnqEJt6nHLwM3HfBJZpcNFlVIanLqDpAzTQlqlekczC4BWBg9AWtRb
+         p+jg==
+X-Forwarded-Encrypted: i=1; AFNElJ8t3KcRlalXMAwREv4kxOc8yqDda01+lnSJWkjntE/3FdMp+/bx+bPZzmFZzf6gHPjso+s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGkTsWamdYR7g0YvLx++W4yEg+hiNa7ozjMnbG5VuCfHbGx2vT
+	7cEOZHoHFM8EF0dWU5TU0Udshkr1GS0WmmG82gD6kvhNNKHXkYJr8eXnpGD+CI51u7QsIzsvKsc
+	gmVDrOA==
+X-Received: from plhi13.prod.google.com ([2002:a17:903:2ecd:b0:2b2:4f3d:3df4])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:cec7:b0:2b4:5d51:ce96
+ with SMTP id d9443c01a7336-2bd7e87ed84mr179781255ad.24.1779136771910; Mon, 18
+ May 2026 13:39:31 -0700 (PDT)
+Date: Mon, 18 May 2026 13:39:31 -0700
+In-Reply-To: <CAEvNRgFgobnW+O=t32gu-0YDy0n7ZqvmdCtg+DzLT3uf0+BDeg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <af023TAT1m3oA9ez@google.com>
+Mime-Version: 1.0
+References: <20260518070943.2091287-1-ZongYao.Chen@linux.alibaba.com>
+ <20260518070943.2091287-3-ZongYao.Chen@linux.alibaba.com> <CAEvNRgFgobnW+O=t32gu-0YDy0n7ZqvmdCtg+DzLT3uf0+BDeg@mail.gmail.com>
+Message-ID: <agt5A90k9lS9JPWp@google.com>
+Subject: Re: [PATCH 2/2] KVM: selftests: Test guest_memfd binding overlap
+ without GPA overlap
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: ZongYao.Chen@linux.alibaba.com, Paolo Bonzini <pbonzini@redhat.com>, 
+	kvm@vger.kernel.org, Shuah Khan <shuah@kernel.org>, 
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Chao Peng <chao.p.peng@linux.intel.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Tianjia Zhang <tianjia.zhang@linux.alibaba.com>, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Fri, May 08, 2026 at 02:36:56AM +0000, Samiullah Khawaja wrote:
->On Thu, May 07, 2026 at 02:25:14PM +0800, Baolu Lu wrote:
->>On 4/28/26 01:56, Samiullah Khawaja wrote:
->>>Add implementation of the device and iommu presevation in a separate
->>>file. Also set the device and iommu preserve/unpreserve ops in the
->>>struct iommu_ops.
->>>
->>>During normal shutdown the iommu translation is disabled. Since the root
->>>table is preserved during live update, it needs to be cleaned up and the
->>>context entries of the unpreserved devices need to be cleared.
->>
->>This is not related to preserve/unpreserve ops and could be made in a
->>separated patch?
->
->Agreed. I will move this stuff to a separate patch.
->>
->>>
->>>Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
->>>---
->>> MAINTAINERS                      |   1 +
->>> drivers/iommu/intel/Makefile     |   1 +
->>> drivers/iommu/intel/iommu.c      |  52 +++++++++++-
->>> drivers/iommu/intel/iommu.h      |  28 +++++++
->>> drivers/iommu/intel/liveupdate.c | 139 +++++++++++++++++++++++++++++++
->>> drivers/iommu/iommu.c            |  18 ++++
->>> include/linux/iommu-liveupdate.h |  10 +++
->>> include/linux/iommu.h            |  14 ++++
->>> include/linux/kho/abi/iommu.h    |  18 ++++
->>> 9 files changed, 277 insertions(+), 4 deletions(-)
->>> create mode 100644 drivers/iommu/intel/liveupdate.c
->>>
+On Mon, May 18, 2026, Ackerley Tng wrote:
+> ZongYao.Chen@linux.alibaba.com writes:
+> 
+> > From: Zongyao Chen <ZongYao.Chen@linux.alibaba.com>
+> >
+> > The guest_memfd binding overlap test recreates the deleted slot with GPA
+> > ranges that overlap the still-live slot.  KVM rejects those attempts from
+> > the generic memslot overlap check before reaching kvm_gmem_bind(), so the
+> > test can pass even if guest_memfd binding overlap detection is broken.
+> >
+> > Recreate the slot at its original, non-overlapping GPA and use guest_memfd
+> > offsets that overlap the front and back halves of the other slot's binding.
+> > Expand the guest_memfd so the back-half case remains within the file size.
+> >
+> > Fixes: 2feabb855df8 ("KVM: selftests: Expand set_memory_region_test to validate guest_memfd()")
+> 
+> Thanks for fixing this!
+> 
+> > Signed-off-by: Zongyao Chen <ZongYao.Chen@linux.alibaba.com>
+> > ---
+> >  .../testing/selftests/kvm/set_memory_region_test.c | 14 +++++++-------
+> >  1 file changed, 7 insertions(+), 7 deletions(-)
+> >
+> > diff --git a/tools/testing/selftests/kvm/set_memory_region_test.c b/tools/testing/selftests/kvm/set_memory_region_test.c
+> > index 9b919a231c93..15607e0bec90 100644
+> > --- a/tools/testing/selftests/kvm/set_memory_region_test.c
+> > +++ b/tools/testing/selftests/kvm/set_memory_region_test.c
+> > @@ -510,7 +510,7 @@ static void test_add_overlapping_private_memory_regions(void)
+> 
+> Shall we rename this to test_bind_overlapping_guest_memfd_offsets to
+> make it clearer?
 
-[snip]
->>
->>>+{
->>>+	struct context_entry *context;
->>>+	int ret;
->>>+	int i;
->>>+
->>>+	for (i = 0; i < ROOT_ENTRY_NR; i++) {
->>>+		/*
->>>+		 * Alloc the context tables now to make sure the iommu unit is
->>>+		 * properly preserved. These might stay unused and wastes around
->>>+		 * 32MB max in scalable mode.
->>>+		 */
->>
->>Instead of allocating and preserving context tables for all root entries
->>(as noted, can waste up to 32MB), could we restrict this only to the
->>entries possibly in use by active PCI devices?
->
->I think the hotplug devices or VFs created through SR-IOV will be missed
->that way. Lets say device A is preserved and the associated iommu is
->also preserved. And then a new device B is hotplugged and preserved,
->then the context table for that will be missed.
+Hmm, not if we make the change additive (see blelow).
+ 
+> Perhaps also update the pr_info() to "Testing binding to overlapping
+> guest_memfd offsets\n".
+> 
+> >
+> >  	vm = vm_create_barebones_type(KVM_X86_SW_PROTECTED_VM);
+> >
+> > -	memfd = vm_create_guest_memfd(vm, MEM_REGION_SIZE * 4, 0);
+> > +	memfd = vm_create_guest_memfd(vm, MEM_REGION_SIZE * 6, 0);
+> 
+> I think this technically only needs to be MEM_REGION_SIZE * 5 for this
+> test to work.
+> 
+> >
+> >  	vm_set_user_memory_region2(vm, MEM_REGION_SLOT, KVM_MEM_GUEST_MEMFD,
+> >  				   MEM_REGION_GPA, MEM_REGION_SIZE * 2, 0, memfd, 0);
+> > @@ -526,19 +526,19 @@ static void test_add_overlapping_private_memory_regions(void)
+> >  	vm_set_user_memory_region2(vm, MEM_REGION_SLOT, KVM_MEM_GUEST_MEMFD,
+> >  				   MEM_REGION_GPA, 0, NULL, -1, 0);
+> 
+> When I re-read this I was wondering why we created and removed the first
+> memslot. Was it meant as a confidence check that set_memory_region works
+> with the given MEM_REGION_GPA? Perhaps we could add a comment/pr_info()
+> to check that.
 
-Ok I thought about it a little more and basically we have following
-things to consider when we preserve context tables,
+Rather than "fix" the check, why not have both?
 
-- The devices can be hotplugged and preserved, so the context tables of
-   those need to be preserved if we don't allocate all of them first time
-   we preserve iommu, as done here.
-- New context tables can be added (after hotplug) for unpreserved
-   devices. And if we don't get another iommu preserve call after these
-   are added, those remain unpreserved, so during shutdown those entries
-   need to be removed from root table or preserved for simplicity.
+> > -	/* Overlap the front half of the other slot. */
+> > +	/* Overlap the front half of the other slot's guest_memfd binding. */
+> >  	r = __vm_set_user_memory_region2(vm, MEM_REGION_SLOT, KVM_MEM_GUEST_MEMFD,
+> > -					 MEM_REGION_GPA * 2 - MEM_REGION_SIZE,
+> > +					 MEM_REGION_GPA,
+> >  					 MEM_REGION_SIZE * 2,
+> > -					 0, memfd, 0);
+> > +					 0, memfd, MEM_REGION_SIZE);
+> >  	TEST_ASSERT(r == -1 && errno == EEXIST, "%s",
+> >  		    "Overlapping guest_memfd() bindings should fail with EEXIST");
+> >
+> > -	/* And now the back half of the other slot. */
+> > +	/* And now the back half of the other slot's guest_memfd binding. */
+> >  	r = __vm_set_user_memory_region2(vm, MEM_REGION_SLOT, KVM_MEM_GUEST_MEMFD,
+> > -					 MEM_REGION_GPA * 2 + MEM_REGION_SIZE,
+> > +					 MEM_REGION_GPA,
+> >  					 MEM_REGION_SIZE * 2,
+> > -					 0, memfd, 0);
+> > +					 0, memfd, MEM_REGION_SIZE * 3);
+> >  	TEST_ASSERT(r == -1 && errno == EEXIST, "%s",
+> >  		    "Overlapping guest_memfd() bindings should fail with EEXIST");
+> >
+> 
+> Since this test program is meant to test set_memory_region, should we be
+> retaining the original test? The original test is wrong in that it
+> doesn't test guest_memfd's binding, but it does test that
+> set_memory_region returns -EEXIST on overlapping GPAs.
+> 
+> Perhaps to just test overlapping GPAs we can use anonymous memory
+> instead of guest_memfd.
 
-To solve this we can,
+Eh, I see no harm in having both.  E.g. if we do this, then we don't have to
+explain why we're not testing the other case :-)
 
-1. Either preserve the new context table when it is added for a preserved
-   iommu. This can be done in iommu_context_addr(). This is simpler and
-   no tracking needed.
-
-2. Or track the preserved context tables using a bitmap and then preserve
-   them incremently whenever a device is preserved. On shutdown during
-   cleanup, we can clear the entries for unpreserved context tables from
-   root table.
-
-I am inclined towards second option. WDYT?
-
-I think we will have to do similar stuff for PASID also down the road to
-preserve pasid_tables in PASID directory.
->
->Since we don't track the context_tables that are preserved, there is no
->way to incremently preserve the new-ones. Let me look into the behaviour
->of KHO, maybe we can make the preserve call idempotent and do these
->incrementally.
->>
->>>+		spin_lock(&iommu->lock);
->>>+		context = iommu_context_addr(iommu, i, 0, 1);
->>>+		spin_unlock(&iommu->lock);
->>>+		if (!context) {
->>>+			ret = -ENOMEM;
->>>+			goto error;
->>>+		}
-
-[snip]
->>
->>Thanks,
->>baolu
->>
->
->Thanks,
->Sami
-
-Sami
+diff --git a/tools/testing/selftests/kvm/set_memory_region_test.c b/tools/testing/selftests/kvm/set_memory_region_test.c
+index 9b919a231c93..283392bcc3a0 100644
+--- a/tools/testing/selftests/kvm/set_memory_region_test.c
++++ b/tools/testing/selftests/kvm/set_memory_region_test.c
+@@ -510,7 +510,7 @@ static void test_add_overlapping_private_memory_regions(void)
+ 
+        vm = vm_create_barebones_type(KVM_X86_SW_PROTECTED_VM);
+ 
+-       memfd = vm_create_guest_memfd(vm, MEM_REGION_SIZE * 4, 0);
++       memfd = vm_create_guest_memfd(vm, MEM_REGION_SIZE * 5, 0);
+ 
+        vm_set_user_memory_region2(vm, MEM_REGION_SLOT, KVM_MEM_GUEST_MEMFD,
+                                   MEM_REGION_GPA, MEM_REGION_SIZE * 2, 0, memfd, 0);
+@@ -542,6 +542,26 @@ static void test_add_overlapping_private_memory_regions(void)
+        TEST_ASSERT(r == -1 && errno == EEXIST, "%s",
+                    "Overlapping guest_memfd() bindings should fail with EEXIST");
+ 
++       /*
++        * Repeat the overlap tests, but so that there is overlap in the
++        * guest_memfd bindings (i.e. in guest_memfd file offsets), but _not_
++        * in the GPA space.  Regardless of where there's overlap, KVM should
++        * return -EEXIST.
++        */
++       r = __vm_set_user_memory_region2(vm, MEM_REGION_SLOT, KVM_MEM_GUEST_MEMFD,
++                                        MEM_REGION_GPA,
++                                        MEM_REGION_SIZE * 2,
++                                        0, memfd, MEM_REGION_SIZE);
++       TEST_ASSERT(r == -1 && errno == EEXIST, "%s",
++                   "Overlapping guest_memfd() bindings should fail with EEXIST");
++
++       /* And now the back half of the other slot's guest_memfd binding. */
++       r = __vm_set_user_memory_region2(vm, MEM_REGION_SLOT, KVM_MEM_GUEST_MEMFD,
++                                        MEM_REGION_GPA,
++                                        MEM_REGION_SIZE * 2,
++                                        0, memfd, MEM_REGION_SIZE * 3);
++       TEST_ASSERT(r == -1 && errno == EEXIST, "%s",
++                   "Overlapping guest_memfd() bindings should fail with EEXIST");
+        close(memfd);
+        kvm_vm_free(vm);
+ }
