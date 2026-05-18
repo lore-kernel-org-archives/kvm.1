@@ -1,199 +1,179 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.20])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD5B2C0285;
-	Mon, 18 May 2026 15:12:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28610375F81
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 15:16:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779117158; cv=none; b=dPEBj6O+QcR9Go/oOtA19po1U/We1THcfmJdLcOlcabcHKx7ct1/VaLebg/9xLAszz1GRJBNHj4iLqTMYiRjmbc+H31U3AI0m4dzRvA5didbg4nLFFdysvyJJyUKNTOfktogUp4Rpc9ig9RREV/vBmw505538mGSi4j8kNMWl14=
+	t=1779117414; cv=none; b=CbQDH7V579UJZB9rTc2vUqfxA6bZ1wY/y0VRuSfMGT+2p5YWREVsURSvqe1A/KB/i46wsQTuaM6pU15jAh1ODpnnXV2Ds1w+e67L7gHTdo4kIE6WYh0wevFcDZ5Dc2aHzDJH97XEjEBzFCnfwmqFCOUhbsIbQqeWMZCwjPJ30zU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779117158; c=relaxed/simple;
-	bh=usaP7VTdT3T6hQ117xP8THBXVVnr1QGxlZ+HgD3YzJk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Z6Qdy1/B/bYn44NRgSNTTP45+vHJc5+DvYGAQtsk0GGXrrKudVsy5RD5buRolRpG1fRmh2oAQhesZHXQy7Cp2i+AK4olLog/AMzlxnA2RNv7NLH3D0N3JvdPhgCT6Ref9Qh+Asx12fZmkodXC4UUuPVw7wsvLSxTJCk5R4E7jjo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Jg6Z1VtE; arc=none smtp.client-ip=198.175.65.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1779117414; c=relaxed/simple;
+	bh=hNrotANF/fNsBLn+vp334OYQiUsjqq/njbycF2YghQc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=dR3ueVkz36rZTsGXkYaANpJSdFYhjuNo9YiBk/wg1p9/WOJDdpLRyHpgHKHj+XA56Isf/GNpYxHMtJTBsN33toXcVlP2WbjVCJdMxK83BQ4t8nsVx2tYRNTjTBx0nyk1JUmNDA2SrlpAliu1Tlj7EZAS71dRKRDXhNdPtJvu/1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=pxMWrnnm; arc=none smtp.client-ip=209.85.210.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Jg6Z1VtE"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779117156; x=1810653156;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=usaP7VTdT3T6hQ117xP8THBXVVnr1QGxlZ+HgD3YzJk=;
-  b=Jg6Z1VtEEm37bHsAasxGSqJSe9u7sRQgrSYwKrekyfTvdIwmZbBzf95g
-   dMrmsw9uQSTOAf0VmrUI9cb/16IiSLwsQSbXZ1Smg+UBkQ6ogoyJE31hr
-   y5Qbx3W2F3S2O/moSA104DjtW4/xPTX3L+pewZknA/I/es+bQTwqzweYk
-   CIhheQln0yKJsemv+wzzxqKZP3bC5EjICvGefx4Dq3fn2qxLNCpSX8LcQ
-   k8u0oiCKFip/LFfp6+pvZZRgSBE964FWC3NAPlcWnklh8fR/qbGMOS1JR
-   CM2lsuR64l1zRjZjUKRlYg9K5YBfsfS/cTQf4JlHUClHU30/694m+bGIv
-   Q==;
-X-CSE-ConnectionGUID: Ags0N3bfT8W0ebA2UCo7Cg==
-X-CSE-MsgGUID: +FIpazb5SliN74Memg3UTg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="79687998"
-X-IronPort-AV: E=Sophos;i="6.23,242,1770624000"; 
-   d="scan'208";a="79687998"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa112.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 08:12:35 -0700
-X-CSE-ConnectionGUID: akdb7uMNSf6p7VqwITabcQ==
-X-CSE-MsgGUID: ACN5/8WXQfm9zO1DhUmmbQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,242,1770624000"; 
-   d="scan'208";a="235205109"
-Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.109.43]) ([10.125.109.43])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 08:12:34 -0700
-Message-ID: <977c1cf8-45cf-4902-9c50-ffc2b45391e6@intel.com>
-Date: Mon, 18 May 2026 08:12:37 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="pxMWrnnm"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-837d43e9ff3so1585366b3a.2
+        for <kvm@vger.kernel.org>; Mon, 18 May 2026 08:16:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779117412; x=1779722212; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=n0wuAL1060+cDsFFvYUT0tX5pCb+Jeju6WfI0kmVqr8=;
+        b=pxMWrnnmKbiGaotZifnMJDfU1hyMkgAB4XsxrLn5CrTsJlgznHtrgZfcRwzsuQpbIG
+         GTvQcg/JP4WF4pDLB9yhg3E4umFCiE65bzJDJkEpaotVVDeLol4iBmKqJSV3wmX4pY6t
+         TMHreRHovaWTlcVU80JzPUJASaAJPqRCnZXSod4K7xRoMfI8KxPrNGj1ACOfmIZpIbDO
+         bjxMHj+9Zfz1hUiojZl0syjXKvYniB+oAQVl5MciStN8Acus/PCj3dpxOa2K/b37nfzI
+         /qzLsY3JR+ohWaafVik/D4ccvxxRtIAvNk3wHzCRD/eXBPsNIaJDEZc+mDbfo51hDZvt
+         Accg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779117412; x=1779722212;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=n0wuAL1060+cDsFFvYUT0tX5pCb+Jeju6WfI0kmVqr8=;
+        b=RTrApsvRtpVNpO660rsBRtnP0w2gtmfCDvy+Ob8MPqb5QjpNwOZfYRh9OY7p89s5O8
+         cz+HtKAKhClZpRS8wRgQHBglSaPG3NPyCnoE1gmLUUfzra8tMEbNUq7e9VTdUm79eGgm
+         mXX1R/DVKw036oxLoYfyDoesRp4+BV8pUI0wzIoEEL1cQLvQ3recCZFCW78E8uCWuxIC
+         jh9HPG4hUOnVGtY1sxPBGgxdBwAbM6EAqG4mDenZsa+08XQdZ05w0eONZEEiiS/du2Zv
+         4qmvj2U6vlALpCJ32lpoj4lmGpzj2sPIN1Nw8f8EFkyO2u2XNcPHL9I2GUDJzIdVII5H
+         yoNQ==
+X-Gm-Message-State: AOJu0Yz8ycmujztVjtd/37Pb5E8uyUKzWWQJC9RMpUhHJqE9s0J3jI5x
+	TvzUOUxv+qiEgsl6hk+qXhr9knh3ZMv6Se30yADFVb3J5eqm4kcv4mloFsrLYvPKS4HOAoKI6xM
+	LZGpApQ==
+X-Received: from pgbcz14.prod.google.com ([2002:a05:6a02:230e:b0:c7f:ca3d:442c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3d26:b0:3a2:dabf:fef6
+ with SMTP id adf61e73a8af0-3b22ed62a5cmr17767724637.35.1779117412058; Mon, 18
+ May 2026 08:16:52 -0700 (PDT)
+Date: Mon, 18 May 2026 08:16:51 -0700
+In-Reply-To: <agsmQaqJ5ShSaV07@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 11/23] x86/virt/seamldr: Allocate and populate a module
- update request
-To: Chao Gao <chao.gao@intel.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, binbin.wu@linux.intel.com,
- dave.hansen@linux.intel.com, djbw@kernel.org, ira.weiny@intel.com,
- kai.huang@intel.com, kas@kernel.org, nik.borisov@suse.com,
- paulmck@kernel.org, pbonzini@redhat.com, reinette.chatre@intel.com,
- rick.p.edgecombe@intel.com, sagis@google.com, seanjc@google.com,
- tony.lindgren@linux.intel.com, vannapurve@google.com,
- vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com,
- yan.y.zhao@intel.com, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-References: <20260513151045.1420990-1-chao.gao@intel.com>
- <20260513151045.1420990-12-chao.gao@intel.com>
- <7d7fff5a-53a5-439e-9ff8-dcbd97f473cd@intel.com> <agsfCsvcILh3Vg7a@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <agsfCsvcILh3Vg7a@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260516163412.601908-1-clopez@suse.de> <agsmQaqJ5ShSaV07@google.com>
+Message-ID: <agstY455kTIumJ5P@google.com>
+Subject: Re: [PATCH] KVM: x86: Fix array_index_nospec() protection in kvm_vcpu_ioctl_x86_set_mce()
+From: Sean Christopherson <seanjc@google.com>
+To: "Carlos =?utf-8?B?TMOzcGV6?=" <clopez@suse.de>, Tony Luck <tony.luck@intel.com>
+Cc: kvm@vger.kernel.org, pbonzini@redhat.com, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, 
+	"maintainer:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>, Jue Wang <juew@google.com>, 
+	"open list:X86 ARCHITECTURE (32-BIT AND 64-BIT)" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 5/18/26 07:15, Chao Gao wrote:
->>> +#define TDX_IMAGE_VERSION_2		0x200
->>> +
->>> +struct tdx_image_header {
->>> +	u16	version; // This ABI is always 0x200
->>
->> That comment reads strangely in here. Did I ask you to write that?
-> 
-> I copied that from the example you suggested for this structure in v8. But
-> yes, it does read awkwardly here, so I will drop it.
++Tony (questions regarding IA32_MCG_CTL and IA32_MCi_CTL behavior)
 
-The point is that the code or comments needs to mention *somewhere* that
-"This (header->version) ABI is always 0x200". I didn't mean for you to
-literally put that ^ in there.
+On Mon, May 18, 2026, Sean Christopherson wrote:
+> On Sat, May 16, 2026, Carlos L=C3=B3pez wrote:
+> > Commit aebc3ca19063 ("KVM: x86: Enable CMCI capability by default and
+> > handle injected UCNA errors") introduced kvm_vcpu_x86_set_ucna(), which
+> > accesses @vcpu->arch.mci_ctl2_banks[] using @mce->bank as the index. Th=
+e
+> > @mce struct is user-controlled, provided via the KVM_X86_SET_MCE ioctl.
+> >=20
+> > The caller of this function, kvm_vcpu_ioctl_x86_set_mce(), bounds-check=
+s
+> > @mce->bank and applies array_index_nospec() to advance the @banks
+> > pointer, but @mce->bank itself is passed through unclamped. On a
+> > speculative path that bypasses the bounds check, the raw @mce->bank
+> > value can index mci_ctl2_banks[] out-of-bounds.
+> >=20
+> > In practice this is a very weak gadget, and would at most allow leaking
+> > a single bit in a 64-bit integer, but prevent potential future issues b=
+y
+> > clamping @mce->bank in place with array_index_nospec(), before passing
+> > the struct to kvm_vcpu_x86_set_ucna().
+> >=20
+> > Fixes: aebc3ca19063 ("KVM: x86: Enable CMCI capability by default and h=
+andle injected UCNA errors")
+> > Signed-off-by: Carlos L=C3=B3pez <clopez@suse.de>
+> > ---
+> >  arch/x86/kvm/x86.c | 3 ++-
+> >  1 file changed, 2 insertions(+), 1 deletion(-)
+> >=20
+> > diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+> > index 209eae67ab18..2d2415031267 100644
+> > --- a/arch/x86/kvm/x86.c
+> > +++ b/arch/x86/kvm/x86.c
+> > @@ -5497,7 +5497,8 @@ static int kvm_vcpu_ioctl_x86_set_mce(struct kvm_=
+vcpu *vcpu,
+> >  	if (mce->bank >=3D bank_num || !(mce->status & MCI_STATUS_VAL))
+> >  		return -EINVAL;
+> > =20
+> > -	banks +=3D array_index_nospec(4 * mce->bank, 4 * bank_num);
+> > +	mce->bank =3D array_index_nospec(mce->bank, bank_num);
+> > +	banks +=3D 4 * mce->bank;
+> > =20
+> >  	if (is_ucna(mce))
+> >  		return kvm_vcpu_x86_set_ucna(vcpu, mce, banks);
+>=20
+> As a follow-up, I think we should fold kvm_vcpu_x86_set_ucna() into
+> kvm_vcpu_ioctl_x86_set_mce().  Splitting it to a separately helper makes =
+it
+> unnecessarily difficult to see the usage of mce->bank.
+>=20
+> Hmm, and isn't the handling of UNCA errors misplaced?  Per the SDM, the o=
+nly
+> allowed values for IA32_MCG_CTL are -1ull and 0.
+>=20
+>   IA32_MCG_CTL controls the reporting of machine-check exceptions. If pre=
+sent,
+>   writing 1s to this register enables machine-check features and writing =
+all 0s
+>   disables machine-check features. All other values are undefined and/or
+>   implementation specific.
+>=20
+> I don't see anything the SDM that exempts UNCA from that logic.  Ditto fo=
+r the
+> similar IA32_MCi_CTL check.  So on top of your fix, over two patches, I t=
+hink we
+> should end up with this?
 
-It's fine if it is in the code to. Just mention it somewhere.
+...
 
->>> +static int init_seamldr_params(struct seamldr_params *params, const u8 *data, u32 size)
->>> +{
->>> +	const struct tdx_image *image		= (const void *)data;
->>> +	const struct tdx_image_header *header	= &image->header;
->>> +
->>> +	u32 sigstruct_len	= header->sigstruct_nr_pages * PAGE_SIZE;
->>> +	u32 module_len		= header->module_nr_pages * PAGE_SIZE;
->>> +
->>> +	u8 *header_start	= (u8 *)header;
->>> +	u8 *header_end		= header_start + HEADER_SIZE;
->>> +
->>> +	u8 *sigstruct_start	= header_end;
->>> +	u8 *sigstruct_end	= sigstruct_start + sigstruct_len;
->>> +
->>> +	u8 *module_start	= sigstruct_end;
->>> +
->>> +	/* Check the calculated payload size against the data size. */
->>> +	if (HEADER_SIZE + sigstruct_len + module_len != size)
->>> +		return -EINVAL;
->>> +
->>> +	/*
->>> +	 * Don't care about user passing the wrong file, but protect
->>> +	 * kernel ABI by preventing accepting garbage.
->>> +	 */
->>
->> How does this "protect kernel ABI"?
-> 
-> "Protect kernel ABI" was imprecise here. The intent is to reject
-> obviously malformed headers.
-> 
-> If the kernel accepts garbage in header fields today, userspace can come
-> to rely on that behavior. Later, the kernel may start validating those
-> fields more strictly or assign meaning to fields that were previously
-> reserved. Rejecting the same image then could be seen as a kernel
-> regression.
-> 
-> I'll simplify the comment to:
-> 
-> 	/* Reject obviously malformed image headers. */
+> Unless I'm wrong, I'll send a v2 with your fix plus two more patches.
 
-I'm still not following this at all.
+Heh, I was partially wrong.  I think.  The IA32_MCi_CTL MSRs control whethe=
+r or
+not a #MC is reported, but don't change error _logging_.
 
-I suspect that someone along the way said something in reviewing this
-about ensuring that fields that are "reserved" are treated as "reserved
-+ must be zero".
+  Setting an EEj flag enables signaling #MC of the associated error and cle=
+aring
+  it disables signaling of the error. Error logging happens regardless of t=
+he
+  setting of these bits. The processor drops writes to bits that are not im=
+plemented.
 
-Somehow that recommendation got conflated with the version checking.
+Ah, I was definitely wrong.  Section 17.5 CORRECTED MACHINE CHECK ERROR INT=
+ERRUPT
+explicitly says so:
 
-But the deeper point is that neither this patch nor its contributor is
-quite able to articulate the reason for this line of code being here.
+  CMCI is not affected by the CR4.MCE bit, and it is not affected by the
+  IA32_MCi_CTL MSRs.
 
-Let me try.
+Actually, that means the existing code is wrong, and has been since commit
+890ca9aefa78 ("KVM: Add MCE support").
 
-	The "tdx_image" ABI is versioned. However, there has only ever
-	been one public versions of the structure: ->version==0x200. The
-	kernel can only parse that version. Future versions of the
-	module might be able to use the same ABIs (user/kernel and
-	kernel/SEAMLDR) but they will not be able to use this kernel
-	code.
+Hrm, and I'm not convinced KVM's handling of IA32_MCG_CTL is correct either=
+.  The
+SDM says it controls reporting of _exceptions_, it doesn't say anything abo=
+ut
+disabling loggin of errors.
 
-	Reject module images without that specific version. This ensures
-	that the kernel is able to understand the passed-in format.
+  IA32_MCG_CTL controls the reporting of machine-check exceptions.
+
+
+Tony,
+
+Does clearing IA32_MCG_CTL affect error logging *and* #MC generation, or ju=
+st #MC
+generation?  And if it impacts logging, does it also apply to UCNA errors?
