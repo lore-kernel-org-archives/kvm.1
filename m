@@ -1,143 +1,207 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8A448C3FF
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 16:47:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DC4494A15
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 16:55:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779122840; cv=none; b=LPANHiKTLahp/JCiiwBo0yE3t0q8Qtz9A34dWGNLKWytTdt6i8exGo/KC6Vz0x8FcEbSCt19QXmZW9RWtS+OfjpVEoAUptO/LvR7o3Q5UTlUVCqvc7Me9pNXHVPfpxOAIdKwHelycL93XCgC/InFU0z5y9BwhvH6qGzyDEiEULc=
+	t=1779123304; cv=none; b=n3FUSWg/cQShYWdyjRsAkM8JrrXdYxRLXqri5u6JFRUol6F7xXPer0R/+amNjNSOAX3ABhgbp5eVVo8AgaFpUrwjJ5MXttiVBq5V+PydVCzlw4gnEWTvU/4/fT5T9fIfIBPMH8RdBmcWpurIzjoXPysJmoHN6oM1SZ2gJOP89wE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779122840; c=relaxed/simple;
-	bh=uZJ/xSOMto8dGbxnTVpZw9SBqppTOhKt7BGw30Zdg+A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uZFgytV+XIBdgusEGW/vPxtBfcfM1F/ZW0DOROY1uRWiVGkxkZXQpZaYlV7z+Q6L/vydIT1R3NdHh/1DpSsyETFJmB4Qg7l0IlDKQO+/CxdhjkPVluvdZYOhZxZEY2kqeWSzLlLI9fRCyqElehetvsBxJjEpEr9pN8wDgn4syG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nKukTcqo; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1779123304; c=relaxed/simple;
+	bh=uLzwi/WCQNnI3a9r0Mor6iinE3d+0njf87UPy8a7WLE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sGbA+HfDFodkUkpl2b9Dg8GvGCICMC3ifuf1Zu1J8SBYkodeivlfO3ta/uiwJn77PiVoUwQ7nKUYkdvTUTrrxihPmyVj+1OExclrM7eQ6c47iU38TxB0+Km7olRm847KklWWeAVSLhvm2/u7jKZ+JRSqF87apwmjl48SFLB8xxQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=XN8JeS87; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nKukTcqo"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ba3b9bcf69so425ad.0
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 09:47:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779122838; x=1779727638; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=fRb534kT/Y8t4mzJvcjyqqGoTPac4Acgjf8YBCzvDuA=;
-        b=nKukTcqo6THU3OJrpAZjK+bkMEcD/wiQoHRer+Og2CBzHbtgb4Sxvj6QI0GyTuQyoH
-         c45n5GNsFhUTLX42jW7A1iDGbJzepcqxkrQnL8ZYFZ9/2sleWwKrNS44PGA1MNTwiYV4
-         RN/QCeg87CWqEBqb9FBJ6AE1L8SB7Zb+Fic1/gahaHux++tEmJS5cs4fkZUBx4V88e39
-         FrejJ/ET+aasIe8L3bLmMBbBvW+Mp/rSNoJnoi3Jt5uTg31e3nRPIW88BBcJKUEhPucU
-         Ko4KIVt0GjTqhxfGBGz8e5dqiuEfPvnhECe+0LvEPS4MH/r86qWzgr8wBfcY2bJApQg6
-         pVcQ==
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="XN8JeS87"
+Received: from pps.filterd (m0528006.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64HNI4d51449052
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 09:55:00 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=ZLY9yfLbRBjpxy+2SZZ2QJ1skamsrrS9MpjOO7Diwus=; b=XN8JeS877jEd
+	EB+ZxD27YIsRCiVSeSY3lAZcZeFfFdxQF+qfF4CTddtmCk+K2U3049kfL4nFlmH7
+	SL3cBbF1DhT0/mKioDrKiQNuR8X/wF49z9HY/X3ZO25Px96ZXMmw7UGd0yozk487
+	BHNo/ja8XUZxE3NcwBWwhA5pmfG/2rItk5Uheyxl/ozsVbHucAmJ+60On9h5ljfT
+	gsTgOrcXmoUn6KVcUVg0XrKksIyHrs9ANc/am9s32d/a/zIvHdMsuKPx/fJ1J80A
+	0nwLeVfHhVfOp9GSZfmcFsGcbp6H2Lm7tfODKhxJrvgT4pMpk4jYBf7t481ofi8A
+	u89jy8cs2A==
+Received: from mail-dy1-f200.google.com (mail-dy1-f200.google.com [74.125.82.200])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4e797hpwnu-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 09:54:59 -0700 (PDT)
+Received: by mail-dy1-f200.google.com with SMTP id 5a478bee46e88-2fe1cf409a1so5002207eec.1
+        for <kvm@vger.kernel.org>; Mon, 18 May 2026 09:54:59 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779122838; x=1779727638;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fRb534kT/Y8t4mzJvcjyqqGoTPac4Acgjf8YBCzvDuA=;
-        b=dAzu64NHASqDrvBv4cvgGYxoNS78zlIzchqhn+MDX66TzypbYreyd12cBU41VolY7K
-         cuiPFMOoNofrtd/iorhGjquhmQwv8KmNnEFo4T8VZjosaI3kBfU2SkpIP9XxlmjXQWqD
-         +IEZgyTGc0ibWPM+FUtVzsInLu7JABFKlikejft9Wo/UX4WVcIu+QR1ww2Qhg6tbPty3
-         8yS0RWgzPyNQE23CSySTas5magHf7A75MB3iUNWFa55JO7Gee3hodMvu/gYXOBXq6l3b
-         4Qr2GOduEikac16biRU43JcRFge7116iMvx/3ywf7QuznorVewzXLonOboItthz9mGuo
-         VXfg==
-X-Gm-Message-State: AOJu0YzmR1gw1UhiHihaU6T/DP8RFQLJaGiagvnaZEUgR1LZTuJ5Ny1w
-	7y+jOURoAiJiQh8YWORxyFvRTOsR0cZijIgE1UXHI5XfB63yc4+VXH9WegFcwOpB1GCDZtRqHy1
-	3BJsKDFjj
-X-Gm-Gg: Acq92OF2nQClhASQ7PCF55Lec0OvChDvHb9dSdedfsfnSsGO/fFokPdpMgKJW3n8ddn
-	itgtT2Jr9rFMnYxMdsgQRL3GIB6QB0gT+2I3XV4XvhgO3dVPfXcXmrlSUcaAiaqOFwCveCoUDdo
-	mf52tAtutU7M/BsTsMefLWtUG8oecKsZ0Z6UnD0uF0IGsm4jXiPLfe451EsZbokJgX/1Wi1qM+1
-	mYs2SQXQqJ4c9RU6j0Ddmz559vm+yJYaXN/6SWt/EcG+rjv7pNC8UxWHzytjLhW4sXTT+uNXWi/
-	VCpHGcPDO58Ku0K5Qksqhrze2vrvgW80M8jUaoOqDR2Lc/EUQHJRz0BGUXZMZjQ4pZWwVlQEj2D
-	I3PQl8Ax8rhGPE6Bkx/TNJf1zS96wYgPwYVyMKTyTZII3Ycj+kUM0MhvjysUEa8I36YhNCo3NQb
-	ixlEC3w/09OnUnlE+zvBxZR5chhis7u4ZrOn/QagWM0hNlhf03HweILFjZAX3eiaTD6cTpfyk=
-X-Received: by 2002:a17:902:e550:b0:2b4:6153:e541 with SMTP id d9443c01a7336-2bdb3064621mr2846235ad.3.1779122837181;
-        Mon, 18 May 2026 09:47:17 -0700 (PDT)
-Received: from google.com (176.13.105.34.bc.googleusercontent.com. [34.105.13.176])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c82bafb0a3esm14196811a12.0.2026.05.18.09.47.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 09:47:16 -0700 (PDT)
-Date: Mon, 18 May 2026 09:47:12 -0700
-From: Vipin Sharma <vipinsh@google.com>
-To: Zhu Yanjun <yanjun.zhu@linux.dev>
-Cc: kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, linux-pci@vger.kernel.org, 
-	ajayachandra@nvidia.com, alex@shazbot.org, amastro@fb.com, ankita@nvidia.com, 
-	apopple@nvidia.com, chrisl@kernel.org, corbet@lwn.net, dmatlack@google.com, 
-	graf@amazon.com, jacob.pan@linux.microsoft.com, jgg@nvidia.com, jgg@ziepe.ca, 
-	jrhilke@google.com, julianr@linux.ibm.com, kevin.tian@intel.com, leon@kernel.org, 
-	leonro@nvidia.com, lukas@wunner.de, michal.winiarski@intel.com, parav@nvidia.com, 
-	pasha.tatashin@soleen.com, praan@google.com, pratyush@kernel.org, rananta@google.com, 
-	rientjes@google.com, rodrigo.vivi@intel.com, rppt@kernel.org, saeedm@nvidia.com, 
-	skhan@linuxfoundation.org, skhawaja@google.com, vivek.kasireddy@intel.com, witu@nvidia.com, 
-	yi.l.liu@intel.com
-Subject: Re: [PATCH v4 05/16] vfio: Enforce preserved devices are retrieved
- via LIVEUPDATE_SESSION_RETRIEVE_FD
-Message-ID: <20260518164045.GB3281683.vipinsh@google.com>
-References: <20260511234802.2280368-1-vipinsh@google.com>
- <20260511234802.2280368-6-vipinsh@google.com>
- <65228806-6ed3-4577-9037-13fd5eb8f9b6@linux.dev>
+        d=1e100.net; s=20251104; t=1779123299; x=1779728099;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZLY9yfLbRBjpxy+2SZZ2QJ1skamsrrS9MpjOO7Diwus=;
+        b=gWxvquqZTQ1XWaJwFDCIWOkK60F7d9of9zz3/pEbzanUbuEshK6Rlc5Sa7bf8QPEuR
+         IQCL4wJyE6UciwF8n/ZT+hbQSLsAYuzpEt81qa7Rz/XijX3QU4NNwKa07r0e88ZlnDMq
+         1afQ1xBKcJ9v/vGFIU1ZNUcAuDOXcYySZp+yReoLxje5fx36y4YD0o50jUgWkyffrf3K
+         oV9Kea0wfmeQdjKJeA2+pam2HG7Xi5aCbRPN3aE5HZTNtnrMZZLBFMZIrfDUkVMVetQq
+         Mp1349cnzFgLDClMKn9nq+4DZdQP2xP+hswNF9jGV70fUb9pDhqGAQNtZBMYw0Ybw2Uj
+         gkdg==
+X-Forwarded-Encrypted: i=1; AFNElJ8ABzp1NC6Ptt59i0LOJb+VuQOXcsgg14quYd3kzVrYwBEzqQxISYPKbZF3vjFhQOhepX0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzm9bDQUbAe35e+P5KoFwYhJoxrkYshLExqkjtfwQkhDPryUIQz
+	wea7Yi5XjQRXPaRE3HC+jDdw55lU58LTZlKyB1Ex3azzxUXa5xGKaNfwhTKXCqASN8hb4xx3aBW
+	6szwtQNDP6cyE81vyi72HvRY8MgAf4KeXhkOwugCTKxGJbCvJALcB
+X-Gm-Gg: Acq92OEG7KxqKojX/qgCUlOZiWqCVQO5kD/18lkX4ekcRx4ei8etLggpxenbB0J6sEf
+	Ar7uYlaNwzdQwWIjkK1FVmU6/F70G4Cp8j3D3+khqPg0h3Sw4bqz4G69ksZ2NPs7LoSAmHrpOlS
+	ySgyAUyUNH/f7q6DfK043SbFfJkrry5SIRnBw3TNtM7kgGEQvqfLeN5Xff6FgR35auBdNrtiBsm
+	KIBdVShFeE+i/T/F5lmuPIvf6CNRw/7Dxol4MMPJUwPtrEMAB19MS7HR84FG7yP/kFCoq0QAc1s
+	PJedNYy9R5Qyygg09gO8hCQN4umGFusKe9ceQemFJA8G3aI8OtM+O9fHF/tXrH2SGL97It9abuD
+	CmqeJ3kULj9UmGJvQ5IYGCrgKCG/Y6w==
+X-Received: by 2002:a05:693c:2c8e:b0:2ee:f85:ec3c with SMTP id 5a478bee46e88-303986b0490mr6401858eec.30.1779123298666;
+        Mon, 18 May 2026 09:54:58 -0700 (PDT)
+X-Received: by 2002:a05:693c:2c8e:b0:2ee:f85:ec3c with SMTP id 5a478bee46e88-303986b0490mr6401843eec.30.1779123298106;
+        Mon, 18 May 2026 09:54:58 -0700 (PDT)
+Received: from [10.0.40.30] ([51.52.155.79])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30296dcb6adsm15797561eec.15.2026.05.18.09.54.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 18 May 2026 09:54:57 -0700 (PDT)
+Message-ID: <e90b20b7-3189-4395-b2a8-6391b5958936@meta.com>
+Date: Mon, 18 May 2026 17:54:52 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <65228806-6ed3-4577-9037-13fd5eb8f9b6@linux.dev>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6/9] vfio/pci: Clean up BAR zap and revocation
+Content-Language: en-GB
+To: Leon Romanovsky <leon@kernel.org>, Alex Williamson <alex@shazbot.org>
+Cc: Jason Gunthorpe <jgg@nvidia.com>, Alex Mastro <amastro@fb.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
+        =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
+        Sumit Semwal <sumit.semwal@linaro.org>,
+        Kevin Tian <kevin.tian@intel.com>, Ankit Agrawal <ankita@nvidia.com>,
+        Pranjal Shrivastava <praan@google.com>,
+        Alistair Popple <apopple@nvidia.com>,
+        Vivek Kasireddy <vivek.kasireddy@intel.com>,
+        linux-kernel@vger.kernel.org, linux-media@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org,
+        kvm@vger.kernel.org
+References: <20260416131815.2729131-1-mattev@meta.com>
+ <20260416131815.2729131-7-mattev@meta.com>
+ <20260501171919.42659174@shazbot.org> <20260505105822.GC11063@unreal>
+From: Matt Evans <mattev@meta.com>
+In-Reply-To: <20260505105822.GC11063@unreal>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE4MDE2NiBTYWx0ZWRfX4amNZ/zypJOi
+ X42DZKUCUjpGqhLbnhenUta+Gdt3XVeplf1YroLfA4KP8oG0Yv1y5u+6aVK90b6P8OyXSczU6CD
+ oFg/MECv3VFPbClO+ihDT5dvBMesRoFGIbITOm4bnVDFbt5kcceuWkvhT5AC7jNmTcpZNmAIemd
+ bNrz/iEglR7BAZjjioFUdzmjhgtIiAVCi8Tu4eCJgdMxKa8UmzqyZdzzLuqz8yBtK2iMXZjeErJ
+ Awkr7WeNH3YFzMeX5Uxz0G+KhTrQ628eLrwQQHY2nPpXZYepwHnxDdJmaSYW581QNjguFl9/lLG
+ LEPt/AtJnvExcSJ+Qsu2QKFIWfdn49gqvV7kFG1TL1ONmbLNID3KQp3wOwus8syS21/JqE7uTDL
+ rjhmgzo72e62mTv36iFidaOZUL5ZkmNtAGmjwRCcjekPXbljYP3pkxtwBXCUsKHqAgLcQhXxjEB
+ 6XMswYcm699ANMMCSRA==
+X-Proofpoint-GUID: yhKvtvHrT5LwXX7rnCmCZYMCOwO-F13-
+X-Authority-Analysis: v=2.4 cv=VscTxe2n c=1 sm=1 tr=0 ts=6a0b4463 cx=c_pps
+ a=PfFC4Oe2JQzmKTvty2cRDw==:117 a=2UbFsIa4v//lIgRL4kGwwA==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=7x6HtfJdh03M6CCDgxCd:22 a=kkcUborcUVj0H7zxAXTl:22 a=VabnemYjAAAA:8
+ a=GEBLkO6eNKYXaKtmIbgA:9 a=QEXdDO2ut3YA:10 a=O8hF6Hzn-FEA:10
+ a=6Ab_bkdmUrQuMsNx7PHu:22 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-ORIG-GUID: yhKvtvHrT5LwXX7rnCmCZYMCOwO-F13-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-18_03,2026-05-18_01,2025-10-01_01
 
-On Sun, May 17, 2026 at 12:04:04PM -0700, Zhu Yanjun wrote:
-> 
-> 在 2026/5/11 16:47, Vipin Sharma 写道:
-> > From: David Matlack <dmatlack@google.com>
-> > 
-> > Enforce that files for incoming (preserved by previous kernel) VFIO
-> > devices are retrieved via LIVEUPDATE_SESSION_RETRIEVE_FD rather than by
-> > opening the corresponding VFIO character device or via
-> > VFIO_GROUP_GET_DEVICE_FD.
-> > 
-> > Both of these methods would result in VFIO initializing the device
-> > without access to the preserved state of the device passed by the
-> > previous kernel.
-> > 
-> > Reviewed-by: Pranjal Shrivastava <praan@google.com>
-> > Signed-off-by: David Matlack <dmatlack@google.com>
-> > Co-developed-by: Vipin Sharma <vipinsh@google.com>
-> > Signed-off-by: Vipin Sharma <vipinsh@google.com>
-> > ---
-> >   drivers/vfio/device_cdev.c             |  8 ++++++++
-> >   drivers/vfio/group.c                   |  9 +++++++++
-> >   drivers/vfio/pci/vfio_pci_liveupdate.c |  6 ++++++
-> >   drivers/vfio/vfio.h                    | 18 ++++++++++++++++++
-> >   4 files changed, 41 insertions(+)
-> > 
-> > diff --git a/drivers/vfio/device_cdev.c b/drivers/vfio/device_cdev.c
-> > index 1ab07ccaf3ab..4df0495941c6 100644
-> > --- a/drivers/vfio/device_cdev.c
-> > +++ b/drivers/vfio/device_cdev.c
-> > @@ -49,6 +49,14 @@ static int vfio_device_cdev_open(struct vfio_device *device, struct file **filep
-> >   		}
-> >   		*filep = file;
-> > +	} else if (vfio_liveupdate_incoming_is_preserved(device)) {
-> > +		/*
-> > +		 * Since it is live update preserved device, it must be
-> > +		 * retrieved via LIVEUPDATE_SESSION_RETRIEVE_FD instead of
-> > +		 * opening /dev/vfio/devices/vfioX.
-> > +		 */
-> > +		ret = -EBUSY;
-> > +		goto err_free_device_file;
-> 
-> When vfio_liveupdate_incoming_is_preserved(device) returns true,
-> vfio_device_put_registration(device) is not called in this path.
-> 
-> Is vfio_device_put_registration(device) instead invoked from the
-> err_free_device_file error handling path?
+Hi Leon, Alex,
 
-Yes, at the end of vfio_device_cdev_open(), goto label first frees the
-device file object and then calls the vfio_device_put_registration().
-This is the same error handlign flow as in the if(!file) {} code in the
-above function.
+On 05/05/2026 11:58, Leon Romanovsky wrote:
+> 
+> On Fri, May 01, 2026 at 05:19:19PM -0600, Alex Williamson wrote:
+>> On Thu, 16 Apr 2026 06:17:49 -0700
+>> Matt Evans <mattev@meta.com> wrote:
+>>
+>>> Previously, vfio_pci_zap_bars() (and the wrapper
+>>> vfio_pci_zap_and_down_write_memory_lock()) calls were paired with
+>>> calls of vfio_pci_dma_buf_move().
+>>>
+>>> This commit replaces them a unified new function,
+>>> vfio_pci_zap_revoke_bars() containing both the vfio_pci_dma_buf_move()
+>>> and the unmap_mapping_range(), making it harder for callers to omit
+>>> one.  It adds a wrapper, vfio_pci_lock_zap_revoke_bars(), which takes
+>>> the write memory_lock before zapping, and adds a new
+>>> vfio_pci_unrevoke_bars() for the re-enable path.
+>>>
+>>> However, as of "vfio/pci: Convert BAR mmap() to use a DMABUF" the
+>>> unmap_mapping_range() to zap is entirely redundant for plain vfio-pci,
+>>> since the DMABUFs used for BAR mappings already zap PTEs when the
+>>> vfio_pci_dma_buf_move() occurs.
+>>>
+>>> One exception remains as a FIXME: in nvgrace-gpu, some BAR VMAs
+>>> conditionally use custom vm_ops, which have not moved to be backed by
+>>> DMABUFs.  If these BARs are mmap()ed, the vdev enables the existing
+>>> behaviour of unmap_mapping_range() for the device fd address space.
+>>
+>> What's the plan here?  Is this a temporary FIXME or a place to prove
+>> that dmabuf for mmap works beyond the core use case?
+
+The larger picture is that I havne't converted the nvgrace-gpu driver to 
+use DMABUFs for its custom mmap/fault handler code.  (It's not 
+straightforward to test, so I don't want to hack that.)
+
+This FIXME is added to vfio_pci_zap_revoke_bars(), saying that for this 
+specific sub-driver (or any others that do custom mmap) they still need 
+to flag so that this wrapper still performs the unmap_mapping_range().
+
+>>> Signed-off-by: Matt Evans <mattev@meta.com>
+>>> ---
+>>>   drivers/vfio/pci/nvgrace-gpu/main.c |  5 +++
+>>>   drivers/vfio/pci/vfio_pci_config.c  | 30 ++++++--------
+>>>   drivers/vfio/pci/vfio_pci_core.c    | 62 +++++++++++++++++++----------
+>>>   drivers/vfio/pci/vfio_pci_priv.h    |  3 +-
+>>>   include/linux/vfio_pci_core.h       |  1 +
+>>>   5 files changed, 62 insertions(+), 39 deletions(-)
+>>>
+>> ...
+>>> @@ -1229,7 +1228,7 @@ static int vfio_pci_ioctl_reset(struct vfio_pci_core_device *vdev,
+>>>   	if (!vdev->reset_works)
+>>>   		return -EINVAL;
+>>>   
+>>> -	vfio_pci_zap_and_down_write_memory_lock(vdev);
+>>> +	vfio_pci_lock_zap_revoke_bars(vdev);
+>>>   
+>>>   	/*
+>>>   	 * This function can be invoked while the power state is non-D0. If
+>>> @@ -1242,10 +1241,9 @@ static int vfio_pci_ioctl_reset(struct vfio_pci_core_device *vdev,
+>>>   	 */
+>>>   	vfio_pci_set_power_state(vdev, PCI_D0);
+>>>   
+>>> -	vfio_pci_dma_buf_move(vdev, true);
+>>
+>> This seems subtle enough to be troublesome.  I wonder if Leon didn't
+>> intentionally place the dmabuf revoke after the device is in D0 to
+>> allow the driver to interact with the device.
+> 
+> My intention was to place vfio_pci_dma_buf_move() as close as possible to
+> pci_try_reset_function(), so the device is known to be fully operational
+> at that point. It looks like calling it after the transition to D0 is the
+> right ordering.
+
+Thanks for that, I had missed that need to have D0 at the time of the 
+revoke.
+
+Getting the lock in the existing place (before D0 set) but doing a 
+separate vfio_zap_revoke_bars() here (replacing the bare move) seems 
+right, though for the sub-drivers which still need the zap (nvgace-gpu) 
+then the unmap_mapping_range() would happen after the D0 now.  I believe 
+this is OK, but I wanted to flag that difference.
+
+Many thanks,
+
+
+Matt
 
