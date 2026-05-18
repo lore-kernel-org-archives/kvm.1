@@ -1,188 +1,129 @@
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83842494D8
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 04:31:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779078702; cv=pass; b=mRKGXIgK1OaSbu69BhXb6rDu+dpj1ErNQ0upWvK1NtouTHk10rXH8UUB/LFBkm/4Ol9JoB58GlPCCZC93y7MGMHpTeJ51NHGelDAzAimKgORtcwHNxrjyGAwz8ymM7ITyIYrdcjkeaif2/PJfEagD2cTNg2DyEocSJhQsrDyey4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779078702; c=relaxed/simple;
-	bh=9ciF2pCZn8Iae4mFy+/rt0+ZpiZ3r3c6YvbMMoAFlRQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kUgf1RxE3vAobXZ2HFUEiYxXVXV/h/olQjJEkMN5IA8FcUkq7m1Sgg+RuklXXioGdqeV5t7Amy1xNW+lNU5hDohzTeIMRYWdl4InRDV6jz51rkWSqJU/ic2Vkmsp3c2cfFH9uRZxYcJMUOY1zUFGQJ3oGU64UfgpDhWgYp58RTM=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=gwj7JBzB; arc=pass smtp.client-ip=209.85.161.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4657738236A;
+	Mon, 18 May 2026 04:42:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779079338; cv=none; b=bZUAYVOYYBZFR0BgWFhC+pAgGvHUf5jbVrzQLsEBT9faUw2/Mpv9Gh2bfbz7iwsG63iKIQPm9Xu83exZoWRTCgRQBjKCRmYx9BpCDWNyVeqbnuHBjSAwNumeOqcSjK9t69XpqDV+0a8h+0mnU/toRniLmw19594uP0q87iv6Xk0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779079338; c=relaxed/simple;
+	bh=WxO5dQDtSXPtnDcRushc7qgiqYJrUF8J6QNjNtk3YcQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JcRBdYnZLqe9Lt49EwHhd6RIY3JhDknxIy5G4Zx64jjxj0BDteFivP35/nxX/rZJn931YMCcmGgUSTHRGLjgAdi78/Jv25Dzuzoi1I/fgA0WS+E0QWZiICbuAodVXEdjghKDRDske5QrvycCd2Npzarg0RlJyKCgMYD1G2f+meo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Bob+Je/R; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="gwj7JBzB"
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-69498319ee7so846766eaf.1
-        for <kvm@vger.kernel.org>; Sun, 17 May 2026 21:31:40 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779078700; cv=none;
-        d=google.com; s=arc-20240605;
-        b=VVn1MgLM+wXIqup6B5ZpusIeIlDX1dtIbsvt7ahKiO13Sv15/gHiVnsLPPdG6u6DbO
-         Rh6wHaBhXp68hfJ5Ia9EboT/YaIufo2spt1UZeuzSLXAvPek2Lj8PPByl1yupYhZNZZb
-         VX/4/cg6R2TOV9oTJfU96Vdwb2ktrHZ8nZEwLp4Xf8TSRwau4KYLhCq5NaIso+10LaiF
-         P/dCzLwePNzSDYRqpKLz5YFuq1jIkj64rEv1vH4uFcsUDyf09wx/fFX3dbGMHXuxTlIC
-         gz0GhCSKdFrokwBc/7RHqFFXXcR1Jta1wvu1ifV1VLZNMs78DR8shglPXSgp/NoxfLKC
-         Fmig==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=GJx3vYf89AmEPHzQLSho6/Q8/zMEPeXT+dUHRoNgkVk=;
-        fh=fq0X6NRc83gK6N8Ks3ox46ZxZ7y09GaFplYkICV/DD0=;
-        b=kuCoHtrlVkH+u4JpZa44/dMHh04JvFIrj/HoinkSv/tZYiPQIQpbvnneQugg3r1/AF
-         CuCfEJpeUH7lCMYxT88iyuu/fvQB2aHYO+UfjPF9SE+zB+04amuA0dLMB6LmKG0gmHXy
-         YmH1JodboAsotgELmdEkjYDUTdi9UaW7ZYo6PrQa05aRbpkDHtNk+5qkNEChXvkXb6VF
-         wdG2dSUfYdeeI8G5IeYsOagLVTQBr7VW3KAyG2IUc3qzUj62qXxHopxJonNz0r6ndELd
-         tErMOwaY2neMtWdIWeLCl5K3UptBMyZgp+Sd35TV2io77iH2g8nNii8PgeISOKaaqbxg
-         Cl9g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1779078700; x=1779683500; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=GJx3vYf89AmEPHzQLSho6/Q8/zMEPeXT+dUHRoNgkVk=;
-        b=gwj7JBzBwb2qhErufEk9dgI3YiITNrHEk6LfhDZxEt4pi3QJSaKfHoR4TLfT55wSQa
-         VZQ+xECsm7I4seO5Hy1DD9GTRB9XQfPwWctcv1EW3Z87uQTDoO25sBU0qUD6emLFsD5k
-         WU0dpdinK0xnz6RB7dfq/471wR1RC+aOd+Z5WlLev8hRa/5LWLhqKVGq3lIlBo3TzV7o
-         Aocr/t36lH7MYQ6mchHUwASuPwWUbdVUKzWxYUIerljjdG/ctaI6S5AKP/A+NnBRZ0wx
-         2z0mzPBWEklehSoUd4h3MJs+2vUCMet2IyYIorIlI1JzwHft29A+lJQJRF6BKOIF4yf7
-         dvkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779078700; x=1779683500;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=GJx3vYf89AmEPHzQLSho6/Q8/zMEPeXT+dUHRoNgkVk=;
-        b=GUVgyLM++kjt00XV5FMdnSg7rFSAjcke1BIFOIerxyQgN5ofucQRZDjpEglSfUwB+2
-         u1fhkzQi+HUyKCtjNou8rkcsT4oMOhQ03/JZCombTttlhno7d2yACZVaGy60XBAfcBJ4
-         WdmnVz4wIzWUIknDkio6ytKDY6q7dz8/QtLzAwFYdebuBAiEXpRT5r3VaqHK4ejEKq2N
-         ruaqwMhTe9e5xKCW37yuFZvHraAfJ+tJWQRVXfPe8QGLXwwnWzNrfCFLbzF8t9xfLEJ+
-         D9WBNEgi+oa8wlPg/r0AW7gaJ/bI4aB27NFwbYSdtyJ/dNI1JG4x4sf+SxPQyjnp+4Bh
-         WeWw==
-X-Forwarded-Encrypted: i=1; AFNElJ+AurV9YjsdhzmyoJLZiOnoRvmkg7LFQyuK+ZNLe8bke3ON30yMF9nTlCDso9na0A0YlQM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWdXP/DMBIqK98pgKYfqXtuhW7ElEcSJuQTH/nvFrk0DJQGrzL
-	jLq1/Dq2o2yuevrQ0mNTuQbeaTeUx/CzK6CDQN5q3ZJ3vkoKkLPZq5eLt5n3bG+UtPlldCd+p16
-	tHiDQOkJvfUSSLxXgCVaWmnpLZZPkMoW+QcMqmi679w==
-X-Gm-Gg: Acq92OEZcgVFl7IgjxEh8Tgo21aXu2SJocvznLqpecQ8UqoS0WKnPl49m8csyfLZruf
-	7lx3ISoWDVU+/7x3LnbQaJxyVKoZFx0taUvBGtpxNKGb9VkbLgrSKMX/3KJLHMuX20VmsgwLRlr
-	xf6KJTFWpjVUQ7dFUEowSweG1/yXlk+pkporbjbEVv6RI6y/acI/ckGYd75C2NGq80BP10SPIn/
-	UmiC6DqhMqnxS9y9BoWFeLBygiB03QsE97iTda9CVIvfDQW1MsnYfHLYY0xRGXuZSEE1fANiP9c
-	OVZgsje8Ye4TNJ/oXqzFc6zAnDg21NkLKCNzemGix8lZq/HiuWg+kGdfUpUkc9Cdmwx1pH+fBLw
-	DUcvCtzP0uwtocQCrHBMxWNz5Vw==
-X-Received: by 2002:a05:6820:1c02:b0:69b:85ba:bd4f with SMTP id
- 006d021491bc7-69b884ac83amr8443261eaf.33.1779078699723; Sun, 17 May 2026
- 21:31:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Bob+Je/R"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64H8j4hW620482;
+	Mon, 18 May 2026 04:42:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=bGWUFNUd70rQ8WihNw4jpC4+/xY2vnlDmpGuDw5bx
+	Qg=; b=Bob+Je/Rhd2jPNcblU/JjBGDwT7MN4kL4Tplm6pQwPB/miTo2afP/n6OG
+	ussqWY3Awn/Hs3uhEJIbEoGMixAnflspd4raDJVdeYpGwK/DMaIFcjzyw1z9Efvd
+	b/cp2CZnEFPywiX/WhtIWJxyhT1iKryoEyatzuNYqV4sxBX2FCjymx6xSbTI9wyD
+	fDmfzKV8Vq7ET2a83PnuQ8PLi/jbsm2SQ9uFKwsXAGbjgRAbmklJKDRXARKV36tr
+	wnj5yqhJVq+O2hpVXZkD6eS1CFhdlqtS8Zn++v/FjvX/BvXinoDH0sGc8tkGWah5
+	3Z6m2q4BKwvvLUFD0SAKV+jItocHw==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h885s9v-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 May 2026 04:42:02 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64I4dMfu028251;
+	Mon, 18 May 2026 04:42:02 GMT
+Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e72wpvc1g-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Mon, 18 May 2026 04:42:01 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
+	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64I4fwdE45744632
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Mon, 18 May 2026 04:41:58 GMT
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 79BFB2004D;
+	Mon, 18 May 2026 04:41:58 +0000 (GMT)
+Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 20FC220040;
+	Mon, 18 May 2026 04:41:56 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.43.47.251])
+	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Mon, 18 May 2026 04:41:55 +0000 (GMT)
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au,
+        chleroy@kernel.org, atrajeev@linux.ibm.com
+Cc: Gautam Menghani <gautam@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: [PATCH v2] KVM: PPC: Kconfig: Enable CONFIG_VPA_PMU with KVM
+Date: Mon, 18 May 2026 10:11:49 +0530
+Message-ID: <20260518044150.34632-1-gautam@linux.ibm.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260514081752.472987-1-xujiakai2025@iscas.ac.cn>
-In-Reply-To: <20260514081752.472987-1-xujiakai2025@iscas.ac.cn>
-From: Anup Patel <anup@brainfault.org>
-Date: Mon, 18 May 2026 10:01:28 +0530
-X-Gm-Features: AVHnY4KrYwepB5OiXTY2dv7ZHi-ani2vKZrt4RfWbnSXlOx_ga651Ne910vtQ3U
-Message-ID: <CAAhSdy2z_2OUyzA_MK+V6z_5ucwKN6A6f4j6hNaVH7c904SBQw@mail.gmail.com>
-Subject: Re: [PATCH] RISC-V: KVM: Fix sign extension for MMIO loads
-To: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
-	Atish Patra <atish.patra@linux.dev>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Paul Walmsley <pjw@kernel.org>, Jiakai Xu <jiakaiPeanut@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-ORIG-GUID: PpjuoOT9BjwOhUhLQsC87Y3Z8qEG--ja
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE4MDA0MSBTYWx0ZWRfX4K9NQFNAFt8/
+ StCBKLsWKzJWsfzTJTf593fHSB99oKGv5RSzJeGGO+NuwUR/aMtlisBFKS07qsgHO3JZZEhjKjT
+ 76RgwG8NuM3PjW6X1kdfXt2Hv4j3GqovCPrjp1VSbkllo0cujn9WyIEdSrIxXzFoubQRLCYoPKl
+ lKPULk4WS8r5B6Xa1zV8q5VvXDbd5+pY92Th4gy90MBYEbtN3ljWppfCU0f3aK+fSA70ztJPLDs
+ u0Fnd+cpNo458Mg51J3r/g+3s4WTUkW71uKua6DuOY0KlMsN7smYyQOJqM2fUb7fR/D0A2i1vHA
+ WlOVW+069coUCIMoq0D0MfNJTYn2Au8tg1OsehZb/sptSbUUIjLqrluBSK4z9PHWJ+B2Gbh+gAE
+ sSXSZWQ0hyLuNLZN7FKjG8bA7hVRcI8hXVvtXA/qnT0Sa54RTiSqk7KGo+GdRVuIWoNxmFeooqj
+ n/W3l7UtxFOkPKUwQsg==
+X-Proofpoint-GUID: vjKVfJVpSCIxUrFwZ6gp_3WBDmW1M8qf
+X-Authority-Analysis: v=2.4 cv=apyCzyZV c=1 sm=1 tr=0 ts=6a0a989b cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=V8glGbnc2Ofi9Qvn3v5h:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=cDqL2IBmYfLLLIMnpHoA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-18_01,2026-05-15_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ malwarescore=0 lowpriorityscore=0 priorityscore=1501 impostorscore=0
+ bulkscore=0 suspectscore=0 adultscore=0 spamscore=0 phishscore=0
+ clxscore=1011 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
+ definitions=main-2605180041
 
-On Thu, May 14, 2026 at 1:47=E2=80=AFPM Jiakai Xu <xujiakai2025@iscas.ac.cn=
-> wrote:
->
-> The kvm_riscv_vcpu_mmio_return() function handles MMIO read results
-> by writing the data back to the guest register. For signed load
-> instructions (LB, LH, LW on RV64), the value needs sign-extension
-> from a smaller integer to unsigned long.
->
-> The current code uses:
->     (ulong)data << shift >> shift
-> but (ulong) makes the right shift a logical shift (zero-extend)
-> rather than an arithmetic shift (sign-extend), causing incorrect
-> results when the MMIO device returns a negative value. For example,
-> LB reading 0x80 would return 128 instead of -128.
->
-> Fix this by casting to (long) after the left shift so that the
-> subsequent right shift is arithmetic and correctly propagates
-> the sign bit:
->     (long)((ulong)data << shift) >> shift
->
-> Additionally, remove the unnecessary shift assignment for LBU
-> (unsigned byte load) since it does not need sign extension.
-> This makes LBU consistent with LHU and LWU which already keep
-> shift =3D 0.
->
-> Fixes: b91f0e4cb8a3 ("RISC-V: KVM: Factor-out instruction emulation into =
-separate sources")
-> Signed-off-by: Jiakai Xu <jiakaiPeanut@gmail.com>
-> Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-> Assisted-by: OpenClaw:DeepSeek-V3.2
+Enable CONFIG_VPA_PMU with KVM to enable its usage. Currently, the
+vpa-pmu driver cannot be used since it is not enabled in distro configs.
 
-LGTM.
+On fedora kernel 6.13.7, the config option is disabled:
+$ cat /boot/config-6.19.12-200.fc43.ppc64le  | grep VPA_PMU
+ # CONFIG_VPA_PMU is not set
 
-Reviewed-by: Anup Patel <anup@brainfault.org>
+Fixes: 176cda0619b6c ("powerpc/perf: Add perf interface to expose vpa counters")
+Cc: stable@vger.kernel.org # v6.13+
+Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+---
+v1 -> v2:
+1. Rebased on latest master
 
-Queued this patch as fix for Linux-7.1-rcX
+ arch/powerpc/kvm/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Thanks,
-Anup
+diff --git a/arch/powerpc/kvm/Kconfig b/arch/powerpc/kvm/Kconfig
+index 9a0d1c1aca6c..56e86b46ff13 100644
+--- a/arch/powerpc/kvm/Kconfig
++++ b/arch/powerpc/kvm/Kconfig
+@@ -82,6 +82,7 @@ config KVM_BOOK3S_64_HV
+ 	select KVM_BOOK3S_HV_POSSIBLE
+ 	select KVM_BOOK3S_HV_PMU
+ 	select CMA
++	select VPA_PMU if HV_PERF_CTRS
+ 	help
+ 	  Support running unmodified book3s_64 guest kernels in
+ 	  virtual machines on POWER7 and newer processors that have
+-- 
+2.53.0
 
-> ---
->  arch/riscv/kvm/vcpu_insn.c | 9 ++++-----
->  1 file changed, 4 insertions(+), 5 deletions(-)
->
-> diff --git a/arch/riscv/kvm/vcpu_insn.c b/arch/riscv/kvm/vcpu_insn.c
-> index 4d89b94128aea..f09f9251d1f0a 100644
-> --- a/arch/riscv/kvm/vcpu_insn.c
-> +++ b/arch/riscv/kvm/vcpu_insn.c
-> @@ -415,7 +415,6 @@ int kvm_riscv_vcpu_mmio_load(struct kvm_vcpu *vcpu, s=
-truct kvm_run *run,
->                 shift =3D 8 * (sizeof(ulong) - len);
->         } else if ((insn & INSN_MASK_LBU) =3D=3D INSN_MATCH_LBU) {
->                 len =3D 1;
-> -               shift =3D 8 * (sizeof(ulong) - len);
->  #ifdef CONFIG_64BIT
->         } else if ((insn & INSN_MASK_LD) =3D=3D INSN_MATCH_LD) {
->                 len =3D 8;
-> @@ -649,22 +648,22 @@ int kvm_riscv_vcpu_mmio_return(struct kvm_vcpu *vcp=
-u, struct kvm_run *run)
->         case 1:
->                 data8 =3D *((u8 *)run->mmio.data);
->                 SET_RD(insn, &vcpu->arch.guest_context,
-> -                       (ulong)data8 << shift >> shift);
-> +                       (long)((ulong)data8 << shift) >> shift);
->                 break;
->         case 2:
->                 data16 =3D *((u16 *)run->mmio.data);
->                 SET_RD(insn, &vcpu->arch.guest_context,
-> -                       (ulong)data16 << shift >> shift);
-> +                       (long)((ulong)data16 << shift) >> shift);
->                 break;
->         case 4:
->                 data32 =3D *((u32 *)run->mmio.data);
->                 SET_RD(insn, &vcpu->arch.guest_context,
-> -                       (ulong)data32 << shift >> shift);
-> +                       (long)((ulong)data32 << shift) >> shift);
->                 break;
->         case 8:
->                 data64 =3D *((u64 *)run->mmio.data);
->                 SET_RD(insn, &vcpu->arch.guest_context,
-> -                       (ulong)data64 << shift >> shift);
-> +                       (long)((ulong)data64 << shift) >> shift);
->                 break;
->         default:
->                 return -EOPNOTSUPP;
-> --
-> 2.34.1
->
