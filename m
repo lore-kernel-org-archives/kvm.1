@@ -1,142 +1,188 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0ED542F8EBB;
-	Mon, 18 May 2026 02:20:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779070804; cv=none; b=GovE3i2gnxxOAKmV3Dshd9CHsZxVuLZYYKtHWqiCBZnhollmbFbaLhyNz/0LxPOpIuAw3cJ5zZkG/Uj0M1MGIJ1WT1KM48PQFHQYGN916rUqbdmNu2jpTt6/zKT+G9rDIR4CGi/xW8egjtQ6iyAOMkg+KYuSNehJvXw69OlDe3k=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779070804; c=relaxed/simple;
-	bh=lmm0Bw+0PJHp7u9T77Pnlf2PlaDDU0n/tVAzR5QksoM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Wg3leksge0bLd9yro35yE+vehePvZtGY7FfPXX9TdxkL7US143seNKXUWUvWeigy7YFQ8DDrJeaI1638yggyDQ+W5vm3iLrpfUZDozYT8Cjv4R1vtXRR3ulaCPew2zbQQVwRpkRDgm046YKiFDrM4Fqs5cvW1NXT9ApwePMCEVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=kiB69d9H; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83842494D8
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 04:31:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.45
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779078702; cv=pass; b=mRKGXIgK1OaSbu69BhXb6rDu+dpj1ErNQ0upWvK1NtouTHk10rXH8UUB/LFBkm/4Ol9JoB58GlPCCZC93y7MGMHpTeJ51NHGelDAzAimKgORtcwHNxrjyGAwz8ymM7ITyIYrdcjkeaif2/PJfEagD2cTNg2DyEocSJhQsrDyey4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779078702; c=relaxed/simple;
+	bh=9ciF2pCZn8Iae4mFy+/rt0+ZpiZ3r3c6YvbMMoAFlRQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kUgf1RxE3vAobXZ2HFUEiYxXVXV/h/olQjJEkMN5IA8FcUkq7m1Sgg+RuklXXioGdqeV5t7Amy1xNW+lNU5hDohzTeIMRYWdl4InRDV6jz51rkWSqJU/ic2Vkmsp3c2cfFH9uRZxYcJMUOY1zUFGQJ3oGU64UfgpDhWgYp58RTM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=gwj7JBzB; arc=pass smtp.client-ip=209.85.161.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="kiB69d9H"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779070801; x=1810606801;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=lmm0Bw+0PJHp7u9T77Pnlf2PlaDDU0n/tVAzR5QksoM=;
-  b=kiB69d9Hlxp590Ed4eqtAz5s0IZd+rXBvWzpNGLlJW9EmN2uE1hyADay
-   JI0ZDk01n1nOFeiOX2x0vzmYgJhUkEniKCJz/nfAzJDNLZ4WHX03mOGcS
-   ZXPp6eMuLKNTw+I/JbJv4Zd34aB3Bofh86qPnqAHerKClaZHpht0w133o
-   bP4z8j+7EnwSkQ2tgFnfETKMUeovNIMtEhnwcObIn/WMmHs3RaxUHzpdT
-   zbDa4Z726AzBGbZS+r6a5fWdOZK1JteT7aSK6d7DsJ8kk/wQ32+rqYcgb
-   mAkmhmsVWY2IIwxExsYtWimfDSQQekGcMSIm4AeHfvqmgXR4TxOpwnDMT
-   Q==;
-X-CSE-ConnectionGUID: oqWtb0sjRjSPgWMAvQefPg==
-X-CSE-MsgGUID: CzazY6JCRsaTGwcsdVRrFA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11789"; a="79950182"
-X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
-   d="scan'208";a="79950182"
-Received: from orviesa004.jf.intel.com ([10.64.159.144])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2026 19:20:00 -0700
-X-CSE-ConnectionGUID: 2crD5fm4Rl2x0zzJgqkOeg==
-X-CSE-MsgGUID: ZYhJsHOETueP/erDGi7fvg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
-   d="scan'208";a="243584884"
-Received: from fanlilin-mobl.ccr.corp.intel.com (HELO [10.238.1.228]) ([10.238.1.228])
-  by orviesa004-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 17 May 2026 19:19:57 -0700
-Message-ID: <52fdc61a-60e8-4547-8ff7-f249b4d667b9@linux.intel.com>
-Date: Mon, 18 May 2026 10:19:54 +0800
+	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="gwj7JBzB"
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-69498319ee7so846766eaf.1
+        for <kvm@vger.kernel.org>; Sun, 17 May 2026 21:31:40 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779078700; cv=none;
+        d=google.com; s=arc-20240605;
+        b=VVn1MgLM+wXIqup6B5ZpusIeIlDX1dtIbsvt7ahKiO13Sv15/gHiVnsLPPdG6u6DbO
+         Rh6wHaBhXp68hfJ5Ia9EboT/YaIufo2spt1UZeuzSLXAvPek2Lj8PPByl1yupYhZNZZb
+         VX/4/cg6R2TOV9oTJfU96Vdwb2ktrHZ8nZEwLp4Xf8TSRwau4KYLhCq5NaIso+10LaiF
+         P/dCzLwePNzSDYRqpKLz5YFuq1jIkj64rEv1vH4uFcsUDyf09wx/fFX3dbGMHXuxTlIC
+         gz0GhCSKdFrokwBc/7RHqFFXXcR1Jta1wvu1ifV1VLZNMs78DR8shglPXSgp/NoxfLKC
+         Fmig==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=GJx3vYf89AmEPHzQLSho6/Q8/zMEPeXT+dUHRoNgkVk=;
+        fh=fq0X6NRc83gK6N8Ks3ox46ZxZ7y09GaFplYkICV/DD0=;
+        b=kuCoHtrlVkH+u4JpZa44/dMHh04JvFIrj/HoinkSv/tZYiPQIQpbvnneQugg3r1/AF
+         CuCfEJpeUH7lCMYxT88iyuu/fvQB2aHYO+UfjPF9SE+zB+04amuA0dLMB6LmKG0gmHXy
+         YmH1JodboAsotgELmdEkjYDUTdi9UaW7ZYo6PrQa05aRbpkDHtNk+5qkNEChXvkXb6VF
+         wdG2dSUfYdeeI8G5IeYsOagLVTQBr7VW3KAyG2IUc3qzUj62qXxHopxJonNz0r6ndELd
+         tErMOwaY2neMtWdIWeLCl5K3UptBMyZgp+Sd35TV2io77iH2g8nNii8PgeISOKaaqbxg
+         Cl9g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1779078700; x=1779683500; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GJx3vYf89AmEPHzQLSho6/Q8/zMEPeXT+dUHRoNgkVk=;
+        b=gwj7JBzBwb2qhErufEk9dgI3YiITNrHEk6LfhDZxEt4pi3QJSaKfHoR4TLfT55wSQa
+         VZQ+xECsm7I4seO5Hy1DD9GTRB9XQfPwWctcv1EW3Z87uQTDoO25sBU0qUD6emLFsD5k
+         WU0dpdinK0xnz6RB7dfq/471wR1RC+aOd+Z5WlLev8hRa/5LWLhqKVGq3lIlBo3TzV7o
+         Aocr/t36lH7MYQ6mchHUwASuPwWUbdVUKzWxYUIerljjdG/ctaI6S5AKP/A+NnBRZ0wx
+         2z0mzPBWEklehSoUd4h3MJs+2vUCMet2IyYIorIlI1JzwHft29A+lJQJRF6BKOIF4yf7
+         dvkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779078700; x=1779683500;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=GJx3vYf89AmEPHzQLSho6/Q8/zMEPeXT+dUHRoNgkVk=;
+        b=GUVgyLM++kjt00XV5FMdnSg7rFSAjcke1BIFOIerxyQgN5ofucQRZDjpEglSfUwB+2
+         u1fhkzQi+HUyKCtjNou8rkcsT4oMOhQ03/JZCombTttlhno7d2yACZVaGy60XBAfcBJ4
+         WdmnVz4wIzWUIknDkio6ytKDY6q7dz8/QtLzAwFYdebuBAiEXpRT5r3VaqHK4ejEKq2N
+         ruaqwMhTe9e5xKCW37yuFZvHraAfJ+tJWQRVXfPe8QGLXwwnWzNrfCFLbzF8t9xfLEJ+
+         D9WBNEgi+oa8wlPg/r0AW7gaJ/bI4aB27NFwbYSdtyJ/dNI1JG4x4sf+SxPQyjnp+4Bh
+         WeWw==
+X-Forwarded-Encrypted: i=1; AFNElJ+AurV9YjsdhzmyoJLZiOnoRvmkg7LFQyuK+ZNLe8bke3ON30yMF9nTlCDso9na0A0YlQM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyWdXP/DMBIqK98pgKYfqXtuhW7ElEcSJuQTH/nvFrk0DJQGrzL
+	jLq1/Dq2o2yuevrQ0mNTuQbeaTeUx/CzK6CDQN5q3ZJ3vkoKkLPZq5eLt5n3bG+UtPlldCd+p16
+	tHiDQOkJvfUSSLxXgCVaWmnpLZZPkMoW+QcMqmi679w==
+X-Gm-Gg: Acq92OEZcgVFl7IgjxEh8Tgo21aXu2SJocvznLqpecQ8UqoS0WKnPl49m8csyfLZruf
+	7lx3ISoWDVU+/7x3LnbQaJxyVKoZFx0taUvBGtpxNKGb9VkbLgrSKMX/3KJLHMuX20VmsgwLRlr
+	xf6KJTFWpjVUQ7dFUEowSweG1/yXlk+pkporbjbEVv6RI6y/acI/ckGYd75C2NGq80BP10SPIn/
+	UmiC6DqhMqnxS9y9BoWFeLBygiB03QsE97iTda9CVIvfDQW1MsnYfHLYY0xRGXuZSEE1fANiP9c
+	OVZgsje8Ye4TNJ/oXqzFc6zAnDg21NkLKCNzemGix8lZq/HiuWg+kGdfUpUkc9Cdmwx1pH+fBLw
+	DUcvCtzP0uwtocQCrHBMxWNz5Vw==
+X-Received: by 2002:a05:6820:1c02:b0:69b:85ba:bd4f with SMTP id
+ 006d021491bc7-69b884ac83amr8443261eaf.33.1779078699723; Sun, 17 May 2026
+ 21:31:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/15] KVM: x86/xen: Don't truncate RAX when handling
- hypercall from protected guest
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
- David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>,
- Dave Hansen <dave.hansen@linux.intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org,
- x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- Yosry Ahmed <yosry@kernel.org>, Kai Huang <kai.huang@intel.com>
-References: <20260514215355.1648463-1-seanjc@google.com>
- <20260514215355.1648463-4-seanjc@google.com>
- <27ba35fd-5563-4bbd-8f95-2285b50efa7a@linux.intel.com>
- <agcXr2FP4C3I_jbQ@google.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <agcXr2FP4C3I_jbQ@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260514081752.472987-1-xujiakai2025@iscas.ac.cn>
+In-Reply-To: <20260514081752.472987-1-xujiakai2025@iscas.ac.cn>
+From: Anup Patel <anup@brainfault.org>
+Date: Mon, 18 May 2026 10:01:28 +0530
+X-Gm-Features: AVHnY4KrYwepB5OiXTY2dv7ZHi-ani2vKZrt4RfWbnSXlOx_ga651Ne910vtQ3U
+Message-ID: <CAAhSdy2z_2OUyzA_MK+V6z_5ucwKN6A6f4j6hNaVH7c904SBQw@mail.gmail.com>
+Subject: Re: [PATCH] RISC-V: KVM: Fix sign extension for MMIO loads
+To: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+Cc: kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+	Atish Patra <atish.patra@linux.dev>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Paul Walmsley <pjw@kernel.org>, Jiakai Xu <jiakaiPeanut@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Thu, May 14, 2026 at 1:47=E2=80=AFPM Jiakai Xu <xujiakai2025@iscas.ac.cn=
+> wrote:
+>
+> The kvm_riscv_vcpu_mmio_return() function handles MMIO read results
+> by writing the data back to the guest register. For signed load
+> instructions (LB, LH, LW on RV64), the value needs sign-extension
+> from a smaller integer to unsigned long.
+>
+> The current code uses:
+>     (ulong)data << shift >> shift
+> but (ulong) makes the right shift a logical shift (zero-extend)
+> rather than an arithmetic shift (sign-extend), causing incorrect
+> results when the MMIO device returns a negative value. For example,
+> LB reading 0x80 would return 128 instead of -128.
+>
+> Fix this by casting to (long) after the left shift so that the
+> subsequent right shift is arithmetic and correctly propagates
+> the sign bit:
+>     (long)((ulong)data << shift) >> shift
+>
+> Additionally, remove the unnecessary shift assignment for LBU
+> (unsigned byte load) since it does not need sign extension.
+> This makes LBU consistent with LHU and LWU which already keep
+> shift =3D 0.
+>
+> Fixes: b91f0e4cb8a3 ("RISC-V: KVM: Factor-out instruction emulation into =
+separate sources")
+> Signed-off-by: Jiakai Xu <jiakaiPeanut@gmail.com>
+> Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+> Assisted-by: OpenClaw:DeepSeek-V3.2
 
+LGTM.
 
-On 5/15/2026 8:55 PM, Sean Christopherson wrote:
-> On Fri, May 15, 2026, Binbin Wu wrote:
->>
->>
->> On 5/15/2026 5:53 AM, Sean Christopherson wrote:
->>> Don't truncate RAX when handling a Xen hypercall for a guest with protected
->>> state, as KVM's ABI is to assume the guest is in 64-bit for such cases
->>> (the guest leaving garbage in 63:32 after a transition to 32-bit mode is
->>> far less likely than 63:32 being necessary to complete the hypercall).
->>>
->>> Fixes: b5aead0064f3 ("KVM: x86: Assume a 64-bit hypercall for guests with protected state")
->>> Signed-off-by: Sean Christopherson <seanjc@google.com>
->>
->> The patch looks good to me, but one question below.
->>
->>> ---
->>>  arch/x86/kvm/xen.c | 6 +++---
->>>  1 file changed, 3 insertions(+), 3 deletions(-)
->>>
->>> diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
->>> index 6d9be74bb673..895095dc684e 100644
->>> --- a/arch/x86/kvm/xen.c
->>> +++ b/arch/x86/kvm/xen.c
->>> @@ -1678,15 +1678,14 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
->>>  	bool handled = false;
->>>  	u8 cpl;
->>>  
->>> -	input = (u64)kvm_register_read(vcpu, VCPU_REGS_RAX);
->>> -
->>>  	/* Hyper-V hypercalls get bit 31 set in EAX */
->>> -	if ((input & 0x80000000) &&
->>> +	if ((kvm_rax_read(vcpu) & 0x80000000) &&
->>>  	    kvm_hv_hypercall_enabled(vcpu))
->>>  		return kvm_hv_hypercall(vcpu);
->>>  
->>>  	longmode = is_64_bit_hypercall(vcpu);
->>
->> Is the variable name misleading?
-> 
-> It most definitely is.  However, @longmode is passed around quite a few locations
-> in xen.c, and so I don't want to opportunistically fix this one variable.  Though
-> I'm definitely not opposed to a separate patch to rename them all to is_64bit or
-> something.
+Reviewed-by: Anup Patel <anup@brainfault.org>
 
-OK, I can do it.
+Queued this patch as fix for Linux-7.1-rcX
 
-> 
->> If the vcpu is in compatible mode (when guest state is not protected),
->> it's in long mode, but the code goes to !longmode path.
->>
->>>  	if (!longmode) {
->>> +		input = (u32)kvm_rax_read(vcpu);
->>>  		params[0] = (u32)kvm_rbx_read(vcpu);
->>>  		params[1] = (u32)kvm_rcx_read(vcpu);
->>>  		params[2] = (u32)kvm_rdx_read(vcpu);
->>> @@ -1696,6 +1695,7 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
->>>  	}
->>>  	else {
->>>  #ifdef CONFIG_X86_64
->>> +		input = (u64)kvm_rax_read(vcpu);
->>>  		params[0] = (u64)kvm_rdi_read(vcpu);
->>>  		params[1] = (u64)kvm_rsi_read(vcpu);
->>>  		params[2] = (u64)kvm_rdx_read(vcpu);
->>
-> 
+Thanks,
+Anup
 
+> ---
+>  arch/riscv/kvm/vcpu_insn.c | 9 ++++-----
+>  1 file changed, 4 insertions(+), 5 deletions(-)
+>
+> diff --git a/arch/riscv/kvm/vcpu_insn.c b/arch/riscv/kvm/vcpu_insn.c
+> index 4d89b94128aea..f09f9251d1f0a 100644
+> --- a/arch/riscv/kvm/vcpu_insn.c
+> +++ b/arch/riscv/kvm/vcpu_insn.c
+> @@ -415,7 +415,6 @@ int kvm_riscv_vcpu_mmio_load(struct kvm_vcpu *vcpu, s=
+truct kvm_run *run,
+>                 shift =3D 8 * (sizeof(ulong) - len);
+>         } else if ((insn & INSN_MASK_LBU) =3D=3D INSN_MATCH_LBU) {
+>                 len =3D 1;
+> -               shift =3D 8 * (sizeof(ulong) - len);
+>  #ifdef CONFIG_64BIT
+>         } else if ((insn & INSN_MASK_LD) =3D=3D INSN_MATCH_LD) {
+>                 len =3D 8;
+> @@ -649,22 +648,22 @@ int kvm_riscv_vcpu_mmio_return(struct kvm_vcpu *vcp=
+u, struct kvm_run *run)
+>         case 1:
+>                 data8 =3D *((u8 *)run->mmio.data);
+>                 SET_RD(insn, &vcpu->arch.guest_context,
+> -                       (ulong)data8 << shift >> shift);
+> +                       (long)((ulong)data8 << shift) >> shift);
+>                 break;
+>         case 2:
+>                 data16 =3D *((u16 *)run->mmio.data);
+>                 SET_RD(insn, &vcpu->arch.guest_context,
+> -                       (ulong)data16 << shift >> shift);
+> +                       (long)((ulong)data16 << shift) >> shift);
+>                 break;
+>         case 4:
+>                 data32 =3D *((u32 *)run->mmio.data);
+>                 SET_RD(insn, &vcpu->arch.guest_context,
+> -                       (ulong)data32 << shift >> shift);
+> +                       (long)((ulong)data32 << shift) >> shift);
+>                 break;
+>         case 8:
+>                 data64 =3D *((u64 *)run->mmio.data);
+>                 SET_RD(insn, &vcpu->arch.guest_context,
+> -                       (ulong)data64 << shift >> shift);
+> +                       (long)((ulong)data64 << shift) >> shift);
+>                 break;
+>         default:
+>                 return -EOPNOTSUPP;
+> --
+> 2.34.1
+>
