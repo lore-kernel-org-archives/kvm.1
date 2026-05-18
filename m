@@ -1,345 +1,151 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB516351C31
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 10:50:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CADA3D3D03
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 10:51:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779101418; cv=none; b=Zdet3+/3arRMNdCDn4rx9CtFm59+Osk1zosS6h/3qNxBV6NdYxSjmGca/lBEKc9ytDXCTUJKO1JHwkXKX12GoBT/c1W9whEmQVyodxh6NoxPdriRse5HecZRp8G6YchkkjI8K4tNyFu4we6iMt/ew3qqEt53hGVfbOFsog5M0X4=
+	t=1779101489; cv=none; b=sQUphE2s3J+/Oc6q7dWKIYKaa4kScsqPjBSMpLjIQZEfX2SDBPzEaUzKoMULqOzU5r6M7nuJZm0k7/HI6LhBNn91HIdG+nNn91D1TeDSXbzO28gxcYNqRHQKR3xWPHJJ74d4+mT84a+TtMIu9iLlXkra3UsYMYkdYjJTsFGXNiE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779101418; c=relaxed/simple;
-	bh=8IWef6KURFlqgq+HSF/YD/B45xhcgkrBrCAFBIQTx+s=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tpcERMPb0dv/RN8xMRH6+yFWz7Mjo6W4wg0FNQwcl26HniEtuH6xX9TNrRDbSUhJsgbO/CLmYzX0Js3pENOULm3SiTNwDgsKByeSDDNhyk58GJx3bFlH5u7SBrL/w1Ol/ROpRBz4pr9j+ey0ogqvV7SlKODZ5BuQuiSwEe/gLG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=njRtki+q; arc=none smtp.client-ip=209.85.221.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779101489; c=relaxed/simple;
+	bh=FrSWc/Tya914aQVLMdFWM3Bj89viW36zwzOdOy4FucQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gmyYaNqvpS6zPmF3tR2hMIE3RCweLk/8H7SvF/34u74G0xyVaVRRWwye305Q4vwkhSh/vz8hZA+I4P6QI9Bw43lT8NwEATp/LjxChxrdwhy+sWAbsRLLYDJcTatEMxfJRfHg87E1k753KCEvDv/sOJzKw5xA7x52RXn+5wZPUEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CUqlHV7d; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="njRtki+q"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-45d96d21e82so1169972f8f.0
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 03:50:09 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779101407; x=1779706207; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6uhQRDXyO9k5Y79/nx1MWTmxBb/gg+LShBDbppKe1X0=;
-        b=njRtki+qhaRIdPlXbdXnCKBY0FI7rH5RBUNeM/Z+bkC0FqC6NUyeClL1Oz8YNbPNRS
-         V1Sex6W4a9gyFqwJFHhoAO7gFCmo1Js60gHmTOLR774BAJU7fVuTuhdVlC1axPXgyI+R
-         lyrwYB8rBhUo1NuU1D03yWQli6fOVTEdAPOzBa5Nj0H8ee4EUMx6lKMgLQ6uuwQ1Bdv2
-         Gg8MrbVEu+DCejAO0qpYq8MvorfVSKks4uslFKkXTuAEhlnihxjL/U9e5lN/KTGMIQ90
-         bELQ3weKC24wUgltohCNoNcdkGfhu9HaYalZohPFDZppGOW37lYyaqSvwj4BU43W/rwb
-         7/sg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779101407; x=1779706207;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=6uhQRDXyO9k5Y79/nx1MWTmxBb/gg+LShBDbppKe1X0=;
-        b=CTy/RnFP/+Zfk6yIoKxH75jrXmNpagUzrczL6yxRaMJOjjUxDNVFlVCeKqTKdaYvND
-         7yOHoHcnCctP2U4/7Vfmk5D33/r3dGUAbhuwuSfZcFGQ+dDcSSorBxk5OLH/D7vLmgCr
-         JJ4vV4YUwv4qT+jFI4X0CKXEX258D69uSO4YWUvXR9C/ljEZpu27DCQErBiq279mJsPg
-         pCDvObawxxHaTvIs5usSdXWVOBdMSP8Gm+Z6kDb8BPLNxcXYyaxmSBWjgdK4SI6iXk5l
-         qwkXlBUz4AYWFgQQDh0uJlsaQdvFegIWdZpBtdEiLbm0bxxw13AQiTaSpxS2iDcUuRPr
-         w4OQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/HZKJYlgsKFwqvS4+VbF18XqwvO1GhqtchFvQe/VK+VfBnw4ZWx6LQOWwFqefVyejRLlc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyKQxisOOk7xS2p0op188295nGz828C6iT98cVErQvFPeVKSzA9
-	suc2MMBOzsgavlRH4ZvlcjIsdoUsh18RP+t2BkeEgkhsWm6WeKFxZxwf
-X-Gm-Gg: Acq92OHrsHCGfTSRLsj1Tfud1vvxWDmTMGHiL111sYlRDQR2tmThk7hz5fQzgg3DhlE
-	9BQK2J6B3XMKfO4WYbBYUuj70WSStzoy5dS7XMYvGDN3Sf+Bo8t6lTOkqjZvDRyQJ/BQ59bo6Cg
-	AY+0/WHepIG938a4btrnNv69E2CMlvMNKC7hhs/QEBd9LxJIWNl+eu7bmaJLzOSInUZEuXqxw59
-	D2l7nh3MuE9WsJztbSsmsYxpAmrCnlH1EzXIip5nvCliNjzGmdiIwZL0HfT7uGFyEaIu7GzZO6j
-	A5gjXnjZsVK7C5IXPMfZuXL6unBYeS+x8cvSodbJEBF0mmFldRVApGB4TP6aRMtjspdKmFovf5P
-	Mdkw+0bE/MoKqF0SFCXKaLyXDaeQDNUO+2pyz3JW9lNITD9p0oHNRaOIBjTC57DjBOckpy2723X
-	UgS7B2yitZ7IjFNTbKf1Ai6V+bOqZ2VrGh/VuLOdHwwOCeYhTqgrm5UJUIilIJPuM7UDkmiRWXW
-	GQ=
-X-Received: by 2002:a05:6000:2489:b0:43f:e2b7:7160 with SMTP id ffacd0b85a97d-45e5c58fe72mr21734038f8f.4.1779101407360;
-        Mon, 18 May 2026 03:50:07 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9ec39806sm35542656f8f.9.2026.05.18.03.50.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 03:50:06 -0700 (PDT)
-Date: Mon, 18 May 2026 11:50:05 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, netdev@vger.kernel.org, Jakub
- Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
- <horms@kernel.org>, Arseniy Krasnov <avkrasnov@salutedevices.com>, Stefan
- Hajnoczi <stefanha@redhat.com>, kvm@vger.kernel.org, Eric Dumazet
- <edumazet@google.com>, Eugenio =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>,
- Xuan Zhuo <xuanzhuo@linux.alibaba.com>, virtualization@lists.linux.dev,
- "David S. Miller" <davem@davemloft.net>, Jason Wang <jasowang@redhat.com>,
- linux-kernel@vger.kernel.org, Maher Azzouzi <maherazz04@gmail.com>
-Subject: Re: [PATCH net] vsock/virtio: fix zerocopy completion for multi-skb
- sends
-Message-ID: <20260518115005.5f13bd2b@pumpkin>
-In-Reply-To: <agrg1GVzoJWtNuSd@sgarzare-redhat>
-References: <20260514092948.268720-1-sgarzare@redhat.com>
-	<20260516125329.7b699c6f@pumpkin>
-	<agrXvCtNRlySlwgx@sgarzare-redhat>
-	<20260518053223-mutt-send-email-mst@kernel.org>
-	<agrg1GVzoJWtNuSd@sgarzare-redhat>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CUqlHV7d"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779101483; x=1810637483;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=FrSWc/Tya914aQVLMdFWM3Bj89viW36zwzOdOy4FucQ=;
+  b=CUqlHV7daHuA3v0s8BTpFKBqQnsi4n8OVOvOSubiCW+q40HH4wAKvEeL
+   wu+8pqTaExNyn78wR7DfnGTD6qD2Ncw6QLT0DxC/RQgUZy2Efa9kejI+S
+   MPtiJ3giT31r1vw9kKOvfPA9s6ObYBxTg7c8qK4Vz9vADuttyYCHzlWIu
+   1GvxDEfLhSIni/oPoBHMX627ckVqL8geFu5vuWftpUUMKZ8lGu0p6+liI
+   iYaETtPmaxm9n0l1cWdzru2U80uRZowgW4TMardFtxxheikko6v0xDGiO
+   9NMnP8CrjDk0Tkg09aBh7MsF7Cj4O9VsznMnr6uAzCAxc5x/J3k4WhUm0
+   w==;
+X-CSE-ConnectionGUID: KyT9CaDdRWuxGUHxUpPqXA==
+X-CSE-MsgGUID: go+zkDE7RQiYUMwU0a29Hg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11789"; a="79089281"
+X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
+   d="scan'208";a="79089281"
+Received: from orviesa002.jf.intel.com ([10.64.159.142])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 03:51:20 -0700
+X-CSE-ConnectionGUID: vqnkY4OyRsGJuaG2QJzAOA==
+X-CSE-MsgGUID: 9ZPAKkp1Q5uSm8geXs68QQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
+   d="scan'208";a="269734578"
+Received: from unknown (HELO [10.239.158.26]) ([10.239.158.26])
+  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 03:51:18 -0700
+Message-ID: <fa47d520-1de9-4ddc-94ca-6bb53ac30f10@intel.com>
+Date: Mon, 18 May 2026 18:51:15 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 01/27] KVM: x86: Fix emulated CPUID features being
+ applied to wrong sub-leaf
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: kvm@vger.kernel.org, pbonzini@redhat.com, seanjc@google.com,
+ rick.p.edgecombe@intel.com, chao.gao@intel.com, kai.huang@intel.com
+References: <20260417073610.3246316-1-binbin.wu@linux.intel.com>
+ <20260417073610.3246316-2-binbin.wu@linux.intel.com>
+ <db11b4df-d5f8-49b5-91dc-daa103f94223@intel.com>
+ <d47cf3d8-0547-4246-9249-eaf56800f2da@linux.intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <d47cf3d8-0547-4246-9249-eaf56800f2da@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Mon, 18 May 2026 11:54:19 +0200
-Stefano Garzarella <sgarzare@redhat.com> wrote:
+On 5/18/2026 4:09 PM, Binbin Wu wrote:
+> 
+> 
+> On 5/15/2026 5:03 PM, Xiaoyao Li wrote:
+>> On 4/17/2026 3:35 PM, Binbin Wu wrote:
+>>> Guard the use of cpuid_func_emulated() with a check that the CPUID
+>>> sub-leaf index is 0, as cpuid_func_emulated() unconditionally returns
+>>> emulated features for index 0 and does not account for indexed leaves.
+>>>
+>>> Without the guard, when iterating over reverse_cpuid[] entries that
+>>> share the same CPUID function but have a non-zero index, e.g.
+>>> CPUID_7_1_ECX (function=7, index=1), the emulated features for index 0
+>>> are incorrectly OR'd into the wrong capability word.  For example,
+>>> RDPID (CPUID.7.0:ECX[22]) gets erroneously applied to CPUID_7_1_ECX,
+>>> which would allow userspace to set bit 22 of CPUID.7.1:ECX in the vCPU's
+>>> capabilities.
+>>>
+>>> This is currently benign as the affected bits in the non-zero index
+>>> words happen to not correspond to meaningful features, but it could
+>>> cause problems as new features are defined in those positions.
+>>>
+>>> Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
+>>> ---
+>>>    arch/x86/kvm/cpuid.c | 9 +++++----
+>>>    1 file changed, 5 insertions(+), 4 deletions(-)
+>>>
+>>> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+>>> index e69156b54cff..25f582a8d795 100644
+>>> --- a/arch/x86/kvm/cpuid.c
+>>> +++ b/arch/x86/kvm/cpuid.c
+>>> @@ -399,15 +399,16 @@ void kvm_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu)
+>>>            if (!entry)
+>>>                continue;
+>>>    -        cpuid_func_emulated(&emulated, cpuid.function, true);
+>>> -
+>>>            /*
+>>>             * A vCPU has a feature if it's supported by KVM and is enabled
+>>>             * in guest CPUID.  Note, this includes features that are
+>>>             * supported by KVM but aren't advertised to userspace!
+>>>             */
+>>> -        vcpu->arch.cpu_caps[i] = kvm_cpu_caps[i] |
+>>> -                     cpuid_get_reg_unsafe(&emulated, cpuid.reg);
+>>> +        vcpu->arch.cpu_caps[i] = kvm_cpu_caps[i];
+>>> +        if (!cpuid.index) {
+>>
+>> Instead of such a temporary fix, I would prefer adding the index parameter to cpuid_func_emulated() and split this patch separately.
+> 
+> I did it in this way because:
+> - The index parameter was here and it was removed in commit ab8bcf649711
 
-> On Mon, May 18, 2026 at 05:33:08AM -0400, Michael S. Tsirkin wrote:
-> >On Mon, May 18, 2026 at 11:18:24AM +0200, Stefano Garzarella wrote: =20
-> >> On Sat, May 16, 2026 at 12:53:29PM +0100, David Laight wrote: =20
-> >> > On Thu, 14 May 2026 11:29:48 +0200
-> >> > Stefano Garzarella <sgarzare@redhat.com> wrote:
-> >> > =20
-> >> > > From: Stefano Garzarella <sgarzare@redhat.com>
-> >> > >
-> >> > > When a large message is fragmented into multiple skbs, the zerocopy
-> >> > > uarg is only allocated and attached to the last skb in the loop.
-> >> > > Non-final skbs carry pinned user pages with no completion tracking,
-> >> > > so the kernel has no way to notify userspace when those pages are =
-safe
-> >> > > to reuse. If the loop breaks early the uarg is never allocated at =
-all,
-> >> > > leaking pinned pages with no completion notification.
-> >> > >
-> >> > > Fix this by following the approach used by TCP: allocate the zeroc=
-opy
-> >> > > uarg (if not provided by the caller) before the send loop and atta=
-ch
-> >> > > it to every skb via skb_zcopy_set(), which takes a reference per s=
-kb.
-> >> > > Each skb's completion properly decrements the refcount, and the
-> >> > > notification only fires after the last skb is freed.
-> >> > > On failure, if no data was sent, the uarg is cleanly aborted via
-> >> > > net_zcopy_put_abort().
-> >> > >
-> >> > > This issue was initially discovered by sashiko while reviewing com=
-mit
-> >> > > 1cb36e252211 ("vsock/virtio: fix MSG_ZEROCOPY pinned-pages account=
-ing")
-> >> > > but was pre-existing.
-> >> > >
-> >> > > Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
-> >> > > Cc: Arseniy Krasnov <avkrasnov@salutedevices.com>
-> >> > > Closes: https://sashiko.dev/#/patchset/20260420132051.217589-1-sga=
-rzare%40redhat.com
-> >> > > Reported-by: Maher Azzouzi <maherazz04@gmail.com>
-> >> > > Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> >> > > ---
-> >> > >  net/vmw_vsock/virtio_transport_common.c | 83 ++++++++++----------=
------
-> >> > >  1 file changed, 34 insertions(+), 49 deletions(-)
-> >> > >
-> >> > > diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vso=
-ck/virtio_transport_common.c
-> >> > > index 989cc252d3d3..1e3409d28164 100644
-> >> > > --- a/net/vmw_vsock/virtio_transport_common.c
-> >> > > +++ b/net/vmw_vsock/virtio_transport_common.c
-> >> > > @@ -70,34 +70,6 @@ static bool virtio_transport_can_zcopy(const st=
-ruct virtio_transport *t_ops,
-> >> > >  	return true;
-> >> > >  }
-> >> > >
-> >> > > -static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
-> >> > > -					   struct sk_buff *skb,
-> >> > > -					   struct msghdr *msg,
-> >> > > -					   size_t pkt_len,
-> >> > > -					   bool zerocopy)
-> >> > > -{
-> >> > > -	struct ubuf_info *uarg;
-> >> > > -
-> >> > > -	if (msg->msg_ubuf) {
-> >> > > -		uarg =3D msg->msg_ubuf;
-> >> > > -		net_zcopy_get(uarg);
-> >> > > -	} else {
-> >> > > -		struct ubuf_info_msgzc *uarg_zc;
-> >> > > -
-> >> > > -		uarg =3D msg_zerocopy_realloc(sk_vsock(vsk),
-> >> > > -					    pkt_len, NULL, false);
-> >> > > -		if (!uarg)
-> >> > > -			return -1;
-> >> > > -
-> >> > > -		uarg_zc =3D uarg_to_msgzc(uarg);
-> >> > > -		uarg_zc->zerocopy =3D zerocopy ? 1 : 0;
-> >> > > -	}
-> >> > > -
-> >> > > -	skb_zcopy_init(skb, uarg);
-> >> > > -
-> >> > > -	return 0;
-> >> > > -}
-> >> > > -
-> >> > >  static int virtio_transport_fill_skb(struct sk_buff *skb,
-> >> > >  				     struct virtio_vsock_pkt_info *info,
-> >> > >  				     size_t len,
-> >> > > @@ -317,8 +289,10 @@ static int virtio_transport_send_pkt_info(str=
-uct vsock_sock *vsk,
-> >> > >  	u32 src_cid, src_port, dst_cid, dst_port;
-> >> > >  	const struct virtio_transport *t_ops;
-> >> > >  	struct virtio_vsock_sock *vvs;
-> >> > > +	struct ubuf_info *uarg =3D NULL;
-> >> > >  	u32 pkt_len =3D info->pkt_len;
-> >> > >  	bool can_zcopy =3D false;
-> >> > > +	bool have_uref =3D false;
-> >> > >  	u32 rest_len;
-> >> > >  	int ret;
-> >> > >
-> >> > > @@ -360,6 +334,25 @@ static int virtio_transport_send_pkt_info(str=
-uct vsock_sock *vsk,
-> >> > >  		if (can_zcopy)
-> >> > >  			max_skb_len =3D min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
-> >> > >  					    (MAX_SKB_FRAGS * PAGE_SIZE));
-> >> > > +
-> >> > > +		if (info->msg->msg_flags & MSG_ZEROCOPY &&
-> >> > > +		    info->op =3D=3D VIRTIO_VSOCK_OP_RW) {
-> >> > > +			uarg =3D info->msg->msg_ubuf;
-> >> > > +
-> >> > > +			if (!uarg) {
-> >> > > +				uarg =3D msg_zerocopy_realloc(sk_vsock(vsk),
-> >> > > +							    pkt_len, NULL, false);
-> >> > > +				if (!uarg) {
-> >> > > +					virtio_transport_put_credit(vvs, pkt_len);
-> >> > > +					return -ENOMEM;
-> >> > > +				}
-> >> > > +
-> >> > > +				if (!can_zcopy)
-> >> > > +					uarg_to_msgzc(uarg)->zerocopy =3D 0;
-> >> > > +
-> >> > > +				have_uref =3D true;
-> >> > > +			}
-> >> > > +		} =20
-> >> >
-> >> > Surely that block should only be done if can_zcopy is true?
-> >> > And shouldn't something unset it if info->op !=3D VIRTIO_VSOCK_OP_RW=
- ?
-> >> > If the msg_zerocopy_realloc() fails then can't you just set can_zcop=
-y to false.
-> >> >
-> >> > It info->msg->msg_buf is already set then I think you have to disabl=
-e zero-copy.
-> >> > The caller has already requested a callback - and you can't add anot=
-her.
-> >> >
-> >> > In any case by the end of this can_zcopy and have_uref are really th=
-e same flag. =20
-> >>
-> >> I kept the same approach we had before, trying to make as few changes =
-as
-> >> possible.
-> >>
-> >> All these potential issues seem to be pre-existing and should be event=
-ually
-> >> addressed in other patches IMHO. This patch one only resolves the main=
- issue
-> >> of calling `skb_zcopy_set()` for every skb to avoid leaking pages, etc=
-. =20
-> >
-> >the patch is upstream now, right? So pretty much have to be patches on
-> >top. =20
->=20
-> If those are actual issues, then yes. TBH, I didn=E2=80=99t look into tha=
-t=20
-> aspect and left it as it was before. We should take a closer look at how=
-=20
-> MSG_ZEROCOPY is handled.
->=20
-> David, if you think it needs fixing and you have time, feel free to send=
-=20
-> patches on top.
+commit ab8bcf649711 removed index parameter for __do_cpuid_func() and 
+__do_cpuid_func_emulated() because they were supposed to generate the 
+whole subleafs of a specific CPUID function leaf. Please see the flow
 
-I'm not fully sure how it all works.
-Especially the paths where msg->msg_ubuf is non-NULL, I suspect it should
-be added to all the skb even if the ZEROCOPY flag isn't set.
-I was just reading the one function.
-But there did look like some very dodgy conditionals.
+kvm_dev_ioctl_get_cpuid()
+   get_cpuid_func()
+     do_cpuid_func()
 
--- David
+Then commit ff402f56e8eb broke this purpose to make 
+__do_cpuid_func_emulated() generate at most 1 subleaf for a function 
+leaf, because it wants to use the extracted cpuid_func_emulated() for a 
+single CPUID entry with implicit subleaf 0 to serve the usage in 
+kvm_vcpu_after_set_cpuid().
 
->=20
-> Thanks,
-> Stefano
->=20
-> > =20
-> >> @Arseniy can you help on this?
-> >> =20
-> >> > =20
-> >> > >  	}
-> >> > >
-> >> > >  	rest_len =3D pkt_len;
-> >> > > @@ -378,27 +371,7 @@ static int virtio_transport_send_pkt_info(str=
-uct vsock_sock *vsk,
-> >> > >  			break;
-> >> > >  		}
-> >> > >
-> >> > > -		/* We process buffer part by part, allocating skb on
-> >> > > -		 * each iteration. If this is last skb for this buffer
-> >> > > -		 * and MSG_ZEROCOPY mode is in use - we must allocate
-> >> > > -		 * completion for the current syscall.
-> >> > > -		 *
-> >> > > -		 * Pass pkt_len because msg iter is already consumed
-> >> > > -		 * by virtio_transport_fill_skb(), so iter->count
-> >> > > -		 * can not be used for RLIMIT_MEMLOCK pinned-pages
-> >> > > -		 * accounting done by msg_zerocopy_realloc().
-> >> > > -		 */
-> >> > > -		if (info->msg && info->msg->msg_flags & MSG_ZEROCOPY &&
-> >> > > -		    skb_len =3D=3D rest_len && info->op =3D=3D VIRTIO_VSOCK_OP_=
-RW) {
-> >> > > -			if (virtio_transport_init_zcopy_skb(vsk, skb,
-> >> > > -							    info->msg,
-> >> > > -							    pkt_len,
-> >> > > -							    can_zcopy)) {
-> >> > > -				kfree_skb(skb);
-> >> > > -				ret =3D -ENOMEM;
-> >> > > -				break;
-> >> > > -			}
-> >> > > -		}
-> >> > > +		skb_zcopy_set(skb, uarg, NULL);
-> >> > >
-> >> > >  		virtio_transport_inc_tx_pkt(vvs, skb);
-> >> > >
-> >> > > @@ -422,6 +395,18 @@ static int virtio_transport_send_pkt_info(str=
-uct vsock_sock *vsk,
-> >> > >
-> >> > >  	virtio_transport_put_credit(vvs, rest_len);
-> >> > >
-> >> > > +	/* msg_zerocopy_realloc() initializes the ubuf_info refcnt to 1.
-> >> > > +	 * skb_zcopy_set() increases it for each skb, so we can drop tha=
-t =20
-> >> >                                                            ^ must
-> >> > =20
-> >> > > +	 * initial reference to keep it balanced.
-> >> > > +	 */
-> >> > > +	if (have_uref) {
-> >> > > +		if (rest_len =3D=3D pkt_len)
-> >> > > +			/* No data sent, abort the notification. */
-> >> > > +			net_zcopy_put_abort(uarg, true); =20
-> >> >
-> >> > Is it worth optimising for the 'nothing sent' case ? =20
-> >>
-> >> What do you suggest doing?
-> >>
-> >> I followed what TCP does.
-> >>
-> >> Thanks,
-> >> Stefano
-> >> =20
-> >> >
-> >> > -- David
-> >> > =20
-> >> > > +		else
-> >> > > +			net_zcopy_put(uarg);
-> >> > > +	}
-> >> > > +
-> >> > >  	/* Return number of bytes, if any data has been sent. */
-> >> > >  	if (rest_len !=3D pkt_len)
-> >> > >  		ret =3D pkt_len - rest_len; =20
-> >> > =20
-> > =20
->=20
+> - I thought cpuid_func_emulated() probably would not be extended in the future.
+
+I don't argue against this.
+
+If we finally go this simple solution, I think adding some comment to 
+cpuid_func_emulated() to call out something like "KVM only emulates 
+CPUID leaf with a subleaf 0 or no significant subleaf" would be helpful.
+
+>>
+>>> +            cpuid_func_emulated(&emulated, cpuid.function, true);
+>>> +            vcpu->arch.cpu_caps[i] |= cpuid_get_reg_unsafe(&emulated, cpuid.reg);
+>>> +        }
+>>>            vcpu->arch.cpu_caps[i] &= cpuid_get_reg_unsafe(entry, cpuid.reg);
+>>>        }
+>>>    
+>>
+> 
 
