@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9903130568D
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 07:59:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.8
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E64CF1C5D7D
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 08:09:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779091142; cv=none; b=CZI2gVDIAxl5j/Mud62tukiLwmOifqDc3cZvomj7YOht2iHhfsgxYw2iLbNs4hzCqqnCKfZqB5ckMSZo8neW1AGDBi6zoSM7MZ/RFqMJ4+gmZvp2THyuUoRWswDGLmzU7OlT6hrUK/r5zXOzZPDJC0JzTboG4JA+nHV8lXsQy9A=
+	t=1779091765; cv=none; b=ET8aisWkKVF39YhLQAst3+fcOO/QDClv/XpMR25M86IrRvgB3FSRYaUdxFSfajrEPBezJ/itU9zaWFJa5eZgnyZMVSY9yfb6nfd23k9FDViJglW5Nx/3A5mzmn93ZmV0rk68ujpgZ2l7l4ImGxJZ3BNFmsFIMCOpKj6D60ZA/QQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779091142; c=relaxed/simple;
-	bh=Q9ndYgo6IqMuMSytMFG0N+MA/8RcLzk3XLT0e4WwUsQ=;
+	s=arc-20240116; t=1779091765; c=relaxed/simple;
+	bh=KLQfImQyy3KPHCroV9ZWV1AFR/Bjp6Xr/sLUIwKBNaI=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gXHgYmki88cemHXd385OXtRwQZ1KEkNn+C4gp0Aq8Oo1ZGq/q6r7bMIctKMCH8JBthLU2b4RyzKwnrXqQ6ZdEvv57QTdzi8RXrGZKRohnIfL+JqgLwE7AdRCi0RmDBjg7jWW/SBGvXIkE76FuIDjPmcrA3Mxa78Z26QnQY8y9rI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=ZtLFVMte; arc=none smtp.client-ip=192.198.163.8
+	 In-Reply-To:Content-Type; b=XqCQBD8Rk8krNbA50LRIkTVZaahTQ5NYbsUqdCggB2GiUKD5+DHwxF/HKNb2oK/ivBb4tny9uTqqQl35H+9SsmdURTcetndY1zFraFPO4SQ2mmVpJXQ0HongqKfRCdxSMzNYhEQvv79xhoJdF+rY4uDd5Ha9t4i/8+iRF65xAY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fraT+kB2; arc=none smtp.client-ip=192.198.163.13
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="ZtLFVMte"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fraT+kB2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779091140; x=1810627140;
+  t=1779091762; x=1810627762;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=Q9ndYgo6IqMuMSytMFG0N+MA/8RcLzk3XLT0e4WwUsQ=;
-  b=ZtLFVMtenXzEvc96I0+80jiPlbEjtodXvPJjaoRTPtcKJzxpl2cIJuK1
-   /jy4Qu9jTBkIjK59shxVBwlSyowZrDHMjdIlWnBGR2nOA8QoP+c8eNFds
-   YkgI3Jsq+El54+XfR0vWdJGgKeGC7RAeXx1nspWk1jkTo06ywhE6hSZON
-   Ws7B0QKP6+HLYbvPnt80HB7uU8ltl997cfllDmSuGiRGPHjTgLTab69IU
-   Bb5GID8kBW7dkAmZY4UfJhFGrRsR+KusQ1w2POjOMh+NVIFKeMEIA2o2x
-   UaLe2PXbtIg9+LYF6ALngn3L8OZm11a/fVy9i/8wdXGdqa+2JoZREf2Al
-   Q==;
-X-CSE-ConnectionGUID: 0m8IdzzLRlShn0AQ3JQHGA==
-X-CSE-MsgGUID: 45/6/IoFQWCGgFV/LbXUtA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11789"; a="97509197"
+  bh=KLQfImQyy3KPHCroV9ZWV1AFR/Bjp6Xr/sLUIwKBNaI=;
+  b=fraT+kB2fK3wAF5nfKpLNnD8r8sAGTP/2+x4WFEX4Cbk6UYvwkuaUiBa
+   TcN28TzlPTAwJgIBVdj+GB1sgbKmUtmvem4JyDoxkOnYKiB17P7MQ98P4
+   kWyzxVL3vYyc/+nsCULgG4EbwiZHr4/gs/ndYkeiC9HKGcPmC7e+VFlI3
+   0pGVKaspL1tMYj4YdA9lDYm6UqU+uNHJ3D4E7rScC+mT9J7PAvW6ciTQ2
+   DdenjIHWwPCbZOwnKamuP+NFsg/LiNz/bUxt1lmnJ5rngAnJmFHFPkapB
+   y0hgJ7T8CubMmKJrVQuU4Ay6Hyk5uWJuqDSm1V/j3SuxxInXU1bgNkybf
+   g==;
+X-CSE-ConnectionGUID: dtSZHOFIS5Waz1DIpFTwvw==
+X-CSE-MsgGUID: CWd48NzBTSi6X/wx3ThgZg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11789"; a="82504022"
 X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
-   d="scan'208";a="97509197"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 00:59:00 -0700
-X-CSE-ConnectionGUID: 76EApswwSJCx8tHeiHZ/WQ==
-X-CSE-MsgGUID: /aBd+xNQRgKPlt8Ozcy4Yw==
+   d="scan'208";a="82504022"
+Received: from orviesa009.jf.intel.com ([10.64.159.149])
+  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 01:09:21 -0700
+X-CSE-ConnectionGUID: OyIRqyV5Sf+rAJSs1tVuGg==
+X-CSE-MsgGUID: iz3HhURRTBu5xAnjLPt5Mw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
-   d="scan'208";a="277451005"
+   d="scan'208";a="239435859"
 Received: from fanlilin-mobl.ccr.corp.intel.com (HELO [10.238.1.228]) ([10.238.1.228])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 00:58:56 -0700
-Message-ID: <bf569f46-8690-4f82-a2a0-d196970880de@linux.intel.com>
-Date: Mon, 18 May 2026 15:58:53 +0800
+  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 01:09:19 -0700
+Message-ID: <d47cf3d8-0547-4246-9249-eaf56800f2da@linux.intel.com>
+Date: Mon, 18 May 2026 16:09:16 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,197 +52,76 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 00/27] KVM: x86: Add a paranoid mode for CPUID
- verification
+Subject: Re: [RFC PATCH 01/27] KVM: x86: Fix emulated CPUID features being
+ applied to wrong sub-leaf
 To: Xiaoyao Li <xiaoyao.li@intel.com>
 Cc: kvm@vger.kernel.org, pbonzini@redhat.com, seanjc@google.com,
  rick.p.edgecombe@intel.com, chao.gao@intel.com, kai.huang@intel.com
 References: <20260417073610.3246316-1-binbin.wu@linux.intel.com>
- <50ccbe42-4b74-4c2a-b530-a367f7285de6@intel.com>
+ <20260417073610.3246316-2-binbin.wu@linux.intel.com>
+ <db11b4df-d5f8-49b5-91dc-daa103f94223@intel.com>
 Content-Language: en-US
 From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <50ccbe42-4b74-4c2a-b530-a367f7285de6@intel.com>
+In-Reply-To: <db11b4df-d5f8-49b5-91dc-daa103f94223@intel.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-On 5/15/2026 4:08 PM, Xiaoyao Li wrote:
+
+
+On 5/15/2026 5:03 PM, Xiaoyao Li wrote:
 > On 4/17/2026 3:35 PM, Binbin Wu wrote:
->> Hi,
+>> Guard the use of cpuid_func_emulated() with a check that the CPUID
+>> sub-leaf index is 0, as cpuid_func_emulated() unconditionally returns
+>> emulated features for index 0 and does not account for indexed leaves.
 >>
->> This RFC series is to allow public capture of feedback from TDX
->> developers before we have too much internal conversations on it and to
->> initiate code review of Sashiko. It is not yet intended for review by
->> KVM maintainers. Sean and Paolo, please feel free to ignore this version.
+>> Without the guard, when iterating over reverse_cpuid[] entries that
+>> share the same CPUID function but have a non-zero index, e.g.
+>> CPUID_7_1_ECX (function=7, index=1), the emulated features for index 0
+>> are incorrectly OR'd into the wrong capability word.  For example,
+>> RDPID (CPUID.7.0:ECX[22]) gets erroneously applied to CPUID_7_1_ECX,
+>> which would allow userspace to set bit 22 of CPUID.7.1:ECX in the vCPU's
+>> capabilities.
 >>
->> Originally, we had issues on TDX when a new hardware feature, which is a
->> host state clobbering feature, is supported by new TDX modules/platforms.
->> A host state clobbering feature requires KVM to save and restore the
->> feature's related MSR(s) on host/guest transitions; otherwise, if the
->> feature is used by TDs, the host state will be corrupted, leading to
->> unexpected behavior on the host.
+>> This is currently benign as the affected bits in the non-zero index
+>> words happen to not correspond to meaningful features, but it could
+>> cause problems as new features are defined in those positions.
 >>
->> Currently KVM hardcodes a deny list for unsupported host clobbering
->> features for TDX, i.e. HLE, RTM and WAITPKG. However, KVM can't keep a
->> list of bits that it may not know about (e.g. the upcoming FRED support
->> in TDX).
+>> Signed-off-by: Binbin Wu <binbin.wu@linux.intel.com>
+>> ---
+>>   arch/x86/kvm/cpuid.c | 9 +++++----
+>>   1 file changed, 5 insertions(+), 4 deletions(-)
 >>
->> We had been working internally to propose a TDX specific solution to
->> solve the host state clobbering feature issue. But during a PUCK meeting,
->> Sean mentioned that KVM had a more permissive CPUID configuration
->> interface than desired and there were problems due to it in the past for
->> normal VMs as well. 
+>> diff --git a/arch/x86/kvm/cpuid.c b/arch/x86/kvm/cpuid.c
+>> index e69156b54cff..25f582a8d795 100644
+>> --- a/arch/x86/kvm/cpuid.c
+>> +++ b/arch/x86/kvm/cpuid.c
+>> @@ -399,15 +399,16 @@ void kvm_vcpu_after_set_cpuid(struct kvm_vcpu *vcpu)
+>>           if (!entry)
+>>               continue;
+>>   -        cpuid_func_emulated(&emulated, cpuid.function, true);
+>> -
+>>           /*
+>>            * A vCPU has a feature if it's supported by KVM and is enabled
+>>            * in guest CPUID.  Note, this includes features that are
+>>            * supported by KVM but aren't advertised to userspace!
+>>            */
+>> -        vcpu->arch.cpu_caps[i] = kvm_cpu_caps[i] |
+>> -                     cpuid_get_reg_unsafe(&emulated, cpuid.reg);
+>> +        vcpu->arch.cpu_caps[i] = kvm_cpu_caps[i];
+>> +        if (!cpuid.index) {
 > 
-> It will be better if some detailed example of problems on normal VMs can be provided.
+> Instead of such a temporary fix, I would prefer adding the index parameter to cpuid_func_emulated() and split this patch separately.
 
-Sean mentioned it in PUCK meeting that google internally had some issues before,
-but he didn't tell the details.
-
-> 
->> Sean suggested that KVM should introduce a more
->> paranoid mode to check CPUID from userspace for VMs in general, as well
->> as an opt-in interface for userspace. And TDX should use the
->> infrastructure to enforce paranoid mode non-optionally.
->>
->> This RFC patch series adds a paranoid CPUID verification mode for KVM on> x86, where KVM must be explicitly aware of every CPUID feature exposed
->> to the guest. When the CPUID paranoid mode is opted-in by userspace or
->> enforced, KVM will reject any unknown or unsupported feature from
->> userspace. And it starts to enforce paranoid CPUID verification for TDX.
-> 
-> Regarding the opt-in interface (for normal VMs), I want to know what the benefit it brings for normal VMs when it's opted-in.
-> 
-> If it can make the host more robust or prevent potential attack from malicious userspace + guest, then it should certainly be forced on instead of userspace to opt-in.
-> 
-> If no good benefit, I doubt any userspace will opt it in. E.g, I can see one benefit without the paranoid mode: Userspace can expose the new simple x86 Instruction to guest before KVM supports it by adding one line of F(xxx) in kvm_initialize_cpu_caps()
-> 
-
-As Rick replied, Sean thought for normal VMs, it could be opted-in to do debug
-or even make it enabled by default.
-
-
->> This patch series touches a lot of lines and involves many subtle CPUID
->> details. We may not expect reviews on these CPUID leaf specific details
->> yet, but feedback is welcome on the framework to build the CPUID overlays
->> and how paranoid CPUID verification is implemented.
->>
->> The changes are only tested on Intel platforms. Compile-tested only for
->> SVM.
-> 
-> Regarding test, can you elaborate more? e.g., did you test the case for normal VMs? and what's the configuration of the normal VMs? e.g., the "-cpu xxx" parameter if you use QEMU. And if so, can you provide the QEMU branch that you used? (so that we can know how much change in QEMU is required to enable the paranoid mode)
-
-I tested it for both normal VMs and TDX by enabling paranoid mode in KVM for
-convenient.
-I can provide a QEMU branch later.
+I did it in this way because:
+- The index parameter was here and it was removed in commit ab8bcf649711
+- I thought cpuid_func_emulated() probably would not be extended in the future.
 
 > 
->> The series is organized in following parts:
->> ===========================================
->> - Patch 1 ~ 2:  Cleanup patches.
->>
->> - Patch 3 ~ 11: Construct CPUID overlays
->>    This part extends kvm_cpu_caps[] into a 2D array indexed by an "overlay"
->>    dimension (CPUID_OL_DEFAULT, CPUID_OL_SVM, CPUID_OL_TDX), allowing
->>    each overlay to maintain its own set of supported CPUID features.
->>    Having separate overlays for VMX and TDX helps handle cases where
->>    KVM's support for certain features differs on Intel-compatible
->>    platforms, e.g., HLE, RTM and WAITPKG are not supported for TDX in
->>    KVM. There will be new host state clobbering features like this in
->>    the future.
->>    Having separate overlays for VMX and SVM helps handle cases where a
->>    common feature has support on one vendor but not the other. Setting
->>    the support in common code requires additional handling in vendor
->>    specific code, e.g., SVM code needs to clear IBT, BUS_LOCK_DETECT
->>    and MSR_IMM.
->>    More overlays could be added in the future if needed.
->>
->>    KVM_GET_SUPPORTED_CPUID and KVM_GET_EMULATED_CPUID are also promoted
->>    to VM-scoped IOCTLs so that userspace can query per-VM-type CPUID
->>    capabilities. CPUID overlays are a KVM internal concept; the overlay is
->>    decided by VM type and/or platform vendor.
->>
->> - Patch 12 ~ 19: Build allowed CPUID values for different overlays
->>    This part builds a comprehensive table of allowed CPUID values covering
->>    the basic, extended, Centaur, and KVM paravirt CPUID ranges.
->>    For each CPUID output register, the validation follows one of three
->>    rules:
->>    1. Ignored: the register is added to the ignored set and KVM skips
->>       validation of the userspace-provided value.
->>    2. Mask/value check: a new KVM-only CPUID leaf enum is defined with a
->>       corresponding reverse_cpuid[] entry, and an allowed mask or fixed
->>       value is initialized per-overlay.
->>    3. Zero check: for reserved registers or registers where no bits are
->>       supported, userspace input is checked against zero.
->>
->> - Patch 20 ~ 25: Implement paranoid CPUID verification
->>    This part adds CPUID paranoid verification to reject userspace CPUID
->>    configurations that set unsupported or unknown bits when paranoid mode
->>    is enabled for a VM.
->>    Also, it adds the opt-in interface KVM_CAP_X86_CPUID_PARANOID for
->>    userspace and unconditionally enforces CPUID paranoid mode for TDs.
->>
->> - Patch 26 ~ 27: Remove the hardcoded filter for TDX.
->>    This part removes the hardcoded deny list for unsupported host
->>    clobbering features for TDX, and relies on the allowed mask for the TDX
->>    overlay to filter and check generically.
->>
->> Opens:
->> ======
->> - CPUID overlays VS. open-code checks for specific features in vendor
->>    specific callbacks.
->>    Open-code checks for specific features in vendor callback will have
->>    less code changes, however, it tightly couples normal VM feature
->>    enablement with TDX. If a new host-state-clobbering feature is added
->>    for normal VMs, the developer has to remember to update the TDX filter
->>    list(s). Or when a common x86 feature is added for only VMX/SVM, the
->>    developer has to remember to clear the bit for the other vendor.
->>    Relying solely on mailing list reviews to catch these omissions may be
->>    more error-prone than using an overlay approach.
+>> +            cpuid_func_emulated(&emulated, cpuid.function, true);
+>> +            vcpu->arch.cpu_caps[i] |= cpuid_get_reg_unsafe(&emulated, cpuid.reg);
+>> +        }
+>>           vcpu->arch.cpu_caps[i] &= cpuid_get_reg_unsafe(entry, cpuid.reg);
+>>       }
+>>   
 > 
-> I prefer the approach in this series. Require explicitly enabling for each overlay will force to provide the justification when enable it.
-> 
->> - This patch series uses a 2D array in common KVM code to accommodate KVM
->>    CPUID capabilities for different overlays. This avoids adding init ops
->>    and runtime ops to call into vendor modules for a few reasons:
->>    1. kvm_ops_update() is called after ops->hardware_setup(), inside which
->>       the KVM CPU capabilities are built, runtime x86 ops can not be
->>       called. Need some workaround to allow it.
->>    2. These inputs to build the KVM CPU capabilities for overlays are from
->>       the common KVM code or via the common KVM code helpers, which make
->>       the callbacks in vendor module just duplication of similar tedious
->>       code.
->>    But conceptually, putting vendor-specific overlay data in the related
->>    vendor module is cleaner.
->>
->> - This patch combines vCPU capability initialization and paranoid CPUID
->>    verification. It refactors the vCPU capability initialization to iterate
->>    over userspace CPUID entries rather than reverse_cpuid[], combining the
->>    paranoid check with capability setup. The purpose is to avoid iterating
->>    over CPUID entries twice for vCPU capability initialization and paranoid
->>    check separately. However, this can change the code for vCPU capability
->>    initialization a bit even when paranoid mode is disabled. It could be
->>    separated if we want to minimize the change for the non-paranoid mode.
-> 
-> I don't think iterate twice matters. It's not hot path anyway. And strictly speaking, it iterates two different ranges:
-> 
-> - for paranoid check, it needs to iterate on cpuid_entries[]
-> - for capability setup, it needs to iterate on reverse_cpuid[]
-> 
-> What's more, I think putting the paranoid check in kvm_check_cpuid() fits more naturally.
-
-It's trade-off.
-If the performance doesn't matter, it's logically cleaner to split them.
-
-
-> 
->> - This patch series checks a CPUID register if part of the 32-bit range
->>    is reserved. I am not sure this is necessary for all cases. It could be
->>    simplified if we believe these reserved bits won’t cause problems
->>    according to the property of the CPUID register, so that they can be
->>    treated as ignored registers.
-> 
-> I'm not clear on it. Do you mean this series checks the reserved bits must be 0?
-
-Yes.
-If a bit is reserved, we don't know whether the bit will be used as a feature
-that could clobber the host state in the future.
-
 
