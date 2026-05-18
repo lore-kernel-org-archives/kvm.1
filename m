@@ -1,130 +1,147 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from out28-194.mail.aliyun.com (out28-194.mail.aliyun.com [115.124.28.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22B6F1DD877;
-	Mon, 18 May 2026 08:16:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DDC53E00BB;
+	Mon, 18 May 2026 08:17:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779092172; cv=none; b=YUuQ7ADPk6l46dl52j2FeFhdOgvz3EO56XetblYLRnAd2SkrF6gfdmWKvcKVRCyIkQJD1/lUDD174dVQcCqlH1AndvshlxiygAfCwoQmihYPj2e4PTH0KVzdkVeN8V7k3iChbzgGXKhadoebmLYcHm+l2LZnCE7vpPh3Ec3biq8=
+	t=1779092276; cv=none; b=tJezLVgG9lmsGOO8KAmwG9EkNBRPGtpGjPDLcIfcD8AiuhkQKk4DcYGUBkDolKgxOIj9SBbPlDO4EH2OpmffLNeUVi/EFRThzD7jcDa/EjlNjR0e/RdJeu8M3jmmR35R7JITmrslzfSpiC74TqZPd9/JWT35akclLWbObqEss0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779092172; c=relaxed/simple;
-	bh=ByqxVztiBsev4MnAG1v00ebe+k0YiFlO6ZLGQy+xEfk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ru4yuqSi7UObh/9VssQ3sdatwr0DmPkbSKYDHyIHC/UjqsYT8ugXZqffLesHhrXB2IKzc4leWysxFlRdGJIlqdCrsqJg4px6PtTkI0nG9h1XI4QH58HVy0mIrKO9OzQud/a8aM2Ew7+oIxAT1BEM/vN/0x5wMlk5+mcLMGaTpYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bzbea2xi; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1779092276; c=relaxed/simple;
+	bh=d5BRpIzONiFycGWrVQ6G7WPVm7yxvxoGCcQ8cuM8tGM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=KuVYwxua8M8QQsiZKxIQTAHXAC1j74lGgw+KVRx4v9W8dO3VDdetGy1EzYIHqb+WGQNsjMY8I0vKGaNbRX5sWyJUc/dyIch3oS58VLX/fcj2scnP68me/YmHMNa+DNep8FwN4Hctt8uINdvvReSWb/R2BXJwnpJJIa7IlnYMss8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com; spf=pass smtp.mailfrom=antgroup.com; dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b=b+V9aKB6; arc=none smtp.client-ip=115.124.28.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antgroup.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bzbea2xi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779092171; x=1810628171;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ByqxVztiBsev4MnAG1v00ebe+k0YiFlO6ZLGQy+xEfk=;
-  b=bzbea2xik8lzV9E/ChlCxR6pfHx10eOWyv2SbYsgLN710mJ3pV9S4eO7
-   vQMJcAz29eW0hPZMS66Uq9q5lml6pI+CsBn1GZTZhuBHX17qwpMEaEt8X
-   WgzgjmQJ5YzPJ8tbyUeduUT+skQsWvshQYE+LqAyAedMbJYh6osJNNopt
-   nDiz43i4K3ybkqxIqSq0Nh5aRZsUROZDMwjusfx9GlG7vSIc9tkFc/kZO
-   CnGx8joz1wcTyjVTVvqHA/1k6khZDq/blnhH50QIx/qrh18vYQgAZau7b
-   mBPEiAi2qLzdBGy9izlsS2ZPnC1+5GY3pCm7wgWw4fl+4Wj/IYr8R2SNo
-   A==;
-X-CSE-ConnectionGUID: UAUQZzsZSF6tca9aSkU44w==
-X-CSE-MsgGUID: E8xDFJkCT7en5pINzgZCYA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11789"; a="82504511"
-X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
-   d="scan'208";a="82504511"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 01:16:10 -0700
-X-CSE-ConnectionGUID: Gt/ytEMMRJKuzofn+ucshw==
-X-CSE-MsgGUID: yZajSFm7S3qG21iwx8BM4g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
-   d="scan'208";a="239437294"
-Received: from fanlilin-mobl.ccr.corp.intel.com (HELO [10.238.1.228]) ([10.238.1.228])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 01:16:08 -0700
-Message-ID: <6c02a10f-c62b-4874-9632-62ee001c087c@linux.intel.com>
-Date: Mon, 18 May 2026 16:16:05 +0800
+	dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b="b+V9aKB6"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=antgroup.com; s=default;
+	t=1779092264; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=Ml//VcpcK6nN5KaD+E2Rd1lM0M8q/+Pu4hPT5T4uUSA=;
+	b=b+V9aKB6w55kDs7DHjN9Er9eXgejVNhDPuEBnCvxBWI8UBO+xVTOi4VvOKTkWk9Z4duiJsB0nuGQzsGREwJfo1WkybB12olfiI20ChmXNAdaPCNvYgxLXs6VBbano9A4nacfG/50XRak3WwluCqbRO5CZ1e9Kofq4yn+/fRYZWk=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R201e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037021130;MF=houwenlong.hwl@antgroup.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---.hZqhtAB_1779092263;
+Received: from localhost(mailfrom:houwenlong.hwl@antgroup.com fp:SMTPD_---.hZqhtAB_1779092263 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Mon, 18 May 2026 16:17:43 +0800
+Date: Mon, 18 May 2026 16:17:43 +0800
+From: Hou Wenlong <houwenlong.hwl@antgroup.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Lai Jiangshan <jiangshan.ljs@antgroup.com>
+Subject: Re: [PATCH v3 01/10] KVM: VMX: Refresh
+ GUEST_PENDING_DBG_EXCEPTIONS.BS on all injected #DBs
+Message-ID: <20260518081743.GA24112@k08j02272.eu95sqa>
+References: <20260515222638.1949982-1-seanjc@google.com>
+ <20260515222638.1949982-2-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] x86/kvm/vmx: Fix VMX vs hrtimer_rearm_deferred()
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: tglx@kernel.org, linux-kernel@vger.kernel.org,
- Sean Christopherson <seanjc@google.com>, Jim Mattson <jmattson@google.com>,
- Vishal L Verma <vishal.l.verma@intel.com>,
- "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- Rick P Edgecombe <rick.p.edgecombe@intel.com>,
- Binbin Wu <binbin.wu@intel.com>, "x86@kernel.org" <x86@kernel.org>,
- Paolo Bonzini <bonzini@redhat.com>
-References: <20260423155611.216805954@infradead.org>
- <20260423155936.957351833@infradead.org>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260423155936.957351833@infradead.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260515222638.1949982-2-seanjc@google.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-On 4/23/2026 11:56 PM, Peter Zijlstra wrote:
-> Vishal reported that KVM unit test 'x2apic' started failing after commit
-> 0e98eb14814e ("entry: Prepare for deferred hrtimer rearming").
+On Fri, May 15, 2026 at 03:26:29PM -0700, Sean Christopherson wrote:
+> Move KVM's stuffing of GUEST_PENDING_DBG_EXCEPTIONS.BS when RFLAGS.TF=1 and
+> MOV/POP SS or STI blocking is active into the exception injection code so
+> that KVM fixes up the VMCS for all injected #DBs, not only those that are
+> reflected back into the guest after #DB interception.  E.g. if KVM queues
+> a #DB in the emulator, or more importantly if userspace does save/restore
+> exactly on the #DB+shadow boundary, then KVM needs to massage the VMCS to
+> avoid the VM-Entry consistency check.
 > 
-> The reason is that KVM/VMX is injecting interrupts while it has IRQs disabled,
-> for a context that will enable IRQs, this means that regs->flags.X86_EFLAGS_IF
-> == 0 and the irqentry_exit() will not DTRT.
+> Opportunistically update the wording of the comment to describe the
+> behavior as a workaround of flawed CPU behavior/architecture, to make it
+> clear that the *only* thing KVM is doing is fudging around a consistency
+> check.  Per the SDM:
 > 
-> Notably, irqentry_exit() must not call hrtimer_rearm_deferred() when the return
-> context does not have IF set, because this will cause problems vs NMIs.
+>   There are no pending debug exceptions after VM entry if any of the
+>   following are true:
 > 
-> Therefore, fix up the state after the injection.
+>     * The VM entry is vectoring with one of the following interruption
+>       types: external interrupt, non-maskable interrupt (NMI), hardware
+>       exception, or privileged software exception.
 > 
-> Fixes: 0e98eb14814e ("entry: Prepare for deferred hrtimer rearming")
-> Reported-by: "Verma, Vishal L" <vishal.l.verma@intel.com>
-> Closes: https://lore.kernel.org/r/70cd3e97fbb796e2eb2ff8cd4b7614ada05a5f24.camel%40intel.com
-> Suggested-by: Thomas Gleixner <tglx@kernel.org>
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Tested-by: "Verma, Vishal L" <vishal.l.verma@intel.com>
-
-Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
-
+> I.e. forcing GUEST_PENDING_DBG_EXCEPTIONS.BS does *not* impact guest-
+> visible behavior.
+> 
+> Fixes: b9bed78e2fa9 ("KVM: VMX: Set vmcs.PENDING_DBG.BS on #DB in STI/MOVSS blocking shadow")
+> Cc: stable@vger.kernel.org
+> Reported-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
+> Closes: https://lore.kernel.org/all/b1a294bc9ed4dae532474a5dc6c8cb6e5962de7c.1757416809.git.houwenlong.hwl@antgroup.com
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 > ---
->  arch/x86/entry/common.c |   13 +++++++++++++
->  1 file changed, 13 insertions(+)
+>  arch/x86/kvm/vmx/vmx.c | 35 ++++++++++++++++++-----------------
+>  1 file changed, 18 insertions(+), 17 deletions(-)
 > 
-> --- a/arch/x86/entry/common.c
-> +++ b/arch/x86/entry/common.c
-> @@ -2,6 +2,7 @@
+> diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> index 1701db1b2e18..a0a0ccf342d3 100644
+> --- a/arch/x86/kvm/vmx/vmx.c
+> +++ b/arch/x86/kvm/vmx/vmx.c
+> @@ -1909,6 +1909,24 @@ void vmx_inject_exception(struct kvm_vcpu *vcpu)
+>  	u32 intr_info = ex->vector | INTR_INFO_VALID_MASK;
+>  	struct vcpu_vmx *vmx = to_vmx(vcpu);
 >  
->  #include <linux/entry-common.h>
->  #include <linux/kvm_types.h>
-> +#include <linux/hrtimer_rearm.h>
->  #include <asm/fred.h>
->  #include <asm/desc.h>
->  
-> @@ -27,6 +28,18 @@ noinstr void x86_entry_from_kvm(unsigned
->  #else
->  		idt_entry_from_kvm(vector);
->  #endif
-> +		/*
-> +		 * Strictly speaking, only the NMI path requires noinstr.
-> +		 */
-> +		instrumentation_begin();
-> +		/*
-> +		 * KVM/VMX will dispatch from IRQ-disabled but for a context
-> +		 * that will have IRQs-enabled. This confuses the entry code
-> +		 * and it will not have reprogrammed the timer. Do so now.
-> +		 */
-> +		hrtimer_rearm_deferred();
-> +		instrumentation_end();
+> +	/*
+> +	 * When injecting a #DB, single-stepping is enabled in RFLAGS, and STI
+> +	 * or MOV-SS blocking is active, set vmcs.PENDING_DBG_EXCEPTIONS.BS to
+> +	 * prevent a false positive from VM-Entry consistency check.  VM-Entry
+> +	 * asserts that a single-step #DB _must_ be pending in this scenario,
+> +	 * as the previous instruction cannot have toggled RFLAGS.TF 0=>1
+> +	 * (because STI and POP/MOV don't modify RFLAGS), therefore the one
+> +	 * instruction delay when activating single-step breakpoints must have
+> +	 * already expired.  However, the CPU isn't smart enough to peek at
+> +	 * vmcs.VM_ENTRY_INTR_INFO_FIELD and so doesn't realize that yes, there
+> +	 * is indeed a #DB pending/imminent.
+> +	 */
+> +	if (ex->vector == DB_VECTOR &&
+> +	    (vmx_get_rflags(vcpu) & X86_EFLAGS_TF) &&
+> +	    vmx_get_interrupt_shadow(vcpu))
+> +		vmcs_writel(GUEST_PENDING_DBG_EXCEPTIONS,
+> +			    vmcs_readl(GUEST_PENDING_DBG_EXCEPTIONS) | DR6_BS);
 > +
->  		return;
->  	}
->  
-> 
-> 
-> 
 
+This matches a version of the modification I had considered earlier.
+
+Reviewed-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
+
+Thanks!
+
+>  	kvm_deliver_exception_payload(vcpu, ex);
+>  
+>  	if (ex->has_error_code) {
+> @@ -5485,26 +5503,9 @@ static int handle_exception_nmi(struct kvm_vcpu *vcpu)
+>  			 * avoid single-step #DB and MTF updates, as ICEBP is
+>  			 * higher priority.  Note, skipping ICEBP still clears
+>  			 * STI and MOVSS blocking.
+> -			 *
+> -			 * For all other #DBs, set vmcs.PENDING_DBG_EXCEPTIONS.BS
+> -			 * if single-step is enabled in RFLAGS and STI or MOVSS
+> -			 * blocking is active, as the CPU doesn't set the bit
+> -			 * on VM-Exit due to #DB interception.  VM-Entry has a
+> -			 * consistency check that a single-step #DB is pending
+> -			 * in this scenario as the previous instruction cannot
+> -			 * have toggled RFLAGS.TF 0=>1 (because STI and POP/MOV
+> -			 * don't modify RFLAGS), therefore the one instruction
+> -			 * delay when activating single-step breakpoints must
+> -			 * have already expired.  Note, the CPU sets/clears BS
+> -			 * as appropriate for all other VM-Exits types.
+>  			 */
+>  			if (is_icebp(intr_info))
+>  				WARN_ON(!skip_emulated_instruction(vcpu));
+> -			else if ((vmx_get_rflags(vcpu) & X86_EFLAGS_TF) &&
+> -				 (vmcs_read32(GUEST_INTERRUPTIBILITY_INFO) &
+> -				  (GUEST_INTR_STATE_STI | GUEST_INTR_STATE_MOV_SS)))
+> -				vmcs_writel(GUEST_PENDING_DBG_EXCEPTIONS,
+> -					    vmcs_readl(GUEST_PENDING_DBG_EXCEPTIONS) | DR6_BS);
+>  
+>  			kvm_queue_exception_p(vcpu, DB_VECTOR, dr6);
+>  			return 1;
+> -- 
+> 2.54.0.563.g4f69b47b94-goog
