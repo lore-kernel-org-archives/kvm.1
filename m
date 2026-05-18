@@ -1,190 +1,145 @@
-Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E521D39280C
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 19:08:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3088738F927
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 19:14:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779131289; cv=none; b=klyWTRZrFXzutdoR1tSNENqaA2H/VOht9/AcQ6MT5/gvuwrbG88pTM4S1+X1nb+rSg/9irM10ZSPSnj6STbBbR9iL4XQJy+6N/nqggNS3JjJotgjAY+q4RnHgzbe0UwtIIFC5+lc2m7Pvw0LuIzVmFXYiiqScIi9GTGM4z9ht5I=
+	t=1779131681; cv=none; b=OqUtVQ+8xWLN0kxrhtQReZr+7kfCzqK6KdYk37NPsJtg2vVkz+aNd0FjAOyYtzQzmBBsCroDWM5zaJcLliO72OnQaRv6a+BdupssdoABafcr4qzwK+QaeOuqV7rlrcZgyP8HbSmDca4d8tBt8zhiytBGd+JoBzrhxeNLS9mgFKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779131289; c=relaxed/simple;
-	bh=E3Kryer03O2/9Oyd1Uw9KKyE+KASGqSz2vSPV4e+764=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vp/d7qoP2K97LKI1u8LTGki003l6LoT5UVcsgETGEou4KXyGqIUYygKB17MiXMoP9GALiHJo3eaUbign9L4sOqJlo9mFgvhhBojjFizIPCjOwALW9bHR44qNVUAYQcUCku9vgf+2ZZVRrPZnfMyQHQNdPD2NGDmGBassd0oAHSo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=p6qI5u9s; arc=none smtp.client-ip=209.85.214.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1779131681; c=relaxed/simple;
+	bh=oprmgku8si+OLXrL/12KBtH9ObDkdjBSzOrFL4VhpNY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=tb24l7CK18GsSwJsifAZf6Ole5qSceuLQVET04RpVw12kWrHC/vMDqu2bHzT8ID0B7WwnLkL9XMKresHXw90D5RMIlMtekOp29kx8xtqhXg1+cFfNEu2e6OSOaGvQLJaDs1ulfxUe/J15Dbkgfc1eGU9CjyDdpRqdt7vjM/6yfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d2iERGx8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="p6qI5u9s"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2b2e8b95bdbso1085ad.0
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 12:08:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779131286; x=1779736086; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9ZU0H6rmWmp4oi8XbArQtxOYDJ2GP70DX/0QfuCGiOE=;
-        b=p6qI5u9sMGK+mVgPNudq7z300tibNdUYHgyHqBnst0NPLl3/b6Wp8K5FYPp8BzysEg
-         gEBVYDwmFjiBtGU/hUNgo/j936wGicRlR2sxXm48+BdP3bd+i+1nHfJWVzgJwffzmfho
-         Q7s1kaK/xLD288kdnTFVniOGByxEZh9KuUZOEj3bsTurhEmuyumNBF62aiMmSxSik2yG
-         LVJyneu3LrKca915ix0jVRY/QqEFOQARaxB5omFiG5JjvLYbazjClJ5+fkFlowprKq2K
-         wmS98Ibiu9BoQ7gloY9qzulK1fzc6+LE+UVLxt4KEJ4zH07/l4PxL4QQOhMb1xc2PB79
-         T4wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779131286; x=1779736086;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9ZU0H6rmWmp4oi8XbArQtxOYDJ2GP70DX/0QfuCGiOE=;
-        b=pKckOudUWSYCP1KQrmgw/dqh2tBrV+SqeI37J+pkXQrNeijWXjzZRU9MDlpyHzljLX
-         lOcHC1Bv3qmH1myWBF4fjXhQ5TpjajZYIpy2Gmbe4yzkKd8Y0gzuMCj+8lrAUEFbHXne
-         JveV82r0Ez1q55lEte63BPayonusxGt7ZgaEftTNV7h7xXMGjjf+Y548KEXHD775H94H
-         Rp0djbTR8C5StCtB5xLG7PkdQmisMRMyfTVRPp9nq54WvtQDHlLKh3WlbrBmIoF/QXe1
-         tNpCmigdeVbn3OpSuWu5MOfJ0RCYP0MNUS9xaAguEoon3njXKGM5JFQ62NaEzUPnKFJG
-         PRYg==
-X-Forwarded-Encrypted: i=1; AFNElJ99Ig0ucD9M7S3ueOrWE0hoGnj4SaIgLVoQ8JmHwFSRFm0zY54y5JNg7ZCp2FdDwxpDMFQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yydw4UbvzwRKyynAI39dbUBSllkWlavC3NeUmv169oJEUM1zccG
-	VmSk2gnBmd23nbXcKRi6esLefV5LnIu5nyA+H+VpvMj4c0Ve/iGPnYi/8GPbfksMQw==
-X-Gm-Gg: Acq92OEFQkhuYWBD4LBfxqh8YGkZWqEjc09rxobNfLgJ6IDRWaNQc3/KqmRGu+TM3Am
-	f4LJ6CAl1KOCHyeSKOD6FDUA/mtpFe0iVReyXNNjvlPU6IxJaXAMCsTujGmPMwfWJJ6bdJidTMn
-	qwleMfHDAHc8+CLgRTY0XjpwK/l4V4HUqwP7rirLMv49LQgvdWIWskKPfw3716/UEyQxo0tn+jO
-	i7CEyIQ0OCf+QvhQPVvsRZM2z8V1CCIiG/LyXEM+UFdxR96FzVaajleJQ/dIndkg3SvdSyx3OYn
-	NekfY50mFUNWZCzIuxPQQxmLpwnec08rI2mwDUqB4M8n+ihdR5TdjCq0zUBvMkfGU+J0B1Kymfp
-	5e6gSudHjVkHfoTUgsQmL299uZmz1fm+aae52qzzmOVTW3/oVy0P6SQun+WT+UdgByks8iq6IsA
-	awSlyfdNVBAjNXPLnLOfVgUbactgH0ixQsK4qIoCdgezOT3UOPwJ0jlPmsESRRdnAmKK7iHQ==
-X-Received: by 2002:a17:903:46ce:b0:2bd:9e75:9e98 with SMTP id d9443c01a7336-2bdb329b484mr3857735ad.9.1779131285670;
-        Mon, 18 May 2026 12:08:05 -0700 (PDT)
-Received: from google.com (153.46.83.34.bc.googleusercontent.com. [34.83.46.153])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c82bb07b007sm14148605a12.11.2026.05.18.12.08.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 12:08:05 -0700 (PDT)
-Date: Mon, 18 May 2026 19:08:01 +0000
-From: Samiullah Khawaja <skhawaja@google.com>
-To: Pranjal Shrivastava <praan@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>, 
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
-	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, David Matlack <dmatlack@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>, 
-	YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH v2 01/16] liveupdate: luo_file: Add internal APIs for
- file preservation
-Message-ID: <agth8vZh96TfEYl_@google.com>
-References: <20260427175633.1978233-1-skhawaja@google.com>
- <20260427175633.1978233-2-skhawaja@google.com>
- <agr6yoyYYq2QFxjL@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d2iERGx8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B99EEC2BCFB
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 19:14:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779131680;
+	bh=oprmgku8si+OLXrL/12KBtH9ObDkdjBSzOrFL4VhpNY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=d2iERGx8VM1zP3Kb70GnbBexBHwHDS5QMKx2rFEZN+WrwaVAaf9afeH+OdN8+AE0N
+	 ARQQeJuYJkZA1DlCrvIYWAG2Isr90yl6RkZGMaRYzmPU3Gm34/w+kHJWOZJ3F3bRxD
+	 G2vTGnMjQw+6rHC040pcKkmCZpAZuEgXWcRQwUJIYW6v7jBcmiAQG+OzqtwO3u9LQm
+	 gUfGp+iltcrSAZR96m3ANqSLkt163e5wJCq+frgyITWxiMOo38rl3Wed4GJbNnd2n5
+	 msDYdXmvEq7ayUdgSWOGhMTaPkna2rhxjbH82WqLVIttC4TE4lOK64fuzTluRKJL6N
+	 GDCuS7ugzAAEA==
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-67c3cb1433cso5795324a12.0
+        for <kvm@vger.kernel.org>; Mon, 18 May 2026 12:14:40 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+/OQJxe/G9inE04tFWTg8dmb58R9jdxzFhaOXxrxaIM/dyGwnOP9evhrZVYxzu7otRbLI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyEAvM4LOkeTvOrvwCnExkMF+lQ1AD/DSQ1FWiKEDKA+/GKzGLj
+	Edl62zkm6/K6Hq0OiipJa+Zbr7ydcbsF/gojyht1avMjHocijLjyf0y4ZvimB4yaESAwOyzvl62
+	+ht4dPDPBNu9EYveKAwPTqsrqYtYv768=
+X-Received: by 2002:a17:907:93d4:b0:bd4:c6be:5f2e with SMTP id
+ a640c23a62f3a-bd51777c81fmr647770466b.3.1779131679529; Mon, 18 May 2026
+ 12:14:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <agr6yoyYYq2QFxjL@google.com>
+References: <20260518045916.2988667-1-nikunj@amd.com> <20260518045916.2988667-8-nikunj@amd.com>
+ <agtGh82vLu4G6pWI@google.com> <agtgltn2wLNFrS2f@google.com>
+In-Reply-To: <agtgltn2wLNFrS2f@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Mon, 18 May 2026 12:14:27 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPtZdgo-BKr0Gc8znWvuJksYgSZFTwgB+aaPStU6q5GZQ@mail.gmail.com>
+X-Gm-Features: AVHnY4IvAW1HjTIGgS6qZG99xx51X_nd0jT31RKiPnI3CCQ_h_vVLhu0mdzPrpI
+Message-ID: <CAO9r8zPtZdgo-BKr0Gc8znWvuJksYgSZFTwgB+aaPStU6q5GZQ@mail.gmail.com>
+Subject: Re: [PATCH v7 7/7] KVM: SVM: Add Page modification logging support
+To: Sean Christopherson <seanjc@google.com>
+Cc: Nikunj A Dadhania <nikunj@amd.com>, kvm@vger.kernel.org, pbonzini@redhat.com, 
+	thomas.lendacky@amd.com, bp@alien8.de, joao.m.martins@oracle.com, 
+	kai.huang@intel.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, May 18, 2026 at 11:40:58AM +0000, Pranjal Shrivastava wrote:
->On Mon, Apr 27, 2026 at 05:56:18PM +0000, Samiullah Khawaja wrote:
->> From: Pasha Tatashin <pasha.tatashin@soleen.com>
->>
->> The core liveupdate mechanism allows userspace to preserve file
->> descriptors. However, kernel subsystems often manage struct file
->> objects directly and need to participate in the preservation process
->> programmatically without relying solely on userspace interaction.
->>
->> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
->> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+> > So maybe something like:
+> >       /*
+> >        * PML is never enabled in hardware for L2. Make sure that an
+> >        * unexpected PML write would trigger a PML_FULL VM-Exit.
+> >        */
 >
->[..]
+> Hmm, I was going to say we should drop the code entirely, but I do think it makes
+> sense to set PML_INDEX to -1 to ensure a VM-Exit occurs.
 >
->> @@ -924,3 +931,65 @@ void liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
->>  	luo_flb_unregister_all(fh);
->>  	list_del(&ACCESS_PRIVATE(fh, list));
->>  }
->> +EXPORT_SYMBOL_GPL(liveupdate_unregister_file_handler);
->> +
+> Actually, even better idea, at least for nVMX.  Rather than write '0' for the
+> address, which is what I really dislike (bad past-Sean!), we should write -1ull
+> so that unexpectedly enabling PML in vmcs02 results in VM-Fail, i.e. don't even
+> rely on the WARN for safety.
+>
+> If SVM has a consistency check on the address, then do the same, otherwise I
+> guess just go with setting pml_index to -1 and WARNing on PML_FULL?
 
-[snip]
->> +
->> +/**
->> + * liveupdate_get_file_incoming - Retrieves a preserved file for in-kernel use.
->> + * @s:      The incoming liveupdate session (restored from the previous kernel).
->> + * @token:  The unique token identifying the file to retrieve.
->> + * @filep:  On success, this will be populated with a pointer to the retrieved
->> + *          'struct file'.
->> + *
->> + * Provides a kernel-internal API for other subsystems to retrieve their
->> + * preserved files after a live update. This function is a simple wrapper
->> + * around luo_retrieve_file(), allowing callers to find a file by its token.
->> + *
->> + * The caller receives a new reference to the file and must call fput() when it
->> + * is no longer needed. The file's lifetime is managed by LUO and any userspace
->> + * file descriptors. If the caller needs to hold a reference to the file beyond
->> + * the immediate scope, it must call get_file() itself.
->
->Thanks for re-wording this and I'm sorry for being a stickler here, I'm
->a bit concerned that the last part here might lead to reference leaks in
->downstream drivers.
->
->Looking at the underlying luo_retrieve_file() implementation [1], it
->explicitly calls get_file() before returning the pointer (both on the
->initial retrieve and on cached ones). This means the caller inherently
->receives a reference that they own & the caller is responsible for
->exactly one fput().
->
->However, that last part of the comment can be misunderstood as the caller
->doesn't hold a lasting reference unless they call get_file() themselves.
->This makes the reader assume that LUO is going to automatically reap
->that initial reference from them.
->
->If a driver author assumes LUO is going to reap it, they will follow that
->last sentence and call get_file() to stash the pointer safely. They might
->end up holding two references (thinking one of them will be reaped), and
->could ultimately leak the struct file when they only call fput() once
->during teardown.
->
->Should we just drop that last sentence to make the lifecycle contract
->unambiguous? (i.e., The caller gets a newly bumped reference, and they
->are responsible for exactly one fput() per call).
+Yeah this makes sense to me.
 
-I think these are all valid points. I will remove the last sentences for
-clarity.
 >
->> + *
->> + * Context: It must be called with session mutex acquired of a restored session.
->> + * Return: 0 on success. Returns -ENOENT if no file with the matching token is
->> + *         found, or any other negative errno on failure.
->> + */
->> +int liveupdate_get_file_incoming(struct liveupdate_session *s, u64 token,
->> +				 struct file **filep)
->> +{
->> +	return luo_retrieve_file(luo_file_set_from_session_locked(s),
->> +				 token, filep);
->> +}
+> > Also, the above commit also hanlded a PML_FULL VM-Exit as unexpected,
+> > maybe we want to do that here as well? Or is that too paranoid?
 >
->Nit: Shouldn't we export both of these functions via EXPORT_SYMBOL_GPL?
->Since, these new APIs are intended for kernel subsystems to participate
->programmatically, there could be IOMMU drivers (or others) that can be
->compiled as loadable modules. Thus we should export these APIs via
->EXPORT_SYMBOL_GPL(). If they aren't exported, any loadable module
->attempting to use them will compile successfully (due to the header), but
->will fail to load at runtime with an Unknown symbol error.
+> Not too paranoid.
 >
->IIUC, if a function isn't exported with EXPORT_SYMBOL, it remains hidden
->inside vmlinux, (i.e. it isn't in the kernel's global symbol table used
->during modprobe).
+> > Annoyingly, the unexpected exit reason handling is in
+> > svm_invoke_exit_handler(), but the guest mode check is in
+> > svm_handle_exit(), so if we do that we may need to move some code
+> > around.
+>
+> Why's that?  Oh, if we want to reuse the unexpected exit code.  What about this?
 
-Agreed. Will Update this.
+I actually had something different in mind, I was going to suggest
+that we move the unexpected exit logic to svm_handle_exit(), and key
+off a specific return value from svm_invoke_exit_handler(). Then we
+can bypass the whole nested_svm_exit_special() logic in
+svm_handle_exit() and jump to unexpected_vmexit.
 
-I think there are other LUO APIs that are not exported and can be used
-by modules. Let me check those also.
+However, as I was writing a diff, I realized this will get gross
+quickly. So I think your suggestion below works.
+
 >
->Thanks,
->Praan
+> We don't even have to document the same thing in two different places, because
+> the reasoning for nested_svm_exit_special() can and is different.  E.g. even if
+> we decided to utilize PML while running L2 (which would be possible, we'd "just"
+> have to translate the GPAs), the exits would still need to be routed to KVM.
+> Ditto for if we did actually enable PML in vmcb02 on behalf of L1: we'd need to
+> remove the check in nested_svm_exit_special(), but not the check in
+> svm_invoke_exit_handler() (though the latter's comment would need to be updated).
 >
->[1] https://elixir.bootlin.com/linux/v7.0-rc3/source/kernel/liveupdate/luo_file.c#L560
+> diff --git arch/x86/kvm/svm/nested.c arch/x86/kvm/svm/nested.c
+> index 4ef9bc6a553f..401a0ac44018 100644
+> --- arch/x86/kvm/svm/nested.c
+> +++ arch/x86/kvm/svm/nested.c
+> @@ -1782,6 +1782,13 @@ int nested_svm_exit_special(struct vcpu_svm *svm)
+>                 if (nested_svm_is_l2_tlb_flush_hcall(vcpu))
+>                         return NESTED_EXIT_HOST;
+>                 break;
+> +       case SVM_EXIT_PML_FULL:
+> +               /*
+> +                * All PML full exits are handled by KVM.  KVM emulates PML in
+> +                * software for L1, but never enables PML in hardware on behalf
+> +                * of L1.
+> +                */
+> +               return NESTED_EXIT_HOST;
+>         default:
+>                 break;
+>         }
+> diff --git arch/x86/kvm/svm/svm.c arch/x86/kvm/svm/svm.c
+> index e74fcde6155e..6bcb191d725b 100644
+> --- arch/x86/kvm/svm/svm.c
+> +++ arch/x86/kvm/svm/svm.c
+> @@ -3635,6 +3635,13 @@ int svm_invoke_exit_handler(struct kvm_vcpu *vcpu, u64 __exit_code)
+>             (u64)exit_code != __exit_code)
+>                 goto unexpected_vmexit;
+>
+> +       /*
+> +        * PML is never enabled when running L2, bail immediately if a PML full
+> +        * exit occurs as something is horribly wrong.
+> +        */
+> +       if (unlikely(is_guest_mode(vcpu) && exit_code == SVM_EXIT_PML_FULL))
+> +               goto unexpected_vmexit;
+> +
+>  #ifdef CONFIG_MITIGATION_RETPOLINE
+>         if (exit_code == SVM_EXIT_MSR)
+>                 return msr_interception(vcpu);
 >
