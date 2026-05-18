@@ -1,175 +1,186 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFC1F43DA2B
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 12:46:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605CE4508E0;
+	Mon, 18 May 2026 12:55:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779108376; cv=none; b=ZWMAhFDz1ZdzmmLfLkhjdh9AeCDK+09F+zv1j0IaZDkSAr9XHClSLymFXZohDcea4/VdTFF4FaRtnKPGaEuUl3nwLQ8ihIm7JMIxhrBiywHcns8vU3Mh4aoTCcPJOq3AvIyf+So5VYsVaR3Ml3u82veSCMpwO9rBoXGEp+RoCnM=
+	t=1779108927; cv=none; b=guV/aiXCuVh6ElqPqreRtQ9DI+Xk92yoD96kvEp380yjzDHjpmEpuPHKmQQf1MgP+4YMtPIGgCNPaHK1pG1zMp/799TYQFZ8l9sXRiW8ZZYXz32VJwz5qLBc7l5+XR2PMHNDdRapnivHH2lNzEEvqweQIk8ZhwDV+MlBOKC7r2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779108376; c=relaxed/simple;
-	bh=lf9bSvJ4KtEk9GbWlRSpmfWhDzhpluktjgpUR6LFA+0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sVtoruZbi5GHC/QeXp1sKmLdb253ZU3DZ8E7ycldN2XBObMF83ZRUvjXmUDbeHd35ic5M9HurjmRgH35CBZ1tFVGERnntnFTVyawh8HkX9OAt7mw4Xr+hgCjMF/DcxCFYRCGFzsm40vI7yMlxmBmShR7ikXSBNSKYOGADC7/LKo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=IBjYbwH3; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1779108927; c=relaxed/simple;
+	bh=TsnwzaRYKCZk9fAfCvB6ylKKPgnmH6O40n1/23cglBk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=R1nGeppu+T4kLKR337lOX15aBJZz4Ybht1R2QtlS24YmdecCVCeKwJZ3lUpkbAnwbSocr3A8Psl7j6jg0GpqMeVTwQAZkBhZ6nM3VjxArtWEKL+4uS6mwrSch/k2AMAYHgifw6LjzymWSLs0ZkyW239LRByPutQ7++V5anqqeQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=lC427nXP; arc=none smtp.client-ip=117.135.210.2
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="IBjYbwH3"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 3C66945BF;
-	Mon, 18 May 2026 05:46:08 -0700 (PDT)
-Received: from e142021.fritz.box (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 110873F632;
-	Mon, 18 May 2026 05:46:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779108373; bh=lf9bSvJ4KtEk9GbWlRSpmfWhDzhpluktjgpUR6LFA+0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IBjYbwH375euFlnzKU9R2lYtc2WqqnS1N4VzF2Hua3J5N1Jpc0YINMHIV84iHRJfd
-	 MOgten3zPv168IJtrabxp8BCQMAhvdqdbEpigLHxbOYEBSdG2j0OUgoMvlHqG5c72o
-	 PlyZ9jV+ooY23/pcOHwI7bId7jArSf9nSH17g6mY=
-From: Andre Przywara <andre.przywara@arm.com>
-To: Will Deacon <will@kernel.org>,
-	Julien Thierry <julien.thierry.kdev@gmail.com>
-Cc: Marc Zyngier <maz@kernel.org>,
-	Sascha Bischoff <Sascha.Bischoff@arm.com>,
-	kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	Alexandru Elisei <alexandru.elisei@arm.com>
-Subject: [PATCH kvmtool v8 6/6] arm64: Handle virtio endianness reset when running nested
-Date: Mon, 18 May 2026 14:45:56 +0200
-Message-ID: <20260518124556.164739-7-andre.przywara@arm.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260518124556.164739-1-andre.przywara@arm.com>
-References: <20260518124556.164739-1-andre.przywara@arm.com>
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="lC427nXP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=Message-ID:Date:MIME-Version:Subject:To:From:
+	Content-Type; bh=CrDEAo7psewF/Zo6NTuk77pv1DJdNaLBNAD0ghaWzHc=;
+	b=lC427nXPvIjwiNmYFg/EZ/bY2f01kkqizgwT6ZxEcbkcVrzaAjXF5M7SV+IYPV
+	sXbPF76d/xj+TKNqP2aVu90z3McknrtM8SAd+IYUYWZY0ea6E6q1c6IlTl63PiPj
+	r+E/5byfzxXrboWTXGYok4Hd1XL2GITtdX1Je6vcqI/Mc=
+Received: from [IPV6:240e:38c:8516:b200:791b:8dc7:75fb:a430] (unknown [])
+	by gzsmtp3 (Coremail) with SMTP id PigvCgDnp4GVCwtqUaZZDw--.170S2;
+	Mon, 18 May 2026 20:52:40 +0800 (CST)
+Message-ID: <22e32ff9-3d79-4130-a3cb-3a4ec2efd498@163.com>
+Date: Mon, 18 May 2026 20:52:37 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/3] KVM: selftests: Add unit to dirty_log_test
+To: Sean Christopherson <seanjc@google.com>
+Cc: wu.fei9@sanechips.com.cn, linux-riscv@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, anup@brainfault.org,
+ atish.patra@linux.dev, pjw@kernel.org, palmer@dabbelt.com,
+ aou@eecs.berkeley.edu, alex@ghiti.fr, pbonzini@redhat.com, shuah@kernel.org
+References: <202605111849442561v1a0B_7W1L2Z-ENusLaP@zte.com.cn>
+ <202605111130.64BBUXDN013040@mse-fl2.zte.com.cn>
+ <agO_0ejKd0x38_-E@google.com> <f64029bf-1f4c-40a7-860a-eb04fbe5317b@163.com>
+ <agck1WqW-TyEqkqd@google.com>
+Content-Language: en-US
+From: Wu Fei <atwufei@163.com>
+In-Reply-To: <agck1WqW-TyEqkqd@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:PigvCgDnp4GVCwtqUaZZDw--.170S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW3Jr4kKFyrCrWfWw18Cw4rZrb_yoW7AFWDpF
+	WSga47KFs7A345Cwn2yayDXryFkr43JFWDA34rt3s0k3s0gF1fXr1xKFy09F95Cr1rZr1S
+	vrZ0q347Zr1DuaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x07UYD7-UUUUU=
+X-CM-SenderInfo: pdwz3wlhl6il2tof0z/xtbCzRlG52oLC5nAxgAA3A
 
-From: Marc Zyngier <maz@kernel.org>
+On 5/15/26 21:51, Sean Christopherson wrote:
+> On Wed, May 13, 2026, Wu Fei wrote:
+>> On 5/13/26 08:03, Sean Christopherson wrote:
+>>> On Mon, May 11, 2026, wu.fei9@sanechips.com.cn wrote:
+>>>> Currently dirty_log_test hardcodes usleep 1ms in each interval, which
+>>>> could be too short for guest to write and fault in enough pages, then
+>>>> there is less chance to test the write protection mechanism, especially
+>>>> in the case of (log_mode != LOG_MODE_DIRTY_RING).
+>>>
+>>> But when log_mode != LOG_MODE_DIRTY_RING, the individual sleep time is largely
+>>> meaningless, because the test won't reap the bitmaps for iterations > 0.
+>>>
+>>> 			if (i && host_log_mode != LOG_MODE_DIRTY_RING)
+>>> 				continue;
+>>>
+>> The first usleep  matters in the case of KVM_DIRTY_LOG_INITIALLY_SET. The
+>> dirty bitmap is not precise in the first get_dirty_log, all pages are marked
+>> as dirty but most of them are not populated in page table, this creates the
+>> situation I mentioned in the cover letter.
+> 
+> I suspect something is messed up in your workflow, because the actual patches
+> aren't properly threaded with respect to the cover letter.  E.g. patch 1 has
+> 
+>    In-Reply-To: <202605111849442561v1a0B_7W1L2Z-ENusLaP@zte.com.cn>
+> 
+> but the cover letter has:
+> 
+>    Message-Id: <202605111108.64BB8RFR010522@mse-db.zte.com.cn>
+> 
+> Copy+pasting the entirety of the cover letter for reference:
+> 
+>   : The current gstage range walker unconditionally advances by 'page_size'
+>   : when a leaf PTE is not found, e.g. when the range to wp is
+>   : [0xfffff01fc000, 0xfffff023c000) , if found_leaf of 0xfffff01fc000
+>   : returns false and page_size is 2MB, it skips the whole range, but it's
+>   : possible to have valid entries in [0xfffff0200000, 0xfffff023c000), so
+>   : only [0xfffff01fc000, 0xfffff0200000) can be skipped safely. Both
+>   : wp/unamp have the same pattern.
+>   :
+>   : dirty_log_test intentionally sets up the unaligned guest physical
+>   : address, after riscv kvm enabling KVM_DIRTY_LOG_INITIALLY_SET, it's easy
+>   : to trigger this bug if there is a larger window for guest to write more
+>   : pages before first collect_dirty_pages.
+> 
+>> "when the range to wp is
+>> [0xfffff01fc000, 0xfffff023c000) , if found_leaf of 0xfffff01fc000
+>> returns false and page_size is 2MB, it skips the whole range, but it's
+>> possible to have valid entries in [0xfffff0200000, 0xfffff023c000), so
+>> only [0xfffff01fc000, 0xfffff0200000) can be skipped safely."
+>>
+>>>>
+>>>> Unit is introduced to replace the default 1ms if specified in command
+>>>> line. The following test can't trigger failure on my riscv vm:
+>>>
+>>> Failure of what?  And does the failure really not reproduce with a higher interval?
+>>
+>> On riscv, it fails to write protect some pages with valid page table entry
+>> then loses track of dirty pages. Higher interval doesn't help because only
+>> the first usleep matters, after the first collect_dirty_pages, all dirty
+>> pages are tracked precisely then there is no such problem.
+> 
+> Ah, gotcha.  Rather than let (and force) the user to provide a larger sleep time,
+> what if we instead randomize the delay before the initial reaping of the dirty
+> bitmap/ring?  That should provide a good balance between coverage, complexity and
+> user-friendliness.
 
-When running an EL2 guest, we need to make sure we don't sample
-SCTLR_EL1 to work out the virtio endianness, as this is likely
-to be a bit random.
+I'm fine with your solution, I applied it and it did trigger the same issue.
 
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Signed-off-by: Andre Przywara <andre.przywara@arm.com>
----
- arm64/include/kvm/kvm-cpu-arch.h |  5 +--
- arm64/kvm-cpu.c                  | 58 ++++++++++++++++++++++++++------
- 2 files changed, 51 insertions(+), 12 deletions(-)
+Thanks,
+Fei.
 
-diff --git a/arm64/include/kvm/kvm-cpu-arch.h b/arm64/include/kvm/kvm-cpu-arch.h
-index d9eb5f0e..91d761fc 100644
---- a/arm64/include/kvm/kvm-cpu-arch.h
-+++ b/arm64/include/kvm/kvm-cpu-arch.h
-@@ -9,8 +9,9 @@
- 
- #define ARM_CPU_ID		3, 0, 0, 0
- #define ARM_CPU_ID_MPIDR	5
--#define ARM_CPU_CTRL		3, 0, 1, 0
--#define ARM_CPU_CTRL_SCTLR_EL1	0
-+#define SYS_SCTLR_EL1		3, 0, 1, 0, 0
-+#define SYS_SCTLR_EL2		3, 4, 1, 0, 0
-+#define SYS_HCR_EL2		3, 4, 1, 1, 0
- 
- struct kvm_cpu {
- 	pthread_t	thread;
-diff --git a/arm64/kvm-cpu.c b/arm64/kvm-cpu.c
-index 204a80d0..ae5a6eb7 100644
---- a/arm64/kvm-cpu.c
-+++ b/arm64/kvm-cpu.c
-@@ -13,6 +13,8 @@
- 
- #define SCTLR_EL1_E0E_MASK	(1 << 24)
- #define SCTLR_EL1_EE_MASK	(1 << 25)
-+#define HCR_EL2_TGE		(1UL << 27)
-+#define HCR_EL2_E2H		(1UL << 34)
- 
- static int debug_fd;
- 
-@@ -394,7 +396,8 @@ int kvm_cpu__get_endianness(struct kvm_cpu *vcpu)
- {
- 	struct kvm_one_reg reg;
- 	u64 psr;
--	u64 sctlr;
-+	u64 sctlr, bit;
-+	u64 hcr = 0;
- 
- 	/*
- 	 * Quoting the definition given by Peter Maydell:
-@@ -405,8 +408,9 @@ int kvm_cpu__get_endianness(struct kvm_cpu *vcpu)
- 	 * We first check for an AArch32 guest: its endianness can
- 	 * change when using SETEND, which affects the CPSR.E bit.
- 	 *
--	 * If we're AArch64, use SCTLR_EL1.E0E if access comes from
--	 * EL0, and SCTLR_EL1.EE if access comes from EL1.
-+	 * If we're AArch64, determine which SCTLR register to use,
-+	 * depending on NV being used or not. Then use either the E0E
-+	 * bit for EL0, or the EE bit for EL1/EL2.
- 	 */
- 	reg.id = ARM64_CORE_REG(regs.pstate);
- 	reg.addr = (u64)&psr;
-@@ -416,16 +420,50 @@ int kvm_cpu__get_endianness(struct kvm_cpu *vcpu)
- 	if (psr & PSR_MODE32_BIT)
- 		return (psr & COMPAT_PSR_E_BIT) ? VIRTIO_ENDIAN_BE : VIRTIO_ENDIAN_LE;
- 
--	reg.id = ARM64_SYS_REG(ARM_CPU_CTRL, ARM_CPU_CTRL_SCTLR_EL1);
-+	if (vcpu->kvm->cfg.arch.nested_virt) {
-+		reg.id = ARM64_SYS_REG(SYS_HCR_EL2);
-+		reg.addr = (u64)&hcr;
-+		if (ioctl(vcpu->vcpu_fd, KVM_GET_ONE_REG, &reg) < 0)
-+			die("KVM_GET_ONE_REG failed (HCR_EL2)");
-+	}
-+
-+	switch (psr & PSR_MODE_MASK) {
-+	case PSR_MODE_EL0t:
-+		switch (hcr & (HCR_EL2_E2H | HCR_EL2_TGE)) {
-+		case HCR_EL2_E2H | HCR_EL2_TGE: /* EL2&0 */
-+			reg.id = ARM64_SYS_REG(SYS_SCTLR_EL2);
-+			bit = SCTLR_EL1_E0E_MASK;
-+			break;
-+		case HCR_EL2_TGE:		/* EL2 */
-+			reg.id = ARM64_SYS_REG(SYS_SCTLR_EL2);
-+			bit = SCTLR_EL1_EE_MASK;
-+			break;
-+		case HCR_EL2_E2H:		/* EL1&0 (VHE) */
-+		default:			/* EL1&0 (!VHE) */
-+			reg.id = ARM64_SYS_REG(SYS_SCTLR_EL1);
-+			bit = SCTLR_EL1_E0E_MASK;
-+			break;
-+		}
-+		break;
-+	case PSR_MODE_EL1t:
-+	case PSR_MODE_EL1h:
-+		reg.id = ARM64_SYS_REG(SYS_SCTLR_EL1);
-+		bit = SCTLR_EL1_EE_MASK;
-+		break;
-+	case PSR_MODE_EL2t:
-+	case PSR_MODE_EL2h:
-+		reg.id = ARM64_SYS_REG(SYS_SCTLR_EL2);
-+		bit = SCTLR_EL1_EE_MASK;
-+		break;
-+	default:
-+		die("What's that mode???\n");
-+	}
-+
- 	reg.addr = (u64)&sctlr;
- 	if (ioctl(vcpu->vcpu_fd, KVM_GET_ONE_REG, &reg) < 0)
--		die("KVM_GET_ONE_REG failed (SCTLR_EL1)");
-+		die("KVM_GET_ONE_REG failed (SCTLR_ELx)");
- 
--	if ((psr & PSR_MODE_MASK) == PSR_MODE_EL0t)
--		sctlr &= SCTLR_EL1_E0E_MASK;
--	else
--		sctlr &= SCTLR_EL1_EE_MASK;
--	return sctlr ? VIRTIO_ENDIAN_BE : VIRTIO_ENDIAN_LE;
-+	return (sctlr & bit) ? VIRTIO_ENDIAN_BE : VIRTIO_ENDIAN_LE;
- }
- 
- void kvm_cpu__show_code(struct kvm_cpu *vcpu)
--- 
-2.43.0
+> 
+> diff --git a/tools/testing/selftests/kvm/dirty_log_test.c b/tools/testing/selftests/kvm/dirty_log_test.c
+> index 12446a4b6e8d..74ca096bf976 100644
+> --- a/tools/testing/selftests/kvm/dirty_log_test.c
+> +++ b/tools/testing/selftests/kvm/dirty_log_test.c
+> @@ -694,7 +694,17 @@ static void run_test(enum vm_guest_mode mode, void *arg)
+>          pthread_create(&vcpu_thread, NULL, vcpu_worker, vcpu);
+>   
+>          for (iteration = 1; iteration <= p->iterations; iteration++) {
+> -               unsigned long i;
+> +               unsigned long i, reap_i;
+> +
+> +               /*
+> +                * Select a random point in the time interval to reap the dirty
+> +                * bitmap/ring while the guest is running, i.e. randomize how
+> +                * long the guest gets to initially run and thus how many pages
+> +                * it can dirty, before collecting the dirty bitmap/ring.  See
+> +                * the loop below for details.
+> +                */
+> +               reap_i = random() % p->interval;
+> +               printf("Reaping after a %lu ms delay\n", reap_i);
+>   
+>                  sync_global_to_guest(vm, iteration);
+>   
+> @@ -729,13 +739,17 @@ static void run_test(enum vm_guest_mode mode, void *arg)
+>                           * that's effectively blocked.  Collecting while the
+>                           * guest is running also verifies KVM doesn't lose any
+>                           * state.
+> -                        *
+> +                        */
+> +                       if (i < reap_i)
+> +                               continue;
+> +
+> +                       /*
+>                           * For bitmap modes, KVM overwrites the entire bitmap,
+>                           * i.e. collecting the bitmaps is destructive.  Collect
+> -                        * the bitmap only on the first pass, otherwise this
+> -                        * test would lose track of dirty pages.
+> +                        * the bitmap while the guest is running only once,
+> +                        * otherwise this test would lose track of dirty pages.
+>                           */
+> -                       if (i && host_log_mode != LOG_MODE_DIRTY_RING)
+> +                       if (i > reap_i && host_log_mode != LOG_MODE_DIRTY_RING)
+>                                  continue;
+>   
+>                          /*
+> @@ -745,7 +759,7 @@ static void run_test(enum vm_guest_mode mode, void *arg)
+>                           * the ring on every pass would make it unlikely the
+>                           * vCPU would ever fill the fing).
+>                           */
+> -                       if (i && !READ_ONCE(dirty_ring_vcpu_ring_full))
+> +                       if (i > reap_i && !READ_ONCE(dirty_ring_vcpu_ring_full))
+>                                  continue;
+>   
+>                          log_mode_collect_dirty_pages(vcpu, TEST_MEM_SLOT_INDEX,
 
