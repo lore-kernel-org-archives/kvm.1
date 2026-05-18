@@ -1,143 +1,137 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F5B83845CB
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 17:25:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B20934DCCD
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 17:32:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779125157; cv=none; b=jfI0DRjLfKxYS/DKMAmha1xDKNz3qe1Uvjg/sfBuos+2qUH6lVbfTQfDRvQalTQM5pocgy0qRbJpT7LVg+WJC0YKaP/QFYAUgh09HGiRHhXv5EbRbJe9pvKn9xRd5WXVScyhGeI9jlWY4WMKH7IUhNtsMiyRUYFhYHodEZHsU8g=
+	t=1779125542; cv=none; b=OW2dm3ZvOhA+gU0bRbj2AYmNls6E7SVDo2iLvUMLz7mTHFTRjV5Xct4ulEouDbzE+1VezMqEYOI3E6zXpEus1rcKFxDHEGkQag9frPv41MpIoXWtZrkZRykkF/u0B1jHW/sL87Kffhp5ChrWWXEvx9eHcXXHyaWY9C8f0h21lxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779125157; c=relaxed/simple;
-	bh=B2IK5EhSLn9NMBfDOEq16b/QDDi4IP9EWIbNC5h4ogg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Regvwr5ACKpU50LeYfhv278Xm+zL4px5ngT3wpDG1Q99i0KJgVZy5/hku/DrPjmPAJcRyCUUvgirn+muVWj3bz2rIwRz4CsVvcTA2GH2wDikX1uce/lJ8O3uP6/LXyVc7DSACNArn0RMuPU8agK+sCCXcdyVJOkU8ecvKXOHIaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=tUnOcNR8; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1779125542; c=relaxed/simple;
+	bh=Q3cV5SAH4cDTYH2vXZ3VzY3UQDOIWARtFNZRDfTMEpc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PjaoBDn/EMveGGA8Uq/Z8oUvTaycAukiZ0Q5Dbqn/YxpHb+1Jk/MNylxidna9S060FBWlcWyh/nwTQ+jzK+B/37gj2yySZVcHYVlpmncHYzmZ/TBLnpPj6uC1KDdKUeuveOOHgAbF5uvw+Wil2VmXCxPZSgXEzkltkdAaV8KpZU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sHDseSSx; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="tUnOcNR8"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64IGxaV33535366;
-	Mon, 18 May 2026 17:25:40 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=PuWq72a1qR8AD57joikG9i8ldILiiQXlNrWoBcyi/
-	Cg=; b=tUnOcNR8xuRtqu4wxRLzyTCh47eLYEtwZgBzP9PBiZ9OxZCViBycGkNHS
-	So119bk1osyajL4CtKBo6kleIsiI3Cdb+u6CMkMBSuvRrQKdeSbuOXz3wIiFZaZq
-	wBLoMBlYPt8shp1w7PbZVi899hRSP3uZlBPU+tblciSe0IPJlvU/T8caurvgnDpH
-	IjUiQqHN0Av14CMy1kvG6Z+Fz+V1Y2u1WRfJcwt9Zov3/8nPItTDuB4uNdhCi5QU
-	gG5baErq0BVLImYxPM+h5SiYU1lMF9EHtHxNHKxv2Q34MogL6ToPuvk9m8Rk5iw8
-	6JNEp1HeFcy+dSdiHQuKH3jGxhG3Q==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6haw0rp5-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 May 2026 17:25:39 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64IHODoi030664;
-	Mon, 18 May 2026 17:25:38 GMT
-Received: from smtprelay05.fra02v.mail.ibm.com ([9.218.2.225])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e73wjxyqb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Mon, 18 May 2026 17:25:38 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay05.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64IHPZtl35979600
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Mon, 18 May 2026 17:25:35 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 042F42004B;
-	Mon, 18 May 2026 17:25:35 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9C8F220040;
-	Mon, 18 May 2026 17:25:31 +0000 (GMT)
-Received: from localhost.localdomain (unknown [9.39.29.56])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Mon, 18 May 2026 17:25:31 +0000 (GMT)
-From: Amit Machhiwal <amachhiw@linux.ibm.com>
-To: Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org
-Cc: Amit Machhiwal <amachhiw@linux.ibm.com>,
-        Vaibhav Jain <vaibhav@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Chinmay Rath <rathc@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
-        Laurent Vivier <lvivier@redhat.com>,
-        Shivaprasad G Bhat <sbhat@linux.ibm.com>,
-        Gautam Menghani <gautam@linux.ibm.com>, qemu-devel@nongnu.org,
-        kvm@vger.kernel.org
-Subject: [PATCH v3 0/2] Fix GCC 16 const-correctness violations
-Date: Mon, 18 May 2026 22:55:14 +0530
-Message-ID: <20260518172517.12466-1-amachhiw@linux.ibm.com>
-X-Mailer: git-send-email 2.50.1
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sHDseSSx"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2b2e8b95bdbso265ad.0
+        for <kvm@vger.kernel.org>; Mon, 18 May 2026 10:32:20 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779125540; x=1779730340; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=QtXGNX27t5qmY2uaruNm0Z8Qvs9s1VMC3BIDapVx9XQ=;
+        b=sHDseSSxk7zRMnVLTPGEonu+W5B8t89m3TG8oqIXbaj7cIGQC3aSlyBtQKekD997p5
+         JO4SEvI8YBbs7Em5DmNnLIlwOZkSXgR659geHoA9DTttIKRf1DlPsoPaMzsJDeVxuCbd
+         WwMyVa6uKAVGtPahfibMo0+s/0zdP28iYxugfQwMWKFq/WlLoarFY8nfq6V/geWN9tOE
+         Y230zfRL7dqNz8v+8tjE9cb/sdc/OOZIO8n5bMgxcxxJLD6WsGeKM5RHo5fXNOtktxBI
+         Tovytk9tLBE4eJ74c0/l/e7H3Fa8zTZLM9lHoabdf1PlC9taBBqMenq5lIprcpz2e+K1
+         wgHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779125540; x=1779730340;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QtXGNX27t5qmY2uaruNm0Z8Qvs9s1VMC3BIDapVx9XQ=;
+        b=eBkPWPDBaQmumHQWBXcKPIcfPKdiCoCmaU9EuiczpxxK8jL7hSpogpD1uORzkN/pKU
+         6iIffA2qbRrjNPusWreGGzl8+uJGRz+8CQcWZia7/6EdmE8zzsXsdkRxnkw3e/oEDBQk
+         6/jPfiMrE2uRFNMFI1iQ20LmCM1lcsvmg1y9SSZ3ZXmU2pcUT7lvwRqZ+QQQu/AFX5eS
+         CNaqF53LdGcwjbDPALu/TRWRVHx/uBvJOuFSJScE/SHNjanOAouuFNSXHwt6lwvnEgHH
+         3acCr/CIxD6uXt1UlP5Qr14OnzhvujoYaCJhI3Oe2Gq0l7RuCslLzZmcSl6GWfrHwcat
+         E85g==
+X-Forwarded-Encrypted: i=1; AFNElJ9LmUsA5bPuaMxeqtBn1bosZhuA3WjvACDeJT508o6kgtxSMMwROetu6rvCjplAsmDEXlw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPoAAsq/cxEMioBxOdrtby4j401KYhg42CU8g1UqoKOgeteQHE
+	VhyCMKxtEVycB9ZPMyY0Q+AWWX4fTYtWjp0dI8pzIbTTyCK5RC4WvHSSWMdDkv5BTTP5E3CGNbY
+	RsxNj0Q==
+X-Gm-Gg: Acq92OHmlVTVFg1Pl5Z3T7KZTqn+htq8hwAfwiqoBCXZo1KS0RXXVYzePcw/BehGamq
+	yvdzDEH7xAXh+4G9l7JBg1YmyBJF8DtUZUIdEhh3JhKSH4a62cqVn/68vgfNAw3Rdm86CNvwytT
+	tsGeAd0Q6eyWstR7maWcpySgg5ZwEkzLDs/JOzczHYc7W63nBKz+GTf+oKFFlG3zmdtR4XAkQZs
+	11L3GpNd6xfh3+gKNuDcQym0uOlPtJb0fcCCTanl6pSVu85U7Org36LA9pM4UNCLlzO9LUC59Qe
+	fdebnTxgPcu8SwprHz68GtNy1IO1A4jWoYKlZz9DWasHJ2xXWXm2vuyLcfgUeWgh3DS0qIjkl1v
+	SrlVWnnRHsAYXUA+EooLCFfbYCqDyP4aR2KHpY9TtPzXDQtUzS2VMjKS2CM7ss7GAc0SA4czy2s
+	zOLQ4v8ubhQHZOLO94LUUebtC0yDwhKbtroN+ap2XOmVfH3OxQ/XfEB7CRwf2ef3ovLONF
+X-Received: by 2002:a17:903:32c5:b0:2b9:e831:5e5c with SMTP id d9443c01a7336-2bdb03a42c2mr3669485ad.4.1779125539725;
+        Mon, 18 May 2026 10:32:19 -0700 (PDT)
+Received: from google.com (44.234.124.34.bc.googleusercontent.com. [34.124.234.44])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5bd5f2cesm159631115ad.14.2026.05.18.10.32.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 May 2026 10:32:19 -0700 (PDT)
+Date: Mon, 18 May 2026 17:32:10 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: David Matlack <dmatlack@google.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>,
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH v2 02/16] iommu: Implement IOMMU Live update FLB callbacks
+Message-ID: <agtNGieEnxNPxXEe@google.com>
+References: <20260427175633.1978233-1-skhawaja@google.com>
+ <20260427175633.1978233-3-skhawaja@google.com>
+ <afUe71D8JfgmA0BG@google.com>
+ <agsHFbI_FQEXiZAA@google.com>
+ <agtHykqDImuLL6nU@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE4MDE2OCBTYWx0ZWRfX19nDBKIWc5uE
- VdBGE0c0OXXISKdqZC7tHdCIt4XKR4avOkHayvzBlK1VMSXC1ezf4WQCO+ftn5AP0HW41KGiG30
- f32X1KxrrfvX05L/HC1wd30BqaYYIKBQSZ6lzAjIbWtMVvj7x7FhOE2yLsN/5+0zF1zp2QPo9m8
- a4yxG3siO8vGk6kETsrAyLYjaDcIbgNFM9qreujj+0qPaP2+Uyn12fBrUEmpvNr1v4JE6VN/tqp
- 7M8yYBTKt1HFabgk/PQjY3Mm6J/5ZhqWveyDP3EV/fFz/Xj0pQO0bjoQGyP9mlhfnw9sa4+9oRa
- E1P/7Tp90ufiOIxARzPK3bpJTYP3I1hKuOBkYQ7RvMjmZuZgy5+yYs9zJtonPKTEa94MCgxd9kg
- Rn6tq0JMG0A+QQgiSMUyVXeNqPsNOiWI9hVeqQxnSNX2hx30aFItRUUR3Zl78rWoInpx3yaILNS
- FfDFjn4sZ9ENzZBwvbw==
-X-Authority-Analysis: v=2.4 cv=Np/htcdJ c=1 sm=1 tr=0 ts=6a0b4b93 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
- a=0FG1SPa2GpMCbKQmkacA:9
-X-Proofpoint-ORIG-GUID: VJkXXHD-Rm4T9iwLgQEW1JkzpXreE-Na
-X-Proofpoint-GUID: 6pIxFtW8DYzlGS5va2QeFQiUC0uDiSW3
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-18_03,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0 clxscore=1011 priorityscore=1501 impostorscore=0
- lowpriorityscore=0 suspectscore=0 adultscore=0 phishscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605180168
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <agtHykqDImuLL6nU@google.com>
 
-GCC 16 has tightened const-correctness checking and now correctly
-rejects attempts to modify or assign const-qualified pointers without
-proper qualification. This series fixes two such violations that cause
-build failures with GCC 16 when using -Werror=discarded-qualifiers.
+On Mon, May 18, 2026 at 05:20:40PM +0000, Samiullah Khawaja wrote:
+> On Mon, May 18, 2026 at 12:33:25PM +0000, Pranjal Shrivastava wrote:
+> > On Fri, May 01, 2026 at 09:45:19PM +0000, David Matlack wrote:
+> > > On 2026-04-27 05:56 PM, Samiullah Khawaja wrote:
+[snip]
+> > > 
+> > > > +static int iommu_liveupdate_flb_retrieve(struct liveupdate_flb_op_args *argp)
+> > > > +{
+> > > > +	struct iommu_flb_obj *obj;
+> > > > +	struct iommu_flb_ser *ser;
+> > > > +
+> > > > +	obj = kzalloc_obj(*obj, GFP_KERNEL);
+> > > > +	if (!obj)
+> > > > +		return -ENOMEM;
+> > > 
+> > > Should this be considered fatal for the same reason
+> > > iommu_liveupdate_restore_array() is considered fatal? If anything in
+> > > iommu_liveupdate_flb_retrieve() fails then the risk of corruption as
+> > > described in iommu_liveupdate_restore_array() is possible.
+> > > 
+> > 
+> > Righ... Nice catch. I suppose we should BUG_ON() this because
+> > luo_flb_file_finish_one [1] returns void. Thus, if we return -ENOMEM
+> > here all we get is a WARN_ON without panic.
+> 
+> The error is propagated by get_flb_incoming(). The finish path has a
+> WARN. But that is fine because finish won't be called as can_finish()
+> will fail if FLB retrieve fails and restore cannot be done.
+> 
+> I will add a comment about this here.
 
-Both patches follow the same approach: changing local variables to
-const-qualified types and using GLib string functions (g_strdup,
-g_strndup, g_strstr_len, g_getenv) that work correctly with const
-strings, eliminating the need for in-place modifications.
+Ack. I was looking at the finish path as it doesn't propagate the error.
+but it won't be called ig. I assumed that there should be no good 
+situation at boot that would cause -ENOMEM. 
 
-Changes in v3:
-- Harsh: g_strndup will abort the program in case of OOM eventually making it a
-  dead code. Additionally, typecase (suffix - cname). Also, unlikely() is not
-  needed.
-    - Remove error handling (GLib functions abort on allocation failure)
-    - Remove unlikely() macro (provides no benefit in initialization code)
-    - Typecast (suffix - cname)
-- Update the commit messages accordingly
-- v2: https://lore.kernel.org/all/20260511131018.102168-1-vaibhav@linux.ibm.com/
+In case we're not panicking for an -ENOMEM and letting the user decide,
+adding a comment would be great.
 
-Changes in v2:
-- Avoid pointer aliasing
-- Handle memory allocation failure error
-- v1: https://lore.kernel.org/all/20260504134344.38958-1-amachhiw@linux.ibm.com
-
-Tested on:
-- GCC 16.1.1 (no warnings with -Werror=discarded-qualifiers)
-- GCC 15.2.1 (backward compatible)
-
-Amit Machhiwal (2):
-  target/ppc/kvm: Fix const violation when trimming CPU alias suffix
-  tests/qtest/libqtest: Fix const violation in qtest_verbose()
-
- target/ppc/kvm.c       | 11 +++++------
- tests/qtest/libqtest.c |  9 ++++-----
- 2 files changed, 9 insertions(+), 11 deletions(-)
-
-
-base-commit: ac6721b88df944ade0048822b2b74210f543d656
--- 
-2.50.1 (Apple Git-155)
-
+Thanks,
+Praan
