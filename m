@@ -1,82 +1,82 @@
 Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3015B38AC9A
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 18:55:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E521D39280C
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 19:08:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779130556; cv=none; b=Nt/CwIrNHQXFGJmHC8RebVqV1MgHSeXcz35kPmGwdkB6HU5vh3XKu2RG0bAkhx2DidYlUW2SEhblu18sWrrwRiVcK8PPCynJ+IUpqL6TSP70bSl1y+Y3lkHsjUUfvba+g8/Z+z/QTowYChZbUivyMf/2urPNm9ig4bhg/2KPIlI=
+	t=1779131289; cv=none; b=klyWTRZrFXzutdoR1tSNENqaA2H/VOht9/AcQ6MT5/gvuwrbG88pTM4S1+X1nb+rSg/9irM10ZSPSnj6STbBbR9iL4XQJy+6N/nqggNS3JjJotgjAY+q4RnHgzbe0UwtIIFC5+lc2m7Pvw0LuIzVmFXYiiqScIi9GTGM4z9ht5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779130556; c=relaxed/simple;
-	bh=haAsUB2P2dMZXBWY/VxFwqzdDlbH/EE+xsFbEoz18JY=;
+	s=arc-20240116; t=1779131289; c=relaxed/simple;
+	bh=E3Kryer03O2/9Oyd1Uw9KKyE+KASGqSz2vSPV4e+764=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P4COhwav4ieTGSVItgdX7iGqhAFFmgH963a2Ynj8MlyL5UDu6Vhy6afTW02TaGUHs0Oq9vuBePn9sby7WLT4emaCg+OzZ4aQSlEyEg69a5PM2w//ItDc+wCjbM7jQIK5smqxSo207vTI5V7dyh7JDDjwq0E5JmclU1pL7NrODok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qLxLNpw0; arc=none smtp.client-ip=209.85.214.170
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vp/d7qoP2K97LKI1u8LTGki003l6LoT5UVcsgETGEou4KXyGqIUYygKB17MiXMoP9GALiHJo3eaUbign9L4sOqJlo9mFgvhhBojjFizIPCjOwALW9bHR44qNVUAYQcUCku9vgf+2ZZVRrPZnfMyQHQNdPD2NGDmGBassd0oAHSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=p6qI5u9s; arc=none smtp.client-ip=209.85.214.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qLxLNpw0"
-Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2ba3b9bcf69so145ad.0
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 11:55:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="p6qI5u9s"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-2b2e8b95bdbso1085ad.0
+        for <kvm@vger.kernel.org>; Mon, 18 May 2026 12:08:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779130554; x=1779735354; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779131286; x=1779736086; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=N8E7VNGYLDNKxW/Ot3tdafHEntRbQFW1KJ60umQhURs=;
-        b=qLxLNpw0rzfB24LC3wkoeSwtOCEYy24DFL9ydIBwyMHgqESR8DmoDUQEseVlmQKQ5d
-         ZcAkKH+bZeJni5tlZT2bCmtgrJqRbbz2h51NaYtBw05gJE2URt1gZiBHI4i97jg+6auD
-         Vo/dO/p9iwaGsl+yXswFAILi92tYf6rDZoM43WakuDElGq1L2Qi9fF0yi6SzzFy903mT
-         z+4X5DTLGMgDkHEMhj9Kth4E+XYS9oEir3uMGICcl8iIqhJwPmTNCjzy/te3Ge9Yy7gE
-         EEUFmNTF5zX8OQ5sqy2tmhs4OzNO9tKyi7DyR6O/gXcLdcR3w87l5BQZ88UkjbJJc9Yq
-         lRzw==
+        bh=9ZU0H6rmWmp4oi8XbArQtxOYDJ2GP70DX/0QfuCGiOE=;
+        b=p6qI5u9sMGK+mVgPNudq7z300tibNdUYHgyHqBnst0NPLl3/b6Wp8K5FYPp8BzysEg
+         gEBVYDwmFjiBtGU/hUNgo/j936wGicRlR2sxXm48+BdP3bd+i+1nHfJWVzgJwffzmfho
+         Q7s1kaK/xLD288kdnTFVniOGByxEZh9KuUZOEj3bsTurhEmuyumNBF62aiMmSxSik2yG
+         LVJyneu3LrKca915ix0jVRY/QqEFOQARaxB5omFiG5JjvLYbazjClJ5+fkFlowprKq2K
+         wmS98Ibiu9BoQ7gloY9qzulK1fzc6+LE+UVLxt4KEJ4zH07/l4PxL4QQOhMb1xc2PB79
+         T4wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779130554; x=1779735354;
+        d=1e100.net; s=20251104; t=1779131286; x=1779736086;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=N8E7VNGYLDNKxW/Ot3tdafHEntRbQFW1KJ60umQhURs=;
-        b=JMjbGdpEcsYTj7S1UxUTtNTgnO7Rr85iXFxibegfiQE3Or1dQkMTNSmotBVY3hza5h
-         LsDDQOielBR8kknRSaqxDLLUL0GpHn1n2nisUp8u0DG3yRfiO4v87QjSK4af4zqk59pI
-         V7nJsNXUBjQ5Y+a9x8HKTawYGis6Sy4BBYXc0KeqijxZVCiolONMC3pptm7IY/3CBOoK
-         7gVduFPLicM72GIEMhmyLkHtnEi6OKpI9vEOt5NTh7ojnYRyIN5aCIyIhksEpQNFcXsX
-         TB9xmpMVET60t/2De0sN5s4nzQQSeThAdbTJ2GxwXEcc6ybzXjvli7LdJ/UEJOkiBasE
-         snaQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9SRegV8YIZYeqlcyVee7HKuGmFA6gMR1Jp3EHuxpvRwYrRU6BUS3CBQaFu3jd/s+P4okI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw9SI5mwXsiJy5hjgikTB5yStbRTmmDgamL+9P3YhKyx3+lUc61
-	U+jS+zgT2A2QoUYdIZ5OVCt0wgt3C/H8VAHp+/GsBe1QmUGashw9kGRrKx+an+PSMQ==
-X-Gm-Gg: Acq92OF0iJummKTmqesBlvjQp21KC/ik1XTqxWLz3AUbHFGNV3kMtqjDuLCWZFj/D+R
-	V4h1LuDgvypHaddASqXIypODhnhDY6GrBeAAhrkLxd09DCWiZtyduNJtOMte13eusRslxqDI5RN
-	i9BnNslD6iqng3jpVxLtI1VWHS6WsPnYDHhUrhaF8sQ9NGbkbsyyK0LYXEebNwqg2w1ISvSdRfY
-	WEHh3OEOn/zZSY+0dIycMz4glF/igGogQdXvjNdvXIRmAOeV+Y96ttYnpPhIqYAgFAPoHPtzyNi
-	XGNRL2hFxM7l9/KVK383jWnz9Os1LjQWH1HPkiC7btuB62jtRrDEBQMTh2hRx4j6apyXoOnBEZi
-	6ZTYXboMLo0fsS/oaaLQcU7DXXAxsFKW3V4zpNE9mDESYJBDeOIkiy5hAdgpwYqZiBg1ouDfAFB
-	Yn0SmL9mlYLQ0cgJ0tV+UMVhJDcQQHFrkrdLC7eYlgoFUlz/oxRyOTIbulxqUDQUliz1mpAg==
-X-Received: by 2002:a17:902:d512:b0:2bc:dc0b:ab29 with SMTP id d9443c01a7336-2bdb0109472mr3404845ad.0.1779130553814;
-        Mon, 18 May 2026 11:55:53 -0700 (PDT)
+        bh=9ZU0H6rmWmp4oi8XbArQtxOYDJ2GP70DX/0QfuCGiOE=;
+        b=pKckOudUWSYCP1KQrmgw/dqh2tBrV+SqeI37J+pkXQrNeijWXjzZRU9MDlpyHzljLX
+         lOcHC1Bv3qmH1myWBF4fjXhQ5TpjajZYIpy2Gmbe4yzkKd8Y0gzuMCj+8lrAUEFbHXne
+         JveV82r0Ez1q55lEte63BPayonusxGt7ZgaEftTNV7h7xXMGjjf+Y548KEXHD775H94H
+         Rp0djbTR8C5StCtB5xLG7PkdQmisMRMyfTVRPp9nq54WvtQDHlLKh3WlbrBmIoF/QXe1
+         tNpCmigdeVbn3OpSuWu5MOfJ0RCYP0MNUS9xaAguEoon3njXKGM5JFQ62NaEzUPnKFJG
+         PRYg==
+X-Forwarded-Encrypted: i=1; AFNElJ99Ig0ucD9M7S3ueOrWE0hoGnj4SaIgLVoQ8JmHwFSRFm0zY54y5JNg7ZCp2FdDwxpDMFQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yydw4UbvzwRKyynAI39dbUBSllkWlavC3NeUmv169oJEUM1zccG
+	VmSk2gnBmd23nbXcKRi6esLefV5LnIu5nyA+H+VpvMj4c0Ve/iGPnYi/8GPbfksMQw==
+X-Gm-Gg: Acq92OEFQkhuYWBD4LBfxqh8YGkZWqEjc09rxobNfLgJ6IDRWaNQc3/KqmRGu+TM3Am
+	f4LJ6CAl1KOCHyeSKOD6FDUA/mtpFe0iVReyXNNjvlPU6IxJaXAMCsTujGmPMwfWJJ6bdJidTMn
+	qwleMfHDAHc8+CLgRTY0XjpwK/l4V4HUqwP7rirLMv49LQgvdWIWskKPfw3716/UEyQxo0tn+jO
+	i7CEyIQ0OCf+QvhQPVvsRZM2z8V1CCIiG/LyXEM+UFdxR96FzVaajleJQ/dIndkg3SvdSyx3OYn
+	NekfY50mFUNWZCzIuxPQQxmLpwnec08rI2mwDUqB4M8n+ihdR5TdjCq0zUBvMkfGU+J0B1Kymfp
+	5e6gSudHjVkHfoTUgsQmL299uZmz1fm+aae52qzzmOVTW3/oVy0P6SQun+WT+UdgByks8iq6IsA
+	awSlyfdNVBAjNXPLnLOfVgUbactgH0ixQsK4qIoCdgezOT3UOPwJ0jlPmsESRRdnAmKK7iHQ==
+X-Received: by 2002:a17:903:46ce:b0:2bd:9e75:9e98 with SMTP id d9443c01a7336-2bdb329b484mr3857735ad.9.1779131285670;
+        Mon, 18 May 2026 12:08:05 -0700 (PDT)
 Received: from google.com (153.46.83.34.bc.googleusercontent.com. [34.83.46.153])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5d11c7f3sm154208605ad.70.2026.05.18.11.55.53
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c82bb07b007sm14148605a12.11.2026.05.18.12.08.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 11:55:53 -0700 (PDT)
-Date: Mon, 18 May 2026 18:55:50 +0000
+        Mon, 18 May 2026 12:08:05 -0700 (PDT)
+Date: Mon, 18 May 2026 19:08:01 +0000
 From: Samiullah Khawaja <skhawaja@google.com>
 To: Pranjal Shrivastava <praan@google.com>
 Cc: David Woodhouse <dwmw2@infradead.org>, 
 	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
-	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
-	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
-	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
 	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
 	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
-	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
-	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, David Matlack <dmatlack@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>, 
 	YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH v2 03/16] iommu: Implement IOMMU domain preservation
-Message-ID: <agtenWUBOVosDCTU@google.com>
+Subject: Re: [PATCH v2 01/16] liveupdate: luo_file: Add internal APIs for
+ file preservation
+Message-ID: <agth8vZh96TfEYl_@google.com>
 References: <20260427175633.1978233-1-skhawaja@google.com>
- <20260427175633.1978233-4-skhawaja@google.com>
- <agsQE1lFGdo-b_IF@google.com>
+ <20260427175633.1978233-2-skhawaja@google.com>
+ <agr6yoyYYq2QFxjL@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -85,171 +85,106 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <agsQE1lFGdo-b_IF@google.com>
+In-Reply-To: <agr6yoyYYq2QFxjL@google.com>
 
-On Mon, May 18, 2026 at 01:13:49PM +0000, Pranjal Shrivastava wrote:
->On Mon, Apr 27, 2026 at 05:56:20PM +0000, Samiullah Khawaja wrote:
->> Add IOMMU domain ops that can be implemented by the IOMMU drivers if
->> they support IOMMU domain preservation across liveupdate. The new IOMMU
->> domain preserve, unpreserve and restore APIs call these ops to perform
->> respective live update operations.
+On Mon, May 18, 2026 at 11:40:58AM +0000, Pranjal Shrivastava wrote:
+>On Mon, Apr 27, 2026 at 05:56:18PM +0000, Samiullah Khawaja wrote:
+>> From: Pasha Tatashin <pasha.tatashin@soleen.com>
 >>
+>> The core liveupdate mechanism allows userspace to preserve file
+>> descriptors. However, kernel subsystems often manage struct file
+>> objects directly and need to participate in the preservation process
+>> programmatically without relying solely on userspace interaction.
+>>
+>> Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
 >> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
->> ---
->>  drivers/iommu/liveupdate.c       | 97 ++++++++++++++++++++++++++++++++
->>  include/linux/iommu-liveupdate.h | 14 +++++
->>  include/linux/iommu.h            | 13 +++++
->>  3 files changed, 124 insertions(+)
->>
->> diff --git a/drivers/iommu/liveupdate.c b/drivers/iommu/liveupdate.c
->> index a26099b145c3..f71f14518248 100644
->> --- a/drivers/iommu/liveupdate.c
->> +++ b/drivers/iommu/liveupdate.c
->> @@ -13,6 +13,9 @@
->>  #include <linux/iommu.h>
->>  #include <linux/errno.h>
->>
->> +#define iommu_max_objs_per_page(_array) \
->> +	((PAGE_SIZE - sizeof(struct iommu_array_hdr_ser)) / sizeof((_array)->objects[0]))
->> +
->>  static void *iommu_liveupdate_restore_array(u64 array_phys)
->>  {
->>  	struct iommu_array_hdr_ser *array_hdr;
->> @@ -196,3 +199,97 @@ void iommu_liveupdate_unregister_flb(struct liveupdate_file_handler *handler)
->>  	liveupdate_unregister_flb(handler, &iommu_flb);
+>
+>[..]
+>
+>> @@ -924,3 +931,65 @@ void liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
+>>  	luo_flb_unregister_all(fh);
+>>  	list_del(&ACCESS_PRIVATE(fh, list));
 >>  }
->>  EXPORT_SYMBOL(iommu_liveupdate_unregister_flb);
+>> +EXPORT_SYMBOL_GPL(liveupdate_unregister_file_handler);
 >> +
->> +static int alloc_object_ser(struct iommu_array_hdr_ser **curr_array_ptr, u64 max_objs)
+
+[snip]
+>> +
+>> +/**
+>> + * liveupdate_get_file_incoming - Retrieves a preserved file for in-kernel use.
+>> + * @s:      The incoming liveupdate session (restored from the previous kernel).
+>> + * @token:  The unique token identifying the file to retrieve.
+>> + * @filep:  On success, this will be populated with a pointer to the retrieved
+>> + *          'struct file'.
+>> + *
+>> + * Provides a kernel-internal API for other subsystems to retrieve their
+>> + * preserved files after a live update. This function is a simple wrapper
+>> + * around luo_retrieve_file(), allowing callers to find a file by its token.
+>> + *
+>> + * The caller receives a new reference to the file and must call fput() when it
+>> + * is no longer needed. The file's lifetime is managed by LUO and any userspace
+>> + * file descriptors. If the caller needs to hold a reference to the file beyond
+>> + * the immediate scope, it must call get_file() itself.
+>
+>Thanks for re-wording this and I'm sorry for being a stickler here, I'm
+>a bit concerned that the last part here might lead to reference leaks in
+>downstream drivers.
+>
+>Looking at the underlying luo_retrieve_file() implementation [1], it
+>explicitly calls get_file() before returning the pointer (both on the
+>initial retrieve and on cached ones). This means the caller inherently
+>receives a reference that they own & the caller is responsible for
+>exactly one fput().
+>
+>However, that last part of the comment can be misunderstood as the caller
+>doesn't hold a lasting reference unless they call get_file() themselves.
+>This makes the reader assume that LUO is going to automatically reap
+>that initial reference from them.
+>
+>If a driver author assumes LUO is going to reap it, they will follow that
+>last sentence and call get_file() to stash the pointer safely. They might
+>end up holding two references (thinking one of them will be reaped), and
+>could ultimately leak the struct file when they only call fput() once
+>during teardown.
+>
+>Should we just drop that last sentence to make the lifecycle contract
+>unambiguous? (i.e., The caller gets a newly bumped reference, and they
+>are responsible for exactly one fput() per call).
+
+I think these are all valid points. I will remove the last sentences for
+clarity.
+>
+>> + *
+>> + * Context: It must be called with session mutex acquired of a restored session.
+>> + * Return: 0 on success. Returns -ENOENT if no file with the matching token is
+>> + *         found, or any other negative errno on failure.
+>> + */
+>> +int liveupdate_get_file_incoming(struct liveupdate_session *s, u64 token,
+>> +				 struct file **filep)
 >> +{
->> +	struct iommu_array_hdr_ser *curr_array = *curr_array_ptr;
->> +	struct iommu_array_hdr_ser *next_array;
->> +
->> +	if (curr_array->nr_objects >= max_objs) {
->> +		next_array = kho_alloc_preserve(PAGE_SIZE);
->> +		if (IS_ERR(next_array))
->> +			return PTR_ERR(next_array);
->> +
->> +		curr_array->next_array_phys = virt_to_phys(next_array);
->> +		*curr_array_ptr = next_array;
->> +		curr_array = next_array;
->> +	}
->> +
->> +	return curr_array->nr_objects++;
+>> +	return luo_retrieve_file(luo_file_set_from_session_locked(s),
+>> +				 token, filep);
 >> +}
->> +
->> +static struct iommu_domain_ser *alloc_iommu_domain_ser(struct iommu_flb_obj *flb)
->> +{
->> +	int idx;
->> +
->> +	idx = alloc_object_ser((struct iommu_array_hdr_ser **)&flb->curr_domain_array,
 >
->Nit: Such type-casts could be brittle and risk strict-aliasing warnings
->based on the compiler.
+>Nit: Shouldn't we export both of these functions via EXPORT_SYMBOL_GPL?
+>Since, these new APIs are intended for kernel subsystems to participate
+>programmatically, there could be IOMMU drivers (or others) that can be
+>compiled as loadable modules. Thus we should export these APIs via
+>EXPORT_SYMBOL_GPL(). If they aren't exported, any loadable module
+>attempting to use them will compile successfully (due to the header), but
+>will fail to load at runtime with an Unknown symbol error.
 >
->Since alloc_object_ser only updates the top-level tracking pointer, we
->can make this much cleaner by changing alloc_object_ser to take a
->void curr_array_ptr. That way, we can pass (void )&flb->curr_domain_array
->cleanly without the double-pointer type-punning. Something like:
->
->static int alloc_object_ser(void **curr_array_ptr, u64 max_objs)
->{
->	struct iommu_array_hdr_ser *curr_array = *curr_array_ptr;
->	struct iommu_array_hdr_ser *next_array;
->
->	...
->}
->
->and we can pass it as:
->
->idx = alloc_object_ser((void **)&flb->curr_domain_array,
->		       iommu_max_objs_per_page(flb->curr_domain_array));
->
+>IIUC, if a function isn't exported with EXPORT_SYMBOL, it remains hidden
+>inside vmlinux, (i.e. it isn't in the kernel's global symbol table used
+>during modprobe).
 
-Agreed. I will update this (including other places).
->> +			       iommu_max_objs_per_page(flb->curr_domain_array));
->> +	if (idx < 0)
->> +		return ERR_PTR(idx);
->> +
->> +	flb->curr_domain_array->objects[idx].hdr.ref_count = 1;
->> +	return &flb->curr_domain_array->objects[idx];
->> +}
->> +
->> +int iommu_domain_preserve(struct iommu_domain *domain, struct iommu_domain_ser **ser)
->> +{
->> +	struct iommu_domain_ser *domain_ser;
->> +	struct iommu_flb_obj *flb_obj;
->> +	int ret;
->> +
->> +	if (!domain->ops->preserve)
->> +		return -EOPNOTSUPP;
->> +
->> +	ret = liveupdate_flb_get_outgoing(&iommu_flb, (void **)&flb_obj);
->> +	if (ret)
->> +		return ret;
->> +
->> +	guard(mutex)(&flb_obj->lock);
->> +	domain_ser = alloc_iommu_domain_ser(flb_obj);
->> +	if (IS_ERR(domain_ser))
->> +		return PTR_ERR(domain_ser);
->> +
->> +	ret = domain->ops->preserve(domain, domain_ser);
->> +	if (ret) {
->> +		domain_ser->hdr.deleted = true;
->
->Nit: This will become domain_ser->hdr.flags |= IOMMU_SER_FLAG_DELETED;
->once we convert the bitfields in PATCH 2 to flags.
+Agreed. Will Update this.
 
-Agreed. I think it is being discussed that bitfields are fine in the
-other thread, but I will switch it to flags for readibility anyway.
->
->> +		return ret;
->> +	}
->> +
->> +	domain->preserved_state = domain_ser;
->> +	*ser = domain_ser;
->> +	return 0;
->> +}
->> +EXPORT_SYMBOL_GPL(iommu_domain_preserve);
->> +
->
->[...]
->
->>  static inline bool iommu_is_dma_domain(struct iommu_domain *domain)
->> @@ -752,6 +757,11 @@ struct iommu_ops {
->>   *                           specific mechanisms.
->>   * @set_pgtable_quirks: Set io page table quirks (IO_PGTABLE_QUIRK_*)
->>   * @free: Release the domain after use.
->> + * @preserve: Preserve the iommu domain for liveupdate.
->> + *            Returns 0 on success, a negative errno on failure.
->> + * @unpreserve: Unpreserve the iommu domain that was preserved earlier.
->> + * @restore: Restore the iommu domain after liveupdate.
->> + *           Returns 0 on success, a negative errno on failure.
->>   */
->>  struct iommu_domain_ops {
->>  	int (*attach_dev)(struct iommu_domain *domain, struct device *dev,
->> @@ -782,6 +792,9 @@ struct iommu_domain_ops {
->>  				  unsigned long quirks);
->>
->>  	void (*free)(struct iommu_domain *domain);
->> +	int (*preserve)(struct iommu_domain *domain, struct iommu_domain_ser *ser);
->> +	void (*unpreserve)(struct iommu_domain *domain, struct iommu_domain_ser *ser);
->> +	int (*restore)(struct iommu_domain *domain, struct iommu_domain_ser *ser);
->
->Nit: Should we add restore in the patch we implement it?
-
-The ops are implemented in iommupt (separate scope) and it is done after
-the iommu pages patch as that is also required for it.
->
->>  };
->
->With the above nits,
->
->Reviewed-by: Pranjal Shrivastava <praan@google.com>
-
-Thanks Pranjal.
+I think there are other LUO APIs that are not exported and can be used
+by modules. Let me check those also.
 >
 >Thanks,
 >Praan
-
-Sami
+>
+>[1] https://elixir.bootlin.com/linux/v7.0-rc3/source/kernel/liveupdate/luo_file.c#L560
+>
