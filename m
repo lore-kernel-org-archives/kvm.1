@@ -1,181 +1,132 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com [35.162.73.231])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B61548A2CA
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 14:01:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 089243603E0;
+	Mon, 18 May 2026 14:02:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=35.162.73.231
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779112900; cv=none; b=FD/hAMGPb8J3TSIUgtRPMD+YaKoqtvk23pDVZD8VeDCUnAuUbGcVvXYBCjd6NyAPdtXrhJxS+wug3jRhAS4rhDdOb/cT77r+V7vZFLs0to8J6Ld6e8oh5tI0SnliARggdzE9PrlzvjDn0GgPCpVHnuobyWIAvKqLpDRKjSi0/80=
+	t=1779112962; cv=none; b=ISBZ+ZVH1aHBH2U0bDAOwZ5zxu+m713SVZvVIuDWFfGK6wdz/eTJX2wx71RMvydMxA+/ZpcpP2itnvV75/rBDuss6N16UcQHNdvrLB1WyQh1KdFX2Y1Rt75FmQ486md9ER+azr2EqiTvg70py5Qtq0yfT9MFACdJ9+EMyysN0V8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779112900; c=relaxed/simple;
-	bh=pDXXz1TH87s1IivcdxWzN8kqNDaLaW3x0g7egMGT/II=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XuKhXUbtlzMBTqtd6N29tW0ODjsAhSFXLNOjcl1v7wZsAN3ozbZts4CUM6Z2QfgQHuafEWYUOEvW0McZFUQJPLJHk//PO+Fh4MCaQIRH+vuXyxGECKoc524wF3Dkcgd7CRmNQx3fyJ7mWqItVXO6KbLI//hdtWQqpkdusaVZwcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Kk5GTAF8; arc=none smtp.client-ip=209.85.214.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1779112962; c=relaxed/simple;
+	bh=MBOe3M8vC36FSXeMstxja8WsC6C5ofZEdm1O6XyYQHg=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=byMhh5GuyiTlZMJRF9nKRQ5b96U5tvQOm4yAd2eQQkRjWR/34K/UN2ZJmWdIS2D1DiqXYpA5dGuSbLTjjDQDwe0vpnzNkehXLfll1YkwSSWjMPo1Nbo9yEzIXBIz5quDfkwLzoalxo4CTg/FDTy4tBM/7HPm3quIweyzDEs55Po=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de; spf=pass smtp.mailfrom=amazon.de; dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b=DVz8fyVc; arc=none smtp.client-ip=35.162.73.231
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Kk5GTAF8"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-2ba180a022dso1295ad.1
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 07:01:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=amazon.de header.i=@amazon.de header.b="DVz8fyVc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779112898; x=1779717698; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=J/DDwNmydnZ95awbzSL1/xD68dz5V6Sw49Abl3+3NpU=;
-        b=Kk5GTAF8yZbICqo34orGOy7kAHN/xjMcb6DHedlQsj3x1cofzUCsDLw318LfVZWlNN
-         0jdbMplSr59a21y0H+Xp/l/A5q7Ecj6QR5rpUw3RlZ7W8qq8hT0UUlo8P6UatE/cTLXD
-         F+09V2EiXFiEN7EeppU5C06mHn9pmazd2mr9Q29itqEu72QdMt6beugOPYPZ8k65dNqD
-         U0OpQ82RZWeJTSfwIm7suEqZY0ODtpaiPPS/dlBKnVmNgb4xdKJDmmDGexkZ9ru0mqL3
-         P5auiMXerMLsE6TXd83qHzjVYfSKUArsWDvYlzG1I9F+j2LoRrjyW6f8hIeaf3UPB/wM
-         mC8w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779112898; x=1779717698;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=J/DDwNmydnZ95awbzSL1/xD68dz5V6Sw49Abl3+3NpU=;
-        b=N4Kh1fukpf+8r7EBXWESCjyZPwDKMfKc6SgpV5LIcW94cJEU09XYQ1oqW9+3Jva2TZ
-         m8Q2Zwi25/aqioaABIDB5tWSSq62ITf4v+1a09h6OPYnH8tfUT49dgtVONVrwBJeuzTf
-         vJWl+TPSjDCUAN4C52YndFQM1G+Bp2p80Mr1AEkzoSI2BQGaNl/HB0FvhI6d9jndY8ie
-         G/HZ34xQXvxWAlxZIpgNqVDEgIqikxwtVHtIqwKzAE2coZJYPlcdrzhfQRX4bx7MSUwM
-         ZOopKUfp7F9UOG1pg94Vwa1F4bIdhfl13xk+S/9zAsEsMhu18cxyoHedu0LLOtoUqt85
-         tvNQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+y+CkQsx69E4J8fqFVisC0hRd9fk5v6NdZ3Y3R+LldSyLaZgRUAveZ/oMjdQzm0NPwqGA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxCZ7fKPeQ+vV1ApV136UJL4aEK6VfjRbstx0jleytONndFGqSK
-	6fV8fPj9WGcvMlQhkQjVvM5eCuDy0BGvnRQ+3Mkval39sUrzUVxIk1z3meEjdSLNcQ==
-X-Gm-Gg: Acq92OH/bmRkOKfcsSFxTF+gKRchKEG/d7EjMSf2mQh02OeI1nx+bNvqAZrPeKBDXO9
-	AFCVl/Ode+/bnTf/zaekI4GUI+i1S1Tc0hamGXYkIRCAo70hC+iwW8Bu9lHhZ6z/1SWgvPwJYWB
-	lyZr3WOZlYu6GJtdojVxDseWUeP+CzQl/2AtoH1DkJpaBxL7MybaoJVfqzXEh96dZamZQV9kpLG
-	/UCuhd41BDMeAmt6Wwg/LilGNR1Hu7T28KdaWe9Ineg5c87yaSu6/m6utndKBKnO7fMwc8neR74
-	hl7i6u7O8HniZEhbPgQhJL1ofLVmWgrImJpP986ZMDITjYBOSGd84XoiXDCFlQcZm3lAUrNMtCN
-	Za0RY5tc5ZQh0RMe+Fjqi/MSgECIzOeG3ZTGjG94wH2q/e4qoEaGGo2yvWjwJLF3hT+xswKncvF
-	FaS8LXcCvCBogCpSUsFB6dyjM0m4GOTUP47lpdaeStyJwYl2nwRw8j3Dns3zRnJGEMvQ8/
-X-Received: by 2002:a17:903:fa6:b0:2bd:a61:8536 with SMTP id d9443c01a7336-2bdb03a448amr2847385ad.6.1779112895495;
-        Mon, 18 May 2026 07:01:35 -0700 (PDT)
-Received: from google.com (44.234.124.34.bc.googleusercontent.com. [34.124.234.44])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5d11b495sm159037515ad.69.2026.05.18.07.01.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 07:01:34 -0700 (PDT)
-Date: Mon, 18 May 2026 14:01:25 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: Baolu Lu <baolu.lu@linux.intel.com>,
-	David Woodhouse <dwmw2@infradead.org>,
-	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Parav Pandit <parav@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	David Matlack <dmatlack@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>,
-	YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH v2 04/16] iommu: Implement device and IOMMU HW
- preservation
-Message-ID: <agsbtV4oargwX45d@google.com>
-References: <20260427175633.1978233-1-skhawaja@google.com>
- <20260427175633.1978233-5-skhawaja@google.com>
- <3874a086-98ae-4b94-8c1b-20e13f5a92fb@linux.intel.com>
- <afzcqWa8iVqrhJLs@google.com>
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazoncorp2;
+  t=1779112961; x=1810648961;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=2Wgj2cmiHagcd8CnnxIkijliXY8iTZAznD+B4zMkJaA=;
+  b=DVz8fyVc3RtjtEOx5Mbb1v3sOAocM209rNsmMABn6Kz0WcBj7OCyDNWr
+   JSucjPTw/FemJ2OsIOiHqbxcQ8DFCQ/QjROgzCFV664VJGSJng5n9TPER
+   E2Ujd8Uw30W0TevdSH2bDYkrkDsvzAAosRgqICBvWzee90/xEcfGxlDPU
+   f2G+P4cM36mcB3PA0QE7AAMPt16NnwgQvSbeCvN6SKC9iGTTDMP2Kygai
+   5W4NIdk4uTRIKGcTEWVtnaKFiKwUX45JgtxsiIaUJRAikU5KQIqsiDZN/
+   Sw6zijEDWJswblBHx0Xb8QjEznv8qlpuNqakTskj2nlHBKzOTlcKj/PBn
+   Q==;
+X-CSE-ConnectionGUID: XVKELTxtT/aSGO/lwRoU9A==
+X-CSE-MsgGUID: lvZ6S6D7QHmReVaYPiTPug==
+X-IronPort-AV: E=Sophos;i="6.23,242,1770595200"; 
+   d="scan'208";a="19697606"
+Received: from ip-10-5-9-48.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.9.48])
+  by internal-pdx-out-012.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 14:02:38 +0000
+Received: from EX19MTAUWC002.ant.amazon.com [205.251.233.111:27410]
+ by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.31.141:2525] with esmtp (Farcaster)
+ id a87cb414-3d81-4d43-9577-c149ac370216; Mon, 18 May 2026 14:02:37 +0000 (UTC)
+X-Farcaster-Flow-ID: a87cb414-3d81-4d43-9577-c149ac370216
+Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
+ EX19MTAUWC002.ant.amazon.com (10.250.64.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Mon, 18 May 2026 14:02:37 +0000
+Received: from dev-dsk-ehemily-1c-401a2257.eu-west-1.amazon.com
+ (10.253.103.254) by EX19D001UWA001.ant.amazon.com (10.13.138.214) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37; Mon, 18 May 2026
+ 14:02:34 +0000
+From: Emily Ehlert <ehemily@amazon.de>
+To: <seanjc@google.com>, <pbonzini@redhat.com>
+CC: <amit.shah@amd.com>, <tglx@linutronix.de>, <mingo@redhat.com>,
+	<bp@alien8.de>, <dave.hansen@linux.intel.com>, <hpa@zytor.com>,
+	<x86@kernel.org>, <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<nh-open-source@amazon.com>, <graf@amazon.de>, <nsaenz@kernel.org>, "Emily
+ Ehlert" <ehemily@amazon.de>
+Subject: [PATCH] KVM: x86: Fix ERAPS RAP clear on INVPCID single-context invalidation
+Date: Mon, 18 May 2026 13:59:56 +0000
+Message-ID: <20260518135956.82569-1-ehemily@amazon.de>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <afzcqWa8iVqrhJLs@google.com>
+X-ClientProxiedBy: EX19D041UWB002.ant.amazon.com (10.13.139.179) To
+ EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
 
-On Thu, May 07, 2026 at 06:47:07PM +0000, Samiullah Khawaja wrote:
-> On Thu, May 07, 2026 at 10:07:43AM +0800, Baolu Lu wrote:
-> > On 4/28/26 01:56, Samiullah Khawaja wrote:
-> > > Add IOMMU ops to preserve/unpreserve a device. These can be implemented
-> > > by the IOMMU drivers that support preservation of devices that have
-> > > their IOMMU domains preserved. During device preservation the state of
-> > > the associated IOMMU is also preserved as dependency.
-> > > 
-> > > Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
-> > > ---
-> > >  drivers/iommu/liveupdate.c       | 162 +++++++++++++++++++++++++++++++
-> > >  include/linux/iommu-liveupdate.h |  33 +++++++
-> > >  include/linux/iommu.h            |  20 ++++
-> > >  3 files changed, 215 insertions(+)
-> > > 
-> 
-> [snip]
-> > > +
-> > > +int iommu_preserve_device(struct iommu_domain *domain,
-> > > +			  struct device *dev, u64 *preserved_state)
-> > > +{
-> > > +	struct iommu_flb_obj *flb_obj;
-> > > +	struct iommu_device_ser *device_ser;
-> > > +	struct dev_iommu *iommu;
-> > > +	struct pci_dev *pdev;
-> > > +	int ret;
-> > > +
-> > > +	if (!dev_is_pci(dev))
-> > > +		return -EOPNOTSUPP;
-> > > +
-> > > +	if (!domain->preserved_state)
-> > > +		return -EINVAL;
-> > > +
-> > > +	if (!iommu_group_dma_owner_claimed(dev->iommu_group))
-> > > +		return -EINVAL;
-> > > +
-> > > +	pdev = to_pci_dev(dev);
-> > > +	iommu = dev->iommu;
-> > > +	if (!iommu->iommu_dev->ops->preserve_device ||
-> > > +	    !iommu->iommu_dev->ops->preserve)
-> > > +		return -EOPNOTSUPP;
-> 
-> I will check for unpreserve ops here also.
+Use kvm_register_mark_dirty() instead of kvm_register_is_dirty() to
+actually mark VCPU_EXREG_ERAPS as dirty when emulating
+INVPCID_TYPE_SINGLE_CTXT.  kvm_register_is_dirty() is a read-only
+predicate whose return value is discarded, making the call a no-op.
+Without this fix, a single-context INVPCID will not trigger a RAP clear
+on the next VMRUN, breaking the ERAPS security guarantee.
 
-[snip]
+Fixes: db5e82496492 ("KVM: SVM: Virtualize and advertise support for ERAPS")
+Signed-off-by: Emily Ehlert <ehemily@amazon.de>
+---
+Hi,
+we recently discovered a SVM bug where ERAPS are not properly cleared,
+this may have security implications. I attached an AI assisted security
+analysis.
 
-> > > +	pdev = to_pci_dev(dev);
-> > > +	iommu = dev->iommu;
-> > > +	if (!iommu->iommu_dev->ops->unpreserve_device ||
-> > > +	    !iommu->iommu_dev->ops->unpreserve)
-> > > +		return;
-> > 
-> > Is it considered a driver bug if it implements the preserve hooks but
-> > not unpreserve ones? This would at least cause a silent memory leak. How
-> > about adding a WARN like this?
-> 
-> I think the preservation should not be done if the unpreserve ops are
-> not implemented by the driver. I will add these checks in the _preserve
-> functions and return EOPNOTSUPP if it is not implemented by the driver.
-> > 
-> >    if (WARN_ON_ONCE(!iommu->iommu_dev->ops->unpreserve_device ||
-> >                     !iommu->iommu_dev->ops->unpreserve))
-> >        return;
-> 
-> We can add this warning here also.
+The bug is reachable when INVPCID is intercepted while ERAPS is exposed
+to the guest. When NPT is disabled then INVPCID is always intercepted
+when shadow paging is acive. ERAPS can I think be active while NPT is
+disabled (commit does not guard against it). So when triggered the
+consequence is that the guest retains stale RAP entries after the
+INVPCID call. A malicious guest could exploit this to speculatively
+influence return predictions of another process within the same guest
+underminding the ERAP security gurantee that the RAP is cleared in the
+PCID invalidation.
 
-I'd rather have the iommu device registration fail instead of solely
-relying on these WARN_ONs here. We can simply add a snippet inside
-iommu_device_register():
+Severity: Low-Medium.  Exploitation requires either an unusual host
+configuration (npt=0, which is primarily a debugging mode) or a nested
+virtualization setup with a cooperative L1 hypervisor.  The attack is
+intra-guest (guest process vs. guest kernel), not guest-to-host, since
+ERAPS hardware tagging still separates host and guest RAP entries.
 
-#ifdef CONFIG_IOMMU_LIVEUPDATE
-if ((iommu->ops->preserve && !iommu->ops->unpreserve) ||
-    (!iommu->ops->preserve && iommu->ops->unpreserve)) {
-        pr_err("IOMMU: %s: Asymmetric live-update operations detected\n",
-               dev_name(iommu->dev));
-        return -EINVAL;
-}
-#endif
+ arch/x86/kvm/x86.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-This prevents a half-baked iommu driver from ever spinning up, completely
-eliminating the need to check for it inside the live-update session paths.
-We anyway don't support hot-pluggable liveupdate ops atm.
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index fd1c4a36b5936..181a78c30260d 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -14207,7 +14207,7 @@ int kvm_handle_invpcid(struct kvm_vcpu *vcpu, unsigned long type, gva_t gva)
+ 		 * the RAP (Return Address Predicator).
+ 		 */
+ 		if (guest_cpu_cap_has(vcpu, X86_FEATURE_ERAPS))
+-			kvm_register_is_dirty(vcpu, VCPU_EXREG_ERAPS);
++			kvm_register_mark_dirty(vcpu, VCPU_EXREG_ERAPS);
+ 
+ 		kvm_invalidate_pcid(vcpu, operand.pcid);
+ 		return kvm_skip_emulated_instruction(vcpu);
+-- 
+2.47.3
 
-Thanks,
-Praan
+
+
+
+Amazon Web Services Development Center Germany GmbH
+Tamara-Danz-Str. 13
+10243 Berlin
+Geschaeftsfuehrung: Christof Hellmis, Andreas Stieger
+Eingetragen am Amtsgericht Charlottenburg unter HRB 257764 B
+Sitz: Berlin
+Ust-ID: DE 365 538 597
+
