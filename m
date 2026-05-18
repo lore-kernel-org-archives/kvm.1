@@ -1,323 +1,286 @@
-Received: from DM5PR21CU001.outbound.protection.outlook.com (mail-centralusazon11011038.outbound.protection.outlook.com [52.101.62.38])
+Received: from iad-out-005.esa.us-east-1.outbound.mail-perimeter.amazon.com (iad-out-005.esa.us-east-1.outbound.mail-perimeter.amazon.com [3.211.80.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43A5239A072;
-	Mon, 18 May 2026 21:44:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.62.38
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779140651; cv=fail; b=qj5rDa0KD5TYRa28IJUUYMpEj4DiaPni+cH+wh4+OXPErmtaObpSkOa01cf70w/GVNRnT3IfmX4exQvPzLn2yntdJLNJV+GKEqtLq2SCMt3FDRBi3UZC6uhkLtJsio5pMh/Ey/RdWOo8UBoTDTkmxEK2Ir6t5iqmYjFn/j6zYOQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779140651; c=relaxed/simple;
-	bh=jU6ySBvc1x9pPGB9Z+9RQR+yO4oIABXOmf9NjgppGg8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ATfR5y3CGP+9HYiJ1FVvBnJ6RAwqGAFzFh0y6opcotyUMN7ycnQNWHnBNtn5E9BdEk/1Xceh80jQin9UYs9uJyvis5Ov1QfNWHbsMezyG5oniOAf/i4UJtM4Ty71zyUgp+z1J5k4rZ74su+x1ptHcl6UJX00V7VB2e70CPqinJo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=RPWXa+cf; arc=fail smtp.client-ip=52.101.62.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4319839EF2A;
+	Mon, 18 May 2026 21:59:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=3.211.80.218
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779141597; cv=none; b=FjsU+4cpOgLOL+JKbsMsBAU8gVye8a4R7Xsd/gzA4zLnWc2ri+w8zKsATrqMVkdcvV9tThGI0RZc/HpXpu9sWaQgI3JdIeV5HVvhh7osxA0p8SVoKNjCRVOPzY35GozHIrf3mEpKOida763DvLYA0DKKFW7KqHn7V+uPrk7+Fp0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779141597; c=relaxed/simple;
+	bh=TKG+7enfOWlg2NAtDfgGxnJEzQymEnNdAzT7SQAP4Ww=;
+	h=Content-Type:MIME-Version:From:To:CC:Subject:Date:Message-ID:
+	 References:In-Reply-To:MIME-Version; b=k4caMPS+FtLN7DXc+reXxsmZ//vSZaW1y5AmdrYV3UIMrgAOT6z57LUp9sHzoOuNqJ21GsRb7IZGuvbq1WHu3mFMY+m3GNQeKNSuQWdFRQWZwmDUH8FZXWeFT5DpwvBh5+Rpd4MRt+pJIJXcL0P9ij7m3aMvSTcVr5S+hJTFnR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk; spf=pass smtp.mailfrom=amazon.co.uk; dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b=s034rcmG; arc=none smtp.client-ip=3.211.80.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.co.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.co.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="RPWXa+cf"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GlIX7MtOSEDpEW0DDlPga3CK/3j3dzhykMW11f1aZvX6oof/42uo2d9WllLJAnpsA8Ph3qqXFptmpkoooNtlYKnm+TtfSs/hAuEGFDqPyWnKg+EvQkFw6dSOAgpGtqBY1a9l7bkgv0v3ajbC+qXlvzpxHL8mJ8/IJLv1RtElArSj1361eNbrj3XHWPSPX1Eg0Y4iCHkXDFadTSfVxehsbdoSmcAHQSwkFrRdNMiRKln8cl799Xwc8rQNezI1qCH5ycyavXZ05ut5Ayj/1YDFTXb2/avT+FDJj5QJUbqnuzI42zg2Os8/Mtgrgs1Gyfvaw0S5Oqs56hf5pt/ebkCxqg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0eGlx4ZynLHtEwmiVPtxiIiMUHD9y8GF4XwtkTV/2oU=;
- b=WQYbEV5xy6FHnfCJeU8jre6iGbvU83KBr+24ULRyu3b3uhFeWpwS/qu1uXtzY+JRarOndDn5PzlvCFGxB8QhNbE6FQw30SI1bGeDUM/Vpm9aRK8ZxBqubnHEPxB3TQhg9/g88WrFsyiUcLtFxSTb/okJtkeNH1GMDA9ZcDlMUxICHv7PAPezqt4/HF6yvqcpTlYLiuzuysPJncRD9UQZaSFh5DUsEjqFWWTw6bIQ84FGe/o9y60XtXJGpjwXUHOp+SVeZAYd/e2mF7P+fhY2uudjzfhhR4pAwY3IZ0Jn9qjt6vbmlMwSWtXL9zKN23mv9k04AGml1Q0VS5Vlfwbfig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=0eGlx4ZynLHtEwmiVPtxiIiMUHD9y8GF4XwtkTV/2oU=;
- b=RPWXa+cfAEX38hK+1ZBaCz/zbXAd9cMbZfzrbj0AgIDKj1YuNh7P6f5aEpCimQlXNxge+v+fwHSMCiaZUxIMl0eZDmdhb5vBDKHphNXRx4vUKiKKoz1Cdy27MaJ1C0kyV5VS61TTvOvLexaagv3xVdX2JzNU0M8B64KZn+9QoVI=
-Received: from CH0PR03CA0415.namprd03.prod.outlook.com (2603:10b6:610:11b::26)
- by PH7PR12MB7891.namprd12.prod.outlook.com (2603:10b6:510:27a::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.23; Mon, 18 May
- 2026 21:44:00 +0000
-Received: from CH2PEPF0000009D.namprd02.prod.outlook.com
- (2603:10b6:610:11b:cafe::7d) by CH0PR03CA0415.outlook.office365.com
- (2603:10b6:610:11b::26) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.25.24 via Frontend Transport; Mon, 18
- May 2026 21:44:00 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- CH2PEPF0000009D.mail.protection.outlook.com (10.167.244.25) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.48.11 via Frontend Transport; Mon, 18 May 2026 21:44:00 +0000
-Received: from nigeria-2635-os.amd.com (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Mon, 18 May
- 2026 16:43:59 -0500
-From: Ashish Kalra <Ashish.Kalra@amd.com>
-To: <tglx@kernel.org>, <mingo@redhat.com>, <bp@alien8.de>,
-	<dave.hansen@linux.intel.com>, <x86@kernel.org>, <hpa@zytor.com>,
-	<seanjc@google.com>, <peterz@infradead.org>, <thomas.lendacky@amd.com>,
-	<herbert@gondor.apana.org.au>, <davem@davemloft.net>, <ardb@kernel.org>
-CC: <pbonzini@redhat.com>, <aik@amd.com>, <Michael.Roth@amd.com>,
-	<KPrateek.Nayak@amd.com>, <Tycho.Andersen@amd.com>,
-	<Nathan.Fontenot@amd.com>, <ackerleytng@google.com>, <jackyli@google.com>,
-	<pgonda@google.com>, <rientjes@google.com>, <jacobhxu@google.com>,
-	<xin@zytor.com>, <pawan.kumar.gupta@linux.intel.com>, <babu.moger@amd.com>,
-	<dyoung@redhat.com>, <nikunj@amd.com>, <john.allen@amd.com>,
-	<darwi@linutronix.de>, <linux-kernel@vger.kernel.org>,
-	<linux-crypto@vger.kernel.org>, <kvm@vger.kernel.org>,
-	<linux-coco@lists.linux.dev>
-Subject: [PATCH v5 7/7] x86/sev: Add debugfs support for RMPOPT
-Date: Mon, 18 May 2026 21:43:49 +0000
-Message-ID: <e93f2253fad6a9c2edf393884bef2803a2430bef.1779133590.git.ashish.kalra@amd.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <cover.1779133590.git.ashish.kalra@amd.com>
-References: <cover.1779133590.git.ashish.kalra@amd.com>
+	dkim=pass (2048-bit key) header.d=amazon.co.uk header.i=@amazon.co.uk header.b="s034rcmG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.co.uk; i=@amazon.co.uk; q=dns/txt;
+  s=amazoncorp2; t=1779141596; x=1810677596;
+  h=from:to:cc:subject:date:message-id:references:
+   in-reply-to;
+  bh=UY4px7obefDkFSqtaMX8W1nqhkHCToXgPd5bqMLXMUU=;
+  b=s034rcmGp4TIFYSid6n8PJcuq2IX2/8c04vw2V/3r3bm5BJuzAqXeg+E
+   cbR2cgDi1wt0eSUid0wu52PSZ+XVpjzonR60EhZZz9tFfzryw18rdGWHc
+   KyOTViQ+rmVh+1xybtq/JpUgjwf38BBPH7J8mXY9poVcCwM5SvqxAkmOo
+   Dn4k3mN9FwxMHP+l/VtGwfzCM7DqRDa7LPBE6IJ6U6dKqHQy73wgstkCG
+   g+YqJJcXqCJWHQfRaVuFfBsWjcfChpGGQU0Q882rPY4DzvS5o5oK7UsLh
+   pCQZpgAl92ZE4ljGlWKayZfyr5eSCfDoUwGeNozRKDeWkrZNggzfv96Oc
+   Q==;
+X-CSE-ConnectionGUID: gTMEk/4WTCen/jZTSjFtkg==
+X-CSE-MsgGUID: 8tZ40CHMRQSBVjZo5QI3zg==
+X-Amazon-filename: smime.p7s
+X-IronPort-AV: E=Sophos;i="6.23,242,1770595200"; 
+   d="p7s'346?scan'346,208,346";a="18989139"
+Content-Type: multipart/mixed; boundary="===============4007323092883351321=="
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: satlexmb08.amd.com (10.181.42.217) To satlexmb07.amd.com
- (10.181.42.216)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH2PEPF0000009D:EE_|PH7PR12MB7891:EE_
-X-MS-Office365-Filtering-Correlation-Id: c722dee3-b87e-402f-2600-08deb52692a4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700016|1800799024|7416014|376014|82310400026|56012099003|22082099003|18002099003|921020|3023799003|11063799003;
-X-Microsoft-Antispam-Message-Info:
-	tPkrIPCs4aw9ji7DAROPmT+bcwh2dhi3PZt/CPWgW0d/4sPEv5l+4j/7ktzzE3h/ODSYxE/1BA8rMTVNWg/tLui/FGruOhy/AvS8zSz7PH5UmhM7Vn0HAchaEBhUl0OSikKyvvYUNDwyYWrVVwZ4LPYd/wrclslPDhPOO5BoNLYws5WazdWamEUuvd7NHoZojcXrxVb2Y00IEZczMaZjqnKky32UHbo1gfOw7fpB/IiyMlkR5KhHMj9lFs+6t2N4IGBmHXmTBNiXJbrew+VnfJaNxSchI0QqLusncWsP0/t5V30LdroIpa0K4wlxmzlprMfx6MTA+oa61svgEW5rowAMbkn65YZhQ0O5+25AkX6m+kO68EgmHh1GrYYgba8edS8hfZmmLWF+RAeI9A8uExpU1DZJSssslL0nXrDYm/b5sKlSKN8esuSi6sk76vm5hsjgLpzEBF0oeOW4UCOWrsoPj9Y6BM4DxdmJNQ/ElEVYt9wK6ExHOXAlGAD5Jbh++EJsnLFNhl3FYIbmjpB8dHFs2xfiM2p5H1mrwWYgMTRBi1BHFsJ/QBUJkFtQJvGMuCxgMMgI5bRrEIMw1Ju9MwWOvhMCcXv7bZzs0tvCE8rO1ySWPWDFR8UlMF6lFBsVZM3ZJ09xmA3YoNnM+1bZqgyKeSJvRFn2e2aqZou95dv0nSV3IA2mzqzjix9575Y8/GM7lnNerXO33G1bEyU76wtQnYA07nbJF8iy/k9gt/H8hvysWsA2zXoWjUxRgJ9aMi/HbMlYZjVjB06VczMGug==
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700016)(1800799024)(7416014)(376014)(82310400026)(56012099003)(22082099003)(18002099003)(921020)(3023799003)(11063799003);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	IASqwDgpkRp0xoSxE/0qvwz+jm3MGkzM5JB33W78uedNR3VVPhJQdwRcHesSS1L8VAGIlcuasIF8ZLccHo9chp4Gc4AyzslZZdOtrzmMM0kltw/fMH7cyzjVUT2iWizFquJNFiIyqT5aI6VR0Po7xtClV+9t/8U0WCHkyniLpt+vbkGMUSvxn9M9PLVzpTu7Iy093huNikqBMcJaNKTnJvNAwkw82dOyl46y9HZlewCwTfoBcCcyTFRceYDs5OVDpjaGCoIuiSsPTsM+QSxossXfj3H480l6lnjjepFOJqAzkGpyOQfuFriJqQMspV6NQfMqIMiCXLpBSac1uIdL/08ZXFVidvfUnEdW9zbFWQNef676paeRdr3sO5WATCKeIPUgApmMg5dy3jmL42MAjUcMFw1B+B86jEcNv/dh7MCoUPrG0RKGGcF1my3pZVCb
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2026 21:44:00.6159
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: c722dee3-b87e-402f-2600-08deb52692a4
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	CH2PEPF0000009D.namprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB7891
+Received: from ip-10-4-3-150.ec2.internal (HELO smtpout.naws.us-east-1.prod.farcaster.email.amazon.dev) ([10.4.3.150])
+  by internal-iad-out-005.esa.us-east-1.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 21:59:52 +0000
+Received: from EX19MTAUEB001.ant.amazon.com [72.21.198.67:31640]
+ by smtpin.naws.us-east-1.prod.farcaster.email.amazon.dev [10.0.94.94:2525] with esmtp (Farcaster)
+ id 7fef345e-b796-4a43-8663-485108bc2c9b; Mon, 18 May 2026 21:59:51 +0000 (UTC)
+X-Farcaster-Flow-ID: 7fef345e-b796-4a43-8663-485108bc2c9b
+Received: from EX19D001UEB002.ant.amazon.com (10.252.135.17) by
+ EX19MTAUEB001.ant.amazon.com (10.252.135.108) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Mon, 18 May 2026 21:59:51 +0000
+Received: from EX19D001UEB002.ant.amazon.com (10.252.135.17) by
+ EX19D001UEB002.ant.amazon.com (10.252.135.17) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.37;
+ Mon, 18 May 2026 21:59:51 +0000
+Received: from EX19D001UEB002.ant.amazon.com ([fe80::19d6:e954:f18:6292]) by
+ EX19D001UEB002.ant.amazon.com ([fe80::19d6:e954:f18:6292%3]) with mapi id
+ 15.02.2562.037; Mon, 18 May 2026 21:59:51 +0000
+From: "Woodhouse, David" <dwmw@amazon.co.uk>
+To: "tglx@kernel.org" <tglx@kernel.org>, "longli@microsoft.com"
+	<longli@microsoft.com>, "luto@kernel.org" <luto@kernel.org>,
+	"alexey.makhalov@broadcom.com" <alexey.makhalov@broadcom.com>,
+	"jstultz@google.com" <jstultz@google.com>, "dave.hansen@linux.intel.com"
+	<dave.hansen@linux.intel.com>, "ajay.kaher@broadcom.com"
+	<ajay.kaher@broadcom.com>, "jan.kiszka@siemens.com" <jan.kiszka@siemens.com>,
+	"haiyangz@microsoft.com" <haiyangz@microsoft.com>, "kas@kernel.org"
+	<kas@kernel.org>, "seanjc@google.com" <seanjc@google.com>,
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "kys@microsoft.com"
+	<kys@microsoft.com>, "decui@microsoft.com" <decui@microsoft.com>,
+	"daniel.lezcano@kernel.org" <daniel.lezcano@kernel.org>, "wei.liu@kernel.org"
+	<wei.liu@kernel.org>, "peterz@infradead.org" <peterz@infradead.org>,
+	"jgross@suse.com" <jgross@suse.com>
+CC: "boris.ostrovsky@oracle.com" <boris.ostrovsky@oracle.com>,
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "mhklinux@outlook.com"
+	<mhklinux@outlook.com>, "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+	"bcm-kernel-feedback-list@broadcom.com"
+	<bcm-kernel-feedback-list@broadcom.com>, "tglx@linutronix.de"
+	<tglx@linutronix.de>, "nikunj@amd.com" <nikunj@amd.com>,
+	"xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>,
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>,
+	"vkuznets@redhat.com" <vkuznets@redhat.com>, "rick.p.edgecombe@intel.com"
+	<rick.p.edgecombe@intel.com>, "virtualization@lists.linux.dev"
+	<virtualization@lists.linux.dev>, "sboyd@kernel.org" <sboyd@kernel.org>,
+	"x86@kernel.org" <x86@kernel.org>
+Subject: Re: [PATCH v3 02/41] x86/tsc: Add helper to register CPU and TSC freq
+ calibration routines
+Thread-Topic: [PATCH v3 02/41] x86/tsc: Add helper to register CPU and TSC
+ freq calibration routines
+Thread-Index: AQHc5xGmpbVPXJqKvE66awyRkPGU2A==
+Date: Mon, 18 May 2026 21:59:51 +0000
+Message-ID: <949e39aec749f019b18fa41c2a42bcc9231288b9.camel@amazon.co.uk>
+References: <20260515191942.1892718-1-seanjc@google.com>
+	 <20260515191942.1892718-3-seanjc@google.com>
+In-Reply-To: <20260515191942.1892718-3-seanjc@google.com>
+Accept-Language: en-GB, en-US
+X-MS-Has-Attach: yes
+X-MS-TNEF-Correlator: 
+MIME-Version: 1.0
 
-From: Ashish Kalra <ashish.kalra@amd.com>
+--===============4007323092883351321==
+Content-Language: en-US
+Content-Type: multipart/signed; micalg=sha-256;
+	protocol="application/pkcs7-signature"; boundary="=-6Tz0T5TstgWdynDqmecj"
 
-Add a debugfs interface to report per-CPU RMPOPT status across all
-system RAM.
+--=-6Tz0T5TstgWdynDqmecj
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-To dump the per-CPU RMPOPT status for all system RAM:
+On Fri, 2026-05-15 at 12:19 -0700, Sean Christopherson wrote:
+>=20
+> --- a/arch/x86/xen/time.c
+> +++ b/arch/x86/xen/time.c
+> @@ -569,7 +569,7 @@ static void __init xen_init_time_common(void)
+> =C2=A0	static_call_update(pv_steal_clock, xen_steal_clock);
+> =C2=A0	paravirt_set_sched_clock(xen_sched_clock);
+> =C2=A0
+> -	x86_platform.calibrate_tsc =3D xen_tsc_khz;
+> +	tsc_register_calibration_routines(xen_tsc_khz, NULL);
+> =C2=A0	x86_platform.get_wallclock =3D xen_get_wallclock;
+> =C2=A0}
+> =C2=A0
 
-/sys/kernel/debug/rmpopt# cat rmpopt-table
+xen_tsc_khz() doesn't use CPUID but really *should*.
 
-Memory @  0GB: CPU(s): none
-Memory @  1GB: CPU(s): none
-Memory @  2GB: CPU(s): 0-1023
-Memory @  3GB: CPU(s): 0-1023
-Memory @  4GB: CPU(s): none
-Memory @  5GB: CPU(s): 0-1023
-Memory @  6GB: CPU(s): 0-1023
-Memory @  7GB: CPU(s): 0-1023
-...
-Memory @1025GB: CPU(s): 0-1023
-Memory @1026GB: CPU(s): 0-1023
-Memory @1027GB: CPU(s): 0-1023
-Memory @1028GB: CPU(s): 0-1023
-Memory @1029GB: CPU(s): 0-1023
-Memory @1030GB: CPU(s): 0-1023
-Memory @1031GB: CPU(s): 0-1023
-Memory @1032GB: CPU(s): 0-1023
-Memory @1033GB: CPU(s): 0-1023
-Memory @1034GB: CPU(s): 0-1023
-Memory @1035GB: CPU(s): 0-1023
-Memory @1036GB: CPU(s): 0-1023
-Memory @1037GB: CPU(s): 0-1023
-Memory @1038GB: CPU(s): none
+Care to pull in
+https://lore.kernel.org/all/20260509224824.3264567-31-dwmw2@infradead.org/
+to your next round please?
 
-Suggested-by: Thomas Lendacky <thomas.lendacky@amd.com>
-Signed-off-by: Ashish Kalra <ashish.kalra@amd.com>
----
- arch/x86/virt/svm/sev.c | 121 ++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 121 insertions(+)
+(Without the misplaced changes in kvm/x86.c that should have been in
+two different prior commits, and are now folded into those correctly in
+my kvmclock5 branch ready for the next posting of that).
 
-diff --git a/arch/x86/virt/svm/sev.c b/arch/x86/virt/svm/sev.c
-index 7f8bb09844c1..ac414143feed 100644
---- a/arch/x86/virt/svm/sev.c
-+++ b/arch/x86/virt/svm/sev.c
-@@ -20,6 +20,8 @@
- #include <linux/amd-iommu.h>
- #include <linux/nospec.h>
- #include <linux/workqueue.h>
-+#include <linux/debugfs.h>
-+#include <linux/seq_file.h>
- 
- #include <asm/sev.h>
- #include <asm/processor.h>
-@@ -144,6 +146,15 @@ static DEFINE_SPINLOCK(snp_leaked_pages_list_lock);
- 
- static unsigned long snp_nr_leaked_pages;
- 
-+/* All users of rmpopt_report_cpumask must hold rmpopt_show_mutex. */
-+static cpumask_t rmpopt_report_cpumask;
-+static struct dentry *rmpopt_debugfs;
-+static DEFINE_MUTEX(rmpopt_show_mutex);
-+
-+struct seq_paddr {
-+	phys_addr_t next_seq_paddr;
-+};
-+
- #undef pr_fmt
- #define pr_fmt(fmt)	"SEV-SNP: " fmt
- 
-@@ -583,6 +594,8 @@ static void rmpopt_cleanup(void)
- 
- 	cancel_delayed_work_sync(&rmpopt_delayed_work);
- 	destroy_workqueue(rmpopt_wq);
-+	debugfs_remove_recursive(rmpopt_debugfs);
-+	rmpopt_debugfs = NULL;
- 
- 	cpus_read_lock();
- 	wrmsrq_on_cpus(&rmpopt_cpumask, MSR_AMD64_RMPOPT_BASE, 0);
-@@ -617,6 +630,10 @@ static inline bool __rmpopt(u64 rax, u64 rcx)
- 		     : "a" (rax), "c" (rcx)
- 		     : "memory", "cc");
- 
-+	if (rcx == RMPOPT_FUNC_REPORT_STATUS)
-+		assign_cpu(smp_processor_id(), &rmpopt_report_cpumask,
-+			   optimized);
-+
- 	return optimized;
- }
- 
-@@ -636,6 +653,108 @@ static void rmpopt_smp(void *val)
- 	rmpopt((u64)val);
- }
- 
-+/*
-+ * 'val' is a system physical address.
-+ */
-+static void rmpopt_report_status(void *val)
-+{
-+	u64 rax = ALIGN_DOWN((u64)val, SZ_1G);
-+	u64 rcx = RMPOPT_FUNC_REPORT_STATUS;
-+
-+	__rmpopt(rax, rcx);
-+}
-+
-+/*
-+ * start() can be called multiple times if allocated buffer has overflowed
-+ * and bigger buffer is allocated.
-+ */
-+static void *rmpopt_table_seq_start(struct seq_file *seq, loff_t *pos)
-+{
-+	phys_addr_t end_paddr = rmpopt_pa_end;
-+	struct seq_paddr *p = seq->private;
-+
-+	if (*pos == 0) {
-+		p->next_seq_paddr = rmpopt_pa_start;
-+		return &p->next_seq_paddr;
-+	}
-+
-+	if (p->next_seq_paddr == end_paddr)
-+		return NULL;
-+
-+	return &p->next_seq_paddr;
-+}
-+
-+static void *rmpopt_table_seq_next(struct seq_file *seq, void *v, loff_t *pos)
-+{
-+	phys_addr_t end_paddr = rmpopt_pa_end;
-+	phys_addr_t *curr_paddr = v;
-+
-+	(*pos)++;
-+	*curr_paddr += SZ_1G;
-+	if (*curr_paddr >= end_paddr)
-+		return NULL;
-+
-+	return curr_paddr;
-+}
-+
-+static void rmpopt_table_seq_stop(struct seq_file *seq, void *v)
-+{
-+}
-+
-+static int rmpopt_table_seq_show(struct seq_file *seq, void *v)
-+{
-+	phys_addr_t *curr_paddr = v;
-+
-+	guard(mutex)(&rmpopt_show_mutex);
-+
-+	seq_printf(seq, "Memory @%3lluGB: ",
-+		   *curr_paddr >> (get_order(SZ_1G) + PAGE_SHIFT));
-+
-+	/*
-+	 * Query all online CPUs rather than just rmpopt_cpumask (primary
-+	 * threads only). The RMPOPT instruction only needs to run on one
-+	 * thread per core for the optimization to take effect, but debugfs
-+	 * reporting requires the RMPOPT status across all CPUs.
-+	 * Performance is not a concern for this diagnostic interface.
-+	 */
-+	cpumask_clear(&rmpopt_report_cpumask);
-+	on_each_cpu_mask(cpu_online_mask, rmpopt_report_status,
-+			 (void *)*curr_paddr, true);
-+
-+	if (cpumask_empty(&rmpopt_report_cpumask))
-+		seq_puts(seq, "CPU(s): none\n");
-+	else
-+		seq_printf(seq, "CPU(s): %*pbl\n", cpumask_pr_args(&rmpopt_report_cpumask));
-+
-+	return 0;
-+}
-+
-+static const struct seq_operations rmpopt_table_seq_ops = {
-+	.start = rmpopt_table_seq_start,
-+	.next = rmpopt_table_seq_next,
-+	.stop = rmpopt_table_seq_stop,
-+	.show = rmpopt_table_seq_show
-+};
-+
-+static int rmpopt_table_open(struct inode *inode, struct file *file)
-+{
-+	return seq_open_private(file, &rmpopt_table_seq_ops, sizeof(struct seq_paddr));
-+}
-+
-+static const struct file_operations rmpopt_table_fops = {
-+	.open = rmpopt_table_open,
-+	.read = seq_read,
-+	.release = seq_release_private,
-+};
-+
-+static void rmpopt_debugfs_setup(void)
-+{
-+	rmpopt_debugfs = debugfs_create_dir("rmpopt", arch_debugfs_dir);
-+
-+	debugfs_create_file("rmpopt-table", 0444, rmpopt_debugfs,
-+			    NULL, &rmpopt_table_fops);
-+}
-+
- /*
-  * RMPOPT optimizations skip RMP checks at 1GB granularity if this
-  * range of memory does not contain any SNP guest memory.
-@@ -798,6 +917,8 @@ void snp_setup_rmpopt(void)
- 	 * optimizations on all physical memory.
- 	 */
- 	queue_delayed_work(rmpopt_wq, &rmpopt_delayed_work, 0);
-+
-+	rmpopt_debugfs_setup();
- }
- EXPORT_SYMBOL_FOR_MODULES(snp_setup_rmpopt, "ccp");
- 
--- 
-2.43.0
+I'll drop that patch, and the similar x86/kvm one which you *have*
+already taken in this series, from my next posting.
 
+Thanks.
+
+
+--=-6Tz0T5TstgWdynDqmecj
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCEkYw
+ggYQMIID+KADAgECAhBNlCwQ1DvglAnFgS06KwZPMA0GCSqGSIb3DQEBDAUAMIGIMQswCQYDVQQG
+EwJVUzETMBEGA1UECBMKTmV3IEplcnNleTEUMBIGA1UEBxMLSmVyc2V5IENpdHkxHjAcBgNVBAoT
+FVRoZSBVU0VSVFJVU1QgTmV0d29yazEuMCwGA1UEAxMlVVNFUlRydXN0IFJTQSBDZXJ0aWZpY2F0
+aW9uIEF1dGhvcml0eTAeFw0xODExMDIwMDAwMDBaFw0zMDEyMzEyMzU5NTlaMIGWMQswCQYDVQQG
+EwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYD
+VQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50
+aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEAyjztlApB/975Rrno1jvm2pK/KxBOqhq8gr2+JhwpKirSzZxQgT9tlC7zl6hn1fXjSo5MqXUf
+ItMltrMaXqcESJuK8dtK56NCSrq4iDKaKq9NxOXFmqXX2zN8HHGjQ2b2Xv0v1L5Nk1MQPKA19xeW
+QcpGEGFUUd0kN+oHox+L9aV1rjfNiCj3bJk6kJaOPabPi2503nn/ITX5e8WfPnGw4VuZ79Khj1YB
+rf24k5Ee1sLTHsLtpiK9OjG4iQRBdq6Z/TlVx/hGAez5h36bBJMxqdHLpdwIUkTqT8se3ed0PewD
+ch/8kHPo5fZl5u1B0ecpq/sDN/5sCG52Ds+QU5O5EwIDAQABo4IBZDCCAWAwHwYDVR0jBBgwFoAU
+U3m/WqorSs9UgOHYm8Cd8rIDZsswHQYDVR0OBBYEFAnA8vwL2pTbX/4r36iZQs/J4K0AMA4GA1Ud
+DwEB/wQEAwIBhjASBgNVHRMBAf8ECDAGAQH/AgEAMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEF
+BQcDBDARBgNVHSAECjAIMAYGBFUdIAAwUAYDVR0fBEkwRzBFoEOgQYY/aHR0cDovL2NybC51c2Vy
+dHJ1c3QuY29tL1VTRVJUcnVzdFJTQUNlcnRpZmljYXRpb25BdXRob3JpdHkuY3JsMHYGCCsGAQUF
+BwEBBGowaDA/BggrBgEFBQcwAoYzaHR0cDovL2NydC51c2VydHJ1c3QuY29tL1VTRVJUcnVzdFJT
+QUFkZFRydXN0Q0EuY3J0MCUGCCsGAQUFBzABhhlodHRwOi8vb2NzcC51c2VydHJ1c3QuY29tMA0G
+CSqGSIb3DQEBDAUAA4ICAQBBRHUAqznCFfXejpVtMnFojADdF9d6HBA4kMjjsb0XMZHztuOCtKF+
+xswhh2GqkW5JQrM8zVlU+A2VP72Ky2nlRA1GwmIPgou74TZ/XTarHG8zdMSgaDrkVYzz1g3nIVO9
+IHk96VwsacIvBF8JfqIs+8aWH2PfSUrNxP6Ys7U0sZYx4rXD6+cqFq/ZW5BUfClN/rhk2ddQXyn7
+kkmka2RQb9d90nmNHdgKrwfQ49mQ2hWQNDkJJIXwKjYA6VUR/fZUFeCUisdDe/0ABLTI+jheXUV1
+eoYV7lNwNBKpeHdNuO6Aacb533JlfeUHxvBz9OfYWUiXu09sMAviM11Q0DuMZ5760CdO2VnpsXP4
+KxaYIhvqPqUMWqRdWyn7crItNkZeroXaecG03i3mM7dkiPaCkgocBg0EBYsbZDZ8bsG3a08LwEsL
+1Ygz3SBsyECa0waq4hOf/Z85F2w2ZpXfP+w8q4ifwO90SGZZV+HR/Jh6rEaVPDRF/CEGVqR1hiuQ
+OZ1YL5ezMTX0ZSLwrymUE0pwi/KDaiYB15uswgeIAcA6JzPFf9pLkAFFWs1QNyN++niFhsM47qod
+x/PL+5jR87myx5uYdBEQkkDc+lKB1Wct6ucXqm2EmsaQ0M95QjTmy+rDWjkDYdw3Ms6mSWE3Bn7i
+5ZgtwCLXgAIe5W8mybM2JzCCBhUwggT9oAMCAQICEFQru/eJkU7BxeS7T6sWKmYwDQYJKoZIhvcN
+AQELBQAwgZYxCzAJBgNVBAYTAkdCMRswGQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNV
+BAcTB1NhbGZvcmQxGDAWBgNVBAoTD1NlY3RpZ28gTGltaXRlZDE+MDwGA1UEAxM1U2VjdGlnbyBS
+U0EgQ2xpZW50IEF1dGhlbnRpY2F0aW9uIGFuZCBTZWN1cmUgRW1haWwgQ0EwHhcNMjQxMjE1MDAw
+MDAwWhcNMjYxMjE1MjM1OTU5WjAiMSAwHgYJKoZIhvcNAQkBFhFkd213QGFtYXpvbi5jby51azCC
+AiIwDQYJKoZIhvcNAQEBBQADggIPADCCAgoCggIBANhjs6T4tJ0lcw4+6sawEn2FowmhunUBsnSV
+ccB+aA7s3Zd9PZV46CU6phAlCWpKk1yFVcD1Rnc4ux17o4LbUgFXiKrORS0jiF/5Oa0rXG3FISG1
+Xdjt8oPKIq+9Z1s2e7Ipi5WWj4AG/xlkH/YMMctL9O8CCRHSrhiChbE/gR57x9PAnt5aeZZ2YWza
+GOOeceaZe+u6vHCHITRmknSAnAX/aNoNJNsQCGcfrE83y9iHmP8BFrSRZqajBKlKq8tyJd5FnSwP
+H3kSUcQlHOwiIfCRFXP4rpXSZ7nKOEZr3SXH06ADY9gZtrSpwBbuzKWDPGWMRuRnz8ogj/Y6DeU4
+2zB/ZAIi5b0BzWf4u0rBEQD5xtpOCxYHc2nXQaFSWu36kP1JaNqElE51OQ92EyVKfW3N6qZcKiBr
+VijXY2EtR+/5W9ixRFnEs4nIeb94Sf92UMEeG9ew2yVvcYXXNPaicGnrkESNC19/a8YXxQEZfrmB
+eAPT9viQJhn3O+sD4pP0Ss3SjVZc6EO7vfoP07bt2n9YE08XSPkxcyb1J/4t/+AskkKeYFBGdpjg
+xd+iLFxjSwBytZuh3+7DuHUfg876WA44ieQDrhHSjuvuAZ1Wb8WUsrpzrcLoYjqFmb/bf6/yyoxl
+t31mdgPC+FLc+Yu1BQwXC3JMbrvbFBVTtn5X2EKDAgMBAAGjggHQMIIBzDAfBgNVHSMEGDAWgBQJ
+wPL8C9qU21/+K9+omULPyeCtADAdBgNVHQ4EFgQUWvtA1XsSV8xjgfFQL/DUTNIbJu4wDgYDVR0P
+AQH/BAQDAgWgMAwGA1UdEwEB/wQCMAAwEwYDVR0lBAwwCgYIKwYBBQUHAwQwUAYDVR0gBEkwRzA6
+BgwrBgEEAbIxAQIBCgIwKjAoBggrBgEFBQcCARYcaHR0cHM6Ly9zZWN0aWdvLmNvbS9TTUlNRUNQ
+UzAJBgdngQwBBQEDMFoGA1UdHwRTMFEwT6BNoEuGSWh0dHA6Ly9jcmwuc2VjdGlnby5jb20vU2Vj
+dGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5jcmwwgYoGCCsGAQUF
+BwEBBH4wfDBVBggrBgEFBQcwAoZJaHR0cDovL2NydC5zZWN0aWdvLmNvbS9TZWN0aWdvUlNBQ2xp
+ZW50QXV0aGVudGljYXRpb25hbmRTZWN1cmVFbWFpbENBLmNydDAjBggrBgEFBQcwAYYXaHR0cDov
+L29jc3Auc2VjdGlnby5jb20wHAYDVR0RBBUwE4ERZHdtd0BhbWF6b24uY28udWswDQYJKoZIhvcN
+AQELBQADggEBAED6T+rfP2XPdLfHoCd5n1iGIcYauWfPHRdZN2Tw7a7NEXIkm2yZNizOSpp3NrMi
+WOBN13XgqnYLsqdpxJhbjwKczKX50/qfhhkOHtrQ0GRkucybK447Aaul80cZT8T3WG9U9dhl3Ct/
+MuyKBWQg3MYlbUT6u4kC9Pk8rd+cR14ttYRUWDKTS2BrL7e8jpNmtCoEakDkMY4MrpoMwM1f4ANV
+qZ8cnDntwXq5ormZIksN2DqxsKLmrFyVAONhqSST72ImBfIVWhFRTCF9tTcI5wE/0Skl25FZmSsB
+B2LUgecgK7MZyw9Do/b0sYS+8YmA/ujUCqNb0fPJBE/B9vBomhswggYVMIIE/aADAgECAhBUK7v3
+iZFOwcXku0+rFipmMA0GCSqGSIb3DQEBCwUAMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3Jl
+YXRlciBNYW5jaGVzdGVyMRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0
+ZWQxPjA8BgNVBAMTNVNlY3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJl
+IEVtYWlsIENBMB4XDTI0MTIxNTAwMDAwMFoXDTI2MTIxNTIzNTk1OVowIjEgMB4GCSqGSIb3DQEJ
+ARYRZHdtd0BhbWF6b24uY28udWswggIiMA0GCSqGSIb3DQEBAQUAA4ICDwAwggIKAoICAQDYY7Ok
++LSdJXMOPurGsBJ9haMJobp1AbJ0lXHAfmgO7N2XfT2VeOglOqYQJQlqSpNchVXA9UZ3OLsde6OC
+21IBV4iqzkUtI4hf+TmtK1xtxSEhtV3Y7fKDyiKvvWdbNnuyKYuVlo+ABv8ZZB/2DDHLS/TvAgkR
+0q4YgoWxP4Eee8fTwJ7eWnmWdmFs2hjjnnHmmXvrurxwhyE0ZpJ0gJwF/2jaDSTbEAhnH6xPN8vY
+h5j/ARa0kWamowSpSqvLciXeRZ0sDx95ElHEJRzsIiHwkRVz+K6V0me5yjhGa90lx9OgA2PYGba0
+qcAW7sylgzxljEbkZ8/KII/2Og3lONswf2QCIuW9Ac1n+LtKwREA+cbaTgsWB3Np10GhUlrt+pD9
+SWjahJROdTkPdhMlSn1tzeqmXCoga1Yo12NhLUfv+VvYsURZxLOJyHm/eEn/dlDBHhvXsNslb3GF
+1zT2onBp65BEjQtff2vGF8UBGX65gXgD0/b4kCYZ9zvrA+KT9ErN0o1WXOhDu736D9O27dp/WBNP
+F0j5MXMm9Sf+Lf/gLJJCnmBQRnaY4MXfoixcY0sAcrWbod/uw7h1H4PO+lgOOInkA64R0o7r7gGd
+Vm/FlLK6c63C6GI6hZm/23+v8sqMZbd9ZnYDwvhS3PmLtQUMFwtyTG672xQVU7Z+V9hCgwIDAQAB
+o4IB0DCCAcwwHwYDVR0jBBgwFoAUCcDy/AvalNtf/ivfqJlCz8ngrQAwHQYDVR0OBBYEFFr7QNV7
+ElfMY4HxUC/w1EzSGybuMA4GA1UdDwEB/wQEAwIFoDAMBgNVHRMBAf8EAjAAMBMGA1UdJQQMMAoG
+CCsGAQUFBwMEMFAGA1UdIARJMEcwOgYMKwYBBAGyMQECAQoCMCowKAYIKwYBBQUHAgEWHGh0dHBz
+Oi8vc2VjdGlnby5jb20vU01JTUVDUFMwCQYHZ4EMAQUBAzBaBgNVHR8EUzBRME+gTaBLhklodHRw
+Oi8vY3JsLnNlY3RpZ28uY29tL1NlY3RpZ29SU0FDbGllbnRBdXRoZW50aWNhdGlvbmFuZFNlY3Vy
+ZUVtYWlsQ0EuY3JsMIGKBggrBgEFBQcBAQR+MHwwVQYIKwYBBQUHMAKGSWh0dHA6Ly9jcnQuc2Vj
+dGlnby5jb20vU2VjdGlnb1JTQUNsaWVudEF1dGhlbnRpY2F0aW9uYW5kU2VjdXJlRW1haWxDQS5j
+cnQwIwYIKwYBBQUHMAGGF2h0dHA6Ly9vY3NwLnNlY3RpZ28uY29tMBwGA1UdEQQVMBOBEWR3bXdA
+YW1hem9uLmNvLnVrMA0GCSqGSIb3DQEBCwUAA4IBAQBA+k/q3z9lz3S3x6AneZ9YhiHGGrlnzx0X
+WTdk8O2uzRFyJJtsmTYszkqadzazIljgTdd14Kp2C7KnacSYW48CnMyl+dP6n4YZDh7a0NBkZLnM
+myuOOwGrpfNHGU/E91hvVPXYZdwrfzLsigVkINzGJW1E+ruJAvT5PK3fnEdeLbWEVFgyk0tgay+3
+vI6TZrQqBGpA5DGODK6aDMDNX+ADVamfHJw57cF6uaK5mSJLDdg6sbCi5qxclQDjYakkk+9iJgXy
+FVoRUUwhfbU3COcBP9EpJduRWZkrAQdi1IHnICuzGcsPQ6P29LGEvvGJgP7o1AqjW9HzyQRPwfbw
+aJobMYIExDCCBMACAQEwgaswgZYxCzAJBgNVBAYTAkdCMRswGQYDVQQIExJHcmVhdGVyIE1hbmNo
+ZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQxGDAWBgNVBAoTD1NlY3RpZ28gTGltaXRlZDE+MDwGA1UE
+AxM1U2VjdGlnbyBSU0EgQ2xpZW50IEF1dGhlbnRpY2F0aW9uIGFuZCBTZWN1cmUgRW1haWwgQ0EC
+EFQru/eJkU7BxeS7T6sWKmYwDQYJYIZIAWUDBAIBBQCgggHpMBgGCSqGSIb3DQEJAzELBgkqhkiG
+9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUxODIxNTk0OVowLwYJKoZIhvcNAQkEMSIEIFiU5Qg9
+Fmi9PGbvIBjBzAyfDqygPzdshDgwa/NHUv8rMIG8BgkrBgEEAYI3EAQxga4wgaswgZYxCzAJBgNV
+BAYTAkdCMRswGQYDVQQIExJHcmVhdGVyIE1hbmNoZXN0ZXIxEDAOBgNVBAcTB1NhbGZvcmQxGDAW
+BgNVBAoTD1NlY3RpZ28gTGltaXRlZDE+MDwGA1UEAxM1U2VjdGlnbyBSU0EgQ2xpZW50IEF1dGhl
+bnRpY2F0aW9uIGFuZCBTZWN1cmUgRW1haWwgQ0ECEFQru/eJkU7BxeS7T6sWKmYwgb4GCyqGSIb3
+DQEJEAILMYGuoIGrMIGWMQswCQYDVQQGEwJHQjEbMBkGA1UECBMSR3JlYXRlciBNYW5jaGVzdGVy
+MRAwDgYDVQQHEwdTYWxmb3JkMRgwFgYDVQQKEw9TZWN0aWdvIExpbWl0ZWQxPjA8BgNVBAMTNVNl
+Y3RpZ28gUlNBIENsaWVudCBBdXRoZW50aWNhdGlvbiBhbmQgU2VjdXJlIEVtYWlsIENBAhBUK7v3
+iZFOwcXku0+rFipmMA0GCSqGSIb3DQEBAQUABIICAM8OsQlCgYxvSOF82bTYNa12ZmCvPHorscCM
+aJsr915mAOH/vS0/0IoGcAzfJ0o+GGrTheWdZh+QRqPF5PFnxgPeB2FpVh2zSA+OwvDXwoLx8McZ
+AuZqnRD7mB6jK0/n9Fyi2Pa1Pe7IBxNKaWGgKg0AY4QtJU5p9v/pdw11UyUdilJIqXh4c/uiIOgv
+Cpsb/onNbypJ4vSH6zqkc2tjkvAAEAmHxeezBt6nhxZDVCjJseM/e5FivKIxFuWxR9LTNQsWMom5
+qTImdoMRznno5kM6Hyv3sGJXRojDzYUnC/LBXC9gPds87vzE6KT1D4orfcejKbshuuWa+5l24ufr
+bd90fbHVDfmcHj/pqs+rsZ+SfHaCWHp5S+8jlB/xIywDsw9f6IQ9bm2RWEIoPvNHxSdWK7kzZmFJ
+aMHdOdhzOgm/7fL/8R0KFTTC792rh/lP/SbeZ7b76iovsDKAA+hzbg/LXTQbgzqMktUzyD7wiRbL
+s+JQFTavHAAXR3oYAEhn+9g+WG5oPwGSvJKt/QiciQJiuuO9t4lOZ62h6nTmaGvLGHnnsDFMXgft
+4KJsLrmUnCgTOUe6DXrXzYkohA4g1dNlv17uT1W+48IhnQEhxtyCQzirrPQpdY+C/+knjYlPiQZr
+WGoxCpHSfs4SZcMIF5SoHnHRT64vORa3kYLfaeRpAAAAAAAA
+
+
+--=-6Tz0T5TstgWdynDqmecj--
+
+--===============4007323092883351321==
+Content-Type: multipart/alternative; boundary="===============2999282878485236890=="
+MIME-Version: 1.0
+Content-Disposition: inline
+
+--===============2999282878485236890==
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+
+
+
+
+Amazon Development Centre (London) Ltd. Registered in England and Wales wit=
+h registration number 04543232 with its registered office at 1 Principal Pl=
+ace, Worship Street, London EC2A 2FA, United Kingdom.
+
+
+
+--===============2999282878485236890==
+Content-Type: text/html; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+
+<br><br><br>Amazon Development Centre (London) Ltd.Registered in England an=
+d Wales with registration number 04543232 with its registered office at 1 P=
+rincipal Place, Worship Street, London EC2A 2FA, United Kingdom.<br><br><br>
+
+--===============2999282878485236890==--
+--===============4007323092883351321==--
