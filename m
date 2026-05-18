@@ -1,102 +1,133 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8F2393DDD
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 20:42:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE7F3392814
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 20:51:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779136964; cv=none; b=VoOxcD8773ZPLx/EqVvrFOU9cZt1y+izSHQv7DkoySb0QGi9/S+qGeNNChfoWNHNKJ3ETJ7GN5YUAF43XJjJyHb8qRMeY4n3lD4uoy65oPhZG0LwG669nLonaIFFz/Wf9urQyWmSJoN5CmdkMk559uOUlI3dMWDKRMZJNMKFwGM=
+	t=1779137473; cv=none; b=BV3y7PlDWVqcF5mL4ePaO7tykK296yXfIeaHWe6SBNJHx8jrZiLpk778nMQyDFLMEB3JqQmMMgpmrQxyRbyBAQdyltdPTOOF4Aee8EtpxJGtHM4GUAX0eme27mxSWBViuszwDgnbqkzWblt7T+2+sbnbRUw/qiMSAqbyCa0yoOU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779136964; c=relaxed/simple;
-	bh=nQVouHXOMCqKouN03zntvmRFb98UZvsXHIXc5Lhetxo=;
+	s=arc-20240116; t=1779137473; c=relaxed/simple;
+	bh=Y/k/A8rQYJuIoEDWTkWkJu7sDQNtQX63mbCefOQE59k=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Yad3QLDMHTGQLdGyiTrnZQU7mnOM1EzYN86ZvOMXbGmTyISiCHfC/O1HO2r0lw5oZfu84AhwMjJRZMPRhCdJBndcizu9vfrWHPNw1a9oyfetRUGO/2dL+JIodz4nNAV9FkYBmOdNIj/Mw0x5NIQZfURiEsXHgutGrc8XjyXPg1I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LaUF8OXi; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=HXNq/vGmEbfZopJeWYNhOCzC1TUtIetZMYppJrgH1+w9FGdZfS+Hf2cYNo6iPRWtW33JM09EXq34yOTJj3qrK+UCKKmOFyGagm1iqI+Jmp7h+rOzfKrs7poE0VSgmhGEeDsXt9aGtGd0EEUIgoAGvRV45MepJ/F0nFRLQQrxsWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RZvyR1Ss; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LaUF8OXi"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b2ecc96a9aso32320495ad.1
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 13:42:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RZvyR1Ss"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82fa2165c3eso1730353b3a.0
+        for <kvm@vger.kernel.org>; Mon, 18 May 2026 13:51:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779136962; x=1779741762; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=vEZiI2mCaxhF27MBx5FxJQ+kMagKDbcRpCU+GTF0M5o=;
-        b=LaUF8OXiun00q6G5gyzFgzqxAR8yDko5H7DIT0sHGhmHtIc43DXdUyzOheAeN5ZdKp
-         QGlspkvwP0DFmgMNoDYdeYt0yMsuM08OHkhOzQD5WDC2efW4zSPiFG/gnD71CL+N3IJr
-         8096AAP/VAcySjXMFl09Ea8sPOwNbiCVEL9au8CJ41ah0BXjXmUDBKSF9vfhsfK65dq0
-         H7JCGOMDhL0Ad6yftSQM5Lt/6G76ihixSNmyxF6B9wzFRgXHfc41Mzi9KLl7XL/aeeoF
-         prJZbNBU4czyFvBcBesF1PWCcqJ7QNoLCHHP44uoYTEJUwHu1aAUDL5QgmO8NE0Th3JB
-         r4cw==
+        d=google.com; s=20251104; t=1779137471; x=1779742271; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xdrFK7KwVl/zk51lMHH0xrd4K1s2WYKbl4YNCQ/z3AA=;
+        b=RZvyR1SsBVJJwWv4q0qhVcNrrN2qqlqmt2e+0iCyCsJaJxPgbvUek8ELdhbX5puHKl
+         GWplAS9DflFJIpdZPcflbdm51CnPu9PPsycIcWDqhZmWtkPt23kUwPJ+WTYd4dcvCMEd
+         jkDIBhp2jVi2Xjht/dxh5yRK4+b8dDj5hca+xvMZoNk4am3TLL1nyKGfncPcZmSD1b75
+         Z9w/y6gh76NQcJAPW9DiJP4tlO2NefiF6fZRhGne7CbWFCRWPEu5krbUOqoC+DjvBDc8
+         AyQxOqzvXLyvOnrrgMPboQsYXqc3v+jwHLsEHkxXkjWiRPEEo56sef9m6VvmhIZRd/eW
+         3FIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779136962; x=1779741762;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=vEZiI2mCaxhF27MBx5FxJQ+kMagKDbcRpCU+GTF0M5o=;
-        b=pYMEyHP+fdcZ+GNiT22RSjlAYWCAKPLIWIR0LtsGaae9RLlx9aMVqJEE/0CnSyteYF
-         Nnq84YrKGpv/tpIGmSAuF3aTe0Oo/G55g5HuxtO7dkYH8cSnh7x2e/4HevIFaMFh28ZC
-         OY06tJWlei/z6WpUMvs5xe+U7vAOfMAeWDTN7oA9VTZy4CLpi+new/N7isZNPkw/NZTy
-         SkWX4rKfczrVmsg1yJqoaRaiHcdxPRlZwuPEaiEt5tk6hPYd4vy/rv7WlZMFbVPrVsaz
-         Mtf7ZMt1ioWgkhq3GPwVD3BMo31FpM4AAghQCwkMUuC9uqwafuuxA/aVxZZNdO23YxM+
-         XgKA==
-X-Forwarded-Encrypted: i=1; AFNElJ+GcwTPUykrVL8tW7EAB23BIHm6gD9xFl+Jtjn46wqwb0PxtZfstMCLYUTd+rlfQ5mWaP4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YytIJwhaPNkKNIqalNrd7omCun1xNWqMVW+yWioxTKRbkoOOyu0
-	iE6w+I9sEdg1rt6JYI7BKGE3LEhwsYR9EBCc3wVGmcGDR+UlqysaVc39ONvPd27qZPf+v6i2qO9
-	a0xnj4A==
-X-Received: from plsr2.prod.google.com ([2002:a17:902:be02:b0:2b2:48d8:c695])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3c43:b0:2bd:c310:f7c9
- with SMTP id d9443c01a7336-2bdc310fd7fmr94710675ad.2.1779136962102; Mon, 18
- May 2026 13:42:42 -0700 (PDT)
-Date: Mon, 18 May 2026 13:42:41 -0700
-In-Reply-To: <CAEvNRgHd4azPaMddvqnSG+Z5fmg+LWd+pz=LSB3PrJTW618dww@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1779137471; x=1779742271;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=xdrFK7KwVl/zk51lMHH0xrd4K1s2WYKbl4YNCQ/z3AA=;
+        b=U9QaL2jeDZD/8MlUSl8zFXKVah5SMvB9/ZjpoxeYUnO6jUR/Ylct/92LbM0mUyizUW
+         PQA2kl0ZEzxTyl+MYIil2kvE0WT7ROQwmVVrmZTnIrIJVtki75oM+niVnG57LQq3VnYR
+         +l2fafDPW0Xyvt7ma44LvBAmI3/yeofGIFpByULSPIvNx5/7EIPiaKigWqHXZd4wnUSh
+         VBeCP1p6yWwD0QOuGbLSAsemUT75hNHedEnn6i4A0NQAlLWb9//Q08+cjsntf0Y0U8Qc
+         LonqvLnlatA4IzOQSC0Y9tignDfd05oO/7QjQGNZmel27cKR4AvGNdMgsid3oKFbOCnS
+         intw==
+X-Forwarded-Encrypted: i=1; AFNElJ9VbwrT32QvqvoL2v8QpWweMwzmp3KVzM5bpKZMOC6n7sW3u3jWyGqRRqyPZjXaKxsig4I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzqODLFspLhsgYmG9UrAMAF00BkJtlBm3+Q0shCwFF1tB+cSAsT
+	GvssX8xlHytVAAlDcBl3hEtCOG6VAhLsEdOM4DZJNO/J083Kxyf0Ho4r+Yr51h0JetHd/u6BEiH
+	TEkvElg==
+X-Received: from pfbg7.prod.google.com ([2002:a05:6a00:ae07:b0:837:c09c:9cce])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:2793:b0:83e:26b:528c
+ with SMTP id d2e1a72fcca58-83f33d26f67mr16065245b3a.28.1779137470943; Mon, 18
+ May 2026 13:51:10 -0700 (PDT)
+Date: Mon, 18 May 2026 13:51:10 -0700
+In-Reply-To: <136d277dba2ac681ed7607a436f55e2fd1975ec5.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260402041156.1377214-1-rppt@kernel.org> <20260402041156.1377214-14-rppt@kernel.org>
- <ac7oE_1j6gxf8OKT@google.com> <CAEvNRgHd4azPaMddvqnSG+Z5fmg+LWd+pz=LSB3PrJTW618dww@mail.gmail.com>
-Message-ID: <agt5wTK5I-FvlB57@google.com>
-Subject: Re: [PATCH v4 13/15] KVM: guest_memfd: implement userfaultfd operations
+References: <20260514215355.1648463-1-seanjc@google.com> <20260514215355.1648463-9-seanjc@google.com>
+ <136d277dba2ac681ed7607a436f55e2fd1975ec5.camel@intel.com>
+Message-ID: <agt7vnVL5rJJUVzo@google.com>
+Subject: Re: [PATCH v2 08/15] KVM: x86: Add mode-aware versions of
+ kvm_<reg>_{read,write}() helpers
 From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Andrea Arcangeli <aarcange@redhat.com>, Andrei Vagin <avagin@google.com>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
-	David Hildenbrand <david@kernel.org>, Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>, 
-	James Houghton <jthoughton@google.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
-	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, 
-	Muchun Song <muchun.song@linux.dev>, Nikita Kalyazin <kalyazin@amazon.com>, 
-	Oscar Salvador <osalvador@suse.de>, Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
-	Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
-	kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, tarunsahu@google.com
-Content-Type: text/plain; charset="us-ascii"
+To: Kai Huang <kai.huang@intel.com>
+Cc: "pbonzini@redhat.com" <pbonzini@redhat.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"vkuznets@redhat.com" <vkuznets@redhat.com>, "dwmw2@infradead.org" <dwmw2@infradead.org>, "paul@xen.org" <paul@xen.org>, 
+	Rick P Edgecombe <rick.p.edgecombe@intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "yosry@kernel.org" <yosry@kernel.org>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 15, 2026, Ackerley Tng wrote:
-> Sean Christopherson <seanjc@google.com> writes:
-> 
-> >
-> > [...snip...]
-> >
-> >> +#ifdef CONFIG_USERFAULTFD
-> >> +static bool kvm_gmem_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags)
-> >> +{
-> >> +	struct inode *inode = file_inode(vma->vm_file);
-> >> +
-> >> +	/*
-> >> +	 * Only support userfaultfd for guest_memfd with INIT_SHARED flag.
-> >> +	 * This ensures the memory can be mapped to userspace.
-> >> +	 */
-> 
-> Is the principle here that any memory that is allowed to be mapped to
-> userspace can be userfault-ed?
+On Mon, May 18, 2026, Kai Huang wrote:
+>=20
+> > @@ -10413,29 +10413,30 @@ static int complete_hypercall_exit(struct kvm=
+_vcpu *vcpu)
+> > =C2=A0
+> > =C2=A0	if (!is_64_bit_hypercall(vcpu))
+> > =C2=A0		ret =3D (u32)ret;
+> > -	kvm_rax_write(vcpu, ret);
+> > +	kvm_rax_write_raw(vcpu, ret);
+> > =C2=A0	return kvm_skip_emulated_instruction(vcpu);
+> > =C2=A0}
+> >=20
+>=20
+> Nit:  AFAICT if we use kvm_rax_write(vcpu, ret) instead of the "raw" vers=
+ion
+> here, we can then remove the
+>=20
+> 	if (!is_64_bit_hypercall(vcpu))
+> 		ret =3D (u32)ret;
 
-Yes?  It's more the opposite though: memory that can't be SHARED and thus can't
-be mapped into userspace can't possibly support userfaultfd.  Six of one, half
-dozen of the other, but I think it's important to highlight that there's no
-judgment call being made, i.e. we aren't deciding to support only SHARED just
-because we're lazy, it's a hard requirement.
+No, because sneakily, is_64_bit_hypercall() !=3D is_64_bit_mode(vcpu).  And=
+ because
+we also need to avoid calling is_64_bit_mode().  If we use kvm_rax_write(),=
+ then
+the unpacked code will be:
+
+	WARN_ON_ONCE(vcpu->arch.guest_state_protected);
+
+	if (is_long_mode(vcpu))
+		kvm_x86_call(get_cs_db_l_bits)(vcpu, &cs_db, &cs_l);
+	else
+		cs_l =3D 0;
+
+	if (cs_l)
+		vcpu->arch.regs[VCPU_REGS_RAX] =3D ret;
+	else=09
+		vcpu->arch.regs[VCPU_REGS_RAX] =3D (u32)ret;
+
+whereas the (correct) behavior here is:
+
+	if (vcpu->arch.guest_state_protected)
+		cs_l =3D 1;
+	else if (is_long_mode(vcpu))
+		kvm_x86_call(get_cs_db_l_bits)(vcpu, &cs_db, &cs_l);
+	else
+		cs_l =3D 0;
+
+	if (cs_l)
+		vcpu->arch.regs[VCPU_REGS_RAX] =3D ret;
+	else=09
+		vcpu->arch.regs[VCPU_REGS_RAX] =3D (u32)ret;
+
+I.e. using the non-raw version will trigger the WARN_ON_ONCE(), and will in=
+correctly
+truncate "ret" whenever cs_l is stale (which might be always?).
