@@ -1,106 +1,103 @@
-Received: from mail-ua1-f46.google.com (mail-ua1-f46.google.com [209.85.222.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3346838B149
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 20:11:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.222.46
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779135104; cv=pass; b=s+VPeU/WIhMx2p8HzSLjvghHzhrK7aiuUmAR7tgQqT5qA09WfHyKrG0XLJhaFKGykBHym49fLbRdet2Sz23E8fG4Bl/s8A+tXf5iEjg5ey963eU9Qh8pyEYYHPOX4L5B6kXoK+3Qr2vBQ5KuciUlDsfuwNZNzZm2o7KJuWlqzfs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779135104; c=relaxed/simple;
-	bh=9IEqR/JAOjfFIJhebyvyH/SI7u/QxKnr1MWrLw5MrgA=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=StpJiVCvmQh3Q1RhYjKXcom+4I8gyMkc+copjvzLklIg71mMkf0mTFWh+0rbw9eQt9obNLWVxqnNcgzYdbwFbdZpHBqm0dpXD3X4J3v9yRIVo5Vm5yoKzX78irkf2txs97+kc7GEJ7VoYANEuGbfKSWqFAgEoNSpMaw/rQO3eVQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c52N6cjE; arc=pass smtp.client-ip=209.85.222.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53113392C2C;
+	Mon, 18 May 2026 20:25:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779135924; cv=none; b=u7B9zBZIIgYZYQCfCjw16tTOcuHqkyIqEUl37K8QSHE8gSyooaJEfWVYGkVE+RUkRMI6XtCoXibt6LLk461t2HJf7Uia04rjT5uf8thgndyWHT5wDe23MtOyjr/BUdAY44+ZnvRpsny/1LV5E7OE4Qz2kRj0hhU8NxDR1ls5s8o=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779135924; c=relaxed/simple;
+	bh=vzbbtmO5nMWBWyq8FbcXn7UnT0/b84Bgk2wFekjS614=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=WJkJ6g63O2o62oF4+nBsVpoKBIXfYnArfntNR8SsrWKTcd0dO88vhXoJNjNAvs/qv2NURvod4+2Z96e+Oe4NdkyxoRwC2MOmPu4eCze9NEAacw1ceJCIeFoH0RBhDY5HXYsnShhWMKRbz/jk3wdQFeZg2ag70C5++ZXosr+PX0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gt89QBc2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c52N6cjE"
-Received: by mail-ua1-f46.google.com with SMTP id a1e0cc1a2514c-9568bae58f7so1809389241.3
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 13:11:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779135101; cv=none;
-        d=google.com; s=arc-20240605;
-        b=AeDk3KRshGPgI4WgdImxICF+hdtEcGlNWHhNpvO7n9zTtCp+ldhML2TMhvz8y/cxFA
-         vzf22J1DFk/x9Z4wPJ2pwMsDV0iPuhom5MciXualyVY0bmoPxaYGPfekyz2kRwdo9UFs
-         QLCM7yJld7pErjcQBMfeh/+/w49WEOGrcibRbIb7bVCVRA1NqzBgwTKiE5IcES3NKL5I
-         KlhI+3seIIrYTODa663Xgv3WUdMUGQhggC1HPTZHOb8HidwqZkmNrSKcm425+Wv7EHQ8
-         n6IifbElJhSuymmsGMC0YbSxQ4SMSQY0ne13wKFtzKvGi0oMmEVHhzEnYiQXyrfyO6ey
-         dIlA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:dkim-signature;
-        bh=9IEqR/JAOjfFIJhebyvyH/SI7u/QxKnr1MWrLw5MrgA=;
-        fh=4Gaj0FZG+dSstTQeyPMOUDojuEAQdlJF7mLv4rFJi1A=;
-        b=jvb15DiCw5RxOu0+jgKoJ/KNysgFFyUiMtAIs+DhFAyvtwF3p2HWA10R4cq5cibB3+
-         mw+ix5Iuc1NuI1B/XZzNHSCdj7cdAENrS1ir80G63DY06nuBujqwIsJXUCDO+pwhNjZ+
-         PKy3H/Rph4wKx3pMPhcw4NcjiZKhmBnR7XnUo1BeIEvO4/CWEUavgLdP6dCpu7ffwXnY
-         nyqONGAUYTwmfILrPvUziYwJl/KK2HTcnt2m++k6dJe6rBsMmZpAi4+fDAUOD4+0iG3b
-         9I9lP0cohtAUaR6P0xUnFwjs1EDrDtgAL0ptQk8tv5bBM26d9GasU4MxWydCiyYVX9v+
-         ZW0g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779135101; x=1779739901; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=9IEqR/JAOjfFIJhebyvyH/SI7u/QxKnr1MWrLw5MrgA=;
-        b=c52N6cjEaqEYeVIKFaWdAtF1aoscZkAHsH7UTL1abmzqtAI5aSjYbquA6Wj2wy5jEX
-         VkWE2LH6tf1nycM393ndpIQ1gjPb6cr2pCmkmhPQXyVngRAbpUx4kys30VJcctcbFmqB
-         9H9xw2h+zGsmIrYX4qfobr+4iE3S4epXjj6IrzL8uk5q6Cjadr03ZXtocNRurR30gOPf
-         oGZN5J/mXd0N3AquoegKHQvfw503ciDn6h5RiqDLi2fVYz3B9S9Qsa9iKA4n41kRa5nQ
-         VgIvyAiPkzggIDbe6UadcvGEh1JM7tUmqCUve+oF21wgHjmnpX2Pq/hHs69J+xRfhFss
-         LDKw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779135101; x=1779739901;
-        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
-         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=9IEqR/JAOjfFIJhebyvyH/SI7u/QxKnr1MWrLw5MrgA=;
-        b=e6KMIx5pPx/28pJCV9xEVAPlGIPTBUDAgvUNcI/A4RQ/Lu7prFlcDU5eqa1ydcWT6D
-         58ZiXkOPJyt2VV+f9b22dPgp4GbwfQLwxPqGHYJ9M5rBfUL/XKjKeWTkjRgMYJ5aujHH
-         3RBnT2G6sCvajSMaBarVv+G3pUruwyBJ8XJhRFpLzhQ31oA5st1x7gTyF9gttRn2sdGu
-         rxknEr20Z687aMslVhXZdtbnTQFpkq2ATGQRt1J5Ors4hL7q6+KRZ5/rvJhX1gSjyw9U
-         DllxlQh5ljyibYp6+02qAvdOJOJT5xy1RL+8GXrUFGP1LrKj6I2TmTOlkuf16TccBlRd
-         UTIw==
-X-Forwarded-Encrypted: i=1; AFNElJ/iIB+Tbc47PbmDNN0gSPV9/Ou2WbzqDWc4CL6xl19INTHKmn08+cT4fJAyKNiKO7dE0Bg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yya5lo215ysiQl6ADFiOD0Hrgp35IE5LrEUkpxmx6TsgwKUgA5R
-	kmdLwytBrKS7CSYqi+Mn6SB2SH3wLI09UFauVqKJaHRFbtGKSLMb4X1qX1h7l43PcRMyIUX26v9
-	v+BwkZpP5Lfpc7GjoXbKynoTxInJspC/UIN7yGK2y
-X-Gm-Gg: Acq92OG8w33BobPaHuyId+foDO40vxj0WgH/PLgzQoMN0W+Ogi7LDYoZTzxOQUq3JjV
-	STQmQg/FZmO5N+gX0Q4F35wtgARlGC7hbsdY0H0xLSEvj+FvZgKcScnAuVi08BswSMZZtxIJzAh
-	6lhNhTwRhFqXBJUtXnVC7rokZTDk1gdmJKExp7OGcTYR5tYu9eIjliXGariAG62rPhYfcZzXN8i
-	rhyUoE3ewHpZ0AmT0ZQaDxV4EZkyiIgK1TfTpKPnXYCEAsn8CJoUwbSjPP4K3gSlZuGPofCW7A3
-	f4H5Pf2io/ViEn4Ctrxk0j0h9UfvV2Yr1lvls90LiOXVw9p7P4yX5N8MphS22ZdJU5w/iNR/48v
-	yMipz
-X-Received: by 2002:a05:6102:942:b0:631:ec2d:12bd with SMTP id
- ada2fe7eead31-63a3cd10ed4mr8833063137.5.1779135100510; Mon, 18 May 2026
- 13:11:40 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 18 May 2026 13:11:39 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Mon, 18 May 2026 13:11:39 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260518070943.2091287-2-ZongYao.Chen@linux.alibaba.com>
-References: <20260518070943.2091287-1-ZongYao.Chen@linux.alibaba.com> <20260518070943.2091287-2-ZongYao.Chen@linux.alibaba.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gt89QBc2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AAB88C2BCB7;
+	Mon, 18 May 2026 20:25:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779135923;
+	bh=vzbbtmO5nMWBWyq8FbcXn7UnT0/b84Bgk2wFekjS614=;
+	h=From:To:Cc:Subject:Date:From;
+	b=gt89QBc2T5Hl8gCGKjsLEIMg7536/fk0S3m0BfpuK83ZX94KV+NR/bbGJ4AvHC4Xv
+	 ZNOuYmjWrZ3cL07x5OmOlso2fFwOGN88u8/VdfRiMgiQPndGvnEIe1VKVXoqi7sRdi
+	 3SW9B4D7SvZBlhzNjguezy4NYZBrvrmTWscMuKWihcFlgqTeGUMfP+8FPpwW+RxaCR
+	 9Vet9o4mqAOymV1+T80qnaDtwN23Gm/Sst8TbyD4ra3Af2oWNDljw4PtudUD59z7H/
+	 Tmx9NdhyW337sij0LStmbfe9ltWCl+FK+e1Yg36RjXk3pf2Nw4zbY/qVMQaQiNTlIX
+	 2mTAtk+jvxbaA==
+From: Yosry Ahmed <yosry@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yosry Ahmed <yosry@kernel.org>
+Subject: [PATCH 0/8] KVM: selftests: Stress save+restore and #PF (ft. nested)
+Date: Mon, 18 May 2026 20:25:06 +0000
+Message-ID: <20260518202514.2037078-1-yosry@kernel.org>
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Mon, 18 May 2026 13:11:39 -0700
-X-Gm-Features: AVHnY4LMAx_y1X0yC87kI7cNrem7WpKVKfwQkhpaYZq-kTqwoEkCuoNA5KTDNNw
-Message-ID: <CAEvNRgF3ow+k74tnQQ0rZQM9jfUMObap36G=HuxG9Yt2E+z0Zg@mail.gmail.com>
-Subject: Re: [PATCH 1/2] KVM: guest_memfd: Return -EEXIST for overlapping bindings
-To: ZongYao.Chen@linux.alibaba.com, Paolo Bonzini <pbonzini@redhat.com>, 
-	kvm@vger.kernel.org
-Cc: Shuah Khan <shuah@kernel.org>, Sean Christopherson <seanjc@google.com>, 
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Chao Peng <chao.p.peng@linux.intel.com>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, Tianjia Zhang <tianjia.zhang@linux.alibaba.com>, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-ZongYao.Chen@linux.alibaba.com writes:
+Add a stress test for save+restore while the guest is triggering and
+handling #PFs, in both L1 and L2. The goal was to create a generic
+selftest that would catch bugs like the one fixed by 5c247d08bc81 ("KVM:
+nSVM: Use vcpu->arch.cr2 when updating vmcb12 on nested #VMEXIT"),
+instead of relying on high-level testing (e.g. building GCC in L2) to
+catch it.
 
-Reviewed-by: Ackerley Tng <ackerleytng@google.com>
-Tested-by: Ackerley Tng <ackerleytng@google.com>
+The test tries to be as generic as possible by triggering #PFs in a
+guest and installing a proper #PF handler, while the host is
+continuously doing save+restore cycles. Exiting to userspace is randomly
+triggered by a second thread that constantly signals the vCPU thread.
+
+Patches (1-4) are prep patches, fixing GPR switching for nSVM and
+generalizing it to cover nVMX, which is needed for the test to run
+properly with nVMX. Patch 4 removes HORRIFIC_L2_UCALL_CLOBBER_HACK, as
+it is no longer needed. While this series does not have the "complete"
+fix added by commit 6783ca4105a7 ("KVM: selftests: Add a shameful hack
+to preserve/clobber GPRs across ucall"), it's a good step in the right
+direction.
+
+Patches (5-8) add the actual test. The test is first introduced as a
+simple (read: dummy) stress test that just explicitly syncs to userspace
+after each #PF handling to do save+restore, then gradually evolves to
+add the random signaling and nested support. After the last patch, the
+test reliably reproduces the CR2 bug.
+
+This series conflicts with reworking L2 stack allocation in [1], but the
+conflict should be trivial to fix regardless of which series lands
+first.
+
+[1]https://lore.kernel.org/kvm/20260506015733.1671124-1-yosry@kernel.org/
+
+Yosry Ahmed (8):
+  KVM: selftests: Fix offsets in GPR switching for nSVM
+  KVM: selftests: Move GPR load/save definitions outside of nSVM code
+  KVM: selftests: Reuse GPR switching logic for nVMX
+  KVM: selftests: Drop HORRIFIC_L2_UCALL_CLOBBER_HACK
+  KVM: selftests: Add basic stress test for save+restore and #PF
+    handling
+  KVM: selftests: Trigger save+restore randomly in the #PF stress test
+  KVM: selftests: Support running stress save+restore and #PF test in L2
+  KVM: selftests: Trigger L2->L1 exits stress save+restore and #PF test
+
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ .../selftests/kvm/include/x86/processor.h     |  65 +++-
+ tools/testing/selftests/kvm/include/x86/vmx.h |  46 +--
+ .../testing/selftests/kvm/lib/x86/processor.c |  13 +
+ tools/testing/selftests/kvm/lib/x86/svm.c     |  29 +-
+ tools/testing/selftests/kvm/lib/x86/ucall.c   |  32 +-
+ .../kvm/x86/stress_save_restore_pf_test.c     | 320 ++++++++++++++++++
+ 7 files changed, 414 insertions(+), 92 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/x86/stress_save_restore_pf_test.c
+
+
+base-commit: a9512a611bd030088f13477258d1f8103cceaa40
+-- 
+2.54.0.563.g4f69b47b94-goog
+
