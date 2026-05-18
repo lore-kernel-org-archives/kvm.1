@@ -1,96 +1,106 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 669873812CD;
-	Mon, 18 May 2026 07:45:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1361D30568D
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 07:47:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779090313; cv=none; b=htBXXe4zgppADA2zS5C2Gpw9lS6TgIxluuvai4fCiV8CwYlmHEb+VXuNnvcsAbTi5FDClJe7Uns+0Q3M1QV2MgA0Mz0fhsfuv7xa3IVgkLwogI4NRc4H21tdLDjtyvYtPOPFwjZj/DQJ0NJweZIiH90a0kSB6R+TSUrxmcyvAic=
+	t=1779090430; cv=none; b=FI9kbU4NRQuSR2wv2Poidmtgjbht/uPgJVl2YLGefsW196UpZ0z0BNeTd3Oq/2LcARUwqwdVmoN+eVtnQ1TxgEOhXfRKXZgnSgJ2OFaNg1CD0I47cGYdLIsQzD5XC93cVKcekgonlpUQecG0E8tik+saNBJCQw1bCi0vm+Soick=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779090313; c=relaxed/simple;
-	bh=Xn7ejV6D166C7lk6TaQZW65H2kSi2PQRjnd2oYtALxQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NPxCM+MPxQUbCSVoXZ6ffhMJGej0D22kmhJOp508TR7/e/7anM5MSwMI2T/KiN8JWzv5iZqGTaWW7oH8iY5IWav0maQYcyuHaZc3W1ItrVZvonKdR6mD5dweROmCcag2ZX8jqgF4EqLszfoehO+3b7rYRK0pVixH9AFPj4inrX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=VhINqGOc; arc=none smtp.client-ip=192.198.163.14
+	s=arc-20240116; t=1779090430; c=relaxed/simple;
+	bh=5kJ2Go7AkLtFV2jFRRdtLJkmd6ieGvPNuDNh0ryIaMY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=iT2TLiu130btQuqcgni+hlE8gal8yryPfjqPby5zqEE8LNdmDtI/lGpsX39TFNW4foLAvlEGt0638SSlrPwb2LLfgtBBYhE20+85geIo9iiJmKxH2Gvo/a5PNuWlcbn0/hfFe7fQWcz9n5/dY7TRUDWNDmcUVJIt88NitNkDKmk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=SAJicJOh; arc=none smtp.client-ip=198.175.65.11
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="VhINqGOc"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="SAJicJOh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779090310; x=1810626310;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Xn7ejV6D166C7lk6TaQZW65H2kSi2PQRjnd2oYtALxQ=;
-  b=VhINqGOcgkyCN0stc9q51nWlIJOi6ZPr9yY8iwfbCGuMnLwODsZChIeH
-   hUMPpoOUUzIYh130Ww8knKs39ElVrCjiXo4fNtsxdwbK8Qw/8XWrUkDjJ
-   5cR31WzIIlj6BAdi05NOUdAkkl3YIFnd25LNu1D03TxE/P0mYg6yD71yA
-   u1BwpQG6u5KZUGp6I6VQxDk02O4kebHGDayJb8obgMQE99lv+mR4oUvaE
-   MOtqtv3XMwqVnZqbyiSDkd/DQfImQSaO6XTctf8CpgJEadiTsPoDd3bOs
-   /o0pmkuc8YNkjy9kGXgxO/OhlNbRLB4dmtiZjzNiPpIZwCmoL1KdYpgSA
-   Q==;
-X-CSE-ConnectionGUID: RdnR/ykgTG+jB+KWJM4Jlg==
-X-CSE-MsgGUID: yT0VYKs4QUejZy2R/15R8Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11789"; a="79967653"
+  t=1779090428; x=1810626428;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=5kJ2Go7AkLtFV2jFRRdtLJkmd6ieGvPNuDNh0ryIaMY=;
+  b=SAJicJOh81XLy+jKv+TswBhu9UOayg5p0M8S1bW4iwgq7x6V3Tdz4JVH
+   qZzd8Bel6z9yvUV2gp1PFoJIPlHS8YHd6t1Kuip/+lra6x/HCHa+FYccu
+   4uCWWCro+otaBiGv4DIenyEWCAYfxyKlZhV6o39n/u7V7ZMcUWrC+uPPf
+   /utWJ5ZKymcJsGCJkFjJYNWULASzc/iu4YrE3QeWkTUJag4B0QT5WDVGk
+   Kl9HfAaTlvamq6VuT1bzwkUlaq5OG6gn+HXf9pEfjZuV8dClahnSS0t78
+   sMB6Fauod7/iA7gpVoCiBBnimbp3hnJZ5mj/Y1S/KQGey2Mw1Wj81uu2e
+   w==;
+X-CSE-ConnectionGUID: DkXLn/DvRg27W4/9gCZ1EQ==
+X-CSE-MsgGUID: zY4SPyW+QmazbOPoYnf+Jw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11789"; a="90246139"
 X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
-   d="scan'208";a="79967653"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 00:45:10 -0700
-X-CSE-ConnectionGUID: Cw4W9WHtTretkoiXa1M0Iw==
-X-CSE-MsgGUID: yMy/BdNcQCOFy1Qm9hdTWg==
+   d="scan'208";a="90246139"
+Received: from fmviesa005.fm.intel.com ([10.60.135.145])
+  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 00:47:08 -0700
+X-CSE-ConnectionGUID: izV970MPTleKfVWY2Lx9kw==
+X-CSE-MsgGUID: IXQYGeAsQ+yMv8V5JtwcIw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
-   d="scan'208";a="236716659"
-Received: from liuzhao-optiplex-7080.sh.intel.com (HELO localhost) ([10.239.160.39])
-  by fmviesa008.fm.intel.com with ESMTP; 18 May 2026 00:45:07 -0700
-Date: Mon, 18 May 2026 16:12:54 +0800
-From: Zhao Liu <zhao1.liu@intel.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: tglx@kernel.org, linux-kernel@vger.kernel.org,
-	Sean Christopherson <seanjc@google.com>,
-	Jim Mattson <jmattson@google.com>,
-	Binbin Wu <binbin.wu@linux.intel.com>,
-	Vishal L Verma <vishal.l.verma@intel.com>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	Rick P Edgecombe <rick.p.edgecombe@intel.com>,
-	Binbin Wu <binbin.wu@intel.com>, "x86@kernel.org" <x86@kernel.org>,
-	Paolo Bonzini <bonzini@redhat.com>, Yi Lai <yi1.lai@intel.com>
-Subject: Re: [PATCH v3 1/2] x86/kvm/vmx: Move IRQ/NMI dispatch from KVM into
- x86 core
-Message-ID: <agrKBk64pCMhzx6+@intel.com>
-References: <20260423155611.216805954@infradead.org>
- <20260423155936.843498069@infradead.org>
- <20260508091829.GO3126523@noisy.programming.kicks-ass.net>
+   d="scan'208";a="244330469"
+Received: from unknown (HELO [10.239.158.26]) ([10.239.158.26])
+  by fmviesa005-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 00:47:06 -0700
+Message-ID: <464f364c-0c5e-4457-a706-89d8629cdba9@intel.com>
+Date: Mon, 18 May 2026 15:47:03 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260508091829.GO3126523@noisy.programming.kicks-ass.net>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 00/27] KVM: x86: Add a paranoid mode for CPUID
+ verification
+To: Binbin Wu <binbin.wu@linux.intel.com>
+Cc: kvm@vger.kernel.org, pbonzini@redhat.com, seanjc@google.com,
+ rick.p.edgecombe@intel.com, chao.gao@intel.com, kai.huang@intel.com
+References: <20260417073610.3246316-1-binbin.wu@linux.intel.com>
+ <c6d216fd-3ca5-4ee8-91d9-ffb088c72fa5@intel.com>
+ <ec9a3882-4505-45f3-b7f8-634cca3a18ce@linux.intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <ec9a3882-4505-45f3-b7f8-634cca3a18ce@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, May 08, 2026 at 11:18:29AM +0200, Peter Zijlstra wrote:
-> Date: Fri, 8 May 2026 11:18:29 +0200
-> From: Peter Zijlstra <peterz@infradead.org>
-> Subject: [PATCH v3 1/2] x86/kvm/vmx: Move IRQ/NMI dispatch from KVM into
->  x86 core
+On 5/18/2026 3:24 PM, Binbin Wu wrote:
 > 
 > 
-> Move the VMX interrupt dispatch magic into the x86 core code. This
-> isolates KVM from the FRED/IDT decisions and reduces the amount of
-> EXPORT_SYMBOL_FOR_KVM().
-> 
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-> Tested-by: "Verma, Vishal L" <vishal.l.verma@intel.com>
-> ---
-> Changes since v2:
->  - one more IS_ENABLED(CONFIG_KVM_INTEL) (Yan Zhao)
->  - fixed idt_do_interrupt_irqoff() prototype (Binbin Wu)
+> On 5/18/2026 9:38 AM, Xiaoyao Li wrote:
+>> On 4/17/2026 3:35 PM, Binbin Wu wrote:
+>>> Originally, we had issues on TDX when a new hardware feature, which is a
+>>> host state clobbering feature, is supported by new TDX modules/platforms.
+>>> A host state clobbering feature requires KVM to save and restore the
+>>> feature's related MSR(s) on host/guest transitions; otherwise, if the
+>>> feature is used by TDs, the host state will be corrupted, leading to
+>>> unexpected behavior on the host.
+>>>
+>>> Currently KVM hardcodes a deny list for unsupported host clobbering
+>>> features for TDX, i.e. HLE, RTM and WAITPKG. However, KVM can't keep a
+>>> list of bits that it may not know about (e.g. the upcoming FRED support
+>>> in TDX).
+>>>
+>>> We had been working internally to propose a TDX specific solution to
+>>> solve the host state clobbering feature issue. But during a PUCK meeting,
+>>> Sean mentioned that KVM had a more permissive CPUID configuration
+>>> interface than desired and there were problems due to it in the past for
+>>> normal VMs as well. Sean suggested that KVM should introduce a more
+>>> paranoid mode to check CPUID from userspace for VMs in general, as well
+>>> as an opt-in interface for userspace. And TDX should use the
+>>> infrastructure to enforce paranoid mode non-optionally.
+>>>
+>>> This RFC patch series adds a paranoid CPUID verification mode for KVM on
+>>> x86, where KVM must be explicitly aware of every CPUID feature exposed
+>>> to the guest. When the CPUID paranoid mode is opted-in by userspace or
+>>> enforced, KVM will reject any unknown or unsupported feature from
+>>> userspace. And it starts to enforce paranoid CPUID verification for TDX.
+>>
+>> This series misses the (important) part to use the TDX overlay to guard the setup_tdparams_cpuids() (and also mask the supported configurable CPUIDs in init_kvm_tdx_caps), to solve the initial TDX problem.
+>>
+> I think the patch 27 is what you referred to.
 
-My Guest is running well and there's no interrupt error in system, so,
-
-Tested-by: Zhao Liu <zhao1.liu@intel.com>
-
+ah, sorry! (I was checking the code when reviewing in the middle of this 
+series while I didn't realize)
