@@ -1,50 +1,50 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A5131B80D;
-	Mon, 18 May 2026 15:29:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 267612512DE;
+	Mon, 18 May 2026 15:35:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779118162; cv=none; b=rErkKOVljARgXHGK0M8oeX1PAhL+mRVcF4bXJ5LImpC22BF7TGJT/kdd8TksexIdqj47fIiM0aHxUEYeU1+i0SLQHu5eYoQaxcmmaH1HaJ7fZ/8Xw2uSJi/2nX3fPrjTEjY2QPoZW38TjzpFlISJq/jbj1GnzO9Ft5EdjgivC/c=
+	t=1779118563; cv=none; b=o8qWARX8qplOkgoSVtMTM/9hzC7V9D6XI1rCC27J6CtTxLJEG+YSuH9ch7LmHCM69PyraE7dMtXKreAYZqfn9afpdEsaPLATJN6Fsc867aukXQ9SrzVUMp1y/qT0ZItbiB8WAWJD2pMcHVo3KekNHRd+1uwxOKpkekIpwN8itzU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779118162; c=relaxed/simple;
-	bh=g3BIq2mZ/ualzPnUMc8iMBsh+jPT9ywhIC4nHWO0C3Y=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
-	 In-Reply-To:Content-Type; b=lXXwfVO+l4A4uFn7bZwhu+3RQrPvddo+/0DtHVYIWYoWSGasPsyWiGpN1BEE8MrhlLdyWZ5G4kT90iC6H8riz6aByXgTH0a5f7pywDLD5+nkfs+fqoqfFtmxHmTdkutrMFvngfG2FMX9ZszrjK5nauzwONb3maaouNZtvppBxBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GSy/2hwS; arc=none smtp.client-ip=192.198.163.19
+	s=arc-20240116; t=1779118563; c=relaxed/simple;
+	bh=/rVD6USICJ0m8HIT/k4nQ75c3Uw0o9iJvEG1MgFD/t8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F1mLbcKFu2s2s/zbLaT0zGtg3LHoSbk07Q5leRp+XCsq+8j1VRBu16TEH0p5bQqbwku+cPQ9Cta/NtjGz71cWKypCVT4fXgxlcJ0IgXOPklUahmX0RrZ7MtAE2JyKTqfYU2UrUMxvBLvqA4JXIaOheXXf39S8FT+qkXSpq2zw9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=MY+xbzGQ; arc=none smtp.client-ip=192.198.163.18
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GSy/2hwS"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="MY+xbzGQ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779118159; x=1810654159;
-  h=message-id:date:mime-version:from:subject:to:cc:
-   references:in-reply-to:content-transfer-encoding;
-  bh=g3BIq2mZ/ualzPnUMc8iMBsh+jPT9ywhIC4nHWO0C3Y=;
-  b=GSy/2hwSzi2H5iow4b/frMSMlTZQiqar2sUjET4k0XqZnleXA4AimbnX
-   GCdceqmxJ6+/nTG1VxThIkPVAkIrKI47D5nrD7kzGcID1dTRm9KXCEUrR
-   CnncXuVXoNFBpMHYndOCQxsJJVIr1tV6MgWflROQns58Bf860hs3RLQ27
-   N8L2UNE0nMWSEo9r/4vToRpJPeATEOQDgjuLe9ayql64gvyrpIHvluIP5
-   fNY57JYFgn+ULm+HxWsF3ImWTsAOomBrp0hqfA6wtmx2owWbToUNYovp4
-   x3vpSlisfv4id88soal5al36tKWheDTLjlqGCMxAraRy960hhM4vXLDcz
-   w==;
-X-CSE-ConnectionGUID: ouZtPSq8TTWAkTlfDy7M3g==
-X-CSE-MsgGUID: vMPVjE+GSiixkbgu4NtZ9Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="78995092"
+  t=1779118560; x=1810654560;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=/rVD6USICJ0m8HIT/k4nQ75c3Uw0o9iJvEG1MgFD/t8=;
+  b=MY+xbzGQ+TVEAVEWDm757z/5wNY1tdyq71f+wdN9YrfXqHvCpF7DyBFJ
+   aXWUa8O4+JXmP0AR0dBr7OzcArCrff6hmLjrHbtLpjGnhD1SWQYKR/AhE
+   3Zyaxhdt6wINDIirqIPPWZza4rlru1iJs8P9gZsiiixhE8XKvdaqnpKQS
+   p5foHaoPapzNbOvLwQtZ2kP+PmqV36tG/6XM+d+XRNsil3Y3/WdSRXG6N
+   pGFPSIssiekJPcgRpTZ9OUbmea2Qnxjh+XnTeXfR9E99KqGES8PV48dlE
+   Se2ioBmmOyXxRmqRRts8HzQ2ArmxtPTEgCPThZ1wZz9eqclPaiSXfTy00
+   A==;
+X-CSE-ConnectionGUID: eMiuFqaUSUqqNToJI23TAA==
+X-CSE-MsgGUID: wJ+lK1MOTfOedaUSOLcLBQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11790"; a="79113841"
 X-IronPort-AV: E=Sophos;i="6.23,242,1770624000"; 
-   d="scan'208";a="78995092"
-Received: from fmviesa004.fm.intel.com ([10.60.135.144])
-  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 08:29:15 -0700
-X-CSE-ConnectionGUID: n4SzjvI9R62yQlS9BC4JDw==
-X-CSE-MsgGUID: nBc+FBxUQ0SyegMrbRVsUA==
+   d="scan'208";a="79113841"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 08:35:58 -0700
+X-CSE-ConnectionGUID: jB3JJ1hzSg++p50UtIJ93Q==
+X-CSE-MsgGUID: fHz7nYoUSb+5jrA1K9eGWw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,242,1770624000"; 
-   d="scan'208";a="241278744"
+   d="scan'208";a="277550911"
 Received: from jmaxwel1-mobl.amr.corp.intel.com (HELO [10.125.109.43]) ([10.125.109.43])
-  by fmviesa004-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 08:29:14 -0700
-Message-ID: <2e082f23-1383-4dba-8cdf-0df612f64ace@intel.com>
-Date: Mon, 18 May 2026 08:29:17 -0700
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 08:35:58 -0700
+Message-ID: <f0d1879a-d716-4cbc-bbf1-708b8401a1ab@intel.com>
+Date: Mon, 18 May 2026 08:36:01 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -52,24 +52,22 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-From: Dave Hansen <dave.hansen@intel.com>
-Subject: Re: [PATCH v9 09/23] coco/tdx-host: Don't expose P-SEAMLDR
- information on CPUs with erratum
-To: Chao Gao <chao.gao@intel.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, binbin.wu@linux.intel.com,
- dave.hansen@linux.intel.com, djbw@kernel.org, ira.weiny@intel.com,
- kai.huang@intel.com, kas@kernel.org, nik.borisov@suse.com,
- paulmck@kernel.org, pbonzini@redhat.com, reinette.chatre@intel.com,
- rick.p.edgecombe@intel.com, sagis@google.com, seanjc@google.com,
- tony.lindgren@linux.intel.com, vannapurve@google.com,
+Subject: Re: [PATCH v9 12/23] x86/virt/seamldr: Introduce skeleton for TDX
+ module updates
+To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
+ linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
+Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
+ ira.weiny@intel.com, kai.huang@intel.com, kas@kernel.org,
+ nik.borisov@suse.com, paulmck@kernel.org, pbonzini@redhat.com,
+ reinette.chatre@intel.com, rick.p.edgecombe@intel.com, sagis@google.com,
+ seanjc@google.com, tony.lindgren@linux.intel.com, vannapurve@google.com,
  vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com,
  yan.y.zhao@intel.com, Thomas Gleixner <tglx@kernel.org>,
  Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
  x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
 References: <20260513151045.1420990-1-chao.gao@intel.com>
- <20260513151045.1420990-10-chao.gao@intel.com>
- <f1057429-4918-4b02-ae17-9bd6cc38a3c1@intel.com> <agsJpjZU0kbsY3oy@intel.com>
+ <20260513151045.1420990-13-chao.gao@intel.com>
+From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
  xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
@@ -114,35 +112,17 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <agsJpjZU0kbsY3oy@intel.com>
+In-Reply-To: <20260513151045.1420990-13-chao.gao@intel.com>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 5/18/26 05:44, Chao Gao wrote:
-> On Fri, May 15, 2026 at 10:26:19AM -0700, Dave Hansen wrote:
->> On 5/13/26 08:09, Chao Gao wrote:
->>> Some TDX-capable CPUs have an erratum, as documented in Intel® Trust
->>> Domain CPU Architectural Extensions (May 2021 edition) Chapter 2.3:
->> 2021, eh?
-> The TDX ISA document has not been updated since then; the May 2021
-> edition is still the latest revision. See:
-> 
-> https://www.intel.com/content/www/us/en/developer/tools/trust-domain-
-> extensions/documentation.html
+On 5/13/26 08:09, Chao Gao wrote:
+>   b) omit touch_nmi_watchdog() and rcu_momentary_eqs(), which exist
+>      there for debugging and are not strictly needed for this update flow
 
-I think you are saying that the CPUs have an erratum.
+Could you possibly start a thread with a suggested refactoring of this
+code? The use of those helpers is really subtle and it would be great to
+put them in one place and document the subtlety so that future users can
+leverage the helper.
 
-That erratum diverges their implementation from the spec: "Intel® Trust
-Domain CPU Architectural Extensions (May 2021 edition) Chapter 2.3".
 
-But when you combine those two things in one sentence, it's incredibly
-confusing.
-
-The erratum you are talking about is brand new. I just asked for it to
-be created in the last month or two. Thus, my confusion when you say
-there: "an erratum, as documented in ... May 2021".
-
-Thus, I'm questioning the 2021 date. You probably also want to mention
-that the erratum is, as of today, not publicly documented.
-
-Can you rephrase this all and make it clearer, please?
