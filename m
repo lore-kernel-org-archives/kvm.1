@@ -1,268 +1,208 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF62B33C18E
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 11:09:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779102544; cv=none; b=Srd8Tzu1RQpmIB2zhKEpq1bk08igfF2z9Xc6ek73o3r8qjoGy6lfyJx45nOuDG90FmicXAcnY92/C/BJ5Zkd7u2y5ofRXwFFkW4Ej1mQMjsIVy6LUIJKunXBt6MpfMRhs+h548J25kJ9yCZIaOmSdBNGWtcNMtzxCAj4VEbwWPg=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779102544; c=relaxed/simple;
-	bh=y3lQJ8hKleP3cpjvWx4c1dbbB/MQsDLBh2c1U+YqGYY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MG5QGkcuABjoirCI3215NqRfRwdm68mNSoo8Akzey7tBzQ2VLjuSvy65v14ZK9f+X8hV9eyHaqmX03If5ycEVk/DAfr9IjczNR3SQx3rpTtqpjsE/OPcmwtz2gb/HnfenJIEfI1A7FgQot7q49FkI1b9jSnh+SI0gi75ksZmMkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AVus2D0u; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tLI3bJtI; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3764D3E7BB6;
+	Mon, 18 May 2026 11:19:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.12
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779103173; cv=fail; b=VXUKIgonl9U8WJsvJyLxSIsXtwGB4s3TsxujjwZvoTjvlAp+PorbdgtWta0r81TgbrNqBgkhHUThnYNaHHAql7O2i3IWg1xtoTIv9qPV93A5td/ahTKeuNvDwMMv1Rp5OkwFjwzjGqsNsUFxdd8b0qoG9fmLRjZFBK4LuTMXEBg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779103173; c=relaxed/simple;
+	bh=f2rvtevQ6OzBhv+K5YwmK3FZtSFn6oeBQ1bUJdYf6Fg=;
+	h=Date:From:To:CC:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=S/WjbGK2cNDc3EyCojbVlqUGwT1aJuTk8eBgpOlR6Hsttx2j0EBEtDV/xMigeN/jM1noSpVdv1yD+ASIKc9OQxhD/fyhV5gzizG1xryM6zhRREvhGHL3g7/QOFkVqwgGynSBlCiNDTe/6QHJrhMLuhxEuwC+0u46T7YN5kvhzYY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k14S0pek; arc=fail smtp.client-ip=192.198.163.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AVus2D0u";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tLI3bJtI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779102541;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3EdVqpBql5Gqkrx4EFtfutWcr864h1ZHzOOzFvQJojI=;
-	b=AVus2D0ug6l87TdrTm831FbGxLjK/za8T2Reh6HGEI57RySZZCP4olP+Vzv7vFgHjZVuvD
-	j5hXo6PoTEDSR8s6uRW/LchtZ2XvThD/yFQM7HmcI/RMVGQN0JoMtI5sdj+G74at/1Dz5X
-	vKCRztHDa/KZ88+S+EuIBc0h4JhDgsw=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-374-8FVOPompNeGG1bpq1GZ7qA-1; Mon, 18 May 2026 07:09:00 -0400
-X-MC-Unique: 8FVOPompNeGG1bpq1GZ7qA-1
-X-Mimecast-MFC-AGG-ID: 8FVOPompNeGG1bpq1GZ7qA_1779102539
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-48fd33b4921so17364655e9.2
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 04:09:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779102539; x=1779707339; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=3EdVqpBql5Gqkrx4EFtfutWcr864h1ZHzOOzFvQJojI=;
-        b=tLI3bJtI6RMtoDHDZv9yUDgLY4wKuVNL9cwt6FP5t33/3CHBICxtGlnfbqjKOUwZgy
-         PCwYUv2zWxxKFkXbqcdLK89CzTXz8dZ1LHGaIxffQCynRxxEghmVKnDJolCZKJQIHpX8
-         9mZI8pUmP+eK4qCeC+D6jju+OYf0bTUGG/glkgE9CUFggdWtsPIBuwy2VzFdnMQiZF93
-         lPD7QAkbcNrYgHyDqz36ZDAeOBUnHA9RtLKgGQuH2fk1D/BE3CMDJivtbEWufyUGjhBv
-         iXcMUDWU3ws79AkJvKfMK/RbUBnrSvmWmrkjlzEqLxLkc3POeijCwqs3vLTdnLOPzXqz
-         BcGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779102539; x=1779707339;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3EdVqpBql5Gqkrx4EFtfutWcr864h1ZHzOOzFvQJojI=;
-        b=gLLi4nh9ROvcpivJQQs5ZUXf80bWkfnFjuvfW+RktK4z3KBj2RIrdLSjnmWa8pgUfE
-         dvfiz5x2qpvTY2Utk4iq5dXsr3wFSXubeT+iLnD158RmXLQR0CZOWSoSzbG1PoHsaeQA
-         fGxMo6fsxPVrO+eH89PgqefdsdQBk8K3p3wQoZEMcI6gCFp6QdkueAFnfLJ7McYuaGy7
-         bvE1ab5zOlwRpSPHlmi4nBlnS8p+dmD/ZCp9ns1kMyFASgfUo5rXwkKvp7bkqBA+ErLs
-         nWTl3tWuD4VVcnNAUPj4qEW5LlL/hdHuxMvp08SUJaEzbV42NcNg5WLC5s08uRAdBlft
-         Dp2A==
-X-Forwarded-Encrypted: i=1; AFNElJ/uAMh6bdePLz7dP6cPIivq5DiPHXCCtgZnWdUquxLff2q/It1GvaYvzzbdxOVSuGZESyc=@vger.kernel.org
-X-Gm-Message-State: AOJu0YynnIEBPsAV/neA1Otgcei5xL7/6qr9oXFTmX51sLSa/waPA6jN
-	syxyvxxMDAp8eYGif9bmaakPg7j6Za/+fHF1TcnCJIQ/mZjTu/MaFeWKGpflLdITJ+tNs/DBu0U
-	f0LMCTy7ovzYRCWPyCLNezfno6GTb6q8VUKmx4afr9Y4aHokC+4Lb+Q==
-X-Gm-Gg: Acq92OEUbz0nIj/+C0ZIAIk9GP9e3PjsLuKyheBALmIKzH2BEj6fn0QBXWKVzmPV18l
-	+E7B4gTPG9+Kt4T0P6zQJCI9+hI/ReZsMKSvzkIr/uWKVEJZoDbIokgp2F58wniklw8bUK9zC6F
-	5/t7tCTMhzYCoxrC6fIdPiKiH0e/L+kXdFV/8pbZYtg2NE90nAPZN8e76+SR1C1Edbe9H/rVgpz
-	SEZBLGCC9yHDMXVZW5uy6efVLGS4MPJ9uqABtKdniV+ph9xyGpktEOBhIT5YiKx6CCZz+xOCstB
-	IEYsalOdHEIm7fmP3vUlV/Aeu6gowcZEQfNFqSab5rBAu3imF7WWpwPpv1w0mPDjCYMkPN6BI0C
-	Bhic7pKP6RMdEOZ1pc5JjBzfTtL5CQpwOqqS5Pb+ys7EMw/ZzMIYiL4AqDmwpkUdrHXxjVCy6yQ
-	==
-X-Received: by 2002:a05:600c:848c:b0:487:2439:b7c8 with SMTP id 5b1f17b1804b1-48fe60e54cbmr219184875e9.1.1779102538863;
-        Mon, 18 May 2026 04:08:58 -0700 (PDT)
-X-Received: by 2002:a05:600c:848c:b0:487:2439:b7c8 with SMTP id 5b1f17b1804b1-48fe60e54cbmr219184145e9.1.1779102538164;
-        Mon, 18 May 2026 04:08:58 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-16-204-231.retail.telecomitalia.it. [87.16.204.231])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48feb029180sm117425235e9.4.2026.05.18.04.08.56
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 04:08:57 -0700 (PDT)
-Date: Mon, 18 May 2026 13:08:52 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, netdev@vger.kernel.org, 
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Arseniy Krasnov <avkrasnov@salutedevices.com>, Stefan Hajnoczi <stefanha@redhat.com>, kvm@vger.kernel.org, 
-	Eric Dumazet <edumazet@google.com>, Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, 
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>, virtualization@lists.linux.dev, 
-	"David S. Miller" <davem@davemloft.net>, Jason Wang <jasowang@redhat.com>, linux-kernel@vger.kernel.org, 
-	Maher Azzouzi <maherazz04@gmail.com>
-Subject: Re: [PATCH net] vsock/virtio: fix zerocopy completion for multi-skb
- sends
-Message-ID: <agrxFFkyvyB-kbvr@sgarzare-redhat>
-References: <20260514092948.268720-1-sgarzare@redhat.com>
- <20260516125329.7b699c6f@pumpkin>
- <agrXvCtNRlySlwgx@sgarzare-redhat>
- <20260518053223-mutt-send-email-mst@kernel.org>
- <agrg1GVzoJWtNuSd@sgarzare-redhat>
- <20260518115005.5f13bd2b@pumpkin>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k14S0pek"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779103162; x=1810639162;
+  h=date:from:to:cc:subject:message-id:references:
+   in-reply-to:mime-version;
+  bh=f2rvtevQ6OzBhv+K5YwmK3FZtSFn6oeBQ1bUJdYf6Fg=;
+  b=k14S0pekqlFFEwxo3MWIiH6mF7u5XHWGOcOY6WEDNC7jzfvYKGIwURR4
+   S8ogwPujveMLtC6aspacjyI5S8mgp1r29YuP8eNawF3sjve31+ZERCRZj
+   pnxaKNnmPfsdRNoBql7WL6mlqGbUR8NPspkElRS6F5eVmd5eH5Wo3NXRr
+   zmslVkaIlp0S21I8zZ+/I75aZJwXPMwgI4upCgNBlYFc571aLwvlIQxvU
+   pRG4CHViXqPMy6eSQKv5+nQFzd/SdCN5ZDaYO2UsLEPAEgnTT2wzdGEVj
+   CjNc8n77AZg+sPqkL8gFYJbD4H01biX5z/1C79ZLZkTgV7IKxDoNJn+Lp
+   g==;
+X-CSE-ConnectionGUID: BeSwbgBITuOENjZPCKyjOA==
+X-CSE-MsgGUID: 94GUN5slTrO6VRfMl4q72A==
+X-IronPort-AV: E=McAfee;i="6800,10657,11789"; a="83805081"
+X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
+   d="scan'208";a="83805081"
+Received: from orviesa007.jf.intel.com ([10.64.159.147])
+  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 04:19:18 -0700
+X-CSE-ConnectionGUID: CB2s67E3T1+ObinGFThJHA==
+X-CSE-MsgGUID: MCr+5FIhTcSRnQIiBxMvbA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
+   d="scan'208";a="239654362"
+Received: from fmsmsx902.amr.corp.intel.com ([10.18.126.91])
+  by orviesa007.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 04:19:19 -0700
+Received: from FMSMSX901.amr.corp.intel.com (10.18.126.90) by
+ fmsmsx902.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 18 May 2026 04:19:17 -0700
+Received: from fmsedg903.ED.cps.intel.com (10.1.192.145) by
+ FMSMSX901.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Mon, 18 May 2026 04:19:17 -0700
+Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.3) by
+ edgegateway.intel.com (192.55.55.83) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Mon, 18 May 2026 04:19:17 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=k4DMthgVmFCopS7GJ3Fwy06SdEjX9JrhEWwWweB2itq+oyWyjXchBQPpsSDULr/pmUPiX8Zvt2KTKzqtjM3kDqovVwh6JwXLCtcQmTIYJ6tw79yqPtL3ReJ6b8+Nr+V38DQxU4+h4p70qnQAhEJ5YTAwhar3cD87XG643wEyn9xwUkhKOWQC3gay4QYzIcHVIorCJa8Ua+7Ia9V01PkKYllt+TY/1IwWG4r0ukQOyKuoohv7YsG10pJD7HW3sHvMFh64VRdffJNsfDjYyjcLVX5JPBJMEa9v/O0T4i73dxstyY2YrYtfIl/JA1CMc/wonK4GQ2wTiL1BGq5YdXVpDg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=R7aRck3RG1sOdkuTyiyqZ6VGBjEPmVWnSnFidgBk770=;
+ b=HhsSlk1lgE7cs8cUDACJ72EsVvaY8nppyRqsVYOMNoJO+BI8DVABt57J3pHOKnUWaPX0vySlbentxo3ODPb/u+gPAxmIr7aPhMZk1K9qq4bA0EMK/0hiLFYxf1PRrWzZRFhCeUocHUWC9/JT5reE8yV+8ylE+Vsnv23gvRsUJFcz7lIFFVcvBQlFpWuZTOZIo02RYZqKPUNwskOu8h5I8VjAo0u2aundbCY31maNOoG1lkXyA1K3zdMm0dzo7ZeOLlLPFD2F3aHUhlGX70AW99YAHOI7P6I66dttBv22m9CtOBkvrmwh9+2vmye/Sm5CJzAgC/T870ubWkqKw2AHbw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from BN7PR11MB2836.namprd11.prod.outlook.com (2603:10b6:406:ad::26)
+ by SA0PR11MB4560.namprd11.prod.outlook.com (2603:10b6:806:93::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9913.12; Mon, 18 May
+ 2026 11:19:14 +0000
+Received: from BN7PR11MB2836.namprd11.prod.outlook.com
+ ([fe80::ac36:7540:4e6f:8d3b]) by BN7PR11MB2836.namprd11.prod.outlook.com
+ ([fe80::ac36:7540:4e6f:8d3b%6]) with mapi id 15.20.9913.009; Mon, 18 May 2026
+ 11:19:14 +0000
+Date: Mon, 18 May 2026 19:18:56 +0800
+From: Chao Gao <chao.gao@intel.com>
+To: Dave Hansen <dave.hansen@intel.com>
+CC: <kvm@vger.kernel.org>, <linux-coco@lists.linux.dev>,
+	<linux-kernel@vger.kernel.org>, <binbin.wu@linux.intel.com>,
+	<dave.hansen@linux.intel.com>, <djbw@kernel.org>, <ira.weiny@intel.com>,
+	<kai.huang@intel.com>, <kas@kernel.org>, <nik.borisov@suse.com>,
+	<paulmck@kernel.org>, <pbonzini@redhat.com>, <reinette.chatre@intel.com>,
+	<rick.p.edgecombe@intel.com>, <sagis@google.com>, <seanjc@google.com>,
+	<tony.lindgren@linux.intel.com>, <vannapurve@google.com>,
+	<vishal.l.verma@intel.com>, <yilun.xu@linux.intel.com>,
+	<xiaoyao.li@intel.com>, <yan.y.zhao@intel.com>, Dan Williams
+	<dan.j.williams@intel.com>, Jonathan Cameron <jonathan.cameron@huawei.com>,
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, "Borislav
+ Petkov" <bp@alien8.de>, <x86@kernel.org>, "H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH v9 04/23] coco/tdx-host: Introduce a "tdx_host" device
+Message-ID: <agr1oB+IZNCxPuLL@intel.com>
+References: <20260513151045.1420990-1-chao.gao@intel.com>
+ <20260513151045.1420990-5-chao.gao@intel.com>
+ <cc35a467-e978-4e3b-a6ba-17a8bde69bd7@intel.com>
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <cc35a467-e978-4e3b-a6ba-17a8bde69bd7@intel.com>
+X-ClientProxiedBy: KL1PR01CA0142.apcprd01.prod.exchangelabs.com
+ (2603:1096:820:4::34) To BN7PR11MB2836.namprd11.prod.outlook.com
+ (2603:10b6:406:ad::26)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260518115005.5f13bd2b@pumpkin>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN7PR11MB2836:EE_|SA0PR11MB4560:EE_
+X-MS-Office365-Filtering-Correlation-Id: 494a9128-2929-4c1b-6719-08deb4cf4ad7
+X-LD-Processed: 46c98d88-e344-4ed4-8496-4ed7712e255d,ExtAddr
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016|4143699003|11063799003|18002099003|56012099003|22082099003;
+X-Microsoft-Antispam-Message-Info: O7zXXNudXR5ddaBLETEs6OVadyir7IqmZx4++z/B2X2nHwAlfY4twjVEokuKR1lq32LA5SjFmBODXeaEFnfmkKaC8LmCacDSa5lSuKXwIMg0kuEXzPyjuZzW7r9BrvjwuD+KJbbviRJK195a+CiLwGst+OrOxzHJQ1DD+wIMBStNttIAPmyJ3Fw8KWlWeRSVNha2CehGNbzexZ9FgZvON8WhoEQOhNv58BG8/Ld8uhPKMgxcjVPVObHBTAkgbQHCmCacMDGdfpLQGad7JuLG+0XZvqXj8vTF48uxqqBulgOIPMicz2CT15cbyyPQxW8Smb+slRDVDrgfA4OEcEhZtYz6NC/0yOCdpVX2riEHq4ewziW6AouP6uQ4CHWyM0BkyrdJynRnYdr1zZlcxsoSMNtFL/MBZYy7MBljUWShYWBgDMwnXYAugVtsqIy3jatt5pTY23zNbwfdxGLaGmctp+0H4L+TMIW/aBLzEuQDEfHZ3YD4kUbDGhghWqPc7m5d0D6nEPLRysdHTiUiX1F1kPrsTj9VbWNgLE3XC0T0vYhEBmaWwbsHW7yDgQ1SaMTTvC5FPELi9YN+md/btEKE/iSY0AHNJ2Hf0qJmXBMiUDaGdUEryNxNRmejfWD3hifODPuH5XB+nJpKBIB5REgPShccGjYGyUXOT9RTqa2hxmq0Zkt3ieSoahZb28zD5zmdszNY1Q3cmzYJ4ruiKHsabw==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN7PR11MB2836.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016)(4143699003)(11063799003)(18002099003)(56012099003)(22082099003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?us-ascii?Q?O9za8LDUwMMU1Pkilsy9iXUQByml63+rXCWudITAMOJlergj9yQ3uefF57Kc?=
+ =?us-ascii?Q?EeyB+bDobxPQa2Lk/XRgh2T75cMB35HK0AUvZr/hlYSt+kofAfptJOqbxSzu?=
+ =?us-ascii?Q?q9FSVFzcalYoYO01gy/TEW5x0ZD74yggD+wWYjp8SEMCJpFg4mV12zXPkFN/?=
+ =?us-ascii?Q?Ms8xzMtdWZj4FmMMn9tE1SiAApHyIkLJ7rde/4hefTD3uGvBil1cLHwH/95m?=
+ =?us-ascii?Q?yVkwz66Vz2HKAyLZp7q7sDHo4wWeq55wTpRkwFU+YwXuxoZh0c1tNV/5l4en?=
+ =?us-ascii?Q?9Fg4yW6N1nWkrYdiDxyLQOwgWUKE0rKx9T6VIiYKw47MHVFLQy0gjIH/6yAb?=
+ =?us-ascii?Q?COud2JuGQlr+xH6fiOBWwNCWv2ZJb4pfZeFEJ+4jQ3yDtkWcAop46rS3NkQT?=
+ =?us-ascii?Q?GdnfxEIE3ERDE2Ts/J7nF/obnlD+SPI/MxkzbzRbG/ooITjWKML9QT54m1Dd?=
+ =?us-ascii?Q?pti4ZZh+2tbWkddp77NI4bdGdibVtHH/zJp26wFelhcTu1drtnBHlQIlDbQW?=
+ =?us-ascii?Q?fCe+3VRMTVs5W651N+ziK0Y9ZXs5DFRWB2mWHLf7g8T6ASyfI+5WjoqyyuYn?=
+ =?us-ascii?Q?TVsEiVLg8lU8TDOeG6FtU64+/Twru5PtQc6aKHwLB6rCE0OvDtiMd1KFz3ru?=
+ =?us-ascii?Q?5UQWcS9sldBfCTnlyQ2VUmGBMj5otb0lsfeAB+dh5sPYNzYVFfQJ3l05zud1?=
+ =?us-ascii?Q?aiWP1ONBpmod7SHXZWkaoZDfUKJtJOETQoQplALqYW37A7AhhpJrltAxwUYf?=
+ =?us-ascii?Q?7WBAWx3Uuy9c1jACypxPyq9kJb50s8ZT0k5I5JyfAINnpJJkmYwbWN/qmakq?=
+ =?us-ascii?Q?n7t530nm7sN81Pl+3yYU1Jx8fw2XGZ1/WqhKLKnHXtYK8YvRTBQwASFcmIZm?=
+ =?us-ascii?Q?OVQ5ZW2H+ub30Q/YkZNAHfiz1qPNpidbH0JcjBn7StuwBe+5Fnoi3Ux82VgF?=
+ =?us-ascii?Q?57/QsyrnnKX6nhnpgueTgj/xWTi8p68MfE6qXtfySXmar0KlNIxUctzo6AGx?=
+ =?us-ascii?Q?3sOcQy90r7PRxYIvfya1DL9l5Cn87x2nTRPuLd0+oqbG/VGx5r0W19Ip4laK?=
+ =?us-ascii?Q?xf3Gd6IYKs+BPI51bRyXq6yyoOviauP9nAQCHhvJm6fEIY9XbY7kgpJf3McP?=
+ =?us-ascii?Q?4OSLsPKRUfbtcByvVEbiTvGOVLXwCUaRUe2CJrt1zPixPLYjZSdyHT94a2Gf?=
+ =?us-ascii?Q?qwuzqBjOJEMHYk+DKwpsxhAgPhwKvEiGQ36P8IG9yPErtcRTQlZNMoeGQ0yZ?=
+ =?us-ascii?Q?mkB/lNktc3U6hdudXJkNy0A7z+43xKzd9SiXljbGQiqHUGYcNPWhJqUcg7Ak?=
+ =?us-ascii?Q?NJnrzmoOihBt1ssYM7JfAjZmu14s8LVBiNBE1aDCsoWPHuvUFfgEcGoQcAC+?=
+ =?us-ascii?Q?09mh5wP0E5IiJzOYzHLZQfX+eN+ZYTN1EVas3BUG4/hXhADe1W8QLesECxav?=
+ =?us-ascii?Q?/tYBAW2YRh0x8qblulKFBHSsfytnneYURbi6+8gbKw8CEKwzvmpWbwJUbKyu?=
+ =?us-ascii?Q?RFGUDl7MnKIIjg5nJ+X4VcW1CGmo2qTLLniYiK46AQ7Qpt+U6fLcpAGyB8zL?=
+ =?us-ascii?Q?nb77UdWgyoPI31CwAkeObPUjFeZDsclLYvmoKziMcF8Tfzul1xmJNnTl5KeT?=
+ =?us-ascii?Q?eOF9v1JymMI5InlvHP5bcm6zb070qxrGJEqltuzfUN21Ba6OjGUiEhcgh7m/?=
+ =?us-ascii?Q?bYoJVImWPFLYJpA4oT9UxS11hbrSBS0MxP0+NpcXFr8mmAnUp0DCmBYfZkJ+?=
+ =?us-ascii?Q?tolyYJR6hw=3D=3D?=
+X-Exchange-RoutingPolicyChecked: J/D1r5M6EMA4m9ToZa18FlKhb+ZQvksBH7bfUUKnsSnbhvlGbTd12fwGK6ni3qnB1D2w0gn2LvacVqWjLOhltGTv/5OkJO/o3ytbFMxRQfdPgfh6j4tf1gZYKZr+4UDOC9Eyb7v4T4VJ4rOcWCNx0m2C92OrtTzs7nY+JaDSaidwbVYFms39R8TOmPlXFbphZwbGYWl8vyBhJvs1/BWAt0yJ/zYRLmbZ53D53LuQ95xxlnaychUvdhecGAVc90Pv9nY7Dc99MNlYtn4GK6fIy+7wutgY0q5fOByLJ6yFSXhxVWZJh2NGyWtak5luKmHuxnSloD8Aqcqy8bELrAHyVQ==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 494a9128-2929-4c1b-6719-08deb4cf4ad7
+X-MS-Exchange-CrossTenant-AuthSource: BN7PR11MB2836.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 18 May 2026 11:19:14.2661
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: X1/KMVWJRTuNlZPJ+IbAplymW5ncKRjlFCEQlM/Q6rx+qkUPsbG0BRPLYW805NQhOKnb6HXQLgEd5nEhibYtNw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR11MB4560
+X-OriginatorOrg: intel.com
 
-On Mon, May 18, 2026 at 11:50:05AM +0100, David Laight wrote:
->On Mon, 18 May 2026 11:54:19 +0200
->Stefano Garzarella <sgarzare@redhat.com> wrote:
+On Fri, May 15, 2026 at 09:21:36AM -0700, Dave Hansen wrote:
+>On 5/13/26 08:09, Chao Gao wrote:
+>> Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
+>> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+>> Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+>> Signed-off-by: Chao Gao <chao.gao@intel.com>
 >
->> On Mon, May 18, 2026 at 05:33:08AM -0400, Michael S. Tsirkin wrote:
->> >On Mon, May 18, 2026 at 11:18:24AM +0200, Stefano Garzarella wrote:
->> >> On Sat, May 16, 2026 at 12:53:29PM +0100, David Laight wrote:
->> >> > On Thu, 14 May 2026 11:29:48 +0200
->> >> > Stefano Garzarella <sgarzare@redhat.com> wrote:
->> >> >
->> >> > > From: Stefano Garzarella <sgarzare@redhat.com>
->> >> > >
->> >> > > When a large message is fragmented into multiple skbs, the zerocopy
->> >> > > uarg is only allocated and attached to the last skb in the loop.
->> >> > > Non-final skbs carry pinned user pages with no completion tracking,
->> >> > > so the kernel has no way to notify userspace when those pages are safe
->> >> > > to reuse. If the loop breaks early the uarg is never allocated at all,
->> >> > > leaking pinned pages with no completion notification.
->> >> > >
->> >> > > Fix this by following the approach used by TCP: allocate the zerocopy
->> >> > > uarg (if not provided by the caller) before the send loop and attach
->> >> > > it to every skb via skb_zcopy_set(), which takes a reference per skb.
->> >> > > Each skb's completion properly decrements the refcount, and the
->> >> > > notification only fires after the last skb is freed.
->> >> > > On failure, if no data was sent, the uarg is cleanly aborted via
->> >> > > net_zcopy_put_abort().
->> >> > >
->> >> > > This issue was initially discovered by sashiko while reviewing commit
->> >> > > 1cb36e252211 ("vsock/virtio: fix MSG_ZEROCOPY pinned-pages accounting")
->> >> > > but was pre-existing.
->> >> > >
->> >> > > Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
->> >> > > Cc: Arseniy Krasnov <avkrasnov@salutedevices.com>
->> >> > > Closes: https://sashiko.dev/#/patchset/20260420132051.217589-1-sgarzare%40redhat.com
->> >> > > Reported-by: Maher Azzouzi <maherazz04@gmail.com>
->> >> > > Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
->> >> > > ---
->> >> > >  net/vmw_vsock/virtio_transport_common.c | 83 ++++++++++---------------
->> >> > >  1 file changed, 34 insertions(+), 49 deletions(-)
->> >> > >
->> >> > > diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
->> >> > > index 989cc252d3d3..1e3409d28164 100644
->> >> > > --- a/net/vmw_vsock/virtio_transport_common.c
->> >> > > +++ b/net/vmw_vsock/virtio_transport_common.c
->> >> > > @@ -70,34 +70,6 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
->> >> > >  	return true;
->> >> > >  }
->> >> > >
->> >> > > -static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
->> >> > > -					   struct sk_buff *skb,
->> >> > > -					   struct msghdr *msg,
->> >> > > -					   size_t pkt_len,
->> >> > > -					   bool zerocopy)
->> >> > > -{
->> >> > > -	struct ubuf_info *uarg;
->> >> > > -
->> >> > > -	if (msg->msg_ubuf) {
->> >> > > -		uarg = msg->msg_ubuf;
->> >> > > -		net_zcopy_get(uarg);
->> >> > > -	} else {
->> >> > > -		struct ubuf_info_msgzc *uarg_zc;
->> >> > > -
->> >> > > -		uarg = msg_zerocopy_realloc(sk_vsock(vsk),
->> >> > > -					    pkt_len, NULL, false);
->> >> > > -		if (!uarg)
->> >> > > -			return -1;
->> >> > > -
->> >> > > -		uarg_zc = uarg_to_msgzc(uarg);
->> >> > > -		uarg_zc->zerocopy = zerocopy ? 1 : 0;
->> >> > > -	}
->> >> > > -
->> >> > > -	skb_zcopy_init(skb, uarg);
->> >> > > -
->> >> > > -	return 0;
->> >> > > -}
->> >> > > -
->> >> > >  static int virtio_transport_fill_skb(struct sk_buff *skb,
->> >> > >  				     struct virtio_vsock_pkt_info *info,
->> >> > >  				     size_t len,
->> >> > > @@ -317,8 +289,10 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->> >> > >  	u32 src_cid, src_port, dst_cid, dst_port;
->> >> > >  	const struct virtio_transport *t_ops;
->> >> > >  	struct virtio_vsock_sock *vvs;
->> >> > > +	struct ubuf_info *uarg = NULL;
->> >> > >  	u32 pkt_len = info->pkt_len;
->> >> > >  	bool can_zcopy = false;
->> >> > > +	bool have_uref = false;
->> >> > >  	u32 rest_len;
->> >> > >  	int ret;
->> >> > >
->> >> > > @@ -360,6 +334,25 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->> >> > >  		if (can_zcopy)
->> >> > >  			max_skb_len = min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
->> >> > >  					    (MAX_SKB_FRAGS * PAGE_SIZE));
->> >> > > +
->> >> > > +		if (info->msg->msg_flags & MSG_ZEROCOPY &&
->> >> > > +		    info->op == VIRTIO_VSOCK_OP_RW) {
->> >> > > +			uarg = info->msg->msg_ubuf;
->> >> > > +
->> >> > > +			if (!uarg) {
->> >> > > +				uarg = msg_zerocopy_realloc(sk_vsock(vsk),
->> >> > > +							    pkt_len, NULL, false);
->> >> > > +				if (!uarg) {
->> >> > > +					virtio_transport_put_credit(vvs, pkt_len);
->> >> > > +					return -ENOMEM;
->> >> > > +				}
->> >> > > +
->> >> > > +				if (!can_zcopy)
->> >> > > +					uarg_to_msgzc(uarg)->zerocopy = 0;
->> >> > > +
->> >> > > +				have_uref = true;
->> >> > > +			}
->> >> > > +		}
->> >> >
->> >> > Surely that block should only be done if can_zcopy is true?
->> >> > And shouldn't something unset it if info->op != VIRTIO_VSOCK_OP_RW ?
->> >> > If the msg_zerocopy_realloc() fails then can't you just set can_zcopy to false.
->> >> >
->> >> > It info->msg->msg_buf is already set then I think you have to disable zero-copy.
->> >> > The caller has already requested a callback - and you can't add another.
->> >> >
->> >> > In any case by the end of this can_zcopy and have_uref are really the same flag.
->> >>
->> >> I kept the same approach we had before, trying to make as few changes as
->> >> possible.
->> >>
->> >> All these potential issues seem to be pre-existing and should be eventually
->> >> addressed in other patches IMHO. This patch one only resolves the main issue
->> >> of calling `skb_zcopy_set()` for every skb to avoid leaking pages, etc.
->> >
->> >the patch is upstream now, right? So pretty much have to be patches on
->> >top.
->>
->> If those are actual issues, then yes. TBH, I didn’t look into that
->> aspect and left it as it was before. We should take a closer look at how
->> MSG_ZEROCOPY is handled.
->>
->> David, if you think it needs fixing and you have time, feel free to send
->> patches on top.
+>This SoB chain at _least_ needs a note. It looks quite bizarre.
+
+I will add a note.
+
+This patch was originally written by me and then substantially revised
+by Yilun, hence his Co-developed-by and Signed-off-by.
+
+Then Dan made additional cleanups on top of Yilun's version and was the first
+to post it at:
+
+https://lore.kernel.org/all/20250919142237.418648-2-dan.j.williams@intel.com/
+
+The current version is based on that posted patch, which is why the SoB
+chain is unusual.
+
 >
->I'm not fully sure how it all works.
+>> +config TDX_HOST_SERVICES
+>> +	tristate "TDX Host Services Driver"
+>> +	depends on INTEL_TDX_HOST
+>> +	default m
+>> +	help
+>> +	  Enable access to TDX host services like module update and
+>> +	  extensions (e.g. TDX Connect).
+>> +
+>> +	  Say y or m if enabling support for confidential virtual machine
+>> +	  support (CONFIG_INTEL_TDX_HOST). The module is called tdx_host.ko.
+>
+>In what world will anyone ever set INTEL_TDX_HOST=y, but turn this off?
 
-Same here, so I pinged Arseniy who worked on that, since it seemed 
-deliberate to have `can_zcopy` (and set `uarg->zerocopy` accordingly) 
-only when it was supported by the transport.
+No, I do not think disabling TDX_HOST_SERVICES while INTEL_TDX_HOST=y makes
+sense.
 
->Especially the paths where msg->msg_ubuf is non-NULL, I suspect it should
->be added to all the skb even if the ZEROCOPY flag isn't set.
->I was just reading the one function.
->But there did look like some very dodgy conditionals.
+>Is this even worth a Kconfig prompt?
+>
+>I guess we need it for the module or built in choice. But otherwise it
+>seems a bit silly.
 
-I see, let's wait for Arseniy's feedback; otherwise, I'll try to fix it 
-next week. As mentioned, this issue existed before this patch, so it 
-shouldn't be a regression.
-
-Thanks,
-Stefano
-
+Yes. it is for the module vs built-in choice.
