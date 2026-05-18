@@ -1,153 +1,246 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1953D646A
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 12:56:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9DC47DF8A
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 13:14:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779109021; cv=none; b=WeyyrnCQoKpZejzBOdqEjOua0eTTwXoYfViPDbXTYNFLgPCZIzh/9BWf2Uaf+gOLg8K1z6nYAqw2+9WVyGURhjONhUbHRHcVw2ieuib5F6i4OtfiZQwHAPJ7pEeLftckcQoW2KPXetoVtoR/PTE03zUMVr9AU1oYZKdehhyNxz0=
+	t=1779110043; cv=none; b=i3X0wOS+YnLKS1avaMoc2KyQOsBMKzJaPDSsLmxKWtQrKLlyCYCQqq739cqK8M3+C+u8LtTMTuxUHSXovozWYBbQdHEvVV1vaeUHFBCrKgp5ULVT2wD8+MJihLtgI2j39r8iCME/MSbI46Ct84yRZcCI2byD3u0tSfkbl+9p+Zk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779109021; c=relaxed/simple;
-	bh=T6VtFxXHRKl0kyStfDGKQfjExmlyrvxWmXQsDCQktZ4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=pqyMcR9lXumyatoCh9kWi7Mixn54JOgJ5aGsbKoWyUUfUw2w47hTHpRXzLlWdnaHoY9AaB/2CK4p1xK6ZWmzm9yGcWVSXwEsuoUwi8IvMsLkVOk1dC4to9OqYU6xP24gOy92+RPXIQ5yOURZlHOr4D++6uyYO/TYL+lERE4XfpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T3I+5OIw; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779110043; c=relaxed/simple;
+	bh=btSIhGMvdP0aU851la5oG7im9lsPLy+PBN4yq1F8bgU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=p5n6EMc5Azr5rlZuiHwNZMfChArBMMrelr8NYlIttX4mc+WZPLAvqU78wN2W7orTx6+L/rrC5B/wUqlDJpspf1aks09pDLJBaDfxHpEiokaEkwyJa0CJK/gy9s7HbqIT0ZkECNeXCT/xJKr6PTXr1LGNqAEZkECxK9xmXbl4mrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GS8gVnJC; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T3I+5OIw"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ba0714574fso11435815ad.2
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 05:56:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GS8gVnJC"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2b46da8c48eso905ad.1
+        for <kvm@vger.kernel.org>; Mon, 18 May 2026 06:14:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779109019; x=1779713819; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eEvRUNdUmhBQ0s2ZG+DQWv0U3vfaEq9qsJLKNdQLrRk=;
-        b=T3I+5OIwDGZHiVqHOAf/leqbKWQMWJyCGWJfkp2c7/EUmsQrB/3TwWR1EuLuQXRAb8
-         yuT83qLiE3MyZMtudlcyYF9cxn8O3cif1dPSG+ogpWK35oFEnltlrogf73U6vmtDczTB
-         vbFlyt8i9amj+JveQxYvnfBdR9DDiPfP9TVPPb4ajv4asl/PwCbyeduxICgIsohtWBDT
-         70XWEf31mta28hpgdICgRO9g4Gh7mwj1jCedKbxarPe1XARQ+XnrWQZqGqFjU0EB/c6u
-         /JwMafoBKhWucki00lAR05PVsBqeZqzhFSBd2iUogT57E1Gkx4yHYsPcwpSJKzNyjtse
-         05ig==
+        d=google.com; s=20251104; t=1779110039; x=1779714839; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=U8z6jY/uEBmrxhBdQT2bu54FMFgYLzRCWsXgjpGmf3I=;
+        b=GS8gVnJC0KW7xQRR8/elOb+VjPnei2vxk3DQo0rZBwaokELrPKF0Dz0sQi5o6EKfvT
+         DuJASQmnMgiOyvOb8aNOeN72vRsBuPkLkG4aPSMCqp5+wh687GMExlBeBzc0jkL1casy
+         RbD9puanmbRbRjmXDiz9sS5UzJYxNUj6da7J0wPyv70S38o1q0I+o+KJRgEMkwwXj+de
+         BHqYorcITBmt6enE08PtF3F3T4pvksN1HWfkH+FYKbGy6l4VbeGUPfZj0onSXUYMTh9+
+         HQsZnja3gVOUoQzTgMoGFpGwDFgX//M9CGZu9zlGiv38bc+YnJ7TAm4uBaVThZcEoToF
+         7kPw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779109019; x=1779713819;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=eEvRUNdUmhBQ0s2ZG+DQWv0U3vfaEq9qsJLKNdQLrRk=;
-        b=ss25gVVfXWdi3OkBnwTzAvB9iZJOncqMXZp9QCimzZ89Zj4adk5o2CQDENw2d8wn0H
-         V9j6hZkeKdKFl4SwC4IFm1YdOceTIm+K5p76DmPc+fi1oKhP2jNzZltrN8HbRmoF2NRd
-         mxXVwUdchQ7XPife6sxxyp1Iw4mNb8fgrjY5eawK998f88ADbUlOFb4yc3nWw9JZoNV6
-         9DbKzwVGFLMTHIDTnx7t6S4yoGugJO3Lkj9iIdCoYZZVaE1VwA8ZC8vBRlDxvc08bZX8
-         9hGBQ9vWxx0zm2X+PvEkmXMFFZQHdt+e3qZxg3/ko9BUM05L3HILyGE73pB4XsR7+N4w
-         DnSw==
-X-Forwarded-Encrypted: i=1; AFNElJ/34vEwpHBQgjtDpVGPMjPJ8Z8DY8U5nKoEj6GIQVo1wD5HCg1V81LhxKqeZmbKf+vInEY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxM4v9vJqWCUv1td9aetPdCxAj/MOQF9rAQOLCgIQlP19xmzv0c
-	vFKFomnCUEldDag105a8o9Oig5p6mieKJrtMes+HkosCxlVVRAVHyR81gq0EmF0y
-X-Gm-Gg: Acq92OHa+h69iOcf1GLiiCSbUDETuvz/UbbQqAOGPEtNNJ1UnVrnzmiFhz1wKUeAC1u
-	Fw98/BttRTLS2VDwL3TQsDp1VfoP5nZ9FIHOPSMUayRsR3ij7BEKJQTVL7K+tXESvQx55FlvJNm
-	tp5T7ir0iU+l0sjo7OCN76mNL4SFjoOH3yoWExuQ0gLur53d3kSop9Z00//Ugf5bDr1fmrTcomh
-	eE5Ikieu3vlBZHjO5yp7ef4wHfO/L0JfGaGILxils55f7TdL4BcrnKiBgI3gLOK0YGmjJb/drqU
-	SUha8BR3RzEIOLnf2Ox4T5zY3lv/R5Fd3/MgfNG33cYRqxQUiHwEVFjLc9VAlBk8QL70NYV0icU
-	SY7poQ+J9NVE1eTsV//9nOOzIkN48kR+yeHYVLK9BHXfX7AdECsAo1zcR4vzGIYiD6m7in7klGx
-	J3F1gshvnw+vQgK0OQfCjdhD0rdDrcjT1IxyGCEQ==
-X-Received: by 2002:a17:902:ebc3:b0:2b0:6e6a:8504 with SMTP id d9443c01a7336-2bd7e973c40mr165865855ad.27.1779109019087;
-        Mon, 18 May 2026 05:56:59 -0700 (PDT)
-Received: from [10.4.95.45] ([139.177.225.233])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5bd5fb35sm147385985ad.12.2026.05.18.05.56.54
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 18 May 2026 05:56:58 -0700 (PDT)
-Message-ID: <ccae4c1b-719c-4bbd-9f2c-251364fa4fb3@gmail.com>
-Date: Mon, 18 May 2026 20:56:51 +0800
+        d=1e100.net; s=20251104; t=1779110039; x=1779714839;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=U8z6jY/uEBmrxhBdQT2bu54FMFgYLzRCWsXgjpGmf3I=;
+        b=g1hw8l1CMrcS/BqZLxy5re1pAuLuvOzmbWYMvl8H36GOVw/cNFEdC6hpDubqtf4y2O
+         6tPj3IAqtGiBWGBl5xyZYQDp9z6MT+qRZ7cV0vRlNnRPssUxmqi2ympMkFnMA7r2A1s0
+         kKbnyj1IILnVpsZUQK3jOEzHnDRKGKlCrcY4OUFu6p7eKdXGypf9Pxqx2HIiX362VBcv
+         oNhcYMflNSsHYIjvHsJc7tL0eHq6t4iMNBBVmrCqi8tytdptDNdzJFegz9lPJOWADI4s
+         r9IkAcFAwV7t1sHQTiS6dfJHSu/4Uv4+psYissM3oPRqKCMsGgUPFE5MkNnXWqumBR4C
+         sY9Q==
+X-Forwarded-Encrypted: i=1; AFNElJ8uC7h64PU9xxIXfMo77RaMnBdXV03TkTo8kREfRd9PKh70+9LXZYLzoGgmfL86AIreReQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxLSLfhYIY4YqlHFTI4TRE8mVMKULtnnOdYUlYzUyi0OXlQPHZl
+	PAj0G5nifZ6h+j3m9wKRk+RzmfHWwE/6WEqHwISfdh9n3C+AB3zY9ZBuH05Bm8UfLA==
+X-Gm-Gg: Acq92OH7n2C5QYpss6tjrscR3pLTFNSwK8TctEQXpIwLFRV2ZCvx5OT2eSwE9Sutiud
+	7pItAExWkv0v0CQU+q0+62kzrQiKGjVe3MVu1K21KGP6zsre0pcgafGTx8cmOPx5CiQE7ueVWFH
+	mhhsIoVe26x5b4UdQBe1/pVSTiclAkIZ32nH0sffI0X5w4cjIVsgMShw4i/l5jjKdJz4qJDHXXT
+	zfAra1Ij+Zj/CwqhMQGL3PZ2la6s67OZeQeE0gRHaQt17q1d+YOWo9zHbHi6dMM6XhBdEz4qKzz
+	5fzgQNNf/4+v41v8gE2yGM0hGhUyHTijb3oL71GuTdDZ4UiJR1k7lqYWvcD3mdkqyQwEkAI9BIb
+	tWGWf7zzpr6CkY8jXoeMCTT5RzQ5aRfwLsERgvZHimPelG4XAP/ai4QjSTPNxHe/ZuywrlNLlbu
+	9wUEUAzGHHN23Gq3XlSortHkUzK7tPcZnn0USCusaVZvBNXc0xjTXZYAlFMk0fozVQRpK6
+X-Received: by 2002:a17:903:2f03:b0:2bd:6727:d689 with SMTP id d9443c01a7336-2bdb03a2b85mr3036825ad.12.1779110038827;
+        Mon, 18 May 2026 06:13:58 -0700 (PDT)
+Received: from google.com (44.234.124.34.bc.googleusercontent.com. [34.124.234.44])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83f1977c494sm14213643b3a.21.2026.05.18.06.13.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 May 2026 06:13:58 -0700 (PDT)
+Date: Mon, 18 May 2026 13:13:49 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	David Matlack <dmatlack@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>,
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH v2 03/16] iommu: Implement IOMMU domain preservation
+Message-ID: <agsQE1lFGdo-b_IF@google.com>
+References: <20260427175633.1978233-1-skhawaja@google.com>
+ <20260427175633.1978233-4-skhawaja@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] KVM: irqchip: KVM: Reduce allocation overhead in
- kvm_set_irq_routing()
-To: Sean Christopherson <seanjc@google.com>,
- Yanfei Xu <yanfei.xu@bytedance.com>
-Cc: pbonzini@redhat.com, kvm@vger.kernel.org, caixiangfeng@bytedance.com,
- fangying.tommy@bytedance.com, isyanfei.xu@gmail.com
-References: <20251226062741.4014391-1-yanfei.xu@bytedance.com>
- <agdrZMRR7oDKZNDK@google.com>
-From: Yanfei Xu <isyanfei.xu@gmail.com>
-In-Reply-To: <agdrZMRR7oDKZNDK@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260427175633.1978233-4-skhawaja@google.com>
 
-Hi Sean,
+On Mon, Apr 27, 2026 at 05:56:20PM +0000, Samiullah Khawaja wrote:
+> Add IOMMU domain ops that can be implemented by the IOMMU drivers if
+> they support IOMMU domain preservation across liveupdate. The new IOMMU
+> domain preserve, unpreserve and restore APIs call these ops to perform
+> respective live update operations.
+> 
+> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+> ---
+>  drivers/iommu/liveupdate.c       | 97 ++++++++++++++++++++++++++++++++
+>  include/linux/iommu-liveupdate.h | 14 +++++
+>  include/linux/iommu.h            | 13 +++++
+>  3 files changed, 124 insertions(+)
+> 
+> diff --git a/drivers/iommu/liveupdate.c b/drivers/iommu/liveupdate.c
+> index a26099b145c3..f71f14518248 100644
+> --- a/drivers/iommu/liveupdate.c
+> +++ b/drivers/iommu/liveupdate.c
+> @@ -13,6 +13,9 @@
+>  #include <linux/iommu.h>
+>  #include <linux/errno.h>
+>  
+> +#define iommu_max_objs_per_page(_array) \
+> +	((PAGE_SIZE - sizeof(struct iommu_array_hdr_ser)) / sizeof((_array)->objects[0]))
+> +
+>  static void *iommu_liveupdate_restore_array(u64 array_phys)
+>  {
+>  	struct iommu_array_hdr_ser *array_hdr;
+> @@ -196,3 +199,97 @@ void iommu_liveupdate_unregister_flb(struct liveupdate_file_handler *handler)
+>  	liveupdate_unregister_flb(handler, &iommu_flb);
+>  }
+>  EXPORT_SYMBOL(iommu_liveupdate_unregister_flb);
+> +
+> +static int alloc_object_ser(struct iommu_array_hdr_ser **curr_array_ptr, u64 max_objs)
+> +{
+> +	struct iommu_array_hdr_ser *curr_array = *curr_array_ptr;
+> +	struct iommu_array_hdr_ser *next_array;
+> +
+> +	if (curr_array->nr_objects >= max_objs) {
+> +		next_array = kho_alloc_preserve(PAGE_SIZE);
+> +		if (IS_ERR(next_array))
+> +			return PTR_ERR(next_array);
+> +
+> +		curr_array->next_array_phys = virt_to_phys(next_array);
+> +		*curr_array_ptr = next_array;
+> +		curr_array = next_array;
+> +	}
+> +
+> +	return curr_array->nr_objects++;
+> +}
+> +
+> +static struct iommu_domain_ser *alloc_iommu_domain_ser(struct iommu_flb_obj *flb)
+> +{
+> +	int idx;
+> +
+> +	idx = alloc_object_ser((struct iommu_array_hdr_ser **)&flb->curr_domain_array,
 
-thanks for your review!
+Nit: Such type-casts could be brittle and risk strict-aliasing warnings
+based on the compiler. 
 
-On 2026/5/16 02:52, Sean Christopherson wrote:
-> On Fri, Dec 26, 2025, Yanfei Xu wrote:
->> In guests with many VFIO devices and MSI-X vectors, kvm_set_irq_routing()
->> becomes a high-overhead operation. Each invocation walks the entire IRQ
->> routing table and reallocates/frees every routing entry.
->>
->> As the routing table grows on each call, entry allocation and freeing
->> dominate the execution time of this function. In scenarios such as VM
->> live migration or live upgrade, this behavior can introduce unnecessary
->> downtime.
->>
->> Allocate memory for all routing entries in one shot using kcalloc(),
->> allowing them to be freed together with a single kfree() call.
->>
->> Example: On a VM with 120 vCPUs and 15 VFIO devices (virtio-net), the
->> total number of calls to kzalloc and kfree is over 20000. With this
->> change, it is reduced to around 30.
-> ...
->
->> @@ -186,6 +175,12 @@ int kvm_set_irq_routing(struct kvm *kvm,
->>   	new = kzalloc(struct_size(new, map, nr_rt_entries), GFP_KERNEL_ACCOUNT);
->>   	if (!new)
->>   		return -ENOMEM;
->> +	e = kcalloc(nr, sizeof(*e), GFP_KERNEL_ACCOUNT);
-> This needs to be a kv flavor of allocation, or maybe even just a "straight to
-> vmalloc'd" allocation.  With 20000+ allocations, that means an order-BIG allocations.
-> So kvzalloc_obj() or kvmalloc_objs()?
+Since alloc_object_ser only updates the top-level tracking pointer, we 
+can make this much cleaner by changing alloc_object_ser to take a 
+void curr_array_ptr. That way, we can pass (void )&flb->curr_domain_array
+cleanly without the double-pointer type-punning. Something like:
 
-Agreed, will switch to kvzalloc_objs in v3
+static int alloc_object_ser(void **curr_array_ptr, u64 max_objs)
+{
+	struct iommu_array_hdr_ser *curr_array = *curr_array_ptr;
+	struct iommu_array_hdr_ser *next_array;
 
->
-> And if we're going to allocate one massive array, then we definitely should get
-> rid of:
->
-> 	/*
-> 	 * Array indexed by gsi. Each entry contains list of irq chips
-> 	 * the gsi is connected to.
-> 	 */
-> 	struct hlist_head map[];
->
-> and kvm_kernel_irq_routing_entry.list.  It'd be easier and faster to have
-> setup_routing_entry() simply iterate over the array.
+	...
+}
 
-if we get rid of these, we need to add a new field to record the offset 
-of entries
-belonging to the same GSI. Compared to the hlist-based lookup, I am not sure
-this would yield a clear gain. Seems hlist feels more straightforward?
+and we can pass it as:
 
->
-> Something we should look at (on top of this), is caching the previous routing
-> table.  I.e. instead of freeing the old table, keep it around, and try to reuse
-> the old table on the next update.  That would allow eliding the alloc+free
-> entirely when userspace is changing routing, but not adding or removing entries.
+idx = alloc_object_ser((void **)&flb->curr_domain_array,
+		       iommu_max_objs_per_page(flb->curr_domain_array));
 
-In our live-upgrade scenario, userspace incrementally adds entries via a 
-large
-number of KVM_SET_GSI_ROUTING ioctls, so the cost is dominated by the
-cumulative overhead across tens of thousands of alloc/free pairs.
+> +			       iommu_max_objs_per_page(flb->curr_domain_array));
+> +	if (idx < 0)
+> +		return ERR_PTR(idx);
+> +
+> +	flb->curr_domain_array->objects[idx].hdr.ref_count = 1;
+> +	return &flb->curr_domain_array->objects[idx];
+> +}
+> +
+> +int iommu_domain_preserve(struct iommu_domain *domain, struct iommu_domain_ser **ser)
+> +{
+> +	struct iommu_domain_ser *domain_ser;
+> +	struct iommu_flb_obj *flb_obj;
+> +	int ret;
+> +
+> +	if (!domain->ops->preserve)
+> +		return -EOPNOTSUPP;
+> +
+> +	ret = liveupdate_flb_get_outgoing(&iommu_flb, (void **)&flb_obj);
+> +	if (ret)
+> +		return ret;
+> +
+> +	guard(mutex)(&flb_obj->lock);
+> +	domain_ser = alloc_iommu_domain_ser(flb_obj);
+> +	if (IS_ERR(domain_ser))
+> +		return PTR_ERR(domain_ser);
+> +
+> +	ret = domain->ops->preserve(domain, domain_ser);
+> +	if (ret) {
+> +		domain_ser->hdr.deleted = true;
 
-Per my observation, the per-call alloc/free overhead is fine; it's the 
-cumulative
-cost that hurts.
+Nit: This will become domain_ser->hdr.flags |= IOMMU_SER_FLAG_DELETED;
+once we convert the bitfields in PATCH 2 to flags.
+
+> +		return ret;
+> +	}
+> +
+> +	domain->preserved_state = domain_ser;
+> +	*ser = domain_ser;
+> +	return 0;
+> +}
+> +EXPORT_SYMBOL_GPL(iommu_domain_preserve);
+> +
+
+[...]
+
+>  static inline bool iommu_is_dma_domain(struct iommu_domain *domain)
+> @@ -752,6 +757,11 @@ struct iommu_ops {
+>   *                           specific mechanisms.
+>   * @set_pgtable_quirks: Set io page table quirks (IO_PGTABLE_QUIRK_*)
+>   * @free: Release the domain after use.
+> + * @preserve: Preserve the iommu domain for liveupdate.
+> + *            Returns 0 on success, a negative errno on failure.
+> + * @unpreserve: Unpreserve the iommu domain that was preserved earlier.
+> + * @restore: Restore the iommu domain after liveupdate.
+> + *           Returns 0 on success, a negative errno on failure.
+>   */
+>  struct iommu_domain_ops {
+>  	int (*attach_dev)(struct iommu_domain *domain, struct device *dev,
+> @@ -782,6 +792,9 @@ struct iommu_domain_ops {
+>  				  unsigned long quirks);
+>  
+>  	void (*free)(struct iommu_domain *domain);
+> +	int (*preserve)(struct iommu_domain *domain, struct iommu_domain_ser *ser);
+> +	void (*unpreserve)(struct iommu_domain *domain, struct iommu_domain_ser *ser);
+> +	int (*restore)(struct iommu_domain *domain, struct iommu_domain_ser *ser);
+
+Nit: Should we add restore in the patch we implement it?
+
+>  };
+
+With the above nits,
+
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
 
 Thanks,
-Yanfei
-
->
+Praan
