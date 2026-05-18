@@ -1,108 +1,185 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1EBF29D291
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 18:32:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 250C41DC1AB
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 18:33:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779129144; cv=none; b=q9kaaHBSqpsfuNpYjNssa22u4N6fF8goWSMzAZLkDZ7KDpz8PtaJ+MlrrKAv1jNYNifYiKv0JOqe5X6nexsACYmaLQLsywu59DmRYl9HMRjHqAWJpQ06JpglZ9VtsPhwdZVOC/WoB4rBrB+aU+ZLzT+iVsJC3iTozABRSyZvggE=
+	t=1779129230; cv=none; b=nUBikKmFK2XSJCsWUAdrnLSZeOiw+qTNA2PzVO0NQtbYLediX1B2n131LazgUI6Av52vXP2aqcG/365JWXDqpBv4SngV+gKiugWx8tF8qhVfiAWcC32rs42oYnZxwE9ODqB7DUlxaLagxm8d70ls81wsG1p0zsy7EhvfPWE9u+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779129144; c=relaxed/simple;
-	bh=16bEYXGZGd2YyQebL5pOyWJvKC3gIBGcSWo7OTItR0g=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=bxJrm8Ce8baHVs66wFEChsRSQPGP1WJ5f1fNkOI8ongysMykrpvzr6mJva0Gt+5xcpl/MjfjjYtre4ahAZgCpihe0twHgbOKyJnkLN30AtPgji2MprcoEYNLRJAxImVPzi2OBVjIf4tL+8WBUfHTXxhz/C2zbppHk6J7EC7nipI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YRRmJYhI; arc=none smtp.client-ip=209.85.210.201
+	s=arc-20240116; t=1779129230; c=relaxed/simple;
+	bh=TyOWWPWoGocXqSwMD+MG/Lr0Gd5wpTyR5wdZ+yXhOuM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BjGNZ1csfDIie1f7REQVp/ZV1Vtfr5lB1GDHvannhVXNwqMJt9gxs8QbxWtfcJW8mqw++nfNwVXkZDdHb71n1dXKf1rLW57hZJPJG72WvRrk0hGTmvWQjjAJAivwiGsyxe4wHNnwIMCVbnqbwbUMlWfUT2tCwSKk+gkYykD9dUU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dM7DWiBy; arc=none smtp.client-ip=209.85.214.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YRRmJYhI"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-836d0184333so3843339b3a.0
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 11:32:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dM7DWiBy"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2b2e8b95bdbso165ad.0
+        for <kvm@vger.kernel.org>; Mon, 18 May 2026 11:33:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779129142; x=1779733942; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uMfPrbhoLjga1AdJLxMvGsU3iqNPJdA/CeWmsArIr+g=;
-        b=YRRmJYhIB4+xHrTzclJKFEDVXRKDBnV0PL+TcjJ1q823qHuS87zvB7iRI4pfOIwVSt
-         /Vcg+k5s1pdTPvf9NmYfD5TzKXRdu3hGY2+63S9VOI0/uJ4yN0yZStUJDi9UJsAdvq8P
-         h+Bkv7Uh6hJDA1X9GqZ49mcgPObXqgWxP+4w8R7dpvrOVipkNw59msdU7vR8o7Fmr6Lh
-         BXU/RRMj+X6GUb82f1O5dtn4+H0kMxN/tZllXE9TfgwHDGYPKBuXqg5UiPMeW9ABU19a
-         2Bar/a81dFIsVZHicquxAwry8vbApv6vr2UJLo0aT39CteFe21zgkeZcIfCV11hNlrNT
-         mlqA==
+        d=google.com; s=20251104; t=1779129228; x=1779734028; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=1KANnHv0swkPJJWZfqLe5jM5UVpVbFidl0DzMhA68oc=;
+        b=dM7DWiByYe8lKa/W5HffJEzRb8QQ2J6ehvri9xzEccfN5lahVqt7CZbogLJXCQmc6n
+         PTpZDSVLqrurzy4WnJFB4yCD5/iU+V8JYaHB8Dy1scEddTLDKR6pRn87L6W5K0iKV1Zz
+         N6ujjO7q0T/4fYyHsFBS9xADZEinsc3s7jLBWZvTQZGjaQ774BN5MECKSxJ7efx0g3zH
+         BDXThMFyYrN7bU2lzREOCFXasWXPbeVgxRFcXSZdpb34t/+//+IUnSl8aInrMxlHI9V1
+         dUuu+55gzxyTgsV/ef/ZaI5tDL9tedQGJp+clsdDGgl7x+SjNFfnM6cfDuL9RTORj0mx
+         +bMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779129142; x=1779733942;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=uMfPrbhoLjga1AdJLxMvGsU3iqNPJdA/CeWmsArIr+g=;
-        b=HgftwDavklYhNPNHblP2XaIOI6InEa7N+3stM6vlsOVVroA48jRlRbsDZcWePF8YqP
-         GxEwU0dLsYDS2CKMhVYltpWD/YRhBda/Jmvapk+WlDU6T8DxpcA4R7RrDkFiAOm6nH2j
-         wAtPmPZG20MJflo77S6o04NNN+AMNUkjSW4HwurgPwmihIFnd+MKWKgHZDBSh+e+L2Oy
-         O82LV8naws4n4jocFSC560gy8ThJxmBFV4xhlzSljGDpUumIskuAES+9C4zVTxGGxCjM
-         UZgxDRFQSe4sQPrveeDN4eYMQFbS1uCPnD/IR+Mu+ZPnXPiP6ok/TWnGpkmdE4AC2jAB
-         jvfA==
-X-Forwarded-Encrypted: i=1; AFNElJ/SpVldRZ5h2CqHARlo8Xu02kBYXFa4sBhVxDOR9CQMMyazF5PYj1jgIgoMTRAlQae9lbM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yynyf2tUpRRfpGvSYxDVJkOAJy5wKaBsVXMxAzZ6DwWyQTGMbZ5
-	UwOkXmB3hzvfFiHpQV36M45TyrA1ZHkMnqL8qxcMbZumTPuK/luRhgqY3IrBGywGcfxII2za2c5
-	A06XbLA==
-X-Received: from pfbff26.prod.google.com ([2002:a05:6a00:2f5a:b0:83e:dfc6:971])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a221:b0:82f:7b98:e499
- with SMTP id d2e1a72fcca58-83f33d9dcb4mr16612559b3a.31.1779129141944; Mon, 18
- May 2026 11:32:21 -0700 (PDT)
-Date: Mon, 18 May 2026 11:32:21 -0700
-In-Reply-To: <20260518070943.2091287-2-ZongYao.Chen@linux.alibaba.com>
+        d=1e100.net; s=20251104; t=1779129228; x=1779734028;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=1KANnHv0swkPJJWZfqLe5jM5UVpVbFidl0DzMhA68oc=;
+        b=ZMB8QKDI3XPC8vgxm2tyYIOyHCAerxF+4zqrKPnKY4osLMMfv0idzqybr0pCYUYYDB
+         NTI49Wly+AY1TDMGYuYb71hiC2SqdGCNrO09wioKR7NK/azlCj0esmlpszwbNbkTM//1
+         BdD2njpwkaEnuGFFF+TXanGQDQkU4UkZGIrd8iQ28irl3HWQPvrjAwBX7AZkTgzbXRBl
+         pwEGskENkCPh99d4xVYjvd+9i80UDegA5N9D91KqFGDBGB2UHEB9QwQHApFF9kqjxDp8
+         1UfH14brB8W67OGGIGOqyUp3VX3tCnbipbkfc9mJ9vdKI4iaV0MuMCc9Zbhw8obUHdu0
+         TYPQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8xl1oUQJl8VTSqKB6Cf1wrk22ZULQS7otKDS5oX6ej5Uc2unF84F49bkXx9SCa7/pLaCc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyk/MBVNrQeu9aA698fp2rUtEz910C/f0NpFeX1M3H+WN73lUcl
+	k7SnEzZ4GhiX1SCrt3e71Gf7LBKYZ9XZplBeo8KkwOofbMOCnKo/yHSiwUiHv0Vdmg==
+X-Gm-Gg: Acq92OFPmxUUmkJxtH86hSh+NaDycttBjTdBHDcEcP4+La4hohOW08mK5v88Liq3+or
+	n+p1od9yUpwkL9zpfqmq3EIOrfjggzyTz6brQ7XneF9zgljBA7IyTz2lwjYu/8c2eBnjkXHrVhK
+	Ae0aqHq82Wo1NZZZZd5yj0tSrfona+DUqfboFFjVtq3l5hyDjYsXAHtF/NLYbWrEM0mj2qRCMfU
+	jARXG8G4zGhvpLQVdIsuNn5FsFZL+dKdHK+ues2Yuip0kIAiEPY5dawFReDKBowomzybRIEMDj0
+	hxv3VWuwI865zgVKkb5jmonKOZVCpu4qQmnXUcs4Rf40FDNpRWSL7XiskB9XmGSsFTQZFH4NJZw
+	jx6MF5v18t4SrtKtFQRe6WjFECOBR12GO3dZilSnz1U/MxkrKUzl9cZDrx587WILDnBMhcsaRIc
+	CxOUw9GzWCNvcaqLnBEhhkqBi1e94TMtGs53H1UywBxpQNaD6XZUf5+N2BmWCyUVy3SqcRyA==
+X-Received: by 2002:a17:903:32c5:b0:2b9:e831:5e5c with SMTP id d9443c01a7336-2bdb03a42c2mr3898675ad.4.1779129227834;
+        Mon, 18 May 2026 11:33:47 -0700 (PDT)
+Received: from google.com (153.46.83.34.bc.googleusercontent.com. [34.83.46.153])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5cfe6487sm156913305ad.54.2026.05.18.11.33.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 May 2026 11:33:47 -0700 (PDT)
+Date: Mon, 18 May 2026 18:33:44 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: Baolu Lu <baolu.lu@linux.intel.com>, 
+	David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
+	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>, 
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH v2 04/16] iommu: Implement device and IOMMU HW
+ preservation
+Message-ID: <agtMUUYyc1qx6GG7@google.com>
+References: <20260427175633.1978233-1-skhawaja@google.com>
+ <20260427175633.1978233-5-skhawaja@google.com>
+ <3874a086-98ae-4b94-8c1b-20e13f5a92fb@linux.intel.com>
+ <afzcqWa8iVqrhJLs@google.com>
+ <agsbtV4oargwX45d@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260518070943.2091287-1-ZongYao.Chen@linux.alibaba.com> <20260518070943.2091287-2-ZongYao.Chen@linux.alibaba.com>
-Message-ID: <agtbNc2uPA7esShy@google.com>
-Subject: Re: [PATCH 1/2] KVM: guest_memfd: Return -EEXIST for overlapping bindings
-From: Sean Christopherson <seanjc@google.com>
-To: ZongYao.Chen@linux.alibaba.com
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, Shuah Khan <shuah@kernel.org>, 
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Chao Peng <chao.p.peng@linux.intel.com>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, Ackerley Tng <ackerleytng@google.com>, 
-	Tianjia Zhang <tianjia.zhang@linux.alibaba.com>, linux-kselftest@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <agsbtV4oargwX45d@google.com>
 
-On Mon, May 18, 2026, ZongYao.Chen@linux.alibaba.com wrote:
-> From: Zongyao Chen <ZongYao.Chen@linux.alibaba.com>
-> 
-> KVM_SET_USER_MEMORY_REGION2 rejects guest_memfd ranges that overlap an
-> existing binding, but kvm_gmem_bind() currently reports the failure through
-> its generic -EINVAL path.  That makes binding conflicts indistinguishable
-> from malformed guest_memfd parameters.
-> 
-> Return -EEXIST when the target guest_memfd range is already bound, matching
-> the errno used for overlapping GPA memslots and making the two types of
-> range conflicts report the same class of error to userspace.
+On Mon, May 18, 2026 at 02:01:25PM +0000, Pranjal Shrivastava wrote:
+>On Thu, May 07, 2026 at 06:47:07PM +0000, Samiullah Khawaja wrote:
+>> On Thu, May 07, 2026 at 10:07:43AM +0800, Baolu Lu wrote:
+>> > On 4/28/26 01:56, Samiullah Khawaja wrote:
+>> > > Add IOMMU ops to preserve/unpreserve a device. These can be implemented
+>> > > by the IOMMU drivers that support preservation of devices that have
+>> > > their IOMMU domains preserved. During device preservation the state of
+>> > > the associated IOMMU is also preserved as dependency.
+>> > >
+>> > > Signed-off-by: Samiullah Khawaja<skhawaja@google.com>
+>> > > ---
+>> > >  drivers/iommu/liveupdate.c       | 162 +++++++++++++++++++++++++++++++
+>> > >  include/linux/iommu-liveupdate.h |  33 +++++++
+>> > >  include/linux/iommu.h            |  20 ++++
+>> > >  3 files changed, 215 insertions(+)
+>> > >
+>>
+>> [snip]
+>> > > +
+>> > > +int iommu_preserve_device(struct iommu_domain *domain,
+>> > > +			  struct device *dev, u64 *preserved_state)
+>> > > +{
+>> > > +	struct iommu_flb_obj *flb_obj;
+>> > > +	struct iommu_device_ser *device_ser;
+>> > > +	struct dev_iommu *iommu;
+>> > > +	struct pci_dev *pdev;
+>> > > +	int ret;
+>> > > +
+>> > > +	if (!dev_is_pci(dev))
+>> > > +		return -EOPNOTSUPP;
+>> > > +
+>> > > +	if (!domain->preserved_state)
+>> > > +		return -EINVAL;
+>> > > +
+>> > > +	if (!iommu_group_dma_owner_claimed(dev->iommu_group))
+>> > > +		return -EINVAL;
+>> > > +
+>> > > +	pdev = to_pci_dev(dev);
+>> > > +	iommu = dev->iommu;
+>> > > +	if (!iommu->iommu_dev->ops->preserve_device ||
+>> > > +	    !iommu->iommu_dev->ops->preserve)
+>> > > +		return -EOPNOTSUPP;
+>>
+>> I will check for unpreserve ops here also.
+>
+>[snip]
+>
+>> > > +	pdev = to_pci_dev(dev);
+>> > > +	iommu = dev->iommu;
+>> > > +	if (!iommu->iommu_dev->ops->unpreserve_device ||
+>> > > +	    !iommu->iommu_dev->ops->unpreserve)
+>> > > +		return;
+>> >
+>> > Is it considered a driver bug if it implements the preserve hooks but
+>> > not unpreserve ones? This would at least cause a silent memory leak. How
+>> > about adding a WARN like this?
+>>
+>> I think the preservation should not be done if the unpreserve ops are
+>> not implemented by the driver. I will add these checks in the _preserve
+>> functions and return EOPNOTSUPP if it is not implemented by the driver.
+>> >
+>> >    if (WARN_ON_ONCE(!iommu->iommu_dev->ops->unpreserve_device ||
+>> >                     !iommu->iommu_dev->ops->unpreserve))
+>> >        return;
+>>
+>> We can add this warning here also.
+>
+>I'd rather have the iommu device registration fail instead of solely
+>relying on these WARN_ONs here. We can simply add a snippet inside
+>iommu_device_register():
+>
+>#ifdef CONFIG_IOMMU_LIVEUPDATE
+>if ((iommu->ops->preserve && !iommu->ops->unpreserve) ||
+>    (!iommu->ops->preserve && iommu->ops->unpreserve)) {
+>        pr_err("IOMMU: %s: Asymmetric live-update operations detected\n",
+>               dev_name(iommu->dev));
+>        return -EINVAL;
+>}
+>#endif
+>
+>This prevents a half-baked iommu driver from ever spinning up, completely
+>eliminating the need to check for it inside the live-update session paths.
+>We anyway don't support hot-pluggable liveupdate ops atm.
 
-The other key piece of information is that we quite clearly intended to return
--EEXIST in this case, given the testcase, but simply failed on multiple fronts.
+Hmm.. I understand your point, But I think we should let the
+registration go through so the IOMMU can be used. Its just that the
+liveupdate preservation will not be supported. Failing the registration
+would be a big hammer that I think is not really needed.
+>
+>Thanks,
+>Praan
 
-No need for a v2, I'll add a blurb when applying.
-
-> Fixes: a7800aa80ea4 ("KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memory")
-> Signed-off-by: Zongyao Chen <ZongYao.Chen@linux.alibaba.com>
-> ---
->  virt/kvm/guest_memfd.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 69c9d6d546b2..46727539d08a 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -675,6 +675,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
->  
->  	if (!xa_empty(&f->bindings) &&
->  	    xa_find(&f->bindings, &start, end - 1, XA_PRESENT)) {
-> +		r = -EEXIST;
->  		filemap_invalidate_unlock(inode->i_mapping);
->  		goto err;
->  	}
-> -- 
-> 2.47.3
-> 
+Sami
