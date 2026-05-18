@@ -1,30 +1,30 @@
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+Received: from out30-100.freemail.mail.aliyun.com (out30-100.freemail.mail.aliyun.com [115.124.30.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0405B3DEAE3;
-	Mon, 18 May 2026 07:10:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D597D3DE427;
+	Mon, 18 May 2026 07:10:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.100
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779088204; cv=none; b=S7TIWTT6JDtCrBjvMYTypkjwkEorXCsKVaSqb+fBzWXdxdyWsb8a+cAXe0gtnKnw5taJCq9qTxkEp98EYnGZwcDosqsa4qS6N6nGmihvzvUimjjwvi5cKP86MBraTOLDfrrnyMa3TrZv8GM51JcuNf/434q67tI6O58EFd/a3/k=
+	t=1779088212; cv=none; b=XoN4LgaaHJKQvAzgcuPqrXLNu9aW5Hy5/o1/XZOn6TkkiB/BF4TI+/DG+yp3TdbJVXbVQiVixJOyMlp59WtEGyiKql4wMygyXbGnKxxCzjNNZ5CPxbaAIW6gNgEuMe/S2Ev0iaR6FfoOvQqy+A9R1MC2zB9KnF31t/0ftyuFQo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779088204; c=relaxed/simple;
-	bh=Gz2L4UQ1widAifOotkrmMVIa7TeFQAy0AXyYN/H8UF0=;
+	s=arc-20240116; t=1779088212; c=relaxed/simple;
+	bh=YViOcVEwFb+NEqT11dAFAGaXos+RyhvLp/NZnEOWgMU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=evGy0Ug5tuE1HQZSUELN71vvsv5fvjupqYIh4XgLwo4KS2hbqC34NG5gzx9DvgkOBdKnJqo1c68IUQ665hTW31dakS4Fb//OB0003E5UvgEZHSCpzkW1H8PllBicct34UiAh9caZjP/B97Q8lvYObIzm5YWdE0h2dBqWVnliQD4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=vZmbUDnM; arc=none smtp.client-ip=115.124.30.113
+	 MIME-Version; b=fDWeIgLgEDK9vCCKY/VZub+cqWD03fy3JUXnH9njjDy1sSZ/bCfQrPzd7XKOChdCZtY6ZFQ/DFLCVun2z6NOzdqA3qnaCxLrObAJRQpZu0MRqwO12AVsQVRPtntKtq1MdKupuObUC6HB0yerEW81saX45V7IWWdJGEW91cq+LJ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=QQx25NMn; arc=none smtp.client-ip=115.124.30.100
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="vZmbUDnM"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="QQx25NMn"
 DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
 	d=linux.alibaba.com; s=default;
-	t=1779088198; h=From:To:Subject:Date:Message-ID:MIME-Version;
-	bh=5iZNvof+RdjsqMlKtAD/FqDCIfxi3ZAyT/Wn2CvVtHU=;
-	b=vZmbUDnMsAMKBNKDJ9o2ZB6c34gQczCKlGxLcTH5SSEw5FJ4A7GCHwu9TDVpm0a9uvQ5tYGXkKAOarlurV2phvIQlsdc4gLVCuIoc94nZUL78/F4kIiWrh1jdvoCWAR9nmLX1lfL8fh9V97Eh+3qKyurEJ9yT2ipZKLLKz9KWcY=
-X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R191e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033032089153;MF=zongyao.chen@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0X34onwF_1779088197;
-Received: from localhost(mailfrom:ZongYao.Chen@linux.alibaba.com fp:SMTPD_---0X34onwF_1779088197 cluster:ay36)
+	t=1779088203; h=From:To:Subject:Date:Message-ID:MIME-Version;
+	bh=9UUz9cxNvFJXw97pxpxZYwOxVNQRD3Z1R4MivFHtRY0=;
+	b=QQx25NMnaO1dV/GWH4zPU+5mKw9vZOoGQFihtDq2rCQNZTIVBiFCr8tNysKGyWBW22jhuITRh4pzIBIkw/Ks2vH6krZ823p1RX+lFAiWuBe/wM7lRGlh6diM70HaWYoCypqaBgV6/6WGzMEXXoPvk3clu0kPZfzqspnhukxABF8=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033037033178;MF=zongyao.chen@linux.alibaba.com;NM=1;PH=DS;RN=12;SR=0;TI=SMTPD_---0X34Snsb_1779088201;
+Received: from localhost(mailfrom:ZongYao.Chen@linux.alibaba.com fp:SMTPD_---0X34Snsb_1779088201 cluster:ay36)
           by smtp.aliyun-inc.com;
-          Mon, 18 May 2026 15:09:57 +0800
+          Mon, 18 May 2026 15:10:01 +0800
 From: ZongYao.Chen@linux.alibaba.com
 To: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org
@@ -38,9 +38,9 @@ Cc: Shuah Khan <shuah@kernel.org>,
 	Zongyao Chen <ZongYao.Chen@linux.alibaba.com>,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH 1/2] KVM: guest_memfd: Return -EEXIST for overlapping bindings
-Date: Mon, 18 May 2026 15:09:42 +0800
-Message-ID: <20260518070943.2091287-2-ZongYao.Chen@linux.alibaba.com>
+Subject: [PATCH 2/2] KVM: selftests: Test guest_memfd binding overlap without GPA overlap
+Date: Mon, 18 May 2026 15:09:43 +0800
+Message-ID: <20260518070943.2091287-3-ZongYao.Chen@linux.alibaba.com>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260518070943.2091287-1-ZongYao.Chen@linux.alibaba.com>
 References: <20260518070943.2091287-1-ZongYao.Chen@linux.alibaba.com>
@@ -54,33 +54,60 @@ Content-Transfer-Encoding: 8bit
 
 From: Zongyao Chen <ZongYao.Chen@linux.alibaba.com>
 
-KVM_SET_USER_MEMORY_REGION2 rejects guest_memfd ranges that overlap an
-existing binding, but kvm_gmem_bind() currently reports the failure through
-its generic -EINVAL path.  That makes binding conflicts indistinguishable
-from malformed guest_memfd parameters.
+The guest_memfd binding overlap test recreates the deleted slot with GPA
+ranges that overlap the still-live slot.  KVM rejects those attempts from
+the generic memslot overlap check before reaching kvm_gmem_bind(), so the
+test can pass even if guest_memfd binding overlap detection is broken.
 
-Return -EEXIST when the target guest_memfd range is already bound, matching
-the errno used for overlapping GPA memslots and making the two types of
-range conflicts report the same class of error to userspace.
+Recreate the slot at its original, non-overlapping GPA and use guest_memfd
+offsets that overlap the front and back halves of the other slot's binding.
+Expand the guest_memfd so the back-half case remains within the file size.
 
-Fixes: a7800aa80ea4 ("KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memory")
+Fixes: 2feabb855df8 ("KVM: selftests: Expand set_memory_region_test to validate guest_memfd()")
 Signed-off-by: Zongyao Chen <ZongYao.Chen@linux.alibaba.com>
 ---
- virt/kvm/guest_memfd.c | 1 +
- 1 file changed, 1 insertion(+)
+ .../testing/selftests/kvm/set_memory_region_test.c | 14 +++++++-------
+ 1 file changed, 7 insertions(+), 7 deletions(-)
 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 69c9d6d546b2..46727539d08a 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -675,6 +675,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+diff --git a/tools/testing/selftests/kvm/set_memory_region_test.c b/tools/testing/selftests/kvm/set_memory_region_test.c
+index 9b919a231c93..15607e0bec90 100644
+--- a/tools/testing/selftests/kvm/set_memory_region_test.c
++++ b/tools/testing/selftests/kvm/set_memory_region_test.c
+@@ -510,7 +510,7 @@ static void test_add_overlapping_private_memory_regions(void)
  
- 	if (!xa_empty(&f->bindings) &&
- 	    xa_find(&f->bindings, &start, end - 1, XA_PRESENT)) {
-+		r = -EEXIST;
- 		filemap_invalidate_unlock(inode->i_mapping);
- 		goto err;
- 	}
+ 	vm = vm_create_barebones_type(KVM_X86_SW_PROTECTED_VM);
+ 
+-	memfd = vm_create_guest_memfd(vm, MEM_REGION_SIZE * 4, 0);
++	memfd = vm_create_guest_memfd(vm, MEM_REGION_SIZE * 6, 0);
+ 
+ 	vm_set_user_memory_region2(vm, MEM_REGION_SLOT, KVM_MEM_GUEST_MEMFD,
+ 				   MEM_REGION_GPA, MEM_REGION_SIZE * 2, 0, memfd, 0);
+@@ -526,19 +526,19 @@ static void test_add_overlapping_private_memory_regions(void)
+ 	vm_set_user_memory_region2(vm, MEM_REGION_SLOT, KVM_MEM_GUEST_MEMFD,
+ 				   MEM_REGION_GPA, 0, NULL, -1, 0);
+ 
+-	/* Overlap the front half of the other slot. */
++	/* Overlap the front half of the other slot's guest_memfd binding. */
+ 	r = __vm_set_user_memory_region2(vm, MEM_REGION_SLOT, KVM_MEM_GUEST_MEMFD,
+-					 MEM_REGION_GPA * 2 - MEM_REGION_SIZE,
++					 MEM_REGION_GPA,
+ 					 MEM_REGION_SIZE * 2,
+-					 0, memfd, 0);
++					 0, memfd, MEM_REGION_SIZE);
+ 	TEST_ASSERT(r == -1 && errno == EEXIST, "%s",
+ 		    "Overlapping guest_memfd() bindings should fail with EEXIST");
+ 
+-	/* And now the back half of the other slot. */
++	/* And now the back half of the other slot's guest_memfd binding. */
+ 	r = __vm_set_user_memory_region2(vm, MEM_REGION_SLOT, KVM_MEM_GUEST_MEMFD,
+-					 MEM_REGION_GPA * 2 + MEM_REGION_SIZE,
++					 MEM_REGION_GPA,
+ 					 MEM_REGION_SIZE * 2,
+-					 0, memfd, 0);
++					 0, memfd, MEM_REGION_SIZE * 3);
+ 	TEST_ASSERT(r == -1 && errno == EEXIST, "%s",
+ 		    "Overlapping guest_memfd() bindings should fail with EEXIST");
+ 
 -- 
 2.47.3
 
