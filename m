@@ -1,164 +1,195 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D198392837;
-	Mon, 18 May 2026 20:25:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49545380FFE
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 20:32:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779135927; cv=none; b=bSPizq8G4oOBb5r2h73+5MlFg1tWjjGfRBys0MYMhUOSlyjdlOwxrbXvc9i3/NDGpgeJIIn7pb8b7NC2309SfS8Fg1ODeOzBJa3Z+992G6RZ4VcyHVoZZz6sC9wrvs+Np0+VGD7qFITOggSaarqhyy7Se3Wm4pbzgvPpHMlNQXw=
+	t=1779136369; cv=none; b=Dc2NBR9NiiZPb1W4GPkS/KxmE+aVXMUzftmBfiYGh4Thntoh8rLLW1OLDX46rkJFeBWHzF+l6bArn+H0LKWtibIOZJhyNthXZsFqYVIACufQkw594+17p3pMDmngztZgxK233FwxUdMmlZed8b+5kNpLCjz2hZKwILnUgrq08qM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779135927; c=relaxed/simple;
-	bh=dTzJGsHSZ8xqNjuDFrBzWN7hB/SUmhWgE/soZ0ivTrc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ebdXCREpHT1yZVc0Zx0zghFooWNtag90JLg+L+l/z3ke0LLFcClBFV9iJa0RtRXjWBkeDaNrFwkN/7in1O7ZSXOd0L3vQHFbi2/NS2VnbRPG+rcXE0AIdlkJ/KnzE8rgwgzNvwhM4NY1gJqgiiVyiGt2KWB3nIE8C0UB4wag5VY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WgS0Xnag; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779136369; c=relaxed/simple;
+	bh=ueB0hMp+FeQZ2rw6x9BVNLt7mojoUSebvdMXIaLRWYA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=epKhbll1VrgVMdSYZuoZCUmqtzmbcXWG+9RIdjJ9fb9JDw493kiVgnoUdfa49d6O2QdxlXXqD4SfKHQKD/y5fcJqaF2xu9NPXYk9iSpjLNAvJIrsq0FAFdjBg5p13wU4ehxRsNIeZG6E2VnYCm89q455ubsWd3t06UlRDSoQkCw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VrhT63k5; arc=none smtp.client-ip=209.85.214.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WgS0Xnag"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7284C2BCC6;
-	Mon, 18 May 2026 20:25:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779135927;
-	bh=dTzJGsHSZ8xqNjuDFrBzWN7hB/SUmhWgE/soZ0ivTrc=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WgS0Xnagi5hvlqRSd1uaKL28Dup8ukB6XofSFo1/iq3XVPFahNA3301Bl8KrPVVTB
-	 uwxWZMinPC3B1l42OooiSOckKNEidbHew9Esa5uyCo2KxaHH0R4gJW/ft4KifnnslI
-	 JBGhKOrsFfe5DheeSdMBN5B2b2jBt2vTv0jddYaYW5HSBQ9Lem5fGtwnyhpqVnqNpz
-	 VZ/1OUHn5GqKTZZS+RoEgYrxDIZbO1Sd5qbjliRhXRP8G+txx6uT1asReHmZD/+Ku6
-	 vVEulaGvDNJlWv1AfNBF/4esy7AgA3SansaD2t8XWtVPSlhk2rjXIQ8D20i74U4Kni
-	 euYZf61oCUxrA==
-From: Yosry Ahmed <yosry@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yosry Ahmed <yosryahmed@google.com>,
-	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH 8/8] KVM: selftests: Trigger L2->L1 exits stress save+restore and #PF test
-Date: Mon, 18 May 2026 20:25:14 +0000
-Message-ID: <20260518202514.2037078-9-yosry@kernel.org>
-X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-In-Reply-To: <20260518202514.2037078-1-yosry@kernel.org>
-References: <20260518202514.2037078-1-yosry@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VrhT63k5"
+Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-2ba180a022dso175ad.1
+        for <kvm@vger.kernel.org>; Mon, 18 May 2026 13:32:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779136367; x=1779741167; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=TNmFlCcVDbEeItJqA64fw5/4nyffyvxzQppQsiHP4dc=;
+        b=VrhT63k5UIyhuFVcy/F9BQ9j29+SBh/bRxyVsiJkFSEbjimpMN1bUNU5nuu8dZkFg2
+         H4+ZIBJEW9RlaAJ4lGhubIWoJahDhQQ96JLI06gixutGHqK63bUNYyrbw78xXgJW/Uhb
+         DEk0VDhn+gc6R+3uDh78g7MIUTDB4akMWY9IJIKlySLzw3rn4VI5XNF/5sUoeIaF1gVL
+         BnhqtHGd6ic3sDNzaG+DtYU3DXFvKXHy+PW75A1qkad5rNNOyCagYq2PlDmKyJAfTolg
+         xNVTDwTqbYUG1nAWaiMJmuzn4ieEgjI7mDTqAV5+FXwNG4ezqlogLRPe4Re+8W3KCoaa
+         2pqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779136367; x=1779741167;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TNmFlCcVDbEeItJqA64fw5/4nyffyvxzQppQsiHP4dc=;
+        b=RdAbTxUnKZK2kvYzOsKJQxxqdUCoJ9fEVDR0U0lohmemS1gI3V4b6bGhQM80afrtik
+         Dm6kLjnc6tgJa1zfVax8iYVmXdHhCWA9AMrIfyjpj35KPWbJSFtzfJ4rytWx+FyNuhvH
+         5hMr4veGM3cj5d0iFyGGFq7jhUXt0UeKYBszoW2kPddoGzh7mRXBeNzRo5EVeMRvkNOT
+         xwpmk/Yr/2HdTR+mo4sg5qoSktK8Qzl0cB1+RH6lwPLiuEnzPt6hS/wntMiUfPXnUseW
+         clyo1Gw/RrhDaaPaJtyL3afW3bFN3rAB98FD5x8FsUYffh1nhxHDUAWO3OUizw1BwLGk
+         gCxw==
+X-Forwarded-Encrypted: i=1; AFNElJ8mUoCcFMvcVQVMZPLhqhBF9BTKVI7JFDt7s3rFITh5BPY9HXxqQ44NH1dOAZzpO511MXs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YztwXdQfiQAyz8vRw22vNYOUrbudXtW7WCNg5xfEnKYQJuvGmxO
+	dhvAqBe2H30V14g1w3OOu09w7pXVk/tYFKuHQKoGZLPDLxwEKUzDgLwqucUnR2XjNA==
+X-Gm-Gg: Acq92OFpIK0k6EGNx9e99fznCop3xQiohK7LLOZL4x7rwiSntOkFRZgVahGG06ZHF3+
+	KigYH86mq4OBDqvyn4Z6MRC+El2VgORVIT8fnQ0TwBD4TyFvt9gSYRxfUXHm9ddyzRfd4hHzdQZ
+	M5bfxzBGkZdnfmBLf5tO7Ws4Oxyqr3BttaM5a3gVd/AqdIrQAjI0EgBlN8ZnBD4C97Ku7bQwsoh
+	Sn9NwYWQMTnzGr3mRsbbxgg2UxA/Zikh7l2MXHBnfp32q40PQxBxHL2GFDGcTb8iYbkyy83Aq77
+	GvkVjUxc8rG/mxQpCuJHbIiwmO/sAa0XzqZ5o9o2qHX0e5fhMtywEfKPv6vWufGLWXzQygtVvOQ
+	jpYOdB95dyvZ8ScqsNRFwbpnrHDj1UJvqEtL33hMqxF3E7lcCg978frWzIWNkN+dOyOzDL3WP36
+	EZIro5u0aryowFz5IBJzAQQMeLfG/TFRR2ITEziszWSV798oNgY96rFrNTSxoe/egKY8obKw==
+X-Received: by 2002:a17:903:17c3:b0:2ba:4749:c9a2 with SMTP id d9443c01a7336-2bdb03a17e1mr3609045ad.2.1779136365901;
+        Mon, 18 May 2026 13:32:45 -0700 (PDT)
+Received: from google.com (153.46.83.34.bc.googleusercontent.com. [34.83.46.153])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-369514361b6sm11821958a91.12.2026.05.18.13.32.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 May 2026 13:32:45 -0700 (PDT)
+Date: Mon, 18 May 2026 20:32:42 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Baolu Lu <baolu.lu@linux.intel.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, 
+	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Pranjal Shrivastava <praan@google.com>, 
+	Vipin Sharma <vipinsh@google.com>, YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH v2 07/16] iommu/vt-d: Implement device and iommu
+ preserve/unpreserve ops
+Message-ID: <agtux6SrjpRYvMit@google.com>
+References: <20260427175633.1978233-1-skhawaja@google.com>
+ <20260427175633.1978233-8-skhawaja@google.com>
+ <a968550d-2cab-47fd-8639-a8747a8a7535@linux.intel.com>
+ <af023TAT1m3oA9ez@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <af023TAT1m3oA9ez@google.com>
 
-From: Yosry Ahmed <yosryahmed@google.com>
+On Fri, May 08, 2026 at 02:36:56AM +0000, Samiullah Khawaja wrote:
+>On Thu, May 07, 2026 at 02:25:14PM +0800, Baolu Lu wrote:
+>>On 4/28/26 01:56, Samiullah Khawaja wrote:
+>>>Add implementation of the device and iommu presevation in a separate
+>>>file. Also set the device and iommu preserve/unpreserve ops in the
+>>>struct iommu_ops.
+>>>
+>>>During normal shutdown the iommu translation is disabled. Since the root
+>>>table is preserved during live update, it needs to be cleaned up and the
+>>>context entries of the unpreserved devices need to be cleared.
+>>
+>>This is not related to preserve/unpreserve ops and could be made in a
+>>separated patch?
+>
+>Agreed. I will move this stuff to a separate patch.
+>>
+>>>
+>>>Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>>>---
+>>> MAINTAINERS                      |   1 +
+>>> drivers/iommu/intel/Makefile     |   1 +
+>>> drivers/iommu/intel/iommu.c      |  52 +++++++++++-
+>>> drivers/iommu/intel/iommu.h      |  28 +++++++
+>>> drivers/iommu/intel/liveupdate.c | 139 +++++++++++++++++++++++++++++++
+>>> drivers/iommu/iommu.c            |  18 ++++
+>>> include/linux/iommu-liveupdate.h |  10 +++
+>>> include/linux/iommu.h            |  14 ++++
+>>> include/linux/kho/abi/iommu.h    |  18 ++++
+>>> 9 files changed, 277 insertions(+), 4 deletions(-)
+>>> create mode 100644 drivers/iommu/intel/liveupdate.c
+>>>
 
-Extend the testing coverage in L2 by injecting a #UD into the vCPU every
-other iteration during restore, and intercepting #UD from L1,
-essentially forcing an L2 -> L1 VM-Exit directly after save+restore.
+[snip]
+>>
+>>>+{
+>>>+	struct context_entry *context;
+>>>+	int ret;
+>>>+	int i;
+>>>+
+>>>+	for (i = 0; i < ROOT_ENTRY_NR; i++) {
+>>>+		/*
+>>>+		 * Alloc the context tables now to make sure the iommu unit is
+>>>+		 * properly preserved. These might stay unused and wastes around
+>>>+		 * 32MB max in scalable mode.
+>>>+		 */
+>>
+>>Instead of allocating and preserving context tables for all root entries
+>>(as noted, can waste up to 32MB), could we restrict this only to the
+>>entries possibly in use by active PCI devices?
+>
+>I think the hotplug devices or VFs created through SR-IOV will be missed
+>that way. Lets say device A is preserved and the associated iommu is
+>also preserved. And then a new device B is hotplugged and preserved,
+>then the context table for that will be missed.
 
-With this change, the test reliably reproduces the CR2 bug fixed by
-commit 5c247d08bc81 ("KVM: nSVM: Use vcpu->arch.cr2 when updating vmcb12
-on nested #VMEXIT") -- at least on Milan, Genoa, and Turin CPUs.
+Ok I thought about it a little more and basically we have following
+things to consider when we preserve context tables,
 
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
----
- .../kvm/x86/stress_save_restore_pf_test.c     | 48 +++++++++++++++++--
- 1 file changed, 43 insertions(+), 5 deletions(-)
+- The devices can be hotplugged and preserved, so the context tables of
+   those need to be preserved if we don't allocate all of them first time
+   we preserve iommu, as done here.
+- New context tables can be added (after hotplug) for unpreserved
+   devices. And if we don't get another iommu preserve call after these
+   are added, those remain unpreserved, so during shutdown those entries
+   need to be removed from root table or preserved for simplicity.
 
-diff --git a/tools/testing/selftests/kvm/x86/stress_save_restore_pf_test.c b/tools/testing/selftests/kvm/x86/stress_save_restore_pf_test.c
-index ec3d36d6e4846..e977d9786e392 100644
---- a/tools/testing/selftests/kvm/x86/stress_save_restore_pf_test.c
-+++ b/tools/testing/selftests/kvm/x86/stress_save_restore_pf_test.c
-@@ -115,8 +115,12 @@ static void l1_svm_code(struct svm_test_data *svm)
- 
- 	generic_svm_setup(svm, guest_access_memory, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
- 
--	run_guest(svm->vmcb, svm->vmcb_gpa);
--	GUEST_ASSERT(false);
-+	svm->vmcb->control.intercept_exceptions |= BIT(UD_VECTOR);
-+
-+	while (1) {
-+		run_guest(svm->vmcb, svm->vmcb_gpa);
-+		GUEST_ASSERT_EQ(svm->vmcb->control.exit_code, (SVM_EXIT_EXCP_BASE + UD_VECTOR));
-+	}
- }
- 
- static void l1_vmx_code(struct vmx_pages *vmx)
-@@ -127,13 +131,17 @@ static void l1_vmx_code(struct vmx_pages *vmx)
- 	GUEST_ASSERT(load_vmcs(vmx));
- 	prepare_vmcs(vmx, guest_access_memory, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
- 
--	/* Ignore any #PF */
--	GUEST_ASSERT(!vmwrite(EXCEPTION_BITMAP, BIT(PF_VECTOR)));
-+	/* Intercept UD, ignore any #PF */
-+	GUEST_ASSERT(!vmwrite(EXCEPTION_BITMAP, BIT(UD_VECTOR) | BIT(PF_VECTOR)));
- 	GUEST_ASSERT(!vmwrite(PAGE_FAULT_ERROR_CODE_MASK, 0));
- 	GUEST_ASSERT(!vmwrite(PAGE_FAULT_ERROR_CODE_MATCH, -1));
- 
- 	GUEST_ASSERT(!vmlaunch());
--	GUEST_ASSERT(false);
-+	while (1) {
-+		GUEST_ASSERT_EQ(vmreadz(VM_EXIT_REASON), EXIT_REASON_EXCEPTION_NMI);
-+		GUEST_ASSERT_EQ(vmreadz(VM_EXIT_INTR_INFO) & 0xff, UD_VECTOR);
-+		GUEST_ASSERT(!vmresume());
-+	}
- }
- 
- static void l1_guest_code(void *test_data)
-@@ -171,6 +179,23 @@ static void vcpu_sigusr_ignore(void)
- 	sigaction(SIGUSR1, &sa, NULL);
- }
- 
-+static bool vcpu_state_is_guest_mode(struct kvm_x86_state *state)
-+{
-+	return !!(state->nested.flags & KVM_STATE_NESTED_GUEST_MODE);
-+}
-+
-+static void vcpu_state_inject_ud(struct kvm_x86_state *state)
-+{
-+	if (state->events.exception.pending || state->events.exception.injected)
-+		return;
-+
-+	state->events.flags |= KVM_VCPUEVENT_VALID_PAYLOAD;
-+	state->events.exception.pending = true;
-+	state->events.exception.injected = false;
-+	state->events.exception.nr = UD_VECTOR;
-+	state->events.exception.has_error_code = false;
-+}
-+
- static bool parse_args_nested(int argc, char *argv[])
- {
- 	bool nested = false;
-@@ -202,10 +227,13 @@ int main(int argc, char *argv[])
- 	gva_t gva;
- 	gpa_t gpa;
- 
-+	TEST_REQUIRE(kvm_has_cap(KVM_CAP_EXCEPTION_PAYLOAD));
-+
- 	nested = parse_args_nested(argc, argv);
- 
- 	vm = vm_create_with_one_vcpu(&vcpu, nested ? l1_guest_code : guest_access_memory);
- 	vm_install_exception_handler(vm, PF_VECTOR, guest_pf_handler);
-+	vm_enable_cap(vm, KVM_CAP_EXCEPTION_PAYLOAD, -2ul);
- 
- 	if (nested) {
- 		TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SVM) || kvm_cpu_has(X86_FEATURE_VMX));
-@@ -264,8 +292,18 @@ int main(int argc, char *argv[])
- 
- 		state = vcpu_save_state(vcpu);
- 
-+		/*
-+		 * If the vCPU is in guest mode, inject a #UD to trigger an
-+		 * L2->L1 VM-Exit every other iteration.
-+		 */
-+		if (vcpu_state_is_guest_mode(state) && count % 2 == 0) {
-+			TEST_ASSERT(nested, "Unexpected guest mode");
-+			vcpu_state_inject_ud(state);
-+		}
-+
- 		kvm_vm_release(vm);
- 		vcpu = vm_recreate_with_one_vcpu(vm);
-+		vm_enable_cap(vm, KVM_CAP_EXCEPTION_PAYLOAD, -2ul);
- 		vcpu_load_state(vcpu, state);
- 		kvm_x86_state_cleanup(state);
- 
--- 
-2.54.0.563.g4f69b47b94-goog
+To solve this we can,
 
+1. Either preserve the new context table when it is added for a preserved
+   iommu. This can be done in iommu_context_addr(). This is simpler and
+   no tracking needed.
+
+2. Or track the preserved context tables using a bitmap and then preserve
+   them incremently whenever a device is preserved. On shutdown during
+   cleanup, we can clear the entries for unpreserved context tables from
+   root table.
+
+I am inclined towards second option. WDYT?
+
+I think we will have to do similar stuff for PASID also down the road to
+preserve pasid_tables in PASID directory.
+>
+>Since we don't track the context_tables that are preserved, there is no
+>way to incremently preserve the new-ones. Let me look into the behaviour
+>of KHO, maybe we can make the preserve call idempotent and do these
+>incrementally.
+>>
+>>>+		spin_lock(&iommu->lock);
+>>>+		context = iommu_context_addr(iommu, i, 0, 1);
+>>>+		spin_unlock(&iommu->lock);
+>>>+		if (!context) {
+>>>+			ret = -ENOMEM;
+>>>+			goto error;
+>>>+		}
+
+[snip]
+>>
+>>Thanks,
+>>baolu
+>>
+>
+>Thanks,
+>Sami
+
+Sami
