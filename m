@@ -1,307 +1,301 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f73.google.com (mail-ed1-f73.google.com [209.85.208.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8C663E63BA
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 09:33:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F9023E8333
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 09:36:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779096799; cv=none; b=Tc+Fj2dwPSnhEr8ojXsyR0BDxsn2Hc2SNY3Dp6sr7zWNA1msm1rS+wGaAG02w0bNWbmiXZk2Nz+UkMXqCyqum6G33kQZCOoKqaUOVAQNld9WhhhlONoDS9fHMFT2B6XeB6ZhHMLz2E2AGt4VHs9OlFR1X++dUPe/URFeILyYDsA=
+	t=1779097007; cv=none; b=HOqQNsRRtSXcpFNbKF1yf8hBTrGvcFM/hj2JMAd3koYaGKExt1A71PPE79l4+XLID7h+VmDNYEmNVdNNO139ijpFvIygnau2SYVUNu4MtBdlSqHMvddK/iDKAmP7NNOeIK+TjBwQ5K8YJp+cMQX+4AxpG/ur5BAuXpopCppuH7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779096799; c=relaxed/simple;
-	bh=jSlre+l4xv2u3lht0ewJ63vmV7qP+xbiV5kD+x9/9jQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PyUD0rTODWkGHup5vy3m/zWQB+WwzXarHCHa8nKYhid0UXK/tZhk9eSB94VKzVBV14vQnNFEyVgzU1eS6SuoUzcm6rNYOZh0eZ4wHNraCiz8vLNc1ob654lXVlSu5e9ZkJaf4wzAo7By/5VqoO4JtN3mdty0fw/YDC7yX9rnH4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Zf12pRr/; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cJ9EzcEb; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1779097007; c=relaxed/simple;
+	bh=L4H1uHql/HJPpc27eILZG0D33tmdJ49HmIaLmZtdcjk=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Dc+KOufR59AZs+DIz76dveRZ1scTc1aCLgq4v0CFrV7P7l13DavKY8f1S1VPRZT3Q36sfKatRGwzp/TFMaA4nDUAPhV+efQNiwO5Ew/J1TyHlvNtno9GTh207dspb5mW2QAP8Ic6+1sqWJrfGypgZ3eyp24MYI6AuDFzOYPl8DE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DBq8N28W; arc=none smtp.client-ip=209.85.208.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--tarunsahu.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Zf12pRr/";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cJ9EzcEb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779096796;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=/rMc/AxTWnfe6rPr4aOrLy+F5Zu/TWf0k5shSHIhIko=;
-	b=Zf12pRr/E1fin2NIN3w/Xg376YkH7Lyd1dQkdvRCqyn+K+CXb7OgVmTCn8l0O56oPtuFfU
-	jZ/SmfLwKPTa91FYgAt1maU8R4jMnST/Q4zmuAatKrx+oIohvrfgb9D3H1MfffK0jcCGGV
-	RqiAWtkkgcOrxxROMkTmQwQsuwLH7E4=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-568-EShOSTDCM6KObDgulQPGKg-1; Mon, 18 May 2026 05:33:14 -0400
-X-MC-Unique: EShOSTDCM6KObDgulQPGKg-1
-X-Mimecast-MFC-AGG-ID: EShOSTDCM6KObDgulQPGKg_1779096793
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-43d7a5b9678so1301976f8f.2
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 02:33:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DBq8N28W"
+Received: by mail-ed1-f73.google.com with SMTP id 4fb4d7f45d1cf-67c3d3a11ceso1831542a12.0
+        for <kvm@vger.kernel.org>; Mon, 18 May 2026 02:36:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779096793; x=1779701593; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=/rMc/AxTWnfe6rPr4aOrLy+F5Zu/TWf0k5shSHIhIko=;
-        b=cJ9EzcEbqft16LRCVOblEHlFhqd6dFMM0L00aCOKdX+l+fN6L1YT3ipc041q5f9gm5
-         IIzcXTQHUrfOqyMWabOchDC/00Mdnes3DQoU2Sujp4/Gn23Q1z2eYtvNq/p/IkHIQcTH
-         XYEWygRp5Cfytu9pHUyHJ1MVbG5pR8qV9gfnUHXcfyED/XGXtM+CDbD/wZAEJAXZlc9U
-         sCGIZgAcJIBFHuRI+m6qeDaVvW3eX6h0DLN8zq54hlIDC1tYnpRO2ok1NFLJSBJ82E5w
-         X67CbTOGYHbriz8T6kf5LfQNeB+yugk7QBmc/iuPAZSmBFZV8i7ILUKx6NHTnZJCGFU0
-         cSdw==
+        d=google.com; s=20251104; t=1779097003; x=1779701803; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=as26CSLWhv9riXhwc0+6uzjiz4k1n6M2f5huVsJsy4s=;
+        b=DBq8N28We2W6eEsbAqjHuhdrB4CKMcnVQqNw9tpkMdrIw+nYTFJRC+48DpUwFUQ+6F
+         PbcV8x2lt7pYkC0tZUU0XG+aidIml1U4bBjIt2fUU2mnG78QJnYe/tpd54fIWkVtOKbT
+         yOvc1EoL7Ep8MR8UP0AJFJhoKMgHjRxYfUEcycdM9vkErWsIKppGg3EFhtWn/PP5KmEt
+         E601aNr9DmU+fC92hpdoPXZduJ0l2LQUA82rKDUX1nyyE1VSx4886aEAlA8Afef9JYGO
+         gtpjHMmwJWrhXNesKmPU3YyUuMmjg2SqgMw+Wft9SuPF9xAexmtG70z+QI476bWaWqeb
+         7KlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779096793; x=1779701593;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/rMc/AxTWnfe6rPr4aOrLy+F5Zu/TWf0k5shSHIhIko=;
-        b=jdcwun+8fesDb1cv723IElXeeZaKZ91BNbc7jp2nHqMTRXwXYmPraR9HOLiTrVr/cx
-         TmL89ytVFr+OVTIofNurMH3By88/K3Qh7J6cru1z+3x2VAKLxFoyoYm5Lo0PJg7TvrH8
-         Id4hQ1DV9GkvZFNN8ejQGHWGzSMxd+IOEB8Dnl6AHaau2vDnfwnstuaQT9ji6SRSWqwB
-         iIcCH4GPAjqsxOtE+g0qe8LGZQd9J66BbTL97Q/xoh1rUVMe2QcpRMmDSUl80/Cdd8Er
-         xAGBrgzB3VQtxeRF9bT4hj3/5+UP9eM0xxR9DlZn3E3cb9uu+U1UyOYJE7/qpD/7lTjS
-         B0lg==
-X-Forwarded-Encrypted: i=1; AFNElJ9+wrnGhscR8R/zKlJNT7LA7CDqCT8R6s5wrOSa4K0lHFBcLAmPe8oddI5P6hPfC4LrO54=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzBT1I2PPfa4IJQTI73rWKVnsEUAklChfdw33RVq1lfYXo72sTw
-	NUW/Hs38UaHwf0m7YZuh30ge0y+lq/hnrPBraola5omGrzg3mU23XS36i4q7OkvYLTisezBnYp1
-	fQmm/ntFhjpq46MrtJ2QFg4fGk5NJTx+b98I4XDZ4johpAeW9Rm6sVA==
-X-Gm-Gg: Acq92OHfqVW2wYulc+RC+8wOt/Uy30Pw1FxfkabDo6ysKqXcG4x/uQAAiJyGb9+296E
-	fLrRnu7bf9BXGqSWQH+xpDXaicYE0jsWAcPHrTr46L89UtYbgW4bUntznIfcCG8g/JFhrReEPqN
-	mtbKAS2XOidfSqvKbfjZlOcdqNBmWj3wBHmvOci6wj+1C62hGkFitaTEvLxprvL1OJmC03+jAgu
-	ESviuB8oKrrflLMHZsII0gVg1Fxk1wC7gXnzQFiJhnVaivdaa9y/DgELDH1w36ysR1sH9a/6ZwC
-	WLZJU4yNx77BvwONw1DK8Xr0k1kgVR99OnPF9uHhe69KQ9O3cO9FGueMnhpvBrkFOHLkzFSLUur
-	ojIvLB8/wXUhkf/4obLDFzv3rQoS/EDCqmATiH0j8
-X-Received: by 2002:a05:600c:a406:b0:48f:e230:1d12 with SMTP id 5b1f17b1804b1-48fe6329913mr173599005e9.31.1779096792665;
-        Mon, 18 May 2026 02:33:12 -0700 (PDT)
-X-Received: by 2002:a05:600c:a406:b0:48f:e230:1d12 with SMTP id 5b1f17b1804b1-48fe6329913mr173598345e9.31.1779096792146;
-        Mon, 18 May 2026 02:33:12 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-48-7.inter.net.il. [80.230.48.7])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48febe5bc94sm140342335e9.4.2026.05.18.02.33.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 02:33:11 -0700 (PDT)
-Date: Mon, 18 May 2026 05:33:08 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: David Laight <david.laight.linux@gmail.com>, netdev@vger.kernel.org,
-	Jakub Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>, kvm@vger.kernel.org,
-	Eric Dumazet <edumazet@google.com>,
-	Eugenio =?iso-8859-1?Q?P=E9rez?= <eperezma@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	virtualization@lists.linux.dev,
-	"David S. Miller" <davem@davemloft.net>,
-	Jason Wang <jasowang@redhat.com>, linux-kernel@vger.kernel.org,
-	Maher Azzouzi <maherazz04@gmail.com>
-Subject: Re: [PATCH net] vsock/virtio: fix zerocopy completion for multi-skb
- sends
-Message-ID: <20260518053223-mutt-send-email-mst@kernel.org>
-References: <20260514092948.268720-1-sgarzare@redhat.com>
- <20260516125329.7b699c6f@pumpkin>
- <agrXvCtNRlySlwgx@sgarzare-redhat>
+        d=1e100.net; s=20251104; t=1779097003; x=1779701803;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=as26CSLWhv9riXhwc0+6uzjiz4k1n6M2f5huVsJsy4s=;
+        b=D3fDNC3YlyAYMSmNH6sbmQ73aXJ/ch6sWjWX+2eYB8VN7ZQitXA+xxfAusn2qA/elY
+         ppiS8RIbYHT/CM8ZfrXC/8fZjlEjfkiflTKwJdIQLf+B1ngWRi6SfDMLSWyUZ4keR2dq
+         g1l1hyn8td6NyKHNUHoAuOHWV2QqdOm17gNFXpOfcsJwLnfdWxm4fEKAr4nPGLXIRMwv
+         yljW7NlXurhNQumTgCR1Ah3+IPCS492UaPkQuuN9cB71XNgcU6+SLN92lcx+CaHmnf+0
+         n/WbhZKJeMt721Ui4x6joqXp3haE/ZfIGk2oRbPHECR8swjcsiykZ1x5VJD9DqGKHgj9
+         rkqA==
+X-Forwarded-Encrypted: i=1; AFNElJ/saeX60xQyNcw3612o7FZl0UFS4HWVltJRp5S7QqHu5eUgn7SH6nuXguVkUoI+rUGLJRo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxv/tvr1HSVAfYMOHv4eWtORzEFA/l7bjNa0ytVQELsW6nTWgKj
+	EJQxCVRXB8Egnt3TMrFw5Akd4qIhi8Revjjx5sunmilCSDCQsxWVKuaz9Z/5WEp6fNgVA/UTww7
+	UoIaG77d0AWdIQYX6zg==
+X-Received: from edxa5.prod.google.com ([2002:a05:6402:13c5:b0:683:d667:6d6c])
+ (user=tarunsahu job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a05:6402:24ce:b0:683:5306:d41b with SMTP id 4fb4d7f45d1cf-683bc5ba630mr6644571a12.7.1779097003267;
+ Mon, 18 May 2026 02:36:43 -0700 (PDT)
+Date: Mon, 18 May 2026 09:36:31 +0000
+In-Reply-To: <cover.1779080766.git.tarunsahu@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <agrXvCtNRlySlwgx@sgarzare-redhat>
+Mime-Version: 1.0
+References: <cover.1779080766.git.tarunsahu@google.com>
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
+Message-ID: <9ff4237649ace8b7eb78f3c3ec9ffaf5ae49ae6a.1779080766.git.tarunsahu@google.com>
+Subject: [RFC PATCH v1 1/9] liveupdate: luo_file: Add internal APIs for file preservation
+From: Tarun Sahu <tarunsahu@google.com>
+To: axelrasmussen@google.com, mark.rutland@arm.com, skhawaja@google.com, 
+	Mike Rapoport <rppt@kernel.org>, sagis@google.com, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Shuah Khan <shuah@kernel.org>, ackerleytng@google.com, corbet@lwn.net, 
+	dmatlack@google.com, Paolo Bonzini <pbonzini@redhat.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, vannapurve@google.com, 
+	Pratyush Yadav <pratyush@kernel.org>, david@redhat.com, aneesh.kumar@kernel.org, 
+	vipinsh@google.com, Alexander Graf <graf@amazon.com>, David Hildenbrand <david@kernel.org>, 
+	Pasha Tatashin <pasha.tatashin@soleen.com>
+Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	kexec@lists.infradead.org, linux-kselftest@vger.kernel.org, 
+	kvm@vger.kernel.org, Tarun Sahu <tarunsahu@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, May 18, 2026 at 11:18:24AM +0200, Stefano Garzarella wrote:
-> On Sat, May 16, 2026 at 12:53:29PM +0100, David Laight wrote:
-> > On Thu, 14 May 2026 11:29:48 +0200
-> > Stefano Garzarella <sgarzare@redhat.com> wrote:
-> > 
-> > > From: Stefano Garzarella <sgarzare@redhat.com>
-> > > 
-> > > When a large message is fragmented into multiple skbs, the zerocopy
-> > > uarg is only allocated and attached to the last skb in the loop.
-> > > Non-final skbs carry pinned user pages with no completion tracking,
-> > > so the kernel has no way to notify userspace when those pages are safe
-> > > to reuse. If the loop breaks early the uarg is never allocated at all,
-> > > leaking pinned pages with no completion notification.
-> > > 
-> > > Fix this by following the approach used by TCP: allocate the zerocopy
-> > > uarg (if not provided by the caller) before the send loop and attach
-> > > it to every skb via skb_zcopy_set(), which takes a reference per skb.
-> > > Each skb's completion properly decrements the refcount, and the
-> > > notification only fires after the last skb is freed.
-> > > On failure, if no data was sent, the uarg is cleanly aborted via
-> > > net_zcopy_put_abort().
-> > > 
-> > > This issue was initially discovered by sashiko while reviewing commit
-> > > 1cb36e252211 ("vsock/virtio: fix MSG_ZEROCOPY pinned-pages accounting")
-> > > but was pre-existing.
-> > > 
-> > > Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
-> > > Cc: Arseniy Krasnov <avkrasnov@salutedevices.com>
-> > > Closes: https://sashiko.dev/#/patchset/20260420132051.217589-1-sgarzare%40redhat.com
-> > > Reported-by: Maher Azzouzi <maherazz04@gmail.com>
-> > > Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
-> > > ---
-> > >  net/vmw_vsock/virtio_transport_common.c | 83 ++++++++++---------------
-> > >  1 file changed, 34 insertions(+), 49 deletions(-)
-> > > 
-> > > diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> > > index 989cc252d3d3..1e3409d28164 100644
-> > > --- a/net/vmw_vsock/virtio_transport_common.c
-> > > +++ b/net/vmw_vsock/virtio_transport_common.c
-> > > @@ -70,34 +70,6 @@ static bool virtio_transport_can_zcopy(const struct virtio_transport *t_ops,
-> > >  	return true;
-> > >  }
-> > > 
-> > > -static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
-> > > -					   struct sk_buff *skb,
-> > > -					   struct msghdr *msg,
-> > > -					   size_t pkt_len,
-> > > -					   bool zerocopy)
-> > > -{
-> > > -	struct ubuf_info *uarg;
-> > > -
-> > > -	if (msg->msg_ubuf) {
-> > > -		uarg = msg->msg_ubuf;
-> > > -		net_zcopy_get(uarg);
-> > > -	} else {
-> > > -		struct ubuf_info_msgzc *uarg_zc;
-> > > -
-> > > -		uarg = msg_zerocopy_realloc(sk_vsock(vsk),
-> > > -					    pkt_len, NULL, false);
-> > > -		if (!uarg)
-> > > -			return -1;
-> > > -
-> > > -		uarg_zc = uarg_to_msgzc(uarg);
-> > > -		uarg_zc->zerocopy = zerocopy ? 1 : 0;
-> > > -	}
-> > > -
-> > > -	skb_zcopy_init(skb, uarg);
-> > > -
-> > > -	return 0;
-> > > -}
-> > > -
-> > >  static int virtio_transport_fill_skb(struct sk_buff *skb,
-> > >  				     struct virtio_vsock_pkt_info *info,
-> > >  				     size_t len,
-> > > @@ -317,8 +289,10 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
-> > >  	u32 src_cid, src_port, dst_cid, dst_port;
-> > >  	const struct virtio_transport *t_ops;
-> > >  	struct virtio_vsock_sock *vvs;
-> > > +	struct ubuf_info *uarg = NULL;
-> > >  	u32 pkt_len = info->pkt_len;
-> > >  	bool can_zcopy = false;
-> > > +	bool have_uref = false;
-> > >  	u32 rest_len;
-> > >  	int ret;
-> > > 
-> > > @@ -360,6 +334,25 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
-> > >  		if (can_zcopy)
-> > >  			max_skb_len = min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
-> > >  					    (MAX_SKB_FRAGS * PAGE_SIZE));
-> > > +
-> > > +		if (info->msg->msg_flags & MSG_ZEROCOPY &&
-> > > +		    info->op == VIRTIO_VSOCK_OP_RW) {
-> > > +			uarg = info->msg->msg_ubuf;
-> > > +
-> > > +			if (!uarg) {
-> > > +				uarg = msg_zerocopy_realloc(sk_vsock(vsk),
-> > > +							    pkt_len, NULL, false);
-> > > +				if (!uarg) {
-> > > +					virtio_transport_put_credit(vvs, pkt_len);
-> > > +					return -ENOMEM;
-> > > +				}
-> > > +
-> > > +				if (!can_zcopy)
-> > > +					uarg_to_msgzc(uarg)->zerocopy = 0;
-> > > +
-> > > +				have_uref = true;
-> > > +			}
-> > > +		}
-> > 
-> > Surely that block should only be done if can_zcopy is true?
-> > And shouldn't something unset it if info->op != VIRTIO_VSOCK_OP_RW ?
-> > If the msg_zerocopy_realloc() fails then can't you just set can_zcopy to false.
-> > 
-> > It info->msg->msg_buf is already set then I think you have to disable zero-copy.
-> > The caller has already requested a callback - and you can't add another.
-> > 
-> > In any case by the end of this can_zcopy and have_uref are really the same flag.
-> 
-> I kept the same approach we had before, trying to make as few changes as
-> possible.
-> 
-> All these potential issues seem to be pre-existing and should be eventually
-> addressed in other patches IMHO. This patch one only resolves the main issue
-> of calling `skb_zcopy_set()` for every skb to avoid leaking pages, etc.
+From: Pasha Tatashin <pasha.tatashin@soleen.com>
 
-the patch is upstream now, right? So pretty much have to be patches on
-top.
+The core liveupdate mechanism allows userspace to preserve file
+descriptors. However, kernel subsystems often manage struct file
+objects directly and need to participate in the preservation process
+programmatically without relying solely on userspace interaction.
 
-> @Arseniy can you help on this?
-> 
-> > 
-> > >  	}
-> > > 
-> > >  	rest_len = pkt_len;
-> > > @@ -378,27 +371,7 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
-> > >  			break;
-> > >  		}
-> > > 
-> > > -		/* We process buffer part by part, allocating skb on
-> > > -		 * each iteration. If this is last skb for this buffer
-> > > -		 * and MSG_ZEROCOPY mode is in use - we must allocate
-> > > -		 * completion for the current syscall.
-> > > -		 *
-> > > -		 * Pass pkt_len because msg iter is already consumed
-> > > -		 * by virtio_transport_fill_skb(), so iter->count
-> > > -		 * can not be used for RLIMIT_MEMLOCK pinned-pages
-> > > -		 * accounting done by msg_zerocopy_realloc().
-> > > -		 */
-> > > -		if (info->msg && info->msg->msg_flags & MSG_ZEROCOPY &&
-> > > -		    skb_len == rest_len && info->op == VIRTIO_VSOCK_OP_RW) {
-> > > -			if (virtio_transport_init_zcopy_skb(vsk, skb,
-> > > -							    info->msg,
-> > > -							    pkt_len,
-> > > -							    can_zcopy)) {
-> > > -				kfree_skb(skb);
-> > > -				ret = -ENOMEM;
-> > > -				break;
-> > > -			}
-> > > -		}
-> > > +		skb_zcopy_set(skb, uarg, NULL);
-> > > 
-> > >  		virtio_transport_inc_tx_pkt(vvs, skb);
-> > > 
-> > > @@ -422,6 +395,18 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
-> > > 
-> > >  	virtio_transport_put_credit(vvs, rest_len);
-> > > 
-> > > +	/* msg_zerocopy_realloc() initializes the ubuf_info refcnt to 1.
-> > > +	 * skb_zcopy_set() increases it for each skb, so we can drop that
-> >                                                            ^ must
-> > 
-> > > +	 * initial reference to keep it balanced.
-> > > +	 */
-> > > +	if (have_uref) {
-> > > +		if (rest_len == pkt_len)
-> > > +			/* No data sent, abort the notification. */
-> > > +			net_zcopy_put_abort(uarg, true);
-> > 
-> > Is it worth optimising for the 'nothing sent' case ?
-> 
-> What do you suggest doing?
-> 
-> I followed what TCP does.
-> 
-> Thanks,
-> Stefano
-> 
-> > 
-> > -- David
-> > 
-> > > +		else
-> > > +			net_zcopy_put(uarg);
-> > > +	}
-> > > +
-> > >  	/* Return number of bytes, if any data has been sent. */
-> > >  	if (rest_len != pkt_len)
-> > >  		ret = pkt_len - rest_len;
-> > 
+Signed-off-by: Pasha Tatashin <pasha.tatashin@soleen.com>
+Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+Signed-off-by: Tarun Sahu <tarunsahu@google.com>
+---
+ include/linux/liveupdate.h       | 21 ++++++++++
+ kernel/liveupdate/luo_file.c     | 69 ++++++++++++++++++++++++++++++++
+ kernel/liveupdate/luo_internal.h | 17 ++++++++
+ 3 files changed, 107 insertions(+)
+
+diff --git a/include/linux/liveupdate.h b/include/linux/liveupdate.h
+index 30c5a39ff9e9..de052438eaac 100644
+--- a/include/linux/liveupdate.h
++++ b/include/linux/liveupdate.h
+@@ -24,6 +24,7 @@ struct file;
+ /**
+  * struct liveupdate_file_op_args - Arguments for file operation callbacks.
+  * @handler:          The file handler being called.
++ * @session:          The session this file belongs to.
+  * @retrieve_status:  The retrieve status for the 'can_finish / finish'
+  *                    operation. A value of 0 means the retrieve has not been
+  *                    attempted, a positive value means the retrieve was
+@@ -44,6 +45,7 @@ struct file;
+  */
+ struct liveupdate_file_op_args {
+ 	struct liveupdate_file_handler *handler;
++	struct liveupdate_session *session;
+ 	int retrieve_status;
+ 	struct file *file;
+ 	u64 serialized_data;
+@@ -240,6 +242,13 @@ void liveupdate_unregister_flb(struct liveupdate_file_handler *fh,
+ 
+ int liveupdate_flb_get_incoming(struct liveupdate_flb *flb, void **objp);
+ int liveupdate_flb_get_outgoing(struct liveupdate_flb *flb, void **objp);
++/* kernel can internally retrieve files */
++int liveupdate_get_file_incoming(struct liveupdate_session *s, u64 token,
++				 struct file **filep);
++
++/* Get a token for an outgoing file, or -ENOENT if file is not preserved */
++int liveupdate_get_token_outgoing(struct liveupdate_session *s,
++				  struct file *file, u64 *tokenp);
+ 
+ #else /* CONFIG_LIVEUPDATE */
+ 
+@@ -285,5 +294,17 @@ static inline int liveupdate_flb_get_outgoing(struct liveupdate_flb *flb,
+ 	return -EOPNOTSUPP;
+ }
+ 
++static inline int liveupdate_get_file_incoming(struct liveupdate_session *s,
++					       u64 token, struct file **filep)
++{
++	return -EOPNOTSUPP;
++}
++
++static inline int liveupdate_get_token_outgoing(struct liveupdate_session *s,
++						struct file *file, u64 *tokenp)
++{
++	return -EOPNOTSUPP;
++}
++
+ #endif /* CONFIG_LIVEUPDATE */
+ #endif /* _LINUX_LIVEUPDATE_H */
+diff --git a/kernel/liveupdate/luo_file.c b/kernel/liveupdate/luo_file.c
+index a0a419085e28..0aa0b4e5339f 100644
+--- a/kernel/liveupdate/luo_file.c
++++ b/kernel/liveupdate/luo_file.c
+@@ -323,6 +323,7 @@ int luo_preserve_file(struct luo_file_set *file_set, u64 token, int fd)
+ 	mutex_init(&luo_file->mutex);
+ 
+ 	args.handler = fh;
++	args.session = luo_session_from_file_set(file_set);
+ 	args.file = file;
+ 	err = fh->ops->preserve(&args);
+ 	if (err)
+@@ -380,6 +381,7 @@ void luo_file_unpreserve_files(struct luo_file_set *file_set)
+ 					   struct luo_file, list);
+ 
+ 		args.handler = luo_file->fh;
++		args.session = luo_session_from_file_set(file_set);
+ 		args.file = luo_file->file;
+ 		args.serialized_data = luo_file->serialized_data;
+ 		args.private_data = luo_file->private_data;
+@@ -411,6 +413,7 @@ static int luo_file_freeze_one(struct luo_file_set *file_set,
+ 		struct liveupdate_file_op_args args = {0};
+ 
+ 		args.handler = luo_file->fh;
++		args.session = luo_session_from_file_set(file_set);
+ 		args.file = luo_file->file;
+ 		args.serialized_data = luo_file->serialized_data;
+ 		args.private_data = luo_file->private_data;
+@@ -432,6 +435,7 @@ static void luo_file_unfreeze_one(struct luo_file_set *file_set,
+ 		struct liveupdate_file_op_args args = {0};
+ 
+ 		args.handler = luo_file->fh;
++		args.session = luo_session_from_file_set(file_set);
+ 		args.file = luo_file->file;
+ 		args.serialized_data = luo_file->serialized_data;
+ 		args.private_data = luo_file->private_data;
+@@ -621,6 +625,7 @@ int luo_retrieve_file(struct luo_file_set *file_set, u64 token,
+ 	}
+ 
+ 	args.handler = luo_file->fh;
++	args.session = luo_session_from_file_set(file_set);
+ 	args.serialized_data = luo_file->serialized_data;
+ 	err = luo_file->fh->ops->retrieve(&args);
+ 	if (err) {
+@@ -654,6 +659,7 @@ static int luo_file_can_finish_one(struct luo_file_set *file_set,
+ 		struct liveupdate_file_op_args args = {0};
+ 
+ 		args.handler = luo_file->fh;
++		args.session = luo_session_from_file_set(file_set);
+ 		args.file = luo_file->file;
+ 		args.serialized_data = luo_file->serialized_data;
+ 		args.retrieve_status = luo_file->retrieve_status;
+@@ -671,6 +677,7 @@ static void luo_file_finish_one(struct luo_file_set *file_set,
+ 	guard(mutex)(&luo_file->mutex);
+ 
+ 	args.handler = luo_file->fh;
++	args.session = luo_session_from_file_set(file_set);
+ 	args.file = luo_file->file;
+ 	args.serialized_data = luo_file->serialized_data;
+ 	args.retrieve_status = luo_file->retrieve_status;
+@@ -924,3 +931,65 @@ void liveupdate_unregister_file_handler(struct liveupdate_file_handler *fh)
+ 	luo_flb_unregister_all(fh);
+ 	list_del(&ACCESS_PRIVATE(fh, list));
+ }
++EXPORT_SYMBOL_GPL(liveupdate_unregister_file_handler);
++
++/**
++ * liveupdate_get_token_outgoing - Get the token for a preserved file.
++ * @s:      The outgoing liveupdate session.
++ * @file:   The file object to search for.
++ * @tokenp: Output parameter for the found token.
++ *
++ * Searches the list of preserved files in an outgoing session for a matching
++ * file object. If found, the corresponding user-provided token is returned.
++ *
++ * This function is intended for in-kernel callers that need to correlate a
++ * file with its liveupdate token.
++ *
++ * Context: It must be called with session mutex acquired.
++ * Return: 0 on success, -ENOENT if the file is not preserved in this session.
++ */
++int liveupdate_get_token_outgoing(struct liveupdate_session *s,
++				  struct file *file, u64 *tokenp)
++{
++	struct luo_file_set *file_set = luo_file_set_from_session_locked(s);
++	struct luo_file *luo_file;
++	int err = -ENOENT;
++
++	list_for_each_entry(luo_file, &file_set->files_list, list) {
++		if (luo_file->file == file) {
++			if (tokenp)
++				*tokenp = luo_file->token;
++			err = 0;
++			break;
++		}
++	}
++
++	return err;
++}
++
++/**
++ * liveupdate_get_file_incoming - Retrieves a preserved file for in-kernel use.
++ * @s:      The incoming liveupdate session (restored from the previous kernel).
++ * @token:  The unique token identifying the file to retrieve.
++ * @filep:  On success, this will be populated with a pointer to the retrieved
++ *          'struct file'.
++ *
++ * Provides a kernel-internal API for other subsystems to retrieve their
++ * preserved files after a live update. This function is a simple wrapper
++ * around luo_retrieve_file(), allowing callers to find a file by its token.
++ *
++ * The caller receives a new reference to the file and must call fput() when it
++ * is no longer needed. The file's lifetime is managed by LUO and any userspace
++ * file descriptors. If the caller needs to hold a reference to the file beyond
++ * the immediate scope, it must call get_file() itself.
++ *
++ * Context: It must be called with session mutex acquired of a restored session.
++ * Return: 0 on success. Returns -ENOENT if no file with the matching token is
++ *         found, or any other negative errno on failure.
++ */
++int liveupdate_get_file_incoming(struct liveupdate_session *s, u64 token,
++				 struct file **filep)
++{
++	return luo_retrieve_file(luo_file_set_from_session_locked(s),
++				 token, filep);
++}
+diff --git a/kernel/liveupdate/luo_internal.h b/kernel/liveupdate/luo_internal.h
+index 875844d7a41d..08b198802e7f 100644
+--- a/kernel/liveupdate/luo_internal.h
++++ b/kernel/liveupdate/luo_internal.h
+@@ -79,6 +79,23 @@ struct luo_session {
+ 
+ extern struct rw_semaphore luo_register_rwlock;
+ 
++static inline struct liveupdate_session *luo_session_from_file_set(struct luo_file_set *file_set)
++{
++	struct luo_session *session;
++
++	session = container_of(file_set, struct luo_session, file_set);
++
++	return (struct liveupdate_session *)session;
++}
++
++static inline struct luo_file_set *luo_file_set_from_session_locked(struct liveupdate_session *s)
++{
++	struct luo_session *session = (struct luo_session *)s;
++
++	lockdep_assert_held(&session->mutex);
++	return &session->file_set;
++}
++
+ int luo_session_create(const char *name, struct file **filep);
+ int luo_session_retrieve(const char *name, struct file **filep);
+ int __init luo_session_setup_outgoing(void *fdt);
+-- 
+2.54.0.563.g4f69b47b94-goog
 
