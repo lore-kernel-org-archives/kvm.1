@@ -1,157 +1,345 @@
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B82C339719
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 10:42:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB516351C31
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 10:50:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779100930; cv=none; b=J90ryDS54j0GUjTXt9M69IZQ7GLo/xqMUzAb+yxc4tzuOEPfaVr92FGdjNVyOD0duiHUNkA4Cc6qRSIgWT/36S9UHSjBMr2mAxWlJW9r2gOql9Xee12jAGzYqE++RobPuAg0B1SwspFReN8LdXp1RGZnKgwUKd3lHLGQeGXSlQ4=
+	t=1779101418; cv=none; b=Zdet3+/3arRMNdCDn4rx9CtFm59+Osk1zosS6h/3qNxBV6NdYxSjmGca/lBEKc9ytDXCTUJKO1JHwkXKX12GoBT/c1W9whEmQVyodxh6NoxPdriRse5HecZRp8G6YchkkjI8K4tNyFu4we6iMt/ew3qqEt53hGVfbOFsog5M0X4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779100930; c=relaxed/simple;
-	bh=Jhlv8/0m1/grDmNWxSqUkf5oeR7IEG5tUINb4nG2ENk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=qULcg0+Mhs0RthXWoKXdqosCIql8dQ5kdBinp02K3tHFG1lVva0uAGc/0NPa+8Qbpz0TkSElp/ZGtp8DF0lzqB/bQVWOeIxFCbj8nt/s4DoGet8tdPJ7HiO6O4p0UmwjiS+e12KMG8dPKG/aStCwezwz8COhHVV/nRL+HXbOjoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=HnWN9V3m; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=EnyNY6GL; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
+	s=arc-20240116; t=1779101418; c=relaxed/simple;
+	bh=8IWef6KURFlqgq+HSF/YD/B45xhcgkrBrCAFBIQTx+s=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tpcERMPb0dv/RN8xMRH6+yFWz7Mjo6W4wg0FNQwcl26HniEtuH6xX9TNrRDbSUhJsgbO/CLmYzX0Js3pENOULm3SiTNwDgsKByeSDDNhyk58GJx3bFlH5u7SBrL/w1Ol/ROpRBz4pr9j+ey0ogqvV7SlKODZ5BuQuiSwEe/gLG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=njRtki+q; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="HnWN9V3m";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="EnyNY6GL"
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64I7fZub2188791
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 10:42:00 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=qcppdkim1; bh=oHkrSqxcx/8hwXMIcSAALuKdtDlXR8XEzbS
-	1uvqBKpo=; b=HnWN9V3mqsDp+onQWJzEl7Ah0kixCph68X64O0I+VmlyTgdfrEd
-	maStHVqxJIIHAzye7mKWz7/tDYdY7a4J0fWDJrRurUNi58g62OeWxAmwVw5Tbz7U
-	cBRfy7FLl0daYBzzJmy6Dta8cmfND0tRXyh+TyiLr6NITbVlGZylKt4+e9mxkKW1
-	CPxaBOLk42JrwENv9dj5HHxIakuGf6bsJhjXJR5UTzZSCd7VdBFLWHwqcnCNqjLW
-	JQMA/IzZd+TvBRvcC8m15H/BOuH2jxk9jROXpQCfFesQikdHjNMPRols7OwduIH3
-	j/vdoCIexlS7e2GqNAnCIA9HUPc/eGJfDEQ==
-Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com [209.85.160.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4e7xkugrv7-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 10:42:00 +0000 (GMT)
-Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-50d8e8c47a3so65810811cf.0
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 03:42:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="njRtki+q"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-45d96d21e82so1169972f8f.0
+        for <kvm@vger.kernel.org>; Mon, 18 May 2026 03:50:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1779100920; x=1779705720; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=oHkrSqxcx/8hwXMIcSAALuKdtDlXR8XEzbS1uvqBKpo=;
-        b=EnyNY6GLSt8hpvQXmOXIkKdBHtJW9SzWx8X7DLa3HiGTdnqYl0VvroMsApzc4NHuKU
-         98noRTayUjwnSX2YGOwjNAWQIC6MGWeQdryQm7+o296zq4oyqE29QcU1vG7gPyr7+YL3
-         yX4zAQzsSYctpXQ0CpbTFw2/eoRfKRrqzZ5pvp3pEJQx5aJgU25iSRYy0yQ9z/5A9wj2
-         EU2d7X+gh7bSZZa8DCt3hNsowQv5IK7KcDXvuTTZ9gtjaD1HgQqRSzHTE3H1y0JAlf3T
-         rBTE0yEza1zaQbP6uQ35WXg7b9lzzz+VWRM8RMm0mSGhKK2TtrogoJDr3z3h2PrIsV88
-         9MIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779100920; x=1779705720;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20251104; t=1779101407; x=1779706207; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oHkrSqxcx/8hwXMIcSAALuKdtDlXR8XEzbS1uvqBKpo=;
-        b=eSu6aMuc+TPoi6170BLYljYskk5Eq/x237b82hGF4IToFLB6av2MQPJR65XJyvD32Q
-         tEBmBMpiYp/lUNyau6Ydl8MjjV/AAzh/CYf03lwoGLpmldUYdCjkDlUBMefjAkZqPgXS
-         pcvR6VVcRMQhXfRdgFOwvMDDke30WN94iNh8xha7z3sAelZWJBSsktQiSOA5G5KCDN26
-         nTfArnE3UPOh3N5PbdL6KObZT9uAtK58mm6N2Re2/9c7Xmx/b2+uSku2XM5czW94lkwz
-         f4Pu6a1DvC2YNHCRSZUz3lz9UdP2+pbMO9Gs+cZJe3LHd5/t6W0eSusNOFT35BAhCfiG
-         XtFA==
-X-Forwarded-Encrypted: i=1; AFNElJ/KdOGGisOWvo4BOxMPMWBymRH/7g7NFM7pHB9WLO6OyxqAh7iIPduUF7lyHETtdALlCBg=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5caNzT/rg2Q27ap7nPkqZh7S4FWK2HXV5InLygPq/YHIyjN2w
-	IfKasSrKI670Hig5STeyspUNS1FeQzj/40SsGH10QG+oLMgEs+0R/wl/SoWwgMsvc5+kluSbIzh
-	pCLRBeWLNwt9hSp3wn7tQKiCehrdiJlurzp7R2hRthm+8l4CKxvHFzQ0=
-X-Gm-Gg: Acq92OG82uePkeksOLVH4XpogqpzGSLrRdJYBMpW8R7TYe3fekPaPQpcExmVePIsdYj
-	y3pp6IGBbkM7VWVa6FGivt+vNSb1m/deV5iXjMtv+q0N9zeqJPg02yhlo29ECpeVFt2jinzfJOl
-	YHapwwT8MVaFyZN1ND9cNvQgm2u8s6GfsnNLWr5zSIXEeEulon7AHhtOJ2u7/TJkc6fZQI1buuQ
-	gykxT3W8xmh75l9N7GFO4Hn+SsmxgR2qYBUwImVvIXOFEhB8vaYgjydGuZHw+H6d/H/4rZv+z61
-	mUyfcqHqjQORtcCNEzcQ+ANFx3i7eAjl7BJEFqA4Ew+q+TFcykKOcaGLOLscpX0h20OY6JGO7Fn
-	SJISavdG4RfCNd53uokNZ2ZUVt7w2i4fWUQSW
-X-Received: by 2002:a05:622a:5910:b0:50e:5aed:caea with SMTP id d75a77b69052e-5165a01ff56mr195424611cf.14.1779100919905;
-        Mon, 18 May 2026 03:41:59 -0700 (PDT)
-X-Received: by 2002:a05:622a:5910:b0:50e:5aed:caea with SMTP id d75a77b69052e-5165a01ff56mr195424261cf.14.1779100919484;
-        Mon, 18 May 2026 03:41:59 -0700 (PDT)
-Received: from quoll ([178.197.219.94])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48febf81970sm107925215e9.8.2026.05.18.03.41.57
+        bh=6uhQRDXyO9k5Y79/nx1MWTmxBb/gg+LShBDbppKe1X0=;
+        b=njRtki+qhaRIdPlXbdXnCKBY0FI7rH5RBUNeM/Z+bkC0FqC6NUyeClL1Oz8YNbPNRS
+         V1Sex6W4a9gyFqwJFHhoAO7gFCmo1Js60gHmTOLR774BAJU7fVuTuhdVlC1axPXgyI+R
+         lyrwYB8rBhUo1NuU1D03yWQli6fOVTEdAPOzBa5Nj0H8ee4EUMx6lKMgLQ6uuwQ1Bdv2
+         Gg8MrbVEu+DCejAO0qpYq8MvorfVSKks4uslFKkXTuAEhlnihxjL/U9e5lN/KTGMIQ90
+         bELQ3weKC24wUgltohCNoNcdkGfhu9HaYalZohPFDZppGOW37lYyaqSvwj4BU43W/rwb
+         7/sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779101407; x=1779706207;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=6uhQRDXyO9k5Y79/nx1MWTmxBb/gg+LShBDbppKe1X0=;
+        b=CTy/RnFP/+Zfk6yIoKxH75jrXmNpagUzrczL6yxRaMJOjjUxDNVFlVCeKqTKdaYvND
+         7yOHoHcnCctP2U4/7Vfmk5D33/r3dGUAbhuwuSfZcFGQ+dDcSSorBxk5OLH/D7vLmgCr
+         JJ4vV4YUwv4qT+jFI4X0CKXEX258D69uSO4YWUvXR9C/ljEZpu27DCQErBiq279mJsPg
+         pCDvObawxxHaTvIs5usSdXWVOBdMSP8Gm+Z6kDb8BPLNxcXYyaxmSBWjgdK4SI6iXk5l
+         qwkXlBUz4AYWFgQQDh0uJlsaQdvFegIWdZpBtdEiLbm0bxxw13AQiTaSpxS2iDcUuRPr
+         w4OQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/HZKJYlgsKFwqvS4+VbF18XqwvO1GhqtchFvQe/VK+VfBnw4ZWx6LQOWwFqefVyejRLlc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyKQxisOOk7xS2p0op188295nGz828C6iT98cVErQvFPeVKSzA9
+	suc2MMBOzsgavlRH4ZvlcjIsdoUsh18RP+t2BkeEgkhsWm6WeKFxZxwf
+X-Gm-Gg: Acq92OHrsHCGfTSRLsj1Tfud1vvxWDmTMGHiL111sYlRDQR2tmThk7hz5fQzgg3DhlE
+	9BQK2J6B3XMKfO4WYbBYUuj70WSStzoy5dS7XMYvGDN3Sf+Bo8t6lTOkqjZvDRyQJ/BQ59bo6Cg
+	AY+0/WHepIG938a4btrnNv69E2CMlvMNKC7hhs/QEBd9LxJIWNl+eu7bmaJLzOSInUZEuXqxw59
+	D2l7nh3MuE9WsJztbSsmsYxpAmrCnlH1EzXIip5nvCliNjzGmdiIwZL0HfT7uGFyEaIu7GzZO6j
+	A5gjXnjZsVK7C5IXPMfZuXL6unBYeS+x8cvSodbJEBF0mmFldRVApGB4TP6aRMtjspdKmFovf5P
+	Mdkw+0bE/MoKqF0SFCXKaLyXDaeQDNUO+2pyz3JW9lNITD9p0oHNRaOIBjTC57DjBOckpy2723X
+	UgS7B2yitZ7IjFNTbKf1Ai6V+bOqZ2VrGh/VuLOdHwwOCeYhTqgrm5UJUIilIJPuM7UDkmiRWXW
+	GQ=
+X-Received: by 2002:a05:6000:2489:b0:43f:e2b7:7160 with SMTP id ffacd0b85a97d-45e5c58fe72mr21734038f8f.4.1779101407360;
+        Mon, 18 May 2026 03:50:07 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45d9ec39806sm35542656f8f.9.2026.05.18.03.50.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 18 May 2026 03:41:58 -0700 (PDT)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-To: Sean Christopherson <seanjc@google.com>,
-        Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
-        Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
-        workflows@vger.kernel.org, linux-doc@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Subject: [PATCH] MAINTAINERS: KVM: Include maintainer profile
-Date: Mon, 18 May 2026 12:41:55 +0200
-Message-ID: <20260518104154.38915-2-krzysztof.kozlowski@oss.qualcomm.com>
-X-Mailer: git-send-email 2.51.0
+        Mon, 18 May 2026 03:50:06 -0700 (PDT)
+Date: Mon, 18 May 2026 11:50:05 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>, netdev@vger.kernel.org, Jakub
+ Kicinski <kuba@kernel.org>, Paolo Abeni <pabeni@redhat.com>, Simon Horman
+ <horms@kernel.org>, Arseniy Krasnov <avkrasnov@salutedevices.com>, Stefan
+ Hajnoczi <stefanha@redhat.com>, kvm@vger.kernel.org, Eric Dumazet
+ <edumazet@google.com>, Eugenio =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+ Xuan Zhuo <xuanzhuo@linux.alibaba.com>, virtualization@lists.linux.dev,
+ "David S. Miller" <davem@davemloft.net>, Jason Wang <jasowang@redhat.com>,
+ linux-kernel@vger.kernel.org, Maher Azzouzi <maherazz04@gmail.com>
+Subject: Re: [PATCH net] vsock/virtio: fix zerocopy completion for multi-skb
+ sends
+Message-ID: <20260518115005.5f13bd2b@pumpkin>
+In-Reply-To: <agrg1GVzoJWtNuSd@sgarzare-redhat>
+References: <20260514092948.268720-1-sgarzare@redhat.com>
+	<20260516125329.7b699c6f@pumpkin>
+	<agrXvCtNRlySlwgx@sgarzare-redhat>
+	<20260518053223-mutt-send-email-mst@kernel.org>
+	<agrg1GVzoJWtNuSd@sgarzare-redhat>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=756; i=krzysztof.kozlowski@oss.qualcomm.com;
- h=from:subject; bh=Jhlv8/0m1/grDmNWxSqUkf5oeR7IEG5tUINb4nG2ENk=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBqCuzycMGxH0KIuWwO+nCp+yWtpNWjL8u1iwNgT
- JybLuAEgniJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCagrs8gAKCRDBN2bmhouD
- 11yXEACK6Av5rc7TCEHRdgiSP8S0hQcHH5AiIJ1skGnSoeWV5zpCQT52LHREKmIo2IZmZJGrB2Z
- mVnBoT/DtMkV+HNqal1gjKQ8t7c1sMATfTJchQjCh+hJfXn4QDJvKxMrDlM3fiFupj5Emp22by4
- ZGl6Fx86CU23pHcWEQ5NtTq1kAQgjpzb2ijZF5C9u7GbefOs8c6gxpeRaVjuhjNn+hJQxAO3U8q
- /TgpJ1yL5VOpeU8iA5+h3V9pGvRZFwTX1M2VK4WPk6rkSY7oQqu1MMwfVcL8wI6jRiAFrF8o3hQ
- 2+IexfOWlQREG84jjjFSdYchvpuDnWx8cV4kEDPyXJkTu9cEV/X+GRgfwWNaU77uwW6GyvexjQj
- E+sav+UZXQqQ3NPskirUAxexeTB4x16+KdvuL/1GmBqNjbNhUh+0JO0t8znlRd8sseRnTQ3e605
- jTDqS9U/SzBCkV5RLUDzaqrdvnC8KuMgww6Dj+R+1LoUFtUlx2suc42bsZiZpovs8JUzcyOzq2r
- pP9zzNh1MyYYhfx0z9C6/qVmh92vETgSi7sWCb9LzY+h9pjbH1s/8QWAvfT1krs2ttXZIvM2KwL
- HF4iCeRxMUT8rLBfrzE5iSouC8HUoMigFwROZfWpBnAFb6h3IlsloMsAj0I6uSwB5pvdmVrLMSL 0Yp1e9tHXNwQU3A==
-X-Developer-Key: i=krzysztof.kozlowski@oss.qualcomm.com; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE4MDEwMyBTYWx0ZWRfX1VSu5/jpU44j
- x+w/c1+JjbZjeiVnVlBeEgfvO9uwX6UwgG74UrtDMYD71BPMvDRlLod867clKLelTPOf0cebOGj
- SLY2s578pwYS1Ek5LmTkUf9FzSmmX6i4yqm5LqsMG+fbWnu9uLgHJ1U2zAXQzOimAXPh0Ef2EBA
- psqUfimSDKFdI5Xo4mLlY6zZqaDWnYIj2LegpU00tbi0Li7IXtuXkKwLjUqpVpTT4OfZSYrOg9l
- 48A/yXSGC3zLeLl0E7aIU3IgvY1zs45+//a+DuQ2E+IqsEwBy/38OfyU0SsoZWU5rcOWYgXoIFu
- bQaSz8CLkh432469PvMB7YIZxknNKE7X/C8m6Ty9Fb7l5iKqenoZflQ2QLGPYklMshWh/q/Z7mG
- 4vh4N+TS1n8WWQCFanoTah1G8j34z9VjV3FiJO7LT3wV7V6utX7YaudETTEcc9mNKjXznC/hTeN
- Ag2ooCxIKVbP2jZyUCg==
-X-Proofpoint-GUID: T7HTz0_x_xjqHoGHWHkoZo1lSEO0yJIK
-X-Proofpoint-ORIG-GUID: T7HTz0_x_xjqHoGHWHkoZo1lSEO0yJIK
-X-Authority-Analysis: v=2.4 cv=FsY1OWrq c=1 sm=1 tr=0 ts=6a0aecf8 cx=c_pps
- a=JbAStetqSzwMeJznSMzCyw==:117 a=gOEeR9iKwsj33Yj5oN/cWg==:17
- a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=u7WPNUs3qKkmUXheDGA7:22 a=yx91gb_oNiZeI1HMLzn7:22 a=EUspDBNiAAAA:8
- a=VwQbUJbxAAAA:8 a=2_xvK-_yVxHKdB_OxrQA:9 a=uxP6HrT_eTzRwkO_Te1X:22
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-18_02,2026-05-15_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 adultscore=0 clxscore=1011 phishscore=0 priorityscore=1501
- malwarescore=0 impostorscore=0 spamscore=0 lowpriorityscore=0 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605180103
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
 
-No dedicated KVM maintainers are returned by get_maintainers.pl for the
-subsystem maintainer profile, thus patches changing that file miss
-the actual owners of the file.
+On Mon, 18 May 2026 11:54:19 +0200
+Stefano Garzarella <sgarzare@redhat.com> wrote:
 
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+> On Mon, May 18, 2026 at 05:33:08AM -0400, Michael S. Tsirkin wrote:
+> >On Mon, May 18, 2026 at 11:18:24AM +0200, Stefano Garzarella wrote: =20
+> >> On Sat, May 16, 2026 at 12:53:29PM +0100, David Laight wrote: =20
+> >> > On Thu, 14 May 2026 11:29:48 +0200
+> >> > Stefano Garzarella <sgarzare@redhat.com> wrote:
+> >> > =20
+> >> > > From: Stefano Garzarella <sgarzare@redhat.com>
+> >> > >
+> >> > > When a large message is fragmented into multiple skbs, the zerocopy
+> >> > > uarg is only allocated and attached to the last skb in the loop.
+> >> > > Non-final skbs carry pinned user pages with no completion tracking,
+> >> > > so the kernel has no way to notify userspace when those pages are =
+safe
+> >> > > to reuse. If the loop breaks early the uarg is never allocated at =
+all,
+> >> > > leaking pinned pages with no completion notification.
+> >> > >
+> >> > > Fix this by following the approach used by TCP: allocate the zeroc=
+opy
+> >> > > uarg (if not provided by the caller) before the send loop and atta=
+ch
+> >> > > it to every skb via skb_zcopy_set(), which takes a reference per s=
+kb.
+> >> > > Each skb's completion properly decrements the refcount, and the
+> >> > > notification only fires after the last skb is freed.
+> >> > > On failure, if no data was sent, the uarg is cleanly aborted via
+> >> > > net_zcopy_put_abort().
+> >> > >
+> >> > > This issue was initially discovered by sashiko while reviewing com=
+mit
+> >> > > 1cb36e252211 ("vsock/virtio: fix MSG_ZEROCOPY pinned-pages account=
+ing")
+> >> > > but was pre-existing.
+> >> > >
+> >> > > Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
+> >> > > Cc: Arseniy Krasnov <avkrasnov@salutedevices.com>
+> >> > > Closes: https://sashiko.dev/#/patchset/20260420132051.217589-1-sga=
+rzare%40redhat.com
+> >> > > Reported-by: Maher Azzouzi <maherazz04@gmail.com>
+> >> > > Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+> >> > > ---
+> >> > >  net/vmw_vsock/virtio_transport_common.c | 83 ++++++++++----------=
+-----
+> >> > >  1 file changed, 34 insertions(+), 49 deletions(-)
+> >> > >
+> >> > > diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vso=
+ck/virtio_transport_common.c
+> >> > > index 989cc252d3d3..1e3409d28164 100644
+> >> > > --- a/net/vmw_vsock/virtio_transport_common.c
+> >> > > +++ b/net/vmw_vsock/virtio_transport_common.c
+> >> > > @@ -70,34 +70,6 @@ static bool virtio_transport_can_zcopy(const st=
+ruct virtio_transport *t_ops,
+> >> > >  	return true;
+> >> > >  }
+> >> > >
+> >> > > -static int virtio_transport_init_zcopy_skb(struct vsock_sock *vsk,
+> >> > > -					   struct sk_buff *skb,
+> >> > > -					   struct msghdr *msg,
+> >> > > -					   size_t pkt_len,
+> >> > > -					   bool zerocopy)
+> >> > > -{
+> >> > > -	struct ubuf_info *uarg;
+> >> > > -
+> >> > > -	if (msg->msg_ubuf) {
+> >> > > -		uarg =3D msg->msg_ubuf;
+> >> > > -		net_zcopy_get(uarg);
+> >> > > -	} else {
+> >> > > -		struct ubuf_info_msgzc *uarg_zc;
+> >> > > -
+> >> > > -		uarg =3D msg_zerocopy_realloc(sk_vsock(vsk),
+> >> > > -					    pkt_len, NULL, false);
+> >> > > -		if (!uarg)
+> >> > > -			return -1;
+> >> > > -
+> >> > > -		uarg_zc =3D uarg_to_msgzc(uarg);
+> >> > > -		uarg_zc->zerocopy =3D zerocopy ? 1 : 0;
+> >> > > -	}
+> >> > > -
+> >> > > -	skb_zcopy_init(skb, uarg);
+> >> > > -
+> >> > > -	return 0;
+> >> > > -}
+> >> > > -
+> >> > >  static int virtio_transport_fill_skb(struct sk_buff *skb,
+> >> > >  				     struct virtio_vsock_pkt_info *info,
+> >> > >  				     size_t len,
+> >> > > @@ -317,8 +289,10 @@ static int virtio_transport_send_pkt_info(str=
+uct vsock_sock *vsk,
+> >> > >  	u32 src_cid, src_port, dst_cid, dst_port;
+> >> > >  	const struct virtio_transport *t_ops;
+> >> > >  	struct virtio_vsock_sock *vvs;
+> >> > > +	struct ubuf_info *uarg =3D NULL;
+> >> > >  	u32 pkt_len =3D info->pkt_len;
+> >> > >  	bool can_zcopy =3D false;
+> >> > > +	bool have_uref =3D false;
+> >> > >  	u32 rest_len;
+> >> > >  	int ret;
+> >> > >
+> >> > > @@ -360,6 +334,25 @@ static int virtio_transport_send_pkt_info(str=
+uct vsock_sock *vsk,
+> >> > >  		if (can_zcopy)
+> >> > >  			max_skb_len =3D min_t(u32, VIRTIO_VSOCK_MAX_PKT_BUF_SIZE,
+> >> > >  					    (MAX_SKB_FRAGS * PAGE_SIZE));
+> >> > > +
+> >> > > +		if (info->msg->msg_flags & MSG_ZEROCOPY &&
+> >> > > +		    info->op =3D=3D VIRTIO_VSOCK_OP_RW) {
+> >> > > +			uarg =3D info->msg->msg_ubuf;
+> >> > > +
+> >> > > +			if (!uarg) {
+> >> > > +				uarg =3D msg_zerocopy_realloc(sk_vsock(vsk),
+> >> > > +							    pkt_len, NULL, false);
+> >> > > +				if (!uarg) {
+> >> > > +					virtio_transport_put_credit(vvs, pkt_len);
+> >> > > +					return -ENOMEM;
+> >> > > +				}
+> >> > > +
+> >> > > +				if (!can_zcopy)
+> >> > > +					uarg_to_msgzc(uarg)->zerocopy =3D 0;
+> >> > > +
+> >> > > +				have_uref =3D true;
+> >> > > +			}
+> >> > > +		} =20
+> >> >
+> >> > Surely that block should only be done if can_zcopy is true?
+> >> > And shouldn't something unset it if info->op !=3D VIRTIO_VSOCK_OP_RW=
+ ?
+> >> > If the msg_zerocopy_realloc() fails then can't you just set can_zcop=
+y to false.
+> >> >
+> >> > It info->msg->msg_buf is already set then I think you have to disabl=
+e zero-copy.
+> >> > The caller has already requested a callback - and you can't add anot=
+her.
+> >> >
+> >> > In any case by the end of this can_zcopy and have_uref are really th=
+e same flag. =20
+> >>
+> >> I kept the same approach we had before, trying to make as few changes =
+as
+> >> possible.
+> >>
+> >> All these potential issues seem to be pre-existing and should be event=
+ually
+> >> addressed in other patches IMHO. This patch one only resolves the main=
+ issue
+> >> of calling `skb_zcopy_set()` for every skb to avoid leaking pages, etc=
+. =20
+> >
+> >the patch is upstream now, right? So pretty much have to be patches on
+> >top. =20
+>=20
+> If those are actual issues, then yes. TBH, I didn=E2=80=99t look into tha=
+t=20
+> aspect and left it as it was before. We should take a closer look at how=
+=20
+> MSG_ZEROCOPY is handled.
+>=20
+> David, if you think it needs fixing and you have time, feel free to send=
+=20
+> patches on top.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index a6553271e19a..7a65b220d93f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -14205,6 +14205,7 @@ L:	kvm@vger.kernel.org
- S:	Supported
- P:	Documentation/process/maintainer-kvm-x86.rst
- T:	git git://git.kernel.org/pub/scm/virt/kvm/kvm.git
-+F:	Documentation/process/maintainer-kvm-x86.rst
- F:	arch/x86/include/asm/kvm*
- F:	arch/x86/include/asm/svm.h
- F:	arch/x86/include/asm/vmx*.h
--- 
-2.51.0
+I'm not fully sure how it all works.
+Especially the paths where msg->msg_ubuf is non-NULL, I suspect it should
+be added to all the skb even if the ZEROCOPY flag isn't set.
+I was just reading the one function.
+But there did look like some very dodgy conditionals.
+
+-- David
+
+>=20
+> Thanks,
+> Stefano
+>=20
+> > =20
+> >> @Arseniy can you help on this?
+> >> =20
+> >> > =20
+> >> > >  	}
+> >> > >
+> >> > >  	rest_len =3D pkt_len;
+> >> > > @@ -378,27 +371,7 @@ static int virtio_transport_send_pkt_info(str=
+uct vsock_sock *vsk,
+> >> > >  			break;
+> >> > >  		}
+> >> > >
+> >> > > -		/* We process buffer part by part, allocating skb on
+> >> > > -		 * each iteration. If this is last skb for this buffer
+> >> > > -		 * and MSG_ZEROCOPY mode is in use - we must allocate
+> >> > > -		 * completion for the current syscall.
+> >> > > -		 *
+> >> > > -		 * Pass pkt_len because msg iter is already consumed
+> >> > > -		 * by virtio_transport_fill_skb(), so iter->count
+> >> > > -		 * can not be used for RLIMIT_MEMLOCK pinned-pages
+> >> > > -		 * accounting done by msg_zerocopy_realloc().
+> >> > > -		 */
+> >> > > -		if (info->msg && info->msg->msg_flags & MSG_ZEROCOPY &&
+> >> > > -		    skb_len =3D=3D rest_len && info->op =3D=3D VIRTIO_VSOCK_OP_=
+RW) {
+> >> > > -			if (virtio_transport_init_zcopy_skb(vsk, skb,
+> >> > > -							    info->msg,
+> >> > > -							    pkt_len,
+> >> > > -							    can_zcopy)) {
+> >> > > -				kfree_skb(skb);
+> >> > > -				ret =3D -ENOMEM;
+> >> > > -				break;
+> >> > > -			}
+> >> > > -		}
+> >> > > +		skb_zcopy_set(skb, uarg, NULL);
+> >> > >
+> >> > >  		virtio_transport_inc_tx_pkt(vvs, skb);
+> >> > >
+> >> > > @@ -422,6 +395,18 @@ static int virtio_transport_send_pkt_info(str=
+uct vsock_sock *vsk,
+> >> > >
+> >> > >  	virtio_transport_put_credit(vvs, rest_len);
+> >> > >
+> >> > > +	/* msg_zerocopy_realloc() initializes the ubuf_info refcnt to 1.
+> >> > > +	 * skb_zcopy_set() increases it for each skb, so we can drop tha=
+t =20
+> >> >                                                            ^ must
+> >> > =20
+> >> > > +	 * initial reference to keep it balanced.
+> >> > > +	 */
+> >> > > +	if (have_uref) {
+> >> > > +		if (rest_len =3D=3D pkt_len)
+> >> > > +			/* No data sent, abort the notification. */
+> >> > > +			net_zcopy_put_abort(uarg, true); =20
+> >> >
+> >> > Is it worth optimising for the 'nothing sent' case ? =20
+> >>
+> >> What do you suggest doing?
+> >>
+> >> I followed what TCP does.
+> >>
+> >> Thanks,
+> >> Stefano
+> >> =20
+> >> >
+> >> > -- David
+> >> > =20
+> >> > > +		else
+> >> > > +			net_zcopy_put(uarg);
+> >> > > +	}
+> >> > > +
+> >> > >  	/* Return number of bytes, if any data has been sent. */
+> >> > >  	if (rest_len !=3D pkt_len)
+> >> > >  		ret =3D pkt_len - rest_len; =20
+> >> > =20
+> > =20
+>=20
 
