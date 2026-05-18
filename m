@@ -1,112 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D173024DFF9;
-	Mon, 18 May 2026 20:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8F2393DDD
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 20:42:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779136814; cv=none; b=LB5hE/KLNXnhKX+rx4Y/4hEGVs152YzsGZmpyP2F/wQcGsXOBeygNXq5LZtUQ02VQXK9Qs36wluAHxsEK2a/TV+tCxmxpuWD5wLlY1LvNUYT8d7968fkKTMnODcvq2azpO+NRebCjAH5msh6w49ITKB1M9ZAeh8RNabnZtWMTTE=
+	t=1779136964; cv=none; b=VoOxcD8773ZPLx/EqVvrFOU9cZt1y+izSHQv7DkoySb0QGi9/S+qGeNNChfoWNHNKJ3ETJ7GN5YUAF43XJjJyHb8qRMeY4n3lD4uoy65oPhZG0LwG669nLonaIFFz/Wf9urQyWmSJoN5CmdkMk559uOUlI3dMWDKRMZJNMKFwGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779136814; c=relaxed/simple;
-	bh=uGn5VAtuR8FSpEhNjFvgTdTXtKIfrxSA4PO0RX5i9rI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CGQ5izr0QkDQ0ba3JclbMprtjuFvbPbhi58pHZXFNP1mHuQaLYvYMuX7QDdxXuP5t/KvfLHFbMi4hONQg95StVPsBpo5c2hR5cpekZA9ijfy0waErCGOUMUit4O+EY5KC5reWyvzB4jTeAUvgB0sJffYwBFxqlQ8g/xK6bNp9N8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MyFnEuAG; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779136964; c=relaxed/simple;
+	bh=nQVouHXOMCqKouN03zntvmRFb98UZvsXHIXc5Lhetxo=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Yad3QLDMHTGQLdGyiTrnZQU7mnOM1EzYN86ZvOMXbGmTyISiCHfC/O1HO2r0lw5oZfu84AhwMjJRZMPRhCdJBndcizu9vfrWHPNw1a9oyfetRUGO/2dL+JIodz4nNAV9FkYBmOdNIj/Mw0x5NIQZfURiEsXHgutGrc8XjyXPg1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LaUF8OXi; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MyFnEuAG"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 363C0C2BCB7;
-	Mon, 18 May 2026 20:40:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779136814;
-	bh=uGn5VAtuR8FSpEhNjFvgTdTXtKIfrxSA4PO0RX5i9rI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MyFnEuAGXYZHivYyNhX5Uhe3nkiqIWrF94VsJIxsmWz4UeJYbm1T8GGRmqiYy+GgE
-	 olW6xMB5wqmiB0CvnqXjQNWyIr2i0FmvrDGsjphiXKm5INGVCzNl6s/2CKeYZDXC0H
-	 2NI7G4tYN+n8hhFCbphsaqkRFHnjtiQJmDMplEAojTmy1GbPmVdg3kL47IxvfjXHVe
-	 RZu/YBlon8wFt3NXqkFy9pqclRcN3RC9Mn5HLzwixFrjs/YkWdnM9w14PBh5JbGy6h
-	 Zx312idHlfkQaUz/H1RCUWmSPIt1V5E5Wsy1EOynBOx3SSr+mvp8DdYpmkmiATnK0Z
-	 8wNEYkQR04x7A==
-Date: Mon, 18 May 2026 20:40:12 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 0/8] KVM: selftests: Stress save+restore and #PF (ft.
- nested)
-Message-ID: <agt4_C13x1Q2GBYt@google.com>
-References: <20260518202514.2037078-1-yosry@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LaUF8OXi"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b2ecc96a9aso32320495ad.1
+        for <kvm@vger.kernel.org>; Mon, 18 May 2026 13:42:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779136962; x=1779741762; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vEZiI2mCaxhF27MBx5FxJQ+kMagKDbcRpCU+GTF0M5o=;
+        b=LaUF8OXiun00q6G5gyzFgzqxAR8yDko5H7DIT0sHGhmHtIc43DXdUyzOheAeN5ZdKp
+         QGlspkvwP0DFmgMNoDYdeYt0yMsuM08OHkhOzQD5WDC2efW4zSPiFG/gnD71CL+N3IJr
+         8096AAP/VAcySjXMFl09Ea8sPOwNbiCVEL9au8CJ41ah0BXjXmUDBKSF9vfhsfK65dq0
+         H7JCGOMDhL0Ad6yftSQM5Lt/6G76ihixSNmyxF6B9wzFRgXHfc41Mzi9KLl7XL/aeeoF
+         prJZbNBU4czyFvBcBesF1PWCcqJ7QNoLCHHP44uoYTEJUwHu1aAUDL5QgmO8NE0Th3JB
+         r4cw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779136962; x=1779741762;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=vEZiI2mCaxhF27MBx5FxJQ+kMagKDbcRpCU+GTF0M5o=;
+        b=pYMEyHP+fdcZ+GNiT22RSjlAYWCAKPLIWIR0LtsGaae9RLlx9aMVqJEE/0CnSyteYF
+         Nnq84YrKGpv/tpIGmSAuF3aTe0Oo/G55g5HuxtO7dkYH8cSnh7x2e/4HevIFaMFh28ZC
+         OY06tJWlei/z6WpUMvs5xe+U7vAOfMAeWDTN7oA9VTZy4CLpi+new/N7isZNPkw/NZTy
+         SkWX4rKfczrVmsg1yJqoaRaiHcdxPRlZwuPEaiEt5tk6hPYd4vy/rv7WlZMFbVPrVsaz
+         Mtf7ZMt1ioWgkhq3GPwVD3BMo31FpM4AAghQCwkMUuC9uqwafuuxA/aVxZZNdO23YxM+
+         XgKA==
+X-Forwarded-Encrypted: i=1; AFNElJ+GcwTPUykrVL8tW7EAB23BIHm6gD9xFl+Jtjn46wqwb0PxtZfstMCLYUTd+rlfQ5mWaP4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytIJwhaPNkKNIqalNrd7omCun1xNWqMVW+yWioxTKRbkoOOyu0
+	iE6w+I9sEdg1rt6JYI7BKGE3LEhwsYR9EBCc3wVGmcGDR+UlqysaVc39ONvPd27qZPf+v6i2qO9
+	a0xnj4A==
+X-Received: from plsr2.prod.google.com ([2002:a17:902:be02:b0:2b2:48d8:c695])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:3c43:b0:2bd:c310:f7c9
+ with SMTP id d9443c01a7336-2bdc310fd7fmr94710675ad.2.1779136962102; Mon, 18
+ May 2026 13:42:42 -0700 (PDT)
+Date: Mon, 18 May 2026 13:42:41 -0700
+In-Reply-To: <CAEvNRgHd4azPaMddvqnSG+Z5fmg+LWd+pz=LSB3PrJTW618dww@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260518202514.2037078-1-yosry@kernel.org>
+Mime-Version: 1.0
+References: <20260402041156.1377214-1-rppt@kernel.org> <20260402041156.1377214-14-rppt@kernel.org>
+ <ac7oE_1j6gxf8OKT@google.com> <CAEvNRgHd4azPaMddvqnSG+Z5fmg+LWd+pz=LSB3PrJTW618dww@mail.gmail.com>
+Message-ID: <agt5wTK5I-FvlB57@google.com>
+Subject: Re: [PATCH v4 13/15] KVM: guest_memfd: implement userfaultfd operations
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Andrea Arcangeli <aarcange@redhat.com>, Andrei Vagin <avagin@google.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	David Hildenbrand <david@kernel.org>, Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>, 
+	James Houghton <jthoughton@google.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, 
+	Muchun Song <muchun.song@linux.dev>, Nikita Kalyazin <kalyazin@amazon.com>, 
+	Oscar Salvador <osalvador@suse.de>, Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, tarunsahu@google.com
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, May 18, 2026 at 08:25:06PM +0000, Yosry Ahmed wrote:
-> Add a stress test for save+restore while the guest is triggering and
-> handling #PFs, in both L1 and L2. The goal was to create a generic
-> selftest that would catch bugs like the one fixed by 5c247d08bc81 ("KVM:
-> nSVM: Use vcpu->arch.cr2 when updating vmcb12 on nested #VMEXIT"),
-> instead of relying on high-level testing (e.g. building GCC in L2) to
-> catch it.
+On Fri, May 15, 2026, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
 > 
-> The test tries to be as generic as possible by triggering #PFs in a
-> guest and installing a proper #PF handler, while the host is
-> continuously doing save+restore cycles. Exiting to userspace is randomly
-> triggered by a second thread that constantly signals the vCPU thread.
+> >
+> > [...snip...]
+> >
+> >> +#ifdef CONFIG_USERFAULTFD
+> >> +static bool kvm_gmem_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags)
+> >> +{
+> >> +	struct inode *inode = file_inode(vma->vm_file);
+> >> +
+> >> +	/*
+> >> +	 * Only support userfaultfd for guest_memfd with INIT_SHARED flag.
+> >> +	 * This ensures the memory can be mapped to userspace.
+> >> +	 */
 > 
-> Patches (1-4) are prep patches, fixing GPR switching for nSVM and
-> generalizing it to cover nVMX, which is needed for the test to run
-> properly with nVMX. Patch 4 removes HORRIFIC_L2_UCALL_CLOBBER_HACK, as
-> it is no longer needed. While this series does not have the "complete"
-> fix added by commit 6783ca4105a7 ("KVM: selftests: Add a shameful hack
-> to preserve/clobber GPRs across ucall"), it's a good step in the right
-> direction.
-> 
-> Patches (5-8) add the actual test. The test is first introduced as a
-> simple (read: dummy) stress test that just explicitly syncs to userspace
-> after each #PF handling to do save+restore, then gradually evolves to
-> add the random signaling and nested support. After the last patch, the
-> test reliably reproduces the CR2 bug.
-> 
-> This series conflicts with reworking L2 stack allocation in [1], but the
-> conflict should be trivial to fix regardless of which series lands
-> first.
-> 
-> [1]https://lore.kernel.org/kvm/20260506015733.1671124-1-yosry@kernel.org/
+> Is the principle here that any memory that is allowed to be mapped to
+> userspace can be userfault-ed?
 
-Oh I forgot, all the patches should have:
-
-Assisted-by: gemini/gemini-3.1-pro
-
-> 
-> Yosry Ahmed (8):
->   KVM: selftests: Fix offsets in GPR switching for nSVM
->   KVM: selftests: Move GPR load/save definitions outside of nSVM code
->   KVM: selftests: Reuse GPR switching logic for nVMX
->   KVM: selftests: Drop HORRIFIC_L2_UCALL_CLOBBER_HACK
->   KVM: selftests: Add basic stress test for save+restore and #PF
->     handling
->   KVM: selftests: Trigger save+restore randomly in the #PF stress test
->   KVM: selftests: Support running stress save+restore and #PF test in L2
->   KVM: selftests: Trigger L2->L1 exits stress save+restore and #PF test
-> 
->  tools/testing/selftests/kvm/Makefile.kvm      |   1 +
->  .../selftests/kvm/include/x86/processor.h     |  65 +++-
->  tools/testing/selftests/kvm/include/x86/vmx.h |  46 +--
->  .../testing/selftests/kvm/lib/x86/processor.c |  13 +
->  tools/testing/selftests/kvm/lib/x86/svm.c     |  29 +-
->  tools/testing/selftests/kvm/lib/x86/ucall.c   |  32 +-
->  .../kvm/x86/stress_save_restore_pf_test.c     | 320 ++++++++++++++++++
->  7 files changed, 414 insertions(+), 92 deletions(-)
->  create mode 100644 tools/testing/selftests/kvm/x86/stress_save_restore_pf_test.c
-> 
-> 
-> base-commit: a9512a611bd030088f13477258d1f8103cceaa40
-> -- 
-> 2.54.0.563.g4f69b47b94-goog
-> 
-> 
+Yes?  It's more the opposite though: memory that can't be SHARED and thus can't
+be mapped into userspace can't possibly support userfaultfd.  Six of one, half
+dozen of the other, but I think it's important to highlight that there's no
+judgment call being made, i.e. we aren't deciding to support only SHARED just
+because we're lazy, it's a hard requirement.
