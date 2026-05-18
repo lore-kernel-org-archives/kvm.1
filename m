@@ -1,80 +1,175 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9680034F474
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 17:12:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBFFE382390
+	for <kvm@vger.kernel.org>; Mon, 18 May 2026 17:20:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779124340; cv=none; b=QfKzfeLLN7e2Vch1QcLYwOZKgpV1B81XKDaBvrYK2nn0SZENuqmPodASdQzsLy3vvlR8FCp/X8E6t2tlb8iX8LLYolG4fTfeKeJL123bDymbRBGZTBT9ZDGKm+bd1fqJAt6ySekT8sAe2zvVZxjZN+rwJbLb8rXJJtW9NQQC3r4=
+	t=1779124847; cv=none; b=H4PpSkIymy9SBNj+QfUDV6Rb7rh1UFgVW2YJb46xWBAc+BrpCp7pkK92Irbpf5bLsTmtiXweP4GI2j/vfVnEkggJddl/Bm5l1IIBC+fPusdGYicf/GFoEj7aiLkE+KNbHKrU9QoqR8iQ0opTxkq/bgyLFaDNYpWPtXfZ+VsVt08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779124340; c=relaxed/simple;
-	bh=ZOxKJLxKUpeL9u1y4xkPTqn/hUnXscJQPz2tar+n/N0=;
+	s=arc-20240116; t=1779124847; c=relaxed/simple;
+	bh=dj6sO1dq24qPoPg8t/jjU62zkoEGx+WZ2bGv3+pLqUg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=clPdqGD68Aj5essBjacIBMYnOSUJy7v8b+2+R5Vd3vfIAlsOMSsHkJQtpHoMm2jkqkrrl0zuhNqRGEzQ8TkGwfvzCVqiD108xxIEPDdWVfMDcpuVgh5l83QcnnBcqBWBv/f8Fub5Xx31nl9pNxC2tQgXyhPm0LaMSpHEtUHOa28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H3JmYA8L; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=DXE3IWrbWEeYVR1hKftiFqVAa3PynoRXOptQCCgiObj0LCw7gDLKocgWQ3Gl/RqfMqV7ZfNQ0YUm3KgzzmHsgWxu8iJ6frKpi/92rxQkVPG6jUzXJ8TfCrlN2+mQZZPXq/sl9yV+r6aiSh0vrzCLQx3x++1vgmHZk7HOkRLoc38=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H57uDpav; arc=none smtp.client-ip=209.85.214.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H3JmYA8L"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9329C2BCB7;
-	Mon, 18 May 2026 17:12:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779124340;
-	bh=ZOxKJLxKUpeL9u1y4xkPTqn/hUnXscJQPz2tar+n/N0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=H3JmYA8LhijkpSRepRe88cGcEZP1misdzIJi3MvYlCPGm76Bugl2WRrVyINYQrksg
-	 tFgVyY4RjCLY0EuXJjWC2hKPY56QPfJFZ9XeSdq2ZIUL+aSkgtQEvtadqAcYiFXijl
-	 zG3X7kKwptN5jH1O0araRD3hEO8KTzsAWuEZXBUDdN0Tqn1o1fG0d7rtv2v2m52kl0
-	 KRofd2lkLaZl4fvlNYi+VSNWVubewC3iQln9i+SQVO3+fVcqh+GUKwg79ILsnOn1O8
-	 3mQBJTCnkncW16BCTlfB3n1lkl6+5evJEWSQXiHG+L7BhL96BaMY+h9HFDUbm+8zOb
-	 1L+6a9markAPQ==
-Date: Mon, 18 May 2026 17:12:18 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Nikunj A Dadhania <nikunj@amd.com>
-Cc: kvm@vger.kernel.org, seanjc@google.com, pbonzini@redhat.com, 
-	thomas.lendacky@amd.com, bp@alien8.de, joao.m.martins@oracle.com, kai.huang@intel.com
-Subject: Re: [PATCH v7 7/7] KVM: SVM: Add Page modification logging support
-Message-ID: <agtGh82vLu4G6pWI@google.com>
-References: <20260518045916.2988667-1-nikunj@amd.com>
- <20260518045916.2988667-8-nikunj@amd.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H57uDpav"
+Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2ba3b9bcf69so1385ad.0
+        for <kvm@vger.kernel.org>; Mon, 18 May 2026 10:20:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779124845; x=1779729645; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wacrkWwKLVRP9x12vc+54brUCUoi0SSZqKwPJxVr82E=;
+        b=H57uDpav90R/HDZlCXbI/iK4j/NMjkoccn2Pqy+GNNnf5DEI0KgfDi3zw9Ysr4k1lN
+         +RL7HYpShgEZbH1v59JjhlyizYBisSJgr1S3mVgSRKbKh2vDQiaG/fGzsiCFXRVAsN5r
+         2kTfWXJdiMdKKmHfhWrEkKzq4Mb2etuD6UXxfPsxEg4L0Pd7iOKFtOFXTcJ8k3DaOSQx
+         XVaF7kg4flVpLxgulgZbhvCUQIg8LvpbPcRZ7D0cbmeeqJTf07VC9XhEDayef27ny6tO
+         LYyB+LZGPoJmtdI6/nJEgflvNhGyuzkHZgZJNOdTZSNEFcLoBWT6w4bOLFsRiVfWSyFJ
+         JmrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779124845; x=1779729645;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wacrkWwKLVRP9x12vc+54brUCUoi0SSZqKwPJxVr82E=;
+        b=tDgBeVAtbskLieWdlZVgJU2lusHBPESeSRohK+uFCcdurZk1suUMz94moiN7BEINj6
+         VTC3WBu9c19RWvERWStkIPLmTY3pRG5GXcSqCGAUeEFB4JTBN15Jqi5ETYJZ256HAkGM
+         PndfdJwfCKoWeXXDw0DK7DfnKaVPsTRbekhw4VZzYfC7xIx+260HaNiebho5qA+fkhbq
+         eOnSUvYFV2PU1kwsmA2PvO2Sm1bfhOQWTTOL9VCc5Xc/EbNBHvCSrvY23Zp+p+ldYbkx
+         1pvMUtjYtUmRIyJpT3UvDSuIPZ/yZ9GdiDxwC8QTbmgi1cHqkyv3X9cp5CEMMXeLqrlh
+         NF7w==
+X-Forwarded-Encrypted: i=1; AFNElJ+Qf4NvSvWB/ZCsKveoIK5nZTK/KVamglm17/lDSS5/Dmh+Po+hd5zQKCrSZWPLSWJ38HA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzt+Lh2OQTZzBQeC33H8D688SCVS2kEh06y0yVZ3QE6NjVoZXqP
+	2jWz1uS9evyQRZ+qpN24R8EBum5v2oEyXl9vGONEnB958RFFy8hCm7cOAZ+Vl4E+bg==
+X-Gm-Gg: Acq92OFR0JuA67Lz0LZp9FKycuSwql4Sq3rt6a8Q1D0X4YQ4+UL7ri/VJnyFxT18Dk0
+	C3TAZ1Bor4jfO7dwjYSi5ttCrBJpFkRKPLs+tD0neEdtqKA9rs3bwz3aH18Ch7u1q9TIMCKADS6
+	WWwW3xF0b/+9Pyt2pv7tvKzzTKV6G5U8L8kcWl7ysPwZtmcxIF13tFI78ujzkcgG5pTiL6JLuQ4
+	THh2VjvBAl6Me9vcHHomW22y+NmW6jamsTzE85uLueOjSpKsI8hkvZE94wu56DhkFA3TYKZ1h8J
+	OlSAx1XXAnohOJPeG49Xml/oi7lsAMi+aBb2TlRLSc6Y+Hk6LpwlZG7/WAKlqGOBVeVW3Bp5Qv/
+	KFghr47hUaNthoEm02Wm2URSffl8eTjouKEDIkppd8H50obokucqAZPmvQEC9/BNKbDVcZ+V8r+
+	geqzW23VDhurJlyPNQDA9BdkhMLVxf3z/iljUh2Oy/GaAJxAcfGY1w1xz7zxOe9tEjilZaefj7/
+	FL7ow4V
+X-Received: by 2002:a17:903:3205:b0:2b0:5193:1212 with SMTP id d9443c01a7336-2bdb03a2d06mr3134135ad.4.1779124844385;
+        Mon, 18 May 2026 10:20:44 -0700 (PDT)
+Received: from google.com (153.46.83.34.bc.googleusercontent.com. [34.83.46.153])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83f196660f9sm19017886b3a.10.2026.05.18.10.20.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 18 May 2026 10:20:43 -0700 (PDT)
+Date: Mon, 18 May 2026 17:20:40 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: David Matlack <dmatlack@google.com>, 
+	David Woodhouse <dwmw2@infradead.org>, Lu Baolu <baolu.lu@linux.intel.com>, 
+	Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>, 
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH v2 02/16] iommu: Implement IOMMU Live update FLB callbacks
+Message-ID: <agtHykqDImuLL6nU@google.com>
+References: <20260427175633.1978233-1-skhawaja@google.com>
+ <20260427175633.1978233-3-skhawaja@google.com>
+ <afUe71D8JfgmA0BG@google.com>
+ <agsHFbI_FQEXiZAA@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20260518045916.2988667-8-nikunj@amd.com>
+In-Reply-To: <agsHFbI_FQEXiZAA@google.com>
 
-> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-> index 4ef9bc6a553f3..dd30aef9fc497 100644
-> --- a/arch/x86/kvm/svm/nested.c
-> +++ b/arch/x86/kvm/svm/nested.c
-> @@ -882,6 +882,12 @@ static void nested_vmcb02_prepare_control(struct vcpu_svm *svm)
->  	vmcb02->control.msrpm_base_pa = vmcb01->control.msrpm_base_pa;
->  	vmcb_mark_dirty(vmcb02, VMCB_PERM_MAP);
->  
-> +	/* Clear PML fields to avoid stale data in vmcb02. */
-> +	if (pml) {
-> +		vmcb02->control.pml_addr = 0;
-> +		vmcb02->control.pml_index = -1;
-> +	}
+On Mon, May 18, 2026 at 12:33:25PM +0000, Pranjal Shrivastava wrote:
+>On Fri, May 01, 2026 at 09:45:19PM +0000, David Matlack wrote:
+>> On 2026-04-27 05:56 PM, Samiullah Khawaja wrote:
+>> > Add liveupdate FLB for IOMMU state preservation. Use KHO preserve memory
+>> > alloc/free helper functions to allocate memory for the IOMMU Live update
+>> > FLB object and the serialization structs for device, domain and iommu.
+>> >
+>> > During retrieve, walk through the preserved obj array headers and
+>> > restore each folio. Also recreate the FLB obj.
+>> >
+>> > Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>>
+>> > +static void *iommu_liveupdate_restore_array(u64 array_phys)
+>> > +{
+>> > +	struct iommu_array_hdr_ser *array_hdr;
+>> > +	void *vaddr = array_phys ? phys_to_virt(array_phys) : NULL;
+>> > +
+>> > +	while (array_phys) {
+>> > +		/*
+>> > +		 * Failure to restore preserved IOMMU state is considered fatal.
+>> > +		 *
+>> > +		 * This is because the IOMMU translations for preserved IOMMUs
+>> > +		 * were kept enabled in the previous kernel and the preserved
+>> > +		 * devices have their IOMMU domains still present. Not being
+>> > +		 * able to restore means that the memory mapped into preserved
+>> > +		 * domains might be already corrupted by the preserved devices.
+>> > +		 *
+>> > +		 * There is no way to confirm the integrity of the memory that
+>> > +		 * was mapped. BUG_ON is the safest option at this point.
+>> > +		 */
+>> > +		BUG_ON(!kho_restore_folio(array_phys));
+>> > +		array_hdr = phys_to_virt(array_phys);
+>> > +		array_phys = array_hdr->next_array_phys;
+>> > +	}
+>> > +
+>> > +	return vaddr;
+>> > +}
+>>
+>> > +static int iommu_liveupdate_flb_retrieve(struct liveupdate_flb_op_args *argp)
+>> > +{
+>> > +	struct iommu_flb_obj *obj;
+>> > +	struct iommu_flb_ser *ser;
+>> > +
+>> > +	obj = kzalloc_obj(*obj, GFP_KERNEL);
+>> > +	if (!obj)
+>> > +		return -ENOMEM;
+>>
+>> Should this be considered fatal for the same reason
+>> iommu_liveupdate_restore_array() is considered fatal? If anything in
+>> iommu_liveupdate_flb_retrieve() fails then the risk of corruption as
+>> described in iommu_liveupdate_restore_array() is possible.
+>>
+>
+>Righ... Nice catch. I suppose we should BUG_ON() this because
+>luo_flb_file_finish_one [1] returns void. Thus, if we return -ENOMEM
+>here all we get is a WARN_ON without panic.
 
-I think the comment here is misleading. vmcb02 is allocated with
-__GFP_ZERO, and IIUC pml_index should not matter when pml_addr is zero.
-This is strictly for hardening as far as I can tell, especially looking
-at commit c3bb9a20834f ("KVM: nVMX: Disable PML in hardware when running
-L2"), which introduced something similar for VMX.
+The error is propagated by get_flb_incoming(). The finish path has a
+WARN. But that is fine because finish won't be called as can_finish()
+will fail if FLB retrieve fails and restore cannot be done.
 
-So maybe something like:
-	/*
-	 * PML is never enabled in hardware for L2. Make sure that an
-	 * unexpected PML write would trigger a PML_FULL VM-Exit.
-	 */
-
-Also, the above commit also hanlded a PML_FULL VM-Exit as unexpected,
-maybe we want to do that here as well? Or is that too paranoid?
-
-Annoyingly, the unexpected exit reason handling is in
-svm_invoke_exit_handler(), but the guest mode check is in
-svm_handle_exit(), so if we do that we may need to move some code
-around.
+I will add a comment about this here.
+>
+>We can't statically allocate obj in liveupdate_flb_op_args because obj
+>is a void ptr. I believe we must add a BUG_ON() here.
+>
+>> > +
+>> > +	/* Data must be present and valid from the previous kernel */
+>> > +	BUG_ON(!kho_restore_folio(argp->data));
+>> > +
+>> > +	mutex_init(&obj->lock);
+>> > +	ser = phys_to_virt(argp->data);
+>> > +	obj->ser = ser;
+>> > +
+>> > +	obj->curr_domain_array = iommu_liveupdate_restore_array(ser->iommu_domain_array_phys);
+>> > +	obj->curr_device_array = iommu_liveupdate_restore_array(ser->device_array_phys);
+>> > +	obj->curr_iommu_array = iommu_liveupdate_restore_array(ser->iommu_array_phys);
+>> > +	argp->obj = obj;
+>> > +	return 0;
+>> > +}
+>
+>Thanks,
+>Praan
+>
+>[1] https://elixir.bootlin.com/linux/v7.1-rc3/source/kernel/liveupdate/luo_flb.c#L208
