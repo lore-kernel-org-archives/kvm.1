@@ -1,113 +1,81 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.12])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1023E7BB1;
-	Mon, 18 May 2026 09:43:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A73E1C5D72;
+	Mon, 18 May 2026 09:46:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779097416; cv=none; b=Y9FMqeMrizjuN3XQ+Fv/Fr6elU+aPGnyhX1Y+BcLbaAeKZdqy3vUvMIbrRdb002hAB5Z7JIgZndwRx0V2+g+GG67AiyaD+ZJlp7Gd9VRYllL7YXwqSULfK9T9iz50MiecwW+LTw/USelvG4CjQgQZ3w5ChQO8Gh9nqSO96wmMpk=
+	t=1779097573; cv=none; b=O8S7+EWL1tWpdObBlxDsC5HAdf5vNQa1iXn9GVwYDYwS0HeriQTJCLTR5PdYb5xcAlhWYwvEzTIKYFYM4P854NY8/pC2yGcRP95g/tKS2ZdmIWZ2kq3sj2ZTvPZrDumoHxiUMsD07QdXv1GoH2YC4H/Xvp+5BS6hh0trOFRK5jA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779097416; c=relaxed/simple;
-	bh=wWKDQsaZaZoeO80TaqAbFyqHo+myamz3q0c0rs3LJuA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Rjy1j5xLaGWnQC2f9TKzH/ONaGo2pJn7TSTOFdPx7CwfsLokdhNsy24oGP3ssqmFECIyFM7ENImkj1XNUecWU482lvrPv49KaU7OYsd5oL81U1az0k+BQHtufqY/SoKPoBbw/xzfNCgrUkBASx1K3hJ/MNhVKaGQNQBZm2iMpQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=lpy7Viho; arc=none smtp.client-ip=192.198.163.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1779097573; c=relaxed/simple;
+	bh=H/glQs9nUrdf/JB9IH8cZDjZT2MMIBPBpwUT5XuF3LE=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dS5SIwRvdind8kq+1LVZKSkPA5WLMv9z2gCxDCqlUry5shgtse4LAweD3kka5XFANirDtEDA5CDWB9alt9WvPFOmvfLfuRGFwI+jXjljY5aG5H8gIoSKI7LCUwgrZfwUpSl2RJghwEEkIlpishyoHv/VcbkXPJKhUGGSEIIM8Sk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=bNTi4op6; arc=none smtp.client-ip=220.197.31.3
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="lpy7Viho"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779097414; x=1810633414;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=wWKDQsaZaZoeO80TaqAbFyqHo+myamz3q0c0rs3LJuA=;
-  b=lpy7VihopCODvXs7uHb9ftcsP5EADrMQMEpDCQsjAli05YqmiIESNQnl
-   vQCOE426f6wM4lAGiUXqExrdwg19x4lqVuUDixZly2drbyQcrTA60DBlH
-   4fCVikuFzlbEjrAT3CN5tLtAHoEpg5K/8O6oKO/J2Y0TkK+e8iMlF8js/
-   FyY4n2btsGOKTsobxS43CW+7/ZFRiEtWdjXmnrV/hNl+RgDQG08s1RUcR
-   7Hoh26xCYktnOvN8G17ni6WQg8HV7BT+LX8rQoXf5Q9pIOCRcP1J2MaGN
-   8Rx3EKt6EzWzZpCukSItSmNK17Vptie/0F4BGfJkJYVxP12UkWqAK5Zdh
-   Q==;
-X-CSE-ConnectionGUID: h5eV6kAkRgKhuugDd4oy5g==
-X-CSE-MsgGUID: pLPscTMNTxKmQ1UdUz/Sdg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11789"; a="83798843"
-X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
-   d="scan'208";a="83798843"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 02:43:33 -0700
-X-CSE-ConnectionGUID: clUQcTh5T1KSCvKA53oTsw==
-X-CSE-MsgGUID: vl9ei/u4STuJaZRjkx8zAQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,241,1770624000"; 
-   d="scan'208";a="239249609"
-Received: from fanlilin-mobl.ccr.corp.intel.com (HELO [10.238.1.228]) ([10.238.1.228])
-  by orviesa008-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 18 May 2026 02:43:30 -0700
-Message-ID: <868898e6-1c57-498d-848d-1df9cbeac23c@linux.intel.com>
-Date: Mon, 18 May 2026 17:43:27 +0800
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="bNTi4op6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version; bh=pa
+	Wfd0J41Qw2Gu0sg/c21JfGyqYleKbjw8wcayIPOl4=; b=bNTi4op69ZehPHteoO
+	ebj4bYb21FvjK+cv7EkaKhBVENGHy9vBVD7nUlDUeSjGHUhkhedzntzwFnW7Q8eU
+	C8cxDZeriw+/vvPDwqwFFBqMaJFprzA0zGZ0EU/ZdM8MmZ4/ilpYHPtM3yUv9CNu
+	RRHzWem/1eNcJjOL06mMwNkso=
+Received: from zengchi (unknown [])
+	by gzsmtp2 (Coremail) with SMTP id PSgvCgCnew683wpqmVyCFA--.31878S2;
+	Mon, 18 May 2026 17:45:33 +0800 (CST)
+From: Zeng Chi <zeng_chi911@163.com>
+To: zhaotianrui@loongson.cn,
+	maobibo@loongson.cn,
+	chenhuacai@kernel.org,
+	kernel@xen0n.name
+Cc: kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	zengchi@kylinos.cn
+Subject: [PATCH] LoongArch: KVM: Add missing slots_lock for EIOINTC virtual extension device registration
+Date: Mon, 18 May 2026 17:45:21 +0800
+Message-Id: <20260518094521.138692-1-zeng_chi911@163.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 03/15] KVM: x86/xen: Don't truncate RAX when handling
- hypercall from protected guest
-To: David Woodhouse <dwmw2@infradead.org>,
- Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
- Vitaly Kuznetsov <vkuznets@redhat.com>, Kiryl Shutsemau <kas@kernel.org>,
- Paul Durrant <paul@xen.org>, Dave Hansen <dave.hansen@linux.intel.com>,
- Rick Edgecombe <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org,
- x86@kernel.org, linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
- Yosry Ahmed <yosry@kernel.org>, Kai Huang <kai.huang@intel.com>
-References: <20260514215355.1648463-1-seanjc@google.com>
- <20260514215355.1648463-4-seanjc@google.com>
- <27ba35fd-5563-4bbd-8f95-2285b50efa7a@linux.intel.com>
- <agcXr2FP4C3I_jbQ@google.com>
- <52fdc61a-60e8-4547-8ff7-f249b4d667b9@linux.intel.com>
- <ad4934f4a663c448924aeabe6418e68ae3ef9813.camel@infradead.org>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <ad4934f4a663c448924aeabe6418e68ae3ef9813.camel@infradead.org>
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:PSgvCgCnew683wpqmVyCFA--.31878S2
+X-Coremail-Antispam: 1Uf129KBjvdXoWrtFy7Cw43tr18uw4kCw1UGFg_yoWDWrX_Cr
+	yS93s3GrWrJa45W3Wqyw1Fkr109a95KFWrAryfuF1kCwnxZrsxZw47Wry5Zwn29rWxurs8
+	XrW0y34akF129jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7IU8hqXPUUUUU==
+X-CM-SenderInfo: 52hqws5fklmiqr6rljoofrz/xtbCwB1EAGoK370HjwAA3T
 
+From: Zeng Chi <zengchi@kylinos.cn>
 
+The second kvm_io_bus_register_dev() call for device_vext was missing
+kvm->slots_lock protection. Add it to match the first registration.
 
-On 5/18/2026 3:15 PM, David Woodhouse wrote:
-> On Mon, 2026-05-18 at 10:19 +0800, Binbin Wu wrote:
->>  
->>>>>   	longmode = is_64_bit_hypercall(vcpu);
->>>>
->>>> Is the variable name misleading?
->>>
->>> It most definitely is.  However, @longmode is passed around quite a few locations
->>> in xen.c, and so I don't want to opportunistically fix this one variable.  Though
->>> I'm definitely not opposed to a separate patch to rename them all to is_64bit or
->>> something.
->>
->> OK, I can do it.
-> 
-> This one (as shown above) is clearly indicating whether this particular
-> vCPU is in 64-bit mode for this particular hypercall. Changing that to
-> is_64bit makes sense.
-> 
-> However, there is a separate overall mode for the VM, which is stored
-> in 'kvm->arch.xen.long_mode' and accessed by userspace using the
-> KVM_XEN_ATTR_TYPE_LONG_MODE attribute. It affects the datatypes used by
-> shared memory data structures, and is also latched by the kernel when
-> the guest writes the MSR for the hypercall page. That one should
-> probably keep its name.
+Signed-off-by: Zeng Chi <zengchi@kylinos.cn>
+---
+ arch/loongarch/kvm/intc/eiointc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-For this one, I think the current KVM code is consistent.
-The format is determined by EFER.LMA, whether the guest is running in 64 bit or
-compatible mode doesn't change the ABI.
-
-struct compat_shared_info is used only when the guest is running natively in a
-32-bit build.
-
-> 
-> 
+diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/eiointc.c
+index 2ab7fafa86d5..ce64ffb706df 100644
+--- a/arch/loongarch/kvm/intc/eiointc.c
++++ b/arch/loongarch/kvm/intc/eiointc.c
+@@ -645,8 +645,10 @@ static int kvm_eiointc_create(struct kvm_device *dev, u32 type)
+ 
+ 	device = &s->device_vext;
+ 	kvm_iodevice_init(device, &kvm_eiointc_virt_ops);
++	mutex_lock(&kvm->slots_lock);
+ 	ret = kvm_io_bus_register_dev(kvm, KVM_IOCSR_BUS,
+ 			EIOINTC_VIRT_BASE, EIOINTC_VIRT_SIZE, device);
++	mutex_unlock(&kvm->slots_lock);
+ 	if (ret < 0) {
+ 		kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &s->device);
+ 		kfree(s);
+-- 
+2.25.1
 
