@@ -1,423 +1,348 @@
-Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0411367B84
-	for <kvm@vger.kernel.org>; Tue, 19 May 2026 16:56:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.145.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779209772; cv=fail; b=uSxBng9D1q5LkEl4et4z/uEVGQseSF+hsNiMr4npcncxobur0PBrbhne10kqkXx8enS6gUX9icBenfEtpw3Fn5bP5qIhwzVOk216IdsdaPiGM35wZuHHBCgHXsYL4T11T1nEdgbhywFx22wt3l7B8MucXUHejxpuPmaxamCAhxM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779209772; c=relaxed/simple;
-	bh=/+rl+zGXxntfm2bGL1v8tsZRWvzSR5a1GeZPV80zZ2E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FaJl+3It3AbERIs3060XWsiim8sDPdmspBfQ8J5jdFTtRENw/1MMSsrk0z/BNh/tfdDgDRVaPZeXs9rmCkYJGQqPZq5MbRrGdFJn1E8h2jS3bXZG+4GZHdOdN7eDkpQdYEJ2+w54eGkc6Ea55h1UeyXCyW6sKjCuy3fjSX7z9ck=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=b7LR6Svc; arc=fail smtp.client-ip=67.231.145.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C134409115
+	for <kvm@vger.kernel.org>; Tue, 19 May 2026 16:57:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779209849; cv=none; b=aA49x8TtF8Ay9BXkddwSPfgLzsq+YH7qUyzGWvQ8PxfSkZUTemjW9+h4nmSlbMZBwKhY5ksJAHOD2wRvlQkKVUxUZ2M8+OJdbfjCR8Y4qTKMu1zyxgZdQQDfWANBKFdNiENI5XGzRn9aDmXQLYjpiixmUwe8W8tdjkmyYftQPqc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779209849; c=relaxed/simple;
+	bh=/dxqY7vF83zqkB9TeiJY/hUNAh4ZjWZkHbYyxtAuPwA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RD0AoeqhilUrYNnY3bJ7F3F/skfpESvPwT38w1eYNvbmSpu6J9v5fH2YsjGW2mAFCusoVfUdBANTkhDygJBp4RZGZPgDkepN81StwegP7bfi4WkpYZvLjlSONAl0pYsMDT9ATLF7YFnw3ydx3RkTc0GgY46juN6JOl01GJxGSHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O/ZdmZSn; arc=none smtp.client-ip=209.85.215.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="b7LR6Svc"
-Received: from pps.filterd (m0528008.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64J0Z557211597
-	for <kvm@vger.kernel.org>; Tue, 19 May 2026 09:56:10 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=OJtNZW12z9Y05Vrht3lzMMxtJE0LDmlKnN/pERYf24w=; b=b7LR6SvcC44C
-	UpwxWr7TYF+7fb+Uzzk2ww5cNZ9ld6C00isxqo7ahUos4G4ySo1jKCXpB2Kvk9LE
-	Vc5ab3eqbVVbVgvRv/Cuqh3hqNMpNEkAx65HatqfUBopmFyDqeWWjnXqVkQofFA0
-	F3AEy+31DqwwxGy+ncXGfgAWxcKdSH3ur1f3lNyw317XY//cX7BiE396TU+WLM31
-	sCZ1a0LIOTRtK+anXD+bpch50n9pFuhxOKxtcXU15cZBamh0GVYLn8rF31dXg+9P
-	oFOXOzREYfHk76+VyzzBoRuHef62cW3P6Fh3M7cp3cF16N52lABpWD2/D27H4B7Q
-	C2nac3cq+g==
-Received: from mail-oa1-f70.google.com (mail-oa1-f70.google.com [209.85.160.70])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4e7d6jnb2h-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Tue, 19 May 2026 09:56:08 -0700 (PDT)
-Received: by mail-oa1-f70.google.com with SMTP id 586e51a60fabf-40ee506cf49so6352972fac.2
-        for <kvm@vger.kernel.org>; Tue, 19 May 2026 09:56:08 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779209768; cv=none;
-        d=google.com; s=arc-20240605;
-        b=lRWQFyUM+HnCLC+hMCEhAJq0hgMgNVdI5QCprGSnV7piVxImHlDclYUZyY8aGgntry
-         XkeOyZTFamt9D3ZfZYSx0DqsTLBIIL0M4PXsClUPlo0yn2aDMx62pDESeUQ2+wx+20EB
-         hfC0nVn9YEGodMFHh6izSfa5UyTosLzWcs6K7TEarqV2ywU+GJCcYTBdBbY0xva3Yed+
-         56wP8j02BrZwTfu2brvFll95DNJYeUGP3g9l/gdcQOTY0pm1N8HNZ5R0wtKvy+6Qzpbd
-         1YART5CXT74RvIcdiKP/vgrxURf5jKyDTGivWYYVuvw7XBonB4z9998KGYZal7gqcNgZ
-         c8fA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=aJk9gSpAyyZLXyKE7r6q+vOPfRd8FFOsqzGXdkoLHG8=;
-        fh=gTRnYimXAgzWuw9hnjCRm9SwCZu0aBc7B662Kiuff3s=;
-        b=L0NgqcdzLepsBNjVw04Y5uewcV1+LLm0+avgdCcTkTEIpGfbLONQrp/TiShqFXqIOC
-         vXhpXmx26CHuJU2X/x5uZoJoJLyzuVUBmwHdm+8lckPf8oivmVDhJtAs+hXX8Xv9w4H5
-         4QKHAIHeKlpWGeuEu8yGSEdcvOmGrA1d0OJ+CwCTUx0rLsYdOui1vk4TEUL/xrtp/wTF
-         oLViKSEV+TPAjx0ADxbgHMaoSZ313mrTMB2lJQ+4c5MF8Zjbly7gi/UvTbmJK7SL2PXc
-         Njaku+2JqhuIAqokTmCsumJ6xpIioFjkRk4Y8xC01Ifsi6VWguZWVVNza++qWk3meDZx
-         uvlA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O/ZdmZSn"
+Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c7963df896fso128753a12.3
+        for <kvm@vger.kernel.org>; Tue, 19 May 2026 09:57:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779209846; x=1779814646; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=TXSSb+QnSoLncqTyl5C1Wf9KSszK/YhT+NIcZleisWI=;
+        b=O/ZdmZSnxyCIZCAjLM7bxtrDB1QqLs+7cV6vMMKosq5UsUbTXgB9Rfoi+T9fwVXUCc
+         quWxqeqNaiz5XQcYHqOqLo+IXqVjPRxPZHvYC6e8PSy45Hjovd/6svCg36YSVvAX8+80
+         ZxBY1yuREZNpsp0adbai4ewHsJoC0uqnrEZ5uc2s2z6eX2d5yQUZBB87fPirmRQNG8Bn
+         MrXbhp0eLJH2IcdGexbQ6MWRs45e+b6yvtX7fyWvs/B3QGBmUGas4jYVv1IGqt0Qi7Ha
+         i0fysplSrsBs1VW7guG73hARhF1ioLdAODpA6K16LfJpaVkG1nkwo3Vx3uf4MkpmX72I
+         GY1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779209768; x=1779814568;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=aJk9gSpAyyZLXyKE7r6q+vOPfRd8FFOsqzGXdkoLHG8=;
-        b=mUgtpVK+BOZh3NV+u9ZW5BhFsQ5ptLtYratJuca18s+UoLNKSGQyJrRtwsUMo3HeRa
-         SySaejiui8BomMpFHnwrEhmTFZ6RFl3b87+mUQQtBoRh9D4mbmZOAZR1TU2RHvu8/EnF
-         rHQRK/q0Hb7/C5EnR9Q6cs/qBOgQ9ub3gNxglBvhV5tlHT7ynXygH4qHHBfKokt3zpgY
-         qrt1rjeIrih3A8LMsD0feSp7h1SqlIdqIyHo4NcDbKGwu0IHXguzBi4aaWzMQgS8WUVn
-         qWIgeSuvecOleZfQ1QiDeBINx7Vp1AcOKhJPEwTzVZL3OKMmrvF5ushWx+9v0dj6bTbj
-         /yUg==
-X-Forwarded-Encrypted: i=1; AFNElJ/ucg6fmYYDvL1Rc3kUBzISGWH9boW+bQLcrwQ95KL3rxmVs+XD1ttDUJ2Ex0c2Erlx6qY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywoh1bSz96TMDv8sssgKZN0C/IUhO2JyeA7ydtstyJ1vykLQ1lX
-	M2mgHgfvC0Wx53HSLlxrwvsDMx51ye3jZ3uyLS+9IjpiPV9jR/C8bdA2UB6oP514rWfJ65B3yQu
-	U0uXEuW7n7iB/Xve3oEKXq5gwVD1WwW7B7VpogaLdm18eMJKGYAmvhkjavCAt17aWFWWOi27xBQ
-	ZeNXep2kILMj5k2qwC5lAUeB6pw68=
-X-Gm-Gg: Acq92OEBYXFKZwYe//BTbFiteM7jLhRJVgs1Wrebc267kvx+1HnB4TJXf7GglAtZeXl
-	uy8y2+PVBq0eM4NdmPKBmZeqiHgALYvQ+8eszNw6E4fNHxm1Tp+eikfhhnY6EZIP54FZjXTqlKy
-	fHrUZJNhZ20B2XBY/rYsUmpvSXZqi0D1lWIjBBZnUlT+38J+Dmo+3eaby8ODDgKzxJASPsp+TOH
-	2OWaosnUM7PEdof6vw=
-X-Received: by 2002:a05:6808:3a14:b0:45e:f0af:5148 with SMTP id 5614622812f47-482e572b473mr12912256b6e.30.1779209767830;
-        Tue, 19 May 2026 09:56:07 -0700 (PDT)
-X-Received: by 2002:a05:6808:3a14:b0:45e:f0af:5148 with SMTP id
- 5614622812f47-482e572b473mr12912231b6e.30.1779209767200; Tue, 19 May 2026
- 09:56:07 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779209846; x=1779814646;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TXSSb+QnSoLncqTyl5C1Wf9KSszK/YhT+NIcZleisWI=;
+        b=rhWKARFtaYp+ze4YN7qsHenLPf6yrBbU4iPoqe8Qv4gGurDV/VF4dUUqsavsR2022G
+         bcC0CcvEmO4RZQtCORI4sR++EUsZQpk+blCeMZcG5W+XAu/B7b+AKwWjVhnxWOFT9TqX
+         gri5rgLCU5p2qtP9JLTt9h5NxoIKyinrCbpbmmDKDncbp3lqNvz+ALHGIDD9oQ1P+Bqh
+         4bPotOaYs2EsvbOER5ot9f6T5GHjrccol6w9hhHuhjeQ9zZTauQVQgdDza8J8IqFl5bb
+         Z4R56tUophp6xp1WjuayU57gNr/x7lOK6qezdAeDCuLWWMLjB85S6glv/zncGkBwBC9g
+         C/tA==
+X-Forwarded-Encrypted: i=1; AFNElJ9g73FfFgo7rQzLhkNpgb4+hcHYpjSk/kwrpD9LI9/dRP6P5RH5jBH8oXxBp/xLLRXCx28=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwTJJIz/TCKVVt8y0kJx7+bPsD9E6aYOtq6Thvwv1hT7NaJOz2
+	BpRGamDSxTxSRVJ8t2H/5W7IehoTXuh4Q9s+1f4oQJtdTmG2sOR2igTr
+X-Gm-Gg: Acq92OFAukIxUhssk2JCI/qeO+/QuqrGwi4mLb+OqmQxpgP4ZgeiBmhcOdpAWVlW8q4
+	mjTxtYfdwNw+DHkNxVG/Ag2LoM0QimoZDyqHDyfHcSIS9BztpNXXnGiFid6nP1ZinEoahBwIMj5
+	PlsPetkMN5jv3g2LCK9qlAUfyBVZGtaAKSVp4KlDHpG6CzW+r1RtNADOxhC1dXWg1xV6xP4JIST
+	EW4hXLLgrPYxLSe4jxY5uXvKwG5Kw6cC0oMNMc3CzgAG/Tf5aduDLtSjvzHr271dkU3jETetxS6
+	ya+64VpBkJJnhLH6IiZ7NJYsF0WSUk/JXXKN5MWAZ+3IKsSIJed74OEKIvjkDmaBWUaeS6Os+vr
+	JQFwq75xX/7QFjGRqBpLCdKIGsT+mEJLRMao59VfmHqCAfGpiluKDV4MAbb2RuA0Of8Ga/5CJmU
+	hVnYv8J1Bmccfd6JzramjGYHlgYpHFuf3rd3DNm7+QchJN
+X-Received: by 2002:a17:903:2ec7:b0:2bd:9875:d457 with SMTP id d9443c01a7336-2bd9875d4fdmr109091215ad.8.1779209846248;
+        Tue, 19 May 2026 09:57:26 -0700 (PDT)
+Received: from gmail.com ([117.133.78.208])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5bd5fe67sm204597705ad.3.2026.05.19.09.57.17
+        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
+        Tue, 19 May 2026 09:57:25 -0700 (PDT)
+From: Ziyu Zhang <ziyuzhang201@gmail.com>
+To: Stefano Garzarella <sgarzare@redhat.com>,
+	"David S . Miller" <davem@davemloft.net>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Cc: Simon Horman <horms@kernel.org>,
+	Andy King <acking@vmware.com>,
+	George Zhang <georgezhang@vmware.com>,
+	Dmitry Torokhov <dtor@vmware.com>,
+	"K . Y . Srinivasan" <kys@microsoft.com>,
+	Haiyang Zhang <haiyangz@microsoft.com>,
+	Wei Liu <wei.liu@kernel.org>,
+	Dexuan Cui <decui@microsoft.com>,
+	Long Li <longli@microsoft.com>,
+	Stefan Hajnoczi <stefanha@redhat.com>,
+	"Michael S . Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
+	Bryan Tan <bryan-bt.tan@broadcom.com>,
+	Vishnu Dasa <vishnu.dasa@broadcom.com>,
+	bcm-kernel-feedback-list@broadcom.com,
+	virtualization@lists.linux.dev,
+	netdev@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-hyperv@vger.kernel.org,
+	kvm@vger.kernel.org,
+	baijiaju1990@gmail.com,
+	r33s3n6@gmail.com,
+	gality369@gmail.com,
+	zhenghaoran154@gmail.com,
+	hanguidong02@gmail.com,
+	zzzccc427@gmail.com,
+	Ziyu Zhang <ziyuzhang201@gmail.com>
+Subject: [PATCH net v2] vsock: keep poll shutdown state consistent
+Date: Wed, 20 May 2026 00:56:36 +0800
+Message-Id: <20260519165636.62542-1-ziyuzhang201@gmail.com>
+X-Mailer: git-send-email 2.39.5 (Apple Git-154)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260512184755.4137227-1-zhipingz@meta.com> <20260512184755.4137227-2-zhipingz@meta.com>
- <e6928a10-77b1-4fdf-8bc3-cd0154b4d4c5@huawei.com> <CAH3zFs2W5cB5Jhk8pm9K=O3-DyN3tHm7h5q9Hu26ekV=_gBEvw@mail.gmail.com>
-In-Reply-To: <CAH3zFs2W5cB5Jhk8pm9K=O3-DyN3tHm7h5q9Hu26ekV=_gBEvw@mail.gmail.com>
-From: Zhiping Zhang <zhipingz@meta.com>
-Date: Tue, 19 May 2026 09:55:56 -0700
-X-Gm-Features: AVHnY4II7Geh49KwlOFnaMEUnIiyWZTiYUlxcqTc_0jLUETaJ7j0xzUGRx7Zyn4
-Message-ID: <CAH3zFs0u2j-PdNjmtCuu8rZm5F0aVQYFo3NuSk0ptByUwrz2ng@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] vfio: add dma-buf get_tph callback and DMA_BUF_TPH feature
-To: fengchengwen <fengchengwen@huawei.com>
-Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <helgaas@kernel.org>,
-        kvm@vger.kernel.org, linux-rdma@vger.kernel.org,
-        linux-pci@vger.kernel.org, netdev@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, Keith Busch <kbusch@kernel.org>,
-        Yochai Cohen <yochai@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE5MDE2OSBTYWx0ZWRfX/rVBKbhZmgdo
- 8DhA7SDqCzpm9CGdlNfaaHyVm2MVI+VGTQesYSs98pcBKRLhd1x0nb7mUunZy7yyoMRdP4GuZ8r
- aH4Ys7ikTi23eWczeMezTGADX48MZ0qveJcb93z1V3064PO9Uyu0BgEQLACnoSIAPTlg5berDC+
- Pm9AQbAANk5mXx9iCrQABAUNpy4hXKptl0wldFhNccaana1k6rTpJvPvrJczk/yZSonsGKzCPbV
- w3eQKh3FUGOorjHdQyTK1Kf0d8MMc99sndV+PLlHQnU396xXEKtQw/qy9g7CTOTmD0ptTTVTna9
- 0t+NXAbd3SBLuEZJLAPxYfxw/Sbi7+NcvEiKxObuycVnmrP1NJTYnmyFZiFwlKrQO/Bb4HOt8Wf
- BlPyjySQgk3+cdtM3c7frjpvP32Yudr80STZa2AlLr7mvi9uUHInZW8faRcb7w6Rpon7UqIWdgm
- uGGAZakxZdqICT5h/TA==
-X-Proofpoint-ORIG-GUID: 5lrg_ZBcvaZiEpiB0VOWDs4oaiYA4EQ-
-X-Authority-Analysis: v=2.4 cv=B5yJFutM c=1 sm=1 tr=0 ts=6a0c9628 cx=c_pps
- a=nSjmGuzVYOmhOUYzIAhsAg==:117 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=_1IyUuN4QrATX339ibzo:22
- a=VabnemYjAAAA:8 a=i0EeH86SAAAA:8 a=Tw_J5DVj0enz2h0_CHoA:9 a=QEXdDO2ut3YA:10
- a=1zu1i0D7hVQfj8NKfPKu:22 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-GUID: 5lrg_ZBcvaZiEpiB0VOWDs4oaiYA4EQ-
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-19_04,2026-05-18_01,2025-10-01_01
+Content-Transfer-Encoding: 8bit
 
-On Wed, May 13, 2026 at 11:08=E2=80=AFPM Zhiping Zhang <zhipingz@meta.com> =
-wrote:
->
-> On Tue, May 12, 2026 at 6:33=E2=80=AFPM fengchengwen <fengchengwen@huawei=
-.com> wrote:
-> >
-> > > >
-> > Hi Zhiping,
-> >
-> > I have several suggestions:
-> >
-> > 1. In struct vfio_device_feature_dma_buf_tph, steering_tag is defined as
-> >    __u16, but PCIe TPH base steering tag is only 8-bit. We can use __u8
-> >    for steering_tag to shrink structure size and reduce reserved paddin=
-g.
-> >
-> > 2. The flags field seems unnecessary. We can use value 0 of steering_tag
-> >    or steering_tag_ext to indicate the corresponding ST entry is not
-> >    available, which simplifies the uAPI design.
-> >
-> > 3. All TPH metadata fields (st, ext st, ph) fit within 32 bits. We can
-> >    wrap them into a union with atomic_t, then use atomic read/write
-> >    instead of memory_lock plus smp_load_acquire/smp_store_release. This
-> >    makes lockless access cleaner and avoids ordering maintenance.
-> >
-> > For details, see the text.
-> >
->
->   Hi Feng,
->
->   Thanks for the detailed review.
->
->   1) Regular TPH uses an 8-bit ST, while Extended TPH uses a 16-bit ST, so
->   so Extended TPH in Flit mode TLP can carry a 16-bit steering tag in
-> the request.
->
->   2) I still think I need an explicit validity indication rather than usi=
-ng
->   `0` to mean "not present". ST and Extended ST can coexist with
->   different values (including the value 0).
->
->    3) I also do not think packing the fields into `atomic_t` removes the =
-need
->   for `memory_lock` here, because the write side still needs the lock for
->   `priv->vdev` ownership/lifetime checks and the dma-buf list/cleanup
->   paths. Open for discussion, though.
->
->   Thanks,
->   Zhiping
->
->
->
->
-> > On 5/13/2026 2:47 AM, Zhiping Zhang wrote:
-> > > Add a dma-buf callback that returns raw TPH metadata from the exporter
-> > > so peer devices can reuse the steering tag and processing hint
-> > > associated with a VFIO-exported buffer. Add a new
-> > > VFIO_DEVICE_FEATURE_DMA_BUF_TPH ioctl that takes the fd from
-> > > VFIO_DEVICE_FEATURE_DMA_BUF along with the TPH values, validates the =
-fd
-> > > is a vfio-exported dma-buf belonging to this device, and stores the T=
-PH
-> > > metadata under memory_lock. The existing VFIO_DEVICE_FEATURE_DMA_BUF
-> > > uAPI is unchanged.
-> > >
-> > > 8-bit ST and 16-bit Extended ST are distinct namespaces in the PCIe T=
-PH
-> > > ST table (firmware reports them as separate fields with separate
-> > > validity bits in the ACPI _DSM ST table), so the uAPI carries both
-> > > values along with a flags field that indicates which value(s) are
-> > > valid for this device. The exporter selects the value that matches the
-> > > importer's requested width and returns -EOPNOTSUPP if that width is
-> > > not present, instead of substituting a value across namespaces.
-> > >
-> > > Publish the TPH fields under memory_lock and gate readers on a
-> > > release/acquire on the flags field; this lets get_tph() run lockless
-> > > and avoids inverting the memory_lock -> dma_resv_lock ordering set up
-> > > by vfio_pci_dma_buf_move(). Convert the @revoked bitfield to a plain =
-bool
-> > > so concurrent updates of @revoked (under dma_resv_lock) and the new T=
-PH
-> > > fields (under memory_lock) cannot race on a shared bitfield byte.
-> >
-> > The commit log includes many implementation details, why not remove or =
-simply it.
-> >
+vsock_poll() reads vsk->peer_shutdown before taking the socket lock
+to set EPOLLHUP and EPOLLRDHUP, then reads it again after taking
+the lock to report EOF readability. A shutdown packet can update
+peer_shutdown while poll is waiting for the lock, so one poll invocation
+can report EOF readability without the corresponding HUP/RDHUP bits.
 
-sure, will do!
+For connectible sockets, take one peer_shutdown snapshot after
+lock_sock() and use it for all peer-shutdown-derived poll bits. For
+datagram sockets, which do not take lock_sock() in poll(), take one
+lockless READ_ONCE() snapshot and pair it with WRITE_ONCE() on the
+writer side.
 
-> > >
-> > > Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
-> > >
-> > > ---
-> > >  drivers/vfio/pci/vfio_pci_core.c   |   3 +
-> > >  drivers/vfio/pci/vfio_pci_dmabuf.c | 113 +++++++++++++++++++++++++++=
-+-
-> > >  drivers/vfio/pci/vfio_pci_priv.h   |  11 +++
-> > >  include/linux/dma-buf.h            |  21 ++++++
-> > >  include/uapi/linux/vfio.h          |  35 +++++++++
-> > >  5 files changed, 182 insertions(+), 1 deletion(-)
-> > >
-> > > diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio=
-_pci_core.c
-> > > index 3f8d093aacf8..94aa6dd95701 100644
-> > > --- a/drivers/vfio/pci/vfio_pci_core.c
-> > > +++ b/drivers/vfio/pci/vfio_pci_core.c
-> > > @@ -1534,6 +1534,9 @@ int vfio_pci_core_ioctl_feature(struct vfio_dev=
-ice *device, u32 flags,
-> > >               return vfio_pci_core_feature_token(vdev, flags, arg, ar=
-gsz);
-> > >       case VFIO_DEVICE_FEATURE_DMA_BUF:
-> > >               return vfio_pci_core_feature_dma_buf(vdev, flags, arg, =
-argsz);
-> > > +     case VFIO_DEVICE_FEATURE_DMA_BUF_TPH:
-> > > +             return vfio_pci_core_feature_dma_buf_tph(vdev, flags, a=
-rg,
-> > > +                                                      argsz);
-> > >       default:
-> > >               return -ENOTTY;
-> > >       }
-> > > diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vf=
-io_pci_dmabuf.c
-> > > index f87fd32e4a01..28247602e359 100644
-> > > --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-> > > +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> > > @@ -19,7 +19,23 @@ struct vfio_pci_dma_buf {
-> > >       u32 nr_ranges;
-> > >       struct kref kref;
-> > >       struct completion comp;
-> > > -     u8 revoked : 1;
-> > > +     /*
-> > > +      * TPH metadata published by VFIO_DEVICE_FEATURE_DMA_BUF_TPH and
-> > > +      * consumed by the @get_tph dma-buf callback.
-> > > +      *
-> > > +      * @tph_flags is the publish/consume gate: writers populate
-> > > +      * @steering_tag, @steering_tag_ext and @ph first, then store
-> > > +      * @tph_flags with smp_store_release(); readers do
-> > > +      * smp_load_acquire(&tph_flags) before accessing the value fiel=
-ds.
-> > > +      * @tph_flags =3D=3D 0 means "TPH not set". Writers serialize v=
-ia
-> > > +      * vdev->memory_lock; readers are lockless to avoid AB-BA again=
-st
-> > > +      * the dma_resv_lock held by importers.
-> > > +      */
-> > > +     u32 tph_flags;
-> >
-> > As subsequent comments, can proceed without tph_flags
-> >
-> > > +     u16 steering_tag;
-> > > +     u16 steering_tag_ext;
-> > > +     u8 ph;
-> >
-> > struct dma_buf_tph {
-> >         union {
-> >                 atomic_t val;
-> >                 struct {
-> >                         u16 st_ext;
-> >                         u8 st;
-> >                         u8 ph;
-> >                 };
-> >         };
-> > };
-> > Set and get are done with atomic operation, no need for lock
-> >
-> > > +     bool revoked;
-> > >  };
-> > >
-> > >  static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
-> > > @@ -69,6 +85,35 @@ vfio_pci_dma_buf_map(struct dma_buf_attachment *at=
-tachment,
-> > >       return ret;
-> > >  }
-> > >
-> >
-> > ...
-> >
-> > >
-> > > +     /**
-> > > +      * @get_tph:
-> > > +      * @dmabuf: DMA buffer for which to retrieve TPH metadata
-> > > +      * @steering_tag: Returns the raw TPH steering tag for @st_width
-> > > +      * @ph: Returns the TPH processing hint (2-bit value)
-> > > +      * @st_width: Consumer's supported steering tag width in bits (=
-8 or 16)
-> > > +      *
-> > > +      * Return the TPH (TLP Processing Hints) metadata associated wi=
-th this
-> > > +      * DMA buffer for the requested steering-tag width. 8-bit ST an=
-d 16-bit
-> > > +      * Extended ST are distinct namespaces in the PCIe TPH ST table=
-, so the
-> > > +      * exporter must select the value that matches @st_width and mu=
-st not
-> > > +      * substitute one for the other.
-> > > +      *
-> > > +      * Return 0 on success, -EOPNOTSUPP if no metadata is available=
- for the
-> > > +      * requested width, or -EINVAL if @st_width is not 8 or 16.
-> > > +      *
-> > > +      * This callback is optional.
-> > > +      */
-> > > +     int (*get_tph)(struct dma_buf *dmabuf, u16 *steering_tag, u8 *p=
-h,
-> > > +                    u8 st_width);
-> >
-> > how about rename steering_tag to st?
-> >
+This keeps the peer-shutdown-derived bits internally consistent for each
+poll pass.
 
-I'd like to keep "steering_tag" in this signature if you don't mind.
-The verbose name keeps the signature self-documenting.
+Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
+Signed-off-by: Ziyu Zhang <ziyuzhang201@gmail.com>
+---
+Link: https://lore.kernel.org/netdev/20260516034745.260442-1-ziyuzhang201@gmail.com/
 
-> > > +
-> > >       /**
-> > >        * @map_dma_buf:
-> > >        *
-> > > diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-> > > index 5de618a3a5ee..53b2bbd9fc1e 100644
-> > > --- a/include/uapi/linux/vfio.h
-> > > +++ b/include/uapi/linux/vfio.h
-> > > @@ -1534,6 +1534,41 @@ struct vfio_device_feature_dma_buf {
-> > >   */
-> > >  #define VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2  12
-> > >
-> > > +/**
-> > > + * Upon VFIO_DEVICE_FEATURE_SET associate TPH (TLP Processing Hints)=
- metadata
-> > > + * with a vfio-exported dma-buf. The dma-buf must have been created =
-by
-> > > + * VFIO_DEVICE_FEATURE_DMA_BUF on this device.
-> > > + *
-> > > + * dmabuf_fd is the file descriptor returned by VFIO_DEVICE_FEATURE_=
-DMA_BUF.
-> > > + *
-> > > + * 8-bit ST (steering_tag) and 16-bit Extended ST (steering_tag_ext)=
- are
-> > > + * distinct namespaces in the PCIe TPH ST table; userspace should po=
-pulate
-> > > + * the value(s) it has from the firmware ST table for this device an=
-d set
-> > > + * the matching VFIO_DMA_BUF_TPH_ST / VFIO_DMA_BUF_TPH_ST_EXT bit in=
- @flags.
-> > > + * An importer requests a specific width and receives the matching v=
-alue;
-> > > + * if the requested width is not present, the importer is told TPH is
-> > > + * unavailable for this dma-buf.
-> > > + *
-> > > + * ph is the 2-bit TLP Processing Hint and must be in the range [0, =
-3].
-> > > + *
-> > > + * The user must set TPH on the dma-buf before the importer consumes=
- it.
-> > > + *
-> > > + * Return: 0 on success, -errno on failure.
-> >
-> > -1 and errno is set on failure.
-> >
+v2:
+- Pair lockless READ_ONCE() users with WRITE_ONCE() on peer_shutdown writers.
+- Move datagram shutdown handling into the SOCK_DGRAM branch and add a comment.
+- Keep one connectible peer_shutdown snapshot after lock_sock() and
+  restore the previous shutdown-derived mask ordering.
 
-This documents the kernel-side return value;
-the -1 / errno form is what the libc ioctl(2) wrapper presents to userspace.
+ net/vmw_vsock/af_vsock.c                | 49 ++++++++++++++++---------
+ net/vmw_vsock/hyperv_transport.c        |  9 +++--
+ net/vmw_vsock/virtio_transport_common.c | 14 ++++---
+ net/vmw_vsock/vmci_transport.c          |  8 ++--
+ 4 files changed, 52 insertions(+), 28 deletions(-)
 
-> > > + */
-> > > +#define VFIO_DEVICE_FEATURE_DMA_BUF_TPH 13
-> > > +
-> > > +#define VFIO_DMA_BUF_TPH_ST          (1 << 0)  /* steering_tag valid=
- */
-> > > +#define VFIO_DMA_BUF_TPH_ST_EXT              (1 << 1)  /* steering_t=
-ag_ext valid */
-> >
-> > It could be represented by judge whether steering_tag/ext =3D=3D 0
-> >
-> > > +
-> > > +struct vfio_device_feature_dma_buf_tph {
-> > > +     __s32   dmabuf_fd;
-> > > +     __u32   flags;
-> > > +     __u16   steering_tag;
-> > > +     __u16   steering_tag_ext;
-> > > +     __u8    ph;
-> > > +     __u8    reserved[3];
-> >
-> > How about:
-> > struct vfio_device_feature_dma_buf_tph {
-> >         __s32   dmabuf_fd;
-> >         __u16   st_ext;
-> >         __u8    st;
-> >         __u8    ph;
-> > }
-> > If st_ext is not zero means it valid, and also with st field.
-> >
-> > Thanks
-> >
-> > > +};
-> > > +
-> > >  /* -------- API for Type1 VFIO IOMMU -------- */
-> > >
-> > >  /**
-> >
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index adcba1b7b..789b00f6e 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -523,7 +523,7 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
+ 		 */
+ 		sock_reset_flag(sk, SOCK_DONE);
+ 		sk->sk_state = TCP_CLOSE;
+-		vsk->peer_shutdown = 0;
++		WRITE_ONCE(vsk->peer_shutdown, 0);
+ 	}
+ 
+ 	if (sk->sk_type == SOCK_SEQPACKET) {
+@@ -814,7 +814,7 @@ static struct sock *__vsock_create(struct net *net,
+ 	vsk->rejected = false;
+ 	vsk->sent_request = false;
+ 	vsk->ignore_connecting_rst = false;
+-	vsk->peer_shutdown = 0;
++	WRITE_ONCE(vsk->peer_shutdown, 0);
+ 	INIT_DELAYED_WORK(&vsk->connect_work, vsock_connect_timeout);
+ 	INIT_DELAYED_WORK(&vsk->pending_work, vsock_pending_work);
+ 
+@@ -1122,6 +1122,25 @@ static int vsock_shutdown(struct socket *sock, int mode)
+ 	return err;
+ }
+ 
++static __poll_t vsock_poll_shutdown(struct sock *sk, u32 peer_shutdown)
++{
++	__poll_t mask = 0;
++
++	/* INET sockets treat local write shutdown and peer write shutdown as a
++	 * case of EPOLLHUP set.
++	 */
++	if (sk->sk_shutdown == SHUTDOWN_MASK ||
++	    ((sk->sk_shutdown & SEND_SHUTDOWN) &&
++	     (peer_shutdown & SEND_SHUTDOWN)))
++		mask |= EPOLLHUP;
++
++	if (sk->sk_shutdown & RCV_SHUTDOWN ||
++	    peer_shutdown & SEND_SHUTDOWN)
++		mask |= EPOLLRDHUP;
++
++	return mask;
++}
++
+ static __poll_t vsock_poll(struct file *file, struct socket *sock,
+ 			       poll_table *wait)
+ {
+@@ -1139,24 +1158,17 @@ static __poll_t vsock_poll(struct file *file, struct socket *sock,
+ 		/* Signify that there has been an error on this socket. */
+ 		mask |= EPOLLERR;
+ 
+-	/* INET sockets treat local write shutdown and peer write shutdown as a
+-	 * case of EPOLLHUP set.
+-	 */
+-	if ((sk->sk_shutdown == SHUTDOWN_MASK) ||
+-	    ((sk->sk_shutdown & SEND_SHUTDOWN) &&
+-	     (vsk->peer_shutdown & SEND_SHUTDOWN))) {
+-		mask |= EPOLLHUP;
+-	}
+-
+-	if (sk->sk_shutdown & RCV_SHUTDOWN ||
+-	    vsk->peer_shutdown & SEND_SHUTDOWN) {
+-		mask |= EPOLLRDHUP;
+-	}
+-
+ 	if (sk_is_readable(sk))
+ 		mask |= EPOLLIN | EPOLLRDNORM;
+ 
+ 	if (sock->type == SOCK_DGRAM) {
++		u32 peer_shutdown = READ_ONCE(vsk->peer_shutdown);
++
++		/* DGRAM sockets do not take lock_sock() in poll(), so use one
++		 * lockless snapshot for all shutdown-derived mask bits.
++		 */
++		mask |= vsock_poll_shutdown(sk, peer_shutdown);
++
+ 		/* For datagram sockets we can read if there is something in
+ 		 * the queue and write as long as the socket isn't shutdown for
+ 		 * sending.
+@@ -1171,6 +1183,7 @@ static __poll_t vsock_poll(struct file *file, struct socket *sock,
+ 
+ 	} else if (sock_type_connectible(sk->sk_type)) {
+ 		const struct vsock_transport *transport;
++		u32 peer_shutdown;
+ 
+ 		lock_sock(sk);
+ 
+@@ -1203,8 +1216,10 @@ static __poll_t vsock_poll(struct file *file, struct socket *sock,
+ 		 * terminated should also be considered read, and we check the
+ 		 * shutdown flag for that.
+ 		 */
++		peer_shutdown = READ_ONCE(vsk->peer_shutdown);
++		mask |= vsock_poll_shutdown(sk, peer_shutdown);
+ 		if (sk->sk_shutdown & RCV_SHUTDOWN ||
+-		    vsk->peer_shutdown & SEND_SHUTDOWN) {
++		    peer_shutdown & SEND_SHUTDOWN) {
+ 			mask |= EPOLLIN | EPOLLRDNORM;
+ 		}
+ 
+diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
+index 432fcbbd1..16b981566 100644
+--- a/net/vmw_vsock/hyperv_transport.c
++++ b/net/vmw_vsock/hyperv_transport.c
+@@ -264,7 +264,7 @@ static void hvs_do_close_lock_held(struct vsock_sock *vsk,
+ 	struct sock *sk = sk_vsock(vsk);
+ 
+ 	sock_set_flag(sk, SOCK_DONE);
+-	vsk->peer_shutdown = SHUTDOWN_MASK;
++	WRITE_ONCE(vsk->peer_shutdown, SHUTDOWN_MASK);
+ 	if (vsock_stream_has_data(vsk) <= 0)
+ 		sk->sk_state = TCP_CLOSING;
+ 	sk->sk_state_change(sk);
+@@ -593,7 +593,9 @@ static int hvs_update_recv_data(struct hvsock *hvs)
+ 		return -EIO;
+ 
+ 	if (payload_len == 0)
+-		hvs->vsk->peer_shutdown |= SEND_SHUTDOWN;
++		WRITE_ONCE(hvs->vsk->peer_shutdown,
++			   READ_ONCE(hvs->vsk->peer_shutdown) |
++			   SEND_SHUTDOWN);
+ 
+ 	hvs->recv_data_len = payload_len;
+ 	hvs->recv_data_off = 0;
+@@ -715,7 +717,8 @@ static s64 hvs_stream_has_data(struct vsock_sock *vsk)
+ 			return ret;
+ 		return hvs->recv_data_len;
+ 	case 0:
+-		vsk->peer_shutdown |= SEND_SHUTDOWN;
++		WRITE_ONCE(vsk->peer_shutdown,
++			   READ_ONCE(vsk->peer_shutdown) | SEND_SHUTDOWN);
+ 		ret = 0;
+ 		break;
+ 	default: /* -1 */
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index dcc8a1d58..71d8eac82 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -1220,7 +1220,7 @@ static void virtio_transport_do_close(struct vsock_sock *vsk,
+ 	struct sock *sk = sk_vsock(vsk);
+ 
+ 	sock_set_flag(sk, SOCK_DONE);
+-	vsk->peer_shutdown = SHUTDOWN_MASK;
++	WRITE_ONCE(vsk->peer_shutdown, SHUTDOWN_MASK);
+ 	if (vsock_stream_has_data(vsk) <= 0)
+ 		sk->sk_state = TCP_CLOSING;
+ 	sk->sk_state_change(sk);
+@@ -1411,12 +1411,15 @@ virtio_transport_recv_connected(struct sock *sk,
+ 	case VIRTIO_VSOCK_OP_CREDIT_UPDATE:
+ 		sk->sk_write_space(sk);
+ 		break;
+-	case VIRTIO_VSOCK_OP_SHUTDOWN:
++	case VIRTIO_VSOCK_OP_SHUTDOWN: {
++		u32 peer_shutdown = READ_ONCE(vsk->peer_shutdown);
++
+ 		if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SHUTDOWN_RCV)
+-			vsk->peer_shutdown |= RCV_SHUTDOWN;
++			peer_shutdown |= RCV_SHUTDOWN;
+ 		if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SHUTDOWN_SEND)
+-			vsk->peer_shutdown |= SEND_SHUTDOWN;
+-		if (vsk->peer_shutdown == SHUTDOWN_MASK) {
++			peer_shutdown |= SEND_SHUTDOWN;
++		WRITE_ONCE(vsk->peer_shutdown, peer_shutdown);
++		if (peer_shutdown == SHUTDOWN_MASK) {
+ 			if (vsock_stream_has_data(vsk) <= 0 && !sock_flag(sk, SOCK_DONE)) {
+ 				(void)virtio_transport_reset(vsk, NULL);
+ 				virtio_transport_do_close(vsk, true);
+@@ -1431,6 +1434,7 @@ virtio_transport_recv_connected(struct sock *sk,
+ 		if (le32_to_cpu(virtio_vsock_hdr(skb)->flags))
+ 			sk->sk_state_change(sk);
+ 		break;
++	}
+ 	case VIRTIO_VSOCK_OP_RST:
+ 		virtio_transport_do_close(vsk, true);
+ 		break;
+diff --git a/net/vmw_vsock/vmci_transport.c b/net/vmw_vsock/vmci_transport.c
+index 7eccd6708..c2231c402 100644
+--- a/net/vmw_vsock/vmci_transport.c
++++ b/net/vmw_vsock/vmci_transport.c
+@@ -811,7 +811,7 @@ static void vmci_transport_handle_detach(struct sock *sk)
+ 		/* On a detach the peer will not be sending or receiving
+ 		 * anymore.
+ 		 */
+-		vsk->peer_shutdown = SHUTDOWN_MASK;
++		WRITE_ONCE(vsk->peer_shutdown, SHUTDOWN_MASK);
+ 
+ 		/* We should not be sending anymore since the peer won't be
+ 		 * there to receive, but we can still receive if there is data
+@@ -1534,7 +1534,9 @@ static int vmci_transport_recv_connected(struct sock *sk,
+ 		if (pkt->u.mode) {
+ 			vsk = vsock_sk(sk);
+ 
+-			vsk->peer_shutdown |= pkt->u.mode;
++			WRITE_ONCE(vsk->peer_shutdown,
++				   READ_ONCE(vsk->peer_shutdown) |
++				   pkt->u.mode);
+ 			sk->sk_state_change(sk);
+ 		}
+ 		break;
+@@ -1551,7 +1553,7 @@ static int vmci_transport_recv_connected(struct sock *sk,
+ 		 * a clean shutdown.
+ 		 */
+ 		sock_set_flag(sk, SOCK_DONE);
+-		vsk->peer_shutdown = SHUTDOWN_MASK;
++		WRITE_ONCE(vsk->peer_shutdown, SHUTDOWN_MASK);
+ 		if (vsock_stream_has_data(vsk) <= 0)
+ 			sk->sk_state = TCP_CLOSING;
+ 
+-- 
+2.43.0
+
