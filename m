@@ -1,83 +1,95 @@
 Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADEC124E4AF
-	for <kvm@vger.kernel.org>; Tue, 19 May 2026 00:43:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95A55223DC6
+	for <kvm@vger.kernel.org>; Tue, 19 May 2026 00:44:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779151419; cv=none; b=d+lF3dvBQNCOsWW4zpo3A+Xyj+ypeP6rCnajL/9HjphxUpeZUaUgW2COO6QPYSuCWoWmHUZOkl8CwMEOkabAb4flGBnhvitKItDOQtRqgnNS/qY4YfmmNZPkJvLiz+bSSyfzB6+kXiqweKes8IxoGaTP4jahcTA4OdF0RyE5pgg=
+	t=1779151443; cv=none; b=XgEv87DSFE+HsX6BFVVEKc8zWsaENDIM5x/C2EJIIP77Um+69Xj5mHFmVFvdRgBZ94t3l84ymn1tFXYklsmdiuymt5oYFvw3mABj5wpd9XKZaJyb4m6hMZFjsAs96VJvsmFG4gMW5ODS0wLGVTAmvGXipEuUCk1fHYqEBzQp1l0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779151419; c=relaxed/simple;
-	bh=nzMxY8+UnJdBw3CvpnvLTddYG+/Acq9tPNOa+ulvV9w=;
+	s=arc-20240116; t=1779151443; c=relaxed/simple;
+	bh=M42PsrU6o0PGT+WkZ+DA322vfkPXIYHrF/QxepmRbeA=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=CfKLhA0I8gRwfmjOLuJd/ZTpTHbU7ZVbpGF8vNCvGsPoDr/VPG7XbfZ3ScsTiYZbpvQ1pqIjBsHv2g2n+Y2t4/GR9qx8crcUdiLDtBhz4ygpgXjRG9RBWivpoO1FiMnTz5ElwQ9IgyGyBcJxj+hwYCs/mK1HC6NkasIauWXMhkU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=g4GqQCHp; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=IgJAu38eBjmCUVAjx5zJ1N8ujdZq12yNAsWsHAIu+eqIQ+l+wTLGYRCMpzwoN+DbfMLpMRU/jx6vitFCp/szuqIsYdqs9qmQn0K0Fmkkjluz5w+gJRFPPOvmvSWXWyez5KBjTqJxRR3NCyAHPzlRVP3jta+FHQabGmq6cWDMxvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ngilIGLr; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="g4GqQCHp"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ba15e384c7so19836825ad.3
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 17:43:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ngilIGLr"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2baf7378ad0so31976705ad.0
+        for <kvm@vger.kernel.org>; Mon, 18 May 2026 17:44:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779151418; x=1779756218; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779151442; x=1779756242; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pW+SZ4DiHEbAMVxFiDO/o07/N3cCEF7bkyUCt/9G1kY=;
-        b=g4GqQCHpVRILL+3L21l/0nPBlT2QwhztIwNWT6vDXj0iXNuyexvlUCYj0TRHp92qaR
-         RWCmXS3ecGrk4ZSHFKLcnXUVkZNEq93UkbZZlxAlKrh0mRnmqMiYRq2XARg9trE5tQaZ
-         N3W0W957FcrwUV6XHUy3Ln/6ZacCmtJEwZfRsppucD4JW++qyb9101FfbIiJ4E612HvI
-         v+NRxKnWNq3Ky5e0n1mqIPR3g4ZvFunRiA/HREdHJ96j4VsEmDMd8OVmS8HGJn2n5utS
-         YywAthg69cdJXhuvzHNSPvc5txWYWo9qmz4aFyn53qP6+OqWuAdIuSUNrunGEHoUiZZD
-         TIhQ==
+        bh=jOzzVcweW7m8AIsSnrKDu5TusjRT2YD7Xt7znQYZE2c=;
+        b=ngilIGLra4hDsdzpv7jo4MYdCx2pcZtvomqxin53oIW0EF8S0oWj+q6504ADcCjVF5
+         DQ0J2ugMBBqF59AzCId2C+0Hu53i8uJYMXLl1MHhZ0Zqs0q1VmtDJHwyFWQ7qMpxyE56
+         uE784y5xOoaX4D2JkYIgLS0605AZlC9WFH95ljbAXsY+AJFRHPneElUBPK2VBw1jMfVC
+         DFENxkmJVVsAjhnD0NUyWKNz6or5eRyqDb7FbGYrMYi7ApHE8wMzCOht3DbHEzDYLYhL
+         PfxrGSkUXqHwsbN4x5TrXUxfqwnar0P01bdLx/kxnGzWLPrb0N4T3SOhtj75/ZqbUAU8
+         BDIw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779151418; x=1779756218;
+        d=1e100.net; s=20251104; t=1779151442; x=1779756242;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pW+SZ4DiHEbAMVxFiDO/o07/N3cCEF7bkyUCt/9G1kY=;
-        b=BIkxO8IS7sphaUQyttpFAlXmbV25l2kIRiTqIRaIAS9sDn3miNtmOsLfx+x3kqT09q
-         YlXI6+vEibw+4xwwgDSh7nA7FWPvIDc89JNRjxew1cP+RuG3weZfXOvp2sSSFH82eSGn
-         9+LpKzggXSA5zbLPWkqY6h2S1w/ApNNV72MNG61Wj321yz1Lb5mCaY/cHzchXpCRAsMp
-         18uRZURnPjgBGAH8Z4hrgQfwQ3dM03DwcnPX1DzHe0TRU4nehqkMvU0BXt8C8n59O4Ux
-         EP+LDxMhWNN7xO+F7w04aNCFApi4wuYlG2ejwDvxFxkz37WaCU9XIVllGjcsBB78nMWF
-         cp/w==
-X-Gm-Message-State: AOJu0YzGe/OW3xPdk2Pdb+u70R2oaoQf5t6x3wGtAO4FOMt2KdtOKasC
-	eOpf27Vj4cuRNob7/prpbZ5QPX1qmZydMrKAA+MRjib4LC/T9ZQ0FiqlzYyWLqMNLzzx2mkY3tv
-	8JuwXtA==
-X-Received: from plfn12.prod.google.com ([2002:a17:902:e54c:b0:2b0:c9c5:109b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:22d0:b0:2b4:61cc:37a8
- with SMTP id d9443c01a7336-2bd7e82bb9cmr183810785ad.17.1779151417754; Mon, 18
- May 2026 17:43:37 -0700 (PDT)
-Date: Mon, 18 May 2026 17:41:00 -0700
-In-Reply-To: <20260422130307.1171808-1-piotr.zarycki@gmail.com>
+        bh=jOzzVcweW7m8AIsSnrKDu5TusjRT2YD7Xt7znQYZE2c=;
+        b=rh2W9qQzhOCAntWDwk/SU9pZillyir/fatc4hHl745/LwMBWPorjPL9MdXQ3sadTVM
+         Hfv0Ke9kyElFtNbAqdJRhPtJLYQMR9fsN8uEw07b2rQhX1yzsdu1DgozizRzmJQLK1F4
+         vWAZEHDrAvvp+eUUvKjKsFUpR33aLlmWqw6OBxNDploAHQLdXZddDT7GbrItEkrMotkl
+         lqf2yN0FO2PXMqiBqZUmX/JDyGQdfsEz4LMk80I8wxrIDSEoXmAcPgW6w8hwsJ1Mo8k3
+         DpY5Sts2oY7A+2pizx/9NSrDQRve5ZhtU/uWL+pmi+YhXkOmtsJJAfecpoiyZ4YWUVWB
+         EzGw==
+X-Gm-Message-State: AOJu0Yz5nmBgfAjPHOT/FeHfNvPYxVHr/B6Kvzq0DHhCt8VdEWik66Ck
+	oTcmryvDAk/N169IdOmF5piZSa+HQEsKu14gu+TFK6BIb7x2WyTiB5Nj2O72CxgH/IBYnXOHRCv
+	pCF/moQ==
+X-Received: from plr17.prod.google.com ([2002:a17:903:4451:b0:2bd:d6b8:a012])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:c403:b0:2bd:8dbd:17e6
+ with SMTP id d9443c01a7336-2bd8dbd19c6mr166105615ad.35.1779151441749; Mon, 18
+ May 2026 17:44:01 -0700 (PDT)
+Date: Mon, 18 May 2026 17:41:02 -0700
+In-Reply-To: <20260501203537.2120074-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <87v7djgoji.fsf@redhat.com> <20260422130307.1171808-1-piotr.zarycki@gmail.com>
+References: <20260501203537.2120074-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <177915101375.2229640.7454102060975937754.b4-ty@google.com>
-Subject: Re: [PATCH v2] KVM: selftests: hyperv_tlb_flush: replace NOP loop
- with udelay()
+Message-ID: <177915111018.2230934.11606707706175599137.b4-ty@google.com>
+Subject: Re: [PATCH v2 0/6] KVM: SEV: sev_dbg_crypt() fix and overhaul
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, vkuznets@redhat.com, 
-	Piotr Zarycki <piotr.zarycki@gmail.com>
-Cc: kvm@vger.kernel.org, pbonzini@redhat.com, shuah@kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	kernel-janitors@vger.kernel.org
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Ashutosh Desai <ashutoshdesai993@gmail.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, 22 Apr 2026 15:03:07 +0200, Piotr Zarycki wrote:
-> Replace the open-coded NOP loop with udelay() which was added to KVM
-> selftests in commit 6b878cbb87bf ("KVM: selftests: Add guest udelay()
-> utility for x86"). The NOP loop is CPU speed dependent while udelay()
-> provides a deterministic delay regardless of host CPU frequency.
+On Fri, 01 May 2026 13:35:31 -0700, Sean Christopherson wrote:
+> Disclaimer: I could have sworn I sent this last week, but obviously did not,
+> and I can't remember _why_ I didn't send it.  So don't be too surprised if
+> there's some glaring flaw or boneheaded mistake.
+> 
+> Ashutosh's fix for a heap OOB/UAF bug in the debug {de,en}crypt code, now
+> with a selftest to detect the bug (and confirm the fix), and to validate the
+> functionality.
+> 
+> [...]
 
-Applied to kvm-x86 selftests, thanks!
+Applied to kvm-x86 sev, to get as much exposure in -next as possible.
 
-[1/1] KVM: selftests: hyperv_tlb_flush: replace NOP loop with udelay()
-      https://github.com/kvm-x86/linux/commit/749fbf2bdcd7
+[1/6] KVM: SVM: Fix page overflow in sev_dbg_crypt() for ENCRYPT path
+      https://github.com/kvm-x86/linux/commit/78ee2d50185a
+[2/6] KVM: selftests: Add a test to verify SEV {en,de}crypt debug ioctls
+      https://github.com/kvm-x86/linux/commit/6edd35e77a42
+[3/6] KVM: SEV: Explicitly validate the dst buffer for debug operations
+      https://github.com/kvm-x86/linux/commit/cb32e895546b
+[4/6] KVM: SEV: Add helper function to pin/unpin a single page
+      https://github.com/kvm-x86/linux/commit/99694add4af3
+[5/6] KVM: SEV: Rewrite logic to {de,en}crypt memory for debug
+      https://github.com/kvm-x86/linux/commit/8d6297a3e73e
+[6/6] KVM: SEV: Allocate only as many bytes as needed for temp crypt buffers
+      https://github.com/kvm-x86/linux/commit/4c735bf1bc22
 
 --
 https://github.com/kvm-x86/linux/tree/next
