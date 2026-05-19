@@ -1,87 +1,89 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE478221540
-	for <kvm@vger.kernel.org>; Tue, 19 May 2026 00:42:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D602624DCF9
+	for <kvm@vger.kernel.org>; Tue, 19 May 2026 00:42:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779151346; cv=none; b=KqUE8kKxw/flVVDFCtAP3O4pZ4jIn54vu/XTwDrMb12dcRv6wdA3h2RjS1y02Fgrl8jV+HQJt7XT6+DzaW0ufYfpcqBV/JczybOe+Ic39a4HvMymlhFKDBNJhQVB84MNhoYuq6b24PZ2aEbxeNuPejeYUgJ7uM+D4NSfbj0GPys=
+	t=1779151353; cv=none; b=TjFKXcqkzjylYVDE4o4eV+RPUafQcjzzjBc/Z7Pcj8VXzCJf/JPCRw4mETd4PDkWblBNAVDDoezetcf4cVUMujpqaeyDsKrgh96TLCLnhZjdyWys/fZnI0O2ABHuReiENo3BHS/3TZRdLL7IrqDbSo3oMl9nWUrHIC8lpzAnm7g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779151346; c=relaxed/simple;
-	bh=0ZXhg3ESzQMIrHvqN+Rk3iOjLKSaO3bVYaLDy6rC1cE=;
+	s=arc-20240116; t=1779151353; c=relaxed/simple;
+	bh=IpYOpFfX4/OD8IEZLfAVYLYMPVpaeg1xGH+f6nBZSWQ=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=AxjWOtbM7qOZzZ8LcQ7eOeILhgRr1jgxk72PGV4SWn2c9XksUxDV17+9/RC2oIH12TgEJv9ItUk6L4YgcHReY0iP2IzyhTrhxGRwoKzxMD2cZ5Rb6gCvaIdi5ZVXylcaZeWVx3DWG/7Cznmy35CyJTIcBzb6yj66LqOyqc4jGaQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dYWv5ic5; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=gPGHefNQ7YLoTCXTRB7R5X1qAv4YfjIhbxwBeOn0ZrvMHyxKuzFw5AszzrH1Nk3XbwImYEaVfZYI1DPctddnMIXbwHiY8X5lN4i9uJptuc9Ar5f4G6LtQTApuuzATjDMrjmbRe0NnCKqg5joxN0UBaoicrkNqTO2ExAaNtFZ14U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DE3fqxC1; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dYWv5ic5"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c799ee56bd6so1492039a12.2
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 17:42:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DE3fqxC1"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82fa2165c3eso1836097b3a.0
+        for <kvm@vger.kernel.org>; Mon, 18 May 2026 17:42:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779151344; x=1779756144; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779151351; x=1779756151; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=P7QwZo6KxCL7PUVyCWizdC0ktl0P8L3MwdufqGhOMio=;
-        b=dYWv5ic50bkwMgIt9AIKOSjPmD9m94zqmtAqX9QEczhCquWWegAh1l3w3Js4gi4ov2
-         wt3Mb4kEyYl5Tgd8TTwMeRuQfl3++0hPBS1iUptBZtVSXJBEbaPiTUJka8K8oEe4ZsXu
-         uAmcDuT06tP9VOjGn67/4KoMZkNr/offt0FFjK2/njDKHQ/LYTOjyJZk3OI1AodftP1/
-         2YOCgaCGiS1JmHDR+fow6A/6rVpWyCoVO7cP1jh0GNMBLT8Gc4rLcx1d46V+tnepxpDO
-         8TSC6aSH9+sWax3wtIalcOq66XLwY2/cccZFcTNry2y9MePMTmfQA5j6O6zhXng4yOMp
-         h9EA==
+        bh=icNlWn+8QPxDo5dEHHdYwfmcjbT1Orh3zLu0h9uaeKQ=;
+        b=DE3fqxC1TDL1PtdvhH9sM5z4Yp+qZeOi6mehtuiZHRKA40MG5b9yhjknjzk2eIfw9Q
+         PAwBSsEkZgJ8JcRKWr3DL8WrcPlSwfJuJDjsD3zs9PKiIHX8F9oYUNmugQWZCWXUnw6d
+         UnyF/e0c1ANIXg9snqCEXq45R2CkQUMX/lVzaEBks1BJMVugOVozcmWWguJ5VPY3E2X3
+         TkeVlbrEmX+3flTqFxdo04PT03IgAXrBQ5XqHM1qvIYd+LgWd1KrcB0e5IBbAt44/3Af
+         nFH8OKz1lvEQCc3SNdNDrZVOWUEQsMXdRrbKmD51wZYNZNSubYrZy3zIQq8tnU2OzAwh
+         DHKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779151344; x=1779756144;
+        d=1e100.net; s=20251104; t=1779151351; x=1779756151;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=P7QwZo6KxCL7PUVyCWizdC0ktl0P8L3MwdufqGhOMio=;
-        b=As+0lykjD4nR1AGSFTUqVyO4uqIjnXtKbGnX2VFMZSwL7osqoJLuPhu77RPN52GXuf
-         gpNNA+aTR4b/XdcpjFv1GltCQbVA4o/qZoMkMmcRleIq6yFw/nHcfOjXtp6+SBZaCMkW
-         EyAZlxh99AqBl+sWs8S/mlZACJEtO/1BxpWLkoGK86wGp7s+YuD2gTFm8ZDfPg2tcJL3
-         RPQOmygHPocx3sg/F8JuAw69kPdFP3JYqQF8Itsx+WDCIKhC6TwwXw7EMJ8GTHwqys8l
-         5N4i7KOwLVgHAjB9RTHmM4+25R2QPFRg1W5JH/UEiT4cLPqQcbKOhTbt5WUw1JDIsEAS
-         Tgeg==
-X-Gm-Message-State: AOJu0YyTKkciQh5231tU5HhxJ9OS+tQjM9hIWtEKox+897TaPCoQLn4N
-	gU8mkOWeD67n/NLABt2MPPHVuodVyZnsKg/ou8qkr3gJy3R/XELu16zOYtDKpYaY92RsPwMv67q
-	yR2Dw9Q==
-X-Received: from pgr17.prod.google.com ([2002:a63:1151:0:b0:c82:bdf7:4836])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:218e:b0:398:9662:10ff
- with SMTP id adf61e73a8af0-3b22e6685e2mr19937882637.4.1779151344014; Mon, 18
- May 2026 17:42:24 -0700 (PDT)
-Date: Mon, 18 May 2026 17:40:40 -0700
-In-Reply-To: <20260423162628.490962-1-seanjc@google.com>
+        bh=icNlWn+8QPxDo5dEHHdYwfmcjbT1Orh3zLu0h9uaeKQ=;
+        b=JUTo8mCojdDVwvTNkJ+KnDEKg9d2Ks/5VNcLGbsXOQ6mNSvGDBE5jm8CGZ5AZCLeHK
+         BBQnNsCwRS3hDI8j5kY+RbZFUqQZzLqJ59VwUpGfPpV4CibVUB/wX58jyVTJj7a8TfkY
+         4mvlWR55fd4ltCEJQpbipTGSRnGxCKEp/+9mTfpjZ0daBPMlwukOIlFhxY1iUBpcbL1A
+         aMYAqShPPlcFhlh5woyQbCZBYPVlYpF+ytfxodQ0WOKAjROcPQvMrQnD2b2V4NUzzIgz
+         zE8RiYUIwl3+TgWOceE1F8FIyW6ziurEIEyyLIC5BJogENJylNAq2az2FhhjogOf4abI
+         MURQ==
+X-Gm-Message-State: AOJu0Yzg63s7ofKMUCKgKE/xq4mrAFMINUbGqr/iP3FiysXs0xqaBhQq
+	YbcaYGZHHwpM7sMafKL7hs7qFQ0OVcvrOAPnx6EW4uREbJ5C/wJip5mtAU+3nh6lEkMum0v3cM9
+	/6935JA==
+X-Received: from pfblu7.prod.google.com ([2002:a05:6a00:7487:b0:836:6e32:7280])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:17a9:b0:835:4291:6975
+ with SMTP id d2e1a72fcca58-83f33d82ffcmr17934598b3a.39.1779151351029; Mon, 18
+ May 2026 17:42:31 -0700 (PDT)
+Date: Mon, 18 May 2026 17:40:42 -0700
+In-Reply-To: <20260406225359.1245490-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260423162628.490962-1-seanjc@google.com>
+References: <20260406225359.1245490-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <177915113628.2231260.17159960202588301938.b4-ty@google.com>
-Subject: Re: [PATCH 0/2] KVM: x86: Fastpath userspace exit fix and hardening
+Message-ID: <177915071468.2226831.14635720413149875996.b4-ty@google.com>
+Subject: Re: [PATCH v3 0/3] KVM: x86: Async #PF MSR fix and cleanups
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	"Nikunj A . Dadhania" <nikunj@amd.com>
+	syzbot+bc0e18379a290e5edfe4@syzkaller.appspotmail.com, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Ethan Yang <ethan.yang.kernel@gmail.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, 23 Apr 2026 09:26:26 -0700, Sean Christopherson wrote:
-> Fix a found-by-inspection bug where KVM could fail to flush the PML buffer
-> (VMX) or fail to grab the most recet CR0/CR3 (SVM) prior to exiting to
-> userspace, which could prove to be fatal if that exit is that last exit prior
-> to save/restore, e.g. the last exit before userspace commits to migrating the
-> VM.
+On Mon, 06 Apr 2026 15:53:55 -0700, Sean Christopherson wrote:
+> Fix a user-triggerable WARN found syzkaller, then clean up related code
+> to eliminate potential stale data usage by removing what are effectively
+> duplicate fields.
 > 
-> Patch 2 is related hardening, i.e. isn't fixing any existing bugs (AFAIK).
+> Ethan Yang (1):
+>   KVM: x86: Don't leave APF half-enabled on bad APF data GPA
 > 
 > [...]
 
 Applied to kvm-x86 misc, thanks!
 
-[1/2] KVM: x86: Ensure vendor's exit handler runs before fastpath userspace exits
-      https://github.com/kvm-x86/linux/commit/0ffedf43910e
-[2/2] KVM: SVM: Refresh vcpu->arch.cr{0,3} prior to invoking fastpath handler
-      https://github.com/kvm-x86/linux/commit/b21525756e82
+[1/3] KVM: x86: Don't leave APF half-enabled on bad APF data GPA
+      https://github.com/kvm-x86/linux/commit/923ca078f08c
+[2/3] KVM: x86: Drop superfluous caching of KVM_ASYNC_PF_DELIVERY_AS_PF_VMEXIT
+      https://github.com/kvm-x86/linux/commit/3c0bf11dd41f
+[3/3] KVM: x86: Drop superfluous caching of KVM_ASYNC_PF_SEND_ALWAYS
+      https://github.com/kvm-x86/linux/commit/7e985021ef2f
 
 --
 https://github.com/kvm-x86/linux/tree/next
