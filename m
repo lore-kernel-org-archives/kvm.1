@@ -1,69 +1,60 @@
-Received: from BN8PR05CU002.outbound.protection.outlook.com (mail-eastus2azon11011015.outbound.protection.outlook.com [52.101.57.15])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E16DA29D291
-	for <kvm@vger.kernel.org>; Tue, 19 May 2026 14:46:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.57.15
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779201997; cv=fail; b=ZPjDuzmhcJKHgVF6BWkULvkkBfgFHyhOKKuFc4yUkXza0Xf8xchIRhYnClg2j81DYDQlqQZ86TOhRuNgsQDmsv7kNai94oVRnizz8X0PEz/HBaSMDabsz6k9TxA9ZdPmNInhw8ULRc9FqAp2tOOD82ldwS6F7Re2wR3nhZVcRiM=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779201997; c=relaxed/simple;
-	bh=JGQnDszPMjTZOxQboUIgiR9cXuBdmnfW1oGraXSKu+w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=ZJQ4cdtrd0LqieSd6737D9ZwSCLbF2sDK13yf4WG2oyO7xs833dR5ZkE6M8WvScHn96WdiJNbbouh1ZzcSmgKiJajyXVO00J1R0ezTI0fQkTSp0DJxkI6UMv6ZBpJOMMMZ7Lxf++zjGEptW7VmGEJ7TOSAZiao731TzPXv/ua80=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=OqkCr+8X; arc=fail smtp.client-ip=52.101.57.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C7EB3233E8
+	for <kvm@vger.kernel.org>; Tue, 19 May 2026 14:56:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779202595; cv=none; b=NoxzFbmH/x1rQmr/dKdtaJQtdj6GtkVwqxyYZsz69uIDc5G4YqIs5z2aUOLPQGszLhB8mAn24LymchY9o/FzXKUrqx+WL+qvFgDYtLiZS7FlG7wZdrWbHYvKGSaWvNppdrTYGWDLLxj+83eRx3Qsv4VDH45mSV9cGe4KA8IfIXM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779202595; c=relaxed/simple;
+	bh=IoVyplfXD4VR5y6U+uekOt1s2x8HLH8CVW1h3/1qkBU=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AwBgH73i87ZOWDGVzVaIY052UgWejWgoMuqR/DuWgHzn9E2+9t3AUxn0/pr0dgS4yAfalWgglDE08MhUQX/kFN5vyV/NDfEQQV/fYmYWZcys7L102UJmMse41LefwtokbLN9RMGak3pyGXGs2J2FUZxrSlsBtcF2P4+MNXWU678=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=NKO/mig/; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="OqkCr+8X"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=YWBbkjCyLAE1H/O5gszq8jP52lkKucYaizBnVcUnnYg1NYhzrRgvv9cfq65GA84UbAMP4FCSk4H7Q5T5Gt3o0jgO7ICy5b5pt/YMsjmfxClk+cVKXLIROlIlYtpjEvIAsD/1eCX0w22tnErkAIoGZijP52uSqCj66vBHieP6HNQEM3Vg4mTlh+GaVlPkN00uy/1T6+CNMjelOAHVeEsa2NQqT83XBJzGB5dwNvKUqAys8qgbwQ85qK8eBMTfqUwTYzrTEzPPLuYuBVeZteJMZwFyYMVuAsy42RYbxQpmT5FANk1jREMmYQ38HcAMyfn4n95Vq/tHDu0CMPDtwR39GQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=eSZ9yO7f2pU81PGSX3+JBeaHyfhpAu5ZtLMTbVgBoIc=;
- b=aSGCm/XAK07lUF9fHla5Y4vMTGfqr8i1c8pClb5hM6+i59FXqVbLOMeIrDUdFibX920X4zZgfHzI9kb6DYEK9fa0ffU/Hcsm/IIgQ5SjKP3LfWoRTQ6abpmRzE8s+5ejM1Yf/n+6zO4X/63EGPo1YXncw1u+izCSeD/g3jN7uVGE6KFhr9LVPZS9owmEMFVJMOGmyBPt5LL/VMdni30ST0Dd86A3M7pqB6UubrFkDN9ZNl+IWhA1xgRc6QS5+twXQ7ZdKdphhMhV3vPGQ/LkxcRslAdlE4tJNOGJ4k0++0FooAgS8DuFFp300WyAyRyHiq6oaIlWpzmpHwRzZ3kjkQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=eSZ9yO7f2pU81PGSX3+JBeaHyfhpAu5ZtLMTbVgBoIc=;
- b=OqkCr+8XBvrk49fl521oG/ylQbWmm9Vjf/za/8luyBmvIEELfEgt8mqKwv29Rpk86DDtnOBqfVVk5IxGfODna6moIew73Wpl9ReY3l+aNqP7swYxTBU83Xyhzn6CqdgaNofEVhKyz1shxCnf2qHmGBzRZkJZmqTaNVUutMvJOgQ=
-Received: from SJ0PR05CA0039.namprd05.prod.outlook.com (2603:10b6:a03:33f::14)
- by CH3PR12MB8257.namprd12.prod.outlook.com (2603:10b6:610:121::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.14; Tue, 19 May
- 2026 14:46:19 +0000
-Received: from MWH0EPF000A672E.namprd04.prod.outlook.com
- (2603:10b6:a03:33f:cafe::ae) by SJ0PR05CA0039.outlook.office365.com
- (2603:10b6:a03:33f::14) with Microsoft SMTP Server (version=TLS1_3,
- cipher=TLS_AES_256_GCM_SHA384) id 15.21.48.13 via Frontend Transport; Tue, 19
- May 2026 14:46:19 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
-Received: from satlexmb07.amd.com (165.204.84.17) by
- MWH0EPF000A672E.mail.protection.outlook.com (10.167.249.20) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.21.48.11 via Frontend Transport; Tue, 19 May 2026 14:46:19 +0000
-Received: from satlexmb10.amd.com (10.181.42.219) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 19 May
- 2026 09:46:18 -0500
-Received: from satlexmb07.amd.com (10.181.42.216) by satlexmb10.amd.com
- (10.181.42.219) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.41; Tue, 19 May
- 2026 09:46:18 -0500
-Received: from [10.252.210.85] (10.180.168.240) by satlexmb07.amd.com
- (10.181.42.216) with Microsoft SMTP Server id 15.2.2562.41 via Frontend
- Transport; Tue, 19 May 2026 09:46:15 -0500
-Message-ID: <77f1f310-d789-427e-8c10-bd6ac4836add@amd.com>
-Date: Tue, 19 May 2026 20:16:14 +0530
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="NKO/mig/"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64JEnsip1594906;
+	Tue, 19 May 2026 14:56:23 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=itnP5A
+	F1cZ1UvGGw4zM43+PT/iwC/X/DLDFttbOsQlU=; b=NKO/mig/xL6oN5B66tpC1F
+	F+wf9gWYrgsc1pU1t+ZGBkPclGkQanhYM6VON9GsFgcilK9BytGzeOYKozLjeHGN
+	pgcnhOSDzdNI7U7N6t37hbsTgAEYf6UO/X4YgQ9W4FZEXcPZ/5HSu0cHSMotP+5G
+	9M10Fsv4W1QwiNzrAYWdaQnY74rSHnU3okAkJp/b74FpQTT3tXikDjbm0EqrTLPi
+	kcGbJ9m/77iZHONuiH9A58COV0/NqLUuT2B9dc3QqRchZlYAh6vTB2LNd15oHO7f
+	J1H9GB3Irx5RSJxEgPnF6gefegOpX/mZEwCI8wxjd78lZ8GrbvL+kRLCoyixRCMQ
+	==
+Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6hb8curt-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 19 May 2026 14:56:22 +0000 (GMT)
+Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64JEs5t6025317;
+	Tue, 19 May 2026 14:56:22 GMT
+Received: from smtprelay03.dal12v.mail.ibm.com ([172.16.1.5])
+	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e754gax0d-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 19 May 2026 14:56:22 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay03.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64JEuKFO16777852
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 19 May 2026 14:56:20 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id CBA2E5805D;
+	Tue, 19 May 2026 14:56:20 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 994FA58055;
+	Tue, 19 May 2026 14:56:16 +0000 (GMT)
+Received: from [9.61.246.77] (unknown [9.61.246.77])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 19 May 2026 14:56:16 +0000 (GMT)
+Message-ID: <8acc0275-ea29-4008-8380-d8eb3de85576@linux.ibm.com>
+Date: Tue, 19 May 2026 20:26:14 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -71,137 +62,145 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 7/7] KVM: SVM: Add Page modification logging support
-To: Sean Christopherson <seanjc@google.com>, Yosry Ahmed <yosry@kernel.org>
-CC: <kvm@vger.kernel.org>, <pbonzini@redhat.com>, <thomas.lendacky@amd.com>,
-	<bp@alien8.de>, <joao.m.martins@oracle.com>, <kai.huang@intel.com>
-References: <20260518045916.2988667-1-nikunj@amd.com>
- <20260518045916.2988667-8-nikunj@amd.com> <agtGh82vLu4G6pWI@google.com>
- <agtgltn2wLNFrS2f@google.com>
+Subject: Re: [PATCH v3 0/2] Fix GCC 16 const-correctness violations
+To: Amit Machhiwal <amachhiw@linux.ibm.com>,
+        Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>, Nicholas Piggin
+ <npiggin@gmail.com>,
+        Chinmay Rath <rathc@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+        Laurent Vivier <lvivier@redhat.com>,
+        Shivaprasad G Bhat <sbhat@linux.ibm.com>,
+        Gautam Menghani <gautam@linux.ibm.com>, qemu-devel@nongnu.org,
+        kvm@vger.kernel.org
+References: <20260518172517.12466-1-amachhiw@linux.ibm.com>
 Content-Language: en-US
-From: "Nikunj A. Dadhania" <nikunj@amd.com>
-In-Reply-To: <agtgltn2wLNFrS2f@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MWH0EPF000A672E:EE_|CH3PR12MB8257:EE_
-X-MS-Office365-Filtering-Correlation-Id: 6621addc-6d7f-467d-92b1-08deb5b56335
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|82310400026|1800799024|376014|36860700016|22082099003|56012099003|4143699003|18002099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	vKZHZwDyi++47wxrFmMHY/CwPvmPSvhWOKbxkSQM7rqTln72J4QAZqIH+k1H1McVuk0uCj/MIGUj0jjaYQkZTZ3DBZQRFu1ipZk1/1ViMgBdCSiwHA1FZyJxKcjWjbUt3BxMLdU3gGpbM4YtvZ4iUhFjCtow3tWtI36nI23W8MS7ttUQGpdKr7DzKPuY56EYBZB8NgZ1B5nwiVidHnD5oW6Dl4jRbVgEeOdgyh3rLQSQPpdp4qDpnYLYMnghhT2zJObxTiBwFYhqNQAx08W/KLXxiafRGXxlNOB/OfJC3O9UUkHc/aMB2+MXHz1IdYAjOZ3b12gvW+fVIMRnrcJXGcSrjZyr75Ht2u7lz6VuEdI5FdeOslm0f/GSc95Hv0zz9BH0OtUnOKbv//J8VzORDWrztLfTVNwCZEj+ZcSfChlIoHQK7NxbXQ4HZE89en48cRIgngX7MuEwzkypWVb8gvo17LAAu2pJpcBb9O3/bQdN1cqtVOwnWS9V/VjojC2wHzsQ6jN/91lJABgovf4Q4jUYXjJDwwB1EFn7Uv84NokffFBCTHxDXgwqc361hGxyqLKaAZh/uN+sm8K6B8gNMgpJ4RvAX/lYUKsaO/JjG0j1Ht4n59cy5dZepFruruWB1kgXPNmmeNtPeh4isxGerHSiVCuVOcpCemJw4VZ3GHPkMUcjnpruRSC5s/vWdSsAvbIMlVvd7OMR5CylK2olBLsc74oke4qUDdAtrKM6wNA=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(376014)(36860700016)(22082099003)(56012099003)(4143699003)(18002099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	8HNJixy19GCW5Yo85EI/+8XcCrqbA39S1hmM+0yRC694grLM7viisIz2qivrRFDauU7qjXkj8njMbDhvpUMrkbuzfR1sj97oGcVfoLBK90YZkAWKvCyCyfN5KdokVKYnPj1TIb8DzV/G8aV/aSM1Iu2sfs2O8PhgLO8EY6H+NfnWB3sefD5qFDCqxxU1mqw6NRN8fIKQ9/SPtfCUuNt9cEUILjUibHhCCY9zf+CrSBa71JM+jz9wGsopvneEtwhQemOocQx/aLmjwMQvjwXMGdicc57Sx9Q6f0Q/X21bdSdpILPgvxeomIJKT5XIoZXpXsVspZaJpyagyqOoRojkx+3VT2zb67ghgq5rPUSVbjktif23V5qeruRgh4356K/l6U4TqagcqaIf6Ll2JNAiJmbMVUotzeWXN7C8CKqe24SvL8QlEu6kV+xoelkQMFoH
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2026 14:46:19.0130
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 6621addc-6d7f-467d-92b1-08deb5b56335
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	MWH0EPF000A672E.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CH3PR12MB8257
+From: Anushree Mathur <anushree.mathur@linux.ibm.com>
+In-Reply-To: <20260518172517.12466-1-amachhiw@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE5MDE0NSBTYWx0ZWRfXzsLDmnYHM/7d
+ 2eYv5bjGJn0tqBXHN9ZX7uhV6FscbdIGJNe/x1MAhuXY+nHhcElwG4LQU3nJY/C1Egha2wCt4Hg
+ jKzyPBcd4SLCym/AdRey+dRYoW2WQhZH+cZJzKZvMOrl4XmPxVXTUAwsSqkzHmITOMFmAF8fHeI
+ 7jSIeeSasXFxsF2MjZTwemmNi2RbsCG8LactRFAsqoGZC2aUeNKQzHsNrb9ZtozVkYq0+bmWbxr
+ gWuVg6NSxaTYB7Ehs09aLWuCxwA9YhCpKhd97KgyqtOOhhkaiXq8x6pmHyIpNS669fMx2DQFsLy
+ f7dFUtIYUkQRqSSxmiYOc/F5GxcxZFdi4akztq9wHPKo6Wlim5+TOZSzjgrkkGr+qwt9P8QEfMY
+ getghArkhLmZgSpOd2WwgR8JwqMqjnZY626aD4T3RqbmZ9zZAsKUSA2nnsJ7LTL3n0Ax24DflYO
+ HWXCwlJ/v9crLwAqFhQ==
+X-Proofpoint-GUID: pqqxBL4ZpGLEKFCqnoLa6qsDhWv2tpD_
+X-Proofpoint-ORIG-GUID: SnglmWk2wc3S6qnM5sFBkl-DoQcykg8Z
+X-Authority-Analysis: v=2.4 cv=aYBRWxot c=1 sm=1 tr=0 ts=6a0c7a17 cx=c_pps
+ a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=VwQbUJbxAAAA:8
+ a=VnNF1IyMAAAA:8 a=M7BuaEJ1ckrLMzOwP28A:9 a=3ZKOabzyN94A:10 a=QEXdDO2ut3YA:10
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-19_04,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ impostorscore=0 adultscore=0 bulkscore=0 suspectscore=0 lowpriorityscore=0
+ clxscore=1011 spamscore=0 phishscore=0 priorityscore=1501 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605190145
 
 
 
-On 5/19/2026 12:25 AM, Sean Christopherson wrote:
-> On Mon, May 18, 2026, Yosry Ahmed wrote:
->>> diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+On 18/05/26 10:55 PM, Amit Machhiwal wrote:
+> GCC 16 has tightened const-correctness checking and now correctly
+> rejects attempts to modify or assign const-qualified pointers without
+> proper qualification. This series fixes two such violations that cause
+> build failures with GCC 16 when using -Werror=discarded-qualifiers.
+>
+> Both patches follow the same approach: changing local variables to
+> const-qualified types and using GLib string functions (g_strdup,
+> g_strndup, g_strstr_len, g_getenv) that work correctly with const
+> strings, eliminating the need for in-place modifications.
+>
+> Changes in v3:
+> - Harsh: g_strndup will abort the program in case of OOM eventually making it a
+>    dead code. Additionally, typecase (suffix - cname). Also, unlikely() is not
+>    needed.
+>      - Remove error handling (GLib functions abort on allocation failure)
+>      - Remove unlikely() macro (provides no benefit in initialization code)
+>      - Typecast (suffix - cname)
+> - Update the commit messages accordingly
+> - v2: https://lore.kernel.org/all/20260511131018.102168-1-vaibhav@linux.ibm.com/
+>
+> Changes in v2:
+> - Avoid pointer aliasing
+> - Handle memory allocation failure error
+> - v1: https://lore.kernel.org/all/20260504134344.38958-1-amachhiw@linux.ibm.com
+>
+> Tested on:
+> - GCC 16.1.1 (no warnings with -Werror=discarded-qualifiers)
+> - GCC 15.2.1 (backward compatible)
+>
+> Amit Machhiwal (2):
+>    target/ppc/kvm: Fix const violation when trimming CPU alias suffix
+>    tests/qtest/libqtest: Fix const violation in qtest_verbose()
+>
+>   target/ppc/kvm.c       | 11 +++++------
+>   tests/qtest/libqtest.c |  9 ++++-----
+>   2 files changed, 9 insertions(+), 11 deletions(-)
+>
+>
+> base-commit: ac6721b88df944ade0048822b2b74210f543d656
 
->> So maybe something like:
->> 	/*
->> 	 * PML is never enabled in hardware for L2. Make sure that an
->> 	 * unexpected PML write would trigger a PML_FULL VM-Exit.
->> 	 */
-> 
-> Hmm, I was going to say we should drop the code entirely, but I do think it makes
-> sense to set PML_INDEX to -1 to ensure a VM-Exit occurs.
-> 
-> Actually, even better idea, at least for nVMX.  Rather than write '0' for the
-> address, which is what I really dislike (bad past-Sean!), we should write -1ull
-> so that unexpectedly enabling PML in vmcs02 results in VM-Fail, i.e. don't even
-> rely on the WARN for safety.
-> 
-> If SVM has a consistency check on the address, then do the same, otherwise I
-> guess just go with setting pml_index to -1 and WARNing on PML_FULL?
+Hi Amit,
 
-At least the PML spec [1] doesn't document a consistency check on PML_ADDR
-during VMRUN.  I'll confirm internally whether one exists in hardware.
+I have tested this patch and it has fixed the qemu build failure. Here 
+is my analysis:
 
-Till then, will go with the below:
-
-	/*
-	 * PML is never enabled in hardware for L2.  Make sure that an
-	 * unexpected PML write would trigger a PML_FULL VM-Exit.
-	 */
-	if (pml)
-		vmcb02->control.pml_index = -1;
-
-If it turns out a MAXPHYADDR check does exist, we can switch to -1ull for
-pml_addr in a follow-up.
-
->> Annoyingly, the unexpected exit reason handling is in
->> svm_invoke_exit_handler(), but the guest mode check is in
->> svm_handle_exit(), so if we do that we may need to move some code
->> around.
-> 
-> Why's that?  Oh, if we want to reuse the unexpected exit code.  What about this?
-> 
-> We don't even have to document the same thing in two different places, because
-> the reasoning for nested_svm_exit_special() can and is different.  E.g. even if
-> we decided to utilize PML while running L2 (which would be possible, we'd "just"
-> have to translate the GPAs), the exits would still need to be routed to KVM.
-> Ditto for if we did actually enable PML in vmcb02 on behalf of L1: we'd need to
-> remove the check in nested_svm_exit_special(), but not the check in
-> svm_invoke_exit_handler() (though the latter's comment would need to be updated).
+[root@localhost build]# gcc --version
+gcc (GCC) 16.1.1 20260501 (Red Hat 16.1.1-1)
 
 
-Will add both changes and add in next version.
+Before applying the patch, when I tried to build qemu it failed:
 
-> diff --git arch/x86/kvm/svm/nested.c arch/x86/kvm/svm/nested.c
-> index 4ef9bc6a553f..401a0ac44018 100644
-> --- arch/x86/kvm/svm/nested.c
-> +++ arch/x86/kvm/svm/nested.c
-> @@ -1782,6 +1782,13 @@ int nested_svm_exit_special(struct vcpu_svm *svm)
->                 if (nested_svm_is_l2_tlb_flush_hcall(vcpu))
->                         return NESTED_EXIT_HOST;
->                 break;
-> +       case SVM_EXIT_PML_FULL:
-> +               /*
-> +                * All PML full exits are handled by KVM.  KVM emulates PML in
-> +                * software for L1, but never enables PML in hardware on behalf
-> +                * of L1.
-> +                */
-> +               return NESTED_EXIT_HOST;
->         default:
->                 break;
->         }
-> diff --git arch/x86/kvm/svm/svm.c arch/x86/kvm/svm/svm.c
-> index e74fcde6155e..6bcb191d725b 100644
-> --- arch/x86/kvm/svm/svm.c
-> +++ arch/x86/kvm/svm/svm.c
-> @@ -3635,6 +3635,13 @@ int svm_invoke_exit_handler(struct kvm_vcpu *vcpu, u64 __exit_code)
->             (u64)exit_code != __exit_code)
->                 goto unexpected_vmexit;
->  
-> +       /*
-> +        * PML is never enabled when running L2, bail immediately if a PML full
-> +        * exit occurs as something is horribly wrong.
-> +        */
-> +       if (unlikely(is_guest_mode(vcpu) && exit_code == SVM_EXIT_PML_FULL))
-> +               goto unexpected_vmexit;
-> +
->  #ifdef CONFIG_MITIGATION_RETPOLINE
->         if (exit_code == SVM_EXIT_MSR)
->                 return msr_interception(vcpu);
-> 
 
-[1] https://docs.amd.com/v/u/en-US/69208_1.00_AMD64_PML_PUB
+[1431/2891] Compiling C object tests/qtest/libqos/libqos.a.p/.._libqtest.c.o
+FAILED: [code=1] tests/qtest/libqos/libqos.a.p/.._libqtest.c.o
+cc -m64 -mlittle-endian -Itests/qtest/libqos/libqos.a.p 
+-Itests/qtest/libqos -I../tests/qtest/libqos -I. -Iqapi -Itrace -Iui 
+-Iui/shader -I/usr/include/glib-2.0 -I/usr/lib64/glib-2.0/include 
+-I/usr/include/sysprof-6 -fdiagnostics-color=auto -Wall -Winvalid-pch 
+-Werror -std=gnu11 -O2 -g -fno-link-libatomic -D_GNU_SOURCE 
+-D_FILE_OFFSET_BITS=64 -D_LARGEFILE_SOURCE -fno-strict-aliasing 
+-fno-common -fwrapv -ftrivial-auto-var-init=zero 
+-fzero-init-padding-bits=all -fzero-call-used-regs=used-gpr 
+-fstack-protector-strong -Wempty-body -Wendif-labels 
+-Wexpansion-to-defined -Wformat-overflow=2 -Wformat-security 
+-Wformat-y2k -Wignored-qualifiers -Wimplicit-fallthrough=2 -Winit-self 
+-Wmissing-format-attribute -Wmissing-prototypes -Wnested-externs 
+-Wold-style-declaration -Wold-style-definition -Wredundant-decls 
+-Wshadow=local -Wstrict-prototypes -Wtype-limits -Wundef -Wvla 
+-Wwrite-strings -Wno-missing-include-dirs -Wno-psabi 
+-Wno-shift-negative-value -isystem /root/qemu/linux-headers -isystem 
+linux-headers -iquote . -iquote /root/qemu -iquote /root/qemu/include 
+-iquote /root/qemu/host/include/ppc64 -iquote 
+/root/qemu/host/include/generic -iquote /root/qemu/tcg/ppc64 -pthread 
+-fPIE -MD -MQ tests/qtest/libqos/libqos.a.p/.._libqtest.c.o -MF 
+tests/qtest/libqos/libqos.a.p/.._libqtest.c.o.d -o 
+tests/qtest/libqos/libqos.a.p/.._libqtest.c.o -c ../tests/qtest/libqtest.c
+../tests/qtest/libqtest.c: In function ‘qtest_verbose’:
+../tests/qtest/libqtest.c:2175:15: error: assignment discards ‘const’ 
+qualifier from pointer target type [-Werror=discarded-qualifiers]
+  2175 |         found = strstr(log, domain);
+       |               ^
+cc1: all warnings being treated as errors
+ninja: build stopped: subcommand failed.
+make: *** [Makefile:170: run-ninja] Error 1
+
+
+
+After applying the patch, building qemu worked perfectly fine.
+
+Please feel free to add:
+
+Tested-by: Anushree Mathur <anushree.mathur@linux.ibm.com>
+
+Thank you,
+Anushree Mathur
+
