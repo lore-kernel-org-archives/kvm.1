@@ -1,208 +1,147 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCF64D2EEF;
-	Tue, 19 May 2026 12:45:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4C4126299;
+	Tue, 19 May 2026 12:56:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779194754; cv=none; b=T7lDbgXf+fcQCRrJ1bYmaFF0ZhhYJZ+kzBl3x1sBNVQ5COs81VhKSTdpA4t1dLV9/kgC5SAo/sb13l6yYbymlnMOWQthTmrGT86lM9zDgDCgWohlwDerktkvokN/IDWsMZITsf64D8r7uJK/8LNLTovFcgSt44v0DZZWfXb7zLQ=
+	t=1779195363; cv=none; b=fN0Egw4qUIEZeHbhnms37N/2azIGsE9ONlzyQyKv42N93FR01WrfNOVtZ6iN2ag3iAS06sK9IBb4Zl7iEi+49OykOOJOartchIwmtN6HwwBk7kWwWpCbMSy3U7rTPiu8nidaMuPiDpEsfYwQ0qukb3Zq6Wcf53Yx2GfmETdeIwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779194754; c=relaxed/simple;
-	bh=C87IXNJFNuffOPo6j/clO/ETCIoredweTuvFWS9kwRo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KkDdB4KbKg6PCWHNhaM04FM5Cy1RvPa/zEoPkh9BrtSYXFTOWgI04GH88xzoQzehjEwnPkDlGKo5xyXbNjqwOgokAiA6tPg6iryqA83EBzc+LgYuiNJXDaQ3HvyPSn87vGhDFtnU0HPkc3NEF6ZeaJqAYGJpQxwm3Y58bpO+vfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=UW0J9gop; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779195363; c=relaxed/simple;
+	bh=Xfxs9VwhdJKne3gTf8HJ94QxvyAL3Oe1auKr7Ait+AI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=hauSdXWNgeIixL9NpH1Hr7aQKd2r0iRZdJfwsvlS7nOMdrhXBPZGtfL0wTw08ZtoEDZdoYX+nfzBfuyP89GQGlX5ccUsEqhelhy/LQiYvDIH4PC329F7O2ugKYWkude/XB1rDqtx6SaBEGkXfnmgLgNrORcUQqSXeGQUXFLHm3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PFYn2EQI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="UW0J9gop"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A93C2BCB3;
-	Tue, 19 May 2026 12:45:43 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PFYn2EQI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D9A4C2BCB3;
+	Tue, 19 May 2026 12:55:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779194753;
-	bh=C87IXNJFNuffOPo6j/clO/ETCIoredweTuvFWS9kwRo=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=UW0J9gop/eSaKgskULyG7KraU52ARclJ4PYF99h/cA5Wzh+vAgGwxL8PUttXl44vh
-	 ZchTvo6DGmDuvwTAa5tc7i1d/C+5J3EKbUWPaQM5RhSyTOg5CUKceMw3mYLoRAIpOa
-	 L88HsPbmxNr1Jg4mHXobck9L1c5F934hcZKhvNev/dEoeOd/66+uQKNAWMXh/6zt2l
-	 IG8ac7n+8FsHKIUN7s3nilp6974Y7d4bpw+9QTjRBmOS6tMBi9do6TvDFg7AluN1/5
-	 d1yKmH7rSneQKbcRbDtSUC+eMdhJumP5DRiQLSkl7z/r8sYzsepl1rPnfrlF9LJ/Qq
-	 sYoaajKqzFcNw==
-Date: Tue, 19 May 2026 13:45:39 +0100
-From: Jonathan Cameron <jic23@kernel.org>
-To: <mhonap@nvidia.com>
-Cc: <alwilliamson@nvidia.com>, <skolothumtho@nvidia.com>,
- <ankita@nvidia.com>, <mst@redhat.com>, <imammedo@redhat.com>,
- <anisinha@redhat.com>, <eric.auger@redhat.com>, <peter.maydell@linaro.org>,
- <shannon.zhaosl@gmail.com>, <jonathan.cameron@huawei.com>,
- <fan.ni@samsung.com>, <pbonzini@redhat.com>,
- <richard.henderson@linaro.org>, <marcel.apfelbaum@gmail.com>,
- <clg@redhat.com>, <cohuck@redhat.com>, <dan.j.williams@intel.com>,
- <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
- <vsethi@nvidia.com>, <cjia@nvidia.com>, <targupta@nvidia.com>,
- <zhiw@nvidia.com>, <kjaju@nvidia.com>, <linux-cxl@vger.kernel.org>,
- <kvm@vger.kernel.org>, <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
-Subject: Re: [RFC 2/9] cxl: Add preserve_config to pxb-cxl OSC method
-Message-ID: <20260519134539.1b11ace4@jic23-huawei>
-In-Reply-To: <20260427181235.3003865-3-mhonap@nvidia.com>
-References: <20260427181235.3003865-1-mhonap@nvidia.com>
-	<20260427181235.3003865-3-mhonap@nvidia.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
+	s=k20201202; t=1779195362;
+	bh=Xfxs9VwhdJKne3gTf8HJ94QxvyAL3Oe1auKr7Ait+AI=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=PFYn2EQI6o67e3QXj1DmucFzY5eMUMVymfs8SWHXncySGE4NzDUggvInLFr6ixsxt
+	 qYg0twpu4rJ6zwcv2EkrCHFLnYMtZXbPyPGyQp7J8y6uStLkA66YZkf9TMjMAtB0R7
+	 gwC3eSMHnmV+sx9T9KrsuVPkn2Peyno2mWDGmAhKcSD1ZXmBVlfxMa6QQVn42RIznn
+	 3OIPR8CO0/7k0gkobMUa7ZtA/zloHi04HmIUPdroRaX/R0/MQws3I14tk74bCHstbG
+	 fo2NHacy3VzbZSO2K5OYkAyPm4uD8SVAWH28rdJeyJFPUhYvBk77tTXkmsWtJMuJ1E
+	 51FQMMQt4xrcw==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+	Lorenzo.Pieralisi2@arm.com
+Subject: Re: [PATCH v14 27/44] arm64: RMI: Set RIPAS of initial memslots
+In-Reply-To: <6681f10b-0966-42e2-ae04-4e1aef47ec4d@arm.com>
+References: <20260513131757.116630-1-steven.price@arm.com>
+ <20260513131757.116630-28-steven.price@arm.com>
+ <yq5av7cjsonr.fsf@kernel.org>
+ <6681f10b-0966-42e2-ae04-4e1aef47ec4d@arm.com>
+Date: Tue, 19 May 2026 18:25:52 +0530
+Message-ID: <yq5ajyszsgmf.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
 
-On Mon, 27 Apr 2026 23:42:28 +0530
-<mhonap@nvidia.com> wrote:
+Suzuki K Poulose <suzuki.poulose@arm.com> writes:
 
-> From: Manish Honap <mhonap@nvidia.com>
-> 
-> Before this patch, pxb-cxl bridges had no _DSM method at all. When the
-> OS called _DSM on a CXL host bridge, ACPI returned an error and the OS
-> defaulted to reassigning resources across suspend/resume. On machines
-> where firmware pre-commits the HDM decoder, that reassignment breaks the
-> DPA mapping.
+> On 19/05/2026 11:02, Aneesh Kumar K.V wrote:
+>> Steven Price <steven.price@arm.com> writes:
+>> 
+>>> The memory which the realm guest accesses must be set to RIPAS_RAM.
+>>> Iterate over the memslots and set all gmem memslots to RIPAS_RAM.
+>>>
+>>> Signed-off-by: Steven Price <steven.price@arm.com>
+>>> ---
+>>   
+>>   ...
+>>   
+>>> +static int set_ripas_of_protected_regions(struct kvm *kvm)
+>>> +{
+>>> +	struct kvm_memslots *slots;
+>>> +	struct kvm_memory_slot *memslot;
+>>> +	int idx, bkt;
+>>> +	int ret = 0;
+>>> +
+>>> +	idx = srcu_read_lock(&kvm->srcu);
+>>> +
+>>> +	slots = kvm_memslots(kvm);
+>>> +	kvm_for_each_memslot(memslot, bkt, slots) {
+>>> +		if (!kvm_slot_has_gmem(memslot))
+>>> +			continue;
+>>> +
+>>> +		ret = realm_init_ipa_state(kvm, memslot->base_gfn,
+>>> +					   memslot->npages);
+>>> +		if (ret)
+>>> +			break;
+>>> +	}
+>>> +	srcu_read_unlock(&kvm->srcu, idx);
+>>> +
+>>> +	return ret;
+>>> +}
+>>> +
+>>>   int kvm_arm_rmi_populate(struct kvm *kvm,
+>>>   			 struct kvm_arm_rmi_populate *args)
+>>>   {
+>>> @@ -890,6 +922,10 @@ int kvm_activate_realm(struct kvm *kvm)
+>>>   			return ret;
+>>>   	}
+>>>   
+>>> +	ret = set_ripas_of_protected_regions(kvm);
+>>> +	if (ret)
+>>> +		return ret;
+>>> +
+>>>   	ret = rmi_realm_activate(virt_to_phys(realm->rd));
+>>>   	if (ret)
+>>>   		return -ENXIO;
+>> 
+>> relam guest already does.
+>> 	for_each_mem_range(i, &start, &end) {
+>> 		if (rsi_set_memory_range_protected_safe(start, end)) {
+>> 			panic("Failed to set memory range to protected: %pa-%pa",
+>> 			      &start, &end);
+>> 		}
+>> 	}
+>> 
+>> if so why is host required to do this ?
+>
+> Ideally this should be a call from the VMM (i.e., user). Irrespective of
+> what the guest does (which the host has no knowledge about), the VMM/
+> user is better aware of what to do for a given guest. We have done this
+> implicitly in the KVM as a start, to keep the initial implementation
+> simple. This could be moved out to the VMM as UABI, if there is
+> sufficient demand for it.
+>
+> TL,DR: This should be a host/deployer decision, not the Guest. There
+> may other guest OS, which do not do RIPAS_RAM early enough.
+>
 
-Ah. Ok. So it's suspend / resume that is causing trouble. I wasn't aware
-PCI reenumerated on that as opposed to boot. I surprised more doesn't
-break.  Make sure to call that out in the cover letter as the impression
-I got was the problem was initial enumeration.
+Are we suggesting that when the guest is running out of DRAM initialized
+via rmi_rtt_data_map_init(), it may need to access memory outside that
+range before it gets a chance to set the RIPAS as RAM?
 
-Mind you I'm still confused. Why is CXL.mem path affected?  That's
-nothing to do with PCI enumeration.
+Does that mean the guest now has to trust the host for that?
+rmi_rtt_init_ripas() is not added to the measurement details, right?
 
-Jonathan
-
-> 
-> Wire preserve_config through GPEXConfig into build_cxl_osc_method() so
-> pxb-cxl host bridges get a _DSM method that signals the OS to keep
-> resource assignments stable when needed. The _DSM function 5 (preserve
-> firmware PCI configuration) is the mechanism used to convey this.
-> 
-> build_pci_host_bridge_dsm_method() is promoted from static to exported
-> so cxl.c can call it without duplicating the AML.
-> 
-> The x86 build_cxl_osc_method() call site passes false since x86 does
-> not use firmware-committed HDM decoders.
-> 
-> build_cxl_osc_method is renamed to acpi_dsdt_add_cxl_host_bridge_methods
-> The function now appends both the CXL _OSC method and the _DSM method,
-> so its old name is misleading. Renamed it to match the pxb-pcie analogue
-> acpi_dsdt_add_host_bridge_methods(), making the two root bridge code
-> paths symmetric. No AML change.
-> 
-> Signed-off-by: Shameer Kolothum <skolothumtho@nvidia.com>
-> Signed-off-by: Manish Honap <mhonap@nvidia.com>
-> ---
->  hw/acpi/cxl-stub.c         | 2 +-
->  hw/acpi/cxl.c              | 4 +++-
->  hw/i386/acpi-build.c       | 2 +-
->  hw/pci-host/gpex-acpi.c    | 5 +++--
->  include/hw/acpi/cxl.h      | 2 +-
->  include/hw/pci-host/gpex.h | 1 +
->  6 files changed, 10 insertions(+), 6 deletions(-)
-> 
-> diff --git a/hw/acpi/cxl-stub.c b/hw/acpi/cxl-stub.c
-> index 15bc21076b..d7c6731975 100644
-> --- a/hw/acpi/cxl-stub.c
-> +++ b/hw/acpi/cxl-stub.c
-> @@ -6,7 +6,7 @@
->  #include "hw/acpi/aml-build.h"
->  #include "hw/acpi/cxl.h"
->  
-> -void build_cxl_osc_method(Aml *dev)
-> +void acpi_dsdt_add_cxl_host_bridge_methods(Aml *dev, bool preserve_config)
->  {
->      g_assert_not_reached();
->  }
-> diff --git a/hw/acpi/cxl.c b/hw/acpi/cxl.c
-> index f92f7fa3d5..b32740a3e3 100644
-> --- a/hw/acpi/cxl.c
-> +++ b/hw/acpi/cxl.c
-> @@ -23,6 +23,7 @@
->  #include "hw/pci/pci_host.h"
->  #include "hw/cxl/cxl.h"
->  #include "hw/cxl/cxl_host.h"
-> +#include "hw/pci-host/gpex.h"
->  #include "hw/mem/memory-device.h"
->  #include "hw/acpi/acpi.h"
->  #include "hw/acpi/aml-build.h"
-> @@ -320,11 +321,12 @@ static Aml *__build_cxl_osc_method(void)
->      return method;
->  }
->  
-> -void build_cxl_osc_method(Aml *dev)
-> +void acpi_dsdt_add_cxl_host_bridge_methods(Aml *dev, bool preserve_config)
->  {
->      aml_append(dev, aml_name_decl("SUPP", aml_int(0)));
->      aml_append(dev, aml_name_decl("CTRL", aml_int(0)));
->      aml_append(dev, aml_name_decl("SUPC", aml_int(0)));
->      aml_append(dev, aml_name_decl("CTRC", aml_int(0)));
->      aml_append(dev, __build_cxl_osc_method());
-> +    aml_append(dev, build_pci_host_bridge_dsm_method(preserve_config));
->  }
-> diff --git a/hw/i386/acpi-build.c b/hw/i386/acpi-build.c
-> index f622b91b76..f66ec8ed24 100644
-> --- a/hw/i386/acpi-build.c
-> +++ b/hw/i386/acpi-build.c
-> @@ -1013,7 +1013,7 @@ build_dsdt(GArray *table_data, BIOSLinker *linker,
->                  aml_append(aml_pkg, aml_eisaid("PNP0A08"));
->                  aml_append(aml_pkg, aml_eisaid("PNP0A03"));
->                  aml_append(dev, aml_name_decl("_CID", aml_pkg));
-> -                build_cxl_osc_method(dev);
-> +                acpi_dsdt_add_cxl_host_bridge_methods(dev, false);
->              } else if (pci_bus_is_express(bus)) {
->                  aml_append(dev, aml_name_decl("_HID", aml_eisaid("PNP0A08")));
->                  aml_append(dev, aml_name_decl("_CID", aml_eisaid("PNP0A03")));
-> diff --git a/hw/pci-host/gpex-acpi.c b/hw/pci-host/gpex-acpi.c
-> index 7de57bbc46..247bd78152 100644
-> --- a/hw/pci-host/gpex-acpi.c
-> +++ b/hw/pci-host/gpex-acpi.c
-> @@ -52,7 +52,7 @@ static void acpi_dsdt_add_pci_route_table(Aml *dev, uint32_t irq,
->      }
->  }
->  
-> -static Aml *build_pci_host_bridge_dsm_method(bool preserve_config)
-> +Aml *build_pci_host_bridge_dsm_method(bool preserve_config)
->  {
->      Aml *method = aml_method("_DSM", 4, AML_NOTSERIALIZED);
->      Aml *UUID, *ifctx, *ifctx1, *buf;
-> @@ -204,7 +204,8 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
->              aml_append(dev, aml_name_decl("_CRS", crs));
->  
->              if (is_cxl) {
-> -                build_cxl_osc_method(dev);
-> +                acpi_dsdt_add_cxl_host_bridge_methods(dev,
-> +                                                      cfg->preserve_config);
->              } else {
->                  /* pxb bridges do not have ACPI PCI Hot-plug enabled */
->                  acpi_dsdt_add_host_bridge_methods(dev, true,
-> diff --git a/include/hw/acpi/cxl.h b/include/hw/acpi/cxl.h
-> index 8f22c71530..6fe6c9c58d 100644
-> --- a/include/hw/acpi/cxl.h
-> +++ b/include/hw/acpi/cxl.h
-> @@ -24,7 +24,7 @@
->  void cxl_build_cedt(GArray *table_offsets, GArray *table_data,
->                      BIOSLinker *linker, const char *oem_id,
->                      const char *oem_table_id, CXLState *cxl_state);
-> -void build_cxl_osc_method(Aml *dev);
-> +void acpi_dsdt_add_cxl_host_bridge_methods(Aml *dev, bool preserve_config);
->  void build_cxl_dsm_method(Aml *dev);
->  
->  #endif
-> diff --git a/include/hw/pci-host/gpex.h b/include/hw/pci-host/gpex.h
-> index a7c2e2edf3..e5c2ebef78 100644
-> --- a/include/hw/pci-host/gpex.h
-> +++ b/include/hw/pci-host/gpex.h
-> @@ -73,6 +73,7 @@ struct GPEXHost {
->  int gpex_set_irq_num(GPEXHost *s, int index, int gsi);
->  
->  void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg);
-> +Aml *build_pci_host_bridge_dsm_method(bool preserve_config);
->  void acpi_dsdt_add_gpex_host(Aml *scope, uint32_t irq);
->  
->  #define PCI_HOST_PIO_BASE               "x-pio-base"
-
+-aneesh
