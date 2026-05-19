@@ -1,374 +1,146 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF1AB3B9D89
-	for <kvm@vger.kernel.org>; Tue, 19 May 2026 20:25:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC57D3BB668
+	for <kvm@vger.kernel.org>; Tue, 19 May 2026 20:25:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779222334; cv=none; b=WrJPpc1R2ktpEoAPs1ZHKd3kb7WBbfhcQnpvT896lR77irBipMQdDljOVvvt3foj6VXPJvmrHOOGlTReObsuwx66l70qdkewZXpfPhcSSUbm6BZp2yEDlUQ3VRitL1m2iT1HhxdpUND6WojczIVf1koKORBgvOmjnKudP1ZS86E=
+	t=1779222336; cv=none; b=Oi8d1tLSHNuIf3PhByq5iD6zZrBLi8VLnPn1+gYIjnN13+sBSQU/WqE1UjW3gYvDSIbklcqwxqkWpn1GUn2R/1fjtmQUMmvFfCW++gYJHI8yBhRRF/RJ0MngdwKlM3A5AR7J7SDJuDZ1h+BX5RmTtVxQaVp7dGZudzKPN6BoaOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779222334; c=relaxed/simple;
-	bh=1XxtQCz9UZQ5GHkMpkyh08iJzPNfXeULf6qUDIEPGx8=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Yq0feVq00Oz5wzBq48cDVHgt3jov8beLLJjVkpop8Qn8Q/dhqflKFjvpsMBqWEWdU16K9yTQJEnM2H4MIm0BWWalTaiGee+CAHxGG1F9lrIWKe3GH3Rr1kj4w7/wI5cLuyqLrqqjiqpvzD6ihVMseTC9XraCli3fzG74nnvPUrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=Nmpbechp; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1779222336; c=relaxed/simple;
+	bh=sRc2NkcvEfIct1sxSx0C/IFyIPhCxb/rmsqZTNHj6+4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=f95YxZy2+7plBOGmXA+VzWYg1IINCMA/P2FJWhfftfLjzW1TOvP0B3UifZxTpitmri64+SxPgBEsS/54kawL71XYLL63G5TGVwr4QGSSwi/uAV2AEO7Ukgo7hbm4qDeMc1iO3AwYhfAbQEYhMmx1udsIUomeynQgWwaY3F5WtAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qttdrzbQ; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="Nmpbechp"
-Received: from pps.filterd (m0109331.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64JDZsQR2072234
-	for <kvm@vger.kernel.org>; Tue, 19 May 2026 13:25:32 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=avwr3roRGZGSUF/B7P8oPrJMI95nP1uRu8Dq+FHkt0k=; b=NmpbechpymJ6
-	Rr7s7cxM66fLvdeBy3HpJStFOZntJeNwjGJNAaqWjsT0MG2QnB8RUdpOl2kr5JQQ
-	x/F3pm7L8BU26eFzTdVVznbVdI495ih7uJlIL7PFfpJky5k2b+SQQCxWbZDbJSgn
-	tbk0PI1LglXM9n//FcWZa1O+LbBnTYppvhmEGZab9yACZXTftu0Ybid5ZwnnDjiI
-	Kb2BK6JbiaiYFXNSC40I1pmy0exTo6cgPbVqqXqPa4uajC4mGaSo1ShT1vY6sqqX
-	sbNEwYvAI1lcrnewJa/0jKArxGUp1I1KnYob8LS9apb461+r6tUZdDzv8Jm5uFWQ
-	iREsNlDdkw==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4e8rvvaw4g-8
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Tue, 19 May 2026 13:25:31 -0700 (PDT)
-Received: from twshared17152.01.snb2.facebook.com (2620:10d:c0a8:1b::8e35) by
- mail.thefacebook.com (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.37; Tue, 19 May 2026 20:25:28 +0000
-Received: by devbig259.ftw1.facebook.com (Postfix, from userid 664516)
-	id 56B052F3ADB1D; Tue, 19 May 2026 13:14:08 -0700 (PDT)
-From: Zhiping Zhang <zhipingz@meta.com>
-To: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-        Leon
- Romanovsky <leon@kernel.org>
-CC: Bjorn Helgaas <helgaas@kernel.org>, <kvm@vger.kernel.org>,
-        <linux-rdma@vger.kernel.org>, <linux-pci@vger.kernel.org>,
-        <netdev@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-        Keith Busch
-	<kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
-        Yishai Hadas
-	<yishaih@nvidia.com>, Zhiping Zhang <zhipingz@meta.com>
-Subject: [PATCH v4 3/3] RDMA/mlx5: get tph for p2p access when registering dma-buf mr
-Date: Tue, 19 May 2026 13:13:51 -0700
-Message-ID: <20260519201401.1558410-4-zhipingz@meta.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260519201401.1558410-1-zhipingz@meta.com>
-References: <20260519201401.1558410-1-zhipingz@meta.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qttdrzbQ"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b9b8137828so42246555ad.0
+        for <kvm@vger.kernel.org>; Tue, 19 May 2026 13:25:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779222333; x=1779827133; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=cV0r3jKPfp4zv5FaaUB3cGXxaoCrk2SAbq84AyKv7tw=;
+        b=qttdrzbQvmgalceQJTTyGqFUG4gib0JVkEcPPUMU+g2l3oqGgj5fDnpVu8ILX0aoAu
+         Tu1p8oDDiTnTQMO+9IqyHDY4zc2UIixyHqczxxr6MdeNjNHzUWbuZPRuKLNRiOxdRCYu
+         dV61z4layUlmdoHkQBgpFe3pzdtP49E+DKvalFNqa3jroAAPMjp0maHIawyz+2gRxJyu
+         kbS/UBgZNKO3LswD/Zgap8IuNbxPfSLc5Pp0Umi5baeSSDcXBp85BU77fr9pR1FCQjL4
+         UClufRr2e07s6PMRub+oSSpyAYJByhwg1MUKv0bMRed2E3wF57mModoOttVijlrmgOl0
+         HuDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779222333; x=1779827133;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cV0r3jKPfp4zv5FaaUB3cGXxaoCrk2SAbq84AyKv7tw=;
+        b=NkeELO3kVM7UG6Waxy9FbZK/H7y3fsu2QZV3jBXmZqNTH81C32LDQxzPro/Toh7K/4
+         V77uPGKSvWtcL6eOqQwj8PjCVL83VOhXyfo1je5fCfwFVE3Eh/9t5A38RB2kyq10xYBp
+         KOfd0Pn3zn1RnKl88YiJLK021jO3IicOqom2D2X2utPgipyUdIFHVBoVwwasfw5VP42A
+         QEGjZOj6tC/zBO41gduOP4Atq91mJkYPN+HZnYwnxlZdIWsUKdKSTqY27HNQS8H+BHq5
+         erMs/1PO2Y9pPIkIKsIUaL6D2b4nAomc70/sGeBsODvJs3tvIfiplVI9LYqMb+/zSrQ5
+         OlWw==
+X-Forwarded-Encrypted: i=1; AFNElJ/FgovZaVSp5kvtehcGNC4roJ2GovxT6tSNnxxzut+X2umglXHy+YzrQU7R+VFwqfsfLM8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXbE7DLvmIV3DbmDCB6iJ0pDnquxUk8cS+Fo/yuOJrUlQXHn7K
+	+ng0JHjUCspA/264M7+FxqLez3XqvB/l9Tixawi4xbDmUL1hrTvzseyyPBzpI1pcwgRMUJjPTri
+	ay9HrNg==
+X-Received: from plbmc15.prod.google.com ([2002:a17:903:2b0f:b0:2b0:af76:bcc2])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:d512:b0:2b4:5f96:184d
+ with SMTP id d9443c01a7336-2bd7e86c6a4mr238530365ad.5.1779222332159; Tue, 19
+ May 2026 13:25:32 -0700 (PDT)
+Date: Tue, 19 May 2026 20:25:31 +0000
+In-Reply-To: <fbb937ae-62e4-4386-86fb-67d9b85c8fdc@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-FB-Internal: Safe
-Content-Type: text/plain
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE5MDIwNCBTYWx0ZWRfX8RqJxAoGF1iQ
- lf3N8RPODZtHyQqiRuT/Mqp4TOINegVcGBww+foqSEIv2HaM/RVU8ctUPujr3SYKdRuRYeYM2eR
- 4wcmNUxbXvw4/j+0ANmQJ897K/mJD8DHRLQk12r3BoIOLcDznsZBxAlPW+W1i3ZgvdE+Qnfi5Sq
- qysTjEy85MDqPbyd7yHp/cniPLcHz0Tc7ImYSWtnbgkEa2VNha0hjgjuvFOHzz7YykPM83AUOjp
- hKPJTb6MtQN8lusw1ZGlWnBcT1IaHTrpq9b75iqv37675fvF+AVxfdIcVIL2QbAWUJoyzUQNkzU
- 4ctW2qPENyr5LFEcKoaxkE0hGM4Qyvpwww4i+9WTZ+VdBH5Z3maCBhmDrYJtVzZylw7Jvo/eJhW
- QI3RBDOnAXYa44wk5EcZWF94oje4iOhcTQlBIJM3Cmf1KP50D4n/RCIiABmd42Hb2se3OT2wowd
- 69nhKPtg2e8GI7EFAZg==
-X-Authority-Analysis: v=2.4 cv=KfHidwYD c=1 sm=1 tr=0 ts=6a0cc73b cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=wpfVPzegXHpEFt3DAXn9:22 a=VabnemYjAAAA:8 a=htxyE6lxEzpvAoqWoHYA:9
- a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-ORIG-GUID: 0x-tb8Z1UAey0AE8ydzytFjI6Grpe_gY
-X-Proofpoint-GUID: 0x-tb8Z1UAey0AE8ydzytFjI6Grpe_gY
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-19_05,2026-05-18_01,2025-10-01_01
+Mime-Version: 1.0
+References: <agusSarZr-R_o2xD@google.com> <fbb937ae-62e4-4386-86fb-67d9b85c8fdc@linux.ibm.com>
+Message-ID: <agzHO6EXfAe_40F4@google.com>
+Subject: Re: Sashiko review email for kvm@vger.kernel.org?
+From: Sean Christopherson <seanjc@google.com>
+To: Janosch Frank <frankja@linux.ibm.com>
+Cc: Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Nicholas Piggin <npiggin@gmail.com>, Anup Patel <anup@brainfault.org>, 
+	Atish Patra <atish.patra@linux.dev>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Claudio Imbrenda <imbrenda@linux.ibm.com>, David Hildenbrand <david@kernel.org>, 
+	Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>, 
+	Eric Farman <farman@linux.ibm.com>, Matthew Rosato <mjrosato@linux.ibm.com>, 
+	Halil Pasic <pasic@linux.ibm.com>, Nipun Gupta <nipun.gupta@amd.com>, 
+	Nikhil Agarwal <nikhil.agarwal@amd.com>, Alex Williamson <alex@shazbot.org>, 
+	Ioana Ciornei <ioana.ciornei@nxp.com>, Longfang Liu <liulongfang@huawei.com>, 
+	Julian Ruess <julianr@linux.ibm.com>, Kirti Wankhede <kwankhede@nvidia.com>, 
+	Yishai Hadas <yishaih@nvidia.com>, Ankit Agrawal <ankita@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+	Shameer Kolothum <skolothumtho@nvidia.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Brett Creeley <brett.creeley@amd.com>, Eric Auger <eric.auger@redhat.com>, 
+	Mostafa Saleh <smostafa@google.com>, Pranjal Shrivastava <praan@google.com>, 
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>, David Matlack <dmatlack@google.com>, 
+	"=?utf-8?Q?Micha=C5=82?= Winiarski" <michal.winiarski@intel.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
+	Stefano Garzarella <sgarzare@redhat.com>, Cornelia Huck <cohuck@redhat.com>, 
+	Jason Wang <jasowang@redhat.com>, "Eugenio =?utf-8?B?UMOpcmV6?=" <eperezma@redhat.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Roman Gushchin <kfree@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Query dma-buf TPH metadata when registering a dma-buf MR for
-peer-to-peer access and translate the returned steering tag into an
-mlx5 ST index. The DMAH path keeps priority; dma-buf metadata is the
-fallback when no DMAH is supplied.
++KVM and LKML, which I stupidly forgot to Cc :-(
 
-Track per-MR ownership of the allocated ST index and release it on MR
-setup failure, destroy, and before re-entering the FRMR pool. Free
-mlx5_st_idx_data when its refcount reaches zero to fix a pre-existing
-leak in mlx5_st_dealloc_index().
+On Tue, May 19, 2026, Janosch Frank wrote:
+> On 5/19/26 02:18, Sean Christopherson wrote:
+> > Hello people with a MAINTAINERS entry that uses kvm@vger.kernel.org as a mailing list!
+> > 
+> > How would y'all feel about enabling Sashiko[*] emails for kvm@vger.kernel.org?  For
+> > a variety of reasons, Sashiko currently only logs its reviews to https://sashiko.dev
+> > by default.  If subsystems want to receive on-list mails, they need to opt-in.
+> > 
+> > I really, really want to enable email reviews for KVM x86, as Sashiko has found
+> > an almost embarassing number of bugs that (a) would have been painful to debug
+> > had they escaped review and (b) I'm not convinced would have been found by
+> > traditional review.  And for me at least the signal:noise ratio is more than good
+> > enough.  There are still hallucinations and false positives from time to time,
+> > but the good outweighs the bad by quite a bit, it's cathartic to flame AI when
+> > it's wrong, and worst case scenario I can simply ignore Sashiko.
+> > 
+> > But, currently Sashiko is only capable of making decisions based on mailing list,
+> > i.e. as things stand, _all_ of kvm@ needs to opt-in.  Before I badger Roman to
+> > add bespoke logic to Sashiko's email flow, e.g. to special case KVM x86 in some
+> > way, I want to see if there's a general consensus in favor (or against) enabling
+> > review emails.
+> > 
+> > Thanks!
+> > 
+> > [*] https://github.com/sashiko-dev/sashiko
+> 
+> Sure,
+  ^
+  |- This
 
-Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
----
- drivers/infiniband/hw/mlx5/mlx5_ib.h          |  6 ++
- drivers/infiniband/hw/mlx5/mr.c               | 86 ++++++++++++++++++-
- .../net/ethernet/mellanox/mlx5/core/lib/st.c  | 28 ++++--
- include/linux/mlx5/driver.h                   |  7 ++
- 4 files changed, 115 insertions(+), 12 deletions(-)
+> as long as there will be no mails from Sashiko or at most one mail per thread.
 
-diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw=
-/mlx5/mlx5_ib.h
-index e156dc4d7529..4ab867392267 100644
---- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
-+++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-@@ -721,6 +721,12 @@ struct mlx5_ib_mr {
- 			u8 revoked :1;
- 			/* Indicates previous dmabuf page fault occurred */
- 			u8 dmabuf_faulted:1;
-+			/* Set when the MR owns dmabuf_st_index and must
-+			 * release it via mlx5_st_dealloc_index() once the
-+			 * firmware mkey is no longer referencing it.
-+			 */
-+			u8 dmabuf_st_owned:1;
-+			u16 dmabuf_st_index;
- 			struct mlx5_ib_mkey null_mmkey;
- 		};
- 	};
-diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5=
-/mr.c
-index 3b6da45061a5..8059b5e4da97 100644
---- a/drivers/infiniband/hw/mlx5/mr.c
-+++ b/drivers/infiniband/hw/mlx5/mr.c
-@@ -38,6 +38,7 @@
- #include <linux/delay.h>
- #include <linux/dma-buf.h>
- #include <linux/dma-resv.h>
-+#include <linux/pci-tph.h>
- #include <rdma/frmr_pools.h>
- #include <rdma/ib_umem_odp.h>
- #include "dm.h"
-@@ -46,6 +47,8 @@
- #include "data_direct.h"
- #include "dmah.h"
+is in conflict with the caveats here, as per-patch email is exactly what I am
+proposing (the current state is that Sashiko never sends mails).
 
-+MODULE_IMPORT_NS("DMA_BUF");
-+
- static int mkey_max_umr_order(struct mlx5_ib_dev *dev)
- {
- 	if (MLX5_CAP_GEN(dev->mdev, umr_extended_translation_offset))
-@@ -899,6 +902,63 @@ static struct dma_buf_attach_ops mlx5_ib_dmabuf_atta=
-ch_ops =3D {
- 	.invalidate_mappings =3D mlx5_ib_dmabuf_invalidate_cb,
- };
+> I'd appreciate something like "I found problems in this thread, here's the
+> link, go look if you want to".
 
-+/*
-+ * Query TPH metadata from @dmabuf and translate the raw steering tag in=
-to
-+ * an mlx5 ST index. On success, returns 0 and the caller becomes the
-+ * owner of *@st_index (must be released with mlx5_st_dealloc_index()
-+ * once the firmware mkey no longer references it). On any failure
-+ * *@st_index and *@ph are left as the no-TPH defaults set by the caller=
-.
-+ *
-+ * @dmabuf must already be referenced by the caller (e.g. via the umem's
-+ * attachment) so we don't re-resolve the user's fd here and avoid a
-+ * dup2() TOCTOU between umem creation and TPH lookup.
-+ */
-+static void get_tph_mr_dmabuf(struct mlx5_ib_dev *dev, struct dma_buf *d=
-mabuf,
-+			      u16 *st_index, u8 *ph)
-+{
-+	u8 req_type;
-+	u16 steering_tag;
-+	u8 st_width;
-+	int ret;
-+
-+	if (!dmabuf->ops->get_tph)
-+		return;
-+
-+	req_type =3D pcie_tph_enabled_req_type(dev->mdev->pdev);
-+	switch (req_type) {
-+	case PCI_TPH_REQ_TPH_ONLY:
-+		st_width =3D 8;
-+		break;
-+	case PCI_TPH_REQ_EXT_TPH:
-+		st_width =3D 16;
-+		break;
-+	default:
-+		return;
-+	}
-+
-+	ret =3D dmabuf->ops->get_tph(dmabuf, &steering_tag, ph, st_width);
-+	if (ret) {
-+		mlx5_ib_dbg(dev, "get_tph failed (%d)\n", ret);
-+		*ph =3D MLX5_IB_NO_PH;
-+		return;
-+	}
-+
-+	ret =3D mlx5_st_alloc_index_by_tag(dev->mdev, steering_tag, st_index);
-+	if (ret) {
-+		*ph =3D MLX5_IB_NO_PH;
-+		mlx5_ib_dbg(dev, "st_alloc_index_by_tag failed (%d)\n", ret);
-+	}
-+}
-+
-+static void mlx5_ib_mr_put_dmabuf_st(struct mlx5_ib_mr *mr)
-+{
-+	if (mr->umem && mr->dmabuf_st_owned) {
-+		mlx5_st_dealloc_index(mr_to_mdev(mr)->mdev,
-+				      mr->dmabuf_st_index);
-+		mr->dmabuf_st_owned =3D 0;
-+	}
-+}
-+
- static struct ib_mr *
- reg_user_mr_dmabuf(struct ib_pd *pd, struct device *dma_device,
- 		   u64 offset, u64 length, u64 virt_addr,
-@@ -941,16 +1001,26 @@ reg_user_mr_dmabuf(struct ib_pd *pd, struct device=
- *dma_device,
- 		ph =3D dmah->ph;
- 		if (dmah->valid_fields & BIT(IB_DMAH_CPU_ID_EXISTS))
- 			st_index =3D mdmah->st_index;
-+	} else {
-+		get_tph_mr_dmabuf(dev, umem_dmabuf->attach->dmabuf,
-+				  &st_index, &ph);
- 	}
+While this would be easier than manually searching through the web site, there
+would still be a sizeable barrier between contributors/maintainers and Sashiko
+feedback.  E.g. to click through an out-of-band source, copy+paste the response
+into the original thread, etc.  
 
- 	mr =3D alloc_cacheable_mr(pd, &umem_dmabuf->umem, virt_addr,
- 				access_flags, access_mode,
- 				st_index, ph);
- 	if (IS_ERR(mr)) {
-+		if (!dmah && st_index !=3D MLX5_MKC_PCIE_TPH_NO_STEERING_TAG_INDEX)
-+			mlx5_st_dealloc_index(dev->mdev, st_index);
- 		ib_umem_release(&umem_dmabuf->umem);
- 		return ERR_CAST(mr);
- 	}
+What are your concerns with per-patch email?  Hallucinations and noise are
+definitely a potential problem, but IMO that can be handled by per-subsystem
+policy.  E.g. if the signal:noise ratio is particularly poor for a subsystem,
+that subsystem can document/state that responding to, or even reading, Sashiko
+mails is completely optional.
 
-+	if (!dmah && st_index !=3D MLX5_MKC_PCIE_TPH_NO_STEERING_TAG_INDEX) {
-+		mr->dmabuf_st_index =3D st_index;
-+		mr->dmabuf_st_owned =3D 1;
-+	}
-+
- 	mlx5_ib_dbg(dev, "mkey 0x%x\n", mr->mmkey.key);
-
- 	atomic_add(ib_umem_num_pages(mr->umem), &dev->mdev->priv.reg_pages);
-@@ -1377,9 +1447,17 @@ static int mlx5r_handle_mkey_cleanup(struct mlx5_i=
-b_mr *mr)
- 	bool is_odp =3D is_odp_mr(mr);
- 	int ret;
-
--	if (mr->ibmr.frmr.pool && !mlx5_umr_revoke_mr_with_lock(mr) &&
--	    !ib_frmr_pool_push(mr->ibmr.device, &mr->ibmr))
--		return 0;
-+	if (mr->ibmr.frmr.pool && !mlx5_umr_revoke_mr_with_lock(mr)) {
-+		/*
-+		 * The mkey has been revoked: firmware no longer references
-+		 * dmabuf_st_index, so release it before this mr can re-enter
-+		 * the FRMR cache for reuse by another registration.
-+		 */
-+		mlx5_ib_mr_put_dmabuf_st(mr);
-+
-+		if (!ib_frmr_pool_push(mr->ibmr.device, &mr->ibmr))
-+			return 0;
-+	}
-
- 	if (is_odp)
- 		mutex_lock(&to_ib_umem_odp(mr->umem)->umem_mutex);
-@@ -1400,6 +1478,8 @@ static int mlx5r_handle_mkey_cleanup(struct mlx5_ib=
-_mr *mr)
- 		dma_resv_unlock(
- 			to_ib_umem_dmabuf(mr->umem)->attach->dmabuf->resv);
- 	}
-+	if (!ret)
-+		mlx5_ib_mr_put_dmabuf_st(mr);
- 	return ret;
- }
-
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c b/drivers/n=
-et/ethernet/mellanox/mlx5/core/lib/st.c
-index 997be91f0a13..8929c17c88bc 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c
-@@ -29,7 +29,7 @@ struct mlx5_st *mlx5_st_create(struct mlx5_core_dev *de=
-v)
- 	u8 direct_mode =3D 0;
- 	u16 num_entries;
- 	u32 tbl_loc;
--	int ret;
-+	int ret =3D 0;
-
- 	if (!MLX5_CAP_GEN(dev, mkey_pcie_tph))
- 		return NULL;
-@@ -92,23 +92,18 @@ void mlx5_st_destroy(struct mlx5_core_dev *dev)
- 	kfree(st);
- }
-
--int mlx5_st_alloc_index(struct mlx5_core_dev *dev, enum tph_mem_type mem=
-_type,
--			unsigned int cpu_uid, u16 *st_index)
-+int mlx5_st_alloc_index_by_tag(struct mlx5_core_dev *dev, u16 tag,
-+			       u16 *st_index)
- {
- 	struct mlx5_st_idx_data *idx_data;
- 	struct mlx5_st *st =3D dev->st;
- 	unsigned long index;
- 	u32 xa_id;
--	u16 tag;
--	int ret;
-+	int ret =3D 0;
-
- 	if (!st)
- 		return -EOPNOTSUPP;
-
--	ret =3D pcie_tph_get_cpu_st(dev->pdev, mem_type, cpu_uid, &tag);
--	if (ret)
--		return ret;
--
- 	if (st->direct_mode) {
- 		*st_index =3D tag;
- 		return 0;
-@@ -152,6 +147,20 @@ int mlx5_st_alloc_index(struct mlx5_core_dev *dev, e=
-num tph_mem_type mem_type,
- 	mutex_unlock(&st->lock);
- 	return ret;
- }
-+EXPORT_SYMBOL_GPL(mlx5_st_alloc_index_by_tag);
-+
-+int mlx5_st_alloc_index(struct mlx5_core_dev *dev, enum tph_mem_type mem=
-_type,
-+			unsigned int cpu_uid, u16 *st_index)
-+{
-+	u16 tag;
-+	int ret;
-+
-+	ret =3D pcie_tph_get_cpu_st(dev->pdev, mem_type, cpu_uid, &tag);
-+	if (ret)
-+		return ret;
-+
-+	return mlx5_st_alloc_index_by_tag(dev, tag, st_index);
-+}
- EXPORT_SYMBOL_GPL(mlx5_st_alloc_index);
-
- int mlx5_st_dealloc_index(struct mlx5_core_dev *dev, u16 st_index)
-@@ -175,6 +184,7 @@ int mlx5_st_dealloc_index(struct mlx5_core_dev *dev, =
-u16 st_index)
-
- 	if (refcount_dec_and_test(&idx_data->usecount)) {
- 		xa_erase(&st->idx_xa, st_index);
-+		kfree(idx_data);
- 		/* We leave PCI config space as was before, no mkey will refer to it *=
-/
- 	}
-
-diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
-index 04b96c5abb57..523a9ab0ae1e 100644
---- a/include/linux/mlx5/driver.h
-+++ b/include/linux/mlx5/driver.h
-@@ -1166,10 +1166,17 @@ int mlx5_dm_sw_icm_dealloc(struct mlx5_core_dev *=
-dev, enum mlx5_sw_icm_type type
- 			   u64 length, u16 uid, phys_addr_t addr, u32 obj_id);
-
- #ifdef CONFIG_PCIE_TPH
-+int mlx5_st_alloc_index_by_tag(struct mlx5_core_dev *dev, u16 tag,
-+			       u16 *st_index);
- int mlx5_st_alloc_index(struct mlx5_core_dev *dev, enum tph_mem_type mem=
-_type,
- 			unsigned int cpu_uid, u16 *st_index);
- int mlx5_st_dealloc_index(struct mlx5_core_dev *dev, u16 st_index);
- #else
-+static inline int mlx5_st_alloc_index_by_tag(struct mlx5_core_dev *dev,
-+					     u16 tag, u16 *st_index)
-+{
-+	return -EOPNOTSUPP;
-+}
- static inline int mlx5_st_alloc_index(struct mlx5_core_dev *dev,
- 				      enum tph_mem_type mem_type,
- 				      unsigned int cpu_uid, u16 *st_index)
---
-2.53.0-Meta
+Beyond that, I'm struggling to understand why folks are opposed to getting mails
+from Sashiko, especially for a list as large as kvm@.  As others pointed out, the
+volume for kvm@ is already high, and it's trivially easy to create a filter for
+mails from sashiko-bot@kernel.org.  I.e. it seems highly unlikely that mail from
+Sashiko will require anyone to significantly rethink and/or rework their workflow,
+whereas the web site approach is very disruptive to email-based review, at least
+for me.
