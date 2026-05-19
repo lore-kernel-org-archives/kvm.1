@@ -1,179 +1,269 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C23C4DB561;
-	Tue, 19 May 2026 12:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB18B4DC540;
+	Tue, 19 May 2026 12:40:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779194341; cv=none; b=UJ8gvdJ48czquhCbo2/KtoT+xOkIJfWz3wt54muhlmYG9+/N7W2uKp23GrsvYypIPnNBTQL7JNG3TmwVK34x2xbuI0NyZ8dLnHn3BVXzbwWUR9HETQpabJdciQItz80Ii/GlwSLYTqtkFENOwixSJWwwy0k59Lq4ZoOZyyvf+ms=
+	t=1779194429; cv=none; b=Mheu0eoWSPk/wtYmM4Kn1lPwf6gvzcM/R89RttMOHclR77qW2K4J8a6PLRCkP145+fAejOODAGjaCecp1oQMzlukIsid29DM4iPj/M60tyoJT85J6FHEdf3XtAbK12QwmTyTxzAnlHr6xQZq3IgG8bK5TsBYjgKb0dSicIhW2kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779194341; c=relaxed/simple;
-	bh=8vDTP3D8eciTBIALrAZgpZD5nbooGrzE+oayZi9KF0E=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W5x13tKsdR0QqBD4iXRtKWjlu1JMDaUiiAdlGxl8OPA6I2WAtrdLhBSz3FVab0Hs1y8ekea1nJzdgBFY107MpUNwqCJm1OW+Yv/3d7JBudvpe0QhV24MZLGIW7Xh8Lm0dcdPGL5N15crSWTapvKkTm7FAYq9vxpAEsmz3H7tA3c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X6t7ol7k; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779194429; c=relaxed/simple;
+	bh=C9LJspxe9GlzuGA89k1Z0lPBgQt209jCJ7X50Q61Rbc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SIdpHIHBPLBawCaDcMethnZUqePiOQ9CkwIMhD6W2A4xvxK/iPryNb6NkbV/ZlyELMNtWOO2M6U7N6BwVCgPbOnnTUQXwl+q6C4NyFTb0M0saY+eFBLwQ5dLLUJs3od0be4TeWp28WX3/ru6/Yqfz7j7VmC3DZ3Umm8R9V1P3To=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BxvXTuw/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X6t7ol7k"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1AF6C2BCB3;
-	Tue, 19 May 2026 12:39:00 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BxvXTuw/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAA02C2BCB8;
+	Tue, 19 May 2026 12:40:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779194340;
-	bh=8vDTP3D8eciTBIALrAZgpZD5nbooGrzE+oayZi9KF0E=;
+	s=k20201202; t=1779194429;
+	bh=C9LJspxe9GlzuGA89k1Z0lPBgQt209jCJ7X50Q61Rbc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=X6t7ol7k8hXaTj/jPvLJ4LNh/i0SOJnXHIXk5IZvumO7d/mN1CRjiMLm+KSTcCp01
-	 dpCgfb3aWuWfFvphoRRIUvocz42q1e+gPLCMrk98HK48+ExirdBV2p39MdspXradvs
-	 1S8OGLvyb2+JpsVe931jV07V3TurIWCZCvnNvmG/z9BrJiOSkahYsYOo1ZSNsKo2ra
-	 Y+gehhYjrv12Lm3yC01nrnbTOX6dWDkJ5zl5bn1iOKENlNlOCBFUr/hY7y5DGNyIh8
-	 j8dzCXa37aHLiHFr20/F7wIrW3FgI33uniFpprTdhEdwfVSdoMKI7k1UkTm0mh1dmW
-	 8eH0eWogRBXPQ==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wPJis-00000003wup-1KJo;
-	Tue, 19 May 2026 12:38:58 +0000
-Date: Tue, 19 May 2026 13:38:57 +0100
-Message-ID: <86qzn7wp3y.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: David Woodhouse <dwmw2@infradead.org>,
-	Will Deacon <will@kernel.org>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	kvm <kvm@vger.kernel.org>,
-	Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Jim Mattson <jmattson@google.com>,
-	Oliver Upton <oupton@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Eric Auger <eric.auger@redhat.com>,
-	Kees Cook <kees@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-	kvmarm@lists.linux.dev,
-	linux-kselftest <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH] Documentation: KVM: Document guest-visible compatibility expectations
-In-Reply-To: <CABgObfacAYexR25SMi1kSZMRnHx3EDGj8=E84V1DumER66ibnQ@mail.gmail.com>
-References: <6856b269d2af706eae397e0cf9c1231f89d9a932.camel@infradead.org>
-	<6afc4b95-3c15-4d71-877d-19b84e91ce05@redhat.com>
-	<57bc082f4824d6114d3156744c25986effc29aca.camel@infradead.org>
-	<baff82ca-6321-4b16-aa61-b2d6d60b6535@redhat.com>
-	<86h5obya2r.wl-maz@kernel.org>
-	<48b06e5655d56ff6eda30e563b34894fa0eb2f07.camel@infradead.org>
-	<ba08dfe9-932b-40c3-9fdf-fc891d52e1d8@redhat.com>
-	<d9d4471a7f5ec1e297b3ca07f42a59090aa91e15.camel@infradead.org>
-	<CABgObfaM-JtNn2MuYXaiadQnLfAhTEaoHAcTG9=J6LkMcQCJ3A@mail.gmail.com>
-	<3f9d731c3d26b0367600f1069e6425099bc34eac.camel@infradead.org>
-	<agxFbniU_6eQ98t2@willie-the-truck>
-	<cf429f2082e863571595f74d1d3dedc3e6a82964.camel@infradead.org>
-	<CABgObfacAYexR25SMi1kSZMRnHx3EDGj8=E84V1DumER66ibnQ@mail.gmail.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	b=BxvXTuw/1KacfEuUcxA2ShzLusAlC1/fZN4LJ1syCuxeVT0wCRJBbz1vfN2Oyv8Qm
+	 laupkzT3Szae7dDCk2WyAfR1JO6EWUtFWMeCu6GUrtojLGRciixMgNUgEbSGfwKxV5
+	 kWo+Ds/+lcbJkp0uff0/b8XlvXvOHzVyKvZY59zvDmFewnPbw2syELpEn9rJbiO6az
+	 9NyfExj1eN5h8NyjNtrhIyhPj7SkS+oKDidCjGzwfYzjVarRSqMQteA19hqSZYAntn
+	 ihCYDQjsc4vt82dLdQrSWcI1AlRa0A0NQ1dqijbRAs9ZIwuxe+azXu6L1e+ORAFgru
+	 5qwgcQBIjyV0w==
+Date: Tue, 19 May 2026 13:40:14 +0100
+From: Jonathan Cameron <jic23@kernel.org>
+To: <mhonap@nvidia.com>
+Cc: <alwilliamson@nvidia.com>, <skolothumtho@nvidia.com>,
+ <ankita@nvidia.com>, <mst@redhat.com>, <imammedo@redhat.com>,
+ <anisinha@redhat.com>, <eric.auger@redhat.com>, <peter.maydell@linaro.org>,
+ <shannon.zhaosl@gmail.com>, <jonathan.cameron@huawei.com>,
+ <fan.ni@samsung.com>, <pbonzini@redhat.com>,
+ <richard.henderson@linaro.org>, <marcel.apfelbaum@gmail.com>,
+ <clg@redhat.com>, <cohuck@redhat.com>, <dan.j.williams@intel.com>,
+ <dave.jiang@intel.com>, <alejandro.lucero-palau@amd.com>,
+ <vsethi@nvidia.com>, <cjia@nvidia.com>, <targupta@nvidia.com>,
+ <zhiw@nvidia.com>, <kjaju@nvidia.com>, <linux-cxl@vger.kernel.org>,
+ <kvm@vger.kernel.org>, <qemu-devel@nongnu.org>, <qemu-arm@nongnu.org>
+Subject: Re: [RFC 1/9] hw/arm/virt: Add CXL FMWS PA window for device memory
+Message-ID: <20260519134014.474a8289@jic23-huawei>
+In-Reply-To: <20260427181235.3003865-2-mhonap@nvidia.com>
+References: <20260427181235.3003865-1-mhonap@nvidia.com>
+	<20260427181235.3003865-2-mhonap@nvidia.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: pbonzini@redhat.com, dwmw2@infradead.org, will@kernel.org, corbet@lwn.net, skhan@linuxfoundation.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, seanjc@google.com, jmattson@google.com, oupton@kernel.org, joey.gouly@arm.com, suzuki.poulose@arm.com, yuzenghui@huawei.com, catalin.marinas@arm.com, rananta@google.com, eric.auger@redhat.com, kees@kernel.org, arnd@arndb.de, nathan@kernel.org, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kselftest@vger.kernel.org
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Tue, 19 May 2026 13:13:41 +0100,
-Paolo Bonzini <pbonzini@redhat.com> wrote:
->=20
-> On Tue, May 19, 2026 at 1:44=E2=80=AFPM David Woodhouse <dwmw2@infradead.=
-org> wrote:
-> > > > So... what next? Is one of the other KVM/arm64 maintainers going to
-> > > > speak up? Paolo would you consider taking the fixes through your tr=
-ee
-> > > > directly?
->=20
-> I admit that my knowledge of Arm is really limited, and I do not
-> understand which IIDR values have architecturally allowed behaviors
-> and which (if any) were made up by KVM; but even if I cannot honestly
-> remark on the code or even the approach, a compatibility knob is the
-> right thing to have.  That's a userspace API design matter, not an Arm
-> or GIC matter.
+On Mon, 27 Apr 2026 23:42:27 +0530
+<mhonap@nvidia.com> wrote:
 
-I agree that we can have the knob -- not having it is a userspace
-issue, and I have said that I was OK with preserving the userspace
-interface.
+> From: Manish Honap <mhonap@nvidia.com>
+> 
+> CXL VFIO passthrough needs a stable guest physical address range for
+> device memory (DPA) that falls inside a CFMWS entry the guest discovers
+> from ACPI CEDT. Without a dedicated range in the address map, the HDM
+> decoder has nowhere to point.
+> 
+> Add VIRT_HIGH_CXL_MMIO immediately after the second PCIe MMIO window.
+> It gets its own highmem_cxl_mmio flag in VirtMachineState rather than
+> sharing highmem_cxl, so the two slots are independently controllable
+> even though both are currently tied to CXL bridge presence.
 
->=20
-> I hope that Marc provides a better explanation of why he believes
-> https://lore.kernel.org/all/20260511113558.3325004-2-dwmw2@infradead.org/
-> shouldn't be accepted, because I am more than a bit puzzled about
-> *why* that patch is being rejected or (in v3) so far ignored. Marc in
-> this thread wrote: "If userspace is not a total joke, it will read all
-> the ID registers, and configure what it wants to see, assuming it is a
-> feature that can be configured (not everything can, because the
-> architecture itself is not fully backward compatible)".
+Can we clearly state here what they are.  highmem_cxl is the root
+bridge registers. I'm not entirely sure I yet understand what highmem_cxl_mmio
 
-This was a more general comment on the full mechanism that we use to
-save/restore the state and at the same time configure the feature
-set. Which is what the GICD_IIDR does to some extent for the GIC.
+> 
+> The base and size flow through GPEXConfig.cxl_mmio to
+> acpi_dsdt_add_gpex(), which carves out a QWord memory descriptor in the
+> first CXL root bridge's _CRS. The CFMWS window is system-wide, so only
+> the first CXL bridge gets the descriptor - subsequent ones would
+> produce duplicate resource claims for the same range.
 
-> But in this case there's an ID register that tells KVM if userspace
-> wants the old or the new behavior, independent of whether that old
-> behavior is architecturally valid or not.
+I don't follow. CFMWS are not system wide. They refer to one or more of the
+root bridges. I suppose you could argue that the 'or more' bit makes
+them kind of system wide. Right now I'm not even sure why they are in
+CRS at all as opposed to being obtained from CEDT.
 
-But the "old behaviour" makes no sense, and cannot be used by a guest:
+Maybe a spec reference for why a bridge should be claiming these regions?
 
-- either the guest doesn't use the alternative interrupt groups, then
-  it wasn't affected by the bug. That's 100% of the guests.
+I'm not understanding yet why we can't use the existing CFMWS support
+so please add information on that tot his commit message.
 
-- or the guest did try to use the alternative groups, and it *NEVER*
-  worked, as it wouldn't get any interrupt at all. What is the point
-  of preserving a "feature" that only results in a non-working guest?
 
-Given that, re-introducing a behaviour that cannot be used makes zero
-sense to me.
+> 
+> build_crs() already emits the bridge's own 64-bit ranges into crs.
+> The CFMWS window is a separate system-wide range, so only that window
+> is appended as a new QWord descriptor; the bridge ranges are not
+> re-emitted. A warn_report() fires if the CFMWS window overlaps any
+> existing bridge 64-bit range, since that would indicate an address
+> layout conflict.
+> 
+> Signed-off-by: Zhi Wang <zhiw@nvidia.com>
+> Signed-off-by: Manish Honap <mhonap@nvidia.com>
+> ---
+>  hw/arm/virt-acpi-build.c   |  5 +++++
+>  hw/arm/virt.c              |  9 +++++++++
+>  hw/pci-host/gpex-acpi.c    | 40 ++++++++++++++++++++++++++++++++++++++
+>  include/hw/arm/virt.h      |  2 ++
+>  include/hw/pci-host/gpex.h |  1 +
+>  5 files changed, 57 insertions(+)
+> 
+> diff --git a/hw/arm/virt-acpi-build.c b/hw/arm/virt-acpi-build.c
+> index 591cfc993c..863e0680fb 100644
+> --- a/hw/arm/virt-acpi-build.c
+> +++ b/hw/arm/virt-acpi-build.c
+> @@ -176,6 +176,11 @@ static void acpi_dsdt_add_pci(Aml *scope, const MemMapEntry *memmap,
+>          cfg.mmio64 = memmap[VIRT_HIGH_PCIE_MMIO];
+>      }
+>  
+> +    if (vms->highmem_cxl) {
+> +        cfg.cxl_mmio.base = memmap[VIRT_HIGH_CXL_MMIO].base;
+> +        cfg.cxl_mmio.size = memmap[VIRT_HIGH_CXL_MMIO].size;
+> +    }
+> +
+>      acpi_dsdt_add_gpex(scope, &cfg);
+>      QLIST_FOREACH(bus, &vms->bus->child, sibling) {
+>          if (pci_bus_is_cxl(bus)) {
+> diff --git a/hw/arm/virt.c b/hw/arm/virt.c
+> index ec0d8475ca..fa07819401 100644
+> --- a/hw/arm/virt.c
+> +++ b/hw/arm/virt.c
+> @@ -211,6 +211,8 @@ static const MemMapEntry base_memmap[] = {
+>  #define DEFAULT_HIGH_PCIE_MMIO_SIZE_GB 512
+>  #define DEFAULT_HIGH_PCIE_MMIO_SIZE (DEFAULT_HIGH_PCIE_MMIO_SIZE_GB * GiB)
+>  
+> +#define DEFAULT_HIGH_CXL_MMIO_SIZE  DEFAULT_HIGH_PCIE_MMIO_SIZE
+> +
+>  /*
+>   * Highmem IO Regions: This memory map is floating, located after the RAM.
+>   * Each MemMapEntry base (GPA) will be dynamically computed, depending on the
+> @@ -237,6 +239,11 @@ static MemMapEntry extended_memmap[] = {
+>      [VIRT_HIGH_PCIE_ECAM] =     { 0x0, 256 * MiB },
+>      /* Second PCIe window */
+>      [VIRT_HIGH_PCIE_MMIO] =     { 0x0, DEFAULT_HIGH_PCIE_MMIO_SIZE },
+> +    /*
+> +     * CXL FMWS guest PA window - separate from PCIe MMIO so the two are
+> +     * independently sizeable. Same default size for now.
+> +     */
+> +    [VIRT_HIGH_CXL_MMIO] =      { 0x0, DEFAULT_HIGH_CXL_MMIO_SIZE },
+>      /* Any CXL Fixed memory windows come here */
 
-> I will certainly take this patch, but I won't override Marc. However
-> I'd like to better understand his point of view, because right now I
-> just don't get it.
+Why not use the infra this comment is talking about?
 
-I don't get it either, but for different reasons.
+>  };
+>  
+> @@ -1724,6 +1731,7 @@ static void create_cxl_host_reg_region(VirtMachineState *vms)
+>                         vms->memmap[VIRT_CXL_HOST].size);
+>      memory_region_add_subregion(sysmem, vms->memmap[VIRT_CXL_HOST].base, mr);
+>      vms->highmem_cxl = true;
+> +    vms->highmem_cxl_mmio = true;
+>  }
+>  
+>  static void create_platform_bus(VirtMachineState *vms)
+> @@ -1897,6 +1905,7 @@ static inline bool *virt_get_high_memmap_enabled(VirtMachineState *vms,
+>          &vms->highmem_cxl,
+>          &vms->highmem_ecam,
+>          &vms->highmem_mmio,
+> +        &vms->highmem_cxl_mmio,
+>      };
+>  
+>      assert(ARRAY_SIZE(extended_memmap) - VIRT_LOWMEMMAP_LAST ==
+> diff --git a/hw/pci-host/gpex-acpi.c b/hw/pci-host/gpex-acpi.c
+> index d9820f9b41..7de57bbc46 100644
+> --- a/hw/pci-host/gpex-acpi.c
+> +++ b/hw/pci-host/gpex-acpi.c
+> @@ -7,6 +7,7 @@
+>  #include "hw/pci/pci_bridge.h"
+>  #include "hw/pci/pcie_host.h"
+>  #include "hw/acpi/cxl.h"
+> +#include "qemu/error-report.h"
+>  
+>  static void acpi_dsdt_add_pci_route_table(Aml *dev, uint32_t irq,
+>                                            Aml *scope, uint8_t bus_num)
+> @@ -108,6 +109,7 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
+>      CrsRangeSet crs_range_set;
+>      CrsRangeEntry *entry;
+>      int i;
+> +    bool first_cxl = true;
+>  
+>      /* start to construct the tables for pxb */
+>      crs_range_set_init(&crs_range_set);
+> @@ -161,6 +163,44 @@ void acpi_dsdt_add_gpex(Aml *scope, struct GPEXConfig *cfg)
+>               */
+>              crs = build_crs(PCI_HOST_BRIDGE(BUS(bus)->parent), &crs_range_set,
+>                              cfg->pio.base, 0, 0, 0);
+> +            if (is_cxl && first_cxl && cfg->cxl_mmio.size) {
+> +                uint64_t cfmws_end = cfg->cxl_mmio.base +
+> +                                     cfg->cxl_mmio.size - 1;
+> +
+> +                /*
+> +                 * The CXL Fixed Memory Window (CFMWS) is a system-wide GPA
+> +                 * range.  Only the first CXL root bridge emits the QWord
+> +                 * descriptor; adding it to every bridge would give the OS
+> +                 * duplicate resource claims for the same range.
+> +                 *
+> +                 * build_crs() has already appended the bridge's own 64-bit
+> +                 * ranges into crs.  Do not copy them again here; only append
+> +                 * the CFMWS window itself as a new QWord descriptor.
+> +                 *
+> +                 * Warn if the CFMWS window overlaps any range already claimed
+> +                 * by the bridge; in the current address layout they should be
+> +                 * disjoint, but catch it early if the layout ever changes.
+> +                 */
+> +                for (i = 0; i < crs_range_set.mem_64bit_ranges->len; i++) {
+> +                    entry = g_ptr_array_index(crs_range_set.mem_64bit_ranges,
+> +                                              i);
+> +                    if (entry->base <= cfmws_end &&
+> +                        entry->limit >= cfg->cxl_mmio.base) {
+> +                        warn_report("CXL CFMWS [0x%"PRIx64"-0x%"PRIx64"] "
+> +                                    "overlaps CXL root bridge 64-bit range "
+> +                                    "[0x%"PRIx64"-0x%"PRIx64"]",
+> +                                    cfg->cxl_mmio.base, cfmws_end,
+> +                                    entry->base, entry->limit);
+> +                    }
+> +                }
+> +                aml_append(crs,
+> +                    aml_qword_memory(AML_POS_DECODE, AML_MIN_FIXED,
+> +                        AML_MAX_FIXED, AML_NON_CACHEABLE, AML_READ_WRITE,
+> +                        0x0000, cfg->cxl_mmio.base, cfmws_end, 0x0000,
+> +                        cfg->cxl_mmio.size));
+> +                first_cxl = false;
+> +            }
+> +
+>              aml_append(dev, aml_name_decl("_CRS", crs));
+>  
+>              if (is_cxl) {
+> diff --git a/include/hw/arm/virt.h b/include/hw/arm/virt.h
+> index 5fcbd1c76f..88bb3c0bdf 100644
+> --- a/include/hw/arm/virt.h
+> +++ b/include/hw/arm/virt.h
+> @@ -91,6 +91,7 @@ enum {
+>      VIRT_CXL_HOST,
+>      VIRT_HIGH_PCIE_ECAM,
+>      VIRT_HIGH_PCIE_MMIO,
+> +    VIRT_HIGH_CXL_MMIO,
+>  };
+>  
+>  typedef enum VirtIOMMUType {
+> @@ -147,6 +148,7 @@ struct VirtMachineState {
+>      bool highmem;
+>      bool highmem_compact;
+>      bool highmem_cxl;
+> +    bool highmem_cxl_mmio;  /* VIRT_HIGH_CXL_MMIO window; follows highmem_cxl */
+>      bool highmem_ecam;
+>      bool highmem_mmio;
+>      bool highmem_redists;
+> diff --git a/include/hw/pci-host/gpex.h b/include/hw/pci-host/gpex.h
+> index 1da9c85bce..a7c2e2edf3 100644
+> --- a/include/hw/pci-host/gpex.h
+> +++ b/include/hw/pci-host/gpex.h
+> @@ -43,6 +43,7 @@ struct GPEXConfig {
+>      MemMapEntry mmio32;
+>      MemMapEntry mmio64;
+>      MemMapEntry pio;
+> +    MemMapEntry cxl_mmio;
+>      int         irq;
+>      PCIBus      *bus;
+>      bool        pci_native_hotplug;
 
->=20
-> > If KVM on arm64 doesn't aspire to maintain guest compatibility across
-> > host kernel changes =E2=80=94 regardless of whether the previous kernel=
-'s
-> > behaviour was "blessed" by the architecture specification or not =E2=80=
-=94 then
-> > it does not meet the expectation that we have of KVM implementations in
-> > the Linux kernel.
->=20
-> I agree with the "aspire" wording. Even if it's not going to be 100%
-> achievable, KVM *needs* to aspire to maintain both guest compatibility
-> and architecture precision. Sometimes it's impossible, sometimes there
-> are constraints that require you to trade off one for another (e.g.
-> via quirks, or by breaking behavior that no sane guest would have
-> cared about). But in general as a maintainer you don't *get* to
-> choose.
->=20
-> Paolo
->=20
-> > Or indeed the standards that we've held for Linux kernel ABIs for the
-> > last 35 years.
-
-As I said before, I'd be OK with something that would restore IIDR to
-REV1. But not something that actively breaks the GIC emulation by
-reintroducing a bug. That's, by construction, dead code that will only
-bitrot, because there is no SW that can make use of this nonsense.
-
-	M.
-
---=20
-Without deviation from the norm, progress is not possible.
