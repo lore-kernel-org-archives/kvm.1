@@ -1,348 +1,191 @@
-Received: from mail-pg1-f178.google.com (mail-pg1-f178.google.com [209.85.215.178])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C134409115
-	for <kvm@vger.kernel.org>; Tue, 19 May 2026 16:57:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B189E492180
+	for <kvm@vger.kernel.org>; Tue, 19 May 2026 17:15:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779209849; cv=none; b=aA49x8TtF8Ay9BXkddwSPfgLzsq+YH7qUyzGWvQ8PxfSkZUTemjW9+h4nmSlbMZBwKhY5ksJAHOD2wRvlQkKVUxUZ2M8+OJdbfjCR8Y4qTKMu1zyxgZdQQDfWANBKFdNiENI5XGzRn9aDmXQLYjpiixmUwe8W8tdjkmyYftQPqc=
+	t=1779210907; cv=none; b=qicRDcVB4wJ0ZN37bve6MyjMsOgeYSzZxkLMLFEchPi7660d7FLjVv0qh0Wc80Ms6qf82YjIkiEC0e2z+qJcU/M9eUXVjHWKOshnUzn/fGbVBDA//TuodbUlJW3cZxQt76oec5I1BBfxBVD24AQdVdrQxWSuROn1DJPSD8xW3xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779209849; c=relaxed/simple;
-	bh=/dxqY7vF83zqkB9TeiJY/hUNAh4ZjWZkHbYyxtAuPwA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=RD0AoeqhilUrYNnY3bJ7F3F/skfpESvPwT38w1eYNvbmSpu6J9v5fH2YsjGW2mAFCusoVfUdBANTkhDygJBp4RZGZPgDkepN81StwegP7bfi4WkpYZvLjlSONAl0pYsMDT9ATLF7YFnw3ydx3RkTc0GgY46juN6JOl01GJxGSHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=O/ZdmZSn; arc=none smtp.client-ip=209.85.215.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779210907; c=relaxed/simple;
+	bh=N0olbpp4+tbbF00EjqkPnSM7waYwBC1YIklDoPh4SKI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UiLrTbjVAzNC3E84uJPgziq2EWe5TYsAT2aeQ7dk2MSC2mv4QU4ehNRJjmmK+gbaePp82P1/I6T+1SedsaO7cgeuHUjZipRAkU8XcyNh70I26ViFr/Mmx66X9X1604OflOX3vCvI1MGA/Aq0WNDPCRxA5WevD4Qa9vpw9JuybO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=danw2frI; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="O/ZdmZSn"
-Received: by mail-pg1-f178.google.com with SMTP id 41be03b00d2f7-c7963df896fso128753a12.3
-        for <kvm@vger.kernel.org>; Tue, 19 May 2026 09:57:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="danw2frI"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ba3b9bcf69so465ad.0
+        for <kvm@vger.kernel.org>; Tue, 19 May 2026 10:15:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779209846; x=1779814646; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=TXSSb+QnSoLncqTyl5C1Wf9KSszK/YhT+NIcZleisWI=;
-        b=O/ZdmZSnxyCIZCAjLM7bxtrDB1QqLs+7cV6vMMKosq5UsUbTXgB9Rfoi+T9fwVXUCc
-         quWxqeqNaiz5XQcYHqOqLo+IXqVjPRxPZHvYC6e8PSy45Hjovd/6svCg36YSVvAX8+80
-         ZxBY1yuREZNpsp0adbai4ewHsJoC0uqnrEZ5uc2s2z6eX2d5yQUZBB87fPirmRQNG8Bn
-         MrXbhp0eLJH2IcdGexbQ6MWRs45e+b6yvtX7fyWvs/B3QGBmUGas4jYVv1IGqt0Qi7Ha
-         i0fysplSrsBs1VW7guG73hARhF1ioLdAODpA6K16LfJpaVkG1nkwo3Vx3uf4MkpmX72I
-         GY1w==
+        d=google.com; s=20251104; t=1779210903; x=1779815703; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yvUscp3TmdBdYJXRIEvO1MdmjothbiB8jYKdWN5DkYE=;
+        b=danw2frIg5E9TklgFEB/t36bxzS0UKmxVX6X0fkSA13/oJFptPYkN/N0Q7cNNYNf+q
+         NMVFYthq3JFt83JOiayT1+3USXDyup0SjT+XPt6wDEGt0GyIHwqPAkYhR/vclZHgR7ns
+         +5KQDsZJI7SPrhiXbYHdugJBKGtuPKJtTPN9+caoDybP1vSG0MNTdAOAzy64qoij2Xwp
+         DWuanTi1w5KUbFhkkqvcGldTVYd1fYuJzk9jDGkPqDtL3MLj/upGFDPSKF0OG51Kyrzt
+         SmCmfc31vAv6muCQG9YHACAWneShcLkHSqwG27gnDbd9Hlz1/OBK/cbyaJBIZnmyKa1F
+         JCRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779209846; x=1779814646;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TXSSb+QnSoLncqTyl5C1Wf9KSszK/YhT+NIcZleisWI=;
-        b=rhWKARFtaYp+ze4YN7qsHenLPf6yrBbU4iPoqe8Qv4gGurDV/VF4dUUqsavsR2022G
-         bcC0CcvEmO4RZQtCORI4sR++EUsZQpk+blCeMZcG5W+XAu/B7b+AKwWjVhnxWOFT9TqX
-         gri5rgLCU5p2qtP9JLTt9h5NxoIKyinrCbpbmmDKDncbp3lqNvz+ALHGIDD9oQ1P+Bqh
-         4bPotOaYs2EsvbOER5ot9f6T5GHjrccol6w9hhHuhjeQ9zZTauQVQgdDza8J8IqFl5bb
-         Z4R56tUophp6xp1WjuayU57gNr/x7lOK6qezdAeDCuLWWMLjB85S6glv/zncGkBwBC9g
-         C/tA==
-X-Forwarded-Encrypted: i=1; AFNElJ9g73FfFgo7rQzLhkNpgb4+hcHYpjSk/kwrpD9LI9/dRP6P5RH5jBH8oXxBp/xLLRXCx28=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxwTJJIz/TCKVVt8y0kJx7+bPsD9E6aYOtq6Thvwv1hT7NaJOz2
-	BpRGamDSxTxSRVJ8t2H/5W7IehoTXuh4Q9s+1f4oQJtdTmG2sOR2igTr
-X-Gm-Gg: Acq92OFAukIxUhssk2JCI/qeO+/QuqrGwi4mLb+OqmQxpgP4ZgeiBmhcOdpAWVlW8q4
-	mjTxtYfdwNw+DHkNxVG/Ag2LoM0QimoZDyqHDyfHcSIS9BztpNXXnGiFid6nP1ZinEoahBwIMj5
-	PlsPetkMN5jv3g2LCK9qlAUfyBVZGtaAKSVp4KlDHpG6CzW+r1RtNADOxhC1dXWg1xV6xP4JIST
-	EW4hXLLgrPYxLSe4jxY5uXvKwG5Kw6cC0oMNMc3CzgAG/Tf5aduDLtSjvzHr271dkU3jETetxS6
-	ya+64VpBkJJnhLH6IiZ7NJYsF0WSUk/JXXKN5MWAZ+3IKsSIJed74OEKIvjkDmaBWUaeS6Os+vr
-	JQFwq75xX/7QFjGRqBpLCdKIGsT+mEJLRMao59VfmHqCAfGpiluKDV4MAbb2RuA0Of8Ga/5CJmU
-	hVnYv8J1Bmccfd6JzramjGYHlgYpHFuf3rd3DNm7+QchJN
-X-Received: by 2002:a17:903:2ec7:b0:2bd:9875:d457 with SMTP id d9443c01a7336-2bd9875d4fdmr109091215ad.8.1779209846248;
-        Tue, 19 May 2026 09:57:26 -0700 (PDT)
-Received: from gmail.com ([117.133.78.208])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5bd5fe67sm204597705ad.3.2026.05.19.09.57.17
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Tue, 19 May 2026 09:57:25 -0700 (PDT)
-From: Ziyu Zhang <ziyuzhang201@gmail.com>
-To: Stefano Garzarella <sgarzare@redhat.com>,
-	"David S . Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Cc: Simon Horman <horms@kernel.org>,
-	Andy King <acking@vmware.com>,
-	George Zhang <georgezhang@vmware.com>,
-	Dmitry Torokhov <dtor@vmware.com>,
-	"K . Y . Srinivasan" <kys@microsoft.com>,
-	Haiyang Zhang <haiyangz@microsoft.com>,
-	Wei Liu <wei.liu@kernel.org>,
-	Dexuan Cui <decui@microsoft.com>,
-	Long Li <longli@microsoft.com>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	"Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Bryan Tan <bryan-bt.tan@broadcom.com>,
-	Vishnu Dasa <vishnu.dasa@broadcom.com>,
-	bcm-kernel-feedback-list@broadcom.com,
-	virtualization@lists.linux.dev,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-hyperv@vger.kernel.org,
-	kvm@vger.kernel.org,
-	baijiaju1990@gmail.com,
-	r33s3n6@gmail.com,
-	gality369@gmail.com,
-	zhenghaoran154@gmail.com,
-	hanguidong02@gmail.com,
-	zzzccc427@gmail.com,
-	Ziyu Zhang <ziyuzhang201@gmail.com>
-Subject: [PATCH net v2] vsock: keep poll shutdown state consistent
-Date: Wed, 20 May 2026 00:56:36 +0800
-Message-Id: <20260519165636.62542-1-ziyuzhang201@gmail.com>
-X-Mailer: git-send-email 2.39.5 (Apple Git-154)
+        d=1e100.net; s=20251104; t=1779210903; x=1779815703;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yvUscp3TmdBdYJXRIEvO1MdmjothbiB8jYKdWN5DkYE=;
+        b=aHF3GdWFJAND7PKgzsIn6jhj+USC99UC0uq+KqlyFt/w1ZrRBK3mdKFhiq405gXtZq
+         Of55g6ugeBRenGOBn6gpUQUxnLQ/HS5TWEyAb7taidNwvMXYFfx/5rYc886bxy1DrQWp
+         HVYY4L658dc7ifbATtMX0pOGXJIF4gHY6A+YaYQa7f//3o1Rd1bcEYsNiV6sa3vl7Uzi
+         FGBLQV1gxZXMw69B2z00QW0D6FdjNRAEL9lV40p2C/cQlwhahpZHApiU82ojgj+nDbDk
+         7HteNEUFK7qhofYNJnTpRO6zqH91uva2UzEuZvKnr2Ri0+SukflTnrtvQZ/+frH0k1iB
+         /J4Q==
+X-Forwarded-Encrypted: i=1; AFNElJ8XGQAsPUBt6v6ECy6Mm4uoh+e8Qzjh0zWCTArxwVj1CA4syKzKNSeEii0de3nCm5rMolI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyFoIAflVaPuYmfZzqnISquhO41VBq8PC0oLtZmP2LTGxtPQyPK
+	X2gqQc+zV5/fbRBtLvLBsgUqUX/WES5G0nRxlSZdeayfP/IRJegkMAgVzs6ShCx+mQ==
+X-Gm-Gg: Acq92OF/lc+DyGrr9k7SozxBLHh+f6gDmEjAt8UpANPhHuswyDKNN0BlUP4f7JCKtlU
+	8MPF2VdNfCmFw4R419YTG7j1eXw7ORpV+VW8xjd931Re71jkz+N7bC83EZERhAam9QQ884LKg7E
+	ZRzJNNBUSQ6pm1roCyvvAeT07GxiKEZ+ZyyhnzgikTUZGoYP/vqMo3AULMLtNgff+ROC2AYdq8E
+	2T6I5z6m2o1ewZnoBMgaplcFhDSkKN+vfBCHS8mWrNirqFWu8EDx/EWLYtrubfW/zDkjcr/Q4yU
+	8qnhByFZkYATwPX1AnZw5ZDNYktqEgy/04rXONStsVirBk37ZcmjeD/aSMscSiihd2gikBl7LZ4
+	Kmk/rqOLv6tl5ojTDk7o6Wmx4+tovEE6rwMv2DikagDhKn9BJddfhbG9KSFfB0e3XAcusEnceYU
+	RHcNi3wReWyCwpA7JjT5FKThKtWIUXf0BMeDP+3w0x7vdSxQUPwUcIKumZLsnjsjqySRQWAA==
+X-Received: by 2002:a17:903:1b67:b0:2bd:3bfd:74f1 with SMTP id d9443c01a7336-2bdb03a2d5dmr6496795ad.2.1779210902187;
+        Tue, 19 May 2026 10:15:02 -0700 (PDT)
+Received: from google.com (153.46.83.34.bc.googleusercontent.com. [34.83.46.153])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c82bb114c08sm18103728a12.23.2026.05.19.10.15.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 May 2026 10:15:01 -0700 (PDT)
+Date: Tue, 19 May 2026 17:14:58 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
+	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>, 
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH v2 06/16] iommupt: Implement preserve/unpreserve/restore
+ callbacks
+Message-ID: <agyaeRExaL6Tm47V@google.com>
+References: <20260427175633.1978233-1-skhawaja@google.com>
+ <20260427175633.1978233-7-skhawaja@google.com>
+ <agxiXNalisHyNkGt@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <agxiXNalisHyNkGt@google.com>
 
-vsock_poll() reads vsk->peer_shutdown before taking the socket lock
-to set EPOLLHUP and EPOLLRDHUP, then reads it again after taking
-the lock to report EOF readability. A shutdown packet can update
-peer_shutdown while poll is waiting for the lock, so one poll invocation
-can report EOF readability without the corresponding HUP/RDHUP bits.
+On Tue, May 19, 2026 at 01:15:08PM +0000, Pranjal Shrivastava wrote:
+>On Mon, Apr 27, 2026 at 05:56:23PM +0000, Samiullah Khawaja wrote:
+>> Implement the iommu domain ops for presevation, unpresevation and
+>> restoration of iommu domains for liveupdate. Use the existing page
+>> walker to preserve the ioptdesc of the top_table and the lower tables.
+>>
+>> Preserve top_level, VASZ and FEAT Sign Extended to restore the domain in
+>> the next kernel. On restore the domain has only the preserved features
+>> enabled and all the other features are zeroed. This is ok since the
+>> restored domain is made immutable and can only be freed. A kunit test is
+>> added to verify that the IOMMU domain free can be done with trimmed
+>> features.
+>>
+>> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>> ---
+>>  drivers/iommu/generic_pt/iommu_pt.h       | 131 ++++++++++++++++++++++
+>>  drivers/iommu/generic_pt/kunit_iommu_pt.h |  28 +++++
+>>  include/linux/generic_pt/iommu.h          |  19 +++-
+>>  3 files changed, 177 insertions(+), 1 deletion(-)
+>>
+>
+>[...]
+>
+>> +static const struct pt_iommu_ops NS(ops_immutable);
+>> +
+>> +/**
+>> + * restore() - Restore page tables and other state of a domain.
+>> + * @domain: Domain to preserve
+>> + *
+>> + * Returns: -ERRNO on failure, 0 on success.
+>> + */
+>> +int DOMAIN_NS(restore)(struct iommu_domain *domain, struct iommu_domain_ser *ser)
+>> +{
+>> +	struct pt_iommu *iommu_table =
+>> +		container_of(domain, struct pt_iommu, domain);
+>> +	struct pt_common *common = common_from_iommu(iommu_table);
+>> +	struct pt_range range;
+>> +
+>> +	common->max_vasz_lg2 = ser->vasz;
+>> +
+>> +	/* Make this domain immutable.*/
+>> +	iommu_table->ops = &NS(ops_immutable);
+>> +
+>
+>Nit: Let's consider adding a comment since we just have .deinit in ops:
+>
+>/*
+> * Restored page tables are strictly transient and only permitted to be
+> * destroyed via .deinit. Because we only preserve user-assigned devices
+> * utilizing pass-through frameworks (VFIO / IOMMUFD), any concurrent or
+> * subsequent map/unmap operations on a restored domain are explicitly
+> * blocked at the subsystem boundary (e.g., via IOAS immutability seals).
+> */
+>
+>This makes it explicitly clear that any nullptr dererfs occuring due to
+>immutable_ops->map_range etc. (in the future) are considered as bugs.
 
-For connectible sockets, take one peer_shutdown snapshot after
-lock_sock() and use it for all peer-shutdown-derived poll bits. For
-datagram sockets, which do not take lock_sock() in poll(), take one
-lockless READ_ONCE() snapshot and pair it with WRITE_ONCE() on the
-writer side.
+Sounds great, will add a comment here.
+>
+>> +	/*
+>> +	 * It is safe to override this here since this domain is immutable and
+>> +	 * can only be freed.
+>> +	 */
+>> +	common->features = 0;
+>> +	if (ser->sign_extend)
+>> +		common->features |= BIT(PT_FEAT_SIGN_EXTEND);
+>> +
+>> +	range = pt_all_range(common);
+>> +	iommu_restore_page(ser->top_table_phys);
+>> +
+>> +	/* Free new table */
+>> +	iommu_free_pages(range.top_table);
+>> +
+>> +	/* Set the restored top table */
+>> +	pt_top_set(common, phys_to_virt(ser->top_table_phys), ser->top_level);
+>> +
+>> +	/* Restore all pages*/
+>> +	range = pt_all_range(common);
+>> +	return pt_walk_range(&range, __restore_tables, NULL);
+>> +}
+>> +EXPORT_SYMBOL_NS_GPL(DOMAIN_NS(restore), "GENERIC_PT_IOMMU");
+>> +#endif
+>> +
+>>  struct pt_unmap_args {
+>>  	struct iommu_pages_list free_list;
+>>  	pt_vaddr_t unmapped;
+>> @@ -1138,6 +1265,10 @@ static const struct pt_iommu_ops NS(ops) = {
+>>  	.deinit = NS(deinit),
+>>  };
+>>
+>> +static const struct pt_iommu_ops NS(ops_immutable) = {
+>> +	.deinit = NS(deinit),
+>> +};
+>> +
+>
+>[...]
+>
+>Thanks,
+>Praan
 
-This keeps the peer-shutdown-derived bits internally consistent for each
-poll pass.
-
-Fixes: d021c344051a ("VSOCK: Introduce VM Sockets")
-Signed-off-by: Ziyu Zhang <ziyuzhang201@gmail.com>
----
-Link: https://lore.kernel.org/netdev/20260516034745.260442-1-ziyuzhang201@gmail.com/
-
-v2:
-- Pair lockless READ_ONCE() users with WRITE_ONCE() on peer_shutdown writers.
-- Move datagram shutdown handling into the SOCK_DGRAM branch and add a comment.
-- Keep one connectible peer_shutdown snapshot after lock_sock() and
-  restore the previous shutdown-derived mask ordering.
-
- net/vmw_vsock/af_vsock.c                | 49 ++++++++++++++++---------
- net/vmw_vsock/hyperv_transport.c        |  9 +++--
- net/vmw_vsock/virtio_transport_common.c | 14 ++++---
- net/vmw_vsock/vmci_transport.c          |  8 ++--
- 4 files changed, 52 insertions(+), 28 deletions(-)
-
-diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
-index adcba1b7b..789b00f6e 100644
---- a/net/vmw_vsock/af_vsock.c
-+++ b/net/vmw_vsock/af_vsock.c
-@@ -523,7 +523,7 @@ int vsock_assign_transport(struct vsock_sock *vsk, struct vsock_sock *psk)
- 		 */
- 		sock_reset_flag(sk, SOCK_DONE);
- 		sk->sk_state = TCP_CLOSE;
--		vsk->peer_shutdown = 0;
-+		WRITE_ONCE(vsk->peer_shutdown, 0);
- 	}
- 
- 	if (sk->sk_type == SOCK_SEQPACKET) {
-@@ -814,7 +814,7 @@ static struct sock *__vsock_create(struct net *net,
- 	vsk->rejected = false;
- 	vsk->sent_request = false;
- 	vsk->ignore_connecting_rst = false;
--	vsk->peer_shutdown = 0;
-+	WRITE_ONCE(vsk->peer_shutdown, 0);
- 	INIT_DELAYED_WORK(&vsk->connect_work, vsock_connect_timeout);
- 	INIT_DELAYED_WORK(&vsk->pending_work, vsock_pending_work);
- 
-@@ -1122,6 +1122,25 @@ static int vsock_shutdown(struct socket *sock, int mode)
- 	return err;
- }
- 
-+static __poll_t vsock_poll_shutdown(struct sock *sk, u32 peer_shutdown)
-+{
-+	__poll_t mask = 0;
-+
-+	/* INET sockets treat local write shutdown and peer write shutdown as a
-+	 * case of EPOLLHUP set.
-+	 */
-+	if (sk->sk_shutdown == SHUTDOWN_MASK ||
-+	    ((sk->sk_shutdown & SEND_SHUTDOWN) &&
-+	     (peer_shutdown & SEND_SHUTDOWN)))
-+		mask |= EPOLLHUP;
-+
-+	if (sk->sk_shutdown & RCV_SHUTDOWN ||
-+	    peer_shutdown & SEND_SHUTDOWN)
-+		mask |= EPOLLRDHUP;
-+
-+	return mask;
-+}
-+
- static __poll_t vsock_poll(struct file *file, struct socket *sock,
- 			       poll_table *wait)
- {
-@@ -1139,24 +1158,17 @@ static __poll_t vsock_poll(struct file *file, struct socket *sock,
- 		/* Signify that there has been an error on this socket. */
- 		mask |= EPOLLERR;
- 
--	/* INET sockets treat local write shutdown and peer write shutdown as a
--	 * case of EPOLLHUP set.
--	 */
--	if ((sk->sk_shutdown == SHUTDOWN_MASK) ||
--	    ((sk->sk_shutdown & SEND_SHUTDOWN) &&
--	     (vsk->peer_shutdown & SEND_SHUTDOWN))) {
--		mask |= EPOLLHUP;
--	}
--
--	if (sk->sk_shutdown & RCV_SHUTDOWN ||
--	    vsk->peer_shutdown & SEND_SHUTDOWN) {
--		mask |= EPOLLRDHUP;
--	}
--
- 	if (sk_is_readable(sk))
- 		mask |= EPOLLIN | EPOLLRDNORM;
- 
- 	if (sock->type == SOCK_DGRAM) {
-+		u32 peer_shutdown = READ_ONCE(vsk->peer_shutdown);
-+
-+		/* DGRAM sockets do not take lock_sock() in poll(), so use one
-+		 * lockless snapshot for all shutdown-derived mask bits.
-+		 */
-+		mask |= vsock_poll_shutdown(sk, peer_shutdown);
-+
- 		/* For datagram sockets we can read if there is something in
- 		 * the queue and write as long as the socket isn't shutdown for
- 		 * sending.
-@@ -1171,6 +1183,7 @@ static __poll_t vsock_poll(struct file *file, struct socket *sock,
- 
- 	} else if (sock_type_connectible(sk->sk_type)) {
- 		const struct vsock_transport *transport;
-+		u32 peer_shutdown;
- 
- 		lock_sock(sk);
- 
-@@ -1203,8 +1216,10 @@ static __poll_t vsock_poll(struct file *file, struct socket *sock,
- 		 * terminated should also be considered read, and we check the
- 		 * shutdown flag for that.
- 		 */
-+		peer_shutdown = READ_ONCE(vsk->peer_shutdown);
-+		mask |= vsock_poll_shutdown(sk, peer_shutdown);
- 		if (sk->sk_shutdown & RCV_SHUTDOWN ||
--		    vsk->peer_shutdown & SEND_SHUTDOWN) {
-+		    peer_shutdown & SEND_SHUTDOWN) {
- 			mask |= EPOLLIN | EPOLLRDNORM;
- 		}
- 
-diff --git a/net/vmw_vsock/hyperv_transport.c b/net/vmw_vsock/hyperv_transport.c
-index 432fcbbd1..16b981566 100644
---- a/net/vmw_vsock/hyperv_transport.c
-+++ b/net/vmw_vsock/hyperv_transport.c
-@@ -264,7 +264,7 @@ static void hvs_do_close_lock_held(struct vsock_sock *vsk,
- 	struct sock *sk = sk_vsock(vsk);
- 
- 	sock_set_flag(sk, SOCK_DONE);
--	vsk->peer_shutdown = SHUTDOWN_MASK;
-+	WRITE_ONCE(vsk->peer_shutdown, SHUTDOWN_MASK);
- 	if (vsock_stream_has_data(vsk) <= 0)
- 		sk->sk_state = TCP_CLOSING;
- 	sk->sk_state_change(sk);
-@@ -593,7 +593,9 @@ static int hvs_update_recv_data(struct hvsock *hvs)
- 		return -EIO;
- 
- 	if (payload_len == 0)
--		hvs->vsk->peer_shutdown |= SEND_SHUTDOWN;
-+		WRITE_ONCE(hvs->vsk->peer_shutdown,
-+			   READ_ONCE(hvs->vsk->peer_shutdown) |
-+			   SEND_SHUTDOWN);
- 
- 	hvs->recv_data_len = payload_len;
- 	hvs->recv_data_off = 0;
-@@ -715,7 +717,8 @@ static s64 hvs_stream_has_data(struct vsock_sock *vsk)
- 			return ret;
- 		return hvs->recv_data_len;
- 	case 0:
--		vsk->peer_shutdown |= SEND_SHUTDOWN;
-+		WRITE_ONCE(vsk->peer_shutdown,
-+			   READ_ONCE(vsk->peer_shutdown) | SEND_SHUTDOWN);
- 		ret = 0;
- 		break;
- 	default: /* -1 */
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index dcc8a1d58..71d8eac82 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -1220,7 +1220,7 @@ static void virtio_transport_do_close(struct vsock_sock *vsk,
- 	struct sock *sk = sk_vsock(vsk);
- 
- 	sock_set_flag(sk, SOCK_DONE);
--	vsk->peer_shutdown = SHUTDOWN_MASK;
-+	WRITE_ONCE(vsk->peer_shutdown, SHUTDOWN_MASK);
- 	if (vsock_stream_has_data(vsk) <= 0)
- 		sk->sk_state = TCP_CLOSING;
- 	sk->sk_state_change(sk);
-@@ -1411,12 +1411,15 @@ virtio_transport_recv_connected(struct sock *sk,
- 	case VIRTIO_VSOCK_OP_CREDIT_UPDATE:
- 		sk->sk_write_space(sk);
- 		break;
--	case VIRTIO_VSOCK_OP_SHUTDOWN:
-+	case VIRTIO_VSOCK_OP_SHUTDOWN: {
-+		u32 peer_shutdown = READ_ONCE(vsk->peer_shutdown);
-+
- 		if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SHUTDOWN_RCV)
--			vsk->peer_shutdown |= RCV_SHUTDOWN;
-+			peer_shutdown |= RCV_SHUTDOWN;
- 		if (le32_to_cpu(hdr->flags) & VIRTIO_VSOCK_SHUTDOWN_SEND)
--			vsk->peer_shutdown |= SEND_SHUTDOWN;
--		if (vsk->peer_shutdown == SHUTDOWN_MASK) {
-+			peer_shutdown |= SEND_SHUTDOWN;
-+		WRITE_ONCE(vsk->peer_shutdown, peer_shutdown);
-+		if (peer_shutdown == SHUTDOWN_MASK) {
- 			if (vsock_stream_has_data(vsk) <= 0 && !sock_flag(sk, SOCK_DONE)) {
- 				(void)virtio_transport_reset(vsk, NULL);
- 				virtio_transport_do_close(vsk, true);
-@@ -1431,6 +1434,7 @@ virtio_transport_recv_connected(struct sock *sk,
- 		if (le32_to_cpu(virtio_vsock_hdr(skb)->flags))
- 			sk->sk_state_change(sk);
- 		break;
-+	}
- 	case VIRTIO_VSOCK_OP_RST:
- 		virtio_transport_do_close(vsk, true);
- 		break;
-diff --git a/net/vmw_vsock/vmci_transport.c b/net/vmw_vsock/vmci_transport.c
-index 7eccd6708..c2231c402 100644
---- a/net/vmw_vsock/vmci_transport.c
-+++ b/net/vmw_vsock/vmci_transport.c
-@@ -811,7 +811,7 @@ static void vmci_transport_handle_detach(struct sock *sk)
- 		/* On a detach the peer will not be sending or receiving
- 		 * anymore.
- 		 */
--		vsk->peer_shutdown = SHUTDOWN_MASK;
-+		WRITE_ONCE(vsk->peer_shutdown, SHUTDOWN_MASK);
- 
- 		/* We should not be sending anymore since the peer won't be
- 		 * there to receive, but we can still receive if there is data
-@@ -1534,7 +1534,9 @@ static int vmci_transport_recv_connected(struct sock *sk,
- 		if (pkt->u.mode) {
- 			vsk = vsock_sk(sk);
- 
--			vsk->peer_shutdown |= pkt->u.mode;
-+			WRITE_ONCE(vsk->peer_shutdown,
-+				   READ_ONCE(vsk->peer_shutdown) |
-+				   pkt->u.mode);
- 			sk->sk_state_change(sk);
- 		}
- 		break;
-@@ -1551,7 +1553,7 @@ static int vmci_transport_recv_connected(struct sock *sk,
- 		 * a clean shutdown.
- 		 */
- 		sock_set_flag(sk, SOCK_DONE);
--		vsk->peer_shutdown = SHUTDOWN_MASK;
-+		WRITE_ONCE(vsk->peer_shutdown, SHUTDOWN_MASK);
- 		if (vsock_stream_has_data(vsk) <= 0)
- 			sk->sk_state = TCP_CLOSING;
- 
--- 
-2.43.0
-
+Sami
