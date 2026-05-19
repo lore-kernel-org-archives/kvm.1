@@ -1,182 +1,125 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3EC450911
-	for <kvm@vger.kernel.org>; Tue, 19 May 2026 09:49:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDB5047DD7C;
+	Tue, 19 May 2026 10:02:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779184183; cv=none; b=n5phyW8s/DfUVqCaivZ1ShiiTXprWsjnEcg/UA51uQDJjmhspjZeNLg01kVDB3qreUCvJT82GGrMSKSTTbyC+U7fxVFPOLFr1BWDuU/Et9Zehq6vkRDZ6cgqgxpE395RcutgR7J4F/qW7GEqSbCqI3Jo/SxR8kD0+4f+qBv1BQA=
+	t=1779184949; cv=none; b=qPKaJa9W2yRT/M9+RtOdjrB2nw1qBwQatXvTE/L1PSbQZx6hwCDj5q7Zs43fWifWZno0fUBKbGaFRDdQwnyz3Ycbh+nbrUB0oqAtPkzESvzba2uwrZAt0I0XrXu1W9UhINUsdFm3p7oiRo1NmeiF4qCRoz8YBrlHJTsVmhTyqAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779184183; c=relaxed/simple;
-	bh=A3kYDVRcCv+l5IYdjIvqMz4NtZd1ehaoUU/Tc+OxqTM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P4z0okshYO24uSkPjdYr+lCXdS0/Nqlvl5tFRydg05qUTxX30tEbiO97sxij44OaS35Rg4PC70wn4alyjk5athwOrZuw+L/znb9P7xM1TApV3dv8sP2/rDKU93gSqiVTh96p6xsXrN+vIPtE/9xY7gWttinBFVFMdYxAZ+kr21o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M0heET/Z; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=K9lsd7cd; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1779184949; c=relaxed/simple;
+	bh=5CY+IUXkmbYVoZqzVuKhQ3pZoZ4Pk6BK8MnYzDSzr7E=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=L422nkrg/B4aB+H2KniMKB9h4XsVfkhG3Nnl1XGU7z5XLfaKSY4Hm4dTAgap77FIzDsu8eAfq/UBku5tTZMecPqWTFrSsqiSNSLbo3Fs9ujqSCqqGhj9osUxo4+ibHE4OsziGyAj0+TykJdG55+ttuc1w0xBYtExXTlihPLPItw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FCjRvMHJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M0heET/Z";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="K9lsd7cd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779184180;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=zj2k4OlZU7xwNJcXmWQpbVh/b6JWeCsbljlDYkhC2cc=;
-	b=M0heET/Z+kggfrXdhnLXocESv95SAULrGRU/fv1PkQbnrjuCmgnH82QMx7zKT9peOFNgRV
-	pVxLxrC3lL6g/btH61xXctxGcbiNKZJsycRCjzJcRsrLV+ihihH7CsdOu4oMv7o5AOq3kR
-	O4K7aoKXn2lFsgTnzZdHNFFuDp1Ya4U=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-636-fUmLO_gTNFqDQ5GIa4I9Rw-1; Tue, 19 May 2026 05:49:39 -0400
-X-MC-Unique: fUmLO_gTNFqDQ5GIa4I9Rw-1
-X-Mimecast-MFC-AGG-ID: fUmLO_gTNFqDQ5GIa4I9Rw_1779184178
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-43d7b7bacddso2687847f8f.0
-        for <kvm@vger.kernel.org>; Tue, 19 May 2026 02:49:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779184178; x=1779788978; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zj2k4OlZU7xwNJcXmWQpbVh/b6JWeCsbljlDYkhC2cc=;
-        b=K9lsd7cdgFvdEggg6qdA5b7M7ERg8BNcPgqVBYKd5v1gG0IwrtvLwUl5F2qeNCNKqj
-         rBDO7BdZwt7kvnL7RtZPjrVf9Rg++GN/AEQG/AICVDXhzZ7FMBA8ylDnA34Jit6MMMTS
-         U76T78cFHa/77CNBrnx0vd7QFqLJ+JfbADVowqBvmS42C4IHZd1VZRsE06k/+dJTKetn
-         HRPnW1BVMm8tApi/rVZysro0BFS9TtUcyoHZLnFRyGwt9SUS/5+VJgzCNudYiSnbfL6G
-         xTBCdJGmVG8CGFXIjBBkflYO0Cd06XZpFstQRj2O45iJ8Vj/toeoLgq+wvl9CV26gqCd
-         0ZfA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779184178; x=1779788978;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zj2k4OlZU7xwNJcXmWQpbVh/b6JWeCsbljlDYkhC2cc=;
-        b=LCjCdAsyO+SceWoagfYseLUr+OuERrm2vUyTur0kz/bBdlsC9H49SALcWrjtyLI7/C
-         idbyCAOG4ZRRihihyxMpI990C+8s2DznqEhrXLM0xcNCXanpTskpL0/MxNzQccqZTbPi
-         Z7CdUY3huaU90m7HfMk4TZ39vlSb0M+Je+837YpONWbRfRIHPRv7dTKv9Aov9xK7TMWh
-         aEKPaP7UeACHYwXE7Bqq8KK8JIEddf7R4yRslSoGt6pKMF3QhdL93UHBZNFwZ+dawN4P
-         S5JfbQepyu3kRVuUxEapQNCtMi/xTxWXMVMKmckBN7CuCl3E1K+ceAuMA3bKwaIThpmx
-         socQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+3HKnp/kkjRHFWUwPgV4bTo8rbTxvR2ecJajcJC/AAlMJOSr6Ki8IdaIAi8zMkZBaG75g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxY7aKECpbR9+4/e6olTiSAOzN9kZ61XnoWq34Mw6hFatOxxOcY
-	3A8P3wG4cjDF0f2qVj2VVemhanbCf3nTjyxztvObsLPOl4kScwc1xiVKnhv48RaELEG00TJwpbB
-	yfNg9dD/wO+P8RPSprF8ZnXFO+khKGNpnmjo05NjZJiRNnNX8P8SSKw==
-X-Gm-Gg: Acq92OH3pZ+gkM0pK5o1BWgjG3nJGE0NMKzLgsoz3WqZw925ngutDfWwvKyfW3BgCfc
-	9g1oVklsOzidyHaG4BHDldRr1Fcp+Q9bJUtb+b/oudDVFEgJpbcxpq058Fps3C8T59aVX0vB0z2
-	dHjMZ/hXsh5SO/R0EvizENq+y35ZK2gmHNl5ikGxmX7TMao6PipF8xIQAkEm5s35YQY2oncJuWE
-	DbRX7nkelQpG/ba+V6KgAHYfYHmktBNlU6RA5dpNFwGZi/2xe9MctGKHF4jLOftuRbJStxFieeI
-	g+lSDy9V2wfLj0qiUcOwtGXkVqaoD7EV3G5xqb/pslVKzsHjwwA2ShoYM700TWBU3g1PVcoyeTe
-	jUM7nURTTVLensISqQs+Y0YVR6eqT6uUxRZp+lsR7+qXLt+8B3QnsKhwREt8YzeDItPDEmg9bfl
-	KQZ+oVUZHT
-X-Received: by 2002:a05:600c:4e55:b0:488:ac01:72de with SMTP id 5b1f17b1804b1-48fe60e510bmr285210245e9.5.1779184178079;
-        Tue, 19 May 2026 02:49:38 -0700 (PDT)
-X-Received: by 2002:a05:600c:4e55:b0:488:ac01:72de with SMTP id 5b1f17b1804b1-48fe60e510bmr285209745e9.5.1779184177542;
-        Tue, 19 May 2026 02:49:37 -0700 (PDT)
-Received: from sgarzare-redhat (host-87-16-204-231.retail.telecomitalia.it. [87.16.204.231])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48fe5cab7c5sm334163125e9.12.2026.05.19.02.49.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 02:49:36 -0700 (PDT)
-Date: Tue, 19 May 2026 11:49:28 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: Arseniy Krasnov <avkrasnov@salutedevices.com>
-Cc: David Laight <david.laight.linux@gmail.com>, 
-	"Michael S. Tsirkin" <mst@redhat.com>, netdev@vger.kernel.org, Jakub Kicinski <kuba@kernel.org>, 
-	Paolo Abeni <pabeni@redhat.com>, Simon Horman <horms@kernel.org>, 
-	Stefan Hajnoczi <stefanha@redhat.com>, kvm@vger.kernel.org, Eric Dumazet <edumazet@google.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	virtualization@lists.linux.dev, "David S. Miller" <davem@davemloft.net>, 
-	Jason Wang <jasowang@redhat.com>, linux-kernel@vger.kernel.org, 
-	Maher Azzouzi <maherazz04@gmail.com>
-Subject: Re: [PATCH net] vsock/virtio: fix zerocopy completion for multi-skb
- sends
-Message-ID: <agwwxuQlIWjwXtMN@sgarzare-redhat>
-References: <20260514092948.268720-1-sgarzare@redhat.com>
- <20260516125329.7b699c6f@pumpkin>
- <agrXvCtNRlySlwgx@sgarzare-redhat>
- <20260518053223-mutt-send-email-mst@kernel.org>
- <agrg1GVzoJWtNuSd@sgarzare-redhat>
- <20260518115005.5f13bd2b@pumpkin>
- <20260519053951.1C60440015@mx4.sberdevices.ru>
- <aea2227c-3011-4457-b909-d16de1596a6d@salutedevices.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FCjRvMHJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BDF4C2BCB3;
+	Tue, 19 May 2026 10:02:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779184948;
+	bh=5CY+IUXkmbYVoZqzVuKhQ3pZoZ4Pk6BK8MnYzDSzr7E=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=FCjRvMHJals+Nn6CQNjvcIFda8xr7o7GvV7HXOOaPv+oBEkbfHumyHVdTzBWmzMJX
+	 9y/9he4/VJ3Bs5eMQhEVcbDIlBmi+HBcoI12ORsQymuciY5S/osY3WzwQ2FjVbKMR5
+	 oM9V8EMF6BOeoyf0r4MV0B3CNksvJqT0q3VjjYBO6unRdMEaVHsdWzBQ1sXpEEendH
+	 /U/O6if5goDue3gM21oIUeqmenUE3zkhzrsVLvLMYrqjbA2aeQ3ghJeTj416jFfesO
+	 pskTY1BS6PFCLAXcdtu6H6hIbMztjmp6g8bGSBXOKRVvrP+CEcVaojmEzKq/SZF/aD
+	 hdsusPyjxEdkg==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev
+Cc: Steven Price <steven.price@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
+	Lorenzo.Pieralisi2@arm.com
+Subject: Re: [PATCH v14 27/44] arm64: RMI: Set RIPAS of initial memslots
+In-Reply-To: <20260513131757.116630-28-steven.price@arm.com>
+References: <20260513131757.116630-1-steven.price@arm.com>
+ <20260513131757.116630-28-steven.price@arm.com>
+Date: Tue, 19 May 2026 15:32:16 +0530
+Message-ID: <yq5av7cjsonr.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <aea2227c-3011-4457-b909-d16de1596a6d@salutedevices.com>
+Content-Type: text/plain
 
-On Tue, May 19, 2026 at 09:37:23AM +0300, Arseniy Krasnov wrote:
->On 18/05/2026 14:08, Stefano Garzarella wrote:
->> On Mon, May 18, 2026 at 11:50:05AM +0100, David Laight wrote:
->>> On Mon, 18 May 2026 11:54:19 +0200
->>> Stefano Garzarella <sgarzare@redhat.com> wrote:
+Steven Price <steven.price@arm.com> writes:
 
-[...]
+> The memory which the realm guest accesses must be set to RIPAS_RAM.
+> Iterate over the memslots and set all gmem memslots to RIPAS_RAM.
+>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+ 
+ ...
+ 
+> +static int set_ripas_of_protected_regions(struct kvm *kvm)
+> +{
+> +	struct kvm_memslots *slots;
+> +	struct kvm_memory_slot *memslot;
+> +	int idx, bkt;
+> +	int ret = 0;
+> +
+> +	idx = srcu_read_lock(&kvm->srcu);
+> +
+> +	slots = kvm_memslots(kvm);
+> +	kvm_for_each_memslot(memslot, bkt, slots) {
+> +		if (!kvm_slot_has_gmem(memslot))
+> +			continue;
+> +
+> +		ret = realm_init_ipa_state(kvm, memslot->base_gfn,
+> +					   memslot->npages);
+> +		if (ret)
+> +			break;
+> +	}
+> +	srcu_read_unlock(&kvm->srcu, idx);
+> +
+> +	return ret;
+> +}
+> +
+>  int kvm_arm_rmi_populate(struct kvm *kvm,
+>  			 struct kvm_arm_rmi_populate *args)
+>  {
+> @@ -890,6 +922,10 @@ int kvm_activate_realm(struct kvm *kvm)
+>  			return ret;
+>  	}
+>  
+> +	ret = set_ripas_of_protected_regions(kvm);
+> +	if (ret)
+> +		return ret;
+> +
+>  	ret = rmi_realm_activate(virt_to_phys(realm->rd));
+>  	if (ret)
+>  		return -ENXIO;
 
->
->Hi guys! Just some replies after quick look:
->
->>>> >> > Surely that block should only be done if can_zcopy is true?
->
->I guess no, since TCP also allocates uarg even if zerocopy is impossible -
->it just sets uarg_to_msgzc(uarg)->zerocopy = 0;
->
->>>> >> > And shouldn't something unset it if info->op != VIRTIO_VSOCK_OP_RW ?
->
->Hm, we can't enter block 'if (info->msg) {' when 'info->op' is not equal to 'VIRTIO_VSOCK_OP_RW',
->because 'msg' is not NULL only for 'VIRTIO_VSOCK_OP_RW'. But anyway You point to right thing - check for
->'VIRTIO_VSOCK_OP_RW' could be removed here. Just with comment why.
->
->>>> >> > If the msg_zerocopy_realloc() fails then can't you just set can_zcopy to false.
->
->Here I guess it is better to follow TCP way to make same behaviour, because exact
->logic for MSG_ZEROCOPY is not documented. TCP also returns error and stops tx loop.
->
->>>> >> >
->>>> >> > It info->msg->msg_buf is already set then I think you have to disable zero-copy.
->>>> >> > The caller has already requested a callback - and you can't add another.
->
->In TCP implementation if 'msg_ubuf' is set they just use it and check for zerocopy in
->the same way as 'msg_ubuf' is NULL.
->
->>>> >> >
->>>> >> > In any case by the end of this can_zcopy and have_uref are really the same flag.
->>>> >>
->
->Need to check it more. But 'can_zcopy' means that we fill frags in skb, have_uref means that we
->allocated completion (but it could be reported with not set 'SO_EE_CODE_ZEROCOPY_COPIED' if
->'can_zcopy' was false).
->
->
->@Stefano, I guess current implementation differs from TCP in two cases (at least from first
->view):
->1) When 'msg_ubuf' is set: in TCP, already set 'msg_ubuf' is passed to 'skb_zerocopy_iter_stream()'
->   (if zerocopy is possible) where it is used as in vsock in call 'skb_zcopy_set()'. In vsock case if
->   'msg_ubuf' is not NULL we will pass just NULL to 'skb_zcopy_set()'. Yes this is will be
->   no-effect call today (due to checks in 'skb_zcopy_set()'), but anyway - in future may be not.
->2) Also i see that 'skb_zerocopy_iter_stream()' in TCP version has some 
->extra checks which are
->   missed in vsock - we only just call '__zerocopy_sg_from_iter()' to fill skb in zerocopy way.
->
->But, I think, instead of trying to compare vsock and TCP versions best way is to just copy
->current TCP flow as close as possible:
->https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/tree/net/ipv4/tcp.c#n1144
->1) Use same flow of checks for 'msg_flags', 'msg_ubuf', SOCK_ZEROCOPY etc.
->2) To copy data we can use 'skb_zerocopy_iter_stream()'.
->3) The only thing that we don't need in vsock is dev mem related code from TCP implementation.
->
->I can take this task, but pls need some time - may be two/three weeks due to another tasks.
->
->What do You think?
+relam guest already does. 
+	for_each_mem_range(i, &start, &end) {
+		if (rsi_set_memory_range_protected_safe(start, end)) {
+			panic("Failed to set memory range to protected: %pa-%pa",
+			      &start, &end);
+		}
+	}
 
-If you can work on it, please go head. They seems all pre-existing, so 
-2/3 weeks are fine. Please let me know if you can't and I'll try to 
-allocate some time.
+if so why is host required to do this ?
 
-Thanks for the help!
-
-Stefano
-
+-aneesh
