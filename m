@@ -1,102 +1,109 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6CC41F0995
-	for <kvm@vger.kernel.org>; Tue, 19 May 2026 00:44:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D264263C9F
+	for <kvm@vger.kernel.org>; Tue, 19 May 2026 00:44:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779151449; cv=none; b=DMCQ4E4dG0f7UCFrrNDJaWkBN1TRfWHZaEu0QVfOn3s0L+aQgf3R8aCwvQpg00GT+zsDt/RZLisrjSZVHIDh/7n1iscA8U20faSZgBE9B+SUnCoCbpsYpuiC7t+9ABSLxUgMjmKVup1JyG+2vIh72A9spmSQ79qJBNjebOwHcEM=
+	t=1779151456; cv=none; b=VrzPegNwRUPfGeAqHOfgxVpUGrEonvLYeDtxM6D63N2Yd0MUHo00ED6SWaPpJ4Z0I9keSxmUojDEt0N2IcQJ4e3R7mWLKf+pUiY+5Xk90BsUVF3ebMS8C6f/YwkrQH0FBhRq1KNhOzrd3JnthbVM3M47u/vtnRqtjsr3ylzEInI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779151449; c=relaxed/simple;
-	bh=qmBzkNxEWGzq2VwD2HyByFiUYOVkAQ1nM5jGrpGDqvI=;
+	s=arc-20240116; t=1779151456; c=relaxed/simple;
+	bh=Ewifb8VwQasaz0okwhge4bZJXgIyigSuJeyXErZk4aU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=s2UI3bxODaM/lvj6UCFkB1gpFdbueUy2AIWZ0bGGLu+dpeL8iqHSgpd5HBVJebu12PGeHZT3Uy9HuqWGFlpGDNlZkvKBxpvlaDq1dQY4jd0pCGu4Twq6SJrmzjTnWDPTyenVi9X7kSnMdZIEgRCiL6fUAsdT3+yRncKiV0Nxq7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jsLqz0v/; arc=none smtp.client-ip=209.85.215.202
+	 To:Content-Type; b=j/n8xDA3hXS28lalZDffD1LC+SYpUM24W2nCWunvYCNhBUcXdH8Y5xAPsV0S55j4Da/9hB+sGR+Rck+HYpb/tscxIEJ8HnHqQxw+BVzhBkZ/mQEOQOZPp/ePa68D2wX9+4oak3A63BX7ZJyJnebU55hglHlRnWCOvSlkfCJPauM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WTZWvuRF; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jsLqz0v/"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c70f19f0f37so1469803a12.0
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 17:44:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WTZWvuRF"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-83cecc22d5fso1489665b3a.2
+        for <kvm@vger.kernel.org>; Mon, 18 May 2026 17:44:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779151447; x=1779756247; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=K5P6e80dFm0NAQdFpnmNLaZSqqU5/u6DG8vr5DyvsFM=;
-        b=jsLqz0v//R8A4V6cCMa7jx2X4mXdJJk0Atu4+XeYeFgKnw5L1jIlieMCLy5hTH05O+
-         pwb+Qv/nBxn67ShVjAZTMmATb2iO3TJghyvTG33fzW3w+sg35H0fTKrAR2sE8wc+s1f4
-         k7VOwZXTGdKfNUw6D2ivvnQSLBuNlOs9+vQA7J6sX57CBTJGEpCwrBZYoeBwWvdYCV6H
-         JG3sc5ilPr2SLKS8bAv9UpguIno2JinG5TJVUp7yFINJNZayp2+/6Cwz2TWuPLiHa7cL
-         FKmj6cYwhcC16UO+hs2kD+NTeo4kxGhS7AzOAT4vGfnK5XMgzTjlcuXgafSe3PSM0wfH
-         wLnw==
+        d=google.com; s=20251104; t=1779151453; x=1779756253; darn=vger.kernel.org;
+        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DC6DVjI2095clscFBU2SfIMH51WSvFVw68FB2pL6Udk=;
+        b=WTZWvuRF5I++iBkOQuqHyI7zk5av1fmmXsRa3KCG1P4FDmbDZ9Q4WA/9w+HlWpfarO
+         rATsrTgsWLASP4XIozjXKxryp7DM30SwNs9yvcEgfaWMZnbU4pPE758vUlsgIQv4/z4Y
+         2HVPyrf7TQSkPBhOJL0dJh6i+m8pMcp8zoEfNW0I+qcItUaRqdel5cAfjEts2Ia7HV+J
+         bYb4+1slJdbVphBPlOynloiYkGaee3TuEBQ5+pICd0GVbnOygrtarfhOMiRFAM7a67DP
+         dhGW38eB2yEafMQEtB3wJ7SiaBkxRnPmIpYABChdC+ovaz7PT7NfmYdo22YmCFyPoIv0
+         DoAA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779151447; x=1779756247;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=K5P6e80dFm0NAQdFpnmNLaZSqqU5/u6DG8vr5DyvsFM=;
-        b=AJ+kGBSakMv3NkCE8ftk99wPLuVTQlKOgBJGguNfwbudUVEBgVxKZQ6i6ySQPdspec
-         lTjNgVRlzdPV21op0LWbZg8TrzM4Gu+lmyNO+wLTIfWz5+TnXJXFxyWUeWugkAo0zPfr
-         zabRBrKBYIoUyAGWPCOwwnVOQo0/pohAAmEBCE+4z/1izuDkc3f+enZKJoIBVZA9N7aP
-         M8UgEr/LEx+4YdUFH8xrwzeBv4qN6h6UJ2Zo98VsGJT+spmgSD1Su8yX3lRNGcAwPx9g
-         ykQRblwcdPYQr0nirbLCFkAjiDpRxUOshWVRWZ/dhWmpx+tu8qee1DbfNmYLRhAoPWaz
-         UHHw==
-X-Gm-Message-State: AOJu0Yx8SzbqsuThCB7KAV9sbeYb6RTGGqPv+xSkBJxFtf/zYFUyrfo0
-	02chGs7vrf5WWEj7YQ3Py8qLlESSYa5xMF+9zEgjJXAJXp1rQtndRl+qFK+eQf5hN/S6JOwNjhJ
-	DQImZTg==
-X-Received: from pgbfm5.prod.google.com ([2002:a05:6a02:4985:b0:c82:7df9:8c21])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:3382:b0:39c:4e62:b843
- with SMTP id adf61e73a8af0-3b22d1a7175mr15817756637.10.1779151447095; Mon, 18
- May 2026 17:44:07 -0700 (PDT)
-Date: Mon, 18 May 2026 17:41:04 -0700
-In-Reply-To: <20260416232329.3408497-1-seanjc@google.com>
+        d=1e100.net; s=20251104; t=1779151453; x=1779756253;
+        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DC6DVjI2095clscFBU2SfIMH51WSvFVw68FB2pL6Udk=;
+        b=H92rthAor/2pcxnp+0JoYx/vpOlX4wqRFWGQIQWKhf0Glr/HY+D3imaD6pfs+mGFPa
+         pF2vKDAwM09S07zDB6GqdBP/5X9xcCn+KoySDlgmjhteB33BmNCYxMQrbGRwgnPjK2bd
+         1oEzdTdIpmin8rP4XWsEdvfGmQFdCznocPO1tyjlC/o0r7ARlL0gnstBhDjnaev+YMUC
+         GaBy2QLByN/hUDVycXtxHm7Oh3hTJiV3mLZjqPnYdML+pxUedSDCbI5qDTIUci4dqFsu
+         46U4c5+itbBuxmvPWvKYnE+MMDdsN8fTspNOHKlIXzcnkugFrlZqpiLs7TT9zWfmpLlF
+         +XiA==
+X-Forwarded-Encrypted: i=1; AFNElJ+bD8/UnXaAPnAjGSeWk5NHwNrzrp2NAoIch9FkMr55hVnzNu9RoQ4kbLEXIxHiQUrGjdk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxCMQ8yuGC7LRRd1MDlE4Gd1nYTjda36XzTZgZwWAdlZYlKJoi
+	57f6CXVnhgK9t9IwolS4x8cN+8rjaGo6PZ9DBai9WK1IOE14z5fIeqC0QEAd5bNirOePl1ovehM
+	M3RdyQg==
+X-Received: from pfbfd35.prod.google.com ([2002:a05:6a00:2ea3:b0:837:c7f5:5c27])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:429b:b0:83e:b125:ff30
+ with SMTP id d2e1a72fcca58-83f33ab698bmr17431805b3a.7.1779151452757; Mon, 18
+ May 2026 17:44:12 -0700 (PDT)
+Date: Mon, 18 May 2026 17:41:06 -0700
+In-Reply-To: <20260407190343.325299-1-jmattson@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260416232329.3408497-1-seanjc@google.com>
+References: <20260407190343.325299-1-jmattson@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <177915097791.2229301.15490282436883023446.b4-ty@google.com>
-Subject: Re: [PATCH v3 0/7] KVM: SEV: Don't advertise unusable VM types
+Message-ID: <177915062620.2226127.1264745848157211491.b4-ty@google.com>
+Subject: Re: [PATCH v8 0/8] KVM: x86: nSVM: Improve PAT virtualization
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Ashish Kalra <ashish.kalra@amd.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	John Allen <john.allen@amd.com>
-Cc: kvm@vger.kernel.org, linux-crypto@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Herbert Xu <herbert@gondor.apana.org.au>, 
-	Tycho Andersen <tycho@kernel.org>
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Yosry Ahmed <yosry@kernel.org>, 
+	Jim Mattson <jmattson@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, 16 Apr 2026 16:23:22 -0700, Sean Christopherson wrote:
-> My preference would be to take this through the KVM tree, with acks on the
-> crypto patches.  I'd also be a-ok with a stable branch/tag of the crypto
-> changes.
+On Tue, 07 Apr 2026 12:03:23 -0700, Jim Mattson wrote:
+> Currently, KVM's implementation of nested SVM treats the PAT MSR the same
+> way whether or not nested NPT is enabled: L1 and L2 share a single
+> PAT. However, the AMD APM specifies that when nested NPT is enabled, the host
+> (L1) and the guest (L2) should have independent PATs: hPAT for L1 and gPAT
+> for L2.
 > 
-> In the words of Tycho:
-> 
-> Recent SEV firmware [1] does not support SEV-ES VMs when SNP is enabled.
-> Expose this by revoking VM-types that are not supported by the current
-> configurations either from firmware restrictions or ASID configuration.
+> This patch series implements independent PATs for L1 and L2 when nested NPT
+> is enabled, but only when a new quirk, KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT,
+> is disabled. By default, the quirk is enabled, preserving KVM's legacy
+> behavior. When the quirk is disabled, KVM correctly virtualizes a separate
+> PAT register for L2, using the g_pat field in the VMCB.
 > 
 > [...]
 
-Applied to kvm-x86 sev, thanks!  Holler if anyone needs a stable tag.
+Applied to kvm-x86 svm.  Yosry and/or Jim, please double check the result, the
+goof with patch 5 was slightly more annoying than I was expecting.
 
-[1/7] crypto/ccp: hoist kernel part of SNP_PLATFORM_STATUS
-      https://github.com/kvm-x86/linux/commit/acf4d11a35d8
-[2/7] crypto/ccp: export firmware supported vm types
-      https://github.com/kvm-x86/linux/commit/4b28f0846ef6
-[3/7] KVM: SEV: Set supported SEV+ VM types during sev_hardware_setup()
-      https://github.com/kvm-x86/linux/commit/c2a02db765af
-[4/7] KVM: SEV: Consolidate logic for printing state of SEV{,-ES,-SNP} enabling
-      https://github.com/kvm-x86/linux/commit/82bf8282444c
-[5/7] KVM: SEV: Don't advertise support for unusable VM types
-      https://github.com/kvm-x86/linux/commit/93d1a486e1d4
-[6/7] KVM: SEV: Don't advertise VM types that are disabled by firmware
-      https://github.com/kvm-x86/linux/commit/d8355a92df1f
-[7/7] KVM: selftests: Teach sev_*_test about revoking VM types
-      https://github.com/kvm-x86/linux/commit/accb7f3a6384
+Thanks!
+
+[1/8] KVM: x86: Define KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT
+      https://github.com/kvm-x86/linux/commit/822790ab0149
+[2/8] KVM: x86: nSVM: Clear VMCB_NPT clean bit when updating hPAT from guest mode
+      https://github.com/kvm-x86/linux/commit/0a8aeb15848e
+[3/8] KVM: x86: nSVM: Cache and validate vmcb12 g_pat
+      https://github.com/kvm-x86/linux/commit/4b83e4ba836e
+[4/8] KVM: x86: nSVM: Set vmcb02.g_pat correctly for nested NPT
+      https://github.com/kvm-x86/linux/commit/02233c73f8ae
+[6/8] KVM: x86: nSVM: Save gPAT to vmcb12.g_pat on VMEXIT
+      https://github.com/kvm-x86/linux/commit/d65cf222b899
+[7/8] KVM: Documentation: document KVM_{GET,SET}_NESTED_STATE for SVM
+      https://github.com/kvm-x86/linux/commit/32ebdbce3b23
+[8/8] KVM: x86: nSVM: Save/restore gPAT with KVM_{GET,SET}_NESTED_STATE
+      https://github.com/kvm-x86/linux/commit/4f256d5770fe
 
 --
 https://github.com/kvm-x86/linux/tree/next
