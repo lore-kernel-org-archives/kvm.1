@@ -1,95 +1,87 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC49924DCF9
-	for <kvm@vger.kernel.org>; Tue, 19 May 2026 00:42:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE478221540
+	for <kvm@vger.kernel.org>; Tue, 19 May 2026 00:42:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779151340; cv=none; b=BrLgYcxaeF71mFJuZ7MqJz2arq1IWf0mxxnEXO4Nz7ZYAE6i9zKrBi2yFYMSEgev/1K+Qm9+9PDFb/m5WxWyt8bmzNX7zi0wf9OppG/rT3BZddPB24Q4UNgOWUvBwMOZ+lmxWDm/hgtJNkW9KKYdH38UE1dMyJxWPVyKtcKtrrY=
+	t=1779151346; cv=none; b=KqUE8kKxw/flVVDFCtAP3O4pZ4jIn54vu/XTwDrMb12dcRv6wdA3h2RjS1y02Fgrl8jV+HQJt7XT6+DzaW0ufYfpcqBV/JczybOe+Ic39a4HvMymlhFKDBNJhQVB84MNhoYuq6b24PZ2aEbxeNuPejeYUgJ7uM+D4NSfbj0GPys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779151340; c=relaxed/simple;
-	bh=go9jzMrocMcEPbaDoL2gNaf6261Jf9BB8OBRee5rK8s=;
+	s=arc-20240116; t=1779151346; c=relaxed/simple;
+	bh=0ZXhg3ESzQMIrHvqN+Rk3iOjLKSaO3bVYaLDy6rC1cE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=fc5WqKmb9pqqyd+ByHE9Q6q73GT2CeIG9lJgvFIOAH9I7eoo60or9YE7eWIndelztMTvpoqjZ+UFFkYmmgKBACnJOa7L2KZdBtXY8Hi1m3zx/tqer1GJAaruUZUX5CGMeLDF13sKGVnHf14weG39/v0dHEvcrJmrKcm8i2fngBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JM0pHtgq; arc=none smtp.client-ip=209.85.210.201
+	 To:Cc:Content-Type; b=AxjWOtbM7qOZzZ8LcQ7eOeILhgRr1jgxk72PGV4SWn2c9XksUxDV17+9/RC2oIH12TgEJv9ItUk6L4YgcHReY0iP2IzyhTrhxGRwoKzxMD2cZ5Rb6gCvaIdi5ZVXylcaZeWVx3DWG/7Cznmy35CyJTIcBzb6yj66LqOyqc4jGaQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dYWv5ic5; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JM0pHtgq"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82f74bcfb86so3812688b3a.0
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 17:42:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dYWv5ic5"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c799ee56bd6so1492039a12.2
+        for <kvm@vger.kernel.org>; Mon, 18 May 2026 17:42:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779151337; x=1779756137; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779151344; x=1779756144; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gAWTgC2n5XL5hrjpKs7d7iBSwBHUavq9roRCCFpKuYY=;
-        b=JM0pHtgqeOv4XuHByNhIoOCa4LPZVPEeQWyzFLnEqJ0rUaKzijX9x08k2ZWsw8mwdY
-         kX1RIaZnbUwe83Y19AMvSiKjqepumt/8hHsgwFtID9JSERXP7b1WslWXxp+Ji6SCZBay
-         NbArIlvLAbQwnqdrRuEZSeEcXrtnSUxpQPUQc1TQLwKkLa/LHzcmRB8fGcf++wudF8+5
-         0XA9MPzdfGtcyH17KWbKOeHZoFHcmbCW1vmd0h0DV1Si1dJnE9lxquDMDTNElmH2d3tR
-         4oGP1X93OR8R5pj8lN1TPyDUV/sg7AFwbMgXuTNmYAH5Jv6JRF7I4GJq92Hfm8QGm7Tc
-         B2QA==
+        bh=P7QwZo6KxCL7PUVyCWizdC0ktl0P8L3MwdufqGhOMio=;
+        b=dYWv5ic50bkwMgIt9AIKOSjPmD9m94zqmtAqX9QEczhCquWWegAh1l3w3Js4gi4ov2
+         wt3Mb4kEyYl5Tgd8TTwMeRuQfl3++0hPBS1iUptBZtVSXJBEbaPiTUJka8K8oEe4ZsXu
+         uAmcDuT06tP9VOjGn67/4KoMZkNr/offt0FFjK2/njDKHQ/LYTOjyJZk3OI1AodftP1/
+         2YOCgaCGiS1JmHDR+fow6A/6rVpWyCoVO7cP1jh0GNMBLT8Gc4rLcx1d46V+tnepxpDO
+         8TSC6aSH9+sWax3wtIalcOq66XLwY2/cccZFcTNry2y9MePMTmfQA5j6O6zhXng4yOMp
+         h9EA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779151337; x=1779756137;
+        d=1e100.net; s=20251104; t=1779151344; x=1779756144;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gAWTgC2n5XL5hrjpKs7d7iBSwBHUavq9roRCCFpKuYY=;
-        b=CBcwJ1T6vKo1S6GHMVt7nFY1pYQabVrZUa0YkQJFCBCbQxCKTLpjJiUM3aaPr+lkWB
-         TO45lx1lFQPPB4goTo1QW8z5rnGZ7VQ/7epiu57EKfhIfIjOzwi6G5y/enschwav87uX
-         XP1jmlxHDAn5DZMreeDvPMusr3cFBFxwT7j+TZbcUChLWrZEgzDac5/S9eCmqDnuNE/W
-         dezw73yobUZJJ2bxYiaeyFcvcnnXof+kEXN5xN8H8WbS3NMCcbpLn0S+pO2dJwIs9km4
-         1mXW+S6Vfq08jBeucWszesBPz4uO2D1qHQAAkJvHIE5hOdNCYg6lrnHLThn+VHRC5hFa
-         vmWA==
-X-Forwarded-Encrypted: i=1; AFNElJ8icQZl1oaklTbz1mEZ0k/Tx0cESeEsK3WPhAcrY0GB4zwJUjfAIf3zn4o2HI0IZFPkm4g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzR5v56GauEpkjNlAA1xVS1YwrzvE8PSGKxHulSJiS6PRYlQor4
-	lxDzMXS/oZCnhdDfyTTuExekF3znKbwgLyq3FAhZ/oGSjLc6ZfcVxa0q2HWuuwiM3vbRd98d0ou
-	+H+M8+g==
-X-Received: from pfde1.prod.google.com ([2002:aa7:8c41:0:b0:82f:7fb6:b50b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:440f:b0:824:374a:1407
- with SMTP id d2e1a72fcca58-83f33c9e8dbmr17940362b3a.16.1779151336836; Mon, 18
- May 2026 17:42:16 -0700 (PDT)
-Date: Mon, 18 May 2026 17:40:38 -0700
-In-Reply-To: <20260408001137.3290444-1-peter.fang@intel.com>
+        bh=P7QwZo6KxCL7PUVyCWizdC0ktl0P8L3MwdufqGhOMio=;
+        b=As+0lykjD4nR1AGSFTUqVyO4uqIjnXtKbGnX2VFMZSwL7osqoJLuPhu77RPN52GXuf
+         gpNNA+aTR4b/XdcpjFv1GltCQbVA4o/qZoMkMmcRleIq6yFw/nHcfOjXtp6+SBZaCMkW
+         EyAZlxh99AqBl+sWs8S/mlZACJEtO/1BxpWLkoGK86wGp7s+YuD2gTFm8ZDfPg2tcJL3
+         RPQOmygHPocx3sg/F8JuAw69kPdFP3JYqQF8Itsx+WDCIKhC6TwwXw7EMJ8GTHwqys8l
+         5N4i7KOwLVgHAjB9RTHmM4+25R2QPFRg1W5JH/UEiT4cLPqQcbKOhTbt5WUw1JDIsEAS
+         Tgeg==
+X-Gm-Message-State: AOJu0YyTKkciQh5231tU5HhxJ9OS+tQjM9hIWtEKox+897TaPCoQLn4N
+	gU8mkOWeD67n/NLABt2MPPHVuodVyZnsKg/ou8qkr3gJy3R/XELu16zOYtDKpYaY92RsPwMv67q
+	yR2Dw9Q==
+X-Received: from pgr17.prod.google.com ([2002:a63:1151:0:b0:c82:bdf7:4836])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:218e:b0:398:9662:10ff
+ with SMTP id adf61e73a8af0-3b22e6685e2mr19937882637.4.1779151344014; Mon, 18
+ May 2026 17:42:24 -0700 (PDT)
+Date: Mon, 18 May 2026 17:40:40 -0700
+In-Reply-To: <20260423162628.490962-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260408001137.3290444-1-peter.fang@intel.com>
+References: <20260423162628.490962-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <177915089967.2228074.1398572969116564533.b4-ty@google.com>
-Subject: Re: [PATCH v2 0/3] KVM: Fix and clean up kvm_vcpu_map[_readonly]() usages
+Message-ID: <177915113628.2231260.17159960202588301938.b4-ty@google.com>
+Subject: Re: [PATCH 0/2] KVM: x86: Fastpath userspace exit fix and hardening
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Madhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
-	Peter Fang <peter.fang@intel.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, Ritesh Harjani <ritesh.list@gmail.com>, 
-	Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org, linuxppc-dev@lists.ozlabs.org, 
-	linux-kernel@vger.kernel.org
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	"Nikunj A . Dadhania" <nikunj@amd.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Tue, 07 Apr 2026 17:11:27 -0700, Peter Fang wrote:
-> kvm_vcpu_map() and kvm_vcpu_map_readonly() are declared to take a gpa_t
-> in kvm_host.h when they're supposed to take a gfn_t. First fix the
-> function prototypes, and then refactor them to correctly take a gpa_t,
-> reducing boilerplate gpa->gfn conversions at all call sites.
+On Thu, 23 Apr 2026 09:26:26 -0700, Sean Christopherson wrote:
+> Fix a found-by-inspection bug where KVM could fail to flush the PML buffer
+> (VMX) or fail to grab the most recet CR0/CR3 (SVM) prior to exiting to
+> userspace, which could prove to be fatal if that exit is that last exit prior
+> to save/restore, e.g. the last exit before userspace commits to migrating the
+> VM.
 > 
-> No actual harm has been done yet as all of the call sites are correctly
-> passing in a gfn.
+> Patch 2 is related hardening, i.e. isn't fixing any existing bugs (AFAIK).
 > 
 > [...]
 
-Applied patch 1 to kvm-x86 generic.  I'm moderately optimistic that the gpc
-stuff will land soon enough that I won't regret skipping 2 and 3 :-)
+Applied to kvm-x86 misc, thanks!
 
-Thanks much!
-
-[1/3] KVM: Fix kvm_vcpu_map[_readonly]() function prototypes
-      https://github.com/kvm-x86/linux/commit/ccd6c77223bb
+[1/2] KVM: x86: Ensure vendor's exit handler runs before fastpath userspace exits
+      https://github.com/kvm-x86/linux/commit/0ffedf43910e
+[2/2] KVM: SVM: Refresh vcpu->arch.cr{0,3} prior to invoking fastpath handler
+      https://github.com/kvm-x86/linux/commit/b21525756e82
 
 --
 https://github.com/kvm-x86/linux/tree/next
