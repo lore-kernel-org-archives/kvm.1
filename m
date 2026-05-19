@@ -1,130 +1,90 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84FBF192D97
-	for <kvm@vger.kernel.org>; Mon, 18 May 2026 23:59:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC95A21FF25
+	for <kvm@vger.kernel.org>; Tue, 19 May 2026 00:40:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779148766; cv=none; b=tp4k8lQmwEv0ZJ3O2ktrR7E5WRhKaB2Z9XQ/uDxSsxp+QZ//Hw+jfNoZPcLa2bMOQsjFYL6Ii5t5JhMfJhgMCUiYmtJT5FVh49ZYOjlgiP1a64aa6fy0MR3XZtmf+ySuQnTZLSPdWMVf4+m/6EAwaemGEMRZOR4rQ2hnvO5YTuk=
+	t=1779151258; cv=none; b=oWjPq9EvsvJCHFJjolgdpoGpskSNUwOZRt0rOy4A22sU9+ZaaLdPJcwAgQFHsuW9V3KWE8in4d0VBByNJ3eMvKKXt8UUmmjJ0MHLB3YYLWahCSvpLEgR/mbuEPZj+TvLed/BQ4ayO0Qj7z1AaWUjoOsLJbhiNvRS0rUqsDwSIok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779148766; c=relaxed/simple;
-	bh=M2JO54/T29iTHbfw2ECqj0TSL6Kfm2Z3nn/1O5aeuQA=;
+	s=arc-20240116; t=1779151258; c=relaxed/simple;
+	bh=FbG+wJGer7DbDBFVV0TO6IUa665R0UX1LReMh/QQVZY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=p5wZPp7R+JmE9ji9jPLBuKGViZegJUf1ir6dtH2m9nNXybNxSd0ReMbzB93A0pwuaflSHX2JfSShZe20ySWeplkG7CWPS53uehQARYBfMd4W2ekg0C1d/XiFkPnUzzkikJvnZCQ1K22/AITnUaPlTT8eRc2dsGT1a5iDJjI7dGI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fTjx7Mw/; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=aFK/mMMobXHf6et3rmOzGkpZq5ashpRXQw/n6/wJQ16mSWQFy5AOpo0Gvg9HhCm67JVOXBwQQesOQgt34pwHl4EYoYNcR/iEA2Jgx7PefVewHUKr0OUzZ4eyub+U9BZplttWTEp01cK6AE84rBs1syQ+TFCZh5Uzq5gzH6tUS18=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eHz5YOoa; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fTjx7Mw/"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c82ac893940so1294754a12.1
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 16:59:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eHz5YOoa"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c8292e18166so1372525a12.3
+        for <kvm@vger.kernel.org>; Mon, 18 May 2026 17:40:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779148765; x=1779753565; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=hjyDZODCsY4T2fLhqAwfuKyPq9OO+rzN9BmDMARSEFg=;
-        b=fTjx7Mw/ZJ0LY4atRYaIvOz2DygpIE2UP/avGQWRPpTpy+X/I/o+u7p3cxc8FUGupm
-         IiUIHBIgyP3OlVaroFLOIbceRe932hhvNHpDcwh5qhU/SQ96ikmcRo/+9BEmO5QdQgGj
-         E6NGRNLPKI0KM5o6OfMXIPk7bVgGlKWpU4FhIpZX/ucm39M1XihxirckmHNgkHk15FKD
-         OQK0SwRqcmaJtyQDiN26xDQIVIbw9X5XMle6ixjwBfe3ug9Upmq+ZVIuZHGvn4hd6Dmt
-         9GmGquZfIcm/7IC0mVtmqKjHFh3DXxIgT5UBeMT7LTyyeUpZgMjZLBJQVf1dE7acsVOt
-         jIGA==
+        d=google.com; s=20251104; t=1779151256; x=1779756056; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YAFnyZvlo/xy8M7f53UQF60Xw7zi2fHUdsU+WPUumV8=;
+        b=eHz5YOoam8tEsPTnra7WFlVfnKvzb5gq1ttFEQkArfWLMC5oTWCgVyEutJsDp9CF1A
+         lMy40zV3qSN5kb9Eo46TFK0KnPuHGfwCrkriBDkDt8jod3xBh/k9s0i3R/sEfUY5Dc1x
+         NVbvXe1bAe1SIPHzkGo4qiXBBij/qEijq22zRSSujff4o8kmqAiXak/Tek8nVKl1C7FP
+         zyerHm5PcBg5SaGXw5ii+HuLfQp+V73QCU3zn1YTV4EkWknHE35f87CVaVLlKK3c7Kl4
+         eH3jcAz/GtZ+B59Yu1+vnrgtd9PJJf455VJZd+PryZeFmk3+Ra8ak0WHq0LJfizcT9zA
+         9KtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779148765; x=1779753565;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=hjyDZODCsY4T2fLhqAwfuKyPq9OO+rzN9BmDMARSEFg=;
-        b=cEqtzkLlf4SN1moL+hGHkSdGmvIp62I/H/E4HV3DDTWbkJ3u8M8Y1I93Gkt9FpkD+Z
-         A/TqJ4jnZd1Y/F/gibYpKuf/nBp7xX+P8zLVzAzncbrHmRb+LtTIk9sqNp4u8gP7lmMH
-         RgvicgSdkCfxEvSaePvqDq09YSnIZhJnkqFpPgSesEkrUFNsRRi4cle8c+Gbj1I1U5Ri
-         O6xcNPIcyTiYpkSFPs7NuoC6vEvoly5NUKAf+0WEeUrNgVQD1bRmgSboMHfz8nj329SH
-         WXhvR8RQK+gpQY0Qd+hQWY9uNrQWdpyXOu3t6BLdcWkAgNioda1L5mg4O5k7UFy4boKP
-         Vw5Q==
-X-Gm-Message-State: AOJu0Yzmh1DwVjEgCYNU+wEuu+ZkkN9cgGNQR0WTOmjl+OyeN7HJGyjl
-	4Z7wyzkwH+2IhA/jIwKisMptKpnkD/RiTa+WL+vsyO3K3sSptu1sdAFxGBGvpAKdecpVaC0txpY
-	vKo6hiQ==
-X-Received: from pgc19.prod.google.com ([2002:a05:6a02:2f93:b0:c73:9dbd:c981])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:4305:b0:3a2:d68d:9e80
- with SMTP id adf61e73a8af0-3b22ebcca49mr19839378637.29.1779148764627; Mon, 18
- May 2026 16:59:24 -0700 (PDT)
-Date: Mon, 18 May 2026 16:59:24 -0700
-In-Reply-To: <CADKH=+2sHHR8M5qjDdjt6CjKOwdte_p8w03V_-kF7P1NwK9E6g@mail.gmail.com>
+        d=1e100.net; s=20251104; t=1779151256; x=1779756056;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YAFnyZvlo/xy8M7f53UQF60Xw7zi2fHUdsU+WPUumV8=;
+        b=LWMJXssu+81wmZyoiTNSMkocSvRL/zZy0oTEgu+Ujmul/aFbl1FjJEecf+fgw8rJqM
+         Fz0Ke39CZS3wrgKUyhzbCAAyvaL+yVjNHS+ymS+NwHb7HKWt9jhV1mDWd0LHWAHxa6Ex
+         H9JnEcYO5l/bx6NTVmTNeHdrgIO5kydIxDgwp3JAfDZaGvftiBgSU7DhlXwvmHd4Bny/
+         vzh3uF3+1nn4JDaQ7k/XV6jb33DcQK+RMsC/7OQ5PHMiG2DfDMbKsA1e1KzRrIyI1HeO
+         iF4Jtcj28+r9wtUb4e9YfVd62T5+F8E2MwBWcfoRxoeu+aWJgK+1EPrJNJHYX0jxN/KB
+         6V8Q==
+X-Gm-Message-State: AOJu0YxjdaLlTCZkawx0oPdWK1HzEYULVAS2cfNUfUYSry8Z4sL/0zUW
+	SsN/YxFON2tRx8i7ugrBCNXX/mqi6yPb0coO98SAJastJzTAAS72wePAbG3bs0shrlsfg0SAwHy
+	uohiK9A==
+X-Received: from pgla17.prod.google.com ([2002:a63:b51:0:b0:c82:2e5b:8f33])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a28:b0:3a2:dbaa:82ee
+ with SMTP id adf61e73a8af0-3b22e642e28mr18727670637.9.1779151255874; Mon, 18
+ May 2026 17:40:55 -0700 (PDT)
+Date: Mon, 18 May 2026 17:40:30 -0700
+In-Reply-To: <20260409153846.1502656-2-hisamshar@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <agt_1yfdx3YmjYei@google.com> <CADKH=+2ZwLuona9esxGfbxO+g57EgmU96ReotPfQG3fY7Pp8KA@mail.gmail.com>
- <aguSFIoEbE_PPpeB@google.com> <CADKH=+2sHHR8M5qjDdjt6CjKOwdte_p8w03V_-kF7P1NwK9E6g@mail.gmail.com>
-Message-ID: <agun3LseAsc8bmnk@google.com>
-Subject: Re: sashiko-bot@kernel.org's Cc list on reviews
+References: <20260319000842.1213426-2-hisamshar@gmail.com> <20260409153846.1502656-2-hisamshar@gmail.com>
+X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
+Message-ID: <177915073151.2227139.1935442048185097112.b4-ty@google.com>
+Subject: Re: [PATCH v2] KVM: selftests: Guard execinfo.h inclusion for
+ non-glibc builds
 From: Sean Christopherson <seanjc@google.com>
-To: Roman Gushchin <kfree@google.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Sean Christopherson <seanjc@google.com>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Hisam Mehboob <hisamshar@gmail.com>
+Cc: kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Aqib Faruqui <aqibaf@amazon.com>, shuah@kernel.org, 
+	pbonzini@redhat.com
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, May 18, 2026, Roman Gushchin wrote:
-> On Mon, May 18, 2026 at 3:26=E2=80=AFPM Sean Christopherson <seanjc@googl=
-e.com> wrote:
-> > On Mon, May 18, 2026, Roman Gushchin wrote:
-> > > On Mon, May 18, 2026 at 2:08=E2=80=AFPM Sean Christopherson <seanjc@g=
-oogle.com> wrote:
-> > > In any case, I'm relying on the corresponding maintainers' decision o=
-n how
-> > > they want to configure Sashiko.
-> >
-> > What level of configurability does the parser have?  Specifically, can =
-it key off
-> > the Cc/To in addition to the list?  I ask because I really, really, wan=
-t to enable
-> > auto-mailing for at least KVM x86, but kvm@vger.kernel.org is wildly ov=
-erloaded.
-> > I could try and drive consensus across all 30+ maintainers, but if ther=
-e's a way
-> > to precisely enable it for just KVM x86...
-> >
-> > E.g. is there a way to do something like:
-> >
-> > [subsystems.kvm_x86]
-> > lists =3D ["kvm@vger.kernel.org" && <email is To: seanjc@google.com>]
-> > reply_all =3D true
->=20
-> No, currently it's only per-mailing list. I did not expect that it
-> would be that contentious.
+On Thu, 09 Apr 2026 20:38:47 +0500, Hisam Mehboob wrote:
+> The backtrace() function and execinfo.h are GNU extensions available
+> in glibc but not in non-glibc C libraries such as musl. Building KVM
+> selftests with musl-gcc fails with:
+> 
+>   lib/assert.c:9:10: fatal error: execinfo.h: No such file or directory
+> 
+> Fix this by guarding the inclusion of execinfo.h and the stack dumping
+> logic under #ifdef __GLIBC__. For non-glibc builds, provide a local
+> stub for test_dump_stack().
+> 
+> [...]
 
-Before you go add more configuration goo on your end, let me see what the o=
-ther
-kvm@ maintainers think.  Maybe we'll get lucky and everyone is on-board alr=
-eady.
+Applied to kvm-x86 fixes, thanks!
 
-> Maybe it should be based on entries in the maintainers file instead.
-> But even then, what if a sub-subsystem wants emails and the top-level
-> subsystem maintainers are against it? Or if a patchset touches multiple
-> subsystems.
+[1/1] KVM: selftests: Guard execinfo.h inclusion for non-glibc builds
+      https://github.com/kvm-x86/linux/commit/34065a5f3cf9
 
-Hmm, maybe use a page table walker approach, and only send emails if every =
-node of
-the tree says yes?  Only getting email some of the time would be pretty dar=
-n
-annoying though :-/
-
-> I mean if building a complex configuration system is the only way forward=
-,
-> ok, it's kinda silly, but why not.
-
-s/kinda silly/flat out stupid, given how easy it is to filter/ignore email.
-
-Crazy idea: as a stopgap, what if sashiko emails linux-kernel@vger.kernel.o=
-rg if
-the list hasn't opted-in?  It wouldn't be as good as getting mails sent dir=
-ectly
-to me, but subscribing to and filtering linux-kernel@vger.kernel.org mails =
-is very
-doable.  And even without subscribing to linux-kernel@vger.kernel.org, for =
-those
-of us that heavily utilize b4, it would better than clicking through a web =
-site.
+--
+https://github.com/kvm-x86/linux/tree/next
