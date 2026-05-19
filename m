@@ -1,91 +1,78 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60CF03FE37D;
-	Tue, 19 May 2026 09:40:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 221C340C5AE;
+	Tue, 19 May 2026 09:43:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779183626; cv=none; b=F+H8MdNFvR/ttjQV7UDjowPM5Z+vK/3L+BAdmmpUrm2WGzyCySD9nZ/TNJUShOXpxHc7Lqe+irH1aZWJvrLTwBB4pKqRtW2U1G4NNCEjV8nKNw8CuPtCCB3Jzq2xtyNB4sVEGfSvJNEmleUxUm3u9mXHiEU7LVUwWUgtdA2Gk84=
+	t=1779183795; cv=none; b=LUPcQXLCI2vq4pjn+/jTsHmVE5Diipi8M4HkcBBiTP9b+OlUtMqLWgnIOc/S4gv99KxBh9qv8+TEzXn5L3I8aeXkrWBVw8DOGQ4dRyIEG3BQ5tEOHIQQOMoO75+bc20rfdFUxZUBHHPUHLrgeiCxkQsJHrxlyLKbrxcNX6ywuZg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779183626; c=relaxed/simple;
-	bh=o4J6QqMYpGZvmNuQqLrqFIRgj7m9/fIFtO5TPzuauHo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=bB/r9bqcrwDVS0x5WFOEtZzq/xEUu2WkVxI56h65aueFUFXNLadp9pu87SQ5CYIcQURiv0pM0X8qMdOsVhJ5cUP/vzvSzVBz4OPsHwhfmY8fKni+BGcM49MsHz80wSJlo428RN4QfIxHigrIm+NxWBl28sNwQIcX4lJtCPGJG/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oR6vMJHZ; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oR6vMJHZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 133BAC2BCB3;
-	Tue, 19 May 2026 09:40:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779183626;
-	bh=o4J6QqMYpGZvmNuQqLrqFIRgj7m9/fIFtO5TPzuauHo=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=oR6vMJHZ1hsZL72AJG0MkJgGa2n/YtUM32dpuHsbzYwF4H0uYIHfnCydwREwO3mQH
-	 59RSQhrNfCZ9mxSbqk5WMHbJUveqd+xhOze1mf48iur17h0NVmhS/TBosAJYib0beS
-	 Q2cxhihEbpbQk+aVfogepWt4oGWNxMu1MHlsUwZldkQkdf5Tj22UvVd7DF0pkdDwn1
-	 IMWaV/6K5CcQdDt6YPKJMDJxVSqgznIq9dKBwUQVRXW45M6M8Td3hUr0DTWfCzN7ji
-	 4aXAkmOwx8vMq+Vw8s0oQZFH7VeidG+bgPFc0LnB8ziEEvmaH7G2y4FZTGJMtP2M2r
-	 QCeG9vkaY2/Hg==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev
-Cc: Steven Price <steven.price@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>, WeiLin.Chang@arm.com,
-	Lorenzo.Pieralisi2@arm.com
-Subject: Re: [PATCH v14 23/44] arm64: RMI: Handle RMI_EXIT_RIPAS_CHANGE
-In-Reply-To: <20260513131757.116630-24-steven.price@arm.com>
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-24-steven.price@arm.com>
-Date: Tue, 19 May 2026 15:10:11 +0530
-Message-ID: <yq5ay0hfspok.fsf@kernel.org>
+	s=arc-20240116; t=1779183795; c=relaxed/simple;
+	bh=nbgBgna4U3ZhBvOGNNur/jiCzWXVWT9U0UbZeEqHbxI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FKmsAAvrsC4OGtOaywHNVj0HfOcP5/aXieuo1QySR1S6m8tGYIn/iQkOyFs3DLIQThoSNYQd8G0N+uQIARAlS3unX3jzlziL8QTZ0SOXOVxmdgJIIDpvhZ4QprRLpJ93I9VVwZqCkuzAB1v8LDbL0I1R40KyeuZgnX86ngjTEzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.213])
+	by gateway (Coremail) with SMTP id _____8AxZniuMAxqWC0LAA--.8253S3;
+	Tue, 19 May 2026 17:43:10 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+	by front1 (Coremail) with SMTP id qMiowJAxHMKtMAxqjD6IAA--.61010S2;
+	Tue, 19 May 2026 17:43:09 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: kernel@xen0n.name,
+	kvm@vger.kernel.org,
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v3 0/6] LoongArch: KVM: Small enhancement about interrupt injection
+Date: Tue, 19 May 2026 17:43:02 +0800
+Message-Id: <20260519094308.3983046-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJAxHMKtMAxqjD6IAA--.61010S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-Steven Price <steven.price@arm.com> writes:
+Here make interrupt status acquire interface simpler, add new interface
+kvm_vcpu_sync_intr() to sync pending interrupt to software ESTAT
+register, and remove expensive vcpu_load() and vcpu_put() function call.
 
-...
+Also interrupt inject is handled with batch method, rather one by one.
 
-> +void kvm_realm_unmap_range(struct kvm *kvm, unsigned long start,
-> +			   unsigned long size, bool unmap_private,
-> +			   bool may_block)
-> +{
-> +	unsigned long end = start + size;
-> +	struct realm *realm = &kvm->arch.realm;
-> +
-> +	if (!kvm_realm_is_created(kvm))
-> +		return;
-> +
-> +	end = min(BIT(realm->ia_bits - 1), end);
-> +
-> +	realm_unmap_shared_range(kvm, start, end, may_block);
-> +	if (unmap_private)
-> +		realm_unmap_private_range(kvm, start, end, may_block);
-> +}
-> +
- 
-kvm_gmem_invalidate_begin() indicates a private-only invalidation. How
-is that supported?
+---
+v2 ... v3:
+  1. Split patch 1 into two smaller patches, one is smaller bugfix patch
+     with irq validility check in kvm_vcpu_ioctl_interrupt(), so that it
+     is easy to porting to old kernel.
 
--aneesh
+v1 ... v2:
+  1. Add irq validility check in function kvm_vcpu_ioctl_interrupt().
+  2. Add valid bit check when set ESTAT CSR register.
+  3. Merge two patches about interrupt clear and set with batch method into
+     one.
+---
+Bibo Mao (6):
+  LoongArch: KVM: Check irq validility in kvm_vcpu_ioctl_interrupt()
+  LoongArch: KVM: Check msgint feature in interrupt post
+  LoongArch: KVM: Use existing macro about interrupt bit mask
+  LoongArch: KVM: Inject interrupt with batch method
+  LoongArch: KVM: Add valid bit check when set ESTAT CSR register
+  LoongArch: KVM: Simple interrupt status acquire interface
+
+ arch/loongarch/include/asm/kvm_vcpu.h |  44 +++++---
+ arch/loongarch/kvm/interrupt.c        | 140 +++++++++++++-------------
+ arch/loongarch/kvm/vcpu.c             |  54 ++++++----
+ 3 files changed, 134 insertions(+), 104 deletions(-)
+
+
+base-commit: 70eda68668d1476b459b64e69b8f36659fa9dfa8
+-- 
+2.39.3
+
