@@ -1,151 +1,166 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC476370D67;
-	Tue, 19 May 2026 22:44:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211BE372EF6;
+	Tue, 19 May 2026 22:57:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779230663; cv=none; b=o7LckScQX5anOsq8Vi9oab/G91+CWz3AHTZoIpjhgQGF8PUwVq6DcUlL5aE+aqdOf6lx8pYAYyzO13G7efN4D1I34Nw0LvbZISV6+ob/JZlvfwlGCNc2w91X3Eiucl9HNainleIsroiYnblY3c78hDxrc3pJY0rK99EuGT4k5nU=
+	t=1779231465; cv=none; b=iJOhzKc4D3F79Vj7iCi9Wl0WJ6IcLczX4QmM2Pb1XhfY3iNj1zETuOFbHJZoqvvuq7MsYf9pgqJdxrtpxmcNMCDOC7xvXLhy8vylwG8yAHE9N7XeIAVP9IKZeb/oFkIPh1dT1CmQwicMrhBxN4VAGEIEO6Mr+fLFuUqyhGNRhzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779230663; c=relaxed/simple;
-	bh=ADBuxpAHmfGju7MPPidYfUdnyuM/6W+pFUa5x6o1zfw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jqEGF1unuvBaNaWBt+2T24fGT++tGv/mLMKhW7Lgfla9D3Pe34r8+sNLHeglJUHK3pvRsR4zQRcIGkr+tk3M0XuhqyJa/UDNqRVr7vuwcLd6XXTRdDyyyO861goEuLkD5drudmAe5NFvWX3PelGcXASLWLAmg779vhY6nMG+ABA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=EHd5fQdt; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1779231465; c=relaxed/simple;
+	bh=Xu0Wzsuqb3UJUFiMu/NhOeqe0Fl6d7jfePXfdrq4gGE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bsFA2aWWYyhf/Ek5ndPaZaxqecwiwi9nkjNMLSJ5ES9iFE4Y66q/Vmy27knxVT/D2z//I0Tm5m6xeZOWonezsuRTwctH1AkLxuK6eFn2Isch8/XOoGJ4z8ttNitc65tdLybbL3fhImbpoly4vS1n83tTeprZPSRPFSkzNFi9dTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EZvlZuw1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="EHd5fQdt"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64JMFtiU4104744;
-	Tue, 19 May 2026 22:44:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=+BUYnlGN3UPyA3ORn
-	JYnT7dxYFPIvdJZstvzf7IoxRU=; b=EHd5fQdtCZMF1EsbZHBQ0S6q8oCzSUxCP
-	DGl6R0RTKtqXXGda7AYmD/MANYQG+vkqVHFxPsmUM8whqQrng3JqbaR6YYIR2wxB
-	oO2kx6N13dsiM/F0qs8hr8aF4wkQUrDbDT5Rmbxz0EK3IebVQ6F9ihYsdjf9HcnP
-	DyN83G82+8XprJwq+GlKpdgy9S9lCkK7C/eC5oqkCP1e3Kqf8holyMQAiLgFM2tZ
-	qkkdv1tZgmjEmdY0/3Dtd7Kw9c5bgsbpgNNB5h7DG8RP8H9EOL0woidN20oYMAb6
-	QGKuY+Wlu/ey14nRvQyMbXwuikL/O9/LK6rTl79ij+8mwUe6iFIgA==
-Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h9xyfeb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 May 2026 22:44:19 +0000 (GMT)
-Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64JMdMxD021176;
-	Tue, 19 May 2026 22:44:18 GMT
-Received: from smtprelay02.wdc07v.mail.ibm.com ([172.16.1.69])
-	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e73wk4twb-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 19 May 2026 22:44:18 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (smtpav04.wdc07v.mail.ibm.com [10.39.53.231])
-	by smtprelay02.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64JMiFcM21103232
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 19 May 2026 22:44:15 GMT
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id CA1B258045;
-	Tue, 19 May 2026 22:44:15 +0000 (GMT)
-Received: from smtpav04.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2A54758050;
-	Tue, 19 May 2026 22:44:14 +0000 (GMT)
-Received: from Mac.ibm.com (unknown [9.61.253.120])
-	by smtpav04.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 19 May 2026 22:44:14 +0000 (GMT)
-From: Omar Elghoul <oelghoul@linux.ibm.com>
-To: linux-s390@vger.kernel.org, linux-kernel@vger.kernel.org,
-        kvm@vger.kernel.org
-Cc: oelghoul@linux.ibm.com, hca@linux.ibm.com, gor@linux.ibm.com,
-        agordeev@linux.ibm.com, borntraeger@linux.ibm.com, svens@linux.ibm.com,
-        schnelle@linux.ibm.com, mjrosato@linux.ibm.com, alifm@linux.ibm.com,
-        farman@linux.ibm.com, gbayer@linux.ibm.com, alex@shazbot.org
-Subject: [PATCH v2 3/3] s390/pci: Fence FMB enable/disable via sysfs for passthrough devices
-Date: Tue, 19 May 2026 18:42:04 -0400
-Message-ID: <20260519224204.19154-4-oelghoul@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260519224204.19154-1-oelghoul@linux.ibm.com>
-References: <20260519224204.19154-1-oelghoul@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EZvlZuw1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 632361F000E9;
+	Tue, 19 May 2026 22:57:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779231463;
+	bh=vlczZf+tmGw8IPcdnoLC+JUsg1rmEL1pieN0hKrWjbE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=EZvlZuw1VED308JyJcnm+ZCcWB9qCZjmAvJ0kifEyyoENrG12qn0dvsSCjLGcaRa6
+	 QcpLh15vokgNbSpAALR7q8uSWiio5M9ti1gFHiz0gF2lBln9RtdIG6ES0hc6o1MfOQ
+	 Bc7+ntO82BL4025y/pvTUtNewTuw//ZKvtzZMLals6YA11Lupm8hJPZUynvBjaAb16
+	 q5L5a9lU1Ab4LrGB2MQQnmEmPnPEVaKMRjwFDQK6Km22EJFcaLJBBThmstxmkc5pXO
+	 ifrMf1nhQi8+e3YEI1/6m6TJQtX+8VbC32BGlXU9vAdOqZrwvy/abxLr3B7uvHRmWa
+	 ktaMwGUF4h8+A==
+Date: Tue, 19 May 2026 15:57:42 -0700
+From: Oliver Upton <oupton@kernel.org>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>, kvm <kvm@vger.kernel.org>,
+	Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Jim Mattson <jmattson@google.com>, Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Eric Auger <eric.auger@redhat.com>, Kees Cook <kees@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+	kvmarm@lists.linux.dev,
+	linux-kselftest <linux-kselftest@vger.kernel.org>
+Subject: Re: [PATCH] Documentation: KVM: Document guest-visible compatibility
+ expectations
+Message-ID: <agzq5kwzuJvd7Mh5@kernel.org>
+References: <3f9d731c3d26b0367600f1069e6425099bc34eac.camel@infradead.org>
+ <agxFbniU_6eQ98t2@willie-the-truck>
+ <cf429f2082e863571595f74d1d3dedc3e6a82964.camel@infradead.org>
+ <CABgObfacAYexR25SMi1kSZMRnHx3EDGj8=E84V1DumER66ibnQ@mail.gmail.com>
+ <86qzn7wp3y.wl-maz@kernel.org>
+ <593a782c50f3c8656e13b36dfb975a67d43a908e.camel@infradead.org>
+ <CABgObfbS-z3OphDna5W_JQPvw+OK=yXJurVMHp1ANZ5uGEgVhQ@mail.gmail.com>
+ <9d0429ddbe4d8c6993e74237c4395697f80092d6.camel@infradead.org>
+ <agzR2kaJsNa8X9lF@kernel.org>
+ <1243d375846c4f4e20c229a6f09300126188fc8b.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE5MDIyNyBTYWx0ZWRfX7NMznHLmPat1
- i+gz7SKX4M5VVBOdNXHuerH9kGjOYdI+Ksp+1tTTzpSla3fDIpAdZcc5bDAW85WuGKZTxkdGcv5
- WYQ7qDrvYcVC4gZTetV7+ostADIwJuwCGTyeu8DtNMno0xgHJ7Nbej/Qc5x399JAG4w81oBtnGO
- 7pb7GxlZDU7f4QRSjnxzrrXaCZ05JCN65/vGcLyn5x2VdWvzI4PN2K+t9my6p1kxgHEQsUY5zbE
- t1Eh2Z7nZFlOPulSOY9tiHBVy0H59orar/YjMlAr1knC6sNhbQxH4CsB41o9q/oY4+W8rfH6SBv
- /XZUEMjlch2Onqh0cTvhnMbGboMLXcAEHJJssPvjCkKXzmxYDsZe8QT2MA/rvZwGkuUxbD7hYJE
- OjEpwPC+vSsXEUB0fjT7FhBmILcA9ke0a3cJMMYnXVh6otrrW8UxvLPZV2TpoCVbLd0PE1P5nN5
- m0DOt9FWYjlyAKEn9vg==
-X-Authority-Analysis: v=2.4 cv=BNuDalQG c=1 sm=1 tr=0 ts=6a0ce7c3 cx=c_pps
- a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8 a=LQOIlC5QHTpW1RRPx_YA:9
-X-Proofpoint-ORIG-GUID: gpqo4L0SjI6NG4NwGvtlU8cOZYMuyNWy
-X-Proofpoint-GUID: gpqo4L0SjI6NG4NwGvtlU8cOZYMuyNWy
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-19_06,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 malwarescore=0 impostorscore=0 suspectscore=0
- lowpriorityscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605190227
+In-Reply-To: <1243d375846c4f4e20c229a6f09300126188fc8b.camel@infradead.org>
 
-Introduce a fence over enabling or disabling FMB via sysfs when the zPCI
-device is associated with a KVM. This will allow a KVM guest to use FMB
-passthrough and avoid the edge-case where the host disables FMB while the
-guest is still using it, which may cause partial counter resets and
-inconsistent reads which have no parallel in the architecture.
+On Tue, May 19, 2026 at 10:58:05PM +0100, David Woodhouse wrote:
+> On Tue, 2026-05-19 at 14:10 -0700, Oliver Upton wrote:
+> > And in the absence of clear evidence of a guest depending on the broken
+> > IGROUPR behavior, I don't see how the guest-side changes of Christoffer's
+> > series are any different from the multitude of bug fixes that we take
+> > every single release cycle. It is an unfortunate bug and I concur with
+> > Marc that it doesn't seem like the sort of thing a guest could rely
+> > upon.
+> 
+> I find this concerning, because I've already explained this.
+> 
+> There is a very real possibility of guests simply not *noticing* that
+> they had bugs in this area, as it didn't *matter* what they wrote to
+> these registers since it never worked.
+> 
+> There is an even larger possibility of guests having worked around the
+> original issue by *detecting* whether the registers were actually
+> writable before choosing to use the alternative groups. And if such a
+> guest launches on a new kernel and then needs to be rolled back to an
+> older kernel, that will also break.
 
-With this patch, the userspace driver, likely QEMU, is still able to enable
-or disable the FMB using the VFIO device feature introduced in the previous
-patch, effectively securing what is associated with the VM state and
-isolating it from other processes on the host.
+The onus is on you to substantiate this claim. I would imagine after
+carrying the revert for so long that there must be at least one example
+of such a guest?
 
-For VFIO devices that are not associated with a KVM (i.e., for userspace
-drivers other than QEMU), this fence does not take effect.
+What ifs and maybes do not meet the bar, in my opinion, for preserving
+bug emulation in KVM. Of course there could be a little flexibility with
+that but we need to have some way of discriminating between bug fixes
+and genuine guest expectations around the behavior of virtual hardware.
 
-Signed-off-by: Omar Elghoul <oelghoul@linux.ibm.com>
----
- arch/s390/pci/pci_debug.c | 11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+> > Wrong or not, this behavior is documented unambiguously. From the VGICv2
+> > UAPI documentation:
+> > 
+> > """
+> > Userspace should set GICD_IIDR before setting any other registers (both
+> > KVM_DEV_ARM_VGIC_GRP_DIST_REGS and KVM_DEV_ARM_VGIC_GRP_CPU_REGS) to ensure
+> > the expected behavior. Unless GICD_IIDR has been set from userspace, writes
+> > to the interrupt group registers (GICD_IGROUPR) are ignored.
+> > """
+> > 
+> > I'm not inclined to change that.
+> 
+> That'll all very well... but as far as I can tell, QEMU *doesn't* set
+> GICD_IIDR, so it still gets the bizarre behaviour where the *guest* can
+> write the registers, but userspace can't. So it looks like it'll work
+> except migration will fail. Am I missing something?
 
-diff --git a/arch/s390/pci/pci_debug.c b/arch/s390/pci/pci_debug.c
-index c7ed7bf254b5..2601614b919b 100644
---- a/arch/s390/pci/pci_debug.c
-+++ b/arch/s390/pci/pci_debug.c
-@@ -149,9 +149,15 @@ static ssize_t pci_perf_seq_write(struct file *file, const char __user *ubuf,
- 	if (!zdev)
- 		return 0;
- 
-+	mutex_lock(&zdev->kzdev_lock);
-+	if (zdev->kzdev) {
-+		rc = -EPERM;
-+		goto release_kzdev_and_out;
-+	}
-+
- 	rc = kstrtoul_from_user(ubuf, count, 10, &val);
- 	if (rc)
--		return rc;
-+		goto release_kzdev_and_out;
- 
- 	mutex_lock(&zdev->fmb_lock);
- 	switch (val) {
-@@ -163,6 +169,9 @@ static ssize_t pci_perf_seq_write(struct file *file, const char __user *ubuf,
- 		break;
- 	}
- 	mutex_unlock(&zdev->fmb_lock);
-+
-+release_kzdev_and_out:
-+	mutex_unlock(&zdev->kzdev_lock);
- 	return rc ? rc : count;
- }
- 
--- 
-2.52.0
+That's exactly it, and why I said tying up UAPI opt-in with
+guest-visible registers is a really bad idea.
 
+> But honestly, I don't care one iota about GICv2; I was only trying to
+> do the cleanup while I was there. Feel free to drop that part entirely.
+> 
+> >  As a way out of this whole mess, can we
+> > instead:
+> > 
+> >  - Allow userspace to set IIDR.Revision to 1
+> > 
+> >  - Drop any bug emulation from the handling of IGROUPR registers
+> 
+> It doesn't make sense to allow setting IIDR.Revision to 1 *without* the
+> one-liner that actually implements the corresponding behaviour change
+> in the IGROUPR registers.
+
+As I described earlier, this whole IIDR crap inarguably broke UAPI and
+obviously normal guest behavior (i.e. reading the register). At minimum
+we need to permit previously-valid values for IIDR, even if they carry
+no implied behaviors.
+
+> And as explained at least twice now, it's the
+> behaviour change that's *important* here.
+> 
+> The fact that it's a long-standing bug in KVM which downstream has been
+> working around for a long time doesn't matter. The unconditional
+> behavioural change *is* a bug and we should fix it.
+
+That is the nature of a bug fix. If you can provide some concrete
+evidence of a guest depending on the RAZ/WI behavior then I agree we
+need to preserve the old behavior.
+
+Otherwise I see this as a matter of principle in how we do bug fixes to
+KVM. Even if upstream took the strictest possible stance towards behavior
+changes we will invariably fail to account for some minutia.
+
+> >  - Special-case the stupid GICv2 UAPI where IGROUPR are only writable if
+> >    the VMM has written to IIDR and the revision >= 2
+> 
+> That already *is* a special case, right? And you'd rather leave it as it is?
+
+Left as documented, yes. With the exception that revision == 1 writes
+not be considered opt-in to restorable IGROUPR.
+
+Thanks,
+Oliver
