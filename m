@@ -1,118 +1,104 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 198C2347FCD
-	for <kvm@vger.kernel.org>; Tue, 19 May 2026 19:45:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4AD3603F7
+	for <kvm@vger.kernel.org>; Tue, 19 May 2026 19:54:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779219951; cv=none; b=Xn9+1wshDcPxS00vpGs2momGUxGVndI1RquM2wBmHvavQImcHb0lZFTeuQufcR0pN28VqvMU1RyuSLukEm7V0d0QJd/vAiKRjxekwabm3sKd0BFGuFAYElWEFGsnG08ibP8ailsz+yRRjJOaq/rvXC8aEjpB5U4f3BKD0VrgOqc=
+	t=1779220466; cv=none; b=ONG3v7hBy0TO3pppc6IgNz3Th2G35L1/XiEQYm4NgaxFaI0jwccl9BzbD/w6Ap3km67NYqVfv8JmNZvqgyCOreVkGEHDuY9m0KI3IZN5RU78AGHgBh14aaGAw9VLuweFfs/YJEo9B2gUIaJNj+siPURuPs8fI5MchLfy6/Q0LK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779219951; c=relaxed/simple;
-	bh=44xEYbljSROVieZ0RPdXuWqnlBLvyVYrKdSQUFcZgLo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=jt0iF2Hrg/P4Kyf5m7uVYYXFkoLC5olJ0Y8opZe7bT1AHZdPVzpOyaGbbC4pOCo/7qTNbWC6fJ2S0K/ic9vt8y/0JX83/G70CsyR6ZVsm/3SLSTyYPoILukMcfHvKLJj6TZoAeudwrru8aJJuc8R3n5GXJzURWCf3qW6B6A3ua0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l/3r0VfH; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779220466; c=relaxed/simple;
+	bh=6tfGb49ZRedzfCouA50bV3/0wXxsxoJ4fIw9A0Ifz4U=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=cXBQr9lVTdToNCwJyXSNkEZ/rLDzHOJeZA8xO/MZ3MEYBpGydj8db5bWFgB6Nt9IVwByRntR/OaSZ04Q+yVfBtF9oNcVdh+mgmK9qL6vFn/1eyaVHxo5GaUhEAxfcTcj+NKZSe2KOGwgR2KKCl//uK8F7WSLy2RxCZWAED64rTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ivKep9oo; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l/3r0VfH"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-4891e5b9c1fso34542745e9.2
-        for <kvm@vger.kernel.org>; Tue, 19 May 2026 12:45:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ivKep9oo"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bd00a65673so28842375ad.1
+        for <kvm@vger.kernel.org>; Tue, 19 May 2026 12:54:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779219948; x=1779824748; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y40Gpg3ilPhkRMprpE5hhH0Rf+TbXkdO/RkFO88+nYo=;
-        b=l/3r0VfHovR/6ekaFuEaH17v2fkuZeWEuXKp2tXy5k3OBSu86aZCYHYCA5qRw13Adn
-         FBmADAfR4wh0u204d91eaTIJN9qTYNbqewOwFZwD6XnQo4xEdDMCZ+OBRI8Vly1MvKGO
-         B03wsZGdcV/dmS/iz8MHFrkWAIGIHVd5XQNm4DPvmNuLBs8xFRT2r016VeHbC7Bma7RK
-         Fs/tntSpM9Kxp8d5YIkHeFT2i+jjj/ojZsHMib+Adr4itiDX6yuKyQ7GucaCEAM5QFwS
-         dkY5t4P3TJRNASyWIF9uuPT03GelF4SHEGLGT4Imx9I5zJ2YLLp2YymPMXZ1GYPgL9aC
-         B+8A==
+        d=google.com; s=20251104; t=1779220465; x=1779825265; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=qAVfvuPEzTQrhFN0ZRU1W9jX6cZgBZO1ZxbdghzeH5g=;
+        b=ivKep9oo+fInZx3A0ifdL26qwEgErdKKTa40FI37QuDEMbwDZN+dOozCpEotRxO9uA
+         jfKjGnMgN7mHGI+/PTcPkV4tssG0bDx5QNe9s+RqcUlIj6AcC/b6dXxXSZJOy6NAAEYr
+         GncMEWFnTLICjb+FsZalDOIfplHq2T/XPxsnSr3N+aOMo4Ay7We1bZeSXx058++NUoqO
+         /qmxEzHuQYcM0dq36IUdNthEPqJRJRv4D+PTZOCFKedoFb6UQ8ldb7yWsFl0htlNg4h9
+         gYaOU/buzppAeSzO4IKI/kVxDMVHUqzVN8+eEHr96izakEnXlUIL2FGmj4sBdLGg7Y8R
+         LAag==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779219948; x=1779824748;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Y40Gpg3ilPhkRMprpE5hhH0Rf+TbXkdO/RkFO88+nYo=;
-        b=R+Fqa2UbYtQZxtXJKLmTA3xXtqTrQoxH+LnTCaPdkwujTApR/Br0EP0O8nHOX5qnlz
-         ynRY+CZEgYo7StlZa6PzmDPN16s/lKKFsxzoYqKuq/XhngXswyQQqHDcyF9fuClNlmHN
-         pG+dLuEDgOdGFJKuNgwsJUbSVq5JSVMiOcgFk7rXVAbPhL+mAdUgIyBiYzTLewfZyu12
-         vIivsF8QL73WPAbKV2UfVJenC6nz7EC7QnLEutMvqk7N36bjZGV7Ve4P2hVZCGsvcBwc
-         BVaI+Ft66ti8bi0ScMJWLSbw0XiBwkVywPc3Gtl7axnQQ8U5nX6rNkYYBZozVBoOKJxg
-         YAUA==
-X-Gm-Message-State: AOJu0Yw8Keku5KiD1q/1QdboFJ7Ejr1BiEQjKlX65VFBv8+fYkEP5OKf
-	xBjMRjmGGjwWpiEJPATDwK8MvdtVQeWsAIKa+/G56o8rXplYlIFe2iTr
-X-Gm-Gg: Acq92OF7cbaA9f1Sr5CLfwN5Tht7Y4fXbbXPpERc1qxRB7XD84nf9xdh4+IXZXOSIUM
-	3LhCdng8iJiyy6eQspZeE/pXGqVOnsZRUkjVpyKK7yw5XQfSLAPvtZGTkGmqr6j7dLJtnqy/7Za
-	9tMQHZv1Raj91QbaWfF0qEyfXql66ZdHHUVvY808B2rsbICUjLUbO/OszOn0AmCoLEXZ1Va6ZJk
-	Sup8zdXkonSmtCz5FQ/n01ATZF3LfBhvxt+jdgxhqOHOfNOOGtnNDCGrp4ef3sc68JZrKFQZmV5
-	0wFIAEXB1hbrsa0+HcxQA/TIIA1yBH8Unu1CM9ROfwXUYjyRXZMgUHo8+QqGhdu3WhqcEr2WxRo
-	yiObzNa0GVBXJN+n+Mk79JpKLSZVF1lpF0w8RkoC3o3jWYBOwCduaJPXOhyRI2RvrSYM60q8LvD
-	ZDy4LZ85lO30x9MrVAuckVCma6TQ3Yqs6u4FOn
-X-Received: by 2002:a05:600c:8592:b0:48a:7aad:4425 with SMTP id 5b1f17b1804b1-48fe60e5235mr242122435e9.3.1779219948365;
-        Tue, 19 May 2026 12:45:48 -0700 (PDT)
-Received: from spark.Home ([2001:8a0:672f:7800:12:2614:1925:95e3])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-48febf8305dsm166729195e9.9.2026.05.19.12.45.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 12:45:47 -0700 (PDT)
-From: Eric Curtin <ericcurtin17@gmail.com>
-To: linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org,
-	Ankit Agrawal <ankita@nvidia.com>,
-	Alex Williamson <alex@shazbot.org>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Yishai Hadas <yishaih@nvidia.com>,
-	Shameer Kolothum <skolothum@nvidia.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Eric Curtin <ericcurtin17@gmail.com>
-Subject: [PATCH] vfio/nvgrace-gpu: add GB10 device ID (0x2e12)
-Date: Tue, 19 May 2026 20:45:45 +0100
-Message-ID: <20260519194545.41503-1-ericcurtin17@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        d=1e100.net; s=20251104; t=1779220465; x=1779825265;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qAVfvuPEzTQrhFN0ZRU1W9jX6cZgBZO1ZxbdghzeH5g=;
+        b=SHnYdb0r8Bxd+QmEApsLreftrf/2NdXMvNoRZD8pLE1Rn0olTtgrMLETiWhldOtZvu
+         cpevcwFts/R5xU2Y+B857Y5dE7v2Bf1+B9L1jAs5PC6DS1hpzlPFq/hmrILHGpN49RS9
+         YX2E2Tkl753XoSHvDPGAEDuvkSKEEdS/WL8TXoBykcXTv++e5v8hMeT1zUKI1lRwIEwh
+         lLpf5yiBSwibdduSoR+p/ZgsyIhsUXm7F+TjQi+X+8+92igF05IFKMpj55vaZSC/+t39
+         DIvQSyLcmHpqZP1j27zx+E54xvR24adkGvWrNLL4D8+TT0NdBflMhC3HYGHTOM6P64SF
+         PThA==
+X-Forwarded-Encrypted: i=1; AFNElJ9zMWAFKUVkj0TP/JKAUYpTxUD627bWl2i8OPxRZ2WoodUndASPL0zj4HNOHvlP5Fp2MOA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxjzrnnkarZyF18WutmbmgGhjzeQrkRt5ca59i3ZybPMjVPcD3H
+	uhNv6JA2k/z75XgxP9WaVmK/tFjgdGqQ8R2AVb0ZS9yFSHlnJB0lhFbzviegtmn3Y3FT4U1j65t
+	iFLGyiQ==
+X-Received: from plgq11.prod.google.com ([2002:a17:902:eb8b:b0:2b0:6cdd:87e2])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:758b:b0:2ba:838b:bfae
+ with SMTP id d9443c01a7336-2bd7e93d8b2mr127872135ad.18.1779220464419; Tue, 19
+ May 2026 12:54:24 -0700 (PDT)
+Date: Tue, 19 May 2026 12:54:23 -0700
+In-Reply-To: <CAEvNRgE4o6C8P2jW_MGn=1BHxgmp183UTk_h5YkM+U_MCTMdzA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260518070943.2091287-1-ZongYao.Chen@linux.alibaba.com>
+ <20260518070943.2091287-3-ZongYao.Chen@linux.alibaba.com> <CAEvNRgFgobnW+O=t32gu-0YDy0n7ZqvmdCtg+DzLT3uf0+BDeg@mail.gmail.com>
+ <agt5A90k9lS9JPWp@google.com> <CAEvNRgE4o6C8P2jW_MGn=1BHxgmp183UTk_h5YkM+U_MCTMdzA@mail.gmail.com>
+Message-ID: <agy_7zPjksEk26qX@google.com>
+Subject: Re: [PATCH 2/2] KVM: selftests: Test guest_memfd binding overlap
+ without GPA overlap
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: ZongYao.Chen@linux.alibaba.com, Paolo Bonzini <pbonzini@redhat.com>, 
+	kvm@vger.kernel.org, Shuah Khan <shuah@kernel.org>, 
+	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Chao Peng <chao.p.peng@linux.intel.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Tianjia Zhang <tianjia.zhang@linux.alibaba.com>, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-The NVIDIA GB10 GPU (device ID 0x2e12, found in DGX GB10 systems) is a
-Grace-Blackwell chip that shares the same NVLink-C2C coherent memory
-architecture as the existing GH200/GB200/GB300 entries.  It exposes
-CPU-coherent device memory via the ACPI DSD properties
-nvidia,gpu-mem-base-pa / nvidia,gpu-mem-size and requires the same
-specialised BAR emulation provided by nvgrace-gpu-vfio-pci.
+On Tue, May 19, 2026, Ackerley Tng wrote:
+> Sean Christopherson <seanjc@google.com> writes:
+> > @@ -542,6 +542,26 @@ static void test_add_overlapping_private_memory_regions(void)
+> >         TEST_ASSERT(r == -1 && errno == EEXIST, "%s",
+> >                     "Overlapping guest_memfd() bindings should fail with EEXIST");
+> >
+> > +       /*
+> > +        * Repeat the overlap tests, but so that there is overlap in the
+> > +        * guest_memfd bindings (i.e. in guest_memfd file offsets), but _not_
+> > +        * in the GPA space.  Regardless of where there's overlap, KVM should
+> > +        * return -EEXIST.
+> > +        */
+> > +       r = __vm_set_user_memory_region2(vm, MEM_REGION_SLOT, KVM_MEM_GUEST_MEMFD,
+> > +                                        MEM_REGION_GPA,
+> > +                                        MEM_REGION_SIZE * 2,
+> > +                                        0, memfd, MEM_REGION_SIZE);
+> > +       TEST_ASSERT(r == -1 && errno == EEXIST, "%s",
+> > +                   "Overlapping guest_memfd() bindings should fail with EEXIST");
+> > +
+> > +       /* And now the back half of the other slot's guest_memfd binding. */
+> > +       r = __vm_set_user_memory_region2(vm, MEM_REGION_SLOT, KVM_MEM_GUEST_MEMFD,
+> > +                                        MEM_REGION_GPA,
+> > +                                        MEM_REGION_SIZE * 2,
+> > +                                        0, memfd, MEM_REGION_SIZE * 3);
+> > +       TEST_ASSERT(r == -1 && errno == EEXIST, "%s",
+> > +                   "Overlapping guest_memfd() bindings should fail with EEXIST");
+> 
+> I just noticed this is kind of odd, what is the purpose of "%s" and then
+> filling the string in with a hardcoded string?
 
-Without this entry the device falls through to the generic vfio-pci
-driver, which fails the iommufd IOMMU_RESV_DIRECT check because the
-NVLink-C2C memory apertures appear as RESV_DIRECT in the IOMMU group
-reserved regions, yielding:
-
-  vfio-pci 000f:01:00.0: Firmware has requested this device have a
-  1:1 IOMMU mapping, rejecting configuring the device without a 1:1
-  mapping.  Contact your platform vendor.
-
-Tested on a DGX GB10 system (aarch64, kernel 6.17.0-1014-nvidia).
-
-Signed-off-by: Eric Curtin <ericcurtin17@gmail.com>
----
- drivers/vfio/pci/nvgrace-gpu/main.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
-index fa056b69f899..ac1acf41df86 100644
---- a/drivers/vfio/pci/nvgrace-gpu/main.c
-+++ b/drivers/vfio/pci/nvgrace-gpu/main.c
-@@ -1244,6 +1244,8 @@ static const struct pci_device_id nvgrace_gpu_vfio_pci_table[] = {
- 	{ PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_NVIDIA, 0x2941) },
- 	/* GB300 SKU */
- 	{ PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_NVIDIA, 0x31C2) },
-+	/* GB10 SKU */
-+	{ PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_NVIDIA, 0x2E12) },
- 	{}
- };
- 
--- 
-2.43.0
-
+Purely oversight.  I didn't even see it until you said something :-)
