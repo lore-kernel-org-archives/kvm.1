@@ -1,135 +1,140 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from proxmox-new.maurer-it.com (proxmox-new.maurer-it.com [94.136.29.106])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B133DEAD2
-	for <kvm@vger.kernel.org>; Tue, 19 May 2026 08:01:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5774B3DD857;
+	Tue, 19 May 2026 08:02:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=94.136.29.106
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779177698; cv=none; b=TCyOFWc8Zi7n4mN41t0YAtKuUNMYHKFossqM4NM5V2fU2uxuFA5V66xL6AB2XMR5hdkOCg202cCueUzFqtd+7dq8bZRmSpaXqvH1cNIOLGAN3PPpJJTHwRZ7Vw+sEkkFasQXHitVpv/cvs8Bzj6R2GRkj4Ecggx+P8ERim9W8Lk=
+	t=1779177779; cv=none; b=qKUfCdQg7Eck0HpD+Phv7qX/t4SKid8qPayhb3zUP1lMw4GLd+EdjuhBlvyPvAZde9vMpOz9b771WC3Yk/uUq/ZefH3koTX9diO43zyuW4U1EB4c0dxFwRLHKLr6JXr7PEicVE1dBKluIDtQ1+am5W1FCV9jhqcf4loRT2bCBCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779177698; c=relaxed/simple;
-	bh=LY8f3exewuVVgW7srhsqrF9FNBytGdppVjn1vhLwqjE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J1F5nx1gw2GB6VFLspnWKiUfXwzz8KJt4sGPP5WJJmekjT2pxhb4MJqFzy45gs7k5bb+yjPSmSEzvEShrr9uR64LiifoIxiVUldjWxJ9kVX5u47PBjB7EV5WQIIT5IakyHB61yEaqiUQ7aVdFfOKKcMtVlIn6ATaiuP6rJ7qL58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bheFfvng; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bheFfvng"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779177696;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=vA5AptWgFLuAf0f3uD0OIL4+IifC0E/7wRKlJanNrms=;
-	b=bheFfvngIY0gzuo3zjvodQ0HItm76N83w3QEG4WTtIyFuBT0QYtyWzGvVpgwApvr9el/XT
-	37zkBV+fcQM0EVinBtaXlvqzbk8wbQ078nQKOHekZZm/ehTBOau3pUYnjO5Zq+1WhwZD1r
-	fXGmYUos8gHLaoxCnmq8HpyyKH7nhhs=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-61-e4nqMxkoPRaV_EYgUn-j-Q-1; Tue,
- 19 May 2026 04:01:31 -0400
-X-MC-Unique: e4nqMxkoPRaV_EYgUn-j-Q-1
-X-Mimecast-MFC-AGG-ID: e4nqMxkoPRaV_EYgUn-j-Q_1779177690
-Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4734E1956068;
-	Tue, 19 May 2026 08:01:30 +0000 (UTC)
-Received: from dell-r430-03.lab.eng.brq2.redhat.com (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
-	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7802C1955D84;
-	Tue, 19 May 2026 08:01:28 +0000 (UTC)
-From: Igor Mammedov <imammedo@redhat.com>
-To: kvm@vger.kernel.org
-Cc: pbonzini@redhat.com,
-	babu.moger@amd.com,
-	seanjc@google.com,
-	thomas.lendacky@amd.com,
-	michael.roth@amd.com,
-	naveen@kernel.org
-Subject: [kvm-unit-tests PATCH v2] x86/svm: work around Virtual VMLOAD/VMSAVE bug on Naples and Rome
-Date: Tue, 19 May 2026 10:01:27 +0200
-Message-ID: <20260519080127.69056-1-imammedo@redhat.com>
+	s=arc-20240116; t=1779177779; c=relaxed/simple;
+	bh=h0rTnLTxCM4upUudmrPgHiPfm9AkC4leOdHrzJAwMjM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JnR2tjj9BSDhv/f9uQDmM17YDT14uQ+1Q8qnD05g+1v1/l7Q/dGBKhIGgr+ul30/onKAzzBw5rwkRp+ecr8l5D2sDsSd0t7MoabZeRyzllyy4TPA0xZ+WQtr5cwkEqcEQw3VM55ydOd5B/W4bw/sZ9PrDes35sJUh5nxfamuN7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com; spf=pass smtp.mailfrom=proxmox.com; arc=none smtp.client-ip=94.136.29.106
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=proxmox.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proxmox.com
+Received: from proxmox-new.maurer-it.com (localhost.localdomain [127.0.0.1])
+	by proxmox-new.maurer-it.com (Proxmox) with ESMTP id CE269802A2;
+	Tue, 19 May 2026 10:02:47 +0200 (CEST)
+Message-ID: <78b03260-856a-4cce-a178-493e248dcbc9@proxmox.com>
+Date: Tue, 19 May 2026 10:02:46 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v6 00/28] KVM: combined patchset for MBEC/GMET support
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, jon@nutanix.com, chao.gao@intel.com
+References: <20260505195226.563317-1-pbonzini@redhat.com>
+ <85548beb-1486-40f9-beb4-632c78e3360b@proxmox.com>
+ <CABgObfZ-UOjO4q3e9o5JGXXCO8VZ50vEZkjNMB44rdcCVxEHxg@mail.gmail.com>
+ <c5b71519-a129-4711-8f98-f05b3178a96d@proxmox.com>
+ <agdmi9wv8yOpgTpb@google.com>
+Content-Language: en-US
+From: David Riley <d.riley@proxmox.com>
+In-Reply-To: <agdmi9wv8yOpgTpb@google.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
+X-Bm-Milter-Handled: 55990f41-d878-4baa-be0a-ee34c49e34d2
+X-Bm-Transport-Timestamp: 1779177753551
 
-AMD Family 17h models 0x00-0x0f (Naples/Zen+) and 0x30-0x3f (Rome/Zen2)
-have a hardware bug where Virtual VMLOAD/VMSAVE causes spurious VMEXITs
-on VMLOAD/VMSAVE even with intercepts disabled, when the VMCB physical
-address as seen by L1 falls in [0x78000000, 0x80000000) range.
-Reserve this range on affected CPUs so the page allocator would never
-allocate the VMCB there.
+Hi Sean,
+thanks for the input.
 
-Given that it's relatively old CPUs + nested env + only performance
-impact, it's not worth fixing on KVM side (which could involve
-messing with allocator or reallocating VMCB, until it's not
-in affected range). Hence a quirk here, to prevent tests
-failures where we can't do anything about them.
+On 5/15/26 8:31 PM, Sean Christopherson wrote:
+> [...]
+> Hmm, this probably confirms its the hrtimer issue?  When using the VMX preemption
+> timer, KVM (on Intel) doesn't use an hrtimer to emulate L1's APIC timer.  I _think_
+> forcing KVM to use an hrtimer would cause result in hrtimers being reprogrammed
+> in response to KVM's usage, and thus mask the deferred reprogramming bug?  That
+> sounds plausible-ish?
+> [...]
+> Can you try Peter's fixes?  AIUI, the reporter's hack-a-fix was very far from a
+> complete fix.  Note, there's a v3 of patch 1 (b4 should take care of that for you,
+> if you're using b4).
+>
+> https://lore.kernel.org/all/20260423155611.216805954@infradead.org
 
-Signed-off-by: Igor Mammedov <imammedo@redhat.com>
----
-there is not official EOL dates on both, but using a newer
-generation(s) release dates it appears that both are effectively
-discontinued for ~3-5 years
+I tested it again with the v3 hrtimer patches [0] applied on top of the v6
+MBEC/GMET series.
 
-v2:
-  * Sean Christopherson <seanjc@google.com>
-      - s/has_vls_bug/has_vls_spurious_vmexit_bug/
----
- x86/svm.c | 26 ++++++++++++++++++++++++++
- 1 file changed, 26 insertions(+)
+Setup:
+* Host CPU: Intel(R) Core(TM) Ultra 7 265K (Arrow Lake)
+* Host OS: Proxmox VE (based on Debian Trixie)
+* Host Kernel: mainline kernel 7.1.0-rc4 with v6 MBEC/GMET and v3 
+hrtimer [0]
+* QEMU: 11.0.0 (downstream build)
+* Guest OS: Windows Server 2026 (24H2, Build 26100.1742) with VBS/Hyper-V
+    enabled.
 
-diff --git a/x86/svm.c b/x86/svm.c
-index a85da905..3f2c7390 100644
---- a/x86/svm.c
-+++ b/x86/svm.c
-@@ -334,6 +334,25 @@ static void setup_npt(void)
- 	__setup_mmu_range(pml4e, 0, size, X86_MMU_MAP_USER);
- }
- 
-+#define VLS_SPURIOUS_VMEXIT_START	0x78000000ULL
-+#define VLS_SPURIOUS_VMEXIT_END	0x80000000ULL
-+
-+/*
-+ * Naples (Fam17h/00-0f) and Rome (Fam17h/30-3f) cause spurious VMEXITs
-+ * on VMLOAD/VMSAVE when the VMCB address falls in [0x78000000, 0x80000000).
-+ */
-+static bool has_vls_spurious_vmexit_bug(void)
-+{
-+	u32 sig = cpuid(1).a;
-+	u32 fam = x86_family(sig);
-+	u32 model = x86_model(sig);
-+
-+	if (fam != 0x17)
-+		return false;
-+
-+	return model <= 0x0f || (model >= 0x30 && model <= 0x3f);
-+}
-+
- static void setup_svm(void)
- {
- 	void *hsave = alloc_page();
-@@ -413,6 +432,13 @@ int run_svm_tests(int ac, char **av, struct svm_test *svm_tests)
- 		return report_summary();
- 	}
- 
-+	if (has_vls_spurious_vmexit_bug()) {
-+		phys_addr_t addr;
-+
-+		for (addr = VLS_SPURIOUS_VMEXIT_START; addr < VLS_SPURIOUS_VMEXIT_END; addr += PAGE_SIZE)
-+			reserve_pages(addr, 1);
-+	}
-+
- 	setup_svm();
- 
- 	vmcb = alloc_page();
--- 
-2.43.0
+Using:
+* QEMU CPU Options: -cpu host,level=30,+vmx-mbec,-cet-ss,-cet-ibt
+
+The CPU lockups did not occur anymore and I was able to boot the Guest. 
+Keep
+in mind that in this case I have the cet-ss and cet-ibt not passed along 
+to the
+guest.
+
+If I launch the same Virtual Guest using
+* QEMU CPU Options: -cpu host,level=30,+vmx-mbec,+cet-ss,+cet-ibt
+
+The issue of the VM being stuck on boot persists even with the hrtimer 
+patches
+applied, but now there are no hard/soft lockups of the CPU anymore.
+
+I get this trace using: trace-cmd record -e kvm
+
+        CPU 0/KVM-11837 [001] d..2.  1363.314703: kvm_apic_accept_irq:  
+apicid 0 vec 209 (Fixed|edge)
+        CPU 0/KVM-11837 [001] d..2.  1363.314703: kvm_apicv_accept_irq: 
+apicid 0 vec 209 (Fixed|edge)
+        CPU 0/KVM-11837 [001] d..3.  1363.314703: kvm_hv_timer_state:  
+  vcpu_id 0 hv_timer 1
+        CPU 0/KVM-11837 [001] d..1.  1363.314703: kvm_entry:      vcpu 0 
+rip 0xfffff801a59020f7
+        CPU 0/KVM-11837 [001] d..1.  1363.314703: kvm_wait_lapic_expire: 
+vcpu 0: delta -590 (late)
+        CPU 0/KVM-11837 [001] d..1.  1363.314993: kvm_exit:      reason 
+EXTERNAL_INTERRUPT rip 0xfffff801a59020ec info 0 0
+        CPU 0/KVM-11837 [001] d..1.  1363.314994: kvm_entry:      vcpu 0 
+rip 0xfffff801a59020ec
+        CPU 0/KVM-11837 [001] d..1.  1363.315993: kvm_exit:      reason 
+EXTERNAL_INTERRUPT rip 0xfffff801a59020ec info 0 0
+        CPU 0/KVM-11837 [001] d..1.  1363.315993: kvm_entry:      vcpu 0 
+rip 0xfffff801a59020ec
+        CPU 0/KVM-11837 [001] d..1.  1363.316993: kvm_exit:      reason 
+EXTERNAL_INTERRUPT rip 0xfffff801a59020ec info 0 0
+        CPU 0/KVM-11837 [001] d..1.  1363.316994: kvm_entry:      vcpu 0 
+rip 0xfffff801a59020ec
+        CPU 0/KVM-11837 [001] d..1.  1363.317992: kvm_exit:      reason 
+EXTERNAL_INTERRUPT rip 0xfffff801a59020ec info 0 0
+        CPU 0/KVM-11837 [001] d..1.  1363.317993: kvm_entry:      vcpu 0 
+rip 0xfffff801a59020ec
+        CPU 0/KVM-11837 [001] d..1.  1363.318992: kvm_exit:      reason 
+EXTERNAL_INTERRUPT rip 0xfffff801a59020ec info 0 0
+        CPU 0/KVM-11837 [001] d..1.  1363.319269: kvm_entry:      vcpu 0 
+rip 0xfffff801a59020ec
+        CPU 0/KVM-11837 [001] d..1.  1363.319992: kvm_exit:      reason 
+EXTERNAL_INTERRUPT rip 0xfffff801a59020ec info 0 0
+        CPU 0/KVM-11837 [001] d..1.  1363.319994: kvm_entry:      vcpu 0 
+rip 0xfffff801a59020ec
+
+I did not spot anything useful in the dmesg/journalctl output.
+
+I also did the same tests with mainline kernel
+7.1.0-rc3 with v6 MBEC/GMET (patches 1-22 of 28) and v3 hrtimer [0]
+and got the same results.
+
+Best regards,
+David
+
+[0] https://lore.kernel.org/all/20260423155611.216805954@infradead.org
+
+
 
