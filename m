@@ -1,45 +1,45 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3883DEADC
-	for <kvm@vger.kernel.org>; Tue, 19 May 2026 07:58:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B133DEAD2
+	for <kvm@vger.kernel.org>; Tue, 19 May 2026 08:01:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779177521; cv=none; b=IFZDpQM1QDweL6HXAwj3f4rj1cTVmCiHLtwFL5Ciea9HEGAb3zl9s0lc0Kq0SCg6adgNl4V2tWo+GEGGl3nTnZXq3vQ4pT9BQ5JP0zsVqRqKSVsmGXyLj/kpEYDyL1EaPmASIRiS3e2p45e+4kiMCfdOuMW780qBL733gzk6I/E=
+	t=1779177698; cv=none; b=TCyOFWc8Zi7n4mN41t0YAtKuUNMYHKFossqM4NM5V2fU2uxuFA5V66xL6AB2XMR5hdkOCg202cCueUzFqtd+7dq8bZRmSpaXqvH1cNIOLGAN3PPpJJTHwRZ7Vw+sEkkFasQXHitVpv/cvs8Bzj6R2GRkj4Ecggx+P8ERim9W8Lk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779177521; c=relaxed/simple;
+	s=arc-20240116; t=1779177698; c=relaxed/simple;
 	bh=LY8f3exewuVVgW7srhsqrF9FNBytGdppVjn1vhLwqjE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uNEywjH0nht7Ed2kwX97DcJ8BjR5iXi/VdhpJFqCaqvlc/9Q/cg2N38Nn8oeMMTUgHH2s1cgwJP9/7MZjVl+JjcT8lmuniT862SHmUtkh4uuTbNQyqYH3vFQuDpk//qa/XwWJcGNA7JRaHzoTyjDU0o1Ile1lW4WvO96Jzj0hXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PkK6Aybr; arc=none smtp.client-ip=170.10.129.124
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=J1F5nx1gw2GB6VFLspnWKiUfXwzz8KJt4sGPP5WJJmekjT2pxhb4MJqFzy45gs7k5bb+yjPSmSEzvEShrr9uR64LiifoIxiVUldjWxJ9kVX5u47PBjB7EV5WQIIT5IakyHB61yEaqiUQ7aVdFfOKKcMtVlIn6ATaiuP6rJ7qL58=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bheFfvng; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PkK6Aybr"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bheFfvng"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779177518;
+	s=mimecast20190719; t=1779177696;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
 	 content-transfer-encoding:content-transfer-encoding;
 	bh=vA5AptWgFLuAf0f3uD0OIL4+IifC0E/7wRKlJanNrms=;
-	b=PkK6AybrlEhzZPQdMXXFQ22ggV6YMmBmCKSgAZ5IOS2hUIU7hzV5kjcqDRPiiTO6tYcxLk
-	GKXT3SkL5A3Y7x6FgO7IoF/AvStvW081ePepGRK1IyyWilcz/xAQSstyvoF88/k0CbinOD
-	CHBmpy/SLLMx+XcpA4i2WF1WpKKa4PY=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+	b=bheFfvngIY0gzuo3zjvodQ0HItm76N83w3QEG4WTtIyFuBT0QYtyWzGvVpgwApvr9el/XT
+	37zkBV+fcQM0EVinBtaXlvqzbk8wbQ078nQKOHekZZm/ehTBOau3pUYnjO5Zq+1WhwZD1r
+	fXGmYUos8gHLaoxCnmq8HpyyKH7nhhs=
+Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-627-WaiGw_p_Pb6ZBwO8LxMzLQ-1; Tue,
- 19 May 2026 03:58:36 -0400
-X-MC-Unique: WaiGw_p_Pb6ZBwO8LxMzLQ-1
-X-Mimecast-MFC-AGG-ID: WaiGw_p_Pb6ZBwO8LxMzLQ_1779177515
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-61-e4nqMxkoPRaV_EYgUn-j-Q-1; Tue,
+ 19 May 2026 04:01:31 -0400
+X-MC-Unique: e4nqMxkoPRaV_EYgUn-j-Q-1
+X-Mimecast-MFC-AGG-ID: e4nqMxkoPRaV_EYgUn-j-Q_1779177690
+Received: from mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.17])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EAEA719560A1;
-	Tue, 19 May 2026 07:58:34 +0000 (UTC)
+	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 4734E1956068;
+	Tue, 19 May 2026 08:01:30 +0000 (UTC)
 Received: from dell-r430-03.lab.eng.brq2.redhat.com (dell-r430-03.lab.eng.brq2.redhat.com [10.37.153.18])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 163F819560A2;
-	Tue, 19 May 2026 07:58:32 +0000 (UTC)
+	by mx-prod-int-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7802C1955D84;
+	Tue, 19 May 2026 08:01:28 +0000 (UTC)
 From: Igor Mammedov <imammedo@redhat.com>
 To: kvm@vger.kernel.org
 Cc: pbonzini@redhat.com,
@@ -48,9 +48,9 @@ Cc: pbonzini@redhat.com,
 	thomas.lendacky@amd.com,
 	michael.roth@amd.com,
 	naveen@kernel.org
-Subject: [kvm-unit-tests v2] x86/svm: work around Virtual VMLOAD/VMSAVE bug on Naples and Rome
-Date: Tue, 19 May 2026 09:58:30 +0200
-Message-ID: <20260519075830.68943-1-imammedo@redhat.com>
+Subject: [kvm-unit-tests PATCH v2] x86/svm: work around Virtual VMLOAD/VMSAVE bug on Naples and Rome
+Date: Tue, 19 May 2026 10:01:27 +0200
+Message-ID: <20260519080127.69056-1-imammedo@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -58,7 +58,7 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.17
 
 AMD Family 17h models 0x00-0x0f (Naples/Zen+) and 0x30-0x3f (Rome/Zen2)
 have a hardware bug where Virtual VMLOAD/VMSAVE causes spurious VMEXITs
