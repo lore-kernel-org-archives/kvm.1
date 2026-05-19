@@ -1,149 +1,423 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
+Received: from mx0a-00082601.pphosted.com (mx0a-00082601.pphosted.com [67.231.145.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E7C3409621;
-	Tue, 19 May 2026 16:24:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779207893; cv=none; b=amLjICdCCxJ9WEmlRVdEb1eCyrw7rQ+pmSBbLN68bgXu5/1nix/vY/QSX7hkP9733Q+pV39GTsF6/StywtRG0iU213zBs8u4dLD3wIo151nfjfZT3Ilrw4jNdKvOBAu9pCvOllZBSeklovEKk2NTXwB/tKZu8IfOLDPiYC6bkJ4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779207893; c=relaxed/simple;
-	bh=ndhxlSOyyIf2Tht2yGztSqbTYC94OIRuLNtYPJKhSXI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=A3QuDmhqoJkobxy0sH7BUiQuUz78zO7i7x7nuS8n91utNlX9t0ULuqw8BHowE6lzmhg+fv/aT7PQzsGZCSKvIcLbCZRCjGJIqaCK5y1PJkYgpTVL1tWCtv6KyTvqeQlA4UOcI9EkK5O3NSP1BSon/V/txzPWdmoQt0JB9zJllUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hHOImgV4; arc=none smtp.client-ip=198.175.65.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0411367B84
+	for <kvm@vger.kernel.org>; Tue, 19 May 2026 16:56:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.145.42
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779209772; cv=fail; b=uSxBng9D1q5LkEl4et4z/uEVGQseSF+hsNiMr4npcncxobur0PBrbhne10kqkXx8enS6gUX9icBenfEtpw3Fn5bP5qIhwzVOk216IdsdaPiGM35wZuHHBCgHXsYL4T11T1nEdgbhywFx22wt3l7B8MucXUHejxpuPmaxamCAhxM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779209772; c=relaxed/simple;
+	bh=/+rl+zGXxntfm2bGL1v8tsZRWvzSR5a1GeZPV80zZ2E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FaJl+3It3AbERIs3060XWsiim8sDPdmspBfQ8J5jdFTtRENw/1MMSsrk0z/BNh/tfdDgDRVaPZeXs9rmCkYJGQqPZq5MbRrGdFJn1E8h2jS3bXZG+4GZHdOdN7eDkpQdYEJ2+w54eGkc6Ea55h1UeyXCyW6sKjCuy3fjSX7z9ck=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=b7LR6Svc; arc=fail smtp.client-ip=67.231.145.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hHOImgV4"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779207892; x=1810743892;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=ndhxlSOyyIf2Tht2yGztSqbTYC94OIRuLNtYPJKhSXI=;
-  b=hHOImgV45QPDm/mScWGpO0J39vip+YX+GKuBdXIRl5dpGATj/6x/zUWQ
-   nLYo7JmvadSfiN7C9qAp5gvUKRkoZZ37Wdsa+becUFKu8o13vT/gGku2D
-   rErgLUTmxkNnbQVLp3PEbQhxP0Ujo1gUFp8e9bAkL7rx/86Mlgm9QWkuK
-   1dOhVkZOlVRTyZR1TLrEj7j3WNPaa3sN+R8rFK8GPVFQx3QClc3a471r2
-   545jIlRpmBHe5cpzDHnfC4m/HbWs3ekVyaed39oecS4Q8Ok7/RPKN2YlR
-   s/0byJZH0ob8M5YKUEUIP5d+iwrOUzHMVETcJG+ew+HKQl8HNeT0xvR1a
-   A==;
-X-CSE-ConnectionGUID: JtoCJuLSRGWdoxyaoUpsKA==
-X-CSE-MsgGUID: Mu/rqH17RDaLsJUfLvagQw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="80071927"
-X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
-   d="scan'208";a="80071927"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 09:24:52 -0700
-X-CSE-ConnectionGUID: w9Tfv7TDTy26EEULNDH5dQ==
-X-CSE-MsgGUID: /GsvDQOOSjOVmp7ib9c6Qw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
-   d="scan'208";a="235386228"
-Received: from spandruv-mobl5.amr.corp.intel.com (HELO [10.125.109.153]) ([10.125.109.153])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 09:24:48 -0700
-Message-ID: <7a177436-05d4-447b-8d24-94ca8b7d4bdd@intel.com>
-Date: Tue, 19 May 2026 09:24:52 -0700
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="b7LR6Svc"
+Received: from pps.filterd (m0528008.ppops.net [127.0.0.1])
+	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64J0Z557211597
+	for <kvm@vger.kernel.org>; Tue, 19 May 2026 09:56:10 -0700
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=OJtNZW12z9Y05Vrht3lzMMxtJE0LDmlKnN/pERYf24w=; b=b7LR6SvcC44C
+	UpwxWr7TYF+7fb+Uzzk2ww5cNZ9ld6C00isxqo7ahUos4G4ySo1jKCXpB2Kvk9LE
+	Vc5ab3eqbVVbVgvRv/Cuqh3hqNMpNEkAx65HatqfUBopmFyDqeWWjnXqVkQofFA0
+	F3AEy+31DqwwxGy+ncXGfgAWxcKdSH3ur1f3lNyw317XY//cX7BiE396TU+WLM31
+	sCZ1a0LIOTRtK+anXD+bpch50n9pFuhxOKxtcXU15cZBamh0GVYLn8rF31dXg+9P
+	oFOXOzREYfHk76+VyzzBoRuHef62cW3P6Fh3M7cp3cF16N52lABpWD2/D27H4B7Q
+	C2nac3cq+g==
+Received: from mail-oa1-f70.google.com (mail-oa1-f70.google.com [209.85.160.70])
+	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4e7d6jnb2h-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Tue, 19 May 2026 09:56:08 -0700 (PDT)
+Received: by mail-oa1-f70.google.com with SMTP id 586e51a60fabf-40ee506cf49so6352972fac.2
+        for <kvm@vger.kernel.org>; Tue, 19 May 2026 09:56:08 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779209768; cv=none;
+        d=google.com; s=arc-20240605;
+        b=lRWQFyUM+HnCLC+hMCEhAJq0hgMgNVdI5QCprGSnV7piVxImHlDclYUZyY8aGgntry
+         XkeOyZTFamt9D3ZfZYSx0DqsTLBIIL0M4PXsClUPlo0yn2aDMx62pDESeUQ2+wx+20EB
+         hfC0nVn9YEGodMFHh6izSfa5UyTosLzWcs6K7TEarqV2ywU+GJCcYTBdBbY0xva3Yed+
+         56wP8j02BrZwTfu2brvFll95DNJYeUGP3g9l/gdcQOTY0pm1N8HNZ5R0wtKvy+6Qzpbd
+         1YART5CXT74RvIcdiKP/vgrxURf5jKyDTGivWYYVuvw7XBonB4z9998KGYZal7gqcNgZ
+         c8fA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version;
+        bh=aJk9gSpAyyZLXyKE7r6q+vOPfRd8FFOsqzGXdkoLHG8=;
+        fh=gTRnYimXAgzWuw9hnjCRm9SwCZu0aBc7B662Kiuff3s=;
+        b=L0NgqcdzLepsBNjVw04Y5uewcV1+LLm0+avgdCcTkTEIpGfbLONQrp/TiShqFXqIOC
+         vXhpXmx26CHuJU2X/x5uZoJoJLyzuVUBmwHdm+8lckPf8oivmVDhJtAs+hXX8Xv9w4H5
+         4QKHAIHeKlpWGeuEu8yGSEdcvOmGrA1d0OJ+CwCTUx0rLsYdOui1vk4TEUL/xrtp/wTF
+         oLViKSEV+TPAjx0ADxbgHMaoSZ313mrTMB2lJQ+4c5MF8Zjbly7gi/UvTbmJK7SL2PXc
+         Njaku+2JqhuIAqokTmCsumJ6xpIioFjkRk4Y8xC01Ifsi6VWguZWVVNza++qWk3meDZx
+         uvlA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779209768; x=1779814568;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=aJk9gSpAyyZLXyKE7r6q+vOPfRd8FFOsqzGXdkoLHG8=;
+        b=mUgtpVK+BOZh3NV+u9ZW5BhFsQ5ptLtYratJuca18s+UoLNKSGQyJrRtwsUMo3HeRa
+         SySaejiui8BomMpFHnwrEhmTFZ6RFl3b87+mUQQtBoRh9D4mbmZOAZR1TU2RHvu8/EnF
+         rHQRK/q0Hb7/C5EnR9Q6cs/qBOgQ9ub3gNxglBvhV5tlHT7ynXygH4qHHBfKokt3zpgY
+         qrt1rjeIrih3A8LMsD0feSp7h1SqlIdqIyHo4NcDbKGwu0IHXguzBi4aaWzMQgS8WUVn
+         qWIgeSuvecOleZfQ1QiDeBINx7Vp1AcOKhJPEwTzVZL3OKMmrvF5ushWx+9v0dj6bTbj
+         /yUg==
+X-Forwarded-Encrypted: i=1; AFNElJ/ucg6fmYYDvL1Rc3kUBzISGWH9boW+bQLcrwQ95KL3rxmVs+XD1ttDUJ2Ex0c2Erlx6qY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywoh1bSz96TMDv8sssgKZN0C/IUhO2JyeA7ydtstyJ1vykLQ1lX
+	M2mgHgfvC0Wx53HSLlxrwvsDMx51ye3jZ3uyLS+9IjpiPV9jR/C8bdA2UB6oP514rWfJ65B3yQu
+	U0uXEuW7n7iB/Xve3oEKXq5gwVD1WwW7B7VpogaLdm18eMJKGYAmvhkjavCAt17aWFWWOi27xBQ
+	ZeNXep2kILMj5k2qwC5lAUeB6pw68=
+X-Gm-Gg: Acq92OEBYXFKZwYe//BTbFiteM7jLhRJVgs1Wrebc267kvx+1HnB4TJXf7GglAtZeXl
+	uy8y2+PVBq0eM4NdmPKBmZeqiHgALYvQ+8eszNw6E4fNHxm1Tp+eikfhhnY6EZIP54FZjXTqlKy
+	fHrUZJNhZ20B2XBY/rYsUmpvSXZqi0D1lWIjBBZnUlT+38J+Dmo+3eaby8ODDgKzxJASPsp+TOH
+	2OWaosnUM7PEdof6vw=
+X-Received: by 2002:a05:6808:3a14:b0:45e:f0af:5148 with SMTP id 5614622812f47-482e572b473mr12912256b6e.30.1779209767830;
+        Tue, 19 May 2026 09:56:07 -0700 (PDT)
+X-Received: by 2002:a05:6808:3a14:b0:45e:f0af:5148 with SMTP id
+ 5614622812f47-482e572b473mr12912231b6e.30.1779209767200; Tue, 19 May 2026
+ 09:56:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 14/23] x86/virt/seamldr: Shut down the current TDX
- module
-To: Chao Gao <chao.gao@intel.com>,
- "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-Cc: "kvm@vger.kernel.org" <kvm@vger.kernel.org>,
- "linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>,
- "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
- "Li, Xiaoyao" <xiaoyao.li@intel.com>, "Huang, Kai" <kai.huang@intel.com>,
- "Zhao, Yan Y" <yan.y.zhao@intel.com>,
- "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>,
- "kas@kernel.org" <kas@kernel.org>,
- "Chatre, Reinette" <reinette.chatre@intel.com>,
- "seanjc@google.com" <seanjc@google.com>,
- "pbonzini@redhat.com" <pbonzini@redhat.com>,
- "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>,
- "Verma, Vishal L" <vishal.l.verma@intel.com>,
- "nik.borisov@suse.com" <nik.borisov@suse.com>,
- "mingo@redhat.com" <mingo@redhat.com>, "Weiny, Ira" <ira.weiny@intel.com>,
- "tony.lindgren@linux.intel.com" <tony.lindgren@linux.intel.com>,
- "Annapurve, Vishal" <vannapurve@google.com>, "Shahar, Sagi"
- <sagis@google.com>, "djbw@kernel.org" <djbw@kernel.org>,
- "tglx@kernel.org" <tglx@kernel.org>, "paulmck@kernel.org"
- <paulmck@kernel.org>, "hpa@zytor.com" <hpa@zytor.com>,
- "bp@alien8.de" <bp@alien8.de>,
- "yilun.xu@linux.intel.com" <yilun.xu@linux.intel.com>,
- "x86@kernel.org" <x86@kernel.org>
-References: <20260513151045.1420990-1-chao.gao@intel.com>
- <20260513151045.1420990-15-chao.gao@intel.com>
- <329d3811e8acbfc2ecdb1c7ba443f23161329e2a.camel@intel.com>
- <agxSAsUvgcHj/Ywl@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- xsFNBE6HMP0BEADIMA3XYkQfF3dwHlj58Yjsc4E5y5G67cfbt8dvaUq2fx1lR0K9h1bOI6fC
- oAiUXvGAOxPDsB/P6UEOISPpLl5IuYsSwAeZGkdQ5g6m1xq7AlDJQZddhr/1DC/nMVa/2BoY
- 2UnKuZuSBu7lgOE193+7Uks3416N2hTkyKUSNkduyoZ9F5twiBhxPJwPtn/wnch6n5RsoXsb
- ygOEDxLEsSk/7eyFycjE+btUtAWZtx+HseyaGfqkZK0Z9bT1lsaHecmB203xShwCPT49Blxz
- VOab8668QpaEOdLGhtvrVYVK7x4skyT3nGWcgDCl5/Vp3TWA4K+IofwvXzX2ON/Mj7aQwf5W
- iC+3nWC7q0uxKwwsddJ0Nu+dpA/UORQWa1NiAftEoSpk5+nUUi0WE+5DRm0H+TXKBWMGNCFn
- c6+EKg5zQaa8KqymHcOrSXNPmzJuXvDQ8uj2J8XuzCZfK4uy1+YdIr0yyEMI7mdh4KX50LO1
- pmowEqDh7dLShTOif/7UtQYrzYq9cPnjU2ZW4qd5Qz2joSGTG9eCXLz5PRe5SqHxv6ljk8mb
- ApNuY7bOXO/A7T2j5RwXIlcmssqIjBcxsRRoIbpCwWWGjkYjzYCjgsNFL6rt4OL11OUF37wL
- QcTl7fbCGv53KfKPdYD5hcbguLKi/aCccJK18ZwNjFhqr4MliQARAQABzUVEYXZpZCBDaHJp
- c3RvcGhlciBIYW5zZW4gKEludGVsIFdvcmsgQWRkcmVzcykgPGRhdmUuaGFuc2VuQGludGVs
- LmNvbT7CwXgEEwECACIFAlQ+9J0CGwMGCwkIBwMCBhUIAgkKCwQWAgMBAh4BAheAAAoJEGg1
- lTBwyZKwLZUP/0dnbhDc229u2u6WtK1s1cSd9WsflGXGagkR6liJ4um3XCfYWDHvIdkHYC1t
- MNcVHFBwmQkawxsYvgO8kXT3SaFZe4ISfB4K4CL2qp4JO+nJdlFUbZI7cz/Td9z8nHjMcWYF
- IQuTsWOLs/LBMTs+ANumibtw6UkiGVD3dfHJAOPNApjVr+M0P/lVmTeP8w0uVcd2syiaU5jB
- aht9CYATn+ytFGWZnBEEQFnqcibIaOrmoBLu2b3fKJEd8Jp7NHDSIdrvrMjYynmc6sZKUqH2
- I1qOevaa8jUg7wlLJAWGfIqnu85kkqrVOkbNbk4TPub7VOqA6qG5GCNEIv6ZY7HLYd/vAkVY
- E8Plzq/NwLAuOWxvGrOl7OPuwVeR4hBDfcrNb990MFPpjGgACzAZyjdmYoMu8j3/MAEW4P0z
- F5+EYJAOZ+z212y1pchNNauehORXgjrNKsZwxwKpPY9qb84E3O9KYpwfATsqOoQ6tTgr+1BR
- CCwP712H+E9U5HJ0iibN/CDZFVPL1bRerHziuwuQuvE0qWg0+0SChFe9oq0KAwEkVs6ZDMB2
- P16MieEEQ6StQRlvy2YBv80L1TMl3T90Bo1UUn6ARXEpcbFE0/aORH/jEXcRteb+vuik5UGY
- 5TsyLYdPur3TXm7XDBdmmyQVJjnJKYK9AQxj95KlXLVO38lczsFNBFRjzmoBEACyAxbvUEhd
- GDGNg0JhDdezyTdN8C9BFsdxyTLnSH31NRiyp1QtuxvcqGZjb2trDVuCbIzRrgMZLVgo3upr
- MIOx1CXEgmn23Zhh0EpdVHM8IKx9Z7V0r+rrpRWFE8/wQZngKYVi49PGoZj50ZEifEJ5qn/H
- Nsp2+Y+bTUjDdgWMATg9DiFMyv8fvoqgNsNyrrZTnSgoLzdxr89FGHZCoSoAK8gfgFHuO54B
- lI8QOfPDG9WDPJ66HCodjTlBEr/Cwq6GruxS5i2Y33YVqxvFvDa1tUtl+iJ2SWKS9kCai2DR
- 3BwVONJEYSDQaven/EHMlY1q8Vln3lGPsS11vSUK3QcNJjmrgYxH5KsVsf6PNRj9mp8Z1kIG
- qjRx08+nnyStWC0gZH6NrYyS9rpqH3j+hA2WcI7De51L4Rv9pFwzp161mvtc6eC/GxaiUGuH
- BNAVP0PY0fqvIC68p3rLIAW3f97uv4ce2RSQ7LbsPsimOeCo/5vgS6YQsj83E+AipPr09Caj
- 0hloj+hFoqiticNpmsxdWKoOsV0PftcQvBCCYuhKbZV9s5hjt9qn8CE86A5g5KqDf83Fxqm/
- vXKgHNFHE5zgXGZnrmaf6resQzbvJHO0Fb0CcIohzrpPaL3YepcLDoCCgElGMGQjdCcSQ+Ci
- FCRl0Bvyj1YZUql+ZkptgGjikQARAQABwsFfBBgBAgAJBQJUY85qAhsMAAoJEGg1lTBwyZKw
- l4IQAIKHs/9po4spZDFyfDjunimEhVHqlUt7ggR1Hsl/tkvTSze8pI1P6dGp2XW6AnH1iayn
- yRcoyT0ZJ+Zmm4xAH1zqKjWplzqdb/dO28qk0bPso8+1oPO8oDhLm1+tY+cOvufXkBTm+whm
- +AyNTjaCRt6aSMnA/QHVGSJ8grrTJCoACVNhnXg/R0g90g8iV8Q+IBZyDkG0tBThaDdw1B2l
- asInUTeb9EiVfL/Zjdg5VWiF9LL7iS+9hTeVdR09vThQ/DhVbCNxVk+DtyBHsjOKifrVsYep
- WpRGBIAu3bK8eXtyvrw1igWTNs2wazJ71+0z2jMzbclKAyRHKU9JdN6Hkkgr2nPb561yjcB8
- sIq1pFXKyO+nKy6SZYxOvHxCcjk2fkw6UmPU6/j/nQlj2lfOAgNVKuDLothIxzi8pndB8Jju
- KktE5HJqUUMXePkAYIxEQ0mMc8Po7tuXdejgPMwgP7x65xtfEqI0RuzbUioFltsp1jUaRwQZ
- MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
- hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
- vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <agxSAsUvgcHj/Ywl@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260512184755.4137227-1-zhipingz@meta.com> <20260512184755.4137227-2-zhipingz@meta.com>
+ <e6928a10-77b1-4fdf-8bc3-cd0154b4d4c5@huawei.com> <CAH3zFs2W5cB5Jhk8pm9K=O3-DyN3tHm7h5q9Hu26ekV=_gBEvw@mail.gmail.com>
+In-Reply-To: <CAH3zFs2W5cB5Jhk8pm9K=O3-DyN3tHm7h5q9Hu26ekV=_gBEvw@mail.gmail.com>
+From: Zhiping Zhang <zhipingz@meta.com>
+Date: Tue, 19 May 2026 09:55:56 -0700
+X-Gm-Features: AVHnY4II7Geh49KwlOFnaMEUnIiyWZTiYUlxcqTc_0jLUETaJ7j0xzUGRx7Zyn4
+Message-ID: <CAH3zFs0u2j-PdNjmtCuu8rZm5F0aVQYFo3NuSk0ptByUwrz2ng@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] vfio: add dma-buf get_tph callback and DMA_BUF_TPH feature
+To: fengchengwen <fengchengwen@huawei.com>
+Cc: Alex Williamson <alex@shazbot.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+        Leon Romanovsky <leon@kernel.org>, Bjorn Helgaas <helgaas@kernel.org>,
+        kvm@vger.kernel.org, linux-rdma@vger.kernel.org,
+        linux-pci@vger.kernel.org, netdev@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, Keith Busch <kbusch@kernel.org>,
+        Yochai Cohen <yochai@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE5MDE2OSBTYWx0ZWRfX/rVBKbhZmgdo
+ 8DhA7SDqCzpm9CGdlNfaaHyVm2MVI+VGTQesYSs98pcBKRLhd1x0nb7mUunZy7yyoMRdP4GuZ8r
+ aH4Ys7ikTi23eWczeMezTGADX48MZ0qveJcb93z1V3064PO9Uyu0BgEQLACnoSIAPTlg5berDC+
+ Pm9AQbAANk5mXx9iCrQABAUNpy4hXKptl0wldFhNccaana1k6rTpJvPvrJczk/yZSonsGKzCPbV
+ w3eQKh3FUGOorjHdQyTK1Kf0d8MMc99sndV+PLlHQnU396xXEKtQw/qy9g7CTOTmD0ptTTVTna9
+ 0t+NXAbd3SBLuEZJLAPxYfxw/Sbi7+NcvEiKxObuycVnmrP1NJTYnmyFZiFwlKrQO/Bb4HOt8Wf
+ BlPyjySQgk3+cdtM3c7frjpvP32Yudr80STZa2AlLr7mvi9uUHInZW8faRcb7w6Rpon7UqIWdgm
+ uGGAZakxZdqICT5h/TA==
+X-Proofpoint-ORIG-GUID: 5lrg_ZBcvaZiEpiB0VOWDs4oaiYA4EQ-
+X-Authority-Analysis: v=2.4 cv=B5yJFutM c=1 sm=1 tr=0 ts=6a0c9628 cx=c_pps
+ a=nSjmGuzVYOmhOUYzIAhsAg==:117 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=_1IyUuN4QrATX339ibzo:22
+ a=VabnemYjAAAA:8 a=i0EeH86SAAAA:8 a=Tw_J5DVj0enz2h0_CHoA:9 a=QEXdDO2ut3YA:10
+ a=1zu1i0D7hVQfj8NKfPKu:22 a=gKebqoRLp9LExxC7YDUY:22
+X-Proofpoint-GUID: 5lrg_ZBcvaZiEpiB0VOWDs4oaiYA4EQ-
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-19_04,2026-05-18_01,2025-10-01_01
 
-On 5/19/26 05:05, Chao Gao wrote:
->>  Why not just WARN_ON_ONCE(get_tdx_sys_info_handoff(&handoff));
->>  And we can drop the ret var. Save 2 LOC.
-> Dave had a different preference here:
-> 
-> https://lore.kernel.org/kvm/8b9d7fa7-6534-48e7-a4fa-c21260b1c762@intel.com/
+On Wed, May 13, 2026 at 11:08=E2=80=AFPM Zhiping Zhang <zhipingz@meta.com> =
+wrote:
+>
+> On Tue, May 12, 2026 at 6:33=E2=80=AFPM fengchengwen <fengchengwen@huawei=
+.com> wrote:
+> >
+> > > >
+> > Hi Zhiping,
+> >
+> > I have several suggestions:
+> >
+> > 1. In struct vfio_device_feature_dma_buf_tph, steering_tag is defined as
+> >    __u16, but PCIe TPH base steering tag is only 8-bit. We can use __u8
+> >    for steering_tag to shrink structure size and reduce reserved paddin=
+g.
+> >
+> > 2. The flags field seems unnecessary. We can use value 0 of steering_tag
+> >    or steering_tag_ext to indicate the corresponding ST entry is not
+> >    available, which simplifies the uAPI design.
+> >
+> > 3. All TPH metadata fields (st, ext st, ph) fit within 32 bits. We can
+> >    wrap them into a union with atomic_t, then use atomic read/write
+> >    instead of memory_lock plus smp_load_acquire/smp_store_release. This
+> >    makes lockless access cleaner and avoids ordering maintenance.
+> >
+> > For details, see the text.
+> >
+>
+>   Hi Feng,
+>
+>   Thanks for the detailed review.
+>
+>   1) Regular TPH uses an 8-bit ST, while Extended TPH uses a 16-bit ST, so
+>   so Extended TPH in Flit mode TLP can carry a 16-bit steering tag in
+> the request.
+>
+>   2) I still think I need an explicit validity indication rather than usi=
+ng
+>   `0` to mean "not present". ST and Extended ST can coexist with
+>   different values (including the value 0).
+>
+>    3) I also do not think packing the fields into `atomic_t` removes the =
+need
+>   for `memory_lock` here, because the write side still needs the lock for
+>   `priv->vdev` ownership/lifetime checks and the dma-buf list/cleanup
+>   paths. Open for discussion, though.
+>
+>   Thanks,
+>   Zhiping
+>
+>
+>
+>
+> > On 5/13/2026 2:47 AM, Zhiping Zhang wrote:
+> > > Add a dma-buf callback that returns raw TPH metadata from the exporter
+> > > so peer devices can reuse the steering tag and processing hint
+> > > associated with a VFIO-exported buffer. Add a new
+> > > VFIO_DEVICE_FEATURE_DMA_BUF_TPH ioctl that takes the fd from
+> > > VFIO_DEVICE_FEATURE_DMA_BUF along with the TPH values, validates the =
+fd
+> > > is a vfio-exported dma-buf belonging to this device, and stores the T=
+PH
+> > > metadata under memory_lock. The existing VFIO_DEVICE_FEATURE_DMA_BUF
+> > > uAPI is unchanged.
+> > >
+> > > 8-bit ST and 16-bit Extended ST are distinct namespaces in the PCIe T=
+PH
+> > > ST table (firmware reports them as separate fields with separate
+> > > validity bits in the ACPI _DSM ST table), so the uAPI carries both
+> > > values along with a flags field that indicates which value(s) are
+> > > valid for this device. The exporter selects the value that matches the
+> > > importer's requested width and returns -EOPNOTSUPP if that width is
+> > > not present, instead of substituting a value across namespaces.
+> > >
+> > > Publish the TPH fields under memory_lock and gate readers on a
+> > > release/acquire on the flags field; this lets get_tph() run lockless
+> > > and avoids inverting the memory_lock -> dma_resv_lock ordering set up
+> > > by vfio_pci_dma_buf_move(). Convert the @revoked bitfield to a plain =
+bool
+> > > so concurrent updates of @revoked (under dma_resv_lock) and the new T=
+PH
+> > > fields (under memory_lock) cannot race on a shared bitfield byte.
+> >
+> > The commit log includes many implementation details, why not remove or =
+simply it.
+> >
 
-I almost never optimize for lines of code.
+sure, will do!
 
-The _only_ reason to worry about it is when you have a chunk of logic
-that's having issues fitting on a "screen". There, squishing a few lines
-together can mean the difference between seeing a whole loop on one
-screen or having to page around.
+> > >
+> > > Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
+> > >
+> > > ---
+> > >  drivers/vfio/pci/vfio_pci_core.c   |   3 +
+> > >  drivers/vfio/pci/vfio_pci_dmabuf.c | 113 +++++++++++++++++++++++++++=
++-
+> > >  drivers/vfio/pci/vfio_pci_priv.h   |  11 +++
+> > >  include/linux/dma-buf.h            |  21 ++++++
+> > >  include/uapi/linux/vfio.h          |  35 +++++++++
+> > >  5 files changed, 182 insertions(+), 1 deletion(-)
+> > >
+> > > diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio=
+_pci_core.c
+> > > index 3f8d093aacf8..94aa6dd95701 100644
+> > > --- a/drivers/vfio/pci/vfio_pci_core.c
+> > > +++ b/drivers/vfio/pci/vfio_pci_core.c
+> > > @@ -1534,6 +1534,9 @@ int vfio_pci_core_ioctl_feature(struct vfio_dev=
+ice *device, u32 flags,
+> > >               return vfio_pci_core_feature_token(vdev, flags, arg, ar=
+gsz);
+> > >       case VFIO_DEVICE_FEATURE_DMA_BUF:
+> > >               return vfio_pci_core_feature_dma_buf(vdev, flags, arg, =
+argsz);
+> > > +     case VFIO_DEVICE_FEATURE_DMA_BUF_TPH:
+> > > +             return vfio_pci_core_feature_dma_buf_tph(vdev, flags, a=
+rg,
+> > > +                                                      argsz);
+> > >       default:
+> > >               return -ENOTTY;
+> > >       }
+> > > diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vf=
+io_pci_dmabuf.c
+> > > index f87fd32e4a01..28247602e359 100644
+> > > --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
+> > > +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
+> > > @@ -19,7 +19,23 @@ struct vfio_pci_dma_buf {
+> > >       u32 nr_ranges;
+> > >       struct kref kref;
+> > >       struct completion comp;
+> > > -     u8 revoked : 1;
+> > > +     /*
+> > > +      * TPH metadata published by VFIO_DEVICE_FEATURE_DMA_BUF_TPH and
+> > > +      * consumed by the @get_tph dma-buf callback.
+> > > +      *
+> > > +      * @tph_flags is the publish/consume gate: writers populate
+> > > +      * @steering_tag, @steering_tag_ext and @ph first, then store
+> > > +      * @tph_flags with smp_store_release(); readers do
+> > > +      * smp_load_acquire(&tph_flags) before accessing the value fiel=
+ds.
+> > > +      * @tph_flags =3D=3D 0 means "TPH not set". Writers serialize v=
+ia
+> > > +      * vdev->memory_lock; readers are lockless to avoid AB-BA again=
+st
+> > > +      * the dma_resv_lock held by importers.
+> > > +      */
+> > > +     u32 tph_flags;
+> >
+> > As subsequent comments, can proceed without tph_flags
+> >
+> > > +     u16 steering_tag;
+> > > +     u16 steering_tag_ext;
+> > > +     u8 ph;
+> >
+> > struct dma_buf_tph {
+> >         union {
+> >                 atomic_t val;
+> >                 struct {
+> >                         u16 st_ext;
+> >                         u8 st;
+> >                         u8 ph;
+> >                 };
+> >         };
+> > };
+> > Set and get are done with atomic operation, no need for lock
+> >
+> > > +     bool revoked;
+> > >  };
+> > >
+> > >  static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
+> > > @@ -69,6 +85,35 @@ vfio_pci_dma_buf_map(struct dma_buf_attachment *at=
+tachment,
+> > >       return ret;
+> > >  }
+> > >
+> >
+> > ...
+> >
+> > >
+> > > +     /**
+> > > +      * @get_tph:
+> > > +      * @dmabuf: DMA buffer for which to retrieve TPH metadata
+> > > +      * @steering_tag: Returns the raw TPH steering tag for @st_width
+> > > +      * @ph: Returns the TPH processing hint (2-bit value)
+> > > +      * @st_width: Consumer's supported steering tag width in bits (=
+8 or 16)
+> > > +      *
+> > > +      * Return the TPH (TLP Processing Hints) metadata associated wi=
+th this
+> > > +      * DMA buffer for the requested steering-tag width. 8-bit ST an=
+d 16-bit
+> > > +      * Extended ST are distinct namespaces in the PCIe TPH ST table=
+, so the
+> > > +      * exporter must select the value that matches @st_width and mu=
+st not
+> > > +      * substitute one for the other.
+> > > +      *
+> > > +      * Return 0 on success, -EOPNOTSUPP if no metadata is available=
+ for the
+> > > +      * requested width, or -EINVAL if @st_width is not 8 or 16.
+> > > +      *
+> > > +      * This callback is optional.
+> > > +      */
+> > > +     int (*get_tph)(struct dma_buf *dmabuf, u16 *steering_tag, u8 *p=
+h,
+> > > +                    u8 st_width);
+> >
+> > how about rename steering_tag to st?
+> >
 
-But, at the point you're doing *that*, you probably need to think about
-refactoring anyway.
+I'd like to keep "steering_tag" in this signature if you don't mind.
+The verbose name keeps the signature self-documenting.
+
+> > > +
+> > >       /**
+> > >        * @map_dma_buf:
+> > >        *
+> > > diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
+> > > index 5de618a3a5ee..53b2bbd9fc1e 100644
+> > > --- a/include/uapi/linux/vfio.h
+> > > +++ b/include/uapi/linux/vfio.h
+> > > @@ -1534,6 +1534,41 @@ struct vfio_device_feature_dma_buf {
+> > >   */
+> > >  #define VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2  12
+> > >
+> > > +/**
+> > > + * Upon VFIO_DEVICE_FEATURE_SET associate TPH (TLP Processing Hints)=
+ metadata
+> > > + * with a vfio-exported dma-buf. The dma-buf must have been created =
+by
+> > > + * VFIO_DEVICE_FEATURE_DMA_BUF on this device.
+> > > + *
+> > > + * dmabuf_fd is the file descriptor returned by VFIO_DEVICE_FEATURE_=
+DMA_BUF.
+> > > + *
+> > > + * 8-bit ST (steering_tag) and 16-bit Extended ST (steering_tag_ext)=
+ are
+> > > + * distinct namespaces in the PCIe TPH ST table; userspace should po=
+pulate
+> > > + * the value(s) it has from the firmware ST table for this device an=
+d set
+> > > + * the matching VFIO_DMA_BUF_TPH_ST / VFIO_DMA_BUF_TPH_ST_EXT bit in=
+ @flags.
+> > > + * An importer requests a specific width and receives the matching v=
+alue;
+> > > + * if the requested width is not present, the importer is told TPH is
+> > > + * unavailable for this dma-buf.
+> > > + *
+> > > + * ph is the 2-bit TLP Processing Hint and must be in the range [0, =
+3].
+> > > + *
+> > > + * The user must set TPH on the dma-buf before the importer consumes=
+ it.
+> > > + *
+> > > + * Return: 0 on success, -errno on failure.
+> >
+> > -1 and errno is set on failure.
+> >
+
+This documents the kernel-side return value;
+the -1 / errno form is what the libc ioctl(2) wrapper presents to userspace.
+
+> > > + */
+> > > +#define VFIO_DEVICE_FEATURE_DMA_BUF_TPH 13
+> > > +
+> > > +#define VFIO_DMA_BUF_TPH_ST          (1 << 0)  /* steering_tag valid=
+ */
+> > > +#define VFIO_DMA_BUF_TPH_ST_EXT              (1 << 1)  /* steering_t=
+ag_ext valid */
+> >
+> > It could be represented by judge whether steering_tag/ext =3D=3D 0
+> >
+> > > +
+> > > +struct vfio_device_feature_dma_buf_tph {
+> > > +     __s32   dmabuf_fd;
+> > > +     __u32   flags;
+> > > +     __u16   steering_tag;
+> > > +     __u16   steering_tag_ext;
+> > > +     __u8    ph;
+> > > +     __u8    reserved[3];
+> >
+> > How about:
+> > struct vfio_device_feature_dma_buf_tph {
+> >         __s32   dmabuf_fd;
+> >         __u16   st_ext;
+> >         __u8    st;
+> >         __u8    ph;
+> > }
+> > If st_ext is not zero means it valid, and also with st field.
+> >
+> > Thanks
+> >
+> > > +};
+> > > +
+> > >  /* -------- API for Type1 VFIO IOMMU -------- */
+> > >
+> > >  /**
+> >
