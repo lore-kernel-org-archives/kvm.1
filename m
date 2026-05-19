@@ -1,166 +1,213 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 211BE372EF6;
-	Tue, 19 May 2026 22:57:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F149232B120
+	for <kvm@vger.kernel.org>; Tue, 19 May 2026 23:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779231465; cv=none; b=iJOhzKc4D3F79Vj7iCi9Wl0WJ6IcLczX4QmM2Pb1XhfY3iNj1zETuOFbHJZoqvvuq7MsYf9pgqJdxrtpxmcNMCDOC7xvXLhy8vylwG8yAHE9N7XeIAVP9IKZeb/oFkIPh1dT1CmQwicMrhBxN4VAGEIEO6Mr+fLFuUqyhGNRhzw=
+	t=1779231914; cv=none; b=qNc/++E4H+JNiReORoXnXPJqg40dL0sWCrc3X14Gc/Tn5R+jOcfJ0fA74HnC4oA8nO3B5+BrvVbzq2ByY24kBI23qSihloL7tLA79VSJvOD47CGYMe0uD638fwIciDhzO2FlGF8HwdHRJz/yaWZ82xQXz7j6apZNGtEv9up2Jnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779231465; c=relaxed/simple;
-	bh=Xu0Wzsuqb3UJUFiMu/NhOeqe0Fl6d7jfePXfdrq4gGE=;
+	s=arc-20240116; t=1779231914; c=relaxed/simple;
+	bh=rKw+Gy2B3liLRrb1+batkgbRplDfelqd2XM3nHk15tE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bsFA2aWWYyhf/Ek5ndPaZaxqecwiwi9nkjNMLSJ5ES9iFE4Y66q/Vmy27knxVT/D2z//I0Tm5m6xeZOWonezsuRTwctH1AkLxuK6eFn2Isch8/XOoGJ4z8ttNitc65tdLybbL3fhImbpoly4vS1n83tTeprZPSRPFSkzNFi9dTQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EZvlZuw1; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=KbKnnEa1a8FwhKrcn29+pS7OCnMk4YM3YBPhQyI05wPoS79ZL2BbaLKaqclfMQFQhi55dlFx2Lzke64iIrSVD/5MG+X6jm96FHkR5Us44nezcRj1rNdHq7OB1wcMDWFh4HZdyMA7VHQp0wcVbBHUJ3MBAxXNPYr08XRWY4IeIfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ruS6ELLU; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EZvlZuw1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 632361F000E9;
-	Tue, 19 May 2026 22:57:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779231463;
-	bh=vlczZf+tmGw8IPcdnoLC+JUsg1rmEL1pieN0hKrWjbE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=EZvlZuw1VED308JyJcnm+ZCcWB9qCZjmAvJ0kifEyyoENrG12qn0dvsSCjLGcaRa6
-	 QcpLh15vokgNbSpAALR7q8uSWiio5M9ti1gFHiz0gF2lBln9RtdIG6ES0hc6o1MfOQ
-	 Bc7+ntO82BL4025y/pvTUtNewTuw//ZKvtzZMLals6YA11Lupm8hJPZUynvBjaAb16
-	 q5L5a9lU1Ab4LrGB2MQQnmEmPnPEVaKMRjwFDQK6Km22EJFcaLJBBThmstxmkc5pXO
-	 ifrMf1nhQi8+e3YEI1/6m6TJQtX+8VbC32BGlXU9vAdOqZrwvy/abxLr3B7uvHRmWa
-	 ktaMwGUF4h8+A==
-Date: Tue, 19 May 2026 15:57:42 -0700
-From: Oliver Upton <oupton@kernel.org>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>,
-	Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <skhan@linuxfoundation.org>, kvm <kvm@vger.kernel.org>,
-	Linux Doc Mailing List <linux-doc@vger.kernel.org>,
-	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Jim Mattson <jmattson@google.com>, Joey Gouly <joey.gouly@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Raghavendra Rao Ananta <rananta@google.com>,
-	Eric Auger <eric.auger@redhat.com>, Kees Cook <kees@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Nathan Chancellor <nathan@kernel.org>,
-	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
-	kvmarm@lists.linux.dev,
-	linux-kselftest <linux-kselftest@vger.kernel.org>
-Subject: Re: [PATCH] Documentation: KVM: Document guest-visible compatibility
- expectations
-Message-ID: <agzq5kwzuJvd7Mh5@kernel.org>
-References: <3f9d731c3d26b0367600f1069e6425099bc34eac.camel@infradead.org>
- <agxFbniU_6eQ98t2@willie-the-truck>
- <cf429f2082e863571595f74d1d3dedc3e6a82964.camel@infradead.org>
- <CABgObfacAYexR25SMi1kSZMRnHx3EDGj8=E84V1DumER66ibnQ@mail.gmail.com>
- <86qzn7wp3y.wl-maz@kernel.org>
- <593a782c50f3c8656e13b36dfb975a67d43a908e.camel@infradead.org>
- <CABgObfbS-z3OphDna5W_JQPvw+OK=yXJurVMHp1ANZ5uGEgVhQ@mail.gmail.com>
- <9d0429ddbe4d8c6993e74237c4395697f80092d6.camel@infradead.org>
- <agzR2kaJsNa8X9lF@kernel.org>
- <1243d375846c4f4e20c229a6f09300126188fc8b.camel@infradead.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ruS6ELLU"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ba3b9bcf69so735ad.0
+        for <kvm@vger.kernel.org>; Tue, 19 May 2026 16:05:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779231912; x=1779836712; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=/JGKe5XSqhMH1qT1WplE0RQlM2euEqwriUAGETdhTiU=;
+        b=ruS6ELLU96jH1l2RCCGxDM55Gv90OFvTn9+Sg6YQ5Me3RAv3IVnCNfc7M4CVphvYof
+         sgzx3TcHiWloh+W9IkxiheZCNhhrpG91qgmyxrymo8mJbMOrGnZjV5uBT9GWMkucXDQG
+         m95bZsS+ymswv5zmtqjs8mWUCs3abiBJa6pZtvvsC5Z3exy/RL3/UdimmYgesLGkoCwd
+         XekjriLDl1Kvg/i7jHm+0bv8Wn3JyvPLNJeJvpE02lu2v2miSl2BRe3Ysr6UkMTm3Yr5
+         lJ++73BSuas44quSJ4/k7Km2AMNuwMqRHniebiN9tIulr82B7lCpPvCQS/fX3mJRdxMm
+         2IDA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779231912; x=1779836712;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/JGKe5XSqhMH1qT1WplE0RQlM2euEqwriUAGETdhTiU=;
+        b=oGmD1Xq8U1LDEqx9yp+zDyTojdey/YJVZFvst9MFGzBRhW4oHPuhxHxQMDfoLFt4yk
+         dc1p2s0/9zWOcnEjzAk0+CSBzeTC84+E3OCWp0Y0K08DEl/2gWjxuGn1XBmjbuoeJy32
+         K9NzBhctYAF5WrkOTlcq3fVvKiGlEI5VMQ4Q953Vb1N48tr186K5T39DJbAoZ9rTyBBk
+         0Q9aRWbs97DG+GMOBxTAr96XOEs8rzLz4kas5JYSuw+eZhOwG+rrRdvlyXsZrtGF/6Nz
+         SfAQRyM9n1HwERVYMK+JZvgAotqiT8udVJRidj6JW82hhSRsSRV0HVIF9bZuRDdtPtOb
+         /Gzg==
+X-Forwarded-Encrypted: i=1; AFNElJ/BznG0m466LRJQMYz1hs+T19EGvZGntRyIGKRapu4de8UFHhE4QZP22FuoL2AaHvvmWTo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxm45yHfmEoOpgHGoJVR/kKmdvIN2LFrYM7ytjSNLn4u85qzCpH
+	1SzXfOmzivMUw4VLCTziuG4FPoPFoktYNH6OdrHX515DYKNtFNV1BMTsiQNajuwk5g==
+X-Gm-Gg: Acq92OHl0ReO0iUlhfe9M07KasN7YlFkKAgV9uktMstISF2dQ35+5CtmjBkdB2KatLi
+	UqrBWzgeZMeMNCExObP73zZVYvWU/JRJP/JAeIe11w8mXSa8O6a/v86Uc2Hdi7CFiovXyroEibT
+	awqno8tR5CGYm3OoR/ZuXKK0YAz2FSTzaqnlveK8O80b6D7DfeIvU806l9MyR9liRZPbSysqOKH
+	8rODAYEgsshJccOwhoxax41WEWhWZ5Nv0waoIZ3stNlTWwLfMz9nj31y/MeoRU7kCJgWSwWBjcV
+	HN0DAokRzJ3kjv3c5IVMvXT8K81K6MLlj5TDwfV7urOnMhiybyl/Kh1Im91jqekP/GnklLuiH3P
+	2WdQAidTynI4qbmiF3XEazojjrv5mH6tJxQ44Fg+kZCQFK4k4s74eQQrbPRxZOGmrFGK046pVZA
+	xGdpH69RYW6SoajwVPoiFyjXlCEHBv6XeRj8h0jjIFAMdMZVO4ItJCyRzf0402XT+7XrfJoW/sg
+	9K2Lkg=
+X-Received: by 2002:a17:903:2a87:b0:2bd:6dad:3dfd with SMTP id d9443c01a7336-2bdb37cf83amr8934085ad.27.1779231911476;
+        Tue, 19 May 2026 16:05:11 -0700 (PDT)
+Received: from google.com (44.234.124.34.bc.googleusercontent.com. [34.124.234.44])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83f196638d0sm22941288b3a.7.2026.05.19.16.05.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 19 May 2026 16:05:10 -0700 (PDT)
+Date: Tue, 19 May 2026 23:05:02 +0000
+From: Pranjal Shrivastava <praan@google.com>
+To: Samiullah Khawaja <skhawaja@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
+	YiFei Zhu <zhuyifei@google.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	David Matlack <dmatlack@google.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>
+Subject: Re: [PATCH v2 12/16] iommufd: Implement ioctl to mark HWPT for
+ preservation
+Message-ID: <agzsngLHDmoD3JxT@google.com>
+References: <20260427175633.1978233-1-skhawaja@google.com>
+ <20260427175633.1978233-13-skhawaja@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1243d375846c4f4e20c229a6f09300126188fc8b.camel@infradead.org>
+In-Reply-To: <20260427175633.1978233-13-skhawaja@google.com>
 
-On Tue, May 19, 2026 at 10:58:05PM +0100, David Woodhouse wrote:
-> On Tue, 2026-05-19 at 14:10 -0700, Oliver Upton wrote:
-> > And in the absence of clear evidence of a guest depending on the broken
-> > IGROUPR behavior, I don't see how the guest-side changes of Christoffer's
-> > series are any different from the multitude of bug fixes that we take
-> > every single release cycle. It is an unfortunate bug and I concur with
-> > Marc that it doesn't seem like the sort of thing a guest could rely
-> > upon.
+On Mon, Apr 27, 2026 at 05:56:29PM +0000, Samiullah Khawaja wrote:
+> From: YiFei Zhu <zhuyifei@google.com>
 > 
-> I find this concerning, because I've already explained this.
+> Userspace provides a token to mark the HWPT for preservation. Note that
+> this token is not the LUO token that is used to preserve the iommufd.
+> Once all the required HWPT are marked for preservation, the user can
+> preserve the iommufd into LUO. The iommufd will preserve the HWPTs that
+> are marked for preservation.
 > 
-> There is a very real possibility of guests simply not *noticing* that
-> they had bugs in this area, as it didn't *matter* what they wrote to
-> these registers since it never worked.
+> The marked HWPTs are tracked using a new XArray mark protected by a new
+> liveupdate mutex. This mutex will also be used during iommufd
+> preservation to protect against any race with the mark preserve ioctl.
 > 
-> There is an even larger possibility of guests having worked around the
-> original issue by *detecting* whether the registers were actually
-> writable before choosing to use the alternative groups. And if such a
-> guest launches on a new kernel and then needs to be rolled back to an
-> older kernel, that will also break.
-
-The onus is on you to substantiate this claim. I would imagine after
-carrying the revert for so long that there must be at least one example
-of such a guest?
-
-What ifs and maybes do not meet the bar, in my opinion, for preserving
-bug emulation in KVM. Of course there could be a little flexibility with
-that but we need to have some way of discriminating between bug fixes
-and genuine guest expectations around the behavior of virtual hardware.
-
-> > Wrong or not, this behavior is documented unambiguously. From the VGICv2
-> > UAPI documentation:
-> > 
-> > """
-> > Userspace should set GICD_IIDR before setting any other registers (both
-> > KVM_DEV_ARM_VGIC_GRP_DIST_REGS and KVM_DEV_ARM_VGIC_GRP_CPU_REGS) to ensure
-> > the expected behavior. Unless GICD_IIDR has been set from userspace, writes
-> > to the interrupt group registers (GICD_IGROUPR) are ignored.
-> > """
-> > 
-> > I'm not inclined to change that.
+> The HWPT token will be used during restore to identify this HWPT. The
+> restoration logic is not implemented and will be added later.
 > 
-> That'll all very well... but as far as I can tell, QEMU *doesn't* set
-> GICD_IIDR, so it still gets the bizarre behaviour where the *guest* can
-> write the registers, but userspace can't. So it looks like it'll work
-> except migration will fail. Am I missing something?
+> Signed-off-by: YiFei Zhu <zhuyifei@google.com>
+> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
 
-That's exactly it, and why I said tying up UAPI opt-in with
-guest-visible registers is a really bad idea.
+[snip]
 
-> But honestly, I don't care one iota about GICv2; I was only trying to
-> do the cleanup while I was there. Feel free to drop that part entirely.
-> 
-> >  As a way out of this whole mess, can we
-> > instead:
-> > 
-> >  - Allow userspace to set IIDR.Revision to 1
-> > 
-> >  - Drop any bug emulation from the handling of IGROUPR registers
-> 
-> It doesn't make sense to allow setting IIDR.Revision to 1 *without* the
-> one-liner that actually implements the corresponding behaviour change
-> in the IGROUPR registers.
+> diff --git a/drivers/iommu/iommufd/iommufd_private.h b/drivers/iommu/iommufd/iommufd_private.h
+> index 6ac1965199e9..111f4d42e210 100644
+> --- a/drivers/iommu/iommufd/iommufd_private.h
+> +++ b/drivers/iommu/iommufd/iommufd_private.h
+> @@ -44,6 +44,11 @@ struct iommufd_ctx {
+>  	struct file *file;
+>  	struct xarray objects;
+>  	struct xarray groups;
+> +#ifdef CONFIG_IOMMU_LIVEUPDATE
+> +#define IOMMUFD_OBJ_LIVEUPDATE_MARK XA_MARK_1
+> +	/* @liveupdate_mutex: Protects the preservation of HWPTs. */
+> +	struct mutex liveupdate_mutex;
+> +#endif
+>  	wait_queue_head_t destroy_wait;
+>  	struct rw_semaphore ioas_creation_lock;
+>  	struct maple_tree mt_mmap;
+> @@ -373,6 +378,10 @@ struct iommufd_hwpt_paging {
+>  	bool auto_domain : 1;
+>  	bool enforce_cache_coherency : 1;
+>  	bool nest_parent : 1;
+> +#ifdef CONFIG_IOMMU_LIVEUPDATE
+> +	bool liveupdate_preserve : 1;
 
-As I described earlier, this whole IIDR crap inarguably broke UAPI and
-obviously normal guest behavior (i.e. reading the register). At minimum
-we need to permit previously-valid values for IIDR, even if they carry
-no implied behaviors.
+Nit: Is this bool a remnant from v1 that made into this refactor? I don't
+see us using it anywhere?
 
-> And as explained at least twice now, it's the
-> behaviour change that's *important* here.
-> 
-> The fact that it's a long-standing bug in KVM which downstream has been
-> working around for a long time doesn't matter. The unconditional
-> behavioural change *is* a bug and we should fix it.
+> +	u64 liveupdate_token;
+> +#endif
+>  	/* Head at iommufd_ioas::hwpt_list */
+>  	struct list_head hwpt_item;
+>  	struct iommufd_sw_msi_maps present_sw_msi;
+> @@ -706,6 +715,15 @@ iommufd_get_vdevice(struct iommufd_ctx *ictx, u32 id)
+>  			    struct iommufd_vdevice, obj);
+>  }
+>
 
-That is the nature of a bug fix. If you can provide some concrete
-evidence of a guest depending on the RAZ/WI behavior then I agree we
-need to preserve the old behavior.
+[...]
 
-Otherwise I see this as a matter of principle in how we do bug fixes to
-KVM. Even if upstream took the strictest possible stance towards behavior
-changes we will invariably fail to account for some minutia.
+> +int iommufd_hwpt_liveupdate_mark_preserve(struct iommufd_ucmd *ucmd)
+> +{
+> +	struct iommu_hwpt_liveupdate_mark_preserve *cmd = ucmd->cmd;
+> +	struct iommufd_hwpt_paging *hwpt_target;
+> +	struct iommufd_hwpt_paging *hwpt_paging;
+> +	struct iommufd_ctx *ictx = ucmd->ictx;
+> +	struct iommufd_object *obj;
+> +	unsigned long index;
+> +	int rc = 0;
+> +
+> +	hwpt_target = iommufd_get_hwpt_paging(ucmd, cmd->hwpt_id);
+> +	if (IS_ERR(hwpt_target))
+> +		return PTR_ERR(hwpt_target);
+> +
+> +	mutex_lock(&ictx->liveupdate_mutex);
+> +
+> +	xa_lock(&ictx->objects);
+> +	xa_for_each_marked(&ictx->objects, index, obj, IOMMUFD_OBJ_LIVEUPDATE_MARK) {
+> +		if (WARN_ON_ONCE(obj->type != IOMMUFD_OBJ_HWPT_PAGING))
+> +			continue;
+> +
+> +		hwpt_paging = to_hwpt_paging(container_of(obj, struct iommufd_hw_pagetable, obj));
+> +		if (hwpt_paging->liveupdate_token == cmd->hwpt_token) {
+> +			rc = -EADDRINUSE;
+> +			goto out_unlock;
+> +		}
+> +	}
+> +
 
-> >  - Special-case the stupid GICv2 UAPI where IGROUPR are only writable if
-> >    the VMM has written to IIDR and the revision >= 2
-> 
-> That already *is* a special case, right? And you'd rather leave it as it is?
+Nit: What happens if the user calls this IOCTL on an HWPT that is already
+marked but passes a different token? 
 
-Left as documented, yes. With the exception that revision == 1 writes
-not be considered opt-in to restorable IGROUPR.
+The xa_for_each_marked loop will not match the new token (so it bypasses
+-EADDRINUSE case) and the code will silently overwrite the HWPT's 
+existing token?
+
+Since there is no unmark / update UAPI, It can be a fair policy as well,
+but maybe we should call it out explicitly, maybe a log like:
+dev_warn("Overwriting token to %d ...") ?
+
+If NOT, then we should avoid overwriting the token and scream with
+retval like -EINVAL & dev_err in dmesg.
+
+> +	__xa_set_mark(&ictx->objects, hwpt_target->common.obj.id, IOMMUFD_OBJ_LIVEUPDATE_MARK);
+> +	hwpt_target->liveupdate_token = cmd->hwpt_token;
+> +
+> +out_unlock:
+> +	xa_unlock(&ictx->objects);
+> +	mutex_unlock(&ictx->liveupdate_mutex);
+> +	iommufd_put_object(ictx, &hwpt_target->common.obj);
+> +	return rc;
+> +}
+
+With those two nits addressed,
+
+Reviewed-by: Pranjal Shrivastava <praan@google.com>
 
 Thanks,
-Oliver
+Praan
