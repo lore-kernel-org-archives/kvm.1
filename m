@@ -1,218 +1,260 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC0F23438BA
-	for <kvm@vger.kernel.org>; Tue, 19 May 2026 18:01:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE358367F40
+	for <kvm@vger.kernel.org>; Tue, 19 May 2026 18:26:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779213718; cv=none; b=gAJ4lrEcXVk4jYoUtcilbEr8HFW4EzrtBHsKnsGhSEUrAYq7DRM6b7LhrM4lCr+jFqoTz7EW6rstfIUtbkuKe51EVcK6L5/TptZkmbUF2A7mACcQ7ipT3YY2qmDPYZmfDT1jzXoXFEP47/N8T6GhE2zYBEe2Thr6ofRF2LIeg+U=
+	t=1779215170; cv=none; b=cCRoVV0r+G/5G3eVw1YZECkPv9BxVS/MReiUza49NuXMHpN9ReFGP+/cMl3MmgR0aunH19PYC9Ma/o/JPfi8nrIIae7T1T6TuV8z0YszC85TTvQMLnTlpr0kTGPmbnsfsb92Tpolb+VeeQPMSVjS19y1SlvFbTUhTaXmnaSr2pk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779213718; c=relaxed/simple;
-	bh=e4kk50Be8aXDcQplMn+i32p43VgE25pg4w/kUoSDVP4=;
+	s=arc-20240116; t=1779215170; c=relaxed/simple;
+	bh=czRIP9fPYWV1iXkGq8o8sM5pGSyI70HQ0UuHcLUB8gg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QD+IvA239iBJOCdtTfdIjL0SBxc4zQ80zN5JARCFZ6MwGl/EdmLEAE97g40K+D2fLxLjQlB6Ub7Ac8gZQ3hsXfVZeUYdjuE0HNGgHMKE1DZRvsRyU+o5krwdErrEHwuHHhQHaKvF5zccboUNMeHLFrStXeO6q/vkPuNkCPhqx10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XkfVi8zm; arc=none smtp.client-ip=209.85.215.174
+	 Content-Type:Content-Disposition:In-Reply-To; b=kIPAa9oeq8Epn5rYEN/K/eKiAeAfcTNOcjsUi0nC8HfMtU9+2ercBVUZFvnzlIZbqsWmNHo8grht64uxnXDR1vCihcf9eASFdz35w+aX4dHXwf8JsT1OuY1rn0C/lizTbvj9iMB9Hc9/HNV3VXxJFMBhD3NTEn4TvFMVwZGskFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ExBwENyb; arc=none smtp.client-ip=209.85.214.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XkfVi8zm"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-c80203b9d7bso1689468a12.0
-        for <kvm@vger.kernel.org>; Tue, 19 May 2026 11:01:55 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ExBwENyb"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2ba180a022dso345ad.1
+        for <kvm@vger.kernel.org>; Tue, 19 May 2026 11:26:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779213715; x=1779818515; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779215168; x=1779819968; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+0tshnSftDumfUObHoSJ/HpWYdPspPnCxn7clHRCbcA=;
-        b=XkfVi8zmuqmo9+W7S6HTWEnH2yqoIbozMSP5DC3tnNysqMn2C/9D1arwDDHxKMsxD3
-         LlMTTE1dn96Rvu9YH1o11loBWSIukkOzmN7p1eszE71qkDzeuylE/2nwngAtsyvvEifU
-         w71AJkQF1u+3rynk8MBHftddDzFnkcd888PUGknL+KBnnfJsEh+vkLLoy7XdHZl8yYOb
-         mEEInUhNDqnItdEnFo6lllJDTUCs1N7XUCuf3o61UJ1NDwUdwHsKfhpkdSQ7oRaK6TlQ
-         akES2mykig9sKpJR/ZiIQbHPcZTbrIJ07gsiWcUNclxL236PRSSZsU8fKiG/0lq2aaiy
-         ZPhA==
+        bh=UztCOzVT9zWGOulxXltF3roIbWFaiwmorl3lCjhP7nc=;
+        b=ExBwENybV9G+YlyM4YG2e6GUhi417ySiYdLqwvZCQ6pYvBuG9r195WtbB2qOgLrXV3
+         pnzV/7XVY8fsjtIiZRkeGwvb6o8a6EIMsIhe9GQbaxmyUi224wnCiimqqBdnQLX66QZU
+         CNhCoN16Tic9MM75jaA9ohkisMjzZ1l4wzxLgshol/+FDYAzXvSd2g5sQeiipd735vVz
+         yT7idGGJL1J0s+DoAP3sbnRVw1pkJ+hBQeDanR3fEd18InYYRKe1r21nbB12n9p4S3oe
+         azhpRuNYsLLwdyo1+SE02wwGdFJ3R6ugKhv/NgSsExrz8DMWb1VSz94fT36x7gSFisCJ
+         4RCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779213715; x=1779818515;
+        d=1e100.net; s=20251104; t=1779215168; x=1779819968;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+0tshnSftDumfUObHoSJ/HpWYdPspPnCxn7clHRCbcA=;
-        b=eajuMLsWkoh5ku3jV9Z2kBXdvwKJnchktbB/6bv8BQiV3Khj56DSz2N+GQnHn1YqX7
-         pxxT+L2DCUwalw1Oe14iX+KLCrPZ6S9O0qDF0K/2LvF6ZSE374rqX8WlpCYD7N3xGA7y
-         WE7gICmpQiRXDnTPDHg5kF1NXcIoyY+ruWtwAcECx0FjK/bm0i74vgUfHJDObJQBNk53
-         Sy3Xaomea4B45ik+rmr7dthXGSixNa/PN932Dpe3O/3Ey2USaq7F0JzOQai0hmjq/ZWB
-         Bs31H7yaqm5ZZNTfCcl6pRR9hvTm+ZhyKNa8ewP5jnGs/0oWjUQ7ASyxYRmVDxrKWMug
-         MB2g==
-X-Forwarded-Encrypted: i=1; AFNElJ+cjfvHZR/xkQJsgXhobrYLxjXUpeHC99/72lS7Ushx4bbBiMturgl5tFvL9mh6VLLovNc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzqqrh145nu7CjJaDap9sovgNKP3O2RzxYTRafUO1G5KkrrGlum
-	OoepZ0Sy9ru5eglHhPWJMH/gQ5HypyE0gyJi8d4a7Tigy2r225Tg41HQ5TZZA2chtw==
-X-Gm-Gg: Acq92OEBXhAs0TmueSY14Yf6qcOFn0e1dHAVsO6LdoWwIZQ3bW9HejwskHCJyDOUPXu
-	i0UQBPnE8alpSwgXrmcUDZDrI9idA4PRJaVIHeB5QyJr4o/gPKbRBdNvxyjGr+BI82/twBpVDPJ
-	wvnVfyPUJouP9SkWoGOx677GJS6FnUb++m59odSiAXkNue8LQYLnHu1+VY3IjNMKjnftUwXLAOx
-	RxR9JZqX2JgPoUrIDjmGHdFJgOt1Lx1cQ8JdD4UcrhMsE3xP7hhRLlT9BsoqP/43ZHgP4IELz4d
-	HWOukBe33dBhBnzHT5lL6ijZKKGfCUGpws/hu8TOhnq3Gm4+0yw2Q5RGk9XJYVJcjridoJ0O2uh
-	DUKrfV5kOv+GGEcMgma4FvJPtg4Izy4n8v5fqIVo9mlu+zxjyQIYPGdwA9r/HxhzKLODRaNS0rd
-	1RTfoCmfiZ0kxOQk65eQnng66EaQ5b2v4EG3jmZDu5+BPvbto4FS7B2965kHlCBLg3f+b4crhG
-X-Received: by 2002:a05:6a20:7f9a:b0:39f:4d08:7555 with SMTP id adf61e73a8af0-3b22e7c65f4mr23894450637.5.1779213714187;
-        Tue, 19 May 2026 11:01:54 -0700 (PDT)
-Received: from google.com (56.149.168.34.bc.googleusercontent.com. [34.168.149.56])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c82bb114c08sm18183837a12.23.2026.05.19.11.01.53
+        bh=UztCOzVT9zWGOulxXltF3roIbWFaiwmorl3lCjhP7nc=;
+        b=D80e8DzzxffFZSo/yi/YgmbZv9udNZIYLyHA0JJcaWCwjUPYxlYIiiHUKLGWObFhGQ
+         mdGoGapVTH2kVGeyPsE8rYIhEssiYo3w4f7d6ZtJd/vpdMsPAt8t6ugompRaaH7XJvLb
+         GFHDiIz9hIm49XDhhT8VckcRXiapuDGsbFftekTcIQy1Qi3H5bey1F9Ff7DUDiTtpg1W
+         pYlsJB0c8lz5zIhCPxXCMAjpxGvEyF8zrEys2uLaAa4a9SffTB54x86Jzs7cHCs9ljg7
+         335tLWkUFmdCV0KhezbfBqXr7mlIjaIf4SHLomFj6AYTZ6gLHFLvsPOoHUR95FE8PyzG
+         NJow==
+X-Forwarded-Encrypted: i=1; AFNElJ+ZQ7ALUM7bmauEDId5adJTWQ5MCMEjzuBu0TLGzJeWm4YNas1lLNnZWCdzSQBioZkDa4s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwxQMpGt6ta4YXek85bc7nEOMJr4etIXDDyM0Bqt+A3PAlCoRUb
+	CHhURL9c3M5E4ZVnv8v5IMAZv5Ramd5OqN1oGiOavytBajhlAoYpnAN03RByYKuvuw==
+X-Gm-Gg: Acq92OFc0JLftdOJ5OqqiCNOAZUw3/ISarZEAvJrH662l33TNKaO6QqcwpKMO2/ogGT
+	EhlgBlCJkaoicLQJIi7AL+gaQZXrhwG0viIAsRqhINtK+biXnz1ZcUflAISfq8zxnBtwrwTLmgS
+	lwsYXg7knJGwuVF3HoeA22SgzbKZAbQUU9E0DOgdbMooN4OBcb899pzXOIGZbS+C0FvLh+Q/agZ
+	d6J1BmRO6iilxR6QBYQBB/q++pBS2qqhj3QAFLDv51eNzIxj/LCTiBcnywH1ONtH6Tb3vidpuTr
+	47VNnh8VDfZuEYKOuBh8xs+ppHcZhmwcYviWAroUOqZ+Y7af14rPiAnFtfGr9taSpY/samClzbg
+	LYR5/pIQP/qOzCfEe9akjjbV3QhUZf1DKYuqWTM6CjAqTACfsEIbJQbZbmMRfH3bLncI/AJxeY2
+	7skJBKuAnx2iCDsizWdggQlGia6agxs7XOS16UoE0LqH8mDEcUSG1notD2j3H6d8oj+ZiquA==
+X-Received: by 2002:a17:902:e788:b0:2b0:b0c9:96e2 with SMTP id d9443c01a7336-2bdb32c0349mr6068925ad.21.1779215167429;
+        Tue, 19 May 2026 11:26:07 -0700 (PDT)
+Received: from google.com (153.46.83.34.bc.googleusercontent.com. [34.83.46.153])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-369512424c2sm15165142a91.4.2026.05.19.11.26.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 19 May 2026 11:01:53 -0700 (PDT)
-Date: Tue, 19 May 2026 18:01:50 +0000
-From: David Matlack <dmatlack@google.com>
-To: Josh Hilke <jrhilke@google.com>
-Cc: Alex Williamson <alex@shazbot.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Vipin Sharma <vipinsh@google.com>, kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] vfio: selftests: Find devices that have VFIO selftest
- drivers
-Message-ID: <agyljom7lr8rhcFv@google.com>
-References: <20260515030758.1203256-1-jrhilke@google.com>
+        Tue, 19 May 2026 11:26:06 -0700 (PDT)
+Date: Tue, 19 May 2026 18:26:03 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: Baolu Lu <baolu.lu@linux.intel.com>, 
+	David Woodhouse <dwmw2@infradead.org>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
+	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>, 
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH v2 07/16] iommu/vt-d: Implement device and iommu
+ preserve/unpreserve ops
+Message-ID: <agyMsywb8KqBNu-S@google.com>
+References: <20260427175633.1978233-1-skhawaja@google.com>
+ <20260427175633.1978233-8-skhawaja@google.com>
+ <a968550d-2cab-47fd-8639-a8747a8a7535@linux.intel.com>
+ <af023TAT1m3oA9ez@google.com>
+ <agtux6SrjpRYvMit@google.com>
+ <agx2RW_jujXbsiea@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=us-ascii; format=flowed
 Content-Disposition: inline
-In-Reply-To: <20260515030758.1203256-1-jrhilke@google.com>
+In-Reply-To: <agx2RW_jujXbsiea@google.com>
 
-On 2026-05-15 03:07 AM, Josh Hilke wrote:
-> Add a new script, list_devices.sh, which prints out the
-> segment:bus:device.function (SBDF) numbers and names of devices on a machine that have a
-> VFIO selftest driver. This makes it easier to determine if the system is
-> capable of running VFIO selftests.
-> 
-> Includes a -q (quiet) argument which prints just the SBDFs so that the
-> output can be piped into tools/testing/selftests/vfio/script/setup.sh to
-> bind the devices to VFIO to use in VFIO selftests.
-> 
-> Examples:
-> 
-> $ ./list_devices.sh
-> 0000:6a:01.0 - Intel SPR DSA (8086:0b25)
-> 0000:6f:01.0 - Intel SPR DSA (8086:0b25)
-> 0000:74:01.0 - Intel SPR DSA (8086:0b25)
-> 0000:79:01.0 - Intel SPR DSA (8086:0b25)
-> 0000:e7:01.0 - Intel SPR DSA (8086:0b25)
-> 0000:ec:01.0 - Intel SPR DSA (8086:0b25)
-> 0000:f1:01.0 - Intel SPR DSA (8086:0b25)
-> 0000:f6:01.0 - Intel SPR DSA (8086:0b25)
-> 
-> $ ./list_devices.sh -q
-> 0000:6a:01.0
-> 0000:6f:01.0
-> 0000:74:01.0
-> 0000:79:01.0
-> 0000:e7:01.0
-> 0000:ec:01.0
-> 0000:f1:01.0
-> 0000:f6:01.0
-> 
-> Suggested-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Josh Hilke <jrhilke@google.com>
-> ---
-> Changelog:
-> 
-> v3:
-> - Show the names of the devices (Sean)
-> 
-> v2:
-> - Move the functionality to discover devices from setup.sh into its own script (Sean)
-> - Omit the patch which automates binding devices to VFIO (Sean, David)
-> 
-> v2: https://lore.kernel.org/kvm/20260414230943.41198-2-jrhilke@google.com/
-> v1: https://lore.kernel.org/kvm/20260409015139.2800185-1-jrhilke@google.com/
-> 
->  tools/testing/selftests/vfio/Makefile         |  1 +
->  .../selftests/vfio/scripts/list_devices.sh    | 46 +++++++++++++++++++
->  2 files changed, 47 insertions(+)
->  create mode 100755 tools/testing/selftests/vfio/scripts/list_devices.sh
-> 
-> diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
-> index 0684932d91bf..777f91f09057 100644
-> --- a/tools/testing/selftests/vfio/Makefile
-> +++ b/tools/testing/selftests/vfio/Makefile
-> @@ -15,6 +15,7 @@ TEST_GEN_PROGS += vfio_pci_driver_test
->  
->  TEST_FILES += scripts/cleanup.sh
->  TEST_FILES += scripts/lib.sh
-> +TEST_FILES += scripts/list_devices.sh
->  TEST_FILES += scripts/run.sh
->  TEST_FILES += scripts/setup.sh
->  
-> diff --git a/tools/testing/selftests/vfio/scripts/list_devices.sh b/tools/testing/selftests/vfio/scripts/list_devices.sh
-> new file mode 100755
-> index 000000000000..8e7cbe5b7449
-> --- /dev/null
-> +++ b/tools/testing/selftests/vfio/scripts/list_devices.sh
-> @@ -0,0 +1,46 @@
-> +#!/bin/bash
-> +# SPDX-License-Identifier: GPL-2.0-or-later
-> +
-> +# List of devices which have a VFIO selftest driver
-> +readonly DEVICES=(
-> +	"8086:0b25,Intel SPR DSA"
-> +	"8086:11fb,Intel GNR-D DSA"
-> +	"8086:1212,Intel DR DSA"
-> +	"8086:0cf8,Intel CBDMA"
-> +)
-> +
-> +QUIET=false
-> +while getopts "q" opt; do
-> +	case $opt in
-> +		q) QUIET=true ;;
-> +		\?) echo "Usage: $0 [-q]" >&2; exit 1 ;;
-> +	esac
-> +done
+On Tue, May 19, 2026 at 02:40:05PM +0000, Pranjal Shrivastava wrote:
+>On Mon, May 18, 2026 at 08:32:42PM +0000, Samiullah Khawaja wrote:
+>> On Fri, May 08, 2026 at 02:36:56AM +0000, Samiullah Khawaja wrote:
+>> > On Thu, May 07, 2026 at 02:25:14PM +0800, Baolu Lu wrote:
+>> > > On 4/28/26 01:56, Samiullah Khawaja wrote:
+>> > > > Add implementation of the device and iommu presevation in a separate
+>> > > > file. Also set the device and iommu preserve/unpreserve ops in the
+>> > > > struct iommu_ops.
+>> > > >
+>> > > > During normal shutdown the iommu translation is disabled. Since the root
+>> > > > table is preserved during live update, it needs to be cleaned up and the
+>> > > > context entries of the unpreserved devices need to be cleared.
+>> > >
+>> > > This is not related to preserve/unpreserve ops and could be made in a
+>> > > separated patch?
+>> >
+>> > Agreed. I will move this stuff to a separate patch.
+>> > >
+>> > > >
+>> > > > Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>> > > > ---
+>> > > > MAINTAINERS                      |   1 +
+>> > > > drivers/iommu/intel/Makefile     |   1 +
+>> > > > drivers/iommu/intel/iommu.c      |  52 +++++++++++-
+>> > > > drivers/iommu/intel/iommu.h      |  28 +++++++
+>> > > > drivers/iommu/intel/liveupdate.c | 139 +++++++++++++++++++++++++++++++
+>> > > > drivers/iommu/iommu.c            |  18 ++++
+>> > > > include/linux/iommu-liveupdate.h |  10 +++
+>> > > > include/linux/iommu.h            |  14 ++++
+>> > > > include/linux/kho/abi/iommu.h    |  18 ++++
+>> > > > 9 files changed, 277 insertions(+), 4 deletions(-)
+>> > > > create mode 100644 drivers/iommu/intel/liveupdate.c
+>> > > >
+>>
+>> [snip]
+>> > >
+>> > > > +{
+>> > > > +	struct context_entry *context;
+>> > > > +	int ret;
+>> > > > +	int i;
+>> > > > +
+>> > > > +	for (i = 0; i < ROOT_ENTRY_NR; i++) {
+>> > > > +		/*
+>> > > > +		 * Alloc the context tables now to make sure the iommu unit is
+>> > > > +		 * properly preserved. These might stay unused and wastes around
+>> > > > +		 * 32MB max in scalable mode.
+>> > > > +		 */
+>> > >
+>> > > Instead of allocating and preserving context tables for all root entries
+>> > > (as noted, can waste up to 32MB), could we restrict this only to the
+>> > > entries possibly in use by active PCI devices?
+>> >
+>> > I think the hotplug devices or VFs created through SR-IOV will be missed
+>> > that way. Lets say device A is preserved and the associated iommu is
+>> > also preserved. And then a new device B is hotplugged and preserved,
+>> > then the context table for that will be missed.
+>>
+>> Ok I thought about it a little more and basically we have following
+>> things to consider when we preserve context tables,
+>>
+>> - The devices can be hotplugged and preserved, so the context tables of
+>>   those need to be preserved if we don't allocate all of them first time
+>>   we preserve iommu, as done here.
+>> - New context tables can be added (after hotplug) for unpreserved
+>>   devices. And if we don't get another iommu preserve call after these
+>>   are added, those remain unpreserved, so during shutdown those entries
+>>   need to be removed from root table or preserved for simplicity.
+>>
+>> To solve this we can,
+>>
+>> 1. Either preserve the new context table when it is added for a preserved
+>>   iommu. This can be done in iommu_context_addr(). This is simpler and
+>>   no tracking needed.
+>>
+>> 2. Or track the preserved context tables using a bitmap and then preserve
+>>   them incremently whenever a device is preserved. On shutdown during
+>>   cleanup, we can clear the entries for unpreserved context tables from
+>>   root table.
+>>
+>> I am inclined towards second option. WDYT?
+>
+>Thinking out loud here, I agree that shifting away from the 32MB
 
-Please move the argument parsing into main().
+Wait it should be 2MB (256 buses * 8K(low + Hi)), I miswrote it earlier.
+>pre-allocation is the right direction. I'm wondering if we can avoid the
+>overhead of introducing a new tracking bitmap (Option 2) altogether?
 
-> +
-> +# Print the segment:bus:device.function numbers of PCI devices that can be used
-> +# to run VFIO selftests.
-> +function main() {
-> +	local id_name
-> +	local name
-> +	local bdfs
-> +	local bdf
-> +	local id
-> +
-> +	for id_name in "${DEVICES[@]}"; do
-> +		IFS=',' read -r id name <<< "$id_name"
-> +		bdfs=$(lspci -D -d "${id}" | awk '{print $1}')
-> +
-> +		[[ -z $bdfs ]] && continue
-> +
-> +		if [ "$QUIET" = true ]; then
+ROOT_ENTRY_NR is 256 and has 2 context tables for scalable mode, so the
+max bitmap will be eight u64. It is per IOMMU, but still reasonable.
+>
+>Since the IOMMU serialization is a strict dependency for device tracking,
+>could we move the context table preservation directly into the device
+>level op: intel_iommu_preserve_device()?
+>
+>Whenever a specific device is preserved on-demand:
+>
+>1. It queries the parent IOMMU to fetch the allocated context table
+>   backing its info->bus.
+>
+>2. It calls iommu_preserve_page(context) for that table. Because KHO's
+>   tracking handles duplicates, this should be fine if multiple devices
+>   reside on the same bus...
+>
+>Regarding Scalable Mode, we could just need a simple check in that path:
+>
+>
+>/* intel_iommu_preserve_device */
+>/* Preserve the primary/lower context table backing this bus */
+>context = iommu_context_addr(info->iommu, info->bus, 0, 0);
+>if (context)
+>	iommu_preserve_page(context);
+>
+>/* If scalable mode is active, preserve the upper context table as well */
+>if (sm_supported(info->iommu)) {
+>	context = iommu_context_addr(info->iommu, info->bus, 0x80, 0);
+>	if (context)
+>		iommu_preserve_page(context);
+>}
+>
+>WDYT?
 
-nit: Consider using empty string to represent false so that this can
-just be:
+I was thinking on the same lines and was hinting to it in my earlier
+reply to Baolu. But then I didn't go for it as with this approach we
+introduce a bunch of complexity or lost state depending on the approach
+we take.
 
-  if [ "$QUIET" ]; then
-  
-> +			echo "${bdfs}"
-> +			continue
-> +		fi
-> +
-> +		while read -r bdf; do
-> +			echo "${bdf} - ${name} (${id})"
-> +		done <<< "$bdfs"
+Basically like I mentioned, the unpreserved context tables need to be
+removed from root table during shutdown. We can find out which ones are
+unpreserved by walking the preserved device list yes. But it complicates
+the overall preservation lifecycle of these context tables by
+introducing multiple preserved device list walks. Basically on every
+device unpreserve we will have to decide that whether we unpreserve the
+context table or some preserved device is still using it. Or if we
+choose to keep it preserved even if the device is unpreserved, then
+during cleanup we have no way of differentiation whether a context table
+was unpreserved and needs clearing in root table.
 
-nit: This can be a simpler one-liner and also moved into the else case
-of the if above to make the execution flow easier to read:
+The bitmap approach is much simpler and only preserves the context
+tables for the active devices as suggested by Baolu earlier. Note with
+this approach we preserve the context tables of the active devices and
+not only the preserved ones, but since these are recreated after kexec
+anyway, so not really a waste as compared to preserving the maximum
+possible.
+>
+>>
+>> I think we will have to do similar stuff for PASID also down the road to
+>> preserve pasid_tables in PASID directory.
+>> >
+>> > Since we don't track the context_tables that are preserved, there is no
+>> > way to incremently preserve the new-ones. Let me look into the behaviour
+>> > of KHO, maybe we can make the preserve call idempotent and do these
+>> > incrementally.
+>> > >
+>> > > > +		spin_lock(&iommu->lock);
+>> > > > +		context = iommu_context_addr(iommu, i, 0, 1);
+>> > > > +		spin_unlock(&iommu->lock);
+>> > > > +		if (!context) {
+>> > > > +			ret = -ENOMEM;
+>> > > > +			goto error;
+>> > > > +		}
+>>
+>[snip]
+>
+>Thanks,
+>Praan
 
-  if [ "$quiet" ]; then
-          echo "${bdfs}"
-  else
-          echo "${bdfs}" | sed "s|$| - ${name} (${id})|"
-  fi
-
-> +	done
-> +}
-> +
-> +main
-> -- 
-> 2.54.0.563.g4f69b47b94-goog
-> 
+Sami
