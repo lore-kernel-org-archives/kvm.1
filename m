@@ -1,93 +1,129 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0FE83BB68B
-	for <kvm@vger.kernel.org>; Tue, 19 May 2026 21:26:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF8C3932CE;
+	Tue, 19 May 2026 21:31:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779226021; cv=none; b=BGV7vo2i+4Zxrnmu42KwQ5t1AKX8q8UQp8DrSASarC41RRicfMZIw6mtWI5igKFfhbLC05W/bkR0m3/ZDVJSYZpk8q+gJGDRdx0z7E66uXoYHiqchMCldSM55QknR+zf6Eo306UsS0Ra75vyQso1Z/4r91eNZFg7Eiv6L+XdAQw=
+	t=1779226272; cv=none; b=ACAE2U03HCNMp0vSRTubI68s0GP3vOHE2rjChff7+uv/Xzd9IVnJjdaSld1xjvaLfu3UspIHwZWvkMFoTCP7bccidlbtAMNKjszgm/M1zMzlmsnVMV5BS3X5BG4Ryu7h+/EaEjoNOu6ArNat5UoTgiM0XuXHNx14kGcELkN7XIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779226021; c=relaxed/simple;
-	bh=QW98c0EO5p8OfysXhROXrzCpSjihaq1a/XqjsKWTkuI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Rjc+rNp8sCIpwy+ia5RXse7ajw5vzxW7+G++sgdpb/nXVMfba/QHolCo+uBpEuZTaTYcjUyR2v3klVL1qOSTwa29ZJIwuj0Kq0dh7XkyipL5rPIc7ceg7P44KInygP7FKT0hOhIn7IT5dQK3iWU5aiMRnXdm6PIyefSUIpWC+n0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LQI9NLVa; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1779226272; c=relaxed/simple;
+	bh=cu5DFJ3DfHfxIobQ9ABwo+jUYPyi7yRiQw28mmLFfAQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uwP/ygq1SFyg1HkLrJPMdb71kzVdDpWkaKBeAyBGe450PB2Jr/C7CXqWoYvWQFpP5O5O2dQzpfgmxm+iHiyNCCB/QGT9nTf+YKbWXyFv5i+FHJoj2sNJfRs9WZzXumUJX2vTY5S8k+bGB2xvNodICz9WoXJgPmktd8HAxnePaFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BTSu6W0V; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LQI9NLVa"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b9a3c3c4eeso41695775ad.3
-        for <kvm@vger.kernel.org>; Tue, 19 May 2026 14:26:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779226019; x=1779830819; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RdKp/MEfbZ+KU36s0cohlMKlKnHoAQty64EupqgsQ/s=;
-        b=LQI9NLVa1rJpcfzHT8M2Z8KArLcqGKIIHJeUoRuWdjP9yg8IGpJiDQ/+UyHYqrHqOm
-         53YofhIiWprj1Ge193KZDji/6VFVaX7SAIMwy0dNX6GgNLrtt2TTQgG1QgudHjVYTVMg
-         XQC7VksqAAUGMP9WUTee/wbJSa+dtCNsP+lUjy4Cn5ibfrjU9rqAWmGVE73hNv+XNGqp
-         VnTXX37wiVIY9TxLx0anpdW+n5XDykswPRI+pySAWXkQVLDX8weVlgZRCPsN8Ly+wo6V
-         EkIgKUtt8MnnchdBlKFrZWbLlkKd2AJGSb23scglWL1rW74W66/wtIIdNgw8ydfg8hxv
-         DlkQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779226019; x=1779830819;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RdKp/MEfbZ+KU36s0cohlMKlKnHoAQty64EupqgsQ/s=;
-        b=NPhQ44Vsl4w+G2HtSUWGJQg1MMDtCY4OknBXwVwE/MrAvXvjd7grGak5QvvqsaBG1d
-         UDtYX3TnANqtbyO7DIz0tdVrxooTiNjl9G0FMOtZJshblsZJw3QacaynY+emNcCOpVlR
-         SdBbAEJcSaalv7xD/swa5srWn3be//av8L9uQ8bvZHiWn06pd5093nMaMBVKcwUe8CSd
-         RByQwixEx6myu/wdeSd3wfWzWKywiIVKgwPQFsxCW3z6ZoOVRbUyrRaHSyR5gFr/j34V
-         EfWp90GoHsWlTSN9YFjz1M9JHAPy75jzjrIWJOoOKWJQIvGq18RcGsZ1u/bwDfqpmmln
-         aUjw==
-X-Forwarded-Encrypted: i=1; AFNElJ+cwK99WVT+Ecc5SCR8e1cRW0cybUN9oxM419JWcGZDxKY2pKse3faIZbI795y7OplpISA=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymbPn4XpG9h9fVVSBL6ZwC4LWeV/JgpopweiM1lfMusYvwv9F2
-	ysf5CQeoMnls6+s9saU/3xD2vsasE/YCwQJUXNvew80WxMyGa2idOU9s+hlp2dWhwL4D5rPz3Eu
-	N6GWs4w==
-X-Received: from plcl4.prod.google.com ([2002:a17:902:e2c4:b0:2b2:c88b:31b8])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:da90:b0:2bd:612b:912d
- with SMTP id d9443c01a7336-2bd7e8ad548mr220905995ad.14.1779226019010; Tue, 19
- May 2026 14:26:59 -0700 (PDT)
-Date: Tue, 19 May 2026 14:26:58 -0700
-In-Reply-To: <20260519202851.1339906-1-arnd@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BTSu6W0V"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D40361F000E9;
+	Tue, 19 May 2026 21:31:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779226271;
+	bh=OKY7V5FfRET17/kEDTnFckQsQH4e38JTxTched89wOw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=BTSu6W0V0CE+Pk6MwecLeB32KlRvGGqEk3KDHMPev64BOWUPU1oD+HV4AOjVmQ5f3
+	 vwjwshgRZnNAPkzjE7PHPCYK+IbmM5aICH21f9HqoBX3RUHplMC6nLDHBEhucbKJkH
+	 0IBqIpXnMnuDf8M+vbZMcKdt1Vc9MOY0T7Pt5cdhcmpf333SrVjnxC5Alh3tCSihSc
+	 Jf7aYXOiEgT4i3LgITMQiXaj+m1d37WMEw/BeLMyYL2pHp5eK53vERKh480lo3Yo0w
+	 gVIcrzALlRdSJPBmZH29j/2oGpzhSxSTB269+IcHBlViScKdSuuTV0wg/wwU38Ts7Z
+	 g6zbPZzlnHZ5g==
+Date: Tue, 19 May 2026 14:31:09 -0700
+From: Oliver Upton <oupton@kernel.org>
+To: Wei-Lin Chang <weilin.chang@arm.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <shuah@kernel.org>,
+	Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Itaru Kitayama <itaru.kitayama@fujitsu.com>
+Subject: Re: [PATCH v3 0/9] KVM: arm64: selftests: Basic nested guest support
+Message-ID: <agzWnS2gzzhEHEG6@kernel.org>
+References: <20260516183003.799058-1-weilin.chang@arm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260519202851.1339906-1-arnd@kernel.org>
-Message-ID: <agzVorbOnlwczjP-@google.com>
-Subject: Re: [PATCH] KVM, SEV: fix merge conflict
-From: Sean Christopherson <seanjc@google.com>
-To: Arnd Bergmann <arnd@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	Alex Williamson <alex@shazbot.org>, Steffen Eiden <seiden@linux.ibm.com>, Arnd Bergmann <arnd@arndb.de>, 
-	"H. Peter Anvin" <hpa@zytor.com>, Tom Lendacky <thomas.lendacky@amd.com>, 
-	Liam Merwick <liam.merwick@oracle.com>, Michael Roth <michael.roth@amd.com>, 
-	Nikunj A Dadhania <nikunj@amd.com>, Maxim Levitsky <mlevitsk@redhat.com>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260516183003.799058-1-weilin.chang@arm.com>
 
-On Tue, May 19, 2026, Arnd Bergmann wrote:
-> From: Arnd Bergmann <arnd@arndb.de>
-> 
-> A conflict between two patches leads to build failure for
-> the reference countingg in 'struct kvm', which moved into
-> the kvm_refcount structure:
-> 
-> arch/x86/kvm/svm/sev.c: In function 'kvm_lockdep_assert_sev_lock_held':
-> arch/x86/kvm/svm/sev.c:118:32: error: 'struct kvm' has no member named 'users_count'
->   118 |         if (!refcount_read(&kvm->users_count))
-> 
-> Resolve this by changing the added reference the same way as
-> the other ones.
-> 
-> Fixes: 422c363f58a8 ("KVM, vfio: remove symbol_get(kvm_get_kvm_safe) from vfio")
+Hi Wei-Lin,
 
-This isn't a merge conflict, it's a bug in wherever this commit is coming from.
+Thank you very much for the series.
 
-> Fixes: ba903f738249 ("KVM: SEV: Assert that kvm->lock is held when querying SEV+ support")
+I haven't had time to read through much of this yet, but I noticed
+Itaru's comment about leaving stage-1 translation disabled for the L2.
 
-Because this commit has been in Linus' tree since 7.1-rc1.
+Since selftests expects things like atomics to work we will definitely
+need the stage-1 MMU to be enabled w/ Normal mappings (this was broken
+in the past [*]). I wonder if we can (ab)use the pre-existing stage-1
+tables that the selftests library creates on behalf of the L1. After all,
+L1 and L2 are both effectively in the same virtual address space.
+
+[*] https://lore.kernel.org/kvmarm/20250405001042.1470552-1-rananta@google.com/
+
+Thanks,
+Oliver
+
+On Sat, May 16, 2026 at 07:29:54PM +0100, Wei-Lin Chang wrote:
+> Hi,
+> 
+> This is v3 of adding basic support for running nested guests (L2) in
+> kselftest. This time a framework for enabling stage-2 in the guest is
+> added, including the s2_mmu struct, s2 translation control setup, and
+> a stage-2 page table generator. Similar to L2 vCPU management, all
+> stage-2 work is done in the guest instead of userspace.
+> 
+> An additional shadow_stage2 test is added which leverages the framework
+> to run L2 with stage-2 enabled.
+> 
+> * Changes from v2 [1]:
+> 
+>   - Update vm_paddr_t to gpa_t, vm_vaddr_t to gva_t.
+> 
+>   - Added framework for enabling stage-2 in the guest.
+> 
+>   - Added shadow_stage2 test.
+> 
+> Thanks!
+> 
+> [1]: https://lore.kernel.org/kvmarm/20260412142216.3806482-1-weilin.chang@arm.com/
+> 
+> Wei-Lin Chang (9):
+>   KVM: arm64: selftests: Add GPR save/restore functions for NV
+>   KVM: arm64: selftests: Add helpers for guest hypervisors
+>   KVM: arm64: selftests: Add hello_nested basic NV selftest
+>   KVM: arm64: selftests: Enhance hello_nested test
+>   KVM: arm64: selftests: Add shadow_stage2 test
+>   KVM: arm64: selftests: shadow_stage2: Allocate L2 stack from dedicated
+>     pool
+>   KVM: arm64: selftests: shadow_stage2: Check supported stage-2 granule
+>     size
+>   KVM: arm64: selftests: Add infrastructure for using stage-2 in guest
+>   KVM: arm64: selftests: shadow_stage2: Turn on stage-2 translation for
+>     the nested guest
+> 
+>  tools/testing/selftests/kvm/Makefile.kvm      |   5 +
+>  .../selftests/kvm/arm64/hello_nested.c        | 134 +++++++++
+>  .../selftests/kvm/arm64/shadow_stage2.c       | 165 +++++++++++
+>  .../selftests/kvm/include/arm64/nested.h      |  85 ++++++
+>  tools/testing/selftests/kvm/lib/arm64/entry.S | 137 +++++++++
+>  .../selftests/kvm/lib/arm64/hyp-entry.S       |  77 +++++
+>  .../testing/selftests/kvm/lib/arm64/nested.c  | 264 ++++++++++++++++++
+>  7 files changed, 867 insertions(+)
+>  create mode 100644 tools/testing/selftests/kvm/arm64/hello_nested.c
+>  create mode 100644 tools/testing/selftests/kvm/arm64/shadow_stage2.c
+>  create mode 100644 tools/testing/selftests/kvm/include/arm64/nested.h
+>  create mode 100644 tools/testing/selftests/kvm/lib/arm64/entry.S
+>  create mode 100644 tools/testing/selftests/kvm/lib/arm64/hyp-entry.S
+>  create mode 100644 tools/testing/selftests/kvm/lib/arm64/nested.c
+> 
+> -- 
+> 2.43.0
+> 
+> 
