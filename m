@@ -1,94 +1,81 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f72.google.com (mail-oo1-f72.google.com [209.85.161.72])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2112377023;
-	Tue, 19 May 2026 20:28:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB08F2FD1B6
+	for <kvm@vger.kernel.org>; Tue, 19 May 2026 20:32:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.72
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779222538; cv=none; b=mLfDdvbzVfdQ1s5TMvW1gq9q5hn1dBtflX0Yj+ft+QwAwrqDWjhAIaOec3Y0ahlOrpH2kVUqS0OSZsknXo0y8D0VhuIOX7dOkav3iOElL43CfSGg81YN2PNxdqnMq07g/UdgI7mMuJiyxEu+Izk2I1jMx0yqfUGz+n57OkMJ0uk=
+	t=1779222742; cv=none; b=b7C7q7HAsAzSOaFZBtU888s3eCyixssyCLTkstNQrqw0PQyQUMk3i51axZ7fdO0+UnY/xWZzP59jX8NoB3uJioq+tSDUCA4k53a2jnhlpd7PBKxzJarC6mbLFJXRd54owGcB82YTSutQiiogP7EXGjDNqXntK7N1V7fvDG+esQo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779222538; c=relaxed/simple;
-	bh=CctPRxY6PRPM24rPxmbaKmGdxWrZNvd1lT6h/xAn+6Q=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=jP/CMbdegV9NyjGo/OjSyUN4sYiSRdjmsPEjWAKm1uLI7fRJm5E1a5XEWNQgAoF4uOmkpbrxZwZKq8QDqgSpdXqZGGnDyuRCrucsQgdh2RggzcgcwBUI9muwCM30X+PzC2B1HiNAWDQ3apIBvIotWtXDdcbZpUz2AdeQgP+nQgs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e5r/6tIX; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e5r/6tIX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 272BF1F000E9;
-	Tue, 19 May 2026 20:28:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779222537;
-	bh=W95J4r+NJDqvjSTHBC2PsoICJoyN2XsLG/Irph0HrZY=;
-	h=From:To:Cc:Subject:Date;
-	b=e5r/6tIXxH8XTKY5omMiKC/bwxr7SzBHhe2/WNc0n8Jv2lF2upVBEko2bW4QfN4GG
-	 miOEud19CJq2zim9veVxP6Le8VGrUtCNbjMXSYC7oag6bLLh+Nb2zmSwrFWDozM5b2
-	 /Rqu/knaX5jDweXB11PpNxNBPPPBysYupPiNeoeXwd21n+TaAFNhYm7fJjCAso09Js
-	 +C7UWVzVcbWG0ClhqJUFnX1aNPHV9DmPkK+xHC/1QgRr9vI1l0o0GvGElVa7Ee52lx
-	 V3+qQ66uCmXMVz5fklJFfxegO0Dd7pbqp0Od5x5RKCEmhQM/a4NXO+hnaQgrmnc1Q1
-	 MwspigGcjOthg==
-From: Arnd Bergmann <arnd@kernel.org>
-To: Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Thomas Gleixner <tglx@kernel.org>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org,
-	Alex Williamson <alex@shazbot.org>,
-	Steffen Eiden <seiden@linux.ibm.com>
-Cc: Arnd Bergmann <arnd@arndb.de>,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Tom Lendacky <thomas.lendacky@amd.com>,
-	Liam Merwick <liam.merwick@oracle.com>,
-	Michael Roth <michael.roth@amd.com>,
-	Nikunj A Dadhania <nikunj@amd.com>,
-	Maxim Levitsky <mlevitsk@redhat.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] KVM, SEV: fix merge conflict
-Date: Tue, 19 May 2026 22:28:36 +0200
-Message-Id: <20260519202851.1339906-1-arnd@kernel.org>
-X-Mailer: git-send-email 2.39.5
+	s=arc-20240116; t=1779222742; c=relaxed/simple;
+	bh=HoEDC39wUhACDo2rSB9AsXNRTOKSeJeyP6gaEyJyvkI=;
+	h=MIME-Version:Date:Message-ID:Subject:From:To:Content-Type; b=Q4MSWOnXWqfSfzlyKv6V5ViXBjMKNr4m3BjfAO66VEAMQnwVNZzi7OdufalXfRoXPeTVFPBtnOqTZiVTh3DRaad3H/jclqCiDbLvRqQjFoCfnEdhBSRonN8/8DD9qGztD4ETUhI+osGhnBd1OCTBUAuMAK7yT0tmbpTrVz8GhVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com; arc=none smtp.client-ip=209.85.161.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=syzkaller.appspotmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=M3KW2WVRGUFZ5GODRSRYTGD7.apphosting.bounces.google.com
+Received: by mail-oo1-f72.google.com with SMTP id 006d021491bc7-69b3a3c798dso4932312eaf.1
+        for <kvm@vger.kernel.org>; Tue, 19 May 2026 13:32:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779222740; x=1779827540;
+        h=to:from:subject:message-id:date:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=Fh8WOWq82s3yGyL2std3a+w6wUWf4qzGB2vY30OC6Ek=;
+        b=gOQXoY13b21lXu6v2A/DbwuClUfW3+Z4Im1/c0rHvwPlnihjaQbqYKLxMnLgZ9LBc8
+         JDZVspu3T+u0ZWH2DDNSpepYM6WVigWTOckhpSxWx55bj3/88rtfMEm8KrVa89oyiHGN
+         XgUipvc090//rlso0Vxj/xZxk57OWLI+aVCbcpZDosx5u8i143HL2qn91LVbPJXNd+WI
+         C4jDZo2JkCrJ+MWAATExHWDC51AyXmLoQBN8jZQ+32s2tyx15tyd92DLk7pR3XsbMrBp
+         hPSd8twAzv6uUzF23raxfwaqirhOQMQ/ddCqV99tQDf3ejvn0clG9sbg8PyfdG3AalmS
+         Ftvg==
+X-Gm-Message-State: AOJu0Yyaw3UxLSq+h/Az2BfvbzJd08zH+8YTy00fof1fdXZA8C5HJaxB
+	9y82332YMdTcFCZWsq8Rw249jwRQ+LUaS4MALDWOyGZ5c0s8B4+CjCFQq1DO0PD0d1iQaYb6TG8
+	Rr6WtwRj2Wna2TNYcKI+DXnhiQMclPFsXM4pWb++BFDU2Bq2PX4WOuRVnyz0=
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+X-Received: by 2002:a05:6820:820:b0:696:21ad:a4f0 with SMTP id
+ 006d021491bc7-69c9437a9cfmr12005502eaf.36.1779222739987; Tue, 19 May 2026
+ 13:32:19 -0700 (PDT)
+Date: Tue, 19 May 2026 13:32:19 -0700
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <6a0cc8d3.a70a0220.1a69d3.0017.GAE@google.com>
+Subject: [syzbot] Monthly kvm-x86 report (May 2026)
+From: syzbot <syzbot+listdd76b73c9e42cdee542d@syzkaller.appspotmail.com>
+To: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com, 
+	seanjc@google.com, syzkaller-bugs@googlegroups.com
+Content-Type: text/plain; charset="UTF-8"
 
-From: Arnd Bergmann <arnd@arndb.de>
+Hello kvm-x86 maintainers/developers,
 
-A conflict between two patches leads to build failure for
-the reference countingg in 'struct kvm', which moved into
-the kvm_refcount structure:
+This is a 31-day syzbot report for the kvm-x86 subsystem.
+All related reports/information can be found at:
+https://syzkaller.appspot.com/upstream/s/kvm-x86
 
-arch/x86/kvm/svm/sev.c: In function 'kvm_lockdep_assert_sev_lock_held':
-arch/x86/kvm/svm/sev.c:118:32: error: 'struct kvm' has no member named 'users_count'
-  118 |         if (!refcount_read(&kvm->users_count))
+During the period, 1 new issues were detected and 0 were fixed.
+In total, 6 issues are still open and 78 have already been fixed.
 
-Resolve this by changing the added reference the same way as
-the other ones.
+Some of the still happening issues:
 
-Fixes: 422c363f58a8 ("KVM, vfio: remove symbol_get(kvm_get_kvm_safe) from vfio")
-Fixes: ba903f738249 ("KVM: SEV: Assert that kvm->lock is held when querying SEV+ support")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Ref Crashes Repro Title
+<1> 695     Yes   WARNING: locking bug in kvm_xen_set_evtchn_fast
+                  https://syzkaller.appspot.com/bug?extid=919877893c9d28162dc2
+<2> 323     Yes   WARNING in handle_exception_nmi (2)
+                  https://syzkaller.appspot.com/bug?extid=4688c50a9c8e68e7aaa1
+<3> 5       Yes   INFO: rcu detected stall in kvm_vcpu_ioctl (4)
+                  https://syzkaller.appspot.com/bug?extid=3d5461510f8dc4adfe30
+
 ---
- arch/x86/kvm/svm/sev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This report is generated by a bot. It may contain errors.
+See https://goo.gl/tpsmEJ for more information about syzbot.
+syzbot engineers can be reached at syzkaller@googlegroups.com.
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 04accfaefd0d..63b57f3b3800 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -115,7 +115,7 @@ static __always_inline void kvm_lockdep_assert_sev_lock_held(struct kvm *kvm)
- 	 * Querying SEV+ support is safe if there are no other references, i.e.
- 	 * if concurrent initialization of SEV+ is impossible.
- 	 */
--	if (!refcount_read(&kvm->users_count))
-+	if (!refcount_read(&kvm->rc.users_count))
- 		return;
- 
- 	/*
--- 
-2.39.5
+To disable reminders for individual bugs, reply with the following command:
+#syz set <Ref> no-reminders
 
+To change bug's subsystems, reply with:
+#syz set <Ref> subsystems: new-subsystem
+
+You may send multiple commands in a single email message.
