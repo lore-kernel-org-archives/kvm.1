@@ -1,169 +1,141 @@
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
+Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7B7D345CAF
-	for <kvm@vger.kernel.org>; Tue, 19 May 2026 18:35:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2561A37883E
+	for <kvm@vger.kernel.org>; Tue, 19 May 2026 18:56:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.182
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779215705; cv=pass; b=KdX6uztQ2aQjvmVFJXCK/w22yYQrX9jyam7DKHLKcKC9ipty5zlTwD2WlAbcf+zMTVFoAo27x/fev0arOVQAFOAWPo6KtYFXBRc4+rR/9T2n229X4Qof2gkZLgcENXLkQ8Ner8JSgPq7SEKYPwHc8XWN06cO0dfV+jQQAyTgUHk=
+	t=1779217002; cv=pass; b=VJMuPD3CyUcd+WK9xoJLzGNEBC2oQsDQ5MHMQTtuFGh5XKsI1t+iqp5JYjzZnTD0AyPw/M7pEFgpnu0bsrtDP6Mo1pAK8m+/DBwUhhGrBhfYVq10aMQfxbL2wOXcM4jax4o0nglrQUu8bdtxjAnayzJxWpG4EpL/zdyPemS1R1U=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779215705; c=relaxed/simple;
-	bh=KGwOof5+ZrWk7fQk8HZziiUwEIlVuaXd+B/75nP5r7o=;
+	s=arc-20240116; t=1779217002; c=relaxed/simple;
+	bh=VoJiSYHkyb93U+CpFIcSkKKZJudViTXrBB5J9PwFeQA=;
 	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=j6No4Exy+6e8fiAN+F+k7UMfOKK+oyjdQ7gP5TabnaOs0fG3FWbgAlWPwRU4rNHLJHgBZrIjAAtffwtDBpM/+m4896Cxyj03fxff/jMnSteCcavMkgpliNtJcW2H3+2/R1IBPVOTs0l6lTQc1p8KSiu7ArmLp+i2u2TecakKa68=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gGAELiIj; arc=pass smtp.client-ip=209.85.221.178
+	 To:Cc:Content-Type; b=pjOFLHfXIY9vo1pWTwA94t4bp1I//SrhgLWT5789DZTY9GfPDIrpQPpDEGAwOT5goYpTV1gGWAlpzBTmM//kpGWfRuwMrE3aURAl1OZ0HayluQkME3ba3CPKi/oLuXGjiltoBbfhYjxW57o/pk/vFkgikFqXfB9dRmQBVYmNUWg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K58qjznf; arc=pass smtp.client-ip=209.85.221.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gGAELiIj"
-Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-57512b86273so2875164e0c.3
-        for <kvm@vger.kernel.org>; Tue, 19 May 2026 11:35:03 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779215703; cv=none;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K58qjznf"
+Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-57512b86273so2890343e0c.3
+        for <kvm@vger.kernel.org>; Tue, 19 May 2026 11:56:41 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779217000; cv=none;
         d=google.com; s=arc-20240605;
-        b=FZR7OPCotJZbSqncJRj/s+NcLRHTFI0QmZ1shsQpQB0RfJz4FGVd05yPl8c1uKdZqF
-         7TKp3hwewje+lavSnmZIL/5FFgqbKmFNlAdArsPOqE4IFXidDWins5wqRWueQHKD0BUZ
-         Nau9Lb6mIOHM+krShGd6rEIWUFBXu4zfW6KY1rH6tkhwjB0ZmvbD6BCwA/niaYTNyD1K
-         U7fqwIX3pbbyeW2ocPCfMYaNkLwh4PjpD9cXwaWmMUqQ5NRN6OslyypCGrCBAO5VjyBT
-         2JWCkTjHGvvD/xrVlBieIu84KRVyK04D2Ah8xmJsasLHWYXKblGLIF9qtydPdn5Axqdk
-         e04A==
+        b=fcYodjyfrWSzVhKbLLIx9GC2PUxSfH2FMSsjbVRC/88L2GzpDd36nX/Sky7QkGCkry
+         buJBQJNbatH8r/HJB3228aKSIyruafLWGljLDrTO/aOG0By69Pw2jWnZOE3r/ABDcox9
+         fg6jzsytrjA+rAoB8rQZbUJrqAJ/WQi+azHQyWnEVQkw3OANo7IdqtjhPyz3tlW/g1Fl
+         wVl4BIeXgcJJ9JoLCahH8dZ9KJqNXcbttLEJNeH7qX1NqDRjEUPYD+QzHPdwPDhjB3zn
+         5vKqKaoF+UoQgbHuV5Wi22DxlVnI0NikRCCxb0sWbP6EwIY193dXy3ZCxh/0HzK03n/q
+         SEXA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:dkim-signature;
-        bh=g5YZm4UgAbGxYabjQSgq96Npr2NETq5PmOxXIUp4roA=;
-        fh=VwuF5xOIkWh2ESfUkJWORAokCXKSgO7H2WfBMI2iBtw=;
-        b=VKmDhZ+ez5jWVLCIs9+3ni3RV15tqW4LYuR1gUsRb0G5GMHOZQ1R5RcGE9CBhohvtp
-         El7GSt960dqC2awHWUQ3TGvDXMz3aFJtTQH+BsQYO7vIrgY7r8TVdNztTX862Pc7fJbu
-         /fZv+9XGvun+RYnLiY0fF3S5oPJl41z3EP5tRO+trV9pI+cKSeecodn04s99FPPBqXlj
-         p56WYYSoWz6A2HZ7LU2nC4gzUEOAq577+WOgW5g/QyP9SOtyurKDhkDfAkwthmID8qLm
-         GUpQSDkdpdsLmLZ31xc4BnRx1Ca9idj21kN6LbGhdmTwdBKf7x/R0m82yyJ1vOIT+1gt
-         x2AQ==;
+        bh=ZJ1om1XG26k9c/pw0fQSTui/sos+jK8LcvkwRi0HW+8=;
+        fh=ci58xLF2nPSqc3jQ+H8ad1e2GnrvTL8ScusbugXlSh0=;
+        b=lWdAPLf/tVjFO6vgtgYVtB5lqloEQ99DGyMiOsIMlK+494vHsUOV+qBUb1i8TJJFB8
+         m0pKMNq//kszK+rrEV/IQAJ19B5sdKHGtfwuYkqs29sfY++9zcstJIR1oIfL+GSK8rFw
+         d1lU3O7qz3pa7WD1bWvKuu+bo4nRX3Fq4gYCx9hceO+a6YKnuNvbb43Z7/HtbRe4P5NL
+         SdLKTGH378wTBAEjT3aeyYF3GFctPivXI6GaWycCSnvzXKOUlaCzPerMk6dVM1Zu8uy4
+         U2Z7sLo89TQY/mfVPvO5ZwR7kPFbMeQNTc4YSEL4ucbMSyXUa01JCuz1tPfz8QbhytNa
+         eW5Q==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779215703; x=1779820503; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779217000; x=1779821800; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=g5YZm4UgAbGxYabjQSgq96Npr2NETq5PmOxXIUp4roA=;
-        b=gGAELiIjllEN2fO5gAg1oWXeDYJshtsvffzgK1Px5SGpE9SJIt5ufCwK3CHTtdnF8D
-         wCyP2UeuOnlJu5f5bNS6wCYxJDbuAg6Dl0Z+3chkVT9KJvQJ1bCF+ikRTxM7lUwobhd/
-         pMjtf8aGrSTwmfUOzZXrDxvIlA4ZMZQfgqtsarl7w9uciW6OmIBP6nM0Ovsng6okSutE
-         3iuKJSZnSerFt9wqKESxm2LjUbNW5maq/Q5JgXw6Z67HWocs6pNxCdkhfzzmPUu3HLKj
-         xDnEbIQTOG4uNqmn2+giEzxWysm0hE53qjRGxSH3Y6u6OIB0wNCwiT70YqUOAL37BMwK
-         qyYg==
+        bh=ZJ1om1XG26k9c/pw0fQSTui/sos+jK8LcvkwRi0HW+8=;
+        b=K58qjznfIkYOiC1tPg6QfmGiKQBWgkIc8INR1T4iaB07msA9+eIMYWKbhbpbDPtjJN
+         CC4LAkCx9m05s8Tt/JMHarvQRABgBeTu7voCDoZKLB6GlBq83Zq1yF0GgS80R5/RIE7x
+         b6lNunUiKHyKEUIDKo9h2CCeMumE+Hxu4Fo2rxRqnIS9l6rWNnmI3iVzBwrEhuuEV5y7
+         nYxyF+DJCYVrpIzX9RxLrlMQPtTn3TyYL6D2SZfzpz1/RVRfd7CJycQdkU5EW7ynD9Au
+         y+k2U1BP0o4Yv+OcAzP7cjZV0k9jq3lwgNBHUiUSIgmE0aIweyE9QMMGXqA5U478nEPi
+         Uokw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779215703; x=1779820503;
+        d=1e100.net; s=20251104; t=1779217000; x=1779821800;
         h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
          :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=g5YZm4UgAbGxYabjQSgq96Npr2NETq5PmOxXIUp4roA=;
-        b=nTDW3dzVWLDdj7npraG66QDkz80HMIFitmlLpcdUmZmCtY2snQwBVO0BZcdiLXDxrL
-         0QaHhNfDHW7dZNZwhC0uqRWTTiokshBLZteVbDA3Weq3Qe+oBn1KfGLlR5ZbSMJG5cNi
-         K8UOdZiDMkRekRp+dTonu09h9hZMFGtKh6s+qtzrOVvSgQIuVKLCVn/gioasaxYAFLxJ
-         7KsifgjPWO95d0DE1bzYi90kcOfE++SoYHe0RstuEFFA9hhr8ryjOx0OAKpACmEwb14G
-         SwC2VXWdXd7Gc6Pz4LfCaUtPMYGL0N9yJ/3LLcEMDCb2FcB7HmlNxjUH1zfhRqKNA4ra
-         c2BQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9GP2Erfxza5EPDPpWov7oEnjtUTc7cC7Vba/saUgumTGjs36/DOb6c+SKgvKqt+hboJqM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzxPT1a5bWm9Zo71ug+tgl08KVpJUBqm6M3eGowEpByVOqOLkhw
-	Gu/Oh3LUVt1Ro/1PZqp72x/d+2MIfsc+R/yRCnHxx7mAURC6QVyhl+Uj06X8qsmAZwSA5nVIYN6
-	2tBtF8PGU22j0yrz0Ogg0zv+y1WuChz8sYm7WGQyi6KBnIN0l89FYlnSt
-X-Gm-Gg: Acq92OGtcmBiZC3fx+gzIpunisvZWPWmesCfNqU3r8z9s8aPP9YSVEjAeY7bOW5phfk
-	a2abtg+zTRD5HbMMifdSs5fPE0JIYD2l5CpsDXkusOv4vjGbITXM52d/VWFajzr9DmNNV8zIlRf
-	n4MYZzQW6+SQE0vZrr6hH53Mypq6Gz8GRBNQFEddQPiNohO4BHYsvC2BYxCtfuCi+bPFVxr6fZO
-	5LiIBR8PRlXGgjswMujgtv5+2VJKBvMdZybv8PBv77N1oY8SPEyjycUbWwXLZqFdMv9jY/lqWZO
-	Pa8ygTioOEgvOoRMJ0t58KHE/4BXXxCPlKxs4HK7ygdGw6kqbPjRiziHlKCmuqDcfN8mUxrDOSR
-	OKOBA
-X-Received: by 2002:a67:e70b:0:b0:62f:46be:8318 with SMTP id
- ada2fe7eead31-63a3cc0e937mr11563105137.6.1779215702359; Tue, 19 May 2026
- 11:35:02 -0700 (PDT)
+        bh=ZJ1om1XG26k9c/pw0fQSTui/sos+jK8LcvkwRi0HW+8=;
+        b=atVTqHqPSL2CLHk/3WW8+lBYqhwPhT+N/IKOJxFXD/Eq9ZSfzRYoRpA7W+rryemRGT
+         U96AFfFmQY2pBwiP735kDTf/NS7OrJL3+Yhzng9V0uClNxaPjHkoiJPzROA3nwvWC5Bg
+         ZW0y74yXaBtjPWu8TFI93/2Y632ZYlqw/WvqtqDYO/4JtVKfj0frn9HsA6C39TVaxDiH
+         qvBW2s7u8MiYdjlg+ASz/0IZyMyvqMNFOn6Pp3Gt1SFCVkBRs1OYRDzYfzp39vNDsHuM
+         rD7WHnT/BNVCdyYHjzQAm68SpO01P5IJDMRDPsS1ZAO7D2JyvD3pHe253KFb4tXNYfkv
+         KBFQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+Reext0xFfUFy9PStqjTmE1ZCQfswnc26GpaA4X++MwWTEuk1wf2Vqxngrq/8LcFw5MNs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7DGH6uve+/nB9zoEq12PZpiFiRMVo9JAjvDWNPY4VRvdc79VJ
+	zeUuFzfXPLKeDY8JSUATpx33ZOswORe8KbnLFBpxk2u4Fz2D6PiqDxSUYj0X+G7SCIcAT6KLhSW
+	DkMhCvbooeiUKtXNz1ajmTEWhdQfuRt/rs1TMKuev
+X-Gm-Gg: Acq92OHj87O5iPz8Hlr8O3NMrVPwUreFEgQx9OjTqOROl/toweliihXmEDW7fxX6cTL
+	1m8BCNRJ1xeqlTDbK/aTCpNmjKaAUGuMWUs5PqWVA7Jj2OnTZWGdyCyjE8/185z/lvgdxrY9y+c
+	qQtleJOf36U5n0sol5d99BCgW5ThMqeYVZwqQC58W9f8X8U4uqHFf1ZVKCha5j8JuOcuC+Ym3cA
+	sZ/XKXPhL47ahpw+VC0/mp+mBhPekHDdicw63zWhXz6YFzY3Wg+5eRBm/XqY2kpXez0NuW7u4Zq
+	K6iguny7IOBXxvrj+1VmuaCzhRSC0ZL/Lh0mae3fRwkQ9H+39E4cjcywn2V65Z00nD0vtjXde2L
+	3TWwO
+X-Received: by 2002:a05:6122:d86:b0:575:3b1b:ef01 with SMTP id
+ 71dfb90a1353d-5760c0a6a7bmr12548926e0c.9.1779216999523; Tue, 19 May 2026
+ 11:56:39 -0700 (PDT)
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 19 May 2026 11:35:01 -0700
+ HTTPREST; Tue, 19 May 2026 11:56:38 -0700
 Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 19 May 2026 11:35:01 -0700
+ HTTPREST; Tue, 19 May 2026 11:56:38 -0700
 From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <agt5A90k9lS9JPWp@google.com>
-References: <20260518070943.2091287-1-ZongYao.Chen@linux.alibaba.com>
- <20260518070943.2091287-3-ZongYao.Chen@linux.alibaba.com> <CAEvNRgFgobnW+O=t32gu-0YDy0n7ZqvmdCtg+DzLT3uf0+BDeg@mail.gmail.com>
- <agt5A90k9lS9JPWp@google.com>
+In-Reply-To: <agt5wTK5I-FvlB57@google.com>
+References: <20260402041156.1377214-1-rppt@kernel.org> <20260402041156.1377214-14-rppt@kernel.org>
+ <ac7oE_1j6gxf8OKT@google.com> <CAEvNRgHd4azPaMddvqnSG+Z5fmg+LWd+pz=LSB3PrJTW618dww@mail.gmail.com>
+ <agt5wTK5I-FvlB57@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 19 May 2026 11:35:01 -0700
-X-Gm-Features: AVHnY4JMb8xTVN3PiZl5iQlu_-bUy05sR1IlC9x-XipUxw6zHkFMz5hIRfmkZZo
-Message-ID: <CAEvNRgE4o6C8P2jW_MGn=1BHxgmp183UTk_h5YkM+U_MCTMdzA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] KVM: selftests: Test guest_memfd binding overlap
- without GPA overlap
+Date: Tue, 19 May 2026 11:56:38 -0700
+X-Gm-Features: AVHnY4LPzDj9g5FV4_YaYz9tvR_M1MnLgRQGl6BwcjJkV-QhnQjrw8WLfhjN4fQ
+Message-ID: <CAEvNRgE+xXRTWHzAetYhQN-OeTHipspbfvYNzaExe89E_sRkBw@mail.gmail.com>
+Subject: Re: [PATCH v4 13/15] KVM: guest_memfd: implement userfaultfd operations
 To: Sean Christopherson <seanjc@google.com>
-Cc: ZongYao.Chen@linux.alibaba.com, Paolo Bonzini <pbonzini@redhat.com>, 
-	kvm@vger.kernel.org, Shuah Khan <shuah@kernel.org>, 
-	"Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>, Chao Peng <chao.p.peng@linux.intel.com>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, Tianjia Zhang <tianjia.zhang@linux.alibaba.com>, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Mike Rapoport <rppt@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Andrea Arcangeli <aarcange@redhat.com>, Andrei Vagin <avagin@google.com>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Baolin Wang <baolin.wang@linux.alibaba.com>, 
+	David Hildenbrand <david@kernel.org>, Harry Yoo <harry.yoo@oracle.com>, Hugh Dickins <hughd@google.com>, 
+	James Houghton <jthoughton@google.com>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, 
+	"Lorenzo Stoakes (Oracle)" <ljs@kernel.org>, "Matthew Wilcox (Oracle)" <willy@infradead.org>, Michal Hocko <mhocko@suse.com>, 
+	Muchun Song <muchun.song@linux.dev>, Nikita Kalyazin <kalyazin@amazon.com>, 
+	Oscar Salvador <osalvador@suse.de>, Paolo Bonzini <pbonzini@redhat.com>, Peter Xu <peterx@redhat.com>, 
+	Shuah Khan <shuah@kernel.org>, Suren Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>, 
+	kvm@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, tarunsahu@google.com, patelsvishal@google.com
 Content-Type: text/plain; charset="UTF-8"
 
 Sean Christopherson <seanjc@google.com> writes:
 
->
-> [...snip...]
->
+> On Fri, May 15, 2026, Ackerley Tng wrote:
+>> Sean Christopherson <seanjc@google.com> writes:
 >>
->> Since this test program is meant to test set_memory_region, should we be
->> retaining the original test? The original test is wrong in that it
->> doesn't test guest_memfd's binding, but it does test that
->> set_memory_region returns -EEXIST on overlapping GPAs.
+>> >
+>> > [...snip...]
+>> >
+>> >> +#ifdef CONFIG_USERFAULTFD
+>> >> +static bool kvm_gmem_can_userfault(struct vm_area_struct *vma, vm_flags_t vm_flags)
+>> >> +{
+>> >> +	struct inode *inode = file_inode(vma->vm_file);
+>> >> +
+>> >> +	/*
+>> >> +	 * Only support userfaultfd for guest_memfd with INIT_SHARED flag.
+>> >> +	 * This ensures the memory can be mapped to userspace.
+>> >> +	 */
 >>
->> Perhaps to just test overlapping GPAs we can use anonymous memory
->> instead of guest_memfd.
+>> Is the principle here that any memory that is allowed to be mapped to
+>> userspace can be userfault-ed?
 >
-> Eh, I see no harm in having both.  E.g. if we do this, then we don't have to
-> explain why we're not testing the other case :-)
->
+> Yes?  It's more the opposite though: memory that can't be SHARED and thus can't
+> be mapped into userspace can't possibly support userfaultfd.  Six of one, half
+> dozen of the other, but I think it's important to highlight that there's no
+> judgment call being made, i.e. we aren't deciding to support only SHARED just
+> because we're lazy, it's a hard requirement.
 
-Makes sense to have both :)
-
-> diff --git a/tools/testing/selftests/kvm/set_memory_region_test.c b/tools/testing/selftests/kvm/set_memory_region_test.c
-> index 9b919a231c93..283392bcc3a0 100644
-> --- a/tools/testing/selftests/kvm/set_memory_region_test.c
-> +++ b/tools/testing/selftests/kvm/set_memory_region_test.c
-> @@ -510,7 +510,7 @@ static void test_add_overlapping_private_memory_regions(void)
->
->         vm = vm_create_barebones_type(KVM_X86_SW_PROTECTED_VM);
->
-> -       memfd = vm_create_guest_memfd(vm, MEM_REGION_SIZE * 4, 0);
-> +       memfd = vm_create_guest_memfd(vm, MEM_REGION_SIZE * 5, 0);
->
->         vm_set_user_memory_region2(vm, MEM_REGION_SLOT, KVM_MEM_GUEST_MEMFD,
->                                    MEM_REGION_GPA, MEM_REGION_SIZE * 2, 0, memfd, 0);
-> @@ -542,6 +542,26 @@ static void test_add_overlapping_private_memory_regions(void)
->         TEST_ASSERT(r == -1 && errno == EEXIST, "%s",
->                     "Overlapping guest_memfd() bindings should fail with EEXIST");
->
-> +       /*
-> +        * Repeat the overlap tests, but so that there is overlap in the
-> +        * guest_memfd bindings (i.e. in guest_memfd file offsets), but _not_
-> +        * in the GPA space.  Regardless of where there's overlap, KVM should
-> +        * return -EEXIST.
-> +        */
-> +       r = __vm_set_user_memory_region2(vm, MEM_REGION_SLOT, KVM_MEM_GUEST_MEMFD,
-> +                                        MEM_REGION_GPA,
-> +                                        MEM_REGION_SIZE * 2,
-> +                                        0, memfd, MEM_REGION_SIZE);
-> +       TEST_ASSERT(r == -1 && errno == EEXIST, "%s",
-> +                   "Overlapping guest_memfd() bindings should fail with EEXIST");
-> +
-> +       /* And now the back half of the other slot's guest_memfd binding. */
-> +       r = __vm_set_user_memory_region2(vm, MEM_REGION_SLOT, KVM_MEM_GUEST_MEMFD,
-> +                                        MEM_REGION_GPA,
-> +                                        MEM_REGION_SIZE * 2,
-> +                                        0, memfd, MEM_REGION_SIZE * 3);
-> +       TEST_ASSERT(r == -1 && errno == EEXIST, "%s",
-> +                   "Overlapping guest_memfd() bindings should fail with EEXIST");
-
-I just noticed this is kind of odd, what is the purpose of "%s" and then
-filling the string in with a hardcoded string?
-
->         close(memfd);
->         kvm_vm_free(vm);
->  }
+I guess this series is only intended to support some kinds of UFFD, but
+IIUC technically UFFDIO_CONTINUE can be used after the private memory is
+inserted (e.g. for TDX live migration).
