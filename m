@@ -1,85 +1,467 @@
-Received: from mail-ot1-f74.google.com (mail-ot1-f74.google.com [209.85.210.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-00069f02.pphosted.com (mx0a-00069f02.pphosted.com [205.220.165.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85E663AC00
-	for <kvm@vger.kernel.org>; Tue, 19 May 2026 00:48:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.74
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779151688; cv=none; b=RDXXoTW7/G1+WDMqRxSnlDTsBlf7CiGb2tI3NnlHORCI88HBW2OHLDsJhq4Xfbn61PnB1+ctyT6wEXTenqeZ/i3kdcdL7VevV80Ig9ppIpygH1SLQeyb0PFCSY/F7zgY2EfhrrIjz7eky88jKdUapJMmgzIaRQH0m4RvfPw8+sA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779151688; c=relaxed/simple;
-	bh=QHKf+aZXn34+/5J/HD019n1CgKD1ux2J3xrbq47knvw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=AkOKvNpldhWyPsbL8oAbkDe1+Vh4IS5Jy9Xuvo5x1mBlDaG7T5qwb2DUh62MrDtS4zao1epVEyQOjicULd0t1thLVwGBwFiKICjVelByXERr8/IWk0Aaz3enpuMY2xjwHJ5V5BuDmr6Ua+59Pc8dDLr/27eqShw21UPtoJBp5dM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qSQKCqPY; arc=none smtp.client-ip=209.85.210.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DDFDE285CB4;
+	Tue, 19 May 2026 00:58:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=205.220.165.32
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779152310; cv=fail; b=R1B/x4636CWqBrfJa6MS9k8paDmRicUcovtDUJYdY675S62XaZ/tCX9WY2Yfx+04lfYcb1/T6TQxNiPgYWU3i6kl7WV6F8mOuMSlmkbyT5B4sPU/EQ/UZsoXycWu+/sHTItVpx9B6ZVApaxlB12DU4/htIlqI5mNGznhI8rdKxo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779152310; c=relaxed/simple;
+	bh=5fkhpw2Daz2EbSoFrsm3eZlluy/NpJ91DrbnpntJcmo=;
+	h=Message-ID:Date:Subject:To:Cc:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=RfjwP4rol1S8UbfXWoyK9IMVGUwBrSq3zZ72CcX2HaB5GBx1i0/R+eUkbqH2JulHh+0ODfIiSY+46gemGpDDkl/nr/IDzrhzAI7RLJvsOGtX3rjZ2Zr4J0hWWe7D8aeMuaAnqAG4pp9VqIiYhzsDPMKL4xwBaYIhjqnkR4MBCX8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=JIeVxkmr; dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b=KWfEYmpw; arc=fail smtp.client-ip=205.220.165.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qSQKCqPY"
-Received: by mail-ot1-f74.google.com with SMTP id 46e09a7af769-7de75c9be06so9636193a34.1
-        for <kvm@vger.kernel.org>; Mon, 18 May 2026 17:48:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="JIeVxkmr";
+	dkim=pass (1024-bit key) header.d=oracle.onmicrosoft.com header.i=@oracle.onmicrosoft.com header.b="KWfEYmpw"
+Received: from pps.filterd (m0246617.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64IFqMkF545944;
+	Tue, 19 May 2026 00:57:55 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=
+	corp-2025-04-25; bh=u+PFvMDHJ33oo7sGA3cLlGmVs2NUml79uY9VX5VPNXc=; b=
+	JIeVxkmraKwKJQi7+XjdYYzhRThW8QDwiRTMVHzas61gXSKMdZSoCFpfYZsYOmy2
+	LRv3YI26KV5viYAq7GmEIIerF6+da4qjeBORnhH0ru7tx/ZZGA1gjlfEpd+akBi5
+	B9kiz8hCKfDC5s8Q9qBn97qSDauxCMcKuvWXt0X0ZURcgNhXOejPckdI2lFfUs/B
+	/CjVDi27lP+S98v70xllu+P9860/XPamfFxVZXUeJ/MykJN94vRbGJpJbkhZRlYa
+	4wsv9YUIMKmJhAApZPoLnc6I7QishVeDyUuKF1ad0MeEGp8ERwfvVud+mGbiAcvr
+	eVTAN+bwIU/4rVMTgyn/OQ==
+Received: from phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta02.appoci.oracle.com [147.154.114.232])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4e6h4q37ty-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 19 May 2026 00:57:55 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.7/8.18.1.7) with ESMTP id 64J0sj9s028343;
+	Tue, 19 May 2026 00:57:54 GMT
+Received: from dm1pr04cu001.outbound.protection.outlook.com (mail-centralusazon11010053.outbound.protection.outlook.com [52.101.61.53])
+	by phxpaimrmta02.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4e6f1a4820-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 19 May 2026 00:57:54 +0000 (GMT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=tYvxjLHz0pT2q1GlB5Iur0+SSs3mOds/bcF8DL80LTKP4KkQ3Zv3WO7riHP80ivS7aX8LmGTi8Gdb0OMUsz5ry85HbNFGwMICws76wD+zSDNpQ9LfXuPaOzWWvlZ5V4tjgmWB4AoRNwqL8MtvQyu/cRNGffOXy47UlUt5vfEo75nS5YcEyfJn9xMxjd4WD0KpbrfJZm+StCiEpTSyd8dv6b5WmU0q8CYyBCOJop3M2baLAItyB/W3tI9Kskv0cFUUW0yAV20ysnZY99D7AUw9++8HrP+TUNzoUHpiZS6tU6igtGGKsCJJ4cwfeSeQ2Fd/4KhTs0lhMu/nLNSjpkXAg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=u+PFvMDHJ33oo7sGA3cLlGmVs2NUml79uY9VX5VPNXc=;
+ b=aM3dfNqEaF+2GaLRInOI9LI2lhsvA6DtHoR24cKSCgMiZDZHjdecPJJY/lu2a80+h7HxH5gy/I9KLx/rN9N5/zbk1dHh4s7FwIuRLaJRx03uR9+WAABvTOWbFp0f5raRmWIJ/NKPASmFEoPUOQ9MKRKOEWplFPIbXbeqwo08dFyRjjsp6OoW7hs9y6TEjh7wqENcqc5TaoOPHXKX9ek0v25KwLwHN677MxId0xImJlB7TaCSBuQa4lYS+S9M3o/5WSLver3HQ0+S0vf2HKxLjqITGzn6JOggloXRNLQavyNFHhhAQuw1PjPEzELr18RUTSapqdWMaqedVTUsdoyoJg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=oracle.com; dmarc=pass action=none header.from=oracle.com;
+ dkim=pass header.d=oracle.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779151686; x=1779756486; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=MOIYlOIkyLAIe9d6QNLjzenaamPqaWyCi9gR//uAfps=;
-        b=qSQKCqPYOKxSCtNnOdQSjb09nKtuSBQqTo/Tbd1RH5iYQZPKLNp8l0ep687ada7aXb
-         q6Agz+VYh5IRKkIeIxnDTQMEFJlXL/5rUDwp9UnxXwq6pPwuEZHNtDtipimYL2Pz8lcS
-         0D4ZKQG2rMm4TRAD8ODVI8iGB6fLT9nTkwj85DoI6fr5C6VaN8j4RxfPNnpsCKqffMPC
-         +TyuoV1WENNt+VaFLwO9/si3Df4mpJMISPWC95imGUKx3Ytax1PHH1eubUG+jeq1q6WI
-         d+mmczZ+VwYruQTD3/flNJXQS4uYz4YLJXUdL5SR0UMsQua3nuJ4p5p3bN/N7LwxNjUu
-         mTlA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779151686; x=1779756486;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MOIYlOIkyLAIe9d6QNLjzenaamPqaWyCi9gR//uAfps=;
-        b=rmyv2WbsyNNTtIBAeB25nJjePP5AD8fFzFgxgUw+E6ZUTehKyIWj5zVkDsFqaxR+bz
-         RhjQEa/JWCpgeVq0fX8LiINCZ7Q6bwRzXgl/OaxTMPS5hmB73lG4d7FcNjxEhGB8Qcp8
-         PWuBbq6YBASR4sgsJzfay6JjWXSAjVz5rAg+sQpRKixt9Zse5w3Hc9rwd6ETJa+qSL86
-         zPUUREHAl9TloGELyOyWHQDakeSksbF1jQzVrd2yLIS5BvEshH9QBfKUiX/ZHTJTRex6
-         /QLaV52XjPd6zHhC33cobGTozPsUc5/8cQGetwiUZMCKvzWNKOe16v+rQ9n+iuh1tSiT
-         aNpA==
-X-Forwarded-Encrypted: i=1; AFNElJ/IiySbiZkJEL1TCgmLrJo1j2iawRoTuc656OUb23TDz9ZF+3a5Z4MlfdbtmmP9WifYMxs=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwcL14+zbOBDrNNFYdeujMdXUFx8BmIgLwQUdl9h5RgyAG84/mI
-	2RyS38KjbiUfI84EgWFlQJJbPaKhOW/gdpvrXviP7VRkKKk7A9w0SnrD8+AvOeRigf1pLnyX9ZH
-	j6aENoQ==
-X-Received: from pjbnv3.prod.google.com ([2002:a17:90b:1b43:b0:369:1a1a:82c9])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2d4b:b0:35a:189b:43db
- with SMTP id 98e67ed59e1d1-369518b20ecmr14004943a91.4.1779151261772; Mon, 18
- May 2026 17:41:01 -0700 (PDT)
-Date: Mon, 18 May 2026 17:40:32 -0700
-In-Reply-To: <20260409142226.2581-1-lei.chen@smartx.com>
+ d=oracle.onmicrosoft.com; s=selector2-oracle-onmicrosoft-com;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=u+PFvMDHJ33oo7sGA3cLlGmVs2NUml79uY9VX5VPNXc=;
+ b=KWfEYmpwQB6xr2AYzGkQ5R6IKcrqJxZXI85XeWiPsDoGm4+owFJGxvxkF6X2qpqggWtMyI0o99UYmgv46CCYO0CNb1KWvGq6gYBr9NZUo8X9NVdN9hocJjIzaJhovjajMQGH///fcQmp3dXXrICdHdReiglDhddmCnXUucnQeyk=
+Received: from BN0PR10MB5109.namprd10.prod.outlook.com (2603:10b6:408:124::23)
+ by PH0PR10MB4808.namprd10.prod.outlook.com (2603:10b6:510:35::23) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.23; Tue, 19 May
+ 2026 00:57:44 +0000
+Received: from BN0PR10MB5109.namprd10.prod.outlook.com
+ ([fe80::d9fa:7ad2:804b:bb83]) by BN0PR10MB5109.namprd10.prod.outlook.com
+ ([fe80::d9fa:7ad2:804b:bb83%6]) with mapi id 15.21.0025.023; Tue, 19 May 2026
+ 00:57:44 +0000
+Message-ID: <935312be-9a86-49fd-8bb4-2c998a68e2df@oracle.com>
+Date: Mon, 18 May 2026 17:57:40 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v4 04/30] KVM: x86: Add KVM_[GS]ET_CLOCK_GUEST for
+ accurate KVM clock migration
+To: David Woodhouse <dwmw2@infradead.org>, kvm@vger.kernel.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Thomas Gleixner <tglx@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>, x86@kernel.org,
+        Marc Zyngier <maz@kernel.org>, Juergen Gross <jgross@suse.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        Paul Durrant <paul@xen.org>, Jonathan Cameron <jic23@kernel.org>,
+        Sascha Bischoff <Sascha.Bischoff@arm.com>,
+        Jack Allister <jalliste@amazon.com>, Joey Gouly <joey.gouly@arm.com>,
+        joe.jin@oracle.com, linux-doc@vger.kernel.org,
+        linux-kernel@vger.kernel.org, xen-devel@lists.xenproject.org,
+        linux-kselftest@vger.kernel.org
+References: <20260509224824.3264567-1-dwmw2@infradead.org>
+ <20260509224824.3264567-5-dwmw2@infradead.org>
+ <0ae8e471-db7a-4842-aca4-8ef643acde8b@oracle.com>
+ <d3c461415e05345a9b82e6f995828c1ae64a4e61.camel@infradead.org>
+Content-Language: en-US
+From: Dongli Zhang <dongli.zhang@oracle.com>
+In-Reply-To: <d3c461415e05345a9b82e6f995828c1ae64a4e61.camel@infradead.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: BY3PR10CA0001.namprd10.prod.outlook.com
+ (2603:10b6:a03:255::6) To BN0PR10MB5109.namprd10.prod.outlook.com
+ (2603:10b6:408:124::23)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <adVGrJaRlRooO4su@google.com> <20260409142226.2581-1-lei.chen@smartx.com>
-X-Mailer: git-send-email 2.54.0.563.g4f69b47b94-goog
-Message-ID: <177915096245.2229085.13630344593497072451.b4-ty@google.com>
-Subject: Re: [PATCH v2] KVM: x86: Rate-limit global clock updates on vCPU load
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Lei Chen <lei.chen@smartx.com>
-Cc: igor@gooddata.com, jan.cipa@gooddata.com, jaroslav.pulchart@gooddata.com, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, pbonzini@redhat.com
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN0PR10MB5109:EE_|PH0PR10MB4808:EE_
+X-MS-Office365-Filtering-Correlation-Id: cef7396b-254b-4543-6ed1-08deb541a29e
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|7416014|376014|22082099003|56012099003|18002099003|13003099007|3023799003|4143699003;
+X-Microsoft-Antispam-Message-Info:
+	rqfUNSh+VeRSytHR4QihiGMxjfG72XXJKuh/PI+n85pjMZHdHVWlJeXBQesQc5hKWKFHnWLXEniHZvYvDbio8tybnw0AUVyUqvhlLbWn0Z4xZj/e5hRS05bg1Bdl29rmAW9+DvA9AUSz4v1BhnbrGR22jkt/CHB2H+/hNxM1D4zbyaTi1n6dnwX/Znq02IT+wv5mtwgkzAjnnNfNVn+AW6032PPz2iK88Iyne/3Kwnud1pEQ0D1XRPiNF+hIdPFUDQsskiFuuu3eOfOxnUVJIblG5f3U4KQxnLxZ7asevMSimT2u5gNaHb3dDRucZbnzYy2MimnQyRGwRVENipUAbvV61AO7RJXUMh4AVbirSJ+2pQv7ARyf95H0nFMrY97UaWlTlvY2G1YJJWcg0P6Pkoi8u3D3muOzX9Z1r3J9pOV79JS4Kp1zpvdx2DA7k0Io2Cl7KrDOGNd5TW4SV9N47uxeMczbXt12MeZFBCcQqNMmMTiy0Xrx83P2EhkQEhC79km1eQUu0BLwz5biz2VIyDzGRguc9j/Z0hrVs6howZH5kJP8iJh9l9xL+/USvRdrb7t4GEYaGJLeM4etSHJa9kq1BCP1/wm7vs3cJO10BLv6B3aevtXiOy6aNfdmr7npOjWUKMshdQQ4iQ7aAtQGgTQv99yBuY6yKMTYckZSmnhfU3j04hQyoXJoqSpL6S/iUEnJ/BlbOoCAUgms0f6PZA==
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BN0PR10MB5109.namprd10.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(22082099003)(56012099003)(18002099003)(13003099007)(3023799003)(4143699003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?N25MUzFqMngxbVJwK1RheGR1OFZkZTd3YTI0MjB6S1dOQmh3ay9XcWVYSkt3?=
+ =?utf-8?B?OVF6M09vUk5sMEFIVFJiM3p2WjJKUjVDaWc3ZzAvRGNtcXpMT1hIazN5NFV4?=
+ =?utf-8?B?dTNlTC8razRXZWFFd1M4QzBONjM0aGRSdjdzMFNlSzduM0FYTXBab3psTTQ2?=
+ =?utf-8?B?Lzg0YzhmR1hlYTRyTXI2VWVDekUzU3UzVmphTWk2bGY3bElxQXk1WFBsbzJy?=
+ =?utf-8?B?T25URlJqemJJcnhWN0xHKy82U1A4anRNdUZCN0hMUytvVU5DbWhjTHQ0QXZ3?=
+ =?utf-8?B?TlZKam5EZ2owVjRNaWlPT3pxUE5OQk1CQUdnelJmTTNNeFlMbEJ5MWRhVWVC?=
+ =?utf-8?B?UkJxQWE4OEVxVDErdWRiZ1l4VlRSKzI4bHY3Nm1ZQ2N4cjBFeXgzSCszRTI5?=
+ =?utf-8?B?SWx0UjFhNHk3aldZNXN2VXkvRm5JY1hieXVPbXBpbys3TXRtR1diblYzbXlG?=
+ =?utf-8?B?TlRXektTL1ovYUg3NzVKaEVjQzM3SzhnaUxuTEdNU1VTTDZ0cXEvY1ZjNjZa?=
+ =?utf-8?B?b0tHd0tHdTk0MTUvdmN2V3U1VFVWQWR6S3llL0YrOFZId1RRSmdPa0l0LzRh?=
+ =?utf-8?B?SFhkeFFXT0RZVU50WkgzdEord1NtMzdkcXhQdUR3Y2Fka1JJdDZTMnpmaUd5?=
+ =?utf-8?B?NjdscDhaTDNaSisvSFA2MEcrbkQ3TldJcTdaSXFtS3ZiNHFrbjAxS3F4VkZF?=
+ =?utf-8?B?MUVtNXJXMjhMaU4rUmhEaTNicGdGU3MxRklVbzZkZFJ6SERRZU9vVlpFVTR4?=
+ =?utf-8?B?QlZTa0d0TkRSQ0RFbDEveXFyOVYwSlBLN1JjcDJTOVlnVHBRTkZNaGFSbGcz?=
+ =?utf-8?B?R2ViVFJkWTQreFh4ZFpUdFljb0tmTzdxa01ucnpZK1N2VERXUmR3OU1qZlhW?=
+ =?utf-8?B?d0V0QUNKWkQzelVoSmpTd2I4QzRoY0R3RTlXQjdtK3B0ZVVBRThTZU50Qm9V?=
+ =?utf-8?B?RklQUHc2RGVtZDVwNFFLNlgrVkxGd3B3Rm42L2tFeWlCTTFKY3ROWUViRk5q?=
+ =?utf-8?B?QnNZdkhZRk9qV2tydXFUV0svNmhzeTlFVEdRYTl2bXNhcHcwQ3pLdXNnK2RM?=
+ =?utf-8?B?WjFQTEh2WWdsN1lpNEVycGwrSVp4eStlMW9RYUt3cW4wZGZpRlF4S1R0Kzkx?=
+ =?utf-8?B?UTRHT29yMFJ4elRJbWlMV21TS2EvOStteWc3QkRuN3dKQm1FNDRuSzlzcmpk?=
+ =?utf-8?B?NXF2QnVsMjRDWkNla0dEME9DM0FXZ2NXVlRLRDhBMGRJRldodVlKRk1Nb005?=
+ =?utf-8?B?S1RueEhBT2lMWjh0N2tVKzdBZlFVNm44OWpZTTh2REwyMDB5QzBKbFhUS1BO?=
+ =?utf-8?B?N0R3V0JtOTJ1SkNscHVybWRlaHQvUVZSUllGSFhIZW4xTDZmczcxajNoODJq?=
+ =?utf-8?B?VFVqaXJUM1dLaHkvVUErTzdaUXhKLzNwQXJIcndmbjkxL3lJZm9DaGd5bTlk?=
+ =?utf-8?B?NkVMdTFkRitTOW05QlkrUmRBd01obCtBMVBWeTdWczl0Q1J6U3ZZMEZtcDlN?=
+ =?utf-8?B?R2lhUzJkQ1FndnBtWmlTYkJVRDlPdm9DdFhJb3h4VUo1eGpYNVZlWlZJc1Bs?=
+ =?utf-8?B?dWJYRlhyT1R2SVNvWFhubzlGalNCOWtKdVYzRDdkRGJPVlpXanMzbENFU09S?=
+ =?utf-8?B?MzRtNkNyWG9sTExNaUNWbjNuV1JOTEd1aEM4MjlJc01YYjVucFlCdGN6TGNO?=
+ =?utf-8?B?WVZ1OGpoVWlzVE9oWmNCT0d4NEFHeWd6eVpSZDVPM1VXeUwyWWZiNXBJa0dF?=
+ =?utf-8?B?UEJ0VXExQm1FQnEyd2hyWlpRZXVsODdJS1R1V3RjVVdjMjByMEYvSWhzM3Bp?=
+ =?utf-8?B?MjZOZWpkYUpsOENTUW1KZkp3TnYvekhVK0ZUYUpOMDZ3UlFyQzhST1JrZC91?=
+ =?utf-8?B?SlRzRTR3cjdPSDB6UHVmbEExWnVRekVIYUQ5K01GQXJydjBRUERlSUlvYldr?=
+ =?utf-8?B?QXZiaVU2VE9DOEV4a3Bxa1V6N3FKMTRLUzZBVWJ3L0ppQmxQUXBwbVJLWVVM?=
+ =?utf-8?B?SndtZzlaSnAydFlvcUlNdUkzMlkxOThxREpqRHN1NmRDUlk3czdnQy9zSHlJ?=
+ =?utf-8?B?Q0ZxMDJBMDBYaEJ6eklteFkzb25tVlVVQmtLWVNFR0VLVmZNRC9CVS96TzBw?=
+ =?utf-8?B?aGxwUFhHYmFVOEwyV1NSbUJVSFhFZnU2dm5LNDh3ckpnQWVDYkJKQ0srL2VF?=
+ =?utf-8?B?OTQ4ZTJOZXhoRWx2SWEvSE85YVIxd2JCMm1DSC9nZDRVRzFRQjBJaTI1SjJD?=
+ =?utf-8?B?QlBPVHRkVlh0WUMrUG1QYjF3eFBLT2lrdWVjUlNnTkZ5ejlVQ1laeWhTN1hR?=
+ =?utf-8?B?bzdydkR4MXl1L3p2aG9ETjRHZmoyTS9VeWtPRHREdVkxMDJ4TDhUQT09?=
+X-Exchange-RoutingPolicyChecked:
+	VSRczNI50qGl0t7ppFFJT9VSU1Z1EDiHIoLfTjdRidhWfHRscuuMr5FZhYM15qIcX6w3Mgm4vxZaKNSP/ib+Iul1Pu5lD7tmxUC0EzKHEzCNrZrEwrBY3x2lcniaxqWBbLIlRFgF/2W9t1EMm3JUwbkGsCh9iaCHtLOuiyT3kkhLkt8io64Hm/+65cm5kr8MEFIj6GpNJ5kodlJNaGdm+wMcuxYs0yDSrkoYp8Bjwyy2st/OenT7FoI9LlNkZwjagMv+IlCek7sagfv3hzW4s3aYMdNA+0D0l+bUgagjMTEbORLkabcmacgieiX412d8as9dFTmICxehOIJh1FqFIw==
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0:
+	QS42RhmHIkZtk1Llb5kxv59L62liBw7TjNvOz9IiCZRKDJvHqbEcompQ6l3nZHNz2c+e+tZI+2sh0xpasekdlzy+1cwx1JbnBZpFiAs4LESptgkNMnQ8okZlw3v2a0rCvP1ufE8oCnvv/vcaPbkQiErFdhTcEx0NMMqF02r0U9c4+QxvyhTqbZq4mbK9/yn/gAFZlTx0dDRV237waRc9vI6fxznQzd8FomZQS+8nLKLShZJVK/V7AhJnCn1j6ZOtJ9qqMsd0VJc2w/jj/FYaVgfsRqdvC+auCO7m1Kdhro7PIjzSBBVacMcGeRJmcMlnLG0YpSmDX26jvqY7KFwTgan0xquFM6C2ow7xSYV/JSPyFTEzSJC/CUaUTAfUkBw/ba/oKD57jh+4AOEmZIh/YAvvofU4AKWbJoMmTEM4++VE1sLRHaLYbtb1mCn5//by7jmrmpak2GyWVRdc93JytGVi93ppvM+3zN67QnmmeXrOl9vLNWmlt2hCsfMKpqeOFFeL+FYZchHpNi6kw+1HHVtLszyFwtVLxddf9nxP7WhtwOy+//Z4i3NVM+MVfggMMOaFQsJiV1eaxnCWwebR/zLywPBVDzepnNu5qkQcpu4=
+X-OriginatorOrg: oracle.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: cef7396b-254b-4543-6ed1-08deb541a29e
+X-MS-Exchange-CrossTenant-AuthSource: BN0PR10MB5109.namprd10.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 19 May 2026 00:57:44.5580
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 4e2c6054-71cb-48f1-bd6c-3a9705aca71b
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: iOPiuUj3TuMvYnGrB0hM7c3l3wTYan25foTD2i6GkHYSIk9arQ1+CA28dWYHliMJN919r3Me0vNJLmPPIMiSMg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR10MB4808
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-19_01,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 bulkscore=0
+ malwarescore=0 mlxlogscore=999 adultscore=0 mlxscore=0 suspectscore=0
+ lowpriorityscore=0 phishscore=0 spamscore=0 classifier=spam adjust=0
+ reason=mlx scancount=1 engine=8.19.0-2605130000 definitions=main-2605190006
+X-Authority-Analysis: v=2.4 cv=NdnWEWD4 c=1 sm=1 tr=0 ts=6a0bb593 cx=c_pps
+ a=OOZaFjgC48PWsiFpTAqLcw==:117 a=OOZaFjgC48PWsiFpTAqLcw==:17
+ a=6eWqkTHjU83fiwn7nKZWdM+Sl24=:19 a=z/mQ4Ysz8XfWz/Q5cLBRGdckG28=:19
+ a=lCpzRmAYbLLaTzLvsPZ7Mbvzbb8=:19 a=xqWC_Br6kY4A:10 a=IkcTkHD0fZMA:10
+ a=NGcC8JguVDcA:10 a=GoEa3M9JfhUA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=jiCTI4zE5U7BLdzWsZGv:22 a=7Gl3-_t3PgB9XO-mQDs3:22 a=VwQbUJbxAAAA:8
+ a=JfrnYn6hAAAA:8 a=vggBfdFIAAAA:8 a=DIwNPwYT3k4F1lwTFE8A:9 a=3ZKOabzyN94A:10
+ a=QEXdDO2ut3YA:10 a=1CNFftbPRP8L7MoqJWF3:22
+X-Proofpoint-GUID: ZPc75IED0VObkGZl2k_c21ZY4S-pCRIs
+X-Proofpoint-ORIG-GUID: ZPc75IED0VObkGZl2k_c21ZY4S-pCRIs
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTE5MDAwNSBTYWx0ZWRfX8M1sB+19sih4
+ QZUxBR2UBp7LQ8aw+yGXvxAnVTQ1otpufWml3BbWG6x3+bO3P/DtzUeJHzISCHSAaYJsYvKkoiM
+ RzREnjNYqk//9P6mGrM1JhfTfSu6OCbs8tZeLMd1/kN6oMYMWOjFKbBccijTHTEKsOKbwhzEon0
+ 90+vzzeX2vmOuFt0pH19hIt9Xcp+O5UzkqsESAGlpUFfTWcbgtX3TNw9uIezZv3CnK36jpS2S5R
+ ieEfPFg97DP2h3l5DXcI5FvV4bGaVyC17QtcuIxhE/CapLiFWeGxG8hXrHyP46AtJYi9jPpI+R3
+ 8tF5bXON9G1nWV0Xwd2/ZQc2zfqhmF86zErGk6g3hin5gwcLHVsW1e7C+qTpBoeYac6vqS3oOWK
+ PD9cOO05h1o/EzO5IRA5BomaDbVwjRPmoHoCMsnwQIPl306XanCsGjyFjRC1UhcxO6Nqf/KQLsA
+ 7i5gpv8Kbu7YnArm6Yg==
 
-On Thu, 09 Apr 2026 22:22:26 +0800, Lei Chen wrote:
-> commit 446fcce2a52b ("Revert "x86: kvm: rate-limit global clock updates"")
-> dropped the rate limiting for KVM_REQ_GLOBAL_CLOCK_UPDATE.
+
+
+On 2026-05-18 1:48 AM, David Woodhouse wrote:
+> On Mon, 2026-05-18 at 00:52 -0700, Dongli Zhang wrote:
+>> On 5/9/26 3:46 PM, David Woodhouse wrote:
 > 
-> As a result, kvm_arch_vcpu_load() can queue global clock update requests
-> every time a vCPU is scheduled when the master clock is disabled or when
-> the vCPU is loaded for the first time.
+> Huh, I didn't write that then; it isn't September yet. Did you mean
+> 2026-05-09? We aren't all in the US... 
 > 
-> [...]
+> Strictly speaking, you just misattributed a quote of mine, which is
+> very poor form :)
+> 
+> What mailer are you using? Can it be fixed?
 
-Applied to kvm-x86 fixes, thanks!
+Thunderbird.
 
-[1/1] KVM: x86: Rate-limit global clock updates on vCPU load
-      https://github.com/kvm-x86/linux/commit/8fe2e698fce4
+I have fixed the Thunderbird configuration. Does it look better to you?
 
---
-https://github.com/kvm-x86/linux/tree/next
+> 
+>>> From: Jack Allister <jalliste@amazon.com>
+>>>
+>>> Where kvm->arch.use_master_clock is false (because the host TSC is
+>>> unreliable, or the guest TSCs are configured strangely), the KVM clock
+>>> is *not* defined as a function of the guest TSC so KVM_GET_CLOCK_GUEST
+>>> returns an error. In this case, as documented, userspace shall use the
+>>> legacy KVM_GET_CLOCK ioctl. The loss of precision is acceptable in this
+>>
+>> The description here confused me a little. It sounds like userspace should call
+>> KVM_SET_CLOCK if KVM_SET_CLOCK_GUEST fails. However, I assume it actually means
+>> that userspace should do nothing extra if KVM_SET_CLOCK_GUEST fails, and simply
+>> rely on the prior KVM_SET_CLOCK and KVM_VCPU_TSC_OFFSET workflow described in
+>> patch 07. Is that correct?
+> 
+> Yes. If KVM_SET_CLOCK_GUEST doesn't work (which might be because
+> KVM_GET_CLOCK_GUEST didn't work so userspace doesn't have the data in
+> the first place, or because the actual ioctl returns failure), then
+> userspace should rely on the old method using KVM_SET_CLOCK imprecisely
+> instead. That includes on a migration from an older kernel that *lacks*
+> KVM_GET_CLOCK_GUEST, of course.
+> 
+> I don't think it strictly matters whether userspace does KVM_SET_CLOCK
+> first, then *tries* KVM_SET_CLOCK_GUEST, or whether it tries
+> KVM_SET_CLOCK_GUEST and then only calls KVM_SET_CLOCK on failure? I'd
+> probably be inclined not to use KVM_SET_CLOCK at all unless it is known
+> to be needed?
+
+I really appreciate guidelines like the ones below.
+
+https://lore.kernel.org/all/20240522001817.619072-8-dwmw2@infradead.org
+
+Assuming I am a user of the new API, I feel confused about whether the goal is
+to replace KVM_SET_CLOCK with KVM_SET_CLOCK_GUEST, or whether the latter is
+meant to supplement the former.
+
+
+If we are going to use KVM_SET_CLOCK_GUEST when KVM_SET_CLOCK is not needed, I
+would appreciate it if the API could carry more data in addition to struct
+pvclock_vcpu_time_info.
+
++#define KVM_SET_CLOCK_GUEST    _IOW(KVMIO, 0xd6, struct pvclock_vcpu_time_info)
++#define KVM_GET_CLOCK_GUEST    _IOR(KVMIO, 0xd7, struct pvclock_vcpu_time_info)
+
+
+In the future, if we need to carry additional data, we could simply reuse the
+padding fields instead of introducing another KVM_SET_CLOCK_GUEST2.
+
+The following is an example of how additional data could be carried.
+
+KVM: x86: Report host tsc and realtime values in KVM_GET_CLOCK
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=c68dc1b577eabd5605c6c7c08f3e07ae18d30d5d
+
+
+So far, I believe this guideline resolves most of my concerns.
+
+https://lore.kernel.org/all/20240522001817.619072-8-dwmw2@infradead.org
+
+> 
+>>> +4.145 KVM_GET_CLOCK_GUEST
+>>> +----------------------------
+>>> +
+>>> +:Capability: none
+>>> +:Architectures: x86_64
+>>> +:Type: vcpu ioctl
+>>> +:Parameters: struct pvclock_vcpu_time_info (out)
+>>> +:Returns: 0 on success, <0 on error
+>>> +
+>>> +Retrieves the current time information structure used for KVM/PV clocks,
+>>> +in precisely the form advertised to the guest vCPU, which gives parameters
+>>> +for a direct conversion from a guest TSC value to nanoseconds.
+>>> +
+>>> +When the KVM clock is not in "master clock" mode, for example because the
+>>> +host TSC is unreliable or the guest TSCs are oddly configured, the KVM clock
+>>> +is actually defined by the host CLOCK_MONOTONIC_RAW instead of the guest TSC.
+>>> +In this case, the KVM_GET_CLOCK_GUEST ioctl returns -EINVAL.
+>>> +
+>>> +4.146 KVM_SET_CLOCK_GUEST
+>>> +----------------------------
+>>> +
+>>> +:Capability: none
+>>
+>> Do we need a KVM_CHECK_EXTENSION capability for this? If userspace wants to
+>> support the new API, should it detect availability via KVM_CHECK_EXTENSION, or
+>> simply try the ioctl and handle failure?
+> 
+> That might be conventional, I suppose. But I suspect Jack's thinking
+> was that userspace is going to have to *try* it anyway, and still might
+> have to fall back to what KVM_SET_CLOCK can manage, so userspace
+> probably wouldn't even bother to check that capability; it doesn't
+> matter.
+> 
+> Since then, we've added some more attributes in this series though, and
+> it probably is worth adding a cap which advertises them *all*?
+> Something like KVM_CAP_CLOCK_PRECISION_API?
+
+From an API user's perspective, userspace may need to distinguish between an API
+failure and the API not being available.
+
+I don't see any existing "Capability: none" entries in
+Documentation/virt/kvm/api.rst.
+
+> 
+>>> +#ifdef CONFIG_X86_64
+>>> +static int kvm_vcpu_ioctl_get_clock_guest(struct kvm_vcpu *v, void __user *argp)
+>>> +{
+>>> +	struct pvclock_vcpu_time_info hv_clock = {};
+>>> +	struct kvm_vcpu_arch *vcpu = &v->arch;
+>>> +	struct kvm_arch *ka = &v->kvm->arch;
+>>> +	unsigned int seq;
+>>> +
+>>> +	/*
+>>> +	 * If KVM_REQ_CLOCK_UPDATE is already pending, or if the pvclock
+>>> +	 * has never been generated at all, call kvm_guest_time_update().
+>>> +	 */
+>>> +	if (kvm_check_request(KVM_REQ_CLOCK_UPDATE, v) || !vcpu->hw_tsc_hz) {
+>>
+>> This was flagged by AI, and I am still checking whether it is a real issue.
+>>
+>> What happens if KVM_REQ_MASTERCLOCK_UPDATE and KVM_REQ_CLOCK_UPDATE are both
+>> pending?
+>>
+>> From my perspective, I am also curious how we should reason about this in other
+>> scenarios in the future. Specifically, when do we need to process
+>> KVM_REQ_MASTERCLOCK_UPDATE before KVM_REQ_CLOCK_UPDATE, and when is it
+>> acceptable not to? I noticed that kvm_cpuid() already processes only
+>> KVM_REQ_CLOCK_UPDATE.
+> 
+> The way I've been thinking about it — and I'm only two cups of coffee
+> into Monday so take those words literally and don't think of them as
+> British understatement of something I believe is absolute truth — is
+> that MASTERCLOCK_UPDATE is updating the actual clock for the whole VM,
+> while CLOCK_UPDATE is about *putting* that information into the per-
+> vCPU pvclock structures.
+> 
+> So after a MASTERCLOCK_UPDATE, we need to do a CLOCK_UPDATE on all
+> vCPUs to disseminate the result. Which means that if CLOCK_UPDATE is
+> already pending before a MASTERCLOCK_UPDATE, it's probably redundant
+> and might as well be cleared because it's only going to get set *again*
+> in kvm_end_pvclock_update()? 
+
+Another scenario is when only MASTERCLOCK_UPDATE is pending and there is no
+pending CLOCK_UPDATE.
+
+In this scenario, is it fine to skip processing MASTERCLOCK_UPDATE before saving
+pvclock_vcpu_time_info?
+
+This should be a very rare scenario. Although it is not mandatory, I think most
+users call these APIs only when the VM is already stopped. I am just curious how
+I should handle this in the future if I am implementing similar code, that is,
+processing a pending request outside vcpu_enter_guest().
+
+> 
+> 
+>>> +	/*
+>>> +	 * Calculate the guest TSC at the new reference point, and the
+>>> +	 * corresponding KVM clock value according to user_hv_clock.
+>>> +	 * Adjust kvmclock_offset so both definitions agree.
+>>> +	 */
+>>> +	guest_tsc = kvm_read_l1_tsc(v, ka->master_cycle_now);
+>>> +	user_clk_ns = __pvclock_read_cycles(&user_hv_clock, guest_tsc);
+>>> +	ka->kvmclock_offset = user_clk_ns - ka->master_kernel_ns;
+>>
+>> I used to explore adjusting ka->kvmclock_offset in KVM_SET_CLOCK based on the
+>> old hv_clock and the new hv_clock long time ago. At that time, my concern was
+>> what would happen if userspace provided bogus values. Theoretically, this is
+>> possible with any ioctl. My concern may be unnecessary.
+>>
+>> Would it be helpful to validate that the delta is within a reasonable range,
+>> e.g. that the drift can never be more than five minutes (forward or backward)?
+> 
+> Setting confidential guests aside, which have their own way of trusting
+> the TSC and should never even *consider* using kvmclock, surely this is
+> supposed to be *entirely* under the control of the VMM? The kernel has
+> no business deciding what is 'bogus'?
+
+Yes, I both think and agree that this is supposed to be entirely under the
+control of the VMM.
+
+Sometimes security researchers use fuzzing tools to interact with APIs in an
+attempt to leak data or crash the hypervisor in order to turn it into a CVE. My
+understanding is that, in the worst-case scenario here, the guest clock would
+simply get stuck.
+
+> 
+> If a guest has been running for months on a previous host and is
+> migrated to a new host, don't we expect that the KVM clock of the new
+> VM on the new host is tweaked from its default near-zero after
+> creation, to some large amount?
+> 
+
+Regarding live migration, my own investigation does not show a proportional
+relationship between VM uptime and the amount of drift.
+
+Just taking QEMU + KVM as an example: suppose TSC scaling is inactive, the
+amount of drift does not depend on how long the VM has been running before live
+migration.
+
+Instead, it depends on the delta between when we call MSR_IA32_TSC and
+KVM_GET_CLOCK, and between MSR_IA32_TSC and KVM_SET_CLOCK.
+
+The guest TSC stops at P1 and resumes at P3.
+The kvmclock stops at P2 and resumes at P4.
+
+We expect P1 == P2 and P3 == P4.
+
+On source host.
+
+- kvm_get_msr_common(MSR_IA32_TSC) for vCPU=0 ===> P1
+- kvm_get_msr_common(MSR_IA32_TSC) for vCPU=1
+- kvm_get_msr_common(MSR_IA32_TSC) for vCPU=2
+- kvm_get_msr_common(MSR_IA32_TSC) for vCPU=3
+- kvm_get_msr_common(MSR_IA32_TSC) for vCPU=4
+... ...
+- kvm_get_msr_common(MSR_IA32_TSC) for vCPU=N
+- KVM_GET_CLOCK                               ===> P2
+
+On target host.
+
+- kvm_set_msr_common(MSR_IA32_TSC) for vCPU=1 ===> P3
+- kvm_set_msr_common(MSR_IA32_TSC) for vCPU=2
+- kvm_set_msr_common(MSR_IA32_TSC) for vCPU=3
+- kvm_set_msr_common(MSR_IA32_TSC) for vCPU=4
+- kvm_set_msr_common(MSR_IA32_TSC) for vCPU=5
+... ...
+- kvm_set_msr_common(MSR_IA32_TSC) for vCPU=N
+- KVM_SET_CLOCK                               ====> P4
+
+
+Here is my equiation to predict the drift.
+
+T1_ns  = P2 - P1 (nanoseconds)
+T2_tsc = P4 - P3 (cycles)
+T2_ns  = pvclock_scale_delta(T2_tsc,
+                             old_hv_clock_src.tsc_to_system_mul,
+                             old_hv_clock_src.tsc_shift)
+
+if (T2_ns > T1_ns)
+    backward drift: T2_ns - T1_ns
+else if (T1_ns > T2_ns)
+    forward drift: T1_ns - T2_ns
+
+
+Theoretically, if P1 == P2 and P3 == P4, we won't encounter any kvm-clock drift.
+
+Thank you very much!
+
+Dongli Zhang
