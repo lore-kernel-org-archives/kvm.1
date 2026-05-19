@@ -1,32 +1,36 @@
 Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 221C340C5AE;
-	Tue, 19 May 2026 09:43:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AE9C39BFE6;
+	Tue, 19 May 2026 09:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779183795; cv=none; b=LUPcQXLCI2vq4pjn+/jTsHmVE5Diipi8M4HkcBBiTP9b+OlUtMqLWgnIOc/S4gv99KxBh9qv8+TEzXn5L3I8aeXkrWBVw8DOGQ4dRyIEG3BQ5tEOHIQQOMoO75+bc20rfdFUxZUBHHPUHLrgeiCxkQsJHrxlyLKbrxcNX6ywuZg=
+	t=1779183796; cv=none; b=StnyEkckCHlF1juCqKklCVrYn/zLt0B8iJqidGoaFYDXip53uylV8s1qJLB46iUd4TuCtIrV21zdCYgMTo8vZSwQEc3zmRBGCSHSPyrNcEU4iTFrrwjsB4UO6F0eT4jG0fpwmP9/AmUDmPqf63ILfRdjrqNdZkgZdKcwjWRgjQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779183795; c=relaxed/simple;
-	bh=nbgBgna4U3ZhBvOGNNur/jiCzWXVWT9U0UbZeEqHbxI=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=FKmsAAvrsC4OGtOaywHNVj0HfOcP5/aXieuo1QySR1S6m8tGYIn/iQkOyFs3DLIQThoSNYQd8G0N+uQIARAlS3unX3jzlziL8QTZ0SOXOVxmdgJIIDpvhZ4QprRLpJ93I9VVwZqCkuzAB1v8LDbL0I1R40KyeuZgnX86ngjTEzc=
+	s=arc-20240116; t=1779183796; c=relaxed/simple;
+	bh=jRgxzR5R5e3osofRZx8RtxmKw2RC7rx8wLXzJD6MlwA=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=FRUAxHyvwK6OwzD/rg0dltLT3Y87Iq1XyrNXbdW9/uV6U2xKTeHQzOs8DkG/IfWhpQYMdxuO4+tpH3elCnXxvDdo0FJ/kqa8EHBMVorN+N7OQMe26P6ULqzlkY7CDKjOKDa6hSrxfebip4xGf/mu0+JJrsTg3YYHpgqYnopzdUA=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
 Received: from loongson.cn (unknown [10.2.5.213])
-	by gateway (Coremail) with SMTP id _____8AxZniuMAxqWC0LAA--.8253S3;
-	Tue, 19 May 2026 17:43:10 +0800 (CST)
+	by gateway (Coremail) with SMTP id _____8BxdnivMAxqXS0LAA--.8403S3;
+	Tue, 19 May 2026 17:43:11 +0800 (CST)
 Received: from localhost.localdomain (unknown [10.2.5.213])
-	by front1 (Coremail) with SMTP id qMiowJAxHMKtMAxqjD6IAA--.61010S2;
-	Tue, 19 May 2026 17:43:09 +0800 (CST)
+	by front1 (Coremail) with SMTP id qMiowJAxHMKtMAxqjD6IAA--.61010S3;
+	Tue, 19 May 2026 17:43:11 +0800 (CST)
 From: Bibo Mao <maobibo@loongson.cn>
 To: Huacai Chen <chenhuacai@kernel.org>
 Cc: kernel@xen0n.name,
 	kvm@vger.kernel.org,
 	loongarch@lists.linux.dev,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v3 0/6] LoongArch: KVM: Small enhancement about interrupt injection
-Date: Tue, 19 May 2026 17:43:02 +0800
-Message-Id: <20260519094308.3983046-1-maobibo@loongson.cn>
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [PATCH v3 1/6] LoongArch: KVM: Check irq validility in kvm_vcpu_ioctl_interrupt()
+Date: Tue, 19 May 2026 17:43:03 +0800
+Message-Id: <20260519094308.3983046-2-maobibo@loongson.cn>
 X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20260519094308.3983046-1-maobibo@loongson.cn>
+References: <20260519094308.3983046-1-maobibo@loongson.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -34,45 +38,42 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJAxHMKtMAxqjD6IAA--.61010S2
+X-CM-TRANSID:qMiowJAxHMKtMAxqjD6IAA--.61010S3
 X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
 X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
 	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
 	nUUI43ZEXa7xR_UUUUUUUUU==
 
-Here make interrupt status acquire interface simpler, add new interface
-kvm_vcpu_sync_intr() to sync pending interrupt to software ESTAT
-register, and remove expensive vcpu_load() and vcpu_put() function call.
+Function kvm_vcpu_ioctl_interrupt() can be called from userspace, here
+add irq validility cheking in kvm_vcpu_ioctl_interrupt().
 
-Also interrupt inject is handled with batch method, rather one by one.
-
+Fixes: f45ad5b8aa93 ("LoongArch: KVM: Implement vcpu interrupt operations")
+Cc: stable@vger.kernel.org
+Signed-off-by: Bibo Mao <maobibo@loongson.cn>
 ---
-v2 ... v3:
-  1. Split patch 1 into two smaller patches, one is smaller bugfix patch
-     with irq validility check in kvm_vcpu_ioctl_interrupt(), so that it
-     is easy to porting to old kernel.
+ arch/loongarch/kvm/vcpu.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-v1 ... v2:
-  1. Add irq validility check in function kvm_vcpu_ioctl_interrupt().
-  2. Add valid bit check when set ESTAT CSR register.
-  3. Merge two patches about interrupt clear and set with batch method into
-     one.
----
-Bibo Mao (6):
-  LoongArch: KVM: Check irq validility in kvm_vcpu_ioctl_interrupt()
-  LoongArch: KVM: Check msgint feature in interrupt post
-  LoongArch: KVM: Use existing macro about interrupt bit mask
-  LoongArch: KVM: Inject interrupt with batch method
-  LoongArch: KVM: Add valid bit check when set ESTAT CSR register
-  LoongArch: KVM: Simple interrupt status acquire interface
-
- arch/loongarch/include/asm/kvm_vcpu.h |  44 +++++---
- arch/loongarch/kvm/interrupt.c        | 140 +++++++++++++-------------
- arch/loongarch/kvm/vcpu.c             |  54 ++++++----
- 3 files changed, 134 insertions(+), 104 deletions(-)
-
-
-base-commit: 70eda68668d1476b459b64e69b8f36659fa9dfa8
+diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+index e28084c49e68..673977a25138 100644
+--- a/arch/loongarch/kvm/vcpu.c
++++ b/arch/loongarch/kvm/vcpu.c
+@@ -1486,7 +1486,14 @@ void kvm_lose_fpu(struct kvm_vcpu *vcpu)
+ 
+ int kvm_vcpu_ioctl_interrupt(struct kvm_vcpu *vcpu, struct kvm_interrupt *irq)
+ {
+-	int intr = (int)irq->irq;
++	int vector, intr = (int)irq->irq;
++
++	vector = intr;
++	if (intr < 0)
++		vector = -intr;
++
++	if (vector >= EXCCODE_INT_NUM)
++		return -EINVAL;
+ 
+ 	if (intr > 0)
+ 		kvm_queue_irq(vcpu, intr);
 -- 
 2.39.3
 
