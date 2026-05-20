@@ -1,184 +1,125 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99AEC39A7E7;
-	Wed, 20 May 2026 23:02:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 308552857FA;
+	Wed, 20 May 2026 23:06:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779318126; cv=none; b=GFIt4Cjk/xNXmsknxvymPLyNVXVNmos8lEblwaPBr/TkG6ZdJRPI9y9gqULnUv3/Unw1COGXfrfnIoEyd4pZfVAYjsrVw9Y9AYTSJ0QFyxPoRV8zwHkfWEYa3+1z4KEEv7QF9Wc+jurz5tWB7aMeHOMWtO5l+Mcc22mvO6qos9A=
+	t=1779318388; cv=none; b=bxdIlseWpCgxHqfVx6O4++zZtoJpTpINjkbC7P3df0VlDFde+OcBFaBMseKCRCvJKnTspdPc84xOrElifdLaL2J3oq+pB5dyFgGosGYMR3rn3FqfqfTG2OJjPg5k8E5MwV8yKtBHwqlgI5vWGQoB91+mEQFQgJZd62xrAq/VIds=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779318126; c=relaxed/simple;
-	bh=HkuY5zlrDncQKLllQWWZ8rfybB4YymoG1YSXmtRo0wk=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=LqcdeZYct6rB8pGP9191idR3787rD9zutq3SXpWVqmJ2FpZB7PCLnNNYMIL0bWHD38PFSrO4Jgv5x2l5BQUA/bMhUrGglJD7HajhbS8BtTr5fb/1gho7zjTA+7u6qL2k/1e0CST6Wc1JrdPXHWXkbvU+nU156RF4pNw1aOho1z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=DYgCKqJA; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1779318388; c=relaxed/simple;
+	bh=V313m8L97j8mFtY/XUymRF9YlUvkZE0RumOS54eIe28=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oTwWshpE+7aAwpO4CvteYftygIyyHCCLTZv15Yl2lj/Q24benykekjkoCyPeKxE8FiiLGsvlpS85x5ucbilzjFleHTxstg1+wn20iwf6SAbz+MmNTlAkEMSBeS389J7UD5R9lRuvNjgh+ne1+aWTmEl3uMzNiztAoYZly//7ylQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ByNanX0C; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="DYgCKqJA"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=HkuY5zlrDncQKLllQWWZ8rfybB4YymoG1YSXmtRo0wk=; b=DYgCKqJAuV01wCeoijOeQHyFzp
-	eCVeH2ow0VIwOMPxuJ37OmNrkc6hTszDikp1AX4YN4iVsT7jZ+EaJZjzdL0Kol5g+Ci0PpHOsyYdk
-	25zjVPdkDqtlK0hzO+QaKBJlQv69RZohqGn1PhH3VF90viyzSXM1vu7r1fupR+JowX80QlWz4JazM
-	ljWoTb8ACPM+hp92r6OX216b7g2nQWsLgyLm9o8Q96CC1GxFw48PfdD+HZs2N25t3xsaz2gJRYh7v
-	ZcJPbjk8KranAwE4PKqk5J6hOXmuVAsMyyUHK4sPluJw7rm8q1uUWadjLgHpuEt6j6fSR534NLYr0
-	zGSmGDCQ==;
-Received: from 54-240-197-227.amazon.com ([54.240.197.227] helo=freeip.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPpvH-00000007ikJ-3pxF;
-	Wed, 20 May 2026 23:01:56 +0000
-Message-ID: <6a621c6ef71670394b3bcbe34cda8c5ae635558e.camel@infradead.org>
-Subject: Re: [PATCH v3 25/41] x86/kvmclock: Hook clocksource.suspend/resume
- when kvmclock isn't sched_clock
-From: David Woodhouse <dwmw2@infradead.org>
-To: Sean Christopherson <seanjc@google.com>, Kiryl Shutsemau
- <kas@kernel.org>,  Paolo Bonzini <pbonzini@redhat.com>, "K. Y. Srinivasan"
- <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu
- <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Long Li
- <longli@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, Alexey
- Makhalov <alexey.makhalov@broadcom.com>,  Jan Kiszka
- <jan.kiszka@siemens.com>, Dave Hansen <dave.hansen@linux.intel.com>, Andy
- Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Juergen Gross <jgross@suse.com>, Daniel Lezcano
- <daniel.lezcano@kernel.org>, Thomas Gleixner <tglx@kernel.org>, John Stultz
- <jstultz@google.com>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>, Vitaly Kuznetsov
- <vkuznets@redhat.com>, Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Boris Ostrovsky
- <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>,
- x86@kernel.org,  linux-coco@lists.linux.dev, kvm@vger.kernel.org,
- linux-hyperv@vger.kernel.org,  virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org,  xen-devel@lists.xenproject.org, Michael
- Kelley <mhklinux@outlook.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- Nikunj A Dadhania <nikunj@amd.com>, Thomas Gleixner <tglx@linutronix.de>
-Date: Thu, 21 May 2026 00:01:53 +0100
-In-Reply-To: <20260515191942.1892718-26-seanjc@google.com>
-References: <20260515191942.1892718-1-seanjc@google.com>
-	 <20260515191942.1892718-26-seanjc@google.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-xGIqWxFCaJJI32R6nuFc"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ByNanX0C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E3391F000E9;
+	Wed, 20 May 2026 23:06:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779318386;
+	bh=BVGPLAkKkk1YqfqfUN1P6AMENqtxRJwQpWbMuxkSR+I=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=ByNanX0C/5bgwCHg7NrVM9PQaZ0U4D3aYm6uyCMIn56e7+u4sRYG1l4ojgaj8rUad
+	 MnThpjNCLs2+06YrYyjO/blObLBWyHQIxW0o8ovx+U0UFcHJfveq2ZSKcjkfEX38E5
+	 ey6F7mt2GS5fQqv7v6YXJ0XocCU2eV1JKWdCHU2XsxP0llnQ5r1Kui23NJZOtNB53S
+	 mCJGwOSs3hZRh+lYz+Q9rQy5eyGZ+OimD1FTQZntBWbV//iNYxtQScGZJF64nDu6Us
+	 PN5KM6ZEFJ+x203utm9wk+Z8WnB4YOaxeIU702btlUODMswClW7UkkKj5utgSF6CZr
+	 y5uEqUxANe/fQ==
+Date: Wed, 20 May 2026 16:06:21 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: tglx@kernel.org, linux-kernel@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Jim Mattson <jmattson@google.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	Vishal L Verma <vishal.l.verma@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Rick P Edgecombe <rick.p.edgecombe@intel.com>,
+	Binbin Wu <binbin.wu@intel.com>, "x86@kernel.org" <x86@kernel.org>,
+	Paolo Bonzini <bonzini@redhat.com>
+Subject: Re: [PATCH v3 1/2] x86/kvm/vmx: Move IRQ/NMI dispatch from KVM into
+ x86 core
+Message-ID: <20260520230621.GA706311@ax162>
+References: <20260423155611.216805954@infradead.org>
+ <20260423155936.843498069@infradead.org>
+ <20260508091829.GO3126523@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260508091829.GO3126523@noisy.programming.kicks-ass.net>
 
+On Fri, May 08, 2026 at 11:18:29AM +0200, Peter Zijlstra wrote:
+> 
+> Move the VMX interrupt dispatch magic into the x86 core code. This
+> isolates KVM from the FRED/IDT decisions and reduces the amount of
+> EXPORT_SYMBOL_FOR_KVM().
+> 
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Tested-by: "Verma, Vishal L" <vishal.l.verma@intel.com>
 
---=-xGIqWxFCaJJI32R6nuFc
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+I am seeing
 
-On Fri, 2026-05-15 at 12:19 -0700, Sean Christopherson wrote:
-> Save/restore kvmclock across suspend/resume via clocksource hooks when
-> kvmclock isn't being used for sched_clock.=C2=A0 This will allow using kv=
-mclock
-> as a clocksource (or for wallclock!) without also using it for sched_cloc=
-k.
->=20
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+  vmlinux.o: warning: objtool: idt_do_interrupt_irqoff+0xe: no-cfi indirect call!
 
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+after this landed in -next.
 
---=-xGIqWxFCaJJI32R6nuFc
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+  $ cat arch/x86/configs/repro.config
+  CONFIG_CFI=y
+  CONFIG_KVM=y
+  CONFIG_KVM_INTEL=y
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUyMDIzMDE1
-M1owLwYJKoZIhvcNAQkEMSIEICiBqRHwycfobkqKmA4uL8ZXD8100ngBVNG/6s3GDF1TMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAUCkd0Gi966hw
-7ilIQqPLyebpwmMB9p3m1I9h4YJJ/IKmNGaPnbLYkLYnT8oJvmqa9rqKVLT8sA36+EcLg312UGVT
-vY3XkCtJARpplbCbs4773p8cB5XCcu08rO1ByQ8c+RBEi5WuhjYiPkPeiYtMQIH9Squ5qFEUCkSG
-YKrjeLzle9LCpcjqvZIGV8Ll+llYO9K4DzzzeP4Su5cW2g3OXGwIc7jdLhhaZBh4fQa/JSsmX0aa
-r3P9ahcP7qH8MxSD0D8LX4W2MexJgWUP5Rbf10ev/hqWpOyyMtmJsMJ/jQN10iztSFf/wWwlsQ3d
-dqFCDlBvZsmMuAZuDqfjyrd5ZNR4HfwHEIb+OMX/zRxrgBnG2qJXNC1HIQ+igy9XDOZAW3jD+sf6
-iSMRYa045cb3sHbnQ4rDqpb/hjyeLLizWfDXzLlmiidFsnrBUZrmkZJbDtiFw/pEpIbFkH93Uy/K
-LXLnn5NBlauvD0cOg8jpNGmNGh4WTXQtmS5GoX1BFWHCAzFhei1Pa8MkDnTSRDWQg+MUS+gOcYNl
-8faWU6yhMvCGl8R53aSgaaxmnM8XD3Hd2OalmtVjBdfZocH6LNYummksnmahyD+Mj7DkRv8sfkNa
-u80tZgytDdiMFdU1Vu0HgGUaqjt5Aa9gf2ci6sayX7tN1WJZODWT7toNbqZyhj8AAAAAAAA=
+  $ make -skj"$(nproc)" ARCH=x86_64 LLVM=1 mrproper defconfig repro.config vmlinux
+  vmlinux.o: warning: objtool: idt_do_interrupt_irqoff+0xe: no-cfi indirect call!
 
+  $ llvm-objdump -drS --disassemble-symbols=idt_do_interrupt_irqoff vmlinux.o
 
---=-xGIqWxFCaJJI32R6nuFc--
+  vmlinux.o:	file format elf64-x86-64
+
+  Disassembly of section .text:
+
+  0000000000001540 <idt_do_interrupt_irqoff>:
+      1540: 55                           	pushq	%rbp
+      1541: 48 89 e5                     	movq	%rsp, %rbp
+      1544: 48 83 e4 f0                  	andq	$-0x10, %rsp
+      1548: 6a 18                        	pushq	$0x18
+      154a: 55                           	pushq	%rbp
+      154b: 9c                           	pushfq
+      154c: 6a 10                        	pushq	$0x10
+      154e: e8 00 00 00 00               	callq	0x1553 <idt_do_interrupt_irqoff+0x13>
+  		000000000000154f:  R_X86_64_PLT32	__x86_indirect_thunk_rdi-0x4
+      1553: c9                           	leave
+      1554: e9 00 00 00 00               	jmp	0x1559 <idt_do_interrupt_irqoff+0x19>
+  		0000000000001555:  R_X86_64_PLT32	__x86_return_thunk-0x4
+      1559: cc                           	int3
+      155a: cc                           	int3
+      155b: cc                           	int3
+      155c: cc                           	int3
+      155d: cc                           	int3
+      155e: cc                           	int3
+      155f: cc                           	int3
+      1560: 90                           	nop
+      1561: 90                           	nop
+      1562: 90                           	nop
+      1563: 90                           	nop
+      1564: 90                           	nop
+      1565: 90                           	nop
+      1566: 90                           	nop
+      1567: 90                           	nop
+      1568: 90                           	nop
+      1569: 90                           	nop
+      156a: 90                           	nop
+      156b: 90                           	nop
+      156c: 90                           	nop
+      156d: 90                           	nop
+      156e: 90                           	nop
+      156f: 90                           	nop
+
+Cheers,
+Nathan
