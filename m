@@ -1,216 +1,121 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDD333E120E
-	for <kvm@vger.kernel.org>; Wed, 20 May 2026 14:31:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779287493; cv=pass; b=Pl5jhwEjRB36xRvsC4elA+JC+CX+ZVsQyuenhJKJBYrRAuHHEvKh/mub6o5tD7ab9xcN8BYgRio5dCaR6CC9ftvH2xCewtZUYpdFqux61QCkjBZCh3FgNHDa8O2kU17fBD5SCzQMiAskPag4pJkXDftAF4g/JHGLo434Agk5EQs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779287493; c=relaxed/simple;
-	bh=X/hV5ljxWA12U5TVhXUBeSsDz7VPis8ajbh1wO1J3cQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=raqbaaBOEy+0y2FAsHePt1hoGJt72gbuUk2ZKCSZkMGSKGrYrvhoEo2U8G33yLUJPd5EfJe+xwwzsrphugFZxkxoMaZnJrpaWWa9ZlgltY9gTUt546YmBXuD9n3szi4B7fJcn0LQ5vfNcQZ0HwkztFx3Pf3En2hXsVO1yFtsu68=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sAgWSPAS; arc=pass smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55F393D891E
+	for <kvm@vger.kernel.org>; Wed, 20 May 2026 14:34:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779287655; cv=none; b=Y3xIELkJyc6yyCwlq3og3XZKM04Nbw7RSW3xIVvnhOKXQ+6bIiH6/NG95zi/vnp8hBDPspCcb6xnWUKpKxyV4+R1W02Hz1vuaw/k2zcWK9gnvYGHv1UpJU82oK9TCV10vJr7EjpHbBMZUHOLSQ9/VAE7yiyxxI+Nh/5Xnf0W2xU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779287655; c=relaxed/simple;
+	bh=YAEY/8fWKMo3CcDwM2zOFRQbxppMAukpFHy8TPUsejU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=FW8h4Jp+rZAbUlZX14eepEewcQPeDPTaqLsaoKuum80nxTngPoGLYUARqQ964P0T4QBOQL1SROKndNMYHHMBO2ogT4TBBIEEcm4yIyR44F+rGWr5GVuQVm9rGaDL4ztgA+hg3jPlSVzN/XJTEM4qXeedbHXJvZyGRTOkub/0VK4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EyxEMT6R; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sAgWSPAS"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-50e61648f10so3971cf.1
-        for <kvm@vger.kernel.org>; Wed, 20 May 2026 07:31:30 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779287490; cv=none;
-        d=google.com; s=arc-20240605;
-        b=Lzd8R3MCCPDik29IUR2n6p0QZ6ey1dto4Utp4awFvThG0GPgplLu5ca/zNt+6LI7oO
-         u6e1Ic1pKGc4LArLqMIxHnH3OiXMZ7K2WOTzD0EqU5mC7Ete+qsRRKf13fUy6vO1j+Su
-         PZ633vTlC8BpJ6Fp+n+tg8fhD4teJKhdFqtmFgXtRX9D5L4Ur7b2zWr9QjkQHbPFcWFi
-         QRzoF1gJvxOuWdoZOYf4CtxVOzkWQ0QO0zKIOU7kZpuTtFOHKr4Ad3KZGQH4iibvRtlM
-         3eh3Z9eZF/NvFyhO2zuCmivZ7fDb5UERH96fmvVrtVTVjwn+uQvxj4HDJgMx/YylO1/U
-         LFuw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=7N5NasgJypbMdlNYb/j7e6t6w9YfyUO25pmJjvirfi4=;
-        fh=82fMbEC5DCm5JcmOOGs5n80s6ngWP5KYWkrV8uuk13U=;
-        b=dAcebhCUD9V1nvNbb9SBdQPw1civyVMsPviBuPEQCSFsRBFc49DVPQUk/9iEMCeYIZ
-         /DWKUM5DXpgBgOj5mgabJZslhEHsSZz4M5+lZnPa1jFj1XRhAo1HI6S79mpdpFfUXEBG
-         c5heG19hyyUwTvLzm9f2fIhcA2IEHBtrIJdJptFeMxksGj/EvPptSg6rEJG/EeiLLBC+
-         lX+aKF1lyx+99n6cNIgjIa0zb+HQ5k3MbmwIQYxXEYxzxxfnGhMT+8spH1YPzWdNFqjh
-         Ua8dyhh8Pxz+nbfoH4RZTsECNqLQgr5nQJXo3dJA6ZJE5D9Cg8AlNFFnBdG9Lo/mjQLx
-         xIlA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EyxEMT6R"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82fa860e71eso2592038b3a.0
+        for <kvm@vger.kernel.org>; Wed, 20 May 2026 07:34:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779287490; x=1779892290; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=7N5NasgJypbMdlNYb/j7e6t6w9YfyUO25pmJjvirfi4=;
-        b=sAgWSPASz84xDaiHsHZWK61DKD8v70jyk6s3eX5y4Zcouu0JcgAQWDfhoP9fop4DGn
-         4T02M3rvi8nCBwxAC9vovMI0Csfczv8MHiqxfoeenk++CO7UczOzat2siilMScimN24a
-         Arxgx+NXokXs789j9Rwuiqs9OeWVWgTxHuJzAbVCH82oQv+znvfaPM4bV8bYa0F/HgS3
-         YjvChslZ3w3cqcVTjy26MDzx7/wRJsqaih1tSMNg4VxFg7OjPMt0HLfSq1vqSnbPfCgY
-         AXI02dKrVpLyqtFflMy9HDGDtfPgf9bQCyvVNyMmK+btJyWVuFhlyGte6gexcrbAIKnn
-         /fzw==
+        d=google.com; s=20251104; t=1779287654; x=1779892454; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Kz5j9nqCKj4ufpyXbbuEEc7hn/CqbmZdKizVLMVbsrY=;
+        b=EyxEMT6RyigaXviC6H9PbCIr/NQuHZ4KVJF069c1h16yZb0dWRdxKkgbprSmw5LVYo
+         GuJb0Qmb4R+nW3FiKK7k76ye+OhOL0ItY6dfLwYasTX3ZYxh+3cYFKBwOlRxewMQFnoF
+         WjuV4yI5CbpPxRHwIIv8SN2UgNRSlHC4ww7FV8PQUa15gyzdPVwOn7bNsM15chSic9df
+         q+EpQYhUJp+0IeJOICGIbdtPtZ83uW3cJxQR7RLJXhp6GWTTfoEoPEhqJKt/5X0GCif+
+         X0z5YdMhx7WqZOJcWRu5oPOaaQ8LUhLEzv+ggk41u+haAlg8NeWKCHonKmW3OjnO40t6
+         1nEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779287490; x=1779892290;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7N5NasgJypbMdlNYb/j7e6t6w9YfyUO25pmJjvirfi4=;
-        b=Z85boKISPcocVjea5dfJ6d9mBGFxtzZjQgOyrJ+g3NybKcBL4XlkhreP3LWE9YLuBe
-         7NVeFC1u2jL96JZERA/6iDz9xou0FrInBFf+M5DU4OoH6ss3RBHJ/vARbZEgYdafauC9
-         x77vPSivlB14gRfnnIWUAHr5kH2bw3LvgNjz2AY/T2HPYBUlKdwHt1H5ui0yf7GEa7t7
-         nKkBvEkG7Rpbo4/nLxspPwvZSfXUQTj6tm+VHuIIY4pZOTXK8CuGGrQWnPp/6U0QmUCe
-         9uRvkDBBQRlnpmA779yssBT54D4ewZGFIAp1i16govSjiNO0r/IZnVt2wK1P24zakqtI
-         unnQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+I6ZvKJrj2h7UOEvZLdbw6WG3DWRDdpz4SN6OFQLeJKbOchBGnGVQZwDw7qq6sQUUYR0U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzX6pm3nYqks7OemYTaWcguLG8/dhc57cQTA68lLmAD4UWRYyDN
-	eesPQ28a47We0HPLWw227jDgWd9CqX986xE+quuLMnw/S3MkkbLp0E3VgZhS7x75TQNEzK/8DDg
-	HVfpZ0O8bM7TChTmeNV/6kOp2g3GIjSGihl2VRBDP
-X-Gm-Gg: Acq92OGjRZJM9FvxQ9SKrLBSql7/3B/O6fpQr60uh27peBwVcnESM/UnGvQ/mOxcs5z
-	/0wlknvVV719mJYJaymG/i/xlpMjB9NPPLnaG8zjn5PvXpynRX0R0KzDTx7mj1wKqBKq9WhWODQ
-	W/dGYCQC9tCq8fqlJMegRncBNoW6ISyiJ1+0EsI/TzgEwywHA8oB/UEAsQYCC/DZcM40zO6ujer
-	0ZKZ8v6HMa6aeLKuyS38Pe7d1cE8L1LZzfINGff0FvtxFlQw/xMOEpdpgobunluHa9XzRo2R1OV
-	0gaHe9FX+CYHdqAAbKk=
-X-Received: by 2002:a05:622a:989:b0:50e:6360:96e with SMTP id
- d75a77b69052e-516791fe73cmr46959761cf.0.1779287488674; Wed, 20 May 2026
- 07:31:28 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779287654; x=1779892454;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=Kz5j9nqCKj4ufpyXbbuEEc7hn/CqbmZdKizVLMVbsrY=;
+        b=Di4SjRMwzapm2ko9n+wUETkye9kKbg8yaDNB1NUBwzwfxtORYL6UVYmfsUxfDp9Wkc
+         2xpaHiQA0KDaumvG7fLVaGuM6Fx1yGFiGpWZlHOaccC3t4Lu09ypTQkJpcJItJvZimYX
+         GeYGvS72fvPxuz1PZkTXzgvHyfMrhFrj9eJo2AO2TnrmQyYRaQtxOfE2ulXcnJmON2EI
+         pI9DjXtXVDj4OmjeK0HceVAMvQ2nY+t9I+HJr9RaPbH7lqu2M4r5Mv2y0TaoE/pohEjE
+         qovD2fz01mYXSqbwOTAYMYcRhPP8j7A+gv/goolJ5MSEhAiUIsUTtvOgGBjTyXvFGVls
+         QeCg==
+X-Forwarded-Encrypted: i=1; AFNElJ/GsYWmYvY006NAxGi0YypZoO1+eC8HuJyeb8x+mK+dq4deMq6qdj0vNBZMPvhgb18c+vk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxazHj1widqUF+BHYs6yIQ1B/nM4bHC5vwEdBORPOeWtssw8Zxt
+	k+ld+50F+9gpG4gO/1aoWrQ1qdNxa9fUw8lXrcU5V1kR1JVXm91tGnmf/+jDKYSX2jjgwksm6Mh
+	VH4Bptw==
+X-Received: from pfbg4.prod.google.com ([2002:a05:6a00:ae04:b0:82f:c34b:9799])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:cd4:b0:82f:b0:28f0
+ with SMTP id d2e1a72fcca58-83f33cbc0fcmr25940056b3a.34.1779287653172; Wed, 20
+ May 2026 07:34:13 -0700 (PDT)
+Date: Wed, 20 May 2026 14:34:11 +0000
+In-Reply-To: <ag0H28jSbSTHXznK@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com> <20260507-gmem-inplace-conversion-v6-12-91ab5a8b19a4@google.com>
-In-Reply-To: <20260507-gmem-inplace-conversion-v6-12-91ab5a8b19a4@google.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Wed, 20 May 2026 15:30:51 +0100
-X-Gm-Features: AVHnY4Lo4l5leoGwp4MOUhUOXd-ZR6_GPypj6bN4fnpU5Ptxtsw2Fzt5rIYMAIk
-Message-ID: <CA+EHjTwOfJ=nCRoX3m5uDt=CcF_zrqGsZVBBmo4MscmPqrBxOA@mail.gmail.com>
-Subject: Re: [PATCH v6 12/43] KVM: guest_memfd: Call arch invalidate hooks on conversion
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+References: <agusSarZr-R_o2xD@google.com> <ag0H28jSbSTHXznK@google.com>
+Message-ID: <ag3GY3P0SgZPF_IJ@google.com>
+Subject: Re: Sashiko review email for kvm@vger.kernel.org?
+From: Sean Christopherson <seanjc@google.com>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, 
+	Huacai Chen <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>, 
+	Nicholas Piggin <npiggin@gmail.com>, Anup Patel <anup@brainfault.org>, 
+	Atish Patra <atish.patra@linux.dev>, Christian Borntraeger <borntraeger@linux.ibm.com>, 
+	Janosch Frank <frankja@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+	David Hildenbrand <david@kernel.org>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>, Eric Farman <farman@linux.ibm.com>, 
+	Matthew Rosato <mjrosato@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>, 
+	Nipun Gupta <nipun.gupta@amd.com>, Nikhil Agarwal <nikhil.agarwal@amd.com>, 
+	Alex Williamson <alex@shazbot.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, 
+	Longfang Liu <liulongfang@huawei.com>, Julian Ruess <julianr@linux.ibm.com>, 
+	Kirti Wankhede <kwankhede@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>, 
+	Ankit Agrawal <ankita@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+	Shameer Kolothum <skolothumtho@nvidia.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Brett Creeley <brett.creeley@amd.com>, Eric Auger <eric.auger@redhat.com>, 
+	Mostafa Saleh <smostafa@google.com>, Giovanni Cabiddu <giovanni.cabiddu@intel.com>, 
+	David Matlack <dmatlack@google.com>, 
+	"=?utf-8?Q?Micha=C5=82?= Winiarski" <michal.winiarski@intel.com>, Stefan Hajnoczi <stefanha@redhat.com>, 
+	Stefano Garzarella <sgarzare@redhat.com>, Cornelia Huck <cohuck@redhat.com>, 
+	Jason Wang <jasowang@redhat.com>, "Eugenio =?utf-8?B?UMOpcmV6?=" <eperezma@redhat.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Roman Gushchin <kfree@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Thu, 7 May 2026 at 21:22, Ackerley Tng via B4 Relay
-<devnull+ackerleytng.google.com@kernel.org> wrote:
->
-> From: Ackerley Tng <ackerleytng@google.com>
->
-> When memory in guest_memfd is converted from private to shared, the
-> platform-specific state associated with the guest-private pages must be
-> invalidated or cleaned up.
->
-> Iterate over the folios in the affected range and call the
-> kvm_arch_gmem_invalidate() hook for each PFN range. This allows
-> architectures to perform necessary teardown, such as updating hardware
-> metadata or encryption states, before the pages are transitioned to the
-> shared state.
->
-> Invoke this helper after indicating to KVM's mmu code that an invalidation
-> is in progress to stop in-flight page faults from succeeding.
->
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
++KVM and LKML (to capture as many of these discussions possible)
 
-Minor nit below, but lgtm.
+On Wed, May 20, 2026, Pranjal Shrivastava wrote:
+> On Tue, May 19, 2026 at 12:18:17AM +0000, Sean Christopherson wrote:
+> > Hello people with a MAINTAINERS entry that uses kvm@vger.kernel.org as a mailing list!
+> > 
+> > How would y'all feel about enabling Sashiko[*] emails for kvm@vger.kernel.org?  For
+> > a variety of reasons, Sashiko currently only logs its reviews to https://sashiko.dev
+> > by default.  If subsystems want to receive on-list mails, they need to opt-in.
+> > 
+> > I really, really want to enable email reviews for KVM x86, as Sashiko has found
+> > an almost embarassing number of bugs that (a) would have been painful to debug
+> > had they escaped review and (b) I'm not convinced would have been found by
+> > traditional review.  And for me at least the signal:noise ratio is more than good
+> > enough.  There are still hallucinations and false positives from time to time,
+> > but the good outweighs the bad by quite a bit, it's cathartic to flame AI when
+> > it's wrong, and worst case scenario I can simply ignore Sashiko.
+> > 
+> > But, currently Sashiko is only capable of making decisions based on mailing list,
+> > i.e. as things stand, _all_ of kvm@ needs to opt-in.  Before I badger Roman to
+> > add bespoke logic to Sashiko's email flow, e.g. to special case KVM x86 in some
+> > way, I want to see if there's a general consensus in favor (or against) enabling
+> > review emails.
+> 
+> I vote for enabling it, it has proven helpful at multiple places. I
+> would wanna ratelimit the # emails it may send in case of a malfunction
+> though.
 
-Reviewed-by: Fuad Tabba <tabba@google.com>
-
-Cheers,
-/fuad
-
-> ---
->  virt/kvm/guest_memfd.c | 41 +++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 41 insertions(+)
->
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 9d82642a025e9..baf4b88dead1f 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -603,6 +603,42 @@ static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
->         return safe;
->  }
->
-> +#ifdef CONFIG_HAVE_KVM_ARCH_GMEM_INVALIDATE
-> +static void kvm_gmem_invalidate(struct inode *inode, pgoff_t start, pgoff_t end)
-> +{
-> +       struct folio_batch fbatch;
-> +       pgoff_t next = start;
-> +       int i;
-> +
-> +       folio_batch_init(&fbatch);
-> +       while (filemap_get_folios(inode->i_mapping, &next, end - 1, &fbatch)) {
-> +               for (i = 0; i < folio_batch_count(&fbatch); ++i) {
-> +                       struct folio *folio = fbatch.folios[i];
-> +                       pgoff_t start_index, end_index;
-> +                       kvm_pfn_t start_pfn, end_pfn;
-> +
-> +                       start_index = max(start, folio->index);
-> +                       end_index = min(end, folio_next_index(folio));
-> +                       /*
-> +                        * end_index is either in folio or points to
-> +                        * the first page of the next folio. Hence,
-> +                        * all pages in range [start_index, end_index)
-> +                        * are contiguous.
-> +                        */
-> +                       start_pfn = folio_file_pfn(folio, start_index);
-> +                       end_pfn = start_pfn + end_index - start_index;
-> +
-> +                       kvm_arch_gmem_invalidate(start_pfn, end_pfn);
-> +               }
-> +
-> +               folio_batch_release(&fbatch);
-> +               cond_resched();
-> +       }
-> +}
-> +#else
-> +static void kvm_gmem_invalidate(struct inode *inode, pgoff_t start, pgoff_t end) {}
-> +#endif
-> +
->  static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
->                                      size_t nr_pages, uint64_t attrs,
->                                      pgoff_t *err_index)
-> @@ -643,7 +679,12 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
->          */
->
->         kvm_gmem_invalidate_begin(inode, start, end);
-> +
-> +       if (!to_private)
-> +               kvm_gmem_invalidate(inode, start, end);
-> +
->         mas_store_prealloc(&mas, xa_mk_value(attrs));
-> +
-
-Why the unrelated extra space?
-
->         kvm_gmem_invalidate_end(inode, start, end);
->  out:
->         filemap_invalidate_unlock(mapping);
->
-> --
-> 2.54.0.563.g4f69b47b94-goog
->
->
+Ya, there's definitely an implied "we'll turn it back off if there are major
+problems".  But I don't see any reason to treat Sashiko any differently than
+other automated systems in this regard; when bots have been too noisy in the
+past, we've complained, and the bot/system was "fixed".
