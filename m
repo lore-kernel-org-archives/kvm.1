@@ -1,233 +1,215 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9515539EF32;
-	Wed, 20 May 2026 21:44:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779313458; cv=none; b=sIgKZgd4rIq+5oeQJvQZzNKMwmnnOOe0V135voBDG/JKuh+7mpQ1WJwSnAwKcFehsjYlCqzIlsnN8v7cqBNFLtx1lRL5IqpWU8pDk7sIMU+NXNUSFG9IxVBd7pzhgw+vHts0nbJX5wbb8anPSLTCY6mrypsUJGzbCxYoQAPScBs=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91DCE39D6D1
+	for <kvm@vger.kernel.org>; Wed, 20 May 2026 21:44:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779313458; cv=pass; b=MFTGaYkEMUXDimvwoMjIph4fchoyC2u5CVngoAFlsTLSzCyey18CaYOU7aPz2w884j7NmxYOpF8wt2kkEHRztTV1dvQnyxFbJfu4f4vUKwyevxha1zbUdzta76eS8YGBZMT1+UdDsNwUYn7RuqzVTh+o1BbcQyyKjxancGaGXJo=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779313458; c=relaxed/simple;
-	bh=V+eATgFjWpKnSKJ5+sPGQpYVwR9soHFVnn/OiMK5Xu8=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=Fdt8Webm1elg7z4/P1zNUvoCzAsovNCnnkoPoLwXly9mEKCtr+/QC1J/d75NfJCaia7ag2v2eXc0MwibqEcitRstGXGYweRJ6+xFP6iSp3IdLfUFQfdIDTkIUM6kXESKcB7VODTCPweGJXDBQteCLTTi8yYqkb+L3ym75ACD2FE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=DWZ73e2a; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	bh=5vwh4tcfC1LD9NZjL0ZwGpI66Tl15UeToPVcfgSGyVE=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=M4gSJ65/MzO/I3Vcg7mjStZL3lzp+y++UEzcGQr98DhJQDbbtFxcajmqI68KhHIeAZ/0Q27ELUt6CRWnYR0EsJozY3nnxUBTq+2+pDNoVk1pPIlESkJCNPFSGhatgOJWVsbfs6dfRJIQ2mQdV9bjIKT2wjg4tQ+4DVhmw3e6ytE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ADNOJ9ot; arc=pass smtp.client-ip=209.85.217.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="DWZ73e2a"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=V+eATgFjWpKnSKJ5+sPGQpYVwR9soHFVnn/OiMK5Xu8=; b=DWZ73e2as4JZA5wGwlfPWL899B
-	lD0QbdknJ5+LTfMizvdQ0Ltd3UyxnFmVZ/6KF+xY5Nt4xtAqHI+T5YgcwG2Gug4yGEUXjiptDo7h1
-	a+FoiEL2zHsVAWUO1iZZYYmedl5/6ETBuIBKDhbopX57i2My7K9jNk56GrIwl3HnwCjbl7yAP7ctV
-	4YhhryAvO6p5/bSuTOoK0+KL2aj5WiS4lHvHcPe2GjyCjcLD0iAYqwPgP03Lw3q2M2H4kboQ69h8b
-	0U+9KwFbsneBjHn5oqHOZPfu7RwBidF5xkcqWAIWR8CItkSRmTLQnOWV7GUuKLLSXaCEXWzVkE/75
-	87ObyEVw==;
-Received: from 54-240-197-235.amazon.com ([54.240.197.235] helo=freeip.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPoi0-00000007bx6-0NuV;
-	Wed, 20 May 2026 21:44:08 +0000
-Message-ID: <a336f998f4d6ca1872eb1ce5867c89e54c228b8b.camel@infradead.org>
-Subject: Re: [PATCH v3 02/41] x86/tsc: Add helper to register CPU and TSC
- freq calibration routines
-From: David Woodhouse <dwmw2@infradead.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
- "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang
- <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui
- <decui@microsoft.com>, Long Li <longli@microsoft.com>, Ajay Kaher
- <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>,
- Jan Kiszka <jan.kiszka@siemens.com>, Dave Hansen
- <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, Peter
- Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, Daniel
- Lezcano <daniel.lezcano@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
- John Stultz <jstultz@google.com>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
- Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Boris Ostrovsky
- <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>,
- x86@kernel.org,  linux-coco@lists.linux.dev, kvm@vger.kernel.org,
- linux-hyperv@vger.kernel.org,  virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org,  xen-devel@lists.xenproject.org, Michael
- Kelley <mhklinux@outlook.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- Nikunj A Dadhania <nikunj@amd.com>, Thomas Gleixner <tglx@linutronix.de>
-Date: Wed, 20 May 2026 22:44:06 +0100
-In-Reply-To: <ag4or9-9c6VZxqya@google.com>
-References: <20260515191942.1892718-1-seanjc@google.com>
-	 <20260515191942.1892718-3-seanjc@google.com>
-	 <44e0d60548d317fd59895f18bd17220dfb2f834b.camel@infradead.org>
-	 <ag4dMc2B3JQi4vxU@google.com>
-	 <621e10bdc9e297c6c600b561d8fa25c3b62968bc.camel@infradead.org>
-	 <ag4or9-9c6VZxqya@google.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-oxbeONMkNdqRjI4b1mSx"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ADNOJ9ot"
+Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-6312d29596cso3960535137.1
+        for <kvm@vger.kernel.org>; Wed, 20 May 2026 14:44:16 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779313456; cv=none;
+        d=google.com; s=arc-20240605;
+        b=g0pzcUdTRmZlqqTofoc3y6/D6d5VN1OebcojJbwFpOo23OiRunoUKST0vWOTpklzV4
+         zwioz+USYDsTmo41YEwICPcCk2r0GSdR6Ln1yM0loT78LGola5jr+vBnNgXPTERkV+eN
+         jgX8iy+fCURYKncpnlUQCsgMFcHjZg6f86vNl47BMkkvHsstDBxKwvzuYOHxyqFcsEt8
+         GHeEXiP/K8crlkCY/+5M8b3dWpPZBUnRkp/0+FxCgMRepYNflpQZUFLBH3+k6a2vHyz6
+         /w2BUkoVg4SVI6R/Th/BKHyzz9l/iWbssySLhoCM1sRyS8gdiYTua/0lOVjhnLPiQ+/4
+         Uckw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=lzeZHICde6LC2KLtrV1UyrIn4vikEEbCZhRCg7feJeA=;
+        fh=l9Tz3U9aM+t7eWe59jXhBNpknbaen5KwCD3L14dVBNU=;
+        b=gDZrSr1TuWvy4rPQSlgI2ayyNXctUA23AWnEL4xJo04G741jrP/hLbsEhZ8RMHpWHN
+         TSJpB+M2tccHFhTVNVg/OQHzsSBXb39zdRSD9K8/cTEGWE5WS/IMt7i/JIUsAy0rToUl
+         7lCWosogsR6lVZt7YHejbyuDJbhT22OOFUSZr37rdh7IpE9Hfi5DijXaCqcjkc+6yslU
+         F/YFDSBlbJCTtbWAhEQnAcqT9s3hmU4YraajVuZzLJPVRjQGHOvM2Y1wyzApsnRs/Voj
+         r8S030JMaOBqR9z+2hHlZCwnHgq5JCtM/Mbq/PHZKTk6JB/85GyV1PqBZLkgdXy0NfQ7
+         jNew==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779313456; x=1779918256; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=lzeZHICde6LC2KLtrV1UyrIn4vikEEbCZhRCg7feJeA=;
+        b=ADNOJ9otSDzKLSEjGCHI05LGqcVyJOoXcW9EASu/7Kw+vPYwuoow6vFIR+kOptGyx2
+         6NDFnxw+PTTDipeB82JByyeBm3XkEN2XsWdEo+HKvK0PXbAMBCY7AYIYMbBluhorBBBK
+         ekYIDXecY5Jcx4mmBIlIK2IyF0oTicfPPUIYsi3eYq7lw6Phtvkvwchnr3K6EsIMtoY+
+         ymSnboMtOWSelbRLQsXho/yT5xUnrbKrRlUPEpvJmh9Iua2GpHQdrKXgS8eZ6inolYy/
+         Dfnf8zBGoNBRAp6Z5G2iwQaHiNmw77tGjz1bpQgbV7seo7nTOohLYpIJwp9EmwPxsDpb
+         xZZA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779313456; x=1779918256;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lzeZHICde6LC2KLtrV1UyrIn4vikEEbCZhRCg7feJeA=;
+        b=MuTBoqVBW1XDFaWvSeCjjzeXLlI2CrEteHRdAR9yNyKlWJJWJGxF48bQrPUCNj0Map
+         BIAHKCyMb45I+t5MiYdAKZG4yYijAUfyDspnFw2Nm+mc2m1vk+83cQPz3VeNR67wcuFl
+         rZBFcHd1kRfnXbbDD24919Dl/x0L8GtbzUR3bA9y6fNzzIf3cydz0SJUv45842kN5bKu
+         6/GGRbuNuawFde7ckcHN61xpLrUUdO3SuY+gEHmEGQXyVWMcm+wpWeNEHrJ16JeLg69+
+         PNFT4bvchMJU7NNze6jwGIDIXIRwnoWtdGnCwPw8lN+n+tydOs3WvX8VN1ewTBMbM3QO
+         W20Q==
+X-Forwarded-Encrypted: i=1; AFNElJ+LKJR2IsWCC/+oOK8Pp0gdzoXV/F+wBAan8P0AslZIeK1uCjjc7s43HDkq8UhrbVfnrBs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxngyEzTzdkiVK7wiJF2kh4uj1nysYrNm6sKW5fh+5RdYxEX40v
+	DrG9quqWj9rplrLdJ828wrZx2o+VTiKwvvTdD4xh/PzGo/p78JkWCz9oqgAV2zFW2g312q0XZOy
+	j+Z1GCkSmYaFOXQBS/aYXrCCFvq69plezaXixxWA1
+X-Gm-Gg: Acq92OEco1UkLhPE6UScdm02mZ1OlJNPwrYeaXb4lJfLc7Pfp2/Ocd3Xqdz5eV+vHfS
+	1ftlRJfIDskVVlbeuM3mbY6bA2Hj4zAfFfftcxGAYh8LwdlNv0mV9zjU6NDB5GbOXG/vCtuVJKZ
+	nvQxmdagcVL66T0ld7xTOqdUh6wNJ0c3NVjMtlyUtmRNg3AKIsuAMtcF24o0epXaZQnJ+DM2Jnj
+	Xapg2/pbKt7S1dtVL+9HxEkQf77lKB86ki2c0c9UkQ8krOoXvW/WJuPJANbRuHCiGFfFzSy64hY
+	M+oWX4LpcPMB4fLibG5GfRieTlhFaKq3AAYnq4Sx+GV64BMxgU3n7vyruZy0+9t8a/qYURc+a5E
+	aVTts
+X-Received: by 2002:a05:6102:32ca:b0:631:8665:3510 with SMTP id
+ ada2fe7eead31-6739e54982dmr235113137.31.1779313454629; Wed, 20 May 2026
+ 14:44:14 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 20 May 2026 14:44:13 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 20 May 2026 14:44:13 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <CA+EHjTw-cUM=FrJevtSDtR7K6MwUfGfOx21LMFDn7DAy5bFzYw@mail.gmail.com>
+References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
+ <20260507-gmem-inplace-conversion-v6-5-91ab5a8b19a4@google.com> <CA+EHjTw-cUM=FrJevtSDtR7K6MwUfGfOx21LMFDn7DAy5bFzYw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
-
-
---=-oxbeONMkNdqRjI4b1mSx
+Date: Wed, 20 May 2026 14:44:13 -0700
+X-Gm-Features: AVHnY4KMeQgcJsvqoO4sP8lu-TRiPVeIaM4bWX0cqtV0EsssjCZBV_2_Gq2a7HM
+Message-ID: <CAEvNRgGQvMdDmVfbk42EY_PGN0ybTp-x21Zj+pg_X1mk9iCRtA@mail.gmail.com>
+Subject: Re: [PATCH v6 05/43] KVM: guest_memfd: Wire up kvm_get_memory_attributes()
+ to per-gmem attributes
+To: Fuad Tabba <tabba@google.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
 
-T24gV2VkLCAyMDI2LTA1LTIwIGF0IDE0OjMzIC0wNzAwLCBTZWFuIENocmlzdG9waGVyc29uIHdy
-b3RlOgo+IE9uIFdlZCwgTWF5IDIwLCAyMDI2LCBEYXZpZCBXb29kaG91c2Ugd3JvdGU6Cj4gPiBP
-biBXZWQsIDIwMjYtMDUtMjAgYXQgMTM6NDQgLTA3MDAsIFNlYW4gQ2hyaXN0b3BoZXJzb24gd3Jv
-dGU6Cj4gPiA+IAo+ID4gPiArwqDCoMKgwqDCoMKgIC8qCj4gPiA+ICvCoMKgwqDCoMKgwqDCoCAq
-IElmIHRoZSBUU0MgY291bnRzIGF0IGEgY29uc3RhbnQgZnJlcXVlbmN5IGFjcm9zcyBQL1Qgc3Rh
-dGVzLCBjb3VudHMKPiA+ID4gK8KgwqDCoMKgwqDCoMKgICogaW4gZGVlcCBDLXN0YXRlcywgYW5k
-IHRoZSBUU0MgaGFzbid0IGJlZW4gbWFya2VkIHVuc3RhYmxlLCB0cmVhdCB0aGUKPiA+ID4gK8Kg
-wqDCoMKgwqDCoMKgICogVFNDIHJlbGlhYmxlLCBhcyBndWFyYW50ZWVkIGJ5IEtWTS7CoCBOb3Rl
-LCB0aGUgVFNDIHVuc3RhYmxlIGNoZWNrCj4gPiA+ICvCoMKgwqDCoMKgwqDCoCAqIGV4aXN0cyBw
-dXJlbHkgdG8gaG9ub3IgdGhlIFRTQyBiZWluZyBtYXJrZWQgdW5zdGFibGUgdmlhIGNvbW1hbmQK
-PiA+ID4gK8KgwqDCoMKgwqDCoMKgICogbGluZSwgYW55IHJ1bnRpbWUgZGV0ZWN0aW9uIG9mIGFu
-IHVuc3RhYmxlIHdpbGwgaGFwcGVuIGFmdGVyIHRoaXMuCj4gPiA+ICvCoMKgwqDCoMKgwqDCoCAq
-Lwo+ID4gPiArwqDCoMKgwqDCoMKgIGlmIChib290X2NwdV9oYXMoWDg2X0ZFQVRVUkVfQ09OU1RB
-TlRfVFNDKSAmJgo+ID4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqAgYm9vdF9jcHVfaGFzKFg4Nl9G
-RUFUVVJFX05PTlNUT1BfVFNDKSAmJgo+ID4gPiArwqDCoMKgwqDCoMKgwqDCoMKgwqAgIWNoZWNr
-X3RzY191bnN0YWJsZSgpKQo+ID4gwqDCoMKgIHsgCj4gPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgIHRzY19wcm9wZXJ0aWVzID0gVFNDX0ZSRVFfS05PV05fQU5EX1JFTElBQkxFOwo+
-ID4gCj4gPiDCoMKgwqAga3ZtY2xvY2sgPSAwOyAvKiBXaHkgdXNlIGl0IGlmIHRoZSBUU0Mgd29y
-a3M/IFRoZSBrdm1jbG9jayBleGlzdHMKPiA+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqAgKnB1cmVseSogdG8gd29yayBhcm91bmQgYSBUU0Mgd2hpY2ggKmRvZXNuJ3Qq
-Cj4gPiDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIGhhdmUgdGhvc2Ug
-cHJvcGVydGllcyBjaGVja2VkIGFib3ZlLiAqLwo+IAo+IGt2bWNsb2NrIHN0aWxsIHByb3ZpZGVz
-IFNZU1RFTV9USU1FIGFuZCBXQUxMX0NMT0NLIDotLwoKVW0sIFNZU1RFTV9USU1FICppcyogdGhl
-IGt2bWNsb2NrIG9mIHdoaWNoIHdlIHNwZWFrLCBpc24ndCBpdD8KCldBTExfQ0xPQ0sgaXMgc29t
-ZXRoaW5nIGVsc2UsIGFuZCBJIGd1ZXNzIHdlIHNob3VsZCBzdGlsbCBjb25zdW1lIHRoYXQsCnll
-cy4KCj4gCj4gPiA+ICsKPiA+ID4gK8KgwqDCoMKgwqDCoCBrdm1fdHNjX2toel9jcHVpZCA9IGt2
-bV9wYXJhX3RzY19raHooKTsKPiA+ID4gKwo+ID4gPiArwqDCoMKgwqDCoMKgIC8qCj4gPiA+ICvC
-oMKgwqDCoMKgwqDCoCAqIElmIHByb3ZpZGVkLCB1c2UgdGhlIFRTQyAoYW5kIEFQSUMgYnVzKSBm
-cmVxdWVuY3kgcHJvdmlkZWQgaW4gS1ZNJ3MKPiA+ID4gK8KgwqDCoMKgwqDCoMKgICogUFYgQ1BV
-SUQgbGVhZiBldmVuIGlmIGt2bWNsb2NrIGl0c2VsZiBpcyBkaXNhYmxlZCB2aWEgY29tbWFuZCBs
-aW5lLgo+ID4gPiArwqDCoMKgwqDCoMKgwqAgKiBUaGUgUFYgQ1BVSUQgaW5mb3JtYXRpb24gaXNu
-J3QgZGVwZW5kZW50IG9uIGt2bWNsb2NrIGluIGFueSB3YXksIGFuZAo+ID4gPiArwqDCoMKgwqDC
-oMKgwqAgKiBpbiBmYWN0IHVzaW5nIHRoZSBwcmVjaXNlIGluZm9ybWF0aW9uIGlzICptb3JlKiBp
-bXBvcnRhbnQgd2hlbiB0aGUKPiA+ID4gK8KgwqDCoMKgwqDCoMKgICogdXNlciBoYXMgZXhwbGlj
-aXRseSBkaXNhYmxlZCBrdm1jbG9jayB0byBmb3JjZSB0aGUga2VybmVsIHRvIHVzZSB0aGUKPiA+
-ID4gK8KgwqDCoMKgwqDCoMKgICogVFNDIGFzIGl0cyBjbG9ja3NvdXJjZS4KPiA+ID4gK8KgwqDC
-oMKgwqDCoMKgICovCj4gPiA+ICvCoMKgwqDCoMKgwqAgaWYgKCFrdm1jbG9jaykgewo+ID4gPiAr
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBpZiAoa3ZtX3RzY19raHpfY3B1aWQpCj4gPiA+
-ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCB0c2NfcmVnaXN0
-ZXJfY2FsaWJyYXRpb25fcm91dGluZXMoa3ZtX2dldF90c2Nfa2h6LAo+ID4gPiArwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBrdm1fZ2V0X2Nw
-dV9raHosCj4gPiA+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
-oMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqDCoMKgIHRzY19wcm9wZXJ0aWVzKTsKPiA+ID4gK8KgwqDCoMKgwqDCoMKgwqDCoMKg
-wqDCoMKgwqAgcmV0dXJuOwo+ID4gPiArwqDCoMKgwqDCoMKgIH0KPiA+ID4gKwo+ID4gCj4gPiAK
-PiA+IFJlZ2FyZGxlc3Mgb2YgdGhlIGFib3ZlLCB3aHkgbm90IGp1c3QgcmVnaXN0ZXIgdGhlc2Ug
-aGVyZQo+ID4gdW5jb25kaXRpb25hbGx5LCBhbmQgcmVtb3ZlIHRoZSBsYXRlciBjYWxsIHRoYXQg
-ZG9lcyB0aGUgc2FtZT8KPiAKPiBCZWNhdXNlIGlmIGt2bWNsb2NrPW4sIGl0J3Mgb25seSBzYWZl
-IHRvIGNhbGwga3ZtX2dldF90c2Nfa2h6KCkgaWYga3ZtX3RzY19raHpfY3B1aWQKPiBpcyBub24t
-emVybywgb3RoZXIgd2lzZSB0aGUgImVsc2UiIHBhdGggd2lsbCBoaXQgYSBOVUxMIHBvaW50ZXIg
-ZGVyZWYgd2hlbiB0cnlpbmcKPiB0byBnZXQgdGhlIGZyZXF1ZW5jeSBmcm9tIHRoZSBQViBjbG9j
-ayBzdHJ1Y3Q6Cj4gCj4gCXJldHVybiBrdm1fdHNjX2toel9jcHVpZCA/IDogcHZjbG9ja190c2Nf
-a2h6KHRoaXNfY3B1X3B2dGkoKSk7CgpBaCwgcmlnaHQuIFRoYW5rcy4gSWNrIHRob3VnaCA6KQo=
+Fuad Tabba <tabba@google.com> writes:
 
+>
+> [...snip...]
+>
+>> +unsigned long kvm_gmem_get_memory_attributes(struct kvm *kvm, gfn_t gfn)
+>> +{
+>> +       struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
+>> +       struct inode *inode;
+>> +
+>> +       /*
+>> +        * If this gfn has no associated memslot, there's no chance of the gfn
+>> +        * being backed by private memory, since guest_memfd must be used for
+>> +        * private memory, and guest_memfd must be associated with some memslot.
+>> +        */
+>> +       if (!slot)
+>> +               return 0;
+>> +
+>> +       CLASS(gmem_get_file, file)(slot);
+>> +       if (!file)
+>> +               return 0;
+>> +
+>> +       inode = file_inode(file);
+>> +
+>> +       /*
+>> +        * Rely on the maple tree's internal RCU lock to ensure a
+>> +        * stable result. This result can become stale as soon as the
+>> +        * lock is dropped, so the caller _must_ still protect
+>> +        * consumption of private vs. shared by checking
+>> +        * mmu_invalidate_retry_gfn() under mmu_lock to serialize
+>> +        * against ongoing attribute updates.
+>> +        */
+>> +       return kvm_gmem_get_attributes(inode, kvm_gmem_get_index(slot, gfn));
+>> +}
+>
+> Doesn't this imply that all consumers of kvm_mem_is_private() should
+> validate the result using mmu_lock and the invalidation sequence?
 
---=-oxbeONMkNdqRjI4b1mSx
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+Let me know how I can improve the comment.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUyMDIxNDQw
-NlowLwYJKoZIhvcNAQkEMSIEIEmBoU2SoTpbUcEINmHhbssFqM9cMtAcIF2RwoenHW4SMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAz/wiqoIcasKx
-bjslyFyZ7yEgJVNn0JJcSpCgnFYroD+iQXtLV/szjY3km9e4EtHn0jmjHMNjJ+CHUi4yrcOU9OQp
-i9Rx0olS3amDHQTwZ89HDSG8187RNnJC3Czqs0+ZE59fuMXwbmgCzablVsgZLXM6VWTISdfJgqH3
-zn3UK2KojCLpQkCUO2fl4gknxzEP9TBbpQX52Wem0YlaHnIG6du9ht8hbouRfv0VnLuIKaSJB6KL
-RuS3rc+TMlcVdUS7LzoDqxf4CT4HX2umWlwnthoAXCBs5H/ZEKucIF1YjKaSqLP/+pb0rRrmoPbX
-1IUK87sMU+BKxXacDCBzOo9Pev3U7p1ba2NDddOVsARByzM2FTO8m3lP/dHk25sQ9AXqVuGSVn7+
-a5yv5/ViBkKq/OsJ6BK0ANY/bHLl339Y8VAcLtDta4LrO7t1DJKxZgs8zkkjmOyD2fYPYQ6/3zU4
-9Evwy/ycUyZiVhpnmFCuNHslfYs8RieMK8nqGcGgTxIeV+xn/N9Q6WDn7fiPZUXVg2aMSa2dNRCy
-pQedYZNrVP8HADS4M3wkhgZH/e3x1+ogRtireu2rVLNKiOoOO14PNpayVX4CLSOgoOv+s9CyC7/G
-lvrsjhfGNgdySpgl97YST+zUsUuj0iqKAUzGiZUlD2wh1sla0hW4cf59o7fcSnoAAAAAAAA=
+I think the "consumption" of private vs shared here actually means
+something like "don't commit a page being faulted into page tables based
+on the result of kvm_gmem_get_memory_attributes() without checking
+kvm->mmu_invalidate_in_progress.", since a racing conversion may
+complete before you commit.
 
+kvm_mem_is_private() is used from these places:
 
---=-oxbeONMkNdqRjI4b1mSx--
+1. Fault handling in KVM, like page_fault_can_be_fast(),
+   kvm_mmu_faultin_pfn(), kvm_mmu_page_fault(): this already handles the
+   entire mmu_lock and invalidation dance. No fault will be committed if
+   a racing conversion happened after kvm_mem_is_private() but before
+   the commit.
+
+2. kvm_mmu_max_mapping_level() from recovering huge pages after
+   disabling dirty logging: Other than that it can't be used with
+   guest_memfd now since dirty logging can't be used with guest_memfd
+   and guest_memfd memslots are not updatable, this holds mmu_lock
+   throughout until the huge page recovery is done. invalidate_begin
+   also involves zapping the pages in the range, so if the order of
+   events is
+
+   | Thread A                     | Thread B          |
+   |------------------------------|-------------------|
+   | invalidate_begin + zap       |                   |
+   | update attributes maple_tree | recover huge page |
+   | invalidate_end               |                   |
+
+   Then recovering will never see the zapped pages, nothing to
+   recover, no kvm_mem_is_private() lookup.
+
+3. kvm_arch_vcpu_pre_fault_memory()
+
+   This eventually calls kvm_tdp_mmu_page_fault(), which checks
+   is_page_fault_stale(), so it does check before committing.
+
+Were there any other calls I missed?
+
+> sev_handle_rmp_fault() calls kvm_mem_is_private() without holding
+> mmu_lock and without any retry mechanism. Is that a problem?
+>
+
+Sean already replied on your actual question separately :)
+
+> Cheers,
+> /fuad
+>
+>
+>>
+>> [...snip...]
+>>
