@@ -1,61 +1,53 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6766E2E285C;
-	Wed, 20 May 2026 08:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3E230100E;
+	Wed, 20 May 2026 08:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779265648; cv=none; b=EFjE8qB9YTTOZT7NFDTNQZ9svAX5LRvGkuSjImRus0oJxKDrc00gbQomhW39vyQoSa393bhBcmCFGrRxnUR9P5rA1RC6fQSH8HUOuIACRm7qC0zgSaeNhNUeUkgyM4PqcpFEGm1nsDSab5BOrE7AW+JnZFp0AlMnH7vvb5ZIOUY=
+	t=1779265974; cv=none; b=qmTztUQDoCM3cLuD28bm8onOAc+n9tLVzUK+w3rBh4LgIZP+RBlIHOkjEvw2xcHmoK7d7ISI48hcy23HqDjG4AYeqUBEgqNRu+vGQt20iqftZv6Q5FxQoPoMEBqD51SmjWtx72Izsdt94jvGaSSEqHPyEbWhxzEktXWqmo6XUN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779265648; c=relaxed/simple;
-	bh=7K/T3SyA2cmNcBSU8rl98YYr2iwX6JMD2Boiij4U5sU=;
+	s=arc-20240116; t=1779265974; c=relaxed/simple;
+	bh=HXY4br/irksB2/qamGBiyv9CIG16phqKEauoA//ODio=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=o3x1gCwwIjohNTOPJrNy6nNarteOm/n0YSehClqrAXBKN/ruemIW3Sf6waLXYhLT+hYOXk7XFasZ11YBvbGV3XA2r5HkCNuU/ETr+Ob0Zs3Mg1NUd9KirxVuh2zznweml3FNPEv+qshyXcNWGWFaUu5TXgVKJdbUTSEgqRlf4Hg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=jk+QeA/E; arc=none smtp.client-ip=90.155.50.34
+	 Content-Type:MIME-Version; b=Ra1PqbnkQR2oGUzGSAK4LPGBELvSyKtX+TkY/0hzxITQZwpt2KrevoiK95KEX14FmA0TqsM+5sooq/X8L6bVjIQ0wLRfuiYb7lpiVNFfRz9ZxwvVcwTD0N065eJKzFmoBEmyWaDvV/maaTqe4uS6vSJTwPM6lW6QZdq1+Nep1ZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=e9s5PJ48; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="jk+QeA/E"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="e9s5PJ48"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
 	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=7K/T3SyA2cmNcBSU8rl98YYr2iwX6JMD2Boiij4U5sU=; b=jk+QeA/EA9Qgp6+ZBgSPS3R0Wj
-	nkv1MuGNm0WWfgdI+k9460CGTQwlpqO4DOjzv5GQ19fqkCZ7XC8S9a2KAcWhUOfhidO/BPwfXUl4w
-	Lh6miuCR+efbDjZuTTYU8LwH4io82vAo/iVCKdkgXkffejvcE2cbNiuLbCS18WMmljDH08QOiJoEc
-	9ysEKre+Gyo445uaQAV+CgldWshypB055HtdQQnWAMIF/RABfLL8p3JDY+PcTpbcx8PtB0NgORqm/
-	xpVgCj97sTA9BZT1fDM9ckrgmC4oW7ToYf7EGe+45gVuoD/6OR0PKnBZz/IeIEGHQkdwVrfsAHnOF
-	Vd8OJU3Q==;
-Received: from 54-240-197-227.amazon.com ([54.240.197.227] helo=freeip.amazon.com)
+	bh=0YsW7VyvcC+raIC7SNX6E895VbreQUQJI/uGnOej2s4=; b=e9s5PJ48RtLaVXwynNnkeQ2Dwc
+	rUbK38uX7BxK83XM/K6YUhx5czXr+9DPT+X/OXqZCZlcP4HHb3Maylk5iLe/HSgX4OuGxiSg08fkb
+	IYq1vozB2tlUdKd/HH4+M2qDSboy7iP28hrVRPVJB18O3+P2eHHavr1TNOHxEcvnfY/ojx6P1wvMy
+	LsCO05MJINGW00uXjjcYEskaEGEYXUr2aangXLY2vopZFkwWAfhFFuclpLRWiCoQvXc/9LgIdHXhr
+	iWdxeEE3NwKmNs8uNjeW6DQn6lnp6Bcyz1Qxn2Er+XD5mNTUPdtxHoBg3oafgpK0GjQwwIaMc60+U
+	2HnmBcDw==;
+Received: from 54-240-197-235.amazon.com ([54.240.197.235] helo=freeip.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPcGs-00000006tkc-0Vll;
-	Wed, 20 May 2026 08:27:18 +0000
-Message-ID: <438916491be31a7f50ad7a84f11a7faf394cfbc1.camel@infradead.org>
+	id 1wPcMA-00000006u1G-3cvc;
+	Wed, 20 May 2026 08:32:47 +0000
+Message-ID: <61a88b55b7e2ca191a4b7066df32330919b3beae.camel@infradead.org>
 Subject: Re: [PATCH v2 03/15] KVM: x86/xen: Don't truncate RAX when handling
  hypercall from protected guest
 From: David Woodhouse <dwmw2@infradead.org>
-To: Binbin Wu <binbin.wu@linux.intel.com>, Sean Christopherson
-	 <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov
- <vkuznets@redhat.com>,  Kiryl Shutsemau <kas@kernel.org>, Paul Durrant
- <paul@xen.org>, Dave Hansen <dave.hansen@linux.intel.com>, Rick Edgecombe
- <rick.p.edgecombe@intel.com>,  kvm@vger.kernel.org, x86@kernel.org,
- linux-coco@lists.linux.dev,  linux-kernel@vger.kernel.org, Yosry Ahmed
- <yosry@kernel.org>, Kai Huang <kai.huang@intel.com>
-Date: Wed, 20 May 2026 09:27:17 +0100
-In-Reply-To: <3beeaf04-e4f9-44cf-a3a3-04fa12912848@linux.intel.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>,  Vitaly Kuznetsov <vkuznets@redhat.com>, Kiryl
+ Shutsemau <kas@kernel.org>, Paul Durrant <paul@xen.org>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>, Rick Edgecombe
+	 <rick.p.edgecombe@intel.com>, kvm@vger.kernel.org, x86@kernel.org, 
+	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org, Yosry Ahmed
+	 <yosry@kernel.org>, Kai Huang <kai.huang@intel.com>, Binbin Wu
+	 <binbin.wu@linux.intel.com>
+Date: Wed, 20 May 2026 09:32:45 +0100
+In-Reply-To: <20260514215355.1648463-4-seanjc@google.com>
 References: <20260514215355.1648463-1-seanjc@google.com>
 	 <20260514215355.1648463-4-seanjc@google.com>
-	 <27ba35fd-5563-4bbd-8f95-2285b50efa7a@linux.intel.com>
-	 <agcXr2FP4C3I_jbQ@google.com>
-	 <52fdc61a-60e8-4547-8ff7-f249b4d667b9@linux.intel.com>
-	 <ad4934f4a663c448924aeabe6418e68ae3ef9813.camel@infradead.org>
-	 <868898e6-1c57-498d-848d-1df9cbeac23c@linux.intel.com>
-	 <d7af5a04a11432ea1878431e8b51061f19c16061.camel@infradead.org>
-	 <dc62e58e-b6ee-41e1-84a5-0716822fefc8@linux.intel.com>
-	 <3beeaf04-e4f9-44cf-a3a3-04fa12912848@linux.intel.com>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-h9/NkfzlrAaTTiqUEi8g"
+	boundary="=-AXLLwX8rID+iZB9TDCRJ"
 User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -66,88 +58,66 @@ MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
---=-h9/NkfzlrAaTTiqUEi8g
+--=-AXLLwX8rID+iZB9TDCRJ
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2026-05-20 at 13:02 +0800, Binbin Wu wrote:
-> > > > For this one, I think the current KVM code is consistent.
-> > > > The format is determined by EFER.LMA, whether the guest is running =
-in 64 bit or
-> > > > compatible mode doesn't change the ABI.
+On Thu, 2026-05-14 at 14:53 -0700, Sean Christopherson wrote:
+> Don't truncate RAX when handling a Xen hypercall for a guest with protect=
+ed
+> state, as KVM's ABI is to assume the guest is in 64-bit for such cases
+> (the guest leaving garbage in 63:32 after a transition to 32-bit mode is
+> far less likely than 63:32 being necessary to complete the hypercall).
 >=20
-> I still have a point of confusion.
+
+The latter isn't likely either. RAX is the system call number, and
+those numbers are only in double digits; it'll be a while before we
+need more than 8 bits for those, let alone 32 :)
+
+But sure, as a cleanup it makes sense. Thanks.
+
+Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+
+> Fixes: b5aead0064f3 ("KVM: x86: Assume a 64-bit hypercall for guests with=
+ protected state")
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+> =C2=A0arch/x86/kvm/xen.c | 6 +++---
+> =C2=A01 file changed, 3 insertions(+), 3 deletions(-)
 >=20
-> I noticed a behavioral mismatch between KVM and Xen regarding when they s=
-witch
-> to the standard/compat shared info.
-> - In Xen: The 32-bit shared info structure is latched if the current vCPU=
- is
-> =C2=A0 not in 64-bit mode:
-> =C2=A0 hvm_latch_shinfo_size
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 d->arch.has_32bit_shinfo =3D hvm_guest_x86=
-_mode(current) !=3D X86_MODE_64BIT
->=20
-> - In KVM: It evaluates is_long_mode(vcpu) instead. E.g.,
-> =C2=A0 kvm_xen_write_hypercall_page
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 bool lm =3D is_long_mode(vcpu);
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ...
-> =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 kvm->arch.xen.long_mode =3D lm;
-
-Nice catch. That should probably use is_64_bit_hypercall() too, yes?
-
-> In theory, these two checks could differ when the guest kernel is running=
- in
-> a 32-bit compatibility mode. However, I believe this mismatch is fine in
-> practice for two reasons:
-> - Mainstream 64-bit OSes don't run in compatibility mode for kernel code =
-after
-> =C2=A0 the early init.
-
-Although... some of the early init does involve 32-bit mode and it
-wouldn't be impossible for the guest to build the hypercall page from
-32-bit mode during startup.
-
-> - By default, HVM guests cannot issue hypercalls from userspace. The only=
- one
-> =C2=A0 exception HVMOP_guest_request_vm_event is not related to the share=
- info.
-
-A third reason: This is only one of *two* places where the guest mode
-gets latched. The guest's mode is also latched when it sets the
-HVM_PARAM_CALLBACK_IRQ parameter. When running under KVM, the VMM
-handles this and tells the kernel via the KVM_XEN_ATTR_TYPE_LONG_MODE
-attribute.
-
-So even if it doesn't latch correctly when setting the hypercall page,
-it will later.
-
-And Linux at least will set KVM_PARAM_CALLBACK_IRQ even if it isn't
-using it, in xen_set_upcall_vector() with a comment saying 'Trick
-toolstack to think we are enlightened'.
-
-> So the vCPU will never be in compatibility mode when a related hypercall =
-occurs.
-> In this specific operational context, evaluating is_long_mode() yields th=
-e
-> exact same functional outcome as checking for 64-bit execution mode. Am I
-> missing anything here?
-
-I think you're right. We have thus far launched about 5 billion Xen
-guests with this, and I've never heard any report about guests latching
-the wrong mode. And there are a *lot* of random home-grown and network
-appliance operating systems out there, and basic things like event
-channels would fail to work if the shared_info was in the wrong mode.
-
-That said, I would not be averse to fixing it. We could just use
-is_64_bit_hypercall() in kvm_xen_write_hypercall_page(), right?
-
-Or at the very least a comment saying that it *should* be doing so, but
-that we're too nervous to change it now?=20
+> diff --git a/arch/x86/kvm/xen.c b/arch/x86/kvm/xen.c
+> index 6d9be74bb673..895095dc684e 100644
+> --- a/arch/x86/kvm/xen.c
+> +++ b/arch/x86/kvm/xen.c
+> @@ -1678,15 +1678,14 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
+> =C2=A0	bool handled =3D false;
+> =C2=A0	u8 cpl;
+> =C2=A0
+> -	input =3D (u64)kvm_register_read(vcpu, VCPU_REGS_RAX);
+> -
+> =C2=A0	/* Hyper-V hypercalls get bit 31 set in EAX */
+> -	if ((input & 0x80000000) &&
+> +	if ((kvm_rax_read(vcpu) & 0x80000000) &&
+> =C2=A0	=C2=A0=C2=A0=C2=A0 kvm_hv_hypercall_enabled(vcpu))
+> =C2=A0		return kvm_hv_hypercall(vcpu);
+> =C2=A0
+> =C2=A0	longmode =3D is_64_bit_hypercall(vcpu);
+> =C2=A0	if (!longmode) {
+> +		input =3D (u32)kvm_rax_read(vcpu);
+> =C2=A0		params[0] =3D (u32)kvm_rbx_read(vcpu);
+> =C2=A0		params[1] =3D (u32)kvm_rcx_read(vcpu);
+> =C2=A0		params[2] =3D (u32)kvm_rdx_read(vcpu);
+> @@ -1696,6 +1695,7 @@ int kvm_xen_hypercall(struct kvm_vcpu *vcpu)
+> =C2=A0	}
+> =C2=A0	else {
+> =C2=A0#ifdef CONFIG_X86_64
+> +		input =3D (u64)kvm_rax_read(vcpu);
+> =C2=A0		params[0] =3D (u64)kvm_rdi_read(vcpu);
+> =C2=A0		params[1] =3D (u64)kvm_rsi_read(vcpu);
+> =C2=A0		params[2] =3D (u64)kvm_rdx_read(vcpu);
 
 
-
---=-h9/NkfzlrAaTTiqUEi8g
+--=-AXLLwX8rID+iZB9TDCRJ
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -226,21 +196,21 @@ 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
-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
+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
-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
+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
 
 
---=-h9/NkfzlrAaTTiqUEi8g--
+--=-AXLLwX8rID+iZB9TDCRJ--
