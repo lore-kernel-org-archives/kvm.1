@@ -1,199 +1,168 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B35D433ADB9
-	for <kvm@vger.kernel.org>; Wed, 20 May 2026 16:19:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956343385B2;
+	Wed, 20 May 2026 16:20:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779293963; cv=none; b=U014RHWYj+Gn+2+DrLHQ+uJ378innDpGFxvNJljZ4Bm9IlcJrbq3+lDD0kNJduxXIRA4kAAYouXX8UHz+bo8unMkN7slJSiM2BDU3vi9N0zMDvz2N+PsK9KBJrE0w1G2afGPQ2BARZszjTXNfd8hi+taElQ6u6vKAvw0MuuAH2M=
+	t=1779294020; cv=none; b=BCMMPaxN/uhRPxKr5nbxknHYZMH0URS+wlyZ+OAgewZjLR+KIHlAZRIgeUz6qYs7WTTKjCS9qSx3jDta+5efX3Kme4PQmAC2ie+slY+wIKIaonmqFFGEU0HFZd7GgozmTqYdLJDob5DfPh4ZswCT+vHWzTUOBRg6sY0M0t++pOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779293963; c=relaxed/simple;
-	bh=JESk8fzbVfL/MwuI24RLNrPxL+cg5zyEjqsViWeknvg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Content-Type; b=EMBdJV2fDfv7N7oBLS5AM1bzE3zlousTIkGuRvQBxeHa4oSbPHq2BGXjOga7hHkHZpuLdFHEPiG4hJ2huo2W1s36B7VOPlychMaCT4D9maxJOgIPOUW7yoWtUk0/HwXTr2kQTfFCGuBcoXaUuGBvu2j7BrQBxXq8qaoHgYedSqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=c2oh30gO; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1779294020; c=relaxed/simple;
+	bh=bvpQZxLlvESVgRx5DsRdBcGxpbxx7htU+Nbqdlz9Qqw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=aJ7oEPuztQaqxRxyi5xuur3xJ7J6K4qwg3sXRyHEjbTWl1QdGeJ/S7Sk8CzvGLb9DcVZlQYumpnlBZqNxm+f4BIltnIfBVq9gzz8Qq7WzW+q5gCUPoYmIAvHQxT7rzyBLfzBUNJiGCMlc5GBsbAWvHKyRkvoYDcSziyW9mA+Ulg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=k2l8lV2v; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="c2oh30gO"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b2ecc96a9aso56985375ad.1
-        for <kvm@vger.kernel.org>; Wed, 20 May 2026 09:19:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779293960; x=1779898760; darn=vger.kernel.org;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=t0g28V3DslRSZVzdjcC1vE0SgoTvJEgyoXcUj1wZGdo=;
-        b=c2oh30gOgadCy0LbCp/DAiGYQuTMp1kbLvVN/qIy1TdA8NfpNmBKwOzKolxVk9jTjQ
-         Zzz4lQy0MkMK4eKvEZKJOmL3PPd4jv6ftOUqJPnNmumCvYSmA9naYWLVIdHFBzOzR7Hf
-         EK8citTSVEJRI/0uncTkM9UvqIDU5xGJWZZxQI/IxNrcLihJvwUbp5S2AYxcJ0ZzjGMV
-         99bW+BPiAwJfJCP29B3bDhvtn5WcttRODVgPo56ln/Ab0wJPpcr9AaTXvyKVkEHm47f3
-         b9lBxH/zRtSChV4HOjoMYL9Gjnift5XsW73bXAngvHIUfElFAibCyFqnf0ZnkWzttA/C
-         IzwA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779293960; x=1779898760;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=t0g28V3DslRSZVzdjcC1vE0SgoTvJEgyoXcUj1wZGdo=;
-        b=eot0vtSJqJzf7CVf9nBchicyc3wGBaBiLOdS5bx1SMkCAX3Eh3D6G0HHkhmqXnNlM0
-         PydAGqR3W0qnxvpYwMxU/vGfOdaCEPZEb2yOk7Jlh2WQGcJa5kTihbHbjbUxCCOSgqp0
-         lxePl/7XKLK7cj50V3r7vkwBHzAgrDxrJ+UcQx3OlKgze9bm6MvqoFlWwe16NTR/lVTz
-         GkjsUjDg/L2ZXK3Bbj4WkQXy77YMtDeJ7sNtPch7+DTV3WbSfwmeKl63QVDFPPRE9tG0
-         a9FSE0I8bFpwr5CCpy6tk1XMGgajS9QIZS+nUp01g0tvVzAoSWQKw5oDl3fOjGw01XBK
-         rwIA==
-X-Forwarded-Encrypted: i=1; AFNElJ+nthZHBKHh1SZ2TsUri8Qzo8wiulfwXZJvTckGuutD4iguu4xxsWWv83vbjAP35sxEsWY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzYZgTXU5MAzfZoAaOBNNxFY3SoJkaQBHtBkuuMfzzUx4zLuM9O
-	5Y0RjiZ/8Rrb/e9qxNMam1Jc+JcvW166Up6h0YCLnytdbkrWIWmuLY5f5xs/M7jLl8/ZHAF4X6S
-	d1Ztc/A==
-X-Received: from pgt38.prod.google.com ([2002:a63:1366:0:b0:c82:798f:628b])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a0a:b0:398:787c:d2e4
- with SMTP id adf61e73a8af0-3b22e7536c1mr27558941637.17.1779293959848; Wed, 20
- May 2026 09:19:19 -0700 (PDT)
-Date: Wed, 20 May 2026 09:19:19 -0700
-In-Reply-To: <20260515222638.1949982-11-seanjc@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="k2l8lV2v"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64K6mYp91522114;
+	Wed, 20 May 2026 16:20:13 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=OjNWer
+	M7KdyccfB86OenGSDqiENrepQBwwkiOuCBlFk=; b=k2l8lV2vurvYcy2jZkOt/i
+	FrSbab16fGVhFtOkpwKx8QfG6TRMiUbwFuulH6ApAN+GdIEd2oQhaPnB9owmIDvv
+	75q/rU0EKtxcmDHBn0oP9kiJ0w3Rhd+dDCxdYM3qVgFOZnjYaQP5qBNNsJXuIrJn
+	8XqBS7gkzSw1ArHibpCVn3On9QpV7tSmmA5DRjj2h+ojBzaCKoBFmC/gSkzkyUA+
+	q4pjUZ0EBxLrXUemornBL+kREqqHV3olpuC7iTyPCEnI4RoCvhF2JwR9Ywy9g07U
+	OO6+k3A+kjg/AHZoNvia2C76CK4q6/6fsFIfck6jI/Z3Uw2auNQpsbYuFnXQumXA
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h9y31ku-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 20 May 2026 16:20:13 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64KFsE2g015474;
+	Wed, 20 May 2026 16:20:12 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e73wk84p4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 20 May 2026 16:20:11 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64KGK6Tc60490170
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 20 May 2026 16:20:06 GMT
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E79082004B;
+	Wed, 20 May 2026 16:20:05 +0000 (GMT)
+Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A43DE20049;
+	Wed, 20 May 2026 16:20:05 +0000 (GMT)
+Received: from p-imbrenda (unknown [9.52.223.175])
+	by smtpav06.fra02v.mail.ibm.com (Postfix) with SMTP;
+	Wed, 20 May 2026 16:20:05 +0000 (GMT)
+Date: Wed, 20 May 2026 18:20:03 +0200
+From: Claudio Imbrenda <imbrenda@linux.ibm.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+        linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
+        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
+        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com,
+        pbonzini@redhat.com, yan.y.zhao@intel.com, isaku.yamahata@intel.com
+Subject: Re: [PATCH v1 3/4] KVM: selftests: Fix pre_fault_memory_test to run
+ on s390
+Message-ID: <20260520182003.7b170445@p-imbrenda>
+In-Reply-To: <ag3S3MjXHW4AeW_6@google.com>
+References: <20260520151710.231788-1-imbrenda@linux.ibm.com>
+	<20260520151710.231788-4-imbrenda@linux.ibm.com>
+	<ag3S3MjXHW4AeW_6@google.com>
+Organization: IBM
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.52; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260515222638.1949982-1-seanjc@google.com> <20260515222638.1949982-11-seanjc@google.com>
-Message-ID: <ag3fB0wB8-DHjUMC@google.com>
-Subject: Re: [PATCH v3 10/10] KVM: selftests: Verify VMX's GUEST_PENDING_DBG_EXCEPTIONS.BS
- Consistency Check
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Hou Wenlong <houwenlong.hwl@antgroup.com>, Lai Jiangshan <jiangshan.ljs@antgroup.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIwMDE1NiBTYWx0ZWRfX0+w+yKPcFFR+
+ RFtDLen9F7QLJSDtM3gOx1+q/zasx1WkdD9HTe0TVmiWkR9u9ouSJapq8FnDgG5n/mIkNYWRPrE
+ JT2jKL3N6VJkAy5Ts5hOJg/L9PH+uWJQXBv+mvA6kirQMr1gMjscFeGk2DfLLmXnTo4AX6Q2Wnz
+ MzX3FhJj48memqcgCcpSO4v/9LlTgUuJnubzbbm06cLVquuX3+57MgycIfcg5NaPvTVxGBUGq/t
+ vvccozSL/nnorlv16+SbUVg5xirI4M9aUdhwMVV16/3zGADru3D9OXwUrIvh1i08z83fjTZY938
+ fZE3pMQz+nTmrN64rQtI2KX2DUbcVtfjdnxvuWivUf3UvqyUgriGS9CckQVtvO1bKd1hk9tEN46
+ pLIgbniMbI6pDD28PelSRVazhSk4V+JsDDMcyDDxEdh7ZxQlsD7Xrg7IHe4C+s/hf7YnyqxMRvc
+ 5Wh2zBLBS7pwzzhR0fg==
+X-Authority-Analysis: v=2.4 cv=BNuDalQG c=1 sm=1 tr=0 ts=6a0ddf3d cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=1XWaLZrsAAAA:8
+ a=VnNF1IyMAAAA:8 a=6aIEw9uYXiUzMIZbHnsA:9 a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: Jgxl_FsFFR2lJ2ZbPil12KZWlBeVWtEd
+X-Proofpoint-GUID: aNj4-9CiqoVIF8cQmFqHHXZgMnSI678Q
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-20_03,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 malwarescore=0 impostorscore=0 suspectscore=0
+ lowpriorityscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605200156
 
-On Fri, May 15, 2026, Sean Christopherson wrote:
-> From: Hou Wenlong <houwenlong.hwl@antgroup.com>
+On Wed, 20 May 2026 08:27:24 -0700
+Sean Christopherson <seanjc@google.com> wrote:
+
+> On Wed, May 20, 2026, Claudio Imbrenda wrote:
+> > Add a missing #include <ucall_common.h> which is needed and otherwise
+> > not included on s390.
+> > 
+> > Fence the assertion  vcpu->run->exit_reason == KVM_EXIT_IO  so that it
+> > is only checked on x86. On s390 the UCALL will return with a different
+> > code.
+> > 
+> > Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
+> > ---
+> >  tools/testing/selftests/kvm/pre_fault_memory_test.c | 7 ++++---
+> >  1 file changed, 4 insertions(+), 3 deletions(-)
+> > 
+> > diff --git a/tools/testing/selftests/kvm/pre_fault_memory_test.c b/tools/testing/selftests/kvm/pre_fault_memory_test.c
+> > index fcb57fd034e6..42794892e902 100644
+> > --- a/tools/testing/selftests/kvm/pre_fault_memory_test.c
+> > +++ b/tools/testing/selftests/kvm/pre_fault_memory_test.c
+> > @@ -11,6 +11,7 @@
+> >  #include <kvm_util.h>
+> >  #include <processor.h>
+> >  #include <pthread.h>
+> > +#include <ucall_common.h>
+> >  
+> >  /* Arbitrarily chosen values */
+> >  #define TEST_SIZE		(SZ_2M + PAGE_SIZE)
+> > @@ -167,7 +168,6 @@ static void __test_pre_fault_memory(unsigned long vm_type, bool private)
+> >  		.type = vm_type,
+> >  	};
+> >  	struct kvm_vcpu *vcpu;
+> > -	struct kvm_run *run;
+> >  	struct kvm_vm *vm;
+> >  	struct ucall uc;
+> >  
+> > @@ -193,10 +193,11 @@ static void __test_pre_fault_memory(unsigned long vm_type, bool private)
+> >  	vcpu_args_set(vcpu, 1, gva);
+> >  	vcpu_run(vcpu);
+> >  
+> > -	run = vcpu->run;
+> > -	TEST_ASSERT(run->exit_reason == KVM_EXIT_IO,
+> > +#ifdef __x86_64__  
 > 
-> In x86's debug_regs test, add a test case to cover the scenario where a
-> single-step #DB occurs in an STI-shadow, in which case KVM needs to stuff
-> vmcs.GUEST_PENDING_DBG_EXCEPTIONS.BS in order to satisfy a flawed VM-Entry
-> Consistency Check.
+> I'd say just delete this assertion entirely.  It's an extra layer of paranoia to
+> guard against stale ucall data, but x86's ucall_arch_get_ucall() already has
+> sufficient guards.
+
+will do, thanks!
+
 > 
-> Wire up an IRQ handler to gain a bit of bonus coverage, as the subsequent
-> IRET from the #DB sets RFLAGS.IF, but *without* STI-blocking, and so the
-> pending IRQ is expected on the instruction immediately following STI.
-> 
-> Signed-off-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
-> [sean: expect the IRQ on the CLI, and explain why]
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> ---
->  tools/testing/selftests/kvm/x86/debug_regs.c | 64 ++++++++++++++++++--
->  1 file changed, 60 insertions(+), 4 deletions(-)
-> 
-> diff --git a/tools/testing/selftests/kvm/x86/debug_regs.c b/tools/testing/selftests/kvm/x86/debug_regs.c
-> index ee9d0f3a5807..6299e921dc27 100644
-> --- a/tools/testing/selftests/kvm/x86/debug_regs.c
-> +++ b/tools/testing/selftests/kvm/x86/debug_regs.c
-> @@ -15,11 +15,46 @@
->  
->  #define IRQ_VECTOR 0xAA
->  
-> +#define  CAST_TO_RIP(v)  ((unsigned long long)&(v))
-> +
->  /* For testing data access debug BP */
->  u32 guest_value;
->  
->  extern unsigned char sw_bp, hw_bp, write_data, ss_start, bd_start;
-> -extern unsigned char fep_bd_start;
-> +extern unsigned char fep_bd_start, fep_sti_start, fep_sti_end;
-> +
-> +static void guest_db_handler(struct ex_regs *regs)
-> +{
-> +	static int count;
-> +	unsigned long target_rips[2] = {
-> +		CAST_TO_RIP(fep_sti_start),
-> +		CAST_TO_RIP(fep_sti_end),
-> +	};
-> +
-> +	__GUEST_ASSERT(regs->rip == target_rips[count],
-> +	               "STI[%u]: unexpected rip 0x%lx (should be 0x%lx)",
-> +		       count, regs->rip, target_rips[count]);
-> +	regs->rflags &= ~X86_EFLAGS_TF;
-> +	count++;
-> +}
-> +
-> +static void guest_irq_handler(struct ex_regs *regs)
-> +{
-> +	/*
-> +	 * The pending IRQ should finally be take when KVM_GUESTDBG_BLOCKIRQ is
-> +	 * cleared and IRQs are enabled.  Note, the IRQ is expected to arrive
-> +	 * on the instruction immediately after STI, even though its in an STI
-> +	 * shadow.  Because the next instruction has a coincident #DB, and #DBs
-> +	 * are not subject to STI-blocking, the #DB will push RFLAGS.IF=1 on
-> +	 * the stack, and the eventual IRET will unmask IRQs and obliterate the
-> +	 * STI shadow in the process.
-> +	 */
-> +	unsigned long target_rip = CAST_TO_RIP(fep_sti_start);
-> +
-> +	__GUEST_ASSERT(regs->rip == target_rip,
-> +		       "IRQ: unexpected rip 0x%lx (should be 0x%lx)",
-> +		       regs->rip, target_rip);
-
-From Sashiko:
-
- : Is an End of Interrupt (EOI) acknowledgment required here?
- : 
- : The handler is triggered by an APIC interrupt injected earlier in the test,
- : but does not write to the APIC_EOI register to acknowledge it.
- : 
- : While it might not fail this specific test since it ends immediately after,
- : does failing to send an EOI leave the interrupt permanently marked as
- : in-service in the local APIC state machine?
-
-Yes, this will leave the IRQ dangling in the ISR.  It doesn't really matter, but
-I'll throw in a:
-
-	x2apic_write_reg(APIC_EOI, 0);
-
-when applying.
-
-> +}
->  
->  static void guest_code(void)
->  {
-> @@ -66,14 +101,32 @@ static void guest_code(void)
->  	/* DR6.BD test */
->  	asm volatile("bd_start: mov %%dr0, %%rax" : : : "rax");
->  
-> -	if (is_forced_emulation_enabled)
-> +	/*
-> +	 * Note, the IRET from the #DB that occurs in the below STI-shadow will
-> +	 * unmask IRQs, i.e. the pending interrupt will be delivered after #DB
-> +	 * handling, on the CLI!
-> +	 */
-> +	if (is_forced_emulation_enabled) {
->  		asm volatile(KVM_FEP "fep_bd_start: mov %%dr0, %%rax" : : : "rax");
->  
-> +		/* pending debug exceptions for emulation */
-> +		asm volatile("pushf\n\t"
-> +			     "orq $" __stringify(X86_EFLAGS_TF) ", (%rsp)\n\t"
-> +			     "popf\n\t"
-> +			     "sti\n\t"
-> +			     "fep_sti_start:"
-> +			     "cli\n\t"
-> +			     "pushf\n\t"
-> +			     "orq $" __stringify(X86_EFLAGS_TF) ", (%rsp)\n\t"
-> +			     "popf\n\t"
-> +			     KVM_FEP "sti\n\t"
-> +			     "fep_sti_end:"
-> +			     "cli\n\t");
-> +	}
-> +
-
-Also from Sashiko:
-
- : Does the test verify that the expected #DB and IRQ events actually occurred?
- : 
- : The assertions are placed inside guest_db_handler() and guest_irq_handler(),
- : but if a bug causes the exceptions to be dropped completely, the guest
- : will simply proceed to execute GUEST_DONE() without error.
- : 
- : Should there be a shared state variable to assert that the handlers fired
- : the expected number of times before concluding the test?
-
-Another "yes".  I'll add an assert that the IRQ actually fired.
+> > +	TEST_ASSERT(vcpu->run->exit_reason == KVM_EXIT_IO,
+> >  		    "Wanted KVM_EXIT_IO, got exit reason: %u (%s)",
+> >  		    run->exit_reason, exit_reason_str(run->exit_reason));
+> > +#endif
+> >  
+> >  	switch (get_ucall(vcpu, &uc)) {
+> >  	case UCALL_ABORT:
+> > -- 
+> > 2.54.0
+> >   
 
