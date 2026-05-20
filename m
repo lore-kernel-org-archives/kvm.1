@@ -1,160 +1,231 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EFD5376A01
-	for <kvm@vger.kernel.org>; Wed, 20 May 2026 11:02:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5C83DA7E0
+	for <kvm@vger.kernel.org>; Wed, 20 May 2026 11:13:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779274964; cv=none; b=T0S8PRIcUUJiDSKu5E1nUHkEqCL6TqOYngQFHZbyUqlUCqupkbWjA9ZUeBaI/mXNS7nHpdtjeA6uEJZy1G9IjWLAUyidjVYDvOpVxTuMbbA6p0IQgYcQfzEwZQ+C3zKuhBSF9v+scdjPWSyIyUUZEWGI7W2AaL0YfDybkQm5b8M=
+	t=1779275611; cv=none; b=tzdRk/Cz/chn/90kQ7WZLEwaMoq+7OwYujOB+Ngx0cN5LkgzHF3U/7Fs7oFzCnZiEyN0BmYVmk+4envMzd9vwyMqepyOkifV8dwgS7iaJ4nzlrrqUNx0vD4xH42YpHswrIA9hc9JPbwmkpq68cvn6OOp5/qIVylUhoZCRLP5pls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779274964; c=relaxed/simple;
-	bh=+7+/q8LAlMzLlWk1znO+lD248Sp+weOvZS73ENKy0kk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=or5q3aBvO3aaCWSS9BPs8Pzn2sPLzX8Z7OmpbcP0mPkBaIcx7F2VKRbEs6Hx+A0zOJLi6Hfai64UtEQ2T9jq0mubJ4+eGzDIUud12vTHcj0ExHVKHVgYgcr0XChG/nrjYncBDpVeDRgVkw8kquq1X91SB/i8YNBYk02RvWdhJ3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=klKpCENe; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1779275611; c=relaxed/simple;
+	bh=LB77Ys2RRwRm1hr3O1UekBIbN8KchsKwolvZBHqv6S8=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=MHKk8DMKkjL+IunIXSxKud16hwn8PxT+1yOwh4FlP6zCUUxX6WafXBsO94Iu4jSFm7fmSSX/0qmZQTWIeFY6GVcXW7O1rjZG5YhCIZcjPwo1Cq6LKKEyYUZpyCu09hSpxRGbmtqxlNz35SmPV+qItm24XhE6nIfSA2lamZZ0R8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I+GujgGV; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="klKpCENe"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E0DEE175A;
-	Wed, 20 May 2026 04:02:34 -0700 (PDT)
-Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4CFCC3F85F;
-	Wed, 20 May 2026 04:02:38 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779274960; bh=+7+/q8LAlMzLlWk1znO+lD248Sp+weOvZS73ENKy0kk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=klKpCENeYWVeS8V9assoUHjXrxQPA4+oCwfz857IRdqVxqQLfPyvVl4yqxb4K/YcR
-	 fEAdP4ISyjfLCwKMIuGSjsfMn8k/s7nhn3wy486zgkUtepNstLit8PmKt82OUaqZZy
-	 R8egHGygvWRT9MV+aNt4Zpb9/HXcanyY8pZkV9n4=
-Date: Wed, 20 May 2026 12:02:31 +0100
-From: Joey Gouly <joey.gouly@arm.com>
-To: Marc Zyngier <maz@kernel.org>
-Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	kvm@vger.kernel.org, Steffen Eiden <seiden@linux.ibm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
-	Mark Rutland <mark.rutland@arm.com>, Will Deacon <will@kernel.org>,
-	Fuad Tabba <tabba@google.com>
-Subject: Re: [PATCH v2 2/2] KVM: arm64: nv: Don't save/restore FP register
- during a nested ERET or exception
-Message-ID: <20260520110231.GA4005903@e124191.cambridge.arm.com>
-References: <20260520085036.541666-1-maz@kernel.org>
- <20260520085036.541666-3-maz@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I+GujgGV"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-36a15ed5119so1184072a91.3
+        for <kvm@vger.kernel.org>; Wed, 20 May 2026 04:13:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779275610; x=1779880410; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=knwXJ3JEsH6Jmlubb4WZUNQijYP0NQzOunR3rtuM3uE=;
+        b=I+GujgGVUxjyNZMP8kvVNgz2+DaSJlH45Iz2vo6HSvjMYqtA2LRlPQjzvtKJWD38gN
+         zFTNqJxroFySoIoqEgj+0CfhI9HKCeHyJeRXaNsPpoIhUwNc6ElFnekJPRFvxNn9jcsu
+         GiUpUAZN8DNnI4l5w/fItOozurRoNZA5vIBnh1vy+bOaJ6LPwWouwzLTVReB0+wiQwkt
+         hUtUHTCENSQznZ7QixsxLNN+obQJratBQb0lkvNB3YQOJXCIuqUow0UMq0KwKrqc/ULg
+         9f4ZUGxbEBrP+X8DL9LWk9njMjCl8rDV68TIk/b3wvuC5WNyWAgoL1VYWyLIwCIp+2r2
+         j4wQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779275610; x=1779880410;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=knwXJ3JEsH6Jmlubb4WZUNQijYP0NQzOunR3rtuM3uE=;
+        b=AT2PpdHAG4K5u3PqIUP/dqOVVCOu5qHBsfT1LJM7hX1ZkQrzTg6fKQwsEKLa60qPnc
+         mjA2um7xrIRCWvnpQeDAcZwoLjKR1oznnEt8G5HU9L+hp/VQTN3knc/SmRvI0n6LNUKA
+         tkL1zJJP5+P/ARmAgAJoCugmCNT37OLukMQRLk7w17Y+2a59v8ayKvAt2FWAFa6Dl6AT
+         ixyEPzfGhHXa6o9CKya7Za+6VSScubXGP6ZLZpOMYHccqbANZGNdrj3pNr7xgMfP6rRf
+         vSfXcQrp2zzXklTPMLshFzM8G0IRZKuAixRPAbJmyqmsF4dMcEcETcmZlkUky2IEVXOc
+         62UA==
+X-Forwarded-Encrypted: i=1; AFNElJ/xz6GmqT32ZVCLq7Q5ltQObPgd4Cqj2U2lLIA0/DQfVlPOR6qFzH/mhqFAy3jDbVTFIdY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4xNxqI1Oosx7lcJ/JlmDo6HAHA6UNfaOPz3KLfj+BA+lieyTn
+	yPvWGG2NyWubLd/3fbOMjsG1twh1+AIlnv13EAr+OJCntuzpAd4QJ8lM
+X-Gm-Gg: Acq92OGMWUTZfEXd0ft7C0zl5Kmw2xTOqGZSS8pLsbTpjyroKrrtbqcBpGj04E/v45s
+	WS1G58dBI7Bp2KD9mWUfb7R1ynCZocJoF6ix7YTzVv5bE6ezxYhZBXEll0DantD5PZk1u/0WBCd
+	Becu4xc+vr8GXgGY0bOiVevb35cOUf1z4elAozKYEHQMoJZENmC6IJWaQ8ZkXE6b3ZPBPNxvB1T
+	01xJzX2Z2aLq11L1UtYHlQDNEp5rnhqh1DPqm0AqOSjSjZAj6FR2CMEo/enpdEpeJTk9jI793vw
+	pzG71wZV6E1rWB+Le30K75nfJb52mwZrIEh36StH2EH+zN0H1Ikt1Az6ix1MQxT04rUxwhBMux8
+	pcbSMn5vXvmNnW4LdD/X98huE2t7kzz2pTbDf5qeb8M2HrSJxm14N67pxaIJmyPiccTBKBwPpNN
+	3VsFZU19IhkMkAhZxwnzPUR6l4CVy+GizijD8+jRFdfWw=
+X-Received: by 2002:a17:90a:51e6:b0:369:932a:2b6d with SMTP id 98e67ed59e1d1-369932a2fa4mr10716050a91.6.1779275609695;
+        Wed, 20 May 2026 04:13:29 -0700 (PDT)
+Received: from name2965-Precision-7820-Tower.. ([14.48.8.61])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36951278e7fsm17171421a91.8.2026.05.20.04.13.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2026 04:13:29 -0700 (PDT)
+From: Jeongjun Park <aha310510@gmail.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: David Woodhouse <dwmw@amazon.co.uk>,
+	Paul Durrant <pdurrant@amazon.com>,
+	Sean Christopherson <seanjc@google.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	syzbot+0948c82180d475ad24e2@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>
+Subject: [PATCH] KVM: pfncache: track HVA invalidations for HVA-based caches
+Date: Wed, 20 May 2026 20:13:25 +0900
+Message-Id: <20260520111325.693807-1-aha310510@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260520085036.541666-3-maz@kernel.org>
+Content-Transfer-Encoding: 8bit
 
-Hi Marc,
+HVA-based gfn_to_pfn caches are not necessarily backed by a KVM memslot.
+When an MMU notifier invalidation targets such an HVA, KVM's global
+mmu_invalidate_seq is not guaranteed to change because that sequence is
+advanced through the memslot-based invalidation path.
 
-On Wed, May 20, 2026 at 09:50:36AM +0100, Marc Zyngier wrote:
-> When switching between L1 and L2, we save the old state using
-> kvm_arch_vcpu_put(), mutate the state in memory, then load the new
-> state using kvm_arch_vcpu_load(). Any live FPSIMD/SVE state is saved
-> and unbound, such that it can be lazily restored on a subsequent trap.
-> 
-> The FPSIMD/SVE state is shared by exception levels, and only a handful
-> of related control registers need to be changed when transitioning
-> between L1 and L2. The save/restore of the common state is needless
-> overhead, especially as trapping becomes exponentially more expensive
-> with nesting.
-> 
-> Avoid this overhead by leaving the common FPSIMD/SVE state live on the
-> CPU, and only switching the state that is distinct for L1 and L2:
+This matters during hva_to_pfn_retry(). The refresh path temporarily
+marks the cache invalid and drops gpc->lock while resolving the HVA and
+creating a kernel mapping. If an overlapping HVA invalidation completes in
+that window, the notifier may observe gpc->valid == false and therefore
+leave no state behind for the in-progress refresh. For an HVA outside all
+memslots, the refresh cannot rely on mmu_invalidate_seq to detect the
+event either.
 
-To make sure I understand this part:
-	
-	L1 sets up L2's FP state live on the CPU 
-	L1 erets
-	eret traps to L0/host
-	preemption disabled
-	kvm_arch_vcpu_put()
-	    kvm_arch_vcpu_put_fp() <-- actually saves the state of the live registers
-	.. set elr etc ..
-	kvm_arch_vcpu_load()
-	    kvm_arch_vcpu_load_fp() <-- doesn't actually restore state, but ensures
-                                        the CPTR trap will be set
-        .. returns to L2 (traps on first use of FP and state will be restored)
-	
-So this patch is (effectively) removing the put_fp()/load_fp(), because the FP
-state is common/shared between L1 and L2, so whatever L1 put into that state
-before the eret, L2 was going to see.
+To prevent this, we must add a per-cache HVA invalidation sequence.
+Bump the sequence whenever the cached HVA overlaps an MMU notifier range,
+regardless of the current valid state. Snapshot the sequence before
+dropping gpc->lock in hva_to_pfn_retry(), and retry the refresh if it
+changes before the new mapping is published.
 
-If my understanding is correct:
-Reviewed-by: Joey Gouly <joey.gouly@arm.com>
+Reported-by: syzbot+0948c82180d475ad24e2@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/6a0c5f2c.a00a0220.2c7954.0000.GAE@google.com/
+Fixes: b9220d32799a ("KVM: x86/xen: allow shared_info to be mapped by fixed HVA")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+---
+ include/linux/kvm_types.h |  1 +
+ virt/kvm/pfncache.c       | 42 ++++++++++++++++++++++++++++++++-------
+ 2 files changed, 36 insertions(+), 7 deletions(-)
 
-Thanks,
-Joey
-
-> 
-> - the trap controls: the effective values are recomputed on each entry
->   into the guest to take the EL into account and merge the L0 and L1
->   configuration if in a nested context, or directly use the L0 configuration
->   in non-nested context (see __activate_traps()).
-> 
-> - the VL settings: the effective values are are also recomputed on each
->   entry into the guest (see fpsimd_lazy_switch_to_guest()).
-> 
-> Since we appear to cover all bases, use the vcpu flags indicating the
-> handling of a nested ERET or exception delivery to avoid the whole FP
-> save/restore shenanigans. SME will have to be similarly dealt with when
-> it eventually gets supported.
-> 
-> For an EL1 L3 guest where L1 and L2 have this optimisation, this
-> results in at least a 10% wall clock reduction when running an I/O
-> heavy workload, generating a high rate of nested exceptions.
-> 
-> Signed-off-by: Marc Zyngier <maz@kernel.org>
-> ---
->  arch/arm64/kvm/fpsimd.c | 23 +++++++++++++++++++++++
->  1 file changed, 23 insertions(+)
-> 
-> diff --git a/arch/arm64/kvm/fpsimd.c b/arch/arm64/kvm/fpsimd.c
-> index 15e17aca1dec0..aca98752a6e42 100644
-> --- a/arch/arm64/kvm/fpsimd.c
-> +++ b/arch/arm64/kvm/fpsimd.c
-> @@ -28,6 +28,20 @@ void kvm_arch_vcpu_load_fp(struct kvm_vcpu *vcpu)
->  	if (!system_supports_fpsimd())
->  		return;
->  
-> +	/*
-> +	 * Avoid needless save/restore of the guest's common
-> +	 * FPSIMD/SVE/SME regs during transitions between L1/L2.
-> +	 *
-> +	 * These transitions only happens in a non-preemptible context
-> +	 * where the host regs have already been saved and unbound. The
-> +	 * live registers are either free or owned by the guest.
-> +	 */
-> +	if (vcpu_get_flag(vcpu, IN_NESTED_ERET) ||
-> +	    vcpu_get_flag(vcpu, IN_NESTED_EXCEPTION)) {
-> +		WARN_ON_ONCE(host_owns_fp_regs());
-> +		return;
-> +	}
-> +
->  	/*
->  	 * Ensure that any host FPSIMD/SVE/SME state is saved and unbound such
->  	 * that the host kernel is responsible for restoring this state upon
-> @@ -102,6 +116,15 @@ void kvm_arch_vcpu_put_fp(struct kvm_vcpu *vcpu)
->  {
->  	unsigned long flags;
->  
-> +	/*
-> +	 * See comment in kvm_arch_vcpu_load_fp().
-> +	 */
-> +	if (vcpu_get_flag(vcpu, IN_NESTED_ERET) ||
-> +	    vcpu_get_flag(vcpu, IN_NESTED_EXCEPTION)) {
-> +		WARN_ON_ONCE(host_owns_fp_regs());
-> +		return;
-> +	}
-> +
->  	local_irq_save(flags);
->  
->  	if (guest_owns_fp_regs()) {
-> -- 
-> 2.47.3
-> 
+diff --git a/include/linux/kvm_types.h b/include/linux/kvm_types.h
+index a568d8e6f4e8..ff3b8aa73561 100644
+--- a/include/linux/kvm_types.h
++++ b/include/linux/kvm_types.h
+@@ -85,6 +85,7 @@ struct gfn_to_pfn_cache {
+ 	u64 generation;
+ 	gpa_t gpa;
+ 	unsigned long uhva;
++	unsigned long hva_invalidate_seq;
+ 	struct kvm_memory_slot *memslot;
+ 	struct kvm *kvm;
+ 	struct list_head list;
+diff --git a/virt/kvm/pfncache.c b/virt/kvm/pfncache.c
+index 728d2c1b488a..296b06482ebc 100644
+--- a/virt/kvm/pfncache.c
++++ b/virt/kvm/pfncache.c
+@@ -19,6 +19,24 @@
+ 
+ #include "kvm_mm.h"
+ 
++static inline bool gpc_uhva_in_range(struct gfn_to_pfn_cache *gpc,
++			      unsigned long start, unsigned long end)
++{
++	return gpc->uhva >= start && gpc->uhva < end;
++}
++
++static inline bool gpc_should_invalidate(struct gfn_to_pfn_cache *gpc,
++				  unsigned long start, unsigned long end)
++{
++	if (!gpc_uhva_in_range(gpc, start, end))
++		return false;
++
++	if (kvm_gpc_is_hva_active(gpc))
++		return true;
++
++	return gpc->valid && !is_error_noslot_pfn(gpc->pfn);
++}
++
+ /*
+  * MMU notifier 'invalidate_range_start' hook.
+  */
+@@ -32,8 +50,7 @@ void gfn_to_pfn_cache_invalidate_start(struct kvm *kvm, unsigned long start,
+ 		read_lock_irq(&gpc->lock);
+ 
+ 		/* Only a single page so no need to care about length */
+-		if (gpc->valid && !is_error_noslot_pfn(gpc->pfn) &&
+-		    gpc->uhva >= start && gpc->uhva < end) {
++		if (gpc_should_invalidate(gpc, start, end)) {
+ 			read_unlock_irq(&gpc->lock);
+ 
+ 			/*
+@@ -45,9 +62,11 @@ void gfn_to_pfn_cache_invalidate_start(struct kvm *kvm, unsigned long start,
+ 			 */
+ 
+ 			write_lock_irq(&gpc->lock);
+-			if (gpc->valid && !is_error_noslot_pfn(gpc->pfn) &&
+-			    gpc->uhva >= start && gpc->uhva < end)
++			if (gpc_should_invalidate(gpc, start, end)) {
++				if (kvm_gpc_is_hva_active(gpc))
++					gpc->hva_invalidate_seq++;
+ 				gpc->valid = false;
++			}
+ 			write_unlock_irq(&gpc->lock);
+ 			continue;
+ 		}
+@@ -124,8 +143,11 @@ static void gpc_unmap(kvm_pfn_t pfn, void *khva)
+ #endif
+ }
+ 
+-static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long mmu_seq)
++static inline bool mmu_notifier_retry_cache(struct gfn_to_pfn_cache *gpc,
++					    unsigned long mmu_seq, unsigned long hva_seq)
+ {
++	struct kvm *kvm = gpc->kvm;
++
+ 	/*
+ 	 * mn_active_invalidate_count acts for all intents and purposes
+ 	 * like mmu_invalidate_in_progress here; but the latter cannot
+@@ -149,7 +171,10 @@ static inline bool mmu_notifier_retry_cache(struct kvm *kvm, unsigned long mmu_s
+ 	 * new (incremented) value of mmu_invalidate_seq is observed.
+ 	 */
+ 	smp_rmb();
+-	return kvm->mmu_invalidate_seq != mmu_seq;
++	if (kvm->mmu_invalidate_seq != mmu_seq)
++		return true;
++
++	return gpc->hva_invalidate_seq != hva_seq;
+ }
+ 
+ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+@@ -159,6 +184,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+ 	kvm_pfn_t new_pfn = KVM_PFN_ERR_FAULT;
+ 	void *new_khva = NULL;
+ 	unsigned long mmu_seq;
++	unsigned long hva_seq;
+ 	struct page *page;
+ 
+ 	struct kvm_follow_pfn kfp = {
+@@ -182,6 +208,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+ 
+ 	do {
+ 		mmu_seq = gpc->kvm->mmu_invalidate_seq;
++		hva_seq = gpc->hva_invalidate_seq;
+ 		smp_rmb();
+ 
+ 		write_unlock_irq(&gpc->lock);
+@@ -232,7 +259,7 @@ static kvm_pfn_t hva_to_pfn_retry(struct gfn_to_pfn_cache *gpc)
+ 		 * attempting to refresh.
+ 		 */
+ 		WARN_ON_ONCE(gpc->valid);
+-	} while (mmu_notifier_retry_cache(gpc->kvm, mmu_seq));
++	} while (mmu_notifier_retry_cache(gpc, mmu_seq, hva_seq));
+ 
+ 	gpc->valid = true;
+ 	gpc->pfn = new_pfn;
+@@ -391,6 +418,7 @@ void kvm_gpc_init(struct gfn_to_pfn_cache *gpc, struct kvm *kvm)
+ 	gpc->pfn = KVM_PFN_ERR_FAULT;
+ 	gpc->gpa = INVALID_GPA;
+ 	gpc->uhva = KVM_HVA_ERR_BAD;
++	gpc->hva_invalidate_seq = 0;
+ 	gpc->active = gpc->valid = false;
+ }
+ 
+--
