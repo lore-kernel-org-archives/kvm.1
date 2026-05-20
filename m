@@ -1,213 +1,322 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62AC8369D7E;
-	Wed, 20 May 2026 18:52:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0B1318ED6;
+	Wed, 20 May 2026 18:53:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779303143; cv=none; b=mo+BWdLkJisEX0K6wQieIcmz7c6yThtVWlS+BdBkuWghls0bxECq34f0Ir3ctsLoQcpkQYia4VeNeIIwSu3R4i8/kk7zPeaY3yIKMA8DO7+xH8D3kdKMfeylrA3lMXxP4Tj+80fn9qV5AUpwwiu++GwgPaeKkbYWXLp+CY2ppYo=
+	t=1779303242; cv=none; b=oJefeaIT2PSjxV8YtgM/cu0hPTJe53Kc3pmbvVIdI3lnwKGucytdfQeX/ZT/FfaozJ1c9UyLUx99KxMy3PO+gB50e8kiJHl2Fd47+oTWeSM3971AhJoLHnGrb7TZundyedl4GXaPtWLnK+7h0HZOp7atiVEO+zSS+lEvaFLEu3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779303143; c=relaxed/simple;
-	bh=QjAnceuew11RIwWs2DQFFNl23Bhtsg/GKQH/i+NDfAM=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=NH802Dirjl/+lVhsmbe2NuvsAZE4bNk+k80Gs1QR9s3qbuqHl0Eiub/pNhesVCqZKImfyswyEgq8x+ihXkmijf1I65fSuCG+W0ULhmC7+UOzN8BnR9BEXK1VXrJZPVHKpzG1bVBNsQHeaWA0dTez3rLb2CiWMJ9Re6gSCrVwlJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=lgUr7i8E; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1779303242; c=relaxed/simple;
+	bh=O7bk/p5xxJij8SY/tXxCYR60LXo7CFl6+XP/lhcyShE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Zxn06V46QFT1JH6PMk3Taj2d999t+6w1De0YOYdixzt/pftH1ggakcaNRl3xiUMUGGdyzaa0Ci9B1GIczVoe4HVauTXQXlD4r5VrtsyCjtMDZjUid3PcLvcHUjNW8IsIQR4HG6S+DrozGCRu0N71o+HFk42xWCoFo67vCbmry7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=oiifBTtB; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=SRl2o1FL; arc=none smtp.client-ip=202.12.124.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="lgUr7i8E"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=eRikeJAaevbA4NP2g19rUNwI2NZyhVnTYBWtQ7dcaAU=; b=lgUr7i8EL2F8QaWtzohapoINjb
-	dAnsORiobdYMPtmsSDZ/QRiN7s1rJUCLo9RKbLoIg7hISvL/AVEQZV+KPYSUfrPlPLBx6WxW38sGS
-	StE/N1VLLOq2EXBHiHp5tpuj4XnsA94KqqySKjvCZH1818yr33rWd2lt3i8Z7+V5eDgAVvzdgankH
-	o6qQUd23ZxwUk68fsqyexc2ORewi6gkpiiPpEOsilLASL6yk5nr0Xj2C2toi+f9IuAfZLfUPegn0l
-	dMC3Fcyo7XJFJ3v8+0OXg/iwVZLcN5GdGUs4G5fr4w3PaILbl4vVz1q0UuQpfAUDYMnvOFqzrUtKR
-	sQuhKA1A==;
-Received: from 54-240-197-227.amazon.com ([54.240.197.227] helo=freeip.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPm1d-00000007UNm-3bew;
-	Wed, 20 May 2026 18:52:14 +0000
-Message-ID: <0a3aa07a1d3c4bec2b89f8026093969155b73caa.camel@infradead.org>
-Subject: Re: [PATCH v3 41/41] x86/kvmclock: Get CPU base frequency from
- CPUID when it's available
-From: David Woodhouse <dwmw2@infradead.org>
-To: Sean Christopherson <seanjc@google.com>, Kiryl Shutsemau
- <kas@kernel.org>,  Paolo Bonzini <pbonzini@redhat.com>, "K. Y. Srinivasan"
- <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu
- <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Long Li
- <longli@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, Alexey
- Makhalov <alexey.makhalov@broadcom.com>,  Jan Kiszka
- <jan.kiszka@siemens.com>, Dave Hansen <dave.hansen@linux.intel.com>, Andy
- Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Juergen Gross <jgross@suse.com>, Daniel Lezcano
- <daniel.lezcano@kernel.org>, Thomas Gleixner <tglx@kernel.org>, John Stultz
- <jstultz@google.com>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>, Vitaly Kuznetsov
- <vkuznets@redhat.com>, Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Boris Ostrovsky
- <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>,
- x86@kernel.org,  linux-coco@lists.linux.dev, kvm@vger.kernel.org,
- linux-hyperv@vger.kernel.org,  virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org,  xen-devel@lists.xenproject.org, Michael
- Kelley <mhklinux@outlook.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- Nikunj A Dadhania <nikunj@amd.com>, Thomas Gleixner <tglx@linutronix.de>
-Date: Wed, 20 May 2026 19:52:12 +0100
-In-Reply-To: <20260515191942.1892718-42-seanjc@google.com>
-References: <20260515191942.1892718-1-seanjc@google.com>
-	 <20260515191942.1892718-42-seanjc@google.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-iph/FD/9Oere6U4F6y6S"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="oiifBTtB";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="SRl2o1FL"
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 316E37A0069;
+	Wed, 20 May 2026 14:53:58 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-11.internal (MEProxy); Wed, 20 May 2026 14:53:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1779303237;
+	 x=1779389637; bh=MTpz+peHYiecvc6XYTPMZbwBhAdBOsmpXC4f3tmOEGk=; b=
+	oiifBTtBkGW7NnJEX0WN68jTtE/nE/um9QvvAzm8jeUdD2pBMyIquGroBygksJwq
+	QrjxEGZtyuhk5VDdqOTdIga61UDFgHkwX0mkXzEa8hT1u9RgFnIStCSIqKQ5M2Qy
+	yQe6dKfpaDdVyNSZpZPLPMgNumzTFY7ZbY+9eeHH5d1UXB3+hvEzs/bZys771G9F
+	mB9tBkrgsA8N+d2A3ZwWy5HIMiwHglZYUXxh1oYgILAeICiLggtO5D/rypqpsRLR
+	+JycVcdu4bddDZ2uABjlBfnIWdTmLurOSc+1E92s3+c4nHZ63VlEXk/kAsnEQZc/
+	0Gma50A5roiVaULnvaUngg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779303237; x=
+	1779389637; bh=MTpz+peHYiecvc6XYTPMZbwBhAdBOsmpXC4f3tmOEGk=; b=S
+	Rl2o1FL0kn9l3fMsK3iRhx2xs5hWwjpmzK54/2vjfiZng0LItxws1U2HHLcBwLr8
+	6diDIAEQQ7Cp5UMzFg86pO2Em2Hx6Q8XcXyArBhfqIqcasXreWw6xlkk8Xuju8r9
+	oAKRpXeUUw5JTXgRE+yfFuTFdODWpZFBRQs9iHNkQmjq1BPU6Q7elgZmdyFzykpk
+	E8/46seEcntYJU+IJ5YYstNNN2xNC3MiPu4UoEQtf3NpaXjf9u7rXBti27d91RJ3
+	76iZnsOZVyOQoIc4IWTnrCZ+qZasR7c91uCYnuNOSJ/H3IOK8uA0C8laW0BFPKYR
+	cLkwDNLLc7F+BFjW/lnnA==
+X-ME-Sender: <xms:RQMOavLdZoTjLHGDXoeXZcgrFwhKuKja18ySo8L2yv1431uJovkeug>
+    <xme:RQMOajmi7VOD4XlWr8iP4YX4u4_NaL4yR4SimDr6OlQGGYEvmHwrCCGMu-BvPMwLX
+    Hd0_Ifbu7d4ds7PTGYUzQBoA2axfe5DfOl36Ux0JeutEHRL_zOX>
+X-ME-Received: <xmr:RQMOaoZEgP_qJyGQnTL6l5Wg8ObXJI6u8ojCSokQnnlkylwVPKvdvWRUohA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddugeehgedtucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
+    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
+    htthgvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudeg
+    veeuueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepledpmhhouggvpehs
+    mhhtphhouhhtpdhrtghpthhtoheprhgrnhgrnhhtrgesghhoohhglhgvrdgtohhmpdhrtg
+    hpthhtohepughmrghtlhgrtghksehgohhoghhlvgdrtghomhdprhgtphhtthhopehvihhp
+    ihhnshhhsehgohhoghhlvgdrtghomhdprhgtphhtthhopehjrhhhihhlkhgvsehgohhogh
+    hlvgdrtghomhdprhgtphhtthhopehkvhhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhr
+    tghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthht
+    ohepjhhgghesiihivghpvgdrtggrpdhrtghpthhtoheprghlvgigsehshhgriigsohhtrd
+    horhhg
+X-ME-Proxy: <xmx:RQMOav93gd7vOiTgTCyw6pWA2WsOdz7_V9OpG2V5vEIRztYB-3nh_A>
+    <xmx:RQMOanZqqUPU5nrQ5nykVOqGbymUvo3IIjU1cPjQ8zi9cL054rsHnA>
+    <xmx:RQMOapdZBa7GTewQhGya1zgrq2cPQRWBxZpchDgr1RV8Yvd_fuBTMg>
+    <xmx:RQMOakmnFszqFGOUyb_ESL836ZLS9qPyG2HchI7z9Sa88caL367_DQ>
+    <xmx:RQMOanlMmmEB_ijbtg-nWDcqpuS0_M7T3s8rSz6zoE4wStHjuW7Ov6rH>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 20 May 2026 14:53:56 -0400 (EDT)
+Date: Wed, 20 May 2026 12:53:54 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Raghavendra Rao Ananta <rananta@google.com>
+Cc: David Matlack <dmatlack@google.com>, Vipin Sharma <vipinsh@google.com>,
+ Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org,
+ linux-kernel@vger.kernel.org, stable@vger.kernel.org, Jason Gunthorpe
+ <jgg@ziepe.ca>, alex@shazbot.org
+Subject: Re: [PATCH v2] vfio/pci: Use a private flag to prevent power state
+ change with VFs
+Message-ID: <20260520125354.2e028b46@shazbot.org>
+In-Reply-To: <20260514173449.3282188-1-rananta@google.com>
+References: <20260514173449.3282188-1-rananta@google.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
+On Thu, 14 May 2026 17:34:49 +0000
+Raghavendra Rao Ananta <rananta@google.com> wrote:
 
---=-iph/FD/9Oere6U4F6y6S
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-
-On Fri, 2026-05-15 at 12:19 -0700, Sean Christopherson wrote:
-> If CPUID.0x16 is present and valid, use the CPU frequency provided by
-> CPUID instead of assuming that the virtual CPU runs at the same
-> frequency as TSC and/or kvmclock.=C2=A0 Back before constant TSCs were a
-> thing, treating the TSC and CPU frequencies as one and the same was
-> somewhat reasonable, but now it's nonsensical, especially if the
-> hypervisor explicitly enumerates the CPU frequency.
->=20
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> The current implementation uses pci_num_vf() while holding the
+> memory_lock to prevent changing the power state of a PF when
+> VFs are enabled. This creates a lockdep circular dependency
+> warning because memory_lock is held during device probing.
+> 
+> [  286.997167] ======================================================
+> [  287.003363] WARNING: possible circular locking dependency detected
+> [  287.009562] 7.0.0-dbg-DEV #3 Tainted: G S
+> [  287.015074] ------------------------------------------------------
+> [  287.021270] vfio_pci_sriov_/18636 is trying to acquire lock:
+> [  287.026942] ff45bea2294d4968 (&vdev->memory_lock){+.+.}-{4:4}, at:
+> vfio_pci_core_runtime_resume+0x1f/0xa0
+> [  287.036530]
+> [  287.036530] but task is already holding lock:
+> [  287.042383] ff45bea3a96b8230 (&new_dev_set->lock){+.+.}-{4:4}, at:
+> vfio_group_fops_unl_ioctl+0x44d/0x7b0
+> [  287.051879]
+> [  287.051879] which lock already depends on the new lock.
+> [  287.051879]
+> [  287.060070]
+> [  287.060070] the existing dependency chain (in reverse order) is:
+> [  287.067568]
+> [  287.067568] -> #2 (&new_dev_set->lock){+.+.}-{4:4}:
+> [  287.073941]        __mutex_lock+0x92/0xb80
+> [  287.078058]        vfio_assign_device_set+0x66/0x1b0
+> [  287.083042]        vfio_pci_core_register_device+0xd1/0x2a0
+> [  287.088638]        vfio_pci_probe+0xd2/0x100
+> [  287.092933]        local_pci_probe_callback+0x4d/0xa0
+> [  287.098001]        process_scheduled_works+0x2ca/0x680
+> [  287.103158]        worker_thread+0x1e8/0x2f0
+> [  287.107452]        kthread+0x10c/0x140
+> [  287.111230]        ret_from_fork+0x18e/0x360
+> [  287.115519]        ret_from_fork_asm+0x1a/0x30
+> [  287.119983]
+> [  287.119983] -> #1 ((work_completion)(&arg.work)){+.+.}-{0:0}:
+> [  287.127219]        __flush_work+0x345/0x490
+> [  287.131429]        pci_device_probe+0x2e3/0x490
+> [  287.135979]        really_probe+0x1f9/0x4e0
+> [  287.140180]        __driver_probe_device+0x77/0x100
+> [  287.145079]        driver_probe_device+0x1e/0x110
+> [  287.149803]        __device_attach_driver+0xe3/0x170
+> [  287.154789]        bus_for_each_drv+0x125/0x150
+> [  287.159346]        __device_attach+0xca/0x1a0
+> [  287.163720]        device_initial_probe+0x34/0x50
+> [  287.168445]        pci_bus_add_device+0x6e/0x90
+> [  287.172995]        pci_iov_add_virtfn+0x3c9/0x3e0
+> [  287.177719]        sriov_add_vfs+0x2c/0x60
+> [  287.181838]        sriov_enable+0x306/0x4a0
+> [  287.186038]        vfio_pci_core_sriov_configure+0x184/0x220
+> [  287.191715]        sriov_numvfs_store+0xd9/0x1c0
+> [  287.196351]        kernfs_fop_write_iter+0x13f/0x1d0
+> [  287.201338]        vfs_write+0x2be/0x3b0
+> [  287.205286]        ksys_write+0x73/0x100
+> [  287.209233]        do_syscall_64+0x14d/0x750
+> [  287.213529]        entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> [  287.219120]
+> [  287.219120] -> #0 (&vdev->memory_lock){+.+.}-{4:4}:
+> [  287.225491]        __lock_acquire+0x14c6/0x2800
+> [  287.230048]        lock_acquire+0xd3/0x2f0
+> [  287.234168]        down_write+0x3a/0xc0
+> [  287.238019]        vfio_pci_core_runtime_resume+0x1f/0xa0
+> [  287.243436]        __rpm_callback+0x8c/0x310
+> [  287.247730]        rpm_resume+0x529/0x6f0
+> [  287.251765]        __pm_runtime_resume+0x68/0x90
+> [  287.256402]        vfio_pci_core_enable+0x44/0x310
+> [  287.261216]        vfio_pci_open_device+0x1c/0x80
+> [  287.265947]        vfio_df_open+0x10f/0x150
+> [  287.270148]        vfio_group_fops_unl_ioctl+0x4a4/0x7b0
+> [  287.275476]        __se_sys_ioctl+0x71/0xc0
+> [  287.279679]        do_syscall_64+0x14d/0x750
+> [  287.283975]        entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> [  287.289559]
+> [  287.289559] other info that might help us debug this:
+> [  287.289559]
+> [  287.297582] Chain exists of:
+> [  287.297582]   &vdev->memory_lock --> (work_completion)(&arg.work)
+> --> &new_dev_set->lock  
+> [  287.297582]
+> [  287.310023]  Possible unsafe locking scenario:
+> [  287.310023]
+> [  287.315961]        CPU0                    CPU1
+> [  287.320510]        ----                    ----
+> [  287.325059]   lock(&new_dev_set->lock);
+> [  287.328917]
+> lock((work_completion)(&arg.work));
+> [  287.336153]                                lock(&new_dev_set->lock);
+> [  287.342523]   lock(&vdev->memory_lock);
+> [  287.346382]
+> [  287.346382]  *** DEADLOCK ***
+> [  287.346382]
+> [  287.352315] 2 locks held by vfio_pci_sriov_/18636:
+> [  287.357125]  #0: ff45bea208ed3e18 (&group->group_lock){+.+.}-{4:4},
+> at: vfio_group_fops_unl_ioctl+0x3e3/0x7b0
+> [  287.367048]  #1: ff45bea3a96b8230 (&new_dev_set->lock){+.+.}-{4:4},
+> at: vfio_group_fops_unl_ioctl+0x44d/0x7b0
+> [  287.376976]
+> [  287.376976] stack backtrace:
+> [  287.381353] CPU: 191 UID: 0 PID: 18636 Comm: vfio_pci_sriov_
+> Tainted: G S                  7.0.0-dbg-DEV #3 PREEMPTLAZY
+> [  287.381355] Tainted: [S]=CPU_OUT_OF_SPEC
+> [  287.381356] Call Trace:
+> [  287.381357]  <TASK>
+> [  287.381358]  dump_stack_lvl+0x54/0x70
+> [  287.381361]  print_circular_bug+0x2e1/0x300
+> [  287.381363]  check_noncircular+0xf9/0x120
+> [  287.381364]  ? __lock_acquire+0x5b4/0x2800
+> [  287.381366]  __lock_acquire+0x14c6/0x2800
+> [  287.381368]  ? pci_mmcfg_read+0x4f/0x220
+> [  287.381370]  ? pci_mmcfg_write+0x57/0x220
+> [  287.381371]  ? lock_acquire+0xd3/0x2f0
+> [  287.381373]  ? pci_mmcfg_write+0x57/0x220
+> [  287.381374]  ? lock_release+0xef/0x360
+> [  287.381376]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
+> [  287.381377]  lock_acquire+0xd3/0x2f0
+> [  287.381378]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
+> [  287.381379]  ? lock_is_held_type+0x76/0x100
+> [  287.381382]  down_write+0x3a/0xc0
+> [  287.381382]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
+> [  287.381383]  vfio_pci_core_runtime_resume+0x1f/0xa0
+> [  287.381384]  ? __pfx_pci_pm_runtime_resume+0x10/0x10
+> [  287.381385]  __rpm_callback+0x8c/0x310
+> [  287.381386]  ? ktime_get_mono_fast_ns+0x3d/0xb0
+> [  287.381389]  ? __pfx_pci_pm_runtime_resume+0x10/0x10
+> [  287.381390]  rpm_resume+0x529/0x6f0
+> [  287.381392]  ? lock_is_held_type+0x76/0x100
+> [  287.381394]  __pm_runtime_resume+0x68/0x90
+> [  287.381396]  vfio_pci_core_enable+0x44/0x310
+> [  287.381398]  vfio_pci_open_device+0x1c/0x80
+> [  287.381399]  vfio_df_open+0x10f/0x150
+> [  287.381401]  vfio_group_fops_unl_ioctl+0x4a4/0x7b0
+> [  287.381402]  __se_sys_ioctl+0x71/0xc0
+> [  287.381404]  do_syscall_64+0x14d/0x750
+> [  287.381405]  ? entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> [  287.381406]  ? trace_irq_disable+0x25/0xd0
+> [  287.381409]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> 
+> Introduce a private flag 'sriov_active' in the vfio_pci_core_device
+> struct. This  allows the driver to track the SR-IOV power state requirement
+> without  relying on pci_num_vf() while holding the memory_lock. The lock is
+> now  only held to set the flag and ensure the device is in D0, after which
+> pci_enable_sriov() can be called without the lock.
+> 
+> Fixes: f4162eb1e2fc ("vfio/pci: Change the PF power state to D0 before enabling VFs")
+> Cc: stable@vger.kernel.org
+> Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
+> Suggested-by: Alex Williamson <alex@shazbot.org>
+> Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
 > ---
-> =C2=A0arch/x86/kernel/kvmclock.c | 16 +++++++++++++++-
-> =C2=A01 file changed, 15 insertions(+), 1 deletion(-)
->=20
-> diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
-> index 62c8ea2e6769..7607920ae386 100644
-> --- a/arch/x86/kernel/kvmclock.c
-> +++ b/arch/x86/kernel/kvmclock.c
-> @@ -190,6 +190,20 @@ void kvmclock_cpu_action(enum kvm_guest_cpu_action a=
-ction)
-> =C2=A0	}
-> =C2=A0}
-> =C2=A0
-> +static unsigned long kvm_get_cpu_khz(void)
-> +{
-> +	unsigned int cpu_khz;
-> +
+>  drivers/vfio/pci/vfio_pci_core.c | 17 ++++++++++++++---
+>  include/linux/vfio_pci_core.h    |  1 +
+>  2 files changed, 15 insertions(+), 3 deletions(-)
+> 
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+> index 3f8d093aacf8a..2fb95f54a1e26 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+> @@ -271,8 +271,11 @@ int vfio_pci_set_power_state(struct vfio_pci_core_device *vdev, pci_power_t stat
+>  	int ret;
+>  
+>  	/* Prevent changing power state for PFs with VFs enabled */
+> -	if (pci_num_vf(pdev) && state > PCI_D0)
+> -		return -EBUSY;
+> +	if (state > PCI_D0) {
+> +		lockdep_assert_held_write(&vdev->memory_lock);
+> +		if (vdev->sriov_active)
+> +			return -EBUSY;
+> +	}
+>  
+>  	if (vdev->needs_pm_restore) {
+>  		if (pdev->current_state < PCI_D3hot && state >= PCI_D3hot) {
+> @@ -2292,8 +2295,9 @@ int vfio_pci_core_sriov_configure(struct vfio_pci_core_device *vdev,
+>  
+>  		down_write(&vdev->memory_lock);
+>  		vfio_pci_set_power_state(vdev, PCI_D0);
+> -		ret = pci_enable_sriov(pdev, nr_virtfn);
+> +		vdev->sriov_active = true;
+>  		up_write(&vdev->memory_lock);
+> +		ret = pci_enable_sriov(pdev, nr_virtfn);
+>  		if (ret) {
+>  			pm_runtime_put(&pdev->dev);
+>  			goto out_del;
+> @@ -2307,6 +2311,13 @@ int vfio_pci_core_sriov_configure(struct vfio_pci_core_device *vdev,
+>  	}
+>  
+>  out_del:
 > +	/*
-> +	 * Prefer CPUID over kvmclock when possible, as the base CPU frequency
-> +	 * isn't necessarily the same as the kvmlock "TSC" frequency.
+> +	 * Avoid taking the memory_lock intentionally. A race with a power
+> +	 * state transition would at most result in an -EBUSY, leaving the
+> +	 * device in PCI_D0.
 > +	 */
-> +	if (!cpuid_get_cpu_freq(&cpu_khz))
-> +		return cpu_khz;
+> +	vdev->sriov_active = false;
 > +
-> +	return pvclock_tsc_khz(this_cpu_pvti());
+>  	mutex_lock(&vfio_pci_sriov_pfs_mutex);
+>  	list_del_init(&vdev->sriov_pfs_item);
+>  out_unlock:
+> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
+> index 2ebba746c18f7..f1451ee4744ac 100644
+> --- a/include/linux/vfio_pci_core.h
+> +++ b/include/linux/vfio_pci_core.h
+> @@ -127,6 +127,7 @@ struct vfio_pci_core_device {
+>  	bool			needs_pm_restore:1;
+>  	bool			pm_intx_masked:1;
+>  	bool			pm_runtime_engaged:1;
+> +	bool			sriov_active:1;
 
-I'm fine with this in principle but shouldn't the fallback be calling
-kvm_get_tsc_khz() instead of directly calling pvclock_tsc_khz()?
+We should drop the bitfield use.  I still need to respin my patches to
+cleanup bitfield races in general, but this looks like a runtime
+updated bitfield without any explicit locking convention with other
+flags in the same storage unit, so should therefore be its own bool.
 
+If we agree, I can do the s/:1// change on commit.  Thanks,
 
-
---=-iph/FD/9Oere6U4F6y6S
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
-
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUyMDE4NTIx
-MlowLwYJKoZIhvcNAQkEMSIEICQ+S9WKGu2dd+J62OoYQxFX0FPKGyzSXOKV7vozFMv6MGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAa2emjoU+APF4
-kqv55ASwWrq71cxMkBfS9xPkjVAzSLFvp/J4aOalhMIe0At74TZpPZOfjacFhDJjCJ8y2dD5z7dH
-U+ec/b+Kj+YYv+68UaP4DlpI5Ue8Pw+u/yyxTljlf3x3D7aXf1o5Q8apZ23EW7MVoAjrGqy+xFu9
-hBrLPI+8LGi9+2KfAOLznoDqAFbEP7Nl2l9qYuQ2IZNB9AeQCJ4E15Ne7bMJHFuWIhlAfoJpCBQ7
-viQe7gzQHorNsiIxdaQCdk5QtIpIiR3fUHpBRrZxQyoQ5VjyAYh86ioMxITc8Ln6gVLtpZGHcivm
-Tp5g2Y87Da03qaHslfYEXdNg6RGFfP5zCcnYB6hNUztCMT44/n3c1L1F64iKQDwrFIEJB4v3ig5n
-qogjVcniGBOkncAOUTgIhRnR1FWLQRNHOygoZybtO8xGFJ/aYFRhhKi3v/7j+TvWVjh8qfERWbK1
-5VmgOpSLx/0AARHDek54pklqDlmLxpFkx4FHQZ9pU2SquzjqPioSKRJuOcYbD5byMjS/fjxi4OR0
-EL0ZZ4/QJsxhAlQT/Y2hJTcV8p4frvAJ93Dnk26OoFaLjQaOHeFoknHRHNvoco3z76l8/tBBcx4M
-mZour2PV9c459u9CS11Q7LJ3XIqvsRpsfo2Okg8ZUrQTJhAvDaJQHa/zRgvQR6kAAAAAAAA=
+Alex
 
 
---=-iph/FD/9Oere6U4F6y6S--
+>  	struct pci_saved_state	*pci_saved_state;
+>  	struct pci_saved_state	*pm_save;
+>  	int			ioeventfds_nr;
+> 
+> base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
+
