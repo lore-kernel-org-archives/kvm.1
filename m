@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2907F3E5ED7;
-	Wed, 20 May 2026 13:40:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 088413DD518;
+	Wed, 20 May 2026 13:40:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779284424; cv=none; b=IY5FQcUT24soeos+/l+WOMECYUYGOMQEevsS5JCiZxH3fpYGO9dY1ezk2Pq+P+mFhcZNSdqGweK1PPYZb80qfc707EL6jnpgwYRdpRGR0Sj2uKhsGNiC3B9H6Zc5RZqaobf/iR0QZt4CxulcjpL8thGj4qZRA2jmw9IwOlVMKTs=
+	t=1779284430; cv=none; b=NeN9MhFlA3SK8QNt1/yUdzSMnJcS/uVnlF6XaQaR2oCKHvxZoxhxC3MgdUW329rH+1mRzFJr2bZcYK4tIE+mobmsMPZPGDrLIFUub5hqZAlGUouRIRNQ5uVMHqFCiwX9gl69EWJ+eF4I4LmF30ocMiLWBgkNpqOobwHPD+cyLjU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779284424; c=relaxed/simple;
-	bh=2uRkB7s6oabhaBTOUeY7fNLUBuDLjjsV/PBO02yCpxQ=;
+	s=arc-20240116; t=1779284430; c=relaxed/simple;
+	bh=rL4SsUZOmcccWMsTgDnBY03K7sLgLIBYfmhJw2Db6OI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XmUQ6JsD9hCqDDYYa2O2IPHYy0XO56XvOvi4z1InsqdEZf20wEnjDah7DCx/royFpzh2OvgAjO11CT67KJVRDL+MGgm0dmHbcBJwaN+rUKZ2chrlRBqtncTOEnBAxOAtxC9oGuzQ2jjcTlCrtcgFiKe4EGXHuU4eQWu24aza6QQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=GFD8vxBX; arc=none smtp.client-ip=198.175.65.19
+	 MIME-Version:Content-Type; b=DQHiX9M+Bqp2ovJ0F/pgN3QUpZeAfo593Yn0JWqA2rX9vN9IYWyE/w41anGuovE29sd2jmlBdBLPa8PNIALX6VB/8impPFXbPyt1PbfSCnhAYzejmnAAJd7Ya84yiFsrvkpid29qjRFtL9yiqaOVOxtWlRlbWKWFDLzviZLIiXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=LoKA4pfY; arc=none smtp.client-ip=198.175.65.19
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="GFD8vxBX"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="LoKA4pfY"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779284422; x=1810820422;
+  t=1779284426; x=1810820426;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=2uRkB7s6oabhaBTOUeY7fNLUBuDLjjsV/PBO02yCpxQ=;
-  b=GFD8vxBXabHQnqkemPGzYjUSillZf0xWL/XMCADJ/rYJWJp5JIVoFjZI
-   ub1b8MRn6ye+G9ZiG59KJ/adKQ6Gu5fVTaekWC3TWG3o6C1HkolB2QARp
-   3S2R52gS15kgHWuDWoWkJGgjb/sTgEqrEzpXX6HCb6YzFkGLqaLYOI073
-   o6CY+/NH9YUVYGoWwA8LjwbBtIkgkoH3nFG/9hemr22r2nFZ5OgSKSIqX
-   9eEI2vIUrOrSkalNCoZgXF27HaGUc6BTX/9F2m66dn4uNk6PYB9j60yPD
-   KMp/vWVy1JO22xhnR1dfz2kTlgZFHl5OJ9y/uJG0ydQQ6LGSiZRWKUB2n
-   Q==;
-X-CSE-ConnectionGUID: PmW/byrWSH6P+1mvl6/mDw==
-X-CSE-MsgGUID: YxraRti8TMiEw1U7ww8weQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80146514"
+  bh=rL4SsUZOmcccWMsTgDnBY03K7sLgLIBYfmhJw2Db6OI=;
+  b=LoKA4pfYR8T5bWnmjxvQCqyX2qASi/06hLqruoxT3Vi2NQKvKBzracKD
+   pcukqjt+kqGsQUAUSsBmpRmE9xaBLooEo4r8oCxIamu09wHVfrg26QBv+
+   XcO927QYdl+Cb5LfdB9R5i4pH5iyODm/xoudJY7dB37qK3/Tve6JMFqOU
+   ZoOu4IXdV9rFe6JvVgaAAr8ie3XlbeBIDdXk6WSKGqZROw1wqvzt08OC1
+   CTsF+xegp6mPdBcL2/4AnuiZU5s5XH79swSMWEaiMrSGxXkuUxu+HsSrh
+   +U/662FPe6f+gmXbpF/XgpQxHeGbd6UZ5g2/PXAd3PX1N/N0Ji13UTR5E
+   A==;
+X-CSE-ConnectionGUID: 8ZyHsss6SbWQb64OVSpJPA==
+X-CSE-MsgGUID: 1bT8GTGfSyaBg2n/17nAaA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="80146545"
 X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="80146514"
+   d="scan'208";a="80146545"
 Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 06:40:18 -0700
-X-CSE-ConnectionGUID: K6R2RWyXSASJL9BuzPd1cg==
-X-CSE-MsgGUID: BdGEX0EESlWAunUzgeQMHA==
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 06:40:22 -0700
+X-CSE-ConnectionGUID: SM3T7PGtSWejdrWTId3p9w==
+X-CSE-MsgGUID: HP4Urmy1TA6QhkaRiVwrrw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="235923873"
+   d="scan'208";a="235923917"
 Received: from 984fee019967.jf.intel.com ([10.23.153.244])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 06:40:17 -0700
+  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 06:40:20 -0700
 From: Chao Gao <chao.gao@intel.com>
 To: kvm@vger.kernel.org,
 	linux-coco@lists.linux.dev,
@@ -72,9 +72,9 @@ Cc: binbin.wu@linux.intel.com,
 	Borislav Petkov <bp@alien8.de>,
 	x86@kernel.org,
 	"H. Peter Anvin" <hpa@zytor.com>
-Subject: [PATCH v10 13/25] x86/virt/seamldr: Allocate and populate a module update request
-Date: Wed, 20 May 2026 06:38:16 -0700
-Message-ID: <20260520133909.409394-14-chao.gao@intel.com>
+Subject: [PATCH v10 16/25] x86/virt/seamldr: Shut down the current TDX module
+Date: Wed, 20 May 2026 06:38:19 -0700
+Message-ID: <20260520133909.409394-17-chao.gao@intel.com>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260520133909.409394-1-chao.gao@intel.com>
 References: <20260520133909.409394-1-chao.gao@intel.com>
@@ -84,233 +84,200 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-There are two important ABIs here:
+The first step of TDX module updates is shutting down the current TDX
+module. This step also packs state information that needs to be
+preserved across updates, called "handoff data". This handoff data is
+consumed by the updated module and stored internally in the SEAM range and
+hidden from the kernel.
 
-'struct tdx_image'	- The on-disk and in-memory format for a TDX
-			  module update image.
-'struct seamldr_params'	- The in-memory ABI passed to the TDX module
-			  loader. Points to a single 'struct tdx_image'
-			  broken up into 4k pages.
+Since handoff data layout may change between modules, the handoff data is
+versioned. Each module has a native handoff version and provides backward
+support for several older versions.
 
-Userspace supplies the update image in struct tdx_image format. The
-image consists of a header followed by a sigstruct and the module
-binary. P-SEAMLDR, however, consumes struct seamldr_params rather than
-the image directly.
+The complete handoff versioning protocol is complex as it supports both
+module upgrades and downgrades. See details in Intel® Trust Domain
+Extensions (Intel® TDX) Module Base Architecture Specification, Chapter
+"Handoff Versioning".
 
-Parse the struct tdx_image provided by userspace and populate a matching
-struct seamldr_params.
+Ideally, the kernel needs to retrieve the handoff versions supported by
+the current module and the new module and select a version supported by
+both. But since this implementation only supports module upgrades, simply
+request handoff data from the current module using its highest supported
+version. That is sufficient for this upgrade-only implementation.
 
-The 'tdx_image' ABI is versioned. Two public versions exist today: 0x100
-and 0x200. This kernel only accepts 0x200. The older 0x100 format is being
-deprecated and is intentionally not supported here. Future versions of the
-module might be able to use the same ABIs (user/kernel and kernel/SEAMLDR)
-but they will not be able to use this kernel code.
+Retrieve the module's handoff version from TDX global metadata and add an
+update step to shut down the module. Module shutdown only needs to run on
+one CPU.
 
-Reject module images without that specific version. This ensures that the
-kernel is able to understand the passed-in format.
-
-Validate the struct tdx_image header before using it, because the header is
-consumed solely by the kernel to locate the sigstruct and module within
-the image. Do not validate the payload itself. The sigstruct and module
-pages are passed through to P-SEAMLDR, which validates them as part of the
-update flow.
-
-sigstruct_pages_pa_list currently has only one entry, but it will grow to
-four pages in the future. Keep it as an array for symmetry with
-module_pages_pa_list and for extensibility.
+Don't cache the handoff information in tdx_sysinfo. It is used only for
+module shutdown, and is present only when the TDX module supports updates.
+Caching it in get_tdx_sys_info() would require extra update-support guards
+and refreshing the cached value across module updates.
 
 Signed-off-by: Chao Gao <chao.gao@intel.com>
+Reviewed-by: Tony Lindgren <tony.lindgren@linux.intel.com>
+Reviewed-by: Xu Yilun <yilun.xu@linux.intel.com>
+Reviewed-by: Kai Huang <kai.huang@intel.com>
+Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
 ---
 v10:
- - Add comments for init_seamldr_params() and its call site [Dave]
- - Use data_len/image_len rather than size [Dave]
- - Do bounds check rather than implicitly truncat the update image [Dave]
- - Explain why the header version is checked in changelog [Dave]
- - make init_seamldr_params() accept a tdx_image pointer [Dave]
- - vertical alignment for code has a pattern [Dave]
+ - Polish the changelog [Rick]
+ - Rename "primary" to "is_lead_cpu" and polish the comment above it [Rick]
 ---
- arch/x86/virt/vmx/tdx/seamldr.c | 145 +++++++++++++++++++++++++++++++-
- 1 file changed, 144 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/tdx_global_metadata.h  |  4 ++++
+ arch/x86/virt/vmx/tdx/seamldr.c             | 15 ++++++++++++++-
+ arch/x86/virt/vmx/tdx/tdx.c                 | 19 ++++++++++++++++++-
+ arch/x86/virt/vmx/tdx/tdx.h                 |  3 +++
+ arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 13 +++++++++++++
+ 5 files changed, 52 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-index d3880b0f93aa..11bd28e8370c 100644
---- a/arch/x86/virt/vmx/tdx/seamldr.c
-+++ b/arch/x86/virt/vmx/tdx/seamldr.c
-@@ -6,6 +6,8 @@
-  */
- #define pr_fmt(fmt)	"seamldr: " fmt
+diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
+index 40689c8dc67e..41150d546589 100644
+--- a/arch/x86/include/asm/tdx_global_metadata.h
++++ b/arch/x86/include/asm/tdx_global_metadata.h
+@@ -40,6 +40,10 @@ struct tdx_sys_info_td_conf {
+ 	u64 cpuid_config_values[128][2];
+ };
  
-+#include <linux/mm.h>
-+#include <linux/slab.h>
- #include <linux/spinlock.h>
- 
- #include <asm/seamldr.h>
-@@ -15,6 +17,35 @@
- /* P-SEAMLDR SEAMCALL leaf function */
- #define P_SEAMLDR_INFO			0x8000000000000000
- 
-+#define SEAMLDR_MAX_NR_MODULE_PAGES	496
-+#define SEAMLDR_MAX_NR_SIG_PAGES	1
-+
-+/*
-+ * The seamldr_params "scenario" field specifies the operation mode:
-+ * 0: Install TDX module from scratch (not used by kernel)
-+ * 1: Update existing TDX module to a compatible version
-+ */
-+#define SEAMLDR_SCENARIO_UPDATE		1
-+
-+/*
-+ * This is the "SEAMLDR_PARAMS" data structure defined in the
-+ * "SEAM Loader (SEAMLDR) Interface Specification".
-+ *
-+ * It is the in-memory ABI that the kernel passes to the P-SEAMLDR
-+ * to update the TDX module. It breaks the TDX module image up in
-+ * page-size pieces.
-+ */
-+struct seamldr_params {
-+	u32	version;
-+	u32	scenario;
-+	u64	sigstruct_pages_pa_list[SEAMLDR_MAX_NR_SIG_PAGES];
-+	u8	reserved[104];
-+	u64	module_nr_pages;
-+	u64	module_pages_pa_list[SEAMLDR_MAX_NR_MODULE_PAGES];
-+} __packed;
-+
-+static_assert(sizeof(struct seamldr_params) == 4096);
-+
- /*
-  * Serialize P-SEAMLDR calls since the hardware only allows a single CPU to
-  * interact with P-SEAMLDR simultaneously. Use raw version as the calls can
-@@ -42,6 +73,98 @@ int seamldr_get_info(struct seamldr_info *seamldr_info)
- }
- EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
- 
-+#define TDX_IMAGE_VERSION_2		0x200
-+
-+struct tdx_image_header {
-+	u16	version;
-+	u16	checksum;
-+	u8	signature[8];
-+	u32	sigstruct_nr_pages;
-+	u32	module_nr_pages;
-+	u8	reserved[4076];
-+} __packed;
-+
-+#define TDX_IMAGE_HEADER_SIZE sizeof(struct tdx_image_header)
-+static_assert(TDX_IMAGE_HEADER_SIZE == 4096);
-+
-+/*
-+ * Intel TDX module update ABI structure. aka. "TDX module blob".
-+ *
-+ * @payload contains sigstruct pages followed by module pages.
-+ */
-+struct tdx_image {
-+	struct tdx_image_header header;
-+	u8 payload[];
++struct tdx_sys_info_handoff {
++	u16 module_hv;
 +};
 +
-+static void populate_pa_list(u64 *pa_list, const u8 *vmalloc_addr, u32 vmalloc_len_pages)
+ struct tdx_sys_info {
+ 	struct tdx_sys_info_version version;
+ 	struct tdx_sys_info_features features;
+diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
+index 002cdae3b1ff..217b3c962aff 100644
+--- a/arch/x86/virt/vmx/tdx/seamldr.c
++++ b/arch/x86/virt/vmx/tdx/seamldr.c
+@@ -15,6 +15,7 @@
+ #include <asm/seamldr.h>
+ 
+ #include "seamcall_internal.h"
++#include "tdx.h"
+ 
+ /* P-SEAMLDR SEAMCALL leaf function */
+ #define P_SEAMLDR_INFO			0x8000000000000000
+@@ -175,6 +176,7 @@ static int init_seamldr_params(struct seamldr_params *params,
+  */
+ enum module_update_state {
+ 	MODULE_UPDATE_START,
++	MODULE_UPDATE_SHUTDOWN,
+ 	MODULE_UPDATE_DONE,
+ };
+ 
+@@ -225,8 +227,16 @@ static void init_state(struct update_ctrl *ctrl)
+ static int do_seamldr_install_module(void *seamldr_params)
+ {
+ 	enum module_update_state newstate, curstate = MODULE_UPDATE_START;
++	int cpu = smp_processor_id();
++	bool is_lead_cpu;
+ 	int ret = 0;
+ 
++	/*
++	 * Some steps must be run on exactly one CPU. Pick a "lead" CPU to
++	 * execute those steps. Use CPU 0 because it is always online.
++	 */
++	is_lead_cpu = cpu == 0;
++
+ 	do {
+ 		newstate = READ_ONCE(update_ctrl.state);
+ 
+@@ -237,7 +247,10 @@ static int do_seamldr_install_module(void *seamldr_params)
+ 
+ 		curstate = newstate;
+ 		switch (curstate) {
+-		/* TODO: add the update steps. */
++		case MODULE_UPDATE_SHUTDOWN:
++			if (is_lead_cpu)
++				ret = tdx_module_shutdown();
++			break;
+ 		default:
+ 			break;
+ 		}
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 53cf99c41dbb..84d5df70a250 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -328,7 +328,7 @@ static __init int build_tdx_memlist(struct list_head *tmb_list)
+ 	return ret;
+ }
+ 
+-static __init int read_sys_metadata_field(u64 field_id, u64 *data)
++static int read_sys_metadata_field(u64 field_id, u64 *data)
+ {
+ 	struct tdx_module_args args = {};
+ 	int ret;
+@@ -1274,6 +1274,23 @@ static __init int tdx_enable(void)
+ }
+ subsys_initcall(tdx_enable);
+ 
++int tdx_module_shutdown(void)
 +{
-+	int i;
++	struct tdx_sys_info_handoff handoff = {};
++	struct tdx_module_args args = {};
++	int ret;
 +
-+	for (i = 0; i < vmalloc_len_pages; i++) {
-+		unsigned long offset = i * PAGE_SIZE;
-+		unsigned long pfn = vmalloc_to_pfn(&vmalloc_addr[offset]);
++	ret = get_tdx_sys_info_handoff(&handoff);
++	WARN_ON_ONCE(ret);
 +
-+		pa_list[i] = pfn << PAGE_SHIFT;
-+	}
++	/*
++	 * Use the module's handoff version as it is the highest the
++	 * module can produce and most likely supported by newer modules.
++	 */
++	args.rcx = handoff.module_hv;
++	return seamcall_prerr(TDH_SYS_SHUTDOWN, &args);
 +}
 +
-+static void populate_seamldr_params(struct seamldr_params *params,
-+				    const u8 *sig, u32 sig_nr_pages,
-+				    const u8 *mod, u32 mod_nr_pages)
+ static bool is_pamt_page(unsigned long phys)
+ {
+ 	struct tdmr_info_list *tdmr_list = &tdx_tdmr_list;
+diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+index 76c5fb1e1ffe..f0c20dea0388 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.h
++++ b/arch/x86/virt/vmx/tdx/tdx.h
+@@ -46,6 +46,7 @@
+ #define TDH_PHYMEM_PAGE_WBINVD		41
+ #define TDH_VP_WR			43
+ #define TDH_SYS_CONFIG			45
++#define TDH_SYS_SHUTDOWN		52
+ #define TDH_SYS_DISABLE			69
+ 
+ /*
+@@ -108,4 +109,6 @@ struct tdmr_info_list {
+ 	int max_tdmrs;	/* How many 'tdmr_info's are allocated */
+ };
+ 
++int tdx_module_shutdown(void);
++
+ #endif
+diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+index d54d4227990c..e793dec688ab 100644
+--- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
++++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+@@ -100,6 +100,19 @@ static __init int get_tdx_sys_info_td_conf(struct tdx_sys_info_td_conf *sysinfo_
+ 	return ret;
+ }
+ 
++static int get_tdx_sys_info_handoff(struct tdx_sys_info_handoff *sysinfo_handoff)
 +{
-+	params->version			= 0;
-+	params->scenario		= SEAMLDR_SCENARIO_UPDATE;
-+	params->module_nr_pages		= mod_nr_pages;
++	int ret;
++	u64 val;
 +
-+	populate_pa_list(params->sigstruct_pages_pa_list, sig, sig_nr_pages);
-+	populate_pa_list(params->module_pages_pa_list, mod, mod_nr_pages);
-+}
++	ret = read_sys_metadata_field(0x8900000100000000, &val);
++	if (ret)
++		return ret;
 +
-+/*
-+ * @image points to a vmalloc()'d 'struct tdx_image'. Transform
-+ * it into @params which is the P-SEAMLDR ABI format.
-+ */
-+static int init_seamldr_params(struct seamldr_params *params,
-+			       const struct tdx_image *image,
-+			       u32 image_len)
-+{
-+	const struct tdx_image_header *header	= &image->header;
-+
-+	u32 sigstruct_len	= header->sigstruct_nr_pages * PAGE_SIZE;
-+	u32 module_len		= header->module_nr_pages * PAGE_SIZE;
-+
-+	u8 *header_start	= (u8 *)header;
-+	u8 *header_end		= header_start + TDX_IMAGE_HEADER_SIZE;
-+
-+	u8 *sigstruct_start	= header_end;
-+	u8 *sigstruct_end	= sigstruct_start + sigstruct_len;
-+
-+	u8 *module_start	= sigstruct_end;
-+
-+	/* Check the calculated payload size against the image size. */
-+	if (TDX_IMAGE_HEADER_SIZE + sigstruct_len + module_len != image_len)
-+		return -EINVAL;
-+
-+	/* Reject unsupported tdx_image ABI versions. */
-+	if (header->version != TDX_IMAGE_VERSION_2)
-+		return -EINVAL;
-+
-+	if (header->sigstruct_nr_pages > SEAMLDR_MAX_NR_SIG_PAGES ||
-+	    header->module_nr_pages > SEAMLDR_MAX_NR_MODULE_PAGES)
-+		return -EINVAL;
-+
-+	if (memcmp(header->signature, "TDX-BLOB", sizeof(header->signature)))
-+		return -EINVAL;
-+
-+	if (memchr_inv(header->reserved, 0, sizeof(header->reserved)))
-+		return -EINVAL;
-+
-+	populate_seamldr_params(params, sigstruct_start, header->sigstruct_nr_pages,
-+					module_start,    header->module_nr_pages);
++	sysinfo_handoff->module_hv = val;
 +	return 0;
 +}
 +
- /**
-  * seamldr_install_module - Install a new TDX module.
-  * @data: Pointer to the TDX module image.
-@@ -51,7 +174,27 @@ EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
-  */
- int seamldr_install_module(const u8 *data, u32 data_len)
+ static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
  {
-+	struct seamldr_params *params;
-+	const struct tdx_image *image;
-+	int ret;
-+
-+	if (data_len < TDX_IMAGE_HEADER_SIZE)
-+		return -EINVAL;
-+
-+	image = (const struct tdx_image *)data;
-+
-+	params = kzalloc_obj(*params);
-+	if (!params)
-+		return -ENOMEM;
-+
-+	/* Populate 'params' from 'image'. */
-+	ret = init_seamldr_params(params, image, data_len);
-+	if (ret)
-+		goto out;
-+
- 	/* TODO: Update TDX module here */
--	return 0;
-+out:
-+	kfree(params);
-+	return ret;
- }
- EXPORT_SYMBOL_FOR_MODULES(seamldr_install_module, "tdx-host");
+ 	int ret = 0;
 -- 
 2.52.0
 
