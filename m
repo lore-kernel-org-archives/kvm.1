@@ -1,227 +1,203 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vk1-f181.google.com (mail-vk1-f181.google.com [209.85.221.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 023EF343898;
-	Wed, 20 May 2026 19:05:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779303911; cv=none; b=eoVh+NWvSR2ZJ0uhWXtzNwN8W5OinVvY168hlH6CTiFGfTQyyJPuIC9PAUW5xOKh+v9fYSrMjV4dGspbOCxJ4Bu5akPub1Y8bJI/7BNFIFQ3chPTOAMRegwsp4bBF5AhIS9sotWIZavdT0YjqPB6ALytiHmEuANsylp19hkE3Eo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779303911; c=relaxed/simple;
-	bh=F/Fpt6jTcy4NSrTkND1yYtGMnDHF82o6TRRAxJt0yGU=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=nUWxG+FpjoTGXK9U+Jb4dwvSzHEY9fXEMxmsIwi7jJPq8rbEvPCo9TCq0D/aaugkAN4VYWzweVXk8gyv6++3BY2wNKR7he2BV+MpMsC5+0eDYT2cKbKPfr+5Omw1WpqCs7o4kFQqXZdD8F5GXf2fOBsjwfmTqToiYR6B2tD8VNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=rAm9IlUy; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50A13033E8
+	for <kvm@vger.kernel.org>; Wed, 20 May 2026 19:05:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.181
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779303919; cv=pass; b=M+5qqfcbw0lxYtDECMFZRwshQJil9HjEnIkL8RViHIoME5kyvPhcVwLtIGsxsBUGmMfc0qfXphU+cqtLlr5M+Pdv9iwnJ50BKfjKHwu15sDUyk23x9rIEUyp2Z+jouGelt/sZd/CogfTeJxOHDJHbbSaWIje5h6D/OZGPbXBNDs=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779303919; c=relaxed/simple;
+	bh=t+gXNDFOzwiaElJbDXmY+gH2gXxUKA66N6Eu3TqE8OA=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iYIKZCTxmtzDC/R05pumr2LrmHDsqwoHqL5F835yQXi2on9R8lj/d8azKROSwYmwdeQMr36B+7vYTi9jwOqBmiRA8Gtm3qN1wpOxuXHLlLpEQRvJqs4CoPkRshH+HXw8Oz5G3kiAYn7alNd/NBb6qF+/1lNqw0o5Gmm8Jf/Iv8c=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HJz5glIM; arc=pass smtp.client-ip=209.85.221.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="rAm9IlUy"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=8tbHSXv0PduRga+zT/mB8RJeehigf48DptUBou4PkPA=; b=rAm9IlUyk+WfmPm0L70sobS35Q
-	8cq3fq5zSk3bgOImc18izqE3hqDuQBOcWwAi1O5HYkWy3804x5Hjt615HyGyxul4NFnCjSsO5DuzO
-	0Wxma947xFddm4dHrcR64NJpJnhW0sHTZj6QA8BkmxeP1xHky+iq9cKJEUdVkrGyoMG9YFRydPnR6
-	YlGcmhd8pc1HNqDjRNgjymByHXAfA4JYQeQ8Gf/vYwygDzLtt8HiAlvIKUc0Ka10cd3IR029AM3DB
-	kB6a2OPg+Fry3XggO/NRKqNmPNLOj7ncCeZNbT9L1Prz6s1Oiz7PpN3BRBJUUYLlxc3EzNGKIzJIi
-	0csYMZKQ==;
-Received: from 54-240-197-227.amazon.com ([54.240.197.227] helo=freeip.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPmE0-00000007Uvp-12En;
-	Wed, 20 May 2026 19:05:00 +0000
-Message-ID: <44e0d60548d317fd59895f18bd17220dfb2f834b.camel@infradead.org>
-Subject: Re: [PATCH v3 02/41] x86/tsc: Add helper to register CPU and TSC
- freq calibration routines
-From: David Woodhouse <dwmw2@infradead.org>
-To: Sean Christopherson <seanjc@google.com>, Kiryl Shutsemau
- <kas@kernel.org>,  Paolo Bonzini <pbonzini@redhat.com>, "K. Y. Srinivasan"
- <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu
- <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Long Li
- <longli@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, Alexey
- Makhalov <alexey.makhalov@broadcom.com>,  Jan Kiszka
- <jan.kiszka@siemens.com>, Dave Hansen <dave.hansen@linux.intel.com>, Andy
- Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Juergen Gross <jgross@suse.com>, Daniel Lezcano
- <daniel.lezcano@kernel.org>, Thomas Gleixner <tglx@kernel.org>, John Stultz
- <jstultz@google.com>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>, Vitaly Kuznetsov
- <vkuznets@redhat.com>, Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Boris Ostrovsky
- <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>,
- x86@kernel.org,  linux-coco@lists.linux.dev, kvm@vger.kernel.org,
- linux-hyperv@vger.kernel.org,  virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org,  xen-devel@lists.xenproject.org, Michael
- Kelley <mhklinux@outlook.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- Nikunj A Dadhania <nikunj@amd.com>, Thomas Gleixner <tglx@linutronix.de>
-Date: Wed, 20 May 2026 20:04:58 +0100
-In-Reply-To: <20260515191942.1892718-3-seanjc@google.com>
-References: <20260515191942.1892718-1-seanjc@google.com>
-	 <20260515191942.1892718-3-seanjc@google.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-BQ4J6FeuOLTRewu0k3H0"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HJz5glIM"
+Received: by mail-vk1-f181.google.com with SMTP id 71dfb90a1353d-56a857578a8so2032609e0c.3
+        for <kvm@vger.kernel.org>; Wed, 20 May 2026 12:05:17 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779303917; cv=none;
+        d=google.com; s=arc-20240605;
+        b=Gh66NUw+/YDMt/198Fb+OjgYZRGScU3+W0JPo0IDkhz9DP0DcZpdkuQlpGHLClDrG3
+         iBOZbmQ459X1YvLw56Yh+CYWNpSCHWWehH3tFsLwJA6bp+rkPXO4dmA+zeA4q8vhxJSh
+         epiv/4pNS561t4xmSNcimj6vcEf/Ux//z2OHInoX57ctDZv8WRWnyOVnYq9JkNPfWFax
+         C0m6tuWVxkOGFDiqNuFgPdnSvVlCWGIDLexwkAJgAgiqqQkch6tx2MvdKH6qUNSC0Q7D
+         RKLNmjqkKEYd/BBfMHxinkGa8aIzVaU6BT1vEPLzzQobu9c6LZRnEeZRjcKeyBv0M1zP
+         wmoA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=3e9o2gG3pCPt49dwVje/mGfLrm4pMM5X5wFjDw9oP4Q=;
+        fh=ZovfqoDZ8N0R8nk9qTL6OsZlRSu2MCzCzejgB/Dqn+Q=;
+        b=OQszqtnFz+oopJzkyIZpGeVU+Q7+zJ6Ca9DUTzXfrVWLymHXOHiHy0JP0EKbYzgO+0
+         hWgmlUa/CO5k0S8dbolIpN2FK0OQHXa6Wzy9HZS6i2hd2fmi8og5UXesH/HhE5Nz7a7R
+         58FIkv4LTSVMJ4w6vjVDU1lu4oHGd98Pg7cBLABtMbxR375udUy9+tRTjFm1rokuV8Ls
+         FdSP3zcYvUhWhFhKOAQHH+PDGB8HUn2w0oLutaZ5lb9e5LT/0YXrYFPfD/t2JHcw8NWn
+         pGk7MjD0eSoD/9Gi/p0BoJVTpF3iEJMnB7RAonAT5h/B2nz4tNLkLu7OA9Vr9egLJfBm
+         /BwQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779303917; x=1779908717; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3e9o2gG3pCPt49dwVje/mGfLrm4pMM5X5wFjDw9oP4Q=;
+        b=HJz5glIMoWnASrYs94/Ol2FGK47FfqdsH5qUUfFpoV2UINTbSuCfUTNOvVgEP2lZGt
+         JeTVDcBNHbWZXKK8538kl3Y8T14O8ld9d0IVuDu1Cp9mwq7N3Lqa++VNxwTLp9bsQG21
+         NflWqF1LfmyfbHb+PyfBUkewquGa/5jYyhM67BX54abhIHYnIjOGOJLyqahlFAnJMNCp
+         CL4W8jIyiwIT/GNGMTwGP/gtgrvCLr91jynIg7ol8M2JP4x/ypi9w3Nj9GZOKhvoKbat
+         k25r7D7GQld0qIg4oto0JxlK41gHqppoUBqKV3ere+J8VJtUDgJqfSIviISEM+gY15u+
+         SPmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779303917; x=1779908717;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3e9o2gG3pCPt49dwVje/mGfLrm4pMM5X5wFjDw9oP4Q=;
+        b=XR1cYZhiDk7p1fG3wOOlXVZUjtMg/ZfOMpXGeNTX2yk+QpIWdkTi3UnV4gvzBeeRcF
+         BDfCPFtah11l4aq+J9HqEl9pY6NI6HxbVeBIa86oISd5Oy/Y4g1eS5T4b0wTCjS+bpAS
+         WtmBHXCVB8dTxoae5Fhp1TiGuJRXOf+mF7tUNOvZy6RZXj6IbRG6y2a70GUaZOJEQ2M8
+         LzzLTnuIuv1pGi8BqAGj+6xtu518XXGDNLV54yB/BDr0uS48S0LY7TC4rd/KpAd0SkQh
+         SdRo3lx/aGNu0vaz6s7Qv89PCjpUQDDMw7Dtsdlk6VdKOWFAbU+/Vlk2ZB5vIdUeEA8z
+         WiEQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9aYn2i8Q/o25E7MT8kH7jTE4XdFCljsoHu/Odri3WrnI48ote8dTZvFlq1DAvr0JUIBfU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwCUA2GKr+GzpTtcHHj6wXV4TfssH72D5R/IJGW2sNbHlpKbyN9
+	yy8e5zFAAnLMd1wpsIq2zRqcfJ7TsqvxTfrtxHznAKdGmQHvYiDxxyxa4nJF3dh2pztnLgND+oz
+	M0OKBpO9X116AYV0S0cxK9Zazf6nE21cAn1WljKLc
+X-Gm-Gg: Acq92OGqCF/NdLI8czO8bUNGumNophyKD8vmuGHKYtCts52Z1lxBhC2m0GSqZz+NgwX
+	NnEBl6QC/pg9YNbmaxMR8bbCLv8JD+xrWBlggG1ARyFYjd1sG4pbwTbJHe5rcFyDPpUnJXLXGR5
+	jKexYVQClSigMZoo8EulKLOtzgZZMdxB8gzvwrkPZNukhpRp3kMwwKwisyQ3yRf8EXiy8qLWxOy
+	oDzKF13iIEA+PSUSXen/F8Due7VXuuNZuTTf70reAoWke66gdpura5t5CctUKsAw24j/+YrCkqf
+	9DK+ezTrX9xQ3kw4Cfb/KXQqzxSU8+R0fEp5Rfkwf/F9GJeeXlKXfDQNo8tPqDeDBPNSuVTxZPa
+	Jy2RK
+X-Received: by 2002:a05:6122:2407:b0:575:637e:9509 with SMTP id
+ 71dfb90a1353d-5760c0940d7mr14510275e0c.13.1779303915928; Wed, 20 May 2026
+ 12:05:15 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 20 May 2026 12:05:15 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 20 May 2026 12:05:15 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <ag3LYxmbqD3EWfrJ@google.com>
+References: <20260414-selftest-global-metadata-v1-0-fd223922bc57@google.com>
+ <agOMfpW2Xxpzk-D5@google.com> <CAEvNRgEpy+d=KTSVcO9svAS9asHCDcwctGo=9PAaFVMUCd-Wrw@mail.gmail.com>
+ <ag3LYxmbqD3EWfrJ@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
-
-
---=-BQ4J6FeuOLTRewu0k3H0
+Date: Wed, 20 May 2026 12:05:15 -0700
+X-Gm-Features: AVHnY4Jb2NXYYYsdCzDpc9JNWTD_Ob2jf_L84rv-RtVDnf4LglR3VtKesLFSPwo
+Message-ID: <CAEvNRgE-jDJSyPtXpd=gc2nhTwVjoM3+k_eED1A-rgO-bkw9Lw@mail.gmail.com>
+Subject: Re: [PATCH RFC 0/4] selftests: harness: Provide global metadata
+ pointer to allow clean teardown from selftest libraries
+To: Sean Christopherson <seanjc@google.com>
+Cc: Kees Cook <kees@kernel.org>, Andy Lutomirski <luto@amacapital.net>, Will Drewry <wad@chromium.org>, 
+	Shuah Khan <shuah@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, thomas.weissschuh@linutronix.de, 
+	linux@weissschuh.net, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2026-05-15 at 12:19 -0700, Sean Christopherson wrote:
-> Add a helper to register non-native, i.e. PV and CoCo, CPU and TSC
-> frequency calibration routines.=C2=A0 This will allow consolidating handl=
-ing
-> of common TSC properties that are forced by hypervisor (PV routines),
-> and will also allow adding sanity checks to guard against overriding a
-> TSC calibration routine with a routine that is less robust/trusted.
->=20
-> Make the CPU calibration routine optional, as Xen (very sanely) doesn't
-> assume the CPU runs as the same frequency as the TSC.
->=20
-> Wrap the helper in an #ifdef to document that the kernel overrides
-> the native routines when running as a VM, and to guard against unwanted
-> usage.=C2=A0 Add a TODO to call out that AMD_MEM_ENCRYPT is a mess and do=
-esn't
-> depend on HYPERVISOR_GUEST because it gates both guest and host code.
->=20
-> No functional change intended.
->=20
-> Reviewed-by: Michael Kelley <mhklinux@outlook.com>
-> Tested-by: Michael Kelley <mhklinux@outlook.com>
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+Sean Christopherson <seanjc@google.com> writes:
 
-Mildly concerned that we might want to support multiple options =E2=80=94 d=
-oes
-it have CPUID 0x15? Does it have 0x40000x10? Does it have a pvclock?
-There are various permutations of those which are perhaps best handled
-by *trying* each one, in some order, and populating a struct with the
-answers?
+> On Tue, May 19, 2026, Ackerley Tng wrote:
+>> Sean Christopherson <seanjc@google.com> writes:
+>>
+>> > On Tue, Apr 14, 2026, Ackerley Tng wrote:
+>> >> Sean suggested using setjmp and longjmp [1] to back to the top level
+>> >> TEST_F(). I looked at [1] and found myself wishing to use TEST_F() the from
+>> >> kselftest harness directly.
+>> >
+>> > Can you elaborate?  If you have a need for direct TEST_F() in KVM selftests, odds
+>> > are good someone/something else will have a similar need, sooner or later.
+>> >
+>>
+>> I guess I like the consistency of working with TEST_F(), there's also
+>> TEST_F_TIMEOUT() and friends and all the usefulness of the rest of the
+>> kselftest_harness as you described, all of which will probably need
+>> re-wrapping if we proceed with the approach of wrapping.
+>
+> FWIW, utilizing the TIMEOUT functionality could get tricky.  KVM tests often have
+> highly variable runtimes based on the underlying environment.  E.g. as an extreme
+> case, see the never ending game of whack-a-mole we've been playing with flavors
+> of KVM-Unit-Tests' access test[*].
+>
+> I can definitely see it being useful, e.g. for tests where we *know* the runtime
+> is O(ms), just want to call out that this is yet another case where KVM tests tend
+> to have more annoying requirements than other selftests.
+>
+> [*] https://lore.kernel.org/all/20260317225327.4068448-1-yosry@kernel.org
+>
 
-But on the basis that perfect is the enemy of good,
+I guess today's KVM selftests are the equivalent of "never timeout", so
+that could be a separate enhancement to kselftest_harness.
 
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+We could use kselftest_harness where it is useful in KVM selftests, not
+as a replacement :)
 
-> diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
-> index b5991d53fc0e..e9e7394140dd 100644
-> --- a/arch/x86/kernel/kvmclock.c
-> +++ b/arch/x86/kernel/kvmclock.c
-> @@ -321,8 +321,8 @@ void __init kvmclock_init(void)
-> =C2=A0	flags =3D pvclock_read_flags(&hv_clock_boot[0].pvti);
-> =C2=A0	kvm_sched_clock_init(flags & PVCLOCK_TSC_STABLE_BIT);
-> =C2=A0
-> -	x86_platform.calibrate_tsc =3D kvm_get_tsc_khz;
-> -	x86_platform.calibrate_cpu =3D kvm_get_tsc_khz;
-> +	tsc_register_calibration_routines(kvm_get_tsc_khz, kvm_get_tsc_khz);
-> +
-> =C2=A0	x86_platform.get_wallclock =3D kvm_get_wallclock;
-> =C2=A0	x86_platform.set_wallclock =3D kvm_set_wallclock;
-> =C2=A0#ifdef CONFIG_X86_LOCAL_APIC
+>> >> Another option would be to expose the current teardown function pointer
+>> >> globally instead of the pointer to the entire metadata struct.
+>> >
+>> > I'm strongly opposed to any idea effectively requires special casing KVM selftests
+>> > in the common harness.  In my experience, the common harness is already quite
+>> > brittle, in large part because there is no singular maintainer(s) that is responsible
+>> > for ensuring changes work for all downstream users.  Adding odd bits of code that
+>> > is only ever used by a handful of KVM selftests is only going to increase the
+>> > probability that that code is broken.
+>>
+>> If Kees likes the idea of exposing a pointer to the metadata globally,
+>> does that make KVM selftests less "special"?
+>
+> Yes.  I don't particuarly care about the code, I just don't want to be in a
+> situation where KVM is doing something "weird" relative to the rest of the world.
+>
+>> If the community likes the global metadata pointer, I could update the
+>> harness to adopt the global metadata pointer and then KVM wouldn't be
+>> special at all.
 
-Can we move those (and maybe everything in the context there too) up
-*before* the check for no-kvmclock at the top of the function? Probably
-in a separate patch.
+On the PUCK call today Sean asked if this would help with the
+TEST_REQUIRE(requirement) problem [1], where we want to skip this test
+if a requirement is not met.
 
---=-BQ4J6FeuOLTRewu0k3H0
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+Having a metadata pointer helps specifically for the KVM_ONE_VCPU_TEST()
+wrapper. We can't define a generic TEST_REQUIRE(), but SKIP() would
+work, since you can define the SKIP() action to be return, which would
+return out of the __suite##_##test() function and effectively skip the
+test.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUyMDE5MDQ1
-OFowLwYJKoZIhvcNAQkEMSIEINsIUHhejUFzHIyQHegqaLqM7IIfDGimFTPgqrmLZ+apMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAh+w8PesY8mIO
-er/Nr+QFVMGIFZcQJ4eGQmhVTLxh6uPcn3Jq8EVibLvaEVvjWWmo68ANJD5oqtNB5vbcIvct1mdF
-LtaX1wIgQ++d79DHV5xr0rxefqnMJX7G82Q2F0PeUy8yY53Iisyb/NlbeV1GJ1RjnZcI2liCEh7j
-34hxCZRq4aUUPdtn+4+pA+FUV6++6gzXhP9rDv2UIhyPFGtK3Kuhf62dXoL+O/OPOccGu1ccQ9YE
-2EZwwdM8BJuI5IK8+V/YwcOxYESo+tgT8p1FKIDB6SD0cqiTaQXTUZNC5Plyim120+0WwhzFT0AN
-1rmAxvi4x1wyAEdSdgYMMAm8k5+CtNB5uxZvI7ZJcJ7bD4At7H8Bkgz8ULJxYfQMyclaoBVepVNo
-UquMMgo2tcylzSsgCbbJG2J2gxiKas3++0RtGoQXP90KKSLPsUGbA5oKtFMJ93psXQagj92Q2MTD
-MhtR4tTAkjuo/97YhzyWL0jZs5s4nk02EdewhQ6KsZxBeMNKcMqwY0Yf+oP3u/t2hFszeZUwb85R
-HSm7hUcauHVtijQx/rGbE8PjehRZV4l05hKTXEWdTnJ8OCiNOE0XTHmzH3wdp8NTH8gpGVxU8cBP
-Dzfzf2wsgnvcXFXj7iOzLKkyI+2vF9eTQ8+xRi6fhhPIBuxbSQCBcn7DVfLmSMIAAAAAAAA=
+The SKIP() action needs to be handled all the way up to the top level
+TEST(), so there's no generic TEST_REQUIRE() to be defined.
+
+Defining TEST_REQUIRE() as SKIP(<call teardown>, abort(), "message")
+would work but that only helps with teardown and doesn't continue with
+the rest of the tests. To continue with the other tests, I can't really
+think of a good option other than setjmp/longjmp.
 
 
---=-BQ4J6FeuOLTRewu0k3H0--
+It seems like the problem KVM_ONE_VCPU_TEST() solves is a FIXTURE
+configuration problem. The vCPU could be set up in the FIXTURE_SETUP(),
+but there's no good way to parametrize the fixture setup code. Did I
+understand correctly?
+
+I'll have that issue in the guest_memfd conversion tests too, leading to
+lots of kselftest_harness wrappers. e.g. INIT_PRIVATE [2], then
+INIT_SHARED [3]. There is FIXTURE_VARIANT_ADD, but the test code isn't
+the same for the INIT_PRIVATE and INIT_SHARED tests.
+
+
+Is the kselftest_harness-native way to parametrize fixture setup to
+create different fixtures? Like FIXTURE(gmem_conversions_init_private),
+FIXTURE(gmem_conversions_init_shared) and
+FIXTURE(gmem_conversions_init_shared_4_pages),
+FIXTURE(gmem_conversions_init_shared_8_pages)?
+
+I guess FIXTURE_SETUP() does have access to the fixture name so setup
+parameters could also be encoded in the fixture name.
+
+[1] https://lore.kernel.org/all/ZjUwqEXPA5QVItyX@google.com/
+[2] https://lore.kernel.org/all/20260507-gmem-inplace-conversion-v6-28-91ab5a8b19a4@google.com/
+[3] https://lore.kernel.org/all/20260507-gmem-inplace-conversion-v6-29-91ab5a8b19a4@google.com/
