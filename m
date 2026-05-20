@@ -1,133 +1,176 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D49A0346A1F;
-	Wed, 20 May 2026 19:42:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668692C11E6
+	for <kvm@vger.kernel.org>; Wed, 20 May 2026 19:50:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779306157; cv=none; b=N+mkI90HsrbM3OMqr1Ztdojrl6qbaeHOm2ObcOHBcN14UP6KoiCnXksiAyHzfYAEu0nhe/17ZlhYxcq6wvssV5tgRHg1wfsKgGvZUekPe5gCPnwEf7gUP6WuXWgRMzqB0uj7qEYsAzT6s/ogeIpjwf/1hfOeFyAsRk/+CQrGXzs=
+	t=1779306646; cv=none; b=hwHujnLmJagSKtcN6UqNPh9eG6+uYHGtIunLyK2urjWzC0N3Nv+DJ/RLhcAOJwP+y7LleKB+IqAQpgz4Q2rWs1cgz2snUqaq6mPCS8cEXxfsLTfgI1k6320/s7V/7at2kL6NzSVODE/AJuW6IP8630/Ul0NhbJ9lm/l9XaQ5YdY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779306157; c=relaxed/simple;
-	bh=atsaRhAHzHNADhhVMahA5E1WNAHoBYGfqIH8Gnl36Ik=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=FD3OT+4c/gVQBKpn7cNkcFIAoczlLcFUcnr1Dvc54Ei1YgKlgilZ9Wtg8XRpybNDERO4+ylbp5LgFARKcKhFVF8Kjl5zFqEreJ7AfyKEVgCm+Y8cq6cA8lXrGk1J5fNx3HZKLwKGc0sU6vYJ9gO88f7i3que37uQEJi9wntl1EI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=eTPcgHhd; arc=none smtp.client-ip=192.198.163.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1779306646; c=relaxed/simple;
+	bh=38oreodTd3a6pgd9iHihqPkmarP5WZdM5RpNKRkZshU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AWqvSMvjcM4035s2rxrVj9RaCEbjHWRJFXFDzhqX40qmzFrIzQmZC9rm3Y1cwfysXth8Az4N+o3iKvC6m1KzqVXtP5Emx4a9aFp2T3U3iv1kPtJRUbg4fsGbrNY+r/kcT0R5GY86A7Bfu3+kZ3hvvlMObf46J8mYAtna0LjJKPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qOkM6CJ3; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="eTPcgHhd"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779306156; x=1810842156;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=atsaRhAHzHNADhhVMahA5E1WNAHoBYGfqIH8Gnl36Ik=;
-  b=eTPcgHhdLBsIVm0hN8HXSyNF6jtmiShzVNcQIDZgE4BD3pW0TBcA0mUN
-   wLdun13KxIfbFHDXbIlzYKQi+sngLqOBGjIvC5aNkhtpeS9Za9lLdBfNK
-   t4SrBBOqshUZCONWHUfvFBfLck2m5OIzjDfwXmAUv/8vf3FdeTK+3FcpS
-   AKmGPCHSNn6hM4Wrtl1GNFWV2YEKvdKF00sEHZTIlE7Gi+pZ9ropiJ+zu
-   h3Gvz7oNPh/kcmiU0lqD0j+nIEYWOMYeKJorQykYxh5PtOcwltWV56LE9
-   sF17a0Y52+ZoymFv3Qz7AGSvFxcoJBVvKlnoo1n+KhGJ4qZqdQ8+OCtd9
-   w==;
-X-CSE-ConnectionGUID: YtbAQpjGQPGsu7QJx25XUQ==
-X-CSE-MsgGUID: t+Djqfd0QV21tM5aIY2UpA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="79368580"
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="79368580"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 12:42:16 -0700
-X-CSE-ConnectionGUID: kUkCUNX4ShiKhZsXQIF7ig==
-X-CSE-MsgGUID: FHMFmU6vTSOG3+LSEfcxtw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="237687779"
-Received: from spandruv-mobl5.amr.corp.intel.com (HELO [10.125.109.190]) ([10.125.109.190])
-  by fmviesa008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 12:42:15 -0700
-Message-ID: <809c5752-f9de-47f4-b73d-4bfe0d6ed9a7@intel.com>
-Date: Wed, 20 May 2026 12:42:19 -0700
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qOkM6CJ3"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2b46da8c48eso1135ad.1
+        for <kvm@vger.kernel.org>; Wed, 20 May 2026 12:50:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779306645; x=1779911445; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zGlZIIGtCBSMFz+AR7h4nxPLAjxI6s+Py2Of2qTbbXE=;
+        b=qOkM6CJ3PRTIuXFlbIEte4u+2ePR75ptmPuG2AH+B2HVX3inE5WOBxxyWtS7kLmTPe
+         nEVG1uK0cEQa941gTNQ+qQ5femZeSPLN/qmEsAPNLhGroRMsPs0Pu9QjGHbUq5GX6DL/
+         EKxpFeavb7BsKEpInoZYBasq1TSnMmB0mCSo/+Q9x0JuNYRR2MdQyEvp+ymqD1C5qYel
+         8jsrTfPouc7qRdktuBaD6LEpoWJUI9BBC6rJs6rkcRsdJTaK9DYQJnfABUEVUBFO3S+G
+         GiIIRfNYeGD14Z83995wDzSZMk9lZEJ/Byv34q6EijImOuwTV5cmoUdfOetPrM6Rzxr/
+         R7+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779306645; x=1779911445;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zGlZIIGtCBSMFz+AR7h4nxPLAjxI6s+Py2Of2qTbbXE=;
+        b=IB2YVdJeTtndB5IaAtiNYAhXfj3mN00V6GhmfA+bu6Zv+bQaF4dz1z/HUyhnGr1YbQ
+         9q6i599fzKioN80uk0vsISFwo072qICi3jhpCDNgxOiNPTgcyx5XC2PoQJzjj9gz6wE9
+         +mkPE9qvuUWiKrDHCiIEfB10KRBCrNXLVwbn2haieZDg0p11tAyGrc2jU/A2g9bhrRd8
+         D6KsHeEkbLuqdba0tOTc3xASHuJe1nZD/QwDeXjH4a6ietPOMWMdPzgQ5peX7jQgYP+d
+         8Dx2Y9OTZ5gq0/I5cjr7eN9NivpbNqjXvgT8FWfs+ceBwMBVfMgzYbj+60DGlCgZZSWE
+         Gzqg==
+X-Forwarded-Encrypted: i=1; AFNElJ/JMqbMCv9FISopQvsWaNAtbtrLd9t8xdn/pmwXVCmjD1YEVioxlFASHk2B++yXFhHdQbI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrhXZNHsGDPetk/eAJ/ARvyRGbxIFbruXN5o/6xlt/jfWgLaNT
+	SXgiQJn4cjRgZRd2eoeJJt4rNvATI8Y+Fi5kpH9W9uGB2YTPA+lUEhzYjHts5iAUQA==
+X-Gm-Gg: Acq92OFl6yQZt8UGSql/Oa4SkRZiaLwT+eTqMqSCEmL4UfBYw/9xOGNJ9mHcscZYIlx
+	LKA2nrELDm2OZM8KItk2VRYeiRm4nanFno2ZFQ5ikAV9Xu5IkVbn+Y+8BDC4Vv/7mB5WA8Ok28x
+	1x26fk6z9pvogVVM4stUDclU0+0AHBXY7nPkgO1tr7h3k8+98HDC2KiFIFfIILxy4o+hRDducUM
+	Z1Dm690wbAPd5M5VOtROFTgRXoZgFBKhoLwC0oTnWCZLEY8CAeCG1Vpn18LV632nNm51OKClczm
+	jvll1jak93DuFdL920pDTaxdfGDpimD2tXpzUgtwmWW8yJYyMSJu0Nm6GGibHLcwOuUb3BeUjKg
+	xfVywJ581UwOJMY2vAUK9Qyco6cQNUfHDwInPY8Gn22reHCil4A6YhpTpFg8rOUsksxSIbBY5kQ
+	3jn+urnmXRfM882PxHaw9X+R808LEEhbXGH6L2XDotoGgwuAfQsgp6KlxaSdbm2mtEOqDB0Q==
+X-Received: by 2002:a17:902:ce0a:b0:2bd:6dad:3dfd with SMTP id d9443c01a7336-2be9f6d571amr560625ad.27.1779306644147;
+        Wed, 20 May 2026 12:50:44 -0700 (PDT)
+Received: from google.com (153.46.83.34.bc.googleusercontent.com. [34.83.46.153])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-84149619c9dsm224416b3a.36.2026.05.20.12.50.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2026 12:50:43 -0700 (PDT)
+Date: Wed, 20 May 2026 19:50:40 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, YiFei Zhu <zhuyifei@google.com>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>
+Subject: Re: [PATCH v2 12/16] iommufd: Implement ioctl to mark HWPT for
+ preservation
+Message-ID: <ag4QQRB6g7BkANj7@google.com>
+References: <20260427175633.1978233-1-skhawaja@google.com>
+ <20260427175633.1978233-13-skhawaja@google.com>
+ <agzsngLHDmoD3JxT@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 00/25] Runtime TDX module update support
-To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, x86@kernel.org, linux-kernel@vger.kernel.org,
- linux-rt-devel@lists.linux.dev, linux-doc@vger.kernel.org
-Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
- ira.weiny@intel.com, kai.huang@intel.com, kas@kernel.org,
- nik.borisov@suse.com, paulmck@kernel.org, pbonzini@redhat.com,
- reinette.chatre@intel.com, rick.p.edgecombe@intel.com, sagis@google.com,
- seanjc@google.com, tony.lindgren@linux.intel.com, vannapurve@google.com,
- vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com,
- yan.y.zhao@intel.com, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- "H. Peter Anvin" <hpa@zytor.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Clark Williams <clrkwllms@kernel.org>, Steven Rostedt <rostedt@goodmis.org>,
- Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>
-References: <20260520133909.409394-1-chao.gao@intel.com>
-From: Dave Hansen <dave.hansen@intel.com>
-Content-Language: en-US
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260520133909.409394-1-chao.gao@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <agzsngLHDmoD3JxT@google.com>
 
-So a little cat|sort|uniq says:
+On Tue, May 19, 2026 at 11:05:02PM +0000, Pranjal Shrivastava wrote:
+>On Mon, Apr 27, 2026 at 05:56:29PM +0000, Samiullah Khawaja wrote:
+>> From: YiFei Zhu <zhuyifei@google.com>
+>>
+>> Userspace provides a token to mark the HWPT for preservation. Note that
+>> this token is not the LUO token that is used to preserve the iommufd.
+>> Once all the required HWPT are marked for preservation, the user can
+>> preserve the iommufd into LUO. The iommufd will preserve the HWPTs that
+>> are marked for preservation.
+>>
+>> The marked HWPTs are tracked using a new XArray mark protected by a new
+>> liveupdate mutex. This mutex will also be used during iommufd
+>> preservation to protect against any race with the mark preserve ioctl.
+>>
+>> The HWPT token will be used during restore to identify this HWPT. The
+>> restoration logic is not implemented and will be added later.
+>>
+>> Signed-off-by: YiFei Zhu <zhuyifei@google.com>
+>> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>
 
-     11 Reviewed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-     17 Reviewed-by: Kiryl Shutsemau (Meta) <kas@kernel.org>
+[snip]
+>
+>> +int iommufd_hwpt_liveupdate_mark_preserve(struct iommufd_ucmd *ucmd)
+>> +{
+>> +	struct iommu_hwpt_liveupdate_mark_preserve *cmd = ucmd->cmd;
+>> +	struct iommufd_hwpt_paging *hwpt_target;
+>> +	struct iommufd_hwpt_paging *hwpt_paging;
+>> +	struct iommufd_ctx *ictx = ucmd->ictx;
+>> +	struct iommufd_object *obj;
+>> +	unsigned long index;
+>> +	int rc = 0;
+>> +
+>> +	hwpt_target = iommufd_get_hwpt_paging(ucmd, cmd->hwpt_id);
+>> +	if (IS_ERR(hwpt_target))
+>> +		return PTR_ERR(hwpt_target);
+>> +
+>> +	mutex_lock(&ictx->liveupdate_mutex);
+>> +
+>> +	xa_lock(&ictx->objects);
+>> +	xa_for_each_marked(&ictx->objects, index, obj, IOMMUFD_OBJ_LIVEUPDATE_MARK) {
+>> +		if (WARN_ON_ONCE(obj->type != IOMMUFD_OBJ_HWPT_PAGING))
+>> +			continue;
+>> +
+>> +		hwpt_paging = to_hwpt_paging(container_of(obj, struct iommufd_hw_pagetable, obj));
+>> +		if (hwpt_paging->liveupdate_token == cmd->hwpt_token) {
+>> +			rc = -EADDRINUSE;
+>> +			goto out_unlock;
+>> +		}
+>> +	}
+>> +
+>
+>Nit: What happens if the user calls this IOCTL on an HWPT that is already
+>marked but passes a different token?
+>
+>The xa_for_each_marked loop will not match the new token (so it bypasses
+>-EADDRINUSE case) and the code will silently overwrite the HWPT's
+>existing token?
+>
+>Since there is no unmark / update UAPI, It can be a fair policy as well,
+>but maybe we should call it out explicitly, maybe a log like:
+>dev_warn("Overwriting token to %d ...") ?
 
-We're on v10 here. There are 6 patches in here with no review tags:
+Agreed. I will do this.
+>
+>If NOT, then we should avoid overwriting the token and scream with
+>retval like -EINVAL & dev_err in dmesg.
+>
+>> +	__xa_set_mark(&ictx->objects, hwpt_target->common.obj.id, IOMMUFD_OBJ_LIVEUPDATE_MARK);
+>> +	hwpt_target->liveupdate_token = cmd->hwpt_token;
+>> +
+>> +out_unlock:
+>> +	xa_unlock(&ictx->objects);
+>> +	mutex_unlock(&ictx->liveupdate_mutex);
+>> +	iommufd_put_object(ictx, &hwpt_target->common.obj);
+>> +	return rc;
+>> +}
+>
+>With those two nits addressed,
+>
+>Reviewed-by: Pranjal Shrivastava <praan@google.com>
+>
+>Thanks,
+>Praan
 
-M:      Kiryl Shutsemau <kas@kernel.org>
-R:      Dave Hansen <dave.hansen@linux.intel.com>
-R:      Rick Edgecombe <rick.p.edgecombe@intel.com>
-
-Are all of those 6 new patches? Or do the reviewers still have some work
-to do?
+Thanks,
+Sami
