@@ -1,166 +1,151 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout-b1-smtp.messagingengine.com (fout-b1-smtp.messagingengine.com [202.12.124.144])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408102C11E6
-	for <kvm@vger.kernel.org>; Wed, 20 May 2026 21:02:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04FC835B65D;
+	Wed, 20 May 2026 21:12:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.144
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779310950; cv=none; b=MU3JZ5ygV0l/WSQ09Qo+mbv9Z92zcHneY5KtW6Q8Oa4imFPZKhYoz88hatgObEz0lWDo8PBQkUyyNaZlS2tHcVvE6SJ4nf1c2XzFhMq14Uu5OgdsgOaKcYM2dyKgSvIOcL8C2VsU1et9V1KRkRUy3taWr83i3RDnRVj59mSTOQ0=
+	t=1779311542; cv=none; b=I7zqB0ESqbUleU+CV/2fW910efzcKFKMNxT+4MxZ7XU8eeQoDGRN+TBNRnxFUZchiHF/XvBA1IFytsJmCNWJLxd7N7ADAIV/W/pDYuMZq+b7qCqveuO0RTAPcGi1yJff4JYzjVDhmw1pHs1cnSZdGiFbgO595Z80v26N+SSslw4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779310950; c=relaxed/simple;
-	bh=/SyQLtBraYhS5/8VMnaEdQSNY3tBbZxFagWmgPcJqrU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=R0yC7jOyYK65PeGNE/zlQNhtrLCGp5imv2DZe3kboqNcGfBhHfY7KKWOouGd59bhadLgjzJ95K0QuSdCct5Ukpgq7NswlbcEIhJk3NqtZhaOY5kcFkKbKrCrgOB6Z0zzmlUZotxCcx9kV8+fSE0dTdfCBBXx8A6/j7D5Xi73j1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rYYAhFQy; arc=none smtp.client-ip=209.85.215.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1779311542; c=relaxed/simple;
+	bh=kEDNMiQgY6MI079QkoJSX6k0r05opPiu8etWh76s5k0=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JneAHHeBt8QoVgp+HPTqOcDUBHh5S/pLnMXugEYC1DBFQMFrICnh+p0rhZ0iIQ8tWyjAeuDR0Q12p7DV15i8MgtGC6XbGIHL0xmiZhROemtfft6CyproHEKgaZ/7BvhdgoOv3mlwP/6vIZOyfqsNLBSSMUF2ifOyxXS8q8uszx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=mpTYUm5E; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=da/ngVPt; arc=none smtp.client-ip=202.12.124.144
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rYYAhFQy"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c70ea91bfe1so3013223a12.1
-        for <kvm@vger.kernel.org>; Wed, 20 May 2026 14:02:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779310947; x=1779915747; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=IMxqN6rGG5Sakxt9VTCj2ZelG+Z0Re7U8JKIeB5aot8=;
-        b=rYYAhFQy9vD0gBQ3+G3dns6dwND0hNmtAFduiSdduwZVLMOvJ8uQW3Z3cWWZ0LhBV8
-         XZ6FJft/Z1Jxu40v9a89TnBiWWdzrWhfCh4uqNPugsAQB1prOpxZ+2/lnuD2HkAOlyCx
-         CWM6hfCXr7h+uFMy+ZMgs/1kyg5B4fl6OfUudPPcoZcLFHqk1TYksy1u4mNTni0gBvlj
-         Q47tEQQGybK+qGGh6ep1swxtIGoZRW1brRlnBZS++Sp2WzU9T0rKoQjaLt3Lik7enEaP
-         TjjN/GBixeoEpM2UnPvgQ7NGodPzOEkwLiWh0OcuXcmKlWTT1A8c7OMiCrXrv4mr/RLO
-         AsNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779310947; x=1779915747;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=IMxqN6rGG5Sakxt9VTCj2ZelG+Z0Re7U8JKIeB5aot8=;
-        b=neqYBlCbU6tV2ceNGfdOARf7SAVqPUrjELwNdGn3i7S2LonoF+qm6VdjhxM8QrpG0q
-         Tv9n69UwT7ZyInthprSEOQH07AT/R2GwNU7u0G4cwoY/1ozFRgPcZ+C+3BVq+wdNVgvO
-         U4CmLYZp/zalNQalkj7HrSDo+7OmSfKsdX3su1cwV5eDLCDoE1QLrM56rh50dmcIN7jT
-         8eoEEHz+CbPeU0Rplo1FP+8AqfIn5tIEHXowOzBfCo32etbD1LeXoCAiQJkvfTZbKTr8
-         l+bOVvFChBlR758tzU5utKuCH8WE307lGsQ5vetTpsyPnanMCAIej330rlOyZsKvD5an
-         49Sg==
-X-Forwarded-Encrypted: i=1; AFNElJ8Rfye84JM2SxOiXJvu4feZleDRaQbMMW1HInRpwpiHFWnEm+EsarJf5HcMnoEBq1s1gPY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEvz8uPEWZs52/dwDSNoDASoq88sQQ+NB1hiEw6xaz1/FwDkG+
-	FMnjhXs2lp14hJTUjbWRsFOOVFcLKreqe1ouBqV/oFL1+9WByiPzUG+p+7ssoKyYDwbLipqQgm5
-	AcUqYAA==
-X-Received: from pgnp19.prod.google.com ([2002:a63:7f53:0:b0:c82:7805:9e4d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:279a:10b0:39b:dea7:5626
- with SMTP id adf61e73a8af0-3b308856ca4mr1798637.35.1779310947183; Wed, 20 May
- 2026 14:02:27 -0700 (PDT)
-Date: Wed, 20 May 2026 14:02:26 -0700
-In-Reply-To: <c347d65f555ad1e10a0e87ee57c5879c7046d0e7.camel@infradead.org>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="mpTYUm5E";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="da/ngVPt"
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfout.stl.internal (Postfix) with ESMTP id C008B1D0007F;
+	Wed, 20 May 2026 17:12:17 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Wed, 20 May 2026 17:12:18 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1779311537;
+	 x=1779397937; bh=+g+lL+U36Qr4BDxd87KODJtgq0o+prLW5jMcZVYy0UQ=; b=
+	mpTYUm5Eeg/hyFwjmm3oKz5Irewvk7UbyTp38/OjgjgWpXt0Gfgzl9m8P5PM0gQa
+	uZTGuVaN7Uf9u0tzh5GlpvChY056FsMXSwA0qcja+dx5sUUgqxDOs9iia4OAC8E4
+	YGrc+C3d/ZisNqwHNQihjRMFJERyJRc3sInDaWCr9S6W5FsYKF5keDlD5yBRhC1x
+	pb0hQ0CdD7cOYQa64J+qv44geiS1G2ogYSsPkNPrkp7qTV56braPLtwP6lsvp0fj
+	C+g6JzPvWiESviU6Ozbaw/22mXulTU2eT+pZfPTBFcaI32VBDmLIFEfGGAIGKGEY
+	zn9rreZ1mC2OgFuZSgqg6A==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779311537; x=
+	1779397937; bh=+g+lL+U36Qr4BDxd87KODJtgq0o+prLW5jMcZVYy0UQ=; b=d
+	a/ngVPtIQeQf1vFdSoV71FGu0iw8aauD7UV+xlq6vyFUNHz//ol31NyB/kxQyet0
+	5Xi3dJfpql/RsyCaAegDFqrPvGRI/qH5tGYNK52w4MuKV3ff/h3wbqsToWJ1LW2Q
+	ezEEHUP513w2IWGNNQ7a7gjym8WF6JEcX1UruY8iNJpowpTHVNXH3tIO9wc5wC5+
+	a7Pzbu1TF6trAz5mePZeEow1UjHoozQSPAPG4FDhbifPtEJJsyrKUeLfYQc4Fzyc
+	8awnyHPAlutWo5aBUPx40MvZNU87TVuV2tXG4nE+IPuyEYbwyWNXLBy9WnXtLX4F
+	IoLQs/SWAC5wQVf0Qs+hg==
+X-ME-Sender: <xms:sSMOanwpb9A7P2hmYbCvtZavwOW2J__qaYPtDa0rdKO3ccAeKHyxmQ>
+    <xme:sSMOavvHi3ZsP3-Qd6D9TjcwSw6SKNmq56ZBpPl7irQDLk-QV8xxTCyJ0jazgoNy_
+    5npKNIWuL4Mvpv2ECX4Mwji7ZqE_6JAVRzNVD2wO5WPctD6XN6KTg>
+X-ME-Received: <xmr:sSMOaiCkmt2tqT8KsxMYdPpL_u6pxexb9m8kJmxKPxqILVoTFRc6kVC1zNk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddugeehieekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
+    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
+    htthgvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudeg
+    veeuueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepledpmhhouggvpehs
+    mhhtphhouhhtpdhrtghpthhtohepjhhgghesnhhvihguihgrrdgtohhmpdhrtghpthhtoh
+    epkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqdhk
+    shgvlhhfthgvshhtsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhhuh
+    grhheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdifihhllhhirghmshho
+    nhesrhgvughhrghtrdgtohhmpdhrtghpthhtohepughmrghtlhgrtghksehgohhoghhlvg
+    drtghomhdprhgtphhtthhopehprghttghhvghssehlihhsthhsrdhlihhnuhigrdguvghv
+    pdhrtghpthhtohepshhkhhgrnheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprh
+    gtphhtthhopegrlhgvgiesshhhrgiisghothdrohhrgh
+X-ME-Proxy: <xmx:sSMOapGImM9r2qpqsTBXibAhzBicX-7wFHLlwInM7NkDfmwmpLkkgg>
+    <xmx:sSMOaqCk9oWlBAHne7UYyM0J7TfA-bf14DZ1EsZa91UE_RQIJb2nig>
+    <xmx:sSMOannZ4FWpdHOTOzbf_1Is7BcfBBmFf5kZDAxC357xH1W4KnNivA>
+    <xmx:sSMOaoMmyVnicoFPH9Ko7g0YDtX4uVQmYqFLQYTlSLojAbHbRT8u6w>
+    <xmx:sSMOareKvCyOULaL5IYVgOcSJOOzodfJUuaQNT3xmLdJP1sEDzdkmwb9>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 20 May 2026 17:12:16 -0400 (EDT)
+Date: Wed, 20 May 2026 15:11:59 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Jason Gunthorpe <jgg@nvidia.com>
+Cc: kvm@vger.kernel.org, linux-kselftest@vger.kernel.org, Shuah Khan
+ <shuah@kernel.org>, Alex Williamson <alex.williamson@redhat.com>, David
+ Matlack <dmatlack@google.com>, patches@lists.linux.dev, Shuah Khan
+ <skhan@linuxfoundation.org>, alex@shazbot.org
+Subject: Re: [PATCH v2] vfio: selftests: Fix out-of-tree build with make O=
+Message-ID: <20260520151159.5bbda153@shazbot.org>
+In-Reply-To: <0-v2-4ccc247e6aff+1d93-vfio_st_make_o_jgg@nvidia.com>
+References: <0-v2-4ccc247e6aff+1d93-vfio_st_make_o_jgg@nvidia.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260515191942.1892718-1-seanjc@google.com> <20260515191942.1892718-7-seanjc@google.com>
- <c347d65f555ad1e10a0e87ee57c5879c7046d0e7.camel@infradead.org>
-Message-ID: <ag4hYu0O71QrLW2y@google.com>
-Subject: Re: [PATCH v3 06/41] x86/acrn: Mark TSC frequency as known when using
- ACRN for calibration
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
-	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
-	Jan Kiszka <jan.kiszka@siemens.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, 
-	Daniel Lezcano <daniel.lezcano@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	John Stultz <jstultz@google.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>, x86@kernel.org, 
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, Michael Kelley <mhklinux@outlook.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, 
-	Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-On Wed, May 20, 2026, David Woodhouse wrote:
-> On Fri, 2026-05-15 at 12:19 -0700, Sean Christopherson wrote:
-> > Mark the TSC frequency as known when using ACRN's PV CPUID information.
-> > Per commit 81a71f51b89e ("x86/acrn: Set up timekeeping") and common sen=
-se,
-> > the TSC freq is explicitly provided by the hypervisor.
-> >=20
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > ---
-> > =C2=A0arch/x86/kernel/cpu/acrn.c | 1 +
-> > =C2=A01 file changed, 1 insertion(+)
-> >=20
-> > diff --git a/arch/x86/kernel/cpu/acrn.c b/arch/x86/kernel/cpu/acrn.c
-> > index c1506cb87d8c..2da3de4d470e 100644
-> > --- a/arch/x86/kernel/cpu/acrn.c
-> > +++ b/arch/x86/kernel/cpu/acrn.c
-> > @@ -29,6 +29,7 @@ static void __init acrn_init_platform(void)
-> > =C2=A0	/* Install system interrupt handler for ACRN hypervisor callback=
- */
-> > =C2=A0	sysvec_install(HYPERVISOR_CALLBACK_VECTOR, sysvec_acrn_hv_callba=
-ck);
-> > =C2=A0
-> > +	setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
-> > =C2=A0	tsc_register_calibration_routines(acrn_get_tsc_khz,
-> > =C2=A0					=C2=A0 acrn_get_tsc_khz);
->=20
-> I'd feel slightly happier doing that from within acrn_get_tsc_khz()
-> itself....
+On Thu, 14 May 2026 13:04:44 -0300
+Jason Gunthorpe <jgg@nvidia.com> wrote:
 
-Ya, though as you note below, this is really a comment on the overall serie=
-s.
+> The test programs are compiled via a static pattern rule that requires
+> intermediate .o files:
+> 
+>   $(TEST_GEN_PROGS): %: %.o $(LIBVFIO_O)
+> 
+> After lib.mk prefixes TEST_GEN_PROGS with $(OUTPUT), this creates
+> dependencies on .o files in the output directory (e.g.
+> $(OUTPUT)/vfio_dma_mapping_test.o). However, there is no rule to compile
+> these .o files from the source directory .c files when OUTPUT differs
+> from the source directory.
+> 
+> Add an explicit chain of pattern rules:
+>   $(OUTPUT)/% -> $(OUTPUT)/%.o -> %.c
+> 
+> Following the same pattern already used in libvfio.mk for the library
+> objects.
+> 
+> Fixes: 19faf6fd969c ("vfio: selftests: Add a helper library for VFIO selftests")
+> Reviewed-by: David Matlack <dmatlack@google.com>
+> Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+> ---
+>  tools/testing/selftests/vfio/Makefile | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> v2: Fix the typo
+> 
+> diff --git a/tools/testing/selftests/vfio/Makefile b/tools/testing/selftests/vfio/Makefile
+> index 40165d087a0bc4..0a4cfd1a6c7ed6 100644
+> --- a/tools/testing/selftests/vfio/Makefile
+> +++ b/tools/testing/selftests/vfio/Makefile
+> @@ -27,10 +27,13 @@ CFLAGS += $(EXTRA_CFLAGS)
+>  
+>  LDFLAGS += -pthread
+>  
+> -$(TEST_GEN_PROGS): %: %.o $(LIBVFIO_O)
+> +$(TEST_GEN_PROGS): $(OUTPUT)/%: $(OUTPUT)/%.o $(LIBVFIO_O)
+>  	$(CC) $(CFLAGS) $(CPPFLAGS) $(LDFLAGS) $< $(LIBVFIO_O) $(LDLIBS) -o $@
+>  
+>  TEST_GEN_PROGS_O = $(patsubst %, %.o, $(TEST_GEN_PROGS))
+> +$(TEST_GEN_PROGS_O): $(OUTPUT)/%.o: %.c
+> +	$(CC) $(CFLAGS) $(CPPFLAGS) $(TARGET_ARCH) -c $< -o $@
+> +
+>  TEST_DEP_FILES = $(patsubst %.o, %.d, $(TEST_GEN_PROGS_O) $(LIBVFIO_O))
+>  -include $(TEST_DEP_FILES)
+>  
+> 
+> base-commit: b5953f774781f0b489ae1f34d49eb08fefe176a6
 
-Waiting to set the cap until the calibration routine is actually run does p=
-revent
-the case where the something registers a calibration routine, but its routi=
-ne is
-never run.
+Applied to vfio next branch for v7.2.  Thanks,
 
-However, because the cap is sticky, it doesn't handle the scenario where it=
-s
-routine _does_ run, but the kernel ultimately throws away its calibration i=
-n favor
-of something else.
-
-Further complicating things is that ~half of the paravirt flows already for=
-ce set
-caps before their routines are invoked:
-
-  snp_secure_tsc_init(), jailhouse_init_platform(), ms_hyperv_init_platform=
-(),
-  vmware_set_capabilities()
-
-Rather than trying to convince everyone that waiting is better, despite tha=
-t
-approach still being flawed, I chose to handle this by ensuring that once t=
-he TSC
-is marked known and/or reliable, the kernel won't replace the calibration r=
-outine
-with a "lesser" source:
-
-  x86/tsc: Rejects attempts to override TSC calibration with lesser routine
-
-That doesn't completely prevent the kernel from being stupid, but it should=
- prevent
-both the case where X's routine is registered but never run, as well as the=
- case
-where it's run but ultimately ignored.
-
-> which I note is 'static inline'. I'm vaguely surprised that even builds
-> (although it does).
-
-Heh, KVM x86 (in the host) does stupid things like this too.  E.g. kvm_pdpt=
-r_read()
-is a static inline, but then wired up as a function pointer in three differ=
-ent
-places.
-
-> Probably nicer to move it explicitly out of line in acrn.c though.
->=20
-> Most of that should be a comment on patch  2 of the series, I guess?
+Alex
