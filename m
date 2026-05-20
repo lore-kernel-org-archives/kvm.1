@@ -1,114 +1,160 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BE5223393F;
-	Wed, 20 May 2026 09:18:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EFD5376A01
+	for <kvm@vger.kernel.org>; Wed, 20 May 2026 11:02:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779268695; cv=none; b=nyCZAkbLU3dtpYceKw/qgbVdGzEN9ni+EvAt9LieYcelaDUwd2k7oAuEm3P9Prg/6RKU7/7BDrLaj93Nd4nXSO2PZLnvCkO56EMVQuWy7zHtyN0WiAjCnJsFo613gErbWaMPV7zG+5yVR05aNGmJH5yIvwY+u6g72nrEvqouQXI=
+	t=1779274964; cv=none; b=T0S8PRIcUUJiDSKu5E1nUHkEqCL6TqOYngQFHZbyUqlUCqupkbWjA9ZUeBaI/mXNS7nHpdtjeA6uEJZy1G9IjWLAUyidjVYDvOpVxTuMbbA6p0IQgYcQfzEwZQ+C3zKuhBSF9v+scdjPWSyIyUUZEWGI7W2AaL0YfDybkQm5b8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779268695; c=relaxed/simple;
-	bh=bHkIZwYQ4YehwcmiTQDqKFNVaSB9gZ+Ge9dQhvhj7WE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QonIENfl1FqGfxKMdMl9phRuF8b5/QowBQEzyAr5iefGhsdG/fSWyRI/WMELdwbic15o4qH9WWbPz/NPOqrPFqfCCy41RQkNdLDp8VKXxTjuqpq+Q+y2AhMLRixlUz35vCTWsrHlaQulALB5kBDfNTc4aYEtVSQe+3DoZtQQJBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EwFjMdG9; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1779274964; c=relaxed/simple;
+	bh=+7+/q8LAlMzLlWk1znO+lD248Sp+weOvZS73ENKy0kk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=or5q3aBvO3aaCWSS9BPs8Pzn2sPLzX8Z7OmpbcP0mPkBaIcx7F2VKRbEs6Hx+A0zOJLi6Hfai64UtEQ2T9jq0mubJ4+eGzDIUud12vTHcj0ExHVKHVgYgcr0XChG/nrjYncBDpVeDRgVkw8kquq1X91SB/i8YNBYk02RvWdhJ3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=klKpCENe; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EwFjMdG9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779268693; x=1810804693;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=bHkIZwYQ4YehwcmiTQDqKFNVaSB9gZ+Ge9dQhvhj7WE=;
-  b=EwFjMdG9x7eG+o17r2QRQt3j/3Ls8p3fVNlOEZEVZU8EOj7jVO8eAJol
-   0Bgfl2zkxslwc2Oh/T5TMA/d8k0V+1IDJmeNQkqjGV4/YPZMYKoLKbBIk
-   EZrAO9nNNCR1QN5yzLmfxuqN4V0+VC4cyGN3qQ7jjnAcDUvReoaoeM4sF
-   uiXUBvZDCjQpKgbMueoZcXZ28G1v4Z5OBz/Sq7xflY4iKoRCYkcxTasgF
-   E4RkVSxhodDGZTG3E2Tah99JxaoXvn2ETx6nN3xgA5eN+TRt6NrD4w812
-   r+kL2Ex4Th9JhqrOToKr5tmzao5M1SPzbcIBuiMeVX/L61/sDmeYMLQiv
-   g==;
-X-CSE-ConnectionGUID: d4i/AOL5TaGgZYiPJPzB4g==
-X-CSE-MsgGUID: ajMXzLR5S5md1I2YrGRAyg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="80012490"
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="80012490"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 02:18:12 -0700
-X-CSE-ConnectionGUID: vDRIt/eMTRuPXWG3W3K6fQ==
-X-CSE-MsgGUID: eho/zchdQXafYo1N5QZP1g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="237105659"
-Received: from fanlilin-mobl.ccr.corp.intel.com (HELO [10.238.1.228]) ([10.238.1.228])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 02:18:06 -0700
-Message-ID: <804827af-f094-41e6-bba9-5f57d0e35cd0@linux.intel.com>
-Date: Wed, 20 May 2026 17:18:03 +0800
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="klKpCENe"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id E0DEE175A;
+	Wed, 20 May 2026 04:02:34 -0700 (PDT)
+Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4CFCC3F85F;
+	Wed, 20 May 2026 04:02:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1779274960; bh=+7+/q8LAlMzLlWk1znO+lD248Sp+weOvZS73ENKy0kk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=klKpCENeYWVeS8V9assoUHjXrxQPA4+oCwfz857IRdqVxqQLfPyvVl4yqxb4K/YcR
+	 fEAdP4ISyjfLCwKMIuGSjsfMn8k/s7nhn3wy486zgkUtepNstLit8PmKt82OUaqZZy
+	 R8egHGygvWRT9MV+aNt4Zpb9/HXcanyY8pZkV9n4=
+Date: Wed, 20 May 2026 12:02:31 +0100
+From: Joey Gouly <joey.gouly@arm.com>
+To: Marc Zyngier <maz@kernel.org>
+Cc: kvmarm@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
+	kvm@vger.kernel.org, Steffen Eiden <seiden@linux.ibm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Oliver Upton <oupton@kernel.org>, Zenghui Yu <yuzenghui@huawei.com>,
+	Mark Rutland <mark.rutland@arm.com>, Will Deacon <will@kernel.org>,
+	Fuad Tabba <tabba@google.com>
+Subject: Re: [PATCH v2 2/2] KVM: arm64: nv: Don't save/restore FP register
+ during a nested ERET or exception
+Message-ID: <20260520110231.GA4005903@e124191.cambridge.arm.com>
+References: <20260520085036.541666-1-maz@kernel.org>
+ <20260520085036.541666-3-maz@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v9 10/23] coco/tdx-host: Implement firmware upload sysfs
- ABI for TDX module updates
-To: Chao Gao <chao.gao@intel.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, dave.hansen@linux.intel.com, djbw@kernel.org,
- ira.weiny@intel.com, kai.huang@intel.com, kas@kernel.org,
- nik.borisov@suse.com, paulmck@kernel.org, pbonzini@redhat.com,
- reinette.chatre@intel.com, rick.p.edgecombe@intel.com, sagis@google.com,
- seanjc@google.com, tony.lindgren@linux.intel.com, vannapurve@google.com,
- vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com,
- yan.y.zhao@intel.com, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-References: <20260513151045.1420990-1-chao.gao@intel.com>
- <20260513151045.1420990-11-chao.gao@intel.com>
-Content-Language: en-US
-From: Binbin Wu <binbin.wu@linux.intel.com>
-In-Reply-To: <20260513151045.1420990-11-chao.gao@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260520085036.541666-3-maz@kernel.org>
 
+Hi Marc,
 
+On Wed, May 20, 2026 at 09:50:36AM +0100, Marc Zyngier wrote:
+> When switching between L1 and L2, we save the old state using
+> kvm_arch_vcpu_put(), mutate the state in memory, then load the new
+> state using kvm_arch_vcpu_load(). Any live FPSIMD/SVE state is saved
+> and unbound, such that it can be lazily restored on a subsequent trap.
+> 
+> The FPSIMD/SVE state is shared by exception levels, and only a handful
+> of related control registers need to be changed when transitioning
+> between L1 and L2. The save/restore of the common state is needless
+> overhead, especially as trapping becomes exponentially more expensive
+> with nesting.
+> 
+> Avoid this overhead by leaving the common FPSIMD/SVE state live on the
+> CPU, and only switching the state that is distinct for L1 and L2:
 
-On 5/13/2026 11:09 PM, Chao Gao wrote:
+To make sure I understand this part:
+	
+	L1 sets up L2's FP state live on the CPU 
+	L1 erets
+	eret traps to L0/host
+	preemption disabled
+	kvm_arch_vcpu_put()
+	    kvm_arch_vcpu_put_fp() <-- actually saves the state of the live registers
+	.. set elr etc ..
+	kvm_arch_vcpu_load()
+	    kvm_arch_vcpu_load_fp() <-- doesn't actually restore state, but ensures
+                                        the CPTR trap will be set
+        .. returns to L2 (traps on first use of FP and state will be restored)
+	
+So this patch is (effectively) removing the put_fp()/load_fp(), because the FP
+state is common/shared between L1 and L2, so whatever L1 put into that state
+before the eret, L2 was going to see.
 
-> diff --git a/arch/x86/virt/vmx/tdx/seamldr.c b/arch/x86/virt/vmx/tdx/seamldr.c
-> index 7269a239bc22..7b345000d7c3 100644
-> --- a/arch/x86/virt/vmx/tdx/seamldr.c
-> +++ b/arch/x86/virt/vmx/tdx/seamldr.c
-> @@ -6,6 +6,7 @@
->   */
->  #define pr_fmt(fmt)	"seamldr: " fmt
+If my understanding is correct:
+Reviewed-by: Joey Gouly <joey.gouly@arm.com>
+
+Thanks,
+Joey
+
+> 
+> - the trap controls: the effective values are recomputed on each entry
+>   into the guest to take the EL into account and merge the L0 and L1
+>   configuration if in a nested context, or directly use the L0 configuration
+>   in non-nested context (see __activate_traps()).
+> 
+> - the VL settings: the effective values are are also recomputed on each
+>   entry into the guest (see fpsimd_lazy_switch_to_guest()).
+> 
+> Since we appear to cover all bases, use the vcpu flags indicating the
+> handling of a nested ERET or exception delivery to avoid the whole FP
+> save/restore shenanigans. SME will have to be similarly dealt with when
+> it eventually gets supported.
+> 
+> For an EL1 L3 guest where L1 and L2 have this optimisation, this
+> results in at least a 10% wall clock reduction when running an I/O
+> heavy workload, generating a high rate of nested exceptions.
+> 
+> Signed-off-by: Marc Zyngier <maz@kernel.org>
+> ---
+>  arch/arm64/kvm/fpsimd.c | 23 +++++++++++++++++++++++
+>  1 file changed, 23 insertions(+)
+> 
+> diff --git a/arch/arm64/kvm/fpsimd.c b/arch/arm64/kvm/fpsimd.c
+> index 15e17aca1dec0..aca98752a6e42 100644
+> --- a/arch/arm64/kvm/fpsimd.c
+> +++ b/arch/arm64/kvm/fpsimd.c
+> @@ -28,6 +28,20 @@ void kvm_arch_vcpu_load_fp(struct kvm_vcpu *vcpu)
+>  	if (!system_supports_fpsimd())
+>  		return;
 >  
-> +#include <linux/mm.h>
-
-This is not needed in this patch.
-
->  #include <linux/spinlock.h>
->  
->  #include <asm/seamldr.h>
-> @@ -41,3 +42,17 @@ int seamldr_get_info(struct seamldr_info *seamldr_info)
->  	return seamldr_call(P_SEAMLDR_INFO, &args);
->  }
->  EXPORT_SYMBOL_FOR_MODULES(seamldr_get_info, "tdx-host");
+> +	/*
+> +	 * Avoid needless save/restore of the guest's common
+> +	 * FPSIMD/SVE/SME regs during transitions between L1/L2.
+> +	 *
+> +	 * These transitions only happens in a non-preemptible context
+> +	 * where the host regs have already been saved and unbound. The
+> +	 * live registers are either free or owned by the guest.
+> +	 */
+> +	if (vcpu_get_flag(vcpu, IN_NESTED_ERET) ||
+> +	    vcpu_get_flag(vcpu, IN_NESTED_EXCEPTION)) {
+> +		WARN_ON_ONCE(host_owns_fp_regs());
+> +		return;
+> +	}
 > +
-> +/**
-> + * seamldr_install_module - Install a new TDX module.
-> + * @data: Pointer to the TDX module image.
-> + * @size: Size of the TDX module image.
-> + *
-> + * Returns 0 on success, negative error code on failure.
-> + */
-> +int seamldr_install_module(const u8 *data, u32 size)
-> +{
-> +	/* TODO: Update TDX module here */
-> +	return 0;
-> +}
-> +EXPORT_SYMBOL_FOR_MODULES(seamldr_install_module, "tdx-host");
-
-
+>  	/*
+>  	 * Ensure that any host FPSIMD/SVE/SME state is saved and unbound such
+>  	 * that the host kernel is responsible for restoring this state upon
+> @@ -102,6 +116,15 @@ void kvm_arch_vcpu_put_fp(struct kvm_vcpu *vcpu)
+>  {
+>  	unsigned long flags;
+>  
+> +	/*
+> +	 * See comment in kvm_arch_vcpu_load_fp().
+> +	 */
+> +	if (vcpu_get_flag(vcpu, IN_NESTED_ERET) ||
+> +	    vcpu_get_flag(vcpu, IN_NESTED_EXCEPTION)) {
+> +		WARN_ON_ONCE(host_owns_fp_regs());
+> +		return;
+> +	}
+> +
+>  	local_irq_save(flags);
+>  
+>  	if (guest_owns_fp_regs()) {
+> -- 
+> 2.47.3
+> 
