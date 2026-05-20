@@ -1,185 +1,193 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43885362139
-	for <kvm@vger.kernel.org>; Wed, 20 May 2026 18:59:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EB62318ED6;
+	Wed, 20 May 2026 18:59:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779303547; cv=none; b=lhheEZo+hf8/t6hiJxqfl9V0upP0IoZ19mrqWgmmx9ssrIBrxh4wJYvwoN62+g/c2CqgyCEzOe2pZRILdRWVYUw1cs8RgdSuXR9GYW7hH38Li4k3zsvQa+rzjAJsiMCCvFQ14QwOT/pJwLqInR7S30RTfAi3WO+St0kfH0AyZ6A=
+	t=1779303561; cv=none; b=O46KWJoxkSbSLbjrO0M9jf0nudJRgrk121eWTaugQ0KrUkvHNQ1DI61ruwp4jvYYwVWl5JK7Ebtm0aE9ZVbN1k1uWS9XieWSp9cte4Nhjxqmmq2nHwMm6ggiyfn6kft+/DVJ9wRHKYR0avyFKOy5lAWwVMrBaT/u6McRHpFjjco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779303547; c=relaxed/simple;
-	bh=CAg8fHi2CXutX4k3jIaYo/3dkMGuQ6K17aloqCRhD8Q=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ltM9YC73uY51VlJ+YY3aBzeiG9Cs60T1wmsveLdjiThl8oAOwSmYe4XEpr9c9icQ9XjiqYVexcwkb0NtuEypH/fqKMVJZprKrUX5xHAgOmciALy/NI7XKBXmenKJsX79wKL6lV0jn/j3Qcl+ud5TZIdn4GIvBYj0r6Jhbce1Bak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=onKZcqng; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1779303561; c=relaxed/simple;
+	bh=Q62hcPFZc1NYqJLxUGdKsz2+hy0EqGUz86+v1ivJn+s=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=DmwEwtEXCXQYW/mmZikEakH9n5h9ZRY5eVO9ZayTjxaecB5ySNnV1xpWHQOIznKoR/pP1RoP33zOE/xOgNgLJvbyacqBZNUkX9Ykl3sbh+7ILjcjNoRVzdHzlNooD5nwjVXVnYy4bdR6sqw6xTPWJplnmANRtypchr2sn/Kid9w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=g5JoUbWJ; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="onKZcqng"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c8279604464so7892812a12.1
-        for <kvm@vger.kernel.org>; Wed, 20 May 2026 11:59:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779303545; x=1779908345; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xc+eqLu2deOuDSSfxTvMnxL/tYv4gr65bHOPW09jR0U=;
-        b=onKZcqngaSjPPE+f2t12Z1e1WELmaKqAUJkbsPODr4tAIiQv4ODxBi4NeYCZ80HIdL
-         XJ62WqlroG3ZhOK1xHVkKJpWkX1Ye9UA6v+lFs9AbBKcYDjwTP6tCs1Ab8m9zu1EwqJc
-         1h7NiJV+bXwDVamlOFlHf43enNUSQ3tDotd15SCyTKx9c8Ipkqd1nzTrrUMjbwjwgpdz
-         QjpR5TaXcYU0Q2rjGckZSnvkGgBV+e20WFIE4zOcyFfJY/ffn4NUQSMiuyO2G2L7cIR9
-         FfQq0bTtZiQdBjKCghiLP5UDVD/54G9wmRGqXbVttw8PqTEh3dEXc++yfUTV9adIHeNc
-         iS1w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779303545; x=1779908345;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=xc+eqLu2deOuDSSfxTvMnxL/tYv4gr65bHOPW09jR0U=;
-        b=lIg4oa6hwnd/2hpLxRwLmieFVdXuiiaOPGBoBdOXf42ouvadbRn+SoNZ+CA+8DmOav
-         FCi7hXgrXLpsUyK1No7QEy3MfcNoWYxXDgTkEZuBt/h/U+0x4gmoqCjf1s789ltdP9U9
-         AP8VSUCAXGf1UdWzp5Qf9hpE4vgq0gT3ZgWe3mNEjXwyMwSYQu1SPl2H16g5/GI4yzj8
-         URC5hdfvAh4N1I9thCV+s0s6zbV2N6BXCyyK5Ez93PNHNeK/IPfJ+WaTuDJ6Opjg3rHD
-         cAm/L5OxgvAZkFHH8TXpbPj0//7uIZUYbuv7O7p5ta60TFG+l6H5berii7A+UPz0aOTb
-         yoZg==
-X-Forwarded-Encrypted: i=1; AFNElJ/gEFHdcW0ZPU6QSy1JVcEO/Yh3zuFvGBSJ+mGseLFYtkYWQNidZViWLUunmorWo3vcR2Q=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjSzMCMnokIsRWltR1c+zvAhAcb4IAR/4lQjj6aLZ6qJSMU5dw
-	WCbGa2ZTBYUEInbE34XCY0dWlB6lrd1Fy7MJ5dys4H/jvhXckqJj1FhFVIwh7hlNBhs8cATyg4X
-	0g6Od2w==
-X-Received: from pgbcz6.prod.google.com ([2002:a05:6a02:2306:b0:c79:8756:1a98])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:734a:b0:3aa:f9cb:d43a
- with SMTP id adf61e73a8af0-3b22e67fe5emr29278600637.5.1779303545036; Wed, 20
- May 2026 11:59:05 -0700 (PDT)
-Date: Wed, 20 May 2026 11:59:04 -0700
-In-Reply-To: <CA+EHjTw-cUM=FrJevtSDtR7K6MwUfGfOx21LMFDn7DAy5bFzYw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="g5JoUbWJ"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=Q62hcPFZc1NYqJLxUGdKsz2+hy0EqGUz86+v1ivJn+s=; b=g5JoUbWJQdG7sePmt8GlN2Kgqm
+	bsgtRyCbYF3vxM3/Nedaj8XxmrWzGATtvuAoTxGm5KPEf4EzzLf0v9/Hafh3vT9zK/rHx2DttmiKu
+	pW8SpVX/0FYF8PsbiegIcabyU7BBcJaQnsD66lRZe9YS0baBlP9pULXnvjknCaSDfUjVGy0wCLtlT
+	Qtqzt10CHymMbbqv2Ok+IgydIWN/ELCCTwz/1IKoddqkR4WFERL7cLKMVv2X7yhLMBw9v111BUt+n
+	/qDNPW6NjTuKyF5mttga1f22yZprgTCfTqXjQkt3CUsKmuXOw/3+n57JgRGvbQxdhhOntA39VrO8m
+	LWv7AbDg==;
+Received: from 54-240-197-235.amazon.com ([54.240.197.235] helo=freeip.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wPm8N-00000007Ufj-3Rdt;
+	Wed, 20 May 2026 18:59:11 +0000
+Message-ID: <810a35d31c00daf48efae533134f68e23ef98de8.camel@infradead.org>
+Subject: Re: [PATCH v3 01/41] x86/tsc: Add a standalone helpers for getting
+ TSC info from CPUID.0x15
+From: David Woodhouse <dwmw2@infradead.org>
+To: Sean Christopherson <seanjc@google.com>, Kiryl Shutsemau
+ <kas@kernel.org>,  Paolo Bonzini <pbonzini@redhat.com>, "K. Y. Srinivasan"
+ <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu
+ <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Long Li
+ <longli@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, Alexey
+ Makhalov <alexey.makhalov@broadcom.com>,  Jan Kiszka
+ <jan.kiszka@siemens.com>, Dave Hansen <dave.hansen@linux.intel.com>, Andy
+ Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
+ Juergen Gross <jgross@suse.com>, Daniel Lezcano
+ <daniel.lezcano@kernel.org>, Thomas Gleixner <tglx@kernel.org>, John Stultz
+ <jstultz@google.com>
+Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>, Vitaly Kuznetsov
+ <vkuznets@redhat.com>, Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Boris Ostrovsky
+ <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>,
+ x86@kernel.org,  linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ linux-hyperv@vger.kernel.org,  virtualization@lists.linux.dev,
+ linux-kernel@vger.kernel.org,  xen-devel@lists.xenproject.org, Michael
+ Kelley <mhklinux@outlook.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Nikunj A Dadhania <nikunj@amd.com>, Thomas Gleixner <tglx@linutronix.de>
+Date: Wed, 20 May 2026 19:59:10 +0100
+In-Reply-To: <20260515191942.1892718-2-seanjc@google.com>
+References: <20260515191942.1892718-1-seanjc@google.com>
+	 <20260515191942.1892718-2-seanjc@google.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-AYSJ/gnlvUPwOtRc9eC8"
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
- <20260507-gmem-inplace-conversion-v6-5-91ab5a8b19a4@google.com> <CA+EHjTw-cUM=FrJevtSDtR7K6MwUfGfOx21LMFDn7DAy5bFzYw@mail.gmail.com>
-Message-ID: <ag4EeByDV-OtGhlk@google.com>
-Subject: Re: [PATCH v6 05/43] KVM: guest_memfd: Wire up kvm_get_memory_attributes()
- to per-gmem attributes
-From: Sean Christopherson <seanjc@google.com>
-To: Fuad Tabba <tabba@google.com>
-Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
-	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
-	david@kernel.org, ira.weiny@intel.com, jmattson@google.com, 
-	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
-	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
-	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, 
-	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
-	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
-	aneesh.kumar@kernel.org, liam@infradead.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On Wed, May 20, 2026, Fuad Tabba wrote:
-> On Thu, 7 May 2026 at 21:22, Ackerley Tng via B4 Relay
-> <devnull+ackerleytng.google.com@kernel.org> wrote:
-> >
-> > From: Sean Christopherson <seanjc@google.com>
-> >
-> > Implement kvm_gmem_get_memory_attributes() for guest_memfd to allow the KVM
-> > core and architecture code to query per-GFN memory attributes.
-> >
-> > kvm_gmem_get_memory_attributes() finds the memory slot for a given GFN and
-> > queries the guest_memfd file's to determine if the page is marked as
-> > private.
-> >
-> > If vm_memory_attributes is not enabled, there is no shared/private tracking
-> > at the VM level. Install the guest_memfd implementation as long as
-> > guest_memfd is enabled to give guest_memfd a chance to respond on
-> > attributes.
-> >
-> > guest_memfd should look up attributes regardless of whether this memslot is
-> > gmem-only since attributes are now tracked by gmem regardless of whether
-> > mmap() is enabled.
-> >
-> > Signed-off-by: Sean Christopherson <seanjc@google.com>
-> > Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-> > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> > ---
-> >  include/linux/kvm_host.h |  2 ++
-> >  virt/kvm/guest_memfd.c   | 31 +++++++++++++++++++++++++++++++
-> >  virt/kvm/kvm_main.c      |  3 +++
-> >  3 files changed, 36 insertions(+)
-> >
-> > diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-> > index c5ba2cb34e45c..28a54298d27db 100644
-> > --- a/include/linux/kvm_host.h
-> > +++ b/include/linux/kvm_host.h
-> > @@ -2557,6 +2557,8 @@ bool kvm_arch_post_set_memory_attributes(struct kvm *kvm,
-> >                                          struct kvm_gfn_range *range);
-> >  #endif /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
-> >
-> > +unsigned long kvm_gmem_get_memory_attributes(struct kvm *kvm, gfn_t gfn);
-> > +
-> >  #ifdef CONFIG_KVM_GUEST_MEMFD
-> >  int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
-> >                      gfn_t gfn, kvm_pfn_t *pfn, struct page **page,
-> > diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> > index 5011d38820d0d..f055e058a3f28 100644
-> > --- a/virt/kvm/guest_memfd.c
-> > +++ b/virt/kvm/guest_memfd.c
-> > @@ -509,6 +509,37 @@ static int kvm_gmem_mmap(struct file *file, struct vm_area_struct *vma)
-> >         return 0;
-> >  }
-> >
-> > +unsigned long kvm_gmem_get_memory_attributes(struct kvm *kvm, gfn_t gfn)
-> > +{
-> > +       struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
-> > +       struct inode *inode;
-> > +
-> > +       /*
-> > +        * If this gfn has no associated memslot, there's no chance of the gfn
-> > +        * being backed by private memory, since guest_memfd must be used for
-> > +        * private memory, and guest_memfd must be associated with some memslot.
-> > +        */
-> > +       if (!slot)
-> > +               return 0;
-> > +
-> > +       CLASS(gmem_get_file, file)(slot);
-> > +       if (!file)
-> > +               return 0;
-> > +
-> > +       inode = file_inode(file);
-> > +
-> > +       /*
-> > +        * Rely on the maple tree's internal RCU lock to ensure a
-> > +        * stable result. This result can become stale as soon as the
-> > +        * lock is dropped, so the caller _must_ still protect
-> > +        * consumption of private vs. shared by checking
-> > +        * mmu_invalidate_retry_gfn() under mmu_lock to serialize
-> > +        * against ongoing attribute updates.
-> > +        */
-> > +       return kvm_gmem_get_attributes(inode, kvm_gmem_get_index(slot, gfn));
-> > +}
-> 
-> Doesn't this imply that all consumers of kvm_mem_is_private() should
-> validate the result using mmu_lock and the invalidation sequence?
-> sev_handle_rmp_fault() calls kvm_mem_is_private() without holding
-> mmu_lock and without any retry mechanism. Is that a problem?
 
-Yes, but my understanding is that sev_handle_rmp_fault() can tolerate false
-positives and false negatives.  It's not optimal, but it's "fine", and already
-KVM's existing behavior, e.g. KVM gets the PFN and then smashes the RMP, without
-ensuring the PFN is fresh.
+--=-AYSJ/gnlvUPwOtRc9eC8
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Mike, is that all correct?
+On Fri, 2026-05-15 at 12:19 -0700, Sean Christopherson wrote:
+> Extract retrieval of TSC frequency information from CPUID into standalone
+> helpers so that TDX guest support can reuse the logic.=C2=A0 Provide a ve=
+rsion
+> that includes the multiplier math as TDX does NOT want to use
+> native_calibrate_tsc()'s fallback logic that derives the TSC frequency
+> based on CPUID.0x16, when the core crystal frequency isn't known.
+>=20
+> Opportunsitically drop native_calibrate_tsc()'s "=3D=3D 0" and "!=3D 0" c=
+hecks
+> in favor of the kernel's preferred style.
+
+"Opportunistically" ? Now that looks wrong too...=20
+
+> No functional change intended.
+>=20
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+
+Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+
+--=-AYSJ/gnlvUPwOtRc9eC8
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
+
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUyMDE4NTkx
+MFowLwYJKoZIhvcNAQkEMSIEIJTKQSj5R0hL5wkeRRYmvqS4pDifeFwjrpzfGk4puPKgMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAPT5nfPm9Tu6C
+pPBq8njqRPhcBZYlkcOxVTVkZO4EjvssxcnINr1dR3R76AFmK6DJz+2N2uZW5eH+GKG0gCAc0gUy
+9hEurC8QK/SecNdo5ye7H4yC5SP3G0BiRAjEulg42z4SYjPXuwOHOhtacjGz9kfKUkewRYQto5nZ
+F+sWmHhs2AhWVVR8pf5rYNl9t4fxcNpswW18V8QOWnIoOabambIEeLB2tooe47LLhQtcGGtM/2I5
+U/Zy49WvUd9xiq7wCg+L15p/QfZaLrmUvW97SKggx1eIFDtG41udmHoLrlURkn09v4rH+h7rV4Hv
+66xEoAl3zMqx9DDcKPFG5uQ8V5r/nB/Cz6PBsvAWr37jPEE5+1vFPUP99OGQJfxyYcX0TBprUz80
+mVEOgcB5IydinJ6HuUCTUiotpHW6/kIgx1rpjzuMFRtavSIL2C3TEl5lM/L5eoNyJ2cJv6FDOFTp
+gnuNxSfhtqWU7AALQY0H9KXrJmEGiX7KO5ecyB1kx323N0IlMT4Ha4nBGOXkbtNkQum569CrPDHj
+KJoShZMBUwYG7aYuhgGyFD2jl4MwUv1ZUk9toSDxlYJjzRFgaJwMVVXbNtAx06SU9d5wSqfSyrir
+yvqPwlkz9iLS45zueEoF9E0QLonk81foUOW29bP+qJ7Tf3KTkMpr5xbJD77sAgoAAAAAAAA=
+
+
+--=-AYSJ/gnlvUPwOtRc9eC8--
