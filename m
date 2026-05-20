@@ -1,341 +1,281 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8F215E8B;
-	Wed, 20 May 2026 00:59:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=198.175.65.16
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779238756; cv=fail; b=LrQQoVhBBGrxUJ9f78tDsw1xtZhCPHus+Loq1zfYBDsfWLNEbs+WnbQvFZPsE0/Vx86uMsxlMKYi3NVsqusZY22jo/rIjQujtXmNKghovhVBXC14ZQ/VqWGjEaMkUSzwFFF0yAK9Yyc7fCmGHVWYWNr5pdW0rhfqM6glRavPmDY=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779238756; c=relaxed/simple;
-	bh=QBX2+uT12sdXdw31z926JwEwZ2dYGiR67ZLOKpin+3k=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=NdbWDDkT1kBnZ2F3IIRcDLCHvfchT3xYZn2IJ2XyKEQ8oQTyeBfXnYnG3WBnJyDS6BseNlZ3AA9Y2+3upPaiJ5k5ekHDSYCoGQ7ekOlWUj1q+s3QqoU8QG4IZYkfp/mb0AORxKCyyB0fp/gT5dWFnZXSgo+cLWXF528pB9aA6Y4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Q7Ws/+xZ; arc=fail smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DFB72D46A1
+	for <kvm@vger.kernel.org>; Wed, 20 May 2026 01:25:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779240344; cv=none; b=RbBe5TXSftnmknLWX2wpT6Ps/j2mMfMv66ICUov8pxyWMNzLHo9as6LzIVm9xdmWipSW4sa3zHIhOttmDBpTH8x5lLk3UDFdma3QauBHVrbV1h0LEjTAiuVKj/CsXTE2nbV/dH0XOdf0ONMRdxIhmo/+aPFgswTnC6caKMooqZI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779240344; c=relaxed/simple;
+	bh=1ZEk7WDfUriJR4Ru02cEYn6C1hyGsTQlxw07aaQqcQQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=NA57Uqfnfl/MspNCMm3LpIUq6PPRae32qLczqdctUOlXOwxEmtOdNGStBMsP1hKeYqeUtkyvCOF1ngJSlSEj+DJw9T3HJbfteXSnq0m4qZThe+mmpm49RzuZCKqTGPoh0CXDIsasrwlfTg6xUr/et9Gr5128cAnHPz0u/sOPe08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sylZ29kv; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Q7Ws/+xZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779238755; x=1810774755;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=QBX2+uT12sdXdw31z926JwEwZ2dYGiR67ZLOKpin+3k=;
-  b=Q7Ws/+xZERlQBPlEVXzF0I1WHcWO1gGTT6JmOgSgwYHzitfnOoRmrpNi
-   iHMKIGEu+8Bi4JegN9cb4XRWYJcTdVIfL4O/gXKWOuUcVNN+G2VxDSMrM
-   ZpAJNEl0bsamNKkBmpJuLRglm+XiZkJD/kU2zZGLq9DL5cDLtIDpZm+/U
-   02glQWqZkB3ltapezPXwqCdx1JiJ5CmuLpbXv5CqbnFSxgP+z9ACuLxaW
-   TJL6snG5wC/GAuYyaJapE1NYqsEZMRDzxwiEfnf77hNqVXVuRK7Hfqtwy
-   j2Zyrz1JSrZdKxMAeCMiwL+Wm0bwZZlCLbdNOegrdx4TZZU8vqObIRisM
-   A==;
-X-CSE-ConnectionGUID: nFSUvaeVQKWl1VvMczNpfQ==
-X-CSE-MsgGUID: 067oS2rRQzapwDim5ySyUg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11791"; a="80305467"
-X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
-   d="scan'208";a="80305467"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 17:59:15 -0700
-X-CSE-ConnectionGUID: duRqg9lLRHCQ+ghd0XzOcw==
-X-CSE-MsgGUID: F2oXNnXPTAu0+yVVsllqeg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,243,1770624000"; 
-   d="scan'208";a="235531000"
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa006.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 19 May 2026 17:59:14 -0700
-Received: from ORSMSX902.amr.corp.intel.com (10.22.229.24) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 19 May 2026 17:59:13 -0700
-Received: from ORSEDG902.ED.cps.intel.com (10.7.248.12) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 19 May 2026 17:59:13 -0700
-Received: from CH4PR04CU002.outbound.protection.outlook.com (40.107.201.20) by
- edgegateway.intel.com (134.134.137.112) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 19 May 2026 17:59:13 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=jYLB8WrV+M3tDWF17yZvOXv24FkxbnHJR3k01Fjk911ayABtXsbQg8CuM/VuiaKZobNy9oYyyk3v8Q58SHtF0J9eiAOpiEfbZ7SdToLu6Y/0hSMCJ72WeH8nxmFjAAHmMrB69jBqSYRvWa8UntMUDbZOUcEtdl/WnFfGgp9kSRWF3O+Zt3VWaYhkCYt9XeE8//mJUaw+u73knw2xi5TxKJoj4CUbd0hzNTF95MopIvveFyQeUqvf3OUZ8W4qNG5+bIgfLxRpkzSUD1Jf3mLv4icUOn9d1ln035P6h+aoDVHVs6cCSP3t9NpjJd1EPBUVzpY/hDY8rn1hNLe/10YsvA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=QBX2+uT12sdXdw31z926JwEwZ2dYGiR67ZLOKpin+3k=;
- b=dj6zqhnPNd8IJz/fq/9d018obehqGgqRycAew6Jblpp5CX+XETigwGC7zNzymHuNGyj09lD4dYi7SLgsSW+8uBgb671Hl7GuWoo+kU6J2uhukHJo4KN/VJl9mmsBbooo3mM7p+NTrrwuBnQyXASJCjE4JZOBr0nGRKutdxz6Gd9CytqQNwKp9mrH1vzAOz9SnkR6ISzDgwwGAceWr9ztvjhSIQDTVL03AsiyYuQ+LxPb1WPXh+ujYhCGkwG3Ml4fR35qbpJWmf5CWN1bQg0rSMF73/BgCSjjFiWsCNMQS2ywnA/2RIiAg0zZikAKWYwZMWu6HQI+F/Mx8Ozl4ZDRPg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from BYAPR11MB2647.namprd11.prod.outlook.com (2603:10b6:a02:be::12)
- by PH0PR11MB5175.namprd11.prod.outlook.com (2603:10b6:510:3d::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.14; Wed, 20 May
- 2026 00:59:11 +0000
-Received: from BYAPR11MB2647.namprd11.prod.outlook.com
- ([fe80::32d7:4779:29d3:a1ee]) by BYAPR11MB2647.namprd11.prod.outlook.com
- ([fe80::32d7:4779:29d3:a1ee%6]) with mapi id 15.21.0025.022; Wed, 20 May 2026
- 00:59:10 +0000
-From: "Huang, Kai" <kai.huang@intel.com>
-To: "seanjc@google.com" <seanjc@google.com>
-CC: "dwmw2@infradead.org" <dwmw2@infradead.org>, "Edgecombe, Rick P"
-	<rick.p.edgecombe@intel.com>, "x86@kernel.org" <x86@kernel.org>,
-	"kas@kernel.org" <kas@kernel.org>, "binbin.wu@linux.intel.com"
-	<binbin.wu@linux.intel.com>, "dave.hansen@linux.intel.com"
-	<dave.hansen@linux.intel.com>, "vkuznets@redhat.com" <vkuznets@redhat.com>,
-	"paul@xen.org" <paul@xen.org>, "yosry@kernel.org" <yosry@kernel.org>,
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "linux-coco@lists.linux.dev"
-	<linux-coco@lists.linux.dev>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 15/15] KVM: x86: Move the bulk of register specific
- code from x86.c to regs.c
-Thread-Topic: [PATCH v2 15/15] KVM: x86: Move the bulk of register specific
- code from x86.c to regs.c
-Thread-Index: AQHc4+xAhMVQIxjW5UeBHPSlwKOJO7YVStWAgAAu1ICAAKY3AA==
-Date: Wed, 20 May 2026 00:59:10 +0000
-Message-ID: <729c4191d16e4c768c231ffb9bb8420306039210.camel@intel.com>
-References: <20260514215355.1648463-1-seanjc@google.com>
-	 <20260514215355.1648463-16-seanjc@google.com>
-	 <074e209fe4c78a735868099f13d76b9dde2c88e3.camel@intel.com>
-	 <agx77QB3UVmJr5xP@google.com>
-In-Reply-To: <agx77QB3UVmJr5xP@google.com>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-user-agent: Evolution 3.58.3 (3.58.3-1.fc43) 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: BYAPR11MB2647:EE_|PH0PR11MB5175:EE_
-x-ms-office365-filtering-correlation-id: a5462365-c393-4e9a-2ff5-08deb60b00c4
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014|38070700021|56012099003|22082099003|11063799006|4143699003|18002099003|5023799004;
-x-microsoft-antispam-message-info: zVY/F5ImiHEQAD3gAq3zeBN556CXqSrOZtA1gs3c6W29CS+/zo8hTnYr6nnpQHqBzZ9hiDjCyb9EWRB2IxDsjsbg2GMshZe9Mz5hk/8m0EtVJ2ed4PC5c/ru8EhY5/dCuUmK0ooB4RWYTXoZ8bwhjaWeJERTpPw1S5Y/SqsSI390zY5j+WoSvnuV9AG/tTiVwt2oIUGpd4ZfmpDFko1k6sRjK9csxWUWUTi5WwL58EX4gy58umU55SwYfLqFOrQwEC3RkCcaadDIAqF6AFbI/JBf3oCZPsO5A3sGpZ4y5FvNLzR0R+HhBcSAE9QJZC7a4kX2FrJoVTrsSnJCEUdhKmt+pvlZi8kOYzXQ3Y0bTJjAhuYxkiMZGS1tjiTKClUhSdzdLbNM6TM4eeeYdWELAWXMCmJ0nqWL+EV4kieD22FoQf4oeBgy2Zz7aSqrceWZcSK2kRbn0Y+2Dlb/qqw3nLCAFUBlBNI8c9WDBlfMHB/rY1toXhWqZz+Z9cvkivGw77koQ17t9LxNJ1Vlv7ghYfp25zNjQTpZCP4xrkHS7upOTlQadgYDhvXnB4U/ekTLdoY43+tV9CFztdOsIDRgT5LDQvTe2zft2FuSYCgXviuGsViV2EmIwjuZsdq5x35tdEBVK0DJs/nn65vaW0o3dRrqgBW/LpnMz1iFzvrrctEno1OxKLRyt0SipMWGzrVhIkIqFPXDeQpeDMa3QwTgaFZsn/f5YzCSInvDloDrdecOX917NaedNXD96RVIQ5ni
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BYAPR11MB2647.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014)(38070700021)(56012099003)(22082099003)(11063799006)(4143699003)(18002099003)(5023799004);DIR:OUT;SFP:1101;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?Y1IxN21GaUp6MmttcmdzejdZTk1STXZUN3VZWURVNnNUdi9hQ3hhNnFsNXNR?=
- =?utf-8?B?MG0yQ2djYUUreVNjNU0wcjhla1hvS1R0ZDdIMVNVb1Vjd25KUzBmeHQrQklP?=
- =?utf-8?B?eGNhK0JPZkdBT2lNK2pET0xNd1dFRU9FR0RhTC9keWxoZWEvTVFENnN2L2tM?=
- =?utf-8?B?clBUNGFhUUlmTER6a2RieWoxSW9YMEhoeE1yWm4rbTFyTTkvZmxSclJDbm5T?=
- =?utf-8?B?TzJ3Y3pvZFRFd0pIcDZISG9pb1BaTENvUzNCSGorWVUwNkFRcXhJTGNQMlRG?=
- =?utf-8?B?Ui9oYkV3aUtuREhLeE8vdWhiQmxHQU1zTDJVV0RRaG5sZm1oM3ZYM0djaVZ2?=
- =?utf-8?B?MUl4NXlPYWFCcmZxaTdXVDNEN3pLaHZ5blhwL1ZUamtJVFRFUng2MUNmNkEr?=
- =?utf-8?B?ck9xdVpjcGRpeDh3a1lHVDNoWGVhLzNTdDBnNTlqT1hBSDVkRTkxZlk2Q0Zm?=
- =?utf-8?B?cmhoRUFKUFptTy9jQk9rYXNMaWdKMEw4SVlwbDQrSkhvUjBEZE5zbFd4dHVD?=
- =?utf-8?B?cEFjRmpHd29TSWNQL2dZTG11aW9pcXRuMEUzYmsvUGdJaGpTUUMwRm5sMnQ2?=
- =?utf-8?B?bnhZRmVEWWhobWhBN2R2VHJrSENzcDNCcjJsK1NNNnhBaFp4aFZIUXVWKzlN?=
- =?utf-8?B?b0Mva20yUTZmZFVkVzJSSXo4QUV4Z3RpZ3VLZXBzVDJwa2Y4VkNtd2t0Z2lW?=
- =?utf-8?B?WEplOHRGbzcyZFVlaThiNW9jRnowQlJPZU5vYnVzL0ZkanY3dVYxbG43MWJy?=
- =?utf-8?B?eGV4ZmlUTnMwc0lQcUtHZ1Q1a1lRdEkzOE9NV0VtUXNIUStsY0MyREtCTGJ3?=
- =?utf-8?B?a0F3YVo0RmtVY2ZCMUNBUGk2NlFjejdia3l1bW5yMEkrR0cxWkJ5NHFzRC9Z?=
- =?utf-8?B?Q1B6Zk5ObWtIcmxlWTJBdDJEQzJ0dXFMOTgxdmFBVW9YWUV2STBCMy9FaVBC?=
- =?utf-8?B?Y3pCSWZ3VE81UFplV254djc5bDFZRGNubEpIUkgzMkVtQWMvVEV6WmxGbHdW?=
- =?utf-8?B?dVVhdGNsTldhK0RMb05ZUS81bml2Ulp4ZE5wajZZUVVNc1h6a2VTdnZpRlRV?=
- =?utf-8?B?NlJ0eGZFSndhNWZvelRMY21QWEhpdkJ2SW1jaVEzTmhmZ1B3alVIUmNGN1pm?=
- =?utf-8?B?ZkdGVkl2eDN2aDdpajhoRlZOTDcvYVJGbWRISkcxUWRqdzdVbjVxK1JIK2Q4?=
- =?utf-8?B?OERFaUo5eEg0OFcwNlZIajZkV3ZPOXF6NjNRUVdqSVZqL1A2Y0RwcG1uK0RG?=
- =?utf-8?B?cTlMOHNYTW02azloQVdtT2N4K3dPSG8rNGFnTkViQVZkV3JlOUw4akcvN0N6?=
- =?utf-8?B?WkYxYkthaEhxNXpYN0FsS0crY2tHTFlUQ21rTTZWbi9wWHJPMkhOc1oyRHh6?=
- =?utf-8?B?RFdabGs0NUplenQyeG9sTkZPd2RZUnZIc2tYWWR3RlhDY3NmaXFVVDZVeHdX?=
- =?utf-8?B?WXI2T0tYSWMyQmYvVlVtQWhNR3A4QWsyWGxPa0FvbElqdGIzWEVEdGIxdEVG?=
- =?utf-8?B?Z0QxTUgxVXZoRGduSjF2WG1halpPZ2JyK256NTB6SjFHdmZJcktLWi9qeXBL?=
- =?utf-8?B?S0V6SCtUV2szc2hKZ0ZYbjNZeFIwRWpGMlpxL2YvQTM4QlN5YkVqQ2JZYi9J?=
- =?utf-8?B?d1doMWJNZWh0VUpMM2NWSFhsVkZrSVFSdTJiN0VrOG0weEtFZ0NidjNZaDJm?=
- =?utf-8?B?dW9GdWl5QnBSUjFwZmthb04reHhKd0xtZjQ4RUhLYk9YeHJJNjFIYWVmbEF2?=
- =?utf-8?B?TVV3Vmo3T3JDM205T0g4SnpTQkplRFpNMURCeXdNeFVQY09BaG1WNVV2YUs5?=
- =?utf-8?B?ZlcrdnlkbzdsdWIvMk1FTEFvalFIR0tvWXJKVzNvUllmY2c3MGI2ejJEVzc0?=
- =?utf-8?B?NGpUS0orMHp6VjNGL21sWTUwMGV4MkJsbWxXRitQaUJZcElZK3hrN1RzMkpS?=
- =?utf-8?B?TnBxczRFV29MTkc3RTVKT3hsTzlOWmJxbVg2YWRPZWZkM0ZmZmFDelEvck5E?=
- =?utf-8?B?cUU3SWVJZ2R6VVpWbXp4eUpOQ1Q5Z1dabm1LTUFlQlZKbGN1TUVWTnlqcW5N?=
- =?utf-8?B?YnRKckVtaGZmOHl3Z3B0aXl4YUNLSW9jUVBRWEc4bjBJZ0w4emQ0VTdJZ2hT?=
- =?utf-8?B?dGVScHdhWDdXQitOR0t2U2E0TzV2MzJibm9wTEhNTUJZM2kyK1RhWDByR0RW?=
- =?utf-8?B?c05IaXlBVUtEdER2UnFaS3FKbHZHaG8ra2NFUUhienRxaUl5bGlJckljcnYz?=
- =?utf-8?B?RGVyZG92R1QvdHV6K0RickhoVUZXLzdwNU5WN200dDMwTFdxazZZMUtyR0c5?=
- =?utf-8?B?cHI1NzFhUXZnZ0U3VGVqdWFwaG5ReldKM3prYlIxNEdNVjRXaVVydz09?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <DE12FD3A73630941A747DC031EEDCE6D@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sylZ29kv"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b9b8137828so44295885ad.0
+        for <kvm@vger.kernel.org>; Tue, 19 May 2026 18:25:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779240341; x=1779845141; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vRZCDdWW3uq8H2JgwwZbaUSnc8P+nYDdB2aCPo1VFZU=;
+        b=sylZ29kvuxfW3lG9ORF29bamUKK48IkKhtG6u/n+lCVCwGpFtXN3krNJfPemytMmjL
+         LR8TTlMvwJFulRDfnkWzHILIYD2g4G9+iwdWbjiGltBAMd2FxivulRV0WUvN/8xt5DaV
+         6Zklow2lUYHLkf6xjc8ytqXPZ1j6A0oMF+ebvQaSP5LJejpTE84pMIPqzAro4YIBMgZX
+         /NOOPiZMJpopudN9CXyakZ7Dm8u1/Q/SD+Oi9nNYhyK+MktMfYZxpAJMpq+Bvyi2NA9J
+         1AmZVlqVuHLhndEpyVFVqPsTR9Vy6rUGh60YmUQTpPH4cRxDuuD/SpOkOjLPDCM21XiF
+         R4Xg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779240341; x=1779845141;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=vRZCDdWW3uq8H2JgwwZbaUSnc8P+nYDdB2aCPo1VFZU=;
+        b=fj7O0rvARCSMCWHKFEvJCLB6kSl1cQV433G2pqzRy+UfXqQS1YFKregOEBHM4uY6Yn
+         beqA+KsHgKBwK/9j/rvArbkSRmk/ebcaxhbHPMkAQAcrlCSYztj2GLmszb/IE2pYnTbQ
+         /3C6CAuceUNe8Muq/KTt42lCPOX+98vAR5Gz/9nmoa6T+6MKu4QHyQCbdauuWJ6giVsr
+         k/9Swlr2vpx+Qzsq/YswrAR4eqYWg+YS+4PEaLz6YTiv0wVpvk0moifYa/EHOYAi88wp
+         PAmu5pVZ101PTGCwWpj/i4oAwWwvX6xx8OsRvP8x/us/Q3RNxvSDadIF5b9DaRN3KCn5
+         L0mA==
+X-Forwarded-Encrypted: i=1; AFNElJ/tljGj/vET8+NO7AKTtMzJSL3f8C94YIdROz1JM/R1QpG4UeM5ENHjtyRXcQ0C3L9dplc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+Rc0jxjV7EwNpawDnY8O3T39iPho8SSuEaSZvXQrtxNLQ88sw
+	I8fgRMyzFVt86nsGQ+TD52gHLVo5KoZujPyM/nC8pldOTN3mgrPZkClXr96y6ypNCRAsdh9Lr7Y
+	Mio42WA==
+X-Received: from plbki13.prod.google.com ([2002:a17:903:68d:b0:2bd:5ced:c1c0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e549:b0:2b2:539b:d2b1
+ with SMTP id d9443c01a7336-2bd7e8bd0b0mr240369515ad.16.1779240341190; Tue, 19
+ May 2026 18:25:41 -0700 (PDT)
+Date: Tue, 19 May 2026 18:25:40 -0700
+In-Reply-To: <729c4191d16e4c768c231ffb9bb8420306039210.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Exchange-RoutingPolicyChecked: YbY1wKnuY8gM35GH7cLebYe9eh6Ll2XdtQ0T4BZPgzm/oH5kn91tXGkrhJ3+yxrahnLYwJydPUwLHlAP8wjt5pCQtkxzLLS6F90Dkbmb6zCrepACkpTCPcHuPuRUh+kNpBDqcALoVb8mdenqC4nnqyBiddg7EFVNtfxXQUlGVQWhxFNe0WFStTtPLsLfFlraRIMIFh9X8CWdCC8De9A3jwg5VlL4E+bEs5eX4Pd5ULU1DiMouwF3Vtop9z88Ce2ST7uL91e12jTPIfoRgpoZXLzwTSE2arufdm1tD8tsjr/lnZsSprpNT21so4iLCH18UTPzdmHHyBS9jauIVns/ng==
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: BYAPR11MB2647.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: a5462365-c393-4e9a-2ff5-08deb60b00c4
-X-MS-Exchange-CrossTenant-originalarrivaltime: 20 May 2026 00:59:10.6552
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: XICTaqQGLHabTPYNBLURrq85z67sPK7pk//3ttfpP2OjQBdO8/KyqL2OOgLs2Cyrt0Az1qhCUo4cM0UtE2QG7g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR11MB5175
-X-OriginatorOrg: intel.com
+Mime-Version: 1.0
+References: <20260514215355.1648463-1-seanjc@google.com> <20260514215355.1648463-16-seanjc@google.com>
+ <074e209fe4c78a735868099f13d76b9dde2c88e3.camel@intel.com>
+ <agx77QB3UVmJr5xP@google.com> <729c4191d16e4c768c231ffb9bb8420306039210.camel@intel.com>
+Message-ID: <ag0NlJ2FEIL7GJIj@google.com>
+Subject: Re: [PATCH v2 15/15] KVM: x86: Move the bulk of register specific
+ code from x86.c to regs.c
+From: Sean Christopherson <seanjc@google.com>
+To: Kai Huang <kai.huang@intel.com>
+Cc: "dwmw2@infradead.org" <dwmw2@infradead.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
+	"x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, 
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "vkuznets@redhat.com" <vkuznets@redhat.com>, 
+	"paul@xen.org" <paul@xen.org>, "yosry@kernel.org" <yosry@kernel.org>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-T24gVHVlLCAyMDI2LTA1LTE5IGF0IDA4OjA0IC0wNzAwLCBTZWFuIENocmlzdG9waGVyc29uIHdy
-b3RlOg0KPiBPbiBUdWUsIE1heSAxOSwgMjAyNiwgS2FpIEh1YW5nIHdyb3RlOg0KPiA+ID4gQEAg
-LTEyNzEyLDE5ICsxMTkxMyw4IEBAIHN0YXRpYyB2b2lkIHN0b3JlX3JlZ3Moc3RydWN0IGt2bV92
-Y3B1ICp2Y3B1KQ0KPiA+ID4gIA0KPiA+ID4gIHN0YXRpYyBpbnQgc3luY19yZWdzKHN0cnVjdCBr
-dm1fdmNwdSAqdmNwdSkNCj4gPiA+ICB7DQo+ID4gPiAtCWlmICh2Y3B1LT5ydW4tPmt2bV9kaXJ0
-eV9yZWdzICYgS1ZNX1NZTkNfWDg2X1JFR1MpIHsNCj4gPiA+IC0JCV9fc2V0X3JlZ3ModmNwdSwg
-JnZjcHUtPnJ1bi0+cy5yZWdzLnJlZ3MpOw0KPiA+ID4gLQkJdmNwdS0+cnVuLT5rdm1fZGlydHlf
-cmVncyAmPSB+S1ZNX1NZTkNfWDg2X1JFR1M7DQo+ID4gPiAtCX0NCj4gPiA+IC0NCj4gPiA+IC0J
-aWYgKHZjcHUtPnJ1bi0+a3ZtX2RpcnR5X3JlZ3MgJiBLVk1fU1lOQ19YODZfU1JFR1MpIHsNCj4g
-PiA+IC0JCXN0cnVjdCBrdm1fc3JlZ3Mgc3JlZ3MgPSB2Y3B1LT5ydW4tPnMucmVncy5zcmVnczsN
-Cj4gPiA+IC0NCj4gPiA+IC0JCWlmIChfX3NldF9zcmVncyh2Y3B1LCAmc3JlZ3MpKQ0KPiA+ID4g
-LQkJCXJldHVybiAtRUlOVkFMOw0KPiA+ID4gLQ0KPiA+ID4gLQkJdmNwdS0+cnVuLT5rdm1fZGly
-dHlfcmVncyAmPSB+S1ZNX1NZTkNfWDg2X1NSRUdTOw0KPiA+ID4gLQl9DQo+ID4gPiArCWlmIChr
-dm1fcnVuX3NldF9yZWdzKHZjcHUpKQ0KPiA+ID4gKwkJcmV0dXJuIC1FSU5WQUw7DQo+ID4gDQo+
-ID4gTml0Og0KPiA+IA0KPiA+IERvIHlvdSB0aGluayAna3ZtX3J1bl9zeW5jX3JlZ3MoKScgaXMg
-YmV0dGVyIHRoYW4gJ2t2bV9ydW5fc2V0X3JlZ3MoKSc/DQo+ID4gDQo+ID4gQmVjYXVzZSBJIHRo
-aW5rICJzeW5jIiByZWZsZWN0cyBiZXR0ZXIgdGhhdCB2Y3B1LT5ydW4tPmt2bV9kaXJ0eV9yZWdz
-IGlzIGNsZWFyZWQNCj4gPiBhZnRlciB0aGUgInNldCIgb3BlcmF0aW9uLg0KPiANCj4gVGhlIHBy
-b2JsZW0gSSBoYXZlIHdpdGggInN5bmMiIGlzIHRoYXQgaXQgZG9lc24ndCBjb21tdW5pY2F0ZSB0
-aGUgZGlyZWN0aW9uIG9mDQo+IHRoZSBzeW5jLiAgV2hhdCBhYm91dCBrdm1fcnVuX3N5bmNfcmVn
-c197dG8sZnJvbX1fdXNlcigpPw0KDQpZZWFoIHRoYXQncyBiZXR0ZXIgdG8gbWUgdG9vLg0KDQo+
-IA0KPiA+ID4gIA0KPiA+ID4gIAlpZiAodmNwdS0+cnVuLT5rdm1fZGlydHlfcmVncyAmIEtWTV9T
-WU5DX1g4Nl9FVkVOVFMpIHsNCj4gPiA+ICAJCXN0cnVjdCBrdm1fdmNwdV9ldmVudHMgZXZlbnRz
-ID0gdmNwdS0+cnVuLT5zLnJlZ3MuZXZlbnRzOw0KPiA+IA0KPiA+IEFsc28sIEkgd29uZGVyIHdo
-ZXRoZXIgaXQncyBiZXR0ZXIgdG8gYWRkIGEgaGVscGVyIGZvciBldmVudHMgc28gc3luY19yZWdz
-KCkgYW5kDQo+ID4gc3RvcmVfcmVncygpIGNhbiBiZSBzaW1wbGlmaWVkIHRvOg0KPiA+IA0KPiA+
-IHN0YXRpYyBpbnQgc3luY19yZWdzKHN0cnVjdCBrdm1fdmNwdSAqdmNwdSkNCj4gPiB7DQo+ID4g
-CWlmIChrdm1fcnVuX3N5bmNfcmVncyh2Y3B1KSkNCj4gPiAJCXJldHVybiAtRUlOVkFMOw0KPiA+
-IAlyZXR1cm4ga3ZtX3J1bl9zeW5jX2V2ZW50cyh2Y3B1KTsNCj4gPiB9DQo+ID4gDQo+ID4gc3Rh
-dGljIHZvaWQgc3RvcmVfcmVncyhzdHJ1Y3Qga3ZtX3ZjcHUgKnZjcHUpDQo+ID4gew0KPiA+IAlr
-dm1fcnVuX2dldF9yZWdzKHZjcHUpOw0KPiA+IAlrdm1fcnVuX2dldF9ldmVudHModmNwdSk7DQo+
-ID4gfQ0KPiA+IA0KPiA+IEFuZCBtYXliZSAna3ZtX3J1bl9nZXRfcmVncygpJyBjb3VsZCBiZSAn
-a3ZtX3J1bl9zdG9yZV9yZWdzKCknIHRvbyAsIHNvIHRoYXQgdGhlDQo+ID4gc3RvcmVfcmVncygp
-IGNvdWxkIGJlOg0KPiA+IA0KPiA+IHN0YXRpYyB2b2lkIHN0b3JlX3JlZ3Moc3RydWN0IGt2bV92
-Y3B1ICp2Y3B1KQ0KPiA+IHsNCj4gPiAJa3ZtX3J1bl9zdG9yZV9yZWdzKHZjcHUpOw0KPiA+IAlr
-dm1fcnVuX3N0b3JlX2V2ZW50cyh2Y3B1KTsNCj4gPiB9DQo+IA0KPiB7c3RvcmUsc3luY31fcmVn
-cygpIGxvb2sgcHJldHR5LCBidXQgSU1PIHRoZSBvdmVyYWxsIGNvZGUgaXMgdWdsaWVyIGJlY2F1
-c2Ugd2UNCj4gZW5kIHVwIHdpdGggc3VwZXIgc21hbGwgaGVscGVycyB0aGF0IGhhdmUgb25lIGNh
-bGxlciwgZS5nLg0KPiANCj4gICBzdGF0aWMgdm9pZCBrdm1fcnVuX3N5bmNfZXZlbnRzX3RvX3Vz
-ZXIoc3RydWN0IGt2bV92Y3B1ICp2Y3B1KQ0KPiAgIHsNCj4gCWlmICh2Y3B1LT5ydW4tPmt2bV92
-YWxpZF9yZWdzICYgS1ZNX1NZTkNfWDg2X0VWRU5UUykNCj4gCQlrdm1fdmNwdV9pb2N0bF94ODZf
-Z2V0X3ZjcHVfZXZlbnRzKHZjcHUsICZ2Y3B1LT5ydW4tPnMucmVncy5ldmVudHMpOw0KPiAgIH0N
-Cj4gDQo+ICAgc3RhdGljIHZvaWQgc3RvcmVfcmVncyhzdHJ1Y3Qga3ZtX3ZjcHUgKnZjcHUpDQo+
-ICAgew0KPiAJQlVJTERfQlVHX09OKHNpemVvZihzdHJ1Y3Qga3ZtX3N5bmNfcmVncykgPiBTWU5D
-X1JFR1NfU0laRV9CWVRFUyk7DQo+IA0KPiAJa3ZtX3J1bl9zeW5jX3JlZ3NfdG9fdXNlcih2Y3B1
-KTsNCj4gCWt2bV9ydW5fc3luY19ldmVudHNfdG9fdXNlcih2Y3B1KTsNCj4gICB9DQo+IA0KPiBG
-b3IgbWUsIHRoZSBleHRyYSAianVtcCIgaXMgdW5kZXNpcmFibGUsIGJ1dCBpdCBhbGxvd3MgYnVy
-eWluZyBfX3tnLHN9ZXRfe3MsfXJlZ3MoKQ0KPiBpbiByZWdzLmMsIGFuZCBzbyBpcyBhIG5ldCBw
-b3NpdGl2ZSBmb3IgcmVnaXN0ZXJzLiAgQnV0IGZvciBldmVudHMsIGl0J3MgcHVyZQ0KPiBvdmVy
-aGVhZC4NCg0KU3VyZS4NCg0KSnVzdCB3b25kZXJpbmcgaXMgaXQgcG9zc2libGUgd2UgbWlnaHQg
-d2FudCB0byBtb3ZlIGV2ZW50cyBoYW5kbGluZyB0byBzb21lDQpvdGhlciBDIGZpbGUgc2luY2Ug
-eW91IGFyZSBjbGVhbnVwIHg4Ni5jPyAgQnV0IHdlIGNhbiBkZWFsIHdpdGggdGhpcyB3aGVuIGl0
-DQpoYXBwZW5zLg0KDQo+IA0KPiA+ID4gZGlmZiAtLWdpdCBhL2FyY2gveDg2L2t2bS94ODYuaCBi
-L2FyY2gveDg2L2t2bS94ODYuaA0KPiA+ID4gaW5kZXggMTg1MDYyYTI2OTI0Li5mZDU1Y2QwMzFi
-MWMgMTAwNjQ0DQo+ID4gPiAtLS0gYS9hcmNoL3g4Ni9rdm0veDg2LmgNCj4gPiA+ICsrKyBiL2Fy
-Y2gveDg2L2t2bS94ODYuaA0KPiA+ID4gQEAgLTQxNCw2ICs0MTQsNyBAQCBpbnQgaGFuZGxlX3Vk
-KHN0cnVjdCBrdm1fdmNwdSAqdmNwdSk7DQo+ID4gPiAgDQo+ID4gPiAgdm9pZCBrdm1fZGVsaXZl
-cl9leGNlcHRpb25fcGF5bG9hZChzdHJ1Y3Qga3ZtX3ZjcHUgKnZjcHUsDQo+ID4gPiAgCQkJCSAg
-IHN0cnVjdCBrdm1fcXVldWVkX2V4Y2VwdGlvbiAqZXgpOw0KPiA+ID4gK3ZvaWQga3ZtX2hhbmRs
-ZV9leGNlcHRpb25fcGF5bG9hZF9xdWlyayhzdHJ1Y3Qga3ZtX3ZjcHUgKnZjcHUpOw0KPiA+ID4g
-IA0KPiA+ID4gIGludCBrdm1fbXRycl9zZXRfbXNyKHN0cnVjdCBrdm1fdmNwdSAqdmNwdSwgdTMy
-IG1zciwgdTY0IGRhdGEpOw0KPiA+ID4gIGludCBrdm1fbXRycl9nZXRfbXNyKHN0cnVjdCBrdm1f
-dmNwdSAqdmNwdSwgdTMyIG1zciwgdTY0ICpwZGF0YSk7DQo+ID4gPiBAQCAtNjA0LDYgKzYwNSw3
-IEBAIHN0YXRpYyBpbmxpbmUgdm9pZCBrdm1fbWFjaGluZV9jaGVjayh2b2lkKQ0KPiA+ID4gIGlu
-dCBrdm1fc3BlY19jdHJsX3Rlc3RfdmFsdWUodTY0IHZhbHVlKTsNCj4gPiA+ICBpbnQga3ZtX2hh
-bmRsZV9tZW1vcnlfZmFpbHVyZShzdHJ1Y3Qga3ZtX3ZjcHUgKnZjcHUsIGludCByLA0KPiA+ID4g
-IAkJCSAgICAgIHN0cnVjdCB4ODZfZXhjZXB0aW9uICplKTsNCj4gPiA+ICt2b2lkIGt2bV9pbnZh
-bGlkYXRlX3BjaWQoc3RydWN0IGt2bV92Y3B1ICp2Y3B1LCB1bnNpZ25lZCBsb25nIHBjaWQpOw0K
-PiA+ID4gDQo+ID4gDQo+ID4gSWYgSSByZWFkIGNvcnJlY3QsIHRoaXMgaXMgYmVjYXVzZSAicmVn
-cy5jIiBjYWxscyBrdm1faW52YWxpZGF0ZV9wY2lkKCkgYnV0IHlvdQ0KPiA+IHdhbnQgdG8ga2Vl
-cCBpdCBpbiB4ODYuYy4gIEJ1dCBpdCBzZWVtcyB0aGUgIng4Ni5oIiBpc24ndCBpbmNsdWRlZCBi
-eSAicmVncy5jIg0KPiA+IGRpcmVjdGx5IGJ1dCB2aWEgb3RoZXIgaGVhZGVycyAoIm1tdS5oIiBk
-b2VzIGluY2x1ZGUgIng4Ni5oIikuDQo+ID4gDQo+ID4gU2hvdWxkIHRoZSAicmVncy5jIiBpbmNs
-dWRlICJ4ODYuaCIgZGlyZWN0bHk/DQo+IA0KPiBPaCwgeWVhaCwgSSBqdXN0IGdvb2ZlZCB0aGF0
-Lg0KPiANCj4gPiBCdHcsIEkgYW0gYSBiaXQgY29uZnVzZWQgdGhlIHJlbGF0aW9uc2hpcCBiZXR3
-ZWVuICJ4ODYuaCIgYW5kIG90aGVyIGhlYWRlcnMgbGlrZQ0KPiA+ICJtbXUuaCIgYW5kIHRoZSBu
-ZXcgInJlZ3MuaCIuICBUaGF0IGlzLCBoZWFkZXJzIGxpa2UgIm1tdS5oIiBpbmNsdWRlICJ4ODYu
-aCIsDQo+ID4gYnV0IGhlYWRlcnMgbGlrZSAicmVncy5oIiBkbyBub3QgKGluc3RlYWQsICJ4ODYu
-aCIgaW5jbHVkZXMgdGhlbSkuDQo+IA0KPiBIZWgsIGRvbid0IGxvb2sgZm9yIGEgdGhlbWUvcGxh
-biwgYmVjYXVzZSB0aGVyZSBpc24ndCBvbmUuICBPdmVyIHRoZSB5ZWFycywgeDg2LmgNCj4gYW5k
-IHg4Ni5jIGJlY2FtZSBkdW1waW5nIGdyb3VuZHMgZm9yIGV2ZXJ5dGhpbmcgdGhhdCBkaWRuJ3Qg
-aGF2ZSBhbiBvYnZpb3VzIGhvbWUsDQo+IGFuZCBzbyB0aGVyZSBhcmVuJ3QgcmVhbCAicnVsZXMi
-Lg0KDQpNeSBndWVzcyB0b28uDQoNCj4gDQo+IEhtbSwgdGhvdWdoIGxvb2tpbmcgYXQgYWxsIG9m
-IHRoaXMgYWdhaW4sIEkgdGhpbmsgd2UncmUgYWN0dWFsbHkgcXVpdGUgY2xvc2UgdG8NCj4gaGF2
-aW5nIHNvbWV3aGF0IHNhbmUgcnVsZXMuICBPdmVyIHRoZSBwYXN0IGZldyB5ZWFycywgSSd2ZSB0
-cmllZCBtdWx0aXBsZSB0aW1lcw0KPiB0byBtb3ZlIHdoYXQgSSBmZWx0IHNob3VsZCBiZSBLVk0t
-aW50ZXJuYWwgc3RydWN0dXJlcyBmcm9tIGFzbS9rdm1faG9zdC5oIHRvIHg4Ni5oLA0KPiBhbmQg
-SSd2ZSBmYWlsZWQgbWlzZXJhYmx5IGV2ZXJ5IHRpbWUgYmVjYXVzZSBpbmV2aXRhYmx5IGV2ZW4g
-dGhlIG1vc3QgaW5ub2N1b3VzDQo+IHN0cnVjdCBtYW5hZ2VzIHRvIGhhdmUgdXNhZ2UgdGhhdCBs
-ZWFkcyB0byBjeWNsaWNhbCBoZWFkZXIgZGVwZW5kZW5jaWVzIGFuZC9vciBpcw0KPiB1c2VkIGJ5
-IGFyY2gtbmV1dHJhbCBLVk0gY29kZS4NCg0KVGhlIHByb2JsZW0gaXMgc29tZSBvdGhlciBrZXJu
-ZWwgY29kZSBpbmNsdWRlcyA8bGludXgva3ZtX2hvc3QuaD4gKHdoaWNoIGluIHR1cm4NCmluY2x1
-ZGVzIDxhc20va3ZtX2hvc3QuaD4pIGJ1dCB0aGUgS1ZNIGludGVybmFsIHN0cnVjdHVyZXMgaGF2
-ZSBub3RoaW5nIHRvIGRvDQp3aXRoIHRoZW0uDQoNCkUuZy4sIHNvbWUgZHJpdmVycyBhcmUgdXNp
-bmcgPGxpbnV4L2t2bV9ob3N0Lmg+Og0KDQojJCBncmVwIGt2bV9ob3N0LmggZHJpdmVycy8gLVJu
-DQpkcml2ZXJzL3ZmaW8vcGNpL3ZmaW9fcGNpX3pkZXYuYzoxNDojaW5jbHVkZSA8bGludXgva3Zt
-X2hvc3QuaD4NCmRyaXZlcnMvdmZpby92ZmlvX21haW4uYzoyMDojaW5jbHVkZSA8bGludXgva3Zt
-X2hvc3QuaD4NCmRyaXZlcnMvZmlybXdhcmUvYXJtX3NkZWkuYzoxOTojaW5jbHVkZSA8bGludXgv
-a3ZtX2hvc3QuaD4NCmRyaXZlcnMvaHd0cmFjaW5nL2NvcmVzaWdodC9jb3Jlc2lnaHQtdHJiZS5j
-OjIwOiNpbmNsdWRlIDxsaW51eC9rdm1faG9zdC5oPg0KZHJpdmVycy9od3RyYWNpbmcvY29yZXNp
-Z2h0L2NvcmVzaWdodC1ldG00eC1jb3JlLmM6MTA6I2luY2x1ZGUNCjxsaW51eC9rdm1faG9zdC5o
-Pg0KZHJpdmVycy9zMzkwL2NyeXB0by92ZmlvX2FwX29wcy5jOjE3OiNpbmNsdWRlIDxsaW51eC9r
-dm1faG9zdC5oPg0KZHJpdmVycy9zMzkwL2NyeXB0by92ZmlvX2FwX3ByaXZhdGUuaDoyMDojaW5j
-bHVkZSA8bGludXgva3ZtX2hvc3QuaD4NCg0KQnV0IGxvb2tpbmcgYXQgdGhlbSwgQUZBSUNUIHdo
-YXQgdGhleSBuZWVkIGlzIG9ubHkgc29tZSBzdHJ1Y3R1cmUgZGVjbGFyYXRpb25zDQooZS5nLiwg
-J3N0cnVjdCBrdm07JykgZm9yIHR5cGUgc2FmZXR5IChwbHVzIHNvbWUgZnVuY3Rpb24gZGVjbGFy
-YXRpb25zKSwgYnV0DQpkb24ndCBhY3R1YWxseSBuZWVkIHRvIHNlZSB0aGUgYWN0dWFsIHN0cnVj
-dHVyZS4NCg0KRm9yIHg4NiwgQUZBSUNUIHRoZXJlJ3MgKG9ubHkpICJhcmNoL3g4Ni9ldmVudHMv
-aW50ZWwvY29yZS5jIiBhY3R1YWxseSB1c2VzIHRoZQ0KJ3N0cnVjdCBrdm1fcG11JywgdGhvdWdo
-LiAgSSBoYXZlbid0IGNoZWNrZWQgb3RoZXIgQVJDSHMgd2hldGhlciB0aGVyZSdzIGNhc2VzDQph
-Y3R1YWxseSBuZWVkIHRvIHVzZSBhbnkgc3RydWN0dXJlLg0KDQo+IA0KPiBJIHRoaW5rIGl0J3Mg
-cHJvYmFibHkgdGltZSB0byBhZG1pdCBJJ3ZlIGJlZW4gbG9va2luZyBhdCB0aGUgYXNtL2t2bV9o
-b3N0LmggdnMuDQo+IHg4Ni5oIHNwbGl0IGFsbCB3cm9uZywgaS5lLiBmaW5hbGx5IGdpdmUgdXAg
-b24gbW92aW5nIHN0cnVjdHVyZXMgb3V0IG9mIGt2bV9ob3N0LmgsDQo+IGFuZCBkbyB0aGUgZXhh
-Y3Qgb3Bwb3NpdGU6IGNvbW1pdCB0byB1c2luZyBrdm1faG9zdC5oIHRvIGRlZmluZSBhbmQgZGVj
-bGFyZSB3aWRlbHkNCj4gdXNlZCBzdHJ1Y3R1cmVzLg0KDQpJZiB0aGUgc3RydWN0dXJlKHMpIGFy
-ZSBvbmx5IHVzZWQgd2l0aGluIGFyY2gveDg2L2t2bS8sIGl0IGRvZXNuJ3Qgc2VlbSByaWdodCB0
-bw0KZGVmaW5lIHRoZW0gaW4gYXNtL2t2bV9ob3N0Lmg/DQoNCj4gDQo+IEJlY2F1c2UgbGl0ZXJh
-bGx5IHRoZSBvbmx5IHJlYXNvbiB0aGF0IHg4Ni5oIGRvZXNuJ3QgaW5jbHVkZSBtbXUuaCBpcyB0
-aGF0IG1tdS5oDQo+IHJlZmVyZW5jZXMgc3RydWN0IGt2bV9ob3N0LCB3aGljaCBpcyBjdXJyZW50
-bHkgZGVmaW5lZCBpbiB4ODYuaC4gwqANCj4gDQoNClllcy4gQnV0IEkgd291bGRuJ3Qgd29ycnkg
-YWJvdXQgdGhpcyB0b28gbXVjaCBzaW5jZSBpdCdzIGEgc21hbGwgdGhpbmcgd2UgY2FuDQphbHdh
-eXMgZmluZCBhIHdheSB0byBmaXguICBFLmcuLCB3ZSBjYW4gbW92ZSBrdm1fbW11X21heF9nZm4o
-KSBvdXQgb2YgIm1tdS5oIg0KKHdpdGggYSByZW5hbWluZyBwZXJoYXBzKS4NCg0KPiBJZiB3ZSAi
-Zml4Ig0KPiB0aGF0LCB0aGVuIChhKSB3ZSBjYW4gbWFrZSB4ODYuaCB0aGUgImNlbnRyYWwiIGlu
-Y2x1ZGUgZXZlcnlvbmUgZXhwZWN0cyBpdCB0byBiZSwNCj4gYW5kIChiKSBpdCBjYW4gYmUgdGhl
-IHN0YXJ0IG9mIGEgY2xlYW51cCBvZiBhc20va3ZtX2hvc3QuaCBhbmQgYSBiaWcgc3RlcCB0b3dh
-cmRzDQo+IGRlZmluaW5nIG1haW50YWluYWJsZSAicnVsZXMiIGZvciB3aGF0IGdvZXMgd2hlcmUu
-ICBFLmcuIHRoZXJlIGFyZSBhIHBpbGUgb2YNCj4gZnVuY3Rpb25hbCBkZWNsYXJhdGlvbnMgaW4g
-YXNtL2t2bV9ob3N0LmggdGhhdCBjYW4gbGl2ZSBlbHNld2hlcmU7IGlmIHdlIHRyaW0NCj4gdGhv
-c2UgZG93biwgdGhlbiB0aGUgcnVsZXMgYmVjb21lOg0KPiANCj4gICAtIGFzbS9rdm1faG9zdC5o
-IGhvbGRzICJjb21tb24iIHN0cnVjdHVyZSBkZWZpbml0aW9ucyBhbmQgYXNzb2NpYXRlZCBrZXkg
-Z2xvYmFsDQo+ICAgICB2YXJpYWJsZXMsIGFuZCB0aGluZ3MgdGhhdCBhcmUgcmVmZXJlbmNlZCBi
-eSBhcmNoLW5ldXRyYWwgS1ZNLg0KDQpJdCdzIGEgYml0IHdlaXJkIHRoZSBhcmNoLW5ldXRyYWwg
-S1ZNIGNvZGUgbmVlZHMgdG8gcmVmZXJlbmNlIHZhcmlhYmxlcyBpbg0KYXNtL2t2bV9ob3N0Lmgs
-IGFuZCBJIGFtIGFmcmFpZCB0aGUgImNvbW1vbiIgc3RydWN0dXJlIGRlZmluaXRpb25zIHdpbGwN
-CmVmZmVjdGl2ZWx5IGJlIGEgbG90IG9mIHN0cnVjdHVyZXMgb25seSB1c2VkIGJ5IGFyY2gveDg2
-L2t2bS8uICANCg0KV2hpY2ggaXNuJ3QgbmVjZXNzYXJpbHkgYSBiYWQgdGhpbmcsIGZyb20gdGhl
-IHBlcnNwZWN0aXZlIHdlIG1pZ2h0IGZpbmFsbHkgY2xlYW4NCnRoaXMgdXAgYnkgYSBnaWFudCBt
-b3ZlLg0KDQpFLmcuLCA8bGludXgva3ZtX3R5cGVzLmg+IGlzIGFscmVhZHkgdXNlZCBieSBvdGhl
-ciBrZXJuZWwgY29tcG9uZW50cyB3aGVyZSB0aGV5DQpkb24ndCBuZWVkIDxsaW51eC9rdm1faG9z
-dC5oPi4gIElkZWFsbHksIG1heWJlIGV2ZW50dWFsbHkgd2UgY2FuIHVzZQ0KPGxpbnV4L2t2bV90
-eXBlcy5oPiBhbmQgPGFzbS9rdm1fdHlwZXMuaD4gZm9yIHRoaW5ncyBuZWVkZWQgYnkgb3RoZXIg
-a2VybmVsDQpjb21wb25lbnRzLCBvciBrZWVwIDxsaW51eC9rdm1faG9zdC5oPiBhbmQgPGFzbS9r
-dm1faG9zdC5oPiBtaW5pbWFsIGFmdGVyIG1vdmluZw0KbWFqb3JpdHkgdGhpbmdzIHRvIHNvbWUg
-S1ZNIGludGVybmFsIGhlYWRlcnMuDQoNCkUuZy4sIG1heWJlOg0KDQogIHZpcnQva3ZtL2luY2x1
-ZGUva3ZtX2hvc3QuaA0KICBhcmNoL3g4Ni9rdm0va3ZtX2hvc3QuaCAoY2FuIGV2ZW4gYmUgbWVy
-Z2VkIHRvIHg4Ni5oKQ0KDQpJIHRoaW5rIHRoZSBwcm9ibGVtIGlzICJzdHJ1Y3Qga3ZtX2FyY2gi
-IGFuZCAic3RydWN0IGt2bV92Y3B1X2FyY2giLCB0aGF0IHRoZXkNCmFyZSBub3QgYSBwb2ludGVy
-IGJ1dCBhIGZ1bGx5IGVtYmVkZGVkIHN0cnVjdHVyZSBpbiAic3RydWN0IGt2bSIgYW5kICJzdHJ1
-Y3QNCmt2bV92Y3B1IiByZXNwZWN0aXZlbHkuICBUaGF0IGNhdXNlZCB0aGF0IHlvdSBuZWVkIHRv
-IGtlZXAgdGhlIGFjdHVhbCBzdHJ1Y3R1cmUNCmRlZmluaXRpb24gb2YgInN0cnVjdCBrdm1fYXJj
-aCIgYW5kICJrdm1fdmNwdV9hcmNoIiBpbiBhc20va3ZtX2hvc3QuaCwgd2hpY2ggaW4NCnR1cm5z
-IG1ha2VzIGEgbG90IG9mIHN0cnVjdHVyZXMgb25seSB1c2VkIGJ5IGFyY2gveDg2L2t2bS8gbmVl
-ZCB0byBzdGF5IGluDQphc20va3ZtX2hvc3QuaC4NCg0KSSBhbSBub3Qgc3VyZSB3aGV0aGVyIHRo
-ZXJlJ3MgYSBtYW5kYXRvcnkgcmVxdWlyZW1lbnQgdGhhdCAic3RydWN0IGt2bV9hcmNoIiBhbmQN
-CiJzdHJ1Y3Qga3ZtX3ZjcHVfYXJjaCIgbXVzdCBiZSBmdWxseSBlbWJlZGRlZCwgYW5kIGl0IHdv
-dWxkIGJlIGtpbmRhIHBhaW5mdWwgdG8NCmNvdmVydCB0byBhIHBvaW50ZXIgKGUuZy4sIHRoZXJl
-J3Mga3ZtX3g4Nl9vcHM6OnZtX3NpemUpLCBidXQgcGVyaGFwcyB0aGF0IGlzDQphbHNvIGFuIG9w
-dGlvbiB0byBjb25zaWRlcj8NCg0KPiAgIC0gPGFyZWE+LntjLGh9IGhvbGRzIHJlbGV2YW50IGRl
-Y2xhcmF0aW9ucyBhbmQgZGVmaW5pdGlvbnMuDQo+ICAgLSB4ODYue2MsaH0gaXMgdGhlIGtpdGNo
-ZW4gc2luayBmb3IgZXZlcnl0aGluZyBlbHNlLg0KDQpZZWFoIHRoZSB0d28gYXJlIHJlYXNvbmFi
-bGUgdG8gbWUuDQo=
+On Wed, May 20, 2026, Kai Huang wrote:
+> On Tue, 2026-05-19 at 08:04 -0700, Sean Christopherson wrote:
+> > On Tue, May 19, 2026, Kai Huang wrote:
+> Just wondering is it possible we might want to move events handling to so=
+me
+> other C file since you are cleanup x86.c?  But we can deal with this when=
+ it
+> happens.
+
+Events are a hard one.  There's a decent amount of code, but not _so_ much =
+that
+it's a no-brainer to move them out of x86.c.  And there's no super clear cu=
+t
+boundary, e.g. events can mean exceptions, INIT+SIPI, IRQs, APIC stuff, etc=
+.,
+several of which already have substantial amounts of code outside of x86.c.
+
+> > Hmm, though looking at all of this again, I think we're actually quite =
+close to
+> > having somewhat sane rules.  Over the past few years, I've tried multip=
+le times
+> > to move what I felt should be KVM-internal structures from asm/kvm_host=
+.h to x86.h,
+> > and I've failed miserably every time because inevitably even the most i=
+nnocuous
+> > struct manages to have usage that leads to cyclical header dependencies=
+ and/or is
+> > used by arch-neutral KVM code.
+>=20
+> The problem is some other kernel code includes <linux/kvm_host.h> (which =
+in turn
+> includes <asm/kvm_host.h>) but the KVM internal structures have nothing t=
+o do
+> with them.
+>=20
+> E.g., some drivers are using <linux/kvm_host.h>:
+>=20
+> #$ grep kvm_host.h drivers/ -Rn
+> drivers/vfio/pci/vfio_pci_zdev.c:14:#include <linux/kvm_host.h>
+> drivers/vfio/vfio_main.c:20:#include <linux/kvm_host.h>
+> drivers/firmware/arm_sdei.c:19:#include <linux/kvm_host.h>
+> drivers/hwtracing/coresight/coresight-trbe.c:20:#include <linux/kvm_host.=
+h>
+> drivers/hwtracing/coresight/coresight-etm4x-core.c:10:#include
+> <linux/kvm_host.h>
+> drivers/s390/crypto/vfio_ap_ops.c:17:#include <linux/kvm_host.h>
+> drivers/s390/crypto/vfio_ap_private.h:20:#include <linux/kvm_host.h>
+>=20
+> But looking at them, AFAICT what they need is only some structure declara=
+tions
+> (e.g., 'struct kvm;') for type safety (plus some function declarations), =
+but
+> don't actually need to see the actual structure.
+
+Ya.
+
+> For x86, AFAICT there's (only) "arch/x86/events/intel/core.c" actually us=
+es the
+> 'struct kvm_pmu', though.
+
+I have a patch to fix that :-)
+
+https://lore.kernel.org/all/20260508231353.406465-7-seanjc@google.com
+
+> I haven't checked other ARCHs whether there's cases actually need to use =
+any
+> structure.
+
+PPC, arm64, and IIRC s390 all have assets defined by KVM that are consumed =
+by
+the kernel at-large.  E.g. because KVM for arm64 can't be built as a module=
+, the
+kernel calls directly into KVM during boot.  IIRC, PPC has similar code.
+
+A few years ago (wow, time flies), I was able to hide KVM internals, using =
+#ifdef
+shenanigans to deal with cases where non-KVM really truly needed to get at =
+things
+defined in kvm_host.h
+
+https://lore.kernel.org/all/20230916003118.2540661-27-seanjc@google.com
+
+More recently, I tried to standardize KVM arch=3D>common includes[1], to he=
+lp pave
+the way to splitting up kvm_host.h, but then s390's crazy arm64 support kil=
+led
+that (at least for now).
+
+[1] https://lore.kernel.org/all/20250611001042.170501-1-seanjc@google.com
+[2] https://lore.kernel.org/all/20260428160527.1378085-1-seiden@linux.ibm.c=
+om
+
+> > I think it's probably time to admit I've been looking at the asm/kvm_ho=
+st.h vs.
+> > x86.h split all wrong, i.e. finally give up on moving structures out of=
+ kvm_host.h,
+> > and do the exact opposite: commit to using kvm_host.h to define and dec=
+lare widely
+> > used structures.
+>=20
+> If the structure(s) are only used within arch/x86/kvm/, it doesn't seem r=
+ight to
+> define them in asm/kvm_host.h?
+
+The problem is that anything that feeds into kvm_vcpu_arch needs to be visi=
+ble
+to virt/kvm.  And burying kvm_x86_ops in arch/kvm/x86 would mean one-liners=
+ like
+kvm_arch_vcpu_blocking() couldn't be inlined.
+
+I've looked at this far too many times :-)
+
+> > Because literally the only reason that x86.h doesn't include mmu.h is t=
+hat mmu.h
+> > references struct kvm_host, which is currently defined in x86.h. =C2=A0
+> >=20
+>=20
+> Yes. But I wouldn't worry about this too much since it's a small thing we=
+ can
+> always find a way to fix.  E.g., we can move kvm_mmu_max_gfn() out of "mm=
+u.h"
+> (with a renaming perhaps).
+
+I hacked on moving more stuff out of x86.{c,h} and kvm_host.h.  The diff st=
+ats
+are quite promising :-)
+
+ arch/x86/include/asm/kvm_host.h           |  444 ++-------------
+ arch/x86/kvm/x86.c                        | 3784 +++----------------------=
+---------------------------------------------------------------------------=
+----------------------
+ arch/x86/kvm/x86.h                        |  474 ++++++++--------
+
+> > If we "fix"
+> > that, then (a) we can make x86.h the "central" include everyone expects=
+ it to be,
+> > and (b) it can be the start of a cleanup of asm/kvm_host.h and a big st=
+ep towards
+> > defining maintainable "rules" for what goes where.  E.g. there are a pi=
+le of
+> > functional declarations in asm/kvm_host.h that can live elsewhere; if w=
+e trim
+> > those down, then the rules become:
+> >=20
+> >   - asm/kvm_host.h holds "common" structure definitions and associated =
+key global
+> >     variables, and things that are referenced by arch-neutral KVM.
+>=20
+> It's a bit weird the arch-neutral KVM code needs to reference variables i=
+n
+> asm/kvm_host.h, and I am afraid the "common" structure definitions will
+> effectively be a lot of structures only used by arch/x86/kvm/. =20
+>=20
+> Which isn't necessarily a bad thing, from the perspective we might finall=
+y clean
+> this up by a giant move.
+>=20
+> E.g., <linux/kvm_types.h> is already used by other kernel components wher=
+e they
+> don't need <linux/kvm_host.h>.  Ideally, maybe eventually we can use
+> <linux/kvm_types.h> and <asm/kvm_types.h> for things needed by other kern=
+el
+> components, or keep <linux/kvm_host.h> and <asm/kvm_host.h> minimal after=
+ moving
+> majority things to some KVM internal headers.
+>=20
+> E.g., maybe:
+>=20
+>   virt/kvm/include/kvm_host.h
+>   arch/x86/kvm/kvm_host.h (can even be merged to x86.h)
+>=20
+> I think the problem is "struct kvm_arch" and "struct kvm_vcpu_arch", that=
+ they
+> are not a pointer but a fully embedded structure in "struct kvm" and "str=
+uct
+> kvm_vcpu" respectively.  That caused that you need to keep the actual str=
+ucture
+> definition of "struct kvm_arch" and "kvm_vcpu_arch" in asm/kvm_host.h, wh=
+ich in
+> turns makes a lot of structures only used by arch/x86/kvm/ need to stay i=
+n
+> asm/kvm_host.h.
+>=20
+> I am not sure whether there's a mandatory requirement that "struct kvm_ar=
+ch" and
+> "struct kvm_vcpu_arch" must be fully embedded, and it would be kinda pain=
+ful to
+> covert to a pointer (e.g., there's kvm_x86_ops::vm_size), but perhaps tha=
+t is
+> also an option to consider?
+
+The idea I had in the past, and where I was going with things before s390's=
+ love
+for arm64 came along, was to add a kvm_arch.h in arch/<arch>/kvm, and have =
+virt/kvm
+include _that_ instead of kvm_host.h.  That way we don't need to make any f=
+undamental
+changes to structures, but we can still significantly cut down on what's ex=
+posed
+via kvm_host.h.  At some point I'll try to take another look; it's really t=
+he
+s390+arm64 combo that's problematic :-/
