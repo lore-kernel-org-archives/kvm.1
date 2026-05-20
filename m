@@ -1,185 +1,394 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3784A3ED3BA;
-	Wed, 20 May 2026 15:17:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00AE63ED5A9
+	for <kvm@vger.kernel.org>; Wed, 20 May 2026 15:17:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779290246; cv=none; b=fHiYMzfgY979GhxEYyVpPX8iGdjb5hjfcle7VCGJDJLIxuN6zukCUm0XcYeuiNLLoQdxA5oikB6Bqm/QP+UwCWFObc4mVKvKOsJQQB97mTW2dLSqzDnsBU53NstH0bWFGDqXfX6ZjF80cGTLqlL5br55GPY90C/rd29g8aRafdE=
+	t=1779290266; cv=none; b=pS5mhQuR2KSKtwH32sVjFw0dLAXXYUqlpTwmcyDpUkaRnym+VLASNdyntVfvx1Swhfn8YEXKWOIF7kmLiXat6G1VRo2kBBaSiuOXU4qCsyB3gWx5Yfd8K3aRVwaEOGfmBmWEvKeWcArpNLz+8Anytwafezu+Q+R8lZ3hYIbjAbI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779290246; c=relaxed/simple;
-	bh=BQCmGvYbepRft3F3wcFkb8z8H/UlTgTlA2s+YUgQsGw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T0/VqnHip/ORggSPJ75QtpDAJyg1rQ3MB3YUg6JrFWxdGv14A3InFX1HLp+EtKb/yxAyC7G6oqRlyJYc0CbE4MroTk4rF5B5HCkDc2R2L8J/xoND1+DsFc9C0rnD3WTQJOlRVmSUYxcxNFcdCxOl3Jwe61eZH65bSk+t7M3WWdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=Gh4+ot87; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1779290266; c=relaxed/simple;
+	bh=KnB8NUgb7OfvhyqvzlGK12v19j9DBbTZLGw4wflVk+g=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mDW4AdXPPsCQfcFYmuKsa/FxiJMbzgAgA9Xf7ZAYKgnPiERRsgV/mNujifaGkIpd0B7hGkhdkGbuPZp4gHPsh2+qPQERpF2CcPRp+AYIKM0D1Oxt4b6zaCaoHWgEmoQ5bxNttuN1WOG17iMB+yOdfIZS7uPP2+YvZYVotEc1L0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=rY5TWU1K; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="Gh4+ot87"
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64K8MRhc3015276;
-	Wed, 20 May 2026 15:17:19 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=pp1; bh=+9FG/QWYKOBvgshYr
-	CprfMiWDuK9krkyWqRZ1vbmmKc=; b=Gh4+ot87enjj4qjoK/IFC6diI9YaRSQTN
-	Ti1m1C7QBZ4z1CNMfjpYcfHXd7fuo/wMH/zPjFAE4cttwo00sYcJC8rFj2raW1uG
-	C3b4J25QDo2XYuObcXP4FvtGfiI7E9Cx2pofess0W6oej16EqbOcdfIFDwk//zRB
-	u8NHAlDVhX/dRl8Gde1qSvmT2RHjZUFyFozWCcM6KOlNry/Rf/z/IkLd+0/43jg+
-	usSmFi/NFmSwHzYdGxH48bA4viU6FAHsA0CD9m1vHFMmZY6EUAKtT7By17pnBuy/
-	1MfpvPKjoi5vw9ksQIrrJ/3kJroPzIUgwAp43rR9Kz5BIbEnnnBgA==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6haw9r6m-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 May 2026 15:17:18 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64KF95pC027198;
-	Wed, 20 May 2026 15:17:17 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e75ky7mt4-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 20 May 2026 15:17:17 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (smtpav06.fra02v.mail.ibm.com [10.20.54.105])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64KFHBOi26018138
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 20 May 2026 15:17:11 GMT
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9EC7520040;
-	Wed, 20 May 2026 15:17:11 +0000 (GMT)
-Received: from smtpav06.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6A1D12004D;
-	Wed, 20 May 2026 15:17:11 +0000 (GMT)
-Received: from p-imbrenda.aag-de.ibm.com (unknown [9.52.223.175])
-	by smtpav06.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 20 May 2026 15:17:11 +0000 (GMT)
-From: Claudio Imbrenda <imbrenda@linux.ibm.com>
-To: linux-kernel@vger.kernel.org
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
-        frankja@linux.ibm.com, david@kernel.org, seiden@linux.ibm.com,
-        nrb@linux.ibm.com, schlameuss@linux.ibm.com, gra@linux.ibm.com,
-        pbonzini@redhat.com, seanjc@google.com, yan.y.zhao@intel.com,
-        isaku.yamahata@intel.com
-Subject: [PATCH v1 1/4] KVM: s390: Implement KVM_PRE_FAULT_MEMORY
-Date: Wed, 20 May 2026 17:17:07 +0200
-Message-ID: <20260520151710.231788-2-imbrenda@linux.ibm.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260520151710.231788-1-imbrenda@linux.ibm.com>
-References: <20260520151710.231788-1-imbrenda@linux.ibm.com>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="rY5TWU1K"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 08E0F1655;
+	Wed, 20 May 2026 08:17:38 -0700 (PDT)
+Received: from e124191.cambridge.arm.com (e124191.cambridge.arm.com [10.1.197.45])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 4D8FA3FAA1;
+	Wed, 20 May 2026 08:17:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1779290263; bh=KnB8NUgb7OfvhyqvzlGK12v19j9DBbTZLGw4wflVk+g=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=rY5TWU1KLZ+sC0o1uhblHewVrO9NZst8oNVvrTJe/E9mcurKsRhafWkZxTyoarjoc
+	 IRDc3fFCxKCe9kRMkTW4Yep2uxOJQDLU7aVSxNIqnDKRn61vQUyMm+nsUZ0aKh6ZYT
+	 J3srMD2OTCjVJ9anmpaQQJi/jy9cImiGXLZOnjDs=
+Date: Wed, 20 May 2026 16:17:38 +0100
+From: Joey Gouly <joey.gouly@arm.com>
+To: Jing Zhang <jingzhangos@google.com>
+Cc: KVM <kvm@vger.kernel.org>, KVMARM <kvmarm@lists.linux.dev>,
+	Marc Zyngier <maz@kernel.org>, Wei-Lin Chang <weilin.chang@arm.com>,
+	Yao Yuan <yaoyuan@linux.alibaba.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Andrew Jones <andrew.jones@linux.dev>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Mingwei Zhang <mizhang@google.com>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Colton Lewis <coltonlewis@google.com>
+Subject: Re: [kvm-unit-tests PATCH v2 4/7] lib: arm64: Add foundational guest
+ execution framework
+Message-ID: <20260520151738.GB4037194@e124191.cambridge.arm.com>
+References: <20260413204630.1149038-1-jingzhangos@google.com>
+ <20260413204630.1149038-5-jingzhangos@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIwMDE0NyBTYWx0ZWRfXxqw4N+BSWqdJ
- uxGpFdcDGYRKsQxOsdSYBbw/HKT3JZ8vkYR9EQU7LJoU2FS0UIkVyZxX9eGYyTQFlg721xeiLAN
- ftSduQxUo6dXkxHTLkTsGxR5xeFryyeNvJqXwJjGRAWO4boFiKQ8NckjPRoucZCCRO3jFLxJQPy
- F+aQvSIc7gGU40rwhShywY42LQgrnVQtnVlPkqfFUgmU0/F5QoCbxozUZU4C3oZo1KKGiwmHajz
- Io3Z/Bp27bhhgxOynyIZnN7XvUgGSdzO7kKtwqK/VXmOi2GWA+oRaxi7MYSgppzCAEMowkIYSKM
- 2UfpHU3G1912rQkIKvhCgRCrSXiYL3cvC4WKKceSmEjnDq1Npmvn2yAlIWhYWyLuO89kqm9AT4e
- VnpMJ9CG2iZlLo52BRYkNirBdS+ji2P9hXzxoWHwkRBGFtruGc/HhAMxLeKe6fX8gT2bOLStGZ+
- 8Rl/8Vg5P9Nzknv8Q0g==
-X-Authority-Analysis: v=2.4 cv=Np/htcdJ c=1 sm=1 tr=0 ts=6a0dd07e cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
- a=RzCfie-kr_QcCd8fBx8p:22 a=VnNF1IyMAAAA:8 a=xyOPYXbJwbhnVPa3_EUA:9
-X-Proofpoint-ORIG-GUID: oc7y2PLgWopLHQvrrJKdabQJLD7JIMsQ
-X-Proofpoint-GUID: AioF1MJ-EJ_BCgB7WqIPcKrdCWT6kYwG
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-20_02,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- bulkscore=0 spamscore=0 clxscore=1011 priorityscore=1501 impostorscore=0
- lowpriorityscore=0 suspectscore=0 adultscore=0 phishscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605200147
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260413204630.1149038-5-jingzhangos@google.com>
 
-Implement and enable the KVM_PRE_FAULT_MEMORY ioctl for s390.
+On Mon, Apr 13, 2026 at 01:46:27PM -0700, Jing Zhang wrote:
+> Introduce the infrastructure to manage and execute guest when running
+> at EL2. This provides the basis for testing advanced features like
+> nested virtualization and GICv4 direct interrupt injection.
+> 
+> The framework includes:
+> - 'struct guest': Encapsulates vCPU state (GPRs, EL1/EL2 sysregs) and
+>   Stage-2 MMU context.
+> - guest_create() / guest_destroy(): Handle lifecycle management and
+>   Stage-2 MMU setup, including identity mappings for guest code,
+>   stack, and UART.
+> - guest_run(): Assembly entry point that saves host callee-saved
+>   registers, caches the guest context pointer in TPIDR_EL2, and
+>   performs the exception return (ERET) to the guest.
+> 
+> Signed-off-by: Jing Zhang <jingzhangos@google.com>
+> ---
+>  arm/Makefile.arm64      |  2 +
+>  lib/arm64/asm-offsets.c | 13 ++++++
+>  lib/arm64/asm/guest.h   | 46 +++++++++++++++++++++
+>  lib/arm64/asm/sysreg.h  |  6 +++
+>  lib/arm64/guest.c       | 89 +++++++++++++++++++++++++++++++++++++++++
+>  lib/arm64/guest_arch.S  | 59 +++++++++++++++++++++++++++
+>  6 files changed, 215 insertions(+)
+>  create mode 100644 lib/arm64/asm/guest.h
+>  create mode 100644 lib/arm64/guest.c
+>  create mode 100644 lib/arm64/guest_arch.S
+> 
+> diff --git a/arm/Makefile.arm64 b/arm/Makefile.arm64
+> index 5e50f5ba..9026fd71 100644
+> --- a/arm/Makefile.arm64
+> +++ b/arm/Makefile.arm64
+> @@ -41,6 +41,8 @@ cflatobjs += lib/arm64/processor.o
+>  cflatobjs += lib/arm64/spinlock.o
+>  cflatobjs += lib/arm64/gic-v3-its.o lib/arm64/gic-v3-its-cmd.o
+>  cflatobjs += lib/arm64/stage2_mmu.o
+> +cflatobjs += lib/arm64/guest.o
+> +cflatobjs += lib/arm64/guest_arch.o
+>  
+>  ifeq ($(CONFIG_EFI),y)
+>  cflatobjs += lib/acpi.o
+> diff --git a/lib/arm64/asm-offsets.c b/lib/arm64/asm-offsets.c
+> index 80de023c..ceeecce5 100644
+> --- a/lib/arm64/asm-offsets.c
+> +++ b/lib/arm64/asm-offsets.c
+> @@ -8,6 +8,7 @@
+>  #include <libcflat.h>
+>  #include <kbuild.h>
+>  #include <asm/ptrace.h>
+> +#include <asm/guest.h>
+>  
+>  int main(void)
+>  {
+> @@ -30,5 +31,17 @@ int main(void)
+>  	DEFINE(S_FP, sizeof(struct pt_regs));
+>  	DEFINE(S_FRAME_SIZE, (sizeof(struct pt_regs) + 16));
+>  
+> +	OFFSET(GUEST_X_OFFSET, guest, x);
+> +	OFFSET(GUEST_ELR_OFFSET, guest, elr_el2);
+> +	OFFSET(GUEST_SPSR_OFFSET, guest, spsr_el2);
+> +	OFFSET(GUEST_HCR_OFFSET, guest, hcr_el2);
+> +	OFFSET(GUEST_VTTBR_OFFSET, guest, vttbr_el2);
+> +	OFFSET(GUEST_SCTLR_OFFSET, guest, sctlr_el1);
+> +	OFFSET(GUEST_SP_EL1_OFFSET, guest, sp_el1);
+> +	OFFSET(GUEST_ESR_OFFSET, guest, esr_el2);
+> +	OFFSET(GUEST_FAR_OFFSET, guest, far_el2);
+> +	OFFSET(GUEST_HPFAR_OFFSET, guest, hpfar_el2);
+> +	OFFSET(GUEST_EXIT_CODE_OFFSET, guest, exit_code);
+> +
+>  	return 0;
+>  }
+> diff --git a/lib/arm64/asm/guest.h b/lib/arm64/asm/guest.h
+> new file mode 100644
+> index 00000000..826c44f8
+> --- /dev/null
+> +++ b/lib/arm64/asm/guest.h
+> @@ -0,0 +1,46 @@
+> +/*
+> + * Copyright (C) 2026, Google LLC.
+> + * Author: Jing Zhang <jingzhangos@google.com>
+> + *
+> + * SPDX-License-Identifier: LGPL-2.0-or-later
+> + */
+> +#ifndef _ASMARM64_GUEST_H_
+> +#define _ASMARM64_GUEST_H_
+> +
+> +#include <libcflat.h>
+> +#include <asm/processor.h>
+> +#include <asm/stage2_mmu.h>
+> +
+> +#define HCR_GUEST_FLAGS (HCR_EL2_VM | HCR_EL2_FMO | HCR_EL2_IMO | \
+> +			 HCR_EL2_AMO | HCR_EL2_RW | HCR_EL2_E2H)
+> +/* Guest stack size */
+> +#define GUEST_STACK_SIZE		SZ_64K
+> +
+> +struct guest {
+> +	/* General Purpose Registers */
+> +	unsigned long x[31]; /* x0..x30 */
+> +
+> +	/* Execution State */
+> +	unsigned long elr_el2;
+> +	unsigned long spsr_el2;
+> +
+> +	/* Control Registers */
+> +	unsigned long hcr_el2;
+> +	unsigned long vttbr_el2;
+> +	unsigned long sctlr_el1;
+> +	unsigned long sp_el1;
+> +
+> +	/* Exit Information */
+> +	unsigned long esr_el2;
+> +	unsigned long far_el2;
+> +	unsigned long hpfar_el2;
+> +	unsigned long exit_code;
+> +
+> +	struct s2_mmu *s2mmu;
+> +};
+> +
+> +struct guest *guest_create(int vmid, void (*guest_func)(void), enum s2_granule granule);
+> +void guest_destroy(struct guest *guest);
+> +void guest_run(struct guest *guest);
+> +
+> +#endif /* _ASMARM64_GUEST_H_ */
+> diff --git a/lib/arm64/asm/sysreg.h b/lib/arm64/asm/sysreg.h
+> index f2d05018..857bee98 100644
+> --- a/lib/arm64/asm/sysreg.h
+> +++ b/lib/arm64/asm/sysreg.h
+> @@ -118,6 +118,10 @@ asm(
+>  #define SCTLR_EL1_TCF0_SHIFT	38
+>  #define SCTLR_EL1_TCF0_MASK	GENMASK_ULL(39, 38)
+>  
+> +#define HCR_EL2_VM		_BITULL(0)
+> +#define HCR_EL2_FMO		_BITULL(3)
+> +#define HCR_EL2_IMO		_BITULL(4)
+> +#define HCR_EL2_AMO		_BITULL(5)
+>  #define HCR_EL2_TGE		_BITULL(27)
+>  #define HCR_EL2_RW		_BITULL(31)
+>  #define HCR_EL2_E2H		_BITULL(34)
+> @@ -132,6 +136,8 @@ asm(
+>  #define SYS_HFGWTR2_EL2		sys_reg(3, 4, 3, 1, 3)
+>  #define SYS_HFGITR2_EL2		sys_reg(3, 4, 3, 1, 7)
+>  
+> +#define SYS_SCTLR_EL1		sys_reg(3, 5, 1, 0, 0)
+> +
+>  #define INIT_SCTLR_EL1_MMU_OFF	\
+>  			(SCTLR_EL1_ITD | SCTLR_EL1_SED | SCTLR_EL1_EOS | \
+>  			 SCTLR_EL1_TSCXT | SCTLR_EL1_EIS | SCTLR_EL1_SPAN | \
+> diff --git a/lib/arm64/guest.c b/lib/arm64/guest.c
+> new file mode 100644
+> index 00000000..68dd449d
+> --- /dev/null
+> +++ b/lib/arm64/guest.c
+> @@ -0,0 +1,89 @@
+> +/*
+> + * Copyright (C) 2026, Google LLC.
+> + * Author: Jing Zhang <jingzhangos@google.com>
+> + *
+> + * SPDX-License-Identifier: LGPL-2.0-or-later
+> + */
+> +#include <libcflat.h>
+> +#include <asm/guest.h>
+> +#include <asm/io.h>
+> +#include <asm/sysreg.h>
+> +#include <asm/barrier.h>
+> +#include <alloc_page.h>
+> +#include <alloc.h>
+> +
+> +static struct guest *__guest_create(struct s2_mmu *s2_ctx, void *entry_point)
+> +{
+> +	struct guest *guest = calloc(1, sizeof(struct guest));
+> +
+> +	guest->elr_el2 = (unsigned long)entry_point;
+> +	guest->spsr_el2 = 0x3C5; /* M=EL1h, DAIF=Masked */
+> +	guest->hcr_el2 = HCR_GUEST_FLAGS;
+> +
+> +	if (s2_ctx) {
+> +		guest->vttbr_el2 = virt_to_phys(s2_ctx->pgd);
+> +		guest->vttbr_el2 |= ((unsigned long)s2_ctx->vmid << 48);
+> +	} else {
+> +		printf("Stage 2 MMU context missing!");
+> +	}
+> +
+> +	guest->sctlr_el1 = read_sysreg(sctlr_el1);
+> +	/* Disable guest stage 1 translation */
+> +	guest->sctlr_el1 &= ~(SCTLR_EL1_M | SCTLR_EL1_C);
+> +	guest->sctlr_el1 |= SCTLR_EL1_I;
+> +
+> +	guest->s2mmu = s2_ctx;
+> +
+> +	return guest;
+> +}
+> +
+> +struct guest *guest_create(int vmid, void (*guest_func)(void), enum s2_granule granule)
+> +{
+> +	unsigned long guest_pa, code_base, stack_pa;
+> +	unsigned long *stack_page;
+> +	struct guest *guest;
+> +	struct s2_mmu *ctx;
+> +
+> +	ctx = s2mmu_init(vmid, granule, true);
+> +	/*
+> +	 * Map the Host's code segment Identity Mapped (IPA=PA).
+> +	 * To be safe, we map a large chunk (e.g., 2MB) around the function
+> +	 * to capture any helper functions the compiler might generate calls to.
+> +	 */
+> +	guest_pa = virt_to_phys((void *)guest_func);
+> +	code_base = guest_pa & ~(SZ_2M - 1);
+> +	s2mmu_map(ctx, code_base, code_base, SZ_2M, S2_MAP_RW);
+> +
+> +	/*
+> +	 * Map Stack
+> +	 * Allocate 16 pages (64K) in Host, get its PA, and map it for Guest.
+> +	 */
+> +	stack_page = alloc_pages(get_order(GUEST_STACK_SIZE >> PAGE_SHIFT));
+> +	stack_pa = virt_to_phys(stack_page);
+> +	/* Identity Map it (IPA = PA) */
+> +	s2mmu_map(ctx, stack_pa, stack_pa, GUEST_STACK_SIZE, S2_MAP_RW);
+> +
+> +	s2mmu_enable(ctx);
+> +
+> +	/* Create Guest */
+> +	/* Entry point is the PA of the function (Identity Mapped) */
+> +	guest = __guest_create(ctx, (void *)guest_pa);
+> +
+> +	/*
+> +	 * Setup Guest Stack Pointer
+> +	 * Must match where we mapped the stack + Offset
+> +	 */
+> +	guest->sp_el1 = stack_pa + GUEST_STACK_SIZE;
+> +
+> +	/* Map UART identity mapped, printf() available to guest */
+> +	s2mmu_map(ctx, 0x09000000, 0x09000000, PAGE_SIZE, S2_MAP_DEVICE);
+> +
+> +	return guest;
+> +}
+> +
+> +void guest_destroy(struct guest *guest)
+> +{
+> +	s2mmu_disable(guest->s2mmu);
+> +	s2mmu_destroy(guest->s2mmu);
+> +	free(guest);
+> +}
+> diff --git a/lib/arm64/guest_arch.S b/lib/arm64/guest_arch.S
+> new file mode 100644
+> index 00000000..70c19507
+> --- /dev/null
+> +++ b/lib/arm64/guest_arch.S
+> @@ -0,0 +1,59 @@
+> +/*
+> + * Copyright (C) 2026, Google LLC.
+> + * Author: Jing Zhang <jingzhangos@google.com>
+> + *
+> + * SPDX-License-Identifier: LGPL-2.0-or-later
+> + */
+> +#define __ASSEMBLY__
+> +#include <asm/asm-offsets.h>
+> +#include <asm/sysreg.h>
+> +
+> +.global guest_run
+> +guest_run:
+> +	/* x0 = struct guest pointer */
+> +
+> +	/* Save Host Callee-Saved Regs */
+> +	stp	x29, x30, [sp, #-16]!
+> +	stp	x27, x28, [sp, #-16]!
+> +	stp	x25, x26, [sp, #-16]!
+> +	stp	x23, x24, [sp, #-16]!
+> +	stp	x21, x22, [sp, #-16]!
+> +	stp	x19, x20, [sp, #-16]!
+> +
+> +	/* Cache Guest Pointer in TPIDR_EL2 */
+> +	msr	tpidr_el2, x0
+> +
+> +	/* Load Guest System Registers */
+> +	ldr	x1, [x0, #GUEST_ELR_OFFSET]
+> +	msr	elr_el2, x1
+> +	ldr	x1, [x0, #GUEST_SPSR_OFFSET]
+> +	msr	spsr_el2, x1
+> +	ldr	x1, [x0, #GUEST_HCR_OFFSET]
+> +	msr	hcr_el2, x1
 
-Faulted-in pages will be marked as accessed, unlike x86, otherwise they
-will trigger a minor fault when accessed. Avoiding such faults is one of
-the points of KVM_PRE_FAULT_MEMORY.
+Here we just override hcr_el2 with the guest's hcr_el2, but we don't
+save/restore the host's value anywhere.
 
-Signed-off-by: Claudio Imbrenda <imbrenda@linux.ibm.com>
----
- arch/s390/kvm/Kconfig    |  1 +
- arch/s390/kvm/kvm-s390.c | 41 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 42 insertions(+)
+example:
 
-diff --git a/arch/s390/kvm/Kconfig b/arch/s390/kvm/Kconfig
-index 5b835bc6a194..8d3ee17a1bcb 100644
---- a/arch/s390/kvm/Kconfig
-+++ b/arch/s390/kvm/Kconfig
-@@ -30,6 +30,7 @@ config KVM
- 	select KVM_VFIO
- 	select VIRT_XFER_TO_GUEST_WORK
- 	select KVM_MMU_LOCKLESS_AGING
-+	select KVM_GENERIC_PRE_FAULT_MEMORY
- 	help
- 	  Support hosting paravirtualized guest machines using the SIE
- 	  virtualization capability on the mainframe. This should work
-diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-index e09960c2e6ed..dd220f3d6e94 100644
---- a/arch/s390/kvm/kvm-s390.c
-+++ b/arch/s390/kvm/kvm-s390.c
-@@ -630,6 +630,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, long ext)
- 	case KVM_CAP_S390_USER_OPEREXEC:
- 	case KVM_CAP_S390_KEYOP:
- 	case KVM_CAP_S390_VSIE_ESAMODE:
-+	case KVM_CAP_PRE_FAULT_MEMORY:
- 		r = 1;
- 		break;
- 	case KVM_CAP_SET_GUEST_DEBUG2:
-@@ -5736,6 +5737,46 @@ void kvm_arch_commit_memory_region(struct kvm *kvm,
- 	return;
- }
+diff --git a/arm/stage2-mmu-test.c b/arm/stage2-mmu-test.c
+index 0df4704b..a8fcc697 100644
+--- a/arm/stage2-mmu-test.c
++++ b/arm/stage2-mmu-test.c
+@@ -98,7 +98,9 @@ int main(int argc, char **argv)
  
-+/**
-+ * kvm_arch_vcpu_pre_fault_memory() -- pre-fault and link gmap dat tables
-+ * @vcpu: the vcpu that shall appear to have generated the fault-in.
-+ * @range: the range that needs to be faulted in.
-+ *
-+ * The given range is faulted in and the corresponding gmap page tables are
-+ * created, as if the given vCPU had performed a read operation. If the range
-+ * ends outside of a memslot, only the part inside the memslot is faulted in.
-+ * If the range starts outside any memslots, an error is returned. An error is
-+ * also returned for UCONTROL VMs, which should instead use the
-+ * KVM_S390_VCPU_FAULT ioctl.
-+ *
-+ * Return:
-+ * * %-ENOENT if the range lies outside of a memslot.
-+ * * %-EINVAL in case of invalid state (for example if the VM is UCONTROL)
-+ * * %-EIO if other errors happen while faulting-in the page (considered a
-+ *   bug, will trigger a warning in the caller).
-+ * * other error codes < 0 in case of other errors.
-+ * * otherwise a number > 0 of bytes that have been faulted in successfully.
-+ */
-+long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu, struct kvm_pre_fault_memory *range)
-+{
-+	unsigned long i;
-+	int rc;
-+
-+	if (kvm_is_ucontrol(vcpu->kvm))
-+		return -EINVAL;
-+
-+	for (i = 0; i < range->size; i += PAGE_SIZE) {
-+		rc = kvm_s390_faultin_gfn_simple(vcpu, NULL, gpa_to_gfn(range->gpa + i), false);
-+		if (rc == PGM_ADDRESSING)
-+			return i ? i : -ENOENT;
-+		if (rc == -EINTR)
-+			return i ? i : -EINTR;
-+		if (rc)
-+			return -EIO;
-+	}
-+	return i;
-+}
-+
- /**
-  * kvm_test_age_gfn() - test young
-  * @kvm: the kvm instance
--- 
-2.54.0
+        report_info("CPU%d: entering guest...", smp_processor_id());
+ 
++       printf("HCR TGE: %d\n", read_sysreg(hcr_el2) & HCR_EL2_TGE);
+        guest_run(guest);
++       printf("HCR TGE: %d\n", read_sysreg(hcr_el2) & HCR_EL2_TGE);
+ 
+        report(handled, "Stage-2 fault handling test completed");
+        guest_destroy(guest);
 
+
+Not sure of the best way to solve it, could maybe add a host_state struct that
+stores registers/state (that can affect the host), and you can also embed one
+in `struct guest` and save/restore from there?
+
+Thanks,
+Joey
+
+> +	ldr	x1, [x0, #GUEST_VTTBR_OFFSET]
+> +	msr	vttbr_el2, x1
+> +	ldr	x1, [x0, #GUEST_SCTLR_OFFSET]
+> +	msr_s	SYS_SCTLR_EL1, x1
+> +	ldr	x1, [x0, #GUEST_SP_EL1_OFFSET]
+> +	msr	sp_el1, x1
+> +
+> +	/* Load Guest GPRs */
+> +	ldp	x1, x2, [x0, #8]
+> +	ldp	x3, x4, [x0, #24]
+> +	ldp	x5, x6, [x0, #40]
+> +	ldp	x7, x8, [x0, #56]
+> +	ldp	x9, x10, [x0, #72]
+> +	ldp	x11, x12, [x0, #88]
+> +	ldp	x13, x14, [x0, #104]
+> +	ldp	x15, x16, [x0, #120]
+> +	ldp	x17, x18, [x0, #136]
+> +	ldp	x19, x20, [x0, #152]
+> +	ldp	x21, x22, [x0, #168]
+> +	ldp	x23, x24, [x0, #184]
+> +	ldp	x25, x26, [x0, #200]
+> +	ldp	x27, x28, [x0, #216]
+> +	ldp	x29, x30, [x0, #232]
+> +	ldr	x0, [x0, #0]
+> +
+> +	isb
+> +	eret
+> -- 
+> 2.53.0.1213.gd9a14994de-goog
+> 
