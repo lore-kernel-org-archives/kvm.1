@@ -1,150 +1,195 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0333D75C7
-	for <kvm@vger.kernel.org>; Wed, 20 May 2026 18:02:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CAB3F787E
+	for <kvm@vger.kernel.org>; Wed, 20 May 2026 18:11:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300159; cv=none; b=iaHwFcoE/b87D14BSYAlk5lDO0ld5ukMCemvN1tFJrCXSyY2f3MX7WsFYg0qhEv7z2Tj3c0xUt88MnpOpSehPk6xFdpkyERaRtHmbBYF2QFma/0dFD9Cad3NXvh2KSt4sBhN2yz9X4yX+ZhqVCxcfRHa9g4LF0CXivadLLagc8Y=
+	t=1779300681; cv=none; b=Gds1JJmeaxUKmwIEO6S78Y1sswc3aCOVoUFGDQ/UIVOQsRz5Px5JKWmvuVr1rf4d74BxlLAdLsXnD2zJM915raGmZDp8XOu+gbCKzoZ8ktJ4oxSfWhTN339hfLSvAV4iqNIf4ovnyemp0znsK13nykXqsOdf+pDWSS+JYKHLtCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300159; c=relaxed/simple;
-	bh=gSR9ZF8mEMkIrcPGA22VrdnTF1lx5yIEAf4xXGH2nlo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ify7jxThJ25PkslDVwRJxbQYiHobb+zWrodage+2m3qYVHghayvi7OngyN7PAPRHRl6I/B0z0i7KgkODdClgi4NFhs56Zu90k0h3M+14FXiRLH0B06RUBVOgLgwbhypxlnbT1pT8EYXVwJJZqVE2kA3YhixbBWmz5ZKaUUXla28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Jlv/ydKo; arc=none smtp.client-ip=209.85.214.176
+	s=arc-20240116; t=1779300681; c=relaxed/simple;
+	bh=F9EAa2fqZKdVWRREy2SptPZ4rR4Fj77slKy/QCP2Jng=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=GEmBJckvh9JVyuHWnmzs1XAurWmkkwiv9ZcxQAyOJdHXNIsglNFHYfgXK1y0gwaFk9cCVFurATbZvCM3SPmxnNW5ugV/W90ZAuVYh5203vGMz8wveZxK4knkEhpDaKtywlKFBM11J/nTdf+DKBEH8lyonMEKwpjipWBOeebkXfE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DNt9/q6u; arc=none smtp.client-ip=209.85.210.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Jlv/ydKo"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2b2e8b95bdbso3405ad.0
-        for <kvm@vger.kernel.org>; Wed, 20 May 2026 11:02:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DNt9/q6u"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8354503d9acso6937809b3a.1
+        for <kvm@vger.kernel.org>; Wed, 20 May 2026 11:11:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779300158; x=1779904958; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=wKj2nsEFhwe3iqBMbsJt9SioFDYUGDCac39gv/hs+vE=;
-        b=Jlv/ydKos+5C8eESq9DBs8tkE2stSoX5Yhg/En0j/ouRXkEPpPPe56b/CLg+eN8Zwl
-         ZLy4w7smEfBmP2lnbDCEl0jp3m/hVai9G+HlbBY4Py9/yf7r/f8ROrZhwIeVHF3hYK4m
-         5n1+7sN7LlGWiDSa2SukyP4L8h39KZjDzvIlGB3t3QnpHVfRFgepNfcwc0wfM+XwP2Ik
-         JpQHJ40FMddVhIMMH+QZ1kMv29n6mLlifvXUn22KRCep1uEccdcWywPEvC7aSiff6MXN
-         NwQJAvZ3mwKwDZZ7LwiYYfkhgxHY+b/iw+4h2Fjyldzbxs8DY1mYta3LS2jASKeAjh0Z
-         7KLA==
+        d=google.com; s=20251104; t=1779300680; x=1779905480; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ral3wdnykP2fUONSZPffUp/laMD2JLc4A4V5t1qiuyw=;
+        b=DNt9/q6uzYbgW+Q9wdHIN7wQu3+JzFofSXz7TCA7nHMlx+8xSt2VkXQAOtmy3wmgi7
+         38qgEE5Xwj4/vQaWrRUN+BhtTZm8mmLR1RQ407ybsQBSTENN2/QJE7u306zffmDaKKeS
+         bFlJ4RCoUxbOwsgHIg5kSMd1nhPBsZ9+YZAjYP31ZRmkkAnH1Q5lrq7GUAfauoikCd20
+         QhTIrdsA9gd3HNA6BNRf6rPlYBdBO+2n8XahdRmklolpnyH0dGkuChL83wgRdFp+7Wt7
+         Wb4PNd4YUZ4a794cKXI1o3ro2K6rSKegLbirwmaHTlTdlOtHWKgz3tvsRoocwcshJUZ0
+         GGnw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779300158; x=1779904958;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wKj2nsEFhwe3iqBMbsJt9SioFDYUGDCac39gv/hs+vE=;
-        b=Zn9lOW18BgF/O4jDx/ReDA82SCxEie5cmwkoefwSV+eQjN/snyZlpEdxYKo6mA0kni
-         HY315F9ZhU8rlXuneDZn5+r5abSINKW/0HLhVoe6y2B4iF53pYj3mQxp1hF0j97phgNH
-         JtL1j0lfWY9ijn9I3elrk1JHwnql2ikxYO408pJ2JIEfmyCJxJigj4IEil9h9BlbG+Do
-         Rd2rkoEPHVSA/r7xiNu4+rDe8touo58WX/i2uWFCoLYHKYB2mJi/ulJasvDev9ww3/tP
-         woyUFvY5ZcpECz0wwO41du+Tl9ljuLUTo4SJZm9ToOytT0Rgl+ikTayOcF7C/MZtOd7h
-         ZP7g==
-X-Forwarded-Encrypted: i=1; AFNElJ/tcdPwET3KxP5lKwsNCayzgujPL6wL914d947piCu2coYaxsZKMBCnxc+IFLb4HYoqPS4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyusDkXnLs84bGpLW0cG0mvWawK7twfWq72sPfJNhxjig6mzMUx
-	ope/pZRGeY+8w5IPgzuhplYy4G9fVSCD5Uq8wX+K+KvW0/N3dnN0n/eR67jkBLzhBg==
-X-Gm-Gg: Acq92OFoaFDXbSbsGZfrGVaNER/JF1xGkghSKzbSDO9D3WOWpwGPk55BG6BHtCgOguz
-	bjBIdw4uf/ahOULWFsI1APFqcJVfgdWZy1Rp6I8vNiWUhh9ICHEjk8uzwyKN1Y/V7qqT/GALRrU
-	hgg2+VGF0tbxG4z5Mq2suu+WcXdpHVSxwtfuR77FclQLKHIbVU2TqnTy18EQ+uLl/t7o9quNTyC
-	lY0YHK58ycfsZwfdp8EJVcE1xBHnu8p967JFN/hzA0iC90WnmyJsV4PIUCEyo2eOFEC16Xc1TNZ
-	7aaoEPxdviBV2g4LwmO7HOZrXw2iFFp4N/c5tQeuG2SB+gHpCgTpfSS28EFZpTZu8+kNZeLJeam
-	KUMlA1iC8rWA53YKSsztLvoczAmhiup4us3aQihS1YSCoLvmb+TuFXSKrw8h1A7YNq7BdzYtRWc
-	h2qVrfJra8W3Z/Dp+bWeP6n2u0SPldQTfYOjeL1O7D18kOv25xoUeVeqihF7L/1byuAQsW
-X-Received: by 2002:a17:902:e749:b0:2bd:6dad:7cca with SMTP id d9443c01a7336-2be9f4474a0mr220335ad.22.1779300157257;
-        Wed, 20 May 2026 11:02:37 -0700 (PDT)
-Received: from google.com (44.234.124.34.bc.googleusercontent.com. [34.124.234.44])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-c82bb0ff0edsm20807015a12.20.2026.05.20.11.02.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 20 May 2026 11:02:36 -0700 (PDT)
-Date: Wed, 20 May 2026 18:02:27 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Parav Pandit <parav@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	David Matlack <dmatlack@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>,
-	YiFei Zhu <zhuyifei@google.com>
-Subject: Re: [PATCH v2 09/16] iommu/vt-d: Restore IOMMU state and reclaimed
- domain ids
-Message-ID: <ag33M2nqVBWXdQHX@google.com>
-References: <20260427175633.1978233-1-skhawaja@google.com>
- <20260427175633.1978233-10-skhawaja@google.com>
- <agzaTPROvwVO-3lO@google.com>
+        d=1e100.net; s=20251104; t=1779300680; x=1779905480;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Ral3wdnykP2fUONSZPffUp/laMD2JLc4A4V5t1qiuyw=;
+        b=bh0y4M6JzvJewTXMXjZ/AQM6GmKkcttIOk2jF6qnWY9mBy2zw0Usdr8jMv/3hpouoC
+         29ngavIQf6rjXLEhmmfOAiIEqEbo+UmLZ0kEaKSIUvvy0nYVXLR1aI7I5oA3NyhIMig9
+         oeKrsdE6rQNsl2s0UVi9XcIJiOdIDF5VUMtb54VUfS/pX5EeG1TaQBBg0DNi29kzWOMK
+         5j29zf8er4MJ5toOyHY0QKZRquZwiOUiRZTRlA1GYx8DMyXZ9mNbCIO7C/bztt0VVbf2
+         XFd+e9e8PmtXi2ieSXRQK5plri1fF8sTSwuUOZVd0MblFQPxhY6sPvAEo3ly2MZMD6eH
+         ZzTg==
+X-Forwarded-Encrypted: i=1; AFNElJ+uEU9EKgv2h7HgiGRkPrFKveP0Jbr+sQfgbDY4+MAbQFAnKJT5kAYdFcUO4Mm4WZ1NPR8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywsd6wZds/jx4Ik8tkYwtXr73wkPVQ4nmCdpPy/Uz7hdNbEEy4i
+	N7WO1a29bT5/8nY/hibfl8TxZG03rr/QRVfUVCy7eA00wk9sHPov9ouHRDtnadd82Xm4dNWM6iu
+	spADM4A==
+X-Received: from pfbby10.prod.google.com ([2002:a05:6a00:400a:b0:837:b0a7:c3ac])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1ca4:b0:838:127d:a161
+ with SMTP id d2e1a72fcca58-83f33b328femr23678520b3a.18.1779300679491; Wed, 20
+ May 2026 11:11:19 -0700 (PDT)
+Date: Wed, 20 May 2026 11:11:18 -0700
+In-Reply-To: <4a918cb38dccd4ef7a2d84d16f5044472d069f7c.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <agzaTPROvwVO-3lO@google.com>
+Mime-Version: 1.0
+References: <20260514215355.1648463-1-seanjc@google.com> <20260514215355.1648463-16-seanjc@google.com>
+ <074e209fe4c78a735868099f13d76b9dde2c88e3.camel@intel.com>
+ <agx77QB3UVmJr5xP@google.com> <729c4191d16e4c768c231ffb9bb8420306039210.camel@intel.com>
+ <ag0NlJ2FEIL7GJIj@google.com> <4a918cb38dccd4ef7a2d84d16f5044472d069f7c.camel@intel.com>
+Message-ID: <ag35RgwowvR9Q4hA@google.com>
+Subject: Re: [PATCH v2 15/15] KVM: x86: Move the bulk of register specific
+ code from x86.c to regs.c
+From: Sean Christopherson <seanjc@google.com>
+To: Kai Huang <kai.huang@intel.com>
+Cc: "dwmw2@infradead.org" <dwmw2@infradead.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "vkuznets@redhat.com" <vkuznets@redhat.com>, 
+	"x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, "paul@xen.org" <paul@xen.org>, 
+	"yosry@kernel.org" <yosry@kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 19, 2026 at 09:46:52PM +0000, Pranjal Shrivastava wrote:
-> On Mon, Apr 27, 2026 at 05:56:26PM +0000, Samiullah Khawaja wrote:
-> > During boot fetch the preserved state of IOMMU unit and if found then
-> > restore the state.
-> > 
-> > - Reuse the root_table that was preserved in the previous kernel.
-> > - Reclaim the domain ids of the preserved domains for each preserved
-> >   devices so these are not acquired by another domain.
-> > 
-> > Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
-> > ---
-> >  drivers/iommu/intel/iommu.c      | 55 ++++++++++++++++++++++--------
-> >  drivers/iommu/intel/iommu.h      |  7 ++++
-> >  drivers/iommu/intel/liveupdate.c | 57 ++++++++++++++++++++++++++++++++
-> >  3 files changed, 105 insertions(+), 14 deletions(-)
-> > 
-> >  		if (translation_pre_enabled(iommu) && !is_kdump_kernel()) {
-> >  			iommu_disable_translation(iommu);
-> > @@ -1648,7 +1661,7 @@ static int __init init_dmars(void)
-> >  		 * we could share the same root & context tables
-> >  		 * among all IOMMU's. Need to Split it later.
-> >  		 */
-> > -		ret = iommu_alloc_root_entry(iommu);
-> > +		ret = iommu_alloc_root_entry(iommu, iommu_ser);
-> >  		if (ret)
-> >  			goto free_iommu;
-> >  
-> > @@ -1732,8 +1745,12 @@ static int __init init_dmars(void)
-> >  
-> >  free_iommu:
-> >  	for_each_active_iommu(iommu, drhd) {
-> > -		disable_dmar_iommu(iommu);
-> > -		free_dmar_iommu(iommu);
-> > +		iommu_ser = iommu_get_preserved_data(iommu->reg_phys, IOMMU_INTEL);
-> > +
-> > +		if (!iommu_ser)
-> > +			disable_dmar_iommu(iommu);
-> > +
-> > +		free_dmar_iommu(iommu, iommu_ser);
-> >  	}
-> >  
-> 
-> I'm wondering what happens if init_dmars fails for a preserved iommu?
-> Since we have non NULL iommu_ser, we'll skip disable_dmar_iommu and skip
-> free_context_table() inside free_dmar_iommu() as well. I'm concerned we
-> might leak some resources in this case. If the failure happens after we
-> set restored = 1, even a rmmod -> modprobe cycle won't help fix the leak
-> 
+On Wed, May 20, 2026, Kai Huang wrote:
+> On Tue, 2026-05-19 at 18:25 -0700, Sean Christopherson wrote:
+> > On Wed, May 20, 2026, Kai Huang wrote:
+> > > I am not sure whether there's a mandatory requirement that "struct kv=
+m_arch" and
+> > > "struct kvm_vcpu_arch" must be fully embedded, and it would be kinda =
+painful to
+> > > covert to a pointer (e.g., there's kvm_x86_ops::vm_size), but perhaps=
+ that is
+> > > also an option to consider?
+> >=20
+> > The idea I had in the past, and where I was going with things before s3=
+90's love
+> > for arm64 came along, was to add a kvm_arch.h in arch/<arch>/kvm, and h=
+ave virt/kvm
+> > include _that_ instead of kvm_host.h. =C2=A0
+> >=20
+>=20
+> Not sure whether there's other code doing so? :-)
+>=20
+> > That way we don't need to make any fundamental
+> > changes to structures, but we can still significantly cut down on what'=
+s exposed
+> > via kvm_host.h. =C2=A0
+> >=20
+>=20
+> Yeah.
+>=20
+> I saw below from you in [1]:
+>=20
+>   --
+>   We've explore several alternatives to the #ifdef __KVM__ approach, and
+>   they all sucked, hard.  What I really wanted (and still want) to do, is=
+ to
+>   bury the bulk of kvm_host.h (and other KVM headers) in virt/kvm, but ev=
+ery
+>   attempt to do that ended in flames.  Even with the __KVM__ guards in pl=
+ace,
+>   each architecture's kvm_host.h is too intertwined with the common kvm_h=
+ost.h,
+>   and trying to extract small-ish pieces just doesn't work (each patch
+>   inevitably snowballed into a gigantic beast).
+>=20
+>   The other idea we considered (which I thought of, and feel dirty for ev=
+en
+>   proposing it internally), is to move all headers under virt/kvm, add
+>   virt/kvm/include to the global header path, and then have KVM x86 omit
+>   virt/kvm/include when configured to hide KVM internals.  I hate this id=
+ea
+>   because it sets a bad precedent, and requires a lot of file movement
+>   without providing any benefit to other architectures.  E.g. I hope that
+>   guarding KVM internals with #ifdef __KVM__ will allow us to slowly clea=
+n
+>   things up so that some day KVM only exposes a handful of APIs to the re=
+st
+>   of the kernel (probably a pipe dream).
+>   --
+>=20
+> I haven't looked into details of your #ifdef __KVM__ approach yet, but se=
+ems you
+> don't quite like moving KVM internal staff to virt/kvm/include/ ?
 
-Re-visiting this, I think we don't need to worry as skipping restore is
-the intended behaviour.. we don't wanna attempt restore on things that
-have already been restored. Please ignore this
+Not for arch code, which is the trickiest bit to handle.
 
-Thanks,
-Praan
+> But if we want to hide KVM internal structures, I don't see any other opt=
+ions
+> except virt/kvm/include/ is the place to go?
+
+arch/$(ARCH)/kvm/kvm_arch.h is the obvious approach.  Code in virt/kvm can =
+reach
+arch/$(ARCH)/kvm, we just need to add it to the include path.  That's why I=
+ was
+working on unifying the include definitions.
+
+> Btw, have you considered reverting the inclusion of "strut kvm" and "stru=
+ct
+> kvm_arch" (and the vcpu structure), i.e., to make "struct kvm_arch" inclu=
+de
+> "struct kvm"?  I don't have any clue of whether it is feasible or how muc=
+h
+> effort it needs, though -- it's just something came to mind when replying=
+.
+>=20
+> [1]: https://lore.kernel.org/all/20230916003118.2540661-1-seanjc@google.c=
+om/
+>=20
+> > At some point I'll try to take another look; it's really the
+> > s390+arm64 combo that's problematic :-/
+>=20
+> If you want, I can take a look.  I think I'll have bandwidth in near feat=
+ure.
+>=20
+> Given you have tried multiple times so I am not sure what I can achieve, =
+though.
+
+Consolidating includes and creating arch/$(ARCH)/kvm/kvm_arch.h should be m=
+ore
+doable, what has failed spectacularly over and over is effectively trying t=
+o hide
+most of asm/kvm_host.h, which sounds *really* stupid when I phrase it that =
+way :-)
+
+> Anyway, seems "allow loading a new (or old) KVM module without needing to
+> rebuild and reboot the entire kernel" is a good reason to do this.
+
+Note, we've scrapped upstreaming multi-KVM, and I don't see it ever getting=
+ accepted
+upstream, as live update is far superior, e.g. isn't limited to just KVM, d=
+oesn't
+have the same orchestration or testing problems, etc.
+
+And FWIW, today, you _can_ reload a new (or old) KVM module without rebuild=
+ing
+the kernel or rebooting the host, it's just that you can't modify certain s=
+tructures.
