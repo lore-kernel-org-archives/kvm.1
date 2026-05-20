@@ -1,68 +1,65 @@
 Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A9F332EBD;
-	Wed, 20 May 2026 18:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF5A270545;
+	Wed, 20 May 2026 18:31:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779301803; cv=none; b=OchB0hKW5R3zQOngNefTdeZDwlumx5qKv6+VrZ6v7awxsq8fY6h+cCSJDOk6v6G7pPJzQcp/EZ+VMJhq31h0rZvjb/w5aygKGJSDRfPRB/AHKlBN3S6GsFixNDRlHrD84pbPZSKmHgi9RKCwze/1dLk7PiNvPvjKTjC8C3FuKE0=
+	t=1779301872; cv=none; b=j+rFIER1JGzqB4cUJOo1NytxoVZ9F5iRbsJYxKIwbNXnkIhElInyLFZS+0rYCtwNh5N9O7GQAmeRHJHb7/wvD5L4A7HkjSzFNFae7ZdvfFfeKhEB275j7boUTT9z2aq1caIMYn02XU4Db0qzfGfn0eM00zn7b7CYu4cTo4Hazy4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779301803; c=relaxed/simple;
-	bh=w9Ikq54kyZZocqmozWL/YZIYuqcADz6X/bu5InIvuAA=;
+	s=arc-20240116; t=1779301872; c=relaxed/simple;
+	bh=38VjBVseDEfelALR1MiRTEA2WPwIZueCOuQcJA11DHw=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HKjonKxJbK0Njq3k4JUseB9Xv2hl8G16mZxnK4MXEL77RJvG4DVlcnrapeXhVY9RBpw31c838F5fIHE5Oq9oveRM/6gPf8OCiCcMLTWezn9TJJl2jGXWmSak/B0UTx51Guiw45NJeFXrGFBXcLDNmbgPn6QDHxkPgqkZ1hifTFM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ny8eIzPz; arc=none smtp.client-ip=90.155.50.34
+	 Content-Type:MIME-Version; b=dMR99nRlEQQo45mFdQDGCevxVrIyqXm7S6Imtm7HvHjpZiitdQhKN4f9xS5ZYmzGmM2h3ujMKp0RIR+uZLbzswqjvxdQi6qU3qFya4Jsw0dGynyRtM//99JZCHCUdV7n1VTFte3uSEOdDzHs7eeVz2qS3anPYKkT8Zs9Djtgi2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=okyxUeyj; arc=none smtp.client-ip=90.155.50.34
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ny8eIzPz"
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="okyxUeyj"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
 	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
 	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
 	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=w9Ikq54kyZZocqmozWL/YZIYuqcADz6X/bu5InIvuAA=; b=ny8eIzPzOV0oK6bJ6yx4O5Z29r
-	RmhEbXuORgsPdjCGa2pxr1NOKGaKvptiBzlwFWsflGtZtzhou+s4OaGi1zbV/dQD/vI9RJOPK9zi0
-	60hga+HpYUv1QjvpznsRBULjZtbWOT7BFWeeGOMMh4+e1JfgUxm/ZH6hBPjpG4TgsALAQrYQ08Fjp
-	A6Osl3KFWx332Xk24jV8Tz8k9FWmwLK2aE7hAPZTMawEnNNYTKdV0cG5aoHOUSWk4hmfNaBAMQmAR
-	gnnzUCl/9Fln4u0dl2tZG1RRIRJfqevUmcxBRhhtW/pPvj6YAT4e+0mWNWu164OZo01UAgNNemPHK
-	hxT58iyw==;
-Received: from 54-240-197-235.amazon.com ([54.240.197.235] helo=freeip.amazon.com)
+	bh=38VjBVseDEfelALR1MiRTEA2WPwIZueCOuQcJA11DHw=; b=okyxUeyjtEfb4IL9N+H2s3fQ4l
+	+FXGCOPfRMtSwfjsiCCErR/hqYIp5E43h19nlrt4LOcqkVnHdTnI4R4ixw9GM3byo64IZ/CfBk9zN
+	QlG9oyCXRDp/W4Nv8hFGJ6REc4kp1SYAJvrFHC3S5281hyRFw/yATFCORBqbsYQ8DJcq4CyQo8OIn
+	9twCl0C6vXyDdlGu5IPu/RSlBANVuoNJZbRft5N+r2T/6avcFTE3Cm0V5uIZHyxK9DkX4PBh0jkkL
+	ySMglljmFU2brGpAwqD/FpsMhr94TdQ3qTAs7ut6Ck8Y1oxrtBwReeEv+UYTIVdX7di2RShBiv2WW
+	lkFhaaWQ==;
+Received: from 54-240-197-227.amazon.com ([54.240.197.227] helo=freeip.amazon.com)
 	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPlfz-00000007TDN-0U1h;
-	Wed, 20 May 2026 18:29:51 +0000
-Message-ID: <849307f7dcc7fd408321ce9be6d405e642014117.camel@infradead.org>
-Subject: Re: [PATCH] Documentation: KVM: Document guest-visible
- compatibility expectations
+	id 1wPlh5-00000007THG-3qKd;
+	Wed, 20 May 2026 18:31:00 +0000
+Message-ID: <6e80893d022b10110f520acf152f70ff6acf2e00.camel@infradead.org>
+Subject: Re: [PATCH v3 00/41] x86: Try to wrangle PV clocks vs. TSC
 From: David Woodhouse <dwmw2@infradead.org>
-To: Oliver Upton <oupton@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>, Will
- Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan
- <skhan@linuxfoundation.org>,  kvm <kvm@vger.kernel.org>, Linux Doc Mailing
- List <linux-doc@vger.kernel.org>, "Kernel Mailing List, Linux"
- <linux-kernel@vger.kernel.org>, Sean Christopherson <seanjc@google.com>,
- Jim Mattson <jmattson@google.com>, Joey Gouly <joey.gouly@arm.com>, Suzuki
- K Poulose <suzuki.poulose@arm.com>, Zenghui Yu <yuzenghui@huawei.com>,
- Catalin Marinas <catalin.marinas@arm.com>, Raghavendra Rao Ananta
- <rananta@google.com>, Eric Auger <eric.auger@redhat.com>, Kees Cook
- <kees@kernel.org>, Arnd Bergmann <arnd@arndb.de>,  Nathan Chancellor
- <nathan@kernel.org>, linux-arm-kernel
- <linux-arm-kernel@lists.infradead.org>,  kvmarm@lists.linux.dev,
- linux-kselftest <linux-kselftest@vger.kernel.org>
-Date: Wed, 20 May 2026 19:29:49 +0100
-In-Reply-To: <ag3zr7-11FO3k-Wv@kernel.org>
-References: <cf429f2082e863571595f74d1d3dedc3e6a82964.camel@infradead.org>
-	 <CABgObfacAYexR25SMi1kSZMRnHx3EDGj8=E84V1DumER66ibnQ@mail.gmail.com>
-	 <86qzn7wp3y.wl-maz@kernel.org>
-	 <593a782c50f3c8656e13b36dfb975a67d43a908e.camel@infradead.org>
-	 <CABgObfbS-z3OphDna5W_JQPvw+OK=yXJurVMHp1ANZ5uGEgVhQ@mail.gmail.com>
-	 <9d0429ddbe4d8c6993e74237c4395697f80092d6.camel@infradead.org>
-	 <agzR2kaJsNa8X9lF@kernel.org>
-	 <1243d375846c4f4e20c229a6f09300126188fc8b.camel@infradead.org>
-	 <agzq5kwzuJvd7Mh5@kernel.org>
-	 <add71b6f61edc6357e1fddad83273b2cba697d10.camel@infradead.org>
-	 <ag3zr7-11FO3k-Wv@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
+ "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang
+ <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui
+ <decui@microsoft.com>, Long Li <longli@microsoft.com>, Ajay Kaher
+ <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>,
+ Jan Kiszka <jan.kiszka@siemens.com>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Andy Lutomirski <luto@kernel.org>, Peter
+ Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, Daniel
+ Lezcano <daniel.lezcano@kernel.org>, Thomas Gleixner <tglx@kernel.org>,
+ John Stultz <jstultz@google.com>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+ Broadcom internal kernel review list
+ <bcm-kernel-feedback-list@broadcom.com>, Boris Ostrovsky
+ <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>,
+ x86@kernel.org,  linux-coco@lists.linux.dev, kvm@vger.kernel.org,
+ linux-hyperv@vger.kernel.org,  virtualization@lists.linux.dev,
+ linux-kernel@vger.kernel.org,  xen-devel@lists.xenproject.org, Michael
+ Kelley <mhklinux@outlook.com>, Tom Lendacky <thomas.lendacky@amd.com>,
+ Nikunj A Dadhania <nikunj@amd.com>, Thomas Gleixner <tglx@linutronix.de>
+Date: Wed, 20 May 2026 19:30:58 +0100
+In-Reply-To: <ag32mwLvHpWn2vCt@google.com>
+References: <20260515191942.1892718-1-seanjc@google.com>
+	 <7260682b21c28d1299e58400b9a2f4b8d23bd434.camel@infradead.org>
+	 <ag32mwLvHpWn2vCt@google.com>
 Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-rM3SP4T0Vb419/7oTOIv"
+	boundary="=-nkQFBHechIC9A3sNo6/e"
 User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -73,101 +70,28 @@ MIME-Version: 1.0
 X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
 
---=-rM3SP4T0Vb419/7oTOIv
+--=-nkQFBHechIC9A3sNo6/e
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, 2026-05-20 at 10:47 -0700, Oliver Upton wrote:
-> On Wed, May 20, 2026 at 12:33:52AM +0100, David Woodhouse wrote:
-> > On Tue, 2026-05-19 at 15:57 -0700, Oliver Upton wrote:
-> > > What ifs and maybes do not meet the bar, in my opinion, for preservin=
-g
-> > > bug emulation in KVM. Of course there could be a little flexibility w=
-ith
-> > > that but we need to have some way of discriminating between bug fixes
-> > > and genuine guest expectations around the behavior of virtual hardwar=
-e.
-> >=20
-> > I believe you have this completely backwards.
+On Wed, 2026-05-20 at 10:59 -0700, Sean Christopherson wrote:
 >=20
-> No, I really don't.
+> > And then it even spent some time at boot actually using the kvmclock as
+> > clocksource... when ideally I don't think it would even have *enabled*
+> > it at all?
 >=20
-> Leaving every bugfix that could _possibly_ have a guest-visible impact
-> subject to drive-by scrutiny many years after the dust has settled is
-> not an acceptable working dynamic. Especially since it would appear
-> that the rest of the ecosystem has long since moved on from this
-> particular issue.
+> Yeah, that's definitely the ideal state.=C2=A0 And I had all the same exp=
+ectations and
+> observations as you when digging in and testing this.=C2=A0 But unless th=
+is series
+> makes things worse, I want punt on achieving the ideal state for the mome=
+nt, as
+> it's proving to be a big lift just to get to a not-awful state.
 
-That's reductio ad absurdum.
+Ack. Just checking my understanding was correct. Baby steps... 40 patches a=
+t a time :)
 
-I can continue to work around this one internally, sure.
-
-But I'm also concerned about the general case because not only did you
-refuse it, but you *also* said that this change in guest-visible
-behaviour "should've happened without a change to the revision number".
-
-Which seems to indicate that not only are you being randomly
-obstructive about a one-line fix, you *also* don't actually understand
-the general concept of what is expected of KVM, which this
-Documentation patch is intending to clarify.
-
-It was *right* to bump the IIDR from 1 to 2 when this guest visible
-behaviour was changed. The only problem was not letting userspace
-select the old revision. I'm really concerned that we now appear to
-have a regression of understanding of even the part we previously *did*
-get right.
-
-> If this matters to you so deeply then please, be part of the solution
-> instead. You may find that reviewing patches leads to better outcomes
-> than getting belligerent with the arm64 folks every time you guys
-> decide to rebase your kernel. Hell, hypotheticals actually have a lot
-> more weight in the context of a review. And if your testing is extensive
-> enough to catch these sort of subtleties, don't you think it's better
-> done against mainline?
-
-Yes. Definitely. That's why my series with the fixes is more *test*
-than actual fix, giving a nice simple framework for any such changes in
-future. It checks that GICR_CTLR_IR|GICR_CTLR_CES are visible only with
-IIDR.rev=3D3 for example.
-
-And we're making progress on the amount of downstream crap, but it
-doesn't help when we seem to have an impedance mismatch on the very
-question of what it means to support customers on KVM at scale. This
-thread is not exactly encouraging my engineers to poke their heads
-above the parapet.
-
-> Maybe it's just me but I am left feeling disappointed that we all
-> haven't found a productive way of working together. I've tried to bridge
-> the gap here; we obviously need to do something that at least fixes the
-> UAPI breakage. Although apparently we don't even care to meet that low
-> of bar.
->=20
-> > A stable and mature platform doesn't get to play in its ivory tower and
-> > randomly inflict breakage on guests because they "deserve it".
->=20
-> Really? Aren't you asking for us to emulate something completely broken
-> for you?
-
-No. I'm asking for a path to be able to *fix* it.
-
-As things stand, if I just drop these patches and launch guests on a
-new kernel, those guests will see writable IGROUPR registers and may
-try to use them. And then if I have to roll *back* a kernel deployment,
-those guests may lose interrupts.
-
-The *only* time a guest-visible feature (or bugfix, nobody cares about
-the difference outside the ivory tower) can be enabled is when the
-kernel deployment is finished and stable and *won't* be rolled back.
-And *then* new launches (and reboots) can get it.
-
-And one day, when the last guest which was launched *without* it is
-finally rebooted and sees the new model, *then* maybe we no longer need
-that one line if() statement to support IIDR version 1.
-
-2018 was basically *yesterday*. And I'm kind of scared that I even have
-to explain it.
-
---=-rM3SP4T0Vb419/7oTOIv
+--=-nkQFBHechIC9A3sNo6/e
 Content-Type: application/pkcs7-signature; name="smime.p7s"
 Content-Disposition: attachment; filename="smime.p7s"
 Content-Transfer-Encoding: base64
@@ -246,21 +170,21 @@ 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
-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
+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
-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
+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
 
 
---=-rM3SP4T0Vb419/7oTOIv--
+--=-nkQFBHechIC9A3sNo6/e--
