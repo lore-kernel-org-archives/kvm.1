@@ -1,151 +1,110 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E0D03E6385;
-	Wed, 20 May 2026 17:38:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8282F349AFF;
+	Wed, 20 May 2026 17:47:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779298724; cv=none; b=rReRcbHpLjHJl0a2rVeIb23So6vms2nWKOibl9T33dQblNWmkcvRe3Oz0v4VerSXGcguda840JasIJfuSMY5ZLKpqmqw6GindA6RnraguQMeKh6adIzpkKy6HT7TzO7QLyeBasjLGjYwtJnfaUgoGMVvwNIBM+qqedyIY3NZ8NA=
+	t=1779299250; cv=none; b=tgRmMn0FBWBvoYvqsahmp5G87StIP44JP/7qVzLSVIKksjBt3d5ELF155Sof+A35m3dc+1HbNYqyuW4nKvj9ueps/DltMs04wwru5GiYapiLkfV7LCRtk8Uzb2A4qtMSUrps0WsnI25K7Z8+y963necESgRzcQCw0OL099DweRM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779298724; c=relaxed/simple;
-	bh=vyFbmDoVPWkmerrHBrMGWkfgzBdsP+tG7jDlcj5Sg2k=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=HrGoJ3+4cl5bhvd0irBA+Q66+LjIYeSJTmh8zvnYKFYL8HPp+TgqK+TH/J8azYi14FJmKFMk4g5AJRpeTQmZtjNAc1EOAra70uY6zwn2RsTt+Jijix0P1b3HOeM0IJaRwk6jv2PUEJhb9jFYF+kG5WxgNpp20KMsEI+qv71saQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mxisXGDK; arc=none smtp.client-ip=192.198.163.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1779299250; c=relaxed/simple;
+	bh=azrcSc5fBS9EAkI43k4N+bdBeogc36tuyCa1/SG/oas=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uIDZrbMD5tzdTo/hXSEaEa8gvA1aRnBGY1iBBaeZnI1SBNP6FMsKiH73kWfZlA0E6AShtK7V0tjESA8EIiUE7WQ3yw3QOvPLVcX+fSP/+uyXO6HIFT+jBbpLfkqYcV061byCxKoNDmsfEn8R5kBy9NFvMqaaQ/nJb/94pjgy1iU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E+KqHORQ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mxisXGDK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779298722; x=1810834722;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=vyFbmDoVPWkmerrHBrMGWkfgzBdsP+tG7jDlcj5Sg2k=;
-  b=mxisXGDK4xBEt1JXcF/+BbQXYSYef885KGsoTn3FBf7kzBTwbln9y4w/
-   Z9D5qGjWZZC34L53UH+NXB6qTLsmWfcjlI2L2F4V+wnDQUxZe5rn3YOqb
-   pGRRA/Cgr9YpTDpi0vqFLnzOsukNmmYEqSAh5xlGL8oE8qnpIZz6BHxDQ
-   5qp7D4PxcsSbJzLPwGl4dJ3Sj9dhOanLksQ683xZ12AWdhE3yb74xZm+7
-   hvvJ9KZFClbRFwvzMc8VAkHG2Wi4zWGyS7KuKLUS9cuMrKtbSZ2oxqR/1
-   fcMN+YEqjcScFhVWNqK6eQRJZ99ORxMhzlaOjVDI1u9Ni3hk47Ty0UD+L
-   Q==;
-X-CSE-ConnectionGUID: v6u1sKfgRKa5OhwIxmrerA==
-X-CSE-MsgGUID: bhQy7/ckQtOji5up1PULRQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11792"; a="82785839"
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="82785839"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 10:38:42 -0700
-X-CSE-ConnectionGUID: BzcvtHkGQj2Xe11/ywkNSQ==
-X-CSE-MsgGUID: G5QdqfqrQ6akAcjjynBOow==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.23,244,1770624000"; 
-   d="scan'208";a="244250611"
-Received: from spandruv-mobl5.amr.corp.intel.com (HELO [10.125.109.190]) ([10.125.109.190])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 20 May 2026 10:38:41 -0700
-Message-ID: <509e8669-b052-437a-8896-69ac71dafde5@intel.com>
-Date: Wed, 20 May 2026 10:38:46 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E+KqHORQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F8F31F000E9;
+	Wed, 20 May 2026 17:47:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779299249;
+	bh=ViRW9Nz3r6hXUk4I8QEt3nB7VpqxM71bV390oMtx5Ug=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=E+KqHORQPEi2v/ovg1wnEqFr8oDWY997yhhY4R1PG1PuSPUJYkhb8VagSOppZB+Rr
+	 A0FKrrZGSqhwUfPDPtXnkAmbqErhn1IZufP64ETA4qqpXvH0pe86apDIE60MBNjwEw
+	 RUfd9pOaiDymD8/T/FWXj7CZcBRvZOPScWM1lK0JYwdnAeWm7tQE1Tsmsl9tTiCRFI
+	 3siFught71zBG4B2SLyJfjVwSEg4UUGfukHiuNBzw5P/8kKwSKZ4x2cHIxbPEaZHgh
+	 C1XP0RZ0Sepvw0ts72eLscxXwx0QJPfuGnmsqMkMRKBDOTHd1f1hMZbWHQJHylmkgs
+	 J70Laujzm+ZXA==
+Date: Wed, 20 May 2026 10:47:27 -0700
+From: Oliver Upton <oupton@kernel.org>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Marc Zyngier <maz@kernel.org>,
+	Will Deacon <will@kernel.org>, Jonathan Corbet <corbet@lwn.net>,
+	Shuah Khan <skhan@linuxfoundation.org>, kvm <kvm@vger.kernel.org>,
+	Linux Doc Mailing List <linux-doc@vger.kernel.org>,
+	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Jim Mattson <jmattson@google.com>, Joey Gouly <joey.gouly@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Raghavendra Rao Ananta <rananta@google.com>,
+	Eric Auger <eric.auger@redhat.com>, Kees Cook <kees@kernel.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	linux-arm-kernel <linux-arm-kernel@lists.infradead.org>,
+	kvmarm@lists.linux.dev,
+	linux-kselftest <linux-kselftest@vger.kernel.org>
+Subject: Re: [PATCH] Documentation: KVM: Document guest-visible compatibility
+ expectations
+Message-ID: <ag3zr7-11FO3k-Wv@kernel.org>
+References: <cf429f2082e863571595f74d1d3dedc3e6a82964.camel@infradead.org>
+ <CABgObfacAYexR25SMi1kSZMRnHx3EDGj8=E84V1DumER66ibnQ@mail.gmail.com>
+ <86qzn7wp3y.wl-maz@kernel.org>
+ <593a782c50f3c8656e13b36dfb975a67d43a908e.camel@infradead.org>
+ <CABgObfbS-z3OphDna5W_JQPvw+OK=yXJurVMHp1ANZ5uGEgVhQ@mail.gmail.com>
+ <9d0429ddbe4d8c6993e74237c4395697f80092d6.camel@infradead.org>
+ <agzR2kaJsNa8X9lF@kernel.org>
+ <1243d375846c4f4e20c229a6f09300126188fc8b.camel@infradead.org>
+ <agzq5kwzuJvd7Mh5@kernel.org>
+ <add71b6f61edc6357e1fddad83273b2cba697d10.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v10 15/25] x86/virt/seamldr: Abort updates after a failed
- step
-To: Chao Gao <chao.gao@intel.com>, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org
-Cc: binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, djbw@kernel.org,
- ira.weiny@intel.com, kai.huang@intel.com, kas@kernel.org,
- nik.borisov@suse.com, paulmck@kernel.org, pbonzini@redhat.com,
- reinette.chatre@intel.com, rick.p.edgecombe@intel.com, sagis@google.com,
- seanjc@google.com, tony.lindgren@linux.intel.com, vannapurve@google.com,
- vishal.l.verma@intel.com, yilun.xu@linux.intel.com, xiaoyao.li@intel.com,
- yan.y.zhao@intel.com, Thomas Gleixner <tglx@kernel.org>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-References: <20260520133909.409394-1-chao.gao@intel.com>
- <20260520133909.409394-16-chao.gao@intel.com>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <20260520133909.409394-16-chao.gao@intel.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <add71b6f61edc6357e1fddad83273b2cba697d10.camel@infradead.org>
 
-On 5/20/26 06:38, Chao Gao wrote:
-> +static void ack_state(struct update_ctrl *ctrl, int result)
->  {
->  	raw_spin_lock(&ctrl->lock);
->  
-> +	ctrl->num_failed += !!result;
->  	ctrl->num_ack++;...> @@ -239,8 +242,8 @@ static int do_seamldr_install_module(void
-*seamldr_params)
->  			break;
->  		}
->  
-> -		ack_state(&update_ctrl);
-> -	} while (curstate != MODULE_UPDATE_DONE);
-> +		ack_state(&update_ctrl, ret);
-> +	} while (curstate != MODULE_UPDATE_DONE && !READ_ONCE(update_ctrl.num_failed));
+On Wed, May 20, 2026 at 12:33:52AM +0100, David Woodhouse wrote:
+> On Tue, 2026-05-19 at 15:57 -0700, Oliver Upton wrote:
+> > What ifs and maybes do not meet the bar, in my opinion, for preserving
+> > bug emulation in KVM. Of course there could be a little flexibility with
+> > that but we need to have some way of discriminating between bug fixes
+> > and genuine guest expectations around the behavior of virtual hardware.
+> 
+> I believe you have this completely backwards.
 
-The READ_ONCE() is cute. But it's not really effective. It's also
-overly-complicated.
+No, I really don't.
 
-update_ctrl.num_failed is just a single. Nothing cares if it is 1 or 2
-or 999. So why have a count?
+Leaving every bugfix that could _possibly_ have a guest-visible impact
+subject to drive-by scrutiny many years after the dust has settled is
+not an acceptable working dynamic. Especially since it would appear
+that the rest of the ecosystem has long since moved on from this
+particular issue.
 
-Any reason this won't work?
+If this matters to you so deeply then please, be part of the solution
+instead. You may find that reviewing patches leads to better outcomes
+than getting belligerent with the arm64 folks every time you guys
+decide to rebase your kernel. Hell, hypotheticals actually have a lot
+more weight in the context of a review. And if your testing is extensive
+enough to catch these sort of subtleties, don't you think it's better
+done against mainline?
 
-	if (result)
-		set_bit(0, ctrl->failed);
+Maybe it's just me but I am left feeling disappointed that we all
+haven't found a productive way of working together. I've tried to bridge
+the gap here; we obviously need to do something that at least fixes the
+UAPI breakage. Although apparently we don't even care to meet that low
+of bar.
 
-... and on the read side:
+> A stable and mature platform doesn't get to play in its ivory tower and
+> randomly inflict breakage on guests because they "deserve it".
 
-	test_bit(0, &update_ctrl.failed)
+Really? Aren't you asking for us to emulate something completely broken
+for you?
 
-That's 100% non-ambiguous. It doesn't have a counter where one isn't
-needed. It also can't even theoretically be messed up by the compiler.
+Thanks,
+Oliver
