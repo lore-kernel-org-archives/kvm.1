@@ -1,195 +1,238 @@
-Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64CAB3F787E
-	for <kvm@vger.kernel.org>; Wed, 20 May 2026 18:11:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D59F3F7AA6
+	for <kvm@vger.kernel.org>; Wed, 20 May 2026 18:13:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779300681; cv=none; b=Gds1JJmeaxUKmwIEO6S78Y1sswc3aCOVoUFGDQ/UIVOQsRz5Px5JKWmvuVr1rf4d74BxlLAdLsXnD2zJM915raGmZDp8XOu+gbCKzoZ8ktJ4oxSfWhTN339hfLSvAV4iqNIf4ovnyemp0znsK13nykXqsOdf+pDWSS+JYKHLtCc=
+	t=1779300839; cv=none; b=Q8M/ZjlK19980MSZsB5Mv53/jKILW+coaWB2jJt/gTYDLTJPNZ5aWR9yX6XmHtneH5pHEv2gyJpLL4qt8U0YVcrzUrkB/9l7kASagu0MQ6YV0wzxkUL5xEz3i6HaB0f61W+PEvfPCjummRDl//WiXMeflL5xydbw/lxlv6X4M/8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779300681; c=relaxed/simple;
-	bh=F9EAa2fqZKdVWRREy2SptPZ4rR4Fj77slKy/QCP2Jng=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GEmBJckvh9JVyuHWnmzs1XAurWmkkwiv9ZcxQAyOJdHXNIsglNFHYfgXK1y0gwaFk9cCVFurATbZvCM3SPmxnNW5ugV/W90ZAuVYh5203vGMz8wveZxK4knkEhpDaKtywlKFBM11J/nTdf+DKBEH8lyonMEKwpjipWBOeebkXfE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DNt9/q6u; arc=none smtp.client-ip=209.85.210.202
+	s=arc-20240116; t=1779300839; c=relaxed/simple;
+	bh=WlGqgjyBORkJfksIFZslOeTBEP3DJ5gkhKNzkH/Egug=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EAX4LqTfGlDk9dE7Fnbye+ifnhE3iqhuJ5ueKtFiRFGmY2yg7ZkNb83NhqfjQ3d/PcD5weAe6y6dgMHiMumyUoqHGFjkPZruJV436SS6boqHiT30RE9h9bW7wUxdgDDSoe5FrHpgawQ+yRmlcaGg0ChK/Svcdgz2acnr1vLIXek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=P6ii/3KS; arc=none smtp.client-ip=209.85.214.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DNt9/q6u"
-Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-8354503d9acso6937809b3a.1
-        for <kvm@vger.kernel.org>; Wed, 20 May 2026 11:11:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="P6ii/3KS"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2ba3b9bcf69so545ad.0
+        for <kvm@vger.kernel.org>; Wed, 20 May 2026 11:13:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779300680; x=1779905480; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Ral3wdnykP2fUONSZPffUp/laMD2JLc4A4V5t1qiuyw=;
-        b=DNt9/q6uzYbgW+Q9wdHIN7wQu3+JzFofSXz7TCA7nHMlx+8xSt2VkXQAOtmy3wmgi7
-         38qgEE5Xwj4/vQaWrRUN+BhtTZm8mmLR1RQ407ybsQBSTENN2/QJE7u306zffmDaKKeS
-         bFlJ4RCoUxbOwsgHIg5kSMd1nhPBsZ9+YZAjYP31ZRmkkAnH1Q5lrq7GUAfauoikCd20
-         QhTIrdsA9gd3HNA6BNRf6rPlYBdBO+2n8XahdRmklolpnyH0dGkuChL83wgRdFp+7Wt7
-         Wb4PNd4YUZ4a794cKXI1o3ro2K6rSKegLbirwmaHTlTdlOtHWKgz3tvsRoocwcshJUZ0
-         GGnw==
+        d=google.com; s=20251104; t=1779300837; x=1779905637; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=FjVopLxhAIzTAf2Kz8X5x4L6V6oaH+XHeIW8ypuJnu8=;
+        b=P6ii/3KS5+sglVC2M5Pmax4dyMAFp7JyGX7E+yCiEdV8gs1flnmFCkp6YoSNEPVl3D
+         H/6Fh4a8OzlHupVNE68ZF++BItdx0kDBo7NpRJkaRQqVQi7qVP3vExOiNOH8AugQBWpR
+         lGFBBkFABRjzqa5fP75ilMm2KmTPLoqchlK82CNe+bZTUnLQqtBI0/yRBpEVnBzDYb9y
+         zPr/wXCLl1qfqfbrZVf9PiYDgpu8qrhDQKBoDzg5W23FUFMsw9n2R6VodEf+m1pvGt5l
+         0R8f4UebZcZrnwUnAIxQrT+isoIPUA3FIWFScwE2SCY+j9L3qHIjrTZTW0bMbSgom09d
+         uW2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779300680; x=1779905480;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Ral3wdnykP2fUONSZPffUp/laMD2JLc4A4V5t1qiuyw=;
-        b=bh0y4M6JzvJewTXMXjZ/AQM6GmKkcttIOk2jF6qnWY9mBy2zw0Usdr8jMv/3hpouoC
-         29ngavIQf6rjXLEhmmfOAiIEqEbo+UmLZ0kEaKSIUvvy0nYVXLR1aI7I5oA3NyhIMig9
-         oeKrsdE6rQNsl2s0UVi9XcIJiOdIDF5VUMtb54VUfS/pX5EeG1TaQBBg0DNi29kzWOMK
-         5j29zf8er4MJ5toOyHY0QKZRquZwiOUiRZTRlA1GYx8DMyXZ9mNbCIO7C/bztt0VVbf2
-         XFd+e9e8PmtXi2ieSXRQK5plri1fF8sTSwuUOZVd0MblFQPxhY6sPvAEo3ly2MZMD6eH
-         ZzTg==
-X-Forwarded-Encrypted: i=1; AFNElJ+uEU9EKgv2h7HgiGRkPrFKveP0Jbr+sQfgbDY4+MAbQFAnKJT5kAYdFcUO4Mm4WZ1NPR8=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywsd6wZds/jx4Ik8tkYwtXr73wkPVQ4nmCdpPy/Uz7hdNbEEy4i
-	N7WO1a29bT5/8nY/hibfl8TxZG03rr/QRVfUVCy7eA00wk9sHPov9ouHRDtnadd82Xm4dNWM6iu
-	spADM4A==
-X-Received: from pfbby10.prod.google.com ([2002:a05:6a00:400a:b0:837:b0a7:c3ac])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1ca4:b0:838:127d:a161
- with SMTP id d2e1a72fcca58-83f33b328femr23678520b3a.18.1779300679491; Wed, 20
- May 2026 11:11:19 -0700 (PDT)
-Date: Wed, 20 May 2026 11:11:18 -0700
-In-Reply-To: <4a918cb38dccd4ef7a2d84d16f5044472d069f7c.camel@intel.com>
+        d=1e100.net; s=20251104; t=1779300837; x=1779905637;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FjVopLxhAIzTAf2Kz8X5x4L6V6oaH+XHeIW8ypuJnu8=;
+        b=NKwnlfr9O1L6TtBuPj0ptW5R8v2kKl9zeL0Oej6N6NE8QFxA+WI/HT0UeQ0u9DzV6r
+         +6BQeEaaTogxdkV4nWW3yY+NHj2hRiCIJ9/nVi+q1DzxMnlX/STsdGE5DLsgijO+iNSA
+         +kPfQRM3OfgRDfB2fATxYV9xzgF6NFPiOobf5IdlnD1OHkvNyEFDs+tMaajISCUmanqu
+         oruoSZUQln8Z3Bwwt3fxi1wg2qEIRKc0UT+FXQUydJNj5Ah9i8nHLN7hG6AW0nOZ3hhL
+         Wd26vGB9xJAGKcjcl7Hx/oZCKWk8Tq9fXM6Z4fY5qwq/vuQ+WV+APJYY9UvX8vs6ncPg
+         JDeA==
+X-Forwarded-Encrypted: i=1; AFNElJ+wDR7RtW7fc5FP3VOTQIuPiG9d+0AZz5Oix/lRjKlHyrweaj11Q7xkYjM331shQUq3yfc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyjeIuacXcE5/mBzPEM/lmTIQ230Zt8FGrrbl6/n9iIG5z89ZuU
+	kcT/EhFB1WVfliowEZaq/iPEzg1AsplOI0Wr4sN3EyszodLECwQa5UsKNnb44mzSZQ==
+X-Gm-Gg: Acq92OFEnU7SpOfSBIjQpHF9bEukYbu0JfHDJ6Yp1gO0X6cJSE9Ka42AYRI+yCQggA5
+	hteJd4oo/B00Xrl1vYW7TXVmWvICK5D09JSMO2kzn9MoR7sM+hZ3tfFikbNU0cejr2LdOeHtw10
+	nhhKDAXiZDFkK3xdWj7QJyUBRcF0SwieeopaMbZSqXo2dTfAkSCArGdSt74p53DuLDg7PiRLh00
+	Wd7+MJMJfOm1UfDNZzutLt1ZqwIk82pz8R6W5KL+NNRCu3Q2sxZ1NiaROWr4BL5J76wKDOn1XE1
+	QAqyTIBsjQZMlXbnuW2OtvmROal2H4usA4aiI0il3QXplRtelWVsSuQkZs5gekNSZ3a6mucWeVj
+	b2UwNqN/I5jBf15fz0E68tRoLuhMLb8joXY9Pd5gvzwH0DR9hD9pmu6c+y65f24TtJ19MSo5uoK
+	6tEdgOw4RzcTErhl6keGa1IAPwSTFMw7u4JMNvv1UQCokFvdqIw6waiHpT1hcK9QdNWSYn1g==
+X-Received: by 2002:a17:903:2288:b0:2ba:6518:e4d8 with SMTP id d9443c01a7336-2be9f43b2edmr335725ad.20.1779300836839;
+        Wed, 20 May 2026 11:13:56 -0700 (PDT)
+Received: from google.com (153.46.83.34.bc.googleusercontent.com. [34.83.46.153])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36a3cb327d3sm376037a91.3.2026.05.20.11.13.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2026 11:13:56 -0700 (PDT)
+Date: Wed, 20 May 2026 18:13:52 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
+	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>, 
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH v2 11/16] iommu/vt-d: preserve PASID table of preserved
+ device
+Message-ID: <ag32IV5JwCtQ2CSj@google.com>
+References: <20260427175633.1978233-1-skhawaja@google.com>
+ <20260427175633.1978233-12-skhawaja@google.com>
+ <agzlrsK1p7hf6DJE@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260514215355.1648463-1-seanjc@google.com> <20260514215355.1648463-16-seanjc@google.com>
- <074e209fe4c78a735868099f13d76b9dde2c88e3.camel@intel.com>
- <agx77QB3UVmJr5xP@google.com> <729c4191d16e4c768c231ffb9bb8420306039210.camel@intel.com>
- <ag0NlJ2FEIL7GJIj@google.com> <4a918cb38dccd4ef7a2d84d16f5044472d069f7c.camel@intel.com>
-Message-ID: <ag35RgwowvR9Q4hA@google.com>
-Subject: Re: [PATCH v2 15/15] KVM: x86: Move the bulk of register specific
- code from x86.c to regs.c
-From: Sean Christopherson <seanjc@google.com>
-To: Kai Huang <kai.huang@intel.com>
-Cc: "dwmw2@infradead.org" <dwmw2@infradead.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
-	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "vkuznets@redhat.com" <vkuznets@redhat.com>, 
-	"x86@kernel.org" <x86@kernel.org>, "kas@kernel.org" <kas@kernel.org>, "paul@xen.org" <paul@xen.org>, 
-	"yosry@kernel.org" <yosry@kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <agzlrsK1p7hf6DJE@google.com>
 
-On Wed, May 20, 2026, Kai Huang wrote:
-> On Tue, 2026-05-19 at 18:25 -0700, Sean Christopherson wrote:
-> > On Wed, May 20, 2026, Kai Huang wrote:
-> > > I am not sure whether there's a mandatory requirement that "struct kv=
-m_arch" and
-> > > "struct kvm_vcpu_arch" must be fully embedded, and it would be kinda =
-painful to
-> > > covert to a pointer (e.g., there's kvm_x86_ops::vm_size), but perhaps=
- that is
-> > > also an option to consider?
-> >=20
-> > The idea I had in the past, and where I was going with things before s3=
-90's love
-> > for arm64 came along, was to add a kvm_arch.h in arch/<arch>/kvm, and h=
-ave virt/kvm
-> > include _that_ instead of kvm_host.h. =C2=A0
-> >=20
->=20
-> Not sure whether there's other code doing so? :-)
->=20
-> > That way we don't need to make any fundamental
-> > changes to structures, but we can still significantly cut down on what'=
-s exposed
-> > via kvm_host.h. =C2=A0
-> >=20
->=20
-> Yeah.
->=20
-> I saw below from you in [1]:
->=20
->   --
->   We've explore several alternatives to the #ifdef __KVM__ approach, and
->   they all sucked, hard.  What I really wanted (and still want) to do, is=
- to
->   bury the bulk of kvm_host.h (and other KVM headers) in virt/kvm, but ev=
-ery
->   attempt to do that ended in flames.  Even with the __KVM__ guards in pl=
-ace,
->   each architecture's kvm_host.h is too intertwined with the common kvm_h=
-ost.h,
->   and trying to extract small-ish pieces just doesn't work (each patch
->   inevitably snowballed into a gigantic beast).
->=20
->   The other idea we considered (which I thought of, and feel dirty for ev=
-en
->   proposing it internally), is to move all headers under virt/kvm, add
->   virt/kvm/include to the global header path, and then have KVM x86 omit
->   virt/kvm/include when configured to hide KVM internals.  I hate this id=
-ea
->   because it sets a bad precedent, and requires a lot of file movement
->   without providing any benefit to other architectures.  E.g. I hope that
->   guarding KVM internals with #ifdef __KVM__ will allow us to slowly clea=
-n
->   things up so that some day KVM only exposes a handful of APIs to the re=
-st
->   of the kernel (probably a pipe dream).
->   --
->=20
-> I haven't looked into details of your #ifdef __KVM__ approach yet, but se=
-ems you
-> don't quite like moving KVM internal staff to virt/kvm/include/ ?
+On Tue, May 19, 2026 at 10:35:26PM +0000, Pranjal Shrivastava wrote:
+>On Mon, Apr 27, 2026 at 05:56:28PM +0000, Samiullah Khawaja wrote:
+>> In scalable mode the PASID table is used to fetch the io page tables.
+>> Preserve and restore the PASID table of the preserved devices.
+>>
+>> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>> ---
+>>  drivers/iommu/intel/iommu.c      |   5 +-
+>>  drivers/iommu/intel/iommu.h      |  12 +++
+>>  drivers/iommu/intel/liveupdate.c | 141 +++++++++++++++++++++++++++++++
+>>  drivers/iommu/intel/pasid.c      |   7 +-
+>>  drivers/iommu/intel/pasid.h      |   9 ++
+>>  include/linux/kho/abi/iommu.h    |  13 +++
+>>  6 files changed, 184 insertions(+), 3 deletions(-)
+>>
 
-Not for arch code, which is the trickiest bit to handle.
+[snip]
+>> +
+>> +static int pasid_lu_do_op(void *table, enum pasid_lu_op op)
+>> +{
+>> +	int ret = 0;
+>> +
+>> +	switch (op) {
+>> +	case PASID_LU_OP_PRESERVE:
+>> +		ret = iommu_preserve_page(table);
+>
+>Nit: This is making me consider renaming the helper as
+>`iommu_preserve_folio`. I almost thought why are we preserving a single
+>page.
 
-> But if we want to hide KVM internal structures, I don't see any other opt=
-ions
-> except virt/kvm/include/ is the place to go?
+Interestingly the iommu pages API uses plural of page in API name as
+each iopt_desc can be backed by multiple pages:
 
-arch/$(ARCH)/kvm/kvm_arch.h is the obvious approach.  Code in virt/kvm can =
-reach
-arch/$(ARCH)/kvm, we just need to add it to the include path.  That's why I=
- was
-working on unifying the include definitions.
+iommu_free_pages()
+iommu_alloc_pages_*()
 
-> Btw, have you considered reverting the inclusion of "strut kvm" and "stru=
-ct
-> kvm_arch" (and the vcpu structure), i.e., to make "struct kvm_arch" inclu=
-de
-> "struct kvm"?  I don't have any clue of whether it is feasible or how muc=
-h
-> effort it needs, though -- it's just something came to mind when replying=
-.
->=20
-> [1]: https://lore.kernel.org/all/20230916003118.2540661-1-seanjc@google.c=
-om/
->=20
-> > At some point I'll try to take another look; it's really the
-> > s390+arm64 combo that's problematic :-/
->=20
-> If you want, I can take a look.  I think I'll have bandwidth in near feat=
-ure.
->=20
-> Given you have tried multiple times so I am not sure what I can achieve, =
-though.
+So I will rename these to:
 
-Consolidating includes and creating arch/$(ARCH)/kvm/kvm_arch.h should be m=
-ore
-doable, what has failed spectacularly over and over is effectively trying t=
-o hide
-most of asm/kvm_host.h, which sounds *really* stupid when I phrase it that =
-way :-)
+iommu_preserve_pages()
+iommu_preserve_pages_list(list)
+iommu_unpreserve_pages()
+iommu_unpreserve_pages_list(list)
+iommu_restore_pages()
+>
+>> +		break;
+>> +	case PASID_LU_OP_UNPRESERVE:
+>> +		iommu_unpreserve_page(table);
+>> +		break;
+>> +	case PASID_LU_OP_RESTORE:
+>> +		iommu_restore_page(virt_to_phys(table));
+>> +		break;
+>> +	case PASID_LU_OP_FREE:
+>> +		iommu_free_pages(table);
+>> +		break;
+>> +	}
+>> +
+>> +	return ret;
+>> +}
+>> +
+>
+>[snip]
+>
+>> +
+>> +void pasid_cleanup_preserved_table(struct device *dev)
+>> +{
+>> +	struct pasid_table *pasid_table;
+>> +	struct pasid_dir_entry *dir;
+>> +	struct pasid_entry *table;
+>> +	size_t dir_size;
+>> +
+>> +	pasid_table = intel_pasid_get_table(dev);
+>> +	if (!pasid_table)
+>> +		return;
+>> +
+>> +	dir = pasid_table->table;
+>> +	table = get_pasid_table_from_pde(&dir[0]);
+>> +	if (!table)
+>> +		return;
+>> +
+>> +	/* Clear everything except the first entry in table. */
+>> +	memset(&table[1], 0, SZ_4K - sizeof(*table));
+>
+>Nit: Is the first entry always 4K or could it change based on PAGE_SIZE?
 
-> Anyway, seems "allow loading a new (or old) KVM module without needing to
-> rebuild and reboot the entire kernel" is a good reason to do this.
+VT-d uses 4k always, but for clarity I will change this to
+VTD_PAGE_SIZE.
+>
+>> +
+>> +	/* Use the folio order to calculate the size of Pasid Directory */
+>> +	dir_size = (1 << (folio_order(virt_to_folio(dir)) + PAGE_SHIFT));
+>> +
+>> +	/* Clear everything except the first entry in directory */
+>> +	memset(&dir[1], 0, dir_size - sizeof(struct pasid_dir_entry));
+>> +
+>> +	clflush_cache_range(&table[0], SZ_4K);
+>> +	clflush_cache_range(&dir[0], dir_size);
+>> +}
+>> +
+>
+>[...]
+>
+>> +void *intel_pasid_try_restore_table(struct device *dev, u64 max_pasid)
+>> +{
+>> +	struct iommu_device_ser *ser = dev_iommu_restored_state(dev);
+>> +
+>> +	if (!ser)
+>> +		return NULL;
+>> +
+>> +	BUG_ON(pasid_lu_handle_pd(phys_to_virt(ser->intel.pasid_table),
+>> +				  PASID_LU_OP_RESTORE));
+>> +	if (WARN_ON_ONCE(ser->intel.max_pasid != max_pasid)) {
+>
+>I'm wondering if this could be slightly relaxed to:
+>if (ser->intel.max_pasid < max_pasid) to ensure it's a minimum
+>requirement rather than an exact match?
 
-Note, we've scrapped upstreaming multi-KVM, and I don't see it ever getting=
- accepted
-upstream, as live update is far superior, e.g. isn't limited to just KVM, d=
-oesn't
-have the same orchestration or testing problems, etc.
+Makes sense. I will update this.
+>
+>> +		pasid_lu_handle_pd(phys_to_virt(ser->intel.pasid_table),
+>> +				   PASID_LU_OP_FREE);
+>> +		return NULL;
+>> +	}
+>> +
+>> +	return phys_to_virt(ser->intel.pasid_table);
+>> +}
+>> diff --git a/drivers/iommu/intel/pasid.c b/drivers/iommu/intel/pasid.c
+>> index 89541b74ab8c..5cac8e95f73b 100644
+>> --- a/drivers/iommu/intel/pasid.c
+>> +++ b/drivers/iommu/intel/pasid.c
+>> @@ -60,8 +60,11 @@ int intel_pasid_alloc_table(struct device *dev)
+>>
+>>  	size = max_pasid >> (PASID_PDE_SHIFT - 3);
+>>  	order = size ? get_order(size) : 0;
+>> -	dir = iommu_alloc_pages_node_sz(info->iommu->node, GFP_KERNEL,
+>> -					1 << (order + PAGE_SHIFT));
+>> +
+>> +	dir = intel_pasid_try_restore_table(dev, 1 << (order + PAGE_SHIFT + 3));
+>> +	if (!dir)
+>> +		dir = iommu_alloc_pages_node_sz(info->iommu->node, GFP_KERNEL,
+>> +						1 << (order + PAGE_SHIFT));
+>>  	if (!dir) {
+>>  		kfree(pasid_table);
+>>  		return -ENOMEM;
+>
+>Thanks,
+>Praan
 
-And FWIW, today, you _can_ reload a new (or old) KVM module without rebuild=
-ing
-the kernel or rebooting the host, it's just that you can't modify certain s=
-tructures.
+Sami
