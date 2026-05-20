@@ -1,145 +1,181 @@
-Received: from fhigh-b3-smtp.messagingengine.com (fhigh-b3-smtp.messagingengine.com [202.12.124.154])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 744183BA246;
-	Wed, 20 May 2026 17:22:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F483E0C70
+	for <kvm@vger.kernel.org>; Wed, 20 May 2026 17:24:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779297749; cv=none; b=cwAxkIsfD0nA/Ct8I7DbY54fDgg2CP8feA58dZR3j2hd3KuCTqMm7+jJl7UYulw7J31QI9MTOxJvKd4JNSAFsZAJ1H8z5I9/yqc2+WGz3MuNiMvnoxwjLQ1KUbiA6yMX6NGddpK236ygPmqbmWdZUJ60YBH07kDRg5lWdYH62e0=
+	t=1779297894; cv=none; b=Chsm/Zqao9413X8J6RmZIYNInlmU9w7uJx/LNf4FKcZGBk1fAwiAX9yk3Ec1gRFD3+rwtxR3qmloXfqf3n8hYb5/8LxJ61u4ibhroWk+vVlmsko6F1fH6y/esjVJHbTgN41hCkH71l4BMKreW5SjXSqWdwbaAXDM45kCH7HF/lE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779297749; c=relaxed/simple;
-	bh=35gUX/S2pFYlMFA4BsfLPqjWTpkxjNlRQrkX9bYveKo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SwtPLzvceTCXvqOVNeUf8RrLcYuBx4i3wMjFYdf5pjP3fS69NTOBdivy/TeV5YyE4tPJHDeHCY8oGpv3zGs/KnWAKqwyOC8Cp53vkhCaLYs+/w92cUfCs1sDu46Q9VSdbCqXhx6bhUD9phTkko7E+qyPgkvoPLdLbuUQYctyNro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=xEKejN2M; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=pyhZSDN/; arc=none smtp.client-ip=202.12.124.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1779297894; c=relaxed/simple;
+	bh=y3tjD6rMTxegPZ3G74BAk72u6S11iQNTtJ2D9z/46Es=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n5KktO7do0ckqGRPM5h/TLJwLfo5KzECbWLqopywpQTK9idBtmGLRCuj0qf4hzrh0Q8HHLal/PQaIFncGPMUvKYXMQIVgcn1C9BBHiAw7SzJxdUUyhtCVhgRkwR/W7r2Zwg+L+QvCm5m7pBWD1zE/qqKLuzWjmLlNb5PVoxBC5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nx1Tz9D2; arc=none smtp.client-ip=209.85.214.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="xEKejN2M";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="pyhZSDN/"
-Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 4480D7A0088;
-	Wed, 20 May 2026 13:22:25 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-12.internal (MEProxy); Wed, 20 May 2026 13:22:25 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1779297745;
-	 x=1779384145; bh=s5dvkWtEODdyoI8bOKVGpIdgoX0fcCuk5jrlqtqFDrw=; b=
-	xEKejN2MNN5XlBB2sNNYbYDhnNkrWsZc/y2/sEaspFQXnhE6F0IYS2uhxR0J0oDY
-	08oCuoP0/GOOkWxscEGyujvYH12gw8YPy5JOdLi8oCMD2QE2Ne2Ir/gEpOgrMHlw
-	wXPbRZyaZnjolilBTzhPUIbjG11YHeJT6ilEYWwWrXqCd4L8xK+HTecgP7MR0E8W
-	7KGQuc7+eq9yvfxdoVLkWswezkMwyBijdhVANgkGID7qzxecI641UPQLHxgDkegB
-	eNXWq3X5tejU19ugLJrAZE/x9jyJwwUzW5rml5opLHTTSd5o4yUo9eVdSWUp+RgJ
-	WZEas8Ipmh9FLTOqI1aCbw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779297745; x=
-	1779384145; bh=s5dvkWtEODdyoI8bOKVGpIdgoX0fcCuk5jrlqtqFDrw=; b=p
-	yhZSDN/dlAAgS7nL+8nwGrn0furYE39opSQHn+7mhKOtr+PPdKanoY1nqU27kjGx
-	QEMWl+p47zmYNB2A5+pOglVRtEZdc9LbfnqDh/d60j9yeo84+VpzSyMaFtnJ7/Ov
-	yS5cZ2oAjHEghQXHon0AL+McOe2U2mKTfi4j/+UvfitR+YpSe3Jz+h2Dj7kR/+t8
-	pgzHcsdhOKT3GYjhQvguDVNT5nWSxNi+PyvSy4vx896odFJOxtWA7yyuNoVp4me8
-	5BXNseW0qK2KmYm60N4bdDuql22doSBgD2c2AGezPGJqVvzlXGwEEaVMiAF7AIF/
-	qMo/nUjiZ9onLRelCczDw==
-X-ME-Sender: <xms:z-0Nap6uAGhrbWj-yDA9NHLz4V_JRy3eLkB7Cv0t3mXcTaCja4_1_w>
-    <xme:z-0NatTLPjWhLfKiToSiSHeOTuYdBuri9V53kVMPWc1W-H_1UVL2swAh2MNcgPwAZ
-    nOgNERAwELaXXM9TQNzTcT7UYPEdVr3zGJb41F2Jgsbp4a1zAIY>
-X-ME-Received: <xmr:z-0NastiPVPkiyr4wY44OJk7WgUN3XBmfqc2Ryr5vn-mfIVdW_q9sngPeEg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddugeehvddvucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfofggtgfgsehtqhertdertdejnecuhfhrohhmpeetlhgvgicu
-    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
-    htthgvrhhnpeegudevhfejueefveduieeuueeifeettdekveekhffgvdetfeelueehgfdt
-    heffhfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepuddvpdhmohguvgep
-    shhmthhpohhuthdprhgtphhtthhopeiihhgrohhguhhohhgrnheskhihlhhinhhoshdrtg
-    hnpdhrtghpthhtohepmhhitghhrghlrdifihhnihgrrhhskhhisehinhhtvghlrdgtohhm
-    pdhrtghpthhtohepkhhvmhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhope
-    hinhhtvghlqdigvgeslhhishhtshdrfhhrvggvuggvshhkthhophdrohhrghdprhgtphht
-    thhopehjghhgseiiihgvphgvrdgtrgdprhgtphhtthhopeihihhshhgrihhhsehnvhhiug
-    hirgdrtghomhdprhgtphhtthhopehskhholhhothhhuhhmthhhohesnhhvihguihgrrdgt
-    ohhmpdhrtghpthhtohepkhgvvhhinhdrthhirghnsehinhhtvghlrdgtohhmpdhrtghpth
-    htoheprhhoughrihhgohdrvhhivhhisehinhhtvghlrdgtohhm
-X-ME-Proxy: <xmx:z-0Nav8RdxoqD3ErBvEx8eGsZeEWHkWQ-wnqJpF55QzG6z8fcsjcVg>
-    <xmx:z-0NalzO25DDQ5AgJps67VEeJrUMzcMwCKyMMcKf2dfapU7_IKTFow>
-    <xmx:z-0Nah_Rdzt0SMwunZQdpQr2FewfigOgo7kqD9yCWoOUoPa2of591A>
-    <xmx:z-0NajPHZxyM38iyvL05FV1dk5lJB3HVgStAma7xB7pKjbedyzHLsQ>
-    <xmx:0e0Nag9IV7Fx8cb0O6p3-2wCg7N27qYmWt3dftVTxmfT2EULehAbvHnC>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 20 May 2026 13:22:22 -0400 (EDT)
-Date: Wed, 20 May 2026 11:22:20 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: =?UTF-8?B?TWljaGHFgg==?= Winiarski <michal.winiarski@intel.com>
-Cc: zhaoguohan@kylinos.cn, kvm@vger.kernel.org,
- intel-xe@lists.freedesktop.org, Jason Gunthorpe <jgg@ziepe.ca>, Yishai
- Hadas <yishaih@nvidia.com>, Shameer Kolothum <skolothumtho@nvidia.com>,
- Kevin Tian <kevin.tian@intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Thomas =?UTF-8?B?SGVsbHN0csO2bQ==?= <thomas.hellstrom@linux.intel.com>,
- linux-kernel@vger.kernel.org, alex@shazbot.org
-Subject: Re: [PATCH v2] vfio/xe: avoid duplicate reset in
- xe_vfio_pci_reset_done
-Message-ID: <20260520112220.274025fa@shazbot.org>
-In-Reply-To: <20260427012128.117051-1-zhaoguohan@kylinos.cn>
-References: <20260424091719.58800-1-zhaoguohan@kylinos.cn>
-	<20260427012128.117051-1-zhaoguohan@kylinos.cn>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nx1Tz9D2"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2b2e8b95bdbso1535ad.0
+        for <kvm@vger.kernel.org>; Wed, 20 May 2026 10:24:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779297892; x=1779902692; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wJhl7WJ2lQSroNNhwKFoiQuIjJsM08m4ektSy1+OM9s=;
+        b=nx1Tz9D2emutkwuM+OM6P5f5s278hQIjrdF6pldisKVJVUD+C8P9Vex6RAT4GqcXBR
+         vUSopWzgy8Umib49eJGTCmdaZ/x932haLx2gJ9iwzSQi7GQJJvcSuIyN1sm4STsoYsem
+         0YJIR60KjJOvYO1Wc5ygE9oNUZrQXWdGk5TUmMsGMif1KebGuEChXuoR4RMsjNXxSr0a
+         rMu4dFnsKR+gj/dfG2jbsEYdfY84GZ1GG6B2q4hpUUbHgd4AqCNdSB5MqtHqRa//8dqD
+         YXGc//vnO4gi5id3yRmeH/jJvlnr6juZWPtdf4LBuXdOgPaeDSphS17XF6bCa5K+XJ6G
+         5yPg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779297892; x=1779902692;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wJhl7WJ2lQSroNNhwKFoiQuIjJsM08m4ektSy1+OM9s=;
+        b=EtGQl8LtH+AMyZkkpqZ7wNAY1sMOHhc23XQE0IjBlo/sdDuPch8Ew1T9K9OoJYeDaw
+         8J/2zcp6hsaS3Y/+4sQusCTAOqtdDpRfOHMJxrEzoKwHiVLWIznKsWmOP8OyfDwoGxut
+         wY1Z435q5O/uTb+fRZd5MWe627/cBhcYcl7cHZA+bP0lKycQQ5jUkbNyd9Cl60WkleBj
+         Jl5UA5wmwCTNc8VvDMnBGpOrXSgTegUiOcnsAcJeZEM5s0gnbMidzHLia/4k46Ovbj4D
+         OVpCB/HLJc3wIUOjyk9WlpZkfYZkGQhelN/CnUcRWjKfZwFycMPzvmXQ/awrAlO7jui6
+         CauQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/8n+PrVOX4rvtmsxQZrEBM86GOVgSfzaDmCMFAujygurdo9sueOD9Tm3W23w4PklIjxh8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxFyXBxBa3ke0ouF65AaI4wXVPvU+3jYhYkiq3ANXtyDDUhhYoX
+	3TRaHB4yB4PPy+uPX7nZ3fo9ey4JIUifLVpg7VEsfbxC0GMuZ35eSzoblSpMFerSwQ==
+X-Gm-Gg: Acq92OHWN+eDhZk4JCLA+OHodzBk2/UTIqypxqxu/gU/JkwfBaH3ct2FUbX6KBmLh/C
+	iBA1wHDpgV86IGrM6L5f+IDpGqMIOghh5PSZvG3CyXEgFLTWSPqr46YrAXDQEST1KWSA1GRTrZL
+	rruhx/S/ZBwnE8w6NMoPPmVLD3HqO3DNcnNgfgSd8Em5vJEYJg5XBowt65gWfqa/qGYabfe7AxG
+	IL4PEmrm1lzPrxdoQERPUlHG0UTeFT9/BKYWY+mrl6awX05sGVwHgwqvRbmICPzniRcgzdgK9U6
+	I5lklpZSgFAm8LsBwgMnNXucbW4SXOENJBmDiydkwVy9uVcv4JtkgYsdhZQN0FnsUgCaX+K5A1N
+	G/XiGnqfdRdS0CNtGf16GsIn1g9QsQKAB5WomQksNDSuA3xbCnuVDte5Zy4RrrLm1bhV4nVSqcS
+	HHt1welQgw120KTqMFtJynjhFXVgV34QPl6hC4GUvsIwuDHqs+pkkNF3pCfBRV5EMD7iof5A==
+X-Received: by 2002:a17:903:3545:b0:2bd:6dad:7cce with SMTP id d9443c01a7336-2be9f448422mr86475ad.26.1779297891648;
+        Wed, 20 May 2026 10:24:51 -0700 (PDT)
+Received: from google.com (153.46.83.34.bc.googleusercontent.com. [34.83.46.153])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bd5c05ffbesm232289015ad.27.2026.05.20.10.24.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2026 10:24:51 -0700 (PDT)
+Date: Wed, 20 May 2026 17:24:47 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Pranjal Shrivastava <praan@google.com>
+Cc: David Woodhouse <dwmw2@infradead.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Jason Gunthorpe <jgg@ziepe.ca>, Robin Murphy <robin.murphy@arm.com>, 
+	Kevin Tian <kevin.tian@intel.com>, Alex Williamson <alex@shazbot.org>, 
+	Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>, 
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH v2 08/16] iommu: Add APIs to get iommu and device
+ preserved state
+Message-ID: <ag3nD8NW9khqxMNS@google.com>
+References: <20260427175633.1978233-1-skhawaja@google.com>
+ <20260427175633.1978233-9-skhawaja@google.com>
+ <agyHS2Tmje4LWogY@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <agyHS2Tmje4LWogY@google.com>
 
-On Mon, 27 Apr 2026 09:21:28 +0800
-zhaoguohan@kylinos.cn wrote:
+On Tue, May 19, 2026 at 03:52:43PM +0000, Pranjal Shrivastava wrote:
+>On Mon, Apr 27, 2026 at 05:56:25PM +0000, Samiullah Khawaja wrote:
+>> The preserved state of the device and IOMMU needs to be fetched during
+>> shutdown and boot in the next kernel. Add APIs that can be used to fetch
+>> the preserved state of a device and IOMMU. The APIs will only be used
+>> during shutdown and after liveupdate so no locking needed.
+>>
+>> Signed-off-by: Samiullah Khawaja <skhawaja@google.com>
+>> ---
+>>  drivers/iommu/liveupdate.c       | 57 ++++++++++++++++++++++++++++++++
+>>  include/linux/iommu-liveupdate.h | 31 +++++++++++++++++
+>>  2 files changed, 88 insertions(+)
+>>
+>> diff --git a/drivers/iommu/liveupdate.c b/drivers/iommu/liveupdate.c
+>> index 765d042e22e3..60ee29b0c6bd 100644
+>> --- a/drivers/iommu/liveupdate.c
+>> +++ b/drivers/iommu/liveupdate.c
+>> @@ -17,6 +17,14 @@
+>>  #define iommu_max_objs_per_page(_array) \
+>>  	((PAGE_SIZE - sizeof(struct iommu_array_hdr_ser)) / sizeof((_array)->objects[0]))
+>>
+>> +#define iommu_liveupdate_for_each_obj(_arr, _obj, _idx)				\
+>> +	for (; (_arr);								\
+>> +	     (_arr) = (_arr)->hdr.next_array_phys ?				\
+>> +	     phys_to_virt((_arr)->hdr.next_array_phys) : NULL)			\
+>> +		for ((_idx) = 0, (_obj) = (_arr)->objects;			\
+>> +		     (_idx) < (_arr)->hdr.nr_objects; (_idx)++, (_obj)++)	\
+>> +			if (!(_obj)->hdr.deleted)
+>> +
+>
+>Nit: While the usage of this macro is safe right now because we use
+>goto out; to short-circuit the scan. Such naked nested loops inside an
+>iterator macro can be a bit of a trap for the future.
+>
+>If anyone tries to reuse this macro down the road and uses a break;
+>statement, it will only break the innermost object loop and continue
+>scanning subsequent array blocks.
+>
+>We could nest two macros or it as a helper fn to prevent such bugs.
 
-> From: GuoHan Zhao <zhaoguohan@kylinos.cn>
->=20
-> xe_vfio_pci_reset_done() sets deferred_reset and, when it manages to
-> acquire state_mutex itself, hands the cleanup off to
-> xe_vfio_pci_state_mutex_unlock().
->=20
-> That helper already clears deferred_reset and runs xe_vfio_pci_reset()
-> before dropping the mutex. Calling xe_vfio_pci_reset() again right
-> afterwards repeats the reset handling unnecessarily.
->=20
-> Fixes: 1f5556ec8b9e ("vfio/xe: Add device specific vfio_pci driver varian=
-t for Intel graphics")
-> Signed-off-by: GuoHan Zhao <zhaoguohan@kylinos.cn>
-> ---
-> v2:
-> - Correct the Fixes tag to point to 1f5556ec8b9e
+Agreed on all points. I will change this to two nested macros.
+>
+>
+>>  static void *iommu_liveupdate_restore_array(u64 array_phys)
+>>  {
+>>  	struct iommu_array_hdr_ser *array_hdr;
+>> @@ -201,6 +209,55 @@ void iommu_liveupdate_unregister_flb(struct liveupdate_file_handler *handler)
+>>  }
+>>  EXPORT_SYMBOL(iommu_liveupdate_unregister_flb);
+>>
+>> +int iommu_for_each_preserved_device(iommu_preserved_device_iter_fn fn,
+>> +				    void *arg)
+>> +{
+>> +	struct iommu_flb_obj *flb_obj;
+>> +	struct iommu_device_array_ser *array;
+>> +	struct iommu_device_ser *device_ser;
+>> +	int ret, idx;
+>> +
+>> +	ret = liveupdate_flb_get_incoming(&iommu_flb, (void **)&flb_obj);
+>> +	if (ret)
+>> +		return -ENOENT;
+>> +
+>> +	array = phys_to_virt(flb_obj->ser->device_array_phys);
+>
+>Nit: phys_to_virt doesn't return an error for NULL. While we shouldn't
+>be in a case where serialized ptrs are NULL. I'm wondering how painful
+>catching such bugs would be.. should we check for NULL phys_addr here?
+>(and at other places)
 
 
-Micha=C5=82, any objection?  I'd prefer to include this with your ack.
+Agreed. Will update.
+>
+>> +	iommu_liveupdate_for_each_obj(array, device_ser, idx) {
+>> +		ret = fn(device_ser, arg);
+>> +		if (ret)
+>> +			goto out;
+>> +	}
+>> +
+>> +out:
+>> +	liveupdate_flb_put_incoming(&iommu_flb);
+>> +	return ret;
+>> +}
+>> +EXPORT_SYMBOL(iommu_for_each_preserved_device);
+>> +
+>
+>With those two nits,
+>
+>Reviewed-by: Pranjal Shrivastava <praan@google.com>i
+
 Thanks,
-
-Alex
-=20
->  drivers/vfio/pci/xe/main.c | 2 --
->  1 file changed, 2 deletions(-)
->=20
-> diff --git a/drivers/vfio/pci/xe/main.c b/drivers/vfio/pci/xe/main.c
-> index 4ecadbbfd86e..cbff5af385ef 100644
-> --- a/drivers/vfio/pci/xe/main.c
-> +++ b/drivers/vfio/pci/xe/main.c
-> @@ -135,8 +135,6 @@ static void xe_vfio_pci_reset_done(struct pci_dev *pd=
-ev)
->  	}
->  	spin_unlock(&xe_vdev->reset_lock);
->  	xe_vfio_pci_state_mutex_unlock(xe_vdev);
-> -
-> -	xe_vfio_pci_reset(xe_vdev);
->  }
-> =20
->  static const struct pci_error_handlers xe_vfio_pci_err_handlers =3D {
-
+Sami
