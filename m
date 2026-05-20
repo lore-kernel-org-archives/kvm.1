@@ -1,130 +1,179 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from MW6PR02CU001.outbound.protection.outlook.com (mail-westus2azon11012044.outbound.protection.outlook.com [52.101.48.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 668B733ADA0
-	for <kvm@vger.kernel.org>; Wed, 20 May 2026 15:36:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779291378; cv=none; b=QfoyDsDGezzZtp7LokxPwqwR95XZeZj2M4FKxdbIdjrulYg7qI0mI63bjCm7mMcNtV0ghfvcaJIYzir7vj0bjBI7NCtzZmpOHBU4+aUPjVXT23Y5MN/W1XQx6KC1w2siI4gDVEsUNy2WyIfCswmO+6KwPFuxccKSlKSiA2de3UE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779291378; c=relaxed/simple;
-	bh=9pNwd+Wy3/fRFaXrGPSHIDObpYDsHwUj/iGsrNgTHeo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Gj80Jia6jYONetYLdwKiC7O/EWNEaA1/hM2JQcDvod6SSV+9YkulQeHyPDmWMX7Lw4UhCs+qv5MTIwJwh8b5WwMQdL5lUMRh0aMxO37cHXqKE6EKzc4I3IUkIAPqx7JQ4BtAvhKmLBsNVSOiLFQIeCjW6VPrtakNJeeXCRVV1y4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JJmwvChG; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0719732BF24;
+	Wed, 20 May 2026 15:47:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.48.44
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779292074; cv=fail; b=Jxn1QAl4RRKP970phjjJHYvORqw0nIQTocxWhLsDGXjRWT+gkV+jNfq45PXreCS59+0U67G45pHZ5ixbvpzGvAhUZYJw0Fue55bQOxole3wsvTTZzGzQb9l0MFMN7WM+gB5N9Ay4r9H54FUW7csOW0dgQ9Hb3rBKBMWS5us3Vso=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779292074; c=relaxed/simple;
+	bh=p8aRmlytLkDjaB+TXf6RGanIuWhttFdSoUzsuZzW8ME=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=MxbL8VJ78MCPTH3JgOTHo6kV8VN4oWBgFyB5nh1PFuRDgpZyEFN+Q0VamswNhCcxxGmYYybucJOcJL6BKAZ8tNqRj2ra1G1bV5jliHqKIBJWQyM61bxLVpMidTKp+k97tLqfRLO8Jb89dgPkFdL9FoAbQMisgFcW6saeAAn2p6I=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=XctBeU2b; arc=fail smtp.client-ip=52.101.48.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JJmwvChG"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ba268cb5e6so51928205ad.1
-        for <kvm@vger.kernel.org>; Wed, 20 May 2026 08:36:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779291377; x=1779896177; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zOaR3KhtByvkV/ZXK0i0RHv1Sn7RvIHKRxyfenEcrQU=;
-        b=JJmwvChGIY5hEe32L+Xx85ibao6cVJtNwjNUeFX1+60F86LvScj/qmGY1kzJlozi4w
-         piAIKMmbhz5eoI6pvDf5D9DNnUtOM527v5cax18Shy1bdD8PlRr4LyGRhGZ3PP/dmUmY
-         Tt+IItwQBUtWTLHQQ5f320olFioeiGbmfdB+nekpOOnz+1JJisvQR3NB2upUmlaNMjy3
-         v7pKsbQuvpt4DQz02JKlBkBrjjvx7aMsomn2S2L2MKLVhpo+ZFl6jYhtRwFUAEc4mL6C
-         RYH9w3iHCR6sAYpi89iqnce0GYwEqEK/WqAT97W5h3EsbXyhCqCE4RSvyxtCkT5hSmau
-         dvMQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779291377; x=1779896177;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zOaR3KhtByvkV/ZXK0i0RHv1Sn7RvIHKRxyfenEcrQU=;
-        b=mL6QC3leNBE62tZVHVxsdVDSSWNHcjvikrLppMEDfTP4IYgGJeyN+nBdnM+V2tUjpO
-         QpkFVBThLLQaII+O1xsRzisSNZz3DMFFZ9D9bZ0R05x/2H33RW0BeJxvDLSIAQcUye6r
-         E2QteX4tFdshEDKHAESfFFWdWJ2Em2hVmmNCe+1uZ6baPgIKMZTeckfWZJRfMuPAlrE/
-         2Gv3wvPPmR5/r03eF93qMpfsFjXoQjABEuIGKbDsNgh7KUwYmWadOF8EVk/D0+SrmRZK
-         kLA9vfvAp+ca3uDEHpHr/qtXqeZ/wlxfuNU3DKp+R9pOhBGobZEY8nhGVgfETihO2ZX4
-         7MbQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/iD9Fre6BVSWSCfvFqAqz/X8+Nm1nkZsxT/DiX+K+L+i8uIKwQ4YDZ/+lqMsw09pzbQxY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLdfb3b0WlTX5xlEWKOVmNwAO8MtRiKM6RTairevjRIpsZCOPa
-	DRhCSaGk1Sey6u3gsh5Z8mVQe8jjbe95z0hYc7Xw7y8iOzvYZzQAZEke+WbNgATS4l7BHfPqLwM
-	ZGfRG4g==
-X-Received: from plbl12.prod.google.com ([2002:a17:902:eb0c:b0:2b0:aef9:a5a2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1b25:b0:2b2:5515:661c
- with SMTP id d9443c01a7336-2bd7e8ca3d7mr349840855ad.31.1779291376624; Wed, 20
- May 2026 08:36:16 -0700 (PDT)
-Date: Wed, 20 May 2026 08:36:15 -0700
-In-Reply-To: <9f1ba406-7638-44e5-bf0d-8aa27be24a59@intel.com>
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="XctBeU2b"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ah6IfzAcl2gEGCVlbTnm2y8RpbIthn8Xx3JIm0O4J44TYmDzPkQjsos2ONiEqlaoo9QSylwNdN4vj1PGUT8Ng1vkqdSFu7QQE4/sKCmynatZX+4Vp5yFKMWC4It/Y5kJhvDT5mQHM5ocM0Aka/0J8TjW0vQvwTJQhJ+ekIXjn2eQ1ceRqPt/Yp34kZV1sEcqWHiBed1laPFmOZpyiWpU04t0xd5CWSrDjm42YxlGQ7i5INvtcTZBhwFOc7PfgGvhKtQbCEGP1P1/pdtkreMgbuh+ZCMi75SC4jPcvbEGSFKpGro9rJit7FHZw2UMi6gC/S0O8K33CxgPr/NTmeFceQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=FFXrOXLNo2NFnW8XTdpUucgGQfPB0ab9/HFASfREelE=;
+ b=O6oKRhpTreimVtT+hKUlnV0bPba1jH/gDO9ylML8+e/El9wDl+gTZ5pzgfXgrptOFOIkIjuV3YxnRHNo2ja7aEcm0DEsOandOZtdAKAcL4naFfVsONQ4jwtAmmR6W1m5xkiKhoToeXx8IkYJB6J9Dvs3MODqVSBv/QAcGn0BVk4CINJA8Na6yyuzKG/0qVMLaVEhCnqhEtk52fO9nKUUznwXk5rlSpDPtpY+yEg2RzcNtw+7NFoDaoMz0z0jcu+kpl8+AocJn+HwDs7jjz9VzpWtZkKnv5WH/sLvvicMQOMgA31S+aordiF+Tqv7rIjb4KKU+UmvdbaJoUJpKggAbQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=FFXrOXLNo2NFnW8XTdpUucgGQfPB0ab9/HFASfREelE=;
+ b=XctBeU2bC9oInIKLnzj/NtkMqljYA2pZmPZMLRPAmehvXnvot/LbnWvG18VYZC4yG91EEFIvkPwCJt/chJR+qxiUZCB+BxFy08j+dUGBQYPJaL3daBu6cL7ArFn/8Q8aSiQIFNSXMnQ3B8YNyswagFuLZdq6X4QdzH7GI8FAoHCA6w88VyPAaQTicsZvL3iovZLLkNk9k9TcMFbYNqMK6+yOKZTekmm/XL2mGQ73Y3NDVCsgarp1pLuwoaIBrmkChihJ0Wk8PtXE91+mhV4o9j51numi8AdE9Ab7S+VURjLC00oi4vr/n+e53JNgQS0YUgo5qN+/ePjuMW8ZoT2etw==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com (2603:10b6:0:4b::8) by
+ PH0PR12MB8006.namprd12.prod.outlook.com (2603:10b6:510:28d::8) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.21.48.14; Wed, 20 May 2026 15:47:49 +0000
+Received: from DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8]) by DM3PR12MB9416.namprd12.prod.outlook.com
+ ([fe80::8cdd:504c:7d2a:59c8%5]) with mapi id 15.20.9913.012; Wed, 20 May 2026
+ 15:47:49 +0000
+Date: Wed, 20 May 2026 09:47:46 -0600
+From: Alex Williamson <alex.williamson@nvidia.com>
+To: Eric Curtin <ericcurtin17@gmail.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Ankit Agrawal
+ <ankita@nvidia.com>, Jason Gunthorpe <jgg@ziepe.ca>, Yishai Hadas
+ <yishaih@nvidia.com>, Shameer Kolothum <skolothumtho@nvidia.com>, Kevin
+ Tian <kevin.tian@intel.com>
+Subject: Re: [PATCH] vfio/nvgrace-gpu: add GB10 device ID (0x2e12)
+Message-ID: <20260520094746.660ed777@nvidia.com>
+In-Reply-To: <20260519194545.41503-1-ericcurtin17@gmail.com>
+References: <20260519194545.41503-1-ericcurtin17@gmail.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: SA0PR11CA0005.namprd11.prod.outlook.com
+ (2603:10b6:806:d3::10) To DM3PR12MB9416.namprd12.prod.outlook.com
+ (2603:10b6:0:4b::8)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20250811063035.12626-1-chenyi.qiang@intel.com>
- <20250811063035.12626-3-chenyi.qiang@intel.com> <9f1ba406-7638-44e5-bf0d-8aa27be24a59@intel.com>
-Message-ID: <ag3U77kKME3LM6at@google.com>
-Subject: Re: [kvm-unit-tests PATCH 2/2] nVMX: Test IA32_DEBUGCTLMSR behavior
- on set and cleared save/load debug controls
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Chenyi Qiang <chenyi.qiang@intel.com>, Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM3PR12MB9416:EE_|PH0PR12MB8006:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9e335f4a-c405-4237-67c9-08deb6872503
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|376014|366016|11063799006|22082099003|56012099003|18002099003|3023799007|6133799003;
+X-Microsoft-Antispam-Message-Info:
+	uPM0uARqkVGsrzXQoX2ETALFbWHNQFSwxOqZ1an+c1ws5cFdsAR6chJgFXvmgnD/AcKL29xLq41vsko6gHRkyMYBpLUlpgnC65xJ65jM/L0EBGAmhWtrMwwRUUODrsYtDPh8yvbh/3h4SXkEsO9zzfVCud+K/spocBKREbxV/PLNsD4GREidj07y6CtW62MmEyeCKx/h0v6gvLu7vQZcvN3r3mQcBD2a1ujS/NWWMuHppwRvTYDFPbji0lMqaEYrfFfWOdHtgcO8VWYtOJwRaXLeXMhUoWMOjuFesJYpYxWdAovmXVMsdKOyXQOMLEpVRrapHey42F4gxzp3CIKoe3BMFHpbzsn0/RLI+HV93De9IqEHNrjz0Nf/O4mV2SlQaOFIPvbtNIOU92ki26daOoGWDEyAtJ2BZxYoILZEBtOfAWyM7QvHUUNcAHhgFUFB9oVHVNH5Xs4g4rIzCuIdq4dLT3kP7GpLFuKaSmrzc2YZoRnQ2j3LJNuHvIKSubcNMCgUaEsU4ulFhpqXFiiY/4JGn4iHqKTQwgP6j4osEHn5ju+2Ay+qMkJteI3i4sF+4iPFy0CwZBjlJegVjYlY2wQcChmEZ5uRRsbDlF1orlkAD2+KdNi8rC1vk23a1RT/D8VF+0XCCf7nSaLY6ds4C0abiuvm3PC/8Hv/LnqI8+x+t2njzJrMuJKKt2qpE4Ko
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DM3PR12MB9416.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(366016)(11063799006)(22082099003)(56012099003)(18002099003)(3023799007)(6133799003);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?gK/uIaG8A8e8bD1W+0qBGLxMV7SL96eCmi1urD/JnQ7Xx13UbMFWBG/25sUs?=
+ =?us-ascii?Q?hjyzd+Mjs1fAXvrJn64ZqO1qV9aGKt//UgQ6jyEbOjeSd8FObMHgIqwwim/i?=
+ =?us-ascii?Q?Q0hl2O2rqfDThdD0LxdfaSLv1G/tDDzgGT7OEFqSN7sGCTk3+lFk66H48Mr7?=
+ =?us-ascii?Q?H6mNxUodNGlWvNQLgKhzxttGKWUbWk/KXYNAmr/Wvb3H6Zwpwb/3KOTMlu0O?=
+ =?us-ascii?Q?XWD4AR3iy+stPmS9hfxGnVM6NlJQudmPMG8iSoBWOMyaUiGvlZzNIh/5vHqW?=
+ =?us-ascii?Q?N10zRoOwI8Zft6PbIVIADCLzs2FeoKf7BnMUJaoeOvJjxp/h3DCIprLTdTZr?=
+ =?us-ascii?Q?CUXF712hKN+o20+Ybtznw0NZ8PllwT3hxWE0jS8aFNazcybGp059n7bc1wzU?=
+ =?us-ascii?Q?bKIc+n/93271J5bcPFqJnQYwEufHlTxaC/QV1n9tqKr24711kxSNC0pe20i4?=
+ =?us-ascii?Q?QBH5RHFpI9GENjElId5GIR6DY1XiiCYfNxR8tYPJeZRoscoo7+rlSYio/uj0?=
+ =?us-ascii?Q?SogBuzrLqT60MIVStwJ7S8Db3naY3tbCtmwt/nPT7NkutfDs6VW8PXZ9l5y6?=
+ =?us-ascii?Q?yxnx2gj65VwsGX2O6aWwGDIH+D9eK54Es0ITyL7nXyneIyJRxuWQflRgKlmF?=
+ =?us-ascii?Q?Z8LIOX1dhCTLCVKgFgM8A85RrdU05o2QHwBE5sRUVjPRDFq82++oe8p6hox+?=
+ =?us-ascii?Q?Zg2TZSi4rYI/hhz18Fjc2Cw+mChuw5b+crmAhIxC6wvr8HRAFZY9NlDxIg2o?=
+ =?us-ascii?Q?HacDgLIFU/CgsLLQEILHOdVCrhNqRu3Sv7rI9Xr6Dxh5d1qldN60Q+1hypfA?=
+ =?us-ascii?Q?61wGuY+sa22KhLaoSQeLiLVXC4ud0nEcsK7NTrCDEe5P0uqhMN21kShPx0M7?=
+ =?us-ascii?Q?6mjaO950p86ohnlrkyRFk5UtIg3PJRGFjDb5njw1OK22IeV5FEczmAMssyJ3?=
+ =?us-ascii?Q?HFByaONT6JAthpCxuSR/+7VjravHXgK1DPG4kWWYfewVjrqgZ8eoAbezqBv1?=
+ =?us-ascii?Q?Yj3B0EAwh6Ea07E/8Zc5fiDwbn6SKcNxymVRgZmuVbbAsmxnd/zLVCqLOVse?=
+ =?us-ascii?Q?UbwhpeyJ/rMNnpZ1IIPyh9H9/4oD9iFH3h10xIce9V7JqGQmNIIg5oc25O7e?=
+ =?us-ascii?Q?uWWGAeQH4T2/R0y87VUHDDZ9ZPkAb/W0FVAJdnJ8Q5qPJMhxjNGYewlRPMey?=
+ =?us-ascii?Q?Ch/ZMBsRItYXCc8vhc3LDVOULnEQhHyguyGmzrEV84Tq0ugHfvNK4152GZ+i?=
+ =?us-ascii?Q?9jLUOKtpmtUHlMc0O0cD+UEGEPd6J9B276FNb4LtRY46t6+x9lg0Wm5QZ2aD?=
+ =?us-ascii?Q?DaeO7EUtbQ/HKj8Fs6qKmw8jlWjRqJuk7QNuyhiDewxQppcn0aP6ruXK/mZM?=
+ =?us-ascii?Q?wzJYlkNpMWGwGr7SZHRceBxFn54EcMw70yuSlFK39LD7iPhqzTXtrrhCDtsJ?=
+ =?us-ascii?Q?9ystffzFoKA8Am+VewZsvjstOrp13JHT4ose0NDxx4YnwhDaq0X4Iuv4TaH7?=
+ =?us-ascii?Q?h7u7akcS32uFWOCSKltO977j44jfIEQcZsX2O1nlg+mkq5Kxa84rcNV4fqrv?=
+ =?us-ascii?Q?Nyqq6MZKdUn66xthRtqRhLulE8Q+e3IdTJLZ7vP31zyRL8FkY+k4+dmN/FzC?=
+ =?us-ascii?Q?g7EcuFk6wpsU3/ic6BiPK5VOiXNXPsandgiQF6z60vQsqf7bA9jLL8gKXdMQ?=
+ =?us-ascii?Q?vdgJEGXZxZm6MoetUUeTOdVOgzOCFNmGMACpUBzoeZ9ESxCaVGkFoVM32s5Y?=
+ =?us-ascii?Q?RH5R9ugYbQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9e335f4a-c405-4237-67c9-08deb6872503
+X-MS-Exchange-CrossTenant-AuthSource: DM3PR12MB9416.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 May 2026 15:47:49.3154
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: TBcTxIBgiRYPY/AeE2/vXRAM1tI78Ucmy6oHfB22pYYNIImX2gAmMbAIWNDncJiUbO8GXSa5kSr+FnOvb+3BnQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8006
 
-On Mon, Aug 11, 2025, Xiaoyao Li wrote:
-> On 8/11/2025 2:30 PM, Chenyi Qiang wrote:
-> > Besides the existing DR7 test on debug controls, introduce a similar
-> > separate test for IA32_DEBUGCTLMSR.
-> > 
-> > Previously, the IA32_DEBUGCTLMSR was combined with the DR7 test. However,
-> > it attempted to access the LBR and BTF bits in the MSR which can be
-> > invalid. Although KVM will exempt these two bits from validity check,
-> > they will be cleared and resulted in the unexpected MSR value.
+On Tue, 19 May 2026 20:45:45 +0100
+Eric Curtin <ericcurtin17@gmail.com> wrote:
+
+> The NVIDIA GB10 GPU (device ID 0x2e12, found in DGX GB10 systems) is a
+> Grace-Blackwell chip that shares the same NVLink-C2C coherent memory
+> architecture as the existing GH200/GB200/GB300 entries.  It exposes
+> CPU-coherent device memory via the ACPI DSD properties
+> nvidia,gpu-mem-base-pa / nvidia,gpu-mem-size and requires the same
+> specialised BAR emulation provided by nvgrace-gpu-vfio-pci.
 > 
-> Initially, LBR (bit 0) and BTF(bit 1) have been allowed to write by the
-> guest but the value are dropped, as the workaround to not break some OS that
-> writes to the MSR unconditionally.
+> Without this entry the device falls through to the generic vfio-pci
+> driver, which fails the iommufd IOMMU_RESV_DIRECT check because the
+> NVLink-C2C memory apertures appear as RESV_DIRECT in the IOMMU group
+> reserved regions, yielding:
 > 
-> BTF never gets supported by KVM. While LBR gained support but it depends on
-> PMU and LBR being exposed to the guest, which requires additional parameters
-> to the test configuration.
+>   vfio-pci 000f:01:00.0: Firmware has requested this device have a
+>   1:1 IOMMU mapping, rejecting configuring the device without a 1:1
+>   mapping.  Contact your platform vendor.
 > 
-> On the other hand, DEBUGCTLMSR_BUS_LOCK_DETECT chosen by this patch doesn't
-> require additional parameter, but it requires the hardware support of the
-> feature. IIRC, it needs to be SPR and later. So it has less coverage of
-> hardwares than LBR.
+> Tested on a DGX GB10 system (aarch64, kernel 6.17.0-1014-nvidia).
+
+This is proposing a patch against upstream v7.1-rc, not a vendor or
+downstream kernel.  What relevant testing against upstream has been
+performed?
+
+It's unclear to me how using the nvgrace-gpu driver rather than
+vfio-pci gets around a RESV_DIRECT mapping requirement on the IOMMU
+group.  Can you elaborate?
+
+The requirement is enforced when setting the group to a container for
+the legacy path or when binding the device when using iommufd.  Both of
+those occur irrespective of using vfio-pci or a variant driver.
+
+I also don't find that a DGX Spark GB10 exposes the ACPI DSD properties
+claimed here, so while the architecture may be similar, the support for
+the nvgrace-gpu specific functionality doesn't appear to be present.
+Thanks,
+
+Alex
+ 
+> Signed-off-by: Eric Curtin <ericcurtin17@gmail.com>
+> ---
+>  drivers/vfio/pci/nvgrace-gpu/main.c | 2 ++
+>  1 file changed, 2 insertions(+)
 > 
-> I'm not sure the preference of Sean/Paolo. Let's see what they would say.
+> diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgrace-gpu/main.c
+> index fa056b69f899..ac1acf41df86 100644
+> --- a/drivers/vfio/pci/nvgrace-gpu/main.c
+> +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
+> @@ -1244,6 +1244,8 @@ static const struct pci_device_id nvgrace_gpu_vfio_pci_table[] = {
+>  	{ PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_NVIDIA, 0x2941) },
+>  	/* GB300 SKU */
+>  	{ PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_NVIDIA, 0x31C2) },
+> +	/* GB10 SKU */
+> +	{ PCI_DRIVER_OVERRIDE_DEVICE_VFIO(PCI_VENDOR_ID_NVIDIA, 0x2E12) },
+>  	{}
+>  };
+>  
 
-I would say add dedicated tests (for BUS_LOCK_DETECT and LBR), and get any coverage
-for KVM's handling of DEBUGCTL reads and writes as a side effect.
-
-> > In this new test, access a valid bit (DEBUGCTLMSR_BUS_LOCK_DETECT, bit 2)
-> > based on the enumration of Bus Lock Detect.
-> > 
-> > Signed-off-by: Chenyi Qiang <chenyi.qiang@intel.com>
-> > ---
-> >   x86/vmx_tests.c | 88 +++++++++++++++++++++++++++++++++++++++++++++++++
-> >   1 file changed, 88 insertions(+)
-> > 
-> > diff --git a/x86/vmx_tests.c b/x86/vmx_tests.c
-> > index 1832bda3..9a2e598f 100644
-> > --- a/x86/vmx_tests.c
-> > +++ b/x86/vmx_tests.c
-> > @@ -1944,6 +1944,92 @@ static int dbgctls_dr7_exit_handler(union exit_reason exit_reason)
-> >   	return VMX_TEST_VMEXIT;
-> >   }
-> > +static int dbgctls_msr_init(struct vmcs *vmcs)
-> > +{
-> > +	/* Check for DEBUGCTLMSR_BUS_LOCK_DETECT(bit 2) in IA32_DEBUGCTLMSR */
-> > +	if (!(cpuid(7).c & (1 << 24))) {
-
-	if (this_cpu_has(X86_FEATURE_BUS_LOCK_DETECT))
-
-> > +		report_skip("%s : \"Bus Lock Detect\" not supported", __func__);
-> > +		return VMX_TEST_VMSKIP;
-> > +	}
-> > +
-> > +	msr_bmp_init();
-> > +	wrmsr(MSR_IA32_DEBUGCTLMSR, 0x0);
-> > +	vmcs_write(GUEST_DEBUGCTL, 0x4);
-
-Please add #defines, i.e. don't use open coded magic literals.
-
-> > +	vmcs_write(ENT_CONTROLS, vmcs_read(ENT_CONTROLS) | ENT_LOAD_DBGCTLS);
-> > +	vmcs_write(EXI_CONTROLS, vmcs_read(EXI_CONTROLS) | EXI_SAVE_DBGCTLS);
