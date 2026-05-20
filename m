@@ -1,68 +1,68 @@
 Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E21AF372680
-	for <kvm@vger.kernel.org>; Wed, 20 May 2026 20:44:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408102C11E6
+	for <kvm@vger.kernel.org>; Wed, 20 May 2026 21:02:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779309877; cv=none; b=hz3JEoyibMG+ZnTzdrLrEoHdLc/h+LmAfTa/E4uAEPV2Ia1NYozVgWNPtu/LXAmPY9IxAQ6R8j21QcgHOK7vqwcX4gWLdnEZYVc0wo3w4KCZ/YCGSRPF7cmpHQMGdNfHD3Vqc5y2ucwsr4Cwqgh+gyKJZ1bF+eDslB6jvw5Ks+g=
+	t=1779310950; cv=none; b=MU3JZ5ygV0l/WSQ09Qo+mbv9Z92zcHneY5KtW6Q8Oa4imFPZKhYoz88hatgObEz0lWDo8PBQkUyyNaZlS2tHcVvE6SJ4nf1c2XzFhMq14Uu5OgdsgOaKcYM2dyKgSvIOcL8C2VsU1et9V1KRkRUy3taWr83i3RDnRVj59mSTOQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779309877; c=relaxed/simple;
-	bh=IW0P0lI7zkBdW6OLQZ3hQpRobomfyoPHqaWIuK3lA7w=;
+	s=arc-20240116; t=1779310950; c=relaxed/simple;
+	bh=/SyQLtBraYhS5/8VMnaEdQSNY3tBbZxFagWmgPcJqrU=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=es3js5HT02LhZZUoBlUf5stsAbl7txAN2m1Hhm6yBWylzdAfRx6Xo9rkf4HVam01liBivUnyAQfYfcHEReHKpK8h+W2lHVhCGU42HfHGN4Q2SB2Bwbffq9aD27fzQ15HhKO0uWK937QFw7YXydCx9tpW9z9MVBptpj356X/Ddrg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mID9EuvA; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=R0yC7jOyYK65PeGNE/zlQNhtrLCGp5imv2DZe3kboqNcGfBhHfY7KKWOouGd59bhadLgjzJ95K0QuSdCct5Ukpgq7NswlbcEIhJk3NqtZhaOY5kcFkKbKrCrgOB6Z0zzmlUZotxCcx9kV8+fSE0dTdfCBBXx8A6/j7D5Xi73j1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rYYAhFQy; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mID9EuvA"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c8271fb43d0so2931192a12.1
-        for <kvm@vger.kernel.org>; Wed, 20 May 2026 13:44:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rYYAhFQy"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c70ea91bfe1so3013223a12.1
+        for <kvm@vger.kernel.org>; Wed, 20 May 2026 14:02:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779309874; x=1779914674; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779310947; x=1779915747; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=Mknx5aOiI2gHqgCD2H8iHmrBA38hthuUh1cz4/8g/LE=;
-        b=mID9EuvAW0u/A4WfZOo77IBVr2CLCReaozhsEMfWMdwNPu7hOi9jDKoPGF7Svq4R9C
-         FftY5EMM3Ow/CAVCa7cxgNh4qwSJkpuUmMjVz45ub+o4BPr8211K7lrdxYKtLQE7PKNu
-         kTo4yNjTgLadFSTPKVAYXFZ3fnHtrD1OfPZ2fko81laSTF+hMZv+idRSlUbsN4eby+09
-         QPqOUacZNUGcUmXeGXOXGZN+yf5EMQscqSGOH/kxBv/BCXWK1zSpTiYGU+5vtyP3ZPud
-         fvMBpsaRdz6KA2wt+AP0MZa14Uf9XBXkCWftdAn0VxyARcTifIgFQrggklAAXNJV0PIi
-         vVpA==
+        bh=IMxqN6rGG5Sakxt9VTCj2ZelG+Z0Re7U8JKIeB5aot8=;
+        b=rYYAhFQy9vD0gBQ3+G3dns6dwND0hNmtAFduiSdduwZVLMOvJ8uQW3Z3cWWZ0LhBV8
+         XZ6FJft/Z1Jxu40v9a89TnBiWWdzrWhfCh4uqNPugsAQB1prOpxZ+2/lnuD2HkAOlyCx
+         CWM6hfCXr7h+uFMy+ZMgs/1kyg5B4fl6OfUudPPcoZcLFHqk1TYksy1u4mNTni0gBvlj
+         Q47tEQQGybK+qGGh6ep1swxtIGoZRW1brRlnBZS++Sp2WzU9T0rKoQjaLt3Lik7enEaP
+         TjjN/GBixeoEpM2UnPvgQ7NGodPzOEkwLiWh0OcuXcmKlWTT1A8c7OMiCrXrv4mr/RLO
+         AsNQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779309874; x=1779914674;
+        d=1e100.net; s=20251104; t=1779310947; x=1779915747;
         h=content-transfer-encoding:cc:to:from:subject:message-id:references
          :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=Mknx5aOiI2gHqgCD2H8iHmrBA38hthuUh1cz4/8g/LE=;
-        b=a0LyXs9ICEp7FDKoE5GicQwvzKSKy6LjngulDDRk0XkY550zZxDzAA3VZVMGbPte5X
-         7iCTTY3aSegrCTCTzX++GM4auOTIifUd53RSgtNR3wSmTCqabD2cZ8zYt38/ZjsUY0ie
-         9z+CLxuaRh0VzLaKg6onpBtKL3jM/c3mXbu7O0UzmtunSWJ4b8F8s9batPmIKeR+UsUo
-         rDZPhdluW9huikcjJp22UPchDZYC//QkNHToWS6aNfe+VozcD1rSZCibGtg5vv6/lfit
-         s1BHRR9UW3zH9tQI8qp9Rfq1x1Y6Z+b09VoucGcPBolnfrUI8EtCLZUZTV47o6Iiziat
-         EQRQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/wjZEluAt/9ErJW62yruvyNkZJ1/BlOGo4Mq3zNZYN4eZyyyOgh4zhYY/wiDSheggS3Pk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxdtfIJqY2+gLyxTqze+VZWLwM3DsfaOPbu2cbUKrPNl+2/Pmyq
-	yPG2dUV6arQ1ueiLdvgH+BroVzQkVRtuIotvyQwXmdgdksvDEq5cmSF5V4nQdqU4NEHgBY7oZ98
-	EcqGtlw==
-X-Received: from pfbmd16.prod.google.com ([2002:a05:6a00:7710:b0:838:4903:1f13])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:c86:b0:837:eaa9:381f
- with SMTP id d2e1a72fcca58-8414aaf9e7emr187969b3a.0.1779309873801; Wed, 20
- May 2026 13:44:33 -0700 (PDT)
-Date: Wed, 20 May 2026 13:44:33 -0700
-In-Reply-To: <44e0d60548d317fd59895f18bd17220dfb2f834b.camel@infradead.org>
+        bh=IMxqN6rGG5Sakxt9VTCj2ZelG+Z0Re7U8JKIeB5aot8=;
+        b=neqYBlCbU6tV2ceNGfdOARf7SAVqPUrjELwNdGn3i7S2LonoF+qm6VdjhxM8QrpG0q
+         Tv9n69UwT7ZyInthprSEOQH07AT/R2GwNU7u0G4cwoY/1ozFRgPcZ+C+3BVq+wdNVgvO
+         U4CmLYZp/zalNQalkj7HrSDo+7OmSfKsdX3su1cwV5eDLCDoE1QLrM56rh50dmcIN7jT
+         8eoEEHz+CbPeU0Rplo1FP+8AqfIn5tIEHXowOzBfCo32etbD1LeXoCAiQJkvfTZbKTr8
+         l+bOVvFChBlR758tzU5utKuCH8WE307lGsQ5vetTpsyPnanMCAIej330rlOyZsKvD5an
+         49Sg==
+X-Forwarded-Encrypted: i=1; AFNElJ8Rfye84JM2SxOiXJvu4feZleDRaQbMMW1HInRpwpiHFWnEm+EsarJf5HcMnoEBq1s1gPY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyEvz8uPEWZs52/dwDSNoDASoq88sQQ+NB1hiEw6xaz1/FwDkG+
+	FMnjhXs2lp14hJTUjbWRsFOOVFcLKreqe1ouBqV/oFL1+9WByiPzUG+p+7ssoKyYDwbLipqQgm5
+	AcUqYAA==
+X-Received: from pgnp19.prod.google.com ([2002:a63:7f53:0:b0:c82:7805:9e4d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6300:279a:10b0:39b:dea7:5626
+ with SMTP id adf61e73a8af0-3b308856ca4mr1798637.35.1779310947183; Wed, 20 May
+ 2026 14:02:27 -0700 (PDT)
+Date: Wed, 20 May 2026 14:02:26 -0700
+In-Reply-To: <c347d65f555ad1e10a0e87ee57c5879c7046d0e7.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260515191942.1892718-1-seanjc@google.com> <20260515191942.1892718-3-seanjc@google.com>
- <44e0d60548d317fd59895f18bd17220dfb2f834b.camel@infradead.org>
-Message-ID: <ag4dMc2B3JQi4vxU@google.com>
-Subject: Re: [PATCH v3 02/41] x86/tsc: Add helper to register CPU and TSC freq
- calibration routines
+References: <20260515191942.1892718-1-seanjc@google.com> <20260515191942.1892718-7-seanjc@google.com>
+ <c347d65f555ad1e10a0e87ee57c5879c7046d0e7.camel@infradead.org>
+Message-ID: <ag4hYu0O71QrLW2y@google.com>
+Subject: Re: [PATCH v3 06/41] x86/acrn: Mark TSC frequency as known when using
+ ACRN for calibration
 From: Sean Christopherson <seanjc@google.com>
 To: David Woodhouse <dwmw2@infradead.org>
 Cc: Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
@@ -86,136 +86,81 @@ Content-Transfer-Encoding: quoted-printable
 
 On Wed, May 20, 2026, David Woodhouse wrote:
 > On Fri, 2026-05-15 at 12:19 -0700, Sean Christopherson wrote:
-> > diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
-> > index b5991d53fc0e..e9e7394140dd 100644
-> > --- a/arch/x86/kernel/kvmclock.c
-> > +++ b/arch/x86/kernel/kvmclock.c
-> > @@ -321,8 +321,8 @@ void __init kvmclock_init(void)
-> > =C2=A0	flags =3D pvclock_read_flags(&hv_clock_boot[0].pvti);
-> > =C2=A0	kvm_sched_clock_init(flags & PVCLOCK_TSC_STABLE_BIT);
+> > Mark the TSC frequency as known when using ACRN's PV CPUID information.
+> > Per commit 81a71f51b89e ("x86/acrn: Set up timekeeping") and common sen=
+se,
+> > the TSC freq is explicitly provided by the hypervisor.
+> >=20
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> > =C2=A0arch/x86/kernel/cpu/acrn.c | 1 +
+> > =C2=A01 file changed, 1 insertion(+)
+> >=20
+> > diff --git a/arch/x86/kernel/cpu/acrn.c b/arch/x86/kernel/cpu/acrn.c
+> > index c1506cb87d8c..2da3de4d470e 100644
+> > --- a/arch/x86/kernel/cpu/acrn.c
+> > +++ b/arch/x86/kernel/cpu/acrn.c
+> > @@ -29,6 +29,7 @@ static void __init acrn_init_platform(void)
+> > =C2=A0	/* Install system interrupt handler for ACRN hypervisor callback=
+ */
+> > =C2=A0	sysvec_install(HYPERVISOR_CALLBACK_VECTOR, sysvec_acrn_hv_callba=
+ck);
 > > =C2=A0
-> > -	x86_platform.calibrate_tsc =3D kvm_get_tsc_khz;
-> > -	x86_platform.calibrate_cpu =3D kvm_get_tsc_khz;
-> > +	tsc_register_calibration_routines(kvm_get_tsc_khz, kvm_get_tsc_khz);
-> > +
-> > =C2=A0	x86_platform.get_wallclock =3D kvm_get_wallclock;
-> > =C2=A0	x86_platform.set_wallclock =3D kvm_set_wallclock;
-> > =C2=A0#ifdef CONFIG_X86_LOCAL_APIC
+> > +	setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
+> > =C2=A0	tsc_register_calibration_routines(acrn_get_tsc_khz,
+> > =C2=A0					=C2=A0 acrn_get_tsc_khz);
 >=20
-> Can we move those (and maybe everything in the context there too) up
-> *before* the check for no-kvmclock at the top of the function?
+> I'd feel slightly happier doing that from within acrn_get_tsc_khz()
+> itself....
 
-Oof, I was going to say "no", but disabling kvmclock is exactly the workaro=
-und
-I've told people to use to get the kernel to use the TSC instead of kvmcloc=
-k.
-
-> Probably in a separate patch.
-
-Ya.  I think this?
-
-diff --git a/arch/x86/kernel/kvmclock.c b/arch/x86/kernel/kvmclock.c
-index 08ee4bc304c8..92a1ebf31e4d 100644
---- a/arch/x86/kernel/kvmclock.c
-+++ b/arch/x86/kernel/kvmclock.c
-@@ -27,6 +27,7 @@ static int kvmclock_vsyscall __initdata =3D 1;
- static int msr_kvm_system_time __ro_after_init;
- static int msr_kvm_wall_clock __ro_after_init;
- static u64 kvm_sched_clock_offset __ro_after_init;
-+static unsigned int kvm_tsc_khz_cpuid __ro_after_init;
-=20
- static int __init parse_no_kvmclock(char *arg)
- {
-@@ -207,7 +208,7 @@ static unsigned long kvm_get_tsc_khz(void)
-                lapic_timer_period =3D apic_khz * 1000 / HZ;
- #endif
-=20
--       return kvm_para_tsc_khz() ? : pvclock_tsc_khz(this_cpu_pvti());
-+       return kvm_tsc_khz_cpuid ? : pvclock_tsc_khz(this_cpu_pvti());
- }
-=20
- static unsigned long kvm_get_cpu_khz(void)
-@@ -387,9 +388,39 @@ void __init kvmclock_init(void)
-        enum tsc_properties tsc_properties =3D TSC_FREQUENCY_KNOWN;
-        bool stable =3D false;
-=20
--       if (!kvm_para_available() || !kvmclock)
-+       if (!kvm_para_available())
-                return;
-=20
-+       /*
-+        * If the TSC counts at a constant frequency across P/T states, cou=
-nts
-+        * in deep C-states, and the TSC hasn't been marked unstable, treat=
- the
-+        * TSC reliable, as guaranteed by KVM.  Note, the TSC unstable chec=
-k
-+        * exists purely to honor the TSC being marked unstable via command
-+        * line, any runtime detection of an unstable will happen after thi=
+Ya, though as you note below, this is really a comment on the overall serie=
 s.
-+        */
-+       if (boot_cpu_has(X86_FEATURE_CONSTANT_TSC) &&
-+           boot_cpu_has(X86_FEATURE_NONSTOP_TSC) &&
-+           !check_tsc_unstable())
-+               tsc_properties =3D TSC_FREQ_KNOWN_AND_RELIABLE;
-+
-+       kvm_tsc_khz_cpuid =3D kvm_para_tsc_khz();
-+
-+       /*
-+        * If provided, use the TSC (and APIC bus) frequency provided in KV=
-M's
-+        * PV CPUID leaf even if kvmclock itself is disabled via command li=
-ne.
-+        * The PV CPUID information isn't dependent on kvmclock in any way,=
- and
-+        * in fact using the precise information is *more* important when t=
-he
-+        * user has explicitly disabled kvmclock to force the kernel to use=
- the
-+        * TSC as its clocksource.
-+        */
-+       if (!kvmclock) {
-+               if (kvm_tsc_khz_cpuid)
-+                       tsc_register_calibration_routines(kvm_get_tsc_khz,
-+                                                         kvm_get_cpu_khz,
-+                                                         tsc_properties);
-+               return;
-+       }
-+
-        if (kvm_para_has_feature(KVM_FEATURE_CLOCKSOURCE2)) {
-                msr_kvm_system_time =3D MSR_KVM_SYSTEM_TIME_NEW;
-                msr_kvm_wall_clock =3D MSR_KVM_WALL_CLOCK_NEW;
-@@ -424,21 +455,14 @@ void __init kvmclock_init(void)
-        }
-=20
-        /*
--        * If the TSC counts at a constant frequency across P/T states, cou=
-nts
--        * in deep C-states, and the TSC hasn't been marked unstable, prefe=
-r
--        * the TSC over kvmclock for sched_clock and drop kvmclock's rating=
- so
--        * that TSC is chosen as the clocksource.  Note, the TSC unstable c=
-heck
--        * exists purely to honor the TSC being marked unstable via command
--        * line, any runtime detection of an unstable will happen after thi=
-s.
-+        * If the TSC is reliable (see above), prefer the TSC over kvmclock=
- for
-+        * sched_clock and drop kvmclock's rating so that TSC is chosen as =
-the
-+        * clocksource.
-         */
--       if (boot_cpu_has(X86_FEATURE_CONSTANT_TSC) &&
--           boot_cpu_has(X86_FEATURE_NONSTOP_TSC) &&
--           !check_tsc_unstable()) {
-+       if (tsc_properties & TSC_RELIABLE)
-                kvm_clock.rating =3D 299;
--               tsc_properties =3D TSC_FREQ_KNOWN_AND_RELIABLE;
--       } else {
-+       else
-                kvm_sched_clock_init(stable);
--       }
-=20
-        tsc_register_calibration_routines(kvm_get_tsc_khz, kvm_get_cpu_khz,
-                                          tsc_properties);
+
+Waiting to set the cap until the calibration routine is actually run does p=
+revent
+the case where the something registers a calibration routine, but its routi=
+ne is
+never run.
+
+However, because the cap is sticky, it doesn't handle the scenario where it=
+s
+routine _does_ run, but the kernel ultimately throws away its calibration i=
+n favor
+of something else.
+
+Further complicating things is that ~half of the paravirt flows already for=
+ce set
+caps before their routines are invoked:
+
+  snp_secure_tsc_init(), jailhouse_init_platform(), ms_hyperv_init_platform=
+(),
+  vmware_set_capabilities()
+
+Rather than trying to convince everyone that waiting is better, despite tha=
+t
+approach still being flawed, I chose to handle this by ensuring that once t=
+he TSC
+is marked known and/or reliable, the kernel won't replace the calibration r=
+outine
+with a "lesser" source:
+
+  x86/tsc: Rejects attempts to override TSC calibration with lesser routine
+
+That doesn't completely prevent the kernel from being stupid, but it should=
+ prevent
+both the case where X's routine is registered but never run, as well as the=
+ case
+where it's run but ultimately ignored.
+
+> which I note is 'static inline'. I'm vaguely surprised that even builds
+> (although it does).
+
+Heh, KVM x86 (in the host) does stupid things like this too.  E.g. kvm_pdpt=
+r_read()
+is a static inline, but then wired up as a function pointer in three differ=
+ent
+places.
+
+> Probably nicer to move it explicitly out of line in acrn.c though.
+>=20
+> Most of that should be a comment on patch  2 of the series, I guess?
