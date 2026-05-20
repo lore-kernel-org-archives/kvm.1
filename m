@@ -1,30 +1,29 @@
-Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.3])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.2])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 480D73EFFD6;
-	Wed, 20 May 2026 15:24:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.3
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CC793EFD35;
+	Wed, 20 May 2026 15:24:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.2
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779290644; cv=none; b=JuE74A7//aU9nGm+bFq1MGJD5pEVpDLOlOuwXZwT1EHTUFB4PvqTfd3pdQYjX48dTnA0wZ2+pEIp1eB2eC2WesPaIvXoE/RTZu6+fFBsjYAtL0mtdyoMmYF7MaeJU6dTfIBTmFv4CEAcy3m0rE1be/l6gQrm0REu0FYthmcwLJo=
+	t=1779290651; cv=none; b=l5Sz9PlPL0kqVMTcI5pONzIZ9siykvgDpVzePIOorncoE67EyRWvGtrK7GbTxcG5jE+XV/cJF07eyVBHnZFvrzLGChp0Gvsn2UCS9zrDg77BJZdyl1paNqGbs8lF5XjrglBIWv/M1W5fD/ToelEloZd2aNknHPdprz0bDlLwKZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779290644; c=relaxed/simple;
-	bh=G3Fr4vdUrJW96r8Narcy4lOO2W49gdC191Maz6rHw7w=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cRuOA4uLrx912ONVlALvozQ0h7kg5T3r4SU5ATrGvP9FB2eI966CBHvLW3e0GivfrH6ytW71hMEm7sqEJdjAv66G68q7m51JFC/lPQ+336fSFZ+nnsZQmcWEtu8/8j6OVfPwyhv17w7zIvQvajKqoTaAvk22KKCyflKJp11DjxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=S6jodwsx; arc=none smtp.client-ip=220.197.31.3
+	s=arc-20240116; t=1779290651; c=relaxed/simple;
+	bh=i0xwSy6wqDixF09ggrrZwC4KNEJCAWOf7kq+PdQyccc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=FWHymN3Svvb4SaIbezE1AOXkI9TMoVcnMr2zbHrIOlWJtjpQEztrr4DXJHrEBgjniEaMz86fJGKlp5rxwR33Earbt0Dh04ilWvTL0G5xXIoMfGs4tv6Wm0bGPnxpGuWRpweHq/MA+fEHTNBakIWJ/F4yqRgMU6GJQaAESc5CVnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=UR+/10Ct; arc=none smtp.client-ip=117.135.210.2
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="S6jodwsx"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="UR+/10Ct"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=od
-	Esu4ivXyLhWqfIiJF0LkZTv8IhxJkl47gzx8ElsNs=; b=S6jodwsxcndgSb0jAD
-	n6oGNFcijbWgLISH9fFniKQsT77rfB4PAeCGPisPrk7g82gWY9n2CpmJdU2cmMpO
-	emUQBV4HCarL30Hhw4VVLiIY1L3JpZDts/ZpHP3VMlWsQutVN52ELdENyuA5Ikfn
-	mr0+1JxESly3Po2QQei8W52zs=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=rz
+	Etfaoq3iNg6WDH8LoFIArzXVhWsn/xtEQAKiEIad4=; b=UR+/10CtKYy8se4CIT
+	ANqE9Xc3xwKDE5WpgPg0gtxVROEYpZOrtUxlVhYewkXlEkMRMZmWqQnROmfUNSBf
+	Fgbv51SUVJrfZNAgEiwHJCIB9uTDRkkzmOeU/sq2I9PorgA4kZGBmMSEzvqcE5av
+	x5suk2OLRM+/NKurqiVDWtPqs=
 Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wAnt1md0Q1qGHMGCg--.33359S3;
-	Wed, 20 May 2026 23:22:09 +0800 (CST)
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wAnt1md0Q1qGHMGCg--.33359S2;
+	Wed, 20 May 2026 23:22:06 +0800 (CST)
 From: Jinyu Tang <tjytimi@163.com>
 To: Anup Patel <apatel@ventanamicro.com>,
 	Anup Patel <anup@brainfault.org>,
@@ -46,12 +45,10 @@ Cc: kvm <kvm@vger.kernel.org>,
 	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
 	Nutty Liu <nutty.liu@hotmail.com>,
 	Jinyu Tang <tjytimi@163.com>
-Subject: [PATCH 1/3] KVM: riscv: Pass the target size to huge G-stage checks
-Date: Wed, 20 May 2026 23:21:46 +0800
-Message-ID: <20260520152148.131272-2-tjytimi@163.com>
+Subject: [PATCH 0/3] KVM: riscv: Fix hugetlb G-stage block mapping eligibility
+Date: Wed, 20 May 2026 23:21:45 +0800
+Message-ID: <20260520152148.131272-1-tjytimi@163.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260520152148.131272-1-tjytimi@163.com>
-References: <20260520152148.131272-1-tjytimi@163.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -59,86 +56,33 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAnt1md0Q1qGHMGCg--.33359S3
-X-Coremail-Antispam: 1Uf129KBjvJXoWxZw1fKw47JFWxKFWktFyxZrb_yoW5AF1rpF
-	47KFs0krWYyr15Ww4SywnrW34rZr4rG34UJa4Utas0yFs8KF12gayDAay5XryYvr93XF47
-	uF4avay5u398KaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zEqg4xUUUUU=
-X-CM-SenderInfo: xwm13xlpl6il2tof0z/xtbC0AF68moN0aFatQAA3h
+X-CM-TRANSID:_____wAnt1md0Q1qGHMGCg--.33359S2
+X-Coremail-Antispam: 1Uf129KBjvdXoW7GF48CF4UZw1DAry3Zry8AFb_yoWfKrX_CF
+	yrKr93Jw48uFyqkFWDtw48KrZ8G3y0yr9rZF4DZwnrWryj9F4DuFnYvFyI9r18Way3uwnx
+	Cr17Ga409w1q9jkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUvcSsGvfC2KfnxnUUI43ZEXa7xRKUDGUUUUUU==
+X-CM-SenderInfo: xwm13xlpl6il2tof0z/xtbC8R558WoN0Z4MrAAA3v
 
-fault_supports_gstage_huge_mapping() already contains the two checks
-needed before installing a G-stage block mapping: the userspace address
-and GPA must have matching offsets within the block, and the whole block
-must be contained within the memslot.
+RISC-V KVM checks memslot alignment and head/tail coverage before
+installing THP-backed PMD G-stage block mappings, but the hugetlb path
+has used the hugetlb VMA size directly. That can be wrong for memslots
+whose HVA and GPA have different offsets within the target block, or for
+partial head/tail blocks.
 
-The helper currently hard-codes PMD_SIZE because its only caller is the
-transparent hugepage path. The hugetlb path needs the same checks, but
-the target block size can be either PMD_SIZE or PUD_SIZE depending on the
-hugetlb VMA.
+Generalize the existing block eligibility helper so it can check a
+caller-provided target size, use it to select hugetlb mappings with a
+PUD -> PMD -> PAGE_SIZE fallback, and add a selftest mode that creates a
+hugetlb memslot with a deliberate HVA/GPA offset mismatch.
 
-So pass the target mapping size into the helper and use it for the
-alignment and bounds checks. This keeps the existing THP PMD behavior
-unchanged and prepares the helper to be reused for the following hugetlb
-fix.
+Jinyu Tang (3):
+  KVM: riscv: Pass the target size to huge G-stage checks
+  KVM: riscv: Check hugetlb block mappings against memslot bounds
+  KVM: selftests: Add a hugetlb memslot alignment test mode
 
-Signed-off-by: Jinyu Tang <tjytimi@163.com>
----
- arch/riscv/kvm/mmu.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ arch/riscv/kvm/mmu.c                          | 53 +++++++++++++++----
+ .../selftests/kvm/kvm_page_table_test.c       | 28 +++++++---
+ 2 files changed, 65 insertions(+), 16 deletions(-)
 
-diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
-index 2d3def024..10be8f683 100644
---- a/arch/riscv/kvm/mmu.c
-+++ b/arch/riscv/kvm/mmu.c
-@@ -286,7 +286,8 @@ bool kvm_test_age_gfn(struct kvm *kvm, struct kvm_gfn_range *range)
- }
- 
- static bool fault_supports_gstage_huge_mapping(struct kvm_memory_slot *memslot,
--					       unsigned long hva)
-+					       unsigned long hva,
-+					       unsigned long map_size)
- {
- 	hva_t uaddr_start, uaddr_end;
- 	gpa_t gpa_start;
-@@ -300,8 +301,8 @@ static bool fault_supports_gstage_huge_mapping(struct kvm_memory_slot *memslot,
- 
- 	/*
- 	 * Pages belonging to memslots that don't have the same alignment
--	 * within a PMD for userspace and GPA cannot be mapped with g-stage
--	 * PMD entries, because we'll end up mapping the wrong pages.
-+	 * within a huge page for userspace and GPA cannot be mapped with
-+	 * g-stage block entries, because we'll end up mapping the wrong pages.
- 	 *
- 	 * Consider a layout like the following:
- 	 *
-@@ -321,7 +322,7 @@ static bool fault_supports_gstage_huge_mapping(struct kvm_memory_slot *memslot,
- 	 *   e -> g
- 	 *   f -> h
- 	 */
--	if ((gpa_start & (PMD_SIZE - 1)) != (uaddr_start & (PMD_SIZE - 1)))
-+	if ((gpa_start & (map_size - 1)) != (uaddr_start & (map_size - 1)))
- 		return false;
- 
- 	/*
-@@ -336,7 +337,8 @@ static bool fault_supports_gstage_huge_mapping(struct kvm_memory_slot *memslot,
- 	 * userspace_addr or the base_gfn, as both are equally aligned (per
- 	 * the check above) and equally sized.
- 	 */
--	return (hva >= ALIGN(uaddr_start, PMD_SIZE)) && (hva < ALIGN_DOWN(uaddr_end, PMD_SIZE));
-+	return (hva & ~(map_size - 1)) >= uaddr_start &&
-+	       (hva & ~(map_size - 1)) + map_size <= uaddr_end;
- }
- 
- static int get_hva_mapping_size(struct kvm *kvm,
-@@ -404,7 +406,7 @@ static unsigned long transparent_hugepage_adjust(struct kvm *kvm,
- 	 * sure that the HVA and GPA are sufficiently aligned and that the
- 	 * block map is contained within the memslot.
- 	 */
--	if (fault_supports_gstage_huge_mapping(memslot, hva)) {
-+	if (fault_supports_gstage_huge_mapping(memslot, hva, PMD_SIZE)) {
- 		int sz;
- 
- 		sz = get_hva_mapping_size(kvm, hva);
 -- 
 2.43.0
 
