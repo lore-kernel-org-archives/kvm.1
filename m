@@ -1,92 +1,102 @@
-Received: from fhigh-b7-smtp.messagingengine.com (fhigh-b7-smtp.messagingengine.com [202.12.124.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D0B1318ED6;
-	Wed, 20 May 2026 18:53:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76DA5318ED6
+	for <kvm@vger.kernel.org>; Wed, 20 May 2026 18:54:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779303242; cv=none; b=oJefeaIT2PSjxV8YtgM/cu0hPTJe53Kc3pmbvVIdI3lnwKGucytdfQeX/ZT/FfaozJ1c9UyLUx99KxMy3PO+gB50e8kiJHl2Fd47+oTWeSM3971AhJoLHnGrb7TZundyedl4GXaPtWLnK+7h0HZOp7atiVEO+zSS+lEvaFLEu3A=
+	t=1779303277; cv=none; b=lLakpcG/+yUCqd1zR41ihEubgSzQ+3JBn/5b4jlg+83d/4HNnh7JQB9lgOPFnItnfKiThs+GHpYv/NzAEDnkLG9Zqc5/tuUpv1NseTUK9fmTw6P89JWmDZL31DHPvQA1ooVDRnybSqUcnqsqyXT3INyx+rR1mNZlXc0tjEuUR14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779303242; c=relaxed/simple;
-	bh=O7bk/p5xxJij8SY/tXxCYR60LXo7CFl6+XP/lhcyShE=;
+	s=arc-20240116; t=1779303277; c=relaxed/simple;
+	bh=6H0gsGaMKlR4OpEMIn4M6H7DgXyJHZ13f05GCdP+s74=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zxn06V46QFT1JH6PMk3Taj2d999t+6w1De0YOYdixzt/pftH1ggakcaNRl3xiUMUGGdyzaa0Ci9B1GIczVoe4HVauTXQXlD4r5VrtsyCjtMDZjUid3PcLvcHUjNW8IsIQR4HG6S+DrozGCRu0N71o+HFk42xWCoFo67vCbmry7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=oiifBTtB; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=SRl2o1FL; arc=none smtp.client-ip=202.12.124.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	 MIME-Version:Content-Type; b=TECy4cize3linvqA8Z2/vIRqO0NuntmXUCsLykxYUu6WLI0QrRlftzvVqgVYBb/jsCle996U5kRVIo2BWZIhmpiWemSRoiXhRgdrQqsLJjb9gf99NmWNYayZfm6gtFoZ1M+4z4/ykLKqpxY3f47sZ4uFY559yJdC7dj3QN2DI7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Eb32N2J9; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="oiifBTtB";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="SRl2o1FL"
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 316E37A0069;
-	Wed, 20 May 2026 14:53:58 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Wed, 20 May 2026 14:53:58 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1779303237;
-	 x=1779389637; bh=MTpz+peHYiecvc6XYTPMZbwBhAdBOsmpXC4f3tmOEGk=; b=
-	oiifBTtBkGW7NnJEX0WN68jTtE/nE/um9QvvAzm8jeUdD2pBMyIquGroBygksJwq
-	QrjxEGZtyuhk5VDdqOTdIga61UDFgHkwX0mkXzEa8hT1u9RgFnIStCSIqKQ5M2Qy
-	yQe6dKfpaDdVyNSZpZPLPMgNumzTFY7ZbY+9eeHH5d1UXB3+hvEzs/bZys771G9F
-	mB9tBkrgsA8N+d2A3ZwWy5HIMiwHglZYUXxh1oYgILAeICiLggtO5D/rypqpsRLR
-	+JycVcdu4bddDZ2uABjlBfnIWdTmLurOSc+1E92s3+c4nHZ63VlEXk/kAsnEQZc/
-	0Gma50A5roiVaULnvaUngg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779303237; x=
-	1779389637; bh=MTpz+peHYiecvc6XYTPMZbwBhAdBOsmpXC4f3tmOEGk=; b=S
-	Rl2o1FL0kn9l3fMsK3iRhx2xs5hWwjpmzK54/2vjfiZng0LItxws1U2HHLcBwLr8
-	6diDIAEQQ7Cp5UMzFg86pO2Em2Hx6Q8XcXyArBhfqIqcasXreWw6xlkk8Xuju8r9
-	oAKRpXeUUw5JTXgRE+yfFuTFdODWpZFBRQs9iHNkQmjq1BPU6Q7elgZmdyFzykpk
-	E8/46seEcntYJU+IJ5YYstNNN2xNC3MiPu4UoEQtf3NpaXjf9u7rXBti27d91RJ3
-	76iZnsOZVyOQoIc4IWTnrCZ+qZasR7c91uCYnuNOSJ/H3IOK8uA0C8laW0BFPKYR
-	cLkwDNLLc7F+BFjW/lnnA==
-X-ME-Sender: <xms:RQMOavLdZoTjLHGDXoeXZcgrFwhKuKja18ySo8L2yv1431uJovkeug>
-    <xme:RQMOajmi7VOD4XlWr8iP4YX4u4_NaL4yR4SimDr6OlQGGYEvmHwrCCGMu-BvPMwLX
-    Hd0_Ifbu7d4ds7PTGYUzQBoA2axfe5DfOl36Ux0JeutEHRL_zOX>
-X-ME-Received: <xmr:RQMOaoZEgP_qJyGQnTL6l5Wg8ObXJI6u8ojCSokQnnlkylwVPKvdvWRUohA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddugeehgedtucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
-    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
-    htthgvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudeg
-    veeuueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepledpmhhouggvpehs
-    mhhtphhouhhtpdhrtghpthhtoheprhgrnhgrnhhtrgesghhoohhglhgvrdgtohhmpdhrtg
-    hpthhtohepughmrghtlhgrtghksehgohhoghhlvgdrtghomhdprhgtphhtthhopehvihhp
-    ihhnshhhsehgohhoghhlvgdrtghomhdprhgtphhtthhopehjrhhhihhlkhgvsehgohhogh
-    hlvgdrtghomhdprhgtphhtthhopehkvhhmsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtohepshhtrggslhgvsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtghpthht
-    ohepjhhgghesiihivghpvgdrtggrpdhrtghpthhtoheprghlvgigsehshhgriigsohhtrd
-    horhhg
-X-ME-Proxy: <xmx:RQMOav93gd7vOiTgTCyw6pWA2WsOdz7_V9OpG2V5vEIRztYB-3nh_A>
-    <xmx:RQMOanZqqUPU5nrQ5nykVOqGbymUvo3IIjU1cPjQ8zi9cL054rsHnA>
-    <xmx:RQMOapdZBa7GTewQhGya1zgrq2cPQRWBxZpchDgr1RV8Yvd_fuBTMg>
-    <xmx:RQMOakmnFszqFGOUyb_ESL836ZLS9qPyG2HchI7z9Sa88caL367_DQ>
-    <xmx:RQMOanlMmmEB_ijbtg-nWDcqpuS0_M7T3s8rSz6zoE4wStHjuW7Ov6rH>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 20 May 2026 14:53:56 -0400 (EDT)
-Date: Wed, 20 May 2026 12:53:54 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Raghavendra Rao Ananta <rananta@google.com>
-Cc: David Matlack <dmatlack@google.com>, Vipin Sharma <vipinsh@google.com>,
- Josh Hilke <jrhilke@google.com>, kvm@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org, Jason Gunthorpe
- <jgg@ziepe.ca>, alex@shazbot.org
-Subject: Re: [PATCH v2] vfio/pci: Use a private flag to prevent power state
- change with VFs
-Message-ID: <20260520125354.2e028b46@shazbot.org>
-In-Reply-To: <20260514173449.3282188-1-rananta@google.com>
-References: <20260514173449.3282188-1-rananta@google.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Eb32N2J9"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-488ff90d6c7so41110525e9.2
+        for <kvm@vger.kernel.org>; Wed, 20 May 2026 11:54:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779303274; x=1779908074; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LTyAy/LIiDay4j1cpOqZG5BjMVSNCk92/hkBpskJyfA=;
+        b=Eb32N2J9Lbz0Y36HSpGOssNFVb9G0VZ8pxUfua/dVM+Yk78PZZioi4e/z3G5I1yoU2
+         q8cRU4IV1CQLw7QY/UigttbQSKqEzClVfcbwZwGEyEw9MFbYjXGEHJpgUoknPBHXe6E5
+         atOcXJVOhv64KvIWNPCyX/Q7ssBhDVw72WbXWGVuDw1b5X1PVrF18e/dfTUa59KRLcbc
+         RqsNsVTTdEhzyI0apVcWoDVqE7lYwhffg5jDU4A3Dj4L+W1sqhq0wRpBZOxC1tXb0X9j
+         j0IgEP200ATv6USiiewKf60i8U2d2TEQvXojNuni1e+ssM87HMPuWhbtwpGkZoYJVWZI
+         XS8g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779303274; x=1779908074;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=LTyAy/LIiDay4j1cpOqZG5BjMVSNCk92/hkBpskJyfA=;
+        b=aE7nBakPHc7/h8aXqjmn1iHCqZUL9+ViclHYfry56Y+StGxUIHH64G/SiALti9mYhi
+         4Bm8JfDLSEjAM0ySlUuGCmzJnk485wXipWgVKhaGgtNzGNMnLQlARAzpoapibQKI0Gbb
+         stZGigWSx1FqGQNO9i/SFfHhj8jzCxdRqYMO14D9SZyCVnBH9ear1gDoF/Jm4G3lVn0M
+         f3gn50P9GENxApIUo7aeS6ksOH96UiZ4L+yodOEcLJSWsvTDoQSzP1e8r0YjLPB8jDqj
+         Quj/RHUtvOezx22cRCsBPqpv4U52WzD9rT9bq4CvqDAZJSKploHECajsRmSgZgEFBjoI
+         QSqw==
+X-Forwarded-Encrypted: i=1; AFNElJ/7B7zzQfdGhiBRiNfx/smiWGxuxINLhQ5fN5cZEpZzHHw3PWTAexj5/95chcY9MCP7ML8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVc/YN5KD1W46JUPyGx9NtHJ57Jwd3xNhvtIv8YHIuQz0v9ktr
+	vk/686xK9OsnvCIM51BbgAzi1SZ9eOvGqfEzfztCtG7d+hcFENHxMn7q
+X-Gm-Gg: Acq92OE9NM2pHT7LkpUszmEzEmsHTZenFDzfC6aPl7bCcNiAmIj7gSY8s3NrAPlSd/W
+	7W9Zp4bRD3v6jF/HOc2Uh2Jemq32/ZC2firEA670OJV6fIA/Ny/mjkFLRJdh64BZBXb4c/pw3uy
+	jBTzBssnLQMa6/ZjX3vpHSBHCu6eK2xASJHopbvC0ibngQ+XlYABLRNbpgzEY5N1//lAD+Ouejf
+	rgeTG81eF9n53EOMc/9jGjnmU7aDStVmODysT4EoH3G2YAhGiY4pYr7DXfC2X8X+gImclBwkBws
+	D6TfA8AbXqx1zE/mALMrQPA1a3hMvXc+4ZSJM8h/7xWsDRP+Vl2wrTHLx5YAKIzNLxjMCnbmGaD
+	exWMVtQecOJu/ndUqxZVQJz2VsFsgvE1wIEr+3KOeiRW/28ZYC20biDAW8/oThqqU98KCq9h0bs
+	6Af4ZM21FhhajWdwMcxUiiI4clLd0rzCc1I4yw5JvVlPdCBuBT76YLzj7UBh/zSqTw3GZYpKE3f
+	ik=
+X-Received: by 2002:a05:600c:c173:b0:48f:e230:c3f8 with SMTP id 5b1f17b1804b1-48fe661b50amr419468595e9.30.1779303273633;
+        Wed, 20 May 2026 11:54:33 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49033dab0besm9243005e9.15.2026.05.20.11.54.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 20 May 2026 11:54:33 -0700 (PDT)
+Date: Wed, 20 May 2026 19:54:31 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Pranjal Shrivastava <praan@google.com>, Tianrui Zhao
+ <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>, Huacai Chen
+ <chenhuacai@kernel.org>, Madhavan Srinivasan <maddy@linux.ibm.com>,
+ Nicholas Piggin <npiggin@gmail.com>, Anup Patel <anup@brainfault.org>,
+ Atish Patra <atish.patra@linux.dev>, Christian Borntraeger
+ <borntraeger@linux.ibm.com>, Janosch Frank <frankja@linux.ibm.com>, Claudio
+ Imbrenda <imbrenda@linux.ibm.com>, David Hildenbrand <david@kernel.org>,
+ Vitaly Kuznetsov <vkuznets@redhat.com>, David Woodhouse
+ <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>, Eric Farman
+ <farman@linux.ibm.com>, Matthew Rosato <mjrosato@linux.ibm.com>, Halil
+ Pasic <pasic@linux.ibm.com>, Nipun Gupta <nipun.gupta@amd.com>, Nikhil
+ Agarwal <nikhil.agarwal@amd.com>, Alex Williamson <alex@shazbot.org>, Ioana
+ Ciornei <ioana.ciornei@nxp.com>, Longfang Liu <liulongfang@huawei.com>,
+ Julian Ruess <julianr@linux.ibm.com>, Kirti Wankhede
+ <kwankhede@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>, Ankit Agrawal
+ <ankita@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>, Shameer Kolothum
+ <skolothumtho@nvidia.com>, Kevin Tian <kevin.tian@intel.com>, Brett Creeley
+ <brett.creeley@amd.com>, Eric Auger <eric.auger@redhat.com>, Mostafa Saleh
+ <smostafa@google.com>, Giovanni Cabiddu <giovanni.cabiddu@intel.com>, David
+ Matlack <dmatlack@google.com>, "=?UTF-8?B?TWljaGHFgg==?= Winiarski"
+ <michal.winiarski@intel.com>, Stefan Hajnoczi <stefanha@redhat.com>,
+ Stefano Garzarella <sgarzare@redhat.com>, Cornelia Huck
+ <cohuck@redhat.com>, Jason Wang <jasowang@redhat.com>, "Eugenio
+ =?UTF-8?B?UMOpcmV6?=" <eperezma@redhat.com>, Kiryl Shutsemau
+ <kas@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, Rick Edgecombe
+ <rick.p.edgecombe@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>, Paolo
+ Bonzini <pbonzini@redhat.com>, Roman Gushchin <kfree@google.com>,
+ kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: Sashiko review email for kvm@vger.kernel.org?
+Message-ID: <20260520195431.6ec8e6df@pumpkin>
+In-Reply-To: <ag3GY3P0SgZPF_IJ@google.com>
+References: <agusSarZr-R_o2xD@google.com>
+	<ag0H28jSbSTHXznK@google.com>
+	<ag3GY3P0SgZPF_IJ@google.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -96,227 +106,45 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 14 May 2026 17:34:49 +0000
-Raghavendra Rao Ananta <rananta@google.com> wrote:
+On Wed, 20 May 2026 14:34:11 +0000
+Sean Christopherson <seanjc@google.com> wrote:
 
-> The current implementation uses pci_num_vf() while holding the
-> memory_lock to prevent changing the power state of a PF when
-> VFs are enabled. This creates a lockdep circular dependency
-> warning because memory_lock is held during device probing.
+> +KVM and LKML (to capture as many of these discussions possible)
 > 
-> [  286.997167] ======================================================
-> [  287.003363] WARNING: possible circular locking dependency detected
-> [  287.009562] 7.0.0-dbg-DEV #3 Tainted: G S
-> [  287.015074] ------------------------------------------------------
-> [  287.021270] vfio_pci_sriov_/18636 is trying to acquire lock:
-> [  287.026942] ff45bea2294d4968 (&vdev->memory_lock){+.+.}-{4:4}, at:
-> vfio_pci_core_runtime_resume+0x1f/0xa0
-> [  287.036530]
-> [  287.036530] but task is already holding lock:
-> [  287.042383] ff45bea3a96b8230 (&new_dev_set->lock){+.+.}-{4:4}, at:
-> vfio_group_fops_unl_ioctl+0x44d/0x7b0
-> [  287.051879]
-> [  287.051879] which lock already depends on the new lock.
-> [  287.051879]
-> [  287.060070]
-> [  287.060070] the existing dependency chain (in reverse order) is:
-> [  287.067568]
-> [  287.067568] -> #2 (&new_dev_set->lock){+.+.}-{4:4}:
-> [  287.073941]        __mutex_lock+0x92/0xb80
-> [  287.078058]        vfio_assign_device_set+0x66/0x1b0
-> [  287.083042]        vfio_pci_core_register_device+0xd1/0x2a0
-> [  287.088638]        vfio_pci_probe+0xd2/0x100
-> [  287.092933]        local_pci_probe_callback+0x4d/0xa0
-> [  287.098001]        process_scheduled_works+0x2ca/0x680
-> [  287.103158]        worker_thread+0x1e8/0x2f0
-> [  287.107452]        kthread+0x10c/0x140
-> [  287.111230]        ret_from_fork+0x18e/0x360
-> [  287.115519]        ret_from_fork_asm+0x1a/0x30
-> [  287.119983]
-> [  287.119983] -> #1 ((work_completion)(&arg.work)){+.+.}-{0:0}:
-> [  287.127219]        __flush_work+0x345/0x490
-> [  287.131429]        pci_device_probe+0x2e3/0x490
-> [  287.135979]        really_probe+0x1f9/0x4e0
-> [  287.140180]        __driver_probe_device+0x77/0x100
-> [  287.145079]        driver_probe_device+0x1e/0x110
-> [  287.149803]        __device_attach_driver+0xe3/0x170
-> [  287.154789]        bus_for_each_drv+0x125/0x150
-> [  287.159346]        __device_attach+0xca/0x1a0
-> [  287.163720]        device_initial_probe+0x34/0x50
-> [  287.168445]        pci_bus_add_device+0x6e/0x90
-> [  287.172995]        pci_iov_add_virtfn+0x3c9/0x3e0
-> [  287.177719]        sriov_add_vfs+0x2c/0x60
-> [  287.181838]        sriov_enable+0x306/0x4a0
-> [  287.186038]        vfio_pci_core_sriov_configure+0x184/0x220
-> [  287.191715]        sriov_numvfs_store+0xd9/0x1c0
-> [  287.196351]        kernfs_fop_write_iter+0x13f/0x1d0
-> [  287.201338]        vfs_write+0x2be/0x3b0
-> [  287.205286]        ksys_write+0x73/0x100
-> [  287.209233]        do_syscall_64+0x14d/0x750
-> [  287.213529]        entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> [  287.219120]
-> [  287.219120] -> #0 (&vdev->memory_lock){+.+.}-{4:4}:
-> [  287.225491]        __lock_acquire+0x14c6/0x2800
-> [  287.230048]        lock_acquire+0xd3/0x2f0
-> [  287.234168]        down_write+0x3a/0xc0
-> [  287.238019]        vfio_pci_core_runtime_resume+0x1f/0xa0
-> [  287.243436]        __rpm_callback+0x8c/0x310
-> [  287.247730]        rpm_resume+0x529/0x6f0
-> [  287.251765]        __pm_runtime_resume+0x68/0x90
-> [  287.256402]        vfio_pci_core_enable+0x44/0x310
-> [  287.261216]        vfio_pci_open_device+0x1c/0x80
-> [  287.265947]        vfio_df_open+0x10f/0x150
-> [  287.270148]        vfio_group_fops_unl_ioctl+0x4a4/0x7b0
-> [  287.275476]        __se_sys_ioctl+0x71/0xc0
-> [  287.279679]        do_syscall_64+0x14d/0x750
-> [  287.283975]        entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> [  287.289559]
-> [  287.289559] other info that might help us debug this:
-> [  287.289559]
-> [  287.297582] Chain exists of:
-> [  287.297582]   &vdev->memory_lock --> (work_completion)(&arg.work)
-> --> &new_dev_set->lock  
-> [  287.297582]
-> [  287.310023]  Possible unsafe locking scenario:
-> [  287.310023]
-> [  287.315961]        CPU0                    CPU1
-> [  287.320510]        ----                    ----
-> [  287.325059]   lock(&new_dev_set->lock);
-> [  287.328917]
-> lock((work_completion)(&arg.work));
-> [  287.336153]                                lock(&new_dev_set->lock);
-> [  287.342523]   lock(&vdev->memory_lock);
-> [  287.346382]
-> [  287.346382]  *** DEADLOCK ***
-> [  287.346382]
-> [  287.352315] 2 locks held by vfio_pci_sriov_/18636:
-> [  287.357125]  #0: ff45bea208ed3e18 (&group->group_lock){+.+.}-{4:4},
-> at: vfio_group_fops_unl_ioctl+0x3e3/0x7b0
-> [  287.367048]  #1: ff45bea3a96b8230 (&new_dev_set->lock){+.+.}-{4:4},
-> at: vfio_group_fops_unl_ioctl+0x44d/0x7b0
-> [  287.376976]
-> [  287.376976] stack backtrace:
-> [  287.381353] CPU: 191 UID: 0 PID: 18636 Comm: vfio_pci_sriov_
-> Tainted: G S                  7.0.0-dbg-DEV #3 PREEMPTLAZY
-> [  287.381355] Tainted: [S]=CPU_OUT_OF_SPEC
-> [  287.381356] Call Trace:
-> [  287.381357]  <TASK>
-> [  287.381358]  dump_stack_lvl+0x54/0x70
-> [  287.381361]  print_circular_bug+0x2e1/0x300
-> [  287.381363]  check_noncircular+0xf9/0x120
-> [  287.381364]  ? __lock_acquire+0x5b4/0x2800
-> [  287.381366]  __lock_acquire+0x14c6/0x2800
-> [  287.381368]  ? pci_mmcfg_read+0x4f/0x220
-> [  287.381370]  ? pci_mmcfg_write+0x57/0x220
-> [  287.381371]  ? lock_acquire+0xd3/0x2f0
-> [  287.381373]  ? pci_mmcfg_write+0x57/0x220
-> [  287.381374]  ? lock_release+0xef/0x360
-> [  287.381376]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
-> [  287.381377]  lock_acquire+0xd3/0x2f0
-> [  287.381378]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
-> [  287.381379]  ? lock_is_held_type+0x76/0x100
-> [  287.381382]  down_write+0x3a/0xc0
-> [  287.381382]  ? vfio_pci_core_runtime_resume+0x1f/0xa0
-> [  287.381383]  vfio_pci_core_runtime_resume+0x1f/0xa0
-> [  287.381384]  ? __pfx_pci_pm_runtime_resume+0x10/0x10
-> [  287.381385]  __rpm_callback+0x8c/0x310
-> [  287.381386]  ? ktime_get_mono_fast_ns+0x3d/0xb0
-> [  287.381389]  ? __pfx_pci_pm_runtime_resume+0x10/0x10
-> [  287.381390]  rpm_resume+0x529/0x6f0
-> [  287.381392]  ? lock_is_held_type+0x76/0x100
-> [  287.381394]  __pm_runtime_resume+0x68/0x90
-> [  287.381396]  vfio_pci_core_enable+0x44/0x310
-> [  287.381398]  vfio_pci_open_device+0x1c/0x80
-> [  287.381399]  vfio_df_open+0x10f/0x150
-> [  287.381401]  vfio_group_fops_unl_ioctl+0x4a4/0x7b0
-> [  287.381402]  __se_sys_ioctl+0x71/0xc0
-> [  287.381404]  do_syscall_64+0x14d/0x750
-> [  287.381405]  ? entry_SYSCALL_64_after_hwframe+0x77/0x7f
-> [  287.381406]  ? trace_irq_disable+0x25/0xd0
-> [  287.381409]  entry_SYSCALL_64_after_hwframe+0x77/0x7f
+> On Wed, May 20, 2026, Pranjal Shrivastava wrote:
+> > On Tue, May 19, 2026 at 12:18:17AM +0000, Sean Christopherson wrote:  
+> > > Hello people with a MAINTAINERS entry that uses kvm@vger.kernel.org as a mailing list!
+> > > 
+> > > How would y'all feel about enabling Sashiko[*] emails for kvm@vger.kernel.org?  For
+> > > a variety of reasons, Sashiko currently only logs its reviews to https://sashiko.dev
+> > > by default.  If subsystems want to receive on-list mails, they need to opt-in.
+> > > 
+> > > I really, really want to enable email reviews for KVM x86, as Sashiko has found
+> > > an almost embarassing number of bugs that (a) would have been painful to debug
+> > > had they escaped review and (b) I'm not convinced would have been found by
+> > > traditional review.  And for me at least the signal:noise ratio is more than good
+> > > enough.  There are still hallucinations and false positives from time to time,
+> > > but the good outweighs the bad by quite a bit, it's cathartic to flame AI when
+> > > it's wrong, and worst case scenario I can simply ignore Sashiko.
+> > > 
+> > > But, currently Sashiko is only capable of making decisions based on mailing list,
+> > > i.e. as things stand, _all_ of kvm@ needs to opt-in.  Before I badger Roman to
+> > > add bespoke logic to Sashiko's email flow, e.g. to special case KVM x86 in some
+> > > way, I want to see if there's a general consensus in favor (or against) enabling
+> > > review emails.  
+> > 
+> > I vote for enabling it, it has proven helpful at multiple places. I
+> > would wanna ratelimit the # emails it may send in case of a malfunction
+> > though.  
 > 
-> Introduce a private flag 'sriov_active' in the vfio_pci_core_device
-> struct. This  allows the driver to track the SR-IOV power state requirement
-> without  relying on pci_num_vf() while holding the memory_lock. The lock is
-> now  only held to set the flag and ensure the device is in D0, after which
-> pci_enable_sriov() can be called without the lock.
+> Ya, there's definitely an implied "we'll turn it back off if there are major
+> problems".  But I don't see any reason to treat Sashiko any differently than
+> other automated systems in this regard; when bots have been too noisy in the
+> past, we've complained, and the bot/system was "fixed".
 > 
-> Fixes: f4162eb1e2fc ("vfio/pci: Change the PF power state to D0 before enabling VFs")
-> Cc: stable@vger.kernel.org
-> Suggested-by: Jason Gunthorpe <jgg@ziepe.ca>
-> Suggested-by: Alex Williamson <alex@shazbot.org>
-> Signed-off-by: Raghavendra Rao Ananta <rananta@google.com>
-> ---
->  drivers/vfio/pci/vfio_pci_core.c | 17 ++++++++++++++---
->  include/linux/vfio_pci_core.h    |  1 +
->  2 files changed, 15 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> index 3f8d093aacf8a..2fb95f54a1e26 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> @@ -271,8 +271,11 @@ int vfio_pci_set_power_state(struct vfio_pci_core_device *vdev, pci_power_t stat
->  	int ret;
->  
->  	/* Prevent changing power state for PFs with VFs enabled */
-> -	if (pci_num_vf(pdev) && state > PCI_D0)
-> -		return -EBUSY;
-> +	if (state > PCI_D0) {
-> +		lockdep_assert_held_write(&vdev->memory_lock);
-> +		if (vdev->sriov_active)
-> +			return -EBUSY;
-> +	}
->  
->  	if (vdev->needs_pm_restore) {
->  		if (pdev->current_state < PCI_D3hot && state >= PCI_D3hot) {
-> @@ -2292,8 +2295,9 @@ int vfio_pci_core_sriov_configure(struct vfio_pci_core_device *vdev,
->  
->  		down_write(&vdev->memory_lock);
->  		vfio_pci_set_power_state(vdev, PCI_D0);
-> -		ret = pci_enable_sriov(pdev, nr_virtfn);
-> +		vdev->sriov_active = true;
->  		up_write(&vdev->memory_lock);
-> +		ret = pci_enable_sriov(pdev, nr_virtfn);
->  		if (ret) {
->  			pm_runtime_put(&pdev->dev);
->  			goto out_del;
-> @@ -2307,6 +2311,13 @@ int vfio_pci_core_sriov_configure(struct vfio_pci_core_device *vdev,
->  	}
->  
->  out_del:
-> +	/*
-> +	 * Avoid taking the memory_lock intentionally. A race with a power
-> +	 * state transition would at most result in an -EBUSY, leaving the
-> +	 * device in PCI_D0.
-> +	 */
-> +	vdev->sriov_active = false;
-> +
->  	mutex_lock(&vfio_pci_sriov_pfs_mutex);
->  	list_del_init(&vdev->sriov_pfs_item);
->  out_unlock:
-> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-> index 2ebba746c18f7..f1451ee4744ac 100644
-> --- a/include/linux/vfio_pci_core.h
-> +++ b/include/linux/vfio_pci_core.h
-> @@ -127,6 +127,7 @@ struct vfio_pci_core_device {
->  	bool			needs_pm_restore:1;
->  	bool			pm_intx_masked:1;
->  	bool			pm_runtime_engaged:1;
-> +	bool			sriov_active:1;
 
-We should drop the bitfield use.  I still need to respin my patches to
-cleanup bitfield races in general, but this looks like a runtime
-updated bitfield without any explicit locking convention with other
-flags in the same storage unit, so should therefore be its own bool.
+Given the number of emails to lkml a few more won't hurt :-)
+But perhaps they should come from "Sashiko (AI bot)" to remind everyone on
+every email.
 
-If we agree, I can do the s/:1// change on commit.  Thanks,
-
-Alex
-
-
->  	struct pci_saved_state	*pci_saved_state;
->  	struct pci_saved_state	*pm_save;
->  	int			ioeventfds_nr;
-> 
-> base-commit: 254f49634ee16a731174d2ae34bc50bd5f45e731
-
+-- David
