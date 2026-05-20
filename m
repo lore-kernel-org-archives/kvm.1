@@ -1,30 +1,30 @@
-Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.5])
+Received: from m16.mail.163.com (m16.mail.163.com [117.135.210.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18DE73033C6;
-	Wed, 20 May 2026 15:23:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48D1B3E9C1F;
+	Wed, 20 May 2026 15:24:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=117.135.210.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779290643; cv=none; b=I5s8tnVyz70H57r0mdTHQofA5T2rViLoYQEE8ccRoKFrTRCgZPrAbmobIx+LJF63gMjVpZTxy85KjQ5aimQNEcMvD6PMWXr8nexIFBuv3O2qXJm2lB7IdDj6hVOxvbkYkqSv4ZoI9I5LNq2Ay2IvDht9KKX2+zKv/ur9gdB+ifY=
+	t=1779290644; cv=none; b=ifozwnB0ZnmWUDy0CCUEo/bd8m4Px9A2cDvaHxiA9ZNjcGwozr7eTGwxlpF0jtv2h3pRtuJr+RGNiAt+ZUkgRNSI/uDiPL1I2q9Ur1NbhbOhmRB6rViYbgVJnIHl7NB0NF4RdjNdKASHrZRcDIdZLdZvzEUu4+7gj99mOCz4hWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779290643; c=relaxed/simple;
-	bh=VVTPIUWRuxNd3juNXHtzCKQSYMoLbKM0vZ1J4RTlD4g=;
+	s=arc-20240116; t=1779290644; c=relaxed/simple;
+	bh=J1Sg/9mFLTkNGvw1ZNWf/BPPEMfKYcH9OSOouWb68L8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RzQoAhlv/J2soBl7zGpdVZX4kZVC+UE/eax1rkGz3Eof1n3ro9jdT9ZLxWl+baWf7yki6fVSNQnkS7BCj1ELT/v5c49mTRe0d3i3XwXVizNM78dUBDfig0h7Cyo+0jUmDIdTmyu/WbnRX3tQmlx9MvNe5eQHguqKpeHM9Z+9IZk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=X1EUBpJ/; arc=none smtp.client-ip=117.135.210.5
+	 MIME-Version; b=ZnoSU2NVM02JlJW6lNA7lePl3iOZa/y43gtGtyLNbgaP1m7M8n9+lQPGE6tlBtKD47sUK5OXlr4ZOZcMXTACXOG9XjigCKsrExoDHwgEfAthtuxD8zpej75nloqwHCxtqbuc1Zx/EiGKTvM4NCBCZEI3R6giIV3MKZhgP69x5cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=YZnsArVi; arc=none smtp.client-ip=117.135.210.4
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="X1EUBpJ/"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="YZnsArVi"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
-	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=7r
-	oBFKdGulDRfEdbUj9Nj2SOy6QsUypGN0bSOEP8gYU=; b=X1EUBpJ/V4CqOTlztu
-	Sj6q+1stEcF13AKPJ2ZUM8LqO4U079SKxoBx3Gi9XzliMn9sx0Dsv7ktlZvmHWJN
-	8ZjyBncvfF8exP4AzcGPaJCTS0wEe/yRI6b99VIxiueFknSf3wlEawys8fKxMzTS
-	bFd2+yRoG3DTNKiiNShOMUvJA=
+	s=s110527; h=From:To:Subject:Date:Message-ID:MIME-Version; bh=/z
+	kQTR9t64J9IX8/nWNTNSFT80BAb+Oq9++KrZ9yIJA=; b=YZnsArVi0ik5XMVehW
+	D3S00NvrGi2rRl7o+pj0D4YTL13SSCsvYJnI4wINGNRhbZwARx+VN+/+oZAN+1Ho
+	Aw3f5U3Lc7YACS3QAvoN/AyPhKdk6uMh76uTDDdJfPoSro0n3pt/2kpaZKa/cYqP
+	0pfG2IHIf0VbVl/3qBP7YFbHo=
 Received: from localhost.localdomain (unknown [])
-	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wAnt1md0Q1qGHMGCg--.33359S5;
-	Wed, 20 May 2026 23:22:12 +0800 (CST)
+	by gzga-smtp-mtada-g1-3 (Coremail) with SMTP id _____wAnt1md0Q1qGHMGCg--.33359S4;
+	Wed, 20 May 2026 23:22:11 +0800 (CST)
 From: Jinyu Tang <tjytimi@163.com>
 To: Anup Patel <apatel@ventanamicro.com>,
 	Anup Patel <anup@brainfault.org>,
@@ -46,9 +46,9 @@ Cc: kvm <kvm@vger.kernel.org>,
 	Yong-Xuan Wang <yongxuan.wang@sifive.com>,
 	Nutty Liu <nutty.liu@hotmail.com>,
 	Jinyu Tang <tjytimi@163.com>
-Subject: [PATCH 3/3] KVM: selftests: Add a hugetlb memslot alignment test mode
-Date: Wed, 20 May 2026 23:21:48 +0800
-Message-ID: <20260520152148.131272-4-tjytimi@163.com>
+Subject: [PATCH 2/3] KVM: riscv: Check hugetlb block mappings against memslot bounds
+Date: Wed, 20 May 2026 23:21:47 +0800
+Message-ID: <20260520152148.131272-3-tjytimi@163.com>
 X-Mailer: git-send-email 2.43.0
 In-Reply-To: <20260520152148.131272-1-tjytimi@163.com>
 References: <20260520152148.131272-1-tjytimi@163.com>
@@ -59,121 +59,118 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:_____wAnt1md0Q1qGHMGCg--.33359S5
-X-Coremail-Antispam: 1Uf129KBjvJXoWxCF15Kw47tr45JFWxuw4rKrg_yoWrCFWxpa
-	s5A3Z8KFsrJrWxXF4xGw1vkr1Sy3ykG3y0yryYg3yj93y7tw1IvF4xCF17ZF93CrZ3ZrZa
-	va15tF17Wa4DJF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRiiSdUUUUU=
-X-CM-SenderInfo: xwm13xlpl6il2tof0z/xtbCzwV782oN0aVUngAA3b
+X-CM-TRANSID:_____wAnt1md0Q1qGHMGCg--.33359S4
+X-Coremail-Antispam: 1Uf129KBjvJXoWxuF4fXF17JF4kZF1ftryxKrg_yoWrGFW5pF
+	WUGa15Cw45Kry3Kr1fJw1DZ3s0vws5W3WUAFyfJa90vrnxJayaga98Xa45XrWrArn3XFWI
+	vFsxZrWDurZ0g3DanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0ziQJ5rUUUUU=
+X-CM-SenderInfo: xwm13xlpl6il2tof0z/xtbC8gN68moN0aMcwAAA3w
 
-kvm_page_table_test can already exercise hugetlb-backed guest memory,
-but it always creates the test memslot with GPA alignment matching the
-hugetlb backing size. That misses the case where a valid hugetlb
-memslot is later moved so that the memslot GPA and HVA no longer have
-the same offset within the backing huge page.
+RISC-V KVM has used the hugetlb VMA size directly as the G-stage
+mapping size since stage-2 page table support was added. That is safe
+only if the block covered by the fault is fully contained in the
+memslot and the userspace address has the same offset as the GPA
+within that block.
 
-Add a -u option that moves the test memslot GPA by one guest page after
-creating the hugetlb memslot. The memslot is created through the normal
-helper first, so the backing allocation remains valid and hugetlb aligned.
-Moving the memslot then creates a deliberate HVA/GPA offset mismatch
-before the guest mapping is installed.
+The THP path already checks those constraints before installing a PMD
+block mapping. The hugetlb path did not, so an unaligned memslot could
+make KVM install a PMD or PUD sized G-stage block that covers memory
+outside the slot or maps the wrong host pages.
 
-This mode is useful for checking that architecture MMUs do not install
-a block mapping when the block would map the wrong host pages or cover
-memory outside the memslot. The option is restricted to hugetlb-backed
-test memory because it's specifically about hugetlb block
-mapping eligibility.
+Select hugetlb mapping sizes through the same memslot-boundary check,
+falling back from PUD to PMD to PAGE_SIZE. When a smaller hugetlb
+mapping size is selected, fault the GFN aligned to that selected size
+instead of the original VMA size.
 
+Also keep hugetlb mappings out of transparent_hugepage_adjust(). Once
+the hugetlb path has chosen PAGE_SIZE, promoting it again through the
+THP helper would miss the hugetlb fallback decision.
+
+Fixes: 9d05c1fee837 ("RISC-V: KVM: Implement stage2 page table programming")
 Signed-off-by: Jinyu Tang <tjytimi@163.com>
 ---
- .../selftests/kvm/kvm_page_table_test.c       | 28 +++++++++++++++----
- 1 file changed, 22 insertions(+), 6 deletions(-)
+ arch/riscv/kvm/mmu.c | 40 ++++++++++++++++++++++++++++++++++++----
+ 1 file changed, 36 insertions(+), 4 deletions(-)
 
-diff --git a/tools/testing/selftests/kvm/kvm_page_table_test.c b/tools/testing/selftests/kvm/kvm_page_table_test.c
-index fc5242fb9..a910e3abb 100644
---- a/tools/testing/selftests/kvm/kvm_page_table_test.c
-+++ b/tools/testing/selftests/kvm/kvm_page_table_test.c
-@@ -230,6 +230,7 @@ struct test_params {
- 	u64 phys_offset;
- 	u64 test_mem_size;
- 	enum vm_mem_backing_src_type src_type;
-+	bool misalign_slot_gpa;
- };
- 
- static struct kvm_vm *pre_init_before_test(enum vm_guest_mode mode, void *arg)
-@@ -244,6 +245,7 @@ static struct kvm_vm *pre_init_before_test(enum vm_guest_mode mode, void *arg)
- 	u64 guest_num_pages;
- 	u64 alignment;
- 	void *host_test_mem;
-+	struct userspace_mem_region *region;
- 	struct kvm_vm *vm;
- 
- 	/* Align up the test memory size */
-@@ -276,13 +278,22 @@ static struct kvm_vm *pre_init_before_test(enum vm_guest_mode mode, void *arg)
- 	/* Add an extra memory slot with specified backing src type */
- 	vm_userspace_mem_region_add(vm, src_type, guest_test_phys_mem,
- 				    TEST_MEM_SLOT_INDEX, guest_num_pages, 0);
-+	region = memslot2region(vm, TEST_MEM_SLOT_INDEX);
-+	host_test_mem = region->host_mem;
-+
-+	if (p->misalign_slot_gpa) {
-+		TEST_ASSERT(is_backing_src_hugetlb(src_type),
-+			    "Memslot GPA misalignment requires hugetlb backing");
-+		TEST_ASSERT(guest_num_pages > 1,
-+			    "Need at least two guest pages to misalign memslot GPA");
-+
-+		guest_test_phys_mem += guest_page_size;
-+		vm_mem_region_move(vm, TEST_MEM_SLOT_INDEX, guest_test_phys_mem);
-+	}
- 
- 	/* Do mapping(GVA->GPA) for the testing memory slot */
- 	virt_map(vm, guest_test_virt_mem, guest_test_phys_mem, guest_num_pages);
- 
--	/* Cache the HVA pointer of the region */
--	host_test_mem = addr_gpa2hva(vm, (gpa_t)guest_test_phys_mem);
--
- 	/* Export shared structure test_args to guest */
- 	sync_global_to_guest(vm, test_args);
- 
-@@ -417,8 +428,8 @@ static void run_test(enum vm_guest_mode mode, void *arg)
- static void help(char *name)
- {
- 	puts("");
--	printf("usage: %s [-h] [-p offset] [-m mode] "
--	       "[-b mem-size] [-v vcpus] [-s mem-type]\n", name);
-+	printf("usage: %s [-h] [-p offset] [-m mode] [-b mem-size]\n", name);
-+	printf("          [-v vcpus] [-s mem-type] [-u]\n");
- 	puts("");
- 	printf(" -p: specify guest physical test memory offset\n"
- 	       "     Warning: a low offset can conflict with the loaded test code.\n");
-@@ -428,6 +439,8 @@ static void help(char *name)
- 	printf(" -v: specify the number of vCPUs to run\n"
- 	       "     (default: 1)\n");
- 	backing_src_help("-s");
-+	printf(" -u: move the test memslot GPA by one guest page after creating\n"
-+	       "     the memslot, forcing a hugetlb HVA/GPA offset mismatch\n");
- 	puts("");
+diff --git a/arch/riscv/kvm/mmu.c b/arch/riscv/kvm/mmu.c
+index 10be8f683..d2378bb1f 100644
+--- a/arch/riscv/kvm/mmu.c
++++ b/arch/riscv/kvm/mmu.c
+@@ -423,12 +423,33 @@ static unsigned long transparent_hugepage_adjust(struct kvm *kvm,
+ 	return PAGE_SIZE;
  }
  
-@@ -442,7 +455,7 @@ int main(int argc, char *argv[])
++static unsigned long hugetlb_mapping_size(struct kvm_memory_slot *memslot,
++					  unsigned long hva,
++					  unsigned long map_size)
++{
++	switch (map_size) {
++	case PUD_SIZE:
++		if (fault_supports_gstage_huge_mapping(memslot, hva, PUD_SIZE))
++			return PUD_SIZE;
++		fallthrough;
++	case PMD_SIZE:
++		if (fault_supports_gstage_huge_mapping(memslot, hva, PMD_SIZE))
++			return PMD_SIZE;
++		fallthrough;
++	case PAGE_SIZE:
++		return PAGE_SIZE;
++	default:
++		return map_size;
++	}
++}
++
+ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
+ 		      gpa_t gpa, unsigned long hva, bool is_write,
+ 		      struct kvm_gstage_mapping *out_map)
+ {
+ 	int ret;
+ 	kvm_pfn_t hfn;
++	bool is_hugetlb;
+ 	bool writable;
+ 	short vma_pageshift;
+ 	gfn_t gfn = gpa >> PAGE_SHIFT;
+@@ -462,16 +483,23 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
+ 		return -EFAULT;
+ 	}
  
- 	guest_modes_append_default();
+-	if (is_vm_hugetlb_page(vma))
++	is_hugetlb = is_vm_hugetlb_page(vma);
++	if (is_hugetlb)
+ 		vma_pageshift = huge_page_shift(hstate_vma(vma));
+ 	else
+ 		vma_pageshift = PAGE_SHIFT;
+ 	vma_pagesize = 1ULL << vma_pageshift;
+ 	if (logging || (vma->vm_flags & VM_PFNMAP))
+ 		vma_pagesize = PAGE_SIZE;
++	else if (is_hugetlb)
++		vma_pagesize = hugetlb_mapping_size(memslot, hva, vma_pagesize);
  
--	while ((opt = getopt(argc, argv, "hp:m:b:v:s:")) != -1) {
-+	while ((opt = getopt(argc, argv, "hp:m:b:v:s:u")) != -1) {
- 		switch (opt) {
- 		case 'p':
- 			p.phys_offset = strtoull(optarg, NULL, 0);
-@@ -461,6 +474,9 @@ int main(int argc, char *argv[])
- 		case 's':
- 			p.src_type = parse_backing_src_type(optarg);
- 			break;
-+		case 'u':
-+			p.misalign_slot_gpa = true;
-+			break;
- 		case 'h':
- 		default:
- 			help(argv[0]);
++	/*
++	 * For hugetlb mappings, vma_pagesize might have been reduced from the
++	 * VMA size to a smaller safe mapping size.
++	 */
+ 	if (vma_pagesize == PMD_SIZE || vma_pagesize == PUD_SIZE)
+-		gfn = (gpa & huge_page_mask(hstate_vma(vma))) >> PAGE_SHIFT;
++		gfn = ALIGN_DOWN(gpa, vma_pagesize) >> PAGE_SHIFT;
+ 
+ 	/*
+ 	 * Read mmu_invalidate_seq so that KVM can detect if the results of
+@@ -513,8 +541,12 @@ int kvm_riscv_mmu_map(struct kvm_vcpu *vcpu, struct kvm_memory_slot *memslot,
+ 	if (mmu_invalidate_retry(kvm, mmu_seq))
+ 		goto out_unlock;
+ 
+-	/* Check if we are backed by a THP and thus use block mapping if possible */
+-	if (!logging && (vma_pagesize == PAGE_SIZE))
++	/*
++	 * Check if we are backed by a THP and thus use block mapping if
++	 * possible. Hugetlb mappings already selected their target size above,
++	 * so do not promote them through the THP helper.
++	 */
++	if (!logging && !is_hugetlb && vma_pagesize == PAGE_SIZE)
+ 		vma_pagesize = transparent_hugepage_adjust(kvm, memslot, hva, &hfn, &gpa);
+ 
+ 	if (writable) {
 -- 
 2.43.0
 
