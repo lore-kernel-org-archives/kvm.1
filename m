@@ -1,177 +1,136 @@
-Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D25D3BAD9D;
-	Thu, 21 May 2026 14:20:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F3F53CF688
+	for <kvm@vger.kernel.org>; Thu, 21 May 2026 14:21:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779373255; cv=none; b=B4UIRhm6/hKIQML2yFjI2hqbpGm1exk2VsYYF5DVBGGpgRddkkr3sktuiFZ9UsGPtlqnUHvFA7TnrMJdzBczNg/YDqhI1UPQMrdiS1SQnoFQtpIDmGZIrYPTo7lTtpEKpH5Ge0OcE8hjywKe4ywSdN6aecjFkfglqJbrb7rzejQ=
+	t=1779373306; cv=none; b=iWsOzfjQx7gbJ96hBJQD8UEl1hpd3kj1Q82etivMaYtS6ArQXtyPN4SQ+4x9+01bW6gz2S+hCYesyGO8EFWMdt9yc9impCEU9qp1lOgpix1PYKnfm1GUkhd8xdlW9IyDwlFsVzsHCpOQg952Oux8yJbXQFwZYaLIX+GZ157W5dE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779373255; c=relaxed/simple;
-	bh=NscdN9xGGzN+yH3yt5p22EI4ib4pXDCVbLRzepNv+Z0=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=scBVTXV4awqgT94SdBcXppmTeqZ0NImHv9+VlTMcz1bovNhUY+Ygfyk2DtTuLDlg5toXdmRl/pfLnQcai+CUv79mnRrn756QKPY2bAJmYoqnsMuD9ecxq+xTWFufYBiWw/EEWByFR9Kmoj+F5LUlzlZfz4npwFrOlkuiMijHhuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from fric.. (unknown [36.110.52.2])
-	by APP-03 (Coremail) with SMTP id rQCowAA3UNewFA9qSZHSEQ--.27615S2;
-	Thu, 21 May 2026 22:20:32 +0800 (CST)
-From: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-To: kvm-riscv@lists.infradead.org,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org
-Cc: Albert Ou <aou@eecs.berkeley.edu>,
-	Alexandre Ghiti <alex@ghiti.fr>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Anup Patel <anup@brainfault.org>,
-	Atish Patra <atish.patra@linux.dev>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Paul Walmsley <pjw@kernel.org>,
-	Jiakai Xu <xujiakai2025@iscas.ac.cn>,
-	Jiakai Xu <jiakaiPeanut@gmail.com>
-Subject: [PATCH] RISC-V: KVM: Fix TOCTOU race in SBI system suspend handler
-Date: Thu, 21 May 2026 14:20:30 +0000
-Message-Id: <20260521142030.1560861-1-xujiakai2025@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1779373306; c=relaxed/simple;
+	bh=+pL+rZ5hYnakVp3eViVhhlNGbB7Zs5h4PZn9WwK7upU=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=I8cN2HD1hRX2xLT5V+xRznFPX+CsicqqXh3W5GAxAp5DS7Cyg8gq9iE2dxCMg7KnHT2oAaZnlPXj426zZWMuWe8Tp2mRpkGzYq+q7X2CgKvG0CKmpd9jPriFkWVb/7xbQ31bpSYIyPeSaxWkfkztc4lZcWA7a6vxBImGFSOCA/Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SqitMEY1; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SqitMEY1"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-368edd5fec4so6876702a91.0
+        for <kvm@vger.kernel.org>; Thu, 21 May 2026 07:21:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779373303; x=1779978103; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=8Q5oVYYRVy83rEvyTZBhLaKBIsxHN0wptJNVngW/2MQ=;
+        b=SqitMEY1JJoz/yFscBsnP6NOrJ50V22ksAYo3FayvTgFLjyqE+IZ7DK7t2atC29yeO
+         3+kNIlP1m08q7kOhc6+vvbT9LYBFlZidNQVfZftYs+XCS3tTsmgxbx5fsBHVPoFLb55f
+         qJHlmkh5Tn6mUgmXo/GoSAZ8pV+yFVtEeFJfsFFXM6323DjGULV9HF61o2wEZbutgqNB
+         5xQA2gINrn6hVS/FffuJL4M/NJkV3RJuNFYHYBjyi+V0uLLPJ+v7bTNa1xDhJzYnjCrR
+         gDHneTTt9q1maUrTeRREPGtrnQ/cG8FtWtFuVWr889bPevi4CfjoyvynKE0uJHDGpVvv
+         ypug==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779373303; x=1779978103;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8Q5oVYYRVy83rEvyTZBhLaKBIsxHN0wptJNVngW/2MQ=;
+        b=C5Bwtx+EZ4zicV1g0IScSNeS15TV2rjSYSjVWAuwGQ2P5h7vbK7v5mbeQ072/HY448
+         BNWt01PkYvsyl3PB7qtvp6k2LzaIMrbs0esCp4bbOdk8hyq9QO6hhAQF+mOwHyV/EIVK
+         xdHshKHrWMRri1I3eElz395x2H9/wpFfTy7yh+bAK/lLNR/quf8anWuOEJYSja+hwvTE
+         +eqPqliiKohnDpkuDlifUmr9TnQcqORWl1+x2jQqShNb/cDgfBL5xjwfNtM9ySEpPE/C
+         1RFPPmsOzwT1UKdp806Bkmje0xTFnixVCWih5VRI3/CDLHjNG4Sz3pXGd+QCdrsXO+6m
+         3OKA==
+X-Forwarded-Encrypted: i=1; AFNElJ/cC9P4eEBmrbJly+zQwy5QRmDto3kRGmm/w+MrwzPML51ouR3NA4PVqruw62sF5WkOsX4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyIyAUPQxttYb8fAOzk34dMX87ymwtxYrbrLgK5elkvB8PLyMQN
+	2cnVBG0ct2nypsOxJTUMMQy9T62zd+PWqGYLC2spMM9Ct4Jpx3Dyu1JEUfOgQWaybTXimRzKAL/
+	bb6rZJQ==
+X-Received: from pjjj1.prod.google.com ([2002:a17:90a:601:b0:368:adeb:4994])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2548:b0:35f:b5df:453
+ with SMTP id 98e67ed59e1d1-36a45630166mr2922293a91.22.1779373302968; Thu, 21
+ May 2026 07:21:42 -0700 (PDT)
+Date: Thu, 21 May 2026 07:21:42 -0700
+In-Reply-To: <CA+EHjTzu=28Sr3=9A9LmJEGz0tBEDbU9taznVV5kdL7s8Nw=Jg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:rQCowAA3UNewFA9qSZHSEQ--.27615S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxAF1fWrW8uF4DJry5Cr1fCrg_yoWrCF4DpF
-	Za9FsY9r4rGr1xAwnFyF4Dur4YgFs5Kr43ArWDurWrXr4YyryrXrsYkrW7XryDJFWFgF9a
-	9F1jka15uF15JFUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBF14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
-	6r4UJwA2z4x0Y4vEx4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oV
-	Cq3wAac4AC62xK8xCEY4vEwIxC4wAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC
-	0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Gr0_Cr
-	1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IE
-	rcIFxwACI402YVCY1x02628vn2kIc2xKxwCY1x0262kKe7AKxVWUtVW8ZwCF04k20xvY0x
-	0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F40E14v26r1j6r18MI8I3I0E
-	7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcV
-	C0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Gr0_Cr1lIxAIcVCF
-	04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7
-	CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JU6c_3UUUUU=
-X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiCRELCWoLKrae5wABsf
+Mime-Version: 1.0
+References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
+ <20260507-gmem-inplace-conversion-v6-19-91ab5a8b19a4@google.com> <CA+EHjTzu=28Sr3=9A9LmJEGz0tBEDbU9taznVV5kdL7s8Nw=Jg@mail.gmail.com>
+Message-ID: <ag8U9qIcTd_GykHE@google.com>
+Subject: Re: [PATCH v6 19/43] KVM: Let userspace disable per-VM mem
+ attributes, enable per-gmem attributes
+From: Sean Christopherson <seanjc@google.com>
+To: Fuad Tabba <tabba@google.com>
+Cc: ackerleytng@google.com, aik@amd.com, andrew.jones@linux.dev, 
+	binbin.wu@linux.intel.com, brauner@kernel.org, chao.p.peng@linux.intel.com, 
+	david@kernel.org, ira.weiny@intel.com, jmattson@google.com, 
+	jthoughton@google.com, michael.roth@amd.com, oupton@kernel.org, 
+	pankaj.gupta@amd.com, qperret@google.com, rick.p.edgecombe@intel.com, 
+	rientjes@google.com, shivankg@amd.com, steven.price@arm.com, 
+	willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
+	forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
+	aneesh.kumar@kernel.org, liam@infradead.org, 
+	Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="us-ascii"
 
-The SBI SUSP handler kvm_sbi_ext_susp_handler() checks that all other
-vCPUs are stopped before entering system suspend, but it does not hold
-mp_state_lock during the iteration. A concurrent HSM HART_START from
-another vCPU can start a target vCPU after the SUSP handler has already
-checked it, violating the invariant that all vCPUs must be stopped
-before suspend.
+On Thu, May 21, 2026, Fuad Tabba wrote:
+> Hi Ackerley,
+> 
+> On Thu, 7 May 2026 at 21:22, Ackerley Tng via B4 Relay
+> <devnull+ackerleytng.google.com@kernel.org> wrote:
+> >
+> > From: Sean Christopherson <seanjc@google.com>
+> >
+> > Make vm_memory_attributes a module parameter so that userspace can disable
+> > the use of memory attributes on the VM level.
+> >
+> > To avoid inconsistencies in the way memory attributes are tracked in KVM
+> > and guest_memfd, the vm_memory_attributes module_param is made
+> > read-only (0444).
+> >
+> > Make CONFIG_KVM_VM_MEMORY_ATTRIBUTES selectable, only for (CoCo) VM types
+> > that might use vm_memory_attributes.
+> >
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> 
+> Config files always confuse me, but Sashiko might be onto something:
+> 
+> https://sashiko.dev/#/patchset/20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4%40google.com?part=19
 
-Fix this with a two-phase approach:
-1. Set a VM-wide suspend_in_progress flag before the iteration to block
-   concurrent HSM HART_START. The HSM start handler checks this flag
-   under its existing mp_state_lock, closing the race.
-2. Hold mp_state_lock during each per-vCPU stopped check so that
-   mp_state reads are ordered against concurrent power_on/power_off
-   writes on the other side of the lock.
+: Since this prompt does not have a default value, will it default to N
+: and silently drop KVM_VM_MEMORY_ATTRIBUTES during configuration updates
+: like make olddefconfig?
+: 
+: Existing userspace VMMs that rely on the KVM_SET_MEMORY_ATTRIBUTES ioctl
+: for TDX or SEV VMs might fail to boot if the feature is unexpectedly
+: compiled out. Could a default y be used to preserve backwards
+: compatibility for existing configurations?
 
-The flag is self-clearing: it resets when any vCPU re-enters
-kvm_arch_vcpu_ioctl_run after the suspend-resume cycle completes.
+> I think this partially goes back to commit 6, the one I flagged
+> yesterday. But also adding "default y" to KVM_VM_MEMORY_ATTRIBUTES?
+> The default value should at least fix this issue, but I'm not sure if
+> it would cause other problems...
 
-Fixes: 023c15151fbb ("RISC-V: KVM: Add SBI system suspend support")
-Signed-off-by: Jiakai Xu <jiakaiPeanut@gmail.com>
-Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-Assisted-by: YuanSheng:DeepSeek-V3.2
----
- arch/riscv/include/asm/kvm_host.h |  3 +++
- arch/riscv/kvm/vcpu.c             |  8 ++++++++
- arch/riscv/kvm/vcpu_sbi_hsm.c     | 11 +++++++++++
- arch/riscv/kvm/vcpu_sbi_system.c  | 10 ++++++++++
- 4 files changed, 32 insertions(+)
-
-diff --git a/arch/riscv/include/asm/kvm_host.h b/arch/riscv/include/asm/kvm_host.h
-index 75b0a951c1bc6..c4e710ec40f90 100644
---- a/arch/riscv/include/asm/kvm_host.h
-+++ b/arch/riscv/include/asm/kvm_host.h
-@@ -93,6 +93,9 @@ struct kvm_arch {
- 
- 	/* KVM_CAP_RISCV_MP_STATE_RESET */
- 	bool mp_state_reset;
-+
-+	/* Set by SBI SUSP to block concurrent HSM HART_START during system suspend */
-+	bool suspend_in_progress;
- };
- 
- struct kvm_cpu_trap {
-diff --git a/arch/riscv/kvm/vcpu.c b/arch/riscv/kvm/vcpu.c
-index a73690eda84b5..ea6f14244addb 100644
---- a/arch/riscv/kvm/vcpu.c
-+++ b/arch/riscv/kvm/vcpu.c
-@@ -838,6 +838,14 @@ int kvm_arch_vcpu_ioctl_run(struct kvm_vcpu *vcpu)
- 	/* Mark this VCPU ran at least once */
- 	vcpu->arch.ran_atleast_once = true;
- 
-+	/*
-+	 * Clear stale suspend flag from a previous suspend-resume cycle.
-+	 * The flag was set by kvm_sbi_ext_susp_handler() and persists
-+	 * across the userspace exit; clearing it here ensures subsequent
-+	 * HSM HART_START operations are not blocked after resume.
-+	 */
-+	WRITE_ONCE(vcpu->kvm->arch.suspend_in_progress, false);
-+
- 	kvm_vcpu_srcu_read_lock(vcpu);
- 
- 	switch (run->exit_reason) {
-diff --git a/arch/riscv/kvm/vcpu_sbi_hsm.c b/arch/riscv/kvm/vcpu_sbi_hsm.c
-index f26207f84bab6..2f88d93768bc8 100644
---- a/arch/riscv/kvm/vcpu_sbi_hsm.c
-+++ b/arch/riscv/kvm/vcpu_sbi_hsm.c
-@@ -31,6 +31,17 @@ static int kvm_sbi_hsm_vcpu_start(struct kvm_vcpu *vcpu)
- 		goto out;
- 	}
- 
-+	/*
-+	 * Reject HART_START while a system suspend is in progress.
-+	 * kvm_sbi_ext_susp_handler() sets this flag before checking
-+	 * that all vCPUs are stopped; checking it here under
-+	 * mp_state_lock closes the race.
-+	 */
-+	if (READ_ONCE(target_vcpu->kvm->arch.suspend_in_progress)) {
-+		ret = SBI_ERR_DENIED;
-+		goto out;
-+	}
-+
- 	kvm_riscv_vcpu_sbi_request_reset(target_vcpu, cp->a1, cp->a2);
- 
- 	__kvm_riscv_vcpu_power_on(target_vcpu);
-diff --git a/arch/riscv/kvm/vcpu_sbi_system.c b/arch/riscv/kvm/vcpu_sbi_system.c
-index c6f7e609ac794..b79c1cff7a996 100644
---- a/arch/riscv/kvm/vcpu_sbi_system.c
-+++ b/arch/riscv/kvm/vcpu_sbi_system.c
-@@ -35,13 +35,23 @@ static int kvm_sbi_ext_susp_handler(struct kvm_vcpu *vcpu, struct kvm_run *run,
- 			return 0;
- 		}
- 
-+		/*
-+		 * Set the VM-wide flag to block concurrent HSM HART_START
-+		 * from racing with the per-vCPU stopped checks below.
-+		 */
-+		WRITE_ONCE(vcpu->kvm->arch.suspend_in_progress, true);
-+
- 		kvm_for_each_vcpu(i, tmp, vcpu->kvm) {
- 			if (tmp == vcpu)
- 				continue;
-+			spin_lock(&tmp->arch.mp_state_lock);
- 			if (!kvm_riscv_vcpu_stopped(tmp)) {
-+				spin_unlock(&tmp->arch.mp_state_lock);
-+				WRITE_ONCE(vcpu->kvm->arch.suspend_in_progress, false);
- 				retdata->err_val = SBI_ERR_DENIED;
- 				return 0;
- 			}
-+			spin_unlock(&tmp->arch.mp_state_lock);
- 		}
- 
- 		kvm_riscv_vcpu_sbi_request_reset(vcpu, cp->a1, cp->a2);
--- 
-2.34.1
-
+Hrm.  As much as I want per-gmem attributes to be the default going forward,
+silently breaking existing setups isn't great.  On the other hand, I'm *very*
+skeptical there are any SNP or TDX deployments using a distro kernel, so I'm
+still leaning towards forcing the issue and turning per-VM attributes off by
+default.
