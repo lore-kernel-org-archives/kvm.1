@@ -1,94 +1,97 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CEF36D9F5
-	for <kvm@vger.kernel.org>; Thu, 21 May 2026 18:47:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C3E3905E0
+	for <kvm@vger.kernel.org>; Thu, 21 May 2026 18:48:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779389236; cv=none; b=Xobir1wSLYW0QywwmyF/WoX+DntSAUcNxzGGfl7K4ifRl26nl7OpFUgTJ+D9Og3f9SOO3IVJNGQXq/fT4zE3YW7sfvOK7bbVUPor4cBp1PPes1Di9FgeWj4ae0OOw3Bal09J5vU+j1sGsyvpmBiYMhkkhJKSyONhl/slrGFCv/o=
+	t=1779389289; cv=none; b=Br4i6IezDj4GSlUSwilr5VFbpn/8dPUP/w4aeVRwgcRJn54U2NY8a919ZyIT8Y8nbRryfvdtDBZEi0s4VLJH/yjlG41rDgzSnAPggeXovTDRYPJ5N4JxAPkuJqnC1yoyqWDHTRq+rp3gXxfpFSbu1/Y4amhLns+yw4tSpU9penI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779389236; c=relaxed/simple;
-	bh=/DG/MIpaMO6i0+S7NwYK+Xz+X5EesI4A/a+bCuZYdfQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gYlochqtiu2H0Yg/vcX92a7dqAvwSRtdrxOq5I4weaGjdLut2Qs4xdg34OcufWuLQzC08J23nvdE7nRdnwKaXNmB6MnxuaU00yv9E+HcgRsqyB6gMUdpnDOi85zNJNQTNs6JQTFXoxKNBuy8udhkg8kWLBSqD2h5zKaBQ06EFvY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eP9I9n3/; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1779389289; c=relaxed/simple;
+	bh=YUNv3MTY3tC2jjOgCa0t+Z2FPE1cUyrX82V+dta0218=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=YXXbleLWdm0dp5w9QMhxoweZj/Hv+wAwqLlXPFqBPWLTVicIory7MfqhFFDXrcEEI0TqBNeiKkOvGTSp0XcSL1aeAP/fKYo4QnN6Wn2zqixtG8b5s7PcwgnFzyLycBzTKCoOuDxFLW4GZR+kbSR2sil8MFDX/twPNZsGkujs28Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h7weSXc5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eP9I9n3/"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3663d5e9bf4so5802527a91.1
-        for <kvm@vger.kernel.org>; Thu, 21 May 2026 11:47:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779389234; x=1779994034; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zotDUcTetMeKkyO7KMKZKkLO0bGRKwkihUsxk7vpQAQ=;
-        b=eP9I9n3/HD/qlX+wbK0JUpVUxbyuVhy0d+Q8JsUAUgtl57ZxZogCxkKRZ5p2yjDfl1
-         rZWXNaWX1m8+UcmfbP/+2qeI93WJFsa97n94P/8IqjO35vf/tm3HxfwW+Nj8Bj/2fPqn
-         HtMxNPr+ulYsxrSkqVXqf9RwOyhyHvYNraWYoFPnAvXkjrWSrgFbX2A7oZAmmDK0DGqn
-         nBSGnaJjQQY64251c8qynoeAelvNd0jWA0xCMdBZ0FAo1IjDwaB20KdLrbsHOK0c6NfP
-         tx2rvy1yOu4UR9xyhj7RSpRY9SO0by47noCVGT2lwBdvIYcqjkjjSH461W/GrnhZrrNR
-         8ZMw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779389234; x=1779994034;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zotDUcTetMeKkyO7KMKZKkLO0bGRKwkihUsxk7vpQAQ=;
-        b=DgrMx2XrVR4deq6L+IxCFjoMaJ0e2sPaO/q0THmxXA9FvEWeFWmF0GfZynZOHdHF/N
-         Kz94lqbkumRncG7/1ThLwFe5K8Gq7JuRix7uF3OVvBFIz3g9GeYN74tUhVqcLdVFdNJC
-         LmxWPqaV0ceq3XxC0nvPNnJ11erbbfDjXTQFurlBvNCGVGmRD9/acsWlr2DXz7N6pOvW
-         FAuOUfoDAU+fGoJPi/a7ERCLNEC8sFKK8ThK96xdzg5XD/J+sPBllsJ7ORHPXQuxkEfu
-         G1r383Ao1p8REqwu11Ugf0T1HcCLIhZRN13eiUan+bkSKflmsKMKn9xK3ifgMqse7EJ9
-         cS2A==
-X-Forwarded-Encrypted: i=1; AFNElJ/XOYRauC5F6B6pnjEU/iE5mffsO6gprRShc79LtEi+bV5UeTVGdQO6eedwHcCChUadzX0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx7nc1zHgteuUoDSys11lSH2eVdAWvc/BuFylj24ZCm9/6FSDeq
-	RyQw2vz5yfjgwgdkbekcdUAG+t4HRCWAv07qQizoB5/NRB5gnlhuhHLXpHMoWnxyuCBvmcH09VV
-	EVMvpRQ==
-X-Received: from pggg7.prod.google.com ([2002:a63:2007:0:b0:c73:ef4d:6a16])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:4fc2:b0:368:3854:3a2e
- with SMTP id 98e67ed59e1d1-36a676d2e82mr471785a91.26.1779389233672; Thu, 21
- May 2026 11:47:13 -0700 (PDT)
-Date: Thu, 21 May 2026 11:47:13 -0700
-In-Reply-To: <0ed747418eaef45a8c161ab5a9e28a12c604f9ea.camel@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h7weSXc5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 432F21F00A3D
+	for <kvm@vger.kernel.org>; Thu, 21 May 2026 18:48:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779389288;
+	bh=BvCUukItYUpyz5H3dJwk31OpQyQKb3byOAcmsK9JtMg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=h7weSXc54Fq6caiyDYOiQPBoe9vuMLNtOuNePauFjLoIJGBga5US/fFNMurHBIYdi
+	 yJaLjcZ/VMU0q8j2hfgK2ps4lC03zxZfnyF98dM9Cj3vX58CLNhtDtThVC5trWLyqG
+	 VgYbRZmCse4EK3/8QFbqP0+HYC/C4SMSxGYxe+WrXferBbteUGBCEM8qz2k0BqCUnw
+	 miiU90qR0IfUU0ORQdLh2UQAUfyfENAxSTFZLOgd0qwR+5e/sQfLMwG17O3WfcyxMJ
+	 WWlEzL7qxQLjTNrbxM+2f61qsG309GlOGBcDxhoozVCBWYPL/kJKR/mH2tI9WUeLIV
+	 wB/vVOaTw6VKQ==
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-bdbcc6c4500so217663966b.1
+        for <kvm@vger.kernel.org>; Thu, 21 May 2026 11:48:08 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8DTZXzS3FEkOhm1R74Y+U3AKVdD3N/eDrIKWtABAgIMVIPrV1cl3tJmYhA5/OIR5sanq4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/wCO0d1UwtKZ038LYQDSR1P2xl0rIRJDl7d2Hl0IkX4pUOiLU
+	OJ4h9VAxoe5Pe2njzmHSkTFQlojJYrLA8QH06TTvZeDpUNVoRyEHeleHHTa0bM4WmEe/Z4wy3kN
+	kuWxizuMVAY+QymnFdN2EYO3txaCsniU=
+X-Received: by 2002:a17:907:9289:b0:bd5:1482:930a with SMTP id
+ a640c23a62f3a-bdd272d1c46mr32526266b.39.1779389287235; Thu, 21 May 2026
+ 11:48:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260514215355.1648463-1-seanjc@google.com> <20260514215355.1648463-16-seanjc@google.com>
- <074e209fe4c78a735868099f13d76b9dde2c88e3.camel@intel.com>
- <agx77QB3UVmJr5xP@google.com> <729c4191d16e4c768c231ffb9bb8420306039210.camel@intel.com>
- <ag0NlJ2FEIL7GJIj@google.com> <4a918cb38dccd4ef7a2d84d16f5044472d069f7c.camel@intel.com>
- <ag35RgwowvR9Q4hA@google.com> <0ed747418eaef45a8c161ab5a9e28a12c604f9ea.camel@intel.com>
-Message-ID: <ag9TMaaeX1aU7w0q@google.com>
-Subject: Re: [PATCH v2 15/15] KVM: x86: Move the bulk of register specific
- code from x86.c to regs.c
-From: Sean Christopherson <seanjc@google.com>
-To: Kai Huang <kai.huang@intel.com>
-Cc: "dwmw2@infradead.org" <dwmw2@infradead.org>, Rick P Edgecombe <rick.p.edgecombe@intel.com>, 
-	"x86@kernel.org" <x86@kernel.org>, "binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, 
-	"kas@kernel.org" <kas@kernel.org>, 
-	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "vkuznets@redhat.com" <vkuznets@redhat.com>, 
-	"paul@xen.org" <paul@xen.org>, "yosry@kernel.org" <yosry@kernel.org>, 
-	"pbonzini@redhat.com" <pbonzini@redhat.com>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
-	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, 
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+References: <20260514210500.1626871-1-seanjc@google.com> <20260514210500.1626871-4-seanjc@google.com>
+ <CAO9r8zNW+dwWykUsALO-BKTg_dX8rT8cFBCR+Y9z2NjXoGJGtA@mail.gmail.com> <ag9SDjTdeXEszAsk@google.com>
+In-Reply-To: <ag9SDjTdeXEszAsk@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 21 May 2026 11:47:55 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPdb5dLsFuEeKxBK98spJx6MhBVYbt6jh9mVGF3vJ74Fw@mail.gmail.com>
+X-Gm-Features: AVHnY4ItMXCUmhCgrgg07YYia79rBB89JaN1pLoCFhMoA5bc4EV8qGKNsMyIVpE
+Message-ID: <CAO9r8zPdb5dLsFuEeKxBK98spJx6MhBVYbt6jh9mVGF3vJ74Fw@mail.gmail.com>
+Subject: Re: [kvm-unit-tests PATCH v3 03/20] x86/svm: Sort (and swap) GPRs by
+ their index, not alphabetically
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	Mathias Krause <minipli@grsecurity.net>, Andrew Jones <andrew.jones@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 20, 2026, Kai Huang wrote:
-> On Wed, 2026-05-20 at 11:11 -0700, Sean Christopherson wrote:
-> > On Wed, May 20, 2026, Kai Huang wrote:
-> > > But if we want to hide KVM internal structures, I don't see any other options
-> > > except virt/kvm/include/ is the place to go?
-> > 
-> > arch/$(ARCH)/kvm/kvm_arch.h is the obvious approach.  Code in virt/kvm can reach
-> > arch/$(ARCH)/kvm, we just need to add it to the include path.  That's why I was
-> > working on unifying the include definitions.
-> 
-> Yeah, for asm/kvm_host.h.
-> 
-> But if I am still following you we still need a place for linux/kvm_host.h, for
-> which I thought virt/kvm/include/ would be the place at first glance.
+On Thu, May 21, 2026 at 11:42=E2=80=AFAM Sean Christopherson <seanjc@google=
+.com> wrote:
+>
+> On Thu, May 21, 2026, Yosry Ahmed wrote:
+> > On Thu, May 14, 2026 at 2:05=E2=80=AFPM Sean Christopherson <seanjc@goo=
+gle.com> wrote:
+> > >
+> > > Sort all GPRs in the nested SVM infrastructure by their index, not
+> > > alphabetically.  This will allow sharing code between SVM and VMX for
+> > > context switching GPRs between guest and host.
+> >
+> > Potentially a naive question, why do we sort them by index if the xchg
+> > instructions just use the offset for each register anyway?
+>
+> So that the offset into the "array", ignoring that this particular implem=
+entation
+> doesn't use an array, can be computed from the architectural index of the=
+ register.
+>
+> Does it matter _here_?  Probably not, because there's not actually an arr=
+ay (yet?).
+> But my goodness is it confusing to look at KVM's vcpu->arch.regs[] and th=
+en switch
+> to selftests or KUT and stare at a set of GPRs that don't align with thei=
+r index.
+>
+> And code mechanics aside, sorting RAX, RBX, RCX, and RDX alphabetically m=
+akes me
+> foam at the mouth :-)
 
-Oh, yes, the KVM-internal pieces of linuy/kvm_host.h would live in virt/kvm.
+You'll be very happy with my selftests patch then :P
+
+>
+> > I ask because I have a patch [*] undoing this for selftests (and
+> > removing the 'rsp' spot), so I think I am missing something.
+> >
+> > [*] https://lore.kernel.org/kvm/20260518202514.2037078-2-yosry@kernel.o=
+rg/
