@@ -1,185 +1,213 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07334D8CE;
-	Thu, 21 May 2026 00:00:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3B361E5B9A
+	for <kvm@vger.kernel.org>; Thu, 21 May 2026 00:22:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779321646; cv=none; b=dSmgh/5eY1w/AQfLkgtzQPmt5aQjpY18KDvAP/Kyloli9SNVou8uPg9dTIMPVb3UrCZf73rikQY/z5Vp0OvYlSrFuLdCr43MZxl0N+nw9u2mMYUQPBsBE2/TI/mFm0JTX4D/2PPjYkGsvBLbqpyxiGTqoja/GCrWk0b9fC+8Xmk=
+	t=1779322930; cv=none; b=s1YpXZiuetlYTVPMYVTNulsW20fbGqy+jOExWDb8awoK/s5DnQlzluUu6zi1n+svuryMMcAJNXfabMlRxOxSahBZTWI9T0SIl/goBkyvNW2GZoO8dF1i3sJ9eCIsmRgUQ7TXN0X5NaGKWJbhkwFa0eEedAgRGN2sGnf690/OH84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779321646; c=relaxed/simple;
-	bh=NcLTLf1gFZKiWmIuS7GLhIukpMn7F7oeQMFwKhor2Fo=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=aXsXk/mTpxh6aSHSOyj5uITembB8JHoy3JUcydTnyXRB1Ho5x6raPzIlYsI2FkduP1XD/QJt/AgMEtNPSz0kci8MuNyzeuLVbO3Yxm+/MDmXjDNbmtl5EDMySG5RKLzjQvKImbzh90TOgf2n7cG5K1wNUY63ievOA8AK0ljIShc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=I274JKVR; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
+	s=arc-20240116; t=1779322930; c=relaxed/simple;
+	bh=0a4CoVtwwwY0r15ut+sz9UFjuNFI6DOIraemtUxXd9M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mcLaIEwJNrCdqMDbhGkn3FWdU245UvlVKex7CSq4B5fdJofEXipD+JTtZtwCc7lFdLHB+RT5YTYrnKpO8GdAzns+ArPSfQFDKsxEmtGl+Zn0rFaNwiVcgb6nQg4kNy9PoZCMKsWQlypWNwg3azBARFuG2UFdO5FD7YOofH5bSzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=D4STMcHw; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=QpJcBc7+; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="I274JKVR"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
-	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=NcLTLf1gFZKiWmIuS7GLhIukpMn7F7oeQMFwKhor2Fo=; b=I274JKVRB2I/bX5KQZ/FAu7eqx
-	FLGKxaMejPeMzVDE/qSz0O7KMiR1POozKjF06k6O/jqCb8/SY49SKTXEUCLDshZD3ClU+TqRrBDRc
-	o+FrB7CtLXMyq949MVy7aHfg5/JfjRnZ19Bi4HB2kIKXZmOOMxCvrKsk0ovH4iD7YEgUcdhmRJobi
-	FzpG9v9OZNFvun6V54L7lv0mWd23T1lJwkQljap41WA/klem5AAOa+6WKisZrZ9+pOLoAxqHuS4fP
-	uNshhLpKWfre8yGZo6sKOTlwgbxu5EY/EDqKythb1g7ttYh5ZVSJplq/x9PBZ9z1VDWr1WywKyxc1
-	zipb6mVg==;
-Received: from 54-240-197-235.amazon.com ([54.240.197.235] helo=freeip.amazon.com)
-	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
-	id 1wPqq4-00000007ltE-268x;
-	Thu, 21 May 2026 00:00:36 +0000
-Message-ID: <d5633d91efb5c43b3618bd2f6c43c6017086bcda.camel@infradead.org>
-Subject: Re: [PATCH v3 39/41] x86/paravirt: Move using_native_sched_clock()
- stub into timer.h
-From: David Woodhouse <dwmw2@infradead.org>
-To: Sean Christopherson <seanjc@google.com>, Kiryl Shutsemau
- <kas@kernel.org>,  Paolo Bonzini <pbonzini@redhat.com>, "K. Y. Srinivasan"
- <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu
- <wei.liu@kernel.org>, Dexuan Cui <decui@microsoft.com>, Long Li
- <longli@microsoft.com>, Ajay Kaher <ajay.kaher@broadcom.com>, Alexey
- Makhalov <alexey.makhalov@broadcom.com>,  Jan Kiszka
- <jan.kiszka@siemens.com>, Dave Hansen <dave.hansen@linux.intel.com>, Andy
- Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>,
- Juergen Gross <jgross@suse.com>, Daniel Lezcano
- <daniel.lezcano@kernel.org>, Thomas Gleixner <tglx@kernel.org>, John Stultz
- <jstultz@google.com>
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>, Vitaly Kuznetsov
- <vkuznets@redhat.com>, Broadcom internal kernel review list
- <bcm-kernel-feedback-list@broadcom.com>, Boris Ostrovsky
- <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>,
- x86@kernel.org,  linux-coco@lists.linux.dev, kvm@vger.kernel.org,
- linux-hyperv@vger.kernel.org,  virtualization@lists.linux.dev,
- linux-kernel@vger.kernel.org,  xen-devel@lists.xenproject.org, Michael
- Kelley <mhklinux@outlook.com>, Tom Lendacky <thomas.lendacky@amd.com>,
- Nikunj A Dadhania <nikunj@amd.com>, Thomas Gleixner <tglx@linutronix.de>
-Date: Thu, 21 May 2026 01:00:34 +0100
-In-Reply-To: <20260515191942.1892718-40-seanjc@google.com>
-References: <20260515191942.1892718-1-seanjc@google.com>
-	 <20260515191942.1892718-40-seanjc@google.com>
-Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
-	boundary="=-BsKJxp2uQuWPK9KQHUFW"
-User-Agent: Evolution 3.52.3-0ubuntu1.1 
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="D4STMcHw";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="QpJcBc7+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779322927;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=i3i7MRKG6FjVJNfFDsY2mBV0HH5ceLNdSFuRKrXNOfM=;
+	b=D4STMcHwg4MBIZPJebc59gAsAjlwjVABRnlG/b+HFxIDeLdFpnSQqLKaKag6jKrp5dJGs6
+	XEJvdVcoiknh3My1iD3KkTb9F2gzCuyqD8dQ5mBvaVifNrsy3uY7g/cLSSWLqd0UQfKMIy
+	Ml/gRsamTqOkJQOs9thtR5absejF20k=
+Received: from mail-pf1-f200.google.com (mail-pf1-f200.google.com
+ [209.85.210.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-632-Cqi-6u_0M92yMNZ4axL-xQ-1; Wed, 20 May 2026 20:22:06 -0400
+X-MC-Unique: Cqi-6u_0M92yMNZ4axL-xQ-1
+X-Mimecast-MFC-AGG-ID: Cqi-6u_0M92yMNZ4axL-xQ_1779322925
+Received: by mail-pf1-f200.google.com with SMTP id d2e1a72fcca58-837c4eb3bdfso3414416b3a.2
+        for <kvm@vger.kernel.org>; Wed, 20 May 2026 17:22:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1779322925; x=1779927725; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=i3i7MRKG6FjVJNfFDsY2mBV0HH5ceLNdSFuRKrXNOfM=;
+        b=QpJcBc7+7MSQ2hD2iskH5FCBECnw8xRJqq2SJHiVBRBoq+4I4eRrUVFm0lAcCburKf
+         XQlT3dsLW82c9tH7vTLjjfb5Ce0Od9hGtyjBcQoUDGhD4Ik9+4ZFaMa4J70ckb2cIbkO
+         KYLiigjosyhPgJZnlkzSgNb9S+9Qk37GQVjFja6f61qu0RFGdOd3emSgt5PI0tb1LvHO
+         4R+eyH1uZmZRpPS5NmRNmZ+rDiOOqEyCrF7FPMPLIf518Xu9mT1zfaPx8gksQ8JfXMg8
+         75jSpFjQ4ntInQDE6WQcE9JGbSQeSDKDuBMPYSMnh/hMSP+pMZ8JS39jHA/tNAlcA0NP
+         yMCA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779322925; x=1779927725;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=i3i7MRKG6FjVJNfFDsY2mBV0HH5ceLNdSFuRKrXNOfM=;
+        b=GOD0zpK2tZQoexiY1p7+dYtHYh1S2CR28pTj/KtTTCDRdbmTA9cZpF9a7nKQIrQ7CA
+         0qHQEA1NJBQs1hDiImiHuEwuxAA1vptOTiZvmJp7r7gJIlyqUiu+5hM3HaMUYJerLka0
+         j2hNrCdAhFzsaJpby4FFvRrn8Wl8AHQz2PDWLCq9+Eaix9P+H3NqwXbdWXmGTrqP3jLY
+         Dxsqb2eusPhJ6n3ZtQQbNoYHu7gt/IkwaQjj4/s4yoY1GmJTulhuCVeY70l87e33Y38Q
+         1ZC49EYV80cQu9xffNVhtzf1yJ3WR/OlxeRIsDYj7XDCgMIqfYNWxe8sS/D7DinVem1X
+         voAg==
+X-Forwarded-Encrypted: i=1; AFNElJ8ejXXgUdu9thRF66JUnXnblowhDTQQJ0zKvhSXz5NPDNlXZQZzsxeeE+iPHqystA9QaqQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3e3fWA9snGP5Wmr6m5tECQAZ2kiRMM9Hue87B6cL1qveZmuz/
+	pwjxgzpzsxvY7duH7GofVkAZt85h4WChXfFrt6KUDp4Ch6E0DkLLm7PZEiK/sUMzfJ9CVjm0XKs
+	vjPWPP6SI2laBCTzkHmY/OcbXUlLQfwWpRtX0Cz+Bn2OIrciOGJFXZA==
+X-Gm-Gg: Acq92OGot33HB0UoiwOTJQIetVsXKfULXsM6eY9bjXuuNkET4n2qqjmFpT1uekxfuQX
+	ms45/T6aEpW2r6G0yfSuTWaieUQOygojvsfo5BKTwtZF/dmoyAd0CnJBIz0C8ZipsJ+IRUqMr36
+	Yr+aHij4rY8c72s3M0ljemTmXoLtnbYmwAPSf0EXN8727BzLkS+OC99I3CgFLrzxOZQV7qKDXjE
+	PWHQW4jcjx8XLu59yLBnqfOJsBBJ36vjL8TcFuQ+MAqxF/wGTljJiQVlkZ9btFDNOLMzdM0WDyq
+	9KBA9zvK9z0VlIHJSVmjzHARvqnSBzLQ9kM5c8o35jZx2YtQdFdyG/Ko/Dx3WpGRP23EOQCaDcd
+	AwvcZ02q4Xtn7G1tAZbtU369rz4sYuXKyX05G+RKEDwRyW/rSZWceyHoaAiyQw+P6
+X-Received: by 2002:a05:6a00:3988:b0:838:af72:fb3a with SMTP id d2e1a72fcca58-8414ac7f34amr670252b3a.7.1779322924830;
+        Wed, 20 May 2026 17:22:04 -0700 (PDT)
+X-Received: by 2002:a05:6a00:3988:b0:838:af72:fb3a with SMTP id d2e1a72fcca58-8414ac7f34amr670212b3a.7.1779322924310;
+        Wed, 20 May 2026 17:22:04 -0700 (PDT)
+Received: from [192.168.68.51] (n175-34-8-244.mrk21.qld.optusnet.com.au. [175.34.8.244])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-83f19794e6esm20725723b3a.25.2026.05.20.17.21.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 20 May 2026 17:22:03 -0700 (PDT)
+Message-ID: <da87fa25-d979-4d22-99f1-3ba1d81cff23@redhat.com>
+Date: Thu, 21 May 2026 10:21:51 +1000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 05/44] arm64: RMI: Add wrappers for RMI calls
+To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org,
+ kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>, Zenghui Yu
+ <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org,
+ linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>,
+ Alexandru Elisei <alexandru.elisei@arm.com>,
+ Christoffer Dall <christoffer.dall@arm.com>, Fuad Tabba <tabba@google.com>,
+ linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
+ <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
+References: <20260513131757.116630-1-steven.price@arm.com>
+ <20260513131757.116630-6-steven.price@arm.com>
+Content-Language: en-US
+From: Gavin Shan <gshan@redhat.com>
+In-Reply-To: <20260513131757.116630-6-steven.price@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
+Hi Steven,
 
---=-BsKJxp2uQuWPK9KQHUFW
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+On 5/13/26 11:17 PM, Steven Price wrote:
+> The wrappers make the call sites easier to read and deal with the
+> boiler plate of handling the error codes from the RMM.
+> 
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> Changes from v13:
+>   * Update to RMM v2.0-bet1 spec including some SRO support (there still
+>     some FIXMEs where SRO support is incomplete).
+> Changes from v12:
+>   * Update to RMM v2.0 specification
+> Changes from v8:
+>   * Switch from arm_smccc_1_2_smc() to arm_smccc_1_2_invoke() in
+>     rmi_rtt_read_entry() for consistency.
+> Changes from v7:
+>   * Minor renaming of parameters and updated comments
+> Changes from v5:
+>   * Further improve comments
+> Changes from v4:
+>   * Improve comments
+> Changes from v2:
+>   * Make output arguments optional.
+>   * Mask RIPAS value rmi_rtt_read_entry()
+>   * Drop unused rmi_rtt_get_phys()
+> ---
+>   arch/arm64/include/asm/rmi_cmds.h | 661 ++++++++++++++++++++++++++++++
+>   1 file changed, 661 insertions(+)
+>   create mode 100644 arch/arm64/include/asm/rmi_cmds.h
+> 
+> diff --git a/arch/arm64/include/asm/rmi_cmds.h b/arch/arm64/include/asm/rmi_cmds.h
+> new file mode 100644
+> index 000000000000..04f7066894e9
+> --- /dev/null
+> +++ b/arch/arm64/include/asm/rmi_cmds.h
+> @@ -0,0 +1,661 @@
+> +/* SPDX-License-Identifier: GPL-2.0 */
+> +/*
+> + * Copyright (C) 2023 ARM Ltd.
+> + */
+> +
+> +#ifndef __ASM_RMI_CMDS_H
+> +#define __ASM_RMI_CMDS_H
+> +
+> +#include <linux/arm-smccc.h>
+> +
 
-On Fri, 2026-05-15 at 12:19 -0700, Sean Christopherson wrote:
-> Now that timer.h ended up with CONFIG_PARAVIRT #ifdeffery anyways, move t=
-he
-> PARAVIRT=3Dn using_native_sched_clock() stub into timer.h as a "free"
-> optimization.
->=20
-> No functional change intended.
->=20
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
+[...]
 
-Reviewed-by: David Woodhouse <dwmw@amazon.co.uk>
+> +
+> +/**
+> + * rmi_rtt_destroy() - Destroy an RTT
+> + * @rd: PA of the RD
+> + * @ipa: Base of the IPA range described by the RTT
+> + * @level: Depth of the RTT within the tree
+> + * @out_rtt: Pointer to write the PA of the RTT which was destroyed
+> + * @out_top: Pointer to write the top IPA of non-live RTT entries
+> + *
 
---=-BsKJxp2uQuWPK9KQHUFW
-Content-Type: application/pkcs7-signature; name="smime.p7s"
-Content-Disposition: attachment; filename="smime.p7s"
-Content-Transfer-Encoding: base64
+In most cases, the parameters are well explained in RMM-v2.0-bet1 spec, I think
+it's nice to keep the code and the spec synchronized. For those specific parameters
+of this function, they're well explained in RMM-v2.0-bet1 spec as below.
 
-MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
-ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
-AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
-BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
-MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
-a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
-jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
-GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
-aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
-nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
-8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
-HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
-IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
-KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
-BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
-QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
-QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
-ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
-/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
-uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
-xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
-W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
-c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
-VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
-NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
-DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
-sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
-w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
-i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
-kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
-0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
-ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
-blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
-hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
-VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
-HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
-ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
-AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
-cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
-cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
-AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
-aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
-hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
-iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
-8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
-JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
-xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
-EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
-B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
-MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
-KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
-Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
-nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
-WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
-W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
-nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
-g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
-9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
-9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
-sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
-a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
-ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
-AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
-dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
-Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
-MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
-YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
-4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
-6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
-QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
-nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
-MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
-VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
-ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUyMTAwMDAz
-NFowLwYJKoZIhvcNAQkEMSIEIG/tb5oHS69DXoPShiAfo2aoOWoJE5oNgVwA+aqkZngOMGQGCSsG
-AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
-cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
-VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
-cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAtGkkp7+gTp0m
-emEfPuqG5QfODGFUCdmtbaG+7ajA00e5WZppAE0MO01AyAmagcs+FXyPRBOsB/i6Mn/0xYi1ib0Z
-jXpAz/gC+TOzeq32X0+Sw808+JHin2UiKX0OzJNd9GZSqHt8pIFcVBZapucupBdw3rH0KZj5cgxa
-0SDzChe/rB2Y4HsEilEpxrBeCO2E7vPCTQymDRWVL572p/hHk0FZ3FWHT0PGWudrCRNFZWcnZz1u
-+uth0I2ecGc+rJdDA/Y1VZeFjOS7mYKBU2hc0I6FAljp9xWUbTmuxSpOoJnRccivMZE8bjhX6pP0
-euVibnrPUFKCDYSdrkDN1GAPSdGlevwI4ue2xYS/Z/I/KE8daom03b1IhP/hcczwcJw+Zexv5xkl
-JNN+NlrVfKSmpq7w8tfRBp9TB3ssSXwYrxNMrRx7UUjYiXxbrXFkyzsFyVA6vUIpLuqhG/1D24zh
-w+uqNi0UF3srIKVkKFLfDEqU17Ipr2iGdMcUHM3FCKUL7//7QMDmCUZSKjFAQ0Zw51J6t1IJUV6f
-rqW5xEQAukHvZr5ZaDfFPBLnPLA+eymvn3mx/oTAfaLreeDjh0On1VnkWWuJdakzbYEH/nIY4GQp
-i4gvJyiNW1p5Rswz5ZSe3gwlx0nYgjHxeri4KJFX1FW1wernAUiSRdB8UVkKwtMAAAAAAAA=
+    @rd: PA of the RD for the target realm
+    @ipa: Base of the IPA range described by the RTT
+    @level: RTT level
+    @out_rtt: PA of the RTT which was destroyed
+    @out_top: Top IPA of non-live RTT entries, from entry at which the RTT walk terminated
 
+> + * Destroys an RTT. The RTT must be non-live, i.e. none of the entries in the
+> + * table are in ASSIGNED or TABLE state.
+> + *
+> + * Return: RMI return code.
+> + */
+> +static inline int rmi_rtt_destroy(unsigned long rd,
+> +				  unsigned long ipa,
+> +				  long level,
+> +				  unsigned long *out_rtt,
+> +				  unsigned long *out_top)
+> +{
+> +	struct arm_smccc_res res;
+> +
+> +	arm_smccc_1_1_invoke(SMC_RMI_RTT_DESTROY, rd, ipa, level, &res);
+> +
+> +	if (out_rtt)
+> +		*out_rtt = res.a1;
+> +	if (out_top)
+> +		*out_top = res.a2;
+> +
+> +	return res.a0;
+> +}
+> +
 
---=-BsKJxp2uQuWPK9KQHUFW--
+[...]
+
+Thanks,
+Gavin
+
