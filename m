@@ -1,139 +1,233 @@
-Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012038.outbound.protection.outlook.com [52.101.53.38])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555AF37F755;
-	Thu, 21 May 2026 07:14:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.38
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB9036308D
+	for <kvm@vger.kernel.org>; Thu, 21 May 2026 07:20:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.180
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779347696; cv=fail; b=pokLp5H4FeBxFK+Ii4u40PbKpqhi9SCD3xV0Y5bo6w9JVQgmwkyMUJW9YXF5NEmHXzsbHObAjDQrks6spZJnH7WWH36bwj/iOvWWwx2rtd/vnFB7lnvYgjmBu9Csx4Zqrr+5nb1lCYLUpb9mR6WcCqAeLHJqXn6NQF8gkgTOiQo=
+	t=1779348019; cv=pass; b=TIcglpV2nnwthWkrUZEI3IwB1Vbi1zy+CL/sd3nqrXb7NweWPehdGSdiQ5f03ASeDoaseX2vJmSY+TqRklusY1d2fC5nCvnO64J2XrIC6eInyiouE4x/CmsXTcAOtL33y/lnfmms2P9giTHN+x8nQnCE34qmMId2QBu4DKvoxq8=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779347696; c=relaxed/simple;
-	bh=eOl/5kmInLQwE/+QbHnoeIM1OfMagPrbzDttZp0nZRA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
-	 Content-Disposition:In-Reply-To:MIME-Version; b=Xl7s+FQuBToEXx9prjVUxtMehqzD38yY3+jyhqBptwB8B7RmVD9kwrBfMjFhs0T/hyNU/5WwfGuPNQf9Wo7412OoOOZEt+Ualcr1w6imHbqA0FGsQ1LyBvDuwOvcZy0eEXxvv8ZQ9hDrsasDHXZ9BiLroCaVvOhrSoOyuNYsVW0=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ohy9EGpk; arc=fail smtp.client-ip=52.101.53.38
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	s=arc-20240116; t=1779348019; c=relaxed/simple;
+	bh=H/h4INyZwih10l9AYdvongdVpuQiBkGMfR0jm2vWFLA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=scL1thkM13EPKxGTvXKvHjJjeDmItUzqpqXCEqfsj/AYnjaI8j//Cnu2fmcVLSOaMUSnn3d35QBvTgLA0C0I43ZGvAu1xzeV5l9TKd5DkrX4rTrEJZvFCv8lcyPPaU9sr/Y1oK/LcRvsd6r2DzuLxgYpuO+bX4Pfb36YqLThGI0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fyly2srd; arc=pass smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ohy9EGpk"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=Na/kKt1VRzyKCEAt0C4oIaqDYqEUdkFgp2QyJ17i2ZxScIp9p69u4BN5Bj0C0bDfqrqgE59fZdw+P9P/NB8YuBsRN3bWzCo9wXn/yhlQQW2Y+wuSHGupyqeud5Xay1LWkG1PrpokRWhhaKfc6R+Mr4JtAMiVKfcIbu7ymoEQQh/x3U/I6CL5Jz7T2GRmDSpxDs/a4bA4GAkHON8YwICHPMuAL/YmQdoi4aKFha1sEXEswI+tGTubDFvtdYp5eBrJvfZPg7DCGAEM7VP20DIx67tV1/3bsY6pZgnJJvoxjCHa4Y7juy8+Iv0m0H2oXHEbajC9adPiglKxmExNbq3SpQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ilpAorFL0c4uoBq9lGB22Q2dd1Zgi8KyP5x3hDIPFvg=;
- b=UtWhABeKESkapcrZBiQVRlp3qvHmczUIXMptYcqFwXnbUcpf/CMNlkHBVRUpy7Qdd9bhR/lgWG1KMMKDr9A2tqsGAVX19XkVaDQOF8tpgneCVZbE6cYvMI7tzPqLTMxkEGoD1uPq77wt4p1fiM3/cCT/53kruGG958/uL5b6r0r0AWJw8EmCbrhVcmLuBzJYzRz61lXAekPmuPe9NuLBZnQ+4ytGUFAEyQMEFcXDSM4isYU70cFAmB2AaACcXEOsyIYGsdQk9EugkDSIYZ0G/HCwBPxIHmTJ+dx2/2DnrXd3y9OtMccAziT1eAqysITlOEubeg/HAXul5T3AecYWGg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ilpAorFL0c4uoBq9lGB22Q2dd1Zgi8KyP5x3hDIPFvg=;
- b=Ohy9EGpknDiyDRq0bhs6EeE9BDTqRP4pM7RG4RzYxHQfeBcrNfCBYmbo/5sbZ+GKDLfXoXCPKfoaRdl5X0ypYCfDG6LfPfxQ+jGjmbCcR7Eq9fsbWz3LijsLDLIxu9Fkpftv5JkvokYQygaTqvQKwFpgkT7EJAZsydXSbcesi0LT2lXZ+FrSqM+6ElOXQy/dr670sKcJMAe14XPXoWbXgcbkYUr5BGh4HZr+sqt2YAwWh+HVgyTS/e0i/2uL0Fwr0aFLm/k5821/UEJqn0bfsmmjokC9xOzra1tpnc32Ql8QulbhatDblB4VpJyfWjvbkIYFqC5UYC7U/ij6A3CfQA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from CH3PR12MB8728.namprd12.prod.outlook.com (2603:10b6:610:171::12)
- by LV3PR12MB9409.namprd12.prod.outlook.com (2603:10b6:408:21d::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.18; Thu, 21 May
- 2026 07:14:51 +0000
-Received: from CH3PR12MB8728.namprd12.prod.outlook.com
- ([fe80::2641:1046:bdf3:93d7]) by CH3PR12MB8728.namprd12.prod.outlook.com
- ([fe80::2641:1046:bdf3:93d7%6]) with mapi id 15.21.0048.013; Thu, 21 May 2026
- 07:14:50 +0000
-Date: Thu, 21 May 2026 07:14:46 +0000
-From: Dragos Tatulea <dtatulea@nvidia.com>
-To: virtualization@lists.linux.dev, "Michael S. Tsirkin" <mst@redhat.com>, 
-	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
-	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>
-Cc: Tariq Toukan <tariqt@nvidia.com>, 
-	Shahar Shitrit <shshitrit@nvidia.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	netdev@vger.kernel.org
-Subject: Re: [PATCH] vhost-vdpa: Expose ASID group change after DRIVER_OK via
- backend feature
-Message-ID: <s6tcrlwfx7uexktx4mk7aee4znpmwitykfuitcmqe2zpev7co5@63vxxt4ze7k7>
-References: <20260511094504.1619893-2-dtatulea@nvidia.com>
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260511094504.1619893-2-dtatulea@nvidia.com>
-X-ClientProxiedBy: FR2P281CA0024.DEUP281.PROD.OUTLOOK.COM
- (2603:10a6:d10:14::11) To CH3PR12MB8728.namprd12.prod.outlook.com
- (2603:10b6:610:171::12)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fyly2srd"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-50d6b393d60so8731cf.0
+        for <kvm@vger.kernel.org>; Thu, 21 May 2026 00:20:14 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779348014; cv=none;
+        d=google.com; s=arc-20240605;
+        b=YPk+OvulTRew+sme8kchJ7HWMaBOqY8vAafm+B1Nqsx/Ci8Bc0aeA0k8fFVxkI48cR
+         P+K3j4qO72CSFqg16ymopmz0smg05NGB5YXrgWe0C6WkYB6hMGH1q1G39UgqXpwZlnvW
+         gLVMa5sVoz0Tm2Vjeq+ucm88KlMuRh0CPV/SYXuWUdi4SSuSn8O6zrTvn7z/vb3FiGYv
+         PnjTZbc/ScqCDn5ZLOpZCFaOQs5P+BQBVeNKBD0V3Bdm4zvOwBlHojzNcwDMg6jC7FUj
+         DjhqFp8URYx/zFDbUVwZwL7NY+Sb0kZ7TlRKytKT1o+wNY+lBXdQoPlLRBPO1rFBcby9
+         FuGg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=4lV/LRyXdVcEtETS6N6JX0KnOiUE4cogpgAqkVQgk4U=;
+        fh=pnNgVkgDEuX4Tq8N9rb3D4gVsGfCGXwKVGojtxSFQtg=;
+        b=HJvfHl+1eEyzHS94pjfao/444dX6imZQunmW09++F/1ZIh6H7UIf7ZCveJm8iTXC7T
+         /MXNPekuuSxpJIah108aIDJCvNwk44pqYeMZDm3gdvtGUVXZU0NN34T2LeSxuFgEhQ5k
+         Q7Reb6QPM3pBjP9/qMRpq54rcB91i8L/k4VZJCsKZ634C3uiz9uyPY+sUpLuz7Cyw/sL
+         uESHkKwutQhCFcWiE0GOKU8IhZlSL6WFmiBqJWRUuqn36LxTKo3/UVoA2ia/3krRO1K1
+         /qKX8dKY9+2mJyqSldNfJtOXLhD3yfTPo65eITuonj5hH/JBL23/nJdTotL73fQDT7jV
+         xb3w==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779348014; x=1779952814; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=4lV/LRyXdVcEtETS6N6JX0KnOiUE4cogpgAqkVQgk4U=;
+        b=fyly2srdJ7tcPl2lAK8guLcb3fiIWl6RTdKuTX8jkxwxW2ZAZyEyJcwv2Xw4TtmXD5
+         hxq4KFty2izzMPCByiD59tCE6dHyVxzhA/c7kG2bdzqczha9jDEzsJ3yX8NrSZVzq1Ms
+         zkem2q9fVbYVIkSVbuJN8Baqr/W2kxIIUYw4kMQFsUMXuzrQkuLVJiqvgNHcWXv5Zm05
+         L/vUwJnQG4wEOHdz76nl9kUPZEEzFytezUI3XMbtQDJKTJBg+O5m7/Cx5N/i94CDvS3F
+         /9+1m338rLSNNw30qDf74hit3cLbq8LLg6ptmsmQ+sYXBUi0CetlKmXTxYOoq40SW3ea
+         XS6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779348014; x=1779952814;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4lV/LRyXdVcEtETS6N6JX0KnOiUE4cogpgAqkVQgk4U=;
+        b=XFzYmlZeh5opaytoggsyg8dDD6POzBL9lkFirzqwWqv7KzLfZxvgQZQJGZ8lgBbzqp
+         owm07sAyXr+KYV71Esas2yQwpi4Pba3FDoMceMSai7Da0Tx5fA2rNMoZXcFGR08is5oB
+         wLrl20voTXUnQD9Z2dtgpbg/x8cNmJEwRrU89PRBuNtg40tOvuLIdd8v5WuNi9sRLVLC
+         fJsPcNugzUTpl3Z2ucbifGgHwKd0XdaUUgNBAhbWMXai4WS6nngNh8jfHuup7nOtETor
+         5z/e6c4jqe4ttfevty8J1xm34lSu5qQNfgjcgiX6BmBUobf5WNUWInnLll6N7RAgIKUr
+         UYRQ==
+X-Forwarded-Encrypted: i=1; AFNElJ91+H5sAReuw/pBbe9KDsGV4iH89rOR1fXHHr+C45jwHrQbgq/CJgS9kUjNnTV67zGOlxo=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyrRCE9+OmupHQdK8A+n8w9Xi/o/oShaQKYx1dx/E6kDnvSrbnF
+	ePD7SDqQ1ZIZ/CB6QhhEVR4FZNoPhGA7ugKBp+j2o+6Ip0qDcWQej76EKCPxhld509baMlcOEui
+	TmdJVkAh6OMougs8N61aj/fNo6xhTGmcXiWSAh3r0
+X-Gm-Gg: Acq92OGUzQVhKTL1tk2B537CL5e8hfpkaIOFWQyd45g1WvmO2JsmN5wtsJ8oR0GicQX
+	hmStnqusIex8XbUeYfltfQqpOBJzpZ/OF1+b+ww8qYDfm6VDA7CdUQ51LtZrK9Vx52LY/CjTIx3
+	8prSTDftKNTlAvs9AVGfknF5Avb69OBkhx29dGZXpdkIV2sW7s+DHd9C9zc57+ZCug/65X5yeOC
+	cJFSUow7yyZcoIQvOvFZeYeXJ4F3V/J+bq4kQbuvbJAbxcBlG/6MSIC4XEE2UN5Ra2LHu0T4RS1
+	ZQYwJcYkViCOCATFouc=
+X-Received: by 2002:a05:622a:8c09:b0:50e:41f3:6467 with SMTP id
+ d75a77b69052e-516c545d431mr5347341cf.12.1779348013286; Thu, 21 May 2026
+ 00:20:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CH3PR12MB8728:EE_|LV3PR12MB9409:EE_
-X-MS-Office365-Filtering-Correlation-Id: 3693671f-521b-49d6-68cf-08deb708a609
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|366016|376014|1800799024|18002099003|22082099003|56012099003|11063799006;
-X-Microsoft-Antispam-Message-Info:
-	P9dKtJpPTkkXwlVSc0SmYbeGRDGo5Yvkr2YYYxVcz3UPoUyIGiSHNGwPLtw/6++kwDVne5RVUUejvEdNVcSl6CXSRDoPiWZBvOyVIhwSYeU+kcWa9Fs90/VZKwiQttp6OJ8A0810zquHMofCLozRzKs82/557BFKODd1hfH4BY82Asnf8x275AZkX1tvzrUVbt2nZSFHnpfPQZGoBQ63b2Rc6qTIO4SaIzm0PJoeR6mGS1Jl2VqH+kCMvmMe6i4RLr6nlkfGTg3pzPOiTW87rob+z15ELhM59crPTDVf5XivU3dAP3ee0oObIFIpdaVBeRbsZHsXVwBnGJZg6CTmolOTElaVa10RsQ/TXrbfdVatT4y2gZnTe396QVAh7t6e7qhGMXyRj97PKNXAWdS5eMSEJuyIpe9VWxixUK3xwiGitviKPVoXPn/8ggEdPiB8Eh9RkUdDcrq1nRAoGZZeWpRc32H9uM3lxQyt+YuPejkFCGMt3eNddCa0mwaXAKDQQh8TVSOE3fJ48fb3rV+6gf8Jr/2qcrGeEaluHhZS3grA14VQ7HUmSmAUhGqDlo5lMkpZWOc38tnmDnNMe7tCc5Knc7TOHbJN3FmmJtD2JgCU/TTceOdsx1vh0faj+94MGXF1WiGFqqVF50PKTJNqcGqo27LDjDwA3gYgVnbADia/+FQaRkSgv0MPwnxVLo+X
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8728.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(18002099003)(22082099003)(56012099003)(11063799006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?1vDPiAbRQeN5ozRI/pY1XYDSIQ9Y+1ph3D/v8UjfZl40AbU1UDAc4tlEW5re?=
- =?us-ascii?Q?u03+WR8lrhYKmeKERv5wgNYP8+8BX0k5S6bvWYict/IKTqG8l6IQ6aD9LBeD?=
- =?us-ascii?Q?agxYrWs8aomJ+jsWTNmuX0PwF9e5yQHoc/ernbugwOvXJrRUTvcunborC01w?=
- =?us-ascii?Q?4V2cOVPtw4+V9ZJcttGXNv0PPnLOQruVjX7UWdAnUeaKJee+JYe1H/mlGYaf?=
- =?us-ascii?Q?WOqBwoGVrATFUyileEHjfHEJ6siO2VWK3j/5sGDeDgwXll7CyfyxG1gW2+9R?=
- =?us-ascii?Q?HlRqfqlBvTr/P+egzmFbY0AZUKUK48ui/HBXQuneqDmc5im98lYIihYdEzx0?=
- =?us-ascii?Q?volmli2SEP2iUhVz5G98oapcLkCmTXF3iT4qYShJ7+bYPGyMKTxsZwy8/2Ut?=
- =?us-ascii?Q?HkVBmv2w4so3Lk4ekG5plbw2CigTQXvnv09CtrKn/6ZWAx9ISsrZNv83hGRs?=
- =?us-ascii?Q?1PPYUG+xuv4wD0wA4eiGCpVoLFMtf/Hee+zDrtzZ2R5QQU+bxVZUyPXKOnKM?=
- =?us-ascii?Q?7R4E087QCa3yOgJlIPcdpTbSiChauSPs0WR35mntW/n7JLAqONVg3BasmArr?=
- =?us-ascii?Q?EzNJuJ4NFiyF530rZyka2PRwioD81OMlJxjyQz7n40EapDMFaLnH5o+NvA5/?=
- =?us-ascii?Q?rnC5M/dAvZCj2NBtLTTo8Xu/bYegCGb2cMRndCtCOkZ+flehkdjrzah35Rga?=
- =?us-ascii?Q?cpXzNQ1Zqr0K1/PekzaRqZP9dt51+RiTAh0CBNgiNsjnpU4ogzH720tKL/Pb?=
- =?us-ascii?Q?DJGfgU8mYc+I6cUXOL7bt1Wv+WYOYgx1oWwv9yfn6RCPyrietVCo8QU+XNZA?=
- =?us-ascii?Q?u5zji1FTMzQcWaqBUDt0FwUiuqUjAraZwFm+GvNCziSlhWLq1Tk6Mr+eoS67?=
- =?us-ascii?Q?dt4icPrfK51RFXxb7zI7m8QMXT9L9im+vzC/uZSwJlLgr6CgZ9sx46Km9EdB?=
- =?us-ascii?Q?GfPusCiejl+GEi4gdFOUYUlKmVXoMn9ohgRPOvAfc/n3i9KAJFbzDG/QfbZT?=
- =?us-ascii?Q?xqO7CupQPAPSy189t+fFkVTf1qT3AjMwZvYST21Kbwy7Pl+GmHpSqlqdsL7K?=
- =?us-ascii?Q?XnGz9pBthSy0+kHXptOEaz+/g0GPN6SAoaKty3C1Wle8bDBkFyTXuM1jvU2b?=
- =?us-ascii?Q?HLISYV59vcP4sGDuQPQvEOUxDxXXvqDruplaOEZRfc2xPSnwVFX1drwElXMd?=
- =?us-ascii?Q?8tWcHWl6eCT/SKive/ZRU3OvRZ3Pwqzll+gnYCbXAU0zoipjptS3jaVTc7GX?=
- =?us-ascii?Q?JCsNrdenbIekeKEFv6/IApkImK6VpcL50Vxz6zmVOpEF49yV04x8+HfwmsE2?=
- =?us-ascii?Q?mk4giWnYAcbnyWjILUx1TBDl4ogYBqyZM1qz4xHqLXmy5qVN1X2lBLMtjpL/?=
- =?us-ascii?Q?4ZMLaHUda3VFSuzJofTJw9d7W4RXjc7B3Xw14i6hhVMkIKZbH5zZFW7Q/WhH?=
- =?us-ascii?Q?7FDQ3tAoCZ8ohyhrJqfEe7OZVT76bite47zq5UgUmszFXH6bQ4Sm9wKs8LPM?=
- =?us-ascii?Q?A2z7qN7bp2MEw+ITpesobBLoHugoDIOPfYEvr20AbT8uNo8XV6c5ofbJJC3V?=
- =?us-ascii?Q?vnxYNRR9qCnUUoKCKSirSFA8UFkXIbxNkdrHzUlbtpwmrshLrVfpTwnCDudg?=
- =?us-ascii?Q?rFm+vUphVWjokGaD6EI0H+yobXMA6a+lJM9Y6XGyG4hGIY/KrCV8EIEMlVNU?=
- =?us-ascii?Q?wWnYSVTYhch28kM5Y1D8giVOfyii3ofi0BU3MfZAo0p/Y2hmFP9vw+GQF7yY?=
- =?us-ascii?Q?yRLTT+X+ZQ=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 3693671f-521b-49d6-68cf-08deb708a609
-X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8728.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2026 07:14:50.8339
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: i51HGOxqf8cEbmZwikl2AQCT8dmpik4/0fFQ0bBr2+ldvXi5V25NJP65Uu9DKPEJ34UYdYENHB/adyf+mtiRBA==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9409
+References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
+ <20260507-gmem-inplace-conversion-v6-5-91ab5a8b19a4@google.com>
+ <CA+EHjTw-cUM=FrJevtSDtR7K6MwUfGfOx21LMFDn7DAy5bFzYw@mail.gmail.com> <CAEvNRgGQvMdDmVfbk42EY_PGN0ybTp-x21Zj+pg_X1mk9iCRtA@mail.gmail.com>
+In-Reply-To: <CAEvNRgGQvMdDmVfbk42EY_PGN0ybTp-x21Zj+pg_X1mk9iCRtA@mail.gmail.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Thu, 21 May 2026 08:19:36 +0100
+X-Gm-Features: AVHnY4IfKawE844Bbti7f163iVDDGQdLfAc0aSSibjPNKnZdr2ZvCDCMhO5buRs
+Message-ID: <CA+EHjTzLCD-dU-euZKgzwyEr2ecPqFDNutcaHm2fCDGA+MHVXA@mail.gmail.com>
+Subject: Re: [PATCH v6 05/43] KVM: guest_memfd: Wire up kvm_get_memory_attributes()
+ to per-gmem attributes
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, May 11, 2026 at 12:45:03PM +0300, Dragos Tatulea wrote:
-> The commit in the fixes tag blocked VHOST_VDPA_SET_GROUP_ASID operations
-> once DRIVER_OK is set. That is too strict for devices which can safely
-> handle this during live migration flows.
-> 
-> Bring back this behavior under a new vhost backend feature flag. The
-> feature is supported by mlx5 and vdpa_sim devices.
-> 
-> Fixes: 3543b04a4ea3 ("vhost: forbid change vq groups ASID if DRIVER_OK is set")
-> Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
-> Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
-> ---
-Gentle ping.
+On Wed, 20 May 2026 at 22:44, Ackerley Tng <ackerleytng@google.com> wrote:
+>
+> Fuad Tabba <tabba@google.com> writes:
+>
+> >
+> > [...snip...]
+> >
+> >> +unsigned long kvm_gmem_get_memory_attributes(struct kvm *kvm, gfn_t gfn)
+> >> +{
+> >> +       struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
+> >> +       struct inode *inode;
+> >> +
+> >> +       /*
+> >> +        * If this gfn has no associated memslot, there's no chance of the gfn
+> >> +        * being backed by private memory, since guest_memfd must be used for
+> >> +        * private memory, and guest_memfd must be associated with some memslot.
+> >> +        */
+> >> +       if (!slot)
+> >> +               return 0;
+> >> +
+> >> +       CLASS(gmem_get_file, file)(slot);
+> >> +       if (!file)
+> >> +               return 0;
+> >> +
+> >> +       inode = file_inode(file);
+> >> +
+> >> +       /*
+> >> +        * Rely on the maple tree's internal RCU lock to ensure a
+> >> +        * stable result. This result can become stale as soon as the
+> >> +        * lock is dropped, so the caller _must_ still protect
+> >> +        * consumption of private vs. shared by checking
+> >> +        * mmu_invalidate_retry_gfn() under mmu_lock to serialize
+> >> +        * against ongoing attribute updates.
+> >> +        */
+> >> +       return kvm_gmem_get_attributes(inode, kvm_gmem_get_index(slot, gfn));
+> >> +}
+> >
+> > Doesn't this imply that all consumers of kvm_mem_is_private() should
+> > validate the result using mmu_lock and the invalidation sequence?
+>
+> Let me know how I can improve the comment.
 
-Thanks,
-Dragos
+Given Sean's context, the comment is good I think. I would quibble
+with the the "_must_ still protect" phrasing being a bit too strict.
+
+Maybe just soften it slightly to acknowledge the exception? Something like:
+
+  * lock is dropped, so callers that require a strict result _must_ protect
+  * consumption of private vs. shared by checking mmu_invalidate_retry_gfn()
+  * under mmu_lock to serialize against ongoing attribute updates. Callers
+  * doing lockless reads must be able to tolerate a stale result.
+
+That aligns the comment with how KVM is actually using it today. That
+said, this is nitpicking. Feel free to use or ignore.
+
+>
+> I think the "consumption" of private vs shared here actually means
+> something like "don't commit a page being faulted into page tables based
+> on the result of kvm_gmem_get_memory_attributes() without checking
+> kvm->mmu_invalidate_in_progress.", since a racing conversion may
+> complete before you commit.
+>
+> kvm_mem_is_private() is used from these places:
+>
+> 1. Fault handling in KVM, like page_fault_can_be_fast(),
+>    kvm_mmu_faultin_pfn(), kvm_mmu_page_fault(): this already handles the
+>    entire mmu_lock and invalidation dance. No fault will be committed if
+>    a racing conversion happened after kvm_mem_is_private() but before
+>    the commit.
+>
+> 2. kvm_mmu_max_mapping_level() from recovering huge pages after
+>    disabling dirty logging: Other than that it can't be used with
+>    guest_memfd now since dirty logging can't be used with guest_memfd
+>    and guest_memfd memslots are not updatable, this holds mmu_lock
+>    throughout until the huge page recovery is done. invalidate_begin
+>    also involves zapping the pages in the range, so if the order of
+>    events is
+>
+>    | Thread A                     | Thread B          |
+>    |------------------------------|-------------------|
+>    | invalidate_begin + zap       |                   |
+>    | update attributes maple_tree | recover huge page |
+>    | invalidate_end               |                   |
+>
+>    Then recovering will never see the zapped pages, nothing to
+>    recover, no kvm_mem_is_private() lookup.
+>
+> 3. kvm_arch_vcpu_pre_fault_memory()
+>
+>    This eventually calls kvm_tdp_mmu_page_fault(), which checks
+>    is_page_fault_stale(), so it does check before committing.
+>
+> Were there any other calls I missed?
+
+The one I was looking at was `sev_handle_rmp_fault()`, which does a lockless
+read without the retry loop. But as Sean just pointed out, that path can
+tolerate false positives/negatives and relies on the guest faulting again,
+so the lack of synchronization there is existing behavior and considered "fine".
+
+>
+> > sev_handle_rmp_fault() calls kvm_mem_is_private() without holding
+> > mmu_lock and without any retry mechanism. Is that a problem?
+> >
+>
+> Sean already replied on your actual question separately :)
+>
+> > Cheers,
+> > /fuad
+> >
+> >
+> >>
+> >> [...snip...]
+> >>
