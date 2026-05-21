@@ -1,54 +1,54 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82F40369D41
-	for <kvm@vger.kernel.org>; Thu, 21 May 2026 23:17:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5928136683B
+	for <kvm@vger.kernel.org>; Thu, 21 May 2026 23:17:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779405455; cv=none; b=LS4M6IkRvNv+3PzysFu6+/M1/eZ+bxQxri8VmYeNI7AMR0N9tmQ26CxwdZS4B/Ul+lB3QpJuL7lsTMyrQZjSYYOhdZgCIQEfxIVf9ykkAeVI2m7QIaxGVb/l5oQLIfyMMj8YH/Tjfo7gc9sb98Zi4bz+hAA/ux9vowuQqAdjpig=
+	t=1779405456; cv=none; b=KMjHl0vo4p5rcNBi9K2l9fME20pEVYFQdbHFaYr3s4Htx6PDCGnH5s6pJea2/irIRRPyQ12HKaOp3OdVniPZpSjAFEjrnBxCmE0i8xQmP9NLxIoiLn1VHzBpriveGMLoleFt5Ri7viiS6VIqWMkhnC1lkZ3aV+73RG53wX9Tl9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779405455; c=relaxed/simple;
-	bh=aD3HXwrZjvyRYUcRcwFGw0yeikfKSuTlbRJOfhgmGv0=;
+	s=arc-20240116; t=1779405456; c=relaxed/simple;
+	bh=JnAB6QOxWpHlGcbP0fmoB+xvPSibMNTRiB0Xtn3yzBk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=ZToQ0qy5/rGMwBlo/GteAZG5roIUjhYlFhyvqJTvIrBa8z5RCffrW+m/IWQfbkih/C+kj66G8WPZZR8E8ulRQrgcGKaqA2D4iA7FnRSfZ4+AdSQu7pg1goTXi6EawmF8uN+GVzYe721wjDKCJfF/jeGr1Mv07jImY8T66z2lo9s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NpQ2J+0Q; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=nI6PikAo/mel3gfHPhcZSjolYF1j1kPyyoQjY1f8Rz/0O/BePFL7KxoYHaHhRjI/knufYhEn1dOXGIFsVyqrTAayEl4Nd/VNWQxn9yvH5dybfFPMrkqfCCQN+Sf2P52OrvK9YO0U2aRAHsnoKnnEL2vEoHrcl5V097o6x8y2enQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V3UFWyUW; arc=none smtp.client-ip=209.85.215.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NpQ2J+0Q"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c8276c91addso3739364a12.2
-        for <kvm@vger.kernel.org>; Thu, 21 May 2026 16:17:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V3UFWyUW"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c850ff84ddfso2529688a12.2
+        for <kvm@vger.kernel.org>; Thu, 21 May 2026 16:17:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=google.com; s=20251104; t=1779405453; x=1780010253; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=t/YlviOZ+xjrC4BOAGoW0+eAq9T/F0XwYkP7ZCZ/m/M=;
-        b=NpQ2J+0QFdQFjmTLPh1OQqDiBnGquBtPdVrTQlOXZGmOd55n9HMIalh+t/drqAHfq3
-         FWiBvBZmmzvFD3ATUqRrHGd9Mzn85MpO9AsBhQPjrGOP12pJ5MLmFA0nYPTp6L5g97BK
-         zQNTHMP0VztcpGKzn1nC0iBNUEzO48XK6hWido5gEpHB+wjXRdXYjnvVDYpbYqYXBsGX
-         agJID+6ChO1DNYxZuywsk6IxZDCUtKlJ+IopLOaXuiPlsONDn6HZlXM6aqvAWiO5ES5o
-         CQZDAHtiESC3C7Ki3qE0drTOGvToeLwjnN4n7iOCD8UhgbZuEiC1Djn6wumUyxsJ5Ksl
-         qSvw==
+        bh=CYqvejVJWhV6aW28w0DTqDCei/XyqM9XZYqN7Ny5D3U=;
+        b=V3UFWyUW04PJpT9i8qgC0c8lCg2wod2J74mW8BigXkwTyZ2+F0aAWFeaxETIUK2h3D
+         KJJp3AB79WHmaBoofvWdiLgOou3fKlkkwYo6OV1ynFib6LX1MymHIu+FkIVAssViSygI
+         I9Fv5ozlsKrDcf7sj51nq0Q+e7ZHZzLF2vGDDaLeXs5OeR6y3FkHLhVXXxWkz14qQdte
+         lWcFzzjLVHOzkD5+uCG88hcooiz+Nwu/ZZwzNt4PYFGuxkQ/vUM9DwfLC0t07Q2Ur53c
+         lV4ct0LOJC+vk3Ne6BDKnA/HIEsknFhGPubNFKq9t+VyJUNt7nyrLVFt2FX338RKRrtU
+         tTug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
         d=1e100.net; s=20251104; t=1779405453; x=1780010253;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=t/YlviOZ+xjrC4BOAGoW0+eAq9T/F0XwYkP7ZCZ/m/M=;
-        b=AhISFl+5HbqauVXC7id+YznbYP4byjIwmH0US7RVfcozm76H1iKp+/BPSCbY9GV1YQ
-         lqJWhWGGZaJSwVWTDLIVIXdpPIGrd6nlgyvVMWJ2cs19rqXlRQTug/S7q8yhNSrwd+9S
-         B2PeXZ1hkKJD6Ne1hfhv1B66MM8qPp1DW9RNvYhvXEXfGwdVndMsQbKp9hUjzgGf8bWQ
-         nogGlNIsCNfv3KlkDfOlFjT3IIdECILIiDj8+WPFYvP+dfL/HDSjMtBpqxSanj/OtA51
-         H8blJgKOHdU9/WOXfv2OduutLITelKZyVpNU6jSXB4DVQWBxSi/3DK5HOS1dvBxPCDOm
-         R/qg==
-X-Forwarded-Encrypted: i=1; AFNElJ8PV1yW3anRQ2AhU5pbfGxLErDWeR+Cd/+o3zj9c/PCqEPj/l2ndtPfzr7EdHqETGAwV8g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxBkAuF24E+2d+aSfyd9VFWgW91xrliPLEN0bUE0m5LFNuz6Q+6
-	qwGBGuOYcJZQ//j7+2rtAvpp2yN2m7Fdo4Gv1tW+X56eiPzHcIpaU5V3WXpZBy0/OMxSx+xexS1
-	qWmJOTA==
-X-Received: from pgbeq12.prod.google.com ([2002:a05:6a02:268c:b0:c80:23f0:ab71])
- (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:7289:b0:39b:89e0:2e37
- with SMTP id adf61e73a8af0-3b328cfdaacmr919032637.14.1779405452327; Thu, 21
- May 2026 16:17:32 -0700 (PDT)
-Date: Thu, 21 May 2026 23:16:52 +0000
+        bh=CYqvejVJWhV6aW28w0DTqDCei/XyqM9XZYqN7Ny5D3U=;
+        b=To0nWGIS1/H2UvOd1el330M0oZfJ9Col5R5G1tn5S1tgj4Uz+MawhQVt3ZLQ+xYpUw
+         2QBwIHRJ2MD/j00d3i5enENfqumAaLiM6VuOHnACdIJp3+HUCSpWcGkkp22qmkYuCEwP
+         PpfxgwfHynlOY1yGaKBLwDjSpr/UL0rU8Mgqp/DKnSXvaWlPJt1j/UB7KOAv9jfXsVPg
+         8UkXjr0ADv70SPWH0oU1yuOjhIkChpSTOsxxn5pGhGAorMiz0pP+5aiNi3oEYdVBeFkB
+         YtefGFvTB/zJS5VFK7GgdvXGM9XJsPRZpOIeFhRE4GgDYsmoZsnNdpEgFZ6Lpnw+Llyd
+         YOXA==
+X-Forwarded-Encrypted: i=1; AFNElJ84udYs9ry14bLTOr28y/xLmu1eg2nfzlKcaICoLJoElUUc+Vol1XOZAnvjv7v9o39y7FI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx0DOYDzKy9ZxNTeEtw4pLzMQv+88fMo9jeNh0mFv1o0fm6DiRv
+	ZEEwKiS/pnIrfNXoWVHLijwJkiyAWnmccfrljrZaiFOwHLr1wHXzaOBpfnC1n9DJsRd1QRzeuH4
+	IWS9TPQ==
+X-Received: from pgjp8.prod.google.com ([2002:a63:e648:0:b0:c82:7805:9e3d])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:d491:b0:3b2:8675:4866
+ with SMTP id adf61e73a8af0-3b328ecda83mr927887637.31.1779405453357; Thu, 21
+ May 2026 16:17:33 -0700 (PDT)
+Date: Thu, 21 May 2026 23:16:53 +0000
 In-Reply-To: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -58,13 +58,14 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
 X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779405439; l=4707;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779405439; l=908;
  i=wyihan@google.com; s=20260319; h=from:subject:message-id;
- bh=BN33KsLCHuN/RaDg069+CrjelUstN+iG9teg2YCApZE=; b=loF/v83C5t/5hp0/ahmXFWBR+WYQZ874vo2GsRCiAyg2Tya7wLx7XnsShach+t2H4yPM2PTlv
- 2JG44wiBlf8AX4pd48vxzI+01vl6kdEwlFYBV63GwdxY3S75xE8vHsr
+ bh=JnAB6QOxWpHlGcbP0fmoB+xvPSibMNTRiB0Xtn3yzBk=; b=z6LbQDrkS1jrkTbATNNebtrydZtJzMJH8yWsyolcf7v1pujKmhYJXQuhs/aFvdKH8ZA4boOf4
+ MnOUPP8sDlbDQkfmsmFlhEgnAVOmZXPDV7wEdqlxWWi4QEM78ca2YOR
 X-Mailer: b4 0.14.3
-Message-ID: <20260521-tdx-selftests-v13-v13-11-6983ae4c3a4d@google.com>
-Subject: [PATCH  v13 11/22] KVM: selftests: Set up TDX boot parameters region
+Message-ID: <20260521-tdx-selftests-v13-v13-12-6983ae4c3a4d@google.com>
+Subject: [PATCH  v13 12/22] KVM: selftests: Back the first memory region with
+ guest_memfd for TDX
 From: Lisa Wang <wyihan@google.com>
 To: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com>, 
 	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
@@ -80,124 +81,29 @@ Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lis
 	linux-kernel@vger.kernel.org, x86@kernel.org, Lisa Wang <wyihan@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-From: Sagi Shahar <sagis@google.com>
+Force GUEST_MEMFD for the primary memory region of TDX VMs.
 
-Allocate memory for TDX boot parameters and define the utility functions
-necessary to fill this memory with the boot parameters.
+TDX must use guest_memfd for private pages as there is no alternative
+mechanism supported by the TDX architecture.
 
-Co-developed-by: Ackerley Tng <ackerleytng@google.com>
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-Signed-off-by: Sagi Shahar <sagis@google.com>
 Signed-off-by: Lisa Wang <wyihan@google.com>
 ---
- .../selftests/kvm/include/x86/tdx/tdx_util.h       |  2 +
- tools/testing/selftests/kvm/lib/x86/processor.c    |  2 +
- tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c | 56 ++++++++++++++++++++++
- 3 files changed, 60 insertions(+)
+ tools/testing/selftests/kvm/lib/kvm_util.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-index d66ea7bc85f9..9660ea9d2f31 100644
---- a/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-+++ b/tools/testing/selftests/kvm/include/x86/tdx/tdx_util.h
-@@ -41,5 +41,7 @@ static inline bool is_tdx_vm(struct kvm_vm *vm)
- 
- void tdx_init_vm(struct kvm_vm *vm, u64 attributes);
- void tdx_vm_setup_boot_code_region(struct kvm_vm *vm);
-+void tdx_vm_setup_boot_parameters_region(struct kvm_vm *vm, u32 nr_runnable_vcpus);
-+void tdx_vm_load_common_boot_parameters(struct kvm_vm *vm);
- 
- #endif /* SELFTESTS_TDX_TDX_UTIL_H */
-diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-index dfabdfd17976..c7c4a37b3170 100644
---- a/tools/testing/selftests/kvm/lib/x86/processor.c
-+++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-@@ -794,6 +794,8 @@ void kvm_arch_vm_post_create(struct kvm_vm *vm, unsigned int nr_vcpus)
- 	if (is_tdx_vm(vm)) {
- 		tdx_init_vm(vm, 0);
- 		tdx_vm_setup_boot_code_region(vm);
-+		tdx_vm_setup_boot_parameters_region(vm, nr_vcpus);
-+		tdx_vm_load_common_boot_parameters(vm);
- 	}
- 
- 	r = __vm_ioctl(vm, KVM_GET_TSC_KHZ, NULL);
-diff --git a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-index bbfaa9af9c60..b16bf24f3ef1 100644
---- a/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-+++ b/tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c
-@@ -3,10 +3,12 @@
- #include "kvm_util.h"
- #include "processor.h"
- #include "tdx/td_boot.h"
-+#include "tdx/td_boot_asm.h"
- #include "tdx/tdx_util.h"
- 
- /* Arbitrarily selected to avoid overlaps with anything else */
- #define TD_BOOT_CODE_SLOT	20
-+#define TD_BOOT_PARAMETERS_SLOT	21
- 
- #define X86_RESET_VECTOR	0xfffffff0ul
- #define X86_RESET_VECTOR_SIZE	16
-@@ -51,6 +53,60 @@ void tdx_vm_setup_boot_code_region(struct kvm_vm *vm)
- 	hva[2] = 0xcc;
- }
- 
-+void tdx_vm_setup_boot_parameters_region(struct kvm_vm *vm, u32 nr_runnable_vcpus)
-+{
-+	size_t boot_params_size =
-+		sizeof(struct td_boot_parameters) +
-+		nr_runnable_vcpus * sizeof(struct td_per_vcpu_parameters);
-+	int npages = DIV_ROUND_UP(boot_params_size, PAGE_SIZE);
-+	gpa_t gpa;
-+
-+	vm_userspace_mem_region_add(vm, VM_MEM_SRC_ANONYMOUS,
-+				    TD_BOOT_PARAMETERS_GPA,
-+				    TD_BOOT_PARAMETERS_SLOT, npages,
-+				    KVM_MEM_GUEST_MEMFD);
-+	gpa = vm_phy_pages_alloc(vm, npages, TD_BOOT_PARAMETERS_GPA, TD_BOOT_PARAMETERS_SLOT);
-+	TEST_ASSERT(gpa == TD_BOOT_PARAMETERS_GPA, "Failed vm_phy_pages_alloc\n");
-+
-+	virt_map(vm, TD_BOOT_PARAMETERS_GPA, TD_BOOT_PARAMETERS_GPA, npages);
-+}
-+
-+void tdx_vm_load_common_boot_parameters(struct kvm_vm *vm)
-+{
-+	struct td_boot_parameters *params =
-+		addr_gpa2hva(vm, TD_BOOT_PARAMETERS_GPA);
-+	u32 cr4;
-+
-+	TEST_ASSERT_EQ(vm->mode, VM_MODE_PXXVYY_4K);
-+
-+	cr4 = kvm_get_default_cr4();
-+	if (vm->mmu.pgtable_levels == 5)
-+		cr4 |= X86_CR4_LA57;
-+
-+	/* TDX spec 11.6.2: CR4 bit MCE is fixed to 1 */
-+	cr4 |= X86_CR4_MCE;
-+
-+	/* TDX spec 11.6.2: CR4 bit VMXE and SMXE are fixed to 0 */
-+	cr4 &= ~(X86_CR4_VMXE | X86_CR4_SMXE);
-+
-+	/* Set parameters! */
-+	params->cr0 = kvm_get_default_cr0();
-+	TEST_ASSERT(vm->mmu.pgd < (1ULL << 32),
-+		    "PGD must be within 32-bit address space for 32-bit boot code");
-+	params->cr3 = vm->mmu.pgd;
-+	params->cr4 = cr4;
-+	params->idtr.base = vm->arch.idt;
-+	params->idtr.limit = kvm_get_default_idt_limit();
-+	params->gdtr.base = vm->arch.gdt;
-+	params->gdtr.limit = kvm_get_default_gdt_limit();
-+
-+	TEST_ASSERT(params->cr0 != 0, "cr0 should not be 0");
-+	TEST_ASSERT(params->cr3 != 0, "cr3 should not be 0");
-+	TEST_ASSERT(params->cr4 != 0, "cr4 should not be 0");
-+	TEST_ASSERT(params->gdtr.base != 0, "gdt base address should not be 0");
-+	TEST_ASSERT(params->idtr.base != 0, "idt base address should not be 0");
-+}
-+
- static struct kvm_tdx_capabilities *tdx_read_capabilities(struct kvm_vm *vm)
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index d1befa3f4b30..9a29540fff40 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -472,7 +472,7 @@ void kvm_set_files_rlimit(u32 nr_vcpus)
+ static bool is_guest_memfd_required(struct vm_shape shape)
  {
- 	struct kvm_tdx_capabilities *tdx_cap = NULL;
+ #ifdef __x86_64__
+-	return shape.type == KVM_X86_SNP_VM;
++	return (shape.type == KVM_X86_SNP_VM || shape.type == KVM_X86_TDX_VM);
+ #else
+ 	return false;
+ #endif
 
 -- 
 2.54.0.746.g67dd491aae-goog
