@@ -1,70 +1,71 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B695D30594F
-	for <kvm@vger.kernel.org>; Thu, 21 May 2026 23:17:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94D01345CDD
+	for <kvm@vger.kernel.org>; Thu, 21 May 2026 23:17:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779405443; cv=none; b=rPeyQNKrPEqjvXsjKPll0emHaBg1M85UIUkbh92ZnRSx+MKwl+WoF/gyZ9RmKmduwJ3Q119ZDIzO4jEEzjdkXpzeMCkzsViJlmP9i+2ibI3oZbrGjIkIw2lJe1a2CE/FiFK977oVmpT+/+5PM/HBEhbDG9Ijnnae3qygb1PWBqc=
+	t=1779405444; cv=none; b=CNCuX1jJ8e+dOFfZ+udh3EpsuX0YJYoDdq26L8vwoEDCA7OCzkJc60luH0IQsg7jTqXyh/wHqAuCnl3QegYvWOYWG1zE7pd3hyuDSuDsI71vWTyYbRvRJWymL8l20NF7sBNNq/e4W6/81oYiiujVByOYlIAeUYMG9gwH29T8thw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779405443; c=relaxed/simple;
-	bh=xohEyJSjao+0f4zXcTkZNxW1s1ON51E/Gofi7RSpk5A=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=HlMzSsVbK0nUzp9aLiMY9XHOhwabr62CwqH+8fsZ1SWRr8M0ibfvD1qGC2MmdhUJJ8SUETOmHSIHh4RfiJuBHyqzD+DurWDHOCGCnfdlMvbL97/t3in2mXsYkAmrCLyOEmIk7QGdHjN9wdBoafcgd1hS/ToTLlyDdAQuz7TnaT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=urtlyWd5; arc=none smtp.client-ip=209.85.210.201
+	s=arc-20240116; t=1779405444; c=relaxed/simple;
+	bh=AJHof9uds57GJf3ZjkCCl1BuKyNY2FzZtq/u9G54vA0=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Alcx3Fz22eN17tD6H2tTQkbTHYwleOHEutYoBR6a+x7W4lFNZcWX9s+HyBohRp+X0juuLednp6awBcg9V4HcMhThuGqSdOCrimClyLvqMmn1g5HOK7mpjO3x1CdJC/FwQSowmXHevU0G0JHrTjfFoJSHzh+iIqP5h8PyMReErvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KSWubWy6; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--wyihan.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="urtlyWd5"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-837c4eb3bdfso4078720b3a.2
-        for <kvm@vger.kernel.org>; Thu, 21 May 2026 16:17:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KSWubWy6"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c82894155ceso9400855a12.1
+        for <kvm@vger.kernel.org>; Thu, 21 May 2026 16:17:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779405441; x=1780010241; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=3bkSrIDTbT5aF0NcYWR4v4f3pXIdZzjbSf5buGjzZO0=;
-        b=urtlyWd5T7IoIOUtCBG/0d+APqQJ3zO5Z2S97EzmdbIREd5HWo4zvgOjWf0AwON5CX
-         vCagWvRrch2Ka2gbJb0rpiXeg6IlbTP6pT4NGHEmJVBEnd0wppQyjr8elcnbCvcSJKBD
-         f46lzSpv/DhEqu12jbgsPTfx/y9z+wIyyPicKeDUvvlm5KsugfgPn007xx8vhUSub8Wg
-         f7OXRE91z06hG2HOpm6V/ao5jS3guP5uw1Lq3iIHUHCRQZBvVHMo16Qc/+uFkT+ihPDw
-         G2ar7WpdgCqt+nDNJk5GE7RKuilZPSN/2Tjljsv0AXQ5x6tA1FZcjN4iQcyQTPsEY+1Z
-         Bf9g==
+        d=google.com; s=20251104; t=1779405442; x=1780010242; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7EAyw0PukGOP2yPXuj5NIxJuzEYzUJ0RUd3D3TdwN3s=;
+        b=KSWubWy6/mEDifnIMrrd8lmaNdX4WZwG27qWHxLRHrIbWrpD6cjQWe2uOT6uddjb6H
+         +opUliaSyB/99QeZs0u4uQUbjEWUI515VSxst9JtuX5UbNHyYvk8uzUCxBTyuXNdSX9V
+         J4+yRwrVwU6BTquZKW5aKp8RmmLrbtHRZXWHJRo24O9t1OYHilwjt6JoAiKXf9rtqzEf
+         eZP0m2tSGKoxa7A5iWpaT+12nMZXXeDsVmesb1mq9D6BU+f3uymHxjgxvLlST9AO7rGb
+         RvQ1OGMU/P5GZXLIJ8FsYDX+J6F9r+9+iHBEPJ3VtYyKxlTYWRJ2cbB1fnUFZcbKGn0H
+         OE0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779405441; x=1780010241;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3bkSrIDTbT5aF0NcYWR4v4f3pXIdZzjbSf5buGjzZO0=;
-        b=E+/VL3WyihUITfiHvcbfKLQGsOrHbdUZkqhZIEqKHjawY4h7WYls1S7Kw6D+9Mg1Vw
-         NHEZuZlSXe/xurGFg6cUyH/5PPvmyDWoZ7xGcttC/1ZueAtCGC2W4z9/iFkH84URVlEo
-         qU08cxmbQDzezVGzixzTUfQI110YKI45oV2OMzVliYH53bsCIUhodODcDEBRlDdjmMNY
-         KFNf3NKnHoXwtv5eehGhdllNCh2OkDC3Qv5ifqThY7fciOWjNNTEu3fmpmOrje0aJZ9b
-         /SINMUcS0hsEYeXH+1Vp5bavuseo4j/E7JcVxEx98yaluJPC5XrftJEQP9vm8EHU8K1k
-         1+cQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+y+AHktuHNyswpQ1+5DhcP46u04yp8YFuqwjv213mTC46j7V0EmJ12ueyNqg+vffbovok=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwkrafD55n6kIPy7Kvv+SGAK6hzQ5LG3pvBRo+AVTFrRkBh8vwE
-	nYEioOnG7RJYkQLfCYO5FqWOjnrl4h3r08gdyYYMRTceDqRvPImGRXpBkrKReWlr8jKRRdECXqs
-	HEVFd1g==
-X-Received: from pfblx5.prod.google.com ([2002:a05:6a00:7545:b0:82f:c34b:9799])
- (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:a0b:b0:83a:4846:90bc
- with SMTP id d2e1a72fcca58-8415f3c291emr1146364b3a.48.1779405440728; Thu, 21
- May 2026 16:17:20 -0700 (PDT)
-Date: Thu, 21 May 2026 23:16:41 +0000
+        d=1e100.net; s=20251104; t=1779405442; x=1780010242;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7EAyw0PukGOP2yPXuj5NIxJuzEYzUJ0RUd3D3TdwN3s=;
+        b=qpyKFSjenzRmxXBixK6Ve2oUHFQtJcqsXKO9C5G+pJrK2bZMFtUYNRosU6XxSToID1
+         MB6fYNZb6W1ogQgbsePOsRrTiu23XNP4yK5VPF9gCBgdTGR6VF7BcNw8V2d6wPja06Lc
+         Lc7NP+VU4KuaLtBj/XgOoGi+9slBc0QsHFBsDXdg4TV1cm0BwLyNReAcrerfpRSxGi/Z
+         uvL5tUXwRdVMKLjc4mE8PgNKH+7CWLZid5R9m4pim0ZMk3Ad/jww9rXmPbUToUfv8rMA
+         SFZgvb2vURltJiss0MmdS8kmSVsRvVQKxckwey+wknpZuiMtgYioMPrnQtwvrEHxTIsk
+         +bgA==
+X-Forwarded-Encrypted: i=1; AFNElJ/B6mwy827nASTM0d4HfHNELqe+94b3jr73gcxur8MK4nPX8r5PyQzN8xWLl9V8yaxRj+M=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9Fr7zFE2rNeYUb3K/uCi+K+O9gAVccBlIBaQyEhk26QVpC+Yw
+	VFnIVq2eVNgPEtR6QC6RfMf3tWgGZPLq3RzahMpSpHRz26IayQHX97YvE/r2BNecs/ss6UIsm4A
+	+zWpoOA==
+X-Received: from pfbhu35.prod.google.com ([2002:a05:6a00:69a3:b0:82f:5b50:db30])
+ (user=wyihan job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:68f:b0:3b1:a9ce:5095
+ with SMTP id adf61e73a8af0-3b328d940ebmr891980637.22.1779405441613; Thu, 21
+ May 2026 16:17:21 -0700 (PDT)
+Date: Thu, 21 May 2026 23:16:42 +0000
+In-Reply-To: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAFmSD2oC/x2MQQqAMAzAviI9W6gbivgV8eC2Tguisg4RxL87P
- CaQPKCchBWG6oHEl6gce4HG1hX4dd4XRglFgCHTUUs95nCj8hYza1a8GosuEs2BvOsjQ+nOxFH ufzoCTO/7AYd3BiJmAAAA
-X-Change-Id: 20260508-tdx-selftests-v13-bf00ad0cb8fe
+References: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
 X-Developer-Key: i=wyihan@google.com; a=ed25519; pk=cRi0fKzS5BMxlHyHY2pJv3w/1zcgfYKr6EYGYppdMYc=
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779405439; l=8037;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779405439; l=7777;
  i=wyihan@google.com; s=20260319; h=from:subject:message-id;
- bh=xohEyJSjao+0f4zXcTkZNxW1s1ON51E/Gofi7RSpk5A=; b=r1ctI7BkzWLkv7GY+9pssqPBHrJSjtAq0rC7HCjPLdke5+p0RpzOYvncBFAn53Bus1m7WGrA+
- PV8NHhNW1Q6DdcIdHFXBi+DS9q8d6aAQxMAR9MiFiRh4pPrEMfdEw0f
+ bh=JHkY9FocbRWshGCdU20jKcRRS7h6ChdXPCzwPWNDo2w=; b=U4JpKZtjKa5yNtiCQmT2R3/E9xKpYLAM51gEtsIpEWhCrEd8LCrGOisO0f7BzDpB4izrlQF0k
+ Toz+ep7VWv8BPW523/aWQDZftn4jb58PMrPgjzV5ba2DTCmfa3u2PIi
 X-Mailer: b4 0.14.3
-Message-ID: <20260521-tdx-selftests-v13-v13-0-6983ae4c3a4d@google.com>
-Subject: [PATCH v13 00/22] TDX KVM selftests
+Message-ID: <20260521-tdx-selftests-v13-v13-1-6983ae4c3a4d@google.com>
+Subject: [PATCH  v13 01/22] KVM: selftests: Add macros to simplify creating VM
+ shapes for non-default types
 From: Lisa Wang <wyihan@google.com>
 To: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com>, 
 	Binbin Wu <binbin.wu@linux.intel.com>, Chao Gao <chao.gao@intel.com>, 
@@ -77,167 +78,223 @@ To: Andrew Jones <ajones@ventanamicro.com>, Ackerley Tng <ackerleytng@google.com
 	Ryan Afranji <afranji@google.com>, Sagi Shahar <sagis@google.com>, 
 	Sean Christopherson <seanjc@google.com>, Shuah Khan <shuah@kernel.org>, Oliver Upton <oupton@kernel.org>
 Cc: Jeremiah McReynolds <jmcrey@google.com>, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, x86@kernel.org, Lisa Wang <wyihan@google.com>, 
-	Adrian Hunter <adrian.hunter@intel.com>
+	linux-kernel@vger.kernel.org, x86@kernel.org, Lisa Wang <wyihan@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-This patch series focuses on setting up a TDX VM and adding all code
-necessary to run a basic lifecycle test.
+From: Sean Christopherson <seanjc@google.com>
 
-Unlike standard KVM selftests can set up the VM through guest registers,
-TDX module protects TDs' register state from the host. This feature of
-TDX causes problems on VM boot state initialization and the ucall
-implementation.
+Add VM_TYPE() and __VM_TYPE() macros to create a vm_shape structure given
+a type (and mode), and use the macros to define VM_SHAPE_{SEV,SEV_ES,SNP}
+shapes for x86's SEV family of VM shapes.  Providing common infrastructure
+will avoid having to copy+paste vm_sev_create_with_one_vcpu() for TDX.
 
-In standard KVM selftests, the host directly initializes the guest state
-by manipulating Special Registers (SREGs) and General Purpose Registers
-(GPRs) via IOCTLs (KVM_SET_SREGS, etc.) before the first KVM_RUN.
+Use the new SEV+ shapes and drop vm_sev_create_with_one_vcpu().
 
-To bypass direct register initialization by the host, we utilize the
-standard x86 reset vector as the default entry point.
+No functional change intended.
 
-The mechanism works as follows:
-1. The host places register values into a specific memory region and
-   inserts boot code at the VM's default starting point.
-2. When the VM starts, it executes this boot code to "pull" values from
-   memory and manually set up its own SREGs and GPRs.
-3. Once the environment is ready, the boot code jumps to the guest code.
-
-The standard x86 ucall() implementation uses PIO, but it does not
-actually transmit data through the 4-byte PIO data. Instead, it relies
-on the host reading the ucall address directly from the guest's RDI
-register.
-
-TDX selftests cannot utilize the standard x86 ucall implementation,
-because the host is unable to access the guest's RDI register. Based on
-this restriction, we considered these potential solutions for the TDX
-ucall implementation.
-
-1. TDCALL PIO with RCX-bits Passthrough
-We first considered passing the RDI value through RCX bits to bypass the
-hardware's register protection, which could be the closest approach to
-the non-TDX implementation as per Sean's suggestion[1]. However, this
-approach is blocked by the software-side implementation: KVM_GET_REGS
-currently does not support TDX VMs and returns -EINVAL. To make this
-work, the KVM ioctl would need a test-only hack.
-
-2. TDCALL PIO with buffer indexing
-To keep a PIO-based approach and unify the get_ucall implementation for
-both TDX and non-TDX VMs, we considered TDCALL PIO with buffer indexing.
-Since the ucall buffer is initialized prior to execution, the VM could
-just pass a buffer index rather than an 8-byte ucall address to fit
-within the 4-byte PIO data limit. The host, already knowing the ucall
-buffer's base address, could then resolve the ucall content via this
-index. We abandoned this solution because it would require changes to
-the common ucall structure and impact other non-x86 architectures.
-
-3. TDCALL MMIO (Selected solution)
-We ultimately selected TDCALL with an 8-byte MMIO data. This method only
-requires initializing an MMIO GPA and adding TDCALL MMIO implementation
-for TDX under the original x86 ucall path. While this diverges from the
-non-TDX PIO, it provides the cleanest implementation with minimal
-disruption to the overall ucall architecture.
-
-4. A note on #VE and x86 ucall simplification
-It is worth noting that the use of a Virtualization Exception (#VE)
-is orthogonal to the PIO vs. MMIO discussion; rather, it is a question
-of how much we want to simplify the x86 ucall implementation. A #VE
-handler is one option to allow VMs use PIO/MMIO identical to the
-non-TDX case. Alternatively, having an MMIO_WRITE wrapper macro, as Sean
-suggested[2], is another option. Either way, discussion for this is
-likely a premature optimization right now, since the PIO/MMIO call is
-only used under ucall_arch_do_ucall(), and standard and TDX VMs use
-different ones now. We should optimize this in the future, but for now,
-invoking TDCALL directly is more robust and concise.
-
-v13 revision for TDX KVM selftests based on kvm/next and guest_memfd:
-In-place conversion support[3]. For ease of testing, this series is also
-available at: https://github.com/googleprodkernel/linux-cc/commits/tdx-selftests-v13
-
-Changes from v12[4]:
-1. Fixed some bugs, including typo, commit order and commit messages.
-2. Inlined the TDCALL to tdx.c file.
-3. Refactored the Makefile to use pattern rules for generic source
-   compilation while ensuring build artifacts are directed to the target
-   output directory.
-
-Series is organized by:
-1. Patches 1 - 4: Initialize the TDX VM
-2. Patches 5 - 8: Add the TDX boot code
-3. Patches 9 - 13: Set up the boot region
-4. Patches 14 - 17: Set up the vCPU
-5. Patches 18 - 19: Finalize the TDX VM
-6. Patches 20 - 22: Implement the ucall and run the TDX test
-
-[1]: https://lore.kernel.org/kvm/aQTcDH9LRezI30dm@google.com/
-[2]: https://lore.kernel.org/kvm/aQTSdk3JtFu1qOMj@google.com/
-[3]: https://lore.kernel.org/all/20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com/T/
-[4]: https://lore.kernel.org/kvm/20251028212052.200523-1-sagis@google.com/
-
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sagi Shahar <sagis@google.com>
+Reviewed-by: Binbin Wu <binbin.wu@linux.intel.com>
+Reviewed-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Lisa Wang <wyihan@google.com>
 ---
-Ackerley Tng (2):
-      KVM: selftests: Add helpers to init TDX memory and finalize VM
-      KVM: selftests: Add ucall support for TDX
+ tools/testing/selftests/kvm/include/kvm_util.h     | 13 +++++++
+ .../testing/selftests/kvm/include/x86/processor.h  |  4 +++
+ tools/testing/selftests/kvm/include/x86/sev.h      |  2 --
+ tools/testing/selftests/kvm/lib/x86/sev.c          | 16 ---------
+ tools/testing/selftests/kvm/x86/sev_smoke_test.c   | 40 +++++++++++-----------
+ 5 files changed, 37 insertions(+), 38 deletions(-)
 
-Erdem Aktas (2):
-      KVM: selftests: Add TDX boot code
-      KVM: selftests: Implement MMIO WRITE for the TDX VM
+diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testing/selftests/kvm/include/kvm_util.h
+index dc70c6da63fa..041bdbfb93f7 100644
+--- a/tools/testing/selftests/kvm/include/kvm_util.h
++++ b/tools/testing/selftests/kvm/include/kvm_util.h
+@@ -233,6 +233,19 @@ kvm_static_assert(sizeof(struct vm_shape) == sizeof(u64));
+ 	shape;					\
+ })
+ 
++#define __VM_TYPE(__mode, __type)		\
++({						\
++	struct vm_shape shape = {		\
++		.mode = (__mode),		\
++		.type = (__type)		\
++	};					\
++						\
++	shape;					\
++})
++
++#define VM_TYPE(__type)				\
++	__VM_TYPE(VM_MODE_DEFAULT, __type)
++
+ extern enum vm_guest_mode vm_mode_default;
+ 
+ #if defined(__aarch64__)
+diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
+index 77f576ee7789..0aa6eecfcbde 100644
+--- a/tools/testing/selftests/kvm/include/x86/processor.h
++++ b/tools/testing/selftests/kvm/include/x86/processor.h
+@@ -365,6 +365,10 @@ static inline unsigned int x86_model(unsigned int eax)
+ 	return ((eax >> 12) & 0xf0) | ((eax >> 4) & 0x0f);
+ }
+ 
++#define VM_SHAPE_SEV		VM_TYPE(KVM_X86_SEV_VM)
++#define VM_SHAPE_SEV_ES		VM_TYPE(KVM_X86_SEV_ES_VM)
++#define VM_SHAPE_SNP		VM_TYPE(KVM_X86_SNP_VM)
++
+ #define PHYSICAL_PAGE_MASK      GENMASK_ULL(51, 12)
+ 
+ #define PAGE_SHIFT		12
+diff --git a/tools/testing/selftests/kvm/include/x86/sev.h b/tools/testing/selftests/kvm/include/x86/sev.h
+index 1af44c151d60..944c59dbe510 100644
+--- a/tools/testing/selftests/kvm/include/x86/sev.h
++++ b/tools/testing/selftests/kvm/include/x86/sev.h
+@@ -53,8 +53,6 @@ void snp_vm_launch_start(struct kvm_vm *vm, u64 policy);
+ void snp_vm_launch_update(struct kvm_vm *vm);
+ void snp_vm_launch_finish(struct kvm_vm *vm);
+ 
+-struct kvm_vm *vm_sev_create_with_one_vcpu(u32 type, void *guest_code,
+-					   struct kvm_vcpu **cpu);
+ void vm_sev_launch(struct kvm_vm *vm, u64 policy, u8 *measurement);
+ 
+ kvm_static_assert(SEV_RET_SUCCESS == 0);
+diff --git a/tools/testing/selftests/kvm/lib/x86/sev.c b/tools/testing/selftests/kvm/lib/x86/sev.c
+index 93f916903461..95d8520eea34 100644
+--- a/tools/testing/selftests/kvm/lib/x86/sev.c
++++ b/tools/testing/selftests/kvm/lib/x86/sev.c
+@@ -158,22 +158,6 @@ void snp_vm_launch_finish(struct kvm_vm *vm)
+ 	vm_sev_ioctl(vm, KVM_SEV_SNP_LAUNCH_FINISH, &launch_finish);
+ }
+ 
+-struct kvm_vm *vm_sev_create_with_one_vcpu(u32 type, void *guest_code,
+-					   struct kvm_vcpu **cpu)
+-{
+-	struct vm_shape shape = {
+-		.mode = VM_MODE_DEFAULT,
+-		.type = type,
+-	};
+-	struct kvm_vm *vm;
+-	struct kvm_vcpu *cpus[1];
+-
+-	vm = __vm_create_with_vcpus(shape, 1, 0, guest_code, cpus);
+-	*cpu = cpus[0];
+-
+-	return vm;
+-}
+-
+ void vm_sev_launch(struct kvm_vm *vm, u64 policy, u8 *measurement)
+ {
+ 	if (is_sev_snp_vm(vm)) {
+diff --git a/tools/testing/selftests/kvm/x86/sev_smoke_test.c b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
+index 1a49ee391586..fe2c438882ae 100644
+--- a/tools/testing/selftests/kvm/x86/sev_smoke_test.c
++++ b/tools/testing/selftests/kvm/x86/sev_smoke_test.c
+@@ -104,7 +104,7 @@ static void compare_xsave(u8 *from_host, u8 *from_guest)
+ 		abort();
+ }
+ 
+-static void test_sync_vmsa(u32 type, u64 policy)
++static void test_sync_vmsa(struct vm_shape shape, u64 policy)
+ {
+ 	struct kvm_vcpu *vcpu;
+ 	struct kvm_vm *vm;
+@@ -114,7 +114,7 @@ static void test_sync_vmsa(u32 type, u64 policy)
+ 	double x87val = M_PI;
+ 	struct kvm_xsave __attribute__((aligned(64))) xsave = { 0 };
+ 
+-	vm = vm_sev_create_with_one_vcpu(type, guest_code_xsave, &vcpu);
++	vm = vm_create_shape_with_one_vcpu(shape, &vcpu, guest_code_xsave);
+ 	gva = vm_alloc_shared(vm, PAGE_SIZE, KVM_UTIL_MIN_VADDR,
+ 			      MEM_REGION_TEST_DATA);
+ 	hva = addr_gva2hva(vm, gva);
+@@ -150,13 +150,13 @@ static void test_sync_vmsa(u32 type, u64 policy)
+ 	kvm_vm_free(vm);
+ }
+ 
+-static void test_sev(void *guest_code, u32 type, u64 policy)
++static void test_sev(void *guest_code, struct vm_shape shape, u64 policy)
+ {
+ 	struct kvm_vcpu *vcpu;
+ 	struct kvm_vm *vm;
+ 	struct ucall uc;
+ 
+-	vm = vm_sev_create_with_one_vcpu(type, guest_code, &vcpu);
++	vm = vm_create_shape_with_one_vcpu(shape, &vcpu, guest_code);
+ 
+ 	/* TODO: Validate the measurement is as expected. */
+ 	vm_sev_launch(vm, policy, NULL);
+@@ -201,12 +201,12 @@ static void guest_shutdown_code(void)
+ 	__asm__ __volatile__("ud2");
+ }
+ 
+-static void test_sev_shutdown(u32 type, u64 policy)
++static void test_sev_shutdown(struct vm_shape shape, u64 policy)
+ {
+ 	struct kvm_vcpu *vcpu;
+ 	struct kvm_vm *vm;
+ 
+-	vm = vm_sev_create_with_one_vcpu(type, guest_shutdown_code, &vcpu);
++	vm = vm_create_shape_with_one_vcpu(shape, &vcpu, guest_shutdown_code);
+ 
+ 	vm_sev_launch(vm, policy, NULL);
+ 
+@@ -218,28 +218,28 @@ static void test_sev_shutdown(u32 type, u64 policy)
+ 	kvm_vm_free(vm);
+ }
+ 
+-static void test_sev_smoke(void *guest, u32 type, u64 policy)
++static void test_sev_smoke(void *guest, struct vm_shape shape, u64 policy)
+ {
+ 	const u64 xf_mask = XFEATURE_MASK_X87_AVX;
+ 
+-	if (type == KVM_X86_SNP_VM)
+-		test_sev(guest, type, policy | SNP_POLICY_DBG);
++	if (shape.type == KVM_X86_SNP_VM)
++		test_sev(guest, shape, policy | SNP_POLICY_DBG);
+ 	else
+-		test_sev(guest, type, policy | SEV_POLICY_NO_DBG);
+-	test_sev(guest, type, policy);
++		test_sev(guest, shape, policy | SEV_POLICY_NO_DBG);
++	test_sev(guest, shape, policy);
+ 
+-	if (type == KVM_X86_SEV_VM)
++	if (shape.type == KVM_X86_SEV_VM)
+ 		return;
+ 
+-	test_sev_shutdown(type, policy);
++	test_sev_shutdown(shape, policy);
+ 
+ 	if (kvm_has_cap(KVM_CAP_XCRS) &&
+ 	    (xgetbv(0) & kvm_cpu_supported_xcr0() & xf_mask) == xf_mask) {
+-		test_sync_vmsa(type, policy);
+-		if (type == KVM_X86_SNP_VM)
+-			test_sync_vmsa(type, policy | SNP_POLICY_DBG);
++		test_sync_vmsa(shape, policy);
++		if (shape.type == KVM_X86_SNP_VM)
++			test_sync_vmsa(shape, policy | SNP_POLICY_DBG);
+ 		else
+-			test_sync_vmsa(type, policy | SEV_POLICY_NO_DBG);
++			test_sync_vmsa(shape, policy | SEV_POLICY_NO_DBG);
+ 	}
+ }
+ 
+@@ -247,13 +247,13 @@ int main(int argc, char *argv[])
+ {
+ 	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SEV));
+ 
+-	test_sev_smoke(guest_sev_code, KVM_X86_SEV_VM, 0);
++	test_sev_smoke(guest_sev_code, VM_SHAPE_SEV, 0);
+ 
+ 	if (kvm_cpu_has(X86_FEATURE_SEV_ES))
+-		test_sev_smoke(guest_sev_es_code, KVM_X86_SEV_ES_VM, SEV_POLICY_ES);
++		test_sev_smoke(guest_sev_es_code, VM_SHAPE_SEV_ES, SEV_POLICY_ES);
+ 
+ 	if (kvm_cpu_has(X86_FEATURE_SEV_SNP))
+-		test_sev_smoke(guest_snp_code, KVM_X86_SNP_VM, snp_default_policy());
++		test_sev_smoke(guest_snp_code, VM_SHAPE_SNP, snp_default_policy());
+ 
+ 	return 0;
+ }
 
-Isaku Yamahata (2):
-      KVM: selftests: Update kvm_init_vm_address_properties() for TDX
-      KVM: selftests: TDX: Use KVM_TDX_CAPABILITIES to validate TDs' attribute configuration
-
-Lisa Wang (2):
-      KVM: selftests: Back the first memory region with guest_memfd for TDX
-      KVM: selftests: Set first memory region as shared if guest_memfd
-
-Sagi Shahar (13):
-      KVM: selftests: Initialize the TDX VM
-      KVM: selftests: Expose segment definitions to assembly files
-      tools: include: Add kbuild.h for assembly structure offsets
-      KVM: selftests: Introduce structures for TDX guest boot parameters
-      KVM: selftests: Expose functions to get default sregs values
-      KVM: selftests: Set up TDX boot code region
-      KVM: selftests: Set up TDX boot parameters region
-      KVM: selftests: Expose function to allocate vCPU stack
-      KVM: selftests: Call KVM_TDX_INIT_VCPU when creating a new TDX vcpu
-      KVM: selftests: Load per-vCPU guest stack in TDX boot parameters
-      KVM: selftests: Set entry point for TDX guest code
-      KVM: selftests: Finalize TD memory as part of kvm_arch_vm_finalize_vcpus
-      KVM: selftests: Add TDX lifecycle test
-
-Sean Christopherson (1):
-      KVM: selftests: Add macros to simplify creating VM shapes for non-default types
-
- tools/include/linux/kbuild.h                       |  11 +
- tools/testing/selftests/kvm/.gitignore             |   3 +-
- tools/testing/selftests/kvm/Makefile.kvm           |  33 +-
- tools/testing/selftests/kvm/include/kvm_util.h     |  13 +
- .../testing/selftests/kvm/include/x86/processor.h  |  40 +++
- .../selftests/kvm/include/x86/processor_asm.h      |  12 +
- tools/testing/selftests/kvm/include/x86/sev.h      |   2 -
- .../selftests/kvm/include/x86/tdx/td_boot.h        |  74 +++++
- .../selftests/kvm/include/x86/tdx/td_boot_asm.h    |  16 +
- tools/testing/selftests/kvm/include/x86/tdx/tdx.h  |  16 +
- .../selftests/kvm/include/x86/tdx/tdx_util.h       |  80 +++++
- tools/testing/selftests/kvm/include/x86/ucall.h    |   6 -
- tools/testing/selftests/kvm/lib/kvm_util.c         |  18 +-
- tools/testing/selftests/kvm/lib/x86/processor.c    | 107 ++++---
- tools/testing/selftests/kvm/lib/x86/sev.c          |  16 -
- tools/testing/selftests/kvm/lib/x86/tdx/td_boot.S  |  60 ++++
- .../selftests/kvm/lib/x86/tdx/td_boot_offsets.c    |  21 ++
- tools/testing/selftests/kvm/lib/x86/tdx/tdx.c      |  30 ++
- tools/testing/selftests/kvm/lib/x86/tdx/tdx_util.c | 334 +++++++++++++++++++++
- tools/testing/selftests/kvm/lib/x86/ucall.c        |  30 ++
- tools/testing/selftests/kvm/x86/sev_smoke_test.c   |  40 +--
- tools/testing/selftests/kvm/x86/tdx_vm_test.c      |  33 ++
- 22 files changed, 907 insertions(+), 88 deletions(-)
----
-base-commit: cd1b71113e3f70f0a1a3d61550cf89f1eed379c4
-change-id: 20260508-tdx-selftests-v13-bf00ad0cb8fe
-
-Best regards,
 -- 
-Lisa Wang <wyihan@google.com>
+2.54.0.746.g67dd491aae-goog
 
