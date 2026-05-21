@@ -1,252 +1,268 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f176.google.com (mail-qt1-f176.google.com [209.85.160.176])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D437A37702E;
-	Thu, 21 May 2026 09:33:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779356014; cv=none; b=KRvd70y80n7berh+ssAtk1TKqllM2s0FNryoasx9JtU3X9xJQRLiezxrgbKcdAdzcvdbM0PAPSaVoODFRJELmrqNyBTqlKFuIaNls2YlnRoiUonuLQfej4py8eyWbm1D4LEz9CWZQnhzDJuZDFd8pyR/D/l+K6QUYuhX29JzF8s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779356014; c=relaxed/simple;
-	bh=w2iApBcpU1slHHlzAFIBH319Kv8zAfKYI+2jhBD82DQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gMMHjSmqqBoiKEg0/fmdUHUoG8cD9HRnZoRQ0SMLK936n6DDZyl1nZ/d9zF/BtbJMDa4TFME8h5j0oDUiKisWpKtZHA65fvGeRgmqSvzeQkFfsvu7VmRbQfpHsMtUxzKWdDm1Z4Y9EFR0W3aoPb3cxWZDAzUSvaI4HAR5McemDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JW+kDjAp; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67D6737FF42
+	for <kvm@vger.kernel.org>; Thu, 21 May 2026 09:55:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.176
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779357341; cv=pass; b=qgps9nilxtDEcT0TJQa4y/GBQvPNqEQR672BqgN1EcBJhDVbTtheYWowxfADn0kLsjEjSskmWKXpddDwZrn4Ce6pF5+pI1l0OOAtzbZuE4wrCjczXzBTzPCrtrFmoagGJDrFFvjtVX9vRYrRZKAKZAUtqccUnrrONbM8iXNIJpE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779357341; c=relaxed/simple;
+	bh=ZRcTPC6pJlAhg9tsnjjkWvgzcx3R4j8Gvtkq+DUOp/Q=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=hztqtHF/P863Ss1xEUoathzr7XEzoVScSlhf6OX2YSa18zaEVDKenLBTXIEjfwUYiS684uslKR53459isBElfnk3V0Lw3z4j46VhCPXizHlyltzrcxijLnd7gPFRrDk1R1r0tyiL/9z/UDgiPA+JZvnjZquBdWWP23iU9TeYZCM=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=elx09jQV; arc=pass smtp.client-ip=209.85.160.176
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JW+kDjAp"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64L2Zhip552016;
-	Thu, 21 May 2026 09:32:53 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=ag2QTg
-	UDP6F8pw36rojCGVYbt7pzhih+zrqnh1c3xTg=; b=JW+kDjApgruRYwxV5Buz+D
-	hDMG6wYxXkYYGmgodW2cGAUR5JvQ83dMzcslqhwpdABltjmhq8lEIc3rELQNNg2U
-	2Genrztf7oEqRtXxJLVv+xxoUEeqKHmqY5nMMXtk1PE0eAuSDvMNALp6Rbhm2rqO
-	MYBHyt1bVO153TvGJzO2fXT81rCG6hWVnKzP2X+mqWqg52vJ1KKkZvw8Sp5oQusd
-	bMP2ha0JmgTB3bqStbezZDXsGnjiDFSy/jtGlTgg8gfr1OWuJu8Zcy5gDj7tvf6f
-	tnj0gnsv1L140rlzPcgH2mXtsEpdnecAC1SfC2UDC1/rtM6lLnZHlp/Y8y1iLYEA
-	==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h9y67gr-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 May 2026 09:32:52 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64L9OIA2027053;
-	Thu, 21 May 2026 09:32:51 GMT
-Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e72wqbmt2-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 May 2026 09:32:51 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
-	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64L9WlZO40567098
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 21 May 2026 09:32:47 GMT
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5DA2420040;
-	Thu, 21 May 2026 09:32:47 +0000 (GMT)
-Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 5EC5F2004E;
-	Thu, 21 May 2026 09:32:45 +0000 (GMT)
-Received: from [9.111.82.79] (unknown [9.111.82.79])
-	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 21 May 2026 09:32:45 +0000 (GMT)
-Message-ID: <942574f6-3959-4ca4-be24-6500b420e422@linux.ibm.com>
-Date: Thu, 21 May 2026 11:32:45 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="elx09jQV"
+Received: by mail-qt1-f176.google.com with SMTP id d75a77b69052e-50d6b393d60so6561cf.0
+        for <kvm@vger.kernel.org>; Thu, 21 May 2026 02:55:39 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779357338; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KgYljQK8oqDqvRGFwqnylE7PWIC9iJGutVhLH84Kd13NUMX8eDpOGx/1fhRpMi8ZZS
+         7xVfa/DltWWVV97Z8CFD6OItN/YUSDYV6FcTeGLVJ7Zw7mr/01OSvbRRwIyCHayQH9Ju
+         OeVVavE6KW/wDks51v+xDtVkJd7gZGO3MNv7BKfqsxS0JktqB9k3tUWhcMWECrT45K97
+         VRySk8ks7JbyVqRbZ0rZA39pWDGhOySR/tPDg6TvDnJttvt2MoGGvOck9R5YptlKBRJ6
+         mCumB1jMjphE9J3vg5TpuGINI/3G0ODZKdgPl5x8/p/LYIHRdT7EdCLm3Rl1N5KLJ7j8
+         3ZtQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:dkim-signature;
+        bh=e7M9NhGknWQDqckmSxYqMS5E/3kqK8iG7U98plSW4NU=;
+        fh=PTz5Cv/fuSb0p46XzzuDOOZyqLjUzvKJa3lRCBJrif8=;
+        b=Qkp7k78HYiosfLFquY6lP8hIOvPc57p9diXJDLpqdPuZvyf+D9fIIvUAKud3EgaLPN
+         51fcN7MMRAUl9nfICabD8P3IfTCgT3G+AYPlGsrYZm9ckO5vNJDuG70z3A5OGPcEfM2u
+         lR5vTT8PE6hk8701QnHOI/4LttF2HdRrPM1kEjKiL7fUNTE1hOMfXUi3/PYJ6+mT/Z4+
+         RVMv4XTGURh1Ju2VIRd1CnCVjMGle125oquLmWGGN2VzumTfrWvbID8YeA3OsI52ZVJq
+         oEvX4ZTggcgvjc4XfWqb1x6s3vFw6XXj7V62K0qgPWQrC/SjRgmB70dWZSUkKYTth49g
+         YQ2A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779357338; x=1779962138; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=e7M9NhGknWQDqckmSxYqMS5E/3kqK8iG7U98plSW4NU=;
+        b=elx09jQVz7SP6iJ3u0MpfDH3jkMZxattoGptkSC2UILK+56zPHVFzRqiAepypA+g5R
+         uXB5cPtIMXyB/qlF5vG4MJFQJcv2hdYeysIj9yEEZDBBECIfc6KSa5REBiXZEiFC18GM
+         GMBp8Ld8V5X/AjYXnfxlER1m54tE63w5KRMcYaLbtprzb8/ATv5nYgUiqVrcnVf545dZ
+         po45aU65ELKpTNgrfydItTDIVQP21xhWajaJ2ktpVujWZVhx3jwoYmXpeoaKSbzvmViy
+         J87ZZ1NlMGoQ2RtiynFCqinyNUEWh09clnbW5BkRvfMntDPH71QiA1Y1ZNMVOdXI5uyB
+         n+gg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779357338; x=1779962138;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=e7M9NhGknWQDqckmSxYqMS5E/3kqK8iG7U98plSW4NU=;
+        b=NJM7fPXx4x+jcFRLfBh9f1/nKAWAeAGTeXXw5OfFviPODhPf9NoztR7fbNzbmj5qjK
+         6vZldzUKGMQeyGWRLacOFpxwWnJbPIiOux/C4AFIcopwUXvCH6b1O8ucfVWLQB5M7psR
+         quia/rXRwLIGobOsnwSOUmGJBR6A5fPhj1pRFkhnt/yK1g+PPnjU1SYPV9Q6yLq4QBSM
+         60V4VqMC2d0/w13HlU5QCHQ/AXv1scP09gVyUnKNqZDyV53Y/8eup4Czt1DUZfnjZCZ9
+         q+dnadbb266Nfim3F1ZxWFQM+rcACKr/0cJ8sqayVofSd8DjuQB/ysqBPfkG/u+doCKB
+         gr2Q==
+X-Forwarded-Encrypted: i=1; AFNElJ/1s/tdkoiC+FMwnk8nDaiZAHIXhQKlJ7GUljBEOhVXBYtxp96Pu3DQPZNVRBWudrtv6/8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzh09/D1BCGanO5IYrV4hjzbP2s0FmjMQoqdkRrLhdw8GO1xbQq
+	OFBpjb7CJ6cY/XJMxsUA3KltEhGXAJJye0d5h8Umm4gTiH9A7VzAwNvLHbf/9/sAmCd6mSiTB72
+	zgZk7/yCeNAum6MMuhsKDRJeMVLJn2nFZ/FRo1Bsg
+X-Gm-Gg: Acq92OFq3ufoD2JDP1/Of3aORYfdhpDE4Pp3q1nwhwdGiZchQmQ2xHwI/Xl+YF/Txfs
+	XCJlKGVjovlAU/BR75ltWu0ELs/2jWiZe0bjv9UdhralJu0Zk6kAquy2ukHfvhQo4q0oL4IqyK1
+	TtwauFqTWitpzUoZBh5OnhPxRkXfCZ3EihOpMoznBWCFzndekSAtgwB+kW42M64S04dDS0rSqZ5
+	sbqtro6pzGWAFv2aWvz+L7gYYTYahUGHukQ6SF006eun0pcgnP/oTxKfvFQR1MwRvdzquoVBvEb
+	SogHD4GBWwAR5K5smIw=
+X-Received: by 2002:a05:622a:8c09:b0:50e:41f3:6467 with SMTP id
+ d75a77b69052e-516c545d431mr6709461cf.12.1779357337839; Thu, 21 May 2026
+ 02:55:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Sashiko review email for kvm@vger.kernel.org?
-To: Sean Christopherson <seanjc@google.com>
-Cc: Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Madhavan Srinivasan <maddy@linux.ibm.com>,
-        Nicholas Piggin <npiggin@gmail.com>, Anup Patel <anup@brainfault.org>,
-        Atish Patra <atish.patra@linux.dev>,
-        Christian Borntraeger <borntraeger@linux.ibm.com>,
-        Claudio Imbrenda <imbrenda@linux.ibm.com>,
-        David Hildenbrand <david@kernel.org>,
-        Vitaly Kuznetsov
- <vkuznets@redhat.com>,
-        David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>,
-        Eric Farman <farman@linux.ibm.com>,
-        Matthew Rosato <mjrosato@linux.ibm.com>,
-        Halil Pasic <pasic@linux.ibm.com>, Nipun Gupta <nipun.gupta@amd.com>,
-        Nikhil Agarwal <nikhil.agarwal@amd.com>,
-        Alex Williamson <alex@shazbot.org>,
-        Ioana Ciornei <ioana.ciornei@nxp.com>,
-        Longfang Liu <liulongfang@huawei.com>,
-        Julian Ruess <julianr@linux.ibm.com>,
-        Kirti Wankhede <kwankhede@nvidia.com>,
-        Yishai Hadas <yishaih@nvidia.com>, Ankit Agrawal <ankita@nvidia.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Shameer Kolothum <skolothumtho@nvidia.com>,
-        Kevin Tian
- <kevin.tian@intel.com>,
-        Brett Creeley <brett.creeley@amd.com>,
-        Eric Auger <eric.auger@redhat.com>,
-        Mostafa Saleh <smostafa@google.com>,
-        Pranjal Shrivastava <praan@google.com>,
-        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-        David Matlack <dmatlack@google.com>,
-        =?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>,
-        Stefan Hajnoczi <stefanha@redhat.com>,
-        Stefano Garzarella <sgarzare@redhat.com>,
-        Cornelia Huck <cohuck@redhat.com>, Jason Wang <jasowang@redhat.com>,
-        =?UTF-8?Q?Eugenio_P=C3=A9rez?=
- <eperezma@redhat.com>,
-        Kiryl Shutsemau <kas@kernel.org>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Rick Edgecombe <rick.p.edgecombe@intel.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Paolo Bonzini <pbonzini@redhat.com>, Roman Gushchin <kfree@google.com>,
-        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <agusSarZr-R_o2xD@google.com>
- <fbb937ae-62e4-4386-86fb-67d9b85c8fdc@linux.ibm.com>
- <agzHO6EXfAe_40F4@google.com>
-Content-Language: en-US
-From: Janosch Frank <frankja@linux.ibm.com>
-Autocrypt: addr=frankja@linux.ibm.com; keydata=
- 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
-In-Reply-To: <agzHO6EXfAe_40F4@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDA4OSBTYWx0ZWRfXxRIJe94bpSzn
- uDXT1d/Ue90QDHnBSyPI/3Z2s0Yzrj+0/zlmYaNCl7YZ7QTH2zqiDw+bfWWpTBTYfa3qddeVPiI
- 9DnlOgbX68hwRGbRvITykc17O9jsuKOkkILImrSTV39QwB/Lbx5H5bngWcSMi3ghbEtQj7gGwIy
- eawNhlXaHuBK81/QpcNx0RdTvxyez12FFDULal4CqkA6Rh6MiEU5v56WWHLZSQenS9bKENxKYpA
- rRKOqsSf3rsdoELx/nC49oXwBGAJrvK/BJB7JPE4DQPIiRvQsWb6sGT1J1etbuMjbbL8Eg1JiQA
- vv7hxe0SouisImTS3U6vO+KE0+gEOyrIxj6nKllKmN/XL22dKwYMtyeOekT78pARD8B4t2JuTKO
- X1Zq88fBUwbcTppWOHObYYtnnmYm9Jr206pi3J9ph9J6ep2hJTmlI4j+Q5BbKalc6Dzb6cWK+oc
- sWtivz5WZVpZoowQccg==
-X-Authority-Analysis: v=2.4 cv=BNuDalQG c=1 sm=1 tr=0 ts=6a0ed144 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17 a=VwQbUJbxAAAA:8
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=c92rfblmAAAA:8
- a=NEAV23lmAAAA:8 a=1LRjq_vfZD5iGkovayUA:9 a=QEXdDO2ut3YA:10
- a=GvGzcOZaWPEFPQC_NcjD:22
-X-Proofpoint-ORIG-GUID: iFn_RW7RHiBY5cr1E3cJ19H7PI6bGAG7
-X-Proofpoint-GUID: qMr3dIis9bzTenNFlc44zoXgBScuzSFh
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-21_01,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 malwarescore=0 impostorscore=0 suspectscore=0
- lowpriorityscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605210089
+References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com> <20260507-gmem-inplace-conversion-v6-21-91ab5a8b19a4@google.com>
+In-Reply-To: <20260507-gmem-inplace-conversion-v6-21-91ab5a8b19a4@google.com>
+From: Fuad Tabba <tabba@google.com>
+Date: Thu, 21 May 2026 10:55:00 +0100
+X-Gm-Features: AVHnY4LC3YVKsMDpMvqn3oyglyq0u9QSInerrEQ0lx4kHSFYhrJCi8Ex_c6F6eo
+Message-ID: <CA+EHjTwrygfMrZZSw4y7-ry8fidW2x0C7iuF2Q=dnPNHUmNtUg@mail.gmail.com>
+Subject: Re: [PATCH v6 21/43] KVM: SEV: Make 'uaddr' parameter optional for KVM_SEV_SNP_LAUNCH_UPDATE
+To: ackerleytng@google.com
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
+	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On 5/19/26 22:25, Sean Christopherson wrote:
-> +KVM and LKML, which I stupidly forgot to Cc :-(
-> 
-> On Tue, May 19, 2026, Janosch Frank wrote:
->> On 5/19/26 02:18, Sean Christopherson wrote:
->>> Hello people with a MAINTAINERS entry that uses kvm@vger.kernel.org as a mailing list!
->>>
->>> How would y'all feel about enabling Sashiko[*] emails for kvm@vger.kernel.org?  For
->>> a variety of reasons, Sashiko currently only logs its reviews to https://sashiko.dev
->>> by default.  If subsystems want to receive on-list mails, they need to opt-in.
->>>
->>> I really, really want to enable email reviews for KVM x86, as Sashiko has found
->>> an almost embarassing number of bugs that (a) would have been painful to debug
->>> had they escaped review and (b) I'm not convinced would have been found by
->>> traditional review.  And for me at least the signal:noise ratio is more than good
->>> enough.  There are still hallucinations and false positives from time to time,
->>> but the good outweighs the bad by quite a bit, it's cathartic to flame AI when
->>> it's wrong, and worst case scenario I can simply ignore Sashiko.
->>>
->>> But, currently Sashiko is only capable of making decisions based on mailing list,
->>> i.e. as things stand, _all_ of kvm@ needs to opt-in.  Before I badger Roman to
->>> add bespoke logic to Sashiko's email flow, e.g. to special case KVM x86 in some
->>> way, I want to see if there's a general consensus in favor (or against) enabling
->>> review emails.
->>>
->>> Thanks!
->>>
->>> [*] https://github.com/sashiko-dev/sashiko
->>
->> Sure,
->    ^
->    |- This
-> 
->> as long as there will be no mails from Sashiko or at most one mail per thread.
-> 
-> is in conflict with the caveats here, as per-patch email is exactly what I am
-> proposing (the current state is that Sashiko never sends mails).>
->> I'd appreciate something like "I found problems in this thread, here's the
->> link, go look if you want to".
-> 
-> While this would be easier than manually searching through the web site, there
-> would still be a sizeable barrier between contributors/maintainers and Sashiko
-> feedback.  E.g. to click through an out-of-band source, copy+paste the response
-> into the original thread, etc.
-> 
-> What are your concerns with per-patch email?  Hallucinations and noise are
-> definitely a potential problem, but IMO that can be handled by per-subsystem
-> policy.  E.g. if the signal:noise ratio is particularly poor for a subsystem,
-> that subsystem can document/state that responding to, or even reading, Sashiko
-> mails is completely optional.
-> 
-> Beyond that, I'm struggling to understand why folks are opposed to getting mails
-> from Sashiko, especially for a list as large as kvm@.  As others pointed out, the
-> volume for kvm@ is already high, and it's trivially easy to create a filter for
-> mails from sashiko-bot@kernel.org.  I.e. it seems highly unlikely that mail from
-> Sashiko will require anyone to significantly rethink and/or rework their workflow,
-> whereas the web site approach is very disruptive to email-based review, at least
-> for me.
+Hi,
 
-In my mind there's a clear separation between human feedback and 
-non-human feedback. So the disruption is something that I prefer. Maybe 
-I just haven't yet fully evaluated how much I trust its review in 
-contrast to my human coworkers.
+On Thu, 7 May 2026 at 21:22, Ackerley Tng via B4 Relay
+<devnull+ackerleytng.google.com@kernel.org> wrote:
+>
+> From: Michael Roth <michael.roth@amd.com>
+>
+> For vm_memory_attributes=1, in-place conversion/population is not
+> supported, so the initial contents necessarily must need to come
+> from a separate src address, which is enforced by the current
+> implementation. However, for vm_memory_attributes=0, it is possible for
+> guest memory to be initialized directly from userspace by mmap()'ing the
+> guest_memfd and writing to it while the corresponding GPA ranges are in
+> a 'shared' state before converting them to the 'private' state expected
+> by KVM_SEV_SNP_LAUNCH_UPDATE.
+>
+> Update the handling/documentation for KVM_SEV_SNP_LAUNCH_UPDATE to allow
+> for 'uaddr' to be set to NULL when vm_memory_attributes=0, which
+> SNP_LAUNCH_UPDATE will then use to determine when it should/shouldn't
+> copy in data from a separate memory location. Continue to enforce
+> non-NULL for the original vm_memory_attributes=1 case.
+>
+> Signed-off-by: Michael Roth <michael.roth@amd.com>
+> [Added src_page check in error handling path when the firmware command fails]
+> [Dropped ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES]
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 
-That being said, I won't be the one holding this back. I see value in 
-this and I'd be happy to test this.
+I'm not very familiar with the SEV-SNP populate flows, but it looks
+like Sashiko is on to something:
+https://sashiko.dev/#/patchset/20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4%40google.com?part=21
+
+- a potential read-only page overwrite, because src_page is acquired
+via get_user_pages_fast() without the FOLL_WRITE flag, but is then
+overwritten via memcpy
+- an ordering violation with the kunmap_local() calls
+
+These predate this patch series and are just being touched by the
+'src_page' addition, but if Sashiko's right, these should probably be
+fixed sooner rather than later.
+
+Cheers,
+/fuad
+
+
+
+> ---
+>  Documentation/virt/kvm/x86/amd-memory-encryption.rst | 15 +++++++++++----
+>  arch/x86/kvm/svm/sev.c                               | 18 +++++++++++++-----
+>  virt/kvm/kvm_main.c                                  |  1 +
+>  3 files changed, 25 insertions(+), 9 deletions(-)
+>
+> diff --git a/Documentation/virt/kvm/x86/amd-memory-encryption.rst b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+> index b2395dd4769de..43085f65b2d85 100644
+> --- a/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+> +++ b/Documentation/virt/kvm/x86/amd-memory-encryption.rst
+> @@ -503,7 +503,8 @@ secrets.
+>
+>  It is required that the GPA ranges initialized by this command have had the
+>  KVM_MEMORY_ATTRIBUTE_PRIVATE attribute set in advance. See the documentation
+> -for KVM_SET_MEMORY_ATTRIBUTES for more details on this aspect.
+> +for KVM_SET_MEMORY_ATTRIBUTES/KVM_SET_MEMORY_ATTRIBUTES2 for more details on
+> +this aspect.
+>
+>  Upon success, this command is not guaranteed to have processed the entire
+>  range requested. Instead, the ``gfn_start``, ``uaddr``, and ``len`` fields of
+> @@ -511,9 +512,15 @@ range requested. Instead, the ``gfn_start``, ``uaddr``, and ``len`` fields of
+>  remaining range that has yet to be processed. The caller should continue
+>  calling this command until those fields indicate the entire range has been
+>  processed, e.g. ``len`` is 0, ``gfn_start`` is equal to the last GFN in the
+> -range plus 1, and ``uaddr`` is the last byte of the userspace-provided source
+> -buffer address plus 1. In the case where ``type`` is KVM_SEV_SNP_PAGE_TYPE_ZERO,
+> -``uaddr`` will be ignored completely.
+> +range plus 1, and ``uaddr`` (if specified) is the last byte of the
+> +userspace-provided source buffer address plus 1.
+> +
+> +In the case where ``type`` is KVM_SEV_SNP_PAGE_TYPE_ZERO, ``uaddr`` will be
+> +ignored completely. Otherwise, ``uaddr`` is required if
+> +kvm.vm_memory_attributes=1 and optional if kvm.vm_memory_attributes=0, since
+> +in the latter case guest memory can be initialized directly from userspace
+> +prior to converting it to private and passing the GPA range on to this
+> +interface.
+>
+>  Parameters (in): struct  kvm_sev_snp_launch_update
+>
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> index c2126b3c30724..bf10d24907a00 100644
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -2343,7 +2343,15 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+>         int level;
+>         int ret;
+>
+> -       if (WARN_ON_ONCE(sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src_page))
+> +       /*
+> +        * For vm_memory_attributes=1, in-place conversion/population is not
+> +        * supported, so the initial contents necessarily need to come from a
+> +        * separate src address. For vm_memory_attributes=0, this isn't
+> +        * necessarily the case, since the pages may have been populated
+> +        * directly from userspace before calling KVM_SEV_SNP_LAUNCH_UPDATE.
+> +        */
+> +       if (vm_memory_attributes &&
+> +           sev_populate_args->type != KVM_SEV_SNP_PAGE_TYPE_ZERO && !src_page)
+>                 return -EINVAL;
+>
+>         ret = snp_lookup_rmpentry((u64)pfn, &assigned, &level);
+> @@ -2390,7 +2398,7 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+>          */
+>         if (ret && !snp_page_reclaim(kvm, pfn) &&
+>             sev_populate_args->type == KVM_SEV_SNP_PAGE_TYPE_CPUID &&
+> -           sev_populate_args->fw_error == SEV_RET_INVALID_PARAM) {
+> +           sev_populate_args->fw_error == SEV_RET_INVALID_PARAM && src_page) {
+>                 void *src_vaddr = kmap_local_page(src_page);
+>                 void *dst_vaddr = kmap_local_pfn(pfn);
+>
+> @@ -2422,8 +2430,8 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
+>         if (copy_from_user(&params, u64_to_user_ptr(argp->data), sizeof(params)))
+>                 return -EFAULT;
+>
+> -       pr_debug("%s: GFN start 0x%llx length 0x%llx type %d flags %d\n", __func__,
+> -                params.gfn_start, params.len, params.type, params.flags);
+> +       pr_debug("%s: GFN start 0x%llx length 0x%llx type %d flags %d src %llx\n", __func__,
+> +                params.gfn_start, params.len, params.type, params.flags, params.uaddr);
+>
+>         if (!params.len || !PAGE_ALIGNED(params.len) || params.flags ||
+>             (params.type != KVM_SEV_SNP_PAGE_TYPE_NORMAL &&
+> @@ -2479,7 +2487,7 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
+>
+>         params.gfn_start += count;
+>         params.len -= count * PAGE_SIZE;
+> -       if (params.type != KVM_SEV_SNP_PAGE_TYPE_ZERO)
+> +       if (src && params.type != KVM_SEV_SNP_PAGE_TYPE_ZERO)
+>                 params.uaddr += count * PAGE_SIZE;
+>
+>         if (copy_to_user(u64_to_user_ptr(argp->data), &params, sizeof(params)))
+> diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+> index ba195bb239aaa..3bf212fd99193 100644
+> --- a/virt/kvm/kvm_main.c
+> +++ b/virt/kvm/kvm_main.c
+> @@ -105,6 +105,7 @@ module_param(allow_unsafe_mappings, bool, 0444);
+>  #ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+>  bool vm_memory_attributes = true;
+>  module_param(vm_memory_attributes, bool, 0444);
+> +EXPORT_SYMBOL_FOR_KVM_INTERNAL(vm_memory_attributes);
+>  #endif
+>  DEFINE_STATIC_CALL_RET0(__kvm_get_memory_attributes, kvm_get_memory_attributes_t);
+>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(STATIC_CALL_KEY(__kvm_get_memory_attributes));
+>
+> --
+> 2.54.0.563.g4f69b47b94-goog
+>
+>
