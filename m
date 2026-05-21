@@ -1,121 +1,123 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C213769E3
-	for <kvm@vger.kernel.org>; Thu, 21 May 2026 20:12:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41D63EDE5F
+	for <kvm@vger.kernel.org>; Thu, 21 May 2026 20:34:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779394374; cv=none; b=ZWVUNXsQpjDDHsZj6vyRxLzUSROcnxxaGd1b8UpHp7e01+2HRdI143N+yKyGlnHWWQj5Vqa2jJyFSuSQkssrKfWlM7yEGs78/WcP9Af+Ezr660uILAG1/T1hrkQ9KWXVembKJOycELeMJoEDx0XjziJl8KVdgkx9mmuzhEFFjnU=
+	t=1779395668; cv=none; b=OwC4QjSIRNyJ6esIyenjEE04mvvjGbG/izAXOLfPZHbpiPsxCO3ac9cORmLs0aVuC6wFbXidsuzL4HJ/mapSM8h4CCv/e4JHoivRx0yX0bBoPzASHRmCAMdObiVnUIgujqkccYXXpvk27daG6NrOTo2tlYXGHd9D1B569e3jtB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779394374; c=relaxed/simple;
-	bh=nF02n4d0zo6XAeoaFC7kFCatJjgNrNlUhsqWsFfaKcE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uTOJH1ktTPT7HwACO5eyQA4EbQvoFjwNCukpU0o1FFQQpTIQ9PPMRCHmSKqwuttdBp2At+YLw/ck0/M7zlRA844eUgrRoZ2e3CN4De1Eym9Rml11K6I0fJACmHUQciEeC9jXzk7zMMiQUnBExAoXAMkEAJQJjmxqsj7ZDg7/gdU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JV9rKCmH; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1779395668; c=relaxed/simple;
+	bh=Vidk3LDEKL2XnrVS0/5PJ+6dbEOeauOpV9iuOcmzzjI=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=qHTRBvwx57mbtYz2bZitfhR+tO/dy7rz5I/dNfr6SgHvBzyyDy714BAlI4SBbJsnHEeFJkq1IaH2KmnKoBITl3xo58zz7DHz7eh5537v6SmagOvNTCB7zXq0R/bIndXgmrq0jpIPII/QoIM7LQSAlemL/1hDyxr/nL3MnLYFqtM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=o+9WImWb; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JV9rKCmH"
-Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64LApQtq2818971;
-	Thu, 21 May 2026 20:12:44 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=nF02n4
-	d0zo6XAeoaFC7kFCatJjgNrNlUhsqWsFfaKcE=; b=JV9rKCmHg6hIVdGRlF4quk
-	EQArWGzspYtqYq7uf07oO+4uMcq4904vZZOJqJ5s4KutvgX5fbgGXBffq3GSq8nU
-	ujh59JLnRnuc6Fpv6NCjll9Hv5a3L4aalc+Wtg2bmQiWs8+uk7SwKfX0bh5x2hRl
-	Qc2PSF/h+shypKocA+AwhTLrexYCKzXSawLNVcy81iWwTPBdY41N3SZLlcChMExd
-	tgnkFeb5Xxw4w2VTNK+YnVI0w+L+T0CqMuSA/ANmA1+cVnVGAQuKZxbFIeLGjaKr
-	sxsjmMBbVhBdrdPuEoNXfCnFOV5EdKSdwn4uLPY44hDgeuOtxQlb3BaDyer3ratw
-	==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h9y8ybx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 May 2026 20:12:44 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64LK97MA019676;
-	Thu, 21 May 2026 20:12:43 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e739w61xn-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Thu, 21 May 2026 20:12:42 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64LKCdHf31326622
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Thu, 21 May 2026 20:12:39 GMT
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 0B53520043;
-	Thu, 21 May 2026 20:12:39 +0000 (GMT)
-Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id B2AC620040;
-	Thu, 21 May 2026 20:12:32 +0000 (GMT)
-Received: from [9.39.29.116] (unknown [9.39.29.116])
-	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Thu, 21 May 2026 20:12:32 +0000 (GMT)
-Message-ID: <cfe1b8d9-8468-462c-af10-174af2746565@linux.ibm.com>
-Date: Fri, 22 May 2026 01:41:26 +0530
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="o+9WImWb"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b2e8bba2e6so91168315ad.1
+        for <kvm@vger.kernel.org>; Thu, 21 May 2026 13:34:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779395666; x=1780000466; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dIireasEnp8AQZjS+o0HC63+VEosuYCnO+TKDPQR05s=;
+        b=o+9WImWbeAbOLztvLMTB+MdER7K+60tboDKwyKU9bSRbhkvTfZYUs0v4XkM2QeRety
+         jTmwLKveG81OJBnWOQqPX8e/6+KmgGV5gzQRWwdmKRKP4oBsw7P0ibo1BzukWptlK0KA
+         TScf/zDsLe1K02dtWTh/nt80ijybeo/UMrVrgzwhieF41ecwBQiNAS5VoLeLOz784tPR
+         U3HMnH1xJnDX89cUe0SvelQAGIt4VC7yBZUvYbdoOUuWdWqJYDzAsN/G4+901+Hjc2qW
+         /hZCQHQiSvMzfztTkUiIiX55aJ46HPK6tkLKWjODNb7O3xpcl/PPp/1351Xl/FPNQCkX
+         8mdg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779395666; x=1780000466;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dIireasEnp8AQZjS+o0HC63+VEosuYCnO+TKDPQR05s=;
+        b=b2RkCDEmtOhOr/irF5xRGVyAzaIhflunxVChrvLby+o2iidmGzzzgHkxQdYTsQr5Ve
+         8Q2/IS4p7+UU1BTHABH6VUbjiwJjBKAB8QFMvCphVOLeHGFVdQ47T32vQw66j/R56ZZe
+         hLaBgbIruWUjx+OnXE/Tuvlb3rwGpFqhE9hv9/laZQNjaTh4fkssewIlQIoK0JqSN+Ag
+         /dIOwcPH7TH0+wTMCg8mI+VhKHmqZFZQVo+gPy0hv1iZbyPDuRiFPEGEUasveWmDuu6t
+         aAptz7BGVQEaR55Kk6AvvNuKwg7vt4GxTSI1+Wz33vc3fEeTFxDTrC6vqBpt5rFfacGC
+         wewA==
+X-Forwarded-Encrypted: i=1; AFNElJ91QDoy0QqcwNvapRRfd1UuiKjitOQapwLyqV26tfOTTDw9dMCUx6bOcL6VybeFKM8MzBI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzekkpdQAbNVDvqov+hu/3UaHmPDiQwL5Q5MTeUPzZL1kYcLqaL
+	M62wSxVmL8leX/f3tk0jcWj1ScA7dCFR8KFm38hnhZ05PPmj7NBmgTtJYtRDq/3vCk8/a+mqN/L
+	lGHleMA==
+X-Received: from plip15.prod.google.com ([2002:a17:903:38cf:b0:2bc:ae06:63be])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:4405:b0:2b9:6458:1a2c
+ with SMTP id d9443c01a7336-2beb06733bemr4530925ad.13.1779395665926; Thu, 21
+ May 2026 13:34:25 -0700 (PDT)
+Date: Thu, 21 May 2026 13:34:24 -0700
+In-Reply-To: <7489ff3cc1ff402bf0ade38272fc52dcbcc75fc1.camel@amazon.co.uk>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/2] Fix GCC 16 const-correctness violations
-To: Amit Machhiwal <amachhiw@linux.ibm.com>,
-        Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org
-Cc: Vaibhav Jain <vaibhav@linux.ibm.com>, Nicholas Piggin
- <npiggin@gmail.com>,
-        Chinmay Rath <rathc@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
-        Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
-        Laurent Vivier <lvivier@redhat.com>,
-        Shivaprasad G Bhat <sbhat@linux.ibm.com>,
-        Gautam Menghani <gautam@linux.ibm.com>, qemu-devel@nongnu.org,
-        kvm@vger.kernel.org
-References: <20260518172517.12466-1-amachhiw@linux.ibm.com>
-Content-Language: en-US
-From: Aditya Gupta <adityag@linux.ibm.com>
-In-Reply-To: <20260518172517.12466-1-amachhiw@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDIwMiBTYWx0ZWRfX+qis8VDyIr57
- Qamt6tZyL6tFCQnQYsFs2cYSZTaYFU99MGMRWcvJP6upl426GgmeWMk61XzgpnqQbKO93QpSipi
- ZK+A8UbLxoaDqkrjrWYNMJdGy5IedFVkUwb7BLkd23r+JayUb4XeKECDerOzmbVHVm/VuKHqvrW
- S2yQcHcCfqId7ZbG5Ceymi1Pfu9jNb2KNFvU86zv1HFDtMX7KWUzbF+MasGw2H4MkI9OaiH+Ioe
- 61WF3vLOhjHFtMvoZ11DUeRmNEI2HsWv/KVyISmBBJnrZIPvkC9k/sEsCKegteqyBt4jnzlZq5n
- ghRrnWVBZfH49xAN1YNkd62vONz01iEjp9yhc0+vod6iQcAtnQjlVp+vrGtpYpZqvvtCaefctg8
- UvmXc6h26rmHKYiJBHn50h7QPIEjb8GpBEud7He+zh/xe1vAN+Tl6WRSEYpUoTr7HbLXhkqBFMy
- OOQlzd5nZTxnpl7OaCQ==
-X-Authority-Analysis: v=2.4 cv=BNuDalQG c=1 sm=1 tr=0 ts=6a0f673c cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
- a=k0V8wgQb6Tt_Ug5EG9gA:9 a=QEXdDO2ut3YA:10 a=zgiPjhLxNE0A:10
-X-Proofpoint-ORIG-GUID: cc9C8jTBvKFN1YsAtllm0sWql6xXbEXa
-X-Proofpoint-GUID: iDkejnIFiR6NXeWA2lxqEnUgRuXtozmx
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-21_04,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- adultscore=0 priorityscore=1501 malwarescore=0 impostorscore=0 suspectscore=0
- lowpriorityscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605210202
+Mime-Version: 1.0
+References: <20260515191942.1892718-1-seanjc@google.com> <20260515191942.1892718-37-seanjc@google.com>
+ <7489ff3cc1ff402bf0ade38272fc52dcbcc75fc1.camel@amazon.co.uk>
+Message-ID: <ag9sUI8pBJda0Ml5@google.com>
+Subject: Re: [PATCH v3 36/41] x86/kvmclock: Get local APIC bus frequency from
+ PV CPUID Timing Info
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw@amazon.co.uk>
+Cc: "tglx@kernel.org" <tglx@kernel.org>, "longli@microsoft.com" <longli@microsoft.com>, 
+	"luto@kernel.org" <luto@kernel.org>, 
+	"alexey.makhalov@broadcom.com" <alexey.makhalov@broadcom.com>, "jstultz@google.com" <jstultz@google.com>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
+	"ajay.kaher@broadcom.com" <ajay.kaher@broadcom.com>, "jan.kiszka@siemens.com" <jan.kiszka@siemens.com>, 
+	"haiyangz@microsoft.com" <haiyangz@microsoft.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"pbonzini@redhat.com" <pbonzini@redhat.com>, "kys@microsoft.com" <kys@microsoft.com>, 
+	"decui@microsoft.com" <decui@microsoft.com>, 
+	"daniel.lezcano@kernel.org" <daniel.lezcano@kernel.org>, "wei.liu@kernel.org" <wei.liu@kernel.org>, 
+	"peterz@infradead.org" <peterz@infradead.org>, "jgross@suse.com" <jgross@suse.com>, 
+	"boris.ostrovsky@oracle.com" <boris.ostrovsky@oracle.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"mhklinux@outlook.com" <mhklinux@outlook.com>, "thomas.lendacky@amd.com" <thomas.lendacky@amd.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"bcm-kernel-feedback-list@broadcom.com" <bcm-kernel-feedback-list@broadcom.com>, 
+	"tglx@linutronix.de" <tglx@linutronix.de>, "nikunj@amd.com" <nikunj@amd.com>, 
+	"xen-devel@lists.xenproject.org" <xen-devel@lists.xenproject.org>, 
+	"linux-hyperv@vger.kernel.org" <linux-hyperv@vger.kernel.org>, "vkuznets@redhat.com" <vkuznets@redhat.com>, 
+	"rick.p.edgecombe@intel.com" <rick.p.edgecombe@intel.com>, 
+	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>, "sboyd@kernel.org" <sboyd@kernel.org>, 
+	"x86@kernel.org" <x86@kernel.org>
+Content-Type: text/plain; charset="us-ascii"
 
-On 18/05/26 22:55, Amit Machhiwal wrote:
+On Wed, May 20, 2026, David Woodhouse wrote:
+> On Fri, 2026-05-15 at 12:19 -0700, Sean Christopherson wrote:
+> > When running as a KVM guest with kvmclock support enabled, stuff the APIC
+> > timer period/frequency with the local APIC bus frequency reported in
+> > CPUID.0x40000010.EBX instead of trying to calibrate/guess the frequency.
+> > 
+> > See Documentation/virt/kvm/x86/cpuid.rst for details.
+> > 
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> 
+> I still don't much like the way this is done inside kvm_get_tsc_khz().
 
-> GCC 16 has tightened const-correctness checking and now correctly
-> rejects attempts to modify or assign const-qualified pointers without
-> proper qualification. This series fixes two such violations that cause
-> build failures with GCC 16 when using -Werror=discarded-qualifiers.
+Yeah, I don't like it either (understatement).  Aha!  native_calibrate_tsc() is
+the oddball, all of the PV flows stuff lapic_timer_period when parsing the initial
+timing info.  I'll just do that.  Blindly writing a global is all kinds of fugly,
+but that's a future
+problem to solve.
 
-The patches fixes qemu build for me, and looks good to me.
+> We also probably ought to be looking for the timing leaf on other
+> hypervisors including VMware 
 
-Reviewed-by: Aditya Gupta <adityag@linux.ibm.com>
+VMware gets the frequency via hypercall.  Why, I have no idea.  I'll let the
+VMware folks deal with that.
 
+	eax = vmware_hypercall3(VMWARE_CMD_GETHZ, UINT_MAX, &ebx, &ecx);
 
-Thanks Amit !
+> and probably Bhyve too.  Should it be done somewhere else?
+
+I'm not opposed to that, though I don't know that it'd be a net positive. The
+"hard" part of getting the info is finding the CPUID base and checking if the
+leaf is available.  Unlike the native CPUID leaf, no math is necessary, and so
+once the leaf is obtained, getting the frequency is trivial.
+
+Regardless, I definitely don't want to take it on in this series. :-)
 
