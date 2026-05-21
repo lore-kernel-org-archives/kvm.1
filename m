@@ -1,172 +1,72 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3171C701F;
-	Thu, 21 May 2026 04:14:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E913734CFDA
+	for <kvm@vger.kernel.org>; Thu, 21 May 2026 04:18:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779336889; cv=none; b=U7SOImERCTwFKlYSFQ/KxvaWXFda1mR6XzZoUabZBAWaZCX10DrULfJMOP3nRb9TUXTpVFLifEb7xwIiSck+UeQmzG9tWm2znowKbxSlEyPHn5bTBmkIAMJkCtcISwUACRsCKTvaBwaweDdqyUkDCc17WhBjPDGLLiJJQqYOVXA=
+	t=1779337098; cv=none; b=YDf2DuQ/N5PiLAvht0/xRo80H8v4oOKKR648Hbo3E6ZW9xPhJ6cF9TV9jFBwXxkRgN2NjIXEqz7rm36R0a5YQAH02AVRX+v7A9qQjTdYRqtPKnT/J6GXSphK0OwxsGFLFsXQbrHzVyY752Xka1cbxK8jML15USL5M+cYsRzbLNw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779336889; c=relaxed/simple;
-	bh=vjHEPSzCvmiTVa6WisKLSIB2nZEdbm97hq2+KjzQehs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Kufy549/R5/FgFs+UXxkyUw/1vJwZyMdieXwcWzKjHJrcKsXjHBBfw/oyci7KZJ1yjjBEONqmo4VWDZGSfg2B6HPO/2qLa6XCN6I+zrkeVq86XcklapJWxLlzBxKXQNqC0yEKgh9WZvaq06zhROB5OM3HZQrxjUP4b826mtBq3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OU4Q6r/d; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779337098; c=relaxed/simple;
+	bh=0pS3yj1aG76j+TNEuUnqm3hj8DlFHBstU745UBGgheo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=TIBNaScpDRAiJFXJRM+dJyuOneI5OSRol6xxwcK3/iuACUuleCntaINJy0LZBhgMXQ0iGAILbYlR5RSSn/VUutoWe//0jATdMHvVV7UsBGA/kSidP5EOfXNrsp7SORNaLFX41x7Qlt8Q7zm/ry/ZAXkxtatprtOD0cXbF9mWa08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eRbaEVgR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OU4Q6r/d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 744731F000E9;
-	Thu, 21 May 2026 04:14:47 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eRbaEVgR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DFAC1F00A3E
+	for <kvm@vger.kernel.org>; Thu, 21 May 2026 04:18:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779336887;
-	bh=O20gUXMAJKTLXS/mcQjXhxXDkoL08EaotspEAUfOY6Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=OU4Q6r/dzP9U2iZB/0BLyjxrxCD1Q1RLJbbTETQEEwJD/NVOm3tfCVuWvKdoouhLI
-	 644ZeHU1gE4EJgRgFql3IHVwhAuwBIpDa9xivqXk2trd4SbsvMcsUhf3yVTdsyrDL0
-	 Jo4OmXjGV/Ur7zr9IYYMpNdSTI/xtn3upRCMud0+X8aXvsmZ7rgElISLDCmy2F3vF6
-	 Vwft3E1iY6A0FNf3tfZkPRK9668nRHqnza9B/q8X4EAC0RsYkq8xe1jkIgZPqcTmbC
-	 RQ2jguPwFPULHku9V6uD8E85GtlqIuoqBs9B1PTFQgcEai6nBDl3JL+snCBpcmJGPI
-	 fFCQzJ/I7PYrg==
-Date: Thu, 21 May 2026 04:14:46 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] KVM: selftests: Add a test for gPAT handling in L2
-Message-ID: <ag6F3NcxI8xCJnus@google.com>
-References: <20260521023448.3826878-1-yosry@kernel.org>
+	s=k20260515; t=1779337092;
+	bh=GGxdWlh+UiAYAHp20trJY6Q+n6opHynbu9yj2m+WUEY=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=eRbaEVgRdLFw36LiuVyiqkbhwtctNdCSy5pEgQ8jyS6EPPFYr6i+rfBXmLxZK6pja
+	 WBGvDbjdParXl+cJsdANQZxhkVfTy4us52USP2OAqIVrbXGj5jzbhxr0AbX9TpLRHw
+	 0PEbLGHIFY79P83ZDQixTXRGJnAmbHA0c8oa0bpCatLqmKnTO6xmM9jbPJsMw/wJvc
+	 JxiQ26JZJUwcRnYI0x/fyoFIOAXcpnQnJvmoPT4PP7DH1TC6u8/aMKqBfMf4ERui9b
+	 8VtPVuObA3s61XSXl6b0D5GEi+Spi/ct2CLWpy7o06zQhfA16WaatnwkRZLJdVzF8r
+	 reoMJK9iLea5w==
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-68719234fd8so2536316a12.3
+        for <kvm@vger.kernel.org>; Wed, 20 May 2026 21:18:12 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+/0b2eiey39n6KRnN5BKm+OmGlySD+nWb8vXVK0bT+bxQ1+oKlNwF12nuSUWLZNaCK9IY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz+5K61A1pg5UwMoNvufMZgyUxejDAEB43Uy3JNMHwYGie/Q+ZQ
+	F4CzMvkf84S/FqyOoBqp++xdVXmiNevmWl5Hxcmc/01UbQuHh/0qBwN0HbT/QAzXykt2qFKemkB
+	WiFP6VmPJ46w5yE87eP34wUYCFofYSzI=
+X-Received: by 2002:a17:907:720d:b0:bd3:a1e5:65f1 with SMTP id
+ a640c23a62f3a-bdc15d2a97fmr53639066b.44.1779337091422; Wed, 20 May 2026
+ 21:18:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260521023448.3826878-1-yosry@kernel.org>
+References: <20260521023448.3826878-1-yosry@kernel.org> <ag6F3NcxI8xCJnus@google.com>
+In-Reply-To: <ag6F3NcxI8xCJnus@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Wed, 20 May 2026 21:18:00 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zMdizNjg3DrZn8B57MYwWN++SOmdamnVKKmfqLZRrKQXw@mail.gmail.com>
+X-Gm-Features: AVHnY4Ikt2N6ghsdSYrN0xxragul4olunD6i9mG8f-OSQpinncy4UILzuDfUwR0
+Message-ID: <CAO9r8zMdizNjg3DrZn8B57MYwWN++SOmdamnVKKmfqLZRrKQXw@mail.gmail.com>
+Subject: Re: [PATCH v2] KVM: selftests: Add a test for gPAT handling in L2
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, May 21, 2026 at 02:34:48AM +0000, Yosry Ahmed wrote:
-[..]
-> +
-> +static void l2_guest_code(void)
-> +{
-> +	u64 expected_initial_pat = npt_enabled ? L2_VMCB12_PAT : L1_PAT_VALUE;
-> +	int i;
-> +
-> +	for (i = 0; i < nr_iterations; i++) {
-> +		GUEST_ASSERT_EQ(rdmsr(MSR_IA32_CR_PAT), expected_initial_pat);
-> +		GUEST_SYNC(1);
-> +		GUEST_ASSERT_EQ(rdmsr(MSR_IA32_CR_PAT), expected_initial_pat);
-> +
-> +		wrmsr(MSR_IA32_CR_PAT, L2_PAT_MODIFIED);
+> > +int main(int argc, char *argv[])
+> > +{
+> > +     TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SVM));
+> > +     TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_NPT));
+> > +     TEST_REQUIRE(kvm_has_cap(KVM_CAP_NESTED_STATE));
+> > +     TEST_REQUIRE(kvm_check_cap(KVM_CAP_DISABLE_QUIRKS2) &
+> > +                  KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT);
+> > +
+> > +     NESTED_PAT_TEST("Invalid gPAT", l1_guest_code_invalid_gpat,
+> > +                     NPT_ENABLED, NO_SAVE_RESTORE, 1);
+> > +
+> > +     NESTED_PAT_TEST("Nested NPT enabled", l1_guest_code,
 
-expected_initial_pat (or more maybe just expected_pat now) should be
-updated here.
+..and this name is wrong. RIP.
 
-> +
-> +		GUEST_ASSERT_EQ(rdmsr(MSR_IA32_CR_PAT), L2_PAT_MODIFIED);
-> +		GUEST_SYNC(2);
-> +		GUEST_ASSERT_EQ(rdmsr(MSR_IA32_CR_PAT), L2_PAT_MODIFIED);
-> +
-> +		vmmcall();
-> +	}
-> +}
-> +
-> +static void l1_guest_code(struct svm_test_data *svm)
-> +{
-> +	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
-> +	struct vmcb *vmcb = svm->vmcb;
-> +	int i;
-> +
-> +	wrmsr(MSR_IA32_CR_PAT, L1_PAT_VALUE);
-> +	GUEST_ASSERT_EQ(rdmsr(MSR_IA32_CR_PAT), L1_PAT_VALUE);
-> +
-> +	generic_svm_setup(svm, l2_guest_code, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
-> +
-> +	vmcb->save.g_pat = L2_VMCB12_PAT;
-> +	vmcb->control.intercept &= ~(1ULL << INTERCEPT_MSR_PROT);
-> +
-> +	for (i = 0; i < nr_iterations; i++) {
-> +		run_guest(vmcb, svm->vmcb_gpa);
-> +
-> +		GUEST_ASSERT_EQ(vmcb->control.exit_code, SVM_EXIT_VMMCALL);
-> +
-> +		/*
-> +		 * If NPT is enabled by L1, L2 has a unique PAT and L1's PAT is
-> +		 * unchanged. Otherwise, PAT is shared between L1 and L2.
-> +		 */
-> +		if (npt_enabled) {
-> +			GUEST_ASSERT_EQ(vmcb->save.g_pat, L2_PAT_MODIFIED);
-> +			GUEST_ASSERT_EQ(rdmsr(MSR_IA32_CR_PAT), L1_PAT_VALUE);
-> +		} else {
-> +			GUEST_ASSERT_EQ(rdmsr(MSR_IA32_CR_PAT), L2_PAT_MODIFIED);
-> +		}
-
-..and we should skip over VMMCALL here.
-
-> +	}
-> +
-> +	GUEST_DONE();
-> +}
-
-[..]
-
-> +int main(int argc, char *argv[])
-> +{
-> +	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SVM));
-> +	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_NPT));
-> +	TEST_REQUIRE(kvm_has_cap(KVM_CAP_NESTED_STATE));
-> +	TEST_REQUIRE(kvm_check_cap(KVM_CAP_DISABLE_QUIRKS2) &
-> +		     KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT);
-> +
-> +	NESTED_PAT_TEST("Invalid gPAT", l1_guest_code_invalid_gpat,
-> +			NPT_ENABLED, NO_SAVE_RESTORE, 1);
-> +
-> +	NESTED_PAT_TEST("Nested NPT enabled", l1_guest_code,
-> +			NPT_DISABLED, NO_SAVE_RESTORE, 1);
-> +
-> +	NESTED_PAT_TEST("Nested NPT enabled", l1_guest_code,
-> +			NPT_ENABLED, NO_SAVE_RESTORE, 1);
-> +
-> +	NESTED_PAT_TEST("Save/Restore", l1_guest_code,
-> +			NPT_ENABLED, DO_SAVE_RESTORE, 1);
-> +
-> +	NESTED_PAT_TEST("Multile VM-Entries", l1_guest_code,
-> +			NPT_ENABLED, NO_SAVE_RESTORE, 1);
-
-..and I didn't notice any of the above because I am passing in
-nr_iterations=1 here lol.
-
-This diff fixes it, let me know if you want a v3:
-
-diff --git a/tools/testing/selftests/kvm/x86/svm_nested_pat_test.c b/tools/testing/selftests/kvm/x86/svm_nested_pat_test.c
-index b9301b3e3f4bd..d9d78db847d61 100644
---- a/tools/testing/selftests/kvm/x86/svm_nested_pat_test.c
-+++ b/tools/testing/selftests/kvm/x86/svm_nested_pat_test.c
-@@ -38,15 +38,16 @@ int nr_iterations;
-
- static void l2_guest_code(void)
- {
--       u64 expected_initial_pat = npt_enabled ? L2_VMCB12_PAT : L1_PAT_VALUE;
-+       u64 expected_pat = npt_enabled ? L2_VMCB12_PAT : L1_PAT_VALUE;
-        int i;
-
-        for (i = 0; i < nr_iterations; i++) {
--               GUEST_ASSERT_EQ(rdmsr(MSR_IA32_CR_PAT), expected_initial_pat);
-+               GUEST_ASSERT_EQ(rdmsr(MSR_IA32_CR_PAT), expected_pat);
-                GUEST_SYNC(1);
--               GUEST_ASSERT_EQ(rdmsr(MSR_IA32_CR_PAT), expected_initial_pat);
-+               GUEST_ASSERT_EQ(rdmsr(MSR_IA32_CR_PAT), expected_pat);
-
-                wrmsr(MSR_IA32_CR_PAT, L2_PAT_MODIFIED);
-+               expected_pat = L2_PAT_MODIFIED;
-
-                GUEST_ASSERT_EQ(rdmsr(MSR_IA32_CR_PAT), L2_PAT_MODIFIED);
-                GUEST_SYNC(2);
-@@ -85,6 +86,7 @@ static void l1_guest_code(struct svm_test_data *svm)
-                } else {
-                        GUEST_ASSERT_EQ(rdmsr(MSR_IA32_CR_PAT), L2_PAT_MODIFIED);
-                }
-+               vmcb->save.rip += 3; /* VMMCALL */
-        }
-
-        GUEST_DONE();
+I will send a new version tomorrow.
