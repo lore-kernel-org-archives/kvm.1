@@ -1,90 +1,80 @@
-Received: from fout-b3-smtp.messagingengine.com (fout-b3-smtp.messagingengine.com [202.12.124.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93F1C3CB91E
-	for <kvm@vger.kernel.org>; Thu, 21 May 2026 17:04:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C4AA3D9DA7
+	for <kvm@vger.kernel.org>; Thu, 21 May 2026 17:13:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779383097; cv=none; b=XpnMs0XY34/ns8eJcJeytHzjlPXD5g6F8bgPL43JO8bTkVTj4J/0YRORJHPjv8NkqACvzFPbXvMiQHyNyZDaXnA9twM4WL0P46QhPjSPTp4LPMIrMd7vdgHRffWjtzSOuQYEDldhAMt2NCA4+JBIdg3KKlbc+GwylFB2sMjewoE=
+	t=1779383634; cv=none; b=CpCzeZL+HlCS5js+c1h6/m9+QnbU4YmfHKTqmPvq92xLZL6Nzk8rcvDS207sJMDRuwSh4zTcIlxWxWb1PjZSaqyzhJtwiRaZ6tb3U3qaKOcBlwxEmpjZHiAA6lA9P4f4Xf/XhELFKt8yBWoR6DfKcS9WnZJDpKHFsIRGiGIRD5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779383097; c=relaxed/simple;
-	bh=Fp9FwB+mawhVq1TTdlwmgb6IroyHr/KVD/XE0PdV1N8=;
+	s=arc-20240116; t=1779383634; c=relaxed/simple;
+	bh=X9MG1kwNUf8O8KAK/Sm8SuGe/dZdaTwPaR1MzEF3AHg=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SicB8/HItnwN/XNegMBRh8fFAjes6zWXGV/Bl5b1QfRHzGpFz5WBN2sgFODevZ9+/YHrP+Y0uBQbg9boYfj4+F19VCt++JBtV5/72qexfSO4AgZ3HXZF4hQpuxLK76mAAPsWEBADeJl43+aXvsE1wcsmKcVwqUupcUyrO7AKbKM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=rvSC0kaz; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=QDA0jxnw; arc=none smtp.client-ip=202.12.124.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	 MIME-Version:Content-Type; b=rfm+5uXyxTs5kxwB67VZogrKqLk1W+7sTpP2zkbDFDtL23283x605ma0x6vaESpf1tsm1n8nlWGoxFqZGB1NfFT70g1XTIk31rKdcL9I1fCWaPGlm9sg+4f8bfnUojIxhR2Vrv4QIKcr0awYnrmuii7vUldN/igJKBTFW5Lo/V0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nzBH2mki; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="rvSC0kaz";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="QDA0jxnw"
-Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
-	by mailfout.stl.internal (Postfix) with ESMTP id 8042E1D000C8;
-	Thu, 21 May 2026 13:04:51 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-11.internal (MEProxy); Thu, 21 May 2026 13:04:51 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1779383091;
-	 x=1779469491; bh=6OtnIFGwl3CB9NCZB/sWiqdi/XZ79bAlkkTY8RrrXJ0=; b=
-	rvSC0kazkO0o9tPuc3D+E6vh/39O+a2D908FmN+2K2GOa6YDX3rUMHBIza8HTWpg
-	D12JjwIgX8SRdgX173YoVEqNbZZtA8oOAOs85fEVYkUc21X28oTx5WLClWKHAGMg
-	G2HjhDIKOlk6a5KKkbMxc2MuqC1zBk/NudbPjqQJ9h6illzyUGAR3/v8zT4tA/2q
-	S3lYegBxnGT0hlbD6HkMg1ORLVsA+l6VdIXCLf9PbHNnpml+dMRBtEGNlYogvD0P
-	OWRnznntbToO4K965COSsf+bv1FhmgANd1CtjhxPg+2OxOU48CclFZXLgrs/RXE+
-	8yrf4e0ow+FpfqGcoXgd2g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779383091; x=
-	1779469491; bh=6OtnIFGwl3CB9NCZB/sWiqdi/XZ79bAlkkTY8RrrXJ0=; b=Q
-	DA0jxnwZBskOLS+Yis8I0cY52xuo0WFTZ99lvlsQf8/Aij8+NuYaphajmVJOG4HQ
-	c/oQ4dBH1meEB3wqA+2STyRqSYCWMrr3NQt4u3UUIcpwkMwDG+W398XTDyfVSK7m
-	z61Aw7YQ4Xf32aSF7Q1axv8xpXCL9EWQk+OVMauKh217qTdY4qVpaoR0kQ38rg6N
-	o/X5W8zw+Em/hyFDJnP/jGwUQAeNS5bR0uEkX1mgD9qHTBiGaHjh7APVw/23veN7
-	rnJldsDRIr5Mmnr8yLBnNxyo+evN7il7egLwj1fUZ0wpyl6pBRJrOrDeU9g/SbI5
-	72W/52pGER/2ysoXfzSTQ==
-X-ME-Sender: <xms:MjsPat0youRIJiTCTn_5KOj_cV7mcmKLtK39wcjZ-CQSP51QIm7j9g>
-    <xme:MjsPallgHyLYfZXepgocwVoWo1fCf6ptuf5JqM1IT9c1u9n8YsKHt71i0tzr9_Ti2
-    2Fcs1fC5CnhnsaYCfECGArWt6IvKIbnBXr6lBjdafNgBP_fTqpe>
-X-ME-Received: <xmr:MjsPat-4De1WL8c0fvGjpw12mGeY7oiyYS9jISl142Q47KSTVIYkziN0K64>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddugeektdeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
-    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
-    htthgvrhhnpeffudetuddtudekhfevjedvkeeufefgtdffgffhieefvddutdeulefggfel
-    fefgleenucffohhmrghinhepghhithhhuhgsrdgtohhmpdhurhhluggvfhgvnhhsvgdrtg
-    homhdptddurdhorhhgpdhkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedt
-    necurfgrrhgrmhepmhgrihhlfhhrohhmpegrlhgvgiesshhhrgiisghothdrohhrghdpnh
-    gspghrtghpthhtohephedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepmhgrthht
-    vghvsehmvghtrgdrtghomhdprhgtphhtthhopehovgdqkhgsuhhilhguqdgrlhhlsehlih
-    hsthhsrdhlihhnuhigrdguvghvpdhrtghpthhtohepkhhvmhesvhhgvghrrdhkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopehlkhhpsehinhhtvghlrdgtohhmpdhrtghpthhtoheprg
-    hlvgigsehshhgriigsohhtrdhorhhg
-X-ME-Proxy: <xmx:MjsPaqpqgBb_3AxBJH_NqoZjeFk2XXyj7pktKHUUic0-Xp90zXLdZg>
-    <xmx:MjsPamlucwt7wIy9hyRwEROi-Hjfw1jy3q4RMjoGG2TZbesPhg_7nA>
-    <xmx:MjsPahialWMoO0V2X9oHkkVigzMK1McN5B-xFwQ-xFGPYSB2zdoLtw>
-    <xmx:MjsPaueGB_aIQfXfN-Eg_o_ya-EXk5izI-VKLrOFSjvptCwULN38rQ>
-    <xmx:MzsPalD3FIRfEiUtJzGd7mb5gCl6BkVPR7Qt-awW3oSjpMqmzxkdhMg->
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 21 May 2026 13:04:50 -0400 (EDT)
-Date: Thu, 21 May 2026 11:04:48 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Matt Evans <mattev@meta.com>
-Cc: oe-kbuild-all@lists.linux.dev, kvm@vger.kernel.org, kernel test robot
- <lkp@intel.com>, alex@shazbot.org
-Subject: Re: [awilliam-vfio:next 11/13]
- include/linux/vfio_pci_core.h:247:31: sparse: sparse: incorrect type in
- return expression (different address spaces)
-Message-ID: <20260521110448.4df82912@shazbot.org>
-In-Reply-To: <ef311ad6-3563-4251-85d0-0f8f03aa55a9@meta.com>
-References: <202605211601.U1OvmuqY-lkp@intel.com>
-	<ef311ad6-3563-4251-85d0-0f8f03aa55a9@meta.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nzBH2mki"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-488a8ca4aadso62715275e9.3
+        for <kvm@vger.kernel.org>; Thu, 21 May 2026 10:13:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779383631; x=1779988431; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zIuChPU1JlP7AlPyeu7nnCYpBOhiwGUpJRXAIqjmuvM=;
+        b=nzBH2mkicctXAN/292q5htBM8uJbtgNpVclJmeiZKdI2qZBJzQP7W0t8OkfXqX86a+
+         U9FNJkbdGMFuH1WuT5mjjd+aXL57+dA3HUPOPJrdtueEf8H/PeHL0dfOiBJdv5ZdbUEc
+         DEEd6F5mW+px4Cqdq3Z4sWqqWrHweRIdrrYt8k6W735dfAkvHALNt/obFyNQnGDjTwam
+         DKE5qj2VWkcmqngZnzjza3NOZoIjJHPK5GDe/CQnpCNJJJ9h6JdmWI67EqhKVibqNKPT
+         Z0100IzuYtrGo5eGLQMg7cgIc46ZruFAZAvLfMipIL0nLAsXeq8fTQRgHMTfwqNE6MMu
+         bkSQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779383631; x=1779988431;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=zIuChPU1JlP7AlPyeu7nnCYpBOhiwGUpJRXAIqjmuvM=;
+        b=WdpwMvAMiWpDnkqNKqLwXxaVEgMjvUQ2LDQkkq+g0LVL7KI6oI7JqE0KDqKqChv7oR
+         tQd0IlrhcnmbdKT7qXY/MHKXXQAhubcLLBlqd4gYXzaIZ9VoyTQFDuOZUgjTIi5dSn1O
+         nVGaX11GXi5Si1wwPTaImjjliiKRblBq7QIV7ub8iLlvmgLd4EELYx/7TdIEaTH5sBH2
+         z8ZKwd9DFyowExXM9OJAD2yAYgujreYNhfhrO/j4cf7QJwWvTptlGPA9nvWB+4utCqKd
+         JQxT6AenLko5JeDjiTKWscSc25RyKRX/khRVSlE+hLf2FtkaM54eal7gk/xF8XpIt5eM
+         hGPQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/GI0PgikHFCr8MWgc5CnoEIIvZNOnDlCFSIyCwjsAo8oTaWU3H+WTe5QPVdVny0t1dhpo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywu9icZFB/GQDT9elKHnxj+3UwdIh2MoYkLVK482kTzgp3e+Zhn
+	3KAD6fSHxx/lNW9f9mfr856EBrmPnZBpQfUQwvibYbe0sPPpSoG4PFyD
+X-Gm-Gg: Acq92OGUGc24SiF3Q/2E24iZ2XkEFe4VsxUYN3peskSuYk2E8+GYyWLSy/8NQGph2gx
+	BxVdEs2T0qjAHOMwQO6++KQbBONhB7fJoXWjA6W06tlDYApNSrcVT7EpUmXhMTjzyACNPgb/kZX
+	ZbiAR4iUr1LW++2lEakZDMYnu6Z6NPNYUOMaEJjFOJLMshNguygmvkvLSYUQCUzCBsVn15sbNJn
+	pJXHkI3UOv/WqMdGW2G3mdsVqxebpLzjXNbHqqM/0CkZhoQA66PRRzaL4wTSj53nUkj51DiJj7a
+	a43K9MiiYev8C0ADYJiw0oxxxXqGS8E9PuMsfo+c9c54ghSJu5ARagjkOVvKCmoEZxSWF74JImE
+	mUKTFsHbd5B0kFNp5hd6ClGcvirAKn6FiFapASD+W/7M51+FroHmimGpajwcKfXkWrCiKEbRFVe
+	o21AutVMQVOIqTMag0KVJBwENyd864qyf/PObTIM78FinCzUYmqXDlOPIXGduIq6mI
+X-Received: by 2002:a05:600c:828c:b0:485:4eaf:eb53 with SMTP id 5b1f17b1804b1-4903606b5b2mr58827015e9.19.1779383630691;
+        Thu, 21 May 2026 10:13:50 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eaa7cf23bsm4086708f8f.5.2026.05.21.10.13.50
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 21 May 2026 10:13:50 -0700 (PDT)
+Date: Thu, 21 May 2026 18:13:48 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: netdev@vger.kernel.org, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Simon
+ Horman <horms@kernel.org>, virtualization@lists.linux.dev,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Jakub Kicinski
+ <kuba@kernel.org>, Eugenio =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>,
+ Paolo Abeni <pabeni@redhat.com>, "Michael S. Tsirkin" <mst@redhat.com>,
+ "David S. Miller" <davem@davemloft.net>, Jason Wang <jasowang@redhat.com>,
+ Stefan Hajnoczi <stefanha@redhat.com>, Eric Dumazet <edumazet@google.com>,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net] vsock/virtio: fix skb overhead overflow on 32-bit
+ builds
+Message-ID: <20260521181348.3d61858e@pumpkin>
+In-Reply-To: <20260521124732.125771-1-sgarzare@redhat.com>
+References: <20260521124732.125771-1-sgarzare@redhat.com>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -94,74 +84,47 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Thu, 21 May 2026 17:59:03 +0100
-Matt Evans <mattev@meta.com> wrote:
+On Thu, 21 May 2026 14:47:32 +0200
+Stefano Garzarella <sgarzare@redhat.com> wrote:
 
-> Hi Alex,
+> From: Stefano Garzarella <sgarzare@redhat.com>
 > 
-> On 21/05/2026 09:07, kernel test robot wrote:
-> > 
-> > tree:   https://github.com/awilliam/linux-vfio.git  next
-> > head:   b9285405c5f6144f4444f97bf3048d865e11cc1d
-> > commit: 859dc0f6253b0d65fd4d79e29aa29b3d939c51a9 [11/13] vfio/pci: Replace vfio_pci_core_setup_barmap() with vfio_pci_core_get_iomap()
-> > config: alpha-randconfig-r132-20260521 (https://urldefense.com/v3/__https://download.01.org/0day-ci/archive/20260521/202605211601.U1OvmuqY-lkp@intel.com/config__;!!Bt8RZUm9aw!-MeA4YCZqVD1LgfRaoW0lgRz_bEdlvVRk8RWaDsMsFVUXAfMxQ3YFOteZOcWJ88tWRlbPA$ )
-> > compiler: alpha-linux-gcc (GCC) 8.5.0
-> > sparse: v0.6.5-rc1
-> > reproduce (this is a W=1 build): (https://urldefense.com/v3/__https://download.01.org/0day-ci/archive/20260521/202605211601.U1OvmuqY-lkp@intel.com/reproduce__;!!Bt8RZUm9aw!-MeA4YCZqVD1LgfRaoW0lgRz_bEdlvVRk8RWaDsMsFVUXAfMxQ3YFOteZOcWJ8-nGduJOw$ )
-> > 
-> > If you fix the issue in a separate patch/commit (i.e. not just a new version of
-> > the same patch/commit), kindly add following tags
-> > | Reported-by: kernel test robot <lkp@intel.com>
-> > | Closes: https://lore.kernel.org/oe-kbuild-all/202605211601.U1OvmuqY-lkp@intel.com/
-> > 
-> > sparse warnings: (new ones prefixed by >>)
-> >     drivers/vfio/pci/vfio_pci_core.c:274:33: sparse: sparse: restricted pci_power_t degrades to integer
-> >     drivers/vfio/pci/vfio_pci_core.c:274:41: sparse: sparse: restricted pci_power_t degrades to integer
-> >     drivers/vfio/pci/vfio_pci_core.c:278:25: sparse: sparse: restricted pci_power_t degrades to integer
-> >     drivers/vfio/pci/vfio_pci_core.c:278:43: sparse: sparse: restricted pci_power_t degrades to integer
-> >     drivers/vfio/pci/vfio_pci_core.c:278:56: sparse: sparse: restricted pci_power_t degrades to integer
-> >     drivers/vfio/pci/vfio_pci_core.c:278:65: sparse: sparse: restricted pci_power_t degrades to integer
-> >     drivers/vfio/pci/vfio_pci_core.c:283:25: sparse: sparse: restricted pci_power_t degrades to integer
-> >     drivers/vfio/pci/vfio_pci_core.c:283:44: sparse: sparse: restricted pci_power_t degrades to integer
-> >     drivers/vfio/pci/vfio_pci_core.c:283:57: sparse: sparse: restricted pci_power_t degrades to integer
-> >     drivers/vfio/pci/vfio_pci_core.c:283:66: sparse: sparse: restricted pci_power_t degrades to integer
-> >     drivers/vfio/pci/vfio_pci_core.c:291:39: sparse: sparse: restricted pci_power_t degrades to integer
-> >     drivers/vfio/pci/vfio_pci_core.c:291:58: sparse: sparse: restricted pci_power_t degrades to integer
-> >     drivers/vfio/pci/vfio_pci_core.c:1736:9: sparse: sparse: cast from restricted vm_fault_t
-> >     drivers/vfio/pci/vfio_pci_core.c: note: in included file (through drivers/vfio/pci/vfio_pci_priv.h):  
-> >>> include/linux/vfio_pci_core.h:247:31: sparse: sparse: incorrect type in return expression (different address spaces) @@     expected void [noderef] __iomem * @@     got void * @@  
-> >     include/linux/vfio_pci_core.h:247:31: sparse:     expected void [noderef] __iomem *
-> >     include/linux/vfio_pci_core.h:247:31: sparse:     got void *
-> >     include/linux/vfio_pci_core.h:250:31: sparse: sparse: incorrect type in return expression (different address spaces) @@     expected void [noderef] __iomem * @@     got void * @@
-> >     include/linux/vfio_pci_core.h:250:31: sparse:     expected void [noderef] __iomem *
-> >     include/linux/vfio_pci_core.h:250:31: sparse:     got void *
-> > 
-> > vim +247 include/linux/vfio_pci_core.h
-> > 
-> >     235	
-> >     236	/*
-> >     237	 * Returns a BAR's iomap base or an ERR_PTR() if, for example, the
-> >     238	 * BAR isn't valid, its resource wasn't acquired, or its iomap
-> >     239	 * failed.  This shall only be used after vfio_pci_core_enable()
-> >     240	 * has set up the BAR maps and before vfio_pci_core_disable()
-> >     241	 * tears them down.
-> >     242	 */
-> >     243	static inline void __iomem __must_check *
-> >     244	vfio_pci_core_get_iomap(struct vfio_pci_core_device *vdev, unsigned int bar)
-> >     245	{
-> >     246		if (WARN_ON_ONCE(bar >= PCI_STD_NUM_BARS))  
-> >   > 247			return ERR_PTR(-EINVAL);  
-> >     248	
-> >     249		if (WARN_ON_ONCE(!vdev->barmap[bar]))
-> >     250			return ERR_PTR(-ENODEV);  
+> On 32-bit architectures, both skb_queue_len() and SKB_TRUESIZE(0) evaluate
+> to 32-bit values. The multiplication can overflow before being assigned to
+> the u64 skb_overhead variable, making the skb overhead check ineffective.
 > 
-> :(  Yep, these need to be IOMEM_ERR_PTR() also.  What's easiest for you 
-> given this is in your `next`?  Should I repost a new version of the 
-> whole series (even though the 1/3, 2/3 went in via the 7.1 RC?), or a 
-> one-off repost of this patch, or..?  Sorry for the silly Q, IDK what's 
-> best practice here.
+> Cast skb_queue_len() to u64 so the multiplication is always performed in
+> 64-bit arithmetic.
+> 
+> This issue was reported by Sashiko while reviewing another patch.
+> 
+> Fixes: 059b7dbd20a6 ("vsock/virtio: fix potential unbounded skb queue")
+> Closes: https://sashiko.dev/#/patchset/20260518090656.134588-1-sgarzare%40redhat.com
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+> ---
+>  net/vmw_vsock/virtio_transport_common.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+> index df3b418e0392..71198bf23fc4 100644
+> --- a/net/vmw_vsock/virtio_transport_common.c
+> +++ b/net/vmw_vsock/virtio_transport_common.c
+> @@ -417,7 +417,7 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+>  static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
+>  					u32 len)
+>  {
+> -	u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
+> +	u64 skb_overhead = ((u64)skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
 
-No worries, I should have caught it too.  Just send a follow-up patch
-against vfio next or linux-next.  Thanks,
+I was thinking this should use mul_u32_u32().
+But that is all moot.
+'skb_overhead' is a memory size in bytes, 'unsigned long' it more than big enough.
+No need for 64bit maths on 32bit.
 
-Alex
+-- David
+
+>  
+>  	/* Allow at most buf_alloc * 2 total budget (payload + overhead),
+>  	 * similar to how SO_RCVBUF is doubled to reserve space for sk_buff
+
