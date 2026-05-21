@@ -1,55 +1,74 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D0040584F;
-	Thu, 21 May 2026 19:38:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A94E397321
+	for <kvm@vger.kernel.org>; Thu, 21 May 2026 19:39:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779392308; cv=none; b=KThNt7E9FBPfwd3NTxxsDMOubStqfqPFddSuQAXvkU4BX4B4inJ0BUtvDvP0hxLgTDfin2eNDyTs285tLoLLX1ErMm+2L3q3SIXH5VpJs4hzWID4WNwPHwTOZ9ciDKjdmhSeaSygLevOHTUdSDGxx37G3US3tl24JIUY5msm4x0=
+	t=1779392368; cv=none; b=lsrJv2t6i2PuiIrr1JCQHG7X7SGoc3s3YiBHmMwLz0SRDvupC0UHzHTO3iwjSgOeR4hk22mkg4FEiPYFCCgXswsmPFqpHqw42bBWnxMkErAslzJ3XtJqRsQdlBUZ3yf61J+w+5e4hC8HbcCZQOT0xxAKrmkxnPESLj1LRCaassM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779392308; c=relaxed/simple;
-	bh=jkVaSirY3zxz720Si45komOa2zS01MxlDGVDcJAnIZE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ANLw9yDKWIyQ8ulWkpsRjKjzsMEJcuIMzKgM02Uy2oVVAAXUwrus3heZ8Jnd5NdXQc0hG8GhpHNYCZhQNHWbKpTc8EcugE5NelJrEH4xG93TXp08nShHq+feyv1mOceu26OEtskOA8v1gkpRiO1KF35UgGQQt+zc+yInwGVltJg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iBpbC8iP; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779392368; c=relaxed/simple;
+	bh=nMKBG3rJEEmkklBedmybAaMiMGB0p2z0B38+ldGC88U=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=MpGbqWwqc0WvxgighYoPGjuUJzPmRrYNHHBqsjXN316861RBK6lAciLC3BykuMxk0QIEqP9HFj4GDaawokaAWlhzObQGfBNeljplgFyatymNBQkOQDMUz/ufP4ZIWOKPOZd2Eui1zee6TzSbwXVEmV4gpi6yEra6eh77sDDfUyg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sxxqFeSt; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iBpbC8iP"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917561F000E9;
-	Thu, 21 May 2026 19:38:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779392305;
-	bh=2xcW2kY0GGl0grlBDzM1Fb05nBp+EuJgclwihYB7zhM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=iBpbC8iPmcQbE42F/3pyQt9S2GUwkH1fIuCuqjq6Kp7jMP6IrhGJ7s8CGF2OjXT3H
-	 NlAz5C4i7Yp7gitdoP9x+ll7KABYJpZSf9Bbn4vJPM6msdhYwP1IcuzVovVBTCuj64
-	 a2HIann4dBM+wPGd75aFCisgJ/y6evw9T/ijj+Rhsjz63PvEG/t20qyWD3tTi4PyxV
-	 p50q98FSB1gP45Xblc92+LfxehromNhsW1s+P/VwH5QSvSdhRGAb+zu2oew3xFyNhq
-	 61+yctziheeXrB/Dx+p+L1/fyYxkt1U63w0bbDpt3JV1GTr2oySAQEMUJBhUFOEs0b
-	 QZaVlSkXFriXQ==
-Date: Thu, 21 May 2026 19:38:24 +0000
-From: Yosry Ahmed <yosry@kernel.org>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: "Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, 
-	kvm <kvm@vger.kernel.org>, Jon Kohler <jon@nutanix.com>, 
-	"Tosatti, Marcelo" <mtosatti@redhat.com>
-Subject: Re: [PATCH 17/22] KVM: x86/mmu: pull struct kvm_pagewalk out of
- struct kvm_mmu
-Message-ID: <ag9coP1aXYi7Xdfh@google.com>
-References: <20260511150648.685374-1-pbonzini@redhat.com>
- <20260511150648.685374-18-pbonzini@redhat.com>
- <CAO9r8zMeg1ta0hL4panuB3D-10PmkwHL+9XKv_0NVjcpq0oJMg@mail.gmail.com>
- <CABgObfZ+TXrw7UpMt2DQUYb6Gwr-+vHy8E3iNbP8WB2z=+1ZTw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sxxqFeSt"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b9b8137828so66442145ad.0
+        for <kvm@vger.kernel.org>; Thu, 21 May 2026 12:39:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779392366; x=1779997166; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=dsmzNvta+Ewkoo3CGEB6qYEmj2PCAz/7ILR9KeZC9gU=;
+        b=sxxqFeSts+u4+wLIJ6q0CG7jpPZXKJq5VN1rMkqHFiuSJf4Dmf44tPdK0CnKlcbP1S
+         QFIfkOKfJw98M/Z89MW4u4BeQhGknsdcGcvktQPJmhTFQaC3KuwUkcOpyLF1CmSgR7h3
+         pO3LC/QbXApp1qFojNGEhVa8UoCBrTAuNBgEYK3bVzoMAWbtTl3DBBBYfWI3GCknGQXG
+         LSbPvNvBaILuO5xTrTfDyKKksc6+AE95MD92kRGAaZ+MossBH7YzNWcZRiMVrAXdVJjd
+         yuz5Ou4+4xw7rv+vSq7q2PSvFzQ/N6i7MRPrTCNshdTS/Qlp0b5ih6uzYXd3dRB3Gq5m
+         VktA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779392366; x=1779997166;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dsmzNvta+Ewkoo3CGEB6qYEmj2PCAz/7ILR9KeZC9gU=;
+        b=mVmZ4lAms3evQCj8Up4P7zNb+V7/LtAeUkELpCG72q7wmAIywskAkO4b4LZoTZRzkE
+         9E/OkTxn0GoibcSGjoXG+y2szJKvUSaaLHtlNzmey9ajsUlxM6ZEdWS8KrD90iEW30cU
+         yE1wjRDnirn/am9PBezwrlpw05i4KGK8kuOGxaU4/BQLad5wi6EqkejM4no8m3etbMzX
+         VLWCH/6Bvciw1nY7oyWUnXBGuuFS40aGLOTHfCE3ab8LHTOZMBU5cXcFcDbymkPAdL4i
+         8ZmJ1I4jUni6I0FDUnaaTkId9WmRntz0dSUv8zSLpdsDW+NTJln/bNcRPw7Gv/fJKwdg
+         xmBg==
+X-Forwarded-Encrypted: i=1; AFNElJ+si458yeZ6U/BFMi7CGnC0EEwMONzYdjg3WCwfXMln1dTVa1G8VksFZ87tF7dvUH5nD1A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSVuDgKnHb6xktB+EZNjiTB7T9ACM+GgSqYH0tVf6FFrxdp2Xc
+	3emx23WksRXrPP0D5auxWZPQW0MDcICJTAr/JMQ/Ep6cE/NOk2jqY+a1gQIORi9A7fA549ECrcb
+	5xPTCeQ==
+X-Received: from plzt11.prod.google.com ([2002:a17:902:bc4b:b0:2bd:9574:2958])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e541:b0:2bd:e452:a484
+ with SMTP id d9443c01a7336-2beb06fad0dmr2885405ad.33.1779392366325; Thu, 21
+ May 2026 12:39:26 -0700 (PDT)
+Date: Thu, 21 May 2026 12:39:25 -0700
+In-Reply-To: <CABgObfZ+TXrw7UpMt2DQUYb6Gwr-+vHy8E3iNbP8WB2z=+1ZTw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CABgObfZ+TXrw7UpMt2DQUYb6Gwr-+vHy8E3iNbP8WB2z=+1ZTw@mail.gmail.com>
+Mime-Version: 1.0
+References: <20260511150648.685374-1-pbonzini@redhat.com> <20260511150648.685374-18-pbonzini@redhat.com>
+ <CAO9r8zMeg1ta0hL4panuB3D-10PmkwHL+9XKv_0NVjcpq0oJMg@mail.gmail.com> <CABgObfZ+TXrw7UpMt2DQUYb6Gwr-+vHy8E3iNbP8WB2z=+1ZTw@mail.gmail.com>
+Message-ID: <ag9fbbWzOO0r777I@google.com>
+Subject: Re: [PATCH 17/22] KVM: x86/mmu: pull struct kvm_pagewalk out of
+ struct kvm_mmu
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: Yosry Ahmed <yosry@kernel.org>, 
+	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, kvm <kvm@vger.kernel.org>, 
+	Jon Kohler <jon@nutanix.com>, Marcelo Tosatti <mtosatti@redhat.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Tue, May 19, 2026 at 12:25:29PM +0200, Paolo Bonzini wrote:
+On Tue, May 19, 2026, Paolo Bonzini wrote:
 > Il mer 13 mag 2026, 23:36 Yosry Ahmed <yosry@kernel.org> ha scritto:
 > >
 > > However, I can't immediately tell what vcpu->arch.cpu_walk is doing
@@ -72,31 +91,10 @@ On Tue, May 19, 2026 at 12:25:29PM +0200, Paolo Bonzini wrote:
 > confusion comes more if you look at the walkers from the POV of struct
 > kvm_mmu. Which leads to the other half...
 
-I think the source of my confusion is that when TDP is enabled
-'root_mmu' is used for tracking the TDP for L1 (GPA->HPA), as well as
-walking L1's own page tables (GVA->GPA).
+I like gva_walk and ngpa_walk, a lot.  A lot, a lot.  I also find cpu_walk to be
+ambiguous and confusing.  It's not like the CPU walks GVA=>GPA but something else
+walks GPA=>HPA.
 
-I guess the main point of the series (in the context of root_mmu) is to
-stop doing that and separate the former (building GPA->HPA) from the
-latter (GVA->GPA).
-
-So after this series:
-- root_mmu only tracks building TDP for L1, or shadowing L1's page
-  tables without TDP.
-- guest_mmu is only used to shadow L1's TDP for L2.
-- cpu_walk is used to walk L1's or L2's CR3-based page tables (i.e.
-  replaces part of old root_mmu and nested_mmu).
-- tdp_walk is used to walk L1's TDPs for L2 (i.e. replaces part of
-  old guest_mmu). I guess tdp_walk is always tied to guest_mmu?
-
-Is my understanding correct? I feel like I missed something.
-
-That being said, I still don't like cpu_walk tbh. Maybe cr3_walk as
-suggested by Kishen, or more explicitly gva_walk or sth. The CPU walks
-both CR3-based page tables as well as TDP page tables, so I am not sure
-why use 'cpu' here?
-
-> 
 > > I also think root_mmu and guest_mmu could still use some improvement
 > > but that's probably outside the scope of this series. These are
 > > essentially L1 MMU and L2 MMU, right? Maybe just mmu and nested_mmu
@@ -112,23 +110,18 @@ why use 'cpu' here?
 > and ngpa_mmu) would not work well.
 > 
 > I suppose guest_mmu could be ngpa_mmu or shadow_tdp_mmu, but another
-
-I was going to suggest shadow_tdp_mmu as I was reading this, I like that
-name. Still can't think of a good name for root_mmu.
-
-I thought about a union of two names, shadow_mmu and tdp_mmu, but I
-suspect most code paths would apply equally to both?
-
 > possibility/refactoring would be to adjust the code and call the two
 > MMUs direct_mmu and shadow_mmu. I haven't looked into what this means
 > for the code but it would definitely make for the clearest naming.
 
-IIUC direct_mmu would only be used for L1 TDP, and shadow_mmu would for
-either shadowing L1 page tables (with TDP=0) or shadowing L1's TDP for
-L2?
+I'm not a fan of "direct".  Even if we deal with the CR0.PG=0 case, there's still
+the direct shadow pages wrinkle.
 
-The naming sounds nice, but as you say below, I don't know how that
-would work code-wise.
+I do like the idea of reworking the code so that there's an MMU for non-nested TDP
+and a shadow MMU for everything else.  Given that the only thing standing in our
+way of having tdp_mmu and shadow_mmu is the existence of TDP support in the shadow
+MMU, what if we finally drop that?  Then we can have tdp_mmu, which is literally
+the TDP MMU, and shadow_mmu.
 
 > Having direct_mmu->w be NULL would be nice, so it seems promising but
 > not something I was going to do soon (the *real* reason to submit this
@@ -141,5 +134,8 @@ would work code-wise.
 > 
 > tl;dr: naming is hard so I tried to change as little as possible in
 > this respect...
-
-Makes sense. Thanks for bearing with me.
+> 
+> Paolo
+> 
+> >
+> 
