@@ -1,308 +1,143 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 459EC223323;
-	Thu, 21 May 2026 17:59:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0EE3905F5
+	for <kvm@vger.kernel.org>; Thu, 21 May 2026 18:42:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779386399; cv=none; b=Y4I/9zcSWFQUN44+ftx69ion/gOvXIfwjy8xnBihJ+pdzPm7Q0SISDzVw5+u2wNQdb2ZDo1AZEqvlTl57LHnI8QESXSPaFCoV2nC7sDTT+/LswYuMKs38B461R9ajQIoudfI7WSczumBQ1NdbMuIWgXBP9drKUqmRBWKIstUNpI=
+	t=1779388945; cv=none; b=vCrLSOUA4DfkISZHBdQ5WHB4v7tJcHJoF0UX9EQQr4dRthObWI08dSZHU9lLHWfFdgVVr+6K+KLlnrjA6rZh092acRCRNy2fz0bEePQeYmBoOhxFGg2/msY2nwrIkAFsRtZEykVyMdn2kvZvikLVEFoJe3vrPAChYNz08mpoDp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779386399; c=relaxed/simple;
-	bh=i9hroFvTWPqkdNEB8k+tU0LkwSbAkDu374ImdJ3kQ9A=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=BgoSkj4VfMop0/RZyCs89hbyd0baxNDUD9Xi3CHkhDb1GyumxcahGa14rB6lmLmnA8qNStdJmwxOijRYYxL5fn01VEhFJT3Np3jLlbhoKzYW3JSkR39EmkOZ0cnFh3gicSWL2aLew0T1ZosCq5P88ca9Q3bK5UhH7DSu6GiqiXc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jKdBndz0; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779388945; c=relaxed/simple;
+	bh=H5kTFXO8HYWZJ9EtsC69gWCFS44YDsRQS0Og9hiXVFc=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=tDpgoFFOPjMI2vCac6YHBX+m2dpqXjPzAj43bFmoxDMaB/zIVVAdFFyRt0NE9Z7Axn0Lo1zz+WHz91QlIL5DbTJpoG6hwJPUp9zzC4fGfcuf3D3tQp4o44AxMGTcc1TYqDW6V/auNytOFpwpEDsOH3rJJffM/IS9fnMNGXMkMvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cKHdyv5Q; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jKdBndz0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17E021F00A3B;
-	Thu, 21 May 2026 17:59:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779386396;
-	bh=vxNkT5bmhErSaBfiVMcn+pLwQL9vS6PSTSmEOJPT7Z0=;
-	h=From:To:Cc:Subject:Date;
-	b=jKdBndz0los9Ee75T5UEiotp8urfL+k87bEn6DKQ2AIS+OxMnDO2p3gTFk5DP3SYN
-	 qNPERMyxcV89Hnr6i3I2Jp5AmpClLqVyRSs0tCkjnGHpo9fbEN5aNDRumzbgF24gzL
-	 etn3mM1uxQovohzaO7qfoRUsTatT1adT3Dof4AgrxU4+jGud4LscuOTflsVKMAbQwS
-	 TFuxvxZ/MxJxooxk5+q+8TqdVJtNBOsRwxLxS4w1VPhh01EJCZFwvKyy4puGXgPSwQ
-	 5v/INX0Nl9qZuPLvDvBdoXa2/9PzBLRn7cU44/3HQEpsgWo9WtupDM2X807y7LY3K8
-	 kugxfmivhjmWw==
-From: Yosry Ahmed <yosry@kernel.org>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	Jim Mattson <jmattson@google.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v3] KVM: selftests: Add a test for gPAT handling in L2
-Date: Thu, 21 May 2026 17:59:48 +0000
-Message-ID: <20260521175948.522757-1-yosry@kernel.org>
-X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cKHdyv5Q"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c828acf7c1dso10054865a12.3
+        for <kvm@vger.kernel.org>; Thu, 21 May 2026 11:42:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779388943; x=1779993743; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=uytZg2IyX0mr+LxoX6v+Kf2d2mR226egtScmZe38spQ=;
+        b=cKHdyv5Qft8m9wBIP52lctRE60BsxvfzwDhBxZw+dnxX81RFIUvtzq5JgpbAImjzVB
+         jR1RrENzpfZZMD6KBwm55TdpE86dbVMr/uIPQVFwOeEyf9XfdQLpreTIVFn5F9SAHLAX
+         ZD+Ph5q72dh3C8bqLWel+VW3cL3M/xfXDl21ogeZmXXTD3y0C9cfZMHyt8UuAaFZxCeC
+         bn/PvkmGNmWWA6rpl/vkvv+48fTmN8dFBnu74shbaAuHESU/HwitY8HbfDdwosc7DC0k
+         bOiXu4Vp4VcyZXsxE9cjXciMAFr0SgXM2AwUYLFEqWvu+8QJcpAxr0ezE5CbhMn1v2sk
+         xmsQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779388943; x=1779993743;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=uytZg2IyX0mr+LxoX6v+Kf2d2mR226egtScmZe38spQ=;
+        b=XwYaLUi6pPVgOIm36mqTOu6J61qmoZmRpslkeaqT9RSv3qFU7JI6BzNMX66dmqmun3
+         FZkE6iqxmB0stUojZJ0lDHKzpcEnkBzTYGiiK76iq0SpOjZ+6NakO5unoiXlKMDyNv52
+         EhWSeTRlJBDLVaM91Q1fuqIorpn/nCInLX/918fEtmxwDED7E3V+gee5JuB4SxQhPVFV
+         98NXyIWa0dA3burwsgKqJLolM8x+dNbOLXc9lGxSJlx+lZgg8TfSBJPVG9ZODxT0RcoB
+         bv5O7CcdE/x3sMCXKzxkyFp1WSY2lvofXY0LTy4CV/MXgxJrOFzRPdb9IMTO5lk4i5by
+         C9qw==
+X-Forwarded-Encrypted: i=1; AFNElJ9yZYAcodVjISwQX1sMWM873sXTQYFEOJNSFEnurUazzobOWkiQG5uLTsSWLyCAMpkz0RU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwO1GkFRFBODFmdDkH6Y2lXmKmyYaSthLMQGcyNOjF8dsBJMfFB
+	43rYnTX4cmvIUh+bMa2grr7CxHIM8WS/Kt7OoYMjECIvODLt+DUPYEE1k2wLZJq5KpZxGJ+5T1V
+	ViSdyxw==
+X-Received: from pgbfm5.prod.google.com ([2002:a05:6a02:4985:b0:c82:7df9:8c21])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6f89:b0:3b2:b1ed:d1df
+ with SMTP id adf61e73a8af0-3b328eb677emr172133637.29.1779388943316; Thu, 21
+ May 2026 11:42:23 -0700 (PDT)
+Date: Thu, 21 May 2026 11:42:22 -0700
+In-Reply-To: <CAO9r8zNW+dwWykUsALO-BKTg_dX8rT8cFBCR+Y9z2NjXoGJGtA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260514210500.1626871-1-seanjc@google.com> <20260514210500.1626871-4-seanjc@google.com>
+ <CAO9r8zNW+dwWykUsALO-BKTg_dX8rT8cFBCR+Y9z2NjXoGJGtA@mail.gmail.com>
+Message-ID: <ag9SDjTdeXEszAsk@google.com>
+Subject: Re: [kvm-unit-tests PATCH v3 03/20] x86/svm: Sort (and swap) GPRs by
+ their index, not alphabetically
+From: Sean Christopherson <seanjc@google.com>
+To: Yosry Ahmed <yosry@kernel.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	Mathias Krause <minipli@grsecurity.net>, Andrew Jones <andrew.jones@linux.dev>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-When KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT is disabled, verify that KVM
-correctly virtualizes the host PAT MSR and the guest PAT register for
-nested SVM guests.
+On Thu, May 21, 2026, Yosry Ahmed wrote:
+> On Thu, May 14, 2026 at 2:05=E2=80=AFPM Sean Christopherson <seanjc@googl=
+e.com> wrote:
+> >
+> > Sort all GPRs in the nested SVM infrastructure by their index, not
+> > alphabetically.  This will allow sharing code between SVM and VMX for
+> > context switching GPRs between guest and host.
+>=20
+> Potentially a naive question, why do we sort them by index if the xchg
+> instructions just use the offset for each register anyway?
 
-With nested NPT disabled:
- * L1 and L2 share the same PAT
- * The vmcb12.g_pat is ignored
+So that the offset into the "array", ignoring that this particular implemen=
+tation
+doesn't use an array, can be computed from the architectural index of the r=
+egister.
 
-With nested NPT enabled:
- * An invalid g_pat in vmcb12 causes VMEXIT_INVALID
- * RDMSR(IA32_PAT) from L2 returns the value of the guest PAT register
- * WRMSR(IA32_PAT) from L2 is reflected in vmcb12's g_pat on VMEXIT
- * RDMSR(IA32_PAT) from L1 returns the value of the host PAT MSR
- * Save/restore with the vCPU in guest mode preserves both hPAT and gPAT
+Does it matter _here_?  Probably not, because there's not actually an array=
+ (yet?).
+But my goodness is it confusing to look at KVM's vcpu->arch.regs[] and then=
+ switch
+to selftests or KUT and stare at a set of GPRs that don't align with their =
+index.
 
-Originally-by: Jim Mattson <jmattson@google.com>
-Signed-off-by: Yosry Ahmed <yosry@kernel.org>
----
+And code mechanics aside, sorting RAX, RBX, RCX, and RDX alphabetically mak=
+es me
+foam at the mouth :-)
 
-v2 -> v3:
-- Fixed multiple VM-Entries test case.
-- Fixed typos.
-
-v1 -> v2:
-- Rewrote most of the test to dedup L1 and L2 code, move assertions to
-  L2 where possible to simplify the test, and drop the shared test
-  struct.
-
-v1 is essentially the patch in v7 of Jim's gPAT series [*]
-[*]https://lore.kernel.org/kvm/20260327234023.2659476-10-jmattson@google.com/
-
----
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../selftests/kvm/x86/svm_nested_pat_test.c   | 202 ++++++++++++++++++
- 2 files changed, 203 insertions(+)
- create mode 100644 tools/testing/selftests/kvm/x86/svm_nested_pat_test.c
-
-diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
-index 9118a5a51b89f..d658dc7cd2b14 100644
---- a/tools/testing/selftests/kvm/Makefile.kvm
-+++ b/tools/testing/selftests/kvm/Makefile.kvm
-@@ -117,6 +117,7 @@ TEST_GEN_PROGS_x86 += x86/svm_nested_clear_efer_svme
- TEST_GEN_PROGS_x86 += x86/svm_nested_shutdown_test
- TEST_GEN_PROGS_x86 += x86/svm_nested_soft_inject_test
- TEST_GEN_PROGS_x86 += x86/svm_nested_vmcb12_gpa
-+TEST_GEN_PROGS_x86 += x86/svm_nested_pat_test
- TEST_GEN_PROGS_x86 += x86/svm_lbr_nested_state
- TEST_GEN_PROGS_x86 += x86/tsc_scaling_sync
- TEST_GEN_PROGS_x86 += x86/sync_regs_test
-diff --git a/tools/testing/selftests/kvm/x86/svm_nested_pat_test.c b/tools/testing/selftests/kvm/x86/svm_nested_pat_test.c
-new file mode 100644
-index 0000000000000..ed7cae7a6b4bd
---- /dev/null
-+++ b/tools/testing/selftests/kvm/x86/svm_nested_pat_test.c
-@@ -0,0 +1,202 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+/*
-+ * Copyright (C) 2026, Google LLC.
-+ *
-+ * Test that KVM correctly virtualizes the PAT MSR and VMCB g_pat field
-+ * for nested SVM guests:
-+ *
-+ * o With nested NPT disabled:
-+ *     - L1 and L2 share the same PAT
-+ *     - The vmcb12.g_pat is ignored
-+ * o With nested NPT enabled:
-+ *     - Invalid g_pat in vmcb12 should cause VMEXIT_INVALID
-+ *     - L2 should see vmcb12.g_pat via RDMSR, not L1's PAT
-+ *     - L2's writes to PAT should be saved to vmcb12 on exit
-+ *     - L1's PAT should be restored after #VMEXIT from L2
-+ *     - State save/restore should preserve both L1's and L2's PAT values
-+ */
-+#include <fcntl.h>
-+#include <stdio.h>
-+#include <stdlib.h>
-+#include <string.h>
-+
-+#include "test_util.h"
-+#include "kvm_util.h"
-+#include "processor.h"
-+#include "svm_util.h"
-+
-+#define L2_GUEST_STACK_SIZE 256
-+
-+#define PAT_DEFAULT		0x0007040600070406ULL
-+#define L1_PAT_VALUE		0x0007040600070404ULL  /* Change PA0 to WT */
-+#define L2_VMCB12_PAT		0x0606060606060606ULL  /* All WB */
-+#define L2_PAT_MODIFIED		0x0606060606060604ULL  /* Change PA0 to WT */
-+#define INVALID_PAT_VALUE	0x0808080808080808ULL  /* 8 is reserved */
-+
-+bool npt_enabled;
-+int nr_iterations;
-+
-+static void l2_guest_code(void)
-+{
-+	u64 expected_pat = npt_enabled ? L2_VMCB12_PAT : L1_PAT_VALUE;
-+	int i;
-+
-+	for (i = 0; i < nr_iterations; i++) {
-+		GUEST_ASSERT_EQ(rdmsr(MSR_IA32_CR_PAT), expected_pat);
-+		GUEST_SYNC(1);
-+		GUEST_ASSERT_EQ(rdmsr(MSR_IA32_CR_PAT), expected_pat);
-+
-+		wrmsr(MSR_IA32_CR_PAT, L2_PAT_MODIFIED);
-+		expected_pat = L2_PAT_MODIFIED;
-+
-+		GUEST_ASSERT_EQ(rdmsr(MSR_IA32_CR_PAT), L2_PAT_MODIFIED);
-+		GUEST_SYNC(2);
-+		GUEST_ASSERT_EQ(rdmsr(MSR_IA32_CR_PAT), L2_PAT_MODIFIED);
-+
-+		vmmcall();
-+	}
-+}
-+
-+static void l1_guest_code(struct svm_test_data *svm)
-+{
-+	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
-+	struct vmcb *vmcb = svm->vmcb;
-+	int i;
-+
-+	wrmsr(MSR_IA32_CR_PAT, L1_PAT_VALUE);
-+	GUEST_ASSERT_EQ(rdmsr(MSR_IA32_CR_PAT), L1_PAT_VALUE);
-+
-+	generic_svm_setup(svm, l2_guest_code, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
-+
-+	vmcb->save.g_pat = L2_VMCB12_PAT;
-+	vmcb->control.intercept &= ~(1ULL << INTERCEPT_MSR_PROT);
-+
-+	for (i = 0; i < nr_iterations; i++) {
-+		run_guest(vmcb, svm->vmcb_gpa);
-+
-+		GUEST_ASSERT_EQ(vmcb->control.exit_code, SVM_EXIT_VMMCALL);
-+
-+		/*
-+		 * If NPT is enabled by L1, L2 has a unique PAT and L1's PAT is
-+		 * unchanged. Otherwise, PAT is shared between L1 and L2.
-+		 */
-+		if (npt_enabled) {
-+			GUEST_ASSERT_EQ(vmcb->save.g_pat, L2_PAT_MODIFIED);
-+			GUEST_ASSERT_EQ(rdmsr(MSR_IA32_CR_PAT), L1_PAT_VALUE);
-+		} else {
-+			GUEST_ASSERT_EQ(rdmsr(MSR_IA32_CR_PAT), L2_PAT_MODIFIED);
-+		}
-+		vmcb->save.rip += 3; /* skip over VMMCALL */
-+	}
-+
-+	GUEST_DONE();
-+}
-+
-+static void l1_guest_code_invalid_gpat(struct svm_test_data *svm)
-+{
-+	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
-+	struct vmcb *vmcb = svm->vmcb;
-+
-+	/* VMRUN should fail without running L2 */
-+	generic_svm_setup(svm, NULL, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
-+
-+	vmcb->save.g_pat = INVALID_PAT_VALUE;
-+	run_guest(vmcb, svm->vmcb_gpa);
-+
-+	GUEST_ASSERT_EQ(vmcb->control.exit_code, SVM_EXIT_ERR);
-+	GUEST_DONE();
-+}
-+
-+static void run_test(const char *test_name, void *guest_code, bool do_save_restore)
-+{
-+	struct kvm_x86_state *state;
-+	struct kvm_vcpu *vcpu;
-+	struct kvm_vm *vm;
-+	struct ucall uc;
-+	gva_t svm_gva;
-+
-+	pr_info("Testing: %s\n", test_name);
-+
-+	vm = vm_create_with_one_vcpu(&vcpu, guest_code);
-+	vm_enable_cap(vm, KVM_CAP_DISABLE_QUIRKS2,
-+		      KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT);
-+
-+	if (npt_enabled) {
-+		vm_enable_npt(vm);
-+		tdp_identity_map_default_memslots(vm);
-+	}
-+
-+	vcpu_alloc_svm(vm, &svm_gva);
-+	vcpu_args_set(vcpu, 1, svm_gva);
-+	sync_global_to_guest(vm, npt_enabled);
-+	sync_global_to_guest(vm, nr_iterations);
-+
-+	for (;;) {
-+		vcpu_run(vcpu);
-+		TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
-+
-+		switch (get_ucall(vcpu, &uc)) {
-+		case UCALL_ABORT:
-+			REPORT_GUEST_ASSERT(uc);
-+			/* NOT REACHED */
-+		case UCALL_SYNC:
-+			if (do_save_restore) {
-+				pr_info("  Save/restore at sync point %ld\n",
-+					uc.args[1]);
-+				state = vcpu_save_state(vcpu);
-+				kvm_vm_release(vm);
-+				vcpu = vm_recreate_with_one_vcpu(vm);
-+				vm_enable_cap(vm, KVM_CAP_DISABLE_QUIRKS2,
-+					      KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT);
-+				vcpu_load_state(vcpu, state);
-+				kvm_x86_state_cleanup(state);
-+			}
-+			break;
-+		case UCALL_DONE:
-+			pr_info("  PASSED\n");
-+			kvm_vm_free(vm);
-+			return;
-+		default:
-+			TEST_FAIL("Unknown ucall %lu", uc.cmd);
-+		}
-+	}
-+}
-+
-+#define NPT_DISABLED 0
-+#define NPT_ENABLED 1
-+
-+#define NO_SAVE_RESTORE 0
-+#define DO_SAVE_RESTORE 1
-+
-+#define NESTED_PAT_TEST(test_name, guest_code, npt, sr, iter)	\
-+({								\
-+	npt_enabled = npt;					\
-+	nr_iterations = iter;					\
-+	run_test(test_name, guest_code, sr);			\
-+})
-+
-+int main(int argc, char *argv[])
-+{
-+	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SVM));
-+	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_NPT));
-+	TEST_REQUIRE(kvm_has_cap(KVM_CAP_NESTED_STATE));
-+	TEST_REQUIRE(kvm_check_cap(KVM_CAP_DISABLE_QUIRKS2) &
-+		     KVM_X86_QUIRK_NESTED_SVM_SHARED_PAT);
-+
-+	NESTED_PAT_TEST("Invalid gPAT", l1_guest_code_invalid_gpat,
-+			NPT_ENABLED, NO_SAVE_RESTORE, 1);
-+
-+	NESTED_PAT_TEST("Nested NPT disabled", l1_guest_code,
-+			NPT_DISABLED, NO_SAVE_RESTORE, 1);
-+
-+	NESTED_PAT_TEST("Nested NPT enabled", l1_guest_code,
-+			NPT_ENABLED, NO_SAVE_RESTORE, 1);
-+
-+	NESTED_PAT_TEST("Save/Restore", l1_guest_code,
-+			NPT_ENABLED, DO_SAVE_RESTORE, 1);
-+
-+	NESTED_PAT_TEST("Multiple VM-Entries", l1_guest_code,
-+			NPT_ENABLED, NO_SAVE_RESTORE, 10);
-+
-+	return 0;
-+}
-
-base-commit: 4f256d5770febb9d61f9b57a4c79c491bf4987f1
--- 
-2.54.0.794.g4f17f83d09-goog
-
+> I ask because I have a patch [*] undoing this for selftests (and
+> removing the 'rsp' spot), so I think I am missing something.
+>=20
+> [*] https://lore.kernel.org/kvm/20260518202514.2037078-2-yosry@kernel.org=
+/
+>=20
+> >
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> >  x86/svm.h | 8 ++++----
+> >  1 file changed, 4 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/x86/svm.h b/x86/svm.h
+> > index 385c1289..d9f7c731 100644
+> > --- a/x86/svm.h
+> > +++ b/x86/svm.h
+> > @@ -392,9 +392,9 @@ struct svm_test {
+> >
+> >  struct regs {
+> >         u64 rax;
+> > -       u64 rbx;
+> >         u64 rcx;
+> >         u64 rdx;
+> > +       u64 rbx;
+> >         u64 cr2;
+> >         u64 rbp;
+> >         u64 rsi;
+> > @@ -457,9 +457,9 @@ static inline void clgi(void)
+> >
+> >
+> >  #define SAVE_GPR_C                              \
+> > -        "xchg %%rbx, regs+0x8\n\t"              \
+> > -        "xchg %%rcx, regs+0x10\n\t"             \
+> > -        "xchg %%rdx, regs+0x18\n\t"             \
+> > +        "xchg %%rcx, regs+0x8\n\t"              \
+> > +        "xchg %%rdx, regs+0x10\n\t"             \
+> > +        "xchg %%rbx, regs+0x18\n\t"             \
+> >          "xchg %%rbp, regs+0x28\n\t"             \
+> >          "xchg %%rsi, regs+0x30\n\t"             \
+> >          "xchg %%rdi, regs+0x38\n\t"             \
+> > --
+> > 2.54.0.563.g4f69b47b94-goog
+> >
+> >
