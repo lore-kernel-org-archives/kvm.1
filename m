@@ -1,132 +1,170 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1508393DEE
-	for <kvm@vger.kernel.org>; Thu, 21 May 2026 10:48:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19AA53B1EE4
+	for <kvm@vger.kernel.org>; Thu, 21 May 2026 10:55:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779360507; cv=pass; b=WfijMHKCq/bjIqKeY/PLfkwTWszNQfht2RbqpeEXl9txBEyM6BMXMbhxyOVFbu4jDAOxjcshYBdhm7v4PQqKDLTT0Ip7sOfSR6N3FdORMkI54QzF9MkNNmPN0UKEBP3YIeWz4MakSUtu3xY3NHzvXmfTlShxO7ZKnMXQS1sdUoI=
+	t=1779360924; cv=pass; b=hR30/PDhRvsod2aOd031Pbxf4KKK1Z5IM3kqiReyUNZY0IQ3htjtwoKSImPc/bv+KuqHlkrebRPNsUn6uAHvPU+NJ38r45mntj3WZaB/lH4eKvL3RfvwoQ6TMNmXPcyyjrBg0VPxklg1l01vxOnaGWnTKIwNWHm08zxa9evXuf4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779360507; c=relaxed/simple;
-	bh=KSQJyeEirtbIxNc1OUhfkc7dDnq9LR3hLNcshO1Tk00=;
+	s=arc-20240116; t=1779360924; c=relaxed/simple;
+	bh=CrRbln77Kyv+OywhjYbw2p4w20REkjlHNanexGR2C04=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PEzvPsHHO+HjRdomWe5/5c24z8jpLyXvTtki6uTm81fAOouJ1havdvvikOvYTGE9jUX9ajbwdBmveG+jjHLsWjlSmLVtC2Sh+qp+ig2IvsyRU0EfKGHXYcUfnpnsl76V6blojBRdh7Ubt33NeLwhbJi80aXp5aruAwrIqunr2s8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CwqNyNcD; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=P3Xgq4y3; arc=pass smtp.client-ip=170.10.129.124
+	 To:Cc:Content-Type; b=VJwJvcdhsoDoZIKZohFiAtBL0VkZi+RClNfPIAvqkE7alTQr/2PLgrqWbDl2PeFleXKo8VzGWUpsH86RCvrovOle5vjAHedgZepfWTvHUxgwJM3hsYM+XNIFIQYYakg1U4rjbFllShoZkWIV+0JV8+QiQ0mzMb0UTHhvLctKh7o=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ECLICZ9X; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=saKECl08; arc=pass smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CwqNyNcD";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="P3Xgq4y3"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ECLICZ9X";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="saKECl08"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779360505;
+	s=mimecast20190719; t=1779360922;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=KSQJyeEirtbIxNc1OUhfkc7dDnq9LR3hLNcshO1Tk00=;
-	b=CwqNyNcDD9VHhsothj5HO9S3dyG26hkKt4nTw9Vg9ELNwi3aHrZmKWyEh0b4UAIHhAXI87
-	IbJIUg8zKRK7yaU/jEmOBcHLtU2+h9Z/8ivthKIrvXBCpz8cdIckZvRJtwCM5yFN05W3/3
-	FW7FhJHQkm4hRN3fafNmpC/IT6mXUlI=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=Uwj6kDFxb81RRUVd41tB3m+Y+isZjmM4bjc+QJQlsJ8=;
+	b=ECLICZ9XWLpSWmQKpVKM7nrEHIdsZaa2tYNE55/TCKNjLFuW7EC6cpJ3BEpncwYkZ+Q+Zg
+	qjEdpMy78eZHwGUgMelG5kUuOvOhLbjOwKIelh9HhpRW4/GP3+dDGHgrZBvptezAYT2Cwk
+	fPRqVVpHhme0aXbBN47Nx8DPgasTsgk=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-199-7OZbz3eJNAKgcO70cHNziQ-1; Thu, 21 May 2026 06:48:24 -0400
-X-MC-Unique: 7OZbz3eJNAKgcO70cHNziQ-1
-X-Mimecast-MFC-AGG-ID: 7OZbz3eJNAKgcO70cHNziQ_1779360503
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-4411a36715dso3925222f8f.2
-        for <kvm@vger.kernel.org>; Thu, 21 May 2026 03:48:23 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779360503; cv=none;
+ us-mta-592-wRkXEEg7PqaTMkNAxdxvfw-1; Thu, 21 May 2026 06:55:19 -0400
+X-MC-Unique: wRkXEEg7PqaTMkNAxdxvfw-1
+X-Mimecast-MFC-AGG-ID: wRkXEEg7PqaTMkNAxdxvfw_1779360918
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-45ea19f2564so929780f8f.2
+        for <kvm@vger.kernel.org>; Thu, 21 May 2026 03:55:18 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779360918; cv=none;
         d=google.com; s=arc-20240605;
-        b=NioCparJfinABHNQOjRfUAmS6x+SzjDhL46ExtcEuUVYoTMw1amF+1mlLaZEC6ismB
-         knZ605zgq5RnAxekDlsaN1YW+2FbJvO4S/ox3ooPKCyNyW/abd9+rBdyE1GR0bntly0D
-         49JHkR5VuOcfhPuKK8qKkpwd/DPJpepInKaamuApuas3ybEnvh2VjVkBTc1FyWYvAX/G
-         jO+ZMT49VyN/dgv9gZBqP/VqL52+YXJ2SF6KVR2g/YGRxMoN5PKSBbsRXNxZ9Ju7SWkR
-         ggGYlJW6qfVtvIslqSYnkXmQCCHKIU7bfdfW9B7AbOywH1yVs1oLkSHa0cjdLZAA7KqD
-         SQUA==
+        b=NQ5PwvH9p9LkQ3SuIkdJJdwKl+5C1fBIPbLqS/3V2bKygKmuessXwXuXdnWahhw5ix
+         OJe0xej1y9o+47I3tz7ScbC8cwfru4cDfNiL78jGH6GFIoSxXrYBApFvqFL6Eu3AyXnP
+         woVQULfHhCTn2MDIhjg+G2ge180Z3BJjhwj1O/PsQz4wpu2cwlWmiDBPNma0ud6S94xb
+         eTtiB17rZOTx1WNdVa5yWRWREWZGk88nGjFO7wrb7N9zoTPPgR6pLouEZvZ1122Ibnxf
+         sfuey94fRe+SdBnS6JpNjTYOJmDGnPwN8SLugOzuDL4fbxgE/FyDOHQjuHS6I1GdW7Wj
+         +Org==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=KSQJyeEirtbIxNc1OUhfkc7dDnq9LR3hLNcshO1Tk00=;
-        fh=g+UxBfoMbwzubUFRhH6zdcyFlxdRWq39JmTAIt+QG90=;
-        b=OPRhZZcg0qTTzgrrf7EtAwmHkiEvTztR8TBvWNc8UW3Yn7zyhqo7ebFwG599AqPV4I
-         X7twYUUpEk3ndov/1IXr3xl1W2IHtocZolxqoJPqAV3ifBKPOX4NJaLurV5bzeBoVBXa
-         1NdQ0dli7bRxdzRZR7LUz8EmfNSPL2o1cyBOTFJ2gzNjUuFcUMN6uohRei+q4RqjnVJF
-         +4q1KRIzdAL13ZN568mSESEen2iXwgsrJMhFLLC31AlvmVSd5HP+3tUZBxe00YcPc/Mq
-         4eFrPy30JkozMxDhBzCqmR3UVDW35I8ARXZDIiSIPplTgzTTvnjBbZeNn76bgX/nGDHO
-         hwwg==;
+        bh=Uwj6kDFxb81RRUVd41tB3m+Y+isZjmM4bjc+QJQlsJ8=;
+        fh=SuKINV5t+DuPSb+Acs0TUr5oYzUC/JD/zMyurv7+RLs=;
+        b=QpyGBZ2AXS15ryWi89TnNbSsX7+gfSOsI4nadGy0ISkIc7dL1M5uKk6Hgj29TmTgaT
+         WZsHFnrGd453zAqf5FCJE4pdq4XaO/CmB1A45VpHeaIAi3Ki3uZo+hLhD0z640DswChV
+         1RpSx9P77Kpz371JLxIXBDeyW2he0/ShvE3GpU6P8+9C/RNQVyCRaWC5Z6jJZtxpkB/m
+         ygo645WV5OqQ5Y97h+7PnQejBzJFImijWVQZr42dhPvfbAANQS0EUboJYoOrkUH2nGuT
+         TtjinggeHooYKDcHnNq7XZJUBacmrUGEJnBj+6T74zAAIVFOjg/b1whUbdN2g8R73HAR
+         64tA==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779360503; x=1779965303; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1779360918; x=1779965718; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KSQJyeEirtbIxNc1OUhfkc7dDnq9LR3hLNcshO1Tk00=;
-        b=P3Xgq4y3jzulhBK+q9Ry/A4RYRUHvDbibS9Jk/CyyM1aAaVwb58InzmX1gAuv/CGWw
-         9CYDLU3bUp3TatEmj8E4J94gcYdngdp3dOFZrvlFJw+OagKj7h06gizDfANUleDGe6x6
-         3a2OAB8CnjcvigPX5JFl3p4GCR4RtSeTTN5+YGHyMTbnwYDeo2U0jByhADFWMFl+VMS8
-         U6bYrLTYDGm3WUTaczXWjvnLi3ncsy9BredsyrT0q6Z2jmE/9zwE0HCqMY+lRtFxneHs
-         /bLdZFjrLnHin5kcasRfXGbmN1aVOq//HFsjKivOzil/NSm6x2JoEzPlOvhGKwENDy3P
-         zq5A==
+        bh=Uwj6kDFxb81RRUVd41tB3m+Y+isZjmM4bjc+QJQlsJ8=;
+        b=saKECl08nUEh2r223HUrAPPYt3nCCI519BWKDVqRjiMiZ4YPk6rcjPoS2KalpzC24q
+         0A5rxyzyvcp2oLoLLqBsXlBMFsi70AcKoOFOZmEy6wtCcXUHRbT45gTJRmluk2HDhUC2
+         O+PDYWAKPrCv4k9lVpwjYRKTtK63JhLUoy1vEgM7BdmH9TH4uJZsA4RKqOx+wSdWEjnU
+         6qUeqPJoWIVhNjkIVmhzQtp1rYYNTwyU0jCd01lIz8+uCNVDeSbvW3pNcF9Piigg6q2n
+         6/G5fSEGlDgTBxicgrdyDWdRcJ5G/okvPh7L3xPTxBhmFHRRUvOFCm2mKKQB4Z47UuaS
+         lJIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779360503; x=1779965303;
+        d=1e100.net; s=20251104; t=1779360918; x=1779965718;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=KSQJyeEirtbIxNc1OUhfkc7dDnq9LR3hLNcshO1Tk00=;
-        b=PLX9cMOGIbskpFINz8XapNtO2ybt0nw1SCaC4wmvD6sw4WQnwAZyVjB4yh6lhFzcKc
-         LYKITwVC9vI07ApmjNPVcb7pPiH4/MdMbpTj4ZndYE6vC+WzDthuAR+CPGc4GFlvsDbT
-         Y7h3MFQgQ1fETnOuly+wLih5DfUP5mUxVwI7ETF6ACXQ9cTiPvfK5YQgvssT4Qi7MtiD
-         P1rgei8LKg34h/kQaj6n0NkH9AMkVZcXOZWbTuIYTPCHPwh53mTZXRCQQzO/9wNQDMce
-         WwR5ZO6GIyXfZKn80wrjfKsppAuppTfP/2WWqyziDpcmUkU8TcP1YCMKymU9nRH4drV2
-         qbXw==
-X-Forwarded-Encrypted: i=1; AFNElJ/3KPZvRz7e4aSBImlXn3ixvqEfozMRqsejlS+rffTwZ+OBmPIFnUCVhH9RgocBId0RMY0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzbKA7qPeY9VHIVzvyCa2wzxn8wFELcpRae9pPAPDLhLJjpVLBP
-	bmYZa218/x+mF135TfSLyZRi36lrHf2BunLyubToGB7YC/sjvT3xVP8+W53J7IyPT1rmNLUJblE
-	2ygIj9MQquhY6i3h2wJKANUtOX2Un9sQw3xjirvnEH/EYzgqgS8v2Y6pEYBmHfDaVfLGlG0Ut7w
-	R2t3qtkelwMQS2wo4kUDU60fkNjjFv
-X-Gm-Gg: Acq92OGj1XdMjCLSCBHkSv/wXUDdT9WE1RuB4/sCoFrpdSf0dI9BLmTLlqDFrj/GieL
-	m37CS74rjAaY5dxCg59hEzxp8XbLkTF6b203Ih2HxrdYWXpkafVoeLIG4jY26x18O86xX5VBdTp
-	dNIp6NAlqGNYmBEO6EKdMtKIi31SkNu/V5LlXkF2QpD3dmF/38vJqgzh5VfJxunjbyjRTrP+gIL
-	R+zeOHuKl1dMcUxGl7OwCOvnSVC6Cr7BDLFwlnDqy6vERPo5MApK8L76XYzcUVvy/JbuVhnb+FJ
-	HHRX7cI=
-X-Received: by 2002:a05:6000:2383:b0:451:4d47:c9d9 with SMTP id ffacd0b85a97d-45ea3ae9661mr3912386f8f.14.1779360503012;
-        Thu, 21 May 2026 03:48:23 -0700 (PDT)
-X-Received: by 2002:a05:6000:2383:b0:451:4d47:c9d9 with SMTP id
- ffacd0b85a97d-45ea3ae9661mr3912344f8f.14.1779360502615; Thu, 21 May 2026
- 03:48:22 -0700 (PDT)
+        bh=Uwj6kDFxb81RRUVd41tB3m+Y+isZjmM4bjc+QJQlsJ8=;
+        b=srBgQbTEnB+0CwcSqH+QxjhVFebJmQokJlW/KyEIlViyJ0pt9Fgn6H1ClbIbILd9Qd
+         EJbsNYR2CvaKAku/uSX7ufJiDtDsdBLbdO00kfytN3/l6nQ0Sb93UMyue0d1ikgO1aAy
+         QhKdN4cnzYDnCGafsihln2XIiaVI+BbSypS1S93eDSfKnU3OD7QgSu3QL2/dJoUhioJs
+         d/m58lwo52F5VFZLU/9mAEjhpoOIkk0+1FgV+c/YJOzUJeKtlE60KAWyt4EeY/BBagKn
+         3gUNNoamuZDLIUAU47b9z66DRsRnqALrcYNK0jl9+NCBXBKEd/cI3JWVsMMPedMfZqHe
+         k/rg==
+X-Forwarded-Encrypted: i=1; AFNElJ8f455jJl5pd2f0aoaEubfEKZ6wctEiu9nGyPZUj8E7B7sx4AY0EQUePnMjhL9CLt9/LFw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzdzRlua+XgzM0LtDEJYjRghuWsgnPpwn+KIp0fOw3biZ3o3vBd
+	ZJfHwh6jTP5Rw9oZI2vsBrixi6G/M42K6jfT7pS7cWuQzB/WjlIh6Z95W2lIGokiKFIRICH4S0N
+	U/20whERG64KO3Vtguhijz/KW4biDuiqMuIfyZ8lEa8+EmdGvE9DdDdEdGv5Esp16I1i3U4njxO
+	rpwdzTNkV6FiaCcLkRpDZzfZh7IX3Y
+X-Gm-Gg: Acq92OEJW2K6A7wTbFqXeMxoNtlz9ZgehQGlZBgflB2uB2Cepw31p1qL7ljFO5CJl92
+	C6tJxQ657foWm+QEy3TrsBAbs2BmGXen2K9cWd8fPo8z392HE+eDQXdjKPy7VbQSUZiGn6xpr+H
+	gZaNbJrVYj9tIGbCUZpzpwF5imOqrhB7dGj3pliUsCHrQ9gK3znw5bkAuBd8+24dM1v60MrR2iz
+	3h+SBcoqJHTS9iG2XHilK2xNJk+T+Il73Hhs7bhHKsG819pV6UmX99Wnlcg6dnLAzbgmeQQ9rT5
+	02S9TAU=
+X-Received: by 2002:a05:6000:4284:b0:437:711c:8754 with SMTP id ffacd0b85a97d-45ea37be805mr4130951f8f.7.1779360917703;
+        Thu, 21 May 2026 03:55:17 -0700 (PDT)
+X-Received: by 2002:a05:6000:4284:b0:437:711c:8754 with SMTP id
+ ffacd0b85a97d-45ea37be805mr4130885f8f.7.1779360917217; Thu, 21 May 2026
+ 03:55:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260514210500.1626871-1-seanjc@google.com> <d2f3be07-b930-402d-bac5-63a21877f6e2@redhat.com>
- <092d0688-0c8d-4b82-bb62-abeb26845df3@grsecurity.net>
-In-Reply-To: <092d0688-0c8d-4b82-bb62-abeb26845df3@grsecurity.net>
+References: <agusSarZr-R_o2xD@google.com> <fbb937ae-62e4-4386-86fb-67d9b85c8fdc@linux.ibm.com>
+ <agzHO6EXfAe_40F4@google.com> <942574f6-3959-4ca4-be24-6500b420e422@linux.ibm.com>
+In-Reply-To: <942574f6-3959-4ca4-be24-6500b420e422@linux.ibm.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Thu, 21 May 2026 12:48:10 +0200
-X-Gm-Features: AVHnY4JkPOdBZTymVAzmu13X2YhSRSbepc2Uo5zy3bPuPiWDLfYjvOduwZESLoo
-Message-ID: <CABgObfayKKDr9birEVn=QMj3Lxi5wo9GnxsSDcZByxEC+HA+Ng@mail.gmail.com>
-Subject: Re: [kvm-unit-tests PATCH v3 00/20] x86: Better backtraces for leaf functions
-To: Mathias Krause <minipli@grsecurity.net>
-Cc: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
-	Andrew Jones <andrew.jones@linux.dev>
+Date: Thu, 21 May 2026 12:55:05 +0200
+X-Gm-Features: AVHnY4Iy5-HelHkSuOQqlqEoYvg6VeW9fgpIgsmz6u_meiw97K41Rb8fEI-jtt4
+Message-ID: <CABgObfZFZSveoEQgMYHeWaFZot6eJgGO1rR2rSXU=cjAPfStZw@mail.gmail.com>
+Subject: Re: Sashiko review email for kvm@vger.kernel.org?
+To: Janosch Frank <frankja@linux.ibm.com>
+Cc: Sean Christopherson <seanjc@google.com>, Tianrui Zhao <zhaotianrui@loongson.cn>, 
+	Bibo Mao <maobibo@loongson.cn>, Huacai Chen <chenhuacai@kernel.org>, 
+	Madhavan Srinivasan <maddy@linux.ibm.com>, Nicholas Piggin <npiggin@gmail.com>, 
+	Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
+	Christian Borntraeger <borntraeger@linux.ibm.com>, Claudio Imbrenda <imbrenda@linux.ibm.com>, 
+	David Hildenbrand <david@kernel.org>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>, Eric Farman <farman@linux.ibm.com>, 
+	Matthew Rosato <mjrosato@linux.ibm.com>, Halil Pasic <pasic@linux.ibm.com>, 
+	Nipun Gupta <nipun.gupta@amd.com>, Nikhil Agarwal <nikhil.agarwal@amd.com>, 
+	Alex Williamson <alex@shazbot.org>, Ioana Ciornei <ioana.ciornei@nxp.com>, 
+	Longfang Liu <liulongfang@huawei.com>, Julian Ruess <julianr@linux.ibm.com>, 
+	Kirti Wankhede <kwankhede@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>, 
+	Ankit Agrawal <ankita@nvidia.com>, Jason Gunthorpe <jgg@nvidia.com>, 
+	Shameer Kolothum <skolothumtho@nvidia.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Brett Creeley <brett.creeley@amd.com>, Eric Auger <eric.auger@redhat.com>, 
+	Mostafa Saleh <smostafa@google.com>, Pranjal Shrivastava <praan@google.com>, 
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>, David Matlack <dmatlack@google.com>, 
+	=?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>, 
+	Stefan Hajnoczi <stefanha@redhat.com>, Stefano Garzarella <sgarzare@redhat.com>, 
+	Cornelia Huck <cohuck@redhat.com>, Jason Wang <jasowang@redhat.com>, 
+	=?UTF-8?Q?Eugenio_P=C3=A9rez?= <eperezma@redhat.com>, 
+	Kiryl Shutsemau <kas@kernel.org>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Roman Gushchin <kfree@google.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, May 21, 2026 at 12:35=E2=80=AFPM Mathias Krause <minipli@grsecurity=
-.net> wrote:
-> > I'm applying patches 1-18, adding the last two give
+On Thu, May 21, 2026 at 11:33=E2=80=AFAM Janosch Frank <frankja@linux.ibm.c=
+om> wrote:
+> > Beyond that, I'm struggling to understand why folks are opposed to gett=
+ing mails
+> > from Sashiko, especially for a list as large as kvm@.  As others pointe=
+d out, the
+> > volume for kvm@ is already high, and it's trivially easy to create a fi=
+lter for
+> > mails from sashiko-bot@kernel.org.  I.e. it seems highly unlikely that =
+mail from
+> > Sashiko will require anyone to significantly rethink and/or rework thei=
+r workflow,
+> > whereas the web site approach is very disruptive to email-based review,=
+ at least
+> > for me.
 >
-> Looks like Sean already integrated them into
-> https://github.com/kvm-x86/kvm-unit-tests, including the fixups that
-> came up during review.
+> In my mind there's a clear separation between human feedback and
+> non-human feedback. So the disruption is something that I prefer. Maybe
+> I just haven't yet fully evaluated how much I trust its review in
+> contrast to my human coworkers.
 
-Oopsie. I've merged manually everything from there up to commit
-0ddb0873cf4f1bd584c0981836778b795bab94f0.
-
-Let's post what's left as a new submission to the mailing list.
+I think this is solved by saying there's no need to *answer* Sashiko,
+it's treated just like any bot. It should be enough to mention on
+v(n+1) what suggestions were taken (or otherwise influenced the code,
+for example by adding a new comment to the code); and possibly a
+single reply to the cover letter saying "all remaining issues that AI
+pointed out are preexisting" (and if there are false positives,
+perhap, include a short explanation).
 
 Paolo
 
