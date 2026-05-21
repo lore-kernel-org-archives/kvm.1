@@ -1,48 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30F2C3806A3;
-	Thu, 21 May 2026 10:19:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7540F37F009;
+	Thu, 21 May 2026 10:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779358745; cv=none; b=r15WbF3z7AulXl8wMUPCmovYsF1OXc6I/jMAHCM/1L+f+EsuQnr/O8JeyIC3ZKygdcFlKAWI9DN2IMFJFlIFTdLPCOzfNmaTVvPe/PiY4Gn4O/IzfZE5A7hDrMvXwb0ydGO+ych+0G72i9TVh5MelM2HXI/Twnp/8vGcZENcM00=
+	t=1779359164; cv=none; b=ub/r9ZmKFU/D+naapJISjWyJchC6qMUopmd8R4IHMXh/XWfhMq73coNvGNcg6LZamrrDxVBpZ7FbEUzu2R+fCyqn1QNF7vElnFbAeE+aFh/i0rJ0t7g2TdlLgCZjM6Y7K/wBdINsdaoa8u7TtDfHcp5WcdNO/FYpWJi9MuXdGHQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779358745; c=relaxed/simple;
-	bh=YiLyi6oIvvHU1tPc4gIss8TQOdQBqAr412XPlezh/So=;
+	s=arc-20240116; t=1779359164; c=relaxed/simple;
+	bh=rJTE3Myf/O4a/LtxpzVjpzB8Qoo9p7WSyNLMEPxmTg0=;
 	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GiczCVNj21/BrARhoL1fyPbaeiU3iiYh9ph4slbadwS59/0G3j/A1N+lupFb/MpaFSHiGdnykvXhPsvbNWeAL1e2XTdQcbUUb8VqETWrRE/BdIr3re/zvhEY39+FdW5NuSuGE0/SNNW+JkNuNzcoM/bR9PYwW827MhzljAcGgDE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LlzMutfv; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version:Content-Type; b=ilgY9ryz4OfReD74OJvrExjP0QIvJGDZACAYhD8sbmMYzY0w406mlHWbt/yuIwQ4EpQzfmU3lP47JZgd5fA9GB9jBGHbe46bsf3oYjUvM/2sfI8XI/bHIjdkY82NxaUP36To8MK84XhpbggjRHolUmTDN01Rj+CrOVyJmZ+sMRY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y/s7co8G; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LlzMutfv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C97EA1F000E9;
-	Thu, 21 May 2026 10:19:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y/s7co8G"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A35F1F000E9;
+	Thu, 21 May 2026 10:26:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779358743;
-	bh=qfM82z3BHmVFU110xOhDnN73f2JicISYXk83H5AhObU=;
+	s=k20260515; t=1779359163;
+	bh=3HbjtSmSEhrB0oy9msErMnLEWNbLnEiCjT4dTyfzcqc=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=LlzMutfvy8MAr6JgeXqIIc7RUQZwsc04MN6EdMvWVRty5YTkiehbKFfqqw37+6iga
-	 gJoMLV5OWS4O2EwwOVt2hDqaJijKSfg/KrPA35M05IKt6CwQsrjWJSyg0gds0m9nFi
-	 fya7uX2xCr85GIG7VpStByHEXh8nQYUoazks2wd5HbDkUrKeEQkSSETALSSVG+KcyI
-	 ctcJVxRxPE12NzuFW0bqG5y5ZH62RRH/3yYv7f6ACq7lYn6Syoy981s+MCfEVEreKr
-	 kY7Jyif//GoEqyhigpXFA1hvMUGG9DNklgbwYJDFCTT/CSlGydS5VJe10w0c79aQax
-	 rbZPGuMoV3g/Q==
+	b=Y/s7co8Gxsey3Z3nyMyNKdDiYEe7Y7pUDbCLus85Ij7r/hz4UmD4JqJVSa6BunKOE
+	 2P+AvMI7fEu04f+J+boPadH4nm30saUKFclhsbY+BWeWk4GHGaVyzPHKtQVHO4VjMP
+	 A8f7HKEug3BT9cHNvlpDl8HVDOknkkjFd83x7Gbr5lcfwUgSTRoieSuGcsaXyhEx5b
+	 uec4rTQQ48ZhNrBrAUjTgfR2juMQtefdaWVBl1m2vx4SQR2CFf8MBRfpZAMLXwbSiZ
+	 6DZt02oPrD/7RQcu0L6qCHu1/ewc4ZS8LajHzmDVkbVYh6aXxcpmD7V0ogIODNgmKf
+	 vX+UHjnuwm30w==
 Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
 	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.98.2)
 	(envelope-from <maz@kernel.org>)
-	id 1wQ0UX-00000004liO-2gGN;
-	Thu, 21 May 2026 10:19:01 +0000
-Date: Thu, 21 May 2026 11:19:01 +0100
-Message-ID: <86jysxvze2.wl-maz@kernel.org>
+	id 1wQ0bI-00000004ls9-3s5I;
+	Thu, 21 May 2026 10:26:01 +0000
+Date: Thu, 21 May 2026 11:26:00 +0100
+Message-ID: <86ik8hvz2f.wl-maz@kernel.org>
 From: Marc Zyngier <maz@kernel.org>
 To: Steven Price <steven.price@arm.com>
 Cc: kvm@vger.kernel.org,
 	kvmarm@lists.linux.dev,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Catalin Marinas <catalin.marinas@arm.com>,
 	Will Deacon <will@kernel.org>,
 	James Morse <james.morse@arm.com>,
 	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Zenghui Yu <yuzenghui@huawei.com>,
 	linux-arm-kernel@lists.infradead.org,
 	linux-kernel@vger.kernel.org,
@@ -60,10 +60,10 @@ Cc: kvm@vger.kernel.org,
 	Vishal Annapurve <vannapurve@google.com>,
 	WeiLin.Chang@arm.com,
 	Lorenzo.Pieralisi2@arm.com
-Subject: Re: [PATCH v14 01/44] kvm: arm64: Include kvm_emulate.h in kvm/arm_psci.h
-In-Reply-To: <20260513131757.116630-2-steven.price@arm.com>
+Subject: Re: [PATCH v14 02/44] kvm: arm64: Avoid including linux/kvm_host.h in kvm_pgtable.h
+In-Reply-To: <20260513131757.116630-3-steven.price@arm.com>
 References: <20260513131757.116630-1-steven.price@arm.com>
-	<20260513131757.116630-2-steven.price@arm.com>
+	<20260513131757.116630-3-steven.price@arm.com>
 User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
  FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
  (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
@@ -73,46 +73,50 @@ List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=US-ASCII
 X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, suzuki.poulose@arm.com, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
+X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
 X-SA-Exim-Mail-From: maz@kernel.org
 X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, 13 May 2026 14:17:09 +0100,
+On Wed, 13 May 2026 14:17:10 +0100,
 Steven Price <steven.price@arm.com> wrote:
->=20
-> From: Suzuki K Poulose <suzuki.poulose@arm.com>
->=20
-> Fix a potential build error (like below, when asm/kvm_emulate.h gets
-> included after the kvm/arm_psci.h) by including the missing header file
-> in kvm/arm_psci.h:
->=20
-> ./include/kvm/arm_psci.h: In function =E2=80=98kvm_psci_version=E2=80=99:
-> ./include/kvm/arm_psci.h:29:13: error: implicit declaration of function
->    =E2=80=98vcpu_has_feature=E2=80=99; did you mean =E2=80=98cpu_have_fea=
-ture=E2=80=99? [-Werror=3Dimplicit-function-declaration]
->    29 |         if (vcpu_has_feature(vcpu, KVM_ARM_VCPU_PSCI_0_2)) {
-> 	         |             ^~~~~~~~~~~~~~~~
-> 			       |             cpu_have_feature
->=20
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+> 
+> To avoid future include cycles, drop the linux/kvm_host.h include in
+> kvm_pgtable.h and include two _types.h headers for the types that are
+> actually used. Additionally provide a forward declaration for struct
+> kvm_s2_mmu as it's only used as a pointer in this file.
+> 
+> Both pgtable.c and kvm_pkvm.h relied on the indirect inclusion of
+> kvm_host.h, so make that explicit.
+> 
 > Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> New patch in v13
+> ---
+>  arch/arm64/include/asm/kvm_pgtable.h | 5 ++++-
+>  arch/arm64/include/asm/kvm_pkvm.h    | 2 +-
+>  arch/arm64/kvm/hyp/pgtable.c         | 1 +
+>  3 files changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/arch/arm64/include/asm/kvm_pgtable.h b/arch/arm64/include/asm/kvm_pgtable.h
+> index 41a8687938eb..e4770ce2ccf6 100644
+> --- a/arch/arm64/include/asm/kvm_pgtable.h
+> +++ b/arch/arm64/include/asm/kvm_pgtable.h
+> @@ -8,9 +8,12 @@
+>  #define __ARM64_KVM_PGTABLE_H__
+>  
+>  #include <linux/bits.h>
+> -#include <linux/kvm_host.h>
+> +#include <linux/kvm_types.h>
+> +#include <linux/rbtree_types.h>
 
-Unrelated to this patch, but really easy to fix: the standard prefix
-for patches targeting KVM/arm64 is:
-
-"KVM: arm64: [opt subsys:] Something starting with a capital letter"
-
-where "opt subsys" could be "CCA" where applicable.
-
-It'd be good to have some consistency.
+I'm surprised by this. Where is the rbtree_type.h requirement coming
+from?
 
 Thanks,
 
 	M.
 
---=20
+-- 
 Without deviation from the norm, progress is not possible.
