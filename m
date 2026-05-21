@@ -1,168 +1,207 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-vk1-f170.google.com (mail-vk1-f170.google.com [209.85.221.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C18FC3E92B7
-	for <kvm@vger.kernel.org>; Thu, 21 May 2026 14:28:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779373724; cv=none; b=ffCfXJCmXVscSdsOBBK8o6I/P20+QQjcenXAu516nY49QwWDpKLsKFaDPp0epnWn2i/mwzr3x0PTEs+o+nlhbps6hVwvD29Kce5vlqYpcGuQS5VOonndR7OOhFNzwz2aIBGSTsDpCvhVzXfNAvvfvD6D5JGYURjzRu+gLksNmTQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779373724; c=relaxed/simple;
-	bh=EUTY7c/wQ6odBf0NG7I5Wy1BmLLq056ywAdcPvlK/DM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=D6gN2CmqFWW7cxTDGAm1GT35rAmhNNymqJJyXOTIpKQ/mzeK9H75d6lprDKI9eaw3DfTRAlT5ycA3snhY3LOrY02kxlMO+gaCzd7f5BFB1j+jAO36NKTFohSzY/27e6/B6WwwaRAxBWn3PT7V36ax8x61YwhfanmYBULun91DLo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qhLF7GX2; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E85D3F1ADF
+	for <kvm@vger.kernel.org>; Thu, 21 May 2026 14:29:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.221.170
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779373783; cv=pass; b=EhFhemFgdZluluAriIQY5yUV29ToueV9wNj9U5aiiJqWFDbNQVgoPvPotej/GezRqU4QpW23ntf9/pAFVEG8t4OkR344obNZifI6jF80XJ8RTMhH/dTZDyGpvvfbFgXRBwATK4oKUJZX0Ci9PKyZBsry7sgRdyfBVTA46YoL25Q=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779373783; c=relaxed/simple;
+	bh=yfN1Pt92cq1NUORJuQ82dwA8T7lKFnYQEXa3cFZE1Ms=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AnLGoffrUFYRlYbTqiWvR8gMxXlx8T4yWqWrwXRbildZfNBlqNqVncBZ5E6VwSfsHIiHlKrw7BrliFK2x6nPHCki8cmshRlpX68msflkrT6IQkQketzKIDzLHryMaNHiin/5oR7fjOt4Fvng9P0A467o+0vXFfAfXN7QsJ8vpr8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=M9M/68B9; arc=pass smtp.client-ip=209.85.221.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qhLF7GX2"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c8292a9605aso3031611a12.0
-        for <kvm@vger.kernel.org>; Thu, 21 May 2026 07:28:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="M9M/68B9"
+Received: by mail-vk1-f170.google.com with SMTP id 71dfb90a1353d-56f72d27e7eso7486953e0c.0
+        for <kvm@vger.kernel.org>; Thu, 21 May 2026 07:29:42 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779373781; cv=none;
+        d=google.com; s=arc-20240605;
+        b=in8+l02OQYPcH+e0xOtq2/BLkKB5J62xKI8NjcR1izU07gxg/YRSe755HhZnEwmdsT
+         vTHq4r073SkXjDqh/HK+LT+UQacKlvraBWrHJ8vjuI/0m7ewlbD3a3XMAhMeOOtImfiR
+         tE6WJjcUHAEd5TN5dj9uI2Zt9O2zDw6E0zsab3M0P0f3pKYoZyM8FxRJCUf77WDg5xvs
+         y4ygODLJ35UPVvCSaBLjrRzbQQl82BqZDd91VT+U2ZthnxZGmHqt6yDEXqj774vupLyR
+         AmYkCJ96HD2mFdk8u6KRXG1PekHJ24LpUUg0mM/4amrt1zqVLtlR5agXYmHBu44/cg27
+         WUvQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=1Wo6mylBSliDlwCJngQfhikHW93XVCjTkYwG+w8Z6n8=;
+        fh=TMkvXfZtxc4VogOL6lMkgxx7SpaqOY4uOkgcPqzcW/Q=;
+        b=MhBGS1f3iuOlcb+CewDXsNSoUXkaE3+ywC/Sq5rAhXjXUlvXPBzFcVVe/QymCBYB5I
+         cAJZf7g3vPx+4S1kd5S+qLtnLhEcn8scJ027ImorFFychHy8Bv+/zkHFswpHps1Nlr2H
+         8B5xMtv3HQfSJdYuAwiwVENfkE+g6j1uikcf1GCc7BoBG9l/6JebzsjQaToUWonz9VUw
+         rEx/gaQBvxqeFOi300fDfggrAgUbRhJ4zR3F5a6ewxtw4b3TlDxKRbuzhqmOvjEEX0AI
+         Pl8NU8SiaMd5kFEW9I2MMDNIpm2rnSfEKfIfSt9yPn/QyOrBHev+lwzPanblum0MnVq6
+         B78A==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779373722; x=1779978522; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Qpfg2DB42qQ3bvRNWMtAmmCZ15+qKS/M5NjmIWYN8UU=;
-        b=qhLF7GX2LRUGFLsi0h7rcnAUm/EFg9z2fHP25yRQh13W3UmjURiSukTgWqEyYjiKME
-         AzRriDpW4HVud5cMYcLN79UA0nRz7ViAFB6NhVHQ5F4kx967w13tBVs2xxHFb8q8QXqO
-         OLp/tZDRx5RCRZzwx1d/8NaY6IYgUZujrh5N/ODc752Rlssdz3GJC8N1goPELOpq54VK
-         7QveePc/69fUYTr+R6YXyAVu8xYqcF7fXAm3X6MIbMewA6NFqYXZ2yHDhBR2hVrUSfft
-         2rw+sIY5HFbhI4oYIVbrd9rmgFGFWDLkzWTMu1i+ZMjFy/UGZtPW9/FiKG9l+InVN6PM
-         47Ug==
+        d=google.com; s=20251104; t=1779373781; x=1779978581; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=1Wo6mylBSliDlwCJngQfhikHW93XVCjTkYwG+w8Z6n8=;
+        b=M9M/68B9coEcNJ4eVPzf1wGC7pbZq6wv8pv+vAWrOB4fq2Wgz6DCwnnaXVUDSmkZRT
+         OaPJceWG4n9RBtqTkVWdu6fbcWRzyLpDEBNeg27242q5Jul+bFgLBXEN4KhNgbmjNHz9
+         XY+GHzvGOa37f//SwWlyfr6zfUPRBRU6PnzsGCQJIH3BtwZ+zNDX3L3Z0yzjEdDj+F8F
+         zUScIW7IccmP4XjKOJWzDplJHVxAjI3pHq38E9Y9J6bQg3EQZKvQxl5PugV7VSRC2h4l
+         MfHooWVn7mLbeWkj2qXohBUVwDomZXmQ92FUzSElE4IFEWgwGQOQ2tExMh5Lx+hdZXaQ
+         YccQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779373722; x=1779978522;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Qpfg2DB42qQ3bvRNWMtAmmCZ15+qKS/M5NjmIWYN8UU=;
-        b=l9eVd4hsgIcLIQCoAiNFV28kbSBP1kUyGLjnHE1IVOt6wejvXDFZHkbe9sCLRR9DFt
-         ODymq/2uJQDAthDfeEAc437aauow5kqwOZPGpA6fD5f48TVHJabzMAeLYlo9CJzM6ZW1
-         D13gPygrAPUA7ZwTJLLPD0bLXOF4rpH58/RzAVkaJnq4KcxLGrH6T93d1ACmrgUFnW1R
-         JXu/C9DH+InSuJUK6hlpgADVOJB2+c35sHmUJ9F4crUsebRRtK8YcKIFc9eiuZEJq5eZ
-         XW8+yDKswvfXjEEl7gnUup0cDObcNwn66BIokl6CFxcmnS4gIsd4nNHAy/o6hEjw7pLD
-         HVCw==
-X-Forwarded-Encrypted: i=1; AFNElJ9s3Ez3g1s7BGHZKy5trkuPOyqtGBT3Tdkw3EmEu0FMaWpSozlgoQ06h5r8nxrSTAGIh6g=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw/2hPVQRBitKXFD0fBq9wtiH16pn+3zzi3Q3jZOPipXVe9VEst
-	vJLPWLdIEpa/5IJBaBJYTVCDNd4tE5YRflstFpxVKGsEvX1CKS7JkmOoaTrfLQmY0GxDlN4BqR3
-	Sr8R62Q==
-X-Received: from pgly11.prod.google.com ([2002:a63:180b:0:b0:c82:cd84:79d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a0a:b0:3a2:d79c:4149
- with SMTP id adf61e73a8af0-3b3087f5270mr3919162637.28.1779373721947; Thu, 21
- May 2026 07:28:41 -0700 (PDT)
-Date: Thu, 21 May 2026 07:28:41 -0700
-In-Reply-To: <202605210807.f147e0c4-lkp@intel.com>
+        d=1e100.net; s=20251104; t=1779373781; x=1779978581;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1Wo6mylBSliDlwCJngQfhikHW93XVCjTkYwG+w8Z6n8=;
+        b=GYdXrxRL7YSZ/28o1nm3Lzf/S+3Z9UNmUNVp5pcW6ryJS/ns23D8eVublH1pffEECQ
+         RU5pBKp/JkTkaFdOqJH/CFY0nfjsp70HrAL6lZCqRtlXVUqbPf5dIaP+Ko4Wd8iMkF9c
+         3w6F+xCCpbFxT1cgjMB6nvjxxWg83lppkmLzBpAbWPtHPdsnIylQ+SPCKxDy03xSOFOZ
+         nULTeWcj6OHYEsaMDzwI75VQqrlL6iJercyQAoZv6/6iAk6t+0rCyZZQAfr+8vG8CbCW
+         fmc1zordmPF3rpEtEhByK0pnA06yWIQiquh0HblTQZZQ0iwhuRKA+HxjDI+23xqt5kqP
+         g1kg==
+X-Forwarded-Encrypted: i=1; AFNElJ+UN355HeRZM5zcaXrBtyRt5m4tWgVoEtXLzywPa8DecSf80D4yFJ5sL/YCrG6fXOO7Uw0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwLSY6pFBVHa9PQtrilCAGtOQZrhfAWx0l9gqWqfrzVxsKJVMva
+	WYPzOGhibu4TH2zIYpo01qDs8OmR88RKvkbS+dKUpvHp0HrYjWSHkaFLDJhZbB8bDrmA3m5YiRO
+	w8ATgMWFsmHOrf1DP8ENMMsGAl/6BfNNyGgOeCGe/
+X-Gm-Gg: Acq92OFBsaUCfEabU6yndP+xJaNZW/G1PLexkE8mHz/l2kxdLQmlRPk71/EzT9W905b
+	1xWSngIy2kISCZ3TLiTiDtEPnfcnOCw9fAIgSpJuFzV7veoc4VNN5da0o1n60M71GiTs/GNiW8D
+	zIpFS8ZPZlUIb6w1tGAUNpYh8H0yWrYb/0wDcj+aOKu00Mgy53lWs1yX979GJgc1FENab4QUAJA
+	nOkKfnvGnuHdEDNzWa7KES/RO4p/Ftqlf1pcQuMBc4wuyD5OYlPqhAjFkknMr1q0AOrdvnNrHmO
+	8+Fsof9is/fGJjGsYTeBjHkJ1YhL9AaanhdJa4nxRHqATCEbjA==
+X-Received: by 2002:a05:6122:3110:b0:575:9f5:ac57 with SMTP id
+ 71dfb90a1353d-5841d681791mr1479571e0c.4.1779373780196; Thu, 21 May 2026
+ 07:29:40 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 21 May 2026 07:29:39 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 21 May 2026 07:29:39 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <ag8JIlHjohAOC3-g@google.com>
+References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
+ <20260507-gmem-inplace-conversion-v6-5-91ab5a8b19a4@google.com>
+ <CA+EHjTw-cUM=FrJevtSDtR7K6MwUfGfOx21LMFDn7DAy5bFzYw@mail.gmail.com>
+ <CAEvNRgGQvMdDmVfbk42EY_PGN0ybTp-x21Zj+pg_X1mk9iCRtA@mail.gmail.com>
+ <CA+EHjTzLCD-dU-euZKgzwyEr2ecPqFDNutcaHm2fCDGA+MHVXA@mail.gmail.com> <ag8JIlHjohAOC3-g@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260501203537.2120074-3-seanjc@google.com> <202605210807.f147e0c4-lkp@intel.com>
-Message-ID: <ag8WmcdDjxkpbzXi@google.com>
-Subject: Re: [PATCH v2 2/6] KVM: selftests: Add a test to verify SEV {en,de}crypt
-From: Sean Christopherson <seanjc@google.com>
-To: kernel test robot <oliver.sang@intel.com>
-Cc: oe-lkp@lists.linux.dev, lkp@intel.com, kvm@vger.kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org, 
-	Ashutosh Desai <ashutoshdesai993@gmail.com>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Date: Thu, 21 May 2026 07:29:39 -0700
+X-Gm-Features: AVHnY4L1QQsQd0FYhhV2GOCZxkOSXAeihTuLPqsZRThJ8u9A5XK7N3qOGhZF0xk
+Message-ID: <CAEvNRgEZ9vCKkoMC11tVrueAonGWH2x6OeaYYxXGEj2gwHUaKw@mail.gmail.com>
+Subject: Re: [PATCH v6 05/43] KVM: guest_memfd: Wire up kvm_get_memory_attributes()
+ to per-gmem attributes
+To: Sean Christopherson <seanjc@google.com>, Fuad Tabba <tabba@google.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, May 21, 2026, kernel test robot wrote:
->=20
->=20
-> Hello,
->=20
-> kernel test robot noticed "kernel-selftests.kvm.make.fail" on:
->=20
-> commit: f6ed3165a8ced57973a0919d0ead11eaff393477 ("[PATCH v2 2/6] KVM: se=
-lftests: Add a test to verify SEV {en,de}crypt")
+Sean Christopherson <seanjc@google.com> writes:
 
-Ah, this is a local commit, from applying the patch.  I fixed up the semant=
-ic
-conflict when applying, i.e. I did NOT botch 6edd35e77a42 ("KVM: selftests:=
- Add a
-test to verify SEV {en,de}crypt debug ioctls"). :-)
+> On Thu, May 21, 2026, Fuad Tabba wrote:
+>> On Wed, 20 May 2026 at 22:44, Ackerley Tng <ackerleytng@google.com> wrote:
+>> >
+>> > Fuad Tabba <tabba@google.com> writes:
+>> >
+>> > >
+>> > > [...snip...]
+>> > >
+>> > >> +unsigned long kvm_gmem_get_memory_attributes(struct kvm *kvm, gfn_t gfn)
+>> > >> +{
+>> > >> +       struct kvm_memory_slot *slot = gfn_to_memslot(kvm, gfn);
+>> > >> +       struct inode *inode;
+>> > >> +
+>> > >> +       /*
+>> > >> +        * If this gfn has no associated memslot, there's no chance of the gfn
+>> > >> +        * being backed by private memory, since guest_memfd must be used for
+>> > >> +        * private memory, and guest_memfd must be associated with some memslot.
+>> > >> +        */
+>> > >> +       if (!slot)
+>> > >> +               return 0;
+>> > >> +
+>> > >> +       CLASS(gmem_get_file, file)(slot);
+>> > >> +       if (!file)
+>> > >> +               return 0;
+>> > >> +
+>> > >> +       inode = file_inode(file);
+>> > >> +
+>> > >> +       /*
+>> > >> +        * Rely on the maple tree's internal RCU lock to ensure a
+>> > >> +        * stable result. This result can become stale as soon as the
+>> > >> +        * lock is dropped, so the caller _must_ still protect
+>> > >> +        * consumption of private vs. shared by checking
+>> > >> +        * mmu_invalidate_retry_gfn() under mmu_lock to serialize
+>> > >> +        * against ongoing attribute updates.
+>> > >> +        */
+>> > >> +       return kvm_gmem_get_attributes(inode, kvm_gmem_get_index(slot, gfn));
+>> > >> +}
+>> > >
+>> > > Doesn't this imply that all consumers of kvm_mem_is_private() should
+>> > > validate the result using mmu_lock and the invalidation sequence?
+>> >
+>> > Let me know how I can improve the comment.
+>>
+>> Given Sean's context, the comment is good I think. I would quibble
+>> with the the "_must_ still protect" phrasing being a bit too strict.
+>>
+>> Maybe just soften it slightly to acknowledge the exception? Something like:
+>>
+>>   * lock is dropped, so callers that require a strict result _must_ protect
+>>   * consumption of private vs. shared by checking mmu_invalidate_retry_gfn()
+>>   * under mmu_lock to serialize against ongoing attribute updates. Callers
+>>   * doing lockless reads must be able to tolerate a stale result.
+>>
+>> That aligns the comment with how KVM is actually using it today. That
+>> said, this is nitpicking. Feel free to use or ignore.
+>
+> Hmm, I wonder if we can figure out a way to consolidate some documentation,
+> because this is _exactly_ the same pattern that x86's host_pfn_mapping_level()
+> deals with (see its big comment below).
+>
 
-> url: https://github.com/intel-lab-lkp/linux/commits/Sean-Christopherson/K=
-VM-SVM-Fix-page-overflow-in-sev_dbg_crypt-for-ENCRYPT-path/20260502-190513
-> patch link: https://lore.kernel.org/all/20260501203537.2120074-3-seanjc@g=
-oogle.com/
-> patch subject: [PATCH v2 2/6] KVM: selftests: Add a test to verify SEV {e=
-n,de}crypt
->=20
-> in testcase: kernel-selftests
-> version: kernel-selftests-x86_64-917719c412c4-1_20260508
-> with following parameters:
->=20
-> 	group: kvm
->=20
->=20
-> config: x86_64-rhel-9.4-kselftests
-> compiler: gcc-14
-> test machine: 16 threads Intel(R) Core(TM) i7-13620H (Raptor Lake) with 3=
-2G memory
->=20
-> (please refer to attached dmesg/kmsg for entire log/backtrace)
->=20
->=20
->=20
->=20
-> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
-ion of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <oliver.sang@intel.com>
-> | Closes: https://lore.kernel.org/oe-lkp/202605210807.f147e0c4-lkp@intel.=
-com
->=20
->=20
-> gcc -D_GNU_SOURCE=3D -I/usr/src/perf_selftests-x86_64-rhel-9.4-kselftests=
--f6ed3165a8ced57973a0919d0ead11eaff393477/tools/testing/selftests/../../../=
-tools/testing/selftests  -I/usr/src/perf_selftests-x86_64-rhel-9.4-kselftes=
-ts-f6ed3165a8ced57973a0919d0ead11eaff393477/tools/testing/selftests/cgroup/=
-lib/include -Wall -Wstrict-prototypes -Wuninitialized -O2 -g -std=3Dgnu99 -=
-Wno-gnu-variable-sized-type-not-at-end -MD -MP -DCONFIG_64BIT -U_FORTIFY_SO=
-URCE -fno-builtin-memcmp -fno-builtin-memcpy -fno-builtin-memset -fno-built=
-in-strnlen -fno-stack-protector -fno-PIE -fno-strict-aliasing -I/usr/src/pe=
-rf_selftests-x86_64-rhel-9.4-kselftests-f6ed3165a8ced57973a0919d0ead11eaff3=
-93477/tools/testing/selftests/../../../tools/include -I/usr/src/perf_selfte=
-sts-x86_64-rhel-9.4-kselftests-f6ed3165a8ced57973a0919d0ead11eaff393477/too=
-ls/testing/selftests/../../../tools/arch/x86/include -I/usr/src/perf_selfte=
-sts-x86_64-rhel-9.4-kselftests-f6ed3165a8ced57973a0919d0ead11eaff393477/too=
-ls/testing/selftests/../../../usr/include/ -Iinclude -I. -Iinclude/x86 -I .=
-./rseq -I..  -isystem /usr/src/perf_selftests-x86_64-rhel-9.4-kselftests-f6=
-ed3165a8ced57973a0919d0ead11eaff393477/usr/include -march=3Dx86-64-v2   -c =
-dirty_log_perf_test.c -o /usr/src/perf_selftests-x86_64-rhel-9.4-kselftests=
--f6ed3165a8ced57973a0919d0ead11eaff393477/tools/testing/selftests/kvm/dirty=
-_log_perf_test.o
-> x86/sev_dbg_test.c: In function =E2=80=98test_sev_dbg=E2=80=99:
-> x86/sev_dbg_test.c:85:33: error: implicit declaration of function =E2=80=
-=98vm_vaddr_alloc=E2=80=99 [-Wimplicit-function-declaration]
->    85 |         data =3D addr_gva2hva(vm, vm_vaddr_alloc(vm, BUFFER_SIZE,=
- KVM_UTIL_MIN_VADDR));
->       |                                 ^~~~~~~~~~~~~~
-> At top level:
-> cc1: note: unrecognized command-line option =E2=80=98-Wno-gnu-variable-si=
-zed-type-not-at-end=E2=80=99 may have been intended to silence earlier diag=
-nostics
-> make[1]: *** [Makefile.kvm:329: /usr/src/perf_selftests-x86_64-rhel-9.4-k=
-selftests-f6ed3165a8ced57973a0919d0ead11eaff393477/tools/testing/selftests/=
-kvm/x86/sev_dbg_test.o] Error 1
-> make[1]: *** Waiting for unfinished jobs....
-> make[1]: Leaving directory '/usr/src/perf_selftests-x86_64-rhel-9.4-kself=
-tests-f6ed3165a8ced57973a0919d0ead11eaff393477/tools/testing/selftests/kvm'
-> make: *** [Makefile:217: all] Error 2
->=20
->=20
->=20
-> The kernel config and materials to reproduce are available at:
-> https://download.01.org/0day-ci/archive/20260521/202605210807.f147e0c4-lk=
-p@intel.com
->=20
->=20
->=20
-> --=20
-> 0-DAY CI Kernel Test Service
-> https://github.com/intel/lkp-tests/wiki
->=20
+This would be great, are you thinking an actual comment or something in
+Documentation/?
+
+Perhaps we could iterate on this a little with me providing the newbie
+perspective. Do you want me to take a stab at writing something up?
+
+> There's also the stale comment in kvm_invalidate_memslot(), which, stating the
+> obvious, speaks to the memslot+SRCU side of things.
+>
+> Maybe it makes sense to to find a central location for one giant comment about
+> how how MMU notifier events and memslot+SRCU protections work?  And then refer
+> to that in paths where some asset needs to be tied into MMU notifiers and/or
+> memslots+SRCU?
+>
+> [*] https://lore.kernel.org/all/agcbWe8s9lmPuJwG@google.com
+>
+> [...snip...]
+>
