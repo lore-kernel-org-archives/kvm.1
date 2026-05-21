@@ -1,97 +1,145 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C3E3905E0
-	for <kvm@vger.kernel.org>; Thu, 21 May 2026 18:48:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58D0040584F;
+	Thu, 21 May 2026 19:38:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779389289; cv=none; b=Br4i6IezDj4GSlUSwilr5VFbpn/8dPUP/w4aeVRwgcRJn54U2NY8a919ZyIT8Y8nbRryfvdtDBZEi0s4VLJH/yjlG41rDgzSnAPggeXovTDRYPJ5N4JxAPkuJqnC1yoyqWDHTRq+rp3gXxfpFSbu1/Y4amhLns+yw4tSpU9penI=
+	t=1779392308; cv=none; b=KThNt7E9FBPfwd3NTxxsDMOubStqfqPFddSuQAXvkU4BX4B4inJ0BUtvDvP0hxLgTDfin2eNDyTs285tLoLLX1ErMm+2L3q3SIXH5VpJs4hzWID4WNwPHwTOZ9ciDKjdmhSeaSygLevOHTUdSDGxx37G3US3tl24JIUY5msm4x0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779389289; c=relaxed/simple;
-	bh=YUNv3MTY3tC2jjOgCa0t+Z2FPE1cUyrX82V+dta0218=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YXXbleLWdm0dp5w9QMhxoweZj/Hv+wAwqLlXPFqBPWLTVicIory7MfqhFFDXrcEEI0TqBNeiKkOvGTSp0XcSL1aeAP/fKYo4QnN6Wn2zqixtG8b5s7PcwgnFzyLycBzTKCoOuDxFLW4GZR+kbSR2sil8MFDX/twPNZsGkujs28Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h7weSXc5; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779392308; c=relaxed/simple;
+	bh=jkVaSirY3zxz720Si45komOa2zS01MxlDGVDcJAnIZE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ANLw9yDKWIyQ8ulWkpsRjKjzsMEJcuIMzKgM02Uy2oVVAAXUwrus3heZ8Jnd5NdXQc0hG8GhpHNYCZhQNHWbKpTc8EcugE5NelJrEH4xG93TXp08nShHq+feyv1mOceu26OEtskOA8v1gkpRiO1KF35UgGQQt+zc+yInwGVltJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iBpbC8iP; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h7weSXc5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 432F21F00A3D
-	for <kvm@vger.kernel.org>; Thu, 21 May 2026 18:48:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iBpbC8iP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917561F000E9;
+	Thu, 21 May 2026 19:38:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779389288;
-	bh=BvCUukItYUpyz5H3dJwk31OpQyQKb3byOAcmsK9JtMg=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=h7weSXc54Fq6caiyDYOiQPBoe9vuMLNtOuNePauFjLoIJGBga5US/fFNMurHBIYdi
-	 yJaLjcZ/VMU0q8j2hfgK2ps4lC03zxZfnyF98dM9Cj3vX58CLNhtDtThVC5trWLyqG
-	 VgYbRZmCse4EK3/8QFbqP0+HYC/C4SMSxGYxe+WrXferBbteUGBCEM8qz2k0BqCUnw
-	 miiU90qR0IfUU0ORQdLh2UQAUfyfENAxSTFZLOgd0qwR+5e/sQfLMwG17O3WfcyxMJ
-	 WWlEzL7qxQLjTNrbxM+2f61qsG309GlOGBcDxhoozVCBWYPL/kJKR/mH2tI9WUeLIV
-	 wB/vVOaTw6VKQ==
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-bdbcc6c4500so217663966b.1
-        for <kvm@vger.kernel.org>; Thu, 21 May 2026 11:48:08 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ8DTZXzS3FEkOhm1R74Y+U3AKVdD3N/eDrIKWtABAgIMVIPrV1cl3tJmYhA5/OIR5sanq4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx/wCO0d1UwtKZ038LYQDSR1P2xl0rIRJDl7d2Hl0IkX4pUOiLU
-	OJ4h9VAxoe5Pe2njzmHSkTFQlojJYrLA8QH06TTvZeDpUNVoRyEHeleHHTa0bM4WmEe/Z4wy3kN
-	kuWxizuMVAY+QymnFdN2EYO3txaCsniU=
-X-Received: by 2002:a17:907:9289:b0:bd5:1482:930a with SMTP id
- a640c23a62f3a-bdd272d1c46mr32526266b.39.1779389287235; Thu, 21 May 2026
- 11:48:07 -0700 (PDT)
+	s=k20260515; t=1779392305;
+	bh=2xcW2kY0GGl0grlBDzM1Fb05nBp+EuJgclwihYB7zhM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=iBpbC8iPmcQbE42F/3pyQt9S2GUwkH1fIuCuqjq6Kp7jMP6IrhGJ7s8CGF2OjXT3H
+	 NlAz5C4i7Yp7gitdoP9x+ll7KABYJpZSf9Bbn4vJPM6msdhYwP1IcuzVovVBTCuj64
+	 a2HIann4dBM+wPGd75aFCisgJ/y6evw9T/ijj+Rhsjz63PvEG/t20qyWD3tTi4PyxV
+	 p50q98FSB1gP45Xblc92+LfxehromNhsW1s+P/VwH5QSvSdhRGAb+zu2oew3xFyNhq
+	 61+yctziheeXrB/Dx+p+L1/fyYxkt1U63w0bbDpt3JV1GTr2oySAQEMUJBhUFOEs0b
+	 QZaVlSkXFriXQ==
+Date: Thu, 21 May 2026 19:38:24 +0000
+From: Yosry Ahmed <yosry@kernel.org>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: "Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, 
+	kvm <kvm@vger.kernel.org>, Jon Kohler <jon@nutanix.com>, 
+	"Tosatti, Marcelo" <mtosatti@redhat.com>
+Subject: Re: [PATCH 17/22] KVM: x86/mmu: pull struct kvm_pagewalk out of
+ struct kvm_mmu
+Message-ID: <ag9coP1aXYi7Xdfh@google.com>
+References: <20260511150648.685374-1-pbonzini@redhat.com>
+ <20260511150648.685374-18-pbonzini@redhat.com>
+ <CAO9r8zMeg1ta0hL4panuB3D-10PmkwHL+9XKv_0NVjcpq0oJMg@mail.gmail.com>
+ <CABgObfZ+TXrw7UpMt2DQUYb6Gwr-+vHy8E3iNbP8WB2z=+1ZTw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260514210500.1626871-1-seanjc@google.com> <20260514210500.1626871-4-seanjc@google.com>
- <CAO9r8zNW+dwWykUsALO-BKTg_dX8rT8cFBCR+Y9z2NjXoGJGtA@mail.gmail.com> <ag9SDjTdeXEszAsk@google.com>
-In-Reply-To: <ag9SDjTdeXEszAsk@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Thu, 21 May 2026 11:47:55 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zPdb5dLsFuEeKxBK98spJx6MhBVYbt6jh9mVGF3vJ74Fw@mail.gmail.com>
-X-Gm-Features: AVHnY4ItMXCUmhCgrgg07YYia79rBB89JaN1pLoCFhMoA5bc4EV8qGKNsMyIVpE
-Message-ID: <CAO9r8zPdb5dLsFuEeKxBK98spJx6MhBVYbt6jh9mVGF3vJ74Fw@mail.gmail.com>
-Subject: Re: [kvm-unit-tests PATCH v3 03/20] x86/svm: Sort (and swap) GPRs by
- their index, not alphabetically
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	Mathias Krause <minipli@grsecurity.net>, Andrew Jones <andrew.jones@linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CABgObfZ+TXrw7UpMt2DQUYb6Gwr-+vHy8E3iNbP8WB2z=+1ZTw@mail.gmail.com>
 
-On Thu, May 21, 2026 at 11:42=E2=80=AFAM Sean Christopherson <seanjc@google=
-.com> wrote:
->
-> On Thu, May 21, 2026, Yosry Ahmed wrote:
-> > On Thu, May 14, 2026 at 2:05=E2=80=AFPM Sean Christopherson <seanjc@goo=
-gle.com> wrote:
-> > >
-> > > Sort all GPRs in the nested SVM infrastructure by their index, not
-> > > alphabetically.  This will allow sharing code between SVM and VMX for
-> > > context switching GPRs between guest and host.
+On Tue, May 19, 2026 at 12:25:29PM +0200, Paolo Bonzini wrote:
+> Il mer 13 mag 2026, 23:36 Yosry Ahmed <yosry@kernel.org> ha scritto:
 > >
-> > Potentially a naive question, why do we sort them by index if the xchg
-> > instructions just use the offset for each register anyway?
->
-> So that the offset into the "array", ignoring that this particular implem=
-entation
-> doesn't use an array, can be computed from the architectural index of the=
- register.
->
-> Does it matter _here_?  Probably not, because there's not actually an arr=
-ay (yet?).
-> But my goodness is it confusing to look at KVM's vcpu->arch.regs[] and th=
-en switch
-> to selftests or KUT and stare at a set of GPRs that don't align with thei=
-r index.
->
-> And code mechanics aside, sorting RAX, RBX, RCX, and RDX alphabetically m=
-akes me
-> foam at the mouth :-)
+> > However, I can't immediately tell what vcpu->arch.cpu_walk is doing
+> > either (compared to vcpu->arch.tdp_walk), so maybe the names can be
+> > improved? If these walks are tied to these MMUs, maybe name them as
+> > such (e.g. root_pg_walk and guest_pg_walk)?
+> 
+> No, cpu_walk is always GVA->(n)GPA and tdp_walk is the optional
+> nGPA->GPA stage. While there is a 1:1 mapping from a struct kvm_mmu to
+> kvm_pagewalk when doing shadow paging, for *emulation* purposes
+> cpu_walk is used for both L1 and L2 and It replaces the
+> vcpu->arch.walk_mmu pointer from the old code (which led to either
+> root_mmu or nested_mmu). In fact the main change in the series is the
+> removal of walk_mmu, with cpu_walk always representing the CR0/CR3/CR4
+> page tables.
+> 
+> I could call them gva_walk and ngpa_walk, but I think the current name
+> are also self-explanatory (especially once you understand that
+> walk_mmu is no more and cpu_walk can be used for both L1 and L2). The
+> confusion comes more if you look at the walkers from the POV of struct
+> kvm_mmu. Which leads to the other half...
 
-You'll be very happy with my selftests patch then :P
+I think the source of my confusion is that when TDP is enabled
+'root_mmu' is used for tracking the TDP for L1 (GPA->HPA), as well as
+walking L1's own page tables (GVA->GPA).
 
->
-> > I ask because I have a patch [*] undoing this for selftests (and
-> > removing the 'rsp' spot), so I think I am missing something.
-> >
-> > [*] https://lore.kernel.org/kvm/20260518202514.2037078-2-yosry@kernel.o=
-rg/
+I guess the main point of the series (in the context of root_mmu) is to
+stop doing that and separate the former (building GPA->HPA) from the
+latter (GVA->GPA).
+
+So after this series:
+- root_mmu only tracks building TDP for L1, or shadowing L1's page
+  tables without TDP.
+- guest_mmu is only used to shadow L1's TDP for L2.
+- cpu_walk is used to walk L1's or L2's CR3-based page tables (i.e.
+  replaces part of old root_mmu and nested_mmu).
+- tdp_walk is used to walk L1's TDPs for L2 (i.e. replaces part of
+  old guest_mmu). I guess tdp_walk is always tied to guest_mmu?
+
+Is my understanding correct? I feel like I missed something.
+
+That being said, I still don't like cpu_walk tbh. Maybe cr3_walk as
+suggested by Kishen, or more explicitly gva_walk or sth. The CPU walks
+both CR3-based page tables as well as TDP page tables, so I am not sure
+why use 'cpu' here?
+
+> 
+> > I also think root_mmu and guest_mmu could still use some improvement
+> > but that's probably outside the scope of this series. These are
+> > essentially L1 MMU and L2 MMU, right? Maybe just mmu and nested_mmu
+> > could work? But I am not sure if we can reclaim the nested_mmu name,
+> > it's gonna screw with anyone doing backports :/
+> 
+> And even more important vcpu->arch.mmu is the pointer to either
+> root_mmu or guest_mmu. I wouldn't reclaim either mmu or nested_mmu.
+> 
+> guest_mmu is not L2 MMU if L1 does not use two-dimensional paging, so
+> l1_mmu and l2_mmu does not cut it entirely. And root_mmu can be either
+> GVA->HPA or GPA->HPA, therefore applying the idea above (e.g., gpa_mmu
+> and ngpa_mmu) would not work well.
+> 
+> I suppose guest_mmu could be ngpa_mmu or shadow_tdp_mmu, but another
+
+I was going to suggest shadow_tdp_mmu as I was reading this, I like that
+name. Still can't think of a good name for root_mmu.
+
+I thought about a union of two names, shadow_mmu and tdp_mmu, but I
+suspect most code paths would apply equally to both?
+
+> possibility/refactoring would be to adjust the code and call the two
+> MMUs direct_mmu and shadow_mmu. I haven't looked into what this means
+> for the code but it would definitely make for the clearest naming.
+
+IIUC direct_mmu would only be used for L1 TDP, and shadow_mmu would for
+either shadowing L1 page tables (with TDP=0) or shadowing L1's TDP for
+L2?
+
+The naming sounds nice, but as you say below, I don't know how that
+would work code-wise.
+
+> Having direct_mmu->w be NULL would be nice, so it seems promising but
+> not something I was going to do soon (the *real* reason to submit this
+> patch now is to get rid of is_executable_pte() half-assed support for
+> MBEC/GMET, and that's where I stopped).
+> 
+> Even with the small complication that CR0.PG=0 is a direct mapping but
+> would use shadow_mmu, it's still a GVA->HPA mapping and thus pretty
+> understandable.
+> 
+> tl;dr: naming is hard so I tried to change as little as possible in
+> this respect...
+
+Makes sense. Thanks for bearing with me.
