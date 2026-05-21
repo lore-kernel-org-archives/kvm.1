@@ -1,224 +1,139 @@
-Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from BL0PR03CU003.outbound.protection.outlook.com (mail-eastusazon11012038.outbound.protection.outlook.com [52.101.53.38])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018DB36AB56
-	for <kvm@vger.kernel.org>; Thu, 21 May 2026 07:14:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 555AF37F755;
+	Thu, 21 May 2026 07:14:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.53.38
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779347648; cv=pass; b=o7vjTzuplsoAyrcYlVqV+bgXwdjQT0ytMj93YapMTKh5K9s4lOu1y0SGNjP7TZjYMNcvRXcKJG7Qy16KZgZqmTsG+gLHwp3EEMidhi5z42rKsrGkykOx7UOrBVMhfy34M6P3iPuzB70ZHdw8IdQQ3L0viemPMns8bv1f7WD1Da4=
+	t=1779347696; cv=fail; b=pokLp5H4FeBxFK+Ii4u40PbKpqhi9SCD3xV0Y5bo6w9JVQgmwkyMUJW9YXF5NEmHXzsbHObAjDQrks6spZJnH7WWH36bwj/iOvWWwx2rtd/vnFB7lnvYgjmBu9Csx4Zqrr+5nb1lCYLUpb9mR6WcCqAeLHJqXn6NQF8gkgTOiQo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779347648; c=relaxed/simple;
-	bh=FwszKxRTkU5t0/z62X07EaM8UOUdI3Szs5D9p5DC8sA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EHVIRzEwJN6CUVey6GVoeUlpvirk3VzyjQvrriR2C8K22TyyUFR6OG7hsemX5lVyMIJh2ZndZbWvvb9FlLqqlUzTFFF29SmCZ9AR9DZw+sqi926lXN4wIlLDsoXf5h3RaHMOiqL0qlgMJxqhrWBY1FaML/k17PGhbPrbnBtYSwg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V5nnUbQG; arc=pass smtp.client-ip=209.85.160.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1779347696; c=relaxed/simple;
+	bh=eOl/5kmInLQwE/+QbHnoeIM1OfMagPrbzDttZp0nZRA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:Content-Type:
+	 Content-Disposition:In-Reply-To:MIME-Version; b=Xl7s+FQuBToEXx9prjVUxtMehqzD38yY3+jyhqBptwB8B7RmVD9kwrBfMjFhs0T/hyNU/5WwfGuPNQf9Wo7412OoOOZEt+Ualcr1w6imHbqA0FGsQ1LyBvDuwOvcZy0eEXxvv8ZQ9hDrsasDHXZ9BiLroCaVvOhrSoOyuNYsVW0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Ohy9EGpk; arc=fail smtp.client-ip=52.101.53.38
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V5nnUbQG"
-Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-50e61648f10so15121cf.1
-        for <kvm@vger.kernel.org>; Thu, 21 May 2026 00:14:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779347646; cv=none;
-        d=google.com; s=arc-20240605;
-        b=ZeiOYGOBbRhz+T1yoDW1ZyItnBfHsueurNWfd+/GsUsDReHvPJ4N+OgFEx+rnz+Upm
-         aoKMG3vQpT3E3QGJrcmPLf/GY4l09Hy3oMvdx7Hw1aucq3+YiMMW/afjWhVbfQytapwZ
-         Wikfy5kYxkpHEJHp6sewTNXRnylW2LNr1GZCxXUkHQc2PQ5mYJsAgRcQ+ahe55WpWUr/
-         aMW5djaGa/pKZ9zK7/ux8vg5WVaVx8HIAlKf0QlNnYE+k/F3Qk5MnPkdyXCwSpU+bP+/
-         uIxHsfDWudnc3W9fOrHW07VFzR06MAMMgHEHB+pMbuRLgn2hXKOwbOaq2yiPEoMQD0sq
-         Nysw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:dkim-signature;
-        bh=uNOn4o9NVeTi7pLeKizYhzgihd3OKpoLohhH00DuQC4=;
-        fh=y8Wi9X76J4PIZJziHZ7vMdYdWVaMuQjhHVSzKEtMkG4=;
-        b=C7eVpodeTtoNq8eKrRo7zWcP3bQA4AJBCIK5RY21sQO7/8ZqtQ3ZWb25sJ3MOzoUuh
-         KmUVkzbrrM+Sgt1Oko4O96TKvyEhFSjudw5m3aj6iwAMb92g1UDSgmyNwGTnaZ7UUJ7S
-         YcSvCwgr+6XCnmrqWIc4RL/P4RzeMCrbWa73Hg3HNMOQUXJeV/6W6PeKjTIU/GzymWgr
-         Cs/VCPCpJgXEalFCPbLGyma7qyfUT4JM6xQNS9YzBs3RCToLe7iDkwvJkp9Eeb4+e/AR
-         PFvzdL1U00x5CrySpCnfu1rvO3as580HIBLj+NTZlGT+fputhxAeopXzySiTSDoTYXuw
-         wEyg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779347646; x=1779952446; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=uNOn4o9NVeTi7pLeKizYhzgihd3OKpoLohhH00DuQC4=;
-        b=V5nnUbQG/ujtVnB4x5oOn0VsrEazM25MSRq+D2fGX7H+mc4Xbw25rTx2FVTeapQP/k
-         XEffiZssRM/2SWMVHHvTxZq167MBKWpda0ZaMvZtfbbbK/UCKbjNwb0e9jBaukozpXb0
-         31GTFPIvPWebIDdzccwk/qevuYJhxvSOlev/0f49lm3NPqc8HAPlyBha41I5Eb7oWCqg
-         nE9dLWXxtGiGY6kSZ8ABtCLDecW7a0uHWrEvGvc8yimscXYCB6k426NxHjb32v95F32C
-         yEORNrcXckebk8rxncLd5WfdLNNNPovA1j/g+8zRqQVkd8e8zYofNgcFtstLTzBKPI/k
-         Zi/g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779347646; x=1779952446;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uNOn4o9NVeTi7pLeKizYhzgihd3OKpoLohhH00DuQC4=;
-        b=nd487Ngj+VZeDLhr0ZNKLHAHuoBxaoZhzjRBIYB4H18yiVnPQ8ZzurTSXKdWj8aXHn
-         akHGAS80OVzDTrEIEpCXkCBVkZ9V6jB7/vr6u4CD5yuFhHgSHJA0FSYGfXuqnMnXibM+
-         D+NmBTXY9pRHGlMuNckulgKw1sB9dxnM2a1ehSImSJG93Ec2jLlIhkPoMxByldEqqZH5
-         WU8W7neXRzk95iM9UCR15Pdv64QaotPcYnOEGi3o/mUbuTN1Ac404iz/T7Hq0GeQFadW
-         CDaGcSfjEKDcqBY6U0sucXM5NcnN6n7doZl5keQCQSdSveWuCRjopcaPZREyc0WWJulH
-         n7qA==
-X-Forwarded-Encrypted: i=1; AFNElJ/oB7BbqHVIBroLP6AcJz5SkG6xfAkEwU1n4mxYhBDQOH26md7IliVeEO8H6O3e0bZYgsA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy+zrEhez00W6gM8Np5ee2P/Nlk82E1yXfcHFHjuSrRDipxiW/D
-	93t6cMDihE0SZ88vjw+Qy2YVek/uN7CunQmfSVIGmfusTuKJeGtu+JrAa8r9a9lqGNlJK9AhmaS
-	YxNu39qiMeKjwb5IfAk5daXSfiT5Vg3l/MlgIji/c
-X-Gm-Gg: Acq92OGL2AWQrlotPLK1rpoU03SfWnYwWhnSLEYcrZyhQoEFr+gWr8MtCvD8Yj3KESY
-	PGrZYwa/GKDpsqRlfIdMSFEge4WbmPRkxwKZyHpWKhRICmvR7kbTp0Q1q0PtO78uYl37GzAEYX6
-	JgUxHceLh1wbhR5bETOb9aL3p0T+6jwpoQP/mBQ4dMx9ebfFQ+xlhyZ+nIf+lQ1uu+iAdoGqFVa
-	7CorrzyqjiXM3F4K3o6dkkyqcSDuupDDgaIkpRmFB5qlZWoLtTkWPf6bK9yy6ZnGHSJoDycQu0t
-	5+aaz2ibe8e6q43Xm3HMFxVrUTyIow==
-X-Received: by 2002:a05:622a:9d8:20b0:516:4f62:85ea with SMTP id
- d75a77b69052e-516c553b726mr5238111cf.21.1779347645271; Thu, 21 May 2026
- 00:14:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Ohy9EGpk"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Na/kKt1VRzyKCEAt0C4oIaqDYqEUdkFgp2QyJ17i2ZxScIp9p69u4BN5Bj0C0bDfqrqgE59fZdw+P9P/NB8YuBsRN3bWzCo9wXn/yhlQQW2Y+wuSHGupyqeud5Xay1LWkG1PrpokRWhhaKfc6R+Mr4JtAMiVKfcIbu7ymoEQQh/x3U/I6CL5Jz7T2GRmDSpxDs/a4bA4GAkHON8YwICHPMuAL/YmQdoi4aKFha1sEXEswI+tGTubDFvtdYp5eBrJvfZPg7DCGAEM7VP20DIx67tV1/3bsY6pZgnJJvoxjCHa4Y7juy8+Iv0m0H2oXHEbajC9adPiglKxmExNbq3SpQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ilpAorFL0c4uoBq9lGB22Q2dd1Zgi8KyP5x3hDIPFvg=;
+ b=UtWhABeKESkapcrZBiQVRlp3qvHmczUIXMptYcqFwXnbUcpf/CMNlkHBVRUpy7Qdd9bhR/lgWG1KMMKDr9A2tqsGAVX19XkVaDQOF8tpgneCVZbE6cYvMI7tzPqLTMxkEGoD1uPq77wt4p1fiM3/cCT/53kruGG958/uL5b6r0r0AWJw8EmCbrhVcmLuBzJYzRz61lXAekPmuPe9NuLBZnQ+4ytGUFAEyQMEFcXDSM4isYU70cFAmB2AaACcXEOsyIYGsdQk9EugkDSIYZ0G/HCwBPxIHmTJ+dx2/2DnrXd3y9OtMccAziT1eAqysITlOEubeg/HAXul5T3AecYWGg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ilpAorFL0c4uoBq9lGB22Q2dd1Zgi8KyP5x3hDIPFvg=;
+ b=Ohy9EGpknDiyDRq0bhs6EeE9BDTqRP4pM7RG4RzYxHQfeBcrNfCBYmbo/5sbZ+GKDLfXoXCPKfoaRdl5X0ypYCfDG6LfPfxQ+jGjmbCcR7Eq9fsbWz3LijsLDLIxu9Fkpftv5JkvokYQygaTqvQKwFpgkT7EJAZsydXSbcesi0LT2lXZ+FrSqM+6ElOXQy/dr670sKcJMAe14XPXoWbXgcbkYUr5BGh4HZr+sqt2YAwWh+HVgyTS/e0i/2uL0Fwr0aFLm/k5821/UEJqn0bfsmmjokC9xOzra1tpnc32Ql8QulbhatDblB4VpJyfWjvbkIYFqC5UYC7U/ij6A3CfQA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from CH3PR12MB8728.namprd12.prod.outlook.com (2603:10b6:610:171::12)
+ by LV3PR12MB9409.namprd12.prod.outlook.com (2603:10b6:408:21d::16) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.25.18; Thu, 21 May
+ 2026 07:14:51 +0000
+Received: from CH3PR12MB8728.namprd12.prod.outlook.com
+ ([fe80::2641:1046:bdf3:93d7]) by CH3PR12MB8728.namprd12.prod.outlook.com
+ ([fe80::2641:1046:bdf3:93d7%6]) with mapi id 15.21.0048.013; Thu, 21 May 2026
+ 07:14:50 +0000
+Date: Thu, 21 May 2026 07:14:46 +0000
+From: Dragos Tatulea <dtatulea@nvidia.com>
+To: virtualization@lists.linux.dev, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	Eugenio =?utf-8?B?UMOpcmV6?= <eperezma@redhat.com>
+Cc: Tariq Toukan <tariqt@nvidia.com>, 
+	Shahar Shitrit <shshitrit@nvidia.com>, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	netdev@vger.kernel.org
+Subject: Re: [PATCH] vhost-vdpa: Expose ASID group change after DRIVER_OK via
+ backend feature
+Message-ID: <s6tcrlwfx7uexktx4mk7aee4znpmwitykfuitcmqe2zpev7co5@63vxxt4ze7k7>
+References: <20260511094504.1619893-2-dtatulea@nvidia.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260511094504.1619893-2-dtatulea@nvidia.com>
+X-ClientProxiedBy: FR2P281CA0024.DEUP281.PROD.OUTLOOK.COM
+ (2603:10a6:d10:14::11) To CH3PR12MB8728.namprd12.prod.outlook.com
+ (2603:10b6:610:171::12)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com> <20260507-gmem-inplace-conversion-v6-15-91ab5a8b19a4@google.com>
-In-Reply-To: <20260507-gmem-inplace-conversion-v6-15-91ab5a8b19a4@google.com>
-From: Fuad Tabba <tabba@google.com>
-Date: Thu, 21 May 2026 08:13:28 +0100
-X-Gm-Features: AVHnY4I5mlImmNgj6VU9Np6tF4MeIY8QXPe0q5_43DkzSppchE88oaKE6aKRKpA
-Message-ID: <CA+EHjTyZx88qAjKc=W1GOTMLdDFpTjuJkAPJ3W6Snnyn3ta8tg@mail.gmail.com>
-Subject: Re: [PATCH v6 15/43] KVM: guest_memfd: Handle lru_add fbatch
- refcounts during conversion safety check
-To: ackerleytng@google.com
-Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
-	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
-	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
-	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
-	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
-	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
-	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
-	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
-	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, 
-	Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
-	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
-	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
-	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
-	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
-	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
-	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
-	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
-	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
-	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	linux-mm@kvack.org, linux-coco@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CH3PR12MB8728:EE_|LV3PR12MB9409:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3693671f-521b-49d6-68cf-08deb708a609
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|376014|1800799024|18002099003|22082099003|56012099003|11063799006;
+X-Microsoft-Antispam-Message-Info:
+	P9dKtJpPTkkXwlVSc0SmYbeGRDGo5Yvkr2YYYxVcz3UPoUyIGiSHNGwPLtw/6++kwDVne5RVUUejvEdNVcSl6CXSRDoPiWZBvOyVIhwSYeU+kcWa9Fs90/VZKwiQttp6OJ8A0810zquHMofCLozRzKs82/557BFKODd1hfH4BY82Asnf8x275AZkX1tvzrUVbt2nZSFHnpfPQZGoBQ63b2Rc6qTIO4SaIzm0PJoeR6mGS1Jl2VqH+kCMvmMe6i4RLr6nlkfGTg3pzPOiTW87rob+z15ELhM59crPTDVf5XivU3dAP3ee0oObIFIpdaVBeRbsZHsXVwBnGJZg6CTmolOTElaVa10RsQ/TXrbfdVatT4y2gZnTe396QVAh7t6e7qhGMXyRj97PKNXAWdS5eMSEJuyIpe9VWxixUK3xwiGitviKPVoXPn/8ggEdPiB8Eh9RkUdDcrq1nRAoGZZeWpRc32H9uM3lxQyt+YuPejkFCGMt3eNddCa0mwaXAKDQQh8TVSOE3fJ48fb3rV+6gf8Jr/2qcrGeEaluHhZS3grA14VQ7HUmSmAUhGqDlo5lMkpZWOc38tnmDnNMe7tCc5Knc7TOHbJN3FmmJtD2JgCU/TTceOdsx1vh0faj+94MGXF1WiGFqqVF50PKTJNqcGqo27LDjDwA3gYgVnbADia/+FQaRkSgv0MPwnxVLo+X
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CH3PR12MB8728.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(1800799024)(18002099003)(22082099003)(56012099003)(11063799006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?1vDPiAbRQeN5ozRI/pY1XYDSIQ9Y+1ph3D/v8UjfZl40AbU1UDAc4tlEW5re?=
+ =?us-ascii?Q?u03+WR8lrhYKmeKERv5wgNYP8+8BX0k5S6bvWYict/IKTqG8l6IQ6aD9LBeD?=
+ =?us-ascii?Q?agxYrWs8aomJ+jsWTNmuX0PwF9e5yQHoc/ernbugwOvXJrRUTvcunborC01w?=
+ =?us-ascii?Q?4V2cOVPtw4+V9ZJcttGXNv0PPnLOQruVjX7UWdAnUeaKJee+JYe1H/mlGYaf?=
+ =?us-ascii?Q?WOqBwoGVrATFUyileEHjfHEJ6siO2VWK3j/5sGDeDgwXll7CyfyxG1gW2+9R?=
+ =?us-ascii?Q?HlRqfqlBvTr/P+egzmFbY0AZUKUK48ui/HBXQuneqDmc5im98lYIihYdEzx0?=
+ =?us-ascii?Q?volmli2SEP2iUhVz5G98oapcLkCmTXF3iT4qYShJ7+bYPGyMKTxsZwy8/2Ut?=
+ =?us-ascii?Q?HkVBmv2w4so3Lk4ekG5plbw2CigTQXvnv09CtrKn/6ZWAx9ISsrZNv83hGRs?=
+ =?us-ascii?Q?1PPYUG+xuv4wD0wA4eiGCpVoLFMtf/Hee+zDrtzZ2R5QQU+bxVZUyPXKOnKM?=
+ =?us-ascii?Q?7R4E087QCa3yOgJlIPcdpTbSiChauSPs0WR35mntW/n7JLAqONVg3BasmArr?=
+ =?us-ascii?Q?EzNJuJ4NFiyF530rZyka2PRwioD81OMlJxjyQz7n40EapDMFaLnH5o+NvA5/?=
+ =?us-ascii?Q?rnC5M/dAvZCj2NBtLTTo8Xu/bYegCGb2cMRndCtCOkZ+flehkdjrzah35Rga?=
+ =?us-ascii?Q?cpXzNQ1Zqr0K1/PekzaRqZP9dt51+RiTAh0CBNgiNsjnpU4ogzH720tKL/Pb?=
+ =?us-ascii?Q?DJGfgU8mYc+I6cUXOL7bt1Wv+WYOYgx1oWwv9yfn6RCPyrietVCo8QU+XNZA?=
+ =?us-ascii?Q?u5zji1FTMzQcWaqBUDt0FwUiuqUjAraZwFm+GvNCziSlhWLq1Tk6Mr+eoS67?=
+ =?us-ascii?Q?dt4icPrfK51RFXxb7zI7m8QMXT9L9im+vzC/uZSwJlLgr6CgZ9sx46Km9EdB?=
+ =?us-ascii?Q?GfPusCiejl+GEi4gdFOUYUlKmVXoMn9ohgRPOvAfc/n3i9KAJFbzDG/QfbZT?=
+ =?us-ascii?Q?xqO7CupQPAPSy189t+fFkVTf1qT3AjMwZvYST21Kbwy7Pl+GmHpSqlqdsL7K?=
+ =?us-ascii?Q?XnGz9pBthSy0+kHXptOEaz+/g0GPN6SAoaKty3C1Wle8bDBkFyTXuM1jvU2b?=
+ =?us-ascii?Q?HLISYV59vcP4sGDuQPQvEOUxDxXXvqDruplaOEZRfc2xPSnwVFX1drwElXMd?=
+ =?us-ascii?Q?8tWcHWl6eCT/SKive/ZRU3OvRZ3Pwqzll+gnYCbXAU0zoipjptS3jaVTc7GX?=
+ =?us-ascii?Q?JCsNrdenbIekeKEFv6/IApkImK6VpcL50Vxz6zmVOpEF49yV04x8+HfwmsE2?=
+ =?us-ascii?Q?mk4giWnYAcbnyWjILUx1TBDl4ogYBqyZM1qz4xHqLXmy5qVN1X2lBLMtjpL/?=
+ =?us-ascii?Q?4ZMLaHUda3VFSuzJofTJw9d7W4RXjc7B3Xw14i6hhVMkIKZbH5zZFW7Q/WhH?=
+ =?us-ascii?Q?7FDQ3tAoCZ8ohyhrJqfEe7OZVT76bite47zq5UgUmszFXH6bQ4Sm9wKs8LPM?=
+ =?us-ascii?Q?A2z7qN7bp2MEw+ITpesobBLoHugoDIOPfYEvr20AbT8uNo8XV6c5ofbJJC3V?=
+ =?us-ascii?Q?vnxYNRR9qCnUUoKCKSirSFA8UFkXIbxNkdrHzUlbtpwmrshLrVfpTwnCDudg?=
+ =?us-ascii?Q?rFm+vUphVWjokGaD6EI0H+yobXMA6a+lJM9Y6XGyG4hGIY/KrCV8EIEMlVNU?=
+ =?us-ascii?Q?wWnYSVTYhch28kM5Y1D8giVOfyii3ofi0BU3MfZAo0p/Y2hmFP9vw+GQF7yY?=
+ =?us-ascii?Q?yRLTT+X+ZQ=3D=3D?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3693671f-521b-49d6-68cf-08deb708a609
+X-MS-Exchange-CrossTenant-AuthSource: CH3PR12MB8728.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2026 07:14:50.8339
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: i51HGOxqf8cEbmZwikl2AQCT8dmpik4/0fFQ0bBr2+ldvXi5V25NJP65Uu9DKPEJ34UYdYENHB/adyf+mtiRBA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV3PR12MB9409
 
-On Thu, 7 May 2026 at 21:22, Ackerley Tng via B4 Relay
-<devnull+ackerleytng.google.com@kernel.org> wrote:
->
-> From: Ackerley Tng <ackerleytng@google.com>
->
-> When checking if a guest_memfd folio is safe for conversion, its refcount
-> is examined. A folio may be present in a per-CPU lru_add fbatch, which
-> temporarily increases its refcount. This can lead to a false positive,
-> incorrectly indicating that the folio is in use and preventing the
-> conversion, even if it is otherwise safe. The conversion process might not
-> be on the same CPU that holds the folio in its fbatch, making a simple
-> per-CPU check insufficient.
->
-> To address this, drain all CPUs' lru_add fbatches if an unexpectedly high
-> refcount is encountered during the safety check. This is performed at most
-> once per conversion request. Draining only if the folio in question may be
-> lru cached.
->
-> guest_memfd folios are unevictable, so they can only reside in the lru_add
-> fbatch. If the folio's refcount is still unsafe after draining, then the
-> conversion is truly deemed unsafe.
->
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-
-Not an area I've worked with that much, but it seems right to me:
-
-Reviewed-by: Fuad Tabba <tabba@google.com>
-
-Cheers,
-/fuad
-
-
+On Mon, May 11, 2026 at 12:45:03PM +0300, Dragos Tatulea wrote:
+> The commit in the fixes tag blocked VHOST_VDPA_SET_GROUP_ASID operations
+> once DRIVER_OK is set. That is too strict for devices which can safely
+> handle this during live migration flows.
+> 
+> Bring back this behavior under a new vhost backend feature flag. The
+> feature is supported by mlx5 and vdpa_sim devices.
+> 
+> Fixes: 3543b04a4ea3 ("vhost: forbid change vq groups ASID if DRIVER_OK is set")
+> Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+> Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
 > ---
->  mm/swap.c              |  2 ++
->  virt/kvm/guest_memfd.c | 18 ++++++++++++++----
->  2 files changed, 16 insertions(+), 4 deletions(-)
->
-> diff --git a/mm/swap.c b/mm/swap.c
-> index 5cc44f0de9877..3134d9d3d7c30 100644
-> --- a/mm/swap.c
-> +++ b/mm/swap.c
-> @@ -37,6 +37,7 @@
->  #include <linux/page_idle.h>
->  #include <linux/local_lock.h>
->  #include <linux/buffer_head.h>
-> +#include <linux/kvm_types.h>
->
->  #include "internal.h"
->
-> @@ -904,6 +905,7 @@ void lru_add_drain_all(void)
->         lru_add_drain();
->  }
->  #endif /* CONFIG_SMP */
-> +EXPORT_SYMBOL_FOR_KVM(lru_add_drain_all);
->
->  atomic_t lru_disable_count = ATOMIC_INIT(0);
->
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 034b72b4947fb..050a8c092b1a3 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-> @@ -8,6 +8,7 @@
->  #include <linux/mempolicy.h>
->  #include <linux/pseudo_fs.h>
->  #include <linux/pagemap.h>
-> +#include <linux/swap.h>
->
->  #include "kvm_mm.h"
->
-> @@ -596,18 +597,27 @@ static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
->         const int filemap_get_folios_refcount = 1;
->         pgoff_t last = start + nr_pages - 1;
->         struct folio_batch fbatch;
-> +       bool lru_drained = false;
->         bool safe = true;
->         int i;
->
->         folio_batch_init(&fbatch);
->         while (safe && filemap_get_folios(mapping, &start, last, &fbatch)) {
->
-> -               for (i = 0; i < folio_batch_count(&fbatch); ++i) {
-> +               for (i = 0; i < folio_batch_count(&fbatch);) {
->                         struct folio *folio = fbatch.folios[i];
->
-> -                       if (folio_ref_count(folio) !=
-> -                           folio_nr_pages(folio) + filemap_get_folios_refcount) {
-> -                               safe = false;
-> +                       safe = (folio_ref_count(folio) ==
-> +                               folio_nr_pages(folio) +
-> +                               filemap_get_folios_refcount);
-> +
-> +                       if (safe) {
-> +                               ++i;
-> +                       } else if (folio_may_be_lru_cached(folio) &&
-> +                                  !lru_drained) {
-> +                               lru_add_drain_all();
-> +                               lru_drained = true;
-> +                       } else {
->                                 *err_index = folio->index;
->                                 break;
->                         }
->
-> --
-> 2.54.0.563.g4f69b47b94-goog
->
->
+Gentle ping.
+
+Thanks,
+Dragos
