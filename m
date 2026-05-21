@@ -1,97 +1,121 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE43737E2ED
-	for <kvm@vger.kernel.org>; Thu, 21 May 2026 19:50:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 93C213769E3
+	for <kvm@vger.kernel.org>; Thu, 21 May 2026 20:12:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779393022; cv=none; b=RkGEc1FP6VkwAdl4lb9GBQMpbX9veEN184JjvzMJ7gKggt8ONoF6IicZMG1I+ar7IgILFXAeWE10cozfOSqHvIjiGLEtjvmefdwrAfn4WPjFvMpchkbQ3v5yyduGvi3UE+SYynuvtRe95VM7moKHuB5AtpdaboPQJFji41gYLlQ=
+	t=1779394374; cv=none; b=ZWVUNXsQpjDDHsZj6vyRxLzUSROcnxxaGd1b8UpHp7e01+2HRdI143N+yKyGlnHWWQj5Vqa2jJyFSuSQkssrKfWlM7yEGs78/WcP9Af+Ezr660uILAG1/T1hrkQ9KWXVembKJOycELeMJoEDx0XjziJl8KVdgkx9mmuzhEFFjnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779393022; c=relaxed/simple;
-	bh=/ZbKkyAcvYBKPuByGAh4nYWXs6N0pRg+Qq7OeLqdbwI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gYCLgScPMaCNSMuQ7mH3VUCnjyrgc1wrUCXtbYgId/A/65WX8cJPSb1PnWUep3RdNcHGmnAl6Ci9flOVVjIkR0reD0+HZ5fJu+EmaDKAjoJas+F+DyD23qsrFRe0pO6OuPLnicHWz1JQEQt6QZwqCL/c9YLm1ZQWubM0cLigf88=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y0CLxCOf; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1779394374; c=relaxed/simple;
+	bh=nF02n4d0zo6XAeoaFC7kFCatJjgNrNlUhsqWsFfaKcE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uTOJH1ktTPT7HwACO5eyQA4EbQvoFjwNCukpU0o1FFQQpTIQ9PPMRCHmSKqwuttdBp2At+YLw/ck0/M7zlRA844eUgrRoZ2e3CN4De1Eym9Rml11K6I0fJACmHUQciEeC9jXzk7zMMiQUnBExAoXAMkEAJQJjmxqsj7ZDg7/gdU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JV9rKCmH; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y0CLxCOf"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-365e70c39d0so6147648a91.0
-        for <kvm@vger.kernel.org>; Thu, 21 May 2026 12:50:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779393021; x=1779997821; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mOnAqTD8HITcgpQA91zBiWYGSq+ljWzNcs3GofrtSBE=;
-        b=Y0CLxCOf3JQ4i6AZSOj2TGnck+kmd8FEHukWai1Pj41NrwC+M+vN2T5Khn3LOTT1U/
-         TcJMICjINv1CzbQZbLVBR4+mRJqUap1cOE8xPZpRNYR53m8U3VXmxD02L28BKI2th8Z5
-         xXBFwZ0+maQL9R4lAC9fZWppqyItE1HipYvmtHtW3arM2E5HjNbSUysY5ofo9ghxy0CD
-         TT/URmXozH73Pxz9pn46+vSz+U8lUfOFNzyOCIrWatTfr7fIQjfvzPXz2prz+AZ5ClZu
-         icKA2PXJTLaZPCW23RqzCIOhjcxN6Pnar2863bOYdaJmA0ua/QkHGatGwkpHLfSFglNn
-         qGOA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779393021; x=1779997821;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mOnAqTD8HITcgpQA91zBiWYGSq+ljWzNcs3GofrtSBE=;
-        b=mqj7wNL2rVgsRPE2rx9YM3cSezbyDgZ6GcM8bhgysea44FtCIschcZyd1j+5MGk3Gt
-         6zqFJ7n/2SFBYDQnziSgvwePwgOfrqUlIK9DkRme9hMq0Q2wBkNrY9wu1TLch7SCANHd
-         /yGUkCPWR0UYsrezLJpUbpmvbK++6JIKj3p41wi/x4NLHccmcF3cdK+rSgk3geEahqFi
-         qqjBqqYyiJoclNi5OCtGG7XMyU14jxO13e1XTKIxTKOWHQiksFBfCxNAWzU0QMG76Ck7
-         2ZaTa9zFJim4iRGSXStgyHeMUHVE0juiYyY7sjGD3Byexun1EX+tbktPjLRPwexWiUl3
-         /hPA==
-X-Forwarded-Encrypted: i=1; AFNElJ+eqCyTa827JhS38++/jQAbDHU5jsow07OGsGDyzX71CHnuOah/pbB4bsB1VXq+UbuY2pI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzfadpw4YqbrACtdv+nzFayp5sWn2kXiphhanjm1OPKjx7WHNM1
-	DuSJSGk6sLXbjiQEZT9AUrJFiULLwSFccGWBZCqkdMSGsjI3KUisGnIhAhYHzN5pBQ/l8Yio5d9
-	Ffnnzew==
-X-Received: from pge19.prod.google.com ([2002:a05:6a02:2d13:b0:c79:8315:4734])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3f4f:b0:366:132:fda3
- with SMTP id 98e67ed59e1d1-36a67475eddmr666973a91.11.1779393020915; Thu, 21
- May 2026 12:50:20 -0700 (PDT)
-Date: Thu, 21 May 2026 12:50:19 -0700
-In-Reply-To: <ag9fbbWzOO0r777I@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JV9rKCmH"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64LApQtq2818971;
+	Thu, 21 May 2026 20:12:44 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=nF02n4
+	d0zo6XAeoaFC7kFCatJjgNrNlUhsqWsFfaKcE=; b=JV9rKCmHg6hIVdGRlF4quk
+	EQArWGzspYtqYq7uf07oO+4uMcq4904vZZOJqJ5s4KutvgX5fbgGXBffq3GSq8nU
+	ujh59JLnRnuc6Fpv6NCjll9Hv5a3L4aalc+Wtg2bmQiWs8+uk7SwKfX0bh5x2hRl
+	Qc2PSF/h+shypKocA+AwhTLrexYCKzXSawLNVcy81iWwTPBdY41N3SZLlcChMExd
+	tgnkFeb5Xxw4w2VTNK+YnVI0w+L+T0CqMuSA/ANmA1+cVnVGAQuKZxbFIeLGjaKr
+	sxsjmMBbVhBdrdPuEoNXfCnFOV5EdKSdwn4uLPY44hDgeuOtxQlb3BaDyer3ratw
+	==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h9y8ybx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 21 May 2026 20:12:44 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64LK97MA019676;
+	Thu, 21 May 2026 20:12:43 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4e739w61xn-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 21 May 2026 20:12:42 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64LKCdHf31326622
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 21 May 2026 20:12:39 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 0B53520043;
+	Thu, 21 May 2026 20:12:39 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B2AC620040;
+	Thu, 21 May 2026 20:12:32 +0000 (GMT)
+Received: from [9.39.29.116] (unknown [9.39.29.116])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 21 May 2026 20:12:32 +0000 (GMT)
+Message-ID: <cfe1b8d9-8468-462c-af10-174af2746565@linux.ibm.com>
+Date: Fri, 22 May 2026 01:41:26 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260511150648.685374-1-pbonzini@redhat.com> <20260511150648.685374-18-pbonzini@redhat.com>
- <CAO9r8zMeg1ta0hL4panuB3D-10PmkwHL+9XKv_0NVjcpq0oJMg@mail.gmail.com>
- <CABgObfZ+TXrw7UpMt2DQUYb6Gwr-+vHy8E3iNbP8WB2z=+1ZTw@mail.gmail.com> <ag9fbbWzOO0r777I@google.com>
-Message-ID: <ag9h-77TTo7zEMG-@google.com>
-Subject: Re: [PATCH 17/22] KVM: x86/mmu: pull struct kvm_pagewalk out of
- struct kvm_mmu
-From: Sean Christopherson <seanjc@google.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Yosry Ahmed <yosry@kernel.org>, 
-	"Kernel Mailing List, Linux" <linux-kernel@vger.kernel.org>, kvm <kvm@vger.kernel.org>, 
-	Jon Kohler <jon@nutanix.com>, Marcelo Tosatti <mtosatti@redhat.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 0/2] Fix GCC 16 const-correctness violations
+To: Amit Machhiwal <amachhiw@linux.ibm.com>,
+        Harsh Prateek Bora <harshpb@linux.ibm.com>, qemu-ppc@nongnu.org
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>, Nicholas Piggin
+ <npiggin@gmail.com>,
+        Chinmay Rath <rathc@linux.ibm.com>, Glenn Miles <milesg@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, Fabiano Rosas <farosas@suse.de>,
+        Laurent Vivier <lvivier@redhat.com>,
+        Shivaprasad G Bhat <sbhat@linux.ibm.com>,
+        Gautam Menghani <gautam@linux.ibm.com>, qemu-devel@nongnu.org,
+        kvm@vger.kernel.org
+References: <20260518172517.12466-1-amachhiw@linux.ibm.com>
+Content-Language: en-US
+From: Aditya Gupta <adityag@linux.ibm.com>
+In-Reply-To: <20260518172517.12466-1-amachhiw@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDIwMiBTYWx0ZWRfX+qis8VDyIr57
+ Qamt6tZyL6tFCQnQYsFs2cYSZTaYFU99MGMRWcvJP6upl426GgmeWMk61XzgpnqQbKO93QpSipi
+ ZK+A8UbLxoaDqkrjrWYNMJdGy5IedFVkUwb7BLkd23r+JayUb4XeKECDerOzmbVHVm/VuKHqvrW
+ S2yQcHcCfqId7ZbG5Ceymi1Pfu9jNb2KNFvU86zv1HFDtMX7KWUzbF+MasGw2H4MkI9OaiH+Ioe
+ 61WF3vLOhjHFtMvoZ11DUeRmNEI2HsWv/KVyISmBBJnrZIPvkC9k/sEsCKegteqyBt4jnzlZq5n
+ ghRrnWVBZfH49xAN1YNkd62vONz01iEjp9yhc0+vod6iQcAtnQjlVp+vrGtpYpZqvvtCaefctg8
+ UvmXc6h26rmHKYiJBHn50h7QPIEjb8GpBEud7He+zh/xe1vAN+Tl6WRSEYpUoTr7HbLXhkqBFMy
+ OOQlzd5nZTxnpl7OaCQ==
+X-Authority-Analysis: v=2.4 cv=BNuDalQG c=1 sm=1 tr=0 ts=6a0f673c cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=VnNF1IyMAAAA:8
+ a=k0V8wgQb6Tt_Ug5EG9gA:9 a=QEXdDO2ut3YA:10 a=zgiPjhLxNE0A:10
+X-Proofpoint-ORIG-GUID: cc9C8jTBvKFN1YsAtllm0sWql6xXbEXa
+X-Proofpoint-GUID: iDkejnIFiR6NXeWA2lxqEnUgRuXtozmx
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-21_04,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 malwarescore=0 impostorscore=0 suspectscore=0
+ lowpriorityscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1011
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605210202
 
-On Thu, May 21, 2026, Sean Christopherson wrote:
-> On Tue, May 19, 2026, Paolo Bonzini wrote:
-> > Il mer 13 mag 2026, 23:36 Yosry Ahmed <yosry@kernel.org> ha scritto:
-> > guest_mmu is not L2 MMU if L1 does not use two-dimensional paging, so
-> > l1_mmu and l2_mmu does not cut it entirely. And root_mmu can be either
-> > GVA->HPA or GPA->HPA, therefore applying the idea above (e.g., gpa_mmu
-> > and ngpa_mmu) would not work well.
-> > 
-> > I suppose guest_mmu could be ngpa_mmu or shadow_tdp_mmu, but another
-> > possibility/refactoring would be to adjust the code and call the two
-> > MMUs direct_mmu and shadow_mmu. I haven't looked into what this means
-> > for the code but it would definitely make for the clearest naming.
-> 
-> I'm not a fan of "direct".  Even if we deal with the CR0.PG=0 case, there's still
-> the direct shadow pages wrinkle.
-> 
-> I do like the idea of reworking the code so that there's an MMU for non-nested TDP
-> and a shadow MMU for everything else.  Given that the only thing standing in our
-> way of having tdp_mmu and shadow_mmu is the existence of TDP support in the shadow
-> MMU, what if we finally drop that?  Then we can have tdp_mmu, which is literally
-> the TDP MMU, and shadow_mmu.
+On 18/05/26 22:55, Amit Machhiwal wrote:
 
-And then I remembered the TDP MMU is 64-bit only.  But, I saw you posted 32-bit
-nested tests for KUT.  Maybe this could be the motivation to invest more in that
-test coverage, and be the juicy carrot that we need to finally kill off 32-bit
-KVM x86?
+> GCC 16 has tightened const-correctness checking and now correctly
+> rejects attempts to modify or assign const-qualified pointers without
+> proper qualification. This series fixes two such violations that cause
+> build failures with GCC 16 when using -Werror=discarded-qualifiers.
+
+The patches fixes qemu build for me, and looks good to me.
+
+Reviewed-by: Aditya Gupta <adityag@linux.ibm.com>
+
+
+Thanks Amit !
+
