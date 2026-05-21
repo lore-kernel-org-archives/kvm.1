@@ -1,49 +1,60 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61703346FA7
-	for <kvm@vger.kernel.org>; Thu, 21 May 2026 09:24:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D437A37702E;
+	Thu, 21 May 2026 09:33:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779355474; cv=none; b=KhJ53B+7tt4Q818Rgyaw4gJv94DmvxN7gQI6zpufcO3vyAyEVlCE752gqW1DYbWSwqhSRMY2hkhyvdNO/6RMTU9X1Dhr9kO2muGTjq9vEgXDJWMKnyvW/wFsv/Y09OtedazDqjOusNCpo1i/lV2bGUZQ6wfcuDUEyTSyCWtDyBY=
+	t=1779356014; cv=none; b=KRvd70y80n7berh+ssAtk1TKqllM2s0FNryoasx9JtU3X9xJQRLiezxrgbKcdAdzcvdbM0PAPSaVoODFRJELmrqNyBTqlKFuIaNls2YlnRoiUonuLQfej4py8eyWbm1D4LEz9CWZQnhzDJuZDFd8pyR/D/l+K6QUYuhX29JzF8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779355474; c=relaxed/simple;
-	bh=3QxB8z2JSbzb9/zZnprEmhvxBLqEcSqpjVqLvCtFuVY=;
+	s=arc-20240116; t=1779356014; c=relaxed/simple;
+	bh=w2iApBcpU1slHHlzAFIBH319Kv8zAfKYI+2jhBD82DQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=l2t/ZWPkUSU6wUpiLNblu9dTuNAq64jjWbaHpPbz0tJ52kIfM0vc+ntJScEtLypMZJ0Xp4gfszEVpLlXJR/5zYLB8+Dgttytq0IPlAk82DPUYZge9SXz1QN8koFd2qL6qowvOYQF4XSZDZ9Bbyv5i84J/I9XUklP07A7aP7D2mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aGWoWFOF; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 In-Reply-To:Content-Type; b=gMMHjSmqqBoiKEg0/fmdUHUoG8cD9HRnZoRQ0SMLK936n6DDZyl1nZ/d9zF/BtbJMDa4TFME8h5j0oDUiKisWpKtZHA65fvGeRgmqSvzeQkFfsvu7VmRbQfpHsMtUxzKWdDm1Z4Y9EFR0W3aoPb3cxWZDAzUSvaI4HAR5McemDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=JW+kDjAp; arc=none smtp.client-ip=148.163.156.1
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aGWoWFOF"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779355471;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=uE8FmMvI+NG9CUOJRem1SehYzInx7xHuyCKWJbrbYvY=;
-	b=aGWoWFOF5o/ORyjIo8Z6FllVj6wJDxZzLmOe2AkXqgkRbOo7UTGS8n9k9cyqSFxFl07Lt2
-	SgGpqL7AVsZeNU19hiVJfKfmqIGtkkr1f3wwthSkZd9P97kMHzqBE9UzvwcUAzsqCQ5oIK
-	/GGoo5PVbeOhQP5Nt6VGiGprg51Nv4Q=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-252-SHYlFXirNuSmsIs1JDVZWQ-1; Thu,
- 21 May 2026 05:24:27 -0400
-X-MC-Unique: SHYlFXirNuSmsIs1JDVZWQ-1
-X-Mimecast-MFC-AGG-ID: SHYlFXirNuSmsIs1JDVZWQ_1779355466
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 48E831956095;
-	Thu, 21 May 2026 09:24:26 +0000 (UTC)
-Received: from [10.44.49.252] (unknown [10.44.49.252])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id C00B718001EF;
-	Thu, 21 May 2026 09:24:24 +0000 (UTC)
-Message-ID: <d2f3be07-b930-402d-bac5-63a21877f6e2@redhat.com>
-Date: Thu, 21 May 2026 11:24:23 +0200
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="JW+kDjAp"
+Received: from pps.filterd (m0360083.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64L2Zhip552016;
+	Thu, 21 May 2026 09:32:53 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=ag2QTg
+	UDP6F8pw36rojCGVYbt7pzhih+zrqnh1c3xTg=; b=JW+kDjApgruRYwxV5Buz+D
+	hDMG6wYxXkYYGmgodW2cGAUR5JvQ83dMzcslqhwpdABltjmhq8lEIc3rELQNNg2U
+	2Genrztf7oEqRtXxJLVv+xxoUEeqKHmqY5nMMXtk1PE0eAuSDvMNALp6Rbhm2rqO
+	MYBHyt1bVO153TvGJzO2fXT81rCG6hWVnKzP2X+mqWqg52vJ1KKkZvw8Sp5oQusd
+	bMP2ha0JmgTB3bqStbezZDXsGnjiDFSy/jtGlTgg8gfr1OWuJu8Zcy5gDj7tvf6f
+	tnj0gnsv1L140rlzPcgH2mXtsEpdnecAC1SfC2UDC1/rtM6lLnZHlp/Y8y1iLYEA
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h9y67gr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 21 May 2026 09:32:52 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64L9OIA2027053;
+	Thu, 21 May 2026 09:32:51 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e72wqbmt2-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Thu, 21 May 2026 09:32:51 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (smtpav03.fra02v.mail.ibm.com [10.20.54.102])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64L9WlZO40567098
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Thu, 21 May 2026 09:32:47 GMT
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5DA2420040;
+	Thu, 21 May 2026 09:32:47 +0000 (GMT)
+Received: from smtpav03.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 5EC5F2004E;
+	Thu, 21 May 2026 09:32:45 +0000 (GMT)
+Received: from [9.111.82.79] (unknown [9.111.82.79])
+	by smtpav03.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Thu, 21 May 2026 09:32:45 +0000 (GMT)
+Message-ID: <942574f6-3959-4ca4-be24-6500b420e422@linux.ibm.com>
+Date: Thu, 21 May 2026 11:32:45 +0200
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -51,168 +62,191 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [kvm-unit-tests PATCH v3 00/20] x86: Better backtraces for leaf
- functions
+Subject: Re: Sashiko review email for kvm@vger.kernel.org?
 To: Sean Christopherson <seanjc@google.com>
-Cc: kvm@vger.kernel.org, Mathias Krause <minipli@grsecurity.net>,
- Andrew Jones <andrew.jones@linux.dev>
-References: <20260514210500.1626871-1-seanjc@google.com>
+Cc: Tianrui Zhao <zhaotianrui@loongson.cn>, Bibo Mao <maobibo@loongson.cn>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        Madhavan Srinivasan <maddy@linux.ibm.com>,
+        Nicholas Piggin <npiggin@gmail.com>, Anup Patel <anup@brainfault.org>,
+        Atish Patra <atish.patra@linux.dev>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>,
+        Vitaly Kuznetsov
+ <vkuznets@redhat.com>,
+        David Woodhouse <dwmw2@infradead.org>, Paul Durrant <paul@xen.org>,
+        Eric Farman <farman@linux.ibm.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Halil Pasic <pasic@linux.ibm.com>, Nipun Gupta <nipun.gupta@amd.com>,
+        Nikhil Agarwal <nikhil.agarwal@amd.com>,
+        Alex Williamson <alex@shazbot.org>,
+        Ioana Ciornei <ioana.ciornei@nxp.com>,
+        Longfang Liu <liulongfang@huawei.com>,
+        Julian Ruess <julianr@linux.ibm.com>,
+        Kirti Wankhede <kwankhede@nvidia.com>,
+        Yishai Hadas <yishaih@nvidia.com>, Ankit Agrawal <ankita@nvidia.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Shameer Kolothum <skolothumtho@nvidia.com>,
+        Kevin Tian
+ <kevin.tian@intel.com>,
+        Brett Creeley <brett.creeley@amd.com>,
+        Eric Auger <eric.auger@redhat.com>,
+        Mostafa Saleh <smostafa@google.com>,
+        Pranjal Shrivastava <praan@google.com>,
+        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        David Matlack <dmatlack@google.com>,
+        =?UTF-8?Q?Micha=C5=82_Winiarski?= <michal.winiarski@intel.com>,
+        Stefan Hajnoczi <stefanha@redhat.com>,
+        Stefano Garzarella <sgarzare@redhat.com>,
+        Cornelia Huck <cohuck@redhat.com>, Jason Wang <jasowang@redhat.com>,
+        =?UTF-8?Q?Eugenio_P=C3=A9rez?=
+ <eperezma@redhat.com>,
+        Kiryl Shutsemau <kas@kernel.org>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Paolo Bonzini <pbonzini@redhat.com>, Roman Gushchin <kfree@google.com>,
+        kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <agusSarZr-R_o2xD@google.com>
+ <fbb937ae-62e4-4386-86fb-67d9b85c8fdc@linux.ibm.com>
+ <agzHO6EXfAe_40F4@google.com>
 Content-Language: en-US
-From: Paolo Bonzini <pbonzini@redhat.com>
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <20260514210500.1626871-1-seanjc@google.com>
+From: Janosch Frank <frankja@linux.ibm.com>
+Autocrypt: addr=frankja@linux.ibm.com; keydata=
+ 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
+In-Reply-To: <agzHO6EXfAe_40F4@google.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIxMDA4OSBTYWx0ZWRfXxRIJe94bpSzn
+ uDXT1d/Ue90QDHnBSyPI/3Z2s0Yzrj+0/zlmYaNCl7YZ7QTH2zqiDw+bfWWpTBTYfa3qddeVPiI
+ 9DnlOgbX68hwRGbRvITykc17O9jsuKOkkILImrSTV39QwB/Lbx5H5bngWcSMi3ghbEtQj7gGwIy
+ eawNhlXaHuBK81/QpcNx0RdTvxyez12FFDULal4CqkA6Rh6MiEU5v56WWHLZSQenS9bKENxKYpA
+ rRKOqsSf3rsdoELx/nC49oXwBGAJrvK/BJB7JPE4DQPIiRvQsWb6sGT1J1etbuMjbbL8Eg1JiQA
+ vv7hxe0SouisImTS3U6vO+KE0+gEOyrIxj6nKllKmN/XL22dKwYMtyeOekT78pARD8B4t2JuTKO
+ X1Zq88fBUwbcTppWOHObYYtnnmYm9Jr206pi3J9ph9J6ep2hJTmlI4j+Q5BbKalc6Dzb6cWK+oc
+ sWtivz5WZVpZoowQccg==
+X-Authority-Analysis: v=2.4 cv=BNuDalQG c=1 sm=1 tr=0 ts=6a0ed144 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17 a=VwQbUJbxAAAA:8
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=iQ6ETzBq9ecOQQE5vZCe:22 a=c92rfblmAAAA:8
+ a=NEAV23lmAAAA:8 a=1LRjq_vfZD5iGkovayUA:9 a=QEXdDO2ut3YA:10
+ a=GvGzcOZaWPEFPQC_NcjD:22
+X-Proofpoint-ORIG-GUID: iFn_RW7RHiBY5cr1E3cJ19H7PI6bGAG7
+X-Proofpoint-GUID: qMr3dIis9bzTenNFlc44zoXgBScuzSFh
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-21_01,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ adultscore=0 priorityscore=1501 malwarescore=0 impostorscore=0 suspectscore=0
+ lowpriorityscore=0 phishscore=0 bulkscore=0 spamscore=0 clxscore=1015
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605210089
 
-On 5/14/26 23:04, Sean Christopherson wrote:
-> Finally re-posting Mathias' work to provide better backtraces on x86, which
-> was blocked by a fatal bug in the nVMX SIPI test that was exposed by the
-> stack frame side effects.  This has been sitting on my local system(s) for
-> something like 5 months, and I all but forgot I hadn't posted it.
+On 5/19/26 22:25, Sean Christopherson wrote:
+> +KVM and LKML, which I stupidly forgot to Cc :-(
 > 
-> Most of this series is cleaning up the nVMX and nSVM to play nice with
-> multi-CPU tests.  Then to fix the race in the problematic SIPI, abuse the
-> VM-Entry MSR load list to atomically detect VM-Enter (I'm still proud of
-> that hack).
+> On Tue, May 19, 2026, Janosch Frank wrote:
+>> On 5/19/26 02:18, Sean Christopherson wrote:
+>>> Hello people with a MAINTAINERS entry that uses kvm@vger.kernel.org as a mailing list!
+>>>
+>>> How would y'all feel about enabling Sashiko[*] emails for kvm@vger.kernel.org?  For
+>>> a variety of reasons, Sashiko currently only logs its reviews to https://sashiko.dev
+>>> by default.  If subsystems want to receive on-list mails, they need to opt-in.
+>>>
+>>> I really, really want to enable email reviews for KVM x86, as Sashiko has found
+>>> an almost embarassing number of bugs that (a) would have been painful to debug
+>>> had they escaped review and (b) I'm not convinced would have been found by
+>>> traditional review.  And for me at least the signal:noise ratio is more than good
+>>> enough.  There are still hallucinations and false positives from time to time,
+>>> but the good outweighs the bad by quite a bit, it's cathartic to flame AI when
+>>> it's wrong, and worst case scenario I can simply ignore Sashiko.
+>>>
+>>> But, currently Sashiko is only capable of making decisions based on mailing list,
+>>> i.e. as things stand, _all_ of kvm@ needs to opt-in.  Before I badger Roman to
+>>> add bespoke logic to Sashiko's email flow, e.g. to special case KVM x86 in some
+>>> way, I want to see if there's a general consensus in favor (or against) enabling
+>>> review emails.
+>>>
+>>> Thanks!
+>>>
+>>> [*] https://github.com/sashiko-dev/sashiko
+>>
+>> Sure,
+>    ^
+>    |- This
 > 
-> For gory details:
+>> as long as there will be no mails from Sashiko or at most one mail per thread.
 > 
-> https://lore.kernel.org/all/3bac29b9-4c49-4e5d-997e-9e4019a2fceb@grsecurity.net
-
-I'm applying patches 1-18, adding the last two give
-
-gcc -mno-red-zone -mno-sse -mno-sse2  -fcf-protection=full -m16 -O1 -g 
--MMD -MP -MF x86/.realmode.d -fno-strict-aliasing -fno-common -Wall 
--Wwrite-strings -Wempty-body -Wuninitialized -Wignored-qualifiers 
--Wno-missing-braces -Werror  -fno-omit-frame-pointer 
--fno-stack-protector    -Wno-frame-address   -fno-pic  -Wclobbered 
--Wunused-but-set-parameter  -Wno-override-init  -Wmissing-parameter-type 
-  -Wold-style-declaration -Wmissing-prototypes -Wstrict-prototypes  -pg 
--mnop-mcount -std=gnu99 -ffreestanding -I 
-/home/pbonzini/work/upstream/kvm-unit-tests/lib -I 
-/home/pbonzini/work/upstream/kvm-unit-tests/lib/x86 -I lib -Os 
--Wno-array-bounds -mno-nop-mcount   -c -o x86/realmode.o 
-/home/pbonzini/work/upstream/kvm-unit-tests/x86/realmode.c
-cc1: error: ‘-pg’ without ‘-mfentry’ may be unreliable with shrink 
-wrapping [-Werror]
-
-with GCC 16.  This fixes it for both 32-bit and 64-bit builds, but I 
-thought I'd run it by you before committing it:
-
-diff --git a/x86/Makefile.x86_64 b/x86/Makefile.x86_64
-index 5b221a48..dffbe8cd 100644
---- a/x86/Makefile.x86_64
-+++ b/x86/Makefile.x86_64
-@@ -66,6 +66,8 @@ $(TEST_DIR)/vmx.$(bin): $(TEST_DIR)/vmx_tests.o
-  $(TEST_DIR)/svm.$(bin): $(TEST_DIR)/svm_tests.o
-  $(TEST_DIR)/svm_npt.$(bin): $(TEST_DIR)/svm_npt.o
-
-+NO_NOP_MCOUNT += $(if $(filter $(NOP_PGFLAGS),$(LATE_CFLAGS)),-mfentry)
-+
-  # Workaround for https://gcc.gnu.org/bugzilla/show_bug.cgi?id=125180
-  fno_fuse_ops_with_volatile := $(call cc-option, 
--fno-fuse-ops-with-volatile-access,)
-  $(TEST_DIR)/intel-iommu.o: CFLAGS += $(fno_fuse_ops_with_volatile)
-diff --git a/x86/realmode.c b/x86/realmode.c
-index 0a7104d4..3b2d8c12 100644
---- a/x86/realmode.c
-+++ b/x86/realmode.c
-@@ -24,8 +24,9 @@ asm(
-  	"test_function: \n\t"
-  	"mov $0x1234, %eax \n\t"
-  	"ret\n\t"
--	/* mcount() stub */
-+	/* profiling stubs */
-	"mcount:\n\t"
-+	"__fentry__:\n\t"
-  	"ret"
-     );
-
-
-Paolo
-
-> Mathias Krause (3):
->    x86/vmx: Initialize test stage in SIPI test *before* launching AP
->      thread
->    x86: Better backtraces for leaf functions
->    x86: Prevent realmode test code instrumentation with nop-mcount
+> is in conflict with the caveats here, as per-patch email is exactly what I am
+> proposing (the current state is that Sashiko never sends mails).>
+>> I'd appreciate something like "I found problems in this thread, here's the
+>> link, go look if you want to".
 > 
-> Sean Christopherson (17):
->    x86/vmx: Drop unused SYSENTER "support" in nested VMX infrastructure
->    x86/vmx: Drop unused guest_regs "support" in nested VMX infrastructure
->    x86/svm: Sort (and swap) GPRs by their index, not alphabetically
->    x86: Dedup guest/host context switch of registers across SVM and VMX
->    x86/virt: Use macro shenanigans to get reg offsets when swapping
->      guest/host regs
->    x86/virt: Track "guest regs" using per-CPU variable
->    x86/svm: Don't VMLOAD/VMSAVE "guest" state around VMRUN
->    x86/vmx: Use separate VMCSes for BSP vs. AP in INIT test
->    x86/vmx: Swap GPRs after checking "launched" status
->    x86/vmx: Track VMCS "launched" state per-CPU
->    x86/vmx: Track "is this CPU in guest mode" per-CPU
->    x86/vmx: Communicate hypercalls via RAX, not a global field
->    x86/kvmclock: Replace spaces with tabs
->    x86/kvmclock: Skip kvmclock test when not running on KVM with
->      CLOCKSOURCE2
->    x86/vmx: Tag "struct vmx_msr_entry" as needing to be 16-byte aligned
->    x86/smp: Align the stack to a 16-byte boundary when invoking SMP
->      function calls
->    x86/vmx: Write to KVM's WALL_CLOCK MSR via VM-Entry load list sync in
->      SIPI test
+> While this would be easier than manually searching through the web site, there
+> would still be a sizeable barrier between contributors/maintainers and Sashiko
+> feedback.  E.g. to click through an out-of-band source, copy+paste the response
+> into the original thread, etc.
 > 
->   lib/x86/processor.h |  15 +++
->   lib/x86/smp.c       |  21 ++++-
->   lib/x86/smp.h       |  32 +++++++
->   lib/x86/virt.h      |  61 ++++++++++++
->   x86/Makefile.common |  14 +++
->   x86/kvmclock.c      |  42 ++++-----
->   x86/kvmclock.h      |   2 +
->   x86/kvmclock_test.c | 225 +++++++++++++++++++++++---------------------
->   x86/realmode.c      |   3 +
->   x86/svm.c           |  19 ++--
->   x86/svm.h           |  61 ++----------
->   x86/svm_tests.c     |   5 +-
->   x86/vmx.c           | 121 +++++++++++-------------
->   x86/vmx.h           |  72 +-------------
->   x86/vmx_tests.c     | 134 ++++++++++++++++----------
->   15 files changed, 443 insertions(+), 384 deletions(-)
->   create mode 100644 lib/x86/virt.h
+> What are your concerns with per-patch email?  Hallucinations and noise are
+> definitely a potential problem, but IMO that can be handled by per-subsystem
+> policy.  E.g. if the signal:noise ratio is particularly poor for a subsystem,
+> that subsystem can document/state that responding to, or even reading, Sashiko
+> mails is completely optional.
 > 
-> 
-> base-commit: 4d60e2429d63dc0c24990114a8afc89e86c187cc
+> Beyond that, I'm struggling to understand why folks are opposed to getting mails
+> from Sashiko, especially for a list as large as kvm@.  As others pointed out, the
+> volume for kvm@ is already high, and it's trivially easy to create a filter for
+> mails from sashiko-bot@kernel.org.  I.e. it seems highly unlikely that mail from
+> Sashiko will require anyone to significantly rethink and/or rework their workflow,
+> whereas the web site approach is very disruptive to email-based review, at least
+> for me.
 
+In my mind there's a clear separation between human feedback and 
+non-human feedback. So the disruption is something that I prefer. Maybe 
+I just haven't yet fully evaluated how much I trust its review in 
+contrast to my human coworkers.
+
+That being said, I won't be the one holding this back. I see value in 
+this and I'd be happy to test this.
