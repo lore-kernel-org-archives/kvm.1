@@ -1,87 +1,177 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92AA51A8F7B
-	for <kvm@vger.kernel.org>; Thu, 21 May 2026 22:30:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58A342EDD69;
+	Thu, 21 May 2026 22:36:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779402626; cv=none; b=IVztWCuna7fDQHS7ZMOhQb+iQZt8kZZOCTERya04ybv5p8diVJLWIu3KIJwDeA6+0xRz17knxsBCfwu2BwNtWMS8UVfKdDeXqxGmqlvrtBNZj0PEeNySeOCw9aInOFSfm3ZxdZwpPa2AfMWUb8nNvoLyMyk+BgxGgQAwl/JIyEA=
+	t=1779403012; cv=none; b=aeR8rcQtf7/0VBrEliqwvbWWYIc51LlsHq9Ti0YsH/g6OZYPwYW4im0gmxESL6zxPRramP7ARBXguBw/CCXOwYhfW75nJDJEyRnAyyY5iqJHjcKu1nJgMYKP1GEb83pXGwPVuiMaGEp3upajzT5oYfax7i7n+dQHnVk9yakjLic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779402626; c=relaxed/simple;
-	bh=rbflla7xle2oiRwHeYhfStYOMc87R2Q835q8UhKjKro=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hx1SN/+0DpU/pKYVWQ8nqSoKb2V9Zi2vEsNETkLQE+Y70FgaO3+LlEFLqNHyRErItE6QFVtfxSJkJVVrHJm4VWIIHphE0Cx7fWab2TVSZekmm+cys+jwUUVFjIrP0ii5itqch1Vqf5rpU5CvYkGrsAo15Ayjn37L2Im4TDvKB6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dsQARqOb; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1779403012; c=relaxed/simple;
+	bh=iWi+rVGWRaT+t7ioXWfrl6ICbml7cqaQG7eYSudc3vY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GQGdg7P+Jx0mTQeJ8hM+7O2eNvUKX83n+N1iYjlbfXHqRu/8iW4YW3GZ+jY7hFU1gp6d35hvdAOXhmrEKU9RLr2DHAlfS0QXzCqxWT//s/rNFLaVmu1w8GYceJxBfQNLEFX7bydWYz/mnKzpsUcvHjW+ZQJ/8kknvLPseGiOkqc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=W+Ic6z9S; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dsQARqOb"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ba718173d1so114076855ad.0
-        for <kvm@vger.kernel.org>; Thu, 21 May 2026 15:30:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779402625; x=1780007425; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+mwj630vVwEqi8mq4SZZW5tTSWOGwfC/65sZINb+5IQ=;
-        b=dsQARqObuEFTteBeD8EZZkmR3mR+BaeWTW/5N3ij1iMrPuqwmludgo8bgkkq5SjjaG
-         gXYtYxn5OsFs0TWqfUUa4VnM/nT//ipCUv7z6Bj/T9NWxXfshSqhP4Ba+xzPAGJZo6Zm
-         Bixb6NOMzNRDOmECGLQEzVOWlE2xyWFnptm26uNZTkbQzAWCRzOYIglo8BkCfWXGdNtl
-         I/UdX7C79e9WoMPoJrNDWLSR8PnVWMFFAt+AaRcWz1faZ3Ngb93adR0OhUovagzkwWpv
-         b326ZDKtiJ2GoZuWlK144sVkx3z9MyeYh6IkQ3sxq0XjvTTzdg5yc0zu8w+ImcMmDDb0
-         ldmA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779402625; x=1780007425;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=+mwj630vVwEqi8mq4SZZW5tTSWOGwfC/65sZINb+5IQ=;
-        b=XKekKnFlQQ/LqOdgNLQ324EDwF5W1grsbGV5xurOAq2Gk9aB2uwQUwR8o+HTeiA0ML
-         Sm42wzeNZwuTfq4hR9MqoJMz/LUCO3LECY4Drig7yFB8sG3e9om19fLGyrpMwzuFX+0y
-         6TVUGB7iVWHH7ef74GJI/Rr5wfeS0LKjKkbASxippBYBW2YHN8OE70CCx/e63AiRm1MI
-         J9xI68HiTYghLEumWEOZpeg/U1lSW6kF5Ih+v2GwsBblBF5l3S0fTVZeLVk0c++Rmfeo
-         +Cmk//cztIFzHcazQdKoFv/4KDcEbSoBgmy+QeArULB5Y76c6XG0wbAJUf1+UyFGMkkR
-         n5xQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8sMIYToK3qCJBCUeiVXjs8TsvJ/KFK6v6klIenU/YoMiJJt1UBY3M64Nt1b6Qj9IW59LI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxuSU1ECYfdy/RyKYsuJ69sQy5Ldwua7H/IKCJYtLK8CZLcLJ//
-	EIVFowog6xZPXVVxKQpca0gQOJp+F9Lq29YIGIzMu5fvSBlmLOtVJ3XelIMmdOAqZ55OXh75mp+
-	k8L+skw==
-X-Received: from pgbfl15.prod.google.com ([2002:a05:6a02:50cf:b0:c80:1541:9dfc])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:430e:b0:3a3:a55f:407c
- with SMTP id adf61e73a8af0-3b328cad3aemr900407637.16.1779402624505; Thu, 21
- May 2026 15:30:24 -0700 (PDT)
-Date: Thu, 21 May 2026 15:30:23 -0700
-In-Reply-To: <3ad6cd109480772ade3c11f23b9c1d7a9855d67e.camel@infradead.org>
+	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="W+Ic6z9S"
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 28EA32A31;
+	Thu, 21 May 2026 15:36:43 -0700 (PDT)
+Received: from [10.57.22.108] (unknown [10.57.22.108])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 987C33F85F;
+	Thu, 21 May 2026 15:36:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
+	t=1779403008; bh=iWi+rVGWRaT+t7ioXWfrl6ICbml7cqaQG7eYSudc3vY=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=W+Ic6z9S90OLpjZazd5fKEp50HHCNAKpeQz+VTrRIXEpk4ThW57c4RECTEvQzpM0L
+	 /7385wq1ns9VH98WBApu5y2aaAivObGeC6hPIhcsCe3/bkbQemX93kPACTaB1UyWRj
+	 Kzn8TtmAYaIsSEdZDnTq4ji6CZ4a9xbP1tUw8Tsc=
+Message-ID: <2f5fec66-979a-4302-aa39-03ee8d9c82da@arm.com>
+Date: Thu, 21 May 2026 23:36:38 +0100
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260509224824.3264567-1-dwmw2@infradead.org> <20260509224824.3264567-28-dwmw2@infradead.org>
- <3ad6cd109480772ade3c11f23b9c1d7a9855d67e.camel@infradead.org>
-Message-ID: <ag-Hf2liLSX9q0rS@google.com>
-Subject: Re: [PATCH v4 27/30] KVM: x86: Add KVM_VCPU_TSC_EFFECTIVE_FREQ attribute
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>, 
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul Durrant <paul@xen.org>, 
-	Jonathan Cameron <jic23@kernel.org>, Sascha Bischoff <Sascha.Bischoff@arm.com>, 
-	Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, 
-	Dongli Zhang <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v14 07/44] arm64: RMI: Configure the RMM with the host's
+ page size
+Content-Language: en-GB
+To: Gavin Shan <gshan@redhat.com>, Steven Price <steven.price@arm.com>,
+ kvm@vger.kernel.org, kvmarm@lists.linux.dev
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Marc Zyngier <maz@kernel.org>,
+ Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>,
+ Oliver Upton <oliver.upton@linux.dev>, Zenghui Yu <yuzenghui@huawei.com>,
+ linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+ Joey Gouly <joey.gouly@arm.com>, Alexandru Elisei
+ <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>,
+ Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev,
+ Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+ Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun
+ <alpergun@google.com>, "Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+ Emi Kisanuki <fj0570is@fujitsu.com>, Vishal Annapurve
+ <vannapurve@google.com>, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
+References: <20260513131757.116630-1-steven.price@arm.com>
+ <20260513131757.116630-8-steven.price@arm.com>
+ <45a953a8-6edc-45c3-b5bd-17f14397ab89@redhat.com>
+From: Suzuki K Poulose <suzuki.poulose@arm.com>
+In-Reply-To: <45a953a8-6edc-45c3-b5bd-17f14397ab89@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Thu, May 21, 2026, David Woodhouse wrote:
-> On Sat, 2026-05-09 at 23:46 +0100, David Woodhouse wrote:
-> > From: David Woodhouse <dwmw@amazon.co.uk>
-> That does leave userspace still needing a way to get the APIC bus
-> frequency, to populate CPUID. So maybe I'll just make an attribute
-> which returns that as a single value.
+On 21/05/2026 01:51, Gavin Shan wrote:
+> Hi Steven,
+> 
+> On 5/13/26 11:17 PM, Steven Price wrote:
+>> RMM v2.0 brings the ability to set the RMM's granule size. Check the
+>> feature registers and configure the RMM so that it matches the host's
+>> page size. This means that operations can be done with a granulatity
+>> equal to PAGE_SIZE.
+>>
+>> Signed-off-by: Steven Price <steven.price@arm.com>
+>> ---
+>> Changes since v13:
+>>   * Moved out of KVM.
+>> ---
+>>   arch/arm64/kernel/rmi.c | 42 +++++++++++++++++++++++++++++++++++++++++
+>>   1 file changed, 42 insertions(+)
+>>
+>> diff --git a/arch/arm64/kernel/rmi.c b/arch/arm64/kernel/rmi.c
+>> index 99c1ccc35c11..a14ead5dedda 100644
+>> --- a/arch/arm64/kernel/rmi.c
+>> +++ b/arch/arm64/kernel/rmi.c
+>> @@ -49,6 +49,45 @@ static int rmi_check_version(void)
+>>       return 0;
+>>   }
+>> +static int rmi_configure(void)
+>> +{
+>> +    struct rmm_config *config __free(free_page) = NULL;
+>> +    unsigned long ret;
+>> +
+>> +    config = (struct rmm_config *)get_zeroed_page(GFP_KERNEL);
+>> +    if (!config)
+>> +        return -ENOMEM;
+>> +
+>> +    switch (PAGE_SIZE) {
+>> +    case SZ_4K:
+>> +        config->rmi_granule_size = RMI_GRANULE_SIZE_4KB;
+>> +        break;
+>> +    case SZ_16K:
+>> +        config->rmi_granule_size = RMI_GRANULE_SIZE_16KB;
+>> +        break;
+>> +    case SZ_64K:
+>> +        config->rmi_granule_size = RMI_GRANULE_SIZE_64KB;
+>> +        break;
+>> +    default:
+>> +        pr_err("Unsupported PAGE_SIZE for RMM\n");
+>> +        return -EINVAL;
+>> +    }
+>> +
+>> +    ret = rmi_rmm_config_set(virt_to_phys(config));
+>> +    if (ret) {
+>> +        pr_err("RMM config set failed\n");
+>> +        return -EINVAL;
+>> +    }
+>> +
+> 
+> Looking at branch 'topics/rmm-v2.0-poc_2' of RMM implementation, the 
+> granule size
+> is fixed to be 4KB at present. I'm not sure if I have looked into 
+> correct RMM
+> implementation, but 'topics/rmm-v2.0-poc_2' is recommended one in the cover
+> letter.
+> 
 
-Already exists, KVM_CAP_X86_APIC_BUS_CYCLES_NS.  The TDX architecture decided
-that unconditionally telling guests the virtual APIC bus runs at 400Mhz was a
-brilliant idea.
+You are right. The tf-RMM only supports 4KB. The policy at the KVM host
+is to set the Linux PAGE_SIZE for the GRANULE_SIZE (at least for now).
+If the RMM doesn't support the PAGE_SIZE, we don't support the RMM.
+
+
+> Besides, there has checks in the handler of the RMI command to make sure 
+> that
+> struct rmm_config::tracking_region_size to be 1GB, indicated by zero. It 
+> maybe
+> worthy to set it before call to rmi_rmm_config_set().
+> 
+>      config.tracking_region_size = 0; /* 1GB */
+
+Thanks, this explicit initialisation is missing, though in effect the
+value is 0'd. Also, we can't really say 1GB here, because the driver 
+should work for an RMM capable of 64K. So, instead, may be we could :
+
+	/* See the definition of RMM_GRANULE_TRACKING_SIZE */
+	config.tracking_region_size = 0;
+
+Suzuki
+
+
+>      ret = rmi_rmm_config_set(virt_to_phys(config));
+> 
+> 
+>> +    ret = rmi_rmm_activate();
+>> +    if (ret) {
+>> +        pr_err("RMM activate failed\n");
+>> +        return -ENXIO;
+>> +    }
+>> +
+>> +    return 0;
+>> +}
+>> +
+>>   static int __init arm64_init_rmi(void)
+>>   {
+>>       /* Continue without realm support if we can't agree on a version */
+>> @@ -60,6 +99,9 @@ static int __init arm64_init_rmi(void)
+>>       if (WARN_ON(rmi_features(1, &rmm_feat_reg1)))
+>>           return 0;
+>> +    if (rmi_configure())
+>> +        return 0;
+>> +
+>>       return 0;
+>>   }
+>>   subsys_initcall(arm64_init_rmi);
+> 
+> Thanks,
+> Gavin
+> 
+
