@@ -1,234 +1,256 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931E235CB7B
-	for <kvm@vger.kernel.org>; Thu, 21 May 2026 08:09:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779350969; cv=none; b=MRI6RgIKs/8hd9zhlSaNLFgycXBavHW3Ddps5ZIVuDvvHut6Nbw7y2Q4NayVAUnOtmfXKG1SmZaPN3efwUicXz7oIYjEE+ssVs44Buk25i89ZG4ueVwFdgS0st9X/ctc8FOBEhkDCqaOfA5UehbcjCo63O0OrcHx6wYW9wO34FQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779350969; c=relaxed/simple;
-	bh=m8cpSHzkg8JEZ10doSe/rAYC3WEzTO38jByOnmopL9g=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=nCDhf6S6CwhFm54iJNuc7NrOdpOWmGIZTrbcvo5xYzd/SgkCIOg3QOKASdmA7yAhqI8EBMIWF1e78JJaLIuEsUWnogCuW/90w/8SqY6Cz9fAtnoyXjyL1dnpN5IiPWGGQMZf8w/7hWD5o+ikuwZctiRVO9hlrs3MmIRXHXbfXwo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=GxXYnf56; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=MNQpHNjy; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2142B36167B
+	for <kvm@vger.kernel.org>; Thu, 21 May 2026 08:27:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779352050; cv=pass; b=hw1jtqzelLSmCfJCWmsSvajRErh5/xvIk26062F1/Rtc7+op3r27LY165hiy1mC2PLeQpYDjysSbGpcr0LbaOZA1m3AuBAA2oOX7fBtjaKYXnhDd3tuix/CY9NBsifO1FiGUExJBCgAHVx425OwHpMrcv8NlnGzdAOC3t6/JCWA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779352050; c=relaxed/simple;
+	bh=Mea46XcA70zxzmyZqyD+qyEd3ZA9s42FFfqINPOE7cg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=dBzVqqqizF9trxelcMtkvxD434Il/HK1bMDCjIV31RNL5Fw2V8nF0MwlyVefA7b0dP1DvjuBsVdDGTo1KdByNA8y+aVFofzhTKbcesLE+ZA8cM/5XzUEbQ2WdxveeoCvgurPxdz1PaQJspvug9b38tCBkgfWTDPghEPFR74UwBg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U8VZUagU; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=PxFd7xv9; arc=pass smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="GxXYnf56";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="MNQpHNjy"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U8VZUagU";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="PxFd7xv9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779350965;
+	s=mimecast20190719; t=1779352048;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=CQsz+70+x94megdjqCdLkEeKOXcrzAViPQxLB/gwRGk=;
-	b=GxXYnf56Xg1oyvmcTOF60YTh9KWkD3phOgtbwQu7qtF/UYd0QYwMh1xXvQzfK5jw7lL3ng
-	at5hNKeXXHkEUSfhTfdObHPMQ/lTsW3HJIQO/Kq9EJO3EehjYPE8UDgyo2UsMAEw0xQOY2
-	Aqr1HSOXjDFzc4dt0vsfs5c0qz0/oXA=
-Received: from mail-pg1-f198.google.com (mail-pg1-f198.google.com
- [209.85.215.198]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=rB3LIF/atoVQxpAbXGNRQNLpos0KUx8F+xO8WV7sZgM=;
+	b=U8VZUagUhR3xhguPgv+jzwkwgNboMvr8k1lCViWaoXh+BTOH8D0WDglE6S2miRz9tUVcif
+	F6PeZY8XWmBJLoRXo9n2i2IOPLhCfEUB3LtpUZ8KK8w3giZ3PnSS9ratQrMj1GzCGDxsHa
+	nJJH/ILS5maOj11iX90whB9hcEv3s/M=
+Received: from mail-yx1-f70.google.com (mail-yx1-f70.google.com
+ [74.125.224.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-392-fDMI7vBdOUSV6hqnyTbbiA-1; Thu, 21 May 2026 04:09:23 -0400
-X-MC-Unique: fDMI7vBdOUSV6hqnyTbbiA-1
-X-Mimecast-MFC-AGG-ID: fDMI7vBdOUSV6hqnyTbbiA_1779350963
-Received: by mail-pg1-f198.google.com with SMTP id 41be03b00d2f7-c828b1b7fddso3311494a12.3
-        for <kvm@vger.kernel.org>; Thu, 21 May 2026 01:09:23 -0700 (PDT)
+ us-mta-664-JMEZBq-rMyeoSCf9-S5wVQ-1; Thu, 21 May 2026 04:27:26 -0400
+X-MC-Unique: JMEZBq-rMyeoSCf9-S5wVQ-1
+X-Mimecast-MFC-AGG-ID: JMEZBq-rMyeoSCf9-S5wVQ_1779352046
+Received: by mail-yx1-f70.google.com with SMTP id 956f58d0204a3-65c3132b7e5so1997553d50.2
+        for <kvm@vger.kernel.org>; Thu, 21 May 2026 01:27:26 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779352046; cv=none;
+        d=google.com; s=arc-20240605;
+        b=VlT2kP9wEp3E4tR0RFCMZUJgrCXwhqhXFxvKbncFODcPZD1peaB0mZzrOzbhcF+Aji
+         sITVa1x/2iRCQ/SFz2O7TOwyDYdutPlGbNVmPAP7A9YXmMEkSTZxa/BOI2OvovQc56ng
+         5/QqmH31jFNw6w6bwXjLr906YB059pZLDIJ6tZO6zIXeC+HqhC5krqPFlQ/QImacn80u
+         C8YgOiJAqCELvZxQ/Y3lA+c2ml/uS8IO9Vl9f07RRPstdnZTe4Hf9oSS/20i9NqMztJ5
+         5sMKw7hDMP6+u+LD9cmTAcY/GOFujZgEiQGRRtF50N9zK/ogNgZovaZhRlXXZwUUD4MO
+         5H/A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=rB3LIF/atoVQxpAbXGNRQNLpos0KUx8F+xO8WV7sZgM=;
+        fh=i5Oqa0aZHHjqfTpL/+t6C6Cs8S7CCrw/f3KArlxHdkc=;
+        b=Z6vER2Ed7pzbRkcyJc6bD1IcVX8k9hjC9TdtGIbZeiK4WnB/SsDHjVV39KThCIG7IE
+         udO67F2pd2RyHBOT2ilubqJLEyA9ernevMubynHGC/RzZvTD/aEM5TTt/c9pP3btANEF
+         5THAlXyeJBXpLjcGic/goDi57mP3hyev28R2DGwmYHGFTvXRl4fQwJzKjiVf2MMGZNnZ
+         ac27EZjjBq3/kZ4L+nMTnycI1SFTfP3U69XUWkOyCoPdoMmjU7xiHnl9H2Ee3wllQQlT
+         PWSyX4cDZut1IjAtAxlnSYRLY9iXXZevd+bQm4mbGEKBRJnNTazauTFTuaT+PpAh2Idg
+         o+kA==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779350962; x=1779955762; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
+        d=redhat.com; s=google; t=1779352046; x=1779956846; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=CQsz+70+x94megdjqCdLkEeKOXcrzAViPQxLB/gwRGk=;
-        b=MNQpHNjypysqmrYqlcSp612wuk6znQfipWvoGuZc6KTOWQOZrlDLDMbsEksJnUm6v5
-         Y5k4JXgFAKKN+4/vJ8u6yOg47V7SCjBD8JmcojfRs8O6y255bWkO7kIX9vGB7Ih3F/IJ
-         TnoO2hbcsc8DIXDjvUzzMi859dRGeKhL4lU3JTQPwsIUx9NARPFKcTbv7t5ZGb8L0Ih2
-         J040M/T26hD+TdL7AwgKV0nAQvDLzESqEZyMuZWxr4pjpY6u4D71HZHEN2Vi6Y22EIR1
-         WlSkt1LbOTWZh3Ofj0n7pM1/4EtV88q4cj+uSwmdm7SOdDiQX6XS+bECRv2h8mvhcxst
-         +qGw==
+        bh=rB3LIF/atoVQxpAbXGNRQNLpos0KUx8F+xO8WV7sZgM=;
+        b=PxFd7xv9n5Lh1trRRIkPAY7LZu/Wzo99r+UATtnqVECSVvybuDD50SwCYpEQGqL+HJ
+         JwqBIi28MkizhMFkuAGDtzTrHe4ARSxKLNteND8xkg4vWudnbnVsMrpa4FKa6vLmhN8R
+         XL4uBRm1nVjXxh+V4yC56DwYPFYlunqsJ9yrbGTT0nykdfj46Ew84JCaqzkFostmSZU5
+         bKsl/zlglluoYTLSu7naM4KINIBnNBBDtHrkrfpbSCKckwNgWto1cknNmX3FlTP5vzHX
+         Z99RfWf/XFq13hBMQiIReak6cesY3flXqusRMWkFY5HGb1kQgqCk3ny2/TeRDmDmbXBW
+         qiwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779350962; x=1779955762;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=CQsz+70+x94megdjqCdLkEeKOXcrzAViPQxLB/gwRGk=;
-        b=TdDdtoum7kCXObh0soF3GuFm4ubkFGaGm6ZLnYxKLZ/A36i3Lx8i73lRjlS1dsf2x0
-         9v0OSUa9KIXI8mvuq6/Rif1E7k21dE3+KSK0wuBywi5sSYpNZEsL/Mr2en369xVhxq0H
-         /nUw3jSPbh+OvmredHXX/W0DfTL00VXM/Pz3xB9OaLhnTydr8A/s/emBRf0+uh5hnxEI
-         r4ItCoAhHpnXqHjCXrfx+4TuuUnAk4Yu78weumjLx/0kRMCp8mtwYl94A8pKBdNBsJol
-         2awXxXreq81ApE7AzpN9OB11m1vJfOBPKCoRlb4QtLv4LOy94yRj4tECavOBma8jDLLY
-         iGGQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8MTLZ9P2VbdHNHpSQ7s55qiXYg3glgw4raeUTWzJXlnVIyk8yx0eO2MHFdmIctTo5dM5g=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxb3RQjCH308+lOT+DNyKoJe3783OnThN9DIJqaWWOtL1UUOWFZ
-	97lMi1eKpkYeCsDrLaTxWDIpx0TvVs0Iv4BMYmtlmEN1utme51+lxi9xSud8HT7jMCbdxwSdmB/
-	6aRVJjvp/eS7FcNmEbsZyBuamLABBboNrt3ugVgDEodJkQyzz2OnmKA==
-X-Gm-Gg: Acq92OF+Id+4zXAERZEcn2ffJ/KAiQzWQu42WoYfTFqgEV5SaEojXhSQsjp7NnQNiWx
-	MGZVAjWXs/mKsKZ5z6aWOHGPeqHGuvC2ng0Crnm21VaT6I/m9cM98VSbb+HF3o6WVzPsWs/X1B2
-	fpKETd1N2ysb/NJ7QZUYkp8SWhfsXMsVyfkXdKgwiQxcOMDGHz4e29lONTFa4fpAC61iw3Ts2qQ
-	384YdC2Xh/CZ8u/5bo8uKpU1DkzhcoGIICttHw7+faAOfvCdFZzhNPHnHMjTX6hVTmOgPqXhyQY
-	YkaG95vmUWTfu79mjz8rKL0iTNy+fd8TrsdQUB3tVyK2Xq0vnVlz3vyTAHOhEZ5rRs/FbYe1Cmh
-	WeO70Z6m7FWIjTbDWMK5wLZBXkKrZfgd2+lDLC/FISZ7CLVOvyytHclHQNs8XbPLIfIsCbGauhE
-	s=
-X-Received: by 2002:a17:903:390f:b0:2ad:9b86:ddc2 with SMTP id d9443c01a7336-2bea3064217mr20029925ad.22.1779350962451;
-        Thu, 21 May 2026 01:09:22 -0700 (PDT)
-X-Received: by 2002:a17:903:390f:b0:2ad:9b86:ddc2 with SMTP id d9443c01a7336-2bea3064217mr20029655ad.22.1779350961985;
-        Thu, 21 May 2026 01:09:21 -0700 (PDT)
-Received: from smtpclient.apple ([122.163.114.34])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2bea91733e5sm3786615ad.11.2026.05.21.01.09.19
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Thu, 21 May 2026 01:09:21 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+        d=1e100.net; s=20251104; t=1779352046; x=1779956846;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=rB3LIF/atoVQxpAbXGNRQNLpos0KUx8F+xO8WV7sZgM=;
+        b=rDM6uDLUDuOyMPexps0X0/23cusxR0Jlg/UbiGQX9pNBeWponeSDNzaIJxxHxib6La
+         k8vBWi29+IY8l/jX8ngCQ+ocdUmHnOw4FWexVi84YKsS4iY521Dtoo0AqJcq0LOTZ0X8
+         Zfghccl/LveHFL/JCOh7AmxZH/NyV84QnyonVSLuw0HaLQ5HcEH51SdEHfMa6/VqTy/q
+         5KSenOWdLjzYCJ7zajmtY1r/Iigmtsung5e7/dUGw0iLTBgGPgFm8z1D2pPMPsI/rH+E
+         Sutt4PGMlyg0p4jFZHW7ySDNfX1ua5MiAB0dASQVWNLyhzfS03qOssfY6fJfCcEqOsLI
+         D/mw==
+X-Forwarded-Encrypted: i=1; AFNElJ9Av6QlgyLw0DVmi+MKAyNz9bDVrfXtgqzawazRye6+ScKYDKSGt/ddtunf+e1km0dVM84=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwWY/XoHG0zzR05ZIEwwTsOZoCKPnaszYcYNli8wmk5ZzssXjTm
+	E5kMqfWTxa3gAcaDOYaR+hJ7AiGAwlNhtSG96+fnaa/Yt4+W7iFj5qyTViH1PjPiWWoPzZBMqZo
+	hrWyU9zgC4JpEyxtHsI/m49YY9NHECYI9eJqF3hAXXUPc0vp9I0yJgwo377nqDVNalVuJKI/u6I
+	6p7Vbtji+JxaEr8h1+JRJN7p19ISQzh0mBtO9V2Tg=
+X-Gm-Gg: Acq92OH1z6wn6pD/N6lnUxgHYJXN1LUkFhDb2RIx6sPvjDpQaJEglbKQpvbfF9l9V+0
+	fNx4uRTefnT0jcgvIxri0Q2GD4GkufNnUE/eb9IWbqgoW6Zu+Y1QsEOqStKfuNgsIJjWab0LFXq
+	KtPZzfLH9IXUBfQf/dvcOnJ5syMu4DEtxHX6ksjQkiP3LfAZlw5FNW341dVBMj34qThhQzPboYm
+	1QCMnK5/xPw5A==
+X-Received: by 2002:a05:690e:400a:b0:65e:3df3:1c71 with SMTP id 956f58d0204a3-65eae3402d0mr1402729d50.43.1779352046106;
+        Thu, 21 May 2026 01:27:26 -0700 (PDT)
+X-Received: by 2002:a05:690e:400a:b0:65e:3df3:1c71 with SMTP id
+ 956f58d0204a3-65eae3402d0mr1402702d50.43.1779352045681; Thu, 21 May 2026
+ 01:27:25 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3864.500.181\))
-Subject: Re: [PATCH for-11.1] accel/kvm: refactor and clean up
- do_kvm_irqchip_create
-From: Ani Sinha <anisinha@redhat.com>
-In-Reply-To: <CAF7B8BF-9095-4B86-8BC2-EA987BC739F7@redhat.com>
-Date: Thu, 21 May 2026 13:39:07 +0530
-Cc: peter.maydell@linaro.org,
- philmd@linaro.org,
- kvm@vger.kernel.org,
- qemu-devel@nongnu.org
+MIME-Version: 1.0
+References: <20260511094504.1619893-2-dtatulea@nvidia.com>
+In-Reply-To: <20260511094504.1619893-2-dtatulea@nvidia.com>
+From: Eugenio Perez Martin <eperezma@redhat.com>
+Date: Thu, 21 May 2026 10:26:48 +0200
+X-Gm-Features: AVHnY4KzvfnK96jq_WEM08qHvg7RJR8HuiYmXJ5atCT1OCaQOTYbbzhAXG5NZTQ
+Message-ID: <CAJaqyWc6gA=TU-YMYdttH3_MjBo+644kgmah1XZnvxP58Gxzag@mail.gmail.com>
+Subject: Re: [PATCH] vhost-vdpa: Expose ASID group change after DRIVER_OK via
+ backend feature
+To: Dragos Tatulea <dtatulea@nvidia.com>
+Cc: virtualization@lists.linux.dev, "Michael S. Tsirkin" <mst@redhat.com>, 
+	Jason Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, 
+	Tariq Toukan <tariqt@nvidia.com>, Shahar Shitrit <shshitrit@nvidia.com>, linux-kernel@vger.kernel.org, 
+	kvm@vger.kernel.org, netdev@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <992D68BD-AC1F-457D-B1C4-8DDC79A10327@redhat.com>
-References: <20260415063835.85540-1-anisinha@redhat.com>
- <CAF7B8BF-9095-4B86-8BC2-EA987BC739F7@redhat.com>
-To: Paolo Bonzini <pbonzini@redhat.com>
-X-Mailer: Apple Mail (2.3864.500.181)
 
-Ping .. has this patch been queued?
+On Mon, May 11, 2026 at 11:46=E2=80=AFAM Dragos Tatulea <dtatulea@nvidia.co=
+m> wrote:
+>
+> The commit in the fixes tag blocked VHOST_VDPA_SET_GROUP_ASID operations
+> once DRIVER_OK is set. That is too strict for devices which can safely
+> handle this during live migration flows.
+>
+> Bring back this behavior under a new vhost backend feature flag. The
+> feature is supported by mlx5 and vdpa_sim devices.
+>
+> Fixes: 3543b04a4ea3 ("vhost: forbid change vq groups ASID if DRIVER_OK is=
+ set")
+> Signed-off-by: Dragos Tatulea <dtatulea@nvidia.com>
+> Reviewed-by: Shahar Shitrit <shshitrit@nvidia.com>
 
+Acked-by: Eugenio P=C3=A9rez <eperezma@redhat.com>
 
-> On 23 Apr 2026, at 7:08=E2=80=AFAM, Ani Sinha <anisinha@redhat.com> =
-wrote:
->=20
-> Ping =E2=80=A6 Now that 11.1 dev window is open.
->=20
->> On 15 Apr 2026, at 12:08=E2=80=AFPM, Ani Sinha <anisinha@redhat.com> =
-wrote:
->>=20
->> Refactor do_kvm_irqchip_create() so it has specific return codes for =
-specific
->> cases. Clean up the logic and add some clarifying comments. Adjust =
-the
->> function call logic accourdingly. Should be no material change.
->>=20
->> Signed-off-by: Ani Sinha <anisinha@redhat.com>
->> ---
->> accel/kvm/kvm-all.c | 48 =
-++++++++++++++++++++++++++++-----------------
->> 1 file changed, 30 insertions(+), 18 deletions(-)
->>=20
->> diff --git a/accel/kvm/kvm-all.c b/accel/kvm/kvm-all.c
->> index 92af42503b..788cbf8693 100644
->> --- a/accel/kvm/kvm-all.c
->> +++ b/accel/kvm/kvm-all.c
->> @@ -2575,6 +2575,13 @@ void kvm_irqchip_set_qemuirq_gsi(KVMState *s, =
-qemu_irq irq, int gsi)
->>    g_hash_table_insert(s->gsimap, irq, GINT_TO_POINTER(gsi));
->> }
->>=20
->> +/**
->> + * do_kvm_irqchip_create - create irqchip
->> + * @s: The KVMState pointer
->> + *
->> + * Returns: -errno on fatal errors, 0 on success and
->> + *          non-negative on non-fatal errors.
->> + */
->> static int do_kvm_irqchip_create(KVMState *s)
->> {
->>    int ret;
->> @@ -2583,32 +2590,34 @@ static int do_kvm_irqchip_create(KVMState *s)
->>    } else if (kvm_check_extension(s, KVM_CAP_S390_IRQCHIP)) {
->>        ret =3D kvm_vm_enable_cap(s, KVM_CAP_S390_IRQCHIP, 0);
->>        if (ret < 0) {
->> -            fprintf(stderr, "Enable kernel irqchip failed: %s\n", =
-strerror(-ret));
->> -            exit(1);
->> +            error_report("Enable kernel irqchip failed: %s", =
-strerror(-ret));
->> +            return ret;
->>        }
->>    } else {
->> -        return -EOPNOTSUPP;
->> +        /*
->> +         * neither KVM_CAP_IRQCHIP nor KVM_CAP_S390_IRQCHIP =
-capabilities are
->> +         * present. We can't proceed. Bail.
->> +         */
->> +        return 1;
->>    }
->>=20
->> -    if (kvm_check_extension(s, KVM_CAP_IRQFD) <=3D 0) {
->> -        fprintf(stderr, "kvm: irqfd not implemented\n");
->> -        exit(1);
->> -    }
->> +    assert(kvm_check_extension(s, KVM_CAP_IRQFD));
->>=20
->>    /* First probe and see if there's a arch-specific hook to create =
-the
->>     * in-kernel irqchip for us */
->>    ret =3D kvm_arch_irqchip_create(s);
->>    if (ret =3D=3D 0) {
->> -        if (s->kernel_irqchip_split =3D=3D ON_OFF_AUTO_ON) {
->> -            error_report("Split IRQ chip mode not supported.");
->> -            exit(1);
->> -        } else {
->> -            ret =3D kvm_vm_ioctl(s, KVM_CREATE_IRQCHIP);
->> -        }
->> +        /*
->> +         * If we are here, it means we are going to do an in-kernel =
-irqchip.
->> +         * Lets make sure that the kernel_irqchip_split setting is =
-not set to
->> +         * split mode.
->> +         */
->> +        assert(s->kernel_irqchip_split !=3D ON_OFF_AUTO_ON);
->> +        ret =3D kvm_vm_ioctl(s, KVM_CREATE_IRQCHIP);
->>    }
->>    if (ret < 0) {
->> -        fprintf(stderr, "Create kernel irqchip failed: %s\n", =
-strerror(-ret));
->> -        exit(1);
->> +        error_report("Create kernel irqchip failed: %s", =
-strerror(-ret));
->> +        return ret;
->>    }
->>=20
->>    return 0;
->> @@ -2616,9 +2625,13 @@ static int do_kvm_irqchip_create(KVMState *s)
->>=20
->> static void kvm_irqchip_create(KVMState *s)
->> {
->> +    int ret;
->>    assert(s->kernel_irqchip_split !=3D ON_OFF_AUTO_AUTO);
->>=20
->> -    if (do_kvm_irqchip_create(s) < 0) {
->> +    ret =3D do_kvm_irqchip_create(s);
->> +    assert(ret >=3D 0);
->> +    if (ret) {
->> +        /* required kvm capabilities missing, we can't proceed. */
->>        return;
->>    }
->>    kvm_kernel_irqchip =3D true;
->> @@ -2839,8 +2852,7 @@ static int kvm_reset_vmfd(MachineState *ms)
->>    }
->>=20
->>    if (s->kernel_irqchip_allowed) {
->> -        /* ignore return from this function */
->> -        do_kvm_irqchip_create(s);
->> +        assert(do_kvm_irqchip_create(s) >=3D 0);
->>    }
->>=20
->>    /*
->> --=20
->> 2.49.0
->>=20
->=20
+> ---
+>  drivers/vdpa/mlx5/net/mlx5_vnet.c |  3 ++-
+>  drivers/vdpa/vdpa_sim/vdpa_sim.c  |  3 ++-
+>  drivers/vhost/vdpa.c              | 13 +++++++++++--
+>  include/uapi/linux/vhost_types.h  |  4 ++++
+>  4 files changed, 19 insertions(+), 4 deletions(-)
+>
+> diff --git a/drivers/vdpa/mlx5/net/mlx5_vnet.c b/drivers/vdpa/mlx5/net/ml=
+x5_vnet.c
+> index ad0d5fbbbca8..f89177957c76 100644
+> --- a/drivers/vdpa/mlx5/net/mlx5_vnet.c
+> +++ b/drivers/vdpa/mlx5/net/mlx5_vnet.c
+> @@ -2906,7 +2906,8 @@ static void unregister_link_notifier(struct mlx5_vd=
+pa_net *ndev)
+>
+>  static u64 mlx5_vdpa_get_backend_features(const struct vdpa_device *vdpa=
+)
+>  {
+> -       return BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK);
+> +       return BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK) |
+> +              BIT_ULL(VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK);
+>  }
+>
+>  static int mlx5_vdpa_set_driver_features(struct vdpa_device *vdev, u64 f=
+eatures)
+> diff --git a/drivers/vdpa/vdpa_sim/vdpa_sim.c b/drivers/vdpa/vdpa_sim/vdp=
+a_sim.c
+> index 8cb1cc2ea139..253c7fb35ea0 100644
+> --- a/drivers/vdpa/vdpa_sim/vdpa_sim.c
+> +++ b/drivers/vdpa/vdpa_sim/vdpa_sim.c
+> @@ -428,7 +428,8 @@ static u64 vdpasim_get_device_features(struct vdpa_de=
+vice *vdpa)
+>
+>  static u64 vdpasim_get_backend_features(const struct vdpa_device *vdpa)
+>  {
+> -       return BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK);
+> +       return BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRIVER_OK) |
+> +              BIT_ULL(VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK);
+>  }
+>
+>  static int vdpasim_set_driver_features(struct vdpa_device *vdpa, u64 fea=
+tures)
+> diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+> index 692564b1bcbb..67b3f49fa709 100644
+> --- a/drivers/vhost/vdpa.c
+> +++ b/drivers/vhost/vdpa.c
+> @@ -682,7 +682,8 @@ static long vhost_vdpa_vring_ioctl(struct vhost_vdpa =
+*v, unsigned int cmd,
+>                         return -EFAULT;
+>                 if (idx >=3D vdpa->ngroups || s.num >=3D vdpa->nas)
+>                         return -EINVAL;
+> -               if (ops->get_status(vdpa) & VIRTIO_CONFIG_S_DRIVER_OK)
+> +               if ((ops->get_status(vdpa) & VIRTIO_CONFIG_S_DRIVER_OK) &=
+&
+> +                   !vhost_backend_has_feature(vq, VHOST_BACKEND_F_GROUP_=
+ASID_AFTER_DRIVER_OK))
+>                         return -EBUSY;
+>                 if (!ops->set_group_asid)
+>                         return -EOPNOTSUPP;
+> @@ -791,7 +792,8 @@ static long vhost_vdpa_unlocked_ioctl(struct file *fi=
+lep,
+>                                  BIT_ULL(VHOST_BACKEND_F_IOTLB_PERSIST) |
+>                                  BIT_ULL(VHOST_BACKEND_F_SUSPEND) |
+>                                  BIT_ULL(VHOST_BACKEND_F_RESUME) |
+> -                                BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRI=
+VER_OK)))
+> +                                BIT_ULL(VHOST_BACKEND_F_ENABLE_AFTER_DRI=
+VER_OK) |
+> +                                BIT_ULL(VHOST_BACKEND_F_GROUP_ASID_AFTER=
+_DRIVER_OK)))
+>                         return -EOPNOTSUPP;
+>                 if ((features & BIT_ULL(VHOST_BACKEND_F_SUSPEND)) &&
+>                      !vhost_vdpa_can_suspend(v))
+> @@ -805,6 +807,13 @@ static long vhost_vdpa_unlocked_ioctl(struct file *f=
+ilep,
+>                 if ((features & BIT_ULL(VHOST_BACKEND_F_DESC_ASID)) &&
+>                      !vhost_vdpa_has_desc_group(v))
+>                         return -EOPNOTSUPP;
+
+Ouch to me here. By reading the errno manual:
+
+Nit: By reading errno(3):
+ENOTSUP - Operation not supported (POSIX.1-2001).
+EOPNOTSUPP - Operation not supported on socket (POSIX.1-2001).
+
+I picked the wrong constant even if they share the same errno value
+(by the same page of the manual). MST, is it worth changing it?
+
+> +               if (features & BIT_ULL(VHOST_BACKEND_F_GROUP_ASID_AFTER_D=
+RIVER_OK)) {
+> +                       if (!(features & BIT_ULL(VHOST_BACKEND_F_IOTLB_AS=
+ID)))
+> +                               return -EINVAL;
+> +                       if (!(vhost_vdpa_get_backend_features(v) &
+> +                               BIT_ULL(VHOST_BACKEND_F_GROUP_ASID_AFTER_=
+DRIVER_OK)))
+> +                               return -EOPNOTSUPP;
+> +               }
+>                 if ((features & BIT_ULL(VHOST_BACKEND_F_IOTLB_PERSIST)) &=
+&
+>                      !vhost_vdpa_has_persistent_map(v))
+>                         return -EOPNOTSUPP;
+> diff --git a/include/uapi/linux/vhost_types.h b/include/uapi/linux/vhost_=
+types.h
+> index 1c39cc5f5a31..ec1ff8a2e260 100644
+> --- a/include/uapi/linux/vhost_types.h
+> +++ b/include/uapi/linux/vhost_types.h
+> @@ -197,5 +197,9 @@ struct vhost_vdpa_iova_range {
+>  #define VHOST_BACKEND_F_DESC_ASID    0x7
+>  /* IOTLB don't flush memory mapping across device reset */
+>  #define VHOST_BACKEND_F_IOTLB_PERSIST  0x8
+> +/* Device supports changing the group ASID after DRIVER_OK.
+> + * Requires VHOST_BACKEND_F_IOTLB_ASID.
+> + */
+> +#define VHOST_BACKEND_F_GROUP_ASID_AFTER_DRIVER_OK  0x9
+>
+>  #endif
+> --
+> 2.54.0
+>
 
