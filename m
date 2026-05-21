@@ -1,167 +1,180 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from out28-194.mail.aliyun.com (out28-194.mail.aliyun.com [115.124.28.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6A403CF02E;
-	Thu, 21 May 2026 12:25:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 954F63A5452;
+	Thu, 21 May 2026 12:33:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779366311; cv=none; b=AXsz1QONef3V41WXKKWhk0phFf24RqJn4x2XyuKYLIrq0XpH0yajGIhuqloFiwNpGuMcxwhnG0jK2IrsrA3vdu9MydVo9ptjut9byNXrExhoRCYEG4OnbKm6ChWfnsErhJf87QRTcmrkXbpurlNTqHC4Kn4p3qpI3JpaI7xnPcQ=
+	t=1779366810; cv=none; b=EoVszKhuSUP3z9XqMBgwRpxTYfFbp+2Uh7BN9lEQrJUAbXKHlVV+QJ62CuBdv4fvuQGjZyoUJW70jpP0tZHFUsIF16HCPRQmBwOy/+EFoo233qq/EJM4agVcrbja7UDee3IPQxeiQTUfccxXXHPQHI0BKgUdeokC/LQI9KZeEaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779366311; c=relaxed/simple;
-	bh=KUjCzoopzTTEwHIzusx3oU4AqEOvMG0KszjI0HD/+KY=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jz4uSP6Gm0k++jiXROzY/qM0FAn/fT9ys3FXvLWrPsbny6cak5x+UntDeye1TufZxG99NmPeF5Nd8O2tYyO0ziUrv9+qi589TIYoEu2iDoUvAM/6QEZrAREygWWQLR/CaSNmLqYap3/w5j39BGxrvSYdaCBD0OKlcMI/igT5elw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZzPjrtOV; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779366810; c=relaxed/simple;
+	bh=wm5kKA6unI/coX+VSaFghpxoyxjKEGE1e4af/nM4w7o=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hhV5Y4fqT5s1XGzhQ37oV30pFCVuU6sWtNgBjT9Juv/3ZjKrbFFrxHt13qDGM+t3vcoTYvW61GNtNTuataRQyrDaoNLLZ/gQDg9YJtr6jgS2JnhyU7Ymx+0ImhbkuHfJqJ5P/WyjlpKa9sP3qgBI7zxoutqy9iRvC+3IcCqZpKw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com; spf=pass smtp.mailfrom=antgroup.com; dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b=fGh6WfVX; arc=none smtp.client-ip=115.124.28.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=antgroup.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=antgroup.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZzPjrtOV"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE181F000E9;
-	Thu, 21 May 2026 12:25:03 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779366303;
-	bh=ZScC40Tjduxa/5ReiIAjgbr4BdCwyUKFutprZ4pKc30=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=ZzPjrtOVYWsAP3dtI2Qfv4W+HKL6glXzSn0vgLGLL96rcCNiW7vjtM6nBPMb3Ng8H
-	 G9dj1AjDw1bFUJ8whfPC4CFsPxPFCrEI3kLw9CoUVEWNET76qN7kpJ+etLKwIP+73f
-	 jtt5BHbwTpTYYZ6unbI5iADz3+2BLKthRgI+qhfY2BaU+B29T9Li8VoBox+JR1HhIq
-	 jsnPQWLR4aUek2kcURFSfQ45a7IZELZzfhA5pfaY0SGrIjuJNhMhwxkGPS12QAhH7E
-	 UlD/wHlZdXyBDz89jSKxk9qAg465mBXIKU5TGMPoV3CzD97N0B7q7qwoeCQsJyLjYy
-	 6VYcuIU70wL5A==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wQ2ST-00000004oOX-1jAK;
-	Thu, 21 May 2026 12:25:01 +0000
-Date: Thu, 21 May 2026 13:25:00 +0100
-Message-ID: <86fr3lvtk3.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Steven Price <steven.price@arm.com>
-Cc: kvm@vger.kernel.org,
-	kvmarm@lists.linux.dev,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>,
-	James Morse <james.morse@arm.com>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Zenghui Yu <yuzenghui@huawei.com>,
-	linux-arm-kernel@lists.infradead.org,
+	dkim=pass (1024-bit key) header.d=antgroup.com header.i=@antgroup.com header.b="fGh6WfVX"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=antgroup.com; s=default;
+	t=1779366795; h=Date:From:To:Subject:Message-ID:MIME-Version:Content-Type;
+	bh=TUQOpx80QeV28tI3NzfFrn9g/OFKMXFJ4t++ZPTUrm8=;
+	b=fGh6WfVXvAce+53BwEtOhi97GymYjw1yoqmhXIReG8rz4iCLVvmsQas+C25bpnXP3RfagsvmJ2Y3YEyh8zCXspba2tQnSjO5mymv7255dZ4OPCIh62BDeoREHWM2fKSqdYQ5tU6b90vNV+2wKs/Z/kzUazRO+AWhbhH92Y4IlP0=
+X-Alimail-AntiSpam:AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=maildocker-contentspam033023018039;MF=houwenlong.hwl@antgroup.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---.hd6Kzav_1779366794;
+Received: from localhost(mailfrom:houwenlong.hwl@antgroup.com fp:SMTPD_---.hd6Kzav_1779366794 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Thu, 21 May 2026 20:33:14 +0800
+Date: Thu, 21 May 2026 20:33:14 +0800
+From: Hou Wenlong <houwenlong.hwl@antgroup.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
-	Joey Gouly <joey.gouly@arm.com>,
-	Alexandru Elisei <alexandru.elisei@arm.com>,
-	Christoffer Dall <christoffer.dall@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	linux-coco@lists.linux.dev,
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
-	Gavin Shan <gshan@redhat.com>,
-	Shanker Donthineni <sdonthineni@nvidia.com>,
-	Alper Gun <alpergun@google.com>,
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
-	Emi Kisanuki <fj0570is@fujitsu.com>,
-	Vishal Annapurve <vannapurve@google.com>,
-	WeiLin.Chang@arm.com,
-	Lorenzo.Pieralisi2@arm.com
-Subject: Re: [PATCH v14 03/44] arm64: RME: Handle Granule Protection Faults (GPFs)
-In-Reply-To: <20260513131757.116630-4-steven.price@arm.com>
-References: <20260513131757.116630-1-steven.price@arm.com>
-	<20260513131757.116630-4-steven.price@arm.com>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	Lai Jiangshan <jiangshan.ljs@antgroup.com>
+Subject: Re: [PATCH v3 01/10] KVM: VMX: Refresh
+ GUEST_PENDING_DBG_EXCEPTIONS.BS on all injected #DBs
+Message-ID: <20260521123314.GA24720@k08j02272.eu95sqa>
+References: <20260515222638.1949982-1-seanjc@google.com>
+ <20260515222638.1949982-2-seanjc@google.com>
+ <ag3dKPXqPTReuLOE@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ag3dKPXqPTReuLOE@google.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
-On Wed, 13 May 2026 14:17:11 +0100,
-Steven Price <steven.price@arm.com> wrote:
+On Wed, May 20, 2026 at 09:11:20AM -0700, Sean Christopherson wrote:
+> On Fri, May 15, 2026, Sean Christopherson wrote:
+> > Move KVM's stuffing of GUEST_PENDING_DBG_EXCEPTIONS.BS when RFLAGS.TF=1 and
+> > MOV/POP SS or STI blocking is active into the exception injection code so
+> > that KVM fixes up the VMCS for all injected #DBs, not only those that are
+> > reflected back into the guest after #DB interception.  E.g. if KVM queues
+> > a #DB in the emulator, or more importantly if userspace does save/restore
+> > exactly on the #DB+shadow boundary, then KVM needs to massage the VMCS to
+> > avoid the VM-Entry consistency check.
+> > 
+> > Opportunistically update the wording of the comment to describe the
+> > behavior as a workaround of flawed CPU behavior/architecture, to make it
+> > clear that the *only* thing KVM is doing is fudging around a consistency
+> > check.  Per the SDM:
+> > 
+> >   There are no pending debug exceptions after VM entry if any of the
+> >   following are true:
+> > 
+> >     * The VM entry is vectoring with one of the following interruption
+> >       types: external interrupt, non-maskable interrupt (NMI), hardware
+> >       exception, or privileged software exception.
+> > 
+> > I.e. forcing GUEST_PENDING_DBG_EXCEPTIONS.BS does *not* impact guest-
+> > visible behavior.
+> > 
+> > Fixes: b9bed78e2fa9 ("KVM: VMX: Set vmcs.PENDING_DBG.BS on #DB in STI/MOVSS blocking shadow")
+> > Cc: stable@vger.kernel.org
+> > Reported-by: Hou Wenlong <houwenlong.hwl@antgroup.com>
+> > Closes: https://lore.kernel.org/all/b1a294bc9ed4dae532474a5dc6c8cb6e5962de7c.1757416809.git.houwenlong.hwl@antgroup.com
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > ---
+> >  arch/x86/kvm/vmx/vmx.c | 35 ++++++++++++++++++-----------------
+> >  1 file changed, 18 insertions(+), 17 deletions(-)
+> > 
+> > diff --git a/arch/x86/kvm/vmx/vmx.c b/arch/x86/kvm/vmx/vmx.c
+> > index 1701db1b2e18..a0a0ccf342d3 100644
+> > --- a/arch/x86/kvm/vmx/vmx.c
+> > +++ b/arch/x86/kvm/vmx/vmx.c
+> > @@ -1909,6 +1909,24 @@ void vmx_inject_exception(struct kvm_vcpu *vcpu)
+> >  	u32 intr_info = ex->vector | INTR_INFO_VALID_MASK;
+> >  	struct vcpu_vmx *vmx = to_vmx(vcpu);
+> >  
+> > +	/*
+> > +	 * When injecting a #DB, single-stepping is enabled in RFLAGS, and STI
+> > +	 * or MOV-SS blocking is active, set vmcs.PENDING_DBG_EXCEPTIONS.BS to
+> > +	 * prevent a false positive from VM-Entry consistency check.  VM-Entry
+> > +	 * asserts that a single-step #DB _must_ be pending in this scenario,
+> > +	 * as the previous instruction cannot have toggled RFLAGS.TF 0=>1
+> > +	 * (because STI and POP/MOV don't modify RFLAGS), therefore the one
+> > +	 * instruction delay when activating single-step breakpoints must have
+> > +	 * already expired.  However, the CPU isn't smart enough to peek at
+> > +	 * vmcs.VM_ENTRY_INTR_INFO_FIELD and so doesn't realize that yes, there
+> > +	 * is indeed a #DB pending/imminent.
+> > +	 */
+> > +	if (ex->vector == DB_VECTOR &&
+> > +	    (vmx_get_rflags(vcpu) & X86_EFLAGS_TF) &&
+> > +	    vmx_get_interrupt_shadow(vcpu))
+> > +		vmcs_writel(GUEST_PENDING_DBG_EXCEPTIONS,
+> > +			    vmcs_readl(GUEST_PENDING_DBG_EXCEPTIONS) | DR6_BS);
 > 
-> If the host attempts to access granules that have been delegated for use
-> in a realm these accesses will be caught and will trigger a Granule
-> Protection Fault (GPF).
+> Pulling in a Sashiko comment:
 > 
-> A fault during a page walk signals a bug in the kernel and is handled by
-> oopsing the kernel. A non-page walk fault could be caused by user space
-> having access to a page which has been delegated to the kernel and will
-> trigger a SIGBUS to allow debugging why user space is trying to access a
-> delegated page.
+>  : By restricting this workaround to only when a #DB is injected, does this
+>  : leave the VM vulnerable to a VM-Entry failure regression after live migration?
+>  : 
+>  : KVM does not export GUEST_PENDING_DBG_EXCEPTIONS to userspace via
+>  : KVM_GET_VCPU_EVENTS. Therefore, upon migration, the destination KVM
+>  : initializes the VMCS with GUEST_PENDING_DBG_EXCEPTIONS=0.
+>  : 
+>  : If a live migration occurs when the guest is in an active interrupt shadow
+>  : with RFLAGS.TF=1, but a different event is pending (or no event is pending
+>  : due to a host timer preemption), this DB_VECTOR check is skipped or
+>  : vmx_inject_exception() is never called.
+>  :
+
+Nice AI review. This reminds me that before writing v1 I was wondering:
+if KVM_GUESTDBG_SINGLESTEP is enabled and there is no #DB injection,
+then single-stepping over STI should fail as well. Then I noticed the
+following code:
+```
+    /* When single-stepping over STI and MOV SS, we must clear the
+     * corresponding interruptibility bits in the guest state. Otherwise
+     * vmentry fails as it then expects bit 14 (BS) in pending debug
+     * exceptions being set, but that's not correct for the guest
+     * debugging
+     * case. */
+    if (vcpu->guest_debug & KVM_GUESTDBG_SINGLESTEP)
+            vmx_set_interrupt_shadow(vcpu, 0);
+```
+
+However, at that time I was missing the live-migration case.
+
+>  : Crnsequently, KVM will attempt VM-Entry with TF=1, shadow=1, and BS=0.
+>  : The Intel SDM mandates that if RFLAGS.TF=1 and STI or MOV SS blocking is
+>  : active, the VM-Entry consistency check requires
+>  : GUEST_PENDING_DBG_EXCEPTIONS.BS=1. The hardware VM-Entry will fail due to
+>  : invalid guest state.
+>  : 
+>  : Since vmx_guest_state_valid() does not check the GUEST_PENDING_DBG_EXCEPTIONS
+>  : field, KVM's emulation_required flag evaluates to false. KVM then falls
+>  : into the error path in __vmx_handle_exit(), dumping the VMCS and crashing
+>  : the guest by returning KVM_EXIT_FAIL_ENTRY to userspace.
+>  : 
+>  : Does KVM need to handle the BS bit requirement in a broader context to
+>  : account for live migration when no #DB is being injected?
 > 
-> Reviewed-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-> Reviewed-by: Gavin Shan <gshan@redhat.com>
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v10:
->  * Don't call arm64_notify_die() in do_gpf() but simply return 1.
-> Changes since v2:
->  * Include missing "Granule Protection Fault at level -1"
-> ---
->  arch/arm64/mm/fault.c | 28 ++++++++++++++++++++++------
->  1 file changed, 22 insertions(+), 6 deletions(-)
+> Yes, but that's a different problem entirely[*], and isn't even solvable on AMD
+> because SVM lacks an equivalent for GUEST_PENDING_DBG_EXCEPTIONS.  Note, only
+> MOV/POP-SS blocking matters, because STI blocking doesn't prevent single-step
+> #DBs, and single-step #DBs have higher priority than IRQs.
 > 
-> diff --git a/arch/arm64/mm/fault.c b/arch/arm64/mm/fault.c
-> index 0f3c5c7ca054..6358ea4787ba 100644
-> --- a/arch/arm64/mm/fault.c
-> +++ b/arch/arm64/mm/fault.c
-> @@ -905,6 +905,22 @@ static int do_tag_check_fault(unsigned long far, unsigned long esr,
->  	return 0;
->  }
->  
-> +static int do_gpf_ptw(unsigned long far, unsigned long esr, struct pt_regs *regs)
-> +{
-> +	const struct fault_info *inf = esr_to_fault_info(esr);
-> +
-> +	die_kernel_fault(inf->name, far, esr, regs);
-> +	return 0;
-> +}
-> +
-> +static int do_gpf(unsigned long far, unsigned long esr, struct pt_regs *regs)
-> +{
-> +	if (!is_el1_instruction_abort(esr) && fixup_exception(regs, esr))
-> +		return 0;
-> +
-> +	return 1;
-> +}
-> +
->  static const struct fault_info fault_info[] = {
->  	{ do_bad,		SIGKILL, SI_KERNEL,	"ttbr address size fault"	},
->  	{ do_bad,		SIGKILL, SI_KERNEL,	"level 1 address size fault"	},
-> @@ -941,12 +957,12 @@ static const struct fault_info fault_info[] = {
->  	{ do_bad,		SIGKILL, SI_KERNEL,	"unknown 32"			},
->  	{ do_alignment_fault,	SIGBUS,  BUS_ADRALN,	"alignment fault"		},
->  	{ do_bad,		SIGKILL, SI_KERNEL,	"unknown 34"			},
-> -	{ do_bad,		SIGKILL, SI_KERNEL,	"unknown 35"			},
-> -	{ do_bad,		SIGKILL, SI_KERNEL,	"unknown 36"			},
-> -	{ do_bad,		SIGKILL, SI_KERNEL,	"unknown 37"			},
-> -	{ do_bad,		SIGKILL, SI_KERNEL,	"unknown 38"			},
-> -	{ do_bad,		SIGKILL, SI_KERNEL,	"unknown 39"			},
-> -	{ do_bad,		SIGKILL, SI_KERNEL,	"unknown 40"			},
-> +	{ do_gpf_ptw,		SIGKILL, SI_KERNEL,	"Granule Protection Fault at level -1" },
-> +	{ do_gpf_ptw,		SIGKILL, SI_KERNEL,	"Granule Protection Fault at level 0" },
-> +	{ do_gpf_ptw,		SIGKILL, SI_KERNEL,	"Granule Protection Fault at level 1" },
-> +	{ do_gpf_ptw,		SIGKILL, SI_KERNEL,	"Granule Protection Fault at level 2" },
-> +	{ do_gpf_ptw,		SIGKILL, SI_KERNEL,	"Granule Protection Fault at level 3" },
-> +	{ do_gpf,		SIGBUS,  SI_KERNEL,	"Granule Protection Fault not on table walk" },
 
-It wouldn't hurt to align the textual description with what we have
-for other fault syndromes:
+Besides that, if MOV/POP SS is emulated with single-stepping, the
+emulator currently injects a #DB. As a result, the guest would observe a
+single-step #DB during the MOV/POP SS shadow, as stated in Intel SDM
+28.7.1:
 
-	"level X granule protection fault (translation table walk)"
+"If the VM entry is vectoring, there is no blocking by STI or by MOV SS
+following the VM entry, regardless of the contents of the
+interruptibility-state field."
 
-for the PTW-trigger faults, and
+If we try to fix this by not injecting #DB, then VM entry fails again.
+Since emulating MOV/POP SS only happens with force emulation, perhaps we
+can simply document this behavior?
 
-	"granule protection fault"
+Thanks!
 
-for the non PTW case.
+> [*] https://lore.kernel.org/all/agUgeO5QNenQM9pT@google.com
 
-Thanks,
 
-	M.
-
--- 
-Without deviation from the norm, progress is not possible.
