@@ -1,212 +1,111 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7650383987
-	for <kvm@vger.kernel.org>; Thu, 21 May 2026 16:46:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84D6E37E2ED
+	for <kvm@vger.kernel.org>; Thu, 21 May 2026 16:51:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779382000; cv=none; b=tOzthfonNqRBvNsxS3vfQOJvW5DkiZH2xKOklSm3bj4NE1faHZDSUXxpP9fVtlwhfglTAceQxExLoA/LWM6ppCNCX1ZY4Vw/kWzMTzxAlWNW8H72OxOsDls7DSiVC+d8UB1iPW/2ak1Pca4PxaA1Bu09mCoqwlEWyHZFgC2etPU=
+	t=1779382311; cv=none; b=WRK2tAhKyTG81qtN+5I0Nv1fLwt8ziWHitCNnbBuMYbZO/ReW0sOqsoFgqb9mlV0CajBjVrUVVyJNQvNreLrTi27sq3q36josJ3f69E9ekamWu9BHuqwfs/D1ysDOWihxpE/psfdG+AToCyMU1z/i8qARkiTbuyE8y8jJRlTXrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779382000; c=relaxed/simple;
-	bh=55HpdrZ1XWqM3uwC+a47+vakAvshOA/Toys7NpGVJzc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LP3Yop5iXcI+xc/vYXgK/hCBa7PAWdOQLPE2JAcibmkws/H+TWIJHQjV7MhOITPljVAGMGtNG3e1mPrwiCs4+kcOJrPVoKRAkFAp14xxhnwWId8Qx4zwLayvLSvZMQNtpc++0t0muNgfCFnvuRZgCCOHCKqBUA8jAu+5X0OYOhY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hAiFXflX; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779382311; c=relaxed/simple;
+	bh=Krvm+sFopZ6qGwSWl9rqo/3ynF840XrDj1AyZIHWH3I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XhctBT4zWiOd7n918UltQ/XgSelFJt8+tgkR7vp8lA0BgRfygYKKsRlapOQIJMTwFlqEyoDu2K1eTQ0q4VeBaCtDTZrSziX0ipahgth8tWweYEkA4yYbFdWYu8gSH+GbWCsxt0NT2g554dlKi/OnAee701USCuYAPFwLSlLxDI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fFQGYINR; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hAiFXflX"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-490388fd0dbso8750215e9.0
-        for <kvm@vger.kernel.org>; Thu, 21 May 2026 09:46:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779381995; x=1779986795; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NA/nM16UoxaTsk3A7SWQL7q3HkgK647mNtY2rDcRyyc=;
-        b=hAiFXflXTEbRl6U5Air/vBGryJ1P7DUwv5y5hFcBfrvyOOjvwLAPWk6boHEMfrP+03
-         djrSF/MmhRRc4oKAARffcHojm9lrMfH/yxDwEmaCsT4BFCL3flmfjoZXGq6TFSC3TeHl
-         JsiTufiR6et1mz+pI8XV2U+9x+ymMfxMCAW0bX+y+95+67AVxLZvt8B0iLXkU9d/aiqe
-         9TLZTYgekPiyf54s88p+J1C3j1Lc4MyofWrYIv5jQC1MQsWTxKDTJulTH9sW3bkKM6Er
-         8ENfEnS8Rye+RBlr7U5dk7H7qISkWK2Sz6IRcVfJFcdljcS2gaAHhL/dDTECxI2slWnI
-         yang==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779381995; x=1779986795;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=NA/nM16UoxaTsk3A7SWQL7q3HkgK647mNtY2rDcRyyc=;
-        b=bygzCHRxLrNIykc3cLCp+931hwICo2nVRmYLaxaByghDjara0feHzHW8shoWMGCEoz
-         NYI+H6D7nXFu2HqkRiQuFrQVVFkRw54vdlnCNvCKixcJGlUEjFaMkU4iYk5AYbtZW4h3
-         Tde/6fn0HHAzqlOGLCXMaXynWNS/7NrBvD+K6VAJe3jkCItFA5noE81dx6kBgfg899Ji
-         I+FMiTkao4ewN3GtfxJG0K9/Qytq1SJCwSjG65CwoSIyBptoVSCEvImt9TCo7jsc2Z6S
-         79g+nOorMK42/V2gitPizZBMVhL7iqeiUbSBtiJiU4D8sHalSauRPvICLUrmCP8Vc/cE
-         W0cQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8bcXzDjDuSAsPWb494bR1RkxMNu+IXxgfHpZcXzj6wPpAGsBQTw7+4dowZlyG5e+kRJas=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEj79w+Rt3bknLZVCFhPQxfGHLyc5TtS+XtlM4cf1nFDyZjALd
-	Z1UtDTF+5ccBQTj0AtUxezwmlmf7w8VE5WyGS26u97ojbxQRoXLgOBlO
-X-Gm-Gg: Acq92OFo3QWPeYg3vxu7+lmIEpV4geALd5G1D3ZIWzHEyTGqk96Mg9MbE6RY3uFuXC0
-	Gb/2h84FvTl4ZbVmCa+F1Qy/XCl01w044AlQ5JRXVuR9NI7nbKvLzU1XkFXGaQppKGNuwftl/wk
-	fracVmehbkD3fB5yxIs+2HyKAw7/P/CQb48ZDVkWmVxwuoYlaN4WlU+BkRXkZaqtIR8nqzDVmPP
-	XkKKzH5sJ1ItZcNQhGU7dAZ+4pofNvRQoHoALq+cs0wS6p8YvYQQRlADRB9zI08oQShcmZtrwQg
-	m4Trkof6ILiMh5xWHO1aKMFHbGLwFG7F7wSInQVec4FL82o3DLSJRFHEgms45LMa2Ndg61dxHPT
-	a50rSVV457cBAI/sp+PnIH3+m7rITNlcwyZQl1BVWoPr2ueFIKCIgnJkWtMJEojAb2ygur8hVTp
-	INljHivlvGlH/T3EizqqJ6Woxm1qDDWhs4IOCgTQ2gyM+qHiIWav9uuvINL+ooBuKD
-X-Received: by 2002:a05:600c:45c6:b0:488:ac01:72de with SMTP id 5b1f17b1804b1-49036033502mr53623425e9.5.1779381994891;
-        Thu, 21 May 2026 09:46:34 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49035ecac15sm31613075e9.6.2026.05.21.09.46.33
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 21 May 2026 09:46:34 -0700 (PDT)
-Date: Thu, 21 May 2026 17:46:31 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Kees Cook <kees@kernel.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Pengpeng Hou
- <pengpeng@iscas.ac.cn>, stable@vger.kernel.org, Petr Pavlu
- <petr.pavlu@suse.com>, Richard Weinberger <richard@nod.at>, Anton Ivanov
- <anton.ivanov@cambridgegreys.com>, Johannes Berg
- <johannes@sipsolutions.net>, "Rafael J. Wysocki" <rafael@kernel.org>, Len
- Brown <lenb@kernel.org>, Corey Minyard <corey@minyard.net>, Gabriel Somlo
- <somlo@cmu.edu>, "Michael S. Tsirkin" <mst@redhat.com>, Jani Nikula
- <jani.nikula@linux.intel.com>, Joonas Lahtinen
- <joonas.lahtinen@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>,
- Tvrtko Ursulin <tursulin@ursulin.net>, David Airlie <airlied@gmail.com>,
- Simona Vetter <simona@ffwll.ch>, Bart Van Assche <bvanassche@acm.org>,
- Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Laurent
- Pinchart <laurent.pinchart@ideasonboard.com>, Hans de Goede
- <hansg@kernel.org>, Mauro Carvalho Chehab <mchehab@kernel.org>, Bjorn
- Helgaas <bhelgaas@google.com>, Hannes Reinecke <hare@suse.de>, "James E.J.
- Bottomley" <James.Bottomley@HansenPartnership.com>, "Martin K. Petersen"
- <martin.petersen@oracle.com>, Daniel Lezcano <daniel.lezcano@kernel.org>,
- Zhang Rui <rui.zhang@intel.com>, Lukasz Luba <lukasz.luba@arm.com>, Greg
- Kroah-Hartman <gregkh@linuxfoundation.org>, Jiri Slaby
- <jirislaby@kernel.org>, Alan Stern <stern@rowland.harvard.edu>, Jason Wang
- <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio
- =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>, Jason Baron
- <jbaron@akamai.com>, Jim Cromie <jim.cromie@gmail.com>, Tiwei Bie
- <tiwei.btw@antgroup.com>, Benjamin Berg <benjamin.berg@intel.com>, Ilpo
- =?UTF-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, "David E. Box"
- <david.e.box@linux.intel.com>, "Maciej W. Rozycki" <macro@orcam.me.uk>,
- Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>, Peter Zijlstra
- <peterz@infradead.org>, Heiko Carstens <hca@linux.ibm.com>, Vasily Gorbik
- <gor@linux.ibm.com>, Sean Christopherson <seanjc@google.com>, Paolo Bonzini
- <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Vinod Koul <vkoul@kernel.org>, Frank Li
- <Frank.Li@kernel.org>, Daniel Gomez <da.gomez@kernel.org>, Sami Tolvanen
- <samitolvanen@google.com>, Aaron Tomlin <atomlin@atomlin.com>, Alexander
- Potapenko <glider@google.com>, Marco Elver <elver@google.com>, Dmitry
- Vyukov <dvyukov@google.com>, Andrew Morton <akpm@linux-foundation.org>,
- John Johansen <john.johansen@canonical.com>, Paul Moore
- <paul@paul-moore.com>, James Morris <jmorris@namei.org>, "Serge E. Hallyn"
- <serge@hallyn.com>, Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
- Georgia Garcia <georgia.garcia@canonical.com>, kvm@vger.kernel.org,
- dmaengine@vger.kernel.org, linux-modules@vger.kernel.org,
- kasan-dev@googlegroups.com, linux-mm@kvack.org, apparmor@lists.ubuntu.com,
- linux-security-module@vger.kernel.org, linux-um@lists.infradead.org,
- linux-acpi@vger.kernel.org, openipmi-developer@lists.sourceforge.net,
- qemu-devel@nongnu.org, intel-gfx@lists.freedesktop.org,
- dri-devel@lists.freedesktop.org, linux-rdma@vger.kernel.org,
- linux-media@vger.kernel.org, linux-pci@vger.kernel.org,
- linux-scsi@vger.kernel.org, linux-pm@vger.kernel.org,
- linuxppc-dev@lists.ozlabs.org, linux-serial@vger.kernel.org,
- linux-usb@vger.kernel.org, usb-storage@lists.one-eyed-alien.net,
- virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
- linux-arch@vger.kernel.org, netdev@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, linux-hardening@vger.kernel.org
-Subject: Re: [PATCH 01/11] params: bound array element output to the
- caller's page buffer
-Message-ID: <20260521174631.71a06440@pumpkin>
-In-Reply-To: <20260521133326.2465264-1-kees@kernel.org>
-References: <20260521133315.work.845-kees@kernel.org>
-	<20260521133326.2465264-1-kees@kernel.org>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fFQGYINR"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 249521F00A3B
+	for <kvm@vger.kernel.org>; Thu, 21 May 2026 16:51:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779382310;
+	bh=TETGt/RT8Kchr3RCq01/yC5FW3WRIspjF6ezT/Sj8/I=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=fFQGYINRUTiTkPRIh0JTR5ASjRUotSK9JR1ig4RfXIUrEYlWSZdoellUUPmVZWeYg
+	 mC629pufxJQJ84R1gHGUnDBCOmqDKJcvy/mucGoCVaH9FXTLY/20OkTIwZnZs68AIL
+	 twSJFozy7fx1youz9buAsq/yy+I7g/mNBGwDUco09cu8wRFbr99+4/GFLDZ7lnKgwf
+	 g0Wr/qhASFqG0jVfWUQsElUiOaRbD9UcBC1rBtrdXTWFkzIBq5t5S7pLYyHU9jC+TH
+	 btiZuY++nurx3EQehcs4c4Dq8IPs3H9FfmccLtkBk4EERW8de0uD4S2Oqlyo8vmyU5
+	 dlsYdBU2fBOmQ==
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-bd0209f25c1so1077023266b.2
+        for <kvm@vger.kernel.org>; Thu, 21 May 2026 09:51:50 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/R2soFJ71la439E6FUd5tNCB8U+4ff64BCcBQeIVYIiolVBvUTxhJ/ZonZZn5XShtRdas=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyPE31F1Oq2k3CVQK+eLChRWC1N0UaYswWCjjT7Gg47G4Oyhbl1
+	egGCp7wLE8BB4PLEAPplxzvjTGW6SisNQVWmiWu+zdg1LCxYS71i+ByNbr8ERkDdGD9Lr9O3yKv
+	le9whow+diArTZOp5UmZGsspfOtEYNe8=
+X-Received: by 2002:a17:907:75cd:b0:bd6:7a7f:66da with SMTP id
+ a640c23a62f3a-bdd28b78aa3mr3715366b.20.1779382309059; Thu, 21 May 2026
+ 09:51:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+References: <20260514210500.1626871-1-seanjc@google.com> <20260514210500.1626871-4-seanjc@google.com>
+In-Reply-To: <20260514210500.1626871-4-seanjc@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Thu, 21 May 2026 09:51:36 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNW+dwWykUsALO-BKTg_dX8rT8cFBCR+Y9z2NjXoGJGtA@mail.gmail.com>
+X-Gm-Features: AVHnY4IKHGzplyAaeLF4bIOTDX23Gr360UrjbbvNGIYd5Cp__TZQW2xokWZ9968
+Message-ID: <CAO9r8zNW+dwWykUsALO-BKTg_dX8rT8cFBCR+Y9z2NjXoGJGtA@mail.gmail.com>
+Subject: Re: [kvm-unit-tests PATCH v3 03/20] x86/svm: Sort (and swap) GPRs by
+ their index, not alphabetically
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	Mathias Krause <minipli@grsecurity.net>, Andrew Jones <andrew.jones@linux.dev>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 21 May 2026 06:33:14 -0700
-Kees Cook <kees@kernel.org> wrote:
+On Thu, May 14, 2026 at 2:05=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> Sort all GPRs in the nested SVM infrastructure by their index, not
+> alphabetically.  This will allow sharing code between SVM and VMX for
+> context switching GPRs between guest and host.
 
-> From: Pengpeng Hou <pengpeng@iscas.ac.cn>
-> 
-> param_array_get() appends each element's string representation into the
-> shared sysfs page buffer by passing buffer + off to the element getter.
-> 
-> That works for getters that only write a small bounded string, but
-> param_get_charp() and similar helpers format against PAGE_SIZE from the
-> pointer they receive. Once off is non-zero, an element getter can
-> therefore write past the end of the original sysfs page buffer.
-> 
-> Collect each element into a temporary PAGE_SIZE buffer first and then
-> copy only the remaining space into the caller's page buffer.
+Potentially a naive question, why do we sort them by index if the xchg
+instructions just use the offset for each register anyway?
 
-Should this be using a 4k buffer on all architectures?
-Initially perhaps just using a different name for the constant until
-all the associated PAGE_SIZE limits have been removed.
+I ask because I have a patch [*] undoing this for selftests (and
+removing the 'rsp' spot), so I think I am missing something.
 
--- David
+[*] https://lore.kernel.org/kvm/20260518202514.2037078-2-yosry@kernel.org/
 
-> 
-> Cc: stable@vger.kernel.org
-> Reviewed-by: Petr Pavlu <petr.pavlu@suse.com>
-> Signed-off-by: Pengpeng Hou <pengpeng@iscas.ac.cn>
-> Signed-off-by: Kees Cook <kees@kernel.org>
+>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 > ---
->  kernel/params.c | 26 ++++++++++++++++++++------
->  1 file changed, 20 insertions(+), 6 deletions(-)
-> 
-> diff --git a/kernel/params.c b/kernel/params.c
-> index 74d620bc2521..752721922a15 100644
-> --- a/kernel/params.c
-> +++ b/kernel/params.c
-> @@ -475,22 +475,36 @@ static int param_array_set(const char *val, const struct kernel_param *kp)
->  static int param_array_get(char *buffer, const struct kernel_param *kp)
->  {
->  	int i, off, ret;
-> +	char *elem_buf;
->  	const struct kparam_array *arr = kp->arr;
->  	struct kernel_param p = *kp;
->  
-> +	elem_buf = kmalloc(PAGE_SIZE, GFP_KERNEL);
-> +	if (!elem_buf)
-> +		return -ENOMEM;
-> +
->  	for (i = off = 0; i < (arr->num ? *arr->num : arr->max); i++) {
-> -		/* Replace \n with comma */
-> -		if (i)
-> -			buffer[off - 1] = ',';
->  		p.arg = arr->elem + arr->elemsize * i;
->  		check_kparam_locked(p.mod);
-> -		ret = arr->ops->get(buffer + off, &p);
-> +		ret = arr->ops->get(elem_buf, &p);
->  		if (ret < 0)
-> -			return ret;
-> +			goto out;
-> +		ret = min(ret, (int)(PAGE_SIZE - 1 - off));
-> +		if (!ret)
-> +			break;
-> +		/* Replace the previous element's trailing newline with a comma. */
-> +		if (i)
-> +			buffer[off - 1] = ',';
-> +		memcpy(buffer + off, elem_buf, ret);
->  		off += ret;
-> +		if (off == PAGE_SIZE - 1)
-> +			break;
->  	}
->  	buffer[off] = '\0';
-> -	return off;
-> +	ret = off;
-> +out:
-> +	kfree(elem_buf);
-> +	return ret;
->  }
->  
->  static void param_array_free(void *arg)
-
+>  x86/svm.h | 8 ++++----
+>  1 file changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/x86/svm.h b/x86/svm.h
+> index 385c1289..d9f7c731 100644
+> --- a/x86/svm.h
+> +++ b/x86/svm.h
+> @@ -392,9 +392,9 @@ struct svm_test {
+>
+>  struct regs {
+>         u64 rax;
+> -       u64 rbx;
+>         u64 rcx;
+>         u64 rdx;
+> +       u64 rbx;
+>         u64 cr2;
+>         u64 rbp;
+>         u64 rsi;
+> @@ -457,9 +457,9 @@ static inline void clgi(void)
+>
+>
+>  #define SAVE_GPR_C                              \
+> -        "xchg %%rbx, regs+0x8\n\t"              \
+> -        "xchg %%rcx, regs+0x10\n\t"             \
+> -        "xchg %%rdx, regs+0x18\n\t"             \
+> +        "xchg %%rcx, regs+0x8\n\t"              \
+> +        "xchg %%rdx, regs+0x10\n\t"             \
+> +        "xchg %%rbx, regs+0x18\n\t"             \
+>          "xchg %%rbp, regs+0x28\n\t"             \
+>          "xchg %%rsi, regs+0x30\n\t"             \
+>          "xchg %%rdi, regs+0x38\n\t"             \
+> --
+> 2.54.0.563.g4f69b47b94-goog
+>
+>
