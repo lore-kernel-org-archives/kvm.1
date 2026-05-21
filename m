@@ -1,160 +1,306 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9F251FC7
-	for <kvm@vger.kernel.org>; Thu, 21 May 2026 21:17:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779398248; cv=none; b=sP4u+UAhJPOPP9UhZoEWnQLCD01vIcZP+NKFoQNHWcjo3/ss7o3WoZMgg4Hu30bcis88lunWdiscUUKBkit44Voc4L93bcDDsc9Q9a/JoTy8XZJJQwAa6hZNBPf8U520So9yZFd86mdHQFm8jXzkCcGR6OerKYsROJsk+EyAxo0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779398248; c=relaxed/simple;
-	bh=XW2WAcTP4Sm+wf3twJ/QoA4Nko2nJVwNKYlSfZwWKSk=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=hxt3Eo0RkT04HEWp+cbGvyd00xBh7oQ4fNEPTrq8/pIptU2vrlwpN3hIjCfkwyar/C3if6sX5xnFx8yNtn7h/hO4Mcoh19nsRQ8xQ7Bx2ASym7wJuwpnzriW8jQBmapwYPb4PFLrhTCgW2WHaZ0zJ7N8UmqVdPkBjgzy7J1EsgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=INe6ga14; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3311731283E
+	for <kvm@vger.kernel.org>; Thu, 21 May 2026 21:27:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.217.41
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779398830; cv=pass; b=mag5tzHz/ePyb8Fo1WF8Ur29eQBzbohc0ULTHdqpK2c1c9Mt4Vr7j7Hwd4qxt4QXTOYqENAAynWv6VXT5JB+ulMCa3pwa4OAOF4nvMzDsEEFZWYzB+KiLpdXeY+UoYKayZ/CmwpoSCKL3hInf3aLscD2O/2EBstd3bKdxsg+jUc=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779398830; c=relaxed/simple;
+	bh=+LPjIhTg4BXMNC3SwV5cz0pp6+I5UIaFhnvuSezWq/s=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Lp53IOBdzngJu6CbU9WZrmYeJehnoZkvl9DBLazdW/rB0YzVl7r8Nqc6jozUcTYH1qVBaT5bwY7QFo5OgA2aMYRSJyqZivQne5KAPZ8m6HR6e+3gRHKJ+MuXGVeeBSEpDsmEAWL8QKfetieC47oZiHvEW1t1OPBuaitP2+28+EI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=i2ZKStgL; arc=pass smtp.client-ip=209.85.217.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="INe6ga14"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b4530a90fdso117127505ad.1
-        for <kvm@vger.kernel.org>; Thu, 21 May 2026 14:17:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="i2ZKStgL"
+Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-63130466364so2418719137.2
+        for <kvm@vger.kernel.org>; Thu, 21 May 2026 14:27:07 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779398826; cv=none;
+        d=google.com; s=arc-20240605;
+        b=A2+u/ActLMO91MiWSQc8QvQlXByBMQtcfBmAk128pfZrGYsY+qWnL0Y602BLb95YHe
+         21eE/dzsD/SIdArGdFzxHJeH/38CE/s1I9R6HCYw0WaotFVIUWJOxHvMFbPTdP8WpGlI
+         LqyUQdPBN3g9Ob464y6DIdWceSoSlYqiG39NrOgpz8FoMemw6RaDNau6mfI/Wqs3hI7C
+         yDnH3iCVG5eIWzC8BZ8unP+kgwITR5hEjCIOPHrrijeeqSNxXgLdja00KkL6T0hZ1YXQ
+         2L5Vz+7U0QQBPzO11GS9+ff7Njpc0UdzN9B5OJkYlQAWUQQ9WlYifvIGLUI5U292b/bv
+         du5g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=jpWgFYhhbnAeBja5/b81jA1gJjkVzB/mfvPZ3ghPp+g=;
+        fh=L6ekuirLOSdp+BEcIuI0l0aS8r8JILuS75b8uTmc+5M=;
+        b=Q77Stj7NbT3hi+yi+W34X/nGfFXoTeycVlazUkDAiTK/YFl1Ct6YPkcFM+p94kFer+
+         CEYtYpFhMpiM190XjCybTr2Ml0LxqFXa8ltR1145Pj3sThBm9Ch/EkcnaIj1ICC0tATj
+         K8ytcRcIVokgXtc1HrefaxCOsH+tNmL2gus+qHBFtkzhBX4i7kskzO/KMpQP0enRRgNt
+         lnJciLHKkSK1oldgFDFIz9GXeX0La3b/VWfoKm8oCFGHHuIBHCLo58ZCwbovR/aug7aJ
+         xLwzG7LPLYPbws6l9a05yriHp6VliJci5iSVebBJHJ4StyJpvv5F6+e40HEzgkJ1KJxF
+         XHSw==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779398246; x=1780003046; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=/jW9XtyrtynBxdJYPv96DfQ4Rw5zedPSv+/BbmcgSxI=;
-        b=INe6ga14hO+LrZApp+y9FDGLXUp87rFwRyJJBIl+Z89cq0GN8oo0/Jg+D/hGu1Acoj
-         QZ3L+uvWmPdBRcM00eL+GbwfszHyGIf77ququvAEP78jtvxrcuiYVA0wy1ToEhlk7W17
-         xLdK8/BRxRernNhpMaJzEzSpKGQttOvsGyaGt1X2pK5O7xx0KOAKqi474YXK2RWM3M9C
-         sAD4bAginlDYBIx6/uYqXNWnx3Tg80wEPpiyHSZtBIsCK7ydi70Kxcyjlj1iqGZCG4ZC
-         dL7tc53D/fVwPAC/DP2FjEeHv2i0QcGh5A1oI4UoiIlhLuvvI0yXiE5Gt60YwiDLJ5h4
-         enlQ==
+        d=google.com; s=20251104; t=1779398826; x=1780003626; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=jpWgFYhhbnAeBja5/b81jA1gJjkVzB/mfvPZ3ghPp+g=;
+        b=i2ZKStgLDsBl+EtckDy+IFV6GwFoCyTq8ms5MhpksZrJFhPTPgYDzE4iLPE0jlQiYq
+         RPytCYF9tgxi98dzeSNO7o20oN7oAbXFFkjGahSY9c1rtQyBfTsDGTa3hiCm3gricSEA
+         +lvk6l8IZYWPlD7Q8cjdX+DEbNNENAb9xELah3owOCujqHQ3/3wXNGvdsdltot0q4zOj
+         VsspnhWUL9TN54ZKsXNn3cG9lXobPnT2/A+PnydSGSmxJ1hgNttuQsUr6IVAPqdCue9F
+         uNC31VfApIwrqQS6h1UWMDgEIOLkKoCnhxnQggo/Jl27YorS2eNwvegmfe5j7BlLd9yy
+         C6oQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779398246; x=1780003046;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=/jW9XtyrtynBxdJYPv96DfQ4Rw5zedPSv+/BbmcgSxI=;
-        b=rd+K661YMbJREvsiQiU/OVEi3Sh+QhJF046pzlpuNrS7iPJAkLlmqgJ+uWMbWSxTwH
-         o29AO50rx8aWYFUD4rtVqH6dbB5GRa3xyZ+qwVgjvxL9kzbNkt/g9dpAPU/Q1i7G5s02
-         NsriO2j6h6xOHrbDu1Y4dtGJD3uUFWzDVa6pcxxmNmodx6Nb43yEaqbUnqhutMxs64i9
-         cAVmcGAVrhQwd6Rmq9hSuDLE/vdhkVx++LVTXY0cA8RcqkQPA8J/nIvuF23d1RBCVzuc
-         W3e5nl5GIO9jt9nrqZ11hwdpEQDxJHLwusFF3Pun93SaHB8/uv6giwnsrBAx9icJ0g2v
-         WGBg==
-X-Forwarded-Encrypted: i=1; AFNElJ9Qgtj4G5ik9Ax+raGoP9ScQr0QyLq8/QNH+JvJMAfkcuCXWgGKInDD49Yiw3kjfmvAObU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXfQ4znOXSu1cY3LsGzFOVMYthP8IjYi4E+JeWEAl4E5iG308R
-	e/DPoOz4rbz6vMy9vmrW/6JTEsZGdvUiKGBUhBsdY5iwTeiuzR/2ptLDFf9OH2OHTSqHl8klvoB
-	BL9hNzA==
-X-Received: from plbkh13.prod.google.com ([2002:a17:903:64d:b0:2b0:c78a:4537])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:ccd0:b0:2b4:5f19:1d34
- with SMTP id d9443c01a7336-2beb05eec0amr6266755ad.17.1779398245853; Thu, 21
- May 2026 14:17:25 -0700 (PDT)
-Date: Thu, 21 May 2026 14:17:25 -0700
-In-Reply-To: <342098f6bfe1e4c7b233433df8f79713b4220614.camel@infradead.org>
+        d=1e100.net; s=20251104; t=1779398826; x=1780003626;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jpWgFYhhbnAeBja5/b81jA1gJjkVzB/mfvPZ3ghPp+g=;
+        b=QPVcPv90FubZ50w4KS8+PM8ZMtb9ggwM75vhryc2nPsgu0uo2oEXQZvJxfvVSKfspC
+         OkL2DT2mR/vjLBYnljvq++qrZoTiaq3Zen3qmszw/85Ybu4DJ7R240VYlnO1CFs+sfdP
+         jfMoZJs32M0MszXOTMPfs022bJfasLDsCt85a79nYd/kArVMLO13ITbEBYN7iIjHOo17
+         ZUjFMV/+ljm/1U8SlUHySArQcm82ktGUgZB78MOQzWAfj+LrYt0mraStGMCMqqA7kDV5
+         4rDKAxR22h8Wvx9fXEsQtkygusA3BEdE+7+CpFyDOBNOrRX7vu3XzncDYpXSHTyumwjQ
+         OHVA==
+X-Forwarded-Encrypted: i=1; AFNElJ9+7i1U8rDUBf+6Alm6vtp32yVp/GqI2Oju4w/SC/qGGYsSW/oleLcQQhzkjH2dCfNU4rc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzL/yHIOlTq66ZReybWw92nC50BKPqqHTXvqHfXLVBF3UW6MDU7
+	NSbv2tB0aK+7QYqTTYGtNcsU13mTJWX9oUWnerl2ZQWP+c6ztWeKye0evjIbvmaeAWANZsl65mK
+	eMsWiuCKjBTXA0EQmqqWb2s0QhyS4WTGyrnGAGJYm
+X-Gm-Gg: Acq92OGu8rzKjgfFaO+fjAZxZFt4rCp8lMjH7VrNajOTlluuAZy1t05rexg09fA+OOX
+	AlpMznv4oC/kZYrnw1tR243OUZBcURJ34zQjDlNXDxmOIAIrGG0UK6M7Vvofi2Qpii2prAn2B7C
+	tDtPOtl9ov7xo9ONRMAyUb2iGuTknAn98TnjtozvB/DRO/1QbNuDAU6v8ZjKwG0OA+LDNWKqywC
+	KlWyYa0S9Y7txeyfsgabqw9v1+PhFi6BFNzvX+QbQNTfk/kdkpGXYC799Yt95AMAghTTV7+WLbh
+	LFRGvxJgWrsVtXXKjmG9OMt54qniR4j9rp5GIdWtkrNYYskh2BnkLxGShNZbLaUl5zLNQeVK6Ev
+	9hNB5
+X-Received: by 2002:a67:e7cb:0:b0:605:6773:611d with SMTP id
+ ada2fe7eead31-67c7405f583mr398913137.1.1779398825479; Thu, 21 May 2026
+ 14:27:05 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 21 May 2026 14:27:04 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Thu, 21 May 2026 14:27:04 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <ag8G7Wq5PbEdKloG@google.com>
+References: <20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4@google.com>
+ <20260507-gmem-inplace-conversion-v6-21-91ab5a8b19a4@google.com>
+ <CA+EHjTwrygfMrZZSw4y7-ry8fidW2x0C7iuF2Q=dnPNHUmNtUg@mail.gmail.com> <ag8G7Wq5PbEdKloG@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260515191942.1892718-1-seanjc@google.com> <20260515191942.1892718-3-seanjc@google.com>
- <44e0d60548d317fd59895f18bd17220dfb2f834b.camel@infradead.org>
- <ag9wz3RiJOtVZrK0@google.com> <342098f6bfe1e4c7b233433df8f79713b4220614.camel@infradead.org>
-Message-ID: <ag92Ze_FADmL1llo@google.com>
-Subject: Re: [PATCH v3 02/41] x86/tsc: Add helper to register CPU and TSC freq
- calibration routines
-From: Sean Christopherson <seanjc@google.com>
-To: David Woodhouse <dwmw2@infradead.org>
-Cc: Kiryl Shutsemau <kas@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>, 
-	"K. Y. Srinivasan" <kys@microsoft.com>, Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, 
-	Dexuan Cui <decui@microsoft.com>, Long Li <longli@microsoft.com>, 
-	Ajay Kaher <ajay.kaher@broadcom.com>, Alexey Makhalov <alexey.makhalov@broadcom.com>, 
-	Jan Kiszka <jan.kiszka@siemens.com>, Dave Hansen <dave.hansen@linux.intel.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Juergen Gross <jgross@suse.com>, 
-	Daniel Lezcano <daniel.lezcano@kernel.org>, Thomas Gleixner <tglx@kernel.org>, 
-	John Stultz <jstultz@google.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Stephen Boyd <sboyd@kernel.org>, x86@kernel.org, 
-	linux-coco@lists.linux.dev, kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, 
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, Michael Kelley <mhklinux@outlook.com>, 
-	Tom Lendacky <thomas.lendacky@amd.com>, Nikunj A Dadhania <nikunj@amd.com>, 
-	Thomas Gleixner <tglx@linutronix.de>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Date: Thu, 21 May 2026 14:27:04 -0700
+X-Gm-Features: AVHnY4JKrLHcWBnwxG_jlJLfen-f7c-olGgUCItaPr4oaASPSS6SIhxF205tXG4
+Message-ID: <CAEvNRgFB8ydih9JTmsH06H32j38tH-iViZqN_eZ_gQAmXpw+Dw@mail.gmail.com>
+Subject: Re: [PATCH v6 21/43] KVM: SEV: Make 'uaddr' parameter optional for KVM_SEV_SNP_LAUNCH_UPDATE
+To: Sean Christopherson <seanjc@google.com>, Fuad Tabba <tabba@google.com>
+Cc: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+	brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+	ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
+	michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+	qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+	shivankg@amd.com, steven.price@arm.com, willy@infradead.org, 
+	wyihan@google.com, yan.y.zhao@intel.com, forkloop@google.com, 
+	pratyush@kernel.org, suzuki.poulose@arm.com, aneesh.kumar@kernel.org, 
+	liam@infradead.org, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+	Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+	Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+	Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+	Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+	Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, Barry Song <baohua@kernel.org>, 
+	Axel Rasmussen <axelrasmussen@google.com>, Yuanchu Xie <yuanchu@google.com>, 
+	Wei Xu <weixugc@google.com>, Youngjun Park <youngjun.park@lge.com>, 
+	Qi Zheng <qi.zheng@linux.dev>, Shakeel Butt <shakeel.butt@linux.dev>, 
+	Kiryl Shutsemau <kas@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	linux-mm@kvack.org, linux-coco@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, May 21, 2026, David Woodhouse wrote:
-> On Thu, 2026-05-21 at 13:53 -0700, Sean Christopherson wrote:
-> >=20
-> > E.g. this is what I've got for the early flow.=C2=A0 Testing now.=20
-> >=20
-> > =C2=A0 void __init tsc_early_init(void)
-> > =C2=A0 {
-> > 	unsigned int known_cpu_khz =3D 0, known_tsc_khz =3D 0;
-> >=20
-> > 	if (!boot_cpu_has(X86_FEATURE_TSC))
-> > 		return;
-> > 	/* Don't change UV TSC multi-chassis synchronization */
-> > 	if (is_early_uv_system())
-> > 		return;
-> >=20
-> > 	if (x86_init.hyper.get_cpu_khz)
-> > 		known_cpu_khz =3D x86_init.hyper.get_cpu_khz();
-> >=20
-> > 	if (tsc_early_khz)
-> > 		known_tsc_khz =3D tsc_early_khz;
-> > 	else if (cc_platform_has(CC_ATTR_GUEST_SNP_SECURE_TSC))
-> > 		known_tsc_khz =3D snp_secure_tsc_init();
-> > 	else if (boot_cpu_has(X86_FEATURE_TDX_GUEST))
-> > 		known_tsc_khz =3D tdx_tsc_init();
-> >=20
-> > 	/*
-> > 	 * If the TSC frequency is still unknown, i.e. not provided by the use=
-r
-> > 	 * or by trusted firmware, try to get it from the hypervisor (which is
-> > 	 * untrusted when running as a CoCo guest).
-> > 	 */
-> > 	if (!known_tsc_khz && x86_init.hyper.get_tsc_khz)
-> > 		known_tsc_khz =3D x86_init.hyper.get_tsc_khz();
-> >=20
-> > 	if (known_tsc_khz)
-> > 		setup_force_cpu_cap(X86_FEATURE_TSC_KNOWN_FREQ);
-> >=20
-> > 	if (!determine_cpu_tsc_frequencies(true, known_cpu_khz, known_tsc_khz)=
-)
-> > 		return;
-> > 	tsc_enable_sched_clock();
-> > =C2=A0 }
->=20
-> That seems reasonable. Where does the call to native_calibrate_tsc()
-> happen; is that from determine_cpu_tsc_frequencies()?=20
+Sean Christopherson <seanjc@google.com> writes:
 
-Yep.
+> On Thu, May 21, 2026, Fuad Tabba wrote:
+>> Hi,
+>>
+>> On Thu, 7 May 2026 at 21:22, Ackerley Tng via B4 Relay
+>> <devnull+ackerleytng.google.com@kernel.org> wrote:
+>> >
+>> > From: Michael Roth <michael.roth@amd.com>
+>> >
+>> > For vm_memory_attributes=1, in-place conversion/population is not
+>> > supported, so the initial contents necessarily must need to come
+>> > from a separate src address, which is enforced by the current
+>> > implementation. However, for vm_memory_attributes=0, it is possible for
+>> > guest memory to be initialized directly from userspace by mmap()'ing the
+>> > guest_memfd and writing to it while the corresponding GPA ranges are in
+>> > a 'shared' state before converting them to the 'private' state expected
+>> > by KVM_SEV_SNP_LAUNCH_UPDATE.
+>> >
+>> > Update the handling/documentation for KVM_SEV_SNP_LAUNCH_UPDATE to allow
+>> > for 'uaddr' to be set to NULL when vm_memory_attributes=0, which
+>> > SNP_LAUNCH_UPDATE will then use to determine when it should/shouldn't
+>> > copy in data from a separate memory location. Continue to enforce
+>> > non-NULL for the original vm_memory_attributes=1 case.
+>> >
+>> > Signed-off-by: Michael Roth <michael.roth@amd.com>
+>> > [Added src_page check in error handling path when the firmware command fails]
+>> > [Dropped ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES]
+>> > Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+>>
+>> I'm not very familiar with the SEV-SNP populate flows, but it looks
+>> like Sashiko is on to something:
+>> https://sashiko.dev/#/patchset/20260507-gmem-inplace-conversion-v6-0-91ab5a8b19a4%40google.com?part=21
+>>
+>> - a potential read-only page overwrite, because src_page is acquired
+>> via get_user_pages_fast() without the FOLL_WRITE flag, but is then
+>> overwritten via memcpy
+>
+> Oof, yeah, that's bad.  Adding FOLL_WRITE to kvm_gmem_populate() feels wrong, and
+> could break uABI, but doing gup() in SNP code would reintroduce the AB-BA issue
+> with filemap_invalidate_lock().
+>
+> Aha!  Not if we use get_user_page_fast_only().  Ugh, but then we'd have to plumb
+> the userspace address into the post-populated callback.
+>
+> Hrm.  Given that no one has yelled about overwriting their CPUID page, and given
+> that the CPUID page is likely dynamically created and thus is unlikely to be a
+> read-only mapping (e.g. versus the initial image), maybe this?
+>
 
-static bool __init determine_cpu_tsc_frequencies(bool early,
-						 unsigned int known_cpu_khz,
-						 unsigned int known_tsc_khz)
-{
-	/* Make sure that cpu and tsc are not already calibrated */
-	WARN_ON(cpu_khz || tsc_khz);
+Overwriting the CPUID page is by design, I think. IIUC if the SNP
+firmware doesn't like something about the CPUID page, it can update
+src_page and then return an error to userspace.
 
-	if (early) {
-		/*
-		 * Early CPU calibration can only use methods that are available
-		 * early in boot (obviously).
-		 */
-		if (known_cpu_khz)
-			cpu_khz =3D known_cpu_khz;
-		else
-			cpu_khz =3D native_calibrate_cpu_early();
-		if (known_tsc_khz)
-			tsc_khz =3D known_tsc_khz;
-		else
-			tsc_khz =3D native_calibrate_tsc();
-	} else {
-		cpu_khz =3D pit_hpet_ptimer_calibrate_cpu();
+Userspace should then check if it agrees with the updated CPUID contents
+and then retry if it agrees.
+
+> diff --git arch/x86/kvm/svm/sev.c arch/x86/kvm/svm/sev.c
+> index 37d4cfa5d980..c73c028d72c1 100644
+> --- arch/x86/kvm/svm/sev.c
+> +++ arch/x86/kvm/svm/sev.c
+> @@ -2456,6 +2456,7 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
+>         sev_populate_args.type = params.type;
+>
+>         count = kvm_gmem_populate(kvm, params.gfn_start, src, npages,
+> +                                 params.type == KVM_SEV_SNP_PAGE_TYPE_CPUID,
+
+I think this makes sense given that writing to src_page can only happen
+when params.type == KVM_SEV_SNP_PAGE_TYPE_CPUID (this is explicitly one
+of the guards in sev_gmem_post_populate()):
+
+	/*
+	 * If the firmware command failed handle the reclaim and cleanup of that
+	 * PFN before reporting an error.
+	 *
+	 * Additionally, when invalid CPUID function entries are detected,
+	 * firmware writes the expected values into the page and leaves it
+	 * unencrypted so it can be used for debugging and error-reporting.
+	 *
+	 * Copy this page back into the source buffer so userspace can use this
+	 * information to provide information on which CPUID leaves/fields
+	 * failed CPUID validation.
+	 */
+	if (ret && !snp_page_reclaim(kvm, pfn) &&
+	    sev_populate_args->type == KVM_SEV_SNP_PAGE_TYPE_CPUID &&
+	    sev_populate_args->fw_error == SEV_RET_INVALID_PARAM && src_page) {
+		void *src_vaddr = kmap_local_page(src_page);
+		void *dst_vaddr = kmap_local_pfn(pfn);
+
+		memcpy(src_vaddr, dst_vaddr, PAGE_SIZE);
+
+		kunmap_local(src_vaddr);
+		kunmap_local(dst_vaddr);
 	}
 
-	...
+>                                   sev_gmem_post_populate, &sev_populate_args);
+>         if (count < 0) {
+>                 argp->error = sev_populate_args.fw_error;
+> diff --git arch/x86/kvm/vmx/tdx.c arch/x86/kvm/vmx/tdx.c
+> index f97bcf580e6d..33f35be4455b 100644
+> --- arch/x86/kvm/vmx/tdx.c
+> +++ arch/x86/kvm/vmx/tdx.c
+> @@ -3188,7 +3188,7 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
+>                 };
+>                 gmem_ret = kvm_gmem_populate(kvm, gpa_to_gfn(region.gpa),
+>                                              u64_to_user_ptr(region.source_addr),
+> -                                            1, tdx_gmem_post_populate, &arg);
+> +                                            1, false, tdx_gmem_post_populate, &arg);
+
+And TDX doesn't try to write src_page, so this is good too.
+
+>                 if (gmem_ret < 0) {
+>                         ret = gmem_ret;
+>                         break;
+> diff --git include/linux/kvm_host.h include/linux/kvm_host.h
+> index 61a3430957f2..b83cda2870ba 100644
+> --- include/linux/kvm_host.h
+> +++ include/linux/kvm_host.h
+> @@ -2596,7 +2596,8 @@ int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_ord
+>  typedef int (*kvm_gmem_populate_cb)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
+>                                     struct page *page, void *opaque);
+>
+> -long kvm_gmem_populate(struct kvm *kvm, gfn_t gfn, void __user *src, long npages,
+> +long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src,
+> +                      long npages, bool writable,
+
+What do you think of need_writable_src instead of just writable for the
+variable name?
+
+>                        kvm_gmem_populate_cb post_populate, void *opaque);
+>  #endif
+>
+> diff --git virt/kvm/guest_memfd.c virt/kvm/guest_memfd.c
+> index a35a55571a2d..6553d4e032ce 100644
+> --- virt/kvm/guest_memfd.c
+> +++ virt/kvm/guest_memfd.c
+> @@ -858,7 +858,8 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
+>         return ret;
+>  }
+>
+> -long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long npages,
+> +long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src,
+> +                      long npages, bool writable,
+>                        kvm_gmem_populate_cb post_populate, void *opaque)
+>  {
+>         struct kvm_memory_slot *slot;
+> @@ -892,8 +893,9 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
+>
+>                 if (src) {
+>                         unsigned long uaddr = (unsigned long)src + i * PAGE_SIZE;
+> +                       unsigned int flags = writable ? FOLL_WRITE : 0;
+
+How about using FOLL_WRITE | FOLL_NOFAULT so if it weren't writable to
+start with, don't CoW, just error out?
+
+Like you said above the CPUID page provided as src_page would have been
+written to before, so it should have been mapped as writable.
+
+>
+> -                       ret = get_user_pages_fast(uaddr, 1, 0, &src_page);
+> +                       ret = get_user_pages_fast(uaddr, 1, flags, &src_page);
+
+If we stick with FOLL_WRITE, this also solves the case where a read-only
+mapping or global zero page are provided as src_page, since
+get_user_pages_fast() will do a copy-on-write if those were the inputs,
+making it writable before the write happens (on failure) in
+sev_gmem_post_populate().
+
+>                         if (ret < 0)
+>                                 break;
+>                         if (ret != 1) {
+>
+>> - an ordering violation with the kunmap_local() calls
+>
+> Yeesh, that's a new one for me.  Thankfully this is 64-bit only, so it's not an
+> issue.
+>
+>> These predate this patch series and are just being touched by the
+>> 'src_page' addition, but if Sashiko's right, these should probably be
+>> fixed sooner rather than later.
+>
+> Yeah, ditto with the offset wrapping case.
