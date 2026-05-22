@@ -1,318 +1,157 @@
-Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1CE36AB77;
-	Fri, 22 May 2026 14:27:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A9843635B
+	for <kvm@vger.kernel.org>; Fri, 22 May 2026 15:15:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779460058; cv=none; b=MWq42k9IUR14MDsCzv1BRBsE14//6XGXCe0AOhqKEQ5x8xelUsLZ8w7qAPVnamDgBd5XuZnNiPTnX6jKTHZUZQ9MoLQ/IkmCed8/AdnGg8pnyHuoasZja3j4Wq6yk34cSYcYh1mWHi8b/mN8eTQJU1wZKX3rMQQdEoMwCl4+Lgs=
+	t=1779462952; cv=none; b=rP/8dj9Cd03i8xJRsHx1d8bmK2c7es0tueiu6+1tz1W8HVRWuBlDA+xgHWWId778ULlJWJec1kZ+p4Ld+BXIy8/QPou90MqJnxcDa65c3Pg3ZebIoxqoD14P4A11++G1dT9I++p0guLZEVZ8dM2PcSAYD2XW1nBDgDwg/l6BiFA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779460058; c=relaxed/simple;
-	bh=plxPpLMP6WEHRwBxbMEElRJxgmc2K9gbji6TFwFsVVc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=E3ujqDZHn1B9FbFooYqETOXwlzTAm1QTNCVBzMOwmTVRxch43WklCPifq41HmMYwlxKpwprWZSF5+c9nLDnODgy0bf/p+4dkANnA/gtXgoNgMQ+Cy3mXCzphafZDE4zRX+BpjSTUshQyscsa4isxDRryRBf1K2/dtPOUsFpEMRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=HqUoE5vL; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=GUD6zca8; arc=none smtp.client-ip=103.168.172.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1779462952; c=relaxed/simple;
+	bh=9g8EAfGvDG1p08Pmtu91DH9geQTr1Eg1+earq8LfPG4=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=OJz6CgE9bZChZ2Euah+XrgMsKtFk50HjC+VVE7OnE5ZfSJ/yJSzDLl7tYtCtTYLB74+/yEWS3tgWiyB47BImRrJ1+zEZxffyNAraRHgygvksfZ7qx/gBX7m4nWzmiRco2O0bUXp5ol3dTH78famcxeA4+qUj8Mr7Wm6srdfCOSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--vannapurve.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vfd+qkAP; arc=none smtp.client-ip=209.85.214.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--vannapurve.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="HqUoE5vL";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="GUD6zca8"
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 74E5714000F5;
-	Fri, 22 May 2026 10:27:35 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Fri, 22 May 2026 10:27:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1779460055;
-	 x=1779546455; bh=sBTGTRf71E2MpJmi83lGE/zP6dtUsvkn63wA+R8D/PM=; b=
-	HqUoE5vLzkhGwxki2xb4ey7u0Sq+PD0YJcF2Ec+FYA28RSgyiHUF9fyaDGE8ibfs
-	eoLgZ/Sk7KWnQZCrI83Zx6pjMnrzrqip1zM5dR/B4lGu2vAjLvzhLZf+VNL/iPOm
-	Vr1AleuSZ2PiKVPRxTbFVDDP14Kukp7LqV6LbvRXNt8G3BZOoQkgnrdInFbCn+xe
-	H7gwc4ojoJ6Z8r3oj/HOJbKNtzXqejIsgfynCFTMQwDdZ38X1vXkdMzdduKhpdVI
-	J3J5cXU8JO4qaneYVQ0/hkPtCpoWsREy+i550w4auLVAG51SUAvNQ8zzHcXNGKut
-	6Poq+HwrdXlrUqEwRB3pgA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779460055; x=
-	1779546455; bh=sBTGTRf71E2MpJmi83lGE/zP6dtUsvkn63wA+R8D/PM=; b=G
-	UD6zca8iTrICctOD0/AF+pVf+rMuC393/kbfJQM05QvIt5WrDKm7XLd7Uw3w3LPy
-	xE0wGwHacW4IR+32gWadVTtfsJNeqURxaphxvT/NjIKp0P8hW0m9wpZDLYoUsr28
-	XuScUlqxRTDK6ts13RAUTPuNXmYGnEunSighqaxlYdyzyRFBMtZZOsRSZWtl+Cac
-	A7HeO+WmQ1apqvZyn39Nl1bwemaDETUGd2ifGJj+2hcvWTum0LjcxaXAEsmXVd7Z
-	BxJP4jTM6esZSICog4F3knWJ76KlIKfrt96+3Ir3LlHOsi9U3THN4V4tD14/Kr89
-	TqG7HBqdPaw+KhGGwFDhw==
-X-ME-Sender: <xms:1mcQavR81An6Uo3LF6Ecf6cU7ZFVK1IOaf1SS7GS_ZksikygY1XKuQ>
-    <xme:1mcQavDxJEORNIc66eHumh0fgOQwSiJeJv6uMz2mhzPJ8S_w7Ait7JTd7JkCF_U3Z
-    xGoE1NR7780A-jU-ov_y9O1T6KfYUcOdYPNweYsHJ4Emq7dYOHL>
-X-ME-Received: <xmr:1mcQauLmpuisbCfSDVmuqrjeP5UMamTSvsRiMDtgPJ2puEal6WA7oJNV-3U>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduhedtgeduucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfgjfhfogggtgfesthejre
-    dtredtvdenucfhrhhomheptehlvgigucghihhllhhirghmshhonhcuoegrlhgvgiesshhh
-    rgiisghothdrohhrgheqnecuggftrfgrthhtvghrnhepvdekfeejkedvudfhudfhteekud
-    fgudeiteetvdeukedvheetvdekgfdugeevueeunecuvehluhhsthgvrhfuihiivgeptden
-    ucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhgpdhnsg
-    gprhgtphhtthhopeduuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepfhgvnhhg
-    tghhvghnghifvghnsehhuhgrfigvihdrtghomhdprhgtphhtthhopehjghhgseiiihgvph
-    gvrdgtrgdprhgtphhtthhopeifrghthhhsrghlrgdrvhhithhhrghnrghgvgesrghrmhdr
-    tghomhdprhgtphhtthhopehhvghlghgrrghssehkvghrnhgvlhdrohhrghdprhgtphhtth
-    hopeifvghirdhhuhgrnhhgvdesrghmugdrtghomhdprhgtphhtthhopeifrghnghiihhho
-    uhdusehhihhsihhlihgtohhnrdgtohhmpdhrtghpthhtohepfigrnhhghihushhhrghnud
-    dvsehhuhgrfigvihdrtghomhdprhgtphhtthhopehlihhuhihonhhglhhonhhgsehhuhgr
-    figvihdrtghomhdprhgtphhtthhopehkvhhmsehvghgvrhdrkhgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:1mcQaiAtvM2_sK57nwC0BHqlaRxHJt1jG4gQTvwYWM2hEjKBO78xxg>
-    <xmx:1mcQarsR9dLQ7EM7CHguDYp07UB75_pV1CR16PB3hK8tMQqkGIyQmg>
-    <xmx:1mcQaoT52z8z5kW99EiZbTj4vFPGYoIRfuWQcwT8YT10sgoH7UVbqw>
-    <xmx:1mcQaqIO1xgnVjSYUPdsaRCZHl8nHoYODPU0Jujbob9CxI_TXBS1KA>
-    <xmx:12cQak9LvKo2Gj-gT5kLMEOjmpNfS8SsyDlNKo9NwB3YgFlKvlCC2DyZ>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 22 May 2026 10:27:33 -0400 (EDT)
-Date: Fri, 22 May 2026 08:27:30 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: fengchengwen <fengchengwen@huawei.com>
-Cc: <jgg@ziepe.ca>, <wathsala.vithanage@arm.com>, <helgaas@kernel.org>,
- <wei.huang2@amd.com>, <wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
- <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, alex@shazbot.org
-Subject: Re: [PATCH v11 5/5] vfio/pci: Add VFIO_DEVICE_FEATURE_TPH_ST for
- TPH ST entry management
-Message-ID: <20260522082730.3d843a7f@shazbot.org>
-In-Reply-To: <512bce27-13a2-44a1-aa5b-b5ea77c174ba@huawei.com>
-References: <20260518071701.25177-1-fengchengwen@huawei.com>
-	<20260518071701.25177-6-fengchengwen@huawei.com>
-	<20260521221008.59ddf977@shazbot.org>
-	<512bce27-13a2-44a1-aa5b-b5ea77c174ba@huawei.com>
-X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vfd+qkAP"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ba86e35aa1so121847825ad.1
+        for <kvm@vger.kernel.org>; Fri, 22 May 2026 08:15:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779462937; x=1780067737; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=J8KQAP9mWp0ZRebZLa5bEvFOR8JqQ907ANUwCS1BhIk=;
+        b=vfd+qkAPjFOttcXas/Ji9M35M4Rw8hcV5fTyPE3i/qz6Urtu59oiZWjVnliJDV8b8X
+         nXc9ju8hf7FIeD4KxoV5671zCCTo2KNxg28Cmp4AowLYke7YszNsR6TOu0LU29I05LHu
+         NSjtge7CzHic4JZstW7NiIi5zCq0R9rSyguhEBY1sHF3mhEiONnewRhq/IygjhEMo45+
+         UqI62LjC+u9pJ3cidfHtOwJCng5tWfNVW3jIAdm2IrU+XE1LeLKh+9GOP76Pkzbyv+tT
+         /XN9Xrdhft0Grt9ieG4VlRCvjwukUwPKDX1O1aJ7qZg6qvWELuu5Nlts4Y0ezfW/P1jP
+         usZw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779462937; x=1780067737;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=J8KQAP9mWp0ZRebZLa5bEvFOR8JqQ907ANUwCS1BhIk=;
+        b=RcTDDQ+Tfzp246ATUz5/YuO+ZUidMrJHh8drEWPEFqjF5QfT4gyavB1ebI4/yKvQcx
+         uZgbADv0edPzfuah4yKFGm+HlwzZA67lv/LIWk51EbN+Gxfz9c3bbYxeStIyBdsM5PxK
+         s4pq623QtQC+IvHue3DTuLmvwbm0wLcC4N4qgU371Ha02OsXn3NoNKJ4odpo26s56TZ5
+         T9FwGH4e7nRQt5TAk/upQV6jwK2+icm85ilNjz/mMldufbm/wC87w/yvz202NiDN4+IJ
+         yJjuE+HrMcxZPPB3XV/UK4aFXqO5rdq0w6Vz3mBHb6tVe26xQXTgFQvN+RaymjZQsSev
+         zQdQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9T2XXqp7Ws3U43LbHMODWzFdfxTu3CbjrUARPmeVPqsbRDIBqSpz6Dm00P9C5JtT8sh8I=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwoJz5braGSljTCJYlDyhT2rYVok5GeGgNO4BBCiR5jXO2LSGt0
+	or2BbIRdsgPu9h4Xuh6NasV7KYIWaNu7/bSAROaX+MaM++HLsOv3z+bjz999ft8bm6Olb01frVd
+	884+mlpOGiICwOd1Uabuwbg==
+X-Received: from pleg14.prod.google.com ([2002:a17:902:e38e:b0:2b4:58ed:55d2])
+ (user=vannapurve job=prod-delivery.src-stubby-dispatcher) by
+ 2002:a17:902:f70e:b0:2b2:5503:1b8d with SMTP id d9443c01a7336-2beb0347058mr43525335ad.6.1779462936728;
+ Fri, 22 May 2026 08:15:36 -0700 (PDT)
+Date: Fri, 22 May 2026 15:15:34 +0000
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.746.g67dd491aae-goog
+Message-ID: <20260522151534.652522-1-vannapurve@google.com>
+Subject: [PATCH v5 1/1] KVM: x86: Introduce has_protected_pmu state for TDX VMs
+From: Vishal Annapurve <vannapurve@google.com>
+To: seanjc@google.com, pbonzini@redhat.com, dave.hansen@linux.intel.com
+Cc: rick.p.edgecombe@intel.com, dapeng1.mi@linux.intel.com, mizhang@google.com, 
+	kai.huang@intel.com, jmattson@google.com, michael.roth@amd.com, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Vishal Annapurve <vannapurve@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, 22 May 2026 18:04:13 +0800
-fengchengwen <fengchengwen@huawei.com> wrote:
+PMU state for TDX VMs is virtualized by TDX Module [1]. Host has following
+toggles to control the PMU functionality exposed to TDX VMs:
+1) Configure TD_PARAMS to allow guests to use performance monitoring.
+2) Restrict the TD to a subset of the PEBS counters if supported.
+3) Limit the TD to setup a certain perfmon events using basic/enhanced
+   event filtering.
 
-> On 5/22/2026 12:10 PM, Alex Williamson wrote:
-> > On Mon, 18 May 2026 15:17:01 +0800
-> > Chengwen Feng <fengchengwen@huawei.com> wrote:
-> >   
-> >> Add VFIO_DEVICE_FEATURE_TPH_ST to allow userspace to manage PCIe TPH
-> >> Steering Tag entries.
-> >>
-> >> SET: Program contiguous ST entries when ST table resides in TPH Capability
-> >>      or MSI-X table. U32_MAX CPU ID clears the corresponding ST entry.
-> >> GET: Retrieve ST values per CPU ID, only available in DS mode.
-> >>
-> >> Both operations are only valid when TPH is enabled on the device.  
-> > 
-> > What?  That doesn't align with the hardware programming model.  The
-> > specification even suggests that the device should be quiesced or TPH
-> > disabled during programming of the steering tags for deterministic
-> > behavior.  
-> 
-> As mentioned in the 4/5 commit, obtaining ST must first enable TPH.
-> Of course, I think it might be necessary to calculate pdev->tph_req_type
-> during the capability detection phase, so that we can modify ST before
-> enabling TPH. Do you think such a modification is needed?
+KVM will need to be enlightened to support these toggles. Introduce
+has_protected_pmu state to track the pmu state for such scenarios
+and explicitly set the has_protected_pmu flag for TDX VMs.
 
-I think a uAPI that doesn't align with the recommended programming
-order of the specification, potentially resulting in non-deterministic
-behavior is bogus.
+If pmu state is protected:
+1) Disable KVM's PMU virtualization framework as additional
+enlightenment is needed within KVM to control/manage the
+visibility of PMU state to such VMs.
+2) Disallow userspace VMM from enabling PMU virtualization state
+using KVM_CAP_PMU_CAPABILITY.
 
-> >> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
-> >> ---
-> >>  drivers/vfio/pci/vfio_pci_core.c | 91 ++++++++++++++++++++++++++++++++
-> >>  include/uapi/linux/vfio.h        | 41 ++++++++++++++
-> >>  2 files changed, 132 insertions(+)
-> >>
-> >> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
-> >> index 0d0140202280..13a22c1d6ea6 100644
-> >> --- a/drivers/vfio/pci/vfio_pci_core.c
-> >> +++ b/drivers/vfio/pci/vfio_pci_core.c
-> >> @@ -1558,6 +1558,95 @@ static int vfio_pci_core_feature_token(struct vfio_pci_core_device *vdev,
-> >>  	return 0;
-> >>  }
-> >>  
-> >> +static int vfio_pci_core_feature_tph_st(struct vfio_pci_core_device *vdev,
-> >> +					u32 flags,
-> >> +					struct vfio_device_feature_tph_st __user *arg,
-> >> +					size_t argsz)
-> >> +{
-> >> +	bool is_set = !!(flags & VFIO_DEVICE_FEATURE_SET);
-> >> +	struct vfio_device_feature_tph_st tph_st;
-> >> +	struct pci_dev *pdev = vdev->pdev;
-> >> +	enum tph_mem_type mtype;
-> >> +	int i, j, ret;
-> >> +	u32 *cpus;
-> >> +	u16 st;
-> >> +
-> >> +	guard(mutex)(&vdev->tph_lock);  
-> > 
-> > Wrong place for this lock.  Why do we even need it?  If a user races
-> > SET/GET with enable/disable, that's their problem.  
-> 
-> OK, will fix in next version
-> 
-> >   
-> >> +
-> >> +	ret = vfio_check_feature(flags, argsz,
-> >> +				 VFIO_DEVICE_FEATURE_GET |
-> >> +				 VFIO_DEVICE_FEATURE_SET,
-> >> +				 sizeof(tph_st));
-> >> +	if (ret <= 0)
-> >> +		return ret;
-> >> +
-> >> +	if (!enable_unsafe_tph ||  
-> > 
-> > Why did we allow the feature to be probe if it can't be used?  
-> 
-> OK, will fix in next version
-> 
-> >   
-> >> +		pcie_tph_enabled_mode(pdev) == PCI_TPH_ST_NS_MODE)  
-> > 
-> > Here's that ambiguity of reporting NS_MODE for disabled, but as above
-> > it's a bogus requirement.  
-> 
-> OK, will fix in next version
-> 
-> >   
-> >> +		return -EOPNOTSUPP;
-> >> +	if (!is_set && pcie_tph_enabled_mode(pdev) != PCI_TPH_ST_DS_MODE)  
-> > 
-> > Why?  Let the interface be symmetric that GET works regardless of mode.  
-> 
-> OK, will remove the restrict
-> 
-> >   
-> >> +		return -EOPNOTSUPP;
-> >> +	if (is_set && pcie_tph_get_st_table_loc(pdev) == PCI_TPH_LOC_NONE)
-> >> +		return -EOPNOTSUPP;
-> >> +
-> >> +	if (copy_from_user(&tph_st, arg, sizeof(tph_st)))
-> >> +		return -EFAULT;
-> >> +
-> >> +	if (tph_st.count == 0 || tph_st.count > VFIO_TPH_ST_MAX_COUNT ||
-> >> +		tph_st.flags > VFIO_TPH_ST_MEM_TYPE_PM)  
-> > 
-> > Wrong operation for a flags field.  
-> 
-> Because currently flags only use bit0 (0-VM, 1-PM), this judge make sure
-> it will return error if userspace passing non-zero in remain bits.
+[1] Section 15.2: https://cdrdv2.intel.com/v1/dl/getContent/733575
 
-This should be a mask to test undefined bits are not set, not a value
-comparison.
+Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+---
+v4 -> v5:
+ - Allow userspace to disable PMU virtualization before creating any
+   vcpus inline with existing ABI contract for KVM_CAP_PMU_CAPABILITY.
 
-> >> +		return -EINVAL;
-> >> +	if (!is_set && tph_st.index != 0)  
-> > 
-> > We can only GET index 0?  Why?  
-> 
-> Because GET operation don't need index, this judgment make sure
-> it will return error if userspace passing non-zero index.
+v4: https://lore.kernel.org/kvm/20260507212957.2629561-1-vannapurve@google.com/
 
-The interface is not symmetric.
+ arch/x86/include/asm/kvm_host.h | 1 +
+ arch/x86/kvm/vmx/tdx.c          | 6 ++++++
+ arch/x86/kvm/x86.c              | 6 +++++-
+ 3 files changed, 12 insertions(+), 1 deletion(-)
+
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index c470e40a00aa..8371dcaaed1a 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -1422,6 +1422,7 @@ struct kvm_arch {
+ 	bool has_private_mem;
+ 	bool has_protected_state;
+ 	bool has_protected_eoi;
++	bool has_protected_pmu;
+ 	bool pre_fault_allowed;
+ 	struct hlist_head *mmu_page_hash;
+ 	struct list_head active_mmu_pages;
+diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
+index 1e47c194af53..eb4b4518e6f0 100644
+--- a/arch/x86/kvm/vmx/tdx.c
++++ b/arch/x86/kvm/vmx/tdx.c
+@@ -638,6 +638,12 @@ int tdx_vm_init(struct kvm *kvm)
+ 	kvm->arch.has_private_mem = true;
+ 	kvm->arch.disabled_quirks |= KVM_X86_QUIRK_IGNORE_GUEST_PAT;
  
-> >> +		return -EINVAL;
-> >> +	if (is_set && (tph_st.index >= VFIO_TPH_ST_MAX_COUNT ||
-> >> +		       tph_st.index + tph_st.count > VFIO_TPH_ST_MAX_COUNT))  
-> > 
-> > DS can have more that 2048 steering tags.  
-> 
-> I check the PCIE protocol, DS mode with ST in pcie-config or msi-x must not
-> hold > 2048 steering tags.
-
-The MSI-X storage location is limited to 2048, but DS mode doesn't
-necessarily use either of these storage locations.
-
-> >> +		return -EINVAL;
-> >> +
-> >> +	cpus = memdup_array_user(&arg->data, tph_st.count, sizeof(*cpus));  
-> > 
-> > Use an __aligned_u64 data_uptr like iommufd does and avoid copying this
-> > into the kernel.  Isn't this steering tags, why's it named cpus?  
-> 
-> we reuse the field which according your previous suggestion:
-> in GET, user pass in cpus, and vfio will feedback steering tags in cpus.
-
-Perhaps this was over stated, but aligning to the generic uAPI name
-since it's dual-purpose would seem to make sense.
++	/*
++	 * PMU support is provided by the TDX-Module (if enabled for the VM).
++	 * From KVM's perspective, the VM doesn't have a virtual PMU.
++	 */
++	kvm->arch.has_protected_pmu = true;
++
+ 	/*
+ 	 * Because guest TD is protected, VMM can't parse the instruction in TD.
+ 	 * Instead, guest uses MMIO hypercall.  For unmodified device driver,
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 0a1b63c63d1a..733674ea0d2a 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -6909,6 +6909,10 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
+ 		if (!enable_pmu || (cap->args[0] & ~KVM_CAP_PMU_VALID_MASK))
+ 			break;
  
-> >> +	if (IS_ERR(cpus))
-> >> +		return PTR_ERR(cpus);
-> >> +
-> >> +	mtype = tph_st.flags & VFIO_TPH_ST_MEM_TYPE_PM ? TPH_MEM_TYPE_PM :
-> >> +							 TPH_MEM_TYPE_VM;  
-> > 
-> > Then why did we use two flag bits for this?  
-> 
-> VFIO_TPH_ST_MEM_TYPE_PM is just one bit, could you explain the two flag bits?
-
-My bad, I overlooked that they're both shifted by 0.  Typically we
-wouldn't define both the 0 and 1 value, only the latter.
++		if (kvm->arch.has_protected_pmu &&
++		    cap->args[0] != KVM_PMU_CAP_DISABLE)
++			break;
++
+ 		mutex_lock(&kvm->lock);
+ 		if (!kvm->created_vcpus && !kvm->arch.created_mediated_pmu) {
+ 			kvm->arch.enable_pmu = !(cap->args[0] & KVM_PMU_CAP_DISABLE);
+@@ -13375,7 +13379,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
+ 	kvm->arch.default_tsc_khz = max_tsc_khz ? : tsc_khz;
+ 	kvm->arch.apic_bus_cycle_ns = APIC_BUS_CYCLE_NS_DEFAULT;
+ 	kvm->arch.guest_can_read_msr_platform_info = true;
+-	kvm->arch.enable_pmu = enable_pmu;
++	kvm->arch.enable_pmu = enable_pmu && !kvm->arch.has_protected_pmu;
  
-> >> +	if (!is_set) {
-> >> +		for (i = 0; i < tph_st.count; i++) {
-> >> +			ret = pcie_tph_get_cpu_st(pdev, mtype, cpus[i], &st);  
-> > 
-> > My understanding was that GET would return the translated values from a
-> > previous SET, not translate on the fly.  I think in order to support
-> > writing STs before enabling TPH, we're going to need to store them
-> > somewhere anyway so that we can push them to the correct location when
-> > TPH is enabled.  That means there a buffer for SET/GET regardless of
-> > the mode that's enabled.  
-> 
-> OK, will try to fix
-> 
-> >   
-> >> +			if (ret)
-> >> +				goto out;
-> >> +			cpus[i] = st;
-> >> +		}
-> >> +		goto out;
-> >> +	}
-> >> +
-> >> +	for (i = 0; i < tph_st.count; i++) {
-> >> +		if (cpus[i] == U32_MAX) {
-> >> +			ret = pcie_tph_set_st_entry(pdev, tph_st.index + i, 0);  
-> > 
-> > Why do we need a magic value to set it to zero?  Hardware doesn't have
-> > a "clear ST register value".  
-> 
-> So you mean for SET, usespace direct passing steering-tag not cpus in this patch?
+ #if IS_ENABLED(CONFIG_HYPERV)
+ 	spin_lock_init(&kvm->arch.hv_root_tdp_lock);
+-- 
+2.54.0.746.g67dd491aae-goog
 
-How does this work with Zhiping's series where there might be TPH values
-exposed through the dma-buf to support p2p DMA?  Where would that level
-of TPH programming occur?
- 
-> >> +			if (ret)
-> >> +				goto out;
-> >> +			continue;
-> >> +		}
-> >> +
-> >> +		ret = pcie_tph_get_cpu_st(pdev, mtype, cpus[i], &st);
-> >> +		if (ret)
-> >> +			goto out;
-> >> +		ret = pcie_tph_set_st_entry(pdev, tph_st.index + i, st);
-> >> +		if (ret)
-> >> +			goto out;  
-> > 
-> > Clearly broken for DS mode.  
-> 
-> For DS mode:
-> 1\ if ST table in CONFIG or MSI-X, then it could done by this way
-> 2\ if ST table not in CONFIG or MSI-X, then it only need invoke GET, and set by device-specific way.
-
-The SET only after enable model is broken, DS mode needs to support
-SET, where GET returns the host translations.  Thanks,
-
-Alex
