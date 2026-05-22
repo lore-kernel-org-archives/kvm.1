@@ -1,38 +1,37 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28E0E34EF05;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41002352F87;
 	Fri, 22 May 2026 22:46:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779489971; cv=none; b=hpdB5nj9joAh0qaR3BMYMQdUvT/BvusJqqNwAzfIYphwhvPve2b0RlJCgb+1A/HmYpSYsrROl69UcAbvxzaqwr0T9hR6/FHOEPyZIioqsr4LAYMFE4McPYj/ITs7vj9z/DiWJERZSGucgyXsU8k0x3QMfmFf6EJu289qudAYvRw=
+	t=1779489971; cv=none; b=pkT0z5eohv4uwvnwSH2cL/E1vyrZ7N2HyR89DxMkjaTgxatWNOrEagxWUzR9sIdjzn50eb8xZ5qvl0QyaU/UQ2fR9pEbwRjpCf+exE8qSBGVIwyoByeZm7IyA8kNUs8YilautJKxRwOHqcRfX6BwlUmPEAAGpV8ddCYtvyPpslk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779489971; c=relaxed/simple;
-	bh=25USkoSk+Sk/e140qXBRP/UoMXSNPLaBpkEe4Yd5BB8=;
+	bh=GQD1jANZIEUF0wkpByeG4W13XuLx6L3WkE4M7CHEPjo=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=JRATNEJwn7TI+H6hnp9ILfWLm5NHC7PXie0UwM6ltMqaA0jWKubLdJgwxP9yDqtkvlCHirk3hp5aKMzJm0+IXJdABE6mZzmzwRUvp23/FSW8yv8y0il+2JXtY1juoRKN/3W78SUUnOmXALR6s89oHmT8vZyLhDfnhXwMQ01Ez04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SPEe7FVP; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Aj+HcAhpIEqIqtSClBoSYBt5yDydHXhMCruzvcMe4O/DXnGxT59uy0nefOh8+C8uyKfSFjqiRsJeo7ZM3Kg+rNAgubzcn0oBdZao/0rTPk+PHF6kKITDwdfaTmUm46TwE0tvQxJcGmQkKVs0frgj2qpFnhagrVTFZvt3djKA39Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iThYzAxu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SPEe7FVP"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CF10CC2BCC4;
-	Fri, 22 May 2026 22:46:10 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iThYzAxu"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 0DF4BC2BCF4;
+	Fri, 22 May 2026 22:46:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779489970;
-	bh=25USkoSk+Sk/e140qXBRP/UoMXSNPLaBpkEe4Yd5BB8=;
+	s=k20201202; t=1779489971;
+	bh=GQD1jANZIEUF0wkpByeG4W13XuLx6L3WkE4M7CHEPjo=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=SPEe7FVPzKtMNUOhX6vpDzRS8/YpQyDZ23exQZ3U6j+CuXr0uH7juSi1xaT4jmRnM
-	 f91xb66h9OUXG9f7JaFShPhTlcnprINAEAnr8lF31ib1praRGzzAGO6VvYz41OQSHp
-	 G0YTNrDWLuFvCbFhmdD5V+U5H/b6nIo1tTQ3K6afXfgdNffgjV89w2RxhUdjH92gfG
-	 xA8CFai9AlB67oToyP/hY6AGyT6/Ry+5IdLhsjLUO58EPEGrjpQh5gm9kyoJkx0Glr
-	 vlF6UQFNLl+9zkPEdcVE1KwRmPA/fr3K68luAFTiQwMs59yszUtFJg2yUrIG7+BfIl
-	 5LrqmsDEXg00w==
+	b=iThYzAxuPLvLXhyoySLZWIK5GekVA5X0j1kuQuMeqI5Lbjm5GyLYkNPIzUx2DblEX
+	 LrqqrUTLzKEDRkhvZIN9psWJsDqiKubLpW8S7EdSO74O2BJFtMmK0Umtkmdf99+NKg
+	 dsCOMEDoSUUZO8N/mqklqIDAUR+0lZjxUXEYtKarvNeeVeHsl0DRGxglsit6Gu7jIp
+	 /o+DrfMhRBiMPuBM4yzSv5n2YFp914DycsKmlFfGlceXda+J0cxnwZAvFElb8AJ8W7
+	 5+0Q34TUveCYie9LHjGrhqqHMaW3D9PsK/53Gspyh5CmB7KKEtNOkYSNO999NUy/yv
+	 0YOAiZhmJZdZg==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id B11F1CD4F3D;
-	Fri, 22 May 2026 22:46:10 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 02DBCCD5BB8;
+	Fri, 22 May 2026 22:46:11 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 22 May 2026 15:46:06 -0700
-Subject: [PATCH v2 1/5] KVM: guest_memfd: Use write permissions when
- GUP-ing source pages
+Date: Fri, 22 May 2026 15:46:09 -0700
+Subject: [PATCH v2 4/5] KVM: SNP: Fix kunmap_local() unmapping order
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +40,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260522-fix-sev-gmem-post-populate-v2-1-3f196bfad5a1@google.com>
+Message-Id: <20260522-fix-sev-gmem-post-populate-v2-4-3f196bfad5a1@google.com>
 References: <20260522-fix-sev-gmem-post-populate-v2-0-3f196bfad5a1@google.com>
 In-Reply-To: <20260522-fix-sev-gmem-post-populate-v2-0-3f196bfad5a1@google.com>
 To: Sean Christopherson <seanjc@google.com>, 
@@ -59,11 +58,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-coco@lists.linux.dev, Yu Zhang <yu.c.zhang@linux.intel.com>, 
  Fuad Tabba <tabba@google.com>, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779489969; l=3935;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779489969; l=1450;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=NOLwc6JliC+gaSDhEKSTPHm5NB60r/tP961hWN1Pkhc=;
- b=BxZIXb/NefSp8WorRdTvHMT6Acj2y9pAVHXgrqlFVnhH092phLGEkuD8WTHfd774O0KA7yxGb
- wLiXqiz/vp9AKNeuYlKQ0zrKSN1rS9wejDmzyeZ8GpSO1drNLsUhM1F
+ bh=VX9xGFMfWmL5HGm1mHjTtC4xZdzEbomljfer0iqVaEQ=;
+ b=FqRXMgrQiAATjkjhq9UmxaSoOh/KdH1pj4wJC6/RV9QZBUUylr1KVoYNH10wJ+vMYjySGY31T
+ vsuLxRE2R4rB46qc+v+yCu6HlrhMPWNheqkAo+RrKYcFSmJtFBBLGKU
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -71,99 +70,49 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 
-From: Sean Christopherson <seanjc@google.com>
+From: Ackerley Tng <ackerleytng@google.com>
 
-sev_gmem_post_populate() may write to the source page if there was an error
-while performing SNP_LAUNCH_UPDATE.
+Mappings created with kmap_local_page() or kmap_local_pfn() must be
+unmapped in the reverse order they were acquired, following a LIFO
+(last-in, first-out) stack-based approach.
 
-Since GUP requested only reads, there is a chance sev_gmem_post_populate()
-could be writing to some read-only page.
+In sev_gmem_post_populate(), src_vaddr is mapped first and dst_vaddr is
+mapped second. The current code incorrectly calls kunmap_local() for
+src_vaddr before dst_vaddr.
 
-sev_gmem_post_populate() will only ever write the source page if the type
-of page being LAUNCH_UPDATEd is a CPUID page. Hence, request a writable
-page only when loading the CPUID page.
+Swap the kunmap_local() calls to ensure the mappings are released in the
+correct order.
 
-Since TDX never writes to the source page, always pass false to
-kvm_gmem_populate().
-
-With this, even if a read-only mapping or the global zero page was provided
-as the source page, GUP will do a copy-on-write, making it writable before
-the write happens in gvm_post_populate.
-
-Fixes: 2a62345b30529 ("KVM: guest_memfd: GUP source pages prior to populating guest memory")
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: 2a62345b3052 ("KVM: guest_memfd: GUP source pages prior to populating guest memory")
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- arch/x86/kvm/svm/sev.c   | 1 +
- arch/x86/kvm/vmx/tdx.c   | 2 +-
- include/linux/kvm_host.h | 3 ++-
- virt/kvm/guest_memfd.c   | 6 ++++--
- 4 files changed, 8 insertions(+), 4 deletions(-)
+ arch/x86/kvm/svm/sev.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 940b97d4a8523..2f254c447923e 100644
+index 2f254c447923e..dbf75326a40f4 100644
 --- a/arch/x86/kvm/svm/sev.c
 +++ b/arch/x86/kvm/svm/sev.c
-@@ -2469,6 +2469,7 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 	sev_populate_args.type = params.type;
+@@ -2360,8 +2360,8 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
  
- 	count = kvm_gmem_populate(kvm, params.gfn_start, src, npages,
-+				  params.type == KVM_SEV_SNP_PAGE_TYPE_CPUID,
- 				  sev_gmem_post_populate, &sev_populate_args);
- 	if (count < 0) {
- 		argp->error = sev_populate_args.fw_error;
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index b8c3d3d8bbfe5..00dcfcbc47f68 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -3185,7 +3185,7 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
- 		};
- 		gmem_ret = kvm_gmem_populate(kvm, gpa_to_gfn(region.gpa),
- 					     u64_to_user_ptr(region.source_addr),
--					     1, tdx_gmem_post_populate, &arg);
-+					     1, false, tdx_gmem_post_populate, &arg);
- 		if (gmem_ret < 0) {
- 			ret = gmem_ret;
- 			break;
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 4c14aee1fb063..2c5ad9a6d5ce8 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2596,7 +2596,8 @@ int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_ord
- typedef int (*kvm_gmem_populate_cb)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
- 				    struct page *page, void *opaque);
+ 		memcpy(dst_vaddr, src_vaddr, PAGE_SIZE);
  
--long kvm_gmem_populate(struct kvm *kvm, gfn_t gfn, void __user *src, long npages,
-+long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src,
-+		       long npages, bool may_writeback_src,
- 		       kvm_gmem_populate_cb post_populate, void *opaque);
- #endif
+-		kunmap_local(src_vaddr);
+ 		kunmap_local(dst_vaddr);
++		kunmap_local(src_vaddr);
+ 	}
  
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 69c9d6d546b28..07d8db344872b 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -858,7 +858,8 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
- 	return ret;
- }
+ 	ret = rmp_make_private(pfn, gfn << PAGE_SHIFT, PG_LEVEL_4K,
+@@ -2396,8 +2396,8 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
  
--long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long npages,
-+long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src,
-+		       long npages, bool may_writeback_src,
- 		       kvm_gmem_populate_cb post_populate, void *opaque)
- {
- 	struct kvm_memory_slot *slot;
-@@ -892,8 +893,9 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
+ 		memcpy(src_vaddr, dst_vaddr, PAGE_SIZE);
  
- 		if (src) {
- 			unsigned long uaddr = (unsigned long)src + i * PAGE_SIZE;
-+			unsigned int flags = may_writeback_src ? FOLL_WRITE : 0;
+-		kunmap_local(src_vaddr);
+ 		kunmap_local(dst_vaddr);
++		kunmap_local(src_vaddr);
+ 	}
  
--			ret = get_user_pages_fast(uaddr, 1, 0, &src_page);
-+			ret = get_user_pages_fast(uaddr, 1, flags, &src_page);
- 			if (ret < 0)
- 				break;
- 			if (ret != 1) {
+ out:
 
 -- 
 2.54.0.794.g4f17f83d09-goog
