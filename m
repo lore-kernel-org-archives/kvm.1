@@ -1,281 +1,181 @@
-Received: from mx0a-001b2d01.pphosted.com (mx0a-001b2d01.pphosted.com [148.163.156.1])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03447357D0B;
-	Fri, 22 May 2026 17:44:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.156.1
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F284A3176FD;
+	Fri, 22 May 2026 17:48:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779471891; cv=none; b=uHFnUO5tLfDjwd2IrSBwnQgeFJ61p30vGEl1ptkwynRdgqDopw6H+VTZIftjQyqjcmZKQqpIwkbjsp5rpgBEwZd5cGAFyEn3fqkzDYbKoQn41ZywLUEWsOoQ7sIhCQS86iTZChxK4zrnJipBwi2KiBDluKESCo160taRzi8TQXw=
+	t=1779472106; cv=none; b=f4i+JedPnLsrfRqYZlG0SWU5AWN6jSdq3kTdYDz9NJzHnRMhys6uNFHhuWe3v1zjAs4qGKHcXfHdeX3AIOxeyuRo/iok1G/BIbzUKyMWz8Ws25/WsC2Tf7jKpv6xEzRUp3MIrmU16JvqCA69IzCR6I21+eC2MjX9rPMt6bcm680=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779471891; c=relaxed/simple;
-	bh=7TUyfPrpp32uutuA5LoMpJSTWZJfXb6Z9pcKEovY8TQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=pZenk3VBGV6JItgcooQtlDce31S6da3DAPAyxiiQovdeM6Mxxr+Tj6q0puP7+KI+qZbl8w7ZtXuj/wqhZeclf/u3yaToaP5W/xS6bbU8sOTNdz9NeKePDiEDSbcTi5qeQjJEeRTdLOITyrvVl54fMeTQf2RQSwQnBcZP9owKj/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=RGR61p98; arc=none smtp.client-ip=148.163.156.1
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1779472106; c=relaxed/simple;
+	bh=YAQoKoOwWPW3Ak+kECiU/OfUOBm+LsGB0e6nKpQwUrQ=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=fM5adW9txNWzWAPmRru7aZHXniv5djJsgTQ9QorKDvAGRzhX1wZj7OVoo2UdLZcKB/WyGgBRGFVf9aAU2X5PNda3E4VQ3hPLUQOgaS0SiveJAzINSd8qD6VD3WDdG8evGr3Jd37YRalyGu/Gz4mLh5EzZTLiHmZfDSfX9usMv4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=qs3+8WTI; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="RGR61p98"
-Received: from pps.filterd (m0356517.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64M8YlZP4037410;
-	Fri, 22 May 2026 17:44:48 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=
-	content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=pp1; bh=qwML4z
-	xSsWLDzmLkGPtHDKwj8k5qoLmLMRq7lEngIug=; b=RGR61p980AQv8ATcyYMHpP
-	Z7sNzlSw08LeQhZsaP614tRnVSpxEMeiO3rYrQrNE8sTBAHLz9RgwFvARIZMbyji
-	Pwsm4NsXMMbZgO++KygsimksuiZhzKr5TN4qDpgrHDkO4BaL7ljLLZjOpWyoVWjK
-	e4vs47nnogcyaWeJ/UEOoZkRXtYvSPW0qf/gdMZvFp6bgAOeRgva2tThKUQGNpPY
-	1H/6V/KTN9B4zcCsbBuuJ2+TEUm5h+ap6eeLH6hD45BE1la2Upiplwp4PpfXtsZJ
-	QaZGK4kOpi/fakeHS4dldWtnIHdQWHoSb1oBxSrhsrbbXPp1ZL2xioSFQ7WVCy1A
-	==
-Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6h75d5cg-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 22 May 2026 17:44:47 +0000 (GMT)
-Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64MHd9xo031698;
-	Fri, 22 May 2026 17:44:47 GMT
-Received: from smtprelay04.wdc07v.mail.ibm.com ([172.16.1.71])
-	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e75kyhntc-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Fri, 22 May 2026 17:44:47 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (smtpav05.wdc07v.mail.ibm.com [10.39.53.232])
-	by smtprelay04.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64MHij8w35848724
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Fri, 22 May 2026 17:44:45 GMT
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 71EB258043;
-	Fri, 22 May 2026 17:44:45 +0000 (GMT)
-Received: from smtpav05.wdc07v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 3EE3D58053;
-	Fri, 22 May 2026 17:44:44 +0000 (GMT)
-Received: from [9.61.48.218] (unknown [9.61.48.218])
-	by smtpav05.wdc07v.mail.ibm.com (Postfix) with ESMTP;
-	Fri, 22 May 2026 17:44:44 +0000 (GMT)
-Message-ID: <8d270932-986b-4978-9615-6d5a614148d0@linux.ibm.com>
-Date: Fri, 22 May 2026 13:44:43 -0400
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="qs3+8WTI"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=YAQoKoOwWPW3Ak+kECiU/OfUOBm+LsGB0e6nKpQwUrQ=; b=qs3+8WTIScj2GuMSok2qYe/51T
+	Es3SyEeuALPxrfXQfv0lJpq9p4zAZC1Orm0IrT6fOVURjfSEkTeRsTP4/pJ/5hlnTxj1VNNSsbH9f
+	4RdiaQ5RVEZR/zdpm962XMlJIMn8GVkTlxvnY24QYWy2udJECluNpzjrtObaB4kPQiqjMwDnM7h+c
+	AvK3xMyjpw3HXO00IvmvkeTb7sTbfuzjPYX6QPze6hoodNxdG6uRkYK6kkEvzOPn+kZphuDlphArh
+	j7M+xvHrheUvY3yszEGwomNWLPI93KZUpI2Zym3PY3b+z8Qt5Nxndl0Cd69DrjL880WQzvszegoVq
+	BC/IZCyA==;
+Received: from 54-240-197-238.amazon.com ([54.240.197.238] helo=freeip.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wQTyi-0000000APGq-2qF8;
+	Fri, 22 May 2026 17:48:08 +0000
+Message-ID: <99356a588677e9ff31c1747db1705d9250a2728d.camel@infradead.org>
+Subject: Re: [PATCH v4 27/30] KVM: x86: Add KVM_VCPU_TSC_EFFECTIVE_FREQ
+ attribute
+From: David Woodhouse <dwmw2@infradead.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>,  Borislav Petkov <bp@alien8.de>, Dave
+ Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross
+ <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul
+ Durrant <paul@xen.org>, Jonathan Cameron <jic23@kernel.org>, Sascha
+ Bischoff <Sascha.Bischoff@arm.com>, Marc Zyngier <maz@kernel.org>, Joey
+ Gouly <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, Dongli
+ Zhang <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
+Date: Fri, 22 May 2026 18:48:07 +0100
+In-Reply-To: <ahCQluJj59uWlDAF@google.com>
+References: <20260509224824.3264567-1-dwmw2@infradead.org>
+	 <20260509224824.3264567-28-dwmw2@infradead.org>
+	 <3ad6cd109480772ade3c11f23b9c1d7a9855d67e.camel@infradead.org>
+	 <ag-Hf2liLSX9q0rS@google.com>
+	 <ab84153e33fbe7c25667f595c56b310d4d5a93ef.camel@infradead.org>
+	 <ahBQ7mXNaTtouT3C@google.com>
+	 <c4b498c401287477402ddd60a0120b0c5a9bf8d3.camel@infradead.org>
+	 <ahCQluJj59uWlDAF@google.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-FXtb7qac/xWXftlRSmGM"
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 3/3] KVM: s390: Introducing kvm_arch_set_irq_inatomic
- fast inject
-To: Douglas Freimuth <freimuth@linux.ibm.com>, borntraeger@linux.ibm.com,
-        imbrenda@linux.ibm.com, frankja@linux.ibm.com, david@kernel.org,
-        hca@linux.ibm.com, gor@linux.ibm.com, agordeev@linux.ibm.com,
-        svens@linux.ibm.com, kvm@vger.kernel.org, linux-s390@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-References: <20260520160442.1051999-1-freimuth@linux.ibm.com>
- <20260520160442.1051999-4-freimuth@linux.ibm.com>
-From: Matthew Rosato <mjrosato@linux.ibm.com>
-Content-Language: en-US
-In-Reply-To: <20260520160442.1051999-4-freimuth@linux.ibm.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-TM-AS-GCONF: 00
-X-Authority-Analysis: v=2.4 cv=ffCdDUQF c=1 sm=1 tr=0 ts=6a10960f cx=c_pps
- a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
- a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=U7nrCbtTmkRpXpFmAIza:22 a=VnNF1IyMAAAA:8
- a=22TEs9BJkDR8V0ZWFCwA:9 a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: wTR_Tu23wCZ5dy1iEZ2-P7fyCHqHpw8M
-X-Proofpoint-GUID: wTR_Tu23wCZ5dy1iEZ2-P7fyCHqHpw8M
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIyMDE3NiBTYWx0ZWRfX/g/QqSxZ66XG
- NOJTCOgptWnqXuycVVvpHvw5VGOgvHlD0BR4FeV43BiztM98QSHvlFpKriYagXE/5EvDOKNDu/p
- n+ita0zpGcEq6eLKAhFNEu7DvpdnDnVQzLcmGULe4pgWHF3pJS5S+ZpnHOBXLG/9YnESQO6JxOC
- 9hUfcqIfZvHYTkF6YjruXLnh8+aXVEchMDRBGnSc3LCizT4YgfNm6Dfec1YwBKaHhwbUeM49uns
- RcKXZtdRAv+AbK3OpJhpQBO43dNun5GgYvaLZfibFYCYQ7qem6mJsvwozLcwGh1ruN0ioe9kqvp
- Fkl166y0FkCnoK6WTNyQKa3/xoVcrBBlWF6kPMmb+f3p7LyXCftg04Q25HLd/2Qg7HGVz6AA2U3
- agV3/8MOMuUWz2Juf+DTXfzNC/4DTR3J3YJNs19VRJUYn7rtwASpZOZugLWKqi7hiXeSAuLJ02M
- w2cjxAhRlMdrHmbtc6A==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-22_04,2026-05-18_01,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- priorityscore=1501 spamscore=0 phishscore=0 suspectscore=0 adultscore=0
- clxscore=1015 impostorscore=0 lowpriorityscore=0 bulkscore=0 malwarescore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605220176
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-On 5/20/26 12:04 PM, Douglas Freimuth wrote:
-> s390 needs a fast path for irq injection, and along those lines we
-> introduce kvm_arch_set_irq_inatomic. Instead of placing all interrupts on
-> the global work queue as it does today, this patch provides a fast path for
-> irq injection.
-> 
-> The inatomic fast path cannot lose control since it is running with
-> interrupts disabled. This meant making the following changes that exist on
-> the slow path today. First, the adapter_indicators page needs to be mapped
-> since it is accessed with interrupts disabled, so we added map/unmap
-> functions. Second, access to shared resources between the fast and slow
-> paths needed to be changed from mutex and semaphores to spin_lock's.
-> Finally, the memory allocation on the slow path utilizes GFP_KERNEL_ACCOUNT
-> but we had to implement the fast path with GFP_ATOMIC allocation. Each of
-> these enhancements were required to prevent blocking on the fast inject
-> path.
-> 
-> Fencing of Fast Inject in Secure Execution environments is enabled in the
-> patch series by not mapping adapter indicator pages. In Secure Execution
-> environments the path of execution available before this patch is followed.
-> 
-> Statistical counters have been added to enable analysis of irq injection on
-> the fast path and slow path including io_390_inatomic, io_flic_inject_airq,
-> io_set_adapter_int and io_390_inatomic_adapter_masked.
-> 
-> Signed-off-by: Douglas Freimuth <freimuth@linux.ibm.com>
 
-[...]
+--=-FXtb7qac/xWXftlRSmGM
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
->  int kvm_s390_inject_vm(struct kvm *kvm,
-> -		       struct kvm_s390_interrupt *s390int)
-> +		       struct kvm_s390_interrupt *s390int, struct kvm_s390_interrupt_info *inti)
->  {
-> -	struct kvm_s390_interrupt_info *inti;
->  	int rc;
->  
-> -	inti = kzalloc_obj(*inti, GFP_KERNEL_ACCOUNT);
-> -	if (!inti)
-> -		return -ENOMEM;
-> -
->  	inti->type = s390int->type;
->  	switch (inti->type) {
->  	case KVM_S390_INT_VIRTIO:
-> @@ -2010,8 +2005,7 @@ int kvm_s390_inject_vm(struct kvm *kvm,
->  				 2);
->  
->  	rc = __inject_vm(kvm, inti);
-> -	if (rc)
-> -		kfree(inti);
+On Fri, 2026-05-22 at 10:21 -0700, Sean Christopherson wrote:
+>=20
+> I'll send a standalone patch, along with a selftest tweak to verify the f=
+ix.
+> It's technically a fix and won't generate any conflicts, no reason to del=
+ay it.
 
-You removed this kfree, but there's still one in the default case
-above.  Remove that as well so the caller is always responsible for
-both allocating and freeing the kvm_s390_interrupt_info.  
+Are you suggesting the other 30 should be delayed? :P
 
-This appears to match the Sashiko complaint about a double-free, but
-you want to fix it here -- not at the individual caller(s).
+--=-FXtb7qac/xWXftlRSmGM
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-> +
->  	return rc;
->  }
->  
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUyMjE3NDgw
+N1owLwYJKoZIhvcNAQkEMSIEIHWCQf6H2vEPWYuBwCloSTuyO7AX3zsI3J6vj4CtEZeOMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAGPBf5ghet1ia
+gwDUGX/8VKP9auTGhaiXI6TYWUTaZT3tFx5/9lBkJRXM/nzLjMflyL44rQAmLz4JLzYR6F/ZdhnL
+rRmqpGwRTcEHwMoXw5YFdYrcUbfvzb2Ar48ve9qIRlWtomOjyL7gN9MotsKuO9t8ueex61WaO+LZ
+l65gWgcinXxS2C48EM3oqlTp4zeLmoiU9vPGAL0+2/MhVsSs9cu795y82aKTXZbTIxz4Dh5UerX0
+BZ+/YpFDF68QW6T1Jgo8M3v6XCw13Io9lGD5p6M608QxOL0EIO04XH5zQ9CirJWMwZno/KGXVjNR
+bEEqn/oZSUCtF7la3aYCB3ZGK70w2QgRXFTfpeJNt32Z1fyhN1+Ef8HCJW0sgTfcwE2+c0RWGq4A
+jne/9N6qoz5mIwRYvgFP+6K8quNHCGaf9fdlK7YnX/8h9YkpTwwsVHx5fFP7U2TpbTXrThvggxcU
+6vi/eikT29yjpQKL1kU4OrSnJt36OA4oKr23jKjDuA05Sdn3YlK5MzXzyoWPUHMk0TP08n8/MBvn
+aRxxgCPLbI1L/7YPGE+ADPKvI9nVGHD4PZvBuJ1KcsqDA/EBNJK3MLMTQDUwNPMXTbnANjFBJFyd
+mwJBMxYg/vp7ZFR0y/QPfM6XrDsCut88XXmcZP/Jyq10sfcHogU94Kb9GjhQyegAAAAAAAA=
 
-[...]
 
-> +
-> +/*
-> + * kvm_arch_set_irq_inatomic: fast-path for irqfd injection
-> + */
-> +int kvm_arch_set_irq_inatomic(struct kvm_kernel_irq_routing_entry *e,
-> +			      struct kvm *kvm, int irq_source_id, int level,
-> +			      bool line_status)
-> +{
-> +	int ret, setbit;
-> +	struct s390_io_adapter *adapter;
-> +	struct kvm_s390_float_interrupt *fi = &kvm->arch.float_int;
-> +	struct kvm_s390_interrupt_info *inti;
-> +	struct kvm_s390_interrupt s390int = {
-> +			.type = KVM_S390_INT_IO(1, 0, 0, 0),
-> +			.parm = 0,
-> +	};
-> +
-> +	kvm->stat.io_390_inatomic++;
-> +
-> +	/* We're only interested in the 0->1 transition. */
-> +	if (!level)
-> +		return -EWOULDBLOCK;
-
-Sashiko makes a good point here; if we -EWOULDBLOCK, it's just going to
-fall back to the irqfd_inject path which will drive set_adapter_int()
-which will always return 0 due to the same !level check.
-
-So while functionally it's not harmful, it would be an optimization to
-simply return 0 here.  Please test it out.
-
-> +	if (e->type != KVM_IRQ_ROUTING_S390_ADAPTER)
-> +		return -EWOULDBLOCK;
-> +
-> +	adapter = get_io_adapter(kvm, e->adapter.adapter_id);
-> +	if (!adapter)
-> +		return -EWOULDBLOCK;
-> +
-> +	s390int.parm64 = isc_to_int_word(adapter->isc);
-> +	setbit = 1;
-> +	ret = adapter_indicators_set_fast(kvm, adapter, &e->adapter, setbit);
-> +	if (ret < 0)
-> +		return -EWOULDBLOCK;
-> +	if (!ret || adapter->masked) {
-
-Sashiko made me double-check your work here.  AFAICT this is correct:
-
-Let's compare it to set_adapter_int(), where we inject only if
-
-if ((ret > 0) && !adapter->masked) {
-	ret = kvm_s390_inject_airq(kvm, adapter);
-
-Here we are trying to decide whether to NOT inject, so invert it:
- 
-if (ret <= 0 || adapter->masked)
-
-and you already checked ret < 0 above, so:
-
-if (ret == 0 || adapter->masked)
-or
-if (!ret || adapter->masked)
-
-I guess it's more a question of whether you want to consider masked
-interrupts (adapter->masked) as a different counter than coalesced
-interrupts (!ret).  I'm not sure we care that much to track this
-distinction, but I think the sum counter is still valuable; it's how
-many times times we delivered interrupts in atomic without actually
-injecting the adapter interrupt.  (Actually, not quite true, see below)
-
-All of this is a long-winded way of saying 'maybe you should rename
-the counter to more-accurately describe what you're counting'.
-And don't forget to update the commit message.
-
-> +		kvm->stat.io_390_inatomic_adapter_masked++;
-> +		return 0;
-> +	}
-> +
-> +	inti = kzalloc_obj(*inti, GFP_ATOMIC);
-> +	if (!inti) {
-> +		setbit = 0;
-> +		adapter_indicators_set_fast(kvm, adapter, &e->adapter, setbit);
-> +		return -EWOULDBLOCK;
-> +	}
-> +
-> +	if (!test_kvm_facility(kvm, 72) || !adapter->suppressible) {
-
-Please look into the sashiko reports re: irqsave and the fi->lock.
-
-> +		ret = kvm_s390_inject_vm(kvm, &s390int, inti);
-> +		if (ret == 0) {
-> +			return ret;
-> +		} else {
-> +			setbit = 0;
-> +			adapter_indicators_set_fast(kvm, adapter, &e->adapter, setbit);
-> +			kfree(inti);
-> +			return -EWOULDBLOCK;
-> +		}
-> +	}
-> +
-> +	spin_lock(&fi->ais_lock);
-> +	if (fi->nimm & AIS_MODE_MASK(adapter->isc)) {
-> +		trace_kvm_s390_airq_suppressed(adapter->id, adapter->isc);
-> +		spin_unlock(&fi->ais_lock);
-> +		kfree(inti);
-
-Actually, about that comment above re: io_390_inatomic_adapter_masked..
-Here is another place where we set the indicators without injecting an
-adapter interrupt.  Now due to adapter interrupt suppression.
-
-If you want that counter to include all 3 (coalesced, masked, and
-suppressed) then you should increment it here as well after you rename
-it.
-
-> +		return 0;
-> +	}
+--=-FXtb7qac/xWXftlRSmGM--
