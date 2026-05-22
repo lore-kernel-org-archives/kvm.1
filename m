@@ -1,90 +1,80 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A46DF313E15
-	for <kvm@vger.kernel.org>; Fri, 22 May 2026 16:01:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF746357D00;
+	Fri, 22 May 2026 16:22:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779465718; cv=none; b=R+u7f6X0PVqptLWglLAQayhJxVP15Hk9lYDzZTgrK3oD7cKcG7x1NBvJKeGpv3N6Jphsvf0yCu0Mdt2S+2wyXvTIu40GlcJZpx23KcccQ5b7Yn7QK+uqE9RxJApJuRJ37R8LH8fV9HWfPrXLsKxHLzafygGYsQAUYhOCuy+Q5I4=
+	t=1779466975; cv=none; b=okhAldVJCFhuQPhmIkFIeu12Zzadpw7SMOWMbLv/sWwjRYlor82lcxiEgsbp2CqAqSVu/e5KMQd0rwNkUrrKXIyAkknqRik1/A3KuXluy/BMhll0tuS3avpTnwu1Wh21JJdS5JkJV3YHVyRRhKE+VLpOxZ4vvS5rLXfj/0BkL6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779465718; c=relaxed/simple;
-	bh=RuKPNubONCAdbcGpb+4TkujB9DKqcRtbxLnmKogDOlE=;
+	s=arc-20240116; t=1779466975; c=relaxed/simple;
+	bh=k5IIM/WuvVoj26e6a9CXnFnmxNMSYOY0Hr0TpIGocQc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Grq9unFAVlGVkzDGL3bWPh1PVpFtbmPdnngQ7ibwPOW9zrxwlBTgpet1Uo9SVXaNxjRiMHDI992pMwYGUM9uPK3z+9dGqwJ3FIBokr55ph3P9NWvP/aelQUTGhX28wABEM7Ok0wYdp22dwfg+yo3qP9WvsKMNR9WjnN59G3am5I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=f4ggAXud; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=jgloOIEBYddlBhzCy4rTjSjEjWxuo5YPnlWbBTc+mlDejDBA5E3hnUJA96EBVe+mBA8Q4WJipomxbYU9SgJhHQPl24y8WwAD3PHHAiPagDq9tTV4pmJ4+HTlrveDAF97YAWIWS+qq6mUXdD1ZgXHOnKeXS+WLRuCw69r8gOl0J8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V9ncAiIa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="f4ggAXud"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-2b46da8c48eso7505ad.1
-        for <kvm@vger.kernel.org>; Fri, 22 May 2026 09:01:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779465716; x=1780070516; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EtKAVWQfKJfzzyI5JiK+IMb/6FsJieotyhYngLX2q4s=;
-        b=f4ggAXudbarnx9T9qOgYRCdmHioO2KAV9XKX81EX5zOAACkJm/uqEvRKuP8jvNQ6vA
-         S3/Tl+/YRFlQ2NWv9EVv11lV9ef3nKFAfk62tOhC/Odzt65xgCfQGEHVeQUCNNUUohLz
-         cVAHA6zclmW9RuogeoGkiSq8qXrOH5ig6/8Bu5O/ifzWrAcFNWGHUbiU6xVc/3HdldHO
-         aJGL7huuAlPnJqgUaR7Q3AA8vssHNUE0qbad1PZdS0Ij1x5zaRXJWSZ43R0H5jl/lCzm
-         wAHd1y7rmT/S+Rmpa0hMX6YmBk3fOycjV4hts3C/iHQhfl+MgSHU6pZPOKWTr/HNMKMQ
-         EuCw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779465716; x=1780070516;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EtKAVWQfKJfzzyI5JiK+IMb/6FsJieotyhYngLX2q4s=;
-        b=YSbVWsu59I4MmqbEt7Nqv1qNoLV27Hej/DTnAuPnwRKNdnKuwdepryyaSgitYNP4SH
-         N+USq12OiDE5VLNBiVuR2lgqt6/dpFZpctbu7cSjBNs5iE9MU1WB7hrdMrtz9OFJO3hJ
-         qnmVTZL5rJzbHDdXjfT+DBI9BVFPezc5aykV9YwKOHjCIz641yaLnJc0xlReIvV6oFp9
-         SlpltJscN1JQJsdB0enoIgDw5tb2t5xobrsmoJw+ELUvlyDBb1ywLoM2OjOd5vjHvx0K
-         3/ApPJoWfbi/aGjme52/0+msoLxVODKeL1Zv4ZZomt0yHEkUAh7f64WeWZOfr2i0i8M3
-         vP1A==
-X-Forwarded-Encrypted: i=1; AFNElJ/Nez+q2qxs9MFwXbC/qvgFbAsdn0fEq1bhhXtAn72T5m6kPy7ieoz5QWFZ8a6zrfekoWo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwEvLHB5W0S0k+syqpkyyv4vceMRqzZTjeVIaHa7T7rBG5oWvL1
-	e0oNHNJkqCBM678mOn6Y35bVF00VTzJqv/qgfEGpHIrrUGUcGY6r0eZRVAJ/sjosIw==
-X-Gm-Gg: Acq92OGQareVwPJ3V4AEnmX31SZmcItoMQY1SFzRqnu05OjWi7Vn21JXLjBwvVG/fcu
-	zIhfZYAXa6tNFatu23X8dJ6GU+RbtaMZTKUtKXEHz75JiVjFTdyp/REFPUOOgmdJgrc5aADB5aY
-	7GVTulZO2nb2Ldb20cOiAt+EQoIxhczRqi1HMCy+r48jPsoymJuGp+xGCgynGLpWlvyuIlWQ59V
-	atZ47JaJHLUP2mdU18xeIbhPtHY46DOigujQzEC8JlNz0RXT5rla0KCBHtJsvbU51MLHbgzGYbR
-	77c4hyuwWa84r3JumuI8pYwzADFI0cISewx7+pk7bewcUKPK9OroUv9TWFs29HXL3S/MM2bBsxK
-	zl3HIRgnFGa2fpnUKUmIuwHmXxv0/e/377IPy6qUSrVzQeo4Gg5JWwZc6Ie61EOoDFpWZvyi+9l
-	IBW9l9ELwNBv05A97BRnGdoOjXuYM7T6loxV3ytif/TCN0mp4n4Z/fFwCHvRekFU19a+WR//WPw
-	XRWrLY=
-X-Received: by 2002:a17:902:c952:b0:2b0:be7d:a25e with SMTP id d9443c01a7336-2beb1a59b6emr2468155ad.18.1779465714686;
-        Fri, 22 May 2026 09:01:54 -0700 (PDT)
-Received: from google.com (44.234.124.34.bc.googleusercontent.com. [34.124.234.44])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-841648a2bf2sm2145075b3a.0.2026.05.22.09.01.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 May 2026 09:01:52 -0700 (PDT)
-Date: Fri, 22 May 2026 16:01:43 +0000
-From: Pranjal Shrivastava <praan@google.com>
-To: Samiullah Khawaja <skhawaja@google.com>
-Cc: David Woodhouse <dwmw2@infradead.org>,
-	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
-	Will Deacon <will@kernel.org>, Jason Gunthorpe <jgg@ziepe.ca>,
-	YiFei Zhu <zhuyifei@google.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Kevin Tian <kevin.tian@intel.com>,
-	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
-	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
-	Adithya Jayachandran <ajayachandra@nvidia.com>,
-	Parav Pandit <parav@nvidia.com>,
-	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>,
-	Pratyush Yadav <pratyush@kernel.org>,
-	Pasha Tatashin <pasha.tatashin@soleen.com>,
-	David Matlack <dmatlack@google.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>
-Subject: Re: [PATCH v2 13/16] iommufd: Persist iommu hardware pagetables for
- live update
-Message-ID: <ahB957SICkiVzZBv@google.com>
-References: <20260427175633.1978233-1-skhawaja@google.com>
- <20260427175633.1978233-14-skhawaja@google.com>
- <agz5rFcl27H8yzTY@google.com>
- <ag4DzYZ4ToDcyfn3@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V9ncAiIa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A9271F00ADE;
+	Fri, 22 May 2026 16:22:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779466974;
+	bh=HXtVzRGfukj3ds6TKFAVxguxeD4B59V0+qCrjbHjkwI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=V9ncAiIaKkIC41jHjldHTO64mB4wI8c0GQBAUaZ7pbkUURnbbZBFBMJvt8Aci8BGT
+	 Nck4lSReIKDoa2M8c0zNRn8JDeGkDupbehwyEjZlz1RON7jXut8ZMMwlTjZrdnxJoE
+	 vuzFL4xnuVKrUa+vIiC7rT9KHELE2x4jU3DS5dSSAn/mnfHiq8fgQINjfpHzMq7FHI
+	 kHcmVoz1KVJpCzB3FpeYPHOlyYlEJv229WHmBTuErNcaTjsHonwGwE+k7aITxD3cqZ
+	 vSgMSZJQZL4NarZCrLXAzcNr6W+5SUKt+/AyZdSp8sWPGjaGlFG8Gh0iCR+LJLarHW
+	 rU0ij2TTeE4Mw==
+Received: from phl-compute-11.internal (phl-compute-11.internal [10.202.2.51])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 9FE30F40069;
+	Fri, 22 May 2026 12:22:53 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-11.internal (MEProxy); Fri, 22 May 2026 12:22:53 -0400
+X-ME-Sender: <xms:3YIQardEGQLOXFYBnvSEETcGGZVXgEZW45Y5IxLqjXXPmZ3VT7eEDg>
+    <xme:3YIQajhQLEBqcpNcIWu3gmlGGEH2Q-ylCLZfDODkoEB4gyCiypDHv5JoHR0-69TbK
+    qOqMGoZfCcl1LxCmjBpJMtdn6zcbODvBPvuhb7u6Fo30xOp7Ertcv0>
+X-ME-Received: <xmr:3YIQajPVY8PZPAj7DCZIF5qneg40bxfQPZGwqZ_MstdGaLOvGh5PVGXa67nS_w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduhedtieegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
+    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
+    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
+    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
+    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
+    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
+    hnrghmvgdpnhgspghrtghpthhtohepfedtpdhmohguvgepshhmthhpohhuthdprhgtphht
+    thhopegurghvvgdrhhgrnhhsvghnsehinhhtvghlrdgtohhmpdhrtghpthhtohepthhglh
+    igsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehmihhnghhosehrvgguhhgrthdrtgho
+    mhdprhgtphhtthhopegsphesrghlihgvnhekrdguvgdprhgtphhtthhopegurghvvgdrhh
+    grnhhsvghnsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepgiekieeskhgv
+    rhhnvghlrdhorhhgpdhrtghpthhtohephhhprgesiiihthhorhdrtghomhdprhgtphhtth
+    hopehrihgtkhdrphdrvggughgvtghomhgsvgesihhnthgvlhdrtghomhdprhgtphhtthho
+    pehsrghthhihrghnrghrrgihrghnrghnrdhkuhhpphhushifrghmhieslhhinhhugidrih
+    hnthgvlhdrtghomh
+X-ME-Proxy: <xmx:3YIQap6uPiHgStdN6slLX3-6-wsZcJ-ZlBtbsEa5JMihJGDPMr0osA>
+    <xmx:3YIQalVqyxMmX-hg356lqe_kxv-FN5yQC_0lqRuy_kXk-0d-G38EVA>
+    <xmx:3YIQajFUUBtqxeNhQl_IWtAGMvThboSss_-8rn1l9s2iHjCsu7mDXg>
+    <xmx:3YIQatf0ePI3bhJ-yeUkFvxe2eX-lLA7HR6vw692U5etBhhmTqQVcA>
+    <xmx:3YIQallRHrCZuIyJDyJEBn-s6N882ow7iGqKd8wAmEHNL1CbJYwXwz_r>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 22 May 2026 12:22:52 -0400 (EDT)
+Date: Fri, 22 May 2026 17:22:51 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H . Peter Anvin" <hpa@zytor.com>, Rick Edgecombe <rick.p.edgecombe@intel.com>, 
+	Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>, Kai Huang <kai.huang@intel.com>, 
+	Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	kvm@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] x86/tdx: Fix zero-extension for 32-bit port I/O
+Message-ID: <ahCCYYA-pfJC-QUu@thinkstation>
+References: <20260428125632.129770-1-kas@kernel.org>
+ <20260428125632.129770-3-kas@kernel.org>
+ <bf92ebbf-8d70-406a-aea1-c11ca576de90@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -93,76 +83,46 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ag4DzYZ4ToDcyfn3@google.com>
+In-Reply-To: <bf92ebbf-8d70-406a-aea1-c11ca576de90@intel.com>
 
-On Wed, May 20, 2026 at 07:40:05PM +0000, Samiullah Khawaja wrote:
-> On Wed, May 20, 2026 at 12:00:44AM +0000, Pranjal Shrivastava wrote:
-> > On Mon, Apr 27, 2026 at 05:56:30PM +0000, Samiullah Khawaja wrote:
-[...]
-
-> > >  #include "double_span.h"
-> > > @@ -1421,6 +1422,7 @@ struct iopt_pages *iopt_alloc_file_pages(struct file *file,
-> > > 
-> > >  {
-> > >  	struct iopt_pages *pages;
-> > > +	int seals;
-> > > 
-> > >  	pages = iopt_alloc_pages(start_byte, length, writable);
-> > >  	if (IS_ERR(pages))
-> > > @@ -1428,6 +1430,11 @@ struct iopt_pages *iopt_alloc_file_pages(struct file *file,
-> > >  	pages->file = get_file(file);
-> > >  	pages->start = start - start_byte;
-> > >  	pages->type = IOPT_ADDRESS_FILE;
-> > > +
-> > > +	seals = memfd_get_seals(file);
-> > > +	if (seals > 0)
-> > > +		pages->seals = seals;
-> > > +
-> > 
-> > Can caching memfd seals create a TOCTOU issue?
-> > IIUC, iopt_alloc_file_pages happens at map time, However, the userspace
-> > is allowed to map a memfd and then apply the F_ADD_SEALS via fcntl()
-> > later in its setup sequence? For example a sequence like:
-> > 
-> > 1. VMM creates a memfd. It has 0 seals.
-> > 2. VMM calls IOMMU_IOAS_MAP_FILE. IOMMUFD caches pages->seals = 0.
-> > 3. VMM finishes its setup and calls:
-> >   fcntl(fd, F_ADD_SEALS, F_SEAL_GROW | F_SEAL_SHRINK | F_SEAL_SEAL).
-> > 
-> > 4.VMM initiates Live Update.
-> > 5.check_iopt_pages_preserved looks at the cached pages->seals
-> >  (which is still 0), sees the seals are missing, & kills the LiveUpdate
-> >  with -EINVAL, even though the file is properly sealed..
+On Tue, May 12, 2026 at 06:14:13PM -0700, Dave Hansen wrote:
+> On 4/28/26 05:56, Kiryl Shutsemau (Meta) wrote:
+> > +	if (size == 4)
+> > +		regs->ax = 0;
+> > +	else
+> > +		regs->ax &= ~mask;
 > 
-> This is true and it is intentionally this way to make sure that the seal
-> is applied during mapping otherwise user can apply the seal after
-> resizing the memfd and preserve IOMMU mappings that are pointing to
-> unpreserved pages. Consider following:
+> I haven't thought about this _that_ much, but this feels wrong. Why is
+> is 4 so special cased?
 > 
-> 1. VMM creates a memfd and seals is zero.
-> 2. VMM maps memfd into ioas/hwpt.
-> 3. VMM resizes the memfd.
-> 4. VMM seals memfd
-> 5. VMM preserves the memfd (it only preseves the current size).
-> 6. VMM preserves iommufd and it succeeds as memfd is sealed.
+> Also, what _are_ the limits on the registers that 'in' can be used on?
 > 
-> But the pages being referred by the iommu mappings are refcounted in
-> current kernel, but not preserved.
+> RAX - n/a, no 64-bit I/O
+> EAX - size=4
+> AX  - size=2
+> AH  - n/a no encoding for inb
+> AL  - size=1
 > 
-> Check the comment in check_iopt_pages_preserved() also. I will add a
-> comment here also.
-> > 
+> I'd find this much easier to grasp if there was a nice table of what the
+> registers, sizes, and masks ended up being usable. As usual, x86 is
+> "fun" here.
 
-I understand the intent to enforce a policy to Seal-at-Map to ensure
-consistency. I am wondering if this policy is a little too restrictive. 
-Should we consider performing a dynamic i_size check during preservation
-instead? I can't think of a good use-case as of now.. (maybe let it be?)
+How about this for the comment:
 
-However, if we decide to keep the current policy, we should probably 
-check for the required seals during the IOMMU_IOAS_MAP_FILE ioctl itself. 
-If the seals aren't present, we could pr_warn("Don't expect liveupdate 
-preservation for this memory, bad seals") to let the user know that this 
-specific mapping will be ineligible for Live Update preservation later. 
+        /*
+         * IN writes the result into a sub-register of RAX. Only the
+         * 32-bit form zero-extends; the smaller forms leave the upper
+         * bits untouched:
+         *
+         *   insn  dest  size  bits written     bits preserved
+         *   inb   AL    1     RAX[ 7: 0]       RAX[63: 8]
+         *   inw   AX    2     RAX[15: 0]       RAX[63:16]
+         *   inl   EAX   4     RAX[63: 0]       (none, zero-extended)
+         *
+         * 'mask' only covers the low 'size' bytes, which is exactly
+         * the range affected for size 1 and 2. For size 4 the write
+         * also clears RAX[63:32], so widen the clear-mask.
+         */
 
-Thanks,
-Praan
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
