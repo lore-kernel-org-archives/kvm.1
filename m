@@ -1,179 +1,125 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09E10356775
-	for <kvm@vger.kernel.org>; Fri, 22 May 2026 17:56:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3CAE368958
+	for <kvm@vger.kernel.org>; Fri, 22 May 2026 18:05:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779472564; cv=none; b=Tk/yiKzvYMDk7Oz9mJhCrRAGit0lvmqd/PWyqGWyNQr8opbHaGyGhiXE30phoOgMM+1kUKLYpqn9bgJ7ryEoUvBrrfRIpqaMKEIIv1BpT2Sc+s86M7hohJi4OCNTKTdOfwLCJbO3/GZWNlWuGJR67fW5U9qf3+y6ziE8odm03cg=
+	t=1779473135; cv=none; b=YeCij3Oun7s5ygQXHV8coKfXc6j6lJKb8LECF0AIZ7jAahkwczTLlKvo9KbkkAXbkEWPLpSE7+51VqJ6MQHZ5+2tkRHXSRHiBLH7iCuYDHnN37y/E0cf0isIL6xpYDQuJtXuuSyk1wCQS8HVzlsOubgxvjVfUwmdOWU6Ycg9ryY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779472564; c=relaxed/simple;
-	bh=ySkm+c/RnCUhdOak3/cI4t14CyRz1vctOucMO4Ihu/4=;
+	s=arc-20240116; t=1779473135; c=relaxed/simple;
+	bh=ebRTbvXGF9x2lbfT7InqhaPnMyNuaa2jYIXrLzHqkt8=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=iTgsNIrH3Q96UznMW8CuqzT4nO8YHRfQQht6rU1oBpOgrb+QNvEJx9te6MfeKGIjvdY9cqqsBlGKg8EUu+wNbaCISqysZPHJ+dFBW0VCIgIhuon9wv0xJbGu5VBx9rzxZPNGOe35cGQQEHyElSbrmZSsbTBXWBha1y89RTn9a74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FpWQvwp6; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=BKuLbmayu6+lKPDdpzM3KVK/j2KkNYS5zBtycWuRN3346vRPs6EQH7kPzqwvWau1vvFg2vBv/CzRR6I9KCVLF6fTY2JO6DmS87KAClTyfbevq/5Kh1YnHt2nZFnp89XwD1+EJp/AnBnavVHF+YZi0IKkduGRyrgDCWfvJkU06x4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oHXJY/Cp; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FpWQvwp6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9064B1F000E9;
-	Fri, 22 May 2026 17:56:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oHXJY/Cp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE9101F00A3E;
+	Fri, 22 May 2026 18:05:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779472562;
-	bh=gPs7eF+SdYhtsrJ2Zsac6sGwzNwDx3dLIY5J1Hl3YS8=;
+	s=k20260515; t=1779473131;
+	bh=fkXv6Xlho1LPgS92N2phwG1e9Pq+DWUMsA33t9JjvpE=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=FpWQvwp6MjQlC6gE6xb3bEpS7s7sprYXo2A0/2b0goUjchOCTUD4ohPLDkwgC0nA0
-	 8bkqPNGbVkGywOPAL16ce2mvOLSod2uvv48I+nLhIKMsGqwg/k9r/gpkgX8kYORnsF
-	 ma0XbmCkPIOQDFFI9jMD2GxSN23RyO/BwQRGPwpbcD1uw99Vg6rzXorUtzTwbr6NPj
-	 BUjcQC+VFVFU4Kts1GohSV0JqxftHVBz51KGPmFEqMSH5z+yrF5MtaClSxUROzC+k3
-	 sXQLHBgglN/Um1GXvFRlZVOthm/m/YiXNFxfq4Z8u0K1eH2Bc8+pEBwXiqLI4dYNu2
-	 dCawEubTLSgnA==
+	b=oHXJY/CpExyInu5mSEBDgmceln4XciCKKsxoXp5mrfQcz6yCxjwU1bn5oO/d6w0sJ
+	 7RBJilMS4bDNO1wQjUez+FKy3L/ayICtZyqZfsfXnx2xzzCQIwxhNmL5hRpYKKxFM9
+	 NOuKXAOKFITMAECBoxYE40J/MzZaxwws3weMY5GzmaBNjk5H8BZorbexE0LM25Dmaa
+	 GjeVJ7OmHwnOiKArnHkUT3zWLxpDhHgEP+ueiw8rek4od1f0w09RFGkkqcbhgqeNJG
+	 0tzOziXuGXwtH98dfM1gjKsQlDhJx7FDdgPFX0huK/JdiettaRykUUb/pd7+7GPt2I
+	 NIOAleZVVDyVw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 5/5] KVM: PPC: Document KVM_PPC_GET_COMPAT_CAPS ioctl
+Subject: Re: [PATCH v2 1/3] KVM: guest_memfd: Return -EEXIST for overlapping
+ bindings
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Amit Machhiwal" <amachhiw@linux.ibm.com>
+To: "Sean Christopherson" <seanjc@google.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260522152744.55251-6-amachhiw@linux.ibm.com>
-References: <20260522152744.55251-6-amachhiw@linux.ibm.com>
+In-Reply-To: <20260522172151.3530267-2-seanjc@google.com>
+References: <20260522172151.3530267-2-seanjc@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Fri, 22 May 2026 17:56:02 +0000
-Message-Id: <20260522175602.9064B1F000E9@smtp.kernel.org>
+Date: Fri, 22 May 2026 18:05:30 +0000
+Message-Id: <20260522180530.EE9101F00A3E@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 5 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
-New issues:
-- [Medium] Macros referenced in the user-facing API documentation are missi=
-ng from UAPI headers.
-- [Medium] The documentation uses ambiguous and non-standard bit numbering =
-(MSB-0), likely causing userspace to check the wrong bits.
-- [Low] The new documentation section breaks the existing `.. _kvm_run:` re=
-StructuredText anchor target.
-- [Low] The documented return values omit multiple valid error codes native=
-ly returned by the ioctl (-EINVAL, -ENOTTY).
-
 Pre-existing issues:
-- [High] kvmppc_map_compat_capabilities under-reports supported compatibili=
-ty modes on APIv1 platforms.
+- [High] The return value of xa_store_range() is ignored in kvm_gmem_bind()=
+, masking memory allocation failures and leading to a Use-After-Free vulner=
+ability.
+- [High] A signed integer overflow in the file size bounds check inside kvm=
+_gmem_bind() allows userspace to map memslots beyond the allocated size of =
+the guest_memfd.
 --
 
-commit 72ed781761ff2f69a81eff7405946f0c54c590e0
-Author: Amit Machhiwal <amachhiw@linux.ibm.com>
-KVM: PPC: Document KVM_PPC_GET_COMPAT_CAPS ioctl
+commit 7edaac3f2255cc17c741557ce1e44f51d4cece29
+Author: Zongyao Chen <ZongYao.Chen@linux.alibaba.com>
 
-This commit adds documentation for the KVM_PPC_GET_COMPAT_CAPS ioctl to the
-KVM API documentation. It describes the compatibility modes supported for
-nested KVM guests on PowerPC systems.
+KVM: guest_memfd: Return -EEXIST for overlapping bindings
 
-Link: https://lore.kernel.org/oe-kbuild-all/202605140717.W1StD3Ke-lkp@intel=
-.com/
+This patch updates the KVM_SET_USER_MEMORY_REGION2 ioctl to return -EEXIST
+instead of -EINVAL when a guest_memfd range overlaps an existing binding.
+This aligns the error reporting with overlapping GPA memslots.
 
-> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.=
-rst
-> index 52bbbb553ce10..d11e054e6665c 100644
-> --- a/Documentation/virt/kvm/api.rst
-> +++ b/Documentation/virt/kvm/api.rst
-> @@ -6555,6 +6555,41 @@ KVM_S390_KEYOP_SSKE
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 69c9d6d546b28..46727539d08ac 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -675,6 +675,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_=
+slot *slot,
 > =20
->  .. _kvm_run:
-> =20
-> +4.145 KVM_PPC_GET_COMPAT_CAPS
-> +-----------------------------
-
-[Severity: Low]
-Does inserting the new section here break the rST anchor target?
-
-By placing the new section directly after the .. _kvm_run: anchor, cross
-references to the kvm_run anchor throughout the documentation will jump
-to this new 4.145 section instead of section 5.
-
-> +:Capability: KVM_CAP_PPC_COMPAT_CAPS
-> +:Architectures: powerpc
-> +:Type: vm ioctl
-> +:Parameters: struct kvm_ppc_compat_caps (out)
-> +:Returns:
-> +	0 on successful completion,
-> +	-EFAULT if ``struct kvm_ppc_compat_caps`` cannot be written
-
-[Severity: Low]
-Should this documentation also include -EINVAL and -ENOTTY?
-
-The kernel implementation explicitly returns -ENOTTY if the underlying
-architecture callback is unsupported, and returns -EINVAL if capabilities
-cannot be mapped or the CPU version cannot be parsed.
-
-> +
-> +IBM POWER system server-based processors provide a compatibility mode fe=
-ature
-> +where an Nth generation processor can operate in modes consistent with e=
-arlier
-> +generations such as (N-1) and (N-2).
-> +
-> +This ioctl provides userspace with information about the CPU compatibili=
-ty modes
-> +supported by the current host processor for booting the nested KVM guest=
-s on
-> +PowerNV (KVM nested APIv1) and PowerVM (KVM nested APIv2) platforms.
+>  	if (!xa_empty(&f->bindings) &&
+>  	    xa_find(&f->bindings, &start, end - 1, XA_PRESENT)) {
+> +		r =3D -EEXIST;
 
 [Severity: High]
-This isn't a bug introduced by this patch, but does the APIv1 implementation
-of kvmppc_map_compat_capabilities under-report supported compatibility mode=
-s?
+This isn't a bug introduced by this patch, but looking at the bounds check
+earlier in kvm_gmem_bind():
 
-The underlying implementation for APIv1 nested KVM uses a switch statement
-with breaks that only sets a single bit matching the host's native generati=
-on.
+    if (offset < 0 || !PAGE_ALIGNED(offset) ||
+        offset + size > i_size_read(inode))
+        goto err;
 
-Because backward compatibility modes are missed, QEMU might erroneously
-conclude the host does not support older guests.
+Are these variables susceptible to a signed integer overflow?
 
-> +
-> +::
-> +
-> +  struct kvm_ppc_compat_caps {
-> +	__u64	flags;			/* Reserved for future use */
-> +	__u64	compat_capabilities;	/* Capabilities supported by the host */
-> +  };
-> +
-> +The ``compat_capabilities`` bit field describes the processor compatibil=
-ity
-> +modes supported by the host. For example, the following bits indicate su=
-pport
-> +for specific processor modes.
-> +
-> +::
-> +
-> +  H_GUEST_CAP_POWER9  (bit 1): KVM guests can run in Power9 processor mo=
-de
-> +  H_GUEST_CAP_POWER10 (bit 2): KVM guests can run in Power10 processor m=
-ode
-> +  H_GUEST_CAP_POWER11 (bit 3): KVM guests can run in Power11 processor m=
-ode
+Both offset and size are evaluated as loff_t values. If userspace provides =
+an
+offset close to the signed 64-bit maximum, adding size could wrap around to=
+ a
+negative value.
 
-[Severity: Medium]
-Are these macros exported to include/uapi/linux/kvm.h?
+Would this cause the offset + size > i_size_read(inode) condition to bypass
+the file size limits and allow the guest to map memslots beyond the allocat=
+ed
+size?
 
-The documentation directs userspace to interpret the bitmask using macros
-like H_GUEST_CAP_POWER9. However, these are defined exclusively in the
-kernel-internal header arch/powerpc/include/asm/hvcall.h. This forces
-userspace to hardcode internal kernel values.
 
-[Severity: Medium]
-Will the bit numbering here mislead userspace developers?
+[Severity: High]
+This is also a pre-existing issue, but I noticed the return value of
+xa_store_range() isn't checked later in kvm_gmem_bind():
 
-The documentation specifies capabilities as (bit 1), (bit 2), etc., which
-implies standard LSB-0 numbering. However, the KVM implementation uses IBM's
-MSB-0 bit numbering, where H_GUEST_CAP_POWER9 is defined as (1UL << (63 - 1=
-)).
+    xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
+    filemap_invalidate_unlock(inode->i_mapping);
 
->  5. The kvm_run structure
->  =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->
+If memory allocation fails and xa_store_range() returns an error pointer,
+does the memslot get omitted from f->bindings while kvm_gmem_bind() still
+proceeds as if it was successful?
+
+When the guest_memfd is closed, kvm_gmem_release() nullifies active bindings
+but would miss this omitted slot, leaving slot->gmem.file set while the VFS
+frees the underlying file.
+
+Later, when the VM is destroyed, could kvm_gmem_unbind() attempting to
+access the memslot's file via get_file_active() trigger a use-after-free?
+
+>  		filemap_invalidate_unlock(inode->i_mapping);
+>  		goto err;
+>  	}
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260522152744.5525=
-1-1-amachhiw@linux.ibm.com?part=3D5
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260522172151.3530=
+267-1-seanjc@google.com?part=3D1
