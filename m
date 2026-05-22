@@ -1,192 +1,209 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
+Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED6B377007;
-	Fri, 22 May 2026 04:06:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6732816132A;
+	Fri, 22 May 2026 04:10:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779422768; cv=none; b=JSlIx+aRKoqSGfslgAa+cWOeSzFbNCkpz7d7QvN8F/NawCSrqMMufoVAXuGKABRi/s2W4I5u+cEvhay+dE4jP9ZMCTPJZJ4kNUjOlxn9Ds0XYwz92BEX7HOek3bXeyEw+2ffw/4K1y2j4t4De5xPVGPKpZeA1/0+PkzZSjN1SEM=
+	t=1779423047; cv=none; b=J077FdvFzPPdlld8UMeJvObH8GEyw+HMXpcYv+6XS1wcR79gvC5BRTL/4cVcwhcFbNJiOR4mSZdycqVYz0m4v8Yvj6w0FWPX2GLdh19Ltf9DuO95J3cV4VBQr8YavrQ5cJx/Y829nA7TZWTxnTMxPGQGm5o9gTS4vBsSIRYYcTw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779422768; c=relaxed/simple;
-	bh=4Stvo2XFlVxPfHj+dM/JOUHcILSlwmXS/k3FEGF2pm8=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=k+nHWkdBbuH9g6vVRYIkolr/OjcFeUDaRD2ahYyZhUcibGeUdacBzkvK4zJAB7dvmkqGQcB3nNcVyocxgfRE8poVSZtshhW2yJbNlRBJrka/6MGjXGg289QcEoTHIQmBJULtN9wrntiz/ZTFE66QvsePXjCxZWg/eQH4jCjMHCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=guvOn5v8; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1779423047; c=relaxed/simple;
+	bh=x7tpEPFe9S8TYODodcuy0xic3AWq0BuUVw6gDhJ19No=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JjKjRqQBWSGy3iTCfwA8CREn58gkagC3/qbiGKnZqldzuQmH7ydDRb3G0GvtoTZETqQj6gK7Biz9DNI9UxMFGMhmCOIPQgPxFfAhvkRBNq109MtNQh6byVSVnPXhM6dfbSbTXiLPwX3RWO9XODWxYcnujfbQotk5tRGF7MfYFhA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=dZP3S/Xk; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=g0WNUc/x; arc=none smtp.client-ip=103.168.172.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="guvOn5v8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779422767; x=1810958767;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=4Stvo2XFlVxPfHj+dM/JOUHcILSlwmXS/k3FEGF2pm8=;
-  b=guvOn5v89sf7M6AeFjoVjFk2otvx6Wj+bXsBkOci69v3EuzZS/NDpo6u
-   StOIyAK8ZGaskELiSDe5Z/Tn3Fur7T8YeSOOEStJ0bjgv9vk47Jl58zvX
-   1SiLClevEUDBzaDp4DzfV87coguOCLjRZy4i7S3Bj17SD4/TuSvA+5HFy
-   CECZrxF5TUzkKW0/GY0JYSoRTB8oG9EdW41SzduAVRANBIPKTO3s445Yk
-   qy5Sa/E6SJEgQVHOJ/NTmPkiRMbffyVG7y9eHADaUCcx5JGY9T+kNb6wB
-   jCCVxNYyGl9KybymFfqxUeC0QhfUIk8NQQ62yU+ioO5QtGbyZQzoqOnep
-   w==;
-X-CSE-ConnectionGUID: OMak20nqSyqYGStRAUaSrA==
-X-CSE-MsgGUID: JiVAAdwsRcioseUdg+w/Bw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11793"; a="80528936"
-X-IronPort-AV: E=Sophos;i="6.24,161,1774335600"; 
-   d="scan'208";a="80528936"
-Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2026 21:06:07 -0700
-X-CSE-ConnectionGUID: vdnPNLHdQyyext91gtCB5g==
-X-CSE-MsgGUID: msPiaawYRy+msVJ7kQJ89Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,161,1774335600"; 
-   d="scan'208";a="239757961"
-Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.159.165])
-  by orviesa006.jf.intel.com with ESMTP; 21 May 2026 21:06:03 -0700
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: kas@kernel.org,
-	djbw@kernel.org,
-	rick.p.edgecombe@intel.com,
-	x86@kernel.org,
-	peter.fang@intel.com
-Cc: linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org,
-	sohil.mehta@intel.com,
-	yilun.xu@intel.com,
-	yilun.xu@linux.intel.com,
-	baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com,
-	xiaoyao.li@intel.com
-Subject: [RFC PATCH 15/15] x86/virt/tdx: Enable TDX Quoting extension
-Date: Fri, 22 May 2026 11:41:28 +0800
-Message-Id: <20260522034128.3144354-16-yilun.xu@linux.intel.com>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="dZP3S/Xk";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="g0WNUc/x"
+Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 76E181400107;
+	Fri, 22 May 2026 00:10:43 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-07.internal (MEProxy); Fri, 22 May 2026 00:10:43 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1779423043;
+	 x=1779509443; bh=1U8w6BlH4UZVbbvLihqiM4iof8tue0zeE+C/qaxNAfI=; b=
+	dZP3S/XkpOCke/XasGtUGb97rPwtSUkrlcQHT6P5/d1lXW/RiSoq6tEo/uywmsjG
+	4xpJbbRnzRg7wLuuVb4c4ffoI/jrdydH+izwQXTkTRBVSrbMIT54a7UiezGsWXmB
+	yvye/r0v7OQf7ktd5xQgVzKMsoq6OpO0wB23h8F+Wk8lFU3W1dCR+xS8AR9GE4cK
+	SHzPbnDKJxP6pDhHfUZDCOE7G/rbT8j6gmZeff7edL+g4Mo+RSGnlV8+i7ccbZ04
+	6/QeLG9fOxDp+y1QkoUxyk9j9L8jDRLGWauE3mAWCwprT9BCudZmkJrQxnNJ89bi
+	2QEd/iRAkP5WUwB72xmQOA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779423043; x=
+	1779509443; bh=1U8w6BlH4UZVbbvLihqiM4iof8tue0zeE+C/qaxNAfI=; b=g
+	0WNUc/xi97Q7oLlbN4C+f1vDDA8CAxJmj3MTJX1PL1JAyew4RtHJpQS3lgIvZsRm
+	Qtftj8lDGTLW7hJWL5v4O9bP1+epxnsl7vwE9t7m+Kten6N5fcnA763eHYIi7Oks
+	rZ+B/MlgZqEEPFkZdk6FYYmx7Pur/s0iz9HhfIO25a12y9LFBCjCkVOsHipJcdFX
+	ooqGQov4zFrA8RhtKl2HHp3U8+/LQb4dKFPNiNlvFvj5yianuAUwVVUkOcaBWX+v
+	aFEd47WffdHjR34z/pbyvyBlirkK6CEENGPVWttdq/tIfmmxf85LbGeX9xLZ5caN
+	EZP8C4jz8sCng/Uc+Vofw==
+X-ME-Sender: <xms:QtcPaqwcjrAqKsm0qsvv4pmKHbbuvXpA6BdY-V0wvspAkoEAti5mYQ>
+    <xme:QtcPakhDTdNza08JhDgcVi8EodE-TwrX1qtMSGvhqP5DwNBL9eO7Es_6PA4V_-03G
+    2iiVarQUe8QIx88ih4d5cGRKazQpM-9dSk0g71oyJdMlZ7SsbBTZQ>
+X-ME-Received: <xmr:QtcPalqZBtASaqYopQ7IZZro5PWb_U5F8ovpEQoKSoiJVEW-RH9TXgOYlRk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddugeelfeelucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
+    hghilhhlihgrmhhsohhnuceorghlvgigsehshhgriigsohhtrdhorhhgqeenucggtffrrg
+    htthgvrhhnpedvkeefjeekvdduhfduhfetkedugfduieettedvueekvdehtedvkefgudeg
+    veeuueenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    grlhgvgiesshhhrgiisghothdrohhrghdpnhgspghrtghpthhtohepuddupdhmohguvgep
+    shhmthhpohhuthdprhgtphhtthhopehfvghnghgthhgvnhhgfigvnheshhhurgifvghird
+    gtohhmpdhrtghpthhtohepjhhgghesiihivghpvgdrtggrpdhrtghpthhtohepfigrthhh
+    shgrlhgrrdhvihhthhgrnhgrghgvsegrrhhmrdgtohhmpdhrtghpthhtohephhgvlhhgrg
+    grsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepfigvihdrhhhurghnghdvsegrmhgu
+    rdgtohhmpdhrtghpthhtohepfigrnhhgiihhohhuudeshhhishhilhhitghonhdrtghomh
+    dprhgtphhtthhopeifrghnghihuhhshhgrnhduvdeshhhurgifvghirdgtohhmpdhrtghp
+    thhtoheplhhiuhihohhnghhlohhngheshhhurgifvghirdgtohhmpdhrtghpthhtohepkh
+    hvmhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:QtcPajj6cuJptqTgF1t25xsmWbT7jQydft3We6YFv2rHYAELoP64GA>
+    <xmx:QtcPavP0LcPBaEn_hjWavMZO9wmY4WG6WtE--cFR62ho2E4r1oYRlg>
+    <xmx:QtcPalwI2au_Tlks0KHj0UeizKW9Qq8ex5wpKHzop-nlKHPj3ffcyQ>
+    <xmx:QtcPappwDG5Qb7JwE6S9U6RiysqMPPG7f1Bu5XJv9xHPSjK8Qj0kVA>
+    <xmx:Q9cPaodYpcXvOYucIGLFy98pWt8ttR2ePa6pNOlQQ002EXnI1d8m3L-2>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 22 May 2026 00:10:41 -0400 (EDT)
+Date: Thu, 21 May 2026 22:10:33 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Chengwen Feng <fengchengwen@huawei.com>
+Cc: <jgg@ziepe.ca>, <wathsala.vithanage@arm.com>, <helgaas@kernel.org>,
+ <wei.huang2@amd.com>, <wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
+ <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, alex@shazbot.org
+Subject: Re: [PATCH v11 2/5] PCI/TPH: Export pcie_tph_get_st_modes() for
+ external use
+Message-ID: <20260521221033.11df345d@shazbot.org>
+In-Reply-To: <20260518071701.25177-3-fengchengwen@huawei.com>
+References: <20260518071701.25177-1-fengchengwen@huawei.com>
+	<20260518071701.25177-3-fengchengwen@huawei.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: Peter Fang <peter.fang@intel.com>
+On Mon, 18 May 2026 15:16:58 +0800
+Chengwen Feng <fengchengwen@huawei.com> wrote:
 
-Enable the TDX Quoting feature via TDH.SYS.CONFIG when supported by the
-TDX module.
+> Export the helper to retrieve supported PCIe TPH steering tag modes so
+> that drivers like VFIO can query and expose device capabilities to
+> userspace.
+> 
+> Add stub functions for pcie_tph_get_st_table_size() and
+> pcie_tph_get_st_table_loc() when !CONFIG_PCIE_TPH.
+> 
+> Add tph_cap validation for pcie_tph_get_st_modes() and
+> pcie_tph_get_st_table_loc() to prevent invalid PCI configuration
+> space access when TPH is not supported.
+> 
+> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
+> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+> ---
+>  drivers/pci/tph.c       | 19 +++++++++++++++++--
+>  include/linux/pci-tph.h |  7 +++++++
+>  2 files changed, 24 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
+> index 877cf556242b..ba31b010f67a 100644
+> --- a/drivers/pci/tph.c
+> +++ b/drivers/pci/tph.c
+> @@ -145,15 +145,27 @@ static void set_ctrl_reg_req_en(struct pci_dev *pdev, u8 req_type)
+>  	pci_write_config_dword(pdev, pdev->tph_cap + PCI_TPH_CTRL, reg);
+>  }
+>  
+> -static u8 get_st_modes(struct pci_dev *pdev)
+> +/**
+> + * pcie_tph_get_st_modes - Get supported Steering Tag modes
+> + * @pdev: PCI device to query
+> + *
+> + * Return:
+> + *  Bitmask of supported ST modes (PCI_TPH_CAP_ST_NS, PCI_TPH_CAP_ST_IV,
+> + *                                 PCI_TPH_CAP_ST_DS)
+> + */
+> +u8 pcie_tph_get_st_modes(struct pci_dev *pdev)
+>  {
+>  	u32 reg;
+>  
+> +	if (!pdev->tph_cap)
+> +		return 0;
+> +
+>  	pci_read_config_dword(pdev, pdev->tph_cap + PCI_TPH_CAP, &reg);
+>  	reg &= PCI_TPH_CAP_ST_NS | PCI_TPH_CAP_ST_IV | PCI_TPH_CAP_ST_DS;
+>  
+>  	return reg;
+>  }
+> +EXPORT_SYMBOL(pcie_tph_get_st_modes);
+>  
+>  /**
+>   * pcie_tph_get_st_table_loc - Return the device's ST table location
+> @@ -168,6 +180,9 @@ u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev)
+>  {
+>  	u32 reg;
+>  
+> +	if (!pdev->tph_cap)
+> +		return PCI_TPH_LOC_NONE;
+> +
+>  	pci_read_config_dword(pdev, pdev->tph_cap + PCI_TPH_CAP, &reg);
+>  
+>  	return reg & PCI_TPH_CAP_LOC_MASK;
+> @@ -395,7 +410,7 @@ int pcie_enable_tph(struct pci_dev *pdev, int mode)
+>  
+>  	/* Sanitize and check ST mode compatibility */
+>  	mode &= PCI_TPH_CTRL_MODE_SEL_MASK;
+> -	dev_modes = get_st_modes(pdev);
+> +	dev_modes = pcie_tph_get_st_modes(pdev);
+>  	if (!((1 << mode) & dev_modes))
+>  		return -EINVAL;
+>  
+> diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
+> index be68cd17f2f8..5772d48ea444 100644
+> --- a/include/linux/pci-tph.h
+> +++ b/include/linux/pci-tph.h
+> @@ -30,6 +30,7 @@ void pcie_disable_tph(struct pci_dev *pdev);
+>  int pcie_enable_tph(struct pci_dev *pdev, int mode);
+>  u16 pcie_tph_get_st_table_size(struct pci_dev *pdev);
+>  u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev);
+> +u8 pcie_tph_get_st_modes(struct pci_dev *pdev);
+>  #else
+>  static inline int pcie_tph_set_st_entry(struct pci_dev *pdev,
+>  					unsigned int index, u16 tag)
+> @@ -41,6 +42,12 @@ static inline int pcie_tph_get_cpu_st(struct pci_dev *dev,
+>  static inline void pcie_disable_tph(struct pci_dev *pdev) { }
+>  static inline int pcie_enable_tph(struct pci_dev *pdev, int mode)
+>  { return -EINVAL; }
+> +static inline u16 pcie_tph_get_st_table_size(struct pci_dev *pdev)
+> +{ return 0; }
+> +static inline u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev)
+> +{ return 0; }
 
-The TDX Quoting extension generates TDX attestation Quotes via a
-SEAMCALL, without using a discrete Quoting engine.
+Functionally the same, but this should be PCI_TPH_LOC_NONE for
+consistency.
 
-TDX Module supports add-on TDX features (e.g. TDX Quoting & TDX Module
-Extensions) that should be manually enabled by host. It extends
-TDH.SYS.CONFIG for host to choose to enable them on bootup.
+It seems there are a couple instances above where reg is passed
+uninitialized to pci_read_config_dword() where the return value is
+untested and the function could operate on garbage stack data.
+Existing issue.  Thanks,
 
-Call TDH.SYS.CONFIG with a new bitmap input parameter to specify which
-features to enable. The bitmap uses the same definitions as
-TDX_FEATURES0. But note not all bits in TDX_FEATURES0 are valid for
-configuration, e.g. TDX Module Extensions is a service that supports TDX
-Quoting, it is implicitly enabled when TDX Quoting is enabled. Setting
-TDX_FEATURES0_EXT in the bitmap has no effect.
+Alex
 
-TDX Module advances the version of TDH.SYS.CONFIG for the change, so
-use the latest version (v1) for add-on feature enabling. But supporting
-existing Modules which only support v0 is still necessary until they are
-deprecated. In fact, it is unlikely that TDH.SYS.CONFIG ever needs to
-change again and the code would stay in v1. So there is little value
-in worrying about deprecating v0 to save a couple lines of code in 5-7
-years when these original TDX platforms sunset.
-
-TDX Module updates global metadata when add-on features are enabled.
-Host should update the cached tdx_sysinfo to reflect these changes.
-
-Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
-Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-Signed-off-by: Peter Fang <peter.fang@intel.com>
----
- arch/x86/virt/vmx/tdx/tdx.h |  4 +++-
- arch/x86/virt/vmx/tdx/tdx.c | 24 ++++++++++++++++++++++--
- 2 files changed, 25 insertions(+), 3 deletions(-)
-
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index 10aff23cd01f..524a14c01aa6 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -58,7 +58,8 @@
- #define TDH_PHYMEM_CACHE_WB		40
- #define TDH_PHYMEM_PAGE_WBINVD		41
- #define TDH_VP_WR			43
--#define TDH_SYS_CONFIG			45
-+#define TDH_SYS_CONFIG_V0		45
-+#define TDH_SYS_CONFIG			SEAMCALL_LEAF_VER(TDH_SYS_CONFIG_V0, 1)
- #define TDH_EXT_INIT			60
- #define TDH_EXT_MEM_ADD			61
- #define TDH_SYS_DISABLE			69
-@@ -97,6 +98,7 @@ struct tdmr_info {
- /* Bit definitions of TDX_FEATURES0 metadata field */
- #define TDX_FEATURES0_NO_RBP_MOD	BIT(18)
- #define TDX_FEATURES0_EXT		BIT_ULL(39)
-+#define TDX_FEATURES0_QUOTE		BIT_ULL(50)
- 
- /*
-  * Do not put any hardware-defined TDX structure representations below
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index f7600f930c6e..86e5b7ad19b3 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1049,6 +1049,7 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
- static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
- 				    u64 global_keyid)
- {
-+	u64 seamcall_fn = TDH_SYS_CONFIG_V0;
- 	struct tdx_module_args args = {};
- 	u64 *tdmr_pa_array;
- 	size_t array_sz;
-@@ -1074,8 +1075,22 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
- 	args.rcx = __pa(tdmr_pa_array);
- 	args.rdx = tdmr_list->nr_consumed_tdmrs;
- 	args.r8 = global_keyid;
--	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
- 
-+	if (tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_QUOTE) {
-+		args.r9 |= TDX_FEATURES0_QUOTE;
-+		/* These parameters require version >= 1 */
-+		seamcall_fn = TDH_SYS_CONFIG;
-+	}
-+
-+	ret = seamcall_prerr(seamcall_fn, &args);
-+	if (ret)
-+		goto free_tdmr;
-+
-+	/* enabling TDX Quoting may change tdx_sysinfo, update it */
-+	if (tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_QUOTE)
-+		ret = get_tdx_sys_info(&tdx_sysinfo);
-+
-+free_tdmr:
- 	/* Free the array as it is not required anymore. */
- 	kfree(tdmr_pa_array);
- 
-@@ -1384,12 +1399,17 @@ static void tdx_quote_init(void)
- 	unsigned int nr_quote_pages;
- 	u64 r;
- 
-+	if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_QUOTE))
-+		return;
-+
- 	do {
- 		r = seamcall(TDH_QUOTE_INIT, &args);
- 	} while (r == TDX_INTERRUPTED_RESUMABLE);
- 
--	if (r)
-+	if (r) {
-+		pr_err("Failed to enable quoting extension: 0x%llx\n", r);
- 		return;
-+	}
- 
- 	/* Quoting metadata is valid only after initialization */
- 	if (get_tdx_sys_info_quote(&tdx_sysinfo.quote))
--- 
-2.25.1
+> +static inline u8 pcie_tph_get_st_modes(struct pci_dev *pdev)
+> +{ return 0; }
+>  #endif
+>  
+>  #endif /* LINUX_PCI_TPH_H */
 
