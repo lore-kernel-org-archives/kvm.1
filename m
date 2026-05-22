@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A2DF383C76;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A06F383329;
 	Fri, 22 May 2026 20:45:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779482721; cv=none; b=Y+up0oHtu1Kvd3THFWa35Rsx5PtmCxapysM0ZqXcCPO4mZibM6UTV3Yo7/YAOGsKSjb5o2U8pDYwvvnQRbKExfJAaKO4fj2MZ5v+HSgbw324EWPTh8/T9ONzs+RBP6yS4IDo4IjUWXlWTpW6xmtO9U1KVJOE2WzcvJQHwYuYfQc=
+	t=1779482721; cv=none; b=n4I+Mon/O4iLtCF/C224WyYpilPRsqprTENpxkJnu11u//Q3oNdmJ+IeHh0O3ZiMrJhnQBeLPa/NrcTKMj1DtNEJME9IyTvar/VW4bBryI4pa4WZWWq5BgYUuvVnYkCH4G4hJvDbLAgzlfOUJAIwlpMyRSMvte03hyU/IU37YV0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779482721; c=relaxed/simple;
-	bh=25USkoSk+Sk/e140qXBRP/UoMXSNPLaBpkEe4Yd5BB8=;
+	bh=VjzCzd1nFC0V+VspHRSm811yDhk2SVg8NJFOEp8BNQU=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=KwhK9C4OVzGP4/hzzpXOjiDJk7si++clDoGvKCwY9+0b+c7u3tABthH3Kkm8qt6QWp0tJn5DChuFdK4a0m6qf1+ayQ+1RpUSy4r3cFaCS48bj8ugk9H4se55C25gpkeMAYElk4euPEK608dLd3X+tZNpxXnbbFzlsmPZS1rjv1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NYHWaYM8; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=rJLZD6ZAhc56VwxCxFH6i7Zidu6Y5NFsVg16V6Gap87G4qN5emkqEga+XU8/tkuiTLWruRIF6VVVviaulVkdu8SBGeLH5jqBZAAyF16oF5wTcyFi4ym2XEO53X2aZeJESgFZXGnr2A/ZxmXBMXxVI1ampJYLAJ/0ZT1TPJXTT3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uRFyQShk; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NYHWaYM8"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id D732EC2BCB8;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uRFyQShk"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id F13CAC2BCC6;
 	Fri, 22 May 2026 20:45:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779482720;
-	bh=25USkoSk+Sk/e140qXBRP/UoMXSNPLaBpkEe4Yd5BB8=;
+	s=k20201202; t=1779482721;
+	bh=VjzCzd1nFC0V+VspHRSm811yDhk2SVg8NJFOEp8BNQU=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=NYHWaYM84EnmRPCIqDQ+4keNoCVk5BwmzYZ3AE2/EzGttpQg2HDN+k2g1GK94ErbZ
-	 +Ulw3omce/3Fcf/M1st73u18pPAgw/kThs72cI/0Vuo53yA5ZCljfmjnQuxs7S8MnG
-	 DeUMgdUvhbNgXjysKv8J3yUPQrW+znZ65qcMdxGemZfQcZgb82hEaDA8aTTBs4PUw1
-	 aMsrrtlAEsNKBdOmMFHJejJvfPuoYC22mXkTfdNizzqC5fkd1q+aQXNOX80niurN0e
-	 95SE28URDqcOfQV0T2X5VJVx2xEx/dgbyKNnFDwxu5Tt524ooT4Fe4DU/XdhMAsUUc
-	 MxYyw2j0UhKag==
+	b=uRFyQShklzep8NxZ2OAADVrGtvknLWCj6uIgDGig54xBvGhyhrJp209JlmBmVLms7
+	 IMISFyZYvoq+kRQutKSH+180AeZEAQCev3R5K/LhTVjJuEVya2UcJeT8bICwbILgvb
+	 6UdPkVYaCpc/Ckik5lg9PqDlHxywzcd5Mpl7Mf9cA/5CnOS8yjlX/QB9H6iKtoUBIR
+	 qnMs/Dbf7YaHhPxbbjh2YoxoRQLIU0XcrKjQ74fAdTs+lQciDLwbGTnGaT6cWWSOs/
+	 fQ1BsFXnj0APT1qgIjDHCmbJwIqR+El6AEBfkrqFEmk9hLaR5vaLTm6s6qb/ukIW+j
+	 s+LxmmLfLvQoQ==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id C20F8CD5BB0;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id E14ECCD5BB7;
 	Fri, 22 May 2026 20:45:20 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 22 May 2026 13:45:07 -0700
-Subject: [PATCH 1/3] KVM: guest_memfd: Use write permissions when GUP-ing
- source pages
+Date: Fri, 22 May 2026 13:45:09 -0700
+Subject: [PATCH 3/3] KVM: guest_memfd: Handle errors from xa_store_range()
+ when binding
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260522-fix-sev-gmem-post-populate-v1-1-9fc8d6437b65@google.com>
+Message-Id: <20260522-fix-sev-gmem-post-populate-v1-3-9fc8d6437b65@google.com>
 References: <20260522-fix-sev-gmem-post-populate-v1-0-9fc8d6437b65@google.com>
 In-Reply-To: <20260522-fix-sev-gmem-post-populate-v1-0-9fc8d6437b65@google.com>
 To: Sean Christopherson <seanjc@google.com>, 
@@ -59,11 +59,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-coco@lists.linux.dev, Yu Zhang <yu.c.zhang@linux.intel.com>, 
  Fuad Tabba <tabba@google.com>, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779482720; l=3935;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779482720; l=1599;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=NOLwc6JliC+gaSDhEKSTPHm5NB60r/tP961hWN1Pkhc=;
- b=aTFMJtLEvgVlBqEj5Dw/cTP/t3oH0sLd50f9WCEDOXRpyo6h3E0l/yR/Aedelcc/W4MjxhgxI
- FhV2a1zxUovBAq38H6gXfATIDzStJ/WiSglU0EdY3Zktm8kJI+h2q1s
+ bh=ppXZ9n7Px9sWPfCeSXJF2Jv5JKohLthkttbhOhgzju8=;
+ b=umbtB2eulJGonqQIEnj0i8tfpFY/JDZfh8iROfUqls2ag7+sahhvKQjHe1YuUZhxnsbzOG+Pg
+ BRTn7AR84LPBWKSpCfIJoEkcbhsFvmOeRkHiyYN2FQYa0Jjf3STwOTj
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -71,99 +71,50 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 
-From: Sean Christopherson <seanjc@google.com>
+From: Ackerley Tng <ackerleytng@google.com>
 
-sev_gmem_post_populate() may write to the source page if there was an error
-while performing SNP_LAUNCH_UPDATE.
+Unhandled errors from xa_store_range() means kvm_gmem_bind() might falsely
+reporting success, leading to false assumptions in guest_memfd's lifecycle
+later.
 
-Since GUP requested only reads, there is a chance sev_gmem_post_populate()
-could be writing to some read-only page.
+Handle these errors by checking and returning the error to the userspace.
 
-sev_gmem_post_populate() will only ever write the source page if the type
-of page being LAUNCH_UPDATEd is a CPUID page. Hence, request a writable
-page only when loading the CPUID page.
-
-Since TDX never writes to the source page, always pass false to
-kvm_gmem_populate().
-
-With this, even if a read-only mapping or the global zero page was provided
-as the source page, GUP will do a copy-on-write, making it writable before
-the write happens in gvm_post_populate.
-
-Fixes: 2a62345b30529 ("KVM: guest_memfd: GUP source pages prior to populating guest memory")
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: a7800aa80ea4d ("KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memory")
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- arch/x86/kvm/svm/sev.c   | 1 +
- arch/x86/kvm/vmx/tdx.c   | 2 +-
- include/linux/kvm_host.h | 3 ++-
- virt/kvm/guest_memfd.c   | 6 ++++--
- 4 files changed, 8 insertions(+), 4 deletions(-)
+ virt/kvm/guest_memfd.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-index 940b97d4a8523..2f254c447923e 100644
---- a/arch/x86/kvm/svm/sev.c
-+++ b/arch/x86/kvm/svm/sev.c
-@@ -2469,6 +2469,7 @@ static int snp_launch_update(struct kvm *kvm, struct kvm_sev_cmd *argp)
- 	sev_populate_args.type = params.type;
- 
- 	count = kvm_gmem_populate(kvm, params.gfn_start, src, npages,
-+				  params.type == KVM_SEV_SNP_PAGE_TYPE_CPUID,
- 				  sev_gmem_post_populate, &sev_populate_args);
- 	if (count < 0) {
- 		argp->error = sev_populate_args.fw_error;
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index b8c3d3d8bbfe5..00dcfcbc47f68 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -3185,7 +3185,7 @@ static int tdx_vcpu_init_mem_region(struct kvm_vcpu *vcpu, struct kvm_tdx_cmd *c
- 		};
- 		gmem_ret = kvm_gmem_populate(kvm, gpa_to_gfn(region.gpa),
- 					     u64_to_user_ptr(region.source_addr),
--					     1, tdx_gmem_post_populate, &arg);
-+					     1, false, tdx_gmem_post_populate, &arg);
- 		if (gmem_ret < 0) {
- 			ret = gmem_ret;
- 			break;
-diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
-index 4c14aee1fb063..2c5ad9a6d5ce8 100644
---- a/include/linux/kvm_host.h
-+++ b/include/linux/kvm_host.h
-@@ -2596,7 +2596,8 @@ int kvm_arch_gmem_prepare(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn, int max_ord
- typedef int (*kvm_gmem_populate_cb)(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
- 				    struct page *page, void *opaque);
- 
--long kvm_gmem_populate(struct kvm *kvm, gfn_t gfn, void __user *src, long npages,
-+long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src,
-+		       long npages, bool may_writeback_src,
- 		       kvm_gmem_populate_cb post_populate, void *opaque);
- #endif
- 
 diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 69c9d6d546b28..07d8db344872b 100644
+index d203135969d13..104f0f3d6a0b3 100644
 --- a/virt/kvm/guest_memfd.c
 +++ b/virt/kvm/guest_memfd.c
-@@ -858,7 +858,8 @@ static long __kvm_gmem_populate(struct kvm *kvm, struct kvm_memory_slot *slot,
- 	return ret;
- }
+@@ -648,6 +648,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 	struct inode *inode;
+ 	struct file *file;
+ 	int r = -EINVAL;
++	void *result;
  
--long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long npages,
-+long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src,
-+		       long npages, bool may_writeback_src,
- 		       kvm_gmem_populate_cb post_populate, void *opaque)
- {
- 	struct kvm_memory_slot *slot;
-@@ -892,8 +893,9 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_gfn, void __user *src, long
+ 	BUILD_BUG_ON(sizeof(gfn_t) != sizeof(slot->gmem.pgoff));
  
- 		if (src) {
- 			unsigned long uaddr = (unsigned long)src + i * PAGE_SIZE;
-+			unsigned int flags = may_writeback_src ? FOLL_WRITE : 0;
+@@ -688,7 +689,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 	if (kvm_gmem_supports_mmap(inode))
+ 		slot->flags |= KVM_MEMSLOT_GMEM_ONLY;
  
--			ret = get_user_pages_fast(uaddr, 1, 0, &src_page);
-+			ret = get_user_pages_fast(uaddr, 1, flags, &src_page);
- 			if (ret < 0)
- 				break;
- 			if (ret != 1) {
+-	xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
++	result = xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
+ 	filemap_invalidate_unlock(inode->i_mapping);
+ 
+ 	/*
+@@ -696,7 +697,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+ 	 * not the other way 'round.  Active bindings are invalidated if the
+ 	 * file is closed before memslots are destroyed.
+ 	 */
+-	r = 0;
++	r = xa_is_err(result) ? xa_err(result) : 0;
+ err:
+ 	fput(file);
+ 	return r;
 
 -- 
 2.54.0.794.g4f17f83d09-goog
