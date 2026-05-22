@@ -1,348 +1,130 @@
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C6E377EA1;
-	Fri, 22 May 2026 10:04:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C02613C98AE;
+	Fri, 22 May 2026 10:33:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779444262; cv=none; b=MSECTb4NBZFl7EqMPgLCHXIXRpV9+IbPRz0P+D03QMX0IDgPdGhhnvBbg3XePJKs2iyAiepsWjQLSDRnDNZlM72/HpEh5lkeKLW773MhOLYaw7CUb7U86E//yra3q81sW65Wq5FU2aVdOtsU/BVywMW+GSVR7hwJ3znHkyWjmdE=
+	t=1779446008; cv=none; b=pRMy+BONDyWphj6rwwCi4ulx9IYOy7kJ86AFbWj9J6wX3ItKgadQ9GDOLEKWirpIqbRr77+mdpi9mM8puyMkozDJpAHHsM9SIuyiaFlxfSG9drLT31b3/U0OhTqPEWNhCkJKiIv7q7lgO+rXt43MSdCDpEJXyduZKBxkMikMoeI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779444262; c=relaxed/simple;
-	bh=qoVU470jmBCxtPK/7Iq+kBWK02+dJ3H6OOM949T4ab8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=cFJ/XrQb8+HkNQbumVYKBnBijT2eIOwc0FdmDCntxtwBr6qIoi/TCSPnJbtQcZzHShmJR7qGctV0ZHbe9pDm2LQLHCrBcfm7phGM5jOqxLhjkuWw+oaeTFLPStDokIjEHVewUR+I1QZA4ZXfxRwp+4MsA3zOVLT6i/BLD7FhFFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=6wET1SUv; arc=none smtp.client-ip=113.46.200.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1779446008; c=relaxed/simple;
+	bh=OC9I9ays2hj7Jffo+4Ohri3Oya/4mlwWbN2Oqlu0vZE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y2eBmX2ak5uJPeTbxbCVRYWzUtqimHsCokMFw7wQK5weJLck1Su9KoshKH73ia7wmrLtnefsCcoKIX8ZMpkvoM9HjS0KsgT9Qi6qMM2lh3oKAgB+Uxsys7PgvxrDpClU4IP18BkD6aOSiaFf2Ys4aqutED+iRcwXsxkSsk17w+o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gGKq/CIz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="6wET1SUv"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=mWaMWoUjJP4+8JPKo9pXxNpvdJIqdj7AjppGEeDe6Fo=;
-	b=6wET1SUvPAXu5G7V72alUKfNM+l9wwTSzls5H14+SAsV7tfAldYxki0L21dmFv1tiLcXKqxjA
-	z0/5mZs+vcm72AhlQ18YrrfG17DXvpAydlFtUQ1TbqPpqJI/vpE5fNmHHU7MUPFVoohCdLVvgIU
-	msfyB3S5xS3M7Dfag34J8rA=
-Received: from mail.maildlp.com (unknown [172.19.162.197])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4gMLKP4W2MzpStQ;
-	Fri, 22 May 2026 17:56:57 +0800 (CST)
-Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
-	by mail.maildlp.com (Postfix) with ESMTPS id 02F3740569;
-	Fri, 22 May 2026 18:04:15 +0800 (CST)
-Received: from [10.67.121.161] (10.67.121.161) by
- kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 22 May 2026 18:04:14 +0800
-Message-ID: <512bce27-13a2-44a1-aa5b-b5ea77c174ba@huawei.com>
-Date: Fri, 22 May 2026 18:04:13 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gGKq/CIz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDB191F00A3D;
+	Fri, 22 May 2026 10:33:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779446006;
+	bh=fSAKcTCjHEBP0sQv4s+o1EWc5Ccjv9UlLr1FZ7wIvhY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=gGKq/CIzLxg1eVylTmSsaymkCWKTFGI+O2LCAQD66kFGHuWu7AEA0EJlsvNO0PnQE
+	 +sihyb31rGdup1cSzTE35K5odHeZ3/eHCKeOYbV9EbYbbeLlKAny6B5p5VBmDYx2ES
+	 GZXeOEgUZAcHnVcNK6M3SVEXt1noKuLnGw0nxC0MojK5TvXJhQ6WEjgAVizgmQLpcI
+	 dDsCOpurTMS0gGQCbFYdDq9VDF2/E8KvK+CSXg9xD83/19DHSXkato+MRFH0E4vsWo
+	 NTnvBgkTQDRwspvDgy289uUsENhabwbbni7Ifovw2ttOt/+5uVb0/kPNiwfTMRJHVs
+	 dZpW2WP7j3/pw==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 3329CF4008C;
+	Fri, 22 May 2026 06:33:25 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Fri, 22 May 2026 06:33:25 -0400
+X-ME-Sender: <xms:9TAQanIenWH_ygrOQ6FUHBHioGIwigEJ1_bMwmlkf-_CugjQOnVFyQ>
+    <xme:9TAQaoztDcO3aL7ONGNqejCZ6lxgiC2rO1Vx_hOXtziE-Jk9_NpyH4rGCI2sD7hjL
+    fZ00HOxyCzB1bqTrz8L27ZkOuzsRdNMUxkEmlzM0tQFZxy688CnJQ>
+X-ME-Received: <xmr:9TAQalSy4EwNoMaSIWOw-ZQF4JGjJASlv6y3tByrXHYXi52jPSyjgkhmOvBfPA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddugeelleegucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtuggjsehttdertd
+    dttddvnecuhfhrohhmpefmihhrhihlucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhn
+    vghlrdhorhhgqeenucggtffrrghtthgvrhhnpeeuieejieffkeehfeffffdtkeelfeelhe
+    fhfefhudehjeehvdffleeuvddufefgkeenucevlhhushhtvghrufhiiigvpedtnecurfgr
+    rhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgvrhhsoh
+    hnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhn
+    vghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeegiedpmh
+    houggvpehsmhhtphhouhhtpdhrtghpthhtohepshhjsehkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpth
+    htoheprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehpvghtvghrgiesrhgv
+    ughhrghtrdgtohhmpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtoheplhhjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhurhgvnhgssehg
+    ohhoghhlvgdrtghomhdprhgtphhtthhopehvsggrsghkrgeskhgvrhhnvghlrdhorhhgpd
+    hrtghpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomh
+X-ME-Proxy: <xmx:9TAQakB5MJDyeRY_hnhhvRW8ddk9xhB6k169PMZOdmdBLzjNgzWUMA>
+    <xmx:9TAQatdv31zZM0M2rGNw6Vf40Z5SRXpwAVIh8GYd_OyXyI_GhgRs6A>
+    <xmx:9TAQasvkmJeWjrcPgrWoxeaHPZ0_znuDXuC3yuO7C7vruthndstmNQ>
+    <xmx:9TAQavJa5JPR45FttlxYzQlQ3p6Hp2BDqXCthKi8GGTuTo5LyVCc4w>
+    <xmx:9TAQao83YRq4gP8_a6IhIK19klW67QorxUepSbRdp0Q2PX13A3GyyW8a>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 22 May 2026 06:33:23 -0400 (EDT)
+Date: Fri, 22 May 2026 11:33:18 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: SeongJae Park <sj@kernel.org>
+Cc: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
+	david@kernel.org, ljs@kernel.org, surenb@google.com, vbabka@kernel.org, 
+	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, 
+	seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, 
+	usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v2 03/14] mm: rename uffd-wp PTE accessors to uffd
+Message-ID: <ahAwiYBj3V8kV-Ez@thinkstation>
+References: <dfda2f55e155b17535ea9fb8330d9fa9afe0c0e1.1778254670.git.kas@kernel.org>
+ <20260514013127.148945-1-sj@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 5/5] vfio/pci: Add VFIO_DEVICE_FEATURE_TPH_ST for TPH
- ST entry management
-To: Alex Williamson <alex@shazbot.org>
-CC: <jgg@ziepe.ca>, <wathsala.vithanage@arm.com>, <helgaas@kernel.org>,
-	<wei.huang2@amd.com>, <wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
-	<liuyonglong@huawei.com>, <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
-References: <20260518071701.25177-1-fengchengwen@huawei.com>
- <20260518071701.25177-6-fengchengwen@huawei.com>
- <20260521221008.59ddf977@shazbot.org>
-Content-Language: en-US
-From: fengchengwen <fengchengwen@huawei.com>
-In-Reply-To: <20260521221008.59ddf977@shazbot.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemk500009.china.huawei.com (7.202.194.94)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260514013127.148945-1-sj@kernel.org>
 
-On 5/22/2026 12:10 PM, Alex Williamson wrote:
-> On Mon, 18 May 2026 15:17:01 +0800
-> Chengwen Feng <fengchengwen@huawei.com> wrote:
+On Wed, May 13, 2026 at 06:31:27PM -0700, SeongJae Park wrote:
+> On Fri,  8 May 2026 16:55:15 +0100 "Kiryl Shutsemau (Meta)" <kas@kernel.org> wrote:
 > 
->> Add VFIO_DEVICE_FEATURE_TPH_ST to allow userspace to manage PCIe TPH
->> Steering Tag entries.
->>
->> SET: Program contiguous ST entries when ST table resides in TPH Capability
->>      or MSI-X table. U32_MAX CPU ID clears the corresponding ST entry.
->> GET: Retrieve ST values per CPU ID, only available in DS mode.
->>
->> Both operations are only valid when TPH is enabled on the device.
+> > Userfaultfd RWP will reuse the uffd-wp PTE bit to mark access-tracking
+> > PTEs, alongside the write-protected ones it already marks. The bit's
+> > meaning now depends on the VMA flag (WP or RWP), not on its name.
+> > 
+> > Rename the kernel-internal names that describe the bit:
+> > 
+> >   - pte/pmd/huge_pte accessors (and swap variants)
+> >   - pgtable_supports_uffd() capability query
+> >   - SCAN_PTE_UFFD khugepaged enum
+> > 
+> > The ftrace string emitted by mm_khugepaged_scan_pmd for this enum is
+> > kept as "pte_uffd_wp" so existing trace-based tooling keeps matching.
+> > 
+> > Pure mechanical rename -- no behavior change.
+> > 
+> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+> > Assisted-by: Claude:claude-opus-4-6
+> > Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 > 
-> What?  That doesn't align with the hardware programming model.  The
-> specification even suggests that the device should be quiesced or TPH
-> disabled during programming of the steering tags for deterministic
-> behavior.
+> Reviewed-by: SeongJae Park <sj@kernel.org>
 
-As mentioned in the 4/5 commit, obtaining ST must first enable TPH.
-Of course, I think it might be necessary to calculate pdev->tph_req_type
-during the capability detection phase, so that we can modify ST before
-enabling TPH. Do you think such a modification is needed?
+Thanks!
 
+> [...]
+> > @@ -4934,10 +4934,10 @@ int copy_hugetlb_page_range(struct mm_struct *dst, struct mm_struct *src,
+> >  		softleaf = softleaf_from_pte(entry);
+> >  		if (unlikely(softleaf_is_hwpoison(softleaf))) {
+> >  			if (!userfaultfd_wp(dst_vma))
+> > -				entry = huge_pte_clear_uffd_wp(entry);
+> > +				entry = huge_pte_clear_uffd(entry);
+> >  			set_huge_pte_at(dst, addr, dst_pte, entry, sz);
+> >  		} else if (unlikely(softleaf_is_migration(softleaf))) {
+> > -			bool uffd_wp = pte_swp_uffd_wp(entry);
+> > +			bool uffd_wp = pte_swp_uffd(entry);
 > 
->> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
->> ---
->>  drivers/vfio/pci/vfio_pci_core.c | 91 ++++++++++++++++++++++++++++++++
->>  include/uapi/linux/vfio.h        | 41 ++++++++++++++
->>  2 files changed, 132 insertions(+)
->>
->> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
->> index 0d0140202280..13a22c1d6ea6 100644
->> --- a/drivers/vfio/pci/vfio_pci_core.c
->> +++ b/drivers/vfio/pci/vfio_pci_core.c
->> @@ -1558,6 +1558,95 @@ static int vfio_pci_core_feature_token(struct vfio_pci_core_device *vdev,
->>  	return 0;
->>  }
->>  
->> +static int vfio_pci_core_feature_tph_st(struct vfio_pci_core_device *vdev,
->> +					u32 flags,
->> +					struct vfio_device_feature_tph_st __user *arg,
->> +					size_t argsz)
->> +{
->> +	bool is_set = !!(flags & VFIO_DEVICE_FEATURE_SET);
->> +	struct vfio_device_feature_tph_st tph_st;
->> +	struct pci_dev *pdev = vdev->pdev;
->> +	enum tph_mem_type mtype;
->> +	int i, j, ret;
->> +	u32 *cpus;
->> +	u16 st;
->> +
->> +	guard(mutex)(&vdev->tph_lock);
-> 
-> Wrong place for this lock.  Why do we even need it?  If a user races
-> SET/GET with enable/disable, that's their problem.
+> Just curious.  Is the variable name intentionally kept to avoid unnecessary
+> change?
 
-OK, will fix in next version
+No, I've missed this. Will fix.
 
-> 
->> +
->> +	ret = vfio_check_feature(flags, argsz,
->> +				 VFIO_DEVICE_FEATURE_GET |
->> +				 VFIO_DEVICE_FEATURE_SET,
->> +				 sizeof(tph_st));
->> +	if (ret <= 0)
->> +		return ret;
->> +
->> +	if (!enable_unsafe_tph ||
-> 
-> Why did we allow the feature to be probe if it can't be used?
-
-OK, will fix in next version
-
-> 
->> +		pcie_tph_enabled_mode(pdev) == PCI_TPH_ST_NS_MODE)
-> 
-> Here's that ambiguity of reporting NS_MODE for disabled, but as above
-> it's a bogus requirement.
-
-OK, will fix in next version
-
-> 
->> +		return -EOPNOTSUPP;
->> +	if (!is_set && pcie_tph_enabled_mode(pdev) != PCI_TPH_ST_DS_MODE)
-> 
-> Why?  Let the interface be symmetric that GET works regardless of mode.
-
-OK, will remove the restrict
-
-> 
->> +		return -EOPNOTSUPP;
->> +	if (is_set && pcie_tph_get_st_table_loc(pdev) == PCI_TPH_LOC_NONE)
->> +		return -EOPNOTSUPP;
->> +
->> +	if (copy_from_user(&tph_st, arg, sizeof(tph_st)))
->> +		return -EFAULT;
->> +
->> +	if (tph_st.count == 0 || tph_st.count > VFIO_TPH_ST_MAX_COUNT ||
->> +		tph_st.flags > VFIO_TPH_ST_MEM_TYPE_PM)
-> 
-> Wrong operation for a flags field.
-
-Because currently flags only use bit0 (0-VM, 1-PM), this judge make sure
-it will return error if userspace passing non-zero in remain bits.
-
-> 
->> +		return -EINVAL;
->> +	if (!is_set && tph_st.index != 0)
-> 
-> We can only GET index 0?  Why?
-
-Because GET operation don't need index, this judgment make sure
-it will return error if userspace passing non-zero index.
-
-> 
->> +		return -EINVAL;
->> +	if (is_set && (tph_st.index >= VFIO_TPH_ST_MAX_COUNT ||
->> +		       tph_st.index + tph_st.count > VFIO_TPH_ST_MAX_COUNT))
-> 
-> DS can have more that 2048 steering tags.
-
-I check the PCIE protocol, DS mode with ST in pcie-config or msi-x must not
-hold > 2048 steering tags.
-
-> 
->> +		return -EINVAL;
->> +
->> +	cpus = memdup_array_user(&arg->data, tph_st.count, sizeof(*cpus));
-> 
-> Use an __aligned_u64 data_uptr like iommufd does and avoid copying this
-> into the kernel.  Isn't this steering tags, why's it named cpus?
-
-we reuse the field which according your previous suggestion:
-in GET, user pass in cpus, and vfio will feedback steering tags in cpus.
-
-> 
->> +	if (IS_ERR(cpus))
->> +		return PTR_ERR(cpus);
->> +
->> +	mtype = tph_st.flags & VFIO_TPH_ST_MEM_TYPE_PM ? TPH_MEM_TYPE_PM :
->> +							 TPH_MEM_TYPE_VM;
-> 
-> Then why did we use two flag bits for this?
-
-VFIO_TPH_ST_MEM_TYPE_PM is just one bit, could you explain the two flag bits?
-
-> 
->> +	if (!is_set) {
->> +		for (i = 0; i < tph_st.count; i++) {
->> +			ret = pcie_tph_get_cpu_st(pdev, mtype, cpus[i], &st);
-> 
-> My understanding was that GET would return the translated values from a
-> previous SET, not translate on the fly.  I think in order to support
-> writing STs before enabling TPH, we're going to need to store them
-> somewhere anyway so that we can push them to the correct location when
-> TPH is enabled.  That means there a buffer for SET/GET regardless of
-> the mode that's enabled.
-
-OK, will try to fix
-
-> 
->> +			if (ret)
->> +				goto out;
->> +			cpus[i] = st;
->> +		}
->> +		goto out;
->> +	}
->> +
->> +	for (i = 0; i < tph_st.count; i++) {
->> +		if (cpus[i] == U32_MAX) {
->> +			ret = pcie_tph_set_st_entry(pdev, tph_st.index + i, 0);
-> 
-> Why do we need a magic value to set it to zero?  Hardware doesn't have
-> a "clear ST register value".
-
-So you mean for SET, usespace direct passing steering-tag not cpus in this patch?
-
-> 
->> +			if (ret)
->> +				goto out;
->> +			continue;
->> +		}
->> +
->> +		ret = pcie_tph_get_cpu_st(pdev, mtype, cpus[i], &st);
->> +		if (ret)
->> +			goto out;
->> +		ret = pcie_tph_set_st_entry(pdev, tph_st.index + i, st);
->> +		if (ret)
->> +			goto out;
-> 
-> Clearly broken for DS mode.
-
-For DS mode:
-1\ if ST table in CONFIG or MSI-X, then it could done by this way
-2\ if ST table not in CONFIG or MSI-X, then it only need invoke GET, and set by device-specific way.
-
-Thanks
-
-> 
->> +	}
->> +
->> +out:
->> +	if (!is_set && !ret) {
->> +		if (copy_to_user(&arg->data, cpus,
->> +			tph_st.count * sizeof(*cpus)))
->> +			ret = -EFAULT;
->> +	}
->> +	if (is_set && ret) {
->> +		/* Roll back previously programmed entries to 0 */
->> +		for (j = 0; j < i; j++)
->> +			pcie_tph_set_st_entry(pdev, tph_st.index + j, 0);
-> 
-> The magic value is zero, not U32_MAX.  Thanks,
-> 
-> Alex
-> 
->> +	}
->> +	kfree(cpus);
->> +	return ret;
->> +}
->> +
->>  int vfio_pci_core_ioctl_feature(struct vfio_device *device, u32 flags,
->>  				void __user *arg, size_t argsz)
->>  {
->> @@ -1576,6 +1665,8 @@ int vfio_pci_core_ioctl_feature(struct vfio_device *device, u32 flags,
->>  		return vfio_pci_core_feature_token(vdev, flags, arg, argsz);
->>  	case VFIO_DEVICE_FEATURE_DMA_BUF:
->>  		return vfio_pci_core_feature_dma_buf(vdev, flags, arg, argsz);
->> +	case VFIO_DEVICE_FEATURE_TPH_ST:
->> +		return vfio_pci_core_feature_tph_st(vdev, flags, arg, argsz);
->>  	default:
->>  		return -ENOTTY;
->>  	}
->> diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
->> index 5de618a3a5ee..aca39d4e5307 100644
->> --- a/include/uapi/linux/vfio.h
->> +++ b/include/uapi/linux/vfio.h
->> @@ -1534,6 +1534,47 @@ struct vfio_device_feature_dma_buf {
->>   */
->>  #define VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2  12
->>  
->> +/**
->> + * VFIO_DEVICE_FEATURE_TPH_ST - Get/Set PCIe TPH Steering Tag (ST) entries
->> + *
->> + * Provides userspace interface to manage PCIe TPH ST table entries.
->> + * This feature is only available when device TPH is enabled.
->> + *
->> + * Upon VFIO_DEVICE_FEATURE_SET:
->> + *   Program contiguous ST table entries from the starting @index.
->> + *   Valid only for hardware with ST table located in TPH Capability
->> + *   space or MSI-X table. If an entry CPU ID is specified as U32_MAX,
->> + *   the corresponding ST entry will be cleared. @index and @count define
->> + *   the contiguous entry range to be programmed.
->> + *   If any entry programming fails, the operation will roll back and
->> + *   clear all entries that were successfully programmed before the error.
->> + *
->> + * Upon VFIO_DEVICE_FEATURE_GET:
->> + *   Retrieve the ST value mapped to each given CPU ID in the @data array.
->> + *   Userspace fills @data with CPU ID array, the interface returns each
->> + *   CPU's corresponding ST value back in place.
->> + *   Valid only when TPH DS mode is enabled.
->> + *
->> + * @flags: Operation flags (VFIO_TPH_ST_MEM_TYPE_*).
->> + * @index: Starting ST entry index, only valid for FEATURE_SET.
->> + * @count: Number of contiguous entries to access.
->> + * @data: Array of CPU IDs for both SET and GET. On SET it programs ST for
->> + *        each CPU; on GET it returns the mapped ST value of each CPU.
->> + *
->> + * This feature is gated by enable_unsafe_tph module parameter.
->> + */
->> +#define VFIO_DEVICE_FEATURE_TPH_ST	13
->> +
->> +struct vfio_device_feature_tph_st {
->> +	__u32 flags;
->> +#define VFIO_TPH_ST_MEM_TYPE_VM		(0U << 0)
->> +#define VFIO_TPH_ST_MEM_TYPE_PM		(1U << 0)
->> +	__u16 index;
->> +	__u16 count;
->> +#define VFIO_TPH_ST_MAX_COUNT		2048
->> +	__u32 data[] __counted_by(count);
->> +};
->> +
->>  /* -------- API for Type1 VFIO IOMMU -------- */
->>  
->>  /**
-> 
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
