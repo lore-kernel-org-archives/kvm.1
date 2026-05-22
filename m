@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0730836F906;
-	Fri, 22 May 2026 04:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ED6B377007;
+	Fri, 22 May 2026 04:06:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779422764; cv=none; b=mQVfNnSsDnKJjnQoDcz8ZA+3imfPGUQ9JgtLPSyazwNe7IEcZG8toNp6jaUKNsJhi4pMxKdiAPTTZYPFEzPatQw53Hedd7BIU8knPd2efxP8cX0HcHWwJ02S6Ir1hDrPonqtIJ4gzs61adq/C64NGoB2d1V3U7Md3VE5saLcAvQ=
+	t=1779422768; cv=none; b=JSlIx+aRKoqSGfslgAa+cWOeSzFbNCkpz7d7QvN8F/NawCSrqMMufoVAXuGKABRi/s2W4I5u+cEvhay+dE4jP9ZMCTPJZJ4kNUjOlxn9Ds0XYwz92BEX7HOek3bXeyEw+2ffw/4K1y2j4t4De5xPVGPKpZeA1/0+PkzZSjN1SEM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779422764; c=relaxed/simple;
-	bh=aDZKpalIG8poSUU5P/VEw+KG1TVNT7uoOGEiPHoS6Gs=;
+	s=arc-20240116; t=1779422768; c=relaxed/simple;
+	bh=4Stvo2XFlVxPfHj+dM/JOUHcILSlwmXS/k3FEGF2pm8=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=iGN/f3Q9XBycYUaQR1mHoalk2X9W7LUhX3QzSAarJ+tyQ07Zrv0rIZ7/cy6qBjRhHj5aWlYI9xprFSrOKBCn29x1bfADjYsIR45qejHJ6lA5p86o3DyffGjUVTStY8eg2y37metP+rs4R1AAqNzgb0soaqYOkdhGRVl2bSvRsvk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CgaZq1lv; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=k+nHWkdBbuH9g6vVRYIkolr/OjcFeUDaRD2ahYyZhUcibGeUdacBzkvK4zJAB7dvmkqGQcB3nNcVyocxgfRE8poVSZtshhW2yJbNlRBJrka/6MGjXGg289QcEoTHIQmBJULtN9wrntiz/ZTFE66QvsePXjCxZWg/eQH4jCjMHCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=guvOn5v8; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CgaZq1lv"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="guvOn5v8"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779422764; x=1810958764;
+  t=1779422767; x=1810958767;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=aDZKpalIG8poSUU5P/VEw+KG1TVNT7uoOGEiPHoS6Gs=;
-  b=CgaZq1lvDfxAKlRdwnuaEMnYq+msF+bfFTc2DnmI8kgTs87ggYUCysd+
-   dXXifO5cFSaLPdeXLtE+aQ/PMMmiGf8f9xLMzLM6pW+CkLCY/kCACyG5R
-   aTWuCzQQ2REt1RCi/wWXdFh4MnKdVigxTiUFCn2dRsMzVYKbM1FLA878k
-   X6ieo83HhYe3Mwye7/i+L8p9Xrnh0wl0+yFpV1gqx1CzWoQCad7SyTE5I
-   FMJBOJOg+svwH/LlcpGDmyWffZul4GJQAiNTv+0z4JQUd6leWWPUBtx2J
-   WQ+srsUwizR+GnBLTH2UR4H1OaVpi9as6ayZGpns6/8WPh+xilIPDrzvn
+  bh=4Stvo2XFlVxPfHj+dM/JOUHcILSlwmXS/k3FEGF2pm8=;
+  b=guvOn5v89sf7M6AeFjoVjFk2otvx6Wj+bXsBkOci69v3EuzZS/NDpo6u
+   StOIyAK8ZGaskELiSDe5Z/Tn3Fur7T8YeSOOEStJ0bjgv9vk47Jl58zvX
+   1SiLClevEUDBzaDp4DzfV87coguOCLjRZy4i7S3Bj17SD4/TuSvA+5HFy
+   CECZrxF5TUzkKW0/GY0JYSoRTB8oG9EdW41SzduAVRANBIPKTO3s445Yk
+   qy5Sa/E6SJEgQVHOJ/NTmPkiRMbffyVG7y9eHADaUCcx5JGY9T+kNb6wB
+   jCCVxNYyGl9KybymFfqxUeC0QhfUIk8NQQ62yU+ioO5QtGbyZQzoqOnep
    w==;
-X-CSE-ConnectionGUID: SaK3grsOSjKXpNwY0r+5DA==
-X-CSE-MsgGUID: 1/Sz5Sc8SPCVdZ3b51Ji2w==
-X-IronPort-AV: E=McAfee;i="6800,10657,11793"; a="80528931"
+X-CSE-ConnectionGUID: OMak20nqSyqYGStRAUaSrA==
+X-CSE-MsgGUID: JiVAAdwsRcioseUdg+w/Bw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11793"; a="80528936"
 X-IronPort-AV: E=Sophos;i="6.24,161,1774335600"; 
-   d="scan'208";a="80528931"
+   d="scan'208";a="80528936"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2026 21:06:03 -0700
-X-CSE-ConnectionGUID: Up3E0bjvTX2f1ygYn0sX3w==
-X-CSE-MsgGUID: 77W7QGREREC2Lx+oMDptPQ==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2026 21:06:07 -0700
+X-CSE-ConnectionGUID: vdnPNLHdQyyext91gtCB5g==
+X-CSE-MsgGUID: msPiaawYRy+msVJ7kQJ89Q==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,161,1774335600"; 
-   d="scan'208";a="239757953"
+   d="scan'208";a="239757961"
 Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.159.165])
-  by orviesa006.jf.intel.com with ESMTP; 21 May 2026 21:05:59 -0700
+  by orviesa006.jf.intel.com with ESMTP; 21 May 2026 21:06:03 -0700
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: kas@kernel.org,
 	djbw@kernel.org,
@@ -58,9 +58,9 @@ Cc: linux-coco@lists.linux.dev,
 	baolu.lu@linux.intel.com,
 	zhenzhong.duan@intel.com,
 	xiaoyao.li@intel.com
-Subject: [RFC PATCH 14/15] x86/virt/tdx: Embed version info in SEAMCALL leaf function definitions
-Date: Fri, 22 May 2026 11:41:27 +0800
-Message-Id: <20260522034128.3144354-15-yilun.xu@linux.intel.com>
+Subject: [RFC PATCH 15/15] x86/virt/tdx: Enable TDX Quoting extension
+Date: Fri, 22 May 2026 11:41:28 +0800
+Message-Id: <20260522034128.3144354-16-yilun.xu@linux.intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
 References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
@@ -72,99 +72,121 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Embed version information in SEAMCALL leaf function definitions rather
-than let the caller open code them. For now, only TDH.VP.INIT is
-involved.
+From: Peter Fang <peter.fang@intel.com>
 
-Don't bother the caller to choose the SEAMCALL version if unnecessary.
-New version SEAMCALLs are guaranteed to be backward compatible, so
-ideally kernel doesn't need to keep version history and only uses the
-latest version SEAMCALLs.
+Enable the TDX Quoting feature via TDH.SYS.CONFIG when supported by the
+TDX module.
 
-The concern is some old TDX Modules don't recognize new version
-SEAMCALLs. Multiple SEAMCALL versions co-exist when kernel should
-support these old Modules. As time goes by, the old Modules deprecate
-and old version SEAMCALL definitions should disappear.
+The TDX Quoting extension generates TDX attestation Quotes via a
+SEAMCALL, without using a discrete Quoting engine.
 
-The old TDX Modules that only support TDH.VP.INIT v0 are all deprecated,
-so only provide the latest (v1) definition.
+TDX Module supports add-on TDX features (e.g. TDX Quoting & TDX Module
+Extensions) that should be manually enabled by host. It extends
+TDH.SYS.CONFIG for host to choose to enable them on bootup.
 
+Call TDH.SYS.CONFIG with a new bitmap input parameter to specify which
+features to enable. The bitmap uses the same definitions as
+TDX_FEATURES0. But note not all bits in TDX_FEATURES0 are valid for
+configuration, e.g. TDX Module Extensions is a service that supports TDX
+Quoting, it is implicitly enabled when TDX Quoting is enabled. Setting
+TDX_FEATURES0_EXT in the bitmap has no effect.
+
+TDX Module advances the version of TDH.SYS.CONFIG for the change, so
+use the latest version (v1) for add-on feature enabling. But supporting
+existing Modules which only support v0 is still necessary until they are
+deprecated. In fact, it is unlikely that TDH.SYS.CONFIG ever needs to
+change again and the code would stay in v1. So there is little value
+in worrying about deprecating v0 to save a couple lines of code in 5-7
+years when these original TDX platforms sunset.
+
+TDX Module updates global metadata when add-on features are enabled.
+Host should update the cached tdx_sysinfo to reflect these changes.
+
+Co-developed-by: Xu Yilun <yilun.xu@linux.intel.com>
 Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+Signed-off-by: Peter Fang <peter.fang@intel.com>
 ---
- arch/x86/virt/vmx/tdx/tdx.h | 23 ++++++++++++++---------
- arch/x86/virt/vmx/tdx/tdx.c |  4 ++--
- 2 files changed, 16 insertions(+), 11 deletions(-)
+ arch/x86/virt/vmx/tdx/tdx.h |  4 +++-
+ arch/x86/virt/vmx/tdx/tdx.c | 24 ++++++++++++++++++++++--
+ 2 files changed, 25 insertions(+), 3 deletions(-)
 
 diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index 01a7d7d8ada9..10aff23cd01f 100644
+index 10aff23cd01f..524a14c01aa6 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.h
 +++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -2,6 +2,7 @@
- #ifndef _X86_VIRT_TDX_H
- #define _X86_VIRT_TDX_H
- 
-+#include <linux/bitfield.h>
- #include <linux/bits.h>
+@@ -58,7 +58,8 @@
+ #define TDH_PHYMEM_CACHE_WB		40
+ #define TDH_PHYMEM_PAGE_WBINVD		41
+ #define TDH_VP_WR			43
+-#define TDH_SYS_CONFIG			45
++#define TDH_SYS_CONFIG_V0		45
++#define TDH_SYS_CONFIG			SEAMCALL_LEAF_VER(TDH_SYS_CONFIG_V0, 1)
+ #define TDH_EXT_INIT			60
+ #define TDH_EXT_MEM_ADD			61
+ #define TDH_SYS_DISABLE			69
+@@ -97,6 +98,7 @@ struct tdmr_info {
+ /* Bit definitions of TDX_FEATURES0 metadata field */
+ #define TDX_FEATURES0_NO_RBP_MOD	BIT(18)
+ #define TDX_FEATURES0_EXT		BIT_ULL(39)
++#define TDX_FEATURES0_QUOTE		BIT_ULL(50)
  
  /*
-@@ -11,6 +12,18 @@
-  * architectural definitions come first.
-  */
- 
-+/*
-+ * SEAMCALL leaf:
-+ *
-+ * Bit 15:0	Leaf number
-+ * Bit 23:16	Version number
-+ */
-+#define SEAMCALL_LEAF			GENMASK(15, 0)
-+#define SEAMCALL_VER			GENMASK(23, 16)
-+
-+#define SEAMCALL_LEAF_VER(l, v)		(FIELD_PREP(SEAMCALL_LEAF, l) | \
-+					 FIELD_PREP(SEAMCALL_VER, v))
-+
- /*
-  * TDX module SEAMCALL leaf functions
-  */
-@@ -31,7 +44,7 @@
- #define TDH_VP_CREATE			10
- #define TDH_MNG_KEY_FREEID		20
- #define TDH_MNG_INIT			21
--#define TDH_VP_INIT			22
-+#define TDH_VP_INIT			SEAMCALL_LEAF_VER(22, 1)
- #define TDH_PHYMEM_PAGE_RDMD		24
- #define TDH_VP_RD			26
- #define TDH_PHYMEM_PAGE_RECLAIM		28
-@@ -52,14 +65,6 @@
- #define TDH_QUOTE_GET			98
- #define TDH_QUOTE_INIT			100
- 
--/*
-- * SEAMCALL leaf:
-- *
-- * Bit 15:0	Leaf number
-- * Bit 23:16	Version number
-- */
--#define TDX_VERSION_SHIFT		16
--
- /* TDX page types */
- #define	PT_NDA		0x0
- #define	PT_RSVD		0x1
+  * Do not put any hardware-defined TDX structure representations below
 diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 821f677e9a86..f7600f930c6e 100644
+index f7600f930c6e..86e5b7ad19b3 100644
 --- a/arch/x86/virt/vmx/tdx/tdx.c
 +++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -2217,8 +2217,8 @@ u64 tdh_vp_init(struct tdx_vp *vp, u64 initial_rcx, u32 x2apicid)
- 		.r8 = x2apicid,
- 	};
+@@ -1049,6 +1049,7 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
+ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
+ 				    u64 global_keyid)
+ {
++	u64 seamcall_fn = TDH_SYS_CONFIG_V0;
+ 	struct tdx_module_args args = {};
+ 	u64 *tdmr_pa_array;
+ 	size_t array_sz;
+@@ -1074,8 +1075,22 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
+ 	args.rcx = __pa(tdmr_pa_array);
+ 	args.rdx = tdmr_list->nr_consumed_tdmrs;
+ 	args.r8 = global_keyid;
+-	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
  
--	/* apicid requires version == 1. */
--	return seamcall(TDH_VP_INIT | (1ULL << TDX_VERSION_SHIFT), &args);
-+	/* apicid requires version == 1. See TDH_VP_INIT definition.*/
-+	return seamcall(TDH_VP_INIT, &args);
- }
- EXPORT_SYMBOL_FOR_KVM(tdh_vp_init);
++	if (tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_QUOTE) {
++		args.r9 |= TDX_FEATURES0_QUOTE;
++		/* These parameters require version >= 1 */
++		seamcall_fn = TDH_SYS_CONFIG;
++	}
++
++	ret = seamcall_prerr(seamcall_fn, &args);
++	if (ret)
++		goto free_tdmr;
++
++	/* enabling TDX Quoting may change tdx_sysinfo, update it */
++	if (tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_QUOTE)
++		ret = get_tdx_sys_info(&tdx_sysinfo);
++
++free_tdmr:
+ 	/* Free the array as it is not required anymore. */
+ 	kfree(tdmr_pa_array);
  
+@@ -1384,12 +1399,17 @@ static void tdx_quote_init(void)
+ 	unsigned int nr_quote_pages;
+ 	u64 r;
+ 
++	if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_QUOTE))
++		return;
++
+ 	do {
+ 		r = seamcall(TDH_QUOTE_INIT, &args);
+ 	} while (r == TDX_INTERRUPTED_RESUMABLE);
+ 
+-	if (r)
++	if (r) {
++		pr_err("Failed to enable quoting extension: 0x%llx\n", r);
+ 		return;
++	}
+ 
+ 	/* Quoting metadata is valid only after initialization */
+ 	if (get_tdx_sys_info_quote(&tdx_sysinfo.quote))
 -- 
 2.25.1
 
