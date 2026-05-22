@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A94F736F910;
-	Fri, 22 May 2026 04:05:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E52371CF4;
+	Fri, 22 May 2026 04:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779422757; cv=none; b=Aqq0AMlZbgz4zI7xreqCf7YRyuwJQr/0ziwULOlUD2dTT+cDvRw0C6TUUQwAk0aZmW9F8silXbunfhNnNs/xc8Ra7hljhbADBDk6Ofi7O3blTu3KKH/PfPhTDvMOg3xrup5avPrFVgCX5OJZiAoEKaYqCrZZT1MORBfRkZSzpCw=
+	t=1779422760; cv=none; b=SK3sVHkH59+oVF7gCXi5NFxqkaUO7nptUWv5gUprLyeTC5NCL6KUcn293LksdePQklOYfxyWB9G/We4OcbTJ0SZOTkS9hGnaJzxKh4MNsvthjQF2O5V5xDqkjipqNOwjC5xv8YtWYpncvU4VsivBUaL/L2u1v99sofVSbhC4Njo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779422757; c=relaxed/simple;
-	bh=jfWMgmbUk563zhcrm+vODqwHxXh19W0SoPcTnCLRL6Y=;
+	s=arc-20240116; t=1779422760; c=relaxed/simple;
+	bh=8ymCjBYlGqF8pPYfR9+OToil8KwvC5uuqR0U1MvIwag=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=O0zF5S3sIu7xir0rwSqW9uodBe1yaHAQeMB5Us9dcPKg48DwC77SZG0Ah7Mey51P1FAtuyprw2VXs1ytKm71wlRUN2u8ig6WjGypWFeFb4hhryMOt/P0gvAXTKaYrnrEEqt5uoBMB8M8ydoNU8RDeC9wZa7Qr2tZAvHtTJw68mY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c8eAdZL+; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=bQVFldlOO2tpbJLvUyDKMz9M6zkPldZTMkDr6+DKm5sjwRjBXqQcIQvVL6LRLclaV1sgCzLWjDPSTyIthMqxfNHbhNEWErjyFb26EmDWGvS6k10DUelzTHWxvP6bZVnaKVpCFcOKppt9H7zifbTTdqX3RjcLyoyyC4D1lKLG4Pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DjF/GZnE; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c8eAdZL+"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DjF/GZnE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779422756; x=1810958756;
+  t=1779422760; x=1810958760;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=jfWMgmbUk563zhcrm+vODqwHxXh19W0SoPcTnCLRL6Y=;
-  b=c8eAdZL+luQ/h5+XEDq8/fxDv+8g3kATfaPE6WMuX56T1u3/Cc+GMNtw
-   WRisSjgVNC5pj8rYRLnV1PiUVHD440EGtkEiZDAbQ4cYchElLj9avIgzp
-   T1zh1EmLVGGFS4vtJhPNpnDl2+zEcMLCFA7fwIYpA11uah41MB+5o6Keq
-   UCzZfsONPkE4ze85QEMF5gKKbthWwtSO0/Wf+tUwlQRSboATbpElZcAl6
-   uXyVYfSO5rhXE0gM5BOnAzJmTLxVQbCAjJV7amR91UsoqxqmQ1SaW+3aw
-   8YhyOHLsUH3DdzGuHOl8vreHkYqsYCgDSR+mg51zHCXVHHMhidc1nJZ/Q
-   w==;
-X-CSE-ConnectionGUID: jIdcWKX5SQaQMpOb/0UAIQ==
-X-CSE-MsgGUID: wv4rYH3FR8GyMhHqKe7Dqw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11793"; a="80528917"
+  bh=8ymCjBYlGqF8pPYfR9+OToil8KwvC5uuqR0U1MvIwag=;
+  b=DjF/GZnEViqA2VYPXwRSRflA94b4MeIGta5N2cYFquZjk4RwLK2FFEx+
+   DLDtU6/u/04H7ma0V4BEfpJ+7flO0XCQ7Dv0OXAabBPf0MckTRvw89kK5
+   cmHhkw8PmFyC86aV2W3X/mjgZ/SJo+Wg46EonWp4RKdSyXcWosKU3eyaq
+   8LJe9KM32F9xdl/j10awBQLDwPWmaHpNzFp2VZV1Rl+FSWSrjUk10EuVU
+   na9I8LUriA0WFmzZJ8ykDeoehUihVp/0Pb1OUq0zB6Wu3KWHG9ekWdh4g
+   F1Ovv2Efh2v5UXYZJUFDoOiqt6rWnhftd7E0VfEUJbMsQPyV0lbcVRol5
+   g==;
+X-CSE-ConnectionGUID: 6nTSB2/qSpKfrJX/Azi7Aw==
+X-CSE-MsgGUID: bhNndQUERFm40lV1qMwtrA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11793"; a="80528924"
 X-IronPort-AV: E=Sophos;i="6.24,161,1774335600"; 
-   d="scan'208";a="80528917"
+   d="scan'208";a="80528924"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2026 21:05:56 -0700
-X-CSE-ConnectionGUID: 43lUnzLqQYGvusGc9f1COA==
-X-CSE-MsgGUID: ZYyTKD/TTAGvlPAlCFuPaw==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2026 21:06:00 -0700
+X-CSE-ConnectionGUID: JHPT7t9PRlOsLysMRo9Acw==
+X-CSE-MsgGUID: ZbGWsh5sQXSbHMXb+vftww==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,161,1774335600"; 
-   d="scan'208";a="239757919"
+   d="scan'208";a="239757929"
 Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.159.165])
-  by orviesa006.jf.intel.com with ESMTP; 21 May 2026 21:05:52 -0700
+  by orviesa006.jf.intel.com with ESMTP; 21 May 2026 21:05:55 -0700
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: kas@kernel.org,
 	djbw@kernel.org,
@@ -58,9 +58,9 @@ Cc: linux-coco@lists.linux.dev,
 	baolu.lu@linux.intel.com,
 	zhenzhong.duan@intel.com,
 	xiaoyao.li@intel.com
-Subject: [RFC PATCH 12/15] KVM: TDX: Add in-kernel Quote generation
-Date: Fri, 22 May 2026 11:41:25 +0800
-Message-Id: <20260522034128.3144354-13-yilun.xu@linux.intel.com>
+Subject: [RFC PATCH 13/15] KVM: TDX: Support event-notify interrupts only with userspace quoting
+Date: Fri, 22 May 2026 11:41:26 +0800
+Message-Id: <20260522034128.3144354-14-yilun.xu@linux.intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
 References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
@@ -74,236 +74,97 @@ Content-Transfer-Encoding: 8bit
 
 From: Peter Fang <peter.fang@intel.com>
 
-Provide an in-kernel path for TDX Quote generation when handling
-TDG.VP.VMCALL<GetQuote>, without requiring an exit to userspace.
+Tie userspace SetupEventNotifyInterrupt support to userspace Quote
+generation. Delivering event-notify interrupts via userspace breaks if
+KVM never exits to userspace in the first place.
 
-Use the core TDX API when the TDX Quoting extension is available. For
-simplicity, each KVM guest checks for availability only once during
-initialization. KVM does not handle Quoting service disruptions.
+No known guest currently requires event-notify interrupt support, so
+defer adding in-kernel support for now. Linux TDX guests use polling
+only.
+
+Update the KVM API Documentation to reflect the change.
 
 Signed-off-by: Peter Fang <peter.fang@intel.com>
 Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
 ---
- arch/x86/include/asm/tdx.h |   9 +++
- arch/x86/kvm/vmx/tdx.h     |   6 ++
- arch/x86/kvm/vmx/tdx.c     | 135 ++++++++++++++++++++++++++++++++++++-
- virt/kvm/kvm_main.c        |   1 +
- 4 files changed, 150 insertions(+), 1 deletion(-)
+ Documentation/virt/kvm/api.rst |  8 +++++++-
+ arch/x86/kvm/vmx/tdx.c         | 20 +++++++++++++++++---
+ 2 files changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 945e6817abb2..5863d6748100 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -115,6 +115,15 @@ struct tdx_quote_req {
- 	u32 out_len;
- 	u8 data[];
- };
-+
-+#define TDX_QUOTE_REQ_HDR_SIZE		(offsetof(struct tdx_quote_req, data))
-+
-+/*
-+ * TDG.VP.VMCALL<GetQuote> Status Codes
-+ */
-+#define TDX_QUOTE_STATUS_SUCCESS	0x0000000000000000ULL
-+#define TDX_QUOTE_STATUS_ERROR		0x8000000000000000ULL
-+#define TDX_QUOTE_STATUS_UNAVAILABLE	0x8000000000000001ULL
- #endif /* CONFIG_INTEL_TDX_GUEST || CONFIG_KVM_INTEL_TDX */
+diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+index 52bbbb553ce1..8a02745a36ee 100644
+--- a/Documentation/virt/kvm/api.rst
++++ b/Documentation/virt/kvm/api.rst
+@@ -7335,6 +7335,9 @@ inputs and outputs of the TDVMCALL.  Currently the following values of
+    queued successfully, the TDX guest can poll the status field in the
+    shared-memory area to check whether the Quote generation is completed or
+    not. When completed, the generated Quote is returned via the same buffer.
++   If the host kernel generates Quotes through the TDX Quoting service provided
++   by the TDX module, KVM processes the GetQuote request and it will not appear
++   in userspace.  KVM only supports version 1 of the GetQuote request.
  
- #ifdef CONFIG_INTEL_TDX_HOST
-diff --git a/arch/x86/kvm/vmx/tdx.h b/arch/x86/kvm/vmx/tdx.h
-index ac8323a68b16..18c93e80c0ec 100644
---- a/arch/x86/kvm/vmx/tdx.h
-+++ b/arch/x86/kvm/vmx/tdx.h
-@@ -47,6 +47,12 @@ struct kvm_tdx {
- 	 * Set/unset is protected with kvm->mmu_lock.
- 	 */
- 	bool wait_for_sept_zap;
-+
-+	/*
-+	 * Whether to get TDX quote directly in kernel, without exiting to
-+	 * userspace.
-+	 */
-+	bool get_quote_in_kernel;
- };
+  * ``TDVMCALL_GET_TD_VM_CALL_INFO``: the guest has requested the support
+    status of TDVMCALLs.  The output values for the given leaf should be
+@@ -7342,7 +7345,10 @@ inputs and outputs of the TDVMCALL.  Currently the following values of
+    field of the union.
  
- /* TDX module vCPU states */
+  * ``TDVMCALL_SETUP_EVENT_NOTIFY_INTERRUPT``: the guest has requested to
+-   set up a notification interrupt for vector ``vector``.
++   set up a notification interrupt for vector ``vector``.  Since this TDVMCALL
++   is used to optimize ``TDVMCALL_GET_QUOTE``, KVM disables this support in
++   userspace VMM if ``TDVMCALL_GET_QUOTE`` is completely handled in the kernel.
++   KVM may add kernel support for this in the future.
+ 
+ KVM may add support for more values in the future that may cause a userspace
+ exit, even without calls to ``KVM_ENABLE_CAP`` or similar.  In this case,
 diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 9f7c39e0d4b5..bade046da5a1 100644
+index bade046da5a1..5aebbec7fa6e 100644
 --- a/arch/x86/kvm/vmx/tdx.c
 +++ b/arch/x86/kvm/vmx/tdx.c
-@@ -1538,11 +1538,133 @@ static int tdx_get_quote_user(struct kvm_vcpu *vcpu, u64 gpa, u64 size)
- 	return 0;
+@@ -185,7 +185,7 @@ static void td_init_cpuid_entry2(struct kvm_cpuid_entry2 *entry, unsigned char i
+ 	tdx_clear_unsupported_cpuid(entry);
  }
  
-+static bool write_quote_status_to_guest(struct kvm_vcpu *vcpu, u64 status,
-+					gpa_t gpa)
-+{
-+	if (kvm_vcpu_write_guest(vcpu,
-+				 gpa + offsetof(struct tdx_quote_req, status),
-+				 &status, sizeof(status)))
-+		return false;
-+
-+	return true;
-+}
-+
-+static bool write_quote_to_guest(struct kvm_vcpu *vcpu, void *quote_data,
-+				 u32 quote_len, gpa_t gpa)
-+{
-+	if (kvm_vcpu_write_guest(vcpu,
-+				 gpa + TDX_QUOTE_REQ_HDR_SIZE,
-+				 quote_data, quote_len))
-+		return false;
-+
-+	if (kvm_vcpu_write_guest(vcpu,
-+				 gpa + offsetof(struct tdx_quote_req, out_len),
-+				 &quote_len, sizeof(quote_len)))
-+		return false;
-+
-+	return true;
-+}
-+
-+static u64 __get_quote_kernel(struct kvm_vcpu *vcpu, struct tdx_quote_req *req,
-+			      size_t req_len, gpa_t req_gpa, size_t total_len)
-+{
-+	struct tdx_td *td = &to_kvm_tdx(vcpu->kvm)->td;
-+
-+	/* Only support version 1 as defined in the GHCI spec */
-+	if (req->version != 1)
-+		return TDX_QUOTE_STATUS_ERROR;
-+
-+	if ((size_t)req->in_len + TDX_QUOTE_REQ_HDR_SIZE > req_len)
-+		return TDX_QUOTE_STATUS_ERROR;
-+
-+	/* The caller frees the quote data */
-+	void *quote_data __free(kvfree) =
-+		tdx_quote_generate(td, req->data, req->in_len, &req->out_len);
-+
-+	if (!quote_data)
-+		return TDX_QUOTE_STATUS_UNAVAILABLE;
-+
-+	if ((size_t)req->out_len + TDX_QUOTE_REQ_HDR_SIZE > total_len)
-+		return TDX_QUOTE_STATUS_ERROR;
-+
-+	if (!write_quote_to_guest(vcpu, quote_data, req->out_len, req_gpa))
-+		return TDX_QUOTE_STATUS_ERROR;
-+
-+	return TDX_QUOTE_STATUS_SUCCESS;
-+}
-+
-+static u64 tdx_get_quote_check_args(struct kvm_vcpu *vcpu, u64 gpa, u64 size)
-+{
-+	gfn_t gfn_start, gfn_end;
-+	u64 end;
-+
-+	if (!size)
-+		return TDVMCALL_STATUS_INVALID_OPERAND;
-+
-+	if (!PAGE_ALIGNED(gpa) || !PAGE_ALIGNED(size))
-+		return TDVMCALL_STATUS_ALIGN_ERROR;
-+
-+	if (check_add_overflow(gpa, size, &end))
-+		return TDVMCALL_STATUS_INVALID_OPERAND;
-+
-+	gfn_start = gpa_to_gfn(gpa);
-+	gfn_end = gpa_to_gfn(end);
-+
+-#define TDVMCALLINFO_SETUP_EVENT_NOTIFY_INTERRUPT	BIT(1)
++#define TDVMCALLINFO_SETUP_EVENT_NOTIFY_INTERRUPT	BIT_ULL(1)
+ 
+ static int init_kvm_tdx_caps(const struct tdx_sys_info_td_conf *td_conf,
+ 			     struct kvm_tdx_capabilities *caps)
+@@ -202,8 +202,15 @@ static int init_kvm_tdx_caps(const struct tdx_sys_info_td_conf *td_conf,
+ 
+ 	caps->cpuid.nent = td_conf->num_cpuid_config;
+ 
+-	caps->user_tdvmcallinfo_1_r11 =
+-		TDVMCALLINFO_SETUP_EVENT_NOTIFY_INTERRUPT;
 +	/*
-+	 * Reject if the guest didn't explicitly convert its quote pages to
-+	 * shared.
++	 * Don't advertise userspace event-notify interrupt support if TDX
++	 * quoting service is enabled, as quote generation will be done entirely
++	 * in the kernel. Support in the kernel can be added later if needed.
 +	 */
-+	if (!kvm_range_has_memory_attributes(vcpu->kvm, gfn_start, gfn_end,
-+					     KVM_MEMORY_ATTRIBUTE_PRIVATE, 0))
-+		return TDVMCALL_STATUS_INVALID_OPERAND;
-+
-+	return TDVMCALL_STATUS_SUCCESS;
-+}
-+
-+static int tdx_get_quote_kernel(struct kvm_vcpu *vcpu, u64 gpa, u64 size)
-+{
-+	void *first_page = NULL;
-+	u64 err, qerr;
-+
-+	err = tdx_get_quote_check_args(vcpu, gpa, size);
-+	if (err != TDVMCALL_STATUS_SUCCESS)
-+		goto out;
-+
-+	err = TDVMCALL_STATUS_INVALID_OPERAND;
-+
-+	first_page = kmalloc(PAGE_SIZE, GFP_KERNEL);
-+	if (!first_page)
-+		goto out;
-+
-+	/*
-+	 * Read the first GetQuote page for its header + in_data. The check
-+	 * above ensures that this GetQuote message is at least one page in
-+	 * size. in_data spanning more than a page is not supported.
-+	 */
-+	if (kvm_vcpu_read_guest(vcpu, gpa, first_page, PAGE_SIZE))
-+		goto out;
-+
-+	qerr = __get_quote_kernel(vcpu, first_page, PAGE_SIZE,
-+				  (gpa_t)gpa, size);
-+
-+	if (write_quote_status_to_guest(vcpu, qerr, (gpa_t)gpa) &&
-+	    qerr == TDX_QUOTE_STATUS_SUCCESS)
-+		err = TDVMCALL_STATUS_SUCCESS;
-+
-+out:
-+	kfree(first_page);
-+	tdvmcall_set_return_code(vcpu, err);
-+
-+	return 1;
-+}
-+
- static int tdx_get_quote(struct kvm_vcpu *vcpu)
++	if (!tdx_quote_enabled()) {
++		caps->user_tdvmcallinfo_1_r11 |=
++			TDVMCALLINFO_SETUP_EVENT_NOTIFY_INTERRUPT;
++	}
+ 
+ 	for (i = 0; i < td_conf->num_cpuid_config; i++)
+ 		td_init_cpuid_entry2(&caps->cpuid.entries[i], i);
+@@ -1684,9 +1691,16 @@ static int tdx_get_quote(struct kvm_vcpu *vcpu)
+ 
+ static int tdx_setup_event_notify_interrupt(struct kvm_vcpu *vcpu)
  {
 +	struct kvm_tdx *kvm_tdx = to_kvm_tdx(vcpu->kvm);
  	struct vcpu_tdx *tdx = to_tdx(vcpu);
- 	u64 gpa = tdx->vp_enter_args.r12;
- 	u64 size = tdx->vp_enter_args.r13;
-+	int ret;
+ 	u64 vector = tdx->vp_enter_args.r12;
  
- 	/* The gpa of buffer must have shared bit set. */
- 	if (vt_is_tdx_private_gpa(vcpu->kvm, gpa)) {
-@@ -1552,7 +1674,12 @@ static int tdx_get_quote(struct kvm_vcpu *vcpu)
- 
- 	gpa &= ~gfn_to_gpa(kvm_gfn_direct_bits(vcpu->kvm));
- 
--	return tdx_get_quote_user(vcpu, gpa, size);
-+	if (kvm_tdx->get_quote_in_kernel)
-+		ret = tdx_get_quote_kernel(vcpu, gpa, size);
-+	else
-+		ret = tdx_get_quote_user(vcpu, gpa, size);
++	/* See init_kvm_tdx_caps() for comments */
++	if (kvm_tdx->get_quote_in_kernel) {
++		tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_SUBFUNC_UNSUPPORTED);
++		return 1;
++	}
 +
-+	return ret;
- }
- 
- static int tdx_setup_event_notify_interrupt(struct kvm_vcpu *vcpu)
-@@ -2751,6 +2878,12 @@ static int tdx_td_init(struct kvm *kvm, struct kvm_tdx_cmd *cmd)
- 	else
- 		kvm->arch.gfn_direct_bits = TDX_SHARED_BIT_PWL_4;
- 
-+	/*
-+	 * Check only once at TD creation. If the quoting service gets disrupted
-+	 * during TD runtime, let the user handle it.
-+	 */
-+	kvm_tdx->get_quote_in_kernel = tdx_quote_enabled();
-+
- 	kvm_tdx->state = TD_STATE_INITIALIZED;
- out:
- 	/* kfree() accepts NULL. */
-diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
-index 89489996fbc1..599f88a13071 100644
---- a/virt/kvm/kvm_main.c
-+++ b/virt/kvm/kvm_main.c
-@@ -2461,6 +2461,7 @@ bool kvm_range_has_memory_attributes(struct kvm *kvm, gfn_t start, gfn_t end,
- 
- 	return true;
- }
-+EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_range_has_memory_attributes);
- 
- static __always_inline void kvm_handle_gfn_range(struct kvm *kvm,
- 						 struct kvm_mmu_notifier_range *range)
+ 	if (vector < 32 || vector > 255) {
+ 		tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_INVALID_OPERAND);
+ 		return 1;
 -- 
 2.25.1
 
