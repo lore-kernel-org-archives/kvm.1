@@ -1,56 +1,56 @@
 Received: from fhigh-a3-smtp.messagingengine.com (fhigh-a3-smtp.messagingengine.com [103.168.172.154])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6732816132A;
-	Fri, 22 May 2026 04:10:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F88259CB2;
+	Fri, 22 May 2026 04:10:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779423047; cv=none; b=J077FdvFzPPdlld8UMeJvObH8GEyw+HMXpcYv+6XS1wcR79gvC5BRTL/4cVcwhcFbNJiOR4mSZdycqVYz0m4v8Yvj6w0FWPX2GLdh19Ltf9DuO95J3cV4VBQr8YavrQ5cJx/Y829nA7TZWTxnTMxPGQGm5o9gTS4vBsSIRYYcTw=
+	t=1779423049; cv=none; b=KnNoYQ4S5iQawzyQmC4lS8V+XJ6XprLluzbJXSZu44scc4O4p8z9cdbMUeU+C8dOFofxir3B+1y+YtcICUxh/tF/2h//4LoJpHpp7bjBR/sbHejIZbdmNdDbP5g+1UTglSJiEja0GJcgu7NRX98/xBY0YG3muliBsCmGyPAgzzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779423047; c=relaxed/simple;
-	bh=x7tpEPFe9S8TYODodcuy0xic3AWq0BuUVw6gDhJ19No=;
+	s=arc-20240116; t=1779423049; c=relaxed/simple;
+	bh=t3zReY/itlmvmkkAArGHFtlTECuSzMScJSFJShWVODA=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JjKjRqQBWSGy3iTCfwA8CREn58gkagC3/qbiGKnZqldzuQmH7ydDRb3G0GvtoTZETqQj6gK7Biz9DNI9UxMFGMhmCOIPQgPxFfAhvkRBNq109MtNQh6byVSVnPXhM6dfbSbTXiLPwX3RWO9XODWxYcnujfbQotk5tRGF7MfYFhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=dZP3S/Xk; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=g0WNUc/x; arc=none smtp.client-ip=103.168.172.154
+	 MIME-Version:Content-Type; b=q5cMVSHtxAWGPOaStg0UZeP3XJH6ziLZDLSnMpxxey/JRIzjh+4X4g2o/IU4mzOm6Wsf+qs8bhZbdKrkjytJqTVTrqk74i8yGciSTFvjvSEBuj+/GhjJi7s/aQQDayIfffEEBtYFjPhvHCKlG83KfUtAqwbNfw5mQdyZt/VyWrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=wpy8qxUg; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=bsZbon5g; arc=none smtp.client-ip=103.168.172.154
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="dZP3S/Xk";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="g0WNUc/x"
-Received: from phl-compute-07.internal (phl-compute-07.internal [10.202.2.47])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id 76E181400107;
-	Fri, 22 May 2026 00:10:43 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="wpy8qxUg";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="bsZbon5g"
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 9B2631400109;
+	Fri, 22 May 2026 00:10:46 -0400 (EDT)
 Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Fri, 22 May 2026 00:10:43 -0400
+  by phl-compute-03.internal (MEProxy); Fri, 22 May 2026 00:10:46 -0400
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
 	cc:cc:content-transfer-encoding:content-type:content-type:date
 	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1779423043;
-	 x=1779509443; bh=1U8w6BlH4UZVbbvLihqiM4iof8tue0zeE+C/qaxNAfI=; b=
-	dZP3S/XkpOCke/XasGtUGb97rPwtSUkrlcQHT6P5/d1lXW/RiSoq6tEo/uywmsjG
-	4xpJbbRnzRg7wLuuVb4c4ffoI/jrdydH+izwQXTkTRBVSrbMIT54a7UiezGsWXmB
-	yvye/r0v7OQf7ktd5xQgVzKMsoq6OpO0wB23h8F+Wk8lFU3W1dCR+xS8AR9GE4cK
-	SHzPbnDKJxP6pDhHfUZDCOE7G/rbT8j6gmZeff7edL+g4Mo+RSGnlV8+i7ccbZ04
-	6/QeLG9fOxDp+y1QkoUxyk9j9L8jDRLGWauE3mAWCwprT9BCudZmkJrQxnNJ89bi
-	2QEd/iRAkP5WUwB72xmQOA==
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1779423046;
+	 x=1779509446; bh=bSPuAhV1qNgQANKsj6arLigZ2MFpysyIX8Y2BGex1Dw=; b=
+	wpy8qxUgiVwBdxR/F51EOwRjU81I//ylUlfIIlpQDoegQjH1NgtBR2bBc07pZQwK
+	zeIhqyGSnlrpO0kG5w75p7YUuFaGq/eWwBBIDQGqthE6Z6U1oF2GYWHsxE0o1BB8
+	jtWTNHtl3Qtrae0/Xvu+2plQp3LwbCm9Djb2CZsVHOYTZZ7fcVw5OHmInTHGQIDm
+	Urnsc53EPYa4IOr6wLkEeR3B3S0Gr5xN5/Lj5OxSt7PNEGdGI36cb25SeQjNK/Hf
+	+gnfcTwNHyMyO1Km+91fZ05MuLNyqLNOTmcCC1DVqr4KQpwmadCykqbaOTmI+jgb
+	MDtAxz2XKiE3/8DbMhEUgg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
 	:content-type:content-type:date:date:feedback-id:feedback-id
 	:from:from:in-reply-to:in-reply-to:message-id:mime-version
 	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779423043; x=
-	1779509443; bh=1U8w6BlH4UZVbbvLihqiM4iof8tue0zeE+C/qaxNAfI=; b=g
-	0WNUc/xi97Q7oLlbN4C+f1vDDA8CAxJmj3MTJX1PL1JAyew4RtHJpQS3lgIvZsRm
-	Qtftj8lDGTLW7hJWL5v4O9bP1+epxnsl7vwE9t7m+Kten6N5fcnA763eHYIi7Oks
-	rZ+B/MlgZqEEPFkZdk6FYYmx7Pur/s0iz9HhfIO25a12y9LFBCjCkVOsHipJcdFX
-	ooqGQov4zFrA8RhtKl2HHp3U8+/LQb4dKFPNiNlvFvj5yianuAUwVVUkOcaBWX+v
-	aFEd47WffdHjR34z/pbyvyBlirkK6CEENGPVWttdq/tIfmmxf85LbGeX9xLZ5caN
-	EZP8C4jz8sCng/Uc+Vofw==
-X-ME-Sender: <xms:QtcPaqwcjrAqKsm0qsvv4pmKHbbuvXpA6BdY-V0wvspAkoEAti5mYQ>
-    <xme:QtcPakhDTdNza08JhDgcVi8EodE-TwrX1qtMSGvhqP5DwNBL9eO7Es_6PA4V_-03G
-    2iiVarQUe8QIx88ih4d5cGRKazQpM-9dSk0g71oyJdMlZ7SsbBTZQ>
-X-ME-Received: <xmr:QtcPalqZBtASaqYopQ7IZZro5PWb_U5F8ovpEQoKSoiJVEW-RH9TXgOYlRk>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddugeelfeelucetufdoteggodetrf
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779423046; x=
+	1779509446; bh=bSPuAhV1qNgQANKsj6arLigZ2MFpysyIX8Y2BGex1Dw=; b=b
+	sZbon5gEbwX4V9J+acsfAY5tF6sJm3615sQbz3f9F1ohXrr4qUAuCp5RbMfMxT8l
+	rPvHzseVqeJT/ETVVCqvRa2076sKVni47Kn11nifujhzbtcIDUDRKUPUtK4VbGqd
+	ELODUjgO6myMfUXf2S3FFUCZgXe2vhv5DiEgzSs6hKBfhbA14nSg9lAFHqGtfNLp
+	xrfMekP3WWMnm/+x4D95PHFs0XHmql/X/jNg1bo7zlffUs24W2IhBZwFi9dVnZ80
+	pA/wERKoWlusCtA14WWZ/HkfXXFpk7G+KPs9ioT38ne+8sNa5Z/afMyMKhscUDdk
+	liE5qSa1YNRZrjenB2F1g==
+X-ME-Sender: <xms:RtcPalf8FYi5iPmu2MK34jiM32IZO5ydUoDCShBAuF_uwqNhkbrp9g>
+    <xme:RtcPahchvyYZds7On7Lo7KRdcvdbRKFKMWsmjufWMkNUeG8XsOhTYhQYfXkvAhr2A
+    bQzQVlPqsgBeh9aNFcMaA_hNX_Dk4Q1is2wwD4If7l9aecMbTmz>
+X-ME-Received: <xmr:RtcPan0EnqF9Bn89HLWf0aCFJ6g26j5okd39RTcf0hoTty26XXWewuuu7KM>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddugeelfeekucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
     gurhepfffhvfevuffkjghfofggtgfgsehtjeertdertddvnecuhfhrohhmpeetlhgvgicu
@@ -66,27 +66,26 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddugeelfeelucetufdote
     dprhgtphhtthhopeifrghnghihuhhshhgrnhduvdeshhhurgifvghirdgtohhmpdhrtghp
     thhtoheplhhiuhihohhnghhlohhngheshhhurgifvghirdgtohhmpdhrtghpthhtohepkh
     hvmhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:QtcPajj6cuJptqTgF1t25xsmWbT7jQydft3We6YFv2rHYAELoP64GA>
-    <xmx:QtcPavP0LcPBaEn_hjWavMZO9wmY4WG6WtE--cFR62ho2E4r1oYRlg>
-    <xmx:QtcPalwI2au_Tlks0KHj0UeizKW9Qq8ex5wpKHzop-nlKHPj3ffcyQ>
-    <xmx:QtcPappwDG5Qb7JwE6S9U6RiysqMPPG7f1Bu5XJv9xHPSjK8Qj0kVA>
-    <xmx:Q9cPaodYpcXvOYucIGLFy98pWt8ttR2ePa6pNOlQQ002EXnI1d8m3L-2>
+X-ME-Proxy: <xmx:RtcPah8KcUg_62GkDjehRmq0CyqWDoQbTehgL5kQM9QnxymGdbMdWg>
+    <xmx:RtcPak5EmG2Q41MLUDleWv54jQPeuNJ30qRjADrxGBLGmhn_oJyViw>
+    <xmx:RtcPahuUTNCzrp4TSoX76cBUU0vTJVsW10ywJh9ZDRAZfa1F-sL8fw>
+    <xmx:RtcPau2K4DjSoSAehxOQmtXS1eVolDej3arleqShc8NkMd_WCU92bQ>
+    <xmx:RtcPaiKElQI0Q8x0xkeRsUBQY7367B61weZz0w-CAcOlDoI0afe3AVSV>
 Feedback-ID: i03f14258:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 22 May 2026 00:10:41 -0400 (EDT)
-Date: Thu, 21 May 2026 22:10:33 -0600
+ 22 May 2026 00:10:45 -0400 (EDT)
+Date: Thu, 21 May 2026 22:10:22 -0600
 From: Alex Williamson <alex@shazbot.org>
 To: Chengwen Feng <fengchengwen@huawei.com>
 Cc: <jgg@ziepe.ca>, <wathsala.vithanage@arm.com>, <helgaas@kernel.org>,
  <wei.huang2@amd.com>, <wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
  <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
  <linux-pci@vger.kernel.org>, alex@shazbot.org
-Subject: Re: [PATCH v11 2/5] PCI/TPH: Export pcie_tph_get_st_modes() for
- external use
-Message-ID: <20260521221033.11df345d@shazbot.org>
-In-Reply-To: <20260518071701.25177-3-fengchengwen@huawei.com>
+Subject: Re: [PATCH v11 3/5] PCI/TPH: Add pcie_tph_enabled_mode() helper
+Message-ID: <20260521221022.322c2af9@shazbot.org>
+In-Reply-To: <20260518071701.25177-4-fengchengwen@huawei.com>
 References: <20260518071701.25177-1-fengchengwen@huawei.com>
-	<20260518071701.25177-3-fengchengwen@huawei.com>
+	<20260518071701.25177-4-fengchengwen@huawei.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -97,113 +96,67 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Mon, 18 May 2026 15:16:58 +0800
+On Mon, 18 May 2026 15:16:59 +0800
 Chengwen Feng <fengchengwen@huawei.com> wrote:
 
-> Export the helper to retrieve supported PCIe TPH steering tag modes so
-> that drivers like VFIO can query and expose device capabilities to
-> userspace.
-> 
-> Add stub functions for pcie_tph_get_st_table_size() and
-> pcie_tph_get_st_table_loc() when !CONFIG_PCIE_TPH.
-> 
-> Add tph_cap validation for pcie_tph_get_st_modes() and
-> pcie_tph_get_st_table_loc() to prevent invalid PCI configuration
-> space access when TPH is not supported.
+> Add a helper to query enabled TPH mode on a PCI device. This is useful for
+> drivers like VFIO-PCI that need to validate TPH state before allowing
+> access to steering tag tables.
 > 
 > Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
-> Acked-by: Bjorn Helgaas <bhelgaas@google.com>
 > ---
->  drivers/pci/tph.c       | 19 +++++++++++++++++--
->  include/linux/pci-tph.h |  7 +++++++
->  2 files changed, 24 insertions(+), 2 deletions(-)
+>  drivers/pci/tph.c       | 12 ++++++++++++
+>  include/linux/pci-tph.h |  3 +++
+>  2 files changed, 15 insertions(+)
 > 
 > diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
-> index 877cf556242b..ba31b010f67a 100644
+> index ba31b010f67a..91c1e83410a3 100644
 > --- a/drivers/pci/tph.c
 > +++ b/drivers/pci/tph.c
-> @@ -145,15 +145,27 @@ static void set_ctrl_reg_req_en(struct pci_dev *pdev, u8 req_type)
->  	pci_write_config_dword(pdev, pdev->tph_cap + PCI_TPH_CTRL, reg);
+> @@ -451,6 +451,18 @@ int pcie_enable_tph(struct pci_dev *pdev, int mode)
 >  }
+>  EXPORT_SYMBOL(pcie_enable_tph);
 >  
-> -static u8 get_st_modes(struct pci_dev *pdev)
 > +/**
-> + * pcie_tph_get_st_modes - Get supported Steering Tag modes
-> + * @pdev: PCI device to query
+> + * pcie_tph_enabled_mode - Get current enabled TPH mode
+> + * @pdev: PCI device
 > + *
-> + * Return:
-> + *  Bitmask of supported ST modes (PCI_TPH_CAP_ST_NS, PCI_TPH_CAP_ST_IV,
-> + *                                 PCI_TPH_CAP_ST_DS)
+> + * Return the enabled TPH mode (IV/DS) or 0 if disabled.
 > + */
-> +u8 pcie_tph_get_st_modes(struct pci_dev *pdev)
->  {
->  	u32 reg;
->  
-> +	if (!pdev->tph_cap)
-> +		return 0;
-> +
->  	pci_read_config_dword(pdev, pdev->tph_cap + PCI_TPH_CAP, &reg);
->  	reg &= PCI_TPH_CAP_ST_NS | PCI_TPH_CAP_ST_IV | PCI_TPH_CAP_ST_DS;
->  
->  	return reg;
->  }
-> +EXPORT_SYMBOL(pcie_tph_get_st_modes);
->  
->  /**
->   * pcie_tph_get_st_table_loc - Return the device's ST table location
-> @@ -168,6 +180,9 @@ u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev)
->  {
->  	u32 reg;
->  
-> +	if (!pdev->tph_cap)
-> +		return PCI_TPH_LOC_NONE;
-> +
->  	pci_read_config_dword(pdev, pdev->tph_cap + PCI_TPH_CAP, &reg);
->  
->  	return reg & PCI_TPH_CAP_LOC_MASK;
-> @@ -395,7 +410,7 @@ int pcie_enable_tph(struct pci_dev *pdev, int mode)
->  
->  	/* Sanitize and check ST mode compatibility */
->  	mode &= PCI_TPH_CTRL_MODE_SEL_MASK;
-> -	dev_modes = get_st_modes(pdev);
-> +	dev_modes = pcie_tph_get_st_modes(pdev);
->  	if (!((1 << mode) & dev_modes))
->  		return -EINVAL;
->  
-> diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
-> index be68cd17f2f8..5772d48ea444 100644
-> --- a/include/linux/pci-tph.h
-> +++ b/include/linux/pci-tph.h
-> @@ -30,6 +30,7 @@ void pcie_disable_tph(struct pci_dev *pdev);
->  int pcie_enable_tph(struct pci_dev *pdev, int mode);
->  u16 pcie_tph_get_st_table_size(struct pci_dev *pdev);
->  u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev);
-> +u8 pcie_tph_get_st_modes(struct pci_dev *pdev);
->  #else
->  static inline int pcie_tph_set_st_entry(struct pci_dev *pdev,
->  					unsigned int index, u16 tag)
-> @@ -41,6 +42,12 @@ static inline int pcie_tph_get_cpu_st(struct pci_dev *dev,
->  static inline void pcie_disable_tph(struct pci_dev *pdev) { }
->  static inline int pcie_enable_tph(struct pci_dev *pdev, int mode)
->  { return -EINVAL; }
-> +static inline u16 pcie_tph_get_st_table_size(struct pci_dev *pdev)
-> +{ return 0; }
-> +static inline u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev)
-> +{ return 0; }
+> +int pcie_tph_enabled_mode(struct pci_dev *pdev)
+> +{
+> +	return pdev->tph_enabled ? pdev->tph_mode : 0;
+> +}
+> +EXPORT_SYMBOL(pcie_tph_enabled_mode);
 
-Functionally the same, but this should be PCI_TPH_LOC_NONE for
-consistency.
-
-It seems there are a couple instances above where reg is passed
-uninitialized to pci_read_config_dword() where the return value is
-untested and the function could operate on garbage stack data.
-Existing issue.  Thanks,
+Doesn't this create ambiguity with PCI_TPH_ST_NS_MODE?  Maybe return an
+-errno if not enabled.  Duplicate same for stub below.  Thanks,
 
 Alex
 
-> +static inline u8 pcie_tph_get_st_modes(struct pci_dev *pdev)
+> +
+>  void pci_restore_tph_state(struct pci_dev *pdev)
+>  {
+>  	struct pci_cap_saved_state *save_state;
+> diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
+> index 5772d48ea444..28d0fa762146 100644
+> --- a/include/linux/pci-tph.h
+> +++ b/include/linux/pci-tph.h
+> @@ -28,6 +28,7 @@ int pcie_tph_get_cpu_st(struct pci_dev *dev,
+>  			unsigned int cpu, u16 *tag);
+>  void pcie_disable_tph(struct pci_dev *pdev);
+>  int pcie_enable_tph(struct pci_dev *pdev, int mode);
+> +int pcie_tph_enabled_mode(struct pci_dev *pdev);
+>  u16 pcie_tph_get_st_table_size(struct pci_dev *pdev);
+>  u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev);
+>  u8 pcie_tph_get_st_modes(struct pci_dev *pdev);
+> @@ -42,6 +43,8 @@ static inline int pcie_tph_get_cpu_st(struct pci_dev *dev,
+>  static inline void pcie_disable_tph(struct pci_dev *pdev) { }
+>  static inline int pcie_enable_tph(struct pci_dev *pdev, int mode)
+>  { return -EINVAL; }
+> +static inline int pcie_tph_enabled_mode(struct pci_dev *pdev)
 > +{ return 0; }
->  #endif
->  
->  #endif /* LINUX_PCI_TPH_H */
+>  static inline u16 pcie_tph_get_st_table_size(struct pci_dev *pdev)
+>  { return 0; }
+>  static inline u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev)
 
