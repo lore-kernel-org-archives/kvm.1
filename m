@@ -1,48 +1,48 @@
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E52371CF4;
-	Fri, 22 May 2026 04:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0730836F906;
+	Fri, 22 May 2026 04:06:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779422760; cv=none; b=SK3sVHkH59+oVF7gCXi5NFxqkaUO7nptUWv5gUprLyeTC5NCL6KUcn293LksdePQklOYfxyWB9G/We4OcbTJ0SZOTkS9hGnaJzxKh4MNsvthjQF2O5V5xDqkjipqNOwjC5xv8YtWYpncvU4VsivBUaL/L2u1v99sofVSbhC4Njo=
+	t=1779422764; cv=none; b=mQVfNnSsDnKJjnQoDcz8ZA+3imfPGUQ9JgtLPSyazwNe7IEcZG8toNp6jaUKNsJhi4pMxKdiAPTTZYPFEzPatQw53Hedd7BIU8knPd2efxP8cX0HcHWwJ02S6Ir1hDrPonqtIJ4gzs61adq/C64NGoB2d1V3U7Md3VE5saLcAvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779422760; c=relaxed/simple;
-	bh=8ymCjBYlGqF8pPYfR9+OToil8KwvC5uuqR0U1MvIwag=;
+	s=arc-20240116; t=1779422764; c=relaxed/simple;
+	bh=aDZKpalIG8poSUU5P/VEw+KG1TVNT7uoOGEiPHoS6Gs=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=bQVFldlOO2tpbJLvUyDKMz9M6zkPldZTMkDr6+DKm5sjwRjBXqQcIQvVL6LRLclaV1sgCzLWjDPSTyIthMqxfNHbhNEWErjyFb26EmDWGvS6k10DUelzTHWxvP6bZVnaKVpCFcOKppt9H7zifbTTdqX3RjcLyoyyC4D1lKLG4Pg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=DjF/GZnE; arc=none smtp.client-ip=198.175.65.16
+	 MIME-Version; b=iGN/f3Q9XBycYUaQR1mHoalk2X9W7LUhX3QzSAarJ+tyQ07Zrv0rIZ7/cy6qBjRhHj5aWlYI9xprFSrOKBCn29x1bfADjYsIR45qejHJ6lA5p86o3DyffGjUVTStY8eg2y37metP+rs4R1AAqNzgb0soaqYOkdhGRVl2bSvRsvk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CgaZq1lv; arc=none smtp.client-ip=198.175.65.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="DjF/GZnE"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CgaZq1lv"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779422760; x=1810958760;
+  t=1779422764; x=1810958764;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=8ymCjBYlGqF8pPYfR9+OToil8KwvC5uuqR0U1MvIwag=;
-  b=DjF/GZnEViqA2VYPXwRSRflA94b4MeIGta5N2cYFquZjk4RwLK2FFEx+
-   DLDtU6/u/04H7ma0V4BEfpJ+7flO0XCQ7Dv0OXAabBPf0MckTRvw89kK5
-   cmHhkw8PmFyC86aV2W3X/mjgZ/SJo+Wg46EonWp4RKdSyXcWosKU3eyaq
-   8LJe9KM32F9xdl/j10awBQLDwPWmaHpNzFp2VZV1Rl+FSWSrjUk10EuVU
-   na9I8LUriA0WFmzZJ8ykDeoehUihVp/0Pb1OUq0zB6Wu3KWHG9ekWdh4g
-   F1Ovv2Efh2v5UXYZJUFDoOiqt6rWnhftd7E0VfEUJbMsQPyV0lbcVRol5
-   g==;
-X-CSE-ConnectionGUID: 6nTSB2/qSpKfrJX/Azi7Aw==
-X-CSE-MsgGUID: bhNndQUERFm40lV1qMwtrA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11793"; a="80528924"
+  bh=aDZKpalIG8poSUU5P/VEw+KG1TVNT7uoOGEiPHoS6Gs=;
+  b=CgaZq1lvDfxAKlRdwnuaEMnYq+msF+bfFTc2DnmI8kgTs87ggYUCysd+
+   dXXifO5cFSaLPdeXLtE+aQ/PMMmiGf8f9xLMzLM6pW+CkLCY/kCACyG5R
+   aTWuCzQQ2REt1RCi/wWXdFh4MnKdVigxTiUFCn2dRsMzVYKbM1FLA878k
+   X6ieo83HhYe3Mwye7/i+L8p9Xrnh0wl0+yFpV1gqx1CzWoQCad7SyTE5I
+   FMJBOJOg+svwH/LlcpGDmyWffZul4GJQAiNTv+0z4JQUd6leWWPUBtx2J
+   WQ+srsUwizR+GnBLTH2UR4H1OaVpi9as6ayZGpns6/8WPh+xilIPDrzvn
+   w==;
+X-CSE-ConnectionGUID: SaK3grsOSjKXpNwY0r+5DA==
+X-CSE-MsgGUID: 1/Sz5Sc8SPCVdZ3b51Ji2w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11793"; a="80528931"
 X-IronPort-AV: E=Sophos;i="6.24,161,1774335600"; 
-   d="scan'208";a="80528924"
+   d="scan'208";a="80528931"
 Received: from orviesa006.jf.intel.com ([10.64.159.146])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2026 21:06:00 -0700
-X-CSE-ConnectionGUID: JHPT7t9PRlOsLysMRo9Acw==
-X-CSE-MsgGUID: ZbGWsh5sQXSbHMXb+vftww==
+  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 May 2026 21:06:03 -0700
+X-CSE-ConnectionGUID: Up3E0bjvTX2f1ygYn0sX3w==
+X-CSE-MsgGUID: 77W7QGREREC2Lx+oMDptPQ==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,161,1774335600"; 
-   d="scan'208";a="239757929"
+   d="scan'208";a="239757953"
 Received: from yilunxu-optiplex-7050.sh.intel.com ([10.239.159.165])
-  by orviesa006.jf.intel.com with ESMTP; 21 May 2026 21:05:55 -0700
+  by orviesa006.jf.intel.com with ESMTP; 21 May 2026 21:05:59 -0700
 From: Xu Yilun <yilun.xu@linux.intel.com>
 To: kas@kernel.org,
 	djbw@kernel.org,
@@ -58,9 +58,9 @@ Cc: linux-coco@lists.linux.dev,
 	baolu.lu@linux.intel.com,
 	zhenzhong.duan@intel.com,
 	xiaoyao.li@intel.com
-Subject: [RFC PATCH 13/15] KVM: TDX: Support event-notify interrupts only with userspace quoting
-Date: Fri, 22 May 2026 11:41:26 +0800
-Message-Id: <20260522034128.3144354-14-yilun.xu@linux.intel.com>
+Subject: [RFC PATCH 14/15] x86/virt/tdx: Embed version info in SEAMCALL leaf function definitions
+Date: Fri, 22 May 2026 11:41:27 +0800
+Message-Id: <20260522034128.3144354-15-yilun.xu@linux.intel.com>
 X-Mailer: git-send-email 2.25.1
 In-Reply-To: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
 References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
@@ -72,99 +72,99 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Peter Fang <peter.fang@intel.com>
+Embed version information in SEAMCALL leaf function definitions rather
+than let the caller open code them. For now, only TDH.VP.INIT is
+involved.
 
-Tie userspace SetupEventNotifyInterrupt support to userspace Quote
-generation. Delivering event-notify interrupts via userspace breaks if
-KVM never exits to userspace in the first place.
+Don't bother the caller to choose the SEAMCALL version if unnecessary.
+New version SEAMCALLs are guaranteed to be backward compatible, so
+ideally kernel doesn't need to keep version history and only uses the
+latest version SEAMCALLs.
 
-No known guest currently requires event-notify interrupt support, so
-defer adding in-kernel support for now. Linux TDX guests use polling
-only.
+The concern is some old TDX Modules don't recognize new version
+SEAMCALLs. Multiple SEAMCALL versions co-exist when kernel should
+support these old Modules. As time goes by, the old Modules deprecate
+and old version SEAMCALL definitions should disappear.
 
-Update the KVM API Documentation to reflect the change.
+The old TDX Modules that only support TDH.VP.INIT v0 are all deprecated,
+so only provide the latest (v1) definition.
 
-Signed-off-by: Peter Fang <peter.fang@intel.com>
 Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
 ---
- Documentation/virt/kvm/api.rst |  8 +++++++-
- arch/x86/kvm/vmx/tdx.c         | 20 +++++++++++++++++---
- 2 files changed, 24 insertions(+), 4 deletions(-)
+ arch/x86/virt/vmx/tdx/tdx.h | 23 ++++++++++++++---------
+ arch/x86/virt/vmx/tdx/tdx.c |  4 ++--
+ 2 files changed, 16 insertions(+), 11 deletions(-)
 
-diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
-index 52bbbb553ce1..8a02745a36ee 100644
---- a/Documentation/virt/kvm/api.rst
-+++ b/Documentation/virt/kvm/api.rst
-@@ -7335,6 +7335,9 @@ inputs and outputs of the TDVMCALL.  Currently the following values of
-    queued successfully, the TDX guest can poll the status field in the
-    shared-memory area to check whether the Quote generation is completed or
-    not. When completed, the generated Quote is returned via the same buffer.
-+   If the host kernel generates Quotes through the TDX Quoting service provided
-+   by the TDX module, KVM processes the GetQuote request and it will not appear
-+   in userspace.  KVM only supports version 1 of the GetQuote request.
+diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
+index 01a7d7d8ada9..10aff23cd01f 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.h
++++ b/arch/x86/virt/vmx/tdx/tdx.h
+@@ -2,6 +2,7 @@
+ #ifndef _X86_VIRT_TDX_H
+ #define _X86_VIRT_TDX_H
  
-  * ``TDVMCALL_GET_TD_VM_CALL_INFO``: the guest has requested the support
-    status of TDVMCALLs.  The output values for the given leaf should be
-@@ -7342,7 +7345,10 @@ inputs and outputs of the TDVMCALL.  Currently the following values of
-    field of the union.
++#include <linux/bitfield.h>
+ #include <linux/bits.h>
  
-  * ``TDVMCALL_SETUP_EVENT_NOTIFY_INTERRUPT``: the guest has requested to
--   set up a notification interrupt for vector ``vector``.
-+   set up a notification interrupt for vector ``vector``.  Since this TDVMCALL
-+   is used to optimize ``TDVMCALL_GET_QUOTE``, KVM disables this support in
-+   userspace VMM if ``TDVMCALL_GET_QUOTE`` is completely handled in the kernel.
-+   KVM may add kernel support for this in the future.
+ /*
+@@ -11,6 +12,18 @@
+  * architectural definitions come first.
+  */
  
- KVM may add support for more values in the future that may cause a userspace
- exit, even without calls to ``KVM_ENABLE_CAP`` or similar.  In this case,
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index bade046da5a1..5aebbec7fa6e 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -185,7 +185,7 @@ static void td_init_cpuid_entry2(struct kvm_cpuid_entry2 *entry, unsigned char i
- 	tdx_clear_unsupported_cpuid(entry);
- }
- 
--#define TDVMCALLINFO_SETUP_EVENT_NOTIFY_INTERRUPT	BIT(1)
-+#define TDVMCALLINFO_SETUP_EVENT_NOTIFY_INTERRUPT	BIT_ULL(1)
- 
- static int init_kvm_tdx_caps(const struct tdx_sys_info_td_conf *td_conf,
- 			     struct kvm_tdx_capabilities *caps)
-@@ -202,8 +202,15 @@ static int init_kvm_tdx_caps(const struct tdx_sys_info_td_conf *td_conf,
- 
- 	caps->cpuid.nent = td_conf->num_cpuid_config;
- 
--	caps->user_tdvmcallinfo_1_r11 =
--		TDVMCALLINFO_SETUP_EVENT_NOTIFY_INTERRUPT;
-+	/*
-+	 * Don't advertise userspace event-notify interrupt support if TDX
-+	 * quoting service is enabled, as quote generation will be done entirely
-+	 * in the kernel. Support in the kernel can be added later if needed.
-+	 */
-+	if (!tdx_quote_enabled()) {
-+		caps->user_tdvmcallinfo_1_r11 |=
-+			TDVMCALLINFO_SETUP_EVENT_NOTIFY_INTERRUPT;
-+	}
- 
- 	for (i = 0; i < td_conf->num_cpuid_config; i++)
- 		td_init_cpuid_entry2(&caps->cpuid.entries[i], i);
-@@ -1684,9 +1691,16 @@ static int tdx_get_quote(struct kvm_vcpu *vcpu)
- 
- static int tdx_setup_event_notify_interrupt(struct kvm_vcpu *vcpu)
- {
-+	struct kvm_tdx *kvm_tdx = to_kvm_tdx(vcpu->kvm);
- 	struct vcpu_tdx *tdx = to_tdx(vcpu);
- 	u64 vector = tdx->vp_enter_args.r12;
- 
-+	/* See init_kvm_tdx_caps() for comments */
-+	if (kvm_tdx->get_quote_in_kernel) {
-+		tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_SUBFUNC_UNSUPPORTED);
-+		return 1;
-+	}
++/*
++ * SEAMCALL leaf:
++ *
++ * Bit 15:0	Leaf number
++ * Bit 23:16	Version number
++ */
++#define SEAMCALL_LEAF			GENMASK(15, 0)
++#define SEAMCALL_VER			GENMASK(23, 16)
 +
- 	if (vector < 32 || vector > 255) {
- 		tdvmcall_set_return_code(vcpu, TDVMCALL_STATUS_INVALID_OPERAND);
- 		return 1;
++#define SEAMCALL_LEAF_VER(l, v)		(FIELD_PREP(SEAMCALL_LEAF, l) | \
++					 FIELD_PREP(SEAMCALL_VER, v))
++
+ /*
+  * TDX module SEAMCALL leaf functions
+  */
+@@ -31,7 +44,7 @@
+ #define TDH_VP_CREATE			10
+ #define TDH_MNG_KEY_FREEID		20
+ #define TDH_MNG_INIT			21
+-#define TDH_VP_INIT			22
++#define TDH_VP_INIT			SEAMCALL_LEAF_VER(22, 1)
+ #define TDH_PHYMEM_PAGE_RDMD		24
+ #define TDH_VP_RD			26
+ #define TDH_PHYMEM_PAGE_RECLAIM		28
+@@ -52,14 +65,6 @@
+ #define TDH_QUOTE_GET			98
+ #define TDH_QUOTE_INIT			100
+ 
+-/*
+- * SEAMCALL leaf:
+- *
+- * Bit 15:0	Leaf number
+- * Bit 23:16	Version number
+- */
+-#define TDX_VERSION_SHIFT		16
+-
+ /* TDX page types */
+ #define	PT_NDA		0x0
+ #define	PT_RSVD		0x1
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 821f677e9a86..f7600f930c6e 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -2217,8 +2217,8 @@ u64 tdh_vp_init(struct tdx_vp *vp, u64 initial_rcx, u32 x2apicid)
+ 		.r8 = x2apicid,
+ 	};
+ 
+-	/* apicid requires version == 1. */
+-	return seamcall(TDH_VP_INIT | (1ULL << TDX_VERSION_SHIFT), &args);
++	/* apicid requires version == 1. See TDH_VP_INIT definition.*/
++	return seamcall(TDH_VP_INIT, &args);
+ }
+ EXPORT_SYMBOL_FOR_KVM(tdh_vp_init);
+ 
 -- 
 2.25.1
 
