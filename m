@@ -1,136 +1,120 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C790349CE0
-	for <kvm@vger.kernel.org>; Fri, 22 May 2026 23:27:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A30B237F8AF
+	for <kvm@vger.kernel.org>; Fri, 22 May 2026 23:27:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779492425; cv=none; b=Og0MZ+r5oDepyV4JgTOkoAjOqRGgBpCSHfGJRBd3NBAhE4nBpgfd5NhHwKbNob6CP9s/jmq1hLgMxttunwvz6nofHw+5SaanbaYbe2QMi8iOzHWxV1Gyw4OrMHodr8fw02HJztGjA+yN5WfVZJ2ZIC5WoBZ74+lcP+NliprMlN0=
+	t=1779492425; cv=none; b=Ol6mcdMMatdlf+m6yIPQ1IjJDailXrSNqE7SEbKoiETJagfuF6AGCrDpB4w3k0tCW3te2XTSG5vQDycE7PB22YdWTXtapQb5EHsuhJ+gtpibUpuqB7sZuO4XTN6pxUkQSVezWCkwmGm7dNu+66UZnyAvqHc2TRhfYkAbxEB4qI4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779492425; c=relaxed/simple;
-	bh=8MlWHOjukcmjWK2KeybFLwuGeoKx2PMyQVOyJc69EUM=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=SAlWJ6bzPLTrt/0H4/TKIkl1IDEa14Y8T8PBcF77FBZMRRt0h2+mCwBaSzk+cISbbSye8J0fMNUIJBfk0OXcPAmkr+kzDfWKrQc3WPS7MjCNSuF/UBQZJBmcwT1MLh60ogvLAmiHK3yWc6iw99/08M5FvkJClaj9I1tF9jI75BQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=U17JOf7Z; arc=none smtp.client-ip=209.85.214.202
+	bh=BGqs+7XB3gWUIESu7X0yek1Mhw0+X/DZjjKlREjWL90=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=TO+Pw6vAMHehY52oaszGreMPuXmV2z9RCo5uO6qw54GN0qzatWgMjci2F3W4W2+vbNxXp36wR8GrpFzUedPOzgw0YistOa8WC9cDWFi5mShD7FdGfsASakfuVAUvw+BvTKiVrdfdGmpGnP3xq2Xcm+YXJLmKz8MKMdJP07D65bQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=F+Hga5ar; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="U17JOf7Z"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2baf7378ad0so81539315ad.0
-        for <kvm@vger.kernel.org>; Fri, 22 May 2026 16:27:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="F+Hga5ar"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-369467ab5bfso6791728a91.0
+        for <kvm@vger.kernel.org>; Fri, 22 May 2026 16:27:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779492422; x=1780097222; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rlgWBoXP/F8tR7zMXfR7Xp/mpa9VMz4i1NV/txY8550=;
-        b=U17JOf7ZA6uTayf3i7X720xkpIMUf7qDsSgzFAGcfg+jhrpzcSY2j8GqngRCp7QPtE
-         O2t5IRrdVfLA5yh7HiseGVNewDcag9lWuhD27AMHgITTzAknHfdo29DNGkKG8cCJX4H0
-         4CcWLNvypooqHDL4RUzFW0oXOw+C//4kp+zx9vPysvXJTdu9c7p3EC2hZ6yeTC3sgRAA
-         dQhsyIUDWMT0otFW+KR2kNylSpfgN9IlCxEMk2h8+0Dc3KCMg3yiFxLpQ+J5KJeGYK4i
-         +h9w0tQrz+VE5JUKJY+6/ZqAhf7bTObSdHi2Z9D7j+vyEm2RMMJnh2RAXN9opWBvR15F
-         VPIg==
+        d=google.com; s=20251104; t=1779492424; x=1780097224; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:from:to:cc:subject:date:message-id:reply-to;
+        bh=YszyzLPcvTIfPw6dM2pGXcfV2rGCyaVWTXh+SVSGVWc=;
+        b=F+Hga5arj5VQrayHbC/PehReCvaA/hcJZ28QXIydOPYARuoBeh8SA5ck9oTD4dMD8Y
+         4Z90Llvz2jAL8W+ODUMkSGAMlghORLXB1iz2Q/g9ZlvOJVTR8LhDRCuOhke7opGlhXIh
+         MIOWdiMSGy6ztcQkaCdEbqPzeFosOfdLpCH539+grFDhHTrJDW4Pjs49qBe0YIlyseAB
+         YDFP2qrLMV/8X4JfPZQcwN1d/8REYIzray3u8BT440sZLK8YlLr+KWQQ5au+DpSD9qMm
+         VREHzfoHq7XscVN5CSAjJ1BY4eQyemsYvaHg7DIS1wj1bAwc8+G4xJ2IDZk8VeL0zYn2
+         Mu5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779492422; x=1780097222;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rlgWBoXP/F8tR7zMXfR7Xp/mpa9VMz4i1NV/txY8550=;
-        b=BDFPoYCFyLd+yxWp4TQASlM6ts37cmjZUl3gR36ibyNp7QN3TtLcKpm57UCuxRcHTJ
-         NsCMwFD3GXKJHaARj8oH5UZxSXpZpyYUNMiDhxLri+zabRibBpydUWdIi+CZKGdnqI30
-         SpeySMX37TgQexZQOB+UN0fBSeILM/dx884JOr0r/DDWyyeaG/7rzohsPA/ZFJKqMwrO
-         /ownH/JY7sYN5IUY/2EERBdtmx8KLuvyRgA1K/nSIUTQyBOqCZpvjzkdCEvvxoc7O0g+
-         lSCxnx6hIwFvE9X0MC9WqlAm5bQ2skxxWcmOkskg5hOyaAgjehGh1lsH4JZQNaGCzEUW
-         RJyQ==
-X-Gm-Message-State: AOJu0Yz9VJEAtwcQAW2w+svn8kWL4HT7ikM9IJrmJXTSP5jfEf/nK5MW
-	ZxXIMF6gY1Px+08MU/WYhhwVAxqDjlXV8i3bUwFRBT8/jyuzKmvtFlbpg7+QgcrNqvBUlWDhDmr
-	ORCWcGg==
-X-Received: from plbmg4.prod.google.com ([2002:a17:903:3484:b0:2b2:3dc8:b460])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e54e:b0:2bd:606d:b339
- with SMTP id d9443c01a7336-2beb05e415fmr60391865ad.21.1779492422437; Fri, 22
- May 2026 16:27:02 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779492424; x=1780097224;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:reply-to:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=YszyzLPcvTIfPw6dM2pGXcfV2rGCyaVWTXh+SVSGVWc=;
+        b=eArZ+MzvQul/6mZxTqvf10EHxefL5r23ervtNg3GNpWW84Fmd8AKoNObNXD3bonNRh
+         qbhyCyafxZpiMCh5I8jB3FdhUKEaN7gMEuOig5vLIaS1QiA53NJbMVIXtluLY+WioiWG
+         WFyRo39RMWhuTUhMF9QJJ70Dn86/NEBAjX3E6iV6cLv37gxXOYmjhWMPDc2kP5zepnKK
+         VpjKh8BS+A+MXIcuuvMv3CPFsioTt5kkEV+bKgZ1HgPSLepyxATYJZ1BceKFLQPjON4i
+         fOovcgR9//L/QpCRqE2VlxVtVzj73wDsfWwoYVbFFT05Ck9rG0vpOGJ9c6Ab29i5L/jT
+         IVTA==
+X-Gm-Message-State: AOJu0YyK7Ky0DI/SlKZ4/yX5SQJCoI7+NxIgrOEGJcSyrC/VkgYZb+qY
+	b13Bl4lC8t4vT/vXKQP8Aj+CWOEG0JW5ahXVsZAJAkkTi8zgTLCJ1e/aZ1pIDVyLPsf+2VYPoWD
+	xGHm6zA==
+X-Received: from pgne12.prod.google.com ([2002:a63:744c:0:b0:c79:22b6:a345])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:5343:b0:35f:bb33:d72c
+ with SMTP id 98e67ed59e1d1-36a6773cf81mr4485356a91.4.1779492423541; Fri, 22
+ May 2026 16:27:03 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Fri, 22 May 2026 16:26:56 -0700
+Date: Fri, 22 May 2026 16:26:57 -0700
+In-Reply-To: <20260522232701.3671446-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
+References: <20260522232701.3671446-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
-Message-ID: <20260522232701.3671446-1-seanjc@google.com>
-Subject: [PATCH v4 0/5] KVM: X86: Fix nested TDP error code info
+Message-ID: <20260522232701.3671446-2-seanjc@google.com>
+Subject: [PATCH v4 1/5] KVM: x86: Widen x86_exception's error_code to 64 bits
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
 Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Kevin Cheng <chengkev@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Kevin's series to fix how KVM populates error information when injecting
-nested page faults (NPF on SVM, EPT violations on VMX) to L1 during
-instruction emulation.
+From: Kevin Cheng <chengkev@google.com>
 
-See v3 for the full cover letter.
+Widen the error_code field in struct x86_exception from u16 to u64 to
+accommodate AMD's NPF error code, which defines information bits above
+bit 31, e.g. PFERR_GUEST_FINAL_MASK (bit 32), and PFERR_GUEST_PAGE_MASK
+(bit 33).
 
-v4:
- - Pass @from_hardware directly instead of stuff a flag in x86_exception.
- - Use the bits in @access (thanks to MBEC+GMET) to get the fault stage.
- - Check the entire PFEC/EXIT_QUAL in the selftest.
- - Use hardware _or_ KVM information, never merge the two.
- - Name the selftest nested_tdp_fault_test.
+Retain the u16 type for the local errcode variable in walk_addr_generic
+as the walker synthesizes conventional #PF error codes that are
+architecturally limited to bits 15:0.
 
-v3:
- - https://lore.kernel.org/all/20260313071033.4153209-1-chengkev@google.com
- - Introduce hardware_nested_page_fault in struct x86_exception to
-   distinguish hardware NPF/EPT exits from emulation-triggered faults
-   as per Sean
- - For SVM, take PFERR_GUEST_FAULT_STAGE bits from hardware exit_info_1
-   on hardware NPF exits, and from fault->error_code on emulation
-   faults
- - For VMX, conditionally OR hardware exit qualification GVA_IS_VALID/
-   GVA_TRANSLATED bits only for hardware EPT violation exits as per
-   Sean
- - Replace #if PTTYPE != PTTYPE_EPT preprocessor guards in
-   paging_tmpl.h with runtime kvm_nested_fault_is_ept() helper that
-   checks guest_mmu as per Sean
+Signed-off-by: Kevin Cheng <chengkev@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+---
+ arch/x86/kvm/kvm_emulate.h     | 2 +-
+ arch/x86/kvm/mmu/paging_tmpl.h | 6 ++++++
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
-v2:
- - https://lore.kernel.org/all/20260224071822.369326-1-chengkev@google.com
- - Split out the widening of the x86_exception error code into a
-   separate patch as per Sean.
- - Added a WARN if both PFERR_GUEST_* bits are set and force the
-   exit_info_1 to PFERR_GUEST_FINAL_MASK if this occurs.
- - Removed the selftest TDP helpers as per Sean
- - Added a patch to populate the EPT violation bits for VMX nested page
-   faults as per Sean.
- - Expanded the added selftest to support VMX and also added a test
-   case for write protected pages using the INS instruction.
-
-v1: https://lore.kernel.org/all/20260121004906.2373989-1-chengkev@google.com
-
-Kevin Cheng (4):
-  KVM: x86: Widen x86_exception's error_code to 64 bits
-  KVM: SVM: Fix nested NPF injection of PFERR_GUEST_{PAGE,FINAL}_MASK
-    bits
-  KVM: VMX: Synthesize nested EPT violation GVA_IS_VALID/GVA_TRANSLATED
-    bits
-  KVM: selftests: Add nested page fault injection test
-
-Sean Christopherson (1):
-  KVM: x86: Tell ->inject_page_fault() whether or a fault came from
-    hardware
-
- arch/x86/include/asm/kvm_host.h               |  20 +-
- arch/x86/kvm/kvm_emulate.h                    |   2 +-
- arch/x86/kvm/mmu/paging_tmpl.h                |  36 +-
- arch/x86/kvm/svm/nested.c                     |  38 ++-
- arch/x86/kvm/vmx/nested.c                     |  29 +-
- arch/x86/kvm/x86.c                            |  16 +-
- tools/testing/selftests/kvm/Makefile.kvm      |   1 +
- .../selftests/kvm/include/x86/processor.h     |   9 +
- .../selftests/kvm/x86/nested_tdp_fault_test.c | 313 ++++++++++++++++++
- 9 files changed, 422 insertions(+), 42 deletions(-)
- create mode 100644 tools/testing/selftests/kvm/x86/nested_tdp_fault_test.c
-
-
-base-commit: 66939c1603bd5579e63278f9dc72cba5b79da9b5
+diff --git a/arch/x86/kvm/kvm_emulate.h b/arch/x86/kvm/kvm_emulate.h
+index 72aece9ef575..f5df31a52996 100644
+--- a/arch/x86/kvm/kvm_emulate.h
++++ b/arch/x86/kvm/kvm_emulate.h
+@@ -22,7 +22,7 @@ enum x86_intercept_stage;
+ struct x86_exception {
+ 	u8 vector;
+ 	bool error_code_valid;
+-	u16 error_code;
++	u64 error_code;
+ 	bool nested_page_fault;
+ 	union {
+ 		u64 address; /* cr2 or nested page fault gpa */
+diff --git a/arch/x86/kvm/mmu/paging_tmpl.h b/arch/x86/kvm/mmu/paging_tmpl.h
+index 07100bbfc270..51f8b4522314 100644
+--- a/arch/x86/kvm/mmu/paging_tmpl.h
++++ b/arch/x86/kvm/mmu/paging_tmpl.h
+@@ -328,6 +328,12 @@ static int FNAME(walk_addr_generic)(struct guest_walker *walker,
+ 	const int write_fault = access & PFERR_WRITE_MASK;
+ 	const int user_fault  = access & PFERR_USER_MASK;
+ 	const int fetch_fault = access & PFERR_FETCH_MASK;
++	/*
++	 * Note! Track the error_code that's common to legacy shadow paging
++	 * and NPT shadow paging as a u16 to guard against unintentionally
++	 * setting any of bits 63:16.  Architecturally, the #PF error code is
++	 * 32 bits, and Intel CPUs don't support settings bits 31:16.
++	 */
+ 	u16 errcode = 0;
+ 	gpa_t real_gpa;
+ 	gfn_t gfn;
 -- 
 2.54.0.794.g4f17f83d09-goog
 
