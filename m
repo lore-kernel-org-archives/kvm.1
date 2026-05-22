@@ -1,106 +1,283 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 345D03438AB
-	for <kvm@vger.kernel.org>; Fri, 22 May 2026 22:21:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC39D221275
+	for <kvm@vger.kernel.org>; Fri, 22 May 2026 22:33:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779488519; cv=none; b=k+80zZOuGCOaQqKNvyBcn1vJAM9dimRDuvwcS0G8oTU/v3KuIl8p0R5wYOkeApb1wvKkJJ3qePuD/QpF0xZl1KAOmqnEymNrDZavTKiQ9r25AUNmnD51l7OpdSTSx9Mn6065Vu+tWW1xaO+D3oWjAgFsCanX6gyCoV9WDPa0/3A=
+	t=1779489210; cv=none; b=DabHIxBdxOGu5XCamqh/occNp/e3SwJXEDeNAi4mAbCP+HP5hD12wETssJtX+uFllZukhg0l34bcdGaDKZgJO0a2X2DsTP8S3WkewU05I51LFxtYevhUmQfwfDBeikHx74yTW2UV5KlgxiifVjTyhniMfUl3wVMllRn19Vn4ACg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779488519; c=relaxed/simple;
-	bh=HY6HkAxdL8O1pP21J7iwWYB8GsIVtu1fEo7LCr9knRk=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=VAXSO5WpoP0pthSXyDphyEBWdStxiqmJo+m+7noCpBzqDC1/3JnOt05outANFD+Omo1UFGOKIw6imjzN9w3WRqQ9pvN5qJsPt+3a102w3IzRH+Z7FYPP4CqauGsMT+kiASwDiAHKVIGJSmnXvNB3FfmhUg5dbiJLTQB8BkFAd2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QoaTf8Qg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779489210; c=relaxed/simple;
+	bh=9ZaGNBLMQL68QaEj0gAWT/Eargnq7NvJTMlnKirB1Tw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=uX1yHjjv5byu60hmpPzkXPudb9UaDJhpUXNw2lkXICMwxs5vnFaxqLUhTZ+UkGsuNAX29QIq3DsNPvM8G7OwBBP+CDYJ3nyjYX1GemySHGb27c0Adi7b5hq5eU+Yl2mtC2KZ7vzO0trQqLvyhrqRkRF6wIPXQGvKaqHIAaXTiGk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vLGtT4c4; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QoaTf8Qg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE4521F000E9;
-	Fri, 22 May 2026 22:21:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779488517;
-	bh=vdXf8KRuXLwPzF77zSfyC40Y/OlUh0xo71iC+lu0IcQ=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=QoaTf8Qg5hClhgVvDIJpMLrliHnw35bE2YjYE0/rS+T5pAKo9ftX1C8/Wu3z421FJ
-	 0Iy/mlde06Q5fKcMQX7l6xY8v9k8YNoYwTZhzogJOs1zUbDMRRxjGzg/C0iPuXtgg7
-	 AlSm/6E9Nym/FPKzSjmXRqVBhUg4+F+oZiBRGeUuI9Bf0FbgUxMFQDCxD/qavXWlmy
-	 nJRucnv/YmuFGEfhOh9MyY+CqLYF3g6QcP2Y5FyTk5oMprpZvRnxyHgLR5N0KGuMA9
-	 55ExwMf1ZODh94iS7pjFYqey5g1WtM7mbO+0GGJvjUgb7+7bB89h8p5qwjIMShU813
-	 HSeNwnFiaY8dw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 3/3] KVM: guest_memfd: Handle errors from
- xa_store_range() when binding
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ackerley Tng via B4 Relay" <devnull+ackerleytng.google.com@kernel.org>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260522-fix-sev-gmem-post-populate-v1-3-9fc8d6437b65@google.com>
-References: <20260522-fix-sev-gmem-post-populate-v1-3-9fc8d6437b65@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 22 May 2026 22:21:56 +0000
-Message-Id: <20260522222156.EE4521F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vLGtT4c4"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c8276c91addso4345398a12.2
+        for <kvm@vger.kernel.org>; Fri, 22 May 2026 15:33:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779489208; x=1780094008; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=kB3CpF1Jlmxz+wPpxElHcqfg37b8qDlRgrbghj+MTcg=;
+        b=vLGtT4c42XuY8UavowDVleFSjcfxHHecQaDP0Q1vf5O7YFEWHzFAKCmKOV+xlpVGqm
+         +tu9L9XnAAmBSB5v2tu5k3046zDWAYKphJId0R1hrRmbPr3ZSWvaeJZ4PtJ4cE4ihewe
+         P/MMof4iLsxCfFdR6o4Ud05tTxdHkEpTY14AnBxJHIpXaaT5M6NaG+R79jJMUcrfuzBk
+         mN6YLnzUyzPibMRO5X2X+9077aD2g0UoAGGZ3SlJKVLljrfyvPzj9eM1K/OhB2Q9cv6Z
+         ZUHX941lpvkM0ViU8Hqyt1T5oIE0Fa9AQoJ3kKqeRhV6v18LUFb8q15Jy9wUKBArsWCd
+         JxqA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779489208; x=1780094008;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kB3CpF1Jlmxz+wPpxElHcqfg37b8qDlRgrbghj+MTcg=;
+        b=K5qIDZASy2G7gPLZeDk/l5h6sDGldvzdllRMu8Xof6teJynvaZrv0yX8aJ+dSVFkKA
+         cINZ95qMj08PGAOF0uCR2AJ8TnWfYnNKJ5opKSwBaungix1Ow66llyob/D1/rKBR/a61
+         OhihCYeWSkkMfij1aaGkKd1zP8NTgxIc+r/v29i5g3fp0EvOeBmgjAQ/qF74qYjisHLI
+         sVSpMhU6YpHiPMcKgvCQ5yVpgaZ+OmrJ4oyILJDFjzAEVPbrNk5qVoosbGihJnMEC45I
+         AknP+BzHnQeJbZergtGT/PcNwa6a7DmHsw0db2PfSiovEDyLUEesA+2g2rpiZ7CQOLO0
+         cRxw==
+X-Forwarded-Encrypted: i=1; AFNElJ9c7wo1htq9GB+YvJn3hSG/4u2h+uLppN3nUo03sIad8F1AgmUSSShmltsqYq/vd2IzQwY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+TLMVPVIS24TCvKzmOQHbJBOtjIxVBCKDxqyLKkuflojWEluO
+	UMnR9d/Q5nomQvkBqBtE8gSXpBigmbVlEXkRzgtooYDCb1Gn4NPvQYhvGxgmrjLhxlM8oKSrp9w
+	6y+Gu4A==
+X-Received: from pgbcb7.prod.google.com ([2002:a05:6a02:707:b0:c82:7df9:8c1d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:3954:b0:39f:8b01:d968
+ with SMTP id adf61e73a8af0-3b328cab982mr5401284637.11.1779489207796; Fri, 22
+ May 2026 15:33:27 -0700 (PDT)
+Date: Fri, 22 May 2026 15:33:27 -0700
+In-Reply-To: <20260313071033.4153209-5-chengkev@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260313071033.4153209-1-chengkev@google.com> <20260313071033.4153209-5-chengkev@google.com>
+Message-ID: <ahDZt1fT3vh-S3Yn@google.com>
+Subject: Re: [PATCH V3 4/4] KVM: selftests: Add nested page fault injection test
+From: Sean Christopherson <seanjc@google.com>
+To: Kevin Cheng <chengkev@google.com>
+Cc: pbonzini@redhat.com, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	yosry@kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Critical] Propagating `xa_store_range()` failure causes a Use-After-Free=
- due to a missing rollback of partially stored XArray entries.
---
+On Fri, Mar 13, 2026, Kevin Cheng wrote:
+> Add a test that exercises nested page fault injection during L2
+> execution. L2 executes I/O string instructions (OUTSB/INSB) that access
+> memory restricted in L1's nested page tables (NPT/EPT), triggering a
+> nested page fault that L0 must inject to L1.
+> 
+> The test supports both AMD SVM (NPF) and Intel VMX (EPT violation) and
+> verifies that:
+>   - The exit reason is an NPF/EPT violation
+>   - The access type and permission bits are correct
+>   - The faulting GPA is correct
+> 
+> Three test cases are implemented:
+>   - Unmap the final data page (final translation fault, OUTSB read)
+>   - Unmap a PT page (page walk fault, OUTSB read)
+>   - Write-protect the final data page (protection violation, INSB write)
+>   - Write-protect a PT page (protection violation on A/D update, OUTSB
+>     read)
+> 
+> Signed-off-by: Kevin Cheng <chengkev@google.com>
+> ---
+>  tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+>  .../selftests/kvm/x86/nested_npf_test.c       | 374 ++++++++++++++++++
+>  2 files changed, 375 insertions(+)
+>  create mode 100644 tools/testing/selftests/kvm/x86/nested_npf_test.c
+> 
+> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+> index 3d372d78a275..9308e6100f27 100644
+> --- a/tools/testing/selftests/kvm/Makefile.kvm
+> +++ b/tools/testing/selftests/kvm/Makefile.kvm
+> @@ -94,6 +94,7 @@ TEST_GEN_PROGS_x86 += x86/nested_dirty_log_test
+>  TEST_GEN_PROGS_x86 += x86/nested_emulation_test
+>  TEST_GEN_PROGS_x86 += x86/nested_exceptions_test
+>  TEST_GEN_PROGS_x86 += x86/nested_invalid_cr3_test
+> +TEST_GEN_PROGS_x86 += x86/nested_npf_test
 
-commit cacb3f43fb3479e4984fbb068881df5efe05c882
-Author: Ackerley Tng <ackerleytng@google.com>
+NPF is AMD specific.  Call it nested_tdp_fault_test.
 
-KVM: guest_memfd: Handle errors from xa_store_range() when binding
+>  TEST_GEN_PROGS_x86 += x86/nested_set_state_test
+>  TEST_GEN_PROGS_x86 += x86/nested_tsc_adjust_test
+>  TEST_GEN_PROGS_x86 += x86/nested_tsc_scaling_test
+> diff --git a/tools/testing/selftests/kvm/x86/nested_npf_test.c b/tools/testing/selftests/kvm/x86/nested_npf_test.c
+> new file mode 100644
+> index 000000000000..7725e5dc3a38
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/x86/nested_npf_test.c
+> @@ -0,0 +1,374 @@
+> +// SPDX-License-Identifier: GPL-2.0-only
+> +/*
+> + * Copyright (C) 2025, Google, Inc.
+> + */
+> +
+> +#include "test_util.h"
+> +#include "kvm_util.h"
+> +#include "processor.h"
+> +#include "svm_util.h"
+> +#include "vmx.h"
+> +
+> +#define L2_GUEST_STACK_SIZE 64
+> +
+> +#define EPT_VIOLATION_ACC_READ		BIT(0)
+> +#define EPT_VIOLATION_ACC_WRITE		BIT(1)
+> +#define EPT_VIOLATION_ACC_INSTR		BIT(2)
+> +#define EPT_VIOLATION_PROT_READ		BIT(3)
+> +#define EPT_VIOLATION_PROT_WRITE	BIT(4)
+> +#define EPT_VIOLATION_PROT_EXEC		BIT(5)
+> +#define EPT_VIOLATION_GVA_IS_VALID	BIT(7)
+> +#define EPT_VIOLATION_GVA_TRANSLATED	BIT(8)
 
-This commit updates kvm_gmem_bind() to check the return value of
-xa_store_range() and propagate any resulting errors back to userspace,
-rather than falsely reporting success.
+Put these in tools/testing/selftests/kvm/include/x86/processor.h.
 
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index d203135969d13..104f0f3d6a0b3 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-[ ... ]
-> @@ -688,7 +689,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_=
-slot *slot,
->  	if (kvm_gmem_supports_mmap(inode))
->  		slot->flags |=3D KVM_MEMSLOT_GMEM_ONLY;
-> =20
-> -	xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
-> +	result =3D xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNE=
-L);
->  	filemap_invalidate_unlock(inode->i_mapping);
-> =20
->  	/*
-> @@ -696,7 +697,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_=
-slot *slot,
->  	 * not the other way 'round.  Active bindings are invalidated if the
->  	 * file is closed before memslots are destroyed.
->  	 */
-> -	r =3D 0;
-> +	r =3D xa_is_err(result) ? xa_err(result) : 0;
+> +enum test_type {
+> +	TEST_FINAL_PAGE_UNMAPPED,	    /* Final data page not present */
+> +	TEST_PT_PAGE_UNMAPPED,		    /* Page table page not present */
+> +	TEST_FINAL_PAGE_WRITE_PROTECTED,    /* Final data page read-only */
+> +	TEST_PT_PAGE_WRITE_PROTECTED,	    /* Page table page read-only */
+> +};
+> +
+> +static vm_vaddr_t l2_test_page;
+> +static void (*l2_entry)(void);
+> +
+> +#define TEST_IO_PORT 0x80
+> +#define TEST1_VADDR 0x8000000ULL
+> +#define TEST2_VADDR 0x10000000ULL
+> +#define TEST3_VADDR 0x18000000ULL
+> +#define TEST4_VADDR 0x20000000ULL
+> +
+> +/*
+> + * L2 executes OUTS reading from l2_test_page, triggering a nested page
+> + * fault on the read access.
+> + */
+> +static void l2_guest_code_outs(void)
+> +{
+> +	asm volatile("outsb" ::"S"(l2_test_page), "d"(TEST_IO_PORT) : "memory");
+> +	GUEST_FAIL("L2 should not reach here");
+> +}
+> +
+> +/*
+> + * L2 executes INS writing to l2_test_page, triggering a nested page
+> + * fault on the write access.
+> + */
+> +static void l2_guest_code_ins(void)
+> +{
+> +	asm volatile("insb" ::"D"(l2_test_page), "d"(TEST_IO_PORT) : "memory");
+> +	GUEST_FAIL("L2 should not reach here");
+> +}
+> +
+> +static void l1_vmx_code(struct vmx_pages *vmx, uint64_t expected_fault_gpa,
+> +			 uint64_t test_type)
+> +{
+> +	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
+> +	uint64_t exit_qual;
+> +
+> +	GUEST_ASSERT(vmx->vmcs_gpa);
+> +	GUEST_ASSERT(prepare_for_vmx_operation(vmx));
+> +	GUEST_ASSERT(load_vmcs(vmx));
+> +
+> +	prepare_vmcs(vmx, l2_entry, &l2_guest_stack[L2_GUEST_STACK_SIZE]);
+> +
+> +	GUEST_ASSERT(!vmlaunch());
+> +
+> +	/* Verify we got an EPT violation exit */
+> +	__GUEST_ASSERT(vmreadz(VM_EXIT_REASON) == EXIT_REASON_EPT_VIOLATION,
+> +		       "Expected EPT violation (0x%x), got 0x%lx",
+> +		       EXIT_REASON_EPT_VIOLATION,
+> +		       vmreadz(VM_EXIT_REASON));
+> +
+> +	exit_qual = vmreadz(EXIT_QUALIFICATION);
+> +
+> +	switch (test_type) {
+> +	case TEST_FINAL_PAGE_UNMAPPED:
+> +		/* Read access, final translation, page not present */
 
-[Severity: Critical]
-If xa_store_range() fails midway through storing a large range (for example,
-returning -ENOMEM), does it leave the already-processed entries in the
-f->bindings XArray?
+These comments aren't super helpful, because for the most part the information
+is redundant with respect to "test_type.  E.g. it's pretty darn easy to see this
+is a !PRESENT fault on the final page.
 
-When this error is propagated back, the caller __kvm_set_memory_region()
-will abort the operation and free the memslot without calling
-kvm_gmem_unbind().
+And what _is_ notable is that TDP page walks are *always* read+write, and that
+NPT walks are *always* USER (see below for why this test doesn't get false failures).
 
-Since the partial XArray updates aren't rolled back here, could this leave
-dangling pointers to the freed memslot in f->bindings? If so, when the file
-is eventually closed, kvm_gmem_release() might iterate over these dangling
-pointers and write to slot->gmem.file, resulting in a use-after-free.
+> +		__GUEST_ASSERT(exit_qual & EPT_VIOLATION_ACC_READ,
+> +			       "Expected ACC_READ set, exit_qual 0x%lx",
+> +			       exit_qual);
+> +		__GUEST_ASSERT(exit_qual & EPT_VIOLATION_GVA_IS_VALID,
+> +			       "Expected GVA_IS_VALID set, exit_qual 0x%lx",
+> +			       exit_qual);
+> +		__GUEST_ASSERT(exit_qual & EPT_VIOLATION_GVA_TRANSLATED,
+> +			       "Expected GVA_TRANSLATED set, exit_qual 0x%lx",
+> +			       exit_qual);
 
->  err:
->  	fput(file);
->  	return r;
+I appreciate trying to make life easier for debuggers, but this goes a bit too
+far.  Checking only select bits also reduces coverage, e.g. KVM could generate
+completely bogus information, but this test wouldn't detect it.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260522-fix-sev-gm=
-em-post-populate-v1-0-9fc8d6437b65@google.com?part=3D3
+IMO, this is much more readable, and just as easy to debug:
+
+	/*
+	 * Note, EPT page table accesses are always read+write, e.g. so that
+	 * the CPU can do A/D updates at-will.
+	 */
+	switch (test_type) {
+	case TEST_FINAL_PAGE_UNMAPPED:
+		GUEST_ASSERT_EXIT_QUAL(exit_qual, EPT_VIOLATION_ACC_READ |
+						  EPT_VIOLATION_GVA_IS_VALID |
+						  EPT_VIOLATION_GVA_TRANSLATED);
+		break;
+	case TEST_PT_PAGE_UNMAPPED:
+		GUEST_ASSERT_EXIT_QUAL(exit_qual, EPT_VIOLATION_ACC_READ |
+						  EPT_VIOLATION_ACC_WRITE |
+						  EPT_VIOLATION_GVA_IS_VALID);
+		break;
+	case TEST_FINAL_PAGE_WRITE_PROTECTED:
+		GUEST_ASSERT_EXIT_QUAL(exit_qual, EPT_VIOLATION_ACC_WRITE |
+						  EPT_VIOLATION_PROT_READ |
+						  EPT_VIOLATION_PROT_EXEC |
+						  EPT_VIOLATION_GVA_IS_VALID |
+						  EPT_VIOLATION_GVA_TRANSLATED);
+		break;
+	case TEST_PT_PAGE_WRITE_PROTECTED:
+		GUEST_ASSERT_EXIT_QUAL(exit_qual, EPT_VIOLATION_ACC_READ |
+						  EPT_VIOLATION_ACC_WRITE |
+						  EPT_VIOLATION_PROT_READ |
+						  EPT_VIOLATION_PROT_EXEC |
+						  EPT_VIOLATION_GVA_IS_VALID);
+		break;
+	}
+
+and then for NPT:
+
+	/*
+	 * Note, without GMET enabled, NPT walks are always user accesses.  And
+	 * like EPT, page table accesses are always read+write.
+	 */
+	switch (test_type) {
+	case TEST_FINAL_PAGE_UNMAPPED:
+		GUEST_ASSERT_NPF_EC(exit_info_1, PFERR_USER_MASK |
+						 PFERR_GUEST_FINAL_MASK);
+		break;
+	case TEST_PT_PAGE_UNMAPPED:
+		GUEST_ASSERT_NPF_EC(exit_info_1, PFERR_WRITE_MASK |
+						 PFERR_USER_MASK |
+						 PFERR_GUEST_PAGE_MASK);
+		break;
+	case TEST_FINAL_PAGE_WRITE_PROTECTED:
+		GUEST_ASSERT_NPF_EC(exit_info_1, PFERR_PRESENT_MASK |
+						 PFERR_WRITE_MASK |
+						 PFERR_USER_MASK |
+						 PFERR_GUEST_FINAL_MASK);
+		break;
+	case TEST_PT_PAGE_WRITE_PROTECTED:
+		GUEST_ASSERT_NPF_EC(exit_info_1, PFERR_PRESENT_MASK |
+						 PFERR_WRITE_MASK |
+						 PFERR_USER_MASK |
+						 PFERR_GUEST_PAGE_MASK);
+		break;
+	}
