@@ -1,104 +1,125 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06293A382B;
-	Fri, 22 May 2026 12:42:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD46138228A
+	for <kvm@vger.kernel.org>; Fri, 22 May 2026 12:49:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779453763; cv=none; b=j+/Qw2H6tmBSyRHqRb4vJUjg7ORXiWjuTi41rotgRjmjxOT0JbQ0zIMHIsJ0I//zJL2nnSnoGFh778kBJy269oAdstK0awVCCQNiyWWrBy+aXY/GTiqD1z6lLtRgkeqncgVMcgTs8fhd/u8Uge7KvS8GaI7hRwqE+V5Lez3zCIc=
+	t=1779454194; cv=none; b=B+AdlIgqmSgwBtRtBBOtmAgMieijMKLKHYMxWZdpGutqkkWjoauwndftXakmMPuj38174pvzLr5hBZccCIoABP64atN7tM9xj61RMTg4bWFwWh+ZGAYobsKHoM5FpqNeT+Px4EI8+Y0YlZTmvPiuErPOphcEPnWmWcbviSnFmjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779453763; c=relaxed/simple;
-	bh=TdAp5VHTo4kSpGRN7kTkXxWq7+25sIsT0KITiE3yivY=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Zy1wcahoZgQaj7SzxwOvd7CN3T7RHVEB92XrA/GKs3UCJQss1Actp4BdYrzxDv0/S5fYj5/X/NKz2wcd4y9noVwfMN0ULV+ZO8p8nA9WYOJoRc4mGXGF2r4jr1WNdOP5pVsf3KKMhY/puD3TDjoo7bEtq3LoLjJtXheXmKVzizs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=sJ6DTlGo; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	s=arc-20240116; t=1779454194; c=relaxed/simple;
+	bh=RbHOtVV6OeY+ZEk+4bAtnYf6cI1SHn8hUw08eOY8EZM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=N7VG+O5lfFsh9xcgPE2EYToAyiAw5hxuxosSjpKyLPUuL5GhKnjAlyOHCQ5XfvB0YUBLGs9KFRVoRL8wkusRIAlScIGkiOm0VHH6nvuCdJmaBRdh7py/vQECujGWvwkKf57+MSw8T5arISgrY9uZoEyWyogbfrZNu8ejyNPef/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=czYTJFew; arc=none smtp.client-ip=209.85.214.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="sJ6DTlGo"
-Received: from pps.filterd (m0109331.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64M8HYYq841953;
-	Fri, 22 May 2026 05:42:35 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=s2048-2025-q2; bh=/aUTLjCJ1AtOwCEJYW
-	hG7oCDm+n498quUxGoDFsC6Ts=; b=sJ6DTlGobC86SevvKIsr8mjfjYPYp1fbbx
-	GUaZWREoI1iNnR9uk6nvRjxqcXL8SnsBubzmVXX7yBW8zWE57OT95UwlyeZCC4Z0
-	Du1KktTYNswUp5Lh4DIOWT8+G+7ztoB4FktYjI21b7Idjzq8ZMhN0BKrCJ0IQz0U
-	QRjxg/J5maIQKXkYI5zScJbVd0xrtLal6n6NV6AV7J7jxt+PQy/gk52tFfrtgLzx
-	DPbRTJi7dzyLCpBDLWagYZ3io7WLT//LSFm5U/k1SSrWsIlDTx2zhl5zZ+7AUypI
-	6YzcDVgmWyToqTefADK24jX+NwLraxyJUz0n6oT88Qk2CXrvOheQ==
-Received: from maileast.thefacebook.com ([163.114.135.16])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4ea3yqeugv-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Fri, 22 May 2026 05:42:34 -0700 (PDT)
-Received: from localhost (2620:10d:c0a8:1b::30) by mail.thefacebook.com
- (2620:10d:c0a9:6f::8fd4) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.2.2562.37; Fri, 22 May
- 2026 12:42:34 +0000
-From: Matt Evans <mattev@meta.com>
-To: Alex Williamson <alex@shazbot.org>
-CC: <kvm@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-        kernel test robot
-	<lkp@intel.com>
-Subject: [PATCH] vfio/pci: Fix sparse warning in vfio_pci_core_get_iomap()
-Date: Fri, 22 May 2026 05:42:11 -0700
-Message-ID: <20260522124215.3268565-1-mattev@meta.com>
-X-Mailer: git-send-email 2.52.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="czYTJFew"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b458add85aso79229525ad.2
+        for <kvm@vger.kernel.org>; Fri, 22 May 2026 05:49:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779454191; x=1780058991; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DQXBtYOgD26OY0sxOaH3yIHE1h+TPqKS3BQiU+AvFJA=;
+        b=czYTJFewNgQdudNdgwZ55E1+qPLX/eGbyT9zSr6Vfh27zIYrh5JeIpUkdT4qKbIJAn
+         SCQfKHCc79A2ralZCRnqE7xqd/+WAkYl9RpZulbZ+8OWnhpXZXJjAT/6MOb+3nygBqCY
+         /yXMpXT0iQ4TwXVvqcqgyW8SJsw3esyWj2mbVO16EIX1fNci1PWWE6w2nTxY2oSJPKNH
+         uigKHszq9m4nhoT5+6B9imaZ6HHu+PEOpPb+/5774Bti5CH+EdiEvn7TOEnafnnOK4I8
+         9uMj+980rBC2uvn5pgF7QSBmfXmeQFqOZYjETtuhWevuB7i0Zafn+fxtJYH8ixEXlLHB
+         soYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779454191; x=1780058991;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=DQXBtYOgD26OY0sxOaH3yIHE1h+TPqKS3BQiU+AvFJA=;
+        b=ZU2ITP+vIOj97drGZMpx8vVQ54lIhlsbZT22pJulST+hYEMaY/eRn0oQzgRZbUw8pu
+         G5EV8R9fdeimBGZsbvpO9PD/ASOca+5A2sVOZUx69izEjWQo8O/zVkTbMymt7ingCTjm
+         tLPWTUrxsXpnWkM/nJej/SCwhaJCE0ZBvtvcv6e5sNTwABQYyOtmQ4MXyXoPzSx+bJ4P
+         Ag7z6HD0WQWuKi4Wf6dn5E9/UvWSFLSJkNc0nR+o6l++XCA1JMT6C+t4b8GF87PITrSG
+         Ruvl2iGjzuZ3s+YEQBhwVscrcxW/AApA3ItfiVbWAB2/cArLdflNRHORIYqkcTrHhCfw
+         TTOA==
+X-Forwarded-Encrypted: i=1; AFNElJ+/M02yTM19gmCxY1XV8ii9vkkCv7ODUaokKPPeH3CczAge+bYi2JVp9y7r1OrsYiDNNC0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEYNgFNFX1+bpZwG/IZj9nY6BCbQy7S9Pw0OWwGZIKnpTL9q2L
+	AthfY+MtpcLYJg7jHYLVY+KDm3hO36fudx24LNQbe/3+SUQuHY0VGVDCs//z39JiuAhbz1XjywE
+	JIx1BdA==
+X-Received: from plpf11.prod.google.com ([2002:a17:903:3c4b:b0:2b0:51f0:272d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:c94d:b0:2b4:63bf:5535
+ with SMTP id d9443c01a7336-2beb073d568mr36887635ad.41.1779454190670; Fri, 22
+ May 2026 05:49:50 -0700 (PDT)
+Date: Fri, 22 May 2026 05:49:50 -0700
+In-Reply-To: <ab84153e33fbe7c25667f595c56b310d4d5a93ef.camel@infradead.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: wD6jP2B1rwjjsN56EgDW5keEJavFqXH4
-X-Proofpoint-ORIG-GUID: wD6jP2B1rwjjsN56EgDW5keEJavFqXH4
-X-Authority-Analysis: v=2.4 cv=NuHhtcdJ c=1 sm=1 tr=0 ts=6a104f3a cx=c_pps
- a=MfjaFnPeirRr97d5FC5oHw==:117 a=MfjaFnPeirRr97d5FC5oHw==:17
- a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22
- a=wpfVPzegXHpEFt3DAXn9:22 a=VwQbUJbxAAAA:8 a=QyXUC8HyAAAA:8 a=VabnemYjAAAA:8
- a=qM8KBkelLQ9gvC1fiHcA:9 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIyMDEyNiBTYWx0ZWRfX0ztNQtSSaa45
- saBdNys/J3YamVpegN+65EHfFdR7TVkSEWCT8Bb4zIrosxYWVLQr2j1mPrUgGUO+F7htsBLQFFX
- Uv8HIdsEb0g67OmLQlCkaWCcCI7vrsYkWZvMT/mj/ATpx0S0qIafxOSe+m7IWki5WlEsQPPORvU
- 8pSlU3DTOHmbGw4On9aEv69h75WbteVYh4u09mdE5c+HJ57q+zvNgtpCB9wm9Tt/cgdK58lEP+b
- ASdhEMe2lUc55nEBOiACfQFeOxZ0nNGuJeKGfww04RDGUHX4U5e0paHBXaLDkE0RsDRCw7W90Up
- nQxQLOIyR0+NClbefMBoh6R5SgIIi2FOVKNCss2cdLsaHHPa+ynt2d0fka27mua6SEPd5PLYVzf
- Kar2M+OPBN2cOn4V27hBhfU1eIS8KmW5VHK3GTz9NfcyAOCHR8Z9AzXae5fdvyIk7Mq5jDOEnhG
- +MMJh+6CnYThqyBfrTg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-22_03,2026-05-18_01,2025-10-01_01
+Mime-Version: 1.0
+References: <20260509224824.3264567-1-dwmw2@infradead.org> <20260509224824.3264567-28-dwmw2@infradead.org>
+ <3ad6cd109480772ade3c11f23b9c1d7a9855d67e.camel@infradead.org>
+ <ag-Hf2liLSX9q0rS@google.com> <ab84153e33fbe7c25667f595c56b310d4d5a93ef.camel@infradead.org>
+Message-ID: <ahBQ7mXNaTtouT3C@google.com>
+Subject: Re: [PATCH v4 27/30] KVM: x86: Add KVM_VCPU_TSC_EFFECTIVE_FREQ attribute
+From: Sean Christopherson <seanjc@google.com>
+To: David Woodhouse <dwmw2@infradead.org>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>, 
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul Durrant <paul@xen.org>, 
+	Jonathan Cameron <jic23@kernel.org>, Sascha Bischoff <Sascha.Bischoff@arm.com>, 
+	Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, 
+	Dongli Zhang <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Use IOMEM_ERR_PTR() when returning a void __iomem * rather than
-ERR_PTR().  This fixes a sparse warning, "different address spaces".
+On Thu, May 21, 2026, David Woodhouse wrote:
+> On Thu, 2026-05-21 at 15:30 -0700, Sean Christopherson wrote:
+> > On Thu, May 21, 2026, David Woodhouse wrote:
+> > > On Sat, 2026-05-09 at 23:46 +0100, David Woodhouse wrote:
+> > > > From: David Woodhouse <dwmw@amazon.co.uk>
+> > > That does leave userspace still needing a way to get the APIC bus
+> > > frequency, to populate CPUID. So maybe I'll just make an attribute
+> > > which returns that as a single value.
+> >=20
+> > Already exists, KVM_CAP_X86_APIC_BUS_CYCLES_NS.=C2=A0 The TDX architect=
+ure decided
+> > that unconditionally telling guests the virtual APIC bus runs at 400Mhz=
+ was a
+> > brilliant idea.
+>=20
+> Ah, thanks.
+>=20
+> So KVM always exposes 1GHz by default regardless of the actual host?
+> Which is why there's no *get* method?
+>=20
+> (Well... getting KVM_CAP_APIC_BUS_CYCLES_NS returns
+> APIC_BUS_CYCLE_NS_DEFAULT which is 1, so it's basically just returning
+> 1 like a lot of cap queries do, and *not* returning what the period is
+> actually set to)
 
-Fixes: 859dc0f6253b ("vfio/pci: Replace vfio_pci_core_setup_barmap() with vfio_pci_core_get_iomap()")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202605211601.U1OvmuqY-lkp@intel.com/
-Signed-off-by: Matt Evans <mattev@meta.com>
----
- include/linux/vfio_pci_core.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+Oh, that's just an oversight, definitely not intentional.  Easy enough to f=
+ix:
 
-diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
-index 7accd0eac457..4fa129fc5c64 100644
---- a/include/linux/vfio_pci_core.h
-+++ b/include/linux/vfio_pci_core.h
-@@ -244,10 +244,10 @@ static inline void __iomem __must_check *
- vfio_pci_core_get_iomap(struct vfio_pci_core_device *vdev, unsigned int bar)
- {
- 	if (WARN_ON_ONCE(bar >= PCI_STD_NUM_BARS))
--		return ERR_PTR(-EINVAL);
-+		return IOMEM_ERR_PTR(-EINVAL);
- 
- 	if (WARN_ON_ONCE(!vdev->barmap[bar]))
--		return ERR_PTR(-ENODEV);
-+		return IOMEM_ERR_PTR(-ENODEV);
- 
- 	return vdev->barmap[bar];
- }
--- 
-2.47.3
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 1616b2eec6e7..cd4a244ca0c5 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -2235,7 +2235,7 @@ int kvm_vm_ioctl_check_extension(struct kvm *kvm, lon=
+g ext)
+                r =3D tdp_enabled;
+                break;
+        case KVM_CAP_X86_APIC_BUS_CYCLES_NS:
+-               r =3D APIC_BUS_CYCLE_NS_DEFAULT;
++               r =3D kvm ? kvm->arch.apic_bus_cycle_ns : APIC_BUS_CYCLE_NS=
+_DEFAULT;
+                break;
+        case KVM_CAP_EXIT_HYPERCALL:
+                r =3D KVM_EXIT_HYPERCALL_VALID_MASK;
 
