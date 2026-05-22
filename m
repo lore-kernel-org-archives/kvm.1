@@ -1,330 +1,262 @@
-Received: from canpmsgout08.his.huawei.com (canpmsgout08.his.huawei.com [113.46.200.223])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 158673546EF;
-	Fri, 22 May 2026 09:39:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.223
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AED53BB132;
+	Fri, 22 May 2026 09:55:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779442757; cv=none; b=G5vA3kEn0vugILctNKj4UBqX31QvnPwSh7befXu0nyiuvAFmLT2CADJTE07lFlK1ilohNkqY72wa5/AOT4kUMJOQU1pDizWJp44J2+GkfpSM5Ylkq6Ym/C621t3rcABGiLGCsi+45orkHLuxpAoDvGsrLHFfB5lCtHwWRIvqH7s=
+	t=1779443751; cv=none; b=tUQ/gq8L5saVFw5C0+p0sCMANF2FAf2Rxeiwc0MoeUj0YgGkxriPpUZSerGeD/ULQi+/VpMISnepSTJgYoDgHNnpydusWG0a7QFVQAXjnb/oKGpsx2HCgZebpUhCSdD0lf0oI3UEUpHo/DBTmI1ghuDWB3XNh5cQIwty9v+aPxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779442757; c=relaxed/simple;
-	bh=gzvPsvTMo0uNOB3nKRAAOE8N06fF1Fym2tL/apRExkY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=XMKM0RcfOibx69sayfLwsHcrtbNpYZFVdYUpJngZc3imK04xQerc5tekzw3kfeQC0H5Z0iGx+bBwDI+zp/dndk1SlIiULYdxXwYOwtShHQrxjn5JoG4lCMRrsFXEgIHc8GOADnY+x1sW6amTdjNgqAVJyLlcj15jmdJfnjUsuQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=NbYB1hOm; arc=none smtp.client-ip=113.46.200.223
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1779443751; c=relaxed/simple;
+	bh=EFHlHMm27XjekJ+YmqGifcP1bo+19jO3UmkVjAAqnWA=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=t/VKZbILmxcJWLibFCtAFq8ZdmGRMnGVTaAf5JKopyh3EYzmJYnyXh2Bbrwc7X0JEUPEZYBECnytlc27/IOmPzLZH5i92RpOkfZdi/lHJO1aRx5lt+fCT5DFxtHI3OyepfJm2H22HR3o8Uj84PpkijqxpW2ICRoLfBHAVuf1130=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vm8X/Sot; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="NbYB1hOm"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=18IpQFK6dTM2RZyRkp5IVjRuUDySq0z04o+aIeuNoFI=;
-	b=NbYB1hOmuews3BbtG6xcgYMrJ08x0U4MuYYHf058N1h3k/QSldFoIkSoBMuuntO3yt7hgYDK1
-	nMX11vQnyhbQ7KA2PgzEa0A8hTOSYYAuGNfyEJsqcFhWU464byOFCaSt4fV9B+CPCE8lQRrNbU2
-	ESrhALoN9mW8lRaKYNPJvvU=
-Received: from mail.maildlp.com (unknown [172.19.163.15])
-	by canpmsgout08.his.huawei.com (SkyGuard) with ESMTPS id 4gMKly5cq9zmVXS;
-	Fri, 22 May 2026 17:31:26 +0800 (CST)
-Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
-	by mail.maildlp.com (Postfix) with ESMTPS id 950A540571;
-	Fri, 22 May 2026 17:39:10 +0800 (CST)
-Received: from [10.67.121.161] (10.67.121.161) by
- kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Fri, 22 May 2026 17:39:09 +0800
-Message-ID: <60e77af2-557c-4a6c-8235-ab7142da77f5@huawei.com>
-Date: Fri, 22 May 2026 17:39:09 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vm8X/Sot"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B311F000E9;
+	Fri, 22 May 2026 09:55:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779443750;
+	bh=JRFSjJVMhkW1cVbO5EZHBHBVGeP4fldmDfewlQIeZHQ=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=Vm8X/Sothl2Nn/zf0Bb0WEHP96x5dzotEE5P5IfPVfKP32zy7i+W8E27CQyufPErX
+	 UvnHByI5C/V2SpU5wFfnFkXB2vxCS/Mpw7JwI42eKTi3OT1Luad62k4ijTYLmBNaod
+	 S9izOaUpvj1e4VDRtbfgDbGfFlEuG+8lQDQZ4DMp5RiePq/OnPz/+dh0fiZWRjkGHG
+	 WFLKBYz8Sa49i4A1GZR6OqOkJx9P89uk7Iych/5dpSkvgpSZ7HOwPtRIqfM+H3tK/6
+	 JPIw5IQQf4u9OcbtrZlIiQg1LoEQNWV3eSDEHQlklsCp4ITfg+c8QflxnUAQDvwoHt
+	 IXjWf22m21x3w==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wQMba-00000005AaP-0q1s;
+	Fri, 22 May 2026 09:55:47 +0000
+Date: Fri, 22 May 2026 10:58:56 +0100
+Message-ID: <87jysvahpb.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu
+ <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V"
+ <aneesh.kumar@kernel.org>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	WeiLin.Chang@arm.com,
+	Lorenzo.Pieralisi2@arm.com
+Subject: Re: [PATCH v14 04/44] arm64: RMI: Add SMC definitions for calling the RMM
+In-Reply-To: <3261b04f-1a0c-451d-8981-1e2bccc8a9ca@arm.com>
+References: <20260513131757.116630-1-steven.price@arm.com>
+	<20260513131757.116630-5-steven.price@arm.com>
+	<86ecj5vsu4.wl-maz@kernel.org>
+	<3261b04f-1a0c-451d-8981-1e2bccc8a9ca@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 4/5] vfio/pci: Add PCIe TPH configuration space
- virtualization
-To: Alex Williamson <alex@shazbot.org>
-CC: <jgg@ziepe.ca>, <wathsala.vithanage@arm.com>, <helgaas@kernel.org>,
-	<wei.huang2@amd.com>, <wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
-	<liuyonglong@huawei.com>, <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
-References: <20260518071701.25177-1-fengchengwen@huawei.com>
- <20260518071701.25177-5-fengchengwen@huawei.com>
- <20260521221015.73a17820@shazbot.org>
-Content-Language: en-US
-From: fengchengwen <fengchengwen@huawei.com>
-In-Reply-To: <20260521221015.73a17820@shazbot.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: kwepems200001.china.huawei.com (7.221.188.67) To
- kwepemk500009.china.huawei.com (7.202.194.94)
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On 5/22/2026 12:10 PM, Alex Williamson wrote:
-> On Mon, 18 May 2026 15:17:00 +0800
-> Chengwen Feng <fengchengwen@huawei.com> wrote:
+On Thu, 21 May 2026 16:33:09 +0100,
+Steven Price <steven.price@arm.com> wrote:
 > 
->> Add support for virtualizing the PCIe TPH (Transaction Processing Hints)
->> control register. TPH may break platform isolation, so add a module
->> parameter "enable_unsafe_tph" to allow administrators to globally control
->> this feature.
->>
->> TPH control register writes are mediated to only allow valid mode settings,
->> and TPH is automatically disabled when VFIO takes ownership of the device
->> or when userspace closes the device file descriptor.
->>
->> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
->> ---
->>  drivers/vfio/pci/vfio_pci.c        | 13 ++++++++++++-
->>  drivers/vfio/pci/vfio_pci_config.c | 28 ++++++++++++++++++++++++++++
->>  drivers/vfio/pci/vfio_pci_core.c   | 16 +++++++++++++++-
->>  include/linux/vfio_pci_core.h      |  4 +++-
->>  4 files changed, 58 insertions(+), 3 deletions(-)
->>
->> diff --git a/drivers/vfio/pci/vfio_pci.c b/drivers/vfio/pci/vfio_pci.c
->> index 0c771064c0b8..6d73668459cf 100644
->> --- a/drivers/vfio/pci/vfio_pci.c
->> +++ b/drivers/vfio/pci/vfio_pci.c
->> @@ -60,6 +60,12 @@ static bool disable_denylist;
->>  module_param(disable_denylist, bool, 0444);
->>  MODULE_PARM_DESC(disable_denylist, "Disable use of device denylist. Disabling the denylist allows binding to devices with known errata that may lead to exploitable stability or security issues when accessed by untrusted users.");
->>  
->> +#ifdef CONFIG_PCIE_TPH
->> +static bool enable_unsafe_tph;
->> +module_param(enable_unsafe_tph, bool, 0444);
->> +MODULE_PARM_DESC(enable_unsafe_tph, "Enable PCIe TPH (Transaction Processing Hints) support. It may break platform isolation. If you do not know what this is for, step away. (default: false)");
->> +#endif
->> +
->>  static bool vfio_pci_dev_in_denylist(struct pci_dev *pdev)
->>  {
->>  	switch (pdev->vendor) {
->> @@ -257,12 +263,17 @@ static int __init vfio_pci_init(void)
->>  {
->>  	int ret;
->>  	bool is_disable_vga = true;
->> +	bool is_enable_unsafe_tph = false;
->>  
->>  #ifdef CONFIG_VFIO_PCI_VGA
->>  	is_disable_vga = disable_vga;
->>  #endif
->> +#ifdef CONFIG_PCIE_TPH
->> +	is_enable_unsafe_tph = enable_unsafe_tph;
->> +#endif
->>  
->> -	vfio_pci_core_set_params(nointxmask, is_disable_vga, disable_idle_d3);
->> +	vfio_pci_core_set_params(nointxmask, is_disable_vga, disable_idle_d3,
->> +				 is_enable_unsafe_tph);
->>  
->>  	/* Register and scan for devices */
->>  	ret = pci_register_driver(&vfio_pci_driver);
->> diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_pci_config.c
->> index a10ed733f0e3..6da35c2313b9 100644
->> --- a/drivers/vfio/pci/vfio_pci_config.c
->> +++ b/drivers/vfio/pci/vfio_pci_config.c
->> @@ -22,6 +22,7 @@
->>  
->>  #include <linux/fs.h>
->>  #include <linux/pci.h>
->> +#include <linux/pci-tph.h>
->>  #include <linux/uaccess.h>
->>  #include <linux/vfio.h>
->>  #include <linux/slab.h>
->> @@ -35,6 +36,8 @@
->>  	((offset >= PCI_BASE_ADDRESS_0 && offset < PCI_BASE_ADDRESS_5 + 4) || \
->>  	 (offset >= PCI_ROM_ADDRESS && offset < PCI_ROM_ADDRESS + 4))
->>  
->> +extern bool enable_unsafe_tph;
->> +
->>  /*
->>   * Lengths of PCI Config Capabilities
->>   *   0: Removed from the user visible capability list
->> @@ -313,6 +316,30 @@ static int vfio_virt_config_read(struct vfio_pci_core_device *vdev, int pos,
->>  	return count;
->>  }
->>  
->> +static int vfio_pci_tph_config_write(struct vfio_pci_core_device *vdev, int pos,
->> +				     int count, struct perm_bits *perm,
->> +				     int offset, __le32 val)
->> +{
->> +	u32 data = le32_to_cpu(val);
->> +
->> +	guard(mutex)(&vdev->tph_lock);
->> +
->> +	if (!enable_unsafe_tph)
->> +		return count;
->> +
->> +	if (offset != PCI_TPH_CTRL)
->> +		return count;
->> +
->> +	/* Only permit write TPH mode. */
->> +	data &= PCI_TPH_CTRL_MODE_SEL_MASK;
->> +	if (data == PCI_TPH_ST_IV_MODE || data == PCI_TPH_ST_DS_MODE)
->> +		pcie_enable_tph(vdev->pdev, data);
->> +	else if (data == PCI_TPH_ST_NS_MODE)
->> +		pcie_disable_tph(vdev->pdev);
->> +
->> +	return count;
->> +}
+> On 21/05/2026 13:40, Marc Zyngier wrote:
+> > On Wed, 13 May 2026 14:17:12 +0100,
+> > Steven Price <steven.price@arm.com> wrote:
+> >>
+> >> The RMM (Realm Management Monitor) provides functionality that can be
+> >> accessed by SMC calls from the host.
+> >>
+> >> The SMC definitions are based on DEN0137[1] version 2.0-bet1
+> >>
+> >> [1] https://developer.arm.com/documentation/den0137/2-0bet1/
+> >>
+> >> Signed-off-by: Steven Price <steven.price@arm.com>
+> >> ---
+> >> Changes since v13:
+> >>  * Updated to RMM spec v2.0-bet1
+> >> Changes since v12:
+> >>  * Updated to RMM spec v2.0-bet0
+> >> Changes since v9:
+> >>  * Corrected size of 'ripas_value' in struct rec_exit. The spec states
+> >>    this is an 8-bit type with padding afterwards (rather than a u64).
+> >> Changes since v8:
+> >>  * Added RMI_PERMITTED_GICV3_HCR_BITS to define which bits the RMM
+> >>    permits to be modified.
+> >> Changes since v6:
+> >>  * Renamed REC_ENTER_xxx defines to include 'FLAG' to make it obvious
+> >>    these are flag values.
+> >> Changes since v5:
+> >>  * Sorted the SMC #defines by value.
+> >>  * Renamed SMI_RxI_CALL to SMI_RMI_CALL since the macro is only used for
+> >>    RMI calls.
+> >>  * Renamed REC_GIC_NUM_LRS to REC_MAX_GIC_NUM_LRS since the actual
+> >>    number of available list registers could be lower.
+> >>  * Provided a define for the reserved fields of FeatureRegister0.
+> >>  * Fix inconsistent names for padding fields.
+> >> Changes since v4:
+> >>  * Update to point to final released RMM spec.
+> >>  * Minor rearrangements.
+> >> Changes since v3:
+> >>  * Update to match RMM spec v1.0-rel0-rc1.
+> >> Changes since v2:
+> >>  * Fix specification link.
+> >>  * Rename rec_entry->rec_enter to match spec.
+> >>  * Fix size of pmu_ovf_status to match spec.
+> >> ---
+> >>  arch/arm64/include/asm/rmi_smc.h | 448 +++++++++++++++++++++++++++++++
+> >>  1 file changed, 448 insertions(+)
+> >>  create mode 100644 arch/arm64/include/asm/rmi_smc.h
+> >>
+> >> diff --git a/arch/arm64/include/asm/rmi_smc.h b/arch/arm64/include/asm/rmi_smc.h
+> >> new file mode 100644
+> >> index 000000000000..a09b7a631fef
+> >> --- /dev/null
+> >> +++ b/arch/arm64/include/asm/rmi_smc.h
+> >> @@ -0,0 +1,448 @@
+> >> +/* SPDX-License-Identifier: GPL-2.0 */
+> >> +/*
+> >> + * Copyright (C) 2023-2026 ARM Ltd.
+> >> + *
+> >> + * The values and structures in this file are from the Realm Management Monitor
+> >> + * specification (DEN0137) version 2.0-bet1:
+> >> + * https://developer.arm.com/documentation/den0137/2-0bet1/
+> > 
+> > How long is this spec going to be available on the ARM web site, which
+> > has a tendency of being reorganised every other week? And there is
+> > already a beta2.
 > 
-> I don't understand the virtualization here, the Requester Enable bits
-> control what's actually enabled, not the Mode Selection bits.  All
-> three of these are valid modes that can be enabled, why aren't they
-> toggled by the value written to PCI_TPH_CTRL_REQ_EN_MASK?
+> Obviously I can't predict the next reorganisation - but at least it's a
+> link that could be fed into archive.org or similar.
 
-OK, will fix in next version
-{
-	...
-	mode = data & PCI_TPH_CTRL_MODE_SEL_MASK;
-	req_en = data & PCI_TPH_CTRL_REQ_EN_MASK;
-	if (req_en && (mode == PCI_TPH_ST_IV_MODE || mode == PCI_TPH_ST_DS_MODE))
-		pcie_enable_tph(vdev->pdev, data);
-	else if (!req_en)
-		pcie_disable_tph(vdev->pdev);
-	...
-}
+I found that the PDF spec was less susceptible to creative nonsense,
+and people can download it for future reference, whereas ARM has
+happily *deleted* specs from the website over time (try to find PSCI
+0.1, for example...).
+
+[...]
+
+> >> +struct realm_params {
+> >> +	union { /* 0x0 */
+> >> +		struct {
+> >> +			u64 flags;
+> >> +			u64 s2sz;
+> >> +			u64 sve_vl;
+> >> +			u64 num_bps;
+> >> +			u64 num_wps;
+> >> +			u64 pmu_num_ctrs;
+> >> +			u64 hash_algo;
+> >> +			u64 num_aux_planes;
+> >> +		};
+> >> +		u8 padding0[0x400];
+> > 
+> > SZ_1K? And similarly all over the shop?
+> 
+> I'm a bit less sure that makes the code more readable - these structures
+> are a bit of a pain because they are somewhat sparse. I've left a
+> comment where the beginning of each union is, and personally I find it
+> easier to see 0x0 + 0x400 == 0x400 rather than trying to work out what
+> SZ_1K is in hex. This is particularly the case in terms of:
+> 
+> > struct rec_params {
+> > 	union { /* 0x0 */
+> > 		u64 flags;
+> > 		u8 padding0[0x100];
+> > 	};
+> > 	union { /* 0x100 */
+> > 		u64 mpidr;
+> > 		u8 padding1[0x100];
+> > 	};
+> > 	union { /* 0x200 */
+> > 		u64 pc;
+> > 		u8 padding2[0x100];
+> > 	};
+> > 	union { /* 0x300 */
+> > 		u64 gprs[REC_CREATE_NR_GPRS];
+> > 		u8 padding3[0xd00];
+> > 	};
+> > };
+> 
+> Where 0xd00 doesn't even have a correspoding SZ_ define.
+
+Indeed, but it is (SZ_4K - SZ_256 * 3). And a lot of these structures
+seem to be designed to form a 4kB blob. I'm sure we can make use of
+that information (BUILD_BUG_ON?).
 
 > 
-> Isn't this patch ordering wrong, why are we allowing tph to be enabled
-> and disabled before we've provided a mechanism to set/get steering tags?
-
-Regarding patch order: TPH must be enabled first before accessing steering tag entries.
-The tag query interfaces rely on runtime TPH state and request type info stored in device struct,
-which is only initialized after successful TPH enabling. So current order is functional necessary.
-
+> The RMM deals with this with macro magic:
 > 
->> +
->>  static struct perm_bits direct_ro_perms = {
->>  	.readfn = vfio_direct_config_read,
->>  };
->> @@ -1121,6 +1148,7 @@ int __init vfio_pci_init_perm_bits(void)
->>  	ret |= init_pci_ext_cap_err_perm(&ecap_perms[PCI_EXT_CAP_ID_ERR]);
->>  	ret |= init_pci_ext_cap_pwr_perm(&ecap_perms[PCI_EXT_CAP_ID_PWR]);
->>  	ecap_perms[PCI_EXT_CAP_ID_VNDR].writefn = vfio_raw_config_write;
->> +	ecap_perms[PCI_EXT_CAP_ID_TPH].writefn = vfio_pci_tph_config_write;
->>  	ecap_perms[PCI_EXT_CAP_ID_DVSEC].writefn = vfio_raw_config_write;
->>  
->>  	if (ret)
->> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
->> index 050e7542952e..0d0140202280 100644
->> --- a/drivers/vfio/pci/vfio_pci_core.c
->> +++ b/drivers/vfio/pci/vfio_pci_core.c
->> @@ -29,6 +29,7 @@
->>  #include <linux/sched/mm.h>
->>  #include <linux/iommufd.h>
->>  #include <linux/pci-p2pdma.h>
->> +#include <linux/pci-tph.h>
->>  #if IS_ENABLED(CONFIG_EEH)
->>  #include <asm/eeh.h>
->>  #endif
->> @@ -41,6 +42,7 @@
->>  static bool nointxmask;
->>  static bool disable_vga;
->>  static bool disable_idle_d3;
->> +bool enable_unsafe_tph;
->>  
->>  static void vfio_pci_eventfd_rcu_free(struct rcu_head *rcu)
->>  {
->> @@ -771,6 +773,11 @@ void vfio_pci_core_close_device(struct vfio_device *core_vdev)
->>  #endif
->>  	vfio_pci_dma_buf_cleanup(vdev);
->>  
->> +	/* Disable TPH when userspace closes the device FD */
->> +	mutex_lock(&vdev->tph_lock);
->> +	pcie_disable_tph(vdev->pdev);
->> +	mutex_unlock(&vdev->tph_lock);
->> +
+> > struct rmi_rec_params {
+> >         /* Flags */
+> >         SET_MEMBER_RMI(unsigned long flags, 0, 0x100);  /* Offset 0 */
+> >         /* MPIDR of the REC */
+> >         SET_MEMBER_RMI(unsigned long mpidr, 0x100, 0x200);      /* 0x100 */
+> >         /* Program counter */
+> >         SET_MEMBER_RMI(unsigned long pc, 0x200, 0x300); /* 0x200 */
+> >         /* General-purpose registers */
+> >         SET_MEMBER_RMI(unsigned long gprs[REC_CREATE_NR_GPRS], 0x300, 0x1000); /* 0x300 */
+> > };
 > 
-> We generally don't need to lock on device close, there's nothing it can
-> race with.  Also this should happen in the below function after the
-> device is known to be back in D0.
+> where the offsets are just directly encoded in the macro - but it's not
+> an especially robust macro and I'm not convinced it's more readable.
 
-I'll remove unnecessary mutex lock in device close path as there is no concurrent race risk.
-Also adjust TPH disable invocation to after device returns to D0 state.
+I think this is just as horrible, but at least it seems to take the
+boundaries of the structure into account.
 
+>
+> I'm happy to hear other suggestions on how to encode this neatly.
+
+Honestly, I wouldn't mind having the structures described in a more
+abstract way and then pre-processed to generate the include files. If
+the architectural MRS wasn't so huge, I would have added it to the
+kernel and used that directly for KVM.
+
+>
+> > I haven't checked the details of the encodings (life is too short),
+> > but I wonder how much of this exists as an MRS and could be
+> > automatically generated?
 > 
-> In general the tph_lock seems more like it's protecting PCI-core since
-> tph enable/disable doesn't serialize itself.
+> Automatically generating this would be good - I'm not sure whether we
+> have a (public) source available to generate from at the moment. I have
+> tried to methodically work through the spec when updating this file, but
+> as Gavin has already pointed out there was at least one mistake (in
+> currently unused definitions) this time.
 
-The tph_lock is designed to serialize all userspace triggered TPH operations on the same device.
+I'm slightly baffled that even the RMM is written this way. Given the
+formalism used in the RMM spec, I was expecting that you'd have a
+bunch of JSON at hand and able to generate any output from that. Doing
+this stuff by hand is both incredibly dull work *and* extremely error
+prone.
 
-> 
->>  	vfio_pci_core_disable(vdev);
->>  
->>  	mutex_lock(&vdev->igate);
->> @@ -2132,6 +2139,7 @@ int vfio_pci_core_init_dev(struct vfio_device *core_vdev)
->>  	mutex_init(&vdev->igate);
->>  	spin_lock_init(&vdev->irqlock);
->>  	mutex_init(&vdev->ioeventfds_lock);
->> +	mutex_init(&vdev->tph_lock);
->>  	INIT_LIST_HEAD(&vdev->dummy_resources_list);
->>  	INIT_LIST_HEAD(&vdev->ioeventfds_list);
->>  	INIT_LIST_HEAD(&vdev->sriov_pfs_item);
->> @@ -2151,6 +2159,7 @@ void vfio_pci_core_release_dev(struct vfio_device *core_vdev)
->>  	struct vfio_pci_core_device *vdev =
->>  		container_of(core_vdev, struct vfio_pci_core_device, vdev);
->>  
->> +	mutex_destroy(&vdev->tph_lock);
->>  	mutex_destroy(&vdev->igate);
->>  	mutex_destroy(&vdev->ioeventfds_lock);
->>  	kfree(vdev->region);
->> @@ -2240,6 +2249,9 @@ int vfio_pci_core_register_device(struct vfio_pci_core_device *vdev)
->>  	if (!disable_idle_d3)
->>  		pm_runtime_put(dev);
->>  
->> +	/* Disable TPH when taking over ownership of the device */
->> +	pcie_disable_tph(pdev);
->> +
-> 
-> Seems like a vfio_pci_core_enable() operation, why do we care if it's
-> enabled here?  Thanks,
+Thanks,
 
-For TPH disable during device takeover: VFIO ownership transfer triggers device reset,
-which clears hardware TPH registers and ST tables. We call pcie_disable_tph to synchronize
-software state with hardware reset status.
+	M.
 
-Thanks
-
-> 
-> Alex
-> 
->>  	ret = vfio_register_group_dev(&vdev->vdev);
->>  	if (ret)
->>  		goto out_power;
->> @@ -2605,11 +2617,13 @@ static void vfio_pci_dev_set_try_reset(struct vfio_device_set *dev_set)
->>  }
->>  
->>  void vfio_pci_core_set_params(bool is_nointxmask, bool is_disable_vga,
->> -			      bool is_disable_idle_d3)
->> +			      bool is_disable_idle_d3,
->> +			      bool is_enable_unsafe_tph)
->>  {
->>  	nointxmask = is_nointxmask;
->>  	disable_vga = is_disable_vga;
->>  	disable_idle_d3 = is_disable_idle_d3;
->> +	enable_unsafe_tph = is_enable_unsafe_tph;
->>  }
->>  EXPORT_SYMBOL_GPL(vfio_pci_core_set_params);
->>  
->> diff --git a/include/linux/vfio_pci_core.h b/include/linux/vfio_pci_core.h
->> index 89165b769e5c..741d5bcc7ba3 100644
->> --- a/include/linux/vfio_pci_core.h
->> +++ b/include/linux/vfio_pci_core.h
->> @@ -142,6 +142,7 @@ struct vfio_pci_core_device {
->>  	struct notifier_block	nb;
->>  	struct rw_semaphore	memory_lock;
->>  	struct list_head	dmabufs;
->> +	struct mutex		tph_lock;
->>  };
->>  
->>  enum vfio_pci_io_width {
->> @@ -157,7 +158,8 @@ int vfio_pci_core_register_dev_region(struct vfio_pci_core_device *vdev,
->>  				      const struct vfio_pci_regops *ops,
->>  				      size_t size, u32 flags, void *data);
->>  void vfio_pci_core_set_params(bool nointxmask, bool is_disable_vga,
->> -			      bool is_disable_idle_d3);
->> +			      bool is_disable_idle_d3,
->> +			      bool is_enable_unsafe_tph);
->>  void vfio_pci_core_close_device(struct vfio_device *core_vdev);
->>  int vfio_pci_core_init_dev(struct vfio_device *core_vdev);
->>  void vfio_pci_core_release_dev(struct vfio_device *core_vdev);
-> 
-
+-- 
+Jazz isn't dead. It just smells funny.
