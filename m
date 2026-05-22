@@ -1,137 +1,135 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A0FB383338;
-	Fri, 22 May 2026 20:45:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 276413438AA
+	for <kvm@vger.kernel.org>; Fri, 22 May 2026 21:19:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779482721; cv=none; b=AiBs7Tck/pUlb4cnDdiYHqUZyZEP/AnN/3h7rezJKvPkRqEIAQPcLuIYkMvdyfD/oD0/3AU2RfOy9zaNzYJgZR5z6PGqtMkoPeTKsAyY7Wn4djToHsURg4VOL2wSKH0Q/XdsHKy9X/rM3jqrXHcLDvaYcenFT4JtkJLIFmBuXXc=
+	t=1779484754; cv=none; b=iepp2hH4wo7lhx7CPw4hHE2lynTXteBhC1GaJQ7JyDW6Wg6lhZeSNPb6iTExWXrrIjWcYenSub3RVLPP+CklJ/NO/abmH7UHXTVVBDxloiRFd4g6hDcMf64yDg//VG66JqppQtsLiwrsY4gj/7RJZlFs1Q15t3/uLU1rBgJnigA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779482721; c=relaxed/simple;
-	bh=TVMOILIkybDF4ZAoPGUr1TGPQPrSGZYxBbN5yDurWpw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=DSzpmZe5h/y3OcTtoMjFrQT/oS+92b5Zw1Mms1HK1hqj+BGSmGiP6NvnBhuX0YoaiDxLn3lF/6YR+OhA8SMQ10KGxXWCI8DZZfEHRhPrq1qxxyLiv2acuTe/M4pehHLt0GehwD3E6a5SsxdAjPtR8REUWL2b042jl5PkU4rABj0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RzJl5n6Z; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1779484754; c=relaxed/simple;
+	bh=XRsEQ0Na/g02daLpn9PGbahWZxa/BfY7Th5AqJ+Jnho=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=VIwCbYIG27hHDYTj1G2ORxZlvSuYdHZNw5TDvOM116T265e432gv4yOYIq8VxVK1Zq6aOjLKjua8BfF2dAFsZGN8CymjXcwHHhIykETFjNMH61/SMB2XA49vCPcUP2KMT2W5D/wSbOGHIh76SoxcrniigXXlvgRfbspHhxcIG+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QCLF7f2L; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RzJl5n6Z"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id E5A6AC2BCC4;
-	Fri, 22 May 2026 20:45:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779482721;
-	bh=TVMOILIkybDF4ZAoPGUr1TGPQPrSGZYxBbN5yDurWpw=;
-	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=RzJl5n6ZhwXUoD4/Yi6W12D8sD2WeCO2cyOqm/81jVCYjFdB6ZbmnefTKfBPBF36Y
-	 hNZG8sTkJuknwqijXQkeXM6YE1aNZz8lVD1+LgznNQC5kC7OFIf+nhb0cQ7squ9kBb
-	 ZRYkBKzhLvhpXiF22XjlG21ZBc1wEcQVENc98fSdL01X++lEbmcss/3DZymZ4CfFND
-	 RqvNom9MmNRwpfGR67bfdd1DFc2FlzmINT/0sgZXTx6H2ER/LTlqgx3Wa22tzWI5PJ
-	 yaczHVgiRRTobIzqP2Oh2O6ItWfCxa/5qV/XpGgbwyT5EeEak7jYUMboZ9aT+9HVMT
-	 V/OIbArCY2ibw==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id D2207CD5BAC;
-	Fri, 22 May 2026 20:45:20 +0000 (UTC)
-From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 22 May 2026 13:45:08 -0700
-Subject: [PATCH 2/3] KVM: guest_memfd: Fix possible signed integer overflow
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QCLF7f2L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECF5D1F000E9;
+	Fri, 22 May 2026 21:19:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779484753;
+	bh=kBh5CRzcfYVKfGv9wpF1dTrMFLAd6hLVpRHVvprfsOI=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=QCLF7f2LKMR4PgLS7jjLOb2ucE+coCNBWOCq11fQXBaNVqsn4GTeuX4c1AHVD8NhW
+	 0fRWKBt28C1raUbIYVJuHxgSBnvX4GVI4/ItiZPa6PSNTMM0acZVVfAxtCC8ykPccc
+	 lKdOJrVDk6ojTcEZsvGi0vheTiq2d5UI8bLCSiJvKmRYrmRoDj2t4T+X8mYNOlS9bf
+	 1u0DGpd+a5RYoGiITN7j7RVFOHlUnets/IAREW0cnaf3+QtvP2+jU/asKozG9gG58W
+	 L+t4E0hwX3EyYNm9NTgI/BjJ5XRJeT8k/m4pH1PyU/IqNa+lKrC/xBz9uiy7CBT+of
+	 0W/MiKG2Ci0ng==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH 1/3] KVM: guest_memfd: Use write permissions when
+ GUP-ing source pages
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Ackerley Tng via B4 Relay" <devnull+ackerleytng.google.com@kernel.org>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260522-fix-sev-gmem-post-populate-v1-1-9fc8d6437b65@google.com>
+References: <20260522-fix-sev-gmem-post-populate-v1-1-9fc8d6437b65@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Fri, 22 May 2026 21:19:12 +0000
+Message-Id: <20260522211912.ECF5D1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260522-fix-sev-gmem-post-populate-v1-2-9fc8d6437b65@google.com>
-References: <20260522-fix-sev-gmem-post-populate-v1-0-9fc8d6437b65@google.com>
-In-Reply-To: <20260522-fix-sev-gmem-post-populate-v1-0-9fc8d6437b65@google.com>
-To: Sean Christopherson <seanjc@google.com>, 
- Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, 
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
- Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
- "H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, 
- Rick Edgecombe <rick.p.edgecombe@intel.com>, 
- Vishal Annapurve <vannapurve@google.com>, Yan Zhao <yan.y.zhao@intel.com>, 
- Michael Roth <michael.roth@amd.com>, 
- Isaku Yamahata <isaku.yamahata@intel.com>, 
- Chao Peng <chao.p.peng@linux.intel.com>, Xiaoyao Li <xiaoyao.li@intel.com>, 
- Zongyao Chen <ZongYao.Chen@linux.alibaba.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-coco@lists.linux.dev, Yu Zhang <yu.c.zhang@linux.intel.com>, 
- Fuad Tabba <tabba@google.com>, Ackerley Tng <ackerleytng@google.com>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779482720; l=2333;
- i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=ofKqXIIrcexdOcp4E1N06pRFNz3oEbe3m6kkux6/laU=;
- b=SG32xTxrOUR3hqoEwkOB131em+YX++oBZh5F0nl7lNjx0k0vZB4nM12YJ7TKtw9JPbxVUT7fz
- b3RmdI6J4DRDbcJJPReO/gjYv5R8oRJ6WED/y7s+F1VstD5Q+HllT8r
-X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
- pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
-X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
- auth_id=649
-X-Original-From: Ackerley Tng <ackerleytng@google.com>
-Reply-To: ackerleytng@google.com
 
-From: Sean Christopherson <seanjc@google.com>
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-The caller, kvm_set_memory_region(), checks for an overflow in an unsigned
-u64 guest_memfd_offset. When guest_memfd_offset is passed to kvm_gmem_bind,
-it is cast into a signed 64-bit integer.
+Pre-existing issues:
+- [High] Modifications to the pinned user space source page (`src_page`) ar=
+e not tracked with `set_page_dirty_lock()`, risking silent data loss if the=
+ page is evicted.
+- [High] Userspace can maliciously trigger a `WARN_ON_ONCE` kernel panic by=
+ passing a zero `uaddr` for non-ZERO page types, leading to a potential den=
+ial of service.
+--
 
-Hence, a large 64-bit offset could result in a negative loff_t, which could
-result in the overflow checks failing.
+commit 6a7184de221e96f7e4e45a9996f99d0f23dabd6a
+Author: Sean Christopherson <seanjc@google.com>
 
-Make kvm_gmem_bind() take u64 instead of loff_t to consistently deal with
-unsigned values to avoid this issue.
+KVM: guest_memfd: Use write permissions when GUP-ing source pages
 
-Fixes: a7800aa80ea4d ("KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memory")
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[Use size_t for size instead of u64]
-Signed-off-by: Ackerley Tng <ackerleytng@google.com>
----
- virt/kvm/guest_memfd.c | 7 +++----
- virt/kvm/kvm_mm.h      | 2 +-
- 2 files changed, 4 insertions(+), 5 deletions(-)
+sev_gmem_post_populate() may write to the source page if there was an error
+while performing SNP_LAUNCH_UPDATE.
 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 07d8db344872b..d203135969d13 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -640,9 +640,9 @@ int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args)
- }
- 
- int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
--		  unsigned int fd, loff_t offset)
-+		  unsigned int fd, u64 offset)
- {
--	loff_t size = slot->npages << PAGE_SHIFT;
-+	size_t size = slot->npages << PAGE_SHIFT;
- 	unsigned long start, end;
- 	struct gmem_file *f;
- 	struct inode *inode;
-@@ -664,8 +664,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
- 
- 	inode = file_inode(file);
- 
--	if (offset < 0 || !PAGE_ALIGNED(offset) ||
--	    offset + size > i_size_read(inode))
-+	if (!PAGE_ALIGNED(offset) || offset + size > i_size_read(inode))
- 		goto err;
- 
- 	filemap_invalidate_lock(inode->i_mapping);
-diff --git a/virt/kvm/kvm_mm.h b/virt/kvm/kvm_mm.h
-index 9fcc5d5b7f8d0..23813d74ce709 100644
---- a/virt/kvm/kvm_mm.h
-+++ b/virt/kvm/kvm_mm.h
-@@ -72,7 +72,7 @@ int kvm_gmem_init(struct module *module);
- void kvm_gmem_exit(void);
- int kvm_gmem_create(struct kvm *kvm, struct kvm_create_guest_memfd *args);
- int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
--		  unsigned int fd, loff_t offset);
-+		  unsigned int fd, u64 offset);
- void kvm_gmem_unbind(struct kvm_memory_slot *slot);
- #else
- static inline int kvm_gmem_init(struct module *module)
+> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
+> --- a/arch/x86/kvm/svm/sev.c
+> +++ b/arch/x86/kvm/svm/sev.c
+> @@ -2469,6 +2469,7 @@ static int snp_launch_update(struct kvm *kvm, struc=
+t kvm_sev_cmd *argp)
+>  	sev_populate_args.type =3D params.type;
+> =20
+>  	count =3D kvm_gmem_populate(kvm, params.gfn_start, src, npages,
+> +				  params.type =3D=3D KVM_SEV_SNP_PAGE_TYPE_CPUID,
+>  				  sev_gmem_post_populate, &sev_populate_args);
 
--- 
-2.54.0.794.g4f17f83d09-goog
+[Severity: High]
+This is a pre-existing issue, but could userspace intentionally trigger a
+WARN_ON_ONCE kernel panic here by passing a zero uaddr for non-ZERO page
+types?
 
+In snp_launch_update(), if userspace provides params.uaddr =3D 0 alongside a
+non-ZERO page type (e.g., KVM_SEV_SNP_PAGE_TYPE_CPUID), src is set to NULL
+because 0 bypasses the PAGE_ALIGNED(src) validation.
 
+When kvm_gmem_populate() is called with src =3D NULL, it skips
+get_user_pages_fast() and leaves src_page as NULL. The __kvm_gmem_populate()
+function then invokes the sev_gmem_post_populate() callback with
+src_page =3D NULL, which triggers the WARN_ON_ONCE in the callback. On
+production systems configured with panic_on_warn=3D1, this could allow an
+unprivileged local user to crash the host.
+
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+[ ... ]
+> @@ -892,8 +893,9 @@ long kvm_gmem_populate(struct kvm *kvm, gfn_t start_g=
+fn, void __user *src, long
+> =20
+>  		if (src) {
+>  			unsigned long uaddr =3D (unsigned long)src + i * PAGE_SIZE;
+> +			unsigned int flags =3D may_writeback_src ? FOLL_WRITE : 0;
+> =20
+> -			ret =3D get_user_pages_fast(uaddr, 1, 0, &src_page);
+> +			ret =3D get_user_pages_fast(uaddr, 1, flags, &src_page);
+
+[Severity: High]
+This is a pre-existing issue, but does this miss tracking modifications to
+the pinned user space source page (src_page)?
+
+While the FOLL_WRITE flag correctly handles the copy-on-write,
+in sev_gmem_post_populate(), if the SEV-SNP firmware returns an invalid
+parameter error for a CPUID page, KVM copies the expected values into the
+user-provided src_page via kmap_local_page() and memcpy().
+
+However, kvm_gmem_populate() uses get_user_pages_fast() to pin the page
+and subsequently calls put_page(src_page) without explicitly marking the
+page as dirty (e.g., using set_page_dirty_lock()).
+
+Because the modification bypasses the user's page tables and directly
+writes to the kernel's direct map, the user PTE's hardware dirty bit
+remains unset. If the page is file-backed or swap-backed and memory
+pressure forces it to be reclaimed, the memory subsystem might see both
+the PTE and the struct page as clean, discarding the page without writing
+the changes to the backing store. This would cause the user-space process
+to silently read stale CPUID data.
+
+>  			if (ret < 0)
+>  				break;
+>  			if (ret !=3D 1) {
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260522-fix-sev-gm=
+em-post-populate-v1-0-9fc8d6437b65@google.com?part=3D1
