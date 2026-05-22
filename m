@@ -1,41 +1,41 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C45B356756;
-	Fri, 22 May 2026 10:54:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1376F3D4121
+	for <kvm@vger.kernel.org>; Fri, 22 May 2026 11:44:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779447287; cv=none; b=LvQMkq1ufZNIt9hSFVa1mzkQGojmUQsxlIGs1t9uaxzfARtc7GoGVQtyNJFJoyQgSr5yOcenFXSrdBbZ3o11+NgS60Xt3iKn6sn0zE0lkHnBPJ9oMEK65cDRhTOUssqcXXxmOPY1+2wJANN+zn3Yod1iD6bULEhu94of8ek0ZJo=
+	t=1779450278; cv=none; b=VDt+8k8Kf9uBQIfmsevsvKSaOOzpdiL6oxksdfoV8cS19VI7WxR1xUcE7c1gsv+GK72unua+1JY/yGiPWge8C0ioWq8yXttb1c/RQTHx6XTArvtHQX5JYw5zShJUMGI1OkOwHjzfDMc/w9wAr9/uubzuZkDuIyP+ApzOFP6wqyg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779447287; c=relaxed/simple;
-	bh=b3P2hBjSQh19IUuIUM2fF0JGVEHnP7/F+/Pk0IYDPiE=;
+	s=arc-20240116; t=1779450278; c=relaxed/simple;
+	bh=HbRSjpP6pq1GX7FNbHSwbMJ77qs/NEnjH+zX7DSg0tg=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rLbw9phdb18zyiRNKpD8iMztnowjAnjTvQ0+yWgPnQ5iS/FNUEwk7UfLHnfxPOuI/iAdNmFajG7sB9OeTxC5YFgk3iUkYgWg4aACFHbLlz6K+1cKxnuQdEBYApexCNWhXfGk9O9UVzHT0H+OnE+m5hRyjctdtkJ6NcUBmdPghlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=fcayLb8m; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=fptQjMEQZof/YxI1Ck3eT27B7NPp4aEpooGR7R19nIVSo6lVdfVpAec48mouHFed+qRQ2/xq6j14Ia06pq94p2IKFDpHpl8K4+LQ1jviC4qcn+C12eerSE/Nz/1m3nShWOL/9cowfD14rtaRm5QvpIofd8HKzh6+EiJyLjm4xHM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AbSWDxTO; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="fcayLb8m"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82FB61F00A3E;
-	Fri, 22 May 2026 10:54:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AbSWDxTO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 648091F00A3E;
+	Fri, 22 May 2026 11:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779447286;
-	bh=I485ulN9sXiuaxr3hxPza2zN7Bv6l4bsoi/xIZYLS2w=;
+	s=k20260515; t=1779450272;
+	bh=7R5NDp5rIQEKgmx6ff9T0EAO9NIuV9zvssCRGuN2Nxg=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=fcayLb8mD9Bodq9rqnJKCW5J/CYwMkGahp883O2LFlT7soZPV8M3KIGbp3jrIiFMp
-	 kIIiJbrpRj8pc7ZhCAcZ0Qzqqhjp/1G5xc1j8E+scvDoy1aIfkxKzG+zJUlonHhs3o
-	 Md4jR7za4bQkYIOA1c9aku3LIY8YRaum4vvVb8AO1193uC/ZvAt2nZNIlftNcIYO1d
-	 7mBMNZISoTGnxzj6kZYrR2AwJ3invVFqui8UKCJAALyz/qtajJRfmdliTOGJAscYQV
-	 SU/24I0DnSXW8jvOayHuuFzW2HNQ3QUcZmvs71lYpuqjRodehb1jJI5SCnuMN4OZYO
-	 KixTHkG7OfGqQ==
-Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id BAAF0F4007C;
-	Fri, 22 May 2026 06:54:44 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Fri, 22 May 2026 06:54:44 -0400
-X-ME-Sender: <xms:9DUQatKIw8pHtuL_uqOaivYUQcb6w8lDWDXW4u2T4qRJnm98l2gfiQ>
-    <xme:9DUQaiKzPJe6e9bA5ywcoJ5ZRy-ppHZ2O5X-CHMV23TgVx94H6cZSLVahiyeltw2R
-    IhajtMUfA0Hs3m8RqK1WuIusqANdavHKiMZPeSLe8TzWkcoazhAIw>
-X-ME-Received: <xmr:9DUQavbk_UOPlqFSDOiCbSnF83Zth4S2PpnwOncelc7CbcknO2le0z71kCk3CA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddugeelleekucetufdoteggodetrf
+	b=AbSWDxTOeMHrl5WkqsyE2VuAIqw3TA0Qfhq27uDPmDZoMOZwfK261avTGlx/XlOdD
+	 +GvfbyWswC4FEMAxbt/l2359Xw9pYVi3J9JOZvT05N2FkgvAI8gosZhoYgfZOxKh7M
+	 XlnBbFiWnA3V0+O+1LCzByK8P9Nb0T5mlcHzGlC+B443kqRQazysmx3DfrfRlwBNr3
+	 rNxdttjFkXe1UhrWj1oBwCUPMJhNONKtxwvsmR5hYiiuaBArqr2zYvZLZNSasj165i
+	 zrkjHP3dGZYYbh1Mj8TboOVdXO7JYpnTC2kszZaCc8yCpplJxwxF/qDwCiR1blpESF
+	 fJMQRALhSVh7w==
+Received: from phl-compute-02.internal (phl-compute-02.internal [10.202.2.42])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 94B66F40069;
+	Fri, 22 May 2026 07:44:31 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-02.internal (MEProxy); Fri, 22 May 2026 07:44:31 -0400
+X-ME-Sender: <xms:n0EQajzaWUAL9foVl3iSXLRppyszmKHlcbKTz09aNBDzWda9abzdIQ>
+    <xme:n0EQao5eWXQxAc48kc28joC7NhC70-iZIgZZMD5N4dFWaBAHcfHEnmrcj_6Av666R
+    fI_7XdS2f_fMSJERkvvdEGk3OLU2fRi7Zq80Q10QApSbteW73137A>
+X-ME-Received: <xmr:n0EQai6cX3uF_gHjNw4yHL8-AiiXt58FoNSXQFsrEwMygLFEdtb141KYHBxPBA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduhedttdekucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtuggjsehttdertd
     dttddvnecuhfhrohhmpefmihhrhihlucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhn
@@ -44,35 +44,36 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgddugeelleekucetufdote
     rhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhdomhgvshhmthhprghuthhhphgvrhhsoh
     hnrghlihhthidqudeiudduiedvieehhedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhn
     vghlrdhorhhgsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeegiedpmh
-    houggvpehsmhhtphhouhhtpdhrtghpthhtohepshhjsehkvghrnhgvlhdrohhrghdprhgt
-    phhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpth
-    htoheprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehpvghtvghrgiesrhgv
-    ughhrghtrdgtohhmpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheplhhjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhurhgvnhgssehg
-    ohhoghhlvgdrtghomhdprhgtphhtthhopehvsggrsghkrgeskhgvrhhnvghlrdhorhhgpd
-    hrtghpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomh
-X-ME-Proxy: <xmx:9DUQalXQ45nNeLCORY2mKnQqw6SnE982YJ4qYQ2t6SoOeMI2y0BbBg>
-    <xmx:9DUQanEuT7mr9cBWathBzxbeRi39QSnTdc0DqsHOhyvnzvLZtl0uyA>
-    <xmx:9DUQaqDatI1DSjaKH9-vRnSfjvKFSWa1lGXfYaszChiPPIrjcIbqnQ>
-    <xmx:9DUQaqXoRWOs6Pe2jV5X2u3ECEO_XG2VZUU8UrJ5LBmWlfWPZQSSHg>
-    <xmx:9DUQai6GZOnuhag9McN737qpIDRxxOugkk-glWd-hou_D78sncHzieP5>
+    houggvpehsmhhtphhouhhtpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdrohhrghdp
+    rhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtg
+    hpthhtohepphgvthgvrhigsehrvgguhhgrthdrtghomhdprhgtphhtthhopegurghvihgu
+    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopehljhhssehkvghrnhgvlhdrohhrghdprh
+    gtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepvhgsrggs
+    khgrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihgrmhdrhhhofihlvghtthesoh
+    hrrggtlhgvrdgtohhmpdhrtghpthhtohepiihihiesnhhvihguihgrrdgtohhm
+X-ME-Proxy: <xmx:n0EQahLnSwNCQtzwgiyBDyXM6QXTIzHcpKJRL_cw5-UfKWI_ZtGPiA>
+    <xmx:n0EQakHez12dNbwMmUO0uVj63cxI2c1kiERawUYVAtNB9Hoqj8ZlOQ>
+    <xmx:n0EQau0j47Y2kYXSFKvkmNASmGHslIn1RQnBuGHsbGerJDymGXmi8w>
+    <xmx:n0EQamzIkUog0A3bQiC44FAMQf1ZKLmSZ2mXYsJouisWgBpHyQv9hA>
+    <xmx:n0EQaoFwDGvWKyiuxNInuwchtGw0QVDFOFHNPlTYuyd4gM6cWXlxSGh_>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 22 May 2026 06:54:43 -0400 (EDT)
-Date: Fri, 22 May 2026 11:54:41 +0100
+ 22 May 2026 07:44:29 -0400 (EDT)
+Date: Fri, 22 May 2026 12:44:25 +0100
 From: Kiryl Shutsemau <kas@kernel.org>
-To: SeongJae Park <sj@kernel.org>
-Cc: akpm@linux-foundation.org, rppt@kernel.org, peterx@redhat.com, 
-	david@kernel.org, ljs@kernel.org, surenb@google.com, vbabka@kernel.org, 
-	Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, 
-	seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, 
+To: Mike Rapoport <rppt@kernel.org>
+Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org, 
+	ljs@kernel.org, surenb@google.com, vbabka@kernel.org, Liam.Howlett@oracle.com, 
+	ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, seanjc@google.com, 
+	pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, sj@kernel.org, 
 	usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
 	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
 	kernel-team@meta.com
-Subject: Re: [PATCH v2 04/14] mm: add VM_UFFD_RWP VMA flag
-Message-ID: <ahAzY0CKNzE-SOd2@thinkstation>
-References: <b47d8d5681fd8730f6090ebfdb72f219a8edef1e.1778254670.git.kas@kernel.org>
- <20260515002932.124892-1-sj@kernel.org>
+Subject: Re: [PATCH v2 05/14] mm: add MM_CP_UFFD_RWP change_protection() flag
+Message-ID: <ahA2Oy0NVaB8I8GR@thinkstation>
+References: <cover.1778254670.git.kas@kernel.org>
+ <ff3420fdd75f58d56827ff3d2eaffc0d74154627.1778254670.git.kas@kernel.org>
+ <agNZE49m8Pkn8CeW@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -81,100 +82,202 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260515002932.124892-1-sj@kernel.org>
+In-Reply-To: <agNZE49m8Pkn8CeW@kernel.org>
 
-On Thu, May 14, 2026 at 05:29:31PM -0700, SeongJae Park wrote:
-> On Fri,  8 May 2026 16:55:16 +0100 "Kiryl Shutsemau (Meta)" <kas@kernel.org> wrote:
-> 
-> > Preparatory patch for userfaultfd read-write protection (RWP). RWP
-> > extends userfaultfd protection from plain write-protection (WP) to
-> > full read-write protection: accesses to an RWP-protected range --
-> > reads as well as writes -- trap through userfaultfd.
+On Tue, May 12, 2026 at 07:45:07PM +0300, Mike Rapoport wrote:
+> On Fri, May 08, 2026 at 04:55:17PM +0100, Kiryl Shutsemau (Meta) wrote:
+> > Preparatory patch. Add the change_protection() primitive that
+> > userfaultfd RWP will use.
 > > 
-> > RWP marks ranges by combining PAGE_NONE with the uffd PTE bit, so
-> > the flag is only meaningful when both primitives exist. A new
-> > CONFIG_USERFAULTFD_RWP Kconfig symbol auto-selects when CONFIG_64BIT,
-> > CONFIG_ARCH_HAS_PTE_PROTNONE, and CONFIG_HAVE_ARCH_USERFAULTFD_WP
-> > are all set; call sites that gate on the flag depend on the symbol.
-> > Elsewhere VM_UFFD_RWP aliases VM_NONE and every downstream check
-> > folds to dead code.
+> > An RWP-protected PTE is PAGE_NONE with the uffd PTE bit set. The
+> > PROT_NONE half makes the CPU fault on any access; the uffd bit
+> > distinguishes an RWP fault from a plain mprotect(PROT_NONE) or NUMA
+> > hinting fault. MM_CP_UFFD_WP and MM_CP_UFFD_RWP share the same PTE
+> > bit, so the two cannot be used together on the same range.
 > > 
-> > Nothing sets the flag yet.
+> > Two new change_protection() flags:
+> > 
+> >   MM_CP_UFFD_RWP            install PAGE_NONE and set the uffd bit
+> >   MM_CP_UFFD_RWP_RESOLVE    restore vma->vm_page_prot, clear the uffd bit
+> > 
+> > Both are wired through change_pte_range(), change_huge_pmd(), and
+> > hugetlb_change_protection() so anon, shmem, THP, and hugetlb all
+> > share the same semantics.
 > > 
 > > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 > > Assisted-by: Claude:claude-opus-4-6
-> 
-> A silly but loud thought.  Would it make more sense to put Signed-off-by: after
-> Assisted-by: ?
-
-I am not sure. I see it both ways in git log. And I don't have strong
-opinion on the order here. Keeping as is.
-
 > > ---
-> >  Documentation/filesystems/proc.rst |  1 +
-> >  fs/proc/task_mmu.c                 |  3 +++
-> >  include/linux/mm.h                 | 28 +++++++++++++++++----------
-> >  include/linux/userfaultfd_k.h      | 31 +++++++++++++++++++++++++-----
-> >  include/trace/events/mmflags.h     |  7 +++++++
-> >  mm/Kconfig                         |  9 +++++++++
-> >  6 files changed, 64 insertions(+), 15 deletions(-)
+> >  include/linux/mm.h            |  5 +++++
+> >  include/linux/userfaultfd_k.h |  1 -
+> >  mm/huge_memory.c              | 20 ++++++++++++------
+> >  mm/hugetlb.c                  | 25 ++++++++++++++++------
+> >  mm/mprotect.c                 | 40 +++++++++++++++++++++++++++++------
+> >  5 files changed, 71 insertions(+), 20 deletions(-)
 > > 
-> > diff --git a/Documentation/filesystems/proc.rst b/Documentation/filesystems/proc.rst
-> > index db6167befb7b..db28207c5290 100644
-> > --- a/Documentation/filesystems/proc.rst
-> > +++ b/Documentation/filesystems/proc.rst
-> > @@ -607,6 +607,7 @@ encoded manner. The codes are the following:
-> >      um    userfaultfd missing tracking
-> >      uw    userfaultfd wr-protect tracking
-> >      ui    userfaultfd minor fault
-> > +    ur    userfaultfd read-write-protect tracking
+> > diff --git a/include/linux/mm.h b/include/linux/mm.h
+> > index 3f53d1e978c0..2b65416bb760 100644
+> > --- a/include/linux/mm.h
+> > +++ b/include/linux/mm.h
+> > @@ -3291,6 +3291,11 @@ int get_cmdline(struct task_struct *task, char *buffer, int buflen);
+> >  #define  MM_CP_UFFD_WP_RESOLVE             (1UL << 3) /* Resolve wp */
+> >  #define  MM_CP_UFFD_WP_ALL                 (MM_CP_UFFD_WP | \
+> >  					    MM_CP_UFFD_WP_RESOLVE)
+> > +/* Whether this change is for uffd RWP */
+> > +#define  MM_CP_UFFD_RWP                    (1UL << 4) /* do rwp */
+> > +#define  MM_CP_UFFD_RWP_RESOLVE            (1UL << 5) /* Resolve rwp */
 > 
-> Yet another silly but loud thought.  My first feeling on this was that this
-> reads like 'u'serfaultfd 'r'ead-protect.  And was further thinking 'uf' for
-> just 'u'seffaultfd 'f'ault or 'up' for 'u'serfault-'p'rotect might make sense.
-> But ended up thinking this is too trivial and ain't really matter.
+> Nit: any reason except copy/paset to use different case in "do rwp" and
+> "Resolve rwp"? ;-)
 
-I will keep it. It's "u" + the first distinguishing letter of the mode
-name. r distinguishes RWP from WP cleanly.
+copy/paste it is. Will use "resolve rwp"
 
-> [...]
-> > diff --git a/mm/Kconfig b/mm/Kconfig
-> > index e8bf1e9e6ad9..ccf534a8cbc9 100644
-> > --- a/mm/Kconfig
-> > +++ b/mm/Kconfig
-> > @@ -1347,6 +1347,15 @@ config HAVE_ARCH_USERFAULTFD_MINOR
-> >  	help
-> >  	  Arch has userfaultfd minor fault support
+> > +#define  MM_CP_UFFD_RWP_ALL                (MM_CP_UFFD_RWP | \
+> > +					    MM_CP_UFFD_RWP_RESOLVE)
 > >  
-> > +config USERFAULTFD_RWP
-> > +	def_bool y
-> > +	depends on 64BIT && ARCH_HAS_PTE_PROTNONE && HAVE_ARCH_USERFAULTFD_WP
-> > +	help
-> > +	  Userfaultfd read-write protection (UFFDIO_RWPROTECT) delivers a
+> >  bool can_change_pte_writable(struct vm_area_struct *vma, unsigned long addr,
+> >  			     pte_t pte);
+> > diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
+> > index fcf308dba311..3725e61a7041 100644
+> > --- a/include/linux/userfaultfd_k.h
+> > +++ b/include/linux/userfaultfd_k.h
+> > @@ -397,7 +397,6 @@ static inline bool userfaultfd_huge_pmd_wp(struct vm_area_struct *vma,
+> >  	return false;
+> >  }
+> >  
+> > -
+> >  static inline bool userfaultfd_armed(struct vm_area_struct *vma)
+> >  {
+> >  	return false;
+> > diff --git a/mm/huge_memory.c b/mm/huge_memory.c
+> > index d88fcccd386d..2537dca63c6c 100644
+> > --- a/mm/huge_memory.c
+> > +++ b/mm/huge_memory.c
+> > @@ -2665,6 +2665,8 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+> >  	spinlock_t *ptl;
+> >  	pmd_t oldpmd, entry;
+> >  	bool prot_numa = cp_flags & MM_CP_PROT_NUMA;
+> > +	bool uffd_rwp = cp_flags & MM_CP_UFFD_RWP;
+> > +	bool uffd_rwp_resolve = cp_flags & MM_CP_UFFD_RWP_RESOLVE;
+> >  	bool uffd_wp = cp_flags & MM_CP_UFFD_WP;
+> >  	bool uffd_wp_resolve = cp_flags & MM_CP_UFFD_WP_RESOLVE;
 > 
-> Seems UFFDIO_RWPROTECT will be introduced later.  Would it make more sense to
-> add this config together with the patch?
+> It looks like uffd_wp* are always ORed with uffd_rwp, we could fold this to
+> e.g.
+> 
+> 	bool uffd_prot = cp_flags & (MM_CP_UFFD_WP | MM_CP_UFFD_RWP);
 
+Makes sense.
 
-Okay, I will move later in the patchset.
-
-> > +	  userfaultfd notification on every access -- read or write -- to a
-> > +	  protected range, letting userspace observe the working set of a
-> > +	  process.
+> >  	int ret = 1;
+> > @@ -2679,11 +2681,18 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+> >  		return 0;
+> >  
+> >  	if (thp_migration_supported() && pmd_is_valid_softleaf(*pmd)) {
+> > -		change_non_present_huge_pmd(mm, addr, pmd, uffd_wp,
+> > -					    uffd_wp_resolve);
+> > +		change_non_present_huge_pmd(mm, addr, pmd,
+> > +					    uffd_wp || uffd_rwp,
+> > +					    uffd_wp_resolve || uffd_rwp_resolve);
+> >  		goto unlock;
+> >  	}
+> >  
+> > +	/* Already in the desired state */
+> > +	if (prot_numa && pmd_protnone(*pmd))
+> > +		goto unlock;
+> > +	if (uffd_rwp && pmd_protnone(*pmd) && pmd_uffd(*pmd))
+> > +		goto unlock;
 > > +
-> >  menuconfig USERFAULTFD
-> >  	bool "Enable userfaultfd() system call"
-> >  	depends on MMU
-> > -- 
-> > 2.51.2
-> > 
-> > 
+> >  	if (prot_numa) {
+> >  
+> >  		/*
+> > @@ -2694,9 +2703,6 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+> >  		if (is_huge_zero_pmd(*pmd))
+> >  			goto unlock;
+> >  
+> > -		if (pmd_protnone(*pmd))
+> > -			goto unlock;
+> > -
+> >  		if (!folio_can_map_prot_numa(pmd_folio(*pmd), vma,
+> >  					     vma_is_single_threaded_private(vma)))
+> >  			goto unlock;
+> > @@ -2725,9 +2731,9 @@ int change_huge_pmd(struct mmu_gather *tlb, struct vm_area_struct *vma,
+> >  	oldpmd = pmdp_invalidate_ad(vma, addr, pmd);
+> >  
+> >  	entry = pmd_modify(oldpmd, newprot);
+> > -	if (uffd_wp)
+> > +	if (uffd_wp || uffd_rwp)
+> >  		entry = pmd_mkuffd(entry);
+> > -	else if (uffd_wp_resolve)
+> > +	else if (uffd_wp_resolve || uffd_rwp_resolve)
+> >  		/*
+> >  		 * Leave the write bit to be handled by PF interrupt
+> >  		 * handler, then things like COW could be properly
+> > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> > index 61cda9992043..63f6b19418b9 100644
+> > --- a/mm/hugetlb.c
+> > +++ b/mm/hugetlb.c
+> > @@ -6434,6 +6436,11 @@ long hugetlb_change_protection(struct vm_area_struct *vma,
+> >  
+> >  		ptep = hugetlb_walk(vma, address, psize);
+> >  		if (!ptep) {
+> > +			/*
+> > +			 * uffd_wp installs a pte marker on the unpopulated
+> > +			 * entry; RWP does not install markers so the
 > 
-> None of my comments is a blocker.
-> 
-> Reviewed-by: SeongJae Park <sj@kernel.org>
+> Nit:                              uffd_rwp
 
-Thanks!
+Ack.
+
+> 
+> > +			 * allocation is unnecessary for it.
+> > +			 */
+> >  			if (!uffd_wp) {
+> >  				address |= last_addr_mask;
+> >  				continue;
+> > diff --git a/mm/mprotect.c b/mm/mprotect.c
+> > index 8340c8b228c6..23e71f68cf7a 100644
+> > --- a/mm/mprotect.c
+> > +++ b/mm/mprotect.c
+> > @@ -216,6 +216,8 @@ static long change_softleaf_pte(struct vm_area_struct *vma,
+> >  {
+> >  	const bool uffd_wp = cp_flags & MM_CP_UFFD_WP;
+> >  	const bool uffd_wp_resolve = cp_flags & MM_CP_UFFD_WP_RESOLVE;
+> > +	const bool uffd_rwp = cp_flags & MM_CP_UFFD_RWP;
+> > +	const bool uffd_rwp_resolve = cp_flags & MM_CP_UFFD_RWP_RESOLVE;
+> 
+> And here a single pair of bools should be enough I think.
+
+Yep.
+
+> 
+> >  	softleaf_t entry = softleaf_from_pte(oldpte);
+> >  	pte_t newpte;
+> >  
+> > @@ -256,7 +258,7 @@ static long change_softleaf_pte(struct vm_area_struct *vma,
+> >  		 * to unprotect it, drop it; the next page
+> >  		 * fault will trigger without uffd trapping.
+> >  		 */
+> > -		if (uffd_wp_resolve) {
+> > +		if (uffd_wp_resolve || uffd_rwp_resolve) {
+> >  			pte_clear(vma->vm_mm, addr, pte);
+> >  			return 1;
+> >  		}
+> > @@ -265,9 +267,9 @@ static long change_softleaf_pte(struct vm_area_struct *vma,
+> >  		newpte = oldpte;
+> >  	}
+> >  
+> > -	if (uffd_wp)
+> > +	if (uffd_wp || uffd_rwp)
+> >  		newpte = pte_swp_mkuffd(newpte);
+> > -	else if (uffd_wp_resolve)
+> > +	else if (uffd_wp_resolve || uffd_rwp_resolve)
+> >  		newpte = pte_swp_clear_uffd(newpte);
+> >  
+> >  	if (!pte_same(oldpte, newpte)) {
+> 
+> -- 
+> Sincerely yours,
+> Mike.
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
