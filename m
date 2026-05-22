@@ -1,385 +1,148 @@
-Received: from fout-b2-smtp.messagingengine.com (fout-b2-smtp.messagingengine.com [202.12.124.145])
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BE0C426EA6;
-	Fri, 22 May 2026 13:39:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.145
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF193BCD38;
+	Fri, 22 May 2026 14:00:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779457203; cv=none; b=LWTapVe+LiaMcXi78y7k22e5LS2cVPLzCTORM8qLNJdyXvhotOXPgnT64ZFZPUrSDZ66AGh8n6rx5shPrHcpvenOwGPHRxGxOWTfTj4ThBmAkBG/Gz6NJR3x5hTxvfGOQ0yYnnQ5ul0XT3QM+1xYFi5WZxz1hUbPhXSWzj83o40=
+	t=1779458431; cv=none; b=cX1sGzTO3SSKEE67lZRjPYeywXfCyIcjakDu1pC6aCHX1Vfldc8lYKhtBEAcZ4De7f2wM9C7C+n86FO9ALpdIj+rtZWzIFR8EW3YSDSdAwjqrSntDOthtKnMHtTSCKqsvoGVKbQKhj6Unxfp3ZbsQYCPaT/zQ1BMnJcWvPVZyb0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779457203; c=relaxed/simple;
-	bh=39e8fnpTUC46kSuw6XMbkKUnGDMgz+PEMYBez5ZsnoM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FBGOZfBVT7pGcDiMF8WljZEdL4ic2CSzMKA9ODHyVbxPyJ5EirdNNdPXTK+bi1lR2+UBl7wzyPyNAZcTO3fct0YdqEbPKA+8E7ao3m3fGNF21dZfX8Kx5K+fv6S0SbYkiSsbMsj+4J7AFQrsMFOPPzkkurvB7L7IxlCg9f3ZV3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=06PiO8pj; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=EPJyAb55; arc=none smtp.client-ip=202.12.124.145
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
+	s=arc-20240116; t=1779458431; c=relaxed/simple;
+	bh=7pNBbYkLnMY2b8HqI8mFIJHke2B5kktZeu8fjtNJHIc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=MzYp1L+gxRRE4ZwKbbgnTdbotEJLFqAajScFfGmljHTPRAGZBpd66eyjh0UiRLCebgVCwMGN4r5a7AVZVOV2spSnSghesVE3UDhY+h1Amxagc60tEvWKnWRS4sDH/Ecft39+dG0GbsSFl4q2HroCkjBEPfZtxl08LnPVGhR48AQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=KBxM9uk7; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=JjUOf/7u; arc=none smtp.client-ip=103.168.172.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="06PiO8pj";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="EPJyAb55"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.stl.internal (Postfix) with ESMTP id BB5291D00121;
-	Fri, 22 May 2026 09:39:54 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Fri, 22 May 2026 09:39:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
-	:from:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1779457194; x=
-	1779543594; bh=7kgK2B7CSrKKlV7MAxGh/B0N2F/JYv53qwBfZJ+EZP0=; b=0
-	6PiO8pjoX+s75ZiHT4qw7ynCfBAjDhdjyUKwJsfr7BZ0gE8NoFBsAnbjHdzFdlzb
-	ZMyrOFE4yR6XKstdv9fcpUtUbHwYqdl1C9yq510gXBJAULoTrVZrGleEL2aXV9z/
-	3IOFF9X98wQCb+xxh68/DzIWouZyrT6LKRJyJHniNUQm5EamBiy+2nYtiNxEFB+y
-	g4HfCf/N6bK7R93iadLzUQ0+kDwbjwJeCDGqRjFSyMrFw1T0JSxQAhof8T1+vyDq
-	OerulQQvls5bQdM1Dbhy4G7+rl3+vd8L6jcwmqBCVeto97J3IgGGa6sAWM1pmIn8
-	z228SWGpnB6cPHhQyeRKg==
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="KBxM9uk7";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="JjUOf/7u"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 3854A1400100;
+	Fri, 22 May 2026 10:00:25 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-06.internal (MEProxy); Fri, 22 May 2026 10:00:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1779458425;
+	 x=1779544825; bh=f6qZu3mjuZB7aeVooNRq0zeE78N1e6ESYl7W/xgClb8=; b=
+	KBxM9uk7qg94yX0lgMGChDTXLRDDbL7PI0nECUI2ugvZ0ScTGU0dyIC7sHfuX3bu
+	FlQPBXcApwI9brkiwxG5pHmkoHN7B4IfeimxwOkMIfk0DI3dxvso8RAsdkdaY5jT
+	Tb2tj1o8IGKlivfPgP06HAXqS7C0pPrYZ6JxzTUIaWPnokEo6TbBYXmnvPt+O7Ly
+	PlouuYJfdC4iCkJxiWImJqrfOGdfi2dnz46e5A8HxVxq/RfZD30YAxGUB6N1QsrU
+	Xkhq2AU6vfklcPDdtL+NvxmDOKbOY3KSp5bME9j258vb05++jk3vo4xnPjN0ESWT
+	m+2bc36IF3a9kbL/ivGdmg==
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
 	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:date:date:feedback-id:feedback-id:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
-	:x-me-sender:x-sasl-enc; s=fm3; t=1779457194; x=1779543594; bh=7
-	kgK2B7CSrKKlV7MAxGh/B0N2F/JYv53qwBfZJ+EZP0=; b=EPJyAb55jbrqUpgHF
-	VjM2SUqz+yHoRy0qmFHa3mWQfnINHDJV2LKa4/Y+sSdwW+3GpDrtoA3tmIOxUi24
-	LUnDrx8JDg24H9sgaLWGNBBTuix8Q27mMFRybJsOds5Xor4sC1S1lC1+tq4vGSP+
-	vJ0PM+X2obTz7CE1cNeHjmNM+lZ19ZqgbOlpgP8Pk0M/4Q6DL9uY+NHQQjrGkyhl
-	MGqFFOOsFMOhJ6ug9JwgvQRxdFvbtVOKAtLeSG3vPYeOm4gzwymMxfURJCVGEIhO
-	/m5n8pkNywjMclMmalDlJgvEj9OkZsDWE1AeTTjnWcRPKNF0EB5ofjEDQP+fMgYG
-	N1OcA==
-X-ME-Sender: <xms:qlwQak0NWdRdzMMRRhBcLctEC-UwSXMnplLDesFGAqJAAnv5A_ZD9Q>
-    <xme:qlwQagKPilxv-Y8vENSqGgJxDmYomUnWBYjhbmpGsAkBPKoo-ptNyE-G-2MJka2NP
-    mdA-qQBlHOEpSXOmM_scTU6Hzw_d4b9KjmOgmxgLhUlQ4hXFhA_mFc>
-X-ME-Received: <xmr:qlwQav2E2quj6ShYPo2Ggyn91TfgO8Xrpl8ovXTmHdMjWwyP43yZmW-HqA0mkg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduhedtfeduucetufdoteggodetrf
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779458425; x=
+	1779544825; bh=f6qZu3mjuZB7aeVooNRq0zeE78N1e6ESYl7W/xgClb8=; b=J
+	jUOf/7uwsEA//+YGZDSYm04aJc/KBTL0vKpZkpzO4LymW3McVSNgUmSAlTc7Q92B
+	ekjBOCZUTS43VmXjPcHUgXo9T278DaDnQuzSk421VyAsVCQ6L0nf/X4jyEW4n9Ca
+	KIzxIFnR8YNSpBegjM4YWbHM42kDKB3fIooB0hWBrDRE+ETz6kDR52P7Iz+Vyh13
+	/uAfu/7OuA2UzISPrmYIg9Eit4ENgWlfCDlklyEHdRpV3Wn96UzoIwR6FUGpqFRm
+	eZYMosboQxSGwnXqwiFKMMnw62fH9lu8ChXJkMpfy+fFQfl3vhIDnFheiOOhQK66
+	66JibzN2yf6tDjFWyxcQg==
+X-ME-Sender: <xms:eGEQah_hko2aJ5D0W0brsbmg6AmwRce7WPuOuL3JdSGN3We8SknE2A>
+    <xme:eGEQaj862Ao4EX4DFKFb2UuiQqZoIDuTaQIDv_U2dRgGr5ADvE56iCNoTC2IQDkhk
+    gNu6ULFNAfPjkx6eIQi3QhUzqIpRms7VetvlQlHLndVSqQ9_Qh7NA>
+X-ME-Received: <xmr:eGEQaoWqxy19pTX3AHKeMmIoCUHtURKa5AvqRZTcP0pvr3c7QQFIjadLFds>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduhedtfeehucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucenucfjughrpefhvfevufffkffojghfggfgsedtkeertd
-    ertddtnecuhfhrohhmpefmihhrhihlucfuhhhuthhsvghmrghuuceokhhirhhilhhlsehs
-    hhhuthgvmhhovhdrnhgrmhgvqeenucggtffrrghtthgvrhhnpeegveehtdfgvdfhudegff
-    euuddvgeevjefhveevgefhvdevieevteeivdehjefhjeenucevlhhushhtvghrufhiiigv
-    pedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkihhrihhllhesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepvdeipdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhgpdhrtghpthhtoh
-    eprhhpphhtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehpvghtvghrgiesrhgvughh
-    rghtrdgtohhmpdhrtghpthhtohepuggrvhhiugeskhgvrhhnvghlrdhorhhgpdhrtghpth
-    htoheplhhjsheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepshhurhgvnhgssehgohho
-    ghhlvgdrtghomhdprhgtphhtthhopehvsggrsghkrgeskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheplhhirghmrdhhohiflhgvthhtsehorhgrtghlvgdrtghomhdprhgtphhtthho
-    peiiihihsehnvhhiughirgdrtghomh
-X-ME-Proxy: <xmx:qlwQargznNHXXEFSIkuyq_USe5H0wAPhBVJSQ3wQGvrW4C84--XX4g>
-    <xmx:qlwQav0Q6vGaOaQu97ctfou2QxG2ad7owUQcAHzVx2yBqAvSKUXiXQ>
-    <xmx:qlwQamcibcUSyR4rL0Kq1iCbCA-YAZBWEbE90Va-f5wRkbr1_mUL4Q>
-    <xmx:qlwQaiGIGFAb7FTMrwdj44FhyhR9gcsYiOWrFXt7qdeCyChTCJjCbQ>
-    <xmx:qlwQakpTcmTUhwg5-1AFaemuUZptVOLso8tO0fFLIxmOXJjOzxXGTCfX>
-Feedback-ID: ie3994620:Fastmail
+    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfgjfhfogggtgfesthejre
+    dtredtvdenucfhrhhomheptehlvgigucghihhllhhirghmshhonhcuoegrlhgvgiesshhh
+    rgiisghothdrohhrgheqnecuggftrfgrthhtvghrnhepvdekfeejkedvudfhudfhteekud
+    fgudeiteetvdeukedvheetvdekgfdugeevueeunecuvehluhhsthgvrhfuihiivgeptden
+    ucfrrghrrghmpehmrghilhhfrhhomheprghlvgigsehshhgriigsohhtrdhorhhgpdhnsg
+    gprhgtphhtthhopeduuddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepfhgvnhhg
+    tghhvghnghifvghnsehhuhgrfigvihdrtghomhdprhgtphhtthhopehjghhgseiiihgvph
+    gvrdgtrgdprhgtphhtthhopeifrghthhhsrghlrgdrvhhithhhrghnrghgvgesrghrmhdr
+    tghomhdprhgtphhtthhopehhvghlghgrrghssehkvghrnhgvlhdrohhrghdprhgtphhtth
+    hopeifvghirdhhuhgrnhhgvdesrghmugdrtghomhdprhgtphhtthhopeifrghnghiihhho
+    uhdusehhihhsihhlihgtohhnrdgtohhmpdhrtghpthhtohepfigrnhhghihushhhrghnud
+    dvsehhuhgrfigvihdrtghomhdprhgtphhtthhopehlihhuhihonhhglhhonhhgsehhuhgr
+    figvihdrtghomhdprhgtphhtthhopehkvhhmsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:eGEQaofrt2A3b54FDNnlDrZ4jDVqOkk1kb-SFKkXPBwkxD5-mafIKQ>
+    <xmx:eGEQapatKW5UWo9nfU-mH7wapzw8mgq4M6oTYtf6F-v-Mp0XmgZYNw>
+    <xmx:eGEQasMXLTEiqmSDNxOqjuOdqYp0qM1Gc64bdEaOUpv46y5ABBBZAw>
+    <xmx:eGEQanWJoT1TOsro0O4wh0EGSqWn26UFx-hKwsITThgiaH8V8DOgEQ>
+    <xmx:eWEQamoj1HP5l3R9MswNGTgyPnm3CuwFvNSpg4d6b4u_qOBjwwLSY-KG>
+Feedback-ID: i03f14258:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 22 May 2026 09:39:53 -0400 (EDT)
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: akpm@linux-foundation.org,
-	rppt@kernel.org,
-	peterx@redhat.com,
-	david@kernel.org
-Cc: ljs@kernel.org,
-	surenb@google.com,
-	vbabka@kernel.org,
-	Liam.Howlett@oracle.com,
-	ziy@nvidia.com,
-	corbet@lwn.net,
-	skhan@linuxfoundation.org,
-	seanjc@google.com,
-	pbonzini@redhat.com,
-	jthoughton@google.com,
-	aarcange@redhat.com,
-	sj@kernel.org,
-	usama.arif@linux.dev,
-	linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	kvm@vger.kernel.org,
-	kernel-team@meta.com,
-	linux-man@vger.kernel.org,
-	alx@kernel.org,
-	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: [PATCH v3 16/16] ioctl_userfaultfd.2: Add read-write protect mode docs
-Date: Fri, 22 May 2026 14:38:57 +0100
-Message-ID: <20260522133857.552279-17-kirill@shutemov.name>
-X-Mailer: git-send-email 2.53.0
-In-Reply-To: <20260522133857.552279-1-kirill@shutemov.name>
-References: <20260522133857.552279-1-kirill@shutemov.name>
+ 22 May 2026 10:00:23 -0400 (EDT)
+Date: Fri, 22 May 2026 08:00:20 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: fengchengwen <fengchengwen@huawei.com>
+Cc: <jgg@ziepe.ca>, <wathsala.vithanage@arm.com>, <helgaas@kernel.org>,
+ <wei.huang2@amd.com>, <wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
+ <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, alex@shazbot.org
+Subject: Re: [PATCH v11 3/5] PCI/TPH: Add pcie_tph_enabled_mode() helper
+Message-ID: <20260522080020.11f1d86b@shazbot.org>
+In-Reply-To: <15bffd1b-e0c7-4393-8cbc-ba54586884c9@huawei.com>
+References: <20260518071701.25177-1-fengchengwen@huawei.com>
+	<20260518071701.25177-4-fengchengwen@huawei.com>
+	<20260521221022.322c2af9@shazbot.org>
+	<15bffd1b-e0c7-4393-8cbc-ba54586884c9@huawei.com>
+X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+On Fri, 22 May 2026 17:18:39 +0800
+fengchengwen <fengchengwen@huawei.com> wrote:
 
-Userfaultfd read-write protection (UFFDIO_REGISTER_MODE_RWP) is
-supported starting from Linux 7.2. It traps every access -- read or
-write -- to a present page within a registered range. The new UAPI
-documented here:
+> On 5/22/2026 12:10 PM, Alex Williamson wrote:
+> > On Mon, 18 May 2026 15:16:59 +0800
+> > Chengwen Feng <fengchengwen@huawei.com> wrote:
+> >   
+> >> Add a helper to query enabled TPH mode on a PCI device. This is useful for
+> >> drivers like VFIO-PCI that need to validate TPH state before allowing
+> >> access to steering tag tables.
+> >>
+> >> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
+> >> ---
+> >>  drivers/pci/tph.c       | 12 ++++++++++++
+> >>  include/linux/pci-tph.h |  3 +++
+> >>  2 files changed, 15 insertions(+)
+> >>
+> >> diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
+> >> index ba31b010f67a..91c1e83410a3 100644
+> >> --- a/drivers/pci/tph.c
+> >> +++ b/drivers/pci/tph.c
+> >> @@ -451,6 +451,18 @@ int pcie_enable_tph(struct pci_dev *pdev, int mode)
+> >>  }
+> >>  EXPORT_SYMBOL(pcie_enable_tph);
+> >>  
+> >> +/**
+> >> + * pcie_tph_enabled_mode - Get current enabled TPH mode
+> >> + * @pdev: PCI device
+> >> + *
+> >> + * Return the enabled TPH mode (IV/DS) or 0 if disabled.
+> >> + */
+> >> +int pcie_tph_enabled_mode(struct pci_dev *pdev)
+> >> +{
+> >> +	return pdev->tph_enabled ? pdev->tph_mode : 0;
+> >> +}
+> >> +EXPORT_SYMBOL(pcie_tph_enabled_mode);  
+> > 
+> > Doesn't this create ambiguity with PCI_TPH_ST_NS_MODE?  Maybe return an
+> > -errno if not enabled.  Duplicate same for stub below.  Thanks,  
+> 
+> Because pcie_enable_tph(PCI_TPH_ST_NS_MODE) could also enable TPH,
+> but PCI_TPH_ST_NS_MODE mean "The function must use a value of all
+> zeros for all Steering Tags" So I think pcie_enable_tph() should
+> treat PCI_TPH_ST_NS_MODE as a invalid input.
 
-  - UFFD_FEATURE_RWP / UFFD_FEATURE_RWP_ASYNC  capability bits
-  - UFFDIO_REGISTER_MODE_RWP                   registration-mode bit
-  - 1 << _UFFDIO_RWPROTECT / _UFFDIO_SET_MODE  available-ioctls bits
-  - UFFDIO_RWPROTECT                           install / remove RWP
-  - UFFDIO_SET_MODE                            runtime sync/async toggle
+This doesn't make any sense to me, PCI_TPH_ST_NS_MODE is a valid enable
+mode for the TPH capability.  Thanks,
 
-Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
----
- man2/ioctl_userfaultfd.2 | 209 ++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 208 insertions(+), 1 deletion(-)
-
-diff --git a/man2/ioctl_userfaultfd.2 b/man2/ioctl_userfaultfd.2
-index 504f61d4b0cd..0a24a77ca32b 100644
---- a/man2/ioctl_userfaultfd.2
-+++ b/man2/ioctl_userfaultfd.2
-@@ -25,7 +25,7 @@
- .\" %%%LICENSE_END
- .\"
- .\"
--.TH IOCTL_USERFAULTFD 2 2021-03-22 "Linux" "Linux Programmer's Manual"
-+.TH IOCTL_USERFAULTFD 2 2026-05-22 "Linux" "Linux Programmer's Manual"
- .SH NAME
- ioctl_userfaultfd \- create a file descriptor for handling page faults in user
- space
-@@ -214,6 +214,33 @@ memory accesses to the regions registered with userfaultfd.
- If this feature bit is set,
- .I uffd_msg.pagefault.feat.ptid
- will be set to the faulted thread ID for each page-fault message.
-+.TP
-+.BR UFFD_FEATURE_RWP " (since Linux 7.2)"
-+If this feature bit is set,
-+the kernel supports read-write protection tracking, and the
-+.B UFFDIO_REGISTER_MODE_RWP
-+registration mode and the
-+.B UFFDIO_RWPROTECT
-+ioctl described below become available.
-+On kernels or architectures that cannot support this mode, the bit is
-+masked out from
-+.I uffdio_api.features
-+on return; callers should inspect the returned features and fall back
-+to another tracking mechanism when the bit is absent.
-+.TP
-+.BR UFFD_FEATURE_RWP_ASYNC " (since Linux 7.2)"
-+If this feature bit is set,
-+the kernel will resolve read-write protect faults in place without
-+delivering a notification, automatically restoring page permissions and
-+letting the faulted thread continue.
-+This bit requires
-+.B UFFD_FEATURE_RWP
-+to be set in the same
-+.B UFFDIO_API
-+call.
-+The async mode can also be toggled at runtime using the
-+.B UFFDIO_SET_MODE
-+ioctl described below.
- .PP
- The returned
- .I ioctls
-@@ -240,6 +267,21 @@ operation is supported.
- The
- .B UFFDIO_WRITEPROTECT
- operation is supported.
-+.TP
-+.BR "1 << _UFFDIO_RWPROTECT" " (since Linux 7.2)"
-+The
-+.B UFFDIO_RWPROTECT
-+operation is supported.
-+This bit is reported only when
-+.B UFFD_FEATURE_RWP
-+was negotiated successfully.
-+.TP
-+.BR "1 << _UFFDIO_SET_MODE" " (since Linux 7.2)"
-+The
-+.B UFFDIO_SET_MODE
-+operation is supported.
-+This is a file-descriptor-level ioctl and is reported once per
-+userfaultfd, independent of any registered range.
- .PP
- This
- .BR ioctl (2)
-@@ -327,6 +369,16 @@ Track page faults on missing pages.
- .TP
- .B UFFDIO_REGISTER_MODE_WP
- Track page faults on write-protected pages.
-+.TP
-+.BR UFFDIO_REGISTER_MODE_RWP " (since Linux 7.2)"
-+Track page faults on read-write-protected pages.
-+Every access (read or write) to a present page within the registered
-+range generates a notification once the range has been protected with
-+.BR UFFDIO_RWPROTECT .
-+This mode cannot be combined with
-+.BR UFFDIO_REGISTER_MODE_WP ;
-+attempting to do so returns
-+.BR EINVAL .
- .PP
- If the operation is successful, the kernel modifies the
- .I ioctls
-@@ -735,6 +787,161 @@ or not registered with userfaultfd write-protect mode.
- .TP
- .B EFAULT
- Encountered a generic fault during processing.
-+.SS UFFDIO_RWPROTECT (Since Linux 7.2)
-+Read-write-protect or un-protect a userfaultfd-registered memory range
-+registered with mode
-+.BR UFFDIO_REGISTER_MODE_RWP .
-+.PP
-+The
-+.I argp
-+argument is a pointer to a
-+.I uffdio_rwprotect
-+structure as shown below:
-+.PP
-+.in +4n
-+.EX
-+struct uffdio_rwprotect {
-+    struct uffdio_range range; /* Range to change RWP on */
-+    __u64 mode;                /* Mode flags */
-+};
-+.EE
-+.in
-+.PP
-+The following mode bits are supported:
-+.TP
-+.B UFFDIO_RWPROTECT_MODE_RWP
-+When this mode bit is set,
-+the ioctl installs read-write protection on every present page in the
-+range specified by
-+.IR range .
-+Otherwise the ioctl removes read-write protection from the range, which
-+is also how a faulted handler resolves an
-+.B UFFD_PAGEFAULT_FLAG_RWP
-+notification.
-+.TP
-+.B UFFDIO_RWPROTECT_MODE_DONTWAKE
-+When this mode bit is set,
-+do not wake up any thread that waits for page-fault resolution after
-+the operation.
-+This can be specified only if
-+.B UFFDIO_RWPROTECT_MODE_RWP
-+is not specified.
-+.PP
-+Read-write protection only affects pages that are currently populated
-+in the range; unmapped addresses are left untouched.
-+Protection is preserved across page reclaim and migration; callers must
-+re-arm a range with
-+.B UFFDIO_RWPROTECT
-+after any operation that drops the underlying page
-+.RB ( "MADV_DONTNEED " "on anonymous memory, hole-punch on shmem,"
-+truncation of a file mapping).
-+.PP
-+This
-+.BR ioctl (2)
-+operation returns 0 on success.
-+On error, \-1 is returned and
-+.I errno
-+is set to indicate the error.
-+Possible errors include:
-+.TP
-+.B EINVAL
-+The
-+.I start
-+or the
-+.I len
-+field of the
-+.I uffdio_range
-+structure was not a multiple of the system page size; or
-+.I len
-+was zero; or the specified range was otherwise invalid; or an invalid
-+mode bit was specified; or
-+.B UFFDIO_RWPROTECT_MODE_DONTWAKE
-+was specified together with
-+.BR UFFDIO_RWPROTECT_MODE_RWP .
-+.TP
-+.B EAGAIN
-+The process was interrupted; retry this call.
-+.TP
-+.B ENOENT
-+The range specified in
-+.I range
-+is not valid.
-+For example, the virtual address does not exist,
-+or part of the range is not registered with
-+.BR UFFDIO_REGISTER_MODE_RWP .
-+.TP
-+.B EFAULT
-+Encountered a generic fault during processing.
-+.\"
-+.SS UFFDIO_SET_MODE (Since Linux 7.2)
-+Toggle userfaultfd features that may be flipped at runtime.
-+.PP
-+The
-+.I argp
-+argument is a pointer to a
-+.I uffdio_set_mode
-+structure as shown below:
-+.PP
-+.in +4n
-+.EX
-+struct uffdio_set_mode {
-+    __u64 enable;     /* Feature bits to set */
-+    __u64 disable;    /* Feature bits to clear */
-+};
-+.EE
-+.in
-+.PP
-+Bits set in
-+.I enable
-+turn the named features on; bits set in
-+.I disable
-+turn them off.
-+The two fields must not overlap.
-+Today only
-+.B UFFD_FEATURE_RWP_ASYNC
-+is a valid bit in either field; any other bit causes the ioctl to
-+return
-+.BR EINVAL .
-+Enabling
-+.B UFFD_FEATURE_RWP_ASYNC
-+also requires
-+.B UFFD_FEATURE_RWP
-+to have been negotiated at
-+.B UFFDIO_API
-+time.
-+.PP
-+The toggle takes the per-process
-+.I mmap_lock
-+in write mode, ensuring that all in-flight fault handlers complete
-+before the new mode takes effect.
-+This allows a single userfaultfd to switch between lightweight async
-+detection and synchronous eviction without re-registering its ranges.
-+.PP
-+This
-+.BR ioctl (2)
-+operation returns 0 on success.
-+On error, \-1 is returned and
-+.I errno
-+is set to indicate the error.
-+Possible errors include:
-+.TP
-+.B EINVAL
-+A bit other than
-+.B UFFD_FEATURE_RWP_ASYNC
-+was specified in
-+.I enable
-+or
-+.IR disable ;
-+the two fields overlap; or
-+.B UFFD_FEATURE_RWP_ASYNC
-+was requested without
-+.B UFFD_FEATURE_RWP
-+having been negotiated.
-+.TP
-+.B EFAULT
-+.I argp
-+refers to an address that is outside the calling process's accessible
-+address space.
- .SH RETURN VALUE
- See descriptions of the individual operations, above.
- .SH ERRORS
--- 
-2.51.2
-
+Alex
