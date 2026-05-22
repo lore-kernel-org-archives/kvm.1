@@ -1,88 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E918C368D7E
-	for <kvm@vger.kernel.org>; Fri, 22 May 2026 18:07:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DE6E2F1FDE;
+	Fri, 22 May 2026 18:29:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779473262; cv=none; b=iHx2FS4Qko0G6LWbcFGdjsmhTg1XcTkAPKnjXd7z9PmDb4q6oxx+aAfIWbM/qB0b1toz7gDXmfun2eIEK7gTIatz3xO5kTz1AYrZ6GGHfHwnc/w/G9dXuUp+hF7rYZnZm337Y5dIKQz/hXNgzOVFQqY5LWlIU56F62BPqRNQtzM=
+	t=1779474597; cv=none; b=ly1dQlvLoc4y2WGpYv7OgZ/FRTW2tL0Guy2Nb1xhUpySF71RlcteC4UoTVG6yK80A5s4ayPot4SKXokWg7AHN9s51BcLUwM+lpmFIwCyims9xmjqqPEBkEegr2I57xZB7JSfbPEOdHlV5YrMfGn9i+5DPjn17ICG5X14FcpNi8E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779473262; c=relaxed/simple;
-	bh=5OWuTe22t8XhTxLMcJ0G91AVC1QJ/+dkB4zFe+zkcLE=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=EqVL+ZQPfOJkUdTAa/hUMWHwtoyU4R7SG4dVF4ivC5xCXcSu8c936XUPqKpDkqR/oCkNRs665CWhvDnU5uCV7gatAoy3vb14tWOCMOiqInYaCbfMhEKDY3xG+ExDhp7KMFMUclo46mkdWzJmdLBpFAoUn0HGsfXHf2ZyMRD4+oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Vc9mQy80; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779474597; c=relaxed/simple;
+	bh=5/AhXF9kGVhULDok/+rh/JjfPACpT4ecZvgjeEKRBIk=;
+	h=Content-Type:MIME-Version:Subject:From:Message-Id:Date:References:
+	 In-Reply-To:To:Cc; b=GOeq2KdjlvbJ8c9pUdCNeyJ3wXFPDEUIuvn2gVR1yHlC7yMBeTzJWb6Lfw/TkaqJpCy2HMhzi3OQqt4Ho4R9diHNxdqSlYNl2Of9FQ15++dfQeQ+FxAljBD9CRfbLjzmOQjEvsL7HuJr718htowmRmhb7EpoPxENLd3a8J/XfZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YfIvkdJi; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Vc9mQy80"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D14881F00A3D;
-	Fri, 22 May 2026 18:07:31 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YfIvkdJi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 406351F000E9;
+	Fri, 22 May 2026 18:29:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779473251;
-	bh=0Sic23736NV8VBUqOYq2C32fQqV/+tVRTsy/n0YTu3k=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Vc9mQy80aNICig8JU74UK5H6cn515T2RWcNSWNM7JI+P5WaV8JC+LBlvrjIehGPhf
-	 QGHWa6SiLX6G4UOl2ue0uZS+rjMe+zMvhikvnZPivK3Kmp01/FEQRlc7gl7XQ55Yic
-	 wBzWHETSdU3IvDfv5C9jiZKb138R4qnLZWCCkEmmPTlNLuLnQ/JZtH7JxKSFdB6G4j
-	 /z1EFB0Ogjevyl3jOgkHFdB5LNYPh/YU5SsNbbwS6Au4HFCrBKeK/bYowdbANYS/JW
-	 ejlpSI3hW35cc1gwAjUonrp6LnE4mPkwGwNjSPFdO/Qah8k3XBcUZRa3bQYSSsVmAP
-	 LJ2PmWGR8qPvg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH 2/2] KVM: selftests: Verify that KVM returns the
- configured APIC bus frequency
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260522173526.3539407-3-seanjc@google.com>
-References: <20260522173526.3539407-3-seanjc@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Fri, 22 May 2026 18:07:31 +0000
-Message-Id: <20260522180731.D14881F00A3D@smtp.kernel.org>
+	s=k20260515; t=1779474596;
+	bh=o8IBLuCs7YOJ3hdmxOMAExhPHKvXLTD+QeFBC0POzSQ=;
+	h=Subject:From:Date:References:In-Reply-To:To:Cc;
+	b=YfIvkdJi7cgsO3LpTKzl01+X3T1RD/v8HXscwZOe99Cy/0vW0rSevxv46G9+fylPX
+	 TVspgAhcerPGGr+LoM8c8tnd0WRnVdr90loef39n7lMg6xuikTObFs7VziqNKwWmfR
+	 X+Gc34lAYlT8/gWjgrtQPSr5vrgqu4MlYRNKw/UPJ/yb39642samKAzxPkwF8F519d
+	 PEGhu9XTCyyxBKo0ss5yEG0Jbmnz2/Y3TvgMTF2rE6LvnXfBuEZ+bAmhYINwX1Pr5Q
+	 2JjvwlLGA2N0CKzudI4ToKoO6WxjOLK+beL2JQjY25PfvfGfOhF5K/F9AdTN1GANiV
+	 6JJ3ftimjX3Fg==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id 93B683930FB9;
+	Fri, 22 May 2026 18:30:06 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v2] vsock: keep poll shutdown state consistent
+From: patchwork-bot+netdevbpf@kernel.org
+Message-Id: 
+ <177947460540.1324219.4145730624585924301.git-patchwork-notify@kernel.org>
+Date: Fri, 22 May 2026 18:30:05 +0000
+References: <20260519165636.62542-1-ziyuzhang201@gmail.com>
+In-Reply-To: <20260519165636.62542-1-ziyuzhang201@gmail.com>
+To: Ziyu Zhang <ziyuzhang201@gmail.com>
+Cc: sgarzare@redhat.com, davem@davemloft.net, edumazet@google.com,
+ kuba@kernel.org, pabeni@redhat.com, horms@kernel.org, acking@vmware.com,
+ georgezhang@vmware.com, dtor@vmware.com, kys@microsoft.com,
+ haiyangz@microsoft.com, wei.liu@kernel.org, decui@microsoft.com,
+ longli@microsoft.com, stefanha@redhat.com, mst@redhat.com,
+ jasowang@redhat.com, xuanzhuo@linux.alibaba.com, eperezma@redhat.com,
+ bryan-bt.tan@broadcom.com, vishnu.dasa@broadcom.com,
+ bcm-kernel-feedback-list@broadcom.com, virtualization@lists.linux.dev,
+ netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, kvm@vger.kernel.org, baijiaju1990@gmail.com,
+ r33s3n6@gmail.com, gality369@gmail.com, zhenghaoran154@gmail.com,
+ hanguidong02@gmail.com, zzzccc427@gmail.com
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Low] The commit message inaccurately states that the capability queries =
-return the APIC bus "frequency", when they actually return the cycle length=
- in nanoseconds.
---
+Hello:
 
-commit ffd11318e67f99d376b64f166afff3fe22cd6e95
-Author: Sean Christopherson <seanjc@google.com>
+This patch was applied to netdev/net.git (main)
+by Jakub Kicinski <kuba@kernel.org>:
 
-KVM: selftests: Verify that KVM returns the configured APIC bus frequency
+On Wed, 20 May 2026 00:56:36 +0800 you wrote:
+> vsock_poll() reads vsk->peer_shutdown before taking the socket lock
+> to set EPOLLHUP and EPOLLRDHUP, then reads it again after taking
+> the lock to report EOF readability. A shutdown packet can update
+> peer_shutdown while poll is waiting for the lock, so one poll invocation
+> can report EOF readability without the corresponding HUP/RDHUP bits.
+> 
+> For connectible sockets, take one peer_shutdown snapshot after
+> lock_sock() and use it for all peer-shutdown-derived poll bits. For
+> datagram sockets, which do not take lock_sock() in poll(), take one
+> lockless READ_ONCE() snapshot and pair it with WRITE_ONCE() on the
+> writer side.
+> 
+> [...]
 
-This commit adds checks to the APIC bus clock test to verify that KVM
-returns the configured APIC bus cycles value when querying the capability
-on the VM, while still returning the default value for system-scoped checks.
+Here is the summary with links:
+  - [net,v2] vsock: keep poll shutdown state consistent
+    https://git.kernel.org/netdev/net/c/aae9d8a5528b
 
-> KVM: selftests: Verify that KVM returns the configured APIC bus frequency
->
-> Add checks in the APIC bus clock test to verify that querying
-> KVM_CAP_X86_APIC_BUS_CYCLES_NS on the VM after changing the frequency
-> returns the VM's actual APIC bus frequency, not KVM's default.  For
-> giggles, verify that KVM still returns its default frequency for the
-> system-scoped check.
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
-[Severity: Low]
-This isn't a bug, but does the commit message use the right terminology her=
-e?
 
-The text states that the capability queries return the APIC bus "frequency"=
-,=20
-but the capability KVM_CAP_X86_APIC_BUS_CYCLES_NS actually returns the cycl=
-e=20
-length in nanoseconds, which is the reciprocal of the frequency (calculated=
-=20
-in the code as NSEC_PER_SEC / apic_hz).=20
-
-Could the commit message be updated to reflect that it returns the cycle=20
-length in nanoseconds rather than the frequency?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260522173526.3539=
-407-1-seanjc@google.com?part=3D2
