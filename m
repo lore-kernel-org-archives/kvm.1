@@ -1,142 +1,194 @@
-Received: from mail-ot1-f52.google.com (mail-ot1-f52.google.com [209.85.210.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B82339DBF1
-	for <kvm@vger.kernel.org>; Fri, 22 May 2026 13:06:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.210.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779455207; cv=pass; b=XIb6Zv1BBFtvI3Y3oE5qMmzbi4DQY//48fL+8CnKmeI3Lmmyel+J/z3mcOuV6uKeGRuuM6rmY1SJqbcdzpqVkhLCHOiXoZbLaOSqVd/UsJesSri6KTnFq7GAEIFy6dGbhZT8CofFE0Mrw80kT3WH7Vh5FPHy9UTLKyKEQ26ONhs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779455207; c=relaxed/simple;
-	bh=1M40iwC+tnqi6/6kGIrQQkFHBdkuDA3KVMWPuRb64R8=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=DofC4CjcTQFIHGD70x5VJYR8P3n6061cx56JQ9suGn2tTOnemQIoS8VrCQAhAVSHddLdL1QQdEdgF2apDfijbF8J6xwDZ4u5PywciWT/ryPtILM1I1OkUkCwrDd5BmJDIrEXz+riUCwTON1pzUeIWYD2FAJGpo8OfSd46khe1CI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=ha+y9ff+; arc=pass smtp.client-ip=209.85.210.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27BF3394464;
+	Fri, 22 May 2026 13:07:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779455253; cv=none; b=bC9QZ0h6zW+7sCkDlxU+ni55a6yyQ2AdvDJZLMcsD3j2IfYKIjR3KiSk+KmLHD77OqoUFbBlr2BCGLTOB9EHfq4gqhdsvObA8lCsA3wggYBH7x1dLTtHZtEx2Mo+l7R1Nk4wRuQ8wXqcPDi3PhMHNuyM0FZAszwNgDgZ6wlNpd4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779455253; c=relaxed/simple;
+	bh=AuqlwZw0rYgmnvcus3P1j3sYrFeJ4f6KFnaJd1FqTmI=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=dQJt5nW60p5UsWIO4LrgeYQ8q9Oys3VabS0V/I597pGj3HvF+qauZBY1NGlT+xII24LrgSWhy7hHdD+4vklCpdcDxwe1Uzz8xS7uiMXeu7mryA5etmVuJnrk8oX9xT0onfNLoh/1YGi+1N+CUAa0X/B2aTBt/v/ylETtsXfpRkE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=I2Z1lu0A; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="ha+y9ff+"
-Received: by mail-ot1-f52.google.com with SMTP id 46e09a7af769-7dbca22dbfeso3881163a34.1
-        for <kvm@vger.kernel.org>; Fri, 22 May 2026 06:06:45 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779455205; cv=none;
-        d=google.com; s=arc-20240605;
-        b=WOVfc03rXjQyOded0bYd4NgOYNyYbvWIv2uno0+zjMjn0oT05C1tkVlzV/vvCgI/ML
-         S53KO9F0sYZQjTJbkjPia4K/KTQLy753ghEx0+/vM0TB4RYZRZPtz8eAVQNvlkd/h/VY
-         +DpFBVxJlJK+mE6RBKQ2JflYzqJDR/lrf6DDKvl85Tt5IL5/z6k3wJJumWOLajcuZO6r
-         FBFnltFlkTZHfH/1kIkTuikSGXaiQ6D2iMqC2GkEVjMPDSsymT9/CT3/igzVVwRuXdm3
-         pwjCl/w+vsMzfbd9eE2wgsorRR6XMHuaDjtk5lCzVTh/S1ymM+13Q/z8gQxY+/sOZmPQ
-         QclA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=cc:to:subject:message-id:date:from:mime-version:dkim-signature;
-        bh=NYAe2rB0gIMb7eEgjvs7GruqXDrCjVi8nCKCe2KONFY=;
-        fh=wp7eTnfftbX22HMgYUc6PKnxRIitWFh08Uxv0Od9kq8=;
-        b=Ok+ktL9WG1OmQeFA3kHWxOLV220Gc2xrt+agbTGuo0kDn9cUwBkPxsQ8AHCHQp2Ieh
-         lhcp5stzuWugrk0jl55XXXF0x5IDWngL/0EiFGF2ineLy6CYev+ITZZlsZycjBIbO5Hd
-         9zOvB2AxbXdilQmxcvDVEJ/MHqAKRX27SkzZpUcTVwyl2iV6PsiHNAmMY7h8yKPEPP9n
-         casr++mu3yiv9et1z2l9KjXTzSG2Zz8jWq5xLOgmiUSfPV/N9N3wC11DAkR7wrHv2RSI
-         A4npoqyf95G3dok92DP02ESRLtl6RbH/nerlEcOvmkWFhDNJd8ACIMr0vSDxprIrR25W
-         YtDw==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1779455205; x=1780060005; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=NYAe2rB0gIMb7eEgjvs7GruqXDrCjVi8nCKCe2KONFY=;
-        b=ha+y9ff+1Ebb6wYHrWfsqL4GlpNu/MTiLMKj6s7MkanQvI8L2K8ovniRmwtUyFJouD
-         skgkMGF0n5JJZfKRLHMZsuEsf+AR1XbiIsGf7Du54cwMRThj04ClUalXgrofOOIkaWGH
-         fy4hoYM+ttQ9ftNsT96FYlhHY8ncGxSan6U3WE7yI9J364a3SMIJBUgXhfmq68tnMDlP
-         kijEis6Leq2POVVChxiYWjhq+2y6wP4gMQ/NVWgxguOb8zzgXhhcZIjzpOegZZfTp2ZS
-         +yhCeQO//oRWWgRV1XgHYWpLNi9wNkKex+Yfhmkmr0wgftYMnbHz1MPNgBr3t01kWrhs
-         QdLA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779455205; x=1780060005;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=NYAe2rB0gIMb7eEgjvs7GruqXDrCjVi8nCKCe2KONFY=;
-        b=bScryAfuXVbS6Dhsg4TkLi0wU12N+B7UyFy+i1l+9M9NStbS4Lr4brRYr/Wq4uGI86
-         Vp87tErENYfwBDc8U38o/zqEQ7+9WBVAtNAw5UW93DVolmn9fw3NyJVSJbIRkNZ3INwQ
-         hLnncVW7whKmDTPFMRM/PXAzyGiNVwztR/K5272dvakI5q8zCUmF10JZqoDUxGqi7XQF
-         3iGzZdJdT/xRCkEWcn+MZjpGlC7IsiiAaU6PlcICTSRHrhTAgnqYWuQVfsB+caFrBBGy
-         AmnUqmMZuX0TAjZTnBBlpgd+DpW8UMNv9q2mbbSDo9o5UTlTyt+aRDZ+tFt/RKGJl+Qm
-         2DQQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/6kqoXB+l9SqQFCnXG7MO1goVPwYkjoHkyenyP/cNFnY9tup4yRb371NfubEoxMyDM9xM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJbLJehITPCyg8phZV8fN+pyhmIV8GFeGQkREF4pHUGkGWN1Tz
-	T0BTciW8WoNOhKbptdxjh+PPg9cdCDNzHWf5VWbZehel0S/vgc9B/+2nb/AaOnqAJlCuxIhoM93
-	ecupE7v9CtfdWBEC2TUj6gbURTe5zqW9PesD3D/UTGNClL5dkfZJ4/mQ=
-X-Gm-Gg: Acq92OGH14ymYQpOyJE2XMOay9h7dRGkymCSyZ6Pdw16wamv1VEKRigaUlkd80BdvzT
-	iFf6tk0j1uh4pzB4MvmkmGR4la6mQIhVOtRYyflgL6XtgM6X6h/z8YE9Luw3irXixapp8jNw7hm
-	cmmA2JA3dWCcu/fPU+YYyC/kFSkzL909p4HlU8geNWApp58s6OZu1dVtwZcVxTldLcFy0Nb7i7H
-	oTdmV1fMYCnvk2yVBo2tpCJCIEyuknU4Gsy5AduVXtgV+LaanDdT9yct3/Ur6xDyhXBhFwU88Aj
-	JOdln87A/s3TACIl4FeLjX/pefPJMjY5g9ViVIITFNHP2h5S9sfNy39nFHKqjMKYNbVri6ILHWF
-	5oKozLISo9xQs/ELWKVEvUpAwh52iFnB34gM=
-X-Received: by 2002:a05:6830:4983:b0:7de:60fa:6203 with SMTP id
- 46e09a7af769-7e5fef070c8mr2267305a34.26.1779455205099; Fri, 22 May 2026
- 06:06:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="I2Z1lu0A"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:References:
+	In-Reply-To:Date:Cc:To:From:Subject:Message-ID:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=AuqlwZw0rYgmnvcus3P1j3sYrFeJ4f6KFnaJd1FqTmI=; b=I2Z1lu0A2WMUwvb3O2GEPeoHr8
+	zqNl3A+zIsIj8HFTT7rFR80Dmf3Rf/0eB1vAJR+QcCya94QaSqXQG/zzUGJclrRBwwnMPJciZlobW
+	c1i+T4FhyVSp5//2X0fSiI5waKHIjwBbv/RxNZeR8t/I1DStE2J5UbMLJiOT4doF4qierouWbH1fU
+	GCHJE2Hamd+EJIa+chz/mPWx5E9zvB2Y1eIlTD9z1GnIm0TuWXNpnQFenRXlDAGr3jgb3+RftyGHC
+	ZBnvQtJhHDGFg7Cp2tyxVpqGu/1ZvDclzKOJd8zjs9SjToqRYG+TZuzJpEqTAmGb6kxlN/fhhiECx
+	U3+WlAFQ==;
+Received: from 54-240-197-238.amazon.com ([54.240.197.238] helo=freeip.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wQPap-0000000A7TT-2aXt;
+	Fri, 22 May 2026 13:07:11 +0000
+Message-ID: <c4b498c401287477402ddd60a0120b0c5a9bf8d3.camel@infradead.org>
+Subject: Re: [PATCH v4 27/30] KVM: x86: Add KVM_VCPU_TSC_EFFECTIVE_FREQ
+ attribute
+From: David Woodhouse <dwmw2@infradead.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jonathan Corbet <corbet@lwn.net>, 
+ Shuah Khan <skhan@linuxfoundation.org>, Thomas Gleixner <tglx@kernel.org>,
+ Ingo Molnar <mingo@redhat.com>,  Borislav Petkov <bp@alien8.de>, Dave
+ Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross
+ <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, Paul
+ Durrant <paul@xen.org>, Jonathan Cameron <jic23@kernel.org>, Sascha
+ Bischoff <Sascha.Bischoff@arm.com>, Marc Zyngier <maz@kernel.org>, Joey
+ Gouly <joey.gouly@arm.com>, Jack Allister <jalliste@amazon.com>, Dongli
+ Zhang <dongli.zhang@oracle.com>, joe.jin@oracle.com, kvm@vger.kernel.org, 
+ linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ xen-devel@lists.xenproject.org, linux-kselftest@vger.kernel.org
+Date: Fri, 22 May 2026 14:07:10 +0100
+In-Reply-To: <ahBQ7mXNaTtouT3C@google.com>
+References: <20260509224824.3264567-1-dwmw2@infradead.org>
+	 <20260509224824.3264567-28-dwmw2@infradead.org>
+	 <3ad6cd109480772ade3c11f23b9c1d7a9855d67e.camel@infradead.org>
+	 <ag-Hf2liLSX9q0rS@google.com>
+	 <ab84153e33fbe7c25667f595c56b310d4d5a93ef.camel@infradead.org>
+	 <ahBQ7mXNaTtouT3C@google.com>
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-CpuB671ZtQNXlLrJBdeU"
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Anup Patel <anup@brainfault.org>
-Date: Fri, 22 May 2026 18:36:33 +0530
-X-Gm-Features: AVHnY4KfXNm77pz9jWxpxXvMATQwUmW7tiCNVyzvocwyuvXKSLYVk8Oece-by1c
-Message-ID: <CAAhSdy0-joewqwsJNkMgzKvc0zh2cTFgTqdP+LZAAxmfEd+Mpw@mail.gmail.com>
-Subject: [GIT PULL] KVM/riscv fixes for 7.1 take #1
-To: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>, 
-	Andrew Jones <andrew.jones@oss.qualcomm.com>, Atish Patra <atish.patra@linux.dev>, 
-	"open list:KERNEL VIRTUAL MACHINE FOR RISC-V (KVM/riscv)" <kvm-riscv@lists.infradead.org>, KVM General <kvm@vger.kernel.org>, 
-	linux-riscv <linux-riscv@lists.infradead.org>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
+
+
+--=-CpuB671ZtQNXlLrJBdeU
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: base64
 
-Hi Paolo,
+T24gRnJpLCAyMDI2LTA1LTIyIGF0IDA1OjQ5IC0wNzAwLCBTZWFuIENocmlzdG9waGVyc29uIHdy
+b3RlOgo+IAo+IE9oLCB0aGF0J3MganVzdCBhbiBvdmVyc2lnaHQsIGRlZmluaXRlbHkgbm90IGlu
+dGVudGlvbmFsLsKgIEVhc3kgZW5vdWdoIHRvIGZpeDoKCldhbnQgbWUgdG8gcm9sbCB0aGF0IGlu
+dG8gdGhlIHNlcmllcz8gQXMgeW91IGVsb3F1ZW50bHkgcHV0IGl0IHRoZQpvdGhlciBkYXksIHdo
+YXQncyBvbmUgbW9yZSBwYXRjaC4uLj8KCj4gZGlmZiAtLWdpdCBhL2FyY2gveDg2L2t2bS94ODYu
+YyBiL2FyY2gveDg2L2t2bS94ODYuYwo+IGluZGV4IDE2MTZiMmVlYzZlNy4uY2Q0YTI0NGNhMGM1
+IDEwMDY0NAo+IC0tLSBhL2FyY2gveDg2L2t2bS94ODYuYwo+ICsrKyBiL2FyY2gveDg2L2t2bS94
+ODYuYwo+IEBAIC0yMjM1LDcgKzIyMzUsNyBAQCBpbnQga3ZtX3ZtX2lvY3RsX2NoZWNrX2V4dGVu
+c2lvbihzdHJ1Y3Qga3ZtICprdm0sIGxvbmcgZXh0KQo+IMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDC
+oMKgwqDCoCByID0gdGRwX2VuYWJsZWQ7Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+IGJyZWFrOwo+IMKgwqDCoMKgwqDCoMKgIGNhc2UgS1ZNX0NBUF9YODZfQVBJQ19CVVNfQ1lDTEVT
+X05TOgo+IC3CoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHIgPSBBUElDX0JVU19DWUNMRV9O
+U19ERUZBVUxUOwo+ICvCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgIHIgPSBrdm0gPyBrdm0t
+PmFyY2guYXBpY19idXNfY3ljbGVfbnMgOiBBUElDX0JVU19DWUNMRV9OU19ERUZBVUxUOwo+IMKg
+wqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoCBicmVhazsKPiDCoMKgwqDCoMKgwqDCoCBjYXNl
+IEtWTV9DQVBfRVhJVF9IWVBFUkNBTEw6Cj4gwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKgwqDCoMKg
+IHIgPSBLVk1fRVhJVF9IWVBFUkNBTExfVkFMSURfTUFTSzsKClBsZWFzZSB0ZWxsIG1lIHRoYXQg
+Y2FuIG5ldmVyIGJlIHplcm8uIEJlY2F1c2Ugd2UgZGl2aWRlIGJ5IGl0IHdoZW4KcmVhZGluZyBI
+Vl9YNjRfTVNSX0FQSUNfRlJFUVVFTkNZLgoKIC4uLiBjaGVja3MgLi4uIGl0IGRvZXMgbG9vayBs
+aWtlIGl0J3MgaW5pdGlhbGlzZWQgdG8KQVBJQ19CVVNfQ1lDTEVfTlNfREVGQVVMVCBpbiBrdm1f
+YXJjaF9pbml0X3ZtKCksIGFuZCB3ZSBkb24ndCBhbGxvdwp1c2Vyc3BhY2UgdG8gc2V0IGl0IHRv
+IHplcm8uCgo=
 
-We have the following fixes for the 7.1 kernel:
-1) Fix invalid HVA warning in steal-time recording
-2) Return SBI_ERR_FAILURE to guest upon OOM in
-    pmu_event_info() and pmu_snapshot_set_shmem()
-3) Fix NULL pointer dereference in SBI v0.1 SEND_IPI handler
-4) Fix sign extension of value for MMIO loads
 
-Please pull.
+--=-CpuB671ZtQNXlLrJBdeU
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-Regards,
-Anup
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUyMjEzMDcx
+MFowLwYJKoZIhvcNAQkEMSIEIMPCxikEHDQX2wCaNntOTEK0rZx8dvCIOCZD+MJAOSKmMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIAU8rJYqt2O38u
++O40TkWc0ihSTIv//fDjxLEGYD6+BhrfXWo8fHYzjh13USsQPHr6Mar41QdTyzOo+PACV5pt9OWe
+DCwR/a+mZPuEygz1Y1PetzlBwkqDJLGbnw3vMjmufuJ3vnwBFB5in9ZJw8Bra9eBB74ZydHH5SMg
+rgJ9Vd7nvcWht4NgDJEE2q/6G/qu3so18obH2MYLRgGQ8gVWWyz/3pWH5rnECNeLs6+sqTgPEUxq
+hEPh8t/c3vnpZd8QZHBw3St+bx0t8Zb0PepG6hM6PQ+tXTBf4Su9ARHnu0qpdPF80ZLtAawO8qtm
+FWh/aC4ent95kgcNVUOs6mY5cyc/kyN2P21nyW1m7jYz3HidNBGLTIEBN6ulHWc/uKttZ3cU1Aza
+gpAZt3OS7UN+IJxsmlMKU6IDVSOoIAUc2czcDFn5VJGtxxqHgwMwwrzjV1Eu4xxuKHdOilNKsXid
+FieAPPYsAVNzM5RCTrTA8uiQe+QmkZG8qCPwLU9R8XAOO0d2Q9aeh4zPVoGkvaCL2q4f62IXArGF
+CdkreDTeNQUETYRmArxP9qP/EaG1a0uYBMSQmByJSejs+yNHu/AWVrXlRE+D3SKAed3RdrjmNLjR
+xToo9PlIcSsh1nhy2YXuHRmLnmdR5TyLhiObq1tnKjlVWzeBoBLI7FqUnKan71MAAAAAAAA=
 
-The following changes since commit 5200f5f493f79f14bbdc349e402a40dfb32f23c8:
 
-  Linux 7.1-rc4 (2026-05-17 13:59:58 -0700)
-
-are available in the Git repository at:
-
-  https://github.com/kvm-riscv/linux.git tags/kvm-riscv-fixes-7.1-1
-
-for you to fetch changes up to c7832534a8160276cccb9a8cc8cafb5614c579d0:
-
-  RISC-V: KVM: Fix sign extension for MMIO loads (2026-05-18 10:19:18 +0530)
-
-----------------------------------------------------------------
-KVM/riscv fixes for 7.1, take #1
-
-- Fix invalid HVA warning in steal-time recording
-- Return SBI_ERR_FAILURE to guest upon OOM in pmu_event_info()
-  and pmu_snapshot_set_shmem()
-- Fix NULL pointer dereference in SBI v0.1 SEND_IPI handler
-- Fix sign extension of value for MMIO loads
-
-----------------------------------------------------------------
-Jiakai Xu (3):
-      RISC-V: KVM: Fix invalid HVA warning in steal-time recording
-      RISC-V: KVM: Fix NULL pointer dereference in SBI v0.1 SEND_IPI handler
-      RISC-V: KVM: Fix sign extension for MMIO loads
-
-Osama Abdelkader (2):
-      riscv: kvm: return SBI_ERR_FAILURE for pmu_snapshot_set_shmem() when OOM
-      riscv: kvm: return SBI_ERR_FAILURE for pmu_event_info() when OOM
-
- arch/riscv/kvm/vcpu_insn.c    |  9 ++++-----
- arch/riscv/kvm/vcpu_pmu.c     | 12 ++++++++----
- arch/riscv/kvm/vcpu_sbi_sta.c |  2 +-
- arch/riscv/kvm/vcpu_sbi_v01.c |  2 ++
- 4 files changed, 15 insertions(+), 10 deletions(-)
+--=-CpuB671ZtQNXlLrJBdeU--
