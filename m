@@ -1,157 +1,237 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A9843635B
-	for <kvm@vger.kernel.org>; Fri, 22 May 2026 15:15:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A93FB29CB24;
+	Fri, 22 May 2026 15:28:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779462952; cv=none; b=rP/8dj9Cd03i8xJRsHx1d8bmK2c7es0tueiu6+1tz1W8HVRWuBlDA+xgHWWId778ULlJWJec1kZ+p4Ld+BXIy8/QPou90MqJnxcDa65c3Pg3ZebIoxqoD14P4A11++G1dT9I++p0guLZEVZ8dM2PcSAYD2XW1nBDgDwg/l6BiFA=
+	t=1779463704; cv=none; b=QmqqeAKKTRmKMMil3Qq1PEPIgGdRHdEhNRaTZgHCf8ZWLqS+y++Qi6KMuOdc+p0Ud9FbaS9eQ/YOmKEhUi1oVKctuJqEX+2cK/i9Y365MdJc0RemepH7Yal0B8vPyK/mCbnCxeBkGdq6xAaLOYoGUOK2iN0mBdMnZStl1PQHK7Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779462952; c=relaxed/simple;
-	bh=9g8EAfGvDG1p08Pmtu91DH9geQTr1Eg1+earq8LfPG4=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=OJz6CgE9bZChZ2Euah+XrgMsKtFk50HjC+VVE7OnE5ZfSJ/yJSzDLl7tYtCtTYLB74+/yEWS3tgWiyB47BImRrJ1+zEZxffyNAraRHgygvksfZ7qx/gBX7m4nWzmiRco2O0bUXp5ol3dTH78famcxeA4+qUj8Mr7Wm6srdfCOSs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--vannapurve.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vfd+qkAP; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--vannapurve.bounces.google.com
+	s=arc-20240116; t=1779463704; c=relaxed/simple;
+	bh=ENJMygQBNEXyKX3kNPC/VUchIDtSHO89qvMqyZoCGyA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=QT0Qd8MTUodpuXM3c5cEclmLQt+IxhRVAg4SKw4W9/Og5XsINSpdwZwK+UW4NiI5BTPSbYiRZkObUFfwxioPFxWjmqLBPx3rabA7/EpMOf0cFtprvqXT3TJPW/O/eMzT8733U5D3LadnXhWOU5cPQFgKYuNqPr5X1I+ghwMSgVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=ROYfWapt; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vfd+qkAP"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2ba86e35aa1so121847825ad.1
-        for <kvm@vger.kernel.org>; Fri, 22 May 2026 08:15:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779462937; x=1780067737; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=J8KQAP9mWp0ZRebZLa5bEvFOR8JqQ907ANUwCS1BhIk=;
-        b=vfd+qkAPjFOttcXas/Ji9M35M4Rw8hcV5fTyPE3i/qz6Urtu59oiZWjVnliJDV8b8X
-         nXc9ju8hf7FIeD4KxoV5671zCCTo2KNxg28Cmp4AowLYke7YszNsR6TOu0LU29I05LHu
-         NSjtge7CzHic4JZstW7NiIi5zCq0R9rSyguhEBY1sHF3mhEiONnewRhq/IygjhEMo45+
-         UqI62LjC+u9pJ3cidfHtOwJCng5tWfNVW3jIAdm2IrU+XE1LeLKh+9GOP76Pkzbyv+tT
-         /XN9Xrdhft0Grt9ieG4VlRCvjwukUwPKDX1O1aJ7qZg6qvWELuu5Nlts4Y0ezfW/P1jP
-         usZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779462937; x=1780067737;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=J8KQAP9mWp0ZRebZLa5bEvFOR8JqQ907ANUwCS1BhIk=;
-        b=RcTDDQ+Tfzp246ATUz5/YuO+ZUidMrJHh8drEWPEFqjF5QfT4gyavB1ebI4/yKvQcx
-         uZgbADv0edPzfuah4yKFGm+HlwzZA67lv/LIWk51EbN+Gxfz9c3bbYxeStIyBdsM5PxK
-         s4pq623QtQC+IvHue3DTuLmvwbm0wLcC4N4qgU371Ha02OsXn3NoNKJ4odpo26s56TZ5
-         T9FwGH4e7nRQt5TAk/upQV6jwK2+icm85ilNjz/mMldufbm/wC87w/yvz202NiDN4+IJ
-         yJjuE+HrMcxZPPB3XV/UK4aFXqO5rdq0w6Vz3mBHb6tVe26xQXTgFQvN+RaymjZQsSev
-         zQdQ==
-X-Forwarded-Encrypted: i=1; AFNElJ9T2XXqp7Ws3U43LbHMODWzFdfxTu3CbjrUARPmeVPqsbRDIBqSpz6Dm00P9C5JtT8sh8I=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwoJz5braGSljTCJYlDyhT2rYVok5GeGgNO4BBCiR5jXO2LSGt0
-	or2BbIRdsgPu9h4Xuh6NasV7KYIWaNu7/bSAROaX+MaM++HLsOv3z+bjz999ft8bm6Olb01frVd
-	884+mlpOGiICwOd1Uabuwbg==
-X-Received: from pleg14.prod.google.com ([2002:a17:902:e38e:b0:2b4:58ed:55d2])
- (user=vannapurve job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:f70e:b0:2b2:5503:1b8d with SMTP id d9443c01a7336-2beb0347058mr43525335ad.6.1779462936728;
- Fri, 22 May 2026 08:15:36 -0700 (PDT)
-Date: Fri, 22 May 2026 15:15:34 +0000
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="ROYfWapt"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64MEYxmc2191659;
+	Fri, 22 May 2026 15:27:58 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=rMrxGouPSv/RreY0Aq+Pr4WXmG770mQeP5vSZQlFE
+	1A=; b=ROYfWaptcTTaa6DH8qXsx/ilF9y0OxFZsmzIF53EzE15tlYLYEYC4EO8C
+	FG+OstVtU5bULxrfhtfUNSaKlZTsfCM3Bcb7pvJVzvDPN/RO9ZbR8QkmuqXCQdxx
+	tYgXo6KnB5dRgQJ/YqsKFjFngEi4C6ul2uuPKhtQpAtdvsYFxFWIF9iJyiJaLBlK
+	fB9tONaiJtOmRX/KahTV3FfE3OejxzMJJCeBhxSsPsgYyEw4JLAjuRUEIDlEDT5y
+	pqBBpnR/ueq7UPsiYIaHTBpPfQwnearqzwJlbyQ1bbPp+0rjwvU5suqyUyBNgQvR
+	lZItyqvX/46INma76kMSmW2tO5mTg==
+Received: from ppma11.dal12v.mail.ibm.com (db.9e.1632.ip4.static.sl-reverse.com [50.22.158.219])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4e6hawk6td-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 May 2026 15:27:57 +0000 (GMT)
+Received: from pps.filterd (ppma11.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma11.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64MFO7lj013973;
+	Fri, 22 May 2026 15:27:57 GMT
+Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
+	by ppma11.dal12v.mail.ibm.com (PPS) with ESMTPS id 4e75kyh5wx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Fri, 22 May 2026 15:27:56 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (smtpav04.fra02v.mail.ibm.com [10.20.54.103])
+	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64MFRraX23659004
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Fri, 22 May 2026 15:27:53 GMT
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 529212004B;
+	Fri, 22 May 2026 15:27:53 +0000 (GMT)
+Received: from smtpav04.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id E313E20043;
+	Fri, 22 May 2026 15:27:49 +0000 (GMT)
+Received: from localhost.localdomain (unknown [9.124.216.126])
+	by smtpav04.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Fri, 22 May 2026 15:27:49 +0000 (GMT)
+From: Amit Machhiwal <amachhiw@linux.ibm.com>
+To: linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>,
+        Amit Machhiwal <amachhiw@linux.ibm.com>,
+        Anushree Mathur <anushree.mathur@linux.ibm.com>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, lkp@intel.com
+Subject: [PATCH v3 0/5] KVM: PPC: Handle CPU compatibility mode for nested guests
+Date: Fri, 22 May 2026 20:57:39 +0530
+Message-ID: <20260522152744.55251-1-amachhiw@linux.ibm.com>
+X-Mailer: git-send-email 2.50.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.746.g67dd491aae-goog
-Message-ID: <20260522151534.652522-1-vannapurve@google.com>
-Subject: [PATCH v5 1/1] KVM: x86: Introduce has_protected_pmu state for TDX VMs
-From: Vishal Annapurve <vannapurve@google.com>
-To: seanjc@google.com, pbonzini@redhat.com, dave.hansen@linux.intel.com
-Cc: rick.p.edgecombe@intel.com, dapeng1.mi@linux.intel.com, mizhang@google.com, 
-	kai.huang@intel.com, jmattson@google.com, michael.roth@amd.com, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Vishal Annapurve <vannapurve@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIyMDE1MCBTYWx0ZWRfX4dQaiEJFMzwV
+ Dr3Vm1pDwnJA4jaIA8CtSpq8uTbwRRa1iZBXTv2xggVWODP6fm/crVu3bVk9sef+6BRd9Dr0LTg
+ Gdy6xk8pp85S5JiP72+ZNQ0YsCK494RRnh3+n+URtkk7bDNO3hsvZpdJ+KntLkNlJFyrBND8MG4
+ pcVVlQdhZaed73wzI82DCi17lp30P8+cvlxrwT0DQjb70Tz/WotBkkRPg/kwiAibwg7D17kVWq9
+ lR3LZ7qZa0VlWr6ozeDp6qzZArE2z9NbSG6RTL0cVj7R9lz1lWhSthgJSGNUfU+DXdNcBeUy7k4
+ 3rb0XmiGput7axMQBqs+zCnpJ8ChHELZoo79ZmK6DZfC5yHZWG3Jk/y6pcIUgzntjjiMckd82IZ
+ 5EsdvMH4ru/hA3uK7Czf40XDUP9DmCuVN7nQvqmBN7EnZmwVs8unSkZbTLI03/cFfnqJV4awaNl
+ B4WQD9LCE8V5tRKgjog==
+X-Authority-Analysis: v=2.4 cv=Np/htcdJ c=1 sm=1 tr=0 ts=6a1075fe cx=c_pps
+ a=aDMHemPKRhS1OARIsFnwRA==:117 a=aDMHemPKRhS1OARIsFnwRA==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22
+ a=RzCfie-kr_QcCd8fBx8p:22 a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8
+ a=XsWQ994mRvDqN3FwEnAA:9
+X-Proofpoint-ORIG-GUID: lxJtId-GrOVNYhhDbsrrvrB1xA96ZzBt
+X-Proofpoint-GUID: SKu5a__dTSr5dQAhGxcMvxMyNk8g9BNq
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-22_04,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ bulkscore=0 spamscore=0 clxscore=1011 priorityscore=1501 impostorscore=0
+ lowpriorityscore=0 suspectscore=0 adultscore=0 phishscore=0 malwarescore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605220150
 
-PMU state for TDX VMs is virtualized by TDX Module [1]. Host has following
-toggles to control the PMU functionality exposed to TDX VMs:
-1) Configure TD_PARAMS to allow guests to use performance monitoring.
-2) Restrict the TD to a subset of the PEBS counters if supported.
-3) Limit the TD to setup a certain perfmon events using basic/enhanced
-   event filtering.
+On POWER systems, newer processor generations can operate in compatibility
+modes corresponding to earlier generations (e.g., a Power11 system running
+in Power10 compatibility mode). In such cases, the effective CPU level
+exposed to guests differs from the physical processor generation.
 
-KVM will need to be enlightened to support these toggles. Introduce
-has_protected_pmu state to track the pmu state for such scenarios
-and explicitly set the has_protected_pmu flag for TDX VMs.
+This creates a problem for nested virtualization. When booting a nested KVM
+guest (L2) inside a host KVM guest (L1) running in a compatibility mode,
+userspace (e.g., QEMU) may derive the CPU model from the raw hardware PVR
+and attempt to configure the nested guest accordingly. However, the L1
+partition is constrained by the compatibility level negotiated with the
+hypervisor (L0), and requests exceeding that level are rejected, leading to
+guest boot failures such as:
 
-If pmu state is protected:
-1) Disable KVM's PMU virtualization framework as additional
-enlightenment is needed within KVM to control/manage the
-visibility of PMU state to such VMs.
-2) Disallow userspace VMM from enabling PMU virtualization state
-using KVM_CAP_PMU_CAPABILITY.
+  KVM-NESTEDv2: couldn't set guest wide elements
 
-[1] Section 15.2: https://cdrdv2.intel.com/v1/dl/getContent/733575
+This series addresses the issue in two steps:
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Vishal Annapurve <vannapurve@google.com>
----
-v4 -> v5:
- - Allow userspace to disable PMU virtualization before creating any
-   vcpus inline with existing ABI contract for KVM_CAP_PMU_CAPABILITY.
+1. Detect and reject invalid compatibility requests early in KVM to avoid
+   late failures.
 
-v4: https://lore.kernel.org/kvm/20260507212957.2629561-1-vannapurve@google.com/
+2. Provide a mechanism for userspace to query the effective CPU
+   compatibility modes supported by the host, so it can select an
+   appropriate CPU model for nested guests.
 
- arch/x86/include/asm/kvm_host.h | 1 +
- arch/x86/kvm/vmx/tdx.c          | 6 ++++++
- arch/x86/kvm/x86.c              | 6 +++++-
- 3 files changed, 12 insertions(+), 1 deletion(-)
+To achieve this, the series introduces a new KVM capability and ioctl
+(KVM_CAP_PPC_COMPAT_CAPS / KVM_PPC_GET_COMPAT_CAPS) that expose the
+compatibility modes supported by the host.
 
-diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
-index c470e40a00aa..8371dcaaed1a 100644
---- a/arch/x86/include/asm/kvm_host.h
-+++ b/arch/x86/include/asm/kvm_host.h
-@@ -1422,6 +1422,7 @@ struct kvm_arch {
- 	bool has_private_mem;
- 	bool has_protected_state;
- 	bool has_protected_eoi;
-+	bool has_protected_pmu;
- 	bool pre_fault_allowed;
- 	struct hlist_head *mmu_page_hash;
- 	struct list_head active_mmu_pages;
-diff --git a/arch/x86/kvm/vmx/tdx.c b/arch/x86/kvm/vmx/tdx.c
-index 1e47c194af53..eb4b4518e6f0 100644
---- a/arch/x86/kvm/vmx/tdx.c
-+++ b/arch/x86/kvm/vmx/tdx.c
-@@ -638,6 +638,12 @@ int tdx_vm_init(struct kvm *kvm)
- 	kvm->arch.has_private_mem = true;
- 	kvm->arch.disabled_quirks |= KVM_X86_QUIRK_IGNORE_GUEST_PAT;
- 
-+	/*
-+	 * PMU support is provided by the TDX-Module (if enabled for the VM).
-+	 * From KVM's perspective, the VM doesn't have a virtual PMU.
-+	 */
-+	kvm->arch.has_protected_pmu = true;
-+
- 	/*
- 	 * Because guest TD is protected, VMM can't parse the instruction in TD.
- 	 * Instead, guest uses MMIO hypercall.  For unmodified device driver,
-diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
-index 0a1b63c63d1a..733674ea0d2a 100644
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -6909,6 +6909,10 @@ int kvm_vm_ioctl_enable_cap(struct kvm *kvm,
- 		if (!enable_pmu || (cap->args[0] & ~KVM_CAP_PMU_VALID_MASK))
- 			break;
- 
-+		if (kvm->arch.has_protected_pmu &&
-+		    cap->args[0] != KVM_PMU_CAP_DISABLE)
-+			break;
-+
- 		mutex_lock(&kvm->lock);
- 		if (!kvm->created_vcpus && !kvm->arch.created_mediated_pmu) {
- 			kvm->arch.enable_pmu = !(cap->args[0] & KVM_PMU_CAP_DISABLE);
-@@ -13375,7 +13379,7 @@ int kvm_arch_init_vm(struct kvm *kvm, unsigned long type)
- 	kvm->arch.default_tsc_khz = max_tsc_khz ? : tsc_khz;
- 	kvm->arch.apic_bus_cycle_ns = APIC_BUS_CYCLE_NS_DEFAULT;
- 	kvm->arch.guest_can_read_msr_platform_info = true;
--	kvm->arch.enable_pmu = enable_pmu;
-+	kvm->arch.enable_pmu = enable_pmu && !kvm->arch.has_protected_pmu;
- 
- #if IS_ENABLED(CONFIG_HYPERV)
- 	spin_lock_init(&kvm->arch.hv_root_tdp_lock);
+Why a new UAPI?
+---------------
+While cpu-version is available in /proc/device-tree/cpus/<cpu#>/cpu-version
+on both L1 booted on PowerNV and PowerVM LPARs, the UAPI approach is
+preferable for several reasons:
+
+1. pHYP (L0) capabilities: On PowerVM, we need to rely on capabilities
+   negotiated with pHYP in KVM, not just device tree properties. The
+   cpu-version property depicts the current compat mode but doesn't point
+   to what all compat modes are supported for the nested guest.
+
+2. procfs dependency: Not all systems run with procfs enabled (CONFIG_PROC_FS
+   is optional). Minimal configurations like buildroot might disable it, but
+   KVM ioctl works regardless since it accesses kernel data structures
+   directly.
+
+3. Kernel validation: The kernel validates and normalizes the compatibility
+   information. Patch 1 adds validation logic that rejects invalid
+   compatibility requests early, ensuring userspace gets validated,
+   consistent data.
+
+4. Abstraction & stability: /proc/device-tree is an implementation detail.
+   The UAPI provides a stable interface that won't break if the underlying
+   mechanism changes.
+
+5. Semantic clarity: KVM_PPC_GET_COMPAT_CAPS clearly expresses what
+   compatibility modes can be used for KVM guests, vs. parsing device tree
+   which requires understanding the semantic meaning of cpu-version.
+
+The implementation supports both:
+
+  - PowerVM (nested API v2), where compatibility information is obtained
+    via the H_GUEST_GET_CAPABILITIES hypercall.
+  - PowerNV (nested API v1), where compatibility is derived from the device
+    tree ("cpu-version") representing the effective processor compatibility
+    level.
+
+This allows userspace (e.g., QEMU) to select a CPU model consistent with
+the host compatibility mode, avoiding mismatches and enabling successful
+nested guest boot.
+
+Changes in v3:
+  - Added "Why a new UAPI?" section to cover letter addressing questions
+    about the need for a new UAPI vs. using existing mechanisms like
+    /proc/device-tree
+  - Fixed initialization of 'r' in KVM_PPC_GET_COMPAT_CAPS ioctl handler
+    from 0 to -ENOTTY for proper error handling when the operation is not
+    supported
+  - Added Vaibhav's "Suggested-by" tags
+  - Have retained Anushree's "Tested-by" tags as no major code changes
+  - Fixed documentation build warning reported by kernel test robot and
+    added "Reported-by" and "Closes" tags to patch 5
+
+Changes in v2:
+  - Squashed patches 2 and 3 from v1 (capability introduction and ioctl
+    wiring) into a single patch for better logical grouping
+  - Changed kvm_ppc_compat_caps.flags from __u32 to __u64 for consistency
+    and future extensibility
+  - Addressed other review comments
+  - Improved commit messages with clearer explanations of the changes
+
+Patch summary:
+  [1/5] Validate arch_compat against host compatibility mode
+  [2/5] Introduce KVM_CAP_PPC_COMPAT_CAPS and wire up ioctl
+  [3/5] Implement capability retrieval for PowerVM (API v2)
+  [4/5] Add PowerNV support (API v1)
+  [5/5] Document the new ioctl
+
+Tested on:
+  - Power11 pSeries LPAR in Power10 compatibility mode (nested API v2)
+  - Power10 PowerNV system (and QEMU TCG PowerNV 11) with nested
+    virtualization (API v1) with various combinations of KVM L1/L2 guests
+    in various supported compatibility modes.
+
+With this series, nested guests boot successfully in configurations where
+they previously failed due to compatibility mismatches.
+
+Related QEMU series:
+  A corresponding QEMU series adds support for querying and using these
+  compatibility capabilities when configuring nested KVM guests:
+  https://lore.kernel.org/all/20260502140021.69712-1-amachhiw@linux.ibm.com/
+
+v2: https://lore.kernel.org/linuxppc-dev/20260513100755.83215-1-amachhiw@linux.ibm.com/
+v1: https://lore.kernel.org/linuxppc-dev/20260430054906.94431-1-amachhiw@linux.ibm.com/
+
+Amit Machhiwal (5):
+  KVM: PPC: Book3S HV: Validate arch_compat against host compatibility
+    mode
+  KVM: PPC: Introduce KVM_CAP_PPC_COMPAT_CAPS and wire up ioctl
+  KVM: PPC: Book3S HV: Implement compat CPU capability retrieval for KVM
+    on PowerVM
+  KVM: PPC: Book3S HV: Add support for compat CPU capabilities for KVM
+    on PowerNV
+  KVM: PPC: Document KVM_PPC_GET_COMPAT_CAPS ioctl
+
+ Documentation/virt/kvm/api.rst      | 35 ++++++++++++++++
+ arch/powerpc/include/asm/kvm_ppc.h  |  1 +
+ arch/powerpc/include/uapi/asm/kvm.h |  6 +++
+ arch/powerpc/kvm/book3s_hv.c        | 63 +++++++++++++++++++++++++++++
+ arch/powerpc/kvm/powerpc.c          | 21 ++++++++++
+ include/uapi/linux/kvm.h            |  4 ++
+ 6 files changed, 130 insertions(+)
+
+
+base-commit: 1d5dcaa3bd65f2e8c9baa14a393d3a2dc5db7524
 -- 
-2.54.0.746.g67dd491aae-goog
-
+2.50.1 (Apple Git-155)
