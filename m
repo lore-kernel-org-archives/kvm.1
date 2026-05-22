@@ -1,117 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8092C35674E;
-	Fri, 22 May 2026 05:49:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DF7B23AB9D;
+	Fri, 22 May 2026 06:49:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779428975; cv=none; b=cG+Vof4tGzfhASgCZ7z1obsT8OHk/d0xZonQebbov/0oyQ9PcJ18Od8CixoT0EdiX/cIuNR8yR8v2/wTeD6vZoAYj5HZvB/azeXS3+PkpL0cbTDtQEjNJxxP2EqdyEaJQnUXgC8WKpaLaG4eIvh6yhl4sxR9QuTPvQ3bXBqGR04=
+	t=1779432591; cv=none; b=tDg15yLMgU7hQw+uKh6D8obCUogbSFNJ9Vg6FVlmllhc4Il1p5g5tiCc+APJd7tp+LA2kpAd6/DIyewj5sc4ieHpdPN1Gn7R+yFxTGHq7g1ddz6DwZNTZrZ3fiESspaRZRUJY0c4NCf5A2iLW6rgWnYPFvbyI1JO364O+GztYnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779428975; c=relaxed/simple;
-	bh=aqxmJYVgnYnTy7ATYKVKzwjKYdEPS8ByUDPImULyrGc=;
-	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t1Cf+dDrfmm7nI/m8DNl4D0dT27Luxm4apyreTJvr0jywk6g+gUSya5NCYGtJ2natJnIFOlzcQ0IaG+cShmd8BTHWXWM19Y1d0kemwQm2MU0ldwg4ZQug59PQpB45nn6Ub6TOiw+TBOEDMc3XrStFywW+LHFZt8abitodkDpN+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Jk4Ks+BI; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Jk4Ks+BI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AA9F1F000E9;
-	Fri, 22 May 2026 05:49:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779428974;
-	bh=E5sM9AUvuYdbGB4g9k8H+Hv5ClFSOJXofYXrX9huibQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=Jk4Ks+BI5b0v7Yq8P3JkHDjP1tsuruhcAbMdrFykwvGKU9wIHCcA0ppRRW9rWFErC
-	 N313Qt4P9HfEHxJJ+iTL9iZCqTUKUNtfMqFXScwk6BQw6X72h4Py/ZGeLRI5DRzTpH
-	 xncgim7ZoYUFgXoLFuTyL+bw78Ka7/SiliBzPLoGFY/d2tGK/zz24hEU1gouQzxbPI
-	 /lfYgnfpWcPZMPPtcj3IrPVtcPURdw5oet2RYP+QKt56i/JbnN7kBmnmIifRiVzmhJ
-	 HEhskgWEfhGs8Equp0nlEkkrzubybTUeRaB2L8Tn95VxTukZhsjz6TCOWDGqIq7pNK
-	 /+8Eo1uwZpKKg==
-Received: from sofa.misterjones.org ([185.219.108.64] helo=lobster-girl.misterjones.org)
-	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.98.2)
-	(envelope-from <maz@kernel.org>)
-	id 1wQIlH-000000056jh-2DhW;
-	Fri, 22 May 2026 05:49:31 +0000
-Date: Fri, 22 May 2026 06:52:48 +0100
-Message-ID: <87lddc9ej3.wl-maz@kernel.org>
-From: Marc Zyngier <maz@kernel.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: Mark Brown <broonie@kernel.org>,
-	Oliver Upton <oupton@kernel.org>,
-	Joey Gouly <joey.gouly@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Will Deacon <will@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Shuah Khan <shuah@kernel.org>,
-	Dave Martin <Dave.Martin@arm.com>,
-	Fuad Tabba <tabba@google.com>,
-	Ben Horgan <ben.horgan@arm.com>,
-	linux-arm-kernel@lists.infradead.org,
-	kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
+	s=arc-20240116; t=1779432591; c=relaxed/simple;
+	bh=7aUGVhxJ8KUI6+DqQ5S9ORhmmSzCY5GipPsgPPOYLCI=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=GPJLqbFC8ZLllXNDUSvmsMDf0N5FAVOZxQpwZJI0bHd3WlYqoQQDnkrR74npxR40q7vDca1hJLcSTi4YKAcSIQ6mPLaVj1QKQh24W4lHWEOF0eVJYvJT2aDxe3PxtO9XDGnckcDr8pFJOiAMABicMD8rQ/SRuvAQ9AO01zM6HgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.2.5.213])
+	by gateway (Coremail) with SMTP id _____8DxhumL_A9qS0sMAA--.35909S3;
+	Fri, 22 May 2026 14:49:47 +0800 (CST)
+Received: from localhost.localdomain (unknown [10.2.5.213])
+	by front1 (Coremail) with SMTP id qMiowJBxpsCL_A9qKU6MAA--.34947S2;
+	Fri, 22 May 2026 14:49:47 +0800 (CST)
+From: Bibo Mao <maobibo@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>
+Cc: kernel@xen0n.name,
 	kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Eric Auger <eric.auger@redhat.com>
-Subject: Re: [PATCH v10 19/30] KVM: arm64: Provide assembly for SME register access
-In-Reply-To: <ag8b7oq4SFpdmlP_@J2N7QTR9R3>
-References: <20260306-kvm-arm64-sme-v10-0-43f7683a0fb7@kernel.org>
-	<20260306-kvm-arm64-sme-v10-19-43f7683a0fb7@kernel.org>
-	<ag8b7oq4SFpdmlP_@J2N7QTR9R3>
-User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
- FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
- (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
+	loongarch@lists.linux.dev,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v4 0/5] LoongArch: KVM: Small enhancement about interrupt injection
+Date: Fri, 22 May 2026 14:49:40 +0800
+Message-Id: <20260522064945.614486-1-maobibo@loongson.cn>
+X-Mailer: git-send-email 2.39.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
-Content-Type: text/plain; charset=US-ASCII
-X-SA-Exim-Connect-IP: 185.219.108.64
-X-SA-Exim-Rcpt-To: mark.rutland@arm.com, broonie@kernel.org, oupton@kernel.org, joey.gouly@arm.com, catalin.marinas@arm.com, suzuki.poulose@arm.com, will@kernel.org, pbonzini@redhat.com, corbet@lwn.net, shuah@kernel.org, Dave.Martin@arm.com, tabba@google.com, ben.horgan@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, peter.maydell@linaro.org, eric.auger@redhat.com
-X-SA-Exim-Mail-From: maz@kernel.org
-X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJBxpsCL_A9qKU6MAA--.34947S2
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
+	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
+	nUUI43ZEXa7xR_UUUUUUUUU==
 
-On Thu, 21 May 2026 15:51:26 +0100,
-Mark Rutland <mark.rutland@arm.com> wrote:
-> 
-> On Fri, Mar 06, 2026 at 05:01:11PM +0000, Mark Brown wrote:
-> > Provide versions of the SME state save and restore functions for the
-> > hypervisor to allow it to restore ZA and ZT for guests.
-> > 
-> > Signed-off-by: Mark Brown <broonie@kernel.org>
-> > ---
-> >  arch/arm64/include/asm/kvm_hyp.h |  2 ++
-> >  arch/arm64/kvm/hyp/fpsimd.S      | 23 +++++++++++++++++++++++
-> >  2 files changed, 25 insertions(+)
-> 
-> While this specific instance is simple enough, I don't think we should
-> continue to duplicate the low level save/restore routines between the
-> main kernel and KVM hyp code.
-> 
-> I've sent a series that avoids the need for this, and cleans up some
-> other bits):
-> 
->   https://lore.kernel.org/linux-arm-kernel/20260521132556.584676-1-mark.rutland@arm.com/
-> 
-> Assuming Marc and Oliver are on board, I'd prefer that we do that
-> cleanup first, and build the KVM SME support atop.
+Here add illegal parameter check in kvm_vcpu_ioctl_interrupt() since this
+function is called from user mode. Also interrupt inject is handled with
+batch method, rather one by one.
 
-Absolutely. The whole FP/SVE is still way too complicated, full of
-esoteric constructs, hard to audit, and I would really like to see it
-cleaned-up before stacking another layer on top.
+---
+v3 ... v4:
+  1. change type of local variable vector with unsigned int rather than
+     int, and use abs() macro.
+  2. Remove last patch since kvm_vcpu_sync_intr() does not sync cached
+     AVEC interrupt to SW CSR_ISR state.
+  3. Replace kvm_set_sw_gcsr() with kvm_write_sw_gcsr() in patch 5,
+     since kvm_set_sw_gcsr() is ORed cached ESTAT interrupt bits,
+     kvm_write_sw_gcsr() is to overwrite the whole SW ESTAT register.
+  4. Modify typo issue about title and log message in patch 5, replace
+     GSTAT with ESTAT
 
-I've quickly eyeballed the KVM-specific patches yesterday, and nothing
-seem outlandish, so there is a good chance some of that could make it
-into 7.2. I plan to look at it again shortly.
+v2 ... v3:
+  1. Split patch 1 into two smaller patches, one is smaller bugfix patch
+     with irq validility check in kvm_vcpu_ioctl_interrupt(), so that it
+     is easy to porting to old kernel.
 
-Thanks,
+v1 ... v2:
+  1. Add irq validility check in function kvm_vcpu_ioctl_interrupt().
+  2. Add valid bit check when set ESTAT CSR register.
+  3. Merge two patches about interrupt clear and set with batch method into
+     one.
+---
+Bibo Mao (5):
+  LoongArch: KVM: Check irq validility in kvm_vcpu_ioctl_interrupt()
+  LoongArch: KVM: Check msgint feature in interrupt post
+  LoongArch: KVM: Use existing macro about interrupt bit mask
+  LoongArch: KVM: Inject interrupt with batch method
+  LoongArch: KVM: Add valid bit check when set ESTAT CSR register
 
-	M.
+ arch/loongarch/include/asm/kvm_vcpu.h |  43 +++++++----
+ arch/loongarch/kvm/interrupt.c        | 100 ++++++++------------------
+ arch/loongarch/kvm/vcpu.c             |  41 +++++++----
+ 3 files changed, 85 insertions(+), 99 deletions(-)
 
+
+base-commit: 70eda68668d1476b459b64e69b8f36659fa9dfa8
 -- 
-Jazz isn't dead. It just smells funny.
+2.39.3
+
