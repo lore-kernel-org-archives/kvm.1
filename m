@@ -1,103 +1,135 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D8CB40963B
-	for <kvm@vger.kernel.org>; Fri, 22 May 2026 16:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4813B477E24
+	for <kvm@vger.kernel.org>; Fri, 22 May 2026 16:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779468104; cv=none; b=a+2Wczp6Vj23iHeHx6/19liKZCnQj9Hm/jzOrpUB4UPc3VafH3nwuTsj8DRaVwBGU9QeZGyHvsPZuxLZ07ZIeyM3v77z9saIb2j4f+VYMZQovs2vIJc6PejVb8hCeLSQV1bf5cgdjy6wx+pg3vDn8qo5DJDDqIRVUF5f8Uj5qv0=
+	t=1779468865; cv=none; b=I3XVk43vXYbmgeGwnbhWXXBC0g3iLLv/vUUp2wn6QfBp0E/2Mk+4yaMjdJ39dvUf7t2CC8Y8HQlvop4EFnajatZVsk11W6ZjiX7LidFvJ8tuEpWaDgt+LozBjs7EZcrFL5ZlUJFNqvaxlH/InNoshYmTsHmMOw7tkRnCpgTvC80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779468104; c=relaxed/simple;
-	bh=5Qx5R2828QQpcoZrx927YAFGHwreDjR3V1uKrQhgJDE=;
+	s=arc-20240116; t=1779468865; c=relaxed/simple;
+	bh=BAQBkaJbwUksCFCRdnkv0H9H5clwR/tNu5q8IVW7hvk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MbEk50E3Ou6QjJApDE+n/L+MWtRKFjQugEmzMlMzZ9S/w2Fu7CHbirmtMf5mKkrM7ykbc8cbVA51Ub4xD4nKymI1Cc7NEHyK4AzJ1sq+JOCBltdSHxBIpzLXDLeQZBWhlzsMOJ345/wE7Pal5J7PjyOt5DTnSOmdKARc2aJb5Fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XX6mxe5J; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=kxT3WiAMcCyj2hI8USOX/ZZxywQc5BJjPkPI3+k7/gCaFjOnk3mZIk2ET+K5N2c21wA3oya1zkSfpkIOS3+69wYRn4fZK1+do8qpXDG7nebZLLTDdhz/NOiFa9H5gaPvMEk5FCTo5RRm+lU+Btt4X1C+xUhWITJQBBAop3eCBcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cE06t9+E; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XX6mxe5J"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3386A1F000E9;
-	Fri, 22 May 2026 16:41:42 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cE06t9+E"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6E851F00A3E;
+	Fri, 22 May 2026 16:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779468102;
-	bh=5p8uo09cI1YbZI7k+tUsQXvuX5KExvcud7/SDZHDEjA=;
+	s=k20260515; t=1779468863;
+	bh=XcYjFp3x3nhf41eqAUeiUl4v/jsgL5K+bXT5SclsVso=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=XX6mxe5JXRiw6sZaZXru2I4bx1zHJ8F8Ylot0abm8gpas5lUaMEcQf+mrVsmvLULG
-	 QbuAFVzYyA44ead9skKAbsf/Hdc5Fz8ceodtuS2ArG+JrUczAgmhg9xSGullD1ZQCK
-	 aLai3imvTMlIWvJex5ZtAkW3ahNVPn5kfMjUdAQxVr04X44Zxk4VdUKJpAXAuY/nwX
-	 3YgExhAUrTKEotnIO4WRLIvWbPtKT8AEjn10+o7/TzZ8zLcE6wc/7bgoeni1OKG5db
-	 5Tk9mKqMmm3+Amg+VWl2AKK7GKpvGtUiS03ZLAHIFt0NWFlM7SZS2GwjXUJBqAlG2q
-	 Y/TLbp8GNT4eg==
+	b=cE06t9+EApM5cZ8hqeZBvMyquUAdwFNLwBd/pgPMD4DtDaxRpAkJ8+4KJOWVlhEN2
+	 IqiMVVaa8tfi+hT+ceLxedykCtt3UAiLaMaRc0V336gvOaIC0UMudkSgkJDTjaQhcR
+	 cThdiKLeiXLnwNzq/JFpylLzA77g0DjhsOW+Qi386QnLKbxCGXIGcOpTlSiAlJuQ7l
+	 JTt6aCYqfEU3iKMfOz6y4LTD0Ev7qHQOIZCu0ot4ORtJ06hlqihDr4r3X/zDKcavPD
+	 ruMumM8yenvRqUSqBZ2yhtkO5jTElnGp3cL4YRSvjxeVURcbgMfQw/FwtvXIntp1K/
+	 MeoV1KZrvsg7Q==
 Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 895E3F40078;
-	Fri, 22 May 2026 12:41:41 -0400 (EDT)
+	by mailfauth.phl.internal (Postfix) with ESMTP id 3A52DF4008C;
+	Fri, 22 May 2026 12:54:22 -0400 (EDT)
 Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-06.internal (MEProxy); Fri, 22 May 2026 12:41:41 -0400
-X-ME-Sender: <xms:RYcQapHrbGJrxd1ghLSPwOJQPbUVO1Jf7r_9tuOq8lz55PDRtnxu1A>
-    <xme:RYcQaqDgs0D3LKSVGtaPQnbzKAo3nkCNsSnlndeIWipQ7DT5BZYTcY4sUHm1yein2
-    zcjpQNw116ZivCx2hURH5dTkS7601ewvojqzbsVBKQe_OWX4TEit9w>
-X-ME-Received: <xmr:RYcQauwBIrY-0zvDsoO9s_FiexNyHsyz2XyG82jBU2NV9TFO2NiAYfEIqHIp5g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduhedtieejucetufdoteggodetrf
+  by phl-compute-06.internal (MEProxy); Fri, 22 May 2026 12:54:22 -0400
+X-ME-Sender: <xms:PooQaqChmNc7KEUYHqtYfJ2flPMNJEw8ziOL-9oKcxTGxqSeTzkdvw>
+    <xme:PooQam01rEltLrNzr4a0rZDRuZRAa-wefvj4AM6fwPAY7KyP2FjLgVGyW0abWDDR4
+    WWxnzxYnRW-iCazAXK2qloRE4lh9B_M8hVjJevy09z6XLYZ2fod8g>
+X-ME-Received: <xmr:PooQasQKovnx3iZAKX4kEC8rSoonw-NLeZy4urbAuMFjkmqeohAnxmEzjTcADw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduhedtjedtucetufdoteggodetrf
     dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
     rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepmfhirhihlhcu
-    ufhhuhhtshgvmhgruhcuoehkrghssehkvghrnhgvlhdrohhrgheqnecuggftrfgrthhtvg
-    hrnhepueeijeeiffekheeffffftdekleefleehhfefhfduheejhedvffeluedvudefgfek
-    necuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepkhhirh
-    hilhhlodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduieduudeivdeiheeh
-    qddvkeeggeegjedvkedqkhgrsheppehkvghrnhgvlhdrohhrghesshhhuhhtvghmohhvrd
-    hnrghmvgdpnhgspghrtghpthhtohepgedtpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopeihrghnrdihrdiihhgrohesihhnthgvlhdrtghomhdprhgtphhtthhopegurghvvg
-    drhhgrnhhsvghnsehlihhnuhigrdhinhhtvghlrdgtohhmpdhrtghpthhtohepphgsohhn
-    iihinhhisehrvgguhhgrthdrtghomhdprhgtphhtthhopehsvggrnhhjtgesghhoohhglh
-    gvrdgtohhmpdhrtghpthhtohepthhglhigsehkvghrnhgvlhdrohhrghdprhgtphhtthho
-    pehmihhnghhosehrvgguhhgrthdrtghomhdprhgtphhtthhopegsphesrghlihgvnhekrd
-    guvgdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhn
-    uhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:RYcQavWnxnToUc3IOO130btJFJKKKiDZSpuMmKCYsJ1tcSQFMUn3Ow>
-    <xmx:RYcQatXmfWoU52IM4iyjD7AiSe3aSDsinfeA89WVd0NwCZHTMFb08Q>
-    <xmx:RYcQaiNIiWzY8eKpNfbFyBCoHqesxPqXtvbAOF51dnq1YyFjMXLJnw>
-    <xmx:RYcQahjAFyNTnhzRsBTmXlEgl-dKZAGvjmjRY7hFlH6-gXnMSUFOFQ>
-    <xmx:RYcQaqdor4HsVVCE8f1Nu9tsPA31WEoBAGulIbNw-QzAX35UFZOchNXL>
+    gurhepfffhvfevuffkfhggtggugfgjsehtkeertddttddunecuhfhrohhmpefmihhrhihl
+    ucfuhhhuthhsvghmrghuuceokhgrsheskhgvrhhnvghlrdhorhhgqeenucggtffrrghtth
+    gvrhhnpeeludettdeigfefhffhhfelveeludeuleduvefhgefgueeitedtleffudegfffg
+    gfenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehkih
+    hrihhllhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqudeiudduiedvieeh
+    hedqvdekgeeggeejvdekqdhkrghspeepkhgvrhhnvghlrdhorhhgsehshhhuthgvmhhovh
+    drnhgrmhgvpdhnsggprhgtphhtthhopeeftddpmhhouggvpehsmhhtphhouhhtpdhrtghp
+    thhtohepuggrvhgvrdhhrghnshgvnhesihhnthgvlhdrtghomhdprhgtphhtthhopehrih
+    gtkhdrphdrvggughgvtghomhgsvgesihhnthgvlhdrtghomhdprhgtphhtthhopehlihhn
+    uhigqdgtohgtoheslhhishhtshdrlhhinhhugidruggvvhdprhgtphhtthhopegtlhhoph
+    gviiesshhushgvrdguvgdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgt
+    phhtthhopegrkheslhhinhhugidrihhnthgvlhdrtghomhdprhgtphhtthhopegsphesrg
+    hlihgvnhekrdguvgdprhgtphhtthhopegurghvvgdrhhgrnhhsvghnsehlihhnuhigrdhi
+    nhhtvghlrdgtohhmpdhrtghpthhtohephhhprgesiiihthhorhdrtghomh
+X-ME-Proxy: <xmx:PooQalvDhz3R6-bp69-gUlIq3JEFdi2d--mRH1dOJVdLHQ-SPWl5RA>
+    <xmx:PooQas4Mx8s2w4MG5pn1QffllfXpNmAKY0S0kE9FIC2chE0zNu5Gpg>
+    <xmx:PooQarY3-TrpvgjjNWyiMSgDpVr6XQG2dOzdXGcf7V2zqsFCbWweEQ>
+    <xmx:PooQanhSZz6LraH4gZTgzv7sQ_EwX3SDSOtbPO3iS6uXvpf5E8unWQ>
+    <xmx:PooQaubUJhtG_1kyEJp6lYxrZ3xOG7FKKd7PPHsACC67GNarb1pqsgSa>
 Feedback-ID: i10464835:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 22 May 2026 12:41:39 -0400 (EDT)
-Date: Fri, 22 May 2026 17:41:34 +0100
+ 22 May 2026 12:54:21 -0400 (EDT)
+Date: Fri, 22 May 2026 17:54:19 +0100
 From: Kiryl Shutsemau <kas@kernel.org>
-To: Yan Zhao <yan.y.zhao@intel.com>
-Cc: dave.hansen@linux.intel.com, pbonzini@redhat.com, seanjc@google.com, 
-	tglx@kernel.org, mingo@redhat.com, bp@alien8.de, x86@kernel.org, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	kai.huang@intel.com, rick.p.edgecombe@intel.com, yilun.xu@linux.intel.com, 
-	vannapurve@google.com, ackerleytng@google.com, sagis@google.com, 
-	binbin.wu@linux.intel.com, xiaoyao.li@intel.com, isaku.yamahata@intel.com
-Subject: Re: [PATCH v2 4/4] x86/virt/tdx: Move mk_keyed_paddr() to tdx.c due
- to no external users
-Message-ID: <ahCG0AW7ygSiBIYP@thinkstation>
-References: <20260430014852.24183-1-yan.y.zhao@intel.com>
- <20260430015014.24261-1-yan.y.zhao@intel.com>
+To: Dave Hansen <dave.hansen@intel.com>
+Cc: "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>, 
+	"linux-coco@lists.linux.dev" <linux-coco@lists.linux.dev>, "clopez@suse.de" <clopez@suse.de>, 
+	"x86@kernel.org" <x86@kernel.org>, "ak@linux.intel.com" <ak@linux.intel.com>, 
+	"bp@alien8.de" <bp@alien8.de>, "dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, 
+	"hpa@zytor.com" <hpa@zytor.com>, "mingo@redhat.com" <mingo@redhat.com>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, "Luck, Tony" <tony.luck@intel.com>, 
+	"tglx@kernel.org" <tglx@kernel.org>, "stable@vger.kernel.org" <stable@vger.kernel.org>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>
+Subject: Re: [PATCH] x86/tdx: Fix zero-extension for CPUID emulation
+Message-ID: <ahCI-vSYMe3digej@thinkstation>
+References: <20260512213719.20974-1-clopez@suse.de>
+ <81343db56b8df8f70a2e13a17e62c620bee36897.camel@intel.com>
+ <7f7b8bfd-f39e-417c-991f-d224d58cb52a@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
-In-Reply-To: <20260430015014.24261-1-yan.y.zhao@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <7f7b8bfd-f39e-417c-991f-d224d58cb52a@intel.com>
 
-On Thu, Apr 30, 2026 at 09:50:14AM +0800, Yan Zhao wrote:
-> Move mk_keyed_paddr() from tdx.h to tdx.c to avoid unnecessary header
-> inclusion and improve encapsulation since there are no users outside of
-> tdx.c.
+On Tue, May 12, 2026 at 03:14:54PM -0700, Dave Hansen wrote:
+> On 5/12/26 14:48, Edgecombe, Rick P wrote:
+> >> -	regs->ax = args.r12;
+> >> -	regs->bx = args.r13;
+> >> -	regs->cx = args.r14;
+> >> -	regs->dx = args.r15;
+> >> +	regs->ax = lower_32_bits(args.r12);
+> >> +	regs->bx = lower_32_bits(args.r13);
+> >> +	regs->cx = lower_32_bits(args.r14);
+> >> +	regs->dx = lower_32_bits(args.r15);
+> >>  
+> > Can you explain the impact here? Why should the guest fixup what the VMM
+> > emulates?
 > 
-> No functional change intended.
+> Oh boy.
+> 
+> args.r12-15 come from the VMM, right? So the VMM Can put whatever it
+> wants in there.
+> 
+> CPUID (the instruction) is defined to fill in eax/ebx/ecx/edx. Those are
+> 32-bit registers so the normal register rules apply: "32-bit operands
+> generate a 32-bit result, zero-extended to a 64-bit result in the
+> destination general-purpose register."
+> 
+> So a properly-behaving CPUID implementation will always end up with the
+> top 32 bits empty on the four CPUID registers after a CPUID is executed.
+> 
+> The VMM here obviously might be naughty and might put gunk in
+> args.r12/r13/r14/r15 that gets copied to ptregs->ax/bx/cx/dx which are
+> 'unsigned long' on 64-bit.
+> 
+> The end result is that a TDX guest can use CPUID and end up having bits
+> set in rax/rbx/rcx/rdx that are architecturally impossible. This patch
+> is effectively fixing up the VMM naughtiness before the guest CPUID
+> instance can see it.
+> 
+> Does anybody disagree with any of that?
 
-Add a new line before SoB.
+Not really.
 
-> Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
-
-Otherwise:
-
-Acked-by: Kiryl Shutsemau <kas@kernel.org>
+But note that the exposure is minimal as we do not issue hypercalls to
+VMM for anything outside of hypervisor range. I am not sure stable@ is
+justified, but worth fixing.
 
 -- 
   Kiryl Shutsemau / Kirill A. Shutemov
