@@ -1,107 +1,88 @@
-Received: from cstnet.cn (smtp25.cstnet.cn [159.226.251.25])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from out28-170.mail.aliyun.com (out28-170.mail.aliyun.com [115.124.28.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 303BF31716B;
-	Fri, 22 May 2026 03:18:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.25
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AD2722157B;
+	Fri, 22 May 2026 04:00:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.28.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779419924; cv=none; b=dOgTwFCL1LNd5dDVxASixyGokErdT6LvoOIW1gEh8sklmXgAR84Rnc8A5qhz4fjhPvHfQ+60U6bfKk/mBaNXyN/OtH1OOX35JkgaM84FeWuk2qjyi+EqadgV5lGFddMLVx3tDAFLP4DX0ne3RPoNYUGZjKVw+4HwmyDmqT6CceU=
+	t=1779422444; cv=none; b=JLJoPAo18RplABCNaIoUcWFl0K4V2HWt9Lo13j1Ma2rxlFHuXb//sYDOVE2YYSvtg09uwBi7tina3fU+MaWEf3TwSsVgbL6BuE2Gr9AZdZ58VpG2D0F0hJxpq3tX1wJO3UqiT5ku9P9PBK2paGTjYy4OzzyfiluaEglSf2vGYvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779419924; c=relaxed/simple;
-	bh=CEOdbTeRWaHp/ze0TpBYNRD2SqgHFJrjhcgEU3s6UMI=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tVDC+wzKGSKW9aw4BmF7G+kr8Y36IUc0eiwzaCeBqRLtHGXKea1h1PTKXs7v6XcaQcyiBQMtGRYgR9K+5AuFNyx/JLFfRFzC5kmSf64zxscy1eAOF9caXiIkAYr+npSRS+7J/WCiau3VRiF1QXCn0f4Is0jPpUOTQ0xtzeL5/EE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.25
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from fric.. (unknown [36.110.52.2])
-	by APP-05 (Coremail) with SMTP id zQCowAC3Sg71yg9qQQ0XEQ--.7414S2;
-	Fri, 22 May 2026 11:18:13 +0800 (CST)
-From: Jiakai Xu <xujiakai2025@iscas.ac.cn>
-To: andrew.jones@oss.qualcomm.com
-Cc: ajones@ventanamicro.com,
-	alex@ghiti.fr,
-	anup@brainfault.org,
-	aou@eecs.berkeley.edu,
-	atish.patra@linux.dev,
-	jiakaiPeanut@gmail.com,
-	kvm-riscv@lists.infradead.org,
-	kvm@vger.kernel.org,
+	s=arc-20240116; t=1779422444; c=relaxed/simple;
+	bh=QbZUKjdjRuQXtzg05CzVoq/5DiFTpb7F9GvwPGCiV3g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KfOHfhN/jVMah8V3dKqjdH8VnrnuXiXttOyzeodf9UdFOsSwxvKYa4DkonGz4Lt5M6y6Kr0lJwGxWT82pOtPUmzNSpwMich9g533JRHcW3n38+BuDvjw6GaD+xpmgIzN+96/FtjWpFxmjndaNuPnNMBM3H000PC+8G0pMN2T+qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=115.124.28.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
+X-Alimail-AntiSpam:AC=CONTINUE;BC=0.2013519|-1;CH=green;DM=|CONTINUE|false|;DS=CONTINUE|ham_alarm|0.091802-0.00767594-0.900522;FP=8872141843517162851|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam011083013073;MF=zhang_wei@open-hieco.net;NM=1;PH=DS;RN=8;RT=8;SR=0;TI=SMTPD_---.hdi.OM-_1779422418;
+Received: from localhost.localdomain(mailfrom:zhang_wei@open-hieco.net fp:SMTPD_---.hdi.OM-_1779422418 cluster:ay29)
+          by smtp.aliyun-inc.com;
+          Fri, 22 May 2026 12:00:29 +0800
+From: Tina Zhang <zhang_wei@open-hieco.net>
+To: kvm@vger.kernel.org
+Cc: seanjc@google.com,
+	pbonzini@redhat.com,
+	mlevitsk@redhat.com,
+	naveen@kernel.org,
 	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	palmer@dabbelt.com,
-	pjw@kernel.org,
-	xujiakai2025@iscas.ac.cn
-Subject: Re: [PATCH] RISC-V: KVM: Fix TOCTOU race in SBI system suspend handler
-Date: Fri, 22 May 2026 03:18:13 +0000
-Message-Id: <20260522031813.3429490-1-xujiakai2025@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <yirnowpcfq6wqru3jshbbaicqftfj4ef3dcss65jdtuon6nzml@iyv45tnmmfha>
-References: <yirnowpcfq6wqru3jshbbaicqftfj4ef3dcss65jdtuon6nzml@iyv45tnmmfha>
+	Tina Zhang <zhang_wei@open-hieco.net>,
+	stable@vger.kernel.org
+Subject: [PATCH] KVM: SVM: Disable AVIC IPI virtualization on Hygon Family 18h (erratum #1235)
+Date: Fri, 22 May 2026 12:00:14 +0800
+Message-ID: <20260522040014.3380201-1-zhang_wei@open-hieco.net>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowAC3Sg71yg9qQQ0XEQ--.7414S2
-X-Coremail-Antispam: 1UD129KBjvJXoWxJr43Jw4rKw1rXw1ruw1Dtrb_yoW8JFy3pr
-	Wjkw4xuw43GF1jq3yxJrW2qayjgrWrGa1UWwn5Cr1xXr15Cr1avr4xt3yY9ayIg3srZa42
-	vrs0q34rCr4qvaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUBI14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
-	JVWxJr1l84ACjcxK6I8E87Iv67AKxVWxJr0_GcWl84ACjcxK6I8E87Iv6xkF7I0E14v26r
-	xl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVAC
-	Y4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r106r15McIj6I8E87Iv67AKxVW8JV
-	WxJwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI2
-	0VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28Icx
-	kI7VAKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2Iq
-	xVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42
-	IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY
-	6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aV
-	CY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7VUbknY7UUUUU==
-X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiCREPCWoPqqh6nAAAsf
 
-Hi, drew!
+Hygon Family 18h CPUs are derived from AMD Family 17h (Zen1) silicon and
+share the same erratum #1235: hardware may read a stale IsRunning=1 bit
+during ICR write emulation and silently fail to generate an
+AVIC_IPI_FAILURE_TARGET_NOT_RUNNING VM-Exit on the sending vCPU.
 
-Thanks for your review!
+The absence of the VM-Exit causes KVM to miss the required wakeup of
+blocking target vCPUs, leading to hung vCPUs and unbounded delays in
+guest execution.
 
-> > I'm not a big fan of this approach and I see sashiko found it has gaps[1].
+Extend the existing AMD Family 17h erratum #1235 workaround to also cover
+Hygon Family 18h.  With IPI virtualization disabled, KVM never sets
+IsRunning=1 in the Physical ID table, so every non-self IPI generates a
+VM-Exit and is correctly emulated.
 
-I read sashiko's feedback and I think it makes sense.
+Fixes: 8de4a1c8164e ("KVM: SVM: Disable (x2)AVIC IPI virtualization if CPU has erratum #1235")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Tina Zhang <zhang_wei@open-hieco.net>
+---
+ arch/x86/kvm/svm/avic.c | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-> > I'd rather we introduce a mutex to kvm_arch to serialize cross-vcpu
-> 
-> Eh, not sure why I said 'introduce' here. We can just use kvm->lock.
-
-I looked into that, but it may be not suitable. Here's why:
-
-Documentation/virt/kvm/locking.rst explicitly states: kvm->lock is taken 
-outside vcpu->mutex. The susp handler runs inside kvm_arch_vcpu_ioctl_run(), 
-which is called from kvm_vcpu_ioctl() where vcpu->mutex is already held.
-
-Taking kvm->lock inside the susp handler would produce: vcpu->mutex → kvm->lock.
-So may be we should introduce a mutex to kvm_arch to serialize cross-vcpu
-mp-state operations.
-
-What do you think?
-
-> > mp-state operations. So it'd be taken in SUSP, HART_START, and also SRST
-> 
-> And, even though SRST doesn't really need it - why not... Consistency has
-> its merits.
-> 
-> > (anywhere that reads or modifies another vcpu's mp-state). Operations that
-> > only modify the calling vcpu's own state would still only use the per-vcpu
-> > mp_state_lock.
-> > 
-> > [1] https://sashiko.dev/#/patchset/20260521142030.1560861-1-xujiakai2025%40iscas.ac.cn
-
-I agree with you.
-
-Regards,
-Jiakai
+diff --git a/arch/x86/kvm/svm/avic.c b/arch/x86/kvm/svm/avic.c
+index adf211860949..993b551180fe 100644
+--- a/arch/x86/kvm/svm/avic.c
++++ b/arch/x86/kvm/svm/avic.c
+@@ -1300,12 +1300,14 @@ bool __init avic_hardware_setup(void)
+ 	}
+ 
+ 	/*
+-	 * Disable IPI virtualization for AMD Family 17h CPUs (Zen1 and Zen2)
+-	 * due to erratum 1235, which results in missed VM-Exits on the sender
+-	 * and thus missed wake events for blocking vCPUs due to the CPU
+-	 * failing to see a software update to clear IsRunning.
++	 * Disable IPI virtualization for AMD Family 17h (Zen1 and Zen2) and
++	 * Hygon Family 18h (derived from AMD Zen1) CPUs due to erratum 1235,
++	 * which results in missed VM-Exits on the sender and thus missed wake
++	 * events for blocking vCPUs due to the CPU failing to see a software
++	 * update to clear IsRunning.
+ 	 */
+-	enable_ipiv = enable_ipiv && boot_cpu_data.x86 != 0x17;
++	if (boot_cpu_data.x86 == 0x17 || boot_cpu_data.x86 == 0x18)
++		enable_ipiv = false;
+ 
+ 	amd_iommu_register_ga_log_notifier(&avic_ga_log_notifier);
+ 
+-- 
+2.43.7
 
