@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FA0D356767;
-	Sat, 23 May 2026 10:03:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9264133121E;
+	Sat, 23 May 2026 10:07:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779530625; cv=none; b=n1irgif3mM8dpiUF0aUBB7Z/qc5KAZjOEZl5g9zOhun+gCHRlachR3NToqiJJBlbDcmO/5g1yxWPYdwMmkOiPg/KxAGZn7ldreC70kjqpj2gRd9Ygzh4M01r3in8d99vE2BKBxMno7T+Cf1JWh53zX3P5/Mh91s1zlD0Z81FX0o=
+	t=1779530866; cv=none; b=kSYZkAlVqU5yDmODk8f7wY9UQlPVkUIn8Wb+1YxrpmRX//nNZSd5PnwwAg106wo89TnwNFD/q/yv2sOAdRVw979cvBm5dodplQgG5lyWXMCYTwpwHA9mZDc+dA4TP1rA1Oh/JbExDwEvqKkKrUdKnaf6dJo+CjPDFbCJ9vshOdc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779530625; c=relaxed/simple;
-	bh=Z8yfeiblCz/3Sd95IRWg5G2c2TXrpu+XnyizFFWl7ws=;
+	s=arc-20240116; t=1779530866; c=relaxed/simple;
+	bh=D6nSXEYo+MpnMypr6RgL8yPZAFyIVpwonG2E7ic9SbM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QnM4Al8p+rpTry3Kc1jkqVd6vws/RMfDvhd2dGynYEumb8kh2ul0ZxaH1JO8vepspn72lo+WaMkewa2UlCzpyi3HP0NB8x2bDkr+Bn1Dl+ATrdQ0O8BRpg7DLs29XHZs4Qro+RCnsRv4HldB14HrmDU7Z2c6ZbLMpomRAtuevqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b2v/Ws4X; arc=none smtp.client-ip=100.103.45.18
+	 Content-Type:Content-Disposition:In-Reply-To; b=mkfKhEdtcNU5FoRCxNduyk0S6p5cme+5wnmrcoZbXYQwgAYuB+kQ5wFl4g5kphwAakwDn2s/xlRmBjSSB6potK1KeUhc+v9o3fYaWt1ke6bdiWVdutXYaiAt507O7PRbl7y4/zylwckKL1SRYr3Ptl8o75gkKmkLMhRfVWAeLMM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ee3Xfjg3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b2v/Ws4X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AA061F000E9;
-	Sat, 23 May 2026 10:03:36 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ee3Xfjg3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F9761F000E9;
+	Sat, 23 May 2026 10:07:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779530624;
-	bh=tHmN2BHFAqmkx4+yIKAwc/rhqe6iOFn48NmkgaH2AR4=;
+	s=k20260515; t=1779530865;
+	bh=rlp1W5vNBlur1QwehE++yDLWhSdLhgpE4g2TYJr/Zrs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=b2v/Ws4X/OrJeoVd2MADb1/OzwlF6mfWpHskl0n53AtfrSWsGgexN3Yaa2xwr+Tgb
-	 NxYvlMdRrDNzJNcemlWPWIZafZlAJ+IbO2Ay2XBX5cKlRzDab8WGSMMtKIdylDbLPH
-	 joRzNAZdmyWyHGAzrW5zkWygvSxFheziGrqE4vs0cldK2Jz7LgE7peYrq7dPzjGpsZ
-	 MdFNSGR6VDJSvQ1tnOQNvcAgH6LWWf8fCUvCYtWzKfh4MpqTCf0r8FubYVyZWrcYUk
-	 Yk+89/7C5VZvHVkv453mbcpMostz4UddeknfAJnvcP/RyMnEpCuP9//GXhJ8CnT7Na
-	 eLq5UlIcIHnug==
-Date: Sat, 23 May 2026 13:03:32 +0300
+	b=Ee3Xfjg3pkY/QBkGfqwUl/vlMPnivycAtzymBvtjnZlKjBwxVCWthpEyBYipSSzTT
+	 7Hb3ZNH2kOFCKNE3qtCT+9Nr7uZYAGjCHz6ZJfQUi7JyzveC6qdztm0snhCDnnwNs7
+	 JCbpv3KNt8AjX+bk84DtiNth6Rg2BdxiP255GajZCvs1fUmt5wjkw34YEykxmjF2mV
+	 KcNcTpDapcXZJUh5tth7qD6xH1H5TIORh7sCj9pBmJqolBHW4xuMlHJFSh0CYr24NF
+	 aCoObYVnef10OiEUycg02dD9SYvFNY7wMVyYEERHahhqBOpYbYVV9y77qAu1rHLjzC
+	 ATNQLHXLaQDGQ==
+Date: Sat, 23 May 2026 13:07:33 +0300
 From: Mike Rapoport <rppt@kernel.org>
 To: Kiryl Shutsemau <kirill@shutemov.name>
 Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org,
@@ -39,40 +39,50 @@ Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org,
 	linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
 	kernel-team@meta.com, linux-man@vger.kernel.org, alx@kernel.org,
 	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
-Subject: Re: [PATCH v3 05/16] mm: add MM_CP_UFFD_RWP change_protection() flag
-Message-ID: <ahF7dNveFezH5bEy@kernel.org>
+Subject: Re: [PATCH v3 13/16] selftests/mm: add userfaultfd RWP tests
+Message-ID: <ahF8ZeErzcEp57Pw@kernel.org>
 References: <20260522133857.552279-1-kirill@shutemov.name>
- <20260522133857.552279-6-kirill@shutemov.name>
+ <20260522133857.552279-14-kirill@shutemov.name>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260522133857.552279-6-kirill@shutemov.name>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260522133857.552279-14-kirill@shutemov.name>
 
-On Fri, May 22, 2026 at 02:38:46PM +0100, Kiryl Shutsemau wrote:
+On Fri, May 22, 2026 at 02:38:54PM +0100, Kiryl Shutsemau wrote:
 > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 > 
-> Preparatory patch. Add the change_protection() primitive that
-> userfaultfd RWP will use.
+> Coverage for UFFDIO_REGISTER_MODE_RWP and UFFDIO_RWPROTECT:
 > 
-> An RWP-protected PTE is PAGE_NONE with the uffd PTE bit set. The
-> PROT_NONE half makes the CPU fault on any access; the uffd bit
-> distinguishes an RWP fault from a plain mprotect(PROT_NONE) or NUMA
-> hinting fault. MM_CP_UFFD_WP and MM_CP_UFFD_RWP share the same PTE
-> bit, so the two cannot be used together on the same range.
+>   rwp-async          async mode — touch pages, verify permissions are
+>                      auto-restored without a message
+>   rwp-sync           sync mode — access blocks, handler resolves via
+>                      UFFDIO_RWPROTECT
+>   rwp-pagemap        PAGEMAP_SCAN reports still-cold pages via
+>                      inverted PAGE_IS_ACCESSED
+>   rwp-mprotect       RWP survives mprotect(PROT_NONE) ->
+>                      mprotect(PROT_READ|PROT_WRITE) round-trip
+>   rwp-gup            GUP walks through a protnone RWP PTE (pipe
+>                      write/read drives the GUP path)
+>   rwp-async-toggle   UFFDIO_SET_MODE flips between sync and async
+>                      without re-registering
+>   rwp-close          closing the uffd restores page permissions
+>   rwp-fork           RWP survives fork() with EVENT_FORK; child's
+>                      PTEs keep the uffd bit
+>   rwp-fork-pin       RWP survives fork() on an RO-longterm-pinned
+>                      anon page (forces copy_present_page()); child
+>                      read auto-resolves and clears the bit, proving
+>                      PAGE_NONE was in place
+>   rwp-wp-exclusive   register with MODE_WP|MODE_RWP returns -EINVAL
 > 
-> Two new change_protection() flags:
-> 
->   MM_CP_UFFD_RWP            install PAGE_NONE and set the uffd bit
->   MM_CP_UFFD_RWP_RESOLVE    restore vma->vm_page_prot, clear the uffd bit
-> 
-> Both are wired through change_pte_range(), change_huge_pmd(), and
-> hugetlb_change_protection() so anon, shmem, THP, and hugetlb all
-> share the same semantics.
+> All tests run against anon, shmem, shmem-private, hugetlb, and
+> hugetlb-private memory, except rwp-fork-pin which is anon-only —
+> copy_present_page() is the private-anon pinned-exclusive fork path.
 > 
 > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
 > Assisted-by: Claude:claude-opus-4-6
@@ -80,12 +90,8 @@ On Fri, May 22, 2026 at 02:38:46PM +0100, Kiryl Shutsemau wrote:
 Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
 
 > ---
->  include/linux/mm.h            |  5 ++++
->  include/linux/userfaultfd_k.h |  1 -
->  mm/huge_memory.c              | 30 +++++++++++++----------
->  mm/hugetlb.c                  | 25 ++++++++++++++-----
->  mm/mprotect.c                 | 46 +++++++++++++++++++++++++++--------
->  5 files changed, 77 insertions(+), 30 deletions(-)
+>  tools/testing/selftests/mm/uffd-unit-tests.c | 766 +++++++++++++++++++
+>  1 file changed, 766 insertions(+)
 
 -- 
 Sincerely yours,
