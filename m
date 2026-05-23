@@ -1,595 +1,329 @@
-Received: from mx0b-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98FC34028D
-	for <kvm@vger.kernel.org>; Fri, 22 May 2026 23:54:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=67.231.153.30
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779494056; cv=fail; b=SCTCMf+Ol/LlRgxhup9GXEurx7cwrRNl4N2UHr7sIgQCbAfrLGGsvHIn0AvCac03c/qd+n9qbmK4eSBZbEZs2B5/ChK09/ebml48XyJoVk+4oVbxmhNVq5zJlhsZ72lPX5fDKrKBc/FfqiH/74qgDgl/DOpuc9WAesUo+wwr3tA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779494056; c=relaxed/simple;
-	bh=DNlochln4KieL0hqL78IZaLMDPpl4uvB9y2dcgfjBMI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QeJ06EgGeWvtJvf9oYkwPmHLoxvrsqHHDWQDzS98tBV7KThTktzFG/NiLehkxmPsqHuAKwJTJxD/UVupTQmiic+sPsw/kZcHDUDHfDTz2PxzqGNSWbAnZowJKvZfIuvVaNB9DMEQNpKYwWAWMeRvH30MhCUgOwCf3WMiA3X5+wE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=HprCEILq; arc=fail smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A4E713B7AE;
+	Sat, 23 May 2026 00:18:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779495483; cv=none; b=YuwZVvbGWZJMsiYe1knYrlXuABzoMiNIjRGtwwIHLQmbkGGjeHGljpY0ks4BrEPZRJP+d2VqhO32rmf9fqsqGBck0i84LkLXiPKXzJdIjeWAs7dI7n1arbOuGYgytRq+6scJT5QtrHqWQGgL5J/cLgr+OkX58brMSvG/wLjYqbo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779495483; c=relaxed/simple;
+	bh=KqSsdLiF1vilvxfcn4kyISvCPXTv43jjluQ/o6Cospw=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
+	 In-Reply-To:To:Cc; b=rd2a1ibYosrb8Dc3WBu7eGUmLiZ6mqpOuOfvkmysKHcmGS1BWJrRrxxrJttisa6wW4C2vFLunsmXFa05fL9T22M03vVthqWzDdHZ7Nd2mHxi3Zu0vk9D/auFUPs1bdwTzU8kxCeMkZ8eVUiuFribNg4Pv8YQH0hl4U0OHMQtxK8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GDPsDSkf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="HprCEILq"
-Received: from pps.filterd (m0148460.ppops.net [127.0.0.1])
-	by mx0a-00082601.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64M5RVUv2384572
-	for <kvm@vger.kernel.org>; Fri, 22 May 2026 16:54:11 -0700
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=BJr1ZIFg0dApTPOKxEBWywjJAcZm+0SNH1wNhtJCPaQ=; b=HprCEILqoF+v
-	cvKFEdCNE4M+GpUSlWvyDFSrqaysRza2gDHyHcQxfxabuxsv4H4440tBNg3URcwe
-	IhKiL8qQoEkEObdZ8T4MddEVks4EE4PSO6CZXR/hQWgOqfq0Q+wppM2H8BL8krGN
-	uNuClSzb9I25LxnmtHxJuy+WHaYwlKKB9CDPtOCnGGkOzLjs9Gcv159bnoND0fCZ
-	RbT7A9qW88aYhXODSOz7vErLtRl5Ls2rPEGm2Ezmoy6XkEhIM094HhFeAV9vJhdS
-	beEubh96WirNIK+JJ8565yhP9ZS5sw9XApDZ6Hc8/1BAlCeyVndv+1AQyJfroCFI
-	je2kIFe8xg==
-Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com [209.85.210.70])
-	by mx0a-00082601.pphosted.com (PPS) with ESMTPS id 4ea30s2xff-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <kvm@vger.kernel.org>; Fri, 22 May 2026 16:54:11 -0700 (PDT)
-Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-7e06cbc08d6so6403131a34.2
-        for <kvm@vger.kernel.org>; Fri, 22 May 2026 16:54:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779494051; cv=none;
-        d=google.com; s=arc-20240605;
-        b=CAZbUlVDBbe4He1Sc9alEFZPm23VGdku8ZYvCETbxLtGvG5y1aEwkr/CT7tvPCoDgn
-         +MYTPU5NGdMVvZeLBP6fZVINGDEP73mBAWfaCqRkNEaHBlW7MZGeV0CAjc9uOqAzzHo8
-         +0PH7aucyAwCJ7Poa/Nr+JDGwpnMWgwn9sY/jkLQPGqrmzKGWUx+y5Za8l/uso+Eqq5S
-         8wOdHsOPv8SQ+z74xwCCuQv3U3ChJjY1qlRTsJQayLXgTMbmlU3FycJSlLS427nXx5pL
-         4PeVnGwpf+SsFNOLaLIuXJlJiVGJLp9Hv1HXdyueolhyURy1PhklZFJc8BzEpVvZtEMn
-         b/ng==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version;
-        bh=xPbccRhP9AzeKhw0/hE7Uzqn/4Emm7Q1lz66iybs3r8=;
-        fh=712h0KZOAVu4S8qwJOqNVxD2zqwkDY53QI2yAVqsbIE=;
-        b=bfRnEV48ndF9/lZHdnxeL7WtqwH7SGC7kDgMMkuVxs9z2J/vt4ViEKQ1t5gBO3ACbC
-         eprVLXgrBBoDI7owFKrbr7RyIP0jmPfwRlsrOL5NrzE+rrAG1KtVsEtHuvk01JJ9sBxp
-         bhxaV1dRwGsqS4MRD4FC/lzbM8SYea+Ms/7LO31MVgaWDdm99RHQxmMXhwAwOXgWlAYa
-         PWnJdI9YuzqxhplB1inwatpC5ENkJ2WZO9ctgDJ+9iUR6QWADB3FAftR9q0KYPEfpuFS
-         4UE/lBasXbzTNbUd6LEc4LnXcxejX36uI+VwVaAnXDByzXZQeyMjjlzQHynR9H7TGk02
-         kDUg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779494051; x=1780098851;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=xPbccRhP9AzeKhw0/hE7Uzqn/4Emm7Q1lz66iybs3r8=;
-        b=eqZHM0vwe8Wxb7naSjGbfkwXzC9ul65UUc/JBB3rDxmLMMtbs1WkTgVtADFk/QeSUR
-         gwsiaUc2Y70sxRN90mGALoHJrMKbvWDjDwdQFUoVKP4YKKSWQQ1at8d0yPeoFMIdYApB
-         LS/feVOt/IVETZS6xtBMY3dlF+t+jXciFQAnxhRxTg3feeaza9DE+R9p3b4zqaWxlBQZ
-         2J2vm3JtwWocZMvKkuQbhPDwk5x8IOjWkUv+C3S2fJlIm4NkigXlauFDGFVJKduwKPtd
-         B9VYjLFtG3ZFwc9IGhBULqbVJLjAYydA2syJFWijhLAIJP+DNMNP4l14P/Luf5PBGQqc
-         49Gw==
-X-Forwarded-Encrypted: i=1; AFNElJ8Xs+H9PIuruOb4F5xT3X9ZpJi3nvd/MiMcTKJOVNbJcUX44fpJf11yc6n3Ym3dv9b9aMI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/8QCV39WL2o8dDKleLw+DIwe720yErRq6K2d645ODm4ZHLfXi
-	aZ32yr0r+we+23ceeLyr9iO7OUZcynTa1Gf3Oaft9LGadU1sxPg8nmkUuYXDo+Yx8twlfT6H1WC
-	77221AclVRqb6kGEw4C8gOvqA3pdyOWltqwzBmrCZr9Ih/vXd57CP9zryPXiKrVxJd9AK0OdSkS
-	o5IkLVK0RLidTbVyhJGBqOzhd4rGo=
-X-Gm-Gg: Acq92OEvej5oHwMMGC+RerAQdKJx8McTJWWgz5JKTIymTSrsecGrMRnNr1HbMf72GW5
-	ZNdK0GSv7a8Ym8vdyqn+dEu/9oCH8qLvQlGFqO0k7vatQvTN45YYVfLk+S2cL5o9FlAGawZwBQ+
-	HbJTkTa2GmSfNnj5iBaRsWOkucgS5578anKaqk6lQgI8OBXAA+id2F6zyLN0B1+xGdtwIYR2LOd
-	26fg6bYx9GrEwv6P5lHgUacDW7mTMA=
-X-Received: by 2002:a05:6830:3789:b0:7dd:b184:1338 with SMTP id 46e09a7af769-7e5fed5b607mr3897068a34.6.1779494050707;
-        Fri, 22 May 2026 16:54:10 -0700 (PDT)
-X-Received: by 2002:a05:6830:3789:b0:7dd:b184:1338 with SMTP id
- 46e09a7af769-7e5fed5b607mr3897049a34.6.1779494050127; Fri, 22 May 2026
- 16:54:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GDPsDSkf"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 45250C2BCC6;
+	Sat, 23 May 2026 00:18:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1779495483;
+	bh=KqSsdLiF1vilvxfcn4kyISvCPXTv43jjluQ/o6Cospw=;
+	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
+	b=GDPsDSkf9GbiHCWV/Ln+xljCDjYDC7OoSH1aWP7kUD7CGok5lG3Tu2wRGh338toei
+	 AjSwXi4Zqi61dlVNLY5uuJ7T4FM3lKJl+ld1XZe8KfyIMx2K9oyhOsMoMpqp/rpvbA
+	 6E7a2aGAkhOAseXrWy/4f+jq6gvJlemgYfBlM7QC8sonGM06tjW+MgMocDjkozJ/Ml
+	 XqChuCz745fhVJE93eG6cYPX1nG+NsrZfej1nnsKj4ya0o7hnGkILHNJA9sxy2i7N2
+	 8xanyuER6ZWuOX/zkSbNBtpchyxVq1kzdxS5E3LCatKxQFBbpyBjA7lmFZNqdNm2qy
+	 PVz34YZD35kjA==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 35363CD5BB8;
+	Sat, 23 May 2026 00:18:03 +0000 (UTC)
+From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
+Date: Fri, 22 May 2026 17:17:44 -0700
+Subject: [PATCH v7 02/42] KVM: Rename KVM_GENERIC_MEMORY_ATTRIBUTES to
+ KVM_VM_MEMORY_ATTRIBUTES
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260519201401.1558410-1-zhipingz@meta.com> <20260519201401.1558410-2-zhipingz@meta.com>
- <20260521160412.4fa75406@shazbot.org>
-In-Reply-To: <20260521160412.4fa75406@shazbot.org>
-From: Zhiping Zhang <zhipingz@meta.com>
-Date: Fri, 22 May 2026 16:53:59 -0700
-X-Gm-Features: AVHnY4Kei3lLPfGxalIVqJuqv9pOsHiferZdcWI224JMky8geVIn4yYyhSSh2jY
-Message-ID: <CAH3zFs0ZUpHnc2WdyoLQBKuHRVDPNZDO6Zay-caW82Qk5ej+nw@mail.gmail.com>
-Subject: Re: [PATCH v4 1/3] vfio: add dma-buf get_tph callback and DMA_BUF_TPH feature
-To: Alex Williamson <alex@shazbot.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>,
-        Bjorn Helgaas <helgaas@kernel.org>, kvm@vger.kernel.org,
-        linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
-        netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
-        Yishai Hadas <yishaih@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Proofpoint-GUID: PJR7ISKK8O-3ds1JMsRuDz2ibnCwOEIr
-X-Proofpoint-ORIG-GUID: PJR7ISKK8O-3ds1JMsRuDz2ibnCwOEIr
-X-Authority-Analysis: v=2.4 cv=Aa6B2XXG c=1 sm=1 tr=0 ts=6a10eca3 cx=c_pps
- a=7uPEO8VhqeOX8vTJ3z8K6Q==:117 a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10
- a=VkNPw1HP01LnGYTKEx00:22 a=7x6HtfJdh03M6CCDgxCd:22 a=JnKecZnUtZousrUlYMGU:22
- a=r1p2_3pzAAAA:8 a=VabnemYjAAAA:8 a=iTjJCpD9-klLVKPjRfgA:9 a=QEXdDO2ut3YA:10
- a=EXS-LbY8YePsIyqnH6vw:22 a=r_pkcD-q9-ctt7trBg_g:22 a=gKebqoRLp9LExxC7YDUY:22
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTIyMDIzOSBTYWx0ZWRfX6MyQbgoag1iW
- B8lsQ+SKXg+Fy6dwZPczSDXQegzik+hdMRjsp/ZPK7mhFvgqk6KLAjMDzS+4qZ9EQJL40z90Iw5
- Z18XblfcX4/+dqIsirWwSt+CDf7AMVHu5bpDms9KN5fdoB1h+tYuWXY5EMQjNO2En85LxKF3U+X
- iadZ1ptR0y5TXBGGP9J1m8qiyz3a6FvH/tR88yDN190E/gZ4zh9rS8FBHop4t7+CqNCm/d1hQGY
- d7LJbOxuFLc4GzvKmEPxwG6VBoocDy7zy71rjWjKf3PFj4p4eZPhreCoN0eiS1aeY2IEKnhHTWb
- esX/fI4F0b0PHSou9QijbG8zgHSIBq80iIQ004CXiQCfELPrPpLIaq5Kni2QROeQEjiBq0zBmiD
- UN28QjahDeI+qZbgYKAf7h1lndAbPcazagdkkIbD3k4nm+RXOYJSypqBnFtwRgTWYSMSJMD+RRC
- 8+uoQKQdZD+7jq2oA3w==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
- definitions=2026-05-22_06,2026-05-18_01,2025-10-01_01
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+Message-Id: <20260522-gmem-inplace-conversion-v7-2-2f0fae496530@google.com>
+References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
+In-Reply-To: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
+To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
+ brauner@kernel.org, chao.p.peng@linux.intel.com, david@kernel.org, 
+ ira.weiny@intel.com, jmattson@google.com, jthoughton@google.com, 
+ michael.roth@amd.com, oupton@kernel.org, pankaj.gupta@amd.com, 
+ qperret@google.com, rick.p.edgecombe@intel.com, rientjes@google.com, 
+ shivankg@amd.com, steven.price@arm.com, tabba@google.com, 
+ willy@infradead.org, wyihan@google.com, yan.y.zhao@intel.com, 
+ forkloop@google.com, pratyush@kernel.org, suzuki.poulose@arm.com, 
+ aneesh.kumar@kernel.org, liam@infradead.org, 
+ Paolo Bonzini <pbonzini@redhat.com>, 
+ Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>, 
+ Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+ Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+ "H. Peter Anvin" <hpa@zytor.com>, Steven Rostedt <rostedt@goodmis.org>, 
+ Masami Hiramatsu <mhiramat@kernel.org>, 
+ Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+ Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, 
+ Shuah Khan <shuah@kernel.org>, Vishal Annapurve <vannapurve@google.com>, 
+ Andrew Morton <akpm@linux-foundation.org>, Chris Li <chrisl@kernel.org>, 
+ Kairui Song <kasong@tencent.com>, Kemeng Shi <shikemeng@huaweicloud.com>, 
+ Nhat Pham <nphamcs@gmail.com>, Baoquan He <bhe@redhat.com>, 
+ Barry Song <baohua@kernel.org>, Axel Rasmussen <axelrasmussen@google.com>, 
+ Yuanchu Xie <yuanchu@google.com>, Wei Xu <weixugc@google.com>, 
+ Youngjun Park <youngjun.park@lge.com>, Qi Zheng <qi.zheng@linux.dev>, 
+ Shakeel Butt <shakeel.butt@linux.dev>, Kiryl Shutsemau <kas@kernel.org>, 
+ Jason Gunthorpe <jgg@ziepe.ca>, Vlastimil Babka <vbabka@kernel.org>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
+ linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779495480; l=8687;
+ i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
+ bh=98OWW71gsIoF1YXmhWgMLeiP4e85e60xSdk51eRg1uQ=;
+ b=0tnPwrxTsyOLN9Qf0Tn9ngKq31l1vbdMrLthrTdYXe+p6jPfY6EKfL8cDRXWc90yfNw3Rn3uN
+ FwuH3dQJ14zDRXj+IiVgZFb2yyjDtK0Nted2klr48/x1M/wwJdO3tat
+X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
+ pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
+X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
+ auth_id=649
+X-Original-From: Ackerley Tng <ackerleytng@google.com>
+Reply-To: ackerleytng@google.com
 
-On Thu, May 21, 2026 at 3:04=E2=80=AFPM Alex Williamson <alex@shazbot.org> =
-wrote:
->
-> >
-> On Tue, 19 May 2026 13:13:49 -0700
-> Zhiping Zhang <zhipingz@meta.com> wrote:
->
-> > Add a dma-buf get_tph callback for exporters to return TPH
-> > (TLP Processing Hints) metadata, and add VFIO_DEVICE_FEATURE_DMA_BUF_TPH
-> > so userspace can attach that metadata to a VFIO-exported dma-buf.
->
-> This should be two patches, the first extending the dma-buf framework
-> for the get_tph callback for explicit approval from dma-buf maintainers
-> (who are not even copied here).  The second the vfio-pci implementation
-> of get_tph.
+From: Sean Christopherson <seanjc@google.com>
 
-Agreed, let me split. v5 will have:
-    1/2 dma-buf: add optional get_tph() callback
-    2/2 vfio/pci: implement get_tph and VFIO_DEVICE_FEATURE_DMA_BUF_TPH
-I will also add Sumit Semwal and Christian K=C3=B6nig, the dma-buf maintain=
-ers.
+Rename the per-VM memory attributes Kconfig to make it explicitly about
+per-VM attributes in anticipation of adding memory attributes support to
+guest_memfd, at which point it will be possible (and desirable) to have
+memory attributes without the per-VM support, even in x86.
 
->
-> > 8-bit ST and 16-bit Extended ST are distinct PCIe TPH namespaces; the
-> > uAPI carries both with explicit validity flags so importers get the
-> > value matching their requested width. SET is write-once per dma-buf;
-> > the existing VFIO_DEVICE_FEATURE_DMA_BUF uAPI is unchanged.
->
-> I didn't see what motivated this write-once change, I thought we
-> understood that it was a userspace problem that the tph values need to
-> be set before providing the dma-buf fd to the importer and that races
-> relative to that are a userspace ordering problem.  Write-once seems
-> unnecessarily restrictive and there's no justification provided here.
+No functional change intended.
 
-Got it, yes the "set TPH before handing the fd to the importer" contract is=
- a
-userspace ordering problem. I'll drop write-once. I'll allow SET to
-overwrite and
-document the ordering requirement in the uAPI comment instead.
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Reviewed-by: Fuad Tabba <tabba@google.com>
+Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+---
+ arch/x86/include/asm/kvm_host.h |  2 +-
+ arch/x86/kvm/Kconfig            |  6 +++---
+ arch/x86/kvm/mmu/mmu.c          |  2 +-
+ arch/x86/kvm/x86.c              |  2 +-
+ include/linux/kvm_host.h        |  8 ++++----
+ include/trace/events/kvm.h      |  4 ++--
+ virt/kvm/Kconfig                |  2 +-
+ virt/kvm/kvm_main.c             | 14 +++++++-------
+ 8 files changed, 20 insertions(+), 20 deletions(-)
 
->
-> > Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
-> > ---
-> >  drivers/vfio/pci/vfio_pci_core.c   |   3 +
-> >  drivers/vfio/pci/vfio_pci_dmabuf.c | 134 +++++++++++++++++++++++++++--
-> >  drivers/vfio/pci/vfio_pci_priv.h   |  12 +++
-> >  include/linux/dma-buf.h            |  21 +++++
-> >  include/uapi/linux/vfio.h          |  35 ++++++++
-> >  5 files changed, 198 insertions(+), 7 deletions(-)
-> >
-> > diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_p=
-ci_core.c
-> > index 3f8d093aacf8..94aa6dd95701 100644
-> > --- a/drivers/vfio/pci/vfio_pci_core.c
-> > +++ b/drivers/vfio/pci/vfio_pci_core.c
-> > @@ -1534,6 +1534,9 @@ int vfio_pci_core_ioctl_feature(struct vfio_devic=
-e *device, u32 flags,
-> >               return vfio_pci_core_feature_token(vdev, flags, arg, args=
-z);
-> >       case VFIO_DEVICE_FEATURE_DMA_BUF:
-> >               return vfio_pci_core_feature_dma_buf(vdev, flags, arg, ar=
-gsz);
-> > +     case VFIO_DEVICE_FEATURE_DMA_BUF_TPH:
-> > +             return vfio_pci_core_feature_dma_buf_tph(vdev, flags, arg,
-> > +                                                      argsz);
-> >       default:
-> >               return -ENOTTY;
-> >       }
-> > diff --git a/drivers/vfio/pci/vfio_pci_dmabuf.c b/drivers/vfio/pci/vfio=
-_pci_dmabuf.c
-> > index f87fd32e4a01..be1c65385670 100644
-> > --- a/drivers/vfio/pci/vfio_pci_dmabuf.c
-> > +++ b/drivers/vfio/pci/vfio_pci_dmabuf.c
-> > @@ -19,7 +19,24 @@ struct vfio_pci_dma_buf {
-> >       u32 nr_ranges;
-> >       struct kref kref;
-> >       struct completion comp;
-> > -     u8 revoked : 1;
-> > +     /*
-> > +      * TPH metadata published by VFIO_DEVICE_FEATURE_DMA_BUF_TPH and
-> > +      * consumed by the @get_tph dma-buf callback.
-> > +      *
-> > +      * @tph_flags is the publish/consume gate: writers populate
-> > +      * @steering_tag, @steering_tag_ext and @ph first, then store
-> > +      * @tph_flags with smp_store_release(); readers do
-> > +      * smp_load_acquire(&tph_flags) before accessing the value fields.
-> > +      * @tph_flags =3D=3D 0 means "TPH not set". Writers publish a non=
--zero
-> > +      * value only once per dma-buf and serialize via vdev->memory_loc=
-k;
-> > +      * readers stay lockless to avoid AB-BA against the dma_resv_lock=
- held
-> > +      * by importers.
-> > +      */
->
-> Can you outline the ABBA hazard, I'm not seeing it.  You're acquiring
-> memory_lock in the feature SET and dma_resv_lock doesn't appear to be
-> held when calling .get_tph().  There's a lot of lockless complication
-> here balanced on this claim of avoiding a hazard that doesn't appear
-> present.
+diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_host.h
+index 8a53ca6195701..8bb7c25240e33 100644
+--- a/arch/x86/include/asm/kvm_host.h
++++ b/arch/x86/include/asm/kvm_host.h
+@@ -2393,7 +2393,7 @@ void kvm_configure_mmu(bool enable_tdp, int tdp_forced_root_level,
+ 		       int tdp_max_root_level, int tdp_huge_page_level);
+ 
+ 
+-#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
++#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+ #define kvm_arch_has_private_mem(kvm) ((kvm)->arch.has_private_mem)
+ #endif
+ 
+diff --git a/arch/x86/kvm/Kconfig b/arch/x86/kvm/Kconfig
+index 801bf9e520db3..26f6afd51bbdc 100644
+--- a/arch/x86/kvm/Kconfig
++++ b/arch/x86/kvm/Kconfig
+@@ -84,7 +84,7 @@ config KVM_SW_PROTECTED_VM
+ 	bool "Enable support for KVM software-protected VMs"
+ 	depends on EXPERT
+ 	depends on KVM_X86 && X86_64
+-	select KVM_GENERIC_MEMORY_ATTRIBUTES
++	select KVM_VM_MEMORY_ATTRIBUTES
+ 	help
+ 	  Enable support for KVM software-protected VMs.  Currently, software-
+ 	  protected VMs are purely a development and testing vehicle for
+@@ -135,7 +135,7 @@ config KVM_INTEL_TDX
+ 	bool "Intel Trust Domain Extensions (TDX) support"
+ 	default y
+ 	depends on INTEL_TDX_HOST
+-	select KVM_GENERIC_MEMORY_ATTRIBUTES
++	select KVM_VM_MEMORY_ATTRIBUTES
+ 	select HAVE_KVM_ARCH_GMEM_POPULATE
+ 	help
+ 	  Provides support for launching Intel Trust Domain Extensions (TDX)
+@@ -159,7 +159,7 @@ config KVM_AMD_SEV
+ 	depends on KVM_AMD && X86_64
+ 	depends on CRYPTO_DEV_SP_PSP && !(KVM_AMD=y && CRYPTO_DEV_CCP_DD=m)
+ 	select ARCH_HAS_CC_PLATFORM
+-	select KVM_GENERIC_MEMORY_ATTRIBUTES
++	select KVM_VM_MEMORY_ATTRIBUTES
+ 	select HAVE_KVM_ARCH_GMEM_PREPARE
+ 	select HAVE_KVM_ARCH_GMEM_INVALIDATE
+ 	select HAVE_KVM_ARCH_GMEM_POPULATE
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index f8aa7eda661ee..b53a0c4b4dfca 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -7971,7 +7971,7 @@ void kvm_mmu_pre_destroy_vm(struct kvm *kvm)
+ 		vhost_task_stop(kvm->arch.nx_huge_page_recovery_thread);
+ }
+ 
+-#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
++#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+ static bool hugepage_test_mixed(struct kvm_memory_slot *slot, gfn_t gfn,
+ 				int level)
+ {
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 48f259015ce44..cb4f7432a073d 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -13611,7 +13611,7 @@ static int kvm_alloc_memslot_metadata(struct kvm *kvm,
+ 		}
+ 	}
+ 
+-#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
++#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+ 	kvm_mmu_init_memslot_memory_attributes(kvm, slot);
+ #endif
+ 
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 2c5ad9a6d5ce8..091f201251159 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -722,7 +722,7 @@ static inline int kvm_arch_vcpu_memslots_id(struct kvm_vcpu *vcpu)
+ }
+ #endif
+ 
+-#ifndef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
++#ifndef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+ static inline bool kvm_arch_has_private_mem(struct kvm *kvm)
+ {
+ 	return false;
+@@ -871,7 +871,7 @@ struct kvm {
+ #ifdef CONFIG_HAVE_KVM_PM_NOTIFIER
+ 	struct notifier_block pm_notifier;
+ #endif
+-#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
++#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+ 	/* Protected by slots_lock (for writes) and RCU (for reads) */
+ 	struct xarray mem_attr_array;
+ #endif
+@@ -2528,7 +2528,7 @@ static inline bool kvm_memslot_is_gmem_only(const struct kvm_memory_slot *slot)
+ 	return slot->flags & KVM_MEMSLOT_GMEM_ONLY;
+ }
+ 
+-#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
++#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+ static inline unsigned long kvm_get_memory_attributes(struct kvm *kvm, gfn_t gfn)
+ {
+ 	return xa_to_value(xa_load(&kvm->mem_attr_array, gfn));
+@@ -2550,7 +2550,7 @@ static inline bool kvm_mem_is_private(struct kvm *kvm, gfn_t gfn)
+ {
+ 	return false;
+ }
+-#endif /* CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES */
++#endif /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
+ 
+ #ifdef CONFIG_KVM_GUEST_MEMFD
+ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_memory_slot *slot,
+diff --git a/include/trace/events/kvm.h b/include/trace/events/kvm.h
+index b282e3a867696..1ba72bd73ea2f 100644
+--- a/include/trace/events/kvm.h
++++ b/include/trace/events/kvm.h
+@@ -358,7 +358,7 @@ TRACE_EVENT(kvm_dirty_ring_exit,
+ 	TP_printk("vcpu %d", __entry->vcpu_id)
+ );
+ 
+-#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
++#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+ /*
+  * @start:	Starting address of guest memory range
+  * @end:	End address of guest memory range
+@@ -383,7 +383,7 @@ TRACE_EVENT(kvm_vm_set_mem_attributes,
+ 	TP_printk("%#016llx -- %#016llx [0x%lx]",
+ 		  __entry->start, __entry->end, __entry->attr)
+ );
+-#endif /* CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES */
++#endif /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
+ 
+ TRACE_EVENT(kvm_unmap_hva_range,
+ 	TP_PROTO(unsigned long start, unsigned long end),
+diff --git a/virt/kvm/Kconfig b/virt/kvm/Kconfig
+index 794976b88c6f9..5119cb37145fc 100644
+--- a/virt/kvm/Kconfig
++++ b/virt/kvm/Kconfig
+@@ -100,7 +100,7 @@ config KVM_ELIDE_TLB_FLUSH_IF_YOUNG
+ config KVM_MMU_LOCKLESS_AGING
+        bool
+ 
+-config KVM_GENERIC_MEMORY_ATTRIBUTES
++config KVM_VM_MEMORY_ATTRIBUTES
+        bool
+ 
+ config KVM_GUEST_MEMFD
+diff --git a/virt/kvm/kvm_main.c b/virt/kvm/kvm_main.c
+index 89489996fbc1e..306153abbafa5 100644
+--- a/virt/kvm/kvm_main.c
++++ b/virt/kvm/kvm_main.c
+@@ -1115,7 +1115,7 @@ static struct kvm *kvm_create_vm(unsigned long type, const char *fdname)
+ 	spin_lock_init(&kvm->mn_invalidate_lock);
+ 	rcuwait_init(&kvm->mn_memslots_update_rcuwait);
+ 	xa_init(&kvm->vcpu_array);
+-#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
++#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+ 	xa_init(&kvm->mem_attr_array);
+ #endif
+ 
+@@ -1300,7 +1300,7 @@ static void kvm_destroy_vm(struct kvm *kvm)
+ 	cleanup_srcu_struct(&kvm->irq_srcu);
+ 	srcu_barrier(&kvm->srcu);
+ 	cleanup_srcu_struct(&kvm->srcu);
+-#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
++#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+ 	xa_destroy(&kvm->mem_attr_array);
+ #endif
+ 	kvm_arch_free_vm(kvm);
+@@ -2418,7 +2418,7 @@ static int kvm_vm_ioctl_clear_dirty_log(struct kvm *kvm,
+ }
+ #endif /* CONFIG_KVM_GENERIC_DIRTYLOG_READ_PROTECT */
+ 
+-#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
++#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+ static u64 kvm_supported_mem_attributes(struct kvm *kvm)
+ {
+ 	if (!kvm || kvm_arch_has_private_mem(kvm))
+@@ -2623,7 +2623,7 @@ static int kvm_vm_ioctl_set_mem_attributes(struct kvm *kvm,
+ 
+ 	return kvm_vm_set_mem_attributes(kvm, start, end, attrs->attributes);
+ }
+-#endif /* CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES */
++#endif /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
+ 
+ struct kvm_memory_slot *gfn_to_memslot(struct kvm *kvm, gfn_t gfn)
+ {
+@@ -4921,7 +4921,7 @@ static int kvm_vm_ioctl_check_extension_generic(struct kvm *kvm, long arg)
+ 	case KVM_CAP_SYSTEM_EVENT_DATA:
+ 	case KVM_CAP_DEVICE_CTRL:
+ 		return 1;
+-#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
++#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+ 	case KVM_CAP_MEMORY_ATTRIBUTES:
+ 		return kvm_supported_mem_attributes(kvm);
+ #endif
+@@ -5325,7 +5325,7 @@ static long kvm_vm_ioctl(struct file *filp,
+ 		break;
+ 	}
+ #endif /* CONFIG_HAVE_KVM_IRQ_ROUTING */
+-#ifdef CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES
++#ifdef CONFIG_KVM_VM_MEMORY_ATTRIBUTES
+ 	case KVM_SET_MEMORY_ATTRIBUTES: {
+ 		struct kvm_memory_attributes attrs;
+ 
+@@ -5336,7 +5336,7 @@ static long kvm_vm_ioctl(struct file *filp,
+ 		r = kvm_vm_ioctl_set_mem_attributes(kvm, &attrs);
+ 		break;
+ 	}
+-#endif /* CONFIG_KVM_GENERIC_MEMORY_ATTRIBUTES */
++#endif /* CONFIG_KVM_VM_MEMORY_ATTRIBUTES */
+ 	case KVM_CREATE_DEVICE: {
+ 		struct kvm_create_device cd;
+ 
 
-You're right: the release/acquire scheme is solving a problem that
-doesn't exist.
-v5 will drop it; see the reply to your follow-up for the replacement.
+-- 
+2.54.0.794.g4f17f83d09-goog
 
->
-> > +     u32 tph_flags;
-> > +     u16 steering_tag_ext;
-> > +     u8 steering_tag;
-> > +     u8 ph;
-> > +     bool revoked;
->
-> If we still used memory_lock for tph, these could be:
->
->         u8 tph_st_valid:1; /* memory_lock */
->         u8 tph_st_ext_valid:1; /* memory_lock */
->         u8 tph_ph:2; /* memory_lock */
->         u8 tph_st;
->         u16 tph_st_ext;
->         u8 revoked:1; /* dma_resv_lock */
->
-> The existing change of @revoked from bitfield to bool has no rationale
-> noted for it in the commit log.
 
-Will adopt the bitfield layout you suggested in v5, with the lock annotatio=
-ns.
-
->
-> >  };
-> >
-> >  static int vfio_pci_dma_buf_attach(struct dma_buf *dmabuf,
-> > @@ -69,6 +86,36 @@ vfio_pci_dma_buf_map(struct dma_buf_attachment *atta=
-chment,
-> >       return ret;
-> >  }
-> >
-> > +static int vfio_pci_dma_buf_get_tph(struct dma_buf *dmabuf, u16 *steer=
-ing_tag,
-> > +                                 u8 *ph, u8 st_width)
-> > +{
-> > +     struct vfio_pci_dma_buf *priv =3D dmabuf->priv;
-> > +     u32 flags;
-> > +
-> > +     /* Pair with the smp_store_release() in VFIO_DEVICE_FEATURE_DMA_B=
-UF_TPH. */
-> > +     flags =3D smp_load_acquire(&priv->tph_flags);
-> > +     if (!flags)
-> > +             return -EOPNOTSUPP;
-> > +
-> > +     switch (st_width) {
-> > +     case 8:
-> > +             if (!(flags & VFIO_DMA_BUF_TPH_ST))
-> > +                     return -EOPNOTSUPP;
-> > +             *steering_tag =3D priv->steering_tag;
-> > +             break;
-> > +     case 16:
-> > +             if (!(flags & VFIO_DMA_BUF_TPH_ST_EXT))
-> > +                     return -EOPNOTSUPP;
-> > +             *steering_tag =3D priv->steering_tag_ext;
-> > +             break;
-> > +     default:
-> > +             return -EINVAL;
-> > +     }
-> > +
-> > +     *ph =3D priv->ph;
-> > +     return 0;
-> > +}
-> > +
-> >  static void vfio_pci_dma_buf_unmap(struct dma_buf_attachment *attachme=
-nt,
-> >                                  struct sg_table *sgt,
-> >                                  enum dma_data_direction dir)
-> > @@ -84,16 +131,17 @@ static void vfio_pci_dma_buf_unmap(struct dma_buf_=
-attachment *attachment,
-> >  static void vfio_pci_dma_buf_release(struct dma_buf *dmabuf)
-> >  {
-> >       struct vfio_pci_dma_buf *priv =3D dmabuf->priv;
-> > +     struct vfio_pci_core_device *vdev =3D READ_ONCE(priv->vdev);
-> >
-> >       /*
-> >        * Either this or vfio_pci_dma_buf_cleanup() will remove from the=
- list.
-> >        * The refcount prevents both.
-> >        */
-> > -     if (priv->vdev) {
-> > -             down_write(&priv->vdev->memory_lock);
-> > +     if (vdev) {
-> > +             down_write(&vdev->memory_lock);
-> >               list_del_init(&priv->dmabufs_elm);
-> > -             up_write(&priv->vdev->memory_lock);
-> > -             vfio_device_put_registration(&priv->vdev->vdev);
-> > +             up_write(&vdev->memory_lock);
-> > +             vfio_device_put_registration(&vdev->vdev);
-> >       }
-> >       kfree(priv->phys_vec);
-> >       kfree(priv);
->
->
-> This seems unnecessary.  I think this is just because priv->vdev is now
-> (unnecessarily) set via WRITE_ONCE, right?  These are very well ordered
-> paths, prior to exposing the dma-buf, while the device is opened, during
-> release, after release. They don't seem to need the READ/WRITE_ONCE
-> treatment.  This looks like noise from trying to make it lockless.
-
-Got it, this is fallout from the lockless attempt. priv->vdev
-transitions are already
-well-ordered by memory_lock. I'll drop all the READ_ONCE/WRITE_ONCE on
-priv->vdev in v5 and leave the existing accesses as they were.
-
->
->
-> > @@ -101,6 +149,7 @@ static void vfio_pci_dma_buf_release(struct dma_buf=
- *dmabuf)
-> >
-> >  static const struct dma_buf_ops vfio_pci_dmabuf_ops =3D {
-> >       .attach =3D vfio_pci_dma_buf_attach,
-> > +     .get_tph =3D vfio_pci_dma_buf_get_tph,
-> >       .map_dma_buf =3D vfio_pci_dma_buf_map,
-> >       .unmap_dma_buf =3D vfio_pci_dma_buf_unmap,
-> >       .release =3D vfio_pci_dma_buf_release,
-> > @@ -269,7 +318,7 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_c=
-ore_device *vdev, u32 flags,
-> >               goto err_free_priv;
-> >       }
-> >
-> > -     priv->vdev =3D vdev;
-> > +     WRITE_ONCE(priv->vdev, vdev);
-> >       priv->nr_ranges =3D get_dma_buf.nr_ranges;
-> >       priv->size =3D length;
-> >       ret =3D vdev->pci_ops->get_dmabuf_phys(vdev, &priv->provider,
-> > @@ -331,6 +380,77 @@ int vfio_pci_core_feature_dma_buf(struct vfio_pci_=
-core_device *vdev, u32 flags,
-> >       return ret;
-> >  }
-> >
-> > +int vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vde=
-v,
-> > +                                   u32 flags,
-> > +                                   struct vfio_device_feature_dma_buf_=
-tph __user *arg,
-> > +                                   size_t argsz)
-> > +{
-> > +     struct vfio_device_feature_dma_buf_tph set_tph;
-> > +     struct vfio_pci_dma_buf *priv;
-> > +     struct dma_buf *dmabuf;
-> > +     int ret;
-> > +
-> > +     ret =3D vfio_check_feature(flags, argsz, VFIO_DEVICE_FEATURE_SET,
-> > +                              sizeof(set_tph));
-> > +     if (ret !=3D 1)
-> > +             return ret;
-> > +
-> > +     if (copy_from_user(&set_tph, arg, sizeof(set_tph)))
-> > +             return -EFAULT;
-> > +
-> > +     if (set_tph.flags & ~(VFIO_DMA_BUF_TPH_ST | VFIO_DMA_BUF_TPH_ST_E=
-XT))
-> > +             return -EINVAL;
-> > +
-> > +     if (!set_tph.flags)
-> > +             return -EINVAL;
-> > +
-> > +     /* PCIe TLP Processing Hint is a 2-bit field. */
-> > +     if (set_tph.ph & ~0x3)
-> > +             return -EINVAL;
-> > +
-> > +     dmabuf =3D dma_buf_get(set_tph.dmabuf_fd);
-> > +     if (IS_ERR(dmabuf))
-> > +             return PTR_ERR(dmabuf);
-> > +
-> > +     if (dmabuf->ops !=3D &vfio_pci_dmabuf_ops) {
-> > +             ret =3D -EINVAL;
-> > +             goto out_put;
-> > +     }
-> > +
-> > +     priv =3D dmabuf->priv;
-> > +     down_write(&vdev->memory_lock);
-> > +     if (READ_ONCE(priv->vdev) !=3D vdev) {
-> > +             ret =3D -EINVAL;
-> > +             goto out_unlock;
-> > +     }
-> > +
-> > +     /*
-> > +      * TPH metadata is write-once per dma-buf so that lockless reader=
-s only
-> > +      * have to observe a single release-published transition from 0 -=
-> flags.
-> > +      */
-> > +     if (READ_ONCE(priv->tph_flags)) {
-> > +             ret =3D -EBUSY;
-> > +             goto out_unlock;
-> > +     }
-> > +
-> > +     priv->steering_tag =3D set_tph.steering_tag;
-> > +     priv->steering_tag_ext =3D set_tph.steering_tag_ext;
-> > +     priv->ph =3D set_tph.ph;
-> > +     /*
-> > +      * Publish the TPH values before the gate flag, so that lockless
-> > +      * readers in vfio_pci_dma_buf_get_tph() see fully-initialized
-> > +      * fields once they observe a non-zero tph_flags.
-> > +      */
-> > +     smp_store_release(&priv->tph_flags, set_tph.flags);
-> > +     ret =3D 0;
-> > +
-> > +out_unlock:
-> > +     up_write(&vdev->memory_lock);
-> > +out_put:
-> > +     dma_buf_put(dmabuf);
-> > +     return ret;
-> > +}
-> > +
-> >  void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool rev=
-oked)
-> >  {
-> >       struct vfio_pci_dma_buf *priv;
-> > @@ -388,7 +508,7 @@ void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_=
-device *vdev)
-> >
-> >               dma_resv_lock(priv->dmabuf->resv, NULL);
-> >               list_del_init(&priv->dmabufs_elm);
-> > -             priv->vdev =3D NULL;
-> > +             WRITE_ONCE(priv->vdev, NULL);
-> >               priv->revoked =3D true;
-> >               dma_buf_invalidate_mappings(priv->dmabuf);
-> >               dma_resv_wait_timeout(priv->dmabuf->resv,
-> > diff --git a/drivers/vfio/pci/vfio_pci_priv.h b/drivers/vfio/pci/vfio_p=
-ci_priv.h
-> > index fca9d0dfac90..c58f369be4b3 100644
-> > --- a/drivers/vfio/pci/vfio_pci_priv.h
-> > +++ b/drivers/vfio/pci/vfio_pci_priv.h
-> > @@ -118,6 +118,10 @@ static inline bool vfio_pci_is_vga(struct pci_dev =
-*pdev)
-> >  int vfio_pci_core_feature_dma_buf(struct vfio_pci_core_device *vdev, u=
-32 flags,
-> >                                 struct vfio_device_feature_dma_buf __us=
-er *arg,
-> >                                 size_t argsz);
-> > +int vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vde=
-v,
-> > +                                   u32 flags,
-> > +                                   struct vfio_device_feature_dma_buf_=
-tph __user *arg,
-> > +                                   size_t argsz);
-> >  void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_device *vdev);
-> >  void vfio_pci_dma_buf_move(struct vfio_pci_core_device *vdev, bool rev=
-oked);
-> >  #else
-> > @@ -128,6 +132,14 @@ vfio_pci_core_feature_dma_buf(struct vfio_pci_core=
-_device *vdev, u32 flags,
-> >  {
-> >       return -ENOTTY;
-> >  }
-> > +
-> > +static inline int
-> > +vfio_pci_core_feature_dma_buf_tph(struct vfio_pci_core_device *vdev, u=
-32 flags,
-> > +                               struct vfio_device_feature_dma_buf_tph =
-__user *arg,
-> > +                               size_t argsz)
-> > +{
-> > +     return -ENOTTY;
-> > +}
-> >  static inline void vfio_pci_dma_buf_cleanup(struct vfio_pci_core_devic=
-e *vdev)
-> >  {
-> >  }
-> > diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
-> > index d1203da56fc5..49eb6ad644a2 100644
-> > --- a/include/linux/dma-buf.h
-> > +++ b/include/linux/dma-buf.h
-> > @@ -113,6 +113,27 @@ struct dma_buf_ops {
-> >        */
-> >       void (*unpin)(struct dma_buf_attachment *attach);
-> >
-> > +     /**
-> > +      * @get_tph:
-> > +      * @dmabuf: DMA buffer for which to retrieve TPH metadata
-> > +      * @steering_tag: Returns the raw TPH steering tag for @st_width
-> > +      * @ph: Returns the TPH processing hint (2-bit value)
-> > +      * @st_width: Consumer's supported steering tag width in bits (8 =
-or 16)
-> > +      *
-> > +      * Return the TPH (TLP Processing Hints) metadata associated with=
- this
-> > +      * DMA buffer for the requested steering-tag width. 8-bit ST and =
-16-bit
-> > +      * Extended ST are distinct namespaces in the PCIe TPH ST table a=
-nd may
-> > +      * both be present with different values, so the exporter must se=
-lect the
-> > +      * value that matches @st_width and must not substitute one for t=
-he other.
-> > +      *
-> > +      * Return 0 on success, -EOPNOTSUPP if no metadata is available f=
-or the
-> > +      * requested width, or -EINVAL if @st_width is not 8 or 16.
-> > +      *
-> > +      * This callback is optional.
-> > +      */
-> > +     int (*get_tph)(struct dma_buf *dmabuf, u16 *steering_tag, u8 *ph,
-> > +                    u8 st_width);
-> > +
-> >       /**
-> >        * @map_dma_buf:
-> >        *
-> > diff --git a/include/uapi/linux/vfio.h b/include/uapi/linux/vfio.h
-> > index 5de618a3a5ee..a9cb6cbc6ade 100644
-> > --- a/include/uapi/linux/vfio.h
-> > +++ b/include/uapi/linux/vfio.h
-> > @@ -1534,6 +1534,41 @@ struct vfio_device_feature_dma_buf {
-> >   */
-> >  #define VFIO_DEVICE_FEATURE_MIG_PRECOPY_INFOv2  12
-> >
-> > +/**
-> > + * Upon VFIO_DEVICE_FEATURE_SET associate TPH (TLP Processing Hints) m=
-etadata
-> > + * with a vfio-exported dma-buf. The dma-buf must have been created by
-> > + * VFIO_DEVICE_FEATURE_DMA_BUF on this device.
-> > + *
-> > + * dmabuf_fd is the file descriptor returned by VFIO_DEVICE_FEATURE_DM=
-A_BUF.
-> > + *
-> > + * 8-bit ST (steering_tag) and 16-bit Extended ST (steering_tag_ext) a=
-re
-> > + * distinct namespaces in the PCIe TPH ST table and may both be presen=
-t with
-> > + * different values. Userspace should populate the value(s) it has fro=
-m the
-> > + * firmware ST table for this device and set the matching VFIO_DMA_BUF=
-_TPH_ST /
-> > + * VFIO_DMA_BUF_TPH_ST_EXT bit in @flags. An importer requests a speci=
-fic
-> > + * width and receives the matching value; if the requested width is not
-> > + * present, the importer is told TPH is unavailable for this dma-buf.
-> > + *
-> > + * ph is the 2-bit TLP Processing Hint and must be in the range [0, 3].
-> > + *
-> > + * The user must set TPH on the dma-buf before the importer consumes i=
-t.
-> > + * TPH metadata is write-once per dma-buf; a second SET returns -EBUSY.
-> > + *
-> > + * Return: 0 on success, -errno on failure.
-> > + */
-> > +#define VFIO_DEVICE_FEATURE_DMA_BUF_TPH 13
-> > +
-> > +#define VFIO_DMA_BUF_TPH_ST          (1 << 0)  /* steering_tag valid */
-> > +#define VFIO_DMA_BUF_TPH_ST_EXT              (1 << 1)  /* steering_tag=
-_ext valid */
-> > +
-> > +struct vfio_device_feature_dma_buf_tph {
-> > +     __s32   dmabuf_fd;
-> > +     __u32   flags;
-> > +     __u8    steering_tag;
-> > +     __u8    ph;
-> > +     __u16   steering_tag_ext;
-> > +};
->
-> Sure is tempting to make the ph field the first 2-bits of u8 flags.
-
-I went back and worked through the layout both ways and I'd actually
-like to keep ph as
-its own field. I think the separate ph field reads better and costs nothing.
-
-> Thanks,
->
-> Alex
-
-Thanks,
-Zhiping
