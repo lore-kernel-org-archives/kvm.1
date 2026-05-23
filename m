@@ -1,149 +1,90 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89A834A767
-	for <kvm@vger.kernel.org>; Sat, 23 May 2026 12:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77BC53597B
+	for <kvm@vger.kernel.org>; Sat, 23 May 2026 12:48:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779539424; cv=none; b=lGajrzl5GgfeZzH4C0rwe/S9rfweKXtie3Z/sgTKKxwsIUjhtkdwe/swwOP7IW6Gn9B9ESb2iLJGVs+meUgg2BJdmlYTbS3gYLD/aZtLq46jYe9Uoaf4e88FTn9eaT1FubdoLM4nvrRJJLo2jFs99DkWe65n4WXa4fPqLVOk8qc=
+	t=1779540534; cv=none; b=uIrQTTgZ7eYy5DhGouHlOzARCJqGPMWyQRKfhIkteiPmIn+Yuze2iADQdifcdbns6vk/v6BPP0k8qKDiuILrbzsPlR0aQ/kri6ALCCa18ti4cYpHVunsYgH3qs2VyrrsXcHjbEWo2BC+fOyACS6m9si7+PqPDbOwLreozBL20gw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779539424; c=relaxed/simple;
-	bh=qfwd2gtzHixi2Cx6b9F6dm+QS5q3MB+L2+cDRnqaeM0=;
+	s=arc-20240116; t=1779540534; c=relaxed/simple;
+	bh=oZfEb1SY+94pBoRb85izS6qyJnRloafYR1oT72QTBnA=;
 	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=h9MhdTIOUyU+y4ZDTLwQtAHvD2k6ETainUIuzH7HtCyBpYZo56Ujf/lcqPk9/KjvtyliaO30xZMT4hFTwjHo6x/UezSA2+5rvss5EFUnFGFtmTxZoceP2mQWWrloqm8OiryCqxC3fUbknWtJkMZGYM8creEtJALV2WFh7u9e17k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=au4Rvsez; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=mkr+NGqzSBrF3YtQxwOXEZXbiMPgHHZpau51jm0WsYsq4L8XXzPRwr9NM4ygDQaFeRkOPafSsKRtVYBmNJ4v3UsrQxrgwO6EUFblvU0v2LXC8996XJy1dRuiamRmYUoeZwDpHxC2j0G9szoHCwZY2O3DpQdwFvSWrerMonJQQIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k8c14zqZ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="au4Rvsez"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A321F000E9
-	for <kvm@vger.kernel.org>; Sat, 23 May 2026 12:30:23 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k8c14zqZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 102E61F000E9
+	for <kvm@vger.kernel.org>; Sat, 23 May 2026 12:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779539423;
-	bh=PvrVL/urDdI0/P/t8T6iBh6+B/dHAY4rtioL3v9eqAo=;
+	s=k20260515; t=1779540533;
+	bh=bEBfcGCc5fNiULy8PHycH5pbqO+vmw0AzZkmwMFqEus=;
 	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
-	b=au4Rvsezf3/SdmC91cB4YCDL0PkkPF077mE0JOEDkRwa0z0gAQ3miKgV1JVd/+iWu
-	 YlXvf6vHwk/oaA8vGnZOjT0ur1/l4BzMe27J/PGMoONgwEMAYUkM0EvrVL5tDf8sz2
-	 dSvOBSTH0DLtxdjt1kPsl/ttRE3sfOOjrD+NEg+X2MQdwmrEFY5oz5OfVUu8pTL1KN
-	 UtUtjiwTngve3P7VO8S9N74XAwaphKte6S3Uf1qrz9ZEqym94nihYsUkHNL0i0b4Ce
-	 OxrruJbF0EKwSB97glahi2F6+rw/LTN//RCdCG31bLf5w3aeJm7qoOhdUe23mRqYes
-	 eks7u7sQpATYg==
+	b=k8c14zqZjzuzjRAwhvivwAk7lKOaULbc6Jrh4zXj/U0Mw2KyqjoFmDuNGnuLj/yvf
+	 EG6J/Ff4/UB6hiuimFjVz5r1nACBexZldn6loZ9f1gxsKXMa8+fjC9SPjt3fX1MEuh
+	 6xGYrfGaUsas9dzS1uKRVsbb0I3r8Jmj67dX4eGqLMnf63BAjinZ9UgZQ5S3J2S05Q
+	 60sQIjKkfm6tplxv0uLLO7Gt/UwpucVE1uL4N1MOH9+SH7IzGpMkvSDOApmcwzVD2F
+	 bJ5ruX0bUG641fEktkrICdNEx2yfIV/to7BdXFJNRto4Efy4CYdfOMUnURm5j8PkmT
+	 2aJ+Kdj8Memdw==
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC v2 3/5] KVM: PPC: selftests: add support for powerpc
+Subject: Re: [RFC v2 5/5] KVM: selftests: Print the vcpu_id when
+ KVM_CREATE_VCPU ioctl fails
 Reply-To: sashiko-reviews@lists.linux.dev
 Cc: kvm@vger.kernel.org
-In-Reply-To: <6e0c74f1273a4baf652d84820ae83696e77263d9.1779524962.git.ritesh.list@gmail.com>
-References: <6e0c74f1273a4baf652d84820ae83696e77263d9.1779524962.git.ritesh.list@gmail.com>
+In-Reply-To: <12184d5eda089814659d5a861b3ebc30d42733a3.1779524962.git.ritesh.list@gmail.com>
+References: <12184d5eda089814659d5a861b3ebc30d42733a3.1779524962.git.ritesh.list@gmail.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 23 May 2026 12:30:22 +0000
-Message-Id: <20260523123023.64A321F000E9@smtp.kernel.org>
+Date: Sat, 23 May 2026 12:48:52 +0000
+Message-Id: <20260523124853.102E61F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [Medium] Guest registers r1 (stack pointer) and r2 (TOC pointer) are not =
-saved to or restored from ex_regs during exception handling.
-- [Medium] Overly restrictive PTE assertions in addr_arch_gva2gpa() prevent=
- address translation for non-RWX pages.
+- [Medium] The added `pr_info()` call clobbers the global `errno` variable =
+before it can be read by the `TEST_ASSERT_VM_VCPU_IOCTL()` macro.
 --
 
-commit b672003494da996fee181637da999ccf8c28f3e8
-Author: Nicholas Piggin <npiggin@gmail.com>
-Subject: KVM: PPC: selftests: add support for powerpc
+commit 9022e7c111e4121ff5a4ed4a90dcbfd2df0a62cd
+Author: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-This commit implements KVM selftests support for powerpc (Book3S-64).
-It includes virtual memory support for the radix MMU, ucall implementation
-via PAPR hcalls, and real-mode guest interrupt handling.
+KVM: selftests: Print the vcpu_id when KVM_CREATE_VCPU ioctl fails
 
-> diff --git a/tools/testing/selftests/kvm/lib/powerpc/handlers.S b/tools/t=
-esting/selftests/kvm/lib/powerpc/handlers.S
-> new file mode 100644
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/lib/powerpc/handlers.S
-[ ... ]
-> +virt_handle_interrupt:
-> +	stdu	%r1,-INT_FRAME_SIZE(%r1)
-> +	mr	%r3,%r31
-> +	bl	route_interrupt
-> +	ld	%r4,(32*8)(%r31) /* NIA */
-> +	ld	%r5,(33*8)(%r31) /* MSR */
-> +	ld	%r6,(35*8)(%r31) /* LR */
-> +	ld	%r7,(36*8)(%r31) /* CTR */
-> +	ld	%r8,(37*8)(%r31) /* XER */
-> +	lwz	%r9,(38*8)(%r31) /* CR */
-> +	mtspr	SPR_SRR0,%r4
-> +	mtspr	SPR_SRR1,%r5
-> +	mtlr	%r6
-> +	mtctr	%r7
-> +	mtxer	%r8
-> +	mtcr	%r9
-> +reg=3D4
-> +	ld	%r0,(0*8)(%r31)
-> +	ld	%r3,(3*8)(%r31)
-> +.rept 28
-> +	ld	reg,(reg*8)(%r31)
-> +	reg=3Dreg+1
-> +.endr
+This commit adds a debug print statement to display the vcpu_id and errno
+when the KVM_CREATE_VCPU ioctl fails.
+
+> diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/s=
+elftests/kvm/lib/kvm_util.c
+> index 0dc67c1502cfb..6a0ee68036236 100644
+> --- a/tools/testing/selftests/kvm/lib/kvm_util.c
+> +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+> @@ -1354,6 +1354,9 @@ struct kvm_vcpu *__vm_vcpu_add(struct kvm_vm *vm, u=
+32 vcpu_id)
+>  	vcpu->vm =3D vm;
+>  	vcpu->id =3D vcpu_id;
+>  	vcpu->fd =3D __vm_ioctl(vm, KVM_CREATE_VCPU, (void *)(unsigned long)vcp=
+u_id);
+> +	if (vcpu->fd < 0)
+> +		pr_info("Failed KVM_CREATE_VCPU for vcpu_id %u with errno %d\n",
+> +			vcpu_id, errno);
+>  	TEST_ASSERT_VM_VCPU_IOCTL(vcpu->fd >=3D 0, KVM_CREATE_VCPU, vcpu->fd, v=
+m);
 
 [Severity: Medium]
-Are r1 (stack pointer) and r2 (TOC pointer) missing from the restore sequen=
-ce?
+Does this pr_info() call clobber errno before it can be evaluated by
+TEST_ASSERT_VM_VCPU_IOCTL()?
 
-Since they aren't restored here, tests cannot modify the stack pointer duri=
-ng
-exception handling.
+Since pr_info() uses standard C library print functions, it can modify errno
+internally even on success. TEST_ASSERT_VM_VCPU_IOCTL() captures errno
+to detect specific failure modes and to format the assertion error message.
 
-[ ... ]
-> +handle_interrupt:
-> +reg=3D4
-> +.rept 28
-> +	std	reg,(reg*8)(%r13)
-> +	reg=3Dreg+1
-> +.endr
-
-[Severity: Medium]
-Does this sequence skip saving r1 and r2 into ex_regs?
-
-If they are skipped, the C handlers receive uninitialized values for these
-registers in ex_regs->gprs[1] and gprs[2], meaning they cannot inspect the
-stack pointer or TOC pointer at the time of the exception.
-
-> diff --git a/tools/testing/selftests/kvm/lib/powerpc/processor.c b/tools/=
-testing/selftests/kvm/lib/powerpc/processor.c
-> new file mode 100644
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/lib/powerpc/processor.c
-[ ... ]
-> +gpa_t addr_arch_gva2gpa(struct kvm_vm *vm, gva_t gva)
-> +{
-[ ... ]
-> +	ptep =3D virt_get_pte(vm, pt, gva, level, NULL);
-> +	pte =3D be64_to_cpu(*ptep);
-> +
-> +	TEST_ASSERT(pte,
-> +		"PTE not present at level: %u gva: 0x%lx pte:0x%lx\n",
-> +		level, gva, pte);
-> +
-> +	TEST_ASSERT((pte & PTE_VALID) && (pte & PTE_LEAF) &&
-> +		    (pte & PTE_READ) && (pte & PTE_RW) && (pte & PTE_EXEC),
-> +		    "PTE not valid at level: %u gva: 0x%lx pte:0x%lx\n",
-> +		    level, gva, pte);
-
-[Severity: Medium]
-Is it possible for tests to map memory without write or execute permissions
-(e.g., read-only or non-executable pages)?
-
-If so, this assertion will falsely trigger and abort the test during virtual
-to physical address translation. Should this check only verify PTE_VALID and
-PTE_LEAF to support testing diverse page permissions?
-
-> +
-> +	return (pte & PTE_PAGE_MASK) + (gva & (vm->page_size - 1));
-> +}
+Could this cause the test framework to print an incorrect error code or
+bypass checks like dead VM detection when KVM_CREATE_VCPU fails?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1779524962.gi=
-t.ritesh.list@gmail.com?part=3D3
+t.ritesh.list@gmail.com?part=3D5
