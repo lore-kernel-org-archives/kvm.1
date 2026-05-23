@@ -1,130 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355A363CB
-	for <kvm@vger.kernel.org>; Sat, 23 May 2026 00:55:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0165421B192
+	for <kvm@vger.kernel.org>; Sat, 23 May 2026 00:57:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779497760; cv=none; b=l3i9ymvTMcGGFVoO96X2l3RwGMOQbekpOwvNJ+tGmC343C5AFuZjfeKTlqcspbXecfKLQSHCaiDNFPD0OyUIsG3B/13D4xTllMbjPuSiX5Ok3Ds5lBD48fwt7Iku1K47rrKQPEBupJrbCfBskHlTr8C1AXQlqcOkz1QMcxfJf4g=
+	t=1779497872; cv=none; b=rwygDM/HXXF4GKUUlU9KsZQuaamK3VzW3DNeWleIvdTKhmIMcxlvU44ZEoTm6xdT1qGCuRctQMCDp8St/U6Bhj6OF+v2ESJMzHzxqYwuJ/61MeXG+pn1+hVuaOq519Frhwp93PaOuGrQcXS0JPAjy8vXfxhNQzBziANeKfgSmx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779497760; c=relaxed/simple;
-	bh=8gSYgA2agHWKhpdpY99I7RZgN/m8g4Ca8Uk8I9kbgWg=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=ehaCV/lHw15sR0Iftp60Laf5WHob9+VwENym5RPqTm4ifyQts9FgWWcIo+jMxDFvOTsof8orf81B73KzCEt9W43bIcpGw1nae9Er6J5E80dtnVvDC1r/eYtHwFWs5nYRCvmMaz/sG7g1FIPZN2XMPeQOuiO6WVms5/Q25vyIvuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WkhfJeN1; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779497872; c=relaxed/simple;
+	bh=WUs7gb4X0dktqJ2K20s3J+bAtuWEGcrYha06520AAes=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RztMuR/7mr8ZCBCS2YZ7DhTomtpINB74V/EPAU3zQm1/n8M1qz/Kf+W7Kls9ZgSJHaW0mTPej6tkRH8u/HDYeY8rfXzslk/O2Fz6aQmYS0D54siHxfxx6/YL+W7CQHtNqExj5WjMHJH5MWmNJey5876Hdns4NQ+gg8BYPv65i/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s13xRv3h; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WkhfJeN1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF1581F000E9;
-	Sat, 23 May 2026 00:55:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779497758;
-	bh=DAc1NxWWLcz9sALoXVhbmf7SG6yOmdXC+2Sq5njWfrY=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=WkhfJeN1TWNF+8Pjq1kvG6Zwr+tlECsP5BQek97qVL7xw9OIHz3zekrljy2q2GqvV
-	 fwW6FaXUL3Jok64fQ6k0zOw+omdZ+3kwu5wzhG9adU+rPxjiGEgmwHFM8bNFi1ZnVW
-	 GYz+FZnXyAwLMFVDHlEY2tF6BLmTDmniGTap0aGc1shqec3iQkZZvHsrz9hz8todzC
-	 9WRB4Qzn/tkRPJeU9EKf97Hd2bZJ1m89GgXxjCrWUdpxYTQeGKEDmsYa96xcEUrbfI
-	 ZeIk1Ld/tcGOgdI1rZZBfOW/jDeIsGLKJRkDGtdj84OTJtO5+liO1LD0/I9uf6XkLa
-	 /M2fdZVrh3NNw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 10/42] KVM: guest_memfd: Ensure pages are not in use
- before conversion
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ackerley Tng via B4 Relay" <devnull+ackerleytng.google.com@kernel.org>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260522-gmem-inplace-conversion-v7-10-2f0fae496530@google.com>
-References: <20260522-gmem-inplace-conversion-v7-10-2f0fae496530@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sat, 23 May 2026 00:55:58 +0000
-Message-Id: <20260523005558.BF1581F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s13xRv3h"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4896c22fcbaso65971765e9.0
+        for <kvm@vger.kernel.org>; Fri, 22 May 2026 17:57:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779497869; x=1780102669; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=WUs7gb4X0dktqJ2K20s3J+bAtuWEGcrYha06520AAes=;
+        b=s13xRv3hvjF6QG9UP1jtRmiVJXvIcorpZJcvHquSRZKVDy1OrbKKbLXysAuiH1Mu3y
+         Xx/YaKiY2gz0XbACfIW7wRGh0TEWxmV9KzhKdchhhOoYuhrCQnds+IjtqnpTj99aO3pw
+         xoFiX0nU9X17NvJ5nzAEbK7FECy2ZFD5qleFQ/jp6gXD39aIu3BjPSzMZPvxeHLcjtof
+         A7BOOybIPt40UO7BuvbIVrcEsQYKYqo/LyLekeung1IF/WOp6g3ajKqGip1Q4llLpkcE
+         oqUa5tKz/wEevwJHQR6U5jkmiJHIoIa9QjbNnIileQBuqQIiMvaVh7U+pzWgTDgM695v
+         cOLg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779497869; x=1780102669;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WUs7gb4X0dktqJ2K20s3J+bAtuWEGcrYha06520AAes=;
+        b=hGg6h+GEaQZEXQADq25DEs0XHOQp4yHYEWloJtT4fKIxIs3timboN6KDMHI9y8SMhZ
+         G9GTkwUPcshVBPaUZ/RUTSWFsB2b9j84iR+niDn3eSKd2wBqUA2mm9taimzy4iT/ex/6
+         4whEBKg1+/DKRJQp30wzwPyeFzlfgoXgiRWCQkYD2eHedrdFhJWFymXdVH+BuxGlgPDH
+         UD2xHmb7pnvVWsy8UoPtCBeuRPs58bpQSRqmE4CwAQ1Rxmc9gyxmiE7seyex/tGMXZjh
+         Sc9eNkilSoPih18VEGg2h8yg3lXWJOp17EZ6ZncN2jcZQuVdz5qEBe0yktdxCI+W6A/w
+         egQQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8eldgmvZexqgMHKTdCKIFBsclk8hnoSuat5hWEiv7MhvkaK+smJDdzT3Fd2IxRha1xRjM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyHByD7hA2HrjfrhwIcT9c98GIXf7vn04BEHeaRGzpmQL1ug6H3
+	nMYlF+RZJYwv9AKGyXhutKO6SbwfX0+lOQY4T5sDaOQYrHXitaTV0VS3
+X-Gm-Gg: Acq92OH7TybyNc2rFChjQ3NnRNB6go3JpETBN06310PCx0lyJLEEkIbUQwVaLPMD9t/
+	9/TfmkCeXd0N/zx2qO2qgDTJFKc0ERSgAyeBiqlJ25g5dRXgfTg/ywpmxSEQGMoDs21esNAhM4P
+	0WWn4JlcM0fWyP3c6JXOViGXd4psgbbQaFkM3dMR0yzpJJBceyBcPPjR0/IxdhUZNGJ5+yscrLU
+	/XOHjaFcYZHJueYrgIyOUrfwmtyvxtpn7Z31Wa95fgV+4UR9pK+0uE6eH33xQaFPwUQYQ64lenH
+	Ypc9ghVNHDoI5zAc1f2hdv/T40Hj7Hk7wJwGEktVDbo0qpzUOIO/wszMHFEY19HusefPno30sWz
+	4CUIHg8ZzSwKfh16PyCX8FRo3Xbt7aniPIFpxj5i2rh1jHOEIywh8GIYlnyn8bR5HId72fSs6A0
+	Bgmeu6wfQJji6XrZX+DVoMpm1wOE7zoYUWVWuUAYJTuaN2iBeYClM/R1ZX5Wwr0HoNWPtUy3W1r
+	kVNJQ==
+X-Received: by 2002:a05:600c:1550:b0:490:48a0:b87a with SMTP id 5b1f17b1804b1-49048a0b90dmr56445365e9.9.1779497869303;
+        Fri, 22 May 2026 17:57:49 -0700 (PDT)
+Received: from ?IPV6:2407:d000:508:aa0:95fa:ebc8:3e52:4986? ([2407:d000:508:aa0:95fa:ebc8:3e52:4986])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490452580dfsm38704615e9.1.2026.05.22.17.57.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 22 May 2026 17:57:48 -0700 (PDT)
+Message-ID: <ac5d0889-0cc2-478e-9e23-bffdc39983bc@gmail.com>
+Date: Sat, 23 May 2026 05:57:45 +0500
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] KVM: selftests: elf: Include <endian.h> instead of
+ <bits/endian.h>
+To: Sean Christopherson <seanjc@google.com>,
+ Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <skhan@linuxfoundation.org>
+Cc: Brigham Campbell <me@brighamcampbell.com>, kvm@vger.kernel.org,
+ linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+References: <20260409164020.1575176-4-hisamshar@gmail.com>
+Content-Language: en-US
+From: Hisam Mehboob <hisamshar@gmail.com>
+In-Reply-To: <20260409164020.1575176-4-hisamshar@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The safety check for memory conversion fails to drain per-CPU LR=
-U batches, leading to spurious failures and a potential infinite livelock w=
-hen userspace retries.
---
+Gentle ping. Could I get some feedback on this patch?
 
-commit 1d1f8db35321bd7380e94b62c704d6ef2854187c
-Author: Ackerley Tng <ackerleytng@google.com>
-
-KVM: guest_memfd: Ensure pages are not in use before conversion
-
-This commit introduces safety checks when converting guest_memfd memory to
-private, ensuring pages are not accessed by other parts of the kernel or
-userspace. It updates the kvm_memory_attributes2 structure to return the
-failing offset to userspace alongside an -EAGAIN error.
-
-> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-> index 91e89b188f583..d1a6cb56626b4 100644
-> --- a/virt/kvm/guest_memfd.c
-> +++ b/virt/kvm/guest_memfd.c
-
-[ ... ]
-
-> @@ -572,9 +572,45 @@ static int kvm_gmem_mas_preallocate(struct ma_state =
-*mas, u64 attributes,
->  	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
->  }
-> =20
-> +static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t=
- start,
-> +					    size_t nr_pages, pgoff_t *err_index)
-> +{
-> +	struct address_space *mapping =3D inode->i_mapping;
-> +	const int filemap_get_folios_refcount =3D 1;
-> +	pgoff_t last =3D start + nr_pages - 1;
-> +	struct folio_batch fbatch;
-> +	bool safe =3D true;
-> +	pgoff_t next;
-> +	int i;
-> +
-> +	folio_batch_init(&fbatch);
-> +
-> +	next =3D start;
-> +	while (safe && filemap_get_folios(mapping, &next, last, &fbatch)) {
-> +
-> +		for (i =3D 0; i < folio_batch_count(&fbatch); ++i) {
-> +			struct folio *folio =3D fbatch.folios[i];
-> +
-> +			if (folio_ref_count(folio) !=3D
-> +			    folio_nr_pages(folio) + filemap_get_folios_refcount) {
-
-[Severity: Medium]
-When folios are allocated and added to the page cache, they are also placed
-into a per-CPU LRU batch, which holds a transient reference on the folio.
-
-Since this code doesn't drain these LRU batches via lru_add_drain_all()
-before checking folio_ref_count(), could this cause spurious -EAGAIN
-failures?
-
-If userspace retries the ioctl in a tight loop on the same CPU, is there a
-risk that the LRU batch might never be preempted or drained, resulting in an
-infinite livelock?
-
-Note that this issue is explicitly fixed later in the patch series by commit
-"KVM: guest_memfd: Handle lru_add fbatch refcounts during conversion safety
-check".
-
-> +				safe =3D false;
-> +				*err_index =3D max(start, folio->index);
-> +				break;
-> +			}
-> +		}
-> +
-> +		folio_batch_release(&fbatch);
-> +		cond_resched();
-> +	}
-> +
-> +	return safe;
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260522-gmem-inpla=
-ce-conversion-v7-0-2f0fae496530@google.com?part=3D10
+Thanks,
+Hisam
