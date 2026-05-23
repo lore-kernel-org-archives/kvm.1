@@ -1,181 +1,182 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0A13002DD
-	for <kvm@vger.kernel.org>; Sat, 23 May 2026 08:04:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7443002DD
+	for <kvm@vger.kernel.org>; Sat, 23 May 2026 08:05:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779523482; cv=pass; b=apIXFQYVCH0++7CY9KrNNbB3z8CSEx2/wCY1DMjPDmm4ex/oXGyb2GuiFdXwvGCkv1Cxe8g2MkwZCuRQVwYkOnmMvqRan4ao5WVbUlW2t/EuXaU5oGCrB/HgaUFgN8Z9LkEJ47VuOlH8d0f5WGhCVSIpua4PcxSyu07wHmVsHtY=
+	t=1779523503; cv=pass; b=VrwaK8mL+WHen4l+pJDoWWHJzAQUf294RLR0R14lmkgFOTlLzSfOKVoHranc57FMOteFhn2q1aOsQlUK2K/3GH/8+3/h9ENa6B+hXmrez/wf3hcIQzzWAypfbyQe7RsmlejgYbzQsxgg60misSmiYaQwO1Ta8qH8gBx3/2A7z+4=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779523482; c=relaxed/simple;
-	bh=K7Vnv9KOQb+dC4E4MeSvCa6bjIyrn4+Roa18WXG38yo=;
+	s=arc-20240116; t=1779523503; c=relaxed/simple;
+	bh=mmkAID+IJO+Hy8aLfdWzLZnA/KqKrIg7tcjpof9RRTE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hGJ5wTlA9haaM7Ibb2btlj0KrCRuSxGTLND5s0N48zQAuFz5m5qFRmwHE2FY7XzM5L9WW4SCX6SpHwrE0YiAJCVAYzsOzpFC4oYUJp4X3bDZ+a7R3xk9RGIrwbbj3TDYjkCfk6dR1PKOObwdVfJeYl5nRiaf8hMo3KjTpkwzVq4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YUMbx/g5; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=e/uFCpRB; arc=pass smtp.client-ip=170.10.129.124
+	 To:Cc:Content-Type; b=lEeXV4xVbmgf3304WXQNSrxjUQbuDYAVGZJW0/Lkq3kJazORYtucJATRHCTzkjwLZV5UI+kR6wzUOHszzVwCZO+Pl0QnNjvi5zYv5VJN6+YsDouh+sS+lNjQ+VLRATmPHC4FLWsMZGaw7+UHJl/ZbP7RY/PcNvKawKxLjockFwk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MZvjh+jr; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tRnKFrr/; arc=pass smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YUMbx/g5";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="e/uFCpRB"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MZvjh+jr";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tRnKFrr/"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779523480;
+	s=mimecast20190719; t=1779523500;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=ttamByqpUXp8gDJ2jEtCsLRWhVllrayfTGFh49yK7cw=;
-	b=YUMbx/g5Judza0n8AwMpiqEKwGEglvNldZMmTM4AhSvzxH2KHRRcY8aUXAKCga8gw2pAyo
-	J7MKw8afaFBHOB39plifUpAoLvTLm3yvLzrANlzY9qBnk8l0AvF9MhXonP5tg19XEEYfC6
-	FyaHhchbCW3nxOLhfErecKI7ClanHvc=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=/6lOELN7ZYTPndYRuMvfJzrgaHiXzqIeclIzONy8ARI=;
+	b=MZvjh+jry4/6BLVx65iMh+2395Ds/Adbn5BzAmnKEGzCFlKUVDpKMqyC3nyg38O+APCSM/
+	wzVRdzJujIwMcMW0Vh4B/vaFvQYazsYfFDFDc4WJLzsBGvCUXLdk8ArqGM3Qlez8cALd5/
+	juduJhL/l1rdIe7+A2g4gHVrJisab5k=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-499-A0KRICZdN7asP6a9tPlsIw-1; Sat, 23 May 2026 04:04:37 -0400
-X-MC-Unique: A0KRICZdN7asP6a9tPlsIw-1
-X-Mimecast-MFC-AGG-ID: A0KRICZdN7asP6a9tPlsIw_1779523476
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-44d9ace59efso4919685f8f.1
-        for <kvm@vger.kernel.org>; Sat, 23 May 2026 01:04:37 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779523476; cv=none;
+ us-mta-416-T7hkDsLoMvOUn5o3qZOc0g-1; Sat, 23 May 2026 04:04:58 -0400
+X-MC-Unique: T7hkDsLoMvOUn5o3qZOc0g-1
+X-Mimecast-MFC-AGG-ID: T7hkDsLoMvOUn5o3qZOc0g_1779523497
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4904bbc6094so7601175e9.3
+        for <kvm@vger.kernel.org>; Sat, 23 May 2026 01:04:58 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779523497; cv=none;
         d=google.com; s=arc-20240605;
-        b=jZP71L0PDCnYBX99SQAiQw42XGuWqbJbdC0T+luDLw0MOaMhru5Cs10iM2Z69EmLz2
-         FtjNLgtP0VMww4ZMDdwmT0cKx8pLK2iScBO6hTRDGY6hMjqjOG7rl1FnUs3JzVrjnPsB
-         DMaEOQvKqBdCOfmGlVxPnnERhr0zWQfzkjYUgbJRzBQleF/dCKif9qnO4zsu/Hj3YDUJ
-         gOxLOWPtr8LTmOj62n/IofjTge12URbMMCYYBu5jy9fZFHXLizJdXfk99PTT8z3/uGo5
-         VqsUEdlIP1NXjiDlRWUJ/L/PikfdboRWJKkdCxtua2EUrofLoD1O8g/DPNaACkjTDITQ
-         BAAA==
+        b=aXsqGe3OZa6bWF0nd1aDAe1ytbXqCFJEOezwEQhlMufIbySjtoa9TDol9rUMdzYmcp
+         xi9/XRV1+f9Jnj2DYl939zcDyspU7/pRF9OCLeIWxV8kiagiYdICzSuwRDCgNNjlVaoW
+         4bJ72pFQM+2DoAENCLeshSeaAGNa//98PvsBcO4MZ2efrKQwTpaM+mRTpECHPN5ehXZ9
+         qE9zl5nTmaKQFsAO1usLhQ/p4h0nM33K2S60tAoZHqvpIzrlUANSJQJbrCfJON7HIJuE
+         KojJf4t/7SLLE9VeO3hTjuifO4OckUZ4Rktz3VNuekHuH5U6h7IfyVZhRzfB+ob8fi+N
+         /WfQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:dkim-signature;
-        bh=ttamByqpUXp8gDJ2jEtCsLRWhVllrayfTGFh49yK7cw=;
-        fh=5Lw/HGKJ+8zJXISiApHzH9cgJ56F3WHZbEDIJ+izNqs=;
-        b=dAUnelUnpS0mv9ADeeT0g1rSWxPEtGM336yvYQvH5NpU6Kqf/0q2N3jnsu6BvOYutD
-         VNxRpwkIKRw0gp2SKPkdi94p8qEHcnkjk1vYjE0ewACnh5rFHh2HhPUr5Yk2D0CSiVW9
-         OG1Jqgrjpmx2YTH0tIKEDlHUSuV1ZlntOTaes3IROYKLG4F92ce+nrw3V3GpYb7LaL0M
-         +Aat9MYwjfcFZWS62m8w7PTHhAumMjxXR+zAT8Twdt82UU/be120uz2CEWFFgB4fndpH
-         QkXMfPPfqlTX+keGRvluxfweoit44xetNaw1WVx2Th5LxIjMN7qDHxwwFBOWP6wE2L2y
-         dT4w==;
+        bh=/6lOELN7ZYTPndYRuMvfJzrgaHiXzqIeclIzONy8ARI=;
+        fh=XSN8PiKc2JyLzD81lx4cwBxZeILVh1zt/O07AJUr2t0=;
+        b=ZlnWKj7lyhmh/b9gNf2Z0+o2wH9yPaqUtmqzrmjxz3vanaMfBoVZ5awaDFOs3jCkYY
+         2UGD/FwY1CYOggyhsMrciNuyq39lV7bDgsh3afbmrutTxeMnMk4+j3zPCjnbnJ9UAQZ8
+         OAzD8InptEFWEVg6fil7byCH5xx9KisEWShr/wVvCHewyi5R110mqPn1+srPrKZyU61b
+         HbNKtzKNyL/C3z0sh+/3vhd/AwRIT1iYx8qysfuU+HfHX26w3QNcONKxyFKRiFRLiobH
+         G8fzcHYxwkxHK7E8RjOC7fhCIPEWrjjpXt1tkf5WrdXZrpGzRynaYP6GHFKQ90I7jyYJ
+         HnEQ==;
         darn=vger.kernel.org
 ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779523476; x=1780128276; darn=vger.kernel.org;
+        d=redhat.com; s=google; t=1779523497; x=1780128297; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ttamByqpUXp8gDJ2jEtCsLRWhVllrayfTGFh49yK7cw=;
-        b=e/uFCpRBLXUQX0h7iJptCkRb/WzsuI6fn885SoFvyQalh+/VQ0TTDHIc1+CX++lixq
-         kPnU6ASxxDHF8pUsqxr6LmUy8XhkXtwClcGe1SykatiJSktvajF6HM8J0FmYhUNQQfVA
-         LETeN13SvueEEvaNGmTX0kY0muPeWrCQM2dUpm8ETWHj41CCCL48cOUES1UKOdyw5mo1
-         5dyYDzL9MA0//SGuH+P4+UpdfeN9AyKbkcpTnzZdLmaaJLwiZjBj8FJKiShzTXjRxIe+
-         Sb1cqaC2IaNehpKXSAwLd9XwBnPzDKqrJtx0y2m+T2B7hoNcIbd4g3Rpi/TVr1JyaYfP
-         nyvw==
+        bh=/6lOELN7ZYTPndYRuMvfJzrgaHiXzqIeclIzONy8ARI=;
+        b=tRnKFrr/odP/j7+G4LK7ccDUDmGwoApDOjHIh32pHVY2Br2RzGpHKSsDy6j1xiwFDa
+         WLTx7eJooQcwLAlUtGJE/ljlQdhj9eIB51h12EqhDkaeBySVKh1GVqw0uc2rqcYULHAE
+         jxPCk0pkEoOH0GP96H4AkW2D+L961PkqKm3quSo4FEjYnTZs9k/ixbCMUciZTyoBffUT
+         4OKmFYN2knNq7iGdBfug2BDrMgv4tu1tTPVsxS1UaY2cGuAwmAXfo1xeExhjGK36aaKU
+         hJWTe9D0lfkUcUB+fKkk5xj0kdyIE1A7AcrXE7l8XAurvTJiTJ+eui1SSN0ltAULfVV4
+         rD1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779523476; x=1780128276;
+        d=1e100.net; s=20251104; t=1779523497; x=1780128297;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=ttamByqpUXp8gDJ2jEtCsLRWhVllrayfTGFh49yK7cw=;
-        b=YxSesOBmiSyF7zMyxItDuttSzx1PI8QSfowuwRiJv3EA1+srkPWWErMc5lulWOgXph
-         +oe1FWvctn4Gp0VTLfnHLhEpX2cJbj4Rdx16v4VrbkQaIJtkIWDUJlUXurmD6oveCX6B
-         cvVGNMCnsV5wO08K9REZUwg77zABq/Xnqjjb/UnTG3ZcyLgRmfNX4wugtylrD6Hoaipc
-         d595KvFc6OJdHlO5B5d8VAcJ7Zj2t0ZR/ZNmaTCuZS8WrQZkGi0wLSrRq00KztST4rYB
-         DvTPrR/LY5Dj5SYOTeNN0tcaW68SXHgvt09C/ANW5+Nws4OKOmG9ysFHpMvpOkWHBJ5T
-         LsAw==
-X-Gm-Message-State: AOJu0Yw5kbKm8cnnvU2OY9M25hJBkJkwPdT5D2mEl1fjUfq6CV94BdGr
-	k5SGuZFp+NeYXtiN5KBCL7gAI9IcnpUnmOUQjTwPr97mRfP6gvO9yVHP+/eYmFkX1vHJszii/hG
-	b6JUCqHA0f24ZNHYWHzT7c353vQ2MT1CWhQRHXL8hbJm3FTDpXG3FvBasKpErC2cYkgUbIikjvV
-	uBUfnRExpKLIvo50eY07aRnZ9GJoT6
-X-Gm-Gg: Acq92OEiiohRNcVYT9AIM2WAU74suyysohXUEZnqqMFyJJyO/O9IHv2ehCC713YSKEQ
-	wMGirW4H4iml4xispPxhM4bKvTOFYZ52tk7akAlrAC2epUnKtD6N5To81Y0Y7wpwTAzoRp05YLP
-	JQcMQFgtUYJqNhletvLtf6ztD15zckhftmQ7O7F3R/y1ktiRZuY9JxA6nHFzFYmSooFO/1E0Qs6
-	9mYlZB33sMyLg+k9zZS8eIK7mPJwuAJ119BtvWuWTxh55OK7gu+0hf0lY5zPE4E0hQkek3PwK05
-	ZglpAE8=
-X-Received: by 2002:a05:6000:1888:b0:45e:73a5:e5e4 with SMTP id ffacd0b85a97d-45eb38b9243mr10583130f8f.33.1779523476056;
-        Sat, 23 May 2026 01:04:36 -0700 (PDT)
-X-Received: by 2002:a05:6000:1888:b0:45e:73a5:e5e4 with SMTP id
- ffacd0b85a97d-45eb38b9243mr10583059f8f.33.1779523475505; Sat, 23 May 2026
- 01:04:35 -0700 (PDT)
+        bh=/6lOELN7ZYTPndYRuMvfJzrgaHiXzqIeclIzONy8ARI=;
+        b=eq/XMZn6tXJeQj4ZBihHzXcrpXtVsBJsq9PkX9qTY5sxizYAMBnJHNm3W8O/23xXur
+         HnMEo/MwP1mEOrw2UtpNx7zWj2GIrYoOp4o4uugtetADdnkLdxSy3bz5wd6nGxSJGm9o
+         H2mpsHWwOmBBnUyHvQmUL4grAVKC+McLpUXWENjZUWpK1M5/hTCFdOEk20BlAjQsQKEa
+         eG1yuZjdtpS1GbN6WG3aDi4YMibVuv8nzl0UUnY+wPaFtg+tVivb7CUjcF6riCUhD3zK
+         q1wiReHKPD6Xl25WS9+lCBJYv4aAqv81ksT8AAlGjRumBWfzqo5GsYkGrL+YbFn73YGG
+         WRWA==
+X-Forwarded-Encrypted: i=1; AFNElJ+jF4mu8C9nm5LyFVIBJU9KGO3RMjZfx9TEFHop5Y8p8ZoU/ge79A31x+el2hGYwixdi9c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxxBVmCKUlPWD++5nc0ZP673cMIRaQKlq3CA4KN/FyuonFquiBE
+	aS1FFgiD6wbSuYzto3ci3e56FWEQGfpY5V7HfCVvVlhJrAYINVOQ+gSh4/P4OvYo6NvmAdYd5KZ
+	hr/8dlPQe++Na3nDeaL0w1wEI9INKtzdUfAizWczMR3czk75VmDN9eTktvwGBQ0FtCpg+0pNWQA
+	DD8QPNVKxKUJIbFe+A+iqTS47vQg+Z
+X-Gm-Gg: Acq92OEHv1A+A9CMjlHVzqDhe5/UAR0ViGAHx5rZ0+YG9M8zJe68Erdgo/PP8CMvWs3
+	C/7YkAxudGfi7PewVC3qhq31L4LJZTWPVAyAwyJHCjqxIbhAizb7mWPg9lJK+9M8p2OdIkc/Klp
+	OArnRvPolRm8wJJdg/o56wZZdYViQVD5y5TCr1E1DYmTcsYwd+EdYNTrbDH0XsPeA9SxJShlca9
+	yjRpfdLq7v69tYt5dv69BaI1OIvwKkMylIxwsMWFm8SDHG5sUQSdN/vb0bD6xS7WR5lR/1md+QB
+	F1ZV/2o=
+X-Received: by 2002:a05:600c:4510:b0:48f:d5a0:284e with SMTP id 5b1f17b1804b1-490428e03b8mr101727165e9.28.1779523497076;
+        Sat, 23 May 2026 01:04:57 -0700 (PDT)
+X-Received: by 2002:a05:600c:4510:b0:48f:d5a0:284e with SMTP id
+ 5b1f17b1804b1-490428e03b8mr101726795e9.28.1779523496671; Sat, 23 May 2026
+ 01:04:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260522122951.117120-1-imbrenda@linux.ibm.com>
-In-Reply-To: <20260522122951.117120-1-imbrenda@linux.ibm.com>
+References: <CAAhSdy0-joewqwsJNkMgzKvc0zh2cTFgTqdP+LZAAxmfEd+Mpw@mail.gmail.com>
+In-Reply-To: <CAAhSdy0-joewqwsJNkMgzKvc0zh2cTFgTqdP+LZAAxmfEd+Mpw@mail.gmail.com>
 From: Paolo Bonzini <pbonzini@redhat.com>
-Date: Sat, 23 May 2026 10:04:23 +0200
-X-Gm-Features: AVHnY4JHAW_gQrvPAHWDAel_biT7NF7yn9kNkYJxpwYTRO3g49bL9AydaXkpZHE
-Message-ID: <CABgObfZ9sZ=BhOMVWNO8pg5JjQmZ6=PNo8dEv7O5VfhrT=LzPA@mail.gmail.com>
-Subject: Re: [GIT PULL v1 0/5] KVM: s390: some vSIE and UCONTROL fixes
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: kvm@vger.kernel.org, linux-s390@vger.kernel.org, frankja@linux.ibm.com, 
-	borntraeger@de.ibm.com
+Date: Sat, 23 May 2026 10:04:44 +0200
+X-Gm-Features: AVHnY4LmO1eiTue2Ym-q3YsTPGm0iPVz1DvdL1ekeTtanMGSUFVES61GYaQ5wM8
+Message-ID: <CABgObfY4SnyfuXZXDvBOj7bWKTziHky8JRVSQ6-012x6TZV-EQ@mail.gmail.com>
+Subject: Re: [GIT PULL] KVM/riscv fixes for 7.1 take #1
+To: Anup Patel <anup@brainfault.org>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>, 
+	Andrew Jones <andrew.jones@oss.qualcomm.com>, Atish Patra <atish.patra@linux.dev>, 
+	"open list:KERNEL VIRTUAL MACHINE FOR RISC-V (KVM/riscv)" <kvm-riscv@lists.infradead.org>, KVM General <kvm@vger.kernel.org>, 
+	linux-riscv <linux-riscv@lists.infradead.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 22, 2026 at 2:30=E2=80=AFPM Claudio Imbrenda <imbrenda@linux.ib=
-m.com> wrote:
+On Fri, May 22, 2026 at 3:06=E2=80=AFPM Anup Patel <anup@brainfault.org> wr=
+ote:
 >
-> Ciao Paolo,
+> Hi Paolo,
 >
-> please pull this small, but important, bunch of fixes for vSIE, still a
-> fallout from the gmap rewrite.
+> We have the following fixes for the 7.1 kernel:
+> 1) Fix invalid HVA warning in steal-time recording
+> 2) Return SBI_ERR_FAILURE to guest upon OOM in
+>     pmu_event_info() and pmu_snapshot_set_shmem()
+> 3) Fix NULL pointer dereference in SBI v0.1 SEND_IPI handler
+> 4) Fix sign extension of value for MMIO loads
 >
-> Claudio Imbrenda (5):
->   KVM: s390: vsie: Fix memory leak when unshadowing
->   KVM: s390: Fix leaking kvm_s390_mmu_cache in case of errors
->   KVM: s390: vsie: Fix unshadowing logic
->   KVM: s390: vsie: Fix redundant rmap entries
->   KVM: s390: Properly reset zero bit in PGSTE
+> Please pull.
 >
->  arch/s390/kvm/dat.c     |  1 +
->  arch/s390/kvm/dat.h     |  3 +-
->  arch/s390/kvm/gaccess.c |  1 +
->  arch/s390/kvm/gmap.c    | 18 +++++++-----
->  arch/s390/kvm/gmap.h    | 61 +++++++++++++++++++++++++++++++++++++++--
->  5 files changed, 73 insertions(+), 11 deletions(-)
+> Regards,
+> Anup
 >
-> --
-> 2.54.0
+> The following changes since commit 5200f5f493f79f14bbdc349e402a40dfb32f23=
+c8:
 >
-> The following changes since commit 6779b50faa562e6cca1aa6a4649a4d764c6c7e=
-28:
->
->   Merge tag 'pci-v7.1-fixes-2' of git://git.kernel.org/pub/scm/linux/kern=
-el/git/pci/pci (2026-05-21 15:02:12 -0700)
+>   Linux 7.1-rc4 (2026-05-17 13:59:58 -0700)
 >
 > are available in the Git repository at:
 >
->   https://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux.git tags/=
-kvm-s390-master-7.1-2
+>   https://github.com/kvm-riscv/linux.git tags/kvm-riscv-fixes-7.1-1
 >
-> for you to fetch changes up to 9029496abfae3c208336855ae6f3e1f5f881ef76:
+> for you to fetch changes up to c7832534a8160276cccb9a8cc8cafb5614c579d0:
 >
->   KVM: s390: Properly reset zero bit in PGSTE (2026-05-22 11:25:11 +0200)
+>   RISC-V: KVM: Fix sign extension for MMIO loads (2026-05-18 10:19:18 +05=
+30)
 
 Pulled, thanks.
 
 Paolo
 
-> ----------------------------------------------------------------
-> KVM: s390: some vSIE and UCONTROL fixes
->
-> Fix some memory issues and some hangs in vSIE.
 >
 > ----------------------------------------------------------------
-> Claudio Imbrenda (5):
->       KVM: s390: vsie: Fix memory leak when unshadowing
->       KVM: s390: Fix leaking kvm_s390_mmu_cache in case of errors
->       KVM: s390: vsie: Fix unshadowing logic
->       KVM: s390: vsie: Fix redundant rmap entries
->       KVM: s390: Properly reset zero bit in PGSTE
+> KVM/riscv fixes for 7.1, take #1
 >
->  arch/s390/kvm/dat.c     |  1 +
->  arch/s390/kvm/dat.h     |  3 ++-
->  arch/s390/kvm/gaccess.c |  1 +
->  arch/s390/kvm/gmap.c    | 18 +++++++++------
->  arch/s390/kvm/gmap.h    | 61 +++++++++++++++++++++++++++++++++++++++++++=
-+++---
->  5 files changed, 73 insertions(+), 11 deletions(-)
+> - Fix invalid HVA warning in steal-time recording
+> - Return SBI_ERR_FAILURE to guest upon OOM in pmu_event_info()
+>   and pmu_snapshot_set_shmem()
+> - Fix NULL pointer dereference in SBI v0.1 SEND_IPI handler
+> - Fix sign extension of value for MMIO loads
+>
+> ----------------------------------------------------------------
+> Jiakai Xu (3):
+>       RISC-V: KVM: Fix invalid HVA warning in steal-time recording
+>       RISC-V: KVM: Fix NULL pointer dereference in SBI v0.1 SEND_IPI hand=
+ler
+>       RISC-V: KVM: Fix sign extension for MMIO loads
+>
+> Osama Abdelkader (2):
+>       riscv: kvm: return SBI_ERR_FAILURE for pmu_snapshot_set_shmem() whe=
+n OOM
+>       riscv: kvm: return SBI_ERR_FAILURE for pmu_event_info() when OOM
+>
+>  arch/riscv/kvm/vcpu_insn.c    |  9 ++++-----
+>  arch/riscv/kvm/vcpu_pmu.c     | 12 ++++++++----
+>  arch/riscv/kvm/vcpu_sbi_sta.c |  2 +-
+>  arch/riscv/kvm/vcpu_sbi_v01.c |  2 ++
+>  4 files changed, 15 insertions(+), 10 deletions(-)
 >
 
