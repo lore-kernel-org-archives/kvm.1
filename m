@@ -1,88 +1,110 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0165421B192
-	for <kvm@vger.kernel.org>; Sat, 23 May 2026 00:57:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D45C1CBEB9
+	for <kvm@vger.kernel.org>; Sat, 23 May 2026 00:59:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779497872; cv=none; b=rwygDM/HXXF4GKUUlU9KsZQuaamK3VzW3DNeWleIvdTKhmIMcxlvU44ZEoTm6xdT1qGCuRctQMCDp8St/U6Bhj6OF+v2ESJMzHzxqYwuJ/61MeXG+pn1+hVuaOq519Frhwp93PaOuGrQcXS0JPAjy8vXfxhNQzBziANeKfgSmx0=
+	t=1779497949; cv=none; b=qmRfagosqZ41UBZFyryXBWBIMCICBgDEffRqnv2wimLcRlaLV9xYuRTCJnZhbHf4M/HadEKpBfEM0vFaNxGa2PXiCmi3zYFecXcmo6skwfTyNMbpAZGxLJJ39VTuQ8ibo73oD2tSx/O+UNV2NxgpjYIMxuf6LK8DF+3UtdaiJFg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779497872; c=relaxed/simple;
-	bh=WUs7gb4X0dktqJ2K20s3J+bAtuWEGcrYha06520AAes=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RztMuR/7mr8ZCBCS2YZ7DhTomtpINB74V/EPAU3zQm1/n8M1qz/Kf+W7Kls9ZgSJHaW0mTPej6tkRH8u/HDYeY8rfXzslk/O2Fz6aQmYS0D54siHxfxx6/YL+W7CQHtNqExj5WjMHJH5MWmNJey5876Hdns4NQ+gg8BYPv65i/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=s13xRv3h; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779497949; c=relaxed/simple;
+	bh=zfqeFk5vjCCH1q+1ez2A2ZOtK+wNGGM+SdhOhWoNJcI=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=nJVbpwk+mD9b5zSgZL9EJ9X4Z9HrvEDQJecUJBDX7uWGTd2RhmS+FlQQJyLnsHqAe64Rir4A9n+WwKVpRY5CDjooz/4UWRe+oeQjaIMbuXuh8DzOxibFX6olODZFpXP7xScWnxy9GSp5pVZXKmTbLpN4HvmaHO2qZq7n1Gik7g8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TUmAwVCS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="s13xRv3h"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4896c22fcbaso65971765e9.0
-        for <kvm@vger.kernel.org>; Fri, 22 May 2026 17:57:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779497869; x=1780102669; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WUs7gb4X0dktqJ2K20s3J+bAtuWEGcrYha06520AAes=;
-        b=s13xRv3hvjF6QG9UP1jtRmiVJXvIcorpZJcvHquSRZKVDy1OrbKKbLXysAuiH1Mu3y
-         Xx/YaKiY2gz0XbACfIW7wRGh0TEWxmV9KzhKdchhhOoYuhrCQnds+IjtqnpTj99aO3pw
-         xoFiX0nU9X17NvJ5nzAEbK7FECy2ZFD5qleFQ/jp6gXD39aIu3BjPSzMZPvxeHLcjtof
-         A7BOOybIPt40UO7BuvbIVrcEsQYKYqo/LyLekeung1IF/WOp6g3ajKqGip1Q4llLpkcE
-         oqUa5tKz/wEevwJHQR6U5jkmiJHIoIa9QjbNnIileQBuqQIiMvaVh7U+pzWgTDgM695v
-         cOLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779497869; x=1780102669;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WUs7gb4X0dktqJ2K20s3J+bAtuWEGcrYha06520AAes=;
-        b=hGg6h+GEaQZEXQADq25DEs0XHOQp4yHYEWloJtT4fKIxIs3timboN6KDMHI9y8SMhZ
-         G9GTkwUPcshVBPaUZ/RUTSWFsB2b9j84iR+niDn3eSKd2wBqUA2mm9taimzy4iT/ex/6
-         4whEBKg1+/DKRJQp30wzwPyeFzlfgoXgiRWCQkYD2eHedrdFhJWFymXdVH+BuxGlgPDH
-         UD2xHmb7pnvVWsy8UoPtCBeuRPs58bpQSRqmE4CwAQ1Rxmc9gyxmiE7seyex/tGMXZjh
-         Sc9eNkilSoPih18VEGg2h8yg3lXWJOp17EZ6ZncN2jcZQuVdz5qEBe0yktdxCI+W6A/w
-         egQQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8eldgmvZexqgMHKTdCKIFBsclk8hnoSuat5hWEiv7MhvkaK+smJDdzT3Fd2IxRha1xRjM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyHByD7hA2HrjfrhwIcT9c98GIXf7vn04BEHeaRGzpmQL1ug6H3
-	nMYlF+RZJYwv9AKGyXhutKO6SbwfX0+lOQY4T5sDaOQYrHXitaTV0VS3
-X-Gm-Gg: Acq92OH7TybyNc2rFChjQ3NnRNB6go3JpETBN06310PCx0lyJLEEkIbUQwVaLPMD9t/
-	9/TfmkCeXd0N/zx2qO2qgDTJFKc0ERSgAyeBiqlJ25g5dRXgfTg/ywpmxSEQGMoDs21esNAhM4P
-	0WWn4JlcM0fWyP3c6JXOViGXd4psgbbQaFkM3dMR0yzpJJBceyBcPPjR0/IxdhUZNGJ5+yscrLU
-	/XOHjaFcYZHJueYrgIyOUrfwmtyvxtpn7Z31Wa95fgV+4UR9pK+0uE6eH33xQaFPwUQYQ64lenH
-	Ypc9ghVNHDoI5zAc1f2hdv/T40Hj7Hk7wJwGEktVDbo0qpzUOIO/wszMHFEY19HusefPno30sWz
-	4CUIHg8ZzSwKfh16PyCX8FRo3Xbt7aniPIFpxj5i2rh1jHOEIywh8GIYlnyn8bR5HId72fSs6A0
-	Bgmeu6wfQJji6XrZX+DVoMpm1wOE7zoYUWVWuUAYJTuaN2iBeYClM/R1ZX5Wwr0HoNWPtUy3W1r
-	kVNJQ==
-X-Received: by 2002:a05:600c:1550:b0:490:48a0:b87a with SMTP id 5b1f17b1804b1-49048a0b90dmr56445365e9.9.1779497869303;
-        Fri, 22 May 2026 17:57:49 -0700 (PDT)
-Received: from ?IPV6:2407:d000:508:aa0:95fa:ebc8:3e52:4986? ([2407:d000:508:aa0:95fa:ebc8:3e52:4986])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490452580dfsm38704615e9.1.2026.05.22.17.57.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 22 May 2026 17:57:48 -0700 (PDT)
-Message-ID: <ac5d0889-0cc2-478e-9e23-bffdc39983bc@gmail.com>
-Date: Sat, 23 May 2026 05:57:45 +0500
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TUmAwVCS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F4BE1F000E9;
+	Sat, 23 May 2026 00:59:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779497948;
+	bh=xE5gmc8BQ1Muk2vbETdbRQQxEYV7HszCqTmd8NWkF3k=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=TUmAwVCSEcD+eXHIc7Xf9pFk35fsmYC/09qrDf5Z3LZqdnN5Ijq5NleANkgh5YhZO
+	 Vc/LxZImkTutnv59r63d7fM0PQKT9R7ncI0uYNjLeporkGeVgV+fjs+YdH/+zVbFwu
+	 En+M4qAsjhhD/65IKLHHV6lLsKAlL6va2kJAsfvZWd+1vwYkJtYGum1ktrRH2gx2bJ
+	 3NM5JAigJYcp7buPDo6ZWlEOXUXWVCYp/pjzQnRGe3r5nzE7uPQwOJNhcWwAUDtYMe
+	 FsEqsv8sdTheRAYkbR15BEMx5ipYiM5B8Z3M2rmDLw3KIdFjRJuObdrBWwIpRw3CvG
+	 bwGebrcfQxZ8A==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v7 06/42] KVM: guest_memfd: Update kvm_gmem_populate()
+ to use gmem attributes
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Ackerley Tng via B4 Relay" <devnull+ackerleytng.google.com@kernel.org>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260522-gmem-inplace-conversion-v7-6-2f0fae496530@google.com>
+References: <20260522-gmem-inplace-conversion-v7-6-2f0fae496530@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 23 May 2026 00:59:07 +0000
+Message-Id: <20260523005908.0F4BE1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] KVM: selftests: elf: Include <endian.h> instead of
- <bits/endian.h>
-To: Sean Christopherson <seanjc@google.com>,
- Paolo Bonzini <pbonzini@redhat.com>, Shuah Khan <skhan@linuxfoundation.org>
-Cc: Brigham Campbell <me@brighamcampbell.com>, kvm@vger.kernel.org,
- linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20260409164020.1575176-4-hisamshar@gmail.com>
-Content-Language: en-US
-From: Hisam Mehboob <hisamshar@gmail.com>
-In-Reply-To: <20260409164020.1575176-4-hisamshar@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-Gentle ping. Could I get some feedback on this patch?
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] kvm_gmem_range_is_private() uses an exact equality check for KVM=
+_MEMORY_ATTRIBUTE_PRIVATE, which will fail if memory attributes are combine=
+d.
+--
 
-Thanks,
-Hisam
+commit 1b34d7cad86326fff0f76b5602a4419246f71f2f
+Author: Ackerley Tng <ackerleytng@google.com>
+
+KVM: guest_memfd: Update kvm_gmem_populate() to use gmem attributes
+
+Update the guest_memfd populate() flow to pull memory attributes from the
+gmem instance instead of the VM when KVM is not configured to track
+shared/private status in the VM. Rename the per-VM API to clarify it is
+for per-VM attributes.
+
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index f055e058a3f28..9d025f518c025 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+[ ... ]
+> @@ -924,12 +924,31 @@ int kvm_gmem_get_pfn(struct kvm *kvm, struct kvm_me=
+mory_slot *slot,
+>  EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_gmem_get_pfn);
+> =20
+>  #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_POPULATE
+> +static bool kvm_gmem_range_is_private(struct gmem_inode *gi, pgoff_t ind=
+ex,
+> +				      size_t nr_pages, struct kvm *kvm, gfn_t gfn)
+> +{
+> +	pgoff_t end =3D index + nr_pages - 1;
+> +	void *entry;
+> +
+> +	if (vm_memory_attributes)
+> +		return kvm_range_has_vm_memory_attributes(kvm, gfn, gfn + nr_pages,
+> +						       KVM_MEMORY_ATTRIBUTE_PRIVATE,
+> +						       KVM_MEMORY_ATTRIBUTE_PRIVATE);
+> +
+> +	mt_for_each(&gi->attributes, entry, index, end) {
+> +		if (xa_to_value(entry) !=3D KVM_MEMORY_ATTRIBUTE_PRIVATE)
+
+[Severity: Medium]
+Since memory attributes are implemented as bitmasks, could this exact
+equality check incorrectly reject the range if other attribute bits are set
+alongside the private bit in the future?
+
+When vm_memory_attributes is true, the generic path
+kvm_range_has_vm_memory_attributes() correctly applies a bitwise AND mask.
+
+Would it be safer to check !(xa_to_value(entry) & KVM_MEMORY_ATTRIBUTE_PRIV=
+ATE)
+here to ensure behavioral consistency and avoid rejecting valid private ran=
+ges?
+
+> +			return false;
+> +	}
+> +
+> +	return true;
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260522-gmem-inpla=
+ce-conversion-v7-0-2f0fae496530@google.com?part=3D6
