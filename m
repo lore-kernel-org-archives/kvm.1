@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 009E7282F2F;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FF6D2D1F64;
 	Sat, 23 May 2026 00:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779495485; cv=none; b=uF6Bf5Vg3y7VKaH3bk6MLPhA+BJASJ8hRBTvTG7ek8GFJDq+Ion+L0s4YjMjXsUULzCGefcsLp+jPAUnmUQ3c28FWFWod47hTpTZ5Lq88Not6aOSxiJbro/TG1fbJdp+aPqGo8PoIy3EplXaphKMST6VSDthCWeIRJK3rD6OGfQ=
+	t=1779495485; cv=none; b=FVd/go5DToSBdYUt9bl8o1eBHQTRSBMEHIOLgBcVo4rwpjq/0U8oy2skxazkcT0ohnZdFusE2mJXglg2GzE6L9HAow7CV7WJ12pISzC+4yXyY1v5Cvqb2wanCl1q1aSuONwNmyeEHTaT90YD24wnlSF2+OBOQofISqKxdcI++0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779495485; c=relaxed/simple;
-	bh=C5/TPxlirT8Z4pUUUU6ZBkl62oZFFAbWfwbAqmNR+1Y=;
+	bh=QVZpcgTulF4j5gS9QxO5iZFGbvYV/y4Lb5gUEMxhu7M=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=QnrT2ZiQZTskQ5iIP+nQKzl3SeXYv2yU2l6Iy+GpTkW6NVZpnbdNYAslr8ElGYF/ZaiIcgY3GcX2GDTsMzeYVJAASw/llTdxHAOYwUbzbSNE/4giUSOTUX95fskV53bwK9brBAuXAbhLTYZ7k9yNgUqdHhKXaNp1fx5ZuJu1Lh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F0aFyTz+; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=Ad+TgRe+odFNzMOyLCtQpqE4owjNaKRseHDrJlMayNhihugYTzplzPsfLwxv0LJvaMIXNjaiybIDpjGxrHEEjdP6luhdQJh3OnMOYnFX4oaxyjVZLCGPTua3BcBFpZOpyd7rhhmbp0Gxy/1m+TFlsoWyxydRikap5n3uEK1LjyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DVdW0uTm; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F0aFyTz+"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 8E4B7C2BD00;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DVdW0uTm"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id EE783C4DE08;
 	Sat, 23 May 2026 00:18:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779495484;
-	bh=C5/TPxlirT8Z4pUUUU6ZBkl62oZFFAbWfwbAqmNR+1Y=;
+	s=k20201202; t=1779495485;
+	bh=QVZpcgTulF4j5gS9QxO5iZFGbvYV/y4Lb5gUEMxhu7M=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=F0aFyTz+ER8xcIW/laLPtfEr3hrkQGVWf+rkomHL3AqCBTnGLivWpqWSQECM+3W/y
-	 OuOZ4eI9oMxmqwqu8RPuJhOWGAW94NcdoV0x7e0q2r6k+HJKiB9bUH8gddjpKJ7FE/
-	 /QqbQHvFdPP5DOwoJKZ25KSL0j5QCkF7rOFh9aHdKXSsLStGf0kQFIyodEtH1LaYtg
-	 5SgKFYRXWlZ/U3AthfWxOoNNe7QPCrWYak6UmTTNv+HvkxdcmMmnO5JQ6JnNE3v24g
-	 eBr2uMo5Py7PO5WjlYZBtMw1YbUM1zTNsYanIGScgXQDrSNBR3I2ialyTRscMo6B5d
-	 M075U90BRQvDQ==
+	b=DVdW0uTme1FAuV9lVIV8erBHPhh+n5+VdHyrh1s73tsUqrhKNDzeiHPUk3vXHaHs9
+	 4g5WlM7R0OrmMUK3yGT8cgFCwKty1Qy8hWEYc5OpHCbQyut8Ka2cCVyYc9l7MmKcx+
+	 4y4Lr9xrX8xvVbu2h97U+CKr0vzh3TQU6QozdDDlLTFH6gt0yj6uNZPODGfWLBwQEv
+	 mUuJ70Yno363hoK/V35BA3h1zrHZcyfg6W0Xu4+DLvNqSCAAjx3Taga4zBwztBN5jV
+	 veaMyikKypM0NuE7D1dqD/u7XDOERuCLyNx28w2stWNsL45buy1mcT3UinYbJzAQUf
+	 hy0Ji9mwWZAJw==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 7444CCD5BBF;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id CEB5BCD5BB0;
 	Sat, 23 May 2026 00:18:04 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 22 May 2026 17:17:58 -0700
-Subject: [PATCH v7 16/42] KVM: guest_memfd: Determine invalidation filter
- from memory attributes
+Date: Fri, 22 May 2026 17:18:01 -0700
+Subject: [PATCH v7 19/42] KVM: guest_memfd: Enable INIT_SHARED on
+ guest_memfd for x86 Coco VMs
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260522-gmem-inplace-conversion-v7-16-2f0fae496530@google.com>
+Message-Id: <20260522-gmem-inplace-conversion-v7-19-2f0fae496530@google.com>
 References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
 In-Reply-To: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -75,11 +75,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779495480; l=3542;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779495480; l=1434;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=WKNyam0WfsXF7704BkJ6Yhxn0VKMH7okmBD8uVfoM5Y=;
- b=7XgIFwfTHLmASpN2NfT4ZLO3vFCUf27e0n/OrizBCmEaacnh/LZlaUDFAFJ0zHSZGfJ//Q7Yk
- 1rEqSPFv0YPCA7mxH/bLILGmkZa33RuM646L4SHQPYrT3EDWYRHQz34
+ bh=q/txV9fzE/Qz/zXX6ODj/OwiruNNlAeYA0AW0TGz21w=;
+ b=RVau5dDenmQbkbvkhJGu2PY5MoFj8qo4yqi1kMyAThDpWex3xIWcd/A6roBnVqFzgo/+LSH2L
+ U+C67sZmdLJBMJYDFpE1Cm6LZuk4e1wBiSHZ1mSUsV4jwEkJxKcvoWz
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -87,95 +87,45 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 
-From: Ackerley Tng <ackerleytng@google.com>
+From: Sean Christopherson <seanjc@google.com>
 
-Before conversion, the range filter doesn't really matter:
+Now that guest_memfd supports tracking private vs. shared within gmem
+itself, allow userspace to specify INIT_SHARED on a guest_memfd instance
+for x86 Confidential Computing (CoCo) VMs, so long as per-VM attributes
+are disabled, i.e. when it's actually possible for a guest_memfd instance
+to contain shared memory.
 
-+ For non-CoCo VMs that use guest_memfd, they have no mirrored tdp, so
-  KVM_DIRECT_ROOTS would have been invalidated anyway.
-+ CoCo VMs could not use INIT_SHARED, and there's no conversion support, so
-  always using KVM_FILTER_PRIVATE would have worked.
-
-Now with conversion support, update kvm_gmem_get_invalidate_filter to
-inspect the memory attributes maple tree for a given range.
-
-Instead of determining the invalidation filter based on static inode
-flags, iterate through the attributes maple tree for the specific range
-being invalidated. This allows KVM to identify if the range contains
-private pages, shared pages, or both, and set the filter bits
-accordingly.
-
-Update kvm_gmem_invalidate_begin and kvm_gmem_release to pass the range
-parameters to the filter helper to ensure invalidation accurately
-targets the memory types present in the affected range.
-
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Reviewed-by: Fuad Tabba <tabba@google.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- virt/kvm/guest_memfd.c | 27 ++++++++++++++++++++-------
- 1 file changed, 20 insertions(+), 7 deletions(-)
+ arch/x86/kvm/x86.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 38b24f79ec223..2a719faebed8a 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -193,12 +193,24 @@ static struct folio *kvm_gmem_get_folio(struct inode *inode, pgoff_t index)
- 	return folio;
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index cb4f7432a073d..e898ffd21b608 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -14158,14 +14158,13 @@ bool kvm_arch_no_poll(struct kvm_vcpu *vcpu)
  }
  
--static enum kvm_gfn_range_filter kvm_gmem_get_invalidate_filter(struct inode *inode)
-+static enum kvm_gfn_range_filter kvm_gmem_get_invalidate_filter(
-+		struct inode *inode, pgoff_t start, pgoff_t end)
+ #ifdef CONFIG_KVM_GUEST_MEMFD
+-/*
+- * KVM doesn't yet support initializing guest_memfd memory as shared for VMs
+- * with private memory (the private vs. shared tracking needs to be moved into
+- * guest_memfd).
+- */
+ bool kvm_arch_supports_gmem_init_shared(struct kvm *kvm)
  {
--	if (GMEM_I(inode)->flags & GUEST_MEMFD_FLAG_INIT_SHARED)
--		return KVM_FILTER_SHARED;
-+	struct gmem_inode *gi = GMEM_I(inode);
-+	enum kvm_gfn_range_filter filter = 0;
-+	void *entry;
-+
-+	lockdep_assert(mt_lock_is_held(&gi->attributes));
-+
-+	mt_for_each(&gi->attributes, entry, start, end - 1) {
-+		filter |= (xa_to_value(entry) & KVM_MEMORY_ATTRIBUTE_PRIVATE) ?
-+			  KVM_FILTER_PRIVATE : KVM_FILTER_SHARED;
-+
-+		if (filter == (KVM_FILTER_PRIVATE | KVM_FILTER_SHARED))
-+			break;
-+	}
- 
--	return KVM_FILTER_PRIVATE;
-+	return filter;
+-	return !kvm_arch_has_private_mem(kvm);
++	/*
++	 * INIT_SHARED isn't supported if the memory attributes are per-VM,
++	 * in which case guest_memfd can _only_ be used for private memory.
++	 */
++	return !vm_memory_attributes || !kvm_arch_has_private_mem(kvm);
  }
  
- static void __kvm_gmem_invalidate_begin(struct gmem_file *f, pgoff_t start,
-@@ -244,7 +256,7 @@ static void kvm_gmem_invalidate_begin(struct inode *inode, pgoff_t start,
- 	enum kvm_gfn_range_filter attr_filter;
- 	struct gmem_file *f;
- 
--	attr_filter = kvm_gmem_get_invalidate_filter(inode);
-+	attr_filter = kvm_gmem_get_invalidate_filter(inode, start, end);
- 
- 	kvm_gmem_for_each_file(f, inode)
- 		__kvm_gmem_invalidate_begin(f, start, end, attr_filter);
-@@ -367,6 +379,7 @@ static long kvm_gmem_fallocate(struct file *file, int mode, loff_t offset,
- static int kvm_gmem_release(struct inode *inode, struct file *file)
- {
- 	struct gmem_file *f = file->private_data;
-+	enum kvm_gfn_range_filter filter;
- 	struct kvm_memory_slot *slot;
- 	struct kvm *kvm = f->kvm;
- 	unsigned long index;
-@@ -398,8 +411,8 @@ static int kvm_gmem_release(struct inode *inode, struct file *file)
- 	 * memory, as its lifetime is associated with the inode, not the file.
- 	 */
- 	end = i_size_read(inode) >> PAGE_SHIFT;
--	__kvm_gmem_invalidate_begin(f, 0, end,
--				    kvm_gmem_get_invalidate_filter(inode));
-+	filter = kvm_gmem_get_invalidate_filter(inode, 0, end);
-+	__kvm_gmem_invalidate_begin(f, 0, end, filter);
- 	__kvm_gmem_invalidate_end(f, 0, end);
- 
- 	list_del(&f->entry);
+ #ifdef CONFIG_HAVE_KVM_ARCH_GMEM_PREPARE
 
 -- 
 2.54.0.794.g4f17f83d09-goog
