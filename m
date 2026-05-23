@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 109772F3600;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60DAD306746;
 	Sat, 23 May 2026 00:18:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779495486; cv=none; b=RwvjLjrxhQjPpIydPS6fc+lPJWpI2qDcQ3Dh7Fvi5PIIguKyu7Zv0lLRdv/qa8K0DW8rUeHM/fGwypimzGoiSKWp5AcdtZaGAWzPqBG8y47/apA77RuBVO4/TOrFyrkCbteeADgr83keo0c/VaXeGkCNZjkLSr4Nhji7EZnWOFU=
+	t=1779495486; cv=none; b=fcc7M46lZZyqOUTQR2G0UkzYpzUXcPDFjcTHs7zZ6+gcEAgxxMs6/EAMPMiiNFxm8N5YAC6z5NfSkvT2KnfXt2m5wnrJZC5ANY5TCsB/XzPnCSwrLHTE4YM050bWdXQKkzwwJG4oV1B09Cp72ugbY0VieThoqTdytygVDoEgH0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779495486; c=relaxed/simple;
-	bh=ANakWQaknMXXsAq6xM/DVcFwZND6TYcVasm1Hl8cgcQ=;
+	bh=SN/owuCx2SpIHZ1eqDB1g81GuHncXI7tgmYvgfDB4Wk=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=iPVp26HyKc1U3kEskzSMcDwXJidjk55ZZhJERNeTvB2zSl85U8wx6Vea9Srok6kzcTurgOPg+GebqlSqG8B5gwZW/4c75E0PcvtDAMzK6SND/uR3gfQ7imUNh6cTLDPnFgAyKDbCefYWagEgQkPcFMp5RUYZ0+cqwh1eCnLa8kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rM8hJfP+; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=gFpXztxn7H/lVaZ/g7hYISpzPn5TGxEvufhBlkJ8yRuKzpiC7H/IvmrgOVH+/XPW5V/qe3kYHJwmmJ4rZFGaeBAxHlYYRV3uxnVg1HgaM8DVAsTsSylcl+27cFbdMxcYXHA0oysDfQBtuM10sbVtEhskQ2JI017XITJfc99lr8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gZVbsOek; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rM8hJfP+"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 6B977C4E693;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gZVbsOek"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id A8441C4FE13;
 	Sat, 23 May 2026 00:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1779495485;
-	bh=ANakWQaknMXXsAq6xM/DVcFwZND6TYcVasm1Hl8cgcQ=;
+	bh=SN/owuCx2SpIHZ1eqDB1g81GuHncXI7tgmYvgfDB4Wk=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=rM8hJfP+or/uDUXfrI4P7cBLZ5CWNFhqYHTstjSgwAzegqWr4Wl3H2S+UEIsGS9Dp
-	 NPBpS6ZzHy6BoS46OoazIJ6eq/Tzz0Uvf8RIloKeteFpYICqs9t1U4wOxmlXLaczZp
-	 dUaGnJJZ1SnTW8l7F/IvQZvOUf5/k8tP02wXu8Mb/u/OJLsdQMeNpwuT1/ZLg17Hqn
-	 g0VLzaubS+jHibaSplpSAZu2G3vWUmknLmdRV4s9HzvE4VKqtSikqQzq1g5GwFl9/T
-	 JF3QLFSGahtz8dr/V2Z4vDTzIxbCIl8HjesKWeesS88mLpW/LqGyLiaIMrcrjIVJnl
-	 rpOQtPE8cs+lg==
+	b=gZVbsOekZyfMa8OmkAxBF+ZTL1XFyMPxMXqluxnQpMD7RNIfH2KtSkH92+Ph5rGBg
+	 Y4n7tZTc158Joaxdu0AHqHF7j/xMa4yGtIZC15qas4GQI7i8rcrHgwlv/7f6OrDK4c
+	 ef3hSMCqpfpbOaXjEQEWNMyXiKaMBjvMt4ppswshrHyS5Kw1HnuDygSjxBZ0KvX/GI
+	 2zyrEAPnxAEu++iYYZJqLyLegbhpf3P+0CRdcMXs2tWVKGDx9xP2cKjVySaNmbLIow
+	 wH4ClWVvA6Apxy51x1KlmNMgHKhY2pRgVhLFOl3yVXCsGXHboE6CtHvLY3iyn6+z/L
+	 oqf9wbzBndThA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id 5668FCD5BB0;
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 9B78DCD5BC1;
 	Sat, 23 May 2026 00:18:05 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 22 May 2026 17:18:07 -0700
-Subject: [PATCH v7 25/42] KVM: selftests: Add selftests global for guest
- memory attributes capability
+Date: Fri, 22 May 2026 17:18:10 -0700
+Subject: [PATCH v7 28/42] KVM: selftests: Test conversion flow when
+ INIT_SHARED
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260522-gmem-inplace-conversion-v7-25-2f0fae496530@google.com>
+Message-Id: <20260522-gmem-inplace-conversion-v7-28-2f0fae496530@google.com>
 References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
 In-Reply-To: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -75,11 +75,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779495480; l=2393;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779495480; l=1651;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=enbUgkpN5h/kbke93UGvFu3sgIUAtIDKKDJ2JxjAPS4=;
- b=cq43NauVbSuTkfNQxrY6AxxrRbsYkVnxUiU7zsR/kcjwwvKFnwaFPQdYFFkTWltwYeNv+hxww
- exhTnvT5zWtC9GsLEnK6/trmWqLRuO5b+scP3403jP2D8BlK9lODSIM
+ bh=9ruFgoANfL3UyeWYyEpmuLipaL+9k+u/mPIJES3rlKI=;
+ b=VjHyhwPjfmbvt7ot/b9xzkNoo39fC/zuX0i+7GvyUi1iOYYr248JJQEUWE8m59qfYODTNxoX8
+ BVtkO/xk3/zB+ySsHgjKNBo7jkj/gv4N46piHBEW2JYmu9z7pUOHWzw
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -87,67 +87,48 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 
-From: Sean Christopherson <seanjc@google.com>
+From: Ackerley Tng <ackerleytng@google.com>
 
-Add a global variable, kvm_has_gmem_attributes, to make the result of
-checking for KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES available to all tests.
+Add a test case to verify that conversions between private and shared
+memory work correctly when the memory is initially created as shared.
 
-kvm_has_gmem_attributes is true if guest_memfd tracks memory attributes, as
-opposed to VM-level tracking.
-
-This global variable is synced to the guest for testing convenience, to
-avoid introducing subtle bugs when host/guest state is desynced.
-
-Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+Co-developed-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- tools/testing/selftests/kvm/include/test_util.h | 2 ++
- tools/testing/selftests/kvm/lib/kvm_util.c      | 5 +++++
- 2 files changed, 7 insertions(+)
+ .../testing/selftests/kvm/x86/guest_memfd_conversions_test.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/include/test_util.h b/tools/testing/selftests/kvm/include/test_util.h
-index d9b433b834f1b..c280c3233f502 100644
---- a/tools/testing/selftests/kvm/include/test_util.h
-+++ b/tools/testing/selftests/kvm/include/test_util.h
-@@ -115,6 +115,8 @@ struct guest_random_state {
- extern u32 guest_random_seed;
- extern struct guest_random_state guest_rng;
+diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+index 8e09e241723e5..5b070d3374eae 100644
+--- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
++++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+@@ -95,6 +95,12 @@ static void __gmem_conversions_##test(test_data_t *t, int nr_pages)		\
+ #define GMEM_CONVERSION_TEST_INIT_PRIVATE(test)					\
+ 	__GMEM_CONVERSION_TEST_INIT_PRIVATE(test, 1)
  
-+extern bool kvm_has_gmem_attributes;
++#define __GMEM_CONVERSION_TEST_INIT_SHARED(test, __nr_pages)			\
++	GMEM_CONVERSION_TEST(test, __nr_pages, GUEST_MEMFD_FLAG_INIT_SHARED)
 +
- struct guest_random_state new_guest_random_state(u32 seed);
- u32 guest_random_u32(struct guest_random_state *state);
- 
-diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
-index 4eaf553fbab11..daa0c1e835a71 100644
---- a/tools/testing/selftests/kvm/lib/kvm_util.c
-+++ b/tools/testing/selftests/kvm/lib/kvm_util.c
-@@ -24,6 +24,8 @@ u32 guest_random_seed;
- struct guest_random_state guest_rng;
- static u32 last_guest_seed;
- 
-+bool kvm_has_gmem_attributes;
++#define GMEM_CONVERSION_TEST_INIT_SHARED(test)					\
++	__GMEM_CONVERSION_TEST_INIT_SHARED(test, 1)
 +
- static size_t vcpu_mmap_sz(void);
- 
- int __open_path_or_exit(const char *path, int flags, const char *enoent_help)
-@@ -521,6 +523,7 @@ struct kvm_vm *__vm_create(struct vm_shape shape, u32 nr_runnable_vcpus,
- 	}
- 	guest_rng = new_guest_random_state(guest_random_seed);
- 	sync_global_to_guest(vm, guest_rng);
-+	sync_global_to_guest(vm, kvm_has_gmem_attributes);
- 
- 	kvm_arch_vm_post_create(vm, nr_runnable_vcpus);
- 
-@@ -2287,6 +2290,8 @@ void __attribute((constructor)) kvm_selftest_init(void)
- 	guest_random_seed = last_guest_seed = random();
- 	pr_info("Random seed: 0x%x\n", guest_random_seed);
- 
-+	kvm_has_gmem_attributes = kvm_has_cap(KVM_CAP_GUEST_MEMFD_MEMORY_ATTRIBUTES);
-+
- 	kvm_selftest_arch_init();
+ struct guest_check_data {
+ 	void *mem;
+ 	char expected_val;
+@@ -186,6 +192,12 @@ GMEM_CONVERSION_TEST_INIT_PRIVATE(init_private)
+ 	test_convert_to_private(t, 0, 'C', 'E');
  }
  
++GMEM_CONVERSION_TEST_INIT_SHARED(init_shared)
++{
++	test_shared(t, 0, 0, 'A', 'B');
++	test_convert_to_private(t, 0, 'B', 'C');
++	test_convert_to_shared(t, 0, 'C', 'D', 'E');
++}
+ 
+ int main(int argc, char *argv[])
+ {
 
 -- 
 2.54.0.794.g4f17f83d09-goog
