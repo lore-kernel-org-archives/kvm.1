@@ -1,131 +1,130 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74DB2F851
-	for <kvm@vger.kernel.org>; Sat, 23 May 2026 00:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 355A363CB
+	for <kvm@vger.kernel.org>; Sat, 23 May 2026 00:55:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779497733; cv=none; b=loxsXTB92d3e1GxRrm+erPpcCXW3QBFm3IthG9+84986Jorp4lnk2xbQvdPkGzNTl2DRuP9rWyOFPkL1kSwDxZTMIkEY8LCU5FqS3yYmR7dHsUBHpPHNjdDcQBAFdst3wOUdHJRZ1Mps0N50LFke8g52odT8xP4n2HW94Kbtzuo=
+	t=1779497760; cv=none; b=l3i9ymvTMcGGFVoO96X2l3RwGMOQbekpOwvNJ+tGmC343C5AFuZjfeKTlqcspbXecfKLQSHCaiDNFPD0OyUIsG3B/13D4xTllMbjPuSiX5Ok3Ds5lBD48fwt7Iku1K47rrKQPEBupJrbCfBskHlTr8C1AXQlqcOkz1QMcxfJf4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779497733; c=relaxed/simple;
-	bh=m3J2s0kR9ZBOUHtGwUosiFlxP9gu8Lz0rrnTC5jbf4o=;
+	s=arc-20240116; t=1779497760; c=relaxed/simple;
+	bh=8gSYgA2agHWKhpdpY99I7RZgN/m8g4Ca8Uk8I9kbgWg=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=OkrNFct9Wipzor5ZcMUkAHSD6sjcvb9Rm7ZVdF1c7c31j8xXBSQZW70lLSd7M0pzsouis5t01WcX6yIlwLrCVmjFeP8u/F89d6YrPAu4WUsPhjjma9w8MTfDWhCLDjiUPo7Wu7jkLGli5/L0dt6JeZQNiuGjS5iqsCagqluMXhI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SoRC5Wye; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=ehaCV/lHw15sR0Iftp60Laf5WHob9+VwENym5RPqTm4ifyQts9FgWWcIo+jMxDFvOTsof8orf81B73KzCEt9W43bIcpGw1nae9Er6J5E80dtnVvDC1r/eYtHwFWs5nYRCvmMaz/sG7g1FIPZN2XMPeQOuiO6WVms5/Q25vyIvuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WkhfJeN1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SoRC5Wye"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D0DE1F000E9;
-	Sat, 23 May 2026 00:55:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WkhfJeN1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF1581F000E9;
+	Sat, 23 May 2026 00:55:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779497732;
-	bh=j4Bh2h7G5o6lRS3Eb970fq+UAo+A8BhiJ+NMzjpfBqQ=;
+	s=k20260515; t=1779497758;
+	bh=DAc1NxWWLcz9sALoXVhbmf7SG6yOmdXC+2Sq5njWfrY=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=SoRC5Wyeh6p1uNuenVtZOqbLyn6cF7QfsYqxruEPgh057Bo397vbStRu0s/gDmHTD
-	 O9HMwBmdZq+f5j+fiGEHTgaeDsh8XvvXK/G6yUXixl0vNA60embS6f7WiW4zhAfH5f
-	 d46Wj2C+QsUfl5r9PC18Qv3UPANnDlsnSBJs7DJXKaRdqwYzLTg/MaAiH0pM/vu+aE
-	 oJU5x9VHKxxvgqC2FaEsSMU1bbqz7kp7L1LlIvnk3RWsUWeoQ2xtWVUoa2qps/QF1T
-	 n+r5boZX0XArwrrOyOkoQFC1NeLUjmVT4rJSR9LeCJyMjB3cg6LuGh7Qp9WOGkebVA
-	 8C+0sgD8p68Gw==
+	b=WkhfJeN1TWNF+8Pjq1kvG6Zwr+tlECsP5BQek97qVL7xw9OIHz3zekrljy2q2GqvV
+	 fwW6FaXUL3Jok64fQ6k0zOw+omdZ+3kwu5wzhG9adU+rPxjiGEgmwHFM8bNFi1ZnVW
+	 GYz+FZnXyAwLMFVDHlEY2tF6BLmTDmniGTap0aGc1shqec3iQkZZvHsrz9hz8todzC
+	 9WRB4Qzn/tkRPJeU9EKf97Hd2bZJ1m89GgXxjCrWUdpxYTQeGKEDmsYa96xcEUrbfI
+	 ZeIk1Ld/tcGOgdI1rZZBfOW/jDeIsGLKJRkDGtdj84OTJtO5+liO1LD0/I9uf6XkLa
+	 /M2fdZVrh3NNw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 20/42] KVM: SEV: Make 'uaddr' parameter optional for
- KVM_SEV_SNP_LAUNCH_UPDATE
+Subject: Re: [PATCH v7 10/42] KVM: guest_memfd: Ensure pages are not in use
+ before conversion
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Ackerley Tng via B4 Relay" <devnull+ackerleytng.google.com@kernel.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260522-gmem-inplace-conversion-v7-20-2f0fae496530@google.com>
-References: <20260522-gmem-inplace-conversion-v7-20-2f0fae496530@google.com>
+In-Reply-To: <20260522-gmem-inplace-conversion-v7-10-2f0fae496530@google.com>
+References: <20260522-gmem-inplace-conversion-v7-10-2f0fae496530@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Sat, 23 May 2026 00:55:31 +0000
-Message-Id: <20260523005532.4D0DE1F000E9@smtp.kernel.org>
+Date: Sat, 23 May 2026 00:55:58 +0000
+Message-Id: <20260523005558.BF1581F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [Critical] Missing FOLL_WRITE pin allows unprivileged users to overwrite =
-arbitrary read-only memory globally (Dirty COW style vulnerability) in the =
-CPUID error path.
-- [High] Strict LIFO ordering violation when unmapping local pages via kunm=
-ap_local() in sev_gmem_post_populate().
+- [Medium] The safety check for memory conversion fails to drain per-CPU LR=
+U batches, leading to spurious failures and a potential infinite livelock w=
+hen userspace retries.
 --
 
-commit feb1b4a1de59f0eb64cbf36005ae06dfcdb9b8de
-Author: Michael Roth <michael.roth@amd.com>
+commit 1d1f8db35321bd7380e94b62c704d6ef2854187c
+Author: Ackerley Tng <ackerleytng@google.com>
 
-KVM: SEV: Make 'uaddr' parameter optional for KVM_SEV_SNP_LAUNCH_UPDATE
+KVM: guest_memfd: Ensure pages are not in use before conversion
 
-This commit updates KVM_SEV_SNP_LAUNCH_UPDATE to make the uaddr parameter
-optional when vm_memory_attributes=3D0, allowing guest memory to be
-initialized directly from userspace. It enforces non-NULL for
-vm_memory_attributes=3D1 cases and updates the relevant documentation.
+This commit introduces safety checks when converting guest_memfd memory to
+private, ensuring pages are not accessed by other parts of the kernel or
+userspace. It updates the kvm_memory_attributes2 structure to return the
+failing offset to userspace alongside an -EAGAIN error.
 
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index 940b97d4a8523..107c6ee60472c 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -2390,7 +2398,7 @@ static int sev_gmem_post_populate(struct kvm *kvm, =
-gfn_t gfn, kvm_pfn_t pfn,
->  	 */
->  	if (ret && !snp_page_reclaim(kvm, pfn) &&
->  	    sev_populate_args->type =3D=3D KVM_SEV_SNP_PAGE_TYPE_CPUID &&
-> -	    sev_populate_args->fw_error =3D=3D SEV_RET_INVALID_PARAM) {
-> +	    sev_populate_args->fw_error =3D=3D SEV_RET_INVALID_PARAM && src_pag=
-e) {
->  		void *src_vaddr =3D kmap_local_page(src_page);
->  		void *dst_vaddr =3D kmap_local_pfn(pfn);
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index 91e89b188f583..d1a6cb56626b4 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
 
-[Severity: Critical]
-This is a pre-existing issue, but does this write to the source page allow
-unprivileged users to overwrite arbitrary read-only memory globally?
+[ ... ]
 
-kvm_gmem_populate() calls get_user_pages_fast(uaddr, 1, 0, &src_page) with
-gup_flags =3D 0, which explicitly does not request FOLL_WRITE.  This means =
-an
-attacker can pin read-only mapped memory, such as the system global zero
-page or a read-only shared file like /etc/passwd.
+> @@ -572,9 +572,45 @@ static int kvm_gmem_mas_preallocate(struct ma_state =
+*mas, u64 attributes,
+>  	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
+>  }
+> =20
+> +static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t=
+ start,
+> +					    size_t nr_pages, pgoff_t *err_index)
+> +{
+> +	struct address_space *mapping =3D inode->i_mapping;
+> +	const int filemap_get_folios_refcount =3D 1;
+> +	pgoff_t last =3D start + nr_pages - 1;
+> +	struct folio_batch fbatch;
+> +	bool safe =3D true;
+> +	pgoff_t next;
+> +	int i;
+> +
+> +	folio_batch_init(&fbatch);
+> +
+> +	next =3D start;
+> +	while (safe && filemap_get_folios(mapping, &next, last, &fbatch)) {
+> +
+> +		for (i =3D 0; i < folio_batch_count(&fbatch); ++i) {
+> +			struct folio *folio =3D fbatch.folios[i];
+> +
+> +			if (folio_ref_count(folio) !=3D
+> +			    folio_nr_pages(folio) + filemap_get_folios_refcount) {
 
-If the SEV firmware rejects a CPUID page (SEV_RET_INVALID_PARAM), KVM will
-attempt to write the expected CPUID values back to the user-provided page:
+[Severity: Medium]
+When folios are allocated and added to the page cache, they are also placed
+into a per-CPU LRU batch, which holds a transient reference on the folio.
 
-	void *src_vaddr =3D kmap_local_page(src_page);
-	void *dst_vaddr =3D kmap_local_pfn(pfn);
+Since this code doesn't drain these LRU batches via lru_add_drain_all()
+before checking folio_ref_count(), could this cause spurious -EAGAIN
+failures?
 
-	memcpy(src_vaddr, dst_vaddr, PAGE_SIZE);
+If userspace retries the ioctl in a tight loop on the same CPU, is there a
+risk that the LRU batch might never be preempted or drained, resulting in an
+infinite livelock?
 
-Because kmap_local_page() creates a direct or fixmap mapping, it is
-inherently writable and bypasses user-level read-only permissions.  Could
-this allow an unprivileged attacker to map a read-only file, pass it as
-uaddr, intentionally trigger a CPUID validation error, and cause KVM to
-overwrite the physical page globally?
+Note that this issue is explicitly fixed later in the patch series by commit
+"KVM: guest_memfd: Handle lru_add fbatch refcounts during conversion safety
+check".
 
-[Severity: High]
-This is a pre-existing issue, but is the unmapping order here violating the
-strict LIFO requirement for local page mappings?
-
-The kmap_local_page() and kmap_local_pfn() mappings are created in this
-order:
-
-	void *src_vaddr =3D kmap_local_page(src_page);
-	void *dst_vaddr =3D kmap_local_pfn(pfn);
-
-But they are unmapped in the same order:
-
-	kunmap_local(src_vaddr);
-	kunmap_local(dst_vaddr);
-
-Unmapping the older mapping (src_vaddr) first causes kmap_local_idx_pop()
-to incorrectly decrement the kmap stack pointer.  This leaves the newer
-mapping active but marks its index as free, which could allow an interrupt
-handler to overwrite the active PTE.  Could this also trigger a
-WARN_ON_ONCE in debug builds and crash the kernel if panic_on_warn is
-enabled?
+> +				safe =3D false;
+> +				*err_index =3D max(start, folio->index);
+> +				break;
+> +			}
+> +		}
+> +
+> +		folio_batch_release(&fbatch);
+> +		cond_resched();
+> +	}
+> +
+> +	return safe;
+> +}
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260522-gmem-inpla=
-ce-conversion-v7-0-2f0fae496530@google.com?part=3D20
+ce-conversion-v7-0-2f0fae496530@google.com?part=3D10
