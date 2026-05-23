@@ -1,165 +1,129 @@
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7F3325B093
-	for <kvm@vger.kernel.org>; Sat, 23 May 2026 13:21:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C9E819004A
+	for <kvm@vger.kernel.org>; Sat, 23 May 2026 13:29:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779542516; cv=none; b=jO18U80UyvGHc53kNWvnLB6gE0exEILUkWkYVVs/smAcGamtjtQa6NsDmjir25v3umlc2rO3UUk+gMpma1JP/AEQVEhv0DaO2Sz+/Nhq4oYYtQRmaiy9f0B0EqKY0w2bprXJdOUVILcwk8KfEnTHpCUGD8R6/keXrEsLr7J2GAg=
+	t=1779543000; cv=none; b=m4nh7NLlqUNbXw5AkT3lIMA+pPp7n+ONzxYvjOz1DOsGAhTQt4Ka8v2AO3zqG62ayrOyRgA84TWX5i5m2XQPeUWqN7oe0h0cQCfw7U2e2469KqF25XAl4xU4A/eTManS2aZgEfrEvESTSjnyuPfn2jiwqZyAQ4ppOMvMVMP2d7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779542516; c=relaxed/simple;
-	bh=mVpavoyb7l6uQQyd2XffEa1v5GKCirvC2OQyuHu/WoM=;
+	s=arc-20240116; t=1779543000; c=relaxed/simple;
+	bh=RgYvcoPplhdqI9CdTTZ6C7ti/+tt7zM/oaJIqfNBkWw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=S2QwCSaXyfDFo/6FeXSRA3Eyczl9cwtzPYxOUo4KOgchVizxOA0dBUEg3/cyoEX3gT0D2JaUST2ZZfyHdghoqpLJLUI1wGmagH39Pus3kdfrYSlfsQTMiEvqFbFeGUbGR74uR/GKYJsA9uTZ0npcYj6XjdMEEi2V56FCgNf9RV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=Xxg3tiqh; arc=none smtp.client-ip=209.85.160.171
+	 Content-Type:Content-Disposition:In-Reply-To; b=UM9YXazyOIYIKtPp0N5NHqc3dY33qa9ANPaCf5srpdHpO6jRHvtfvZ7k9OAm7obGf5sI6fq0C6KB+oEPF9xe14Fu0CfrjsfsV/nUGTDq9uVndLnygTmysknvj+sugeqKA1uXriQvOlCdTUMP9aNpqh8BSYrBTe+CG7+9g97BRgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=D7+anw4q; arc=none smtp.client-ip=209.85.219.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="Xxg3tiqh"
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-514ae601e01so85785691cf.1
-        for <kvm@vger.kernel.org>; Sat, 23 May 2026 06:21:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="D7+anw4q"
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-8cbe69b122bso39445156d6.2
+        for <kvm@vger.kernel.org>; Sat, 23 May 2026 06:29:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ziepe.ca; s=google; t=1779542512; x=1780147312; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=RRo5ik7HMyePlqAnBOmFqKyPpDT1cZy71Z1vsu5Dc6A=;
-        b=Xxg3tiqh/o10p9grWN8xlGLTCHbiYwdthKIAvtUw91N4QiOhp8Uk3rEIJaIO5Q1A+K
-         F2TCrF3UD6rWquLJ0WrDEcuywqZDsO4cdlGpI74HWSVdfu2cKKScAkaH5WUujM6o2VTO
-         ujZOYjmgyvP70L50HRgi8O6SyGJEAKyowIdh1wRV/+edUCXFLdG8JVanS2/dIBarcPbi
-         JUn0ArbqRfl0TBsfk1EBYA1zZqKPXR3VGW3QUkUp4f3399sPWRudX5vK51lizA0KL6Yz
-         2WUE45uUISCAr3HJn2PsmypjLVWu05r7NVdrOuCXp29PulLUOFGh9/zpcZYz0tProgDd
-         vINQ==
+        d=ziepe.ca; s=google; t=1779542998; x=1780147798; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=mynkKK2hhJL7CehQlWlPJPsBrNct9+41+jY7GnTD+Ds=;
+        b=D7+anw4qINDaierLtHXM7V7LKYD9V3OexFvPuyf8IZbqVvWuFqNgY+qLKvirOgoFL2
+         X436hL6XLE1aJZ2baQeRVfcfsahxsvcCuJccdg8WXNSXE7ICPMptjDdmlkERKQup39cG
+         C8NWGsqidqQgQZy+fyqEBF38seeiC25lYfvQUuSxVzL/xEQWszjHAiyAcA8NSZBqDFn0
+         Qmck1tlSb6y1WrtMSV/LicXzSppDC6fe7vJ98YNYnb3cTmRUUniVZRWzErKSQkmAvuzs
+         eHtX6oKIlG/ricMpDGjaBru8CkdK8wwKLgFDvq5XJA1b4p1UghevhrWCIrUsJC7fumff
+         xV3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779542512; x=1780147312;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RRo5ik7HMyePlqAnBOmFqKyPpDT1cZy71Z1vsu5Dc6A=;
-        b=O8pgGRAULcnnByZS7SVliOANocu4KmMpCXYC9mR3KoIDJKWJwV9sKccxwfeu0D+qVl
-         G/mf8S8feCsndf2rRHa+qGybNqE0ePAeqnU00G258yPuHVgDEB7gNeXgy9M9qRGPGbjy
-         cChjO7w/3zShc/16BJAzRx1w93/Rz8OFL7Vd6kDw7LGpqSr2l8AIt9i1Ug6PvRtsM3xS
-         W/EVaz2EU9acXGMoAigomQeIgBRqA504Cd8osfuYnbAflaD8Y0T6DUbQprF9Urxl4Ao8
-         /8OpTGnFt0k6T/YsRw3+NCEDJUULrvf0fq8f75d2RuuPzcH+2hvIJZjYrDrfflJwiFmQ
-         1r7w==
-X-Forwarded-Encrypted: i=1; AFNElJ9D7sT8IPFz6PnBLFiOpqN1Zewx7Rbjv7LJnP6sjvHBi+dbfXbgk3yOCrZH/ChmupDqqUo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyLDpsG8a/xd+ZEG3RSDjLSiBpT8YDbGopP0c60D3GO60PZfB62
-	yxiJodrZcV+U4uVPjbVbHSX5rHAzgp2XHXikKOTmCuKAUIAEhIQT8Q8ef1D+3r/EO0I=
-X-Gm-Gg: Acq92OG/ingle0+JWsbpr+tCCv9t9vKeIvYkthM2JBG9auFSGsC7y8e/ibqyANfQ/OS
-	S6l77/AVivC+OheIaELXEOWqMCprJn+vvnLmGf8jqLv6wzSxCxQBmmCZDP/gT6wDAcOGgQAFu1a
-	m8tjOVBSSgXnICVZw5eM4x57bPPfLOZGGBapgNp1UwcOFSNtraxiJLpBEZzoYv2uWZgYPZfPk6a
-	jRVzK4kjPblqM4zhyM1fuVNMlHcyhyA7gfGvCpqDnx2B/wntsDcb6Cb64xWuLz0nU3W16bztaUS
-	jxw+H+LL5VkBC2IP1u7B09u1qa/TyDwELF3cZn6SaQgNOitVCnkClmsy/exUGzgV3xVJZF52xgL
-	kJkocJ2zh35r6DOcQACPdSQfMBvEtasad+RLtqglmYDXg+a21B9aLOsIqlCUn7zGBX/oRzm4dU8
-	hzWN2e4B2eAuxU1u2IjaVSKnBOsJVzmymnK34GdFwvTA+IrPFmi/MBlyXrOrTLE0Fe7KMbxerd6
-	zF/12v9wsibXX4G
-X-Received: by 2002:a05:622a:4cca:b0:50b:29a6:8696 with SMTP id d75a77b69052e-516d429b5e5mr107369911cf.7.1779542512416;
-        Sat, 23 May 2026 06:21:52 -0700 (PDT)
+        d=1e100.net; s=20251104; t=1779542998; x=1780147798;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mynkKK2hhJL7CehQlWlPJPsBrNct9+41+jY7GnTD+Ds=;
+        b=IcC7aR6Qv+6ujaCPbAQjJK51ljcap76ZQFS+qiyGyII5lQRCP0nTMjDDn4O7/D2+vH
+         9+E0SnFp+OobuwSnpG2V6k1USEeKxLe8nSlr1Fbv32icZU7Nsx9O8oTVhyD4gL2juQHp
+         h9E9/Famj3ExthFsJBEjQCAqpCFQPpQWP380iuU3kZo5UQ0UH3oaJGAwQdTEV4vNegDD
+         SmkAvB8Ag8oUEpOaM7ReEvFdicDIQkhrvFL4XirD2givAMzjsIK/1J+ANe0QV21iJNX7
+         k+BBLixs3GYgXY7x5G/9w6HKgj2G1O1JzmACRjv7dfCCIPyfyDCPAGWDE9vpkLDV4FGh
+         n54Q==
+X-Forwarded-Encrypted: i=1; AFNElJ8eeKL9xtNgjiu6frXvI2aVKgMG9pGahLGO1WVTxvmwp3yQeY785W4n0eASrkC4+rGhdGw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxapSf3rSCQXTaLlOv/jmC6l/ufMNfHfHLGPBvOsN7kp5umbIt9
+	XULtwYUg/R68yws8XdrVzly5rD4tpvFf6Gfsag+Az+Wtq6QhgxOPLezYt3/eSHfvQcQ=
+X-Gm-Gg: Acq92OG6UC82/Sc+pM8bABps1PRT07/Xmhm6a84RbEShNq33wVOo7CNhr8jeA6lX6OW
+	Z6twB+fHJDWR5Q8iPrGLhoLCbV2rfmPEK/s/q1oXDGzcpaOQEFCOcoFNlFJfBt5/f3W7RMcB87k
+	/aFs+kB2P1s9iokknQdlqF9vr0zPm7Gau0xdFoBLEF8mrIqnmMpoJpQi5Czmu5ZjArUS8VVq3rL
+	C2W97b9xFAe0eFtH02O4j6/Z4WauSW1hHeTOJa8s6uWepE5NdbV71GLX5XFs2+icFUy+TKn3PRi
+	J/Mq/4DzYcf0B5sheXd87alpo0czE8+vtWP23XsgZg7WCsRfgPN1TA28YCqhnrOPvmynUADvCOY
+	HPGMPNZbP7a28WFYvixEvSnl0I2cxJsMxTQJd4epePX5Ghf2egMEviAjlwjKZAtaVcpmpUYPWR3
+	7Y0+etwp2M4yk527NTm84zL1JFKNupRU/HiHAMwxCsfFIyv1AZ1x5jiIZj40djmj4KzYstWT2oz
+	S2QUg==
+X-Received: by 2002:a05:6214:1c43:b0:8b5:84:aa1b with SMTP id 6a1803df08f44-8cc7b50024dmr122990516d6.9.1779542998086;
+        Sat, 23 May 2026 06:29:58 -0700 (PDT)
 Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-516d8cb9650sm39132141cf.22.2026.05.23.06.21.51
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-8cc80deae74sm46895946d6.11.2026.05.23.06.29.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 May 2026 06:21:51 -0700 (PDT)
+        Sat, 23 May 2026 06:29:57 -0700 (PDT)
 Received: from jgg by wakko with local (Exim 4.97)
 	(envelope-from <jgg@ziepe.ca>)
-	id 1wQmIY-00000006Gp4-3JkH;
-	Sat, 23 May 2026 10:21:50 -0300
-Date: Sat, 23 May 2026 10:21:50 -0300
+	id 1wQmQO-00000006HXM-46jw;
+	Sat, 23 May 2026 10:29:56 -0300
+Date: Sat, 23 May 2026 10:29:56 -0300
 From: Jason Gunthorpe <jgg@ziepe.ca>
-To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Cc: iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, Alexey Kardashevskiy <aik@amd.com>,
-	Bjorn Helgaas <helgaas@kernel.org>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Joerg Roedel <joro@8bytes.org>, Jonathan Cameron <jic23@kernel.org>,
+To: Pranjal Shrivastava <praan@google.com>
+Cc: David Matlack <dmatlack@google.com>,
+	Samiullah Khawaja <skhawaja@google.com>,
+	David Woodhouse <dwmw2@infradead.org>,
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>,
+	Will Deacon <will@kernel.org>, Robin Murphy <robin.murphy@arm.com>,
 	Kevin Tian <kevin.tian@intel.com>,
-	Nicolin Chen <nicolinc@nvidia.com>,
-	Samuel Ortiz <sameo@rivosinc.com>,
-	Steven Price <steven.price@arm.com>,
-	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>,
-	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: Re: [PATCH v4 1/4] iommufd/device: Associate a kvm pointer to
- iommufd_device
-Message-ID: <20260523132150.GF7702@ziepe.ca>
-References: <20260427061005.901854-1-aneesh.kumar@kernel.org>
- <20260427061005.901854-2-aneesh.kumar@kernel.org>
- <20260427135906.GB740385@ziepe.ca>
- <yq5afr4f1egv.fsf@kernel.org>
- <20260428125015.GB849557@ziepe.ca>
- <yq5atsstzxe9.fsf@kernel.org>
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>,
+	Adithya Jayachandran <ajayachandra@nvidia.com>,
+	Parav Pandit <parav@nvidia.com>,
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>,
+	Pratyush Yadav <pratyush@kernel.org>,
+	Pasha Tatashin <pasha.tatashin@soleen.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Chris Li <chrisl@kernel.org>, Vipin Sharma <vipinsh@google.com>,
+	YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH v2 02/16] iommu: Implement IOMMU Live update FLB callbacks
+Message-ID: <20260523132956.GG7702@ziepe.ca>
+References: <20260427175633.1978233-1-skhawaja@google.com>
+ <20260427175633.1978233-3-skhawaja@google.com>
+ <afUe71D8JfgmA0BG@google.com>
+ <agr9ggdY3GYltteV@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <yq5atsstzxe9.fsf@kernel.org>
+In-Reply-To: <agr9ggdY3GYltteV@google.com>
 
-On Wed, Apr 29, 2026 at 07:22:46PM +0530, Aneesh Kumar K.V wrote:
+On Mon, May 18, 2026 at 11:52:34AM +0000, Pranjal Shrivastava wrote:
+> On Fri, May 01, 2026 at 09:45:19PM +0000, David Matlack wrote:
 > 
-> Jason Gunthorpe <jgg@ziepe.ca> writes:
+> [...]
 > 
-> > On Tue, Apr 28, 2026 at 05:31:04PM +0530, Aneesh Kumar K.V wrote:
-> >> > I thought we were trying to get away from struct kvm?
-> >> >
-> >> > https://lore.kernel.org/all/adf29Rn7q9Db0hxc@google.com/
-> >> >
-> >> > Ie this should be a 'struct file *kvm_fd'
-> >> >
-> >> > ?
-> >> >
-> >> > Though I am wondering how practical it is to do this at this moment :\
-> >> >
-> >> 
-> >> Should we also switch 
-> >> 
-> >> modified   drivers/vfio/vfio.h
-> >> @@ -22,8 +22,8 @@ struct vfio_device_file {
-> >>  
-> >>  	u8 access_granted;
-> >>  	u32 devid; /* only valid when iommufd is valid */
-> >> -	spinlock_t kvm_ref_lock; /* protect kvm field */
-> >> -	struct kvm *kvm;
-> >> +	spinlock_t kvm_ref_lock; /* protect kvm_file */
-> >> +	struct file *kvm_file;
-> >>  	struct iommufd_ctx *iommufd; /* protected by struct vfio_device_set::lock */
-> >>  };
-> >>  
-> >> @@ -88,7 +88,7 @@ struct vfio_group {
-> >>  #endif
-> >>  	enum vfio_group_type		type;
-> >>  	struct mutex			group_lock;
-> >> -	struct kvm			*kvm;
-> >> +	struct file			*kvm_file;
-> >>  	struct file			*opened_file;
-> >>  	struct blocking_notifier_head	notifier;
-> >>  	struct iommufd_ctx		*iommufd;
-> >
-> > Ideally, yes everything outside kvm should just use the struct file
-> > and there should be quite narrow places where you do some kvm
-> > operation on it.
-> >  
-> >> ie,
-> >> KVM_CREATE_DEVICE with KVM_DEV_TYPE_VFIO still use kvm->users_count,
-> >> KVM_DEV_VFIO_FILE_ADD -> will switch to get_file(kvm->_file);
-> >> and VFIO_DEVICE_BIND_IOMMUFD -> will switch to get_file(df->kvm_file)
-> >> 
-> >> > Maybe ask Paolo how his series is going?
-> >
-> > I thought the above is what Paolo's series was going after?
-> >
+> > > +
+> > > +/**
+> > > + * struct iommu_hdr_ser - Common header for all serialized IOMMU objects
+> > > + * @ref_count: Reference count for the object
+> > > + * @deleted: Flag indicating if the object is deleted
+> > > + * @incoming: Flag indicating if the object was preserved in previous kernel
+> > > + */
+> > > +struct iommu_hdr_ser {
+> > > +	u32 ref_count;
+> > > +	u32 deleted:1;
+> > > +	u32 incoming:1;
+> > 
+> > Are C bitfields safe to use in Live Update ABI?
+> > 
 > 
-> Hi Paolo,
-> 
-> Could you please take a look at this? I’ve tried to document the
-> reference count details and hope I’ve captured everything correctly, but
-> I’d appreciate your review to make sure I haven’t missed anything.
+> AFAIU, they aren't. The C standard does not dictate how bitfields are
+> packed into their underlying types (e.g., whether they are packed MSB to
+> LSB or vice-versa), making them highly dependent on the compiler and arch
+> endianness.
 
-Reminder?
+Bitfield are defined in the SYSV UNIX ELF ABIs, they are stable for
+kexec, but variable across arches how they lay out in memory.
 
 Jason
