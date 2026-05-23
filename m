@@ -1,87 +1,149 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E354F3890FB
-	for <kvm@vger.kernel.org>; Sat, 23 May 2026 11:30:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89A834A767
+	for <kvm@vger.kernel.org>; Sat, 23 May 2026 12:30:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779535815; cv=none; b=F7k3FMRB68B4xuwHmzlalDNFyZACGaWEEgoktFQU9Fn+/2tFtn4tOHC1cWKLAfLMQjy6K/w2+2Tf3nXmxT2RRd4+mxv+cy4391eDuH5+KU4HcPo0tDCWj55GAH2XqLkjco0QissA0U/+9mHrOfplfoEiXzpGYIkp4ItvPD+NwTA=
+	t=1779539424; cv=none; b=lGajrzl5GgfeZzH4C0rwe/S9rfweKXtie3Z/sgTKKxwsIUjhtkdwe/swwOP7IW6Gn9B9ESb2iLJGVs+meUgg2BJdmlYTbS3gYLD/aZtLq46jYe9Uoaf4e88FTn9eaT1FubdoLM4nvrRJJLo2jFs99DkWe65n4WXa4fPqLVOk8qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779535815; c=relaxed/simple;
-	bh=JMI44/ouLWGh9v3cwRXboxes8Ebe6Yq5Nc7HqOw+anI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nodyTGVATVUKn3tzvmaFJ357S3CiomAv1AGT+Q1L3Mu/VajQOkYSH5oAEG/Hxx4Lh7iTHF7B769ij513qVEuWAnSmuLV2fKTc44PM07JevJoqWBczPMod02IcFqY9CYB4+3vmcowoj6T7fcHi1GK07oYWxMqF3PgLD5FBRPfmHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ybw8ACPE; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779539424; c=relaxed/simple;
+	bh=qfwd2gtzHixi2Cx6b9F6dm+QS5q3MB+L2+cDRnqaeM0=;
+	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=h9MhdTIOUyU+y4ZDTLwQtAHvD2k6ETainUIuzH7HtCyBpYZo56Ujf/lcqPk9/KjvtyliaO30xZMT4hFTwjHo6x/UezSA2+5rvss5EFUnFGFtmTxZoceP2mQWWrloqm8OiryCqxC3fUbknWtJkMZGYM8creEtJALV2WFh7u9e17k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=au4Rvsez; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ybw8ACPE"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-6870f904c6bso7182288a12.0
-        for <kvm@vger.kernel.org>; Sat, 23 May 2026 04:30:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779535812; x=1780140612; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JMI44/ouLWGh9v3cwRXboxes8Ebe6Yq5Nc7HqOw+anI=;
-        b=Ybw8ACPE4O+XhvcRXrDJyvODHQ0XC519EcisfoVwi7aDBZF0f8QBK5o9wtLHcI7+er
-         fTW6cdrnPbS0+Rs8nev15Ge1qloUIB1wEzdoYnhh13A6beuqddmCSsejfBSnaQFuy9F9
-         e1ZGeSGsh76mZnqgaEtNT27qtWZdAUU2p5Ev87dxbx6qdbD4r6EK2T/Klb4KEalU9FRr
-         N7gEzk5jIr/H11MejWFBs0rTV/+gEJ0m7ldQmQuwRKJ4Olmix+JETv8cm97f644ylB35
-         hwkvN6YRX0gdDL1xhVDeXbNoED6SvSSvO6XB2xTeacgnzYJzNAzppsIq7vcc9fNUssgo
-         /NSg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779535812; x=1780140612;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JMI44/ouLWGh9v3cwRXboxes8Ebe6Yq5Nc7HqOw+anI=;
-        b=KaaEQToLUpmEcUFAfQ9+HJ5XgjuAukDg6iXK6kzvKYCCMCZRkYuLUozgNaswhlEVZi
-         kL4In1ydf/HKjasUZ6/M4PVQauuyZ0LDnr0hKqRhk69Ije+vrnnjGpcpHMAp+90INeA8
-         kDCiwnk4EictlXwOnNKJmC6XPifn9mOwi+hSIpcyhae9nO2MBn+K4adyhh7QViKIIsK/
-         sfSpQI7e4j0kFsY8BkpJe5AuCR1O7xC76AL72PpKHPDuXw6AZegpUfdQ8MOT/Qz/Ce1Y
-         UuEcycEwIVDBcyhsmm23xcbDMwGV1zuMiuSMBz8zelmbsHqemn/MQ3wJYXO127LySiTb
-         n8Ug==
-X-Forwarded-Encrypted: i=1; AFNElJ8tur7QLXtESK9qawASohwRSDYEVh6xClzkWKEMkkS/Wtgy2HFRmUN89m37AmdHAO3dthk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyeXPCA+nOSPU85wT+GaYHoSYpmRksMhih5InnQ9NAwAPwTPGE1
-	SMpLBw8+WTpANHKHIyoxTBXucdgwcH7r9FHE1L0s6Cnc1aV2A8zHDkPV
-X-Gm-Gg: Acq92OHSDlhWhTBI6bztdvwtsToHeurJBrXdAA4tDMK3W/G6VFPTBqzdUJwN5Byxl8I
-	rLW48HQ7OQb21LvcnxaEhaAUMqO/SFBnLc1sqHl7uRgN3ykGMTadrGiyjJVK8X0o1IGAQDs6hJg
-	vBjltbukTVtVeFN7e3qbLIIR5hjifGb1TSYFNO+CdgcigrOlcMozdWkv8rYuXkYtRc1VXRa2gaQ
-	E+djBzxHyGhYIwx9KTdljrC222F8xjZZVAiLDcgdm31CofRWeysxm+c8MRORSLkoRZiowZjjglt
-	k+Me2rSwnHkhZwR1fYdvJmvxsvDyV6/brP0tpHnPvtK+eiN1NYH29zJWu7m0iHGNt8vZwhtPVHp
-	GslT9eXfhDai2ogLfjNZrZw5MBzQojU+2XNjqo4BjTnOkyBqFKA0rO8XwpL4Ua1pvd3ESBQpNdu
-	gl+VZDhR6m2KVgYs5kJIcFFmyNHLvwW86gRP3GW9hVsGC70CrjZTEmjsXHU1bYtxDLf7n/hQBF+
-	Yr9yMsCgHwC
-X-Received: by 2002:a17:907:b5a6:b0:bdd:87c:5bd0 with SMTP id a640c23a62f3a-bdd28a79cd4mr339609266b.11.1779535811817;
-        Sat, 23 May 2026 04:30:11 -0700 (PDT)
-Received: from localhost (226.55.classcom.pl. [195.150.55.226])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-bddc264dea6sm171918966b.7.2026.05.23.04.30.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 23 May 2026 04:30:11 -0700 (PDT)
-Date: Sat, 23 May 2026 13:30:19 +0200
-From: Piotr Zarycki <piotr.zarycki@gmail.com>
-To: seanjc@google.com, pbonzini@redhat.com
-Cc: vkuznets@redhat.com, shuah@kernel.org, kvm@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] KVM: selftests: hyperv_features: test write of 1 to
- HV_X64_MSR_RESET
-Message-ID: <ahGPQDJCT1aW7vVY@arch-piotr>
-References: <20260523111857.195396-1-piotr.zarycki@gmail.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="au4Rvsez"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A321F000E9
+	for <kvm@vger.kernel.org>; Sat, 23 May 2026 12:30:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779539423;
+	bh=PvrVL/urDdI0/P/t8T6iBh6+B/dHAY4rtioL3v9eqAo=;
+	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
+	b=au4Rvsezf3/SdmC91cB4YCDL0PkkPF077mE0JOEDkRwa0z0gAQ3miKgV1JVd/+iWu
+	 YlXvf6vHwk/oaA8vGnZOjT0ur1/l4BzMe27J/PGMoONgwEMAYUkM0EvrVL5tDf8sz2
+	 dSvOBSTH0DLtxdjt1kPsl/ttRE3sfOOjrD+NEg+X2MQdwmrEFY5oz5OfVUu8pTL1KN
+	 UtUtjiwTngve3P7VO8S9N74XAwaphKte6S3Uf1qrz9ZEqym94nihYsUkHNL0i0b4Ce
+	 OxrruJbF0EKwSB97glahi2F6+rw/LTN//RCdCG31bLf5w3aeJm7qoOhdUe23mRqYes
+	 eks7u7sQpATYg==
+From: sashiko-bot@kernel.org
+Subject: Re: [RFC v2 3/5] KVM: PPC: selftests: add support for powerpc
+Reply-To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+In-Reply-To: <6e0c74f1273a4baf652d84820ae83696e77263d9.1779524962.git.ritesh.list@gmail.com>
+References: <6e0c74f1273a4baf652d84820ae83696e77263d9.1779524962.git.ritesh.list@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Sat, 23 May 2026 12:30:22 +0000
+Message-Id: <20260523123023.64A321F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260523111857.195396-1-piotr.zarycki@gmail.com>
 
-Hi,
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Medium] Guest registers r1 (stack pointer) and r2 (TOC pointer) are not =
+saved to or restored from ex_regs during exception handling.
+- [Medium] Overly restrictive PTE assertions in addr_arch_gva2gpa() prevent=
+ address translation for non-RWX pages.
+--
 
-After receiving KVM_SYSTEM_EVENT_RESET the test simply advances to the
-next stage without resetting the vCPU. Is verifying
-KVM_SYSTEM_EVENT_RESET is delivered sufficient?
+commit b672003494da996fee181637da999ccf8c28f3e8
+Author: Nicholas Piggin <npiggin@gmail.com>
+Subject: KVM: PPC: selftests: add support for powerpc
 
-Thanks,
-Piotr
+This commit implements KVM selftests support for powerpc (Book3S-64).
+It includes virtual memory support for the radix MMU, ucall implementation
+via PAPR hcalls, and real-mode guest interrupt handling.
+
+> diff --git a/tools/testing/selftests/kvm/lib/powerpc/handlers.S b/tools/t=
+esting/selftests/kvm/lib/powerpc/handlers.S
+> new file mode 100644
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/lib/powerpc/handlers.S
+[ ... ]
+> +virt_handle_interrupt:
+> +	stdu	%r1,-INT_FRAME_SIZE(%r1)
+> +	mr	%r3,%r31
+> +	bl	route_interrupt
+> +	ld	%r4,(32*8)(%r31) /* NIA */
+> +	ld	%r5,(33*8)(%r31) /* MSR */
+> +	ld	%r6,(35*8)(%r31) /* LR */
+> +	ld	%r7,(36*8)(%r31) /* CTR */
+> +	ld	%r8,(37*8)(%r31) /* XER */
+> +	lwz	%r9,(38*8)(%r31) /* CR */
+> +	mtspr	SPR_SRR0,%r4
+> +	mtspr	SPR_SRR1,%r5
+> +	mtlr	%r6
+> +	mtctr	%r7
+> +	mtxer	%r8
+> +	mtcr	%r9
+> +reg=3D4
+> +	ld	%r0,(0*8)(%r31)
+> +	ld	%r3,(3*8)(%r31)
+> +.rept 28
+> +	ld	reg,(reg*8)(%r31)
+> +	reg=3Dreg+1
+> +.endr
+
+[Severity: Medium]
+Are r1 (stack pointer) and r2 (TOC pointer) missing from the restore sequen=
+ce?
+
+Since they aren't restored here, tests cannot modify the stack pointer duri=
+ng
+exception handling.
+
+[ ... ]
+> +handle_interrupt:
+> +reg=3D4
+> +.rept 28
+> +	std	reg,(reg*8)(%r13)
+> +	reg=3Dreg+1
+> +.endr
+
+[Severity: Medium]
+Does this sequence skip saving r1 and r2 into ex_regs?
+
+If they are skipped, the C handlers receive uninitialized values for these
+registers in ex_regs->gprs[1] and gprs[2], meaning they cannot inspect the
+stack pointer or TOC pointer at the time of the exception.
+
+> diff --git a/tools/testing/selftests/kvm/lib/powerpc/processor.c b/tools/=
+testing/selftests/kvm/lib/powerpc/processor.c
+> new file mode 100644
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/lib/powerpc/processor.c
+[ ... ]
+> +gpa_t addr_arch_gva2gpa(struct kvm_vm *vm, gva_t gva)
+> +{
+[ ... ]
+> +	ptep =3D virt_get_pte(vm, pt, gva, level, NULL);
+> +	pte =3D be64_to_cpu(*ptep);
+> +
+> +	TEST_ASSERT(pte,
+> +		"PTE not present at level: %u gva: 0x%lx pte:0x%lx\n",
+> +		level, gva, pte);
+> +
+> +	TEST_ASSERT((pte & PTE_VALID) && (pte & PTE_LEAF) &&
+> +		    (pte & PTE_READ) && (pte & PTE_RW) && (pte & PTE_EXEC),
+> +		    "PTE not valid at level: %u gva: 0x%lx pte:0x%lx\n",
+> +		    level, gva, pte);
+
+[Severity: Medium]
+Is it possible for tests to map memory without write or execute permissions
+(e.g., read-only or non-executable pages)?
+
+If so, this assertion will falsely trigger and abort the test during virtual
+to physical address translation. Should this check only verify PTE_VALID and
+PTE_LEAF to support testing diverse page permissions?
+
+> +
+> +	return (pte & PTE_PAGE_MASK) + (gva & (vm->page_size - 1));
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1779524962.gi=
+t.ritesh.list@gmail.com?part=3D3
