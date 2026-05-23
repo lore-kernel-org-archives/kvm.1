@@ -1,155 +1,181 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6875A1C84DC
-	for <kvm@vger.kernel.org>; Sat, 23 May 2026 05:02:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779512571; cv=none; b=dAIQ8fRm59wYTGWclEV4mfC5oKf3VWopN77qqXh3E7w/HBE8bLk6R96W0hDv/ITXMFM+KkIBX4fYdtueNuS4L0UEogFoPXeAECDjI02gEWUtjV2TZv8ZqQmpuyD6k33aRYGMbnTcxwKrhZTrgWEGGgCr0fnS+b43no0faHT/ygc=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779512571; c=relaxed/simple;
-	bh=W9ITGv3qxa+WYkFAH41yDgqAQyYvdortQve2uFX62yw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MEfWYLFrwMFLJlA6/aNTnDwcOIlBBeeQJSzVf00QBWTdM/cNAIiHpcc84NGrh23k6rKYVRnvkXnEYXRYPP0MttTHOluTodh8xRgRcNtAIqOqHUo9voc7ypqRoXgnsRHEakJBFoPdQa+s4B2NSFIJplbKl/fGH7KcLYFGilaJ3DA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YJDQg9/J; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09DC02FFDFC
+	for <kvm@vger.kernel.org>; Sat, 23 May 2026 08:03:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=170.10.133.124
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779523424; cv=pass; b=RoGg0cG4mnwiJ07gazzJw1ubsNAdYzWVOt6FqT+Id4XJ0E1T5IrG6G1VNTCf4m3CYm2JXAhUxERMkpZOu3wAbF9rqwUAa7gFlxM4Sm1mIWmj7ntf+1Y5X8n1ZGhThsCJPPJWR2mgUvWBxmfdwnKPGQfcepJpPhRl/EArwLlsdS4=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779523424; c=relaxed/simple;
+	bh=qz6D3f3YJ2k4+mQtE6g0uFyZLHw2nxe5jE72RTocq8g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nMfC1VWEUtkOqm6udekzfJV2QfpyK51K1PkfrGLGvHO8c8i+bGwUl0ggL9ydzxZfvANpq7PQtZdpXmdwUkOaaQi0xsOwkKTYZDmba5LKyyeKDyJLR85mjT+GWGM8e8KaChdGUeDLn38BfBxt1s53LOlOME7CJ9sYLfo89D3G9ng=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TmXWnTrE; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=Qi13rRP+; arc=pass smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YJDQg9/J"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-2ba17c8cfacso81924235ad.2
-        for <kvm@vger.kernel.org>; Fri, 22 May 2026 22:02:50 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TmXWnTrE";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="Qi13rRP+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779523420;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8kCCPSR7eAbezRrY9EzmdTOQTokcL1TCE2C4CcBHkS8=;
+	b=TmXWnTrECwQicLVh2U4s1iZn4V5As7wyHW3noteoEkX+bBzylXKXYvV8j2NV17zR5GFixA
+	R46TrqMIz7KgFZIlbh22KnHmtbMjUHF6hvolvAT6JIVpjkgfhzBq3PQ2cDp12uFLFY5JKR
+	mRcbDE43QTbsExtGI1PtyWzSQJz0FI8=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-340-ZSR4ExgGPbiBrsW84vKiuA-1; Sat, 23 May 2026 04:03:38 -0400
+X-MC-Unique: ZSR4ExgGPbiBrsW84vKiuA-1
+X-Mimecast-MFC-AGG-ID: ZSR4ExgGPbiBrsW84vKiuA_1779523417
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-48d127eb013so36906765e9.1
+        for <kvm@vger.kernel.org>; Sat, 23 May 2026 01:03:38 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779523417; cv=none;
+        d=google.com; s=arc-20240605;
+        b=ZQD+JKFpLS4Viv7ioYABNSKIS6QNFOoH7mj/aDuBtFgb5gDb9KGQvNZODVJnZTsHjK
+         QPdkZfZLciCfFiiU4kyehkbR+4MWnqiE6zp7Ejc6bU6M76QcNxl9AkaglvEOwFAC2IV5
+         hFiGYysBm5+0NAHVd3CtzSpiYwP34Gs2YMuUludmF/WdLunfTLDwa38Gqzr0/A9a0U4Q
+         bxv48ADa2qSId5FbcuiErWTswbE+JOMQe+hst62faiPNSW1aXxoVvASEspnPiqcln/rC
+         +Gj2X+0MANVybtv13LP8QYEYSjohRlkDb6PhhnQ0hAggRIU9oo0ciqyCZBYCNNZYrIU2
+         LUYQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=8kCCPSR7eAbezRrY9EzmdTOQTokcL1TCE2C4CcBHkS8=;
+        fh=47FBMO1rHY4kkKIycu/tOedqbMmxdyFKxUHEq53QmcU=;
+        b=E8pPx0v30t5sqxjveaz+uDR9bnWOIzwtMI0T/f5rrozWnWOhZjhpFA24k3qflJR4bt
+         lq3Qu39qYJdMud484gpcDciQlvoi6GGthvu8uBXvOZ1WRFB8rKuWyzW1beyHuofbko3L
+         LK+4Y//RbW1l58GTK+8cYKE2pezDIJfyhuNndbs8JoXXsoyW7WEG7z3bcENixUTeZ6eT
+         6LiIfZNytJ07ZQUg/rkiFsnZa77tBoQC2MFvLLQnM386UVNaD7hOBqZcIg7oq0AvWEAX
+         GbDUdgneAGf7a2rpg1CAC0kr3d91kegBLTTm0LkzphKVR9MHYN6fBQ+YpiiGgUgcSUbj
+         cZbQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779512569; x=1780117369; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=leshpFjJpw+iFa3BTxU37ORXazCVi1TrfBnEvsNvsW8=;
-        b=YJDQg9/JzFJWM32RnK5Y9NGwKryyiupV/9oed/ENeX9SlLVIMUzjDnu75j+k3LsFiV
-         dee1FEtJx75a9VC87lU/4+pprcAREUkeDD73/u5K6az9i+nsyVcYKCWI+bAwfpw9Wdu0
-         UfHpy/z2pZPJJsc8UoOSAc4B8t1+I9s9z6KgtuHRirahHFaB4BF3YyrH02tisKPdiE5b
-         bCom/j+/DrTZXJlX14HGpbuliSH+0xXKnHCMzpkrw8PdKkaj4An5JlV33Rsy5lkDqFDA
-         GhGdVuWaew0/UtSFk9HPg7J54AWTTQpO5lhfgg6QxFMo2+DYCoA0ul1umVqHlbTUpOLf
-         OAqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779512569; x=1780117369;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+        d=redhat.com; s=google; t=1779523417; x=1780128217; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=leshpFjJpw+iFa3BTxU37ORXazCVi1TrfBnEvsNvsW8=;
-        b=KRwK0XeXrcpilBK1+VAUBTdqBL96e4o9mG0Eog+Hh37/H7j+WVdvd2I2yYGR6ulP7E
-         lwhuoK0gqXb8W7zc74K+SNtm5JpBfAnyokEwlFoTalg7f93LS6NBiyCm0F8EX7FJM2w4
-         TB6dD1fOApBt/GI8GwKVPOmf6gbxiwIBpbP3rTMhn+GrdAjd1IxxZoTmoxXcnpAyuzFC
-         DOoTy2fh5FDsZFNLtwyV+GXva3q7nnf1WlJ8yLFrcwuX/ZEdAZoSA8kuiAoX03/PuX6x
-         SYwfb6kjt1QJgpRQS01rRVQT2n7M4p659vDfudWXczzt0uDv+AfYCJqY+8W4fP7FMEVd
-         5HbA==
-X-Forwarded-Encrypted: i=1; AFNElJ8njrsf/tm0M2ox4ecOom3CuRaIddLr6j0FqzxDBtgLbV5vLiKBL5imHKrY8OBbAEVFsLM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxXxV7EguggYKQW71UXfHo7jC1wsxbK/i9Iz2XwFICXF62IbiiM
-	T5UZpEpGuks1xbcf8s/USlAxltMuwDQFwP3cIKhbm1UmduyelMVLbtTA
-X-Gm-Gg: Acq92OHYM/CKEbiJsBUS66PymG1Mxayz/Yhpik10+mzz5yjc+H7NcduGBN0BA1SJo2F
-	GEKS3b9uzoIiiIZ5fnuMtFDMzUQ+D08TM3DYAB2QebknJUjdgjf8lxoWZU9aIO/b9UgE4Zj5vJT
-	/pf5p3WhRpEws9jgPVVJyucMBN+lb5UxCq9OLl1FPO8q1C0lcRo1BZbKPR96O2P1SozsP7nAKe8
-	jOrNU6NCTqPg7rHdB+oMVKj+seYfNWXkIiVkQODrD18/DeXnnwZTGYk9KRN5D4OPYmn0egNJXnk
-	A1L86DXyT/Yu5qNWV5D/j/BPnM7uuR8c3iWMis+1ONghrrL9/cMS0+fKlEWz1Z6b2uf8LZBwDfp
-	R8ziMSWiAKkwrgwgHRfT/mtC2hESQFOE4gfhozYebHyFqdoVUi2kgBgfQprUbUKzxK2J/g3eRhF
-	TfoXeV6/717vtKpiyWWuWEmG+pkKQzvO9w12Ud7R0nyaxuNDtFRAveEWQ=
-X-Received: by 2002:a17:903:298b:b0:2bd:2de3:51a4 with SMTP id d9443c01a7336-2beb0604f43mr70763195ad.27.1779512569475;
-        Fri, 22 May 2026 22:02:49 -0700 (PDT)
-Received: from yash-Bravo-15-B5DD.local ([14.99.167.142])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb591d102sm32152325ad.81.2026.05.22.22.02.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 22 May 2026 22:02:49 -0700 (PDT)
-From: Yash Suthar <yashsuthar983@gmail.com>
-To: pbonzini@redhat.com,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: skhan@linuxfoundation.org,
-	me@brighamcampbell.com,
-	Yash Suthar <yashsuthar983@gmail.com>
-Subject: [PATCH] kvm: vfio: Convert kvm_vfio_file_add() to use CLASS(fd) and guard(mutex)
-Date: Sat, 23 May 2026 10:32:42 +0530
-Message-ID: <20260523050242.41472-1-yashsuthar983@gmail.com>
-X-Mailer: git-send-email 2.43.0
+        bh=8kCCPSR7eAbezRrY9EzmdTOQTokcL1TCE2C4CcBHkS8=;
+        b=Qi13rRP+n1qBS9fs7pZ4EA+bPbL98i/jtJzEWO2Vj4Bu+PSGOsC4X/E5BZNR0NCfLe
+         JusLpjhZ659mQEe7TNX/puPAcDhBa08/7GvL1Jaa4xjeLOkF6yu/GK0W/mXTytWPAL1F
+         z4TKWx94sSSYEk3tXVXfkgsaEcj92qxmhafIX+PuWToMYs4dQwnBJForS/qDruYccH2z
+         PJZa9KgJJ9lgdu6V4FJNQ5H4ALro0ZqMy0MeGbFXCcZbcpbh4c3A9yS1ZovSA8ZwExkQ
+         PR192E7LT3mbtc953YJzzh1EeootQJ6fjXFJrjG923OEidwtZQbIkXqZSzFCd9s+hG2j
+         Kj+Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779523417; x=1780128217;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=8kCCPSR7eAbezRrY9EzmdTOQTokcL1TCE2C4CcBHkS8=;
+        b=nyAwkxwfMsFcHriW8wjrYSxCG/67gANC2UVTvpTYAhAAX5/17FiiGDkKek7fFh+j9p
+         Z8Xk709MsBf1PjxOonsmjVsRfeOePqpaue28anuJIdPjzOkkgqYePgYFNHHox2POLf2U
+         NRds+kQyDls5AlcP7rUx0IXIa+nYQrEMeIKiW7SAj2azyEMI5HdQlFJdiUVzGOQeJy82
+         R3LLeKUQ8XyYqlttht/6beLIkZmWEJYEb1BIynmabBsuzjSO8rhVvgcI1D+3dbXLBDEQ
+         Sx/7MZOWOHrts6EuSxvrX5Zx8c37bexgfY4DROkno4dKF13OfqJHGuSpvUoEgszt3FmR
+         AUiA==
+X-Forwarded-Encrypted: i=1; AFNElJ8HhExdSdQWDR4U4moMNda1i9k7zGs+VkHv0S152KqBPVpt4eCGfxk0WxUZFPdzqE7cjKk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQb3nufy++JsKbPpaB+gI1bZfoCEX8kuMWfNrQiNPOsD5bTsSE
+	ZC5iUTuO5zujIPM+Hzmn8Runt910+i2dBQqQ2YS+x7DVABw7tOYC8Ou7mu9hqzE9a3AHzXkiy66
+	FDOBE0er7xlkeFfVNj5weyY8zx1vt3w2XOkJpWyBcKZYFeIqVKczaBYMMaZq5K1P9yeZlKf14bT
+	9isi16zISEv6Uyb0Jan+64cxzEg2zn
+X-Gm-Gg: Acq92OH2XNdwMTMVwzmBsTNDr//WPvYGwh2+NYQsdWaMRg5slrMyC1i2bi0Q45Uvs59
+	U1RA/Eyy13F4Ha65emiotWq2wocBxP1U3BYZcmlrAK45OGdfaLWhyZkgGSpNyBZsVbk6k3laLMC
+	mNL9FMmj5imcjBhXqrkK5YBdZTt0ZkbObmNglORjNrxSDdiF7/KfBEyfYzyudn0Ifgt8gWqwCWG
+	q5QnwbIgl+przmU0Ik9f40wkpaWGKllp54UVXltipOKjV0dDegeyXqL9yZWrMQY+4hAlj/QtpS8
+	GpwR/Ug=
+X-Received: by 2002:a05:600c:5298:b0:48e:51f8:eb39 with SMTP id 5b1f17b1804b1-490428e0b24mr103916315e9.28.1779523417121;
+        Sat, 23 May 2026 01:03:37 -0700 (PDT)
+X-Received: by 2002:a05:600c:5298:b0:48e:51f8:eb39 with SMTP id
+ 5b1f17b1804b1-490428e0b24mr103915625e9.28.1779523416685; Sat, 23 May 2026
+ 01:03:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260520072518.504865-1-maz@kernel.org>
+In-Reply-To: <20260520072518.504865-1-maz@kernel.org>
+From: Paolo Bonzini <pbonzini@redhat.com>
+Date: Sat, 23 May 2026 10:03:24 +0200
+X-Gm-Features: AVHnY4JSA0Bs3_rwKjWLijly1xMqn0yNDirfiVv1I4mSWo8k1UBJzXBC_g_e__A
+Message-ID: <CABgObfb4UiufkpDOP6yyAYNjBYnSZvZpi6hfqXoEX7dqCPBk3g@mail.gmail.com>
+Subject: Re: [GIT PULL] KVM/arm64 fixes for 7.1, take #3
+To: Marc Zyngier <maz@kernel.org>
+Cc: Michael Bommarito <michael.bommarito@gmail.com>, Vincent Donnefort <vdonnefort@google.com>, 
+	Will Deacon <will@kernel.org>, Yuan Yao <yaoyuan@linux.alibaba.com>, 
+	Steffen Eiden <seiden@linux.ibm.com>, Joey Gouly <joey.gouly@arm.com>, 
+	Suzuki K Poulose <suzuki.poulose@arm.com>, Oliver Upton <oupton@kernel.org>, 
+	Zenghui Yu <yuzenghui@huawei.com>, kvmarm@lists.linux.dev, 
+	linux-arm-kernel@lists.infradead.org, kvm@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Convert manual fget/fput call to CLASS(fd, f) and
-mutex_lock/unlock to guard(mutex).
+On Wed, May 20, 2026 at 9:25=E2=80=AFAM Marc Zyngier <maz@kernel.org> wrote=
+:
+>
+> Paolo,
+>
+> Here's the next set of KVM/arm64 fixes for 7.1. Continuing the trend,
+> we have two AI-fuelled fixes, both of which are stable candidates.
+> Additionally, a minor tidying-up of the hypervisor tracing descriptor
+> validation.
+>
+> Please pull,
+>
+>         M.
+>
+> The following changes since commit effc0a39b8e0f30670fe24f51e44329d4324e5=
+66:
+>
+>   KVM: arm64: Pre-check vcpu memcache for host->guest donate (2026-05-07 =
+14:12:42 +0100)
+>
+> are available in the Git repository at:
+>
+>   git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm.git tags/kv=
+marm-fixes-7.1-3
+>
+> for you to fetch changes up to 1702da76e017ae0fbe1a92b07bc332972c293e89:
+>
+>   KVM: arm64: Fix nVHE/pKVM hyp tracing error on invalid desc (2026-05-20=
+ 08:08:37 +0100)
 
-This remove the goto based paths both out_unlock and
-out_fput.
+Done, thanks.
 
-Signed-off-by: Yash Suthar <yashsuthar983@gmail.com>
----
- virt/kvm/vfio.c | 37 ++++++++++++++-----------------------
- 1 file changed, 14 insertions(+), 23 deletions(-)
+Paolo
 
-diff --git a/virt/kvm/vfio.c b/virt/kvm/vfio.c
-index 9f9acb66cc1e..bb3694d9c0c4 100644
---- a/virt/kvm/vfio.c
-+++ b/virt/kvm/vfio.c
-@@ -144,45 +144,36 @@ static int kvm_vfio_file_add(struct kvm_device *dev, unsigned int fd)
- {
- 	struct kvm_vfio *kv = dev->private;
- 	struct kvm_vfio_file *kvf;
--	struct file *filp;
--	int ret = 0;
-+	struct file *file;
-+	CLASS(fd, f)(fd);
- 
--	filp = fget(fd);
--	if (!filp)
-+	if (fd_empty(f))
- 		return -EBADF;
- 
-+	file = fd_file(f);
-+
- 	/* Ensure the FD is a vfio FD. */
--	if (!kvm_vfio_file_is_valid(filp)) {
--		ret = -EINVAL;
--		goto out_fput;
--	}
-+	if (!kvm_vfio_file_is_valid(file))
-+		return -EINVAL;
- 
--	mutex_lock(&kv->lock);
-+	guard(mutex)(&kv->lock);
- 
- 	list_for_each_entry(kvf, &kv->file_list, node) {
--		if (kvf->file == filp) {
--			ret = -EEXIST;
--			goto out_unlock;
--		}
-+		if (kvf->file == file)
-+			return -EEXIST;
- 	}
- 
- 	kvf = kzalloc_obj(*kvf, GFP_KERNEL_ACCOUNT);
--	if (!kvf) {
--		ret = -ENOMEM;
--		goto out_unlock;
--	}
-+	if (!kvf)
-+		return -ENOMEM;
- 
--	kvf->file = get_file(filp);
-+	kvf->file = get_file(file);
- 	list_add_tail(&kvf->node, &kv->file_list);
- 
- 	kvm_vfio_file_set_kvm(kvf->file, dev->kvm);
- 	kvm_vfio_update_coherency(dev);
- 
--out_unlock:
--	mutex_unlock(&kv->lock);
--out_fput:
--	fput(filp);
--	return ret;
-+	return 0;
- }
- 
- static int kvm_vfio_file_del(struct kvm_device *dev, unsigned int fd)
--- 
-2.43.0
+> ----------------------------------------------------------------
+> KVM/arm64 fixes for 7.1, take #3
+>
+> - Fix ITS EventID sanitisation when restoring an interrupt translation
+>   table.
+>
+> - Fix PPI memory leak when failing to initialise a vcpu.
+>
+> - Correctly return an error when the validation of a hypervisor trace
+>   descriptor fails, and limit this validation to protected mode only.
+>
+> ----------------------------------------------------------------
+> Michael Bommarito (2):
+>       KVM: arm64: vgic-its: Reject restored DTE with out-of-range num_eve=
+ntid_bits
+>       KVM: arm64: vgic: Free private_irqs when init fails after allocatio=
+n
+>
+> Vincent Donnefort (1):
+>       KVM: arm64: Fix nVHE/pKVM hyp tracing error on invalid desc
+>
+>  arch/arm64/kvm/arm.c            | 4 +++-
+>  arch/arm64/kvm/hyp/nvhe/trace.c | 9 +++++++--
+>  arch/arm64/kvm/vgic/vgic-its.c  | 4 ++++
+>  3 files changed, 14 insertions(+), 3 deletions(-)
+>
 
