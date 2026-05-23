@@ -1,38 +1,38 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77679255F2C;
-	Sat, 23 May 2026 00:18:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F0F32D0C9A;
+	Sat, 23 May 2026 00:18:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779495484; cv=none; b=TluW0O8FWFRzuTnDn1rDZ8fi9svvY0LjkYouJBe1LaDX9K/uhhqwST6B9eYy73G+th4YrsacHEvlvyR5G2bmLvl5aBVf3Fv1dJun3V7e9rFF/VVOpeBt+oPfqxFxspeqqI4JkYtUrWx+9BTt6AMmX7Tg/N+EwtP8HA1MngKtvSo=
+	t=1779495485; cv=none; b=Zl7aPLP5lRW8DiWDR8+tRDRC4RLtJQvSWKifqcoRsj3CctKgt6tLbnLgCkx6M0TQUEFOlULNg0r2XHhWVQXLlpFKoYSVT3Qw8CMYRBa+jd4tc2j3TPakV1/sBfabmP2DUnSr5+RP0bAlyuuTm6tWoCpVWfbD2MHruqTvqACAWzA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779495484; c=relaxed/simple;
-	bh=0ECVEVBkOWP4qU1yQu82KydlPY9WQUdkOibk73+w7KI=;
+	s=arc-20240116; t=1779495485; c=relaxed/simple;
+	bh=7qp4zMrNzIsThD9ZhrN6U3AlyQDi6Rwj4KkahGCg/Ik=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=ZG+WV/YeHHYQkthddlNY5KsiR0ZJXv49VLoTBINSLJhWowCmMjVD8ddQ0uz4yfI2Dv8Av2F0cc2omVTG4D07acyLDCMoWJ3xAK2XJJnHRp9poB7uUsmXjb7qfhulT4x5AAjlxQiewiilc2265o8HnpSUS3gHHxLv8eIGib9CwSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kLvqSEj0; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:To:Cc; b=N/PLze+yDtc7LuNIShYK4wf6pCb+LSNi5x26+WZhepOBO6twx0kh7bMnZiN90C244sHt7gwGPjXcza/Ao6bYc9YB/QqHwQvEgKk9AbDKxkEm5GGrStpvN1UHXv93yzM/4TG8K7jA4dOjW+qbFKGHEGe1411q6PM+3GTqxVRJO0c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aztCcMSh; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kLvqSEj0"
-Received: by smtp.kernel.org (Postfix) with ESMTPS id 0FBD6C4AF1D;
-	Sat, 23 May 2026 00:18:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aztCcMSh"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 31A18C4AF0C;
+	Sat, 23 May 2026 00:18:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1779495484;
-	bh=0ECVEVBkOWP4qU1yQu82KydlPY9WQUdkOibk73+w7KI=;
+	s=k20201202; t=1779495485;
+	bh=7qp4zMrNzIsThD9ZhrN6U3AlyQDi6Rwj4KkahGCg/Ik=;
 	h=From:Date:Subject:References:In-Reply-To:To:Cc:Reply-To:From;
-	b=kLvqSEj0CRM4A5mvC1WSttgzNkrXIUnXqZCnL8LrC/MmIExIToPjl03n+gOiA3N6z
-	 IOFqudd0YQYH85F5UAGiCU2EB+S0q5s4mxiIU1nxd+tRYXM/oGbpj+m/IhaeKUxrDu
-	 OhLRc96JAag6nclmIrcJklWiP+4xHBo3wWksqpef9bOYNtvD0L4VGVJUjjstOOYdQN
-	 JlaHqm39Fkzw2AzGxfKJqcvv236JG6cZwQKYl5IKy7jvgrzGia2Di8a24x/Ryn0qf+
-	 noL5rCPT0lm85Pl9OQnl10bsFQDJmJgxYR5qLv2qHd7qONzEx+4l//ApcEOrkuFg9H
-	 HDmJCNejWVB9Q==
+	b=aztCcMShnbOOutZHbeaSEQDmvr1SMIIcBH9mnD6hpPoyzCYCgehy03ZesIBGkFy2B
+	 AbBRiHidQxalC934yMBSltkTZL+JRachPfgM0Ue/3a++KxzO5rQPMQNW5qzd7AKHWP
+	 TAK+CQn+bEC7ZUZpJVb+y9iHbrzyvYUJawmVX/aiW4GGkzfN8d5q6Mb8lh1MVXlNoh
+	 DgqtTCU4n7DM2yTXwV7fTgozbv8pmYInaXYJR4spbMPRmwIbdT+m2rCTAQDAJ1TfN0
+	 QrHJ37SPGmJCIpqMrPpJEvz5H4zXSrIkU3xYnwgo4OtARWTdrSW8+JwZeUSlW0g0Ui
+	 L7LMB3yNcIvtA==
 Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id EFB54CD5BB0;
-	Sat, 23 May 2026 00:18:03 +0000 (UTC)
+	by smtp.lore.kernel.org (Postfix) with ESMTP id 16E00CD4F3D;
+	Sat, 23 May 2026 00:18:05 +0000 (UTC)
 From: Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Date: Fri, 22 May 2026 17:17:52 -0700
-Subject: [PATCH v7 10/42] KVM: guest_memfd: Ensure pages are not in use
- before conversion
+Date: Fri, 22 May 2026 17:18:04 -0700
+Subject: [PATCH v7 22/42] KVM: selftests: Create gmem fd before "regular"
+ fd when adding memslot
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -41,7 +41,7 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260522-gmem-inplace-conversion-v7-10-2f0fae496530@google.com>
+Message-Id: <20260522-gmem-inplace-conversion-v7-22-2f0fae496530@google.com>
 References: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
 In-Reply-To: <20260522-gmem-inplace-conversion-v7-0-2f0fae496530@google.com>
 To: aik@amd.com, andrew.jones@linux.dev, binbin.wu@linux.intel.com, 
@@ -75,11 +75,11 @@ Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org,
  linux-kselftest@vger.kernel.org, linux-mm@kvack.org, 
  linux-coco@lists.linux.dev, Ackerley Tng <ackerleytng@google.com>
 X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779495480; l=4831;
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779495480; l=2867;
  i=ackerleytng@google.com; s=20260225; h=from:subject:message-id;
- bh=cnZFLwTLg0Lwy0rZo0cUvbWemQ2hZvl4OTIbiNEhnVs=;
- b=64di4loWw6cUcML/ICcXk1/lgktF4DU2Ztv1qt14+J+T9DcX3g7s7ngiKohYx9NXdvr32D4nH
- 0J9OaMGGWnwCo1LTY1D2moCiBYi+bixvOx3z/RAehg1/SB22aMaEbRn
+ bh=RNvMuyEG81zAjIH6ngsYAi4wtfdbjpEfP2b7U2HhIp8=;
+ b=Jkl9z/IG9o3DTV9dsZ1c0XCWBPN8lK8b08doDKG38G29qtueGYT0i4yhJbhA9PDnyvpYXt1dF
+ 2X/Mz2S7AlXA96lZ8ff9rqUSTNiD0eDrguT2M4eDnCgNoD6EA9kW+lE
 X-Developer-Key: i=ackerleytng@google.com; a=ed25519;
  pk=sAZDYXdm6Iz8FHitpHeFlCMXwabodTm7p8/3/8xUxuU=
 X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
@@ -87,152 +87,83 @@ X-Endpoint-Received: by B4 Relay for ackerleytng@google.com/20260225 with
 X-Original-From: Ackerley Tng <ackerleytng@google.com>
 Reply-To: ackerleytng@google.com
 
-From: Ackerley Tng <ackerleytng@google.com>
+From: Sean Christopherson <seanjc@google.com>
 
-When converting memory to private in guest_memfd, it is necessary to ensure
-that the pages are not currently being accessed by any other part of the
-kernel or userspace to avoid any current user writing to guest private
-memory.
+When adding a memslot associated a guest_memfd instance, create/dup the
+guest_memfd before creating the "normal" backing file.  This will allow
+dup'ing the gmem fd as the normal fd when guest_memfd supports mmap(),
+i.e. to make guest_memfd the _only_ backing source for the memslot.
 
-guest_memfd checks for unexpected refcounts to determine whether a page is
-still in use. The only expected refcounts after unmapping the range
-requested for conversion are those that are held by guest_memfd itself.
-
-Update the kvm_memory_attributes2 structure to include an error_offset
-field. This allows KVM to report the exact offset where a conversion
-failed to userspace. If the safety check fails, return -EAGAIN and copy
-the error_offset back to userspace so that it can potentially retry the
-operation or handle the failure gracefully.
-
-Suggested-by: David Hildenbrand <david@kernel.org>
-Co-developed-by: Vishal Annapurve <vannapurve@google.com>
-Signed-off-by: Vishal Annapurve <vannapurve@google.com>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Reviewed-by: Fuad Tabba <tabba@google.com>
 Signed-off-by: Ackerley Tng <ackerleytng@google.com>
 ---
- include/uapi/linux/kvm.h |  3 ++-
- virt/kvm/guest_memfd.c   | 68 ++++++++++++++++++++++++++++++++++++++++++++----
- 2 files changed, 65 insertions(+), 6 deletions(-)
+ tools/testing/selftests/kvm/lib/kvm_util.c | 45 +++++++++++++++---------------
+ 1 file changed, 23 insertions(+), 22 deletions(-)
 
-diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
-index e6bbf68a83813..0b55258573d3d 100644
---- a/include/uapi/linux/kvm.h
-+++ b/include/uapi/linux/kvm.h
-@@ -1658,7 +1658,8 @@ struct kvm_memory_attributes2 {
- 	__u64 size;
- 	__u64 attributes;
- 	__u64 flags;
--	__u64 reserved[12];
-+	__u64 error_offset;
-+	__u64 reserved[11];
- };
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index 2a76eca7029d3..df73b23a4c66a 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -1054,6 +1054,29 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
+ 	if (alignment > 1)
+ 		region->mmap_size += alignment;
  
- #define KVM_MEMORY_ATTRIBUTE_PRIVATE           (1ULL << 3)
-diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
-index 426917d22a2b6..2767992955752 100644
---- a/virt/kvm/guest_memfd.c
-+++ b/virt/kvm/guest_memfd.c
-@@ -572,9 +572,45 @@ static int kvm_gmem_mas_preallocate(struct ma_state *mas, u64 attributes,
- 	return mas_preallocate(mas, xa_mk_value(attributes), GFP_KERNEL);
- }
- 
-+static bool kvm_gmem_is_safe_for_conversion(struct inode *inode, pgoff_t start,
-+					    size_t nr_pages, pgoff_t *err_index)
-+{
-+	struct address_space *mapping = inode->i_mapping;
-+	const int filemap_get_folios_refcount = 1;
-+	pgoff_t last = start + nr_pages - 1;
-+	struct folio_batch fbatch;
-+	bool safe = true;
-+	pgoff_t next;
-+	int i;
++	if (flags & KVM_MEM_GUEST_MEMFD) {
++		if (guest_memfd < 0) {
++			u32 guest_memfd_flags = 0;
 +
-+	folio_batch_init(&fbatch);
-+
-+	next = start;
-+	while (safe && filemap_get_folios(mapping, &next, last, &fbatch)) {
-+
-+		for (i = 0; i < folio_batch_count(&fbatch); ++i) {
-+			struct folio *folio = fbatch.folios[i];
-+
-+			if (folio_ref_count(folio) !=
-+			    folio_nr_pages(folio) + filemap_get_folios_refcount) {
-+				safe = false;
-+				*err_index = max(start, folio->index);
-+				break;
-+			}
++			TEST_ASSERT(!guest_memfd_offset,
++				    "Offset must be zero when creating new guest_memfd");
++			guest_memfd = vm_create_guest_memfd(vm, mem_size, guest_memfd_flags);
++		} else {
++			/*
++			 * Install a unique fd for each memslot so that the fd
++			 * can be closed when the region is deleted without
++			 * needing to track if the fd is owned by the framework
++			 * or by the caller.
++			 */
++			guest_memfd = kvm_dup(guest_memfd);
 +		}
 +
-+		folio_batch_release(&fbatch);
-+		cond_resched();
++		region->region.guest_memfd = guest_memfd;
++		region->region.guest_memfd_offset = guest_memfd_offset;
++	} else {
++		region->region.guest_memfd = -1;
 +	}
 +
-+	return safe;
-+}
-+
- static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
--				     size_t nr_pages, uint64_t attrs)
-+				     size_t nr_pages, uint64_t attrs,
-+				     pgoff_t *err_index)
- {
-+	bool to_private = attrs & KVM_MEMORY_ATTRIBUTE_PRIVATE;
- 	struct address_space *mapping = inode->i_mapping;
- 	struct gmem_inode *gi = GMEM_I(inode);
- 	pgoff_t end = start + nr_pages;
-@@ -588,8 +624,21 @@ static int __kvm_gmem_set_attributes(struct inode *inode, pgoff_t start,
+ 	region->fd = -1;
+ 	if (backing_src_is_shared(src_type))
+ 		region->fd = kvm_memfd_alloc(region->mmap_size,
+@@ -1083,28 +1106,6 @@ void vm_mem_add(struct kvm_vm *vm, enum vm_mem_backing_src_type src_type,
  
- 	mas_init(&mas, mt, start);
- 	r = kvm_gmem_mas_preallocate(&mas, attrs, start, nr_pages);
--	if (r)
-+	if (r) {
-+		*err_index = start;
- 		goto out;
-+	}
-+
-+	if (to_private) {
-+		unmap_mapping_pages(mapping, start, nr_pages, false);
-+
-+		if (!kvm_gmem_is_safe_for_conversion(inode, start, nr_pages,
-+						     err_index)) {
-+			mas_destroy(&mas);
-+			r = -EAGAIN;
-+			goto out;
-+		}
-+	}
+ 	region->backing_src_type = src_type;
  
- 	/*
- 	 * From this point on guest_memfd has performed necessary
-@@ -609,9 +658,10 @@ static long kvm_gmem_set_attributes(struct file *file, void __user *argp)
- 	struct gmem_file *f = file->private_data;
- 	struct inode *inode = file_inode(file);
- 	struct kvm_memory_attributes2 attrs;
-+	pgoff_t err_index;
- 	size_t nr_pages;
- 	pgoff_t index;
--	int i;
-+	int i, r;
- 
- 	if (copy_from_user(&attrs, argp, sizeof(attrs)))
- 		return -EFAULT;
-@@ -635,8 +685,16 @@ static long kvm_gmem_set_attributes(struct file *file, void __user *argp)
- 
- 	nr_pages = attrs.size >> PAGE_SHIFT;
- 	index = attrs.offset >> PAGE_SHIFT;
--	return __kvm_gmem_set_attributes(inode, index, nr_pages,
--					 attrs.attributes);
-+	r = __kvm_gmem_set_attributes(inode, index, nr_pages, attrs.attributes,
-+				      &err_index);
-+	if (r) {
-+		attrs.error_offset = ((uint64_t)err_index) << PAGE_SHIFT;
-+
-+		if (copy_to_user(argp, &attrs, sizeof(attrs)))
-+			return -EFAULT;
-+	}
-+
-+	return r;
- }
- 
- static long kvm_gmem_ioctl(struct file *file, unsigned int ioctl,
+-	if (flags & KVM_MEM_GUEST_MEMFD) {
+-		if (guest_memfd < 0) {
+-			u32 guest_memfd_flags = 0;
+-			TEST_ASSERT(!guest_memfd_offset,
+-				    "Offset must be zero when creating new guest_memfd");
+-			guest_memfd = vm_create_guest_memfd(vm, mem_size, guest_memfd_flags);
+-		} else {
+-			/*
+-			 * Install a unique fd for each memslot so that the fd
+-			 * can be closed when the region is deleted without
+-			 * needing to track if the fd is owned by the framework
+-			 * or by the caller.
+-			 */
+-			guest_memfd = kvm_dup(guest_memfd);
+-		}
+-
+-		region->region.guest_memfd = guest_memfd;
+-		region->region.guest_memfd_offset = guest_memfd_offset;
+-	} else {
+-		region->region.guest_memfd = -1;
+-	}
+-
+ 	region->unused_phy_pages = sparsebit_alloc();
+ 	if (vm_arch_has_protected_memory(vm))
+ 		region->protected_phy_pages = sparsebit_alloc();
 
 -- 
 2.54.0.794.g4f17f83d09-goog
