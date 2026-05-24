@@ -1,88 +1,69 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6346238F920
-	for <kvm@vger.kernel.org>; Sun, 24 May 2026 07:43:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 071E336A02F;
+	Sun, 24 May 2026 13:21:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779608632; cv=none; b=pI5PImwfhZGQggq5yEv9xXpD5naBBeOpQnqehLq8/Mb/2UEYMWJarujvqq76iD9DSchWIJhTNxMDITDqz1QTD8hYChhnhShjvbwsWWE9QdS9jr9BjRQBaL9o/Ylycb87bupZV1FBnK7ef36TjyV72NpNBqpjacRKXvLWNDHIvD0=
+	t=1779628879; cv=none; b=ZIbFJdFQVX7V0GdOsyopFQuYT3AHGlYe5KwzvWN3cfPMKR57TqNNBrdBB2He14QYH8447iYyJQiw/qcyLdFKIzTR57AmplySHVOKsbN6wQIStqhmImBcfQfHCqjqPlncsEtrxL+xxjk+HJ9dCenlIB84yz3weM0gtU6BBgeF0FE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779608632; c=relaxed/simple;
-	bh=sMZJiqFYOoSGn++Vy+ItrgCs8WBaVci+YgY01KnG7fE=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AOB6dpMm2I3PH6t2B+HcYxVnfh4oelwrIGubck+69LRjV04YWZTamMHSRK2uuyFRIjVQcxI5IgDZ0jUC2gfLJsK2bbBRsJBiZuBN7pAjKAJU9oGmc8c20f5O8acgAW8grxMOyHErMR2rY85P43exEN3LNeXlTTRW+9wnwUUC/Q0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O66FA70G; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=jS1GD+uu; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1779628879; c=relaxed/simple;
+	bh=Au1iecDaQWJNcDTRDirWIcr1XH5hIoAm4ImD/d2IfVg=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=HbL09Z1v5HTUFHaV95hRXMQ7+raq0Cc+1FUx38IFYR+Phi7CcCH5Xmo8rBtM/HLagJ1XSKRZKR8nJR0EBMphNbyMIWvGe+Nf8ivx0bgy3PNdB98/1ys+3oTUcjurSDEPU0AylScraXfDoXdzwB0kU2B8HyMPiygCr1jDxg1Irys=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=LvGA3usG; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O66FA70G";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="jS1GD+uu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779608629;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=guYtmTJ2slb5RNDW22mMKN47SoDX8VY7dh3FeNFIKbQ=;
-	b=O66FA70GyeLp44EN/kZGFHnEof2z3eG/twAPKKZvLVs7zTbznS79u/h7hpXATAyEgeD33a
-	PwRILFqcG+F9O665PWMvK0QiOZLDMPOBVogBkEjY0SuCMw/qjaDS9PxUc28VmbaU840trQ
-	Se9hsRQ8mq3PTDWIQWzcUJL/agddfY8=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-352-7C5v1CWiMoqI4fdNrrBDbw-1; Sun, 24 May 2026 03:43:45 -0400
-X-MC-Unique: 7C5v1CWiMoqI4fdNrrBDbw-1
-X-Mimecast-MFC-AGG-ID: 7C5v1CWiMoqI4fdNrrBDbw_1779608624
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-45aeac88af4so7129723f8f.3
-        for <kvm@vger.kernel.org>; Sun, 24 May 2026 00:43:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779608624; x=1780213424; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=guYtmTJ2slb5RNDW22mMKN47SoDX8VY7dh3FeNFIKbQ=;
-        b=jS1GD+uub0cWYZ1wzXWU/cBl6gcnSVr1JX79j3uoN74ScV1zkq63fIrNPcIYENejJn
-         SmHeDvGS6GHuEOaaMs4dLPE6AKH5ZFOMg/fhM0F0GSAcY4zSzWFo/NszSdkA69G1OYv5
-         SaesNkGCytpbNaeWkTXn71HoFmrB3aIDFaAhJbggdl4JrqI78yavhyMSXrb54V2+h4nT
-         Gm/epLzUVEBUMrZDMQJahD+72cYo6rKQ20IDVkSHO//2jfx4gzC9pWTnNVvsiiVY79F/
-         lUeb8hURJlB5ygwA9C7c3U/8iu5WjjA35zTq1/+92cE3rCysE1V0x3uVXFAJsjzd96oP
-         kJ7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779608624; x=1780213424;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=guYtmTJ2slb5RNDW22mMKN47SoDX8VY7dh3FeNFIKbQ=;
-        b=MzVKcgg4bxbZpOs2y8H1liF9QqSmEYDutCeuSt/Bstcorre0wjP+LIaSWO3N/AxQwc
-         AnbYKiQdg7yDS50offk6wt2ABGER3ZzwZ6CGFyxHoBBq53ctuaOZTD1TrloaNQwbtqzK
-         NUnNEDL1JoK9WN+6Dp/R41qI9mdnGPaAahhHkxMlh7Jc8KrLw1NVdNboCS+sw+b4vFDN
-         kU4t6Hf/KaARVNzTsxvdxkPvuzRUTyaaMDyvl0j8IVYFNknyegf5bwKc9Mtpz+0KRLYQ
-         ppCbz0DPvUoLCtPSoUm/IBAPVa739ByW5ElcL873sNcTFGESLFEtnVY9/oLRakaKovE6
-         WUUw==
-X-Forwarded-Encrypted: i=1; AFNElJ+62fdZy4DYeJGsudlzS3SPCNNqG02um+vKuC9ZFjCZR5HZo5OBUbwJ+bYEnUOspLyhVIA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz2TwJyFHbT1QIUWH9KL0Y8LxomQyzuZGcIXDV4FzcnRJcNFyf3
-	Yzn1pj8O/Moku6pIMZmazPPQL9bBo9rD6sxqrgCJzE/HLbUZnTtgfpJuQrJkUc3n8AHXoVxqkx9
-	xSJ09Xsdx3AG0jCRVWX+c4mb975Rw0pEgEedAdSoSQPb54C8XAQck/Q==
-X-Gm-Gg: Acq92OHoRn5vDj/ztwXXmuvnRU9YBE9198EsTeZVUQACdMLDMWidvJ91TEU6jLT/5JA
-	bMbqTlaaJ1wWBdzz5YdrTlYQ5nn/UX8f0DjrMQMKNRDaQEn+aT9fHD6xYVwNif49YVKfSfy3mf1
-	ZGv3vdOZw1iUOt7zFmFiHAO98QTMBklg5dILepMg1IagPVk+s0+0/33wYmL9fVPYpICGfeV8VjZ
-	OYk1+RRXKoiFXHSm4DMWnPhUmB1YkJ+7myr8VB25OV4znfm5xaBl1jNVjg8c0gw9yuEZtL+ZQYH
-	Lcu8bMhYRibDYtHEsAetEIcl8IG3T6adG21ZpRPNLn8uiew8gfG1mQAuFJU9aSSBkd6AKWJgfkt
-	/RHg6RlDbkchwjElTFSigFaM8589fn7Ix2NGPyhlKduqoWDDD8GI7Vf5iYHaPgEY4nDGUjMWSHj
-	PwjLBfBWu752SMcsjpednvGtE=
-X-Received: by 2002:a05:6000:26d1:b0:451:1143:7df5 with SMTP id ffacd0b85a97d-45eb38e041fmr16426306f8f.41.1779608623965;
-        Sun, 24 May 2026 00:43:43 -0700 (PDT)
-X-Received: by 2002:a05:6000:26d1:b0:451:1143:7df5 with SMTP id ffacd0b85a97d-45eb38e041fmr16426274f8f.41.1779608623537;
-        Sun, 24 May 2026 00:43:43 -0700 (PDT)
-Received: from [10.41.25.122] ([77.241.232.4])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6c9f548sm19154877f8f.2.2026.05.24.00.43.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 24 May 2026 00:43:42 -0700 (PDT)
-From: Paolo Bonzini <pbonzini@redhat.com>
-To: torvalds@linux-foundation.org
-Cc: linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org
-Subject: [GIT PULL] KVM changes for Linux 7.1-rc5
-Date: Sun, 24 May 2026 09:43:41 +0200
-Message-ID: <20260524074341.36685-1-pbonzini@redhat.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="LvGA3usG"
+Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64O7oNgC154865;
+	Sun, 24 May 2026 13:21:03 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-transfer-encoding:date:from:in-reply-to:message-id
+	:mime-version:references:subject:to; s=qcppdkim1; bh=S/wJhNV3RAm
+	G4rFJoPI+bHWyBGLEbvcGfNyWHa1gHpU=; b=LvGA3usGOZj5RVkZjeuo5boigAO
+	9X5iSkwCCgx7ldkeVUHhoM+yamxESL1B8oxdSib9GaH+jzqcmzUBSN5XHSlTwnuI
+	EZe/qNU+AfeAychnMu7wXYVLR/VtrYwYSWhfaGcoI5j/EToMXs8a7da7OwS6Ji1K
+	IKJUeSbxLihA1AxIkmIQnPO6WERz6wcr5ioocss5HTGizvFv+xoKR8TCETl5ms1M
+	dNijXBHAAhjoQPdBFloEVNufjvhpRd4PoM+vo8k+cm635kSpsQKWiGY9sJwXX6Kr
+	Zm5R2t/6y6qlwI4xTmMMIqJYgKckRXwlhBxeCJWrDM7U11R5KhGmUYsv8RQ==
+Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4ebba0tf62-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 24 May 2026 13:21:02 +0000 (GMT)
+Received: from pps.filterd (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+	by APBLRPPMTA01.qualcomm.com (8.18.1.7/8.18.1.7) with ESMTP id 64ODKxE3009281;
+	Sun, 24 May 2026 13:20:59 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 4eb5ahgq6s-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 24 May 2026 13:20:59 +0000 (GMT)
+Received: from APBLRPPMTA01.qualcomm.com (APBLRPPMTA01.qualcomm.com [127.0.0.1])
+	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 64ODKx6x009265;
+	Sun, 24 May 2026 13:20:59 GMT
+Received: from hu-devc-blr-u24-a.qualcomm.com (hu-anuppate-blr.qualcomm.com [10.131.36.165])
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 64ODKx9X009261
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Sun, 24 May 2026 13:20:59 +0000 (GMT)
+Received: by hu-devc-blr-u24-a.qualcomm.com (Postfix, from userid 486687)
+	id 7F89021CFC; Sun, 24 May 2026 18:50:58 +0530 (+0530)
+From: Anup Patel <anup.patel@oss.qualcomm.com>
+To: Paolo Bonzini <pbonzini@redhat.com>, Atish Patra <atish.patra@linux.dev>,
+        Thomas Gleixner <tglx@kernel.org>
+Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
+        Anup Patel <anup@brainfault.org>,
+        Andrew Jones <andrew.jones@oss.qualcomm.com>,
+        kvm-riscv@lists.infradead.org, kvm@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+        "Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>,
+        Anup Patel <anup.patel@oss.qualcomm.com>
+Subject: [PATCH v3 2/2] RISC-V: KVM: AIA: Make HGEI number management fully per-CPU
+Date: Sun, 24 May 2026 18:50:57 +0530
+Message-ID: <20260524132057.2425034-3-anup.patel@oss.qualcomm.com>
+X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20260524132057.2425034-1-anup.patel@oss.qualcomm.com>
+References: <20260524132057.2425034-1-anup.patel@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -90,117 +71,183 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-QCInternal: smtphost
+X-QCInternal: smtphost
+X-Proofpoint-ORIG-GUID: bnmTaGUR6yG9VfV1YibQOTzTa5IAgFYE
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI0MDEzNSBTYWx0ZWRfX4+jrG67ilBiX
+ TVzNUflng9tavOiH19DCmmF3UBPY2DfbugVuC2zQ0mzHNOa2UKzthbfCeIoaXHZXvdjKUhhDeeD
+ bvYKiNADcDlK/uSbKt/dyhBhNxKzTOzcf3L66EhBwdF/pSZgts51I/8IB1bBgh2mXWMPRdswGNX
+ GDdfEKyvZYMbR2E8wXqQQoMFPJ72DXbxk9unw286s2sR1n8nVREBn11osejrR8i+K71nSl43gL2
+ LeL4T1dfVDacaR1smn2NEJ/Xlc3NvaULDwpiB8W6IBchDMpCcCMY1eqS/brzSGX6vruhUNpxgSR
+ KzzD03s0C7Yi2UmhKeXsPIG4bkH4Twz6y4+4QNeApATff96Ue8R47ekUtS6ygotO/avdNL+EjpN
+ 2lk1qXEi/oThCXYjrpvAsBNncjv81FGMOapLxfqGHoSROex8D0CogoMdi/OAGJEZWNZrU0jM2la
+ mNPAWkr2bbMevj3kW2Q==
+X-Proofpoint-GUID: bnmTaGUR6yG9VfV1YibQOTzTa5IAgFYE
+X-Authority-Analysis: v=2.4 cv=Xca5Co55 c=1 sm=1 tr=0 ts=6a12fb3e cx=c_pps
+ a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
+ a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
+ a=DJpcGTmdVt4CTyJn9g5Z:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
+ a=2MwdZdDoDz0fOsLNy3oA:9
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-24_04,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 malwarescore=0 adultscore=0 priorityscore=1501 impostorscore=0
+ clxscore=1011 lowpriorityscore=0 bulkscore=0 phishscore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605240135
 
-Linus,
+From: "Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>
 
-The following changes since commit 6779b50faa562e6cca1aa6a4649a4d764c6c7e28:
+Previously, the number of Hypervisor Guest External Interrupt (HGEI)
+lines was stored in a single global variable `kvm_riscv_aia_nr_hgei`
+and assumed to be the same for all HARTs. This assumption does not
+hold on heterogeneous RISC-V SoCs where different cores may expose
+different HGEIE CSR widths.
 
-  Merge tag 'pci-v7.1-fixes-2' of git://git.kernel.org/pub/scm/linux/kernel/git/pci/pci (2026-05-21 15:02:12 -0700)
+Introduce `nr_hgei` field into the per-CPU `struct aia_hgei_control`
+and probe the actual supported HGEI count for the current HART in
+`kvm_riscv_aia_enable()` using the standard RISC-V CSR probe technique:
 
-are available in the Git repository at:
+    csr_write(CSR_HGEIE, -1UL);
+    nr = fls_long(csr_read(CSR_HGEIE));
+    if (nr)
+        nr--;
 
-  https://git.kernel.org/pub/scm/virt/kvm/kvm.git tags/for-linus
+All HGEI allocation, free and disable paths (`kvm_riscv_aia_free_hgei()`,
+`kvm_riscv_aia_disable()`, etc.) now use the per-CPU value instead of
+the global one.
 
-for you to fetch changes up to 9a12fa5213cfc391e0eed63902d3be98f0913765:
+The global `kvm_riscv_aia_nr_hgei` now represents the minimum number
+of HGEI lines across HARTs and can be used to check whether HGEI
+support is available or not.
 
-  KVM: SVM: Disable AVIC IPI virtualization on Hygon Family 18h (erratum #1235) (2026-05-23 10:09:04 +0200)
+This makes KVM AIA robust on big.LITTLE-style asymmetric platforms.
 
-----------------------------------------------------------------
-Arm:
+Signed-off-by: Guo Ren (Alibaba DAMO Academy) <guoren@kernel.org>
+Signed-off-by: Anup Patel <anup.patel@oss.qualcomm.com>
+---
+ arch/riscv/kvm/aia.c | 67 +++++++++++++++++++++++++++++---------------
+ 1 file changed, 44 insertions(+), 23 deletions(-)
 
-- Fix ITS EventID sanitisation when restoring an interrupt translation
-  table.
-
-- Fix PPI memory leak when failing to initialise a vcpu.
-
-- Correctly return an error when the validation of a hypervisor trace
-  descriptor fails, and limit this validation to protected mode only.
-
-RISC-V:
-
-- Fix invalid HVA warning in steal-time recording
-
-- Return SBI_ERR_FAILURE to guest upon OOM in pmu_event_info()
-  and pmu_snapshot_set_shmem()
-
-- Fix NULL pointer dereference in SBI v0.1 SEND_IPI handler
-
-- Fix sign extension of value for MMIO loads
-
-s390:
-
-- Fix bugs in vSIE (nested virtualization) and UCONTROL, caused by the page
-  table rewrite.
-
-x86:
-
-- Apply erratum #1235 workaround (disable AVIC IPI virtualization) on Hygon
-  Family 18h, just like on AMD Family 17h.
-
-- When KVM_CAP_X86_APIC_BUS_CYCLES_NS is queried on a specific VM, return
-  the VM's configured APIC bus frequency instead of the default.  This
-  is less confusing (read: not wrong) and makes it easier to fill in CPUID
-  information that communicates the APIC bus frequency to the guest.
-
-Selftests:
-
-- Do not include glibc-internal <bits/endian.h>; it worked by chance and
-  broke building KVM selftests with musl.
-
-----------------------------------------------------------------
-Claudio Imbrenda (5):
-      KVM: s390: vsie: Fix memory leak when unshadowing
-      KVM: s390: Fix leaking kvm_s390_mmu_cache in case of errors
-      KVM: s390: vsie: Fix unshadowing logic
-      KVM: s390: vsie: Fix redundant rmap entries
-      KVM: s390: Properly reset zero bit in PGSTE
-
-Hisam Mehboob (1):
-      KVM: selftests: elf: Include <endian.h> instead of <bits/endian.h>
-
-Jiakai Xu (3):
-      RISC-V: KVM: Fix invalid HVA warning in steal-time recording
-      RISC-V: KVM: Fix NULL pointer dereference in SBI v0.1 SEND_IPI handler
-      RISC-V: KVM: Fix sign extension for MMIO loads
-
-Michael Bommarito (2):
-      KVM: arm64: vgic-its: Reject restored DTE with out-of-range num_eventid_bits
-      KVM: arm64: vgic: Free private_irqs when init fails after allocation
-
-Osama Abdelkader (2):
-      riscv: kvm: return SBI_ERR_FAILURE for pmu_snapshot_set_shmem() when OOM
-      riscv: kvm: return SBI_ERR_FAILURE for pmu_event_info() when OOM
-
-Paolo Bonzini (3):
-      Merge tag 'kvmarm-fixes-7.1-3' of git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm into HEAD
-      Merge tag 'kvm-s390-master-7.1-2' of https://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux into HEAD
-      Merge tag 'kvm-riscv-fixes-7.1-1' of https://github.com/kvm-riscv/linux into HEAD
-
-Sean Christopherson (2):
-      KVM: x86: Return the VM's configured APIC bus frequency when queried
-      KVM: selftests: Verify that KVM returns the configured APIC cycle length
-
-Tina Zhang (1):
-      KVM: SVM: Disable AVIC IPI virtualization on Hygon Family 18h (erratum #1235)
-
-Vincent Donnefort (1):
-      KVM: arm64: Fix nVHE/pKVM hyp tracing error on invalid desc
-
- arch/arm64/kvm/arm.c                               |  4 +-
- arch/arm64/kvm/hyp/nvhe/trace.c                    |  9 +++-
- arch/arm64/kvm/vgic/vgic-its.c                     |  4 ++
- arch/riscv/kvm/vcpu_insn.c                         |  9 ++--
- arch/riscv/kvm/vcpu_pmu.c                          | 12 +++--
- arch/riscv/kvm/vcpu_sbi_sta.c                      |  2 +-
- arch/riscv/kvm/vcpu_sbi_v01.c                      |  2 +
- arch/s390/kvm/dat.c                                |  1 +
- arch/s390/kvm/dat.h                                |  3 +-
- arch/s390/kvm/gaccess.c                            |  1 +
- arch/s390/kvm/gmap.c                               | 18 ++++---
- arch/s390/kvm/gmap.h                               | 61 ++++++++++++++++++++--
- arch/x86/kvm/svm/avic.c                            | 12 +++--
- arch/x86/kvm/x86.c                                 |  2 +-
- tools/testing/selftests/kvm/lib/elf.c              |  2 +-
- .../selftests/kvm/x86/apic_bus_clock_test.c        |  4 ++
- 16 files changed, 115 insertions(+), 31 deletions(-)
+diff --git a/arch/riscv/kvm/aia.c b/arch/riscv/kvm/aia.c
+index 5ec503288555..c289d8999aaf 100644
+--- a/arch/riscv/kvm/aia.c
++++ b/arch/riscv/kvm/aia.c
+@@ -23,6 +23,7 @@ struct aia_hgei_control {
+ 	raw_spinlock_t lock;
+ 	unsigned long free_bitmap;
+ 	struct kvm_vcpu *owners[BITS_PER_LONG];
++	unsigned int nr_hgei;
+ };
+ static DEFINE_PER_CPU(struct aia_hgei_control, aia_hgei);
+ static int hgei_parent_irq;
+@@ -452,7 +453,7 @@ void kvm_riscv_aia_free_hgei(int cpu, int hgei)
+ 
+ 	raw_spin_lock_irqsave(&hgctrl->lock, flags);
+ 
+-	if (hgei > 0 && hgei <= kvm_riscv_aia_nr_hgei) {
++	if (hgei > 0 && hgei <= hgctrl->nr_hgei) {
+ 		if (!(hgctrl->free_bitmap & BIT(hgei))) {
+ 			hgctrl->free_bitmap |= BIT(hgei);
+ 			hgctrl->owners[hgei] = NULL;
+@@ -486,21 +487,8 @@ static irqreturn_t hgei_interrupt(int irq, void *dev_id)
+ 
+ static int aia_hgei_init(void)
+ {
+-	int cpu, rc;
++	int rc;
+ 	struct irq_domain *domain;
+-	struct aia_hgei_control *hgctrl;
+-
+-	/* Initialize per-CPU guest external interrupt line management */
+-	for_each_possible_cpu(cpu) {
+-		hgctrl = per_cpu_ptr(&aia_hgei, cpu);
+-		raw_spin_lock_init(&hgctrl->lock);
+-		if (kvm_riscv_aia_nr_hgei) {
+-			hgctrl->free_bitmap =
+-				BIT(kvm_riscv_aia_nr_hgei + 1) - 1;
+-			hgctrl->free_bitmap &= ~BIT(0);
+-		} else
+-			hgctrl->free_bitmap = 0;
+-	}
+ 
+ 	/* Skip SGEI interrupt setup for zero guest external interrupts */
+ 	if (!kvm_riscv_aia_nr_hgei)
+@@ -545,9 +533,48 @@ static void aia_hgei_exit(void)
+ 
+ void kvm_riscv_aia_enable(void)
+ {
++	const struct imsic_global_config *gc;
++	const struct imsic_local_config *lc;
++	struct aia_hgei_control *hgctrl;
++
+ 	if (!kvm_riscv_aia_available())
+ 		return;
+ 
++	gc = imsic_get_global_config();
++	lc = (gc) ? this_cpu_ptr(gc->local) : NULL;
++	hgctrl = this_cpu_ptr(&aia_hgei);
++
++	/* Figure-out number of bits in HGEIE */
++	csr_write(CSR_HGEIE, -1UL);
++	hgctrl->nr_hgei = fls_long(csr_read(CSR_HGEIE));
++	csr_write(CSR_HGEIE, 0);
++	if (hgctrl->nr_hgei)
++		hgctrl->nr_hgei--;
++
++	/*
++	 * Number of usable per-HART HGEI lines should be minimum of
++	 * per-HART IMSIC guest files and number of bits in HGEIE.
++	 */
++	if (lc)
++		hgctrl->nr_hgei = min((ulong)hgctrl->nr_hgei, lc->nr_guest_files);
++	else
++		hgctrl->nr_hgei = 0;
++
++	/*
++	 * The global number of usable HGEI lines should be minimum
++	 * across all HARTs.
++	 */
++	kvm_riscv_aia_nr_hgei = min(kvm_riscv_aia_nr_hgei, hgctrl->nr_hgei);
++
++	if (hgctrl->nr_hgei) {
++		hgctrl->free_bitmap = BIT(hgctrl->nr_hgei + 1) - 1;
++		hgctrl->free_bitmap &= ~BIT(0);
++	} else {
++		hgctrl->free_bitmap = 0;
++	}
++
++	raw_spin_lock_init(&hgctrl->lock);
++
+ 	csr_write(CSR_HVICTL, aia_hvictl_value(false));
+ 	csr_write(CSR_HVIPRIO1, 0x0);
+ 	csr_write(CSR_HVIPRIO2, 0x0);
+@@ -588,7 +615,7 @@ void kvm_riscv_aia_disable(void)
+ 
+ 	raw_spin_lock_irqsave(&hgctrl->lock, flags);
+ 
+-	for (i = 0; i <= kvm_riscv_aia_nr_hgei; i++) {
++	for (i = 0; i <= hgctrl->nr_hgei; i++) {
+ 		vcpu = hgctrl->owners[i];
+ 		if (!vcpu)
+ 			continue;
+@@ -634,14 +661,8 @@ int kvm_riscv_aia_init(void)
+ 	csr_write(CSR_HGEIE, 0);
+ 	if (kvm_riscv_aia_nr_hgei)
+ 		kvm_riscv_aia_nr_hgei--;
+-
+-	/*
+-	 * Number of usable HGEI lines should be minimum of per-HART
+-	 * IMSIC guest files and number of bits in HGEIE
+-	 */
+ 	if (gc)
+-		kvm_riscv_aia_nr_hgei = min((ulong)kvm_riscv_aia_nr_hgei,
+-					    gc->nr_guest_files);
++		kvm_riscv_aia_nr_hgei = min(kvm_riscv_aia_nr_hgei, gc->nr_guest_files);
+ 	else
+ 		kvm_riscv_aia_nr_hgei = 0;
+ 
+-- 
+2.43.0
 
