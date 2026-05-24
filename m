@@ -1,133 +1,250 @@
-Received: from flow-b8-smtp.messagingengine.com (flow-b8-smtp.messagingengine.com [202.12.124.143])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f46.google.com (mail-oo1-f46.google.com [209.85.161.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 083EEE555;
-	Sun, 24 May 2026 00:08:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.143
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779581298; cv=none; b=S4hBtfvxIZvi+qPzaORzzz5Dkjf1is6iJlBhFL1NiOHzULD5h8QHXVMMmQUstX2ghaz6hw39fGQVx6wT5poZLlojqPx5yMaNZkuVvF9Ht/O6NI1qBuTwjg94WlAqJ+orsdwwWBtsPbKEEt+U3gkkPpbMH0+soBi/NbM70WGA3Ww=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779581298; c=relaxed/simple;
-	bh=ibOXMmyPy1OAlADs6YJhAT6SpQm5cY3R9sMM7pbe7A0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eMe6+63QAEl5gT5goUS+HWTQwYoBC+Cd6yUf6kCSvacIZgifG4GPLUKVeT69W+GZkhhdLyleD3Njk/P4z6UVXKKn1u6WDWp2xmX2xUDDmPrcsSb6HGYab/lzwnsXlrCgxTEMlWKmxKWfLT/0ynaSQIAFX63xHgnX72DUClYcfJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=Gz2Mjnyy; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=P66W112j; arc=none smtp.client-ip=202.12.124.143
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2818285066
+	for <kvm@vger.kernel.org>; Sun, 24 May 2026 05:23:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.161.46
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779600240; cv=pass; b=M3A2kqbpeQOYJkkhBmm7omoHRnlsepRHIAUEXOWwZRt55qymjjavUzdhjlt66AzltYXTixFFwHO+kpS5tgiA3y8X+O3Nqvx1+yxfHBnxvoaKrfBrNBtprVo120Cc67v219aw9wSnJjHOQQGAVHeFb4PO33SWeEcUm6seFZo+ujY=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779600240; c=relaxed/simple;
+	bh=Eopx750WVoBwB4WCJWW83n+ga5EbZfJTe9hwIKn1MgU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Ifct/fAM5/lGC81hSGxjrWCo/Hn6LfjsRWQ0I91JFGnAipSgTKKKsdngG/Ce91vAXb/yPOsBdgVn5odNKmfttGgUXeOl1zhHshXAzH6nxy6ms3PrXuASH9m3eX+TzrfvxxxmLfhriyjvtQtf7KM/kKPUPLPdQe+KPPpMiRqxr7s=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org; spf=none smtp.mailfrom=brainfault.org; dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b=v8kkn10g; arc=pass smtp.client-ip=209.85.161.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=brainfault.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=brainfault.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="Gz2Mjnyy";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="P66W112j"
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailflow.stl.internal (Postfix) with ESMTP id 932CD130006C;
-	Sat, 23 May 2026 20:08:13 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Sat, 23 May 2026 20:08:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1779581293; x=
-	1779588493; bh=bOW3L8R72QTY5Nd5WS70HCXZ0iclOnm9lq7EioHVhjE=; b=G
-	z2Mjnyy3ZUQAyP+kZpFy4wEXbtv0zxxnMI6FV69F+8GKCYhtKaiDlsMJG7jY9awP
-	odBNaWeImYySll7F/C1d34/zqHhu+qsMrTtmOfbsxdZk+hayWEt6AoBrYTPQH26d
-	aeHldZrblVRhSCJu147s35HSgt7FXr6ofwCOTH0r5Sd2fWvcBSYwbC5sKbZZpowV
-	ekwysBPN/34GBSaXKCFJDSkLrv3Iierrpn8VldIcS5bRmtl85SmCKBI2RG6vbs4O
-	Vn1Y2uSKbdFZ3VIv7kmp/puc9kRBTQZLpCg0x969TJJr/DdmwZ0AAF8EoW2zo3jv
-	ILqCxHY2SrYJbagitsVgw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1779581293; x=1779588493; bh=bOW3L8R72QTY5Nd5WS70HCXZ0iclOnm9lq7
-	EioHVhjE=; b=P66W112jOXxtTt1/jIy4NYcASQN652h2lmLJHJxnzyIkd6LSDHS
-	q+9rbiNxvG0zVVExqVdFthlE4GioU4qqIFcKXHiaR/ZevjEkAZruUCSxUTLx9nUS
-	cg7LdRV0lxscEx2CiIFFFjre5ByxgXPsrviUlnoNTeMR35vDjoblNmgyNMoiGl48
-	CLN2lJbQq+P+WvI0Y6u6pKkkvK/W3dOm4rc81VUKX2ExdlVi/+M0r6LBJZRvTzq/
-	PLlHafce62O8Ae7clkqIbWNoHKA6fOdUzOnzQj85aZPxpbVOdw4X1svwMWxcCetE
-	S57k0MBOGDhp7iwPkzeynimC1BgTWRIXdpg==
-X-ME-Sender: <xms:bEESaughE1L8wNAw6-Tboi_OTEbrkiBPfWphC1gVg1RQ0KrCDmoFUw>
-    <xme:bEESatfw7OYcKZuldoKZDe_ZkA6LtlHFpKmNTkcclHawnla2-c5qAYXlfJUrW4bl2
-    DH3PD5U6wdkFSy4Vq9eVmGtMo2rnyzUuOfqrBnmoc4fvupH3E7v704>
-X-ME-Received: <xmr:bEESatM85Kp8Ys-ayUtcBSyAEHje2dFDj7owp50PnBRNkrl7PRqsbpsYMjNjZw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefhedrtddtgdduheeggeeiucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucenucfjughrpeffhffvvefukfhfgggtuggjsehttdertd
-    dttddvnecuhfhrohhmpefmihhrhihlucfuhhhuthhsvghmrghuuceokhhirhhilhhlsehs
-    hhhuthgvmhhovhdrnhgrmhgvqeenucggtffrrghtthgvrhhnpeeiveekgedugeetjefgue
-    egjeejkeetvdeuvdeifffftdfhvedvffeuieegleegvdenucffohhmrghinhepkhgvrhhn
-    vghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrh
-    homhepkhhirhhilhhlsehshhhuthgvmhhovhdrnhgrmhgvpdhnsggprhgtphhtthhopeeh
-    tddpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprhhpphhtsehkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhnuggrthhiohhnrdhorhhg
-    pdhrtghpthhtohepphgvthgvrhigsehrvgguhhgrthdrtghomhdprhgtphhtthhopegurg
-    hvihgusehkvghrnhgvlhdrohhrghdprhgtphhtthhopehljhhssehkvghrnhgvlhdrohhr
-    ghdprhgtphhtthhopehsuhhrvghnsgesghhoohhglhgvrdgtohhmpdhrtghpthhtohepvh
-    gsrggskhgrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihgrmhdrhhhofihlvght
-    thesohhrrggtlhgvrdgtohhmpdhrtghpthhtohepiihihiesnhhvihguihgrrdgtohhm
-X-ME-Proxy: <xmx:bEESaq0skpAwg1PDaGi8DjW_QLmZtPVZCUawJOQjS0k8IqvCgw_WBA>
-    <xmx:bEESavKPwDlFOe7kGEZEbtj_Uc_XsLeXS-q16eVt-Aw1hmkTnjbnZQ>
-    <xmx:bEESajZrCvLqVpD38kQ94zW1JHxmFlUZkVDJOddnEjnU-6y2pADqmQ>
-    <xmx:bEESagnduI5E4gsBSx_8kraDKWUi1jSseknqfEBu3ikHn6oihztVYw>
-    <xmx:bUESahUyLmGaTkuebIyTdGRJozup0-YDPiaBE8kJpo5RZGkYcDDzF81d>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
- 23 May 2026 20:08:12 -0400 (EDT)
-Date: Sun, 24 May 2026 01:08:11 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Mike Rapoport <rppt@kernel.org>
-Cc: akpm@linux-foundation.org, peterx@redhat.com, david@kernel.org, 
-	ljs@kernel.org, surenb@google.com, vbabka@kernel.org, Liam.Howlett@oracle.com, 
-	ziy@nvidia.com, corbet@lwn.net, skhan@linuxfoundation.org, seanjc@google.com, 
-	pbonzini@redhat.com, jthoughton@google.com, aarcange@redhat.com, sj@kernel.org, 
-	usama.arif@linux.dev, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, kvm@vger.kernel.org, 
-	kernel-team@meta.com, linux-man@vger.kernel.org, alx@kernel.org
-Subject: Re: [PATCH v3 15/16] userfaultfd.2: Add read-write protect mode
-Message-ID: <ahJBTaobKD9XdT33@thinkstation>
-References: <20260522133857.552279-1-kirill@shutemov.name>
- <20260522133857.552279-16-kirill@shutemov.name>
- <ahGDbKr2u6sqoc3f@kernel.org>
+	dkim=pass (2048-bit key) header.d=brainfault-org.20251104.gappssmtp.com header.i=@brainfault-org.20251104.gappssmtp.com header.b="v8kkn10g"
+Received: by mail-oo1-f46.google.com with SMTP id 006d021491bc7-69d60694c9bso2377679eaf.2
+        for <kvm@vger.kernel.org>; Sat, 23 May 2026 22:23:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779600236; cv=none;
+        d=google.com; s=arc-20240605;
+        b=KYC/0V/oNs+CF0w/p8l+P1UOhI5TD6+ElFpXDEBfKnoxafBFjHLob4+cvUCFXeV3zD
+         rGbLOiUBh/0XN6NJ+EIIJyf+LuovkOLt9fObzgQu+KckEA202tYAlLJA6DgRVEZurxYa
+         fNnpc2lV7/AsxUvs5zNmbY4fdsbgBOZ5F1Dq3qj5ZBBjMp0rOuFBMofw9Tgph3LNI6+J
+         pDi+R5yDuJMBRzkxYAR2Tf+SpFUWq/vWK2iXdT9Iuy/F8EYIR+Ms1Pg3xDNXTEiux0Qw
+         Fx/OpPhi0fHMn9fQmcRcevHPy+DO3c27libG8XWaBUils+Jt9CnChyvLGKusQ2eO5i4m
+         6FPg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=TlsDSTzRWDaQ++yneqT1aqZ8P2+n7UdjaBbJTpkbfU0=;
+        fh=/JEJqJWDXNaq0tSlaWZ75Jk/+kHUpBiNWi8dZgNfVPY=;
+        b=KXPuAadEJGvZl8m70qzXmGu5L90V98ZfNmSm3mzQGq6oa15v6f1ke5s/0RFz+HDADz
+         dcC0Gmi1bCQaoqOHNGLDJezT6hopkERY2k5Dw9gTup0fFPyt79R815sCVJJR6z+TVBB7
+         Xxs4kEt0S6HPMjjc9ojJT8frps4xYeUgQqbDzzNo8M5N+P6rzE9AN114zsLOvcKJUofM
+         jjeHLPpU3AQcTpSfsmRM4RcjLVFndMv7tZuEwXEiJa+HPSMxxKdrhkVvJZhwbOxUNMpD
+         yGdZHJJV2bpEI59tYqZtBZxxHgajxHd0m8sqON0KDsYTeuLDQI6sXDgNXiQ6eOsGIvPo
+         OWmQ==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=brainfault-org.20251104.gappssmtp.com; s=20251104; t=1779600236; x=1780205036; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TlsDSTzRWDaQ++yneqT1aqZ8P2+n7UdjaBbJTpkbfU0=;
+        b=v8kkn10glY91FJDzRXzeUue/f1+0hJMQYl47Hq1grKfCKsq8ff4vjd4drTAWS5K83k
+         FcKx+2EsHALq6IHF8PwZXl51AMzk0vZM2z3dXh8+lC1f/+hRV+QlBYAwbVICEMqtav/c
+         hdbZr3KP+EbxaFEqLlY18l9+E025828T2ogeFQs8bTqA/YxQUx4lSEJIA8VUqDQEkt29
+         gd8oq883Y2UN2o4G+U3REL+/Fm2X6wiVA1UnXtRFOgLp79CNbI+O+Xhe8b/qVgVfFxGR
+         dmchXfp3Dnue0rm591/7L3wPBecD0yj/swg4PGXSMXM3hoGO0bTaTWRaB2lNS2DkZut8
+         XqYA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779600236; x=1780205036;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=TlsDSTzRWDaQ++yneqT1aqZ8P2+n7UdjaBbJTpkbfU0=;
+        b=bhFh81HSB3vPKk2UQDqKaOburlOFy41HdCSp0BfOOwosufciQM5Xk6SUtd5jxW3A5t
+         klKRdWzVjKTykvM9Yo5mJBKIxuy5gJIifcrYASB6qxa3DNV+fTfFsteQmOPbcqEDWHt6
+         Wg1hdmnBNgq1LVcEt+ux+ks5TgTWblmT7gyOefyo1zGKWKkFD8Qsu2xsd0j2YwYTMXAX
+         XKj2X5bPuBXUBYCpatb7wb8975B13Q6eGehp28JQBWp+rQlJdAbT/x2AYl77nNdHNoBg
+         bWkgObrMZfeafGvNQBss0GDIPUFi8wahjO/ATVWdOSiDaboEr/zj/CMmKDycol/MPu7D
+         LcnA==
+X-Forwarded-Encrypted: i=1; AFNElJ/ojuNOkG8pVqMkmhCnxro8Ihu6Y61tlav7e80Bqc8Axemv/gtHroUVJB0wU7tQ7LdZSIE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5rHSaoakD03+98SKxnwvbjGhlkaB+KmM+PF5zdTJ72BjFmIFY
+	dwVXIJ1b+qdUMxUxdHz+xj4F5Gcu33QtvEg2hwLulKm5xzUcM7O3Tbvyo2OEdr5PFCFQpoBhQYV
+	lTWqkw7/hKRfS5fw/55xY9CX6uBpZ2ZZB10D4exE80w==
+X-Gm-Gg: Acq92OE/fiV1KtMYlyQOEZXroyBgPrRy/mCbi6MMUVhs+GAQFnKfqok8Y0K/XzoDbm/
+	uv4Sp3862PvV46e9uSHjTPudB7l9Qe+7kptyJrutefjEQJoz4XF5b+nQCQwyAAWqJ+vg63D+/0G
+	pYFzLrSrXDl74d7gRhNIYvD0dZfiuC68FZ0utkJOSxFR8SqtLDw6DyDNEkZnd3TY3/RQqKBQizz
+	itNPg7x9JmcYlNDPfDpF/UkBKz/rei4J36+dDQO/7yiM+H8TUa7xjMokCLfyuJUhq0wDXSde7bu
+	ZvIUo8LG9lhyyYpB2a7TM/5EvLJl225MbWfv+pD/rDyfPD0kO2yFD2ZF47C49kKU2HADhjPeP/X
+	+N1LMJ8SR+sTmYlF/Wk1BmIW+2lE/tFqVNm0fyg==
+X-Received: by 2002:a05:6820:809:b0:69d:9b54:8578 with SMTP id
+ 006d021491bc7-69d9b549206mr1744642eaf.3.1779600236536; Sat, 23 May 2026
+ 22:23:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ahGDbKr2u6sqoc3f@kernel.org>
+References: <20260425005916.3321811-1-guoren@kernel.org> <20260425005916.3321811-2-guoren@kernel.org>
+In-Reply-To: <20260425005916.3321811-2-guoren@kernel.org>
+From: Anup Patel <anup@brainfault.org>
+Date: Sun, 24 May 2026 10:53:44 +0530
+X-Gm-Features: AVHnY4IC08q9kBcQZP_1G1-2LQgJp4Rcy_GebziaWQmr8stCU9wj261jbCraHkA
+Message-ID: <CAAhSdy1E+k3whKm0dpgFO9J6DdMhAv0ojGc9rfPVKTt8zZW_xg@mail.gmail.com>
+Subject: Re: [PATCH V2 1/4] RISC-V: KVM: AIA: Make HGEI number and management
+ fully per-CPU
+To: guoren@kernel.org
+Cc: alex@ghiti.fr, aou@eecs.berkeley.edu, atish.patra@linux.dev, 
+	cp0613@linux.alibaba.com, fangyu.yu@linux.alibaba.com, gaohan@iscas.ac.cn, 
+	inochiama@gmail.com, kvm-riscv@lists.infradead.org, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, me@ziyao.cc, 
+	palmer@dabbelt.com, pjw@kernel.org, tglx@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, May 23, 2026 at 01:37:32PM +0300, Mike Rapoport wrote:
-> On Fri, May 22, 2026 at 02:38:56PM +0100, Kiryl Shutsemau wrote:
-> > From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
-> > 
-> > Read-write protect mode (UFFDIO_REGISTER_MODE_RWP) is supported starting
-> > from Linux 7.2. It traps every access -- read or write -- to a present
-> > page within a registered range. The matching UAPI consists of:
-> > 
-> >   - UFFDIO_REGISTER_MODE_RWP   registration-mode bit
-> >   - UFFD_FEATURE_RWP           capability bit
-> >   - UFFD_FEATURE_RWP_ASYNC     async (in-kernel) fault resolution
-> >   - UFFDIO_RWPROTECT           install / remove RWP on a range
-> >   - UFFDIO_SET_MODE            runtime sync/async toggle
-> >   - UFFD_PAGEFAULT_FLAG_RWP    new pagefault.flags bit
-> > 
-> > Document the new registration-mode entry, the "Userfaultfd read-write
-> > protect mode" section, the new pagefault flag, and a VERSIONS line.
-> > 
-> > Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
-> > ---
-> >  man2/userfaultfd.2 | 147 ++++++++++++++++++++++++++++++++++++++++++++-
-> >  1 file changed, 146 insertions(+), 1 deletion(-)
-> 
-> This doesn't apply to the current man-pages tree
-> https://git.kernel.org/pub/scm/docs/man-pages/man-pages.git
-> 
-> and reading raw groff hurts eyes too much.
-> 
-> What linux-man tree did you use to generate those?
+On Sat, Apr 25, 2026 at 6:29=E2=80=AFAM <guoren@kernel.org> wrote:
+>
+> From: "Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>
+>
+> Previously the number of Hypervisor Guest External Interrupt (HGEI)
+> lines was stored in a single global variable `kvm_riscv_aia_nr_hgei`
+> and assumed to be the same for all HARTs. This assumption does not
+> hold on heterogeneous RISC-V SoCs where different cores may expose
+> different HGEIE CSR widths.
+>
+> Introduce `nr_hgei` field into the per-CPU `struct aia_hgei_control`
+> and probe the actual supported HGEI count for the current HART in
+> `kvm_riscv_aia_enable()` using the standard RISC-V CSR probe
+> technique:
+>
+>     csr_write(CSR_HGEIE, -1UL);
+>     nr =3D fls_long(csr_read(CSR_HGEIE));
+>     if (nr)
+>         nr--;
+>
+> All HGEI allocation, free and disable paths (`kvm_riscv_aia_free_hgei()`,
+> `kvm_riscv_aia_disable()`, etc.) now use the per-CPU value instead of
+> the global one.
+>
+> The early global `kvm_riscv_aia_nr_hgei` is kept only for deciding
+> whether SGEI interrupt registration is needed; the real per-HART
+> initialization of lock and free_bitmap is moved to enable time.
 
-Ughh.. Used old github mirror. Will rebase.
+We should keep the `kvm_riscv_aia_nr_hgei` to imply two things:
+1) Minimum number of HGEI lines available across all HARTs
+2) Non-zero kvm_riscv_aia_nr_hgei means HGEI is enabled
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+The PATCH2 is redundant and must be droped. I will take care
+care of this at the time of merging.
+
+>
+> This makes KVM AIA robust on big.LITTLE-style and multi-vendor
+> asymmetric platforms.
+>
+> Signed-off-by: Guo Ren (Alibaba DAMO Academy) <guoren@kernel.org>
+> ---
+>  arch/riscv/kvm/aia.c | 40 ++++++++++++++++++++++++----------------
+>  1 file changed, 24 insertions(+), 16 deletions(-)
+>
+> diff --git a/arch/riscv/kvm/aia.c b/arch/riscv/kvm/aia.c
+> index 5ec503288555..a23729052cfb 100644
+> --- a/arch/riscv/kvm/aia.c
+> +++ b/arch/riscv/kvm/aia.c
+> @@ -23,6 +23,7 @@ struct aia_hgei_control {
+>         raw_spinlock_t lock;
+>         unsigned long free_bitmap;
+>         struct kvm_vcpu *owners[BITS_PER_LONG];
+> +       unsigned int nr_hgei;
+>  };
+>  static DEFINE_PER_CPU(struct aia_hgei_control, aia_hgei);
+>  static int hgei_parent_irq;
+> @@ -452,7 +453,7 @@ void kvm_riscv_aia_free_hgei(int cpu, int hgei)
+>
+>         raw_spin_lock_irqsave(&hgctrl->lock, flags);
+>
+> -       if (hgei > 0 && hgei <=3D kvm_riscv_aia_nr_hgei) {
+> +       if (hgei > 0 && hgei <=3D hgctrl->nr_hgei) {
+>                 if (!(hgctrl->free_bitmap & BIT(hgei))) {
+>                         hgctrl->free_bitmap |=3D BIT(hgei);
+>                         hgctrl->owners[hgei] =3D NULL;
+> @@ -486,21 +487,8 @@ static irqreturn_t hgei_interrupt(int irq, void *dev=
+_id)
+>
+>  static int aia_hgei_init(void)
+>  {
+> -       int cpu, rc;
+> +       int rc;
+>         struct irq_domain *domain;
+> -       struct aia_hgei_control *hgctrl;
+> -
+> -       /* Initialize per-CPU guest external interrupt line management */
+> -       for_each_possible_cpu(cpu) {
+> -               hgctrl =3D per_cpu_ptr(&aia_hgei, cpu);
+> -               raw_spin_lock_init(&hgctrl->lock);
+> -               if (kvm_riscv_aia_nr_hgei) {
+> -                       hgctrl->free_bitmap =3D
+> -                               BIT(kvm_riscv_aia_nr_hgei + 1) - 1;
+> -                       hgctrl->free_bitmap &=3D ~BIT(0);
+> -               } else
+> -                       hgctrl->free_bitmap =3D 0;
+> -       }
+>
+>         /* Skip SGEI interrupt setup for zero guest external interrupts *=
+/
+>         if (!kvm_riscv_aia_nr_hgei)
+> @@ -545,9 +533,29 @@ static void aia_hgei_exit(void)
+>
+>  void kvm_riscv_aia_enable(void)
+>  {
+> +       struct aia_hgei_control *hgctrl;
+> +
+>         if (!kvm_riscv_aia_available())
+>                 return;
+>
+> +       hgctrl =3D this_cpu_ptr(&aia_hgei);
+> +
+> +       /* Figure-out number of bits in HGEIE */
+> +       csr_write(CSR_HGEIE, -1UL);
+> +       hgctrl->nr_hgei =3D fls_long(csr_read(CSR_HGEIE));
+> +       csr_write(CSR_HGEIE, 0);
+> +       if (hgctrl->nr_hgei)
+> +               hgctrl->nr_hgei--;
+
+For completness of this patch, we should also have the following:
+
+    if (gc)
+        hgctrl->nr_hgei=3D min((ulong)hgctrl->nr_hgei, gc->nr_guest_files);
+    else
+        hgctrl->nr_hgei =3D 0;
+
+Also, over here we should check and update kvm_riscv_aia_nr_hgei
+to keep it minimum accross HARTs:
+
+  if (hgctrl->nr_hgei && hgctrl->nr_hgei < kvm_riscv_aia_nr_hgei)
+    kvm_riscv_aia_nr_hgei =3D hgctrl->nr_hgei;
+
+> +
+> +       if (hgctrl->nr_hgei) {
+> +               hgctrl->free_bitmap =3D BIT(hgctrl->nr_hgei + 1) - 1;
+> +               hgctrl->free_bitmap &=3D ~BIT(0);
+> +       } else {
+> +               hgctrl->free_bitmap =3D 0;
+> +       }
+> +
+> +       raw_spin_lock_init(&hgctrl->lock);
+> +
+>         csr_write(CSR_HVICTL, aia_hvictl_value(false));
+>         csr_write(CSR_HVIPRIO1, 0x0);
+>         csr_write(CSR_HVIPRIO2, 0x0);
+> @@ -588,7 +596,7 @@ void kvm_riscv_aia_disable(void)
+>
+>         raw_spin_lock_irqsave(&hgctrl->lock, flags);
+>
+> -       for (i =3D 0; i <=3D kvm_riscv_aia_nr_hgei; i++) {
+> +       for (i =3D 0; i <=3D hgctrl->nr_hgei; i++) {
+>                 vcpu =3D hgctrl->owners[i];
+>                 if (!vcpu)
+>                         continue;
+> --
+> 2.43.0
+>
+
+Regards,
+Anup
