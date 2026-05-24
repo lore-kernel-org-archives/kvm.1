@@ -1,142 +1,206 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C992363B9
-	for <kvm@vger.kernel.org>; Sun, 24 May 2026 07:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6346238F920
+	for <kvm@vger.kernel.org>; Sun, 24 May 2026 07:43:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779608471; cv=none; b=fXT/EJGki6s6GMvkTipK87iHmYwa0S14GGCSQ8svIIyzZFVi0GlR/5Mq3sC+iWlC21i/kue9rUfsgRJ+QCdg0GGzM8OZpkanSE1sCQ6iB+HSjgykxbakvFV6Byz9C8PiIHNY2vN3ET4QvlTPRa7nEt1I0uubYFz9OtVtytL6u8c=
+	t=1779608632; cv=none; b=pI5PImwfhZGQggq5yEv9xXpD5naBBeOpQnqehLq8/Mb/2UEYMWJarujvqq76iD9DSchWIJhTNxMDITDqz1QTD8hYChhnhShjvbwsWWE9QdS9jr9BjRQBaL9o/Ylycb87bupZV1FBnK7ef36TjyV72NpNBqpjacRKXvLWNDHIvD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779608471; c=relaxed/simple;
-	bh=nOp8jjGq5V9hBzjdsY3KMGVxlmO39EiHtBRWB9fGPyc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Ss8bY5lzff6Lm8BULrB20OBxm3zmAt9bJd5Q/Y9YWp7LmkxSsMxMWwpu/6T8UpCo5peV5YXDSUatiOktLlXo4wzYxF3XbmWJVFvvtbq3tOqxzRIjNlkh/lI+3rviSdm/9sRWTNE+qMrLQCumCFS5LNkG2XLybTh4g/ykiDr1QQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bhiqQZSu; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1779608632; c=relaxed/simple;
+	bh=sMZJiqFYOoSGn++Vy+ItrgCs8WBaVci+YgY01KnG7fE=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=AOB6dpMm2I3PH6t2B+HcYxVnfh4oelwrIGubck+69LRjV04YWZTamMHSRK2uuyFRIjVQcxI5IgDZ0jUC2gfLJsK2bbBRsJBiZuBN7pAjKAJU9oGmc8c20f5O8acgAW8grxMOyHErMR2rY85P43exEN3LNeXlTTRW+9wnwUUC/Q0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O66FA70G; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=jS1GD+uu; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bhiqQZSu"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O66FA70G";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="jS1GD+uu"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779608468;
+	s=mimecast20190719; t=1779608629;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=A3rd1sVuTBw0rT3pQVGAGUb98jc4+qx51P3i9XL3UT0=;
-	b=bhiqQZSuuIOcRcYzjjCl3q4z20M0n0BF85n6QNU3Fjjj6Us5a1ZIqwDmghyLo20SMgLF3C
-	C80bnQQfzm3Vzc/EKO3kb4it+/pv2nXs0DdZaXbenBkDmUILeLAJbCXO2SnvNAbDDYm+FU
-	MMGM/D6QKWgKARNj759Q316Gts8RczU=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-272-B2g9SXkiMbGsLoiZ0LARhw-1; Sun,
- 24 May 2026 03:41:06 -0400
-X-MC-Unique: B2g9SXkiMbGsLoiZ0LARhw-1
-X-Mimecast-MFC-AGG-ID: B2g9SXkiMbGsLoiZ0LARhw_1779608465
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C91D619560B7;
-	Sun, 24 May 2026 07:41:05 +0000 (UTC)
-Received: from [10.44.32.29] (unknown [10.44.32.29])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 9BC5B300019F;
-	Sun, 24 May 2026 07:41:04 +0000 (UTC)
-Message-ID: <96d1ed59-6a8e-4b8f-bbfb-0214b2f438a3@redhat.com>
-Date: Sun, 24 May 2026 09:40:58 +0200
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=guYtmTJ2slb5RNDW22mMKN47SoDX8VY7dh3FeNFIKbQ=;
+	b=O66FA70GyeLp44EN/kZGFHnEof2z3eG/twAPKKZvLVs7zTbznS79u/h7hpXATAyEgeD33a
+	PwRILFqcG+F9O665PWMvK0QiOZLDMPOBVogBkEjY0SuCMw/qjaDS9PxUc28VmbaU840trQ
+	Se9hsRQ8mq3PTDWIQWzcUJL/agddfY8=
+Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
+ [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-352-7C5v1CWiMoqI4fdNrrBDbw-1; Sun, 24 May 2026 03:43:45 -0400
+X-MC-Unique: 7C5v1CWiMoqI4fdNrrBDbw-1
+X-Mimecast-MFC-AGG-ID: 7C5v1CWiMoqI4fdNrrBDbw_1779608624
+Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-45aeac88af4so7129723f8f.3
+        for <kvm@vger.kernel.org>; Sun, 24 May 2026 00:43:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1779608624; x=1780213424; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=guYtmTJ2slb5RNDW22mMKN47SoDX8VY7dh3FeNFIKbQ=;
+        b=jS1GD+uub0cWYZ1wzXWU/cBl6gcnSVr1JX79j3uoN74ScV1zkq63fIrNPcIYENejJn
+         SmHeDvGS6GHuEOaaMs4dLPE6AKH5ZFOMg/fhM0F0GSAcY4zSzWFo/NszSdkA69G1OYv5
+         SaesNkGCytpbNaeWkTXn71HoFmrB3aIDFaAhJbggdl4JrqI78yavhyMSXrb54V2+h4nT
+         Gm/epLzUVEBUMrZDMQJahD+72cYo6rKQ20IDVkSHO//2jfx4gzC9pWTnNVvsiiVY79F/
+         lUeb8hURJlB5ygwA9C7c3U/8iu5WjjA35zTq1/+92cE3rCysE1V0x3uVXFAJsjzd96oP
+         kJ7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779608624; x=1780213424;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=guYtmTJ2slb5RNDW22mMKN47SoDX8VY7dh3FeNFIKbQ=;
+        b=MzVKcgg4bxbZpOs2y8H1liF9QqSmEYDutCeuSt/Bstcorre0wjP+LIaSWO3N/AxQwc
+         AnbYKiQdg7yDS50offk6wt2ABGER3ZzwZ6CGFyxHoBBq53ctuaOZTD1TrloaNQwbtqzK
+         NUnNEDL1JoK9WN+6Dp/R41qI9mdnGPaAahhHkxMlh7Jc8KrLw1NVdNboCS+sw+b4vFDN
+         kU4t6Hf/KaARVNzTsxvdxkPvuzRUTyaaMDyvl0j8IVYFNknyegf5bwKc9Mtpz+0KRLYQ
+         ppCbz0DPvUoLCtPSoUm/IBAPVa739ByW5ElcL873sNcTFGESLFEtnVY9/oLRakaKovE6
+         WUUw==
+X-Forwarded-Encrypted: i=1; AFNElJ+62fdZy4DYeJGsudlzS3SPCNNqG02um+vKuC9ZFjCZR5HZo5OBUbwJ+bYEnUOspLyhVIA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2TwJyFHbT1QIUWH9KL0Y8LxomQyzuZGcIXDV4FzcnRJcNFyf3
+	Yzn1pj8O/Moku6pIMZmazPPQL9bBo9rD6sxqrgCJzE/HLbUZnTtgfpJuQrJkUc3n8AHXoVxqkx9
+	xSJ09Xsdx3AG0jCRVWX+c4mb975Rw0pEgEedAdSoSQPb54C8XAQck/Q==
+X-Gm-Gg: Acq92OHoRn5vDj/ztwXXmuvnRU9YBE9198EsTeZVUQACdMLDMWidvJ91TEU6jLT/5JA
+	bMbqTlaaJ1wWBdzz5YdrTlYQ5nn/UX8f0DjrMQMKNRDaQEn+aT9fHD6xYVwNif49YVKfSfy3mf1
+	ZGv3vdOZw1iUOt7zFmFiHAO98QTMBklg5dILepMg1IagPVk+s0+0/33wYmL9fVPYpICGfeV8VjZ
+	OYk1+RRXKoiFXHSm4DMWnPhUmB1YkJ+7myr8VB25OV4znfm5xaBl1jNVjg8c0gw9yuEZtL+ZQYH
+	Lcu8bMhYRibDYtHEsAetEIcl8IG3T6adG21ZpRPNLn8uiew8gfG1mQAuFJU9aSSBkd6AKWJgfkt
+	/RHg6RlDbkchwjElTFSigFaM8589fn7Ix2NGPyhlKduqoWDDD8GI7Vf5iYHaPgEY4nDGUjMWSHj
+	PwjLBfBWu752SMcsjpednvGtE=
+X-Received: by 2002:a05:6000:26d1:b0:451:1143:7df5 with SMTP id ffacd0b85a97d-45eb38e041fmr16426306f8f.41.1779608623965;
+        Sun, 24 May 2026 00:43:43 -0700 (PDT)
+X-Received: by 2002:a05:6000:26d1:b0:451:1143:7df5 with SMTP id ffacd0b85a97d-45eb38e041fmr16426274f8f.41.1779608623537;
+        Sun, 24 May 2026 00:43:43 -0700 (PDT)
+Received: from [10.41.25.122] ([77.241.232.4])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6c9f548sm19154877f8f.2.2026.05.24.00.43.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 24 May 2026 00:43:42 -0700 (PDT)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: torvalds@linux-foundation.org
+Cc: linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Subject: [GIT PULL] KVM changes for Linux 7.1-rc5
+Date: Sun, 24 May 2026 09:43:41 +0200
+Message-ID: <20260524074341.36685-1-pbonzini@redhat.com>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [ANNOUNCE] Email reviews from Sashiko enabled for kvm@
-To: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-References: <ahCGijy722ITkND3@google.com>
-Content-Language: en-US
-From: Paolo Bonzini <pbonzini@redhat.com>
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <ahCGijy722ITkND3@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+Content-Transfer-Encoding: 8bit
 
-On 5/22/26 18:38, Sean Christopherson wrote:
-> FYI, we've opted-in kvm@vger.kernel.org for email reviews from Sashiko[*], so
-> don't be surprised if/when you start getting review feedback.  Given the broad
-> usage of kvm@, Sashiko is configured to email the patch author and Cc kvm@,
-> e.g. won't blast an email to the entire Cc of the original patch.
-> 
-> If Sashiko points out a real flaw, you'll likely get asked to address the issue,
-> but unless the maintainer(s) for a (sub)subsystem say otherwise, there are no
-> expectations that you respond to sashiko-bot (though it's totally fine and even
-> encouraged to do so).  In short, treat Sashiko like any other bot.
-> 
-> The signal:noise ratio for Sashiko has gotten pretty solid, so we don't expect
-> an onslaught of slop, but if there are problems with the volume and/or quality
-> of feedback, we'll adjust and tweak as needed (again, as we do for any other bot).
+Linus,
 
-A couple more things that are specific to KVM generic and x86 patches 
-(though, generally speaking, none of this is a bad idea):
+The following changes since commit 6779b50faa562e6cca1aa6a4649a4d764c6c7e28:
 
-* if you see a false positive, consider that a human might be confused 
-in the same way: adding a comment about something being preexisting or 
-not expected to happen will often be enough to silence Sashiko and might 
-help people reading the code months or years down the line.
+  Merge tag 'pci-v7.1-fixes-2' of git://git.kernel.org/pub/scm/linux/kernel/git/pci/pci (2026-05-21 15:02:12 -0700)
 
-* while you are not expected to respond to the bot, it can be convenient 
-to do at least one quick reply somewhere in the thread noting that 
-you've read it and whether you are waiting a few days for human reviews 
-before sending v(N+1).  This is not mandatory either, it's just kindness 
-to the reviewers.
+are available in the Git repository at:
 
-* the only thing you *are* expected to do is to point out, as you would 
-for human input, any changes from the previous posting that were 
-suggested or done in response to Sashiko reviews.  This is nothing new, 
-as it is standard practice to point out all changes, but please do 
-mention the source of the suggestion.
+  https://git.kernel.org/pub/scm/virt/kvm/kvm.git tags/for-linus
 
-Also, right now Sashiko assumes that all patches are based on 
-kvm/master, which can result in failure to apply them.  This should be 
-fixed soon on either our or their side.
+for you to fetch changes up to 9a12fa5213cfc391e0eed63902d3be98f0913765:
 
-Thanks,
+  KVM: SVM: Disable AVIC IPI virtualization on Hygon Family 18h (erratum #1235) (2026-05-23 10:09:04 +0200)
 
-Paolo
+----------------------------------------------------------------
+Arm:
+
+- Fix ITS EventID sanitisation when restoring an interrupt translation
+  table.
+
+- Fix PPI memory leak when failing to initialise a vcpu.
+
+- Correctly return an error when the validation of a hypervisor trace
+  descriptor fails, and limit this validation to protected mode only.
+
+RISC-V:
+
+- Fix invalid HVA warning in steal-time recording
+
+- Return SBI_ERR_FAILURE to guest upon OOM in pmu_event_info()
+  and pmu_snapshot_set_shmem()
+
+- Fix NULL pointer dereference in SBI v0.1 SEND_IPI handler
+
+- Fix sign extension of value for MMIO loads
+
+s390:
+
+- Fix bugs in vSIE (nested virtualization) and UCONTROL, caused by the page
+  table rewrite.
+
+x86:
+
+- Apply erratum #1235 workaround (disable AVIC IPI virtualization) on Hygon
+  Family 18h, just like on AMD Family 17h.
+
+- When KVM_CAP_X86_APIC_BUS_CYCLES_NS is queried on a specific VM, return
+  the VM's configured APIC bus frequency instead of the default.  This
+  is less confusing (read: not wrong) and makes it easier to fill in CPUID
+  information that communicates the APIC bus frequency to the guest.
+
+Selftests:
+
+- Do not include glibc-internal <bits/endian.h>; it worked by chance and
+  broke building KVM selftests with musl.
+
+----------------------------------------------------------------
+Claudio Imbrenda (5):
+      KVM: s390: vsie: Fix memory leak when unshadowing
+      KVM: s390: Fix leaking kvm_s390_mmu_cache in case of errors
+      KVM: s390: vsie: Fix unshadowing logic
+      KVM: s390: vsie: Fix redundant rmap entries
+      KVM: s390: Properly reset zero bit in PGSTE
+
+Hisam Mehboob (1):
+      KVM: selftests: elf: Include <endian.h> instead of <bits/endian.h>
+
+Jiakai Xu (3):
+      RISC-V: KVM: Fix invalid HVA warning in steal-time recording
+      RISC-V: KVM: Fix NULL pointer dereference in SBI v0.1 SEND_IPI handler
+      RISC-V: KVM: Fix sign extension for MMIO loads
+
+Michael Bommarito (2):
+      KVM: arm64: vgic-its: Reject restored DTE with out-of-range num_eventid_bits
+      KVM: arm64: vgic: Free private_irqs when init fails after allocation
+
+Osama Abdelkader (2):
+      riscv: kvm: return SBI_ERR_FAILURE for pmu_snapshot_set_shmem() when OOM
+      riscv: kvm: return SBI_ERR_FAILURE for pmu_event_info() when OOM
+
+Paolo Bonzini (3):
+      Merge tag 'kvmarm-fixes-7.1-3' of git://git.kernel.org/pub/scm/linux/kernel/git/kvmarm/kvmarm into HEAD
+      Merge tag 'kvm-s390-master-7.1-2' of https://git.kernel.org/pub/scm/linux/kernel/git/kvms390/linux into HEAD
+      Merge tag 'kvm-riscv-fixes-7.1-1' of https://github.com/kvm-riscv/linux into HEAD
+
+Sean Christopherson (2):
+      KVM: x86: Return the VM's configured APIC bus frequency when queried
+      KVM: selftests: Verify that KVM returns the configured APIC cycle length
+
+Tina Zhang (1):
+      KVM: SVM: Disable AVIC IPI virtualization on Hygon Family 18h (erratum #1235)
+
+Vincent Donnefort (1):
+      KVM: arm64: Fix nVHE/pKVM hyp tracing error on invalid desc
+
+ arch/arm64/kvm/arm.c                               |  4 +-
+ arch/arm64/kvm/hyp/nvhe/trace.c                    |  9 +++-
+ arch/arm64/kvm/vgic/vgic-its.c                     |  4 ++
+ arch/riscv/kvm/vcpu_insn.c                         |  9 ++--
+ arch/riscv/kvm/vcpu_pmu.c                          | 12 +++--
+ arch/riscv/kvm/vcpu_sbi_sta.c                      |  2 +-
+ arch/riscv/kvm/vcpu_sbi_v01.c                      |  2 +
+ arch/s390/kvm/dat.c                                |  1 +
+ arch/s390/kvm/dat.h                                |  3 +-
+ arch/s390/kvm/gaccess.c                            |  1 +
+ arch/s390/kvm/gmap.c                               | 18 ++++---
+ arch/s390/kvm/gmap.h                               | 61 ++++++++++++++++++++--
+ arch/x86/kvm/svm/avic.c                            | 12 +++--
+ arch/x86/kvm/x86.c                                 |  2 +-
+ tools/testing/selftests/kvm/lib/elf.c              |  2 +-
+ .../selftests/kvm/x86/apic_bus_clock_test.c        |  4 ++
+ 16 files changed, 115 insertions(+), 31 deletions(-)
 
