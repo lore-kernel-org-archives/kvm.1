@@ -1,172 +1,163 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B72C613B7AE
-	for <kvm@vger.kernel.org>; Sun, 24 May 2026 17:33:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E039314B95
+	for <kvm@vger.kernel.org>; Sun, 24 May 2026 19:49:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779643998; cv=none; b=kZThpK2JriTKaf1fDQhFJ1cwdtsTPvVT2Nf+qa8MmVUE3Hgw0o0gNnjLgtl4cruDQvDq0M547VdHHuG+YY62WO7ZfESAbTd2kk1WOFC1y8pSCqHWbv+9MQq3o1vWgW7tjx7IrBBtUcKtJEXcx29trXNcK6nb3IAm3mcjUBnH01M=
+	t=1779652169; cv=none; b=RXankqC0OaubbgTYLQgql7zZBlgtqWb8rCRAWrg6wBv9ksOQIm1ye1ySfwU+BhfpHxORE+oyHk6Tv27RuhCLIJvaAGdFlgEdnxXaURB2OnFUqbVhjHgF2bXATbqFk8woPQJcxpKB8YdHZmDUoAkbWnZKTOtW64VA4aegioaegN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779643998; c=relaxed/simple;
-	bh=BLAO65E5sUHD3oMYset0eVZSG5zNY86O8cnJAzi0+rI=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=jQOyclwI3yhOWoBX5/KtmHUgx+dJvK8lnKChkiTGCRV4pW3sco2REuZn49PVT8yltgKA3n3lKEwzIuDCStv2sIX3c9ZtlO+IGJ/1UW66eHVN+a8TH5SfpkJSw1LFd4U353Be83JLRNfEoRExqwGKm1q/XMFztuia4XJyucR4Ics=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MX2gV4te; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779652169; c=relaxed/simple;
+	bh=Aikse4RE6NDmdwoW209Q/3yBuQ/vdaxwxVtNl3i70Y0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lYN+1HkzZKoGH9v8x598TqbZTxGavW0Nsch1Ssrv0WDdjAdHzHcV9xCA8egDSt62Dp14pI2zmUIVH7NBOybINr2Z0ug6PiP0D5N/XQ7MKwH3Xw4i6Ur+EH5fGJc5yIpgdXdg5aVvjsciCM4HG5GfMxxZGKc//hruwBY2bn+4c9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=N3Wz0mnp; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=Jwi0oRdC; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MX2gV4te"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F8FA1F000E9;
-	Sun, 24 May 2026 17:33:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779643997;
-	bh=1uiSYGYQm+x3bonDtzeLrQAN5D5FTgrMKvYOJi5hSNc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MX2gV4teLGwkXlZ6gdOwv1aXJf8OKvkiDPJqyX9f2Q1gmuQ/GkZ9QVMQq5Aru4tgJ
-	 AnLxAZIqjFaDWet0VRS/VLI7CUEDp8HKwODNS0sSh8YOJOH156CBRnI3Uvgr/ckCjv
-	 OOLWhvhhh8L8fdH+0QYiq9XsZfsxH5CdE51WwQ9SKzX3RooVltj/vPsmKDKHYBvzGN
-	 tHO0IzHlIQrNPe7GtdnfCHXAvruXu9BskzqCR+LWe5T67dToTicgPG4V1eDMEmCgq4
-	 FeAPMiGFlz7bC8ubZXjYrrFAqzwtrx1sk5tlhPhbLM2NuRx/oJ7xefl9hSDZGdQuij
-	 sYSpdxsPQcpsQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 2/2] RISC-V: KVM: AIA: Make HGEI number management
- fully per-CPU
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Anup Patel" <anup.patel@oss.qualcomm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260524162009.2602535-3-anup.patel@oss.qualcomm.com>
-References: <20260524162009.2602535-3-anup.patel@oss.qualcomm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Sun, 24 May 2026 17:33:16 +0000
-Message-Id: <20260524173317.5F8FA1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="N3Wz0mnp";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="Jwi0oRdC"
+Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64NMo60B3079108
+	for <kvm@vger.kernel.org>; Sun, 24 May 2026 19:49:28 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=J5MO/OMSAh+ISDr45BR8NwJA
+	XuQI8xvKI6XO4ycoTj0=; b=N3Wz0mnpcXw5UIH0b2xrFG3DN3CKQzkY9k2DY9eM
+	Qso5dHfjbzeuP7oy1uorTKXI22jUThALjtRfxAcvs4E78L8yVrSRhmjI00oepO7A
+	kSq4ANK599NGcpX8yAeN+pG7408cOdP993E8LCBi8GONTLtsVb/yZ34zxuhud+Wq
+	Q0iKNxI4377/ah9tNN5qK01bcgPp7GGUCuB2/uI1NHBgOIFy6w9g5WsW+WYlp6r0
+	y6wVf+9iB9RYicyHIgZUP9GghqNoI9xiL304LpaJsLIyjC4fCubBmN8IoCK4D6kF
+	NlBhuyZLFpZMG2FY3v9KsoVx5cKG48i71tfATu39JOfZiw==
+Received: from mail-dy1-f197.google.com (mail-dy1-f197.google.com [74.125.82.197])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eb88w3d4x-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Sun, 24 May 2026 19:49:27 +0000 (GMT)
+Received: by mail-dy1-f197.google.com with SMTP id 5a478bee46e88-2bda35eab74so8154935eec.0
+        for <kvm@vger.kernel.org>; Sun, 24 May 2026 12:49:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1779652167; x=1780256967; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=J5MO/OMSAh+ISDr45BR8NwJAXuQI8xvKI6XO4ycoTj0=;
+        b=Jwi0oRdCzA9PJxG8Y2+c5nDoEuDVADR3wV+hmx+TyNHdyQHWxTijv8+gtBoGSHiaLW
+         xRNZFSaAi1VLXMK+7M/PyiCbQbVKhvGdLRZNKmq9t6/cJeimJQIb674Xzpprb6PD7d1w
+         NxG/G4B4GRWXVQ6orDa0mYbK+pPWbXMNkiLkroGGI6/trx/ZCTygeqo9hNdrYj4fSExR
+         VjEkE8JY7y9ab4SIV6Q2m+7QlLcRgmK9zbPvCt1xOWOW4Ve1iriSTKqY9aP1q1R3oYIv
+         rVtFdSAMtKlBC2uqoaZyzKAcyWWtTyabp+Qe15SecTWSfitRF2KWZr/ik7DoOubP1ke6
+         MlNQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779652167; x=1780256967;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=J5MO/OMSAh+ISDr45BR8NwJAXuQI8xvKI6XO4ycoTj0=;
+        b=o6neuV+8EYU2B6yRlVGVv/QSLBuE195+1FtoGB4XssATg+kzsDcJj2OYDPH7zNcK88
+         71PbmIe5gGtGkZwA161FuT2N7yKtuJxiZDqdfVmeHig03jJfKYiFdklJjtuUt6BXBrw0
+         51WK2RNFSt9C7jtmK4zHQM6n0jwhYZik273z2Ce5OHSWsQuyIbDZVoYa6MuLojKrapfi
+         zvFpe/NPvzB9Rk3ix5L++03fRzYCrkXw8IV8d+IKzhmV7yKQkNuFprMNw4F6ai9uH4Vb
+         vRJGsbEyVmE8sRYKL4+VaHa3N3CaRR1hjy4gL1HyRUd/2ByDq3STnhQaJyInY6/XqYfm
+         VCfA==
+X-Forwarded-Encrypted: i=1; AFNElJ9jDWVJQGzxUBsZTPJpCHH8zcg3PeSS9JHFcL/x2RubLT649MPpCCVkSiK9nMF8SU1USnU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxlbTOJYBnMKoWo5cKUpAp54zM1cDjqa0shJDTUc3CIEz8UkEjc
+	qRtLsEA2tGEWjdDQ4Gg0gI0SVyNCv8bVkBs2GAbapBqlet/cwLhUAsd11RLuRhRMBVrUEg9z7PV
+	ca/xYydkGZTYpFVm+AWVlaOnYgDv3MUrowxz6e8pYw494jj6TxDvpUVI=
+X-Gm-Gg: Acq92OEMOqBLNsuVqS2WPuo3WIkYycH1nHH6bmkxHzdqRqo44Fu3rpIx2Pek0ElrsmN
+	fVROhFwqNxZLieZqLeiIulfQE0XlTrS+yq01JnCqLaR42HEmTUo8WSvpLCrFMsH/II/ZIPMycOF
+	zqOuxmtYkKaGMWLmZThWUbrqBhxAiwwPoEfa64i3BRuTqzeq2q6zxXQhT1tfYTalHstvCQiD7Hk
+	ZH5o35QlCNiuCszim0xfOcHlnxQvSoK4GQYgEhLU384mGpRgEc8s1B+fOnZBLF0UdxSXfmnsUGP
+	+0KZlN+GvhnTULN+odltQX5mQ7bfz7lcTMaGRi6uP13SYDhn23Eo/Gc4UQ/A0VwqNRWxDdLJ/Zz
+	vWHEDa++ujB2/yARUsPwYbGKYrJIVLrQ=
+X-Received: by 2002:a05:7300:72cd:b0:2e7:190:41d6 with SMTP id 5a478bee46e88-3044a3f996amr5218053eec.2.1779652167004;
+        Sun, 24 May 2026 12:49:27 -0700 (PDT)
+X-Received: by 2002:a05:7300:72cd:b0:2e7:190:41d6 with SMTP id 5a478bee46e88-3044a3f996amr5218032eec.2.1779652166440;
+        Sun, 24 May 2026 12:49:26 -0700 (PDT)
+Received: from localhost ([140.82.166.162])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-30451ef470dsm6221072eec.4.2026.05.24.12.49.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 24 May 2026 12:49:26 -0700 (PDT)
+Date: Sun, 24 May 2026 14:49:24 -0500
+From: Andrew Jones <andrew.jones@oss.qualcomm.com>
+To: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+Cc: ajones@ventanamicro.com, alex@ghiti.fr, anup@brainfault.org,
+        aou@eecs.berkeley.edu, atish.patra@linux.dev, jiakaiPeanut@gmail.com,
+        kvm-riscv@lists.infradead.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org,
+        palmer@dabbelt.com, pjw@kernel.org
+Subject: Re: [PATCH] RISC-V: KVM: Fix TOCTOU race in SBI system suspend
+ handler
+Message-ID: <y5hmqjrtgeby3amnlfycifpfm2dc3oaj5eebgvdu3tgjjgohvx@kw3a7xpxqrbt>
+References: <rqpv3mrcsxxdlaedbckb26bf5vfkj3xgd6m26me24nf4tbcqtb@jh62r2df3ur7>
+ <20260523013232.2352161-1-xujiakai2025@iscas.ac.cn>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260523013232.2352161-1-xujiakai2025@iscas.ac.cn>
+X-Authority-Analysis: v=2.4 cv=S/jpBosP c=1 sm=1 tr=0 ts=6a135647 cx=c_pps
+ a=Uww141gWH0fZj/3QKPojxA==:117 a=cvcws7F5//HeuvjG1O1erQ==:17
+ a=kj9zAlcOel0A:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=eoimf2acIAo5FJnRuUoq:22
+ a=fKUkpt_rHN1RTTC0GtAA:9 a=CjuIK1q_8ugA:10 a=PxkB5W3o20Ba91AHUih5:22
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI0MDE5OCBTYWx0ZWRfX/jTNDUliklvy
+ 9+no+bcHvwVG2MUZdixJ07cHOVAoWTs5EmaT2MLhCRYoOXKbVC6azGyDzFuAstbjtgJN/4U3T5c
+ oWKthR2bH6V6Y1fkbw4dgYCSd3aOswUwPGb+xKHXulBbLvNKPK/6hX+C7P5GQRdH1iop/uMJsXP
+ J7Gn35fGdFjKmDYKWbpsuPcNHLLNofoIeYixlFX9m/Qmq47Xm5pBqa3Ks3hEvlFlcUMyKLmkorO
+ 6U6ED3WI6psziOq0xpjfEFslsp3Z+a59L7eRxZCxnolbrBrwexwFNso9DssNhwctfN6WwR0HMLk
+ Eoe2A5oMeK8DSZDMg0p5q0rA6YJq9QZyFod4zhVnMSpe8SIsMXw4oqf4tT1wgGNydaiZAWOoCj1
+ KgwFzitymBGMxqRjPBtaCnqO9GhOnyPf4qDxdr6G4riOpS6yEpYfG06vCBY7qsElFpru0mN5pBO
+ SWPFdSMyqdGK+Ctoctw==
+X-Proofpoint-ORIG-GUID: c_VPYtnu7OPWgDTeE6Gh_kaQ9ghcNdKH
+X-Proofpoint-GUID: c_VPYtnu7OPWgDTeE6Gh_kaQ9ghcNdKH
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-24_06,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 lowpriorityscore=0 malwarescore=0 clxscore=1015
+ priorityscore=1501 impostorscore=0 adultscore=0 phishscore=0 spamscore=0
+ bulkscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
+ definitions=main-2605240198
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] The global `kvm_riscv_aia_nr_hgei` fails to compute the minimum nu=
-mber of HGEI lines across all HARTs as claimed, leading to potential VM cra=
-shes on heterogeneous systems.
-- [High] Dynamic re-initialization of `hgctrl->lock` and `free_bitmap` in `=
-kvm_riscv_aia_enable()` introduces lock corruption and resource races durin=
-g CPU hotplug.
---
+On Sat, May 23, 2026 at 01:32:32AM +0000, Jiakai Xu wrote:
+> > But... before we get too carried away. Unless I'm missing something, this
+> > race really looks too theoretical to justify any change at all. Do you
+> > have a test case in mind that could force it?
+> 
+> Unfortunately, I don't have a reproducer or test case that can reliably
+> trigger this race. 
+> 
+> But as we saw earlier, this is a real bug, and we can tell that just by 
+> analyzing the code.
+> 
+> The real environment is complex and unpredictable, and such races are 
+> possible. Wouldn't it be nice if we found it and fixed it now?
+>
 
-commit 9793b8a8f6852f288109f4a89da48941361d7e97
-Author: Guo Ren (Alibaba DAMO Academy) <guoren@kernel.org>
+I assume the scenario we're trying to fix is:
 
-RISC-V: KVM: AIA: Make HGEI number management fully per-CPU
+ HART-x                                                 HART-z
+ ------                                                 ------
+ SUSP()
+   Check HART-y is stopped
+                                                        HART_START(HART-y)
+                                                        HART_STOP()
+   Check HART-z is stopped
+   Determine all HARTs are stopped and exit to userspace
 
-This commit transitions the KVM AIA Hypervisor Guest External Interrupt (HG=
-EI)
-number management from a global variable to a per-CPU field. It aims to bet=
-ter
-support heterogeneous RISC-V SoCs where different cores might expose differ=
-ent
-HGEIE CSR widths. The per-CPU supported HGEI count is probed in
-kvm_riscv_aia_enable() during CPU enablement.
+Besides the fact that the race seems quite unlikely (only a pathological
+guest would try to force it), userspace can/should still double check that
+all HARTs are stopped before proceeding with its system suspend
+implementation. So, since we would need to introduce a new lock to resolve
+this very unlikely issue, then I'm not 100% convinced we should. I would
+be more willing to fix it if I thought the host was at any risk, but I
+think this is "only" a guest corruption issue. If the guest does wild
+things like this during a system suspend, then it can keep all its pieces.
+I would agree that we should add a comment about this choice, though.
 
-> diff --git a/arch/riscv/kvm/aia.c b/arch/riscv/kvm/aia.c
-> index 5ec503288555d..a7a102ad9c16a 100644
-> --- a/arch/riscv/kvm/aia.c
-> +++ b/arch/riscv/kvm/aia.c
-
-[ ... ]
-
-> @@ -529,25 +513,48 @@ static int aia_hgei_init(void)
->  void kvm_riscv_aia_enable(void)
->  {
-> +	const struct imsic_global_config *gc;
-> +	const struct imsic_local_config *lc;
-> +	struct aia_hgei_control *hgctrl;
-> +
->  	if (!kvm_riscv_aia_available())
->  		return;
-> =20
-> +	gc =3D imsic_get_global_config();
-> +	lc =3D (gc) ? this_cpu_ptr(gc->local) : NULL;
-> +	hgctrl =3D this_cpu_ptr(&aia_hgei);
-> +
-> +	/* Figure-out number of bits in HGEIE */
-> +	csr_write(CSR_HGEIE, -1UL);
-> +	hgctrl->nr_hgei =3D fls_long(csr_read(CSR_HGEIE));
-> +	csr_write(CSR_HGEIE, 0);
-> +	if (hgctrl->nr_hgei)
-> +		hgctrl->nr_hgei--;
-> +
-> +	/*
-> +	 * Number of usable per-HART HGEI lines should be minimum of
-> +	 * per-HART IMSIC guest files and number of bits in HGEIE.
-> +	 */
-> +	if (lc)
-> +		hgctrl->nr_hgei =3D min((ulong)hgctrl->nr_hgei, lc->nr_guest_files);
-> +	else
-> +		hgctrl->nr_hgei =3D 0;
-> +
-> +	hgctrl->free_bitmap =3D (hgctrl->nr_hgei) ? GENMASK_ULL(hgctrl->nr_hgei=
-, 1) : 0;
-> +
-> +	raw_spin_lock_init(&hgctrl->lock);
-
-[Severity: High]
-Does dynamically re-initializing hgctrl->lock and free_bitmap here risk lock
-corruption and resource races during CPU hotplug?
-
-Since kvm_riscv_aia_enable() is invoked dynamically during CPU hotplug via
-KVM's hardware_enable callback, it blindly calls raw_spin_lock_init() and
-overwrites the free_bitmap.
-
-If a CPU is offlined, a migrating VCPU retains its HGEI assignment and may
-concurrently call kvm_riscv_aia_free_hgei() to release it on the offlined C=
-PU.
-
-If the offlined CPU comes online simultaneously, it will re-initialize the
-active spinlock, causing lock corruption.
-
-Also, since hgctrl->owners is not cleared during CPU offline, resetting
-free_bitmap while old VCPUs are still registered prevents
-kvm_riscv_aia_free_hgei() from setting owners[hgei] =3D NULL.
-
-Could this lead to use-after-free vulnerabilities when kvm_riscv_aia_disabl=
-e()
-later iterates over the stale pointers?
-
-[ ... ]
-
-> @@ -634,14 +641,8 @@ int kvm_riscv_aia_init(void)
->  	csr_write(CSR_HGEIE, 0);
->  	if (kvm_riscv_aia_nr_hgei)
->  		kvm_riscv_aia_nr_hgei--;
-> -
-> -	/*
-> -	 * Number of usable HGEI lines should be minimum of per-HART
-> -	 * IMSIC guest files and number of bits in HGEIE
-> -	 */
->  	if (gc)
-> -		kvm_riscv_aia_nr_hgei =3D min((ulong)kvm_riscv_aia_nr_hgei,
-> -					    gc->nr_guest_files);
-> +		kvm_riscv_aia_nr_hgei =3D min(kvm_riscv_aia_nr_hgei, gc->nr_guest_file=
-s);
->  	else
->  		kvm_riscv_aia_nr_hgei =3D 0;
-
-[Severity: High]
-The commit message claims that kvm_riscv_aia_nr_hgei represents the minimum
-number of HGEI lines across all HARTs. Is this actually the case?
-
-In kvm_riscv_aia_init(), the CSR_HGEIE register is only probed on the single
-CPU executing the initialization routine.
-
-If KVM initializes on a 'big' core with HGEI lines, it advertises hardware
-acceleration capabilities globally.
-
-If a VCPU is later scheduled on a 'little' core with 0 HGEI lines, will
-kvm_riscv_aia_alloc_hgei() fail with -ENOENT and result in an unrecoverable=
- VM
-crash (KVM_EXIT_FAIL_ENTRY_NO_VSFILE)?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260524162009.2602=
-535-1-anup.patel@oss.qualcomm.com?part=3D2
+Thanks,
+drew
