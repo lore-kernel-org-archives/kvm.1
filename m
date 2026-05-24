@@ -1,53 +1,52 @@
 Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1ED73AB298;
-	Sun, 24 May 2026 16:20:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1123ACEF0;
+	Sun, 24 May 2026 16:20:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779639640; cv=none; b=gJWUNlqWbIoqQ1qSF+wAnUxeLbj9AtmxmQpn4bjkBssiF0fev16331qTeD9jB4I4bueq3E4D+BPgehg5wWeUKGlNpfETD97jma63WASXdYj3aTe5RwiThguQ6PsC1jrX36VoMvVmG47qRmSsedh2vqmnUYTbGjS3feYlpBNGC+g=
+	t=1779639651; cv=none; b=ELmZUR/+xaygUhbUdGls3iYIBaQT8Lfv7qqjLzyqqZxcIIT40jSwBZYv0N35I64Z1SF5bK/020w1Ti0m3szEbxgLw0+xqaw0HR6MW+tFuELDlT3AKCGuynMYGy4QMD6tMQcMjUSQQ5cycvYy4haQmqfoXoTPVZZR7us71Mw4Md8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779639640; c=relaxed/simple;
-	bh=Em4RJnlxKEUxnN8Jba06PqsMAlPyxnLj4mbpo9sewf0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bCoXInHSKBuT1aDvp9T1huOOIAss2Nvi53gmjEuIUi4qGpfQqjkZTwOikKyJSVBCmnBAQl1G3Ehu/1KPHyr+moRR6kW+tTgyO9cqW7fPTCMM6ZxdFDloJvWYfuaH2twWeGPXYJqsmayY3IvTMjxCUv7CAYVNFkleIQ33UQBjzmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=KvyQwjos; arc=none smtp.client-ip=205.220.180.131
+	s=arc-20240116; t=1779639651; c=relaxed/simple;
+	bh=7+EyGHYJWsceYkN0P9lyHfNWbRmcVV0QVPwLpQcU4NY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=R4tCrEZqOi65CwYSE34iWwMQ3vnD6uEk2bDOMLYpPW0YQ+KhIFyyGsQ1DPfCnexeT1UzcJj8bhpdKQuBcXnnnZdNP/kPljE1Hzs616oIPch+9s2WtuGttiscWreK+tKmOxEHh5Dwy+alnq80ptCdyld2K7KNEkr6RniAUxWZB0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=dtFnHIzS; arc=none smtp.client-ip=205.220.180.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="KvyQwjos"
-Received: from pps.filterd (m0279872.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64NMnSf73452072;
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="dtFnHIzS"
+Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64NL5sA31498348;
 	Sun, 24 May 2026 16:20:24 GMT
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=bQaR6YcNEvp
-	K8hDWYrbzZugIFvklHHMkmm29TWYi7J4=; b=KvyQwjos5fzehtTVni0ZehNoOXH
-	AoSfN498Y6Nu9TuxAMXbaMnqOh+sTwfkIA/ZFhSFVMcph0YB+lG6QP9DLYX/WSPm
-	+J7EDyQ/pTwazuP9pC9gfo1uxjgRMzkbmnZHwb9WahRa1BeSqSBYbL5uI/2lL9IC
-	7gbmX2hh3MozfdLoSEylIa5S0wqK6tviuU0c9bz1UEBvs9CpLTIIrsesH+deXGBr
-	KDMUljnPrGdqs4b17vIsgD2YcRWWpCUOGAotHFSvLYv7FHmQlctpL6ROs58PmPug
-	Q3hcjfqtCcE4Nza7b1g1I8dZzJ29en/JV0ZVaKUzHF3XgAtCNn/CZlRA9ZQ==
+	cc:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=qcppdkim1; bh=hdgYunfzgz7gRF8cx00GMl2+9vS+/7kqWBw
+	kqOe/6fo=; b=dtFnHIzSNR14ugY/2oN6AVgHRxt6ZMg4uaGIgMj/YUG6GsJYGV6
+	nB1Xk3xr2j0eK7Q3YURcOJVivZ7Ucdcrjme7b8Vb6+3lBJS4Z3+dw7G9NBfLKqYE
+	pOIdXybRtWjB9vgYu+OUVPBEU+VhCvymSExxSlbu6OMZgmVAS8t3b5sY6hOBSIs1
+	hF9pRiYPsOq/didLF1j/+yBi6J7hFICOvUintPXM3Mk6Rp+rfKupC5wsJ5dezqO9
+	yraLSD4gAmCWXUXT593wyX8HVyN1FyobOQlFkfSu0UYI9zq/YmnwZkW4OrGJL4Cl
+	cRv7OReX92m8P6A54iA41uSwIfZbE0cN3tQ==
 Received: from apblrppmta01.qualcomm.com (blr-bdr-fw-01_GlobalNAT_AllZones-Outside.qualcomm.com [103.229.18.19])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eb4m7kh4e-1
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4eb386kqth-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Sun, 24 May 2026 16:20:23 +0000 (GMT)
+	Sun, 24 May 2026 16:20:24 +0000 (GMT)
 Received: from pps.filterd (APBLRPPMTA01.qualcomm.com [127.0.0.1])
-	by APBLRPPMTA01.qualcomm.com (8.18.1.7/8.18.1.7) with ESMTP id 64OGKKEX025072;
+	by APBLRPPMTA01.qualcomm.com (8.18.1.7/8.18.1.7) with ESMTP id 64OGKKFe025074;
 	Sun, 24 May 2026 16:20:20 GMT
 Received: from pps.reinject (localhost [127.0.0.1])
-	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 4eb5ahj3ed-1
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 4eb5ahj3eb-1
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Sun, 24 May 2026 16:20:20 +0000 (GMT)
 Received: from APBLRPPMTA01.qualcomm.com (APBLRPPMTA01.qualcomm.com [127.0.0.1])
-	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 64OGKKrt025056;
+	by pps.reinject (8.18.1.12/8.18.1.12) with ESMTP id 64OGKKU7025058;
 	Sun, 24 May 2026 16:20:20 GMT
 Received: from hu-devc-blr-u24-a.qualcomm.com (hu-anuppate-blr.qualcomm.com [10.131.36.165])
-	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 64OGKK0c025053
+	by APBLRPPMTA01.qualcomm.com (PPS) with ESMTPS id 64OGKKAa025054
 	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
 	Sun, 24 May 2026 16:20:20 +0000 (GMT)
 Received: by hu-devc-blr-u24-a.qualcomm.com (Postfix, from userid 486687)
-	id 6B12021CFC; Sun, 24 May 2026 21:50:19 +0530 (+0530)
+	id 659E721BF4; Sun, 24 May 2026 21:50:19 +0530 (+0530)
 From: Anup Patel <anup.patel@oss.qualcomm.com>
 To: Paolo Bonzini <pbonzini@redhat.com>, Atish Patra <atish.patra@linux.dev>,
         Thomas Gleixner <tglx@kernel.org>
@@ -56,14 +55,11 @@ Cc: Palmer Dabbelt <palmer@dabbelt.com>, Paul Walmsley <pjw@kernel.org>,
         Andrew Jones <andrew.jones@oss.qualcomm.com>,
         kvm-riscv@lists.infradead.org, kvm@vger.kernel.org,
         linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
-        "Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>,
-        Anup Patel <anup.patel@oss.qualcomm.com>
-Subject: [PATCH v4 2/2] RISC-V: KVM: AIA: Make HGEI number management fully per-CPU
-Date: Sun, 24 May 2026 21:50:09 +0530
-Message-ID: <20260524162009.2602535-3-anup.patel@oss.qualcomm.com>
+        "Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>
+Subject: [PATCH v4 0/2] RISC-V: KVM: Convert HGEI management to fully per-HART
+Date: Sun, 24 May 2026 21:50:07 +0530
+Message-ID: <20260524162009.2602535-1-anup.patel@oss.qualcomm.com>
 X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260524162009.2602535-1-anup.patel@oss.qualcomm.com>
-References: <20260524162009.2602535-1-anup.patel@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -73,191 +69,76 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-QCInternal: smtphost
 X-QCInternal: smtphost
-X-Proofpoint-GUID: _YA0KJlzyG7xdHq6-Ha1bpgygFR6VvAn
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI0MDE2NCBTYWx0ZWRfX+2RKKq9B3oTk
- 0hlBusu2ynywuZcgX/vc27L4YJZgazvln7i2bgCj9PiLIHBcSBlkRd5xE8xhnbDbe1PcsSzmbNz
- hGKyV49fPycuAeYflUtCWKJjqk00M2WinO0LfFhf3Da6+3Zel6ikQbm0L9ClOqbO+BUXdS+MJQn
- 3/+ApBowgm34qp/QMhiOH0sjNKpTp7ySjLPmrasVqMDlrLDCb14AIid+LQv3xRpdcvxIPHS2dFW
- QBaR1r24zoppsj84IJ1SU/UWLw2aXw26HPdH98lVUvG8KSQ8YrJNnMnur8QPR0mX+csWmxbhP2f
- fkI0OoqZz0p2YamKoCjLapRXGSw0swo7uQ5+2g1eb1s9M4Hey2HwgydpZmJX18NMoPpeMO8Cz8W
- 8sMrJ05G778OQqZrBYDeoTd6GVEAC6uPZztHewZnx016wqhNm/cy9C0L+ikHF47VmtQzQLgjgey
- 4NQjott7PZBo/d6x72A==
-X-Authority-Analysis: v=2.4 cv=MrJiLWae c=1 sm=1 tr=0 ts=6a132547 cx=c_pps
+X-Proofpoint-ORIG-GUID: Lxv0I_R_MNDPKhaUzBwpO-OUTLuvY4uh
+X-Proofpoint-GUID: Lxv0I_R_MNDPKhaUzBwpO-OUTLuvY4uh
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI0MDE2NCBTYWx0ZWRfX1YEuiN8g2mWS
+ hz9WL+QmkEMaAri/H3AglasEE8iwk2KJ0woBLxVhDnTpxpCIkpDUy2K5JCCj/4Zg/CCvWvDEwqB
+ b8WfoXYe7gNWhnyYULaiql6UW85L7Zx7MZWpnfqsGDlt7NaSqIti5q4hkOYmfwmNo9rjLnrJTfJ
+ Tbxbq6r6MqNl9y7dka3orUfHoShBINNGPQNyWm2pi6x2TE54gFnenwABl1f5aLXHV5kdit/Cc1I
+ No4PiumDbuqW0Ha7/J3vF4s7HLdiSrbra90RHjsOAbZ6DUr0tgJIKTLKolMgZdaKH43TnYvqQCK
+ MNXt68+2atb946w0UKWNRqWo3nBNn+OSivGCoMhLXr1ZoMVsYLM+JfaGx0TATsyJ1mra4o28FjB
+ k+QGlXykU5hGgNVeirLjwAfsD+jh66g9XW9Op0/YdFOXVUB2RRzpfbxyz3dLBQkexNNcQ17EFqT
+ 7KMMQXK/+MkU6ex4JCA==
+X-Authority-Analysis: v=2.4 cv=PJY/P/qC c=1 sm=1 tr=0 ts=6a132548 cx=c_pps
  a=Ou0eQOY4+eZoSc0qltEV5Q==:117 a=Ou0eQOY4+eZoSc0qltEV5Q==:17
  a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22
- a=yx91gb_oNiZeI1HMLzn7:22 a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8
- a=RF-wksdoetG4AV3774UA:9
-X-Proofpoint-ORIG-GUID: _YA0KJlzyG7xdHq6-Ha1bpgygFR6VvAn
+ a=_glEPmIy2e8OvE2BGh3C:22 a=VwQbUJbxAAAA:8 a=KRMKSR888c52cKfz2NEA:9
 X-Proofpoint-Virus-Version: vendor=baseguard
  engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
  definitions=2026-05-24_05,2026-05-18_01,2025-10-01_01
 X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 priorityscore=1501 phishscore=0 impostorscore=0
- lowpriorityscore=0 clxscore=1015 bulkscore=0 malwarescore=0 spamscore=0
- adultscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
+ phishscore=0 impostorscore=0 clxscore=1015 priorityscore=1501
+ lowpriorityscore=0 bulkscore=0 adultscore=0 suspectscore=0 malwarescore=0
+ spamscore=0 classifier=typeunknown authscore=0 authtc= authcc= route=outbound
+ adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
  definitions=main-2605240164
 
 From: "Guo Ren (Alibaba DAMO Academy)" <guoren@kernel.org>
 
-Previously, the number of Hypervisor Guest External Interrupt (HGEI)
-lines was stored in a single global variable `kvm_riscv_aia_nr_hgei`
-and assumed to be the same for all HARTs. This assumption does not
-hold on heterogeneous RISC-V SoCs where different cores may expose
-different HGEIE CSR widths.
+This short series converts RISC-V KVM AIA's Hypervisor Guest External
+Interrupt (HGEI) line management from a global "one-size-fits-all"
+model to a fully per-HART (per-CPU) model. It also performs the
+corresponding changes in the IMSIC irqchip driver.
 
-Introduce `nr_hgei` field into the per-CPU `struct aia_hgei_control`
-and probe the actual supported HGEI count for the current HART in
-`kvm_riscv_aia_enable()` using the standard RISC-V CSR probe technique:
+The motivation is to properly support heterogeneous RISC-V SoCs
+(big.LITTLE, multi-vendor core mixes) where different HARTs may
+expose different numbers of guest interrupt files / HGEIE bits.
 
-    csr_write(CSR_HGEIE, -1UL);
-    nr = fls_long(csr_read(CSR_HGEIE));
-    if (nr)
-        nr--;
+After this series, HGEI allocation, freeing, and interrupt delivery
+are completely per-HART and there are no remaining global assumptions
+about number of guest interrupt files.
 
-All HGEI allocation, free and disable paths (`kvm_riscv_aia_free_hgei()`,
-`kvm_riscv_aia_disable()`, etc.) now use the per-CPU value instead of
-the global one.
+Changelog:
+V4:
+ - Don't modify kvm_riscv_aia_nr_hgei in kvm_riscv_aia_enable()
+   since we use kvm_riscv_aia_nr_hgei mostly for HGEI enable/disable
+   checks.
+ - Use GENMASK_ULL() instead of `BIT(hgctrl->nr_hgei + 1) - 1`
+ - Always setup SGEI interrupt irrespective of kvm_riscv_aia_nr_hgei
 
-The global `kvm_riscv_aia_nr_hgei` now represents the minimum number
-of HGEI lines across HARTs and can be used to check whether HGEI
-support is available or not.
+V3:
+ - Move PATCH3 as first patch and kept the nr_guest_files in
+   global config as the number of guest files across all CPUs
+ - Droped original PATCH2 and squashed original PATCH4 into
+   original PATCH1 which is now PATCH2.
+ - Addressed comments in original PATCH1.
 
-This makes KVM AIA robust on big.LITTLE-style asymmetric platforms.
+V2:
+ - Add per-HART IMSIC guest files to compute final HGEI count.
+ - Add min(local->nr_guest_files, nr_guest_files);
 
-Signed-off-by: Guo Ren (Alibaba DAMO Academy) <guoren@kernel.org>
-Signed-off-by: Anup Patel <anup.patel@oss.qualcomm.com>
----
- arch/riscv/kvm/aia.c | 65 ++++++++++++++++++++++----------------------
- 1 file changed, 33 insertions(+), 32 deletions(-)
+V1:
+ - https://lore.kernel.org/kvm-riscv/20260421145451.1597930-1-guoren@kernel.org/
 
-diff --git a/arch/riscv/kvm/aia.c b/arch/riscv/kvm/aia.c
-index 5ec503288555..a7a102ad9c16 100644
---- a/arch/riscv/kvm/aia.c
-+++ b/arch/riscv/kvm/aia.c
-@@ -23,6 +23,7 @@ struct aia_hgei_control {
- 	raw_spinlock_t lock;
- 	unsigned long free_bitmap;
- 	struct kvm_vcpu *owners[BITS_PER_LONG];
-+	unsigned int nr_hgei;
- };
- static DEFINE_PER_CPU(struct aia_hgei_control, aia_hgei);
- static int hgei_parent_irq;
-@@ -452,7 +453,7 @@ void kvm_riscv_aia_free_hgei(int cpu, int hgei)
- 
- 	raw_spin_lock_irqsave(&hgctrl->lock, flags);
- 
--	if (hgei > 0 && hgei <= kvm_riscv_aia_nr_hgei) {
-+	if (hgei > 0 && hgei <= hgctrl->nr_hgei) {
- 		if (!(hgctrl->free_bitmap & BIT(hgei))) {
- 			hgctrl->free_bitmap |= BIT(hgei);
- 			hgctrl->owners[hgei] = NULL;
-@@ -486,25 +487,8 @@ static irqreturn_t hgei_interrupt(int irq, void *dev_id)
- 
- static int aia_hgei_init(void)
- {
--	int cpu, rc;
-+	int rc;
- 	struct irq_domain *domain;
--	struct aia_hgei_control *hgctrl;
--
--	/* Initialize per-CPU guest external interrupt line management */
--	for_each_possible_cpu(cpu) {
--		hgctrl = per_cpu_ptr(&aia_hgei, cpu);
--		raw_spin_lock_init(&hgctrl->lock);
--		if (kvm_riscv_aia_nr_hgei) {
--			hgctrl->free_bitmap =
--				BIT(kvm_riscv_aia_nr_hgei + 1) - 1;
--			hgctrl->free_bitmap &= ~BIT(0);
--		} else
--			hgctrl->free_bitmap = 0;
--	}
--
--	/* Skip SGEI interrupt setup for zero guest external interrupts */
--	if (!kvm_riscv_aia_nr_hgei)
--		goto skip_sgei_interrupt;
- 
- 	/* Find INTC irq domain */
- 	domain = irq_find_matching_fwnode(riscv_get_intc_hwnode(),
-@@ -529,25 +513,48 @@ static int aia_hgei_init(void)
- 		return rc;
- 	}
- 
--skip_sgei_interrupt:
- 	return 0;
- }
- 
- static void aia_hgei_exit(void)
- {
--	/* Do nothing for zero guest external interrupts */
--	if (!kvm_riscv_aia_nr_hgei)
--		return;
--
- 	/* Free per-CPU SGEI interrupt */
- 	free_percpu_irq(hgei_parent_irq, &aia_hgei);
- }
- 
- void kvm_riscv_aia_enable(void)
- {
-+	const struct imsic_global_config *gc;
-+	const struct imsic_local_config *lc;
-+	struct aia_hgei_control *hgctrl;
-+
- 	if (!kvm_riscv_aia_available())
- 		return;
- 
-+	gc = imsic_get_global_config();
-+	lc = (gc) ? this_cpu_ptr(gc->local) : NULL;
-+	hgctrl = this_cpu_ptr(&aia_hgei);
-+
-+	/* Figure-out number of bits in HGEIE */
-+	csr_write(CSR_HGEIE, -1UL);
-+	hgctrl->nr_hgei = fls_long(csr_read(CSR_HGEIE));
-+	csr_write(CSR_HGEIE, 0);
-+	if (hgctrl->nr_hgei)
-+		hgctrl->nr_hgei--;
-+
-+	/*
-+	 * Number of usable per-HART HGEI lines should be minimum of
-+	 * per-HART IMSIC guest files and number of bits in HGEIE.
-+	 */
-+	if (lc)
-+		hgctrl->nr_hgei = min((ulong)hgctrl->nr_hgei, lc->nr_guest_files);
-+	else
-+		hgctrl->nr_hgei = 0;
-+
-+	hgctrl->free_bitmap = (hgctrl->nr_hgei) ? GENMASK_ULL(hgctrl->nr_hgei, 1) : 0;
-+
-+	raw_spin_lock_init(&hgctrl->lock);
-+
- 	csr_write(CSR_HVICTL, aia_hvictl_value(false));
- 	csr_write(CSR_HVIPRIO1, 0x0);
- 	csr_write(CSR_HVIPRIO2, 0x0);
-@@ -588,7 +595,7 @@ void kvm_riscv_aia_disable(void)
- 
- 	raw_spin_lock_irqsave(&hgctrl->lock, flags);
- 
--	for (i = 0; i <= kvm_riscv_aia_nr_hgei; i++) {
-+	for (i = 0; i <= hgctrl->nr_hgei; i++) {
- 		vcpu = hgctrl->owners[i];
- 		if (!vcpu)
- 			continue;
-@@ -634,14 +641,8 @@ int kvm_riscv_aia_init(void)
- 	csr_write(CSR_HGEIE, 0);
- 	if (kvm_riscv_aia_nr_hgei)
- 		kvm_riscv_aia_nr_hgei--;
--
--	/*
--	 * Number of usable HGEI lines should be minimum of per-HART
--	 * IMSIC guest files and number of bits in HGEIE
--	 */
- 	if (gc)
--		kvm_riscv_aia_nr_hgei = min((ulong)kvm_riscv_aia_nr_hgei,
--					    gc->nr_guest_files);
-+		kvm_riscv_aia_nr_hgei = min(kvm_riscv_aia_nr_hgei, gc->nr_guest_files);
- 	else
- 		kvm_riscv_aia_nr_hgei = 0;
- 
+Guo Ren (Alibaba DAMO Academy) (2):
+  irqchip/riscv-imsic: Add nr_guest_files in per-HART local config
+  RISC-V: KVM: AIA: Make HGEI number management fully per-CPU
+
+ arch/riscv/kvm/aia.c                    | 65 +++++++++++++------------
+ drivers/irqchip/irq-riscv-imsic-state.c |  9 ++--
+ include/linux/irqchip/riscv-imsic.h     |  5 +-
+ 3 files changed, 41 insertions(+), 38 deletions(-)
+
 -- 
 2.43.0
 
