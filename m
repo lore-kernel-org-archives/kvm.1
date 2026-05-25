@@ -1,158 +1,186 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D61532AE78
-	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:19:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B57175A7E
+	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779711557; cv=none; b=TQS2GmLwTmoUM/qIHpgiUrWMZcMTaBfVNL3GOyTvAsyl24jr+MgTls/7FZxx+mX3b4AhLc5ukRkgU3o0x3uIe5PwemWQ5JQpnTxCMF+BnU+KBJePuomDP2T/YvI9hgHVFF6pjE/CrZTDCEZ1mT6qBqSgo3LhgTCMeksa9IOMr+A=
+	t=1779711850; cv=none; b=DgONu7UuWBAMJSIJo7ILcaU73FJKD09Hw9dWqJ6OUn/7IGR2lqmy2XID+lXopWwrTxJNfxcOViomY2UR/boOMArSdNQKBBZnwn3bUofHvFXoulzyk+3oHpERhUVwyDU3w0/SjhY15Oxwptup+CWVgrIVUy3Jjw9zJzqYElC+q/M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779711557; c=relaxed/simple;
-	bh=8j7IOFAtL9gTm/LpPNiRRFdWGXf7hGmm53I4IhEHygU=;
+	s=arc-20240116; t=1779711850; c=relaxed/simple;
+	bh=fQ87BVPAI+R0z70qyonJZnQswPOeGKkcIej1oI1agR0=;
 	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=pkG9E8+ElcJPi8nLqkU++ZFhzgyl1zKkXHiezHR8v0Jk2XI3N5VSKyClcsCiAnmlHtHMdDfHuYp9Udgf/hXDaiaI8zLUpUnGpbPLBppdJSEZYKgaZfgwFxm0v5kss39wvtfs9P4zMrVL6/fhcBRLFu1rlCFQOtAenyFaaidLY/Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oIDWMlI8; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=P9vv52hiFp0GKe/DuIF8iPqCsM1VKUDvmN9d5kyinkFE5vLNv9RMyjqT3o7UYVciVhR/IHUQX8nYbzlZkIWpUEIxoAcQvalEa4JHd/V6wdnKmV1PEyj8W8XBhe2hZgYMG+cAGr/Q+1xxiVM6+qwljmKRoIYXL6o+bYTy/qUBTGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d+904+Ig; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oIDWMlI8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831DA1F000E9
-	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:19:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d+904+Ig"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74CB1F000E9
+	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779711556;
-	bh=HK4ixZK+YJAXQj7ZNUhL4S6QabfZInMaQnVNsf+ZnZY=;
+	s=k20260515; t=1779711848;
+	bh=4CJkwF44z3wJxT3vHoeKqT+T4HF0Wkf5JcpoK0KkynI=;
 	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
-	b=oIDWMlI8GErbx7MxChMUdS0fQ9ANsBIfCNTooA4/r6NI8RtBnEtCfQTx8wYwmycn/
-	 qsL3SdZe8PqmwaFnNNEXEI3/igYLNRBcszLDRfUo4vnNVyRoWR/aIzi84Ei/QZm/dO
-	 YDP5xUWpXcgwwrQZO5bWRm6VT979foZAcAW5n6XmKbAhmw3lD25BQ/85+wJV0sTE88
-	 K1htelF5RthwHkeeiJIY8b8zFeQ4pQ0W4mEEQhQTeRgb4PZj8PfeXLfnbpty4miXAe
-	 ZKUgPj1y6yvPu78FT3v8I/9ZgqoOwLNHsO1tAChR5Lo77tfJw3D6EB5bYaWzEPyngR
-	 MObvYxh+RgpTw==
+	b=d+904+IgbpM9CeyGQnEna+fcqpkfTbSNCwOIBkthFhQk0VGmxXiA1/oMczgDPWKNv
+	 JMFapfVCFkfykPzI13TAqc4y60Ka1OMzbj8Wat5hPz2hDABGw4ZzEpQCBRvSsqVLWH
+	 HUwiSEeRg3983T21dfpdtGPiRDQMg7C+eNoEtPaYQCv3NhTDuB2g6m8eDuxXAiME7K
+	 n8TZj3eVHHMb/oGJYh+zy91MN/I4LbIjJiPlD1t9+ZpB3wisjp9WEG4IGLLHcRRl/h
+	 zxkTW+MHb1Y80t0oY9icjBaP4uDOTTOznYk6NC3HV6PO5DL6s3wX5tYFyc6jTpvktD
+	 seqDeop7KFJ1Q==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 04/14] mm: add VM_UFFD_RWP VMA flag
+Subject: Re: [PATCH v4 14/14] Documentation/userfaultfd: document RWP
+ working set tracking
 Reply-To: sashiko-reviews@lists.linux.dev
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260525113737.1942478-5-kas@kernel.org>
-References: <20260525113737.1942478-5-kas@kernel.org>
+In-Reply-To: <20260525113737.1942478-15-kas@kernel.org>
+References: <20260525113737.1942478-15-kas@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 25 May 2026 12:19:16 +0000
-Message-Id: <20260525121916.831DA1F000E9@smtp.kernel.org>
+Date: Mon, 25 May 2026 12:24:08 +0000
+Message-Id: <20260525122408.B74CB1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-
-New issues:
-- [High] VM_UFFD_RWP is missing from VM_COPY_ON_FORK, causing silent loss o=
-f read-write protection during fork.
-
-Pre-existing issues:
-- [Critical] Evaluating __VMA_UFFD_FLAGS causes a stack buffer overflow on =
-32-bit architectures.
+- [Critical] The documented VMM working set tracking workflow disables asyn=
+c mode AFTER performing PAGEMAP_SCAN, creating a TOCTOU data loss race cond=
+ition.
+- [High] UFFDIO_SET_MODE relies solely on mmap_write_lock() to synchronize =
+with in-flight faults, failing to exclude or drain per-VMA locked faults.
+- [Medium] The example code uses an anonymous compound literal for the UFFD=
+IO_API ioctl argument, making it impossible to inspect returned features.
+- [Low] The example C code contains standard C compliance issues and an und=
+efined variable in the `pwrite` call.
 --
 
-commit 536d8ac75bb2e8e900819fb7cdfb4b146e00c606
+commit ae370f680f6102fabefea63e5943a13cca9daab8
 Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-mm: add VM_UFFD_RWP VMA flag
+Documentation/userfaultfd: document RWP working set tracking
 
-Preparatory patch for userfaultfd read-write protection (RWP). RWP
-extends userfaultfd protection from plain write-protection (WP) to
-full read-write protection.
+Add an admin-guide section covering UFFDIO_REGISTER_MODE_RWP:
 
-> diff --git a/include/linux/mm.h b/include/linux/mm.h
-> index 0f2612a70fb1e..3d0a5ac3c717c 100644
-> --- a/include/linux/mm.h
-> +++ b/include/linux/mm.h
+  - sync and async fault models;
+  - UFFDIO_RWPROTECT semantics;
+  - UFFD_FEATURE_RWP_ASYNC;
+  - UFFDIO_SET_MODE runtime mode flips.
+
+It also covers typical VMM working-set-tracking workflow from detection
+loop through sync-mode eviction and back to async.
+
+> diff --git a/Documentation/admin-guide/mm/userfaultfd.rst b/Documentation=
+/admin-guide/mm/userfaultfd.rst
+> index 1e533639fd509..cb5d0e0c9fff1 100644
+> --- a/Documentation/admin-guide/mm/userfaultfd.rst
+> +++ b/Documentation/admin-guide/mm/userfaultfd.rst
+
 [ ... ]
-> @@ -633,22 +639,24 @@ enum {
->   * reconsistuted upon page fault, so necessitate page table copying upon=
- fork.
->   *
->   * Note that these flags should be compared with the DESTINATION VMA not=
- the
-> - * source, as VM_UFFD_WP may not be propagated to destination, while all=
- other
-> - * flags will be.
-> + * source: VM_UFFD_WP and VM_UFFD_RWP may be cleared on the destination
-> + * (dup_userfaultfd() -> userfaultfd_reset_ctx() when the parent context=
- did
-> + * not negotiate UFFD_FEATURE_EVENT_FORK), while all other flags propaga=
-te.
->   *
->   * VM_PFNMAP / VM_MIXEDMAP - These contain kernel-mapped data which cann=
-ot be
->   *                           reasonably reconstructed on page fault.
->   *
->   *              VM_UFFD_WP - Encodes metadata about an installed uffd
-> - *                           write protect handler, which cannot be
-> - *                           reconstructed on page fault.
-> - *
-> - *                           We always copy pgtables when dst_vma has uf=
-fd-wp
-> - *                           enabled even if it's file-backed
-> - *                           (e.g. shmem). Because when uffd-wp is enabl=
-ed,
-> - *                           pgtable contains uffd-wp protection informa=
-tion,
-> - *                           that's something we can't retrieve from pag=
-e cache,
-> - *                           and skip copying will lose those info.
-> + *              VM_UFFD_RWP  write- or read-write-protect handler, which
-> + *                           cannot be reconstructed on page fault.
-> + *
-> + *                           We always copy pgtables when dst_vma has the
-> + *                           uffd PTE bit in use even if it's file-backed
-> + *                           (e.g. shmem). Because when the uffd bit is
-> + *                           in use, the pgtable contains the protection
-> + *                           information, that's something we can't
-> + *                           retrieve from page cache, and skip copying
-> + *                           will lose those info.
+
+> +**Runtime Mode Switching:**
+> +
+> +``UFFDIO_SET_MODE`` toggles ``UFFD_FEATURE_RWP_ASYNC`` at runtime, allow=
+ing
+> +the VMM to switch between lightweight async detection and safe sync
+> +eviction without re-registering. The toggle takes ``mmap_write_lock()`` =
+to
+> +ensure all in-flight faults complete before the mode change takes effect.
 
 [Severity: High]
-The comment mentions we must copy page tables when VM_UFFD_RWP is in use,
-but it looks like VM_UFFD_RWP is not added to VM_COPY_ON_FORK in
-include/linux/mm.h.
+Does taking only mmap_write_lock() safely synchronize with in-flight faults
+here?
 
-Will this cause vma_needs_copy() to return false for file-backed VMAs that
-only have VM_UFFD_RWP set, and result in a silent loss of read-write
-protection during fork() since the page tables won't be copied?
+mmap_write_lock() alone does not exclude or drain existing per-VMA read loc=
+ks.
 
-> diff --git a/include/linux/userfaultfd_k.h b/include/linux/userfaultfd_k.h
-> index f4cf5763f92cc..87a8cebd59387 100644
-> --- a/include/linux/userfaultfd_k.h
-> +++ b/include/linux/userfaultfd_k.h
-> @@ -21,10 +21,11 @@
->  #include <linux/hugetlb_inline.h>
-> =20
->  /* The set of all possible UFFD-related VM flags. */
-> -#define __VM_UFFD_FLAGS (VM_UFFD_MISSING | VM_UFFD_WP | VM_UFFD_MINOR)
-> +#define __VM_UFFD_FLAGS (VM_UFFD_MISSING | VM_UFFD_MINOR | \
-> +			 VM_UFFD_WP | VM_UFFD_RWP)
-> =20
-> -#define __VMA_UFFD_FLAGS mk_vma_flags(VMA_UFFD_MISSING_BIT, VMA_UFFD_WP_=
-BIT, \
-> -				      VMA_UFFD_MINOR_BIT)
-> +#define __VMA_UFFD_FLAGS mk_vma_flags(VMA_UFFD_MISSING_BIT, VMA_UFFD_MIN=
-OR_BIT, \
-> +				      VMA_UFFD_WP_BIT, VMA_UFFD_RWP_BIT)
+Since modern page faults (including userfaultfd async and sync faults)
+execute under the per-VMA lock, UFFDIO_SET_MODE could return while async
+faults are still resolving if the implementation only relies on
+mmap_write_lock().
+
+Would the implementation need to call vma_start_write(vma) to properly
+drain per-VMA locked faults?
+
+[ ... ]
+
+> +    uffd =3D userfaultfd(O_CLOEXEC | O_NONBLOCK);
+> +    ioctl(uffd, UFFDIO_API, &(struct uffdio_api){
+> +        .api =3D UFFD_API,
+> +        .features =3D UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC,
+> +    });
+
+[Severity: Medium]
+Since UFFDIO_API modifies the features field on return, how can the caller
+inspect the returned features to fall back when RWP is unavailable?
+
+Using an anonymous compound literal here means the struct lifetime expires
+after the ioctl() statement, making it impossible to check the negotiated
+features as recommended in the "Feature availability" section.
+
+Should this use a named local variable instead?
+
+> +    ioctl(uffd, UFFDIO_REGISTER, &(struct uffdio_register){
+> +        .range =3D { guest_mem, guest_size },
+> +        .mode =3D UFFDIO_REGISTER_MODE_RWP |
+> +                UFFDIO_REGISTER_MODE_MISSING,
+> +    });
+> +
+> +    /* Tracking loop */
+> +    while (vm_running) {
+> +        /* 1. Detection phase (async =E2=80=94 no vCPU stalls) */
+> +        ioctl(uffd, UFFDIO_RWPROTECT, &(struct uffdio_rwprotect){
+> +            .range =3D full_range,
+> +            .mode =3D UFFDIO_RWPROTECT_MODE_RWP });
+> +        sleep(tracking_interval);
+> +
+> +        /* 2. Find cold pages (uffd bit still set) */
+> +        ioctl(pagemap_fd, PAGEMAP_SCAN, &(struct pm_scan_arg){
+> +            .category_mask =3D PAGE_IS_ACCESSED,
+> +            .category_inverted =3D PAGE_IS_ACCESSED,
+> +            .return_mask =3D PAGE_IS_ACCESSED,
+> +            ...
+> +        });
+> +
+> +        /* 3. Switch to sync for safe eviction */
+> +        ioctl(uffd, UFFDIO_SET_MODE,
+> +              &(struct uffdio_set_mode){
+> +                  .disable =3D UFFD_FEATURE_RWP_ASYNC });
 
 [Severity: Critical]
-This is a pre-existing issue, but does evaluating __VMA_UFFD_FLAGS cause a
-stack buffer overflow on 32-bit architectures?
+Does scanning for cold pages before switching to sync mode introduce a data
+loss race condition?
 
-The mk_vma_flags() helper creates a temporary vma_flags_t struct and sets
-the given bits. On 32-bit architectures, NUM_VMA_FLAG_BITS is defined as
-BITS_PER_LONG (32), so vma_flags_t contains an array of exactly one
-unsigned long.
+If a vCPU accesses a "cold" page between PAGEMAP_SCAN and UFFDIO_SET_MODE,
+the async fault handler will silently remove RWP protection and grant write
+access without blocking.
 
-Since VMA_UFFD_RWP_BIT is 43 and VMA_UFFD_MINOR_BIT is 41, does calling
-__set_bit() with these values calculate an array index of 1, writing
-out-of-bounds to bitmap[1] and corrupting the stack unconditionally?
+The VMM would then evict this page (copying it with pwrite and dropping it
+with fallocate), and any concurrent vCPU writes would be discarded by the
+hole punch, leading to guest data corruption.
+
+Should the VMM switch to sync mode before calling PAGEMAP_SCAN to safely
+freeze the working set?
+
+> +
+> +        /* 4. Evict cold pages (vCPU faults block on guest_mem) */
+> +        for each cold range:
+> +            /* Read from io_mem -- bypasses RWP, no fault. */
+> +            pwrite(storage_fd, io_mem + cold_offset, len, offset);
+
+[Severity: Low]
+Does this code compile cleanly?
+
+The pwrite() call uses "offset" as its fourth argument, but the file offset
+variable seems to be "cold_offset".
+
+Also, io_mem is a void* from mmap(), and pointer arithmetic on void*
+(io_mem + cold_offset) is a GCC extension rather than standard C.
+
+Should io_mem be explicitly cast to a byte pointer, and offset be changed
+to cold_offset?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525113737.1942=
-478-1-kas@kernel.org?part=3D4
+478-1-kas@kernel.org?part=3D14
