@@ -1,157 +1,130 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2338933E367
-	for <kvm@vger.kernel.org>; Mon, 25 May 2026 10:12:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97E293382DC
+	for <kvm@vger.kernel.org>; Mon, 25 May 2026 10:18:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779703924; cv=none; b=h8a5o//ToiEM5tsV49obouMJXpDzE+J9UHCA0yZn/Qa270RcrDm1v2rKsBj/tMOOR5TsshQ1pDfPuSzp1yHMmXsODjwdSexfn18AqFcJsScNJTrD2rxUdvzBPK0jWidIvrwr9AUlWwASh+ajZQ/RolxDGB9JLKc3SFU+3/uKNg0=
+	t=1779704329; cv=none; b=u01dB8JFojrhCE9Juydf9FDTGRgVwI6klp4Rs2pcld8NYQBTfHE3LaOFyIzD0KTP9ry3Wf0j5YzFTSG4WjD3pjDXKKZBtzmk6maYx/lJmZ1t4V8LswYbzD/WuZJp70tlQ1pitV/fUZsTW+4syA7IQWrhfg4t5Fomr9+D98yW3ME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779703924; c=relaxed/simple;
-	bh=VGwTMWT39R9BAyiNPZ4hQgQ4TYpWAM+0yGx122L/U2o=;
+	s=arc-20240116; t=1779704329; c=relaxed/simple;
+	bh=gezKptKHQJ6Fbc36vcGICBuy1B7dsf5PBldeRqHZarc=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=TNEpyHVR6EWn0OFMkry2GS+Ms82a0bSERLe97rpHZuKLgfH5ctykDksX+1ts6pMDc2Ezpv2tuWgdrPwTsa2UrnA2weTtFSr+NrltB8CYX1m8oWyn9gETFfeux63/y2uT+6fmqsFKdDaKUgmTJv1Q57GuUgwiQhJM1cuQeUU31e4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HNzLBFNy; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=oSB69g6/xTl+vQP6cg52og8GYFG+zqdlhHdim0VsBzUjSzijGEJdCjwlSL892xS6gRv45GoE+Zw38YoGF0yuFcbg5/GTLdWvPOWeLDO8xfIizZKgE8gm9vtRH86Gv0ZtnXIF5uLIO2gRX8oLkT3S86iaBL46wivLRj7sPKKhQd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XDdWRs8S; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HNzLBFNy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9FF21F000E9;
-	Mon, 25 May 2026 10:12:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XDdWRs8S"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 430F31F000E9;
+	Mon, 25 May 2026 10:18:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779703922;
-	bh=FnMAJ5cKJ0PIrix/hhvkZQMdXAxiguU0pErf0q03J40=;
+	s=k20260515; t=1779704328;
+	bh=ap295fnGU4+PQ6IKuRqZxYgqp+uekliM0RyLtWKK6t0=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=HNzLBFNyZypVQi2KBdlbNA7C33ibhs10i6Gl4GEsJON7EFk0YtZ1SaRrYFe8wHURB
-	 zJE63uyhDV2HvnF+mLsafkcYGrp4sNxhERZFkY3bF1QLzaT/TLpEw/QfGsnfXnCkJT
-	 PQXf9IQReQldI6iEK58jF4Iz5ZLRf/gan5nPeVmgZ6m86hYYii6a0qVh0SfF/LAr/C
-	 U27q0ESr0gUpK/xYWTjIhfmbh4r9rDoXO/eo26E/8z7MthLNlGtFyecC5AMpEIQMXE
-	 kMdLN5zU2zVMywSJq810cj40wiPHimwXsuXXKH5Xo7CiQ/QyQH9H1Fa6lSo+Jw2oMP
-	 oO61r0HXF1ujg==
+	b=XDdWRs8S2Vji3QlXtLLCV7bS3UWZlJah9cGKmdQtXgfdUBnA6hUs6pf71z+vh5YP7
+	 zMX7n8uLv7byJfg4ZXfxCIYS/63xDbRgm5V2V9KMPhsKneZL48jsSkpYjr/Kn2Kqtn
+	 pd48jiw2HrDn+t6rWAB16ln7Gkeq4+DPNmvbk+2Uan7ZfkAB4RsLDk/ORptlIFDqtx
+	 dvahpyV+WNw6R9QnwPuC52GKXxZ0rwxI8gp7fcCbb3thtegxBGvbFWMNtil/XnSm+z
+	 mLpCLUPpqPfE3HkfTjV4ko81mJTbMbqYBoJQjb7tBsVZ30ujFw+5cJNUL6beaDTQgF
+	 hO+7gfLgYIJJg==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 net] LoongArch: KVM: Add missing slots_lock for IO
- bus device register/unregister
+Subject: Re: [PATCH v5 1/2] irqchip/riscv-imsic: Add nr_guest_files in
+ per-HART local config
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Zeng Chi" <zeng_chi911@163.com>
+To: "Anup Patel" <anup.patel@oss.qualcomm.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260525092633.1706633-1-zeng_chi911@163.com>
-References: <20260525092633.1706633-1-zeng_chi911@163.com>
+In-Reply-To: <20260525094945.3721783-2-anup.patel@oss.qualcomm.com>
+References: <20260525094945.3721783-2-anup.patel@oss.qualcomm.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 25 May 2026 10:12:02 +0000
-Message-Id: <20260525101202.B9FF21F000E9@smtp.kernel.org>
+Date: Mon, 25 May 2026 10:18:47 +0000
+Message-Id: <20260525101848.430F31F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
 
 Pre-existing issues:
-- [High] Device destruction callbacks free the device state but fail to cle=
-ar the corresponding pointers in the `kvm->arch` structure, enabling an exp=
-loitable Use-After-Free.
+- [High] The loop searching for the correct MMIO location uses `nr_mmios` a=
+s its continuation condition instead of `j < nr_mmios`. This acts as an inf=
+inite loop if `nr_mmios > 0` and can cause an out-of-bounds read on the `mm=
+ios` array.
+- [High] The calculation of `nr_guest_files` can silently underflow to `0xF=
+FFFFFFF` if the remaining MMIO resource size is smaller than a single page,=
+ leading to an incorrectly maximized guest file count.
 --
 
-commit 42b850769c4b9c6a7cd2f75195e998f622a6c28d
-Author: Zeng Chi <zengchi@kylinos.cn>
+commit 15182effc09715c1274ad73e7c779ccf2a70e30d
+Author: Guo Ren (Alibaba DAMO Academy) <guoren@kernel.org>
 
-LoongArch: KVM: Add missing slots_lock for IO bus device register/unregister
+irqchip/riscv-imsic: Add nr_guest_files in per-HART local config
 
-This commit fixes missing slots_lock protection around IO bus device
-unregistration in the LoongArch KVM interrupt controllers.
+This commit adds nr_guest_files to the per-HART local config to represent
+the number of guest files available on a particular HART. This allows KVM
+to use per-HART configurations for asymmetric big.Little systems instead
+of relying on a global minimum.
 
-> diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/=
-eiointc.c
-> index 2ab7fafa86d59..2b14485d14a70 100644
-> --- a/arch/loongarch/kvm/intc/eiointc.c
-> +++ b/arch/loongarch/kvm/intc/eiointc.c
+> diff --git a/drivers/irqchip/irq-riscv-imsic-state.c b/drivers/irqchip/ir=
+q-riscv-imsic-state.c
+> index e3ed874d89e73..b8d1bbbf42f73 100644
+> --- a/drivers/irqchip/irq-riscv-imsic-state.c
+> +++ b/drivers/irqchip/irq-riscv-imsic-state.c
+> @@ -920,13 +920,12 @@ int __init imsic_setup_state(struct fwnode_handle *=
+fwnode, void *opaque)
+>  		local->msi_va =3D mmios_va[index] + reloff;
 
-[ ... ]
+[Severity: High]
+This is a pre-existing issue, but looking at the code just above this hunk
+in imsic_setup_state(), the loop searching for the correct MMIO location
+uses nr_mmios as its continuation condition:
 
-> @@ -667,8 +671,10 @@ static void kvm_eiointc_destroy(struct kvm_device *d=
-ev)
+	for (j =3D 0; nr_mmios; j++) {
+		if (reloff < resource_size(&mmios[j])) {
+			...
+
+Since nr_mmios is a constant integer greater than 0, this acts as an
+unconditional loop. If the condition is never satisfied, could j increment
+past nr_mmios and cause an out-of-bounds read on the dynamically allocated
+mmios array?
+
 > =20
->  	kvm =3D dev->kvm;
->  	eiointc =3D kvm->arch.eiointc;
-> +	mutex_lock(&kvm->slots_lock);
->  	kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &eiointc->device);
->  	kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &eiointc->device_vext);
-> +	mutex_unlock(&kvm->slots_lock);
->  	kfree(eiointc);
->  	kfree(dev);
->  }
+>  		/*
+> -		 * KVM uses global->nr_guest_files to determine the available guest
+> -		 * interrupt files on each CPU. Take the minimum number of guest
+> -		 * interrupt files across all CPUs to avoid KVM incorrectly allocating
+> -		 * an unexisted or unmapped guest interrupt file on some CPUs.
+> +		 * KVM uses both local->nr_guest_files and global->nr_guest_files
+> +		 * to determine the available guest interrupt files on each CPU.
+>  		 */
+>  		nr_guest_files =3D (resource_size(&mmios[index]) - reloff) / IMSIC_MMI=
+O_PAGE_SZ - 1;
 
 [Severity: High]
-This isn't a bug introduced by this patch, but is it possible that this lea=
-ves
-a dangling pointer in kvm->arch.eiointc?
+This is a pre-existing issue, but can this calculation silently underflow to
+0xFFFFFFFF if the remaining MMIO resource size is smaller than a single
+page?
 
-If anon_inode_getfd() fails during device creation (for example, due to file
-descriptor exhaustion), kvm_ioctl_create_device() will call the device's
-destroy callback. This function frees eiointc, but kvm->arch.eiointc is nev=
-er
-set back to NULL.
+If the remaining resource size is strictly greater than 0 but less than
+IMSIC_MMIO_PAGE_SZ, the division yields 0. Subtracting 1 from 0 causes an
+unsigned underflow.
 
-Could this allow a malicious userspace program to trigger a use-after-free
-later? For instance, if the VM continues running and userspace successfully
-creates the other IRQ devices (ipi and pch_pic), kvm_arch_irqchip_in_kernel=
-()
-could return true based on the dangling pointer.=20
+Because min() is used in the following lines, it compares both as unsigned
+and selects the maximum allowed guest files instead of 0. Could this
+artificially inflate the guest file count and lead KVM to make out-of-bounds
+MMIO accesses?
 
-A subsequent KVM_IRQ_LINE ioctl might then route to pch_pic_set_irq() and
-dereference the freed memory via eiointc_set_irq().
-
-> diff --git a/arch/loongarch/kvm/intc/ipi.c b/arch/loongarch/kvm/intc/ipi.c
-> index 1f6ebbd0af5c8..4fa0897d7bdb0 100644
-> --- a/arch/loongarch/kvm/intc/ipi.c
-> +++ b/arch/loongarch/kvm/intc/ipi.c
-
-[ ... ]
-
-> @@ -447,7 +447,9 @@ static void kvm_ipi_destroy(struct kvm_device *dev)
+> -		global->nr_guest_files =3D min(global->nr_guest_files, nr_guest_files);
+> +		local->nr_guest_files =3D min((BIT(global->guest_index_bits) - 1), nr_=
+guest_files);
+> +		global->nr_guest_files =3D min(global->nr_guest_files, local->nr_guest=
+_files);
 > =20
->  	kvm =3D dev->kvm;
->  	ipi =3D kvm->arch.ipi;
-> +	mutex_lock(&kvm->slots_lock);
->  	kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &ipi->device);
-> +	mutex_unlock(&kvm->slots_lock);
->  	kfree(ipi);
->  	kfree(dev);
->  }
-
-[Severity: High]
-This is a pre-existing issue, but does this face the same dangling pointer
-risk as kvm_eiointc_destroy() above? We free the device state but do not cl=
-ear
-kvm->arch.ipi.
-
-> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/=
-pch_pic.c
-> index aa0ed59ae8cf9..175a630aceb41 100644
-> --- a/arch/loongarch/kvm/intc/pch_pic.c
-> +++ b/arch/loongarch/kvm/intc/pch_pic.c
-
-[ ... ]
-
-> @@ -481,7 +481,9 @@ static void kvm_pch_pic_destroy(struct kvm_device *de=
-v)
->  	kvm =3D dev->kvm;
->  	s =3D kvm->arch.pch_pic;
->  	/* unregister pch pic device and free it's memory */
-> +	mutex_lock(&kvm->slots_lock);
->  	kvm_io_bus_unregister_dev(kvm, KVM_MMIO_BUS, &s->device);
-> +	mutex_unlock(&kvm->slots_lock);
->  	kfree(s);
->  	kfree(dev);
->  }
-
-[Severity: High]
-This is also a pre-existing issue, but similarly, should we clear
-kvm->arch.pch_pic here after freeing the device memory to avoid leaving a s=
-tale
-pointer?
+>  		nr_handlers++;
+>  	}
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525092633.1706=
-633-1-zeng_chi911@163.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525094945.3721=
+783-1-anup.patel@oss.qualcomm.com?part=3D1
