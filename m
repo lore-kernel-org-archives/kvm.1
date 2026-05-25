@@ -1,104 +1,121 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7CBA2356C6
-	for <kvm@vger.kernel.org>; Mon, 25 May 2026 05:17:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11DD0340A47;
+	Mon, 25 May 2026 05:17:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779686235; cv=none; b=MGK2vA2LrXPDUGegD5IAkcBvJ9/eEc3aptU7OtlFJxQzyyssp+RbgTyRLKmzR0x4lHLvrJM5eDTZOZJSYgsRQTCDiL1/IgwTV7Frb0sGEpVTxlluF8DBbFj1mIoxyEfK94b0pdNvr+QrF14VGgwJHJlDW6qS8VwxhchgbUw+Xhk=
+	t=1779686264; cv=none; b=XblfAQHfdgonIsroAIBDgJE2KM+R4Bxb7bH5YI1+M+LBRclELpLQHLwlDNbe3nxZFAQ/kLAgY4UTjTIMqHkLOsv76pAWrtWBj8fQXxlYMEoJyvj2mXAQdkmQKKcO6bDZUTCdYfvD/M/0JFAql3NDggGExHzB57A4BTbhTnSbJ3c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779686235; c=relaxed/simple;
-	bh=ZHxcErcXty1HmZPinImYNljm+wOhfbxoVxcYak+pfto=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Gx/dH2IgnkBEnERGQw6nkL6vQBq2yAMiWJziGNnRNyDu3rFDzuDbL3sRBvdpj6ZYJTSe2ZYPXiQr21xMKiOdhb4nKj/xGH/APdsMAQ4fFdawhWX4YhzEAuGSEZCSeaLXYdiBbvkfxVjPjR+2NR/ZzIEoXeFccW+gWb5+3nzSbTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B5zj+zcg; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779686264; c=relaxed/simple;
+	bh=2JJ0cFDif1e+mCqups5FCWkp2Ud2RUi9EoKvpd6rEfg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bxFjjuow2wNoCTlRIdO3z4Yxdn+CQnb44c0KiPUWeWdWPkrLVyxbWSmP1VbS19U6NsqxCnBksiyaj7J0V1Ni/i8CSm2wDdUlBZgPCWsj/uoYJHHmEQA1kvM6n0KS88L4aEdcDhkiFo7+hPSEMCV6th+4ZpvYpWqanU/x9sGWGBc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=COLeuQur; arc=none smtp.client-ip=192.198.163.10
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B5zj+zcg"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485D51F000E9;
-	Mon, 25 May 2026 05:17:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779686234;
-	bh=3Eypf9UJEuM/2OyOqF5KBeZNbrV9RWRXtVdFOl0Eyp0=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=B5zj+zcgdZglMAOOm6LlYhsyH6OfwZ/CijrGfLdvZxR+LGTRT5v2lXb+GhRLc8ZiC
-	 G4xPOt2OJbiW2NdX2JdkRjE7+W3dESofWsnT4pSGaOQ7v+kt+eobdO80xUXBFStrFB
-	 MgXMLH6xTmuda1x82/EEjumtnHMj6+IAruE79MPqRFKbFLixfJcuW8W918R//5LHpl
-	 K+sBq4TbnWStpd7/0153TEvYx3NFOP7T6GeykBl8e9vNyLFzAiUnRJVX8irrSc19KI
-	 wc5ynG1DOY00h8ONPGNfr3SoPAj7jk8BHsZlXM/ZXb8jk/qxX7A+4qUhXxXUp97ir1
-	 cKDojDz/CvM7g==
-From: sashiko-bot@kernel.org
-Subject: Re: [v3 2/2] KVM: irqchip: Cache IRQ routing entries allocation
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Yanfei Xu" <yanfei.xu@bytedance.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260525035242.107264-3-yanfei.xu@bytedance.com>
-References: <20260525035242.107264-3-yanfei.xu@bytedance.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 25 May 2026 05:17:13 +0000
-Message-Id: <20260525051714.485D51F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="COLeuQur"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779686263; x=1811222263;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=2JJ0cFDif1e+mCqups5FCWkp2Ud2RUi9EoKvpd6rEfg=;
+  b=COLeuQurwlICn6d5YsmCrA7fhzTXflB3RhuNArh3Id6QLxaEdiRzyUOD
+   /N6Ix8fZBJfZBAS5jMQJQdylDsGwLtQQdr7NlnFtMfaRU0SS6dqGCWThA
+   +h36qGc3zwRNn1Q3aC3VjdF2frHgqAPDEZ3jj04dQHJjNRvIJDr8epcGd
+   FYIUR45CT/Muz499ynZlLmlt948pB4kOuATEJiov0dEWiLGTrZB36Q79S
+   7DEWVjNR8savwoc60Zl+KF+jQDKM5b8EOt546M78KWVC+3dGU07+V9LqT
+   wVQdW925ZFZIOssKVmRO7W6VM5A+X1ZswVL0LIbox33WRMszqWAp9frxG
+   Q==;
+X-CSE-ConnectionGUID: w6c1KXaETXuh0RKglqX0bA==
+X-CSE-MsgGUID: p4ORsl4uSQ+MpQbJRYHLJg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11796"; a="91892746"
+X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
+   d="scan'208";a="91892746"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2026 22:17:42 -0700
+X-CSE-ConnectionGUID: 1iQ4TVDMRN25AtYbIXRFfw==
+X-CSE-MsgGUID: vQhmM6fTRI6NINMsfY3fpQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
+   d="scan'208";a="265341647"
+Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.151])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2026 22:17:38 -0700
+Date: Mon, 25 May 2026 08:17:35 +0300
+From: Tony Lindgren <tony.lindgren@linux.intel.com>
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
+	x86@kernel.org, peter.fang@intel.com, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com, xiaoyao.li@intel.com
+Subject: Re: [RFC PATCH 15/15] x86/virt/tdx: Enable TDX Quoting extension
+Message-ID: <ahPbb1Ws9hBruJ2d@tlindgre-MOBL1>
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-16-yilun.xu@linux.intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260522034128.3144354-16-yilun.xu@linux.intel.com>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Fri, May 22, 2026 at 11:41:28AM +0800, Xu Yilun wrote:
+> From: Peter Fang <peter.fang@intel.com>
+> 
+> TDX Module updates global metadata when add-on features are enabled.
+> Host should update the cached tdx_sysinfo to reflect these changes.
 
-Pre-existing issues:
-- [Critical] Missing bounds check on user-supplied `ue->u.irqchip.irqchip` =
-allows an out-of-bounds array write on LoongArch and PowerPC.
---
+This should be made clearer IMO. How about mention that get_tdx_sys_info()
+needs to get called again to reload the TDX module global metadata?
+ 
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -1049,6 +1049,7 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
+>  static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
+>  				    u64 global_keyid)
+>  {
+> +	u64 seamcall_fn = TDH_SYS_CONFIG_V0;
+>  	struct tdx_module_args args = {};
+>  	u64 *tdmr_pa_array;
+>  	size_t array_sz;
+> @@ -1074,8 +1075,22 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
+>  	args.rcx = __pa(tdmr_pa_array);
+>  	args.rdx = tdmr_list->nr_consumed_tdmrs;
+>  	args.r8 = global_keyid;
+> -	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
+>  
+> +	if (tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_QUOTE) {
+> +		args.r9 |= TDX_FEATURES0_QUOTE;
+> +		/* These parameters require version >= 1 */
+> +		seamcall_fn = TDH_SYS_CONFIG;
+> +	}
+> +
+> +	ret = seamcall_prerr(seamcall_fn, &args);
+> +	if (ret)
+> +		goto free_tdmr;
+> +
+> +	/* enabling TDX Quoting may change tdx_sysinfo, update it */
+> +	if (tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_QUOTE)
+> +		ret = get_tdx_sys_info(&tdx_sysinfo);
 
-commit 8ac8d5f6cab84711afabacca6347f1ad673dc605
-Author: Yanfei Xu <yanfei.xu@bytedance.com>
-Subject: KVM: irqchip: Cache IRQ routing entries allocation
+The comment above helps, but the change in the handling will be easy to
+miss.
 
-This patch caches a VM-local entries array allocation from a freed IRQ rout=
-ing
-table to reduce allocation and free churn during frequent routing updates. =
-It
-also initializes the remaining MSI fields on x86, LoongArch, and PowerPC si=
-nce
-cached entries are reused without being zeroed.
+> +free_tdmr:
+>  	/* Free the array as it is not required anymore. */
+>  	kfree(tdmr_pa_array);
+>  
 
-> diff --git a/arch/loongarch/kvm/irqfd.c b/arch/loongarch/kvm/irqfd.c
-> index f4f953b224192..15cc80cde071b 100644
-> --- a/arch/loongarch/kvm/irqfd.c
-> +++ b/arch/loongarch/kvm/irqfd.c
-> @@ -60,6 +60,8 @@ int kvm_set_routing_entry(struct kvm *kvm,
->  		e->msi.address_lo =3D ue->u.msi.address_lo;
->  		e->msi.address_hi =3D ue->u.msi.address_hi;
->  		e->msi.data =3D ue->u.msi.data;
-> +		e->msi.flags =3D ue->flags;
-> +		e->msi.devid =3D ue->u.msi.devid;
+So I think it would be good to also add a comment to get_tdx_sys_info()
+to make it easier for folks to follow that it may get called multiple
+times.
 
-[Severity: Critical]
-This isn't a bug introduced by this patch, but does the KVM_IRQ_ROUTING_IRQ=
-CHIP
-case in this function lack bounds checking on the irqchip index?
+Regards,
 
-Looking at kvm_set_routing_entry() on LoongArch (and similarly on PowerPC),
-the irqchip.pin is validated against KVM_IRQCHIP_NUM_PINS, but there doesn't
-appear to be a check for e->irqchip.irqchip against KVM_NR_IRQCHIPS.
-
-When kvm_set_routing_entry() returns success, setup_routing_entry() executes
-this array write:
-
-virt/kvm/irqchip.c:setup_routing_entry() {
-    ...
-    if (e->type =3D=3D KVM_IRQ_ROUTING_IRQCHIP)
-        rt->chip[e->irqchip.irqchip][e->irqchip.pin] =3D e->gsi;
-    ...
-}
-
-Could this allow a user-supplied routing entry to provide an arbitrarily
-large irqchip index, causing an out-of-bounds write of e->gsi into the heap
-memory following the kvm_irq_routing_table?
-
-[ ... ]
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525035242.1072=
-64-1-yanfei.xu@bytedance.com?part=3D2
+Tony
