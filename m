@@ -1,173 +1,147 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BF083E2AA3;
-	Mon, 25 May 2026 09:53:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D321340260
+	for <kvm@vger.kernel.org>; Mon, 25 May 2026 09:57:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779702819; cv=none; b=UZW6I675wrGKVk+qfzkWV1+HhdJfEj62zpx3M29kHeYsBpEGU1rqXpjiG9KTwAH4iaHmIE50pp/CRTg8JEazKvh50r6RRNUeJ9/jXDaRk6iRc9/YtLRp5RmDUDbPiOdHe//5acRuzKJ9xsv242PPx5JIaT+cd8kS141q7kTg9bA=
+	t=1779703080; cv=none; b=P7csz/SGd2/rQwAE/YdpUzW4aIfuq8XkB8meQQkxNaJubUCVF7Y9ghMLKD5ZmVKN679bBPjW98OrMxnMs5KNcXwdyAcP9RAi4tS8vbYl7FzI+cOXPK1f+idYMzmYuAJGkb7uaQE61Q9qz3ZVAk4vY0d0rHNu2CRz6YECtLU8/VY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779702819; c=relaxed/simple;
-	bh=nl4ZwqaZzWO4TpX5//aMEvyipqRok3uOxlOGFlrgtWM=;
-	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
-	 In-Reply-To:Content-Type; b=InWWhoTeQD3aeCZdUrMLW/8JUAkDXb+Pejc0zL84loWfd9QoAoV5tslh0hwuzlvHays9SDmDLg6sjzJxA5SkDUpcAahP3TjsUh07PAMcOa1MKJhrHXHIKekW5LOjJACuZzmERWV/uSJ/v1YEs0IFpNj1CQO7Lm7pvIN7aK3Tzeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.20.42.62])
-	by gateway (Coremail) with SMTP id _____8DxFOgbHBRqDwkNAA--.31328S3;
-	Mon, 25 May 2026 17:53:31 +0800 (CST)
-Received: from [10.20.42.62] (unknown [10.20.42.62])
-	by front1 (Coremail) with SMTP id qMiowJBxSeAWHBRqhkKQAA--.11008S3;
-	Mon, 25 May 2026 17:53:27 +0800 (CST)
-Subject: Re: [PATCH v2 net] LoongArch: KVM: Add missing slots_lock for IO bus
- device register/unregister
-To: Zeng Chi <zeng_chi911@163.com>, zhaotianrui@loongson.cn,
- chenhuacai@kernel.org, kernel@xen0n.name, kees@kernel.org,
- siyanteng@cqsoftware.com.cm, maqianga@uniontech.com, gaosong@loongson.cn,
- yury.norov@gmail.com
-Cc: kvm@vger.kernel.org, loongarch@lists.linux.dev,
- linux-kernel@vger.kernel.org, zengchi@kylinos.cn
-References: <20260518094521.138692-1-zeng_chi911@163.com>
- <20260525092633.1706633-1-zeng_chi911@163.com>
-From: Bibo Mao <maobibo@loongson.cn>
-Message-ID: <75a7525a-28d9-fdcb-a696-e56942530e7c@loongson.cn>
-Date: Mon, 25 May 2026 17:50:25 +0800
-User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
- Thunderbird/68.7.0
+	s=arc-20240116; t=1779703080; c=relaxed/simple;
+	bh=uK/vt7eLnOx5l8lJnbIVpEjTM2YvSAf8nXV0EaVRzsk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=DsoKt2wic86kpxGouUZ3BzX9s/GN7+xGM/fyNRhmMx25V5HFFcoPEfkBtWj+R8l+sHCncjXEA9t3Q2q+fSM8dRHj7krPhmaiKOJ+1jR04PgOtcrCYzSA5DmiMLhuJmXy2tXnE4FvPkAomRupW9JviIBna9lHUBEVOnovxAfgWdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SXJCNFrU; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tF/2NOxH; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SXJCNFrU";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tF/2NOxH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779703078;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=c1gLqb9yQcrxGhMm5dozqHasfJujBtBwy62H+RJqRdg=;
+	b=SXJCNFrUzM75Ukyy0U7laPw9r1EylOZ1JvO+ft+KLWGKJgUUXpNjAaSCwCts+Pt4P6roK+
+	HmQJTgzM3L2MUQq4AVNOR3SD1nfawWwA/BcG35pumkPslHoELFOCp7kpzoXbuIDaAB9op6
+	VbsnDZwKh0yw2V/+6ax3DdpKkE0mHFY=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-81-kEt4E2BpMfCjmzHEG9rSFQ-1; Mon, 25 May 2026 05:57:56 -0400
+X-MC-Unique: kEt4E2BpMfCjmzHEG9rSFQ-1
+X-Mimecast-MFC-AGG-ID: kEt4E2BpMfCjmzHEG9rSFQ_1779703075
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-48fd233d1e2so8676135e9.1
+        for <kvm@vger.kernel.org>; Mon, 25 May 2026 02:57:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1779703075; x=1780307875; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=c1gLqb9yQcrxGhMm5dozqHasfJujBtBwy62H+RJqRdg=;
+        b=tF/2NOxHNQKgMBzqI4DH3UjknadLJPd/cS7dAoETtafHRBI/ldH5IsvB+dzWp72SDe
+         4IfWp1vP/9pzTAF+yM56ckNwRXwZzZFW3eFxDVodxDqdxAqN+t74rJXLFER+IGUGtvzD
+         sg1S/8drAws4E0nzlp4K8A77f5jpzgnhKXthYjSVVGGETenbKUAz4lEJG7tUqIQT2ebE
+         aM2VjHX21qRp2Ndpfw40COzYoyeBvx/u2pl2t5SzoS6QmNrj5GPZsAdxS7PjttqtoIOK
+         M4sye+pD0X/NVOae9sxBmH4KeQM9heHcEuP8qtbpXHuZBJT/0GjzmfC8f36pf9gdCsC3
+         4/lA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779703075; x=1780307875;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=c1gLqb9yQcrxGhMm5dozqHasfJujBtBwy62H+RJqRdg=;
+        b=BsH2iP+u9UNfjduz+6/Pbaeb+5fG1nTNgZ00NQJmOMnzx7asUC9iKy5vD16GztGC01
+         yw19UjbA1sj3Muhis7f6LevM1x3OVMMXLkSpxi2PCljpeQQRFo6PNbHuYLqsNkFW7Vew
+         YZQ1wynLPHlNvzYe7XadbQYh2JBfl4XemVWVwUIKT7fX6ujWxDTf56v4WwBUifAdGRxI
+         1uRn1D3VRQh2DfbFMc2ID7ihyiz1TFbu9yjrPB8TYyzCgtOsBCBEFzK0e4J/Fz5VfKdx
+         eOlocWthl0rkWA3bSNOrxa8jvm7rXtQy4K0JOq0BNHvT+OJI5sQ4/kLHSe3yVHM+pt5A
+         0IOQ==
+X-Forwarded-Encrypted: i=1; AFNElJ+bYLdzKjRPOECqs+AUvMdt2au3cFvGjutlUFw/q4GbL+RIKP5+7hbhWvlmTrkDazAg94A=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz0QBchUeGMh9/9vuIP6JsmZdi/OG4zdcvzVclD51/1rug4uQ68
+	ixU6/W/Wru7n5zvGcNb6+bM4vVfFAHIfBNSshwvDCOXcAB5YobNAZLcBGG+rrHyrV0uNuLTa8sK
+	+k4s730X6uIm6v99ggpTnYF6/Al6TzcxERO95I+xp4zjhVl3egT7WQw==
+X-Gm-Gg: Acq92OHuxSa2GM48hkfWqmu11IHDPr+6xsCX7jYWe3ds+XyzQZLJOh3NQRXPBMR9c8z
+	9fVVkc0oE+kRDsYFBntKi5KDkgll8FOiiXucV/w1DcsgtsUzwjoAwLHKK7lWoXfo70h/KaPma8T
+	pzHtu3zRsFIs6P1nx3DYSkwUDFGx3HC4ETvZGuXPJ8K4LvspuKkCsYC6RtFmAOko5DM0HhKD8RN
+	osLbMqYV0/cNsRMzpDQXa4ps+CYyAhlY44A8J/h4Nos6MgD7O4rdpPFDxKgsKjUIycTf9Qy5lVh
+	+ZNJyxvIDV56wM+AnAERqjkJTY501ixH+hAQZ2j66m0rprYuyHutdKWFAbBAeOhpvJg1o6F9I5/
+	wuI4WowBJa9RTFA7V5uq/oQTWRapXOAh93Qx49VJTXHmye47ECDrHOmuqKbaxMjx3FB7dUGuEjU
+	HY3BEhrQ==
+X-Received: by 2002:a05:600c:6995:b0:490:482c:4384 with SMTP id 5b1f17b1804b1-490482c44ddmr216835835e9.24.1779703075156;
+        Mon, 25 May 2026 02:57:55 -0700 (PDT)
+X-Received: by 2002:a05:600c:6995:b0:490:482c:4384 with SMTP id 5b1f17b1804b1-490482c44ddmr216835185e9.24.1779703074518;
+        Mon, 25 May 2026 02:57:54 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-135-12.retail.telecomitalia.it. [82.53.135.12])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490417b0680sm83957175e9.8.2026.05.25.02.57.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 May 2026 02:57:53 -0700 (PDT)
+Date: Mon, 25 May 2026 11:57:45 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: patchwork-bot+netdevbpf@kernel.org, netdev@vger.kernel.org, 
+	xuanzhuo@linux.alibaba.com, horms@kernel.org, virtualization@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, kuba@kernel.org, eperezma@redhat.com, 
+	pabeni@redhat.com, mst@redhat.com, davem@davemloft.net, jasowang@redhat.com, 
+	stefanha@redhat.com, edumazet@google.com, stable@vger.kernel.org
+Subject: Re: [PATCH net] vsock/virtio: fix skb overhead overflow on 32-bit
+ builds
+Message-ID: <ahQbVxvbBEJZ3TBU@sgarzare-redhat>
+References: <20260521124732.125771-1-sgarzare@redhat.com>
+ <177950282964.1445071.6600517211632117224.git-patchwork-notify@kernel.org>
+ <20260523173557.5cc4f4f6@pumpkin>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20260525092633.1706633-1-zeng_chi911@163.com>
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Language: en-US
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxSeAWHBRqhkKQAA--.11008S3
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj93XoWxGry7uF18uw48Kw48ur43twc_yoWrJFW8pF
-	45ua4q9r4rWrnrXrZ2qr1DWF4Uuanagw1rury8CFW7uF4qqryrtF95AFy5WFyq93yxuFW0
-	qF15GFn0v3WUAabCm3ZEXasCq-sJn29KB7ZKAUJUUUUx529EdanIXcx71UUUUU7KY7ZEXa
-	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
-	0xBIdaVrnRJUUUPab4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
-	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
-	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
-	0_Jr0_Gr1l84ACjcxK6I8E87Iv67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVCY1x0267AK
-	xVW8Jr0_Cr1UM2kKe7AKxVWUAVWUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07
-	AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWU
-	AVWUtwAv7VC2z280aVAFwI0_Gr0_Cr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI4
-	8JMxk0xIA0c2IEe2xFo4CEbIxvr21lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vI
-	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67
-	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIY
-	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
-	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
-	JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjxU4SoGDU
-	UUU
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260523173557.5cc4f4f6@pumpkin>
 
+On Sat, May 23, 2026 at 05:35:57PM +0100, David Laight wrote:
+>On Sat, 23 May 2026 02:20:29 +0000
+>patchwork-bot+netdevbpf@kernel.org wrote:
+>
+>> Hello:
+>>
+>> This patch was applied to netdev/net.git (main)
+>> by Jakub Kicinski <kuba@kernel.org>:
+>
+>Did anyone else notice that is isn't a bug?
+>
+>There is no way that a 'count of bytes of kernel memory' can overflow
+>the size of 'long'.
 
+It's more of an estimate than an actual calculation of memory usage if 
+we queue the incoming packet. In theory, an overflow could occur if the 
+user sets `buf_alloc` to 4GB. In practice, though, I think you're right: 
+the memory should run out before we get to that check.
 
-On 2026/5/25 下午5:26, Zeng Chi wrote:
-> From: Zeng Chi <zengchi@kylinos.cn>
-> 
-> kvm_io_bus_register_dev() and kvm_io_bus_unregister_dev() should be
-> called under kvm->slots_lock. The unregister calls in ipi.c, pch_pic.c
-> and eiointc.c were missing this protection. Add it to match the
-> register side.
-one small nit, the mail tile is [PATCH v2 net], I think it should be 
-[PATCH v2] :)
+Thanks,
+Stefano
 
-> 
-> Signed-off-by: Zeng Chi <zengchi@kylinos.cn>
-> ---
->   arch/loongarch/kvm/intc/eiointc.c | 6 ++++++
->   arch/loongarch/kvm/intc/ipi.c     | 2 ++
->   arch/loongarch/kvm/intc/pch_pic.c | 2 ++
->   3 files changed, 10 insertions(+)
-> 
-> diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/intc/eiointc.c
-> index 2ab7fafa86d5..2b14485d14a7 100644
-> --- a/arch/loongarch/kvm/intc/eiointc.c
-> +++ b/arch/loongarch/kvm/intc/eiointc.c
-> @@ -645,10 +645,14 @@ static int kvm_eiointc_create(struct kvm_device *dev, u32 type)
->   
->   	device = &s->device_vext;
->   	kvm_iodevice_init(device, &kvm_eiointc_virt_ops);
-> +	mutex_lock(&kvm->slots_lock);
->   	ret = kvm_io_bus_register_dev(kvm, KVM_IOCSR_BUS,
->   			EIOINTC_VIRT_BASE, EIOINTC_VIRT_SIZE, device);
-> +	mutex_unlock(&kvm->slots_lock);
->   	if (ret < 0) {
-> +		mutex_lock(&kvm->slots_lock);
->   		kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &s->device);
-> +		mutex_unlock(&kvm->slots_lock);
->   		kfree(s);
->   		return ret;
->   	}
-
-I prefer something like this, however it is only my personal option.
---- a/arch/loongarch/kvm/intc/eiointc.c
-+++ b/arch/loongarch/kvm/intc/eiointc.c
-@@ -645,13 +645,16 @@ static int kvm_eiointc_create(struct kvm_device 
-*dev, u32 type)
-
-         device = &s->device_vext;
-         kvm_iodevice_init(device, &kvm_eiointc_virt_ops);
-+       mutex_lock(&kvm->slots_lock);
-         ret = kvm_io_bus_register_dev(kvm, KVM_IOCSR_BUS,
-                         EIOINTC_VIRT_BASE, EIOINTC_VIRT_SIZE, device);
-         if (ret < 0) {
-                 kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &s->device);
-+               mutex_unlock(&kvm->slots_lock);
-                 kfree(s);
-                 return ret;
-         }
-+       mutex_unlock(&kvm->slots_lock);
-         kvm->arch.eiointc = s;
-
-@chenhuacai what is your option?
-
-The others look good to me.
-
-Regards
-Bibo Mao
-> @@ -667,8 +671,10 @@ static void kvm_eiointc_destroy(struct kvm_device *dev)
->   
->   	kvm = dev->kvm;
->   	eiointc = kvm->arch.eiointc;
-> +	mutex_lock(&kvm->slots_lock);
->   	kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &eiointc->device);
->   	kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &eiointc->device_vext);
-> +	mutex_unlock(&kvm->slots_lock);
->   	kfree(eiointc);
->   	kfree(dev);
->   }
-> diff --git a/arch/loongarch/kvm/intc/ipi.c b/arch/loongarch/kvm/intc/ipi.c
-> index 1f6ebbd0af5c..4fa0897d7bdb 100644
-> --- a/arch/loongarch/kvm/intc/ipi.c
-> +++ b/arch/loongarch/kvm/intc/ipi.c
-> @@ -447,7 +447,9 @@ static void kvm_ipi_destroy(struct kvm_device *dev)
->   
->   	kvm = dev->kvm;
->   	ipi = kvm->arch.ipi;
-> +	mutex_lock(&kvm->slots_lock);
->   	kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &ipi->device);
-> +	mutex_unlock(&kvm->slots_lock);
->   	kfree(ipi);
->   	kfree(dev);
->   }
-> diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/intc/pch_pic.c
-> index aa0ed59ae8cf..175a630aceb4 100644
-> --- a/arch/loongarch/kvm/intc/pch_pic.c
-> +++ b/arch/loongarch/kvm/intc/pch_pic.c
-> @@ -481,7 +481,9 @@ static void kvm_pch_pic_destroy(struct kvm_device *dev)
->   	kvm = dev->kvm;
->   	s = kvm->arch.pch_pic;
->   	/* unregister pch pic device and free it's memory */
-> +	mutex_lock(&kvm->slots_lock);
->   	kvm_io_bus_unregister_dev(kvm, KVM_MMIO_BUS, &s->device);
-> +	mutex_unlock(&kvm->slots_lock);
->   	kfree(s);
->   	kfree(dev);
->   }
-> 
+>
+>-- David
+>
+>>
+>> On Thu, 21 May 2026 14:47:32 +0200 you wrote:
+>> > From: Stefano Garzarella <sgarzare@redhat.com>
+>> >
+>> > On 32-bit architectures, both skb_queue_len() and SKB_TRUESIZE(0) evaluate
+>> > to 32-bit values. The multiplication can overflow before being assigned to
+>> > the u64 skb_overhead variable, making the skb overhead check ineffective.
+>> >
+>> > Cast skb_queue_len() to u64 so the multiplication is always performed in
+>> > 64-bit arithmetic.
+>> >
+>> > [...]
+>>
+>> Here is the summary with links:
+>>   - [net] vsock/virtio: fix skb overhead overflow on 32-bit builds
+>>     https://git.kernel.org/netdev/net/c/4157501b9a8f
+>>
+>> You are awesome, thank you!
+>
 
