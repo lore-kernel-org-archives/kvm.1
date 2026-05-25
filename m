@@ -1,101 +1,177 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D6B7384229
-	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:39:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB3437FF77
+	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:42:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779712745; cv=none; b=ooBNFeiOqXRUVafHefGf2Q4UUgBi4znKpROriqGBcdpmnQEB06+X8K3f30fcRxYmY91YAk9mQUWb3kEvOfNbd9Jx8BhYi1OqHvnV7Kjgdqul5XIlZN6PRPW27ctPYvwyuK8k/5ZghLGBLU0b4woIva/VGHnJx1+iqT9YQEUTx+I=
+	t=1779712931; cv=none; b=pd0XzEJJJsRX+wShK47RCtosjm9Hg+WAez5Enl2Wwq1sl38u8c4Ojyu/16sNrFkuOQWWB+ZqCM4YSi91Tg3GRD2qv4KwQJ6HDbz3276aS/njcDDK4jW1EO2rrBE0MkqniRDnZ7OJJEo5REJGjYzjghnz/G767TXvPvB3PDi/11g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779712745; c=relaxed/simple;
-	bh=iThrTyXlPtbp9s4r8JGtzaYkt2R12gFuwIOu5YMlHpQ=;
-	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=PciDx0i2Grrupg9A+Z2uIi8gr6dHNfdyM/wZ0BSwI46drDTu2YLUX0Gc5Zo/lJRIeIPrIKXXhjt4j8LSyYnB7+cYZhEew4uyZYqxvHpYTsKYjKPmE228d/3YQrW8GU14cpxhRfkV1wotNVpCCYXdgqnKaxP86rj3pelLs1gGtRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JAynKFAW; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779712931; c=relaxed/simple;
+	bh=nBZFB/qKiQFEmkpum3LmDBV+XZABkX4tDlOB6EU6g/4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SL0r3DgxRLDY8DCnY1VoUy9Gr4UGQpfbjt6/jfsY/dmscqyqMDn38oOtr/bK+Z+UA6LQsDU7+8F7bp6llJcMQZvj8XZuh2ty0kR74eoOfniqQVkNhzoVu0xRH+CzLKfHxKYHMv16saqSSekcQJcDLfw0V63qvmue9EdQBJNx9IE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BOYnkIol; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=VoKsHsT+; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JAynKFAW"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A31F1F00A3A
-	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:39:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779712744;
-	bh=I9lCoHG3kQBzorrevEoQ86mZLpeSG/BMdchhIUpji3E=;
-	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
-	b=JAynKFAWNzcxDwm782iwmwmcuK5D8V8y+vy69hzzPGRvryIBfrNhGrFjrX731qEGa
-	 FwxVrfLoUyXdjGF2BXxpv6V9p1mxJAwdP0gvBAdvjEMIlfCE4sWyA9wl51JbcSxsJz
-	 IUmvEawGSPX5AuuqkHuSYiH2daSqpWWpiLbN0lZ/0E6Hev8M2CMEvdhmNoVdEvugdW
-	 iNs8E9LbiH80VTg/I35pPYgIXo5G4kT54M+oH1uRsOTlhdye5FtlHkIIjHQSsWzNBQ
-	 fkWsnqPYem4YOnQLju3pEZP6HrR9O0TDCSUV2Q1BhebBFHOkCUDgARzDsDWepY5DXr
-	 Ij51VjeoEBPVg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 13/14] selftests/mm: add userfaultfd RWP tests
-Reply-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260525113737.1942478-14-kas@kernel.org>
-References: <20260525113737.1942478-14-kas@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 25 May 2026 12:39:03 +0000
-Message-Id: <20260525123904.0A31F1F00A3A@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BOYnkIol";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="VoKsHsT+"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779712929;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=C2mO9ihHPbnXM6c2+MtWPyD/ZxOr74sqrY+NK7spw+c=;
+	b=BOYnkIolC/QsgdcBu0A7lXkN/AnR+4FlBO9j+CToxSx2HqeeSMTCbnCYbHoEWO9hnoQ5/v
+	9MRrhskAbrtAhzPT3X/+hmxQaMveaL2RjmFnDcSthfVVT6xvcq2tu3YHepXsGbD94zB/w4
+	85qIDlNrlBFKa+CiWSaEclZLhJoIArY=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-126-GeL_7VpyMZusb64mO_6_sA-1; Mon, 25 May 2026 08:42:07 -0400
+X-MC-Unique: GeL_7VpyMZusb64mO_6_sA-1
+X-Mimecast-MFC-AGG-ID: GeL_7VpyMZusb64mO_6_sA_1779712926
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-4518f777225so6881674f8f.1
+        for <kvm@vger.kernel.org>; Mon, 25 May 2026 05:42:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1779712926; x=1780317726; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=C2mO9ihHPbnXM6c2+MtWPyD/ZxOr74sqrY+NK7spw+c=;
+        b=VoKsHsT+E9v36NgANdIVDxnzvmPXBdCzjU182ePme/onYYVA+/QIX1cRo3OSvMcrQW
+         Hayz8BQq8zdvo4QkHcpz589X3Lgjv57CqBO2YnEHh4u/kGKYltHLLXzgwXhmDKqh/8+v
+         jO6v45NmFodBqyFBHAODgDWQomU4D4KW3ZzJ60tGZQz48rHML7i0n+nzRhquE3vOiSGA
+         PWHv22G7hAifGs40ngnyx9YAPWd+0OsXktep1VnC+lqM4ixpMbjrvALcuXJ/3eGMWIZu
+         GG+ovmkuSeESVggZECz4qsSQO8z/SzcXkN/uQDFBWxMsbDYuGtDrEgciI+wScgtxt/k6
+         OwAQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779712926; x=1780317726;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=C2mO9ihHPbnXM6c2+MtWPyD/ZxOr74sqrY+NK7spw+c=;
+        b=pzR7wm5Flzdi1oU7WNix6engM7MZM14mUlNeNgLqOd4l6KnJe9e+zsreZvWOyIKjhs
+         UtRVqXqfQYhTbpH3/Rp5l50wj0bRart856jHvyWIIbGhAR+NY+/v3MxmGrKrqnhh0Keu
+         GVP8KhVgW+szqLziCzqQyZkQSsHENeExQDjkkgmdnuRJTZKM9ve7GTZYgKtWmapBxeKX
+         VAAFYgVAr2F8kyyD8DYwL6oQQ9PY/KuDT5nHfF2xBf5FdiRXn3L28dNgRaO6U3iHF1HM
+         kTrxIhkUVW4dEr255AVVknsa7mCrtFyg7t9NyplULvUuJx5b5rY1isa/9IxVH0c+1S+0
+         nTZA==
+X-Forwarded-Encrypted: i=1; AFNElJ9WYb6Mp0+ZVrhfxt69o0FzZ+q7Ng2mDAWeLMDeh+2O/S69OWoa+gZ6EqZwR1F7nMHrfrA=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx6otw4SP1brcIPwPhb/8iW5cAGmtkKyXiLKx9jEUcpEa3r/3e4
+	OdGR6jVFibax5C9BrbQ04txnNeWg202bWfOcTFRr0N+EY9/l74J8nrbnH6kE9F4itZC9IqKSEWf
+	oEl2G8IAW1z41bQg0z4JdaiW13LCcJViLr1KeoV9epugP4gyJJmujYA==
+X-Gm-Gg: Acq92OEGOpw4+WKZH1G1oKmBrVg6pS4QvFPBkTi+HtwUV3X23p8ZRRV23Ji3QxAnUB5
+	xyICnC/xf72KxtbwlDgZPq59bh64SpfUAFN63tfPfjLadgzAo/3PEmIG88gFp1uWb/rpIzPadYA
+	5fV3nexjiKGPpB4CnTL3ah1NOpPDAdm1k6mP9MeZiBi+IWuH4ZycyjFWnPvT6UMpe9z0ZttL9b9
+	1b7dz57G3GDCzsJ6EfPRcV8DTlKxbsp449zWnVHC6pAi7wlGRPY68vxWyFaZIp4y8vM+fGJij5n
+	MWedV4dTP+WDPl1viOrKj+35kmx7bSz3dA0g00F4A1ARLrd9/ur4FpVYeHMHITxeub7G/QbK/T4
+	wF+937+BrjbZDbXVHS18iW9t7+7KSF+qXzo5WIwKZXBl6yastTY7MhA==
+X-Received: by 2002:a05:6000:4605:b0:43d:7bc9:9b2c with SMTP id ffacd0b85a97d-45eb3687941mr23325976f8f.17.1779712925857;
+        Mon, 25 May 2026 05:42:05 -0700 (PDT)
+X-Received: by 2002:a05:6000:4605:b0:43d:7bc9:9b2c with SMTP id ffacd0b85a97d-45eb3687941mr23325918f8f.17.1779712925385;
+        Mon, 25 May 2026 05:42:05 -0700 (PDT)
+Received: from redhat.com (IGLD-80-230-25-45.inter.net.il. [80.230.25.45])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6d4850dsm25575281f8f.17.2026.05.25.05.42.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 May 2026 05:42:04 -0700 (PDT)
+Date: Mon, 25 May 2026 08:42:01 -0400
+From: "Michael S. Tsirkin" <mst@redhat.com>
+To: David Laight <david.laight.linux@gmail.com>
+Cc: Stefano Garzarella <sgarzare@redhat.com>,
+	patchwork-bot+netdevbpf@kernel.org, netdev@vger.kernel.org,
+	xuanzhuo@linux.alibaba.com, horms@kernel.org,
+	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org, kuba@kernel.org, eperezma@redhat.com,
+	pabeni@redhat.com, davem@davemloft.net, jasowang@redhat.com,
+	stefanha@redhat.com, edumazet@google.com, stable@vger.kernel.org
+Subject: Re: [PATCH net] vsock/virtio: fix skb overhead overflow on 32-bit
+ builds
+Message-ID: <20260525083859-mutt-send-email-mst@kernel.org>
+References: <20260521124732.125771-1-sgarzare@redhat.com>
+ <177950282964.1445071.6600517211632117224.git-patchwork-notify@kernel.org>
+ <20260523173557.5cc4f4f6@pumpkin>
+ <ahQbVxvbBEJZ3TBU@sgarzare-redhat>
+ <20260525115314.3cf310e6@pumpkin>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260525115314.3cf310e6@pumpkin>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] Hardcoding _UFFDIO_SET_MODE in the unconditionally checked expec=
-ted_ioctls breaks the userfaultfd selftests on older kernels.
---
+On Mon, May 25, 2026 at 11:53:14AM +0100, David Laight wrote:
+> On Mon, 25 May 2026 11:57:45 +0200
+> Stefano Garzarella <sgarzare@redhat.com> wrote:
+> 
+> > On Sat, May 23, 2026 at 05:35:57PM +0100, David Laight wrote:
+> > >On Sat, 23 May 2026 02:20:29 +0000
+> > >patchwork-bot+netdevbpf@kernel.org wrote:
+> > >  
+> > >> Hello:
+> > >>
+> > >> This patch was applied to netdev/net.git (main)
+> > >> by Jakub Kicinski <kuba@kernel.org>:  
+> > >
+> > >Did anyone else notice that is isn't a bug?
+> > >
+> > >There is no way that a 'count of bytes of kernel memory' can overflow
+> > >the size of 'long'.  
+> > 
+> > It's more of an estimate than an actual calculation of memory usage if 
+> > we queue the incoming packet. In theory, an overflow could occur if the 
+> > user sets `buf_alloc` to 4GB. In practice, though, I think you're right: 
+> > the memory should run out before we get to that check.
+> 
+> The calculation is:
+> 
+> 	u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0); 
+> 
+> skb_queue_len() will be the number of items on the queue.
+> SKB_TRUESIZE(0) is the memory taken up by a zero length skb (basically sizeof(skb)).
+> 
+> Unless you either corrupt the queue length or manage to allocate skb that use
+> less than the minimum about of memory that product can't overflow 'unsigned long'.
+> 
+> The later calculations might wrap - but the multiply can't.
+> 
+> -- David
 
-commit 2e7d7c5845ff822166d0f5b0dd880bef4b890a15
-Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
-selftests/mm: add userfaultfd RWP tests
 
-This commit adds coverage for UFFDIO_REGISTER_MODE_RWP and UFFDIO_RWPROTECT.
-It introduces multiple test cases for sync and async modes, mprotect
-interactions, GUP paths, and fork behaviors.
+Indeed, I wasn't thinking. For this to even get close to overflowing
+we'd have to have almost all of 4G available to the 32 bit kernel taken
+up by this single queue.
 
-> diff --git a/tools/testing/selftests/mm/uffd-unit-tests.c b/tools/testing=
-/selftests/mm/uffd-unit-tests.c
-> index a6c14109e8188..bd6f35ddaa4d0 100644
-> --- a/tools/testing/selftests/mm/uffd-unit-tests.c
-> +++ b/tools/testing/selftests/mm/uffd-unit-tests.c
-> @@ -109,6 +111,11 @@ static void uffd_test_skip(const char *message)
-> =20
->  static void test_uffd_api(bool use_dev)
->  {
-> +	const uint64_t expected_ioctls =3D
-> +		BIT_ULL(_UFFDIO_REGISTER) |
-> +		BIT_ULL(_UFFDIO_UNREGISTER) |
-> +		BIT_ULL(_UFFDIO_API) |
-> +		BIT_ULL(_UFFDIO_SET_MODE);
->  	struct uffdio_api uffdio_api;
->  	int uffd;
+Revert, I'd say.
 
-[ ... ]
+> > 
+> > Thanks,
+> > Stefano
+> > 
+> > >
+> > >-- David
+> > >  
+> > >>
+> > >> On Thu, 21 May 2026 14:47:32 +0200 you wrote:  
+> > >> > From: Stefano Garzarella <sgarzare@redhat.com>
+> > >> >
+> > >> > On 32-bit architectures, both skb_queue_len() and SKB_TRUESIZE(0) evaluate
+> > >> > to 32-bit values. The multiplication can overflow before being assigned to
+> > >> > the u64 skb_overhead variable, making the skb overhead check ineffective.
+> > >> >
+> > >> > Cast skb_queue_len() to u64 so the multiplication is always performed in
+> > >> > 64-bit arithmetic.
+> > >> >
+> > >> > [...]  
+> > >>
+> > >> Here is the summary with links:
+> > >>   - [net] vsock/virtio: fix skb overhead overflow on 32-bit builds
+> > >>     https://git.kernel.org/netdev/net/c/4157501b9a8f
+> > >>
+> > >> You are awesome, thank you!  
+> > >  
+> > 
 
-> @@ -148,6 +155,15 @@ static void test_uffd_api(bool use_dev)
->  		goto out;
->  	}
-> =20
-> +	/* Verify returned fd-level ioctls bitmask */
-> +	if ((uffdio_api.ioctls & expected_ioctls) !=3D expected_ioctls) {
-> +		uffd_test_fail("UFFDIO_API missing expected ioctls: "
-
-[Severity: Medium]
-Will this unconditional check cause the baseline test_uffd_api to fail on
-older kernels that do not support UFFDIO_SET_MODE? Since the selftests are
-usually expected to gracefully skip unsupported tests, it seems hardcoding
-this bit into expected_ioctls might break backward compatibility for the
-test suite.
-
-> +			       "got=3D0x%"PRIx64", expected=3D0x%"PRIx64,
-> +			       (uint64_t)uffdio_api.ioctls,
-> +			       expected_ioctls);
-> +		goto out;
-> +	}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525113737.1942=
-478-1-kas@kernel.org?part=3D13
