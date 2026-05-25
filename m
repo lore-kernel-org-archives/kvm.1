@@ -1,120 +1,115 @@
-Received: from flow-c6-smtp.messagingengine.com (flow-b6-smtp.messagingengine.com [202.12.124.141])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE6573612E7;
-	Mon, 25 May 2026 19:43:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09140249E5
+	for <kvm@vger.kernel.org>; Mon, 25 May 2026 20:33:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779738216; cv=none; b=kVpVabov9BXsHOHdIv1zxzQX5q1IkrOsef905HZ17YQKgnsDxYXrUtenocA2medBH+jgKnr0xl1TADKYAYh7vzjQG6ul0LdWCi1XYw/a1VnGruEpB81Ui7ZAOWujN5FOwpk5ItEnFzUqCQVCj4Xl/1OZiSgYqKCk19xClt1sAGU=
+	t=1779741223; cv=none; b=sD3A6fPjpEbRdhYRhqWCUNHg6nkWFoBvoiZKlw7kRl5sSzFKwD2HHW29BvKov1454OBy7Ac5GLq6at5CpmqSVua7uCFSxeYNpC/FYCCUifnAleEmq4uiJXUEi/R7FZ0+csCr+vXnd2PR1VGxl2eAEGz3xQS3xr5wBvbQdXAbS7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779738216; c=relaxed/simple;
-	bh=GKD93VG64A5kxQue7lEH7O29Yz4xMU1KD9nt6cnvzoI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MpPQv0wYzrFhABkmqicIcAxkvjQCclW4DAaWN9vngK1UKfFVSfYKsvjlqeCyMMLrvWVrphXocM+kPEDiu4fsfGMHXUBE66a0ct4StCY5Mg2sXDtTY73sn5G3y2QqRvVyHWof83w7FkbTAl5EvIcgc5xLukXDvePZKV5XKZTQJ8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=C4Mur35z; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=sViDS8HA; arc=none smtp.client-ip=202.12.124.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
+	s=arc-20240116; t=1779741223; c=relaxed/simple;
+	bh=jxsGXfzQ6lUcOQJPqistqbP61aBTn1yYtWklxnTrd2I=;
+	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=sOz68hiuiKpHkFWzDIA1g/SKPicOZnRxo0c4HFqJuWmPaSyADqEtIpD6ljqs2ixj9nUXiZmXNVJYAG3DGM20gLglLUYrRkeN79Rw7Ebs75y38gKcyqakkSRIw4Twe4lc0mpRRrzIpL9L6ZkP5XHXJfQBztlie7uCEKbF2jMJozk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j82Wv1e7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="C4Mur35z";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="sViDS8HA"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailflow.stl.internal (Postfix) with ESMTP id B332B13007A6;
-	Mon, 25 May 2026 15:43:32 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Mon, 25 May 2026 15:43:34 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1779738212; x=
-	1779745412; bh=eYZqWDWmyjtutgvRJcqr8YK9g0zs3aP+mve8YH79Xw0=; b=C
-	4Mur35zTAbdD2IH43kVpVnAr6/c+7yOk/l7RaxWV7gUuKK0LNc012SvoYkL1W084
-	3l5W+uvWNRqm5fhQkmt7O8t0iOvfRVp5c7hsHQHpE6Qh9FSZ/MEoPjx96aKk3AkE
-	ssHYiwNmq1SEAVqnFbP0efBZxyldRCmC8s5Zl+tfQZ8WGuOzTI6yGE2h/vgSae7k
-	mH4yLwNBGC7Rcf2oBc4LwvH9yTSphL11RFVYaRK4lx8Q1UmZQghLA8nEnHZAWaWf
-	ANbAc/pq4iTpbnf6rJyZNkH2dmzPXLX09kCmIN9z+S/jXs+v1Y9/03JjxJgLlD/P
-	VACidMDqSxRwBY//QEiLA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1779738212; x=1779745412; bh=eYZqWDWmyjtutgvRJcqr8YK9g0zs3aP+mve
-	8YH79Xw0=; b=sViDS8HAC4PUJSq+rQLyeLUU8K1RBZxtExi2wq9BmqnqlgPgwyN
-	A24DJP5LDnGg1XLYHaPLLcTmeOs9GGABxvDEts7fRHt2Cr4GzkPgcFXPC0/4z6rU
-	S7MZLXXm9hUbWS/42u9bwfyccWDh5aqvzRRQFgkyXQ4N4ZIarTL88AlaJ88AS1PY
-	LUhejk7h5TE7vhxge3p0FZMOlitRcZsFQTiKLqUlqfBiSXLETziIYFAXJmmwI7Sd
-	DxnDbdMGt9z7apzpgLqymuEckeKuzE+TUb2C7cGXwaQClZF4CFliiAtp2+KnzRwy
-	v9H84aLObrCHOxPeV9DArTRarjdVgpP6vkQ==
-X-ME-Sender: <xms:Y6YUaipClrAJ8uJDR42SfSGS26hZSRBEPmfiDPDTce1H4j1lOv6VjQ>
-    <xme:Y6YUapBwgZ821jjjbBe2VKkhReoLXtF_9ma9NNvoktqa1974baqEE2VtYpz2gorfX
-    5JjcKdLE51LuAPXiwcWvcMvFxsvD6uVhK-jQU_OfE5RfKAxOOBtY88>
-X-ME-Received: <xmr:Y6YUaheTNXu-YOC1yxulv5MrAXBFKOj4V6N8TttkUK-CbcGrf5Cmi-ODIUlOyw>
-X-ME-Proxy-Cause: dmFkZTGngrPU8UnqgtZHBi2y4I4SmyZVOKDVY9/WQa8xOMHvTiQ9LJMMNTiLiBDkUTCnEb
-    VmSZ0YH/NriLI6FeprGFh0FO2pN0fiL5RqhghH5nywUkn6bjGacjYJJo3Cei5tQxKfTyRk
-    znk0VH0r3YdzTv38dyn04gsnUUZy5ILD6NFuKJO6eVTQADMTFq2bevs1uTCjhyveT7jM30
-    y5wq28mw5I0yWm965Y3QDl2LcU6F4ztQfJCBam49DHPmA17AqsoHeyvSkoYi7mmDv04bir
-    9qsX+ty+9nymwEGBpfIhsRiomOXpjmW8fBCDJTRxzSlpkO3BAb1yO1FTBnmN62zB7n3dCy
-    +aqI1PIGiVpWUOKlMua6wqJfJZ3pKZazyu6GdRFuFYe04jJya3EtT+8qzvODERAt9Xr67A
-    LyKEejtEHrJwvpmxTo826djH+4IlpOcQ+qWk+1pl5CIFNgGpaXHCfH09gGVYVoP8q5iR7s
-    uvJBsCojis9FDdA5X+cKIAVLNYGwThfa64G5lZlqDBL2cRt1LicIU1gF+B0FfkliYnkQ7P
-    cvbwqXazG9g490YMUzuTeRY0LTBh9x+fBwH9dOkG7Ol0zG9sF9HcblH4iyLcKUig45Vdep
-    1QrMBKdiU+uAhtKZ4aAfF8DLYc3yfDZ2L7gxGx78FDAtDqrATaYgs/0xxH3w
-X-ME-Proxy: <xmx:Y6YUamdUCTt7fnRYY1r_x2Okc3-Nb-VWlcnMljgq5J1VXLBLADs3MA>
-    <xmx:Y6YUavP4yHvqbcJLMkazD0udv9gZugM7IOSYpKqj2kjKB9Dsl6Qvxw>
-    <xmx:Y6YUanoxnCds8pQk1NO57YCbE-pcWn98OApZhhZgxwKYuXkqVXA63A>
-    <xmx:Y6YUamWU-whlKbA8ZzMZjVrlSDufg11xavmpSu2i8Q8fF2cq_XIVsQ>
-    <xmx:ZKYUalJW4HxZxn7Y43nNwQCuCQOb6PT0GdqWwOlWIFLym8SBXKKhw2uV>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 25 May 2026 15:43:31 -0400 (EDT)
-Date: Mon, 25 May 2026 20:43:30 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: Andrew Morton <akpm@linux-foundation.org>
-Cc: sashiko-reviews@lists.linux.dev, kvm@vger.kernel.org, rppt@kernel.org, 
-	peterx@redhat.com, david@kernel.org, ljs@kernel.org, surenb@google.com, 
-	vbabka@kernel.org, Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, 
-	skhan@linuxfoundation.org, seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, 
-	aarcange@redhat.com, sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v4 03/14] mm: rename uffd-wp PTE accessors to uffd
-Message-ID: <ahSlqQCqrxGsQS4W@thinkstation>
-References: <20260525113737.1942478-4-kas@kernel.org>
- <20260525120513.C51E91F00A3A@smtp.kernel.org>
- <ahRf00RTI4_0Puux@thinkstation>
- <20260525123108.0b66d07c4be97dab3536dfde@linux-foundation.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j82Wv1e7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FE971F000E9
+	for <kvm@vger.kernel.org>; Mon, 25 May 2026 20:33:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779741221;
+	bh=oxHqKBe91ZMJVrsXubLJsuYSeeL36Mr9ljmzP2Xh728=;
+	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
+	b=j82Wv1e74wJGrgYWnghomBPgFS0TLIijKBxnb9SATXxKJUG94ZWxheMAw3hdxpXbH
+	 WNaUNQh3uQAdnqwU5Akd1rw0yLpMbbTQ6IQd08WtBXQU4C+kZNjhPouTKctShkIfD2
+	 HsaXTaT2H+Nj8ojGPeamrsGajufqkcQujyDaOhlvvlM7skfL2E1vpoMptLsScZVtlx
+	 qsGtXqIGegK/fYHyosGh1YPpAF8WiLSMu4ZMkCs3vB5GKi2txJyprOjHZGUKx0v8pr
+	 HurjPMH2aHmkJgdo3gk8BCETK4RqR/c7l/QsLUOsyO2I2VlY/Ym1V3YD2RCTvJm+To
+	 MndRZEr0wQqUQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 2/5] iommufd/device: Associate KVM file pointer with
+ iommufd_device
+Reply-To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260525154816.1029642-3-aneesh.kumar@kernel.org>
+References: <20260525154816.1029642-3-aneesh.kumar@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 25 May 2026 20:33:41 +0000
+Message-Id: <20260525203341.9FE971F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260525123108.0b66d07c4be97dab3536dfde@linux-foundation.org>
 
-On Mon, May 25, 2026 at 12:31:08PM -0700, Andrew Morton wrote:
-> On Mon, 25 May 2026 15:43:32 +0100 Kiryl Shutsemau <kirill@shutemov.name> wrote:
-> 
-> > To: sashiko-reviews@lists.linux.dev
-> 
-> hm.  What's this.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Critical] Use-After-Free / Lifetime Mismatch due to borrowed KVM file re=
+ference
+--
 
-kvm@ folks opted-in for getting review feedback by mail for patchsets
-sent to the list. I've replied to all recipients of the patchset not
-only to kvm@.
+commit e5661ddf7c17ac12b18e45c9b4e38b80511ba1c0
+Author: Shameer Kolothum <skolothumtho@nvidia.com>
 
-> Sashiko seems to have been useful this time around.
+iommufd/device: Associate KVM file pointer with iommufd_device
+   =20
+This commit extends iommufd_device_bind() to accept the device's KVM file
+and stores it in the iommufd_device struct. This provides TSM vDevice suppo=
+rt
+access to the KVM associated with a VFIO device.
 
-Yeah, better than last time.
+> diff --git a/drivers/iommu/iommufd/device.c b/drivers/iommu/iommufd/devic=
+e.c
+> index 170a7005f0bc8..718abdc0e627a 100644
+> --- a/drivers/iommu/iommufd/device.c
+> +++ b/drivers/iommu/iommufd/device.c
+> @@ -216,7 +217,9 @@ void iommufd_device_destroy(struct iommufd_object *ob=
+j)
+>   * The caller must undo this with iommufd_device_unbind()
+>   */
+>  struct iommufd_device *iommufd_device_bind(struct iommufd_ctx *ictx,
+> -					   struct device *dev, u32 *id)
+> +					   struct device *dev,
+> +					   struct file *kvm_file,
+> +					   u32 *id)
+>  {
+>  	struct iommufd_device *idev;
+>  	struct iommufd_group *igroup;
 
-> > Confirmed and pre-existing ... Will address in a separate
-> > patch on top of this series.
-> 
-> There are quite a few like this.  Would it be better to address these
-> existing issues immediately then base the new feature-add on top?
+[ ... ]
 
-Fair enough. Will prepare patches this week.
+> @@ -266,6 +269,8 @@ struct iommufd_device *iommufd_device_bind(struct iom=
+mufd_ctx *ictx,
+>  	if (!iommufd_selftest_is_mock_dev(dev))
+>  		iommufd_ctx_get(ictx);
+>  	idev->dev =3D dev;
+> +	/* reference is already taken in vfio_df_ioctl_bind_iommufd() */
+> +	idev->kvm_file =3D kvm_file;
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+[Severity: Critical]
+Does this borrowed reference create a potential use-after-free regression if
+the iommufd_device outlives the VFIO device?
+
+If a concurrent ioctl on the iommufd device is maliciously stalled (for
+example, using userfaultfd during a copy_to_user in IOMMU_GET_HW_INFO),
+iommufd_object_remove() can time out after 60 seconds and return -EBUSY.
+This would fail to remove the idev object, leaving it alive in the iommufd
+xarray.
+
+VFIO owns the KVM file reference and unconditionally drops it when the VFIO
+device file is closed. If VFIO drops this reference while idev remains aliv=
+e,
+the file could be freed, leaving idev->kvm_file as a dangling pointer.
+
+If the stalled ioctl is subsequently allowed to finish, a new
+IOMMU_VIOMMU_ALLOC ioctl could look up the leaked idev and attempt to call
+get_file(idev->kvm_file), resulting in a use-after-free on the freed struct
+file.
+
+Should this function take its own independent reference to kvm_file to
+ensure the file remains valid for the entire lifetime of the iommufd_device?
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525154816.1029=
+642-1-aneesh.kumar@kernel.org?part=3D2
