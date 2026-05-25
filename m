@@ -1,90 +1,198 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5884A37DE9F
-	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:06:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F342303C83
+	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:07:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779710801; cv=none; b=NtiC0QzX27Cbx76T24VwhDxNmgTpDJRvkfH3RjamH4XM5E0Qinsc+155pK0KJyy6BS4n/NdwqHFpYmW+FQuWBLJqu/F7EJi+xm3wchR+uCWwPL90ZGpoJCqLwkN4+WQh/c+bD2pR4i3k08nWau6JcrUFwHXCYbT7ylR5z8+Yk7M=
+	t=1779710851; cv=none; b=nrqwEPwrYIx2XeTw7099Wov0VCC2dRRu1pwEb7t28NPr1mZ3vpQ3mvM4UZhf8oy5Jq2I3dEDF6dmqyXhQuCLcTDg+bYRP5Fq5Twx6kDz3f0q7iOOpW3yj8MaNrTfyk0Mm0fid9MBRHpnOx7R/k6KZtnl/CACQE8zIPWkOqxz8tI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779710801; c=relaxed/simple;
-	bh=K7hftySqJ84syS01osrFM4H2/IChZzhHyOIGxBhocj4=;
-	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=oD58rhq0z8TsmddttaWdPG0yf1oYfwYWFqvnzXi00lJFF4emXq+BVxP3ubv1Kv0cLspXX39c6ju+1pR8R9VLmhbtV7xIa0iX6tQZ7isBHJhwsiu0PaggC8uExsOB40UfTCpcI8ftaybd/bfWQuM9F82AR22xE/uDAitwxQsAka0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EIaGV3Am; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779710851; c=relaxed/simple;
+	bh=4CHZeOjV/PB5i3VCyI3BpHIWRw8dkqH4DKRqFHpWnXk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lsrVLod0M1Uc/iPMqX2PfAY6wTwKCZbb4j4jg+6Fk5RPTCRqUtYeanBQbDOyKqumkFjk+o9LP2KfZdchTl4vkdDyeEB1v7zqeDCmk32wDj2gu7NG7Nc9KZR5hLQgI3KL5LFfZ3nMjBgvx45GSiQ5cWmfCGAetlBL7S4dK/FIPrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dUncHN64; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EIaGV3Am"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 328441F000E9
-	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:06:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779710800;
-	bh=mJX5NWrfZP8G4i3ze9qPnICO5C7TRKekeXibWesECR0=;
-	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
-	b=EIaGV3AmwweOHB9tFSnrOJAGD1ID6W5+xMPeLhuShBvisye7YB1rKw+nSXtqUtwR/
-	 MUKgazMlRzT80WzR4fXxDtX/WPR4TdSNl1afBuobVUHvF5ZZCYc4uH0zRF4Ya7hDTf
-	 Yh/BZMKJSdn7ptvHUPtjGpT3oWaqO6GOLypNzulabklTc7LEYgnuUjksFusWDSBq/N
-	 fGOt55NSY/dKRM9N3trQP7NawzcIBecsdfs0SoAcUgUUIK0053dPz8JGbkLF40fBKV
-	 2A77yzVP0krCS+SbULuX/+6gSDE925PZr/VW8+/sU9GwzVi1qP3lH6WMvTzOz3t4No
-	 Ai9UzY2LeDItA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 01/14] mm: decouple protnone helpers from
- CONFIG_NUMA_BALANCING
-Reply-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260525113737.1942478-2-kas@kernel.org>
-References: <20260525113737.1942478-2-kas@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 25 May 2026 12:06:39 +0000
-Message-Id: <20260525120640.328441F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dUncHN64"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779710849;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=OxA+wkCeRGCMz6mVK+iQ6ixDlpZfLn5/b8lmiEYNdoY=;
+	b=dUncHN64a5nTV/JMIaUHrHxfboaZbhczZ5+uiZ80olxTfcBv7+/xskybWMkmqz67xhRimc
+	r8KiqvmLbA8ViIK/pWe2PVIBCBsinAt5660BmGCVcb2ZQ1G0+Np2dmdKawAYxfkIGeToru
+	yrc/oJDwT2s1FbBGNWO9HFp5tJg6/Vw=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-475-I0qRiSyqPs2raqMvXLHirQ-1; Mon,
+ 25 May 2026 08:07:25 -0400
+X-MC-Unique: I0qRiSyqPs2raqMvXLHirQ-1
+X-Mimecast-MFC-AGG-ID: I0qRiSyqPs2raqMvXLHirQ_1779710844
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C9D38195608E;
+	Mon, 25 May 2026 12:07:24 +0000 (UTC)
+Received: from virtlab1023.lab.eng.rdu2.redhat.lab.eng.rdu2.redhat.com (virtlab1023.lab.eng.rdu2.redhat.com [10.8.1.187])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 5840C30002E0;
+	Mon, 25 May 2026 12:07:24 +0000 (UTC)
+From: Paolo Bonzini <pbonzini@redhat.com>
+To: kvm@vger.kernel.org
+Cc: "Aithal, Srikanth" <sraithal@amd.com>
+Subject: [PATCH kvm-unit-tests] svm_tests: access rflags and rax via this_cpu_guest_regs()
+Date: Mon, 25 May 2026 08:07:23 -0400
+Message-ID: <20260525120723.8265-1-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [High] Unconditional selection of ARCH_HAS_PTE_PROTNONE on LoongArch caus=
-es boot-time warnings/panics in debug_vm_pgtable on 32-bit configurations.
---
+This is needed now that the VMCB save area is properly updated.
 
-commit ce0e2bca623ff8e41c100c4e1e7335cad7b9483c
-Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Reported-by: Aithal, Srikanth <sraithal@amd.com>
+Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+---
+ x86/svm_tests.c | 31 ++++++++++++++++++++++---------
+ 1 file changed, 22 insertions(+), 9 deletions(-)
 
-mm: decouple protnone helpers from CONFIG_NUMA_BALANCING
+diff --git a/x86/svm_tests.c b/x86/svm_tests.c
+index 8547e729..00552448 100644
+--- a/x86/svm_tests.c
++++ b/x86/svm_tests.c
+@@ -650,7 +650,7 @@ static bool msr_intercept_finished(struct svm_test *test)
+ 	 *      while RAX hold its lower 32 bits.
+ 	 */
+ 	if (vmcb->control.exit_info_1)
+-		test->scratch = ((regs->rdx << 32) | (vmcb->save.rax & 0xffffffff));
++		test->scratch = ((regs->rdx << 32) | (regs->rax & 0xffffffff));
+ 	else
+ 		test->scratch = regs->rcx;
+ 
+@@ -1871,9 +1871,11 @@ static bool virq_inject_check(struct svm_test *test)
+ 
+ static void virq_inject_within_shadow_prepare(struct svm_test *test)
+ {
++	struct guest_regs *regs = this_cpu_guest_regs();
++
+ 	virq_inject_prepare(test);
+ 	vmcb->control.int_state = SVM_INTERRUPT_SHADOW_MASK;
+-	vmcb->save.rflags |= X86_EFLAGS_IF;
++	regs->rflags |= X86_EFLAGS_IF;
+ }
+ 
+ extern void virq_inject_within_shadow_test(struct svm_test *test);
+@@ -2710,12 +2712,14 @@ asm("guest_rflags_test_guest:\n\t"
+ 
+ static void svm_test_singlestep(void)
+ {
++	struct guest_regs *regs = this_cpu_guest_regs();
++
+ 	handle_exception(DB_VECTOR, guest_rflags_test_db_handler);
+ 
+ 	/*
+ 	 * Trap expected after completion of first guest instruction
+ 	 */
+-	vmcb->save.rflags |= X86_EFLAGS_TF;
++	regs->rflags |= X86_EFLAGS_TF;
+ 	report (__svm_vmrun((u64)guest_rflags_test_guest) == SVM_EXIT_VMMCALL &&
+ 		guest_rflags_test_trap_rip == (u64)&insn2,
+ 		"Test EFLAGS.TF on VMRUN: trap expected  after completion of first guest instruction");
+@@ -2724,7 +2728,7 @@ static void svm_test_singlestep(void)
+ 	 */
+ 	guest_rflags_test_trap_rip = 0;
+ 	vmcb->save.rip += 3;
+-	vmcb->save.rflags |= X86_EFLAGS_TF;
++	regs->rflags |= X86_EFLAGS_TF;
+ 	report (__svm_vmrun(vmcb->save.rip) == SVM_EXIT_VMMCALL &&
+ 		guest_rflags_test_trap_rip == 0, "Test EFLAGS.TF on VMRUN: trap not expected");
+ 
+@@ -3319,6 +3323,7 @@ static void dummy_nmi_handler(struct ex_regs *regs)
+ 
+ static void svm_intr_intercept_mix_run_guest(volatile int *counter, u64 expected_vmexit)
+ {
++	struct guest_regs *regs = this_cpu_guest_regs();
+ 	if (counter)
+ 		*counter = 0;
+ 
+@@ -3338,7 +3343,7 @@ static void svm_intr_intercept_mix_run_guest(volatile int *counter, u64 expected
+ 	report(vmcb->control.exit_code == expected_vmexit,
+ 	       "Wanted VM-Exit reason 0x%lx, got 0x%lx",
+ 	       expected_vmexit, vmcb->control.exit_code);
+-	report(vmcb->save.rflags & X86_EFLAGS_IF, "Guest should have EFLAGS.IF set now");
++	report(regs->rflags & X86_EFLAGS_IF, "Guest should have EFLAGS.IF set now");
+ 	cli();
+ }
+ 
+@@ -3354,12 +3359,14 @@ static void svm_intr_intercept_mix_if_guest(struct svm_test *test)
+ 
+ static void svm_intr_intercept_mix_if(void)
+ {
++	struct guest_regs *regs = this_cpu_guest_regs();
++
+ 	// make a physical interrupt to be pending
+ 	handle_irq(0x55, dummy_isr);
+ 
+ 	vmcb->control.intercept |= (1 << INTERCEPT_INTR);
+ 	vmcb->control.int_ctl &= ~V_INTR_MASKING_MASK;
+-	vmcb->save.rflags &= ~X86_EFLAGS_IF;
++	regs->rflags &= ~X86_EFLAGS_IF;
+ 
+ 	test_set_guest(svm_intr_intercept_mix_if_guest);
+ 	cli();
+@@ -3388,11 +3395,13 @@ static void svm_intr_intercept_mix_gif_guest(struct svm_test *test)
+ 
+ static void svm_intr_intercept_mix_gif(void)
+ {
++	struct guest_regs *regs = this_cpu_guest_regs();
++
+ 	handle_irq(0x55, dummy_isr);
+ 
+ 	vmcb->control.intercept |= (1 << INTERCEPT_INTR);
+ 	vmcb->control.int_ctl &= ~V_INTR_MASKING_MASK;
+-	vmcb->save.rflags &= ~X86_EFLAGS_IF;
++	regs->rflags &= ~X86_EFLAGS_IF;
+ 
+ 	test_set_guest(svm_intr_intercept_mix_gif_guest);
+ 	cli();
+@@ -3418,11 +3427,13 @@ static void svm_intr_intercept_mix_gif_guest2(struct svm_test *test)
+ 
+ static void svm_intr_intercept_mix_gif2(void)
+ {
++	struct guest_regs *regs = this_cpu_guest_regs();
++
+ 	handle_irq(0x55, dummy_isr);
+ 
+ 	vmcb->control.intercept |= (1 << INTERCEPT_INTR);
+ 	vmcb->control.int_ctl &= ~V_INTR_MASKING_MASK;
+-	vmcb->save.rflags |= X86_EFLAGS_IF;
++	regs->rflags |= X86_EFLAGS_IF;
+ 
+ 	test_set_guest(svm_intr_intercept_mix_gif_guest2);
+ 	svm_intr_intercept_mix_run_guest(&dummy_isr_recevied, SVM_EXIT_INTR);
+@@ -3447,11 +3458,13 @@ static void svm_intr_intercept_mix_nmi_guest(struct svm_test *test)
+ 
+ static void svm_intr_intercept_mix_nmi(void)
+ {
++	struct guest_regs *regs = this_cpu_guest_regs();
++
+ 	handle_exception(2, dummy_nmi_handler);
+ 
+ 	vmcb->control.intercept |= (1 << INTERCEPT_NMI);
+ 	vmcb->control.int_ctl &= ~V_INTR_MASKING_MASK;
+-	vmcb->save.rflags |= X86_EFLAGS_IF;
++	regs->rflags |= X86_EFLAGS_IF;
+ 
+ 	test_set_guest(svm_intr_intercept_mix_nmi_guest);
+ 	svm_intr_intercept_mix_run_guest(&nmi_recevied, SVM_EXIT_NMI);
+-- 
+2.52.0
 
-Introduce CONFIG_ARCH_HAS_PTE_PROTNONE to decouple the protnone PTE
-infrastructure from CONFIG_NUMA_BALANCING.
-
-> diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
-> index 606597da46b8d..77e9a9a30483f 100644
-> --- a/arch/loongarch/Kconfig
-> +++ b/arch/loongarch/Kconfig
-> @@ -67,6 +67,7 @@ config LOONGARCH
->  	select ARCH_SUPPORTS_LTO_CLANG
->  	select ARCH_SUPPORTS_LTO_CLANG_THIN
->  	select ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
-> +	select ARCH_HAS_PTE_PROTNONE
-
-[Severity: High]
-Does unconditionally selecting ARCH_HAS_PTE_PROTNONE introduce a regression
-by causing a boot-time warning in debug_vm_pgtable on 32-bit LoongArch
-configurations?
-
-On 32-bit LoongArch (CONFIG_32BIT), _PAGE_PROTNONE is defined as 0. This
-makes pte_protnone() always return 0. During boot, pte_protnone_tests() in
-mm/debug_vm_pgtable.c executes WARN_ON(!pte_protnone(pte)), leading to a
-kernel panic on systems with panic_on_warn.
-
-Prior to this patch, these tests skipped 32-bit LoongArch because they were
-gated by CONFIG_NUMA_BALANCING.
-
-Will this also cause a regression for generic features depending on
-ARCH_HAS_PTE_PROTNONE (like userfaultfd RWP), causing them to fail silently
-on 32-bit LoongArch since they expect pte_protnone() to accurately identify
-PROT_NONE PTEs?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525113737.1942=
-478-1-kas@kernel.org?part=3D1
