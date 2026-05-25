@@ -1,95 +1,99 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.14])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332C512D1F1;
-	Mon, 25 May 2026 06:00:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B8073A7F4A;
+	Mon, 25 May 2026 06:24:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779688841; cv=none; b=HdlTO67LaZF+qOo2ki45YbEtwK7Efui377wo/PoJodnLLTjW3dirKLFZOHhLm0J5eQ0MN5iSuW7dCyVB/w3IUlG6n+mf2GeEkkZ94TOlw2YtPuxjV47k/vEdKb8JXggkrRMmzn/7Uk5DDSkGs7yv+pANnqVUCDU8pwNlxglhNTI=
+	t=1779690287; cv=none; b=QyfnkrfR3hIihmXLx6YtODgpvOAn+LQBl8iE/0AQgHrvCVPERhFuYUKaQjNInNkNpic3nyQM45AcOrtINO5UR9sycRlvc+VDQPcWtPA9t8sPu/g3RSEMFuk8uo1VoPMqSmlL1hUGEl40gD7bUm01VL18eGor0cojMoGlA0ACaJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779688841; c=relaxed/simple;
-	bh=MlRJqyLjdxZ6bc6oLzgCm2gHe0XD5oU4+kyAXVXObos=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K7+7By6X0zy9swHc0wHSF7hzWM9Dbg4swtwXtf0eyI3Ymh7sQPa3x/vmKaH/d9d8rQrdBb1euYBMdk5UZHRsjavDDwlXg3IvX/Y6QP12b/MHvgr9eLZ/K88FIB2p/dD5iCecHI2daA74G3JU2OuYyoqtQWpzqYE7htBKIWA5XJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CFKyf/af; arc=none smtp.client-ip=198.175.65.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1779690287; c=relaxed/simple;
+	bh=7QEs99OKEpBp0XzYt0E0idTSIoma9Xjl8SS3oxoRLC8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rR6D6PYu8OQWhgrtkysrAVRk/b60+G6et7OkhVO9mOswE7hQW3jguykfAI952zC9Z8nstnE5nLbodzvxFZWKA4uakNnCmE/DPCc6U6Id7zCyy9mRrpgBUnFWqbeELtqOtsRPiT4Hx43EEz5CkHTq63t3boAYkKB7gl/BsjCGGlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=hg+CoZQS; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CFKyf/af"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="hg+CoZQS"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779688841; x=1811224841;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=MlRJqyLjdxZ6bc6oLzgCm2gHe0XD5oU4+kyAXVXObos=;
-  b=CFKyf/afn2ktInTkRgiqfBrXe/v1xCRE7tNNB+6YNfzHNs1H7NGSQX+h
-   SZnQK7k8fnULJxD5XwGxGBGC6iWSXB4lpxd2008VCS2Xi7b67eeCKtvgz
-   YmUunbnA6+wD4ZZFzIAEWsys729b4jtIzSZEzqA8yxlFkuFOQ/iREhXWT
-   ypTIJPrb/oHYic5ACY7dCUtrWQm17uQ0yuSmL35QeAEw4AWHqVOqvFIjM
-   yFKIxTt+YU4S0LzCROwF4X4XwqNztfc3tWCDxbmj8C2PZe48xUo3b6ftq
-   MSCUjF5rt8VOlpAyFNeAZqMIrjNrOyIrQnpHXnvtx1KNuurNat/AtE0IN
-   g==;
-X-CSE-ConnectionGUID: 6Aon84uhSROHGStBVEH0MQ==
-X-CSE-MsgGUID: xC4Xwd4vTCixDKP6uv59AQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11796"; a="84393739"
+  t=1779690285; x=1811226285;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=7QEs99OKEpBp0XzYt0E0idTSIoma9Xjl8SS3oxoRLC8=;
+  b=hg+CoZQSVMogmUdpqgVx4sFWej3WykbWq8gZDgsB9cRIFouxfkRM9Crm
+   YuSVukTRscvaTl3tE8k0WUOKXYpl2uQ4HkQuZ+I9uiaqI3T7WJLXcWTqI
+   erjv9Sx6nS1d6SYQWlZruAPyKzsso9TA/U8h4Um5qhtqUhT5lPT7xxTWX
+   cb0eh03EAqxTFVZQfcO+8UkIAMQvDCdjRr6KcMvvPXzqflpsNSSM4UXtJ
+   02OJxccMaD7Mzt2Qec2c9xpHkLlaYguXC0suUhG2Sts/Jy4uzvu6dYbKx
+   +TgHp91xFP5nABZkGHZ78o3YiRgy+WYqVNzpi0585Xfcxg/b3tKsGSfY+
+   A==;
+X-CSE-ConnectionGUID: M+iGs+QsRha8Z6GuRF4MHw==
+X-CSE-MsgGUID: bXg+pKLqTPyrqaFjmTaAPA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11796"; a="79656673"
 X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
-   d="scan'208";a="84393739"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2026 23:00:40 -0700
-X-CSE-ConnectionGUID: jphD9s61THGXhW85SwlC9Q==
-X-CSE-MsgGUID: FDeWkl5IT7iyyoRzfB0QXA==
+   d="scan'208";a="79656673"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2026 23:24:45 -0700
+X-CSE-ConnectionGUID: codRSZlMS32nwrxhLCDHjQ==
+X-CSE-MsgGUID: gzzr8r5ySFiamucLeWDI1g==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
-   d="scan'208";a="279619628"
-Received: from pgcooper-mobl3.ger.corp.intel.com (HELO localhost) ([10.245.245.151])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2026 23:00:35 -0700
-Date: Mon, 25 May 2026 09:00:32 +0300
-From: Tony Lindgren <tony.lindgren@linux.intel.com>
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
-	x86@kernel.org, peter.fang@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, xiaoyao.li@intel.com
-Subject: Re: [PATCH 04/15] x86/virt/tdx: Enable the Extensions right after
- basic TDX Module init
-Message-ID: <ahPlgBgvIwimzmzH@tlindgre-MOBL1>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-5-yilun.xu@linux.intel.com>
+   d="scan'208";a="265356970"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.239.158.44]) ([10.239.158.44])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 May 2026 23:24:41 -0700
+Message-ID: <8b2f285b-9685-4a66-bfa8-725f4da9896c@intel.com>
+Date: Mon, 25 May 2026 14:24:38 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260522034128.3144354-5-yilun.xu@linux.intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/15] x86/virt/tdx: Read global metadata for TDX Module
+ Extensions
+To: Xu Yilun <yilun.xu@linux.intel.com>, kas@kernel.org, djbw@kernel.org,
+ rick.p.edgecombe@intel.com, x86@kernel.org, peter.fang@intel.com
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, sohil.mehta@intel.com, yilun.xu@intel.com,
+ baolu.lu@linux.intel.com, zhenzhong.duan@intel.com
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-2-yilun.xu@linux.intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260522034128.3144354-2-yilun.xu@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Fri, May 22, 2026 at 11:41:17AM +0800, Xu Yilun wrote:
-> The detailed initialization flow for TDX Module Extensions has been
-> fully implemented. Enable the flow after basic TDX Module
-> initialization.
+On 5/22/2026 11:41 AM, Xu Yilun wrote:
+> Add reading of the global metadata for TDX Module Extensions.
 > 
-> Theoretically, the Extensions doesn't need to be enabled right after
-> basic TDX initialization. It could be enabled right before the first
-> Extension SEAMCALL is issued. That would save or postpone memory usage.
-> But it isn't worth the complexity, the needs for the Extensions are vast
-> but the savings are little for a typical TDX capable system (about
-> 0.001% of memory). So the Linux decision is to just enable it along with
-> the basic TDX.
+> TDX Module Extensions is an add-on feature enumerated by TDX_FEATURES0.
+
+> But for the Module's integrity, Linux requires that all features that a
+> Module advertises must have a complete, valid set of metadata, 
+
+I doubt on this.
+
+1. Is it a must that any new feature introduces new metadata field?
+
+2. Linux only cares the integrity for the features it uses, not for all 
+the features.
+
+> and the
+> validation must succeed at core TDX initialization time.
 > 
-> Note that the Extensions initialization flow will still not start if no
-> add-on features require Extensions. The enabling of add-on features will
-> be in later patches. Until then, the system hasn't consumed extra memory.
+> Check TDX_FEATURES0 before reading these metadata. If a feature is
+> advertised, a failure in reading associated metadata causes the entire
+> TDX initialization to fail, otherwise skip.
 
-Looking at patch 15/15, we need to reload the TDX module metadata at least
-for the attestation. We need to do that early, so to me it seems that
-everything can be just tagged __init from the start.
+I'm not sure why we need to explain the behavior when the reading fails. 
+It's not different to other existing fields.
 
-So you can just call init_tdx_ext() in patch 3/15, and this patch is not
-needed at all?
+Instead, I think you can explain why we need to check TDX_FEATURES0_EXT 
+at first.
 
-Regards,
-
-Tony
+Anyway, I don't read it as a good changelog. It event doesn't tell what 
+the added fields are and why we need them.
