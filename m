@@ -1,147 +1,184 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D321340260
-	for <kvm@vger.kernel.org>; Mon, 25 May 2026 09:57:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9BF93E869A
+	for <kvm@vger.kernel.org>; Mon, 25 May 2026 09:58:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779703080; cv=none; b=P7csz/SGd2/rQwAE/YdpUzW4aIfuq8XkB8meQQkxNaJubUCVF7Y9ghMLKD5ZmVKN679bBPjW98OrMxnMs5KNcXwdyAcP9RAi4tS8vbYl7FzI+cOXPK1f+idYMzmYuAJGkb7uaQE61Q9qz3ZVAk4vY0d0rHNu2CRz6YECtLU8/VY=
+	t=1779703089; cv=none; b=KB/KvgdXZVnyJ+O/ZAfvt9vi1cp21gm3bfYt5t/FEgXSd/Kj/2d1UTbRQYhcnYCX5SYdapO6AHAcdr34HE02NEsZKUmiTCpmZjes6DaId5ke73ZwNSF6PmF7BLsyQSeingIrNe1MgSkKevj0OUey0mysMr5og7bG8gTN6epEm6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779703080; c=relaxed/simple;
-	bh=uK/vt7eLnOx5l8lJnbIVpEjTM2YvSAf8nXV0EaVRzsk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DsoKt2wic86kpxGouUZ3BzX9s/GN7+xGM/fyNRhmMx25V5HFFcoPEfkBtWj+R8l+sHCncjXEA9t3Q2q+fSM8dRHj7krPhmaiKOJ+1jR04PgOtcrCYzSA5DmiMLhuJmXy2tXnE4FvPkAomRupW9JviIBna9lHUBEVOnovxAfgWdI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SXJCNFrU; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=tF/2NOxH; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1779703089; c=relaxed/simple;
+	bh=YIcoDH61ho33Opg/5ey4o2PjDEXs+ZoLPSygOU57BGE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pvu3lU6BiAwwLt7zGiApzcqNxbAKYWALCAjbohdHiSng3mEGkS1x+pCPcqSvur3bx2TUQlb6fyl6Fn6vLhXXx6/1MFBgwx4onnAIKvQbVHPoI5bxuasxDvQlHfOl+MYNJQfOS7RGLVYNmVPGQ6Pd9zQhXWkzx/Z2ppsZi4AnzCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h/edijR5; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SXJCNFrU";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="tF/2NOxH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779703078;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=c1gLqb9yQcrxGhMm5dozqHasfJujBtBwy62H+RJqRdg=;
-	b=SXJCNFrUzM75Ukyy0U7laPw9r1EylOZ1JvO+ft+KLWGKJgUUXpNjAaSCwCts+Pt4P6roK+
-	HmQJTgzM3L2MUQq4AVNOR3SD1nfawWwA/BcG35pumkPslHoELFOCp7kpzoXbuIDaAB9op6
-	VbsnDZwKh0yw2V/+6ax3DdpKkE0mHFY=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-81-kEt4E2BpMfCjmzHEG9rSFQ-1; Mon, 25 May 2026 05:57:56 -0400
-X-MC-Unique: kEt4E2BpMfCjmzHEG9rSFQ-1
-X-Mimecast-MFC-AGG-ID: kEt4E2BpMfCjmzHEG9rSFQ_1779703075
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-48fd233d1e2so8676135e9.1
-        for <kvm@vger.kernel.org>; Mon, 25 May 2026 02:57:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779703075; x=1780307875; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=c1gLqb9yQcrxGhMm5dozqHasfJujBtBwy62H+RJqRdg=;
-        b=tF/2NOxHNQKgMBzqI4DH3UjknadLJPd/cS7dAoETtafHRBI/ldH5IsvB+dzWp72SDe
-         4IfWp1vP/9pzTAF+yM56ckNwRXwZzZFW3eFxDVodxDqdxAqN+t74rJXLFER+IGUGtvzD
-         sg1S/8drAws4E0nzlp4K8A77f5jpzgnhKXthYjSVVGGETenbKUAz4lEJG7tUqIQT2ebE
-         aM2VjHX21qRp2Ndpfw40COzYoyeBvx/u2pl2t5SzoS6QmNrj5GPZsAdxS7PjttqtoIOK
-         M4sye+pD0X/NVOae9sxBmH4KeQM9heHcEuP8qtbpXHuZBJT/0GjzmfC8f36pf9gdCsC3
-         4/lA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779703075; x=1780307875;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=c1gLqb9yQcrxGhMm5dozqHasfJujBtBwy62H+RJqRdg=;
-        b=BsH2iP+u9UNfjduz+6/Pbaeb+5fG1nTNgZ00NQJmOMnzx7asUC9iKy5vD16GztGC01
-         yw19UjbA1sj3Muhis7f6LevM1x3OVMMXLkSpxi2PCljpeQQRFo6PNbHuYLqsNkFW7Vew
-         YZQ1wynLPHlNvzYe7XadbQYh2JBfl4XemVWVwUIKT7fX6ujWxDTf56v4WwBUifAdGRxI
-         1uRn1D3VRQh2DfbFMc2ID7ihyiz1TFbu9yjrPB8TYyzCgtOsBCBEFzK0e4J/Fz5VfKdx
-         eOlocWthl0rkWA3bSNOrxa8jvm7rXtQy4K0JOq0BNHvT+OJI5sQ4/kLHSe3yVHM+pt5A
-         0IOQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+bYLdzKjRPOECqs+AUvMdt2au3cFvGjutlUFw/q4GbL+RIKP5+7hbhWvlmTrkDazAg94A=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz0QBchUeGMh9/9vuIP6JsmZdi/OG4zdcvzVclD51/1rug4uQ68
-	ixU6/W/Wru7n5zvGcNb6+bM4vVfFAHIfBNSshwvDCOXcAB5YobNAZLcBGG+rrHyrV0uNuLTa8sK
-	+k4s730X6uIm6v99ggpTnYF6/Al6TzcxERO95I+xp4zjhVl3egT7WQw==
-X-Gm-Gg: Acq92OHuxSa2GM48hkfWqmu11IHDPr+6xsCX7jYWe3ds+XyzQZLJOh3NQRXPBMR9c8z
-	9fVVkc0oE+kRDsYFBntKi5KDkgll8FOiiXucV/w1DcsgtsUzwjoAwLHKK7lWoXfo70h/KaPma8T
-	pzHtu3zRsFIs6P1nx3DYSkwUDFGx3HC4ETvZGuXPJ8K4LvspuKkCsYC6RtFmAOko5DM0HhKD8RN
-	osLbMqYV0/cNsRMzpDQXa4ps+CYyAhlY44A8J/h4Nos6MgD7O4rdpPFDxKgsKjUIycTf9Qy5lVh
-	+ZNJyxvIDV56wM+AnAERqjkJTY501ixH+hAQZ2j66m0rprYuyHutdKWFAbBAeOhpvJg1o6F9I5/
-	wuI4WowBJa9RTFA7V5uq/oQTWRapXOAh93Qx49VJTXHmye47ECDrHOmuqKbaxMjx3FB7dUGuEjU
-	HY3BEhrQ==
-X-Received: by 2002:a05:600c:6995:b0:490:482c:4384 with SMTP id 5b1f17b1804b1-490482c44ddmr216835835e9.24.1779703075156;
-        Mon, 25 May 2026 02:57:55 -0700 (PDT)
-X-Received: by 2002:a05:600c:6995:b0:490:482c:4384 with SMTP id 5b1f17b1804b1-490482c44ddmr216835185e9.24.1779703074518;
-        Mon, 25 May 2026 02:57:54 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-135-12.retail.telecomitalia.it. [82.53.135.12])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490417b0680sm83957175e9.8.2026.05.25.02.57.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 May 2026 02:57:53 -0700 (PDT)
-Date: Mon, 25 May 2026 11:57:45 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: patchwork-bot+netdevbpf@kernel.org, netdev@vger.kernel.org, 
-	xuanzhuo@linux.alibaba.com, horms@kernel.org, virtualization@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, kuba@kernel.org, eperezma@redhat.com, 
-	pabeni@redhat.com, mst@redhat.com, davem@davemloft.net, jasowang@redhat.com, 
-	stefanha@redhat.com, edumazet@google.com, stable@vger.kernel.org
-Subject: Re: [PATCH net] vsock/virtio: fix skb overhead overflow on 32-bit
- builds
-Message-ID: <ahQbVxvbBEJZ3TBU@sgarzare-redhat>
-References: <20260521124732.125771-1-sgarzare@redhat.com>
- <177950282964.1445071.6600517211632117224.git-patchwork-notify@kernel.org>
- <20260523173557.5cc4f4f6@pumpkin>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h/edijR5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB071F00A3A
+	for <kvm@vger.kernel.org>; Mon, 25 May 2026 09:58:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779703087;
+	bh=YxS4MMEWBaJECf1wnCAqzr9MgHb+NMNn0Vdz7r7z4Zc=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=h/edijR5JzEWcmsdOXrus7Xrv+QxQpqqcfh+Fee5PX1Dk+54Lppw7gqlXDBZFPIsD
+	 ekoU+cv2nGp1RBl1awP/Z/sgVDJwl8JzNxzIcClQJVxbSD7TtxEcISukmKn5fBGrx+
+	 cXXTDtH9+9vLy8J3Agq+v/UHJq+B8/wbx0kZ6vJe1YZXNXFpEyXkLX1rAoWqWOCYKi
+	 thngM1P/HzxO6ShG9kDqwQcfpFpbO/kDpm7aCcPmbVyXkrQTXwUVRa9bxLnzd26KxJ
+	 jRikXqptDjKSpyBwdcDv7vlcag4d3pJXc8T+LJQtsD5N12wUg8pwq1TcSzm4Y1GOtA
+	 ukFk/eSpf9UqQ==
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-bd8d0e4e341so1308219066b.0
+        for <kvm@vger.kernel.org>; Mon, 25 May 2026 02:58:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ8zJJThiKhQLLM4gMNRz/OBBNzG2MiDPogWMZVgR6kcEBcGVliej5Q5OAVXTEvN6CvCquw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw9XRZ0Gtk1+8TpdEQkvCV2dLuOjAA/xQiBMfGD4FVSDgjHQbZ2
+	obuyLQORsAhQCCV3fWX0PZPA1QqW95e5qqRMBjCLRQSuqvRhfmHt6Hk9Plue3tujz3WjIpBD6Ra
+	2+eOoCiIozuyYKyqVunV/S6HtRe0nCNQ=
+X-Received: by 2002:a17:907:1ca7:b0:ba6:8f34:b419 with SMTP id
+ a640c23a62f3a-bdd23602369mr823876966b.13.1779703086116; Mon, 25 May 2026
+ 02:58:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <20260523173557.5cc4f4f6@pumpkin>
+References: <20260518094521.138692-1-zeng_chi911@163.com> <20260525092633.1706633-1-zeng_chi911@163.com>
+ <75a7525a-28d9-fdcb-a696-e56942530e7c@loongson.cn>
+In-Reply-To: <75a7525a-28d9-fdcb-a696-e56942530e7c@loongson.cn>
+From: Huacai Chen <chenhuacai@kernel.org>
+Date: Mon, 25 May 2026 17:58:27 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H4__A=SQmrijs3OgeSpSFQSrCVL_2CrF0pzwRbvY_MH_Q@mail.gmail.com>
+X-Gm-Features: AVHnY4Iy13hSDGD7Ws8vVYlghEQ3qzYuRGg3aDmaK06HHSU3Hm_ofRtZ-3qip5I
+Message-ID: <CAAhV-H4__A=SQmrijs3OgeSpSFQSrCVL_2CrF0pzwRbvY_MH_Q@mail.gmail.com>
+Subject: Re: [PATCH v2 net] LoongArch: KVM: Add missing slots_lock for IO bus
+ device register/unregister
+To: Bibo Mao <maobibo@loongson.cn>
+Cc: Zeng Chi <zeng_chi911@163.com>, zhaotianrui@loongson.cn, kernel@xen0n.name, 
+	kees@kernel.org, siyanteng@cqsoftware.com.cm, maqianga@uniontech.com, 
+	gaosong@loongson.cn, yury.norov@gmail.com, kvm@vger.kernel.org, 
+	loongarch@lists.linux.dev, linux-kernel@vger.kernel.org, zengchi@kylinos.cn
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, May 23, 2026 at 05:35:57PM +0100, David Laight wrote:
->On Sat, 23 May 2026 02:20:29 +0000
->patchwork-bot+netdevbpf@kernel.org wrote:
+On Mon, May 25, 2026 at 5:53=E2=80=AFPM Bibo Mao <maobibo@loongson.cn> wrot=
+e:
 >
->> Hello:
->>
->> This patch was applied to netdev/net.git (main)
->> by Jakub Kicinski <kuba@kernel.org>:
 >
->Did anyone else notice that is isn't a bug?
 >
->There is no way that a 'count of bytes of kernel memory' can overflow
->the size of 'long'.
+> On 2026/5/25 =E4=B8=8B=E5=8D=885:26, Zeng Chi wrote:
+> > From: Zeng Chi <zengchi@kylinos.cn>
+> >
+> > kvm_io_bus_register_dev() and kvm_io_bus_unregister_dev() should be
+> > called under kvm->slots_lock. The unregister calls in ipi.c, pch_pic.c
+> > and eiointc.c were missing this protection. Add it to match the
+> > register side.
+> one small nit, the mail tile is [PATCH v2 net], I think it should be
+> [PATCH v2] :)
+>
+> >
+> > Signed-off-by: Zeng Chi <zengchi@kylinos.cn>
+> > ---
+> >   arch/loongarch/kvm/intc/eiointc.c | 6 ++++++
+> >   arch/loongarch/kvm/intc/ipi.c     | 2 ++
+> >   arch/loongarch/kvm/intc/pch_pic.c | 2 ++
+> >   3 files changed, 10 insertions(+)
+> >
+> > diff --git a/arch/loongarch/kvm/intc/eiointc.c b/arch/loongarch/kvm/int=
+c/eiointc.c
+> > index 2ab7fafa86d5..2b14485d14a7 100644
+> > --- a/arch/loongarch/kvm/intc/eiointc.c
+> > +++ b/arch/loongarch/kvm/intc/eiointc.c
+> > @@ -645,10 +645,14 @@ static int kvm_eiointc_create(struct kvm_device *=
+dev, u32 type)
+> >
+> >       device =3D &s->device_vext;
+> >       kvm_iodevice_init(device, &kvm_eiointc_virt_ops);
+> > +     mutex_lock(&kvm->slots_lock);
+> >       ret =3D kvm_io_bus_register_dev(kvm, KVM_IOCSR_BUS,
+> >                       EIOINTC_VIRT_BASE, EIOINTC_VIRT_SIZE, device);
+> > +     mutex_unlock(&kvm->slots_lock);
+> >       if (ret < 0) {
+> > +             mutex_lock(&kvm->slots_lock);
+> >               kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &s->device)=
+;
+> > +             mutex_unlock(&kvm->slots_lock);
+> >               kfree(s);
+> >               return ret;
+> >       }
+>
+> I prefer something like this, however it is only my personal option.
+> --- a/arch/loongarch/kvm/intc/eiointc.c
+> +++ b/arch/loongarch/kvm/intc/eiointc.c
+> @@ -645,13 +645,16 @@ static int kvm_eiointc_create(struct kvm_device
+> *dev, u32 type)
+>
+>          device =3D &s->device_vext;
+>          kvm_iodevice_init(device, &kvm_eiointc_virt_ops);
+> +       mutex_lock(&kvm->slots_lock);
+>          ret =3D kvm_io_bus_register_dev(kvm, KVM_IOCSR_BUS,
+>                          EIOINTC_VIRT_BASE, EIOINTC_VIRT_SIZE, device);
+>          if (ret < 0) {
+>                  kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &s->device=
+);
+> +               mutex_unlock(&kvm->slots_lock);
+>                  kfree(s);
+>                  return ret;
+>          }
+> +       mutex_unlock(&kvm->slots_lock);
+>          kvm->arch.eiointc =3D s;
+>
+> @chenhuacai what is your option?
+Both are OK for me. If we want to minimize the critical section, then
+this patch is a little better.
 
-It's more of an estimate than an actual calculation of memory usage if 
-we queue the incoming packet. In theory, an overflow could occur if the 
-user sets `buf_alloc` to 4GB. In practice, though, I think you're right: 
-the memory should run out before we get to that check.
-
-Thanks,
-Stefano
-
+Huacai
 >
->-- David
+> The others look good to me.
 >
->>
->> On Thu, 21 May 2026 14:47:32 +0200 you wrote:
->> > From: Stefano Garzarella <sgarzare@redhat.com>
->> >
->> > On 32-bit architectures, both skb_queue_len() and SKB_TRUESIZE(0) evaluate
->> > to 32-bit values. The multiplication can overflow before being assigned to
->> > the u64 skb_overhead variable, making the skb overhead check ineffective.
->> >
->> > Cast skb_queue_len() to u64 so the multiplication is always performed in
->> > 64-bit arithmetic.
->> >
->> > [...]
->>
->> Here is the summary with links:
->>   - [net] vsock/virtio: fix skb overhead overflow on 32-bit builds
->>     https://git.kernel.org/netdev/net/c/4157501b9a8f
->>
->> You are awesome, thank you!
+> Regards
+> Bibo Mao
+> > @@ -667,8 +671,10 @@ static void kvm_eiointc_destroy(struct kvm_device =
+*dev)
+> >
+> >       kvm =3D dev->kvm;
+> >       eiointc =3D kvm->arch.eiointc;
+> > +     mutex_lock(&kvm->slots_lock);
+> >       kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &eiointc->device);
+> >       kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &eiointc->device_ve=
+xt);
+> > +     mutex_unlock(&kvm->slots_lock);
+> >       kfree(eiointc);
+> >       kfree(dev);
+> >   }
+> > diff --git a/arch/loongarch/kvm/intc/ipi.c b/arch/loongarch/kvm/intc/ip=
+i.c
+> > index 1f6ebbd0af5c..4fa0897d7bdb 100644
+> > --- a/arch/loongarch/kvm/intc/ipi.c
+> > +++ b/arch/loongarch/kvm/intc/ipi.c
+> > @@ -447,7 +447,9 @@ static void kvm_ipi_destroy(struct kvm_device *dev)
+> >
+> >       kvm =3D dev->kvm;
+> >       ipi =3D kvm->arch.ipi;
+> > +     mutex_lock(&kvm->slots_lock);
+> >       kvm_io_bus_unregister_dev(kvm, KVM_IOCSR_BUS, &ipi->device);
+> > +     mutex_unlock(&kvm->slots_lock);
+> >       kfree(ipi);
+> >       kfree(dev);
+> >   }
+> > diff --git a/arch/loongarch/kvm/intc/pch_pic.c b/arch/loongarch/kvm/int=
+c/pch_pic.c
+> > index aa0ed59ae8cf..175a630aceb4 100644
+> > --- a/arch/loongarch/kvm/intc/pch_pic.c
+> > +++ b/arch/loongarch/kvm/intc/pch_pic.c
+> > @@ -481,7 +481,9 @@ static void kvm_pch_pic_destroy(struct kvm_device *=
+dev)
+> >       kvm =3D dev->kvm;
+> >       s =3D kvm->arch.pch_pic;
+> >       /* unregister pch pic device and free it's memory */
+> > +     mutex_lock(&kvm->slots_lock);
+> >       kvm_io_bus_unregister_dev(kvm, KVM_MMIO_BUS, &s->device);
+> > +     mutex_unlock(&kvm->slots_lock);
+> >       kfree(s);
+> >       kfree(dev);
+> >   }
+> >
 >
-
