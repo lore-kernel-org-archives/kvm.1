@@ -1,56 +1,104 @@
-Received: from out198-45.us.a.mail.aliyun.com (out198-45.us.a.mail.aliyun.com [47.90.198.45])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A5C328E0;
-	Mon, 25 May 2026 04:04:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=47.90.198.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7CBA2356C6
+	for <kvm@vger.kernel.org>; Mon, 25 May 2026 05:17:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779681877; cv=none; b=InwxUKcFee082yA/oODd/K71M05z9PEeRhDVYAu7KjnIkTiidFFAmz3abOR62hzI+dT0yT6MZYrucA20OTUivU3fRSdd/y7MSrIeT+DBQlZL13ZlIbqEl+0aMoH1jtdOTplN6+gaCZMPr1xXYwW53nPedE3x3oFlqMXEMrXVFxA=
+	t=1779686235; cv=none; b=MGK2vA2LrXPDUGegD5IAkcBvJ9/eEc3aptU7OtlFJxQzyyssp+RbgTyRLKmzR0x4lHLvrJM5eDTZOZJSYgsRQTCDiL1/IgwTV7Frb0sGEpVTxlluF8DBbFj1mIoxyEfK94b0pdNvr+QrF14VGgwJHJlDW6qS8VwxhchgbUw+Xhk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779681877; c=relaxed/simple;
-	bh=HE9U58GZgMIjnm0OatsP8ZOy28V7bEY4DNb7XNlex9g=;
-	h=Date:From:To:Cc:Message-ID:Subject:MIME-Version:References:
-	 In-Reply-To:Content-Type; b=Yhkrp2asr+UgdTvAiklfJXwmMw7a81/HJrGziheqkAos/qnPPmU4uZaGLtp1NGE30cfKhjFPVFmmIqH772IEdHtSye1HDsiXz4Ntm4l9TlZ7VBKi7PytAN+7bDEUKTbOE41AOdI68uy97N1oDITtQKcjrku6YFPlRnpyH3k4ToY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net; spf=pass smtp.mailfrom=open-hieco.net; arc=none smtp.client-ip=47.90.198.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=open-hieco.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=open-hieco.net
-X-Alimail-AntiSpam:AC=CONTINUE;BC=0.1609595|-1;BR=01201311R121S07rulernew998_84748_2000303;CH=blue;DM=|CONTINUE|false|;DS=CONTINUE|ham_news_journal|0.0148758-0.000317564-0.984807;FP=3739503386867361111|0|0|0|0|-1|-1|-1;HT=maildocker-contentspam033040074035;MF=zhang_wei@open-hieco.net;NM=1;PH=DW;RN=7;RT=7;SR=0;TI=W4_0.2.3_0B53580D_1779681078360_o7001c199k;
-Received: from WS-web (zhang_wei@open-hieco.net[W4_0.2.3_0B53580D_1779681078360_o7001c199k] cluster:ay29) at Mon, 25 May 2026 11:58:49 +0800
-Date: Mon, 25 May 2026 11:58:49 +0800
-From: "=?UTF-8?B?5byg5beN?=" <zhang_wei@open-hieco.net>
-To: "Sean Christopherson" <seanjc@google.com>
-Cc: "kvm" <kvm@vger.kernel.org>,
-  "pbonzini" <pbonzini@redhat.com>,
-  "mlevitsk" <mlevitsk@redhat.com>,
-  "naveen" <naveen@kernel.org>,
-  "linux-kernel" <linux-kernel@vger.kernel.org>,
-  "stable" <stable@vger.kernel.org>
-Reply-To: "=?UTF-8?B?5byg5beN?=" <zhang_wei@open-hieco.net>
-Message-ID: <b4dd2e22-2364-40ed-a06f-4082adb309d1.zhang_wei@open-hieco.net>
-Subject: =?UTF-8?B?UmU6IFtQQVRDSF0gS1ZNOiBTVk06IERpc2FibGUgQVZJQyBJUEkgdmlydHVhbGl6YXRpb24g?=
-  =?UTF-8?B?b24gSHlnb24gRmFtaWx5IDE4aCAoZXJyYXR1bSAjMTIzNSk=?=
-X-Mailer: [Alimail-Mailagent revision 57][W4_0.2.3][null][Unknown]
+	s=arc-20240116; t=1779686235; c=relaxed/simple;
+	bh=ZHxcErcXty1HmZPinImYNljm+wOhfbxoVxcYak+pfto=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Gx/dH2IgnkBEnERGQw6nkL6vQBq2yAMiWJziGNnRNyDu3rFDzuDbL3sRBvdpj6ZYJTSe2ZYPXiQr21xMKiOdhb4nKj/xGH/APdsMAQ4fFdawhWX4YhzEAuGSEZCSeaLXYdiBbvkfxVjPjR+2NR/ZzIEoXeFccW+gWb5+3nzSbTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B5zj+zcg; arc=none smtp.client-ip=100.103.45.18
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B5zj+zcg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 485D51F000E9;
+	Mon, 25 May 2026 05:17:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779686234;
+	bh=3Eypf9UJEuM/2OyOqF5KBeZNbrV9RWRXtVdFOl0Eyp0=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=B5zj+zcgdZglMAOOm6LlYhsyH6OfwZ/CijrGfLdvZxR+LGTRT5v2lXb+GhRLc8ZiC
+	 G4xPOt2OJbiW2NdX2JdkRjE7+W3dESofWsnT4pSGaOQ7v+kt+eobdO80xUXBFStrFB
+	 MgXMLH6xTmuda1x82/EEjumtnHMj6+IAruE79MPqRFKbFLixfJcuW8W918R//5LHpl
+	 K+sBq4TbnWStpd7/0153TEvYx3NFOP7T6GeykBl8e9vNyLFzAiUnRJVX8irrSc19KI
+	 wc5ynG1DOY00h8ONPGNfr3SoPAj7jk8BHsZlXM/ZXb8jk/qxX7A+4qUhXxXUp97ir1
+	 cKDojDz/CvM7g==
+From: sashiko-bot@kernel.org
+Subject: Re: [v3 2/2] KVM: irqchip: Cache IRQ routing entries allocation
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Yanfei Xu" <yanfei.xu@bytedance.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260525035242.107264-3-yanfei.xu@bytedance.com>
+References: <20260525035242.107264-3-yanfei.xu@bytedance.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 25 May 2026 05:17:13 +0000
+Message-Id: <20260525051714.485D51F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-x-aliyun-im-through: {"version":"v1.0"}
-References: <ahBScosf2jUlKdAt@google.com>
-x-aliyun-mail-creator: W4_0.2.3_null_MC4YXhpb3MvMC4yNy4y3M
-In-Reply-To: <ahBScosf2jUlKdAt@google.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: base64
 
-T24gRnJpLCBNYXkgMjIsIDIwMjYsIFNlYW4gQ2hyaXN0b3BoZXJzb24gd3JvdGU6Cj4gSUlVQywg
-ZmFtaWx5IDE4aCBpcyBjYXJ2ZWQgb3V0IGVudGlyZWx5IGZvciBIeWdvbiwgY29ycmVjdD8gIEku
-ZS4KPiB0aGVyZSdzIG5vIHJpc2sgb2YgZGlzYWJsaW5nIElQSSB2aXJ0dWFsaXphdGlvbiBvbiB1
-bmFmZmVjdGVkIEFNRCBDUFVzPwoKWWVzLCB0aGF0IGlzIG15IHVuZGVyc3RhbmRpbmcuCgpUaGUg
-b3JpZ2luYWwgSHlnb24gZW5hYmxlbWVudCBbMV0gdXNlcyBGYW1pbHkgMThoIHRvZ2V0aGVyIHdp
-dGggdGhlCkh5Z29uR2VudWluZSB2ZW5kb3IgSUQgdG8gZGlzdGluZ3Vpc2ggSHlnb24gRGh5YW5h
-IGZyb20gQU1EIEZhbWlseSAxN2gsCmFuZCBleHBsaWNpdGx5IHN0YXRlcyB0aGF0IG9ubHkgSHln
-b24gaXMgZXhwZWN0ZWQgdG8gdXNlIEZhbWlseSAxOGguICBTbwp0aGlzIHNob3VsZCBub3QgYWZm
-ZWN0IHVuYWZmZWN0ZWQgQU1EIENQVXMuCgpJIGNhbiBhZGQgYW4gWDg2X1ZFTkRPUl9IWUdPTiBj
-aGVjayB0b28gaWYgeW91IHByZWZlciBtYWtpbmcgdGhlCmRlcGVuZGVuY3kgZXhwbGljaXQuCgpb
-MV0gaHR0cHM6Ly9sd24ubmV0L0FydGljbGVzLzc2NDQ4MS8KClRoYW5rcywKVGluYQ==
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+
+Pre-existing issues:
+- [Critical] Missing bounds check on user-supplied `ue->u.irqchip.irqchip` =
+allows an out-of-bounds array write on LoongArch and PowerPC.
+--
+
+commit 8ac8d5f6cab84711afabacca6347f1ad673dc605
+Author: Yanfei Xu <yanfei.xu@bytedance.com>
+Subject: KVM: irqchip: Cache IRQ routing entries allocation
+
+This patch caches a VM-local entries array allocation from a freed IRQ rout=
+ing
+table to reduce allocation and free churn during frequent routing updates. =
+It
+also initializes the remaining MSI fields on x86, LoongArch, and PowerPC si=
+nce
+cached entries are reused without being zeroed.
+
+> diff --git a/arch/loongarch/kvm/irqfd.c b/arch/loongarch/kvm/irqfd.c
+> index f4f953b224192..15cc80cde071b 100644
+> --- a/arch/loongarch/kvm/irqfd.c
+> +++ b/arch/loongarch/kvm/irqfd.c
+> @@ -60,6 +60,8 @@ int kvm_set_routing_entry(struct kvm *kvm,
+>  		e->msi.address_lo =3D ue->u.msi.address_lo;
+>  		e->msi.address_hi =3D ue->u.msi.address_hi;
+>  		e->msi.data =3D ue->u.msi.data;
+> +		e->msi.flags =3D ue->flags;
+> +		e->msi.devid =3D ue->u.msi.devid;
+
+[Severity: Critical]
+This isn't a bug introduced by this patch, but does the KVM_IRQ_ROUTING_IRQ=
+CHIP
+case in this function lack bounds checking on the irqchip index?
+
+Looking at kvm_set_routing_entry() on LoongArch (and similarly on PowerPC),
+the irqchip.pin is validated against KVM_IRQCHIP_NUM_PINS, but there doesn't
+appear to be a check for e->irqchip.irqchip against KVM_NR_IRQCHIPS.
+
+When kvm_set_routing_entry() returns success, setup_routing_entry() executes
+this array write:
+
+virt/kvm/irqchip.c:setup_routing_entry() {
+    ...
+    if (e->type =3D=3D KVM_IRQ_ROUTING_IRQCHIP)
+        rt->chip[e->irqchip.irqchip][e->irqchip.pin] =3D e->gsi;
+    ...
+}
+
+Could this allow a user-supplied routing entry to provide an arbitrarily
+large irqchip index, causing an out-of-bounds write of e->gsi into the heap
+memory following the kvm_irq_routing_table?
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525035242.1072=
+64-1-yanfei.xu@bytedance.com?part=3D2
