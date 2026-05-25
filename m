@@ -1,169 +1,281 @@
-Received: from mx4.sberdevices.ru (mx4.sberdevices.ru [152.89.196.46])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F713603C2;
-	Mon, 25 May 2026 11:26:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=152.89.196.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D4313537DE
+	for <kvm@vger.kernel.org>; Mon, 25 May 2026 11:37:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779708380; cv=none; b=Nman0wKi2WbzBLjMmJnUtZKElieaC1tnqHI7206gqKlpSNmGHLSYOsHl3qhgIOb+E2WgBuP+ZUD8tYZqwS6XFIfWKitcsoN39pYKoUNsqsjMZ9DrWmu1seQR1g4aRRRyARTyzRfEor5MnP41Aye+bjQ3eAhy38gWPHzn6UIFpG8=
+	t=1779709069; cv=none; b=pUgxcHyf3i2CTr7/nYDPxhKCDbf1wLsWusnRpFkzr9OASSaWG2cptTz1PYGqBrUBJa3TIwbxv6q96ZFkAWvZQfqTeFQzkOzuS8Jc5eA+A7Auqia5SVzt3qB55DSZLmgkT6M3QDh9f7JxhmRz1+mD/Y/iZNxgYUC9ylzzNyKY+Pc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779708380; c=relaxed/simple;
-	bh=+7lrnusKGJys61jus0yfPMx3RY0wCJsrZ4PSZBrHzzs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=oY9VX0w7c8P6dGqU1cNRBmOy8RXM+9R5qMFYTQzJmoDmBP1OZuGJLSY7O3BrKcm8AK7DyFRwk8MtITSoU3r56CqunsLZteGJ23KQ1RC/RvJ3w7Cw6iYsNwXGsqRx2KP+gnb6pBWHj6+CetKBI9x4zc0TRPpkZrzgXN6o6WkWPx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=salutedevices.com; spf=pass smtp.mailfrom=salutedevices.com; dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b=R7NbcLOk; arc=none smtp.client-ip=152.89.196.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=salutedevices.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=salutedevices.com
+	s=arc-20240116; t=1779709069; c=relaxed/simple;
+	bh=nQJaH/srQOrVSpFB11U/FMDBvjNhUxwHcDYcfXkl0Lg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=QBDRR7PtixI71vnJJIVs5Wqj6N3XwQ7LLOV85680qJSzVxcGuZrh4R+KAD/e/rjxp9k/FTxShFxqWGGLDl2oyt7eesV0y2rWbf/YBp/wNybHbBj06VwCtDuZZC9BMH29+bKHl7pFub12xLSWIbudSBGkmUB9FBmdstvbLnwaEt8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NmAEqScW; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b="R7NbcLOk"
-Received: from p-antispam-ksmg-sc-msk02.sberdevices.ru (localhost [127.0.0.1])
-	by mx4.sberdevices.ru (Postfix) with ESMTP id 820E940007;
-	Mon, 25 May 2026 14:25:27 +0300 (MSK)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mx4.sberdevices.ru 820E940007
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
-	s=post; t=1779708327;
-	bh=6G03KsF8U9FZPAjusQcm8JvvbLhsu4jxVRnCewWEwkE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
-	b=R7NbcLOkliJzA0Qobaf4sDvGiqUSoJxFwSdqhhkje39fBUphzZV50jqgC1MGxcQnj
-	 j4sIyqzg173C7IUcBiFu/btuJr7jNF7SIF/ab892iRLhFt9ZPFlm1Trd/cB4sAXiYC
-	 qeBLeubv1/JaOSdkNC/XFlC4FIJjB+79i4FMeXF+ldwByLQur/5qzGFk9WgTQI2n7u
-	 U/7AE70UDuccalQfzkC2EZ2hovY/DephrArFzy90TH4nTKQYb4SqW9YXDNhtv3Lfk7
-	 n4jHlFfw9ACV+92un1pIK47uQ6JPDJyfwwctxvaQq00P94JAr0vlRr7XJnRki5dLbO
-	 4UcauBB/J63pQ==
-Received: from smtp.sberdevices.ru (p-exch-cas-a-m1.sberdevices.ru [172.24.201.216])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(Client CN "sberdevices.ru", Issuer "R12" (not verified))
-	by mx4.sberdevices.ru (Postfix) with ESMTPS;
-	Mon, 25 May 2026 14:25:24 +0300 (MSK)
-Message-ID: <fb071f63-2ba8-4cb8-bf18-331fa078653f@salutedevices.com>
-Date: Mon, 25 May 2026 14:25:19 +0300
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NmAEqScW"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56A0B1F00A3D;
+	Mon, 25 May 2026 11:37:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779709067;
+	bh=Dl7dpu1exa3A74XDjIC3N/ZIjaN5eVr0TdcVgG6iMio=;
+	h=From:To:Cc:Subject:Date;
+	b=NmAEqScWjcjnXJnQqLoH9ADQOY2xkAo4ylGlMcgVyre/A1WpTUWIEQwHNFbuXjKs/
+	 VrAtkDqGnFBk10TU1OtJ5/pYI38+6/jg6QhbxKlS6h5eXbcaFSislA6Qxd0d9DT4ZK
+	 PX7PmP90VIqcHZ1+2ParU64+3C0xAvnylsoliGIp37Ddfq4RLo93W7WWqXals4PDjW
+	 7Npg4nJePbeJckt2Roah16YQxfxgqUek3v+H9XIbN+ynOY9Cn46Pp8DtIKN1Be1XkW
+	 dmohCDEq2ibhkwjzO1cRgs9eRTUKdH8m6vkFpdywwMBBrpvmgyxLHDkT+h0DDwHZuZ
+	 VNPD4EhjO45Xw==
+Received: from phl-compute-03.internal (phl-compute-03.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 96CC7F40082;
+	Mon, 25 May 2026 07:37:46 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Mon, 25 May 2026 07:37:46 -0400
+X-ME-Sender: <xms:ijQUapk4d6chi8s7ETQOcq73rYa_rCeoi0Q4iZTZGSAHhqjioZhpFg>
+    <xme:ijQUaozW0hO6RXMI5yfakY0Qqfwl0pAvsZkc4UfLcbzBZD9WfaX6wtXnnW_wP5Tzf
+    r62Rbw7CbFz4hoDvkJ82n9AXYIbkDeZBH6vrPYtDqLNujg1fDIjog>
+X-ME-Received: <xmr:ijQUaoJhVFes3KDlXytKccazqXEnIpWlSWIxpxWffdz6Qow6OoRrTWlz5WWUGQ>
+X-ME-Proxy-Cause: dmFkZTF3tWtaeukQqIXNh7e9P6RzlqNyAwK/t8XHj+gg488wnUommG6YA/pGCeS/NKqttW
+    7ZXkwmHCXokbXK8HTefJ4ZSlSN9p92+PKcsEE5ygZQfEPrRAv9dk2Uj1Rp9gm8pvW7D5dI
+    8SsI9JbTU90NHvLh95w8XadB5ZffnVtnkTOR2eA+dkONQUAYLWhZJ5dW3jhIzZg02o9gDG
+    E09iaGwEscv7TRtZvygVhiEgayjhIRbhgY/vezbHGe1fFbKpLruJIKRDlkXCB4qCydkpIV
+    aMBsnRvuvz5zxyyol40qpUTGtt3Alcrd0sglI70Fct4d5+azC035MorTASsN12HgTuNGZg
+    f5C52NGWAGA2MbgfW4STfdCpDljPOm4ge+TE95gmrlOrqtehOfNhl56p//B98PcUuQvrHh
+    pz82+adGrnbVjlO9yKKIfwtfohxlwXBUO7RYVDez7SBp4kYZ1hK2fG6qicPU2rh6RQJ/7f
+    iJXAhL4XC/YicpUHw3/eLTxp58t+Qj7WWQx9m5yhG2akquAQGl1yqX31aq4RGk6slHO4Px
+    EYNhX19WkOMZ3DI0YnIUyvNjtmaPjqpSG/dXpbnxrEOErJ6Ty75yXaEiNGctD8kiOVLGiP
+    GJUdd2sm2CJ4E0oxIHwZVLdg5sgw+dRgEysxBAzG/JGTC8U+P2UG5jMx/hbw
+X-ME-Proxy: <xmx:ijQUajJhPBBISovERw7Mc3ZLq21LJnwMxM1qWtCI7hZcwnc_P2WREw>
+    <xmx:ijQUavWg6O2zBjGA8quukUMd6qVcWHXq3fXCPAS5KIcRk9vIoLSroA>
+    <xmx:ijQUajC4zSPG92Z8qdI5_YNpR_J_pbYwHZgSf_fWI2V7R7q94GESeg>
+    <xmx:ijQUaqGyQ86ttczeJxHT8Da9nXq7P-bTsQm7Qq8oiALDIt0FyMB-RQ>
+    <xmx:ijQUanfjXUj0RMZOu2wCqh5BKywf6W9TppamQHjXZ_7PEz840G5FEUxM>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 25 May 2026 07:37:44 -0400 (EDT)
+From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
+To: akpm@linux-foundation.org,
+	rppt@kernel.org,
+	peterx@redhat.com,
+	david@kernel.org
+Cc: ljs@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org,
+	Liam.Howlett@oracle.com,
+	ziy@nvidia.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	jthoughton@google.com,
+	aarcange@redhat.com,
+	sj@kernel.org,
+	usama.arif@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	kvm@vger.kernel.org,
+	kernel-team@meta.com,
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>
+Subject: [PATCH v4 00/14] userfaultfd: working set tracking for VM guest memory
+Date: Mon, 25 May 2026 12:37:14 +0100
+Message-ID: <20260525113737.1942478-1-kas@kernel.org>
+X-Mailer: git-send-email 2.54.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH net] vsock/virtio: bind uarg before filling zerocopy skb
-To: "malin (R)" <malin89@huawei.com>, tanjingguo <tanjingguo@huawei.com>,
-	"mst@redhat.com" <mst@redhat.com>, "jasowang@redhat.com"
-	<jasowang@redhat.com>, "xuanzhuo@linux.alibaba.com"
-	<xuanzhuo@linux.alibaba.com>, "eperezma@redhat.com" <eperezma@redhat.com>,
-	"stefanha@redhat.com" <stefanha@redhat.com>, "sgarzare@redhat.com"
-	<sgarzare@redhat.com>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
-	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
-	"horms@kernel.org" <horms@kernel.org>
-CC: Chenzhe <chenzhe@huawei.com>, cenxianlong <cenxianlong@huawei.com>,
-	cuirongzhen <cuirongzhen@huawei.com>, "virtualization@lists.linux.dev"
-	<virtualization@lists.linux.dev>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-References: <9fece5ea269049f883f367642c07eaa0@huawei.com>
-Content-Language: ru
-From: Arseniy Krasnov <avkrasnov@salutedevices.com>
-In-Reply-To: <9fece5ea269049f883f367642c07eaa0@huawei.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: p-exch-cas-s-m1.sberdevices.ru (172.16.210.2) To
- p-exch-cas-a-m1.sberdevices.ru (172.24.201.216)
-X-KSMG-AntiPhishing: NotDetected
-X-KSMG-AntiSpam-Auth: dkim=none
-X-KSMG-AntiSpam-Envelope-From: avkrasnov@salutedevices.com
-X-KSMG-AntiSpam-Info: LuaCore: 105 0.3.105 c7fb587251b1312ef0d9243823bef7335f8fcbef, {Tracking_from_domain_doesnt_match_to}, d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;smtp.sberdevices.ru:5.0.1,7.1.1;salutedevices.com:7.1.1, FromAlignment: s
-X-KSMG-AntiSpam-Interceptor-Info: scan successful
-X-KSMG-AntiSpam-Lua-Profiles: 203399 [May 25 2026]
-X-KSMG-AntiSpam-Method: none
-X-KSMG-AntiSpam-Rate: 0
-X-KSMG-AntiSpam-Status: not_detected
-X-KSMG-AntiSpam-Version: 6.1.1.22
-X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2026/05/25 06:10:00 #28194981
-X-KSMG-AntiVirus-Status: NotDetected, skipped
-X-KSMG-KATA-Status: Not Scanned
-X-KSMG-LinksScanning: NotDetected
-X-KSMG-Message-Action: skipped
-X-KSMG-Rule-ID: 5
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+
+This series adds userfaultfd support for tracking the working set of
+VM guest memory, so a VMM can identify cold pages and evict them to
+tiered or remote storage.
+
+v1: https://lore.kernel.org/all/20260427114607.4068647-1-kas@kernel.org/
+v2: https://lore.kernel.org/all/cover.1778254670.git.kas@kernel.org/
+v3: https://lore.kernel.org/all/20260522133857.552279-1-kirill@shutemov.name/
+
+== Changes since v3 ==
+
+  - Rebased onto mm-new, including Mike Rapoport's fs/userfaultfd.c ->
+    mm/userfaultfd.c
+  - 05/14, 13/14: Reviewed-by from Mike folded.
+  - 06/14: hugetlb sites now restore _PAGE_PSE via arch_make_huge_pte()
+    after huge_pte_modify(); move_swap_pte() re-arms the uffd PTE bit
+    when dst_vma is RWP-armed.
+  - Man-page patches dropped; will be sent against the linux-man tree
+    separately.
+
+== Problem ==
+
+A VMM managing guest memory needs to:
+
+  1. detect which pages are still being touched (working-set
+     tracking);
+  2. safely evict cold pages to slower tiered or remote storage;
+  3. fetch them back on demand when accessed again.
+
+== Approach ==
+
+UFFDIO_REGISTER_MODE_RWP is a new userfaultfd registration mode, in
+parallel with the existing MODE_MISSING / MODE_WP / MODE_MINOR. It
+uses the same mechanism on every backing -- anon, shmem, hugetlbfs:
+
+  - PAGE_NONE on the PTE (the same primitive NUMA balancing uses)
+    makes the page inaccessible while keeping it resident;
+  - the uffd PTE bit (the one MODE_WP already owns) marks the entry
+    as "userfaultfd-tracked" so the protnone fault path can tell an
+    RWP fault apart from an mprotect(PROT_NONE) or NUMA hinting
+    fault.
+
+VM_UFFD_WP and VM_UFFD_RWP are mutually exclusive per VMA, so the
+same PTE bit safely carries both meanings depending on the
+registered VMA flag.
+
+In sync mode, the kernel delivers a UFFD_PAGEFAULT_FLAG_RWP message
+to the registered handler, and the handler resolves the fault with
+UFFDIO_RWPROTECT clearing MODE_RWP. In async mode
+(UFFD_FEATURE_RWP_ASYNC), the fault is auto-resolved in-place: the
+kernel restores the original PTE permissions and the faulting thread
+continues without a userfaultfd message ever being delivered.
+Userspace then learns which pages were touched by reading
+PAGE_IS_ACCESSED out of PAGEMAP_SCAN -- pages whose uffd bit is
+still set were not re-accessed since the last RWP cycle.
+
+UFFDIO_RWPROTECT is the protect/unprotect ioctl, mirroring
+UFFDIO_WRITEPROTECT.
+
+UFFDIO_SET_MODE flips RWP_ASYNC <-> sync at runtime under
+mmap_write_lock(), so a VMM can run in async mode for detection and
+switch to sync for race-free eviction without re-registering the
+userfaultfd.
+
+== Typical VMM workflow ==
+
+  /* arm */
+  UFFDIO_API(features = RWP | RWP_ASYNC)
+  UFFDIO_REGISTER(MODE_RWP)
+
+  /* detection cycle */
+  UFFDIO_RWPROTECT(range, RWP)
+  sleep(interval)
+  PAGEMAP_SCAN(!PAGE_IS_ACCESSED) -> cold pages
+
+  /* eviction */
+  UFFDIO_SET_MODE(disable = RWP_ASYNC)                  /* sync */
+  pwrite(cold) + fallocate(FALLOC_FL_PUNCH_HOLE, cold)  /* races trapped */
+  UFFDIO_SET_MODE(enable  = RWP_ASYNC)                  /* resume */
+
+== Series layout ==
+
+Patches 1 to 3 are preparatory:
+
+  1: decouple protnone helpers from CONFIG_NUMA_BALANCING.
+  2-3: rename _PAGE_BIT_UFFD_WP, pte_uffd_wp() and friends to drop
+       the _WP suffix, since the bit now carries WP and RWP meaning
+       depending on the VMA flag. The SCAN_PTE_UFFD enum's ftrace
+       output string is intentionally kept as "pte_uffd_wp" so
+       trace-based tooling does not silently break.
+
+Patches 4 to 7 add the in-kernel mechanism:
+
+  4: VM_UFFD_RWP VMA flag (aliased to VM_NONE until 8/14 introduces
+     CONFIG_USERFAULTFD_RWP together with the UAPI).
+  5: MM_CP_UFFD_RWP change_protection() primitive (PAGE_NONE +
+     uffd bit, plus a RESOLVE counterpart).
+  6: marker preservation across swap, device-exclusive, migration,
+     fork, mremap, UFFDIO_MOVE, hugetlb copy, and mprotect().
+  7: handle VM_UFFD_RWP in khugepaged, rmap, and GUP.
+
+Patches 8 to 12 wire the userspace surface:
+
+   8: UFFDIO_REGISTER_MODE_RWP and UFFDIO_RWPROTECT plumbing
+      (introduces CONFIG_USERFAULTFD_RWP).
+   9: RWP fault delivery and exposure of UFFDIO_REGISTER_MODE_RWP.
+  10: PAGE_IS_ACCESSED in PAGEMAP_SCAN.
+  11: UFFD_FEATURE_RWP_ASYNC for async fault resolution.
+  12: UFFDIO_SET_MODE for runtime sync/async toggle.
+
+Patches 13 and 14 are kernel tests and Documentation/. Matching
+userfaultfd(2) and ioctl_userfaultfd(2) man-page updates will be
+sent as a separate patchset against the kernel.org linux-man tree.
+
+Kiryl Shutsemau (Meta) (14):
+  mm: decouple protnone helpers from CONFIG_NUMA_BALANCING
+  mm: rename uffd-wp PTE bit macros to uffd
+  mm: rename uffd-wp PTE accessors to uffd
+  mm: add VM_UFFD_RWP VMA flag
+  mm: add MM_CP_UFFD_RWP change_protection() flag
+  mm: preserve RWP marker across PTE rewrites
+  mm: handle VM_UFFD_RWP in khugepaged, rmap, and GUP
+  userfaultfd: add UFFDIO_REGISTER_MODE_RWP and UFFDIO_RWPROTECT
+    plumbing
+  mm/userfaultfd: add RWP fault delivery and expose
+    UFFDIO_REGISTER_MODE_RWP
+  mm/pagemap: add PAGE_IS_ACCESSED for RWP tracking
+  userfaultfd: add UFFD_FEATURE_RWP_ASYNC for async fault resolution
+  userfaultfd: add UFFDIO_SET_MODE for runtime sync/async toggle
+  selftests/mm: add userfaultfd RWP tests
+  Documentation/userfaultfd: document RWP working set tracking
+
+ Documentation/admin-guide/mm/pagemap.rst     |  13 +-
+ Documentation/admin-guide/mm/userfaultfd.rst | 236 +++++-
+ Documentation/filesystems/proc.rst           |   1 +
+ arch/arm64/Kconfig                           |   1 +
+ arch/arm64/include/asm/pgtable-prot.h        |   8 +-
+ arch/arm64/include/asm/pgtable.h             |  47 +-
+ arch/loongarch/Kconfig                       |   1 +
+ arch/loongarch/include/asm/pgtable.h         |   4 +-
+ arch/powerpc/include/asm/book3s/64/pgtable.h |   8 +-
+ arch/powerpc/platforms/Kconfig.cputype       |   1 +
+ arch/riscv/Kconfig                           |   1 +
+ arch/riscv/include/asm/pgtable-bits.h        |  12 +-
+ arch/riscv/include/asm/pgtable.h             |  59 +-
+ arch/s390/Kconfig                            |   1 +
+ arch/s390/include/asm/hugetlb.h              |  12 +-
+ arch/s390/include/asm/pgtable.h              |   4 +-
+ arch/x86/Kconfig                             |   1 +
+ arch/x86/include/asm/pgtable.h               |  56 +-
+ arch/x86/include/asm/pgtable_types.h         |  16 +-
+ fs/proc/task_mmu.c                           | 108 ++-
+ include/asm-generic/hugetlb.h                |  18 +-
+ include/asm-generic/pgtable_uffd.h           |  32 +-
+ include/linux/huge_mm.h                      |   7 +
+ include/linux/leafops.h                      |   4 +-
+ include/linux/mm.h                           |  46 +-
+ include/linux/mm_inline.h                    |   4 +-
+ include/linux/pgtable.h                      |  32 +-
+ include/linux/swapops.h                      |   4 +-
+ include/linux/userfaultfd_k.h                |  78 +-
+ include/trace/events/huge_memory.h           |   2 +-
+ include/trace/events/mmflags.h               |   7 +
+ include/uapi/linux/fs.h                      |   1 +
+ include/uapi/linux/userfaultfd.h             |  54 +-
+ init/Kconfig                                 |   8 +
+ mm/Kconfig                                   |   9 +
+ mm/debug_vm_pgtable.c                        |   4 +-
+ mm/huge_memory.c                             | 155 +++-
+ mm/hugetlb.c                                 | 158 +++-
+ mm/internal.h                                |   4 +-
+ mm/khugepaged.c                              |  40 +-
+ mm/memory.c                                  | 123 ++-
+ mm/migrate.c                                 |  20 +-
+ mm/migrate_device.c                          |   8 +-
+ mm/mprotect.c                                |  68 +-
+ mm/mremap.c                                  |  17 +-
+ mm/page_table_check.c                        |   8 +-
+ mm/rmap.c                                    |  18 +-
+ mm/swapfile.c                                |   9 +-
+ mm/userfaultfd.c                             | 378 ++++++++-
+ tools/include/uapi/linux/fs.h                |   1 +
+ tools/testing/selftests/mm/uffd-unit-tests.c | 766 +++++++++++++++++++
+ 51 files changed, 2248 insertions(+), 425 deletions(-)
 
 
-
-On 25/05/2026 14:15, malin (R) wrote:
-> From 9eea4f61a4dca97f56c23e12267219bf791a20d1 Mon Sep 17 00:00:00 2001
-> From: Jingguo Tan <tanjingguo@huawei.com>
-> Date: Fri, 22 May 2026 19:53:45 +0800
-> Subject: [PATCH net] vsock/virtio: bind uarg before filling zerocopy skb
-> 
-> virtio_transport_send_pkt_info() allocates or reuses the zerocopy uarg
-> before entering the send loop, but virtio_transport_alloc_skb() still
-> fills the skb before it inherits that uarg. When fixed-buffer vectored
-> zerocopy hits MAX_SKB_FRAGS, io_sg_from_iter() may partially attach
-> managed frags and return -EMSGSIZE. The rollback path calls kfree_skb()
-> to free an skb that carries SKBFL_MANAGED_FRAG_REFS but no uarg, so
-> skb_release_data() falls through to ordinary frag unref.
-> 
-> Pass the uarg into virtio_transport_alloc_skb() and bind it immediately
-> before virtio_transport_fill_skb(). This keeps control or no-payload skbs
-> untouched while ensuring success and rollback share one lifetime rule.
-> 
-> Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
-> Signed-off-by: Lin Ma <malin89@huawei.com>
-> Signed-off-by: Rongzhen Cui <cuirongzhen@huawei.com>
-> Signed-off-by: Jingguo Tan <tanjingguo@huawei.com>
-
-Acked-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
-
-> ---
-> 
->  net/vmw_vsock/virtio_transport_common.c | 11 ++++++++---
->  1 file changed, 8 insertions(+), 3 deletions(-)
-> 
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index df3b418e0392..73f58925ff72 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
-> @@ -205,6 +205,7 @@ static u16 virtio_transport_get_type(struct sock *sk)
->  static struct sk_buff *virtio_transport_alloc_skb(struct virtio_vsock_pkt_info *info,
->  						  size_t payload_len,
->  						  bool zcopy,
-> +						  struct ubuf_info *uarg,
->  						  u32 src_cid,
->  						  u32 src_port,
->  						  u32 dst_cid,
-> @@ -245,6 +246,11 @@ static struct sk_buff *virtio_transport_alloc_skb(struct virtio_vsock_pkt_info *
->  	if (info->msg && payload_len > 0) {
->  		int err;
->  
-> +		/* Bind the zerocopy lifetime before filling frags so error rollback
-> +		 * frees managed fixed-buffer pages through the uarg-aware path.
-> +		 */
-> +		skb_zcopy_set(skb, uarg, NULL);
-> +
->  		err = virtio_transport_fill_skb(skb, info, payload_len, zcopy);
->  		if (err)
->  			goto out;
-> @@ -364,6 +370,7 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->  		skb_len = min(max_skb_len, rest_len);
->  
->  		skb = virtio_transport_alloc_skb(info, skb_len, can_zcopy,
-> +						 uarg,
->  						 src_cid, src_port,
->  						 dst_cid, dst_port);
->  		if (!skb) {
-> @@ -371,8 +378,6 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->  			break;
->  		}
->  
-> -		skb_zcopy_set(skb, uarg, NULL);
-> -
->  		virtio_transport_inc_tx_pkt(vvs, skb);
->  
->  		ret = t_ops->send_pkt(skb, info->net);
-> @@ -1183,7 +1188,7 @@ static int virtio_transport_reset_no_sock(const struct virtio_transport *t,
->  	if (!t)
->  		return -ENOTCONN;
->  
-> -	reply = virtio_transport_alloc_skb(&info, 0, false,
-> +	reply = virtio_transport_alloc_skb(&info, 0, false, NULL,
->  					   le64_to_cpu(hdr->dst_cid),
->  					   le32_to_cpu(hdr->dst_port),
->  					   le64_to_cpu(hdr->src_cid),
+base-commit: 449a5df98f8dffa9b037e3b6838fc5af327df072
+-- 
+2.54.0
 
