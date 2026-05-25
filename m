@@ -1,116 +1,93 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mx4.sberdevices.ru (mx4.sberdevices.ru [152.89.196.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96E123603C2
-	for <kvm@vger.kernel.org>; Mon, 25 May 2026 11:25:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F713603C2;
+	Mon, 25 May 2026 11:26:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=152.89.196.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779708349; cv=none; b=KnvFOkfYBgWujdY+gw49bD2i2y9VfeP+EO/lnAXA6Vo+9AX0ABRAX+DF9FqwF2cs36H+hBaCNgbyAZ9ykq6mKBe9rQ969Sl4OILledyF12nslTuhWR4k6UFZi11TsOe2zrEoSJ7IYDB1Fu3YdFVRHzOLiwM4dZeFnOnuGLn1wXY=
+	t=1779708380; cv=none; b=Nman0wKi2WbzBLjMmJnUtZKElieaC1tnqHI7206gqKlpSNmGHLSYOsHl3qhgIOb+E2WgBuP+ZUD8tYZqwS6XFIfWKitcsoN39pYKoUNsqsjMZ9DrWmu1seQR1g4aRRRyARTyzRfEor5MnP41Aye+bjQ3eAhy38gWPHzn6UIFpG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779708349; c=relaxed/simple;
-	bh=zuX0Di4TKhnMq54tvjmHDzO+X5SQw874TgobIrg3T80=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AUnQPCp7dTJUbKfZ7JGqU8teBxr9/1R82rUocFx9gto3625J7EkHieY9cFGJH+1C+Cm2Nf/CbjGx1Pv3IIXMKLTYBU+KvFgdXTMSta4KDJlpZZap919nP5iHOpWyEtBKtFYZdxJsezACU/IAiK3BYYjwwCr2HgLe44tCymilcbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eBq1y+E9; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=lmgy4AaL; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1779708380; c=relaxed/simple;
+	bh=+7lrnusKGJys61jus0yfPMx3RY0wCJsrZ4PSZBrHzzs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=oY9VX0w7c8P6dGqU1cNRBmOy8RXM+9R5qMFYTQzJmoDmBP1OZuGJLSY7O3BrKcm8AK7DyFRwk8MtITSoU3r56CqunsLZteGJ23KQ1RC/RvJ3w7Cw6iYsNwXGsqRx2KP+gnb6pBWHj6+CetKBI9x4zc0TRPpkZrzgXN6o6WkWPx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=salutedevices.com; spf=pass smtp.mailfrom=salutedevices.com; dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b=R7NbcLOk; arc=none smtp.client-ip=152.89.196.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=salutedevices.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=salutedevices.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eBq1y+E9";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="lmgy4AaL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779708346;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=7IxQxHR/6kpLhzpKQfpUJefi9nFgXyGkAWeI40YgJOo=;
-	b=eBq1y+E96i+zwBYCjDe2OkDzOBFsBXnRoI0rJEppAqfpi8Fk70pnMlZKkwGsdOpXUmWG0i
-	koIDk2yIm6OcsT0RQKguJnMVwgZt4A4558gLIOXX9KP7jDs5s/9HR5SP1sNbC8Cu8asKJ0
-	C6k1ino/l0LuEkcVMeiGS4CpMrhXnRA=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-79-yiZvO-VpMyK9HTav6LS95Q-1; Mon, 25 May 2026 07:25:45 -0400
-X-MC-Unique: yiZvO-VpMyK9HTav6LS95Q-1
-X-Mimecast-MFC-AGG-ID: yiZvO-VpMyK9HTav6LS95Q_1779708344
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-49047e9ca88so22915185e9.3
-        for <kvm@vger.kernel.org>; Mon, 25 May 2026 04:25:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779708344; x=1780313144; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7IxQxHR/6kpLhzpKQfpUJefi9nFgXyGkAWeI40YgJOo=;
-        b=lmgy4AaLlJfOdThQu5yi+DCX8IwCo7BVxLO/aaXkN98Fy/FfcDdA+Vhq7wrfndnGlu
-         6IiyWYnK5fmNaGKMOgc8Q0rescBU/gD9DErPgMS41DrH7NpZ6KoeXO8XDilylLpB1eNI
-         wGjzoij19PRsgzzW6Dz/W1x0XSjzs6xB2/sldWEemCQaEddiaIxoa2eKCxlVCybrMRaN
-         X4ZELGBV/u2O+JNv8BTyWl3gHUkOXWUh5wtaAHx30GoP2ZEWHpu+hMYwFuLHqzMFg5rm
-         /NJHI94zk+OHiC+tb2W9iEwj0ZP2QHYRRzgi9+EB9whMq3NJ5riIpDNG8j9TmoAUDb9y
-         7TRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779708344; x=1780313144;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7IxQxHR/6kpLhzpKQfpUJefi9nFgXyGkAWeI40YgJOo=;
-        b=hLVSHndKazZ+9tsv4YBsZwgLpgIxfL/q1qrztC7pJ+s8/mb8o+b8bsyKD0q8BAoCaC
-         qt0+quNu8Yful4ngTEPECjmY/assgAt4d/3EbPgEXsD2mQOlAz93BgPOY1pjuKW32uXY
-         q8rYoepftikPeKP1Xk48ZOcSLloMUSUVlovju30dLuwgGT4DgY0fSTXUxJDoHrFpF/6P
-         sL2wCeQr/dQmhlOL7ogzmSr+bo/tADkETf9UEHb+7ze+9mP5/MHvpsd41Ga1qeprCm7a
-         5nvrAXIHjs+XJh3ss7UDSsllsVLzhVIZ8G+0BfiwmAkF5nRaVj+kDsyvlObfrC9gcKbt
-         KwhA==
-X-Forwarded-Encrypted: i=1; AFNElJ8nhlcP/NUj1CEC52NPb/dDGoPfdxOf0pzUFxTG58UiOZeyFwniJT78JRZYptUZbHl7XC0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyeWcxdq6wE8oMHntvH0hzCdZIbsIjEPPt0l3IvFTwXqajsZkfH
-	lHomVLHhBJPilvSAY7cGic912pN8B9g9/VggTKJyxiqVcLFfqM8poU4gjLYWZSXr/nwLYHF2v6K
-	C4SpsOOkHx1binr1ACa0nN31AwDWJcuDXUnus3Zhcy0PG6Ma/6kosjQ==
-X-Gm-Gg: Acq92OF+vzD9xqU3T1fp1xhlVsVIwabhUtDYASZoPJuq+PwSCBepx0LxuJPAMPMZmVJ
-	PqvF4GbZG/BJ1KyTYUkmKMhkuxAmyC9PYD1fOwH4y7CDo64aCCMQ7Lypd3p0GBFZZc1/LxWO7xg
-	NfJrFDdK5O8aHqJHRsgjuNPvJ9H5AZZir91jrCcgbkEPqFlX0PNHIKxCJUei0jk9Hh8ekrOwr4v
-	q8c7q6KgW7H+wjD5dP9EhGtOc62PirdWEJyCoT3iKpxWE/v/PAi3JdgIskFy6f5/HEMl0oL3HZp
-	oMMzTZOOnmLal+5H0tI0+eyvIEVqsaq8gkQnyod79la8a6h6Ogm3oAquoWzTQv+Ycm4BKTZMPb5
-	M6EWO0Xx1XKckFKJduedj4l5EplUb4uE9u4LtiExt5Ik=
-X-Received: by 2002:a05:600c:4510:b0:489:1c1f:35df with SMTP id 5b1f17b1804b1-490424a682emr215601205e9.10.1779708344019;
-        Mon, 25 May 2026 04:25:44 -0700 (PDT)
-X-Received: by 2002:a05:600c:4510:b0:489:1c1f:35df with SMTP id 5b1f17b1804b1-490424a682emr215600375e9.10.1779708343354;
-        Mon, 25 May 2026 04:25:43 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-25-45.inter.net.il. [80.230.25.45])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49045282201sm268455945e9.8.2026.05.25.04.25.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 May 2026 04:25:42 -0700 (PDT)
-Date: Mon, 25 May 2026 07:25:38 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: "malin (R)" <malin89@huawei.com>
-Cc: Arseniy Krasnov <avkrasnov@salutedevices.com>,
-	tanjingguo <tanjingguo@huawei.com>,
-	"jasowang@redhat.com" <jasowang@redhat.com>,
-	"xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>,
-	"eperezma@redhat.com" <eperezma@redhat.com>,
-	"stefanha@redhat.com" <stefanha@redhat.com>,
-	"sgarzare@redhat.com" <sgarzare@redhat.com>,
-	"davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>,
-	"kuba@kernel.org" <kuba@kernel.org>,
-	"pabeni@redhat.com" <pabeni@redhat.com>,
-	"horms@kernel.org" <horms@kernel.org>, Chenzhe <chenzhe@huawei.com>,
-	cenxianlong <cenxianlong@huawei.com>,
-	cuirongzhen <cuirongzhen@huawei.com>,
-	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>,
-	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
-	"netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] vsock/virtio: bind uarg before filling zerocopy skb
-Message-ID: <20260525072533-mutt-send-email-mst@kernel.org>
-References: <9fece5ea269049f883f367642c07eaa0@huawei.com>
+	dkim=pass (2048-bit key) header.d=salutedevices.com header.i=@salutedevices.com header.b="R7NbcLOk"
+Received: from p-antispam-ksmg-sc-msk02.sberdevices.ru (localhost [127.0.0.1])
+	by mx4.sberdevices.ru (Postfix) with ESMTP id 820E940007;
+	Mon, 25 May 2026 14:25:27 +0300 (MSK)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mx4.sberdevices.ru 820E940007
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=salutedevices.com;
+	s=post; t=1779708327;
+	bh=6G03KsF8U9FZPAjusQcm8JvvbLhsu4jxVRnCewWEwkE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type:From;
+	b=R7NbcLOkliJzA0Qobaf4sDvGiqUSoJxFwSdqhhkje39fBUphzZV50jqgC1MGxcQnj
+	 j4sIyqzg173C7IUcBiFu/btuJr7jNF7SIF/ab892iRLhFt9ZPFlm1Trd/cB4sAXiYC
+	 qeBLeubv1/JaOSdkNC/XFlC4FIJjB+79i4FMeXF+ldwByLQur/5qzGFk9WgTQI2n7u
+	 U/7AE70UDuccalQfzkC2EZ2hovY/DephrArFzy90TH4nTKQYb4SqW9YXDNhtv3Lfk7
+	 n4jHlFfw9ACV+92un1pIK47uQ6JPDJyfwwctxvaQq00P94JAr0vlRr7XJnRki5dLbO
+	 4UcauBB/J63pQ==
+Received: from smtp.sberdevices.ru (p-exch-cas-a-m1.sberdevices.ru [172.24.201.216])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(Client CN "sberdevices.ru", Issuer "R12" (not verified))
+	by mx4.sberdevices.ru (Postfix) with ESMTPS;
+	Mon, 25 May 2026 14:25:24 +0300 (MSK)
+Message-ID: <fb071f63-2ba8-4cb8-bf18-331fa078653f@salutedevices.com>
+Date: Mon, 25 May 2026 14:25:19 +0300
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH net] vsock/virtio: bind uarg before filling zerocopy skb
+To: "malin (R)" <malin89@huawei.com>, tanjingguo <tanjingguo@huawei.com>,
+	"mst@redhat.com" <mst@redhat.com>, "jasowang@redhat.com"
+	<jasowang@redhat.com>, "xuanzhuo@linux.alibaba.com"
+	<xuanzhuo@linux.alibaba.com>, "eperezma@redhat.com" <eperezma@redhat.com>,
+	"stefanha@redhat.com" <stefanha@redhat.com>, "sgarzare@redhat.com"
+	<sgarzare@redhat.com>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "kuba@kernel.org"
+	<kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>,
+	"horms@kernel.org" <horms@kernel.org>
+CC: Chenzhe <chenzhe@huawei.com>, cenxianlong <cenxianlong@huawei.com>,
+	cuirongzhen <cuirongzhen@huawei.com>, "virtualization@lists.linux.dev"
+	<virtualization@lists.linux.dev>, "kvm@vger.kernel.org"
+	<kvm@vger.kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+References: <9fece5ea269049f883f367642c07eaa0@huawei.com>
+Content-Language: ru
+From: Arseniy Krasnov <avkrasnov@salutedevices.com>
 In-Reply-To: <9fece5ea269049f883f367642c07eaa0@huawei.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: p-exch-cas-s-m1.sberdevices.ru (172.16.210.2) To
+ p-exch-cas-a-m1.sberdevices.ru (172.24.201.216)
+X-KSMG-AntiPhishing: NotDetected
+X-KSMG-AntiSpam-Auth: dkim=none
+X-KSMG-AntiSpam-Envelope-From: avkrasnov@salutedevices.com
+X-KSMG-AntiSpam-Info: LuaCore: 105 0.3.105 c7fb587251b1312ef0d9243823bef7335f8fcbef, {Tracking_from_domain_doesnt_match_to}, d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;127.0.0.199:7.1.2;smtp.sberdevices.ru:5.0.1,7.1.1;salutedevices.com:7.1.1, FromAlignment: s
+X-KSMG-AntiSpam-Interceptor-Info: scan successful
+X-KSMG-AntiSpam-Lua-Profiles: 203399 [May 25 2026]
+X-KSMG-AntiSpam-Method: none
+X-KSMG-AntiSpam-Rate: 0
+X-KSMG-AntiSpam-Status: not_detected
+X-KSMG-AntiSpam-Version: 6.1.1.22
+X-KSMG-AntiVirus: Kaspersky Secure Mail Gateway, version 2.1.1.8310, bases: 2026/05/25 06:10:00 #28194981
+X-KSMG-AntiVirus-Status: NotDetected, skipped
+X-KSMG-KATA-Status: Not Scanned
+X-KSMG-LinksScanning: NotDetected
+X-KSMG-Message-Action: skipped
+X-KSMG-Rule-ID: 5
 
-On Mon, May 25, 2026 at 11:15:12AM +0000, malin (R) wrote:
-> >From 9eea4f61a4dca97f56c23e12267219bf791a20d1 Mon Sep 17 00:00:00 2001
+
+
+On 25/05/2026 14:15, malin (R) wrote:
+> From 9eea4f61a4dca97f56c23e12267219bf791a20d1 Mon Sep 17 00:00:00 2001
 > From: Jingguo Tan <tanjingguo@huawei.com>
 > Date: Fri, 22 May 2026 19:53:45 +0800
 > Subject: [PATCH net] vsock/virtio: bind uarg before filling zerocopy skb
@@ -132,7 +109,7 @@ On Mon, May 25, 2026 at 11:15:12AM +0000, malin (R) wrote:
 > Signed-off-by: Rongzhen Cui <cuirongzhen@huawei.com>
 > Signed-off-by: Jingguo Tan <tanjingguo@huawei.com>
 
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
 
 > ---
 > 
@@ -189,6 +166,4 @@ Acked-by: Michael S. Tsirkin <mst@redhat.com>
 >  					   le64_to_cpu(hdr->dst_cid),
 >  					   le32_to_cpu(hdr->dst_port),
 >  					   le64_to_cpu(hdr->src_cid),
-> -- 
-> 2.53.0
 
