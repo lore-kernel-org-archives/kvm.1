@@ -1,186 +1,127 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B57175A7E
-	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:24:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91EB1382363
+	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:26:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779711850; cv=none; b=DgONu7UuWBAMJSIJo7ILcaU73FJKD09Hw9dWqJ6OUn/7IGR2lqmy2XID+lXopWwrTxJNfxcOViomY2UR/boOMArSdNQKBBZnwn3bUofHvFXoulzyk+3oHpERhUVwyDU3w0/SjhY15Oxwptup+CWVgrIVUy3Jjw9zJzqYElC+q/M=
+	t=1779711984; cv=none; b=EwiD+TTd9mNWCvMpC9u3IxBNUUQlvlHQ9LUHwj4qjuhu3OFrhOasUeZhNRHR+TzxaZfZoaGe6j9rDFHwQiLuvex4GUjQsMR1XwTfkOjWp2sbmQ80asQqNdtWjztgD6OJdgXS8g6PT67Y1whpkmf/bOh5G1V8HBEoFTgS5BqOmnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779711850; c=relaxed/simple;
-	bh=fQ87BVPAI+R0z70qyonJZnQswPOeGKkcIej1oI1agR0=;
-	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=P9vv52hiFp0GKe/DuIF8iPqCsM1VKUDvmN9d5kyinkFE5vLNv9RMyjqT3o7UYVciVhR/IHUQX8nYbzlZkIWpUEIxoAcQvalEa4JHd/V6wdnKmV1PEyj8W8XBhe2hZgYMG+cAGr/Q+1xxiVM6+qwljmKRoIYXL6o+bYTy/qUBTGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d+904+Ig; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779711984; c=relaxed/simple;
+	bh=XKd3/sBVdFq7scHu0YsvYg3lOUwCrl49yVJU6hxqojc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=sHstHLGUFuhCOqTdWp78n4UCpJmZ8N3O91AhGeHMfEpY9uqlur79XP/wwrWMnAQMQhK+yz8F37CLwwB0W3LMTHJYT16iJ9vc06dY5XjMil1iHy5d8LmFAK6/vClABMtNhbBb4eygTv0qzSiO19hL6bbzHvRNSBf5UP8+a4AaPLs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T/lOEKCe; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=V3Zb20dV; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d+904+Ig"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B74CB1F000E9
-	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:24:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779711848;
-	bh=4CJkwF44z3wJxT3vHoeKqT+T4HF0Wkf5JcpoK0KkynI=;
-	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
-	b=d+904+IgbpM9CeyGQnEna+fcqpkfTbSNCwOIBkthFhQk0VGmxXiA1/oMczgDPWKNv
-	 JMFapfVCFkfykPzI13TAqc4y60Ka1OMzbj8Wat5hPz2hDABGw4ZzEpQCBRvSsqVLWH
-	 HUwiSEeRg3983T21dfpdtGPiRDQMg7C+eNoEtPaYQCv3NhTDuB2g6m8eDuxXAiME7K
-	 n8TZj3eVHHMb/oGJYh+zy91MN/I4LbIjJiPlD1t9+ZpB3wisjp9WEG4IGLLHcRRl/h
-	 zxkTW+MHb1Y80t0oY9icjBaP4uDOTTOznYk6NC3HV6PO5DL6s3wX5tYFyc6jTpvktD
-	 seqDeop7KFJ1Q==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 14/14] Documentation/userfaultfd: document RWP
- working set tracking
-Reply-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260525113737.1942478-15-kas@kernel.org>
-References: <20260525113737.1942478-15-kas@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 25 May 2026 12:24:08 +0000
-Message-Id: <20260525122408.B74CB1F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T/lOEKCe";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="V3Zb20dV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779711980;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=4hkd86DeSZBRxqkEKxXYxQ6Fg5bw2Xdd0Nw7s4mAqxY=;
+	b=T/lOEKCeN8ZgBnQe8l+GICI16pqW+1ms7o1ohH2E2atpQ3Y1jZr+TlifjxqtH4vXoE2gdB
+	dGBeXM9GX1638hjS/GKkuv2rOCbzFu+enuHLTa+u1FNqvK61BrTH9q+yXj4uC8ZTg6x4b1
+	J8M0k6DfGDfssfLhZ8N1wotIbk7Wazc=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-138-87J-NTdVMdur7M3QEpYI5A-1; Mon, 25 May 2026 08:26:19 -0400
+X-MC-Unique: 87J-NTdVMdur7M3QEpYI5A-1
+X-Mimecast-MFC-AGG-ID: 87J-NTdVMdur7M3QEpYI5A_1779711978
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-48fe6894f3fso53460875e9.2
+        for <kvm@vger.kernel.org>; Mon, 25 May 2026 05:26:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1779711978; x=1780316778; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=4hkd86DeSZBRxqkEKxXYxQ6Fg5bw2Xdd0Nw7s4mAqxY=;
+        b=V3Zb20dVjHJQvBWw+ViTWlfBtxLVs3bMm4kfJIfFn9XNdNGTATFAh39d8A80NXn5dR
+         DNETLpj7ygVeu/wGcu62/rrEP2ui9LQ+LsqnF5i/2944Q6Uv5P9K0uj9zmFoVH9NL90m
+         9HORkLlFhjgtI0xk3DyMrCrxqNHZYICj2IRS7x8KJfwoN56uvy+9x65WRF79LTZ3fMfe
+         PSztA/nd1BfF/nUP/0q2qxe2RAelscpyo3R6CgzbLtW9qKTjv2qDx4Aloi5Y/Ne13TNZ
+         pKIuZ//AOi9NXdPFygtRPnKahv5G0WfD3MWymHcXKDNzLLqD+8PVWZ3+bVw32++BPcYJ
+         6HwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779711978; x=1780316778;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4hkd86DeSZBRxqkEKxXYxQ6Fg5bw2Xdd0Nw7s4mAqxY=;
+        b=MwUogokbU8ZsmEy8+pFt2U285AGZjEOJEZcOMZ5RgzQkzhOp177LpNpI5Fsic9pLSY
+         h6OaQNtTWc5sqeyOuXWQND3kuB5TF5aA2c+0I2/ghIDUBAyUGadyFjCpy7n/eC9rNT+q
+         rfWDkwvJ7m6U21iLXj8x3J0WE9g7hAt4U9YWt+jHI4ZFu1d6qw2Q8bYoT5jzmzFlull5
+         mLvkGMEOoc172n7IJujDO8mqGH13l7haWBZ7vvOtUEi60VWEcYaa5MvruyJ1XGPa3LlS
+         i26Duug04BE+HAIfCHHVuV/x1Pbe/zTK7c2mAJY8pUSXFEp1kIc7ZsBUoJ5KHmx356Lq
+         Rsww==
+X-Forwarded-Encrypted: i=1; AFNElJ+xjIMIHqoEtgOwDewlYxPXGXU6ZXZhI1N85mQ97ZD4kgaXBBPLBG0IngLm/OHG63h07kI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwVZ/JCPg+lnJc6rrRUG/hS/XLEiwvmdYP5wSxMBSYskIBDExDG
+	uu80SbRflya12GuRF5vuVfjm08DJZRGEJOawUFBK2t8zqjmcTfT9F8CVhZcCx3VAlhRuMmvsjW9
+	dip+9Cl5+qSYnwRbNIvJyhAnSgrTigpb3jnbnjqv2BxSvi19GxS4mqw==
+X-Gm-Gg: Acq92OEgK7uwRFeni/mxWs02epKnx7Yb33V63yb4Ts6f/i3qmrSs/Mah8ULkr1lSUPB
+	S3OAM4NLHz1kYPcjX6bOYTffzkbk741MY6PfhnpoIT4sAx4x2A9nTHHZAZYO8wsaov0W2CAAx2b
+	cizzOiZQ/Spp/O0ESn9Yf1pX6SgFS1MQP0FMtkEDIhmvxw4ztKrweHTeT7jrVRobhhY7TzQQ8Qn
+	k+64RUD+tMQXKnV3pxtZKNLsnuSLjix/uVDoa4ivnGrm3HYyL8k6pxrB9F8MOjIH+TJIlUNTiMu
+	HdGdREN7hvtKgOV5GqajZxI7dXv/Bbg0brbnlDuhige0Er4MX9WuFhfyxUwQqJMGHm4BZiQor42
+	fT0ocHCko4y/QHrpkWJcx1Wc=
+X-Received: by 2002:a05:600c:34c5:b0:490:601f:d775 with SMTP id 5b1f17b1804b1-490601fd89emr86929525e9.5.1779711977882;
+        Mon, 25 May 2026 05:26:17 -0700 (PDT)
+X-Received: by 2002:a05:600c:34c5:b0:490:601f:d775 with SMTP id 5b1f17b1804b1-490601fd89emr86929055e9.5.1779711977417;
+        Mon, 25 May 2026 05:26:17 -0700 (PDT)
+Received: from fedora (nat-20.ign.cz. [91.219.240.20])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49045282201sm272209365e9.8.2026.05.25.05.26.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 May 2026 05:26:16 -0700 (PDT)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: Piotr Zarycki <piotr.zarycki@gmail.com>, seanjc@google.com,
+ pbonzini@redhat.com
+Cc: shuah@kernel.org, kvm@vger.kernel.org, linux-kselftest@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] KVM: selftests: hyperv_features: test write of 1 to
+ HV_X64_MSR_RESET
+In-Reply-To: <ahGPQDJCT1aW7vVY@arch-piotr>
+References: <20260523111857.195396-1-piotr.zarycki@gmail.com>
+ <ahGPQDJCT1aW7vVY@arch-piotr>
+Date: Mon, 25 May 2026 14:26:15 +0200
+Message-ID: <875x4bllp4.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [Critical] The documented VMM working set tracking workflow disables asyn=
-c mode AFTER performing PAGEMAP_SCAN, creating a TOCTOU data loss race cond=
-ition.
-- [High] UFFDIO_SET_MODE relies solely on mmap_write_lock() to synchronize =
-with in-flight faults, failing to exclude or drain per-VMA locked faults.
-- [Medium] The example code uses an anonymous compound literal for the UFFD=
-IO_API ioctl argument, making it impossible to inspect returned features.
-- [Low] The example C code contains standard C compliance issues and an und=
-efined variable in the `pwrite` call.
---
+Piotr Zarycki <piotr.zarycki@gmail.com> writes:
 
-commit ae370f680f6102fabefea63e5943a13cca9daab8
-Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
+> Hi,
+>
+> After receiving KVM_SYSTEM_EVENT_RESET the test simply advances to the
+> next stage without resetting the vCPU. Is verifying
+> KVM_SYSTEM_EVENT_RESET is delivered sufficient?
+>
 
-Documentation/userfaultfd: document RWP working set tracking
+For every stage of this test we're basically using a new VM
+(vm_create_with_one_vcpu()) thus it does not really matter much what we
+do after receiving KVM_SYSTEM_EVENT_RESET.
 
-Add an admin-guide section covering UFFDIO_REGISTER_MODE_RWP:
+The basic idea behind the test was to verify that
+KVM_CAP_HYPERV_ENFORCE_CPUID works as expected, i.e. the guest gets
+access to the MSRs/hypercalls according to the guest visible CPUIDs and
+not to everything KVM knows about (I guess we could've named it
+'hyperv_feature_access' to actually reflect that). It, however, makes
+sense to actually test side-effects of writing to MSRs/using hypercalls,
+especially when it's relatively easy and I see that the change here goes
+in this direction. With this, I think it is a good and sufficient
+change, so
 
-  - sync and async fault models;
-  - UFFDIO_RWPROTECT semantics;
-  - UFFD_FEATURE_RWP_ASYNC;
-  - UFFDIO_SET_MODE runtime mode flips.
+Reviewed-by: Vitaly Kuznetsov <vkuznets@redhat.com>
 
-It also covers typical VMM working-set-tracking workflow from detection
-loop through sync-mode eviction and back to async.
+Thanks!
 
-> diff --git a/Documentation/admin-guide/mm/userfaultfd.rst b/Documentation=
-/admin-guide/mm/userfaultfd.rst
-> index 1e533639fd509..cb5d0e0c9fff1 100644
-> --- a/Documentation/admin-guide/mm/userfaultfd.rst
-> +++ b/Documentation/admin-guide/mm/userfaultfd.rst
+-- 
+Vitaly
 
-[ ... ]
-
-> +**Runtime Mode Switching:**
-> +
-> +``UFFDIO_SET_MODE`` toggles ``UFFD_FEATURE_RWP_ASYNC`` at runtime, allow=
-ing
-> +the VMM to switch between lightweight async detection and safe sync
-> +eviction without re-registering. The toggle takes ``mmap_write_lock()`` =
-to
-> +ensure all in-flight faults complete before the mode change takes effect.
-
-[Severity: High]
-Does taking only mmap_write_lock() safely synchronize with in-flight faults
-here?
-
-mmap_write_lock() alone does not exclude or drain existing per-VMA read loc=
-ks.
-
-Since modern page faults (including userfaultfd async and sync faults)
-execute under the per-VMA lock, UFFDIO_SET_MODE could return while async
-faults are still resolving if the implementation only relies on
-mmap_write_lock().
-
-Would the implementation need to call vma_start_write(vma) to properly
-drain per-VMA locked faults?
-
-[ ... ]
-
-> +    uffd =3D userfaultfd(O_CLOEXEC | O_NONBLOCK);
-> +    ioctl(uffd, UFFDIO_API, &(struct uffdio_api){
-> +        .api =3D UFFD_API,
-> +        .features =3D UFFD_FEATURE_RWP | UFFD_FEATURE_RWP_ASYNC,
-> +    });
-
-[Severity: Medium]
-Since UFFDIO_API modifies the features field on return, how can the caller
-inspect the returned features to fall back when RWP is unavailable?
-
-Using an anonymous compound literal here means the struct lifetime expires
-after the ioctl() statement, making it impossible to check the negotiated
-features as recommended in the "Feature availability" section.
-
-Should this use a named local variable instead?
-
-> +    ioctl(uffd, UFFDIO_REGISTER, &(struct uffdio_register){
-> +        .range =3D { guest_mem, guest_size },
-> +        .mode =3D UFFDIO_REGISTER_MODE_RWP |
-> +                UFFDIO_REGISTER_MODE_MISSING,
-> +    });
-> +
-> +    /* Tracking loop */
-> +    while (vm_running) {
-> +        /* 1. Detection phase (async =E2=80=94 no vCPU stalls) */
-> +        ioctl(uffd, UFFDIO_RWPROTECT, &(struct uffdio_rwprotect){
-> +            .range =3D full_range,
-> +            .mode =3D UFFDIO_RWPROTECT_MODE_RWP });
-> +        sleep(tracking_interval);
-> +
-> +        /* 2. Find cold pages (uffd bit still set) */
-> +        ioctl(pagemap_fd, PAGEMAP_SCAN, &(struct pm_scan_arg){
-> +            .category_mask =3D PAGE_IS_ACCESSED,
-> +            .category_inverted =3D PAGE_IS_ACCESSED,
-> +            .return_mask =3D PAGE_IS_ACCESSED,
-> +            ...
-> +        });
-> +
-> +        /* 3. Switch to sync for safe eviction */
-> +        ioctl(uffd, UFFDIO_SET_MODE,
-> +              &(struct uffdio_set_mode){
-> +                  .disable =3D UFFD_FEATURE_RWP_ASYNC });
-
-[Severity: Critical]
-Does scanning for cold pages before switching to sync mode introduce a data
-loss race condition?
-
-If a vCPU accesses a "cold" page between PAGEMAP_SCAN and UFFDIO_SET_MODE,
-the async fault handler will silently remove RWP protection and grant write
-access without blocking.
-
-The VMM would then evict this page (copying it with pwrite and dropping it
-with fallocate), and any concurrent vCPU writes would be discarded by the
-hole punch, leading to guest data corruption.
-
-Should the VMM switch to sync mode before calling PAGEMAP_SCAN to safely
-freeze the working set?
-
-> +
-> +        /* 4. Evict cold pages (vCPU faults block on guest_mem) */
-> +        for each cold range:
-> +            /* Read from io_mem -- bypasses RWP, no fault. */
-> +            pwrite(storage_fd, io_mem + cold_offset, len, offset);
-
-[Severity: Low]
-Does this code compile cleanly?
-
-The pwrite() call uses "offset" as its fourth argument, but the file offset
-variable seems to be "cold_offset".
-
-Also, io_mem is a void* from mmap(), and pointer arithmetic on void*
-(io_mem + cold_offset) is a GCC extension rather than standard C.
-
-Should io_mem be explicitly cast to a byte pointer, and offset be changed
-to cold_offset?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525113737.1942=
-478-1-kas@kernel.org?part=3D14
