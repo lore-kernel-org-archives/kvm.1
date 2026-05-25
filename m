@@ -1,41 +1,42 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BEAD37F743
-	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5884A37DE9F
+	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779710715; cv=none; b=Sc6EXbGT3EuxYGiqc5lmZD9vIhpPXtQSq/qY6keOAqUZNq0KQZFrcfegvXtfatYo+5bQ+oOxTKMN7vGKuyt8wHHmncTMsOS90FrA+yB2KzzPbjE6iOovMSgCvqrtEdl8+Gr/QWFL4E9I7pZeZlv8shVo/bLnyJ3zqOcQ2HOgI8s=
+	t=1779710801; cv=none; b=NtiC0QzX27Cbx76T24VwhDxNmgTpDJRvkfH3RjamH4XM5E0Qinsc+155pK0KJyy6BS4n/NdwqHFpYmW+FQuWBLJqu/F7EJi+xm3wchR+uCWwPL90ZGpoJCqLwkN4+WQh/c+bD2pR4i3k08nWau6JcrUFwHXCYbT7ylR5z8+Yk7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779710715; c=relaxed/simple;
-	bh=wd07kg8HNWKGPcyGelYTYyyevX6+yGCy6qsI0FkkcZs=;
+	s=arc-20240116; t=1779710801; c=relaxed/simple;
+	bh=K7hftySqJ84syS01osrFM4H2/IChZzhHyOIGxBhocj4=;
 	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=is5bybzAjEyOhzpyFTawUzhZaQPsU0yFhSsKhW1ltdvKGtqWz9AS/lSfYKOZNKsHfW2iuxeBMq9SDL2EPeR/HKQ5LDx9McU4OlhZQiKjjXl8FYhfHVGpAji6o63HrVjcH7zweUTVqzV8cpAMPQljLWssPDauWaQbgV3v/kHrrro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZzqkJc7u; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=oD58rhq0z8TsmddttaWdPG0yf1oYfwYWFqvnzXi00lJFF4emXq+BVxP3ubv1Kv0cLspXX39c6ju+1pR8R9VLmhbtV7xIa0iX6tQZ7isBHJhwsiu0PaggC8uExsOB40UfTCpcI8ftaybd/bfWQuM9F82AR22xE/uDAitwxQsAka0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EIaGV3Am; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZzqkJc7u"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C51E91F00A3A
-	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:05:13 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EIaGV3Am"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 328441F000E9
+	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:06:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779710714;
-	bh=yPs034zydrHpAtoeOTtgBr8hiPVQ6YKFkzravdsh6OY=;
+	s=k20260515; t=1779710800;
+	bh=mJX5NWrfZP8G4i3ze9qPnICO5C7TRKekeXibWesECR0=;
 	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
-	b=ZzqkJc7u/i4x7g2AxTZeycwj6nh9AyjHNEWttvvHFdrOwpCzfM/uDNmK7Rm6MU/j4
-	 MoeVs6PX9+6PDIHJGvSWIEmWTLUvCZK08pFy0KbyQaIsXrVji7r2+msY+2NF3EjCq+
-	 ISeBFp4oGwIx9fBG1OBnC5ENukYl9LLkjHLHeID7H+PXcKbGwPoFZMaorhL406+c6D
-	 oajiHJ01RrLX+xH8xr30eGDun5RvmBAfyi5hQc/3muE8f4qzmMc94OB8LlIExVG0+f
-	 ZKf5EYGvUUxMdJk6y806wKF9zU4YeV90lrFrht4lZMn9t+4tyFve2U1uaqT2P4QMyU
-	 WMYXhRO11vpog==
+	b=EIaGV3AmwweOHB9tFSnrOJAGD1ID6W5+xMPeLhuShBvisye7YB1rKw+nSXtqUtwR/
+	 MUKgazMlRzT80WzR4fXxDtX/WPR4TdSNl1afBuobVUHvF5ZZCYc4uH0zRF4Ya7hDTf
+	 Yh/BZMKJSdn7ptvHUPtjGpT3oWaqO6GOLypNzulabklTc7LEYgnuUjksFusWDSBq/N
+	 fGOt55NSY/dKRM9N3trQP7NawzcIBecsdfs0SoAcUgUUIK0053dPz8JGbkLF40fBKV
+	 2A77yzVP0krCS+SbULuX/+6gSDE925PZr/VW8+/sU9GwzVi1qP3lH6WMvTzOz3t4No
+	 Ai9UzY2LeDItA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 03/14] mm: rename uffd-wp PTE accessors to uffd
+Subject: Re: [PATCH v4 01/14] mm: decouple protnone helpers from
+ CONFIG_NUMA_BALANCING
 Reply-To: sashiko-reviews@lists.linux.dev
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260525113737.1942478-4-kas@kernel.org>
-References: <20260525113737.1942478-4-kas@kernel.org>
+In-Reply-To: <20260525113737.1942478-2-kas@kernel.org>
+References: <20260525113737.1942478-2-kas@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 25 May 2026 12:05:13 +0000
-Message-Id: <20260525120513.C51E91F00A3A@smtp.kernel.org>
+Date: Mon, 25 May 2026 12:06:39 +0000
+Message-Id: <20260525120640.328441F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -44,62 +45,46 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
 Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [High] make_uffd_wp_huge_pte() modifies a present HugeTLB PTE without fir=
-st using huge_ptep_modify_prot_start() to atomically clear it.
+- [High] Unconditional selection of ARCH_HAS_PTE_PROTNONE on LoongArch caus=
+es boot-time warnings/panics in debug_vm_pgtable on 32-bit configurations.
 --
 
-commit 61d6f87823653be9ecc3927f774b67e53241d193
+commit ce0e2bca623ff8e41c100c4e1e7335cad7b9483c
 Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-mm: rename uffd-wp PTE accessors to uffd
+mm: decouple protnone helpers from CONFIG_NUMA_BALANCING
 
-This commit mechanically renames the uffd-wp PTE, PMD, and huge_pte accesso=
-rs
-to just "uffd", as the bit's meaning now depends on the VMA flag rather than
-its name. It updates the pgtable capability queries and the khugepaged enum
-accordingly, while preserving the ftrace string for trace-based tooling.
+Introduce CONFIG_ARCH_HAS_PTE_PROTNONE to decouple the protnone PTE
+infrastructure from CONFIG_NUMA_BALANCING.
 
-> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> index 1e3a15bf46f4e..cbd164f4928f0 100644
-> --- a/fs/proc/task_mmu.c
-> +++ b/fs/proc/task_mmu.c
-[ ... ]
-> @@ -2612,10 +2612,10 @@ static void make_uffd_wp_huge_pte(struct vm_area_=
-struct *vma,
-> =20
->  	if (softleaf_is_migration(entry))
->  		set_huge_pte_at(vma->vm_mm, addr, ptep,
-> -				pte_swp_mkuffd_wp(ptent), psize);
-> +				pte_swp_mkuffd(ptent), psize);
->  	else
+> diff --git a/arch/loongarch/Kconfig b/arch/loongarch/Kconfig
+> index 606597da46b8d..77e9a9a30483f 100644
+> --- a/arch/loongarch/Kconfig
+> +++ b/arch/loongarch/Kconfig
+> @@ -67,6 +67,7 @@ config LOONGARCH
+>  	select ARCH_SUPPORTS_LTO_CLANG
+>  	select ARCH_SUPPORTS_LTO_CLANG_THIN
+>  	select ARCH_SUPPORTS_MSEAL_SYSTEM_MAPPINGS
+> +	select ARCH_HAS_PTE_PROTNONE
 
 [Severity: High]
-This is a pre-existing issue, but does this code risk losing hardware updat=
-es
-to the Dirty or Accessed bits?
+Does unconditionally selecting ARCH_HAS_PTE_PROTNONE introduce a regression
+by causing a boot-time warning in debug_vm_pgtable on 32-bit LoongArch
+configurations?
 
-When applying the userfaultfd WP bit to a present HugeTLB PTE, the code cal=
-ls
-huge_ptep_modify_prot_commit() using a ptent value that was fetched earlier
-without holding an exclusive lock or clearing the PTE. Because it doesn't u=
-se
-huge_ptep_modify_prot_start() to atomically clear the entry before committi=
-ng,
-the hardware could concurrently set the Dirty or Accessed bits.
+On 32-bit LoongArch (CONFIG_32BIT), _PAGE_PROTNONE is defined as 0. This
+makes pte_protnone() always return 0. During boot, pte_protnone_tests() in
+mm/debug_vm_pgtable.c executes WARN_ON(!pte_protnone(pte)), leading to a
+kernel panic on systems with panic_on_warn.
 
-The subsequent set_huge_pte_at() inside huge_ptep_modify_prot_commit() will
-overwrite the PTE with the old snapshot, silently discarding these hardware
-updates. The standard PTE counterpart, make_uffd_wp_pte(), correctly uses
-ptep_modify_prot_start() to avoid this race.
+Prior to this patch, these tests skipped 32-bit LoongArch because they were
+gated by CONFIG_NUMA_BALANCING.
 
->  		huge_ptep_modify_prot_commit(vma, addr, ptep, ptent,
-> -					     huge_pte_mkuffd_wp(ptent));
-> +					     huge_pte_mkuffd(ptent));
->  }
->  #endif /* CONFIG_HUGETLB_PAGE */
+Will this also cause a regression for generic features depending on
+ARCH_HAS_PTE_PROTNONE (like userfaultfd RWP), causing them to fail silently
+on 32-bit LoongArch since they expect pte_protnone() to accurately identify
+PROT_NONE PTEs?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525113737.1942=
-478-1-kas@kernel.org?part=3D3
+478-1-kas@kernel.org?part=3D1
