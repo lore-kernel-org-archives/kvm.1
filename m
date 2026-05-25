@@ -1,153 +1,132 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847682E424F
-	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:42:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DA7734DCF3
+	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:48:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779712941; cv=none; b=KBJbIl9TnkWJibIlzw9h8rhFORShgXhnr/l4+ENseIWulyAZLIO/9YJQ0BrkbRjX5CgxmgX/HdbE/VY9sArCMbHOdoWtk9KmlXCCqERzp7c1dvDyeRhIB+Apw5YEr+khRJGGRK5TC39gXH3intwA6HiQ9nLAgKWVUXy/9YokFQA=
+	t=1779713330; cv=none; b=L/nlx50fa4iUR8itaT7dxuCkMTuK/qqRr668fg3qHcxkt2o1ctmPZyFCh7XS86l8arbR2fjCTOw7rDMjCF1KBH5jZx1rSEJeqAPsa7bxYe6X3btb//yfcurj93YNKXrajpXsl2k1ZnV/DuDInrcoKdy5BALJv+gyvR6HoztT1T4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779712941; c=relaxed/simple;
-	bh=Wo/OCnbAQcg/PLrRNrWwi39n2yBTXFGefhQCqORglwM=;
-	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=DAF3J4CcTeeeGCiSG64pLBK1NkeTBHiUVHd+5NCm5amKy3W1wA845kC19KWK28kWlnNw0y2yMIwLVy1lF1P8IGdE8nB1F6p+/ea2CBlKRZVk2YudOAJvUyOAS4lyBrRvc2+ZsjDn4s5xXu+MvyqoIWsGKxrhseFYxnLHIw/wIZY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WH2MIt63; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779713330; c=relaxed/simple;
+	bh=g0X791ggz6n0BeIA9ombUGQUjMQuuLnyDFFrfuhS/ns=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BymSjY6myRVzzdk4dh0+53HFOks6L/CUVywwqyIaGoihSvI10U5QGhu2n2pW6rSDkr5eXDelAiYdZE1PliTReuM6lOhb5kCnDMFxZRQ7JNCJbspFRa6yJWpq3Mv9jaQdr5/Md9s31E7epDPofisNT2ccCJ9UMVPInTytjK84zNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bRXYwaaA; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=kjRkhazS; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WH2MIt63"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5336F1F00A3A
-	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:42:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779712940;
-	bh=gvIPoNXrTi2uVXmW3mMo6pW5mG91lBhuVwWsnt9m+OE=;
-	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
-	b=WH2MIt63NS19FABn4rEJHHYe8R5lSAOizkkRfS67NBraE0xSIutn3I2cX37y2ilyc
-	 0iy2PKZYVrWISm4s1+B5OxNxh7G3D5phsmCTmvcyjg3Rw+MGQmhzil7cAo7h0bQeEd
-	 a49xWObAPCmaaVWTOAxqXePsBVE9dpyGfTiUBcCnWppBtPLWXIN8Cl5Ux0N2Wiu8dm
-	 1owlKtoMQYRzqL/VsGLA2IRrP4GytYtdoGUeOXp85szFN26yo3mEhHa+q5lxRCXte6
-	 dPZpScWrTZi+nKdRtU5DUTduwOcoavurOx6Oltcdeg6V2aQBohVyAd82K2TW1ykbtz
-	 ZJiH//HIHWR7A==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 12/14] userfaultfd: add UFFDIO_SET_MODE for runtime
- sync/async toggle
-Reply-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260525113737.1942478-13-kas@kernel.org>
-References: <20260525113737.1942478-13-kas@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Mon, 25 May 2026 12:42:20 +0000
-Message-Id: <20260525124220.5336F1F00A3A@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bRXYwaaA";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="kjRkhazS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779713328;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=g0X791ggz6n0BeIA9ombUGQUjMQuuLnyDFFrfuhS/ns=;
+	b=bRXYwaaAa8s1JnjYJWcGQpJjcfn68eD38Phxp2dE1vKEJsWRd+UZgfwjVaUpoZFJVPZF7p
+	jxmwo1AMehVcZ4ro+x/xo+njry/6zIEqa3nMoctY+PLZVN1C9Wp5lGtaDst77K2ECNW4Xs
+	iOC9FPcmz74DniL/ZF6LkAGDUFMMRU8=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-584-SicFfy3uP9ehx19zYkbcug-1; Mon, 25 May 2026 08:48:47 -0400
+X-MC-Unique: SicFfy3uP9ehx19zYkbcug-1
+X-Mimecast-MFC-AGG-ID: SicFfy3uP9ehx19zYkbcug_1779713326
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-43d7b7bacddso6580269f8f.0
+        for <kvm@vger.kernel.org>; Mon, 25 May 2026 05:48:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1779713326; x=1780318126; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=g0X791ggz6n0BeIA9ombUGQUjMQuuLnyDFFrfuhS/ns=;
+        b=kjRkhazStr15+7M/Ih3LPfMYwvXmc9W0UoohV4MgAtxo4qWvWH78X8oynXxVFZS9vg
+         aKv9RnK9poC7OclDSANsH1otIjHiggPMD71ar+hJtfoH0/i+IYmKIy2KCkVCfES/vxi7
+         lW4dyzLz0lVBgod1Np8zLRc0hVMYsBJHfJEr8+bevD8Dszj0nCcGaZfElFD+R3+/GxZm
+         PmojGd7knEiWEIh+kJCjUWREt2gjWdU3vkKcV65i55DUXdl/7OdW5Aj8aRGC5j8his2q
+         ikt0kYJoJeU9WLTwCItY5dfCPtvG4EhptRGGN4gNLIunHWdIQnvRfEkNWjXdSRhhH3Hi
+         2hRw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779713326; x=1780318126;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=g0X791ggz6n0BeIA9ombUGQUjMQuuLnyDFFrfuhS/ns=;
+        b=UdKQVyv97pF3DGEPsYOZJlEqbcYigihf50RYfSRrSgR94+R6YiQ5HeeSXutxvZXlKZ
+         LmnlHRkbgHIsft7rSTeub6HMHVdvhz8KdWSHWZUxTrsKS316BXOQmX8Rf0lBxE5e1KCK
+         tC76yAEoycn/HxRe7TI88jh0q/OGWw3La5+FWdBPHzeYDWXYOnn0pDq30H+qyujuaLIb
+         UO9GvzJGuSpD71Twq2vqI3X7okGU++uoFsDumgKViKxMKd080f82gAXHg7TGzhJEEmyI
+         3+OOsbcj8U6rYZfL4+dKkXyN79FF8zcVqXuWGOsf2POPCXbHirG+oTm9ZVjla25sgE66
+         vkYg==
+X-Forwarded-Encrypted: i=1; AFNElJ/wgeHxjiDz2MVKg8CN6OZEEGgTUEB0lrd29TNLNzPSP5w+NtgTDK8kiouXMJ+TmCe44n8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxV588lbwM5/GYp/Ly7S1uuYQabrGn5dPr5nRNx8fAlbPQrjn71
+	EaV0ugnryel0kFspRMvwaDTTO+9sINOOC70YAZiwhOcG4WPKWAGDR9ocC4drf5xsyLdUc1jdPQk
+	gDe5XFfyWdwN/jPUYj3dPUcpguBPC3/AwWT738mSimyhhFN1jfYjSpA==
+X-Gm-Gg: Acq92OEzwDErIU+Vm3yVN08dVogf5qd6VG2msiMJjdSsvC+wKAWWblpWqjhTIa/zS4E
+	cFtu2WO5AvDNiGmTYpaP7b9j6aR1OWWtidEMZcHxkby7r384qKSadDrzgvcSzlOOq4rx6gV4XF1
+	G3+t1tis1bFb4bJ7Lj9pdIpJQzyPNCYxrxQAIQGOlA9b9mt297N7ANf4i0hngWygBEhbGyakKGu
+	BL6LNDbjlrT7uEqpI/5xuuUNYPG0MKXCat2HLw7+fKN8HBPSjbioL8l1gv4Ra5vpCVw8GHbh+XC
+	/HHqS8U3RW5usVicTfRBQa8Dt4kgm/KfVRAo0T+mpOgpPi0+Xo5JTxdaN4oGNoonnPxF03E+1OW
+	k/mT8o3hrIOZb2ewCPGIx9ZWadL0Ssq7LGjqQ69Dube8rWNQ8qps3sCYmmX9r4aBJlokg0zs=
+X-Received: by 2002:a05:600c:46cc:b0:490:48df:2793 with SMTP id 5b1f17b1804b1-49048df2f57mr209950235e9.26.1779713326046;
+        Mon, 25 May 2026 05:48:46 -0700 (PDT)
+X-Received: by 2002:a05:600c:46cc:b0:490:48df:2793 with SMTP id 5b1f17b1804b1-49048df2f57mr209949785e9.26.1779713325422;
+        Mon, 25 May 2026 05:48:45 -0700 (PDT)
+Received: from sgarzare-redhat (host-82-53-135-12.retail.telecomitalia.it. [82.53.135.12])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4904333146bsm143470125e9.0.2026.05.25.05.48.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 May 2026 05:48:44 -0700 (PDT)
+Date: Mon, 25 May 2026 14:48:39 +0200
+From: Stefano Garzarella <sgarzare@redhat.com>
+To: "malin (R)" <malin89@huawei.com>
+Cc: Arseniy Krasnov <avkrasnov@salutedevices.com>, 
+	tanjingguo <tanjingguo@huawei.com>, "mst@redhat.com" <mst@redhat.com>, 
+	"jasowang@redhat.com" <jasowang@redhat.com>, "xuanzhuo@linux.alibaba.com" <xuanzhuo@linux.alibaba.com>, 
+	"eperezma@redhat.com" <eperezma@redhat.com>, "stefanha@redhat.com" <stefanha@redhat.com>, 
+	"davem@davemloft.net" <davem@davemloft.net>, "edumazet@google.com" <edumazet@google.com>, 
+	"kuba@kernel.org" <kuba@kernel.org>, "pabeni@redhat.com" <pabeni@redhat.com>, 
+	"horms@kernel.org" <horms@kernel.org>, Chenzhe <chenzhe@huawei.com>, 
+	cenxianlong <cenxianlong@huawei.com>, cuirongzhen <cuirongzhen@huawei.com>, 
+	"virtualization@lists.linux.dev" <virtualization@lists.linux.dev>, "kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"netdev@vger.kernel.org" <netdev@vger.kernel.org>, "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] vsock/virtio: bind uarg before filling zerocopy skb
+Message-ID: <ahRFCaqFwdEFA9CK@sgarzare-redhat>
+References: <9fece5ea269049f883f367642c07eaa0@huawei.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <9fece5ea269049f883f367642c07eaa0@huawei.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] The userfaultfd_set_mode function iterates over an external mm_str=
-uct's VMAs without verifying address space stability.
-- [Low] Lockless read of ctx->features races with its own WRITE_ONCE update=
-, causing a data race.
---
+On Mon, May 25, 2026 at 11:15:12AM +0000, malin (R) wrote:
+>From 9eea4f61a4dca97f56c23e12267219bf791a20d1 Mon Sep 17 00:00:00 2001
+>From: Jingguo Tan <tanjingguo@huawei.com>
+>Date: Fri, 22 May 2026 19:53:45 +0800
+>Subject: [PATCH net] vsock/virtio: bind uarg before filling zerocopy skb
+>
+>virtio_transport_send_pkt_info() allocates or reuses the zerocopy uarg
+>before entering the send loop, but virtio_transport_alloc_skb() still
+>fills the skb before it inherits that uarg. When fixed-buffer vectored
+>zerocopy hits MAX_SKB_FRAGS, io_sg_from_iter() may partially attach
+>managed frags and return -EMSGSIZE. The rollback path calls kfree_skb()
+>to free an skb that carries SKBFL_MANAGED_FRAG_REFS but no uarg, so
+>skb_release_data() falls through to ordinary frag unref.
+>
+>Pass the uarg into virtio_transport_alloc_skb() and bind it immediately
+>before virtio_transport_fill_skb(). This keeps control or no-payload skbs
+>untouched while ensuring success and rollback share one lifetime rule.
+>
+>Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
+>Signed-off-by: Lin Ma <malin89@huawei.com>
+>Signed-off-by: Rongzhen Cui <cuirongzhen@huawei.com>
+>Signed-off-by: Jingguo Tan <tanjingguo@huawei.com>
+>---
+>
+> net/vmw_vsock/virtio_transport_common.c | 11 ++++++++---
+> 1 file changed, 8 insertions(+), 3 deletions(-)
 
-commit 6988a435b501422279701e12a0fb8f5c3d604468
-Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 
-userfaultfd: add UFFDIO_SET_MODE for runtime sync/async toggle
-
-This commit adds an ioctl to toggle UFFD_FEATURE_RWP_ASYNC on an active=20
-userfaultfd context. It handles synchronization by acquiring the mmap_write=
-_lock,
-draining in-flight faults via vma_start_write(), and waking pending sync
-waiters to retry.
-
-> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
-> index 20478bb373111..680ef9bd57fd6 100644
-> --- a/mm/userfaultfd.c
-> +++ b/mm/userfaultfd.c
-
-[ ... ]
-
-> @@ -4261,6 +4271,109 @@ static int userfaultfd_rwprotect(struct userfault=
-fd_ctx *ctx,
->  	return ret;
->  }
-> =20
-
-[ ... ]
-
-> +static int userfaultfd_set_mode(struct userfaultfd_ctx *ctx,
-> +				unsigned long arg)
-> +{
-> +	struct uffdio_set_mode mode;
-> +	struct mm_struct *mm =3D ctx->mm;
-> +
-> +	if (copy_from_user(&mode, (void __user *)arg, sizeof(mode)))
-> +		return -EFAULT;
-> +
-> +	/* enable and disable must not overlap */
-> +	if (mode.enable & mode.disable)
-> +		return -EINVAL;
-> +
-> +	/* only toggleable features that this kernel/arch actually supports */
-> +	if ((mode.enable | mode.disable) &
-> +	    ~(uffd_api_available_features() & UFFD_FEATURE_TOGGLEABLE))
-> +		return -EINVAL;
-> +
-> +	/* RWP_ASYNC can only be enabled on contexts that negotiated RWP */
-> +	if ((mode.enable & UFFD_FEATURE_RWP_ASYNC) &&
-> +	    !(ctx->features & UFFD_FEATURE_RWP))
-
-[Severity: Low]
-Is it possible for a concurrent UFFDIO_SET_MODE call to trigger a data race
-here?
-
-Because ctx->features is updated with WRITE_ONCE() later in this function,
-reading it locklessly without the new userfaultfd_features() helper
-(or READ_ONCE) might cause KCSAN warnings, even though the UFFD_FEATURE_RWP
-bit itself doesn't change.
-
-> +		return -EINVAL;
-> +
-> +	if (!mmget_not_zero(mm))
-> +		return -ESRCH;
-> +
-> +	/*
-> +	 * Drain in-flight faults before flipping features. mmap_write_lock()
-> +	 * blocks new mmap_read_lock() callers, but per-VMA locked faults
-> +	 * (lock_vma_under_rcu() + FAULT_FLAG_VMA_LOCK) that acquired before
-> +	 * this point keep running. Calling vma_start_write() on each UFFD-
-> +	 * armed VMA waits for those readers to drop, so no in-flight fault
-> +	 * can observe the old features after mmap_write_unlock().
-> +	 */
-> +	mmap_write_lock(mm);
-> +	{
-> +		struct vm_area_struct *vma;
-> +		VMA_ITERATOR(vmi, mm, 0);
-> +
-> +		for_each_vma(vmi, vma) {
-
-[Severity: High]
-Does this iteration code need to verify address space stability before
-walking the VMAs?
-
-Since ctx->mm can belong to a different process, it might be marked
-MMF_UNSTABLE if the target process encountered a dup_mmap() failure or
-was reaped by the OOM killer.
-
-If the address space is unstable, the maple tree might contain XA_ZERO_ENTRY
-markers, which could cause a kernel panic when dereferencing
-vma->vm_userfaultfd_ctx.ctx.
-
-Would it be appropriate to call check_stable_address_space(mm) right after
-acquiring the mmap_write_lock?
-
-> +			if (vma->vm_userfaultfd_ctx.ctx =3D=3D ctx)
-> +				vma_start_write(vma);
-> +		}
-> +	}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525113737.1942=
-478-1-kas@kernel.org?part=3D12
