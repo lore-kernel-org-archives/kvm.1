@@ -1,118 +1,168 @@
-Received: from va-2-113.ptr.blmpb.com (va-2-113.ptr.blmpb.com [209.127.231.113])
+Received: from va-1-112.ptr.blmpb.com (va-1-112.ptr.blmpb.com [209.127.230.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A182D0622
-	for <kvm@vger.kernel.org>; Mon, 25 May 2026 03:53:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.231.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CAE622D9481
+	for <kvm@vger.kernel.org>; Mon, 25 May 2026 03:53:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.127.230.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779681197; cv=none; b=mX6KtYepRwqhn+q2yOOhlR2JXnqY017EHRNtRzEBbOp0TBtbifbIHTA6IxAwHsgjOAkfaVOecA9WzxqOZoFVYx+TgYk2h3m6esMM95YzRd5EA+U2BecD/JoGdmDodEs3v60UpanKBatMVfmJvHo5+AaTFGHcu7lTLtB9mwa/1w0=
+	t=1779681202; cv=none; b=iDUFYPB/HYK8VTtKh6vEcueeRt4iSEZVEkBCciqBniSPA0FS1o73PZcVX+ngE6uq6VyYgW23nCfvDWs1RKocjgKSzM0PackpzYWOvj1fRFCwIRNaBrAOGmgGOn5T26hYZW1aiZ9CIa5lP+PdprqahiSrW7SxEZmFfsmi5FZmwJM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779681197; c=relaxed/simple;
-	bh=L6ukFEBQXC/kIX4TNaD30CgrrmcjFvQgJZeQ9/827Zo=;
-	h=Subject:Date:Content-Type:From:Message-Id:Mime-Version:To:Cc; b=QFwCud2IXamvWDz+2SD1OBwRGmpOxH0la6ELDY0g6j8hihjYBn+Rkyy/gcw53FD2M0HhX1pxt1LzvzVymGm20GI+JcztboHyVyxwwjOfz8otWQcLHRBOrOuU0Tq3dOIYwN8Hw6t/COZ/MhM0j8IpRjOAyynQF+eAErQE8rEsc58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=pkA+RHfA; arc=none smtp.client-ip=209.127.231.113
+	s=arc-20240116; t=1779681202; c=relaxed/simple;
+	bh=eCg5nnEfRhBAO6LzuVWPcR0uqe5gBRSg4aUlAWkWXKQ=;
+	h=To:Subject:Cc:Mime-Version:Date:Content-Type:From:Message-Id:
+	 References:In-Reply-To; b=jmXcvCJUfyAt3zyU6jtMkHwEiwKAvzyTfPkQf6SsBlNsDz/Vja3hXdvSLUhZe+3ffN5NJpEU/5uPwniMg8aRt9HvxLzbvGHsopsqK9ngiyHxjpRcf04994HSwDa+r9lHr9e6wBEv8aaZnVEEmNqsPGc13ygny39g+/noBMrLHVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com; spf=pass smtp.mailfrom=bytedance.com; dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b=V1AIRIzh; arc=none smtp.client-ip=209.127.230.112
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bytedance.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="pkA+RHfA"
+	dkim=pass (2048-bit key) header.d=bytedance.com header.i=@bytedance.com header.b="V1AIRIzh"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
- s=2212171451; d=bytedance.com; t=1779681184; h=from:subject:
+ s=2212171451; d=bytedance.com; t=1779681196; h=from:subject:
  mime-version:from:date:message-id:subject:to:cc:reply-to:content-type:
  mime-version:in-reply-to:message-id;
- bh=fuzHHuhemOiKvdNY2llJuX8JkAEHKsIeyQhAf1pDTE4=;
- b=pkA+RHfAi80VG00ZbXKT4w3Wkh1uIew+c2r3rutO481QjOPF3rXNlSFWTrsQm1zwVjcLI6
- ioRZqm4qkKhKdRJdxOEFomVN1TunWlx2ttTN7zDI10HufOopDKhXSZILdVXMMR1C6vPIAw
- dtNfeS2TkdQUVq59+s8K1hcyraAM0iKB6B4ly+U5ADngfeemjEtD1BE/Ki8VJokKVTmTY2
- SdWQ/k4OL8Nh6TZxoCu/OG1/q7detxKomH6u1u0XylLJsJjj3wrJOI2xG4S0yUAG/H0Ybb
- 5S4Phk5jJ04MXNhw/5NCc1uD/Z4X6+ee46Tq9zCD9a/UnEeBUrkqNjlNPoDPFA==
-Subject: [v3 0/2] KVM: irqchip: Reduce KVM_SET_GSI_ROUTING allocation overhead
-Date: Mon, 25 May 2026 11:52:40 +0800
-X-Lms-Return-Path: <lba+26a13c79e+2834b8+vger.kernel.org+yanfei.xu@bytedance.com>
-X-Mailer: git-send-email 2.20.1
-Content-Type: text/plain; charset=UTF-8
-From: "Yanfei Xu" <yanfei.xu@bytedance.com>
-Message-Id: <20260525035242.107264-1-yanfei.xu@bytedance.com>
+ bh=8ya9UPGlW74YJX2t7n7RCe/MjmA4tcTuq7UD1ym4HtU=;
+ b=V1AIRIzhBmLwyUrEDjhYfeECgdWUja1MIEUU60OqycRWO9i87MlmbQlw5ceUdr7Vhv4m8I
+ thoRCRNYJQWO/n9Eg4PsXEVKw5y8ueI7ZkHRS0FLVbc9p6kOVrFjb21Lj1RJ7wz8tFv1gB
+ dFMX+lMiaGu2SX4YLdXFnt/9IgmY5gXX+4UreE5CUq4ezUTltNRPF6iUDzE0yVi/ILdTd9
+ dCZk6/HeAxqMb8la6/MKCvFolJvtQqdqVb8vG7Kh9X6ozg/D91corsigBte54u4qiRq/F/
+ R2oP/7W8LnYmlvRGhtjJZQWrQ/Vq250N0hbS6dvl+v3/XLESrKJtpcOE0oCj1g==
+To: <seanjc@google.com>, <pbonzini@redhat.com>
+Subject: [v3 1/2] KVM: irqchip: KVM: Reduce allocation overhead in kvm_set_irq_routing()
+Content-Transfer-Encoding: 7bit
+Cc: <kvm@vger.kernel.org>, <caixiangfeng@bytedance.com>, 
+	<fangying.tommy@bytedance.com>, <yanfei.xu@bytedance.com>, 
+	<isyanfei.xu@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: 7bit
-To: <seanjc@google.com>, <pbonzini@redhat.com>
 X-Original-From: Yanfei Xu <yanfei.xu@bytedance.com>
-Cc: <kvm@vger.kernel.org>, <caixiangfeng@bytedance.com>, 
-	<fangying.tommy@bytedance.com>, <yanfei.xu@bytedance.com>, 
-	<isyanfei.xu@gmail.com>
+Date: Mon, 25 May 2026 11:52:41 +0800
+X-Mailer: git-send-email 2.20.1
+Content-Type: text/plain; charset=UTF-8
+From: "Yanfei Xu" <yanfei.xu@bytedance.com>
+Message-Id: <20260525035242.107264-2-yanfei.xu@bytedance.com>
+X-Lms-Return-Path: <lba+26a13c7aa+05425f+vger.kernel.org+yanfei.xu@bytedance.com>
+References: <20260525035242.107264-1-yanfei.xu@bytedance.com>
+In-Reply-To: <20260525035242.107264-1-yanfei.xu@bytedance.com>
 
-KVM_SET_GSI_ROUTING can become expensive for guests with many VFIO
-devices and MSI-X vectors, Each update rebuilds the routing table, and
-the repeated allocation/free of routing entries can dominate the cost of
-kvm_set_irq_routing().
+In guests with many VFIO devices and MSI-X vectors, kvm_set_irq_routing()
+becomes a high-overhead operation. Each invocation walks the entire IRQ
+routing table and reallocates/frees every routing entry.
 
-This series reduces that overhead in two steps.
+As the routing table grows on each call, entry allocation and freeing
+dominate the execution time of this function. In scenarios such as VM
+live migration or live upgrade, this behavior can introduce unnecessary
+downtime.
 
-Patch 1 allocates all routing entries in one contiguous allocation, so
-the entries can be freed together instead of allocating and freeing each
-entry independently.
+Allocate memory for all routing entries in one shot using kvzalloc_objs(),
+allowing them to be freed together with a single kfree() call.
 
-Patch 2 adds a per-VM cache for one freed entries[] allocation and reuses
-it when the next routing update needs the same allocation size.  This
-avoids repeated allocation/free churn for frequent routing updates while
-preserving the existing SRCU lifetime rules.
+Example: On a VM with 120 vCPUs and 15 VFIO devices (virtio-net), the
+total number of calls to kzalloc and kfree is over 20000. With this
+change, it is reduced to around 30.
 
-I wrote a test that continuously calls KVM_SET_GSI_ROUTING 50000 times and
-count the elapsed time:
-Test machine:
-  Architecture: x86_64
-  CPU: Intel Xeon Platinum 8336C @ 2.30GHz
+Reported-by: Xiangfeng Cai <caixiangfeng@bytedance.com>
+Signed-off-by: Yanfei Xu <yanfei.xu@bytedance.com>
+---
+ include/linux/kvm_host.h |  1 +
+ virt/kvm/irqchip.c       | 37 ++++++++++++-------------------------
+ 2 files changed, 13 insertions(+), 25 deletions(-)
 
-With 512 routes:
-Before:
-    irq_routing_perf_test --routes=512 --iterations=50000
-      total: 1557023.484 us
-      average: 31.140 us/update
-After:
-    irq_routing_perf_test --routes=512 --iterations=50000
-      total: 873104.338 us
-      average: 17.462 us/update
-
-With 4096 routes:                                                         
-Before:
-    irq_routing_perf_test --routes=4096 --iterations=50000
-      total: 15192698.026 us
-      average: 303.854 us/update 
-After:
-    irq_routing_perf_test --routes=4096 --iterations=50000
-      total: 3295068.326 us
-      average: 65.901 us/update
+diff --git a/include/linux/kvm_host.h b/include/linux/kvm_host.h
+index 4c14aee1fb06..a8d74b25c5cf 100644
+--- a/include/linux/kvm_host.h
++++ b/include/linux/kvm_host.h
+@@ -693,6 +693,7 @@ struct kvm_kernel_irq_routing_entry {
+ struct kvm_irq_routing_table {
+ 	int chip[KVM_NR_IRQCHIPS][KVM_IRQCHIP_NUM_PINS];
+ 	u32 nr_rt_entries;
++	struct kvm_kernel_irq_routing_entry *entries;
+ 	/*
+ 	 * Array indexed by gsi. Each entry contains list of irq chips
+ 	 * the gsi is connected to.
+diff --git a/virt/kvm/irqchip.c b/virt/kvm/irqchip.c
+index 462c70621247..b78f113af4ea 100644
+--- a/virt/kvm/irqchip.c
++++ b/virt/kvm/irqchip.c
+@@ -98,21 +98,10 @@ int kvm_set_irq(struct kvm *kvm, int irq_source_id, u32 irq, int level,
  
-The result shows that the time spent per call is reduced by approximately
-78.3% when the number of routing increase to 4096. It can significantly
-improves routing update efficiency.
-
-v2->v3:
-1.switch kcalloc to kv flavor of allocation. (Sean's suggestion)
-2.introduce patch2 to cache freed entries allocation and reuse it at the
-  next routing update. (Sean's suggestion)
-
-v1->v2:
-1. fix variable 'r' is used uninitialized when a 'if' condition is true 
-2. simplified free_irq_routing_table() by removing the iteration over the
-   entries and the hlist cleanup.
-
-[v2]: https://lore.kernel.org/kvm/20251226062741.4014391-1-yanfei.xu@bytedance.com/
-
-Yanfei Xu (2):
-  KVM: irqchip: KVM: Reduce allocation overhead in kvm_set_irq_routing()
-  KVM: irqchip: Cache IRQ routing entries allocation
-
- arch/loongarch/kvm/irqfd.c |  2 +
- arch/powerpc/kvm/mpic.c    |  2 +
- arch/x86/kvm/irq.c         |  2 +
- include/linux/kvm_host.h   |  7 +++
- virt/kvm/irqchip.c         | 88 +++++++++++++++++++++++++++-----------
- 5 files changed, 76 insertions(+), 25 deletions(-)
-
+ static void free_irq_routing_table(struct kvm_irq_routing_table *rt)
+ {
+-	int i;
+-
+ 	if (!rt)
+ 		return;
+ 
+-	for (i = 0; i < rt->nr_rt_entries; ++i) {
+-		struct kvm_kernel_irq_routing_entry *e;
+-		struct hlist_node *n;
+-
+-		hlist_for_each_entry_safe(e, n, &rt->map[i], link) {
+-			hlist_del(&e->link);
+-			kfree(e);
+-		}
+-	}
+-
++	kvfree(rt->entries);
+ 	kfree(rt);
+ }
+ 
+@@ -187,31 +176,33 @@ int kvm_set_irq_routing(struct kvm *kvm,
+ 	if (!new)
+ 		return -ENOMEM;
+ 
++	e = kvzalloc_objs(*e, nr, GFP_KERNEL_ACCOUNT);
++	if (!e) {
++		r = -ENOMEM;
++		goto out;
++	}
++	new->entries = e;
++
+ 	new->nr_rt_entries = nr_rt_entries;
+ 	for (i = 0; i < KVM_NR_IRQCHIPS; i++)
+ 		for (j = 0; j < KVM_IRQCHIP_NUM_PINS; j++)
+ 			new->chip[i][j] = -1;
+ 
+ 	for (i = 0; i < nr; ++i) {
+-		r = -ENOMEM;
+-		e = kzalloc_obj(*e, GFP_KERNEL_ACCOUNT);
+-		if (!e)
+-			goto out;
+-
+ 		r = -EINVAL;
+ 		switch (ue->type) {
+ 		case KVM_IRQ_ROUTING_MSI:
+ 			if (ue->flags & ~KVM_MSI_VALID_DEVID)
+-				goto free_entry;
++				goto out;
+ 			break;
+ 		default:
+ 			if (ue->flags)
+-				goto free_entry;
++				goto out;
+ 			break;
+ 		}
+-		r = setup_routing_entry(kvm, new, e, ue);
++		r = setup_routing_entry(kvm, new, e + i, ue);
+ 		if (r)
+-			goto free_entry;
++			goto out;
+ 		++ue;
+ 	}
+ 
+@@ -226,10 +217,6 @@ int kvm_set_irq_routing(struct kvm *kvm,
+ 
+ 	new = old;
+ 	r = 0;
+-	goto out;
+-
+-free_entry:
+-	kfree(e);
+ out:
+ 	free_irq_routing_table(new);
+ 
 -- 
 2.20.1
