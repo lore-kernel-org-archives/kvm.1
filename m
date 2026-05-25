@@ -1,177 +1,153 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CB3437FF77
-	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:42:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 847682E424F
+	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:42:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779712931; cv=none; b=pd0XzEJJJsRX+wShK47RCtosjm9Hg+WAez5Enl2Wwq1sl38u8c4Ojyu/16sNrFkuOQWWB+ZqCM4YSi91Tg3GRD2qv4KwQJ6HDbz3276aS/njcDDK4jW1EO2rrBE0MkqniRDnZ7OJJEo5REJGjYzjghnz/G767TXvPvB3PDi/11g=
+	t=1779712941; cv=none; b=KBJbIl9TnkWJibIlzw9h8rhFORShgXhnr/l4+ENseIWulyAZLIO/9YJQ0BrkbRjX5CgxmgX/HdbE/VY9sArCMbHOdoWtk9KmlXCCqERzp7c1dvDyeRhIB+Apw5YEr+khRJGGRK5TC39gXH3intwA6HiQ9nLAgKWVUXy/9YokFQA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779712931; c=relaxed/simple;
-	bh=nBZFB/qKiQFEmkpum3LmDBV+XZABkX4tDlOB6EU6g/4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SL0r3DgxRLDY8DCnY1VoUy9Gr4UGQpfbjt6/jfsY/dmscqyqMDn38oOtr/bK+Z+UA6LQsDU7+8F7bp6llJcMQZvj8XZuh2ty0kR74eoOfniqQVkNhzoVu0xRH+CzLKfHxKYHMv16saqSSekcQJcDLfw0V63qvmue9EdQBJNx9IE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BOYnkIol; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=VoKsHsT+; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1779712941; c=relaxed/simple;
+	bh=Wo/OCnbAQcg/PLrRNrWwi39n2yBTXFGefhQCqORglwM=;
+	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=DAF3J4CcTeeeGCiSG64pLBK1NkeTBHiUVHd+5NCm5amKy3W1wA845kC19KWK28kWlnNw0y2yMIwLVy1lF1P8IGdE8nB1F6p+/ea2CBlKRZVk2YudOAJvUyOAS4lyBrRvc2+ZsjDn4s5xXu+MvyqoIWsGKxrhseFYxnLHIw/wIZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WH2MIt63; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BOYnkIol";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="VoKsHsT+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779712929;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=C2mO9ihHPbnXM6c2+MtWPyD/ZxOr74sqrY+NK7spw+c=;
-	b=BOYnkIolC/QsgdcBu0A7lXkN/AnR+4FlBO9j+CToxSx2HqeeSMTCbnCYbHoEWO9hnoQ5/v
-	9MRrhskAbrtAhzPT3X/+hmxQaMveaL2RjmFnDcSthfVVT6xvcq2tu3YHepXsGbD94zB/w4
-	85qIDlNrlBFKa+CiWSaEclZLhJoIArY=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-126-GeL_7VpyMZusb64mO_6_sA-1; Mon, 25 May 2026 08:42:07 -0400
-X-MC-Unique: GeL_7VpyMZusb64mO_6_sA-1
-X-Mimecast-MFC-AGG-ID: GeL_7VpyMZusb64mO_6_sA_1779712926
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-4518f777225so6881674f8f.1
-        for <kvm@vger.kernel.org>; Mon, 25 May 2026 05:42:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779712926; x=1780317726; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=C2mO9ihHPbnXM6c2+MtWPyD/ZxOr74sqrY+NK7spw+c=;
-        b=VoKsHsT+E9v36NgANdIVDxnzvmPXBdCzjU182ePme/onYYVA+/QIX1cRo3OSvMcrQW
-         Hayz8BQq8zdvo4QkHcpz589X3Lgjv57CqBO2YnEHh4u/kGKYltHLLXzgwXhmDKqh/8+v
-         jO6v45NmFodBqyFBHAODgDWQomU4D4KW3ZzJ60tGZQz48rHML7i0n+nzRhquE3vOiSGA
-         PWHv22G7hAifGs40ngnyx9YAPWd+0OsXktep1VnC+lqM4ixpMbjrvALcuXJ/3eGMWIZu
-         GG+ovmkuSeESVggZECz4qsSQO8z/SzcXkN/uQDFBWxMsbDYuGtDrEgciI+wScgtxt/k6
-         OwAQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779712926; x=1780317726;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=C2mO9ihHPbnXM6c2+MtWPyD/ZxOr74sqrY+NK7spw+c=;
-        b=pzR7wm5Flzdi1oU7WNix6engM7MZM14mUlNeNgLqOd4l6KnJe9e+zsreZvWOyIKjhs
-         UtRVqXqfQYhTbpH3/Rp5l50wj0bRart856jHvyWIIbGhAR+NY+/v3MxmGrKrqnhh0Keu
-         GVP8KhVgW+szqLziCzqQyZkQSsHENeExQDjkkgmdnuRJTZKM9ve7GTZYgKtWmapBxeKX
-         VAAFYgVAr2F8kyyD8DYwL6oQQ9PY/KuDT5nHfF2xBf5FdiRXn3L28dNgRaO6U3iHF1HM
-         kTrxIhkUVW4dEr255AVVknsa7mCrtFyg7t9NyplULvUuJx5b5rY1isa/9IxVH0c+1S+0
-         nTZA==
-X-Forwarded-Encrypted: i=1; AFNElJ9WYb6Mp0+ZVrhfxt69o0FzZ+q7Ng2mDAWeLMDeh+2O/S69OWoa+gZ6EqZwR1F7nMHrfrA=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx6otw4SP1brcIPwPhb/8iW5cAGmtkKyXiLKx9jEUcpEa3r/3e4
-	OdGR6jVFibax5C9BrbQ04txnNeWg202bWfOcTFRr0N+EY9/l74J8nrbnH6kE9F4itZC9IqKSEWf
-	oEl2G8IAW1z41bQg0z4JdaiW13LCcJViLr1KeoV9epugP4gyJJmujYA==
-X-Gm-Gg: Acq92OEGOpw4+WKZH1G1oKmBrVg6pS4QvFPBkTi+HtwUV3X23p8ZRRV23Ji3QxAnUB5
-	xyICnC/xf72KxtbwlDgZPq59bh64SpfUAFN63tfPfjLadgzAo/3PEmIG88gFp1uWb/rpIzPadYA
-	5fV3nexjiKGPpB4CnTL3ah1NOpPDAdm1k6mP9MeZiBi+IWuH4ZycyjFWnPvT6UMpe9z0ZttL9b9
-	1b7dz57G3GDCzsJ6EfPRcV8DTlKxbsp449zWnVHC6pAi7wlGRPY68vxWyFaZIp4y8vM+fGJij5n
-	MWedV4dTP+WDPl1viOrKj+35kmx7bSz3dA0g00F4A1ARLrd9/ur4FpVYeHMHITxeub7G/QbK/T4
-	wF+937+BrjbZDbXVHS18iW9t7+7KSF+qXzo5WIwKZXBl6yastTY7MhA==
-X-Received: by 2002:a05:6000:4605:b0:43d:7bc9:9b2c with SMTP id ffacd0b85a97d-45eb3687941mr23325976f8f.17.1779712925857;
-        Mon, 25 May 2026 05:42:05 -0700 (PDT)
-X-Received: by 2002:a05:6000:4605:b0:43d:7bc9:9b2c with SMTP id ffacd0b85a97d-45eb3687941mr23325918f8f.17.1779712925385;
-        Mon, 25 May 2026 05:42:05 -0700 (PDT)
-Received: from redhat.com (IGLD-80-230-25-45.inter.net.il. [80.230.25.45])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6d4850dsm25575281f8f.17.2026.05.25.05.42.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 May 2026 05:42:04 -0700 (PDT)
-Date: Mon, 25 May 2026 08:42:01 -0400
-From: "Michael S. Tsirkin" <mst@redhat.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: Stefano Garzarella <sgarzare@redhat.com>,
-	patchwork-bot+netdevbpf@kernel.org, netdev@vger.kernel.org,
-	xuanzhuo@linux.alibaba.com, horms@kernel.org,
-	virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, kuba@kernel.org, eperezma@redhat.com,
-	pabeni@redhat.com, davem@davemloft.net, jasowang@redhat.com,
-	stefanha@redhat.com, edumazet@google.com, stable@vger.kernel.org
-Subject: Re: [PATCH net] vsock/virtio: fix skb overhead overflow on 32-bit
- builds
-Message-ID: <20260525083859-mutt-send-email-mst@kernel.org>
-References: <20260521124732.125771-1-sgarzare@redhat.com>
- <177950282964.1445071.6600517211632117224.git-patchwork-notify@kernel.org>
- <20260523173557.5cc4f4f6@pumpkin>
- <ahQbVxvbBEJZ3TBU@sgarzare-redhat>
- <20260525115314.3cf310e6@pumpkin>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WH2MIt63"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5336F1F00A3A
+	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:42:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779712940;
+	bh=gvIPoNXrTi2uVXmW3mMo6pW5mG91lBhuVwWsnt9m+OE=;
+	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
+	b=WH2MIt63NS19FABn4rEJHHYe8R5lSAOizkkRfS67NBraE0xSIutn3I2cX37y2ilyc
+	 0iy2PKZYVrWISm4s1+B5OxNxh7G3D5phsmCTmvcyjg3Rw+MGQmhzil7cAo7h0bQeEd
+	 a49xWObAPCmaaVWTOAxqXePsBVE9dpyGfTiUBcCnWppBtPLWXIN8Cl5Ux0N2Wiu8dm
+	 1owlKtoMQYRzqL/VsGLA2IRrP4GytYtdoGUeOXp85szFN26yo3mEhHa+q5lxRCXte6
+	 dPZpScWrTZi+nKdRtU5DUTduwOcoavurOx6Oltcdeg6V2aQBohVyAd82K2TW1ykbtz
+	 ZJiH//HIHWR7A==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v4 12/14] userfaultfd: add UFFDIO_SET_MODE for runtime
+ sync/async toggle
+Reply-To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260525113737.1942478-13-kas@kernel.org>
+References: <20260525113737.1942478-13-kas@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Mon, 25 May 2026 12:42:20 +0000
+Message-Id: <20260525124220.5336F1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260525115314.3cf310e6@pumpkin>
 
-On Mon, May 25, 2026 at 11:53:14AM +0100, David Laight wrote:
-> On Mon, 25 May 2026 11:57:45 +0200
-> Stefano Garzarella <sgarzare@redhat.com> wrote:
-> 
-> > On Sat, May 23, 2026 at 05:35:57PM +0100, David Laight wrote:
-> > >On Sat, 23 May 2026 02:20:29 +0000
-> > >patchwork-bot+netdevbpf@kernel.org wrote:
-> > >  
-> > >> Hello:
-> > >>
-> > >> This patch was applied to netdev/net.git (main)
-> > >> by Jakub Kicinski <kuba@kernel.org>:  
-> > >
-> > >Did anyone else notice that is isn't a bug?
-> > >
-> > >There is no way that a 'count of bytes of kernel memory' can overflow
-> > >the size of 'long'.  
-> > 
-> > It's more of an estimate than an actual calculation of memory usage if 
-> > we queue the incoming packet. In theory, an overflow could occur if the 
-> > user sets `buf_alloc` to 4GB. In practice, though, I think you're right: 
-> > the memory should run out before we get to that check.
-> 
-> The calculation is:
-> 
-> 	u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0); 
-> 
-> skb_queue_len() will be the number of items on the queue.
-> SKB_TRUESIZE(0) is the memory taken up by a zero length skb (basically sizeof(skb)).
-> 
-> Unless you either corrupt the queue length or manage to allocate skb that use
-> less than the minimum about of memory that product can't overflow 'unsigned long'.
-> 
-> The later calculations might wrap - but the multiply can't.
-> 
-> -- David
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [High] The userfaultfd_set_mode function iterates over an external mm_str=
+uct's VMAs without verifying address space stability.
+- [Low] Lockless read of ctx->features races with its own WRITE_ONCE update=
+, causing a data race.
+--
 
+commit 6988a435b501422279701e12a0fb8f5c3d604468
+Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-Indeed, I wasn't thinking. For this to even get close to overflowing
-we'd have to have almost all of 4G available to the 32 bit kernel taken
-up by this single queue.
+userfaultfd: add UFFDIO_SET_MODE for runtime sync/async toggle
 
-Revert, I'd say.
+This commit adds an ioctl to toggle UFFD_FEATURE_RWP_ASYNC on an active=20
+userfaultfd context. It handles synchronization by acquiring the mmap_write=
+_lock,
+draining in-flight faults via vma_start_write(), and waking pending sync
+waiters to retry.
 
-> > 
-> > Thanks,
-> > Stefano
-> > 
-> > >
-> > >-- David
-> > >  
-> > >>
-> > >> On Thu, 21 May 2026 14:47:32 +0200 you wrote:  
-> > >> > From: Stefano Garzarella <sgarzare@redhat.com>
-> > >> >
-> > >> > On 32-bit architectures, both skb_queue_len() and SKB_TRUESIZE(0) evaluate
-> > >> > to 32-bit values. The multiplication can overflow before being assigned to
-> > >> > the u64 skb_overhead variable, making the skb overhead check ineffective.
-> > >> >
-> > >> > Cast skb_queue_len() to u64 so the multiplication is always performed in
-> > >> > 64-bit arithmetic.
-> > >> >
-> > >> > [...]  
-> > >>
-> > >> Here is the summary with links:
-> > >>   - [net] vsock/virtio: fix skb overhead overflow on 32-bit builds
-> > >>     https://git.kernel.org/netdev/net/c/4157501b9a8f
-> > >>
-> > >> You are awesome, thank you!  
-> > >  
-> > 
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index 20478bb373111..680ef9bd57fd6 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
 
+[ ... ]
+
+> @@ -4261,6 +4271,109 @@ static int userfaultfd_rwprotect(struct userfault=
+fd_ctx *ctx,
+>  	return ret;
+>  }
+> =20
+
+[ ... ]
+
+> +static int userfaultfd_set_mode(struct userfaultfd_ctx *ctx,
+> +				unsigned long arg)
+> +{
+> +	struct uffdio_set_mode mode;
+> +	struct mm_struct *mm =3D ctx->mm;
+> +
+> +	if (copy_from_user(&mode, (void __user *)arg, sizeof(mode)))
+> +		return -EFAULT;
+> +
+> +	/* enable and disable must not overlap */
+> +	if (mode.enable & mode.disable)
+> +		return -EINVAL;
+> +
+> +	/* only toggleable features that this kernel/arch actually supports */
+> +	if ((mode.enable | mode.disable) &
+> +	    ~(uffd_api_available_features() & UFFD_FEATURE_TOGGLEABLE))
+> +		return -EINVAL;
+> +
+> +	/* RWP_ASYNC can only be enabled on contexts that negotiated RWP */
+> +	if ((mode.enable & UFFD_FEATURE_RWP_ASYNC) &&
+> +	    !(ctx->features & UFFD_FEATURE_RWP))
+
+[Severity: Low]
+Is it possible for a concurrent UFFDIO_SET_MODE call to trigger a data race
+here?
+
+Because ctx->features is updated with WRITE_ONCE() later in this function,
+reading it locklessly without the new userfaultfd_features() helper
+(or READ_ONCE) might cause KCSAN warnings, even though the UFFD_FEATURE_RWP
+bit itself doesn't change.
+
+> +		return -EINVAL;
+> +
+> +	if (!mmget_not_zero(mm))
+> +		return -ESRCH;
+> +
+> +	/*
+> +	 * Drain in-flight faults before flipping features. mmap_write_lock()
+> +	 * blocks new mmap_read_lock() callers, but per-VMA locked faults
+> +	 * (lock_vma_under_rcu() + FAULT_FLAG_VMA_LOCK) that acquired before
+> +	 * this point keep running. Calling vma_start_write() on each UFFD-
+> +	 * armed VMA waits for those readers to drop, so no in-flight fault
+> +	 * can observe the old features after mmap_write_unlock().
+> +	 */
+> +	mmap_write_lock(mm);
+> +	{
+> +		struct vm_area_struct *vma;
+> +		VMA_ITERATOR(vmi, mm, 0);
+> +
+> +		for_each_vma(vmi, vma) {
+
+[Severity: High]
+Does this iteration code need to verify address space stability before
+walking the VMAs?
+
+Since ctx->mm can belong to a different process, it might be marked
+MMF_UNSTABLE if the target process encountered a dup_mmap() failure or
+was reaped by the OOM killer.
+
+If the address space is unstable, the maple tree might contain XA_ZERO_ENTRY
+markers, which could cause a kernel panic when dereferencing
+vma->vm_userfaultfd_ctx.ctx.
+
+Would it be appropriate to call check_stable_address_space(mm) right after
+acquiring the mmap_write_lock?
+
+> +			if (vma->vm_userfaultfd_ctx.ctx =3D=3D ctx)
+> +				vma_start_write(vma);
+> +		}
+> +	}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525113737.1942=
+478-1-kas@kernel.org?part=3D12
