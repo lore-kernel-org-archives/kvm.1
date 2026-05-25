@@ -1,164 +1,240 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA86C2AE78
-	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:13:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F171434F483
+	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:18:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779711201; cv=none; b=FzULJjdquJe3a1OgvA+KletvufHTHT9c6wcpLWWmsM8Hjud81EWkbsoFtf5zWH5f/4SJUCCp32yi0/41ZLXin2KNUUsZWUcAA3F+143bWK4CtgWR4OaW45zj48AzfkJX02t8DSnFLPB0QouN0j3y4GrfmHRWExSyE7/wmR9G14I=
+	t=1779711540; cv=none; b=Yvka3w+7BpVXGgw3LrsNmR8ivPp/4LsnPy8HBQJC1WUZjMWJNy3CwtXXStFL4hz88Us7gTpB2sUsBKSTCVdiaB/P0CzNA46xB7FWu9H+aYOvenDZP3+vHNnzAg5/4JPlfp6+mzjSZkTAD6liBJY6WoC4PNnPk7Z4ZLkF8bWJ6XE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779711201; c=relaxed/simple;
-	bh=P4ktzbMy6IdeQ2h+x+JLxLFvHWbghC5TqPICi+Oy51o=;
+	s=arc-20240116; t=1779711540; c=relaxed/simple;
+	bh=rLiL/8+8+6vY1ilTNkrxefwj/UKlvOUYwuTwwOTGHho=;
 	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=DZZJUy22In4272rnXdTyg1ZItvy6teJhOKLfHrHPkvrhKdrgDqntop6XQx3d/5lh9xMBpOga9VyVHv6w6hs8DmBEvz1xljE4Aj3kqrYgl8+AM5PBMwxnnx7nnyVv54rDMOIww3QmnXyLKfhc0FJGWYgW8cNDiQsjbGnYQs3+PVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NWivJzO9; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Y/vCIelZHrZvYIH0k29BGHhgESNUeqIwa1zIVogeTh8fDcFxWUng0RGrgNYXveQUoJjROR20zskbx1QIzxAuYXjuOwHxEX0gwGBVmo2i0dxLdIfN/HNVoaTTo0aRxMhrvxKtoRhZubSV/ZJMITcj3HnHvEYJ/AcSYCVhf1AWaUE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RjT07NBo; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NWivJzO9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B03D1F000E9
-	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:13:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RjT07NBo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57D0B1F000E9
+	for <kvm@vger.kernel.org>; Mon, 25 May 2026 12:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779711199;
-	bh=fp6hk6KA0i5qoHgRNr+OwE3rCCENPUzTVKgK61HZcCo=;
+	s=k20260515; t=1779711538;
+	bh=nMDuZDq7bGLYvLkOPONtcEIpAlpiYraOhlL3kslbMQY=;
 	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
-	b=NWivJzO9yXBOFNIn4Gf+60kJbFVQALzPqQAgSmFeL7rjT/HM7VyvghubAdh9bSup7
-	 +W2MvL39I3FN9or8LcU7V4HmJ21IFH48y3p+OhxLHx7QC3u+fXtrTkr8/m/fmV/r1N
-	 g19t1pSVfBIe1LshSzdxeKaGtzWnmCX31QGeDuElC26EiSCIljlA+ABfcc5HFlkPf7
-	 2s3mi0PzBDOtDwr80w5cOuDmRN8hVCWm7gyadXFJkXD7DCSLZ3luqDy1L7szvr7paI
-	 7QvT8QPuOzRSf2RyQ9hNvgE21Kku3iNltuG0bHe4OOOtwnIHMxoTXqvDATB7pNmvK1
-	 q0KsLfxp9W/2Q==
+	b=RjT07NBo81n8WZrcdKicdyNvrBLoSByHahcKFZMmcNTI026m6JzOYISHPZYNcvuZV
+	 aLBXh851vUC/kIFKs1re9pDwaBL7AgDpeOAF5sAQbCQotzubTm//JgUXvKF4sYAQza
+	 ePU8c0EaClf2V2tzfc1aq3xxYc1fq8lAMD5jmfCDI9qezmX3JtiFa4V+4p99VibrmQ
+	 MVs70MCEi+z5soXolIhMKb4mItE2mRk3up6QbXdVnyFyF/G+iC6oGFoXlF/2L5H1oT
+	 WlNtvoYAmRenfWdGUbl9V7xA+TWrJxbU2+eGGVm4FKC4vf6NBt0GgtuLWv6mWsC+n0
+	 GMnuEFJbZmuSA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v4 05/14] mm: add MM_CP_UFFD_RWP change_protection()
- flag
+Subject: Re: [PATCH v4 09/14] mm/userfaultfd: add RWP fault delivery and
+ expose UFFDIO_REGISTER_MODE_RWP
 Reply-To: sashiko-reviews@lists.linux.dev
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260525113737.1942478-6-kas@kernel.org>
-References: <20260525113737.1942478-6-kas@kernel.org>
+In-Reply-To: <20260525113737.1942478-10-kas@kernel.org>
+References: <20260525113737.1942478-10-kas@kernel.org>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Mon, 25 May 2026 12:13:18 +0000
-Message-Id: <20260525121319.3B03D1F000E9@smtp.kernel.org>
+Date: Mon, 25 May 2026 12:18:57 +0000
+Message-Id: <20260525121858.57D0B1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 5 potential issue(=
 s) to consider:
 
 New issues:
-- [High] UFFD_RWP silently fails to apply PAGE_NONE protection on architect=
-ures without CONFIG_ARCH_HAS_PTE_PROTNONE.
-- [High] Resolving UFFD_RWP incorrectly clears UFFD_WP PTE markers.
+- [High] UFFD RWP tracking is bypassed or causes an infinite loop during GU=
+P FOLL_FORCE accesses on PROT_NONE VMAs.
+- [High] Orphaned RWP-protected PTEs cause an unrecoverable infinite page f=
+ault loop in hugetlb_fault().
+- [High] NUMA balancing silently strips userfaultfd RWP protection from adj=
+acent PTEs within a large folio.
+- [Medium] Missing feature capability check in userfaultfd_register allows =
+enabling RWP without negotiating the feature.
 
 Pre-existing issues:
-- [High] mprotect() silently drops userfaultfd protection bits from migrati=
-on and device-private swap entries.
+- [High] Calling present-PTE accessors on potentially non-present swap or m=
+igration entries in must_wait() handlers.
 --
 
-commit 53d11b1df1ce4306088d5ef4ffa8552398e6493b
+commit 0e07f627a7171ce12ad9ac2a38e2b76f7df096a7
 Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Date:   Mon May 25 11:37:19 2026 +0000
 
-mm: add MM_CP_UFFD_RWP change_protection() flag
+mm/userfaultfd: add RWP fault delivery and expose UFFDIO_REGISTER_MODE_RWP
 
-This commit introduces the change_protection() primitive for userfaultfd RW=
-P.
-It adds MM_CP_UFFD_RWP and MM_CP_UFFD_RWP_RESOLVE flags, wiring them through
-the change_pte_range(), change_huge_pmd(), and hugetlb_change_protection()
-paths.
+This commit introduces read-write protection (RWP) tracking for userfaultfd.
+It wires the fault side of RWP tracking and turns on the userspace interfac=
+e,
+exposing UFFDIO_REGISTER_MODE_RWP.
 
 > diff --git a/mm/hugetlb.c b/mm/hugetlb.c
-> index d0c81a056ae2a..4d75b69d42728 100644
+> index 8555810cd42ec..f63718296cc20 100644
 > --- a/mm/hugetlb.c
 > +++ b/mm/hugetlb.c
-[ ... ]
-> @@ -6488,19 +6496,24 @@ long hugetlb_change_protection(struct vm_area_str=
-uct *vma,
->  			 * pte_marker_uffd_wp()=3D=3Dtrue implies !poison
->  			 * because they're mutual exclusive.
->  			 */
-> -			if (pte_is_uffd_wp_marker(pte) && uffd_wp_resolve)
-> +			if (pte_is_uffd_wp_marker(pte) &&
-> +			    (uffd_wp_resolve || uffd_rwp_resolve))
->  				/* Safe to modify directly (non-present->none). */
->  				huge_pte_clear(mm, address, ptep, psize);
 
-[Severity: High]
-Could this inadvertently destroy userfaultfd WP state? Since RWP does not
-install or use PTE markers, any marker encountered here must be a UFFD_WP
-marker. If a resolve operation for RWP is allowed to clear these markers,
-it seems like it might drop the write-protect state completely.
+> [ ... ]
 
-> diff --git a/mm/mprotect.c b/mm/mprotect.c
-> index 8340c8b228c67..4a6b35482aee9 100644
-> --- a/mm/mprotect.c
-> +++ b/mm/mprotect.c
-> @@ -214,8 +214,9 @@ static __always_inline void set_write_prot_commit_flu=
-sh_ptes(struct vm_area_stru
->  static long change_softleaf_pte(struct vm_area_struct *vma,
->  	unsigned long addr, pte_t *pte, pte_t oldpte, unsigned long cp_flags)
->  {
-> -	const bool uffd_wp =3D cp_flags & MM_CP_UFFD_WP;
-> -	const bool uffd_wp_resolve =3D cp_flags & MM_CP_UFFD_WP_RESOLVE;
-> +	const bool uffd_prot =3D cp_flags & (MM_CP_UFFD_WP | MM_CP_UFFD_RWP);
-> +	const bool uffd_prot_resolve =3D cp_flags &
-> +		(MM_CP_UFFD_WP_RESOLVE | MM_CP_UFFD_RWP_RESOLVE);
->  	softleaf_t entry =3D softleaf_from_pte(oldpte);
->  	pte_t newpte;
-
-[Severity: High]
-This is a pre-existing issue, but I noticed that when downgrading
-permissions for a migration_write entry (such as during a standard
-mprotect), this function constructs the new PTE via swp_entry_to_pte().
-While the soft_dirty bit is explicitly preserved, it does not appear to
-check or preserve pte_swp_uffd().
-
-Could a standard mprotect() running concurrently with migration silently
-strip the UFFD bit, permanently bypassing userfaultfd traps when the page
-is restored? It looks like change_non_present_huge_pmd() might have a
-similar issue with device_private_write entries.
-
-[ ... ]
-> @@ -256,7 +257,7 @@ static long change_softleaf_pte(struct vm_area_struct=
- *vma,
->  		 * to unprotect it, drop it; the next page
->  		 * fault will trigger without uffd trapping.
->  		 */
-> -		if (uffd_wp_resolve) {
-> +		if (uffd_prot_resolve) {
->  			pte_clear(vma->vm_mm, addr, pte);
->  			return 1;
->  		}
-
-[Severity: High]
-Does this have the same side effect as the hugetlb path above? By using
-uffd_prot_resolve, which includes MM_CP_UFFD_RWP_RESOLVE, an RWP
-resolution would clear UFFD_WP markers. Since RWP does not use PTE
-markers, should this check remain specific to WP resolution?
-
-[ ... ]
-> @@ -681,6 +703,10 @@ long change_protection(struct mmu_gather *tlb,
->  	WARN_ON_ONCE(cp_flags & MM_CP_PROT_NUMA);
->  #endif
+> @@ -6062,6 +6062,17 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, str=
+uct vm_area_struct *vma,
+>  		goto out_mutex;
+>  	}
 > =20
-> +	if (IS_ENABLED(CONFIG_ARCH_HAS_PTE_PROTNONE) &&
-> +	    (cp_flags & MM_CP_UFFD_RWP))
-> +		newprot =3D PAGE_NONE;
-> +
->  	if (is_vm_hugetlb_page(vma))
->  		pages =3D hugetlb_change_protection(vma, start, end, newprot,
->  						  cp_flags);
+> +	/*
+> +	 * Protnone hugetlb PTEs with the uffd bit are used by
+> +	 * userfaultfd RWP for access tracking. Plain PROT_NONE (without the
+> +	 * marker) is not an RWP fault and is not expected on hugetlb (no
+> +	 * NUMA hinting), so let normal hugetlb fault handling proceed.
+> +	 */
+> +	if (pte_protnone(vmf.orig_pte) && vma_is_accessible(vma) &&
+> +	    userfaultfd_rwp(vma) && huge_pte_uffd(vmf.orig_pte)) {
 
 [Severity: High]
-On architectures that do not define CONFIG_ARCH_HAS_PTE_PROTNONE, will
-newprot default to the VMA's standard permissive protections (such as
-readable/writable)?
+When a Hugetlb VMA is registered with UFFD RWP, its PTEs are marked
+pte_protnone().
 
-If change_present_ptes() applies these permissive protections alongside the
-_PAGE_UFFD bit, memory accesses might not fault. Will this silently fail
-open and bypass the userfaultfd RWP trap entirely instead of trapping?
+If the VMA is unregistered (UFFDIO_UNREGISTER) or the process forks and the
+child drops __VM_UFFD_FLAGS, userfaultfd_rwp(vma) becomes false, but the
+page tables retain the PROT_NONE PTEs.
+
+When a thread accesses these orphaned pages, does the handler skip the
+hugetlb_handle_userfault() block, fall through, and update access flags
+without clearing _PAGE_PROTNONE?
+
+Since Hugetlb does not support NUMA hinting, could this cause an
+unrecoverable infinite page fault loop when the CPU retries the
+instruction and hits the same PROT_NONE PTE?
+
+> +		return hugetlb_handle_userfault(&vmf, mapping, VM_UFFD_RWP);
+> +	}
+> +
+>  	/*
+>  	 * If we are going to COW/unshare the mapping later, we examine the
+
+> diff --git a/mm/memory.c b/mm/memory.c
+> index e4ae5350db416..3e393881031d2 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+
+> [ ... ]
+
+> @@ -6410,8 +6416,16 @@ static vm_fault_t handle_pte_fault(struct vm_fault=
+ *vmf)
+>  	if (!pte_present(vmf->orig_pte))
+>  		return do_swap_page(vmf);
+> =20
+> -	if (pte_protnone(vmf->orig_pte) && vma_is_accessible(vmf->vma))
+> +	if (pte_protnone(vmf->orig_pte) && vma_is_accessible(vmf->vma)) {
+
+[Severity: High]
+If a VMA is marked PROT_NONE but has UFFD RWP registered, GUP accesses
+using FOLL_FORCE will bypass this check because vma_is_accessible(vma)
+evaluates to false.
+
+Does this cause GUP's follow_page_mask() to retry the read, see the PROT_NO=
+NE
+PTE again, and fault indefinitely, creating an infinite loop?
+
+For writes, does it fall through to do_wp_page() and bypass userfaultfd RWP
+tracking entirely?
+
+> +		/*
+> +		 * RWP-protected PTEs are protnone plus the uffd bit. On a
+> +		 * VM_UFFD_RWP VMA, a protnone PTE without the uffd bit is
+> +		 * NUMA hinting and must still fall through to do_numa_page().
+> +		 */
+> +		if (userfaultfd_pte_rwp(vmf->vma, vmf->orig_pte))
+> +			return do_uffd_rwp(vmf);
+>  		return do_numa_page(vmf);
+
+[Severity: High]
+When a page fault occurs on a pure NUMA hinting PTE within a large folio,
+do_numa_page() calls numa_rebuild_large_mapping().
+
+This function iterates over all adjacent PTEs and rebuilds any PTE where
+pte_protnone() is true by unconditionally calling pte_modify().
+
+Since RWP-protected PTEs are also marked pte_protnone(), will
+numa_rebuild_large_mapping() indiscriminately clear the PROT_NONE protection
+from any RWP-protected PTEs in the same large folio, silently bypassing
+userfaultfd RWP tracking?
+
+> +	}
+> =20
+>  	spin_lock(vmf->ptl);
+
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index 78eb63702649e..b966df47800c1 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+
+> [ ... ]
+
+> @@ -2736,6 +2748,13 @@ static inline bool userfaultfd_must_wait(struct us=
+erfaultfd_ctx *ctx,
+>  	 */
+>  	if (!pte_write(ptent) && (reason & VM_UFFD_WP))
+>  		goto out;
+> +	/*
+> +	 * PTE is still RW-protected (protnone with uffd bit), wait for
+> +	 * userspace to resolve. Plain PROT_NONE without the marker is not
+> +	 * an RWP fault.
+> +	 */
+> +	if (pte_protnone(ptent) && pte_uffd(ptent) && (reason & VM_UFFD_RWP))
+
+[Severity: High]
+This is a pre-existing issue, but userfaultfd_must_wait() and
+userfaultfd_huge_must_wait() fetch the PTE locklessly and check pte_none().
+
+If the page was concurrently swapped out or migrated, it will be a non-pres=
+ent
+entry (which is not pte_none()).
+
+Since swap entries encode bits differently than present PTEs, does calling
+present-PTE accessors like pte_write() (and now pte_protnone() and pte_uffd=
+())
+on potentially non-present entries produce undefined results?
+
+> +		goto out;
+> =20
+>  	ret =3D false;
+
+> [ ... ]
+
+> @@ -4477,6 +4496,15 @@ static int userfaultfd_api(struct userfaultfd_ctx =
+*ctx,
+>  		uffdio_api.features &=3D ~UFFD_FEATURE_WP_UNPOPULATED;
+>  		uffdio_api.features &=3D ~UFFD_FEATURE_WP_ASYNC;
+>  	}
+> +	/*
+> +	 * RWP needs both PROT_NONE support and the uffd-wp PTE bit. The
+> +	 * VM_UFFD_RWP check covers compile-time unavailability; the
+> +	 * pgtable_supports_uffd() check covers runtime (e.g. riscv
+> +	 * without the SVRSW60T59B extension) where the PTE bit is declared
+> +	 * but not actually usable.
+> +	 */
+> +	if (VM_UFFD_RWP =3D=3D VM_NONE || !pgtable_supports_uffd())
+> +		uffdio_api.features &=3D ~UFFD_FEATURE_RWP;
+
+[Severity: Medium]
+This patch exposes UFFDIO_REGISTER_MODE_RWP, allowing userspace to register
+VMAs with RWP mode.
+
+If the architecture does not support the required PTE bits, userfaultfd_api=
+()
+masks out UFFD_FEATURE_RWP.
+
+Since userfaultfd_register() lacks a strict feature verification for RWP
+(like the one existing for WP), will the registration falsely succeed and
+apply VM_UFFD_RWP to the VMA even when the feature was not successfully
+negotiated?
+
+> =20
+>  	ret =3D -EINVAL;
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260525113737.1942=
-478-1-kas@kernel.org?part=3D5
+478-1-kas@kernel.org?part=3D9
