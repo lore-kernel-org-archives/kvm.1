@@ -1,202 +1,114 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from flow-b8-smtp.messagingengine.com (flow-b8-smtp.messagingengine.com [202.12.124.143])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D1CE3F4125
-	for <kvm@vger.kernel.org>; Mon, 25 May 2026 15:16:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8C5C384CCA;
+	Mon, 25 May 2026 15:18:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.143
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779722191; cv=none; b=Z8MZ2LwxZDwR049fHocc42iMxPITko2YnQbsexrlLzm+NxGlz5lshycL67V/6+CYeoUjuhpsQXYRM2XbT2o7+fkaO+Ma8VLF5mIc88b0mxHeo2D/N+rfmoH1FBVE+ikHarfGEfQGYJXz+8bloZ/GnXfSZonV/YNEhwTEIZ8Hjm8=
+	t=1779722292; cv=none; b=d2F/X5f6LreODMmtLX0Uz3uqattdHve+2Tq94USediHJ4YyRaejf/iRjpP8v/mACJqGx07pjE66dWaqggtwJef+2d8Wlr/YmnyMbDKzu80zt32ipAH8JtxD2SvmMWOx3S5dqwo4tOVryb598EYhl/UFxKI88VuixmM1GFz4RfFw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779722191; c=relaxed/simple;
-	bh=AJUSWFiE6Q27sPZdsP0TJj9XuNjCnHJMEQ5y+0iZRbU=;
+	s=arc-20240116; t=1779722292; c=relaxed/simple;
+	bh=4QkRt+iKr11Jp/pucEfsueGPTjgQKpWewnCGgXJfwGE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uhGz3nJYTQB1KKliA5Y+ysltYN4BdQYlEVStJcrypvXUhJxVx+5KiRdeOUWI/vOwa5ALuNGaC/fhqEJ+xRYqS07CCy3mve3xOaY1rU937YrRYupTnFNkRrWDs4VaccZUjlSEWiJse607mIEeNr6FWBfuWfN55Phx3xdeXSB5rYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LguTpTI6; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=hAzRXwyX; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=R/LcfckSnr2VroLW12r3vASgQf8MwafrQ/qP8zbKx7VXJo1qr0ZtgDOb0LgnvUZ/0vFdWaxOe2jr2w62BbwYD/D3vUOfDf4jc4fU9K4FazmHBMVt1zgktC/IlZ2UYgVw4pOOi8daxq6AeTkvRyOQhVOEbeyuT4pECAGMDVppZVM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=ZgwucYs3; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=pe7X97JB; arc=none smtp.client-ip=202.12.124.143
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LguTpTI6";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="hAzRXwyX"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779722188;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LRIUymRBu2V1hz/h+nW5xnuAvIV3Q2kXa6qoE0y+ue8=;
-	b=LguTpTI6BWaTZH5ABb/3/RebpIGBfLjK8R2TXfxdx4gqJ3ZxGF/6fJ2KhhQ1dVqwTZrYGf
-	kzOPyntBBL5YHpIzhPsAdtnOpwG7d60gFU4kaXOJfH6r9CPB5QMnxXhnlC7Zg21QB5KE+b
-	9rPyz8oFIz5Yhi3RXpJKv3+uC/caXyw=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-377-6qaqLFdVPSaImeoLA-tTPA-1; Mon, 25 May 2026 11:16:27 -0400
-X-MC-Unique: 6qaqLFdVPSaImeoLA-tTPA-1
-X-Mimecast-MFC-AGG-ID: 6qaqLFdVPSaImeoLA-tTPA_1779722186
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-44d79da8cf7so7380159f8f.2
-        for <kvm@vger.kernel.org>; Mon, 25 May 2026 08:16:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779722186; x=1780326986; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=LRIUymRBu2V1hz/h+nW5xnuAvIV3Q2kXa6qoE0y+ue8=;
-        b=hAzRXwyXAktwhDS3ouSPPjjPmrO7cY4ZjTuUsruD0+iZc8MiVfBSqoyfgzTi9zDQXh
-         WNW9zvRgErVlYmPEeP1mimuzm9QHX0rcJuVAU3Dl/UeXSbVOIZXUDn5GHNbskNI7it/+
-         Xm4riBjfeoDz7PLtmcL7xRrBl+MaGaKSvjFJvpePQuHLBfMZS9HYR8G13vWfBDzdEgkF
-         1Nl31+f4MNNvI62Rbhsd2FFGDVC5QEvBe6xFHjDkishS8P5oKzT8o8CR4FophObKpMcZ
-         +ZC0CNF+o9uRY734yAzsrbG7JbU4+cEIj+VHWFpVX+npsnr8y8iBG0F6mQRrqxLctJeE
-         r+dg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779722186; x=1780326986;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LRIUymRBu2V1hz/h+nW5xnuAvIV3Q2kXa6qoE0y+ue8=;
-        b=rBfKU23AUHlC5ALhSFxFiK3ra43S1UhMizi4x0oEBw1wyu9dkZWoGfGpRDFrRoHEw3
-         22VzCb5sFNQs7gfnAspqqezADz1r9OnCcNFshGSjzMbiB9ra+qzy4/+607OMazPdgslS
-         x5RZvix4oCLe3RtqHL6KEMPwbwjy/rwjW9MwzNmpmJ17q7mHRLMSO0XaEzbGeICVDuvv
-         wht1EcAKXuL4qZ9N8Wz5C58xnnd5iP8BMXal687qxmEzKHFBK8Pm4Z6U2TmExt1wCBD6
-         N9OShk3EfUuxpULPTdPBLlW8bkRbabKCehrPpZBcvhtp+qS1vWu6Z4x+lMBr47ggEp0Z
-         AK3g==
-X-Forwarded-Encrypted: i=1; AFNElJ9w92yR+TJk0g0vTm0GF8dEnAMCvUAbyk3jPQkhRFsmLS9KJ8w2wwHOldYmpjTRv9b+Pto=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx+h0SFJbCHxAqwh+Q+Uy2vLZOSntYq7Scwp+8gDM08r6YESjWA
-	+iouN7AZwPrG5LCcLUOcueNzKCpUXgs6tJBGQ7aBkf8A1R3V61Gv3idwfsjyJfKn1wPk7IMGAnt
-	SpK2vNX146Meq5t0nK5X4HrPAx04qHQWsCoA0SXloVJfTQdkc9sYWiA==
-X-Gm-Gg: Acq92OFcHvgM66kW8o9yCMKRH1u9aMww3W/TvbTtma7OMrBvXOeQc2M+ySq/FFUCW1F
-	u0m+CR+U+MntYrfSu1qchrMaZ0QOUpwwi6xcViBNk4LbN7ILO59h7Fic5DXOlLCtMPCFvmlm5l/
-	cuKVg3XMLDmRC4bs8pTaLWSL8H9i/Gdv24NweFW+eZvn3qKtW+MEvT+I9jLrWkdwaSiND1+rJ0R
-	3vvTbuNPQhvT6ShHxcELLVR+jzP/KydDwRggmJ9fakoUeaFQGpaG3BiH5CEsf4jc0WXyb3JholT
-	zME4myqnj8MAdIFUU8RUQAHNdfPS0OSyR9jtppKre5mn5IB2jDQoXvaU3mQIYMValxqGEmlC1sp
-	x1fxKXVmANQGqDLYx7pNFOCj2QX9vTVDhvsyQe9iJsVE9nNuq7NBOhBJWanCJMsjaLWaAJk8=
-X-Received: by 2002:a05:6000:29c8:b0:45e:8526:7dc5 with SMTP id ffacd0b85a97d-45eb38b3902mr16847539f8f.28.1779722186152;
-        Mon, 25 May 2026 08:16:26 -0700 (PDT)
-X-Received: by 2002:a05:6000:29c8:b0:45e:8526:7dc5 with SMTP id ffacd0b85a97d-45eb38b3902mr16847494f8f.28.1779722185615;
-        Mon, 25 May 2026 08:16:25 -0700 (PDT)
-Received: from sgarzare-redhat (host-82-53-135-12.retail.telecomitalia.it. [82.53.135.12])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45eb6c9de2dsm26855784f8f.4.2026.05.25.08.16.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 25 May 2026 08:16:24 -0700 (PDT)
-Date: Mon, 25 May 2026 17:16:18 +0200
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: David Laight <david.laight.linux@gmail.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>, 
-	patchwork-bot+netdevbpf@kernel.org, netdev@vger.kernel.org, xuanzhuo@linux.alibaba.com, 
-	horms@kernel.org, virtualization@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	kvm@vger.kernel.org, kuba@kernel.org, eperezma@redhat.com, pabeni@redhat.com, 
-	davem@davemloft.net, jasowang@redhat.com, stefanha@redhat.com, edumazet@google.com, 
-	stable@vger.kernel.org
-Subject: Re: [PATCH net] vsock/virtio: fix skb overhead overflow on 32-bit
- builds
-Message-ID: <ahRmBTnNMrg-oano@sgarzare-redhat>
-References: <20260521124732.125771-1-sgarzare@redhat.com>
- <177950282964.1445071.6600517211632117224.git-patchwork-notify@kernel.org>
- <20260523173557.5cc4f4f6@pumpkin>
- <ahQbVxvbBEJZ3TBU@sgarzare-redhat>
- <20260525115314.3cf310e6@pumpkin>
- <20260525083859-mutt-send-email-mst@kernel.org>
- <ahRJS2bN9Bw_AKyo@sgarzare-redhat>
- <20260525155322.240fbd87@pumpkin>
+	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="ZgwucYs3";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="pe7X97JB"
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailflow.stl.internal (Postfix) with ESMTP id C4F2D130008E;
+	Mon, 25 May 2026 11:18:08 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-04.internal (MEProxy); Mon, 25 May 2026 11:18:10 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-transfer-encoding:content-type:content-type
+	:date:date:from:from:in-reply-to:in-reply-to:message-id
+	:mime-version:references:reply-to:subject:subject:to:to; s=fm2;
+	 t=1779722288; x=1779729488; bh=XNbeMvEzyPh7sPx47CH3WFhZNyDg4LG8
+	isuSFxUw54Y=; b=ZgwucYs3+R/6nBszPKkbyaaLOw1OxtR1O2hV7axbTFh568Sz
+	yqsraJGeP9Mh55L1umBu45pVfGjtQ/yY2072ude/j+VUiLp0wKnBKnBzffmQTJjW
+	/o6y8NhmakYY7QpVtA3+0UuERBM+v3/1jaJZBBFSMC1KzrWelj74dRlwGcnhe+2Q
+	GN2vBFdJcoZAEObvxQ0cpPwUMtznPUF15RUOW6bBsvNRbXOw3NWrGeu1rUdtfPCP
+	KRtZ7RMKVOisgrU2X5VinS6AX0Bw9rksA6Pq35tp4IqGtwAUEZ8SXNVzxRdItopa
+	fE1xING4NpeXknYeXNIL73nPKFDhfUVaaBm1PA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779722288; x=
+	1779729488; bh=XNbeMvEzyPh7sPx47CH3WFhZNyDg4LG8isuSFxUw54Y=; b=p
+	e7X97JBh31Sh07ScqRqkEf2YOrHHOUgWC5br+p5O05641zAF/bw1oOiSl51scTkL
+	TTBmGNhHqGdy1A4ZQphhKCWRfADUQ+t/4v2R/7gCyxE8VyFGZqB0BFfxYiMZECt5
+	GrrCcw+pm3XCSta6tGdeiTs3s9gf3/hHzzWt+SNV6NpvKTfyuiGTduzK9uFAXt3U
+	b4qeVuqbEhqzu1xePnxNMt8BNrrh90Z5XxK7fgL1BZ1WU0+Hni8lr9GeW3viOxc1
+	33a5yXoApOcudml5GCuNo7lCtONMBZT5XBC8Ium0/KFoFE6btbuQ20GO+4kbrrMD
+	ncG4YKOPipnNo3bmpJtjA==
+X-ME-Sender: <xms:MGgUajFAUiJsfhbMD8cHUarZn4-DaghF1cg8HubDqerjMlMmmi53vA>
+    <xme:MGgUaovjOjPg9H37IzVGtvI4xGytU93RUdUMWdKYS2mPACUQWau6wj9cV7-ZDTeZI
+    AJkFJg2Yw9BVgjFiCOO2xbNDWiiCX9AFjI0jxlnxjn67DMoSi92tQ>
+X-ME-Received: <xmr:MGgUavYJ3acQQt61YkqqwotH0qSNFWkOLpKjD2k7SjiKN9gyPnPRBQWuhJJJoA>
+X-ME-Proxy-Cause: dmFkZTEQSsA+CxVWFlgQbg+iDCxnTUddRJf1SNUTKP4UbEAr+U7uFdm1L5+NkcBqlGZsgL
+    pWKCoEhxBJTNaYSbHSylQV/0lm3jZelxuBNryUEz7SwVEtnBFzslpWQY8GJQqg2vsw0Zz0
+    QbZjSZzpKFySn6GqmOLPPlHhCcbMIJ4g8t5wjZhUIw3xERy2MPRsEDG+tKN/NHyTPLO7qG
+    MNuhuxsRfncOHiTNXvffzzZm0c3vhnS8L84qdlFXa8gN4MF4U+SuBZ8q2TZuKc3/FG/FpB
+    PVSHHPoh/Er5NdABQbI2y8OVtNjciY+F6ctFbe2E3mJ1Jli9xJbNK2RTsh9eF1N7wmLMer
+    +EdWIphgvjcbs5d2AJ59P1kblBevKKM+MdC/ufRfH/YKB+uf3079AfvZnMPv9gPK+9Ntfn
+    PpICwq40BKLb/d8mAa73XLYvg6gtbWHshle5RMxYTC8df9j0imwSTBIiiZNqtI+TjNBtKT
+    ZQIQqfOSRANa7gCD8G8tiOC6+LZ7tar2QHfd/1bAJDIQ5U/MJrqJP2t9drRITdX5TOGnp0
+    moO9d+bPUiX8QPtzfu+FHjuFZlLwUePpENrh+Up+d4tRLtnf7kdtSthSxLCCd1z+swEhAZ
+    ZOGkGRExuVavjoQAIPsmxZtMQE+r1r2JvHWnywL01pE1anfn209CZp5q3vKw
+X-ME-Proxy: <xmx:MGgUalpLt6qUWtQKAom-JJcSBYEe2hkrM3mIBsKUp29hEwzNSK0J6A>
+    <xmx:MGgUampwvba2qMEc1z2qQ2iA9ZydNO8pumW3dVf9aCb-ZN0PGE_usw>
+    <xmx:MGgUaiX5uzhzrMtUHH5JFosvi4v9Lml4r-i00G28693pIcTmAs2S-g>
+    <xmx:MGgUajQ6izxbSlGL9PDntG4Qj4XsHDLOT-cm5F5mV6PSR5rDB5YKig>
+    <xmx:MGgUamW0W6QRvvpVR2BPEw06UwSETR2oy1kuoY2zLWaGSnhCceUiuVyP>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 25 May 2026 11:18:07 -0400 (EDT)
+Date: Mon, 25 May 2026 16:18:06 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org, akpm@linux-foundation.org, rppt@kernel.org, 
+	peterx@redhat.com, david@kernel.org, ljs@kernel.org, surenb@google.com, 
+	vbabka@kernel.org, Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, 
+	skhan@linuxfoundation.org, seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, 
+	aarcange@redhat.com, sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v4 07/14] mm: handle VM_UFFD_RWP in khugepaged, rmap, and
+ GUP
+Message-ID: <ahRmty2nebDOvgpt@thinkstation>
+References: <20260525113737.1942478-8-kas@kernel.org>
+ <20260525131923.11A1B1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Type: text/plain; charset=iso-8859-1
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260525155322.240fbd87@pumpkin>
+In-Reply-To: <20260525131923.11A1B1F000E9@smtp.kernel.org>
 
-On Mon, May 25, 2026 at 03:53:22PM +0100, David Laight wrote:
->On Mon, 25 May 2026 15:09:54 +0200
->Stefano Garzarella <sgarzare@redhat.com> wrote:
->
->> On Mon, May 25, 2026 at 08:42:01AM -0400, Michael S. Tsirkin wrote:
->> >On Mon, May 25, 2026 at 11:53:14AM +0100, David Laight wrote:
->> >> On Mon, 25 May 2026 11:57:45 +0200
->> >> Stefano Garzarella <sgarzare@redhat.com> wrote:
->> >>
->> >> > On Sat, May 23, 2026 at 05:35:57PM +0100, David Laight wrote:
->> >> > >On Sat, 23 May 2026 02:20:29 +0000
->> >> > >patchwork-bot+netdevbpf@kernel.org wrote:
->> >> > >
->> >> > >> Hello:
->> >> > >>
->> >> > >> This patch was applied to netdev/net.git (main)
->> >> > >> by Jakub Kicinski <kuba@kernel.org>:
->> >> > >
->> >> > >Did anyone else notice that is isn't a bug?
->> >> > >
->> >> > >There is no way that a 'count of bytes of kernel memory' can overflow
->> >> > >the size of 'long'.
->> >> >
->> >> > It's more of an estimate than an actual calculation of memory usage if
->> >> > we queue the incoming packet. In theory, an overflow could occur if the
->> >> > user sets `buf_alloc` to 4GB. In practice, though, I think you're right:
->> >> > the memory should run out before we get to that check.
->> >>
->> >> The calculation is:
->> >>
->> >> 	u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
->> >>
->> >> skb_queue_len() will be the number of items on the queue.
->> >> SKB_TRUESIZE(0) is the memory taken up by a zero length skb (basically sizeof(skb)).
->> >>
->> >> Unless you either corrupt the queue length or manage to allocate skb that use
->> >> less than the minimum about of memory that product can't overflow 'unsigned long'.
->> >>
->> >> The later calculations might wrap - but the multiply can't.
->> >>
->> >> -- David
->> >
->> >
->> >Indeed, I wasn't thinking. For this to even get close to overflowing
->> >we'd have to have almost all of 4G available to the 32 bit kernel taken
->> >up by this single queue.
->
->Except there is usually only 1G or 2G available to the kernel.
->And all the skb would have to contain no data.
+On Mon, May 25, 2026 at 01:19:22PM +0000, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> - [High] GUP enters an infinite loop when using FOLL_FORCE on an
+> inaccessible (PROT_NONE) VMA that has VM_UFFD_RWP enabled.
 
-`skb_overhead` was introduced to prevent exactly queueing skb without 
-any data (essentially containing just the EOM for SEQPACKET) that we 
-plan to fix properly in some other way instead of queueing empty skb.
+Confirmed. RWP resolution restores vm_page_prot, which is PAGE_NONE on
+a PROT_NONE VMA -- the page never becomes accessible and FOLL_FORCE
+loops. Will fix in v5 by rejecting the registration up front in
+vma_can_userfault():
 
->
->> >
->> >Revert, I'd say.
->>
->> I also blindly added the cast to silence sashiko :-(
->> I see now that it could never actually happen, but semantically itâ€™s
->> correct, so maybe we can avoid the revert.
->
->Lots of things are semantically correct :-)
+      +       if ((vm_flags & VM_UFFD_RWP) && !vma_is_accessible(vma))
+      +               return false;
 
-I see :-)
+> -- 
+> Sashiko AI review · https://sashiko.dev/#/patchset/20260525113737.1942478-1-kas@kernel.org?part=7
 
->
->I didn't look any further down the function to see if it could be
->'unsigned long' (or even size_t - but I like 'proper' types when they
->are always correct, I have to remember that size_t is unsigned long).
-
-IIRC here the main reason was to handle the next check with u64 to avoid 
-overflows (buf_alloc is u32) when it was introduce, but maybe, after 
-commit c6087c5aaad6 ("vsock/virtio: fix skb overhead accounting to 
-preserve full buf_alloc") it could be size_t.
-
->
->The problem with the (u64) cast is that gcc is very likely to make a
->'pigs breakfast' of it and do a full 64x64 multiply.
->It'll then try to keep the 64bit value in a register-pair which ends
->up being spilled to stack as a pair.
->I've seen it spill a constant zero and do a multiply by an immediate
->zero when doing 64bit maths on 32bit x86.
->I think gcc can hold a 64bit value as two separate 32bit values; that
->can generate reasonable code. But if they get merged (eg because of an
->"=A" asm constraint) it all goes horribly wrong.
->This is why there are some asm 'helpers' for mixed 32bit/64bit maths.
-
-Thanks for the details, I'll keep these in mind, really useful!
-
-Stefano
-
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
