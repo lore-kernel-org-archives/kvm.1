@@ -1,64 +1,50 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 139F93B777B
-	for <kvm@vger.kernel.org>; Mon, 25 May 2026 07:07:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF45347516;
+	Mon, 25 May 2026 08:06:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779692857; cv=none; b=DDWZxrUbdxhrpFQT1mRwfC0OhuMSHQJp3t0sLxQXWoLz5pUqXOc/V0qmTmJm1JJwwuUSPfMidowZhQV5P+AiMeQo/aHOi88gW8ZgNxSevCkXnqw7rETJhWMCU56JvcYiTwWFEL4p9tfSeGhZJd3Tx2jILJRPKYLCpNMwYpPtStg=
+	t=1779696364; cv=none; b=tmE0sItJ9/EY/qWeONNKwPK7fRTGRmVFDjEbxCJEH8qc8jvLOY6BqFioqni7dbFFiRxsvnB/mC2WRqoXHBiivdFBmTPSy39xHnqk++5pHOLMU2KBHOmfPJxImEIy8+CBLgij6j0ooe+74kAmBQt0UgBu3Z4Yv1fecCmEFXPGp/Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779692857; c=relaxed/simple;
-	bh=URFZ1vwASMvVqdA1+9smaG7I3bKjYdtJPqnOH0H41mk=;
+	s=arc-20240116; t=1779696364; c=relaxed/simple;
+	bh=WuQyD1hPuF84erucIgGd6RKPm8N1Vpgg5Y/iU5DXlV0=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uaVlX3IN/yZmd9e0jEdD+azG102LTXpIHT1DY0Z2JQka5RM9NLDuRlCYVvsLnycUpZ6MwgNLxmXAS5UD9Hq9e7ymxmPdSV5XN2J1HaDdIxu/vuFyB1Zo1ZgbctAtqWsQBxm2yB4pb8NhVXvLcwS35cZQiCdUfb0ZD70YOZc6xX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KyrEHoBI; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=k8DUjNAgVU3JP+ffCuscb73YtZ5BX82Vks5/BbIy8ri4ijpywgcSIz+j2EgUl0W7VhXp+JXzz6/g9odNGOvNhuTXeOLNH7MoI5KJVquU29UV2TqIV+2jiIHpix1J/eM4oHR3qdntH76onlHnxzxD+nwZCt/AYYNBbbIrjWel4UQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YzO7a+4I; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KyrEHoBI"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-36ac67f489aso479033a91.0
-        for <kvm@vger.kernel.org>; Mon, 25 May 2026 00:07:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779692854; x=1780297654; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pFMw4UuGDjf0p4oj+e6tcK49mC0E+D/7wabzuRfHops=;
-        b=KyrEHoBIbS1NQTdH302i3F0DIbVQ0esPmP16hZ6AYlzxTyDnNl3838lEtIki2Y4NAm
-         CjZO/n8AGwUXP4d9c0781SAAMPX8vGszC5Ny1UD/Vdvxq1ih/UjuwyktiRrRsdouXihW
-         yLVEM10eR4N4puIWp1iEU2WPs1eL3zCiRCx8Jrijqrzm3bjTUdAuVhkGdF/Q7ooggyXV
-         1orj53Tc/F8Cg7egj95150fGnXiSBdzYBbVObQUSFkIQUhbyt69YH1vfvNLUQ1IZGaHB
-         7JQyj+oc6xPWVjZCiYG0r9yVHluh108oY1qf3WG6er73a48WRXsUHTn+7YP6hT1i8dH7
-         gMkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779692854; x=1780297654;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=pFMw4UuGDjf0p4oj+e6tcK49mC0E+D/7wabzuRfHops=;
-        b=gi53g+kMk3gIhp2ROamSr2SNQ59Mr58WdfiIjPaeSlofmjxh7UwMOAqLWwGyTcCDrO
-         lNwuxPSODq07f3qWoEXLUNtEml3JT1dBDoJo5C5TNpgxsd1XuOpuDicw7wivfrBOJIrT
-         YsZEJb8h/Jg+ViA+uUJ9R5std3YGUUfglHjA+Zd7nPnzwW+2UuCfhmnMrK/QexuciZ00
-         oi38QamPb6nmR5lzatt3a4YANprRfwFiKba4u1BoRNNzDok97ce2QMYwBgIJFxhMUo63
-         oAeqc29h0MsQa3jVpWrxnqAnNiM4+KA6NBJS5NO8GskthJOVXb7Wlq9Eesu1HjxvfSbL
-         wYNw==
-X-Gm-Message-State: AOJu0YxweSS7q67YzDSXAagECdW2hKASI6glr343rVos8d5iGfT26kb4
-	I+e4Nk58HypOOwrs7p0U7BCRAxLkAcJhpXFHtaA2oH6Wa6O+M+ry6/Ya
-X-Gm-Gg: Acq92OFN0qEpIhDdD1YyvoOtokwxfJ9tW8XIuQRkB3Eda5sglR5wLdkb5Q6tHk+wEco
-	CXtS1CjCEwP6odSBAhQo0ysYgmSHNHCCJJllnJcgV7muYyMNlaXQt4LEcnLuFgsrT03LRzP4+ah
-	VCF7MGv6C3xhXpAVsSlI1X1VT+MrBaqREe1nkNFRk4elMa0jUnsI0fBYNkTevHaVsAPkQsEO4ig
-	bwbyDKSp18z6WLwQQTQjdLK5S/L6cH8EjdRFwln3NuNGU9utfPtlIk0hQYo8wXvmUSRfKfhCE3I
-	1EXO0cnA4Zt77HpVNO00bL2NMswaWlCZU8QS7jAXkyf8/trZHHIvD7DVQ5bmcS2uf1DNro6v/+8
-	UD4Q8G6lVMHte/UtnKCRjMMhLlyNjUmWmhDHN2lXDomN5qrZNGzThGe1swYtXG8gHEJLWCJjJ2r
-	m6zIZH4dByWNGaqvO5tdEFrIn2npnaqTX0T0+5VhUb7VAmYMqHL+Xc4yY5Lk4=
-X-Received: by 2002:a17:90a:e70d:b0:369:3c3d:f899 with SMTP id 98e67ed59e1d1-36a6ba28e3bmr9654503a91.2.1779692853856;
-        Mon, 25 May 2026 00:07:33 -0700 (PDT)
-Received: from [10.3.165.119] ([61.213.176.12])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36a7265a001sm8580394a91.7.2026.05.25.00.07.32
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 25 May 2026 00:07:33 -0700 (PDT)
-Message-ID: <d93320d5-2974-4e26-be97-785ffd2ea7c5@gmail.com>
-Date: Mon, 25 May 2026 15:07:30 +0800
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YzO7a+4I"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779696363; x=1811232363;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=WuQyD1hPuF84erucIgGd6RKPm8N1Vpgg5Y/iU5DXlV0=;
+  b=YzO7a+4I88Rra5FgsmanBweKvR1zMvRHWsODnvM7lMUO4GAH5dPxZSaX
+   ECxlC9iq7WxxZ/KMaoV4pnm0DVC5pKe3LcpMZNqnEOJy/O4F33yh8cO8O
+   v9TW3R4GxD5Fy4TFQwHPk2DOSHKuzNnAg7dMkdG2gf6JKvOPdqW8sk0xs
+   2AbYbiEmJL+wmC+7Zqhj5zScfl4xvzdi/OChkYKJHHcI7WGIKscXgQ9Ds
+   Y56yyJHNbRuMGpI6yWOSyA2XVKRPhPhRDqqGWl3vgcgOQWlV7QhlA8/8+
+   scJf6EtYi+A382Z4HwdiuLISvz/12Uwr6XLKWikFRwHK3kvlmD0y3oKVV
+   g==;
+X-CSE-ConnectionGUID: XvorEweBRrqoGKMPQOPNhQ==
+X-CSE-MsgGUID: G8Qlk/oYRAeUeoGpLm+K3w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11796"; a="79547764"
+X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
+   d="scan'208";a="79547764"
+Received: from fmviesa009.fm.intel.com ([10.60.135.149])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 01:06:02 -0700
+X-CSE-ConnectionGUID: YQ1sbaohS/+jh2A7czFVuQ==
+X-CSE-MsgGUID: vLddJW+4SUeV+zZyTBWEsA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
+   d="scan'208";a="235179307"
+Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.239.158.44]) ([10.239.158.44])
+  by fmviesa009-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 01:05:59 -0700
+Message-ID: <8590964e-e6aa-4300-8ef7-7f53d1399780@intel.com>
+Date: Mon, 25 May 2026 16:05:57 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -66,70 +52,143 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [v3 2/2] KVM: irqchip: Cache IRQ routing entries allocation
-To: sashiko-reviews@lists.linux.dev, Yanfei Xu <yanfei.xu@bytedance.com>
-Cc: kvm@vger.kernel.org
-References: <20260525035242.107264-3-yanfei.xu@bytedance.com>
- <20260525051714.485D51F000E9@smtp.kernel.org>
-From: Yanfei Xu <isyanfei.xu@gmail.com>
-In-Reply-To: <20260525051714.485D51F000E9@smtp.kernel.org>
+Subject: Re: [PATCH 04/15] x86/virt/tdx: Enable the Extensions right after
+ basic TDX Module init
+To: Xu Yilun <yilun.xu@linux.intel.com>, kas@kernel.org, djbw@kernel.org,
+ rick.p.edgecombe@intel.com, x86@kernel.org, peter.fang@intel.com
+Cc: linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, sohil.mehta@intel.com, yilun.xu@intel.com,
+ baolu.lu@linux.intel.com, zhenzhong.duan@intel.com
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-5-yilun.xu@linux.intel.com>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <20260522034128.3144354-5-yilun.xu@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
+On 5/22/2026 11:41 AM, Xu Yilun wrote:
+> The detailed initialization flow for TDX Module Extensions has been
+> fully implemented. Enable the flow after basic TDX Module
+> initialization.
+> 
+> Theoretically, the Extensions doesn't need to be enabled right after
+> basic TDX initialization. It could be enabled right before the first
+> Extension SEAMCALL is issued. That would save or postpone memory usage.
+> But it isn't worth the complexity, the needs for the Extensions are vast
+> but the savings are little for a typical TDX capable system (about
+> 0.001% of memory). So the Linux decision is to just enable it along with
+> the basic TDX.
 
-On 2026/5/25 13:17, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
->
-> Pre-existing issues:
-> - [Critical] Missing bounds check on user-supplied `ue->u.irqchip.irqchip` allows an out-of-bounds array write on LoongArch and PowerPC.
-> --
 
-Posted a separate fix for this issue.
-https://lore.kernel.org/kvm/20260525070154.495455-1-yanfei.xu@bytedance.com/
 
-Thanks,
-Yanfei
+> Note that the Extensions initialization flow will still not start if no
+> add-on features require Extensions. The enabling of add-on features will
+> be in later patches. Until then, the system hasn't consumed extra memory.
 
-> commit 8ac8d5f6cab84711afabacca6347f1ad673dc605
-> Author: Yanfei Xu <yanfei.xu@bytedance.com>
-> Subject: KVM: irqchip: Cache IRQ routing entries allocation
->
-> This patch caches a VM-local entries array allocation from a freed IRQ routing
-> table to reduce allocation and free churn during frequent routing updates. It
-> also initializes the remaining MSI fields on x86, LoongArch, and PowerPC since
-> cached entries are reused without being zeroed.
->
->> diff --git a/arch/loongarch/kvm/irqfd.c b/arch/loongarch/kvm/irqfd.c
->> index f4f953b224192..15cc80cde071b 100644
->> --- a/arch/loongarch/kvm/irqfd.c
->> +++ b/arch/loongarch/kvm/irqfd.c
->> @@ -60,6 +60,8 @@ int kvm_set_routing_entry(struct kvm *kvm,
->>   		e->msi.address_lo = ue->u.msi.address_lo;
->>   		e->msi.address_hi = ue->u.msi.address_hi;
->>   		e->msi.data = ue->u.msi.data;
->> +		e->msi.flags = ue->flags;
->> +		e->msi.devid = ue->u.msi.devid;
-> [Severity: Critical]
-> This isn't a bug introduced by this patch, but does the KVM_IRQ_ROUTING_IRQCHIP
-> case in this function lack bounds checking on the irqchip index?
->
-> Looking at kvm_set_routing_entry() on LoongArch (and similarly on PowerPC),
-> the irqchip.pin is validated against KVM_IRQCHIP_NUM_PINS, but there doesn't
-> appear to be a check for e->irqchip.irqchip against KVM_NR_IRQCHIPS.
->
-> When kvm_set_routing_entry() returns success, setup_routing_entry() executes
-> this array write:
->
-> virt/kvm/irqchip.c:setup_routing_entry() {
->      ...
->      if (e->type == KVM_IRQ_ROUTING_IRQCHIP)
->          rt->chip[e->irqchip.irqchip][e->irqchip.pin] = e->gsi;
->      ...
-> }
->
-> Could this allow a user-supplied routing entry to provide an arbitrarily
-> large irqchip index, causing an out-of-bounds write of e->gsi into the heap
-> memory following the kvm_irq_routing_table?
->
-> [ ... ]
->
+based on the above, how about putting this patch before patch 02 and 03? 
+so that we can eliminate the churn of add "__init" and the 
+"__maybe_unused " in patch 02.
+
+To be more safer, we can even make the code as
+
+static bool tdx_supports_extension(void)
+{
+	/* To be enabled when kernel is ready. */
+	return false;
+}
+
+static __init int init_tdx_ext(void)
+{
+	if (!tdx_supports_extension())
+		return 0;
+
+	/* No feature requires TDX Module Extensions. */
+	if (!tdx_sysinfo.ext.ext_required)
+		return 0;
+}
+
+and after all the pieces implemented, we can change 
+tdx_supports_extension() to
+
+static bool tdx_supports_extension(void)
+{
+	/* To be enabled when kernel is ready. */
+	return !!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT);
+}
+
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> ---
+>   arch/x86/virt/vmx/tdx/tdx.c | 16 ++++++++++------
+>   1 file changed, 10 insertions(+), 6 deletions(-)
+> 
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> index ff2b96c20d2b..dad5ec642723 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -1180,7 +1180,7 @@ static __init int init_tdmrs(struct tdmr_info_list *tdmr_list)
+>   	return 0;
+>   }
+>   
+> -static void tdx_clflush_hpa_list(struct page *root, unsigned int nr_pages)
+> +static __init void tdx_clflush_hpa_list(struct page *root, unsigned int nr_pages)
+>   {
+>   	u64 *entries = page_to_virt(root);
+>   	int i;
+> @@ -1193,7 +1193,7 @@ static void tdx_clflush_hpa_list(struct page *root, unsigned int nr_pages)
+>   #define HPA_LIST_INFO_PFN		GENMASK_U64(51, 12)
+>   #define HPA_LIST_INFO_LAST_ENTRY	GENMASK_U64(63, 55)
+>   
+> -static u64 to_hpa_list_info(struct page *root, unsigned int nr_pages)
+> +static __init u64 to_hpa_list_info(struct page *root, unsigned int nr_pages)
+>   {
+>   	return FIELD_PREP(HPA_LIST_INFO_FIRST_ENTRY, 0) |
+>   	       FIELD_PREP(HPA_LIST_INFO_PFN, page_to_pfn(root)) |
+> @@ -1201,7 +1201,7 @@ static u64 to_hpa_list_info(struct page *root, unsigned int nr_pages)
+>   }
+>   
+>   /* Initialize the TDX Module Extensions then Extension-SEAMCALLs can be used */
+> -static int tdx_ext_init(void)
+> +static __init int tdx_ext_init(void)
+>   {
+>   	struct tdx_module_args args = {};
+>   	u64 r;
+> @@ -1216,7 +1216,7 @@ static int tdx_ext_init(void)
+>   	return 0;
+>   }
+>   
+> -static int tdx_ext_mem_add(struct page *root, unsigned int nr_pages)
+> +static __init int tdx_ext_mem_add(struct page *root, unsigned int nr_pages)
+>   {
+>   	struct tdx_module_args args = {
+>   		.rcx = to_hpa_list_info(root, nr_pages),
+> @@ -1240,7 +1240,7 @@ static int tdx_ext_mem_add(struct page *root, unsigned int nr_pages)
+>   	return 0;
+>   }
+>   
+> -static int tdx_ext_mem_setup(void)
+> +static __init int tdx_ext_mem_setup(void)
+>   {
+>   	unsigned int nr_pages;
+>   	struct page *page;
+> @@ -1301,7 +1301,7 @@ static int tdx_ext_mem_setup(void)
+>   	return ret;
+>   }
+>   
+> -static int __maybe_unused init_tdx_ext(void)
+> +static __init int init_tdx_ext(void)
+>   {
+>   	int ret;
+>   
+> @@ -1373,6 +1373,10 @@ static __init int init_tdx_module(void)
+>   	if (ret)
+>   		goto err_reset_pamts;
+>   
+> +	ret = init_tdx_ext();
+> +	if (ret)
+> +		goto err_reset_pamts;
+> +
+>   	pr_info("%lu KB allocated for PAMT\n", tdmrs_count_pamt_kb(&tdx_tdmr_list));
+>   
+>   out_put_tdxmem:
+
