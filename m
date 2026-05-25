@@ -1,140 +1,152 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34522348C73;
-	Mon, 25 May 2026 10:51:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 332C93E9C25
+	for <kvm@vger.kernel.org>; Mon, 25 May 2026 10:53:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779706300; cv=none; b=Suyx7inoOeRAxrL/lEvsizABbsY7lxzAwOtfDE9PsaZqWAceo9F2MTVHhmT7UN6zfxZ7zEMFVSR6OkiyiITX4tfmBvUM+OZrWcjOv0gMHINhKeLEe3cMWyJkb/BMXSwMXwEi3YmVt0BrZdVp3mQaeb1T2cZxoB2DoU2h1OpwIBw=
+	t=1779706399; cv=none; b=cmMsLrEOabTtJFB6lBJn6FbLZ2T/CwjhLnBeec1mGG5xbMN+gmoW9L+EhI1814Y0vNXHR8kG0kTp9NIBsQc0BblkD2TM06Cjf0kVMRmXMQk8Pw3FeWekJDo/EnIaggvp79yxQ6CQ4ovZYbx02Lpky2csrelJA7qE7gAaU/Ax3TU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779706300; c=relaxed/simple;
-	bh=WHhh7BSoR9UrFiBzLJml/5squKR//6wSP8qG+SZ6DMw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TH7K6PTjY1o471EAkiOJie8kcg9KwLVClgBz5rzUqSrJ054YlDbMg0zcB5mGr1PMXefP33kDoANaHe1IzCIMKTC+yvOkihaHnknv43LU8Hl/AAiOLWd+LPS0RoSaSPm6fSxB86vlzj/IpsesqHCVfiMcgT0dwreB2VHO3CWfE/g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=CSjL7kR9; arc=none smtp.client-ip=198.175.65.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1779706399; c=relaxed/simple;
+	bh=rCoOpEyyUCy5izIH7PFgiOzmcy6juASzPqw0DoJcH0A=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=rcNsZp20pGztTDZzWHMfYzIBfm+LhdWkuatK75VzaAooLD7Wtj8ySNNPpyzxlLtwsEMd6SooobduM66NDIHwWcNUOkTKctpmcII39E1sJegwmvLChA5mI5j3aCPQLmsoYGrOxuXnNeztLyofKypbbXgE7DOqDIguQIEc6mXl0uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JTgqzR8h; arc=none smtp.client-ip=209.85.128.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="CSjL7kR9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779706299; x=1811242299;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=WHhh7BSoR9UrFiBzLJml/5squKR//6wSP8qG+SZ6DMw=;
-  b=CSjL7kR96C8rFibyM0enIGqbQsvhTYrFPwfqHCnzCx/FJ3cJJhIEx/C6
-   2oaNj2t0b0NtOZxGRbcU1bi/26YG1tGLHIZuRtQ7dXeaJTXEiPGhaDrAq
-   8BF++ZcD/QECvGBM1FcMnKcXoYZG9z1gEA00GD9tCkDZ+Ja69i1F8v4Yw
-   dVzGxlPDpW+PmJtU3t5SL+xM5itfV8JNJmGrPc0YHg/caPLaycph8f3PA
-   DzKh9iEZCCHGDSpiDylCYeQbZbCba5o+9qOrkzULbZkr1xCEa/Chas5Nt
-   VGvfPlVqDHA9fu8LVTIIv3r6Bxjz7UbSl35R/GmiIm58ZyAYtJVq9Mz/b
-   Q==;
-X-CSE-ConnectionGUID: Fp5OdfHOTyy4tM44voWMAA==
-X-CSE-MsgGUID: 9rqjUYfRR5Oj/Q/QdFe04g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11796"; a="80711467"
-X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
-   d="scan'208";a="80711467"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa108.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 03:51:34 -0700
-X-CSE-ConnectionGUID: w9YDZJDLR5iV3v9R0xBOuA==
-X-CSE-MsgGUID: r6P8TIL4SsiLutdusURMKQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,167,1774335600"; 
-   d="scan'208";a="271897140"
-Received: from xiaoyaol-hp-g830.ccr.corp.intel.com (HELO [10.239.158.44]) ([10.239.158.44])
-  by orviesa002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 03:51:30 -0700
-Message-ID: <892508b2-6c61-4db2-a12f-902f62385e71@intel.com>
-Date: Mon, 25 May 2026 18:51:27 +0800
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JTgqzR8h"
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-4905529b933so12169905e9.0
+        for <kvm@vger.kernel.org>; Mon, 25 May 2026 03:53:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779706396; x=1780311196; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hIaUsl5OR/SB9imIspw1g7Ej0mCc49YZbthvw9ulBV0=;
+        b=JTgqzR8hYkHOKVq6LvCHMzI0UwunfbBdpl/kEjtAGqhI2I7iKdjb3u8htt8q3YB9ts
+         ha7iOGO3j7TsCDYZrDTwZXZN5qnWneBCiiJrN0gZmfTP71m+TAnkmixGpGfXMYlFXLuh
+         jOOkwKLGWqpVtCeS3Mrw2+SkkfDazmU9QwETwepYvxlj/z4HxlcXSZxOno+Se6LB3Y65
+         apXE8bM7gRw4SA+Nb9040sqIvK2Rx3Q9BQGGpo+ObaOTNGJXB6N+/bJQZHUiZ89vGUAT
+         n8b9ei+uZqcVnbG2clDOzFjzpS3Q8Snqg1RztkVmkKgDVnlZmA93NWsLguUXR7Rf98iB
+         kObg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779706396; x=1780311196;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=hIaUsl5OR/SB9imIspw1g7Ej0mCc49YZbthvw9ulBV0=;
+        b=sWyQH+4VW5g5n5ZsSXVDp2VetYrC6hZNAGp6AxVRHwKNe+J1cZGU75irUNzKq8F1jS
+         UhEOB/DDE2wq/KnTDVR6uLVX4D9zEoda7nejmmLULXN3NVGLz452cMwIlz+mYw1ileSg
+         jaZXXSb1SrrBHlRGBiWiSWjP1lG5o3PHre7SIbeEjyaFvMW/Z3DIu6MP3zvEkFsB6n7x
+         Ns6iCN6CWrMXEPTC+viu+NwuTfdjUnGHipMZM55499S4EbnncE4p5vRZTM/pqRhjyZLg
+         EVXFHFQSe+iiuxiSxXNrGvPQmjLxIYl35C0RXoOO378PviklIdRKAMfAeh8hiUyu368T
+         453g==
+X-Forwarded-Encrypted: i=1; AFNElJ8VDXEVAE/1JhLWL0zwnpaI6z0uwwTIlSCPNjy6tgrKoibzaLNUy1jRtKcpMghhpQrkeKc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQWXc6+kMpHmKemJpIcrzFrkPp2+XOe3VjgPnZY5nrq5KsoMm5
+	CyLx1A83iSeSQf7HqxH+embm9Ofjo7QSC25XDuEexva4RAn+w+4X93nh
+X-Gm-Gg: Acq92OFTSxOm1pU11KHTyVX6C1yG1kh+u13/88KvJWkhSUhQX23Ad6N9HFnKQpCuXZf
+	NwP/BCf2A3qxnkMJ/NxZFKUBE8Cn1B5j1XEuzv1qcpf5NornwV42d2cejfzo00T0Psawt/OQBRM
+	N3pWvevXOKat3g53bKhX9E0GFkT/+Q7mwOJ29t+yIHEpm1b/xZDkZSasLrmvQNuMN6+NZMYSnLW
+	K7UacKAB1jVJTNMgTfquTJeki+5a8DLIXUdkmN6JVEYmfoL2O5C6b18b+6qtx91XpUA12Q51Z/j
+	BRLgJ5vVyr5eHqMpnRYykNw5iIJpdQNG/JEbgqA74k/7wR2rx0RzOZpaFMwM9vd1nCj4FdomECP
+	Td+3PEpsoYU2K0P3yaso5Ukb8qlYKUl4f6xPrwqgrzo39Wg0b0oGR0zf0ueZSN1LB8/im/OGEjv
+	WuwSq5029hz0WU+d83koZD98J5LAxq78VVPem1UO6ujmbchSkA1BRVw1rH5IyvfIjW
+X-Received: by 2002:a05:600c:468a:b0:490:3d62:f5df with SMTP id 5b1f17b1804b1-490428e5a6amr234019415e9.30.1779706396365;
+        Mon, 25 May 2026 03:53:16 -0700 (PDT)
+Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4904561a33dsm222417485e9.11.2026.05.25.03.53.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 25 May 2026 03:53:15 -0700 (PDT)
+Date: Mon, 25 May 2026 11:53:14 +0100
+From: David Laight <david.laight.linux@gmail.com>
+To: Stefano Garzarella <sgarzare@redhat.com>
+Cc: patchwork-bot+netdevbpf@kernel.org, netdev@vger.kernel.org,
+ xuanzhuo@linux.alibaba.com, horms@kernel.org,
+ virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, kuba@kernel.org, eperezma@redhat.com,
+ pabeni@redhat.com, mst@redhat.com, davem@davemloft.net,
+ jasowang@redhat.com, stefanha@redhat.com, edumazet@google.com,
+ stable@vger.kernel.org
+Subject: Re: [PATCH net] vsock/virtio: fix skb overhead overflow on 32-bit
+ builds
+Message-ID: <20260525115314.3cf310e6@pumpkin>
+In-Reply-To: <ahQbVxvbBEJZ3TBU@sgarzare-redhat>
+References: <20260521124732.125771-1-sgarzare@redhat.com>
+	<177950282964.1445071.6600517211632117224.git-patchwork-notify@kernel.org>
+	<20260523173557.5cc4f4f6@pumpkin>
+	<ahQbVxvbBEJZ3TBU@sgarzare-redhat>
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 15/15] x86/virt/tdx: Enable TDX Quoting extension
-To: Tony Lindgren <tony.lindgren@linux.intel.com>,
- Xu Yilun <yilun.xu@linux.intel.com>
-Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
- x86@kernel.org, peter.fang@intel.com, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, sohil.mehta@intel.com,
- yilun.xu@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-16-yilun.xu@linux.intel.com>
- <ahPbb1Ws9hBruJ2d@tlindgre-MOBL1>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <ahPbb1Ws9hBruJ2d@tlindgre-MOBL1>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On 5/25/2026 1:17 PM, Tony Lindgren wrote:
-> On Fri, May 22, 2026 at 11:41:28AM +0800, Xu Yilun wrote:
->> From: Peter Fang <peter.fang@intel.com>
->>
->> TDX Module updates global metadata when add-on features are enabled.
->> Host should update the cached tdx_sysinfo to reflect these changes.
-> 
-> This should be made clearer IMO. How about mention that get_tdx_sys_info()
-> needs to get called again to reload the TDX module global metadata?
+On Mon, 25 May 2026 11:57:45 +0200
+Stefano Garzarella <sgarzare@redhat.com> wrote:
 
-Ah ha! This patch answers my comment to patch 1:
-https://lore.kernel.org/all/956fa1e6-2920-4b2e-8037-d4b9d812ae53@intel.com/
+> On Sat, May 23, 2026 at 05:35:57PM +0100, David Laight wrote:
+> >On Sat, 23 May 2026 02:20:29 +0000
+> >patchwork-bot+netdevbpf@kernel.org wrote:
+> >  
+> >> Hello:
+> >>
+> >> This patch was applied to netdev/net.git (main)
+> >> by Jakub Kicinski <kuba@kernel.org>:  
+> >
+> >Did anyone else notice that is isn't a bug?
+> >
+> >There is no way that a 'count of bytes of kernel memory' can overflow
+> >the size of 'long'.  
+> 
+> It's more of an estimate than an actual calculation of memory usage if 
+> we queue the incoming packet. In theory, an overflow could occur if the 
+> user sets `buf_alloc` to 4GB. In practice, though, I think you're right: 
+> the memory should run out before we get to that check.
 
-sysinfo_ext->memory_pool_required_pages and sysinfo_ext->ext_required 
-will be updated after extensions are enabled by TDH.SYS.CONFIG.
+The calculation is:
 
-Patch 06 in this series already reads the tdx_sys_info_quote out of 
-get_tdx_sys_info(), which mean get_tdx_sys_info() doesn't ensure all the 
-global metadata will be update again.
+	u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0); 
 
-So how about move the read of memory_pool_required_pages and 
-ext_required out of get_tdx_sys_info() and put them after 
-TDH.SYS.CONFIG, so that we don't need call get_tdx_sys_info() again?
+skb_queue_len() will be the number of items on the queue.
+SKB_TRUESIZE(0) is the memory taken up by a zero length skb (basically sizeof(skb)).
 
->> --- a/arch/x86/virt/vmx/tdx/tdx.c
->> +++ b/arch/x86/virt/vmx/tdx/tdx.c
->> @@ -1049,6 +1049,7 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
->>   static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
->>   				    u64 global_keyid)
->>   {
->> +	u64 seamcall_fn = TDH_SYS_CONFIG_V0;
->>   	struct tdx_module_args args = {};
->>   	u64 *tdmr_pa_array;
->>   	size_t array_sz;
->> @@ -1074,8 +1075,22 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
->>   	args.rcx = __pa(tdmr_pa_array);
->>   	args.rdx = tdmr_list->nr_consumed_tdmrs;
->>   	args.r8 = global_keyid;
->> -	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
->>   
->> +	if (tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_QUOTE) {
->> +		args.r9 |= TDX_FEATURES0_QUOTE;
->> +		/* These parameters require version >= 1 */
->> +		seamcall_fn = TDH_SYS_CONFIG;
->> +	}
->> +
->> +	ret = seamcall_prerr(seamcall_fn, &args);
->> +	if (ret)
->> +		goto free_tdmr;
->> +
->> +	/* enabling TDX Quoting may change tdx_sysinfo, update it */
->> +	if (tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_QUOTE)
->> +		ret = get_tdx_sys_info(&tdx_sysinfo);
+Unless you either corrupt the queue length or manage to allocate skb that use
+less than the minimum about of memory that product can't overflow 'unsigned long'.
+
+The later calculations might wrap - but the multiply can't.
+
+-- David
+
 > 
-> The comment above helps, but the change in the handling will be easy to
-> miss.
+> Thanks,
+> Stefano
 > 
->> +free_tdmr:
->>   	/* Free the array as it is not required anymore. */
->>   	kfree(tdmr_pa_array);
->>   
+> >
+> >-- David
+> >  
+> >>
+> >> On Thu, 21 May 2026 14:47:32 +0200 you wrote:  
+> >> > From: Stefano Garzarella <sgarzare@redhat.com>
+> >> >
+> >> > On 32-bit architectures, both skb_queue_len() and SKB_TRUESIZE(0) evaluate
+> >> > to 32-bit values. The multiplication can overflow before being assigned to
+> >> > the u64 skb_overhead variable, making the skb overhead check ineffective.
+> >> >
+> >> > Cast skb_queue_len() to u64 so the multiplication is always performed in
+> >> > 64-bit arithmetic.
+> >> >
+> >> > [...]  
+> >>
+> >> Here is the summary with links:
+> >>   - [net] vsock/virtio: fix skb overhead overflow on 32-bit builds
+> >>     https://git.kernel.org/netdev/net/c/4157501b9a8f
+> >>
+> >> You are awesome, thank you!  
+> >  
 > 
-> So I think it would be good to also add a comment to get_tdx_sys_info()
-> to make it easier for folks to follow that it may get called multiple
-> times.
-> 
-> Regards,
-> 
-> Tony
 
