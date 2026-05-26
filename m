@@ -1,145 +1,136 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9A97390CBD
-	for <kvm@vger.kernel.org>; Tue, 26 May 2026 16:02:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6453AEF3D;
+	Tue, 26 May 2026 16:10:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779811351; cv=none; b=gNqNsV/QkGQNRFlACGOvIRS90+NJvsOivhuP9XhmiXId5GmZNlFLfr5auZ0gTa8v8eCMsfMpMiTqu6Q0Zn5S7FJMql59JfvMjXcpfFbatZbK2xijjqBy41nBrT8xvkRftu1RPGG2Gvvb2PF1Yr4zXMlpMMOPuDHBu6MRrXpYndI=
+	t=1779811835; cv=none; b=lcjHSRkkMttMAWftwuyFWWpbElH+Eas9HaeqqDsFmDXB7H7S/Ksz6ATG07wmJ8dlcksaS+LtmnVZIKHLPHBOB+Q5OJvVScmPQ1gKrCBq7DIRpde8wNMRd/THiMFn7vuiqGz4GXMKr4q70gGOxmU4OBBjiNKSJLIH0eMK0nl5Q2Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779811351; c=relaxed/simple;
-	bh=S9OGEUMGDDwqBxJQeDjRniwtTU3d0tYhrSFlsc7NF6A=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=FChjHSxKDZjX3RxnVs6J6iKvEbYzHK+3Ny8PDQaQXEyCEm6nvR+wv39f1iPHZnNTO2hifJn6jkClaIUOvFRFGN6Edh9TdnmxpeR16RdOleQWoMTSfAbhy3daqirBjSmjlLojNJnULmKBeThWSUWf602mAPwqWXRqUmJMdUsbg/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MC6Zrju9; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779811835; c=relaxed/simple;
+	bh=xG1/qXhfx/h5p+pX/53atrkrUXeXCwWDpc3FSQ8GLWo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HNrW8h11eJX8afBUK3vupPYVs+J+gW9IH+1Q5hqJGuQx/yUf2IvzthlLW8C7238LtOWrTmnAMhTovDzDn3rchNgGVV9uqquaEzuZEOYSBOSzfFnQRNe0RvP7t1AZqL6CHnqVNSLfQQ9FdjPVfnya8cTADAQptx2PnROeClnHADo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X3VPQUh6; arc=none smtp.client-ip=192.198.163.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MC6Zrju9"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F0F71F000E9;
-	Tue, 26 May 2026 16:02:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779811349;
-	bh=wExrHCn56bhU165W4U85e35+8scDGxT4F5LAwqp0RrA=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=MC6Zrju9SRjgsRD17pz80YAw1r/osq6Md+mrfCTa+Bb7KzlITfh/sYjWvaIaCghQE
-	 /MLo59VeX1WHCX2ZCQJdZInYr/jwHFalF3NdljeNEAptm4YxDpKYyMrPSCMcYRU+Vr
-	 I5nE5+rruG8C+yjZcRC7CE3nHEgJuevM0hd8DrDi3uw/YgSMxurJvqvcQ1NqAYHY3w
-	 jMplp3hoelt9xZAmQYrOmOdTwq4PMW12rGlgx0iMn6LZm/dDOifpFYBhiEZ5VN/PmW
-	 I1bKjlMyp407iEwsQG8MfumYqWeruSdgyl1H1xiXo1gp2tTEu4R3QtFEuwZq00UGx4
-	 UoO9S4pMymW5g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 6/7] riscv: kexec: Add the relocate-trampoline
- wrapper
-Reply-To: sashiko-reviews@lists.linux.dev
-To: fangyu.yu@linux.alibaba.com
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260526125009.2404-7-fangyu.yu@linux.alibaba.com>
-References: <20260526125009.2404-7-fangyu.yu@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 26 May 2026 16:02:29 +0000
-Message-Id: <20260526160229.8F0F71F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X3VPQUh6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779811834; x=1811347834;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=xG1/qXhfx/h5p+pX/53atrkrUXeXCwWDpc3FSQ8GLWo=;
+  b=X3VPQUh6yIIOdBj0+bqwEAH2r3nBUsPpAtj4gYP8ypyd8MnPC8wCCY06
+   ATBMpKHsJ0/TxZ/ZSQ97wJUKkRpg5xnNrJUB64PfXywSD3UO9ZeNxJRfV
+   Ajbq8w3FZDvKXvklNzBKxwBJa0lrlHctVChAPJ8CprEkcBR1VB8EGQafU
+   sYlTrVW1rBHJu3tUo8mq6Db5/EL3+fgrbsiVevd8TO1nKMxZDwOcCNwRP
+   8tG8md1KgQxeQ3tQTNFRaEspshjZUuFSc4MgwG284UZdyKCnd0htBWkKC
+   Ktzyp6BA864G9YDdR2XrdIB1aHSD+jieSXt0A0UvJolpGN4bRQ/3JfQ8B
+   g==;
+X-CSE-ConnectionGUID: R8bh7IQ7Q4C9jzQ6O94sUQ==
+X-CSE-MsgGUID: 9LKH8VPRRp2DilAhLvdxLg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="106088297"
+X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
+   d="scan'208";a="106088297"
+Received: from fmviesa010.fm.intel.com ([10.60.135.150])
+  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 09:09:48 -0700
+X-CSE-ConnectionGUID: xKWflDhFQyKZw496TR6iDw==
+X-CSE-MsgGUID: ttWZp8WgSRahGfW/CxtO8Q==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
+   d="scan'208";a="237793850"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa010.fm.intel.com with ESMTP; 26 May 2026 09:09:45 -0700
+Date: Tue, 26 May 2026 23:45:51 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: Tony Lindgren <tony.lindgren@linux.intel.com>, kas@kernel.org,
+	djbw@kernel.org, rick.p.edgecombe@intel.com, x86@kernel.org,
+	peter.fang@intel.com, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com
+Subject: Re: [RFC PATCH 15/15] x86/virt/tdx: Enable TDX Quoting extension
+Message-ID: <ahXAL41ZmIDHmgfu@yilunxu-OptiPlex-7050>
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-16-yilun.xu@linux.intel.com>
+ <ahPbb1Ws9hBruJ2d@tlindgre-MOBL1>
+ <892508b2-6c61-4db2-a12f-902f62385e71@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <892508b2-6c61-4db2-a12f-902f62385e71@intel.com>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+On Mon, May 25, 2026 at 06:51:27PM +0800, Xiaoyao Li wrote:
+> On 5/25/2026 1:17 PM, Tony Lindgren wrote:
+> > On Fri, May 22, 2026 at 11:41:28AM +0800, Xu Yilun wrote:
+> > > From: Peter Fang <peter.fang@intel.com>
+> > > 
+> > > TDX Module updates global metadata when add-on features are enabled.
+> > > Host should update the cached tdx_sysinfo to reflect these changes.
+> > 
+> > This should be made clearer IMO. How about mention that get_tdx_sys_info()
+> > needs to get called again to reload the TDX module global metadata?
+> 
+> Ah ha! This patch answers my comment to patch 1:
+> https://lore.kernel.org/all/956fa1e6-2920-4b2e-8037-d4b9d812ae53@intel.com/
+> 
+> sysinfo_ext->memory_pool_required_pages and sysinfo_ext->ext_required will
+> be updated after extensions are enabled by TDH.SYS.CONFIG.
+> 
+> Patch 06 in this series already reads the tdx_sys_info_quote out of
+> get_tdx_sys_info(), which mean get_tdx_sys_info() doesn't ensure all the
+> global metadata will be update again.
+> 
+> So how about move the read of memory_pool_required_pages and ext_required
+> out of get_tdx_sys_info() and put them after TDH.SYS.CONFIG, so that we
+> don't need call get_tdx_sys_info() again?
 
-New issues:
-- [High] Writing per-image physical addresses to global variables during th=
-e 'prepare' phase causes a Use-After-Free and state corruption if the kexec=
- load fails.
-- [High] The assembly wrapper incorrectly calculates physical addresses for=
- `.bss` variables on `CONFIG_XIP_KERNEL` builds by assuming virtual offsets=
- always match physical offsets.
+Yes, I'm good to it. I hesitated to move them out in case we need some
+central control on global data. But now I see there is already a
+precedent:
 
-Pre-existing issues:
-- [High] The kexec control page is made executable but never marked non-exe=
-cutable when freed, and is left writable, violating W^X protections.
---
+https://lore.kernel.org/kvm/20260520133909.409394-22-chao.gao@intel.com/
 
-commit 6032faa530dc53961ca595e035246adbe5c3514a
-Author: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+Once we've agreed on moving add-on data reading out of get_tdx_sys_info(),
+we don't have to read them after TDH.SYS.CONFIG, read them when really
+needed. How about the following, that makes the Extension part in this
+series self-contained.
 
-riscv: kexec: Add the relocate-trampoline wrapper
+----8<----
 
-This commit adds a new assembly wrapper for kexec on RISC-V that handles
-the two-step MMU teardown process. It also updates the preparation phase
-to publish the wrapper and control code buffer physical addresses to global
-variables.
+diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+index 86e5b7ad19b3..b729c1f5ab9e 100644
+--- a/arch/x86/virt/vmx/tdx/tdx.c
++++ b/arch/x86/virt/vmx/tdx/tdx.c
+@@ -1536,6 +1536,10 @@ static __init int init_tdx_ext(void)
+        if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
+                return 0;
 
-> --- a/arch/riscv/kernel/kexec_relocate.S
-> +++ b/arch/riscv/kernel/kexec_relocate.S
-[ ... ]
-> @@ -231,6 +231,43 @@ SYM_CODE_START(riscv_kexec_norelocate)
-[ ... ]
-> +	/*
-> +	 * Now executing at the PA of this wrapper with the trampoline pgd
-> +	 * installed (identity-mapped). Drop the MMU; PC stays valid because
-> +	 * it is already a PA.
-> +	 */
-> +	csrw	CSR_SATP, zero
-> +	sfence.vma x0, x0
-> +
-> +	/* Jump to the PA of control_code_buffer to run the relocate body. */
-> +	la	t0, riscv_kexec_cc_buffer_pa
++       ret = get_tdx_sys_info_ext(&tdx_sysinfo.ext);
++       if (ret)
++               return ret;
++
+        /* No feature requires TDX Module Extensions. */
+        if (!tdx_sysinfo.ext.ext_required)
+                return 0;
+diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+index f9cc2dd02caf..e7d9e0c4b604 100644
+--- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
++++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+@@ -140,8 +140,5 @@ static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
+        ret = ret ?: get_tdx_sys_info_td_ctrl(&sysinfo->td_ctrl);
+        ret = ret ?: get_tdx_sys_info_td_conf(&sysinfo->td_conf);
 
-[Severity: High]
-Does this PC-relative load calculate the correct physical address on
-CONFIG_XIP_KERNEL builds?
-
-On XIP kernels, .text executes from ROM and .data/.bss reside in RAM.
-Because this code executes with the MMU disabled, a PC-relative load like
-la will compute the distance relative to the ROM address.
-
-Could this lead to computing an incorrect physical address and causing an
-unhandled fault?
-
-> +	REG_L	t0, 0(t0)
-> +	jr	t0
-> +SYM_CODE_END(riscv_kexec_relocate_entry)
-
-> --- a/arch/riscv/kernel/machine_kexec.c
-> +++ b/arch/riscv/kernel/machine_kexec.c
-[ ... ]
-> @@ -144,6 +146,11 @@ machine_kexec_prepare(struct kimage *image)
-> =20
->  		/* Mark the control page executable */
->  		set_memory_x((unsigned long) control_code_buffer, 1);
-
-[Severity: High]
-This is a pre-existing issue, but does this leak executable pages back into
-the general allocation pool?
-
-If the kexec load fails, or if the image is later unloaded, kimage_free()
-will return this page to the allocator. Since arch_kexec_pre_free_pages()
-isn't implemented to clear _PAGE_EXEC, does this return an executable page
-to the standard page allocator?
-
-> +
-> +		WRITE_ONCE(riscv_kexec_relocate_entry_pa,
-> +			   __pa_symbol(&riscv_kexec_relocate_entry));
-> +		WRITE_ONCE(riscv_kexec_cc_buffer_pa,
-> +			   __pa(control_code_buffer));
-
-[Severity: High]
-Can writing per-image addresses to global variables during the prepare phase
-cause a use-after-free if the load fails?
-
-If do_kexec_load() fails after this point (for example, due to an invalid
-segment in kimage_load_segment()), the new image and its control page are
-freed by kimage_free().
-
-If a previously loaded, valid kexec image was already in place, won't a
-subsequent kexec reboot read these corrupted global variables and jump to
-the freed page?
-
->  	} else {
->  		WRITE_ONCE(riscv_kexec_norelocate_pa,
->  			   __pa_symbol(&riscv_kexec_norelocate));
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526125009.2404=
--1-fangyu.yu@linux.alibaba.com?part=3D6
+-       if (sysinfo->features.tdx_features0 & TDX_FEATURES0_EXT)
+-               ret = ret ?: get_tdx_sys_info_ext(&sysinfo->ext);
+-
+        return ret;
+ }
