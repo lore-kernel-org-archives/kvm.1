@@ -1,301 +1,206 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EB3C3C98B5;
-	Tue, 26 May 2026 22:40:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from fhigh-a7-smtp.messagingengine.com (fhigh-a7-smtp.messagingengine.com [103.168.172.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94F883C2796;
+	Tue, 26 May 2026 22:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779835213; cv=none; b=em0nt/uHk82PJqtE9jjKbWz5WyT9NuS7Vk4S0KYJakLUS7E81p/9Ce3KSspecGRYTPSNS0YPbXUXXVlmjFONGjjG38RcJWBto8rkF2yvFVq71j03MaAqyN0AFz/jPURVZj8BjhggjzB15k00Mfu2jCgqMelbYGSphg2CpgWPZEc=
+	t=1779835375; cv=none; b=BwFTj13j5mr69nbh++DUS2h4SycfyB7NEH1u+3mDwtMUwTVMX8xtMo07IFTRpmT3jONfLX6ujDSRetcQJqxHYU0mddNDBZ7GLAbv6/49UrOvkBWVdTHKnXa5YE5XxwD5f+S9L6JECMRoTeZ7Kbe+n2nqn7m/7SLOGCjVJs2CGUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779835213; c=relaxed/simple;
-	bh=4ZsHIv4N6/NCP2/ajrwyNNKnubLcTNHLLsZjty2wESk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dwUayrJx+Qww03/WYbL2xi8rW2GCmdQW6ywliI9SOcIgny9AnqEFqT7WKwq53LwgQ93mF0psYvoZs6OVs327GitqOcsKVyTuBz22Qo3t70LKuED83hi00tMSP8CBZJmebQF8St7MVovLnTgcHRtGTVZxRnli5f8ObHh51r5TZpg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=AXsm1hzp; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1779835375; c=relaxed/simple;
+	bh=leoKjuXb3Fkoz7c9gx0HR3rMhRlO6xD+VEID2VUBlKA=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Wfihrblpn4WRppp2Gx0BlYEAdvyErg784Sd3vrDv4xem9fYQyDQ+yBuEx4kTfpuI4iJCLZbcD02MLfM54pjjM9A/uZdGiPA7Gzx6iQmxt1E/PWmX5zuoCBZZ3gp6tk37i8bk7F/AwMkjtImgvmOFAmXqzKwI1Qn03AhjF3k2ruk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=A1oMAJRq; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=bnec3cEy; arc=none smtp.client-ip=103.168.172.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="AXsm1hzp"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 55CDD2BCD;
-	Tue, 26 May 2026 15:40:05 -0700 (PDT)
-Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 004C43F7B4;
-	Tue, 26 May 2026 15:40:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779835210; bh=4ZsHIv4N6/NCP2/ajrwyNNKnubLcTNHLLsZjty2wESk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=AXsm1hzpBuEeCpbPMpGNwj2zpuAZiBw7QvuDvzJn9YdzvELwZzalI22u5I6syuUcx
-	 g+ZcRViMTXlEw9buABxdoeHEgSz8zotJJ8soarEZVxPWzYrGlbdZ02BjicfyFt8/RX
-	 kNBBLV9MAeurOwPVEHaKHASILTG6HMQewD3U3pDU=
-Date: Tue, 26 May 2026 23:39:58 +0100
-From: Wei-Lin Chang <weilin.chang@arm.com>
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, 
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, 
-	Oliver Upton <oliver.upton@linux.dev>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Lorenzo.Pieralisi2@arm.com
-Subject: Re: [PATCH v14 19/44] arm64: RMI: Allocate/free RECs to match vCPUs
-Message-ID: <2uvtjhncf57yek5i4fupdefunukmidzw452mcavnmixpr5u3qd@uoaktzpak3nl>
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-20-steven.price@arm.com>
+	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="A1oMAJRq";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="bnec3cEy"
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id 94FA81400093;
+	Tue, 26 May 2026 18:42:51 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Tue, 26 May 2026 18:42:51 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to; s=fm2; t=1779835371;
+	 x=1779921771; bh=nbpV2Rw+s2KQr0TXgNA3hWlTlp75noHrspBdqyxRFXg=; b=
+	A1oMAJRqM3kI4xGeBDI7YGXztjG/tghIq6r/pXkNhmr1igOns8T8XSstzxhD7joU
+	lffCx7u0xcLUCje3NX88vUaIrewd80wMwKTM92kmXRSI3zKIQMkOOqSJqjVIkwFl
+	P3WQ5mlblsKL8W3zDYFC2raA0vEKrCXCOd9jlu+NKA4LRBB6gMNPzMmBA0KYZ/Ru
+	6cUmvdJ8SIYxY148HtiRgk49xHrO2IBeNvMz9pVlE77Ka6M1t7RHs7myn/eqBYdS
+	p83s3XwqqM+PPxAYOtfUqxsbeiU7WKEsiPhS13DpKk742Z4mV6LBU6IqGQaJBgWU
+	k2wVQJG/yeWmGzAPqsvgWQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:in-reply-to:message-id:mime-version
+	:references:reply-to:subject:subject:to:to:x-me-proxy
+	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779835371; x=
+	1779921771; bh=nbpV2Rw+s2KQr0TXgNA3hWlTlp75noHrspBdqyxRFXg=; b=b
+	nec3cEyZ/ahtp+Wzn+uXbs1GP9aWfyv0xNvfkeWaMeMuOF8HJpsVxAzlxZjwNU9k
+	CPQrbLbCmNWZwP5KSfsWjIQLZz4msBFQCP3F6kFvE8Qogx3EFXxpMq+rzBgUBaM8
+	0KKIlloZ6bha/DV0SeI8hkMBVK1m9Qmzo2qa9ZEaQYs/dB1hUiVl6IPppEVeMuZE
+	kiNvr+j6yu2d/zdqUiepQaUb3zNeb09erB3aQBikWgRGHSOQwO8HUfv7bwJrjADb
+	ACaAHXDT0fIquDQdGTAfcc5fNpdpUtfatuYYCOD2nX8rVh6rVMbOJmvuXkysceAB
+	DLJkJ4mI/zZnNnUQ+BmfQ==
+X-ME-Sender: <xms:6iEWahNIrM8jxwRW-krF2-U290DjaGQqwQtXUZSm8DzdDWyTnVp92w>
+    <xme:6iEWaiNIGIOzw3dY_PBtFg4bMgDcBBrNsTXvXl0_ryvOyjBmj6avhvbdo7SXvv-gD
+    IwiwdCZgEwGladZIKDPY3MSTsM1xxG4kbKceXBl4A6gHGTHivZwPg>
+X-ME-Received: <xmr:6iEWaplsuHMgol_VNsF92qceIDbwH8RduF8vmfXOAOqeXHsPOa3LJl4wzJw>
+X-ME-Proxy-Cause: dmFkZTEIdm9pXw7+geLaeXnUx6i0h1NfZ8ldwwTV3dklYt4ZfW9yYh8XHfYA3bDCa/YVBF
+    3uFhdyVmr9maIrgfQwBMTHejSjVxrHaW/j/CCtzQsCVGJycOwIXBJE94CMxDF2mOwrfUX0
+    t3Llu5Q2FQef476zcZKG2eBtUnZnw8N/0jJT3amj/2uXiQKO2OHqKCA6+1fmZyP2g0raw2
+    yFJshfZ5pdLDKIouxiF0kiSXQXHKqe8fmM1yAjC5S5Nsizj1Jnoaoet/wpu4TQnJxKJA3z
+    Ku/BqFU5MhC9wWYnhyMAC+NownNNYuNNerlQ+H/quh2lfnLh27dbfm1yBLSNmSveshRtBf
+    XVfdI+ULEpXFQSoRtI1PkgCuf3ms3hXQ+PHeHweKCBGSL3NZdNfxbOk/Cs4L1PFRaK020K
+    aSACmJf4urXGdthiRfN/KGOhPPy3e5obYkuxsJSq+E/ZH48BlYL8NgGBbmDj5/JNYivxs6
+    YYHFBEFcR84EN/J1VABzNWc0Jd38X6Tg+ZueIu+WMKvri6h3nFU2H88mNNft+Mu2f0Uu1l
+    O2IP4orYQXph0AQywYFZpeEasTjeKE+GNa64mX0N1fm/D1fX5rUtLwaLP0p1qiB1IFQW5h
+    zHZAmZbieIZO/ALYnqBEde1sCdipZUDp8rb81ZDbkKlZmwmYNAtUwBHjh4Rg
+X-ME-Proxy: <xmx:6iEWaguGCLm780lNEX0IL5iUiNBexHOi5caj45kev3_-4NdSyVeoGg>
+    <xmx:6iEWasoP_lxD9sX9Fk1iAPl5gIjU5TL2d06w8M-TTTymHs4v_Z37Vg>
+    <xmx:6iEWauefxVEn6lg2346aoEMaGhuqXwCBCFSylfgejTHc-FqZgwGpIg>
+    <xmx:6iEWasnYE-KIaQWzRdIi2j9-_9uLZ6aXtSyuAfSZAHX4h04iaYB41g>
+    <xmx:6yEWap7MVeEJptFtzO6P-G0pgJuP49bcNGcQqrWDV-szlvJDtSMoHkAo>
+Feedback-ID: i03f14258:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 26 May 2026 18:42:49 -0400 (EDT)
+Date: Tue, 26 May 2026 16:42:47 -0600
+From: Alex Williamson <alex@shazbot.org>
+To: Chengwen Feng <fengchengwen@huawei.com>
+Cc: <jgg@ziepe.ca>, <wathsala.vithanage@arm.com>, <helgaas@kernel.org>,
+ <wei.huang2@amd.com>, <wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
+ <liuyonglong@huawei.com>, <kvm@vger.kernel.org>,
+ <linux-pci@vger.kernel.org>, alex@shazbot.org
+Subject: Re: [PATCH v12 4/6] PCI/TPH: Move tph_req_type initialization into
+ pci_tph_init
+Message-ID: <20260526164247.6a1b4727@shazbot.org>
+In-Reply-To: <20260526040830.52854-5-fengchengwen@huawei.com>
+References: <20260526040830.52854-1-fengchengwen@huawei.com>
+	<20260526040830.52854-5-fengchengwen@huawei.com>
+X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260513131757.116630-20-steven.price@arm.com>
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hi,
+On Tue, 26 May 2026 12:08:28 +0800
+Chengwen Feng <fengchengwen@huawei.com> wrote:
 
-On Wed, May 13, 2026 at 02:17:27PM +0100, Steven Price wrote:
-> The RMM maintains a data structure known as the Realm Execution Context
-> (or REC). It is similar to struct kvm_vcpu and tracks the state of the
-> virtual CPUs. KVM must delegate memory and request the structures are
-> created when vCPUs are created, and suitably tear down on destruction.
+> Relocate tph_req_type resolution logic from pcie_enable_tph() to
+> pci_tph_init(). The request type is fixed per device and root port topology
+> at probe time, no need recalculation on each TPH enable.
 > 
-> RECs may require additional pages (e.g. for storing larger register
-> state for SVE). The RMM can request extra pages for this purpose using
-> the Stateful RMI Operations (SRO) functionality to request pages during
-> REC creation. These pages are then passed back to the host from the RMM
-> ('reclaimed') when the REC is destroyed. The kernel tracking object
-> (struct rmi_sro_state) is stored in the realm_rec structure to avoid
-> memory allocation during the destruction path.
+> Also drop redundant tph_req_type reset in pcie_disable_tph(), the value
+> remains valid across disable/enable cycles.
 > 
-> Note that only some of register state for the REC can be set by KVM, the
-> rest is defined by the RMM (zeroed). The register state then cannot be
-> changed by KVM after the REC is created (except when the guest
-> explicitly requests this e.g. by performing a PSCI call).
+> This change allows pcie_tph_get_cpu_st() to work properly and retrieve
+> valid steering tag values even when TPH is not enabled on the device.
 > 
-> Signed-off-by: Steven Price <steven.price@arm.com>
+> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
 > ---
-> Changes since v13:
->  * Support SRO for REC creation/destruction instead of auxiliary
->    granules.
-> Changes since v12:
->  * Use the new range-based delegation RMI.
-> Changes since v11:
->  * Remove the KVM_ARM_VCPU_REC feature. User space no longer needs to
->    configure each VCPU separately, RECs are created on the first VCPU
->    run of the guest.
-> Changes since v9:
->  * Size the aux_pages array according to the PAGE_SIZE of the host.
-> Changes since v7:
->  * Add comment explaining the aux_pages array.
->  * Rename "undeleted_failed" variable to "should_free" to avoid a
->    confusing double negative.
-> Changes since v6:
->  * Avoid reporting the KVM_ARM_VCPU_REC feature if the guest isn't a
->    realm guest.
->  * Support host page size being larger than RMM's granule size when
->    allocating/freeing aux granules.
-> Changes since v5:
->  * Separate the concept of vcpu_is_rec() and
->    kvm_arm_vcpu_rec_finalized() by using the KVM_ARM_VCPU_REC feature as
->    the indication that the VCPU is a REC.
-> Changes since v2:
->  * Free rec->run earlier in kvm_destroy_realm() and adapt to previous patches.
-> ---
->  arch/arm64/include/asm/kvm_emulate.h |   2 +-
->  arch/arm64/include/asm/kvm_host.h    |   3 +
->  arch/arm64/include/asm/kvm_rmi.h     |  17 +++++
->  arch/arm64/kvm/arm.c                 |   6 ++
->  arch/arm64/kvm/reset.c               |   1 +
->  arch/arm64/kvm/rmi.c                 | 105 +++++++++++++++++++++++++++
->  6 files changed, 133 insertions(+), 1 deletion(-)
+>  drivers/pci/tph.c | 33 ++++++++++++++++-----------------
+>  1 file changed, 16 insertions(+), 17 deletions(-)
 > 
-> diff --git a/arch/arm64/include/asm/kvm_emulate.h b/arch/arm64/include/asm/kvm_emulate.h
-> index 82fd777bd9bb..2e69fe494716 100644
-> --- a/arch/arm64/include/asm/kvm_emulate.h
-> +++ b/arch/arm64/include/asm/kvm_emulate.h
-> @@ -714,7 +714,7 @@ static inline bool kvm_realm_is_created(struct kvm *kvm)
+> diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
+> index 95e2a95055ee..3660ad5d3623 100644
+> --- a/drivers/pci/tph.c
+> +++ b/drivers/pci/tph.c
+> @@ -371,7 +371,6 @@ void pcie_disable_tph(struct pci_dev *pdev)
+>  	pci_write_config_dword(pdev, pdev->tph_cap + PCI_TPH_CTRL, 0);
 >  
->  static inline bool vcpu_is_rec(const struct kvm_vcpu *vcpu)
->  {
-> -	return false;
-> +	return kvm_is_realm(vcpu->kvm);
+>  	pdev->tph_mode = 0;
+> -	pdev->tph_req_type = 0;
+>  	pdev->tph_enabled = 0;
 >  }
+>  EXPORT_SYMBOL(pcie_disable_tph);
+> @@ -396,7 +395,6 @@ int pcie_enable_tph(struct pci_dev *pdev, int mode)
+>  {
+>  	u32 reg;
+>  	u8 dev_modes;
+> -	u8 rp_req_type;
 >  
->  #endif /* __ARM64_KVM_EMULATE_H__ */
-> diff --git a/arch/arm64/include/asm/kvm_host.h b/arch/arm64/include/asm/kvm_host.h
-> index 3512696ed506..39b5de03d0fe 100644
-> --- a/arch/arm64/include/asm/kvm_host.h
-> +++ b/arch/arm64/include/asm/kvm_host.h
-> @@ -969,6 +969,9 @@ struct kvm_vcpu_arch {
+>  	/* Honor "notph" kernel parameter */
+>  	if (pci_tph_disabled)
+> @@ -416,21 +414,6 @@ int pcie_enable_tph(struct pci_dev *pdev, int mode)
 >  
->  	/* Hyp-readable copy of kvm_vcpu::pid */
->  	pid_t pid;
-> +
-> +	/* Realm meta data */
-> +	struct realm_rec rec;
->  };
+>  	pdev->tph_mode = mode;
 >  
->  /*
-> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
-> index 8bd743093ccf..d99bf4fc3c39 100644
-> --- a/arch/arm64/include/asm/kvm_rmi.h
-> +++ b/arch/arm64/include/asm/kvm_rmi.h
-> @@ -59,6 +59,22 @@ struct realm {
->  	unsigned int ia_bits;
->  };
->  
-> +/**
-> + * struct realm_rec - Additional per VCPU data for a Realm
-> + *
-> + * @mpidr: MPIDR (Multiprocessor Affinity Register) value to identify this VCPU
-> + * @rec_page: Kernel VA of the RMM's private page for this REC
-> + * @aux_pages: Additional pages private to the RMM for this REC
-> + * @run: Kernel VA of the RmiRecRun structure shared with the RMM
-> + * @sro: A preallocated SRO state context
-> + */
-> +struct realm_rec {
-> +	unsigned long mpidr;
-> +	void *rec_page;
-> +	struct rec_run *run;
-> +	struct rmi_sro_state *sro;
-> +};
-> +
->  void kvm_init_rmi(void);
->  u32 kvm_realm_ipa_limit(void);
->  
-> @@ -66,6 +82,7 @@ int kvm_init_realm(struct kvm *kvm);
->  int kvm_activate_realm(struct kvm *kvm);
->  void kvm_destroy_realm(struct kvm *kvm);
->  void kvm_realm_destroy_rtts(struct kvm *kvm);
-> +void kvm_destroy_rec(struct kvm_vcpu *vcpu);
->  
->  static inline bool kvm_realm_is_private_address(struct realm *realm,
->  						unsigned long addr)
-> diff --git a/arch/arm64/kvm/arm.c b/arch/arm64/kvm/arm.c
-> index eb2b61fe1f0a..93d34762db91 100644
-> --- a/arch/arm64/kvm/arm.c
-> +++ b/arch/arm64/kvm/arm.c
-> @@ -586,6 +586,8 @@ int kvm_arch_vcpu_create(struct kvm_vcpu *vcpu)
->  	/* Force users to call KVM_ARM_VCPU_INIT */
->  	vcpu_clear_flag(vcpu, VCPU_INITIALIZED);
->  
-> +	vcpu->arch.rec.mpidr = INVALID_HWID;
-> +
->  	vcpu->arch.mmu_page_cache.gfp_zero = __GFP_ZERO;
->  
->  	/* Set up the timer */
-> @@ -1651,6 +1653,10 @@ static int kvm_vcpu_init_check_features(struct kvm_vcpu *vcpu,
->  	if (test_bit(KVM_ARM_VCPU_HAS_EL2, &features))
+> -	/* Get req_type supported by device and its Root Port */
+> -	pci_read_config_dword(pdev, pdev->tph_cap + PCI_TPH_CAP, &reg);
+> -	if (FIELD_GET(PCI_TPH_CAP_EXT_TPH, reg))
+> -		pdev->tph_req_type = PCI_TPH_REQ_EXT_TPH;
+> -	else
+> -		pdev->tph_req_type = PCI_TPH_REQ_TPH_ONLY;
+> -
+> -	/* Check if the device is behind a Root Port */
+> -	if (pci_pcie_type(pdev) != PCI_EXP_TYPE_RC_END) {
+> -		rp_req_type = get_rp_completer_type(pdev);
+> -
+> -		/* Final req_type is the smallest value of two */
+> -		pdev->tph_req_type = min(pdev->tph_req_type, rp_req_type);
+> -	}
+> -
+>  	if (pdev->tph_req_type == PCI_TPH_REQ_DISABLE)
 >  		return -EINVAL;
 >  
-> +	/* Realms are incompatible with AArch32 */
-> +	if (vcpu_is_rec(vcpu))
-> +		return -EINVAL;
-> +
->  	return 0;
->  }
+> @@ -538,11 +521,27 @@ void pci_tph_init(struct pci_dev *pdev)
+>  {
+>  	int num_entries;
+>  	u32 save_size;
+> +	u8 rp_req_type;
+> +	u32 reg = 0;
 >  
-> diff --git a/arch/arm64/kvm/reset.c b/arch/arm64/kvm/reset.c
-> index b963fd975aac..c18cdca7d125 100644
-> --- a/arch/arm64/kvm/reset.c
-> +++ b/arch/arm64/kvm/reset.c
-> @@ -161,6 +161,7 @@ void kvm_arm_vcpu_destroy(struct kvm_vcpu *vcpu)
->  	free_page((unsigned long)vcpu->arch.ctxt.vncr_array);
->  	kfree(vcpu->arch.vncr_tlb);
->  	kfree(vcpu->arch.ccsidr);
-> +	kvm_destroy_rec(vcpu);
->  }
+>  	pdev->tph_cap = pci_find_ext_capability(pdev, PCI_EXT_CAP_ID_TPH);
+>  	if (!pdev->tph_cap)
+>  		return;
 >  
->  static void kvm_vcpu_reset_sve(struct kvm_vcpu *vcpu)
-> diff --git a/arch/arm64/kvm/rmi.c b/arch/arm64/kvm/rmi.c
-> index 849111817af7..353a5ca45e78 100644
-> --- a/arch/arm64/kvm/rmi.c
-> +++ b/arch/arm64/kvm/rmi.c
-> @@ -173,9 +173,108 @@ static int realm_ensure_created(struct kvm *kvm)
->  	return -ENXIO;
->  }
->  
-> +static int kvm_create_rec(struct kvm_vcpu *vcpu)
-> +{
-> +	struct user_pt_regs *vcpu_regs = vcpu_gp_regs(vcpu);
-> +	unsigned long mpidr = kvm_vcpu_get_mpidr_aff(vcpu);
-> +	struct realm *realm = &vcpu->kvm->arch.realm;
-> +	struct realm_rec *rec = &vcpu->arch.rec;
-> +	unsigned long rec_page_phys;
-> +	struct rec_params *params;
-> +	int r, i;
+> +	/* Get req_type supported by device and its Root Port */
+> +	pci_read_config_dword(pdev, pdev->tph_cap + PCI_TPH_CAP, &reg);
+> +	if (FIELD_GET(PCI_TPH_CAP_EXT_TPH, reg))
+> +		pdev->tph_req_type = PCI_TPH_REQ_EXT_TPH;
+> +	else
+> +		pdev->tph_req_type = PCI_TPH_REQ_TPH_ONLY;
 > +
-> +	if (rec->run)
-> +		return -EBUSY;
-> +
-> +	/*
-> +	 * The RMM will report PSCI v1.0 to Realms and the KVM_ARM_VCPU_PSCI_0_2
-> +	 * flag covers v0.2 and onwards.
-> +	 */
-> +	if (!vcpu_has_feature(vcpu, KVM_ARM_VCPU_PSCI_0_2))
-> +		return -EINVAL;
-> +
-> +	BUILD_BUG_ON(sizeof(*params) > PAGE_SIZE);
-> +	BUILD_BUG_ON(sizeof(*rec->run) > PAGE_SIZE);
-> +
-> +	params = (struct rec_params *)get_zeroed_page(GFP_KERNEL);
-> +	rec->rec_page = (void *)__get_free_page(GFP_KERNEL);
-> +	rec->run = (void *)get_zeroed_page(GFP_KERNEL);
-
-Should this be cast to (struct rec_run *) ?
-
-> +	rec->sro = kmalloc_obj(*rec->sro);
-> +	if (!params || !rec->rec_page || !rec->run || !rec->sro) {
-> +		r = -ENOMEM;
-> +		goto out_free_pages;
+> +	/* Check if the device is behind a Root Port */
+> +	if (pci_pcie_type(pdev) != PCI_EXP_TYPE_RC_END) {
+> +		rp_req_type = get_rp_completer_type(pdev);
+> +		/* Final req_type is the smallest value of two */
+> +		pdev->tph_req_type = min(pdev->tph_req_type, rp_req_type);
 > +	}
 > +
-> +	for (i = 0; i < ARRAY_SIZE(params->gprs); i++)
-> +		params->gprs[i] = vcpu_regs->regs[i];
-> +
-> +	params->pc = vcpu_regs->pc;
-> +
-> +	if (vcpu->vcpu_id == 0)
-> +		params->flags |= REC_PARAMS_FLAG_RUNNABLE;
-> +
-> +	rec_page_phys = virt_to_phys(rec->rec_page);
-> +
-> +	if (rmi_delegate_page(rec_page_phys)) {
-> +		r = -ENXIO;
-> +		goto out_free_pages;
-> +	}
-> +
-> +	params->mpidr = mpidr;
-> +
-> +	if (rmi_rec_create(virt_to_phys(realm->rd), rec_page_phys,
-> +			   virt_to_phys(params), rec->sro)) {
-> +		r = -ENXIO;
-> +		goto out_undelegate_rmm_rec;
-> +	}
-> +
-> +	rec->mpidr = mpidr;
-> +
-> +	free_page((unsigned long)params);
-> +	return 0;
-> +
-> +out_undelegate_rmm_rec:
-> +	if (WARN_ON(rmi_undelegate_page(rec_page_phys)))
-> +		rec->rec_page = NULL;
-> +out_free_pages:
-> +	free_page((unsigned long)rec->run);
-> +	free_page((unsigned long)rec->rec_page);
-> +	free_page((unsigned long)params);
-> +	kfree(rec->sro);
-> +	rec->run = NULL;
-> +	return r;
-> +}
-> +
+>  	num_entries = pcie_tph_get_st_table_size(pdev);
+>  	save_size = sizeof(u32) + num_entries * sizeof(u16);
+>  	pci_add_ext_cap_save_buffer(pdev, PCI_EXT_CAP_ID_TPH, save_size);
 
-[...]
 
-Thanks,
-Wei-Lin Chang
+There's a virtualization problem hidden here that we haven't discussed
+yet.  tph_req_type goes on to define how pcie_enable_tph(),
+pcie_tph_get_cpu_st(), and pcie_tph_set_st_entry work relative to
+standard or extended TPH.  The user has no visibility or control of
+whether these interfaces enable extended TPH mode or get/set extended
+TPH values.
+
+That not only means that the virtualization of the TPH capability is
+broken (user writes one value to TPH Requester Enable, sees another),
+but I think it also breaks DS mode if the device implementation that
+depends on the width, and also breaks interoperability with Zhiping's
+series.  The user doesn't know whether to take the 8-bit or 16-bit
+steering tags.  In fact, the kernel's mode selection only considers the
+path to the root port completer and not to other devices and could
+enable TPH between devices in incompatible modes.
+
+Minimally it seems the Extended TPH Requester Supported register needs
+to be virtualized, restricting it based on the topology support, and
+the user written operating mode needs to be honored, but that also
+presents a challenge in how we represent/interpret the steering tags
+to/from the user.  Thanks,
+
+Alex
