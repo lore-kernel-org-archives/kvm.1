@@ -1,107 +1,165 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C59DF23D283;
-	Tue, 26 May 2026 12:55:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from fhigh-c5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EDCA3CF699;
+	Tue, 26 May 2026 13:05:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779800112; cv=none; b=Meoj6Cv09CdIzU1nzRvQ9XjBQnmlQKd2fgJxTJB/br0xCBxgVEpluydNweL7aPb97d4d/5Z591IPYBQoUgaLadc+GVMIWBaUFTK4hYpL76Z8jP4uBjR2L/u8Ow7VOg3OMG5KBfAN1L4n6ilP3X7nIhZg8+/+oBrm7aYCAWauv2k=
+	t=1779800723; cv=none; b=XGxA5/btpmchwk1tfuMBtX+269vhrRG9G8foNcDaW6JKp/6cmt2F2Sh5tHrX2t1DdcptrGv500ucSTBKcbwsslTFsBC+3Slc8kSZb5ge13zs0yx51gqNU3qWTUWqUOJ5aAzbPVsTbHoNIOKyflXRLCTznjipHDItbl4BDBKi3ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779800112; c=relaxed/simple;
-	bh=VxSbsncF9vADETy7fhLZoS22+L7DTIEAKMxSb9WtYrM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qlqBZd3EW8LSNSZNSnOh4frsxuZaGrrNbahWdQa8GPYhek9jsAVHMUvSgzwf38/uSNlY09MUVbE/NZKBaP9mzB44MzSqWp4ZLeQvVVfCZ9mo4L8jxgxkGORnbsAuG6gRUhQUm8BpU+/9dvzSDaq1QIG6C+lHBo+ZFjN8S4XcFIg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=fo5a9G0/; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1779800723; c=relaxed/simple;
+	bh=Q1x0vzo4Fcg7T40t+fkqOjXDWYibC3Uzz9whKJveh2I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=AncZ+XfRCLFS4P9RLQELSBcmgxEsN7tIKmPGr4qzOutQIKXkn4fS1rq2E99+mRNkrw6p1ZvNSnptVn1UbmlaQs2DD3aNB7TCr1MPfsSDMBT6AX4AULH0zARjzE6hWK7b7vul/Pvg3KK5vP3NMYmlNndLoYW7bdo+EF/jem5YLbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=NdbTXC6n; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=IGBF0Cz2; arc=none smtp.client-ip=202.12.124.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="fo5a9G0/"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 15BC0169C;
-	Tue, 26 May 2026 05:55:05 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D1B823F86F;
-	Tue, 26 May 2026 05:55:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779800110; bh=VxSbsncF9vADETy7fhLZoS22+L7DTIEAKMxSb9WtYrM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=fo5a9G0/UR1rJmXRW8xYXjhAvtLS2+70sZ6z1sOp/HlSEMk0q9pDFKe5TXJFhEe9p
-	 Bus1NUBvRv9ywGtrw5jgFylzEHIQv/5HBa9k1qcjGljFnL/ePc8CNz2C2IXRURJUTt
-	 6oHeIDtNLGjpysUwLQableFVV5GxivWDR9z3iuXQ=
-Date: Tue, 26 May 2026 13:55:04 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
-	Oliver Upton <oupton@kernel.org>, Dave Martin <Dave.Martin@arm.com>,
-	Fuad Tabba <tabba@google.com>, Ben Horgan <ben.horgan@arm.com>,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Eric Auger <eric.auger@redhat.com>
-Subject: Re: [PATCH v10 04/30] arm64/fpsimd: Determine maximum virtualisable
- SME vector length
-Message-ID: <ahWYKJ5zOrnNnAgI@J2N7QTR9R3>
-References: <20260306-kvm-arm64-sme-v10-0-43f7683a0fb7@kernel.org>
- <20260306-kvm-arm64-sme-v10-4-43f7683a0fb7@kernel.org>
- <agGwWE2hcj9O4EGu@J2N7QTR9R3.cambridge.arm.com>
- <agHOvFiI1e3y_ur4@sirena.co.uk>
+	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="NdbTXC6n";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="IGBF0Cz2"
+Received: from phl-compute-12.internal (phl-compute-12.internal [10.202.2.52])
+	by mailfhigh.stl.internal (Postfix) with ESMTP id 1B37E7A0084;
+	Tue, 26 May 2026 09:05:19 -0400 (EDT)
+Received: from phl-frontend-03 ([10.202.2.162])
+  by phl-compute-12.internal (MEProxy); Tue, 26 May 2026 09:05:19 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-transfer-encoding:content-type:date:date:from
+	:from:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1779800718; x=
+	1779887118; bh=E7L0m3RyuvBx1kNYpnyZCnh1DhseUWlMTVoo0K5ue5I=; b=N
+	dbTXC6nfKnkuwTtmDny+2aqIfJfyc1pBOZW+8mXnJyJFIEx+jT73avZVDg/Jdvjw
+	Nzv0eaYnrGmJoaCuXRXodkKmc8sK4BAknIxuTjQ52wqoDGzcFYg+Ha5WVQU6B0hK
+	rbjOB49DcM5AXfYsIoNMqTJWHx+4EOd6goiLvaSou0h7pn3VDDyzOHlInzHUIjZI
+	/+RNwRPiMw2v4NO05bqJRe7dH6zRyPI1ApCqipYeUWHgpltb1WLwcC6MoH+hp6x+
+	fjf3GmwRmT1FYvAr08Xppk0iWSgXdFzF9jJTzvbGTKiTsOTW5+jdlMmZtCwXc9jb
+	M1z6MHUXBOf129pYYVm9w==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:date:date:feedback-id:feedback-id:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to:x-me-proxy:x-me-sender
+	:x-me-sender:x-sasl-enc; s=fm3; t=1779800718; x=1779887118; bh=E
+	7L0m3RyuvBx1kNYpnyZCnh1DhseUWlMTVoo0K5ue5I=; b=IGBF0Cz2M9jn/2BO1
+	XqK9E7mBCfZ+0kW/I5mbgVnQ3I/ZSgJ1JA9UWnFdlkX0WAKHtEFH0bH56UQ+mynW
+	5ki0M36q2ccwgGP3XTCdjTJhlyPmamMRg8v5lv4UZnxYmBDNinnd4HTHKAwYPR/K
+	3o6I0AjjhRjolYHVK0IAMYcpUTrSyqbWT57Wa+oqNiMFNb0o/GJYHa5V4xsSZ/8u
+	yoelRdT6Bfx/CMs5cTRDsWD8v5scZ+xazieiEp7R2yyv4p1Zl8kSr3J12JKbqkap
+	12f65rOvP5garDUHPksiR0Fg75ChENNaiX+TMqd9+BsvP17+PxsUA527yL6LRl9A
+	tH7YQ==
+X-ME-Sender: <xms:jpoVajmJ6WfrbsSPGTVkEfrekOjzMs8zWXbpbWq639ZzOL8HiMj6cQ>
+    <xme:jpoVan5a9eUB6O8v9m3GLafW_NDDs1LTXe1HLng_jFNy7Zk_TuZGvaWkINExq3vDP
+    DGWUdYumCw5GpXqnvpJawBcKsQXLCawD6YluV1OJDhLauBRnmT1lA>
+X-ME-Received: <xmr:jpoVasmQdD8CIIlXVC6KWxrECud1Y7qt1SFMnXGGYVE9wBSKkgpulwbJgGhw-Q>
+X-ME-Proxy-Cause: dmFkZTGhhOzazjqDbg84kXmGQIriAJ7A5ZgfZ0KyuPxd944l9VDoz0auYhNa1nywHIJo+A
+    1950kHkKTkQx9lnfSbZcx/S8Mcmt8P0l8Wb8fN0f+wGCwnBkoWy9vl20eCC3tZZX+sH7av
+    Dlxe1oS29Zt+/zoZFzy+yh5aDbHDzc3iUaHQ8s1Xon6Q6ulUL8z0cPYFRnxsd9cUuaOOeC
+    grd5OyNgyo2h51fT3APjemmY7PM1ZW9p43vVXIU5xFLcMabfv/O6RwCJbL3XPnw5Oz6kjj
+    h/H6ZW2FJischjgbFlb1Y+t4mjYQn8Uqjf0DstcwPvag6qa0D5BtHhYNV9zEgkVoBIpvsV
+    HjeUxvJUyBNj4Et00jMB7yxNstb+ga+iDaignJA2Z1TUx07nEuujPXNVC1yKIQAZC/SRzt
+    KO5DpEJq+zywyr4tZxV7LPwshOrBc4oFzAodKrcv+DCEH47AMqMlDsNbdlfSfkf4eUkFiA
+    6FrzrMB9pHbLNpLe7gvkO33hNIIfH5mGXcbOUp8UxYISR022hjAtnUUAcDxY697CtAxQpP
+    zVqAPTUv6uxCKk4KV2zALF7uGWHWgp8gpR2UBm+3CtgTzS5njazyXneppcKKltY4vTsOgH
+    bM2isd0gIi4bl9y8nut0ap6qUmCIjBrJ5uh6XU6vK+q1gGHoKXBVlBAI4d+w
+X-ME-Proxy: <xmx:jpoVapSB3NiLJAt2oBY_qVX6PeATrFh8ryxFpUGzBAGC8q-RLv9mnQ>
+    <xmx:jpoVaqnfDl3OkB8GHiY4njTmrqhqpBg9k9wlUxREioGuLZDzM7yPPg>
+    <xmx:jpoVaqOpVyT8PispWbGQbpRrC7IAGA4whXvqq7W6Gedbn55oLSAMEg>
+    <xmx:jpoVaq0ExCIZGsrjGeGe4IOoij7eUukPqrEf9m-HIIND7l0QFYp6bg>
+    <xmx:jpoVarbEJal-RJM_emCreopxr2MC6yXgAvxyIpdvxoEPhTt6JhxAGLql>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 26 May 2026 09:05:18 -0400 (EDT)
+From: Kiryl Shutsemau <kirill@shutemov.name>
+To: akpm@linux-foundation.org,
+	rppt@kernel.org,
+	peterx@redhat.com,
+	david@kernel.org
+Cc: ljs@kernel.org,
+	surenb@google.com,
+	vbabka@kernel.org,
+	Liam.Howlett@oracle.com,
+	ziy@nvidia.com,
+	corbet@lwn.net,
+	skhan@linuxfoundation.org,
+	seanjc@google.com,
+	pbonzini@redhat.com,
+	jthoughton@google.com,
+	aarcange@redhat.com,
+	sj@kernel.org,
+	usama.arif@linux.dev,
+	linux-mm@kvack.org,
+	linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	kvm@vger.kernel.org,
+	kernel-team@meta.com,
+	"Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+	stable@vger.kernel.org,
+	Sashiko AI review <sashiko-bot@kernel.org>
+Subject: [PATCH v5 01/18] fs/proc/task_mmu: fix make_uffd_wp_huge_pte() prot-update race
+Date: Tue, 26 May 2026 14:04:49 +0100
+Message-ID: <20260526130509.2748441-2-kirill@shutemov.name>
+X-Mailer: git-send-email 2.54.0
+In-Reply-To: <20260526130509.2748441-1-kirill@shutemov.name>
+References: <20260526130509.2748441-1-kirill@shutemov.name>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <agHOvFiI1e3y_ur4@sirena.co.uk>
+Content-Transfer-Encoding: 8bit
 
-On Mon, May 11, 2026 at 09:42:36PM +0900, Mark Brown wrote:
-> On Mon, May 11, 2026 at 11:32:56AM +0100, Mark Rutland wrote:
-> > On Fri, Mar 06, 2026 at 05:00:56PM +0000, Mark Brown wrote:
-> 
-> > > +#define SME_VQ_INVALID	(SME_VQ_MAX + 1)
-> 
-> > Does using (SME_VQ_MAX + 1) for this make something easier than if we
-> > used 0?
-> 
-> There were checks for VLs less than $THING which were causing annoyance
-> IIRC but it should be workable since we shouldn't offer SME to guests if
-> the invalid VL comes up.  I'll look again when I'm back from holiday.
-> 
-> > To solve all of the above, I think what we actually want to do is find
-> > the largest uniformly implemented VL which is smaller than the smallest
-> > partially implemented VL.
-> 
-> Yes, that's what we're going for.
+From: "Kiryl Shutsemau (Meta)" <kas@kernel.org>
 
-To be clear, that was a concrete suggestiong as to the algorithm.
+make_uffd_wp_huge_pte() arms the UFFD_WP bit on a present HugeTLB PTE by
+calling huge_ptep_modify_prot_commit() with a ptent snapshot that was
+fetched without the corresponding huge_ptep_modify_prot_start(). The
+start helper is what atomically clears the entry so the kernel-owned
+snapshot stays consistent until the commit; without it, the hardware
+may set Dirty or Accessed in the live PTE between the original read
+and the commit, and huge_ptep_modify_prot_commit() (whose generic
+implementation just calls set_huge_pte_at()) then writes the stale
+snapshot back over the live hardware bits, losing the update.
 
-I'm saying we should have code along the lines of:
+The non-hugetlb sibling make_uffd_wp_pte() does this correctly via
+ptep_modify_prot_start() / ptep_modify_prot_commit(). Mirror that
+pattern for the present-PTE branch. The migration case stays as-is --
+migration entries are non-present, so there's no hardware update to
+race against.
 
-int find_virtualisable_vl(struct vl_info *info)
-{
-        DECLARE_BITMAP(partial_only_map, SVE_VQ_MAX);
-        unsigned long b_min_partial, m_max_virt;
+Fixes: 52526ca7fdb9 ("fs/proc/task_mmu: implement IOCTL to get and optionally clear info about PTEs")
+Cc: stable@vger.kernel.org
+Reported-by: Sashiko AI review <sashiko-bot@kernel.org>
+Signed-off-by: Kiryl Shutsemau <kas@kernel.org>
+---
+ fs/proc/task_mmu.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-        bitmap_andnot(partial_only_map, info->va_partial_map, info->vq_map,
-                      SVE_VQ_MAX);
-        b_min_partial = find_last_bit(partial_only_map, SVE_VQ_MAX);
+diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+index 1e3a15bf46f4..e21a38ac745b 100644
+--- a/fs/proc/task_mmu.c
++++ b/fs/proc/task_mmu.c
+@@ -2610,12 +2610,16 @@ static void make_uffd_wp_huge_pte(struct vm_area_struct *vma,
+ 	if (softleaf_is_hwpoison(entry) || softleaf_is_marker(entry))
+ 		return;
+ 
+-	if (softleaf_is_migration(entry))
++	if (softleaf_is_migration(entry)) {
+ 		set_huge_pte_at(vma->vm_mm, addr, ptep,
+ 				pte_swp_mkuffd_wp(ptent), psize);
+-	else
+-		huge_ptep_modify_prot_commit(vma, addr, ptep, ptent,
+-					     huge_pte_mkuffd_wp(ptent));
++	} else {
++		pte_t old_pte, new_pte;
++
++		old_pte = huge_ptep_modify_prot_start(vma, addr, ptep);
++		new_pte = huge_pte_mkuffd_wp(old_pte);
++		huge_ptep_modify_prot_commit(vma, addr, ptep, old_pte, new_pte);
++	}
+ }
+ #endif /* CONFIG_HUGETLB_PAGE */
+ 
+-- 
+2.54.0
 
-        /* All implemented VLs are virtualisable */
-        if (m_min_partial >= SVE_VQ_MAX)
-                return info->max_vl;
-
-        b_max_virt = find_next_bit(info->vq_map, SVE_VQ_MAX, b_min_partial);
-
-        /* No implemented VLs are virtualisable */
-        if (b_max_virt >= SVE_VQ_MAX)
-                return 0;
-
-	/* At least one virtualisable VL exists */
-        return sve_vl_from_vq(__bit_to_vq(b_max_virt));
-}
-
-Mark.
