@@ -1,114 +1,160 @@
-Received: from flow-b3-smtp.messagingengine.com (flow-b3-smtp.messagingengine.com [202.12.124.138])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D88D35E1BD;
-	Tue, 26 May 2026 08:21:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.138
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D2AB2D5C7A
+	for <kvm@vger.kernel.org>; Tue, 26 May 2026 08:23:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779783715; cv=none; b=Y5Hojz80Uw5diP1AVXdcoDkx9gLQvs2VA46ozCpFWlEqq9sqRC5JfdKamOszshh2UCzTEt3Vg9YPTl79cy6l4MxXUpUnbboOVWaGlgR0ywyY2h4R1qzDRFWMTsf5AmRwugWV0/ZYvrMIPAxppwWkMZVrLzGPzCaddQjJICWm+i0=
+	t=1779783820; cv=none; b=CLrHybx3j/HkVdAHjxyMfYu5sWsIb+3dKZQHgCHDk2gWuBj5v6CIj138YtuItTCq/SM0DXqAetjjqVIGbQHzJ1B6baXwJhojsdwiCz8bZmIowxliCVoEYpgnu4eZ+bxAThwJLC7IP3lOjtzQc5BOZHHtgsThM0zyA6QqFi2ym6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779783715; c=relaxed/simple;
-	bh=06O6vLti/8SGJM+uKs+UJJY3EUyrxns+/tXRJg2/uLw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q7oWdV2ZcQXLy28e3XyEGCjTJy2LFMt+7dp+HBR+VB/FkGWr/XvJVbeKH3KSMuvd0VpcCZy5T8sQrCkM08QwkBjKfaWirxAr9u0oi3USvtn8K8bB1DZ4EransZVdm+j8RI/iqf19AWdUyyxtXGXm4qV7I5EG9TVAd5IAqtncGRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=EbSZoOB6; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=furBzsQc; arc=none smtp.client-ip=202.12.124.138
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
+	s=arc-20240116; t=1779783820; c=relaxed/simple;
+	bh=vQwsCxT+Dcg67tKMHeYEoFGDHvzyeWT3wuZzpong/lw=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=OkAK3KN4ECVVfkl273fn0DhwbYK5740TlfBDBiipN261WoZsaMgJGXf5DzKCVhkNAFkYNREYCA9zzQKZ8nACFbHIYY/W/3bCbXPlkY0RgET2dz4R65DiIVZu4dEkW7fABq92EBqIjMJ8Taj/t5plCQ7ii7Rgfa4xoMaw3uzq9Ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NjTU5MU9; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="EbSZoOB6";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="furBzsQc"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailflow.stl.internal (Postfix) with ESMTP id CE9D01300098;
-	Tue, 26 May 2026 04:21:51 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-04.internal (MEProxy); Tue, 26 May 2026 04:21:53 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
-	 h=cc:cc:content-type:content-type:date:date:from:from
-	:in-reply-to:in-reply-to:message-id:mime-version:references
-	:reply-to:subject:subject:to:to; s=fm2; t=1779783711; x=
-	1779790911; bh=wQjXxGFL5Lg67GSyDSM6dyIeupTs1FKFZvV2GOAivr0=; b=E
-	bSZoOB6ff9yD6/VEnqTMqTzIFIge0DRBYape1xA77WJbH68HHhXCNQQevy78b/5s
-	Rf/J+X1CJ461tvRk5IwaWTb7X+ml/aA55f0Mw2E9Obs2zmNaN6dvIFiursq1//2J
-	Z+c0OL5Dg7frIjM6UMugBgi021oy3flGqxDidMRpbGcYCtjrAwlKsjCTtmvfPcCL
-	1TTcfR+9oNdk+N2fwIXJW05luI3rDdEefK6CND2+aCX2QM97qlncn91sCvqcj8TQ
-	cE7cEBh3LzbtmtaNFo0XR8ezRaiej1RQbtdz7G3jF7/s4LjJElQqu4JzMvMV03Y9
-	0w32sxfKVvl0sQyM79Okg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
-	1779783711; x=1779790911; bh=wQjXxGFL5Lg67GSyDSM6dyIeupTs1FKFZvV
-	2GOAivr0=; b=furBzsQc1Q4glZjGfRj6U97GnnIbyE7KdPKCsClaRU7r/S8O2Zn
-	ZBqkE+p4Oi1cyypYt4K7SPcYl3GHWM+vcss94wbMfcmoXXfBej33LHI5NIcS46bI
-	i8BC2L8ttC6LI+2+AM+0tRYg0adxdRI43GsGrOc4H7vshUtqLhdQKcxt1Dy297JP
-	HuYDqtZWASEqyAH6LZfUC448OOS58BogHTzX6oZ2Cqmv1COvJp3RyycK5Ct3G+bS
-	frY54sNqw9qVWfRUHvAIq+rx67MjlZKhSAFAdPtlzkJDumm0yQqmusFdv8DVGprL
-	ArphrYaamLkD49ciIEc2rw/z9rmvJ6nhYgQ==
-X-ME-Sender: <xms:H1gVahWEOl6lQaHH5I9-6Y6sQFAUA_lBCmGO4U0d615pNhOVxo0CMg>
-    <xme:H1gVap-jTrAh0tuLMxPN-6CthtN9If06XsY9Ic4P2QA_Pc0zV1D0PqhLDQii7BFDW
-    zzHWrocheAIDm8-t93kD-mvxs2Lxzd8i3cFDgUIowNhEsk37sHyyVY>
-X-ME-Received: <xmr:H1gVanrKRxJ3h_ACpKSNg_0pRqzuNVQcDy4m0mPBOMGb2XUrv_afVUMfF3tMQg>
-X-ME-Proxy-Cause: dmFkZTFVRF4ROBUmcM4hrH1rPz69sP/HFNDpACqKIdo4b+hALyZE5EaMnrNSuoBbpZNyB0
-    nqeUFxhnfH+dLhiV9z7ujtcLPqsdJDhF/oYhZOfD4dZFHr6PPfvVj58Gvm4JOLxXnyKsPS
-    sJ8Fhto7GS92EsPkmf30kDQzF+BdauRj/CHeYxvZTekBZsSXcKJ2uLhyPskML7OP/LintN
-    W5UbK0ONoP65MQKF0161Fr7z6DSeT/aMoulLSZ+gOZaye6pXnXHnm9hyCPCV+3HxzO9TuT
-    /6QGJlCHh+MuEiaxBoHdq6q8m2T2yLDq45K4OxKghO8GogTwWUPj9R1gBbFKfQ8GKhDPGK
-    kieU3s1wgChMWdmysZgtYhacCwJjTE/z57h/dYC7VuMJJTJAr3umOnbTD8ZhKeVAK/8cEh
-    ZR4+lpAEkWVcbRA8G9r1Z71w6ZTTqAxEIckACVYVv/xkElv/EHY/kpdclqcZWOam2IF4Vb
-    QGTWLQQrkjtaQI7UUgvX6OATkjzkWsQS3xb0wJuxWecYWD4UsKkSIIsd8DZ/+40Wm0CgWw
-    NR+fZeeA5kkK0hZnUX+G1qT7RifK/4jMTSucw/o05SGvIwUGMjZzxhKvoK68ucoyXPcYD3
-    8ou43prSxxZOBDrMrSjdtEwtbG/73oyest4J1o8bggBD5gYBkf5re1j1axPQ
-X-ME-Proxy: <xmx:H1gVao7b0dRVl-PnEE8BWR3TTrOqxqdR0NW0urHk8lYblgLi8MAIRQ>
-    <xmx:H1gVao6Oi4mdwVYQ_rApI1rzMc0xQlyRtZAmJ7BK24PvP6r61D0J9w>
-    <xmx:H1gVankmwyqJGA90XZ8vNzDxvZDQUHeCMoF2dwRfBU9NTGyMuWBngw>
-    <xmx:H1gVavj-wl39pOMFhQWI2MabbWxzdmAg5Ao4cS-wHFETDcT2u-UB9w>
-    <xmx:H1gVatC7sT6FImTCQ_qXttStSS38HVnn3YyKeSYgNdKJ-Qx-NiJVQ559>
-Feedback-ID: ie3994620:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 26 May 2026 04:21:48 -0400 (EDT)
-Date: Tue, 26 May 2026 09:21:44 +0100
-From: Kiryl Shutsemau <kirill@shutemov.name>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org, akpm@linux-foundation.org, rppt@kernel.org, 
-	peterx@redhat.com, david@kernel.org, ljs@kernel.org, surenb@google.com, 
-	vbabka@kernel.org, Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, 
-	skhan@linuxfoundation.org, seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, 
-	aarcange@redhat.com, sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	kernel-team@meta.com
-Subject: Re: [PATCH v4 08/14] userfaultfd: add UFFDIO_REGISTER_MODE_RWP and
- UFFDIO_RWPROTECT plumbing
-Message-ID: <ahVX0DXLhqo912j_@thinkstation>
-References: <20260525113737.1942478-9-kas@kernel.org>
- <20260525121111.E857E1F000E9@smtp.kernel.org>
- <ahRoPjww-xTjjl3O@thinkstation>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NjTU5MU9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 101271F000E9;
+	Tue, 26 May 2026 08:23:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779783819;
+	bh=bh6uhT6A9sTQphHICJeYEAy7n9Yj31J+Ju7kgYoABSk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=NjTU5MU99mEPXVjzgyglYks04/5sD9TfiVNYaU2t838wKNIJDWIiTwznXf+ZD0QRN
+	 2lepoAflE5V8NJkCshCQKOpKcDB9aLPtf/lG1YxF3ZEe00sOqVWMXnLBOy8OrCVGug
+	 eNTno4PDlaXON19A/u2y95ydKMvCAS8SjyjzFDKQamr3kW7kp/Mvt73jYtst6ltLAs
+	 29vGnaR6+9gtldL9oS8yrqHqm6dUhxPa/gzX2iXjck2yOKXvHu0OINsZ3zHk8yR9jU
+	 SYxEQ0pfcNVqY52wKKLmUpnnLdpmx1GsnE6ZrdpiQ0CS34hxfw71jSBOrNkww72ZtV
+	 COMgUvnoUz8gA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH] RISC-V: KVM: Fix timer state restore
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Qiang Ma" <maqianga@uniontech.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260526075544.796396-1-maqianga@uniontech.com>
+References: <20260526075544.796396-1-maqianga@uniontech.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 26 May 2026 08:23:36 +0000
+Message-Id: <20260526082339.101271F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ahRoPjww-xTjjl3O@thinkstation>
 
-On Mon, May 25, 2026 at 04:19:43PM +0100, Kiryl Shutsemau wrote:
-> On Mon, May 25, 2026 at 12:11:11PM +0000, sashiko-bot@kernel.org wrote:
-> > Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> > 
-> > Pre-existing issues:
-> > - [High] Page tables are accessed and modified under mmap_write_lock
-> > without first draining per-VMA lock holders via vma_start_write(),
-> > risking races with concurrent per-VMA readers.
-> 
-> Confirmed and pre-existing -- the pre-patch path called uffd_wp_range()
-> which has the same gap (no vma_start_write() before change_protection()
-> either). Will address in a follow-up that audits the userfaultfd
-> register/unregister paths together.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
-Looking again, this is false alarm. PTL provides enough serialization
-here. No change needed.
+New issues:
+- [High] The patch introduces a strict UAPI register restoration ordering d=
+ependency, causing the timer to permanently stall if `state` is restored be=
+fore `compare`.
 
--- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Pre-existing issues:
+- [Critical] Timer teardown uses a state flag for synchronization instead o=
+f unconditionally canceling the hrtimer, leading to a use-after-free on VCP=
+U destruction.
+- [High] Restoring the timer state to OFF fails with `-EINVAL` if the timer=
+ is already OFF, aborting live migration. This is exacerbated by SSTC incor=
+rectly reporting its state.
+--
+
+commit 12ffaa755d54118c3c86ae260e5df5a3b6b59454
+Author: Qiang Ma <maqianga@uniontech.com>
+
+RISC-V: KVM: Fix timer state restore
+
+This commit changes the timer state restoration logic in the one-reg interf=
+ace
+to re-arm the timer using the restored compare value (t->next_cycles) inste=
+ad
+of using the state value itself.
+
+> diff --git a/arch/riscv/kvm/vcpu_timer.c b/arch/riscv/kvm/vcpu_timer.c
+> --- a/arch/riscv/kvm/vcpu_timer.c
+> +++ b/arch/riscv/kvm/vcpu_timer.c
+> @@ -229,7 +229,7 @@ int kvm_riscv_vcpu_set_reg_timer(struct kvm_vcpu *vcp=
+u,
+>  		break;
+>  	case KVM_REG_RISCV_TIMER_REG(state):
+>  		if (reg_val =3D=3D KVM_RISCV_TIMER_STATE_ON)
+> -			ret =3D kvm_riscv_vcpu_timer_next_event(vcpu, reg_val);
+> +			ret =3D kvm_riscv_vcpu_timer_next_event(vcpu, t->next_cycles);
+
+[Severity: High]
+Does this change introduce a strict ordering dependency for userspace regis=
+ter
+restoration?
+
+If a VMM restores the state register to ON before restoring the compare
+register, it appears this will arm the timer using an uninitialized or stale
+t->next_cycles value.
+
+If the compare register is restored later via KVM_SET_ONE_REG:
+
+	case KVM_REG_RISCV_TIMER_REG(compare):
+		t->next_cycles =3D reg_val;
+		break;
+
+This only updates memory and doesn't seem to re-arm the running hrtimer. Wi=
+ll
+this cause the virtual timer to stall indefinitely?
+
+Before this patch, using 1 armed the timer for immediate expiration, and the
+subsequent callback would asynchronously pick up the restored compare value.
+
+>  		else
+>  			ret =3D kvm_riscv_vcpu_timer_cancel(t);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but does restoring the timer sta=
+te
+to OFF fail and abort live migration if the timer is already OFF?
+
+If kvm_riscv_vcpu_timer_cancel() is called when restoring an OFF state:
+
+static int kvm_riscv_vcpu_timer_cancel(struct kvm_vcpu_timer *t)
+{
+	if (!t->init_done || !t->next_set)
+		return -EINVAL;
+        ...
+}
+
+On the migration destination, a newly created VCPU has t->next_set =3D=3D f=
+alse, so
+restoring an OFF state returns -EINVAL.
+
+Additionally, when the SSTC extension is enabled, the timer is programmed
+directly via CSRs and t->next_set is not set to true for a running timer. W=
+ill
+this cause KVM_GET_ONE_REG to incorrectly report the state as OFF for active
+VMs, which then fails during restoration on the destination?
+
+[Severity: Critical]
+This is a pre-existing issue, but does using the t->next_set flag for
+synchronization during teardown lead to a use-after-free?
+
+Looking at kvm_riscv_vcpu_timer_cancel(), it skips canceling the hrtimer if
+the flag is false:
+
+static int kvm_riscv_vcpu_timer_cancel(struct kvm_vcpu_timer *t)
+{
+	if (!t->init_done || !t->next_set)
+		return -EINVAL;
+
+	hrtimer_cancel(&t->hrt);
+	t->next_set =3D false;
+...
+
+If the hrtimer callback clears t->next_set before it finishes executing, and
+the VCPU is destroyed concurrently, the teardown path will see
+t->next_set =3D=3D false and skip hrtimer_cancel().
+
+Will the still-executing callback then dereference the freed VCPU memory?
+
+>  		break;
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526075544.7963=
+96-1-maqianga@uniontech.com?part=3D1
