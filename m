@@ -1,127 +1,137 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.14])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3D5978F29;
-	Tue, 26 May 2026 20:00:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.14
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA74C25B0BE
+	for <kvm@vger.kernel.org>; Tue, 26 May 2026 20:18:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779825656; cv=none; b=EdynV2+eiQyPtv1hJegP2muMdSHbdxhwXF7lQ49+KnTkC3McB6KsVx1P6bBKlbaQemqtPymSJYphsFCk/e2j0oiqPZQuyTT0UWVbaYpbJGVc2Kc8yZWT8ftdE2YsrrmW8zQn1b0Fg9PmJeakn9sBPjd8H4FTeblbfd7NDdgbBMA=
+	t=1779826694; cv=none; b=E9j3OF50R/c57I2rvBWlvLoYidiRQDgYXYsmKVt7Vvy3DbOO37gRpvTR3QGCUabLbagCUIjidlFNrpmBi7sPgi67BwYi+UxL859FqRC3pkwY345F+gwbFsnM1W+/7J9upUgjHj9Cy97OGsgBgFrTt9fRx6Z5z2grR9LGglURApc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779825656; c=relaxed/simple;
-	bh=br7dydNZ01TIIzaiM5VkTbl6FdkySRFBBn48eA+DWak=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=igFw8Rt8lLkXeovSyVqawJqT7lnllQjOaD9qbXeGoGzgu0ZqrVjN/fPXX2S4qSA+K0OzC2HiMjLevVTcauPE4MoHthOI3hr4O1VCVSegMf59uQlZVofcY7AKpeAohwZppHR9iAaeEZPzfrLTgn+esfp9yFcAXaJ1mtTQBXxM/hc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=fz4o/llO; arc=none smtp.client-ip=192.198.163.14
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1779826694; c=relaxed/simple;
+	bh=uPX2Vv6sl1N8tZq8k77saq1gFrGNkXTerT2rhszNpIg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=OzO3vmcKeFYN3xSLKoeN8xslYNNEbMPNRisOt8oBWAF2y3+lIzq3eMfpodZALiIVMmYVzDbGlBvy5qaNKQah2cOC4JPsMhm2voTbF7eMe99gomC7fUALu8+qB1xeHBgA45pBo8EvkGWM0jaJzQsZspdxNktiehZxb7XkxdZSIAU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PEpQBorz; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="fz4o/llO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779825654; x=1811361654;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=br7dydNZ01TIIzaiM5VkTbl6FdkySRFBBn48eA+DWak=;
-  b=fz4o/llOJe63eNC4SuYLHT4blmCGtmQn1+b8/9pFcnImh/Y5sxHTFU1t
-   TYUJCE7lJg8p2hdWZ77ndnQx6oY0fJ2/qcYC2yaxttcYn0u1Rab7usv0Z
-   LoiKn/Dr3xavRVqjArW6y0OvPgDbce3qgDfaB9STDdmhZ4aexT4YB9bLe
-   fUCNQEe3APjqehrKMLP/xz012ilOwgH+mWdOH59paTBW+63bJbOgmRPqY
-   WrQ8MsBK2TZFkKqPO9M8q8PYJMn478hxFoyCB4AGlb/DwT+ds8Vfa6IcM
-   1uHF5zeeTaKp9u7x3jhc+uQmcetlMyykWlazvjfNyAbg9gKQE+xQn6I+p
-   w==;
-X-CSE-ConnectionGUID: Txqls6DaRqOTADqwN6TMQA==
-X-CSE-MsgGUID: 5VE08cijSQCY7Sh/ozfwXw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="80682350"
-X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
-   d="scan'208";a="80682350"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa108.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 13:00:53 -0700
-X-CSE-ConnectionGUID: lkeFsiwJSw2MyzTb86k3kg==
-X-CSE-MsgGUID: NNQWOn6JRgmrOkLI6FlbjA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
-   d="scan'208";a="237851121"
-Received: from unknown (HELO [10.24.81.183]) ([10.24.81.183])
-  by fmviesa010-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 13:00:52 -0700
-Message-ID: <3dea8def-28dc-4812-851d-55d6381abc6b@intel.com>
-Date: Tue, 26 May 2026 13:00:19 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PEpQBorz"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8046F1F00A3C
+	for <kvm@vger.kernel.org>; Tue, 26 May 2026 20:18:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779826693;
+	bh=VFAHaqeDXhdvrZhDDwx4GnmWtjl5CllgZ/HuBUKxWVg=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=PEpQBorzvM73wLSwqYZygzXM3CeDiu2ARViOihdKP17vcjtRX2Payt2d3UauNVm3N
+	 A94dC/0hCWIEuIgGBmalb01YtMQEMg8X/9Mh9HedYgb5krCNUqsuSITEzhnPZl2egQ
+	 F513bextw2Nfl4z1dczby2zjIW5L6z+nOuwod3INfPMRLLOPJDB/+E+c2wi1iDjvc8
+	 Fj2kCrzQSU9GJ6HXQgSkjlyeSn42NPfygbJO+ZBIgtCTblHvOH6k4kRLWrB+3IBiwM
+	 JITg3z/oeniBb0FHRYwMtfKa3Emz0Dn5oMFypRRirwCZgL1atbkZgmFX0AItZqxuvz
+	 ZjZqge7GwfmnA==
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-bd4d7f4fa02so1852888766b.3
+        for <kvm@vger.kernel.org>; Tue, 26 May 2026 13:18:13 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ+ZWccJG+ZeLnikpEjxhlYlBQ/laPCmLaX+C5RUfLLEjRvfpzJPHu1k7e+E5LwHLeYP0Ls=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywj5lMpha1oRHMlgi9zCX9sCDCKCVppxB0Runeru3g5uaGcdizr
+	tyHLQYqngBdX61XiF33/OzRfmSmT/XQNwAIHAIVDRu4U9JRtSWdiQq6EHc35tXvhhE2crml3tRi
+	QndWGa3AL7pAl/tO6NdntkJBiZfw0Df8=
+X-Received: by 2002:a17:907:a789:b0:bd2:bd3:1ef8 with SMTP id
+ a640c23a62f3a-bdd272cfb68mr1236896266b.35.1779826692504; Tue, 26 May 2026
+ 13:18:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 0/4] struct page to PFN conversion for TDX guest
- private memory
-To: Sean Christopherson <seanjc@google.com>, Yan Zhao <yan.y.zhao@intel.com>
-Cc: dave.hansen@linux.intel.com, pbonzini@redhat.com, tglx@kernel.org,
- mingo@redhat.com, bp@alien8.de, kas@kernel.org, x86@kernel.org,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
- linux-coco@lists.linux.dev, kai.huang@intel.com, rick.p.edgecombe@intel.com,
- yilun.xu@linux.intel.com, vannapurve@google.com, ackerleytng@google.com,
- sagis@google.com, binbin.wu@linux.intel.com, xiaoyao.li@intel.com,
- isaku.yamahata@intel.com
-References: <20260430014852.24183-1-yan.y.zhao@intel.com>
- <ahX2dcHAQgwuiJBC@google.com>
-Content-Language: en-US
-From: Dave Hansen <dave.hansen@intel.com>
-Autocrypt: addr=dave.hansen@intel.com; keydata=
- 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
-In-Reply-To: <ahX2dcHAQgwuiJBC@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20260506015733.1671124-1-yosry@kernel.org> <20260506015733.1671124-2-yosry@kernel.org>
+ <ahDidRRVYHD6x50P@google.com> <CAO9r8zNOEYf7RzoDUjueTVaiFTFQ7sizBfpeCoCbCCTFavRDqw@mail.gmail.com>
+ <CAO9r8zMuhJpeBwY-tod4mr522hXhHRrkK8UhnxgpMi0SQ0vyMg@mail.gmail.com> <ahXwaC7U8mGJKr-P@google.com>
+In-Reply-To: <ahXwaC7U8mGJKr-P@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 26 May 2026 13:18:01 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zNiNJ4xwYmAEv1YzcYKKQnzM6kdcJBAis+Hm3WxG3VMJg@mail.gmail.com>
+X-Gm-Features: AVHnY4JC8tanyrCzmFH9ud9SVPtlSBLG2VYBnqfZXbTlWitS9gsdcSpSApg3lQc
+Message-ID: <CAO9r8zNiNJ4xwYmAEv1YzcYKKQnzM6kdcJBAis+Hm3WxG3VMJg@mail.gmail.com>
+Subject: Re: [PATCH v6 01/16] KVM: nSVM: Stop leaking single-stepping on VMRUN
+ into L2
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Jim Mattson <jmattson@google.com>, 
+	Dapeng Mi <dapeng1.mi@linux.intel.com>, Sandipan Das <sandipan.das@amd.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 5/26/26 12:37, Sean Christopherson wrote:
->> v2 is based on v7.1.0-rc1 + Sean's 4 cleanup patches (see details in
->> section "Base" below). The purpose is to get Dave's Ack, so Sean can take
->> it from the KVM x86 tree. The full stack of v2 is available at [14].
-> Dave, any concerns?
+On Tue, May 26, 2026 at 12:11=E2=80=AFPM Sean Christopherson <seanjc@google=
+.com> wrote:
+>
+> On Fri, May 22, 2026, Yosry Ahmed wrote:
+> > On Fri, May 22, 2026 at 4:45=E2=80=AFPM Yosry Ahmed <yosry@kernel.org> =
+wrote:
+> > >
+> > > On Fri, May 22, 2026 at 4:10=E2=80=AFPM Sean Christopherson <seanjc@g=
+oogle.com> wrote:
+> > > >
+> > > > On Wed, May 06, 2026, Yosry Ahmed wrote:
+> > > > > According to the APM, TF on VMRUN causes a #DB after VMRUN comple=
+tes on
+> > > > > the _host_ side. However, KVM injects a #DB in L2 context instead=
+ (or
+> > > > > exits to userspace if KVM_GUESTDBG_SINGLESTEP is set) in
+> > > > > kvm_skip_emulated_instruction().
+> > > > >
+> > > > > Introduce __kvm_skip_emulated_instruction(),
+> > > >
+> > > > Eh, just make svm_skip_emulated_instruction() visible via svm.h and=
+ call that
+> > > > directly.  No need to bring SVM's mess into common KVM.
+> > >
+> > > Yeah I thought about doing that. The only reason I was hesitant is
+> > > that if [__]kvm_skip_emulated_instruction(),
+> >
+> > if [__]kvm_skip_emulated_instruction() gains new logic*
+>
+> Well, __kvm_skip_emulated_instruction() can't gain new logic if it doesn'=
+t exist,
+> which is why I want to avoid it.  IMO, it's _more_ likely that we'd add c=
+ode to
+> __kvm_skip_emulated_instruction() that breaks the obscure VMRUN behavior.
+>
+> And if we add logic to kvm_skip_emulated_instruction(), it's seems like a=
+ forgone
+> conclusion that we'll have to analyzing VMRUN to see what the "right" beh=
+avior is.
 
-These look fine to me. They make the code marginally cleaner and the
-changelogs are much better at describing the problem now.
+Right, sorry I wasn't clear. What I meant is, if someone is modifying
+kvm_skip_emulated_instruction(), they are likely to check
+__kvm_skip_emulated_instruction() as well to check which variant
+should carry the logic based on the callers. They are less likely to
+check direct callers of {svm/vmx}_skip_emulated_instruction().
 
-Going to Linus via the KVM route is fine with me:
+>
+> > > handling it here might be missed. Also, there's only one direct calle=
+r of
+> > > svm/vmx_skip_emulated_instruction() (and it's TASK_SWITCH interceptio=
+n, who
+> > > cares).
+>
+> handle_exception_nmi() also calls it for INT1, though that code is broken=
+ (the
+> INT1 should count as an instruction).
+>
+> > > So I think it's more consistent and future proof to refactor
+> > > kvm_skip_emulated_instruction() instead.
+>
+> I actually think the task switch case is the perfect argument for using
+> svm_skip_emulated_instruction() directly.  The only flows crazy enough to=
+ warrant
+> bypassing normal instruction skipping behavior are legacy task switches a=
+nd VMRUN.
+> Sounds about right to me :-)
 
-Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+No objections here :)
+
+Mainly the point above, that it's more likely someone will check the
+callers of __kvm_skip_emulated_instruction() when updating
+kvm_skip_emulated_instruction().
