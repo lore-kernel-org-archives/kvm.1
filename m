@@ -1,148 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51911D9A5F
-	for <kvm@vger.kernel.org>; Tue, 26 May 2026 15:26:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E9E338D3E5
+	for <kvm@vger.kernel.org>; Tue, 26 May 2026 15:53:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779809194; cv=none; b=OuA7OZMU888rXf21lEbJB44METODqLnw8hMtZLuGrDFHQ0RHrgNsZPcxv51Dr96i+f7B47m+LxrTvq+3zl21elCAaR9shUT4KOAHfAWR5Db3w2HAXkRpuZb/vf5Em1fo2RQbw4wngBUxFpWa5eCi1avQA2pj5+nLDtvTHAV2ej4=
+	t=1779810817; cv=none; b=uUY48UezYJoH6mQT24xpO6DEN0w5HyFF6yQeSNziACCsk38WpZ7mykmtEyexp2IiNxl55U6E+6bbflLZPsmrjR8mT6L9BFr7VYFEPxjRetKun27PEvl2cYBoCAPvQs7CHAEmp/x02QoDnSmEqT3QAUzIK5GO5J4erfpjMVKRXDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779809194; c=relaxed/simple;
-	bh=c/GWuYvxE73rVUL7dJbR3Z0OSjIQfIAjUZrsPt151A0=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=I2cFrOFVYfv7oBR5GRiLQGIVs4Ylg7b3SLHOee1OmyDVM+jHZu1Qkoi/9bc+onVCnyTEUOQJjjj2R/Nn+sF33MBw4uVgnZ/D4ao6n+YoT2SUyuI2atThOcSSbAm69OCJUPvP6BWPju4JMmpcxNeS+EOCa9XKI7f93uDKopv//qY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iUVT+VCC; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779810817; c=relaxed/simple;
+	bh=mBfUP0yVPjk2NwcZtGJBC+WG51c9+q2CFtrlyo+9fNY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=YzhOV4C6RDWSXpgwqgragYiMkIg7Q4Cyy6dvDl4D7gtCuFmlg7KTqMvW4CQYNyi/9MtSIccw4Sy+s6E5JDgVNCYiApR8dtC4osPPNzn4MvX/0FfT7/Fc2yNyMmpH+WCv6scDxBa9MNT9mvh9dy58oByohIVrqW3zZ0kUI10cduk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uSQ96kDs; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iUVT+VCC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40C971F000E9;
-	Tue, 26 May 2026 15:26:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779809193;
-	bh=TYYTQclcKOxMie+PVuh5Nly6jX/1/FXtZwAqxYlPwtk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=iUVT+VCC1jl2DXaWWoHPBkAFSlkal4EhQCgTM9Ja/7H2L+51C511kBsBEa2o2sDiq
-	 DioJ7ns4GCyqWnGu5UiQVvOd+9eiZ7gsA2ziY4fY6iTjJ3n1cDb0t5GzoCgjl6ynP1
-	 15aJIUCT1nx3eSsmJp+LE6ZpSM/tOvXnveSckNPg8A5whrIiW7pNLd4lhV0q4/MuSc
-	 UMdxGWO7DK2tJSFA6yPk569WeN70SSQGJP9xzoxw8bi04LBpi9sFv91FK65YhHJdSL
-	 YT5sgkkQltC3LFpOm8vjZSvUuO6P/s+wfP/RMPos85Jtmy8TJumy+1pL0/XmNdlGB7
-	 4xnLU5A1vE4cQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 5/7] riscv: kexec: Always build the trampoline page
- table
-Reply-To: sashiko-reviews@lists.linux.dev
-To: fangyu.yu@linux.alibaba.com
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260526125009.2404-6-fangyu.yu@linux.alibaba.com>
-References: <20260526125009.2404-6-fangyu.yu@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 26 May 2026 15:26:32 +0000
-Message-Id: <20260526152633.40C971F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uSQ96kDs"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-367fd7b8825so10715850a91.0
+        for <kvm@vger.kernel.org>; Tue, 26 May 2026 08:53:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779810816; x=1780415616; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=uJNCogH4Zbu4XOm/ShCIueHOInBR+JpKq+7IbtHCuDM=;
+        b=uSQ96kDsfpfPYvEPmfVgjWzn4eEI23W4qJhQzklApRCqKxkLeRhiUZSocUgjbLkake
+         64aP9VS6gBeQV5fy9BA2WpZKMsLdJ+SPmJ7Xu8Yk3pY4hHppVDyT5fsLKxGEqKrL9wbO
+         oJ2euxkGt4I6ldKza8wDM1pFk/U9/dP/jggm/dAFpbl06r/xPzKB9DVJ8H+pT68/BHiA
+         kkjdP5MzkXjLs/g5UynS5WSUl93M5/HCDntACz8u/SOzPqCHFO9RHJMSiT5wr4OPyyqa
+         goq2EQw9u8loL0phvWAH+7MH9Zq7bLYJC9eP5Iv76dZo8O+We4EJXclGGgKJfQvwbHkB
+         XBsA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779810816; x=1780415616;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=uJNCogH4Zbu4XOm/ShCIueHOInBR+JpKq+7IbtHCuDM=;
+        b=FuJZ9RCK/Tk9RKmtCvTemdz/JXYlkuo98sr5qX2HsSb9e9OKuvPrp1FJudafEJGjyh
+         xl+oMBWygzD0vG2f+5an7DAhAc3g4Vl0ylBhMlQFNWvLj0GEUMR+lbmvRpb2ow8kW5cd
+         oePEEMqNoYDFTFBBnDv3vrgdKQgYH2zoKhCrOdO2DtpHSpCnrmDKDK3XT+kNlrR8e+9Z
+         YV851WoPvEjS0NrWtFMOM3CRsC+1+cCMQMQ3f3eyWLVqgg95jmMTeVK3xnZeeRDqyMH+
+         UJI+gCpMPZvrppV1sd+HncEkQ8osIeDmFV0sppABPV3s/lTKuPsexVMVJjEnrHLTvtRh
+         1K1w==
+X-Forwarded-Encrypted: i=1; AFNElJ8gIONWhDVTeoYA6uZRxlA51F5YpOj7BGYetaiJHQB1Z0ihU83p0Axze+iYP6ESRlj0qdg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGKWGfYzryOQj0Cyw9Pd5sIY6ozOFbk0K/8RSRQuXvjeUYKvzO
+	81ZS+A5BAIKrUTFynI+gvziMb5cwnjpNCKftSmP4AynS1b7/5g5bafSFkZhTpvA08JunFfeihJu
+	x5b3w9g==
+X-Received: from pgmm13.prod.google.com ([2002:a05:6a02:550d:b0:c82:2dd8:9d48])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:1a8e:b0:368:78da:803
+ with SMTP id 98e67ed59e1d1-36a674f81fbmr19324004a91.12.1779810815253; Tue, 26
+ May 2026 08:53:35 -0700 (PDT)
+Date: Tue, 26 May 2026 08:53:34 -0700
+In-Reply-To: <20260522-fix-sev-gmem-post-populate-v2-2-3f196bfad5a1@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260522-fix-sev-gmem-post-populate-v2-0-3f196bfad5a1@google.com> <20260522-fix-sev-gmem-post-populate-v2-2-3f196bfad5a1@google.com>
+Message-ID: <ahXB_tBWakUUjt6q@google.com>
+Subject: Re: [PATCH v2 2/5] KVM: guest_memfd: Fix possible signed integer overflow
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Vishal Annapurve <vannapurve@google.com>, 
+	Yan Zhao <yan.y.zhao@intel.com>, Michael Roth <michael.roth@amd.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Chao Peng <chao.p.peng@linux.intel.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Zongyao Chen <ZongYao.Chen@linux.alibaba.com>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Yu Zhang <yu.c.zhang@linux.intel.com>, Fuad Tabba <tabba@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
+For shortlogs (and changeloges), when possible, describe the _change_ itself, not
+its impact is.	Sometimes "Fix xyz" is the best shortlog, e.g. when fixing build
+failures, but here, I would go with:
 
-Pre-existing issues:
-- [High] W^X memory protection bypass due to missing set_memory_nx() in mac=
-hine_kexec_cleanup()
-- [High] Out-of-bounds read in machine_kexec_prepare() during FDT search le=
-ading to kernel panic
---
+  KVM: guest_memfd: Treat memslot binding offset+size as unsigned values
 
-commit 12b9a2069db4f35db2b3ed4b36105e4aefe8ff09
-Author: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+for two reasons.  First, it provides a lot more context for future readers, versus 
+"Fix possible signed integer overflow" which doesn't even capture what flow is
+affected, how the overflow is being fixed, etc.  Second, if the fix is wrong,
+incomplete, etc., we don't end up with a follow-up patch that start with "Really
+fix ...".
 
-riscv: kexec: Always build the trampoline page table
+Oh, actually, three reasons.  This doesn't only affect the overflow check.  The
+check on a negative offset is flawed, as it means KVM would incorrectly reject
+bindings with (comically) large offsets.
 
-This patch refactors the kexec preparation path to build the trampoline
-page table and capture its satp value unconditionally, rather than only
-doing so for crash kernels.
+LOL, four.  There is no bug.  The size of the memslot is ((1UL << 31) - 1)
+pages, i.e. 0x7FF_FFFFF000:
 
-> diff --git a/arch/riscv/kernel/machine_kexec.c b/arch/riscv/kernel/machin=
-e_kexec.c
-> index 00fdc42d650df..556b76bcf96e7 100644
-> --- a/arch/riscv/kernel/machine_kexec.c
-> +++ b/arch/riscv/kernel/machine_kexec.c
-> @@ -119,6 +119,16 @@ machine_kexec_prepare(struct kimage *image)
->  		return -EINVAL;
->  	}
+	if (id < KVM_USER_MEM_SLOTS &&
+	    (mem->memory_size >> PAGE_SHIFT) > KVM_MEM_MAX_NR_PAGES)
+		return -EINVAL;
 
-[Severity: High]
-This is a pre-existing issue in the code just above this hunk, but can the
-device tree search loop trigger an out-of-bounds read?
+and so "loff_t size" can never be negative.
 
-When iterating over kexec segments to locate the device tree, the code
-checks memsz but not bufsz:
+As for the offset, the negative check is intentional, because KVM_CREATE_GUEST_MEMFD
+takes loff_t for the size, and so an offset that is negative would also be larger
+than the size of the file.
 
-        if (image->segment[i].memsz <=3D sizeof(fdt))
-                continue;
+I still think it's worth taking unsigned values, because teasing out all of that
+information wasn't exactly easy.
 
-        if (image->file_mode)
-                memcpy(&fdt, image->segment[i].buf, sizeof(fdt));
+On Fri, May 22, 2026, Ackerley Tng wrote:
+> From: Sean Christopherson <seanjc@google.com>
+> 
+> The caller, kvm_set_memory_region(), checks for an overflow in an unsigned
+> u64 guest_memfd_offset. When guest_memfd_offset is passed to kvm_gmem_bind,
+> it is cast into a signed 64-bit integer.
+> 
+> Hence, a large 64-bit offset could result in a negative loff_t, which could
+> result in the overflow checks failing.
+> 
+> Make kvm_gmem_bind() take u64 instead of loff_t to consistently deal with
+> unsigned values to avoid this issue.
+> 
+> Fixes: a7800aa80ea4d ("KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memory")
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> [Use size_t for size instead of u64]
 
-If a segment is provided where p_filesz is smaller than sizeof(fdt) but
-p_memsz is larger, memcpy() will read past the end of the kernel-allocated
-image buffer. If this buffer happens to be adjacent to an unmapped guard
-page, could this result in a fatal page fault?
+Why?  Oh, right, because kvm_memory_slot.npages is an "unsigned long".  The
+discrepancy between a u64 for the offset and a size_t for the size is confusing,
+as they are both conceptually in the same "domain".
 
-> =20
-> +	/*
-> +	 * Build the trampoline page table and capture its SATP value.
-> +	 * The crash path consumes it today; the non-crash kexec path
-> +	 * will use the same setup as well.
-> +	 */
-> +	riscv_kexec_build_tramp((unsigned long)__kexec_tramp_text_start,
-> +				__pa_symbol(__kexec_tramp_text_start));
-> +	WRITE_ONCE(kexec_tramp_satp,
-> +		   PFN_DOWN(__pa_symbol(kexec_tramp_pgd)) | satp_mode);
-> +
->  	/* Copy the assembler code for relocation to the control page */
->  	if (image->type !=3D KEXEC_TYPE_CRASH) {
->  		control_code_buffer =3D page_address(image->control_code_page);
+Rather than u64 and size_t, we should use pgoff_t, which is what KVM already uses
+as the storage for kvm_memory_slot.gmem.pgoff.
 
-[ ... ]
-
-> @@ -135,19 +145,8 @@ machine_kexec_prepare(struct kimage *image)
->  		/* Mark the control page executable */
->  		set_memory_x((unsigned long) control_code_buffer, 1);
-
-[Severity: High]
-This isn't a bug introduced by this patch, but if the kexec payload is
-subsequently unloaded (like via kexec -u) or fails later in the load
-process, kimage_free() will call the architecture-specific
-machine_kexec_cleanup().
-
-Since machine_kexec_cleanup() on riscv is an empty stub, it doesn't call
-set_memory_nx() to reverse this permission change. The page is then freed
-back to the buddy allocator via kimage_free_pages() while still retaining
-its executable permission.
-
-Does this leave executable pages in the generic kernel allocator, bypassing
-write-xor-execute protections?
-
->  	} else {
-> -		/*
-> -		 * Crash kexec uses riscv_kexec_norelocate as a trampoline.
-> -		 * Pre-build the trampoline page tables and capture the
-> -		 * trampoline SATP value plus the physical address of
-> -		 * riscv_kexec_norelocate so that the panic path only has
-> -		 * to switch satp and jump.
-> -		 */
-> -		riscv_kexec_build_tramp((unsigned long)__kexec_tramp_text_start,
-> -					__pa_symbol(__kexec_tramp_text_start));
->  		WRITE_ONCE(riscv_kexec_norelocate_pa,
->  			   __pa_symbol(&riscv_kexec_norelocate));
-> -		WRITE_ONCE(kexec_tramp_satp,
-> -			   PFN_DOWN(__pa_symbol(kexec_tramp_pgd)) | satp_mode);
->  	}
-> =20
->  	return 0;
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526125009.2404=
--1-fangyu.yu@linux.alibaba.com?part=3D5
+I'll send a new version as a standalone patch.
