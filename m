@@ -1,154 +1,115 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f52.google.com (mail-ed1-f52.google.com [209.85.208.52])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C55940B6C3
-	for <kvm@vger.kernel.org>; Tue, 26 May 2026 18:31:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779820319; cv=none; b=cbEkNlR2ochXC4I+cKIZ2guhiQc+yjSQ+RbC9scVg8+YjbcDUl0SWHD2c2oA2wYs6LT4E0zDv6N+EpQ+WgZwz+MeT14yFPByFw2gjulVNVx7WxMriQf8KM3Nk0mSEXhlob2uy76L+ted1qHyVFYebBVx7F5DFF8lI9EvMRnOfI8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779820319; c=relaxed/simple;
-	bh=Cg7dczjcT2ZewLtHQrJjhi+FX0sH21uHc8VAENcNe9g=;
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AAA34219EB
+	for <kvm@vger.kernel.org>; Tue, 26 May 2026 18:39:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.52
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779820751; cv=pass; b=EiJ6v+Vl71oMLIbmmA25CO/CHdaZLodOy7yNvwxyNAq+vc7rELXnRrEOWqTE130mq54+AKdwsuXD5jY5S91NtqBVyjjU1U4wQQB5wlytHXrWzjUBGojL7+oHneU5kOWkz2VbeH7ojkYKse71gDv0QzoB3bFtPO4CWMqbYgBqYRE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779820751; c=relaxed/simple;
+	bh=TQ0YkjZ6DaYWwBevwDIkK78Ix7JVxyhaUN3xT4LANLY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qa4Cz8ZKOOks4TmVmlqCzheGEF8sV4lZWl0X6MjLG6w9v84vpEcssQDaB+SUnIizjAqFTU19UJ9uNNPxS1ifBf4uzk/p5fjz2/YZ4p2vahk6OgL7WB6TpJuZ91NvDU+XowIFitgQ6yuKukYCVd0G4HLMWcHdFMDOZrO1//IW7I0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Rvqzgu55; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=VDJb8HrHYeqai3EcId1wIoMSDdwjJnOipfbcS08jdAS8puwYzyqR0ggFR/MPYjQkzhaGZzEIHj17QkzE1ohwhXmBCTbCl8eOAiQw5FvidS6EGnVK0T3LZ+793znX0cjaEYVVPpGv38787O7fRsFBNMHsNjLzB6IE6L5rFBYeHzQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MPIsIoVN; arc=pass smtp.client-ip=209.85.208.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Rvqzgu55"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 121AD1F00A3E
-	for <kvm@vger.kernel.org>; Tue, 26 May 2026 18:31:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779820318;
-	bh=eEPiWcBYWLBQgSJw8g/tV0hZMvXuK3lxYxueGxGt+7k=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=Rvqzgu55ae/a4FtK8pAxCRxbNyvHVkY2MXJXHKnQbF2N/LzO+eZUwtbM4laAzK0YT
-	 s07r7XitpBZylW5ZjbepOgm2/Si/e/JVsvTv54pAYcSRhEP8uYnSgqvRyKOZ37+CO4
-	 /pRQ04YeSmvN/X5zWOifaeTmZdSVuzt1pFlS0bRsq2olVjf0Kr47Z9EymBDymXAtFI
-	 UbglYS3Lcjajug0LrY3RVGqdONLDsdbl3HEW6QueVPd8F4imPEhckL1LxNStng8NyW
-	 xCIdB7gExB/Yx2xNee3Sin1XUcn3TRunAXpHPdMItGFttzcOMOozxMOHOhQgChKQqk
-	 sa4K4qUxzo0xw==
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-67f94c078e8so1507628a12.1
-        for <kvm@vger.kernel.org>; Tue, 26 May 2026 11:31:58 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ/vuonEMLbAwoCpcHYQuArr8bwxAAzrdCHBUDcSl9GXP+mhYyX2e5saZd++7yt9rgxQ5g8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxTVL1kC+950iGskATmbmLwQiK6lrauyQeB630aCl5aoAXmu6g/
-	KQw/EPytMSkw8RAU405wrDBS9nqIjnFw5BsSSiqVcm/saFQZg7oHfrhh3UOF2y6jEgIa9xMuADZ
-	b2Seg5KOvJ49DY/lPbCa+flXiPVaX8lw=
-X-Received: by 2002:a17:907:a80c:b0:bd5:ec9:e063 with SMTP id
- a640c23a62f3a-bdd267cae6cmr1198794666b.49.1779820316976; Tue, 26 May 2026
- 11:31:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MPIsIoVN"
+Received: by mail-ed1-f52.google.com with SMTP id 4fb4d7f45d1cf-67c1eea6b4dso23a12.1
+        for <kvm@vger.kernel.org>; Tue, 26 May 2026 11:39:09 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779820748; cv=none;
+        d=google.com; s=arc-20240605;
+        b=M6Ggb72JjlUsYfCuuKUrb2Gb1vKlGsT5n9U5W2QbqoH+7wYXGx5//Z4GHYAILvO1CS
+         oOg+tPQD8+upHlqZGH21lbn+U2l+b60+5dNU2y2BkhB0KptJ7PO5m+udZfRhf2zun9bh
+         ugmoNZg4n8FeTv97W7tqFsLkx3oojOUWhZgRrMHZms7CpjlXe3/MhTiE9cXdhZEYMAPh
+         Vf4oDPGLCo/UdT05i00yw2sG7rbByZf6S5ttD0RAw9TA+y1Qa32b/s42WHPfu6kdttCN
+         c4X+zWUAYLM2yYN9PRtr8E+tMEe8f7vx+UNEjxh5RAZvlsDEAzMl+R5A242aaRJBDY77
+         021A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=VZrclRlrLw1F8/3daiaKppXoN6r8/1TCSncdy3RzcBA=;
+        fh=+J1R3Nbrz7zxU1gpQnDEZJ0CeATkVYEWAOQQlNRSVKw=;
+        b=eLOXOdQ8ZK25A8cNfenC22vtYkDjLLn0WaQWNzurHbb+zhwZxH+IqUsy4RmOuY6IG0
+         h5h9U41DmeHP6FGFBGvUA2skIs7kkOquJcVPynNPmONOhh4xMykAwvceaAUBZqnlWrLJ
+         HfxHgoOLGcLli8mE0i6Ps3MiHYlCUr1D91+n66kJBMmKc4UuoOKfFmLWnC0bhoUjCZ25
+         zteD+kI9/nhvO6qFXmDS84hSTDlMhxO6fhnbtY0bxRZLyItim0RrVgbCoPNUt5xNO4mI
+         cZfNcVrT3u4Zhyw9SLWQCe7NVO0qPUdDgVXj0G+m5VzcoTl2ZuiI6U74PlDkJtvQ+5xU
+         YA8g==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779820748; x=1780425548; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VZrclRlrLw1F8/3daiaKppXoN6r8/1TCSncdy3RzcBA=;
+        b=MPIsIoVNsFdVMXJRJ4ZnH14jWU4ca8f7NkGCg6OAxzPUqUSAdfZZWDa+NI/ifUQwpf
+         tjJ6pel86DJ6t8+IbHotRq0rZeCPYIOYZgFkReIrfyzzQ4Y6RbAwG0H1hdEH7skxfJU1
+         JIyyf9GjoYxXIOiRD0ufFJjooc2+jvhT/gC/yPB35e+f+7yYf43YQ0RXbn2Pgi5M9ztJ
+         TO6Otmu2wriiUTSupJpwMGdF6F+I5AJWdiNp9F5qgQmHC3HReDq+V+hm74JqQ4kEduaB
+         VUpwR0QMHtHAFlT6elVpKDxw6bWpFFAeP3aEzEPYOGzN9IpsLIgZFF7WtAbFhK6veCUh
+         u4yA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779820748; x=1780425548;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=VZrclRlrLw1F8/3daiaKppXoN6r8/1TCSncdy3RzcBA=;
+        b=JSF9ds1PItBYpMJe83oMiKxrw35Ihy/zuOQEGmVKv65qDiP7GhCVwkmXiHivB74z6K
+         OEWk/uDq0dmHvXX/0SD0yun1p4aHwlA/e87qS9RAVQk7AQUeLG3IR1ehqkWOLJ/NZCC4
+         17Pui6vCl6pn/LGTLDQe2765JmvPL3ApfXTTc8QQfpOk599FxTazzOpVo1efbVPc22XW
+         Czf3hS/esGt/sZ18Sd897QCPl4gb+l0EDklC8qlJxcpBToTQ5x2X/DR8RkAZYQy4R3Us
+         lF8b6XNDgPXFsJO/eOvuMT+4JczF3nUItcScjNis7Kzve8T4zhM8tBp976ApPDyJFakb
+         rQ8w==
+X-Forwarded-Encrypted: i=1; AFNElJ9el7VIxRDnDYBk9cfycDB9XyjEQ3Kmu4ktU0l6WPzgqJUQ8dnRJF8wMDyasNQYCvFa4U8=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy74gziMTqwdiEeNXR0HpHjxBJkLudFMZ6mAyD1P8D13gGrxT8g
+	QC3DORbq/mgxKB1aOhuFBBn2v5mZIa948KDZPAtwbMetbvE4z9G6awdTDJYD/PXNZ3jXfOje8mc
+	S43+xkyTWyotj9sq0CecaP+IW7d4E4Te8fAV9pMvM
+X-Gm-Gg: Acq92OEo8sKP6iS51aQL2FPVjA09tdZR/xEI40Yu7GFDW+puaunPaCgP5ROC23GC9Ui
+	7JtbhpS7rMTzmHkAGEyyX3d0fIC+l3r+5Ctspau0iUmTVQsNj6KgRMFXEA5eRuFgMyyNHFXBCO2
+	du48LHJs2QxnpEOAy9saVruKNb11of5PyPRBdq1OvfI/daVZoxxCMINFGxINq//RCWRQ03+52O8
+	LecnKv7c08P26CEPj4qKyBX6o+uEin6AdpnRwgSvi0hv92YIPnkiOY5yC1peOfBFK1b+7N0ryqs
+	mPhJnBpj0hN8ytdUow==
+X-Received: by 2002:a05:6402:5356:10b0:66e:e3f9:ebb6 with SMTP id
+ 4fb4d7f45d1cf-688fd0d56f7mr134060a12.4.1779820748207; Tue, 26 May 2026
+ 11:39:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260522232701.3671446-1-seanjc@google.com> <20260522232701.3671446-4-seanjc@google.com>
-In-Reply-To: <20260522232701.3671446-4-seanjc@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 26 May 2026 11:31:45 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zP-t3YsiXNZm2beR6RcRZaDN386_ktmipGm+sA=2PGcaQ@mail.gmail.com>
-X-Gm-Features: AVHnY4J_1fdnhkQ0Py-uRXObO7sDEeAhFrVHWci4hpsgIrEd2EUWmPz46ue-Xnc
-Message-ID: <CAO9r8zP-t3YsiXNZm2beR6RcRZaDN386_ktmipGm+sA=2PGcaQ@mail.gmail.com>
-Subject: Re: [PATCH v4 3/5] KVM: SVM: Fix nested NPF injection of
- PFERR_GUEST_{PAGE,FINAL}_MASK bits
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Kevin Cheng <chengkev@google.com>
+References: <20260513224608.1859737-1-jmattson@google.com> <20260513224608.1859737-4-jmattson@google.com>
+ <CALMp9eS4s9tsOmvDUDeqS7oph0mSHyhxBiULQdwHVaG+7gXLSQ@mail.gmail.com>
+ <agXcKDjnJc9DPcyr@google.com> <CALMp9eS831M153QmAgjzJcR2dFY_wCCCzDisd7_T6GyS3-gAFw@mail.gmail.com>
+ <agX2SJF3rJSkIqDe@google.com> <CALMp9eQTSxFkVf4vV83yNYvv2AjseHYiD3M68mcc951L4U1Jxw@mail.gmail.com>
+ <agX5v1utAfyMadPm@google.com> <CALMp9eQqbHrcV1_WM+5xUR16OpGk+unxoZGi+=t55cqVhFgAfQ@mail.gmail.com>
+ <DS7PR12MB82016B1B310BD994C83B35D294072@DS7PR12MB8201.namprd12.prod.outlook.com>
+In-Reply-To: <DS7PR12MB82016B1B310BD994C83B35D294072@DS7PR12MB8201.namprd12.prod.outlook.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Tue, 26 May 2026 11:38:56 -0700
+X-Gm-Features: AVHnY4KO9YpPS3F4eK2yFsOKV_kGxdvJkMqyQHd9reQ58QYwde_VG7jCuT3Sxr4
+Message-ID: <CALMp9eQ2SLq2bVngJ1RHEfkFe5yaTDrFxXT0KNTgBZY6WRMDbw@mail.gmail.com>
+Subject: Re: [PATCH v3 3/4] KVM: x86: Virtualize AMD CPUID faulting
+To: "Kaplan, David" <David.Kaplan@amd.com>
+Cc: Sean Christopherson <seanjc@google.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"hpa@zytor.com" <hpa@zytor.com>, "shuah@kernel.org" <shuah@kernel.org>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "ctpence@google.com" <ctpence@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, May 22, 2026 at 4:27=E2=80=AFPM Sean Christopherson <seanjc@google.=
-com> wrote:
+On Thu, May 14, 2026 at 11:17=E2=80=AFAM Kaplan, David <David.Kaplan@amd.co=
+m> wrote:
 >
-> From: Kevin Cheng <chengkev@google.com>
->
-> Fix KVM's generation of PFERR_GUEST_{PAGE,FINAL}_MASK bits when injecting=
- a
-> Nested Page Fault into L1.  Currently, KVM blindly stuffs GUEST_FINAL int=
-o
-> L1, which is blatantly wrong given that KVM obviously generates NPFs for
-> page table accesses.
->
-> There are two paths that trigger NPF injection: hardware NPF exits (from
-> L2) and emulation-triggered faults, i.e. when KVM detects a NPF as part o=
-f
-> emulating an L2 GVA access.  For the hardware case, use the bits verbatim
-> from the VMCB, as KVM is simply forwarding a NPF to L1.  For the emulatio=
-n
-> case, propagate the GUEST_{PAGE,FINAL} bits from the access field (which
-> were recently added for MBEC+GMET support).
->
-> To differentiate between the two cases, add "hardware_nested_page_fault"
-> to "struct x86_exception", and set it when injecting a NPF in response to
-> an NPF exit from L2.
+> This appears to be a bug, as most other instructions (e.g. INVPCID) that =
+have CPL checks do the CPL checks before the VMEXIT checks.  I'm following =
+up on this internally...
 
-hardware_nested_page_fault is no more.
-
->
-> To help guard against future goofs, assert that exactly one of GUEST_PAGE
-> or GUEST_FINAL is set when injecting a NPF.  Unlike VMX, there are no
-> (known) cases where hardware doesn't set either bit, and KVM should alway=
-s
-> set one or the other when emulating a GVA access.
->
-> Signed-off-by: Kevin Cheng <chengkev@google.com>
-> [sean: use plumbed in @access bits, massage changelog]
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-[..]
-> @@ -39,19 +39,32 @@ static void nested_svm_inject_npf_exit(struct kvm_vcp=
-u *vcpu,
->  {
->         struct vcpu_svm *svm =3D to_svm(vcpu);
->         struct vmcb *vmcb =3D svm->vmcb;
-> +       u64 fault_stage;
->
-> -       if (vmcb->control.exit_code !=3D SVM_EXIT_NPF) {
-> -               /*
-> -                * TODO: track the cause of the nested page fault, and
-> -                * correctly fill in the high bits of exit_info_1.
-> -                */
-> -               vmcb->control.exit_code =3D SVM_EXIT_NPF;
-> -               vmcb->control.exit_info_1 =3D (1ULL << 32);
-> -               vmcb->control.exit_info_2 =3D fault->address;
-> -       }
-> +       /*
-> +        * For hardware NPF exits, the GUEST_FAULT_STAGE bits are only
-> +        * available in the hardware exit_info_1, since the guest_mmu
-> +        * walker doesn't know whether the faulting GPA was a page table
-> +        * page or final page from L2's perspective.
-> +        */
-> +       if (from_hardware)
-> +               fault_stage =3D vmcb->control.exit_info_1 &
-> +                             PFERR_GUEST_FAULT_STAGE_MASK;
-> +       else
-> +               fault_stage =3D fault->error_code & PFERR_GUEST_FAULT_STA=
-GE_MASK;
->
-> -       vmcb->control.exit_info_1 &=3D ~0xffffffffULL;
-> -       vmcb->control.exit_info_1 |=3D fault->error_code;
-> +       /*
-> +        * All nested page faults should be annotated as occurring on the
-> +        * final translation *or* the page walk. Arbitrarily choose "fina=
-l"
-> +        * if KVM is buggy and enumerated both or neither.
-> +        */
-> +       if (WARN_ON_ONCE(hweight64(fault_stage) !=3D 1))
-> +               fault_stage =3D PFERR_GUEST_FINAL_MASK;
-> +
-> +       vmcb->control.exit_code =3D SVM_EXIT_NPF;
-> +       vmcb->control.exit_info_1 =3D fault_stage |
-> +                                   (fault->error_code & ~PFERR_GUEST_FAU=
-LT_STAGE_MASK);
-
-Do we need to do this in the common path? If from_hardware=3Dtrue, can
-the fault injected by KVM have different flags from the one produced
-by hardware? I guess the answer is yes, (e.g. if KVM is doing
-write-protection?). Might be worth a comment.
-
-> +       vmcb->control.exit_info_2 =3D fault->address;
->
->         nested_svm_vmexit(svm);
->  }
-> --
-> 2.54.0.794.g4f17f83d09-goog
->
->
+Did you learn anything from the internal follow-up? The ellipsis
+suggests, "stay tuned..." :)
