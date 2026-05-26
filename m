@@ -1,154 +1,151 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 135E53C37AC;
-	Tue, 26 May 2026 06:56:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0A7311592;
+	Tue, 26 May 2026 07:01:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779778613; cv=none; b=CizYzpmNVY9clANh1xDR/AXP0yvQfYyageXJal9OaYcrGS8zFgArfpX5kixUfA5/UD15ia0m0qwHxLYuc/tWeGnYstCUSUkcpBpHx7yIgAX0ngv6xBoSMdX4cmjG9+fbYrYwDfLPJOM2iFSBmLn0Yzxry2sw14etWwLk2oDThJg=
+	t=1779778864; cv=none; b=FdjP5a8QGcr2tsRGrTQFwBLHDsjGGnmHkrUKore0pq5CHUKETAIEwJ382TeJkOMImDANckifWrDh2BKPkHnrS78WvKgs/CY718DGymeDA/UEAjJDo3KY1FqY+yJNZss0rxcYIH6o7O2xi9fFkZxEZcKg8KVqSWkm/RxmPs5LurQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779778613; c=relaxed/simple;
-	bh=+K/chcO6pUeQLrwQKaofRX7QkoTVWrLfLjv8QEGt4mQ=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=mxNPXBZFCoNDM5R2+9YSXp6HnK0cbVeK6osvyvxy8XJZMUUeKhsg/o/3KYyo4I3foNXG/Bn7STbLmR+Gu2g6zA7tPLD8Jk+7xCKFtQOTg6P/SVdPegDGULH61aY0BhTtzmRY2/wRNs6KmFHPbpY/PSrC5abchAQYEkz4Owt05i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LCH/tOTF; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779778864; c=relaxed/simple;
+	bh=xU9ey+/gCReKFhu6u/IO0ogzUI4OXMbbCdFe4TuRYio=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RH8CA7zPnyjlMiFTPpe2OEYWAoBbvH0av6oV/95oKGrRc3j609dxo0fnj4NVxEqBd73qEVH/U5Cx3HpWrS5Oqtw7b0TYj4Kz054YVED0PiPyBIFDjv01LfY2/cSWuNRB2ao/WXurLhXoWSEuISBTqwKh8fDVLx0BsPXrNoe+rnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=T4KD+iQQ; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LCH/tOTF"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B13D1F000E9;
-	Tue, 26 May 2026 06:56:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779778611;
-	bh=daydDheNrnDPiRdJK/Nx8S7fHjZOfOICOVi+Nn5bm3o=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=LCH/tOTFnmO8CS9l839BxSNyadZO/ayY3InS1iAjoUiIN3aHjGV71aOrmeW1qftVZ
-	 DgMJwl7kgcmlGKoZLk2U9DJAXZQQXfn3YBMxD/JVu931N937fvNvXsbRJ3tjUtHEgL
-	 LdekHz44rm6daeBKpD1pgiR1WU1zlssMwGxXlWrJDftQQ1sF+fYpPT1s+focu7djGY
-	 SGBk01pHAungdGkC/32Js5VVaet8IUn3vv3lu23OpLVvht5wcotwwEPkX703jIqKoC
-	 wnzOh7f04kJ/J8NtmghwIgUlNFUiNG7ZlIlcYvCbFtCuB4TLCCsRzlQuJFAfUwJiel
-	 ebOCTw/oS2/tA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v12 6/6] vfio/pci: Add PCIe TPH control register
- virtualization
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Chengwen Feng" <fengchengwen@huawei.com>
-Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
-In-Reply-To: <20260526040830.52854-7-fengchengwen@huawei.com>
-References: <20260526040830.52854-7-fengchengwen@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 26 May 2026 06:56:51 +0000
-Message-Id: <20260526065651.9B13D1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="T4KD+iQQ"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64PLIBLH4185202;
+	Tue, 26 May 2026 07:00:51 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=VX8+1S
+	+jkayJgLaGXATX8h/OXyDc7O/lTdANJFoVST4=; b=T4KD+iQQboiVBtFZGNTDlv
+	6HQA1fviE+ITIN4jI7Q6KD4g5IlfSepPGRiQj9w2ZGyDIbyHoLyRCYraXbKLb+ig
+	p2+6pF17f01gJbfR+ByVTS6SwphcLzeYj0L8vQy4hfyzWt6hJ0Oksa6F84t1LzOq
+	HROIkyXGVKBnsR0mytCVl2L1VHoiG5hqOYEdL7gt7Gznnu//1a7mXfUbNWUALidO
+	nI1/MCisBVQu/qSJfTxpHB0qbe5ff5f6PtmS5zM1BJpEhrM3LQjVZwi3xoGV/Cfo
+	RLc494LM3BXmx9WPYJ1lx3yw/H8ptpx0iJf6AmzDTsGh+xekYFxSx7wa3sTBf1dw
+	==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4eb4nq1wma-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 26 May 2026 07:00:50 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64Q6s4Aa005766;
+	Tue, 26 May 2026 07:00:49 GMT
+Received: from smtprelay06.wdc07v.mail.ibm.com ([172.16.1.73])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4ebpjq8bnv-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 26 May 2026 07:00:49 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay06.wdc07v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64Q70lqX16122604
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 26 May 2026 07:00:48 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id A7BCA58059;
+	Tue, 26 May 2026 07:00:47 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 73A285805D;
+	Tue, 26 May 2026 07:00:44 +0000 (GMT)
+Received: from [9.123.0.169] (unknown [9.123.0.169])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 26 May 2026 07:00:44 +0000 (GMT)
+Message-ID: <40b7656b-52ef-4140-b6e3-e034fd44a4fd@linux.ibm.com>
+Date: Tue, 26 May 2026 12:30:43 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] KVM: PPC: Kconfig: Enable CONFIG_VPA_PMU with KVM
+Content-Language: en-GB
+To: Gautam Menghani <gautam@linux.ibm.com>, maddy@linux.ibm.com,
+        npiggin@gmail.com, mpe@ellerman.id.au, chleroy@kernel.org,
+        atrajeev@linux.ibm.com
+Cc: linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+References: <20260518044150.34632-1-gautam@linux.ibm.com>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <20260518044150.34632-1-gautam@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: 7qkukWVPBjDP_LO3AnDPm149bcRTJKrk
+X-Proofpoint-ORIG-GUID: NvEfuJU5a97V-5xkwsqXfnF1So_ulFhD
+X-Authority-Analysis: v=2.4 cv=QIJYgALL c=1 sm=1 tr=0 ts=6a154522 cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=f7IdgyKtn90A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22
+ a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=mE7zvaIDyRbJdjUQ4pMA:9 a=QEXdDO2ut3YA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI2MDA1NiBTYWx0ZWRfX1z7hS0EfpvnJ
+ sAbzsT4d5VZP3aY/4JjjtCMq4OHBCdmWJCbaSHRTaI6TsLLmI9xXEfeQugl8Cvxlk3QjRkmGYQo
+ LC/GbOwQkFJW3uVhCLG4B8CHmlS6Vpi20Tsb7gNfdkQD5LYZYHhw3QUeMvrV5QygEmxQkXSwCDz
+ CsK/p8bPmfjjxzhy7c8PrZZdXbBZbIx9Pv87yCOGxSjM5ES/4DYwAnkjxnOGHOmAyJBC0g9vhef
+ pJJjyUbxe4wrYImY7mzXrBrgwDDkbHbifkqjZHqs0pN1G5JZQI+tr1Yww9wmlcfBZk+yz3mK6kT
+ KbF2ompqmrEy5dQztaK6vZvoUyvT67skM7pOG3qCzigFRAPl4UZsteEiCnOrp1+R8gsECZx/84s
+ M74ib5oI5RxCGYYjZhvu9acMgFevCn16wYoBbnqwJL8yewcJzmFe/LRR25GNeEnHMc3xl6Cw5Ll
+ Qv/ZJm5QmBkq55YMOLw==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-26_01,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 priorityscore=1501 impostorscore=0 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 adultscore=0 spamscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
+ definitions=main-2605260056
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] The TPH configuration write handler silently drops valid byte-leve=
-l writes, blocks ST Table config-space writes, and bypasses virtual configu=
-ration space updates.
-- [High] TPH state is lost and becomes unrecoverable after a device reset d=
-ue to missing state synchronization.
-- [High] `vfio_pci_tph_config_write` performs MMIO accesses without holding=
- `vdev->memory_lock`, racing with concurrent device resets.
---
 
-commit e0337d4fe2416ad1997b3bae043a087facf49ef3
-Author: Chengwen Feng <fengchengwen@huawei.com>
 
-vfio/pci: Add PCIe TPH control register virtualization
+On 18/05/26 10:11 am, Gautam Menghani wrote:
+> Enable CONFIG_VPA_PMU with KVM to enable its usage. Currently, the
+> vpa-pmu driver cannot be used since it is not enabled in distro configs.
+> 
 
-Implement virtualized handling for PCIe TPH capability control register
-writes. Validate and mediate user write requests to accept only valid TPH
-mode configurations. Synchronize shadow steering tag table to hardware when
-TPH gets enabled successfully.
+I think the commit log needs a rephrase as irrespective of current state 
+of distro configs, it makes sense to enable CONFIG_VPA_PMU for KVM 
+guests on Power by default since this is the only use-case for VPA 
+counters (i.e. in a KVM guest).
 
-> diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_p=
-ci_config.c
-> index a10ed733f0e3a..188845f81626d 100644
-> --- a/drivers/vfio/pci/vfio_pci_config.c
-> +++ b/drivers/vfio/pci/vfio_pci_config.c
+> On fedora kernel 6.13.7, the config option is disabled:
+> $ cat /boot/config-6.19.12-200.fc43.ppc64le  | grep VPA_PMU
+>   # CONFIG_VPA_PMU is not set
+> 
+> Fixes: 176cda0619b6c ("powerpc/perf: Add perf interface to expose vpa counters")
+> Cc: stable@vger.kernel.org # v6.13+
+> Signed-off-by: Gautam Menghani <gautam@linux.ibm.com>
+> ---
+> v1 -> v2:
+> 1. Rebased on latest master
+> 
+>   arch/powerpc/kvm/Kconfig | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/arch/powerpc/kvm/Kconfig b/arch/powerpc/kvm/Kconfig
+> index 9a0d1c1aca6c..56e86b46ff13 100644
+> --- a/arch/powerpc/kvm/Kconfig
+> +++ b/arch/powerpc/kvm/Kconfig
+> @@ -82,6 +82,7 @@ config KVM_BOOK3S_64_HV
+>   	select KVM_BOOK3S_HV_POSSIBLE
+>   	select KVM_BOOK3S_HV_PMU
+>   	select CMA
+> +	select VPA_PMU if HV_PERF_CTRS
 
-[ ... ]
 
-> @@ -313,6 +317,39 @@ static int vfio_virt_config_read(struct vfio_pci_cor=
-e_device *vdev, int pos,
->  	return count;
->  }
-> =20
-> +static int vfio_pci_tph_config_write(struct vfio_pci_core_device *vdev, =
-int pos,
-> +				     int count, struct perm_bits *perm,
-> +				     int offset, __le32 val)
-> +{
-> +	struct pci_dev *pdev =3D vdev->pdev;
-> +	u32 data =3D le32_to_cpu(val);
-> +	u8 mode, req_en;
-> +	int i, ret;
-> +
-> +	if (!enable_unsafe_tph)
-> +		return count;
-> +
-> +	if (offset !=3D PCI_TPH_CTRL || count < 2)
-> +		return count;
+Also, since we already select KVM_BOOK3S_HV_PMU, VPA_PMU is a natural 
+extension, provided we enable only if the required dependecy is enabled.
 
-[Severity: High]
-Does this silently drop valid 1-byte writes to the control register, or
-writes to the upper bytes of the register (e.g. offset 0x09)? This might
-break guests that perform byte-wise accesses.
+With an update to the changelog with suggested rationale:
 
-Also, could this drop guest writes to the ST Table if it resides in the
-capability space (offset >=3D 0x0C)?
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com>
 
-Additionally, since this function returns without ever updating
-vdev->vconfig via vfio_default_config_write() or similar, does this bypass
-virtual configuration space updates entirely?
+>   	help
+>   	  Support running unmodified book3s_64 guest kernels in
+>   	  virtual machines on POWER7 and newer processors that have
 
-> +
-> +	guard(mutex)(&vdev->tph_lock);
-> +
-> +	mode =3D FIELD_GET(PCI_TPH_CTRL_MODE_SEL_MASK, data);
-> +	req_en =3D FIELD_GET(PCI_TPH_CTRL_REQ_EN_MASK, data);
-> +	if (req_en) {
-> +		ret =3D pcie_enable_tph(pdev, mode);
-
-[Severity: High]
-If pcie_enable_tph() succeeds, it updates the hardware register and sets
-pdev->tph_enabled =3D 1. However, since pci_save_state() is not called here,
-if a device reset occurs (e.g. via VFIO_DEVICE_RESET), the PCI core
-restores the stale saved state where TPH is disabled, clearing the hardware
-register.
-
-Since pdev->tph_enabled remains 1 in software, wouldn't subsequent attempts
-by the guest to re-enable TPH cause pcie_enable_tph() to immediately return
--EBUSY, permanently blocking the guest from using TPH after a reset?
-
-> +		if (ret =3D=3D 0 && vdev->tph_st_shadow) {
-> +			for (i =3D 0; i < vdev->tph_st_entries; i++)
-> +				pcie_tph_set_st_entry(pdev, i,
-> +						      vdev->tph_st_shadow[i]);
-
-[Severity: High]
-If the hardware ST table resides in the MSI-X table, pcie_tph_set_st_entry()
-may perform MMIO writes. Since this is executed holding only
-vdev->tph_lock, could this race with a concurrent device reset (which
-acquires down_write(&vdev->memory_lock) to block MMIO accesses and disables
-memory decode)?
-
-Without holding down_read(&vdev->memory_lock) here, could these MMIO writes
-interleave with the physical reset or occur while memory decode is disabled,
-causing Master Aborts?
-
-> +		}
-> +	} else {
-> +		pcie_disable_tph(vdev->pdev);
-> +	}
-> +
-> +	return count;
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526040830.5285=
-4-1-fengchengwen@huawei.com?part=3D6
