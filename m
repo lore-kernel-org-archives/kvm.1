@@ -1,54 +1,54 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A9C3E7BC4
-	for <kvm@vger.kernel.org>; Tue, 26 May 2026 23:54:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E288F3E8323
+	for <kvm@vger.kernel.org>; Tue, 26 May 2026 23:54:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779839704; cv=none; b=qP0tN0OJRQoVhNRctCb4e8+D/zOyA8gDth00RQvzBC1OLyzHCVIhW5ZY+cpYH6Wm0iPQ1oyCbVgxSSTB0VIUPr7JoC/sXObswSuCRzIcFfkXiJFbvzlI1Y7PcndLDETzLOhsAD1/yhqHEWr0oowfsyry9zqJG2J7n1q1VL1pBcA=
+	t=1779839707; cv=none; b=HWVjSgJFVqldr1+ikG3XIgqNVLdIUfjkNByaEGINLvGP5EgABa73WqMRA8OWGfKUZ/UwmoaMl1+n5Zop7/IPDXpoLLtesrOCAr5xuS1Yk6+m/fI09QZcLWFB/kUGLGvHiNeXbALZVdxIY0VzVgahmdsnLZIfUn2qjU+VwqYiP3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779839704; c=relaxed/simple;
-	bh=oKAGiCEez1guitxAB0c+dRZEQNdemvDrxj+Wsr4GpQY=;
+	s=arc-20240116; t=1779839707; c=relaxed/simple;
+	bh=CkH0Vzpqcgvxa7Y2LQJUZJmUrJFwjbVNSoXMV7tcqZE=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=VrJFs+mj5P7jIs+09/u7WKLqJXnuXPN1MGE5GoUewH+t+lr+BdCz2fm2u5tmRFuITgIWIQyir/aM49/iSISeUl/a84QmfDOWJiWBxNadESpkr7nC2t3S8EIAIQiX1cpRfqYupig8gGoOZ36MHo7XaU+dx97VVYTpsP9ywrkmMTg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YTQfqNgU; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=XGUBnn9808NPrlI3ZXq2Puzb8ff5HfhZrTyUaPfBn8APrJFW2Gqfm0JeQNlhk7ggMjoFu7NHqh+4doGFt6PnRu/iY9TDCqU0qjIsFWTBVAm5fpMxfJZdSrl6llDZSrOR9uH/t+GLP58pDxjik/djBXpgxRM8RGzp3KnzxYyfbCk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EHms+Axk; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YTQfqNgU"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b9a3c3c4eeso112626035ad.3
-        for <kvm@vger.kernel.org>; Tue, 26 May 2026 16:54:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EHms+Axk"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c8292e18166so5390486a12.3
+        for <kvm@vger.kernel.org>; Tue, 26 May 2026 16:54:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779839685; x=1780444485; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779839689; x=1780444489; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=u1vMyA9EZK7kcD8bOsSBJdErzXn6fW4e6Ma8FcXvmHE=;
-        b=YTQfqNgUvHh2uIf165H/h8YrC8nJ2S0baLA8vo8CTuMHsp2tbDodSnanlFQrGxroOn
-         y3WGEwg/GKSLEcvqnYK5oknKniF+JGohfqaHKui+1C1JJWlnuj7c2HGZMaH4RwSE1+z1
-         YUPKN2wDcb/svlAgFLxYv5yYlgAr7gvq53svK0nH4sPXNAU6ZPEMX6A3NM808YKmdxVU
-         mfbCEOZtvGx7qDCwDU1T10HRv5JPPLysieGWXGvetPmdIjKO6yuj9XNaGlKwwjbDI2V1
-         MAYkqU8KpmQiVQ82F0+LkfmL+8YQAEm9W5Thc22Ys3yNV+WW+iM74hxJT12rS4Wf+QTl
-         fBLA==
+        bh=W0Hu/D8rAuWKbGc4lHoFkn5GJfHnwhou62SLjESXk+s=;
+        b=EHms+Axkefp8PwSTahgdtD2/Sisow1YdDbwPFldOw1JaAOZe6OILHgqMiAx2UiS1Z6
+         Qe2cr9VG6d2ayLtpZjMVdmmQPRkBpcdptEEmwrnBZxL2wpvKrIsZhcHr3JN9j6uRHj/V
+         g3iLtT3Cm98vhM1R+9G8O2E//zWCtNwDSLs+saijUrRq46xD9EqhpPsRdOXTDi1Q85UC
+         D9PlRs1r1Rqjqiwcac5cktHVXoXwzVSrZNTcupgntUB5IMT7jWDRYtStCzkc7GNszs55
+         8qiDoO4EMVh6YI5uFfuLNflxqdr+psbOSAoT36T6nCrdFUfdPwc2sn0exV+yPUQ8tkMV
+         duIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779839685; x=1780444485;
+        d=1e100.net; s=20251104; t=1779839689; x=1780444489;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=u1vMyA9EZK7kcD8bOsSBJdErzXn6fW4e6Ma8FcXvmHE=;
-        b=dA5GInT9WjocO1NlCz2Eeoy/qK7+7DE+KOvQSnXvrY41VShcwM98BdiIZKJI+xRrHO
-         l0H3V3E7leqfvHXbXEM6wsf5KEm5l2jzai60Ep6H0Ahvlee0UND+GQnTIWOdi5s6speu
-         /kOm+DmP0J7iBGoDYRSL3eGa8kyIgVLXokgCawU7LTS+fFAsOtAD5V3+B1qGtxYwfXK8
-         7oeG8hkSc3EgO9OOKdWDVjjVPFSsFv7BgqvV/xOctGfCjOjj08U7F27NPHjqoeDcTbAV
-         8UrZm4CDb9VmrBgyUzwVsGfCpNi/gc44Sb1/5XwbFFGJqWs+fhINA46S8QPyvgn/LNw6
-         ZiAA==
-X-Forwarded-Encrypted: i=1; AFNElJ/qqs9vZH78B4wlQSr8B17WhgwPh4f6mPBKFEJm/f36EslSvBH205Gcmi75SD9/Twl8Yaw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzVLQggSHJlrXPWKgYsI6Z0CqB+P1NP5SjZ2lxzmJ6neaUiX9zV
-	hEiQgpWVZEAfs/01Cpsiq1r+QFcdz7BsoHh+udZq/USeYsswTc4eM2yvIPlV61kyahCzXSd7/+f
-	sHjqpHWAW
-X-Received: from pgbcb21.prod.google.com ([2002:a05:6a02:715:b0:c80:22ee:7357])
- (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f60f:b0:2b0:5795:9ead
- with SMTP id d9443c01a7336-2beb02cb6bamr225455725ad.0.1779839685352; Tue, 26
- May 2026 16:54:45 -0700 (PDT)
-Date: Tue, 26 May 2026 23:54:11 +0000
+        bh=W0Hu/D8rAuWKbGc4lHoFkn5GJfHnwhou62SLjESXk+s=;
+        b=pKK8PysVfQr9kNXLzW4auDoSAksjy3dKXnKwsVO85soAtuOmBPcUvE+wBgpMa0cU4F
+         6rZWNJJqBzOL72ZGxW9NMC6YKLwS63N5o7NOMi5kbYZovR9r0wuE64reqVuvPQzBPNI2
+         2q5a2NKbMCU6D8agudwtRd32mg8nOqQT8zJOOCKQZY6Q3TQ9/62XOTHMlJfKl2GKDjNh
+         5AL1z+QLoqa3cXBQl3kr5sR3bYtkuMW/4el/u5kMeQF7sii3QdSzNSVKFzFmw64lYkrM
+         B+CKyp0j5mjCuaIMwdDO9i6NksjV6zQbVb2U1bFFghMb5wiSvlMtWg+8fsUmO632kWv3
+         glkA==
+X-Forwarded-Encrypted: i=1; AFNElJ/k2o4ivbHVYq8IHCNa5iRhvETgSo7vEiJ0pv4Fs64CmlDOL0ZmDJfI/ofaWJ7NJd3HKUE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRGidQCF7rGoMiZAEQ+Ax6V8p9/4NsfzIrhtywbytYFwDMLcsk
+	ZAUuUYGU/Ug4Se72aeByffTQ+zztudJ+hDW6zWpFPT3vPVr+1imNAtx9/7lbcMriTYNJqmvUS0i
+	duruO/nT1
+X-Received: from pfblu13.prod.google.com ([2002:a05:6a00:748d:b0:82f:ad57:40bb])
+ (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:22c6:b0:836:900e:8743
+ with SMTP id d2e1a72fcca58-8415f35d58amr21464806b3a.36.1779839688895; Tue, 26
+ May 2026 16:54:48 -0700 (PDT)
+Date: Tue, 26 May 2026 23:54:13 +0000
 In-Reply-To: <20260526235417.2058313-1-jrhilke@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
@@ -58,8 +58,8 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20260526235417.2058313-1-jrhilke@google.com>
 X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
-Message-ID: <20260526235417.2058313-5-jrhilke@google.com>
-Subject: [PATCH v2 04/10] selftests/vfio: igb: Program MSI-X interrupt routing
+Message-ID: <20260526235417.2058313-7-jrhilke@google.com>
+Subject: [PATCH v2 06/10] selftests/vfio: igb: Disable PCIe completion timeout retries
 From: Josh Hilke <jrhilke@google.com>
 To: Alex Williamson <alex@shazbot.org>, David Matlack <dmatlack@google.com>
 Cc: Vipin Sharma <vipinsh@google.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
@@ -69,152 +69,60 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Alex Williamson <alex.williamson@nvidia.com>
 
-The submitted driver writes only GPIE.EIAME (with a register value of
-0x10, which is actually GPIE.Multiple_MSIX, bit 4) and clears EICR by
-reading it.  On QEMU this works because the emulated loopback path is
-synchronous and EICR is implemented as read-to-clear unconditionally.
-Real 82576 hardware needs the full MSI-X programming sequence.
+The mix_and_match test intentionally submits TX descriptors with an
+unmapped source IOVA so that the DMA read fails.  By default the 82576
+re-sends the request after a PCIe completion timeout (datasheet section
+8.6.1, GCR.Completion_Timeout_Resend, bit 16, initial value 1b).  On
+real hardware this turns a single fault into a stream of retried reads,
+keeping PCIe AER and IOMMU error handling busy and interfering with
+reset recovery.
 
-Per 82576 datasheet section 7.3.2.11 Table 7-47, MSI-X mode requires:
-
-  GPIE.Multiple_MSIX (bit 4): route causes through IVAR.
-  GPIE.EIAME (bit 30): apply EIAM on MSI-X assertion.  Without EIAME,
-    section 7.3.2.11 specifies EIAM only takes effect on EICR
-    read/write, which is not the path used here.
-
-Configure auto-clear and auto-mask for vector 0:
-
-  EIAC (section 8.8.5): auto-clear of EICR cause bit on MSI-X assertion.
-  EIAM (section 8.8.6): with EIAME set, auto-mask of EIMS on MSI-X
-    assertion.  This guarantees one interrupt per memcpy batch and
-    prevents repeat delivery if the cause re-asserts before EIMS is
-    restored.
-
-Replace the read-to-clear of EICR with write-to-clear.  Section 8.8.5
-states "If any bits are set in EIAC, the EICR register should not be
-read", and section 7.3.4.3 cautions against read-to-clear in MSI-X
-mode in general.  Write-to-clear (section 7.3.4.2) is unconditional.
-
-Replace the magic '1' values written to EIMS/EIMC with IGB_EICR_VEC0,
-add the GPIE/EIAC/EIAM macros, and drop the wrong-valued IGB_GPIE_EIAME
-macro (the new definition lives next to IGB_GPIE_MULTIPLE_MSIX).
+Clear GCR.Completion_Timeout_Resend during device initialization so a
+failed read fails once and stays failed.
 
 Assisted-by: Claude:claude-opus-4-7
 Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
 ---
- .../selftests/vfio/lib/drivers/igb/igb.c      | 40 ++++++++++++++++---
- .../vfio/lib/drivers/igb/registers.h          | 11 ++++-
- 2 files changed, 43 insertions(+), 8 deletions(-)
+ tools/testing/selftests/vfio/lib/drivers/igb/igb.c   | 12 ++++++++++++
+ .../selftests/vfio/lib/drivers/igb/registers.h       |  2 ++
+ 2 files changed, 14 insertions(+)
 
 diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-index c0f9cefb23e5..a8f2072b6820 100644
+index 879c21780f5b..89537f8345d1 100644
 --- a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
 +++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-@@ -271,11 +271,32 @@ static void igb_init(struct vfio_pci_device *device)
- 	/* Enable MSI-X with 1 vector for the test */
- 	vfio_pci_msix_enable(device, MSIX_VECTOR, 1);
+@@ -209,6 +209,18 @@ static void igb_init(struct vfio_pci_device *device)
+ 		vfio_pci_config_writew(device, PCI_COMMAND, cmd_reg);
+ 	}
  
--	/* Enable auto-masking of interrupts to avoid storms without a real ISR */
--	igb_write32(igb, IGB_GPIE, IGB_GPIE_EIAME);
 +	/*
-+	 * Program MSI-X interrupt routing per 82576 datasheet:
-+	 *
-+	 * GPIE (section 7.3.2.11, Table 7-47): set Multiple_MSIX (bit 4) to
-+	 * route interrupt causes through IVAR mapping, and EIAME (bit 30)
-+	 * to apply EIAM on MSI-X assertion (without EIAME, EIAM only
-+	 * applies on EICR read/write).
-+	 *
-+	 * EIAC (section 8.8.5): enable auto-clear of EICR for vector 0.
-+	 * Without auto-clear the cause stays set after delivery and the
-+	 * test can see spurious interrupts on the next memcpy batch.
-+	 *
-+	 * EIAM (section 8.8.6): enable auto-mask of EIMS for vector 0 on
-+	 * MSI-X assertion (effective because EIAME is set), so a single
-+	 * interrupt is delivered per memcpy batch even if the cause
-+	 * re-asserts before software re-enables the mask.
-+	 *
-+	 * IVAR (section 7.3.1.2, register definition in 8.8.13): map RX
-+	 * cause 0 to MSI-X vector 0 and mark the entry valid.
++	 * Disable DMA re-send on PCIe completion timeout (82576 datasheet
++	 * section 8.6.1, GCR.Completion_Timeout_Resend, bit 16).  The
++	 * mix_and_match test intentionally submits descriptors targeting
++	 * unmapped IOVAs; with the default (set) value, the device keeps
++	 * retrying the failed read indefinitely, which keeps PCIe AER and
++	 * IOMMU error handling busy and interferes with reset recovery.
 +	 */
-+	igb_write32(igb, IGB_GPIE, IGB_GPIE_MULTIPLE_MSIX | IGB_GPIE_EIAME);
-+	igb_write32(igb, IGB_EIAC, IGB_EICR_VEC0);
-+	igb_write32(igb, IGB_EIAM, IGB_EICR_VEC0);
- 
- 	/* Enable interrupts on vector 0 */
--	igb_write32(igb, IGB_EIMS, 1);
-+	igb_write32(igb, IGB_EIMS, IGB_EICR_VEC0);
- 
- 	/* Map vector 0 to interrupt cause 0 and mark it valid */
- 	igb_write32(igb, IGB_IVAR0, IGB_IVAR_VALID);
-@@ -302,17 +323,24 @@ static void igb_remove(struct vfio_pci_device *device)
- 
- static void igb_irq_disable(struct igb *igb)
- {
--	igb_write32(igb, IGB_EIMC, 1);
-+	igb_write32(igb, IGB_EIMC, IGB_EICR_VEC0);
- }
- 
- static void igb_irq_enable(struct igb *igb)
- {
--	igb_write32(igb, IGB_EIMS, 1);
-+	igb_write32(igb, IGB_EIMS, IGB_EICR_VEC0);
- }
- 
- static void igb_irq_clear(struct igb *igb)
- {
--	igb_read32(igb, IGB_EICR);
-+	/*
-+	 * Use write-to-clear (datasheet 7.3.4.2).  In MSI-X mode with EIAC
-+	 * programmed, section 8.8.5 explicitly states "If any bits are set
-+	 * in EIAC, the EICR register should not be read", which rules out
-+	 * the read-to-clear path in 7.3.4.3.  Bits not in EIAC are still
-+	 * cleared by writing 1.
-+	 */
-+	igb_write32(igb, IGB_EICR, 0xFFFFFFFF);
- }
- 
- static void igb_memcpy_start(struct vfio_pci_device *device, iova_t src,
++	ctrl = igb_read32(igb, IGB_GCR);
++	ctrl &= ~IGB_GCR_CMPL_TMOUT_RESEND;
++	igb_write32(igb, IGB_GCR, ctrl);
++
+ 	/* Configure PHY internal loopback for testing. */
+ 	if (igb_setup_loopback(igb))
+ 		return;
 diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/registers.h b/tools/testing/selftests/vfio/lib/drivers/igb/registers.h
-index 9a8b0f830f89..a133a208ed08 100644
+index a133a208ed08..3f04bcaa44ba 100644
 --- a/tools/testing/selftests/vfio/lib/drivers/igb/registers.h
 +++ b/tools/testing/selftests/vfio/lib/drivers/igb/registers.h
-@@ -3,6 +3,8 @@
- #ifndef _IGB_REGISTERS_H_
- #define _IGB_REGISTERS_H_
+@@ -73,6 +73,8 @@
  
-+#include <linux/bits.h>
-+
- /* Register Offsets (Intel 82576EB Datasheet) */
- #define IGB_CTRL 0x00000 /* Device Control */
- #define IGB_STATUS 0x00008 /* Device Status */
-@@ -76,12 +78,18 @@
+ #define IGB_RAH0 0x05404 /* Receive Address High 0 */
+ #define IGB_VMOLR0 0x05AD0 /* VM Offload Layout Register 0 */
++#define IGB_GCR 0x05B00 /* PCIe Control */
++#define IGB_GCR_CMPL_TMOUT_RESEND BIT(16) /* Re-send on completion timeout */
+ 
+ #define IGB_VMOLR_LPE 0x00010000 /* Long Packet Enable */
  #define IGB_VMOLR_BAM 0x08000000 /* Broadcast Accept Mode */
- #define IGB_RAH_POOL_1 0x00040000 /* Pool 1 assignment */
- 
--#define IGB_EIMS 0x01524 /* Extended Interrupt Mask Set */
- #define IGB_EICS 0x01520 /* Extended Interrupt Cause Set */
-+#define IGB_EIMS 0x01524 /* Extended Interrupt Mask Set */
- #define IGB_EIMC 0x01528 /* Extended Interrupt Mask Clear */
-+#define IGB_EIAC 0x0152C /* Extended Interrupt Auto Clear */
-+#define IGB_EIAM 0x01530 /* Extended Interrupt Auto Mask Enable */
-+#define IGB_EICR_VEC0 BIT(0) /* MSI-X cause/vector 0 */
- #define IGB_CTRL_GIO_MASTER_DISABLE (1 << 2) /* GIO Master Disable */
- #define IGB_STATUS_GIO_MASTER_ENABLE (1 << 19) /* GIO Master Enable */
- #define IGB_GPIE 0x01514 /* General Purpose Interrupt Enable */
-+/* GPIE fields per 82576 datasheet section 7.3.2.11, Table 7-47 */
-+#define IGB_GPIE_MULTIPLE_MSIX BIT(4)  /* Multi-vector MSI-X mode */
-+#define IGB_GPIE_EIAME         BIT(30) /* Apply EIAM on MSI-X assertion */
- #define IGB_TXDCTL0_Q_EN (1 << 25) /* Transmit Queue Enable */
- #define IGB_RXDCTL0_Q_EN (1 << 25) /* Receive Queue Enable */
- #define IGB_MRQC 0x05818 /* Multiple Receive Queues Command */
-@@ -99,7 +107,6 @@
- #define IGB_PHY_CTRL_FULL_DUPLEX	0x0100 /* bit 8 */
- #define IGB_PHY_CTRL_LOOPBACK		0x4000 /* bit 14 */
- 
--#define IGB_GPIE_EIAME 0x10 /* Extended Interrupt Auto Mask Enable */
- #define IGB_IVAR_VALID 0x80 /* Valid bit for IVAR register */
- 
- /*
 -- 
 2.54.0.794.g4f17f83d09-goog
 
