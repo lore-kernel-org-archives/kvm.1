@@ -1,136 +1,143 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6453AEF3D;
-	Tue, 26 May 2026 16:10:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B273938F64E
+	for <kvm@vger.kernel.org>; Tue, 26 May 2026 16:13:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779811835; cv=none; b=lcjHSRkkMttMAWftwuyFWWpbElH+Eas9HaeqqDsFmDXB7H7S/Ksz6ATG07wmJ8dlcksaS+LtmnVZIKHLPHBOB+Q5OJvVScmPQ1gKrCBq7DIRpde8wNMRd/THiMFn7vuiqGz4GXMKr4q70gGOxmU4OBBjiNKSJLIH0eMK0nl5Q2Y=
+	t=1779812004; cv=none; b=j8RZ01VQnFfPShcG+qw88cVzmI2WfY7QybvLWardFpeLMpmCmV6ID66qouQ7r7gsukMdcS9g01HTTUge4gImofU270SODzF1amU69g/7SfRSNvytu8I77i0P+bK6JOeuU+pnCGwRdm9qyjoGmDXHuPt5yRhtFEeFqOLe2SYVd7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779811835; c=relaxed/simple;
-	bh=xG1/qXhfx/h5p+pX/53atrkrUXeXCwWDpc3FSQ8GLWo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HNrW8h11eJX8afBUK3vupPYVs+J+gW9IH+1Q5hqJGuQx/yUf2IvzthlLW8C7238LtOWrTmnAMhTovDzDn3rchNgGVV9uqquaEzuZEOYSBOSzfFnQRNe0RvP7t1AZqL6CHnqVNSLfQQ9FdjPVfnya8cTADAQptx2PnROeClnHADo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X3VPQUh6; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1779812004; c=relaxed/simple;
+	bh=su9JZyL6kCCByom6RtyIOUZV/R46eYJ7VEk1jdF4Ucg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Zul/fUZcazKwSmzC7+dCYSSG/y+Ew/4VXPkSIPj/CrgA+9LLCvKH6+TsdbqB0aiEhDcydzYiRGAxQ2bDiPkisP90a28Z0dEj7ZmA7G2SttWlIuy6pUpVvh5lNeVqIO+hF96H3KvYzXbO4DSfDYEcDpGYCKahmgB0Ko1LNhC61w0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FXd/xzLQ; arc=none smtp.client-ip=209.85.216.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X3VPQUh6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779811834; x=1811347834;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=xG1/qXhfx/h5p+pX/53atrkrUXeXCwWDpc3FSQ8GLWo=;
-  b=X3VPQUh6yIIOdBj0+bqwEAH2r3nBUsPpAtj4gYP8ypyd8MnPC8wCCY06
-   ATBMpKHsJ0/TxZ/ZSQ97wJUKkRpg5xnNrJUB64PfXywSD3UO9ZeNxJRfV
-   Ajbq8w3FZDvKXvklNzBKxwBJa0lrlHctVChAPJ8CprEkcBR1VB8EGQafU
-   sYlTrVW1rBHJu3tUo8mq6Db5/EL3+fgrbsiVevd8TO1nKMxZDwOcCNwRP
-   8tG8md1KgQxeQ3tQTNFRaEspshjZUuFSc4MgwG284UZdyKCnd0htBWkKC
-   Ktzyp6BA864G9YDdR2XrdIB1aHSD+jieSXt0A0UvJolpGN4bRQ/3JfQ8B
-   g==;
-X-CSE-ConnectionGUID: R8bh7IQ7Q4C9jzQ6O94sUQ==
-X-CSE-MsgGUID: 9LKH8VPRRp2DilAhLvdxLg==
-X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="106088297"
-X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
-   d="scan'208";a="106088297"
-Received: from fmviesa010.fm.intel.com ([10.60.135.150])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 09:09:48 -0700
-X-CSE-ConnectionGUID: xKWflDhFQyKZw496TR6iDw==
-X-CSE-MsgGUID: ttWZp8WgSRahGfW/CxtO8Q==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
-   d="scan'208";a="237793850"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa010.fm.intel.com with ESMTP; 26 May 2026 09:09:45 -0700
-Date: Tue, 26 May 2026 23:45:51 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Tony Lindgren <tony.lindgren@linux.intel.com>, kas@kernel.org,
-	djbw@kernel.org, rick.p.edgecombe@intel.com, x86@kernel.org,
-	peter.fang@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com
-Subject: Re: [RFC PATCH 15/15] x86/virt/tdx: Enable TDX Quoting extension
-Message-ID: <ahXAL41ZmIDHmgfu@yilunxu-OptiPlex-7050>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-16-yilun.xu@linux.intel.com>
- <ahPbb1Ws9hBruJ2d@tlindgre-MOBL1>
- <892508b2-6c61-4db2-a12f-902f62385e71@intel.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FXd/xzLQ"
+Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-367fd7b8825so10748653a91.0
+        for <kvm@vger.kernel.org>; Tue, 26 May 2026 09:13:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779812003; x=1780416803; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EKti3bpIeaw9DUQ7b6OosKHvIytGX0/8ZwQX1bJsL8w=;
+        b=FXd/xzLQpHtKld142i7ZJa2VABUyIe6PW5JOIh3MQfiOWe29Be8eg8DrNYt5RW4wAb
+         55C2VfNq3OBs37cHt97m60w8ps6w/vxqq+LjiSYTrAH5zaSuzXCjud2xGAZbKwGcxQMr
+         j2i92cZ73MUjq+c1o3l9x6DmQk1sJUv7Jnn74YHCc8ylY8kdMyK4HGPyZmyQrZSjv/Pk
+         gR8G7Jv496X3L+hD0W9gRXPsRTl3COsx1MCQh2YYsR4YwOQZW7uu2ywwpMILynt81hYW
+         uYh4vhDCa1eiVRjJO+oRyXcSDLswU8moiaytW0RihAIcwhqEG8mLpP/yzUJhsyAs9ika
+         XQcw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779812003; x=1780416803;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EKti3bpIeaw9DUQ7b6OosKHvIytGX0/8ZwQX1bJsL8w=;
+        b=QXy7tl5hhM1t8SGm+vPAiCnMHbH3jO9YMrK/leJzyYWK1C2D9jJ0hmQRuw5HaHLLc1
+         YHAyHhu+d+QNYsl/0oGXDhDIizrjBoI0EavcJEMqsqmXquZkjU4gSKO7osLmpcE9p+OR
+         KIXt0V20A/KdoQLk6O0sqLRA2AC4t1W0ktOBZHyRZZ3fnTTMZcsjuNK5dRWUe0svpwqW
+         /hHS4wovl4nQEmBmpqph2UMb16dSguSF9BBWVD1BUwI40e5mRij33SZO5D3iwDD59rUs
+         dIziGP+oJ8Nvz76LXJSdJqIJvw8t6LMJ3IX0vMNp0tdUo/hAePTfMLh6YRiz9v3OrNJQ
+         zoQg==
+X-Forwarded-Encrypted: i=1; AFNElJ8mMrnpUKfru70NssIJAIUydUbAgcE/SIfRjrKbeYcsVJ/Rv/UkZCRm3nCV2tnsD9d2wmU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzN2zbvwruHPpZcuqZxWUt8lzhZIDhjcpD7xDauhCCDgCwtKDov
+	AUUcRuh7uyMrkcc53vIQ8S06IIvza1VrNyB9kDF72A59/Biv/UK9DPll232B/Pkp4So1QB2uqzP
+	EkG7oEA==
+X-Received: from pjbsj15.prod.google.com ([2002:a17:90b:2d8f:b0:368:45e6:af08])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:33c1:b0:368:cefe:ddd0
+ with SMTP id 98e67ed59e1d1-36a6765aa6bmr17580098a91.15.1779812002650; Tue, 26
+ May 2026 09:13:22 -0700 (PDT)
+Date: Tue, 26 May 2026 09:13:21 -0700
+In-Reply-To: <20260522-fix-sev-gmem-post-populate-v2-1-3f196bfad5a1@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <892508b2-6c61-4db2-a12f-902f62385e71@intel.com>
+Mime-Version: 1.0
+References: <20260522-fix-sev-gmem-post-populate-v2-0-3f196bfad5a1@google.com> <20260522-fix-sev-gmem-post-populate-v2-1-3f196bfad5a1@google.com>
+Message-ID: <ahXGoTaknK4KVuAz@google.com>
+Subject: Re: [PATCH v2 1/5] KVM: guest_memfd: Use write permissions when
+ GUP-ing source pages
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Vishal Annapurve <vannapurve@google.com>, 
+	Yan Zhao <yan.y.zhao@intel.com>, Michael Roth <michael.roth@amd.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Chao Peng <chao.p.peng@linux.intel.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Zongyao Chen <ZongYao.Chen@linux.alibaba.com>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Yu Zhang <yu.c.zhang@linux.intel.com>, Fuad Tabba <tabba@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-On Mon, May 25, 2026 at 06:51:27PM +0800, Xiaoyao Li wrote:
-> On 5/25/2026 1:17 PM, Tony Lindgren wrote:
-> > On Fri, May 22, 2026 at 11:41:28AM +0800, Xu Yilun wrote:
-> > > From: Peter Fang <peter.fang@intel.com>
-> > > 
-> > > TDX Module updates global metadata when add-on features are enabled.
-> > > Host should update the cached tdx_sysinfo to reflect these changes.
-> > 
-> > This should be made clearer IMO. How about mention that get_tdx_sys_info()
-> > needs to get called again to reload the TDX module global metadata?
+The shortlog is misleading, bordering on outright wrong.  I think most people
+would read it as "ALWAYS Use write permissions when GUP-ing source pages".  I
+also think it should be scoped to:
+
+  KVM: SEV:
+
+because this only affects SNP, and IMO is an SNP bug, not a guest_memfd bug.  E.g.
+
+  KVM: SEV: Pin source page for write when adding CPUID data for SNP guest
+
+On Fri, May 22, 2026, Ackerley Tng wrote:
+> From: Sean Christopherson <seanjc@google.com>
 > 
-> Ah ha! This patch answers my comment to patch 1:
-> https://lore.kernel.org/all/956fa1e6-2920-4b2e-8037-d4b9d812ae53@intel.com/
+> sev_gmem_post_populate() may write to the source page if there was an error
+
+Avoid referencing function names in changelogs when possible.  Unless the reader
+is already familiar with the code, the name is meaningless.  The purpose of the
+changelog is to complement the literal patch, not to provide a play-by-play
+description.
+
+> while performing SNP_LAUNCH_UPDATE.
 > 
-> sysinfo_ext->memory_pool_required_pages and sysinfo_ext->ext_required will
-> be updated after extensions are enabled by TDH.SYS.CONFIG.
+> Since GUP requested only reads, there is a chance sev_gmem_post_populate()
+> could be writing to some read-only page.
 > 
-> Patch 06 in this series already reads the tdx_sys_info_quote out of
-> get_tdx_sys_info(), which mean get_tdx_sys_info() doesn't ensure all the
-> global metadata will be update again.
+> sev_gmem_post_populate() will only ever write the source page if the type
+> of page being LAUNCH_UPDATEd is a CPUID page. Hence, request a writable
+> page only when loading the CPUID page.
 > 
-> So how about move the read of memory_pool_required_pages and ext_required
-> out of get_tdx_sys_info() and put them after TDH.SYS.CONFIG, so that we
-> don't need call get_tdx_sys_info() again?
+> Since TDX never writes to the source page, always pass false to
+> kvm_gmem_populate().
 
-Yes, I'm good to it. I hesitated to move them out in case we need some
-central control on global data. But now I see there is already a
-precedent:
+Describe changes in human-friendly, conversational language.  And in a way that
+doesn't require looking at the patch to understand the changelog: "pass false"
+is meaningless without looking at the code to see what flag was added (or exists).
 
-https://lore.kernel.org/kvm/20260520133909.409394-22-chao.gao@intel.com/
+> With this, even if a read-only mapping or the global zero page was provided
+> as the source page, GUP will do a copy-on-write, making it writable before
+> the write happens in gvm_post_populate.
 
-Once we've agreed on moving add-on data reading out of get_tdx_sys_info(),
-we don't have to read them after TDH.SYS.CONFIG, read them when really
-needed. How about the following, that makes the Extension part in this
-series self-contained.
+Objection, speculation.  If the mapping is truly read-only, i.e. doesn't allow
+writes at all, then GUP will fail.  This is all superfluous information though;
+"read-only" is a pretty ubiquitous concept, there's no need to explain it in
+gory detail.
 
-----8<----
 
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 86e5b7ad19b3..b729c1f5ab9e 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1536,6 +1536,10 @@ static __init int init_tdx_ext(void)
-        if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
-                return 0;
+I'll rewrite to this when applying:
 
-+       ret = get_tdx_sys_info_ext(&tdx_sysinfo.ext);
-+       if (ret)
-+               return ret;
-+
-        /* No feature requires TDX Module Extensions. */
-        if (!tdx_sysinfo.ext.ext_required)
-                return 0;
-diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-index f9cc2dd02caf..e7d9e0c4b604 100644
---- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-+++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
-@@ -140,8 +140,5 @@ static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
-        ret = ret ?: get_tdx_sys_info_td_ctrl(&sysinfo->td_ctrl);
-        ret = ret ?: get_tdx_sys_info_td_conf(&sysinfo->td_conf);
+---
+When populating a guest_memfd instance with the initial CPUID data for an
+SNP guest, acquire a writable pin on the source page as KVM will write back
+the "correct" CPUID information if the userspace provided data is rejected
+by trusted firmware.  Because KVM writes to the source page using a kernel
+mapping, pinning for read could result in KVM clobbering read-only memory.
 
--       if (sysinfo->features.tdx_features0 & TDX_FEATURES0_EXT)
--               ret = ret ?: get_tdx_sys_info_ext(&sysinfo->ext);
--
-        return ret;
- }
+Note, well-behaved VMMs are unlikely to be affected, as CPUID information
+is almost always dynamically generated by userspace, i.e. it's unlikely for
+the CPUID information to be backed by a read-only mapping.
+---
+
+> Fixes: 2a62345b30529 ("KVM: guest_memfd: GUP source pages prior to populating guest memory")
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+
+Cc: stable@vger.kernel.org
+
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> ---
+
