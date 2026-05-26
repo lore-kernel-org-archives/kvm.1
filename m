@@ -1,118 +1,111 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB53F3B6C0E;
-	Tue, 26 May 2026 16:27:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10E93BD62C
+	for <kvm@vger.kernel.org>; Tue, 26 May 2026 16:30:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779812878; cv=none; b=gSvENQRsrnmu+ScIedX38lLwwjLuVN/MHavzN9v6vsV6zgCC2XLgtgRfDG9tLYmeysjPSv72kfg1BiHu333GNZW8JhK0L0YBevM0rArfjIe1pQ78oV2WRnvwUX2Ib136odM27NPh8nopuyna3oncaKFKYpvjQDccj4tDpbvUltA=
+	t=1779813039; cv=none; b=FaV1m7h7rb5I6IQbAkrAUxM0Q0ZOessgN555mgDvzwOgmKpUwy0SKpPicYQe85gnByvgAQNir+X1rxiSERJn2aLNXnmVOI0ajhSMekrQqvAbEGVSpysjhd7uATmSkJNUYz4y3RCyjqTD+jqXZ8Vg61Br+yoSERcgyurW/PbsTxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779812878; c=relaxed/simple;
-	bh=uyHF9eg1fNPkQ8bTIFguWMYCPZbh4kpcbqHZpzfY8Kw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AziRrhsRir8YWeyz42HDuEP+8qUcuQZXagXkwHREyT6bphCInCt+boVrrY8r53bWLbD1giC89oRTsjRrwgzqDqSFPXtFcFAPTs4oXTj9qMhwpQ0vICtcd7j7bM+g+9M1BKQ25mi8XjytkgkI/ZUsnIRDNPUt9lvlQer72yt20cI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WCPBslFB; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779813039; c=relaxed/simple;
+	bh=nevdse5t1kv9gNIo9f0Audc3CzDL/suBD0JEhDghzgc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Pj0VRiON0jj9+hugdVducAiBVa/kS9ZfR8uzupAPnbQLTeUDSeQR1Jl8tKNqgBpJe15HmOeaixj2bU38Rd/85v32vFhmkMzHMyCKBXIXA+pKd3VNz8ermYjGQEmyK1uuOUp+U7TIvz+oMwzTPZdt7Q44ZKbCm6nFi7377MbAXZg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bGMb7I5s; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WCPBslFB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289D31F000E9;
-	Tue, 26 May 2026 16:27:54 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bGMb7I5s"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 798EB1F000E9;
+	Tue, 26 May 2026 16:30:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779812875;
-	bh=uX6weQ63PycMa+NiIwkaE0lKXtL5D7cf5slQyEH4uVQ=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=WCPBslFBHlD18xXQc3r4cfXRi6NRqMWZgpFMn1cIbrapYoU4c4gRwNK1+7uVsqGAy
-	 60v2BCHvTRcdS1tVvGPbqfVfdwwcJp1FHFNfktx1fkX0Wbx1RZrVm0KBNermhINrKf
-	 T9lX4lpoqb8ZTQ988HCILQXzmPKZjen7JnhZ0OVSRmfeZwap0kKaSy4gg8etm5udnf
-	 udcU0Sgi7luz1Cc1OPvSW+2ubz9qCszQO2AwKg/qp69fZ72CdWGJzB5e9f6nHF0uBd
-	 ldc80qXMC/DUvHJCNvAW1ArbfI1EfmFu9YdmZYAerVhlmQZOEcNqDEor/Ir+l9+s8j
-	 e4sx9r+STyxUg==
-Date: Tue, 26 May 2026 17:27:52 +0100
-From: Lorenzo Stoakes <ljs@kernel.org>
-To: Takahiro Itazuri <itazur@amazon.com>
-Cc: seanjc@google.com, Liam.Howlett@oracle.com, ackerleytng@google.com, 
-	agordeev@linux.ibm.com, ajones@ventanamicro.com, akpm@linux-foundation.org, 
-	alex@ghiti.fr, andrii@kernel.org, aou@eecs.berkeley.edu, ast@kernel.org, 
-	baolu.lu@linux.intel.com, borntraeger@linux.ibm.com, bp@alien8.de, bpf@vger.kernel.org, 
-	catalin.marinas@arm.com, chenhuacai@kernel.org, corbet@lwn.net, coxu@redhat.com, 
-	daniel@iogearbox.net, dave.hansen@linux.intel.com, david@kernel.org, 
-	derekmn@amazon.com, dev.jain@arm.com, eddyz87@gmail.com, 
-	gerald.schaefer@linux.ibm.com, gor@linux.ibm.com, haoluo@google.com, hca@linux.ibm.com, 
-	hpa@zytor.com, itazur@amazon.co.uk, jackabt@amazon.co.uk, jackmanb@google.com, 
-	jannh@google.com, jgg@ziepe.ca, jgross@suse.com, jhubbard@nvidia.com, 
-	jiayuan.chen@shopee.com, jmattson@google.com, joey.gouly@arm.com, 
-	john.fastabend@gmail.com, jolsa@kernel.org, jthoughton@google.com, kalyazin@amazon.co.uk, 
-	kas@kernel.org, kernel@xen0n.name, kpsingh@kernel.org, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev, lenb@kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org, 
-	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, loongarch@lists.linux.dev, 
-	lorenzo.stoakes@oracle.com, luto@kernel.org, maobibo@loongson.cn, martin.lau@linux.dev, 
-	maz@kernel.org, mhocko@suse.com, mingo@redhat.com, mlevitsk@redhat.com, 
-	nikita.kalyazin@linux.dev, oupton@kernel.org, palmer@dabbelt.com, patrick.roy@linux.dev, 
-	pavel@kernel.org, pbonzini@redhat.com, peterx@redhat.com, peterz@infradead.org, 
-	pfalcato@suse.de, pjw@kernel.org, prsampat@amd.com, rafael@kernel.org, 
-	riel@surriel.com, rppt@kernel.org, ryan.roberts@arm.com, sdf@fomichev.me, 
-	shijie@os.amperecomputing.com, skhan@linuxfoundation.org, song@kernel.org, surenb@google.com, 
-	suzuki.poulose@arm.com, svens@linux.ibm.com, tabba@google.com, tglx@kernel.org, 
-	thuth@redhat.com, urezki@gmail.com, vannapurve@google.com, vbabka@kernel.org, 
-	will@kernel.org, willy@infradead.org, wu.fei9@sanechips.com.cn, x86@kernel.org, 
-	yang@os.amperecomputing.com, yangyicong@hisilicon.com, yonghong.song@linux.dev, 
-	yosry@kernel.org, yu-cheng.yu@intel.com, yuzenghui@huawei.com, 
-	zhengqi.arch@bytedance.com
-Subject: Re: [PATCH v12 00/16] Direct Map Removal Support for guest_memfd
-Message-ID: <ahXJoHNoeCcaupzN@lucifer>
-References: <aeennZlV60k81OBf@google.com>
- <20260506080753.14517-1-itazur@amazon.com>
+	s=k20260515; t=1779813038;
+	bh=4YeuA7IpI6JywUxHIAkYJPVBfYIBWeXGN2kVbZOsDPo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=bGMb7I5sVFk0EuyvfOOnmARyO+szeIWJHPFICCoRaWcYclHXwvttqMDAMN6z+FwNg
+	 QomuDu2C0hef6v/Drt8uHlemerowNpvzLL5mxQnrLul6BI+A+mxOgwfxMVXqabVSk5
+	 3pl1BZONK+v2whTfFTwQG/gzuGWlk6fmB5hl0VfTBC89DXF2wpaO7/JAy3RE8qFdi+
+	 3k9Rt3WY6cW8fEOFjrWft80kzYx3FqRxCi4QQzqau8dtPMGPq8zpd35aXbWJMN0rtf
+	 AiMWJSa81BkfQiuB3tmuv9nMK0fA14+B7lfyCmugauBIZCrTz0mDdackF7A77tvaZo
+	 zu30sq4LmYQDg==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 7/7] riscv: kexec: Route normal kexec through the
+ trampoline page table
+Reply-To: sashiko-reviews@lists.linux.dev
+To: fangyu.yu@linux.alibaba.com
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260526125009.2404-8-fangyu.yu@linux.alibaba.com>
+References: <20260526125009.2404-8-fangyu.yu@linux.alibaba.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 26 May 2026 16:30:38 +0000
+Message-Id: <20260526163038.798EB1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260506080753.14517-1-itazur@amazon.com>
 
-On Wed, May 06, 2026 at 08:07:52AM +0000, Takahiro Itazuri wrote:
-> Hi Lorenzo and Sean,
->
-> Apologies for the delayed reply — Nikita is leaving Amazon, and I'm
-> taking over this series going forward. Thanks for your patience.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-Hey,
+Pre-existing issues:
+- [High] The control code page (image->control_code_page) is marked executa=
+ble using set_memory_x() during machine_kexec_prepare(), but this permissio=
+n is never reverted. Because machine_kexec_cleanup() is empty, if the kexec=
+ image is freed, the page is returned to the buddy allocator while still re=
+taining executable permissions.
+--
 
-Thanks for letting us know! And thanks to Nikita for all his work, will
-keep an eye out for the respin!
+commit 1b8b8dd4e5bc4de88d60ccac9a5bd712badb4dd3
+Author: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 
-Cheers, Lorenzo
+riscv: kexec: Route normal kexec through the trampoline page table
 
->
-> On Tue, Apr 21, 2026 at 01:40:00PM +0000, Lorenzo Stoakes wrote:
-> > Hm, given this touches a fair bit of mm, I wonder if we shouldn't try to do this
-> > through the mm tree?
->
-> On Tue, Apr 21, 2026 at 04:36:00PM +0000, Sean Christopherson wrote:
-> > Yeah, when the time comes, the mm pieces definitely need to go through the mm
-> > tree.  Ideally, I think this would be merged in two separate parts, with all mm
-> > changes going through the mm tree, and then the KVM changes through the KVM tree
-> > using a stable topic branch/tag from Andrew.
->
-> Thanks for the guidance. The split makes sense to me; I'm planning to
-> follow this approach with patches 1-6 (mm) going through the mm tree
-> and patches 7-16 (KVM) through the KVM tree on top of a stable
-> branch/tag from mm. I'll confirm the exact boundary and coordination
-> details as I prepare the repost.
->
-> On Tue, Apr 21, 2026 at 01:40:00PM +0000, Lorenzo Stoakes wrote:
-> > In any case, we definitely need a rebase on something not-next :) if not mm then
-> > Linus's tree at least maybe?
-> >
-> > I'm seeing a lot of conflicts against mm-unstable, it can't b4 shazam even patch
-> > 1 and in Linus's tree it's failing at an mm patch (mm: introduce
-> > AS_NO_DIRECT_MAP).
->
-> I'll rebase onto v7.1-rc1 and resolve the conflicts as part of the split.
->
-> Takahiro
->
+This patch modifies the normal kexec path on RISC-V to route through a
+trampoline wrapper that disables the MMU before jumping to the relocation
+code. This resolves an emulation issue with KVM in VS-mode where the previo=
+us
+single-step transition failed.
+
+> diff --git a/arch/riscv/kernel/machine_kexec.c b/arch/riscv/kernel/machin=
+e_kexec.c
+> index e3eb1e71920a5..99cc251f971c6 100644
+> --- a/arch/riscv/kernel/machine_kexec.c
+> +++ b/arch/riscv/kernel/machine_kexec.c
+[ ... ]
+> @@ -231,11 +231,15 @@ machine_kexec(struct kimage *image)
+>  {
+>  	struct kimage_arch *internal =3D &image->arch;
+>  	unsigned long jump_addr =3D (unsigned long) image->start;
+> -	unsigned long first_ind_entry =3D (unsigned long) &image->head;
+> +	/*
+> +	 * The relocate body runs entirely with the MMU off (the wrapper
+> +	 * drops SATP before jumping into control_code_buffer), so the very
+> +	 * first entry must be a physical address.
+> +	 */
+
+[Severity: High]
+This is a pre-existing issue, but since the relocate body now runs entirely
+with the MMU off, is the set_memory_x() call for the control code page in
+machine_kexec_prepare() still necessary?
+
+Currently, image->control_code_page is marked executable during preparation,
+but these permissions are never reverted because machine_kexec_cleanup()
+is empty. If the kexec image is freed, the page is returned to the buddy
+allocator while retaining its executable status. This leads to a persistent
+W^X violation when the page is later reallocated for regular kernel data.
+
+Since SATP=3D0 during the execution of this buffer, does it make sense to r=
+emove
+the set_memory_x() call entirely to prevent this leak of executable
+permissions?
+
+> +	unsigned long first_ind_entry =3D __pa(&image->head);
+>  	unsigned long this_cpu_id =3D __smp_processor_id();
+>  	unsigned long this_hart_id =3D cpuid_to_hartid_map(this_cpu_id);
+>  	unsigned long fdt_addr =3D internal->fdt_addr;
+> -	void *control_code_buffer =3D page_address(image->control_code_page);
+>  	riscv_kexec_method kexec_method =3D NULL;
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526125009.2404=
+-1-fangyu.yu@linux.alibaba.com?part=3D7
