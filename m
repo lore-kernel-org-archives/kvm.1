@@ -1,137 +1,113 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97B224E4C6
-	for <kvm@vger.kernel.org>; Tue, 26 May 2026 13:17:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08F93F58CE;
+	Tue, 26 May 2026 13:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779801431; cv=none; b=T5G3w7sma3XTm+KDmfq/Cim/s699WS44TBLHBkjCAi9NbwX3KfPbn4SSDMi1P3E8zbMz0+qxm1hO9B8nDhkqfXpRElDpQtqJuZWS70A5zf8iUqPiCqZfEAKtn1Q8h7clEWiFJ7ZeyjnR8m+wHz1G84UMEA21BI+FsYKvwFU7iG4=
+	t=1779801966; cv=none; b=eg5MljHaJpj4RD0a64ZX1SJ7gNMxTzTNuupA8Bl9boOyw13KHMLAlaBq8xcO35NPY+BV+7kiIPsVCmoXXE/lVVt3AVBvUxuQHoic9m/F3hFMFS5E1Gj6mXWzGVdD60l3jCD4StZdv2xwA+ZRXY38xUjzzPTyHRP8FMMC5FPPBnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779801431; c=relaxed/simple;
-	bh=xQobCGYBivBMcOFzdO2RITfwWzz3INW2IBz/Wm/hIc4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=mH21Y0wVAjvyW0Y68ZdUaTwtzszZrQrvrdjl7ChEtmAI0FUw5apzRG8/NXytdhcIrssDUYyNfJAQb72H8dlRPeb7ntEQRFRgoftuNEyTFAYs9JNMo4vRd3my3buXsrbE83y7KAyNbwJK2J64e+eox+XJS99RIMK3GEhN8Pbd2QU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HtUjpzpY; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779801966; c=relaxed/simple;
+	bh=42BQf5cb0aa7ANVrL7TApWSiKbz/Y4tfFfyXq/jCX7s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=THuiAoBO3FIL+8c3oD31BXojgWptORyWlFZhwsgP48c55GR0/QodHAm2vo1W/Ww2jQscEWHAFJj0NXOR+7mhac/HaR9t/1tyFy9lw4O2POlGbcHiE/U1i2Hg6/kFWqxzm4FBY0tJlESmcln5iebMXRGcq/0OWayKW54NacR8eRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TITtatTj; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HtUjpzpY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E43D11F000E9;
-	Tue, 26 May 2026 13:17:09 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TITtatTj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793F71F000E9;
+	Tue, 26 May 2026 13:25:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779801430;
-	bh=OUXVg+EFRDZF0tCyBe/HiFb7oEb55JxIp+aDmypQ/Qg=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=HtUjpzpY60zmPwQmW6bZGRaVHe+CzU8IpgvZ/uR0O4EfMwnSvzElTl25P69XSc/84
-	 YACTqsiIp0JSF49g7jqV+AteA3W/EHaYAcMrFLkRPfVk6tTr3l0cUq9+OWG/1BNqGe
-	 n6v/iuEidK6Py68bwyGgcp8ErdpxO2gy1VnDPx+P1BKa+vOEKcn0tccBYdshJJjFXE
-	 jrTqDVI1WSGdFRCufkpa/SsOHZMSJ/mpBMSt2T7B5aPnvcvW1khbzZ7/+RLYldm6jn
-	 9ogq+1DklCiavjlXMnCNe9QeLRc+D2r4U0vHjgJnPDdkPXziJOvYbVSHbkT3i5g/0a
-	 YtP/zCx8zwxGw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/7] riscv: Add kexec trampoline text section to
- vmlinux.lds.S
-Reply-To: sashiko-reviews@lists.linux.dev
-To: fangyu.yu@linux.alibaba.com
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260526125009.2404-2-fangyu.yu@linux.alibaba.com>
-References: <20260526125009.2404-2-fangyu.yu@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 26 May 2026 13:17:09 +0000
-Message-Id: <20260526131709.E43D11F000E9@smtp.kernel.org>
+	s=k20260515; t=1779801963;
+	bh=F1H6PxWdK7ElO8sXwbyLzjpAZlZnOUADTxmFnZZJISI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=TITtatTjeuXKHP3vxhkMEUcUKI7aQF+KQAkDyIgK0iTk1YtqaWlWAc/NduBPKYfWd
+	 BYW65ooqwULFumubeML0s9CcVKhQhpv2s8C7oUbhV8rJyac8kfYLoPiODnjdRE+lHp
+	 PKTeqF/mQc5XZ/bIJd/1eNRUWf6eqa9qn7kmpoCxlqOOg5QLSgqziQLKkPsHiFNyBZ
+	 +oHX5/MU89S30gtshdh+SRGe292Rl4cGaKO+xtSkF9ucMVDKcYaJW3Gy3pwh/oTJ8m
+	 c/FdR9OPiamccYfUrulbWfvS1VaYCglE8LB09DUrqfmsi4f8/Ie/o3sAE3TMiB4zoD
+	 rP31HXqWZpJmA==
+Date: Tue, 26 May 2026 14:25:56 +0100
+From: Mark Brown <broonie@kernel.org>
+To: Mark Rutland <mark.rutland@arm.com>
+Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
+	Oliver Upton <oupton@kernel.org>, Dave Martin <Dave.Martin@arm.com>,
+	Fuad Tabba <tabba@google.com>, Ben Horgan <ben.horgan@arm.com>,
+	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
+	Peter Maydell <peter.maydell@linaro.org>,
+	Eric Auger <eric.auger@redhat.com>
+Subject: Re: [PATCH v10 02/30] arm64/fpsimd: Update FA64 and ZT0 enables when
+ loading SME state
+Message-ID: <d8074c6b-9bc9-496e-8a74-94ac18ce9a55@sirena.org.uk>
+References: <20260306-kvm-arm64-sme-v10-0-43f7683a0fb7@kernel.org>
+ <20260306-kvm-arm64-sme-v10-2-43f7683a0fb7@kernel.org>
+ <ahWWqU51Zffmhlo5@J2N7QTR9R3>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="H7xcdA+9c3FyZG2q"
+Content-Disposition: inline
+In-Reply-To: <ahWWqU51Zffmhlo5@J2N7QTR9R3>
+X-Cookie: You are fairminded, just and loving.
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [Low] The `KEXEC_TRAMP_TEXT` macro introduces section layout directives b=
-ut is placed in `image-vars.h`, a header strictly intended for linker scrip=
-t variable assignments.
-- [Low] The linker ASSERT failure message statically hardcodes '4K', which =
-is inaccurate for RISC-V kernels configured with larger page sizes.
-- [Low] The `.kexec.tramp.text` section and its boundary symbols are omitte=
-d when `CONFIG_XIP_KERNEL` is enabled alongside `CONFIG_KEXEC_CORE`, causin=
-g a build failure.
---
 
-commit 2ab699179f3a5599c71d8911590e4b8328996c8a
-Author: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+--H7xcdA+9c3FyZG2q
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-riscv: Add kexec trampoline text section to vmlinux.lds.S
+On Tue, May 26, 2026 at 01:48:41PM +0100, Mark Rutland wrote:
+> On Fri, Mar 06, 2026 at 05:00:54PM +0000, Mark Brown wrote:
 
-This commit adds a dedicated .kexec.tramp.text area to the RISC-V linker
-script when CONFIG_KEXEC_CORE is enabled. It aligns the section to PAGE_SIZE
-and adds an assertion to ensure the trampoline fits within a single page.
+> > We provide a helper which does the configuration as part of a
+> > read/modify/write operation along with the configuration of the task VL,
+> > then update the floating point state load and SME access trap to use it.
 
-> diff --git a/arch/riscv/kernel/image-vars.h b/arch/riscv/kernel/image-var=
-s.h
-> index 3df30dd1c458b..ae286c6d5d65a 100644
-> --- a/arch/riscv/kernel/image-vars.h
-> +++ b/arch/riscv/kernel/image-vars.h
-> @@ -34,4 +34,18 @@ __efistub_screen_info		=3D screen_info;
-> =20
->  #endif
-> =20
-> +#ifdef CONFIG_KEXEC_CORE
-> +#define KEXEC_TRAMP_TEXT						\
-> +		. =3D ALIGN(PAGE_SIZE);					\
-> +		__kexec_tramp_text_start =3D .;				\
-> +		KEEP(*(.kexec.tramp.text))				\
-> +		KEEP(*(.kexec.tramp.text.*))				\
-> +		__kexec_tramp_text_end =3D .;				\
+> > +		if (fa64)					\
+> > +			__new |= SMCR_ELx_FA64;			\
+> > +		if (zt0)					\
+> > +			__new |= SMCR_ELx_EZT0;			\
 
-[Severity: Low]
-Does placing a section layout macro like KEXEC_TRAMP_TEXT in image-vars.h
-violate the architectural purpose of this header?
+> I'd strongly prefer that we make it the caller's responsiblity to track
+> all the bits within SMCR, rather than requiring each caller to pass a
+> bag of booleans.
 
-The header comment indicates it is intended only for "Linker script
-variables to be set after section resolution", rather than layout directives
-containing KEEP and ALIGN.
+I was explicitly going for the opposite of that in order to make it
+harder for someone implementing a future extension to miss a place where
+an update is required, having the callers independently constructing the
+register values feels like it's asking for trouble.
 
-> +		ASSERT((__kexec_tramp_text_end - __kexec_tramp_text_start) <=3D PAGE_S=
-IZE,  \
-> +			".kexec.tramp.text exceeds 4K");				\
+> 	unsigned long __task_smcr(const struct task_struct *tsk)
+> 	{
+> 		unsigned long vq = sve_vq_from_vl(task_get_sme_vl(tsk));
+> 		unsigned long smcr = vq - 1;
 
-[Severity: Low]
-Should the error message avoid hardcoding "4K" here?
+I agree that's a better pattern for the main kernel - we could also do
+something similar with a task_set_smcr() which wraps the explicitly
+specifed version.  That would I think avoid most of the issue you're
+seeing?
 
-RISC-V supports larger page sizes like 16KB and 64KB, so if the assertion
-dynamically checks against PAGE_SIZE and fails on a larger page size,
-emitting "exceeds 4K" might be misleading.
+--H7xcdA+9c3FyZG2q
+Content-Type: application/pgp-signature; name="signature.asc"
 
-> +		. =3D ALIGN(PAGE_SIZE);
-> +#else
-> +#define KEXEC_TRAMP_TEXT /* nothing */
-> +#endif
-> +
->  #endif /* __RISCV_KERNEL_IMAGE_VARS_H */
-> diff --git a/arch/riscv/kernel/vmlinux.lds.S b/arch/riscv/kernel/vmlinux.=
-lds.S
-> index 61bd5ba6680a7..47fefee772667 100644
-> --- a/arch/riscv/kernel/vmlinux.lds.S
-> +++ b/arch/riscv/kernel/vmlinux.lds.S
-> @@ -45,6 +45,7 @@ SECTIONS
->  		ENTRY_TEXT
->  		IRQENTRY_TEXT
->  		SOFTIRQENTRY_TEXT
-> +		KEXEC_TRAMP_TEXT
+-----BEGIN PGP SIGNATURE-----
 
-[Severity: Low]
-Will this cause a build failure when CONFIG_XIP_KERNEL is enabled alongside
-CONFIG_KEXEC_CORE?
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoVn2QACgkQJNaLcl1U
+h9B0uAf9FsOQ191IjRxjDWRTIzKuXKL2RhEm/vJESCmoiliG05She/LfLMIqhDji
+Q/cC/kYbmSE3xPCIIztZVByWhLSAIjMP1qWJ8W3yjzVVb22SlVdR5LgX7Ul7v2hz
+VT9uQ1cHmCbdotaBfkRiVvlege2YZwhAYTA5zCvqN+4yL2CWGjB4260gU2yh+jXJ
+pwK0TpvHk5jC3X3JLLtW9B9YzzcmWKbkwe1wQCsRvG9K8HHdXJzLHn30t5o7NSsY
+nr3laBeKco7QBfqsrXfyQhpPahS34qLzpYrf41C3ZjLxt2nBIr/lGGN1Fs4owBdt
+Kh2RXpL5IcSeFr8jyQ2A4InBCsw8kw==
+=vL5s
+-----END PGP SIGNATURE-----
 
-When CONFIG_XIP_KERNEL is active, vmlinux.lds.S delegates to
-vmlinux-xip.lds.S and skips including image-vars.h.
-
-Because the KEXEC_TRAMP_TEXT macro is never evaluated, the symbols
-__kexec_tramp_text_start and __kexec_tramp_text_end would be undefined when
-arch/riscv/kernel/machine_kexec.c tries to reference them.
-
->  		_etext =3D .;
->  	}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526125009.2404=
--1-fangyu.yu@linux.alibaba.com?part=3D1
+--H7xcdA+9c3FyZG2q--
