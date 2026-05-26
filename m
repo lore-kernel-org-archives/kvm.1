@@ -1,112 +1,101 @@
-Received: from canpmsgout09.his.huawei.com (canpmsgout09.his.huawei.com [113.46.200.224])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8321D3AE715;
-	Tue, 26 May 2026 04:08:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.224
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CECF3A7186;
+	Tue, 26 May 2026 04:31:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779768538; cv=none; b=uYsgAjUpbk0OrEHDf29+7JPH+OgLSZZarel6N1T4nG9ORpP9nnMcYQhyccMXsqyBwkNMaLGpCPrfIN8AcisB75P8z+D6iC1FuCzaTPySGabovpXEcV/6ittyMxSnrZhF0VjPIXLMn5cqe+92Fspq1RQSZWX3NKiOq5TH3HHni7A=
+	t=1779769899; cv=none; b=hgBf5ZmrbM4HmG5ZfcGHfm8jipSHQHGzFmQB3X2eg165hxHPuh3PZdPA2Dg0a1Fz3/3t4Dbr3bzfXz/leJ+PkCWn+224+XAk//NWN/S8ycZRMiLGOBZ7n/8ww0q50d7xqqykiqrNAyrEv1CMU82Vqe8D0snUcH7LpHFdD0d8hb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779768538; c=relaxed/simple;
-	bh=Jl36QBFaB1npZ4nQkXnLfLEiPBTpWQe0eZV5jvbLvV0=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kMyTrj41Rz0SoI8D9D5V2thZKz3BxNuSIBDM1RfzbxdPxds4XUPoUQQx+IbNz+6Q2DebahB3KA8YkNpREIHYBvJEdbdl7HH5Wawggn021CnmW5sV/1SXQghbTLlxg0YPugdklxH3DYdU17tiYBRKfTiUWgeT+MHrnvUMLNFdXZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=Akaxkqx8; arc=none smtp.client-ip=113.46.200.224
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1779769899; c=relaxed/simple;
+	bh=6RnQIGHpeQIVlxqzzYzE6uYM1KIm4SZlzj9Kuk4thd0=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=ER8Rym1olnJCDyuYbNa+7LMKxwKQY2BkY0DbxTNZLcNf70M1ChIaougbqW6YfdBFByR73U2FmutL0cEQyI2m52HV1SvKvPyIQnwECt5mnE7blCm0DAOTt5eLNBtbnkrXWWABaeF9FGPhdlCSzXol+nGBqVBukH6c1XQ5EaTGPx8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f7sy2BB3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="Akaxkqx8"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=uIqZ4KBp1zO/lcRi0QiZxRKpi2g0llki1FIHFBCdG/E=;
-	b=Akaxkqx8YW51TvNdywk7oh0bPH5uf6mDumcJvdyulTx6oabACOmULwGQFrdI9zSaGr29esOxj
-	X2t8S71U3c27u1dqr+jgYHcovil0MDb090JE8YTVZ0wf+MkazxHApk6fozi3Zr2QUjDShl5BJHv
-	EvO7cjxyiRqqUm1gylpmEhs=
-Received: from mail.maildlp.com (unknown [172.19.163.214])
-	by canpmsgout09.his.huawei.com (SkyGuard) with ESMTPS id 4gPfDl3cRtz1cyQR;
-	Tue, 26 May 2026 12:00:55 +0800 (CST)
-Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
-	by mail.maildlp.com (Postfix) with ESMTPS id 303EB40561;
-	Tue, 26 May 2026 12:08:39 +0800 (CST)
-Received: from localhost.localdomain (10.50.163.32) by
- kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 26 May 2026 12:08:38 +0800
-From: Chengwen Feng <fengchengwen@huawei.com>
-To: <alex@shazbot.org>, <jgg@ziepe.ca>
-CC: <wathsala.vithanage@arm.com>, <helgaas@kernel.org>, <wei.huang2@amd.com>,
-	<wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
-	<liuyonglong@huawei.com>, <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
-Subject: [PATCH v12 1/6] PCI/TPH: Fix pcie_tph_get_st_table_loc() field extraction
-Date: Tue, 26 May 2026 12:08:25 +0800
-Message-ID: <20260526040830.52854-2-fengchengwen@huawei.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20260526040830.52854-1-fengchengwen@huawei.com>
-References: <20260526040830.52854-1-fengchengwen@huawei.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f7sy2BB3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3494D1F000E9;
+	Tue, 26 May 2026 04:31:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779769895;
+	bh=tljaTvv0fA8n5ojHqWJ2qf4OK0bi1oyUg1k+/OqmkdA=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=f7sy2BB3PWyqCFlr0QUluYO3vABJnEXYSHsFS5Ag1cs99C5sP4Ms+3daPw7AB0PsQ
+	 lZ9tkipRI5+yiVam/ushytMstZERPCcC9JvYdvsukZzFQaDDI20FiZUinvuGNRfo1g
+	 xhrjo+7WqndpVmItahWUdCA0zvODHzI0RhJX0cIL2mq9EArmomG2wC7PIE+6+mKF7h
+	 n2U7Vh1mUyR54zOQxTNuiIwLIaNegPS4QtOUkRuWL6vZzaao6HL4Ka+B/aVBBgivQU
+	 MYl8gpkrAQxhcPfvEAoRnWpXfe6oExd0V2zdoKDqvOVur5TcmTeEFcn0B3UVeSjI4R
+	 e+ydrgMtOSW1g==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v12 1/6] PCI/TPH: Fix pcie_tph_get_st_table_loc() field
+ extraction
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Chengwen Feng" <fengchengwen@huawei.com>
+Cc: linux-pci@vger.kernel.org, kvm@vger.kernel.org
+In-Reply-To: <20260526040830.52854-2-fengchengwen@huawei.com>
+References: <20260526040830.52854-2-fengchengwen@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 26 May 2026 04:31:34 +0000
+Message-Id: <20260526043135.3494D1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
-X-ClientProxiedBy: kwepems500001.china.huawei.com (7.221.188.70) To
- kwepemk500009.china.huawei.com (7.202.194.94)
 
-pcie_tph_get_st_table_loc() incorrectly uses FIELD_GET(), which shifts the
-field value to bit 0. But the function is designed to return raw
-PCI_TPH_LOC_* values as defined in the function comment.
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
-This causes incorrect ST table location detection. Fix it by using bitwise
-AND with PCI_TPH_CAP_LOC_MASK to return the unshifted field value matching
-the function specification.
+Pre-existing issues:
+- [High] Exported functions pcie_tph_get_st_table_loc() and pcie_tph_get_st=
+_table_size() do not verify that the device actually supports TPH (pdev->tp=
+h_cap !=3D 0) before accessing the capability offset.
+--
 
-This doesn't make a difference to mlx5_st_create(), the lone external
-caller, because it only checks for PCI_TPH_LOC_NONE (0), but will be needed
-for callers that check for PCI_TPH_LOC_CAP or PCI_TPH_LOC_MSIX.
+commit 778a377b4fe5a5811f9d4225d057f7de399a56a3
+Author: Chengwen Feng <fengchengwen@huawei.com>
 
-Fixes: d2e8a34876ce ("PCI/TPH: Add Steering Tag support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
-Reviewed-by: Alex Williamson <alex.williamson@nvidia.com>
-Reviewed-by: Bjorn Helgaas <bhelgaas@google.com>
----
- drivers/pci/tph.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+PCI/TPH: Fix pcie_tph_get_st_table_loc() field extraction
 
-diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
-index 91145e8d9d95..877cf556242b 100644
---- a/drivers/pci/tph.c
-+++ b/drivers/pci/tph.c
-@@ -170,7 +170,7 @@ u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev)
- 
- 	pci_read_config_dword(pdev, pdev->tph_cap + PCI_TPH_CAP, &reg);
- 
--	return FIELD_GET(PCI_TPH_CAP_LOC_MASK, reg);
-+	return reg & PCI_TPH_CAP_LOC_MASK;
- }
- EXPORT_SYMBOL(pcie_tph_get_st_table_loc);
- 
-@@ -185,9 +185,6 @@ u16 pcie_tph_get_st_table_size(struct pci_dev *pdev)
- 
- 	/* Check ST table location first */
- 	loc = pcie_tph_get_st_table_loc(pdev);
--
--	/* Convert loc to match with PCI_TPH_LOC_* defined in pci_regs.h */
--	loc = FIELD_PREP(PCI_TPH_CAP_LOC_MASK, loc);
- 	if (loc != PCI_TPH_LOC_CAP)
- 		return 0;
- 
-@@ -316,8 +313,6 @@ int pcie_tph_set_st_entry(struct pci_dev *pdev, unsigned int index, u16 tag)
- 	set_ctrl_reg_req_en(pdev, PCI_TPH_REQ_DISABLE);
- 
- 	loc = pcie_tph_get_st_table_loc(pdev);
--	/* Convert loc to match with PCI_TPH_LOC_* */
--	loc = FIELD_PREP(PCI_TPH_CAP_LOC_MASK, loc);
- 
- 	switch (loc) {
- 	case PCI_TPH_LOC_MSIX:
--- 
-2.17.1
+This commit fixes the ST table location detection in
+pcie_tph_get_st_table_loc() by using bitwise AND with PCI_TPH_CAP_LOC_MASK
+instead of FIELD_GET(). The function was designed to return raw
+PCI_TPH_LOC_* values without shifting.
 
+> diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
+> index 91145e8d9d951..877cf556242b4 100644
+> --- a/drivers/pci/tph.c
+> +++ b/drivers/pci/tph.c
+> @@ -170,7 +170,7 @@ u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev)
+> =20
+>  	pci_read_config_dword(pdev, pdev->tph_cap + PCI_TPH_CAP, &reg);
+
+[Severity: High]
+This is a pre-existing issue, but should this function verify that the devi=
+ce
+actually supports TPH (pdev->tph_cap !=3D 0) before reading the capability?
+
+If a device lacks the TPH capability, pdev->tph_cap is 0, which results in a
+read of the generic PCI Command & Status registers at offset 0x04. The ST
+Table Location mask (bits 9-10) maps exactly to the Fast Back-to-Back Enable
+and Interrupt Disable bits in the Command register.
+
+If Interrupt Disable is set (which is standard for MSI/MSI-X devices), would
+this incorrectly return PCI_TPH_LOC_MSIX (0x400)? If Fast Back-to-Back Enab=
+le
+is set, it might return PCI_TPH_LOC_CAP (0x200) and then incorrectly extract
+the table size from the PCI Status register in pcie_tph_get_st_table_size().
+
+Since these are EXPORT_SYMBOL APIs, they can be called by external modules
+that might not independently validate pdev->tph_cap. This could lead to
+falsely detecting TPH support and allocating unnecessary shadow memory.
+
+> -	return FIELD_GET(PCI_TPH_CAP_LOC_MASK, reg);
+> +	return reg & PCI_TPH_CAP_LOC_MASK;
+>  }
+>  EXPORT_SYMBOL(pcie_tph_get_st_table_loc);
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526040830.5285=
+4-1-fengchengwen@huawei.com?part=3D1
