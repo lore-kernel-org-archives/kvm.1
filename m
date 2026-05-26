@@ -1,166 +1,119 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B4CD402B9E
-	for <kvm@vger.kernel.org>; Tue, 26 May 2026 15:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CF53D3013
+	for <kvm@vger.kernel.org>; Tue, 26 May 2026 15:07:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779807979; cv=none; b=uvA/AObqtZvp9/MpbL66cxewP1+Z/iNANFP22CB4X0dTNklg0Q3DJCV5hMhAYZrmOZ4viGkNfpizBjNya3nm1pSNjk8grUevaDiDez/b89qQLuagObfzmZJVb/OYyEimhGOtIOakmmVUIsJawX7hlVK9XarZQhhzbExsZk7D2ac=
+	t=1779808069; cv=none; b=HI4KYe5ZExb2m6oGMM5USW/yREo6lqcagUkaRoHJm/ZDg0S7RIcxZKFIB8YIVMlI8KTloavMwuK0ePZ0sbVwLdhWVNVS+IfPLlrva7eeYXJjtSyHYFEao0ctu5jxi0Ut8x3M9VfIaGIpTxMVcLV+Ibb+ykwNASP+Xt6S8YmF1Hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779807979; c=relaxed/simple;
-	bh=yC1gJC0wGbY4EXVX+u2WSQKoe9np/z92NVvYENVx2xE=;
+	s=arc-20240116; t=1779808069; c=relaxed/simple;
+	bh=yqLbdx2+N1IWN/d2ABHcFLi0HIPvSwmquQjRkB57Tik=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=lJngEthIpLOswU0/KUKaXHml1iykthC5/IwCguyp6viAU0ZS0iqe7kwTqg0leil3HB1xk+cZBzGXN/ISygEVWv3tag5UVqsEEKj20qoFW6AUWOOBJzR0U2IEr0A77wTmBLN/Ywti2Fem5WfJ6EPL3O8e6zGc7mGflLMG+wTwvCw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TUkvc9LX; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=J+4XkjHD4IlL/evS8xYEf/JgIER66jmLSqXNOyxwbtKQDJLp/n/4EODleoBjYgBJ+VF0KUJKVZ09pHAJbX8n2Vsroa2fRdAbWX02oG7Jf0dqWFq9OjYMkUZb1r9ff66YyrM4D6keQ2r+hBS5Oya0uuaY0ngZSpyt84pdLnRRMvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WErBmgR+; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TUkvc9LX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4721A1F00A3A;
-	Tue, 26 May 2026 15:06:16 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WErBmgR+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 040591F000E9;
+	Tue, 26 May 2026 15:07:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779807976;
-	bh=waNCF2Cdqfr1xHDjy6aWA/CPgoyA4TWHeeJ8oaxZSqA=;
+	s=k20260515; t=1779808068;
+	bh=4L8oWOAAvrwgxYb5nCo0l9//fCw1V4yTY54rwbsXAgc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=TUkvc9LX+LPqRSlQNbIRYUrqJE0uA5PNKd7sKDq6KKO4WMHtRok6h9xoI7iqJkerR
-	 8Y5Cdlc+Gz5iqUAvPLJLo4oDfomhjuz5/XPR5NiGoF2hWjUjsRnRBVsfzQbGqJbk6L
-	 3Wd7cqGeLKpqglGplBow9JORztWwR7uuSOeN56XmxVcpai3UJoyH+DZafePrJ1kyY0
-	 HoAHZJvuzQ75LsTlcUPDkV5/a9daR6Hu0rT4No0VDLgXESSVP754gw2lxesCJ+/1gn
-	 V1y2wP5s2Qqu/y1QlQhivHHT3YIJu0GblX7vVXXHeXkDIYdzHElghACRjpen6+sXT4
-	 SsoKuJ/Fl3DfQ==
+	b=WErBmgR+Z06vZXtdr8WDQ+hKaYn40/aeCkP+k+OxEk4l0bSk9cwug7sVTPerpt9sE
+	 eRiqo+Fku+ckNfiMxCZjYAFIOnLC5ID6Hxi/GId6F67WqO0HRK3b0eyJofVwE6038W
+	 cCNvT0DwVQ4mIR2T4bi1KTCrznj5l+/Cqozh/4Bnwo/HA/hUVkKgEmki5ydPlR37bN
+	 NXTjB96jDLnUgKtS8W8oXeP0qdDqRUF+VLtu+PsjJKCo/f0k2+faPU9b2iTGWiUUlF
+	 rnaQhWbpeiPtIeOzojur7FoMdo8JBj+uoKv0kSxJ/D8RALdULGvu0F2NKtRQi3ycGW
+	 rRdWNPJP5qggA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 4/6] LoongArch: KVM: Inject interrupt with batch
- method
+Subject: Re: [PATCH v5 16/18] userfaultfd: add UFFDIO_SET_MODE for runtime
+ sync/async toggle
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Bibo Mao" <maobibo@loongson.cn>
+To: "Kiryl Shutsemau" <kirill@shutemov.name>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260526125256.2511876-5-maobibo@loongson.cn>
-References: <20260526125256.2511876-5-maobibo@loongson.cn>
+In-Reply-To: <20260526130509.2748441-17-kirill@shutemov.name>
+References: <20260526130509.2748441-17-kirill@shutemov.name>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 26 May 2026 15:06:15 +0000
-Message-Id: <20260526150616.4721A1F00A3A@smtp.kernel.org>
+Date: Tue, 26 May 2026 15:07:47 +0000
+Message-Id: <20260526150748.040591F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-
-Pre-existing issues:
-- [Critical] Dangling pointer in kvm->arch.dmsintc can lead to Use-After-Fr=
-ee on KVM device creation failure.
-- [High] Uninitialized stack array `vector` is used to branch and silently =
-corrupt guest hardware CSRs.
+- [Critical] Iterating over VMAs on a potentially unstable mm_struct withou=
+t calling check_stable_address_space(mm) beforehand.
 --
 
-commit c99b04775d4df30c8c3b8ac62860cd645d5d2d98
-Author: Bibo Mao <maobibo@loongson.cn>
+commit 8f453481752954b7331f26ca18fe64760d20297c
+Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-LoongArch: KVM: Inject interrupt with batch method
+userfaultfd: add UFFDIO_SET_MODE for runtime sync/async toggle
 
-This patch updates interrupt injection to use a bitmask and batch method=20
-rather than injecting interrupts one by one. It also removes the unused=20
-priority_to_irq[] array.
+This commit adds an ioctl to toggle userfaultfd async mode at runtime witho=
+ut
+re-registering. It updates the context features locklessly for readers, whi=
+le
+draining in-flight faults by acquiring the mmap_write_lock and calling
+vma_start_write() on all armed VMAs.
 
-> diff --git a/arch/loongarch/kvm/interrupt.c b/arch/loongarch/kvm/interrup=
-t.c
-> index 48dd56aa4dc56..50081484336eb 100644
-> --- a/arch/loongarch/kvm/interrupt.c
-> +++ b/arch/loongarch/kvm/interrupt.c
-> @@ -9,39 +9,16 @@
->  #include <asm/kvm_vcpu.h>
->  #include <asm/kvm_dmsintc.h>
-> =20
+> diff --git a/mm/userfaultfd.c b/mm/userfaultfd.c
+> index f40bf473a6f68..f172ec14a6c84 100644
+> --- a/mm/userfaultfd.c
+> +++ b/mm/userfaultfd.c
+
 [ ... ]
-> -static int kvm_irq_deliver(struct kvm_vcpu *vcpu, unsigned int priority)
-> +static void kvm_irq_deliver(struct kvm_vcpu *vcpu, unsigned long mask)
->  {
-> -	unsigned int irq =3D 0;
-> +	unsigned long irq;
->  	unsigned long old, new;
-> =20
-> -	clear_bit(priority, &vcpu->arch.irq_pending);
-> -	if (priority < EXCCODE_INT_NUM)
-> -		irq =3D priority_to_irq[priority];
-> -
-> -	switch (priority) {
-> -	case INT_AVEC:
-> -		dmsintc_inject_irq(vcpu);
-> -		fallthrough;
-> -	case INT_TI:
-> -	case INT_IPI:
-> -	case INT_SWI0:
-> -	case INT_SWI1:
-> +	irq =3D mask & KVM_ESTAT_IRQ_MASK;
-> +	if (irq) {
-> +		if (irq & CPU_AVEC)
-> +			dmsintc_inject_irq(vcpu);
+
+> @@ -4290,6 +4300,109 @@ static int userfaultfd_rwprotect(struct userfault=
+fd_ctx *ctx,
+>  	return ret;
+>  }
+
+[ ... ]
+
+> +static int userfaultfd_set_mode(struct userfaultfd_ctx *ctx,
+> +				unsigned long arg)
+> +{
+> +	struct uffdio_set_mode mode;
+> +	struct mm_struct *mm =3D ctx->mm;
+
+[ ... ]
+
+> +	/*
+> +	 * Drain in-flight faults before flipping features. mmap_write_lock()
+> +	 * blocks new mmap_read_lock() callers, but per-VMA locked faults
+> +	 * (lock_vma_under_rcu() + FAULT_FLAG_VMA_LOCK) that acquired before
+> +	 * this point keep running. Calling vma_start_write() on each UFFD-
+> +	 * armed VMA waits for those readers to drop, so no in-flight fault
+> +	 * can observe the old features after mmap_write_unlock().
+> +	 */
+> +	mmap_write_lock(mm);
+> +	{
+> +		struct vm_area_struct *vma;
+> +		VMA_ITERATOR(vmi, mm, 0);
+> +
+> +		for_each_vma(vmi, vma) {
 
 [Severity: Critical]
-This isn't a bug introduced by this patch, but looking at the dmsintc device
-code, can a dangling pointer lead to a Use-After-Free on KVM device creation
-failure?
+Does this VMA iteration need to verify the address space is stable?
 
-If KVM device creation fails at anon_inode_getfd() in
-kvm_ioctl_create_device(), the cleanup path calls ops->destroy()
-(kvm_dmsintc_destroy()).
+Since the mm here is accessed via the userfaultfd context (and could be an
+external mm_struct), iterating over it without calling
+check_stable_address_space(mm) after acquiring the mmap lock might encounter
+XA_ZERO_ENTRY markers in the maple tree if the mm was flagged MMF_UNSTABLE
+(e.g., from a dup_mmap() failure or the OOM reaper). Accessing
+vma->vm_userfaultfd_ctx.ctx on a zero entry could cause a kernel panic.
 
-kvm_dmsintc_destroy() frees dev->kvm->arch.dmsintc via kfree() but does not
-set kvm->arch.dmsintc to NULL.
-
-Because the KVM VM instance is not destroyed on device creation failure, ca=
-n a
-userspace program subsequently trigger interrupt injections (e.g. via the
-KVM_IRQ_LINE ioctl) which route to pch_msi_set_irq()?
-
-Since this function conditionally accesses kvm->arch.dmsintc->msg_addr_base,
-does this lead to a fully triggerable Use-After-Free that can result in a h=
-ost
-kernel crash or privilege escalation?
-
-
-[Severity: High]
-This is a pre-existing issue, but does dmsintc_inject_irq() use an
-uninitialized stack array that can silently corrupt guest hardware CSRs?
-
-In dmsintc_inject_irq(), the array unsigned long vector[4] is declared on
-the stack without initialization:
-
-arch/loongarch/kvm/intc/dmsintc.c:dmsintc_inject_irq() {
-	...
-	unsigned long vector[4], old;
-	...
-	for (i =3D 0; i < 4; i++) {
-		old =3D atomic64_read(&(ds->vector_map[i]));
-		if (old)
-			vector[i] =3D atomic64_xchg(&(ds->vector_map[i]), 0);
-	}
-
-	if (vector[0]) {
-		old =3D kvm_read_hw_gcsr(LOONGARCH_CSR_ISR0);
-		kvm_write_hw_gcsr(LOONGARCH_CSR_ISR0, vector[0] | old);
-	}
-	...
-}
-
-The for loop assigns to vector[i] only if ds->vector_map[i] is non-zero. If
-it is zero, vector[i] remains uninitialized.
-
-The code then evaluates if (vector[0]) and other array elements.
-
-If the stack garbage happens to be non-zero, it reads the guest's CSR and
-writes vector[i] | old back, corrupting the guest's LOONGARCH_CSR_ISR0 (and
-others) with host kernel stack data.
-
-Can this cause unpredictable guest behavior or act as an information leak f=
-rom
-the host kernel to the guest?
-
-> +
->  		old =3D kvm_read_hw_gcsr(LOONGARCH_CSR_TVAL);
->  		set_gcsr_estat(irq);
+> +			if (vma->vm_userfaultfd_ctx.ctx =3D=3D ctx)
+> +				vma_start_write(vma);
+> +		}
+> +	}
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526125256.2511=
-876-1-maobibo@loongson.cn?part=3D4
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526130509.2748=
+441-1-kirill@shutemov.name?part=3D16
