@@ -1,98 +1,144 @@
-Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8D73FD970
-	for <kvm@vger.kernel.org>; Tue, 26 May 2026 16:55:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 407B524CEEA
+	for <kvm@vger.kernel.org>; Tue, 26 May 2026 17:05:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779814535; cv=none; b=Ajw/KJvzXueLdKAGHwZS/rBLnWu6C9mFf5LG/dpNeGsy43VAe9BeMNzPjhqeNcY3hF7B2ihS8ZSvfh9x0mahXACUFbZZdMMpeYbbGEjvKZGlQC4DT1aiFTSy2eoLWH/UOYoXnIKNrNHDrTCVWjOvOxXBPR1sJfbmN+qThYJGMcg=
+	t=1779815136; cv=none; b=Yr++jTNei/h9So1/dcAN1mmJqvX+39C+T5vV8Ysq7+zmpqQkV/1AEyHNge1AMKW1CZlEQ+X61YwEg7XPLFz6cuIKhD32HtJ6ysnMFsOEZLvPg9oBxyXtxAYTdnAgYjHn736KGxZVAIFBzYJxPUL6DmGtBFriDf0KVO0B3wySMlg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779814535; c=relaxed/simple;
-	bh=lS88pgO4vl0WQoEIrTfiXdwjUHeGJQ0+p5JkXjqIuL0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=PnvAFp9xHcON2Ik2KG8JDgXCZOmPWaUlcFiSMP9pqZqhsd+DiiIAcW/VwROnCGhWHac95Jj6J1OzZKIv7QkSq54J5rGdpyAnFNj38WW39Nks6qLn2NnE00tKJm4VeIZHnlsBCB9yV9/AvlgCU4f3I0+5pPYEx83qZMmLUOCRQU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=j37vd0hP; arc=none smtp.client-ip=209.85.210.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1779815136; c=relaxed/simple;
+	bh=Af37uu6qJbTzEUzIv3CRpRglMIvVDZzHvPqpJxuYF+s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VNG27sLU3mG+lhvp0EtTxJWJCUBqIORJt5Wezuh9W5Y2f1RBZf65yF1QEKzXG6CZs85u2gk/0ht49pueRcR1GS3BlsNHERd9Hujptz7xQaCG8zlXUZ+yRkFa8IwOQ6pazZgVHvPLsFaSt21B9xrETJWWehVimuEMzR6O8OxUqSs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=lUaZT/yY; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="j37vd0hP"
-Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-837cc5bc6deso6940022b3a.3
-        for <kvm@vger.kernel.org>; Tue, 26 May 2026 09:55:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779814533; x=1780419333; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=LZT31wOgcdRUmGTT5DQeYgf6s1URS8IbeXG7+gb+Vm8=;
-        b=j37vd0hPHYczoNM5Gcznb5RSBUDWvyG3nNAnMaq8ZKy/cPbiFfgG60jYs5dJJgFwPC
-         XTnv6SXr6o7QSvLnGGwxB+A58zuKGIWVRBThB1tpGqAeKceULrRcVhaeiea+UoCOHksV
-         QdG6x8G6UVmzAnT9+vSeLcdCX8YRfmRDI8wKrp8OSRnZL5bK0KWQjyv9pzo7bYGEf+6i
-         NzK4qIUc9qcEzNODJs1oTw7+HkJdiAF9LeOSIPygMkTqfs6Hq7MpZi7KEPP5HQYsHwWt
-         o8ANiYhz4Aibu5fCXJkplfW/NfMED4ei2WKBDiGUTTDURsbEgnBIOWp889kFItbhlpaO
-         MAdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779814533; x=1780419333;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LZT31wOgcdRUmGTT5DQeYgf6s1URS8IbeXG7+gb+Vm8=;
-        b=iCkHW8D6znJ0GQoP5Ea3hOpEgqSVlVtoyVGWBLSX6DDaI0kQI5QcAMX7awWrfSFnbr
-         evuNWYwMyj7n7oZ1Mcbl8ZPIuGkgX6bStSKf1KDMoXXBDuqOEmsmEyawSa6oUI9G9lVI
-         cmbSbZpir0bc0I9JYL5mrm3kepdiFV0d6w0Wy+SlWrQP5N6HjcGL+AwyPVyYkFRkv392
-         dB0Iklcp5fukTkhs/7KSOXTWHSjCj1PAfzzARK9w8tc+3XRVBwOm7VZU6Y0CHtQD8YPI
-         ogZ2qrasu5HH6i/v74vCWGxhDo2praVQcluxaaeX1JX+Eyhm5EPH9n7iK9l+a0KnPwn2
-         i9QQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8P4Rgei+xN/98YwzBMxDsKQEcbOwiPTW8MteU0Hc+8L1sl78uXXEpHyiG6VnqYdOGgp8o=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy1KcK7CkltZulN9zdfBB0mmbuolw2MDh0aZmf+tK+btYe6NUJ9
-	rxrNXG4k+bK7t3xx9ImK5KRfsq7SWVd1/8j4ZXjUARXgm70Xlwus4ENhOHjcNpms95AXpEJN5s2
-	zuCtWiQ==
-X-Received: from pfbfx7.prod.google.com ([2002:a05:6a00:8207:b0:82f:6245:a6ec])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:298f:b0:835:3d5e:1dd3
- with SMTP id d2e1a72fcca58-8415f586b5bmr17521220b3a.42.1779814532656; Tue, 26
- May 2026 09:55:32 -0700 (PDT)
-Date: Tue, 26 May 2026 09:55:32 -0700
-In-Reply-To: <20260522-fix-sev-gmem-post-populate-v2-0-3f196bfad5a1@google.com>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="lUaZT/yY"
+Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64Q9gf7f3031882;
+	Tue, 26 May 2026 17:05:30 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=p8jCAXsmkvIC/i4ObA5lY/GJs3BfBg
+	JX1OmSP0SPcm0=; b=lUaZT/yYfKhucJzdNHsmlth4dp6ddjN2Pn1cd3PzAGMqad
+	vlghpHDnxRcb+kqWR+HUd/9sfNQNCh70BGcoBVacJyhieCOzXmWWXPqEEppzofuT
+	OygNTBolKaTnPh0l8D3htOmRTISRHfzzwLj1YIP73SktRWbxM+E3t4iSDB79tvPq
+	XOtsGVNbjtZcfHj+bo+jWR0BM9fTYFyxEFxDHCkSxJ476KAvgMSHG2HtGHTom8Hv
+	AmpCSOezQMOnIudV987+cxv2xBG5JA7LrOf7kkfuam4VRp1hnM+io9sEItT57W1o
+	JqHe8eFU1h+WmgGMumFEwPDEn58GtXwVrBOlbtRQ==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4eb4nc4ajx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 26 May 2026 17:05:30 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64QGs6NP006273;
+	Tue, 26 May 2026 17:05:29 GMT
+Received: from smtprelay07.fra02v.mail.ibm.com ([9.218.2.229])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ebqjjtcm1-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 26 May 2026 17:05:29 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay07.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64QH5Pt226345818
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 26 May 2026 17:05:25 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id B6D192004D;
+	Tue, 26 May 2026 17:05:25 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 920A42004B;
+	Tue, 26 May 2026 17:05:25 +0000 (GMT)
+Received: from osiris (unknown [9.52.216.133])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Tue, 26 May 2026 17:05:25 +0000 (GMT)
+Date: Tue, 26 May 2026 19:05:24 +0200
+From: Steffen Eiden <seiden@linux.ibm.com>
+To: Arnd Bergmann <arnd@kernel.org>
+Cc: Claudio Imbrenda <imbrenda@linux.ibm.com>,
+        Christian Borntraeger <borntraeger@linux.ibm.com>,
+        Andreas Grapentin <gra@linux.ibm.com>,
+        Nina Schoetterl-Glausch <nsg@linux.ibm.com>,
+        Janosch Frank <frankja@linux.ibm.com>,
+        David Hildenbrand <david@kernel.org>, kvm@vger.kernel.org,
+        Arnd Bergmann <arnd@arndb.de>
+Subject: Re: [PATCH 1/2] kvm: rework memory prefault
+Message-ID: <20260526170524.185462-A-seiden@linux.ibm.com>
+References: <20260526125220.1560451-1-arnd@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260522-fix-sev-gmem-post-populate-v2-0-3f196bfad5a1@google.com>
-Message-ID: <ahXQhE1EUzlyetq5@google.com>
-Subject: Re: [PATCH v2 0/5] guest_memfd fixes for bind and populate
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Vishal Annapurve <vannapurve@google.com>, 
-	Yan Zhao <yan.y.zhao@intel.com>, Michael Roth <michael.roth@amd.com>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>, Chao Peng <chao.p.peng@linux.intel.com>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, Zongyao Chen <ZongYao.Chen@linux.alibaba.com>, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	Yu Zhang <yu.c.zhang@linux.intel.com>, Fuad Tabba <tabba@google.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260526125220.1560451-1-arnd@kernel.org>
+X-TM-AS-GCONF: 00
+X-Authority-Analysis: v=2.4 cv=VvYTxe2n c=1 sm=1 tr=0 ts=6a15d2da cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=kj9zAlcOel0A:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=klqDRX_zH8uQnmrxto0A:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-ORIG-GUID: R6rYCEcjygVTByXBqlpqkFqXeGlojEsd
+X-Proofpoint-GUID: R6rYCEcjygVTByXBqlpqkFqXeGlojEsd
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI2MDE0NCBTYWx0ZWRfX8cT0DiCxEO42
+ IOcNvxdo8jmp9dspeDFsp0kiwVixE6nYASXhdW04tl8mlCo86VWPM5mBt5uWTYIlOusS9Ud3349
+ j4Yb5sk7VnRhvMRmfNhGwTLkHfLet9rIHWYV/romVaPLJHH1O4y5Li5J26jd84SYp5EkkzFT+IF
+ 4L/UjpdACAp2ejWDuX09rgLO3KgXZJeC6Ai4hF25Yuh1iCJsnNSGvC5JfmOKymV8aU30NojWR2i
+ 51HmyHHujnadnMZMv5nlYb6IPRkqc1MUv8YbTUF1AnnpGnM0izlAVDtsLfloc2lFyhrlRMz6Rb+
+ qiFfjsb0tvRbC3jT9pk2BjeS734fsGIk+M5ym4jK96AeSanUN2Xvxts6I850PPJ+/zkkO+qPm/6
+ gAQGnlRsuwvn9snBlV+onskaOgqhFFp5cyG0n+MyaSIqjgOXURjdVPZ+m3ITSHWTYNkYHq3viKg
+ V6LJt8FpTiWhy4nEntA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-05-26_04,2026-05-26_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ suspectscore=0 phishscore=0 priorityscore=1501 spamscore=0 adultscore=0
+ lowpriorityscore=0 malwarescore=0 impostorscore=0 clxscore=1011 bulkscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605260144
 
-On Fri, May 22, 2026, Ackerley Tng wrote:
-> This series is a group of fixes for the bind and populate flows for
-> guest_memfd, and fixes some issues reported by Sashiko after reviewing the
-> guest_memfd in-place conversions series [1] and another fixup series Sean
-> posted [3].
+On Tue, May 26, 2026 at 02:52:19PM +0200, Arnd Bergmann wrote:
+> From: Arnd Bergmann <arnd@arndb.de>
+> 
+> When both s390 and arm64 KVM modules are enabled on s390,
+> the latter fails to link against the s390 version of
+> kvm_arch_vcpu_pre_fault_memory():
+> 
+> ERROR: modpost: "kvm_arch_vcpu_pre_fault_memory" [arch/s390/kvm/arm64/kvm-arm64.ko] undefined!
+> 
+> Change the logic to reference this based on a target
+> specific macro rather than a global Kconfig symbol.
+> 
+> Fixes: f67bba50ef56 ("KVM: s390: arm64: Enable KVM_ARM64 config and Kbuild")
+> Fixes: 927ce4dee94f ("KVM: s390: Implement KVM_PRE_FAULT_MEMORY")
+> 
 
-In the future, please don't bundle unrelated changes.  The SNP specific changes
-are related and should be a series, but the signed integer thing and the lack of
-error handling on xa_store_range() are completely unrelated, because the fact
-that Sashiko kept complaining about pre-existing issues.
+Thanks for looking into this.
 
-I totally understand why you bundled these together, but that obviously didn't
-stop Sashiko from complaining about pre-existing issues, over and over.
+An alternative solution could be for the kvm-arm64 module to just implement the
+function as well. The s390 implementation is purely gmap based and has no
+dependencies to s390-kvm beside that. arm on s390 kvm could use the exact same
+implementation as well. 
 
-Unnecessarily bundling can lead to exactly what's happening here: the three SNP
-changes are ready to go, but the two unrelated guest_memfd changes need new
-versions.  Which isn't hard to deal with, but it's extra friction that is easily
-avoided.
+I guess this is probably dead code as (I assume) qemu-aarch64 does not use the feature.
+But I saw some proposals regarding this feature for KVM/arm64 on the list.
 
-I'll apply the SNP changes, and send a new version of the signed vs. unsigned
-issue.  Please send a new version of the xa_store_range() error handling (or
-prove that I'm wrong).
+> Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+> ---
+> This is not yet an actual problem, but will be when both
+> the experimental 'sae' branch and the 7.2 contents from
+> current linux-next are merged.
+> 
+> Not sure who should carry this patch in the meantime, but
+> it would be possible to add it to kvm-next already in
+> preparation for the upcoming sae support.
 
-Thanks!
+I would prefer if you put it in next now. Less patches to carry around.
+
+But If that is not feasible I can add it to series 1 once Claudios patches are
+in 7.2.
+
+	Steffen
+
