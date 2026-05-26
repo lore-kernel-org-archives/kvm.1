@@ -1,143 +1,118 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B273938F64E
-	for <kvm@vger.kernel.org>; Tue, 26 May 2026 16:13:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB53F3B6C0E;
+	Tue, 26 May 2026 16:27:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779812004; cv=none; b=j8RZ01VQnFfPShcG+qw88cVzmI2WfY7QybvLWardFpeLMpmCmV6ID66qouQ7r7gsukMdcS9g01HTTUge4gImofU270SODzF1amU69g/7SfRSNvytu8I77i0P+bK6JOeuU+pnCGwRdm9qyjoGmDXHuPt5yRhtFEeFqOLe2SYVd7I=
+	t=1779812878; cv=none; b=gSvENQRsrnmu+ScIedX38lLwwjLuVN/MHavzN9v6vsV6zgCC2XLgtgRfDG9tLYmeysjPSv72kfg1BiHu333GNZW8JhK0L0YBevM0rArfjIe1pQ78oV2WRnvwUX2Ib136odM27NPh8nopuyna3oncaKFKYpvjQDccj4tDpbvUltA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779812004; c=relaxed/simple;
-	bh=su9JZyL6kCCByom6RtyIOUZV/R46eYJ7VEk1jdF4Ucg=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Zul/fUZcazKwSmzC7+dCYSSG/y+Ew/4VXPkSIPj/CrgA+9LLCvKH6+TsdbqB0aiEhDcydzYiRGAxQ2bDiPkisP90a28Z0dEj7ZmA7G2SttWlIuy6pUpVvh5lNeVqIO+hF96H3KvYzXbO4DSfDYEcDpGYCKahmgB0Ko1LNhC61w0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FXd/xzLQ; arc=none smtp.client-ip=209.85.216.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1779812878; c=relaxed/simple;
+	bh=uyHF9eg1fNPkQ8bTIFguWMYCPZbh4kpcbqHZpzfY8Kw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=AziRrhsRir8YWeyz42HDuEP+8qUcuQZXagXkwHREyT6bphCInCt+boVrrY8r53bWLbD1giC89oRTsjRrwgzqDqSFPXtFcFAPTs4oXTj9qMhwpQ0vICtcd7j7bM+g+9M1BKQ25mi8XjytkgkI/ZUsnIRDNPUt9lvlQer72yt20cI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WCPBslFB; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FXd/xzLQ"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-367fd7b8825so10748653a91.0
-        for <kvm@vger.kernel.org>; Tue, 26 May 2026 09:13:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779812003; x=1780416803; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=EKti3bpIeaw9DUQ7b6OosKHvIytGX0/8ZwQX1bJsL8w=;
-        b=FXd/xzLQpHtKld142i7ZJa2VABUyIe6PW5JOIh3MQfiOWe29Be8eg8DrNYt5RW4wAb
-         55C2VfNq3OBs37cHt97m60w8ps6w/vxqq+LjiSYTrAH5zaSuzXCjud2xGAZbKwGcxQMr
-         j2i92cZ73MUjq+c1o3l9x6DmQk1sJUv7Jnn74YHCc8ylY8kdMyK4HGPyZmyQrZSjv/Pk
-         gR8G7Jv496X3L+hD0W9gRXPsRTl3COsx1MCQh2YYsR4YwOQZW7uu2ywwpMILynt81hYW
-         uYh4vhDCa1eiVRjJO+oRyXcSDLswU8moiaytW0RihAIcwhqEG8mLpP/yzUJhsyAs9ika
-         XQcw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779812003; x=1780416803;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=EKti3bpIeaw9DUQ7b6OosKHvIytGX0/8ZwQX1bJsL8w=;
-        b=QXy7tl5hhM1t8SGm+vPAiCnMHbH3jO9YMrK/leJzyYWK1C2D9jJ0hmQRuw5HaHLLc1
-         YHAyHhu+d+QNYsl/0oGXDhDIizrjBoI0EavcJEMqsqmXquZkjU4gSKO7osLmpcE9p+OR
-         KIXt0V20A/KdoQLk6O0sqLRA2AC4t1W0ktOBZHyRZZ3fnTTMZcsjuNK5dRWUe0svpwqW
-         /hHS4wovl4nQEmBmpqph2UMb16dSguSF9BBWVD1BUwI40e5mRij33SZO5D3iwDD59rUs
-         dIziGP+oJ8Nvz76LXJSdJqIJvw8t6LMJ3IX0vMNp0tdUo/hAePTfMLh6YRiz9v3OrNJQ
-         zoQg==
-X-Forwarded-Encrypted: i=1; AFNElJ8mMrnpUKfru70NssIJAIUydUbAgcE/SIfRjrKbeYcsVJ/Rv/UkZCRm3nCV2tnsD9d2wmU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzN2zbvwruHPpZcuqZxWUt8lzhZIDhjcpD7xDauhCCDgCwtKDov
-	AUUcRuh7uyMrkcc53vIQ8S06IIvza1VrNyB9kDF72A59/Biv/UK9DPll232B/Pkp4So1QB2uqzP
-	EkG7oEA==
-X-Received: from pjbsj15.prod.google.com ([2002:a17:90b:2d8f:b0:368:45e6:af08])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:33c1:b0:368:cefe:ddd0
- with SMTP id 98e67ed59e1d1-36a6765aa6bmr17580098a91.15.1779812002650; Tue, 26
- May 2026 09:13:22 -0700 (PDT)
-Date: Tue, 26 May 2026 09:13:21 -0700
-In-Reply-To: <20260522-fix-sev-gmem-post-populate-v2-1-3f196bfad5a1@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WCPBslFB"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289D31F000E9;
+	Tue, 26 May 2026 16:27:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779812875;
+	bh=uX6weQ63PycMa+NiIwkaE0lKXtL5D7cf5slQyEH4uVQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=WCPBslFBHlD18xXQc3r4cfXRi6NRqMWZgpFMn1cIbrapYoU4c4gRwNK1+7uVsqGAy
+	 60v2BCHvTRcdS1tVvGPbqfVfdwwcJp1FHFNfktx1fkX0Wbx1RZrVm0KBNermhINrKf
+	 T9lX4lpoqb8ZTQ988HCILQXzmPKZjen7JnhZ0OVSRmfeZwap0kKaSy4gg8etm5udnf
+	 udcU0Sgi7luz1Cc1OPvSW+2ubz9qCszQO2AwKg/qp69fZ72CdWGJzB5e9f6nHF0uBd
+	 ldc80qXMC/DUvHJCNvAW1ArbfI1EfmFu9YdmZYAerVhlmQZOEcNqDEor/Ir+l9+s8j
+	 e4sx9r+STyxUg==
+Date: Tue, 26 May 2026 17:27:52 +0100
+From: Lorenzo Stoakes <ljs@kernel.org>
+To: Takahiro Itazuri <itazur@amazon.com>
+Cc: seanjc@google.com, Liam.Howlett@oracle.com, ackerleytng@google.com, 
+	agordeev@linux.ibm.com, ajones@ventanamicro.com, akpm@linux-foundation.org, 
+	alex@ghiti.fr, andrii@kernel.org, aou@eecs.berkeley.edu, ast@kernel.org, 
+	baolu.lu@linux.intel.com, borntraeger@linux.ibm.com, bp@alien8.de, bpf@vger.kernel.org, 
+	catalin.marinas@arm.com, chenhuacai@kernel.org, corbet@lwn.net, coxu@redhat.com, 
+	daniel@iogearbox.net, dave.hansen@linux.intel.com, david@kernel.org, 
+	derekmn@amazon.com, dev.jain@arm.com, eddyz87@gmail.com, 
+	gerald.schaefer@linux.ibm.com, gor@linux.ibm.com, haoluo@google.com, hca@linux.ibm.com, 
+	hpa@zytor.com, itazur@amazon.co.uk, jackabt@amazon.co.uk, jackmanb@google.com, 
+	jannh@google.com, jgg@ziepe.ca, jgross@suse.com, jhubbard@nvidia.com, 
+	jiayuan.chen@shopee.com, jmattson@google.com, joey.gouly@arm.com, 
+	john.fastabend@gmail.com, jolsa@kernel.org, jthoughton@google.com, kalyazin@amazon.co.uk, 
+	kas@kernel.org, kernel@xen0n.name, kpsingh@kernel.org, kvm@vger.kernel.org, 
+	kvmarm@lists.linux.dev, lenb@kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-doc@vger.kernel.org, linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-mm@kvack.org, linux-pm@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, linux-s390@vger.kernel.org, loongarch@lists.linux.dev, 
+	lorenzo.stoakes@oracle.com, luto@kernel.org, maobibo@loongson.cn, martin.lau@linux.dev, 
+	maz@kernel.org, mhocko@suse.com, mingo@redhat.com, mlevitsk@redhat.com, 
+	nikita.kalyazin@linux.dev, oupton@kernel.org, palmer@dabbelt.com, patrick.roy@linux.dev, 
+	pavel@kernel.org, pbonzini@redhat.com, peterx@redhat.com, peterz@infradead.org, 
+	pfalcato@suse.de, pjw@kernel.org, prsampat@amd.com, rafael@kernel.org, 
+	riel@surriel.com, rppt@kernel.org, ryan.roberts@arm.com, sdf@fomichev.me, 
+	shijie@os.amperecomputing.com, skhan@linuxfoundation.org, song@kernel.org, surenb@google.com, 
+	suzuki.poulose@arm.com, svens@linux.ibm.com, tabba@google.com, tglx@kernel.org, 
+	thuth@redhat.com, urezki@gmail.com, vannapurve@google.com, vbabka@kernel.org, 
+	will@kernel.org, willy@infradead.org, wu.fei9@sanechips.com.cn, x86@kernel.org, 
+	yang@os.amperecomputing.com, yangyicong@hisilicon.com, yonghong.song@linux.dev, 
+	yosry@kernel.org, yu-cheng.yu@intel.com, yuzenghui@huawei.com, 
+	zhengqi.arch@bytedance.com
+Subject: Re: [PATCH v12 00/16] Direct Map Removal Support for guest_memfd
+Message-ID: <ahXJoHNoeCcaupzN@lucifer>
+References: <aeennZlV60k81OBf@google.com>
+ <20260506080753.14517-1-itazur@amazon.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260522-fix-sev-gmem-post-populate-v2-0-3f196bfad5a1@google.com> <20260522-fix-sev-gmem-post-populate-v2-1-3f196bfad5a1@google.com>
-Message-ID: <ahXGoTaknK4KVuAz@google.com>
-Subject: Re: [PATCH v2 1/5] KVM: guest_memfd: Use write permissions when
- GUP-ing source pages
-From: Sean Christopherson <seanjc@google.com>
-To: Ackerley Tng <ackerleytng@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
-	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, 
-	Rick Edgecombe <rick.p.edgecombe@intel.com>, Vishal Annapurve <vannapurve@google.com>, 
-	Yan Zhao <yan.y.zhao@intel.com>, Michael Roth <michael.roth@amd.com>, 
-	Isaku Yamahata <isaku.yamahata@intel.com>, Chao Peng <chao.p.peng@linux.intel.com>, 
-	Xiaoyao Li <xiaoyao.li@intel.com>, Zongyao Chen <ZongYao.Chen@linux.alibaba.com>, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
-	Yu Zhang <yu.c.zhang@linux.intel.com>, Fuad Tabba <tabba@google.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260506080753.14517-1-itazur@amazon.com>
 
-The shortlog is misleading, bordering on outright wrong.  I think most people
-would read it as "ALWAYS Use write permissions when GUP-ing source pages".  I
-also think it should be scoped to:
+On Wed, May 06, 2026 at 08:07:52AM +0000, Takahiro Itazuri wrote:
+> Hi Lorenzo and Sean,
+>
+> Apologies for the delayed reply — Nikita is leaving Amazon, and I'm
+> taking over this series going forward. Thanks for your patience.
 
-  KVM: SEV:
+Hey,
 
-because this only affects SNP, and IMO is an SNP bug, not a guest_memfd bug.  E.g.
+Thanks for letting us know! And thanks to Nikita for all his work, will
+keep an eye out for the respin!
 
-  KVM: SEV: Pin source page for write when adding CPUID data for SNP guest
+Cheers, Lorenzo
 
-On Fri, May 22, 2026, Ackerley Tng wrote:
-> From: Sean Christopherson <seanjc@google.com>
-> 
-> sev_gmem_post_populate() may write to the source page if there was an error
-
-Avoid referencing function names in changelogs when possible.  Unless the reader
-is already familiar with the code, the name is meaningless.  The purpose of the
-changelog is to complement the literal patch, not to provide a play-by-play
-description.
-
-> while performing SNP_LAUNCH_UPDATE.
-> 
-> Since GUP requested only reads, there is a chance sev_gmem_post_populate()
-> could be writing to some read-only page.
-> 
-> sev_gmem_post_populate() will only ever write the source page if the type
-> of page being LAUNCH_UPDATEd is a CPUID page. Hence, request a writable
-> page only when loading the CPUID page.
-> 
-> Since TDX never writes to the source page, always pass false to
-> kvm_gmem_populate().
-
-Describe changes in human-friendly, conversational language.  And in a way that
-doesn't require looking at the patch to understand the changelog: "pass false"
-is meaningless without looking at the code to see what flag was added (or exists).
-
-> With this, even if a read-only mapping or the global zero page was provided
-> as the source page, GUP will do a copy-on-write, making it writable before
-> the write happens in gvm_post_populate.
-
-Objection, speculation.  If the mapping is truly read-only, i.e. doesn't allow
-writes at all, then GUP will fail.  This is all superfluous information though;
-"read-only" is a pretty ubiquitous concept, there's no need to explain it in
-gory detail.
-
-
-I'll rewrite to this when applying:
-
----
-When populating a guest_memfd instance with the initial CPUID data for an
-SNP guest, acquire a writable pin on the source page as KVM will write back
-the "correct" CPUID information if the userspace provided data is rejected
-by trusted firmware.  Because KVM writes to the source page using a kernel
-mapping, pinning for read could result in KVM clobbering read-only memory.
-
-Note, well-behaved VMMs are unlikely to be affected, as CPUID information
-is almost always dynamically generated by userspace, i.e. it's unlikely for
-the CPUID information to be backed by a read-only mapping.
----
-
-> Fixes: 2a62345b30529 ("KVM: guest_memfd: GUP source pages prior to populating guest memory")
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-
-Cc: stable@vger.kernel.org
-
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
-
+>
+> On Tue, Apr 21, 2026 at 01:40:00PM +0000, Lorenzo Stoakes wrote:
+> > Hm, given this touches a fair bit of mm, I wonder if we shouldn't try to do this
+> > through the mm tree?
+>
+> On Tue, Apr 21, 2026 at 04:36:00PM +0000, Sean Christopherson wrote:
+> > Yeah, when the time comes, the mm pieces definitely need to go through the mm
+> > tree.  Ideally, I think this would be merged in two separate parts, with all mm
+> > changes going through the mm tree, and then the KVM changes through the KVM tree
+> > using a stable topic branch/tag from Andrew.
+>
+> Thanks for the guidance. The split makes sense to me; I'm planning to
+> follow this approach with patches 1-6 (mm) going through the mm tree
+> and patches 7-16 (KVM) through the KVM tree on top of a stable
+> branch/tag from mm. I'll confirm the exact boundary and coordination
+> details as I prepare the repost.
+>
+> On Tue, Apr 21, 2026 at 01:40:00PM +0000, Lorenzo Stoakes wrote:
+> > In any case, we definitely need a rebase on something not-next :) if not mm then
+> > Linus's tree at least maybe?
+> >
+> > I'm seeing a lot of conflicts against mm-unstable, it can't b4 shazam even patch
+> > 1 and in Linus's tree it's failing at an mm patch (mm: introduce
+> > AS_NO_DIRECT_MAP).
+>
+> I'll rebase onto v7.1-rc1 and resolve the conflicts as part of the split.
+>
+> Takahiro
+>
