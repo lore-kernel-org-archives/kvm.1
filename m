@@ -1,93 +1,158 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA21B3BB100
-	for <kvm@vger.kernel.org>; Tue, 26 May 2026 13:45:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D654F3BED23
+	for <kvm@vger.kernel.org>; Tue, 26 May 2026 13:46:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779803133; cv=none; b=t0ECekf/GH0bB3UI+/KShrjm2tt+87MBrjxRuQ39azLz9isfjsZ+1C5ciMOoeFb+p38j5f7MbdEMWfEIgALolNYWOR5VcMlEoGvPSPFLMWZpGs6alvwsrkU6gf0QhdsisFpYqnqCpVU84s3GyJVvXeNg3HEWaWgrwm487nxs9RU=
+	t=1779803217; cv=none; b=IwhXiQe8kTK2oNOJguzYFF8kmDZVufewFiD+3dAk+TBLvq6HuDSbmPRbJFid29Jv/YiEkhets+o5O44RkzKqweBmCXSCJLV7bgfWPu8J4cLOFDJrnBwAhZU4osl+OEm8z1y2d1T/heaRD4/htIwNkToQdXV3AxT7Y8Py0j+8K4E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779803133; c=relaxed/simple;
-	bh=dCYlgKZTH9VMy9Ru1zjAAcfghHXcI8RvqEHyTqil3Oo=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=OL87LK1gQBdmET4/abb+S+n9IenLwtKfJA9el4OCMxXamY6FazC+VYpxD+W+wkcmeQtosI8ZuQvIv0HkVevriaF2HMAQMOyjja1zD4nt97+5FcAbiDj6zN1H7G2R0DE/7WtAxUZjhZqmBdZGsxUHS1M3bhUwM87k5ZwPcH52TZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AC88d2hD; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1779803217; c=relaxed/simple;
+	bh=YLWx51acZGW7XG7scrNA0Dsa4eZJkeDfI5ceQuxSxAY=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Xrpy4Ej7zRAWM04GF3dspJcjFa16pzTFTlrzJa1V2lDg1kg/Du732DZtZ1BqBJCZ12K0Rc2+QDItKkCZ3LyRRVeOBzHez+j5G5/NYPqY+wRWY+k+Re2Bl3l3uI5SJkLQOSZdPtsbt594k/cM1Pr9f1DvxVI/G6gpaazhiSxhPSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XppUcttq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AC88d2hD"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b9b8137828so107745165ad.0
-        for <kvm@vger.kernel.org>; Tue, 26 May 2026 06:45:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779803131; x=1780407931; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=b7ogrWNYI3gepg7QyExihjmhdR3tEft22xe63YUoKhA=;
-        b=AC88d2hDRIMP2hWNlK5MFK9WKAZgqMaZk1HGviuTyF0lHapaPGXYx3zpEPrwDhLlcT
-         UEHoUhQ6cKMvm+Y7uzTTiND2lXGcD2vxKcQEtMpbByFRcz78ujG/275nvu5nTbnXDAx8
-         /uRhuduVY/NYj6sc918zN2+ZlL+Ntimxw9CzBFSVs8WRHmAyaBqWhAudaNQbENmYTlbW
-         eXg63tCgYtnAhxTB9s1mILTcI7BBM/GFMlxOSKxJBH+rDhYMZH5CjJQh0mRAmGDs82e4
-         H1VHYhkleoVxCg++d/ly5HVCAwPiqtosXXEVgOWS86tzC9qbYewY4RDRizICUSabR1Vq
-         V2og==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779803131; x=1780407931;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=b7ogrWNYI3gepg7QyExihjmhdR3tEft22xe63YUoKhA=;
-        b=bQ2OstM2hmf2wisMzMRo35qA5zymRMl/GRzoeV5li+0/TjWpEYXnxHmmhU+gbhVxsM
-         hD8KvrrbLWo/sVnBx20MEXnXrmg3r8Iao/2sgho4ETJUO8SwGFgrh1NZvryHSvkyetCv
-         BuezgJp1KOss7Lrvcp1SKqqclSu5GpSR6ZIgJaxUSygr1QaoYwM8m7X/6Qrq9+J/xR0u
-         DRsR9iQUtpiFO8qVswJkL+roSmmLDkYARagWTkUIom/BcVR1PAbapY8ia7WlCyuoZM/O
-         eDsoDVx7nkTnSE0ko9pb90Wukkj0Zv9FiHs3nbI2bbnuoCMjsckzyGjHFBWEblpsY2FA
-         hiyg==
-X-Forwarded-Encrypted: i=1; AFNElJ/E4INdB/GP7UaklMmQgR4GoaQiUCFHYMQN5Ut0eh5hQHIq1VT1fDWyVujppEGKVbSXaFo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyEMAbDMSrFxiWVEEUlHLKN0giDhFjiPJuN0szpCr6pPYfjxH1g
-	OoX4bc6Id1akrC5AVlMh3A2WlDKfwaIPU4pXwXPJNdWf7QSqj84S86DBeDRppV15qM78S7+GJ8v
-	sC1mIwg==
-X-Received: from plsa3.prod.google.com ([2002:a17:902:b583:b0:2b2:4270:9f7c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:15c7:b0:2bd:8938:b811
- with SMTP id d9443c01a7336-2beb0700897mr225723395ad.34.1779803130936; Tue, 26
- May 2026 06:45:30 -0700 (PDT)
-Date: Tue, 26 May 2026 06:45:28 -0700
-In-Reply-To: <ahSMMAUQ83P-NeOi@mozart.vkv.me>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XppUcttq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A281E1F000E9;
+	Tue, 26 May 2026 13:46:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779803215;
+	bh=5HQmyzXTnZv5pO5qY41DEvREOJv/7STVC9eu7mCjVjk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=XppUcttqwCDaCQLF1/k33mOL42GjDwMz1OafIVpOd0/R2Rat8GfFsmKWYZ1hB85LQ
+	 //NfCTXbCPP+6B7jRaRQD54I9BA6l+d6hni29JuzDtuUZ+olA3ei2UNOptKv7ra0Fx
+	 MZRtRaznwrorvwoLQ1lkH6/wkZMdDToxo5unce7H9cPObX9iWad+nTMRyqwuU4Kt6E
+	 gVrEfbVck7IcHiJvc+ng7BrN7qeo+ehGlMsmJzqy5/iEdDtLgVKZaSlV0BCzZWunk8
+	 Va4fzM0Z3KFc9ANXUR+bgsd/D24R3+dwoChHDADQgh4gB+MPK6VFr+QyKcHIUBdulz
+	 aInz6LGOXhinw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 01/18] fs/proc/task_mmu: fix make_uffd_wp_huge_pte()
+ prot-update race
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Kiryl Shutsemau" <kirill@shutemov.name>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260526130509.2748441-2-kirill@shutemov.name>
+References: <20260526130509.2748441-2-kirill@shutemov.name>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 26 May 2026 13:46:55 +0000
+Message-Id: <20260526134655.A281E1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <ahSMMAUQ83P-NeOi@mozart.vkv.me>
-Message-ID: <ahWj-P_1uOlYku4m@google.com>
-Subject: Re: New "no-cfi indirect call!" build failure on 7.1-rc5
-From: Sean Christopherson <seanjc@google.com>
-To: Calvin Owens <calvin@wbinvd.org>
-Cc: linux-kernel@vger.kernel.org, peterz@infradead.org, tglx@kernel.org, 
-	vishal.l.verma@intel.com, zhao1.liu@intel.com, binbin.wu@linxu.intel.com, 
-	x86@kernel.org, kvm@vger.kernel.org, nathan@kernel.org
-Content-Type: text/plain; charset="us-ascii"
 
-On Mon, May 25, 2026, Calvin Owens wrote:
-> Hello all,
-> 
-> I'm seeing build failures with the attached kconfig on 7.1-rc5:
-> 
->     running 'make' '-skj32' 'oldconfig' 'tar-pkg' 'LLVM=/home/calvinow/llvm-22.1.5/bin/'
->     vmlinux.o: error: objtool: idt_do_interrupt_irqoff+0xe: no-cfi indirect call!
-> 
-> It bisects down to commit 0701c9e17bd903d95b2ddf7dd2e1d8be5027f331:
-> 
->     Author:     Peter Zijlstra <peterz@infradead.org>
->     AuthorDate: Fri May 8 11:18:29 2026 +0200
->     Commit:     Thomas Gleixner <tglx@kernel.org>
->     CommitDate: Tue May 19 20:25:51 2026 +0200
-> 
->     x86/kvm/vmx: Move IRQ/NMI dispatch from KVM into x86 core
-> 
-> Nathan noticed it last week in -next:
-> 
->     https://lore.kernel.org/all/20260520230621.GA706311@ax162/
-> 
-> You can reproduce my LLVM with this, in case it matters:
-> https://github.com/jcalvinowens/kernel-testing/blob/master/scripts/build-llvm.sh
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
-Peter is on it: https://lore.kernel.org/all/20260526090631.GA4149641@noisy.programming.kicks-ass.net
+Pre-existing issues:
+- [Critical] `pagemap_scan_hugetlb_entry()` illegally modifies shared HugeT=
+LB PMDs without unsharing, silently corrupting the memory protection of oth=
+er processes.
+- [High] `pagemap_scan_hugetlb_entry()` incorrectly uses the hardcoded `HPA=
+GE_SIZE` macro to verify if the requested range covers the entire HugeTLB p=
+age, breaking write-protection for gigantic huge pages.
+- [High] Self-deadlock in `pagemap_scan_pte_hole()` when write-protecting u=
+nallocated HugeTLB pages due to recursive `hugetlb_vma_lock` acquisition.
+--
+
+commit a2b7dff5e4a0bce48bb972dee8e0bb1bf34d50e4
+Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
+Subject: fs/proc/task_mmu: fix make_uffd_wp_huge_pte() prot-update race
+
+This commit fixes a race condition in make_uffd_wp_huge_pte() where the
+UFFD_WP bit is applied to a present HugeTLB PTE using a non-atomic snapshot.
+It mirrors the ptep_modify_prot_start() and ptep_modify_prot_commit() patte=
+rn
+used for normal PTEs to prevent hardware updates from being lost.
+
+> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
+> --- a/fs/proc/task_mmu.c
+> +++ b/fs/proc/task_mmu.c
+
+[ ... ]
+
+> @@ -2960,11 +2964,11 @@ static int pagemap_scan_hugetlb_entry(pte_t *ptep=
+, unsigned long hmask,
+>  	if (~categories & PAGE_IS_WRITTEN)
+>  		goto out_unlock;
+> =20
+>  	if (end !=3D start + HPAGE_SIZE) {
+                     ^^^^^^^^^^
+[Severity: High]
+This isn't a bug introduced by this patch, but could this hardcoded macro
+cause gigantic huge pages to incorrectly back out of write-protection?
+
+For gigantic HugeTLB pages (e.g., 1GB), the generic page walker provides
+boundaries spanning the gigantic page size. Because HPAGE_SIZE is defined
+as (1UL << HPAGE_SHIFT), checking against it will falsely mark the range as
+partial.
+
+Should this dynamically evaluate the size using
+huge_page_size(hstate_vma(vma)) instead?
+
+>  		/* Partial HugeTLB page WP isn't possible. */
+>  		pagemap_scan_backout_range(p, start, end);
+>  		p->arg.walk_end =3D start;
+>  		ret =3D 0;
+>  		goto out_unlock;
+>  	}
+> =20
+>  	make_uffd_wp_huge_pte(vma, start, ptep, pte);
+        ^^^^^^^^^^^^^^^^^^^^^
+[Severity: Critical]
+This isn't a bug introduced by this patch, but does modifying the HugeTLB
+PTE/PMD here break the shared PMD protections for other processes?
+
+HugeTLB supports PMD sharing across processes. When applying UFFD_WP marker=
+s,
+the kernel must normally break sharing via huge_pmd_unshare().
+
+Because pagemap_scan_hugetlb_entry() modifies the shared page table
+directly without unsharing, could this silently apply write protection to t=
+he
+mappings of all other processes sharing this PMD, leaving their TLB entries
+desynchronized?
+
+>  	flush_hugetlb_tlb_range(vma, start, end);
+> =20
+>  out_unlock:
+
+[ ... ]
+
+> @@ -2994,10 +2998,10 @@ static int pagemap_scan_pte_hole(unsigned long ad=
+dr, unsigned long end,
+>  	ret =3D pagemap_scan_output(p->cur_vma_category, p, addr, &end);
+>  	if (addr =3D=3D end)
+>  		return ret;
+> =20
+>  	if (~p->arg.flags & PM_SCAN_WP_MATCHING)
+>  		return ret;
+> =20
+>  	err =3D uffd_wp_range(vma, addr, end - addr, true);
+        ^^^^^^^^^^^^^^^^^^^
+[Severity: High]
+This isn't a bug introduced by this patch, but can this lead to a
+self-deadlock when write-protecting unallocated HugeTLB pages?
+
+When PAGEMAP_SCAN write-protects a HugeTLB VMA, walk_hugetlb_range()
+acquires hugetlb_vma_lock_read(vma). If it encounters an unallocated HugeTLB
+page, it calls .pte_hole (pagemap_scan_pte_hole()), which delegates
+through uffd_wp_range() -> change_protection() ->
+hugetlb_change_protection().
+
+The latter unconditionally attempts to acquire hugetlb_vma_lock_write() for
+shared mappings on the same VMA. Acquiring a write lock on an rw_semaphore
+while already holding a read lock causes a guaranteed self-deadlock.
+
+>  	if (err < 0)
+>  		ret =3D err;
+> =20
+>  	return ret;
+>  }
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526130509.2748=
+441-1-kirill@shutemov.name?part=3D1
