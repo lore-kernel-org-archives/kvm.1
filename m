@@ -1,129 +1,100 @@
-Received: from out162-62-57-87.mail.qq.com (out162-62-57-87.mail.qq.com [162.62.57.87])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DA1410D06;
-	Tue, 26 May 2026 17:46:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=162.62.57.87
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 061FD40912D
+	for <kvm@vger.kernel.org>; Tue, 26 May 2026 18:18:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779817570; cv=none; b=QQWQAd56U/TQH+GtZKjdlX5JuYvZXUcER3owAKa4pXEyBJZKEBVmBCO4plZse1u8gGT0Fnc2DBhLDprjhjkz+HB3QnKr1P23inXoKFBgqcrWzviLCqnyxtvtjWw9X3TKIWbVjVRgk5yUi3T9W/SLo8OooWz3rfyKKeGeRjvnsNI=
+	t=1779819520; cv=none; b=X7fR0kI7UqbsW70urAEpB++XFBNYd4w/DlJcoWMpaaTtdv6Z3b/mkIaZ3lM3EzygWTZynoNOwwzlOXRahjYt72SSFQdARYtiGNZAX4P6E8HdNXxD1tLkyQb+JC6LNKjhoMJT0PEuqzlS1CrIFrB/0N6b3jrEN5gmwSxTnti4ADU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779817570; c=relaxed/simple;
-	bh=PdVtP6sssOJ3EIuVmfd7lk5qdcv/5nkj8OeuDeEt/FI=;
-	h=Message-ID:From:To:Cc:Subject:Date:MIME-Version; b=jzHlkAMRA/1WXzW5xdNZPm0l5EmO1aKWizTGdr0eOSBh6qjB1jNnr6wJWzqSoQ2Q0QvDmTv/vLPE3zEZ6Ya8uLskd77YDC8vbaM/wLChK7DtVowgOEbwPMWkqnubqAgdnGpOyFDwTgkM9cArEoZhLrU5rqhkxAEZ/G0CGddzXck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=LNlMJsmS; arc=none smtp.client-ip=162.62.57.87
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
+	s=arc-20240116; t=1779819520; c=relaxed/simple;
+	bh=I2hL7Xv1YXGIOJ3Fng+SxOELQY+n5LLMlvwaeqB3/h0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AsQTxpPKLqG44i6A5DAGaf00P/5KmFZh3XUm1EQIfggSmV+GJvUdNNL8VaisBOf7dTxqr8uLcGmPFkUyLH7UR0zImjrFsnvpVWTcAfceY+Rs96L+BgS9dPorbTPwODNaFt2sCuChb5zMVzQWhdClQSnELzTB+Ini7Xl6ZR4X7sI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HSOw3tT8; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="LNlMJsmS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
-	t=1779817562; bh=PyHP5PNdEGsrCQrHfMIuujp0ZFajIH+PxtUvpO2gIi0=;
-	h=From:To:Cc:Subject:Date;
-	b=LNlMJsmSvXJ1QIps+fGEVJByUugUWbF6+C77NsBBeqqz4kUueaa11WdvIizzuKoPe
-	 XSuaY56i5S1BEsQaL8RAIyxoWPZXlouya0FUaa7RbrhqUDtF5wJFXb7MNdaasxzM/C
-	 05AItxvgin4FfUM+g1SX1MOSWyiK3Ek91xKTKgK0=
-Received: from localhost.localdomain ([101.6.30.191])
-	by newxmesmtplogicsvrsza73-0.qq.com (NewEsmtp) with SMTP
-	id B338346E; Wed, 27 May 2026 01:44:51 +0800
-X-QQ-mid: xmsmtpt1779817491tcv3lxi29
-Message-ID: <tencent_744B87186CA59CFD106992329A6510F7F60A@qq.com>
-X-QQ-XMAILINFO: Od8VqZhFMB3N6T8rBpCruW5btiixb4YHieciEvawUsMESFo13m08n+Dz8g6gzt
-	 msVc44bMBuksxWjK2ySX7prw+7Rpmcho9lTWo9t4MAxI2TIDZne4GGvqTDa44N0rAS/NuRMpInoT
-	 sOip9lurkikG2rnl50zU1c3C993p8bA5wW/x2J0jFz13+XFAC1/2cyXGLFmFbfAim5vR4WJQwk+5
-	 CY99Y5dTYu9pssmgES4pRThunWj7z/uqvJDNfJLsiEFACMFTx0aVhE2KJVkq88bBW2KwBD2/1KyQ
-	 FjwneNB+Bc01w5gpZ9RPVMWLu+07X/eRJUHVmKnj9MC7KSLcAaCEk1mTpsDi/lnX3dxgOUE0I7rX
-	 ZmPEZMEbhkYFmtrqtP2j4HjSmesrdqyJhalaxK74/yp4iePpKkkTCnW3dHemJSDaBAZcCyY3tSYW
-	 46uYPkZHGV9JGHfDFeP7HGM2AZcNIKKB3bBCKWiRFvMvzW6ufNY8JU7ZfoeWibKlxmbhhBe/8ONM
-	 yPMeknKkrnCNkCkyPFRibz3xRm5hUQUG0GLisWOigFzWs9Sy4EkvIs0E/kNW4Fy4M8ejXagcprVB
-	 Mtegyr14vwcNFjKHXbKuD3I6VqQtVoOLjtc4SEUwwJmvbHyEyFUMNmCN2sjPpBXb1Y9gz+vRFweu
-	 CLDif1yuuFKfH4i1A7G+dM8fwnUn4B7WqxsB3FPSmOzTQ1KO1S/YcRfOqHwYqLdnqRZx0ak7X1f+
-	 vQpfj5tm2G1A6rbcG58JDX6QM5EIChQM1Cz7Opcm2Uh9km5Wj+EubqzL3PD94ThAKDOt9Hrm1GaQ
-	 9iklhFxIlSnz7LGalj7lGg22PEb5Z/NvzWhe0c141sW/vGuHgb9TrT9aL1inKwDN3LRSFGRAMLiV
-	 z60C9+8t51c6VJIbuljzsPXSteURqGD79hLz4RSxYnxu/VI3WWZ2ds3Ko9Ze2xXWhD2zg3iFLpKe
-	 akn/Ld4VDEkBIBqCC7cs49knovzJz9VP1xqwQIFm8+9bewTClk2yFQvrvjiGjH05w2/4EDkKYxgS
-	 /cQYtyQ9OosvV3RSTa0QD2gyrNRLc=
-X-QQ-XMRINFO: M/715EihBoGS47X28/vv4NpnfpeBLnr4Qg==
-From: xuanqingshi <1356292400@qq.com>
-To: seanjc@google.com,
-	pbonzini@redhat.com
-Cc: kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Xuanqing Shi <1356292400@qq.com>
-Subject: [PATCH] KVM: VMX: Use _safe MSR accessors in LBR handler
-Date: Wed, 27 May 2026 01:44:49 +0800
-X-OQ-MSGID: <20260526174449.957633-1-1356292400@qq.com>
-X-Mailer: git-send-email 2.25.1
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HSOw3tT8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA10F1F00A3A
+	for <kvm@vger.kernel.org>; Tue, 26 May 2026 18:18:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779819518;
+	bh=l7unfT3FS0j6hC5nX8tDwm0WHt5djHPUk9DUK+pi40U=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc;
+	b=HSOw3tT81PM1qndY9yR8q8+nwWtH40ptnzD1wsOd8XwOh2RA0tYu5zTWC0TM303d0
+	 +6KiEfscKaiJ36Q56uNxOCcA3fV6fCbhzi3HqXkoS9MM6vfoFn/Td5ZKsQ+4dPPIqQ
+	 B0koh/cHGT8SipZ9SI8IbR4tiQxT6vlY19vYcDiAwJyJzfRp+fWkNMKoJueu/j49zD
+	 QJ4YnedxUlKMDhUPu3FfRR1lkGzGdoHk8gg532CB0UWaF6Y9iNTgbdcZ3NVjuIREJ3
+	 zRJKb1YG0bURzreLtxNJEziMC97X3cvWwowsafn8yqN4mhHHta4/HtIuz6sMHWkpNI
+	 laEoCNJqjZZcg==
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-bdbcc6c4500so892066766b.1
+        for <kvm@vger.kernel.org>; Tue, 26 May 2026 11:18:38 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/XRToDkXHFqmm1miR7hgmXCTZvjO8FO5CfACqCd4VN6LQ5MSCrs3jc3STjW8TdU5I3kSU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRRpVkGCpQg08E9yQqhQ704JY6FlfK75L7u/D+1hGGwo5D18Xs
+	7LxCsUk7wsoiMpiP+Htgrenpr+BT/xVC7b3UmwuxLdQWMGSgIui13JcZ53/ou/FsAIqz1FDxbX0
+	iENDdMPfgtOdsGM49O3PmRhiUUhV3uWw=
+X-Received: by 2002:a17:906:9918:b0:bdd:52ef:73e3 with SMTP id
+ a640c23a62f3a-bdd52ef77c4mr913369466b.12.1779819517747; Tue, 26 May 2026
+ 11:18:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260522232701.3671446-1-seanjc@google.com> <20260522232701.3671446-3-seanjc@google.com>
+In-Reply-To: <20260522232701.3671446-3-seanjc@google.com>
+From: Yosry Ahmed <yosry@kernel.org>
+Date: Tue, 26 May 2026 11:18:26 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zMVVd6LgBRujJZs9mjWp6Fy4SFxbrGUBNBMsSRFw7krsg@mail.gmail.com>
+X-Gm-Features: AVHnY4KhwTqvxc1jxAph-TkhOwR2KAilSS5-mjmUap9PZvx4TSJtUVGzAs3Fvoc
+Message-ID: <CAO9r8zMVVd6LgBRujJZs9mjWp6Fy4SFxbrGUBNBMsSRFw7krsg@mail.gmail.com>
+Subject: Re: [PATCH v4 2/5] KVM: x86: Tell ->inject_page_fault() whether or a
+ fault came from hardware
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Kevin Cheng <chengkev@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Xuanqing Shi <1356292400@qq.com>
+On Fri, May 22, 2026 at 4:27=E2=80=AFPM Sean Christopherson <seanjc@google.=
+com> wrote:
+>
+> When injecting a page fault (including nested TDP faults into L1), tell t=
+he
+> injection routine whether or not the fault originated in hardware, i.e. i=
+f
+> KVM is effectively forwarding a fault it intercept.  For nested TDP fault
+> injection, KVM needs to grab PAGE_WALK vs. GUEST_FINAL information from t=
+he
+> VMCB/VMCS, _if_ the fault originated in hardware.
+>
+> No functional change intended (nothing uses the new param, yet...).
+>
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> ---
+>  arch/x86/include/asm/kvm_host.h | 18 ++++++++++++++----
+>  arch/x86/kvm/mmu/paging_tmpl.h  |  2 +-
+>  arch/x86/kvm/svm/nested.c       |  3 ++-
+>  arch/x86/kvm/vmx/nested.c       |  3 ++-
+>  arch/x86/kvm/x86.c              | 16 +++++++++-------
+>  5 files changed, 28 insertions(+), 14 deletions(-)
+>
+> diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/kvm_h=
+ost.h
+> index 271bdd109a98..d11063c36f03 100644
+> --- a/arch/x86/include/asm/kvm_host.h
+> +++ b/arch/x86/include/asm/kvm_host.h
+> @@ -484,7 +484,8 @@ struct kvm_mmu {
+>         u64 (*get_pdptr)(struct kvm_vcpu *vcpu, int index);
+>         int (*page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_fault *f=
+ault);
+>         void (*inject_page_fault)(struct kvm_vcpu *vcpu,
+> -                                 struct x86_exception *fault);
+> +                                 struct x86_exception *fault,
+> +                                 bool from_hardware);
 
-intel_pmu_handle_lbr_msrs_access() uses rdmsrq()/wrmsrq() to directly
-access LBR-related MSRs on the physical CPU. If the guest provides an
-out-of-range or otherwise invalid MSR index, the unchecked access
-triggers a #GP fault, resulting in an "unchecked MSR access error"
-warning and a host crash when panic_on_warn is enabled.
-
-The crash was observed in a nested virtualization setup where a
-VMCS-targeted fuzzer triggered a WRMSR to MSR 0x1c8 (LBR_SELECT)
-that propagated through the PMU emulation path to the physical host:
-
-  unchecked MSR access error: WRMSR to 0x1c8
-  (tried to write 0x0000000000004000)
-  Call Trace:
-   ? native_write_msr+0x4/0x30
-   ? intel_pmu_handle_lbr_msrs_access+0xff/0x120 [kvm_intel]
-   intel_pmu_set_msr+0x4e0/0x7f0 [kvm_intel]
-   kvm_pmu_set_msr+0x17e/0x1c0 [kvm]
-   kvm_set_msr_common+0xc76/0x1440 [kvm]
-   vmx_set_msr+0x5e6/0x1570 [kvm_intel]
-   kvm_emulate_wrmsr+0x54/0x1d0 [kvm]
-   vmx_handle_exit+0x7fc/0x970 [kvm_intel]
-
-Replace rdmsrq()/wrmsrq() with their _safe variants so that invalid
-MSR accesses are caught gracefully and reported back to the guest as
-errors instead of crashing the host.
-
-Found by a VMCS-targeted fuzzer based on syzkaller.
-
-Fixes: 1b5ac3226a1a ("KVM: vmx/pmu: Pass-through LBR msrs when the guest LBR event is ACTIVE")
-Signed-off-by: Xuanqing Shi <1356292400@qq.com>
----
- arch/x86/kvm/vmx/pmu_intel.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
-
-diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-index 27eb76e6b6a0..94d2cbffcff4 100644
---- a/arch/x86/kvm/vmx/pmu_intel.c
-+++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -293,6 +293,7 @@ static bool intel_pmu_handle_lbr_msrs_access(struct kvm_vcpu *vcpu,
- {
- 	struct lbr_desc *lbr_desc = vcpu_to_lbr_desc(vcpu);
- 	u32 index = msr_info->index;
-+	int err;
- 
- 	if (!intel_pmu_is_valid_lbr_msr(vcpu, index))
- 		return false;
-@@ -309,12 +310,12 @@ static bool intel_pmu_handle_lbr_msrs_access(struct kvm_vcpu *vcpu,
- 	local_irq_disable();
- 	if (lbr_desc->event->state == PERF_EVENT_STATE_ACTIVE) {
- 		if (read)
--			rdmsrq(index, msr_info->data);
-+			err = rdmsrq_safe(index, &msr_info->data);
- 		else
--			wrmsrq(index, msr_info->data);
-+			err = wrmsrq_safe(index, msr_info->data);
- 		__set_bit(INTEL_PMC_IDX_FIXED_VLBR, vcpu_to_pmu(vcpu)->pmc_in_use);
- 		local_irq_enable();
--		return true;
-+		return !err;
- 	}
- 	clear_bit(INTEL_PMC_IDX_FIXED_VLBR, vcpu_to_pmu(vcpu)->pmc_in_use);
- 	local_irq_enable();
--- 
-2.25.1
-
+Probably a bit late to ask this question, but why do we need
+from_hardware (or the previous hardware_nested_page_fault) as opposed
+to just checking exit_code / exit_reason? Is it possible to get an
+NPF/EPT violation but then synthesize a different one into L1 rather
+than forwarding the one we got from HW?
