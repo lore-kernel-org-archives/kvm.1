@@ -1,168 +1,354 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B51A61DBB3A;
-	Tue, 26 May 2026 06:09:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A700B3C09F7;
+	Tue, 26 May 2026 06:29:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779775765; cv=none; b=kV5UEblZsfiIzVIN8Ut4j2Awcx4nyjvAz4qdDhKZXyHWncthSlST/fyfEKYW8ShxnnUv9PfiWMOvJcsEZ992pFFhQg/1RNPA1yb7RgSitrzwfGzrTnitPITIXoMOjRNWU0DL//jA6pDTaJuqn+RvYvl2v4a4nLq+OiX7IjHWLGM=
+	t=1779776975; cv=none; b=bLoq83JyFfMSpv/AmAB5FZPkt+1lygWoCuD6y2nVTz4vh4lxS4c6SkBHWqp7PoDLtlkuqoVsaZgGq3Nr2gPsfJrGGAjutAqFRRr4Ez9znqyYoD2vezB7t6Wmq/LLKXN16EYd4vLKpDWAzsLqmup9pWGckw2urFaDqB1OBTwEIkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779775765; c=relaxed/simple;
-	bh=U322n/qX24WfW4XoPi3jiVoFQsdKe4rjCXM0VoA8UAw=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=hyzvvDMnORGtk2A4OsXpVWFEpU9LtLJUvfQLJBE73cXoq+Sxo7Qaq6S7mdvAUAOoU4yjRzim8eEEn7jWiKCsdE8ujb9VPkTVGrlC6OT7RTUs0T4h+zCCm+5FSy+LwYi1YV/iSMa6R9js7YjFGME2kHj5VE3fO0mGhJhfbz/7j8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YAUzbUJ6; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779776975; c=relaxed/simple;
+	bh=myc9srhre8R2a2/GTSs/nvUGqfo++Ll/SKMOUuaQqgc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=POCx6v3boKQ6486vtL9MVFwqrCs/H83ho7RvOvvZo/IQGRYMQ28lLbgu+izeSYkUXTcNGfKR5y4/xgH+CqWyrq7irxSPt7idjix0HQ0/1LirDtvWsuxGafDdlXksor+BL1iNpD+2YbtSwnyqc+5MJ4L7VyadjC3BQAwXXLuG1ig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=ceBt+Vuq; arc=none smtp.client-ip=113.46.200.218
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YAUzbUJ6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F8B1F000E9;
-	Tue, 26 May 2026 06:09:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779775763;
-	bh=PQAoBHyGvx1uYfDXigDRWV5iHFLDA1yCWhVIGyAiJws=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=YAUzbUJ60VVfwaxgNHXYBA+JaIicPKOSBxay8bM0MF4HoEijYTzGfI8NE8brGGSim
-	 06fN06Yw5DyLtQpB9QOpgeKbIWCp/KpYbOuEI0X2SfJijS/jdDmRlak6xXS80bM3UC
-	 5jGzRmlVea4Iynw0DA9MEsvMa87EkTjpvsFrpoiHAwX8p1NGA1qxfSdXBH496aWXsx
-	 PuxxW52On1f/H6yejgfbQke03TuJEOJdbXukB4iYUyIEFSAXNlgII6DCAdt96YVU2x
-	 q6ayMvNlXveQHodUElSEwZ2xuTLX87wd+KXThmREspE+7RcAxrHjL5sKlHktJkrG9E
-	 TqnD6dg9aURVA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v12 5/6] vfio/pci: Add VFIO_DEVICE_FEATURE_TPH_ST for
- PCIe TPH steering tag management
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Chengwen Feng" <fengchengwen@huawei.com>
-Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
-In-Reply-To: <20260526040830.52854-6-fengchengwen@huawei.com>
-References: <20260526040830.52854-6-fengchengwen@huawei.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 26 May 2026 06:09:22 +0000
-Message-Id: <20260526060923.30F8B1F000E9@smtp.kernel.org>
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="ceBt+Vuq"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=Um3vskZODifbfeUX6kCi4lUUt/2FPn9XXLI2b92pr4A=;
+	b=ceBt+VuqqaBj/KSRKlBrJylsd3/VMfAx5/0EQHQZ13GK4xJYzODPHcLuiRG0sF+slPJNGweMl
+	zcGAwmmi8n8SXpTbqKJluV4WmsM5ifyt1G6UvckgGdi2XWDvG++lhV+FB9Q1raVjFuS6mmuwykx
+	vbvNeSAtSj22pnfhhFoiZOg=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4gPjMd1TvvzpSvR;
+	Tue, 26 May 2026 14:22:05 +0800 (CST)
+Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id 508AF20104;
+	Tue, 26 May 2026 14:29:29 +0800 (CST)
+Received: from [10.67.121.161] (10.67.121.161) by
+ kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Tue, 26 May 2026 14:29:28 +0800
+Message-ID: <4e1055e9-3e75-4cf7-a5c6-ccffe9c1b585@huawei.com>
+Date: Tue, 26 May 2026 14:29:28 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v11 5/5] vfio/pci: Add VFIO_DEVICE_FEATURE_TPH_ST for TPH
+ ST entry management
+To: Alex Williamson <alex@shazbot.org>
+CC: <jgg@ziepe.ca>, <wathsala.vithanage@arm.com>, <helgaas@kernel.org>,
+	<wei.huang2@amd.com>, <wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
+	<liuyonglong@huawei.com>, <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
+References: <20260518071701.25177-1-fengchengwen@huawei.com>
+ <20260518071701.25177-6-fengchengwen@huawei.com>
+ <20260521221008.59ddf977@shazbot.org>
+ <512bce27-13a2-44a1-aa5b-b5ea77c174ba@huawei.com>
+ <20260522082730.3d843a7f@shazbot.org>
+Content-Language: en-US
+From: fengchengwen <fengchengwen@huawei.com>
+In-Reply-To: <20260522082730.3d843a7f@shazbot.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemk500009.china.huawei.com (7.202.194.94)
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] The return value of `copy_to_user()` is mishandled in `vfio_pci_tp=
-h_op_cpu_query()`, resulting in a positive return value to userspace on mem=
-ory faults.
-- [High] Hardware modifications to the ST table via MSI-X MMIO occur withou=
-t ensuring the PCI device is in an active power state (e.g., D0), risking P=
-CIe errors.
-- [Low] Unconditional memory allocation for the TPH ST shadow table during =
-device initialization, even when the TPH feature is globally disabled.
---
+On 5/22/2026 10:27 PM, Alex Williamson wrote:
+> On Fri, 22 May 2026 18:04:13 +0800
+> fengchengwen <fengchengwen@huawei.com> wrote:
+> 
+>> On 5/22/2026 12:10 PM, Alex Williamson wrote:
+>>> On Mon, 18 May 2026 15:17:01 +0800
+>>> Chengwen Feng <fengchengwen@huawei.com> wrote:
+>>>   
+>>>> Add VFIO_DEVICE_FEATURE_TPH_ST to allow userspace to manage PCIe TPH
+>>>> Steering Tag entries.
+>>>>
+>>>> SET: Program contiguous ST entries when ST table resides in TPH Capability
+>>>>      or MSI-X table. U32_MAX CPU ID clears the corresponding ST entry.
+>>>> GET: Retrieve ST values per CPU ID, only available in DS mode.
+>>>>
+>>>> Both operations are only valid when TPH is enabled on the device.  
+>>>
+>>> What?  That doesn't align with the hardware programming model.  The
+>>> specification even suggests that the device should be quiesced or TPH
+>>> disabled during programming of the steering tags for deterministic
+>>> behavior.  
+>>
+>> As mentioned in the 4/5 commit, obtaining ST must first enable TPH.
+>> Of course, I think it might be necessary to calculate pdev->tph_req_type
+>> during the capability detection phase, so that we can modify ST before
+>> enabling TPH. Do you think such a modification is needed?
+> 
+> I think a uAPI that doesn't align with the recommended programming
+> order of the specification, potentially resulting in non-deterministic
+> behavior is bogus.
+> 
+>>>> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
+>>>> ---
+>>>>  drivers/vfio/pci/vfio_pci_core.c | 91 ++++++++++++++++++++++++++++++++
+>>>>  include/uapi/linux/vfio.h        | 41 ++++++++++++++
+>>>>  2 files changed, 132 insertions(+)
+>>>>
+>>>> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
+>>>> index 0d0140202280..13a22c1d6ea6 100644
+>>>> --- a/drivers/vfio/pci/vfio_pci_core.c
+>>>> +++ b/drivers/vfio/pci/vfio_pci_core.c
+>>>> @@ -1558,6 +1558,95 @@ static int vfio_pci_core_feature_token(struct vfio_pci_core_device *vdev,
+>>>>  	return 0;
+>>>>  }
+>>>>  
+>>>> +static int vfio_pci_core_feature_tph_st(struct vfio_pci_core_device *vdev,
+>>>> +					u32 flags,
+>>>> +					struct vfio_device_feature_tph_st __user *arg,
+>>>> +					size_t argsz)
+>>>> +{
+>>>> +	bool is_set = !!(flags & VFIO_DEVICE_FEATURE_SET);
+>>>> +	struct vfio_device_feature_tph_st tph_st;
+>>>> +	struct pci_dev *pdev = vdev->pdev;
+>>>> +	enum tph_mem_type mtype;
+>>>> +	int i, j, ret;
+>>>> +	u32 *cpus;
+>>>> +	u16 st;
+>>>> +
+>>>> +	guard(mutex)(&vdev->tph_lock);  
+>>>
+>>> Wrong place for this lock.  Why do we even need it?  If a user races
+>>> SET/GET with enable/disable, that's their problem.  
+>>
+>> OK, will fix in next version
 
-commit 467d413fb2d015dba9001b9372af0200c578a4c6
-Author: Chengwen Feng <fengchengwen@huawei.com>
+I still keep the lock which used to protect the ST table shadow
 
-vfio/pci: Add VFIO_DEVICE_FEATURE_TPH_ST for PCIe TPH steering tag manageme=
-nt
+>>
+>>>   
+>>>> +
+>>>> +	ret = vfio_check_feature(flags, argsz,
+>>>> +				 VFIO_DEVICE_FEATURE_GET |
+>>>> +				 VFIO_DEVICE_FEATURE_SET,
+>>>> +				 sizeof(tph_st));
+>>>> +	if (ret <= 0)
+>>>> +		return ret;
+>>>> +
+>>>> +	if (!enable_unsafe_tph ||  
+>>>
+>>> Why did we allow the feature to be probe if it can't be used?  
+>>
+>> OK, will fix in next version
 
-Add new userspace device feature to access and maintain PCIe TPH Steering
-Tag table entries, supporting two mutually exclusive operation modes:
-raw table read/write and CPU ID lookup.
+done in v12
 
-> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
-_core.c
-> index 3f8d093aacf8a..8cf341689a478 100644
-> --- a/drivers/vfio/pci/vfio_pci_core.c
-> +++ b/drivers/vfio/pci/vfio_pci_core.c
-[ ... ]
-> @@ -1516,6 +1518,159 @@ static int vfio_pci_core_feature_token(struct vfi=
-o_pci_core_device *vdev,
-[ ... ]
-> +static int vfio_pci_tph_op_cpu_query(struct vfio_pci_core_device *vdev,
-> +				     struct vfio_device_feature_tph_st *arg)
-> +{
-[ ... ]
-> +	for (i =3D 0; i < arg->count; i++) {
-> +		ret =3D pcie_tph_get_cpu_st(pdev, mtype, cpus[i], &st);
-> +		if (ret)
-> +			goto out;
-> +		cpus[i] =3D st;
-> +	}
-> +
-> +	ret =3D copy_to_user(uptr, cpus, arg->count * sizeof(u32));
-> +out:
-> +	kfree(cpus);
-> +	return ret;
+>>
+>>>   
+>>>> +		pcie_tph_enabled_mode(pdev) == PCI_TPH_ST_NS_MODE)  
+>>>
+>>> Here's that ambiguity of reporting NS_MODE for disabled, but as above
+>>> it's a bogus requirement.  
+>>
+>> OK, will fix in next version
 
-[Severity: High]
-Does this return a positive value to userspace if the copy fails?=20
-copy_to_user() returns the number of bytes that failed to copy, so returnin=
-g=20
-it directly here instead of a negative error code like -EFAULT might break=
-=20
-the ioctl ABI, as userspace typically checks for negative error codes.
+done in v12
 
-> +}
-> +
-> +static int vfio_pci_core_feature_tph_st(struct vfio_pci_core_device *vde=
-v,
-> +					u32 flags,
-> +					struct vfio_device_feature_tph_st __user *arg,
-> +					size_t argsz)
-> +{
-[ ... ]
-> +	switch (op_type) {
-> +	case VFIO_TPH_ST_OP_RAW_TABLE:
-> +		if (is_set && is_get)
-> +			return -EINVAL;
-> +		return vfio_pci_tph_op_raw_table(vdev, is_get, &tph_st);
+>>
+>>>   
+>>>> +		return -EOPNOTSUPP;
+>>>> +	if (!is_set && pcie_tph_enabled_mode(pdev) != PCI_TPH_ST_DS_MODE)  
+>>>
+>>> Why?  Let the interface be symmetric that GET works regardless of mode.  
+>>
+>> OK, will remove the restrict
 
-[Severity: High]
-Is it possible for the device to be in a suspended power state (e.g., D3hot=
-)=20
-when this ioctl is called?=20
+done in v12
 
-If userspace triggers this while suspended, the subsequent call to=20
-pcie_tph_set_st_entry() might perform direct MMIO writes to the MSI-X table.
-Accessing MMIO on a suspended device can cause PCIe Unsupported Request (UR)
-errors or Target Aborts.=20
+>>
+>>>   
+>>>> +		return -EOPNOTSUPP;
+>>>> +	if (is_set && pcie_tph_get_st_table_loc(pdev) == PCI_TPH_LOC_NONE)
+>>>> +		return -EOPNOTSUPP;
+>>>> +
+>>>> +	if (copy_from_user(&tph_st, arg, sizeof(tph_st)))
+>>>> +		return -EFAULT;
+>>>> +
+>>>> +	if (tph_st.count == 0 || tph_st.count > VFIO_TPH_ST_MAX_COUNT ||
+>>>> +		tph_st.flags > VFIO_TPH_ST_MEM_TYPE_PM)  
+>>>
+>>> Wrong operation for a flags field.  
+>>
+>> Because currently flags only use bit0 (0-VM, 1-PM), this judge make sure
+>> it will return error if userspace passing non-zero in remain bits.
+> 
+> This should be a mask to test undefined bits are not set, not a value
+> comparison.
 
-Should there be a pm_runtime_resume_and_get() or similar power state check=
-=20
-before accessing hardware registers?
+done in v12
 
-> +	case VFIO_TPH_ST_OP_CPU_QUERY:
-> +		if (is_set)
-> +			return -EOPNOTSUPP;
-> +		return vfio_pci_tph_op_cpu_query(vdev, &tph_st);
-> +	default:
-> +		return -EINVAL;
-> +	}
-> +}
-[ ... ]
-> @@ -2097,12 +2254,23 @@ int vfio_pci_core_init_dev(struct vfio_device *co=
-re_vdev)
->  	mutex_init(&vdev->igate);
->  	spin_lock_init(&vdev->irqlock);
->  	mutex_init(&vdev->ioeventfds_lock);
-> +	mutex_init(&vdev->tph_lock);
-> +	vdev->tph_st_entries =3D vfio_pci_tph_st_shadow_size(vdev);
-> +	vdev->tph_st_shadow =3D NULL;
-> +	if (vdev->tph_st_entries) {
-> +		vdev->tph_st_shadow =3D kcalloc(vdev->tph_st_entries, sizeof(u16),
-> +					      GFP_KERNEL);
+> 
+>>>> +		return -EINVAL;
+>>>> +	if (!is_set && tph_st.index != 0)  
+>>>
+>>> We can only GET index 0?  Why?  
+>>
+>> Because GET operation don't need index, this judgment make sure
+>> it will return error if userspace passing non-zero index.
+> 
+> The interface is not symmetric.
 
-[Severity: Low]
-Does this code unconditionally allocate memory for the shadow table even wh=
-en=20
-the enable_unsafe_tph module parameter is false?=20
+Referring to your suggestion, I redesigned the interface (v12).
 
-While the allocation is relatively small, operations will be rejected with=
-=20
--EOPNOTSUPP anyway if the feature is disabled globally. Perhaps this=20
-allocation can be avoided entirely in that case to save kernel memory.
+supporting two mutually exclusive operation modes:
+    1. Raw table read/write: Operate shadow ST table, sync updates to hardware
+       TPH capability or MSI-X table. Failed batch write triggers entry
+       rollback to keep hardware consistent.
+    2. CPU ID lookup: Query translated steering tag by specified memory type,
+       pure read-only without modifying ST table.
 
-> +		if (!vdev->tph_st_shadow)
-> +			return -ENOMEM;
-> +	}
+The first operation (raw table) is symmetric.
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526040830.5285=
-4-1-fengchengwen@huawei.com?part=3D5
+>  
+>>>> +		return -EINVAL;
+>>>> +	if (is_set && (tph_st.index >= VFIO_TPH_ST_MAX_COUNT ||
+>>>> +		       tph_st.index + tph_st.count > VFIO_TPH_ST_MAX_COUNT))  
+>>>
+>>> DS can have more that 2048 steering tags.  
+>>
+>> I check the PCIE protocol, DS mode with ST in pcie-config or msi-x must not
+>> hold > 2048 steering tags.
+> 
+> The MSI-X storage location is limited to 2048, but DS mode doesn't
+> necessarily use either of these storage locations.
+> 
+>>>> +		return -EINVAL;
+>>>> +
+>>>> +	cpus = memdup_array_user(&arg->data, tph_st.count, sizeof(*cpus));  
+>>>
+>>> Use an __aligned_u64 data_uptr like iommufd does and avoid copying this
+>>> into the kernel.  Isn't this steering tags, why's it named cpus?  
+>>
+>> we reuse the field which according your previous suggestion:
+>> in GET, user pass in cpus, and vfio will feedback steering tags in cpus.
+> 
+> Perhaps this was over stated, but aligning to the generic uAPI name
+> since it's dual-purpose would seem to make sense.
+>  
+>>>> +	if (IS_ERR(cpus))
+>>>> +		return PTR_ERR(cpus);
+>>>> +
+>>>> +	mtype = tph_st.flags & VFIO_TPH_ST_MEM_TYPE_PM ? TPH_MEM_TYPE_PM :
+>>>> +							 TPH_MEM_TYPE_VM;  
+>>>
+>>> Then why did we use two flag bits for this?  
+>>
+>> VFIO_TPH_ST_MEM_TYPE_PM is just one bit, could you explain the two flag bits?
+> 
+> My bad, I overlooked that they're both shifted by 0.  Typically we
+> wouldn't define both the 0 and 1 value, only the latter.
+>  
+>>>> +	if (!is_set) {
+>>>> +		for (i = 0; i < tph_st.count; i++) {
+>>>> +			ret = pcie_tph_get_cpu_st(pdev, mtype, cpus[i], &st);  
+>>>
+>>> My understanding was that GET would return the translated values from a
+>>> previous SET, not translate on the fly.  I think in order to support
+>>> writing STs before enabling TPH, we're going to need to store them
+>>> somewhere anyway so that we can push them to the correct location when
+>>> TPH is enabled.  That means there a buffer for SET/GET regardless of
+>>> the mode that's enabled.  
+>>
+>> OK, will try to fix
+
+done in v12
+
+>>
+>>>   
+>>>> +			if (ret)
+>>>> +				goto out;
+>>>> +			cpus[i] = st;
+>>>> +		}
+>>>> +		goto out;
+>>>> +	}
+>>>> +
+>>>> +	for (i = 0; i < tph_st.count; i++) {
+>>>> +		if (cpus[i] == U32_MAX) {
+>>>> +			ret = pcie_tph_set_st_entry(pdev, tph_st.index + i, 0);  
+>>>
+>>> Why do we need a magic value to set it to zero?  Hardware doesn't have
+>>> a "clear ST register value".  
+>>
+>> So you mean for SET, usespace direct passing steering-tag not cpus in this patch?
+> 
+> How does this work with Zhiping's series where there might be TPH values
+> exposed through the dma-buf to support p2p DMA?  Where would that level
+> of TPH programming occur?
+
+My patch set has two basic functions:
+1. Obtain the ST corresponding to the specified CPU.
+2. Set and read the ST table.
+
+Zhiping's patchset is used to cache the P2P data to an Lx cache in the GPU, it
+include two part:
+1. Set the ST corresponding to a DMABUF of the GPU (the ST is obtained in another
+   way and is not in the kernel).
+2. Set the ST to the ST table of the MLX NIC.
+
+The two can be unified to some extent, as long as the following two points are met:
+1. An interface is provided to obtain whether the req_tph_type is normal or extend.
+   In this way, the 8-bit ST or 16-bit ST of the GPU can be selected based on the
+   type.
+2. An interface is provided to obtain the target ST index. In this way, the
+   corresponding ST index can be directly written based on my patchset.
+
+The following uses the setting of the ST cache stash for P2P as an example:
+1. The application obtains the ST corresponding to a DMABUF of the GPU in other ways.
+   The ST can be 8-bit or 16-bit or both.
+2. The application calls the VFIO interface to obtain the req_tph_type supported by
+   the NIC device (whether only 8-bit or 16-bit is supported).
+3. The application determines which ST to be selected based on 1 and 2.
+4. The application calls the interface to obtain the target ST index. This interface
+   may be provided by the vendor driver.
+5. The application calls the SET ST ENTRY VFIO interface to set the ST to the NIC.
+
+>  
+>>>> +			if (ret)
+>>>> +				goto out;
+>>>> +			continue;
+>>>> +		}
+>>>> +
+>>>> +		ret = pcie_tph_get_cpu_st(pdev, mtype, cpus[i], &st);
+>>>> +		if (ret)
+>>>> +			goto out;
+>>>> +		ret = pcie_tph_set_st_entry(pdev, tph_st.index + i, st);
+>>>> +		if (ret)
+>>>> +			goto out;  
+>>>
+>>> Clearly broken for DS mode.  
+>>
+>> For DS mode:
+>> 1\ if ST table in CONFIG or MSI-X, then it could done by this way
+>> 2\ if ST table not in CONFIG or MSI-X, then it only need invoke GET, and set by device-specific way.
+> 
+> The SET only after enable model is broken, DS mode needs to support
+> SET, where GET returns the host translations.  Thanks,
+
+done in v12
+
+BTW, there are two points I would like to retain:
+1. Whether to allocate temporary cache in ioctl—I retained it in version v12
+   because the interface supports batch operations, and copying only a portion
+   each time would affect performance.
+2. After the device is taken over and released by vfio, I still maintained the
+   call to pcie_disable_tph in v12 because this ensures that the software state
+   remains consistent with the hardware state.
+
+Thanks
+
+> 
+> Alex
+
