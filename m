@@ -1,144 +1,171 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E8133FD14D;
-	Tue, 26 May 2026 14:20:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9983FF8B9
+	for <kvm@vger.kernel.org>; Tue, 26 May 2026 14:30:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779805261; cv=none; b=nAugqjE+HqBQXnKKN+NfdOegq33p8OXQH06bgD7vorWREHRNfO8u7MZiqzT2flHgBQ8S4mvjGiZffLFjfT1GgX9/eFsaJ0NLTdNr0YsutrNDbcwWx5zyNJC9Ef0AQJy9sOh1r08SBfZGVWg/Xgz/UGfqeW+wAJxuea5AJ9ADYhE=
+	t=1779805806; cv=none; b=tg52DdpEOkO4n9zYdyqiZ60WmFXSx27Rgy7Lk8za0Fbtto4LjvTeNpo+ljFnB01dQZoVzmcrJMTrn2ldkEP/nIa8e20Bsu1QzIsankLuhEzCPwIV9gjLislxyJuolGrXzJ0r6B0ElDv1u836k51HL4FmCRXZNoxaA2adbeIuVUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779805261; c=relaxed/simple;
-	bh=oKeqOBlOW8Be2H98W+ENHlID/l7YbOJiPsGt4yqgS+M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=losB1KSP1AmemhVCFZfQrtcEd1/QAuR3SMXdi1+OZsGN2o4CKE5xmz2Cep5jv/mYeqJg6AHT4ajXdjD57UOHeqPgQAfVvELWl5VdlvtknCre00+lgOpzEWKrpFq1D0esAFHwKdRiMz1GWJvG10WBICHq0tOj7B3Ncb988rCkG3M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=F14nbYYP; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	s=arc-20240116; t=1779805806; c=relaxed/simple;
+	bh=YhgJdcYHqt3q1NQcFs0IKz+MjKG2AaaQjJl35HJ+Urc=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=e9qC3JW4k7Cey3WZqbExPfKcBxxZGb7bri/Rtpr3a5zCaeztyTQnEkOEvNhefiOE+476G0Ac6sMG0HTa6PcnZXziyCbejPbyvriWhy703g8ZMh+VywBT9ibM51mB6veed3PPP+/elx+ktnPNsvqU1CeR/4/GXLtRCbSmS5YJcSg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nfb65XYf; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="F14nbYYP"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7A69B169C;
-	Tue, 26 May 2026 07:20:53 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D58D33F7B4;
-	Tue, 26 May 2026 07:20:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779805258; bh=oKeqOBlOW8Be2H98W+ENHlID/l7YbOJiPsGt4yqgS+M=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=F14nbYYPYB2LN8COACBdN+twjwuAYIeYGM2J8IXo78QE4ABzj31FapUzVEAbdR68/
-	 vp89J59Lbka/24fD+2rVIhuJpEKbpJxb6Or8JQDk7VkpomwibdibkkRcNe87C/CqSW
-	 6o4tvmW4yUVy510uaZnZh+LaHy1N+NcMfmkLyvic=
-Date: Tue, 26 May 2026 15:20:52 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Mark Brown <broonie@kernel.org>
-Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
-	Oliver Upton <oupton@kernel.org>, Dave Martin <Dave.Martin@arm.com>,
-	Fuad Tabba <tabba@google.com>, Ben Horgan <ben.horgan@arm.com>,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Eric Auger <eric.auger@redhat.com>
-Subject: Re: [PATCH v10 02/30] arm64/fpsimd: Update FA64 and ZT0 enables when
- loading SME state
-Message-ID: <ahWsRNb9uZhf46hG@J2N7QTR9R3>
-References: <20260306-kvm-arm64-sme-v10-0-43f7683a0fb7@kernel.org>
- <20260306-kvm-arm64-sme-v10-2-43f7683a0fb7@kernel.org>
- <ahWWqU51Zffmhlo5@J2N7QTR9R3>
- <d8074c6b-9bc9-496e-8a74-94ac18ce9a55@sirena.org.uk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nfb65XYf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1EF1F00A3A;
+	Tue, 26 May 2026 14:30:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779805805;
+	bh=er45Ws/9wIIh61VDuolK5Xc9kgenMTXmI9FoDVzxv90=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Nfb65XYfsnwTkXP9LiqF92xsAD1NchKV3yDhgCx3S2lLYaH+doSQ91rUWmT/cWrMf
+	 xcyZ6HxZFCDkHsQ3bvvcatkG/Z/iGTIkSj/dDhVivSZdpb5mjQ2OhqwSj2I9cRvI0P
+	 D8ZQGEoEqVAf4dRG3Dw5biyolIFW1V7ltBNs6DUVxzgVn2er6IcBsQ+UkQ/jLHcKwZ
+	 +DvcMv1xAU2i9D1gyaB7L2D9nRGMf8lXv6o8Q1t/oK9jRybqdNB5AnWtincpI97wIk
+	 gr1vz5Yl2IAT+543sfCsG+4VHraWYkZrwYZEnzEQdelEmBbKTYNAxBtV4wxo6OKYL+
+	 bN8B0yz8Vl6kA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 3/7] riscv: kexec: Build trampoline page tables for
+ crash kernel entry
+Reply-To: sashiko-reviews@lists.linux.dev
+To: fangyu.yu@linux.alibaba.com
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260526125009.2404-4-fangyu.yu@linux.alibaba.com>
+References: <20260526125009.2404-4-fangyu.yu@linux.alibaba.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 26 May 2026 14:30:04 +0000
+Message-Id: <20260526143004.CC1EF1F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d8074c6b-9bc9-496e-8a74-94ac18ce9a55@sirena.org.uk>
 
-On Tue, May 26, 2026 at 02:25:56PM +0100, Mark Brown wrote:
-> On Tue, May 26, 2026 at 01:48:41PM +0100, Mark Rutland wrote:
-> > On Fri, Mar 06, 2026 at 05:00:54PM +0000, Mark Brown wrote:
-> 
-> > > We provide a helper which does the configuration as part of a
-> > > read/modify/write operation along with the configuration of the task VL,
-> > > then update the floating point state load and SME access trap to use it.
-> 
-> > > +		if (fa64)					\
-> > > +			__new |= SMCR_ELx_FA64;			\
-> > > +		if (zt0)					\
-> > > +			__new |= SMCR_ELx_EZT0;			\
-> 
-> > I'd strongly prefer that we make it the caller's responsiblity to track
-> > all the bits within SMCR, rather than requiring each caller to pass a
-> > bag of booleans.
-> 
-> I was explicitly going for the opposite of that in order to make it
-> harder for someone implementing a future extension to miss a place where
-> an update is required, having the callers independently constructing the
-> register values feels like it's asking for trouble.
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
-I didn't say callers should *construct* the value independently, and I
-showed how to centralize the construction in a __task_smcr() function.
+New issues:
+- [Critical] Hardware Page Table Layout Violation on Sv32 (32-bit RISC-V)
+- [High] Page Table Overwrite / Collision in riscv_kexec_build_tramp()
 
-I think callers should pass the entire value around rather than a
-collection of discrete booleans: constructing a collection of discrete
-booleans is functionally equivalent to construction the entire value,
-and we can more easily manage the construction and passing of the entire
-value.
+Pre-existing issues:
+- [High] Privilege Escalation / W^X Protection Bypass via Missing Cleanup
+--
 
-> > 	unsigned long __task_smcr(const struct task_struct *tsk)
-> > 	{
-> > 		unsigned long vq = sve_vq_from_vl(task_get_sme_vl(tsk));
-> > 		unsigned long smcr = vq - 1;
-> 
-> I agree that's a better pattern for the main kernel - we could also do
-> something similar with a task_set_smcr() which wraps the explicitly
-> specifed version.
+commit 2f8fd9ee19b545626c02a8751eacf676c55f551a
+Author: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 
-I don't think a task_set_smcr() function would gain much vs
-using sysreg_cond_update_s(). I expect that we'd use the SMCR value as
-the source of truth (and hence that would need to be generated outside
-of task_set_smcr()), at which point either task_set_smcr() would be a
-thin wrapper that just hides the register name, or it would generate the
-value independently and obscure the connection.
+riscv: kexec: Build trampoline page tables for crash kernel entry
 
-I expect that what we should have eventually is something like:
+Crash kexec uses riscv_kexec_norelocate as a trampoline to jump into
+the crashkernel. Add a small helper to build dedicated 4KB page tables
+that map the trampoline page as executable.
 
-	unsigned long smcr = __task_smcr(task);
+> diff --git a/arch/riscv/kernel/machine_kexec.c b/arch/riscv/kernel/machin=
+e_kexec.c
+> index 2306ce3e5f229..9b4b495e7c155 100644
+> --- a/arch/riscv/kernel/machine_kexec.c
+> +++ b/arch/riscv/kernel/machine_kexec.c
+> @@ -18,6 +18,65 @@
+>  #include <linux/interrupt.h>
+>  #include <linux/irq.h>
 
-	sysreg_cond_update_s(SYS_SMCR_EL1, smcr);
+[ ... ]
 
-	if (za) {
-		__sme load_za(sme_state);
-		if (smcr & SMCR_ELx_EZT0)
-			__sme_load_zt(sme_state);
-	}
+> +static void map_tramp_page(p4d_t *p4ds, pud_t *puds, pmd_t *pmds, pte_t =
+*ptes,
+> +			   unsigned long va, unsigned long pa)
+> +{
+> +	pgd_t *pgd =3D (pgd_t *)kexec_tramp_pgd + pgd_index(va);
+> +	pmd_t *pmd;
+> +
+> +	if (pgtable_l5_enabled) {
 
-... or:
+[ ... ]
 
-	const unsigned long smcr = __task_smcr(task);
-	const bool zt0 = smcr & SMCR_ELx_EZT0;
+> +	} else {
+> +		set_pgd(pgd, pfn_pgd(PFN_DOWN(__pa_symbol(puds)), PAGE_TABLE));
+> +	}
+> +
+> +	if (pgtable_l4_enabled) {
 
-	sysreg_cond_update_s(SYS_SMCR_EL1, smcr);
+[ ... ]
 
-	if (za) {
-		__sme load_za(sme_state);
-		if (zt0)
-			__sme_load_zt(sme_state);
-	}
+> +	} else {
+> +		pmd =3D (pmd_t *)puds + pmd_index(va);
+> +	}
+> +	set_pmd(pmd, pfn_pmd(PFN_DOWN(__pa_symbol(ptes)), PAGE_TABLE));
+> +
+> +	set_pte((pte_t *)ptes + pte_index(va),
+> +		pfn_pte(PFN_DOWN(pa), PAGE_KERNEL_EXEC));
+> +}
 
-... where in either case it's clear at the function level that the value
-programmed into SMCR matches what we're using for boolean decisions, and
-it's clear at a higher level that functions are consistent given
-consistent usage of __task_smcr().
+[Severity: Critical]
+Does this construct an invalid 3-level page table hierarchy on 32-bit RISC-=
+V?
 
-> That would I think avoid most of the issue you're seeing?
+On Sv32, the hardware MMU strictly expects a 2-level hierarchy (PGD -> PTE).
+Because both pgtable_l5_enabled and pgtable_l4_enabled are false on 32-bit,
+this code will set the PGD entry to point to puds, set puds[0] to point to
+ptes, and finally populate ptes.
 
-I'm not sure what you mean here.
+When the Sv32 hardware MMU walks this table, it expects the table pointed to
+by PGD to be the leaf PTE table. If it reads puds[0], it will find a non-le=
+af
+PAGE_TABLE entry (RWX=3D0), which the hardware considers invalid, resulting=
+ in
+a fatal page fault.
 
-I don't think we need task_set_smcr(), and I'd prefer what I suggested.
+> +static void riscv_kexec_build_tramp(unsigned long va, unsigned long pa)
+> +{
+> +	/* VA -> PA: map the trampoline page via its kernel VA. */
+> +	map_tramp_page(kexec_tramp_p4d,  kexec_tramp_pud,
+> +		       kexec_tramp_pmd,  kexec_tramp_pte,  va, pa);
+> +
+> +	/*
+> +	 * PA -> PA: identity-map the same page so the second-pass code
+> +	 * can keep executing after the kernel VA mapping is dropped.
+> +	 */
+> +	map_tramp_page(kexec_tramp_p4d2, kexec_tramp_pud2,
+> +		       kexec_tramp_pmd2, kexec_tramp_pte2, pa, pa);
+> +}
 
-Mark.
+[Severity: High]
+Can the second call to map_tramp_page() overwrite the PGD entry created by
+the first call?
+
+Both calls use the shared kexec_tramp_pgd root table. If va and pa happen
+to share the same PGD index (for example, on Sv39 if pa >> 30 & 511 matches
+va >> 30 & 511), the second call will replace the pointer to va's lower-lev=
+el
+tables with a pointer to the identity-map's lower-level tables.
+
+Since the identity-map tables only contain valid entries for pa's indices,
+attempting to execute from va after switching satp would result in a fatal
+instruction page fault.
+
+> @@ -73,6 +132,14 @@ machine_kexec_prepare(struct kimage *image)
+> =20
+>  		/* Mark the control page executable */
+>  		set_memory_x((unsigned long) control_code_buffer, 1);
+
+[Severity: High]
+This is a pre-existing issue, but does this leak an executable page back to
+the system allocator if the kexec load fails or is unloaded?
+
+When preparing a non-crash kexec image, the control code page is marked
+executable using set_memory_x(). However, if the user unloads the kexec
+image via kexec -u, or if the load fails later, kimage_free() returns
+this page to the buddy allocator.
+
+Since machine_kexec_cleanup() is empty, the permissions are never reverted,
+violating W^X protections and leaving a window for privilege escalation whe=
+re
+allocated memory can be executable.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526125009.2404=
+-1-fangyu.yu@linux.alibaba.com?part=3D3
