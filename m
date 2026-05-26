@@ -1,174 +1,191 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD16C329396
-	for <kvm@vger.kernel.org>; Tue, 26 May 2026 03:14:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E077717C220;
+	Tue, 26 May 2026 03:15:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779765266; cv=none; b=YexrDwG/hSPmM3g2Auz0a1sOdvc64X081x7WqUyQaBcMaJER695uR5PHc3oaiZIBdkeG4XJXNYNYr2wszdJHJqztvS8a25C+fNcABf4Ln1WjvCH607Jpg3rFZwae6wGm8bZ3/p2Xja79IzIBKYvfoR8pswTuvZVYyR4td2KMnzI=
+	t=1779765351; cv=none; b=o6Dj1Z7taTJqKAg67S07aoCrz2Ngrn0UXrKSy6lI7MPj0F9+sj0mQ/GlZs4jYlZyitwWV3TgYzHo4ePvO9ULLfcNjDNMIWIhxNLTQHgehMLI3TE7WlgdGN1RWA7f69RX1ZjQHz6RN+wKDIuQ+EXL5ibuWN7alai+6EmoXn7UTVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779765266; c=relaxed/simple;
-	bh=0zO3oiVbUZEIxrABAA7SknTYQrGlnLnzJrFR3K/t7Jg=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=bf7icSaPMV0X2zexOIrWUbyyCTlm6hnBZIu+WC71LQYsNPmSRRQedQqfmgh06dU94CELsdlvuO/73+pvRFlR+XUN7gA5JL6ZljX36caBKRC9IV4xpqG4sqxxELICwaVB/LTiHX0vMvdbgxrXFyrqf7c+XrMzkLPsmw49tfW8W/A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=POokM44d; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="POokM44d"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 443F71F000E9;
-	Tue, 26 May 2026 03:14:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779765265;
-	bh=3vQTzuzN9z+OEKIhxoS4fk+Xjv1/LsOKFApVMgJIteo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=POokM44dutPdmjqqCFQRLlK3oklkIq3gLI4OLUf0RjywR2UeMgBrvH+5h69Ti19Mh
-	 83Y2xetKy32ZIi+2nzzOwfT24dLz2D1Y7wuw8SF6F8YpsPoabKOWQjJupUvCL80IB4
-	 itXNMqba10CPA3AesKKXKW6RbMJhUTdcDshWVCXqUevarmzcMbj6F542ytXUGiz6zD
-	 syUv/OqXjEoo9UBfBpsOVL1WWfQyPaITf+OnwSZC4B6XBj9ZsSCfC90e7JbKSZiFf7
-	 M3ttS9fMjX+5UQ8pMsxC2hiOgpsGAiLrLa4rSINmy5mh7AwYydTBP+dROgKhm3NE9x
-	 bYp8kJIbpwbtQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v8 2/3] KVM: s390: Enable adapter_indicators_set to use
- mapped pages
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Douglas Freimuth" <freimuth@linux.ibm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260526015323.207343-3-freimuth@linux.ibm.com>
-References: <20260526015323.207343-3-freimuth@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 26 May 2026 03:14:24 +0000
-Message-Id: <20260526031425.443F71F000E9@smtp.kernel.org>
+	s=arc-20240116; t=1779765351; c=relaxed/simple;
+	bh=g4NvqahIRfrXtpjswB/Z/Zs6eXFPz88fFr5ZheFLVZc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=a8D+WPM4RYuW56vU5XFfRLmP/JOl+tV6+cmMOmqR7l5mjkc6LY+vJxI0gPsJDpV9n+CpOABNZB/a1ZkqZQPh+fP1qthl/xjywaNVv2RNxWD5ZxqbirwLUjPjHiOFeytO0eYPwSQUe2LjwKA3IdN4UkWMLv3yoEskJaEOEoHfd5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from fric.. (unknown [36.110.52.2])
+	by APP-03 (Coremail) with SMTP id rQCowAAnSeBJEBVq0pxjEg--.16714S2;
+	Tue, 26 May 2026 11:15:21 +0800 (CST)
+From: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+To: kvm-riscv@lists.infradead.org,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org
+Cc: Albert Ou <aou@eecs.berkeley.edu>,
+	Alexandre Ghiti <alex@ghiti.fr>,
+	Anup Patel <anup@brainfault.org>,
+	Atish Patra <atish.patra@linux.dev>,
+	Nutty Liu <liujingqi@lanxincomputing.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Paul Walmsley <pjw@kernel.org>,
+	Jiakai Xu <xujiakai2025@iscas.ac.cn>,
+	Jiakai Xu <jiakaiPeanut@gmail.com>
+Subject: [PATCH] RISC-V: KVM: Fix NULL pointer dereference in AIA IMSIC functions
+Date: Tue, 26 May 2026 03:15:17 +0000
+Message-Id: <20260526031517.1166025-1-xujiakai2025@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:rQCowAAnSeBJEBVq0pxjEg--.16714S2
+X-Coremail-Antispam: 1UD129KBjvJXoW3JFyUZrWrAw1ktw4xWr1rZwb_yoWxAF4xpr
+	Z8Wr48Cr40yw47X3y2vry5Jr4kJr1UC3W7GryxKwn8XF1UKw18Zrn7Xry7GFyDGry8ZFy7
+	tr1Dtay09r1UJaUanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUB214x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4j
+	6r4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1lnxkEFVAIw20F6cxK64vIFxWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+	F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r4j6F
+	4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I
+	648v4I1lFIxGxcIEc7CjxVA2Y2ka0xkIwI1lc7CjxVAaw2AFwI0_Jw0_GFyl42xK82IYc2
+	Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s02
+	6x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0x
+	vE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r4j6F4UMIIF0xvE
+	42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6x
+	kF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUO73vUUUUU
+X-CM-SenderInfo: 50xmxthndljiysv6x2xfdvhtffof0/1tbiDAYSCWoUK52DawABsw
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [High] A userspace-triggerable WARN_ON_ONCE can crash the host kernel.
-- [High] Loss of atomicity leads to partially updated, inconsistent guest a=
-dapter indicators on mapping failure.
-- [High] The fast path for long-term mapped pages skips KVM dirty page trac=
-king, breaking live migration.
---
+Fuzzer reported a NULL pointer dereference in 
+kvm_riscv_vcpu_aia_imsic_put() when a VCPU's imsic_state was NULL while 
+kvm_riscv_aia_initialized() returned true.
 
-commit d5dc6d5087f20c38643d53d19e20548f19464244
-Author: Douglas Freimuth <freimuth@linux.ibm.com>
+The global initialized flag is set per-VM in aia_init(), but imsic_state 
+is allocated per-VCPU in kvm_riscv_vcpu_aia_imsic_init(). If a VCPU is 
+created after aia_init() has already run, its imsic_state remains NULL 
+while the global flag is true. When this VCPU is preempted, kvm_sched_out()
+calls kvm_arch_vcpu_put() -> kvm_riscv_vcpu_aia_put() ->
+kvm_riscv_vcpu_aia_imsic_put() which dereferences NULL.
 
-KVM: s390: Enable adapter_indicators_set to use mapped pages
+Add NULL pointer guards to kvm_riscv_vcpu_aia_imsic_put(), consistent with 
+the NULL checks already present in all other functions in the same file.
 
-This commit optimizes the s390 adapter_indicators_set function to use
-long-term mapped pages when available. If adapter indicator pages are
-not mapped, local mapping is done on a slow path.
+Also add a NULL guard to kvm_riscv_vcpu_aia_imsic_release() and 
+kvm_riscv_vcpu_aia_imsic_has_interrupt() for the same reason.
 
-> diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
-> index 8c44ed20651b7..23f578e7b9dce 100644
-> --- a/arch/s390/kvm/interrupt.c
-> +++ b/arch/s390/kvm/interrupt.c
+Fixes: 4cec89db80ba ("RISC-V: KVM: Move HGEI[E|P] CSR access to IMSIC virtualization")
+Signed-off-by: Jiakai Xu <jiakaiPeanut@gmail.com>
+Signed-off-by: Jiakai Xu <xujiakai2025@iscas.ac.cn>
+Assisted-by: YuanSheng:DeepSeek-V3.2
+---
+ arch/riscv/kvm/aia_imsic.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-[ ... ]
+diff --git a/arch/riscv/kvm/aia_imsic.c b/arch/riscv/kvm/aia_imsic.c
+index 8786f52cf65a2..d38f5de0834c5 100644
+--- a/arch/riscv/kvm/aia_imsic.c
++++ b/arch/riscv/kvm/aia_imsic.c
+@@ -683,6 +683,9 @@ bool kvm_riscv_vcpu_aia_imsic_has_interrupt(struct kvm_vcpu *vcpu)
+ 	unsigned long flags;
+ 	bool ret = false;
+ 
++	if (!imsic)
++		return false;
++
+ 	/*
+ 	 * The IMSIC SW-file directly injects interrupt via hvip so
+ 	 * only check for interrupt when IMSIC VS-file is being used.
+@@ -722,6 +725,9 @@ void kvm_riscv_vcpu_aia_imsic_put(struct kvm_vcpu *vcpu)
+ 	struct imsic *imsic = vcpu->arch.aia_context.imsic_state;
+ 	unsigned long flags;
+ 
++	if (!imsic)
++		return;
++
+ 	if (!kvm_vcpu_is_blocking(vcpu))
+ 		return;
+ 
+@@ -738,6 +744,9 @@ void kvm_riscv_vcpu_aia_imsic_release(struct kvm_vcpu *vcpu)
+ 	int old_vsfile_hgei, old_vsfile_cpu;
+ 	struct imsic *imsic = vcpu->arch.aia_context.imsic_state;
+ 
++	if (!imsic)
++		return;
++
+ 	/* Read and clear IMSIC VS-file details */
+ 	write_lock_irqsave(&imsic->vsfile_lock, flags);
+ 	old_vsfile_hgei = imsic->vsfile_hgei;
+-- 
+2.34.1
 
-> @@ -2885,41 +2885,80 @@ static unsigned long get_ind_bit(__u64 addr, unsi=
-gned long bit_nr, bool swap)
->  static int adapter_indicators_set(struct kvm *kvm,
->  				  struct s390_io_adapter *adapter,
->  				  struct kvm_s390_adapter_int *adapter_int)
->  {
+Found by fuzzing. Here is the report:
 
-[ ... ]
+Unable to handle kernel paging request at virtual address dfffffff00000006
+Modules linked in:
+CPU: 1 UID: 0 PID: 26225 Comm: syz.9.1131 Tainted: G        W           7.1.0-rc1-gb69bcb13ed70 #2 PREEMPT 
+Tainted: [W]=WARN
+Hardware name: riscv-virtio,qemu (DT)
+epc : kasan_byte_accessible+0x12/0x20 mm/kasan/generic.c:210
+ ra : __kasan_check_byte+0x16/0x46 mm/kasan/common.c:573
+epc : ffffffff80beb626 ra : ffffffff80be9622 sp : ff200000016276a0
+ gp : ffffffff8a395320 tp : ff6000008f6f5040 t0 : ffffffff86a7e880
+ t1 : ffffffff8a4a4a00 t2 : 0000000000000000 s0 : ff200000016276b0
+ s1 : 0000000000000030 a0 : dfffffff00000006 a1 : ffffffff867223e4
+ a2 : 0000000000000000 a3 : 0000000000000007 a4 : 0000000000000003
+ a5 : dfffffff00000000 a6 : ffffffff8010e72c a7 : 0000000000000004
+ s2 : 0000000000000030 s3 : ffffffff867223e4 s4 : 0000000000000000
+ s5 : 0000000000000000 s6 : 0000000000000000 s7 : ffffffff8010e72c
+ s8 : ffffffff867223e4 s9 : ffffffff8a3da080 s10: 0000085c7b3d0060
+ s11: ff6000008f6f5040 t3 : ffffffff8a4a4a00 t4 : ffffffff8a4a5a80
+ t5 : 1ffffffff22ed7d1 t6 : ff600000ffa4d710 ssp : 0000000000000000
+status: 0000000200000100 badaddr: dfffffff00000006 cause: 000000000000000d
+[<ffffffff80beb626>] kasan_mem_to_shadow include/linux/kasan.h:66 [inline]
+[<ffffffff80beb626>] kasan_byte_accessible+0x12/0x20 mm/kasan/generic.c:210
+[<ffffffff80be9622>] __kasan_check_byte+0x16/0x46 mm/kasan/common.c:573
+[<ffffffff802fe7ba>] kasan_check_byte include/linux/kasan.h:402 [inline]
+[<ffffffff802fe7ba>] lock_acquire kernel/locking/lockdep.c:5842 [inline]
+[<ffffffff802fe7ba>] lock_acquire+0x198/0x50e kernel/locking/lockdep.c:5825
+[<ffffffff867223e4>] __raw_read_lock_irqsave include/linux/rwlock_api_smp.h:174 [inline]
+[<ffffffff867223e4>] _raw_read_lock_irqsave+0x76/0x82 kernel/locking/spinlock.c:240
+[<ffffffff8010e72c>] kvm_riscv_vcpu_aia_imsic_put+0x72/0x17c arch/riscv/kvm/aia_imsic.c:728
+[<ffffffff80101bda>] kvm_riscv_vcpu_aia_put+0x288/0x324 arch/riscv/kvm/aia.c:155
+[<ffffffff8011f210>] kvm_arch_vcpu_put+0x44/0x612 arch/riscv/kvm/vcpu.c:621
+[<ffffffff800d50aa>] kvm_sched_out+0xdc/0x296 virt/kvm/kvm_main.c:6405
+[<ffffffff86705faa>] __fire_sched_out_preempt_notifiers kernel/sched/core.c:4923 [inline]
+[<ffffffff86705faa>] fire_sched_out_preempt_notifiers kernel/sched/core.c:4931 [inline]
+[<ffffffff86705faa>] prepare_task_switch kernel/sched/core.c:5176 [inline]
+[<ffffffff86705faa>] context_switch kernel/sched/core.c:5332 [inline]
+[<ffffffff86705faa>] __schedule+0x10c8/0x513c kernel/sched/core.c:7188
+[<ffffffff8670a0e2>] __schedule_loop kernel/sched/core.c:7267 [inline]
+[<ffffffff8670a0e2>] schedule+0xc4/0x35e kernel/sched/core.c:7282
+[<ffffffff80121cc2>] kvm_riscv_check_vcpu_requests arch/riscv/kvm/vcpu.c:670 [inline]
+[<ffffffff80121cc2>] kvm_arch_vcpu_ioctl_run+0x1d16/0x3214 arch/riscv/kvm/vcpu.c:885
+[<ffffffff800da8ee>] kvm_vcpu_ioctl+0x532/0x13ce virt/kvm/kvm_main.c:4469
+[<ffffffff80d45c90>] vfs_ioctl fs/ioctl.c:51 [inline]
+[<ffffffff80d45c90>] __do_sys_ioctl fs/ioctl.c:597 [inline]
+[<ffffffff80d45c90>] __se_sys_ioctl fs/ioctl.c:583 [inline]
+[<ffffffff80d45c90>] __riscv_sys_ioctl+0x180/0x1e4 fs/ioctl.c:583
+[<ffffffff80078fb2>] syscall_handler+0x94/0x118 arch/riscv/include/asm/syscall.h:112
+[<ffffffff866fa94a>] do_trap_ecall_u+0x43e/0x5de arch/riscv/kernel/traps.c:342
+[<ffffffff86726756>] handle_exception+0x15e/0x16a arch/riscv/kernel/entry.S:232
+Code: 8082 07b7 e000 1141 17fd e422 810d 0800 1782 953e (4503) 0005 
+---[ end trace 0000000000000000 ]---
+----------------
+Code disassembly (best guess):
+   0:	8082                	ret
+   2:	e00007b7          	lui	a5,0xe0000
+   6:	1141                	addi	sp,sp,-16
+   8:	17fd                	addi	a5,a5,-1 # 0xffffffffdfffffff
+   a:	e422                	fsw	fs0,8(sp)
+   c:	810d                	srli	a0,a0,0x3
+   e:	0800                	addi	s0,sp,16
+  10:	1782                	slli	a5,a5,0x20
+  12:	953e                	add	a0,a0,a5
+* 14:	00054503          	lbu	a0,0(a0) <-- trapping instruction
 
-> +	} else {
-> +		map =3D page_address(ind_info->page);
-> +		bit =3D get_ind_bit(ind_info->addr, adapter_int->ind_offset, adapter->=
-swap);
-> +		set_bit(bit, map);
+<<<<<<<<<<<<<<< tail report >>>>>>>>>>>>>>>
 
-[Severity: High]
-Does this fast path need to track dirty pages for live migration?
-
-The slow path calls mark_page_dirty() and set_page_dirty_lock() after
-setting the bit, but this mapped-page fast path modifies guest memory
-directly via set_bit() without updating KVM's dirty logging bitmap.
-
-Could this leave the destination host with stale indicator states after a
-live migration?
-
-> +		spin_unlock_irqrestore(&adapter->maps_lock, flags);
-> +	}
-> +	spin_lock_irqsave(&adapter->maps_lock, flags);
-> +	summary_info =3D get_map_info(adapter, adapter_int->summary_addr);
-> +	if (!summary_info) {
-> +		spin_unlock_irqrestore(&adapter->maps_lock, flags);
-> +		summary_page =3D pin_map_page(kvm, adapter_int->summary_addr, 0);
-
-[Severity: High]
-Could this lead to a partially updated adapter state if the summary page
-fails to map?
-
-The original code atomically pinned both the indicator and summary pages
-before making any modifications. Here, if pin_map_page() fails for the
-summary page, the function aborts and returns -1, but the indicator bit
-was already set in the preceding block and is not rolled back.
-
-Can this result in the indicator being set without a corresponding summary
-bit, potentially causing lost events and I/O hangs?
-
-> +		if (WARN_ON_ONCE(!summary_page))
-
-[Severity: High]
-Can a malicious userspace process trigger this WARN_ON_ONCE?
-
-Since the summary_addr is provided by userspace (e.g., via QEMU setting up
-routing entries), an unprivileged process might be able to intentionally
-unmap the memory to force pin_map_page() to fail.
-
-If panic_on_warn is enabled in a production environment, could this action
-crash the host kernel?
-
-> +			return -1;
-> +		idx =3D srcu_read_lock(&kvm->srcu);
-> +		map =3D page_address(summary_page);
-> +		bit =3D get_ind_bit(adapter_int->summary_addr,
-> +				  adapter_int->summary_offset, adapter->swap);
-> +		summary_set =3D test_and_set_bit(bit, map);
-> +		mark_page_dirty(kvm, adapter_int->summary_gaddr >> PAGE_SHIFT);
-> +		set_page_dirty_lock(summary_page);
-> +		srcu_read_unlock(&kvm->srcu, idx);
-> +		unpin_user_page(summary_page);
-> +	} else {
-> +		map =3D page_address(summary_info->page);
-> +		bit =3D get_ind_bit(summary_info->addr, adapter_int->summary_offset,
-> +				  adapter->swap);
-> +		summary_set =3D test_and_set_bit(bit, map);
-
-[Severity: High]
-Similarly, is dirty page tracking missing here for the summary page fast
-path, bypassing KVM's dirty logging bitmap?
-
-> +		spin_unlock_irqrestore(&adapter->maps_lock, flags);
->  	}
-> =20
-> -	idx =3D srcu_read_lock(&kvm->srcu);
-> -	map =3D page_address(ind_page);
-> -	bit =3D get_ind_bit(adapter_int->ind_addr,
-> -			  adapter_int->ind_offset, adapter->swap);
-> -	set_bit(bit, map);
-> -	mark_page_dirty(kvm, adapter_int->ind_gaddr >> PAGE_SHIFT);
-> -	set_page_dirty_lock(ind_page);
-> -	map =3D page_address(summary_page);
-> -	bit =3D get_ind_bit(adapter_int->summary_addr,
-> -			  adapter_int->summary_offset, adapter->swap);
-> -	summary_set =3D test_and_set_bit(bit, map);
-> -	mark_page_dirty(kvm, adapter_int->summary_gaddr >> PAGE_SHIFT);
-> -	set_page_dirty_lock(summary_page);
-> -	srcu_read_unlock(&kvm->srcu, idx);
-> -
-> -	unpin_user_page(ind_page);
-> -	unpin_user_page(summary_page);
->  	return summary_set ? 0 : 1;
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526015323.2073=
-43-1-freimuth@linux.ibm.com?part=3D2
