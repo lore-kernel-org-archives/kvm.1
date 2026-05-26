@@ -1,107 +1,148 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04C571B6D08;
-	Tue, 26 May 2026 15:19:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51911D9A5F
+	for <kvm@vger.kernel.org>; Tue, 26 May 2026 15:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779808778; cv=none; b=iGySVkyULjZ1sUA+SRMBKojQaZUeYA0z9GiPwV0wU62rSdKQuixHtFeCNXH99GjTtIk5xzf9MEJGtah3r1chwvU3rIVRQ14+TeZxkmo9VW3xULvEXtR4r5TaAsd0zIB/rHUvf+u0HozTg3nyaBC5RxIVeWZSUBDobJWpeIX9t6I=
+	t=1779809194; cv=none; b=OuA7OZMU888rXf21lEbJB44METODqLnw8hMtZLuGrDFHQ0RHrgNsZPcxv51Dr96i+f7B47m+LxrTvq+3zl21elCAaR9shUT4KOAHfAWR5Db3w2HAXkRpuZb/vf5Em1fo2RQbw4wngBUxFpWa5eCi1avQA2pj5+nLDtvTHAV2ej4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779808778; c=relaxed/simple;
-	bh=IjCdT7QUzYPO0qYM3E33rBp7fz7JoKrppWlCCqiyh1Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mXSTAU+O9+8swTMBPrYy2+m2xhqjzS1+zoUSnz7MqlgTZuNtUBxDiFy+7pAmXGDvdYoHFoekhSiFE/VzViNLOCdgzGUusUN6WHtSFoQdPfR6BxKlP1ER/Y2QHuAWqJ8PbO0ZCIbqemiavmpj+UqBhj4s4mARVvPc0LxMieCivy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DEXgZHuw; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779809194; c=relaxed/simple;
+	bh=c/GWuYvxE73rVUL7dJbR3Z0OSjIQfIAjUZrsPt151A0=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=I2cFrOFVYfv7oBR5GRiLQGIVs4Ylg7b3SLHOee1OmyDVM+jHZu1Qkoi/9bc+onVCnyTEUOQJjjj2R/Nn+sF33MBw4uVgnZ/D4ao6n+YoT2SUyuI2atThOcSSbAm69OCJUPvP6BWPju4JMmpcxNeS+EOCa9XKI7f93uDKopv//qY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iUVT+VCC; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DEXgZHuw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21C411F000E9;
-	Tue, 26 May 2026 15:19:32 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iUVT+VCC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40C971F000E9;
+	Tue, 26 May 2026 15:26:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779808776;
-	bh=Fj96/yHeNPt6Cv4EkJ4bgbsXqIfa2PjP2NmQ5QjGnZU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=DEXgZHuw791/GRbMTcEj+6sGSTqq8DcjMj+sMViOavnQ7zCZ1XF093R0JwczhqgLW
-	 rWzmwVldZKVRyxDJp8jkNVDFSQ4mz8lUiQzzw3d6FwTP1fVx6aVcpYivjY5fMYo3pj
-	 gkQg9QVkMK9nzrCsfj5DASsHTvJhWbbnhEikgkKCmNfTO1sDzOnONxPnIpoiz/zEoz
-	 68YRryRoA3VRde5fpfdWcb3qBQ2KcgLO4iSzhh59cdngtJQF7NXAy0MPsvAoKw7ZUg
-	 FjEXx7lwWFiKCNp9cQOHX6p/zGyaoPiPy0Hg1JaibiaGNdDzip5H24JrHuVX8tfSYO
-	 OgGLH694iilFw==
-Date: Tue, 26 May 2026 16:19:30 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
-	Oliver Upton <oupton@kernel.org>, Dave Martin <Dave.Martin@arm.com>,
-	Fuad Tabba <tabba@google.com>, Ben Horgan <ben.horgan@arm.com>,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Eric Auger <eric.auger@redhat.com>
-Subject: Re: [PATCH v10 02/30] arm64/fpsimd: Update FA64 and ZT0 enables when
- loading SME state
-Message-ID: <733ec6da-c8de-4b6b-9ab7-1f819a1a8465@sirena.org.uk>
-References: <20260306-kvm-arm64-sme-v10-0-43f7683a0fb7@kernel.org>
- <20260306-kvm-arm64-sme-v10-2-43f7683a0fb7@kernel.org>
- <ahWWqU51Zffmhlo5@J2N7QTR9R3>
- <d8074c6b-9bc9-496e-8a74-94ac18ce9a55@sirena.org.uk>
- <ahWsRNb9uZhf46hG@J2N7QTR9R3>
+	s=k20260515; t=1779809193;
+	bh=TYYTQclcKOxMie+PVuh5Nly6jX/1/FXtZwAqxYlPwtk=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=iUVT+VCC1jl2DXaWWoHPBkAFSlkal4EhQCgTM9Ja/7H2L+51C511kBsBEa2o2sDiq
+	 DioJ7ns4GCyqWnGu5UiQVvOd+9eiZ7gsA2ziY4fY6iTjJ3n1cDb0t5GzoCgjl6ynP1
+	 15aJIUCT1nx3eSsmJp+LE6ZpSM/tOvXnveSckNPg8A5whrIiW7pNLd4lhV0q4/MuSc
+	 UMdxGWO7DK2tJSFA6yPk569WeN70SSQGJP9xzoxw8bi04LBpi9sFv91FK65YhHJdSL
+	 YT5sgkkQltC3LFpOm8vjZSvUuO6P/s+wfP/RMPos85Jtmy8TJumy+1pL0/XmNdlGB7
+	 4xnLU5A1vE4cQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 5/7] riscv: kexec: Always build the trampoline page
+ table
+Reply-To: sashiko-reviews@lists.linux.dev
+To: fangyu.yu@linux.alibaba.com
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260526125009.2404-6-fangyu.yu@linux.alibaba.com>
+References: <20260526125009.2404-6-fangyu.yu@linux.alibaba.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 26 May 2026 15:26:32 +0000
+Message-Id: <20260526152633.40C971F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="lTHQvf4c3zxfQxl6"
-Content-Disposition: inline
-In-Reply-To: <ahWsRNb9uZhf46hG@J2N7QTR9R3>
-X-Cookie: You are fairminded, just and loving.
 
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
---lTHQvf4c3zxfQxl6
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Pre-existing issues:
+- [High] W^X memory protection bypass due to missing set_memory_nx() in mac=
+hine_kexec_cleanup()
+- [High] Out-of-bounds read in machine_kexec_prepare() during FDT search le=
+ading to kernel panic
+--
 
-On Tue, May 26, 2026 at 03:20:52PM +0100, Mark Rutland wrote:
-> On Tue, May 26, 2026 at 02:25:56PM +0100, Mark Brown wrote:
+commit 12b9a2069db4f35db2b3ed4b36105e4aefe8ff09
+Author: Fangyu Yu <fangyu.yu@linux.alibaba.com>
 
-> > I was explicitly going for the opposite of that in order to make it
-> > harder for someone implementing a future extension to miss a place where
-> > an update is required, having the callers independently constructing the
-> > register values feels like it's asking for trouble.
+riscv: kexec: Always build the trampoline page table
 
-> I didn't say callers should *construct* the value independently, and I
-> showed how to centralize the construction in a __task_smcr() function.
+This patch refactors the kexec preparation path to build the trampoline
+page table and capture its satp value unconditionally, rather than only
+doing so for crash kernels.
 
-> I think callers should pass the entire value around rather than a
-> collection of discrete booleans: constructing a collection of discrete
-> booleans is functionally equivalent to construction the entire value,
-> and we can more easily manage the construction and passing of the entire
-> value.
+> diff --git a/arch/riscv/kernel/machine_kexec.c b/arch/riscv/kernel/machin=
+e_kexec.c
+> index 00fdc42d650df..556b76bcf96e7 100644
+> --- a/arch/riscv/kernel/machine_kexec.c
+> +++ b/arch/riscv/kernel/machine_kexec.c
+> @@ -119,6 +119,16 @@ machine_kexec_prepare(struct kimage *image)
+>  		return -EINVAL;
+>  	}
 
-I got that, the problem I see is that it's equivalent to passing the
-entire value right up until the point where there's another field that
-needs managing and then every place that sets a new value needs to make
-sure it does the right thing.  I think a __task_smcr() that constructs
-the value each time time as you suggest avoids that well enough.
+[Severity: High]
+This is a pre-existing issue in the code just above this hunk, but can the
+device tree search loop trigger an out-of-bounds read?
 
---lTHQvf4c3zxfQxl6
-Content-Type: application/pgp-signature; name="signature.asc"
+When iterating over kexec segments to locate the device tree, the code
+checks memsz but not bufsz:
 
------BEGIN PGP SIGNATURE-----
+        if (image->segment[i].memsz <=3D sizeof(fdt))
+                continue;
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoVugEACgkQJNaLcl1U
-h9BPlwf/Ze/FTGkfrNEWHYQnTukgy62jd2hLEoI81w2cJWeW1iKUcQRKDOnQqfoO
-tdiYqwOiv+lncrlx2l1VXph79UoTYcP6qxN3lKt1cGQVqaTEDXmtMz4uQ4ZJo5Sq
-mqMEFr4VxrejxmenvuTBM4Oz9NT+nGVviTN0lZor1Kn6+8TDPhbJ5SuTCsPy1W1g
-Vc+z92OsPbX2Pv/0v9diUBqEZ5IMEbDL8oGAn7XTXFkgO5ERDV5rDuMn5bza4a2c
-g9SL5xHA4uqZtpCHJWFUninWXEF82rbjg3oJxg0V63ZTMsfoZaW30LH3RATwqbSw
-fx5ZyMSwIve2BQRIl/4avbmXOPJBpw==
-=v5ln
------END PGP SIGNATURE-----
+        if (image->file_mode)
+                memcpy(&fdt, image->segment[i].buf, sizeof(fdt));
 
---lTHQvf4c3zxfQxl6--
+If a segment is provided where p_filesz is smaller than sizeof(fdt) but
+p_memsz is larger, memcpy() will read past the end of the kernel-allocated
+image buffer. If this buffer happens to be adjacent to an unmapped guard
+page, could this result in a fatal page fault?
+
+> =20
+> +	/*
+> +	 * Build the trampoline page table and capture its SATP value.
+> +	 * The crash path consumes it today; the non-crash kexec path
+> +	 * will use the same setup as well.
+> +	 */
+> +	riscv_kexec_build_tramp((unsigned long)__kexec_tramp_text_start,
+> +				__pa_symbol(__kexec_tramp_text_start));
+> +	WRITE_ONCE(kexec_tramp_satp,
+> +		   PFN_DOWN(__pa_symbol(kexec_tramp_pgd)) | satp_mode);
+> +
+>  	/* Copy the assembler code for relocation to the control page */
+>  	if (image->type !=3D KEXEC_TYPE_CRASH) {
+>  		control_code_buffer =3D page_address(image->control_code_page);
+
+[ ... ]
+
+> @@ -135,19 +145,8 @@ machine_kexec_prepare(struct kimage *image)
+>  		/* Mark the control page executable */
+>  		set_memory_x((unsigned long) control_code_buffer, 1);
+
+[Severity: High]
+This isn't a bug introduced by this patch, but if the kexec payload is
+subsequently unloaded (like via kexec -u) or fails later in the load
+process, kimage_free() will call the architecture-specific
+machine_kexec_cleanup().
+
+Since machine_kexec_cleanup() on riscv is an empty stub, it doesn't call
+set_memory_nx() to reverse this permission change. The page is then freed
+back to the buddy allocator via kimage_free_pages() while still retaining
+its executable permission.
+
+Does this leave executable pages in the generic kernel allocator, bypassing
+write-xor-execute protections?
+
+>  	} else {
+> -		/*
+> -		 * Crash kexec uses riscv_kexec_norelocate as a trampoline.
+> -		 * Pre-build the trampoline page tables and capture the
+> -		 * trampoline SATP value plus the physical address of
+> -		 * riscv_kexec_norelocate so that the panic path only has
+> -		 * to switch satp and jump.
+> -		 */
+> -		riscv_kexec_build_tramp((unsigned long)__kexec_tramp_text_start,
+> -					__pa_symbol(__kexec_tramp_text_start));
+>  		WRITE_ONCE(riscv_kexec_norelocate_pa,
+>  			   __pa_symbol(&riscv_kexec_norelocate));
+> -		WRITE_ONCE(kexec_tramp_satp,
+> -			   PFN_DOWN(__pa_symbol(kexec_tramp_pgd)) | satp_mode);
+>  	}
+> =20
+>  	return 0;
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526125009.2404=
+-1-fangyu.yu@linux.alibaba.com?part=3D5
