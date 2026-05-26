@@ -1,171 +1,155 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E9983FF8B9
-	for <kvm@vger.kernel.org>; Tue, 26 May 2026 14:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B375B3B2D18
+	for <kvm@vger.kernel.org>; Tue, 26 May 2026 14:33:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779805806; cv=none; b=tg52DdpEOkO4n9zYdyqiZ60WmFXSx27Rgy7Lk8za0Fbtto4LjvTeNpo+ljFnB01dQZoVzmcrJMTrn2ldkEP/nIa8e20Bsu1QzIsankLuhEzCPwIV9gjLislxyJuolGrXzJ0r6B0ElDv1u836k51HL4FmCRXZNoxaA2adbeIuVUs=
+	t=1779806024; cv=none; b=X7eaQtv586bQQzjKwI1TuYf+4ohggJ57c2OQmbRIBJ7haivIPVSA914QebQ6SvY3nm2Ycc/OV5TjDKfpRlnvLoTlynXXr/xKvDONx5YggyYmeh4vPIVfQdiDbV+ye9coYifBlPFwDpFDS6/08StfXbAYFBuXH4jxfXQYZUqQHRk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779805806; c=relaxed/simple;
-	bh=YhgJdcYHqt3q1NQcFs0IKz+MjKG2AaaQjJl35HJ+Urc=;
+	s=arc-20240116; t=1779806024; c=relaxed/simple;
+	bh=Qt2zS51RD3aBd6EEt5QFSj0qeN8yWEWttbJ/MAAlBvk=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=e9qC3JW4k7Cey3WZqbExPfKcBxxZGb7bri/Rtpr3a5zCaeztyTQnEkOEvNhefiOE+476G0Ac6sMG0HTa6PcnZXziyCbejPbyvriWhy703g8ZMh+VywBT9ibM51mB6veed3PPP+/elx+ktnPNsvqU1CeR/4/GXLtRCbSmS5YJcSg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Nfb65XYf; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=TCVfvW6afAFsXg+osda9SwxTc38qVsQcmPCbjKQROzMCvlSeUlmCg7vkq2rtXcwtaMt8D/XLmRY0A+KQgdXaYoO4RH8rVNTGeBs6D7WCyiujyWcpW5ud9tBv7VH/Yj/xSWM6odKjdBSuRHx84J53aAuMCLglbS0K1DVAd4VTaWY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=a6kYCgGr; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Nfb65XYf"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1EF1F00A3A;
-	Tue, 26 May 2026 14:30:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="a6kYCgGr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D661F00A3A;
+	Tue, 26 May 2026 14:33:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779805805;
-	bh=er45Ws/9wIIh61VDuolK5Xc9kgenMTXmI9FoDVzxv90=;
+	s=k20260515; t=1779806023;
+	bh=7C36IAbN9iBb/4fzQo5ywpSq3rFh1m6L5HTe/kyO6Ss=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Nfb65XYfsnwTkXP9LiqF92xsAD1NchKV3yDhgCx3S2lLYaH+doSQ91rUWmT/cWrMf
-	 xcyZ6HxZFCDkHsQ3bvvcatkG/Z/iGTIkSj/dDhVivSZdpb5mjQ2OhqwSj2I9cRvI0P
-	 D8ZQGEoEqVAf4dRG3Dw5biyolIFW1V7ltBNs6DUVxzgVn2er6IcBsQ+UkQ/jLHcKwZ
-	 +DvcMv1xAU2i9D1gyaB7L2D9nRGMf8lXv6o8Q1t/oK9jRybqdNB5AnWtincpI97wIk
-	 gr1vz5Yl2IAT+543sfCsG+4VHraWYkZrwYZEnzEQdelEmBbKTYNAxBtV4wxo6OKYL+
-	 bN8B0yz8Vl6kA==
+	b=a6kYCgGr/wvVvAwAPOaqFKZ2JHnCZU37lu3fdVB1O5apOX4xDWjt664TJeorwsgoV
+	 EDoO6b08qKCXwCYx2Mp3oeSl7Ufj6EcEHowpF5j9U8nq1JcIluURAx/mmaLLlO63bJ
+	 /e6w+AUJJ5VnM8SsiPSHhZ8+sEDrJ6+f6oiLffH2LVkCS3a5cgVifhgsR36ACEYADj
+	 9j6YM5Bc8KsuE2otzg2lsSd+/4AxqwSIHgp3vLV4JOr+dVEwy1OBK/sn3Q4RXZl0Pv
+	 rUQMzMcMBo59zVQtdGqXa7yG2FpBijuofMmMxTjo7HFVkwRymOzvKsAKiE3Noo7kVt
+	 AM9qd0252ddWw==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 3/7] riscv: kexec: Build trampoline page tables for
- crash kernel entry
+Subject: Re: [PATCH v5 13/18] mm/userfaultfd: add RWP fault delivery and
+ expose UFFDIO_REGISTER_MODE_RWP
 Reply-To: sashiko-reviews@lists.linux.dev
-To: fangyu.yu@linux.alibaba.com
+To: "Kiryl Shutsemau" <kirill@shutemov.name>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260526125009.2404-4-fangyu.yu@linux.alibaba.com>
-References: <20260526125009.2404-4-fangyu.yu@linux.alibaba.com>
+In-Reply-To: <20260526130509.2748441-14-kirill@shutemov.name>
+References: <20260526130509.2748441-14-kirill@shutemov.name>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Tue, 26 May 2026 14:30:04 +0000
-Message-Id: <20260526143004.CC1EF1F00A3A@smtp.kernel.org>
+Date: Tue, 26 May 2026 14:33:42 +0000
+Message-Id: <20260526143342.C6D661F00A3A@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
 s) to consider:
-
-New issues:
-- [Critical] Hardware Page Table Layout Violation on Sv32 (32-bit RISC-V)
-- [High] Page Table Overwrite / Collision in riscv_kexec_build_tramp()
-
-Pre-existing issues:
-- [High] Privilege Escalation / W^X Protection Bypass via Missing Cleanup
+- [Critical] The RWP marker (`PROT_NONE` with the `_PAGE_UFFD` bit) is phys=
+ically indistinguishable from a UFFD-WP protected PTE that has been scanned=
+ by NUMA balancing. This causes spurious RWP faults and infinite page fault=
+ loops.
+- [High] Orphaned RWP markers on hugetlb VMAs (e.g., remaining after fork) =
+cause infinite page fault loops because fallback handlers cannot resolve PR=
+OT_NONE PTEs.
 --
 
-commit 2f8fd9ee19b545626c02a8751eacf676c55f551a
-Author: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+commit a9cbf618ba30a3b9b6fa493754de9420693632a9
+Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-riscv: kexec: Build trampoline page tables for crash kernel entry
+mm/userfaultfd: add RWP fault delivery and expose UFFDIO_REGISTER_MODE_RWP
 
-Crash kexec uses riscv_kexec_norelocate as a trampoline to jump into
-the crashkernel. Add a small helper to build dedicated 4KB page tables
-that map the trampoline page as executable.
+Wire the fault side of read-write protection tracking and turn the
+userspace interface on.
 
-> diff --git a/arch/riscv/kernel/machine_kexec.c b/arch/riscv/kernel/machin=
-e_kexec.c
-> index 2306ce3e5f229..9b4b495e7c155 100644
-> --- a/arch/riscv/kernel/machine_kexec.c
-> +++ b/arch/riscv/kernel/machine_kexec.c
-> @@ -18,6 +18,65 @@
->  #include <linux/interrupt.h>
->  #include <linux/irq.h>
-
-[ ... ]
-
-> +static void map_tramp_page(p4d_t *p4ds, pud_t *puds, pmd_t *pmds, pte_t =
-*ptes,
-> +			   unsigned long va, unsigned long pa)
-> +{
-> +	pgd_t *pgd =3D (pgd_t *)kexec_tramp_pgd + pgd_index(va);
-> +	pmd_t *pmd;
-> +
-> +	if (pgtable_l5_enabled) {
-
-[ ... ]
-
-> +	} else {
-> +		set_pgd(pgd, pfn_pgd(PFN_DOWN(__pa_symbol(puds)), PAGE_TABLE));
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 0d8d39cd88885..d4da39d698b82 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -6062,6 +6062,17 @@ vm_fault_t hugetlb_fault(struct mm_struct *mm, str=
+uct vm_area_struct *vma,
+>  		goto out_mutex;
+>  	}
+> =20
+> +	/*
+> +	 * Protnone hugetlb PTEs with the uffd bit are used by
+> +	 * userfaultfd RWP for access tracking. Plain PROT_NONE (without the
+> +	 * marker) is not an RWP fault and is not expected on hugetlb (no
+> +	 * NUMA hinting), so let normal hugetlb fault handling proceed.
+> +	 */
+> +	if (pte_protnone(vmf.orig_pte) && vma_is_accessible(vma) &&
+> +	    userfaultfd_rwp(vma) && huge_pte_uffd(vmf.orig_pte)) {
+> +		return hugetlb_handle_userfault(&vmf, mapping, VM_UFFD_RWP);
 > +	}
-> +
-> +	if (pgtable_l4_enabled) {
 
-[ ... ]
+[Severity: High]
+Does this code handle orphaned RWP markers correctly after a fork?
 
-> +	} else {
-> +		pmd =3D (pmd_t *)puds + pmd_index(va);
-> +	}
-> +	set_pmd(pmd, pfn_pmd(PFN_DOWN(__pa_symbol(ptes)), PAGE_TABLE));
-> +
-> +	set_pte((pte_t *)ptes + pte_index(va),
-> +		pfn_pte(PFN_DOWN(pa), PAGE_KERNEL_EXEC));
-> +}
+When a process forks, dup_mmap() clears __VM_UFFD_FLAGS on the child VMA,
+and the _PAGE_UFFD bit is stripped from the PTEs. The child receives plain
+PROT_NONE PTEs instead of RWP markers.
+
+Since hugetlb does not support NUMA hinting, hugetlb_fault() lacks the logic
+to upgrade a PROT_NONE PTE back to the permissions in vma->vm_page_prot. It
+simply updates the young/dirty flags and leaves the PTE as PROT_NONE. Could
+this result in the child infinitely looping on page faults when trying to
+access these orphaned pages?
+
+> diff --git a/mm/memory.c b/mm/memory.c
+> index 06473285c0dcc..111fdae141203 100644
+> --- a/mm/memory.c
+> +++ b/mm/memory.c
+> @@ -6122,6 +6122,14 @@ static void numa_rebuild_large_mapping(struct vm_f=
+ault *vmf, struct vm_area_stru
+>  		if (!pte_present(ptent) || !pte_protnone(ptent))
+>  			continue;
+> =20
+> +		/*
+> +		 * RWP-armed PTEs are also protnone but carry _PAGE_UFFD as a
+> +		 * marker. Leave them alone -- rewriting to vm_page_prot would
+> +		 * stop the RWP trap.
+> +		 */
+> +		if (pte_uffd(ptent))
+> +			continue;
 
 [Severity: Critical]
-Does this construct an invalid 3-level page table hierarchy on 32-bit RISC-=
-V?
+Can this check cause a livelock when UFFD-WP interacts with NUMA balancing?
 
-On Sv32, the hardware MMU strictly expects a 2-level hierarchy (PGD -> PTE).
-Because both pgtable_l5_enabled and pgtable_l4_enabled are false on 32-bit,
-this code will set the PGD entry to point to puds, set puds[0] to point to
-ptes, and finally populate ptes.
+When NUMA balancing scans a VMA, it converts present PTEs to PROT_NONE but
+preserves the _PAGE_UFFD bit if they were protected by UFFD-WP. This creates
+a PTE signature that is identical to an RWP marker (PROT_NONE + _PAGE_UFFD).
 
-When the Sv32 hardware MMU walks this table, it expects the table pointed to
-by PGD to be the leaf PTE table. If it reads puds[0], it will find a non-le=
-af
-PAGE_TABLE entry (RWX=3D0), which the hardware considers invalid, resulting=
- in
-a fatal page fault.
+If the VMA only has UFFD-WP enabled, the fault correctly falls through to
+do_numa_page(). However, this check in numa_rebuild_large_mapping() will
+unconditionally skip rebuilding the PTE, leaving it as PROT_NONE. Does this
+cause the CPU to indefinitely retry the faulting instruction?
 
-> +static void riscv_kexec_build_tramp(unsigned long va, unsigned long pa)
-> +{
-> +	/* VA -> PA: map the trampoline page via its kernel VA. */
-> +	map_tramp_page(kexec_tramp_p4d,  kexec_tramp_pud,
-> +		       kexec_tramp_pmd,  kexec_tramp_pte,  va, pa);
-> +
-> +	/*
-> +	 * PA -> PA: identity-map the same page so the second-pass code
-> +	 * can keep executing after the kernel VA mapping is dropped.
-> +	 */
-> +	map_tramp_page(kexec_tramp_p4d2, kexec_tramp_pud2,
-> +		       kexec_tramp_pmd2, kexec_tramp_pte2, pa, pa);
-> +}
-
-[Severity: High]
-Can the second call to map_tramp_page() overwrite the PGD entry created by
-the first call?
-
-Both calls use the shared kexec_tramp_pgd root table. If va and pa happen
-to share the same PGD index (for example, on Sv39 if pa >> 30 & 511 matches
-va >> 30 & 511), the second call will replace the pointer to va's lower-lev=
-el
-tables with a pointer to the identity-map's lower-level tables.
-
-Since the identity-map tables only contain valid entries for pa's indices,
-attempting to execute from va after switching satp would result in a fatal
-instruction page fault.
-
-> @@ -73,6 +132,14 @@ machine_kexec_prepare(struct kimage *image)
+> @@ -6412,8 +6426,16 @@ static vm_fault_t handle_pte_fault(struct vm_fault=
+ *vmf)
+>  	if (!pte_present(vmf->orig_pte))
+>  		return do_swap_page(vmf);
 > =20
->  		/* Mark the control page executable */
->  		set_memory_x((unsigned long) control_code_buffer, 1);
+> -	if (pte_protnone(vmf->orig_pte) && vma_is_accessible(vmf->vma))
+> +	if (pte_protnone(vmf->orig_pte) && vma_is_accessible(vmf->vma)) {
+> +		/*
+> +		 * RWP-protected PTEs are protnone plus the uffd bit. On a
+> +		 * VM_UFFD_RWP VMA, a protnone PTE without the uffd bit is
+> +		 * NUMA hinting and must still fall through to do_numa_page().
+> +		 */
+> +		if (userfaultfd_pte_rwp(vmf->vma, vmf->orig_pte))
+> +			return do_uffd_rwp(vmf);
 
-[Severity: High]
-This is a pre-existing issue, but does this leak an executable page back to
-the system allocator if the kexec load fails or is unloaded?
+[Severity: Critical]
+Furthermore, if the VMA has both UFFD-WP and UFFD-RWP enabled,
+userfaultfd_pte_rwp() will evaluate to true. Does this cause a spurious RWP
+fault to be delivered?
 
-When preparing a non-crash kexec image, the control code page is marked
-executable using set_memory_x(). However, if the user unloads the kexec
-image via kexec -u, or if the load fails later, kimage_free() returns
-this page to the buddy allocator.
-
-Since machine_kexec_cleanup() is empty, the permissions are never reverted,
-violating W^X protections and leaving a window for privilege escalation whe=
-re
-allocated memory can be executable.
+Once userspace resolves this spurious fault and clears the UFFD bit, it wou=
+ld
+silently destroy the UFFD-WP protection, potentially allowing unauthorized
+writes.
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526125009.2404=
--1-fangyu.yu@linux.alibaba.com?part=3D3
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526130509.2748=
+441-1-kirill@shutemov.name?part=3D13
