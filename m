@@ -1,111 +1,196 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10E93BD62C
-	for <kvm@vger.kernel.org>; Tue, 26 May 2026 16:30:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA6C39AD34
+	for <kvm@vger.kernel.org>; Tue, 26 May 2026 16:39:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779813039; cv=none; b=FaV1m7h7rb5I6IQbAkrAUxM0Q0ZOessgN555mgDvzwOgmKpUwy0SKpPicYQe85gnByvgAQNir+X1rxiSERJn2aLNXnmVOI0ajhSMekrQqvAbEGVSpysjhd7uATmSkJNUYz4y3RCyjqTD+jqXZ8Vg61Br+yoSERcgyurW/PbsTxY=
+	t=1779813585; cv=none; b=it3zw6vPcRZjeQu/rCA/rZzztXI4YnFh4qzriGtLf61e1hh0YUcoc4HZcGqk8kg0Fz29oJXGGSTwcKkDfhwzcx6eXR7a0XVqUKEGzomdEi2NWLSDeHRqotZpOa8mGpNnGnrm9Z5eT4UfdmAPVxUB3l9oit3t8h175M+RKm1IlLI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779813039; c=relaxed/simple;
-	bh=nevdse5t1kv9gNIo9f0Audc3CzDL/suBD0JEhDghzgc=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Pj0VRiON0jj9+hugdVducAiBVa/kS9ZfR8uzupAPnbQLTeUDSeQR1Jl8tKNqgBpJe15HmOeaixj2bU38Rd/85v32vFhmkMzHMyCKBXIXA+pKd3VNz8ermYjGQEmyK1uuOUp+U7TIvz+oMwzTPZdt7Q44ZKbCm6nFi7377MbAXZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bGMb7I5s; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779813585; c=relaxed/simple;
+	bh=vdiS8jEUTDZVhvBUoPc9BRMQcliTq3ZdcyymjfOkB6E=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=GGRScMO2ObQduwCc+zv85spuce2f+OsUljOhRD8Vx1VROali/2XtoIExS1DQmQ0E8ru6JAEmOQdoRax3f8YL5KCSAyZr6wbUWtCKjznr7DVmUPsgrJUxk/Q45RWLhWYVIzrpAbxeP6NHm/4ZWwY8YEC0qp5vgOAXkI5tPvNZIDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MWuQ1+gn; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bGMb7I5s"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 798EB1F000E9;
-	Tue, 26 May 2026 16:30:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779813038;
-	bh=4YeuA7IpI6JywUxHIAkYJPVBfYIBWeXGN2kVbZOsDPo=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=bGMb7I5sVFk0EuyvfOOnmARyO+szeIWJHPFICCoRaWcYclHXwvttqMDAMN6z+FwNg
-	 QomuDu2C0hef6v/Drt8uHlemerowNpvzLL5mxQnrLul6BI+A+mxOgwfxMVXqabVSk5
-	 3pl1BZONK+v2whTfFTwQG/gzuGWlk6fmB5hl0VfTBC89DXF2wpaO7/JAy3RE8qFdi+
-	 3k9Rt3WY6cW8fEOFjrWft80kzYx3FqRxCi4QQzqau8dtPMGPq8zpd35aXbWJMN0rtf
-	 AiMWJSa81BkfQiuB3tmuv9nMK0fA14+B7lfyCmugauBIZCrTz0mDdackF7A77tvaZo
-	 zu30sq4LmYQDg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 7/7] riscv: kexec: Route normal kexec through the
- trampoline page table
-Reply-To: sashiko-reviews@lists.linux.dev
-To: fangyu.yu@linux.alibaba.com
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260526125009.2404-8-fangyu.yu@linux.alibaba.com>
-References: <20260526125009.2404-8-fangyu.yu@linux.alibaba.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 26 May 2026 16:30:38 +0000
-Message-Id: <20260526163038.798EB1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MWuQ1+gn"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-36641bb3d97so6722959a91.3
+        for <kvm@vger.kernel.org>; Tue, 26 May 2026 09:39:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779813581; x=1780418381; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=gGCac3ndRY4cFGyojmw/sDEy33dzfMnUmsB2axatg3k=;
+        b=MWuQ1+gnVcwNuZkWrR0B5BZn4qfgG8DGjiWBMIpeiHDCr4VHX+nhCBHmy2xi1XKs7S
+         lC/dgns3QKEE0p7XY4erG1qXKomMzwd7wTdmlPCUCDhqM6OY1OFYIFGTIRinsQPZwtrb
+         v4sPS08swQdX8a4G2qyZxyCV4DV25CJIAINLhl6ltO/9+QWozo8FQAO2RHMdvka0ch1S
+         x3/2gM3H2NbYe6+/a3Rp35djW48ybxrOAGqFoFgJkxIcOhrPtO7LUFvl0bb0MCpT55dN
+         2eU+x0l2FIrdAZr0f8T5qKsz3zhp6cTnsXSeLK1DDYn1BNUYrZJ4Htgq05YCXBpCP45V
+         URnQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779813581; x=1780418381;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=gGCac3ndRY4cFGyojmw/sDEy33dzfMnUmsB2axatg3k=;
+        b=I4BvTo12EWnNElNaqYM1bIpIfEfy45RQMZQMSBiTgMwQkl8VFGX09PYqeGWbbvxT3B
+         2i2eQtwXcU3RGYdUBesigxFf62zfN7VwyITS3j5xhm/LQNtAzRzgMgL2Q6m8mZQ4CZb9
+         HO8IA41WekhQ9WiTwoJesY0RfUzO+FOFzyKC8bCf116JnsQtfuBdcM1sJ3fA3nx72QlN
+         MyUhWS7zzb7PcOSF6uKd9hBpp2S22SYdlrwAU9HZMwNdl2Kc+Gevhtd+dR1DgZv8M3bH
+         M6sO/1h4YeT/fYmt8iO7uMPoszW5RI92JogQSzMILgs/lyxA4o4ovDKLtH+wwlrQFSEN
+         iGVA==
+X-Forwarded-Encrypted: i=1; AFNElJ/yqwvjXhcK/BHN5pOmh0J+EnjmcZxw0TPUAXvobE5T0+MaJ1cfqoUmYVPccLaCOpbg/sk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy9lgOaSvEPFEengeqUlR6Nn3RSCBbdTzmlsl5bJtP29lNKw8o8
+	/mKllpQRyOebXcNHywM2PuqiSmseOvNaeaW18MWdwKJ37vz3DqXJ5MinNcwE949cXGYnkbD+hg0
+	YqnUhCg==
+X-Received: from pghq18.prod.google.com ([2002:a63:e212:0:b0:c6e:6f94:b489])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:270e:b0:362:e826:cefe
+ with SMTP id 98e67ed59e1d1-36a67697a77mr19184155a91.23.1779813580821; Tue, 26
+ May 2026 09:39:40 -0700 (PDT)
+Date: Tue, 26 May 2026 09:39:40 -0700
+In-Reply-To: <20260522-fix-sev-gmem-post-populate-v2-3-3f196bfad5a1@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260522-fix-sev-gmem-post-populate-v2-0-3f196bfad5a1@google.com> <20260522-fix-sev-gmem-post-populate-v2-3-3f196bfad5a1@google.com>
+Message-ID: <ahXMzPz1cQl6kZge@google.com>
+Subject: Re: [PATCH v2 3/5] KVM: guest_memfd: Handle errors from
+ xa_store_range() when binding
+From: Sean Christopherson <seanjc@google.com>
+To: Ackerley Tng <ackerleytng@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Vishal Annapurve <vannapurve@google.com>, 
+	Yan Zhao <yan.y.zhao@intel.com>, Michael Roth <michael.roth@amd.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Chao Peng <chao.p.peng@linux.intel.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Zongyao Chen <ZongYao.Chen@linux.alibaba.com>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Yu Zhang <yu.c.zhang@linux.intel.com>, Fuad Tabba <tabba@google.com>
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
+On Fri, May 22, 2026, Ackerley Tng wrote:
+> Unhandled errors from xa_store_range() means kvm_gmem_bind() might falsely
+> reporting success, leading to false assumptions in guest_memfd's lifecycle
+> later.
+> 
+> On error, restore the unbound state and return the error to userspace.
+> 
+> Fixes: a7800aa80ea4d ("KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memory")
+> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+> ---
+>  virt/kvm/guest_memfd.c | 11 +++++++++--
+>  1 file changed, 9 insertions(+), 2 deletions(-)
+> 
+> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+> index d203135969d13..5b4911ffa208a 100644
+> --- a/virt/kvm/guest_memfd.c
+> +++ b/virt/kvm/guest_memfd.c
+> @@ -648,6 +648,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  	struct inode *inode;
+>  	struct file *file;
+>  	int r = -EINVAL;
+> +	void *result;
 
-Pre-existing issues:
-- [High] The control code page (image->control_code_page) is marked executa=
-ble using set_memory_x() during machine_kexec_prepare(), but this permissio=
-n is never reverted. Because machine_kexec_cleanup() is empty, if the kexec=
- image is freed, the page is returned to the buddy allocator while still re=
-taining executable permissions.
---
+I would rather go with "xr".  "result" is too generic, e.g. begs the question of
+"result of what?"
 
-commit 1b8b8dd4e5bc4de88d60ccac9a5bd712badb4dd3
-Author: Fangyu Yu <fangyu.yu@linux.alibaba.com>
+Actually, I don't think we even need an intermediate variable.
 
-riscv: kexec: Route normal kexec through the trampoline page table
+>  	BUILD_BUG_ON(sizeof(gfn_t) != sizeof(slot->gmem.pgoff));
+>  
+> @@ -688,7 +689,14 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  	if (kvm_gmem_supports_mmap(inode))
+>  		slot->flags |= KVM_MEMSLOT_GMEM_ONLY;
+>  
+> -	xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
+> +	result = xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
+> +	if (xa_is_err(result)) {
+> +		r = xa_err(result);
+> +		xa_store_range(&f->bindings, start, end - 1, NULL, GFP_KERNEL);
 
-This patch modifies the normal kexec path on RISC-V to route through a
-trampoline wrapper that disables the MMU before jumping to the relocation
-code. This resolves an emulation issue with KVM in VS-mode where the previo=
-us
-single-step transition failed.
+I'm not convinced this is necessary.  Sashiko "asked" the question:
 
-> diff --git a/arch/riscv/kernel/machine_kexec.c b/arch/riscv/kernel/machin=
-e_kexec.c
-> index e3eb1e71920a5..99cc251f971c6 100644
-> --- a/arch/riscv/kernel/machine_kexec.c
-> +++ b/arch/riscv/kernel/machine_kexec.c
-[ ... ]
-> @@ -231,11 +231,15 @@ machine_kexec(struct kimage *image)
->  {
->  	struct kimage_arch *internal =3D &image->arch;
->  	unsigned long jump_addr =3D (unsigned long) image->start;
-> -	unsigned long first_ind_entry =3D (unsigned long) &image->head;
-> +	/*
-> +	 * The relocate body runs entirely with the MMU off (the wrapper
-> +	 * drops SATP before jumping into control_code_buffer), so the very
-> +	 * first entry must be a physical address.
-> +	 */
+ : If xa_store_range() fails midway through storing a large range (for example,
+ : returning -ENOMEM), does it leave the already-processed entries in the
+ : f->bindings XArray?
+ : 
+ : When this error is propagated back, the caller __kvm_set_memory_region()
+ : will abort the operation and free the memslot without calling
+ : kvm_gmem_unbind().
+ : 
+ : Since the partial XArray updates aren't rolled back here, could this leave
+ : dangling pointers to the freed memslot in f->bindings? If so, when the file
+ : is eventually closed, kvm_gmem_release() might iterate over these dangling
+ : pointers and write to slot->gmem.file, resulting in a use-after-free.
 
-[Severity: High]
-This is a pre-existing issue, but since the relocate body now runs entirely
-with the MMU off, is the set_memory_x() call for the control code page in
-machine_kexec_prepare() still necessary?
+but I think Sashiko is hallicunating.
 
-Currently, image->control_code_page is marked executable during preparation,
-but these permissions are never reverted because machine_kexec_cleanup()
-is empty. If the kexec image is freed, the page is returned to the buddy
-allocator while retaining its executable status. This leads to a persistent
-W^X violation when the page is later reallocated for regular kernel data.
+If @entry is non-NULL, xa_store_range() pre-creates the entire range, before
+storing anything into the range:
 
-Since SATP=3D0 during the execution of this buffer, does it make sense to r=
-emove
-the set_memory_x() call entirely to prevent this leak of executable
-permissions?
+		if (entry) {
+			unsigned int order = BITS_PER_LONG;
+			if (last + 1)
+				order = __ffs(last + 1);
+			xas_set_order(&xas, last, order);
+			xas_create(&xas, true);
+			if (xas_error(&xas))
+				goto unlock;
+		}
 
-> +	unsigned long first_ind_entry =3D __pa(&image->head);
->  	unsigned long this_cpu_id =3D __smp_processor_id();
->  	unsigned long this_hart_id =3D cpuid_to_hartid_map(this_cpu_id);
->  	unsigned long fdt_addr =3D internal->fdt_addr;
-> -	void *control_code_buffer =3D page_address(image->control_code_page);
->  	riscv_kexec_method kexec_method =3D NULL;
+Yes, the API handles failure on the subsequent xas_store(), but I can't imagine
+that failure is actually, barring garbage input from KVM:
 
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526125009.2404=
--1-fangyu.yu@linux.alibaba.com?part=3D7
+		do {
+			xas_set_range(&xas, first, last);
+			xas_store(&xas, entry);
+			if (xas_error(&xas))
+				goto unlock;
+			first += xas_size(&xas);
+		} while (first <= last);
+
+Purely from a design perspective, providing an API that can fail partway through
+under normal operation, with no indication of where failure occured (AFAICT),
+would be awful.
+
+> +	} else {
+> +		r = 0;
+> +	}
+> +
+>  	filemap_invalidate_unlock(inode->i_mapping);
+>  
+>  	/*
+> @@ -696,7 +704,6 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+>  	 * not the other way 'round.  Active bindings are invalidated if the
+>  	 * file is closed before memslots are destroyed.
+>  	 */
+> -	r = 0;
+
+All in all, unless someone proves with a test that I'm wrong, just this?
+
+diff --git virt/kvm/guest_memfd.c virt/kvm/guest_memfd.c
+index 0c923fd603fd..c0f5b9565be2 100644
+--- virt/kvm/guest_memfd.c
++++ virt/kvm/guest_memfd.c
+@@ -688,7 +688,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+        if (kvm_gmem_supports_mmap(inode))
+                slot->flags |= KVM_MEMSLOT_GMEM_ONLY;
+ 
+-       xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
++       r = xa_err(xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL));
+        filemap_invalidate_unlock(inode->i_mapping);
+ 
+        /*
+@@ -696,7 +696,6 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+         * not the other way 'round.  Active bindings are invalidated if the
+         * file is closed before memslots are destroyed.
+         */
+-       r = 0;
+ err:
+        fput(file);
+        return r;
