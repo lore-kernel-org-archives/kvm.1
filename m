@@ -1,62 +1,57 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.21])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6F0B37AA72;
-	Tue, 26 May 2026 09:00:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00333D090A;
+	Tue, 26 May 2026 09:06:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779786029; cv=none; b=ChFpuM2MHEpQv7p1+lNDmEgnMgHUfWq6Na0G87/HcrKPyVR+X0I/ffdtSLZWyaOxohwiQYwiUdbiBQN8In9MZr2j3HZl5xWFs5pkx93I+kswcdJ7zQlKB0J5SS4V1mJeMFk7CvqUHNbzn++/uTzX69CiB6SsCYAkBhh2aNT9H9g=
+	t=1779786411; cv=none; b=ZpxGHTs3fM4+7bWkeflO2wO1Echpx6IHUFlBSa8tXgjBVvAVw5LhczIPXZg4x37H2Ohn2GmE33GUAEeTVXVeozG7qKqDlou02EvwSJdf0er1VmYhCYp34WNTHbfbOyfGVs+UijHN8xrlPYwrx4onjeBuQ/J90EG1ZOd7fNNGT7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779786029; c=relaxed/simple;
-	bh=VlxN1gZlE6div2qrTTk4vrnX8MwdS25Dx4Fh/5WzNJ0=;
+	s=arc-20240116; t=1779786411; c=relaxed/simple;
+	bh=Pk4Zxh/6GCSqphJXtb254nlpOPtp0kqaGEAD8QhIDyk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ow5L44lVhQREzQphXCIIO6/uz5Zfz11KSgb2J6OIfYROnzZxL9Dr4cq02S/uIbSWxOGEzii6tGgzuEcBM6uJQUUPc7hcfz8NdPmEsgH/haHkgnuIAhq5DAnbPad3wP9Im66Dkd+wEE2+T0cLPpTvO8bycrPFFg1F1qZ27Jcxkh4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nANuAOCM; arc=none smtp.client-ip=198.175.65.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=Yoqpw4YyQNamQi+M3poMG+1fri9/dk7SC1RvfF+ul8vLiKB8SLw5lQPOv3IsdqMyXmbfWfuFyK4v7IjHADxHEwMFYT8BEs1zAmunoeuPSs61D4slVIeFkJPKoQLINDVlJcZYBjS5DRFuIQyn6ddijrLpWr1AqEIxVLCsQBPXmOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=kWQD2xCp; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nANuAOCM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779786028; x=1811322028;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=VlxN1gZlE6div2qrTTk4vrnX8MwdS25Dx4Fh/5WzNJ0=;
-  b=nANuAOCMfdOTx6NtFmAZHy+xEEIF8rTQcZ8KY9RDcJpANm5jk0peKPsR
-   NtjQlb3bEeI1SND6Ado61xOYMhwM12N/2kettbJoyP7X/KqlbS4b3Hyrf
-   btNKUtovV5W4jBWbdTFAqcRdtNH2P4prdEQ67HPY/dp6hgDYqXUpTaIH8
-   8WZQ+g6TpJzhUnGPGh/IQk5CXCUx/TCq36+dtUQ9X1rnyNdCu/i42al1X
-   PyLByCd+hVvhvTJUBBp+xAlYb9uZd4DKAUrt1EGSl7YNE/FGHaZG09xuW
-   hwwZz98IA8pmc7WNTbrOm4iEuCukSlHzPVCmIwTWCpI/jndGZO5FonB6m
-   Q==;
-X-CSE-ConnectionGUID: IyzB+nAyR464tQqCrJmdZg==
-X-CSE-MsgGUID: Wn9QjqqBT2uN9paDX9XN+Q==
-X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="80502699"
-X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; 
-   d="scan'208";a="80502699"
-Received: from fmviesa001.fm.intel.com ([10.60.135.141])
-  by orvoesa113.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 02:00:28 -0700
-X-CSE-ConnectionGUID: L6PCRCCpS+2bd5HXY7evLQ==
-X-CSE-MsgGUID: cnvgDg3/R3Gp8+IgzlN/xw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,169,1774335600"; 
-   d="scan'208";a="265718349"
-Received: from vpanait-mobl.ger.corp.intel.com (HELO localhost) ([10.245.244.44])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 02:00:23 -0700
-Date: Tue, 26 May 2026 12:00:20 +0300
-From: Tony Lindgren <tony.lindgren@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Xu Yilun <yilun.xu@linux.intel.com>, kas@kernel.org, djbw@kernel.org,
-	rick.p.edgecombe@intel.com, x86@kernel.org, peter.fang@intel.com,
-	linux-coco@lists.linux.dev, linux-kernel@vger.kernel.org,
-	kvm@vger.kernel.org, sohil.mehta@intel.com, yilun.xu@intel.com,
-	baolu.lu@linux.intel.com, zhenzhong.duan@intel.com
-Subject: Re: [RFC PATCH 15/15] x86/virt/tdx: Enable TDX Quoting extension
-Message-ID: <ahVhJE7NHNblEM4W@tlindgre-MOBL1>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-16-yilun.xu@linux.intel.com>
- <ahPbb1Ws9hBruJ2d@tlindgre-MOBL1>
- <892508b2-6c61-4db2-a12f-902f62385e71@intel.com>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="kWQD2xCp"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=MX0LDly+iHV21u5rfDPy9bGX7A4OJVsxZo83l2WOrA8=; b=kWQD2xCpso1cr187mV8GrUcLw0
+	yZv9J07kCP1ir+I8IXnCUzNbRdaC7DRRMEuPGRxH385NwF7kIBl+WnnRu8YMAgP1iY/VP2ytVk4J6
+	XFy01b9RX+w5w3mRlj3nbFmcEA/C0L9DpTI1f7PdDVgDHcJoHdiClpRrqcZkZVCnnFHcqXJS4GEnh
+	PmrEJzXrKmtqhpA04kJJhtNcJC9eYiucH4l6kpT0Ak+ilCRNPcDbqAYvxt7BfDev1Pzy1zmQHt0EF
+	4gmShClYA737DY8CHZIj0C8zsZKjhs2oR+ztDyt/KXIpDkF9wsvkS8Hq8XD2opQy+Vq9PavFcJYQn
+	aFvmNa7A==;
+Received: from 77-249-17-252.cable.dynamic.v4.ziggo.nl ([77.249.17.252] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wRnk9-0000000AnYX-1D59;
+	Tue, 26 May 2026 09:06:39 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id C9685300673; Tue, 26 May 2026 11:06:31 +0200 (CEST)
+Date: Tue, 26 May 2026 11:06:31 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Nathan Chancellor <nathan@kernel.org>
+Cc: tglx@kernel.org, linux-kernel@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Jim Mattson <jmattson@google.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	Vishal L Verma <vishal.l.verma@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Rick P Edgecombe <rick.p.edgecombe@intel.com>,
+	Binbin Wu <binbin.wu@intel.com>, "x86@kernel.org" <x86@kernel.org>,
+	Paolo Bonzini <bonzini@redhat.com>,
+	Calvin Owens <calvin@wbinvd.org>
+Subject: Re: [PATCH v3 1/2] x86/kvm/vmx: Move IRQ/NMI dispatch from KVM into
+ x86 core
+Message-ID: <20260526090631.GA4149641@noisy.programming.kicks-ass.net>
+References: <20260423155611.216805954@infradead.org>
+ <20260423155936.843498069@infradead.org>
+ <20260508091829.GO3126523@noisy.programming.kicks-ass.net>
+ <20260520230621.GA706311@ax162>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -65,31 +60,106 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <892508b2-6c61-4db2-a12f-902f62385e71@intel.com>
+In-Reply-To: <20260520230621.GA706311@ax162>
 
-On Mon, May 25, 2026 at 06:51:27PM +0800, Xiaoyao Li wrote:
-> On 5/25/2026 1:17 PM, Tony Lindgren wrote:
-> > On Fri, May 22, 2026 at 11:41:28AM +0800, Xu Yilun wrote:
-> > > From: Peter Fang <peter.fang@intel.com>
-> > > 
-> > > TDX Module updates global metadata when add-on features are enabled.
-> > > Host should update the cached tdx_sysinfo to reflect these changes.
+
+Sorry, I missed this :/
+
+On Wed, May 20, 2026 at 04:06:21PM -0700, Nathan Chancellor wrote:
+> On Fri, May 08, 2026 at 11:18:29AM +0200, Peter Zijlstra wrote:
 > > 
-> > This should be made clearer IMO. How about mention that get_tdx_sys_info()
-> > needs to get called again to reload the TDX module global metadata?
+> > Move the VMX interrupt dispatch magic into the x86 core code. This
+> > isolates KVM from the FRED/IDT decisions and reduces the amount of
+> > EXPORT_SYMBOL_FOR_KVM().
+> > 
+> > Suggested-by: Sean Christopherson <seanjc@google.com>
+> > Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> > Tested-by: "Verma, Vishal L" <vishal.l.verma@intel.com>
 > 
-> Ah ha! This patch answers my comment to patch 1:
-> https://lore.kernel.org/all/956fa1e6-2920-4b2e-8037-d4b9d812ae53@intel.com/
+> I am seeing
 > 
-> sysinfo_ext->memory_pool_required_pages and sysinfo_ext->ext_required will
-> be updated after extensions are enabled by TDH.SYS.CONFIG.
+>   vmlinux.o: warning: objtool: idt_do_interrupt_irqoff+0xe: no-cfi indirect call!
 > 
-> Patch 06 in this series already reads the tdx_sys_info_quote out of
-> get_tdx_sys_info(), which mean get_tdx_sys_info() doesn't ensure all the
-> global metadata will be update again.
+> after this landed in -next.
 > 
-> So how about move the read of memory_pool_required_pages and ext_required
-> out of get_tdx_sys_info() and put them after TDH.SYS.CONFIG, so that we
-> don't need call get_tdx_sys_info() again?
+>   $ cat arch/x86/configs/repro.config
+>   CONFIG_CFI=y
+>   CONFIG_KVM=y
+>   CONFIG_KVM_INTEL=y
+> 
+>   $ make -skj"$(nproc)" ARCH=x86_64 LLVM=1 mrproper defconfig repro.config vmlinux
+>   vmlinux.o: warning: objtool: idt_do_interrupt_irqoff+0xe: no-cfi indirect call!
+> 
 
-Sounds like a good idea to me.
+Durr.
+
+---
+Subject: x86/kvm/vmx: Fix x86_64 CFI build
+
+I missed that idt_do_interrupt_irqoff() gets compiled on x84_64; this is
+a problem for CFI builds because it includes an unadorned indirect call.
+It is however completely dead code.
+
+Rework things to not emit this function at all.
+
+Fixes: 0701c9e17bd9 ("x86/kvm/vmx: Move IRQ/NMI dispatch from KVM into x86 core")
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Reported-by: Calvin Owens <calvin@wbinvd.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+---
+diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
+index 06c7c6ebd6f9..14cd43d4da6c 100644
+--- a/arch/x86/entry/common.c
++++ b/arch/x86/entry/common.c
+@@ -55,7 +55,7 @@ noinstr void x86_entry_from_kvm(unsigned int event_type, unsigned int vector)
+ 	 * The FRED NMI context is significantly different and will not work
+ 	 * right (specifically FRED fixed the NMI recursion issue).
+ 	 */
+-	idt_entry_from_kvm(vector);
++	idt_do_nmi_irqoff();
+ }
+ EXPORT_SYMBOL_FOR_KVM(x86_entry_from_kvm);
+ #endif
+diff --git a/arch/x86/entry/entry.S b/arch/x86/entry/entry.S
+index a56e043b266d..2bc217bb5475 100644
+--- a/arch/x86/entry/entry.S
++++ b/arch/x86/entry/entry.S
+@@ -109,11 +109,13 @@ EXPORT_SYMBOL(__ref_stack_chk_guard);
+ 	RET
+ .endm
+ 
++#ifndef CONFIG_X86_64
+ .pushsection .text, "ax"
+ SYM_FUNC_START(idt_do_interrupt_irqoff)
+ 	IDT_DO_EVENT_IRQOFF CALL_NOSPEC _ASM_ARG1
+ SYM_FUNC_END(idt_do_interrupt_irqoff)
+ .popsection
++#endif
+ 
+ .pushsection .noinstr.text, "ax"
+ SYM_FUNC_START(idt_do_nmi_irqoff)
+diff --git a/arch/x86/kernel/idt.c b/arch/x86/kernel/idt.c
+index 7bcf1decc034..90a22e24a9eb 100644
+--- a/arch/x86/kernel/idt.c
++++ b/arch/x86/kernel/idt.c
+@@ -268,18 +268,10 @@ void __init idt_setup_early_pf(void)
+ }
+ #endif
+ 
+-#if IS_ENABLED(CONFIG_KVM_INTEL)
+-noinstr void idt_entry_from_kvm(unsigned int vector)
++#if IS_ENABLED(CONFIG_KVM_INTEL) && !defined(CONFIG_X86_64)
++void idt_entry_from_kvm(unsigned int vector)
+ {
+-	if (vector == NMI_VECTOR)
+-		return idt_do_nmi_irqoff();
+-
+-	/*
+-	 * Only the NMI path requires noinstr.
+-	 */
+-	instrumentation_begin();
+ 	idt_do_interrupt_irqoff(gate_offset(idt_table + vector));
+-	instrumentation_end();
+ }
+ #endif
+ 
