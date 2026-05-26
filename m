@@ -1,64 +1,64 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C45E8407CDA
-	for <kvm@vger.kernel.org>; Tue, 26 May 2026 16:47:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F8D73FD970
+	for <kvm@vger.kernel.org>; Tue, 26 May 2026 16:55:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779814030; cv=none; b=pEJ5cBOyJcLYi2Lk4mGOjBUfZx12JYvMTkfG21WwtBnHuoQ++e9aouUCL4p0wAPYWYWzsp2ec0DNSnjogv5jUyIpZNG225YkJnGBZyC62lAIjXsqzwA19OwirBxpIjnxBta1/aqPnpb/XBU26OsfWMgLaOZ1TtYMuXV/5P5wgLI=
+	t=1779814535; cv=none; b=Ajw/KJvzXueLdKAGHwZS/rBLnWu6C9mFf5LG/dpNeGsy43VAe9BeMNzPjhqeNcY3hF7B2ihS8ZSvfh9x0mahXACUFbZZdMMpeYbbGEjvKZGlQC4DT1aiFTSy2eoLWH/UOYoXnIKNrNHDrTCVWjOvOxXBPR1sJfbmN+qThYJGMcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779814030; c=relaxed/simple;
-	bh=HGgVKFUyZeW/doyt/1y5AWLdMAlMEEHs85xRlHMS8CI=;
+	s=arc-20240116; t=1779814535; c=relaxed/simple;
+	bh=lS88pgO4vl0WQoEIrTfiXdwjUHeGJQ0+p5JkXjqIuL0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=bl1bBh/a3wh8mZA+Y0pWVPOLoUNflldhGjGSYq5vXlF7UBkLtv4mfN4sO9/0I4+awkqdpfaA0uBBaTz2hhs/dbCbciI4KcRimOt0cEnBD64wyRf8Efd+d8OGNyQDV1rgBqGD7Q0bU2+ruEbT2Jk1SaKwUAjdDcDAl0OKXRhGriw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Wh4Za8Nu; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=PnvAFp9xHcON2Ik2KG8JDgXCZOmPWaUlcFiSMP9pqZqhsd+DiiIAcW/VwROnCGhWHac95Jj6J1OzZKIv7QkSq54J5rGdpyAnFNj38WW39Nks6qLn2NnE00tKJm4VeIZHnlsBCB9yV9/AvlgCU4f3I0+5pPYEx83qZMmLUOCRQU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=j37vd0hP; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Wh4Za8Nu"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bc977e6aedso114954155ad.2
-        for <kvm@vger.kernel.org>; Tue, 26 May 2026 09:47:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="j37vd0hP"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-837cc5bc6deso6940022b3a.3
+        for <kvm@vger.kernel.org>; Tue, 26 May 2026 09:55:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779814028; x=1780418828; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779814533; x=1780419333; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=5hEkpl5l62+cN1SxJ1PimRF17M7yN52dY6rYG/782eM=;
-        b=Wh4Za8NuZ8/zE0fpWJxGwHWazvdnRq9LzY2lf46Iwo+zeFh2cFfdBsLVDtnItgwIsd
-         qR1xhOIDOlUfaVp3j8ZfmVZVsH+R/SnGi4Hso+JgGkhEvaYIVaRV0EIcGOB1HUQicQRh
-         E1FOX3Gdg7KXuQnBWzFiAJwNh/n4cF0c0eytjEYHK89uu2iT8I4AwXWk8OPUd8Iyh76w
-         pZIF/+6KP2lw+fuUanBUpv71xhwoMl84qHPawJ3jmr8FpZuaOKMyNp2p8Uy1ycDpvKI9
-         rmTFo9yzydNBttx0JZXP4fcF8g8FFmgxo+cu4iM9NNfz++lmudjSZo7Vxy3j17BTs7kx
-         WRTg==
+        bh=LZT31wOgcdRUmGTT5DQeYgf6s1URS8IbeXG7+gb+Vm8=;
+        b=j37vd0hPHYczoNM5Gcznb5RSBUDWvyG3nNAnMaq8ZKy/cPbiFfgG60jYs5dJJgFwPC
+         XTnv6SXr6o7QSvLnGGwxB+A58zuKGIWVRBThB1tpGqAeKceULrRcVhaeiea+UoCOHksV
+         QdG6x8G6UVmzAnT9+vSeLcdCX8YRfmRDI8wKrp8OSRnZL5bK0KWQjyv9pzo7bYGEf+6i
+         NzK4qIUc9qcEzNODJs1oTw7+HkJdiAF9LeOSIPygMkTqfs6Hq7MpZi7KEPP5HQYsHwWt
+         o8ANiYhz4Aibu5fCXJkplfW/NfMED4ei2WKBDiGUTTDURsbEgnBIOWp889kFItbhlpaO
+         MAdA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779814028; x=1780418828;
+        d=1e100.net; s=20251104; t=1779814533; x=1780419333;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=5hEkpl5l62+cN1SxJ1PimRF17M7yN52dY6rYG/782eM=;
-        b=gW68pGn82ClK97EQ+0+wKcNyEjqmf2THOvWruzairrxng0bBncT8ilxS0Qo0UoPF0q
-         SEwOFCO5MdPshCE3JFanp+2k3B8WsSzXldWb4PO1UQc3Tiqid1HELwqqqwL6chC6Pr8/
-         bWk3xxt/Fi0m/5eG54m5+ge2Qmwy7Zb+53bny1jcO7imecsIgOKX1H8T4eMsFgb3xhmT
-         mOuSJ+NpQsoYxhaNQdJQQH2SwF2VE/mdwWAFZvrSMF72Hv9GbYbY1/02Kkp5Wyw7XVJa
-         iw07w+5qnSmuyWH/SW2otxuiQuSDmaYVbteEsHAG/L9ANFm1czR6c6bdOEcpgE7cgLs/
-         Spog==
-X-Forwarded-Encrypted: i=1; AFNElJ99PjhKyzXCg9mllZX36G0PxlA9mDDvEXg5dgsozwrsLVZpKRUCvgH2CDakjoXJkWnZLHY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy7sBcyEGWm8gVZlXvLSkbCVGN44oXc++w7z8KUYgfu0UPvGM6q
-	7PxZv2lbNhTpUW4XbN9Bws+9LVrnipfomuqQxsO2Tg34lFmNsCT3VC/MOOQOxotM2TkmXZK9Pnx
-	2YJzDdQ==
-X-Received: from pgbbj8.prod.google.com ([2002:a05:6a02:188:b0:c73:8741:7555])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a20:6a03:b0:3a1:90ef:7e46
- with SMTP id adf61e73a8af0-3b328ed621bmr19755806637.33.1779814027730; Tue, 26
- May 2026 09:47:07 -0700 (PDT)
-Date: Tue, 26 May 2026 09:47:07 -0700
-In-Reply-To: <20260522-fix-sev-gmem-post-populate-v2-5-3f196bfad5a1@google.com>
+        bh=LZT31wOgcdRUmGTT5DQeYgf6s1URS8IbeXG7+gb+Vm8=;
+        b=iCkHW8D6znJ0GQoP5Ea3hOpEgqSVlVtoyVGWBLSX6DDaI0kQI5QcAMX7awWrfSFnbr
+         evuNWYwMyj7n7oZ1Mcbl8ZPIuGkgX6bStSKf1KDMoXXBDuqOEmsmEyawSa6oUI9G9lVI
+         cmbSbZpir0bc0I9JYL5mrm3kepdiFV0d6w0Wy+SlWrQP5N6HjcGL+AwyPVyYkFRkv392
+         dB0Iklcp5fukTkhs/7KSOXTWHSjCj1PAfzzARK9w8tc+3XRVBwOm7VZU6Y0CHtQD8YPI
+         ogZ2qrasu5HH6i/v74vCWGxhDo2praVQcluxaaeX1JX+Eyhm5EPH9n7iK9l+a0KnPwn2
+         i9QQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8P4Rgei+xN/98YwzBMxDsKQEcbOwiPTW8MteU0Hc+8L1sl78uXXEpHyiG6VnqYdOGgp8o=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy1KcK7CkltZulN9zdfBB0mmbuolw2MDh0aZmf+tK+btYe6NUJ9
+	rxrNXG4k+bK7t3xx9ImK5KRfsq7SWVd1/8j4ZXjUARXgm70Xlwus4ENhOHjcNpms95AXpEJN5s2
+	zuCtWiQ==
+X-Received: from pfbfx7.prod.google.com ([2002:a05:6a00:8207:b0:82f:6245:a6ec])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:298f:b0:835:3d5e:1dd3
+ with SMTP id d2e1a72fcca58-8415f586b5bmr17521220b3a.42.1779814532656; Tue, 26
+ May 2026 09:55:32 -0700 (PDT)
+Date: Tue, 26 May 2026 09:55:32 -0700
+In-Reply-To: <20260522-fix-sev-gmem-post-populate-v2-0-3f196bfad5a1@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260522-fix-sev-gmem-post-populate-v2-0-3f196bfad5a1@google.com> <20260522-fix-sev-gmem-post-populate-v2-5-3f196bfad5a1@google.com>
-Message-ID: <ahXOiy0dBSBOQli2@google.com>
-Subject: Re: [PATCH v2 5/5] KVM: SNP: Mark source page dirty in sev_gmem_post_populate
+References: <20260522-fix-sev-gmem-post-populate-v2-0-3f196bfad5a1@google.com>
+Message-ID: <ahXQhE1EUzlyetq5@google.com>
+Subject: Re: [PATCH v2 0/5] guest_memfd fixes for bind and populate
 From: Sean Christopherson <seanjc@google.com>
 To: Ackerley Tng <ackerleytng@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
@@ -73,32 +73,26 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo
 Content-Type: text/plain; charset="us-ascii"
 
 On Fri, May 22, 2026, Ackerley Tng wrote:
-> Mark the folio as dirty after copying data into the source page in
-> sev_gmem_post_populate. After the memcpy, failing to mark the page dirty
-> can lead to the memory management subsystem discarding the changes if the
-> page is reclaimed or otherwise processed by the swap subsystem.
-> 
-> Fixes: 2a62345b3052 ("KVM: guest_memfd: GUP source pages prior to populating guest memory")
-> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
-> ---
->  arch/x86/kvm/svm/sev.c | 1 +
->  1 file changed, 1 insertion(+)
-> 
-> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
-> index dbf75326a40f4..1a361f08c7a3d 100644
-> --- a/arch/x86/kvm/svm/sev.c
-> +++ b/arch/x86/kvm/svm/sev.c
-> @@ -2395,6 +2395,7 @@ static int sev_gmem_post_populate(struct kvm *kvm, gfn_t gfn, kvm_pfn_t pfn,
->  		void *dst_vaddr = kmap_local_pfn(pfn);
->  
->  		memcpy(src_vaddr, dst_vaddr, PAGE_SIZE);
-> +		folio_mark_dirty(page_folio(src_page));
+> This series is a group of fixes for the bind and populate flows for
+> guest_memfd, and fixes some issues reported by Sashiko after reviewing the
+> guest_memfd in-place conversions series [1] and another fixup series Sean
+> posted [3].
 
-I'd rather use set_page_dirty().  I'll fixup when applying, unless someon objects.
+In the future, please don't bundle unrelated changes.  The SNP specific changes
+are related and should be a series, but the signed integer thing and the lack of
+error handling on xa_store_range() are completely unrelated, because the fact
+that Sashiko kept complaining about pre-existing issues.
 
->  		kunmap_local(dst_vaddr);
->  		kunmap_local(src_vaddr);
-> 
-> -- 
-> 2.54.0.794.g4f17f83d09-goog
-> 
+I totally understand why you bundled these together, but that obviously didn't
+stop Sashiko from complaining about pre-existing issues, over and over.
+
+Unnecessarily bundling can lead to exactly what's happening here: the three SNP
+changes are ready to go, but the two unrelated guest_memfd changes need new
+versions.  Which isn't hard to deal with, but it's extra friction that is easily
+avoided.
+
+I'll apply the SNP changes, and send a new version of the signed vs. unsigned
+issue.  Please send a new version of the xa_store_range() error handling (or
+prove that I'm wrong).
+
+Thanks!
