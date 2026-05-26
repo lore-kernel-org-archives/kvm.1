@@ -1,85 +1,123 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C01A3BFE24
-	for <kvm@vger.kernel.org>; Tue, 26 May 2026 18:50:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73AEA33BBD7
+	for <kvm@vger.kernel.org>; Tue, 26 May 2026 18:53:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779821451; cv=none; b=HM4aan9NCBoliVN9O+5Z/mcSwydpREJU55sJu6UwhyQ4z5P24N+vrlNRLNCOXmnHleSV3wIsqBVDsZMy01cOW7swiun+HwXfv42NFkAfoRdifOZ850AceoGOyJf7AuJsi4o8XKef3p32Vz8C2beliMvEboEUfb29uQwnHUnJQmo=
+	t=1779821588; cv=none; b=IywFI+ErjeKSfYVvePjCbRqeKo8h2KcPU0M9HPMkHd81y0xR3pXxv/WMBINAhhMW9QQ/4Ux1lvnINGDa8CyIn/9DRbXL3mMa6+/OxzVaB1ZFLJ1CO+zx0AHYY0nM1bJSClfaZIfKIsZBgSjUCkF06rMVR5Lvf6QjFHZYqHFI+XA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779821451; c=relaxed/simple;
-	bh=g/OnkkyRx0zzedtsLbDYYcuHrTucGvnPwjn0juWf8KI=;
+	s=arc-20240116; t=1779821588; c=relaxed/simple;
+	bh=nHWKESLNLKIYqIEoYmwgZTbDYK428g/steFbyt/rhVQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KTSEkUiHenDclNyvJQrhvv6jw9RiKm2e5uCePI1BP9fyjpTaYyQgQfDgZIdsyr3VROtuWf5NZEXa6cddv8cmDoRZNc4ranTb5U35mqReLYsYaf1Cv0LDawT/20rj6ltFUJemfNq/niDnpouo4rXDQMsWrbEBuQ+0CTatHAS+8Dw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=C7N+xtbq; arc=none smtp.client-ip=100.103.45.18
+	 To:Cc:Content-Type; b=APOBY+k/CkOwWMWgPCM8MoYZrLC9ZvwfeB9J+dWf/cFvxQL9x1WP3fyUzRItIoEMwg9TqHCTufgct+2u3D21160lAAtuZdqxBXWBT0om/ESbvdIx5BIQh17q4jukGlAcP+fL8IQlPbkZpRKzVNHwJVXtJydVeEg/WmFw7k6g1eY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WyG8wmnX; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="C7N+xtbq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 353FB1F00ACF
-	for <kvm@vger.kernel.org>; Tue, 26 May 2026 18:50:50 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WyG8wmnX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D1BC1F00A3E
+	for <kvm@vger.kernel.org>; Tue, 26 May 2026 18:53:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779821450;
-	bh=Nq/BwNTq8jAtzNULC/+90W4eHS56uIQr3hvZxrqeGWg=;
+	s=k20260515; t=1779821587;
+	bh=ji5ELC9qqcq+6qVrUCFcEJP2/xaFB1AguBrbrHljg0k=;
 	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=C7N+xtbqHxS3h7NSfle55r0+VuM5cCjgqBpW0llKd9iiConazWQy0LwO3SVLjzK7H
-	 5qclFaA37X+PIKqAYUV1BT0TIQJArNkPsFg2FFQ/XU72YH6RFrJJO4Nj1pjzAfqbmJ
-	 4NP1PsdydFmeRedBmwu2SxgPQRwgQ9oiEnQvNi9+QEiMaHL6cZM79ykWqykOZGiMfQ
-	 4kU0IqX/cXRL10A87E0b4dAxzAZsojtv2z1BUBduRCd/4tQ9UIAxSlIDOLUucwq4n1
-	 OPlNzGIie4hrjfxWO3jUn7HPNkBzYzuGIArpmTG4RMdJqau1OZ03KJoNTw9mWz8Q+V
-	 T4+5pfWh0VB2g==
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-bd8f6ef4ba6so1640662166b.3
-        for <kvm@vger.kernel.org>; Tue, 26 May 2026 11:50:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ84SoGAtTw/u3i8wKNoLrM8o+JO6p0+osyp2bLxY6pwr4s2WY1vZRS/Xa2TurE/rjgJBqc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywaj6SSj+jvFyDkxy6UvTohOiQZki5qw8mrHxxhgCB7r4s1zaVd
-	O2Wo8kJvJl/diOyG1s2E6QS+JeY9eIuKnQPWI9xDtKp1XLq/9LE0prY/oJFIptCPZdjnjROFiON
-	lv9V09UBSnxJmoPAZGyCFvYWqhhbt2w4=
-X-Received: by 2002:a17:907:b14:b0:bd1:4da0:b0d3 with SMTP id
- a640c23a62f3a-bdd229317c5mr845955066b.9.1779821449113; Tue, 26 May 2026
- 11:50:49 -0700 (PDT)
+	b=WyG8wmnXR+w83dEotYUQKj65cuYPyd8reIla2Nsx4b7Q+Vla1J3lAZE8U90w5UoEP
+	 g5hG0Gz84bgH0KSnQTC5Z2FY14GX+haUWGcCb68P9lekiFCu6VA5NLvx22cUn3qvTy
+	 0HdtnUp3qQ4vJXGKfSIQuY4xAXcOtdAUwvzV/H0/duCD2fj0Ck3WmJP62ATz4z+o7I
+	 fdfTSH4KujW43MeC0ojkO+m4XNgcB0P53ictHoPrRzYscFk4xd+fhSq1g9axmPkU9n
+	 cfQTUfju85Jiabl5eLk6wPT1ywTcc98A4rFwRfE/SOLRWFGw4c/zqMB34zbA2ljrMt
+	 rG4mihshKPBnQ==
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6886be3d39bso7724903a12.3
+        for <kvm@vger.kernel.org>; Tue, 26 May 2026 11:53:07 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AFNElJ/ctOppA178bdT23Y8/RWbyX8Fv+mjzbdSvj72f4NFcgMBbJlthuwgcYHHAwwuAubaJu1k=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGfHiE96x0nW72m219oV2aWcX4oxDNpitbQ59Dc4PFGnk6SY2M
+	aB4n394+/SJVv42deH/HFKvoESjE0QdU2R6sbswHZwWvtI57PntbRkiUr8Y44xlZK904hELxiMN
+	hLEBLpQAuuzZnKTuA4suMKZdr8+tYuRM=
+X-Received: by 2002:a17:907:9810:b0:bd8:d86d:568a with SMTP id
+ a640c23a62f3a-bdd2b1dc044mr1157847466b.47.1779821586124; Tue, 26 May 2026
+ 11:53:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260522232701.3671446-1-seanjc@google.com> <20260522232701.3671446-4-seanjc@google.com>
- <CAO9r8zP-t3YsiXNZm2beR6RcRZaDN386_ktmipGm+sA=2PGcaQ@mail.gmail.com> <ahXp9V3o0bWVi1lj@google.com>
-In-Reply-To: <ahXp9V3o0bWVi1lj@google.com>
+References: <20260522232701.3671446-1-seanjc@google.com> <20260522232701.3671446-3-seanjc@google.com>
+ <CAO9r8zMVVd6LgBRujJZs9mjWp6Fy4SFxbrGUBNBMsSRFw7krsg@mail.gmail.com> <ahXrDZaVL4fKciUQ@google.com>
+In-Reply-To: <ahXrDZaVL4fKciUQ@google.com>
 From: Yosry Ahmed <yosry@kernel.org>
-Date: Tue, 26 May 2026 11:50:37 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zMGwUszi1xvi4WU1M85ZZWTDTfbQacjBfNDw8+QS4WDOw@mail.gmail.com>
-X-Gm-Features: AVHnY4Lj-UdrOuTNIP3DIyC7N66OAcTr-F0yVlAYsJrxWWmVRXGdfIlYudFnrE4
-Message-ID: <CAO9r8zMGwUszi1xvi4WU1M85ZZWTDTfbQacjBfNDw8+QS4WDOw@mail.gmail.com>
-Subject: Re: [PATCH v4 3/5] KVM: SVM: Fix nested NPF injection of
- PFERR_GUEST_{PAGE,FINAL}_MASK bits
+Date: Tue, 26 May 2026 11:52:52 -0700
+X-Gmail-Original-Message-ID: <CAO9r8zPA-ZpNo7=S22psZ7aoTvwYUnXWx6u=tNVud0Ze78BOBg@mail.gmail.com>
+X-Gm-Features: AVHnY4IUtIsRZQzdpOsxGyxTZvErxhE_O1HPl_tBo9aA4oyP1pUt5XxkO_TqdgA
+Message-ID: <CAO9r8zPA-ZpNo7=S22psZ7aoTvwYUnXWx6u=tNVud0Ze78BOBg@mail.gmail.com>
+Subject: Re: [PATCH v4 2/5] KVM: x86: Tell ->inject_page_fault() whether or a
+ fault came from hardware
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
 	Kevin Cheng <chengkev@google.com>
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> > > +       vmcb->control.exit_code = SVM_EXIT_NPF;
-> > > +       vmcb->control.exit_info_1 = fault_stage |
-> > > +                                   (fault->error_code & ~PFERR_GUEST_FAULT_STAGE_MASK);
+On Tue, May 26, 2026 at 11:48=E2=80=AFAM Sean Christopherson <seanjc@google=
+.com> wrote:
+>
+> On Tue, May 26, 2026, Yosry Ahmed wrote:
+> > On Fri, May 22, 2026 at 4:27=E2=80=AFPM Sean Christopherson <seanjc@goo=
+gle.com> wrote:
+> > >
+> > > When injecting a page fault (including nested TDP faults into L1), te=
+ll the
+> > > injection routine whether or not the fault originated in hardware, i.=
+e. if
+> > > KVM is effectively forwarding a fault it intercept.  For nested TDP f=
+ault
+> > > injection, KVM needs to grab PAGE_WALK vs. GUEST_FINAL information fr=
+om the
+> > > VMCB/VMCS, _if_ the fault originated in hardware.
+> > >
+> > > No functional change intended (nothing uses the new param, yet...).
+> > >
+> > > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > > ---
+> > >  arch/x86/include/asm/kvm_host.h | 18 ++++++++++++++----
+> > >  arch/x86/kvm/mmu/paging_tmpl.h  |  2 +-
+> > >  arch/x86/kvm/svm/nested.c       |  3 ++-
+> > >  arch/x86/kvm/vmx/nested.c       |  3 ++-
+> > >  arch/x86/kvm/x86.c              | 16 +++++++++-------
+> > >  5 files changed, 28 insertions(+), 14 deletions(-)
+> > >
+> > > diff --git a/arch/x86/include/asm/kvm_host.h b/arch/x86/include/asm/k=
+vm_host.h
+> > > index 271bdd109a98..d11063c36f03 100644
+> > > --- a/arch/x86/include/asm/kvm_host.h
+> > > +++ b/arch/x86/include/asm/kvm_host.h
+> > > @@ -484,7 +484,8 @@ struct kvm_mmu {
+> > >         u64 (*get_pdptr)(struct kvm_vcpu *vcpu, int index);
+> > >         int (*page_fault)(struct kvm_vcpu *vcpu, struct kvm_page_faul=
+t *fault);
+> > >         void (*inject_page_fault)(struct kvm_vcpu *vcpu,
+> > > -                                 struct x86_exception *fault);
+> > > +                                 struct x86_exception *fault,
+> > > +                                 bool from_hardware);
 > >
-> > Do we need to do this in the common path?
+> > Probably a bit late to ask this question, but why do we need
+> > from_hardware (or the previous hardware_nested_page_fault) as opposed
+> > to just checking exit_code / exit_reason? Is it possible to get an
+> > NPF/EPT violation but then synthesize a different one into L1 rather
+> > than forwarding the one we got from HW?
 >
-> What do you mean by "this"?  Pulling flags from fault->error_code?
+> Yes.  E.g. if access to emulated MMIO from L2 hit a !PRESENT fault (EPT V=
+iolation
+> or #NPF), e.g. because MMIO caching is disabled or it's the first time th=
+e GPA has
+> been accessed by L2, then KVM will enter the emulator.  If emulating the =
+MMIO
+> access then hits a TDP fault, e.g. because L2 was accessing MMIO with a M=
+OVQ
+> (memory-to-memory move), or because L1 has since unmapped the code stream=
+, then
+> the TDP fault synthesized to L1 will not be the "same" fault the triggere=
+d the
+> VM-Exit.
 
-Yes, sorry if that wasn't clear.
-
->
-> > If from_hardware=true, can the fault injected by KVM have different flags
-> > from the one produced by hardware?
->
-> Flags, yes.  fault_stage, no.
-
-Right, I meant the flags.
-
->
-> > I guess the answer is yes, (e.g. if KVM is doing write-protection?). Might be
-> > worth a comment.
->
-> Or if L1 has modified its TDP PTEs in memory, but hasn't yet flushed TLBs.  In
-> that case, KVM's software walker can see the updated PTEs, while hardware may
-> have seen something else.
-
-Makes sense. A comment would be helpful for laymans like myself.
+Interesting, thanks for the example. Probably worth documenting this
+somewhere (changelog? comment?).
