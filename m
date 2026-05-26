@@ -1,158 +1,213 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D654F3BED23
-	for <kvm@vger.kernel.org>; Tue, 26 May 2026 13:46:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ACA63C3BEF;
+	Tue, 26 May 2026 13:58:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779803217; cv=none; b=IwhXiQe8kTK2oNOJguzYFF8kmDZVufewFiD+3dAk+TBLvq6HuDSbmPRbJFid29Jv/YiEkhets+o5O44RkzKqweBmCXSCJLV7bgfWPu8J4cLOFDJrnBwAhZU4osl+OEm8z1y2d1T/heaRD4/htIwNkToQdXV3AxT7Y8Py0j+8K4E=
+	t=1779803888; cv=none; b=TOmFnt7tAfZjFI9DQ1u5phoNbXeBKqnww/YywLpADycALtNzN6+MwTf2VzonibzkDjcrg5EO1oJh8e1qn3aJLnN+FLWIetFt236zQHe+vAmtJCq940LfwHIkkuu5PCHL/VYqlKNt3vq/EO31SxTcYZdKQe1G0ure1kEuVit70wY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779803217; c=relaxed/simple;
-	bh=YLWx51acZGW7XG7scrNA0Dsa4eZJkeDfI5ceQuxSxAY=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Xrpy4Ej7zRAWM04GF3dspJcjFa16pzTFTlrzJa1V2lDg1kg/Du732DZtZ1BqBJCZ12K0Rc2+QDItKkCZ3LyRRVeOBzHez+j5G5/NYPqY+wRWY+k+Re2Bl3l3uI5SJkLQOSZdPtsbt594k/cM1Pr9f1DvxVI/G6gpaazhiSxhPSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XppUcttq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779803888; c=relaxed/simple;
+	bh=4hivPqPLm4jAEqaSxrRkiWL3/2lstLFYr+lk99OsN8U=;
+	h=Message-ID:Subject:From:To:Cc:Date:Content-Type:MIME-Version; b=h1bK0hZ/HEKvmz8IJ1Ue2Kd/5RmgQiaTBAM9ww3wmFRJZBJcTuCjHELVhepLf4lCHY3XA1q+TMHwUvti6GqVIXVuHmAokyq4/gl6/gJrvdCxDVHHRoQkhjzv6J+xdw5BUMaRzqDMNfta+x62pcr5Zj7RmTMPHJzdSxR0EI5O17Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=casper.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=BLxzJhcC; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=casper.srs.infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XppUcttq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A281E1F000E9;
-	Tue, 26 May 2026 13:46:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779803215;
-	bh=5HQmyzXTnZv5pO5qY41DEvREOJv/7STVC9eu7mCjVjk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=XppUcttqwCDaCQLF1/k33mOL42GjDwMz1OafIVpOd0/R2Rat8GfFsmKWYZ1hB85LQ
-	 //NfCTXbCPP+6B7jRaRQD54I9BA6l+d6hni29JuzDtuUZ+olA3ei2UNOptKv7ra0Fx
-	 MZRtRaznwrorvwoLQ1lkH6/wkZMdDToxo5unce7H9cPObX9iWad+nTMRyqwuU4Kt6E
-	 gVrEfbVck7IcHiJvc+ng7BrN7qeo+ehGlMsmJzqy5/iEdDtLgVKZaSlV0BCzZWunk8
-	 Va4fzM0Z3KFc9ANXUR+bgsd/D24R3+dwoChHDADQgh4gB+MPK6VFr+QyKcHIUBdulz
-	 aInz6LGOXhinw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v5 01/18] fs/proc/task_mmu: fix make_uffd_wp_huge_pte()
- prot-update race
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Kiryl Shutsemau" <kirill@shutemov.name>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260526130509.2748441-2-kirill@shutemov.name>
-References: <20260526130509.2748441-2-kirill@shutemov.name>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Tue, 26 May 2026 13:46:55 +0000
-Message-Id: <20260526134655.A281E1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="BLxzJhcC"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=MIME-Version:Content-Type:Date:Cc:To:
+	From:Subject:Message-ID:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:In-Reply-To:References;
+	bh=4hivPqPLm4jAEqaSxrRkiWL3/2lstLFYr+lk99OsN8U=; b=BLxzJhcCmX+N/1IMZidKMw+Zu5
+	7oK1Dk5qR0SisOMk/5hMjEXOUBHBKfwNlP/53XxEiZvhhaqzIexAXTchXo3inP2HksKz7/9R0FaW8
+	/t36JFyVJ3o2/a84SX5M0ghFccDluC7lZNXrnJID9ksnkQ8LFOV641RC/jF2ToOuGG0idNbeorm/e
+	cFUQzBixOuHLNjaEyPw3E3EHwfU6IDqcHKU6HBZTrNp1QCD6Ntjrd0zWq29KFCY1Sh5zfrsn1E4Q6
+	u1fSSnL7ywF9WVBoz01ibdlp5HNsj7fkrE5Jaqmb7FsyWKPgAAzoSDBf9uS7me4DIttZLWB5M1CH0
+	ebQLEQSA==;
+Received: from 54-240-197-231.amazon.com ([54.240.197.231] helo=u09cd745991455d.ant.amazon.com)
+	by casper.infradead.org with esmtpsa (Exim 4.99.1 #2 (Red Hat Linux))
+	id 1wRsHq-0000000186n-3o6u;
+	Tue, 26 May 2026 13:57:39 +0000
+Message-ID: <b4895a532344ba6a879d922be8536f9000cd398c.camel@infradead.org>
+Subject: [RFC] KVM/x86: Killing kvm_get_time_and_clockread() in favour of
+ ktime_get_snapshot()
+From: David Woodhouse <dwmw2@infradead.org>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini
+ <pbonzini@redhat.com>,  Thomas Gleixner <tglx@kernel.org>, John Stultz
+ <jstultz@google.com>, Michael Kelley <mhklinux@outlook.com>
+Cc: Vitaly Kuznetsov <vkuznets@redhat.com>, Marcelo Tosatti
+ <mtosatti@redhat.com>, "Christopher S. Hall"
+ <christopher.s.hall@intel.com>,  Stephen Boyd <sboyd@kernel.org>, Miroslav
+ Lichvar <mlichvar@redhat.com>, Ingo Molnar <mingo@redhat.com>,  Borislav
+ Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter
+ Anvin" <hpa@zytor.com>, "K. Y. Srinivasan" <kys@microsoft.com>, Haiyang
+ Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>, Dexuan Cui
+ <decui@microsoft.com>, Daniel Lezcano <daniel.lezcano@kernel.org>, 
+ kvm@vger.kernel.org, linux-hyperv@vger.kernel.org, x86@kernel.org, 
+ linux-kernel@vger.kernel.org
+Date: Tue, 26 May 2026 14:57:37 +0100
+Content-Type: multipart/signed; micalg="sha-256"; protocol="application/pkcs7-signature";
+	boundary="=-5rsTwYqtzyW6vlMHdADL"
+User-Agent: Evolution 3.52.3-0ubuntu1.1 
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+X-SRS-Rewrite: SMTP reverse-path rewritten from <dwmw2@infradead.org> by casper.infradead.org. See http://www.infradead.org/rpr.html
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
 
-Pre-existing issues:
-- [Critical] `pagemap_scan_hugetlb_entry()` illegally modifies shared HugeT=
-LB PMDs without unsharing, silently corrupting the memory protection of oth=
-er processes.
-- [High] `pagemap_scan_hugetlb_entry()` incorrectly uses the hardcoded `HPA=
-GE_SIZE` macro to verify if the requested range covers the entire HugeTLB p=
-age, breaking write-protection for gigantic huge pages.
-- [High] Self-deadlock in `pagemap_scan_pte_hole()` when write-protecting u=
-nallocated HugeTLB pages due to recursive `hugetlb_vma_lock` acquisition.
---
+--=-5rsTwYqtzyW6vlMHdADL
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-commit a2b7dff5e4a0bce48bb972dee8e0bb1bf34d50e4
-Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
-Subject: fs/proc/task_mmu: fix make_uffd_wp_huge_pte() prot-update race
+In 2012, as part of implementing the "master clock" mode for kvmclock,
+Marcelo added kvm_get_time_and_clockread() in commit d828199e8444
+("KVM: x86: implement PVCLOCK_TSC_STABLE_BIT pvclock flag").
 
-This commit fixes a race condition in make_uffd_wp_huge_pte() where the
-UFFD_WP bit is applied to a present HugeTLB PTE using a non-atomic snapshot.
-It mirrors the ptep_modify_prot_start() and ptep_modify_prot_commit() patte=
-rn
-used for normal PTEs to prevent hardware updates from being lost.
+In 2016, Christopher Hall added the generic ktime_get_snapshot() in
+commit 9da0f49c8767 ("time: Add timekeeping snapshot code capturing
+system time and counter"), which provides the same paired read of
+{ time, counter } through the core timekeeping code.
 
-> diff --git a/fs/proc/task_mmu.c b/fs/proc/task_mmu.c
-> --- a/fs/proc/task_mmu.c
-> +++ b/fs/proc/task_mmu.c
+Then in 2018, Vitaly Kuznetsov added Hyper-V TSC page support in
+commit b0c39dc68e3b ("x86/kvm: Pass stable clocksource to guests when
+running nested on Hyper-V"), which extended vgettsc() to handle the
+HVCLOCK case.
 
-[ ... ]
+I'd quite like to kill it all with fire and make KVM use
+ktime_get_snapshot() instead.
 
-> @@ -2960,11 +2964,11 @@ static int pagemap_scan_hugetlb_entry(pte_t *ptep=
-, unsigned long hmask,
->  	if (~categories & PAGE_IS_WRITTEN)
->  		goto out_unlock;
-> =20
->  	if (end !=3D start + HPAGE_SIZE) {
-                     ^^^^^^^^^^
-[Severity: High]
-This isn't a bug introduced by this patch, but could this hardcoded macro
-cause gigantic huge pages to incorrectly back out of write-protection?
+However, to correlate with the TSC provided to guests, KVM needs the
+underlying host TSC counter value, *not* the cycles count from the
+hyperv_clocksource_tsc_page clocksource which is scaled to 10MHz.
 
-For gigantic HugeTLB pages (e.g., 1GB), the generic page walker provides
-boundaries spanning the gigantic page size. Because HPAGE_SIZE is defined
-as (1UL << HPAGE_SHIFT), checking against it will falsely mark the range as
-partial.
+If we wanted to support master clock mode while nesting under KVM and
+bizarrely using the kvmclock for system timing, we'd have the same
+problem with the kvmclock clocksource, which similarly scales to 1GHz.
 
-Should this dynamically evaluate the size using
-huge_page_size(hstate_vma(vma)) instead?
+One option is to say "Don't Do That Then=E2=84=A2": if you want to provide =
+a
+masterclock kvmclock to guests then *don't* use the silly pvclocks for
+your own kernel's timekeeping, use the damn TSC. Because if the TSC
+*isn't* reliable then you can't do masterclock mode for your guests
+anyway.
 
->  		/* Partial HugeTLB page WP isn't possible. */
->  		pagemap_scan_backout_range(p, start, end);
->  		p->arg.walk_end =3D start;
->  		ret =3D 0;
->  		goto out_unlock;
->  	}
-> =20
->  	make_uffd_wp_huge_pte(vma, start, ptep, pte);
-        ^^^^^^^^^^^^^^^^^^^^^
-[Severity: Critical]
-This isn't a bug introduced by this patch, but does modifying the HugeTLB
-PTE/PMD here break the shared PMD protections for other processes?
+Perhaps that should have been the response when commit b0c39dc68e3b was
+submitted, but I guess we're stuck supporting that mode now. But I
+really do want to kill the KVM hacks and use ktime_get_snapshot().
 
-HugeTLB supports PMD sharing across processes. When applying UFFD_WP marker=
-s,
-the kernel must normally break sharing via huge_pmd_unshare().
+Reverse-engineering the original TSC reading from the clocksource
+counter value doesn't look sane, without a loss of precision and/or
+128-bit division.
 
-Because pagemap_scan_hugetlb_entry() modifies the shared page table
-directly without unsharing, could this silently apply write protection to t=
-he
-mappings of all other processes sharing this PMD, leaving their TLB entries
-desynchronized?
+One simple option that occurs to me would be to add a 'cycles_raw'
+value to the system_time_snapshot, for PV clocksources like hyperv and
+kvmclock to populate with the original TSC reading.
 
->  	flush_hugetlb_tlb_range(vma, start, end);
-> =20
->  out_unlock:
+That might actually let us clean up some of the PTP code that currently
+has to deal with TSC vs. kvmclock in counter snapshots too. I think I
+could kill the use of get_cycles() in vmclock for the kvmclock case,
+which might make Thomas happy...
 
-[ ... ]
+Any better ideas?
 
-> @@ -2994,10 +2998,10 @@ static int pagemap_scan_pte_hole(unsigned long ad=
-dr, unsigned long end,
->  	ret =3D pagemap_scan_output(p->cur_vma_category, p, addr, &end);
->  	if (addr =3D=3D end)
->  		return ret;
-> =20
->  	if (~p->arg.flags & PM_SCAN_WP_MATCHING)
->  		return ret;
-> =20
->  	err =3D uffd_wp_range(vma, addr, end - addr, true);
-        ^^^^^^^^^^^^^^^^^^^
-[Severity: High]
-This isn't a bug introduced by this patch, but can this lead to a
-self-deadlock when write-protecting unallocated HugeTLB pages?
+--=-5rsTwYqtzyW6vlMHdADL
+Content-Type: application/pkcs7-signature; name="smime.p7s"
+Content-Disposition: attachment; filename="smime.p7s"
+Content-Transfer-Encoding: base64
 
-When PAGEMAP_SCAN write-protects a HugeTLB VMA, walk_hugetlb_range()
-acquires hugetlb_vma_lock_read(vma). If it encounters an unallocated HugeTLB
-page, it calls .pte_hole (pagemap_scan_pte_hole()), which delegates
-through uffd_wp_range() -> change_protection() ->
-hugetlb_change_protection().
+MIAGCSqGSIb3DQEHAqCAMIACAQExDzANBglghkgBZQMEAgEFADCABgkqhkiG9w0BBwEAAKCCD9Aw
+ggSOMIIDdqADAgECAhAOmiw0ECVD4cWj5DqVrT9PMA0GCSqGSIb3DQEBCwUAMGUxCzAJBgNVBAYT
+AlVTMRUwEwYDVQQKEwxEaWdpQ2VydCBJbmMxGTAXBgNVBAsTEHd3dy5kaWdpY2VydC5jb20xJDAi
+BgNVBAMTG0RpZ2lDZXJ0IEFzc3VyZWQgSUQgUm9vdCBDQTAeFw0yNDAxMzAwMDAwMDBaFw0zMTEx
+MDkyMzU5NTlaMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYDVQQDExdWZXJv
+a2V5IFNlY3VyZSBFbWFpbCBHMjCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAMjvgLKj
+jfhCFqxYyRiW8g3cNFAvltDbK5AzcOaR7yVzVGadr4YcCVxjKrEJOgi7WEOH8rUgCNB5cTD8N/Et
+GfZI+LGqSv0YtNa54T9D1AWJy08ZKkWvfGGIXN9UFAPMJ6OLLH/UUEgFa+7KlrEvMUupDFGnnR06
+aDJAwtycb8yXtILj+TvfhLFhafxroXrflspavejQkEiHjNjtHnwbZ+o43g0/yxjwnarGI3kgcak7
+nnI9/8Lqpq79tLHYwLajotwLiGTB71AGN5xK+tzB+D4eN9lXayrjcszgbOv2ZCgzExQUAIt98mre
+8EggKs9mwtEuKAhYBIP/0K6WsoMnQCcCAwEAAaOCAVwwggFYMBIGA1UdEwEB/wQIMAYBAf8CAQAw
+HQYDVR0OBBYEFIlICOogTndrhuWByNfhjWSEf/xwMB8GA1UdIwQYMBaAFEXroq/0ksuCMS1Ri6en
+IZ3zbcgPMA4GA1UdDwEB/wQEAwIBhjAdBgNVHSUEFjAUBggrBgEFBQcDBAYIKwYBBQUHAwIweQYI
+KwYBBQUHAQEEbTBrMCQGCCsGAQUFBzABhhhodHRwOi8vb2NzcC5kaWdpY2VydC5jb20wQwYIKwYB
+BQUHMAKGN2h0dHA6Ly9jYWNlcnRzLmRpZ2ljZXJ0LmNvbS9EaWdpQ2VydEFzc3VyZWRJRFJvb3RD
+QS5jcnQwRQYDVR0fBD4wPDA6oDigNoY0aHR0cDovL2NybDMuZGlnaWNlcnQuY29tL0RpZ2lDZXJ0
+QXNzdXJlZElEUm9vdENBLmNybDARBgNVHSAECjAIMAYGBFUdIAAwDQYJKoZIhvcNAQELBQADggEB
+ACiagCqvNVxOfSd0uYfJMiZsOEBXAKIR/kpqRp2YCfrP4Tz7fJogYN4fxNAw7iy/bPZcvpVCfe/H
+/CCcp3alXL0I8M/rnEnRlv8ItY4MEF+2T/MkdXI3u1vHy3ua8SxBM8eT9LBQokHZxGUX51cE0kwa
+uEOZ+PonVIOnMjuLp29kcNOVnzf8DGKiek+cT51FvGRjV6LbaxXOm2P47/aiaXrDD5O0RF5SiPo6
+xD1/ClkCETyyEAE5LRJlXtx288R598koyFcwCSXijeVcRvBB1cNOLEbg7RMSw1AGq14fNe2cH1HG
+W7xyduY/ydQt6gv5r21mDOQ5SaZSWC/ZRfLDuEYwggWbMIIEg6ADAgECAhAH5JEPagNRXYDiRPdl
+c1vgMA0GCSqGSIb3DQEBCwUAMEExCzAJBgNVBAYTAkFVMRAwDgYDVQQKEwdWZXJva2V5MSAwHgYD
+VQQDExdWZXJva2V5IFNlY3VyZSBFbWFpbCBHMjAeFw0yNDEyMzAwMDAwMDBaFw0yODAxMDQyMzU5
+NTlaMB4xHDAaBgNVBAMME2R3bXcyQGluZnJhZGVhZC5vcmcwggIiMA0GCSqGSIb3DQEBAQUAA4IC
+DwAwggIKAoICAQDali7HveR1thexYXx/W7oMk/3Wpyppl62zJ8+RmTQH4yZeYAS/SRV6zmfXlXaZ
+sNOE6emg8WXLRS6BA70liot+u0O0oPnIvnx+CsMH0PD4tCKSCsdp+XphIJ2zkC9S7/yHDYnqegqt
+w4smkqUqf0WX/ggH1Dckh0vHlpoS1OoxqUg+ocU6WCsnuz5q5rzFsHxhD1qGpgFdZEk2/c//ZvUN
+i12vPWipk8TcJwHw9zoZ/ZrVNybpMCC0THsJ/UEVyuyszPtNYeYZAhOJ41vav1RhZJzYan4a1gU0
+kKBPQklcpQEhq48woEu15isvwWh9/+5jjh0L+YNaN0I//nHSp6U9COUG9Z0cvnO8FM6PTqsnSbcc
+0j+GchwOHRC7aP2t5v2stVx3KbptaYEzi4MQHxm/0+HQpMEVLLUiizJqS4PWPU6zfQTOMZ9uLQRR
+ci+c5xhtMEBszlQDOvEQcyEG+hc++fH47K+MmZz21bFNfoBxLP6bjR6xtPXtREF5lLXxp+CJ6KKS
+blPKeVRg/UtyJHeFKAZXO8Zeco7TZUMVHmK0ZZ1EpnZbnAhKE19Z+FJrQPQrlR0gO3lBzuyPPArV
+hvWxjlO7S4DmaEhLzarWi/ze7EGwWSuI2eEa/8zU0INUsGI4ywe7vepQz7IqaAovAX0d+f1YjbmC
+VsAwjhLmveFjNwIDAQABo4IBsDCCAawwHwYDVR0jBBgwFoAUiUgI6iBOd2uG5YHI1+GNZIR//HAw
+HQYDVR0OBBYEFFxiGptwbOfWOtMk5loHw7uqWUOnMDAGA1UdEQQpMCeBE2R3bXcyQGluZnJhZGVh
+ZC5vcmeBEGRhdmlkQHdvb2Rob3Uuc2UwFAYDVR0gBA0wCzAJBgdngQwBBQEBMA4GA1UdDwEB/wQE
+AwIF4DAdBgNVHSUEFjAUBggrBgEFBQcDAgYIKwYBBQUHAwQwewYDVR0fBHQwcjA3oDWgM4YxaHR0
+cDovL2NybDMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDA3oDWgM4YxaHR0
+cDovL2NybDQuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNybDB2BggrBgEFBQcB
+AQRqMGgwJAYIKwYBBQUHMAGGGGh0dHA6Ly9vY3NwLmRpZ2ljZXJ0LmNvbTBABggrBgEFBQcwAoY0
+aHR0cDovL2NhY2VydHMuZGlnaWNlcnQuY29tL1Zlcm9rZXlTZWN1cmVFbWFpbEcyLmNydDANBgkq
+hkiG9w0BAQsFAAOCAQEAQXc4FPiPLRnTDvmOABEzkIumojfZAe5SlnuQoeFUfi+LsWCKiB8Uextv
+iBAvboKhLuN6eG/NC6WOzOCppn4mkQxRkOdLNThwMHW0d19jrZFEKtEG/epZ/hw/DdScTuZ2m7im
+8ppItAT6GXD3aPhXkXnJpC/zTs85uNSQR64cEcBFjjoQDuSsTeJ5DAWf8EMyhMuD8pcbqx5kRvyt
+JPsWBQzv1Dsdv2LDPLNd/JUKhHSgr7nbUr4+aAP2PHTXGcEBh8lTeYea9p4d5k969pe0OHYMV5aL
+xERqTagmSetuIwolkAuBCzA9vulg8Y49Nz2zrpUGfKGOD0FMqenYxdJHgDCCBZswggSDoAMCAQIC
+EAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQELBQAwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoT
+B1Zlcm9rZXkxIDAeBgNVBAMTF1Zlcm9rZXkgU2VjdXJlIEVtYWlsIEcyMB4XDTI0MTIzMDAwMDAw
+MFoXDTI4MDEwNDIzNTk1OVowHjEcMBoGA1UEAwwTZHdtdzJAaW5mcmFkZWFkLm9yZzCCAiIwDQYJ
+KoZIhvcNAQEBBQADggIPADCCAgoCggIBANqWLse95HW2F7FhfH9bugyT/danKmmXrbMnz5GZNAfj
+Jl5gBL9JFXrOZ9eVdpmw04Tp6aDxZctFLoEDvSWKi367Q7Sg+ci+fH4KwwfQ8Pi0IpIKx2n5emEg
+nbOQL1Lv/IcNiep6Cq3DiyaSpSp/RZf+CAfUNySHS8eWmhLU6jGpSD6hxTpYKye7PmrmvMWwfGEP
+WoamAV1kSTb9z/9m9Q2LXa89aKmTxNwnAfD3Ohn9mtU3JukwILRMewn9QRXK7KzM+01h5hkCE4nj
+W9q/VGFknNhqfhrWBTSQoE9CSVylASGrjzCgS7XmKy/BaH3/7mOOHQv5g1o3Qj/+cdKnpT0I5Qb1
+nRy+c7wUzo9OqydJtxzSP4ZyHA4dELto/a3m/ay1XHcpum1pgTOLgxAfGb/T4dCkwRUstSKLMmpL
+g9Y9TrN9BM4xn24tBFFyL5znGG0wQGzOVAM68RBzIQb6Fz758fjsr4yZnPbVsU1+gHEs/puNHrG0
+9e1EQXmUtfGn4InoopJuU8p5VGD9S3Ikd4UoBlc7xl5yjtNlQxUeYrRlnUSmdlucCEoTX1n4UmtA
+9CuVHSA7eUHO7I88CtWG9bGOU7tLgOZoSEvNqtaL/N7sQbBZK4jZ4Rr/zNTQg1SwYjjLB7u96lDP
+sipoCi8BfR35/ViNuYJWwDCOEua94WM3AgMBAAGjggGwMIIBrDAfBgNVHSMEGDAWgBSJSAjqIE53
+a4blgcjX4Y1khH/8cDAdBgNVHQ4EFgQUXGIam3Bs59Y60yTmWgfDu6pZQ6cwMAYDVR0RBCkwJ4ET
+ZHdtdzJAaW5mcmFkZWFkLm9yZ4EQZGF2aWRAd29vZGhvdS5zZTAUBgNVHSAEDTALMAkGB2eBDAEF
+AQEwDgYDVR0PAQH/BAQDAgXgMB0GA1UdJQQWMBQGCCsGAQUFBwMCBggrBgEFBQcDBDB7BgNVHR8E
+dDByMDegNaAzhjFodHRwOi8vY3JsMy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMDegNaAzhjFodHRwOi8vY3JsNC5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVtYWlsRzIu
+Y3JsMHYGCCsGAQUFBwEBBGowaDAkBggrBgEFBQcwAYYYaHR0cDovL29jc3AuZGlnaWNlcnQuY29t
+MEAGCCsGAQUFBzAChjRodHRwOi8vY2FjZXJ0cy5kaWdpY2VydC5jb20vVmVyb2tleVNlY3VyZUVt
+YWlsRzIuY3J0MA0GCSqGSIb3DQEBCwUAA4IBAQBBdzgU+I8tGdMO+Y4AETOQi6aiN9kB7lKWe5Ch
+4VR+L4uxYIqIHxR7G2+IEC9ugqEu43p4b80LpY7M4KmmfiaRDFGQ50s1OHAwdbR3X2OtkUQq0Qb9
+6ln+HD8N1JxO5nabuKbymki0BPoZcPdo+FeRecmkL/NOzzm41JBHrhwRwEWOOhAO5KxN4nkMBZ/w
+QzKEy4PylxurHmRG/K0k+xYFDO/UOx2/YsM8s138lQqEdKCvudtSvj5oA/Y8dNcZwQGHyVN5h5r2
+nh3mT3r2l7Q4dgxXlovERGpNqCZJ624jCiWQC4ELMD2+6WDxjj03PbOulQZ8oY4PQUyp6djF0keA
+MYIDuzCCA7cCAQEwVTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMX
+VmVyb2tleSBTZWN1cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJYIZIAWUDBAIBBQCg
+ggE3MBgGCSqGSIb3DQEJAzELBgkqhkiG9w0BBwEwHAYJKoZIhvcNAQkFMQ8XDTI2MDUyNjEzNTcz
+N1owLwYJKoZIhvcNAQkEMSIEIPZdWqjWXIQr94Vdfxtjr2TiGBfC5iGl1xVFEnLKwQTwMGQGCSsG
+AQQBgjcQBDFXMFUwQTELMAkGA1UEBhMCQVUxEDAOBgNVBAoTB1Zlcm9rZXkxIDAeBgNVBAMTF1Zl
+cm9rZXkgU2VjdXJlIEVtYWlsIEcyAhAH5JEPagNRXYDiRPdlc1vgMGYGCyqGSIb3DQEJEAILMVeg
+VTBBMQswCQYDVQQGEwJBVTEQMA4GA1UEChMHVmVyb2tleTEgMB4GA1UEAxMXVmVyb2tleSBTZWN1
+cmUgRW1haWwgRzICEAfkkQ9qA1FdgOJE92VzW+AwDQYJKoZIhvcNAQEBBQAEggIADNXaLoqSi4sD
+P/VeiOEZKwoJ56XIgFYoXFSmt302b2HQAeWltIfmcerhWPXNrf5nBoUhWismZ7yD4/d1nCfqT5F3
+nMWlUR64M52tzVmpOccKHH73V7Nr9pcuXgyYtlUjue/vcTr74Vt5SDaWoyWWUWPvClGDX7VnL1+q
+o4gDMal4haCRrSzOS0ifsAN0VWYITUjBWTfcl5z54sGPjbo9auNZ2pt36wpbrjfkNwaV5Osdfjoh
+Rg7f3d0gc+n5W90KvsnUmS5qsSnxOnDTGBtm46wLM9LHY/AwdEXuXBQWoehO5r57Z4qwTR2aXv6s
+l+n7f+ymAY+aAL4YsUnRkuTfDpaFOt48J043qxA8Jk1JarcstAQyk5QntmdV+4BMYr2x3vU2UxQS
+LmzUSiuswzvxyXobhtjeCM9lLMHfhf1IRFrMPWgfkTlvk79SLYBglIbERHRPaSm+1l58vuZcLVDD
+MLRKJGBDyWcvoxPRukM0JBcPAmyAxkGEWP0sV8DPR+z4SD/DJ/NG8RAzAvHZIR6H4fow1KlQ7W5g
+O/0CEVibFbBk4YlBefopNn+XKlow1ndUwxTrKzKgW4KN5ptM0rYrI+k0DqMKpI5WtM+CRGSB80Ni
+74G8JYpjxE7jP1YIsWFYY/iJFWNk+i6MqBFeqEnKtzjWATLe0n2SMtM8H2r41d0AAAAAAAA=
 
-The latter unconditionally attempts to acquire hugetlb_vma_lock_write() for
-shared mappings on the same VMA. Acquiring a write lock on an rw_semaphore
-while already holding a read lock causes a guaranteed self-deadlock.
 
->  	if (err < 0)
->  		ret =3D err;
-> =20
->  	return ret;
->  }
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526130509.2748=
-441-1-kirill@shutemov.name?part=3D1
+--=-5rsTwYqtzyW6vlMHdADL--
