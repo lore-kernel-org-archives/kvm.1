@@ -1,204 +1,93 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D1D3264F2;
-	Tue, 26 May 2026 02:35:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F68D30BF67
+	for <kvm@vger.kernel.org>; Tue, 26 May 2026 02:40:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779762939; cv=none; b=t32eady8i0BPUJKB5+icY7Tto6lelvvZFjPB4vOlJzdmxsHo1mZO9/DnpMNS29LeaCKUUUA7iyFALHbAzFggjBwT7cLyOWnUUefVEDAhevaPkkdCdt/PjzJt+RDR/iW4oXTeGuPcfwTuY5xKKjQMEqjJsbL6pBJMRai0FYB/Opc=
+	t=1779763223; cv=none; b=NuKsGkk7HFsBTmFA3P4h3blHae4+CvFMhOGYaW3rvBcUr9CSPU9FSVhpFCeQtfMn2hQg+cLFqwJmeRal+74tHQxFDbrYM61gJfkSnSLCxXQSlbtGi2dZtUU419QoAPK0ahDjXXJ1WRW/vmHovzCGnuFBbHIqn6mdg9z82qoNEB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779762939; c=relaxed/simple;
-	bh=6WuNs68Db22YKlyZABLkieFbKvfcpx6Rf74QPb8/WiQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mfL76aH+k3OsiKLAiLR83i9aVJeywY8hjhMuGchqk0aFQmmRF/P1O7hah/kDXiTz6uBmlgR0we1i2Eqtr4z5hYRzx6z8U1v2XufjrtRM3lmbhBbwFpPO0wOhEYZ2b6brWOJqioOjYxFbKh0KVbJ6RpesyUGq6MG6PUbBQctpeyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=bOFxdF9C; arc=none smtp.client-ip=198.175.65.13
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1779763223; c=relaxed/simple;
+	bh=wiA156QzzAtrr6cEb4b4b8QfPRg/ovPdcoha9/Mpmx4=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=AkQK2/OPXefW0BX2DkLVVP4c2SWpZ0HudEcuaee8Sx0r+0PZym224EMZstO0r+JmiH6Kx5dd8TiqawZmMZPVpGI1EeGUyPRB7Dg2S98J3ATdAZAuDxdWPXqlf671pt3B4XKcHEjva1L6HY1VnXMfE811TbDSj2XtYXNrj7D2bU8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Ng7j/itt; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="bOFxdF9C"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779762937; x=1811298937;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=6WuNs68Db22YKlyZABLkieFbKvfcpx6Rf74QPb8/WiQ=;
-  b=bOFxdF9CBjg0K/np9IkGL1suJCe2JrhWXf9XFaWcsJGm/KRklVUfoHA+
-   8susST3ENzD6svEWoMRU5jxy6Z+kigxGIhEZQFupPNf6zk9KA5NFzQ+54
-   FXe+MxN4RdWTNMFT8rYfgVwzn0ZarpsLpQKXFHK3vZs7I3MWVJnsj8vfh
-   Lp6iICzu8Zcfb88dAWwJ84pYvoiLwZ+wSMboGAlc2LWgFFCp/I4XApifb
-   2QAOU2tmvXh9UX3z0Wdw0bGhIVd+cOSVy9XoIOC5Qy66getxyySPA74jK
-   1oJxggd6yqg6u7XBKHVenJAO6AyM1StCjDtK990hk103rjmo8b6xD7eTu
-   A==;
-X-CSE-ConnectionGUID: 6r9fYfiHQPKz7Z5ss31sVQ==
-X-CSE-MsgGUID: RF/dQPOZSGi86LrDk22G3g==
-X-IronPort-AV: E=McAfee;i="6800,10657,11797"; a="91677854"
-X-IronPort-AV: E=Sophos;i="6.24,168,1774335600"; 
-   d="scan'208";a="91677854"
-Received: from orviesa001.jf.intel.com ([10.64.159.141])
-  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 19:35:24 -0700
-X-CSE-ConnectionGUID: 2Ngf3jtgRpWTN/eSGePtIw==
-X-CSE-MsgGUID: kDW/DPGxS6CHeP/Vo9jHSg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,168,1774335600"; 
-   d="scan'208";a="279878326"
-Received: from rpedgeco-desk.jf.intel.com ([10.88.27.139])
-  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 May 2026 19:35:24 -0700
-From: Rick Edgecombe <rick.p.edgecombe@intel.com>
-To: bp@alien8.de,
-	dave.hansen@intel.com,
-	hpa@zytor.com,
-	kas@kernel.org,
-	kvm@vger.kernel.org,
-	linux-coco@lists.linux.dev,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	mingo@redhat.com,
-	nik.borisov@suse.com,
-	pbonzini@redhat.com,
-	seanjc@google.com,
-	tglx@kernel.org,
-	vannapurve@google.com,
-	x86@kernel.org,
-	chao.gao@intel.com,
-	yan.y.zhao@intel.com,
-	kai.huang@intel.com
-Cc: rick.p.edgecombe@intel.com,
-	"Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
-Subject: [PATCH v6 10/11] x86/virt/tdx: Enable Dynamic PAMT
-Date: Mon, 25 May 2026 19:35:14 -0700
-Message-ID: <20260526023515.288829-11-rick.p.edgecombe@intel.com>
-X-Mailer: git-send-email 2.54.0
-In-Reply-To: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
-References: <20260526023515.288829-1-rick.p.edgecombe@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Ng7j/itt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C15001F000E9;
+	Tue, 26 May 2026 02:40:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779763221;
+	bh=q95h0hq2o67cu9oyjrf/hCGVPUAgQ/EQoEX/eDthSa8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Ng7j/ittOwcJFo1CZ6sCo9dmBIeKrhlwMLWNsVeYEwjHPPFO45qMGciTT4sfakfcs
+	 4elSkq4No7ehla/rrnier4wFFcnE/fKjfskhu80P1IHChQwvyiZvQOBINE7wmzIeTI
+	 zrKWjUrMV95t9makFN4+i8IIxk6Lm2vlje7uxKt3gssA19LN4HkqW5EU/wzc3N/qEH
+	 VZcqbCUtZGrteHkPaCTj384TDmaGu0013ZNRGuRURQYx0kShcfdzIcJHB5bdu7Mrkh
+	 2y50ioz8+1Zl+W2yDIh6F9ZDNkDg83dUfAXxWbbHzGObuwyjEPDLx7xvSpKBxXpsvM
+	 MEu/tL0KXq9eA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v8 1/3] KVM: s390: Add map/unmap ioctl and clean
+ mappings post-guest
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Douglas Freimuth" <freimuth@linux.ibm.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260526015323.207343-2-freimuth@linux.ibm.com>
+References: <20260526015323.207343-2-freimuth@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 26 May 2026 02:40:21 +0000
+Message-Id: <20260526024021.C15001F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-From: "Kirill A. Shutemov" <kirill.shutemov@linux.intel.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [High] The register_io_adapter function acquires dev->kvm->lock but fails=
+ to release it on several early error return paths, causing a permanent dea=
+dlock.
+--
 
-The Physical Address Metadata Table (PAMT) holds TDX metadata for
-physical memory and must be allocated by the kernel during TDX module
-initialization. Dynamic PAMT is a TDX module feature that can reduce this
-memory use by allocating part of the PAMT dynamically.
+commit 846f99f02dcb9dca2543059b14bd01a7e4a020cf
+Author: Douglas Freimuth <freimuth@linux.ibm.com>
 
-All pieces are in place to Enable Dynamic PAMT if it is supported.
-Determine if the TDX module supports it by checking the 'features0' bit
-exposed by the TDX module.
+KVM: s390: Add map/unmap ioctl and clean mappings post-guest
 
-The TDX module also exposes information about whether the *system* (and
-not the module) supports Dynamic PAMT.
+This patch introduces map and unmap ioctls for s390 adapter set indicator
+pages to allow access when interrupts are disabled. It adds logic to clean
+up mappings upon guest removal, and fences the ioctls in Secure Execution
+environments to prevent longterm pinning.
 
-The TDX module documentation describes how PAMT works internally. To allow
-the last level to be dynamically allocated, it uses a 3 level tree
-structure, not unlike page tables. Like page tables, it has a maximum
-address space that it can cover. This address space can be covered in 48
-bits. If the host physical address space is higher than this, than the
-TDX module can't guarantee the tree will be able to cover the TDX memory.
+> diff --git a/arch/s390/kvm/interrupt.c b/arch/s390/kvm/interrupt.c
+> --- a/arch/s390/kvm/interrupt.c
+> +++ b/arch/s390/kvm/interrupt.c
 
-The TDX module exposes this system support via metadata stating the
-minimum number of HKIDs that need to be available in order for Dynamic
-PAMT to be usable. The reasoning appears to be that more HKIDs can shrink
-the "real" addressable physical address bits enough to make the 48 bit
-Dynamic PAMT limit workable on high physical address width HW. However,
-the docs also clearly explain the 48 bit limit and how this fits into the
-Dymamic PAMT tree constraints.
+[ ... ]
 
-The handy x86_phys_bits value is already read and adjusted for keyid bits.
-So just compare that against 48 instead of reading more metadata and
-burdening the code with the more tenuous connection to minimum HKID bits.
+> @@ -2412,6 +2412,7 @@ static int register_io_adapter(struct kvm_device *d=
+ev,
+>  	struct s390_io_adapter *adapter;
+>  	struct kvm_s390_io_adapter adapter_info;
+> =20
+> +	mutex_lock(&dev->kvm->lock);
+>  	if (copy_from_user(&adapter_info,
+>  			   (void __user *)attr->addr, sizeof(adapter_info)))
+>  		return -EFAULT;
 
-Signed-off-by: Kirill A. Shutemov <kirill.shutemov@linux.intel.com>
-Co-developed-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
----
-v6:
- - After Nikolai pointed out that the TDX docs actually have the Dynamic
-   PAMT pages-per-2MB region fixed at 2 instead of variable sized, I
-   checked over the docs more closely looking for anything else that might
-   have been missed. Spotted this 48 bit physical address bit check in the
-   docs, so added it.
----
- arch/x86/include/asm/tdx.h  | 11 ++++++++++-
- arch/x86/virt/vmx/tdx/tdx.c | 11 +++++++++--
- arch/x86/virt/vmx/tdx/tdx.h |  3 ---
- 3 files changed, 19 insertions(+), 6 deletions(-)
+[Severity: High]
+Does this code leave dev->kvm->lock held on the early error return paths?
 
-diff --git a/arch/x86/include/asm/tdx.h b/arch/x86/include/asm/tdx.h
-index 191da84bbf2a1..187014686df3e 100644
---- a/arch/x86/include/asm/tdx.h
-+++ b/arch/x86/include/asm/tdx.h
-@@ -33,6 +33,10 @@
- #define TDX_SUCCESS		0ULL
- #define TDX_RND_NO_ENTROPY	0x8000020300000000ULL
- 
-+/* Bit definitions of TDX_FEATURES0 metadata field */
-+#define TDX_FEATURES0_NO_RBP_MOD		BIT_ULL(18)
-+#define TDX_FEATURES0_DYNAMIC_PAMT		BIT_ULL(36)
-+
- #ifndef __ASSEMBLER__
- 
- #include <uapi/asm/mce.h>
-@@ -152,7 +156,12 @@ const struct tdx_sys_info *tdx_get_sysinfo(void);
- 
- static inline bool tdx_supports_dynamic_pamt(const struct tdx_sys_info *sysinfo)
- {
--	return false; /* To be enabled when kernel is ready */
-+	/*
-+	 * The TDX Module's internal Dynamic PAMT tree structure can't
-+	 * handle physical addresses with more than 48 bits.
-+	 */
-+	return sysinfo->features.tdx_features0 & TDX_FEATURES0_DYNAMIC_PAMT &&
-+	       boot_cpu_data.x86_phys_bits <= 48;
- }
- 
- /* Simple structure for pre-allocating Dynamic PAMT pages outside of locks. */
-diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
-index 3544794fb092a..75140511571bf 100644
---- a/arch/x86/virt/vmx/tdx/tdx.c
-+++ b/arch/x86/virt/vmx/tdx/tdx.c
-@@ -1028,8 +1028,9 @@ static __init int construct_tdmrs(struct list_head *tmb_list,
- 	return ret;
- }
- 
--static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
--				    u64 global_keyid)
-+#define TDX_SYS_CONFIG_DYNAMIC_PAMT	BIT(16)
-+
-+static __init int config_tdx_module(struct tdmr_info_list *tdmr_list, u64 global_keyid)
- {
- 	struct tdx_module_args args = {};
- 	u64 *tdmr_pa_array;
-@@ -1056,6 +1057,12 @@ static __init int config_tdx_module(struct tdmr_info_list *tdmr_list,
- 	args.rcx = __pa(tdmr_pa_array);
- 	args.rdx = tdmr_list->nr_consumed_tdmrs;
- 	args.r8 = global_keyid;
-+
-+	if (tdx_supports_dynamic_pamt(&tdx_sysinfo)) {
-+		pr_info("Enable Dynamic PAMT\n");
-+		args.r8 |= TDX_SYS_CONFIG_DYNAMIC_PAMT;
-+	}
-+
- 	ret = seamcall_prerr(TDH_SYS_CONFIG, &args);
- 
- 	/* Free the array as it is not required anymore. */
-diff --git a/arch/x86/virt/vmx/tdx/tdx.h b/arch/x86/virt/vmx/tdx/tdx.h
-index 8c39dde347cc2..68a68468fbeb6 100644
---- a/arch/x86/virt/vmx/tdx/tdx.h
-+++ b/arch/x86/virt/vmx/tdx/tdx.h
-@@ -86,9 +86,6 @@ struct tdmr_info {
- 	DECLARE_FLEX_ARRAY(struct tdmr_reserved_area, reserved_areas);
- } __packed __aligned(TDMR_INFO_ALIGNMENT);
- 
--/* Bit definitions of TDX_FEATURES0 metadata field */
--#define TDX_FEATURES0_NO_RBP_MOD	BIT(18)
--
- /*
-  * Do not put any hardware-defined TDX structure representations below
-  * this comment!
--- 
-2.54.0
+If copy_from_user() fails here, or if the subsequent adapter_info.id
+validation checks fail, the function returns an error directly without call=
+ing
+mutex_unlock(&dev->kvm->lock). This would leave the mutex permanently locke=
+d,
+potentially causing the VM to deadlock on any subsequent operations that
+require this lock.
 
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526015323.2073=
+43-1-freimuth@linux.ibm.com?part=3D1
