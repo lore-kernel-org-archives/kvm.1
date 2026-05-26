@@ -1,113 +1,125 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E08F93F58CE;
-	Tue, 26 May 2026 13:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A4E138424D
+	for <kvm@vger.kernel.org>; Tue, 26 May 2026 13:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779801966; cv=none; b=eg5MljHaJpj4RD0a64ZX1SJ7gNMxTzTNuupA8Bl9boOyw13KHMLAlaBq8xcO35NPY+BV+7kiIPsVCmoXXE/lVVt3AVBvUxuQHoic9m/F3hFMFS5E1Gj6mXWzGVdD60l3jCD4StZdv2xwA+ZRXY38xUjzzPTyHRP8FMMC5FPPBnc=
+	t=1779802160; cv=none; b=EVoViZoNq9wwEaYVyi3EAhk0pkg0WA6BucpsQlivk+QcmzBqLBE/wAL5mvFK0dppiaQj6b3ZNEk9QB0gS7lULOJQzDNFaCFecxo8N5fJ1DAcf0wyIgoL7s16WJRNYQMwf1LDR6PiFjWH2rnPqZ57OnwqqhONZd47LpzXIP+e4Qs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779801966; c=relaxed/simple;
-	bh=42BQf5cb0aa7ANVrL7TApWSiKbz/Y4tfFfyXq/jCX7s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=THuiAoBO3FIL+8c3oD31BXojgWptORyWlFZhwsgP48c55GR0/QodHAm2vo1W/Ww2jQscEWHAFJj0NXOR+7mhac/HaR9t/1tyFy9lw4O2POlGbcHiE/U1i2Hg6/kFWqxzm4FBY0tJlESmcln5iebMXRGcq/0OWayKW54NacR8eRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TITtatTj; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779802160; c=relaxed/simple;
+	bh=bWs5iBHaZpaDceS+ISlKl30xwFuON0KQHCBvXgOeZpA=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=JV5zGiOdPULG2p+J3NCM+VyCW0hlmf5Gzgb/6Jre9AxmlJV2wIn5KnPAwvgJR19nZVLLAqAI4AFCzQ8uE5ABKh1pbHNmWU02OdDAcDbzHYBUgXXaxKd/fD8GaX7eTmfF0z1MTbWfmbIKeyetnluLZkZz0PCAFBxhOsBnVpeFnw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BGfRs7C7; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TITtatTj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 793F71F000E9;
-	Tue, 26 May 2026 13:25:59 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BGfRs7C7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C84591F000E9;
+	Tue, 26 May 2026 13:29:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779801963;
-	bh=F1H6PxWdK7ElO8sXwbyLzjpAZlZnOUADTxmFnZZJISI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=TITtatTjeuXKHP3vxhkMEUcUKI7aQF+KQAkDyIgK0iTk1YtqaWlWAc/NduBPKYfWd
-	 BYW65ooqwULFumubeML0s9CcVKhQhpv2s8C7oUbhV8rJyac8kfYLoPiODnjdRE+lHp
-	 PKTeqF/mQc5XZ/bIJd/1eNRUWf6eqa9qn7kmpoCxlqOOg5QLSgqziQLKkPsHiFNyBZ
-	 +oHX5/MU89S30gtshdh+SRGe292Rl4cGaKO+xtSkF9ucMVDKcYaJW3Gy3pwh/oTJ8m
-	 c/FdR9OPiamccYfUrulbWfvS1VaYCglE8LB09DUrqfmsi4f8/Ie/o3sAE3TMiB4zoD
-	 rP31HXqWZpJmA==
-Date: Tue, 26 May 2026 14:25:56 +0100
-From: Mark Brown <broonie@kernel.org>
-To: Mark Rutland <mark.rutland@arm.com>
-Cc: Marc Zyngier <maz@kernel.org>, Joey Gouly <joey.gouly@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Will Deacon <will@kernel.org>, Paolo Bonzini <pbonzini@redhat.com>,
-	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <shuah@kernel.org>,
-	Oliver Upton <oupton@kernel.org>, Dave Martin <Dave.Martin@arm.com>,
-	Fuad Tabba <tabba@google.com>, Ben Horgan <ben.horgan@arm.com>,
-	linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org,
-	Peter Maydell <peter.maydell@linaro.org>,
-	Eric Auger <eric.auger@redhat.com>
-Subject: Re: [PATCH v10 02/30] arm64/fpsimd: Update FA64 and ZT0 enables when
- loading SME state
-Message-ID: <d8074c6b-9bc9-496e-8a74-94ac18ce9a55@sirena.org.uk>
-References: <20260306-kvm-arm64-sme-v10-0-43f7683a0fb7@kernel.org>
- <20260306-kvm-arm64-sme-v10-2-43f7683a0fb7@kernel.org>
- <ahWWqU51Zffmhlo5@J2N7QTR9R3>
+	s=k20260515; t=1779802158;
+	bh=v+mD3T1/Y50iRZ86jhhx2i/GaX49aeqF++iG6Je5h2E=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=BGfRs7C7seZsPU1p2DYR8SwTkqk/52ltDy5I2G9ga/msmKaX9kD+iXTlFd+HmFG1b
+	 u51CbbPjFOafCer010ddADNeeBUEZ5l211QZEATJScfXog76QPgkjSzsHrE2pyRtsf
+	 5oHLPq7D+KFk2DCujqtF7MQgyDsXJmFWUM/794lacGaJBD1GvuAZBhLBlBXVuekUYg
+	 LDm4dwhRF/i5XzrDIlbkaGoMz+vd/pS1k6y+LjMyzE7ql8kgc0r/WOOL3YVY6tLhNp
+	 GU6Ifcx0+x9qLZrYbdLhg8e5HVFBOf9d7WE+bHDU19PATIlrDipd9RDlwh8wC11GQD
+	 /D9Mck/ztFdYw==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v5 07/18] mm: rename uffd-wp PTE accessors to uffd
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Kiryl Shutsemau" <kirill@shutemov.name>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260526130509.2748441-8-kirill@shutemov.name>
+References: <20260526130509.2748441-8-kirill@shutemov.name>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Tue, 26 May 2026 13:29:18 +0000
+Message-Id: <20260526132918.C84591F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="H7xcdA+9c3FyZG2q"
-Content-Disposition: inline
-In-Reply-To: <ahWWqU51Zffmhlo5@J2N7QTR9R3>
-X-Cookie: You are fairminded, just and loving.
 
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
 
---H7xcdA+9c3FyZG2q
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Pre-existing issues:
+- [Critical] copy_hugetlb_page_range() incorrectly applies huge_pte_clear_u=
+ffd() to non-present swap entries (HWPoison and Migration entries), which f=
+ails to clear the intended bit and can corrupt the swap entry's offset.
+--
 
-On Tue, May 26, 2026 at 01:48:41PM +0100, Mark Rutland wrote:
-> On Fri, Mar 06, 2026 at 05:00:54PM +0000, Mark Brown wrote:
+commit e93aa2eb8e2d0c3ad18e5c1d814ca772bba7232e
+Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
 
-> > We provide a helper which does the configuration as part of a
-> > read/modify/write operation along with the configuration of the task VL,
-> > then update the floating point state load and SME access trap to use it.
+mm: rename uffd-wp PTE accessors to uffd
 
-> > +		if (fa64)					\
-> > +			__new |= SMCR_ELx_FA64;			\
-> > +		if (zt0)					\
-> > +			__new |= SMCR_ELx_EZT0;			\
+This commit mechanically renames uffd-wp PTE accessors, capability queries,
+and scan enums to drop the -wp suffix. This prepares the codebase for
+userfaultfd RWP to reuse the same PTE bit for access tracking.
 
-> I'd strongly prefer that we make it the caller's responsiblity to track
-> all the bits within SMCR, rather than requiring each caller to pass a
-> bag of booleans.
+> diff --git a/mm/hugetlb.c b/mm/hugetlb.c
+> index 571212b80835e..d0c81a056ae2a 100644
+> --- a/mm/hugetlb.c
+> +++ b/mm/hugetlb.c
+> @@ -4918,10 +4918,10 @@ int copy_hugetlb_page_range(struct mm_struct *dst=
+, struct mm_struct *src,
+>  		softleaf =3D softleaf_from_pte(entry);
+>  		if (unlikely(softleaf_is_hwpoison(softleaf))) {
+>  			if (!userfaultfd_wp(dst_vma))
+> -				entry =3D huge_pte_clear_uffd_wp(entry);
+> +				entry =3D huge_pte_clear_uffd(entry);
 
-I was explicitly going for the opposite of that in order to make it
-harder for someone implementing a future extension to miss a place where
-an update is required, having the callers independently constructing the
-register values feels like it's asking for trouble.
+[Severity: Critical]
+This is a pre-existing issue, but doesn't this incorrectly apply the
+present-PTE clear function to a non-present swap entry?
 
-> 	unsigned long __task_smcr(const struct task_struct *tsk)
-> 	{
-> 		unsigned long vq = sve_vq_from_vl(task_get_sme_vl(tsk));
-> 		unsigned long smcr = vq - 1;
+For non-present entries like hwpoison or migration entries, shouldn't we use
+pte_swp_clear_uffd() instead of huge_pte_clear_uffd()?=20
 
-I agree that's a better pattern for the main kernel - we could also do
-something similar with a task_set_smcr() which wraps the explicitly
-specifed version.  That would I think avoid most of the issue you're
-seeing?
+Since huge_pte_clear_uffd() targets the present-PTE bit index, which on
+architectures like arm64 is located at a different bit (e.g., bit 58) than
+the swap PTE bit index (bit 3).
 
---H7xcdA+9c3FyZG2q
-Content-Type: application/pgp-signature; name="signature.asc"
+Migration entries store the page PFN in the swap offset. Could clearing the
+wrong bit accidentally corrupt the PFN? When the migration completes, this
+corrupted PFN could then be restored into the PTE.
 
------BEGIN PGP SIGNATURE-----
+>  			set_huge_pte_at(dst, addr, dst_pte, entry, sz);
+>  		} else if (unlikely(softleaf_is_migration(softleaf))) {
+> -			bool uffd_wp =3D pte_swp_uffd_wp(entry);
+> +			bool uffd =3D pte_swp_uffd(entry);
+> =20
+>  			if (!softleaf_is_migration_read(softleaf) && cow) {
+>  				/*
+> @@ -4931,12 +4931,12 @@ int copy_hugetlb_page_range(struct mm_struct *dst=
+, struct mm_struct *src,
+>  				softleaf =3D make_readable_migration_entry(
+>  							swp_offset(softleaf));
+>  				entry =3D swp_entry_to_pte(softleaf);
+> -				if (userfaultfd_wp(src_vma) && uffd_wp)
+> -					entry =3D pte_swp_mkuffd_wp(entry);
+> +				if (userfaultfd_wp(src_vma) && uffd)
+> +					entry =3D pte_swp_mkuffd(entry);
+>  				set_huge_pte_at(src, addr, src_pte, entry, sz);
+>  			}
+>  			if (!userfaultfd_wp(dst_vma))
+> -				entry =3D huge_pte_clear_uffd_wp(entry);
+> +				entry =3D huge_pte_clear_uffd(entry);
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmoVn2QACgkQJNaLcl1U
-h9B0uAf9FsOQ191IjRxjDWRTIzKuXKL2RhEm/vJESCmoiliG05She/LfLMIqhDji
-Q/cC/kYbmSE3xPCIIztZVByWhLSAIjMP1qWJ8W3yjzVVb22SlVdR5LgX7Ul7v2hz
-VT9uQ1cHmCbdotaBfkRiVvlege2YZwhAYTA5zCvqN+4yL2CWGjB4260gU2yh+jXJ
-pwK0TpvHk5jC3X3JLLtW9B9YzzcmWKbkwe1wQCsRvG9K8HHdXJzLHn30t5o7NSsY
-nr3laBeKco7QBfqsrXfyQhpPahS34qLzpYrf41C3ZjLxt2nBIr/lGGN1Fs4owBdt
-Kh2RXpL5IcSeFr8jyQ2A4InBCsw8kw==
-=vL5s
------END PGP SIGNATURE-----
+[Severity: Critical]
+This isn't a bug introduced by this patch, but this shares the same issue as
+above. We are clearing the UFFD bit on a migration entry using
+huge_pte_clear_uffd().=20
 
---H7xcdA+9c3FyZG2q--
+Is it possible to change this to pte_swp_clear_uffd() to avoid corrupting
+the migration entry's PFN?
+
+>  			set_huge_pte_at(dst, addr, dst_pte, entry, sz);
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526130509.2748=
+441-1-kirill@shutemov.name?part=3D7
