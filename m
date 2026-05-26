@@ -1,40 +1,60 @@
-Received: from canpmsgout03.his.huawei.com (canpmsgout03.his.huawei.com [113.46.200.218])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A700B3C09F7;
-	Tue, 26 May 2026 06:29:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.218
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 391692139C9;
+	Tue, 26 May 2026 06:33:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779776975; cv=none; b=bLoq83JyFfMSpv/AmAB5FZPkt+1lygWoCuD6y2nVTz4vh4lxS4c6SkBHWqp7PoDLtlkuqoVsaZgGq3Nr2gPsfJrGGAjutAqFRRr4Ez9znqyYoD2vezB7t6Wmq/LLKXN16EYd4vLKpDWAzsLqmup9pWGckw2urFaDqB1OBTwEIkg=
+	t=1779777222; cv=none; b=OmU6EDIWOKW0OkVh4n1gaNI5zlXd1d1X+CxqApPzUdu6OM41dGajCE5CZepajuEsvk6dxlMmToI8ukesTuvDCiuI1M0EKzurGk7l9Nv2jpH1bxyGMb4/Iza3OWmyZcnG8LJP8ZNQxNK64QDy0/zKZXRNB8mipDEAbW37X+IsLMw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779776975; c=relaxed/simple;
-	bh=myc9srhre8R2a2/GTSs/nvUGqfo++Ll/SKMOUuaQqgc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=POCx6v3boKQ6486vtL9MVFwqrCs/H83ho7RvOvvZo/IQGRYMQ28lLbgu+izeSYkUXTcNGfKR5y4/xgH+CqWyrq7irxSPt7idjix0HQ0/1LirDtvWsuxGafDdlXksor+BL1iNpD+2YbtSwnyqc+5MJ4L7VyadjC3BQAwXXLuG1ig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=ceBt+Vuq; arc=none smtp.client-ip=113.46.200.218
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1779777222; c=relaxed/simple;
+	bh=HKAO9maESbKI4Exfss2i7RDbJyHWmkSIKxamB9uJhLA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=t4ngz1QZxZGdyOFo38h/r30NAfdlASdEELDIMkPFB0Ev9YySaT6l6I04ksU4102e4RZnOmQB50KufmeKDR64TKSDk3W/5y78A5LCxj550Z+OLUhHc/j5HYKPd/KFRZWCZO1wEiisfZtQo4YHKAlyV3wBg1iH14rHokHbFqcdctI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=cpfdUPE5; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="ceBt+Vuq"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=Um3vskZODifbfeUX6kCi4lUUt/2FPn9XXLI2b92pr4A=;
-	b=ceBt+VuqqaBj/KSRKlBrJylsd3/VMfAx5/0EQHQZ13GK4xJYzODPHcLuiRG0sF+slPJNGweMl
-	zcGAwmmi8n8SXpTbqKJluV4WmsM5ifyt1G6UvckgGdi2XWDvG++lhV+FB9Q1raVjFuS6mmuwykx
-	vbvNeSAtSj22pnfhhFoiZOg=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout03.his.huawei.com (SkyGuard) with ESMTPS id 4gPjMd1TvvzpSvR;
-	Tue, 26 May 2026 14:22:05 +0800 (CST)
-Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
-	by mail.maildlp.com (Postfix) with ESMTPS id 508AF20104;
-	Tue, 26 May 2026 14:29:29 +0800 (CST)
-Received: from [10.67.121.161] (10.67.121.161) by
- kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.11; Tue, 26 May 2026 14:29:28 +0800
-Message-ID: <4e1055e9-3e75-4cf7-a5c6-ccffe9c1b585@huawei.com>
-Date: Tue, 26 May 2026 14:29:28 +0800
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="cpfdUPE5"
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64PN5oCG4112531;
+	Tue, 26 May 2026 06:33:07 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=pp1; bh=lSSTgI
+	JxElpRPZXCwCiqCKzOkrKn0h4qZngFuiv7DgQ=; b=cpfdUPE5GXZtk7jlSz6ZR/
+	9gZW04DexbKzX0Ao2CT9354Iq2VdPZ2LkuXTN020t0l+7B4S649D87v25jlxY+Z1
+	fptQYAGSz4U5aA71XLqZ1+H3eQpa7MDV5OebBvNT3zPJqwCxtO8XZwiyvCKZW5MP
+	vNjZ7GOVmQmOFsP4ubf8V4Him10gnMSvo6Q7A6UvS6mY/vhC/3AqKH1kb7LNpw7O
+	kK7Yapbyl/J5v1llS2nr+NsDqecbtAf9nkMrdYO9JZUk5E+sQenhTiu3kVQOb9oN
+	vN+A7y4ar4YBnHSMpgpwI4Ob/Cor1Wx5MmfeegXRaDOVBfx0sRlOjBwPGHH/R2DA
+	==
+Received: from ppma21.wdc07v.mail.ibm.com (5b.69.3da9.ip4.static.sl-reverse.com [169.61.105.91])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4eb4pd9t75-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 26 May 2026 06:33:06 +0000 (GMT)
+Received: from pps.filterd (ppma21.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma21.wdc07v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64Q6O35j009870;
+	Tue, 26 May 2026 06:33:06 GMT
+Received: from smtprelay05.dal12v.mail.ibm.com ([172.16.1.7])
+	by ppma21.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4ebqjjr3xx-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 26 May 2026 06:33:06 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (smtpav06.dal12v.mail.ibm.com [10.241.53.105])
+	by smtprelay05.dal12v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64Q6X5mr30147200
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 26 May 2026 06:33:05 GMT
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 6C7D958055;
+	Tue, 26 May 2026 06:33:05 +0000 (GMT)
+Received: from smtpav06.dal12v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 1FE0558043;
+	Tue, 26 May 2026 06:33:00 +0000 (GMT)
+Received: from [9.123.0.169] (unknown [9.123.0.169])
+	by smtpav06.dal12v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 26 May 2026 06:32:59 +0000 (GMT)
+Message-ID: <76f82194-9afb-4dfe-ad96-ae338c7db61d@linux.ibm.com>
+Date: Tue, 26 May 2026 12:02:58 +0530
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -42,313 +62,94 @@ List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v11 5/5] vfio/pci: Add VFIO_DEVICE_FEATURE_TPH_ST for TPH
- ST entry management
-To: Alex Williamson <alex@shazbot.org>
-CC: <jgg@ziepe.ca>, <wathsala.vithanage@arm.com>, <helgaas@kernel.org>,
-	<wei.huang2@amd.com>, <wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
-	<liuyonglong@huawei.com>, <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
-References: <20260518071701.25177-1-fengchengwen@huawei.com>
- <20260518071701.25177-6-fengchengwen@huawei.com>
- <20260521221008.59ddf977@shazbot.org>
- <512bce27-13a2-44a1-aa5b-b5ea77c174ba@huawei.com>
- <20260522082730.3d843a7f@shazbot.org>
-Content-Language: en-US
-From: fengchengwen <fengchengwen@huawei.com>
-In-Reply-To: <20260522082730.3d843a7f@shazbot.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
- kwepemk500009.china.huawei.com (7.202.194.94)
+Subject: Re: [PATCH] KVM: Validate irqchip index for LoongArch and PowerPC
+Content-Language: en-GB
+To: Yanfei Xu <yanfei.xu@bytedance.com>, zhaotianrui@loongson.cn,
+        maobibo@loongson.cn, chenhuacai@kernel.org, maddy@linux.ibm.com,
+        npiggin@gmail.com, sashiko-reviews@lists.linux.dev, seanjc@google.com,
+        pbonzini@redhat.com
+Cc: kvm@vger.kernel.org, loongarch@lists.linux.dev,
+        linuxppc-dev@lists.ozlabs.org, caixiangfeng@bytedance.com,
+        fangying.tommy@bytedance.com, isyanfei.xu@gmail.com,
+        Sashiko <sashiko-bot@kernel.org>, stable@vger.kernel.org
+References: <20260525070154.495455-1-yanfei.xu@bytedance.com>
+From: Harsh Prateek Bora <harshpb@linux.ibm.com>
+In-Reply-To: <20260525070154.495455-1-yanfei.xu@bytedance.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Authority-Analysis: v=2.4 cv=OdqoyBTY c=1 sm=1 tr=0 ts=6a153ea3 cx=c_pps
+ a=GFwsV6G8L6GxiO2Y/PsHdQ==:117 a=GFwsV6G8L6GxiO2Y/PsHdQ==:17
+ a=IkcTkHD0fZMA:10 a=NGcC8JguVDcA:10 a=f7IdgyKtn90A:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=RnoormkPH1_aCDwRdu11:22 a=RzCfie-kr_QcCd8fBx8p:22
+ a=VwQbUJbxAAAA:8 a=968KyxNXAAAA:8 a=VnNF1IyMAAAA:8 a=VhF_hiyGZBDqKw0Zxd0A:9
+ a=QEXdDO2ut3YA:10
+X-Proofpoint-GUID: LRBMiiFu8R_IMzxWSnnQX7_Q9AYoCXuw
+X-Proofpoint-ORIG-GUID: 5_W0oqDVcmHgDExfvwT3FxNm3zkLR1hH
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI2MDA1MSBTYWx0ZWRfX90z2vKmC0yAk
+ CWSucWXg+h4/Q/KVFzuUyOVTM3Ffn5pOF70e9b6dUfaJEKlTKVS5FhR0ih3lCU5NshKV2HubsWL
+ SLfOz2KgQyFTWyDyk2c5VFMWK1WwrBK2V9He1yI9qH2vWFfu8CbOiIp2svrl8Uq45ssuZG3u1Ui
+ cuswYiUbKsINKddCpffjDXQZri/svJx49y8R9X0UXJ5QeIaEer68I3nADevAk7o7ZS6KHC7DBh7
+ MG28r5i57DGfw6xEXwCLKnf0V7ak8mqhnXdEfVg1oz1XtuJKej7DUYpLPsxWAu1QchEvUJRRzOU
+ iv4n2vwDpREmpc8NxtC0O7SgemcbY5bh0qeZ95hhSCXTfhTLcwq9eHdse9QCZxpX66x3iCn1oei
+ xB1qrl0z7NgLSMif/uc2QI9feykHP1Y9tJixKyB/lftuVZyDsUVJxUFB8gmLDmtZlH8qNq8mrER
+ 2NZy1yKpnBXTVaXu5PQ==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.51,FMLib:17.12.100.49
+ definitions=2026-05-26_01,2026-05-18_01,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ priorityscore=1501 impostorscore=0 clxscore=1011 malwarescore=0
+ lowpriorityscore=0 bulkscore=0 suspectscore=0 adultscore=0 spamscore=0
+ phishscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
+ definitions=main-2605260051
 
-On 5/22/2026 10:27 PM, Alex Williamson wrote:
-> On Fri, 22 May 2026 18:04:13 +0800
-> fengchengwen <fengchengwen@huawei.com> wrote:
++ cc: stable@vger.kernel.org
+
+On 25/05/26 12:31 pm, Yanfei Xu wrote:
+> Sashiko reported that irqchip index is not validated for LoongArch and
+> PowerPC. Add validation and reject out-of-range irqchip indexes to avoid
+> indexing past the routing table's chip array.
 > 
->> On 5/22/2026 12:10 PM, Alex Williamson wrote:
->>> On Mon, 18 May 2026 15:17:01 +0800
->>> Chengwen Feng <fengchengwen@huawei.com> wrote:
->>>   
->>>> Add VFIO_DEVICE_FEATURE_TPH_ST to allow userspace to manage PCIe TPH
->>>> Steering Tag entries.
->>>>
->>>> SET: Program contiguous ST entries when ST table resides in TPH Capability
->>>>      or MSI-X table. U32_MAX CPU ID clears the corresponding ST entry.
->>>> GET: Retrieve ST values per CPU ID, only available in DS mode.
->>>>
->>>> Both operations are only valid when TPH is enabled on the device.  
->>>
->>> What?  That doesn't align with the hardware programming model.  The
->>> specification even suggests that the device should be quiesced or TPH
->>> disabled during programming of the steering tags for deterministic
->>> behavior.  
->>
->> As mentioned in the 4/5 commit, obtaining ST must first enable TPH.
->> Of course, I think it might be necessary to calculate pdev->tph_req_type
->> during the capability detection phase, so that we can modify ST before
->> enabling TPH. Do you think such a modification is needed?
+> Fixes: de9ba2f36368 ("KVM: PPC: Support irq routing and irqfd for in-kernel MPIC")
+> Fixes: 1928254c5ccb ("LoongArch: KVM: Add irqfd support")
+> Reported-by: Sashiko <sashiko-bot@kernel.org>
+> Closes: https://lore.kernel.org/kvm/20260525051714.485D51F000E9@smtp.kernel.org/
+> Signed-off-by: Yanfei Xu <yanfei.xu@bytedance.com>
+> ---
+>   arch/loongarch/kvm/irqfd.c | 3 ++-
+>   arch/powerpc/kvm/mpic.c    | 3 ++-
+>   2 files changed, 4 insertions(+), 2 deletions(-)
 > 
-> I think a uAPI that doesn't align with the recommended programming
-> order of the specification, potentially resulting in non-deterministic
-> behavior is bogus.
-> 
->>>> Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
->>>> ---
->>>>  drivers/vfio/pci/vfio_pci_core.c | 91 ++++++++++++++++++++++++++++++++
->>>>  include/uapi/linux/vfio.h        | 41 ++++++++++++++
->>>>  2 files changed, 132 insertions(+)
->>>>
->>>> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci_core.c
->>>> index 0d0140202280..13a22c1d6ea6 100644
->>>> --- a/drivers/vfio/pci/vfio_pci_core.c
->>>> +++ b/drivers/vfio/pci/vfio_pci_core.c
->>>> @@ -1558,6 +1558,95 @@ static int vfio_pci_core_feature_token(struct vfio_pci_core_device *vdev,
->>>>  	return 0;
->>>>  }
->>>>  
->>>> +static int vfio_pci_core_feature_tph_st(struct vfio_pci_core_device *vdev,
->>>> +					u32 flags,
->>>> +					struct vfio_device_feature_tph_st __user *arg,
->>>> +					size_t argsz)
->>>> +{
->>>> +	bool is_set = !!(flags & VFIO_DEVICE_FEATURE_SET);
->>>> +	struct vfio_device_feature_tph_st tph_st;
->>>> +	struct pci_dev *pdev = vdev->pdev;
->>>> +	enum tph_mem_type mtype;
->>>> +	int i, j, ret;
->>>> +	u32 *cpus;
->>>> +	u16 st;
->>>> +
->>>> +	guard(mutex)(&vdev->tph_lock);  
->>>
->>> Wrong place for this lock.  Why do we even need it?  If a user races
->>> SET/GET with enable/disable, that's their problem.  
->>
->> OK, will fix in next version
+> diff --git a/arch/loongarch/kvm/irqfd.c b/arch/loongarch/kvm/irqfd.c
+> index f4f953b22419..40ed1081c4b6 100644
+> --- a/arch/loongarch/kvm/irqfd.c
+> +++ b/arch/loongarch/kvm/irqfd.c
+> @@ -51,7 +51,8 @@ int kvm_set_routing_entry(struct kvm *kvm,
+>   		e->irqchip.irqchip = ue->u.irqchip.irqchip;
+>   		e->irqchip.pin = ue->u.irqchip.pin;
+>   
+> -		if (e->irqchip.pin >= KVM_IRQCHIP_NUM_PINS)
+> +		if (e->irqchip.pin >= KVM_IRQCHIP_NUM_PINS ||
+> +		    e->irqchip.irqchip >= KVM_NR_IRQCHIPS)
+>   			return -EINVAL;
+>   
+>   		return 0;
+> diff --git a/arch/powerpc/kvm/mpic.c b/arch/powerpc/kvm/mpic.c
+> index 3070f36d9fb8..fb5f9e65e02e 100644
+> --- a/arch/powerpc/kvm/mpic.c
+> +++ b/arch/powerpc/kvm/mpic.c
+> @@ -1833,7 +1833,8 @@ int kvm_set_routing_entry(struct kvm *kvm,
+>   		e->set = mpic_set_irq;
+>   		e->irqchip.irqchip = ue->u.irqchip.irqchip;
+>   		e->irqchip.pin = ue->u.irqchip.pin;
+> -		if (e->irqchip.pin >= KVM_IRQCHIP_NUM_PINS)
+> +		if (e->irqchip.pin >= KVM_IRQCHIP_NUM_PINS ||
+> +		    e->irqchip.irqchip >= KVM_NR_IRQCHIPS)
 
-I still keep the lock which used to protect the ST table shadow
-
->>
->>>   
->>>> +
->>>> +	ret = vfio_check_feature(flags, argsz,
->>>> +				 VFIO_DEVICE_FEATURE_GET |
->>>> +				 VFIO_DEVICE_FEATURE_SET,
->>>> +				 sizeof(tph_st));
->>>> +	if (ret <= 0)
->>>> +		return ret;
->>>> +
->>>> +	if (!enable_unsafe_tph ||  
->>>
->>> Why did we allow the feature to be probe if it can't be used?  
->>
->> OK, will fix in next version
-
-done in v12
-
->>
->>>   
->>>> +		pcie_tph_enabled_mode(pdev) == PCI_TPH_ST_NS_MODE)  
->>>
->>> Here's that ambiguity of reporting NS_MODE for disabled, but as above
->>> it's a bogus requirement.  
->>
->> OK, will fix in next version
-
-done in v12
-
->>
->>>   
->>>> +		return -EOPNOTSUPP;
->>>> +	if (!is_set && pcie_tph_enabled_mode(pdev) != PCI_TPH_ST_DS_MODE)  
->>>
->>> Why?  Let the interface be symmetric that GET works regardless of mode.  
->>
->> OK, will remove the restrict
-
-done in v12
-
->>
->>>   
->>>> +		return -EOPNOTSUPP;
->>>> +	if (is_set && pcie_tph_get_st_table_loc(pdev) == PCI_TPH_LOC_NONE)
->>>> +		return -EOPNOTSUPP;
->>>> +
->>>> +	if (copy_from_user(&tph_st, arg, sizeof(tph_st)))
->>>> +		return -EFAULT;
->>>> +
->>>> +	if (tph_st.count == 0 || tph_st.count > VFIO_TPH_ST_MAX_COUNT ||
->>>> +		tph_st.flags > VFIO_TPH_ST_MEM_TYPE_PM)  
->>>
->>> Wrong operation for a flags field.  
->>
->> Because currently flags only use bit0 (0-VM, 1-PM), this judge make sure
->> it will return error if userspace passing non-zero in remain bits.
-> 
-> This should be a mask to test undefined bits are not set, not a value
-> comparison.
-
-done in v12
-
-> 
->>>> +		return -EINVAL;
->>>> +	if (!is_set && tph_st.index != 0)  
->>>
->>> We can only GET index 0?  Why?  
->>
->> Because GET operation don't need index, this judgment make sure
->> it will return error if userspace passing non-zero index.
-> 
-> The interface is not symmetric.
-
-Referring to your suggestion, I redesigned the interface (v12).
-
-supporting two mutually exclusive operation modes:
-    1. Raw table read/write: Operate shadow ST table, sync updates to hardware
-       TPH capability or MSI-X table. Failed batch write triggers entry
-       rollback to keep hardware consistent.
-    2. CPU ID lookup: Query translated steering tag by specified memory type,
-       pure read-only without modifying ST table.
-
-The first operation (raw table) is symmetric.
-
->  
->>>> +		return -EINVAL;
->>>> +	if (is_set && (tph_st.index >= VFIO_TPH_ST_MAX_COUNT ||
->>>> +		       tph_st.index + tph_st.count > VFIO_TPH_ST_MAX_COUNT))  
->>>
->>> DS can have more that 2048 steering tags.  
->>
->> I check the PCIE protocol, DS mode with ST in pcie-config or msi-x must not
->> hold > 2048 steering tags.
-> 
-> The MSI-X storage location is limited to 2048, but DS mode doesn't
-> necessarily use either of these storage locations.
-> 
->>>> +		return -EINVAL;
->>>> +
->>>> +	cpus = memdup_array_user(&arg->data, tph_st.count, sizeof(*cpus));  
->>>
->>> Use an __aligned_u64 data_uptr like iommufd does and avoid copying this
->>> into the kernel.  Isn't this steering tags, why's it named cpus?  
->>
->> we reuse the field which according your previous suggestion:
->> in GET, user pass in cpus, and vfio will feedback steering tags in cpus.
-> 
-> Perhaps this was over stated, but aligning to the generic uAPI name
-> since it's dual-purpose would seem to make sense.
->  
->>>> +	if (IS_ERR(cpus))
->>>> +		return PTR_ERR(cpus);
->>>> +
->>>> +	mtype = tph_st.flags & VFIO_TPH_ST_MEM_TYPE_PM ? TPH_MEM_TYPE_PM :
->>>> +							 TPH_MEM_TYPE_VM;  
->>>
->>> Then why did we use two flag bits for this?  
->>
->> VFIO_TPH_ST_MEM_TYPE_PM is just one bit, could you explain the two flag bits?
-> 
-> My bad, I overlooked that they're both shifted by 0.  Typically we
-> wouldn't define both the 0 and 1 value, only the latter.
->  
->>>> +	if (!is_set) {
->>>> +		for (i = 0; i < tph_st.count; i++) {
->>>> +			ret = pcie_tph_get_cpu_st(pdev, mtype, cpus[i], &st);  
->>>
->>> My understanding was that GET would return the translated values from a
->>> previous SET, not translate on the fly.  I think in order to support
->>> writing STs before enabling TPH, we're going to need to store them
->>> somewhere anyway so that we can push them to the correct location when
->>> TPH is enabled.  That means there a buffer for SET/GET regardless of
->>> the mode that's enabled.  
->>
->> OK, will try to fix
-
-done in v12
-
->>
->>>   
->>>> +			if (ret)
->>>> +				goto out;
->>>> +			cpus[i] = st;
->>>> +		}
->>>> +		goto out;
->>>> +	}
->>>> +
->>>> +	for (i = 0; i < tph_st.count; i++) {
->>>> +		if (cpus[i] == U32_MAX) {
->>>> +			ret = pcie_tph_set_st_entry(pdev, tph_st.index + i, 0);  
->>>
->>> Why do we need a magic value to set it to zero?  Hardware doesn't have
->>> a "clear ST register value".  
->>
->> So you mean for SET, usespace direct passing steering-tag not cpus in this patch?
-> 
-> How does this work with Zhiping's series where there might be TPH values
-> exposed through the dma-buf to support p2p DMA?  Where would that level
-> of TPH programming occur?
-
-My patch set has two basic functions:
-1. Obtain the ST corresponding to the specified CPU.
-2. Set and read the ST table.
-
-Zhiping's patchset is used to cache the P2P data to an Lx cache in the GPU, it
-include two part:
-1. Set the ST corresponding to a DMABUF of the GPU (the ST is obtained in another
-   way and is not in the kernel).
-2. Set the ST to the ST table of the MLX NIC.
-
-The two can be unified to some extent, as long as the following two points are met:
-1. An interface is provided to obtain whether the req_tph_type is normal or extend.
-   In this way, the 8-bit ST or 16-bit ST of the GPU can be selected based on the
-   type.
-2. An interface is provided to obtain the target ST index. In this way, the
-   corresponding ST index can be directly written based on my patchset.
-
-The following uses the setting of the ST cache stash for P2P as an example:
-1. The application obtains the ST corresponding to a DMABUF of the GPU in other ways.
-   The ST can be 8-bit or 16-bit or both.
-2. The application calls the VFIO interface to obtain the req_tph_type supported by
-   the NIC device (whether only 8-bit or 16-bit is supported).
-3. The application determines which ST to be selected based on 1 and 2.
-4. The application calls the interface to obtain the target ST index. This interface
-   may be provided by the vendor driver.
-5. The application calls the SET ST ENTRY VFIO interface to set the ST to the NIC.
-
->  
->>>> +			if (ret)
->>>> +				goto out;
->>>> +			continue;
->>>> +		}
->>>> +
->>>> +		ret = pcie_tph_get_cpu_st(pdev, mtype, cpus[i], &st);
->>>> +		if (ret)
->>>> +			goto out;
->>>> +		ret = pcie_tph_set_st_entry(pdev, tph_st.index + i, st);
->>>> +		if (ret)
->>>> +			goto out;  
->>>
->>> Clearly broken for DS mode.  
->>
->> For DS mode:
->> 1\ if ST table in CONFIG or MSI-X, then it could done by this way
->> 2\ if ST table not in CONFIG or MSI-X, then it only need invoke GET, and set by device-specific way.
-> 
-> The SET only after enable model is broken, DS mode needs to support
-> SET, where GET returns the host translations.  Thanks,
-
-done in v12
-
-BTW, there are two points I would like to retain:
-1. Whether to allocate temporary cache in ioctl—I retained it in version v12
-   because the interface supports batch operations, and copying only a portion
-   each time would affect performance.
-2. After the device is taken over and released by vfio, I still maintained the
-   call to pcie_disable_tph in v12 because this ensures that the software state
-   remains consistent with the hardware state.
-
-Thanks
-
-> 
-> Alex
+Reviewed-by: Harsh Prateek Bora <harshpb@linux.ibm.com> # PPC KVM
+>   			goto out;
+>   		break;
+>   	case KVM_IRQ_ROUTING_MSI:
 
