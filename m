@@ -1,93 +1,141 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F20BB3C0A1A
-	for <kvm@vger.kernel.org>; Tue, 26 May 2026 19:14:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F596377009;
+	Tue, 26 May 2026 19:35:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779822897; cv=none; b=Y69wRJBCCUTYfgAN8v37Xe6hml357roVeRPR0J21oQ0GDfIbXWJsv1+oT0H8bxdakNrcVE5JOkq962uSeRGkduw48WtzJHSO1BcQNrxa2q1oXEbY4Vl18GTlhE0iQd0c9h8nyqwPjb6vIrqWWPzHIGb19m7iael5qiDYm0f7xcg=
+	t=1779824117; cv=none; b=Y+2qJfQoXrK5nNgCxBtWVFzIxl5m8akR08YkjnJTE5Gh8HzAiBWBaFnWvb7ToBE7rTxV9Nuv+lANgYu7Lwpf7nHHb29bMFUeAhZ5apvK3AwS6TdI/NyAhNaA29ZgYisN4/HauHTUUZ3Qakl70XPHvi8i20InA8pZp3pZS5AiS9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779822897; c=relaxed/simple;
-	bh=dKF8dhPCpCOpz8wBx+QwX3wSntBAN0hT0/ziOW11cl0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=B0rUKXqZ8rOZIvnsxg4tuqcxqv9kDtSiJL1+VoGWbDnJGZc4KqVRmfuXRuxiNE55v2NNGq4nyECxyLizbrQVpnf47T9HWei+QrNwzTQMyLfeJlRo057pU5osHAnb+WZQSmEUNz+9k86jc8yv3vb/ZVYmGo2rIHv5EuzvDaJjQ7o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I9Hb7E4l; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1779824117; c=relaxed/simple;
+	bh=odo8NTIQ0dTJqfJ9cjC18K0+ZBsCnrh6snt1thkGFhE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=b5hmDVDtOiBVNfcZKgHQ3A4tWypyC/9eVYahSQOO2Pdteyui2NsnQaxgnQ/GmNmVd8NNHgzmIEkfaYdC06+C/NzjUNu0+s6MiwwEr2goEFdLFdzz9APzlwQV/YCRUIEpNFlPypAVgIMLZDdHG3/MDdl78pR7IMx/EFT9GRr2joU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GK8EOjS/; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I9Hb7E4l"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b4678c6171so119286765ad.1
-        for <kvm@vger.kernel.org>; Tue, 26 May 2026 12:14:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779822895; x=1780427695; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mwn3Zsnn2yuB32x6MdgS3rMVrimBb61d0On2s1kwTYc=;
-        b=I9Hb7E4lnhBMLAh1Pki01RhJmumzGYygpjyotfQp2ooYKEzn2bkrKeW6GW8jsVhSCd
-         fY1iLviXPW8ZJWeew0X//IjjeKqUOixtntA5f2xEy3eQcKI9PJUHgJ9omIZRrbs8NV3S
-         VEfe3Os5STDzzP9F+fkE+8HWieNHvSSkQo0mmpMpRzFZMqjHrEgKYd8NkovLs/KOjutq
-         goBKMkThQKgZiV92ltTHEZIAe+LNEZpaxKE27pJR24UBB/fr/YFsdZzvmk2hAzMdRMKE
-         qsToqPmyJzJziBtK1I9Txfi7gFzZbeWiniOF94SDcwY2QsL7FhYIkTol+XtYGDqNl6r+
-         K8Fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779822895; x=1780427695;
-        h=content-transfer-encoding:cc:to:from:subject:message-id:references
-         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=mwn3Zsnn2yuB32x6MdgS3rMVrimBb61d0On2s1kwTYc=;
-        b=HW6ruSBgL/FkDbp61KtobIamlj9zRD9jZE0Xb6fU90NNzXXkUVhx+2645gT9BNuWSj
-         PEh8yxhji1DWv9zAli2FF9/5oRLCUqm58tx0PNG3gyXO5Al/BSUVLLM3+YDH72R3FI+e
-         O09D4AdflBir4kc70J8e4eRvlsX6VqgrHuPy+egTgcqpsUSjZTmYw8QdR8aqCs5qMirc
-         zPlVrpi8ar0IqVCqfVreJZqVPsysD5SHc9xIkgy40SFs5orL7sNriT779S7Ar2v4J5xt
-         LyI5+ME5TcDgqZzlcHPTnwtd3rVXHVR6otzwcPsrTOzvFZncAJXmTFFA9WhVqGD1KLiz
-         6akg==
-X-Gm-Message-State: AOJu0YywdGVujr2D6n8CLpRj8KcEQWXDe3AUnzO18NoaUZtagmia8eKz
-	n7SNOvKQYspwjnY0HKaqZictWLtUr2vS+UkBC8eJFKjY7b4iRWw9bOX0LhU8On9oGMbxacm7vaU
-	nvdXa1g==
-X-Received: from plec21.prod.google.com ([2002:a17:902:f315:b0:2bc:ae06:63a9])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:b84:b0:2bc:db35:96c7
- with SMTP id d9443c01a7336-2beb07ed803mr208583365ad.28.1779822895127; Tue, 26
- May 2026 12:14:55 -0700 (PDT)
-Date: Tue, 26 May 2026 12:14:54 -0700
-In-Reply-To: <b4dd2e22-2364-40ed-a06f-4082adb309d1.zhang_wei@open-hieco.net>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GK8EOjS/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E531F000E9;
+	Tue, 26 May 2026 19:35:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779824116;
+	bh=zCHYwAhMAGk6oeQDjijUVO8ob9Vx+9syF8qD2oS+U2Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=GK8EOjS/H0sQwLkoicKKMlEMegTWCcQfkdFsliLJzr1oHWvoptR3bU6ftNI8cGqqe
+	 rIbSrAKjknpLjmQ+/vUceg30Igqcoc31/WYSiJoalazETQ3Fc1yZs7Bjj26OZwJuxm
+	 XSx/Z6zU0o2YpxGJ/o7wHVT/6yt4yBVSOSfQ6nzAMgID6pOfp0mqxMlPTyBKGlglT0
+	 LlE6v6IfhyQ6b9wUCsaT3dh6bQrLqQXD2Kjuq1r/57IzxJiMzS0L8j/htISG8C6cP7
+	 r28LtUMiuCb2Z7KyiogipPXZll1EumYmjfFrSiVAR3jaACC0bn0KcsnDb3jlYMSQCF
+	 IaR729Wq1lLZg==
+Date: Tue, 26 May 2026 12:35:10 -0700
+From: Nathan Chancellor <nathan@kernel.org>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: tglx@kernel.org, linux-kernel@vger.kernel.org,
+	Sean Christopherson <seanjc@google.com>,
+	Jim Mattson <jmattson@google.com>,
+	Binbin Wu <binbin.wu@linux.intel.com>,
+	Vishal L Verma <vishal.l.verma@intel.com>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	Rick P Edgecombe <rick.p.edgecombe@intel.com>,
+	Binbin Wu <binbin.wu@intel.com>, "x86@kernel.org" <x86@kernel.org>,
+	Paolo Bonzini <bonzini@redhat.com>,
+	Calvin Owens <calvin@wbinvd.org>
+Subject: Re: [PATCH v3 1/2] x86/kvm/vmx: Move IRQ/NMI dispatch from KVM into
+ x86 core
+Message-ID: <20260526193510.GA2851089@ax162>
+References: <20260423155611.216805954@infradead.org>
+ <20260423155936.843498069@infradead.org>
+ <20260508091829.GO3126523@noisy.programming.kicks-ass.net>
+ <20260520230621.GA706311@ax162>
+ <20260526090631.GA4149641@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <ahBScosf2jUlKdAt@google.com> <b4dd2e22-2364-40ed-a06f-4082adb309d1.zhang_wei@open-hieco.net>
-Message-ID: <ahXxLup2MZkyli1W@google.com>
-Subject: Re: [PATCH] KVM: SVM: Disable AVIC IPI virtualization on Hygon Family
- 18h (erratum #1235)
-From: Sean Christopherson <seanjc@google.com>
-To: "=?utf-8?B?5byg5beN?=" <zhang_wei@open-hieco.net>
-Cc: kvm <kvm@vger.kernel.org>, pbonzini <pbonzini@redhat.com>, 
-	mlevitsk <mlevitsk@redhat.com>, naveen <naveen@kernel.org>, 
-	linux-kernel <linux-kernel@vger.kernel.org>, stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: quoted-printable
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260526090631.GA4149641@noisy.programming.kicks-ass.net>
 
-On Mon, May 25, 2026, =E5=BC=A0=E5=B7=8D wrote:
-> On Fri, May 22, 2026, Sean Christopherson wrote:
-> > IIUC, family 18h is carved out entirely for Hygon, correct?  I.e.
-> > there's no risk of disabling IPI virtualization on unaffected AMD CPUs?
->=20
-> Yes, that is my understanding.
->=20
-> The original Hygon enablement [1] uses Family 18h together with the
-> HygonGenuine vendor ID to distinguish Hygon Dhyana from AMD Family 17h,
-> and explicitly states that only Hygon is expected to use Family 18h.  So
-> this should not affect unaffected AMD CPUs.
->=20
-> I can add an X86_VENDOR_HYGON check too if you prefer making the
-> dependency explicit.
+On Tue, May 26, 2026 at 11:06:31AM +0200, Peter Zijlstra wrote:
+> 
+> Sorry, I missed this :/
 
-No need, I just wanted to double check.  And this is already in Linus' tree=
-,
-commit 9a12fa5213cf ("KVM: SVM: Disable AVIC IPI virtualization on Hygon Fa=
-mily
-18h (erratum #1235)"), so what I would have preferred is irrelevant :-)
+No worries, I should have pinged about it elsewhere sooner.
 
-Thanks for the follow-up!
+> Subject: x86/kvm/vmx: Fix x86_64 CFI build
+> 
+> I missed that idt_do_interrupt_irqoff() gets compiled on x84_64; this is
+> a problem for CFI builds because it includes an unadorned indirect call.
+> It is however completely dead code.
+> 
+> Rework things to not emit this function at all.
+> 
+> Fixes: 0701c9e17bd9 ("x86/kvm/vmx: Move IRQ/NMI dispatch from KVM into x86 core")
+> Reported-by: Nathan Chancellor <nathan@kernel.org>
+> Reported-by: Calvin Owens <calvin@wbinvd.org>
+> Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+
+> ---
+> diff --git a/arch/x86/entry/common.c b/arch/x86/entry/common.c
+> index 06c7c6ebd6f9..14cd43d4da6c 100644
+> --- a/arch/x86/entry/common.c
+> +++ b/arch/x86/entry/common.c
+> @@ -55,7 +55,7 @@ noinstr void x86_entry_from_kvm(unsigned int event_type, unsigned int vector)
+>  	 * The FRED NMI context is significantly different and will not work
+>  	 * right (specifically FRED fixed the NMI recursion issue).
+>  	 */
+> -	idt_entry_from_kvm(vector);
+> +	idt_do_nmi_irqoff();
+>  }
+>  EXPORT_SYMBOL_FOR_KVM(x86_entry_from_kvm);
+>  #endif
+> diff --git a/arch/x86/entry/entry.S b/arch/x86/entry/entry.S
+> index a56e043b266d..2bc217bb5475 100644
+> --- a/arch/x86/entry/entry.S
+> +++ b/arch/x86/entry/entry.S
+> @@ -109,11 +109,13 @@ EXPORT_SYMBOL(__ref_stack_chk_guard);
+>  	RET
+>  .endm
+>  
+> +#ifndef CONFIG_X86_64
+>  .pushsection .text, "ax"
+>  SYM_FUNC_START(idt_do_interrupt_irqoff)
+>  	IDT_DO_EVENT_IRQOFF CALL_NOSPEC _ASM_ARG1
+>  SYM_FUNC_END(idt_do_interrupt_irqoff)
+>  .popsection
+> +#endif
+>  
+>  .pushsection .noinstr.text, "ax"
+>  SYM_FUNC_START(idt_do_nmi_irqoff)
+> diff --git a/arch/x86/kernel/idt.c b/arch/x86/kernel/idt.c
+> index 7bcf1decc034..90a22e24a9eb 100644
+> --- a/arch/x86/kernel/idt.c
+> +++ b/arch/x86/kernel/idt.c
+> @@ -268,18 +268,10 @@ void __init idt_setup_early_pf(void)
+>  }
+>  #endif
+>  
+> -#if IS_ENABLED(CONFIG_KVM_INTEL)
+> -noinstr void idt_entry_from_kvm(unsigned int vector)
+> +#if IS_ENABLED(CONFIG_KVM_INTEL) && !defined(CONFIG_X86_64)
+> +void idt_entry_from_kvm(unsigned int vector)
+>  {
+> -	if (vector == NMI_VECTOR)
+> -		return idt_do_nmi_irqoff();
+> -
+> -	/*
+> -	 * Only the NMI path requires noinstr.
+> -	 */
+> -	instrumentation_begin();
+>  	idt_do_interrupt_irqoff(gate_offset(idt_table + vector));
+> -	instrumentation_end();
+>  }
+>  #endif
+>  
+
+-- 
+Cheers,
+Nathan
