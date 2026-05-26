@@ -1,150 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from flow-b3-smtp.messagingengine.com (flow-b3-smtp.messagingengine.com [202.12.124.138])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0355C38C437;
-	Tue, 26 May 2026 08:18:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4513B2EDD6B;
+	Tue, 26 May 2026 08:19:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.138
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779783536; cv=none; b=p6lZAssWLPZ1zSr5RmmxW3WxihiBLVVLgwGP0N8wYRwwEeL3r8guyHXzPWW3suC9kShYdUWKOJAKRyQwNvZgsil+tMARTONFt4/xEBfVk7IKg6A3mjwnC04R/rAafqW89WN87/BOo2uNJPmYvX0IVy+y9ZR0hYA58GHbXwPbmP8=
+	t=1779783568; cv=none; b=bOgWOIPq0UJ6yOxXVGcZT7NMvxqUaKJhCslhdAGrCGgY18vHLlxVvdlR8zkrJhYrmQtz6ieskHPBt6MtgphaCYVmw35YOFNAiggo0HWOTo7PkkZXxKKAfYz3J9a84wtHatumoaQLUgT3jXJzoUxipp8VnvRrryPlTzphUcjZvWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779783536; c=relaxed/simple;
-	bh=7P07CdNOmQGZJg0EfjRUCspGiu3wZVRoU5sO7ejYFVU=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=OKD1F1nUMkpDs/pvzS9wuutvrAuvM6Qdfu0Cht+C/C3K76iETbFKF+1PDYv/xf2h38aS0AvHs32Zc7Hrmqsl6v82s0lIDDbnYcoyOYTOQPGe0z7AuNYPppXQa675yvw46WHMRnkY3+owUCvJW1koI3kOSNfgrKknaw9b2ce/1nc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YhoaFJ8w; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779783568; c=relaxed/simple;
+	bh=k8RtWdr2AcJtsgbhOZVyq2BgQBN8G21AAOzH8w6CyvA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oyOG26GkrwWhuLaebbTiSewrPVjtGjmcm7knAOoNyRS9DWvliekVxWuiKrNee7G1W5IIVupvQeO9qQ12v2Vjewn4KRv7higMFmi9XUcYyhH0fpzDjmcP0APrUNugFgu7btqaECrtOyTQB5G+qAp9bSRn9jTJREThkmRoG3OhGVc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name; spf=pass smtp.mailfrom=shutemov.name; dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b=NNMcuZoz; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=t5TCYBJH; arc=none smtp.client-ip=202.12.124.138
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=shutemov.name
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shutemov.name
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YhoaFJ8w"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79B0C1F000E9;
-	Tue, 26 May 2026 08:18:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779783534;
-	bh=RXdz+9PIJL9vx3rhCrYf2R/KTQGogpAk1EQvVwIpdTM=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date;
-	b=YhoaFJ8wrC9xwTCjYSyEEnZM5dx/I8fEq65/EY9kz2L9wZEf/dmXSda69IjErci3X
-	 h2HS/THuoineYzYBkpICBbL4kaUh0Y08PqkZ/4apbAHZlKStj2yYr6/Jx0MJRsxP2S
-	 U2NV55R59Yd60YPK7xq/cxqZCqcyN0XjvyQAjkW/LL2JaYk4oRq1CWH2EMS7AM5X+b
-	 nJ1++ZbieLKLvkKCTMhfUzwmU31iscN8rEOcxrYwtP2MFycPdVQtq1ya2xgDUAMBsB
-	 GLv6BedlIYhuabuJuNBSTK8l9Be1j+v9nhUhFY/0T8w0H9wbYdHRbtn4OPrbYUiyfJ
-	 t8v5uFFLA9hhg==
-X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
-From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+	dkim=pass (2048-bit key) header.d=shutemov.name header.i=@shutemov.name header.b="NNMcuZoz";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="t5TCYBJH"
+Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
+	by mailflow.stl.internal (Postfix) with ESMTP id B6754130018A;
+	Tue, 26 May 2026 04:19:23 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-05.internal (MEProxy); Tue, 26 May 2026 04:19:25 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shutemov.name;
+	 h=cc:cc:content-type:content-type:date:date:from:from
+	:in-reply-to:in-reply-to:message-id:mime-version:references
+	:reply-to:subject:subject:to:to; s=fm2; t=1779783563; x=
+	1779790763; bh=NZv6DmRHsbAvyhU5VLHqEzbXbswDumT7KoHiGFwcjS4=; b=N
+	NMcuZoz+vT7pqMT9TnQljKDBpFqwmj78ogb2CR1FVUjR7CUPaGx1vVq3CNfa7M82
+	S3110WO9V/RGdvWxThX00e48cgLPfYpl1ZRqzhLsMWUPToefmbgPXWVFDvpZFdXb
+	288BzcyB2SFw0DoyBMxh+SzDJ5hN/Vl/76AjAb913P6h8WO0hniYifZWNvKxz3fh
+	JTzg6Q39Hu8iT2pAfccvgva58NQ69JdFJ1+YLoFXDz24WVPIp0oLJLQYS6B7XyYq
+	QYEpiZqy50vhSEbHW5ZRjul4gyEs+9eOS7NZMpaZtebqe1aH9SbG7fGNUhvTS/TO
+	W+IVlFJ5KWrzoy57toDuQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=
+	1779783563; x=1779790763; bh=NZv6DmRHsbAvyhU5VLHqEzbXbswDumT7KoH
+	iGFwcjS4=; b=t5TCYBJHdLNsxFEkQbKmYIRZwBaRBimwbvFosqSH1njr1zWX3dk
+	U+K+G51A46JPj2GKC1/4UgduhU96c7cJKe7O5hnYMYXtxAdWX76pcss1vKsXEdBL
+	vxVZrE62joOcTKRogMh1o1DfJuG0iL+AupHtuv3QJgMRMo6/x7d9yVVjV8dEU1zH
+	0+Mykptm9VkCm2Yomz1fsSi/2P27mSnmHEsQp0uDGsv37baf+INpQ94jM+RD2Hvp
+	S41wC6ZwTaTkxx/npE1lUjOKmexInMoRem+E75HBNw9Vw5TF4SyDlDQFodUxyk7I
+	9i+Cm9mdPRFeZmBU0aN4E7/p3W0eRZAwL5g==
+X-ME-Sender: <xms:ilcVag74itIFR2KD_wU1wJSlcm08voAA3bWLKq-EJag-EaC0YAFgMQ>
+    <xme:ilcVaqS6TVaRJD54bayaqHjFj_TQYXKKjT3erd6dre_vcN0HiTdJHgZi58ISD7DS3
+    JMdk4h_P4wFHNCTQaUIVzVjPX5F6ZtY13AC2yvDoC3U7GsW-bg75Y4>
+X-ME-Received: <xmr:ilcVapsVL30QWKNuN98-R1YfLYLH8u37eQOQUh7eeidHZTJI6KzgwRda7ZUvyw>
+X-ME-Proxy-Cause: dmFkZTGg3NKGEoTEY919NCtnOF8MXOv3USa+FVzdfGv8gK+6Kmljj9Z7v+MEhBOmgQ4iJz
+    2wkryOqsOOaL72yi/M9sWzEc2149MsMisNlSFsbjS2gc4WdjUB1aMMawTlxaNfjsVW9dII
+    R0i7J6B+bwSd+x0K9fRdEAtCQLXpfvwBXFKonzv+hsxozQjCRiBrUq+9trag9LFaMeWwLw
+    uYts+B7zg01wIjauFMjqZkURWggbx/h2EfR7rxs3yAa1jzHPFQB6AGBsGlpCUDRbV4j4de
+    jUbsEfDZQWvNRB2FmLkOYhv1Ae+RJKanr0+cxI61K9142+8LcdCDjsJjTPJZpjHgmRfSgQ
+    b+kVapfvL/TRnNIo1+vDt9AEIpEhNalldrNMDB+L2DR2+qi/krrW0BjTrxC8M44EYkHpAN
+    Kog5k8r7BvYencRrXX6SRUvv0VVL6u/Auw+3NsY9Fh0/tYV7mlNNl4AWlrFhZvycIA4NiH
+    ONClnHj1O33ouGoEDFDI39O4wIb4YKoe1EPycCPzb6U9bj+9euSdE0cxwudMTPiPgZPO3b
+    JDeqtl1N2YoBjXClkgqSPQyFk9WzsxFVb4f929aLSmtQgLD+NVG33DcGNYTQVcUWqllkdF
+    2Nx8b9c1sR6/BCQH0FN55gMnfx1/9tPuR8eIUD1QQK8Z+WovoWueBlV5a9JQ
+X-ME-Proxy: <xmx:ilcVapt-OAd4UoTqoiR5yS5t8LDd5Ctkc9mueTqlIRgTFzkN-5qlJg>
+    <xmx:ilcVahepuMvCuvNXf2n_WXImHh3faz3xDbTkrsj79OJ7BhUEtGrv0Q>
+    <xmx:ilcVas6IGiIsnNh9XJE3GNP0qZP2olrro0gRqCCkw7ybgOCPdOd3zw>
+    <xmx:ilcVaik7rIxQdrGwf_D1Jk3lXr5gbvOsZFsUyjUYtbRkAtDHtl0CtQ>
+    <xmx:i1cVagYklGZxC9VVnFQWBN53-Kkuw3Gg3XrNoE5Iff-8cbhsP3341TpK>
+Feedback-ID: ie3994620:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 26 May 2026 04:19:20 -0400 (EDT)
+Date: Tue, 26 May 2026 09:19:14 +0100
+From: Kiryl Shutsemau <kirill@shutemov.name>
 To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Subject: Re: [PATCH v5 5/5] iommufd/vdevice: add TSM request ioctl
-In-Reply-To: <20260525221834.AD7021F000E9@smtp.kernel.org>
-References: <20260525154816.1029642-6-aneesh.kumar@kernel.org>
- <20260525221834.AD7021F000E9@smtp.kernel.org>
-Date: Tue, 26 May 2026 13:48:50 +0530
-Message-ID: <yq5ase7eshw5.fsf@kernel.org>
+Cc: kvm@vger.kernel.org, akpm@linux-foundation.org, rppt@kernel.org, 
+	peterx@redhat.com, david@kernel.org, ljs@kernel.org, surenb@google.com, 
+	vbabka@kernel.org, Liam.Howlett@oracle.com, ziy@nvidia.com, corbet@lwn.net, 
+	skhan@linuxfoundation.org, seanjc@google.com, pbonzini@redhat.com, jthoughton@google.com, 
+	aarcange@redhat.com, sj@kernel.org, usama.arif@linux.dev, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, linux-kselftest@vger.kernel.org, 
+	kernel-team@meta.com
+Subject: Re: [PATCH v4 06/14] mm: preserve RWP marker across PTE rewrites
+Message-ID: <ahVXF5gplFCK7HDc@thinkstation>
+References: <20260525113737.1942478-7-kas@kernel.org>
+ <20260525120819.C18561F000E9@smtp.kernel.org>
+ <ahRk5tphnTx_CVnA@thinkstation>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ahRk5tphnTx_CVnA@thinkstation>
 
-sashiko-bot@kernel.org writes:
+On Mon, May 25, 2026 at 04:07:15PM +0100, Kiryl Shutsemau wrote:
+> On Mon, May 25, 2026 at 12:08:19PM +0000, sashiko-bot@kernel.org wrote:
+> > Pre-existing issues:
+> > - [High] Failure to write-protect the destination PTE in
+> > copy_present_page() completely bypasses UFFD_WP tracking for pinned
+> > pages.
+> 
+> Confirmed and pre-existing -- copy_present_page() builds the dest PTE
+> with maybe_mkwrite(pte_mkdirty(pte), dst_vma) and only adds the UFFD
+> bit, never wrprotects. Will address in a separate fix after this
+> series.
 
-> Thank you for your contribution! Sashiko AI review found 3 potential issue(s) to consider:
-> - [High] The ioctl handler incorrectly truncates the `ssize_t` residue from `tsm_guest_req()` to a 32-bit `int`, causing valid large positive residues to be misinterpreted as negative error codes.
-> - [Medium] The `IOMMU_VDEVICE_TSM_REQ` ioctl omits the TSM implementation-specific result code (`tsm_code`), preventing userspace from forwarding it to the guest.
-> - [Low] Manual initialization of `sockptr_t` bypasses kernel macros.
-> --
->
-> commit d5ee59b85809ac88694767fcc899de1ccc2821ca
-> Author: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
->
-> iommufd/vdevice: add TSM request ioctl
->
-> This commit adds the IOMMU_VDEVICE_TSM_REQ ioctl to issue TSM guest
-> request/response transactions against an iommufd vdevice. It forwards
-> these requests through the new tsm_guest_req() helper to the PCI TSM
-> backend, supporting CoCo guest device attestation.
->
->> diff --git a/drivers/iommu/iommufd/tsm.c b/drivers/iommu/iommufd/tsm.c
->> index 09ee668dbed9d..342fbdb6a6b95 100644
->> --- a/drivers/iommu/iommufd/tsm.c
->> +++ b/drivers/iommu/iommufd/tsm.c
-> [ ... ]
->> +int iommufd_vdevice_tsm_req_ioctl(struct iommufd_ucmd *ucmd)
->> +{
->> +	int rc;
->
-> [Severity: High]
-> tsm_guest_req() returns an ssize_t representing the unconsumed byte residue,
-> and the user-provided req_len and resp_len are __u32.
->
-> If the residue is between 2GB and 4GB, could it overflow this 32-bit signed
-> rc variable and become a negative value? This could cause the libc ioctl()
-> wrapper to incorrectly treat a successful request as a failure.
->
-> Would it be safer to return the residue by modifying a field in
-> struct iommu_vdevice_tsm_req instead of returning unbounded positive values
-> via the ioctl return code?
->
+Looking closer, this is false alarm. pte_mkuffd() makes the PTE
+write-protected. No change needed.
 
-req_len and resp_len are both 32 bits.
-
->
->> +	struct iommufd_vdevice *vdev;
->> +	struct iommu_vdevice_tsm_req *cmd = ucmd->cmd;
->> +	struct tsm_guest_req_info info = {
->> +		.scope = cmd->scope,
->> +		.req   = {
->> +			.user = u64_to_user_ptr(cmd->req_uptr),
->> +			.is_kernel = false,
->> +		},
->
-> [Severity: Low]
-> Could this use the USER_SOCKPTR() macro to initialize the sockptr_t safely
-> instead of manually setting .user and .is_kernel? Bypassing the macro makes
-> this fragile against future layout changes in the sockptr_t structure.
->
->> +		.req_len = cmd->req_len,
->> +		.resp    =  {
->> +			.user = u64_to_user_ptr(cmd->resp_uptr),
->> +			.is_kernel = false,
->> +		},
->> +		.resp_len = cmd->resp_len,
->> +	};
-> [ ... ]
->> diff --git a/drivers/virt/coco/tsm-core.c b/drivers/virt/coco/tsm-core.c
->> index 3870d08ffe0d1..c24886851f9e0 100644
->> --- a/drivers/virt/coco/tsm-core.c
->> +++ b/drivers/virt/coco/tsm-core.c
-> [ ... ]
->> +ssize_t tsm_guest_req(struct device *dev, struct tsm_guest_req_info *info)
->> +{
->> +	int ret;
->> +	enum pci_tsm_req_scope pci_scope;
->> +
->> +	if (!dev_is_pci(dev))
->> +		return -EINVAL;
->> +
->> +	ret = tsm_pci_req_scope(info->scope, &pci_scope);
->> +	if (ret)
->> +		return ret;
->> +
->> +	return pci_tsm_guest_req(to_pci_dev(dev), pci_scope, info->req,
->> +				 info->req_len, info->resp, info->resp_len,
->> +				 NULL);
->
-> [Severity: Medium]
-> pci_tsm_guest_req() supports returning a TSM implementation-specific result
-> code via the tsm_code parameter, but it is passed NULL here and omitted
-> from struct iommu_vdevice_tsm_req.
->
-> Do userspace VMMs need this architecture-specific result code to
-> determine the outcome and failure reasons of attestation flows, and
-> accurately emulate the hardware TSM interface for the guest?
->
-
-Will update the iotcl to include tsm_code as part of the response. 
-
->
->> +}
->> +EXPORT_SYMBOL_GPL(tsm_guest_req);
->
-
--aneesh
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
