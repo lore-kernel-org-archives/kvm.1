@@ -1,133 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60FA8224B05
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 02:40:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1924528B4E2;
+	Wed, 27 May 2026 02:42:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779849658; cv=none; b=tUl7IxuCf1lFPiCrBOT6M4cjdsGL+XSISBCL00Y4fm0vVtCRsCSgzudNdqAHBQE9ujMOcrZV9kxMz3glEE1p5x31I+SKDf9iYjlBF6uEH6i4uzxMOvaGYQRUg5JtgYgdV09Z2IcsIV/blmenDUVc/qLmgvVPHvod8Rc4SnqGqUM=
+	t=1779849748; cv=none; b=XYlwLhQD8ScSsyzr3LaWD+sD3TMhoA4HCOTCTQ8bHzD1ZMcGCSurhV/5En/X/a9B/5oaeDyH82PjwylnPDfR60o1jSS/UTRgk2QODvRLGhwq7tIhGKvvjoSeGCiZK6od1J2heot3O8WP0kRoUbYgj0D+LaTsj73sQG8Z+Mresvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779849658; c=relaxed/simple;
-	bh=JDN8H7+QusmJKhDSObJAHa+aJXXXjy111PTT2ztgp1o=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Cejyxv2jve6UUG2xd5hOGzxOTJ4b/RhoEoNbGjeqtEHZBZ0MNG+Gd38Yxd61fZgnimjCmEOAn754C0NurWsoV+Kee/Y3nltHPLW92JUi4SlAe73/26lyyW2FyX1x0AqIdJh+h+hDLZRAxYDF/ICEk/egQ2t3wUPkrwz9T8Em9s0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HBeIjb+c; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779849748; c=relaxed/simple;
+	bh=LWLxBWu0oUQRieiXt3Qx1lppTPdmdDzSyoQOZ1xnVnU=;
+	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=rZgl7fjjIi0D7fUccOx7/UuhlBVOBcC2ShxIF6NKogAlP8E04ulu9ggrY/XS+L+E4xV6Mdkg71fW7ijPle7xm8xOx1nGmqh+AZuQm0KIeP8A94lDwAMrxiEVfjIaz7Ez4qRokQ2ljb6RpqSofuhdd/SUvWZFBpOUYMvWdLZCdV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=N81+mgxL; arc=none smtp.client-ip=113.46.200.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HBeIjb+c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 290821F000E9;
-	Wed, 27 May 2026 02:40:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779849657;
-	bh=TYLmXzMogZNkjPXiIqPFQmRqtzI6V4jnls0Qzzt31SM=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=HBeIjb+cMc1jQVNt5awDa2p7HtuBXB0zSMGDj4P70VHQPqDKoLvRSWkedE4xc3V7h
-	 Hr8aIWfp3kysPyUkA0lQyUFtle8GAaY76xPGUF9WhqHMa6LKf6TkGX+EHLc6Y4jzPs
-	 GbuWDsn5dzKwACuR2dCJikv17N0ExZZpUecxIT6iLvkzZd2XvjNwMjG2xnP1lvs2IT
-	 dVXTDokCDYimNYk7OEWtYRrZYvBntm8tHDw5TgG0IoGfL/EI0UhTRmWzPBP9L+yC4+
-	 2yqo0WqRhHwYLnHmFemSZzTImWMHEJC0qAIAyJo/b5Xdu9QT/3lzUGTwvi1wy3PFL/
-	 9MliH78vCZsMA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 10/10] selftests/vfio: igb: Use offical IGB headers
- in selftest driver
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Josh Hilke" <jrhilke@google.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260526235417.2058313-11-jrhilke@google.com>
-References: <20260526235417.2058313-11-jrhilke@google.com>
-Content-Type: text/plain; charset=utf-8
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="N81+mgxL"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=LWLxBWu0oUQRieiXt3Qx1lppTPdmdDzSyoQOZ1xnVnU=;
+	b=N81+mgxLPtVXoU54AzsJhQF4Q8GJIAxAhJ0adTotEs6zdN5jLHxMCkN7uqGR9iHjt/UbC5KCl
+	JhasNzuWfnr/gRtj5IfWjPyzBEFTiBgUv1kTQA+A0q6fsHfWJxw1HVxOuMF0S6VP4KYV8VNhk8K
+	w5dnC/mCBdwEx0we81TjCi0=
+Received: from mail.maildlp.com (unknown [172.19.162.140])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4gQDGj6V0pzcb43;
+	Wed, 27 May 2026 10:34:37 +0800 (CST)
+Received: from kwepemr100009.china.huawei.com (unknown [7.202.195.37])
+	by mail.maildlp.com (Postfix) with ESMTPS id 1428A2025F;
+	Wed, 27 May 2026 10:42:24 +0800 (CST)
+Received: from kwepemr200017.china.huawei.com (7.202.195.7) by
+ kwepemr100009.china.huawei.com (7.202.195.37) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.36; Wed, 27 May 2026 10:42:23 +0800
+Received: from kwepemr200017.china.huawei.com ([7.202.195.7]) by
+ kwepemr200017.china.huawei.com ([7.202.195.7]) with mapi id 15.02.1544.011;
+ Wed, 27 May 2026 10:42:23 +0800
+From: "malin (R)" <malin89@huawei.com>
+To: Jakub Kicinski <kuba@kernel.org>
+CC: Arseniy Krasnov <avkrasnov@salutedevices.com>, tanjingguo
+	<tanjingguo@huawei.com>, "mst@redhat.com" <mst@redhat.com>,
+	"jasowang@redhat.com" <jasowang@redhat.com>, "xuanzhuo@linux.alibaba.com"
+	<xuanzhuo@linux.alibaba.com>, "eperezma@redhat.com" <eperezma@redhat.com>,
+	"stefanha@redhat.com" <stefanha@redhat.com>, "sgarzare@redhat.com"
+	<sgarzare@redhat.com>, "davem@davemloft.net" <davem@davemloft.net>,
+	"edumazet@google.com" <edumazet@google.com>, "pabeni@redhat.com"
+	<pabeni@redhat.com>, "horms@kernel.org" <horms@kernel.org>, Chenzhe
+	<chenzhe@huawei.com>, cenxianlong <cenxianlong@huawei.com>, cuirongzhen
+	<cuirongzhen@huawei.com>, "virtualization@lists.linux.dev"
+	<virtualization@lists.linux.dev>, "kvm@vger.kernel.org"
+	<kvm@vger.kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH net] vsock/virtio: bind uarg before filling zerocopy skb
+Thread-Topic: [PATCH net] vsock/virtio: bind uarg before filling zerocopy skb
+Thread-Index: Adztggm6M3GXlP0rSUS4BU76FCpiCg==
+Date: Wed, 27 May 2026 02:42:23 +0000
+Message-ID: <bd2b60d9ee5d4edfae4a7ce58ace71a4@huawei.com>
+Accept-Language: zh-CN, en-US
+Content-Language: zh-CN
+X-MS-Has-Attach:
+X-MS-TNEF-Correlator:
+Content-Type: text/plain; charset="us-ascii"
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 27 May 2026 02:40:56 +0000
-Message-Id: <20260527024057.290821F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
-- [Low] Unused macros IGB_ETH_OVERHEAD_SZ and IGB_JUMBO_FRAME_SIZE were int=
-roduced.
-- [Low] Including `e1000_82575.h` without forward declaring `struct e1000_h=
-w` may cause compiler warnings.
-- [Low] The patch uses E1000_EICR_RX_QUEUE0 (a legacy Rx cause mask) to rep=
-resent an MSI-X vector bit in interrupt mask/clear registers.
---
+Hello Jakub,
 
-commit bff1218f00385f0c7ad23675f49b73f63118bf25
-Author: Josh Hilke <jrhilke@google.com>
+> The email headers are duplicated on this patch.
+> This appears to confuse git am into thinking the patch is empty:
+>=20
+> $ git am mbox
+> Patch is empty.
+>=20
+> Please fix this and repost (please add the review tags you already
+> received in the repost)
 
-selftests/vfio: igb: Use offical IGB headers in selftest driver
+My bad. I have sent the right post with git command.
+https://lore.kernel.org/netdev/20260527023301.1075581-1-malin89@huawei.com/=
+T/#u
 
-This commit includes the official Intel network driver header files in
-the igb selftest and refactors the driver to directly utilize standard
-E1000_ prefixed registers and macros. It also removes the duplicated
-registers.h file.
+Please let me know if there is any other problem.
 
-> diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools/t=
-esting/selftests/vfio/lib/drivers/igb/igb.c
-> index 5568b463c2f2b..74b4239545541 100644
-> --- a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-> +++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-> @@ -5,14 +5,19 @@
->  #include <linux/io.h>
->  #include <linux/pci_regs.h>
->  #include <linux/pci_ids.h>
-> +#include <linux/mii.h>
->  #include <libvfio/vfio_pci_device.h>
-> =20
-> -#include "registers.h"
-> +#include "e1000_regs.h"
-> +#include "e1000_defines.h"
-> +#include "e1000_82575.h"
-
-[Severity: Low]
-Since e1000_82575.h contains function prototypes that reference struct e100=
-0_hw,
-which is not declared here, will this cause compiler warnings (like "struct
-e1000_hw declared inside parameter list")? If the selftests are built with
--Werror, could this result in a build failure?
-
-> =20
->  #define PCI_DEVICE_ID_INTEL_82576 0x10C9
->  #define IGB_MAX_CHUNK_SIZE 1024
->  #define MSIX_VECTOR 0
->  #define RING_SIZE 4096 /* Number of descriptors in ring */
-> +#define IGB_ETH_OVERHEAD_SZ 18
-> +#define IGB_JUMBO_FRAME_SIZE (IGB_MAX_CHUNK_SIZE + IGB_ETH_OVERHEAD_SZ)
-
-[Severity: Low]
-Are these new macros used anywhere in the code? It looks like they might be=
- dead
-code since they aren't referenced.
-
-[ ... ]
-
-> @@ -297,15 +300,15 @@ static void igb_hw_init(struct vfio_pci_device *dev=
-ice)
->  	 * IVAR (section 7.3.1.2, register definition in 8.8.13): map RX
->  	 * cause 0 to MSI-X vector 0 and mark the entry valid.
->  	 */
-> -	igb_write32(igb, IGB_GPIE, IGB_GPIE_MULTIPLE_MSIX | IGB_GPIE_EIAME);
-> -	igb_write32(igb, IGB_EIAC, IGB_EICR_VEC0);
-> -	igb_write32(igb, IGB_EIAM, IGB_EICR_VEC0);
-> +	igb_write32(igb, E1000_GPIE, E1000_GPIE_MSIX_MODE | E1000_GPIE_EIAME);
-> +	igb_write32(igb, E1000_EIAC, E1000_EICR_RX_QUEUE0);
-> +	igb_write32(igb, E1000_EIAM, E1000_EICR_RX_QUEUE0);
-> =20
->  	/* Enable interrupts on vector 0 */
-> -	igb_write32(igb, IGB_EIMS, IGB_EICR_VEC0);
-> +	igb_write32(igb, E1000_EIMS, E1000_EICR_RX_QUEUE0);
-
-[Severity: Low]
-Is it semantically correct to use E1000_EICR_RX_QUEUE0 here?
-
-In MSI-X mode, the bits in EIMS, EIMC, EIAC, and EIAM correspond directly to
-MSI-X vectors (where vector 0 is bit 0), rather than legacy interrupt cause=
-s.
-While E1000_EICR_RX_QUEUE0 equals BIT(0) and works mathematically, using a
-legacy cause mask to represent an MSI-X vector bit seems confusing.
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526235417.2058=
-313-1-jrhilke@google.com?part=3D10
+Thanks
+Lin
