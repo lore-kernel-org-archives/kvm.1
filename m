@@ -1,118 +1,113 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FDF390205
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 06:33:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B254317173;
+	Wed, 27 May 2026 06:38:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779863632; cv=none; b=ia2Kd1wBbvvYuRHoJzQHvEMAbB1fWQ7eOQgWB8BDOo7ojVBQhscgYkSqulaNAtaTu+wXmq2Cy/+4TEIWrR+/aNxhiiJTBrzCqVXNQDXUsgSYjBEQV165DvoNloGKK1x0bbXPbrvQc4Qeq4u2tRMfBXbxLFdztfa2d8grnGaiSOk=
+	t=1779863917; cv=none; b=sHWAUcKl4MEaXCgnqeJwYKwapczgsnyaJL6NdBeAGxLfgdy00R4AwojO34RkPRzHwRkmD4+cmmIKP9OnnjuuIx22oiTJVasrZuwH+WFLQTlFp7Fw2owFpMGIfW6Ca1GfU86QRTHJ5qQwdtN5rkOJLvtiQv1rN8KyihlLimkyzXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779863632; c=relaxed/simple;
-	bh=Di57p2d8mm1e9FS3FqEyA3WRW3rSa8huQvwUyH2FPZo=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Q7W4+9/YL24ki2g1VRIIPU9SYCxZyiEuSw0GtMkZ0lr2ETmbx32+IyX5WnlkLEK/7KF/8YxNfA/4nGEUDrHgET+wVkP9cDJ5P0QSezIAtW7ztvYPFsNGiKTdoL9LLszTDrg/z70qJHLAW6au8kfo7+Ju5S7YUVDkuwhHdnPDfYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R6Im29Nq; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779863917; c=relaxed/simple;
+	bh=VSu4XacPTfAAH8TU3ziJiUZvBWBgsgB8TWw5Zo7aixc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=huq8linzTMXSRMtGZV3ejQRopJNF/kMkxzXa31JrDzxVqI1QwN+lrNr7SXWcwlwEMfHhq19HD3Rtz7Ae2fuEUfE604jKREufCDcRL69U+uFyWEHNS/BdpSSvPuHdyRYKAAaQ+9pZf1uqGbieNwcdhjnuJoKTbcPaSz1AuOAPa1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=OfLncmD7; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R6Im29Nq"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 028AB1F000E9;
-	Wed, 27 May 2026 06:33:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779863631;
-	bh=dYRzvQFui2JnN/3x0y+6TN8lYP3zSXb384CYAztEhnc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=R6Im29NqetBCe2qQYJYkmqB4588QSe0eC8FmCn/g8Xj6cyVkdbSXeIgc1YRCMpQf9
-	 rHCREmQJJyu9pxr3ywz5M/rnYryamvNDGCtFuoqAFPNt0zYfi3/NCMExZ9S/sDs02K
-	 cqMC79Rs4WPgOP2jnRqOIcgfRL/ZMadNe33njWv1MRwpDc7X9Da26w5SYWHfrT5RZv
-	 RV8y2cbzfwxlTCkIlFFkLsGvAc0Qe0iifnTgtRVaGYfbyGiqrUA2AsWUIx1EVDomZL
-	 7//NAwDSSjKBLUtYDlhNHVcxqdjIWMRPgTXVtUpa7tkn5ZVc70WOu5fUf44LSt7tSE
-	 xt6MZTYAD/S9g==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 2/3] KVM: riscv: selftests: Refactor ISA and SBI
- extension sublist macros
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Yong-Xuan Wang" <yongxuan.wang@sifive.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260526-kvm-get_reg_list-v2-v2-2-7940a401454a@sifive.com>
-References: <20260526-kvm-get_reg_list-v2-v2-2-7940a401454a@sifive.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 27 May 2026 06:33:50 +0000
-Message-Id: <20260527063351.028AB1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="OfLncmD7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779863915; x=1811399915;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=VSu4XacPTfAAH8TU3ziJiUZvBWBgsgB8TWw5Zo7aixc=;
+  b=OfLncmD70bVfJvRHW/7c0rnNu7cALKKnXIcDYF39mvFqI/PZjbK7tqR0
+   tjMTtxcfb3rlJmYWA4esP8KWrAFA43jBvXvl7Gq6041w5ATfjELPBxLYE
+   S32Pzic26MizFRISehMCBwVZ20mKvT60s3fcMZsY7gxy3fw6943fuTIlC
+   aU08EnbcNkINq/pHfM+cx+cffgNNV2bhn5dc9GGFaGyfK+UGniBUA3UnK
+   tFpD3kcygB227VxsPXEX6SjJUvPM/k9ePz51CSmQ7uA7ok5cfPFPH40/2
+   AVmIDr5bg6OJHh7Z7tQk4dDEqHqNJQwgi1fKsfakAur6XnRXiwGMGQRiT
+   Q==;
+X-CSE-ConnectionGUID: 4MKbSAVaTSGQxSh+e6aIaw==
+X-CSE-MsgGUID: xXOfNSG0SmKWclR966MDIQ==
+X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="92158794"
+X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; 
+   d="scan'208";a="92158794"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 23:38:32 -0700
+X-CSE-ConnectionGUID: Quk2jmmASI6UVSAQSf603g==
+X-CSE-MsgGUID: DpkUDCMMRsOKxfD2sC+3FA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; 
+   d="scan'208";a="246170051"
+Received: from unknown (HELO [10.239.158.45]) ([10.239.158.45])
+  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 23:38:30 -0700
+Message-ID: <9073ac91-3aa4-41e2-bb81-8878409498e5@intel.com>
+Date: Wed, 27 May 2026 14:38:27 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 02/15] x86/virt/tdx: Add extra memory to TDX Module for
+ Extensions
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
+ x86@kernel.org, peter.fang@intel.com, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, sohil.mehta@intel.com,
+ yilun.xu@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-3-yilun.xu@linux.intel.com>
+ <7139c55b-b949-415d-ab82-fca1b1cc3880@intel.com>
+ <ahZpUA62NRdNrkvZ@yilunxu-OptiPlex-7050>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <ahZpUA62NRdNrkvZ@yilunxu-OptiPlex-7050>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
-s) to consider:
-- [Medium] The test configuration name for the RISC-V Vector extension was =
-inadvertently changed from "v" to "vector", breaking command-line compatibi=
-lity and CI scripts.
---
+On 5/27/2026 11:47 AM, Xu Yilun wrote:
+>>> +static void tdx_clflush_hpa_list(struct page *root, unsigned int nr_pages)
+>>> +{
+>>> +	u64 *entries = page_to_virt(root);
+>>> +	int i;
+>>> +
+>>> +	for (i = 0; i < nr_pages; i++)
+>>> +		clflush_cache_range(__va(entries[i]), PAGE_SIZE);
+>>
+>> Is the page flush only needed when CLFLUSH_BEFORE_ALLOC is true?
+>>
+>> If so, it inherits the same decision to always flush as what
+> 
+> Yes it is basically the same as tdx_clflush_page().
+> 
+>> tdx_clflush_page() did. Then, any chance we can use tdx_clflush_page() here
+> 
+> But I don't think we should convert hpa/page/va back and forth just for
+> re-using one line of code.
 
-commit 04b9ab70c63f573228b2b6329b688555ba3e3fd3
-Author: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Because we want/need to flush page as late as possible so that the page 
+flush needs to happen right before SEAMCALL?
 
-KVM: riscv: selftests: Refactor ISA and SBI extension sublist macros
+How about we pass in the struct page * and number into tdx_ext_mem_add() 
+and construct the root page inside it?
 
-This commit refactors the get-reg-list test to use unified sublist macros
-for ISA and SBI extensions, aiming to eliminate code duplication and improve
-maintainability.
+>> so that we have a single central place of the comment to explain the kernel
+>> design decision.
+> 
+> How about I add a comment here to connect this wrapper to
+> tdx_clflush_page():
+> 
+> /*
+>   * Unconditionally flush the pages regardless of CLFLUSH_BEFORE_ALLOC. Inherit
+>   * the same decision as tdx_clflush_page().
+>   */
+> static void tdx_clflush_hpa_list(struct page *root, unsigned int nr_pages)
+> ...
 
-> diff --git a/tools/testing/selftests/kvm/riscv/get-reg-list.c b/tools/tes=
-ting/selftests/kvm/riscv/get-reg-list.c
-> index 8d6fdb5d38b89..cb16c638ce1a1 100644
-> --- a/tools/testing/selftests/kvm/riscv/get-reg-list.c
-> +++ b/tools/testing/selftests/kvm/riscv/get-reg-list.c
-> @@ -1057,37 +1057,17 @@ static __u64 vector_regs[] =3D {
->  #define SUBLIST_BASE \
->  	{"base", .regs =3D base_regs, .regs_n =3D ARRAY_SIZE(base_regs), \
->  	 .skips_set =3D base_skips_set, .skips_set_n =3D ARRAY_SIZE(base_skips_=
-set),}
-[ ... ]
-> -#define SUBLIST_V \
-> -	{"v", .feature =3D KVM_RISCV_ISA_EXT_V, .regs =3D vector_regs, .regs_n =
-=3D ARRAY_SIZE(vector_regs),}
-> +
-> +#define SUBLIST_ISA(ext, extu)				\
-> +	{						\
-> +		.name =3D #ext,				\
-> +		.feature =3D KVM_RISCV_ISA_EXT_##extu,	\
-> +		.regs =3D ext##_regs,			\
-> +		.regs_n =3D ARRAY_SIZE(ext##_regs),	\
-> +	}
+It works either. I don't have strong preference. Let's see if anyone 
+else say something about it.
 
-[ ... ]
-
-> @@ -1153,10 +1131,10 @@ KVM_SBI_EXT_SIMPLE_CONFIG(susp, SUSP);
->  KVM_SBI_EXT_SIMPLE_CONFIG(mpxy, MPXY);
->  KVM_SBI_EXT_SUBLIST_CONFIG(fwft, FWFT);
-> =20
-> -KVM_ISA_EXT_SUBLIST_CONFIG(aia, AIA);
-> -KVM_ISA_EXT_SUBLIST_CONFIG(fp_f, FP_F);
-> -KVM_ISA_EXT_SUBLIST_CONFIG(fp_d, FP_D);
-> -KVM_ISA_EXT_SUBLIST_CONFIG(v, V);
-> +KVM_ISA_EXT_SUBLIST_CONFIG(aia, SSAIA);
-> +KVM_ISA_EXT_SUBLIST_CONFIG(fp_f, F);
-> +KVM_ISA_EXT_SUBLIST_CONFIG(fp_d, D);
-> +KVM_ISA_EXT_SUBLIST_CONFIG(vector, V);
-
-[Severity: Medium]
-Does this inadvertently change the configuration name exposed to users from
-"v" to "vector"?
-
-Since the SUBLIST_ISA macro uses #ext to stringify the name, calling
-KVM_ISA_EXT_SUBLIST_CONFIG(vector, V) sets the name to "vector" rather than
-keeping the original "v".
-
-This changes the user-facing CLI configuration name, which might break
-backwards compatibility for anyone invoking ./get-reg-list --config v or CI
-scripts that rely on the old name.
-
-Could we keep the test configuration name as "v" to avoid breaking
-command-line compatibility?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526-kvm-get_re=
-g_list-v2-v2-0-7940a401454a@sifive.com?part=3D2
