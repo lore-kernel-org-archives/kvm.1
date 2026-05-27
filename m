@@ -1,86 +1,181 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE332367D9
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 17:49:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEDA2453495;
+	Wed, 27 May 2026 17:49:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779904165; cv=none; b=PbBPTG0MX1WplJJozj3zVknGOD4Lbj4S6r/aeVhNbpz7ohqArARaHRkzLzt4z8I4LTjCJD1+B8FinAoY6wZld7I4VVAErFzY4KBajcMWr1HaJzNNabu+MmI0Yxdbw8fm4W/JUIGpyHEQIRBzNLSVfiSWt6OkPZi+Ib4aj2qSt5Y=
+	t=1779904172; cv=none; b=eOlyilXIuBwLuZyp5s2BsKu50xi9KYDFxivjl8ddib3b6/1MnpDmQuGmXkvq3CWncyzM9t/XD3gSdGuefpClYI6uQeGhLeRJq+Y/t5qCPdXGQuGPB+zO7NeUjQrKWRnGPTTyKgpAXiF0RahzWLDmeIf0C5z5SRpc0nq1YWw32j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779904165; c=relaxed/simple;
-	bh=ZmLs2BImNTS697uuYKV7GL+d90yx02AqP4TYiwOmS4U=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Content-Type; b=nGZZdtueuHH+1CltxrUjifrjQUtZeb5ZGY+Nsv2UMnjbWxqPY8yhNJppCb05JT/E/g7SiAUSNvi7VqfGCPJ+x4R1dvDhu9iJJ2cZnKRJvbYHUVTMFFp/IQy6YXBhgWFwUwT2FiLvv2jZUP+ePzQiCwKDUYMsSfuZj5a73VGDCuY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aabrwo6t; arc=none smtp.client-ip=209.85.214.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1779904172; c=relaxed/simple;
+	bh=QHo4vfpTo+OuuUOJhK/ykgVt9OF28GCINhc8L0+DwLY=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=fiyJhb5cvnenwkyAJFA6taOBPqVNkVMNmqxcTHPR5Ov+mS3Os5368YxSY8A+uF6pgBFxeP7f21FXO3NT+MZ7T40S7l8ZohPDOWm3FF5r+8v65rgEAZWdWxNc1YiM3e5NEvz7iwaDG2YMAm6u75Ki5dRs2bQ8ypPelvZktMsmK3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QmO3s03N; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aabrwo6t"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b9b8137828so123300535ad.0
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 10:49:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779904163; x=1780508963; darn=vger.kernel.org;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=KMYTk3hkl99ebNU+1sIwx3gm+Ba8Y+fSM7epDpi6c6g=;
-        b=aabrwo6t3BvFD+3Eiag9ovt+MmHtLG6UBOGJeqWLkwywazVBzUuf4X/bhAkqnpxLlB
-         jbNPmFI+5IjYogTjSPXR6mf4aH/vVFkX9L1ogUuYGHweuQZpJthEELhkpO/Fyr9sarF9
-         SzmFtORKapy6lbkVVz6rqXFAAWjslrLRtKaFYbk3Tkt8ETr4eecXSNu9WFgBY6lYl8V7
-         NeOU7TaiGpfbMANAQY6m/od8CxqcUOW7OmKRPFVD6ivjxH8fLYuLp3gNYfhkkaEefSZq
-         jhOnf305JcVNKeZ8MhE8iCPNhJ3DvQulflCZYnRDa+6ge0PS/eIQPKr6fBIwsTtLe9H1
-         KlKA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779904163; x=1780508963;
-        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KMYTk3hkl99ebNU+1sIwx3gm+Ba8Y+fSM7epDpi6c6g=;
-        b=osvQ0k0e2rK05Ek6ZG4nOrdfvVanbr+KrTfCrhEDK3K35KRz2nGfEuAclk8vB2BV8s
-         PEHFcmzM3QZgreFbaPVOIWCdKMRo5gGrJShH+++dn3gzyJBzze4NOp63ID8kQ3TkXKs4
-         EXOSrbCayXHW4WRQiohyQgcLbzbVbwOhm1lXpUpenL6ASiw8NY5V7+x5bQcnotV0sD6b
-         N99+2uD6PovpWJL2qgMlggLgE+94msuIMBvAPg1AbbtT/L/LQliR6btlPy00qtqbO35s
-         BcNb0hXE1v0BrweLjsx1ghqIdxqpPuH48gr5gUPoRWxEWbaOTyIXimC45MUDEuYAOVyi
-         f7dA==
-X-Forwarded-Encrypted: i=1; AFNElJ/CQw7lLRXFfaKXG69JQCShn211r6P/193Ij29EOFax01h1KoShFINx78pBVJWL+I9mlUE=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx8eh2Xp7yvgwzS+eLNoMw2iRHwxmneOTixLnH6RF/KYu5e9axm
-	1IN7wmDPkgkknav5/UTy+DF1R6wLuzqrxlCmC43CHpvCU+xiaIMrOkIiW/9NlTzjLZORqcn8I6e
-	SQlV+tA==
-X-Received: from plnz8.prod.google.com ([2002:a17:902:8348:b0:2bd:8434:6d14])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2b0f:b0:2bd:63dc:b7ad
- with SMTP id d9443c01a7336-2beb05a227emr251077395ad.2.1779904163215; Wed, 27
- May 2026 10:49:23 -0700 (PDT)
-Date: Wed, 27 May 2026 10:49:08 -0700
-In-Reply-To: <20260227213849.3653331-1-jmattson@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QmO3s03N"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4D841F000E9;
+	Wed, 27 May 2026 17:49:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779904171;
+	bh=SGme9EGefoC4cL8s1RAk5wHcM5ST2icrcVT0s+6JiQc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date;
+	b=QmO3s03NUjN2KFqtIUNtplCgcfaiu+Zcwi+mR9p0ChcHpkFSiBa0c8XOUU77YxoRC
+	 EC+3w96HLGEGLX4iD+1lIV1YJB2h6ncGaOV1DRryGf8wiB26VaRL2WTfu258Kmv5bR
+	 9tJMY3nZ/suiqDc9/rWUBVC85sqTB51FU27hoFmjA/mIY50pjtjg2DEyP+xmAhKoWi
+	 VylILIA7GlyRI9PuJlsSklRpORIYI4TWUAWhtTUvqOy6DyFkVqoQZCTx7cDZUbtGd+
+	 D3A+64reAFfrEt8eJ7xuksT7wzZdkmXU91SPyGB6Sq1fXqjNLqLp3x9pnD417T3vMq
+	 fRws0Ks1kio+g==
+X-Mailer: emacs 30.2 (via feedmail 11-beta-1 I)
+From: Aneesh Kumar K.V <aneesh.kumar@kernel.org>
+To: "Dan Williams (nvidia)" <djbw@kernel.org>,
+	Alexey Kardashevskiy <aik@amd.com>, linux-coco@lists.linux.dev,
+	iommu@lists.linux.dev, linux-kernel@vger.kernel.org,
+	kvm@vger.kernel.org
+Cc: Bjorn Helgaas <helgaas@kernel.org>,
+	Dan Williams <djbw@kernel.org>,
+	Jason Gunthorpe <jgg@ziepe.ca>,
+	Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Xu Yilun <yilun.xu@linux.intel.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Tony Krowiak <akrowiak@linux.ibm.com>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Jason Herne <jjherne@linux.ibm.com>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Eric Farman <farman@linux.ibm.com>, linux-s390@vger.kernel.org
+Subject: Re: [PATCH v5 5/5] iommufd/vdevice: add TSM request ioctl
+In-Reply-To: <yq5apl2gsw6y.fsf@kernel.org>
+References: <20260525154816.1029642-1-aneesh.kumar@kernel.org>
+ <20260525154816.1029642-6-aneesh.kumar@kernel.org>
+ <becd865d-09a4-4ac3-b719-4a0deae2692a@amd.com>
+ <6a168c8ea7d10_2129b2100e@djbw-dev.notmuch> <yq5apl2gsw6y.fsf@kernel.org>
+Date: Wed, 27 May 2026 23:19:15 +0530
+Message-ID: <yq5aldd4spyc.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260227213849.3653331-1-jmattson@google.com>
-X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
-Message-ID: <177989667583.4072071.5439471047016710005.b4-ty@google.com>
-Subject: Re: [kvm-unit-tests PATCH] x86: nVMX: Add retry loop to advanced RTM
- debugging subtest
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
-	Paolo Bonzini <pbonzini@redhat.com>, Yosry Ahmed <yosry@kernel.org>, 
-	Jim Mattson <jmattson@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 27 Feb 2026 13:38:34 -0800, Jim Mattson wrote:
-> Linux commit 400816f60c54 ("perf/x86/intel: Implement support for TSX Force
-> Abort") introduced a feature that temporarily disables RTM on Skylake and
-> similar CPUs (06_55H stepping <= 5, 06_4EH, 06_5EH, 06_8EH stepping <= 0BH,
-> and 06_9EH stepping <= 0CH) via the TSX_FORCE_ABORT MSR, so that all four
-> general purpose PMCs can be used by perf. This feature is on by default,
-> but can be disabled by writing 0 to /sys/devices/cpu/allow_tsx_force_abort.
-> 
-> [...]
+Aneesh Kumar K.V <aneesh.kumar@kernel.org> writes:
 
-Applied to kvm-x86 next, thanks!
+> "Dan Williams (nvidia)" <djbw@kernel.org> writes:
+>
+>> Alexey Kardashevskiy wrote:
+>>>
 
-[1/1] x86: nVMX: Add retry loop to advanced RTM debugging subtest
-      https://github.com/kvm-x86/kvm-unit-tests/commit/dbcb11d7f580
+......
 
---
-https://github.com/kvm-x86/kvm-unit-tests/tree/next
+>>>=20
+>>> I have 3 types of requests to fit here, all go via VM -> KVM -> QEMU ->=
+ IOMMUFD -> TSM.
+>>>=20
+>>> 1) bind/unbind TDI <- moves to CONFIG_LOCKED, this is "OP";
+>>> 2) start/stop TDI <- moves to RUN, this is "GR"? Right now I route it v=
+ia "OP";
+>>> 3) enable/disable MMIO/DMA <- no TDI state change, this is "GR" but whi=
+ch scope is it here?
+>>
+>> The scope parameter was meant to enumerate a security model for classes
+>> of commands that are otherwise opaque to the kernel. However, none of
+>> the commands we are targeting are opaque (private specification with
+>> unknown effect). It now turns out there is no role for @scope for
+>> security.
+>>
+>> Now a command family that iommufd can validate seems useful. As it
+>> stands this implementation aliases command codes across TSMs. Do we
+>> proceed with creating an actual shared command uapi for the truly shared
+>> commands:
+>>
+>> TSM_REQ_TYPE_DEFAULT: Commands every arch needs
+>> TSM_REQ_READ_OBJECT
+>> TSM_REQ_REGEN_OBJECT
+>> TSM_REQ_OBJECT_INFO
+>> TSM_REQ_VALIDATE_MMIO
+>> TSM_REQ_SET_TDI_STATE
+>>
+>> TSM_REQ_TYPE_SEV: Commands only SEV needs
+>> TSM_REQ_SEV_ENABLE_DMA
+>> TSM_REQ_SEV_DISABLE_DMA
+>>
+>> ...or just observe that per CC arch commands are needed to setup the VM
+>> so per CC arch commands are needed to marshal device assignment support
+>> requests.
+>>
+>> In that case pci_tsm_req_scope becomes tsm_req_type and is just:
+>>
+>> TSM_REQ_TYPE_CCA
+>> TSM_REQ_TYPE_SEV
+>> TSM_REQ_TYPE_TDX
+>>
+>> I am leaning towards the latter at this point.
+>
+> But we already have struct pci_tsm_ops::guest_req, which is specific to
+> the underlying CC architecture. From the above, pci_tsm_req_scope also
+> appears to carry the same information. Is that useful?
+>
+
+I think there is value in having the VMM express the guest=E2=80=99s
+confidential computing architecture, so that the TSM backend can
+validate whether it should handle that guest request ?.
+
+So it would not be the IOMMU validating the scope value, but rather
+pci_tsm_ops::guest_req.
+
+static ssize_t cca_tsm_guest_req(struct pci_tdi *tdi, enum pci_tsm_req_scop=
+e scope,
+		sockptr_t req, size_t req_len, sockptr_t resp,
+		size_t resp_len, u64 *tsm_code)
+{
+	struct pci_dev *pdev =3D tdi->pdev;
+
+	/* reject the guest request if VMM was using the link tsm wrongly. The gue=
+st
+	 * was using a wrong CC archiecture with this link tsm
+	 */
+	if (scope !=3D TSM_REQ_TYPE_CCA)
+		return -EINVAL;
+
+
+Jason Gunthorpe <jgg@ziepe.ca> writes:
+
+> On Tue, May 26, 2026 at 11:17:50PM -0700, Dan Williams (nvidia) wrote:
+>
+>> In that case pci_tsm_req_scope becomes tsm_req_type and is just:
+>>=20
+>> TSM_REQ_TYPE_CCA
+>> TSM_REQ_TYPE_SEV
+>> TSM_REQ_TYPE_TDX
+>>=20
+>> I am leaning towards the latter at this point.
+>
+> Yeah, this sounds good. I would also include an common op field that
+> can be decoded by the TSM driver based on the TYPE above, and the
+> usual in/out message buffers.
+
+We already have iommufd_vdevice_tsm_op_ioctl() to handle common
+operations. Right now, it handles IOMMU_VDEVICE_TSM_BIND and
+IOMMU_VDEVICE_TSM_UNBIND. I guess we should move TSM_REQ_SET_TDI_STATE
+operations to that as well?
+
+-aneesh
