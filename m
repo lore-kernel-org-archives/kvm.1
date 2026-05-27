@@ -1,64 +1,65 @@
-Received: from mail-pj1-f74.google.com (mail-pj1-f74.google.com [209.85.216.74])
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C16A530595B
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 01:52:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 516AB2E1F02
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 01:58:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779846780; cv=none; b=KUmrTGJ2KO+QZtc6CYax8/1Yw9WYw/e/22Dhah039an4cUiNY+ILVsh+mVmjgQO68j8SlrfM1nCdw6/9bXBTOyjcgNMIa6PNs7+SKHoxN2pVz2U+10EhikV7Kr/JJznysWwFdGUhCAsv6fgJGZ1CufJ6n6BLXtLRemQyYk1qGUY=
+	t=1779847103; cv=none; b=StgfBis+JSw52wAK7hX8Chv5wI3VxwMDh3Lvdf+D//hP6notZ5Dr/8Xcx+n27m4MUiYE8NYk7zMALAgW4px6VxTYcaXXcAmQRcYRCHxv/NU8GOqcMFjAwxLTLCThJTO83zd96iteQYYpuv8gU4J4UpjkJB1g+XxKXDgE1829vOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779846780; c=relaxed/simple;
-	bh=IPPflrt2ixeVBcVvApThkw3bzZ6vvduVA5kYYTH8cSg=;
+	s=arc-20240116; t=1779847103; c=relaxed/simple;
+	bh=Fvg5FU+5onnxA3JOwnqKcuKDQQNeL3X3+pq0iVePivM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=QF/RCgZEHExPrX02GS22APHQTahCeAwjye5pq1PN9DxklMBHMtBJU2KspIXWzkLXCFQKj9KEWKKKtM2CUEzucqcRONKIc6VwEJLLD4N9IEMzag5rVSCEIoegvjigOoQ6G4e0K/ZI6yQmugmFRml+EM4XqxjKgGsiYn/h8q380NQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XbJVs11z; arc=none smtp.client-ip=209.85.216.74
+	 To:Cc:Content-Type; b=CsFb7hyVImmqbpGSAT2xv7WVfxlBB5HQXTBcR0nWpa0p8PKb+hxn4Wwkc2MvDGIB3zNnUvtFbm9cpTbL0OtAIQor2Qj/rSizHqe0BtOTLqPFNdhcgza52sjIc6r9iFuEMhZfYVsoUNqZoHFUlnmFJPumeqhG3gYI8cbIB1Gv2ZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WBXoTrpP; arc=none smtp.client-ip=209.85.215.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XbJVs11z"
-Received: by mail-pj1-f74.google.com with SMTP id 98e67ed59e1d1-3663d5e9b9bso10568310a91.1
-        for <kvm@vger.kernel.org>; Tue, 26 May 2026 18:52:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WBXoTrpP"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c82c4772950so5655870a12.1
+        for <kvm@vger.kernel.org>; Tue, 26 May 2026 18:58:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779846778; x=1780451578; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779847102; x=1780451902; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=gAu6ljr21ozziRAbwgtJG9dieSAyh7HwPYGLLlrPUpE=;
-        b=XbJVs11zqc1r5oUaHEmPCIliJEBja9nv3I4LwvPtViHc8yDvdd3dqqrczGnWgUoTCf
-         9V2a2p2LtWbKo8e9UGRl4bKhJzSSTnKxy6ew1iYeEiKsgimUwhcSgdgTPT89RjgriRRM
-         7UniLBRazOhSwE2fo8YJ/HXZypZZBW1lagYeko7Hlwzh9LPLYoRBvVJ8Ci9HfIv3JVil
-         e13mrX1TkeQ3pI5UC5DQv5gDWJf5mZXz3NVqeFZxc2OArn2s1f5w4vGrguBeS/CkQSuK
-         Z8AH8lo7B7oSSi+l+h2u15wkMzlRzeqwOWhM29lQ2lnwV+V3aNhzY+a4sZa5994jxJTt
-         J4Fw==
+        bh=T1E3c8UkJn5TWqrXNHTdzWU5tTA5LqbQi2KJ/n84lHo=;
+        b=WBXoTrpPhPCzxF1AuGr2sdTRFbvG7wZBRE4wG4idPo3ZI5zNCmRSDAKtEiiLCPaNXy
+         bFJzQ2/xOcGr7oKK2p8CLSKeY+53s9zS6n1nd/qZ+r2qqpMg32vQOn1ReyseOvyZSVuc
+         i89d4EtLa02OQEZQsrjcbZDtbkoFcu2RpPiZDIckouf6wYLpnHVAhNBHCAaVcZodvMzm
+         bwqWBHppicGB96TT3D46WA6vWi+xbXfIYXK1ytSKn9XYOVsna3kcKmtLxrRElHwVaqWs
+         Op/zJInonBnma+sjcqByUtOe1+ACN04ruCzZ2J0T6C6u8PnwrCNydJ2bfnZ7M3JiaPos
+         nBwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779846778; x=1780451578;
+        d=1e100.net; s=20251104; t=1779847102; x=1780451902;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gAu6ljr21ozziRAbwgtJG9dieSAyh7HwPYGLLlrPUpE=;
-        b=fxIHQQ82QiDmPyUlOubNCElsXQI4q6xTzaGWzBHNBhEdNoMr+57USCKnaB4TwRIXXY
-         T2psDfWTxIKi43XkntLE5xnViCGhpado7o9AOvDDrCJjFdw32VEUDzaUrYQGy/PAcDfP
-         lHWSih1ftQ7CkVNbf+YghAhwuUIulUNKKoe6joXRSEl2wy74NxJ9L2eUaQvwbHMyJ2ds
-         bMuZXV4tW6kOJqGfd4iNgqiXABtHdQ04NTTWE/9IPxu0yzMwFV4oy3RRBNogpsJRJrsB
-         RyjcGUY9/pRL1zWQ+2XPderaYoMcX3Y2Gg+QZ7jKXN2W7vurTKITHwQVg9MKRpBajoUK
-         M9tg==
-X-Forwarded-Encrypted: i=1; AFNElJ+kfL7IUp+ks8PqqzMcDeugeDOUQqbW0gj/wtHDt/l3p0ozHVxHqnR9w9K+MdUtUbZHO/4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxi63R0wcKnarrLE78kj8lrOuEaPJB5qJH3Yas6uigtTA+k6Jn6
-	Al9L3Nv2AxraedyKFUd6sHvG4/Wtqa7fpL5HPzx0KScfQs7OyppAa8zmIxkh/vfz6m1WtUmKn9d
-	K6d8zxQ==
-X-Received: from pliq5.prod.google.com ([2002:a17:903:3905:b0:2b2:3f89:e9d2])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:252:b0:2b0:ac1e:9737
- with SMTP id d9443c01a7336-2beb058d650mr240861805ad.12.1779846777893; Tue, 26
- May 2026 18:52:57 -0700 (PDT)
-Date: Tue, 26 May 2026 18:52:57 -0700
-In-Reply-To: <20260421231557.1254270-4-jrhilke@google.com>
+        bh=T1E3c8UkJn5TWqrXNHTdzWU5tTA5LqbQi2KJ/n84lHo=;
+        b=Ql+FzwB+YftuBSsUCLuM5E1C1x1KuERGrCTVy2EuhMHDYC0D8cRfxUuGMBTIpLQKKL
+         gyRlIdY+30NEyQTWzVarWIJnemn67qAwVkSfVwwdx6Z9dtiStVzJItlDiJ1aGnHi5UAB
+         JMobQ67gExKTh9LzUF7YYUhBoIubWSEJ1iOP/Swv6p64+h70ls6hKYzuZNXOv8pU13wx
+         PQ9CzQuXsJZCQm2AZTzgICnk1kzSI2t4QdTAJ+TEjrln+Sgpbv0EC7OwlxOickGOxBG8
+         asgpbs+14EjQmWzhiIa05KnYP6rQQ9u53v9hpUXqyIxvbLxr2exVCgsLZFYRu5kbChEm
+         Cs1w==
+X-Forwarded-Encrypted: i=1; AFNElJ/s5LRaSsgFW9x2YPx+d+y3niyvRNcYV5zOjQQuiElgeD79S1/Z+T11GrJZ95/SZY6bXBo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz6wU5BccNTmN5EgvElnOLBwtKgWrhIByohdhb5q9aV2m+hNT0T
+	MnXBvdFQXRQZMi9SYHh+riTeuN5JM7E3c9o1mIuVJG0eSlgc1Gpvkg3G6m9YQ6CUGCmEQLlLLhu
+	S6EpoSw==
+X-Received: from pfne7.prod.google.com ([2002:aa7:8247:0:b0:83f:1941:b9bc])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:aa7:9062:0:b0:82f:53f1:1937
+ with SMTP id d2e1a72fcca58-8414b552a2dmr19503226b3a.27.1779847101300; Tue, 26
+ May 2026 18:58:21 -0700 (PDT)
+Date: Tue, 26 May 2026 18:58:20 -0700
+In-Reply-To: <20260421231557.1254270-6-jrhilke@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260421231557.1254270-1-jrhilke@google.com> <20260421231557.1254270-4-jrhilke@google.com>
-Message-ID: <ahZOebR5XXQNkyW0@google.com>
-Subject: Re: [PATCH v3 03/16] KVM: selftests: Add guest read/write macros
+References: <20260421231557.1254270-1-jrhilke@google.com> <20260421231557.1254270-6-jrhilke@google.com>
+Message-ID: <ahZPvCt_8J86Ak3F@google.com>
+Subject: Re: [PATCH v3 05/16] KVM: selftests: Add helper to generate random
+ u64 in range [min,max]
 From: Sean Christopherson <seanjc@google.com>
 To: Josh Hilke <jrhilke@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
@@ -66,26 +67,77 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.
 Content-Type: text/plain; charset="us-ascii"
 
 On Tue, Apr 21, 2026, Josh Hilke wrote:
-> diff --git a/tools/testing/selftests/kvm/steal_time.c b/tools/testing/selftests/kvm/steal_time.c
-> index 7be8adfe5dd3..23380de79817 100644
-> --- a/tools/testing/selftests/kvm/steal_time.c
-> +++ b/tools/testing/selftests/kvm/steal_time.c
-> @@ -72,8 +72,7 @@ static void steal_time_init(struct kvm_vcpu *vcpu, uint32_t i)
->  	int ret;
+> Introduce kvm_random_u64_in_range(state, min, max). This function
+> returns a random u64 in the inclusive range of [min, max] using a struct
+> kvm_random_state.
+> 
+> Suggested-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Josh Hilke <jrhilke@google.com>
+> ---
+>  tools/testing/selftests/kvm/include/test_util.h |  4 ++++
+>  tools/testing/selftests/kvm/lib/test_util.c     | 16 ++++++++++++++++
+>  2 files changed, 20 insertions(+)
+> 
+> diff --git a/tools/testing/selftests/kvm/include/test_util.h b/tools/testing/selftests/kvm/include/test_util.h
+> index ae39c4293b9a..584a4ab43db5 100644
+> --- a/tools/testing/selftests/kvm/include/test_util.h
+> +++ b/tools/testing/selftests/kvm/include/test_util.h
+> @@ -132,6 +132,10 @@ static inline uint64_t kvm_random_u64(struct kvm_random_state *state)
+>  	return ((uint64_t)kvm_random_u32(state) << 32) | kvm_random_u32(state);
+>  }
 >  
->  	/* ST_GPA_BASE is identity mapped */
-> -	st_gva[i] = (void *)(ST_GPA_BASE + i * STEAL_TIME_SIZE);
-> -	sync_global_to_guest(vcpu->vm, st_gva[i]);
-> +	WRITE_AND_SYNC_TO_GUEST(vcpu->vm, st_gva[i], (void *)(ST_GPA_BASE + i * STEAL_TIME_SIZE));
+> +/* Returns a random u64 in the inclusive range [min, max] */
 
-Please wrap these.  80 chars is a soft limit (and so is 100 chars), but the purpose
-of the rules *and* their exceptions is to make the code easier to read.  This is
-hard to parse, because there's so much going on in one line, whereas I find this
-easier to tease apart:
+Put the comment above the definition (But thank you for writing it!  I had typed
+up a response asking for exactly this, before I realized it was there, just on
+the declaration).
 
-	WRITE_AND_SYNC_TO_GUEST(vcpu->vm, st_gva[i],
-				(void *)(ST_GPA_BASE + i * STEAL_TIME_SIZE));
-
+> +uint64_t kvm_random_u64_in_range(struct kvm_random_state *state, uint64_t min,
+> +				 uint64_t max);
+> +
+>  enum vm_mem_backing_src_type {
+>  	VM_MEM_SRC_ANONYMOUS,
+>  	VM_MEM_SRC_ANONYMOUS_THP,
+> diff --git a/tools/testing/selftests/kvm/lib/test_util.c b/tools/testing/selftests/kvm/lib/test_util.c
+> index e342d9fb4771..23d543a9053e 100644
+> --- a/tools/testing/selftests/kvm/lib/test_util.c
+> +++ b/tools/testing/selftests/kvm/lib/test_util.c
+> @@ -42,6 +42,22 @@ uint32_t kvm_random_u32(struct kvm_random_state *state)
+>  	return state->seed;
+>  }
 >  
->  	ret = _vcpu_set_msr(vcpu, MSR_KVM_STEAL_TIME,
->  			    (ulong)st_gva[i] | KVM_STEAL_RESERVED_MASK);
+> +uint64_t kvm_random_u64_in_range(struct kvm_random_state *state, uint64_t min, uint64_t max)
+
+Wrap.
+
+> +{
+> +	uint64_t value;
+> +	uint64_t range;
+> +
+> +	TEST_ASSERT(min <= max, "min (0x%lx) cannot be greater than max (0x%lx)", min, max);
+
+LOL, that's a rather hilarious error message.  Partly because it's so pointless
+(gotta love TEST_ASSERT()), partly because @min obviously _can_ be greater than
+@max :-)
+
+The "min <= max" that gets printed is pretty darn self-explanatory, maybe take
+the opportunity to throw shade at the user/developer?
+
+	TEST_ASSERT(min <= max, "PEBKAC, min = 0x%lx, max = 0x%lx", min, max);
+
+> +
+> +	value = kvm_random_u64(state);
+> +
+> +	range = max - min;
+> +	if (range == ULLONG_MAX)
+> +		return value;
+> +
+> +	return min + (value % (range + 1));
+> +}
+> +
+>  /*
+>   * Parses "[0-9]+[kmgt]?".
+>   */
+> -- 
+> 2.54.0.rc2.533.g4f5dca5207-goog
+> 
