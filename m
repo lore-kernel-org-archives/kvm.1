@@ -1,50 +1,75 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC9FF3ED124;
-	Wed, 27 May 2026 10:52:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 507EC3EFFD0;
+	Wed, 27 May 2026 10:52:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779879135; cv=none; b=pBaE6jnAnMmaNK2J4DR61LEMJ9oNQym7WaJH/h7DBzZe0ewoEQdKasPIijR+PAoEeeAPojwOqU54MsUo1mm2AhwvVIh4EgdeInWHb3P+R+s2Nr1qKEyRDkbIq2jY9pIYklJTe2E/H441DoKb1HuUPocUc+GnkwOTvn/JRNqjgL8=
+	t=1779879141; cv=none; b=deCGf5jMZMw0DqoQVu2j5QCVf3WaMWf0jqiRhJKvGcSALg0dHUsW2yfu6yR/s06XHy99E/ldNTs4xFe1K9cqSrCHT/8xa7XK1UEA/epq48yP9n/Ma5yPYtphRtKwJhjHYsOQA4Dd0DNkcSZzRdi6wwl0cEGeOzqof8FWkDGaj1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779879135; c=relaxed/simple;
-	bh=bZ3q7NUxPu/Uy9EvozZtelgm2WWc+8VfFSdGGhRHG8k=;
+	s=arc-20240116; t=1779879141; c=relaxed/simple;
+	bh=B+g4YvqHsDOnAqiOfY8GpdmA2K/xqBIQDqFMvbowv4w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=s7JFxEMPegqk4okBSvV/SsS0KKJjAckQyrFP9UlsbYPfZZzZ+0GvV2S/QpHspMAi8XM19oqdvfdefp6Y+KyApA8pNMZxkfm7NnadENxTg8tSPhuBKvDXTYN4U2gDH0vjQjRQIwUJsFPbzSUfbp28Glw+znT7bGDsPaq+OmWjpRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b=YhTLnJvm; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=tNECuLqau/xafwclGWQqfVu8TJ7f/mcqxrtf+x/UrvnbOOTOBkg+mcoZELwFSPu8WY+1ZMWxat8a88J8wQ89IENkspJkTRa3e0cijmKZ1xMLvjpVM888YlgHbZk42wj+U8TBlcDJfIQPRB4WpUV/rZuNFR1qVxTfTDC+fh4W2yI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VTfF9UyH; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=arm.com header.i=@arm.com header.b="YhTLnJvm"
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4AC482880;
-	Wed, 27 May 2026 03:52:08 -0700 (PDT)
-Received: from thinkpad-e142931.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 2048A3F7D8;
-	Wed, 27 May 2026 03:52:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple; d=arm.com; s=foss;
-	t=1779879133; bh=bZ3q7NUxPu/Uy9EvozZtelgm2WWc+8VfFSdGGhRHG8k=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YhTLnJvmmF65boUW+vmDho7GBx7AJLdCghw5GsyJl5KirHzsbS5ATMbP+WfAvvEuj
-	 b50xqYAeLis1xbDrNkn922M2Bgb4QPCrF2DhBY578LYskLJGNKO/3Sr0xUWdRWtWJb
-	 vVnOCfUDpygkhnVvzHXwnazTXPjHCweaHXIU38jU=
-Date: Wed, 27 May 2026 11:52:02 +0100
-From: Wei-Lin Chang <weilin.chang@arm.com>
-To: Steven Price <steven.price@arm.com>, kvm@vger.kernel.org, 
-	kvmarm@lists.linux.dev
-Cc: Catalin Marinas <catalin.marinas@arm.com>, 
-	Marc Zyngier <maz@kernel.org>, Will Deacon <will@kernel.org>, James Morse <james.morse@arm.com>, 
-	Oliver Upton <oliver.upton@linux.dev>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Zenghui Yu <yuzenghui@huawei.com>, linux-arm-kernel@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, Joey Gouly <joey.gouly@arm.com>, 
-	Alexandru Elisei <alexandru.elisei@arm.com>, Christoffer Dall <christoffer.dall@arm.com>, 
-	Fuad Tabba <tabba@google.com>, linux-coco@lists.linux.dev, 
-	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>, Gavin Shan <gshan@redhat.com>, 
-	Shanker Donthineni <sdonthineni@nvidia.com>, Alper Gun <alpergun@google.com>, 
-	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>, Emi Kisanuki <fj0570is@fujitsu.com>, 
-	Vishal Annapurve <vannapurve@google.com>, Lorenzo.Pieralisi2@arm.com
-Subject: Re: [PATCH v14 23/44] arm64: RMI: Handle RMI_EXIT_RIPAS_CHANGE
-Message-ID: <aly6g5gd27ceezehporuika5rvqu6kqnm5c5cbs36gh2gdrjws@y7gpy2lhtaaz>
-References: <20260513131757.116630-1-steven.price@arm.com>
- <20260513131757.116630-24-steven.price@arm.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VTfF9UyH"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19A201F00A3E;
+	Wed, 27 May 2026 10:52:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779879140;
+	bh=bYZ1ZawJY45HMeql39fayAt+bbGilPmWtkSg8lwQRkk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To;
+	b=VTfF9UyHggRVD3b88Meuq/pdvPzMOjtYNSjr+C19JK9AIaW34GXfw99L2QlB1BUpp
+	 ox9AA2hy5HYmKHoCEpw7/aeMFlTD8eD7p+r058Fqo7A2tZEupmwFLyIMlnched7LtZ
+	 gGluKyrLI7l6vXJg7xjvZjYa+mVEb6a2i809OdeABQOnfSUTJ5ycqwPRSpqfooWPkp
+	 Xrkubg/iZijBaDRNJPIkhYVUkJ6BpZNya7H5q/j3aYpZm6DwHW0UKu+PWHPVO2oNK5
+	 nAKIdXfDlrHXT0xuuwePYCqOe8N+1HiywxMwFORXbKsIdQS4vJzDNbbsbslcES8rw2
+	 Cor3p964Zz46A==
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 6366AF4006F;
+	Wed, 27 May 2026 06:52:18 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Wed, 27 May 2026 06:52:18 -0400
+X-ME-Sender: <xms:4swWaraOJyE7U8Bi55IhtbqbvuOo_siLAL-A_B0tXIonqGi_adFIpw>
+    <xme:4swWahwIxFnmc3WY0i6Xd_RtwFh_pC7BXS73z2pB53W9GFvUqw-b13l3I2p58FobC
+    BgCWFg80cWkAadOjc0GV7hBD5ukV-3fq7Pn_qUONtQqw1OLp22YZ-M>
+X-ME-Received: <xmr:4swWaoTDgEASqaY9-FnKpmmutvOfUsOwLBzKg2LMTgUtFjp4uvnpsF9A2x9MJw>
+X-ME-Proxy-Cause: dmFkZTGQGmNv5Mx6E4sUI3KXUIvD9y9YLx5q/3nV9yEQV99YXai9x6vujP9852Mk+mIcHA
+    WNa4/f+TuNBOTkh5tfGKJBzkD5d+ALvaVg69eao/lmmkW5kHf902Qg7ykrI8jYr5umZWJC
+    krGKdYKHfbkLojo8cAKNQaDIiIf5hNmKU/c9TWV99Xble4GnKeHCvyjv9ownScLkbkuG69
+    YZqUjCfEHE0Um/W+ynZ+ssjoeO6B6WvVsYNNGBmrhpDAqlMlTDEAu2O6KZ+U5iptu+dCEY
+    Jg/hX/GBvuwEav4jxeZhgYOjiks/zDZ7FGEKsvYWxjrWbHit++4jAXHdrzE0gpqj1bceoX
+    0gtIQ4sQBqQXAbiWKyM8s82wyVOu1Il724kJlkrrWxU7jD7cZZCVMBUTOVrIpzoGRCc1+X
+    +qVHD1XfIlP1P1/Ga0j4UGC8ufGx1pu4HCJQlmdPoyrZBs/kpPqTukjQbhm2eKQm+qMBsm
+    qm6P4oBpxX2z/Gk6Yb8PMLRH/2lIiMoYgz8Le613tAukDK6JX8kQg1rnB8FG8bi2G6RVqH
+    uSpopSYJiYaqTng+Eu6Y9NcrsuF+0+al4xLHTw/5hg0g50/tNiHH/b20yQqtKbsu0T+/VG
+    2AnbfWlOAS5MGQ62T9S1aCp69YiXS4gsFaMatg9DQlz2/5pwMVf/+qDLaZDg
+X-ME-Proxy: <xmx:4swWanoUmPlAKoTR3uacAZlhXF37dBcOJ6L8OI1m7asWY9d530FAQg>
+    <xmx:4swWaqbqG3PNiKMb3gIYS3tkJdG-6egwVElvnRjQfF-MBQN0rEwcYQ>
+    <xmx:4swWapoNB8zpCYmppB0h4nKx5jC6Cn-qmChgJEtadZxiFA9KF9xffQ>
+    <xmx:4swWaumuGWc0pe50IqB8N-kChWMNkWbJYCHPeBdIE95f8Us8NoUSZQ>
+    <xmx:4swWas8AALla6O7nT3rhqG1W-iLcZln23yACoJwbAw1-mA42lXeFVGfJ>
+Feedback-ID: i10464835:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 27 May 2026 06:52:16 -0400 (EDT)
+Date: Wed, 27 May 2026 11:52:10 +0100
+From: Kiryl Shutsemau <kas@kernel.org>
+To: Chao Gao <chao.gao@intel.com>
+Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, 
+	djbw@kernel.org, ira.weiny@intel.com, kai.huang@intel.com, nik.borisov@suse.com, 
+	paulmck@kernel.org, pbonzini@redhat.com, reinette.chatre@intel.com, 
+	rick.p.edgecombe@intel.com, sagis@google.com, seanjc@google.com, 
+	tony.lindgren@linux.intel.com, vannapurve@google.com, vishal.l.verma@intel.com, 
+	yilun.xu@linux.intel.com, xiaoyao.li@intel.com, yan.y.zhao@intel.com, 
+	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
+Subject: Re: [PATCH v10 03/25] x86/virt/tdx: Consolidate TDX global
+ initialization states
+Message-ID: <ahbMPxrVbxnql7hu@thinkstation>
+References: <20260520133909.409394-1-chao.gao@intel.com>
+ <20260520133909.409394-4-chao.gao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
@@ -53,125 +78,29 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20260513131757.116630-24-steven.price@arm.com>
+In-Reply-To: <20260520133909.409394-4-chao.gao@intel.com>
 
-Hi,
-
-On Wed, May 13, 2026 at 02:17:31PM +0100, Steven Price wrote:
-> The guest can request that a region of it's protected address space is
-> switched between RIPAS_RAM and RIPAS_EMPTY (and back) using
-> RSI_IPA_STATE_SET. This causes a guest exit with the
-> RMI_EXIT_RIPAS_CHANGE code. We treat this as a request to convert a
-> protected region to unprotected (or back), exiting to the VMM to make
-> the necessary changes to the guest_memfd and memslot mappings. On the
-> next entry the RIPAS changes are committed by making RMI_RTT_SET_RIPAS
-> calls.
+On Wed, May 20, 2026 at 06:38:06AM -0700, Chao Gao wrote:
+> The kernel uses several global flags to guard one-time TDX initialization
+> flows and prevent them from being repeated.
 > 
-> The VMM may wish to reject the RIPAS change requested by the guest. For
-> now it can only do this by no longer scheduling the VCPU as we don't
-> currently have a usecase for returning that rejection to the guest, but
-> by postponing the RMI_RTT_SET_RIPAS changes to entry we leave the door
-> open for adding a new ioctl in the future for this purpose.
+> When the TDX module is updated, all of those states must be reset so that
+> the module can be initialized again. Today those states are kept as
+> separate global variables, which makes the reset path awkward and easy to
+> miss when a new state is added.
 > 
-> Signed-off-by: Steven Price <steven.price@arm.com>
-> ---
-> Changes since v13:
->  * Switch to the new RMI_RTT_UNPROT_UNMAP range-based API.
->  * Drop ugly hack for RMM bug which errored when the RIPAS was already
->    set to the desired value.
-> Changes since v12:
->  * Switch to the new RMM v2.0 RMI_RTT_DATA_UNMAP which can unmap an
->    address range.
-> Changes since v11:
->  * Combine the "Allow VMM to set RIPAS" patch into this one to avoid
->    adding functions before they are used.
->  * Drop the CAP for setting RIPAS and adapt to changes from previous
->    patches.
-> Changes since v10:
->  * Add comment explaining the assignment of rec->run->exit.ripas_base in
->    kvm_complete_ripas_change().
-> Changes since v8:
->  * Make use of ripas_change() from a previous patch to implement
->    realm_set_ipa_state().
->  * Update exit.ripas_base after a RIPAS change so that, if instead of
->    entering the guest we exit to user space, we don't attempt to repeat
->    the RIPAS change (triggering an error from the RMM).
-> Changes since v7:
->  * Rework the loop in realm_set_ipa_state() to make it clear when the
->    'next' output value of rmi_rtt_set_ripas() is used.
-> New patch for v7: The code was previously split awkwardly between two
-> other patches.
-> ---
->  arch/arm64/include/asm/kvm_rmi.h |   6 +
->  arch/arm64/kvm/mmu.c             |   8 +-
->  arch/arm64/kvm/rmi.c             | 439 +++++++++++++++++++++++++++++++
->  3 files changed, 450 insertions(+), 3 deletions(-)
+> Group the states into a single structure so they can be reset together, for
+> example with memset(), and so a newly added state won't be missed.
 > 
-> diff --git a/arch/arm64/include/asm/kvm_rmi.h b/arch/arm64/include/asm/kvm_rmi.h
-> index feb534a6678e..007249a13dbc 100644
-> --- a/arch/arm64/include/asm/kvm_rmi.h
-> +++ b/arch/arm64/include/asm/kvm_rmi.h
-> @@ -88,6 +88,12 @@ int kvm_rec_enter(struct kvm_vcpu *vcpu);
->  int kvm_rec_pre_enter(struct kvm_vcpu *vcpu);
->  int handle_rec_exit(struct kvm_vcpu *vcpu, int rec_run_status);
->  
-> +void kvm_realm_unmap_range(struct kvm *kvm,
-> +			   unsigned long ipa,
-> +			   unsigned long size,
-> +			   bool unmap_private,
-> +			   bool may_block);
-> +
->  static inline bool kvm_realm_is_private_address(struct realm *realm,
->  						unsigned long addr)
->  {
-> diff --git a/arch/arm64/kvm/mmu.c b/arch/arm64/kvm/mmu.c
-> index eb56d4e7f21a..10ca9dbe40a0 100644
-> --- a/arch/arm64/kvm/mmu.c
-> +++ b/arch/arm64/kvm/mmu.c
-> @@ -319,6 +319,7 @@ static void invalidate_icache_guest_page(void *va, size_t size)
->   * @start: The intermediate physical base address of the range to unmap
->   * @size:  The size of the area to unmap
->   * @may_block: Whether or not we are permitted to block
-> + * @only_shared: If true then protected mappings should not be unmapped
+> Drop the __ro_after_init annotation from tdx_module_initialized because
+> the other two states do not have it. And with TDX module update support,
+> all the states need to be writable at runtime.
 
-Do you think it's better if we use enum kvm_gfn_range_filter for this?
-Pass KVM_FILTER_{PRIVATE, SHARED} to indicate what to unmap. This way we
-don't have the think about booleans. kvm_realm_unmap_range() in patch 23
-will have to change too though.
+You still can use __read_mostly.
 
->   *
->   * Clear a range of stage-2 mappings, lowering the various ref-counts.  Must
->   * be called while holding mmu_lock (unless for freeing the stage2 pgd before
-> @@ -326,7 +327,7 @@ static void invalidate_icache_guest_page(void *va, size_t size)
->   * with things behind our backs.
->   */
->  static void __unmap_stage2_range(struct kvm_s2_mmu *mmu, phys_addr_t start, u64 size,
-> -				 bool may_block)
-> +				 bool may_block, bool only_shared)
->  {
->  	struct kvm *kvm = kvm_s2_mmu_to_kvm(mmu);
->  	phys_addr_t end = start + size;
-> @@ -343,7 +344,7 @@ void kvm_stage2_unmap_range(struct kvm_s2_mmu *mmu, phys_addr_t start,
->  	if (kvm_vm_is_protected(kvm_s2_mmu_to_kvm(mmu)))
->  		return;
->  
-> -	__unmap_stage2_range(mmu, start, size, may_block);
-> +	__unmap_stage2_range(mmu, start, size, may_block, false);
->  }
->  
->  void kvm_stage2_flush_range(struct kvm_s2_mmu *mmu, phys_addr_t addr, phys_addr_t end)
-> @@ -2418,7 +2419,8 @@ bool kvm_unmap_gfn_range(struct kvm *kvm, struct kvm_gfn_range *range)
->  
->  	__unmap_stage2_range(&kvm->arch.mmu, range->start << PAGE_SHIFT,
->  			     (range->end - range->start) << PAGE_SHIFT,
-> -			     range->may_block);
-> +			     range->may_block,
-> +			     !(range->attr_filter & KVM_FILTER_PRIVATE));
->  
->  	kvm_nested_s2_unmap(kvm, range->may_block);
->  	return false;
+> Signed-off-by: Chao Gao <chao.gao@intel.com>
 
-[...]
+Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
 
-Thanks,
-Wei-Lin Chang
+-- 
+  Kiryl Shutsemau / Kirill A. Shutemov
