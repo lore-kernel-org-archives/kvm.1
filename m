@@ -1,129 +1,88 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 530CD4534A2
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 18:09:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3FF34611CA
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 18:10:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779905372; cv=none; b=EBTB2tqxRYOvHw6OryUocO0eGFUaccXV3TREMx25RQFOZzYGLm2MLiY1oJxkRUVPiQuAGn84b87LCNoMWgat+pfRVPRW6JszpPFktJ9yz7Wz9hVxlZW4ifKYeg+3uMwsLB3emGtWpBZH0l2TkgjdaiKUJy+V5cYrprI+N9RGiNw=
+	t=1779905414; cv=none; b=CziV2mXhBgH21kjjMjjGPP+Cl+wVrVImzRak/yTV/58SQru1DPPp57pI0EtLDERC2psVFOH8CU8CFDj178kk1NS13sl1cAAh019tO5FkI7aUCpGiX8V2VIK1+tkN0xW8ZqCv2+M3vS2L+T4XCYohB+0cx435oIlOkpQIPM8tLd0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779905372; c=relaxed/simple;
-	bh=htlmsUpxEnizeUP3B6xI1XKO3j5rovXUVkrwa4G5o5U=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=s/YeydqHmJxhudOD6RHM0jHxnLcn4hqBA7uOQBUfYBS1KucG+6AP+ai8OQJUzGf5VEmHZOwdgaYrMLg98SwftX1fn0socZWEC6GlIiXZAauPp6xgzLF82SDEhw9ehfjq0/PkJ+cVsNIGarBGOyVQ0VYjGUY1+NsCc4GcQfUqGQg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=F5Yn8NdN; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779905414; c=relaxed/simple;
+	bh=bjTBiuEI2Gb0yoOHDpPWFZ0LkmXS4yuNQ+J8WdNX0v4=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=GxOYbOYcD6fqUoFPy/DJiHl9Yvn+0YZa8eNsQcd1jthsZqYSZTe46y1ucabgn/NWPBMgzp/+t9p585bmADBGcs0CG8Yd6r1K6qWqTLy/zp0H+8Gxhj7bOnpUFbGnNUj/IdlIL3Z+dQJ1esZWnUd//Y09iIw8Hk/wv4Lgn3DndoY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tgasfQ/Y; arc=none smtp.client-ip=209.85.215.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="F5Yn8NdN"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-4585a116a4aso10018106f8f.3
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 11:09:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tgasfQ/Y"
+Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c827adbf00cso5392944a12.2
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 11:10:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779905369; x=1780510169; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Pkyf7riAoZs+kZFhuxOcxmnZXgTl46iuUo4KIhOjOqA=;
-        b=F5Yn8NdNL9c4NbDDRW5PZl20wXG3n3jyg0nkznUa8TAGyHolFlWmsExFaafP3VfDZl
-         yNGYsB/u+4eAHMVSk6/HJKadwiUL40EJJLSCElu4i7HILGjdebPN/r6OVfN3fzyv1O9/
-         Y0Gx6Z2bUnRwif8Dgsza4mqX8SSL8+eG5QlyspygG+nsNKOgylrTPrXTC9OB9phhZZY2
-         d4X6ZxBgguZNpfATgF2rEPQkqEwtxptm1el7s73vJVBSXUwI06FFgq6X2A9eKvsEy2dC
-         9u+l4JDfSNmmvBn7PFSBh5fOYEh9INedHcR2/caTc/3ExznQqJ6pfsgdCH95UqYK4gm0
-         O6IA==
+        d=google.com; s=20251104; t=1779905412; x=1780510212; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=O0CdVfxKmDIVL3Py8q8FK9CkzIjMccvxEZLs5IONfFE=;
+        b=tgasfQ/YInhvu4KsXz2EBhsx6G+hpDumHh3FdngbKOF6xQx6ofAhaNk6nDIYaGYjhr
+         O9TkOzCThy/8LC7E4iU63OE0ELXukvX2Y72V+jfVpg8M78Vktap4bU0tq6NefXsEx4fx
+         7MZF0jLqrXkanyu85AkPLQ4hlXecZ4IOVykF3EAHLTeR7bu2ZEkRi16QYYxyjFcXX+vo
+         gOYhWAWdGABYJPk8pCubCBDrEKfkLBBU8vGd8+tObQ0OZ9zzLFOUCCeDNkvKJne2+oSJ
+         7iluVLoKLvAp7BcqVxUEU50oz2LHz6UmucHAuxa9Cnm851rPtdsyeFuqgGrZmJkIP9Qi
+         f4XQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779905369; x=1780510169;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Pkyf7riAoZs+kZFhuxOcxmnZXgTl46iuUo4KIhOjOqA=;
-        b=cx0YcvxoJ8ZVJ2vlUuSuyRm6Jb72CWbTcNPVVtK3cyqp8Fp7BwFA4Kd5N6SA0HelCh
-         K8yQ1O2bvTzxZxi/KITDTfXrD+YQuzYP6QFsbOYN4XC213dtdm/sx7HAOZMWVhwUWDeA
-         gmJIxCKt7Qxk4eaWPLq9WIZz1A/j844ZjpLsdX7cbR90MciTCE7XcTx1KDl2rR7vvOH+
-         +kDOT5mRieNfVEk4Bf7ASpHia4ynygSgF0JoFmKAx8xguaYMt2NUYgAXg2hRAMPRIot8
-         iI7FA0za5r6JS6GbCig1aIYnwwYbXFA25L/QrgwFNnHm7sY6QksDCFqwEvQFyggvL4VU
-         USfQ==
-X-Forwarded-Encrypted: i=1; AFNElJ8wx74UEG2riUZ8W0AL63uezXSXfO30LNtxFBmTXCvD/Imgw6EXWQ9JjDnCA73OLO2qA90=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwAhiCVD+IT0PeU5NlhDrnJMSDnvYIvLdnjpbaf9BAb1voP1L/4
-	rUNC0Fcot70CkePxt9o66gjwRtCVf56axFXtOeaHaQA2x7b1jhGp9LL7
-X-Gm-Gg: Acq92OG5yN1f51dkNLmKaJs19sqw/ejH41zkZLb4jO4ZVuyeb8ZaziFhIPOIHylp+ei
-	sQkuuOEF+wIEda40U9IAOIZKxRQmyDoA8BTltg1Chw/i1lUBdMV6mBfAGPdwBoz1lirVDI4Hqje
-	uNIuYe/5Yuo7EiS+ycUmcP713LdX/Lr390LSWtN5FUG7pfLLtNg6nnOvUuZX5inMyPJW20ttN6a
-	bIgjgVlFgb87Lo7a56d54yx1PwMGBoV8jNKKSkIlG5nlczMsvJtdDOaq1brsfVWxM+M2UpAKgXi
-	cSbo5uriltzC2ALnuIB0vwE0oZPtFTbRt3Z6L3JmyuKa/ZsFqFBVX97My4Mb7gbjzyH3fo2AZ7a
-	U2ccgfxjJea4W/dlwBccfm+Es515ujSmExglBIMWBi2x4ZD7h9KWpaNVW5j5RBOXMNGBhQYexY5
-	DEa7C9UG2TDh4IjW0ftRR5nm2AUFDiU590w8562TBekB7XEuEhsP2Fido9SSKB9l0N
-X-Received: by 2002:a05:6000:461a:b0:441:1c06:17e4 with SMTP id ffacd0b85a97d-45eb38a8032mr33753535f8f.39.1779905368393;
-        Wed, 27 May 2026 11:09:28 -0700 (PDT)
-Received: from pumpkin (82-69-66-36.dsl.in-addr.zen.co.uk. [82.69.66.36])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45edb558449sm7086121f8f.13.2026.05.27.11.09.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 11:09:28 -0700 (PDT)
-Date: Wed, 27 May 2026 19:09:26 +0100
-From: David Laight <david.laight.linux@gmail.com>
-To: Stefano Garzarella <sgarzare@redhat.com>
-Cc: netdev@vger.kernel.org, "David S. Miller" <davem@davemloft.net>, Eugenio
- =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>, virtualization@lists.linux.dev,
- Jakub Kicinski <kuba@kernel.org>, linux-kernel@vger.kernel.org, Xuan Zhuo
- <xuanzhuo@linux.alibaba.com>, "Michael S. Tsirkin" <mst@redhat.com>,
- kvm@vger.kernel.org, Paolo Abeni <pabeni@redhat.com>, Jason Wang
- <jasowang@redhat.com>, Simon Horman <horms@kernel.org>, Stefan Hajnoczi
- <stefanha@redhat.com>, Eric Dumazet <edumazet@google.com>
-Subject: Re: [PATCH RESEND net] Revert "vsock/virtio: fix skb overhead
- overflow on 32-bit builds"
-Message-ID: <20260527190926.1a2d6095@pumpkin>
-In-Reply-To: <20260527171046.130211-1-sgarzare@redhat.com>
-References: <20260527171046.130211-1-sgarzare@redhat.com>
-X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; arm-unknown-linux-gnueabihf)
+        d=1e100.net; s=20251104; t=1779905412; x=1780510212;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=O0CdVfxKmDIVL3Py8q8FK9CkzIjMccvxEZLs5IONfFE=;
+        b=JyUzbDP3fQPH2PPdUPu6kLGJ/zAMuhYbWqnOWfwyjMZp3wLWoaoL+dELxMVQ9klKkU
+         9naa/zQgyP9yuIDqMnKU7+NjRTe37xsGQwtJZPeTCUrWgS7LTiRd7V07+CCQOo0XIH1x
+         +CO85keG/4vAwLepwHP1LqFIrRz2O2U5pyaikSN0bX+eElHjRjzD7fzsqdXet+knJ+s+
+         YDi2s8ZObUN2ero4OY8UtFaPxMG1IAPuOR+Pv2pW+q+9hrm0RKqDaF/Och7z5gofCeie
+         JA3pOdE/xys7364gVqlSK1gqoJRgYwhYtW1dnhUDtIvZCBurpcJGp7WtU0o1xoN3qTjV
+         52IQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/uHpVwNYv95sxqs3Mt75+SFEHra3icdjpqa1BgCN7KWQVJ8A3NdKJWsCTbHAhV3ues/Tc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywgz5Eakz9IRBIk0+HPViEtnjzbHn5tGtAKHmTkBBwfLR7B+xF2
+	gRXdhaYv4EwVvL8N3LPwxc7MJDRPSVMLd7rcV2bQpvgyFw5mvPvu/BZewOlzuCUleoruk8lPQhd
+	sWbjjIw==
+X-Received: from pgkc23.prod.google.com ([2002:a63:ef57:0:b0:c7e:68a1:910c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:486:b0:3b3:f46:1efa
+ with SMTP id adf61e73a8af0-3b328f54678mr25731704637.42.1779905411564; Wed, 27
+ May 2026 11:10:11 -0700 (PDT)
+Date: Wed, 27 May 2026 11:09:54 -0700
+In-Reply-To: <20260518135956.82569-1-ehemily@amazon.de>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+References: <20260518135956.82569-1-ehemily@amazon.de>
+X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
+Message-ID: <177990538854.4123030.2149054954047224360.b4-ty@google.com>
+Subject: Re: [PATCH] KVM: x86: Fix ERAPS RAP clear on INVPCID single-context invalidation
+From: Sean Christopherson <seanjc@google.com>
+To: Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com, 
+	Emily Ehlert <ehemily@amazon.de>
+Cc: amit.shah@amd.com, mingo@redhat.com, bp@alien8.de, 
+	dave.hansen@linux.intel.com, hpa@zytor.com, x86@kernel.org, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, nh-open-source@amazon.com, 
+	graf@amazon.de, nsaenz@kernel.org, Thomas Gleixner <tglx@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, 27 May 2026 19:10:46 +0200
-Stefano Garzarella <sgarzare@redhat.com> wrote:
-
-> From: Stefano Garzarella <sgarzare@redhat.com>
+On Mon, 18 May 2026 13:59:56 +0000, Emily Ehlert wrote:
+> Use kvm_register_mark_dirty() instead of kvm_register_is_dirty() to
+> actually mark VCPU_EXREG_ERAPS as dirty when emulating
+> INVPCID_TYPE_SINGLE_CTXT.  kvm_register_is_dirty() is a read-only
+> predicate whose return value is discarded, making the call a no-op.
+> Without this fix, a single-context INVPCID will not trigger a RAP clear
+> on the next VMRUN, breaking the ERAPS security guarantee.
 > 
-> This reverts commit 4157501b9a8f ("vsock/virtio: fix skb overhead
-> overflow on 32-bit builds"). The fix was semantically correct (although
-> it would have been better to use mul_u32_u32(), as David pointed out),
-> but in practice we are estimating the memory used to allocate the SKBs,
-> and this will never cause a 32-bit variable to overflow on a 32-bit
-> system, since the memory would have run out long before that. On 64-bit,
-> SKB_TRUESIZE() already evaluates to size_t, so the multiplication is
-> already in 64-bit arithmetic without the cast.
-> 
-> Let's revert this to avoid unnecessary 64-bit multiplies on the
-> per-packet receive path on 32-bit systems.
-> 
-> Reported-by: David Laight <david.laight.linux@gmail.com>
-> Closes: https://lore.kernel.org/netdev/20260523173557.5cc4f4f6@pumpkin
-> Suggested-by: "Michael S. Tsirkin" <mst@redhat.com>
-> Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+> [...]
 
-FWIW:
+Applied to kvm-x86 fixes, thanks!
 
-Reviewed-by: David Laight <david.laight.linux@gmail.com>
+[1/1] KVM: x86: Fix ERAPS RAP clear on INVPCID single-context invalidation
+      https://github.com/kvm-x86/linux/commit/b60621c5121c
 
-> ---
->  net/vmw_vsock/virtio_transport_common.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-> index b143290a311d..d4d26fba9e37 100644
-> --- a/net/vmw_vsock/virtio_transport_common.c
-> +++ b/net/vmw_vsock/virtio_transport_common.c
-> @@ -417,7 +417,7 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
->  static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
->  					u32 len)
->  {
-> -	u64 skb_overhead = ((u64)skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
-> +	u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
->  
->  	/* Allow at most buf_alloc * 2 total budget (payload + overhead),
->  	 * similar to how SO_RCVBUF is doubled to reserve space for sk_buff
-
+--
+https://github.com/kvm-x86/linux/tree/next
