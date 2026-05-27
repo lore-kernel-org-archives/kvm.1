@@ -1,129 +1,139 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116D1286405
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 02:26:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE9DC1B808;
+	Wed, 27 May 2026 02:33:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779848780; cv=none; b=aIihZIifGxXXSZgoSsOv7W4x4SZ0809mzrNusO9eApsPVNvlLCh2WW+iYHTtcf6HDGPk2RGfCBvNkeQD2y0UnoIV52vo9zK2ziqvKm8v5aUFi9rWHdAW4T93QJbntG2YhXyAm/YaFLDwozT/mOCKmmsKLptQj0bDMuuYSwnkebQ=
+	t=1779849203; cv=none; b=hFMWiq4wzjj32xCOViqpSkBELoIzI3m3b5kWdoYn2LRrPmUDpga6a7lWAI2GTwRlyCaNU4N3eLBSqIDvVb3nrxIKicPF0cqjdSXqfP0YBqHbo++o/Kqys9Y5/Ad7P0yMt2jgzafukway4b+QFWiOUhQFHRVPtBur3wsrArijEZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779848780; c=relaxed/simple;
-	bh=pDivmIK8UxDTWlWa+HKMxIp+Ev7qbg1GmF8UpU0b2qo=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=qf6KfsKidYXO5LJ9JY/StOZtehrEx33OzNrfaPfI+bN5SX10O+ZoL3XvR2ootskulmYtrhrc30RYCmEMiViohMgtPwkPcSOVi4+kYqkEUMNfa2oHBf+4ZzRLDCYinQZDLmYFsWpVz5Gnfp80Q0V6nFo4HucweR++JNCAZQ/7Jx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=azmNu9sY; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1779849203; c=relaxed/simple;
+	bh=8t6TIlrq8lTYCr8mYmTCyfM+uVkhcnM7NGEhdAc/kSo=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version:Content-Type; b=u0omstrgHIhMoRu1J34gGjyxFGtXiCX57E10Dx66ooFr9mlr5SMIDbF/LVsK/X6YBRb74rn2J+J1B9Y/fpj3NYDLi5PxjlbmZ77rzDBJCiZAMJ3qAFvtQ73lm20zzDXj+fUyIXWd2mt2aXYsKn0ijqQUxw1+lnrufgCOXQE0+NY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=adthIWDU; arc=none smtp.client-ip=113.46.200.217
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="azmNu9sY"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bd6aeb3637so260613365ad.2
-        for <kvm@vger.kernel.org>; Tue, 26 May 2026 19:26:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779848778; x=1780453578; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FJGgy03uEutpauKs1fQ7bqRu089ezmKrTIOy21fn9cs=;
-        b=azmNu9sYttVJucB5Q6y80GwCDdEs4srfeNromwEVTgL0037w+Fj/QUgXXmTET62hxu
-         GJwzF0TwDcTZs8pLbhPt4fFb0EahQ4dykSWAtNulIDzBWMhC44/o3KkQq0A0X+zwrpF1
-         9b9wMEpmtnpjf1iNjqugHZ9tViPVerVEFKdt8VHvWPvS/gSrNwptr79PpGc1yn4SwDTE
-         bvTk4pyJ1G41BLyp23O3AUN1gllGuxw0gvyBwSpDr4Ztc1aAJEu0c5zor79iB/cXksLh
-         loogcArx8LBF++lqQglnlDVz33puQ+fnWNn5SpW5MmbVGS3gR7c32SOGz9QGwigUMNbF
-         IL4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779848778; x=1780453578;
-        h=cc:to:from:subject:message-id:mime-version:date:reply-to
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FJGgy03uEutpauKs1fQ7bqRu089ezmKrTIOy21fn9cs=;
-        b=ZNEpZjTskRfVMjRhqXY+KnYq/j9PM0NyqdsZxtaG5sY7XAyrXe7ts6wQKS7sWQpCuO
-         lfbAdWCTZUbmA4Wu6sExV9da0vqrmlpJAmmTCWy6r0bv/LCPqHO98wmzm6kJ0L0lQzTz
-         AKtwYnokRnuaEp1wUDpVV0h5d+kMgN2ajEHkM0MEhEh54rd/QbzV7Nhc9iqSwhKqkN53
-         DU4NXzIy6MFArl18a2tEGOqKzVLSADJE664yFbaDMaGlm8UcCDqnvhS+++tod5I7mHC6
-         rP4vezI3OJ/363MfFZH/OOPUbBmPJK5N/6myjMrgTqeB3sjOMpV/D4XgA9Sxc/RX7mpi
-         k1Yg==
-X-Gm-Message-State: AOJu0YwA1CM2bmzY0fX9hsax/SeROaG6MlR+U0dIYMyZ9b0ko9FgL/x1
-	WxVtyf1H0bXLZCgxExMAPqYy2pEcJoTazFGYazMPTzUvUyUWrcg9inlv24UpUaTkVw3CUhRDtSG
-	pZyFPQA==
-X-Received: from pliq5.prod.google.com ([2002:a17:903:3905:b0:2bd:3dba:a4c5])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1aae:b0:2b9:5d1b:73da
- with SMTP id d9443c01a7336-2beb0741079mr241708895ad.30.1779848778312; Tue, 26
- May 2026 19:26:18 -0700 (PDT)
-Reply-To: Sean Christopherson <seanjc@google.com>
-Date: Tue, 26 May 2026 19:26:17 -0700
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="adthIWDU"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=9N6WG8+Zu4U/WbEJSIu0ss4C6WrIjKJDWfdin0qydaE=;
+	b=adthIWDUzQwA0DFQsR/sPXxgncKfVMhHNeclfFmdbssxW1U77WicR331TwFbcFt3Srw/Ff8qg
+	Hi/xFChr6gEU1jpo8HR/H5RkH3LcO5QPXhtHan0x6GA8jNw501a6DMiLTup3N6hmtQHbhfbtGs3
+	GBUGa5BU+TUrVzeYOtS/iPc=
+Received: from mail.maildlp.com (unknown [172.19.163.0])
+	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4gQD434PQqzcZxp;
+	Wed, 27 May 2026 10:25:23 +0800 (CST)
+Received: from kwepemr200017.china.huawei.com (unknown [7.202.195.7])
+	by mail.maildlp.com (Postfix) with ESMTPS id C06A540561;
+	Wed, 27 May 2026 10:33:09 +0800 (CST)
+Received: from huawei.com (7.227.44.14) by kwepemr200017.china.huawei.com
+ (7.202.195.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Wed, 27 May
+ 2026 10:33:08 +0800
+From: Lin Ma <malin89@huawei.com>
+To: <kuba@kernel.org>, <avkrasnov@salutedevices.com>,
+	<cenxianlong@huawei.com>, <chenzhe@huawei.com>, <cuirongzhen@huawei.com>,
+	<davem@davemloft.net>, <edumazet@google.com>, <eperezma@redhat.com>,
+	<horms@kernel.org>, <jasowang@redhat.com>, <kvm@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <malin89@huawei.com>, <mst@redhat.com>,
+	<netdev@vger.kernel.org>, <pabeni@redhat.com>, <sgarzare@redhat.com>,
+	<stefanha@redhat.com>, <tanjingguo@huawei.com>,
+	<virtualization@lists.linux.dev>, <xuanzhuo@linux.alibaba.com>
+Subject: [PATCH net v2] vsock/virtio: bind uarg before filling zerocopy skb
+Date: Wed, 27 May 2026 10:33:01 +0800
+Message-ID: <20260527023301.1075581-1-malin89@huawei.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
-Message-ID: <20260527022617.3973884-1-seanjc@google.com>
-Subject: [PATCH v2] KVM: VMX: Handle bad values on proxied writes to LBR MSRs
-From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Xuanqing Shi <1356292400@qq.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100002.china.huawei.com (7.221.188.206) To
+ kwepemr200017.china.huawei.com (7.202.195.7)
 
-From: Xuanqing Shi <1356292400@qq.com>
+From: Jingguo Tan <tanjingguo@huawei.com>
 
-Use the "safe" WRMSR API when writing LBRs on behalf of the guest (or host
-userspace), and propagate any errors back to the instigator, as the value
-being written is untrusted.  E.g. if the guest (or host userspace) attempts
-to set reserved bits in LBR_SELECT, then KVM needs to return an error, and
-not WARN on the bad value.
+virtio_transport_send_pkt_info() allocates or reuses the zerocopy uarg
+before entering the send loop, but virtio_transport_alloc_skb() still
+fills the skb before it inherits that uarg. When fixed-buffer vectored
+zerocopy hits MAX_SKB_FRAGS, io_sg_from_iter() may partially attach
+managed frags and return -EMSGSIZE. The rollback path call kfree_skb()
+to free an skb that carries SKBFL_MANAGED_FRAG_REFS but no uarg, so
+skb_release_data() falls through to ordinary frag unref.
 
-Continue using the "unsafe" version of RDMSR, as it should be impossible to
-reach the helper with a completely bogus MSR, i.e. WARNing on RDMSR failure
-is very desirable, e.g. to make KVM bugs more visible.
+Pass the uarg into virtio_transport_alloc_skb() and bind it immediately
+before virtio_transport_fill_skb(). This keeps control or no-payload skbs
+untouched while ensuring success and rollback share one lifetime rule.
 
-  unchecked MSR access error: WRMSR to 0x1c8 (tried to write 0x0000000000004000)
-  Call Trace:
-   intel_pmu_set_msr+0x4e0/0x7f0 [kvm_intel]
-   kvm_pmu_set_msr+0x17e/0x1c0 [kvm]
-   kvm_set_msr_common+0xc76/0x1440 [kvm]
-   vmx_set_msr+0x5e6/0x1570 [kvm_intel]
-   kvm_emulate_wrmsr+0x54/0x1d0 [kvm]
-   vmx_handle_exit+0x7fc/0x970 [kvm_intel]
-
-Fixes: 1b5ac3226a1a ("KVM: vmx/pmu: Pass-through LBR msrs when the guest LBR event is ACTIVE")
-Cc: stable@vger.kernel.org
-Signed-off-by: Xuanqing Shi <1356292400@qq.com>
-[sean: rework changelog, only modify WRMSR path, tag for stable@]
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: 581512a6dc93 ("vsock/virtio: MSG_ZEROCOPY flag support")
+Signed-off-by: Lin Ma <malin89@huawei.com>
+Signed-off-by: Rongzhen Cui <cuirongzhen@huawei.com>
+Signed-off-by: Jingguo Tan <tanjingguo@huawei.com>
+Acked-by: Arseniy Krasnov <avkrasnov@salutedevices.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
 ---
+v1->v2 changes:
+* add acked and review tags.
+* repost to avoid duplicated subject.
 
-v2:
- - Rework changelog to better capture the scenario.
- - Keep using the "unsafe" version of RDMSR.
+ net/vmw_vsock/virtio_transport_common.c | 11 ++++++++---
+ 1 file changed, 8 insertions(+), 3 deletions(-)
 
-v1: https://lore.kernel.org/all/tencent_744B87186CA59CFD106992329A6510F7F60A@qq.com
-
- arch/x86/kvm/vmx/pmu_intel.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
-diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-index 27eb76e6b6a0..22138c487216 100644
---- a/arch/x86/kvm/vmx/pmu_intel.c
-+++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -308,13 +308,15 @@ static bool intel_pmu_handle_lbr_msrs_access(struct kvm_vcpu *vcpu,
- 	 */
- 	local_irq_disable();
- 	if (lbr_desc->event->state == PERF_EVENT_STATE_ACTIVE) {
-+		int err = 0;
+diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
+index df3b418e0392..73f58925ff72 100644
+--- a/net/vmw_vsock/virtio_transport_common.c
++++ b/net/vmw_vsock/virtio_transport_common.c
+@@ -205,6 +205,7 @@ static u16 virtio_transport_get_type(struct sock *sk)
+ static struct sk_buff *virtio_transport_alloc_skb(struct virtio_vsock_pkt_info *info,
+ 						  size_t payload_len,
+ 						  bool zcopy,
++						  struct ubuf_info *uarg,
+ 						  u32 src_cid,
+ 						  u32 src_port,
+ 						  u32 dst_cid,
+@@ -245,6 +246,11 @@ static struct sk_buff *virtio_transport_alloc_skb(struct virtio_vsock_pkt_info *
+ 	if (info->msg && payload_len > 0) {
+ 		int err;
+ 
++		/* Bind the zerocopy lifetime before filling frags so error rollback
++		 * frees managed fixed-buffer pages through the uarg-aware path.
++		 */
++		skb_zcopy_set(skb, uarg, NULL);
 +
- 		if (read)
- 			rdmsrq(index, msr_info->data);
- 		else
--			wrmsrq(index, msr_info->data);
-+			err = wrmsrq_safe(index, msr_info->data);
- 		__set_bit(INTEL_PMC_IDX_FIXED_VLBR, vcpu_to_pmu(vcpu)->pmc_in_use);
- 		local_irq_enable();
--		return true;
-+		return !err;
- 	}
- 	clear_bit(INTEL_PMC_IDX_FIXED_VLBR, vcpu_to_pmu(vcpu)->pmc_in_use);
- 	local_irq_enable();
-
-base-commit: 9f2a49c511cb05b85745e1578e4fd425bff87f58
+ 		err = virtio_transport_fill_skb(skb, info, payload_len, zcopy);
+ 		if (err)
+ 			goto out;
+@@ -364,6 +370,7 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+ 		skb_len = min(max_skb_len, rest_len);
+ 
+ 		skb = virtio_transport_alloc_skb(info, skb_len, can_zcopy,
++						 uarg,
+ 						 src_cid, src_port,
+ 						 dst_cid, dst_port);
+ 		if (!skb) {
+@@ -371,8 +378,6 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
+ 			break;
+ 		}
+ 
+-		skb_zcopy_set(skb, uarg, NULL);
+-
+ 		virtio_transport_inc_tx_pkt(vvs, skb);
+ 
+ 		ret = t_ops->send_pkt(skb, info->net);
+@@ -1183,7 +1188,7 @@ static int virtio_transport_reset_no_sock(const struct virtio_transport *t,
+ 	if (!t)
+ 		return -ENOTCONN;
+ 
+-	reply = virtio_transport_alloc_skb(&info, 0, false,
++	reply = virtio_transport_alloc_skb(&info, 0, false, NULL,
+ 					   le64_to_cpu(hdr->dst_cid),
+ 					   le32_to_cpu(hdr->dst_port),
+ 					   le64_to_cpu(hdr->src_cid),
 -- 
-2.54.0.823.g6e5bcc1fc9-goog
-
+2.53.0
