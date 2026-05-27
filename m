@@ -1,386 +1,237 @@
-Received: from fout-a8-smtp.messagingengine.com (fout-a8-smtp.messagingengine.com [103.168.172.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dl1-f53.google.com (mail-dl1-f53.google.com [74.125.82.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4233630A0;
-	Wed, 27 May 2026 19:00:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779908451; cv=none; b=UuDWt0iSyYT4t5mGsqJDzCKzvuXyXFN/DvNLbQoNlDb76uaSQH9BAhJq9jsIwf4WWneLMNJmL4pgEOdamHhwf/BR4Nm3G85dhgTCGkFb0z1SlI9pdVFJlNGby4bmYBe4vdMinLS8aVEggdRh2orsCtJW6Pvuv7RGLaOEwnE6CPQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779908451; c=relaxed/simple;
-	bh=zVYumL1TQMBjpa94qtturgLFdRZdyaHrxiIPuQWN0Po=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GP24bTmypHl6zd4wIBPdxWA1dJUePAJTP9KTza2Q+NMWRJ/3yup6qiGSFWjNaDhaXDmmwx0g4tdIyHgMMSi7rnLmynjgho+IViZTlOcdXLKIbXeopERdD0tPFUzTvPICiZA6GfVHZKiQWwvm0CyVMncVXrHg+SBOibUEa03QtUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=M/oq2HzD; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=ji8XVn7J; arc=none smtp.client-ip=103.168.172.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC8AC3655C4
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 19:11:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779909108; cv=pass; b=RYWwvyw57e0kw27jQW0fmG0AVKGF7/oHppc8G+qbhOy8dg+aMwKB2YHuhhnA/wydQBUmswx1fyD/12oeJt9k0LU7B9kImSqSPKzQBH8kF2AV6saXMIzeA/aiNDhJkjqJ14xk3k5SSrxrJnyumI0OGpzNLSI9xUhoQtQx4n4ty+8=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779909108; c=relaxed/simple;
+	bh=rS5bK7IwIlskYEDOipfKrEuNeVXLgKbZp9e4SthEl0U=;
+	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PUM4eaRms74qGR/PNiWseh+X+RvH4jqdIGqXmWdGg1kP8AF4V9cZ2xNM0/YyPdt5tPO3OW4coXoFLbUeI8EsGsAeWQcY1wwGYbb3ExA03hQan/2EdxLxqaVwGbPhkupkpp2aVXqzYKd4IwyXMH0V+K1hNrxUW8CeTvIC6wl8Deo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hObYjZJD; arc=pass smtp.client-ip=74.125.82.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="M/oq2HzD";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="ji8XVn7J"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id AD614EC01CD;
-	Wed, 27 May 2026 15:00:47 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Wed, 27 May 2026 15:00:47 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1779908447;
-	 x=1779994847; bh=dWbmHmsFhL1JO+fiI5q5drCmWA2QA+KCJc5JMtUlBmM=; b=
-	M/oq2HzDusPURhX3PIJQvFC8elfwFPJblxkoLAsvhV+5zowU6LCrF/RayghKfENS
-	n39TYd0JXcGOoGdYcwejVM9s7oN4VV7R7b8MFrRSaLXzGlKiXihojunP6epKfxMN
-	i9nYUZ/qg/Sxlq0xQzecX1sbbri8ULBozPIz/am7O3684p3VONsIERy2cB6qw83g
-	sJ0mdVsmsdeKAP14g672QEQAnjRsL0/incTsSFEbhPDGYXbyaR0aqqHFNf7kFt3Q
-	xCOKukR1nRtTR64hzEGxql2j1Fr7QIafGxoj2lbJVkOa9hqzoLbua78Fz1HTQfJa
-	UkLrAFTc0KLfC14JACS2hA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779908447; x=
-	1779994847; bh=dWbmHmsFhL1JO+fiI5q5drCmWA2QA+KCJc5JMtUlBmM=; b=j
-	i8XVn7JYwhv53sC0PHW/A/GYHCDOuzw6RS1mDqkKrnbgrx8YIbaXEK25T5ILq5He
-	CG0U9A6997j8+I1lfIolQRgGAy0K6qSqtKRlTY7gKCGtfR4tesdKx2QL+pibpSgq
-	Zt9YGLuqw4uxw+MRprBvo1vkHzb9/DlswUOFe00SiAgwDss0lc+sMSRCH3kpMUQV
-	98wfZvvv3UUtJYz+18EU1UWuLKa/4E63PtO2CJBqQefdJjZWy4w/TNrbTAWtP6+2
-	DdZoDC45yGkAnRqu92du188czVZOdKbq40f3eeINIxUOmPbZbBKMnKTAMZKCljCg
-	Ptmd5Ni4G0kWM0AetkLiQ==
-X-ME-Sender: <xms:Xz8XarMOxMVYc8P7wGikv_5Skw5e_5UVYl1q0Y0F_fiIV6i5s5QXqw>
-    <xme:Xz8XatjjRHfD-SDnIxDxc_GiTQGU5RRsN9U_eIN3ApEu7RZeeeIVze8wEQknkzR1y
-    U1xWjY_qQMcomzZfrbKEKgiOK-G9ywjFJpsgsBaqdHGsnnYqHNZUQ>
-X-ME-Received: <xmr:Xz8Xap4d1CKb0fT04S8_EbsVfRNfmzwM0neIUzlbIEv3g2nb4EIcrWdA4Qg>
-X-ME-Proxy-Cause: dmFkZTE5WtTqMLkQXWrOLoLo7pE4j0s8oEtY8S5EKw1HdzVXgTrDfWP6Czu+t/MsztoF8+
-    crha1tfirvoCetGitPp1eWqmDGW+r/VUAROv464BItTXNIQReEVPlSbXtNbu1N/fI0E1nk
-    ujXyyLb9/htjvVvAvOKyuVGrqCso38H6hnJbYOUHe0Sh7FNhdlaHC3u6VRV2hNxPPUKAQi
-    FJJ0bUnKultMtPpcL5NORMRvE90xqPQVC8tvb09OD1a6VXD6SP8IXC9Cj9YF9AwMdZD/uF
-    NOLX/dNjjRu1tqXw4n5gXZ8ieR5dVxmzP1OMLXD44+iGeSjwE2F6fQpdpQzTjD8MIkyuXw
-    rJETSR72SLRFlIfjMxopSf3ILBynVZVBuIMeLLdnj65PcpK6djQTtpg4pJFpCcKLMHJVzG
-    X34OxntDhM6t/Blwh8QrNzSKmROlkl3ANkDbRfxmM8ULgwt6xWDAkGtdRIvSKjP3aMVlqK
-    hF5mjqO+T0bVSbIiDe+rP0MviTqH+N4yBsjjzFKnykSnioV8jIYBfKioSCyDB6MMIZIk7V
-    Q/Pf2SXPK1PUdPoNuEqAkWbWCq7SMe292XJJ7mUS+KZK24UJJhXaVi9wk02yhLWL7vBCpV
-    8ldj8DEX0ndddiSdITV8r6W2S6oqynyosbniib4xPJIjkWFldrif4Aq9K1VQ
-X-ME-Proxy: <xmx:Xz8XasfvR2ynvW8tkCdbOdxuSYAYoq3reazvIpLaW8MqAtk1yfFwQw>
-    <xmx:Xz8XaqBp0206C-vByNU_CcKsGhFZrWsNwLB44bywICdDFslBMZKo0Q>
-    <xmx:Xz8XajD377KiwNhqz0AtxqDeb0QL6b8sKY70D4NAlgpGLyDwqYaiBw>
-    <xmx:Xz8XakZ7fb6HYf1LWcJ_o5pZFOpDQepVweIh43Giquz05XhkFSkQVA>
-    <xmx:Xz8Xah3EVrvET6SjEVcfY8519Kvq8W1HTr4dxiaxNjvqJ7Jx3sjp7NKs>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 27 May 2026 15:00:46 -0400 (EDT)
-Date: Wed, 27 May 2026 13:00:45 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Zhiping Zhang <zhipingz@meta.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Sumit
- Semwal <sumit.semwal@linaro.org>, Christian Konig
- <christian.koenig@amd.com>, Bjorn Helgaas <helgaas@kernel.org>,
- <kvm@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <netdev@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, Keith Busch <kbusch@kernel.org>, Yochai
- Cohen <yochai@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
- alex@shazbot.org
-Subject: Re: [PATCH v5 4/4] RDMA/mlx5: get tph for p2p access when
- registering dma-buf mr
-Message-ID: <20260527130045.704a4502@shazbot.org>
-In-Reply-To: <20260526144401.1485788-5-zhipingz@meta.com>
-References: <20260526144401.1485788-1-zhipingz@meta.com>
-	<20260526144401.1485788-5-zhipingz@meta.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hObYjZJD"
+Received: by mail-dl1-f53.google.com with SMTP id a92af1059eb24-12ddbe104ccso8940387c88.0
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 12:11:46 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779909106; cv=none;
+        d=google.com; s=arc-20240605;
+        b=AMkCSoUhMLTkrTYNNza4ny/tHizzntGjZRHm+B+KRvXhftZZnOCxYqiJH4eR+eZdDg
+         qp9SDUQ75QvzUidqDbMwUjKQTlGX8XxuXHAaSOk+ZTP3gQ0rhyS+up8Zxx1KqXzIZn1m
+         HEAqo4hJl4OyBXgGRGUlRbmOdHaNZBiD8LhqG7OS6lGnZBX78aM58VL95galUQC0hnCe
+         A6T1iOtih9rLmJgVtTL+CecZMz39CYSnkyn+JCAzNujhtLV4UOhXbYdCyp+ydutDIc9v
+         5QEIkmKY9pjVAkJHMB6ljivuet7ryIzAAs4Jsu/QZbPvnsU6vTaJC9avBSRqqA8ONCnZ
+         bvzg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:dkim-signature;
+        bh=/iOy9oeAWJWkVK3CTYdsdZ3vk3yFbXZM1XcJc1qE60c=;
+        fh=GeIn1lAshYjRaJrdVoHZf+XEZe+na/HnY9hoz8ewmOA=;
+        b=CCr8ZDCM6bbAj9ZJq8/NXYIGVrXH7NE8RNkAtSqATV6plpxXxreTkWd+eoRXPnqDaX
+         POTIrgIPJHd/mZpQ40HMpQ9U+HvjDfcq0VEni74Pza3PrxViisxEKISlLA/zBjWtksJv
+         /Rciw4G0c10Ms8KGfTc5YXJ8v4A5yAN0AkoS8ylnKbWcO068lch9In0P+1FYvp/o9e6j
+         ERBsUUvNUqvQ9ttcVd0A9/HfmqziyEbzIJ+DiVSjLyeqLzckzYYze4S3RkyBOzfPn9jx
+         M5xx8pjq8++31HqguMe3Aj1rk9gm1MBAUU/KIO+1pm5bpnW4RzQ4h7f49lW68+cQKcyV
+         2dKg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779909106; x=1780513906; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/iOy9oeAWJWkVK3CTYdsdZ3vk3yFbXZM1XcJc1qE60c=;
+        b=hObYjZJDyX6wds1SjEZbISo1A//I21GetEQmlSJLEgcamKm5eTGJCaPEZSjlA/BLEK
+         ZOtbzGc8zm2kNShUiCgOMCYtJV9Qj5vLsgmQ6XYspfy1vQ5/ctnh8lqaL2kSGkq9hvXl
+         QD4TRVZ4DNvULWgb/vBIDxwISHxA4a8Pbzs0gthlozy5SVsv1lfNEI7g3zGM6VT0naAU
+         g6E2PPQrgNMOYe//RlQdyIoTkYsyVpoauS1HhCSsNXH+iGFkeoCkbmks5EC6kvpow4ch
+         BhHY1GeN637++nsa1cd7phqftGmmzU/e15QN0xkv1PAZfRaRIXRfOrcj/rr+B8dgmQnh
+         mEXA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779909106; x=1780513906;
+        h=cc:to:subject:message-id:date:mime-version:references:in-reply-to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/iOy9oeAWJWkVK3CTYdsdZ3vk3yFbXZM1XcJc1qE60c=;
+        b=of9nOxZzet/BB69pIyLAd08IW6E727+BfwjKF1zc6x0nfbb11Cp6Z63rBQl0LnyGwG
+         1IBk/JSuxbozZzUODA1TOIbKBvdEoKHUh50EhubxoStKn0E8quAXM2DZ6QnlO/iChtKe
+         f23y3GFv0FzRAC79xlV7dZl4ImKyLaP07+l6Bq5qGMUju5z3b8eR9CF+yF1d90EzoXzZ
+         wDQEVX0ngrsTB83uQdTxG0EenOso7WvRUDt+UhEudXE4KQ6rOljUg7Ojsag3e8Pf9zgE
+         DXUoKRv09K5Jxoh9W0MsiJLRuwWi2/K6Wfs4AX+zoibVFHXcFljidbQdV+0kEgaUV+pw
+         H/rQ==
+X-Forwarded-Encrypted: i=1; AFNElJ8lJBglcYlec4oqh1m0HcL9ayqGqA4W/I51TLn7AFTJmyIxwGlQTIjrmsZeYPXXbpni8oU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxcHzt85VTJKbEdglmW3IBuY1OMQdFfGRQBETxgbAzpIkxcEoBV
+	/epU3mnBYLa8hEVYnsrUOobmGJdbCypS2qaYw/qaWdxnpwbbzrsytajYJC9Bgc2249Allrfx+9z
+	/bcwzXmj8fnehIZ9DMTtLB727MEnEqVPHQ5QeLh0x
+X-Gm-Gg: Acq92OFF+v2nJiAr10GJMF1Y20nnDFGgZ0fiQONRBECkazw7A83w/qDa91ahcSHgj4Z
+	SNt7XXlDnSGoRt/4YJ2s9+PDmQcoGc/z6EG7NPbXqvSHDTqMIgsyF5kNZXGdCV9/wHJ3aZhhACE
+	2h0s9Eizqx5rrrSMG4YX4FhbsIQun5pENrk4gJEFWZjzBH9i0Fb3sCzc6nLorRAwm/6rpQkYSzr
+	BQZMvIAXjvLBIX+47F3wkeGZJbHcIUsOUjLyKJ0Y/ca2rceoEIevgGZf157dNpFBECVz66WlivU
+	EOJyJOCQFtcr6a3E13rq0Zs0p2jH1+wKYbB8oRUpAL0ZA0pLMwemO7ZLysj8EEiCykFs7etaxjD
+	71ijsbbpVPtwL+Q==
+X-Received: by 2002:a05:7022:6624:b0:136:83f5:c99 with SMTP id
+ a92af1059eb24-13683f50f0cmr7372245c88.5.1779909105156; Wed, 27 May 2026
+ 12:11:45 -0700 (PDT)
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 27 May 2026 12:11:44 -0700
+Received: from 176938342045 named unknown by gmailapi.google.com with
+ HTTPREST; Wed, 27 May 2026 12:11:44 -0700
+From: Ackerley Tng <ackerleytng@google.com>
+In-Reply-To: <ahXMzPz1cQl6kZge@google.com>
+References: <20260522-fix-sev-gmem-post-populate-v2-0-3f196bfad5a1@google.com>
+ <20260522-fix-sev-gmem-post-populate-v2-3-3f196bfad5a1@google.com> <ahXMzPz1cQl6kZge@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Date: Wed, 27 May 2026 12:11:44 -0700
+X-Gm-Features: AVHnY4IPedUzJdSkNoWjnu4aPO2wBw2uvc56SVrS-WCZO4xFwUugZXQCckX4e_U
+Message-ID: <CAEvNRgHnxEO+jXqEKuewiDgFBDQDSr68A8MnJJSyf9K5AgbwWg@mail.gmail.com>
+Subject: Re: [PATCH v2 3/5] KVM: guest_memfd: Handle errors from
+ xa_store_range() when binding
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Kiryl Shutsemau <kas@kernel.org>, 
+	Rick Edgecombe <rick.p.edgecombe@intel.com>, Vishal Annapurve <vannapurve@google.com>, 
+	Yan Zhao <yan.y.zhao@intel.com>, Michael Roth <michael.roth@amd.com>, 
+	Isaku Yamahata <isaku.yamahata@intel.com>, Chao Peng <chao.p.peng@linux.intel.com>, 
+	Xiaoyao Li <xiaoyao.li@intel.com>, Zongyao Chen <ZongYao.Chen@linux.alibaba.com>, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev, 
+	Yu Zhang <yu.c.zhang@linux.intel.com>, Fuad Tabba <tabba@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, 26 May 2026 07:43:56 -0700
-Zhiping Zhang <zhipingz@meta.com> wrote:
+Sean Christopherson <seanjc@google.com> writes:
 
-> Query dma-buf TPH metadata when registering a dma-buf MR for peer-to-
-> peer access and translate the returned steering tag into an mlx5 ST
-> index. Keep the DMAH path as the first priority and only fall back to
-> DMA-buf metadata when no DMAH is supplied.
-> 
-> Track per-MR ownership of the allocated ST index and release it on MR
-> setup failure, destroy, and FRMR-pool reuse. Release the ST index before
-> the MR is pushed back into the FRMR pool, and free mlx5_st_idx_data when
-> its refcount reaches zero so repeated allocation/deallocation does not
-> leak memory.
-> 
-> Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
-> ---
->  drivers/infiniband/hw/mlx5/mlx5_ib.h          |  6 ++
->  drivers/infiniband/hw/mlx5/mr.c               | 86 ++++++++++++++++++-
->  .../net/ethernet/mellanox/mlx5/core/lib/st.c  | 28 ++++--
->  include/linux/mlx5/driver.h                   |  7 ++
->  4 files changed, 115 insertions(+), 12 deletions(-)
-> 
-> diff --git a/drivers/infiniband/hw/mlx5/mlx5_ib.h b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-> index e156dc4d7529..4ab867392267 100644
-> --- a/drivers/infiniband/hw/mlx5/mlx5_ib.h
-> +++ b/drivers/infiniband/hw/mlx5/mlx5_ib.h
-> @@ -721,6 +721,12 @@ struct mlx5_ib_mr {
->  			u8 revoked :1;
->  			/* Indicates previous dmabuf page fault occurred */
->  			u8 dmabuf_faulted:1;
-> +			/* Set when the MR owns dmabuf_st_index and must
-> +			 * release it via mlx5_st_dealloc_index() once the
-> +			 * firmware mkey is no longer referencing it.
-> +			 */
-> +			u8 dmabuf_st_owned:1;
-> +			u16 dmabuf_st_index;
->  			struct mlx5_ib_mkey null_mmkey;
->  		};
->  	};
-> diff --git a/drivers/infiniband/hw/mlx5/mr.c b/drivers/infiniband/hw/mlx5/mr.c
-> index 3b6da45061a5..8059b5e4da97 100644
-> --- a/drivers/infiniband/hw/mlx5/mr.c
-> +++ b/drivers/infiniband/hw/mlx5/mr.c
-> @@ -38,6 +38,7 @@
->  #include <linux/delay.h>
->  #include <linux/dma-buf.h>
->  #include <linux/dma-resv.h>
-> +#include <linux/pci-tph.h>
->  #include <rdma/frmr_pools.h>
->  #include <rdma/ib_umem_odp.h>
->  #include "dm.h"
-> @@ -46,6 +47,8 @@
->  #include "data_direct.h"
->  #include "dmah.h"
->  
-> +MODULE_IMPORT_NS("DMA_BUF");
-> +
+> On Fri, May 22, 2026, Ackerley Tng wrote:
+>> Unhandled errors from xa_store_range() means kvm_gmem_bind() might falsely
+>> reporting success, leading to false assumptions in guest_memfd's lifecycle
+>> later.
+>>
+>> On error, restore the unbound state and return the error to userspace.
+>>
+>> Fixes: a7800aa80ea4d ("KVM: Add KVM_CREATE_GUEST_MEMFD ioctl() for guest-specific backing memory")
+>> Signed-off-by: Ackerley Tng <ackerleytng@google.com>
+>> ---
+>>  virt/kvm/guest_memfd.c | 11 +++++++++--
+>>  1 file changed, 9 insertions(+), 2 deletions(-)
+>>
+>> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
+>> index d203135969d13..5b4911ffa208a 100644
+>> --- a/virt/kvm/guest_memfd.c
+>> +++ b/virt/kvm/guest_memfd.c
+>> @@ -648,6 +648,7 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+>>  	struct inode *inode;
+>>  	struct file *file;
+>>  	int r = -EINVAL;
+>> +	void *result;
+>
+> I would rather go with "xr".  "result" is too generic, e.g. begs the question of
+> "result of what?"
+>
 
-This doesn't appear to add any dma-buf namespace dependencies.
+Good to go with xr too.
 
->  static int mkey_max_umr_order(struct mlx5_ib_dev *dev)
->  {
->  	if (MLX5_CAP_GEN(dev->mdev, umr_extended_translation_offset))
-> @@ -899,6 +902,63 @@ static struct dma_buf_attach_ops mlx5_ib_dmabuf_attach_ops = {
->  	.invalidate_mappings = mlx5_ib_dmabuf_invalidate_cb,
->  };
->  
-> +/*
-> + * Query TPH metadata from @dmabuf and translate the raw steering tag into
-> + * an mlx5 ST index. On success, returns 0 and the caller becomes the
-> + * owner of *@st_index (must be released with mlx5_st_dealloc_index()
-> + * once the firmware mkey no longer references it). On any failure
-> + * *@st_index and *@ph are left as the no-TPH defaults set by the caller.
-> + *
-> + * @dmabuf must already be referenced by the caller (e.g. via the umem's
-> + * attachment) so we don't re-resolve the user's fd here and avoid a
-> + * dup2() TOCTOU between umem creation and TPH lookup.
-> + */
-> +static void get_tph_mr_dmabuf(struct mlx5_ib_dev *dev, struct dma_buf *dmabuf,
-> +			      u16 *st_index, u8 *ph)
-> +{
-> +	u8 req_type;
-> +	u16 steering_tag;
-> +	u8 st_width;
-> +	int ret;
-> +
-> +	if (!dmabuf->ops->get_tph)
-> +		return;
-> +
-> +	req_type = pcie_tph_enabled_req_type(dev->mdev->pdev);
-> +	switch (req_type) {
-> +	case PCI_TPH_REQ_TPH_ONLY:
-> +		st_width = 8;
-> +		break;
-> +	case PCI_TPH_REQ_EXT_TPH:
-> +		st_width = 16;
-> +		break;
-> +	default:
-> +		return;
-> +	}
-> +
-> +	ret = dmabuf->ops->get_tph(dmabuf, &steering_tag, ph, st_width);
-> +	if (ret) {
-> +		mlx5_ib_dbg(dev, "get_tph failed (%d)\n", ret);
-> +		*ph = MLX5_IB_NO_PH;
-> +		return;
-> +	}
-> +
-> +	ret = mlx5_st_alloc_index_by_tag(dev->mdev, steering_tag, st_index);
-> +	if (ret) {
-> +		*ph = MLX5_IB_NO_PH;
-> +		mlx5_ib_dbg(dev, "st_alloc_index_by_tag failed (%d)\n", ret);
-> +	}
-> +}
+> Actually, I don't think we even need an intermediate variable.
+>
+>>  	BUILD_BUG_ON(sizeof(gfn_t) != sizeof(slot->gmem.pgoff));
+>>
+>> @@ -688,7 +689,14 @@ int kvm_gmem_bind(struct kvm *kvm, struct kvm_memory_slot *slot,
+>>  	if (kvm_gmem_supports_mmap(inode))
+>>  		slot->flags |= KVM_MEMSLOT_GMEM_ONLY;
+>>
+>> -	xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
+>> +	result = xa_store_range(&f->bindings, start, end - 1, slot, GFP_KERNEL);
+>> +	if (xa_is_err(result)) {
+>> +		r = xa_err(result);
+>> +		xa_store_range(&f->bindings, start, end - 1, NULL, GFP_KERNEL);
+>
+> I'm not convinced this is necessary.  Sashiko "asked" the question:
+>
+>  : If xa_store_range() fails midway through storing a large range (for example,
+>  : returning -ENOMEM), does it leave the already-processed entries in the
+>  : f->bindings XArray?
+>  :
+>  : When this error is propagated back, the caller __kvm_set_memory_region()
+>  : will abort the operation and free the memslot without calling
+>  : kvm_gmem_unbind().
+>  :
+>  : Since the partial XArray updates aren't rolled back here, could this leave
+>  : dangling pointers to the freed memslot in f->bindings? If so, when the file
+>  : is eventually closed, kvm_gmem_release() might iterate over these dangling
+>  : pointers and write to slot->gmem.file, resulting in a use-after-free.
+>
+> but I think Sashiko is hallicunating.
+>
 
-ph handling is inconsistent, why not use a local variable and only set
-the caller's pointer on success?
+When I updated this I kind of just assumed xa_store_range() always
+iterates indices (so for a range [0, 10], it would store 11 times), and
+an earlier index could be set, and a later store could result in
+-ENOMEM.
 
-> +
-> +static void mlx5_ib_mr_put_dmabuf_st(struct mlx5_ib_mr *mr)
-> +{
-> +	if (mr->umem && mr->dmabuf_st_owned) {
-> +		mlx5_st_dealloc_index(mr_to_mdev(mr)->mdev,
-> +				      mr->dmabuf_st_index);
-> +		mr->dmabuf_st_owned = 0;
-> +	}
-> +}
-> +
->  static struct ib_mr *
->  reg_user_mr_dmabuf(struct ib_pd *pd, struct device *dma_device,
->  		   u64 offset, u64 length, u64 virt_addr,
-> @@ -941,16 +1001,26 @@ reg_user_mr_dmabuf(struct ib_pd *pd, struct device *dma_device,
->  		ph = dmah->ph;
->  		if (dmah->valid_fields & BIT(IB_DMAH_CPU_ID_EXISTS))
->  			st_index = mdmah->st_index;
-> +	} else {
-> +		get_tph_mr_dmabuf(dev, umem_dmabuf->attach->dmabuf,
-> +				  &st_index, &ph);
->  	}
->  
->  	mr = alloc_cacheable_mr(pd, &umem_dmabuf->umem, virt_addr,
->  				access_flags, access_mode,
->  				st_index, ph);
->  	if (IS_ERR(mr)) {
-> +		if (!dmah && st_index != MLX5_MKC_PCIE_TPH_NO_STEERING_TAG_INDEX)
-> +			mlx5_st_dealloc_index(dev->mdev, st_index);
->  		ib_umem_release(&umem_dmabuf->umem);
->  		return ERR_CAST(mr);
->  	}
->  
-> +	if (!dmah && st_index != MLX5_MKC_PCIE_TPH_NO_STEERING_TAG_INDEX) {
-> +		mr->dmabuf_st_index = st_index;
-> +		mr->dmabuf_st_owned = 1;
-> +	}
-> +
->  	mlx5_ib_dbg(dev, "mkey 0x%x\n", mr->mmkey.key);
->  
->  	atomic_add(ib_umem_num_pages(mr->umem), &dev->mdev->priv.reg_pages);
-> @@ -1377,9 +1447,17 @@ static int mlx5r_handle_mkey_cleanup(struct mlx5_ib_mr *mr)
->  	bool is_odp = is_odp_mr(mr);
->  	int ret;
->  
-> -	if (mr->ibmr.frmr.pool && !mlx5_umr_revoke_mr_with_lock(mr) &&
-> -	    !ib_frmr_pool_push(mr->ibmr.device, &mr->ibmr))
-> -		return 0;
-> +	if (mr->ibmr.frmr.pool && !mlx5_umr_revoke_mr_with_lock(mr)) {
-> +		/*
-> +		 * The mkey has been revoked: firmware no longer references
-> +		 * dmabuf_st_index, so release it before this mr can re-enter
-> +		 * the FRMR cache for reuse by another registration.
-> +		 */
-> +		mlx5_ib_mr_put_dmabuf_st(mr);
-> +
-> +		if (!ib_frmr_pool_push(mr->ibmr.device, &mr->ibmr))
-> +			return 0;
-> +	}
->  
->  	if (is_odp)
->  		mutex_lock(&to_ib_umem_odp(mr->umem)->umem_mutex);
-> @@ -1400,6 +1478,8 @@ static int mlx5r_handle_mkey_cleanup(struct mlx5_ib_mr *mr)
->  		dma_resv_unlock(
->  			to_ib_umem_dmabuf(mr->umem)->attach->dmabuf->resv);
->  	}
-> +	if (!ret)
-> +		mlx5_ib_mr_put_dmabuf_st(mr);
->  	return ret;
->  }
->  
-> diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c
-> index 997be91f0a13..8929c17c88bc 100644
-> --- a/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c
-> +++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/st.c
-> @@ -29,7 +29,7 @@ struct mlx5_st *mlx5_st_create(struct mlx5_core_dev *dev)
->  	u8 direct_mode = 0;
->  	u16 num_entries;
->  	u32 tbl_loc;
-> -	int ret;
-> +	int ret = 0;
+Since you called this out, I dug into it more.
 
-Unnecessary change.
+> If @entry is non-NULL, xa_store_range() pre-creates the entire range, before
+> storing anything into the range:
+>
+> 		if (entry) {
+> 			unsigned int order = BITS_PER_LONG;
+> 			if (last + 1)
+> 				order = __ffs(last + 1);
+> 			xas_set_order(&xas, last, order);
+> 			xas_create(&xas, true);
+> 			if (xas_error(&xas))
+> 				goto unlock;
+> 		}
+>
 
->  
->  	if (!MLX5_CAP_GEN(dev, mkey_pcie_tph))
->  		return NULL;
-> @@ -92,23 +92,18 @@ void mlx5_st_destroy(struct mlx5_core_dev *dev)
->  	kfree(st);
->  }
->  
-> -int mlx5_st_alloc_index(struct mlx5_core_dev *dev, enum tph_mem_type mem_type,
-> -			unsigned int cpu_uid, u16 *st_index)
-> +int mlx5_st_alloc_index_by_tag(struct mlx5_core_dev *dev, u16 tag,
-> +			       u16 *st_index)
->  {
->  	struct mlx5_st_idx_data *idx_data;
->  	struct mlx5_st *st = dev->st;
->  	unsigned long index;
->  	u32 xa_id;
-> -	u16 tag;
-> -	int ret;
-> +	int ret = 0;
->  
->  	if (!st)
->  		return -EOPNOTSUPP;
->  
-> -	ret = pcie_tph_get_cpu_st(dev->pdev, mem_type, cpu_uid, &tag);
-> -	if (ret)
-> -		return ret;
-> -
->  	if (st->direct_mode) {
->  		*st_index = tag;
->  		return 0;
-> @@ -152,6 +147,20 @@ int mlx5_st_alloc_index(struct mlx5_core_dev *dev, enum tph_mem_type mem_type,
->  	mutex_unlock(&st->lock);
->  	return ret;
->  }
-> +EXPORT_SYMBOL_GPL(mlx5_st_alloc_index_by_tag);
-> +
-> +int mlx5_st_alloc_index(struct mlx5_core_dev *dev, enum tph_mem_type mem_type,
-> +			unsigned int cpu_uid, u16 *st_index)
-> +{
-> +	u16 tag;
-> +	int ret;
-> +
-> +	ret = pcie_tph_get_cpu_st(dev->pdev, mem_type, cpu_uid, &tag);
-> +	if (ret)
-> +		return ret;
-> +
-> +	return mlx5_st_alloc_index_by_tag(dev, tag, st_index);
-> +}
->  EXPORT_SYMBOL_GPL(mlx5_st_alloc_index);
->  
->  int mlx5_st_dealloc_index(struct mlx5_core_dev *dev, u16 st_index)
-> @@ -175,6 +184,7 @@ int mlx5_st_dealloc_index(struct mlx5_core_dev *dev, u16 st_index)
->  
->  	if (refcount_dec_and_test(&idx_data->usecount)) {
->  		xa_erase(&st->idx_xa, st_index);
-> +		kfree(idx_data);
->  		/* We leave PCI config space as was before, no mkey will refer to it */
->  	}
+xa_store_range() doesn't actually always iterate: if last + 1 is some
+clean power of 2, it'll create a higher order xarray node.
 
-Should this be pulled out as a fix separate from the feature added
-here?  Thanks,
+Otherwise, it falls back to creating and storing 1 index/node at a time:
+if the above did manage to create an xarray node, xas_error() returns
+false, it goes on to the store below.
 
-Alex
+> Yes, the API handles failure on the subsequent xas_store(), but I can't imagine
+> that failure is actually, barring garbage input from KVM:
+>
+> 		do {
+> 			xas_set_range(&xas, first, last);
+> 			xas_store(&xas, entry);
+> 			if (xas_error(&xas))
+> 				goto unlock;
+> 			first += xas_size(&xas);
+> 		} while (first <= last);
+>
 
->  
-> diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
-> index 04b96c5abb57..523a9ab0ae1e 100644
-> --- a/include/linux/mlx5/driver.h
-> +++ b/include/linux/mlx5/driver.h
-> @@ -1166,10 +1166,17 @@ int mlx5_dm_sw_icm_dealloc(struct mlx5_core_dev *dev, enum mlx5_sw_icm_type type
->  			   u64 length, u16 uid, phys_addr_t addr, u32 obj_id);
->  
->  #ifdef CONFIG_PCIE_TPH
-> +int mlx5_st_alloc_index_by_tag(struct mlx5_core_dev *dev, u16 tag,
-> +			       u16 *st_index);
->  int mlx5_st_alloc_index(struct mlx5_core_dev *dev, enum tph_mem_type mem_type,
->  			unsigned int cpu_uid, u16 *st_index);
->  int mlx5_st_dealloc_index(struct mlx5_core_dev *dev, u16 st_index);
->  #else
-> +static inline int mlx5_st_alloc_index_by_tag(struct mlx5_core_dev *dev,
-> +					     u16 tag, u16 *st_index)
-> +{
-> +	return -EOPNOTSUPP;
-> +}
->  static inline int mlx5_st_alloc_index(struct mlx5_core_dev *dev,
->  				      enum tph_mem_type mem_type,
->  				      unsigned int cpu_uid, u16 *st_index)
+So if a later xas_create() fails because it runs out of memory, the
+earlier stores would have already been committed.
 
+This ignores -EEXIST being returned since earlier in kvm_gmem_bind()
+conflicts were already checked.
+
+> Purely from a design perspective, providing an API that can fail partway through
+> under normal operation, with no indication of where failure occured (AFAICT),
+> would be awful.
+>
+
+Do you mean the API of xas_store_range()? xas is updated by
+xas_set_range() so that should track the last store. Since the cleanup
+is storing NULLs and won't allocate, I thought it would be fine to just
+store NULL on the entire range on error.
+
+>> +	} else {
+>> +		r = 0;
+>> +	}
+>> +
+>>  	filemap_invalidate_unlock(inode->i_mapping);
+>>
+>>  	/*
+>>
+>> [...snip...]
+>>
