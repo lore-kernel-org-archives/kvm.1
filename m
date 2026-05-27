@@ -1,98 +1,82 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1FF4534A2
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 18:14:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E68347B420
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 18:14:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779905673; cv=none; b=CpkWIOFdcbj/1JUytrac3nibw0cvyPuuBO/ueGR7GXR1herq2h84VYGHWCdFspwlaFDblLhQ41KVIfIQZEhr4ShX23d85AYY3BKHdf8v556b9KBxNIKVdF0jSKazn+sINe3ZHrwKWr5W730ddWz9U7JuSHZbdwOXtWSRRcS9epI=
+	t=1779905681; cv=none; b=tJVRmuuRcqy1u54yvPFjtJg9Rrl4fRNZ+dWz+YCE50H8Oe9MrBjK56l6vFjPdqG2/f7aGo2EUIPCaPq4cEVj4Q0dr4rsWOa9++CYXAJjjgQelZHF0En+vdR+nnYCgC2afOxJoEgpR54EyEXBcpcNxYCnUVlI1fVQIJVw49b5UgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779905673; c=relaxed/simple;
-	bh=O9pOk5v+q8VTzg7ynkOmwYh/WXaD4qHadkilsV42SIc=;
+	s=arc-20240116; t=1779905681; c=relaxed/simple;
+	bh=rLnY/r9Ruahq6JSCM4QZVx42p/ohIgGGx2zoK296gjk=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=TfC/QpzWMTzD4tGS4X4VOHD2JZ2NeqaGtqcQ3GQV82RSt1aCCDP03FXsOctmmaqxX1iyNM6aEExSSwQ3soJ1nEufaHeqFaL8r1Uh6RtlA+hlEEr8Pv628quAEyLV7EjZOYYH6rkB4kukOqkWmJQTAICSnrwRDn+qWcExN5TAk4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Mc54KIjd; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=W6Sgl5tfes1RBS/9AS8JxUiu1ejidOkmjyhD/JGRjhbfmEiswvThAPvqtvy6zNDCW0wdHGJsTvkg/7zEG81egbvf9z9IAFgBybowmSdl2auslq2fga17SQVFtD9s0NhkR1w/cM2SaOxh4QRdWNw5AqgQzninRWtqcIGWlR1ulMU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=O2pSL1pv; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Mc54KIjd"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bf004bf8beso1694535ad.3
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 11:14:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="O2pSL1pv"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82f6b984b3aso5348807b3a.3
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 11:14:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779905671; x=1780510471; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779905678; x=1780510478; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yQnId2rHDW8In1E8uy3X9GmOauCk23K9nsxnBe9nCG8=;
-        b=Mc54KIjdXwwSJ/75s2zPL3WwJ9YewKkBKbkD1z93OHK75c9hlk50N7jm+DhMCX+tP+
-         SXvp1o7Ip5lSuvE5wquAfPvJk4WE1DefFZ9mjPjlb/Q8xpRwFT7DTOEmVgywa12wapbm
-         MYG9CIFEq2VoMay5olmLF/vEasBdiHCkUGA2W9aTQroepejKDkl2pm/80f5XF9V8Uoki
-         NkgCTSjC1gdIRngg0C94bJ3bg/T+BQIK2pJQAFewx6It72mj3PwvOeqEUEVMvV4C/ofw
-         q8cR3zNP9HGJA+hVsWHW8m4E0rX7xxlwqRbCwYjOy9T9aYFJJYXTsRGDqUwNhZFPnnI0
-         W53Q==
+        bh=ae0JUYZnH6PDq++BeF1nOUuxoe4YC/dX1lDQosSPY5o=;
+        b=O2pSL1pvDX8thkRVNHwtx6tiCGHu46WFdXGzHz5pYVytNpdFmXhhiMNldwVvJV3QGp
+         AL5BIifeaTuu+oJ5+uHRAp2i1gvfBnlMSpBT1Tcuf/bz4kKcDxohNgjzGIoxOLQCgMsR
+         zC5d1HAH7/W6GHWfCQFWejWhVTgIdIA+L5uaHV3HAdLzB2pDG8BmIscKRk7yJ50Xu/kw
+         oE82qcnpdXsNA9ZrwQbQ2z40JxvaQKvVBdH6Y4k+DQXj88nDzhq4oVrbMTyqWT6S0BmE
+         /oWHnCN0eQuMl9uoZbDgyfGW7Enko+zfzo7KahgXcvVMBbDJdwet2ZqA6jINjDdoz/CG
+         a0ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779905671; x=1780510471;
+        d=1e100.net; s=20251104; t=1779905678; x=1780510478;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yQnId2rHDW8In1E8uy3X9GmOauCk23K9nsxnBe9nCG8=;
-        b=kKtuofU+CnfMIj91OXft/3M3L79W0SwPx6PB8YY2JZr1X+xBlF+gpShSYbo0DE6TKV
-         fq0LaiaXpr5CKmjgiTfcPD1KfCwzKhvfupnT/FJrLbr52kwRbnBTvcuQS6aJBF6a7ExR
-         y+JR8uawEfhh0MNbSIWomBFIkNPv2paT5sLqAXV6Ems+7D21qp2q2Ef9iCnDbDd+vRWk
-         nC6y91gh00JTQIKqmO+Ph8C5oFGySS0IMZwJvLtTPjmpdDxlH1EcjChQsgQuTxfyRbRi
-         N80e8E60v//IhI9cPI+nYmnbcOf3kwnVEChbcEt6pQwWHzJFe8xwwf3ifE4qIc+w53PT
-         FtHQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/pxLtGaOdEmTTTMvVAyiuhDbRJHsM98RLPaI4BvIwtP/0NnEbNles7OiNcwyzl72E9+VI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxikiTsRdIXz+xp9jxessFPiaSztgB1hjq29WOpvcMCraffLAWE
-	Xav9oNC8XPNsK3aevK06tIT1hVerLdrv3GNSzcHSspt4ICGMEPEKcqSgrSIyRwA+qQugLW9p05I
-	piOt6TQ==
-X-Received: from plop17.prod.google.com ([2002:a17:902:8a91:b0:2bc:9bda:56d0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f64e:b0:2b2:50bd:83b3
- with SMTP id d9443c01a7336-2beb035c826mr257510165ad.10.1779905670713; Wed, 27
- May 2026 11:14:30 -0700 (PDT)
-Date: Wed, 27 May 2026 11:10:12 -0700
-In-Reply-To: <20260430014852.24183-1-yan.y.zhao@intel.com>
+        bh=ae0JUYZnH6PDq++BeF1nOUuxoe4YC/dX1lDQosSPY5o=;
+        b=Uaz//VSrCC/Z620aCCUUBpG/7GiBdG3D3yeL0najgjEJumU5mzRO3YA/sx+FN2HRX/
+         l9u6IU7M9PVc0uwbEQkdhqgF3EBv6wSqh2Nk65lbCh8CViQLLDChFonwcmgHU6AFnBF1
+         MlsUDTevWhmA3GtwHIYITxhhJTaKArzxX6tlgRnYngmliNrvxjVc9cYZi6UPWxvlXz51
+         0oKkDWzKvT++UnYykv5cm+/BrXeem5e3Ln33xFG1GlE156IZNXwCsF5H6cs1lWdzLJ0i
+         s/H8PF+ubLG8L77VWKtalES/Y1DcZWrDOjOLr8dukyCNHlNq8yFrH7OrTvYzkm47faju
+         HXdg==
+X-Forwarded-Encrypted: i=1; AFNElJ/PSl1Hva4VsxxCgGbBV/Y54HNDkA/ubGNYH7Z6kXGdNKZRbm545iQ0sSgxil4k2aZz7Rw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzF4pYp3cN8xQcoGxB5zK7Q0HQMBniseJDePToGnKG34bAyXlDG
+	EkYTY2j/SmoaOlSy9oJdlIpBzgJqZ0vrsC/9/NfrQoFAAsoTT607L9t9sQQ1UcK0qY+KdShT/GX
+	ECh7oGQ==
+X-Received: from pfbey25.prod.google.com ([2002:a05:6a00:38d9:b0:82f:4183:2832])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:9084:b0:83e:b443:965e
+ with SMTP id d2e1a72fcca58-8415f2dd96amr22258784b3a.3.1779905677512; Wed, 27
+ May 2026 11:14:37 -0700 (PDT)
+Date: Wed, 27 May 2026 11:10:14 -0700
+In-Reply-To: <20260523111857.195396-1-piotr.zarycki@gmail.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260430014852.24183-1-yan.y.zhao@intel.com>
+References: <20260523111857.195396-1-piotr.zarycki@gmail.com>
 X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
-Message-ID: <177990514368.4120011.1575758464694752462.b4-ty@google.com>
-Subject: Re: [PATCH v2 0/4] struct page to PFN conversion for TDX guest
- private memory
+Message-ID: <177990517478.4120439.17004463221573645730.b4-ty@google.com>
+Subject: Re: [PATCH] KVM: selftests: hyperv_features: test write of 1 to HV_X64_MSR_RESET
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, dave.hansen@linux.intel.com, pbonzini@redhat.com, 
-	Yan Zhao <yan.y.zhao@intel.com>
-Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de, kas@kernel.org, 
-	x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
-	linux-coco@lists.linux.dev, kai.huang@intel.com, rick.p.edgecombe@intel.com, 
-	yilun.xu@linux.intel.com, vannapurve@google.com, ackerleytng@google.com, 
-	sagis@google.com, binbin.wu@linux.intel.com, xiaoyao.li@intel.com, 
-	isaku.yamahata@intel.com
+To: Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com, 
+	Piotr Zarycki <piotr.zarycki@gmail.com>
+Cc: vkuznets@redhat.com, shuah@kernel.org, kvm@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, 30 Apr 2026 09:48:52 +0800, Yan Zhao wrote:
-> This is v2 of the struct page to PFN conversion series, which converts TDX
-> guest private memory mapping/unmapping APIs from taking struct page to
-> taking PFN as input.
-> 
-> v2 is based on v7.1.0-rc1 + Sean's 4 cleanup patches (see details in
-> section "Base" below). The purpose is to get Dave's Ack, so Sean can take
-> it from the KVM x86 tree. The full stack of v2 is available at [14].
-> 
-> [...]
+On Sat, 23 May 2026 13:18:57 +0200, Piotr Zarycki wrote:
+> Writing 1 to HV_X64_MSR_RESET triggers a real vCPU reset; the test
+> was writing 0 because the host loop was not prepared to handle the
+> resulting KVM_EXIT_SYSTEM_EVENT. Add the missing handling and write
+> 1 to actually exercise the reset path.
 
-Applied to kvm-x86 mmu, thanks!
+Applied to kvm-x86 selftests, thanks!
 
-[1/4] x86/tdx: Use PFN directly for mapping guest private memory
-      https://github.com/kvm-x86/linux/commit/6ad0badd765c
-[2/4] x86/tdx: Use PFN directly for unmapping guest private memory
-      https://github.com/kvm-x86/linux/commit/4c7a1247646c
-[3/4] x86/tdx: Drop exported function tdx_quirk_reset_page()
-      https://github.com/kvm-x86/linux/commit/4a72a6dc447d
-[4/4] x86/virt/tdx: Move mk_keyed_paddr() to tdx.c due to no external users
-      https://github.com/kvm-x86/linux/commit/3f330fbb918f
+[1/1] KVM: selftests: hyperv_features: test write of 1 to HV_X64_MSR_RESET
+      https://github.com/kvm-x86/linux/commit/5bd0387e3b56
 
 --
 https://github.com/kvm-x86/linux/tree/next
