@@ -1,90 +1,233 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9787D423A80
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 15:21:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7EE03FC5DA;
+	Wed, 27 May 2026 15:21:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779895278; cv=none; b=soak5KiQv75fdK8Tcx+0ncRRDnX6Ik6Y0LYkeougwzfpTDI7pfBeTARqC5wNcgZXFCODpC+AjYU00erIWq5TSp+/+wr5OE9hp5VFzacje4kY+1giFv+GbRzupChIBHYP7kOGOezlrtX3qxYirTn37LdaKlgo1CvupC6gLWtYqJ0=
+	t=1779895299; cv=none; b=ikJbhBrSz8Lk1IdWhbyS9dsTXy2mBCbNoGhn9+dELXlRQjA8QpV7OgON+fZpg4QJDmXMKOdwPlBL7Rfgc6/ob1j7GEljs98UossO0HoCswmdW8HT32D4BEyOyIeLeRrw+/D9OrqZJDIotAghuqgSxn6WZJXqO3tQZhg7V0DpZGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779895278; c=relaxed/simple;
-	bh=xhyXzRInQ1hVIcFi+/mRkOJnihyjq8eBvrX7aKxRaZM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Eb0Jy5Hf7JdFw5Vew9x47QqFi2YAfq+vGV5jb7Ws0h1KZ0ZxWp1BedQDcXaatpMLIm3Cdo6RVAIHxOwU/SXC6sHhv7ErIBRrtbTom8ra23zwclIOcyWjkl8DQ0yck6kE0wVRtXceB7yJRNbTKqOSqeWo7XGPCecbgEZ5UoABbf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H65x7YQJ; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1779895299; c=relaxed/simple;
+	bh=tE2TU4DTN8usCHQHsX7JSxdcw9nunKjlogE83etYDEs=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TgRGVqTLGeRZnMEANynJUdF2x1z/ZZGHjnb48I8jCU+Sk+YiW7XpFVqFY6W6YamJ+2UHnr2leLO4p8WwvSfOnCheon1PyatJxGuRaketsPxaG+ew0J+oNbDQpbzs06iMcZUKGCLED0t5iQdPkg3Lf6QVsVmge6fVd+3cGHaJR1k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bqKm/KIx; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H65x7YQJ"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b99eb06178so25372285ad.2
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 08:21:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779895276; x=1780500076; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=BC30JWKH/aly7zj6nofm2S0xQsc5N6Du5fBIfFIP3QE=;
-        b=H65x7YQJFVfIbBV3/pZXu1EWK2JHsBNny/3wsVemeifD0ak2blERgx8Kq3BReQZkoc
-         3xOziBexxAm+dRPVAXKuCbOGYQKc4LrSWtbfS1O9izpvxADMVA/lotD05rHT6viPpHw9
-         useBiF9T3rwGSOYrMyPAl2syukjVspiorwUnEbE0ajn68PVX1JUU4XYW6yS0B6y+g2pN
-         d5KH8oi8VUre3WkZYMdzgd0vmENPdz8gi+BBM1T5PfC18PQ/Mc7Y3QMWwuR+cBQJo/Wr
-         PughSRhTK22ziDEUzbBLngtZCNPLDsI5ANw5CLmbyVpePjUFxP1gg5ZkzKTyEUP91K+s
-         CjnQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779895276; x=1780500076;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BC30JWKH/aly7zj6nofm2S0xQsc5N6Du5fBIfFIP3QE=;
-        b=pIaVe4EwUjgBcXjYZf7AjOkDXHQ6qZadt4GganwxJUvz3oZRPRIaSTCV9mBd/MuxdJ
-         c45igfl0NNOVTEA6Sf3+j9THLFnVLNh6pMB2eTcOIqJUlmHbWTvCxPel/Py68+aePSGa
-         oGvPp0JFBRK9LUW09g0aGs07hg5DRbAgffPrasLLUUO0Zq/a1mJdajhLPvkD9WDy9qdh
-         Je3pSMcK6c2Nbukh18LB4jhA9yiaHQv9VSxsocCFyc/OZ1PAzMpF3TfQ/5xG7VZDLztY
-         LoIj72MhBjHPTHW0QrgkW8sM4bOzu9xcgDPF42K5qpqoIQwtWa6l7RCF+7HxyJhxj3R+
-         nSrg==
-X-Forwarded-Encrypted: i=1; AFNElJ95w3SuducKoXXBeI49SnisvG2nE6izmGbGeWFWltz9E0fCs0csPyC0Ob14t92TrMO1PNk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwhjqRhutxUgCjpLWaF/Fxq84zyPkLdkfXJYLXuE+K7FrXe/keK
-	+tL6lONVsmng+CpBkOtPB2nd/7kpG/wYI2nM17smiO8Poa5Lo9uChd9pSAiFfaiPPyS6cr3MJPI
-	dsEnRrg==
-X-Received: from plsh9.prod.google.com ([2002:a17:902:b949:b0:2bc:f203:12a1])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:cccf:b0:2ba:fed:7891
- with SMTP id d9443c01a7336-2beb0626253mr283978245ad.30.1779895275535; Wed, 27
- May 2026 08:21:15 -0700 (PDT)
-Date: Wed, 27 May 2026 08:21:14 -0700
-In-Reply-To: <d3cd9e60-3b4e-4df0-abd4-5677c30f20fc@intel.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bqKm/KIx"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C3C11F000E9;
+	Wed, 27 May 2026 15:21:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779895295;
+	bh=zfzKYqdLKqLou2xyyPcBQZmXad6Js16rghPX85JNlC8=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=bqKm/KIx9SZiNFvg+rRpM9FW+apfluy74behCm+gNm7zPh7TFNXNfkZcXFxlFkUXR
+	 75HJ325gNQJZ3eAVBm06XNdT8uXEB5lo5l2yZMiAJhfqKU9jiqvn1S2mECrepBDhHC
+	 QFdJee5SKkaZ6Htu401Go8q+AP0zROI8I94tc4MTUoD8brfWJrjzkVetrh52AHHaqS
+	 4e5uGQ5LFWCoFKYw7idtizfjriz5gVd2E/MVjBTFKsunebdNF0tWw7mbnDuzkWPAHn
+	 0cohXt53o9ybwk6hc0rS00bSwBp+8dMNOroAMfW1ENaVFhYu1QzSUb6Qbc2lVq0jB9
+	 /syB2Qilfkk1A==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wSG4b-00000006jaR-1Cqt;
+	Wed, 27 May 2026 15:21:33 +0000
+Date: Wed, 27 May 2026 16:21:32 +0100
+Message-ID: <86jysovpxf.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Steven Price <steven.price@arm.com>
+Cc: kvm@vger.kernel.org,
+	kvmarm@lists.linux.dev,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	James Morse <james.morse@arm.com>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Zenghui Yu <yuzenghui@huawei.com>,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org,
+	Joey Gouly <joey.gouly@arm.com>,
+	Alexandru Elisei <alexandru.elisei@arm.com>,
+	Christoffer Dall <christoffer.dall@arm.com>,
+	Fuad Tabba <tabba@google.com>,
+	linux-coco@lists.linux.dev,
+	Ganapatrao Kulkarni <gankulkarni@os.amperecomputing.com>,
+	Gavin Shan <gshan@redhat.com>,
+	Shanker Donthineni <sdonthineni@nvidia.com>,
+	Alper Gun <alpergun@google.com>,
+	"Aneesh Kumar K . V" <aneesh.kumar@kernel.org>,
+	Emi Kisanuki <fj0570is@fujitsu.com>,
+	Vishal Annapurve <vannapurve@google.com>,
+	WeiLin.Chang@arm.com,
+	Lorenzo.Pieralisi2@arm.com
+Subject: Re: [PATCH v14 13/44] arm64: RMI: Define the user ABI
+In-Reply-To: <20260513131757.116630-14-steven.price@arm.com>
+References: <20260513131757.116630-1-steven.price@arm.com>
+	<20260513131757.116630-14-steven.price@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260527151232.4058615-1-seanjc@google.com> <20260527151232.4058615-3-seanjc@google.com>
- <d3cd9e60-3b4e-4df0-abd4-5677c30f20fc@intel.com>
-Message-ID: <ahcL6tprdOooMISu@google.com>
-Subject: Re: [kvm-unit-tests PATCH v3 2/2] x86/vmx: (Re)Add a nVMX test to
- validate load/save of DEBUGCTL
-From: Sean Christopherson <seanjc@google.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
-	Chenyi Qiang <chenyi.qiang@intel.com>
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: steven.price@arm.com, kvm@vger.kernel.org, kvmarm@lists.linux.dev, catalin.marinas@arm.com, will@kernel.org, james.morse@arm.com, oliver.upton@linux.dev, suzuki.poulose@arm.com, yuzenghui@huawei.com, linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org, joey.gouly@arm.com, alexandru.elisei@arm.com, christoffer.dall@arm.com, tabba@google.com, linux-coco@lists.linux.dev, gankulkarni@os.amperecomputing.com, gshan@redhat.com, sdonthineni@nvidia.com, alpergun@google.com, aneesh.kumar@kernel.org, fj0570is@fujitsu.com, vannapurve@google.com, WeiLin.Chang@arm.com, Lorenzo.Pieralisi2@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, May 27, 2026, Xiaoyao Li wrote:
-> On 5/27/2026 11:12 PM, Sean Christopherson wrote:
-> > +	for (i = 1; i <= supported_bits; i++) {
-> > +		if ((i & supported_bits) != i)
-> > +			continue;
-> > +
-> > +		for (j = 1; j <= supported_bits; j++) {
-> > +			if ((j & supported_bits) != j)
-> > +				continue;
-> > +
-> > +			__vmx_debugctl_test(i, j);
-> > +		}
-> > +	}
+On Wed, 13 May 2026 14:17:21 +0100,
+Steven Price <steven.price@arm.com> wrote:
 > 
-> What a clever idea!
-> 
-> A minor flaw: Both i and j should start from 0, since 0 is a valid value.
+> There is one CAP which identified the presence of CCA, and one ioctl.
+> The ioctl is used to populate memory during creation of the realm as
+> this requires the RMM to copy data from an unprotected address to the
+> protected memory - CCA does not support memory conversion where the
+> memory contents is preserved as this is incompatible with memory
+> encryption.
+>
+> Signed-off-by: Steven Price <steven.price@arm.com>
+> ---
+> Changes since v13:
+>  * KVM_ARM_VCPU_RMI_PSCI_COMPLETE removed.
+>  * KVM_ARM_RMI_POPULATE documentation updated to reflect that the
+>    structure is written by the kernel.
+>  * CAP number bumped.
+> Changes since v12:
+>  * Change KVM_ARM_RMI_POPULATE to update the structure with the amount
+>    that has been progressed rather than return the number of bytes
+>    populated.
+>  * Describe the flag KVM_ARM_RMI_POPULATE_FLAGS_MEASURE.
+>  * CAP number is bumped.
+>  * NOTE: The PSCI ioctl may be removed in a future spec release.
+> Changes since v11:
+>  * Completely reworked to be more implicit. Rather than having explicit
+>    CAP operations to progress the realm construction these operations
+>    are done when needed (on populating and on first vCPU run).
+>  * Populate and PSCI complete are promoted to proper ioctls.
+> Changes since v10:
+>  * Rename symbols from RME to RMI.
+> Changes since v9:
+>  * Improvements to documentation.
+>  * Bump the magic number for KVM_CAP_ARM_RME to avoid conflicts.
+> Changes since v8:
+>  * Minor improvements to documentation following review.
+>  * Bump the magic numbers to avoid conflicts.
+> Changes since v7:
+>  * Add documentation of new ioctls
+>  * Bump the magic numbers to avoid conflicts
+> Changes since v6:
+>  * Rename some of the symbols to make their usage clearer and avoid
+>    repetition.
+> Changes from v5:
+>  * Actually expose the new VCPU capability (KVM_ARM_VCPU_REC) by bumping
+>    KVM_VCPU_MAX_FEATURES - note this also exposes KVM_ARM_VCPU_HAS_EL2!
+> ---
+>  Documentation/virt/kvm/api.rst | 40 ++++++++++++++++++++++++++++++++++
+>  include/uapi/linux/kvm.h       | 13 +++++++++++
+>  2 files changed, 53 insertions(+)
 
-Heh, I knew I should have added a comment.  I deliberately started at '1', because
-'0' is used as a "base" value, to be able to detect changes.  I.e. '0' is getting
-valiated on every test anyways.
+$SUBJECT looks wrong. This is a KVM change, not an RMI change.
+
+>
+> diff --git a/Documentation/virt/kvm/api.rst b/Documentation/virt/kvm/api.rst
+> index 52bbbb553ce1..ca68aae7faa2 100644
+> --- a/Documentation/virt/kvm/api.rst
+> +++ b/Documentation/virt/kvm/api.rst
+> @@ -6553,6 +6553,37 @@ KVM_S390_KEYOP_SSKE
+>    Sets the storage key for the guest address ``guest_addr`` to the key
+>    specified in ``key``, returning the previous value in ``key``.
+>  
+> +4.145 KVM_ARM_RMI_POPULATE
+> +--------------------------
+> +
+> +:Capability: KVM_CAP_ARM_RMI
+> +:Architectures: arm64
+> +:Type: vm ioctl
+> +:Parameters: struct kvm_arm_rmi_populate (in/out)
+> +:Returns: 0 on success, < 0 on error
+> +
+> +::
+> +
+> +  struct kvm_arm_rmi_populate {
+> +	__u64 base;
+> +	__u64 size;
+> +	__u64 source_uaddr;
+> +	__u32 flags;
+> +	__u32 reserved;
+> +  };
+> +
+> +Populate a region of protected address space by copying the data from the
+> +(non-protected) user space pointer provided into a protected region (backed by
+> +guestmem_fd). It implicitly sets the destination region to RIPAS RAM. This is
+> +only valid before any VCPUs have been run. The ioctl might not populate the
+> +entire region and in this case the kernel updates the fields `base`, `size` and
+> +`source_uaddr`. User space may have to repeatedly call it until `size` is 0 to
+> +populate the entire region.
+> +
+> +`flags` can be set to `KVM_ARM_RMI_POPULATE_FLAGS_MEASURE` to request that the
+> +populated data is hashed and added to the guest's Realm Initial Measurement
+> +(RIM).
+
+Where is that measurement stored? And retrieved? At least a pointer to
+that would help.
+
+> +
+>  .. _kvm_run:
+>  
+>  5. The kvm_run structure
+> @@ -8904,6 +8935,15 @@ helpful if user space wants to emulate instructions which are not
+>  This capability can be enabled dynamically even if VCPUs were already
+>  created and are running.
+>  
+> +7.47 KVM_CAP_ARM_RMI
+> +--------------------
+> +
+> +:Architectures: arm64
+> +:Target: VM
+> +:Parameters: None
+> +
+> +This capability indicates that support for CCA realms is available.
+> +
+>  8. Other capabilities.
+>  ======================
+>  
+> diff --git a/include/uapi/linux/kvm.h b/include/uapi/linux/kvm.h
+> index 6c8afa2047bf..b8cff0938041 100644
+> --- a/include/uapi/linux/kvm.h
+> +++ b/include/uapi/linux/kvm.h
+> @@ -996,6 +996,7 @@ struct kvm_enable_cap {
+>  #define KVM_CAP_S390_USER_OPEREXEC 246
+>  #define KVM_CAP_S390_KEYOP 247
+>  #define KVM_CAP_S390_VSIE_ESAMODE 248
+> +#define KVM_CAP_ARM_RMI 249
+>  
+>  struct kvm_irq_routing_irqchip {
+>  	__u32 irqchip;
+> @@ -1669,4 +1670,16 @@ struct kvm_pre_fault_memory {
+>  	__u64 padding[5];
+>  };
+>  
+> +/* Available with KVM_CAP_ARM_RMI, only for VMs with KVM_VM_TYPE_ARM_REALM */
+> +#define KVM_ARM_RMI_POPULATE	_IOWR(KVMIO, 0xd7, struct kvm_arm_rmi_populate)
+> +#define KVM_ARM_RMI_POPULATE_FLAGS_MEASURE	(1 << 0)
+> +
+> +struct kvm_arm_rmi_populate {
+> +	__u64 base;
+> +	__u64 size;
+> +	__u64 source_uaddr;
+> +	__u32 flags;
+> +	__u32 reserved;
+> +};
+> +
+>  #endif /* __LINUX_KVM_H */
+
+Thanks,
+
+	M.
+
+-- 
+Without deviation from the norm, progress is not possible.
