@@ -1,106 +1,222 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD9693F20EB;
-	Wed, 27 May 2026 10:47:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD783ED124;
+	Wed, 27 May 2026 10:51:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779878846; cv=none; b=PQX3hNLjPPbYBN+I1FmqJtgdWEHpTxf/zWutvVimpCevTJQxXeScZlhoniZJ8pJAnlNAKAD4tVo7S+ztrllgDeHDj2W9KqYPQPc4UUZXcQwI02wBOI1eSKgr5tL+QZNSMVhdRPjXzV3r4lSiAIEwvcB2/bsQ+aPzfzwj0YL7kIY=
+	t=1779879117; cv=none; b=L24uBck4r/ZTgLjigbzeLxtqnXW/j0tjeQFZR38AmokkkMaNk3Z5S6/+J/Lam9N6Y0mpgq1RrLyGBpZOlgu7hXM7Ri8A6luadxUvEA8Hz4jmA2Q3Ov2pwmCsdXT2/WM4TY+5LjO782iHHxcF+5vwlkMrkZwnqgbQ1ZO3Gcva5eE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779878846; c=relaxed/simple;
-	bh=NG9qFWc8suFuBEIAwPaCqokXulOXVIsBYFkIYBFf05I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=DoJ/FI8r7T44v3GofwobTVoCGt8oobbYzw1/HGRk7YMqOwEYALPBNhAPYQzldUW5qPdfh98JPzIZfNN/qx71sZSTapjbC1oDABwMhbRjzVin1yK8olkdyRrUStweAF6OOnYRJ5Dq0l82thFUUfQoozNzG6EKTS6fmrdUfFE4VZw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Tc6dg+Nt; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779879117; c=relaxed/simple;
+	bh=CB78L5XoCP4RbTKJZWO2kCWlYmt5eE9Al4oCQiJ44gs=;
+	h=Date:Message-ID:From:To:Cc:Subject:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=A/8dXL70iL81grVTvN57FJiaeC7wqpKuoieBM7M1BA6aXubI3iJ7xf6cw/4vSxXuSF5aqEXh/UpNsSH+HQT/d4Kv1qg+LXkBdcDWFVZephIjQU+yT0qm9kkhy2iIpXKyPZBq8XqCJtDdJCc3+QFm20rZLFJM/SSuDZRP6AM7aN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VuZl16Dh; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Tc6dg+Nt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE6EC1F00A3C;
-	Wed, 27 May 2026 10:47:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VuZl16Dh"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 796531F000E9;
+	Wed, 27 May 2026 10:51:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779878845;
-	bh=GF7yqPZxy/UBtAIWdj52Ge5BTK1zGLdahdE7Vukgqwo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To;
-	b=Tc6dg+NtPYwSy6YxvL6ke5G+ogEJhvRTEv2GMFuWbDhreX00XZ2/Zyz59xNivFV6S
-	 qAWIQu9boUwAZMCCyjDX1NyOOPnhLZgVpEU1QjrWX2o/aExqBVAduRDtEZOF2AJ4y/
-	 xyvR8vxIrMe0ECNzQmRbv9zMsflpgux9eY45iIKjZIY/8g1WA2v3OdKR3cYAYCmfdM
-	 QADgpuatWtMtoxEQpx12+fWLX4haxsDoZxlCnbwNzCWdjVl7ytx4iHyEymRiKtGKky
-	 sRIVeBiA1wwibApAIRDKoD2lLEtW7XcCNDL+VWOeozP46F9wciT0D1JSSv1c0A9nhZ
-	 4ZReIM9fIAH9Q==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 26823F40069;
-	Wed, 27 May 2026 06:47:24 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Wed, 27 May 2026 06:47:24 -0400
-X-ME-Sender: <xms:vMsWalYxOMLURUfSkV1AA8InzZZLh3UlhJirFusJyEz7QYRfqYApLg>
-    <xme:vMsWajwGdYsLKsDUDO4R11uGlDk7vb5QXswhf3LhXSnsbHCAe4rg0DR2bZkCfJ9ru
-    l_SDTGaAME86ya3lI35TZx15HhLbxleBIwm03CxDR6vYUNgTrwhrN17>
-X-ME-Received: <xmr:vMsWaiS3rXIfauwuIQk5DlsIBtIfl3RdJhMD_0EUjgOACQzkz3L05Usd_QwGmw>
-X-ME-Proxy-Cause: dmFkZTFyOlGajrZfYr2FiS7Y+kZQdh0DZ3FDWQRjnBiOtI3qVeVj5SlTCXSqmIQUkdVHhM
-    xuasDhH2MID8z+flEntYV99unByU3JmO9+dd5e7REqFA7tcKQIzkqrutFlVhhnXUbO06x2
-    m1Hn3+rT1o+Q1qUjqm6NU/Yb51xCabF3gaIMn1oqu61osCZH36ZOAncwzoC7CMcEIKe3kw
-    9R51AC4ugba2BPCDIFqzZeyxIjc4LZSG005acWsv13Ha8AQHfRoADLBZ6crsZB5fyz1Pp0
-    FgDsHVwPgwOtoF0AcS9D0HJDuvq0/65OIJgSKPLxmH1Uk2Y5EZjlMA+rlKzzUW3s+ggaJ2
-    ccdKNYwzkD0qD+awGjZAHobXaFI/5AXGkI0yqJ/XcQEcxr4hvB9dEk1ojHnkd9RsSSEfV7
-    p4LT4A9Fquepo9HHrY18vWBu6cLlO0ws00rxteQCycEAOBw98oEgM6QDDzP+WT/+gD+I8X
-    AEikLtWTWGwyItv47nbzZROhF2QXQd6R2zJZKdut0smnGUYvtDOcSFPhWf+5zwJXUFD7e3
-    VoqjHPAhUSov8rNZlce5lNzDFvpuFbERORo9CKC4A5ygtEvwHSYZbDh2PUlxT1zNoXUiLg
-    dq7iBRGT2eCeAZp7AVB2+ZUdE/HpzCgADQWWaGXwJ7qaP2sdqLkLUF2OjTjg
-X-ME-Proxy: <xmx:vMsWapqPHRFVzHNZaGRvZ6jw0LyG-8nr9lqQbkLsMB62RLNtT0YG0Q>
-    <xmx:vMsWakYXEKVAJ8OILzWUi0TW6xWYDgxprJn6iTKcWn4_Y-NpfAppZg>
-    <xmx:vMsWarrNlVSbVhrEyR8F8prHRbF3OzEMidAJKjW7BTtP1cATl0_Fbw>
-    <xmx:vMsWaok8_qkFHB9hZjUyiEdNViUtOIUbmGKKO3i8tyRgInFxE4nENQ>
-    <xmx:vMsWau8NDtv7gJdpSyMHtijYjickL_M8UR6KuVF72lvRdCXGIUGLThXs>
-Feedback-ID: i10464835:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 27 May 2026 06:47:22 -0400 (EDT)
-Date: Wed, 27 May 2026 11:47:16 +0100
-From: Kiryl Shutsemau <kas@kernel.org>
-To: Chao Gao <chao.gao@intel.com>
-Cc: kvm@vger.kernel.org, linux-coco@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, binbin.wu@linux.intel.com, dave.hansen@linux.intel.com, 
-	djbw@kernel.org, ira.weiny@intel.com, kai.huang@intel.com, nik.borisov@suse.com, 
-	paulmck@kernel.org, pbonzini@redhat.com, reinette.chatre@intel.com, 
-	rick.p.edgecombe@intel.com, sagis@google.com, seanjc@google.com, 
-	tony.lindgren@linux.intel.com, vannapurve@google.com, vishal.l.verma@intel.com, 
-	yilun.xu@linux.intel.com, xiaoyao.li@intel.com, yan.y.zhao@intel.com, 
-	Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>
-Subject: Re: [PATCH v10 02/25] x86/virt/tdx: Move TDX global initialization
- states to file scope
-Message-ID: <ahbLRFl5OPtqHr3t@thinkstation>
-References: <20260520133909.409394-1-chao.gao@intel.com>
- <20260520133909.409394-3-chao.gao@intel.com>
+	s=k20260515; t=1779879115;
+	bh=4XE3jVKRLJiqOr507V6y6IObkBgPaGSpBZ4Jf9AwYyU=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References;
+	b=VuZl16DhMrRvTzEXlDbYmB30nnzXbHxJEr9wgHJfAV54MODXeJtHyvOnxlfTCzNHh
+	 I+Znw4UR2Csu6hPkQ94IfX3sFW/3hja2r9YeCgr8bPdeOT5QCPyO7dTjH5327lo/AY
+	 9mzgZXNqX8LhHaoP4HWJb/fu3vLBLoxN01pkT5L2HCkB/+20wPveXcaFukzzqSjLVd
+	 i33wQxVnk6OY8RC8Acp7OVZyNi6l3B7FN/kUcf4KMS3pTPR7cLSCN6XXDyrY6/UfsR
+	 q8D9s1Q4a/Qf1qSjj7ycN0McjNLFKoB6EZgzaUbS1wOABED05E5pR3sNGKZsneUqWH
+	 k+T+n6uuMv0RA==
+Received: from sofa.misterjones.org ([185.219.108.64] helo=goblin-girl.misterjones.org)
+	by disco-boy.misterjones.org with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.98.2)
+	(envelope-from <maz@kernel.org>)
+	id 1wSBrd-00000006dx0-2PbV;
+	Wed, 27 May 2026 10:51:53 +0000
+Date: Wed, 27 May 2026 11:51:53 +0100
+Message-ID: <86mrxlunue.wl-maz@kernel.org>
+From: Marc Zyngier <maz@kernel.org>
+To: Sascha Bischoff <Sascha.Bischoff@arm.com>
+Cc: "linux-arm-kernel@lists.infradead.org"
+	<linux-arm-kernel@lists.infradead.org>,
+	"kvmarm@lists.linux.dev"
+	<kvmarm@lists.linux.dev>,
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>,
+	nd <nd@arm.com>,
+	"oliver.upton@linux.dev" <oliver.upton@linux.dev>,
+	Joey Gouly
+	<Joey.Gouly@arm.com>,
+	Suzuki Poulose <Suzuki.Poulose@arm.com>,
+	"yuzenghui@huawei.com" <yuzenghui@huawei.com>,
+	"peter.maydell@linaro.org"
+	<peter.maydell@linaro.org>,
+	"lpieralisi@kernel.org" <lpieralisi@kernel.org>,
+	Timothy Hayes <Timothy.Hayes@arm.com>
+Subject: Re: [PATCH v2 03/39] irqchip/gic-v5: Setup gic_kvm_info on ACPI hosts
+In-Reply-To: <20260521144846.1899475-4-sascha.bischoff@arm.com>
+References: <20260521144846.1899475-1-sascha.bischoff@arm.com>
+	<20260521144846.1899475-4-sascha.bischoff@arm.com>
+User-Agent: Wanderlust/2.15.9 (Almost Unreal) SEMI-EPG/1.14.7 (Harue)
+ FLIM-LB/1.14.9 (=?UTF-8?B?R29qxY0=?=) APEL-LB/10.8 EasyPG/1.0.0 Emacs/30.1
+ (aarch64-unknown-linux-gnu) MULE/6.0 (HANACHIRUSATO)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260520133909.409394-3-chao.gao@intel.com>
+MIME-Version: 1.0 (generated by SEMI-EPG 1.14.7 - "Harue")
+Content-Type: text/plain; charset=US-ASCII
+X-SA-Exim-Connect-IP: 185.219.108.64
+X-SA-Exim-Rcpt-To: Sascha.Bischoff@arm.com, linux-arm-kernel@lists.infradead.org, kvmarm@lists.linux.dev, kvm@vger.kernel.org, nd@arm.com, oliver.upton@linux.dev, Joey.Gouly@arm.com, Suzuki.Poulose@arm.com, yuzenghui@huawei.com, peter.maydell@linaro.org, lpieralisi@kernel.org, Timothy.Hayes@arm.com
+X-SA-Exim-Mail-From: maz@kernel.org
+X-SA-Exim-Scanned: No (on disco-boy.misterjones.org); SAEximRunCond expanded to false
 
-On Wed, May 20, 2026 at 06:38:05AM -0700, Chao Gao wrote:
-> TDX module global initialization is executed only once. The first call
-> caches both the result and the "done" state, and later callers reuse the
-> saved result. A lock protects that cached states.
+On Thu, 21 May 2026 15:50:09 +0100,
+Sascha Bischoff <Sascha.Bischoff@arm.com> wrote:
 > 
-> Those states and the lock are currently kept as function-local statics
-> because they are used only by try_init_module_global().
+> Device-tree based GICv5 probing already passes the IRS details and
+> maintenance interrupt to KVM, but the ACPI path only initialises the
+> irqchip and installs the ACPI IRQ model. As a result, KVM never sees
+> the GICv5 host information required to probe the vGIC on ACPI systems.
 > 
-> TDX module updates need to reset the cached states so TDX global
-> initialization can be run again after an update. That will add another
-> access site in the same file.
+> Add the ACPI equivalent of the DT KVM setup. Parse the MADT GICC
+> entries for the maintenance interrupt, require all relevant entries to
+> agree, register the interrupt as a GICv5 PPI-encoded GSI, and pass the
+> resulting IRQ together with the IRS base and coherency information to
+> KVM. Native GICv5 does not require a maintenance interrupt unless the
+> legacy GICv3-compatible CPU interface is present, so preserve the
+> existing no-maintenance-IRQ handling for that case.
 > 
-> Move the cached states to file scope so it is accessible outside
-> try_init_module_global(), and move the lock along with the states it
-> protects.
+> Signed-off-by: Sascha Bischoff <sascha.bischoff@arm.com>
+> ---
+>  drivers/irqchip/irq-gic-v5.c | 103 +++++++++++++++++++++++++++++++++--
+>  1 file changed, 98 insertions(+), 5 deletions(-)
 > 
-> No functional change intended.
-> 
-> Signed-off-by: Chao Gao <chao.gao@intel.com>
+> diff --git a/drivers/irqchip/irq-gic-v5.c b/drivers/irqchip/irq-gic-v5.c
+> index 707deabbf2f63..ccd1ec69a6ab2 100644
+> --- a/drivers/irqchip/irq-gic-v5.c
+> +++ b/drivers/irqchip/irq-gic-v5.c
+> @@ -1126,7 +1126,7 @@ static void gicv5_set_cpuif_idbits(void)
+>  #ifdef CONFIG_KVM
+>  static struct gic_kvm_info gic_v5_kvm_info __initdata;
+>  
+> -static void __init gic_of_setup_kvm_info(struct device_node *node)
+> +static void __init gic_setup_kvm_info(unsigned int maint_irq)
+>  {
+>  	struct gicv5_irs_chip_data *irs_data = gicv5_irs_get_chip_data();
+>  
+> @@ -1140,13 +1140,14 @@ static void __init gic_of_setup_kvm_info(struct device_node *node)
+>  		return;
+>  	}
+>  
+> -	gic_v5_kvm_info.type = GIC_V5;
+> +	if (WARN_ON(!irs_data))
+> +		return;
+>  
+> +	gic_v5_kvm_info.type = GIC_V5;
+>  	gic_v5_kvm_info.gicv5_irs.base = irs_data->irs_base;
+>  	gic_v5_kvm_info.gicv5_irs.non_coherent = !!(irs_data->flags & IRS_FLAGS_NON_COHERENT);
+> -
+> -	/* GIC Virtual CPU interface maintenance interrupt */
+> -	gic_v5_kvm_info.maint_irq = irq_of_parse_and_map(node, 0);
+> +	gic_v5_kvm_info.maint_irq = maint_irq;
+> +	gic_v5_kvm_info.no_maint_irq_mask = false;
 
-Reviewed-by: Kiryl Shutsemau <kas@kernel.org>
+
+You remove this last line from patch #1, and reintroduce it here. My
+gut feeling is that it should never be removed the first place.
+
+>
+>  	/*
+>  	 * We require an MI if we have legacy support, but don't, otherwise.
+> @@ -1162,10 +1163,101 @@ static void __init gic_of_setup_kvm_info(struct device_node *node)
+>  
+>  	vgic_set_kvm_info(&gic_v5_kvm_info);
+>  }
+> +
+> +static void __init gic_of_setup_kvm_info(struct device_node *node)
+> +{
+> +	/* GIC Virtual CPU interface maintenance interrupt */
+> +	gic_setup_kvm_info(irq_of_parse_and_map(node, 0));
+> +}
+> +
+> +#ifdef CONFIG_ACPI
+> +struct gicv5_acpi_kvm_info {
+> +	u32 maint_irq;
+> +	int maint_irq_mode;
+> +};
+> +
+> +static struct gicv5_acpi_kvm_info acpi_v5_kvm_info __initdata;
+> +
+> +static int __init gic_acpi_parse_virt_madt_gicc(union acpi_subtable_headers *header,
+> +						const unsigned long end)
+> +{
+> +	struct acpi_madt_generic_interrupt *gicc =
+> +		(struct acpi_madt_generic_interrupt *)header;
+> +	static int first_madt = true;
+> +	int maint_irq_mode;
+> +
+> +	if (!(gicc->flags &
+> +	      (ACPI_MADT_ENABLED | ACPI_MADT_GICC_ONLINE_CAPABLE)))
+> +		return 0;
+> +
+> +	maint_irq_mode = (gicc->flags & ACPI_MADT_VGIC_IRQ_MODE) ?
+> +			 ACPI_EDGE_SENSITIVE : ACPI_LEVEL_SENSITIVE;
+> +
+> +	if (first_madt) {
+> +		first_madt = false;
+> +
+> +		acpi_v5_kvm_info.maint_irq = gicc->vgic_interrupt;
+> +		acpi_v5_kvm_info.maint_irq_mode = maint_irq_mode;
+> +		return 0;
+> +	}
+> +
+> +	/* The maintenance interrupt must be the same for every GICC entry. */
+> +	if (acpi_v5_kvm_info.maint_irq != gicc->vgic_interrupt ||
+> +	    acpi_v5_kvm_info.maint_irq_mode != maint_irq_mode)
+> +		return -EINVAL;
+> +
+> +	return 0;
+> +}
+> +
+> +static bool __init gic_acpi_collect_virt_info(void)
+> +{
+> +	int count;
+> +
+> +	acpi_v5_kvm_info.maint_irq = 0;
+> +	acpi_v5_kvm_info.maint_irq_mode = 0;
+> +
+> +	count = acpi_table_parse_madt(ACPI_MADT_TYPE_GENERIC_INTERRUPT,
+> +				      gic_acpi_parse_virt_madt_gicc, 0);
+> +
+> +	return count > 0;
+> +}
+> +
+> +static void __init gic_acpi_setup_kvm_info(void)
+> +{
+> +	unsigned int maint_irq = 0;
+> +	int irq;
+> +
+> +	if (!gic_acpi_collect_virt_info()) {
+> +		pr_warn("Unable to get hardware information used for virtualization\n");
+> +		return;
+> +	}
+> +
+> +	if (acpi_v5_kvm_info.maint_irq) {
+> +		u32 gsi = FIELD_PREP(GICV5_HWIRQ_TYPE, GICV5_HWIRQ_TYPE_PPI) |
+> +			  FIELD_PREP(GICV5_HWIRQ_ID, acpi_v5_kvm_info.maint_irq);
+> +
+> +		irq = acpi_register_gsi(NULL, gsi,
+> +					acpi_v5_kvm_info.maint_irq_mode,
+> +					ACPI_ACTIVE_HIGH);
+> +		if (irq <= 0)
+> +			return;
+
+This probably deserves a bit of a warning. And maybe not completely
+fail the registration with KVM?
+
+Thanks,
+
+	M.
 
 -- 
-  Kiryl Shutsemau / Kirill A. Shutemov
+Without deviation from the norm, progress is not possible.
