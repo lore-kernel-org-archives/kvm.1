@@ -1,128 +1,153 @@
-Received: from ale.deltatee.com (ale.deltatee.com [204.191.154.188])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA8723815FB;
-	Wed, 27 May 2026 16:07:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=204.191.154.188
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7253E8354
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 16:08:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779898061; cv=none; b=Jclq9EhH36VUVFMa7YmU+zTF0gd3mDhQGHjRTOLVBVtr4VZd2hwMs+uhnI+HkfRSpChV1jI0EMwLAC+yE6Ob2w/WZ3LbBLqx7TMcVNVNKne8+yqZ93L8p5VRI30pL/5FaIlnouBaUK8Z/XBVDjed/26MWARZtkm2FdeGITamURU=
+	t=1779898117; cv=none; b=ODuxmoA82KCnGl4I2mLNKzM/1cG0ZMeEcPaoe+lhfbKEV2Duhb/Wul7+eBa2ApdezEOqeJ6hSFtGPhVRiVkG2k9on6Xra2AZdzEP4ylaiyLTFWgaf8kdoOWen/D1OxMmpU5HmpHP2HbctHO5IAvKpM4jSwAxsnqs3ubK3yVhOpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779898061; c=relaxed/simple;
-	bh=vldW0y+z4LN7l1LrKmQGTYsiBU6VTtN37aU9t23LL0Y=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:From:In-Reply-To:
-	 Content-Type:Subject; b=Gl/yMyD+mqsCHsKFbGE3l1AhQcIblUE1ZcEyXzWMrS4L57ICzDkZ4cwxVR7llFlS7TZSdqMdzAVoInfIWDTvJm1KE74M3tXq6Qpan8vE3ERor3FUUVoTHkK3P0eUU0WNMbz5p0WIcNK+Ucl/EP08ElVegoJwIQky3Jgphi7cqEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=deltatee.com; spf=pass smtp.mailfrom=deltatee.com; dkim=pass (2048-bit key) header.d=deltatee.com header.i=@deltatee.com header.b=hKKQDdIr; arc=none smtp.client-ip=204.191.154.188
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=deltatee.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=deltatee.com
+	s=arc-20240116; t=1779898117; c=relaxed/simple;
+	bh=89MwsaT30SUmDSqOMjsQUHlaorigN0+SIrDdseQ/Wgs=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Nc4hkWCKLLwwRfhuMpIdSdyAbfv+SQcVRJuizz0fKwS7GfkrCgVmpkUlWSmVIDwQaYSgJFk1zzJ7tNgLQ0miYLX6ykz86uCTHLJKRixfECmyqJWv/7s48FZyHJFmwyDEmy+rpJi4d73tSq6MjmW4PJq+hV6NPrFbl40s5QZ/cT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gqr6OJgD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=deltatee.com header.i=@deltatee.com header.b="hKKQDdIr"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=deltatee.com; s=20200525; h=Subject:In-Reply-To:From:References:Cc:To:
-	MIME-Version:Date:Message-ID:content-disposition;
-	bh=qGgbZA7gj3eEje/Kt3h0lR6kJ8rSI8Qm0mNt/KdiiAg=; b=hKKQDdIrR+jWwnj24G+ln2wtbI
-	dqLuifKrJ1IXNelOU+BQve3+wXU3dNpcHAqIpwfFWbRuzpdMBbEoZEURfIlX3FyOZbDB0V6U2zy0F
-	tGJiCdbanctZEtuWZEc6Ctk4z8ZY/m6I58gtn1PuvZolrRTGKRZm57hzhNjrGR5XyHwNAXbmyhjQc
-	YxQdPm9C0dkk+aNXmXyJi1bGuIT5XS/9RVo5R5qwEiNZf12fPWzrOUCArdpSJYEDRGqxHeVyHTzla
-	fSY3zJeaAzjwNg+t29KhK1Npb/Oa6Yl5CyzWl7nGKurmy3jhZ8GrWFQuMN9hWfvqoM+9p8sc85bSp
-	gztv1aSA==;
-Received: from d142-179-236-232.abhsia.telus.net ([142.179.236.232] helo=[192.168.11.155])
-	by ale.deltatee.com with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-	(Exim 4.98.2)
-	(envelope-from <logang@deltatee.com>)
-	id 1wSGn0-00000001YTC-0svZ;
-	Wed, 27 May 2026 10:07:26 -0600
-Message-ID: <843e8525-5927-45b5-a3e2-a5ec16234398@deltatee.com>
-Date: Wed, 27 May 2026 10:07:22 -0600
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gqr6OJgD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D5251F00A3D;
+	Wed, 27 May 2026 16:08:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779898115;
+	bh=GOPX5IARmJ6wI6rsLZCc+SqU4kdUXbdL9CQ8CbjdAx8=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=Gqr6OJgDAIAjozCoJ2WZPTQCj68CzUXGjuSVJP0f/jeJFQ37gXMNyr4EhXQ3Dved5
+	 v2DD3gua0VQqtEawJQ0NCyiBPXL3KuII2DXymXZO7S6xoaR9p7Mb4CjDeyYh01H3cV
+	 DshuAKfGdaqJKU10baxk2XIYOfCHAaLif6dzJMnpm4xbX5yJqSckIOfxZ/9ztZJTEF
+	 hPmGx6NHJoSHRQORyOx63mLXB4tLvoJcqfSNPy5eCF6A51o6JD9nXABh+JfzF8ti+l
+	 t2a35dt0PbWGOn85I6oiykBrgMM2YNVXS9aeTMbtvtF8anYDTQDLAEvEtOogVeymQ2
+	 60c/J4H+gu1iA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v3 2/5] KVM: s390: Implement KVM_PRE_FAULT_MEMORY
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260527144358.186359-3-imbrenda@linux.ibm.com>
+References: <20260527144358.186359-3-imbrenda@linux.ibm.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 27 May 2026 16:08:33 +0000
+Message-Id: <20260527160834.9D5251F00A3D@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Matt Evans <mattev@meta.com>, Alex Williamson <alex@shazbot.org>,
- Leon Romanovsky <leon@kernel.org>, Jason Gunthorpe <jgg@nvidia.com>,
- Alex Mastro <amastro@fb.com>, =?UTF-8?Q?Christian_K=C3=B6nig?=
- <christian.koenig@amd.com>, Bjorn Helgaas <bhelgaas@google.com>
-Cc: Mahmoud Adam <mngyadam@amazon.de>, David Matlack <dmatlack@google.com>,
- =?UTF-8?B?QmrDtnJuIFTDtnBlbA==?= <bjorn@kernel.org>,
- Sumit Semwal <sumit.semwal@linaro.org>, Kevin Tian <kevin.tian@intel.com>,
- Ankit Agrawal <ankita@nvidia.com>, Pranjal Shrivastava <praan@google.com>,
- Alistair Popple <apopple@nvidia.com>,
- Vivek Kasireddy <vivek.kasireddy@intel.com>, linux-kernel@vger.kernel.org,
- linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org,
- linux-pci@vger.kernel.org
-References: <20260527102319.100128-1-mattev@meta.com>
- <20260527102319.100128-2-mattev@meta.com>
-Content-Language: en-US
-From: Logan Gunthorpe <logang@deltatee.com>
-In-Reply-To: <20260527102319.100128-2-mattev@meta.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-SA-Exim-Connect-IP: 142.179.236.232
-X-SA-Exim-Rcpt-To: mattev@meta.com, alex@shazbot.org, leon@kernel.org, jgg@nvidia.com, amastro@fb.com, christian.koenig@amd.com, bhelgaas@google.com, mngyadam@amazon.de, dmatlack@google.com, bjorn@kernel.org, sumit.semwal@linaro.org, kevin.tian@intel.com, ankita@nvidia.com, praan@google.com, apopple@nvidia.com, vivek.kasireddy@intel.com, linux-kernel@vger.kernel.org, linux-media@vger.kernel.org, dri-devel@lists.freedesktop.org, linaro-mm-sig@lists.linaro.org, kvm@vger.kernel.org, linux-pci@vger.kernel.org
-X-SA-Exim-Mail-From: logang@deltatee.com
-X-Spam-Level: 
-Subject: Re: [PATCH v2 1/9] PCI/P2PDMA: Add CONFIG_PCI_P2PDMA_CORE
-X-SA-Exim-Version: 4.2.1 (built Sun, 23 Feb 2025 07:57:16 +0000)
-X-SA-Exim-Scanned: Yes (on ale.deltatee.com)
 
+Thank you for your contribution! Sashiko AI review found 3 potential issue(=
+s) to consider:
 
+New issues:
+- [Medium] The error check `if (rc > 0) return -EIO;` is unreachable and fa=
+ils to handle page table walk exceptions.
 
-On 2026-05-27 04:23, Matt Evans wrote:
-> The P2PDMA code currently provides two features under the same
-> CONFIG_PCI_P2PDMA option:
-> 
->  1.  Locate providers via pcim_p2pdma_provider()
->  2.  Manage actual P2P DMA
-> 
-> Other code (such as vfio-pci) depends on 1, without having a hard
-> dependency on 2.
-> 
-> A future commit expands the use of DMABUF in vfio-pci for non-P2P
-> scenarios, relying on pcim_p2pdma_provider() always being present.  If
-> that depended on CONFIG_PCI_P2PDMA, it would make vfio-pci only
-> available if CONFIG_ZONE_DEVICE is present (e.g. 64-bit systems), even
-> when P2P is not needed.
-> 
-> To resolve this, introduce CONFIG_PCI_P2PDMA_CORE which contains the
-> basic provider functionality to make it available even if the
-> CONFIG_PCI_P2PDMA feature is disabled or unavailable due to
-> !CONFIG_ZONE_DEVICE.  Users such as vfio-pci can enable their own P2P
-> features based off the original CONFIG_PCI_P2PDMA (available when
-> CONFIG_ZONE_DEVICE is set).
-> 
-> Signed-off-by: Matt Evans <mattev@meta.com>
+Pre-existing issues:
+- [High] kvm_s390_faultin_gfn() incorrectly returns success (0) when it rac=
+es with an MMU notifier, leading to silent memory skips in KVM_PRE_FAULT_ME=
+MORY and potential leaks of uninitialized host memory in access_guest_page_=
+with_key_gpa().
+- [High] KVM_PRE_FAULT_MEMORY can trigger a deterministic host kernel infin=
+ite loop if the requested GPA is within a KVM memslot but outside the gmap =
+ASCE limit.
+--
 
-Largely this looks good to me. I have one minor nit below that you can
-apply or not. Either way, feel free to add:
+commit f2d2595771b18daab539c7480809ae63c3707ec4
+Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
 
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
+KVM: s390: Implement KVM_PRE_FAULT_MEMORY
 
+Implement and enable the KVM_PRE_FAULT_MEMORY ioctl for s390.
 
->  static void pci_p2pdma_release(void *data)
->  {
->  	struct pci_dev *pdev = data;
-> @@ -241,11 +251,13 @@ static void pci_p2pdma_release(void *data)
->  		synchronize_rcu();
->  	xa_destroy(&p2pdma->map_types);
->  
-> +#ifdef CONFIG_PCI_P2PDMA
->  	if (!p2pdma->pool)
->  		return;
->  
->  	gen_pool_destroy(p2pdma->pool);
->  	sysfs_remove_group(&pdev->dev.kobj, &p2pmem_group);
-> +#endif
->  }
+Faulted-in pages will be marked as accessed, unlike x86, otherwise they
+will trigger a minor fault when accessed. Avoiding such faults is one of
+the points of KVM_PRE_FAULT_MEMORY.
 
-I'm personally not a fan of adding #ifdefs inside functions like this.
-This instance is small and easy to understand, but it can quickly become
-a bit of a mess if we start adding more features. I probably would have
-created a pci_p2pdma_release_pool() helper which does the inverse of
-pci_p2pdma_setup_pool(), it would be called in pci_p2pdma_release() and
-an empty implementation would be provided in the case where
-CONFIG_PCI_P2PDMA is not set.
+> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
+> --- a/arch/s390/kvm/kvm-s390.c
+> +++ b/arch/s390/kvm/kvm-s390.c
 
-Logan
+[ ... ]
+
+> +long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu, struct kvm_pr=
+e_fault_memory *range)
+> +{
+> +	struct guest_fault f =3D { .gfn =3D gpa_to_gfn(range->gpa), };
+> +	gpa_t end;
+> +	int rc;
+> +
+> +	if (kvm_is_ucontrol(vcpu->kvm))
+> +		return -EINVAL;
+> +
+> +	rc =3D kvm_s390_faultin_gfn(vcpu, NULL, &f);
+
+[Severity: High]
+This is a pre-existing issue, but does kvm_s390_faultin_gfn() incorrectly
+return 0 when it races with an MMU notifier?
+
+In kvm_s390_faultin_gfn(), rc is initialized to 0. Inside the retry loop,
+if mmu_invalidate_retry_gfn() evaluates to true due to a concurrent MMU
+invalidation, gmap_link() is skipped. But there is no else branch to set
+rc =3D -EAGAIN. rc remains 0, the loop terminates matching else if
+(rc !=3D -EAGAIN), and the function incorrectly returns 0 (success) while
+dropping the page reference.
+
+For KVM_PRE_FAULT_MEMORY, does this cause kvm_arch_vcpu_pre_fault_memory()
+to falsely assume a huge page was mapped (since f.ptep remains NULL) and
+silently skip up to 1MB of memory instead of retrying?
+
+[Severity: High]
+This is also a pre-existing issue, but can KVM_PRE_FAULT_MEMORY trigger a
+deterministic host kernel infinite loop if the requested GPA is within a KVM
+memslot but outside the gmap ASCE limit?
+
+If userspace provides a GPA that falls within a valid KVM memslot but
+exceeds the bounds of the guest physical address space limit (gmap->asce),
+__kvm_faultin_pfn() successfully returns a PFN. When gmap_link() calls
+dat_entry_walk(), it detects the out-of-bounds access and returns
+PGM_ADDRESSING (5).
+
+However, _gmap_link() blindly converts any error that is not -ENOMEM or
+-EINVAL to -EAGAIN. Does kvm_s390_faultin_gfn() receive -EAGAIN and
+continuously retry the exact same steps in its while(1) loop, causing an
+unkillable infinite loop on the host CPU since __kvm_faultin_pfn() does
+not yield or check for signals?
+
+> +	if (rc =3D=3D PGM_ADDRESSING)
+> +		return -ENOENT;
+> +	if (rc > 0)
+
+[Severity: Medium]
+Is this error check unreachable?
+
+kvm_s390_faultin_gfn() only ever returns > 0 for PGM_ADDRESSING, which is
+already explicitly caught and converted to -ENOENT right above this check.
+Any other PGM_ exception code from the page table walk (like PGM_PROTECTION
+or PGM_TRANSLATION_SPEC) is masked by _gmap_link() returning -EAGAIN, which
+then causes an infinite loop in kvm_s390_faultin_gfn().
+
+Can rc > 0 ever evaluate to true here?
+
+> +		return -EIO;
+> +	if (rc < 0)
+> +		return rc;
+> +
+> +	if (f.ptep)
+> +		return PAGE_SIZE;
+> +
+> +	end =3D ALIGN(range->gpa + PAGE_SIZE, f.crste_region3 ? _REGION3_SIZE :=
+ HPAGE_SIZE);
+> +	return min(range->size, end - range->gpa);
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260527144358.1863=
+59-1-imbrenda@linux.ibm.com?part=3D2
