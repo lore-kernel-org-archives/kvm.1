@@ -1,141 +1,109 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.11])
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 215383BADBD;
-	Wed, 27 May 2026 07:36:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BBB3C942C;
+	Wed, 27 May 2026 07:44:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779867366; cv=none; b=AsQ2LxCVBDzKD4T5xqUPqGL61moyO25SvIfFuiIkXI+Pclvw/7aGUQjDJxDwXxarc1PfHn/yP3wi5UD75uwIQha41591zYL7ImFr5K3VjNQ43/aHErisku2CuRVCIfACEU/iuynVLaFcttZnyXwG+jNPDB41zWhTXJR1umo8OoI=
+	t=1779867893; cv=none; b=UfqQmOAWNpxHsWOqOCNnQpU+X/L5E8ScsVXL4EoVvEK8C3eC+gaxoPVuyl/paa3Q+sAlGtQPgLvUCGLZZ40rJ7FPlijzGOodtjwOCBFIq3oF0d1GxmYXs4KVZWSZBZ8H3piepcTs5PbFkp8wnD9OYErcZAuR59tPw/JMZqik/8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779867366; c=relaxed/simple;
-	bh=jJxmfr0ZMSUiNYT3VY0T18Tgkm8H53Ln35tUn9VNEo8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qNO77ffCNcnuDqa96haisO3Sa+LlgXRuN4ngXXJuDJfZSV4oZdm6xF1bBxe5JHViZRBMfQlJoLIx/bd1aaU22JBSi6kHIdgcW8n1Q8d2jX1lqyappWe9Py+4ZYcOgkGnjgnpZgb6Dl1bGeeUXGrBvNgpa48iOAUSzp9YaHR2y9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=mfJYtQ9B; arc=none smtp.client-ip=192.198.163.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	s=arc-20240116; t=1779867893; c=relaxed/simple;
+	bh=ozTte0BPwNdQBHJiGla2o7AXE7eUx+UmAxnUXu2Ky3M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=FZv5Y5C7pMG/dvMNNp2i13ZRVGz7I/DqrdvC2eEjDHXvPZC5048nw0CRXANPFtUPJ6op3+3KMsefzX/oTr8LsKsdq24p5MaLjRZzGkpVxi6Wm80mfQKU/qFtxgaaQSEe1tDDFhwfWdbPirQBUC/XdqHD//xXeIXCmsXwxcp7XWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=R8rI6o95; arc=none smtp.client-ip=192.198.163.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="mfJYtQ9B"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="R8rI6o95"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779867365; x=1811403365;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=jJxmfr0ZMSUiNYT3VY0T18Tgkm8H53Ln35tUn9VNEo8=;
-  b=mfJYtQ9B27ntx9D6yB6Se40EDicLtFDnDQk6FHetptkYRE/OTnGk9YvH
-   pIllCbZPyeA+Cr3Ot/n39s9V7rPQiLFzwhHZLPZnovMa/y8GASrvx4dsh
-   q0Jiv4mT0ZQJ+Gz2vJhkmkdQUY0V+FumdMrohSbHAstB1D+Elbo5NbR5C
-   JfWkHBD0olCigHR46PKzbxDDpzVuBT42RxN/QUSPOTWcF8pokCcb9mb2A
-   74YByut/HHMnI+2k4fYhbTx+i3fbL7FUp1eBWOqkJ9kmsedvK0knq64Ie
-   wG+lr6TonA80Bh4+s8rsvZZIJCt2TjBHlsdMu9j41P4Jus4PUFfHQP/FY
-   w==;
-X-CSE-ConnectionGUID: Ggg5nnEZQM+ERNsFgKEo3Q==
-X-CSE-MsgGUID: 6t/5ydbzROiCyKWK31O5cA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="91262460"
+  t=1779867892; x=1811403892;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=ozTte0BPwNdQBHJiGla2o7AXE7eUx+UmAxnUXu2Ky3M=;
+  b=R8rI6o95/eEvTByw9S3NY8YkhCOEf79YMm5MUfra4iSSM4oESwjmVkgI
+   YcEp4AksSCReR+LjFzAqEurOCK1iaS1+RgzBNyV94HppfDSzPBNVP+zFv
+   TuWkP0jV+nWYG96mZS8sAaRLHvQ6S3r5MsOLGGtYJPdLUSTSrbq47KU8l
+   uneRFv4AUAwQ+pO1QITuTuqSIlzb6zeXXlSVngWGJFhDPovdUziUD6m0/
+   cFCw22KeJhe91ceYJxWpa2EBRCaFnZJjHKCtg3HYq90DLgNKMB20y0nxf
+   xTHlSwXLpqnIpsr4h0P/a8m1owYIskUozYIWUgEOQXAsOMOYse/V7Vt+a
+   Q==;
+X-CSE-ConnectionGUID: 3wn55UA9SEmqJR/No+0fjQ==
+X-CSE-MsgGUID: CW45+ZLPRtuvmFHJPoD2Dw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="80540624"
 X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; 
-   d="scan'208";a="91262460"
-Received: from orviesa008.jf.intel.com ([10.64.159.148])
-  by fmvoesa105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 00:35:57 -0700
-X-CSE-ConnectionGUID: HBTTigcnQZWB+8uBXCA3NQ==
-X-CSE-MsgGUID: GzTNo3lbTouJ4duTUdVwBQ==
+   d="scan'208";a="80540624"
+Received: from orviesa001.jf.intel.com ([10.64.159.141])
+  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 00:44:52 -0700
+X-CSE-ConnectionGUID: ogpwk6xURDeHw5xpPmxqyA==
+X-CSE-MsgGUID: X2M247fxQ4uIWZBSd9O9Lw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; 
-   d="scan'208";a="241995879"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by orviesa008.jf.intel.com with ESMTP; 27 May 2026 00:35:54 -0700
-Date: Wed, 27 May 2026 15:11:58 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Sohil Mehta <sohil.mehta@intel.com>
-Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
-	x86@kernel.org, peter.fang@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	yilun.xu@intel.com, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com, xiaoyao.li@intel.com
-Subject: Re: [PATCH 01/15] x86/virt/tdx: Read global metadata for TDX Module
- Extensions
-Message-ID: <ahaZPjf+A7ms0Ba9@yilunxu-OptiPlex-7050>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-2-yilun.xu@linux.intel.com>
- <b25e03ad-0bf4-482f-86ec-eebc6ac03d95@intel.com>
+   d="scan'208";a="280280973"
+Received: from unknown (HELO [10.239.158.45]) ([10.239.158.45])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 00:44:48 -0700
+Message-ID: <df4eb3b2-a11e-4d73-b298-af1beb92d53f@intel.com>
+Date: Wed, 27 May 2026 15:44:45 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <b25e03ad-0bf4-482f-86ec-eebc6ac03d95@intel.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 14/15] x86/virt/tdx: Embed version info in SEAMCALL
+ leaf function definitions
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
+ x86@kernel.org, peter.fang@intel.com, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, sohil.mehta@intel.com,
+ yilun.xu@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-15-yilun.xu@linux.intel.com>
+ <90a4835f-bc11-4415-a7b6-84347f40861b@intel.com>
+ <ahaTH+O8YGxEXSpz@yilunxu-OptiPlex-7050>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <ahaTH+O8YGxEXSpz@yilunxu-OptiPlex-7050>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Tue, May 26, 2026 at 11:05:48PM -0700, Sohil Mehta wrote:
-> On 5/21/2026 8:41 PM, Xu Yilun wrote:
-> > Add reading of the global metadata for TDX Module Extensions.
-> > 
-> > TDX Module Extensions is an add-on feature enumerated by TDX_FEATURES0.
-> > But for the Module's integrity, Linux requires that all features that a
-> > Module advertises must have a complete, valid set of metadata, and the
-> > validation must succeed at core TDX initialization time.
-> > 
-> > Check TDX_FEATURES0 before reading these metadata. If a feature is
-> > advertised, a failure in reading associated metadata causes the entire
-> > TDX initialization to fail, otherwise skip.
-> > 
-> > Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
-> > ---
-> >  arch/x86/include/asm/tdx_global_metadata.h  |  6 ++++++
-> >  arch/x86/virt/vmx/tdx/tdx.h                 |  1 +
-> >  arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 16 ++++++++++++++++
+On 5/27/2026 2:45 PM, Xu Yilun wrote:
+>>>    /*
+>>>     * TDX module SEAMCALL leaf functions
+>>>     */
+>>> @@ -31,7 +44,7 @@
+>>>    #define TDH_VP_CREATE			10
+>>>    #define TDH_MNG_KEY_FREEID		20
+>>>    #define TDH_MNG_INIT			21
+>>> -#define TDH_VP_INIT			22
+>>> +#define TDH_VP_INIT			SEAMCALL_LEAF_VER(22, 1)
+>>
+>> how about
+>>
+>> #define TDH_VP_INIT			22
+>> #define TDH_VP_INIT_V1			SEAMCALL_LEAF_VER(TDH_VP_INIT, 1)
+>>
+>> and use TDH_VP_INIT_V1 below?
 > 
-> The top comments in tdx_global_metadata.h and tdx_global_metadata.c say
-> that these files are autogenerated. I believe the script lives outside
-> the tree. Is there a plan to merge the script?
+> I'm trying to avoid a _Vx postfix if unnecessary. Don't make callers
+> have to choose between versions. The main MACRO should always point to
+> the latest version since later versions are backward compatible.
 
-No, the plan of auto-generating is deprecated. Now we switch to manual
-update.
+I don't agree.
 
-> 
-> The generated code is optimized for space instead of readability. Also,
-> I see odd uncommented assignments u64 => u8/u16 all over the file. I am
-> assuming the upper bits are expected to be zero.
-> 
-> The patch is hard to review without the script. Can you post a link to
+The later versions are backwards compatible, but the later versions 
+might not be supported by the loaded TDX module.
 
-Yes, it is. A new plan is to refactor the file in future.
+Usually the callers will have to choose between versions due to the TDX 
+module being used varies, just like the case in the next patch.
 
-> the updated script that led to this patch?
-> 
-> 
-> >  3 files changed, 23 insertions(+)
-> > 
-> > diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
-> > index 40689c8dc67e..533afe50a3f1 100644
-> > --- a/arch/x86/include/asm/tdx_global_metadata.h
-> > +++ b/arch/x86/include/asm/tdx_global_metadata.h
-> > @@ -40,12 +40,18 @@ struct tdx_sys_info_td_conf {
-> >  	u64 cpuid_config_values[128][2];
-> >  };
-> >  
-> > +struct tdx_sys_info_ext {
-> > +	u16 memory_pool_required_pages;
-> > +	u8 ext_required;
-> 
-> The name ext_required seems like a boolean. It is also used like a
-> boolean later.
-> 	if (!tdx_sysinfo.ext.ext_required)
-> 		return 0;
-> 
-> But, IIUC, is it actually a mask that lists any feature that needs
+We can make TDH_VP_INIT represent the v1 as this patch because Linux 
+mandates v1 when the code was merged. So it can be made the default.
 
-No it is just a bool about Extentions needs to be initialized or not.
+> The next patch is an exception. I've found there is no public TDX Module
+> release available for TDH.SYS.CONFIG v1. I expect people just use the
+> un-versioned MACRO for development, but have to keep the explicitly
+> versioned _V0 macro for compatibility for now.
 
-> extensions to work correctly? If so, it would be good to give it a name
-> that reflects its usage. Maybe:
-> features_requiring_ext or something better
-> 
-> As Xiaoyao mentioned, the struct requires a better explanation in the
-> commit log.
-
-Will do. I also plan to change the patch organization: instead of the
-old auto-generated patch splitting style, I will switch to a human-readable
-style and fold these metadata readings directly into the patches that
-actually use them (e.g., DPAMT and TDX Runtime Update).
