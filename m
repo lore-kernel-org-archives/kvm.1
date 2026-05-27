@@ -1,105 +1,127 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.15])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2DF93CDBA3;
-	Wed, 27 May 2026 12:09:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2A833CB2C7
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 12:14:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779883771; cv=none; b=Qr3QuVTJ5s4eplTXa3SBclbA9WvmxETne8V+58vCZJ7weeop9+wV7t4vDQ8f+he2t4h4Zq78qTgienQ7EEQU6VYyB5HwTmuw/hUuErQE3+o8DtJZcWutaOvi6/Htm38AtopBqrgs/vy6Fgx1NBKRkewqRyndQZIeXG+1A4Zy+EY=
+	t=1779884082; cv=none; b=YnbmiE8AECVNkdsOeh9tQrul9Ty89QiZGDFCEAcYb4FE0t1ibihgPds/lt+fZHTU7eQGVIGAATmpp0k6IXvU9WdZ+XNliSnxH9kXzPVWACCik/Xjqmju6Qv3Ptlt4f70jDkqlmLSlQ7+ygWZ3Ut7TPeHgDNMOUkMRz/CwExpLyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779883771; c=relaxed/simple;
-	bh=iTL19uWaS2bpLpnZA/tSxOng8jmAExz/yKTFG4Q2bx8=;
+	s=arc-20240116; t=1779884082; c=relaxed/simple;
+	bh=r4H4etJpbxgvnWsKcOTGgVwJdweQQvXvLKk8S0w3cbs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=LpEsmaFlAU0QAo1wTs/e+iUOzxJMUR6xiZKduoSffhe1vDNxWEDOO/EbxOK5xEiRTPEZQOC1qQNi2jxAhcCaBxS2d8zzehDwIimn5knnSB9PekXPMNO3uAsa0d0kr5PgH4mgZ2Srtb2nvS1K16jCWXwTow8n4hgBYwf0eEO/0dc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=k87H3KfM; arc=none smtp.client-ip=192.198.163.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=nMjZ5a5S7dXFKI5gMJog0NTdiYb2Bn1dheTxIFuT9vWs5QDekxK6AjL/CQ7GZBEVlsSDKEmVGW4zzgygYizurkjbfIfnV60xE3cLYqB2TR8zSdm3WWJXoCNufyoxLJmBPYHwJcXgUrwfi0Mah63cAouUG4SGlLNkqp9PL0pNH7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=eextby6a; arc=none smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="k87H3KfM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779883769; x=1811419769;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=iTL19uWaS2bpLpnZA/tSxOng8jmAExz/yKTFG4Q2bx8=;
-  b=k87H3KfMwcuVqoAg6NnxwfXZeo47dFSkNZDaoqANxlqS1JgAWgvh7Qko
-   7PT9bkzBFm0K3ZvkWx+NWYsWoamKeW7emmgLRn6XWxbmW7ne7js/7ZzPX
-   uTM2KOKy791kJobJl64hmWGMmc8iIymrpVXcd5d+mCif9wLkaJ2wJ2DBn
-   l8VWx6KPqi+yfkiEbihOoyHUqFLNq8IReaor6J5Bz0YpKrN1uumdsGMDA
-   xbK0a1Urxbg7Ga0UBFpdf9Nw1Xj3MZ3voeCg8sEisVnZC12WU4ErWJCbC
-   oKDgwm4+caozAvGxe7+IcFZHyzNwUt4vku8J+7GU5zwBEeUOQofAsFA4m
-   w==;
-X-CSE-ConnectionGUID: YjoeIstPSomxnN3cJ7QYUg==
-X-CSE-MsgGUID: Hln9CIoSR1u+wCcYEao/nA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="80822424"
-X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; 
-   d="scan'208";a="80822424"
-Received: from fmviesa008.fm.intel.com ([10.60.135.148])
-  by fmvoesa109.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 05:09:28 -0700
-X-CSE-ConnectionGUID: +WqbmjKhRm2X7ZStNn9Brg==
-X-CSE-MsgGUID: gyjroSBTQO23425isE3TMw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; 
-   d="scan'208";a="239629885"
-Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
-  by fmviesa008.fm.intel.com with ESMTP; 27 May 2026 05:09:25 -0700
-Date: Wed, 27 May 2026 19:45:29 +0800
-From: Xu Yilun <yilun.xu@linux.intel.com>
-To: Xiaoyao Li <xiaoyao.li@intel.com>
-Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
-	x86@kernel.org, peter.fang@intel.com, linux-coco@lists.linux.dev,
-	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
-	zhenzhong.duan@intel.com
-Subject: Re: [RFC PATCH 14/15] x86/virt/tdx: Embed version info in SEAMCALL
- leaf function definitions
-Message-ID: <ahbZWT+El709Aaje@yilunxu-OptiPlex-7050>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-15-yilun.xu@linux.intel.com>
- <90a4835f-bc11-4415-a7b6-84347f40861b@intel.com>
- <ahaTH+O8YGxEXSpz@yilunxu-OptiPlex-7050>
- <df4eb3b2-a11e-4d73-b298-af1beb92d53f@intel.com>
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="eextby6a"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-51306c9f2a8so139674681cf.1
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 05:14:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ziepe.ca; s=google; t=1779884080; x=1780488880; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=zjybRMBUQubASldC260OK8MJUJyjzZlOHF/HoeFPi84=;
+        b=eextby6ajjRyi73ugcPsaBcUGRyCiEHcrXw76GIcT6DqzMhVcYWiRuYzmmZymJL5kt
+         1+DVEbLNgptJKvePXRcfFXDqxThs0EKdBV41MXXGetuT7WYVSf45tsGExGzxd4+PNyeS
+         s8CySgQpiGAy0BBvKWE/+8RwhL9Z1kUH5hiNlwkf6FlLfSuzb5uITtJ1ePhC9r2icohc
+         gQsQUs2pPEES+kZcFIQfejPDIqTq8H88nH7TpLJXKZz2RHRjxIt+0BsubVGcN5Uc7vzo
+         Kk5EjfwzrO+iar6IR8Czp78sN4qOO6nQW0KvinjW+4mtCSbvarN4nojzvZtvidIWxt5w
+         KlvA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779884080; x=1780488880;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=zjybRMBUQubASldC260OK8MJUJyjzZlOHF/HoeFPi84=;
+        b=L5qxJVXEDyJsImYQgt16U5g8D9dhT1eDQzjPew1mtIZgzOaAAwZGajVWmfMtJcb+pH
+         VMSYXMsF2JsU7ekNlHuBL4P9xLy7e33E7MCZviOhvhggiyCH3YPWWUkCyguBlX7CGsOg
+         OWEly0TWjLgDHFogepW9+wGiDI+pLMVKApM7rZx06VD8xquQzWFaXjrN65DFjjsxmmD/
+         BBbkHgKxkdO67J6oWLC5niVy0VJ4uOh5rTF4v+YLc98Y/vUVEMd7tlhOjiqXEsDqZ4Wi
+         KnGNgS+2FbEkjs+KxlyraXekbRFUMVpwgoAUlxNYlqQGoKuP4hm9HIw2StzNwf+8l85s
+         p6Hg==
+X-Forwarded-Encrypted: i=1; AFNElJ850hCEOYHfEeZ+XZe0ajn82j7Yct//uDezGjSRhqLiX+y4L8y/Na3SyuVDwQ4SvsTuKZI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzGqeTjU6wAA3L1C9CTmWl/hByNlyUvpYu5SAk9GQMPQ0zqPcT1
+	PTEvjeFQg3q5kjjuzWXC+Fxf/szmTvCMVfLshkKluoLMjp+3OWFr9bCYdYVkdxRS0rk=
+X-Gm-Gg: Acq92OEj2Y8rL1vyycoFPYIEPYOz7GiFcGFRWLw3gXygrMvaCifrHYFhrimLDi0URK5
+	WIuR6tfsXXqfDuGoUt0NZZQ0v3UmW/aLlJESmZWYodQkn1856r5+KENdjSzo/z4NJ1XHjEwtOT5
+	YnJfvmRjGdTOa+QPsCBCrWQeVer1G8RJae3QRibq2MBELw1jE+flY4QX2dtCP/NLVIEMCDICdeV
+	3xF53HbrYFoO7UoAWNEYqIXhbSBjEp0QxPQ3BNeOKt5Tt7PhuV+XWCfjTByn6oGs20mftyuW2kH
+	aiZihYdiq2nR0pgc1cyBIhrLqwZLwmUL/E22N8S2xe2gebU7ryZrKuqBq88zLAP9NVwRiFYi4iQ
+	uYJ2cAjPd7dV89sQE7P4P9VvkAjlFFNs9eqRu5KouRPBw6WSBsU1tQ32pFOXpROttfDAQ0bdyu2
+	qwCmcNRzsBzYDv/N1CgU66M+bwD7wLfBpYCiJ+/yqRrn5IdFgnFDUb/Xwh5Ms8QpG1l5PqHOPh3
+	MYT2hRhaGZdTNGU
+X-Received: by 2002:ac8:58d4:0:b0:516:d2cc:5160 with SMTP id d75a77b69052e-516d459212fmr302395201cf.32.1779884079723;
+        Wed, 27 May 2026 05:14:39 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-51706adc446sm39991901cf.15.2026.05.27.05.14.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2026 05:14:38 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wSD9i-0000000ENnz-0tj0;
+	Wed, 27 May 2026 09:14:38 -0300
+Date: Wed, 27 May 2026 09:14:38 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: Christian =?utf-8?B?S8O2bmln?= <christian.koenig@amd.com>
+Cc: Zhiping Zhang <zhipingz@meta.com>, Alex Williamson <alex@shazbot.org>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sumit Semwal <sumit.semwal@linaro.org>,
+	Bjorn Helgaas <helgaas@kernel.org>, kvm@vger.kernel.org,
+	linux-rdma@vger.kernel.org, linux-pci@vger.kernel.org,
+	netdev@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	Keith Busch <kbusch@kernel.org>, Yochai Cohen <yochai@nvidia.com>,
+	Yishai Hadas <yishaih@nvidia.com>
+Subject: Re: [PATCH v5 0/4] vfio/dma-buf: add TPH support for peer-to-peer
+ access
+Message-ID: <20260527121438.GJ2487554@ziepe.ca>
+References: <20260526144401.1485788-1-zhipingz@meta.com>
+ <a8cd01ab-d7aa-465d-bfa3-431f78f33ee1@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <df4eb3b2-a11e-4d73-b298-af1beb92d53f@intel.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <a8cd01ab-d7aa-465d-bfa3-431f78f33ee1@amd.com>
 
-On Wed, May 27, 2026 at 03:44:45PM +0800, Xiaoyao Li wrote:
-> On 5/27/2026 2:45 PM, Xu Yilun wrote:
-> > > >    /*
-> > > >     * TDX module SEAMCALL leaf functions
-> > > >     */
-> > > > @@ -31,7 +44,7 @@
-> > > >    #define TDH_VP_CREATE			10
-> > > >    #define TDH_MNG_KEY_FREEID		20
-> > > >    #define TDH_MNG_INIT			21
-> > > > -#define TDH_VP_INIT			22
-> > > > +#define TDH_VP_INIT			SEAMCALL_LEAF_VER(22, 1)
-> > > 
-> > > how about
-> > > 
-> > > #define TDH_VP_INIT			22
-> > > #define TDH_VP_INIT_V1			SEAMCALL_LEAF_VER(TDH_VP_INIT, 1)
-> > > 
-> > > and use TDH_VP_INIT_V1 below?
-> > 
-> > I'm trying to avoid a _Vx postfix if unnecessary. Don't make callers
-> > have to choose between versions. The main MACRO should always point to
-> > the latest version since later versions are backward compatible.
+On Wed, May 27, 2026 at 08:55:49AM +0200, Christian König wrote:
+> On 5/26/26 16:43, Zhiping Zhang wrote:
+> > This series adds TLP Processing Hints (TPH) support to the VFIO dma-buf
+> > export path, allowing importing drivers (e.g. mlx5) to use the
+> > exporter's steering tag when performing peer-to-peer DMA into a
+> > VFIO-owned device.
 > 
-> I don't agree.
+> I'm not an expert for TPH, but that sounds very strange to me.
 > 
-> The later versions are backwards compatible, but the later versions might
-> not be supported by the loaded TDX module.
-> 
-> Usually the callers will have to choose between versions due to the TDX
-> module being used varies, just like the case in the next patch.
+> As far as I know the TLP Processing Hints allow devices to give a
+> steering tag to the root complex together with memory accesses to
+> give fine grained control about cache usage. In other words it is an
+> extension to the classic snoop bit.
 
-No, we don't choose SEAMCALL versions based on TDX module versions. The
-next patch is an exception, if by the time of merging there are releases
-support TDX_SYS_CONFIG v1, I'd rather delete TDX_SYS_CONFIG_V0.
+TPHS includes an bit of data on every TLP and the data transits to the
+eventual completer.
+
+It does not have to be a root port.
+ 
+> For P2P that is obviously nonsense because we don't have P2P support
+> for cached accesses.
+
+For P2P the TPH data on the TLP will transit to the P2P completer
+unchanged.
+
+It is up to the completer do define what it does with the TPH data.
+
+Typically root ports in CPUs will use TPH data for cache placement
+instructions. But who knows what a P2P device will use it for.
+
+In Linux the driver that owns the completing address space gets to
+specify how the TPH data works based on its own device specific
+knowledge.
+
+Jason
