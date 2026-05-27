@@ -1,119 +1,133 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5B638B7BD
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 23:49:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A69F333F5B4
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 23:53:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779925781; cv=none; b=j0ZQfidxeHscVXCYbVMs9XJhE5Ho8Jq7rg0Zwflme0jW0oV53RPbsgQ/cnSatZLhA83LMTIm0w5asjT5g14AfHm7Xi+DqJwFpMqEPW5AyOiTPgDNRb3QjI/osgbQvUM/d1Uxux7phKjuVYS0IWoLganYth0x4xvNhpsWsTlPKPk=
+	t=1779926004; cv=none; b=CkSdiV6elycidZKKkuNppbNhWG3x/J7nozYq6WOPna1uphrL53HzyRLOh2xjrgZc9tmyrXshoXjb3Cw044h7UA9/2nO1oEBEM5ka0KAa/IRnU8YyjmuJXAY1ohLdATskyOzBbnEcqS1voy/IhPsn4maURfHKTP/HNJa6lYbzaqg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779925781; c=relaxed/simple;
-	bh=pTq0LqTckkRulgB4C8MRq4YW7t2zq0gXUKt5K8i1fZk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=E7Ek8lkXcMrYZEupVaxYzUNe36oiRZH9KnapKUArLn0ArXi2dooNCJw32e7QlE4jmVbT01HjYRZGVQRAp9G0+FCmQCAxJP2Y0aoqOKhjc9ShRmgvZpARZz0LYN1sn0E4XWTOYKCadqv9qm5k3iELScIw9i2UUJQfMdTgty6+Qc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NNRItCUz; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779926004; c=relaxed/simple;
+	bh=z+1Wz9+DPxD65TmCQuzRccNFI/4SeWS3AgLc0eD4f34=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=RIqI8pEs4pwiHpcs+1jBe66k7lORdf4Pyw1UJXgjEKHsvO+cDrRuBqF/h70K82Mbtjkwu3PYGzJ+OyvdjyOhcIThENz+OpV+WwI0m6RMWz/EC9umkiIPjqaWlVPxllwVjVBZVkI8Bvkw+kJHjGU+AiKDLqg3rETJciqRUivIVhM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hIZKxC5j; arc=none smtp.client-ip=209.85.216.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NNRItCUz"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA8431F000E9
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 23:49:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779925779;
-	bh=TcOfKEdiNAel16+xP7tjMPPqKrxHymQZIh7pOvA0B7A=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc;
-	b=NNRItCUz6/1PXK54GmICGhfqy8vhQ/cRtrzEbAENBEAMv4b8534sJfSvJCI6fFuWy
-	 fRcKjO6SFCNEpbTQo5nQN18gmgcM/+ZuDGoVk9WCG5RCZtuom4Rw74bgAIgPHX88Fo
-	 UZsBfKZaa6FQ6CmPnWDxn7ftI3zbzG4GT3Xife0oKmU+KX6pJL91nPDY3viVhNx0Ft
-	 Gm0OPKe+SCBB+FYaDVPEFU0LoiMCW0iYPf5klUl8i6tnHvAnd7hyDUD6Q+qZiu4yYc
-	 JAVJZ20qglbGkrZvOIIOHpi9YC/p3rGTKcYZ/ze7Tp9OxubH6K3s8x5XYcNuSlPjDh
-	 YAOW7n90nRhpQ==
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-bdd1986cc86so924500966b.2
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 16:49:39 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AFNElJ+2Eut1KYKYsjgYeoI2CopBEyDifNdJfHOkcHwYfzTSsQfYTshD6qJXpHQdGtT9IunBFYE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwHcVzjWYa5hvLaeD2X2vgXmppLzHLgoJ1+39vvShQqIdaN+rbK
-	KdGjWU5CbxM8juzEG7yUgJoGT2T6a5IwFqHCsSlb4KVtbYSlJ+kshA3CnvAtqEmwkB+SiIrG07D
-	RS++gNK391bjn6ThHQ4QWsrcUx5aOgOg=
-X-Received: by 2002:a17:907:b59a:b0:bd3:893c:c44f with SMTP id
- a640c23a62f3a-bdd25fd111amr1135482966b.19.1779925778799; Wed, 27 May 2026
- 16:49:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hIZKxC5j"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-368b68a33adso17130833a91.1
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 16:53:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779926002; x=1780530802; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=X7Ev2ts7Jym1NJMb3G2uVBKct2ImZO6Q4kknAYq5ess=;
+        b=hIZKxC5jnK/yUvmNWSGCY/TnZTVLb2zTJONADcQv1zg4uFh5TJMBY54dy2wdEXl60p
+         1dlv4uGNqKeEd+m1FibmtLj9moUN+8W+0HFaw8zF4frsi5q70947K/q+hjpIM7dkFEE5
+         X7zH7e5SWvNuo4CB+Am8RYj93qgJ0Kww7MXi/UnzJk0ndSDWslt5ZB3H9R6195HtIvJE
+         25oRTE9aXoUCvgL4qQSZI9HbcuVjhLjIw7p0nYAmyMY+WHGBva7T2jeWhjPnR/tkvM+F
+         /5LXrC6mEIGu06xiEA1QppP8CU/d3zJo/19tddeZH355+m5LxEB/i8r6PXCx2j3CC3Lk
+         zgOg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779926002; x=1780530802;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=X7Ev2ts7Jym1NJMb3G2uVBKct2ImZO6Q4kknAYq5ess=;
+        b=LkODKMYt2slqGmcQbJLa1D6hk58Xat+4mYJ+y/TCF7vsckYJGbg21EmucSy4hDzlBZ
+         pQroXUoRsws2OVCZe681cw4N1NOSu7eeBr6rwzrPign6fuaYYdT1F4MwDmXtP1psxaKY
+         piFfE7LofrLZnw9Ed6zOVtaGSAfjy9uFXcDmPOgeWs3zRE560+NCxb5ND1+2SgkHk2RN
+         Vt71+jB/pzULRK0y2vZ2TwYrpJuPnDeXueJ/ndebi+8KF5/WWsUzcPkvzwA7X4SW9aEy
+         SHAPZY1Sq89HZYqMqsZqUBvYLzbvSNgewfxatHs12egm4X84a2VAdPhOJWQSOX5Bt5pY
+         BlZg==
+X-Forwarded-Encrypted: i=1; AFNElJ9GZGBmjuCQGkFkmMC0fMMVwTMGbekKiMmqBaDgoHhmjT+yarfb5JkFQKEHoPgEmMZI/tk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDGt1MWGd264mcRpDSpgziaOAFJ8kf75/ayxbiyyGexbZ5v6MW
+	BT6okhV6tY8PLz6E50HgOaKqsDPPYjQcePl79mD0hgHKvPIbnXjvLVXSw3Tlv9Z4LXV0E1IVP52
+	1x5OvtA==
+X-Received: from pgjo19.prod.google.com ([2002:a63:e353:0:b0:c79:71c6:fd98])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:3647:b0:36a:8ce7:b879
+ with SMTP id 98e67ed59e1d1-36a8ce7be66mr12851863a91.5.1779926001724; Wed, 27
+ May 2026 16:53:21 -0700 (PDT)
+Date: Wed, 27 May 2026 16:53:21 -0700
+In-Reply-To: <20260527120600.20696-4-pbonzini@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20260527180417.4119289-1-seanjc@google.com>
-In-Reply-To: <20260527180417.4119289-1-seanjc@google.com>
-From: Yosry Ahmed <yosry@kernel.org>
-Date: Wed, 27 May 2026 16:49:27 -0700
-X-Gmail-Original-Message-ID: <CAO9r8zNrz3U18hGOj9MAd46X-OHYzs9-QebH=D1TRp=wcHmk=A@mail.gmail.com>
-X-Gm-Features: AVHnY4JiSXVam1T_54bVn9bMSZoH6JL5KTlNZOmfF2bsvQBRmkl5BCVqSqq4WU8
-Message-ID: <CAO9r8zNrz3U18hGOj9MAd46X-OHYzs9-QebH=D1TRp=wcHmk=A@mail.gmail.com>
-Subject: Re: [kvm-unit-tests GIT PULL] x86: random smattering of changes
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+References: <20260527120600.20696-1-pbonzini@redhat.com> <20260527120600.20696-4-pbonzini@redhat.com>
+Message-ID: <aheD8XjfMrL9wGFa@google.com>
+Subject: Re: [PATCH 3/4] KVM: nSVM: invalidate cached PDPTRs across nested NPT transitions
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-On Wed, May 27, 2026 at 11:04=E2=80=AFAM Sean Christopherson <seanjc@google=
-.com> wrote:
->
-> Please pull a rather random set of changes that have been accumulating ov=
-er
-> the last few months.
->
-> Note, the SKINIT nSVM intercept test fails on some Turin CPUs, but allege=
-dly
-> only on pre-production hardware?  I assume/hope such hardware isn't commo=
-nly
-> available, and so didn't bother trying to handle it in upstream KUT.
->
-> The following changes since commit 9eb6c57313060d34f7e5b2ac6f90bb5873bbe2=
-ff:
->
->   Merge branch 'mbec' into HEAD (2026-05-12 13:03:25 +0200)
->
-> are available in the Git repository at:
->
->   https://github.com/kvm-x86/kvm-unit-tests.git tags/kvm-x86-2026.05.27
->
-> for you to fetch changes up to c10d4616e2ad5d95553b2f0c389b4546dfacd76f:
->
->   x86/vmx: Remove the superfluous vmx_cet config entry (2026-05-27 08:59:=
-46 -0700)
->
-> ----------------------------------------------------------------
-> KVM-Unit-Tests x86 changes:
->
->  - Track SVM's EXIT_CODE as a 64-bit value, to verify KVM does the same.
->
->  - Add nSVM tests for unsupported instruction intercepts.
->
->  - Serialize the (v)CPU after WRMSR(TSCDEADLINE) to prepare for APIC time=
-r
->    virtualization.
->
->  - Disable PKU in the vCPU model when running the nVMX access tests to ma=
-ke
->    the runtime somewhat reasonable.
->
->  - Extended the VMOVDQA test to cover VMOVNTDQA as well.
->
->  - Add test coverage for ENTER + emulated MMIO.
->
->  - Misc fixes, cleanups, and minor coverage enhancements.
->
-> ----------------------------------------------------------------
-> Isaku Yamahata (2):
->       x86: Replace NOP with CPUID after WRMSR(TSCDEADLINE) to serialize d=
-eadline timer
->       x86: tscdeadline_latency: Remove unnecessary nop
->
-> Jim Mattson (1):
->       x86: nVMX: Add retry loop to advanced RTM debugging subtest
->
-> Kevin Cheng (2):
->       x86/svm: Add missing svm intercepts
->       x86/svm: Add unsupported instruction intercept test
+On Wed, May 27, 2026, Paolo Bonzini wrote:
+> When L2 runs under nested NPT and uses PAE paging, KVM's cached PDPTRs
+> in mmu->pdptrs[] can hold stale or wrong values after nested
+> transitions and across migration restore, because both
+> nested_svm_load_cr3() and svm_get_nested_state_pages() only refresh
+> PDPTRs on the !nested_npt path.
+> 
+> The user-visible bug is on migration restore of an L2 running with nested
+> NPT and 32-bit PAE paging, if userspace uses KVM_SET_SREGS rather than
+> KVM_SET_SREGS2.  In that case, load_pdptrs() leaves VCPU_EXREG_PDPTR
+> marked as available, and kvm_pdptr_read() will use a stale translation
+> that used L1 GPAs instead of L2 nGPAs.  svm_get_nested_state_pages()
+> runs on first KVM_RUN but skips the refresh because nested_npt_enabled()
+> is true.  The CPU itself reads L2's PDPTRs correctly from memory via
+> L1's NPT, but KVM-side walking of guest PAE page tables uses the bogus
+> cached values.
+> 
+> Unlike Intel's GUEST_PDPTR0..3 fields in the VMCS, SVM has no
+> VMCB-cached PDPTR state: the in-memory PDPTEs at the current CR3 are
+> the only source of truth, and svm_cache_reg(VCPU_EXREG_PDPTR) simply
+> reloads them from memory via load_pdptrs().  Clearing the avail
+> bit (and the dirty bit because !avail/dirty is invalid) to force
+> a reload when PDPTRs as needed fixes the bug.
+> 
+> Do the same for nested_svm_load_cr3()'s nested_npt branch, so that
+> the invariant "PDPTRs need reloading" is handled similarly for both
+> immediate and deferred loading.
+> 
+> Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
+> ---
+>  arch/x86/kvm/kvm_cache_regs.h |  8 ++++++++
+>  arch/x86/kvm/svm/nested.c     | 27 ++++++++++++++++++---------
+>  2 files changed, 26 insertions(+), 9 deletions(-)
+> 
+> diff --git a/arch/x86/kvm/kvm_cache_regs.h b/arch/x86/kvm/kvm_cache_regs.h
+> index 2ae492ad6412..6bae5db5a54e 100644
+> --- a/arch/x86/kvm/kvm_cache_regs.h
+> +++ b/arch/x86/kvm/kvm_cache_regs.h
+> @@ -77,6 +77,14 @@ static inline bool kvm_register_is_dirty(struct kvm_vcpu *vcpu,
+>  	return test_bit(reg, vcpu->arch.regs_dirty);
+>  }
+>  
+> +static inline void kvm_register_mark_for_reload(struct kvm_vcpu *vcpu,
+> +					       enum kvm_reg reg)
 
-Any reason not to include this series:
-https://lore.kernel.org/kvm/20260312200308.3089379-1-chengkev@google.com/?
+I would rather use kvm_clear_available_registers() than add yet another API,
+which isn't even a good fit here since SVM never expects the PDPTRs to be dirty.
+
+Though I think it's a moot point, because nSVM should be clearing *all*
+lazy-loaded registers.  It just so happens that PDPTRs are the only such "register".
+
+I haven't checked to see if this would actually be correct, I'm just mimicking
+the nVMX code.  But conceptually, I think we want something like so:
+
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index e74fcde6155e..0c6ab00766b1 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -1303,6 +1303,8 @@ void svm_switch_vmcb(struct vcpu_svm *svm, struct kvm_vmcb_info *target_vmcb)
+ {
+        svm->current_vmcb = target_vmcb;
+        svm->vmcb = target_vmcb->ptr;
++
++       kvm_clear_available_registers(&svm->vcpu, SVM_REGS_LAZY_LOAD_SET);
+ }
+ 
+ static int svm_vcpu_precreate(struct kvm *kvm)
