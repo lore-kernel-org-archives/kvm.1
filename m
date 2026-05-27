@@ -1,135 +1,145 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B340277C81
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 01:29:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A9D228725B;
+	Wed, 27 May 2026 01:30:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779845380; cv=none; b=IJe4MAmHjv/MBDXuEphsrzQAcGvBVa8uEQ/r9pieKvEwOlhzf0cvbFaXZ99Tux4xwa7ye1kdWF04IFp1zhg1TOTlKvPspyiHjfnlbv7h9/AdD1L9fP7aKQU3PhuZmvUAVUFdT2AYlvnML9s7HX/wOJe4m133MoSXY2zXmtHqfy8=
+	t=1779845414; cv=none; b=PAnSz4J+CpxJAAqfxVW+QcvYrc9rCWGaWkXHBZ8Hu/Df8wlPjQaQUAGoZ62p/ET7DFAoz6TCiy7LIgLntOt9iWmxBB3R0b5zIq6AyONV+PegNIqiHdun8icCuaTSkphL1TmwjIJ6Vchv4xyKV8PHsMhZcgS6ZLVF0XgbGj0FOO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779845380; c=relaxed/simple;
-	bh=MZPGz6ctLe0VVMPEGo2AyWnFmsCo0H+g2n86WeNge/g=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=BnegGSoJX4Oc+wHQ0ntXCdJaISDTjRIokwxSxO7u3k2WF99YIySF2fzBOzm7QnupYFuxLGSXH4e20cuh5wfgb36iPsntVcgqGqoM/9+W4QPwT9xU/3CEFiQyYrVljMYcurNmkUYE3XdGmTokuGoE6/DJGB2vGJnyknsBrJbPHCg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eK6e4qYS; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779845414; c=relaxed/simple;
+	bh=4iZvbEc4EoOfmM/OxcolYEr8wy9z3bo9hjGNMkVHeek=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KS9u/UXKGG3PvloUiz4uZ8Qybop8KafK5bYBPPfDjIXRwpuB7VQPt+K4MgpDHtWPNQYWO5yMAKCUG+AfJDpINaue+7j3fh9r5SQEXbo2uynr3Z7NSyl71mDk9ya0/IEZXTmjjkQFEQbgmW0juiR4fVv5sdnCJZNTsQGW2bUuAXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=P9bRfPYV; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eK6e4qYS"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 162D71F000E9;
-	Wed, 27 May 2026 01:29:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779845379;
-	bh=DqQogEqxsdfomAAExE9eLBJLlbsC8jzE3gzxEQS+RzE=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=eK6e4qYSBBw3tyVAP01KT7qthWV2wtCk1CTILTDJ8jJ5IAnAQWALayh57DmzJKSTw
-	 FHIV7k8ygs9rp6aSuABrEkLaEkSSWK+JNHzsFtOU+cM4+WmtM2OLwDM1lniiG1G5qC
-	 ltXR7wJGDaAqjzhzAjo7miZdg/o4OQdRwqVbhVMgH1vMj+td4819MLJseYQKa8M2mt
-	 qfMtVw5gYHngO/XKlXUWuYsXPkF0Sg3D26cm1dQiHbbacaQkZoCh8mUh8KZm8orY1x
-	 kfS2gCkomZHzGavTtEGsUeVJTxAKWJDhPhZkeoyg+jrTONOQ1K1MyFj4Raea1Z0ey0
-	 wV11anLI7v+NA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 34/43] KVM: selftests: Test that shared/private
- status is consistent across processes
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ackerley Tng via B4 Relay" <devnull+ackerleytng.google.com@kernel.org>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260507-gmem-inplace-conversion-v6-34-91ab5a8b19a4@google.com>
-References: <20260507-gmem-inplace-conversion-v6-34-91ab5a8b19a4@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 27 May 2026 01:29:38 +0000
-Message-Id: <20260527012939.162D71F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="P9bRfPYV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779845412; x=1811381412;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=4iZvbEc4EoOfmM/OxcolYEr8wy9z3bo9hjGNMkVHeek=;
+  b=P9bRfPYVZbv/KzFQDeLFt5+S7huSbCDfjk7nnIKjW7AkFca2K/pTjI/Q
+   H33zA7Uyagi88fS5YpfofYRgLif0Cu1xYWAcqXHVf51v9zA4K3avveBGk
+   NGhCV7GmJivhEvBYqtChFIUbt1Vb8Xlk7GYtqR3gSJYDwN2RpJI7dlHor
+   r0MWwec3sW6la9WAelz9lA5wSi6cwKPp3uCcCxXDKATSGO2DzVTqJ1cpl
+   jM03dbxg24OMbJztEKn4CgLiRQ2w0BYHl6wWTY7optiCTEffNB3YrXWmo
+   V+YOxAsuksqzpB4Ll25zK5pz3RhT+G3fONM0TQlHOQ6MuhR5Xm4YC/dRY
+   Q==;
+X-CSE-ConnectionGUID: leC0ug5yQsCKzYqXviKn0A==
+X-CSE-MsgGUID: oQg20SO2Tba752X/9biucw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="91777071"
+X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
+   d="scan'208";a="91777071"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 18:30:12 -0700
+X-CSE-ConnectionGUID: iAS1q6SvS8+hGELWUqYDxw==
+X-CSE-MsgGUID: f5tNwDbWQASzWZx8l2IKvw==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
+   d="scan'208";a="265959363"
+Received: from unknown (HELO [10.239.158.45]) ([10.239.158.45])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 18:30:08 -0700
+Message-ID: <9c1d9fd0-9991-4853-99bf-ae454893a94a@intel.com>
+Date: Wed, 27 May 2026 09:30:06 +0800
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 15/15] x86/virt/tdx: Enable TDX Quoting extension
+To: Xu Yilun <yilun.xu@linux.intel.com>
+Cc: Tony Lindgren <tony.lindgren@linux.intel.com>, kas@kernel.org,
+ djbw@kernel.org, rick.p.edgecombe@intel.com, x86@kernel.org,
+ peter.fang@intel.com, linux-coco@lists.linux.dev,
+ linux-kernel@vger.kernel.org, kvm@vger.kernel.org, sohil.mehta@intel.com,
+ yilun.xu@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-16-yilun.xu@linux.intel.com>
+ <ahPbb1Ws9hBruJ2d@tlindgre-MOBL1>
+ <892508b2-6c61-4db2-a12f-902f62385e71@intel.com>
+ <ahXAL41ZmIDHmgfu@yilunxu-OptiPlex-7050>
+Content-Language: en-US
+From: Xiaoyao Li <xiaoyao.li@intel.com>
+In-Reply-To: <ahXAL41ZmIDHmgfu@yilunxu-OptiPlex-7050>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [Medium] A TOCTOU race condition in the `TEST_STATE_AWAIT` macro causes s=
-purious test failures when the child process successfully exits.
-- [Medium] The forked child process does not detect parent termination and =
-will spin infinitely if the parent process crashes or fails an assertion.
---
+On 5/26/2026 11:45 PM, Xu Yilun wrote:
+> On Mon, May 25, 2026 at 06:51:27PM +0800, Xiaoyao Li wrote:
+>> On 5/25/2026 1:17 PM, Tony Lindgren wrote:
+>>> On Fri, May 22, 2026 at 11:41:28AM +0800, Xu Yilun wrote:
+>>>> From: Peter Fang <peter.fang@intel.com>
+>>>>
+>>>> TDX Module updates global metadata when add-on features are enabled.
+>>>> Host should update the cached tdx_sysinfo to reflect these changes.
+>>>
+>>> This should be made clearer IMO. How about mention that get_tdx_sys_info()
+>>> needs to get called again to reload the TDX module global metadata?
+>>
+>> Ah ha! This patch answers my comment to patch 1:
+>> https://lore.kernel.org/all/956fa1e6-2920-4b2e-8037-d4b9d812ae53@intel.com/
+>>
+>> sysinfo_ext->memory_pool_required_pages and sysinfo_ext->ext_required will
+>> be updated after extensions are enabled by TDH.SYS.CONFIG.
+>>
+>> Patch 06 in this series already reads the tdx_sys_info_quote out of
+>> get_tdx_sys_info(), which mean get_tdx_sys_info() doesn't ensure all the
+>> global metadata will be update again.
+>>
+>> So how about move the read of memory_pool_required_pages and ext_required
+>> out of get_tdx_sys_info() and put them after TDH.SYS.CONFIG, so that we
+>> don't need call get_tdx_sys_info() again?
+> 
+> Yes, I'm good to it. I hesitated to move them out in case we need some
+> central control on global data. But now I see there is already a
+> precedent:
+> 
+> https://lore.kernel.org/kvm/20260520133909.409394-22-chao.gao@intel.com/
+> 
+> Once we've agreed on moving add-on data reading out of get_tdx_sys_info(),
+> we don't have to read them after TDH.SYS.CONFIG, read them when really
+> needed. How about the following, that makes the Extension part in this
+> series self-contained.
 
-commit e61a976fed3c062fac98d04a5f2859ab8c1293f6
-Author: Sean Christopherson <seanjc@google.com>
+Actually below is what I meant after TDH.SYS.CONFIG.
 
-KVM: selftests: Test that shared/private status is consistent across proces=
-ses
+And I think we can re-order the patches of enabling TDX extensions by 
+moving the patch 04 as the first one.
 
-This commit adds a test to verify that a guest_memfd's shared/private status
-is consistent across processes, and that shared pages mapped in any process
-are unmapped from all processes upon conversion.
-
-> diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test=
-.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-> index 960b2da8dd16d..4c33e21f04972 100644
-> --- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-> +++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
-[ ... ]
-> +/* Test that shared/private memory protections work and are seen from an=
-y process. */
-> +GMEM_CONVERSION_TEST_INIT_SHARED(forked_accesses)
-> +{
-[ ... ]
-> +	test_state =3D kvm_mmap(sizeof(*test_state), PROT_READ | PROT_WRITE,
-> +			      MAP_SHARED | MAP_ANONYMOUS, -1);
+> ----8<----
+> 
+> diff --git a/arch/x86/virt/vmx/tdx/tdx.c b/arch/x86/virt/vmx/tdx/tdx.c
+> index 86e5b7ad19b3..b729c1f5ab9e 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx.c
+> @@ -1536,6 +1536,10 @@ static __init int init_tdx_ext(void)
+>          if (!(tdx_sysinfo.features.tdx_features0 & TDX_FEATURES0_EXT))
+>                  return 0;
+> 
+> +       ret = get_tdx_sys_info_ext(&tdx_sysinfo.ext);
+> +       if (ret)
+> +               return ret;
 > +
-> +#define TEST_STATE_AWAIT(__state)						\
-> +	while (READ_ONCE(*test_state) !=3D __state) {				\
+>          /* No feature requires TDX Module Extensions. */
+>          if (!tdx_sysinfo.ext.ext_required)
+>                  return 0;
+> diff --git a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+> index f9cc2dd02caf..e7d9e0c4b604 100644
+> --- a/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+> +++ b/arch/x86/virt/vmx/tdx/tdx_global_metadata.c
+> @@ -140,8 +140,5 @@ static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
+>          ret = ret ?: get_tdx_sys_info_td_ctrl(&sysinfo->td_ctrl);
+>          ret = ret ?: get_tdx_sys_info_td_conf(&sysinfo->td_conf);
+> 
+> -       if (sysinfo->features.tdx_features0 & TDX_FEATURES0_EXT)
+> -               ret = ret ?: get_tdx_sys_info_ext(&sysinfo->ext);
+> -
+>          return ret;
+>   }
 
-[Severity: Medium]
-Does the child process handle parent termination?
-
-When the child process calls TEST_STATE_AWAIT(), child_pid is 0, so it skips
-the waitpid() block below and spins in an infinite loop waiting for the sta=
-te
-to change.
-
-If the parent process fails an assertion or crashes, it will exit and leave
-the child spinning at 100% CPU indefinitely until the global kselftest
-timeout triggers.
-
-Could the child check if the parent is still alive during this loop, or set=
-up
-prctl(PR_SET_PDEATHSIG, SIGKILL) prior to the loop?
-
-> +		if (child_pid !=3D 0) {						\
-> +			int status;						\
-> +			pid_t pid;						\
-> +			do {							\
-> +				pid =3D waitpid(child_pid, &status, WNOHANG);	\
-> +			} while (pid =3D=3D -1 && errno =3D=3D EINTR);			\
-> +			if (pid =3D=3D -1)						\
-> +				TEST_FAIL("Couldn't check child status.");	\
-> +			else if (pid !=3D 0)					\
-> +				TEST_FAIL("Child exited prematurely.");		\
-
-[Severity: Medium]
-Is there a race condition here if the child exits after the parent reads the
-state but before waitpid() executes?
-
-If READ_ONCE(*test_state) !=3D __state evaluates to true, the parent enters=
- the
-loop. If the child concurrently updates the state to __state and then exits
-cleanly, waitpid() will detect the child's exit.
-
-Because the state isn't re-evaluated before failing, the parent will
-erroneously trigger this premature exit failure.
-
-Could we check READ_ONCE(*test_state) =3D=3D __state again before triggerin=
-g the
-TEST_FAIL() to avoid spurious failures?
-
-> +		}								\
-> +	}
-> +
-> +#define TEST_STATE_SET(__state) WRITE_ONCE(*test_state, __state)
-> +
-> +	child_pid =3D fork();
-> +	TEST_ASSERT(child_pid !=3D -1, "fork failed");
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260507-gmem-inpla=
-ce-conversion-v6-0-91ab5a8b19a4@google.com?part=3D34
