@@ -1,88 +1,90 @@
-Received: from mail-pg1-f201.google.com (mail-pg1-f201.google.com [209.85.215.201])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3FF34611CA
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 18:10:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA7D0466B5C
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 18:10:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779905414; cv=none; b=CziV2mXhBgH21kjjMjjGPP+Cl+wVrVImzRak/yTV/58SQru1DPPp57pI0EtLDERC2psVFOH8CU8CFDj178kk1NS13sl1cAAh019tO5FkI7aUCpGiX8V2VIK1+tkN0xW8ZqCv2+M3vS2L+T4XCYohB+0cx435oIlOkpQIPM8tLd0=
+	t=1779905418; cv=none; b=aN+F/hD+k7/LyVd9FEoqGYmK57Sl/kevADUJceh1asOWWDKuQfiQDrc2SalBri05I6fG677ZDdQtHYX/w5YFdQP1o7kKo5nbsjsnhNhZGz1pQkjZf/0Vt3gQGyOiYtK2z8jzIw0Cnfhy5Ai0ncJcMDiCDUsDLtlNe/5TJXwTL0k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779905414; c=relaxed/simple;
-	bh=bjTBiuEI2Gb0yoOHDpPWFZ0LkmXS4yuNQ+J8WdNX0v4=;
+	s=arc-20240116; t=1779905418; c=relaxed/simple;
+	bh=qcoe4XBnhTqijbcRrIZ9ewSZixDRZUg2U4Pb6Qkk5w8=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GxOYbOYcD6fqUoFPy/DJiHl9Yvn+0YZa8eNsQcd1jthsZqYSZTe46y1ucabgn/NWPBMgzp/+t9p585bmADBGcs0CG8Yd6r1K6qWqTLy/zp0H+8Gxhj7bOnpUFbGnNUj/IdlIL3Z+dQJ1esZWnUd//Y09iIw8Hk/wv4Lgn3DndoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=tgasfQ/Y; arc=none smtp.client-ip=209.85.215.201
+	 To:Cc:Content-Type; b=Si/3eu5nSo2ytsq0yVT7Stlo94Xv/T2wGIO8PFcRm7WUocSqj0s1XLL1DOfv69fNjsNQ6gbkFdGQU651mFoYPLYn3r5T+axotW7VGlDvn31+PjlKtCJEPONHHGtg6llATQfFBIuF0AeSUSED1T40CLDtcX624xDnh0JMMuWLlPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=btbgbW7C; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="tgasfQ/Y"
-Received: by mail-pg1-f201.google.com with SMTP id 41be03b00d2f7-c827adbf00cso5392944a12.2
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 11:10:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="btbgbW7C"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2bc977e6aedso129581535ad.2
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 11:10:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779905412; x=1780510212; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779905416; x=1780510216; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=O0CdVfxKmDIVL3Py8q8FK9CkzIjMccvxEZLs5IONfFE=;
-        b=tgasfQ/YInhvu4KsXz2EBhsx6G+hpDumHh3FdngbKOF6xQx6ofAhaNk6nDIYaGYjhr
-         O9TkOzCThy/8LC7E4iU63OE0ELXukvX2Y72V+jfVpg8M78Vktap4bU0tq6NefXsEx4fx
-         7MZF0jLqrXkanyu85AkPLQ4hlXecZ4IOVykF3EAHLTeR7bu2ZEkRi16QYYxyjFcXX+vo
-         gOYhWAWdGABYJPk8pCubCBDrEKfkLBBU8vGd8+tObQ0OZ9zzLFOUCCeDNkvKJne2+oSJ
-         7iluVLoKLvAp7BcqVxUEU50oz2LHz6UmucHAuxa9Cnm851rPtdsyeFuqgGrZmJkIP9Qi
-         f4XQ==
+        bh=Wz5V2AnkDInQJ3fl7CYRLzB5u3WBTi6kbMPgGiC65kk=;
+        b=btbgbW7Cd4MhVdXB7yiRCrJfDZTvC/B9YKTeD528Z7CK1J/4s5f6wp5ZstBAtZOJJi
+         jcgZxs+cfaIbqWhMfK15w3Bj7pK0oiDG65kaahI0eBkEzoi+UoDGnLvs1dq3pVFsYsn/
+         vdIjYSitU6IFHeGh919wnFQnX2kJn2VoViuS13QjHFBj1XjoNTZstPUxrKw+Mz/Amou0
+         m3lCxZ+R0YoqTE6Gx4ZdBrEBvqRrOAZFWdFBYacIwdoj0+NH/KmYJZSkU71+BkZSL9oo
+         JfL8U+14X+pEtdoIOcPyyiPD7FsJBd2ELXmtsHJpu58dSsJsvcAzdhTN2YubThc0r29/
+         7djw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779905412; x=1780510212;
+        d=1e100.net; s=20251104; t=1779905416; x=1780510216;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=O0CdVfxKmDIVL3Py8q8FK9CkzIjMccvxEZLs5IONfFE=;
-        b=JyUzbDP3fQPH2PPdUPu6kLGJ/zAMuhYbWqnOWfwyjMZp3wLWoaoL+dELxMVQ9klKkU
-         9naa/zQgyP9yuIDqMnKU7+NjRTe37xsGQwtJZPeTCUrWgS7LTiRd7V07+CCQOo0XIH1x
-         +CO85keG/4vAwLepwHP1LqFIrRz2O2U5pyaikSN0bX+eElHjRjzD7fzsqdXet+knJ+s+
-         YDi2s8ZObUN2ero4OY8UtFaPxMG1IAPuOR+Pv2pW+q+9hrm0RKqDaF/Och7z5gofCeie
-         JA3pOdE/xys7364gVqlSK1gqoJRgYwhYtW1dnhUDtIvZCBurpcJGp7WtU0o1xoN3qTjV
-         52IQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/uHpVwNYv95sxqs3Mt75+SFEHra3icdjpqa1BgCN7KWQVJ8A3NdKJWsCTbHAhV3ues/Tc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywgz5Eakz9IRBIk0+HPViEtnjzbHn5tGtAKHmTkBBwfLR7B+xF2
-	gRXdhaYv4EwVvL8N3LPwxc7MJDRPSVMLd7rcV2bQpvgyFw5mvPvu/BZewOlzuCUleoruk8lPQhd
-	sWbjjIw==
-X-Received: from pgkc23.prod.google.com ([2002:a63:ef57:0:b0:c7e:68a1:910c])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:486:b0:3b3:f46:1efa
- with SMTP id adf61e73a8af0-3b328f54678mr25731704637.42.1779905411564; Wed, 27
- May 2026 11:10:11 -0700 (PDT)
-Date: Wed, 27 May 2026 11:09:54 -0700
-In-Reply-To: <20260518135956.82569-1-ehemily@amazon.de>
+        bh=Wz5V2AnkDInQJ3fl7CYRLzB5u3WBTi6kbMPgGiC65kk=;
+        b=TkgJa9NZjmLgGeeapfnsIaghTiEA0fNPLd1+Qsr1J1IxRbXCc2gO0d7pdoQcH8Ce5h
+         yDj1SX91pdKlrD8vTSKIB3JR7aijBVonxVYNlu2+S7G7UHTTDQQ8j63F2pNmS6AsqgP0
+         y9xsCabByThxZvJ9GV/4F5afeMYERP9+og+jeSOa2Brr4MCMkscDuEAeheK/m5T+0FBr
+         v6/GsryrFNcFmgSUtxOQ//m7uXCy76Mep7zSID3wweloV86xn+2cQCXBmm8ETbs7Eju1
+         u9q62ZxAzN8SpznhK/aw5rwr9qSXFLPJ0ddkzSkMOxw88cYJP6a3D9b8B2ccgABGB9lJ
+         LU0g==
+X-Gm-Message-State: AOJu0Yz93Rzgs5ObF27nt4REveYddipxbwaSK82wPpvRttqT2We23sVG
+	+OcpHMwkOMMe0kHRSV8aafQWdDNmQwGWsOH4nC+v+Yy/B2CUsvfzEhYZAFfGKBjdBYFNB0Ypppp
+	lqB0m2A==
+X-Received: from plbjc14.prod.google.com ([2002:a17:903:25ce:b0:2ae:c329:bddd])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:e74b:b0:2bd:9803:9304
+ with SMTP id d9443c01a7336-2beb06cae35mr257998605ad.39.1779905415688; Wed, 27
+ May 2026 11:10:15 -0700 (PDT)
+Date: Wed, 27 May 2026 11:09:56 -0700
+In-Reply-To: <20260515171536.1841645-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260518135956.82569-1-ehemily@amazon.de>
+References: <20260515171536.1841645-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
-Message-ID: <177990538854.4123030.2149054954047224360.b4-ty@google.com>
-Subject: Re: [PATCH] KVM: x86: Fix ERAPS RAP clear on INVPCID single-context invalidation
+Message-ID: <177990537439.4122707.14200674992574317584.b4-ty@google.com>
+Subject: Re: [PATCH] KVM: SVM: Flush the current TLB when transitioning from
+ xAVIC => x2AVIC
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com, 
-	Emily Ehlert <ehemily@amazon.de>
-Cc: amit.shah@amd.com, mingo@redhat.com, bp@alien8.de, 
-	dave.hansen@linux.intel.com, hpa@zytor.com, x86@kernel.org, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org, nh-open-source@amazon.com, 
-	graf@amazon.de, nsaenz@kernel.org, Thomas Gleixner <tglx@kernel.org>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Naveen N Rao <naveen@kernel.org>
 Content-Type: text/plain; charset="utf-8"
 
-On Mon, 18 May 2026 13:59:56 +0000, Emily Ehlert wrote:
-> Use kvm_register_mark_dirty() instead of kvm_register_is_dirty() to
-> actually mark VCPU_EXREG_ERAPS as dirty when emulating
-> INVPCID_TYPE_SINGLE_CTXT.  kvm_register_is_dirty() is a read-only
-> predicate whose return value is discarded, making the call a no-op.
-> Without this fix, a single-context INVPCID will not trigger a RAP clear
-> on the next VMRUN, breaking the ERAPS security guarantee.
+On Fri, 15 May 2026 10:15:36 -0700, Sean Christopherson wrote:
+> Flush the current TLB when xAVIC *or* x2AVIC is activated, as KVM is
+> (apparently) responsible for purging TLB entries when transitioning from
+> xAVIC to x2AVIC.  The APM says a whole lot of nothing about TLB flushing
+> with respect to (x2)AVIC, but empirical data strongly suggests hardware
+> also does a whole lot of nothing.
+> 
+> Failure to flush the TLB when enabling x2AVIC can lead to guest accesses
+> to the APIC base address getting incorrectly redirected to the virtual
+> APIC page.  The flaw most visibly manifests as failures in KVM-Unit-Test's
+> verify_disabled_apic_mmio() testcase when x2APIC is enabled (though for
+> reasons unknown, the test only reliably fails with EFI builds).
 > 
 > [...]
 
 Applied to kvm-x86 fixes, thanks!
 
-[1/1] KVM: x86: Fix ERAPS RAP clear on INVPCID single-context invalidation
-      https://github.com/kvm-x86/linux/commit/b60621c5121c
+[1/1] KVM: SVM: Flush the current TLB when transitioning from xAVIC => x2AVIC
+      https://github.com/kvm-x86/linux/commit/a9e18aa3263f
 
 --
 https://github.com/kvm-x86/linux/tree/next
