@@ -1,260 +1,148 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-dy1-f170.google.com (mail-dy1-f170.google.com [74.125.82.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD3B2272801;
-	Wed, 27 May 2026 05:23:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.17
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779859421; cv=fail; b=cKSlGIkuKnxprazstfWRrQsQMeTA0TsgHW24Ukf04aOfX6EwdwmGfaZr5jwW9blEWCn/qVPwe00LocwqZoJrRJnF7BykNbrVBvSDdmBgHb4AQRSQolUUaE6s4niLauTH63V+vP+HnOgYoe4VmKCKUl2wuoL7bw870vquuZcHAdg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779859421; c=relaxed/simple;
-	bh=E/plLYU5237YfQafR3No3BBUOwkfcN4j45MQjAtAccA=;
-	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=gOCuQJ3YokQ2ZX5SUnjrDssQ7J+Ao4+/tj5bCaOWTeBAeV0DCYlRJ4p1FoCGGtXszqc+DjETOYzA4kixGyMVRX5g3sbWcqpEml43v1CndRMR1ExmtBGx7MyL+gpsyE8K2gBfb4DlswLLs9WBVzbq31m3pAk2vr+yax/V84hmrW4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=dFk+I6bN; arc=fail smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770D926E706
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 05:53:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779861182; cv=none; b=tjLIpj3KexnQ/D4x1wejQiZuqJU10o/de2Ys/2G9u/MxP6c3ewxi+2OO90M9Xk1Q4ZQ+jTCjmDwZ648t4rN9y7HRlFotSX1h/xp1ga86pemEIx8TR01eUJV99BDkosOA1rqoZEjKOxQ9pJxtEHKiFibH2F8Ym2tgi5OhW3WHfWo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779861182; c=relaxed/simple;
+	bh=XMtEi6pQMVKyTapHo789HRwMSCgn+nOLhMBYdeAM8y0=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=u3H/xUtjnKVF67+9j95hc5gn9KtzbS1iuCU9wxcNIG0BFVBxADReAas4j3Go7bQ+8Yms5P7Zc6atsKypYPijcAXsZfHTuS+nkgrkKNxguPlQs+deMtMoLGBEM/POqLYLetK06xM/RDtZP+UYEWXKk58cop1gasOF5sYRU7l9LnQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=VXAnVGsv; arc=none smtp.client-ip=74.125.82.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="dFk+I6bN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779859419; x=1811395419;
-  h=message-id:date:subject:to:cc:references:from:
-   in-reply-to:content-transfer-encoding:mime-version;
-  bh=E/plLYU5237YfQafR3No3BBUOwkfcN4j45MQjAtAccA=;
-  b=dFk+I6bNT7fh51y3v5rZ7fCvR3k83n6yacG4/vUqvxQsxpKx8zju8mhF
-   RTSPKqhbFm8cn5s7U/RVjus7BUugApQkQ5PD1E3LjUbg5IffMSXHScJ3T
-   ikZmERvI78N+dYe4ykQOezJQpcXONabyuZRlKFU9mTHZ+KHlWD/MTFTyY
-   R2sA670xeMykhniiXG9VMSFrPS/TFQXjlDVM2ycxR5fEbIEHvA39hoPqw
-   4vCB74TrGpdgIEI5eCKkZ/M7C8Tjo7+C9C6ulz2RsiVw5W1ndTezRLem4
-   TvT47AZN9DNSibVTC0Pq4oICAJtEoQ+lZfHy5uoDXqcdzgX5DiJ+Mok8+
-   w==;
-X-CSE-ConnectionGUID: p+MWmyqASc+Btr1eyfye4Q==
-X-CSE-MsgGUID: RCXC7Ya/QRqyu+/93BGhOQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="80530924"
-X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
-   d="scan'208";a="80530924"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 22:23:39 -0700
-X-CSE-ConnectionGUID: fqP5Kze/TgKmQoj7ZO6bFg==
-X-CSE-MsgGUID: TcEKpyIUT7O4+Z5G/mv41Q==
-X-ExtLoop1: 1
-Received: from orsmsx902.amr.corp.intel.com ([10.22.229.24])
-  by fmviesa003.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 22:23:39 -0700
-Received: from ORSMSX903.amr.corp.intel.com (10.22.229.25) by
- ORSMSX902.amr.corp.intel.com (10.22.229.24) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 26 May 2026 22:23:38 -0700
-Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
- ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37 via Frontend Transport; Tue, 26 May 2026 22:23:38 -0700
-Received: from DM1PR04CU001.outbound.protection.outlook.com (52.101.61.26) by
- edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.2562.37; Tue, 26 May 2026 22:23:35 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=KJ4ZtEVqbiQYBqN5/fX9b0kq2lU218atZSvq9iSoI/ZfTD1ilr5CRX6B4tsu1pbF81gkZntyhs1z3KJEgOnuautMhwHxV1vbDt0y0+zdipJGIWIh+ToH5VC1aw5QCMJ+cFpWzJOIoc887E/OfKSqENgm7U8Sbr3rWCJv1HxjHcO5XlgJW8mDS1CK125DU4RJWBP2DiTWFv9Qc9CKlG96I2Vq2E7GLy2INLfCa4ThYdc8/iqZqLpmfS9azqiVuJBtaLqioGckFHdjmj83MSYhF8cLinPCVaqOQkodQPUTBVBK+P/os52tzy5MArWbSEmqxM4n+aIEirQWZARFUfOp3A==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=0feH+pT6qIql6qWZRgC3JZvo2/38diiOwmX1XmAV/T0=;
- b=RtJ49mD7jdoHSVpkRiAK7Cw1UUTRT+cAyj9m9PRhkyPrUu12nM3a/pQEyzLYEs9xLY5jyAvzdPZpY/DxRqEbxfReQFGlJwiCiFoJIMsKhlcjNjzqLppxtEsr/l+0HIEJzYN8ps/5Nwt7K1pkKlJIXoDkiViL/IyyiPwP3BCojUMX857DISZ3M4sLbVR7WwZTIU9oNfhM2fId3YMHvmRs9hYriBQ6QuWahJ0icBl/0sJupZjNizh3MOVCtsFmORtnzXzX5tqrV2iDAxUVX+oTiYqiMpaMDe9r9Q0Nb9K9ZL9Jmj1Im5+f96UrKAqqwwpabaWmt+9o1MMicQ+dVw+n6g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from DS0PR11MB7997.namprd11.prod.outlook.com (2603:10b6:8:125::14)
- by LVUPR11MB9568.namprd11.prod.outlook.com (2603:10b6:408:39e::18) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.48.19; Wed, 27 May
- 2026 05:23:32 +0000
-Received: from DS0PR11MB7997.namprd11.prod.outlook.com
- ([fe80::24fa:827f:6c5b:6246]) by DS0PR11MB7997.namprd11.prod.outlook.com
- ([fe80::24fa:827f:6c5b:6246%4]) with mapi id 15.21.0071.010; Wed, 27 May 2026
- 05:23:32 +0000
-Message-ID: <2542e761-57ed-4170-8ce9-1de3fc685dea@intel.com>
-Date: Tue, 26 May 2026 22:23:30 -0700
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/15] Enable TDX Module Extensions and DICE-based TDX
- Quoting
-Content-Language: en-US
-To: Xu Yilun <yilun.xu@linux.intel.com>, <kas@kernel.org>, <djbw@kernel.org>,
-	<rick.p.edgecombe@intel.com>, <x86@kernel.org>, <peter.fang@intel.com>
-CC: <linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
-	<kvm@vger.kernel.org>, <yilun.xu@intel.com>, <baolu.lu@linux.intel.com>,
-	<zhenzhong.duan@intel.com>, <xiaoyao.li@intel.com>
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
-From: Sohil Mehta <sohil.mehta@intel.com>
-In-Reply-To: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: BY3PR04CA0023.namprd04.prod.outlook.com
- (2603:10b6:a03:217::28) To DS0PR11MB7997.namprd11.prod.outlook.com
- (2603:10b6:8:125::14)
+	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="VXAnVGsv"
+Received: by mail-dy1-f170.google.com with SMTP id 5a478bee46e88-3045c195251so4690171eec.1
+        for <kvm@vger.kernel.org>; Tue, 26 May 2026 22:53:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=sifive.com; s=google; t=1779861180; x=1780465980; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=mv8BPWe9vjiV7eG5zhSWNmlAlLaLwUax0FP44WMjBLo=;
+        b=VXAnVGsvG8BUl0wEjzNSTEQRi6tNzlYVNIZEm3o/FF0/7j/O3+1p0C49KhZLkeQ2xr
+         hkZ+J5GgRNpEO1nDj5I7pkJ/j8xWVpXYqiPbSBlkjAzdz7+5tMDZLXY+6FQU5VhD23oG
+         0UCXA8sQ4tEgkAqfdjDELPU2kGLmFeij4EybLSyMKvHJNGic0JvnZENTEzURM4kIQiBl
+         xOraXGFXdS3FG2gH+qtFWoAwtegKXGwy/TISXzbRtmlKY2fnUxwoKbyTJO6uuhuR+9uT
+         k6aT1uENL3H8tftrsi0tR58FU9Je4Nd/xcn/zgvYafFvt2XffLns40DgOzJkzZmxx7QA
+         tCBw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779861180; x=1780465980;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mv8BPWe9vjiV7eG5zhSWNmlAlLaLwUax0FP44WMjBLo=;
+        b=ZOd3M+yhmsDu8iOHUeGDWWCCvm4F9iWYbyWaaEE06qq1+vzh/qm+sLHHW8G34LRvx6
+         hzMJiFiMRzBvouNdu2Vy/00wlCth17psxPGdMXv1RFY1xEeNKAiEwl9JAsSXRPdZK2Go
+         FXv3NpLNgSmCcbTjTlLrr2xHz+snwDx9ukExIH3WodZknG+MrHymr+/s5jK2g4uSZIFP
+         r9tFO3NlhrAPdcy6bewOKEveU865LoCghnrqavEYNMC5GEKaba6Po679r+XsI0Ewj2dh
+         0/NQIqvDYbMQpb4W5vBQB3NXVhNkLtoubwWvq/V3xvDlZLnGW4qkhPDnLQnjdhvePxlJ
+         6kCQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9ycHMIzs+GxTF0Xy7QjY4v6ltMfWLRtBGp/AjxkGs6W9VXxbJBBnkxz4ZVGAMhNSVHtxs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywl8Mz6PVFYnPfOqZYdkVNSRiTVKOnduCGrvNINdzLfHtiilazo
+	IshgQfBG2o9DrArAOFcOcn6GAW4bNJ/9z1uhEDcp6oocFGlFZjdlTp3YW3nOOXjgENM=
+X-Gm-Gg: Acq92OFCsI91jhsTuCYdmQfVrFn9lfyXWTmyTtwcYICsnAKpltflb7YDFCnL7XS6bxr
+	Pc/F02WtBn5UIc21OLv/G/m/E2s+lveICvc4zig/iHFACytuVVeQQibCLRcB/mKn0nkZZO5MegO
+	Rh9k3wa096oSevJtu8xwbW/3usjqWPC0bXf5gmFNxqACrKu/IDOgyPyGxJw92We7bTQvtIrLhZ4
+	+7oLCEqPA2NJ4TwL+ATOpjmO/Y62r2pwrX1Ag2JKfW2Nz/8InG0NmOlfyFbrZG6LFr1VTaTigH1
+	atUywgXkGizuemfnBtNP4KPHDVaqkFnSPCVAJ3waDs3+JevgFmAQoeNl3wjPyB+ful6UEZzOWJH
+	sBiyiODoe5x0ZldHYYOnX6r+Pfwh9VqoIikCq+asoOPsKuCfFdGfeSNHPnvG6fo4JuhqpbPluFb
+	YVQxVE7ruP4QN8tY2KsTHlArgDfSt9FyoQUiZ84GT7SzjRfikNeZWfyCndJszN2EoQ
+X-Received: by 2002:a05:7300:ef82:b0:304:b93a:511a with SMTP id 5a478bee46e88-304b93a555emr669520eec.28.1779861180303;
+        Tue, 26 May 2026 22:53:00 -0700 (PDT)
+Received: from sw07.internal.sifive.com ([4.53.31.132])
+        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-304be0851c9sm613202eec.23.2026.05.26.22.52.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 26 May 2026 22:52:59 -0700 (PDT)
+From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
+Subject: [PATCH v2 0/3] KVM: riscv: add check_supported_reg() into
+ get-reg-list test
+Date: Tue, 26 May 2026 22:52:37 -0700
+Message-Id: <20260526-kvm-get_reg_list-v2-v2-0-7940a401454a@sifive.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DS0PR11MB7997:EE_|LVUPR11MB9568:EE_
-X-MS-Office365-Filtering-Correlation-Id: d1934988-332e-4394-dbe8-08debbb01806
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|18002099003|22082099003|5023799004|11063799006|6133799003|3023799007|56012099006;
-X-Microsoft-Antispam-Message-Info: 63BWrEN95j1sbPiDO33ZSYp8E1pcV+uQOtYOxSpEuKldQNXwMTVe4mIMhaXMvR9luspFwOPG/cuIX227OOs5YTewm0Pnpcr/ceWGnK8YcbUgUI3pt3JUl4j5vhQx9+VewiBqp/rbtjTO3RU1LGvw3xOFksP+rtAotD8tUJQmvthmrJSQjhmGhk6Ib5Qpq/Sw/554SiBjXP7Vf1b6Gr2NA0xP+FSK0s+ZMvZoahFaRP6nfW8081UjPYeE2z+qiTH5yN/Vy09WpToF+OC5zZzxTmmhc2LZCXNfaOx4jj+MEHRZGG24ZPRtpupgXKUC9DITK/4hzzw5d72SgrajglEhnauQlWnPppyaooIyv/x7yAlFVeyqJ3vOZkk9e87np089m5fsf0yZjAg0M78UNYuEjx4mvUe0PbIjrt/RtbXgbbw73BZc/VXMfzsQ0z7ji/49bvbEud/Ym7dDNyVnzkKCUGq0fy7vzQo4zdSATomzgaW+FMaSEFh37tY997K34pMNJ1QPlE2KUebuJ286SQC0hKKQ5IQYvq5W1Lgd08e6NRm+Hd1hDGlaAdwU5gt1oxdVK4szXjsMEBUje6zb2cokeiOwcbeA4uMbby+qcFKxX2HDHC4jUGAdu8n7LmM+hSg6HxcEjXL5kllsZVLma9l5m+vOqeHkpBxxCDq1ZtVnrx6T+Od/qUMwZ41sEpU0CaHf
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7997.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(18002099003)(22082099003)(5023799004)(11063799006)(6133799003)(3023799007)(56012099006);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?NU9rakZ2NDdkdi93a2p3VUhMbTZ5MXZCWUFrWitpczlWZnlSZVhNeGUzQW1r?=
- =?utf-8?B?eTQ4MCtQNU8rRmNNMGhHaUNoam5hNzR6L2FpUjAwWFRkQlhLWVNhbWNWcjRF?=
- =?utf-8?B?WWdKOXoxNTdiS1NjMHZncVlkQ0xKYTBRbzdmN0kvbmpXdk5MZ3owZ28zRmp2?=
- =?utf-8?B?T1Ixc1g4TnVUYUZUVjFZb0ltRVRtUS92V1hQVGNjRDc5V0dRK1ZzRU1QSlVt?=
- =?utf-8?B?d2htNkVablE4VWMzOUt6MlNEVTE2TEtFR0o3NVRlMjg4empOZlBGbmJ2bGh2?=
- =?utf-8?B?TkgzOHNNYW1VYmVncTM0QUFpY2lVdmdDS2hFTWZpQVNMN3RhVUIxN051MlNF?=
- =?utf-8?B?Y2Y2WTI3RGxEOFA3UXZ0M2l3Qml2a3FUdEtqcUJLVVBqN0I0WVdHbnJ2bVpH?=
- =?utf-8?B?UGJMN3h3S2EySFBjckVXQ3V4NUozV1pPZWRVRlpEUU5iR0RWb01xQkptZHIz?=
- =?utf-8?B?Y1VuRVduNEhXZzVvWDZNbGIyZXBMaldGTDU4UE9Ydk1ZSmI2UkZjNzFUaUFK?=
- =?utf-8?B?a3ltQXVodElQMU5rdDNHdHg5Q3M3LzNDbTMvdkJBZkx1SGc0TkltN3R5QWpa?=
- =?utf-8?B?ZDM1cm41bTl3aXNVQXdrNlJLL0R5NnhyS293akM0VUlOd3BQbHc5WVQyRUZ5?=
- =?utf-8?B?dkRTdXY2KzZDQTdYL0lqN25JbGxRY0dvdXpiQnFvZkhoL1A0Y1kvaGhmYm5i?=
- =?utf-8?B?dWlXM2wrTHhMQkRnS2doRGgzbVo0MjRORERDZk5QTmxHYmVXLytzaWh5TkdJ?=
- =?utf-8?B?dGk2WU14RmM0UWx0T1hLcDA5NVdYU2U0cEcyQk0vdmFTUTZYa3pxY1VJSlRn?=
- =?utf-8?B?YnFsSkQwendydzVPdTFCY3RoU1podjhpbVJ4b2RpK25mU1RkYW90Q2k3dWFZ?=
- =?utf-8?B?cEdna2l5a3JaK1Z3bjNkd3B3VDczdzZia2xtc0w2aXluNndvZWFwSVdNbGFp?=
- =?utf-8?B?aTNvbFNOc1lIcG1KWUJIdkdwVEFkU3BXdG8wcmZHVTZoYVZaMmRPUXozRUpn?=
- =?utf-8?B?NFFpeDhsQ1JLbEduSmhmYXRvMDI5RFN0Y3E5bVRma3NxOHpqMlhqMGhjL0lu?=
- =?utf-8?B?TlQ1eVNwZ1BQK1c0NUw2V2xDaWg3OXlRUDh2bGhJV29RQTVZZ2MvaHIvVDBn?=
- =?utf-8?B?ZndjVldqbm05Y1hkWklUWHRxSVREM2NrMmh5b2dVZi9Md2puTzRLeUpiVUl2?=
- =?utf-8?B?Yk85WDV0NWo0WmFJY3pnUGw0ZXBVSlhXV1ZiMGRoSUFsb2xNenhaUUs5RU9C?=
- =?utf-8?B?SjFMWTBMWWhhMjhadnhjd0piMmE0T1k2OVFmVFpmTFhPOTYzeU1sK01RRkpo?=
- =?utf-8?B?cWtxdFgyaC9hbDl6RUR0aXkvWm1XTVNJMmZvcWxRMmdpcTRkTHZPb2JrRGVZ?=
- =?utf-8?B?N3I3UG5lV2dHQXZvY2pldHdQekpLOWptZFFRQVJTVkVUNUVWME1IMlhXYlIz?=
- =?utf-8?B?cHlQbCs1azVlbjlqRXN2SmkyaU45SDk3UXRoN2J5RjNZZmphbWZBTWRjUDdY?=
- =?utf-8?B?eEJqdkJ4Qlk2U2VFWGFEb2h5Y3NrV2FUY0RkbDE0VmF6OHFIYXZOUEJ0K1Z5?=
- =?utf-8?B?Tkdvd1M0Z1ZvT0g0Uzg0bENUdjZUanVPV2p4UEZIazBWSE9lUnFkSE1xYmph?=
- =?utf-8?B?dFdjRWJHRmhLVGE2cTI4MllhYi9WV1NKb2ZNbzY5V0dST1ZnY0FPSG5WWEta?=
- =?utf-8?B?WGd2V0J4MW1XekZnK21qR3kyODd3SFROZTdHbHZrZWRGWUFVYzdFME1Va09Q?=
- =?utf-8?B?dmdncFNpTXZyWUorcU5oclJGczVDYlUzMGNUWDdHSVdMZnBHQUhTOE9oM0tm?=
- =?utf-8?B?RytLUXlsdU9qQnEzYndlbmVKU3R4YlJFVXZTSkpBM3IydzBKaWFjOGJQZDhG?=
- =?utf-8?B?bU1rMkUyRHptOVN0RjgzdFI5M21NZmVIYkwvN0hvQ3dKOUZpTjI0c0JtL1BP?=
- =?utf-8?B?cVdZcTZqTjhEWFliT2FuajFOQS9FVm1FSEJiaHJwSTBUNmNqczBPeHBXQ0VS?=
- =?utf-8?B?SE1SVlNpbjJIcnc3OEFvQXlqNTRDanVSQXlhL2l2U2JQaGNNZ2t6b0ZVM0JI?=
- =?utf-8?B?cW83TE9iU1lkRmJKVjVIZVFlSWkwZE13dTNBNStwYXZ3aWQwVnREYUVNZWpu?=
- =?utf-8?B?NXMzcDgyZ0xaTGZ6VkZVUFplQjJCQmE0Tklid0NxVGxXWW9LK1lkQmp4Qzl6?=
- =?utf-8?B?eWVQK3hSM0w0MjdoNU1XcDNjaGtaaC9RaHFmMGtVeGNMQitGd1cyUWo3SlhT?=
- =?utf-8?B?SDdVY0RGSFp0NC82N24zMllJWTNYcHMxZ0VwdHZPdE1hVmdRajlUNVFHM3BL?=
- =?utf-8?B?K2FnVTBlWlFqNEhHdWpwSHViZHZVVkYrQmZNRUpGdCtnamdyUE5vdz09?=
-X-Exchange-RoutingPolicyChecked: PcJl5McKiBRf/HoFOBLnElcKAnWDlcEOqz8WxVOutkZJ/4wdAX95SbASmriFYn8WmFymz8Lufhez0CGFWJwjrHZNyyHXd1eMjgklxtZ1CKFE0KP6guxPaKPF9IXfSvn9o+doY515SbDviUlB4AGepAiwqG5ZqAx9tBjKs1mVerjVUnjzYz++9t/hskWaC0pfvJx6A+rsg61zhZdEFfB62lsErpvxME/5+je8QhrkEmHdiz1fCFaldJim6a2TlB4uAQnQOOmSRRUAqeQXpbL1hmO5rM7agAtzEIirkI+uw/Ms924WNNJHzxYxTjCrp5A4YNHZrYTDGBtkxSnJEUfT/Q==
-X-MS-Exchange-CrossTenant-Network-Message-Id: d1934988-332e-4394-dbe8-08debbb01806
-X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7997.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 05:23:32.6478
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 3Osu9Jp1GIeYW6VcW2MDUUQgAnU9/IptKKGEN20xuv0hLJN218rOeQNKpX9fpYzmSMHxji7jzxyFNVQIdJppWw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LVUPR11MB9568
-X-OriginatorOrg: intel.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
+X-B4-Tracking: v=1; b=H4sIAKWGFmoC/yXM0QrCMAxA0V8ZeTYwIwvMXxEZs0u7TJ3S1CKM/
+ bt1ezwP9y5gElUMztUCUbKavuYCOlTgxn4OgjoUA9XEdUOM9/zEIKmLErqHWsJM6Ft/4paPvWM
+ HpXxH8frdrpfrbvvcJnHpv4J1/QGZJyUldwAAAA==
+X-Change-ID: 20260526-kvm-get_reg_list-v2-f9f36961ac6c
+To: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
+ Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
+ Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
+ =?utf-8?q?Cl=C3=A9ment_L=C3=A9ger?= <cleger@rivosinc.com>, 
+ Andrew Jones <ajones@ventanamicro.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+ Shuah Khan <shuah@kernel.org>
+Cc: greentime.hu@sifive.com, vincent.chen@sifive.com, zong.li@sifive.com, 
+ kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
+ linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
+ linux-kselftest@vger.kernel.org, Yong-Xuan Wang <yongxuan.wang@sifive.com>
+X-Mailer: b4 0.15.2
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1779861178; l=2226;
+ i=yongxuan.wang@sifive.com; s=20260424; h=from:subject:message-id;
+ bh=XMtEi6pQMVKyTapHo789HRwMSCgn+nOLhMBYdeAM8y0=;
+ b=q9jHCAP+KqxybvqnOUcDDbHtKLZ/DyBnHqPDhCTTTHt2gInjOqDb2P9hcABX5fwKgdtCTdq6y
+ lOkHTWnkjR3D/UYR6VGzjLbXF8gXsDCK4xZKDIJx7fbtiqW5wHBuyAj
+X-Developer-Key: i=yongxuan.wang@sifive.com; a=ed25519;
+ pk=+8NCHB1ZJvZthQAmZspOAaqjo+/snaW8mFSiDx45HxY=
 
-Hello,
+This series addresses a bug in the SBI FWFT (Firmware Features) extension
+where features could remain exposed to guests after their dependent ISA
+extensions are disabled at runtime, and improves the related selftest
+infrastructure.
 
-On 5/21/2026 8:41 PM, Xu Yilun wrote:
+The bug (patch 1) occurred because FWFT feature support was cached at vCPU
+initialization time. When userspace subsequently disabled ISA extensions
+via KVM ONE_REG, the cached support status was not updated, leading to
+stale feature exposure.
 
-> The first 4 patches will eventually need an ack by an x86 maintainer, so
-> please review with that in mind.
-> 
+The selftest improvements (patches 2-3) enhance the get-reg-list test by
+refactoring the extension sublist infrastructure and splitting FWFT
+feature testing into separate, properly-gated sublists.
 
-I am looking at this from an x86 reviewer perspective with limited prior
-TDX knowledge.
+---
+Changes in v2:
+- Fix FWFT stale feature exposure by removing static 'supported' field
+- Refactor get-reg-list test to use unified extension sublist macros
+- Split FWFT testing into per-feature sublists with runtime checks
+(Andrew)
 
-> == Overview ==
-> 
-> TDX Module introduces the "TDX Module Extensions" to support long
-> running / hard-irq preemptible flows inside. This makes TDX Module
-> capable of handling complex tasks through "Extension SEAMCALLs".
+To: Anup Patel <anup@brainfault.org>
+To: Atish Patra <atish.patra@linux.dev>
+To: Paul Walmsley <pjw@kernel.org>
+To: Palmer Dabbelt <palmer@dabbelt.com>
+To: Albert Ou <aou@eecs.berkeley.edu>
+To: Alexandre Ghiti <alex@ghiti.fr>
+To: Clément Léger <cleger@rivosinc.com>
+To: Andrew Jones <ajones@ventanamicro.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+To: Shuah Khan <shuah@kernel.org>
+Cc: greentime.hu@sifive.com
+Cc: vincent.chen@sifive.com
+Cc: zong.li@sifive.com
+Cc: kvm@vger.kernel.org
+Cc: kvm-riscv@lists.infradead.org
+Cc: linux-riscv@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+Cc: linux-kselftest@vger.kernel.org
 
-Can we explain a bit more about why these extensions are needed or what
-would happen if the kernel didn't enable them? I ran the series through
-an LLM for my curiosity. I think something on the below lines might be a
-good addition for the cover letter itself.
+---
+Yong-Xuan Wang (3):
+      KVM: RISC-V: SBI FWFT: Fix stale feature exposure after runtime extension changes
+      KVM: riscv: selftests: Refactor ISA and SBI extension sublist macros
+      KVM: riscv: selftests: Split SBI FWFT into separate feature-specific sublists
 
-(Please verify)
+ arch/riscv/include/asm/kvm_vcpu_sbi_fwft.h       |   1 -
+ arch/riscv/kvm/vcpu_sbi_fwft.c                   |  17 ++-
+ tools/testing/selftests/kvm/riscv/get-reg-list.c | 172 +++++++++++++++--------
+ 3 files changed, 119 insertions(+), 71 deletions(-)
+---
+base-commit: c7832534a8160276cccb9a8cc8cafb5614c579d0
+change-id: 20260526-kvm-get_reg_list-v2-f9f36961ac6c
 
-The TDX module's normal SEAMCALLs are designed to be short,
-non-preemptible operations. However, some newer features (like
-DICE-based TDX Quoting) require complex, potentially long-running
-computations that can't complete within the tight constraints of a
-single non-preemptible SEAMCALL.
-
-The "TDX Module Extensions" solve this by introducing "Extension
-SEAMCALLs" — a new class of SEAMCALLs that are:
-
-* Long-running — they may take significant time to complete (e.g.,
-cryptographic operations for attestation/quoting).
-
-* Hard-IRQ preemptible — they can be interrupted by hardware interrupts
-and later resumed, so they don't monopolize the CPU or cause
-unacceptable interrupt latency.
-
-Without this mechanism, complex operations like generating DICE
-attestation quotes would either block interrupts for too long
-(unacceptable for a host kernel) or wouldn't be possible inside the TDX
-module at all. The Extensions give the TDX module a way to handle these
-heavyweight tasks while remaining cooperative with the host's
-interrupt/scheduling model.
-
-> 
-> TDX Module allows some add-on features to use the Extension. 
-
-s/Module/module throughout the series.
-
-The existing kernel code predominantly uses the lower case TDX "module".
-
-
-> The first feature to use Extensions is DICE-based TDX Quoting [1].
-> DICE is an industry-standard, certificate-backed attestation
-> framework that layers evidence through a chain of certificates.
-> 
-> This series adds infrastructure to enable the Extensions and then
-> implement DICE-based TDX Quoting.
-> 
-> The Extensions consumes relatively large amount of memory (~50MB). So it
-> is designed to be off by default. It must be enabled after basic TDX
-> Module initialization and when add-on features require it. To enable
-> the Extensions, host first adds extra memory to TDX Module via a
-> SEAMCALL (TDH.EXT.MEM.ADD), then uses another SEAMCALL (TDH.EXT.INIT) to
-> initialize Extensions, and then some add-on features, e.g. DICE, could
-> use Extension SEAMCALLs for work. Note that host can never get the added
-> memory back.
-> 
-> Theoretically, the Extensions doesn't need to be enabled right after
-> basic TDX initialization. It could be enabled right before the first
-> Extension SEAMCALL is issued. That would save or postpone memory usage.
-> But it isn't worth the complexity, the needs for the Extensions are vast
-> but the savings are little for a typical TDX capable system (about
-> 0.001% of memory). So the Linux decision is to just enable it along with
-> the basic TDX.
-> 
-
-I think enabling it by default on TDX platforms (with the module
-extension) might make sense. But the explanation here is slightly
-confusing.
-
-You said earlier that "The Extensions consumes relatively large amount
-of memory (~50MB)" so they must be off by default. Later you say that
-"..the saving are little .."
-
-Are you saying that the dynamic enabling of the extensions is not worth
-it or the dynamic allocation of the memory needed to support them?
-
-In addition, could you briefly describe the complexity we are trading off?
-
-> This series has 2 distinct parts:
-> 
->   Patches  1-4:  TDX Module Extensions enabling
->   Patches  5-15: DICE-based TDX Quoting, primarily Peter's work.
-> 
