@@ -1,62 +1,62 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96343F58FE
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 12:50:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44AB73E9287
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 12:50:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779886233; cv=none; b=r1lQc9ySszRSEF2l1AesEm05GLFWKeLd5d6WmbbY5VdczoyrZSFNARQuddZf+sxAomjW2JyruszkQh9mXeIV63F7UlgQX/8gLV+M6G8h+5RZOAAaip3Rh7XxmD5n46JCnMGPOXy8vTAp+TeugvQxLOX3ap0VgsTrUbJUmDEfgO8=
+	t=1779886238; cv=none; b=fuEjep8rQjXz3ZaXMFTN76JtjWRtcat22FQwqt9i79TggCZYkuD2EcCnJtMrQgo8lmpjAuF/vN6duqqxKoWpo59/+OJklD2pS/YqRYaAFbLPBu2uUZL/P5ENLq2PILO/xqYruIs2M83r8eFzIjgV5Ab9/78N7T0kLPcCcjakZdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779886233; c=relaxed/simple;
-	bh=KLO6h2CiB1/rteH5f840+2wKPqI5HPLzKE9w5TFO6+s=;
+	s=arc-20240116; t=1779886238; c=relaxed/simple;
+	bh=VZncZLZyzeZAaiIuhyjROvi6ztX3D3dqBhle8qaHB4o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E+85Nrvu9ZGn87tjeOcjKvqMjCfe5YnzphTOHtJGBN4b88IGi+SG0jazbVZMEzy2WFtTvbbjrI3pnxX6+0ndwXHxhc49hmHHi0+ytDs1r6TRlDf46z+4/QaKGXFCOL7QZZtvZ69RNE+FkXYAlptbiQQmfGdyDygtxBKCMPf0Vqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JUTkYAVk; arc=none smtp.client-ip=209.85.214.176
+	 MIME-Version; b=WcxmQsIakKkIUGFk0LfnVgGZz16IZG/vE8w3lmPxzrDfj72UajHcnoMVPfnE0zagPhS34XzX6Nk7YGXU+CkAvCbB41mMQKuFUKP6RPn0qSXiLSx0aM2U54zti6ph0xuGKSCA/3YKXaKHq4/PzdsBBIx95QfBHajkNDfY0sCqOb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KXhqHpQH; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JUTkYAVk"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-2ba856db1c0so85491085ad.3
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 05:50:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KXhqHpQH"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-2bd266f6fc0so57899295ad.2
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 05:50:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779886232; x=1780491032; darn=vger.kernel.org;
+        d=gmail.com; s=20251104; t=1779886237; x=1780491037; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WHUxe7lnPztFxDQVjPCLiqbcKDb3U3X7b1X5k1GLWTA=;
-        b=JUTkYAVkcfNHC0TMgEPNLdHTQhB6447RGkvG+vRcQjZ8Z3lYikJ6dTIPV/A2PIPB8m
-         3Ku/6CKPKVsd9CHJtLdAlXCjb27+m35VdUMYl67QFFOKl6dsxI3WA3cdchk9CdYTd6pR
-         J4VVmYBgMkdQLWx2J5IANQYKDjV+oqrEsWMEDh5BxZyaAQ82MCcHZ1sBQFPLtlYwdGVf
-         7JaSe1mELY7h8zTdpCRB56pBDsEtl/brBd+Mnji5uVGcWLhTx08J+66sGjbWeFM+iC+a
-         6jEDClx9V6iTrSZgoyEM6M6b8cwVpQhA3H5KU/urUGAiYdhJZyMrpzEnRiV4/32Mtt7z
-         ztKg==
+        bh=cFfUfVdymceQ6sN/zEMi68S56nOfGcMVCqg5DL2077Y=;
+        b=KXhqHpQH/EuXmKA6+vgD5wBMDvE3PfzGJQNCi38lAOIOsgyFKOkm4Bg0zY6MSlIANg
+         /gHLyUt+yF7DHa7y6Y6l1Iw/9DLFkl1Vqm1jh55hzbLcx7uvffjoNw6vKR33EMBlUcUR
+         dZS23H4GMIm/yTaL9TG8Di1b2XyF6X9qZ+u7xyD8Y5/kkB7BEQoFstCeXUFIAm7vIML2
+         z5rIeFsQUan8+W3GCLsC1vg6ISiMJNQw0UHBSgv3xsBWH0heE0YoOlxmeyw1ody2J4no
+         ZxphVjdsATIEVoSj9/ozJuj7t/G1DimRiKIQIOA7AgibGoasad/VpQ0Nin4K3DHS3cs7
+         XN1g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779886232; x=1780491032;
+        d=1e100.net; s=20251104; t=1779886237; x=1780491037;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=WHUxe7lnPztFxDQVjPCLiqbcKDb3U3X7b1X5k1GLWTA=;
-        b=DzoDIAtm91PLCOy1ElsakBtjZjhV+AsJjVvbfdJ/TaS4ejfZoSsoigsBpF0m0wLty4
-         Wrs2BhsuiZQvRMHusyvZI1EQAoqj6Qug5AGlFd+Ha1+psubmBl25+3M03Hgqkv7xopBh
-         SLJIPRxDvGmn6pATIUAo5Qs+RGcPtye3nlqRxMqj6gbfE6B+GYax1MZstR8u1z/iMEgS
-         Tfg36vGk/0OO/1rwCZy0Z8fmq9rknnZpy1/OujKoE3a4JDBJ3A/97LHYxq2CsE08RjXY
-         BWMwV4jWZdnnGPu3hvgPT+u2TXNu6PnHTDqR+Fnr6FF/HW5czjJ510DIaI13JGyfngT+
-         5YXg==
-X-Gm-Message-State: AOJu0Yzm6TtThfkjG5/i7uzxnxMuAaH/8xJ+b8LoNeraRXvpdQDplIsa
-	dbWX5JA5syz/15Lz0jmwakWS2Y9PJTpcsD6fiPuEVV1lLDT6FPJIXqL5xpKMyg==
-X-Gm-Gg: Acq92OFUWKwxI4m8Pls3urmDKV+kw0kAaeQ0ZW/tH/wdhWhw6UnpvUVLI5zyIhxxFCB
-	2ngH5uRWKpfWlqKM3BIiPXjzQFl0QL6tjmYbRGn6E+I/D9nKjyhOCUuDUJvWzaOkUfWZqJHMb2D
-	rF//dbUHernKNunSwvFlW5kAf+LORQ10SZ+Gsi75P39+Q7mswiSkq0CYA6NS3tM08ErnpHoL28y
-	dM1Y21d8kX3CRE+33Ok7+ZcE3JQbXKfWcVQVS8zsKgvd6B767wVAIw2htHEKsq+z3voN0BUFYBv
-	ZX3Gg49lpbenyMaNukRL8LEAUksQtosrUg8G5HqXBzY4A7WfoM5Ktec9/T4UBzAe9TGPi17AQ7o
-	dWKpMOaj+5qESJ5Q7M4Q9Y8F4dyMd012ui/OwTL+ScxbcF2McFlg2lALcw6HqVI9ixolT6zZZbQ
-	juK/MpPu+0YvRtd8DI3N62I+YUL+3FyVVMdcbjrlfkB2+B8/u8Ew==
-X-Received: by 2002:a17:902:f70e:b0:2bc:8ebd:af76 with SMTP id d9443c01a7336-2beb03466afmr244325935ad.0.1779886231867;
-        Wed, 27 May 2026 05:50:31 -0700 (PDT)
+        bh=cFfUfVdymceQ6sN/zEMi68S56nOfGcMVCqg5DL2077Y=;
+        b=NhVM9kHOJjv0Y/akVbKi52v6d/J3Jd/m24G86f1uULvas+SP7HyzrVTZG0qs6sp0fm
+         XAjgqJBbz+TE8pR+zImrar9ctIqIH2vubSvnGPH7HuJt9aQSKIzQVKnvdMma8jS72s37
+         QY/pSMriBi5XHRg6p2CgGEGTCUIysDx/RRztXjzDTXS98RdYjURLARsapOClSAAO6Rs5
+         TmqgIWnxYTuaZsPQngXbKWVFnwji9HpJovcroamzNGu/BTOtKr2s+0Q/9tbv69djZkBY
+         tX8p7gkt8i22fmt8fvkvqJXlM+laHpyyN5E+FQlk81Gdkqz8pOzZ+7MYaPDslKaTxDZT
+         H/zA==
+X-Gm-Message-State: AOJu0YxabqdgsxLkXQTHWpp+kNlMBxIzLlVtifg6fW3VA6Lvu18nkMy1
+	jbqmDymsQiqPwx8+RiFZ/sT2ghbwqKMihBhFEHHffYlK0LZ7LdU+Ty7Jk2lefw==
+X-Gm-Gg: Acq92OGXojneMjz/nP8iNwMLieFpFWSXLY8E0+ryf+7kwg1GD+zacG7pn+MhNng4A/D
+	weLMcIfe69O7grP0wIqR4xlPNacw46P0kU3y36TKf6yaVQ45Wq4LxhiDYGbX7vuaIFCS7qSEcE5
+	TKmsrx9diOd/LOvMyZIcBtWkpPXt2t9akwXjPGuCxeZnp7oZFahyqxq8LVGRPtKKCJFzInwspIL
+	hEk1N+u5YmMz++jWvGvYyr584RVsEiNax6OakBbvZ/6vKjbLQmZUZKTUxsc1e5NO+UZ+7l3n46F
+	uLK2sL4yy/CycJr9+uVEaCvM3ldxcZlyDQ1lowjwh1XjhW3Z0+LN9beVHPJ60SNh6+3mzpcVpxX
+	yHQpVAH+MydsUO4ngS4iFEVabnMUZNZIFDYsGSS0VJB6UZnnJW3HFDEjruWHpVlwKC5fV9xUa05
+	AQCIaBwZLeWm2yUtJt1wkU2IOFbL5Kkt2u+5dfamc=
+X-Received: by 2002:a17:903:2f89:b0:2b0:ccad:de1a with SMTP id d9443c01a7336-2beb06bc100mr254327575ad.30.1779886236651;
+        Wed, 27 May 2026 05:50:36 -0700 (PDT)
 Received: from Mac.ibm.com ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb58c69a0sm151851185ad.59.2026.05.27.05.50.27
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb58c69a0sm151851185ad.59.2026.05.27.05.50.32
         (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 27 May 2026 05:50:31 -0700 (PDT)
+        Wed, 27 May 2026 05:50:36 -0700 (PDT)
 From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
 To: kvm@vger.kernel.org
 Cc: linuxppc-dev@lists.ozlabs.org,
@@ -70,9 +70,9 @@ Cc: linuxppc-dev@lists.ozlabs.org,
 	Michael Ellerman <mpe@ellerman.id.au>,
 	linux-kernel@vger.kernel.org,
 	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [RFC v3 04/10] KVM: PPC: selftests: powerpc enable kvm_create_max_vcpus test
-Date: Wed, 27 May 2026 18:19:53 +0530
-Message-ID: <5233755b872c4b97ca5a8aa06f06ee9fc73b4c40.1779885589.git.ritesh.list@gmail.com>
+Subject: [RFC v3 05/10] KVM: selftests: Print the vcpu_id when KVM_CREATE_VCPU ioctl fails
+Date: Wed, 27 May 2026 18:19:54 +0530
+Message-ID: <c99d0f7a08dd0ffff355d9a8a3cafbdb58ae646a.1779885589.git.ritesh.list@gmail.com>
 X-Mailer: git-send-email 2.50.1
 In-Reply-To: <cover.1779885589.git.ritesh.list@gmail.com>
 References: <cover.1779885589.git.ritesh.list@gmail.com>
@@ -84,43 +84,37 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Nicholas Piggin <npiggin@gmail.com>
+Print the vcpu_id and errno when the KVM_CREATE_VCPU ioctl fails, for
+debug purposes.
+This helped in debugging an issue with KVM on PowerVM, where KVM_CREATE_VCPU
+only supports max 2048 vcpus, because the PAPR_HCALL H_GUEST_CREATE_VCPU
+("Documentation/arch/powerpc/kvm-nested.rst") supports only up to 0-2047
+vcpu_id. However KVM_CAP_MAX_VCPUS capability extension always reports max_vcpus
+as NR_CPUS of the host.
 
-powerpc's maximum permitted vCPU ID depends on the VM's SMT mode, and
-the maximum reported by KVM_CAP_MAX_VCPU_ID exceeds a simple non-SMT
-VM's limit.
-
-The powerpc KVM selftest port uses non-SMT VMs, so add a workaround
-to the kvm_create_max_vcpus test case to limit vCPU IDs to
-KVM_CAP_MAX_VCPUS on powerpc.
-
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-[Rebased to latest mainline tree]
 Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 ---
- tools/testing/selftests/kvm/kvm_create_max_vcpus.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ tools/testing/selftests/kvm/lib/kvm_util.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tools/testing/selftests/kvm/kvm_create_max_vcpus.c b/tools/testing/selftests/kvm/kvm_create_max_vcpus.c
-index c5310736ed06..a82c13d6cdf5 100644
---- a/tools/testing/selftests/kvm/kvm_create_max_vcpus.c
-+++ b/tools/testing/selftests/kvm/kvm_create_max_vcpus.c
-@@ -56,6 +56,15 @@ int main(int argc, char *argv[])
- 		    "KVM_MAX_VCPU_IDS (%d) must be at least as large as KVM_MAX_VCPUS (%d).",
- 		    kvm_max_vcpu_id, kvm_max_vcpus);
- 
-+#ifdef __powerpc64__
-+	/*
-+	 * powerpc has a particular format for the vcpu ID that depends on
-+	 * the guest SMT mode, and the max ID cap is too large for non-SMT
-+	 * modes, where the maximum ID is the same as the maximum vCPUs.
-+	 */
-+	kvm_max_vcpu_id = kvm_max_vcpus;
-+#endif
+diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
+index e00a25f59416..6319e2037882 100644
+--- a/tools/testing/selftests/kvm/lib/kvm_util.c
++++ b/tools/testing/selftests/kvm/lib/kvm_util.c
+@@ -1354,6 +1354,13 @@ struct kvm_vcpu *__vm_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
+ 	vcpu->vm = vm;
+ 	vcpu->id = vcpu_id;
+ 	vcpu->fd = __vm_ioctl(vm, KVM_CREATE_VCPU, (void *)(unsigned long)vcpu_id);
++	if (vcpu->fd < 0) {
++		int saved_errno = errno;
 +
- 	test_vcpu_creation(0, kvm_max_vcpus);
++		pr_info("Failed KVM_CREATE_VCPU for vcpu_id %u with errno %d\n",
++			vcpu_id, saved_errno);
++		errno = saved_errno;
++	}
+ 	TEST_ASSERT_VM_VCPU_IOCTL(vcpu->fd >= 0, KVM_CREATE_VCPU, vcpu->fd, vm);
  
- 	if (kvm_max_vcpu_id > kvm_max_vcpus)
+ 	TEST_ASSERT(vcpu_mmap_sz() >= sizeof(*vcpu->run), "vcpu mmap size "
 -- 
 2.39.5
 
