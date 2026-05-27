@@ -1,190 +1,89 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D6722472A6;
-	Wed, 27 May 2026 06:17:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 388741A5B9E;
+	Wed, 27 May 2026 06:20:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779862675; cv=none; b=QHKa2JJlp759kGEX4o9SOiAQgRH8aZKMgTDDX3iwXiNJa6XDhitvKobNMRuqFt4RH0gz1j9VgJDn2c+h0GiqDZQkq+OyJFSTopsXTd4iwD+w8udfLkov7ydXnPEhfojLvaHGkKAR5GxoIUa6zs8b0Nu8OsAsTJqox6KJGmcYG7Q=
+	t=1779862804; cv=none; b=i/6EhwTU+K6DSS8pI1qUPHYTZX65som+o4UsBMKGOsqwshmgJIE5GGYOWEBohylxjsz+8foHLDQRNGf3UF8fNpLoeLsplCshaAE6F96l6X+mWLs1YT+pZSPMgMqRUXtPFdg3bYgpS4TXPfvOFEmNlzfSiSoMn+4R9zaLQ6Ou5VI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779862675; c=relaxed/simple;
-	bh=ITZ89l8iv+tRojDGYDoM+u7LyJtEkE40gE1DUpCsepw=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 Mime-Version:Content-Type; b=gza85TsePKaIThe2POTxVWWky4xztRZdyhrZNskYUWoReVoz56GG2nNjgOKhtgLeHnL+CAYXqhf2q8zIUNttl59L1y6Bviss2y1h0H7tw6xjujSBxwM0JWSdXIUCIBSla8JPC9WyBi3f7B+9/HUBobalmUCyZW01hU63T41a4Vc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZGF4HNU8; arc=none smtp.client-ip=100.103.45.18
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZGF4HNU8"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 482771F00A3A;
-	Wed, 27 May 2026 06:17:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779862674;
-	bh=ZT/m8b1GGado2ObiguIe+nrJbFZcOjU/0firNep8ZZE=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject;
-	b=ZGF4HNU8vusMaJXqA36lg/7aCESZ5Yv1d7rXALegoxA85zBLw6Br4xR3MyNoMU3Ni
-	 SiWYsIidwkJGPSE/vxajnzuQ1m52HRM/8hJCkJr0R0q1CdpXr3/owbXTlUrzlXfpzk
-	 +ueF3LRS00o9zNfmsa38IFO0qVZTSWfydKbddr25y8veDTi5utOdXCWr40SqLyz6/a
-	 qA/2VJvMoD1mbU7w/Lha2PQsmAAgyq9/hTSoDLCRJqo0E+o3q7WDLmuL6VEVLyIXOj
-	 z4Box8YffdHjbIVkFk2VlH/Ae0rbxa3A83yAGYr99qRKVbxfkIu61SIS6W2q3P6Mu9
-	 GqrsHKTqjRWiQ==
-Received: from phl-compute-01.internal (phl-compute-01.internal [10.202.2.41])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 7C4E5F4006F;
-	Wed, 27 May 2026 02:17:52 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Wed, 27 May 2026 02:17:52 -0400
-X-ME-Sender: <xms:kIwWak9u3bKh0PZ2-2vlwdaKDX0ZCjeQQW4X6eYYquRmxkQ4Fu-m6g>
-    <xme:kIwWaqn3C8WqyU5qOEDNf_DmCqdOLzBnjygiVtmKRp2pY_GZr7wcrix6XnN_XCByP
-    IlOTXfOCfu1JBEsOZfdkclougvvRHlY-R7EAS6xYCX0nzJitSDTVOZK>
-X-ME-Received: <xmr:kIwWajG9OzDDFVvY7_6eus_xqy0lfTjzvuZ7-vAixy8OkOUXn0G7nkR-7oAdTdfSB8jBuhI7fGKyVTJ4uWdt0E17WuVxZbllREo>
-X-ME-Proxy-Cause: dmFkZTGErg+1lWkmtnAfvZbPe16X0asbS04veNar5msmw1tkod5BOZqg7nEH99D5I9SUhQ
-    Eimi3Gtg2JkZkWINT7pEaY7Zsjx/vI51Vw+mc4IeFv+/0YLPvV9POut5KNXS7vXU43Y5uk
-    Z9b052jxbLf7zuQpq8Q4paiW6CrKpiXaldtdAONK+ChW4RAHl1HO8O6Vt0TSgo0SE0unyo
-    G1tRhBTXhQKQDvhIuDBZ6v3R/hp3x62c4Rid1K7J84JHjPGDmjW4GIQM7O1/0n1ZeXw3kj
-    OiTvOjHcFQHUqbztpMt2u9eqcsHopQ4s/NvDdELaBTL7VJYKNpaiZe0/UAi7fJne7y/EI7
-    punSI61BJxIPNVXx7CoOy1h+sR62KKfpO+1rmoJYZQnqZf/gJmvn8ds97hH4eO4OkGYRyJ
-    S4Fp+i+r+yw6Wv6dz4bUY61M64JlU1yWp7TtCTVqzfSAlkMAPVaaLHxHT9fBChJt36oEXO
-    IpgADbPyaiJYYuuhH42Z7ZJayw13wNccBsuTkW/rc0uI81u1udGkTrp71iecFnAuLiBbPS
-    XQG1qcqc/Oj/pgUai1p5J3qKNLc7gjAYhdeUC1kR0+92m4gJA4Ycv70MWW1ChODR+uwSCc
-    evBe4npgf2SOOq8tzPKQO77DseN9ja5jKaVZTZwpDLGEXjcde+FdI33ljEKg
-X-ME-Proxy: <xmx:kIwWalvxp7cN1jtHn7jncdePxeINa_iSeogoIjzrHpar30b5yHqwVQ>
-    <xmx:kIwWahmIYVLUxsIYTk7CRNY51sNcZp1ysLF4un7NYslksHgnDS2P-Q>
-    <xmx:kIwWamP6Gf1_00K6aZ5uD7i_ZayXa1uinrDp8gOb2V7TDhxYp_S3cw>
-    <xmx:kIwWagwNa9e0Ag4swqzy5VfwkyGODN486VW66o5z7R5012saglnZdw>
-    <xmx:kIwWakmEOpC0NQCNX7190PZ-wxsodSAmoCwVBux9nPU2s-7tWoGiv6tH>
-Feedback-ID: i67ae4b3e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 27 May 2026 02:17:51 -0400 (EDT)
-Date: Tue, 26 May 2026 23:17:50 -0700
-From: "Dan Williams (nvidia)" <djbw@kernel.org>
-To: Alexey Kardashevskiy <aik@amd.com>, 
- "Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>, 
- linux-coco@lists.linux.dev, 
- iommu@lists.linux.dev, 
- linux-kernel@vger.kernel.org, 
- kvm@vger.kernel.org
-Cc: Bjorn Helgaas <helgaas@kernel.org>,  Dan Williams <djbw@kernel.org>,
-  Jason Gunthorpe <jgg@ziepe.ca>,  Joerg Roedel <joro@8bytes.org>,
-  Jonathan Cameron <jic23@kernel.org>,  Kevin Tian <kevin.tian@intel.com>,
-  Nicolin Chen <nicolinc@nvidia.com>,  Samuel Ortiz <sameo@rivosinc.com>,
-  Steven Price <steven.price@arm.com>,
-  Suzuki K Poulose <Suzuki.Poulose@arm.com>,
-  Will Deacon <will@kernel.org>,  Xu Yilun <yilun.xu@linux.intel.com>,
-  Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
-  Paolo Bonzini <pbonzini@redhat.com>,
-  Tony Krowiak <akrowiak@linux.ibm.com>,
-  Halil Pasic <pasic@linux.ibm.com>,  Jason Herne <jjherne@linux.ibm.com>,
-  Harald Freudenberger <freude@linux.ibm.com>,
-  Holger Dengler <dengler@linux.ibm.com>,
-  Heiko Carstens <hca@linux.ibm.com>,  Vasily Gorbik <gor@linux.ibm.com>,
-  Alexander Gordeev <agordeev@linux.ibm.com>,
-  Christian Borntraeger <borntraeger@linux.ibm.com>,
-  Sven Schnelle <svens@linux.ibm.com>,
-  Alex Williamson <alex@shazbot.org>,
-  Matthew Rosato <mjrosato@linux.ibm.com>,
-  Farhan Ali <alifm@linux.ibm.com>,  Eric Farman <farman@linux.ibm.com>,
-  linux-s390@vger.kernel.org
-Message-ID: <6a168c8ea7d10_2129b2100e@djbw-dev.notmuch>
-In-Reply-To: <becd865d-09a4-4ac3-b719-4a0deae2692a@amd.com>
-References: <20260525154816.1029642-1-aneesh.kumar@kernel.org>
- <20260525154816.1029642-6-aneesh.kumar@kernel.org>
- <becd865d-09a4-4ac3-b719-4a0deae2692a@amd.com>
-Subject: Re: [PATCH v5 5/5] iommufd/vdevice: add TSM request ioctl
+	s=arc-20240116; t=1779862804; c=relaxed/simple;
+	bh=Dc4bmFMHioCyNUCDB8qvw8hFLzO7OBv/AaO8yAqhk8Y=;
+	h=Subject:To:Cc:References:From:Message-ID:Date:MIME-Version:
+	 In-Reply-To:Content-Type; b=nhsdtM8V3RWxlTASXg/iQVRxC1ng11JqOC7EeuRIcZ9a2C0Xw3kQ9aEMwzLs2JIzBnfv5/MmMlLWZRcX5BhFs9dwslVfjOpRDjKKZsIJ2k3kf+TlFlNbsiC+qA56a/rcFBB1cBqGIyaGTL43PoCondahGLGnkHlaWe9hhBclod4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [10.20.42.62])
+	by gateway (Coremail) with SMTP id _____8DxrcAOjRZqIqwNAA--.15213S3;
+	Wed, 27 May 2026 14:19:58 +0800 (CST)
+Received: from [10.20.42.62] (unknown [10.20.42.62])
+	by front1 (Coremail) with SMTP id qMiowJBxKMEHjRZqDHySAA--.1572S3;
+	Wed, 27 May 2026 14:19:52 +0800 (CST)
+Subject: Re: [PATCH] LoongArch: KVM: Check return values for put_user
+To: Qiang Ma <maqianga@uniontech.com>, zhaotianrui@loongson.cn,
+ chenhuacai@kernel.org, kernel@xen0n.name
+Cc: kvm@vger.kernel.org, loongarch@lists.linux.dev,
+ linux-kernel@vger.kernel.org
+References: <20260526074202.789799-1-maqianga@uniontech.com>
+From: Bibo Mao <maobibo@loongson.cn>
+Message-ID: <cd6fa852-5893-2dd9-bff9-2a773ab85cf9@loongson.cn>
+Date: Wed, 27 May 2026 14:16:49 +0800
+User-Agent: Mozilla/5.0 (X11; Linux loongarch64; rv:68.0) Gecko/20100101
+ Thunderbird/68.7.0
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+In-Reply-To: <20260526074202.789799-1-maqianga@uniontech.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Language: en-US
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJBxKMEHjRZqDHySAA--.1572S3
+X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
+X-Coremail-Antispam: 1Uk129KBj9xXoW7Jw1kKrW3uFy3KFy5JrW3XFc_yoW3Wrg_XF
+	1Skwn3WrW8Ja1DXw1vg34rCry3Jw18JFsY9as8Zr97J3s5Jrsxurs7W3ZxAr1q9rWUCan8
+	GFZ8Cr9xCryYqosvyTuYvTs0mTUanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvT
+	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
+	cSsGvfJTRUUUbxAYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
+	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
+	w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUCVW8JwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
+	W8JVWxJwA2z4x0Y4vEx4A2jsIE14v26F4j6r4UJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_
+	Gr1j6F4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
+	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAF
+	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcVAKI48JMxk0xIA0c2IEe2xFo4
+	CEbIxvr21l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG
+	67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMI
+	IYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E
+	14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJV
+	W8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x07j1WlkU
+	UUUU=
 
-Alexey Kardashevskiy wrote:
+
+
+On 2026/5/26 下午3:42, Qiang Ma wrote:
+> put_user() may return -EFAULT, so, when the user space address
+> is invalid, it should return -EFAULT.
 > 
+> Signed-off-by: Qiang Ma <maqianga@uniontech.com>
+> ---
+>   arch/loongarch/kvm/vcpu.c | 3 ++-
+>   1 file changed, 2 insertions(+), 1 deletion(-)
 > 
-> On 26/5/26 01:48, Aneesh Kumar K.V (Arm) wrote:
-> > Add IOMMU_VDEVICE_TSM_REQUEST for issuing TSM guest request/response
-> > transactions against an iommufd vdevice.
-> > 
-> > The ioctl takes a vdevice_id plus request/response user buffers and length
-> > fields, and forwards the request through tsm_guest_req() to the PCI TSM
-> > backend. This provides the host-side passthrough path used by CoCo guests
-> > for TSM device attestation and acceptance flows after the device has been
-> > bound to TSM.
-> > 
-> > Also add the supporting tsm_guest_req() helper and associated TSM core
-> > interface definitions.
-> > 
-> > Based on changes from: Alexey Kardashevskiy <aik@amd.com>
-> > 
-> > Signed-off-by: Aneesh Kumar K.V (Arm) <aneesh.kumar@kernel.org>
-> > ---
-> >   drivers/iommu/iommufd/iommufd_private.h |  6 ++
-> >   drivers/iommu/iommufd/main.c            |  3 +
-> >   drivers/iommu/iommufd/tsm.c             | 68 +++++++++++++++++++++
-> >   drivers/virt/coco/tsm-core.c            | 39 ++++++++++++
-> >   include/linux/pci-tsm.h                 |  9 +--
-> >   include/linux/tsm.h                     | 25 ++++++++
-> >   include/uapi/linux/iommufd.h            | 80 +++++++++++++++++++++++++
-> >   7 files changed, 226 insertions(+), 4 deletions(-)
-[..]
-> > diff --git a/drivers/iommu/iommufd/tsm.c b/drivers/iommu/iommufd/tsm.c
-> > index 09ee668dbed9..342fbdb6a6b9 100644
-> > --- a/drivers/iommu/iommufd/tsm.c
-> > +++ b/drivers/iommu/iommufd/tsm.c
-> > @@ -60,3 +60,71 @@ int iommufd_vdevice_tsm_op_ioctl(struct iommufd_ucmd *ucmd)
-> >   	iommufd_put_object(ucmd->ictx, &vdev->obj);
-> >   	return rc;
-> >   }
-> > +
-> > +static bool iommufd_vdevice_tsm_req_scope_valid(u32 scope)
-> > +{
-> > +	if (scope > IOMMU_VDEVICE_TSM_REQ_SCOPE_PCI_LAST)
-> > +		return false;
-> > +
-> > +	switch (scope) {
-> > +	case IOMMU_VDEVICE_TSM_REQ_PCI_INFO:
-> > +	case IOMMU_VDEVICE_TSM_REQ_PCI_STATE_CHANGE:
-> > +	case IOMMU_VDEVICE_TSM_REQ_PCI_DEBUG_READ:
-> > +	case IOMMU_VDEVICE_TSM_REQ_PCI_DEBUG_WRITE:
+> diff --git a/arch/loongarch/kvm/vcpu.c b/arch/loongarch/kvm/vcpu.c
+> index 782dc1a36e29..67441edf0e1f 100644
+> --- a/arch/loongarch/kvm/vcpu.c
+> +++ b/arch/loongarch/kvm/vcpu.c
+> @@ -1104,7 +1104,8 @@ static int kvm_loongarch_cpucfg_get_attr(struct kvm_vcpu *vcpu,
+>   		return -ENXIO;
+>   	}
+>   
+> -	put_user(val, uaddr);
+> +	if (put_user(val, uaddr))
+> +		return -EFAULT;
+>   
+>   	return ret;
+>   }
 > 
-> This scope thing still needs clarification.
-> 
-> I have 3 types of requests to fit here, all go via VM -> KVM -> QEMU -> IOMMUFD -> TSM.
-> 
-> 1) bind/unbind TDI <- moves to CONFIG_LOCKED, this is "OP";
-> 2) start/stop TDI <- moves to RUN, this is "GR"? Right now I route it via "OP";
-> 3) enable/disable MMIO/DMA <- no TDI state change, this is "GR" but which scope is it here?
+Reviewed-by: Bibo Mao <maobibo@loongson.cn>
 
-The scope parameter was meant to enumerate a security model for classes
-of commands that are otherwise opaque to the kernel. However, none of
-the commands we are targeting are opaque (private specification with
-unknown effect). It now turns out there is no role for @scope for
-security.
-
-Now a command family that iommufd can validate seems useful. As it
-stands this implementation aliases command codes across TSMs. Do we
-proceed with creating an actual shared command uapi for the truly shared
-commands:
-
-TSM_REQ_TYPE_DEFAULT: Commands every arch needs
-TSM_REQ_READ_OBJECT
-TSM_REQ_REGEN_OBJECT
-TSM_REQ_OBJECT_INFO
-TSM_REQ_VALIDATE_MMIO
-TSM_REQ_SET_TDI_STATE
-
-TSM_REQ_TYPE_SEV: Commands only SEV needs
-TSM_REQ_SEV_ENABLE_DMA
-TSM_REQ_SEV_DISABLE_DMA
-
-...or just observe that per CC arch commands are needed to setup the VM
-so per CC arch commands are needed to marshal device assignment support
-requests.
-
-In that case pci_tsm_req_scope becomes tsm_req_type and is just:
-
-TSM_REQ_TYPE_CCA
-TSM_REQ_TYPE_SEV
-TSM_REQ_TYPE_TDX
-
-I am leaning towards the latter at this point.
