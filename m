@@ -1,90 +1,82 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pf1-f201.google.com (mail-pf1-f201.google.com [209.85.210.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034332D2488
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 18:10:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32337466B58
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 18:10:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779905431; cv=none; b=Pyf2W5nk7Iio2Y8ZNaFbKEgzySOgwaXhwuQssx32ibEyBre+VQSGylVgbw2LJ1Y4KOsXR+p1OrQBvjZbsc4RveK7y/h0GmizbGReaVF9FnApxbbhyT3dtHMZGgE1+M7PbP92z8KcKPHR7wGuNKiuCIqlqFqo+Pj+n4FNHwFAs0M=
+	t=1779905437; cv=none; b=nTuuoKuwuxqozgsbBXM2OFdQGKVSCC1hNhqAfjZrFrkf/ZSBp4OFT5mQXiy6sOctheJeWOkxCovXQtvlpvLs/lPxHataw7DEHNs/7y2RqExYDLjebBemxflccEy8mtKmlns5UgdJMyyqp+3mIuvDCdZ6LhY3sQ+pCFJpYLeQJDE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779905431; c=relaxed/simple;
-	bh=KsitsgupVmJ/JgX1sAvjL8NpETNPbirdrIFBG75Pwug=;
+	s=arc-20240116; t=1779905437; c=relaxed/simple;
+	bh=FB7zc86Z9JwA5tIlxQwL6TWLMDxSRypJjpULpguWMV0=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=mTnvvZjKyhoA7gVBFWb3fpUVkMhqqKPQsAR/OV5UtYuXDrX8Qu54q93sT6LEwIox1bYm/jmuoo3V8kEJd+QjKSiR2uW+i/BlwFbvU8biqBiGKnLo9ta80aPztjjN8TxxUMTammqZw7sKG6p1fNnhVi7GHvn1IbxROV9UiuDZta0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QXuHrs9L; arc=none smtp.client-ip=209.85.214.202
+	 To:Content-Type; b=nc21UE3xes482CtJ7VH3A5LV/5KOPrx4LspI4Q5pflu2tblSS75FN6klf/Q8VAs70/GGqkz/I4SzrKolGoEIEC0Zpa5++yEELAtpkBfuuNMnzakYEIbwRe3AU56DcCqx4JV/O7KQfGGjwfO+CkdmsGJKYBZgGsa7e5WLi6UUK7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u12bpC54; arc=none smtp.client-ip=209.85.210.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QXuHrs9L"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ba6fe41283so128667245ad.1
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 11:10:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u12bpC54"
+Received: by mail-pf1-f201.google.com with SMTP id d2e1a72fcca58-82f85179263so13549716b3a.3
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 11:10:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779905429; x=1780510229; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=zEEE1YoGH0jFeVCJaKIXnPR39dWTuvsItNcK0xbSu58=;
-        b=QXuHrs9LsFd2uizvNTmRRhFNSGbUMlaK0Gm0gw2/hdTXri0+y/7DMZ7aIC0b4gTMje
-         tgXMJuj8gVguMzQuu+ArYJaw6X9w8zm/lhitaAqej6h5e4Oo6LsjknaA3YrwjgPqp7Vt
-         yn5A4+fjarhQL66Wwcnu2sH1Rolqo1tTgy8c0zinNXtPbDlcjU7MldKiXq7J1PmsNaVi
-         KTHOHOwTCkE7nCBAVsyvHiNa6Gz4m/n/gbpdTkp62vsigW5Gy6WTYwbgvh9icmhr/MKT
-         XmfhWorh1n/Y93EDUAIzDVtzAO+Xlcxfw/8TdzQ2eJ0vZjY7R5y91u4Xx5l9dVBhS3d0
-         A/ow==
+        d=google.com; s=20251104; t=1779905435; x=1780510235; darn=vger.kernel.org;
+        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=DmQrBP64QgwtPwQkL0LeP7Kj+/VUU6DHNyZ246jI55k=;
+        b=u12bpC542gufWzl+OgFyAg8oJdzxKKIQTDEpm8OBLdLksS/mrMkC+uLaSC4pZuYPHn
+         cyTFnPdCKA25q9cOjZwHS9UsJdNTpqcJwuaDshZuG2FTl8/UwTeNDRmHnokavTFYb9ZN
+         ogWHwl8K1PLYYEpmbiSXUUt3NVg13ediDaKZYTxhvjgeBlMHoSRi1SCdjhZjr1+U9P4g
+         o3KvxEvZYeuxcIQMvU0tbtMq/fHVqOjO3m1LIxtehLPWsII3h9HMDW4Wk+PinOc1QeU3
+         wLG4HEohgJFcaPOVo2gYkjh6Mauef8rfqP/jACLMiYW0bDXV7rJ+9HBHOjS90VkDmlPx
+         edXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779905429; x=1780510229;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=zEEE1YoGH0jFeVCJaKIXnPR39dWTuvsItNcK0xbSu58=;
-        b=SUFBgBoPPmAkW74UiAnm80yAR6SJMhNopSx5zZMDd5GK/eq7LS1I6qW556g08NeVVg
-         1Fj67G9f8/CiISHi4FVD6SfGEoT48D8pr2pEwN38o0RpcF5quuE/uUhuedIDU3yr18Bs
-         6d33Iq2MU/DhA6b+/AcFCS0aie6LXzTTKYulIoygm6pNTrFMVnydnO5QGlalnyGcKb5m
-         nWdQ9kgcSW3KhnJN2pi74qeUc09RDt+uckAry/IsUFmJaiQKt7kK6qEHPoAzXpLOKPEe
-         0X5JXIe65jF/VO8CC+VzAhb+c/YKJSItMiytxJLHSsfidYqAiLw6kv8wdIXJyZSfPyyp
-         EH0g==
-X-Gm-Message-State: AOJu0YyWUm8kolWLfCFBpcfMjJrY4gimgPHCB1KTYluvJrRo9KU2dLkK
-	smHohMGYrZmz6PLQYrOWsvS1Z7MZpSlqusbZK/5LMOxeCUT96WRG45iusY75vREAzEW7nSLElNb
-	YeRcHdg==
-X-Received: from ploe14.prod.google.com ([2002:a17:903:240e:b0:2bc:a589:91c0])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f54b:b0:2b0:6e6a:8504
- with SMTP id d9443c01a7336-2beb061327amr264594395ad.27.1779905429166; Wed, 27
- May 2026 11:10:29 -0700 (PDT)
-Date: Wed, 27 May 2026 11:10:00 -0700
-In-Reply-To: <20260522172151.3530267-1-seanjc@google.com>
+        d=1e100.net; s=20251104; t=1779905435; x=1780510235;
+        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DmQrBP64QgwtPwQkL0LeP7Kj+/VUU6DHNyZ246jI55k=;
+        b=DlcDpEMl48kTOmUPl8jhT0H86p5FXPfzAYYy3tSGgf2fTdT+geIxBrLrDnQOzV/qJo
+         bRXpQ0fkxvkEqdZuuQ33ofNvKx5bfL++WzgajkHQElE82TGptHIPfFE7D3H74/XC0HOa
+         f5SFItdB28JQMvALI/T7jS/eCxUvyoXLbZRK32+pJxwUSjHqBxSiCLaD7jR14maaWuvL
+         GL1XUi4CKk6CyQeUvbYZje8T2gez5k5iOZd0ub7bAp+IbhU+2DjyK2uVb+sLmydYFWu5
+         7KPywTFIItjOIvg0G6v/gTdokMLyAFpLsGQwzp4qxwQfpxI6gCZcf9SOQKs9iABIWibo
+         uGUQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9J87zTjB9brjLQ4NhOK+9C7nOJPEvpb8ju9Yur9qp0bHhgI4qYI7Gb6QjCP56A7R/3ONk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzY3pYlMSjisQcbkDG9hzf0h/xtjQyq0zfetTlRbCzNKRoRWkwE
+	LgDbf9oWufGTSzB0jwyEVeqaTeaOj/XJNloZ3qF3N7i9iHWLOKK9zVxC4OuL+BlxWbYkqOrqrkt
+	9KttLCQ==
+X-Received: from pfld13.prod.google.com ([2002:a05:6a00:198d:b0:83e:e011:246b])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3e04:b0:83f:250d:59c
+ with SMTP id d2e1a72fcca58-8415f64b432mr25687913b3a.39.1779905435142; Wed, 27
+ May 2026 11:10:35 -0700 (PDT)
+Date: Wed, 27 May 2026 11:10:02 -0700
+In-Reply-To: <20260518104154.38915-2-krzysztof.kozlowski@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260522172151.3530267-1-seanjc@google.com>
+References: <20260518104154.38915-2-krzysztof.kozlowski@oss.qualcomm.com>
 X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
-Message-ID: <177990525893.4121416.4733019500372362112.b4-ty@google.com>
-Subject: Re: [PATCH v2 0/3] KVM: Fix guest_memfd binding overlap errno and selftest
+Message-ID: <177990531688.4122040.12101957747520595968.b4-ty@google.com>
+Subject: Re: [PATCH] MAINTAINERS: KVM: Include maintainer profile
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Zongyao Chen <ZongYao.Chen@linux.alibaba.com>, Ackerley Tng <ackerleytng@google.com>
+To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org, 
+	workflows@vger.kernel.org, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, 
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Fri, 22 May 2026 10:21:48 -0700, Sean Christopherson wrote:
-> Fix a goof where KVM rejects guest_memfd bindings that overlap an existing
-> binding with EINVAL instead of the intended EEXIST, and then add that specific
-> scenario to testcase that's supposed to verify overlap checks.
-> 
-> v2:
->  - Collect Ackerley's reviews.
->  - Keep the GPA overlap testcases (because why not). [Sean]
->  - Add a patch to remove superfluous %s formatting. [Ackerley]
-> 
-> [...]
+On Mon, 18 May 2026 12:41:55 +0200, Krzysztof Kozlowski wrote:
+> No dedicated KVM maintainers are returned by get_maintainers.pl for the
+> subsystem maintainer profile, thus patches changing that file miss
+> the actual owners of the file.
 
-Applied to kvm-x86 gmem, thanks!
+Applied to kvm-x86 misc, thanks!
 
-[1/3] KVM: guest_memfd: Return -EEXIST for overlapping bindings
-      https://github.com/kvm-x86/linux/commit/7ea987a90585
-[2/3] KVM: selftests: Test guest_memfd binding overlap without GPA overlap
-      https://github.com/kvm-x86/linux/commit/772989854acd
-[3/3] KVM: selftests: Remove unnecessary "%s" formatting of a constant string
-      https://github.com/kvm-x86/linux/commit/b0e476eb755e
+[1/1] MAINTAINERS: KVM: Include maintainer profile
+      https://github.com/kvm-x86/linux/commit/66472e86703f
 
 --
 https://github.com/kvm-x86/linux/tree/next
