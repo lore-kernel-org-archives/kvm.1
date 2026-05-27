@@ -1,121 +1,199 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A5074534A2
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 17:44:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DB72566F7;
+	Wed, 27 May 2026 17:46:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779903850; cv=none; b=nSzsS7VfmLCxSbJmnj5ojxMqU0XNMbKqZyNyljD47ghgcgaV5PR225d0bnyN22Vw97taYlOwko5sXwkUVf5jaiIrWOtrTww97cjBSdtxPFwFuLPF8O00a5k1rstE4St2L1fjElXKiYtE81KMyLmxzAQDnXDwAvCHK2d700tGWqA=
+	t=1779903965; cv=none; b=E5zFLrEfnvcre8Bf7Y3I9P37sNSVoYYNIr/d0xSGCV0omuWleE8ii6L7COtZH1j39St0Go7B1V14L1Fg8lEtdUUU45U/nRynRaNxr9pafVM0BXeF7eJeY2oyWJ/eKeISjuJWWIzjg65+01egXfkwtywlXtXIiKmKKfPQWbF9Jx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779903850; c=relaxed/simple;
-	bh=77ZuH98Z/7cwSOPku138FSNXa6+3lR22DIlZyZ/iZdU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=u7ec1FcEaiHOAuVl/86Y7O+zchEEgu4A+BxSMhvDkiSXOqpiLrY7gjL9VejJsHUzpQMI1eZa4tccSeR2oNPjkA6M1gyHwMuHASS/UgmyHLq5tfzSVO7krJQInpRFbUFAf0P6Ml3hwFvZDKuvGsdQt4Y4BNpU4kfNoJ0IBMVX8w4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K73a8olv; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jmattson.bounces.google.com
+	s=arc-20240116; t=1779903965; c=relaxed/simple;
+	bh=0ThiOYWvoBP+x61ngBsl19TSjuAMKJt5lb2/LI++YMc=;
+	h=Content-Type:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To; b=foEM6MHJplN2KUWk4EuSk/Bk6N7MXotQb4BMSWI2yX456xFLpEYVaXfraQm3jKpaFhsN7ud+iVZXbgZiB8+Q6ESb0/sNLkXZHwEFPLUz2K/hGmLyTvsbF3MN+SlCwh8Y9yFHRD5ozOECbarNxH5U7bLXihHVaFIN5RfrrDAA9pg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=TsY7bihV; arc=none smtp.client-ip=192.198.163.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K73a8olv"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2b7aba0af02so114737805ad.2
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 10:44:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779903847; x=1780508647; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=O7VlkQudn+G7xM0z/ouPzrwYiSQV/Sy22jTIFn2bz+c=;
-        b=K73a8olvk3exIXE3XtX0zm8DdFXDZEh21iOfYy4tWd5kxu8HRSfSBnCfVoAeIDlozU
-         q9ER81R+SDzc9nxC5PTKzTLGqRxrjpcFvdufSziAWcD7yjTcJfFeUFuiGMQgNibuDpIy
-         NwIClkkIxE6uFptUtLW62Zl2Gerfxt6b0nNEd/VX5ApeVHunjMbHcWfD1+7ef2T6rbiO
-         Beag8V9xjM8zgc/LsubV9EDbd3OUN1J5K1cAZyDgVHdZCieCC0J1U8WKOlEQmcKs3ych
-         JONQgrEm19EnklUI3y/vPKLXohQczQvp6IWA09svUUopLhDUdNsVNstBwcAyEn07nAmR
-         IXFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779903847; x=1780508647;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=O7VlkQudn+G7xM0z/ouPzrwYiSQV/Sy22jTIFn2bz+c=;
-        b=JNE26WnMuSKK5yf1qCGmbux9CKaytOSyYUcV1wzjch4EclFHplxIDqsJplYFvSJ1So
-         UrV8l4UjefXMCqngdlA8Hz0Gvl3aiDmyzzP/f3Fb6Gdw1NtOhTf8gtxd7NtQAx+7ugcM
-         b5S+gbY+SvA9DGNlMYlSQvxlbmleIk9uurboDgyMYClCcyFdKL8xnmCfwP2m/bpMoJYi
-         YXH0DYTjo48Wqfj90hqEyDSlAsQkDDQXithJiTDZFukZMZ8G0QL8j8MmGA/A5CSx+2Ct
-         RppTDhcC1KctvK2pLhAhQ0hDsoX7IwweWrQUwNSzXyTCGUuXZRU+lt9qQkKj1wVx2Cnv
-         Mhfw==
-X-Forwarded-Encrypted: i=1; AFNElJ/RKIwZ8LTEkXEZ+H+HeQtkjmx4Qjmpj3H1q7RKQUBNxN83cNtSAM88pA7nvuLgZztSgFQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyvoY81iAkDQtWI4D+IqZeTXxR7xzsJwCbEMq8YsuSdPR/g8ODP
-	opT2J1eOGdit2S1qqv0T8uaxT1Z9ZdLl3m+SXS9jXJkBI4Gzl8zsoo6bqCXn93ckmg695bF0rOK
-	ErWzXUv+GcLTGwQ==
-X-Received: from plkz6.prod.google.com ([2002:a17:902:7086:b0:2b2:488e:b71])
- (user=jmattson job=prod-delivery.src-stubby-dispatcher) by
- 2002:a17:902:ebcd:b0:2b7:88d8:efde with SMTP id d9443c01a7336-2beb0365d7bmr270523025ad.7.1779903846519;
- Wed, 27 May 2026 10:44:06 -0700 (PDT)
-Date: Wed, 27 May 2026 10:43:47 -0700
-In-Reply-To: <20260527174347.2356165-1-jmattson@google.com>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="TsY7bihV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779903963; x=1811439963;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to;
+  bh=0ThiOYWvoBP+x61ngBsl19TSjuAMKJt5lb2/LI++YMc=;
+  b=TsY7bihVySzTYKM/EIpePu/WywDhHHN+7XRrMidO+tirOmgaYcHOHAAp
+   G0IDHq2UcrkaWT5/YtyxNF4ov8ZEBtwXu9UhEatwl8J9XoJbpIKvvAviL
+   3E7ZfsChDoNcZypkAjvMcdPbURHSaAGrMHPHTv5baJYAJfJjgzpE+00HR
+   oJReExL4fxVeW7IUgsEIev3Ppf/ggITQqEh+CfIjJApMGpHd3LieVQC9k
+   qbsI2Wpw5utqEAddA/QOi18TFpA50Sha/0GNM02AHBrHwh9CCEE+KKx44
+   sl/cG786E/nGTxwOGJs7bcpPdmIu67i+jZbKQpStmPXWX2bRcKq3DWXnL
+   w==;
+X-CSE-ConnectionGUID: 0QKfts6lQ9WMCn69ZzwYjg==
+X-CSE-MsgGUID: NspLnTXKRCaNyIXQPY9U0w==
+X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="79893337"
+X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
+   d="scan'208";a="79893337"
+Received: from orviesa005.jf.intel.com ([10.64.159.145])
+  by fmvoesa112.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 10:46:02 -0700
+X-CSE-ConnectionGUID: JihalDBCS721iENI+MVomQ==
+X-CSE-MsgGUID: Vqbx2Z5dSy6GzF6RTTz6ew==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
+   d="scan'208";a="247258093"
+Received: from sghuge-mobl2.amr.corp.intel.com (HELO [10.125.111.27]) ([10.125.111.27])
+  by orviesa005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 10:46:02 -0700
+Content-Type: multipart/mixed; boundary="------------qh7EUZpxDlywN8WehcLGDAQL"
+Message-ID: <5ed6121c-314e-4cf0-9a11-b0661c87c694@intel.com>
+Date: Wed, 27 May 2026 10:45:28 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260527174347.2356165-1-jmattson@google.com>
-X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
-Message-ID: <20260527174347.2356165-6-jmattson@google.com>
-Subject: [PATCH v4 5/5] KVM: selftests: Update hwcr_msr_test for CPUID
- faulting bit
-From: Jim Mattson <jmattson@google.com>
-To: seanjc@google.com, pbonzini@redhat.com, tglx@kernel.org, mingo@redhat.com, 
-	bp@alien8.de, dave.hansen@linux.intel.com, x86@kernel.org, hpa@zytor.com, 
-	shuah@kernel.org, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, ctpence@google.com, David.Kaplan@amd.com, 
-	binbin.wu@linux.intel.com
-Cc: Jim Mattson <jmattson@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 2/2] x86/tdx: Fix zero-extension for 32-bit port I/O
+To: "Kiryl Shutsemau (Meta)" <kas@kernel.org>,
+ Thomas Gleixner <tglx@kernel.org>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ x86@kernel.org
+Cc: "H . Peter Anvin" <hpa@zytor.com>,
+ Rick Edgecombe <rick.p.edgecombe@intel.com>,
+ Kuppuswamy Sathyanarayanan <sathyanarayanan.kuppuswamy@linux.intel.com>,
+ Kai Huang <kai.huang@intel.com>, Sean Christopherson <seanjc@google.com>,
+ Borys Tsyrulnikov <tsyrulnikov.borys@gmail.com>,
+ linux-kernel@vger.kernel.org, linux-coco@lists.linux.dev,
+ kvm@vger.kernel.org, stable@vger.kernel.org
+References: <20260527120544.2903923-1-kas@kernel.org>
+ <20260527120544.2903923-3-kas@kernel.org>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260527120544.2903923-3-kas@kernel.org>
 
-Add BIT_ULL(35) (CpuidUserDis) to the valid mask in hwcr_msr_test, now that
-KVM accepts writes to this bit when the guest CPUID advertises
-CpuidUserDis.
+This is a multi-part message in MIME format.
+--------------qh7EUZpxDlywN8WehcLGDAQL
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Signed-off-by: Jim Mattson <jmattson@google.com>
----
- tools/testing/selftests/kvm/include/x86/processor.h | 1 +
- tools/testing/selftests/kvm/x86/hwcr_msr_test.c     | 9 +++++++--
- 2 files changed, 8 insertions(+), 2 deletions(-)
+On 5/27/26 05:05, Kiryl Shutsemau (Meta) wrote:
+...
+> -	/* Update part of the register affected by the emulated instruction */
+> -	regs->ax &= ~mask;
+> +	/*
+> +	 * IN writes the result into a sub-register of RAX. Only the
+> +	 * 32-bit form zero-extends; the smaller forms leave the upper
+> +	 * bits untouched:
+> +	 *
+> +	 *   insn  dest  size  bits written     bits preserved
+> +	 *   inb   AL    1     RAX[ 7: 0]       RAX[63: 8]
+> +	 *   inw   AX    2     RAX[15: 0]       RAX[63:16]
+> +	 *   inl   EAX   4     RAX[63: 0]       (none, zero-extended)
+> +	 *
+> +	 * 'mask' only covers the low 'size' bytes, which is exactly the
+> +	 * range affected for size 1 and 2. For size 4 the write also
+> +	 * clears RAX[63:32], so widen the clear-mask.
+> +	 */
+> +	if (size == 4)
+> +		regs->ax = 0;
+> +	else
+> +		regs->ax &= ~mask;
+> +
 
-diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-index 06878e7c7347..513e4a1075fa 100644
---- a/tools/testing/selftests/kvm/include/x86/processor.h
-+++ b/tools/testing/selftests/kvm/include/x86/processor.h
-@@ -226,6 +226,7 @@ struct kvm_x86_cpu_feature {
- #define X86_FEATURE_SEV			KVM_X86_CPU_FEATURE(0x8000001F, 0, EAX, 1)
- #define X86_FEATURE_SEV_ES		KVM_X86_CPU_FEATURE(0x8000001F, 0, EAX, 3)
- #define X86_FEATURE_SEV_SNP		KVM_X86_CPU_FEATURE(0x8000001F, 0, EAX, 4)
-+#define	X86_FEATURE_GP_ON_USER_CPUID	KVM_X86_CPU_FEATURE(0x80000021, 0, EAX, 17)
- #define	X86_FEATURE_PERFMON_V2		KVM_X86_CPU_FEATURE(0x80000022, 0, EAX, 0)
- #define	X86_FEATURE_LBR_PMC_FREEZE	KVM_X86_CPU_FEATURE(0x80000022, 0, EAX, 2)
- 
-diff --git a/tools/testing/selftests/kvm/x86/hwcr_msr_test.c b/tools/testing/selftests/kvm/x86/hwcr_msr_test.c
-index 8e20a03b3329..53b7971aa072 100644
---- a/tools/testing/selftests/kvm/x86/hwcr_msr_test.c
-+++ b/tools/testing/selftests/kvm/x86/hwcr_msr_test.c
-@@ -11,12 +11,17 @@
- void test_hwcr_bit(struct kvm_vcpu *vcpu, unsigned int bit)
- {
- 	const u64 ignored = BIT_ULL(3) | BIT_ULL(6) | BIT_ULL(8);
--	const u64 valid = BIT_ULL(18) | BIT_ULL(24);
--	const u64 legal = ignored | valid;
-+	u64 valid = BIT_ULL(18) | BIT_ULL(24);
- 	u64 val = BIT_ULL(bit);
- 	u64 actual;
-+	u64 legal;
- 	int r;
- 
-+	if (kvm_cpu_has(X86_FEATURE_GP_ON_USER_CPUID))
-+		valid |= BIT_ULL(35);
-+
-+	legal = ignored | valid;
-+
- 	r = _vcpu_set_msr(vcpu, MSR_K7_HWCR, val);
- 	TEST_ASSERT(val & ~legal ? !r : r == 1,
- 		    "Expected KVM_SET_MSRS(MSR_K7_HWCR) = 0x%lx to %s",
--- 
-2.54.0.794.g4f17f83d09-goog
+Is there any way we could do this with fewer comments and more code?
 
+I mean, there's only three cases. Why have;
+
+	u64 mask = GENMASK(BITS_PER_BYTE * size - 1, 0);
+
+When there are only 3 possible cases:
+
+	1 => 0xf
+	2 => 0xff
+	4 => 0xffff
+
+and one of those cases needs a special case on top of it.
+
+Maybe something like this?
+
+	/* Clear out part of RAX so part of args.r11 can be OR'd in: */
+	switch (size) {
+	case 1:
+		/* inb consumes lower 8 bits of r11: */
+		regs->ax &= ~GENMASK_ULL(7, 0);
+		args.r11 &=  GENMASK_ULL(7, 0);
+		break;
+	case 2:
+		/* inw consumes lower 16 bits of r11: */
+		regs->ax &= ~GENMASK_ULL(15, 0);
+		args.r11 &=  GENMASK_ULL(15, 0);
+		break;
+	case 4:
+		/* inl is weird and zeros the whole register: */
+		regs->ax &= ~GENMASK_ULL(63, 0);
+		/* But only consumes 32-bits from r11: */
+		args.r11 &=  GENMASK_ULL(31, 0);
+		break;
+	default:
+		/* Probable TDX module bug. Illegal in[bwl] size: */
+		WARN_ON_ONCE(1);
+		success = 0;
+	}
+
+	if (success)
+		regs->ax |= args.r11;
+
+It might need a temporary variable for args.r11, but you get the point.
+That's basically the data from the comment but written as code.
+--------------qh7EUZpxDlywN8WehcLGDAQL
+Content-Type: text/x-patch; charset=UTF-8; name="tdxinX.patch"
+Content-Disposition: attachment; filename="tdxinX.patch"
+Content-Transfer-Encoding: base64
+
+IHRkeC5jIHwgICAyOSArKysrKysrKysrKysrKysrKysrKysrKysrKysrLQogMSBmaWxlIGNo
+YW5nZWQsIDI4IGluc2VydGlvbnMoKyksIDEgZGVsZXRpb24oLSkK
+
+--------------qh7EUZpxDlywN8WehcLGDAQL--
