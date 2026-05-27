@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DE703D811F;
-	Wed, 27 May 2026 23:47:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 729653DA5B2;
+	Wed, 27 May 2026 23:47:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779925645; cv=none; b=pJXmqmfKzvBZewQOXRcVvHNSf7iFj+kH9gculSmyTtcC78XS4rOGza50AqONH8IpWbJdMtfe28qIFFR/HTsZ7YproYQ2/fNPkj1ORo7x2qKPnBZUavvlzQ+FMyRo9GYbWcoKo950SEGfwOWTbzL8RHm179n1Rnj+GiLQ6leA3hg=
+	t=1779925645; cv=none; b=lfJoKJSnLjs+lYNNDfTRCgs+LxCZdye5UE07yTILuYqloCehx0J4sqCoS6SHaVvVzQTedB8vgaMZDMudW854w9T59M36XcgE4gA+OWMaGpNdQbOKp7lQic3Lf9Ygmq7q/ShDqq1a+SJjnQ2j8qlW8Rz5m7PGh7Nrwdx8uUZ+Sdk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779925645; c=relaxed/simple;
-	bh=RH39PNn/B2K1ju7y7kb3Q9hqqhSA+ENKgCm8lSkjoDc=;
+	bh=/FJ/pHWRgLiuSDRymygjv3hpBEpE82SbBkGfJgNq6pQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AZhBPjqjifYLJZqYcAJPXldj/gA84tctSjnByDA28EXm59vnp9/44VLmctl+w+AiGDZag9uTssMcdH0aoxlgsLVBOP5dFLf1v7/I13Xk7x260QaqDGSMMloaEiVqUNRl5M+d695yjmRrs3rPBdo+imcVyoAFdfhYEQ86oFXl8AQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SklgLZYh; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=DPi3MGaIPwrfWCVMzlIqbsf4A9prDZH+5cVj8JETqUzuG1RQIV+Eesw65dfW/X58Y3sWW4NXL7bYs2dxhGy3jd9WYS3UE6MWqfUe6vyrH3syiOXvFa9ZAaX8dxiCRgtn79L42wIi5jsFfS8r/YRorPPGTvplu/VbR4kJS9wLSTc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jZbn4nU1; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SklgLZYh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65E7F1F00A3D;
-	Wed, 27 May 2026 23:47:22 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jZbn4nU1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA65F1F000E9;
+	Wed, 27 May 2026 23:47:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779925643;
-	bh=Q3xofZqOzvu5Onur3sOZTMIEKlsNXZMa7Z/7OwCz1yM=;
+	s=k20260515; t=1779925644;
+	bh=jwzvNaDhgxzGSMGoezFqYQOSgXb6nd5oUPgLydEYQFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=SklgLZYh+Phi3oRi8jAtnZb88ZB3ZoukK8PiG5i+nvX/9z90vkE0eVip1Yb5KokXa
-	 iJG7lJyEHWoq4x0ECRXUvkOidmeHIpgjpaHjZUYVB/nHfg0z7QYxDIVDhvPyH2Y/OT
-	 YiX7yKiKrzhiBs6wT7/F1hZNgi3falAcR+039wqXlf1duHBK9SQONS2GjAAdgandT7
-	 ZKDCs29/x1yrkQ/L5J+2+XDvEMMmXXUwKtCQ8ww1vQ6TYayft1YbSb38kQCAiC0Btf
-	 Xok0e+p3j81Im4bwcOVEEiuV5R6Uw0GJzghnbM78WP0w9IJkBinyjTv/Et0locxJYh
-	 V4vgYWIptN2Gw==
+	b=jZbn4nU1G6XdC/6AERLGYW4R5i1ELcIYVPPxDB5dDTH6vDFsHoYEdwZAjqSExJdZs
+	 Kucae8vJgbsd63T9Q3NCrwG7FErZvkriy1OaEzvnXZc6w+wRHB7dFCUvgRkY61Esau
+	 NNBD10oK9HpGWm/snq+XtbQn/MlwRq215dTim35gi/kHPT/5EBCysuFae4DZn+5mHi
+	 8YUlQNk0AF9G7cwybe02P2K7QEhO/4aoxC6n2xV9gOk6IOsfUC9ob4iwUC8EzfYFkx
+	 hx8jor3aP7OTKPXaC9wzJXOoLO21BSeZDoSIPSZyD0RWQA+mjYYIc06vtED4TI7EEa
+	 glk1kwpICSE1w==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -41,9 +41,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v7 06/17] KVM: x86/pmu: Rename reprogram_counters() to clarify usage
-Date: Wed, 27 May 2026 23:47:00 +0000
-Message-ID: <20260527234711.4175166-7-yosry@kernel.org>
+Subject: [PATCH v7 08/17] KVM: x86/pmu: Check mediated PMU counter enablement before event filters
+Date: Wed, 27 May 2026 23:47:02 +0000
+Message-ID: <20260527234711.4175166-9-yosry@kernel.org>
 X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
 In-Reply-To: <20260527234711.4175166-1-yosry@kernel.org>
 References: <20260527234711.4175166-1-yosry@kernel.org>
@@ -55,72 +55,31 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Rename reprogram_counters() to kvm_pmu_request_counters_reprogram()
-clarifying that it is more similar to
-kvm_pmu_request_counter_reprogram(), and less similar to
-reprogram_counter(). The kvm_pmu_* prefix is also appropriate as the
-function is exposed in the header.
+If the guest disables the counter (by clearing
+ARCH_PERFMON_EVENTSEL_ENABLE), KVM still performs the PMU filter lookup,
+even though it doesn't end up changing eventsel_hw.  Check if the
+counter is enabled by the guest before doing the potentially expensive
+PMU filter lookup.
 
-Opportunistically rename the argument from 'diff' to 'counters'.
-
-No functional change intended.
-
+Suggested-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/kvm/pmu.c           | 2 +-
- arch/x86/kvm/pmu.h           | 7 ++++---
- arch/x86/kvm/vmx/pmu_intel.c | 2 +-
- 3 files changed, 6 insertions(+), 5 deletions(-)
+ arch/x86/kvm/pmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
-index d6ac3c55fce55..afbc731e72174 100644
+index afbc731e72174..67dbbd4c73036 100644
 --- a/arch/x86/kvm/pmu.c
 +++ b/arch/x86/kvm/pmu.c
-@@ -889,7 +889,7 @@ int kvm_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		if (pmu->global_ctrl != data) {
- 			diff = pmu->global_ctrl ^ data;
- 			pmu->global_ctrl = data;
--			reprogram_counters(pmu, diff);
-+			kvm_pmu_request_counters_reprogram(pmu, diff);
- 		}
- 		/*
- 		 * Unconditionally forward writes to vendor code, i.e. to the
-diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
-index b1f2418e960ac..f8286067722b0 100644
---- a/arch/x86/kvm/pmu.h
-+++ b/arch/x86/kvm/pmu.h
-@@ -210,14 +210,15 @@ static inline void kvm_pmu_request_counter_reprogram(struct kvm_pmc *pmc)
- 	kvm_make_request(KVM_REQ_PMU, pmc->vcpu);
- }
+@@ -532,7 +532,7 @@ static bool pmc_is_event_allowed(struct kvm_pmc *pmc)
  
--static inline void reprogram_counters(struct kvm_pmu *pmu, u64 diff)
-+static inline void kvm_pmu_request_counters_reprogram(struct kvm_pmu *pmu,
-+						      u64 counters)
+ static void kvm_mediated_pmu_refresh_event_filter(struct kvm_pmc *pmc)
  {
- 	int bit;
+-	bool allowed = pmc_is_event_allowed(pmc);
++	bool allowed = pmc_is_locally_enabled(pmc) && pmc_is_event_allowed(pmc);
+ 	struct kvm_pmu *pmu = pmc_to_pmu(pmc);
  
--	if (!diff)
-+	if (!counters)
- 		return;
- 
--	for_each_set_bit(bit, (unsigned long *)&diff, X86_PMC_IDX_MAX)
-+	for_each_set_bit(bit, (unsigned long *)&counters, X86_PMC_IDX_MAX)
- 		set_bit(bit, pmu->reprogram_pmi);
- 	kvm_make_request(KVM_REQ_PMU, pmu_to_vcpu(pmu));
- }
-diff --git a/arch/x86/kvm/vmx/pmu_intel.c b/arch/x86/kvm/vmx/pmu_intel.c
-index 27eb76e6b6a03..9bd77843d8da2 100644
---- a/arch/x86/kvm/vmx/pmu_intel.c
-+++ b/arch/x86/kvm/vmx/pmu_intel.c
-@@ -391,7 +391,7 @@ static int intel_pmu_set_msr(struct kvm_vcpu *vcpu, struct msr_data *msr_info)
- 		if (pmu->pebs_enable != data) {
- 			diff = pmu->pebs_enable ^ data;
- 			pmu->pebs_enable = data;
--			reprogram_counters(pmu, diff);
-+			kvm_pmu_request_counters_reprogram(pmu, diff);
- 		}
- 		break;
- 	case MSR_IA32_DS_AREA:
+ 	if (pmc_is_gp(pmc)) {
 -- 
 2.54.0.794.g4f17f83d09-goog
 
