@@ -1,103 +1,88 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 343A346AEE2
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 18:14:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC6B478E57
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 18:14:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779905656; cv=none; b=fsNW3lVqxLKCTh2gIGmCsE08YFcq+4bi5JMN8KCtqWafECgAEKaTD51nSRDuD01szVhYQTHTFdjEpUMUHyXFBO5Pnskfogf+AHPYgYAAvC9SD+ja3WwLqQVOQMbuj2gO3QpYM4g1V5R6LyFEzDiuPVjEW/tM+VNkZYBvjMqSY6M=
+	t=1779905665; cv=none; b=YyraGmXzVOa9iydoLpW/hbhf70iaoUsOh8rrl1b9X+T+M/IGzhaAnMmXRJjNH5sKuh+ZuWQEnQ/G70EM6g8C5qwi/UXH7ccgUJ/VOHxWu8yLAi/iynK2UkLN1WGrzcPxUEFp2gtSFjxfPDt1qxtQ4DZ9AMj6p/RUcjDfrLV+VYY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779905656; c=relaxed/simple;
-	bh=VnylfXIZ70oSP2hDN4nujviqjegHcfm1jt5nW9RJes8=;
+	s=arc-20240116; t=1779905665; c=relaxed/simple;
+	bh=IOKoyHLxY/z5hLsO3htY/vrG3Fzj2MXOzTE5IC9IOAI=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=B7wgf05d7YwZMIj3fTPMDymqedLSneTIsvTDTBA+jpyWc3N/hAn4TdjUzNGReIQlz5eCGuwXNrdZkXPiF00dCdVe+J/wHFf8ztuEGCcIR0mzyIyjOdUN9WD46ouwZo+8IGs1xBf2vvjFMsoQlQLSl2BkzNwhPgQq/PSri/wkaoQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FAi1TH7B; arc=none smtp.client-ip=209.85.214.202
+	 To:Cc:Content-Type; b=DhWEEqae7TldYRm3TmAjP8dX1IUoKRB6Ao38qDeXQSN4v7Dtb2vCu9BiYSJ7jDiwnKU/aA8wqorVjGB68mIQJBwsqkey6r0KTQOeYNgFQ4p4MQxd+affx0c6a5sMcMmOq/Hahf5WfgfdKMBYAQwW3sPKFla2MRHWn13xT91BWhE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GiBPuq+T; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FAi1TH7B"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bd04e4fe3dso75186055ad.3
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 11:14:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GiBPuq+T"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2bf02e2f864so102695ad.0
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 11:14:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779905654; x=1780510454; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779905663; x=1780510463; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tsAS7fK21PiDroSowJOs3iMwRvwVi266gNJjjTpdxyU=;
-        b=FAi1TH7BqRGO9k4gLZ4fJ0JLvYDpK0TcIPEMOrrARMX1d+7Pw4slkMWW5W3BWGYKN2
-         lDELEuTH+rwxEqgrGyC4wVZ15bhJR+Eo5S9655Bmcahu1X3uynWowbd76g+T/JxQ2faM
-         hTxvs2sfDFVXpPOcZu46V1ovYuo4o1NMiWxuNtHeYrEDKnOdlgEf5hmYokDo0mbFKgL4
-         qyrDk4Gb8TdhqxTlQ/WRWqk/eCLTFkF44f3vNN07FGHZDGrCc8fzUXRXGQff+7PQ/7Lf
-         UTrotfs3AhRSaefsaqVAhmTS49rX+SZ0deGnHGc32eV5uCsTNM0e7eo4bo2ckXC/lSVQ
-         17VA==
+        bh=90QoHoDQFIalJTQFQDHyQUQDWaZ1Brl3VNnvhBjJDmQ=;
+        b=GiBPuq+TjpWlHLG7inhuDN2/z236u61k9tC6iWTQdSL04u/ngGJBFEu5DBz7f0HsjC
+         wMHiQmFeLCFKnkgiwvWN/NC8iVvuNug/8/6EqbWddCuP2qcIkZDghpJX+GEUDe0bruIZ
+         +Ju+83qTm/f8o+2LSgN/lq9L9fMplTIK0n4MFNGLglrl/UHdt5/k/pIsHNyon+GZRI3V
+         SbEb6hVJBRPjSmI9jI4gnpwUat5ySTBFv7hP2WExtoc4OmpZBUSthhvtTvJk42ROurH5
+         rlq7xMZeHQNYcG+B1PxWhVLHQEmDT9NytR0Hmyjgz3x5StY+cp9K/H3UvqJyI79nc29X
+         +2bA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779905654; x=1780510454;
+        d=1e100.net; s=20251104; t=1779905663; x=1780510463;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tsAS7fK21PiDroSowJOs3iMwRvwVi266gNJjjTpdxyU=;
-        b=Jx3FE5TCGMEruISXFanz/yLgh4nGsgPZPFC+5RVKppmdGzinTrcRT2YhcsLzAXehjS
-         P0ejNWqZQAtlmaqp1W6JkQ/BcG1a20IuBj4ylm59XZfuQen4rFrJJ6MmLPGJ+D0kNgop
-         iinLul9Fe7LPivuSFIyVU1B0/LQ/6SY40ViTvQ3NZ1OF4aFZWL50Gndj08X7NIc6+T2M
-         KEESFu+Dw09DP0ate1AuXINFhROxPgW3p035ZSkE0lSEzb70zm4/fhtZ1PEZP45QcnEL
-         LBVcLxSxMKGudciH8q2e0YhY4ht3fbiPPeXsypfXbIP7i+kgQGRCEVveGmtAsCPh3hjI
-         LdwQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/6DL5LnFiIuX/JcjjVglNbAOFbSLliJL1hIx5jh/+QsUpPANnjfW4eWsSDbEMoa/cqBSg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzNovRS+V72/7fqCH2C1QQPvpxudK15CPNMulstAjAjY547qANJ
-	GRVE1kLN2I76ezC0tbTO240UYLi/zsiKC+6aI9NYb8r8d9sS5l/fAp8YYWtX77XKBf0hy28aZ91
-	1DVD0nw==
-X-Received: from pllj9.prod.google.com ([2002:a17:902:7589:b0:2ba:f5a6:38db])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1247:b0:2bd:c5f8:504f
- with SMTP id d9443c01a7336-2beb0702144mr255121925ad.40.1779905654395; Wed, 27
- May 2026 11:14:14 -0700 (PDT)
-Date: Wed, 27 May 2026 11:14:13 -0700
-In-Reply-To: <CAO9r8zMGwUszi1xvi4WU1M85ZZWTDTfbQacjBfNDw8+QS4WDOw@mail.gmail.com>
+        bh=90QoHoDQFIalJTQFQDHyQUQDWaZ1Brl3VNnvhBjJDmQ=;
+        b=VnJ59ALnc6wLf2eDrWjgSJUZ2Xxj+i1MLvzxdA06Qg+XzO2zfFcn3sBY5lIz6jcr2W
+         E3232ZQxC1WxlE3+Bk/nX8GmEjvDwFVrrbgvfqe7CBAEV3Iwg7teEvWLNUbtpBf0XZg4
+         Q4C2h0Kw8gZ10mKty1yoZqQPO9ZgMA8BoPqNiIXlGeolejZgZ+qBVwsveLGXqRNc/o9H
+         Ao3Fx2/poCg/50DFbdw9Aa3mD9ZG9VIu+rcJjZi/Lc0RUcRiQd576jOxT4URwx+/Tvbs
+         2WcO/oT1Qf5CsOWf8hp+7HLG7+yBjfimQgyckCPw9RjpAfj/xwEIgSFKxFUEAowjopxi
+         zDVQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/Di7o66zHQg1v8p4s8m5wP7W5nNGV/jCuPBGMeBcD86KsRKhGm1ak7oyhM5xi1xV7CzkM=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzjmw7ONVNSP5LIfWksYRC2r/1Gij4j9kEZKH7d/dd3sgKNvV7b
+	ukCbhhIdAs05fAawkBqA44U4XcRFg83tzQ493rCtrrvQSk5YKSQsgXj34c+2JXDfHLeBmrxOAUP
+	i4S+AKQ==
+X-Received: from plsb19.prod.google.com ([2002:a17:902:b613:b0:2b2:51df:a515])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1aae:b0:2b9:5d1b:73da
+ with SMTP id d9443c01a7336-2beb0741079mr277701145ad.30.1779905662956; Wed, 27
+ May 2026 11:14:22 -0700 (PDT)
+Date: Wed, 27 May 2026 11:10:10 -0700
+In-Reply-To: <20260522151534.652522-1-vannapurve@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260522232701.3671446-1-seanjc@google.com> <20260522232701.3671446-4-seanjc@google.com>
- <CAO9r8zP-t3YsiXNZm2beR6RcRZaDN386_ktmipGm+sA=2PGcaQ@mail.gmail.com>
- <ahXp9V3o0bWVi1lj@google.com> <CAO9r8zMGwUszi1xvi4WU1M85ZZWTDTfbQacjBfNDw8+QS4WDOw@mail.gmail.com>
-Message-ID: <ahc0dRxHXMqOK-D5@google.com>
-Subject: Re: [PATCH v4 3/5] KVM: SVM: Fix nested NPF injection of
- PFERR_GUEST_{PAGE,FINAL}_MASK bits
+References: <20260522151534.652522-1-vannapurve@google.com>
+X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
+Message-ID: <177990512633.4119760.10440459060511762147.b4-ty@google.com>
+Subject: Re: [PATCH v5 1/1] KVM: x86: Introduce has_protected_pmu state for
+ TDX VMs
 From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry@kernel.org>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Kevin Cheng <chengkev@google.com>
-Content-Type: text/plain; charset="us-ascii"
+To: Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com, dave.hansen@linux.intel.com, 
+	Vishal Annapurve <vannapurve@google.com>
+Cc: rick.p.edgecombe@intel.com, dapeng1.mi@linux.intel.com, mizhang@google.com, 
+	kai.huang@intel.com, jmattson@google.com, michael.roth@amd.com, 
+	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, May 26, 2026, Yosry Ahmed wrote:
-> > > > +       vmcb->control.exit_code = SVM_EXIT_NPF;
-> > > > +       vmcb->control.exit_info_1 = fault_stage |
-> > > > +                                   (fault->error_code & ~PFERR_GUEST_FAULT_STAGE_MASK);
-> > >
-> > > Do we need to do this in the common path?
-> >
-> > What do you mean by "this"?  Pulling flags from fault->error_code?
+On Fri, 22 May 2026 15:15:34 +0000, Vishal Annapurve wrote:
+> PMU state for TDX VMs is virtualized by TDX Module [1]. Host has following
+> toggles to control the PMU functionality exposed to TDX VMs:
+> 1) Configure TD_PARAMS to allow guests to use performance monitoring.
+> 2) Restrict the TD to a subset of the PEBS counters if supported.
+> 3) Limit the TD to setup a certain perfmon events using basic/enhanced
+>    event filtering.
 > 
-> Yes, sorry if that wasn't clear.
-> 
-> >
-> > > If from_hardware=true, can the fault injected by KVM have different flags
-> > > from the one produced by hardware?
-> >
-> > Flags, yes.  fault_stage, no.
-> 
-> Right, I meant the flags.
-> 
-> >
-> > > I guess the answer is yes, (e.g. if KVM is doing write-protection?). Might be
-> > > worth a comment.
-> >
-> > Or if L1 has modified its TDP PTEs in memory, but hasn't yet flushed TLBs.  In
-> > that case, KVM's software walker can see the updated PTEs, while hardware may
-> > have seen something else.
-> 
-> Makes sense. A comment would be helpful for laymans like myself.
+> [...]
 
-I elected to not add a comment for now, because I'm not 100% confident the nSVM
-code is correct, and so didn't want to stealth in a comment that wasn't correct
-either.  It's certainly much better than it was, but especially with GMET in play,
-I need to stare more to convince myself it handles all the edge cases correctly.
+Applied to kvm-x86 misc, with a heavily modified changelog.  Thanks!
+
+[1/1] KVM: x86: Introduce has_protected_pmu state for TDX VMs
+      https://github.com/kvm-x86/linux/commit/986833d381d2
+
+--
+https://github.com/kvm-x86/linux/tree/next
