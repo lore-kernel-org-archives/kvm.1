@@ -1,149 +1,111 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2780F3FBB46
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 11:43:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1896A3F6612;
+	Wed, 27 May 2026 11:55:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779882212; cv=none; b=K+071MgBaYpRAiQuQcs6uSL5/TRWqZ0eaDVUr4ivC41Bu4Z9Oq81W6lsKW7dvJZ7lup7//C/2O/DjdIfz+Y3dzIzUbaqxVPFnYob4+FkFcYwLCIpdgmdHYGJOBijg8OgEVUkRXT48Wg0VYKBA8nrZHL9LtQCafJqR6idNT9jP78=
+	t=1779882926; cv=none; b=rRVSFtgh0Hi91lAfpthmBjf/HRhbG7mTKB7KSfdZXAyHKj0kCdfkBzexLZzSDMOWBuEBDDx8zAi4INLl6xBOWai2/Y+Ad078PmCECburt285f5xRCQTJn4by30XSOmR7EgLYWTBoDU2vXDRn9nFkFCvZMx6TGy4mA8MhMhfw3NY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779882212; c=relaxed/simple;
-	bh=NYmu56YsQAClMPDKQZHaQ46XvPECUSZnxoZS8at4tZU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o6N2saRlUuX8hN/0j5FLEsknXSU/N18LX3Z7kGHOWWc32T7106m1Wkts3LbmlnwPWacDqI+5QwPTR/2EacbLJwvMlRC4AiAV+zr0KOpja5J6KUP+MB16Xo0pWtqShFvLiHM/B4yrgYY8BbGGJK90h59f6+1hE6wlSnuKpmpAWio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=oCzN9qwj; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1779882926; c=relaxed/simple;
+	bh=YOxq85BhoK+UeFka8Zxzm7yB2mOJp2IBDAa3h85nUxM=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=SZ3X4SOoFe0IEG8lIy7cZ3NXm4tpBJED3dCEQ5KaXqOVV18PdBrizDYrdcamVCpZnYDpRpbdatSWOcM5+qIN9XJS1+e9rx29JTykkrKxyPS69g0leZxWMGIvcdlx93Wui5QfC9ugCvO7yo2tdqdZqvyjDpptXBnbh9Tzpr4hyJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DCaFa/qD; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="oCzN9qwj"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-4904c1ce4c1so53438215e9.3
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 04:43:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1779882204; x=1780487004; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AJonqsC661AicUoZ3WXf5dOPD/EyukyFdYhNbfWENfY=;
-        b=oCzN9qwj95+oop1+9PW4rX/GjoM9tfsik8VQLmD39IUyZCglMsvSMwhjp4DGKv2ZNh
-         kbWnX2jr5HygLm72CCCdy73fvgr/D/mUyoTDVBs+jwzjl66uvkyW9b/LUIvRYsZ+WKwg
-         e8uT7odhNX//A9TplKf2Tgy0ly6GPU6F3OmoqyElg2h/yGmlMDCkYIcyhapshFGBhxDJ
-         upyqeuHC4Be4NXvRoK7thSG4ZekgotYybL/FT3YUMMNV/XejGkh194ZitS/wNC1APDMU
-         NlKUsFrw15rTaZhUiLjGvLF/BeNr8YTC12KLSQSVMReB2/IbNt5628q2gQOIxPsLHIq9
-         DLQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779882204; x=1780487004;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=AJonqsC661AicUoZ3WXf5dOPD/EyukyFdYhNbfWENfY=;
-        b=jDwL6DT3IlulVExBn7BKZx5qVhlmS7cHPZy77irWhqdNZVrRkSj1iayAhrh4YsFNs0
-         n29MJvErbwZY5y/k1QlfO69xo6XjT2N52Szk9zmb32F3g7u10IHrKROodgsqxXOoRNRv
-         fA4yE50cQaT3aeljUWxY98lT6jKXDlWkBnd6qiROF/X3hAHk1PlXGHPrvtS1T0/q7S1R
-         jOzJPC9zLi3DLN0FmT2DqNRbvXxZv7Uqa/4huWYoIx2AsFENuWepEfDnRsdZYlVGUzA3
-         r1z/hKQI6AVC5oQ2DuODGqwvyPLZcPHQYlvw79rtqv7ZH0RRq6sDX7bd0ZaaH/mMF+1m
-         xncQ==
-X-Forwarded-Encrypted: i=1; AFNElJ+HslXfJF0uDqKuKEU3dBjp5Wh7o0fgZKHbgpYXu/afmCaav9GCXvJURY62xfT2cqgjhfc=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz9x7r8nwQ5jmyJDFYnVZN7NgwanQ7qM8mMMUXAduIAY0q5JIy0
-	F0vpxlfOEtPuSDBNaCIHNN7+cSsgSkFQchL9HPBlmkwqy8TUXnmkriK9nXOImS6d0xw=
-X-Gm-Gg: Acq92OEAzgER3dcqtjpDTigDTW5Vhejk8Y8SIWV6g3FjRik9zx1N88fCnK7v/BHnMdi
-	kuR3FhH0bB54Mi0yHqlYnLivpds5v4QhSa6rEri9rRiXz1q2jPiI2KWS5sFYgzz8H/XHcMTg74e
-	F5HqwvSJz23XOfV3s1VAdK5f/ehfNdDesiZromJBTm2tHsXOhIWoJweqG5Z0mku1A4opUaB67Et
-	otpQRxyEv7GZJhfLx+n4tUcH3v5BrOY3pU590aMOpd/aD6zJLlPHdzDN4uKvHjfim429cI7shf4
-	c8ofoTekhoTTQIzu1Kt77GGSmEJ/0MOp3JrjNaRLyiClIF3uDlf+WBO+zT1Op8gDjyudrQVyEiw
-	qdl7CI2BzSEEmTzvVC1NkJwqRrhsZjVL8CuOtBRj0qTypz5KO2XdesdhXJXQoByRt2lD/mjVPl+
-	xEvFV25pR/NrzBdP+h5dy/mcw=
-X-Received: by 2002:a05:600c:45ce:b0:490:59cc:998e with SMTP id 5b1f17b1804b1-49059cc99famr238489835e9.3.1779882204321;
-        Wed, 27 May 2026 04:43:24 -0700 (PDT)
-Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-45edb557679sm9410757f8f.10.2026.05.27.04.43.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 04:43:22 -0700 (PDT)
-Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 396A95FBBF;
-	Wed, 27 May 2026 12:43:21 +0100 (BST)
-From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
-To: qemu-devel@nongnu.org
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org,
-	Mohamed Mediouni <mohamed@unpredictable.fr>,
-	Pedro Barbuda <pbarbuda@microsoft.com>,
-	Alexander Graf <agraf@csgraf.de>,
-	Peter Maydell <peter.maydell@linaro.org>,
-	qemu-arm@nongnu.org,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v6 4/8] target/arm: ensure aarch64 DISAS_WFE will exit
-Date: Wed, 27 May 2026 12:43:16 +0100
-Message-ID: <20260527114320.1581552-5-alex.bennee@linaro.org>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20260527114320.1581552-1-alex.bennee@linaro.org>
-References: <20260527114320.1581552-1-alex.bennee@linaro.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DCaFa/qD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 807C01F000E9;
+	Wed, 27 May 2026 11:55:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779882924;
+	bh=rwYv4TseoI1EneuWWYSVd5SVs3X9jXRq/3Su1LCmXYo=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=DCaFa/qDRf4IJ+5AkAnS+HaKC5Z9K+BxSmtKWTVAkgwhQ4mMz7+qq/m+7deBlemr9
+	 yfwjwLKoyZ+lhkWuuw6kw8mVWvuLK2dmi2DvdL+wnqlYQJQ7Yzs/hJb8qlKWi4kmkM
+	 FJjX7znGJ1sBZQgPNRHVReRBGgL4VFBin8Kz95REE9h4fYkLzhVWZBPYF3gi5EIClv
+	 9dKw6++5+2elpvUWIRwkWWayib1RRnIzZGeutGDvzI5vE4/ZH/e+LLWQvr6/GLRAFq
+	 FCGlc9TX5er09Ag2QeO+hNWoV5rKZYLuFl9BcLnTypoyD0uocMemQ61US8p57aain7
+	 Yjxyd1QdK4g1w==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v13 4/8] PCI/TPH: Add requester policy to
+ pcie_tph_get_cpu_st()
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Chengwen Feng" <fengchengwen@huawei.com>
+Cc: linux-pci@vger.kernel.org, kvm@vger.kernel.org
+In-Reply-To: <20260527094719.43886-5-fengchengwen@huawei.com>
+References: <20260527094719.43886-5-fengchengwen@huawei.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 27 May 2026 11:55:23 +0000
+Message-Id: <20260527115524.807C01F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
 
-This mirrors the logic for DISAS_WFE in 32 bit world. As the WFE/WFI
-have similar behaviours shuffle the case statements around a little
-and update the commentary to cover both.
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
 
-Fixes: 252ec405768 (target-arm: implement WFE/YIELD as a yield for AArch64)
-Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
-Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
+Pre-existing issues:
+- [Critical] Use-After-Free of `irq->cpu_mask` in `bnxt_free_irq()` because=
+ it frees the CPU mask before cancelling the asynchronous IRQ affinity noti=
+fication work.
+- [High] Lockless read-modify-write on the shared `PCI_TPH_CTRL` register i=
+n `pcie_tph_set_st_entry()` leads to state corruption and hardware instabil=
+ity.
+--
 
----
-v4
-  - shuffle case statements, unify the comments.
----
- target/arm/tcg/translate-a64.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+commit e83a9eff13ffcc47efd9212a157c144fb33f5bdc
+Author: Chengwen Feng <fengchengwen@huawei.com>
 
-diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
-index 3e3971db3fb..d057241e9df 100644
---- a/target/arm/tcg/translate-a64.c
-+++ b/target/arm/tcg/translate-a64.c
-@@ -10913,25 +10913,25 @@ static void aarch64_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
-         case DISAS_NORETURN:
-         case DISAS_SWI:
-             break;
--        case DISAS_WFE:
--            gen_a64_update_pc(dc, 4);
--            gen_helper_wfe(tcg_env);
--            break;
-         case DISAS_YIELD:
-             gen_a64_update_pc(dc, 4);
-             gen_helper_yield(tcg_env);
-             break;
-+        /*
-+         * Both WFE/WFI can cause exceptions or exit the loop to
-+         * halt so we have to make sure we have rectified the PC.
-+         * However they can also return directly if they don't
-+         * enter a wait state so we must add an exit block so we exit
-+         * the loop and check for interrupts.
-+         */
-+        case DISAS_WFE:
-+            gen_a64_update_pc(dc, 4);
-+            gen_helper_wfe(tcg_env);
-+            tcg_gen_exit_tb(NULL, 0);
-+            break;
-         case DISAS_WFI:
--            /*
--             * This is a special case because we don't want to just halt
--             * the CPU if trying to debug across a WFI.
--             */
-             gen_a64_update_pc(dc, 4);
-             gen_helper_wfi(tcg_env, tcg_constant_i32(4));
--            /*
--             * The helper doesn't necessarily throw an exception, but we
--             * must go back to the main loop to check for interrupts anyway.
--             */
-             tcg_gen_exit_tb(NULL, 0);
-             break;
-         }
--- 
-2.47.3
+PCI/TPH: Add requester policy to pcie_tph_get_cpu_st()
 
+This commit extends pcie_tph_get_cpu_st() to accept a requester policy
+argument. It allows callers to explicitly retrieve steering tags for standa=
+rd
+or extended TPH explicitly. The patch updates driver call sites and=20
+documentation to pass the new TPH_REQ_AUTO argument.
+
+> diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethe=
+rnet/broadcom/bnxt/bnxt.c
+> --- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> +++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+> @@ -11734,6 +11734,7 @@ static void bnxt_irq_affinity_notify(struct irq_a=
+ffinity_notify *notify,
+>  		return;
+> =20
+>  	if (pcie_tph_get_cpu_st(irq->bp->pdev, TPH_MEM_TYPE_VM,
+> +				TPH_REQ_AUTO,
+>  				cpumask_first(irq->cpu_mask), &tag))
+
+[Severity: Critical]
+This is a pre-existing issue, but could this lead to a use-after-free of
+irq->cpu_mask?
+
+If bnxt_free_irq() frees the CPU mask (which happens via free_cpumask_var()
+when CONFIG_CPUMASK_OFFSTACK is enabled) before cancelling the pending
+affinity notification work, could the asynchronous execution of
+bnxt_irq_affinity_notify() access the freed memory when evaluating
+cpumask_first(irq->cpu_mask)?
+
+[Severity: High]
+This is also a pre-existing issue, but is it safe to update the steering
+tag without any locking?
+
+Since bnxt_irq_affinity_notify() executes asynchronously in a workqueue,
+multiple instances can run concurrently if several IRQs change affinity
+at once.
+
+Does calling pcie_tph_set_st_entry() after this block cause a race condition
+on the shared PCI_TPH_CTRL register during the lockless read-modify-write
+cycle? Could one thread re-enable TPH while another is still writing to the
+ST table?
+
+>  		return;
+
+[ ... ]
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260527094719.4388=
+6-1-fengchengwen@huawei.com?part=3D4
