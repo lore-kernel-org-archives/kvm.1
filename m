@@ -1,128 +1,118 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC9A1A5B9E
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 06:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FDF390205
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 06:33:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779862813; cv=none; b=KYy7SWL6IMBEsQTECojmwi5hVjKuMUFI1iHKAu09sazH3hfvIFAVyJMYujrhAWJcpI/qUGmw+8DpQIjTJDgiUj45iSqCfCGff45A5xTes0nPGPPKrsvGbbV/xA3TzpLNlkWuFddW8qQ8y5++gp5pqkTrAtqkNn3yvD+BnHwImL4=
+	t=1779863632; cv=none; b=ia2Kd1wBbvvYuRHoJzQHvEMAbB1fWQ7eOQgWB8BDOo7ojVBQhscgYkSqulaNAtaTu+wXmq2Cy/+4TEIWrR+/aNxhiiJTBrzCqVXNQDXUsgSYjBEQV165DvoNloGKK1x0bbXPbrvQc4Qeq4u2tRMfBXbxLFdztfa2d8grnGaiSOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779862813; c=relaxed/simple;
-	bh=NAZwaIJkrOGm7VNZq25KVgZK+0hsP23dRBeMlH14Z8U=;
+	s=arc-20240116; t=1779863632; c=relaxed/simple;
+	bh=Di57p2d8mm1e9FS3FqEyA3WRW3rSa8huQvwUyH2FPZo=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=iWAr79So/+6UgefaN42jItg6Li5bW2i+rgv47FuQdUeD1oZ1fw/Y4YjJSwioX1L5LYDe3K/a6UaY7QM6FTSzr/fSfT9HPRL3GWDABC/LwZ9gk9MWMSZ5LTqp7I3M0YiDKGV4jxY6qa/nkT0O/EtDCBygbDNWe1OfgOnwALAqQdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RWjhpMAx; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=Q7W4+9/YL24ki2g1VRIIPU9SYCxZyiEuSw0GtMkZ0lr2ETmbx32+IyX5WnlkLEK/7KF/8YxNfA/4nGEUDrHgET+wVkP9cDJ5P0QSezIAtW7ztvYPFsNGiKTdoL9LLszTDrg/z70qJHLAW6au8kfo7+Ju5S7YUVDkuwhHdnPDfYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=R6Im29Nq; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RWjhpMAx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B667A1F000E9;
-	Wed, 27 May 2026 06:20:05 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="R6Im29Nq"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 028AB1F000E9;
+	Wed, 27 May 2026 06:33:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779862805;
-	bh=AYEIfGZPlU34T6zoQr+uwzzxoUc6uAS2TPVpWS2WFQ8=;
+	s=k20260515; t=1779863631;
+	bh=dYRzvQFui2JnN/3x0y+6TN8lYP3zSXb384CYAztEhnc=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=RWjhpMAx9+H8NuAPktFnFyYiT2Tp18wsK4tdLlkWB6O+Qp64zyR0+zQ912uz+GzC+
-	 omQqFTpG6uEgNpNqvd7r3iRjMbFDnnHDZlRqG166Bq9IP0i+fYBGG+ZywaRQ2qa3h8
-	 +UTfW+4g5ktmteaK4+C7HrgL8y4mjGxFe0MKr1sYH+KwcDVegF4ZZ2s3ylvTiiIVVF
-	 2jIYcSBg4osiRKCfgIeCj+A78VtznGnujBoMbKMJjjfreF29xZAx2WmQExbGbQ+U9O
-	 +LmCvzLsP/ULKiVPzgm28wgyZ276ZRAjmpWP2WKa6tbNlUdaI7+6YECjb19TR4LbSH
-	 A/fBduzFgakbQ==
+	b=R6Im29NqetBCe2qQYJYkmqB4588QSe0eC8FmCn/g8Xj6cyVkdbSXeIgc1YRCMpQf9
+	 rHCREmQJJyu9pxr3ywz5M/rnYryamvNDGCtFuoqAFPNt0zYfi3/NCMExZ9S/sDs02K
+	 cqMC79Rs4WPgOP2jnRqOIcgfRL/ZMadNe33njWv1MRwpDc7X9Da26w5SYWHfrT5RZv
+	 RV8y2cbzfwxlTCkIlFFkLsGvAc0Qe0iifnTgtRVaGYfbyGiqrUA2AsWUIx1EVDomZL
+	 7//NAwDSSjKBLUtYDlhNHVcxqdjIWMRPgTXVtUpa7tkn5ZVc70WOu5fUf44LSt7tSE
+	 xt6MZTYAD/S9g==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v2 1/3] KVM: RISC-V: SBI FWFT: Fix stale feature
- exposure after runtime extension changes
+Subject: Re: [PATCH v2 2/3] KVM: riscv: selftests: Refactor ISA and SBI
+ extension sublist macros
 Reply-To: sashiko-reviews@lists.linux.dev
 To: "Yong-Xuan Wang" <yongxuan.wang@sifive.com>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260526-kvm-get_reg_list-v2-v2-1-7940a401454a@sifive.com>
-References: <20260526-kvm-get_reg_list-v2-v2-1-7940a401454a@sifive.com>
+In-Reply-To: <20260526-kvm-get_reg_list-v2-v2-2-7940a401454a@sifive.com>
+References: <20260526-kvm-get_reg_list-v2-v2-2-7940a401454a@sifive.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 27 May 2026 06:20:05 +0000
-Message-Id: <20260527062005.B667A1F000E9@smtp.kernel.org>
+Date: Wed, 27 May 2026 06:33:50 +0000
+Message-Id: <20260527063351.028AB1F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
 s) to consider:
-- [High] The removal of the `!tconf->enabled` check allows guests to access=
- and manipulate FWFT features that userspace explicitly disabled.
-- [High] Dynamically evaluating `feature->supported(vcpu)` during guest SBI=
- calls or ONE_REG ioctls corrupts the running hardware state.
+- [Medium] The test configuration name for the RISC-V Vector extension was =
+inadvertently changed from "v" to "vector", breaking command-line compatibi=
+lity and CI scripts.
 --
 
-commit 1795bfc5a03de0367e3bbad5e0256579be467a29
+commit 04b9ab70c63f573228b2b6329b688555ba3e3fd3
 Author: Yong-Xuan Wang <yongxuan.wang@sifive.com>
 
-KVM: RISC-V: SBI FWFT: Fix stale feature exposure after runtime extension c=
-hanges
+KVM: riscv: selftests: Refactor ISA and SBI extension sublist macros
 
-This commit updates the RISC-V KVM SBI FWFT implementation to determine
-feature availability dynamically at runtime rather than relying on an
-initialization-time snapshot. It replaces checks against a static 'supporte=
-d'
-field with calls to the feature's supported() callback.
+This commit refactors the get-reg-list test to use unified sublist macros
+for ISA and SBI extensions, aiming to eliminate code duplication and improve
+maintainability.
 
-> diff --git a/arch/riscv/kvm/vcpu_sbi_fwft.c b/arch/riscv/kvm/vcpu_sbi_fwf=
-t.c
-> index 2eab15339694f..d3be059c38223 100644
-> --- a/arch/riscv/kvm/vcpu_sbi_fwft.c
-> +++ b/arch/riscv/kvm/vcpu_sbi_fwft.c
-> @@ -279,8 +279,8 @@ static int kvm_fwft_get_feature(struct kvm_vcpu *vcpu=
-, u32 feature,
->  		return SBI_ERR_DENIED;
->  	}
-> =20
-> -	if (!tconf->supported || !tconf->enabled)
-> -		return SBI_ERR_NOT_SUPPORTED;
-> +	if (!tconf->feature->supported(vcpu))
-> +		return  SBI_ERR_NOT_SUPPORTED;
-
-[Severity: High]
-Does the removal of the !tconf->enabled check allow guests to access and
-manipulate FWFT features that userspace has explicitly disabled?
-
-The enabled field is used by the VMM to explicitly mask specific features
-for the guest via the KVM ONE_REG API. By omitting this check here, a guest
-could successfully issue SBI_EXT_FWFT_SET and SBI_EXT_FWFT_GET calls to
-configure any feature supported by the underlying hardware, completely
-bypassing the VMM's security and feature masking policies.
-
-[Severity: High]
-Does evaluating feature->supported(vcpu) dynamically during guest SBI calls
-corrupt the running hardware state?
-
-The SBI_FWFT_POINTER_MASKING_PMLEN feature's supported callback invokes
-try_to_set_pmm(), which probes the hardware by executing csr_set and
-csr_read_clear on the physical CSR_HENVCFG register.
-
-When triggered by a guest SBI call, this directly clears the ENVCFG_PMM bits
-in the active hardware CSR. Because SBI calls execute in the in-kernel fast
-path without a full vcpu_put()/vcpu_load() cycle, KVM resumes the guest
-without restoring CSR_HENVCFG, silently disabling pointer masking for the
-running guest.
+> diff --git a/tools/testing/selftests/kvm/riscv/get-reg-list.c b/tools/tes=
+ting/selftests/kvm/riscv/get-reg-list.c
+> index 8d6fdb5d38b89..cb16c638ce1a1 100644
+> --- a/tools/testing/selftests/kvm/riscv/get-reg-list.c
+> +++ b/tools/testing/selftests/kvm/riscv/get-reg-list.c
+> @@ -1057,37 +1057,17 @@ static __u64 vector_regs[] =3D {
+>  #define SUBLIST_BASE \
+>  	{"base", .regs =3D base_regs, .regs_n =3D ARRAY_SIZE(base_regs), \
+>  	 .skips_set =3D base_skips_set, .skips_set_n =3D ARRAY_SIZE(base_skips_=
+set),}
+[ ... ]
+> -#define SUBLIST_V \
+> -	{"v", .feature =3D KVM_RISCV_ISA_EXT_V, .regs =3D vector_regs, .regs_n =
+=3D ARRAY_SIZE(vector_regs),}
+> +
+> +#define SUBLIST_ISA(ext, extu)				\
+> +	{						\
+> +		.name =3D #ext,				\
+> +		.feature =3D KVM_RISCV_ISA_EXT_##extu,	\
+> +		.regs =3D ext##_regs,			\
+> +		.regs_n =3D ARRAY_SIZE(ext##_regs),	\
+> +	}
 
 [ ... ]
 
-> @@ -428,7 +427,7 @@ static int kvm_sbi_ext_fwft_get_reg_id(struct kvm_vcp=
-u *vcpu, int index, u64 *re
->  			continue;
+> @@ -1153,10 +1131,10 @@ KVM_SBI_EXT_SIMPLE_CONFIG(susp, SUSP);
+>  KVM_SBI_EXT_SIMPLE_CONFIG(mpxy, MPXY);
+>  KVM_SBI_EXT_SUBLIST_CONFIG(fwft, FWFT);
 > =20
->  		conf =3D kvm_sbi_fwft_get_config(vcpu, feature->id);
-> -		if (!conf || !conf->supported)
-> +		if (!conf || !feature->supported(vcpu))
->  			continue;
+> -KVM_ISA_EXT_SUBLIST_CONFIG(aia, AIA);
+> -KVM_ISA_EXT_SUBLIST_CONFIG(fp_f, FP_F);
+> -KVM_ISA_EXT_SUBLIST_CONFIG(fp_d, FP_D);
+> -KVM_ISA_EXT_SUBLIST_CONFIG(v, V);
+> +KVM_ISA_EXT_SUBLIST_CONFIG(aia, SSAIA);
+> +KVM_ISA_EXT_SUBLIST_CONFIG(fp_f, F);
+> +KVM_ISA_EXT_SUBLIST_CONFIG(fp_d, D);
+> +KVM_ISA_EXT_SUBLIST_CONFIG(vector, V);
 
-[Severity: High]
-Can this also corrupt the physical host CPU state when called from a ONE_REG
-ioctl?
+[Severity: Medium]
+Does this inadvertently change the configuration name exposed to users from
+"v" to "vector"?
 
-Similar to the SBI call path above, evaluating feature->supported(vcpu) here
-invokes the hardware probing logic. If triggered via a ONE_REG ioctl from
-userspace, it would corrupt the CSR_HENVCFG register of the physical host
-CPU executing the ioctl thread.
+Since the SUBLIST_ISA macro uses #ext to stringify the name, calling
+KVM_ISA_EXT_SUBLIST_CONFIG(vector, V) sets the name to "vector" rather than
+keeping the original "v".
+
+This changes the user-facing CLI configuration name, which might break
+backwards compatibility for anyone invoking ./get-reg-list --config v or CI
+scripts that rely on the old name.
+
+Could we keep the test configuration name as "v" to avoid breaking
+command-line compatibility?
 
 --=20
 Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526-kvm-get_re=
-g_list-v2-v2-0-7940a401454a@sifive.com?part=3D1
+g_list-v2-v2-0-7940a401454a@sifive.com?part=3D2
