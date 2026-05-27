@@ -1,83 +1,86 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7782B2DECBA
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 17:50:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1803A2DECBA
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 17:50:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779904206; cv=none; b=YQZ7I0ffTE0xGVuprmFT9Yi0FgMY+pUWoeLoaxPHX89cYjbYLsyv7ANPF4cxmiqQM0wM0zlY1NLupqJA2DR69xqHz38IoKd/cCD/MvNKLCeQKZYHx/ZA//ERT63Zp2ldCClHNkdswFm2ZX7OEMNdvtxIti3my8loWiXQma4/jiY=
+	t=1779904210; cv=none; b=WXpYPw+lwyxn+WLvVpLWbpFQv4TglmLeBxHbd9JK4ihanEFnvyzaEDH0j4VnIO9AuCHiu3eNGRCdldkEJX8P2QPOo9AmmC8EpvTX93dR+vqFch9i2Tw5a/l78eHc8evLihNmuybajRX9/nYIHnP0N7+aSYEnAK1UooEk8vDZWDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779904206; c=relaxed/simple;
-	bh=tKRV1Z0ZVh+UgFhRxNMclrd8SwjOONZx4Iyy1UkGces=;
+	s=arc-20240116; t=1779904210; c=relaxed/simple;
+	bh=1BW7r9KqtnIFi5kuh51qWD66P5FNa6siBZkCD4Jlpgw=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=TwwGrpXFciLa2ioNBL4EaEE+jvbTnQoVd5AHSpl67fZqYcyEdGp4YNcEsE4c6HTI35sex3zZnzm8eoS1X+fnExNVjXWpc+zob3l79lcgyOBtMgx2/0AA/Gt4Z+fTbkdfvFyGx+/N9BomzkETrR+3uJ8anh73+iDDC5b+kv4R6nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=p5HUFbMT; arc=none smtp.client-ip=209.85.215.202
+	 To:Cc:Content-Type; b=kQV+jeXdlIm/2kz2xVAhxkw/E0zN3vMju7PjYhH020sUxCVRFKRaT7Oe99vGbj7/qkCAS1LLdNe0+xEiZu99dfgCEfpovcxadfjQDLbFiTYnqGn413Sez9tTpv/9Odc5af5mxG3qTR/fQUgqxeZeU2afdOyPTv7+/SyjASRx9eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Mw288/9B; arc=none smtp.client-ip=209.85.216.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="p5HUFbMT"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c82ac893940so5841199a12.1
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 10:50:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Mw288/9B"
+Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-366122e01fcso11426237a91.2
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 10:50:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779904204; x=1780509004; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779904208; x=1780509008; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=fTo02/1VjHtEWl6DSFps5XXHnaBlTwlL/IJV/C62XRY=;
-        b=p5HUFbMTmJusHqEcddEVEv654XxghTlHSOdPtahN/CM8lOO3rkHLEPfcS+h/UCWuZb
-         nkSCRGrbPWMoW67wyxYoasIH22cSq3IKGsZos5g6nvLGCljE2bTZr8BTIpThaWwdwLVH
-         /juIYh55cgjHsWqE44QYWSaWj9qz5EDTxv5B9vsCGQ0MEUiWabts5SvTzOkXLtAp+BoT
-         U73A/6Rr12anJTE+Xfo8x72u3xLN16SeXqCP8qGJ8XSY4gkIZ6cs9/4laB2lMq1nE60x
-         /FnS9GnucShPDiZmhiUzeXFerQvRauTBdz4mrfuyqw8Nx0zkuRSQgPBXFRok33jCDGEX
-         HjFA==
+        bh=qTKqrTVvlKxeIIRWyVuq2MiHyfMURoW7pbpRw8A7Aiw=;
+        b=Mw288/9BgSmSGvY9DYTup0xPgG39W8qZXz2D7ZspDdjOyjsB6aZhVn64k1dRR81OuK
+         aMV3GnxrVcdWU1rXb0NDqzlXHLgNewous9GGVrVv6GuD1N4YJAktl9ch1Fn1u13FtMKQ
+         WZ1YgpBjjGBXOUFt4Ts6WOxzZBNDC5wO42W71rkx8uexyK0+A6a/1ooU4xLJaFFMSUW+
+         FD17NuCrLkN0Lywfw9/AHLMohk/VOoZNL9/0m4PXf26O/G/cI8X1JXeZXaFIX2bw5Lor
+         deUXprNgC0L5fEnnlyTZLeL7b336TXFbUOu0xqeQHv/ZEE6yVEWBmbxndh0vwFm4WRd2
+         LYOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779904204; x=1780509004;
+        d=1e100.net; s=20251104; t=1779904208; x=1780509008;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=fTo02/1VjHtEWl6DSFps5XXHnaBlTwlL/IJV/C62XRY=;
-        b=Bf0SOHc54V6vSEqC8BXAjONBDgg0rozVNmWBA0o9EUqSQ66CfvLBbfTGM2BYxP2uUQ
-         euUBOAyLmAsY1VuidsE0LkhHgBpwMeHD3bXlbfbLHugivDFKkmspU3RshLRbXDnoSa4A
-         tcHuVg8sqToxK9uOQwXt4jULUDGmIF3acYd7JNj2/VKFHtnD/ekt37L0MmfFD4tvYqU8
-         42l4rAKkZop4svxRoOH6F2D2Ez+hNEjLwSEYLBdbJAhjvZBY2n9PRpJAGpquWZNAHovx
-         r/fK6kknGO7rbCXZ4Ss1uX/G4422vzSfGDs/oqDMdr8WP1L197Qtv8vlMreZmIBe/RRc
-         7FIg==
-X-Gm-Message-State: AOJu0YzqFd5pImnxtJSG54d6N0iJvVY5VhqjIHywkga9f5ejJH3/CIBw
-	KWULEw4kvqbbQO02L1HzPecYBOUM8A/7d68+6vigq0Jg+QZLVVeuotCjAP/nGBSWFU3N0SyxbSf
-	UwPWJkg==
-X-Received: from pfbfb19.prod.google.com ([2002:a05:6a00:2d93:b0:838:5125:b5e4])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:1ac9:b0:83d:632e:a8df
- with SMTP id d2e1a72fcca58-8415f6af7e7mr22846018b3a.40.1779904203601; Wed, 27
- May 2026 10:50:03 -0700 (PDT)
-Date: Wed, 27 May 2026 10:49:14 -0700
-In-Reply-To: <20260514200536.1603737-1-seanjc@google.com>
+        bh=qTKqrTVvlKxeIIRWyVuq2MiHyfMURoW7pbpRw8A7Aiw=;
+        b=WLV6ZPd0Pz/cwRo83Lvuvr7P/YOfBAEDs7NMNUKs7BXvw7YEdFd5VMR0cf/zhcrX0Y
+         CU6tGlYYRTmxFuRw3HUrEw8ASVqpr2iCuAFJg+zu0ZF0h6X4HKCGeA5gZFOp4lkFbrh7
+         elD/9bokln/D6Jt783WFDiW+MVtq3oF4/v9IYDU3JXPJ4HrUSjtJVdLu+mruIEw6H69S
+         IjQ5jC3w+1EbBqlDyVvIBuutQje+yarJOyShQhl6/IX8BVfVcGoxoivaw4mcAbUQH+Uk
+         0Qc3Y9XCnrSy38M2yaMNHU+PaJkE2cMfa57ifq4n8M/kIlOTF21LImPqkp63FnhXJjZi
+         mTOA==
+X-Gm-Message-State: AOJu0Yy7KUCdA15m+io17Lfn/xkterc3xINWnvL+oJhmpZFy/hYJXJHZ
+	f2lpymT9xLYq/XigVxLv/CCG6TlXhE/5/MPEXjbZnfVpEYfMiwvL16L1M4v2eiRVMIYGyjOjw2s
+	QorfnLw==
+X-Received: from pjua3.prod.google.com ([2002:a17:90a:cb83:b0:369:4e8d:8e72])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90a:d2c3:b0:36a:6ac2:8bc8
+ with SMTP id 98e67ed59e1d1-36a6ac28c1emr13071593a91.14.1779904207799; Wed, 27
+ May 2026 10:50:07 -0700 (PDT)
+Date: Wed, 27 May 2026 10:49:16 -0700
+In-Reply-To: <20260514211510.1630673-1-seanjc@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260514200536.1603737-1-seanjc@google.com>
+References: <20260514211510.1630673-1-seanjc@google.com>
 X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
-Message-ID: <177989665727.4071847.1437992814822816532.b4-ty@google.com>
-Subject: Re: [kvm-unit-tests PATCH] x86: Disable PKU in vCPU model for vmx_pf_{vpid/no_vpid/invvpid}_test
+Message-ID: <177989674287.4072527.76629190729560025.b4-ty@google.com>
+Subject: Re: [kvm-unit-tests PATCH] x86/emulator: Add testcases for ENTER +
+ emulated MMIO
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>
-Cc: kvm@vger.kernel.org, Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: kvm@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-On Thu, 14 May 2026 13:05:36 -0700, Sean Christopherson wrote:
-> Run the vmx_pf_{vpid/no_vpid/invvpid}_test VMX tests with -pku, i.e. with
-> Protection Keys disabled in the (v)CPU model, to reduce the number of
-> testcases by an order of magnitude, which in turn reduces the runtime by
-> roughly the same factor.  As is, even the 240 seconds timeout is
-> insufficient, e.g. each test can take upwards of 300 seconds when run on
-> Skylake-era hardware with a debug kernel.
+On Thu, 14 May 2026 14:15:10 -0700, Sean Christopherson wrote:
+> Add testcases for stack pushes to emulated MMIO via the ENTER instruction
+> to validate a pile of KVM changes needed to fix a use-after-free due to
+> KVM referencing kernel stack data across a userspace exit.  Test that ENTER
+> is handled correctly if it splits non-MMIO => MMIO, MMIO => non-MMIO, and
+> MMIO => MMIO pages.
+> 
+> Opportunistically add a comment explaining what the collection of pages
+> are used for in the emulator test.
 > 
 > [...]
 
 Applied to kvm-x86 next, thanks!
 
-[1/1] x86: Disable PKU in vCPU model for vmx_pf_{vpid/no_vpid/invvpid}_test
-      https://github.com/kvm-x86/kvm-unit-tests/commit/7e7d2f89232b
+[1/1] x86/emulator: Add testcases for ENTER + emulated MMIO
+      https://github.com/kvm-x86/kvm-unit-tests/commit/20693e433cc1
 
 --
 https://github.com/kvm-x86/kvm-unit-tests/tree/next
