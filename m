@@ -1,132 +1,177 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0B33F9267
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 11:36:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63733EEAD0
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 11:43:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779881784; cv=none; b=EDqnL8yUYG1OdsRmKl7ZdSrt49+d7PFofMGLrnQv0gzL0bZQ9ZVf4SMONvdseyPxHcb7hk0h3HC8kPh2UHHSVRApzpZjBREcWS1jsHYqJrUWpBLkA7ST6q1Bl/QOpp3gdyR1LHBMevJrC5YJnO43vKxsaabzPAPnY8QTJ2Jz4HE=
+	t=1779882207; cv=none; b=DdT+TXqCfvIIAuqXgDaxPPQHKqfLb5IT/nNjwwcePelzmwBwu/isioGuBRf0UffkgivF67pNIXwOIpHWfksgYwWEm4JFCTaEErFgCrxIhk2DBFG4IJLVEnNZ4g0LdFepojsX7YMtA7JRCXMlcE+4gDkBwX7PtX5/+bo4kWHgwQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779881784; c=relaxed/simple;
-	bh=Ox1/u8ETRmBP8fbh96OnHd4k0Ijf3t81yA3eK1b17q0=;
-	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=XV8oMb5CAsZROpLCpKn47vmrpy19L79fMJFjbHOeeViJEAbivEAQVAIG/mTEgfXTwojmEL+6gEpY7U8tlKFQ9e3oxluLQAB0OTVBzSXiLT0GK/+XWPS6E3CyugEq2EBu7piA+xJqCR6/dgCrFWMuHJIZbD1WUGxrizpZzWO+mc8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RZvPsSEp; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779882207; c=relaxed/simple;
+	bh=pJ4W3l2cfftQx53uPgTKLgVG8ehpjcVvnjLKRCQDGE8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=SReWbN1dWxG02VaCiOHTaKwH8P25/6tbcOzg2VQmqXQsc2OEicOKtp/GeJ3E52mkcYqwRNjzK7tzTqH6qHbSuE0oQAwGg+R5QB954nz55QHdYlpBoCHJgUgqWhAupnfX9gMVTgmG0p/fjipQvWR2pd9juAhLteEmr5/pkgXViUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=bPADWELO; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RZvPsSEp"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-366375c4076so5039987a91.3
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 04:36:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="bPADWELO"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-49048e043e5so40285155e9.1
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 04:43:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779881778; x=1780486578; darn=vger.kernel.org;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=OBwJckIjnNMjSafxeOFpVmfknD9YcolFfX87IwoV4Hs=;
-        b=RZvPsSEpr37r383KtT1y3E+OJnvnOnEmqfzv3VKFeVoFoTGtwCZmrGsolOtJYfr0x7
-         q2DinG3p53NfY8f3eYsbX2Qi3Hg3lg6rmYCZh0LGv3oqsQq/put7oFxzvOiOmQpgFviR
-         uQjIq4Fw5XN50tqQAt6yVBIEEBUsxKaGGtNjxeeOdG2Rf8OfkOfOgjTGedfdFEeogFmu
-         2SilMPP0bufr7NoJlbSDblExDVYpjRhtdlL1e64El6o6vGfmd/hTtnMG3X6+JqbDuVUT
-         nJfDLIra7NiZffKI0hpgZdcDZgVBGGOyjkL0i+Fxev6U2a4hHY22td9WFXsRhGHvPqms
-         0lIQ==
+        d=linaro.org; s=google; t=1779882203; x=1780487003; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=IDYcqy+lALeYVl8Mkv8O83zszmMK8AJuHWXrTl78/K0=;
+        b=bPADWELOYLPV+BRJV9h6FQ2V0YUFNa98wMTYr3C5MLYq00/Xlvw6hTEoZziyMKrCAn
+         MBthjrUCcMzLuEkdwHOOvVuQWNUvF5OeLOICx5riVxNKR0en8EeBN7CUzd0WjcMXClyU
+         H9rVT/5EAY/m0SnMFvgaOThwi5j3Sjw2vSLLgdZAQlMaK9sWnXqaT0o0JDhnZ+F90SvS
+         RanQe9lqm8DhzcvVBGk2qXagCsNRSCyg9/GE8zmMoM8EQHGQohPM/3GcqmzgJz2uaHM8
+         cDFSKBOnMN+FplF57pI31BgrhRJMF6EYRHIXoJy9wc0DnuIVqKdob2ITl//woruR++WO
+         tyYQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779881778; x=1780486578;
-        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=OBwJckIjnNMjSafxeOFpVmfknD9YcolFfX87IwoV4Hs=;
-        b=SP0VgWGww1i+gB5KalWRjkCVnriTAbOLriKfBJhHsqzmGX+BijFy534knpkMVmsFXI
-         FyfCKwbh4C83Gs9Swsyc7jW+x9uTD23roYn1MGaggSrz98yftk7L87bfDwcq/iFai+ux
-         /z0KY+V/+tEoMJkvjq6I0yMH4npzT2GmsijqCvWwJodll8jLTPK7JHXTcuNSgCgqynfB
-         xaHmm8vtg8TNfj11m6BVBIi40JaX8mJ0SxPrJFw5NAZDqJfbxBnVWED9wmL5w/QkBR5P
-         XzSBOvfzZshSEG9hsuxz0LwojdEJajFtL6eO7yIN1hPTEZ7LQXV7Oh9XJsdqJ/tj/g8P
-         Pq6Q==
-X-Gm-Message-State: AOJu0YxJLB2piDKNmBDOGC/FSoqByNLLEW9f9UkCTwggaLYiM+7HCwkN
-	Oy6VBuNIJu6DuNnyPNBF+OmfRoL/PEKS62qxGYtwHGalJGJJTbXMBWp5zS97zg==
-X-Gm-Gg: Acq92OFeaJ87OeIzeAhFi4WWbeEjb7f+d2Lt93MtjPmAqxiyZXDQE5tvgwEY/gamWmS
-	3YORJu3RUoFw9UjwiNIm1ShdIrUjGa+7BIkCteJRc3dVULmuoQOihYwe2FIbeWhEdpllmAg2e31
-	x52k0BTCuiDkFMucaRg+t6rSFXynBOyvX957TyAWB6lu6CUOhwPmWNiysVzvAeNxFFiKmn779q0
-	3go45XkJY7PhX25nabFHobHKC4sriKkT5un0P46Aei3j9CDVNuX4Y2BKtPJeoD4p27g+VHYojB2
-	Ly+Ds7S8nU9BF1vP/sAUA2FB8my6H8EMvDc4wVzIkKA/jPvd3qugv7ZDgXPLZtC/H/OUdt44uxg
-	kcWJJZgCniqk0tuvKr1VvV/HtVmZ5zHVALydjnXkgm+lrAz4g76FRyRMvQ28WIAgwYL1jw7xyXR
-	du0RIlawGSbYp/E9WLD6WC7Q==
-X-Received: by 2002:a17:90b:38cc:b0:361:45df:102 with SMTP id 98e67ed59e1d1-36a6765b589mr21645367a91.17.1779881778307;
-        Wed, 27 May 2026 04:36:18 -0700 (PDT)
-Received: from pve-server ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-36b24d9c5edsm798906a91.3.2026.05.27.04.36.16
+        d=1e100.net; s=20251104; t=1779882203; x=1780487003;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IDYcqy+lALeYVl8Mkv8O83zszmMK8AJuHWXrTl78/K0=;
+        b=MbyclmEKkcvvhU9ipWmMBrtkkoBOpoNjROwdyDMaNtY49jNBf1VOF/fHUoDktCaOjL
+         0i6tHQJrGu4bqL8dQMJplaM6TDgPccNXa9D+MyPRA6SgANRpEZ4JMWndSyoVzg/7yN/4
+         BhtdQcUSgYPAz/40tPACdPrZjTn7NJ1MlUCYw9fjya7+qXNoekQi49KkPeHEDugrkA0a
+         g2lEHVrjEJbbHzS2jkGrLla8icASdI7YOxE7vbKKYlPxafDCb/O0RLJIRjZjMX5fhoG/
+         VgiPrQVeqTbDw/5rOG3Rac2CtPNvl8lhLbzR0oBh2v/TU6SIGMr0jqqVLOfROYvjKllp
+         AvBQ==
+X-Forwarded-Encrypted: i=1; AFNElJ9mDnIZ20ur/02dC9oIyq6Wpy5OU+TDFm+gKXQ9GGDel2KL+nKSpN4MfiwoEu2Kfv6Jc+Y=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzjSjJ8tkdJmAbMB+EfoGvYyFNQ1mZFcHL1qKwI/WybhHLqGHGr
+	dz+PcPupCsuYU/b4UfbtiMze4LUnE7N7XseuekNw1RbTjZuqLDwWh3shvt20G7DNxyw=
+X-Gm-Gg: Acq92OHYQtK24wZBmep8a/U4dgYSM4F6Pfom/eaChVfJDepDUrSPFhIackRBynvdPxS
+	yE4TR9YE+Zk/kPXRLXPxXr6Fj3HNJnJWmQ3kwKvWaumHFIJ1JJ4RMNNdcruWvvYJa7NJmrRkkiB
+	pGHT+7I2Zqe7gojmL3J+G31Vz02qZ7q64pJMmcIysVHQhoR1jFW8RgVUsBliGkt5BTpHxPala5n
+	QPFsL4Uh9HeU9KMYfjzCKAT4VOKVzhLdFmzT2VjCRWcXnyTYh8xLrvo+v1iQGMGkh20g1bgiu62
+	KOkhwDTxxkzbT0aT5TuELue5PXCYPMnENAXgnvC/5VqbpTJSHlH1jmOX2asiI1eoO9p8c6X+/Za
+	fwMWYtMcDp8HbFW1hznynVKtwoFF1urJoMkVlxkfeGbTr/Au8o60GhAejBaouCw1h5qdxQ3u0qH
+	TROwT4nAIwnEzSzCy6w6uBdrc=
+X-Received: by 2002:a05:600c:4f88:b0:490:50eb:b777 with SMTP id 5b1f17b1804b1-49050ebb9e0mr346140385e9.5.1779882202494;
+        Wed, 27 May 2026 04:43:22 -0700 (PDT)
+Received: from draig.lan ([185.124.0.195])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490454b1ab3sm441824325e9.14.2026.05.27.04.43.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 04:36:17 -0700 (PDT)
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Subject: Re: [RFC v2 5/5] KVM: selftests: Print the vcpu_id when KVM_CREATE_VCPU ioctl fails
-In-Reply-To: <20260523124853.102E61F000E9@smtp.kernel.org>
-Date: Wed, 27 May 2026 17:00:56 +0530
-Message-ID: <qzmx6qdr.ritesh.list@gmail.com>
-References: <12184d5eda089814659d5a861b3ebc30d42733a3.1779524962.git.ritesh.list@gmail.com> <20260523124853.102E61F000E9@smtp.kernel.org>
+        Wed, 27 May 2026 04:43:21 -0700 (PDT)
+Received: from draig.lan (localhost [IPv6:::1])
+	by draig.lan (Postfix) with ESMTP id C902E5F7F0;
+	Wed, 27 May 2026 12:43:20 +0100 (BST)
+From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+To: qemu-devel@nongnu.org
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	kvm@vger.kernel.org,
+	Mohamed Mediouni <mohamed@unpredictable.fr>,
+	Pedro Barbuda <pbarbuda@microsoft.com>,
+	Alexander Graf <agraf@csgraf.de>,
+	Peter Maydell <peter.maydell@linaro.org>,
+	qemu-arm@nongnu.org,
+	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+Subject: [PATCH v6 0/8] target/arm: fully model WFxT instructions for A-profile
+Date: Wed, 27 May 2026 12:43:12 +0100
+Message-ID: <20260527114320.1581552-1-alex.bennee@linaro.org>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-sashiko-bot@kernel.org writes:
+This series fully models the behaviour of WFxT instructions. We
+already had support for WFE for M-profile but we left off A-profile as
+it has more potential sources of wake-ups. The main one is the event
+stream which includes events from significant bits of the timer
+ticking over.
 
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> - [Medium] The added `pr_info()` call clobbers the global `errno` variable before it can be read by the `TEST_ASSERT_VM_VCPU_IOCTL()` macro.
-> --
->
-> commit 9022e7c111e4121ff5a4ed4a90dcbfd2df0a62cd
-> Author: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
->
-> KVM: selftests: Print the vcpu_id when KVM_CREATE_VCPU ioctl fails
->
-> This commit adds a debug print statement to display the vcpu_id and errno
-> when the KVM_CREATE_VCPU ioctl fails.
->
->> diff --git a/tools/testing/selftests/kvm/lib/kvm_util.c b/tools/testing/selftests/kvm/lib/kvm_util.c
->> index 0dc67c1502cfb..6a0ee68036236 100644
->> --- a/tools/testing/selftests/kvm/lib/kvm_util.c
->> +++ b/tools/testing/selftests/kvm/lib/kvm_util.c
->> @@ -1354,6 +1354,9 @@ struct kvm_vcpu *__vm_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
->>  	vcpu->vm = vm;
->>  	vcpu->id = vcpu_id;
->>  	vcpu->fd = __vm_ioctl(vm, KVM_CREATE_VCPU, (void *)(unsigned long)vcpu_id);
->> +	if (vcpu->fd < 0)
->> +		pr_info("Failed KVM_CREATE_VCPU for vcpu_id %u with errno %d\n",
->> +			vcpu_id, errno);
->>  	TEST_ASSERT_VM_VCPU_IOCTL(vcpu->fd >= 0, KVM_CREATE_VCPU, vcpu->fd, vm);
->
-> [Severity: Medium]
-> Does this pr_info() call clobber errno before it can be evaluated by
-> TEST_ASSERT_VM_VCPU_IOCTL()?
->
-> Since pr_info() uses standard C library print functions, it can modify errno
-> internally even on success. TEST_ASSERT_VM_VCPU_IOCTL() captures errno
-> to detect specific failure modes and to format the assertion error message.
->
-> Could this cause the test framework to print an incorrect error code or
-> bypass checks like dead VM detection when KVM_CREATE_VCPU fails?
->
+The refactoring from the previous iterations of the patch have now
+been merged.
 
-yup, I will fix this in v3.. Something like this -
+I've dropped trying to fully model the global monitor in favour of
+taking advantage of the architectural flexibility to have an IMPDEF
+event wake up for any reason. We treat the setting of exclusive_addr
+as such a reason because it indicates the current vCPU is in a ldstx
+exclusive region and we don't want the guest to deadlock. This does mean
+the system won't sleep on WFE enabled locks but people shouldn't be
+relying on QEMU to model real world sleep patterns anyway given the
+efficiency of emulation compared to real HW.
 
-+       if (vcpu->fd < 0) {
-+               int saved_errno = errno;
-+               pr_info("Failed KVM_CREATE_VCPU for vcpu_id %u with errno %d\n",
-+                       vcpu_id, saved_errno);
-+               errno = saved_errno;
-+       }
+I've written a test case using kvm-unit-tests:
 
-Also I noticed that all other KVM selftests have moved from
+  Message-ID: <20260527111822.1563679-1-alex.bennee@linaro.org>
+  Date: Wed, 27 May 2026 12:18:21 +0100
+  Subject: [kvm-unit-tests PATCH v2] arm: add wfx test case
+  From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 
-uint64_t -> u64
-uint32_t -> u32
-uint8_t -> u8
-int64_t -> s64
-...
+Only the following patches still need review:
 
-So, I will add separate patches on top of the current patch similar to
-how it was done earlier to convert powerpc kvm selftests as well - to
-keep the review simpler w/o mixing too many changes in v3.
+  target/arm: enable event stream on WFE instructions
+  target/arm: fix WFET typo in syndrome
 
--ritesh
+v6
+  - add typo fix
+  - addressed rth's comments
+
+v5
+  - addressed rth's comments
+  - all but one patch now reviewed
+
+v4
+  - precursor refactor patches now merged
+  - dropped global monitor emulation
+  - addressed other comments
+  - tested with check-tcg and kvm-unit-test wfx tests
+
+v3
+  - fixed the WFE exception handling
+
+v2
+  - I've kept the tests separate, see:
+
+    Message-ID: <20260417164328.1009132-1-alex.bennee@linaro.org>
+    Date: Fri, 17 Apr 2026 17:43:20 +0100
+    Subject: [PATCH 0/7] tests/tcg: more capabilities for aarch64-softmmu tests
+    From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
+
+  - tweaks to global monitor behaviour
+  - STLR/STL will also trigger events to avoid deadlocks
+  - see under the --- in the patches for details
+
+Alex.
+
+Alex Bennée (8):
+  target/arm: fix WFET typo in syndrome
+  target/arm: teach arm_cpu_has_work about halting reasons
+  target/arm: redefine event stream fields
+  target/arm: ensure aarch64 DISAS_WFE will exit
+  target/arm: implements SEV/SEVL for all modes
+  target/arm: enable event stream on WFE instructions
+  target/arm: handle the WFE trap case
+  target/arm: implement WFET
+
+ target/arm/cpu.h               |  16 +++
+ target/arm/internals.h         |  22 ++-
+ target/arm/syndrome.h          |   2 +-
+ target/arm/tcg/helper-defs.h   |   3 +-
+ target/arm/tcg/translate.h     |  18 +++
+ target/arm/tcg/a32.decode      |   5 +-
+ target/arm/tcg/a64.decode      |   5 +-
+ target/arm/tcg/t16.decode      |   4 +-
+ target/arm/tcg/t32.decode      |   4 +-
+ target/arm/arm-powerctl.c      |   6 +-
+ target/arm/cpu.c               |  53 +++++--
+ target/arm/helper.c            |   8 +-
+ target/arm/kvm.c               |   5 +-
+ target/arm/machine.c           |   2 +-
+ target/arm/tcg/op_helper.c     | 253 ++++++++++++++++++++++++++++++---
+ target/arm/tcg/translate-a64.c |  64 +++++----
+ target/arm/tcg/translate.c     |  31 ++--
+ 17 files changed, 395 insertions(+), 106 deletions(-)
+
+-- 
+2.47.3
 
