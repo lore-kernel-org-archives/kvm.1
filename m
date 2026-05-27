@@ -1,153 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F7253E8354
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 16:08:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F905382F01;
+	Wed, 27 May 2026 16:17:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779898117; cv=none; b=ODuxmoA82KCnGl4I2mLNKzM/1cG0ZMeEcPaoe+lhfbKEV2Duhb/Wul7+eBa2ApdezEOqeJ6hSFtGPhVRiVkG2k9on6Xra2AZdzEP4ylaiyLTFWgaf8kdoOWen/D1OxMmpU5HmpHP2HbctHO5IAvKpM4jSwAxsnqs3ubK3yVhOpU=
+	t=1779898624; cv=none; b=qWr1BpO/PYtib9eVcD+C2KPZ+ttCNHHYUP9ozh/uUtyClotaZw6hycnTYCXW27DP/UAFIHhva5iJ2q3CvSuK6re6VXIWB3dek0cOGhVIeiEXJPEfa/cHrdAsF8q4FOwMhyeL1M/SXKup5wnQyaYgjlTxSMUxY8ldZsDrxiSc3Qc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779898117; c=relaxed/simple;
-	bh=89MwsaT30SUmDSqOMjsQUHlaorigN0+SIrDdseQ/Wgs=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=Nc4hkWCKLLwwRfhuMpIdSdyAbfv+SQcVRJuizz0fKwS7GfkrCgVmpkUlWSmVIDwQaYSgJFk1zzJ7tNgLQ0miYLX6ykz86uCTHLJKRixfECmyqJWv/7s48FZyHJFmwyDEmy+rpJi4d73tSq6MjmW4PJq+hV6NPrFbl40s5QZ/cT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gqr6OJgD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779898624; c=relaxed/simple;
+	bh=mZT0P/zwaX51RtEUsi0fOiyR3kTC/n5FTEuynXi8sSo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ADAxtmBEvZT4pZQaAh6jCnYVQtRvh8nivU/aRXN+D8RkfJycbHSfKrw8fWtuwtfyo17C3wpZPtRAx1IQvychRV85awyGiam5HxF2PdYGSkMAoKl36cUMvHYE4TjWyqrin5ANVeg6Ua6dLpKwfqpNb4uIxCm2p1OoDoSI+usiWAI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=B+cTT3I9; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gqr6OJgD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D5251F00A3D;
-	Wed, 27 May 2026 16:08:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779898115;
-	bh=GOPX5IARmJ6wI6rsLZCc+SqU4kdUXbdL9CQ8CbjdAx8=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=Gqr6OJgDAIAjozCoJ2WZPTQCj68CzUXGjuSVJP0f/jeJFQ37gXMNyr4EhXQ3Dved5
-	 v2DD3gua0VQqtEawJQ0NCyiBPXL3KuII2DXymXZO7S6xoaR9p7Mb4CjDeyYh01H3cV
-	 DshuAKfGdaqJKU10baxk2XIYOfCHAaLif6dzJMnpm4xbX5yJqSckIOfxZ/9ztZJTEF
-	 hPmGx6NHJoSHRQORyOx63mLXB4tLvoJcqfSNPy5eCF6A51o6JD9nXABh+JfzF8ti+l
-	 t2a35dt0PbWGOn85I6oiykBrgMM2YNVXS9aeTMbtvtF8anYDTQDLAEvEtOogVeymQ2
-	 60c/J4H+gu1iA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 2/5] KVM: s390: Implement KVM_PRE_FAULT_MEMORY
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Claudio Imbrenda" <imbrenda@linux.ibm.com>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260527144358.186359-3-imbrenda@linux.ibm.com>
-References: <20260527144358.186359-3-imbrenda@linux.ibm.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 27 May 2026 16:08:33 +0000
-Message-Id: <20260527160834.9D5251F00A3D@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="B+cTT3I9"
+Received: from pps.filterd (m0356516.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64RC0gSF272240;
+	Wed, 27 May 2026 16:16:47 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=pp1; bh=b9F+AmgWvYDlJzmEdke60GpHwUtQVz
+	Dqf0WjOaCEDh0=; b=B+cTT3I9cHjb6BNxLlOprt9Z+T973dcNKzaK5AOiECzjIr
+	manQXwCv1j2GW2sL7WZcIRv6Yi0lt6gjtNZ9OknuAzzuGNrhWDRxD1jxysFQ8Why
+	GnKDcwVLGWwsgWUG0NMtT53WZ1cu0I8tDkQ/WtxS/ZWugiMOKPX8dldJmEQxssL/
+	Omax6bdFYMejZpIbYYz85HChlDfA7PZ9bEEuf2qFCD8oQGrhM2guaTyLQ9xXP0PE
+	weiUsw0wp9EbxiajT34+3BZc67bDMhlmPrg77aUDLLSUXkLN461O8+gVGaWZb5kE
+	IPwT3M+ImY08HMtRuBqPgcU88hfB2jbfxMJ6JU1g==
+Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4eb4nq91d4-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 May 2026 16:16:46 +0000 (GMT)
+Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
+	by ppma12.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64RG96gu002888;
+	Wed, 27 May 2026 16:16:45 GMT
+Received: from smtprelay02.fra02v.mail.ibm.com ([9.218.2.226])
+	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4edjrb3tt0-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Wed, 27 May 2026 16:16:45 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (smtpav01.fra02v.mail.ibm.com [10.20.54.100])
+	by smtprelay02.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64RGGfTI47907136
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Wed, 27 May 2026 16:16:42 GMT
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id DDDE020043;
+	Wed, 27 May 2026 16:16:41 +0000 (GMT)
+Received: from smtpav01.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 09AF520040;
+	Wed, 27 May 2026 16:16:40 +0000 (GMT)
+Received: from Gautams-MacBook-Pro.local (unknown [9.43.117.77])
+	by smtpav01.fra02v.mail.ibm.com (Postfix) with ESMTPS;
+	Wed, 27 May 2026 16:16:39 +0000 (GMT)
+Date: Wed, 27 May 2026 21:46:33 +0530
+From: Gautam Menghani <gautam@linux.ibm.com>
+To: Sean Christopherson <seanjc@google.com>
+Cc: maddy@linux.ibm.com, npiggin@gmail.com, mpe@ellerman.id.au,
+        chleroy@kernel.org, atrajeev@linux.ibm.com,
+        linuxppc-dev@lists.ozlabs.org, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] KVM: PPC: Kconfig: Enable CONFIG_VPA_PMU with KVM
+Message-ID: <ahcY4S7shzG_kDt6@Gautams-MacBook-Pro.local>
+References: <20260518044150.34632-1-gautam@linux.ibm.com>
+ <agu2UAi6lWclxFYh@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <agu2UAi6lWclxFYh@google.com>
+X-TM-AS-GCONF: 00
+X-Proofpoint-Reinject: loops=2 maxloops=12
+X-Proofpoint-GUID: Xu6BugMKoIkhkjlN9TsXGZnUcHw_o0Aa
+X-Proofpoint-ORIG-GUID: b4h-zIYe_oohMh7MgSS0yqDDW51hSHfT
+X-Authority-Analysis: v=2.4 cv=QIJYgALL c=1 sm=1 tr=0 ts=6a1718ee cx=c_pps
+ a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
+ a=kj9zAlcOel0A:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
+ a=RnoormkPH1_aCDwRdu11:22 a=Y2IxJ9c9Rs8Kov3niI8_:22 a=kH-xMUQrV69S-q4FAwAA:9
+ a=CjuIK1q_8ugA:10
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI3MDE2MiBTYWx0ZWRfX2QhgFulZW/6g
+ Hy7Sug3x7czsigDCKgOh/cCVjtkTjghZP+Dz/ef744228AR1+LwgPyGw7dsgss2fBD1Cz6AqKgO
+ A/Qr25KvlfSitOv9ndVQacMFGfWA1PvBqNCad0OdoVIH9VWr/oklw1B2uHcIshV5B3iXJG6IyET
+ TtR/Y55rm5e8ypHl0w8i+rG7TfF4TX85HEcXVQ6Ny4ZbtAMt9QHzs3eKNbP4M1XjGf9UUbwxX56
+ 6bg7UyZymYshjdD4/UMye7nw6k/kplm5t6jZAC0ZstDFYkfSzWhDFkbvVeo5uS988VdjTz6wU7a
+ OdPHAoNvhY7kZZ9eJ9GTCiK/9+cA2tend9bHw3itshzDh9zPsMzycuKi7nlTfdq2jnsPUPioof2
+ UqUgEkoM+sk1yzN6JSn11CHdCn4lx6ZScHfjfxHwggMX2olJIEV6KStSYurHyDP0q6MGsfeWKlJ
+ EDpY9n0DTI+AIVsGxyA==
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-05-27_02,2026-05-26_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ clxscore=1015 priorityscore=1501 impostorscore=0 malwarescore=0
+ suspectscore=0 phishscore=0 bulkscore=0 adultscore=0 spamscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.22.0-2605130000
+ definitions=main-2605270162
 
-Thank you for your contribution! Sashiko AI review found 3 potential issue(=
-s) to consider:
+On Mon, May 18, 2026 at 06:01:04PM -0700, Sean Christopherson wrote:
+> On Mon, May 18, 2026, Gautam Menghani wrote:
+> > Enable CONFIG_VPA_PMU with KVM to enable its usage. Currently, the
+> > vpa-pmu driver cannot be used since it is not enabled in distro configs.
+> 
+> That seems like a problem to take up with distros, no?
 
-New issues:
-- [Medium] The error check `if (rc > 0) return -EIO;` is unreachable and fa=
-ils to handle page table walk exceptions.
+Rather than enabling individually for different distros, wouldn't it be
+better if it is enabled with KVM automatically? I can rephrase the
+commit log to emphasize that this config option is only relevant for
+KVM (similar to CONFIG_KVM_BOOK3S_HV_PMU).
 
-Pre-existing issues:
-- [High] kvm_s390_faultin_gfn() incorrectly returns success (0) when it rac=
-es with an MMU notifier, leading to silent memory skips in KVM_PRE_FAULT_ME=
-MORY and potential leaks of uninitialized host memory in access_guest_page_=
-with_key_gpa().
-- [High] KVM_PRE_FAULT_MEMORY can trigger a deterministic host kernel infin=
-ite loop if the requested GPA is within a KVM memslot but outside the gmap =
-ASCE limit.
---
 
-commit f2d2595771b18daab539c7480809ae63c3707ec4
-Author: Claudio Imbrenda <imbrenda@linux.ibm.com>
-
-KVM: s390: Implement KVM_PRE_FAULT_MEMORY
-
-Implement and enable the KVM_PRE_FAULT_MEMORY ioctl for s390.
-
-Faulted-in pages will be marked as accessed, unlike x86, otherwise they
-will trigger a minor fault when accessed. Avoiding such faults is one of
-the points of KVM_PRE_FAULT_MEMORY.
-
-> diff --git a/arch/s390/kvm/kvm-s390.c b/arch/s390/kvm/kvm-s390.c
-> --- a/arch/s390/kvm/kvm-s390.c
-> +++ b/arch/s390/kvm/kvm-s390.c
-
-[ ... ]
-
-> +long kvm_arch_vcpu_pre_fault_memory(struct kvm_vcpu *vcpu, struct kvm_pr=
-e_fault_memory *range)
-> +{
-> +	struct guest_fault f =3D { .gfn =3D gpa_to_gfn(range->gpa), };
-> +	gpa_t end;
-> +	int rc;
-> +
-> +	if (kvm_is_ucontrol(vcpu->kvm))
-> +		return -EINVAL;
-> +
-> +	rc =3D kvm_s390_faultin_gfn(vcpu, NULL, &f);
-
-[Severity: High]
-This is a pre-existing issue, but does kvm_s390_faultin_gfn() incorrectly
-return 0 when it races with an MMU notifier?
-
-In kvm_s390_faultin_gfn(), rc is initialized to 0. Inside the retry loop,
-if mmu_invalidate_retry_gfn() evaluates to true due to a concurrent MMU
-invalidation, gmap_link() is skipped. But there is no else branch to set
-rc =3D -EAGAIN. rc remains 0, the loop terminates matching else if
-(rc !=3D -EAGAIN), and the function incorrectly returns 0 (success) while
-dropping the page reference.
-
-For KVM_PRE_FAULT_MEMORY, does this cause kvm_arch_vcpu_pre_fault_memory()
-to falsely assume a huge page was mapped (since f.ptep remains NULL) and
-silently skip up to 1MB of memory instead of retrying?
-
-[Severity: High]
-This is also a pre-existing issue, but can KVM_PRE_FAULT_MEMORY trigger a
-deterministic host kernel infinite loop if the requested GPA is within a KVM
-memslot but outside the gmap ASCE limit?
-
-If userspace provides a GPA that falls within a valid KVM memslot but
-exceeds the bounds of the guest physical address space limit (gmap->asce),
-__kvm_faultin_pfn() successfully returns a PFN. When gmap_link() calls
-dat_entry_walk(), it detects the out-of-bounds access and returns
-PGM_ADDRESSING (5).
-
-However, _gmap_link() blindly converts any error that is not -ENOMEM or
--EINVAL to -EAGAIN. Does kvm_s390_faultin_gfn() receive -EAGAIN and
-continuously retry the exact same steps in its while(1) loop, causing an
-unkillable infinite loop on the host CPU since __kvm_faultin_pfn() does
-not yield or check for signals?
-
-> +	if (rc =3D=3D PGM_ADDRESSING)
-> +		return -ENOENT;
-> +	if (rc > 0)
-
-[Severity: Medium]
-Is this error check unreachable?
-
-kvm_s390_faultin_gfn() only ever returns > 0 for PGM_ADDRESSING, which is
-already explicitly caught and converted to -ENOENT right above this check.
-Any other PGM_ exception code from the page table walk (like PGM_PROTECTION
-or PGM_TRANSLATION_SPEC) is masked by _gmap_link() returning -EAGAIN, which
-then causes an infinite loop in kvm_s390_faultin_gfn().
-
-Can rc > 0 ever evaluate to true here?
-
-> +		return -EIO;
-> +	if (rc < 0)
-> +		return rc;
-> +
-> +	if (f.ptep)
-> +		return PAGE_SIZE;
-> +
-> +	end =3D ALIGN(range->gpa + PAGE_SIZE, f.crste_region3 ? _REGION3_SIZE :=
- HPAGE_SIZE);
-> +	return min(range->size, end - range->gpa);
-> +}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260527144358.1863=
-59-1-imbrenda@linux.ibm.com?part=3D2
+Thanks,
+Gautam
