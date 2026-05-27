@@ -1,123 +1,100 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.13])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46BE23806D6
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 03:29:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6036C2F3C0A;
+	Wed, 27 May 2026 04:11:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779852594; cv=none; b=DkZnWnpkyiuoG952+7YDts1bPz6LwSPR9btHAiLiLiS99ACVJVc5c9WlQ2tdSsYO/NuBuWbHFqwkMaecCEDcfkhThqzGiqWjikPa73M2gK9NQDZ+bP/aWxz/xlMsZAbpswehwlvFhRL9JvhCmdMANtmmhcek5VKN3ZNf/+yrWvg=
+	t=1779855087; cv=none; b=rmtxX0z105xyQfcGcshEpzvv9PCYY+92PxjqJ5RFuNFM8Br2LTavqsQC0JoCoYmBuDz9uWKgeRwKWmMfTAk4HhJ5RU3Bp3qN8ZguaS5wXWtD1/N4aowUDzILGsq0yJ7i91UnaNW/1/akjGaEy0axJ4n0tFC9/cmhSSg025dbXyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779852594; c=relaxed/simple;
-	bh=Tt9FVmg//7mK1+dC5sxTJMqU8ZQpf1QOgnhYX/ptzj4=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=SzqPcxlKtqYuEg+NEXs5UvRf6z4dt/+y9jzH32oKQpZQ5ghW0tfE8a6jqOTlzg/LLjim9fl4kBz3TyDlN5zSc6YyKBeBx1aBWJ+z+c9QpCH3cmIPqoBMdLeBswFLe6jRJD0W97twXNrBIzJjyLEMLZoYVcdUqRLw6AfLddLr4iM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E6/p87hE; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779855087; c=relaxed/simple;
+	bh=QzY0L5uyGC0TEUhedlSvQpQTcy/l2fYgahH0LB0MsIk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=H3/PBgZkIHUms4BrYKqdZpPIwANoGgier/MJpFEFBsUmcqYuUFXaKErDSiRi+gPYhZu+3V9h05NSHHw8XJpFdq1OyB+tnZdHrNnV1zHPR7/Ci/RWRkdu7TTR3pV5QdlqyaooUhneF5b3Za88peHtW0gvP629+zw40zvbRdQIH20=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cESN+k6t; arc=none smtp.client-ip=198.175.65.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E6/p87hE"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB30A1F00A3D;
-	Wed, 27 May 2026 03:29:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779852593;
-	bh=V28ioQXFdf5gTV6d1QcGHOYfgP6PyYYIJ6KhFhOwRv4=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=E6/p87hE2ODh5PH9R4bqr15mw1R3r4CAnO0HSz+ywaCgA/r1YFXQCtIgRdKyZ56iV
-	 UR4KmUdRjXZDC6M6dSFR83LR2zt9idzg880Ca6PLPAhMwmj6eIudNTjpfmgpTCJ1qV
-	 fHV6PnpC37PnqwLvUfsckUYSQPFEKJ7kTt+wLgu2WH3whUO7XBOh6Z1RZcIntS895O
-	 GEqzvZYotL18HvNf1zJIczOMZNG7CSufMxdvdxe8Z0QgoByxj7/sHkLinypvc0p8jV
-	 vdggKTt+NQozYCSiPMFqTLLVeJxNTg+mo7egXoU28B+jkCjrqaK85zm3qNBV/SQlG1
-	 XY4uM1rmJS3pw==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 06/43] KVM: x86/mmu: Bug the VM if gmem attributes
- are queried to determine max mapping level
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ackerley Tng via B4 Relay" <devnull+ackerleytng.google.com@kernel.org>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260507-gmem-inplace-conversion-v6-6-91ab5a8b19a4@google.com>
-References: <20260507-gmem-inplace-conversion-v6-6-91ab5a8b19a4@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 27 May 2026 03:29:52 +0000
-Message-Id: <20260527032952.DB30A1F00A3D@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cESN+k6t"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779855087; x=1811391087;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=QzY0L5uyGC0TEUhedlSvQpQTcy/l2fYgahH0LB0MsIk=;
+  b=cESN+k6tTKDH2ANP0ByS5l+yepPIDSn1FZDXHAKLNRFI91wT7UPTY3Jv
+   Fx+4mBPVY02J+y7Ksdfn0QysioYSuzg48M6QJvlI7P8UrKLgTjNzgyG2w
+   arFGpPJ2+F9at7Zx4SWPVVfnjs0x+/NCcOmRTbzqCkJT2Z4pinKGRqZ8X
+   EXmas2wCUKaIphnRTG5ZkVxcoJY74JiBSRorYkHgmH8IUQhlu7PGO+br0
+   8dcER9Zt9783T12cXFtgvmp11AyallhBbH9LQv4PLqZStmiaBv3h00y/S
+   PASFUI+KG8wND923n1kmonkcCU5zpD4UG3GKwnpcbBf/8uOjzSL+wV775
+   w==;
+X-CSE-ConnectionGUID: JGVeFydZTaecIkkk5ZYR6Q==
+X-CSE-MsgGUID: z3iVEZw3QVyoQ06vQgizlw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="91783985"
+X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
+   d="scan'208";a="91783985"
+Received: from fmviesa004.fm.intel.com ([10.60.135.144])
+  by orvoesa105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 21:11:27 -0700
+X-CSE-ConnectionGUID: EpK096U0S6ORoQqNH1GfqQ==
+X-CSE-MsgGUID: +EL2mAYESfeaTgCkztmC4w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
+   d="scan'208";a="243946041"
+Received: from yilunxu-optiplex-7050.sh.intel.com (HELO localhost) ([10.239.159.165])
+  by fmviesa004.fm.intel.com with ESMTP; 26 May 2026 21:11:23 -0700
+Date: Wed, 27 May 2026 11:47:28 +0800
+From: Xu Yilun <yilun.xu@linux.intel.com>
+To: Xiaoyao Li <xiaoyao.li@intel.com>
+Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
+	x86@kernel.org, peter.fang@intel.com, linux-coco@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	sohil.mehta@intel.com, yilun.xu@intel.com, baolu.lu@linux.intel.com,
+	zhenzhong.duan@intel.com
+Subject: Re: [PATCH 02/15] x86/virt/tdx: Add extra memory to TDX Module for
+ Extensions
+Message-ID: <ahZpUA62NRdNrkvZ@yilunxu-OptiPlex-7050>
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-3-yilun.xu@linux.intel.com>
+ <7139c55b-b949-415d-ab82-fca1b1cc3880@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <7139c55b-b949-415d-ab82-fca1b1cc3880@intel.com>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] The newly added KVM_BUG_ON check in kvm_mmu_max_mapping_level eval=
-uates global state and unconditionally crashes standard, non-confidential V=
-Ms whenever user-space disables dirty logging.
-- [Low] The patch unconditionally references conditionally compiled symbols=
- (`__kvm_get_memory_attributes` and `kvm_gmem_get_memory_attributes`), resu=
-lting in build and link failures on standard configurations.
---
+> > +static void tdx_clflush_hpa_list(struct page *root, unsigned int nr_pages)
+> > +{
+> > +	u64 *entries = page_to_virt(root);
+> > +	int i;
+> > +
+> > +	for (i = 0; i < nr_pages; i++)
+> > +		clflush_cache_range(__va(entries[i]), PAGE_SIZE);
+> 
+> Is the page flush only needed when CLFLUSH_BEFORE_ALLOC is true?
+> 
+> If so, it inherits the same decision to always flush as what
 
-commit ffa430675edb844f07837310c0934745f310bf26
-Author: Ackerley Tng <ackerleytng@google.com>
+Yes it is basically the same as tdx_clflush_page().
 
-KVM: x86/mmu: Bug the VM if gmem attributes are queried to determine max ma=
-pping level
+> tdx_clflush_page() did. Then, any chance we can use tdx_clflush_page() here
 
-This commit introduces a KVM_BUG_ON check in kvm_mmu_max_mapping_level()
-to prevent querying guest_memfd memory attributes while holding the MMU
-lock.
+But I don't think we should convert hpa/page/va back and forth just for
+re-using one line of code.
 
-> diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-> index a80a876ab4ad6..153bcc5369985 100644
-> --- a/arch/x86/kvm/mmu/mmu.c
-> +++ b/arch/x86/kvm/mmu/mmu.c
-[ ... ]
-> @@ -3357,6 +3357,15 @@ int kvm_mmu_max_mapping_level(struct kvm *kvm, str=
-uct kvm_page_fault *fault,
->  		max_level =3D fault->max_level;
->  		is_private =3D fault->is_private;
->  	} else {
-> +		/*
-> +		 * Memory attributes cannot be obtained from guest_memfd while
-> +		 * the MMU lock is held.
-> +		 */
-> +		if (KVM_BUG_ON(static_call_query(__kvm_get_memory_attributes) =3D=3D
-> +			       kvm_gmem_get_memory_attributes, kvm)) {
+> so that we have a single central place of the comment to explain the kernel
+> design decision.
 
-[Severity: Low]
-Does this code cause build and link failures on standard configurations?
+How about I add a comment here to connect this wrapper to
+tdx_clflush_page():
 
-When CONFIG_KVM_MEMORY_ATTRIBUTES is disabled (e.g. standard x86 builds
-without confidential VM features), __kvm_get_memory_attributes is not
-declared.
-
-Additionally, on 32-bit builds where CONFIG_KVM_GUEST_MEMFD is disabled,
-kvm_gmem_get_memory_attributes is undefined. Unconditionally referencing
-these symbols here breaks the build on those setups.
-
-[Severity: High]
-Does this check evaluate global state instead of checking if the specific
-memslot uses guest_memfd, potentially crashing standard VMs?
-
-On standard x86_64 configurations, KVM initialization can set this global
-static call to kvm_gmem_get_memory_attributes for all VMs. If userspace
-(like QEMU) disables dirty logging on any memslot, KVM triggers huge page
-recovery:
-
-kvm_tdp_mmu_recover_huge_pages()
-    kvm_mmu_max_mapping_level(..., fault =3D NULL, ...)
-
-Since fault is NULL, this executes the KVM_BUG_ON() check. Because the
-global static call matches, the condition evaluates to true and immediately
-kills the innocent VM via kvm_vm_bugged().
-
-Could an unprivileged userspace VMM trigger a local denial of service
-simply by toggling dirty logging on standard non-confidential VMs?
-
-> +			return 0;
-> +		}
-> +
->  		max_level =3D PG_LEVEL_NUM;
->  		is_private =3D kvm_mem_is_private(kvm, gfn);
->  	}
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260507-gmem-inpla=
-ce-conversion-v6-0-91ab5a8b19a4@google.com?part=3D6
+/*
+ * Unconditionally flush the pages regardless of CLFLUSH_BEFORE_ALLOC. Inherit
+ * the same decision as tdx_clflush_page().
+ */
+static void tdx_clflush_hpa_list(struct page *root, unsigned int nr_pages)
+...
