@@ -1,149 +1,146 @@
-Received: from fhigh-b6-smtp.messagingengine.com (fhigh-b6-smtp.messagingengine.com [202.12.124.157])
+Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 394B1330B3B;
-	Wed, 27 May 2026 17:03:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46CE439B498
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 17:04:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.168.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779901428; cv=none; b=PtCB/I5T4kUJR705EqQyadCTtZXZmuefw7Y8J3hQ3dHM0Kc6LGfsezE/iGm+99L9qUen9b7u3fHuY9D2TeD0wyTMAHyhkn6GEvU0Xh/gvcs/uJf5yXDNQs21Rl8DEK2qI2SMlSSdhQpq+Qv5E+ket8RyH9HJmLE/IlU5r57sUCo=
+	t=1779901458; cv=none; b=OncBIkwh1JxU3RoYj/m0Qkm704BSqOtmVe4282+gXQYIA3mTMYl9XvRTiJMOQlc3TEaFjrYLlkw3fhMcuw0q7oneoDBXRSvTl/+ZM07eDZhUmlOSXV0WWDw4HDv/PZrjwfddp/L7dLDKrvpZ7NMQ2TLc69bS1mk0GsYPSmqZdMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779901428; c=relaxed/simple;
-	bh=/xXCIqZg0D8XwLkgfozxgA+43ECEOp+EOCDyToXR2vU=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RtFNzwW/pR+K6a9/DdmsbHzw8T//UeASo6XGJd36z/MzKpfzZGgEFdi86kWglczVD324tqxhwNquK/rYVSq/nTBn2ss3JUZEbOH+3yrGUg5CEcubwFz2vyL5B4ID96sIU6EHE5hqSUHZ5ExvPspWRistYb9jDXPuHLdKj9BJFKA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=AaxabphA; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=iNeyWCtn; arc=none smtp.client-ip=202.12.124.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1779901458; c=relaxed/simple;
+	bh=HsASMyINEQfHno0rsw+42YhTlmX4Nb5LD4aBfiSfkGo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WqhbwgyAw2Nj9wzIqgZ/9Pt+PeL5nFiKClE87zunV90Z2bjL390vtMYXFvrbbWZFXenVTRixQFc6ToWBnTC/W5iDFy93o9VwgIKlDKJGmtiRbyOBA0PHxi3m4rskbvmHm/wr2iu+D9k4RG8RwXph9h/udbCqggUcggVMLRlmXZ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=BEhQsBXL; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=CvMZssfb; arc=none smtp.client-ip=205.220.168.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="AaxabphA";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="iNeyWCtn"
-Received: from phl-compute-05.internal (phl-compute-05.internal [10.202.2.45])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 8E1FE7A0073;
-	Wed, 27 May 2026 13:03:43 -0400 (EDT)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Wed, 27 May 2026 13:03:44 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1779901423;
-	 x=1779987823; bh=W7sJHu3X3lqZ/+F+nLKQX33IaAFOhmRus2xF/6aombA=; b=
-	AaxabphAoo6w78R+giTZxGMumpkaYExgTgANkm0L7z049fjebaxLG34fGrEBRTwM
-	0mxx2Rmc/XguHJmNgAJRNfh9xnVYzOGLT5/6ICaVB4KZ5QugxDThviUsC5lXgzch
-	3nvGnR0ntdAiNEwb6EXszCLOmA0PoFrkuxWbpKaimGJu7fZMzDHtcBmTzrxUxCoU
-	EUj3A/rk1Q8VyYhjtX1jcNtuLkyfY1lHDckAZc7cdPEWn1QXO/Bq3M0lJkvW1bpW
-	2O4cuQs5wJ+5LOwCEMjB4T+YNw1WoHJufNx8jL+/iAAG7doB+Zi7HFwW+43AQeV4
-	6rSZKa8QucaleZHcd4kpnA==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779901423; x=
-	1779987823; bh=W7sJHu3X3lqZ/+F+nLKQX33IaAFOhmRus2xF/6aombA=; b=i
-	NeyWCtnDfJBw0XfwXA+Kba/WTFuC7S8UHIh7oJzMJWzOfqAazyIvBfykWzA7ad0S
-	1uDDx5f8qr7Jux/Jp0WNTRJs3UzQ/59RB+qoZwjR5qgqqPocXG5BxiXoQBcN7Uo+
-	EXBRehRLY/PW/uoRSNTZSb7q3MLaW/mKUrtESTUe4uw0lRGkuqhzVwEDwZZPFd7J
-	JrzdSeddUpRJWNcz8DhV9MljEQALYGfbDFwdvpDoYxoVNHqoRgX3Ga4dwAA0Ha6g
-	ZRoPs2Lhs5RpLXVh4LE2en7nQTGhZ8/b+921ib0rCzqYpYP1+wREspJk7qyuyvSr
-	nJDR0DEA84czK18SkF7RQ==
-X-ME-Sender: <xms:7iMXal4seHozvvDvAA9MM-LrnGPT_6AD7eO9VZY8AeIY0kDWpPWqow>
-    <xme:7iMXaqcnQd6i3eyIY0ITia-eu54QBdiVFlQY0zPZNkRXwdaIXxpgIA0gaXXWhcPGR
-    hk6eb9bUYTj8gWVy3On0M5PH-IwtptOJHeahrUluO_fOHWyNj7VFw>
-X-ME-Received: <xmr:7iMXasH2_KW3WwEkhodc8P4Evg3OVr1J3tlDI_K3wVHIEQwXLIBzYFTii3g>
-X-ME-Proxy-Cause: dmFkZTGxcVZESYa1ffk92r9u7bA5CJRTGW5mmmN1n+HTRN9GHNe7b0bEFT1hm4KYChXyqK
-    9nz8ZYt0Fx5NUXMS8jZogLQNwBocT39E50Wwhz9qWYNH+79P69GN3uDGGXdgmSdzLm1r5P
-    bkgWmjCeL5D7oaTsJMN1wmLMkDfnvJaPsjo9Bg7dSmeAEWmgWYzPbiHM+hw4pojGhw7M7c
-    tErY5ufRoYQszzxMddGV/UwNpRRFXmpwO47lEHpXJy6H7e+Rwfv4TXluSH+L6B+C4V1K4q
-    Ti6nlCPzGKfjeQ75Bb/GW7vcsB4DNilTIAYDebmMu3+zwtKnWdEEVDr6wbjaVGnRnbbol2
-    P0A4hcvRhQ8rG11feiZNw4CKpev/4N6/CnNZJfSRCA8Pj5hqTnR6nlvhZer2/3xl4nwp2I
-    BXiW7qCYmtKj/8eWvQ9uZ47s/NjVW0fE+3gDKxmranb0qTfiEzERX1wFjZ2RodeOXtPByW
-    XJAihLMQme1uOfSXE4H0IWYRXxichWw2o6N56L5e3M0sZfDP1469YumJtbC4ge34SXsS5J
-    ocj6+FDqOmbXJYtBBvP9JIfINw8u76k4b/NbuAmgPGdmDT7wI/5SqI5a2rF+AIs+3q1kPL
-    wQm0C478OgWX5LS+0Ch9zSRBvbMtlYI5JCyzN6ry72wEnWsjPec7mTf0mKwQ
-X-ME-Proxy: <xmx:7iMXaq7VBX5LZI_dEfC6hxsiS3uwvkSpIC3WImdJkqseUI6_jw9-ig>
-    <xmx:7iMXavvWL9sCyz_j7015hc7UIAHZDyGnxxuV7p0KCF7oWQmnkVvcNA>
-    <xmx:7iMXau9IbgeRrjkf4NhDd5xYZuNC5I1MjCzwzxtt_Inbh9CStiUDIw>
-    <xmx:7iMXapnjyzMVxA3xzlhxj94f0o_BdY6G-jsscFnXna7OcWjM1_sKkg>
-    <xmx:7yMXamkyoqc9miOMUeqwiZXcioIbaKPYghwpx6v0DHhXoHqQtACSm5o3>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 27 May 2026 13:03:41 -0400 (EDT)
-Date: Wed, 27 May 2026 11:03:40 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Zhiping Zhang <zhipingz@meta.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Sumit
- Semwal <sumit.semwal@linaro.org>, Christian Konig
- <christian.koenig@amd.com>, Bjorn Helgaas <helgaas@kernel.org>,
- <kvm@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <netdev@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, Keith Busch <kbusch@kernel.org>, Yochai
- Cohen <yochai@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
- alex@shazbot.org
-Subject: Re: [PATCH v5 2/4] dma-buf: add optional get_tph() callback
-Message-ID: <20260527110340.5547dd30@shazbot.org>
-In-Reply-To: <20260526144401.1485788-3-zhipingz@meta.com>
-References: <20260526144401.1485788-1-zhipingz@meta.com>
-	<20260526144401.1485788-3-zhipingz@meta.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="BEhQsBXL";
+	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="CvMZssfb"
+Received: from pps.filterd (m0279863.ppops.net [127.0.0.1])
+	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64RGiPtE195636
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 17:04:16 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
+	cc:content-type:date:from:in-reply-to:message-id:mime-version
+	:references:subject:to; s=qcppdkim1; bh=6nha1feETo1rSKy37ATFEomW
+	axLqzR6X6eFWdjB9xhc=; b=BEhQsBXLxYXh8B8T4cuZBzpDXJy3V8d+KSBqaJlf
+	8sMlakShjajq9oljZ3x6QQUTUWxdjaS1K8zrY51pShQoNAtfCHbkF/qRVQ4806fX
+	8Awxj+JRtqVusORT3KT+sztSa4ZJ2PoSXh92SrF6LKQlyhDhkCf9XIwov8+bcOb3
+	t+lN4BDuP+oC99RaAC3XHQa7hX0pVxJtgMyxkU79vGGYD0FjiVv3YkvMIA+p62je
+	1UPexMftSDe7A3quTUDCsQxZwKkysqk+ZtNzIxnIF0Xp4NA03HH7XflYoCUfNSgx
+	ddqPAfK7LBeaGvoEanBhjSxltpWq0ekeP06TbBLuE6Gqog==
+Received: from mail-dl1-f72.google.com (mail-dl1-f72.google.com [74.125.82.72])
+	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4edxce9nqb-1
+	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 17:04:16 +0000 (GMT)
+Received: by mail-dl1-f72.google.com with SMTP id a92af1059eb24-13509e2e47bso14495824c88.1
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 10:04:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=oss.qualcomm.com; s=google; t=1779901456; x=1780506256; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=6nha1feETo1rSKy37ATFEomWaxLqzR6X6eFWdjB9xhc=;
+        b=CvMZssfbVL2T9P7QWlFa7kLGFpWlAX9tPvtt1fwcIV+VZP5mgTcmbrIJ9ZM0/lvy+R
+         huzjf0ZeNrhplV41tVhJidZhzNV1JaaLTqhhV4Yaz5ArUIQF/8zvCbkEVKoP3b9dxzvu
+         PDvQstcqSSWpD+MiSOlzbF8LuBSv9sJQ/apkFA6N7HK2+Rbp6pfwxEyCjPFBJu0ul+5T
+         ZGylOJGuJ1mxR2NPqlPWVcFrtF6TqsYsT29vKZnymdCwlmWPLh1Gw3Jg1DzHisfe2oIL
+         jXuAJnoHxnDaQG3SmryrGjIL7cC8Yp4ciDZjeMQ7MVRhXLhv4iJKR4UcFYg4wMrQrXVd
+         KQaw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779901456; x=1780506256;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=6nha1feETo1rSKy37ATFEomWaxLqzR6X6eFWdjB9xhc=;
+        b=SaTL8pslSkR030g4xeosdeY8NoXuyFlAqpgtD9kWHcEjmFA1rZZKoNkShMwcW8IdhZ
+         Ws/MYwzj7IerElcx+/ZHEfHthR4DuRciMkLchDD8WeyiNxh3jbrcXKIl/fQI5xinZCor
+         b3zbW8cDTwuquppDlkLj3g3Mlc03p5pWa+bJCn4Y7+5v5BJ61OnycvtSRie/xyAJmUk0
+         ty/rymRNMu9LIyeaF/U1LCUqVeUJgfMZaH9xj+uDvJv2ccWXdHkR9vRLs2SSdOoiMsVb
+         Qw1F/qauobi1KpjK8wWm+Rt/8F7RNTic9OeKNqmUzUymK1L5Pm0BSLzBjAyZIXF9/qti
+         GGEg==
+X-Forwarded-Encrypted: i=1; AFNElJ9srd7bhyV2g6xl5PAphE+O5/1p2baUz9KINibd++uDdNCX/AipyC3Kb7WxaPlXz6tVKrg=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz2x3Fg8QBhhjs/045+ouYmbr5UteoWbU2LglaGuKApi8Xzbr9L
+	eFfr8qcr7ToJtyiIm8g0VDXzxTtaIbf+M/Ix20m/gxp+77HZCD77mtsC9DltPnj6i2n8sNKGwYf
+	BH9n937DqLx67njZLBRx1nGUiVh+mAapX7J5V3devJYwryr6/iDX8qEY=
+X-Gm-Gg: Acq92OGne5QeiRgZzpiYw2/gvEaU15lejvJhh8yN94UKGHjeXKLNzM8gWWeOI5a0SUj
+	e/M7jmgEVE4ogqH5RSFKh7PvOYXgUw437zIqw7/E/P0MwlJN3zdReCHCYtxDiTJXvuRIrGPHCx1
+	dN6UMxajqpU7XupLFo4HOgZMcAiTWbaheIrvzCyHj19RkEc4dAf6waw0PO/MkPHMxLoONYmSnsu
+	xp46R12bL6CWjhdP/7e8DS8uVpWwzOjwYGxBvRYK8j8qzyi8ErP59gRvPBQZ5c9T1tV1ev5DL+r
+	W0Lvy3qaydoWMp1T/p0KH2uhM8FhBL6aqCNEUKPBhMe13zfRsd4TpUf8sonxp89f0E/wlhvu0ED
+	eB+S+qM+t2GL67IRJ8iXE2CaJxq6y386waJMCXyF8GA==
+X-Received: by 2002:a05:7022:258f:b0:137:6c0d:b990 with SMTP id a92af1059eb24-1376c0dba8emr719574c88.25.1779901455913;
+        Wed, 27 May 2026 10:04:15 -0700 (PDT)
+X-Received: by 2002:a05:7022:258f:b0:137:6c0d:b990 with SMTP id a92af1059eb24-1376c0dba8emr719548c88.25.1779901455346;
+        Wed, 27 May 2026 10:04:15 -0700 (PDT)
+Received: from localhost ([140.82.166.162])
+        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1366aa88eccsm10819104c88.9.2026.05.27.10.04.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2026 10:04:14 -0700 (PDT)
+Date: Wed, 27 May 2026 12:04:13 -0500
+From: Andrew Jones <andrew.jones@oss.qualcomm.com>
+To: Guodong Xu <guodong@riscstar.com>
+Cc: Jonathan Corbet <corbet@lwn.net>, Paul Walmsley <pjw@kernel.org>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>,
+        Shuah Khan <shuah@kernel.org>, Anup Patel <anup@brainfault.org>,
+        Atish Patra <atish.patra@linux.dev>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        Deepak Gupta <debug@rivosinc.com>, Zong Li <zong.li@sifive.com>,
+        Christian Brauner <brauner@kernel.org>,
+        Charlie Jenkins <charlie@rivosinc.com>,
+        Samuel Holland <samuel.holland@sifive.com>, linux-doc@vger.kernel.org,
+        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, kvm@vger.kernel.org,
+        kvm-riscv@lists.infradead.org
+Subject: Re: [PATCH v2 08/10] riscv: cpufeature: Introduce ISA bases bitmap
+ and rva23u64 detection
+Message-ID: <bfap4hslksgmfosoy2c4g5qgrhk6ofd72e6f3f2qxpojey5yuc@74jvqlfe3urw>
+References: <20260511-rva23u64-hwprobe-v2-v2-0-21c5a544f1dc@riscstar.com>
+ <20260511-rva23u64-hwprobe-v2-v2-8-21c5a544f1dc@riscstar.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260511-rva23u64-hwprobe-v2-v2-8-21c5a544f1dc@riscstar.com>
+X-Proofpoint-ORIG-GUID: h7j4eZB4y74o6ANiRFmc6EKjvDcxKu4w
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI3MDE3MSBTYWx0ZWRfX8UI/bQQMI00c
+ 7q0iod/qJl9z3MxpzXoyICwk74a8Gp0v3lj3Cfetg2HXGdbBUnBT1/j6RRVYqjVR3OpiNBDzECG
+ N/T0GlVY0MtD9iCLxS+DGThQjcN5/wCStz/kEA/K6mPKuTJ0QoL6LQtah8RzxIs6QIKUJH214MK
+ juo6hPh+93WxlAeRiKwusj8IKFWBEKEONguC5TokEkw4TdeatRYA9NdCsRW45q7kFZL8J2rs68p
+ 0qCso8rYwiu5nEwJxUwCnXQl1qcOZ+VjxKL77tqA181OETgxDDSM0qBMMR+OrQl1AFnaoiIEHsP
+ KYcSqmauSftmsrh0HFehRyqmdtMEIb/9btsTn01ll+p2uGHVYbyb6ALPCnxG83za/bA4meUw9t1
+ ckN2UKrwGKlQD9igk/YA2xG4pnhSIR9BYSPWdl9IeZr9bqtu8BOycxRVeT2+JvU8RA5hpeLdLCY
+ f2tOVg86vs5lO8EDb+Q==
+X-Proofpoint-GUID: h7j4eZB4y74o6ANiRFmc6EKjvDcxKu4w
+X-Authority-Analysis: v=2.4 cv=SIpykuvH c=1 sm=1 tr=0 ts=6a172410 cx=c_pps
+ a=bS7HVuBVfinNPG3f6cIo3Q==:117 a=cvcws7F5//HeuvjG1O1erQ==:17
+ a=kj9zAlcOel0A:10 a=NGcC8JguVDcA:10 a=s4-Qcg_JpJYA:10
+ a=VkNPw1HP01LnGYTKEx00:22 a=u7WPNUs3qKkmUXheDGA7:22 a=yOCtJkima9RkubShWh1s:22
+ a=DOyYl3NULbmlVlinG0MA:9 a=CjuIK1q_8ugA:10 a=vBUdepa8ALXHeOFLBtFW:22
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
+ definitions=2026-05-27_03,2026-05-26_03,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ phishscore=0 bulkscore=0 priorityscore=1501 clxscore=1015 adultscore=0
+ lowpriorityscore=0 spamscore=0 impostorscore=0 malwarescore=0 suspectscore=0
+ classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
+ reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605270171
 
-On Tue, 26 May 2026 07:43:54 -0700
-Zhiping Zhang <zhipingz@meta.com> wrote:
+On Mon, May 11, 2026 at 09:34:53PM -0400, Guodong Xu wrote:
+...
+> +	/* Zic64b and Supm with PMLEN=7 */
+> +	if (riscv_cbom_block_size != 64 ||
+> +	    riscv_cbop_block_size != 64 ||
+> +	    riscv_cboz_block_size != 64 ||
 
-> Add an optional dma-buf get_tph callback so an exporter can return TPH
-> (TLP Processing Hints) metadata to an importer.
-> 
-> 8-bit ST and 16-bit Extended ST are distinct namespaces in the PCIe TPH
-> ST table and may both be present with different values. The importer
-> passes its supported steering-tag width and the exporter returns the
-> matching value, or -EOPNOTSUPP if no metadata is available for that
-> width.
-> 
-> The first user is VFIO_DEVICE_FEATURE_DMA_BUF_TPH in vfio-pci, with the
-> mlx5 RDMA driver as the first importer.
-> 
-> Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
-> ---
->  include/linux/dma-buf.h | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
-> 
-> diff --git a/include/linux/dma-buf.h b/include/linux/dma-buf.h
-> index d1203da56fc5..49eb6ad644a2 100644
-> --- a/include/linux/dma-buf.h
-> +++ b/include/linux/dma-buf.h
-> @@ -113,6 +113,27 @@ struct dma_buf_ops {
->  	 */
->  	void (*unpin)(struct dma_buf_attachment *attach);
->  
-> +	/**
-> +	 * @get_tph:
-> +	 * @dmabuf: DMA buffer for which to retrieve TPH metadata
-> +	 * @steering_tag: Returns the raw TPH steering tag for @st_width
-> +	 * @ph: Returns the TPH processing hint (2-bit value)
-> +	 * @st_width: Consumer's supported steering tag width in bits (8 or 16)
-> +	 *
-> +	 * Return the TPH (TLP Processing Hints) metadata associated with this
-> +	 * DMA buffer for the requested steering-tag width. 8-bit ST and 16-bit
-> +	 * Extended ST are distinct namespaces in the PCIe TPH ST table and may
-> +	 * both be present with different values, so the exporter must select the
-> +	 * value that matches @st_width and must not substitute one for the other.
-> +	 *
-> +	 * Return 0 on success, -EOPNOTSUPP if no metadata is available for the
-> +	 * requested width, or -EINVAL if @st_width is not 8 or 16.
-> +	 *
-> +	 * This callback is optional.
-> +	 */
-> +	int (*get_tph)(struct dma_buf *dmabuf, u16 *steering_tag, u8 *ph,
-> +		       u8 st_width);
+The only mandated RVA23U64 extension we don't have ISA string support for
+is Zic64b. I wonder if we shouldn't add that support too where it would
+have a validate check like above.
 
-Why not make this `bool extended` rather than `u8 st_width` to avoid
-the entire class of errors involving an invalid width?  Thanks,
-
-Alex
+Thanks,
+drew
