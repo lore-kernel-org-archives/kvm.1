@@ -1,124 +1,208 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EF9940DFB6
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 13:32:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1AB126CE11;
+	Wed, 27 May 2026 14:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779888767; cv=none; b=aQB0r5c0RPIUUU1bGdu/ks0HuDtjUGFiMwnbbQhfPLA9izgDGZHcGVblwRFazi4/7hzghRQuUHppOPYuXlnU/hp1ktNuILWTiov678xqGGRqWlStUvgqDc+B+CD105ADSs0/t6S5S9r1FR/rPAeIlHjD1KR191UFkB3x4teQwaM=
+	t=1779890445; cv=none; b=CFPiF8A6gBpbOUazNQaGAhRaS1Ea9g1AONFkMaBsrvMV+WxCsCM1uqsoO50iIGXpV32DBkWr0XQpRTJ+MPY7BTgFbbHjpMWATGIWPFwkwqCCwJP9QmnE25+WDzohzdwrDvrhxdpZ5UByM1+YgVH4L7wBRZjy6PbS/7dP/F7ZaLA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779888767; c=relaxed/simple;
-	bh=nHxCvMt8mDytJgMjaUw4z4vw03dWooYH1/hea6CnYfw=;
-	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=uB2FVDX/Tso4Nm5uniUrpcKk4KEVAqtF2c1/2FBQSHsrOfbY/9xzdZudWCx6gKR+7VA30Mjdl0kceLQM4po/QQL29hk7Kdt426OPTKcRlmbqPEMClPoEn3xotZYNFNi0m7UdK2djRHSQdzKHuLvlLYMa1PSZ1lR/De3E50+2P34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Si53YlWD; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779890445; c=relaxed/simple;
+	bh=RgYLm0neXHaOUmS8HjXVx4g4nVnS8LbFqtbXrEMNpvU=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=Bs5KsTxIh41I7TZ2TXNkgCNS5Z7tH9tH5Rbc7FJ+3/Zp6tWM9G7fGXVoZA79zsT7gaFzpMdTr+7O9M+pX+ONBibqiqN2UKOqHTajIgXE1zrnIibyzk2aZC8g6IfTjdLTXPmf+GTd3rrtdmuKKBNoXE0rQFUu4KUuHr1IjNot5GY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=diRZGXiJ; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Si53YlWD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26D501F000E9
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 13:32:46 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="diRZGXiJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 144C21F000E9;
+	Wed, 27 May 2026 14:00:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779888766;
-	bh=DSBT5YBxTZz4CzRcFm7NIe+OsuGHiBnjci1SR+eEU58=;
-	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
-	b=Si53YlWDtFOT0i8dadigm5IqOK8pqrixeJC0FUGLH2hYxl/z5w2//RmfJUw6T+XL/
-	 5g+4OM8mKrR1K03xuuCphWN3G2Y+PysNVuPNoyIKo86PGYsG0uUZO0xsvrZrqgpDxw
-	 WJyt5bS4poPc6rGZELsG8mE7DVaHXIA68Cs5mQ1eVdYPAwpKxo670WUafC/BdSmp6O
-	 CcgJUsnHTn8Kj30TviALHe+63peAzYxJF93nHN15yYcQQn190BLYycZIXY6wlN+rhZ
-	 iHML/NrJ4nqVBhkJZUDz1X4aSGh8IB+4y/RGaUK9Q/oQ/BPWkKXaGPqSZ8dsEuYXlK
-	 kTXZGSjGgV11w==
+	s=k20260515; t=1779890443;
+	bh=nnV4YXKJfYHyAfxRAhVW3bNbXbpn5GT0V7zzObAG/mE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=diRZGXiJ5GihVQS9GokK+5+3VnNcn8P+rV9aDMo78yM+p69WoMrMDfrV8D7xogQ5o
+	 llqgzvJe2i8nFj5IDGx/oMC8ge14YpfO3ZfUKq6s2APNQkkAvy/wn6OLidWpXjthZQ
+	 w84M66ym7ChgacwVl6crL7olCsCXhTmyxe6eGl6De6F+Tef699HI7bczEsAZSTnmpJ
+	 ftDRRgV4bZMSEtKRvnX7eM738Nh3f4w4HvbHdXccaxnuaOy6lwm92b7dkZSQY/BZDM
+	 +E6/jSQoPoLCA04JlvLTJgDuLm+0uyjFFO8tJY8orrkZ9VcpC0r+9Hp6B8gXFNmHVH
+	 fA9VjOKrBSY/g==
 From: sashiko-bot@kernel.org
-Subject: Re: [RFC v3 03/10] KVM: PPC: selftests: add support for powerpc
+Subject: Re: [PATCH v13 8/8] vfio/pci: Virtualize PCIe TPH capability
+ registers
 Reply-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-In-Reply-To: <99818a9e1c8954ba74e1861dfa2bd5eee19f4f86.1779885589.git.ritesh.list@gmail.com>
-References: <99818a9e1c8954ba74e1861dfa2bd5eee19f4f86.1779885589.git.ritesh.list@gmail.com>
+To: "Chengwen Feng" <fengchengwen@huawei.com>
+Cc: kvm@vger.kernel.org, linux-pci@vger.kernel.org
+In-Reply-To: <20260527094719.43886-9-fengchengwen@huawei.com>
+References: <20260527094719.43886-9-fengchengwen@huawei.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 27 May 2026 13:32:45 +0000
-Message-Id: <20260527133246.26D501F000E9@smtp.kernel.org>
+Date: Wed, 27 May 2026 14:00:42 +0000
+Message-Id: <20260527140043.144C21F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-- [Medium] Global exception handlers array leaks state across VMs and cause=
-s race conditions in multi-VM tests.
+- [High] Failure to clear software shadow state (`vdev->tph_st_shadow`) on =
+device release allows cross-VM state leakage.
+- [Medium] `vfio_pci_tph_config_write` incorrectly drops valid partial writ=
+es to the TPH Control Register.
+- [Low] Incorrect bounds check (`offset + count < target_byte`) in `vfio_pc=
+i_tph_config_read` causes out-of-bounds byte masking.
+- [Low] The global variable `enable_unsafe_tph` is declared using `extern` =
+directly in a .c file.
 --
 
-commit 4362b48fc35809ad7a74045c726f7ffae0c70ccd
-Author: Nicholas Piggin <npiggin@gmail.com>
+commit 1386cbe8efd9ebb31a3a570e82dded7da344b1be
+Author: Chengwen Feng <fengchengwen@huawei.com>
 
-KVM: PPC: selftests: add support for powerpc
+vfio/pci: Virtualize PCIe TPH capability registers
+   =20
+Implement read/write virtualization for PCIe TPH Extended Capability by
+masking out extended requester bits when unsupported and validating TPH mode
+configuration. Automatically disable TPH during device ownership handover
+and introduce an enable_unsafe_tph module parameter.
 
-This commit implements KVM selftests support for powerpc (Book3S-64),
-including ucalls and virtual memory for the radix MMU.
-
-> diff --git a/tools/testing/selftests/kvm/lib/powerpc/processor.c b/tools/=
-testing/selftests/kvm/lib/powerpc/processor.c
-> new file mode 100644
-> index 0000000000000..9846ec26a32aa
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/lib/powerpc/processor.c
+> diff --git a/drivers/vfio/pci/vfio_pci_config.c b/drivers/vfio/pci/vfio_p=
+ci_config.c
+> index a10ed733f0e3a..518a6afa7ada1 100644
+> --- a/drivers/vfio/pci/vfio_pci_config.c
+> +++ b/drivers/vfio/pci/vfio_pci_config.c
 
 [ ... ]
 
-> +struct handler {
-> +	void (*fn)(struct ex_regs *regs);
-> +	int trap;
-> +};
+> @@ -35,6 +37,8 @@
+>  	((offset >=3D PCI_BASE_ADDRESS_0 && offset < PCI_BASE_ADDRESS_5 + 4) ||=
+ \
+>  	 (offset >=3D PCI_ROM_ADDRESS && offset < PCI_ROM_ADDRESS + 4))
+> =20
+> +extern bool enable_unsafe_tph;
 > +
-> +#define NR_HANDLERS	10
-> +static struct handler handlers[NR_HANDLERS];
+
+[Severity: Low]
+Is it intended to declare this module parameter using extern directly in the
+C file? Usually, these are placed in a shared header file to ensure type
+safety and consistency across the module.
+
+>  /*
+>   * Lengths of PCI Config Capabilities
+>   *   0: Removed from the user visible capability list
+
+[ ... ]
+
+> @@ -313,6 +317,68 @@ static int vfio_virt_config_read(struct vfio_pci_cor=
+e_device *vdev, int pos,
+>  	return count;
+>  }
+> =20
+> +static int vfio_pci_tph_config_read(struct vfio_pci_core_device *vdev, i=
+nt pos,
+> +				    int count, struct perm_bits *perm,
+> +				    int offset, __le32 *val)
+> +{
+> +	const int target_byte =3D PCI_TPH_CAP + 1;
+> +	struct pci_dev *pdev =3D vdev->pdev;
+> +	const u8 ext_bit =3D BIT(0);
+> +	int byte_off;
+> +	u8 *data;
+> +	int ret;
+> +
+> +	if (pdev->tph_ext_requester || offset > target_byte ||
+> +		offset + count < target_byte)
+
+[Severity: Low]
+Does this bounds check properly exclude reads that end exactly before the
+target byte?
+
+If a read happens with offset =3D 4 and count =3D 1, and target_byte =3D 5,=
+ then
+offset + count < target_byte evaluates to 5 < 5, which is false. This causes
+the code to proceed and modify data[byte_off] outside the requested read
+window.
+
+Should this be offset + count <=3D target_byte instead?
+
+> +		return vfio_direct_config_read(vdev, pos, count, perm,
+> +					       offset, val);
+> +
+> +	ret =3D vfio_direct_config_read(vdev, pos, count, perm, offset, val);
+> +
+> +	/* Mask out TPH requester capability */
+> +	byte_off =3D target_byte - offset;
+> +	data =3D (u8 *)val;
+> +	data[byte_off] &=3D ~ext_bit;
+> +
+> +	return ret;
+> +}
+> +
+> +static int vfio_pci_tph_config_write(struct vfio_pci_core_device *vdev, =
+int pos,
+> +				     int count, struct perm_bits *perm,
+> +				     int offset, __le32 val)
+> +{
+> +	struct pci_dev *pdev =3D vdev->pdev;
+> +	u32 data =3D le32_to_cpu(val);
+> +	enum tph_req_policy policy;
+> +	u8 mode, req;
+> +	int i, ret;
+> +
+> +	if (!enable_unsafe_tph)
+> +		return count;
+> +
+> +	if (offset !=3D PCI_TPH_CTRL || count < 2)
 
 [Severity: Medium]
-Could this static global array cause state leakage across VMs or race
-conditions in multi-threaded tests?
+Does this check unintentionally drop valid partial writes to the TPH Control
+Register?
 
-Since this is defined as a static global on the host rather than a per-VM
-allocation, a new VM will start with a zeroed guest handlers array (from ELF
-loading), but the host's handlers array will retain entries from previous V=
-Ms.
+The PCIe specification allows configuration space accesses in 1, 2, or 4-by=
+te
+sizes. If a guest OS writes 1 byte to the PCI_TPH_CTRL register, count < 2
+is true, and the function returns without updating the hardware or virtual
+state.
 
-This appears to limit the total number of unique handlers that can be insta=
-lled
-sequentially across all VMs in the entire test process to 10, which would
-eventually result in the "Out of exception handlers" failure below.
-
-Additionally, if multiple threads concurrently create VMs and install excep=
-tion
-handlers, would they race on this shared host array and sync corrupted stat=
-e to
-their respective guests?
-
+> +		return count;
 > +
-> +void route_interrupt(struct ex_regs *regs)
-> +{
-> +	int i;
+> +	guard(mutex)(&vdev->tph_lock);
 
 [ ... ]
 
-> +void vm_install_exception_handler(struct kvm_vm *vm, int trap,
-> +			       void (*fn)(struct ex_regs *))
-> +{
-> +	int i;
+> diff --git a/drivers/vfio/pci/vfio_pci_core.c b/drivers/vfio/pci/vfio_pci=
+_core.c
+> index 01c8396b9ffed..47d20f17ff656 100644
+> --- a/drivers/vfio/pci/vfio_pci_core.c
+> +++ b/drivers/vfio/pci/vfio_pci_core.c
+
+[ ... ]
+
+> @@ -656,6 +659,9 @@ void vfio_pci_core_disable(struct vfio_pci_core_devic=
+e *vdev)
+>  	 */
+>  	vfio_pci_set_power_state(vdev, PCI_D0);
+> =20
+> +	/* Clear TPH status when releasing ownership */
+> +	pcie_disable_tph(pdev);
 > +
-> +	for (i =3D 0; i < NR_HANDLERS; i++) {
-> +		if (!handlers[i].trap || handlers[i].trap =3D=3D trap) {
-> +			if (fn =3D=3D NULL)
-> +				trap =3D 0; /* Clear handler */
-> +			handlers[i].trap =3D trap;
-> +			handlers[i].fn =3D fn;
-> +			sync_global_to_guest(vm, handlers[i]);
-> +			return;
-> +		}
-> +	}
-> +
-> +	TEST_FAIL("Out of exception handlers");
-> +}
+
+[Severity: High]
+Should vdev->tph_st_shadow also be cleared here during device release?
+
+While pcie_disable_tph() disables TPH in the hardware, the shadow state in
+vdev->tph_st_shadow appears to persist. If the device is reassigned to a
+new VM and that VM enables TPH, vfio_pci_tph_config_write() will program
+the hardware using the previous VM's steering tags stored in the uncleared
+shadow state.
+
+Could this lead to cross-VM state leakage where the new VM implicitly uses
+the previous VM's steering tags?
+
+>  	/* Stop the device from further DMA */
+>  	pci_clear_master(pdev);
+>
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/cover.1779885589.gi=
-t.ritesh.list@gmail.com?part=3D3
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260527094719.4388=
+6-1-fengchengwen@huawei.com?part=3D8
