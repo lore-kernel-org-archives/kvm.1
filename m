@@ -1,101 +1,86 @@
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
+Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD8B41A9B46
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 17:49:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEE332367D9
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 17:49:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779904161; cv=none; b=BkyAdKRg30AzCvtvVXl1SnrAy+IgMTcTRMEv5UNYY4nuGLUF6gE17l8/5dMJWDMRoqHWk22zKDSyGRlfS0nL1rO5q0xKSMS6INrr9fRALBCePm672idJPGOuVScrtpZAj8xjz5fJZxWPqkaSstcGkdnTpsiOGVFOwCHCV6c72cg=
+	t=1779904165; cv=none; b=PbBPTG0MX1WplJJozj3zVknGOD4Lbj4S6r/aeVhNbpz7ohqArARaHRkzLzt4z8I4LTjCJD1+B8FinAoY6wZld7I4VVAErFzY4KBajcMWr1HaJzNNabu+MmI0Yxdbw8fm4W/JUIGpyHEQIRBzNLSVfiSWt6OkPZi+Ib4aj2qSt5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779904161; c=relaxed/simple;
-	bh=JA9gYKjVWSoYdAznZ03gluIIktumEbS7npLGNPzJyRs=;
+	s=arc-20240116; t=1779904165; c=relaxed/simple;
+	bh=ZmLs2BImNTS697uuYKV7GL+d90yx02AqP4TYiwOmS4U=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=I2B4hmf1a2ZuryRFwX1IQHKQVndOIQxpLwhJj9bXXS95HYJCdAGgeP1LbtnVM3k4c1TQlfE89LGDM0Dt+5E5HmPPivRizQUTsulB0cVIXaLdAl0s6AMXx1KKhb4V5PRj8R82+bn/WnJEXRIN2s3TNhtiLCg20UhmMJCWzpb5Uqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Zc+oOPuI; arc=none smtp.client-ip=209.85.216.73
+	 To:Content-Type; b=nGZZdtueuHH+1CltxrUjifrjQUtZeb5ZGY+Nsv2UMnjbWxqPY8yhNJppCb05JT/E/g7SiAUSNvi7VqfGCPJ+x4R1dvDhu9iJJ2cZnKRJvbYHUVTMFFp/IQy6YXBhgWFwUwT2FiLvv2jZUP+ePzQiCwKDUYMsSfuZj5a73VGDCuY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aabrwo6t; arc=none smtp.client-ip=209.85.214.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Zc+oOPuI"
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-368f2d76b04so10940206a91.3
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 10:49:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aabrwo6t"
+Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2b9b8137828so123300535ad.0
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 10:49:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779904159; x=1780508959; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7dD4LLjnnbh8v3LNXxw9sJU47ISXAw6BVEmxkNKPtVc=;
-        b=Zc+oOPuI4hilmmoN5rn2xqxGOSWPWfsKJyXTWmlEaGdM3LXjFotPhis6X+d5tmfJ1l
-         IqMXv4sg4xLKfceXdjYc+08nSdCWk6PkiBKAUNWsh/HQBOOyojmBYIkfDOqvYwatG8EY
-         hoVvWUBNdGK77gMJhZdUrdx242dTA92Tui3eIF08Oj2tDVPP5vXqtcvvZK5E20p7f6ew
-         B2Ii7VfWqdkBQrtZSSUnjF6fvod8mxK2HxSGnjmRHqZqSZYWaF4J6M7Ps0N0PMoveo36
-         iGVeOpZv1sXl7htuA6Qp7dAYwAnl6+1RpyuYegroGVei6PROJs7Gx/CZVCEO9FhIlmYj
-         c8aQ==
+        d=google.com; s=20251104; t=1779904163; x=1780508963; darn=vger.kernel.org;
+        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=KMYTk3hkl99ebNU+1sIwx3gm+Ba8Y+fSM7epDpi6c6g=;
+        b=aabrwo6t3BvFD+3Eiag9ovt+MmHtLG6UBOGJeqWLkwywazVBzUuf4X/bhAkqnpxLlB
+         jbNPmFI+5IjYogTjSPXR6mf4aH/vVFkX9L1ogUuYGHweuQZpJthEELhkpO/Fyr9sarF9
+         SzmFtORKapy6lbkVVz6rqXFAAWjslrLRtKaFYbk3Tkt8ETr4eecXSNu9WFgBY6lYl8V7
+         NeOU7TaiGpfbMANAQY6m/od8CxqcUOW7OmKRPFVD6ivjxH8fLYuLp3gNYfhkkaEefSZq
+         jhOnf305JcVNKeZ8MhE8iCPNhJ3DvQulflCZYnRDa+6ge0PS/eIQPKr6fBIwsTtLe9H1
+         KlKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779904159; x=1780508959;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7dD4LLjnnbh8v3LNXxw9sJU47ISXAw6BVEmxkNKPtVc=;
-        b=htm7VoKR1is26jOjTK4cC6LdpIJKIAZG3wxvU2vFh8AVrn6esxZfQFwQ8QxCLdT+eP
-         bdi7rCMsuOdMFo0uXIjYLNakNLsm3jXAzoqFQdjy5A/4FGON6m3Nzs4hNwuyp3r4f7K7
-         AnhcBpLpp5k4W/kvTSg6yBCwZDWmzZ6zO6s8l21qeYvFrFSr05X1ipPwetkp+HqTHQ9w
-         x0lD8kbqd/yckyh21Trs/RkZAvV4WAXPx+V3kdW+EUjJaLki4eY78hEwuDCdTl/kqDZd
-         nriLJFWeX0/oxIqrvSubWEW/k/DUUUft0uAz+a5u8GnEJI55l1W/7oy8liOujGXNb3xB
-         raww==
-X-Forwarded-Encrypted: i=1; AFNElJ+GYiZo9KPurNafnflE+VLmhlNN6hm3AYfv+je8aZ1Zi2IBaA1D2KTKOHcKBzCn35+jvP4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyBoZJRUT/Ne4pxhRbGxN7yJWUQevhWIYYaeft9f6KxC/gu67z4
-	48adHZ4qOItoeq+HmNHhxzmWxeLdTzkJkDHHVbgQuwLCwMo6zaFtjPiD7tm3RLTHA2xwxZLn+s5
-	kiUBjBA==
-X-Received: from pjuf7.prod.google.com ([2002:a17:90a:ce07:b0:36a:3227:69a7])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:6c8:b0:36a:fcf5:64c2
- with SMTP id 98e67ed59e1d1-36afcf56624mr8565041a91.13.1779904158965; Wed, 27
- May 2026 10:49:18 -0700 (PDT)
-Date: Wed, 27 May 2026 10:49:06 -0700
-In-Reply-To: <20251224014324.1307211-1-chengkev@google.com>
+        d=1e100.net; s=20251104; t=1779904163; x=1780508963;
+        h=to:from:subject:message-id:references:mime-version:in-reply-to:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KMYTk3hkl99ebNU+1sIwx3gm+Ba8Y+fSM7epDpi6c6g=;
+        b=osvQ0k0e2rK05Ek6ZG4nOrdfvVanbr+KrTfCrhEDK3K35KRz2nGfEuAclk8vB2BV8s
+         PEHFcmzM3QZgreFbaPVOIWCdKMRo5gGrJShH+++dn3gzyJBzze4NOp63ID8kQ3TkXKs4
+         EXOSrbCayXHW4WRQiohyQgcLbzbVbwOhm1lXpUpenL6ASiw8NY5V7+x5bQcnotV0sD6b
+         N99+2uD6PovpWJL2qgMlggLgE+94msuIMBvAPg1AbbtT/L/LQliR6btlPy00qtqbO35s
+         BcNb0hXE1v0BrweLjsx1ghqIdxqpPuH48gr5gUPoRWxEWbaOTyIXimC45MUDEuYAOVyi
+         f7dA==
+X-Forwarded-Encrypted: i=1; AFNElJ/CQw7lLRXFfaKXG69JQCShn211r6P/193Ij29EOFax01h1KoShFINx78pBVJWL+I9mlUE=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx8eh2Xp7yvgwzS+eLNoMw2iRHwxmneOTixLnH6RF/KYu5e9axm
+	1IN7wmDPkgkknav5/UTy+DF1R6wLuzqrxlCmC43CHpvCU+xiaIMrOkIiW/9NlTzjLZORqcn8I6e
+	SQlV+tA==
+X-Received: from plnz8.prod.google.com ([2002:a17:902:8348:b0:2bd:8434:6d14])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:2b0f:b0:2bd:63dc:b7ad
+ with SMTP id d9443c01a7336-2beb05a227emr251077395ad.2.1779904163215; Wed, 27
+ May 2026 10:49:23 -0700 (PDT)
+Date: Wed, 27 May 2026 10:49:08 -0700
+In-Reply-To: <20260227213849.3653331-1-jmattson@google.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20251224014324.1307211-1-chengkev@google.com>
+References: <20260227213849.3653331-1-jmattson@google.com>
 X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
-Message-ID: <177989663546.4071483.13324448017637391219.b4-ty@google.com>
-Subject: Re: [kvm-unit-tests PATCH v3 0/2] x86/svm: Add testing for L1
- intercept bug
+Message-ID: <177989667583.4072071.5439471047016710005.b4-ty@google.com>
+Subject: Re: [kvm-unit-tests PATCH] x86: nVMX: Add retry loop to advanced RTM
+ debugging subtest
 From: Sean Christopherson <seanjc@google.com>
 To: Sean Christopherson <seanjc@google.com>, kvm@vger.kernel.org, 
-	Kevin Cheng <chengkev@google.com>
-Cc: yosryahmed@google.com, andrew.jones@linux.dev, thuth@redhat.com, 
-	pbonzini@redhat.com
+	Paolo Bonzini <pbonzini@redhat.com>, Yosry Ahmed <yosry@kernel.org>, 
+	Jim Mattson <jmattson@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-On Wed, 24 Dec 2025 01:43:22 +0000, Kevin Cheng wrote:
-> If a feature is not advertised to L1, L1 intercepts for instructions
-> controlled by this feature should be ignored. Currently, the added test
-> fails due to a bug in nested vm exit handling where vmcb12 intercepts
-> are checked before vmcb02 intercepts, causing the #UD exception to never
-> be injected into L2 if the L1 intercept is set. This is fixed in [0]
-> 
-> The first patch just adds the missing intercepts needed for testing and
-> restructures the vmcb_control_area struct to make adding the missing
-> intercepts less ugly. The second patch adds the test which disables all
-> relevant features that have available instruction intercepts, and checks
-> that the #UD exception is correctly delivered despite the L1 intercept
-> being set.
+On Fri, 27 Feb 2026 13:38:34 -0800, Jim Mattson wrote:
+> Linux commit 400816f60c54 ("perf/x86/intel: Implement support for TSX Force
+> Abort") introduced a feature that temporarily disables RTM on Skylake and
+> similar CPUs (06_55H stepping <= 5, 06_4EH, 06_5EH, 06_8EH stepping <= 0BH,
+> and 06_9EH stepping <= 0CH) via the TSX_FORCE_ABORT MSR, so that all four
+> general purpose PMCs can be used by perf. This feature is on by default,
+> but can be disabled by writing 0 to /sys/devices/cpu/allow_tsx_force_abort.
 > 
 > [...]
 
-Applied to kvm-x86 next, even though the SKINIT test fails on the Turin system
-available to me.  AIUI, there's a ucode bug or something for pre-production
-hardware?
+Applied to kvm-x86 next, thanks!
 
-Anyways, I mention that because if others see failures, then we'll probably
-need to figure out a way to automatically skip the SKINIT test (or maybe eat
-the #GP and treat it as XFAIL?).
-
-[1/2] x86/svm: Add missing svm intercepts
-      https://github.com/kvm-x86/kvm-unit-tests/commit/8322ddeda22b
-[2/2] x86/svm: Add unsupported instruction intercept test
-      https://github.com/kvm-x86/kvm-unit-tests/commit/7586f98f809e
+[1/1] x86: nVMX: Add retry loop to advanced RTM debugging subtest
+      https://github.com/kvm-x86/kvm-unit-tests/commit/dbcb11d7f580
 
 --
 https://github.com/kvm-x86/kvm-unit-tests/tree/next
