@@ -1,157 +1,108 @@
-Received: from fout-a5-smtp.messagingengine.com (fout-a5-smtp.messagingengine.com [103.168.172.148])
+Received: from mail.alien8.de (mail.alien8.de [65.109.113.108])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F24BD313520;
-	Wed, 27 May 2026 20:53:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.148
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A9073101D0;
+	Wed, 27 May 2026 21:06:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=65.109.113.108
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779915220; cv=none; b=LBbLmP851AbhKwSIyFRhDy0cst41VU975YUOqAKUqBc9lA5samH5KawKEjwWaYqNgsFVHDU+I00HuKJfBHUDdVoBEc90hDXkDeA2dimdwI860izm8PF1i9ONFfB/vS0sEiJuVE9ppbSI68/cEEGSr/3hegdnaijLtCyeG6SsP8M=
+	t=1779916020; cv=none; b=qczHr48coXJJop8m0ywxcipEErACpWlpTv0bqFYUfqi987wv+DJgFrynPAFvor3/i/VVNcRsc3YhiNEJPy9D4v9PS2YUiJlArcNwHlQQ5ZEBuG4vsIiFRsI3jpNVU2Eolrs96hneZyPMb3rnjFOhJ2Fb+mCTDRp0aPFJSCk7CRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779915220; c=relaxed/simple;
-	bh=4YfWInZ9CLb2AOWifcQm5snj/1dxglE9jo08vZEeOVw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fYVnDN2MmYURVCbiheNB0bjaUaZih8Ltu3kzjIMdTKhbhc3WHkEeqbk1WGcqwB59+1GSlSLFwsRFiR7L70l2ER3s0sDW3X+rLNr7+vcHedYWP/zqLTM9eBN3aT0kARQvC0tOufE6C/zcGyE62dciUR3FzUHKVo2F7MJri1tvmBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org; spf=pass smtp.mailfrom=shazbot.org; dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b=RNYOFR4v; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=SYR/FQvF; arc=none smtp.client-ip=103.168.172.148
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=shazbot.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=shazbot.org
+	s=arc-20240116; t=1779916020; c=relaxed/simple;
+	bh=T333W9UzfwFRyZqUtUnwPK7/vCADoN8h+s30/wxT1NY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Xyzs0byPnl0n2wFNTPrpffEYNLtLtx3i9zt4arlet69df2elqqUXjsJxXgqtqF9EFKYVyzkONmSb7UzPoGCk5fEKB3iuwTRP//Cz0E7+mgJLGYAa/qI52xZzXYUoUlFtSkFMWRltyLZgzILIwkoJMLmDkKD914jRWX1OdJe3xHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de; spf=pass smtp.mailfrom=alien8.de; dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b=MSNmsJrs; arc=none smtp.client-ip=65.109.113.108
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=alien8.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=alien8.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=shazbot.org header.i=@shazbot.org header.b="RNYOFR4v";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="SYR/FQvF"
-Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
-	by mailfout.phl.internal (Postfix) with ESMTP id A26A0EC0077;
-	Wed, 27 May 2026 16:53:35 -0400 (EDT)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-04.internal (MEProxy); Wed, 27 May 2026 16:53:35 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=shazbot.org; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1779915215;
-	 x=1780001615; bh=TzsAIWJKWxLMYgzdxaWg1KgQLd4L0BjlB8TYvo0b3Wo=; b=
-	RNYOFR4v5bWL/PM5DIyXR4qJ7Z6D92QH4Cy3LppgJ2E10MJO0PuwTaB/1ZS4mPXs
-	HCy0NsxoHbYMZFe3VwIxnIk7UalNGjMCyXkVRadKJ/QJRllBlcvLK0US9bDnRRwH
-	6klEt3FAKvTL2P4spELYW/PugDCje8LL0Ak2B8lpWgrlMieFy0qqty5mthOK6YVr
-	Rhf9Iewhj29R21KaCbpTOdDzjPQiJ0CmO+Rk7JOctajA/BmSBddG/tAdkJT5GGtW
-	zBuDNHNOx3392bRIFbVn1Ult5hkbN35Ha4jR+7jPRHGfTjrPROxBLy/cGuNVSNd3
-	ViIUKxEjTTS2UcxD0OILWQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm3; t=1779915215; x=
-	1780001615; bh=TzsAIWJKWxLMYgzdxaWg1KgQLd4L0BjlB8TYvo0b3Wo=; b=S
-	YR/FQvFC4ejpPKA5OBsG13goMswKVWLYt6j6dBBPa74VeBdvIyoCVVHp1jCXiqIU
-	07UC5auhDx18L36o7Zewh5c80pfPFKlgetlVnNkUbmTCcPGme4t6P2IrLyA3FYl1
-	2nYaYTArJB2lHcUyoxswLCD9xVmvtAiYlF2pFMU6So7MkExYpS+C+rzrlorO0HIl
-	jBiU6PuyZz+kIvrGRvD213X+hEG3/+Rg7HED7lIYZvRy7Gjz8NdPcJ4wYfnRIUlS
-	fw2ts1qxs9BqHIwWUkgLiWw72+YfKObWsWa7EzK6/QVHc3wQUozvmjRXvnBdLVNX
-	seAoShWn6kLhUu2+63EhQ==
-X-ME-Sender: <xms:z1kXamIPytd-cXsTONJm-Aj97UNRY8erds7YIJI34uyND3oBSi-Z4g>
-    <xme:z1kXaltoxOt0GRjv_2UhRNeWXGOr9itEAPa_TWXD4vrODN9l-pRVdYFbvyClNSOc2
-    GPZWW5WX3-vmnTuTB94M_xbapRKUN0E3HboovE7EYH_6QzzUvDDZg>
-X-ME-Received: <xmr:z1kXamU78RBBOF3LItIWluXvjTR0m2VhE8TZFi-BcVnUEXTlyLXxbu9UCZA>
-X-ME-Proxy-Cause: dmFkZTF1K9viltT52o4ie7G6CQKxrNMh36y//trnUnjN2k5DDgIcr7l1e0mhd521pVUDS/
-    uUGjEBHMKe4uB8HMHx4OURBWT7vcgWNK/HbH2TS03Hxbg5FeReRt7to9/tAI+ydT7I1l89
-    uhh7qF0gDk2T40TaUxMNHZxuF+GSXmiNNkylKLwO+IpzgNQ4v74oMtPuQDE3B0Xiy58k/H
-    OdJyMun/gxHDWJd4SGLl8Pb+k54CNl+UmtkuZYH5bsrFwFICfdDCJITm++6BzDRZXY9DKa
-    O8KAQIwlIxQ9/B+BwQfavF8kkeajVFD2pGqmPEYauMUdU+iLblknNkg8eCzti1XGaihJVh
-    qVoc+YvwS0sBtLpk5V9sfF412d0n5bBVYaDlaUJ5lgZULolELwh4cY5u+BDy6Xjz92ZTQS
-    dKE81COvd/li6hW7NzXrkCXp91IpDu7+2BgrEgE3Zh8JU6ezDH5h+sMjmvg/x7QvHfxIne
-    lDFoJF/TIt1qrWIKqoxk5000z2TjniOuWIRbKYzld7HeHhtoTa7+acr6e0auCJQRsK+tnW
-    Tlu41x61PoLJ2LbQGxryv42A/1+Mnbsx6dlJNiQ5ZutWsX43E5IDzh+73DxHGwzuwVnJLu
-    qICs6bhUv4aZw/7QiJNSkhBaWYhcMLlgqC3xyqr3DgShx8Jfvzey4VBaL0zg
-X-ME-Proxy: <xmx:z1kXaoJn4vy4awOhNB-9NU295v8QIWTpScmh081UN1PvO8WAuPNszA>
-    <xmx:z1kXaj9mjlGWSi9WlnN52HuUcbRJ0U3AjtMA6XsHuhhdoMeuUEryYA>
-    <xmx:z1kXauNgGG1dViSVnY4M55iBNlOuBJ70jXTrL4WK4i9NlB3auC950Q>
-    <xmx:z1kXan1Orfv6sdp6Dbaq5FokGcKR6AgKbOBN6YPa_wJKAhs29pTzjw>
-    <xmx:z1kXag0SGdBPokUwULyB2T-XuxcA1UGmGMn0kcLsKDgBKz-bZMCPSAt_>
-Feedback-ID: i03f14258:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 27 May 2026 16:53:33 -0400 (EDT)
-Date: Wed, 27 May 2026 14:53:32 -0600
-From: Alex Williamson <alex@shazbot.org>
-To: Zhiping Zhang <zhipingz@meta.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>, Leon Romanovsky <leon@kernel.org>, Sumit
- Semwal <sumit.semwal@linaro.org>, Christian Konig
- <christian.koenig@amd.com>, Bjorn Helgaas <helgaas@kernel.org>,
- <kvm@vger.kernel.org>, <linux-rdma@vger.kernel.org>,
- <linux-pci@vger.kernel.org>, <netdev@vger.kernel.org>,
- <dri-devel@lists.freedesktop.org>, Keith Busch <kbusch@kernel.org>, Yochai
- Cohen <yochai@nvidia.com>, Yishai Hadas <yishaih@nvidia.com>,
- alex@shazbot.org
-Subject: Re: [PATCH v5 1/4] PCI/TPH: expose the enabled TPH requester type
-Message-ID: <20260527145332.30412ea4@shazbot.org>
-In-Reply-To: <20260526144401.1485788-2-zhipingz@meta.com>
-References: <20260526144401.1485788-1-zhipingz@meta.com>
-	<20260526144401.1485788-2-zhipingz@meta.com>
-X-Mailer: Claws Mail 4.4.0 (GTK 3.24.51; x86_64-pc-linux-gnu)
+	dkim=pass (4096-bit key) header.d=alien8.de header.i=@alien8.de header.b="MSNmsJrs"
+Received: from localhost (localhost.localdomain [127.0.0.1])
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTP id C70D940E00BA;
+	Wed, 27 May 2026 21:06:56 +0000 (UTC)
+X-Virus-Scanned: Debian amavisd-new at mail.alien8.de
+Authentication-Results: mail.alien8.de (amavisd-new); dkim=pass (4096-bit key)
+	header.d=alien8.de
+Received: from mail.alien8.de ([127.0.0.1])
+	by localhost (mail.alien8.de [127.0.0.1]) (amavisd-new, port 10026)
+	with ESMTP id LXhOfZMt6doO; Wed, 27 May 2026 21:06:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=alien8.de; s=alien8;
+	t=1779916006; bh=+HB2pTTn+1mGkcvaE+8Ypvs3xq7dhmSiIMi7/IobGeI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=MSNmsJrsZfquvctjkm4A7wVSPWQOst3IF/Ws+ghRkWMWkMP/YEKONQcC/qPpK7EiN
+	 yRp3ZCmBr/nR1EJd65n9wjhmlc47wLNlTDM2Xb+CDagdckY/2uTalX0xAIP7p/pt+N
+	 Pb3Og82D0J+SrNTropVuIZrgwZ+EInH0jFN804aDxxv+XlInolW/FBo+RN8bRx++LX
+	 HY1dIGdOOGdqLvmuzCdKu0/w4VVGJxbGxSdvy/DN8o4wZbl8Ygjbnbel5PCFfKiefb
+	 vRpl0gYl4EOrUfkmHVvVHsy3SeFZpg2A8n6oRr3Odmv5xz46w6O19qDQ6zgZhxJmmr
+	 ejekiD93wbcnL1itzHQKcxtpaSrKk3OJVAl6iIhL36kYPtoltq3PYfFa/oHV2c9Z7e
+	 GjAqkiMaScudmRdwI99NGe7ThOSD8VdNhJZD0S/4SJOP10Ejzzc3pU0SJcZ74Vrmrf
+	 GgVinXTIIU13ofpT0UxWm/UbX2kc6ijleadMethc3GuMkl7g59iY1dSHZWFpN5AvZE
+	 51X7tOq/sq7j47vcuOoIGjBz+iERbEugz583sQzIg9CAnpKOlXbAN1N89PniWOKHMu
+	 b23Io7bghPsIbPOs723PXEROUXMPenr8/uRypKPWUs0OKJef90ZM8l5xkf0uUhXTff
+	 1HTpp10UT6W8ircra4oNcLcI=
+Received: from stx.tnic (unknown [IPv6:2600:1700:38ca:c00:b8a3:f58e:8829:9ca6])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange ECDHE (P-256) server-signature ECDSA (P-256) server-digest SHA256)
+	(No client certificate requested)
+	by mail.alien8.de (SuperMail on ZX Spectrum 128k) with ESMTPSA id 573BC40E01A1;
+	Wed, 27 May 2026 21:06:11 +0000 (UTC)
+Date: Wed, 27 May 2026 14:06:03 -0700
+From: Borislav Petkov <bp@alien8.de>
+To: Ashish Kalra <Ashish.Kalra@amd.com>
+Cc: tglx@kernel.org, mingo@redhat.com, dave.hansen@linux.intel.com,
+	x86@kernel.org, hpa@zytor.com, seanjc@google.com,
+	peterz@infradead.org, thomas.lendacky@amd.com,
+	herbert@gondor.apana.org.au, davem@davemloft.net, ardb@kernel.org,
+	pbonzini@redhat.com, aik@amd.com, Michael.Roth@amd.com,
+	KPrateek.Nayak@amd.com, Tycho.Andersen@amd.com,
+	Nathan.Fontenot@amd.com, ackerleytng@google.com, jackyli@google.com,
+	pgonda@google.com, rientjes@google.com, jacobhxu@google.com,
+	xin@zytor.com, pawan.kumar.gupta@linux.intel.com,
+	babu.moger@amd.com, dyoung@redhat.com, nikunj@amd.com,
+	john.allen@amd.com, darwi@linutronix.de,
+	linux-kernel@vger.kernel.org, linux-crypto@vger.kernel.org,
+	kvm@vger.kernel.org, linux-coco@lists.linux.dev
+Subject: Re: [PATCH v5 2/7] x86/msr: add wrmsrq_on_cpus helper
+Message-ID: <20260527210603.GCahdcu8zvVjfKfGEL@fat_crate.local>
+References: <cover.1779133590.git.ashish.kalra@amd.com>
+ <c9fe5c2fef063f5006cc9bfa03eec824ac015db7.1779133590.git.ashish.kalra@amd.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <c9fe5c2fef063f5006cc9bfa03eec824ac015db7.1779133590.git.ashish.kalra@amd.com>
 
-On Tue, 26 May 2026 07:43:53 -0700
-Zhiping Zhang <zhipingz@meta.com> wrote:
-
-> Add pcie_tph_enabled_req_type() so drivers can query the enabled TPH
-> requester mode without reaching into pci_dev internals.
+On Mon, May 18, 2026 at 09:42:15PM +0000, Ashish Kalra wrote:
+> From: Ashish Kalra <ashish.kalra@amd.com>
 > 
-> This keeps pci_dev::tph_req_type inside the PCI/TPH code and provides a
-> !CONFIG_PCIE_TPH stub for callers.
+> The existing wrmsr_on_cpus() takes a per-cpu struct msr array, requiring
+> callers to allocate and populate per-cpu storage even when every CPU
+> receives the same value. This is unnecessary overhead for the common
+> case of writing a single uniform u64 to a per-CPU MSR across multiple
+> CPUs.
 > 
-> Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
-> ---
->  drivers/pci/tph.c       | 12 ++++++++++++
->  include/linux/pci-tph.h |  2 ++
->  2 files changed, 14 insertions(+)
-> 
-> diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
-> index 91145e8d9d95..6c4492075ae9 100644
-> --- a/drivers/pci/tph.c
-> +++ b/drivers/pci/tph.c
-> @@ -174,6 +174,18 @@ u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev)
->  }
->  EXPORT_SYMBOL(pcie_tph_get_st_table_loc);
->  
-> +/**
-> + * pcie_tph_enabled_req_type - Return the device's enabled TPH requester type
-> + * @pdev: PCI device to query
-> + *
-> + * Return: PCI_TPH_REQ_DISABLE, PCI_TPH_REQ_TPH_ONLY or PCI_TPH_REQ_EXT_TPH.
-> + */
-> +u8 pcie_tph_enabled_req_type(struct pci_dev *pdev)
-> +{
-> +	return pdev->tph_req_type;
-> +}
-> +EXPORT_SYMBOL(pcie_tph_enabled_req_type);
-> +
->  /*
->   * Return the size of ST table. If ST table is not in TPH Requester Extended
->   * Capability space, return 0. Otherwise return the ST Table Size + 1.
-> diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
-> index be68cd17f2f8..fe572737b409 100644
-> --- a/include/linux/pci-tph.h
-> +++ b/include/linux/pci-tph.h
-> @@ -30,6 +30,7 @@ void pcie_disable_tph(struct pci_dev *pdev);
->  int pcie_enable_tph(struct pci_dev *pdev, int mode);
->  u16 pcie_tph_get_st_table_size(struct pci_dev *pdev);
->  u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev);
-> +u8 pcie_tph_enabled_req_type(struct pci_dev *pdev);
->  #else
->  static inline int pcie_tph_set_st_entry(struct pci_dev *pdev,
->  					unsigned int index, u16 tag)
-> @@ -41,6 +42,7 @@ static inline int pcie_tph_get_cpu_st(struct pci_dev *dev,
->  static inline void pcie_disable_tph(struct pci_dev *pdev) { }
->  static inline int pcie_enable_tph(struct pci_dev *pdev, int mode)
->  { return -EINVAL; }
-> +static inline u8 pcie_tph_enabled_req_type(struct pci_dev *pdev) { return 0; }
+> Add wrmsrq_on_cpus() which writes the same u64 value to the specified
+> MSR on all CPUs in the given cpumask.
 
-nit, s/0/PCI_TPH_REQ_DISABLE/ for consistency.  Thanks,
+So let's add yet another function which name differs from the other one by
+a single letter and have people go look at the implementation to know which is
+which...?
 
-Alex
+Instead of unifying what's there and extending this one to do what you want it
+to do?
 
+And now you have a wrmsrQ_on_cpus() but no rdmsrQ_on_cpus()?
 
+Because if you look at the code, you'll see how those are used: first you
+rdmsr on CPUs, modify each value and then wrmsr on same CPUs.
+
+So no, try again pls.
+
+-- 
+Regards/Gruss,
+    Boris.
+
+https://people.kernel.org/tglx/notes-about-netiquette
