@@ -1,121 +1,104 @@
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73223391E7F;
-	Wed, 27 May 2026 15:06:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A06C03BE635
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 15:12:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779894369; cv=none; b=XJPvvu9WK+V9KxnvGnDSMA5xTvza7yyveVy4sbnuBY0FSzmoy2ufvXUsbAC5DefOzgJic5me10rdHkNeJee7DU3s779pm2iK4rXnOWKxRz8+QTLaMSK4VYq3ii74H1jpFRyl70OdJHXfiX+SulKJbdOWhtix2Dn4CY757BpWJJU=
+	t=1779894755; cv=none; b=p5UhTJ1NyrosgQhAigq1QkFzac9j74QTKK1U3b5VURVMNwA+mWbBFRz3n6lqX2s6Ezrg2BBmDL7lzkADQOil5VMSHzHdaYocXoDYdTDCRMnSNKtBOoaPpksea3s7XD1wLNrqK4t9qG3jaqgp+AhfH4W/wvmVuj0kc+xUJI+unkw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779894369; c=relaxed/simple;
-	bh=RsfjSdPS3FsOalRYjySmRZ6wI/wkCixF3/saE67AD6A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gS3pFsxOLuJcvgmm4c/u9oxwMkG5MDe0lj2LuGgikM3DDfUN41ezPMuEIz8x2pZOqataXBfJJbpsY5RIfSR72cCNSgY0dWZMXkLmZVE62qQtGS2iUeTRnOUE3PcoukvGlTCbqT8t48/F3Z1/EwCJDcbLbz2Dcy5u8vUlILtjN28=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=iYLg+1FR; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+	s=arc-20240116; t=1779894755; c=relaxed/simple;
+	bh=912snAcCTNqOWUD6SpdL0K01Hil6+eYbKui0bgbt/go=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=koe4UyCirV/Jq3TGRLWwrs8p0jS6DaGi+/ysluNu4U1aUg/k7MKnRcKMEEXc+gs3ZuB71G9gOQE5nQgAMTws7fe9LLgCKFychdM5SAKJLGDXVN6DS3ux/9wAtOPRunOsEzyo+IVIff3vlb1wH/R50GwiSIfz2VE1poMBi+GtU6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=a+O0gznk; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="iYLg+1FR"
-Received: from pps.filterd (m0353725.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 64RCmeoo735911;
-	Wed, 27 May 2026 15:06:02 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-type:date:from:in-reply-to:message-id:mime-version
-	:references:subject:to; s=pp1; bh=4/M+V/oY9D2n9kC3WcRNF0fEOu/EhL
-	RwS3owsawK5jE=; b=iYLg+1FRtjGRw1LjZ7wdkGkQU2o/hDnd91uiluOkwwxFC2
-	O4IZFmffF8MV0FzttxBxEMHpiEpLOTtnWcvSGVS3eVNwXANRYhotvMp/gv8nWEZT
-	W/br42TY04FLaHzOCcJH/Doq+Hjq0lRZ5wPSLt6EFwZkmPOMsp0Q3uCeEmLtKJdh
-	bWx5g7MTlJrRtyhsHH5t9E4Dc04SgDRnfzPaBo8Y6X5ltcMKDCL9kN9lyvAAd2TM
-	2D0Th/wzwBc+TNTdmKZVQlasAfbCYjGWLVYHAUpEQPZXzS3uMT27Y1V46qNQbkUH
-	E3mmVHm7bNWRoxcNOg8NxN16cUnjiBt8ixrGwNaw==
-Received: from ppma13.dal12v.mail.ibm.com (dd.9e.1632.ip4.static.sl-reverse.com [50.22.158.221])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4eb4nc8pjw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 27 May 2026 15:06:02 +0000 (GMT)
-Received: from pps.filterd (ppma13.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma13.dal12v.mail.ibm.com (8.18.1.7/8.18.1.7) with ESMTP id 64REs5lv005364;
-	Wed, 27 May 2026 15:06:01 GMT
-Received: from smtprelay06.fra02v.mail.ibm.com ([9.218.2.230])
-	by ppma13.dal12v.mail.ibm.com (PPS) with ESMTPS id 4edjrb3jfw-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 27 May 2026 15:06:01 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (smtpav02.fra02v.mail.ibm.com [10.20.54.101])
-	by smtprelay06.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 64RF5tUM12321074
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 27 May 2026 15:05:55 GMT
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 9EC5D20043;
-	Wed, 27 May 2026 15:05:55 +0000 (GMT)
-Received: from smtpav02.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 6691B20040;
-	Wed, 27 May 2026 15:05:55 +0000 (GMT)
-Received: from osiris (unknown [9.52.216.133])
-	by smtpav02.fra02v.mail.ibm.com (Postfix) with ESMTPS;
-	Wed, 27 May 2026 15:05:55 +0000 (GMT)
-Date: Wed, 27 May 2026 17:05:54 +0200
-From: Steffen Eiden <seiden@linux.ibm.com>
-To: Claudio Imbrenda <imbrenda@linux.ibm.com>
-Cc: linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
-        linux-s390@vger.kernel.org, borntraeger@de.ibm.com,
-        frankja@linux.ibm.com, david@kernel.org, nrb@linux.ibm.com,
-        schlameuss@linux.ibm.com, gra@linux.ibm.com, pbonzini@redhat.com,
-        seanjc@google.com, yan.y.zhao@intel.com, isaku.yamahata@intel.com
-Subject: Re: [PATCH v3 0/5] KVM: s390: Implement KVM_PRE_FAULT_MEMORY
-Message-ID: <20260527150554.361644-A-seiden@linux.ibm.com>
-References: <20260527144358.186359-1-imbrenda@linux.ibm.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="a+O0gznk"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82f85179263so13427967b3a.3
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 08:12:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779894754; x=1780499554; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=loqmIAZkS6j01OGafW7CG6LP/Z/yHpRC0pSxjAWH8I4=;
+        b=a+O0gznkDs24eC3G6XyJOBHQCmWN3UwyJ6HTcQrfebhcjUmT95zpHe9vEXktaag4hS
+         IyBGKMEaEeY5wPp7Fu9uAQzufGAQQcB0nEtUzu27W4b71Nn/nl3rCwpGMIFXFxH4/get
+         xx5A4eRqq3WJ/8QeexedpAiDae2VY7YgYR6PwoIuovzgI05zetdbNW6TXBD1/D+8WZgd
+         xJd5v0PX9dqphuf3uUm0B2osltmW9fUmSQUPNaM9h7xEzcZDSFWkWChRwPgpDZfsAK6O
+         3gtrD/yZj5ZURXkhq/QEzePb+qOlgF+zmGaD+GtARUDnnyfVyiOX2VZaOK0WFdqZf6pB
+         Lkgw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779894754; x=1780499554;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=loqmIAZkS6j01OGafW7CG6LP/Z/yHpRC0pSxjAWH8I4=;
+        b=AtoP5pNPJrgFoiN0dWUUK/WvVwl66ZJO5s4nuNuZAaso9Cl4OXvHS//bRCJXUyGQjO
+         Wb0ZBBm9cWaNVzUim1NKijcVbLQyn5C4HFMnnctd+68CRGbtLfwkWa07uu8Z0KCL1c+q
+         AdxDZEuk0ULaWksgMKFtYEhwmVuDVTjdDmYIe4XLmVpEkJaBHU/laE29Fcmkp0rThch6
+         4/0LD3h7tXT3LQDqv7/wM09p3m+TICo0xTcfipjvceWJ4VatdVqdBHCWqFudf9m4ATwC
+         bBA0t40snL6CHH8nH90LkS+URuFXPBkbP3JUkUyT4sD/k5FombNb8bhC7nus/Lj9Exnc
+         02KA==
+X-Gm-Message-State: AOJu0YzhvvOnUJDqSNK0ccNdTPAVEOlZXDBA2Fnbd+z3vduinhF+7OHm
+	05jWUyKDCFsFjVFzlFZe5OeKbcTVkAdNlMjwn4I5KrC7AxFg+fQza4C/pQN5R7qF32rTw6QLx9e
+	LuUt/bw==
+X-Received: from pfblb9.prod.google.com ([2002:a05:6a00:4f09:b0:837:7965:c70c])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:39a6:b0:82c:e83d:a9b0
+ with SMTP id d2e1a72fcca58-8415f552ce6mr22328525b3a.21.1779894753673; Wed, 27
+ May 2026 08:12:33 -0700 (PDT)
+Reply-To: Sean Christopherson <seanjc@google.com>
+Date: Wed, 27 May 2026 08:12:30 -0700
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260527144358.186359-1-imbrenda@linux.ibm.com>
-X-TM-AS-GCONF: 00
-X-Proofpoint-Reinject: loops=2 maxloops=12
-X-Authority-Analysis: v=2.4 cv=VvYTxe2n c=1 sm=1 tr=0 ts=6a17085a cx=c_pps
- a=AfN7/Ok6k8XGzOShvHwTGQ==:117 a=AfN7/Ok6k8XGzOShvHwTGQ==:17
- a=kj9zAlcOel0A:10 a=NGcC8JguVDcA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=RnoormkPH1_aCDwRdu11:22 a=V8glGbnc2Ofi9Qvn3v5h:22 a=VnNF1IyMAAAA:8
- a=hYS-lhFIv60Om3WMZeUA:9 a=CjuIK1q_8ugA:10
-X-Proofpoint-ORIG-GUID: IMQZWw-Ec8TABG63qYU3Q6yVafnuGb8z
-X-Proofpoint-GUID: lxpu3190xhYYXdFyAKQfcraO2MsQNDjZ
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwNTI3MDE0NCBTYWx0ZWRfX8QqIeMPhkXId
- OWDVh3Xd9eRATwgkX2jG/oUjY5zPBNJufAECw5BeCGgFdNbT6Ni+h90tz1nbIXrZiDr6lBynKft
- s8wuSo/G2oZWGeFWp228pPt8D6yJhoojY2E1TniK+tq8ueJwzPL8EqCEG47L0+EaJ6GDsr7bwsX
- LWWTHzLrZ9X3LzqAQzI/sS9ivPxth66xSHP3YpG4cDPbQQkWqvVUCZoEMqjQJ3Q7kojDK0EyvXe
- FE9VHMBj0ECZcmCqUECPxdRqDLcTs+c7ehkATx25otpymGC2/xEMAvlfycgXijj3KyCDZB5Fkog
- 9+LQvRpkZYyS+CJ33vxZsrdjE0EsxvEwTCyfLAK3B6059/FOkR7v5j399r2W/49oPK5Qe63oPmP
- 1DvxMoxVtZKlZpy/hedEWaaaO8LzcMwlQLBKIXhyD5p4S7eMuEwUIC6Ylsr2QXLazbI5E0A7Dp1
- OcK1Z1390xbJ/gs+FPg==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1143,Hydra:6.1.125,FMLib:17.12.100.49
- definitions=2026-05-27_02,2026-05-26_03,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- suspectscore=0 phishscore=0 priorityscore=1501 spamscore=0 adultscore=0
- lowpriorityscore=0 malwarescore=0 impostorscore=0 clxscore=1011 bulkscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2605130000 definitions=main-2605270144
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.54.0.823.g6e5bcc1fc9-goog
+Message-ID: <20260527151232.4058615-1-seanjc@google.com>
+Subject: [kvm-unit-tests PATCH v3 0/2]  nVMX: Improve DEBUGCTL test coverage
+From: Sean Christopherson <seanjc@google.com>
+To: Paolo Bonzini <pbonzini@redhat.com>
+Cc: kvm@vger.kernel.org, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	Chenyi Qiang <chenyi.qiang@intel.com>, Sean Christopherson <seanjc@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Wed, May 27, 2026 at 04:43:53PM +0200, Claudio Imbrenda wrote:
-> Implement KVM_PRE_FAULT_MEMORY on s390, and update documentation and
-> selftests accordingly.
-> 
+Current nested debugctls test focuses on DR7 value and fakes the result of
+IA32_DEBUGCTLMSR in comment. Although the test can pass because DR7 is the
+only criterion to determine the result, there are some error messages
+appearing in dmesg due to accessing to BTF | LBR bits in IA32_DEBUGCTLMSR
+with report_ignored_msrs KVM parameter enabled.
 
-...
+Clean up the old test so that it focuses on DR7, then add a separate test for
+DEBUGCTLMSR bits that are actually supported and can be validated during VMX
+transitions.
 
-> Claudio Imbrenda (5):
->   KVM: s390: Track page size in struct guest_fault
->   KVM: s390: Implement KVM_PRE_FAULT_MEMORY
->   KVM: s390: Update KVM_PRE_FAULT_MEMORY API documentation
->   KVM: selftests: Fix pre_fault_memory_test to run on s390
->   KVM: selftests: Enable pre_fault_memory_test for s390
+v3:
+ - Massage changelog in patch 1.  [Xiaoyao]
+ - Combine all DEBUGCTL tests into one testcase. [Sean]
+ - Validate all supported combinations. [Sean]
+ - Independently validate LOAD/SAVE controls. [Sean]
+ - Drop unnecessary configuration entry. [Sean]
 
-LGTM. 
+v2:
+ - Modify the commit message in patch 1 (Xiaoyao)
+ - Add dedicated tests (for BUS_LOCK_DETECT and LBR) covering the DEBUGCTL
+   reads and writes during VMX transitions (Sean)
+ - Add one additional test for RTM_DEBUG bit that was not mentioned in v1.
 
-For the whole series:
+v1: https://lore.kernel.org/kvm/20250811063035.12626-1-chenyi.qiang@intel.com
 
-Reviewed-by: Steffen Eiden <seiden@linux.ibm.com>
 
+Chenyi Qiang (2):
+  nVMX: Remove the IA32_DEBUGCTLMSR access in debugctls test
+  x86/vmx: (Re)Add a nVMX test to validate load/save of DEBUGCTL
+
+ lib/x86/msr.h   |   2 +
+ x86/vmx_tests.c | 196 ++++++++++++++++++++++++++++++++++++++++--------
+ 2 files changed, 166 insertions(+), 32 deletions(-)
+
+
+base-commit: 05b7715ffd4ae4ef8f0a5dea869f1543d89f936d
+-- 
+2.54.0.823.g6e5bcc1fc9-goog
 
