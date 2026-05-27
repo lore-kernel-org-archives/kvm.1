@@ -1,165 +1,115 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from canpmsgout12.his.huawei.com (canpmsgout12.his.huawei.com [113.46.200.227])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27E253BF69A
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 08:49:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83F2A392820;
+	Wed, 27 May 2026 09:47:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.227
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779871790; cv=none; b=Rc8k/3y3NbnzLX6902h3Mw5B13ikGiijLNSPTeGFEXluOT2rY7jEg+L0Kmw574FoIE9MqtjRU/V68BdNGjFtenfkan0mNvKzSQCjNYkXoWAbOy2culCKQFeHdz6LGPQ+BzjoDWuIH94CV23SJUVxjXQ2vOwkmZPUAvpGABfW8vk=
+	t=1779875251; cv=none; b=ia+IDrfGKSsLW/+2o+PWx7lZJm5Tl82NlD3gDiIJPhghZaej2xcG2J1d5g8gMku+nlPm4zuM1uWPrt+MvxOyXyvFBjaDVcMJ0GJjMxrDkZw9901+tq0gg/MLNo1L02qSfPuYxCuDCwbFvBrrRq/ce4n5MYtoMXy8Q9qZya9XWjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779871790; c=relaxed/simple;
-	bh=8mwV/3RT8AF7FRSpqsuS9Hn/ROGx+ckdxnqbnTpmGh8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IAlQL4zjP6IFZ0HoQY5IhEWmAanRb1BqocdqdNzsHSC72nApmMtfh16k8LwnzWIxjuesAQPnPuNGgXDxm0h/vtli0+WTyFIu5oEDj8/CRbVpw20t5DQTNZidvosMwbvU6UoaSJy0rAQS4s3eW2eaizxynd8fywHVa4r4NnznOhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BK8l5FOL; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1779875251; c=relaxed/simple;
+	bh=D73DYFwVjwcIEgNgcApuEGE8m7m5+9nFKXDJWp/2bDg=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=O/Hu/7zz6sikmoS4BhG/rsZ80SNV0cqp+rDUMk+fAvuRyMNXU6Zj3ft81IHd/O+ThCDJr9F3/NJZUAAF4G3RdISHtQezPsTtix+qmpZU1umwXPb5zb/JRDVrJ24NLi/ZC6iqV2rUXxwlWuKEN18nvVeAy0VjRmx9Ucpfc47/mSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=BKmQ62fU; arc=none smtp.client-ip=113.46.200.227
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BK8l5FOL"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779871788;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=2NLOfdHH3QksKJfjHy1RgDXCNjFEJ10Iq9DHsTH8IKA=;
-	b=BK8l5FOLG5+CCJeEjfC7HQy0QLVe9/IkUiYMU3DnIGWWQDoHZv7kHO5YOYrWYSPE14Crnm
-	eu3MKCK37HLnd6MTnDBjWTbZ4qeLSGeHO8Zvjzc0cnuHIMeJinI1iSUpIW4UOn2hVYl+g/
-	BAuTMPHflRkKGbrf5a8pmptHZMHS0cQ=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-392-U_1MO9hpMFSgFy6qA43fGg-1; Wed,
- 27 May 2026 04:49:42 -0400
-X-MC-Unique: U_1MO9hpMFSgFy6qA43fGg-1
-X-Mimecast-MFC-AGG-ID: U_1MO9hpMFSgFy6qA43fGg_1779871779
-Received: from mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.93])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 22326195604F;
-	Wed, 27 May 2026 08:49:38 +0000 (UTC)
-Received: from [10.44.32.217] (unknown [10.44.32.217])
-	by mx-prod-int-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 4ED1D1800357;
-	Wed, 27 May 2026 08:49:30 +0000 (UTC)
-Message-ID: <d68c60d1-1475-494b-9abb-d0ec2b52b99a@redhat.com>
-Date: Wed, 27 May 2026 10:49:28 +0200
+	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="BKmQ62fU"
+dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
+	c=relaxed/relaxed; q=dns/txt;
+	h=From;
+	bh=1/GqvF4uYB76LIkz+UgMsc+1nogzr//MEy+Fk6lWTvo=;
+	b=BKmQ62fUGkmkD0mDlk6kXlrrq1N4FDNIKYVHHgJCekJFo7akYCqnN02+/xbajQjcqcZ4OWH67
+	4oNFEjFahS0r0N7VjUyZKgHHOUPoOHnuLPY63AaLqs2oq5lYpP0E1xuXklLiR7jWJ3PXyvtzE7R
+	rhOF59HgorGEhhWmCZuBsZ8=
+Received: from mail.maildlp.com (unknown [172.19.163.214])
+	by canpmsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4gQPhx5shQznTXX;
+	Wed, 27 May 2026 17:39:29 +0800 (CST)
+Received: from kwepemk500009.china.huawei.com (unknown [7.202.194.94])
+	by mail.maildlp.com (Postfix) with ESMTPS id EB16D40561;
+	Wed, 27 May 2026 17:47:26 +0800 (CST)
+Received: from localhost.localdomain (10.50.163.32) by
+ kwepemk500009.china.huawei.com (7.202.194.94) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1544.11; Wed, 27 May 2026 17:47:26 +0800
+From: Chengwen Feng <fengchengwen@huawei.com>
+To: <alex@shazbot.org>, <jgg@ziepe.ca>
+CC: <wathsala.vithanage@arm.com>, <helgaas@kernel.org>, <wei.huang2@amd.com>,
+	<wangzhou1@hisilicon.com>, <wangyushan12@huawei.com>,
+	<liuyonglong@huawei.com>, <kvm@vger.kernel.org>, <linux-pci@vger.kernel.org>
+Subject: [PATCH v13 5/8] PCI/TPH: expose the enabled TPH requester type
+Date: Wed, 27 May 2026 17:47:16 +0800
+Message-ID: <20260527094719.43886-6-fengchengwen@huawei.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20260527094719.43886-1-fengchengwen@huawei.com>
+References: <20260527094719.43886-1-fengchengwen@huawei.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC] KVM/x86: Killing kvm_get_time_and_clockread() in favour of
- ktime_get_snapshot()
-To: David Woodhouse <dwmw2@infradead.org>,
- Sean Christopherson <seanjc@google.com>, Thomas Gleixner <tglx@kernel.org>,
- John Stultz <jstultz@google.com>, Michael Kelley <mhklinux@outlook.com>
-Cc: Vitaly Kuznetsov <vkuznets@redhat.com>,
- Marcelo Tosatti <mtosatti@redhat.com>,
- "Christopher S. Hall" <christopher.s.hall@intel.com>,
- Stephen Boyd <sboyd@kernel.org>, Miroslav Lichvar <mlichvar@redhat.com>,
- Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>, "H. Peter Anvin" <hpa@zytor.com>,
- "K. Y. Srinivasan" <kys@microsoft.com>,
- Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
- Dexuan Cui <decui@microsoft.com>, Daniel Lezcano
- <daniel.lezcano@kernel.org>, kvm@vger.kernel.org,
- linux-hyperv@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
-References: <b4895a532344ba6a879d922be8536f9000cd398c.camel@infradead.org>
-Content-Language: en-US
-From: Paolo Bonzini <pbonzini@redhat.com>
-Autocrypt: addr=pbonzini@redhat.com; keydata=
- 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
-In-Reply-To: <b4895a532344ba6a879d922be8536f9000cd398c.camel@infradead.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.93
+Content-Type: text/plain
+X-ClientProxiedBy: kwepems100001.china.huawei.com (7.221.188.238) To
+ kwepemk500009.china.huawei.com (7.202.194.94)
 
-On 5/26/26 15:57, David Woodhouse wrote:
-> In 2012, as part of implementing the "master clock" mode for kvmclock,
-> Marcelo added kvm_get_time_and_clockread() in commit d828199e8444
-> ("KVM: x86: implement PVCLOCK_TSC_STABLE_BIT pvclock flag").
-> 
-> In 2016, Christopher Hall added the generic ktime_get_snapshot() in
-> commit 9da0f49c8767 ("time: Add timekeeping snapshot code capturing
-> system time and counter"), which provides the same paired read of
-> { time, counter } through the core timekeeping code.
-> 
-> Then in 2018, Vitaly Kuznetsov added Hyper-V TSC page support in
-> commit b0c39dc68e3b ("x86/kvm: Pass stable clocksource to guests when
-> running nested on Hyper-V"), which extended vgettsc() to handle the
-> HVCLOCK case.
-> 
-> I'd quite like to kill it all with fire and make KVM use
-> ktime_get_snapshot() instead.
-> 
-> However, to correlate with the TSC provided to guests, KVM needs the
-> underlying host TSC counter value, *not* the cycles count from the
-> hyperv_clocksource_tsc_page clocksource which is scaled to 10MHz.
-> 
-> If we wanted to support master clock mode while nesting under KVM and
-> bizarrely using the kvmclock for system timing, we'd have the same
-> problem with the kvmclock clocksource, which similarly scales to 1GHz.
-> 
-> One option is to say "Don't Do That Then™": if you want to provide a
-> masterclock kvmclock to guests then *don't* use the silly pvclocks for
-> your own kernel's timekeeping, use the damn TSC. Because if the TSC
-> *isn't* reliable then you can't do masterclock mode for your guests
-> anyway.
-> 
-> Perhaps that should have been the response when commit b0c39dc68e3b was
-> submitted, but I guess we're stuck supporting that mode now. But I
-> really do want to kill the KVM hacks and use ktime_get_snapshot().
-> 
-> Reverse-engineering the original TSC reading from the clocksource
-> counter value doesn't look sane, without a loss of precision and/or
-> 128-bit division.
-> 
-> One simple option that occurs to me would be to add a 'cycles_raw'
-> value to the system_time_snapshot, for PV clocksources like hyperv and
-> kvmclock to populate with the original TSC reading.
-> 
-> That might actually let us clean up some of the PTP code that currently
-> has to deal with TSC vs. kvmclock in counter snapshots too. I think I
-> could kill the use of get_cycles() in vmclock for the kvmclock case,
-> which might make Thomas happy...
+From: Zhiping Zhang <zhipingz@meta.com>
 
-Yeah, when reading I was thinking of PTP as well.  Seems worthwhile.
+Add pcie_tph_enabled_req_type() so drivers can query the enabled TPH
+requester mode without reaching into pci_dev internals.
 
-Paolo
+Signed-off-by: Zhiping Zhang <zhipingz@meta.com>
+Signed-off-by: Chengwen Feng <fengchengwen@huawei.com>
+---
+ drivers/pci/tph.c       | 12 ++++++++++++
+ include/linux/pci-tph.h |  3 +++
+ 2 files changed, 15 insertions(+)
+
+diff --git a/drivers/pci/tph.c b/drivers/pci/tph.c
+index c5695bceb5e8..509057799a9d 100644
+--- a/drivers/pci/tph.c
++++ b/drivers/pci/tph.c
+@@ -460,6 +460,18 @@ int pcie_enable_tph(struct pci_dev *pdev, int mode,
+ }
+ EXPORT_SYMBOL(pcie_enable_tph);
+ 
++/**
++ * pcie_tph_enabled_req_type - Return the device's enabled TPH requester type
++ * @pdev: PCI device to query
++ *
++ * Return: PCI_TPH_REQ_DISABLE, PCI_TPH_REQ_TPH_ONLY or PCI_TPH_REQ_EXT_TPH.
++ */
++u8 pcie_tph_enabled_req_type(struct pci_dev *pdev)
++{
++	return pdev->tph_req_type;
++}
++EXPORT_SYMBOL(pcie_tph_enabled_req_type);
++
+ void pci_restore_tph_state(struct pci_dev *pdev)
+ {
+ 	struct pci_cap_saved_state *save_state;
+diff --git a/include/linux/pci-tph.h b/include/linux/pci-tph.h
+index 66e6140ddb72..c59656de3bbd 100644
+--- a/include/linux/pci-tph.h
++++ b/include/linux/pci-tph.h
+@@ -41,6 +41,7 @@ int pcie_tph_get_cpu_st(struct pci_dev *dev,
+ void pcie_disable_tph(struct pci_dev *pdev);
+ int pcie_enable_tph(struct pci_dev *pdev, int mode,
+ 		    enum tph_req_policy req_policy);
++u8 pcie_tph_enabled_req_type(struct pci_dev *pdev);
+ u16 pcie_tph_get_st_table_size(struct pci_dev *pdev);
+ u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev);
+ #else
+@@ -56,6 +57,8 @@ static inline void pcie_disable_tph(struct pci_dev *pdev) { }
+ static inline int pcie_enable_tph(struct pci_dev *pdev, int mode,
+ 				  enum tph_req_policy req_policy)
+ { return -EINVAL; }
++static inline u8 pcie_tph_enabled_req_type(struct pci_dev *pdev)
++{ return 0; }
+ static inline u16 pcie_tph_get_st_table_size(struct pci_dev *pdev)
+ { return 0; }
+ static inline u32 pcie_tph_get_st_table_loc(struct pci_dev *pdev)
+-- 
+2.17.1
 
