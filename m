@@ -1,128 +1,102 @@
-Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9937C3E8699
-	for <kvm@vger.kernel.org>; Tue, 26 May 2026 23:54:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD41E281503
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 00:14:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779839723; cv=none; b=A3doF8N3V99ky7amdY8Iwj5TzwrhL/Levx1r26ZrQ9OuCX/jNmCDV7ZEszOBCqbNLE2mOORadknBi60YCczoxr9BaFzuy3Ql8O5KDgktHp1xFwC421MRfMIIZV79tWZZMPNiBEDQT+Vte7UrAqdtEhk7Npwa5a+ozFEHbbhth0k=
+	t=1779840900; cv=none; b=mv+YDEpXIsVMrk+sGn9cyjtS2H+E3O4i1ckE8GVF4AvXjTZu2nxUkuj52w8OLLEMSZH+kHUTqFG+boKCZ8dFvuNIPiI8WNkWQmcxI04Ge7Fis+zAELU1xyAPbg7AN27mERs0SQfUScR2mJWCwJkknJH5kgnVyneT/EDZDPGqs7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779839723; c=relaxed/simple;
-	bh=VQh9ycIq/sQw5zQ6MT1xTqUvZGeINgII+2poi1PGM74=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=pvyQsYznN1pzoJrN7vJU4h2lQrSn+wWJF4enohPqo67lgcjJzInvGu1DGxLYpMPKjB5fnIGVisBxN1URyc6yR30YAMLebEvYH5q+IJSHPobhk3MBiIz/geTMVUttg3C8J8Jka69Ac7GJSuTy4bMyicuiv19coY1tc17vvlCQPY0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h8UJUi0R; arc=none smtp.client-ip=209.85.214.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--jrhilke.bounces.google.com
+	s=arc-20240116; t=1779840900; c=relaxed/simple;
+	bh=pL6h1NE6DWf/rU/VsSnUx9/aHjKQK/2KaZNdL60mM3E=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=J8JrnAxP4b88gyNy6f8zIaYze2PyiLFIHgTXnbPvWfdgLvsE016RI7PijNCk5FVmFA1lxw+ll0kd70a+mPJNpztrygqkboGCk+RtCzE7ejXbE0jAhm1HBo2QEFLdcxQOqa+Kenac7Hocf08AoXiZIFKa/v5USyUvL8CKZMEXURQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OayA1gDV; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h8UJUi0R"
-Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2ba224c3ffdso10984935ad.0
-        for <kvm@vger.kernel.org>; Tue, 26 May 2026 16:54:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779839687; x=1780444487; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=YppsghfGH6D340aJjNneB6gAMUs9CtxpsUi5k9VDxXY=;
-        b=h8UJUi0Ru/muUsLXmZ+orfDCx2wEXYvLVgp5F4nH78rTraYscxeGuDc/LLYhMdeoQm
-         Zxz2cpxZx50XqqqJc53lEUTQFlUhrOFaAF/Vz/jdvAPVRZqRMocHkZroUOKTy0B5X2b4
-         xSZn7g2jniog3TAfTSy9/t4q+06yv7ZeA5DXfQPGgTFA/Hc9oP8hJjukCS0CtRTN68rp
-         o10anZL8TvMsvwvRYLwqoqaFjLxLguC8pnG7law1JtZZNep9MMzx7rAkC2ID/XPdXv3i
-         RgGQTAzRROugsP2wTY1A3F5I0pdTOpygImG2RuF8om63tZ6VQ4GewK/7Ngf5FSGDnhLF
-         8JUw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779839687; x=1780444487;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=YppsghfGH6D340aJjNneB6gAMUs9CtxpsUi5k9VDxXY=;
-        b=C5Z0Q9NOn54pUukEmy4tdmxO6o+AYwMI8c4ZMgATHB36FkZ16jFBXb2GvjYPgCBT+U
-         qHsfnaWKvJHog/sRRONrup9hQ58/MBVXP8lBE5swGQt1hOzE9BrT6fTXAAuSfUWu7eDU
-         tnA/4dHQ6OR+wjzfnRxApaJSMXNy4copn2XEmQSNQLIScmIpxD+1b1cjpIhR5LtcnvRK
-         9Lftqf9ry4cIhqxi4MT6ceFXgvFZWUzg6xkkHovep50aWkH6vhumW8z12HJh7xWQBoBG
-         ZQBBC+EWdyLw9D4+RmCvgNS4ht6gDUe/+hLn3ptXORvXRs+YquEqpYR03nOvqh+J5UtX
-         5Jdg==
-X-Forwarded-Encrypted: i=1; AFNElJ+DvIz/xgPXkI83yWFqzif33f125wJDEl3lI/ZUchsJEe1JRezWAXlC+EzmXv9yxeZpxSE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YymrORxAK8utAq2YpSrCw7EZb67HdUrAnJXjsrRhlDVobktgqLv
-	mvagwN8SvDVUEV2WsNajIjPd/smar70jwJY0yG8PwF+dkZgmAcxKhBlbM9mlUViIWisyu91X0rt
-	ufiyP/gY+
-X-Received: from pgbbk8.prod.google.com ([2002:a05:6a02:288:b0:c82:cd84:79d])
- (user=jrhilke job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:41c9:b0:2bd:5ab:af95
- with SMTP id d9443c01a7336-2beb023584amr217494565ad.0.1779839686876; Tue, 26
- May 2026 16:54:46 -0700 (PDT)
-Date: Tue, 26 May 2026 23:54:12 +0000
-In-Reply-To: <20260526235417.2058313-1-jrhilke@google.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OayA1gDV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69A771F000E9;
+	Wed, 27 May 2026 00:14:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779840884;
+	bh=YEqzKzc0ORxC1DtmDx+EGiqoz+8JVRqlubpGLdh0X6A=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=OayA1gDVOa47FrnsKBLaxTH6zVdeItC1RN4aBjYNUv7u1TJdlL5qvdFINvhtz62pZ
+	 IiLirFd+YdpLEKxNvgj6x75UX/v75JUPHsxahkq6WTv3lAbeowVh+fHAbFyJqqS9of
+	 uVze1S6hbpRAvEnQr61uAJHS7tbwou0X9YVVbbLQUntuQPOeR8NmRIlS+6l1mp2xnW
+	 FwqIeaiIMWxoKs6g9O13kIUtuje2peis8PXvS+0wf/N4BJHhsN+oKK53vsqrd+KKHP
+	 XVAwWHWkQmjWogUgJmLTWGxyQizh0gFP3J4URL4+Gvap+knCY23Ax6gn9YmWDVPu3B
+	 d23vo18hoNXTQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v2 03/10] selftests/vfio: igb: Use advanced TX and RX
+ descriptors
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Josh Hilke" <jrhilke@google.com>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260526235417.2058313-4-jrhilke@google.com>
+References: <20260526235417.2058313-4-jrhilke@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 27 May 2026 00:14:44 +0000
+Message-Id: <20260527001444.69A771F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260526235417.2058313-1-jrhilke@google.com>
-X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
-Message-ID: <20260526235417.2058313-6-jrhilke@google.com>
-Subject: [PATCH v2 05/10] selftests/vfio: igb: Extend memcpy completion
- timeout for line-rate hardware
-From: Josh Hilke <jrhilke@google.com>
-To: Alex Williamson <alex@shazbot.org>, David Matlack <dmatlack@google.com>
-Cc: Vipin Sharma <vipinsh@google.com>, Shuah Khan <shuah@kernel.org>, kvm@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org, 
-	Josh Hilke <jrhilke@google.com>, Alex Williamson <alex.williamson@nvidia.com>
-Content-Type: text/plain; charset="UTF-8"
 
-From: Alex Williamson <alex.williamson@nvidia.com>
+Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+s) to consider:
+- [Medium] Overwriting IGB_SRRCTL0 clears the BSIZEPACKET field, setting th=
+e receive buffer size to 0 bytes and violating the hardware specification.
+--
 
-The submitted driver waits at most 1 ms (100 * 10 us) for the last RX
-descriptor to be written back.  QEMU's emulated loopback is synchronous:
-by the time igb_memcpy_wait() runs, the receive descriptors are already
-written back.  Real 82576 hardware processes the descriptor ring at
-line rate.
+commit dc2cc67e8a6e2c641907cee5129b78515c56abca
+Author: Alex Williamson <alex.williamson@nvidia.com>
 
-max_memcpy_size is (RING_SIZE - 1) * IGB_MAX_CHUNK_SIZE, approximately
-4 MB, split into 4095 1 KB frames.  At 1 Gb/s line rate (~125 MB/s),
-4 MB takes ~32 ms on the wire, plus per-frame preamble, SFD,
-inter-frame gap and FCS overhead (~3%) and descriptor fetch/writeback
-latency.  The 1 ms cap times out long before any valid transfer can
-complete.
+selftests/vfio: igb: Use advanced TX and RX descriptors
 
-Wait up to ~200 ms (200 iterations * 1 ms) for descriptor writeback
-before returning -ETIMEDOUT.  ~6x the line-rate floor leaves comfortable
-headroom for host scheduling jitter while keeping the intentional
-invalid-DMA tests (mix_and_match) so they recover quickly on real faults.
+This commit updates the igb selftests driver to use advanced descriptors for
+transmit and receive. It configures SRRCTL.DESCTYPE to the advanced
+one-buffer layout for receive and sets up advanced data descriptor fields
+in igb_memcpy_start() for transmit. Legacy CMD macros are removed.
 
-Assisted-by: Claude:claude-opus-4-7
-Signed-off-by: Alex Williamson <alex.williamson@nvidia.com>
----
- .../testing/selftests/vfio/lib/drivers/igb/igb.c  | 15 +++++++++++++--
- 1 file changed, 13 insertions(+), 2 deletions(-)
+> diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools/t=
+esting/selftests/vfio/lib/drivers/igb/igb.c
+> index 5bbc6fca75189..c0f9cefb23e59 100644
+> --- a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
+> +++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
+> @@ -226,6 +226,17 @@ static void igb_init(struct vfio_pci_device *device)
+>  	igb_write32(igb, IGB_RDLEN0, RING_SIZE * sizeof(struct igb_rx_desc));
+>  	igb_write32(igb, IGB_RDH0, 0);
+>  	igb_write32(igb, IGB_RDT0, 0);
+> +
+> +	/*
+> +	 * Select the advanced one-buffer descriptor format.  Per 82576
+> +	 * datasheet section 7.1.5.2: "SRRCTL[n].DESCTYPE must be set to a
+> +	 * value other than 000b for the 82576 to write back the special
+> +	 * descriptors."  struct igb_rx_desc matches the advanced one-buffer
+> +	 * writeback layout (section 7.1.5.2), so polling rx.wb.status_error
+> +	 * requires this format.  Section 8.10.2 specifies DESCTYPE[27:25].
+> +	 */
+> +	igb_write32(igb, IGB_SRRCTL0, IGB_SRRCTL_DESCTYPE_ADV_ONEBUF);
 
-diff --git a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-index a8f2072b6820..879c21780f5b 100644
---- a/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-+++ b/tools/testing/selftests/vfio/lib/drivers/igb/igb.c
-@@ -403,11 +403,22 @@ static int igb_memcpy_wait(struct vfio_pci_device *device)
- 	prev_tail = (igb->rx_tail + RING_SIZE - 1) % RING_SIZE;
- 	rx = &igb->rx_ring[prev_tail];
- 
--	retries = 100;
-+	/*
-+	 * Real 82576 hardware processes the descriptor ring at line rate.
-+	 * max_memcpy_size = (RING_SIZE - 1) * IGB_MAX_CHUNK_SIZE ~= 4 MB,
-+	 * split into 4095 1 KB frames.  At 1 Gb/s (~125 MB/s) the worst
-+	 * valid memcpy takes ~32 ms on the wire, plus per-frame preamble,
-+	 * SFD, IFG and FCS overhead (~3%) and descriptor fetch/writeback
-+	 * latency.  Wait up to ~200 ms before declaring the device hung;
-+	 * ~6x the line-rate floor leaves comfortable headroom for host
-+	 * scheduling jitter while keeping the intentional invalid-DMA
-+	 * tests bounded.
-+	 */
-+	retries = 200;
- 	while (retries-- > 0) {
- 		if (rx->wb.status_error & 1)
- 			break;
--		usleep(10);
-+		usleep(1000);
- 	}
- 
- 	igb_irq_clear(igb);
--- 
-2.54.0.794.g4f17f83d09-goog
+[Severity: Medium]
+Does writing directly to IGB_SRRCTL0 unintentionally clear the BSIZEPACKET
+field?
 
+Because this is a direct write rather than a read-modify-write, all other b=
+its
+in the register are cleared to 0, including BSIZEPACKET (bits 6:0).
+
+The Intel 82576 datasheet dictates that BSIZEPACKET sets the receive buffer
+size in 1 KB increments and explicitly forbids setting it to 0. A 0 value
+leaves the hardware with no space configured for DMA, causing it to drop
+incoming packets.
+
+This behavior remains present in subsequent patches in the series, where
+the macro is updated to E1000_SRRCTL(0) but the BSIZEPACKET field remains
+unpopulated.
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260526235417.2058=
+313-1-jrhilke@google.com?part=3D3
