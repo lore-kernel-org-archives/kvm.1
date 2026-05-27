@@ -1,88 +1,98 @@
-Received: from mail-pl1-f201.google.com (mail-pl1-f201.google.com [209.85.214.201])
+Received: from mail-pl1-f202.google.com (mail-pl1-f202.google.com [209.85.214.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCC6B478E57
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 18:14:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1FF4534A2
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 18:14:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779905665; cv=none; b=YyraGmXzVOa9iydoLpW/hbhf70iaoUsOh8rrl1b9X+T+M/IGzhaAnMmXRJjNH5sKuh+ZuWQEnQ/G70EM6g8C5qwi/UXH7ccgUJ/VOHxWu8yLAi/iynK2UkLN1WGrzcPxUEFp2gtSFjxfPDt1qxtQ4DZ9AMj6p/RUcjDfrLV+VYY=
+	t=1779905673; cv=none; b=CpkWIOFdcbj/1JUytrac3nibw0cvyPuuBO/ueGR7GXR1herq2h84VYGHWCdFspwlaFDblLhQ41KVIfIQZEhr4ShX23d85AYY3BKHdf8v556b9KBxNIKVdF0jSKazn+sINe3ZHrwKWr5W730ddWz9U7JuSHZbdwOXtWSRRcS9epI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779905665; c=relaxed/simple;
-	bh=IOKoyHLxY/z5hLsO3htY/vrG3Fzj2MXOzTE5IC9IOAI=;
+	s=arc-20240116; t=1779905673; c=relaxed/simple;
+	bh=O9pOk5v+q8VTzg7ynkOmwYh/WXaD4qHadkilsV42SIc=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=DhWEEqae7TldYRm3TmAjP8dX1IUoKRB6Ao38qDeXQSN4v7Dtb2vCu9BiYSJ7jDiwnKU/aA8wqorVjGB68mIQJBwsqkey6r0KTQOeYNgFQ4p4MQxd+affx0c6a5sMcMmOq/Hahf5WfgfdKMBYAQwW3sPKFla2MRHWn13xT91BWhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GiBPuq+T; arc=none smtp.client-ip=209.85.214.201
+	 To:Cc:Content-Type; b=TfC/QpzWMTzD4tGS4X4VOHD2JZ2NeqaGtqcQ3GQV82RSt1aCCDP03FXsOctmmaqxX1iyNM6aEExSSwQ3soJ1nEufaHeqFaL8r1Uh6RtlA+hlEEr8Pv628quAEyLV7EjZOYYH6rkB4kukOqkWmJQTAICSnrwRDn+qWcExN5TAk4E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Mc54KIjd; arc=none smtp.client-ip=209.85.214.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GiBPuq+T"
-Received: by mail-pl1-f201.google.com with SMTP id d9443c01a7336-2bf02e2f864so102695ad.0
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 11:14:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Mc54KIjd"
+Received: by mail-pl1-f202.google.com with SMTP id d9443c01a7336-2bf004bf8beso1694535ad.3
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 11:14:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779905663; x=1780510463; darn=vger.kernel.org;
+        d=google.com; s=20251104; t=1779905671; x=1780510471; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=90QoHoDQFIalJTQFQDHyQUQDWaZ1Brl3VNnvhBjJDmQ=;
-        b=GiBPuq+TjpWlHLG7inhuDN2/z236u61k9tC6iWTQdSL04u/ngGJBFEu5DBz7f0HsjC
-         wMHiQmFeLCFKnkgiwvWN/NC8iVvuNug/8/6EqbWddCuP2qcIkZDghpJX+GEUDe0bruIZ
-         +Ju+83qTm/f8o+2LSgN/lq9L9fMplTIK0n4MFNGLglrl/UHdt5/k/pIsHNyon+GZRI3V
-         SbEb6hVJBRPjSmI9jI4gnpwUat5ySTBFv7hP2WExtoc4OmpZBUSthhvtTvJk42ROurH5
-         rlq7xMZeHQNYcG+B1PxWhVLHQEmDT9NytR0Hmyjgz3x5StY+cp9K/H3UvqJyI79nc29X
-         +2bA==
+        bh=yQnId2rHDW8In1E8uy3X9GmOauCk23K9nsxnBe9nCG8=;
+        b=Mc54KIjdXwwSJ/75s2zPL3WwJ9YewKkBKbkD1z93OHK75c9hlk50N7jm+DhMCX+tP+
+         SXvp1o7Ip5lSuvE5wquAfPvJk4WE1DefFZ9mjPjlb/Q8xpRwFT7DTOEmVgywa12wapbm
+         MYG9CIFEq2VoMay5olmLF/vEasBdiHCkUGA2W9aTQroepejKDkl2pm/80f5XF9V8Uoki
+         NkgCTSjC1gdIRngg0C94bJ3bg/T+BQIK2pJQAFewx6It72mj3PwvOeqEUEVMvV4C/ofw
+         q8cR3zNP9HGJA+hVsWHW8m4E0rX7xxlwqRbCwYjOy9T9aYFJJYXTsRGDqUwNhZFPnnI0
+         W53Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779905663; x=1780510463;
+        d=1e100.net; s=20251104; t=1779905671; x=1780510471;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=90QoHoDQFIalJTQFQDHyQUQDWaZ1Brl3VNnvhBjJDmQ=;
-        b=VnJ59ALnc6wLf2eDrWjgSJUZ2Xxj+i1MLvzxdA06Qg+XzO2zfFcn3sBY5lIz6jcr2W
-         E3232ZQxC1WxlE3+Bk/nX8GmEjvDwFVrrbgvfqe7CBAEV3Iwg7teEvWLNUbtpBf0XZg4
-         Q4C2h0Kw8gZ10mKty1yoZqQPO9ZgMA8BoPqNiIXlGeolejZgZ+qBVwsveLGXqRNc/o9H
-         Ao3Fx2/poCg/50DFbdw9Aa3mD9ZG9VIu+rcJjZi/Lc0RUcRiQd576jOxT4URwx+/Tvbs
-         2WcO/oT1Qf5CsOWf8hp+7HLG7+yBjfimQgyckCPw9RjpAfj/xwEIgSFKxFUEAowjopxi
-         zDVQ==
-X-Forwarded-Encrypted: i=1; AFNElJ/Di7o66zHQg1v8p4s8m5wP7W5nNGV/jCuPBGMeBcD86KsRKhGm1ak7oyhM5xi1xV7CzkM=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzjmw7ONVNSP5LIfWksYRC2r/1Gij4j9kEZKH7d/dd3sgKNvV7b
-	ukCbhhIdAs05fAawkBqA44U4XcRFg83tzQ493rCtrrvQSk5YKSQsgXj34c+2JXDfHLeBmrxOAUP
-	i4S+AKQ==
-X-Received: from plsb19.prod.google.com ([2002:a17:902:b613:b0:2b2:51df:a515])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:903:1aae:b0:2b9:5d1b:73da
- with SMTP id d9443c01a7336-2beb0741079mr277701145ad.30.1779905662956; Wed, 27
- May 2026 11:14:22 -0700 (PDT)
-Date: Wed, 27 May 2026 11:10:10 -0700
-In-Reply-To: <20260522151534.652522-1-vannapurve@google.com>
+        bh=yQnId2rHDW8In1E8uy3X9GmOauCk23K9nsxnBe9nCG8=;
+        b=kKtuofU+CnfMIj91OXft/3M3L79W0SwPx6PB8YY2JZr1X+xBlF+gpShSYbo0DE6TKV
+         fq0LaiaXpr5CKmjgiTfcPD1KfCwzKhvfupnT/FJrLbr52kwRbnBTvcuQS6aJBF6a7ExR
+         y+JR8uawEfhh0MNbSIWomBFIkNPv2paT5sLqAXV6Ems+7D21qp2q2Ef9iCnDbDd+vRWk
+         nC6y91gh00JTQIKqmO+Ph8C5oFGySS0IMZwJvLtTPjmpdDxlH1EcjChQsgQuTxfyRbRi
+         N80e8E60v//IhI9cPI+nYmnbcOf3kwnVEChbcEt6pQwWHzJFe8xwwf3ifE4qIc+w53PT
+         FtHQ==
+X-Forwarded-Encrypted: i=1; AFNElJ/pxLtGaOdEmTTTMvVAyiuhDbRJHsM98RLPaI4BvIwtP/0NnEbNles7OiNcwyzl72E9+VI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxikiTsRdIXz+xp9jxessFPiaSztgB1hjq29WOpvcMCraffLAWE
+	Xav9oNC8XPNsK3aevK06tIT1hVerLdrv3GNSzcHSspt4ICGMEPEKcqSgrSIyRwA+qQugLW9p05I
+	piOt6TQ==
+X-Received: from plop17.prod.google.com ([2002:a17:902:8a91:b0:2bc:9bda:56d0])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:902:f64e:b0:2b2:50bd:83b3
+ with SMTP id d9443c01a7336-2beb035c826mr257510165ad.10.1779905670713; Wed, 27
+ May 2026 11:14:30 -0700 (PDT)
+Date: Wed, 27 May 2026 11:10:12 -0700
+In-Reply-To: <20260430014852.24183-1-yan.y.zhao@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20260522151534.652522-1-vannapurve@google.com>
+References: <20260430014852.24183-1-yan.y.zhao@intel.com>
 X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
-Message-ID: <177990512633.4119760.10440459060511762147.b4-ty@google.com>
-Subject: Re: [PATCH v5 1/1] KVM: x86: Introduce has_protected_pmu state for
- TDX VMs
+Message-ID: <177990514368.4120011.1575758464694752462.b4-ty@google.com>
+Subject: Re: [PATCH v2 0/4] struct page to PFN conversion for TDX guest
+ private memory
 From: Sean Christopherson <seanjc@google.com>
-To: Sean Christopherson <seanjc@google.com>, pbonzini@redhat.com, dave.hansen@linux.intel.com, 
-	Vishal Annapurve <vannapurve@google.com>
-Cc: rick.p.edgecombe@intel.com, dapeng1.mi@linux.intel.com, mizhang@google.com, 
-	kai.huang@intel.com, jmattson@google.com, michael.roth@amd.com, 
-	kvm@vger.kernel.org, linux-kernel@vger.kernel.org
+To: Sean Christopherson <seanjc@google.com>, dave.hansen@linux.intel.com, pbonzini@redhat.com, 
+	Yan Zhao <yan.y.zhao@intel.com>
+Cc: tglx@kernel.org, mingo@redhat.com, bp@alien8.de, kas@kernel.org, 
+	x86@kernel.org, linux-kernel@vger.kernel.org, kvm@vger.kernel.org, 
+	linux-coco@lists.linux.dev, kai.huang@intel.com, rick.p.edgecombe@intel.com, 
+	yilun.xu@linux.intel.com, vannapurve@google.com, ackerleytng@google.com, 
+	sagis@google.com, binbin.wu@linux.intel.com, xiaoyao.li@intel.com, 
+	isaku.yamahata@intel.com
 Content-Type: text/plain; charset="utf-8"
 
-On Fri, 22 May 2026 15:15:34 +0000, Vishal Annapurve wrote:
-> PMU state for TDX VMs is virtualized by TDX Module [1]. Host has following
-> toggles to control the PMU functionality exposed to TDX VMs:
-> 1) Configure TD_PARAMS to allow guests to use performance monitoring.
-> 2) Restrict the TD to a subset of the PEBS counters if supported.
-> 3) Limit the TD to setup a certain perfmon events using basic/enhanced
->    event filtering.
+On Thu, 30 Apr 2026 09:48:52 +0800, Yan Zhao wrote:
+> This is v2 of the struct page to PFN conversion series, which converts TDX
+> guest private memory mapping/unmapping APIs from taking struct page to
+> taking PFN as input.
+> 
+> v2 is based on v7.1.0-rc1 + Sean's 4 cleanup patches (see details in
+> section "Base" below). The purpose is to get Dave's Ack, so Sean can take
+> it from the KVM x86 tree. The full stack of v2 is available at [14].
 > 
 > [...]
 
-Applied to kvm-x86 misc, with a heavily modified changelog.  Thanks!
+Applied to kvm-x86 mmu, thanks!
 
-[1/1] KVM: x86: Introduce has_protected_pmu state for TDX VMs
-      https://github.com/kvm-x86/linux/commit/986833d381d2
+[1/4] x86/tdx: Use PFN directly for mapping guest private memory
+      https://github.com/kvm-x86/linux/commit/6ad0badd765c
+[2/4] x86/tdx: Use PFN directly for unmapping guest private memory
+      https://github.com/kvm-x86/linux/commit/4c7a1247646c
+[3/4] x86/tdx: Drop exported function tdx_quirk_reset_page()
+      https://github.com/kvm-x86/linux/commit/4a72a6dc447d
+[4/4] x86/virt/tdx: Move mk_keyed_paddr() to tdx.c due to no external users
+      https://github.com/kvm-x86/linux/commit/3f330fbb918f
 
 --
 https://github.com/kvm-x86/linux/tree/next
