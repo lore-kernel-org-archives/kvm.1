@@ -1,103 +1,157 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534342F361E;
-	Wed, 27 May 2026 01:44:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A6D330644
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 01:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779846260; cv=none; b=AN9rIEswdWSPBU2PHYJg+JBxczJcWod1WQbXiBCCNmZay+D3+dBNYqZ/T8XHEE7AhIzkiBp/N1JCFw8U/V4OH231dQ92O7Lz08JMOCNZaYDeonS+Za435VYXm2EfRuA6kxmub3eay5fgIQnAl9NkPBFf7aSChnqhuhygiG+mWH8=
+	t=1779846309; cv=none; b=Adl/nvFrtnfyIks/bRgoLlDk8g4FJSYxiWEtTrchXt/c++hJ6dNvkmDeBHg7U4nCsdU7PaVa94+xcLJdIWuU4xUzQnR+B96PsrfTeJOZRZ5xA9Lt0ZIvdkiB/ikDviIM2VrM7LR+Mu4wiJMNGW4IpyW67qtH6/0NFaA3wQxoli8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779846260; c=relaxed/simple;
-	bh=YkqhpB2yRiNrR5OCmysL5NkRfbjm9+DobitoJx5LLaQ=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=geb7aZUKTErWKqdX6VtVDz0aRi8pRDNV2XZ/UPmRkDcOLoPvTPBc5tsd4IBMUeu0UsIacGEthr0EwGLDfEW4AqaYdhnYpjb+lJaleiF20nUU76ThVS9IWFazlc7rT6gPIVBCX2ZpsqQethjhaa9VV7OFb2Sf1D29JzCQAc04FZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=BhuCFQ9i; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779846309; c=relaxed/simple;
+	bh=Rd9QdKKfa0NEAVrVMnKN2JlPa/c2t2pc6FSX2X+Fodg=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=uYDUDsE6QtGRNlVZwAI5Y002NK38ezmZzFTJpExv+iu9PxWdNGbPzCBH6h4K3GqHDQpSMCxsV/wfFLaI6Gw+qhtlJBI45Wpv6Ck1bL6QJJoqAjows8FrPkNnaQqMG/udvMeOMRwjW1PnmwQ+ew8s54FptqbbNqI1Wc3v3C7yiqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EhAGbG4K; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="BhuCFQ9i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E12211F000E9;
-	Wed, 27 May 2026 01:44:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux-foundation.org; s=korg; t=1779846259;
-	bh=YwMQK/K0YC5t/5LwYD8hgycOymIzyP/pOWdnzfaJDUY=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References;
-	b=BhuCFQ9i5RmTYcvz3+9UJKwbl9rmgW/uXmrXQKonSFXDpwnt78VzYXfK6sXWMQDvA
-	 Y4Mxf+SGcRH09Jga7eYF96NTKSYVqxrVeRxmfCwFmAiDpC99kAbXharxaDWpAxgYEX
-	 pflJ2eqx3w8XlmqyQ0o6jOYOwM++hWYQkWBnET4w=
-Date: Tue, 26 May 2026 18:44:17 -0700
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Dave Hansen <dave.hansen@intel.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Lance Yang
- <lance.yang@linux.dev>, david@kernel.org, dave.hansen@linux.intel.com,
- ypodemsk@redhat.com, hughd@google.com, will@kernel.org,
- aneesh.kumar@kernel.org, npiggin@gmail.com, tglx@linutronix.de,
- mingo@redhat.com, bp@alien8.de, x86@kernel.org, hpa@zytor.com,
- arnd@arndb.de, ljs@kernel.org, ziy@nvidia.com,
- baolin.wang@linux.alibaba.com, Liam.Howlett@oracle.com, npache@redhat.com,
- ryan.roberts@arm.com, dev.jain@arm.com, baohua@kernel.org,
- shy828301@gmail.com, riel@surriel.com, jannh@google.com, jgross@suse.com,
- seanjc@google.com, pbonzini@redhat.com, boris.ostrovsky@oracle.com,
- virtualization@lists.linux.dev, kvm@vger.kernel.org,
- linux-arch@vger.kernel.org, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, ioworker0@gmail.com
-Subject: Re: [PATCH 7.2 v10 1/2] mm/mmu_gather: prepare to skip redundant
- sync IPIs
-Message-Id: <20260526184417.a4de7beb76bce85d7597b676@linux-foundation.org>
-In-Reply-To: <f437455d-1598-483d-9dcf-1932d265ef3f@intel.com>
-References: <20260424062528.71951-1-lance.yang@linux.dev>
-	<20260424062528.71951-2-lance.yang@linux.dev>
-	<20260424150454.GF3126523@noisy.programming.kicks-ass.net>
-	<f437455d-1598-483d-9dcf-1932d265ef3f@intel.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EhAGbG4K"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81BB31F000E9;
+	Wed, 27 May 2026 01:45:06 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779846306;
+	bh=NDscbBjS1G4L8RTxRn1+UGK772Oing3sCwNQ+B0ujnM=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=EhAGbG4KrDplu7KxmYdOYHBUwL282kzRWZH+G6ztoxzS68TxevtuplgXBWlESPY1y
+	 qLW4abo7yiRGit+Y7/Nx4tldnhkQ4R85QpG+Sn6v7OI2tbiDga99B//beO2zV+E8Fw
+	 Ag5M5q/2czWJ7TxX4wi+KJ/Ly+zD0c8YeuZKrq4lbLQxqRDLmJJXycBLuBLfWXb31E
+	 W3wnH5ltzT/A9VmGkRMPTmWKYs1Utr+viHkF0pGHUW7dJV1Ckt8U+RdzyDfy1baq9+
+	 ZKQc8Qt1KEbJ44KdSB3pRyI5xw6DN8V9jlXEkstthle8o0fHF+KfYioubfUo+swTxl
+	 GKzKFcPSOoWXQ==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v6 38/43] KVM: selftests: Provide common function to set
+ memory attributes
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Ackerley Tng via B4 Relay" <devnull+ackerleytng.google.com@kernel.org>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260507-gmem-inplace-conversion-v6-38-91ab5a8b19a4@google.com>
+References: <20260507-gmem-inplace-conversion-v6-38-91ab5a8b19a4@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 27 May 2026 01:45:06 +0000
+Message-Id: <20260527014506.81BB31F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
 
-On Fri, 24 Apr 2026 08:52:16 -0700 Dave Hansen <dave.hansen@intel.com> wrote:
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
+s) to consider:
+- [High] The function incorrectly routes all attribute updates through gues=
+t_memfd if the host globally supports it, crashing on non-guest_memfd regio=
+ns and skipping VM-level updates.
+- [Medium] An integer overflow in the `end` address calculation can cause t=
+he memory attribute setting loop to be silently bypassed.
+- [Low] Using min() with mixed underlying types (gpa_t and size_t) causes a=
+ strict compilation warning/error.
+- [Low] Silent suppression of zero-sized requests on the guest_memfd path d=
+iverges from the VM ioctl path behavior and masks invalid API usages.
+--
 
-> On 4/24/26 08:04, Peter Zijlstra wrote:
-> > So I don't like this at all.... The comment says there is a preceding
-> > TLB flush, but there is nothing that guarantees there is. One would have
-> > to go audit all users and ensure this is always true.
-> > 
-> > This thing is incredibly fragile.
-> 
-> Yeah, this seems like an attempt to apply a code solution to a data
-> structure problem.
-> 
-> I think I talked about this in earlier iterations. But, ideally, what
-> happens here is that the things doing the table freeing or collapsing or
-> whatever would note in a data structure what they did.
-> 
-> Then the actual flushing code can look at the data structure and figure
-> out what kind of flush it needs. Things like "do I need to flush on lazy
-> CPUs?" Or, "have I done an IPI since the last page table free?"
-> 
-> But, if I remember from earlier in this thread, some of the callers of
-> this stuff didn't have a nice data structure (like an mmu_gather) passed
-> in to the places where it would be needed to exfiltrate the information.
-> 
-> I think Lance gave up on that because it looked too invasive to him.
-> 
-> But, I think this boils down to the code being too fragile as-is to
-> support what Lance is trying to do. It actually needs some refactoring
-> love before it can support the desired optimization. I'm not sure
-> there's an easy way out here.
+commit 16550ec77b955792a5b53a3ee07ba0330c0c629a
+Author: Sean Christopherson <seanjc@google.com>
 
-Well this is a bummer.  Looky:
+KVM: selftests: Provide common function to set memory attributes
 
-> On a 64-core Intel x86 server, the CAL interrupt count in
-> /proc/interrupts dropped from 646,316 to 785 when collapsing a 20 GiB
-> range with this series applied.
+This commit introduces vm_mem_set_memory_attributes() to handle setting
+memory attributes for a guest physical address range. It refactors existing
+shared and private memory functions to use this new helper. It also routes
+attribute updates either through guest_memfd or VM-level ioctls based on
+global host support.
 
-It would have been nice.
+> diff --git a/tools/testing/selftests/kvm/include/kvm_util.h b/tools/testi=
+ng/selftests/kvm/include/kvm_util.h
+> --- a/tools/testing/selftests/kvm/include/kvm_util.h
+> +++ b/tools/testing/selftests/kvm/include/kvm_util.h
+[ ... ]
+> +static inline void vm_mem_set_memory_attributes(struct kvm_vm *vm, gpa_t=
+ gpa,
+> +						size_t size, u64 attrs)
+> +{
+> +	if (kvm_has_gmem_attributes) {
 
-Oh well, it's been a month with no progress so this patchset appears to
-be before its time.  Thanks all, I'll drop this from the 7.1 queue.
+[Severity: High]
+Can this route all attribute updates through guest_memfd if the host
+globally supports it, crashing on non-guest_memfd regions?
 
-(otoh, "a month with no progress" == "decently tested")!
+Existing tests intentionally create non-private memslots (flags =3D 0) and
+call vm_mem_set_private(). Because this branches solely on the global
+kvm_has_gmem_attributes capability, it will call kvm_gpa_to_guest_memfd()
+which asserts that the region is a guest_memfd region:
 
+TEST_ASSERT(region && region->region.flags & KVM_MEM_GUEST_MEMFD)
+
+This can cause these tests to crash.
+
+Also, due to this strict branching, non-guest_memfd regions bypass
+vm_set_memory_attributes() entirely, so their VM-level attributes are never
+updated.
+
+Could we dynamically check if the specific memory region has the
+KVM_MEM_GUEST_MEMFD flag before choosing the routing path?
+
+> +		gpa_t end =3D gpa + size;
+
+[Severity: Medium]
+Does this calculation overflow end if size is sufficiently large, such as
+when testing boundary conditions with (size_t)-1?
+
+If gpa + size overflows, end becomes smaller than gpa. The loop condition
+addr < end would then evaluate to false immediately, and the function would
+silently return without making any ioctl calls to KVM.
+
+Prior to this patch, size was passed directly to the kernel ioctl which
+handled bounds validation.
+
+> +		off_t fd_offset;
+> +		gpa_t addr;
+> +		size_t len;
+> +		int fd;
+> +
+> +		for (addr =3D gpa; addr < end; addr +=3D len) {
+
+[Severity: Low]
+Does this loop silently mask invalid test configurations for zero-sized
+requests?
+
+If vm_mem_set_private() is called with size =3D=3D 0, end evaluates to gpa =
+and
+the loop condition addr < end immediately fails, returning silently.
+
+In contrast, the fallback else path (vm_set_memory_attributes()) routes the
+zero-size request to KVM, which rejects it with -EINVAL and triggers a
+TEST_ASSERT failure.
+
+> +			fd =3D kvm_gpa_to_guest_memfd(vm, addr, &fd_offset, &len);
+> +			len =3D min(end - addr, len);
+
+[Severity: Low]
+Does this cause a compilation warning due to mixing underlying types?
+
+end - addr is of type gpa_t (u64), while len is size_t. The standard kernel
+min() macro performs strict type checking, which will generate a warning
+about comparing distinct pointer types. Since KVM selftests are built with
+-Werror, this can cause a build failure.
+
+Could this use min_t(size_t, ...) instead?
+
+> +
+> +			gmem_set_memory_attributes(fd, fd_offset, len, attrs);
+> +		}
+> +	} else {
+> +		vm_set_memory_attributes(vm, gpa, size, attrs);
+> +	}
+> +}
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260507-gmem-inpla=
+ce-conversion-v6-0-91ab5a8b19a4@google.com?part=3D38
