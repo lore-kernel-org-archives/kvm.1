@@ -1,294 +1,244 @@
-Received: from mail-dy1-f175.google.com (mail-dy1-f175.google.com [74.125.82.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.8])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402892BEC3F
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 05:53:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779861192; cv=none; b=mhxMgKx9BVIR5FUmXMTgTUCQKNYzhxBrFwyzqHznFBQGRhDhik4vHd3lhdHYkhV+b7AI5QjXrbD47acssaGLfOCq68C0nFoU4fhLmfRADgJhcjwdNgqe1spIoASCjSSDrjAm4UbKFpejn6gz7KbpsXxazrnJofSa9Se1wSW18nk=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779861192; c=relaxed/simple;
-	bh=PU3MvdV8tam4q1KMdiajihMJ3i8qhlgrfETzPE8HD/Y=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=VP3FSgCERlofpkReRMOS2Jt0Tiy9cTf8SUHKL+vPMSb7S+dGo3TYS7Dgs+uf1ZvS9DWlzZqDr0l6HvD9NXrGL7DWrCdQ9WXQe38/xf8So6ojoXgL0fXPR5L/SBmFW0BRDTRaV1TO+gO7pIQuQpWGUtMCBN993+dnWpICgLn1Ne8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com; spf=pass smtp.mailfrom=sifive.com; dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b=eWKjppRq; arc=none smtp.client-ip=74.125.82.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=sifive.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sifive.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4864527FB37;
+	Wed, 27 May 2026 06:05:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=192.198.163.8
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779861958; cv=fail; b=drngHRq3RaGEO47LeKNxgj9N7mp3g+pnjBW1Mr4H6b7vcU91ZFxxOo/Y3HclxOAPCnZc3zXWlWLwfd+mbC3/OOWpad3E+hgU12ytQD4eT6bFBdaptF42DIfi2jWN8003r3qiJyGKJsVYT2AykFE1JE0wCCDq1MQCscBzJR0u580=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779861958; c=relaxed/simple;
+	bh=FOifYwSNaq62ELJFmkNtK4yf7uCaTkU3H6Oy3niLJHA=;
+	h=Message-ID:Date:Subject:To:CC:References:From:In-Reply-To:
+	 Content-Type:MIME-Version; b=U7rZyKE988qNK1Pi1I8VZQkZzz/L7HXO+wUdcge6eWRkoAeED59js/jlQpMMmqmYJ0sm/CTqdAng50VkyZO/tFEj//YQBhoiMwv3WoUycnbi7T3i2s7+3op0TkSO5PBWIVwH5XD3INzKqOMB/KV6lq/fGIhejoGiHH7uZrreWJc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=irdguoJx; arc=fail smtp.client-ip=192.198.163.8
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sifive.com header.i=@sifive.com header.b="eWKjppRq"
-Received: by mail-dy1-f175.google.com with SMTP id 5a478bee46e88-304997cdb21so3331275eec.0
-        for <kvm@vger.kernel.org>; Tue, 26 May 2026 22:53:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sifive.com; s=google; t=1779861184; x=1780465984; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Wp1oswXj3dj/ue+2mbG75NTENINWm5S4spwl9AqmaA8=;
-        b=eWKjppRqnDjef9kU0LFoDBClyA9DBq2K3AlJPnUFfxtxbTlQH6bmTsfp1Y93cMRiNY
-         TY6SdvpNsau9gqFWXZqVS/+L4k0u9zVs+6kkKKKzyvQ8rKmzO+hL235IjfvO0UY3mJ1G
-         bup40OubANgeFFZddcWyAs9G1QgW/qP6oFtISJ4YWr5x1CjS0UnEnCDZe5jmikII375S
-         XZoYflHfV/uUx0UBxsbc20aeqMbnRlV7OFvYQ6H3/J+EtWz9sdgLrjKaA6adnhCnP1pP
-         XTf7FoJ7a8d1cB0q5EOJoP22bnOzkfvGRrAAyvWO2mIhoe+ZxJujOPUlnFiuw/rXhfdR
-         vqmQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779861184; x=1780465984;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-gg:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Wp1oswXj3dj/ue+2mbG75NTENINWm5S4spwl9AqmaA8=;
-        b=JVqusOFKqF9Yl+0CFuY+clWGoN/uaoY6u3FPhM66XGFIfxWDjatzCCs6qxv5AV2NJG
-         buvKf9WlRX1uTl/BeLIobplOAIu732yzlok0Ql5Nh7pd6Xt1ZnRPFwSAz6vB7ps9GqTE
-         IpPIOAiHKOONBb2vGDZ7MoVjWkBSqR2vpprl5jmhCqIHCEcD0o4trh2HPCIJtfpYqPDY
-         EO2RiSRs4QHbcTl+iKtXGlf0l6cAFxRSirvUjae0vkY4B4o/qLMXRpFb9qLXa0sp/7te
-         uAAWsMru0PKA+DyT67bVJUrRyJjfLvj4rd8Umw8f2CkfELlnIpACdWFsONN19FoXXXx5
-         hvlA==
-X-Forwarded-Encrypted: i=1; AFNElJ8ZAV+WKINnnPgftVHQxtl9AHtpDmNy+mjZB+c1jPEm+yctynnwDWkca3oKQZoJz5Qyuaw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw0BTjh3L5IdafBg2UqqXZk5Bw749rofVKGFFQIDvqzsegtaLUj
-	ja92rcGuYZDG5Ld7Hh/Bb23fkBFPMB8FbDUtsBTj6sm3hQ+u+JDa1ABtX/AlEbquVck=
-X-Gm-Gg: Acq92OEGenhwUmSftOiJGc4/eUgcvprKg8yjbcuMyY14JuQbrTkHepOu5LY4nbZzo/P
-	HZ4+WzF0Z7F6GxkV2AZdiTk1rqCeOZgTK1JkA5FK4aXRSN6irQ+Oafhx5uCdeGm0ZP4Y9hTpQiw
-	1SHjbPX4DRCTR0KzdxCU7DIdXKxnriQiMgDcBlhy2MEGHTUvV7PyWliNDXGpsBolqTSI0KAzkXE
-	tR8yrU2DQVlJ2itTiVcJ8nHgbVvzT9uq8IeywU3LttP3VLM2hmE4kopzK+HA4USmD3qfmdXx97B
-	+vrukHL4w4Z4rR/qmp2LAn+MY5HY9ZhCuEhxfwRi5S/MosDorNWcOE8u0v2dNXf934tGQhp+Fwa
-	n1vAawbH7lN/F9jr1iLpQ/b5aBoKjdliULpETAICWV90ID79UrCZv7brsBC6E/Ui+ABlSxGt8E2
-	dGmakMsrGUix06ROctMdVxCitOg8dba4aT91kiMMIDrYwQyz9HmgXx3w==
-X-Received: by 2002:a05:7300:e826:b0:304:8881:b82 with SMTP id 5a478bee46e88-30488810bd7mr4633718eec.1.1779861184313;
-        Tue, 26 May 2026 22:53:04 -0700 (PDT)
-Received: from sw07.internal.sifive.com ([4.53.31.132])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-304be0851c9sm613202eec.23.2026.05.26.22.53.03
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 26 May 2026 22:53:03 -0700 (PDT)
-From: Yong-Xuan Wang <yongxuan.wang@sifive.com>
-Date: Tue, 26 May 2026 22:52:40 -0700
-Subject: [PATCH v2 3/3] KVM: riscv: selftests: Split SBI FWFT into separate
- feature-specific sublists
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="irdguoJx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1779861956; x=1811397956;
+  h=message-id:date:subject:to:cc:references:from:
+   in-reply-to:content-transfer-encoding:mime-version;
+  bh=FOifYwSNaq62ELJFmkNtK4yf7uCaTkU3H6Oy3niLJHA=;
+  b=irdguoJxRBKshxuwTbHAQx7+JnolbBLXqSX8n4dy/iFH7Eer4WaAW+lb
+   OpHNNLqExnwX5xRtvb8jSr+5R6UqyURp4Q2W6sGja4W3OR3kxma5hg55k
+   hzIwoCgRxNWSdEWsLwBPSwX6uJW6DpBcAXiGkWmS2rUzhAdRBUQIEQL17
+   syUXlskT+MWuibYoHGp9ijWg0BQ921sRCUd4vGqABgePF+42GviiZMs1T
+   Wb5V0gUQPGtox9iAa9YczvfiCkC+Z6F2hCR9nsZ2qSpMCmH57gDDcWFDp
+   S7lbre1JnrWRiM5RG4Sp4/3tD0yd/9n2/4Cz+bcZ8cZ8Ym2ea9RyTHAvo
+   A==;
+X-CSE-ConnectionGUID: wpqvWVUrSxm48/HvDJWm9g==
+X-CSE-MsgGUID: qgRn2U4zQem3t3elhp4gSA==
+X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="98259729"
+X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
+   d="scan'208";a="98259729"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by fmvoesa102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 23:05:55 -0700
+X-CSE-ConnectionGUID: yUQyI46xQl+wnVSW3to4jw==
+X-CSE-MsgGUID: bBto7EZjQIibhnXlx2QKDQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.24,170,1774335600"; 
+   d="scan'208";a="266011829"
+Received: from orsmsx903.amr.corp.intel.com ([10.22.229.25])
+  by fmviesa001.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 26 May 2026 23:05:55 -0700
+Received: from ORSMSX901.amr.corp.intel.com (10.22.229.23) by
+ ORSMSX903.amr.corp.intel.com (10.22.229.25) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 26 May 2026 23:05:54 -0700
+Received: from ORSEDG901.ED.cps.intel.com (10.7.248.11) by
+ ORSMSX901.amr.corp.intel.com (10.22.229.23) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37 via Frontend Transport; Tue, 26 May 2026 23:05:54 -0700
+Received: from DM5PR21CU001.outbound.protection.outlook.com (52.101.62.11) by
+ edgegateway.intel.com (134.134.137.111) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.37; Tue, 26 May 2026 23:05:52 -0700
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Z9XCs6qjDe6e/0JbV+OXufujhg9othJOMvz+H4TO5aP+vVZYsS8N+f1srF8zt5RLibWCh/3XiRUPO4qx1MimUxQzoBQOjivfux9BOeikirlwN+7eS5VTLSELDMxuRmTbKEO5K1QuauNUER4yQB3j60p6lY4PbEBMqe3CZIZXrlkQhV9212d3VwmyW9sPOl3UmB76+OGqjvaM/71nm6//DGEFIhe5+3ZiapV14tUcvNrf/hQZ6NFQDt9IhyIRHkb2fKqEMW6j7f4/9UytvIVqzIPlrjUQR/V1eG0nGSul46cDptgYF2zBoWkHBvBsaqw1qb2psfRk1WUkRhMxxiVAzQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=m4mUl1zmsgMRwvcZKMsX2JUdLgjpcv1oDUKxuB1Zn14=;
+ b=nCWTtcBrWo09eN93Xb85oW/baTYIM96c4yIDmdicuufM6czTUD4r4xuVmUu6s6Hpx7PJfa7gJTNfxwPNn4kQDNAg5ErMYKSgskucuHz9mXlJHb5S4FOS25psqoZ52LVtBLlALGRvO8grcn1ilqe/l0hpP/D+bmj7IjF98m1yOTJAp5s6zPrYNgFnIT1a9dDTJOFTVMvxEbLdNU2et9cSpDuuEbOLONIg/o5WK+MLsaI5bVRYVFg+AoNIqQMT6OjK+TDcRGQuHEKaauzIP66hHkA/VuSlrsELKdHSlYZvITtgoMtk2E1PujDipYwsozmkPUF8wPrOicMTa/yh8/7LUg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
+ dkim=pass header.d=intel.com; arc=none
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=intel.com;
+Received: from DS0PR11MB7997.namprd11.prod.outlook.com (2603:10b6:8:125::14)
+ by DM4PR11MB7277.namprd11.prod.outlook.com (2603:10b6:8:10b::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.21.71.12; Wed, 27 May
+ 2026 06:05:50 +0000
+Received: from DS0PR11MB7997.namprd11.prod.outlook.com
+ ([fe80::24fa:827f:6c5b:6246]) by DS0PR11MB7997.namprd11.prod.outlook.com
+ ([fe80::24fa:827f:6c5b:6246%4]) with mapi id 15.21.0071.010; Wed, 27 May 2026
+ 06:05:50 +0000
+Message-ID: <b25e03ad-0bf4-482f-86ec-eebc6ac03d95@intel.com>
+Date: Tue, 26 May 2026 23:05:48 -0700
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 01/15] x86/virt/tdx: Read global metadata for TDX Module
+ Extensions
+Content-Language: en-US
+To: Xu Yilun <yilun.xu@linux.intel.com>, <kas@kernel.org>, <djbw@kernel.org>,
+	<rick.p.edgecombe@intel.com>, <x86@kernel.org>, <peter.fang@intel.com>
+CC: <linux-coco@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<kvm@vger.kernel.org>, <yilun.xu@intel.com>, <baolu.lu@linux.intel.com>,
+	<zhenzhong.duan@intel.com>, <xiaoyao.li@intel.com>
+References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
+ <20260522034128.3144354-2-yilun.xu@linux.intel.com>
+From: Sohil Mehta <sohil.mehta@intel.com>
+In-Reply-To: <20260522034128.3144354-2-yilun.xu@linux.intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: BY3PR04CA0025.namprd04.prod.outlook.com
+ (2603:10b6:a03:217::30) To DS0PR11MB7997.namprd11.prod.outlook.com
+ (2603:10b6:8:125::14)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260526-kvm-get_reg_list-v2-v2-3-7940a401454a@sifive.com>
-References: <20260526-kvm-get_reg_list-v2-v2-0-7940a401454a@sifive.com>
-In-Reply-To: <20260526-kvm-get_reg_list-v2-v2-0-7940a401454a@sifive.com>
-To: Anup Patel <anup@brainfault.org>, Atish Patra <atish.patra@linux.dev>, 
- Paul Walmsley <pjw@kernel.org>, Palmer Dabbelt <palmer@dabbelt.com>, 
- Albert Ou <aou@eecs.berkeley.edu>, Alexandre Ghiti <alex@ghiti.fr>, 
- =?utf-8?q?Cl=C3=A9ment_L=C3=A9ger?= <cleger@rivosinc.com>, 
- Andrew Jones <ajones@ventanamicro.com>, Paolo Bonzini <pbonzini@redhat.com>, 
- Shuah Khan <shuah@kernel.org>
-Cc: greentime.hu@sifive.com, vincent.chen@sifive.com, zong.li@sifive.com, 
- kvm@vger.kernel.org, kvm-riscv@lists.infradead.org, 
- linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org, 
- linux-kselftest@vger.kernel.org, Yong-Xuan Wang <yongxuan.wang@sifive.com>
-X-Mailer: b4 0.15.2
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1779861178; l=7898;
- i=yongxuan.wang@sifive.com; s=20260424; h=from:subject:message-id;
- bh=PU3MvdV8tam4q1KMdiajihMJ3i8qhlgrfETzPE8HD/Y=;
- b=Rf/Bxb/Y6dVq19o6khyGvrIhnmWe6YPFVdkxBIChoeXeDEbJ5eD7cToZTzm/Vs3esy/8MC97k
- 1y2/g4v/RwICUXDg73dHFNGlE0YaXfV2hGe0iNJyWyk9lFzoRaXUW+j
-X-Developer-Key: i=yongxuan.wang@sifive.com; a=ed25519;
- pk=+8NCHB1ZJvZthQAmZspOAaqjo+/snaW8mFSiDx45HxY=
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS0PR11MB7997:EE_|DM4PR11MB7277:EE_
+X-MS-Office365-Filtering-Correlation-Id: 39bf6342-ecd3-494a-0b55-08debbb60090
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|22082099003|18002099003|6133799003|3023799007|4143699003|11063799006|56012099006;
+X-Microsoft-Antispam-Message-Info: 8Ylro6c3fjwyvGP8vXy9OwJjmcWjHN8uskTjvlOnFpBE5bGZQ5yXtSPiKDPIarsxVs4eye3zmSfjU6zxztB5ybUEU5ksW8CB8ZE9WVXxqF11AclPw3borOyDZNHEMtPbzELu/fV6PNdgPj7KE4t0jl4NQHhrI3kzQrzyq2WfJTXFMhHIlL0jifJ3xKL5bXA1EUWtLjQRnRZs2DOoEHPOva92fYglif7TPVpZ1S9EGWhbdrAqFh0lKzCKm4rcBJbWoRKv5rnW43GhTuhP9JE+RV74Z4d9O2+xkkK7KWc3S+S06GVaIVcjGgGqCnZedWwNyrbpPABhmEvIgJYb53cdhXN5V4qJNoIXdk3Xvgm7MHErD8kC2xtuOeloy+t1qVYLq05Mq1wsSz22VQchyrsei4JI9J8rxxIP3HtNPQOEgNEiz/zfGB8DtTU2x2LCJwcBV4I9vNw/AoBW02Dj6yQ/IUMkHILpKTTnRkJrP1Wc4NYuWN3rMtcKxLmmLApTgn+j2DzHL9xBtheHlHjP8t1jY/K0FmG/olhmXCNbrWlsdhBoqEa4L/oMmqroBbd1HvkrzJ2+PxNmx0n9h1dGF1PfDMj3z4zqHvvLuKgm0xIkxsA+X0GZAev2cPNbC89nwUKv53lY1mMK65BZ8BoBFkLkYlbUull2lcnSIjWAJo7DYGCHv/RAKB0gbTg7rut0tWJK
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:DS0PR11MB7997.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(22082099003)(18002099003)(6133799003)(3023799007)(4143699003)(11063799006)(56012099006);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?YTIrRUwwMUhXQ1M1UkVVV3pjSUQvL1pvTi9vZkFPTkFLWFlxb3gvcGFTU2lP?=
+ =?utf-8?B?QWZwakhCUSs4VCtieE8yRzBaR1phWHFhTndBMWVHYzZUSzBXUFJxd0w5T1RK?=
+ =?utf-8?B?L3hJMzlvNG1BVmFWTnJhakxEUDlORW5Ncmd6VTc3T2JIVEY3TXBzTnJzblJV?=
+ =?utf-8?B?dzhybFFUUVV3S3ZtZHN6a2VkMlcxNGlEVElkTzgzVFExWXB6R0QxcjFhdnJz?=
+ =?utf-8?B?Szd2Nmx1NVF4Mm1zYTd2VDVXYUhpTDliOTNYOEZEeHJlMVAxTVpHNE13RlJD?=
+ =?utf-8?B?Y1VDZnF3ZlJJYjlBUEUwYjJJaG0rNzRLMmZwTjlINXBCRUgybFhJK2ptUkVQ?=
+ =?utf-8?B?ZnBtdkZ0TWFJa0hGeG5sbTFYYzh2WXpXMVVENHNTTldCbnRUOFZ0cmxOQzZm?=
+ =?utf-8?B?UFZsZ0UyZi9ZSUhXVFZENThES0o3Zmt0Z0t3N3FLdEtqMkhyRzIrWElVRExT?=
+ =?utf-8?B?SkUvZ0UwSFg3NnFwL25UM2hqZjBucSt6a0hFL3J5MHFOankvcFBxa2NlOEZk?=
+ =?utf-8?B?WnJjeCtjeU9sYU9RRldBVXdhNnlRc29ITytrT1dMS0ZoejZCRC91YVVYZEY5?=
+ =?utf-8?B?VDZoM2V1ZWs5TFBkUll6ZGdwY1NlYno4Zm1ZdTAwTG5MVXFwMWcvRUpFRVlD?=
+ =?utf-8?B?SXlLblZtVHlyTUhzNlpSTVA3U0xUWGdLL3JyK3VkNElWS2liMzlOdDdTb052?=
+ =?utf-8?B?K1R0VWJBQXVMZ3BRZjdZZ2JFRFNWR1hXNlVmVFNtSGlDSDA4aFRHa3RXRkdW?=
+ =?utf-8?B?UUV3YTVsTGx4TG9rWmxIczRMYnlGckpPRFRCald4dzIrdi9BaTFFKzZUN3Yv?=
+ =?utf-8?B?S0tRa0dFVUtJVXgyakdqQTdPS24rQ2VLUFkvRTRJcEJsZWM4L3p5djV0WU1G?=
+ =?utf-8?B?SW93MFVTRTlpWUpBcEtjZTA3alp6T0xkN3VrUHdkOVlXcWxyZnR4VXlxMm1Y?=
+ =?utf-8?B?QTJjSmpldDNOVkhXZ1dZSGNTdEhVa3V2S1NIdUVUbnhWbkdpbzFIWVhzUTVu?=
+ =?utf-8?B?N2ZFUUlMQnJkSkpUWE0xRFFJRWpneUJITFdnUFZsY0M5SW5oYlJPSC93M2Zv?=
+ =?utf-8?B?MkFzS1RVTVBsR1JNZjg0dklLKy91aTZPUW5JZmNwT05CSUp2Q3oweFlmRTFt?=
+ =?utf-8?B?RXFFRDMrVHk3dE1SNzZBWHFFdXhpR0p2d1hCZ1JydzhFckJOSC9BVllxaUJH?=
+ =?utf-8?B?Vllkc2N0SzJiaDJMK241R3ZrOFQvckdxK2lmR1Y4V204ZkYvUlArQTM0eEZQ?=
+ =?utf-8?B?TjkyT1dIRmJsR1VQWTlucndnUHhuY0x4QktEOTE1MkhKNTBDbkIyR0kyT1VC?=
+ =?utf-8?B?bEFnbk5uRndLbnpmSVZvT1JYQmt0VWNwU1dhSzF0VWVXbmdNNmJKYkkxY2cw?=
+ =?utf-8?B?VjcwaXhxbGt1K3YxNDZvdDgybm5lREN6THNIT215VFpCNm80K1FiRXNGK2JX?=
+ =?utf-8?B?UTN0amdmL251V0o0WG95dTN0RlRwcytpODYwaEY4cUNicU1tTnpzOGJ2WE9X?=
+ =?utf-8?B?bmxSYlRxQmFJclUvdW01aTJNMlpjRU10RHl3Wmg3bUFIdEVCcEdSL3cwUGtF?=
+ =?utf-8?B?VWpVSzcxNUlDVW91VWpkZ0pzVm1xdjZsdkJTZ2ZDT1ZrT1NDMlpsYllpblB3?=
+ =?utf-8?B?WHBTREpOYnpka29tSHdnU2FWUkNLN1F4Qy8yVGZGSW5kQms3R1dBL1VjV1BS?=
+ =?utf-8?B?T1ozT1lvbVpKRjduQjRpSmJzeWRXbFJUVWhHSmFUMzlwc3BWMXcwZHhvbU5O?=
+ =?utf-8?B?cndHQjBSdWMvMUNZWldScm43RThVRmJnVitjSlZzZFphNEJrOGd4R0pvcVlN?=
+ =?utf-8?B?WGdnQUc2dm1ucUdlSG1xTkFCaTVPekZxelVJeTJhZ0tzZFFaQWRJbU5hckg4?=
+ =?utf-8?B?ZXdpWFppWXBCRWtPbnk5MytaMmFtM29hbTVuWmVMLytWRm8xL05mTzVoclpW?=
+ =?utf-8?B?YWtVUG0zUWR5dXJOdVVyME9ldDJCZWYwbEQ3WXdUT3RFS2dTYjY3bjZZaFZv?=
+ =?utf-8?B?UUlXeFlsUThmT2JyMmV0UHZlSC81VGY2RUtKN1o3S1UwVXBjSWxLRXYrSXp2?=
+ =?utf-8?B?TXdkeUJmWG5YQWU5ZjVIVERqaWI2MVlqb0dtUWR1MGJpRStSWkpGUTk3Z3E5?=
+ =?utf-8?B?TUlnOVJqcERpYzFMUzFKUXMvcHpiMDIxNTI3UnVFTVExSlpSdFNEbHBGQnBQ?=
+ =?utf-8?B?dzFXQlltRldBSE0yblpzYkxiVUJ0dWVORUs4VSs3VlNsRVIzUGszVXRTR3pv?=
+ =?utf-8?B?dEZPVjBpQ0NON2VOR0pKN29mU1Y5QUcrQkdoaTgzcjFmcnpITUo2dWJ2WWt6?=
+ =?utf-8?B?b1hNMGg5aUIwUFdxYjA0dmgrRTcrcVBXNm9XWlR2NW4vQnlnbHlJQT09?=
+X-Exchange-RoutingPolicyChecked: m8upDpMZ46kOUhueiQ3LEZWRgqpgGeJpohAuxQ+W1bJeEZ6btpYMuSz3mmHAo9OI2bkrMEOToNXJRSWTIP++aVV/VfG1Rb9IVdA0af5TjZfq26FpSAK8RGuecIxgJadSTHMKKPfbEuBMC8TWBAAdPVdHm77M1flDvX5jcqGqFBiieGamgrGbz/mCqwdw8Ml1rnSW2Y+sJzrxeMkvjBcrKdtIn6i000aiEJUPKOy7eZeW0SXUF0mtBI/ggz74ep2NVxW9ygmo63ZEVCRZP862KxzuB4aaRZt+pnp0tV3Eumsq1TYKKqdejUUlCnwrfoLWQusDTa3oii1RRNTKu7Hcuw==
+X-MS-Exchange-CrossTenant-Network-Message-Id: 39bf6342-ecd3-494a-0b55-08debbb60090
+X-MS-Exchange-CrossTenant-AuthSource: DS0PR11MB7997.namprd11.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 May 2026 06:05:50.2657
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 59Wk5HPVXl2PHGs5wB9hsrcLHZfduxhkf8Wo+D2XbyVyiTBrqYPvuAoIHmOHYHzGd8D9KLKOncGZEGEJzYIk4g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DM4PR11MB7277
+X-OriginatorOrg: intel.com
 
-Divide the monolithic SBI FWFT (Firmware Features) register list into
-separate sublists, each testing a specific FWFT feature independently
-with proper dependency checking.
+On 5/21/2026 8:41 PM, Xu Yilun wrote:
+> Add reading of the global metadata for TDX Module Extensions.
+> 
+> TDX Module Extensions is an add-on feature enumerated by TDX_FEATURES0.
+> But for the Module's integrity, Linux requires that all features that a
+> Module advertises must have a complete, valid set of metadata, and the
+> validation must succeed at core TDX initialization time.
+> 
+> Check TDX_FEATURES0 before reading these metadata. If a feature is
+> advertised, a failure in reading associated metadata causes the entire
+> TDX initialization to fail, otherwise skip.
+> 
+> Signed-off-by: Xu Yilun <yilun.xu@linux.intel.com>
+> ---
+>  arch/x86/include/asm/tdx_global_metadata.h  |  6 ++++++
+>  arch/x86/virt/vmx/tdx/tdx.h                 |  1 +
+>  arch/x86/virt/vmx/tdx/tdx_global_metadata.c | 16 ++++++++++++++++
 
-Previously, all FWFT features were tested together in a single sublist.
-This caused issues because:
-1. Not all FWFT features are available on all platforms
-2. Some features depend on specific ISA extensions (e.g., pointer_masking
-requires Smnpm)
-3. Tests would fail if any single feature was unavailable
+The top comments in tdx_global_metadata.h and tdx_global_metadata.c say
+that these files are autogenerated. I believe the script lives outside
+the tree. Is there a plan to merge the script?
 
-Add the feature-specific SBI FWFT sublists with the following
-improvements:
-- Add check_supported_reg() function to validate register availability
-  based on required ISA extensions
-- Add check_fwft_feature() helper to verify FWFT feature availability
-  at runtime
-- Update filter_reg() to handle per-feature FWFT register filtering
+The generated code is optimized for space instead of readability. Also,
+I see odd uncommented assignments u64 => u8/u16 all over the file. I am
+assuming the upper bits are expected to be zero.
 
-Signed-off-by: Yong-Xuan Wang <yongxuan.wang@sifive.com>
----
- tools/testing/selftests/kvm/riscv/get-reg-list.c | 92 +++++++++++++++++++++---
- 1 file changed, 82 insertions(+), 10 deletions(-)
+The patch is hard to review without the script. Can you post a link to
+the updated script that led to this patch?
 
-diff --git a/tools/testing/selftests/kvm/riscv/get-reg-list.c b/tools/testing/selftests/kvm/riscv/get-reg-list.c
-index cb16c638ce1a..6a34320be78c 100644
---- a/tools/testing/selftests/kvm/riscv/get-reg-list.c
-+++ b/tools/testing/selftests/kvm/riscv/get-reg-list.c
-@@ -26,7 +26,21 @@ enum {
- 	KVM_RISC_V_REG_OFFSET_MAX,
- };
- 
--static bool isa_ext_cant_disable[KVM_RISCV_ISA_EXT_MAX];
-+static bool isa_ext_enabled[KVM_RISCV_ISA_EXT_MAX];
-+
-+bool check_supported_reg(struct kvm_vcpu *vcpu, __u64 reg)
-+{
-+	switch (reg & ~REG_MASK) {
-+	case KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pointer_masking.enable):
-+	case KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pointer_masking.flags):
-+	case KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pointer_masking.value):
-+		return isa_ext_enabled[KVM_RISCV_ISA_EXT_SMNPM];
-+	default:
-+		break;
-+	}
-+
-+	return true;
-+}
- 
- bool filter_reg(__u64 reg)
- {
-@@ -148,7 +162,12 @@ bool filter_reg(__u64 reg)
- 	case KVM_REG_RISCV_CSR | KVM_REG_RISCV_CSR_AIA | KVM_REG_RISCV_CSR_AIA_REG(siph):
- 	case KVM_REG_RISCV_CSR | KVM_REG_RISCV_CSR_AIA | KVM_REG_RISCV_CSR_AIA_REG(iprio1h):
- 	case KVM_REG_RISCV_CSR | KVM_REG_RISCV_CSR_AIA | KVM_REG_RISCV_CSR_AIA_REG(iprio2h):
--		return isa_ext_cant_disable[KVM_RISCV_ISA_EXT_SSAIA];
-+		return isa_ext_enabled[KVM_RISCV_ISA_EXT_SSAIA];
-+	/* KVM misaligned delegation registers are always visible when the host supports it */
-+	case KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(misaligned_deleg.enable):
-+	case KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(misaligned_deleg.flags):
-+	case KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(misaligned_deleg.value):
-+		return true;
- 	default:
- 		break;
- 	}
-@@ -193,15 +212,39 @@ static int override_vector_reg_size(struct kvm_vcpu *vcpu, struct vcpu_reg_subli
- 	return 0;
- }
- 
-+void check_fwft_feature(struct kvm_vcpu *vcpu, struct vcpu_reg_sublist *s, u64 feature)
-+{
-+	unsigned long value;
-+	int rc;
-+
-+	/* Enable SBI FWFT extension so that we can check the supported register */
-+	rc = __vcpu_set_reg(vcpu, feature, 1);
-+	if (rc)
-+		return;
-+
-+	for (int i = 0; i < s->regs_n; i++) {
-+		if ((s->regs[i] & KVM_REG_RISCV_TYPE_MASK) == KVM_REG_RISCV_SBI_STATE) {
-+			rc = __vcpu_get_reg(vcpu, s->regs[i], &value);
-+			__TEST_REQUIRE(!rc, "%s not available, skipping tests", s->name);
-+		}
-+	}
-+
-+	/* We should assert if disabling failed here while enabling succeeded before */
-+	vcpu_set_reg(vcpu, feature, 0);
-+}
-+
- void finalize_vcpu(struct kvm_vcpu *vcpu, struct vcpu_reg_list *c)
- {
--	unsigned long isa_ext_state[KVM_RISCV_ISA_EXT_MAX] = { 0 };
-+	unsigned long isa_ext_state;
- 	struct vcpu_reg_sublist *s;
- 	u64 feature;
- 	int rc;
- 
--	for (int i = 0; i < KVM_RISCV_ISA_EXT_MAX; i++)
--		__vcpu_get_reg(vcpu, RISCV_ISA_EXT_REG(i), &isa_ext_state[i]);
-+	for (int i = 0; i < KVM_RISCV_ISA_EXT_MAX; i++) {
-+		rc = __vcpu_get_reg(vcpu, RISCV_ISA_EXT_REG(i), &isa_ext_state);
-+		if (!rc)
-+			isa_ext_enabled[i] = !!isa_ext_state;
-+	}
- 
- 	/*
- 	 * Disable all extensions which were enabled by default
-@@ -209,8 +252,10 @@ void finalize_vcpu(struct kvm_vcpu *vcpu, struct vcpu_reg_list *c)
- 	 */
- 	for (int i = 0; i < KVM_RISCV_ISA_EXT_MAX; i++) {
- 		rc = __vcpu_set_reg(vcpu, RISCV_ISA_EXT_REG(i), 0);
--		if (rc && isa_ext_state[i])
--			isa_ext_cant_disable[i] = true;
-+		if (rc && isa_ext_enabled[i])
-+			isa_ext_enabled[i] = true;
-+		else
-+			isa_ext_enabled[i] = false;
- 	}
- 
- 	for (int i = 0; i < KVM_RISCV_SBI_EXT_MAX; i++) {
-@@ -229,9 +274,15 @@ void finalize_vcpu(struct kvm_vcpu *vcpu, struct vcpu_reg_list *c)
- 				goto skip;
- 		}
- 
-+		if (s->feature == KVM_RISCV_SBI_EXT_FWFT) {
-+			feature = RISCV_SBI_EXT_REG(KVM_RISCV_SBI_EXT_FWFT);
-+			check_fwft_feature(vcpu, s, feature);
-+		}
-+
- 		switch (s->feature_type) {
- 		case VCPU_FEATURE_ISA_EXT:
- 			feature = RISCV_ISA_EXT_REG(s->feature);
-+			isa_ext_enabled[s->feature] = true;
- 			break;
- 		case VCPU_FEATURE_SBI_EXT:
- 			feature = RISCV_SBI_EXT_REG(s->feature);
-@@ -897,11 +948,15 @@ static __u64 sbi_sta_regs[] = {
- 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_STA | KVM_REG_RISCV_SBI_STA_REG(shmem_hi),
- };
- 
--static __u64 sbi_fwft_regs[] = {
-+static __u64 sbi_fwft_misaligned_deleg_regs[] = {
- 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_EXT | KVM_REG_RISCV_SBI_SINGLE | KVM_RISCV_SBI_EXT_FWFT,
- 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(misaligned_deleg.enable),
- 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(misaligned_deleg.flags),
- 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(misaligned_deleg.value),
-+};
-+
-+static __u64 sbi_fwft_pointer_masking_regs[] = {
-+	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_EXT | KVM_REG_RISCV_SBI_SINGLE | KVM_RISCV_SBI_EXT_FWFT,
- 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pointer_masking.enable),
- 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pointer_masking.flags),
- 	KVM_REG_RISCV | KVM_REG_SIZE_ULONG | KVM_REG_RISCV_SBI_STATE | KVM_REG_RISCV_SBI_FWFT | KVM_REG_RISCV_SBI_FWFT_REG(pointer_masking.value),
-@@ -1129,7 +1184,6 @@ KVM_SBI_EXT_SIMPLE_CONFIG(pmu, PMU);
- KVM_SBI_EXT_SIMPLE_CONFIG(dbcn, DBCN);
- KVM_SBI_EXT_SIMPLE_CONFIG(susp, SUSP);
- KVM_SBI_EXT_SIMPLE_CONFIG(mpxy, MPXY);
--KVM_SBI_EXT_SUBLIST_CONFIG(fwft, FWFT);
- 
- KVM_ISA_EXT_SUBLIST_CONFIG(aia, SSAIA);
- KVM_ISA_EXT_SUBLIST_CONFIG(fp_f, F);
-@@ -1206,6 +1260,23 @@ KVM_ISA_EXT_SIMPLE_CONFIG(zvksed, ZVKSED);
- KVM_ISA_EXT_SIMPLE_CONFIG(zvksh, ZVKSH);
- KVM_ISA_EXT_SIMPLE_CONFIG(zvkt, ZVKT);
- 
-+static struct vcpu_reg_list config_sbi_fwft_misaligned_deleg = {
-+	.sublists = {
-+		SUBLIST_BASE,
-+		SUBLIST_SBI(fwft_misaligned_deleg, FWFT),
-+		{0},
-+	},
-+};
-+
-+static struct vcpu_reg_list config_sbi_fwft_pointer_masking = {
-+	.sublists = {
-+		SUBLIST_BASE,
-+		SUBLIST_ISA(smnpm, SMNPM),
-+		SUBLIST_SBI(fwft_pointer_masking, FWFT),
-+		{0},
-+	},
-+};
-+
- struct vcpu_reg_list *vcpu_configs[] = {
- 	&config_sbi_base,
- 	&config_sbi_sta,
-@@ -1213,7 +1284,8 @@ struct vcpu_reg_list *vcpu_configs[] = {
- 	&config_sbi_dbcn,
- 	&config_sbi_susp,
- 	&config_sbi_mpxy,
--	&config_sbi_fwft,
-+	&config_sbi_fwft_misaligned_deleg,
-+	&config_sbi_fwft_pointer_masking,
- 	&config_aia,
- 	&config_fp_f,
- 	&config_fp_d,
 
--- 
-2.43.7
+>  3 files changed, 23 insertions(+)
+> 
+> diff --git a/arch/x86/include/asm/tdx_global_metadata.h b/arch/x86/include/asm/tdx_global_metadata.h
+> index 40689c8dc67e..533afe50a3f1 100644
+> --- a/arch/x86/include/asm/tdx_global_metadata.h
+> +++ b/arch/x86/include/asm/tdx_global_metadata.h
+> @@ -40,12 +40,18 @@ struct tdx_sys_info_td_conf {
+>  	u64 cpuid_config_values[128][2];
+>  };
+>  
+> +struct tdx_sys_info_ext {
+> +	u16 memory_pool_required_pages;
+> +	u8 ext_required;
+
+The name ext_required seems like a boolean. It is also used like a
+boolean later.
+	if (!tdx_sysinfo.ext.ext_required)
+		return 0;
+
+But, IIUC, is it actually a mask that lists any feature that needs
+extensions to work correctly? If so, it would be good to give it a name
+that reflects its usage. Maybe:
+features_requiring_ext or something better
+
+As Xiaoyao mentioned, the struct requires a better explanation in the
+commit log.
+
+> +};
+
+...
+
+>  static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
+>  {
+>  	int ret = 0;
+> @@ -116,5 +129,8 @@ static __init int get_tdx_sys_info(struct tdx_sys_info *sysinfo)
+>  	ret = ret ?: get_tdx_sys_info_td_ctrl(&sysinfo->td_ctrl);
+>  	ret = ret ?: get_tdx_sys_info_td_conf(&sysinfo->td_conf);
+>  
+> +	if (sysinfo->features.tdx_features0 & TDX_FEATURES0_EXT)
+
+Other metadata reads aren't gated on feature checking. Is this check
+manually added or autogenerated. If manually added, it should have a
+code comment clarifying that.
+
+> +		ret = ret ?: get_tdx_sys_info_ext(&sysinfo->ext);
+> +
+>  	return ret;
+>  }
 
