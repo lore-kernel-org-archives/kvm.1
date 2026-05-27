@@ -1,65 +1,65 @@
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F203FDBF1
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 11:43:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FC23F0761
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 11:43:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779882210; cv=none; b=OZ3xc4JA50fLYFOyI8TohV/U3Hf0P91T5+GHof8PEhW+6dLMMujpTAyyjNJCoRXvt6nFZDO5MufGBwTrcSxwQ47iDrkfnjlzn6bJFqCm5IckvRMHf9Iw+XCSJHAlMfzw3rMOduHqyUt2VmQqMmoiYArJj+mE9r+Jc3sHioopYQU=
+	t=1779882211; cv=none; b=NnhfQiK6cUZyyhT5KPrbyrcWoU7oGOLGN9swQ9FHit/3+AwknLqvJjpMOGKJHp69hkFopYa8DBnGX9Q63wMbSTdJpF0TrAYsme7V+gxzjmLVjQz5I6qTIPQw47XpvmvPaJrg7bEZFOg+5b6ypDVeysmmaaKPXf0bbD0bLqsp1GI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779882210; c=relaxed/simple;
-	bh=TgXemkgW2xjGqdL7efvn5GwakWCM6zwP9roL0UUY14Q=;
+	s=arc-20240116; t=1779882211; c=relaxed/simple;
+	bh=m8aOjJrBLfQgdUUE8zyZXG7yCIhh0bB0NzkRC9CoCNE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QPeGYwVqC80PDawd+BHFtFQg7QXTuEjPRQ2C8ArQNdqfex57Hf+Z6v+b/CkiuNZsbsxNLmfv/f/9DuF3P5wpL1uST5ha2O+kYfobDy8m/Do3AWQqsvO4TiKZKfELOiOsTZsBez77RdIULBYX2cMQtxBE8lMCGszk9Sxi/d9PZdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=g2uMIhA1; arc=none smtp.client-ip=209.85.128.42
+	 MIME-Version:Content-Type; b=spZp6FUJI46VfwMGkoFSOUk1i2VBTFd6e17CMM21E9GPEl9GP8rsASMPTTbY5f/kkJaJs4ClWhEAzZWkPKavOkZxJSmKJu8ALEGUlcAL7PvcyznsKFZZrZ9oWPETsSmIpoSIzL1DGoIe16dZj8iDpB5ChcdTF9C0gq6MARoWxGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=dpc84+Ef; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="g2uMIhA1"
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-48a3e9862f0so61189715e9.1
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 04:43:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="dpc84+Ef"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4891c00e7aeso80055245e9.2
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 04:43:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1779882203; x=1780487003; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1779882206; x=1780487006; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Vr/dCWZqkxecamIVH5FjFCNfp5PazmhoCWjfR1OvVNg=;
-        b=g2uMIhA1ojyOBSV3niIOaFrGfSs5+AeVZHpeUcJBjKhzhjnY35yz8nTSiNGmVanJk9
-         nPH5SyRGqOc/QYfZX3m8d6SvIn/Lqaank1Nky3RbnGK3/gVy4OAcemlNlOUl1y6uOJeB
-         Psea3KWgxcPKgnpbrqJWcNGLLGYH5AFr3T851jSLjBlU4z0yeR7Ue1uT1zmN7/sn9gxN
-         YrhdfQH7+p5WZOJd2cGO2I3Jw5VgsT6RuDmaX9aVTWIYGr5bpCr62brZ1tQu6UE1iA9n
-         ZLn48KxLsKqojlabnNDSCQp6AGGBpkIZzKvXDUl9fRWpUrEaQo7/LcqVl0q2P3rK++Tg
-         6QUA==
+        bh=0nGT9Jp4pthasA5g2F4sYzBBA0JTzuDlDIySeJkpXWw=;
+        b=dpc84+EfBb6hwjFC4FQ0g4DZhde204fs0ShtzJDn4haYv/f7kUj1wyMrf5OLfQzdz5
+         vkeS73QOJFXyq/KtPLndssCnenWZ5p9N//TCCgClGKB39ObpoDu7Dbt7BT8VXeSXLUM0
+         H32CjHzhSjmAlkzpG4QgkZvm0heh05+4e5IQib0jodt8gxn/sshFAsMZxcAIO+7+BeVT
+         fy9EHkiYT3v8qygGsjcWllIGuFI5MULGj+YSaXf/ZgadJfnP1VVpjFNbW5Xlb2AahZdH
+         soa3vAy69X+/2I9t/v1YU3F1x5MUKIhWziHZu2CV9I/0piscaqTZ+ZbYE1fmYqABvkTt
+         syTw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779882203; x=1780487003;
+        d=1e100.net; s=20251104; t=1779882206; x=1780487006;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=Vr/dCWZqkxecamIVH5FjFCNfp5PazmhoCWjfR1OvVNg=;
-        b=qp9uI3jR96Qv9E20iRCn6Rq827qDlWMOlAPn8J3Y3MDuNNHDU7dN3amjlf2ng6ZyOt
-         P+0yyU55htnjefM7651rMEr135dS5kLAbtpErJFXy3wvEPx981NWV/GD0BnH5YFYV809
-         PWEJdSpSbwhJPKNVOtIC4LcBIrs1+JM9anvYsDCgSEhZkmT5VUFFd41awPQm2fGBAmyX
-         Ja+cniP36dFBxJfmobCnvh4PmIaisoQHHxGpLJXcZFBtWQUw0zURiV6iPPictYVysbIJ
-         ZpIC3tPs3vS++85rnLtcsiSCcKFH2kvjRPlwjUl3dEHz/FJ/7o7qQXFBMPhw0GBTkN+L
-         Ll0A==
-X-Forwarded-Encrypted: i=1; AFNElJ8V7THvrPbPMLS6nTgO+8Bc3RnFDeAjcMN70vy12WcX+73stHK6iImTeh+IstKWTzgWczk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGVPGqP5a8kBzBv4dOofy/DDu9/sYVbsgOpZG9JpHj4qsMelKr
-	vJBP5pLsQWO8EYVVQwguPXPRTMDoiuGaxlDBZb9ktcRm2z8+EWf9jSza9kLXQ7pJj68=
-X-Gm-Gg: Acq92OFifBO/sEXHgFefY5G7OQnlId38lnk/jb6yzrNciezXTL/iTNvRyagT95KU/aR
-	+uZUPeEoGP65aoWQGQn18isJie0/yoGsOpBISLGrWO/Ja5t2Mgy6zk4g6Bg0oqrpuw9aKoJ87tZ
-	IyfFc+v9EQuFWfshqFC3OiLd/yYUvNdnksb0o+cy7BXzBqd5ZWBXNXJI2cEki/UwXsBCJZ/qznQ
-	W5VYmwrD7L0zl/mNaMVCwW258MwKP3+rCeZ3SKy+N7VZPjz8enPb4yTWEJIPPDUJ8Txob/ivQj0
-	0m28nfz+a6IUUj3rEBfmiHMRtRzUqEWrInnr4kzZKk3zxGmkgVYA43uw7ei96f4BjK74KQ6prmZ
-	LQLrGkhS4Bh346i8jj2ZbrE2tNyEmPQPZDbD1jxs9dg3+QHIB9D6KN0uKAyMzcbyp+/QQYQY2b/
-	J4KiC362L2Ru6L6K45WVsxhzwk6x3jBsNZLw==
-X-Received: by 2002:a05:600c:6992:b0:490:5000:917 with SMTP id 5b1f17b1804b1-49050000ae6mr310718185e9.1.1779882203368;
-        Wed, 27 May 2026 04:43:23 -0700 (PDT)
+        bh=0nGT9Jp4pthasA5g2F4sYzBBA0JTzuDlDIySeJkpXWw=;
+        b=I5O5cYb/qLRenwuH5BIUi+vFsDRoont0OZ3xnlpxTAUOIAVhbCXQ2lcdzKfcYWYnlU
+         l3TEXYDYKNg1WSy90ac3wfKH1GO85dGeYZP8QkQEVgBdd9qCqtBbkRdfyrVNfe6MJZ+2
+         5fbAzygbunzlwNRL04Tgx0Bm2ns02mCyxRkQ9qUbApUT8q4a9ClGw9aUNNiEL4dWB75A
+         MB5s5g9fJ0BoJVaCLJTACu/skoYeavrOdT2OJ1mBaBIL/KVnGgz14izd3EHCsw63RHDD
+         6bKkwkDnV8prW1DJrQ0dBebj4Z33l9Sd0dNOdq/dVJLmqSGnU70cE/byc5QwFReXMN7y
+         lRbw==
+X-Forwarded-Encrypted: i=1; AFNElJ/iCxcmyVefivtfUdR40gSfQMF+HuXzClIgItfDyfSBsYOUFWpFUlQkboJv/8CU4JNerII=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxR8LWu74qZoXTo/BZHwW4yO0G+NTj1V3SCTa+tXlgI/LQZnMiX
+	L7dfjLew6zdBOupK2BNgxXZx9UhDrPeQyMMA9XJEG7iJr9hMawZW7KOF+TZiRSZkcDY=
+X-Gm-Gg: Acq92OFZlLCS1iujA1ucrsTFKAFQD1piORMnqCJBzvwgQcQhJAgwl71KD+krxeINk5+
+	wa1uW+RUrvy1A5JggQ15A7w0kV+YQRCqeQlyxKnd3Sd9pVqgA8tFn64Og0sF8UhZb9LtuVI4GYp
+	x4amRAo08/QZoOq0ZkgpkOz8Kl5vVyx35NAThaA2wD9zUbNlAekNHLKLwE1WwGEbgUkVArQuBCU
+	pqm45BsinC0kcDEqdds0EJcO/TMxl+t+Gofa5K+TWfD6Cmvhab62nwy393vuMImRCa1B2qmdj83
+	BqS3a73NeEHdm1ymX3FvMcPWVIOfbZEwRHbPWWEW+DOojVIHaIBQefDcTlo/6JKGhD+tfTbY777
+	YKhsPjGlayNd4rWe43kTOeUqef6w6cIl/jshbiE3EJ1tgps76i7gNfbLHUgP/uSGP9AgUKBVD/1
+	dNJScrSqCRppJ55EebFjHFI2E=
+X-Received: by 2002:a05:600c:45d2:b0:490:6237:521d with SMTP id 5b1f17b1804b1-490623753admr219397755e9.13.1779882205893;
+        Wed, 27 May 2026 04:43:25 -0700 (PDT)
 Received: from draig.lan ([185.124.0.195])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-490454c600esm383473175e9.3.2026.05.27.04.43.21
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-49045620c05sm389935035e9.14.2026.05.27.04.43.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 04:43:21 -0700 (PDT)
+        Wed, 27 May 2026 04:43:24 -0700 (PDT)
 Received: from draig.lan (localhost [IPv6:::1])
-	by draig.lan (Postfix) with ESMTP id 24CF75FB96;
+	by draig.lan (Postfix) with ESMTP id 8D7045FFEF;
 	Wed, 27 May 2026 12:43:21 +0100 (BST)
 From: =?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>
 To: qemu-devel@nongnu.org
@@ -72,9 +72,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	qemu-arm@nongnu.org,
 	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Richard Henderson <richard.henderson@linaro.org>
-Subject: [PATCH v6 3/8] target/arm: redefine event stream fields
-Date: Wed, 27 May 2026 12:43:15 +0100
-Message-ID: <20260527114320.1581552-4-alex.bennee@linaro.org>
+Subject: [PATCH v6 7/8] target/arm: handle the WFE trap case
+Date: Wed, 27 May 2026 12:43:19 +0100
+Message-ID: <20260527114320.1581552-8-alex.bennee@linaro.org>
 X-Mailer: git-send-email 2.47.3
 In-Reply-To: <20260527114320.1581552-1-alex.bennee@linaro.org>
 References: <20260527114320.1581552-1-alex.bennee@linaro.org>
@@ -87,80 +87,101 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-The event stream control bits are the same for both CNTHCTL and
-CNTKCTL so rather than duplicating the definitions rename them to be
-useful in both cases.
-
-We will need these in a later commit when we start implementing event
-streams.
+Now WFE can actually suspend on A-profile we also need to handle when
+its trapped. To do this we need to pass the instruction size so we can
+deal with the is_16bit syndrome encoding.
 
 Reviewed-by: Richard Henderson <richard.henderson@linaro.org>
 Signed-off-by: Alex Bennée <alex.bennee@linaro.org>
----
- target/arm/internals.h | 11 +++++++----
- target/arm/helper.c    |  8 ++++----
- 2 files changed, 11 insertions(+), 8 deletions(-)
 
-diff --git a/target/arm/internals.h b/target/arm/internals.h
-index 7deaf1ab6de..0c22781919b 100644
---- a/target/arm/internals.h
-+++ b/target/arm/internals.h
-@@ -269,14 +269,17 @@ FIELD(VSTCR, SA, 30, 1)
-  * have different bit definitions, and EL1PCTEN might be
-  * bit 0 or bit 10. We use _E2H1 and _E2H0 suffixes to
-  * disambiguate if necessary.
-+ *
-+ * The event stream bits (EVN*) are in the same position for
-+ * CNTKCTL_EL1/CTNKCTL.
-  */
- FIELD(CNTHCTL, EL0PCTEN_E2H1, 0, 1)
- FIELD(CNTHCTL, EL0VCTEN_E2H1, 1, 1)
- FIELD(CNTHCTL, EL1PCTEN_E2H0, 0, 1)
- FIELD(CNTHCTL, EL1PCEN_E2H0, 1, 1)
--FIELD(CNTHCTL, EVNTEN, 2, 1)
--FIELD(CNTHCTL, EVNTDIR, 3, 1)
--FIELD(CNTHCTL, EVNTI, 4, 4)
-+FIELD(CNTxCTL, EVNTEN, 2, 1)
-+FIELD(CNTxCTL, EVNTDIR, 3, 1)
-+FIELD(CNTxCTL, EVNTI, 4, 4)
- FIELD(CNTHCTL, EL0VTEN, 8, 1)
- FIELD(CNTHCTL, EL0PTEN, 9, 1)
- FIELD(CNTHCTL, EL1PCTEN_E2H1, 10, 1)
-@@ -286,7 +289,7 @@ FIELD(CNTHCTL, EL1TVT, 13, 1)
- FIELD(CNTHCTL, EL1TVCT, 14, 1)
- FIELD(CNTHCTL, EL1NVPCT, 15, 1)
- FIELD(CNTHCTL, EL1NVVCT, 16, 1)
--FIELD(CNTHCTL, EVNTIS, 17, 1)
-+FIELD(CNTxCTL, EVNTIS, 17, 1)
- FIELD(CNTHCTL, CNTVMASK, 18, 1)
- FIELD(CNTHCTL, CNTPMASK, 19, 1)
+---
+v6
+  - defer calculating target_el until after the early return
+---
+ target/arm/tcg/helper-defs.h   |  2 +-
+ target/arm/tcg/op_helper.c     | 16 +++++++++++++++-
+ target/arm/tcg/translate-a64.c |  2 +-
+ target/arm/tcg/translate.c     |  2 +-
+ 4 files changed, 18 insertions(+), 4 deletions(-)
+
+diff --git a/target/arm/tcg/helper-defs.h b/target/arm/tcg/helper-defs.h
+index a05f2258f29..ebdf09be38a 100644
+--- a/target/arm/tcg/helper-defs.h
++++ b/target/arm/tcg/helper-defs.h
+@@ -54,7 +54,7 @@ DEF_HELPER_2(exception_swstep, noreturn, env, i32)
+ DEF_HELPER_2(exception_pc_alignment, noreturn, env, vaddr)
+ DEF_HELPER_1(setend, void, env)
+ DEF_HELPER_2(wfi, void, env, i32)
+-DEF_HELPER_1(wfe, void, env)
++DEF_HELPER_2(wfe, void, env, i32)
+ DEF_HELPER_2(wfit, void, env, i32)
+ DEF_HELPER_1(yield, void, env)
+ DEF_HELPER_1(pre_hvc, void, env)
+diff --git a/target/arm/tcg/op_helper.c b/target/arm/tcg/op_helper.c
+index b803c9bf162..060b155d559 100644
+--- a/target/arm/tcg/op_helper.c
++++ b/target/arm/tcg/op_helper.c
+@@ -574,7 +574,7 @@ static int64_t gt_calc_next_event_stream(CPUARMState *env)
+ }
+ #endif
  
-diff --git a/target/arm/helper.c b/target/arm/helper.c
-index 8240f1b3848..3b06bd80a01 100644
---- a/target/arm/helper.c
-+++ b/target/arm/helper.c
-@@ -1766,9 +1766,9 @@ static void gt_cnthctl_write(CPUARMState *env, const ARMCPRegInfo *ri,
-     uint32_t valid_mask =
-         R_CNTHCTL_EL0PCTEN_E2H1_MASK |
-         R_CNTHCTL_EL0VCTEN_E2H1_MASK |
--        R_CNTHCTL_EVNTEN_MASK |
--        R_CNTHCTL_EVNTDIR_MASK |
--        R_CNTHCTL_EVNTI_MASK |
-+        R_CNTxCTL_EVNTEN_MASK |
-+        R_CNTxCTL_EVNTDIR_MASK |
-+        R_CNTxCTL_EVNTI_MASK |
-         R_CNTHCTL_EL0VTEN_MASK |
-         R_CNTHCTL_EL0PTEN_MASK |
-         R_CNTHCTL_EL1PCTEN_E2H1_MASK |
-@@ -1783,7 +1783,7 @@ static void gt_cnthctl_write(CPUARMState *env, const ARMCPRegInfo *ri,
-             R_CNTHCTL_EL1TVCT_MASK |
-             R_CNTHCTL_EL1NVPCT_MASK |
-             R_CNTHCTL_EL1NVVCT_MASK |
--            R_CNTHCTL_EVNTIS_MASK;
-+            R_CNTxCTL_EVNTIS_MASK;
+-void HELPER(wfe)(CPUARMState *env)
++void HELPER(wfe)(CPUARMState *env, uint32_t insn_len)
+ {
+ #ifdef CONFIG_USER_ONLY
+     /*
+@@ -592,11 +592,25 @@ void HELPER(wfe)(CPUARMState *env)
+      */
+     CPUState *cs = env_cpu(env);
+     ARMCPU *cpu = env_archcpu(env);
++    uint32_t excp;
++    int target_el;
+ 
+     if (qatomic_xchg(&env->event_register, false)) {
+         return;
      }
-     if (cpu_isar_feature(aa64_ecv, cpu)) {
-         valid_mask |= R_CNTHCTL_ECV_MASK;
+ 
++    /* We might sleep, so now we check to see if we should trap */
++    target_el = check_wfx_trap(env, true, &excp);
++    if (target_el) {
++        if (env->aarch64) {
++            env->pc -= insn_len;
++        } else {
++            env->regs[15] -= insn_len;
++        }
++        raise_exception(env, excp, syn_wfx(1, 0xe, 0, false, WFE, insn_len == 2),
++                        target_el);
++    }
++
+     /*
+      * If the CPU has entered the exclusive region we could sleep
+      * until the global monitor moves from Exclusive to Open Access.
+diff --git a/target/arm/tcg/translate-a64.c b/target/arm/tcg/translate-a64.c
+index ee584e9a793..92db4e69b64 100644
+--- a/target/arm/tcg/translate-a64.c
++++ b/target/arm/tcg/translate-a64.c
+@@ -10935,7 +10935,7 @@ static void aarch64_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
+          */
+         case DISAS_WFE:
+             gen_a64_update_pc(dc, 4);
+-            gen_helper_wfe(tcg_env);
++            gen_helper_wfe(tcg_env, tcg_constant_i32(4));
+             tcg_gen_exit_tb(NULL, 0);
+             break;
+         case DISAS_WFI:
+diff --git a/target/arm/tcg/translate.c b/target/arm/tcg/translate.c
+index c10cc382d15..1f554f6c271 100644
+--- a/target/arm/tcg/translate.c
++++ b/target/arm/tcg/translate.c
+@@ -6836,7 +6836,7 @@ static void arm_tr_tb_stop(DisasContextBase *dcbase, CPUState *cpu)
+             tcg_gen_exit_tb(NULL, 0);
+             break;
+         case DISAS_WFE:
+-            gen_helper_wfe(tcg_env);
++            gen_helper_wfe(tcg_env, tcg_constant_i32(curr_insn_len(dc)));
+             /*
+              * The helper can return if the event register is set, so we
+              * must go back to the main loop to check for events.
 -- 
 2.47.3
 
