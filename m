@@ -1,201 +1,206 @@
-Received: from mail-dl1-f42.google.com (mail-dl1-f42.google.com [74.125.82.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7245731E850
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 23:31:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779924705; cv=pass; b=JLaSUrE+CkL3CSkWB3drrS3aUXtCwXYVYzV9W+QUyvRBUtVUScDj4oN7CkrIy4YqzeCTfoDbQviI7FJHOYak6dj+h9LaTC6iY4EEDL6hG/6nTXzYVZBLh3v/zsaPPmO1iRmb/98eQWkPUv6XCUq6lBIyfZJKvPLrcukUfUXX3Hg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779924705; c=relaxed/simple;
-	bh=FY5kRXN4HxQf8uvWx/WNrgDa70/IQkpHxs2C5AfvEZA=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iqWlHszWQTj/mkIPPNl416yk8nZmNJgX+gledh0m4r0ALQdHjxV9mICsZtt7C/5lLqIMIPSDf3YPmiS/CLO7X46G7YaWdAqPY5rDUUE022O2EFcWC1GQ58E7cvekeHER1q5zON2Kxz4rAVp0WJIFWvZ36nrXgoVV6ienyPvqR9Y=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KcfT8xG0; arc=pass smtp.client-ip=74.125.82.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F6A2330337;
+	Wed, 27 May 2026 23:47:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779925640; cv=none; b=GiSUyw9imqcLakFqhwnDsGYm2shgBIn6bCPN2WKoPs2mb7h1EPjDFuHp4D8ltXHG/yHr50YXICpV3dS2WyQyTo2/8et7d1kTztWFHa0v1v3FjGEh184Gu28uo9gfs+qvtxqY/saa+4QA8zUKh6VSpSSfTL+YNFZHKZTILfdS+eM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779925640; c=relaxed/simple;
+	bh=nwCMNKVZeR868aL7gSVcNWCpcSNuQ6idRav/hCqkUb0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=q9IryAb+9Ib4CZHLqWK6Y2T0yZ991faaSzjXJ0Dud2xjkAO5m7fvOIn2f9YH2FsmirhU2XjKeRYGBul+eREfiGYv4RyTFZkCUfNWp3q/l8QpxpNUGG7IDaWoRBUjXvxyh7JdvleIn97kCR3XPN+ViSFh8EWjSjaRX+LEiFiMWIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NkziNZGa; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KcfT8xG0"
-Received: by mail-dl1-f42.google.com with SMTP id a92af1059eb24-1334825de43so10857501c88.0
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 16:31:44 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779924704; cv=none;
-        d=google.com; s=arc-20240605;
-        b=YWF7Cj8YHZqtg4LisZP8o6Oa6S1c5f8GHzceKP49J141Hu8A5nvovvW1Ty5UismCIL
-         TxhXTnMWT4EYo0xAskX3pbPXVNna1PbSkPl64QfAlXEr+0rqy3WcZsB8Lg+cXdqJqQox
-         5u/q/bfwCAUSjtdlZhqT9YnONBHevQB8oL49Dcu7sKxASCADGvLgcq4918le95Izn54e
-         3WuLBNcNV7xmoh/c8JG/FBHYa4DZNbilG7uJBrqF5C131I2KT6BA3CXokMdqoVUTQ2tm
-         5ZHDsFS8+0FufKiHKfUH7RzfAXQMwqfWWYnqWgfiHwyR8j/nlW6mtMelH9Tj+qrWbgeN
-         LfKg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:dkim-signature;
-        bh=Obtu6u3O3o/o4dgX8LFuxYSOq09LDgKPPUPR2GIgz6M=;
-        fh=KVy4+j+TE0qJlGnL1oxDtQvAs+ZlkPteDJwxhHS2piY=;
-        b=KphiJc2BVkEqb0Ks8fLaoveYwWVSxJ8m21u+lfH/2UeDSbV3zAOeuoAfzQOd5wzeNB
-         0Lb3jsQq8NDT9ZXYM6pEH/h73iFQqKiZnP57svLF8TtEC5vqhOHOq6X/A1HyCfw5flMz
-         Uzc5b3qNeQk11eLhkgBJbRlNCDrPQlqQzSMKk9anvh5tBVh/JZUphfW+itJO+Lv1iGdF
-         iXg4eoBrEFW3SaleW0wFQMFGR3NkMAjmibCH9b2ClOqmVjNgLTsjHeVTwmZvxZ2d6SMH
-         jEnOcNx3MWFhCQ8IYL3GG+gf/zHZ6No1yaHidLYG4aTKr4BHSFvsbsz3Jfrnq1CVZm23
-         sn4A==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779924704; x=1780529504; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Obtu6u3O3o/o4dgX8LFuxYSOq09LDgKPPUPR2GIgz6M=;
-        b=KcfT8xG0Npxjt3pj6p8A9699Q7rplgme6gios85yfh6+s8qBtXILxoEVGgWWPS2bvo
-         yQCZJU4LUc3OKdA7ELvza707f57LsKFp/o65N8QnSLcA8l09zrhC+lAqvk50/NMLk0sq
-         9hm/DSkzWodoISGcbrMG1BKmHYUWONdk4U+kJgLpUKv8DTMHO6VJHBfd8NTMJr9EgfEp
-         b7+HdWH3eaLWYtRUTVbG6KMnTPQCr8WcNwz07yS2WRKJGGLuav4i8rUrVDlPFAT5ZfXd
-         L0k6h5slc9FMAwMdXAJ+Fuiq61YfGj/5/8Tcd7vWM+YvMQSs7dGfNLFk+6PouXC7DEO7
-         nM2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779924704; x=1780529504;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Obtu6u3O3o/o4dgX8LFuxYSOq09LDgKPPUPR2GIgz6M=;
-        b=RgbqTL73Ygo86a/XSovkB+kkMi5fYeVdjAWf8SUE4u/QE/nOP6JjipNTKu5SEsoSRk
-         nvtN5k8G1n/Y4S9xXwDZqtdxQgMgzk8+a5O6vDOAL2JzjqVzjHERr31msopYrgoWiEfH
-         O5GOyjFNgxPMhN6vCP+Xe+/JMd+WYHAU88YxmtFNb5WltgBt+SVQRgLxaGY09/8zx2sY
-         PkAU6a5icY1tzhjQ0vrlWfuP6iVZ4iu1pKRattAh2F5gRs1KEvp4H/D14+OSD1fR5t4d
-         f8ECOLOBzwS+I7UBFjQIdxLxb3pozSiRnmv9f7unjqwaFSlWkpKMOoHFV8wmA2+7EpM3
-         txXQ==
-X-Gm-Message-State: AOJu0YweMBq07jO4WjUErKCxKZNvogglqv4wWpb1yDMxFgxTqAWrVoM4
-	cMobx+Y9dUW2B0+Q04F9sRQBjre9FZc+1lrvKlmWPb05dTCiDexCMXPQAmHp9Cj7M+LJDmUPLfI
-	lV3uCYc6A8jP83lBYFX6nTLHVXlgDDXks5Ro05I8NX4hyXHIkzBd27lZ0umw=
-X-Gm-Gg: Acq92OEvKgzjw74RL2oFEILqy7OwuUT9xALgHubvGm6kUtwZV9FDiWkS352spJr9i8y
-	eoIPx+h8AuLudjXJDnjKkE9AkY6XmF4p7dyyfFa+mYgAPDIUb3VwKkucjoyJkKcEvEp/4DLqN1J
-	AJwInCXDrW7qS/B4Ln77qag7WqhfijgKxJRr4gRfCc/vjboBeR+fimxBM7C34YVLzMCRnaBGGTF
-	ZRXqt/1XpxbKpt39o02eV8XMWVGbBsiAhzpUcIck35g7mvZJBBl388Pxxo51B9ZpBafgMHzv1Hd
-	E7N2Cp4X1iJgSHeXpgSFkwkqc1sF/JR3k8syxNMtRzl1tdec2aVl3FoHio/MHuZdL9v0noPYeIO
-	8h+c=
-X-Received: by 2002:a05:701b:2612:b0:130:73ed:208 with SMTP id
- a92af1059eb24-1365f5f3689mr4745492c88.9.1779924702943; Wed, 27 May 2026
- 16:31:42 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 27 May 2026 16:31:42 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 27 May 2026 16:31:42 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260523005532.4D0DE1F000E9@smtp.kernel.org>
-References: <20260522-gmem-inplace-conversion-v7-20-2f0fae496530@google.com> <20260523005532.4D0DE1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NkziNZGa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 288231F000E9;
+	Wed, 27 May 2026 23:47:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779925638;
+	bh=lnfmKchHrBbtPtoBQu/oo/EL2ocExeDcRfCFNAlwDzY=;
+	h=From:To:Cc:Subject:Date;
+	b=NkziNZGamDIg4NYVDjfJAEqSuUnYDWSAzXiduM7CCfNViO3NJznWtzKEZR5/8SXqc
+	 9fZxCo0guLBkIalLx9cqGZKmWinsWrftLNttw7eKLHDm5bgx+bxu1pJvWpMTv3KOuq
+	 q3ImG53uQ4+jeBEYGO5O4Wc4NCcS0uzERPQjtI+igBMGpIrvS/isG1FlRs1ULUgJsb
+	 FO7Nr/5joh7fjH6+X4U7MJ0kiOqGNPg5lGeypzP89DCus5Ovy+zkMK8NpfKm+qp8Ug
+	 udIdUM+RGiPZxmH9pqa/ybBF/6oLN/LeZ68/a4HauOgiG87P8sQhSzltl1/uPffyAH
+	 p/U/Im5ua1Oag==
+From: Yosry Ahmed <yosry@kernel.org>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	Jim Mattson <jmattson@google.com>,
+	Dapeng Mi <dapeng1.mi@linux.intel.com>,
+	Sandipan Das <sandipan.das@amd.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Ingo Molnar <mingo@redhat.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yosry Ahmed <yosry@kernel.org>
+Subject: [PATCH v7 00/17] KVM: x86/pmu: Add support for AMD Host-Only/Guest-Only bits
+Date: Wed, 27 May 2026 23:46:54 +0000
+Message-ID: <20260527234711.4175166-1-yosry@kernel.org>
+X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Wed, 27 May 2026 16:31:42 -0700
-X-Gm-Features: AVHnY4IbNlZ1RTod9euztnDIZ2uULN1-OWvv6seFfFHUYB_hs4gByAgHjLh9_vw
-Message-ID: <CAEvNRgH_=OYjJzk9__7nXWvxJS9wZYwy_T+jD9KOYocP_s21Ug@mail.gmail.com>
-Subject: Re: [PATCH v7 20/42] KVM: SEV: Make 'uaddr' parameter optional for KVM_SEV_SNP_LAUNCH_UPDATE
-To: sashiko-reviews@lists.linux.dev, 
-	Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Cc: kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-sashiko-bot@kernel.org writes:
+v7 of Jim and myself's series adding support for AMD's Host-Only and
+Guest-Only performance counter eventsel bits in KVM's mediated PMU
+passthrough implementation. The series keeps growing in size over
+versions. This is Sean's fault (as usual), as he keeps finding subtle
+problems and making excellent suggestions.
 
-> Thank you for your contribution! Sashiko AI review found 2 potential issu=
-e(s) to consider:
->
-> Pre-existing issues:
-> - [Critical] Missing FOLL_WRITE pin allows unprivileged users to overwrit=
-e arbitrary read-only memory globally (Dirty COW style vulnerability) in th=
-e CPUID error path.
-> - [High] Strict LIFO ordering violation when unmapping local pages via ku=
-nmap_local() in sev_gmem_post_populate().
-> --
->
-> commit feb1b4a1de59f0eb64cbf36005ae06dfcdb9b8de
-> Author: Michael Roth <michael.roth@amd.com>
->
-> KVM: SEV: Make 'uaddr' parameter optional for KVM_SEV_SNP_LAUNCH_UPDATE
->
-> This commit updates KVM_SEV_SNP_LAUNCH_UPDATE to make the uaddr parameter
-> optional when vm_memory_attributes=3D0, allowing guest memory to be
-> initialized directly from userspace. It enforces non-NULL for
-> vm_memory_attributes=3D1 cases and updates the relevant documentation.
->
->> diff --git a/arch/x86/kvm/svm/sev.c b/arch/x86/kvm/svm/sev.c
->> index 940b97d4a8523..107c6ee60472c 100644
->> --- a/arch/x86/kvm/svm/sev.c
->> +++ b/arch/x86/kvm/svm/sev.c
->> @@ -2390,7 +2398,7 @@ static int sev_gmem_post_populate(struct kvm *kvm,=
- gfn_t gfn, kvm_pfn_t pfn,
->>  	 */
->>  	if (ret && !snp_page_reclaim(kvm, pfn) &&
->>  	    sev_populate_args->type =3D=3D KVM_SEV_SNP_PAGE_TYPE_CPUID &&
->> -	    sev_populate_args->fw_error =3D=3D SEV_RET_INVALID_PARAM) {
->> +	    sev_populate_args->fw_error =3D=3D SEV_RET_INVALID_PARAM && src_pa=
-ge) {
->>  		void *src_vaddr =3D kmap_local_page(src_page);
->>  		void *dst_vaddr =3D kmap_local_pfn(pfn);
->
-> [Severity: Critical]
-> This is a pre-existing issue, but does this write to the source page allo=
-w
-> unprivileged users to overwrite arbitrary read-only memory globally?
->
-> kvm_gmem_populate() calls get_user_pages_fast(uaddr, 1, 0, &src_page) wit=
-h
-> gup_flags =3D 0, which explicitly does not request FOLL_WRITE.  This mean=
-s an
-> attacker can pin read-only mapped memory, such as the system global zero
-> page or a read-only shared file like /etc/passwd.
->
-> If the SEV firmware rejects a CPUID page (SEV_RET_INVALID_PARAM), KVM wil=
-l
-> attempt to write the expected CPUID values back to the user-provided page=
-:
->
-> 	void *src_vaddr =3D kmap_local_page(src_page);
-> 	void *dst_vaddr =3D kmap_local_pfn(pfn);
->
-> 	memcpy(src_vaddr, dst_vaddr, PAGE_SIZE);
->
-> Because kmap_local_page() creates a direct or fixmap mapping, it is
-> inherently writable and bypasses user-level read-only permissions.  Could
-> this allow an unprivileged attacker to map a read-only file, pass it as
-> uaddr, intentionally trigger a CPUID validation error, and cause KVM to
-> overwrite the physical page globally?
->
+These bits allow an nSVM-enabled guest to configure performance counters
+that count only during L1 execution (Host-Only) or only during L2 execution
+(Guest-Only).
 
-Fixed in https://lore.kernel.org/all/20260522-fix-sev-gmem-post-populate-v2=
--1-3f196bfad5a1@google.com/
+KVM updates the hardware event selector ENABLE bit at nested transitions
+and EFER.SVME changes such that counters only count in the appropriate
+mode.
 
-> [Severity: High]
-> This is a pre-existing issue, but is the unmapping order here violating t=
-he
-> strict LIFO requirement for local page mappings?
->
-> The kmap_local_page() and kmap_local_pfn() mappings are created in this
-> order:
->
-> 	void *src_vaddr =3D kmap_local_page(src_page);
-> 	void *dst_vaddr =3D kmap_local_pfn(pfn);
->
-> But they are unmapped in the same order:
->
-> 	kunmap_local(src_vaddr);
-> 	kunmap_local(dst_vaddr);
->
-> Unmapping the older mapping (src_vaddr) first causes kmap_local_idx_pop()
-> to incorrectly decrement the kmap stack pointer.  This leaves the newer
-> mapping active but marks its index as free, which could allow an interrup=
-t
-> handler to overwrite the active PTE.  Could this also trigger a
-> WARN_ON_ONCE in debug builds and crash the kernel if panic_on_warn is
-> enabled?
->
+The series grew significantly after v4, as it now includes semi-related
+nSVM fixups and selftests cleanups needed for the series. I think parts
+of this series can land independently (patches 1-8 and patches 14-16),
+but then the remaining series would depend on both.
 
-Fixed in https://lore.kernel.org/all/20260522-fix-sev-gmem-post-populate-v2=
--4-3f196bfad5a1@google.com/
+v6 -> v7:
+- Instead of creating __kvm_skip_emulated_instruction(), call
+  svm_skip_emulated_instruction() directly when emulating VMRUN [Sean].
+- Split bailing early on failed VMRUN into two patches, one for the
+  actual fix (patch 2) and one for the code cleanup (patch 3).
+- Add a Fixes tag for patch 3.
+- Indentation fixes and changelog updates.
 
-> --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260522-gmem-inp=
-lace-conversion-v7-0-2f0fae496530@google.com?part=3D20
+v5 -> v6:
+- Use a per-counter PMU callback that is called from
+  pmc_is_locally_enabled(), rather than a single callback for all
+  counters from kvm_pmu_handle_event(). This is mainly to address the
+  problem Sashiko found where kvm_pmu_recalc_pmc_emulation() does not
+  capture counter disablement due to Host-Only/Guest-Only bits [Sean].
+- Move the bitmap tracking counters using Host-Only/Guest-Only bits from
+  SVM code to the generic PMU code (and in its own patch), as it's now a
+  generic optimization for pmc_is_locally_enabled() that is reused by SVM
+  code on nested transitions [Sean].
+
+v4 -> v5:
+- Dropped moving leave_guest_mode() and enter_guest_mode() definitions,
+  since the calls to update the vPMU no longer happen within these
+  functions.
+- Add PMU helpers refactoring to facilitate SVM usage.
+- Added nested SVM fixups to count VMRUN correctly in guest mode when
+  Host-Only/Guest-Only support is enabled [Jim/Sean].
+- Update the vPMU synchronously on nested VM-Enter/VM-Exit and EFER.SVME
+  changes, such that counter enablement is reevaluated before the
+  instructions are counted, as the vPMU counts based on the vCPU state
+  at instruction retirement (e.g. using new EFER value when EFER.SVME
+  changes) [Jim/Sean].
+- Keep deferring vPMU updates using KVM_REQ_PMU in the
+  svm_leave_nested() path to avoid KVM potentially consuming stale
+  state [Sean].
+- Use a single PMU callback for reprogramming counters instead of a
+  per-counter callback [Sean].
+- Move the bitmap tracking counters into SVM code. The generic vPMU code
+  now only exposes an API to reprogram counters, and an SVM wrapper uses
+  it on nested transitions [Sean].
+- Drop the manual stack-alignment fixes in the vPMU selftest, instead
+  rework L2 stack setup in all nested selftests to reuse the allocation
+  and alignment logic used by L1, and completely drop L1-provided stacks
+  for L2 [Sean].
+
+v6: https://lore.kernel.org/kvm/20260506015733.1671124-1-yosry@kernel.org/
+v5: https://lore.kernel.org/kvm/20260430202750.3924147-1-yosry@kernel.org/
+v4: https://lore.kernel.org/kvm/20260326031150.3774017-1-yosry@kernel.org/
+
+
+Jim Mattson (2):
+  KVM: x86/pmu: Allow Host-Only/Guest-Only bits with nSVM and mediated
+    PMU
+  KVM: selftests: Add svm_pmu_host_guest_test for Host-Only/Guest-Only
+    bits
+
+Yosry Ahmed (15):
+  KVM: nSVM: Stop leaking single-stepping on VMRUN into L2
+  KVM: nSVM: Bail early out of VMRUN emulation if advancing RIP fails
+  KVM: nSVM: Unify RIP and PMU handling calls when emulating VMRUN
+  KVM: nSVM: Move VMRUN instruction retirement after entering guest mode
+  KVM: x86: Move enable_pmu/enable_mediated_pmu to pmu.h and pmu.c
+  KVM: x86/pmu: Rename reprogram_counters() to clarify usage
+  KVM: x86/pmu: Do a single atomic OR when reprogramming counters
+  KVM: x86/pmu: Check mediated PMU counter enablement before event
+    filters
+  KVM: x86/pmu: Add support for KVM_X86_PMU_OP_OPTIONAL_RET0
+  KVM: x86/pmu: Disable counters based on Host-Only/Guest-Only bits in
+    SVM
+  KVM: x86/pmu: Track mediated PMU counters with mode-specific enables
+  KVM: x86/pmu: Reprogram Host/Guest-Only counters on nested transitions
+  KVM: selftests: Refactor allocating guest stack into a helper
+  KVM: selftests: Allocate a dedicated guest page for x86 L2 guest stack
+  KVM: selftests: Drop L1-provided stacks for L2 guests on x86
+
+ arch/x86/include/asm/kvm-x86-pmu-ops.h        |   5 +-
+ arch/x86/include/asm/kvm_host.h               |   3 +-
+ arch/x86/include/asm/perf_event.h             |   2 +
+ arch/x86/kvm/pmu.c                            |  21 +-
+ arch/x86/kvm/pmu.h                            |  44 +++-
+ arch/x86/kvm/svm/nested.c                     |  43 +++-
+ arch/x86/kvm/svm/pmu.c                        |  42 ++++
+ arch/x86/kvm/svm/svm.c                        |   3 +-
+ arch/x86/kvm/svm/svm.h                        |  24 ++
+ arch/x86/kvm/vmx/pmu_intel.c                  |   2 +-
+ arch/x86/kvm/x86.c                            |   9 -
+ arch/x86/kvm/x86.h                            |   3 -
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ tools/testing/selftests/kvm/include/x86/pmu.h |   6 +
+ .../selftests/kvm/include/x86/processor.h     |   2 +
+ .../selftests/kvm/include/x86/svm_util.h      |   5 +-
+ tools/testing/selftests/kvm/include/x86/vmx.h |   4 +-
+ .../testing/selftests/kvm/lib/x86/memstress.c |  19 +-
+ .../testing/selftests/kvm/lib/x86/processor.c |  45 ++--
+ tools/testing/selftests/kvm/lib/x86/svm.c     |   6 +-
+ tools/testing/selftests/kvm/lib/x86/vmx.c     |   6 +-
+ .../selftests/kvm/x86/aperfmperf_test.c       |   9 +-
+ .../kvm/x86/evmcs_smm_controls_test.c         |   5 +-
+ .../testing/selftests/kvm/x86/hyperv_evmcs.c  |   6 +-
+ .../selftests/kvm/x86/hyperv_svm_test.c       |   6 +-
+ .../selftests/kvm/x86/kvm_buslock_test.c      |   9 +-
+ .../selftests/kvm/x86/nested_close_kvm_test.c |  12 +-
+ .../selftests/kvm/x86/nested_dirty_log_test.c |   8 +-
+ .../selftests/kvm/x86/nested_emulation_test.c |   4 +-
+ .../kvm/x86/nested_exceptions_test.c          |   9 +-
+ .../kvm/x86/nested_invalid_cr3_test.c         |  10 +-
+ .../selftests/kvm/x86/nested_tdp_fault_test.c |   9 +-
+ .../kvm/x86/nested_tsc_adjust_test.c          |  10 +-
+ .../kvm/x86/nested_tsc_scaling_test.c         |  10 +-
+ .../kvm/x86/nested_vmsave_vmload_test.c       |   6 +-
+ tools/testing/selftests/kvm/x86/smm_test.c    |   8 +-
+ tools/testing/selftests/kvm/x86/state_test.c  |  11 +-
+ .../selftests/kvm/x86/svm_int_ctl_test.c      |   5 +-
+ .../selftests/kvm/x86/svm_lbr_nested_state.c  |   6 +-
+ .../kvm/x86/svm_nested_clear_efer_svme.c      |   7 +-
+ .../kvm/x86/svm_nested_shutdown_test.c        |   5 +-
+ .../kvm/x86/svm_nested_soft_inject_test.c     |   6 +-
+ .../selftests/kvm/x86/svm_nested_vmcb12_gpa.c |  13 +-
+ .../kvm/x86/svm_pmu_host_guest_test.c         | 216 ++++++++++++++++++
+ .../selftests/kvm/x86/svm_vmcall_test.c       |   5 +-
+ .../kvm/x86/triple_fault_event_test.c         |   9 +-
+ .../selftests/kvm/x86/vmx_apic_access_test.c  |   5 +-
+ .../kvm/x86/vmx_apicv_updates_test.c          |   4 +-
+ .../kvm/x86/vmx_invalid_nested_guest_state.c  |   6 +-
+ .../kvm/x86/vmx_nested_la57_state_test.c      |   5 +-
+ .../kvm/x86/vmx_preemption_timer_test.c       |   5 +-
+ 51 files changed, 479 insertions(+), 245 deletions(-)
+ create mode 100644 tools/testing/selftests/kvm/x86/svm_pmu_host_guest_test.c
+
+
+base-commit: 9f2a49c511cb05b85745e1578e4fd425bff87f58
+-- 
+2.54.0.794.g4f17f83d09-goog
+
