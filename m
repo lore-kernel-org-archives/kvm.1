@@ -1,143 +1,114 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10FCA382F05
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 17:11:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FFF544CAE6
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 17:11:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779901872; cv=none; b=kZp5PFHkT4GVMaSNPyZjbX4ZNkFcCrZhAvui65D8xLb/FerC/eepAI+pWa+HFsOz+HRSDEmB274zeSL4u1Us584x54fOWUtfDOqoPZUM3xVAjzaNAGrbFvnpV2YsFspeOAytnYvOGBINmk2OpR92yYFURmhnbOOm2jTH3u7+J70=
+	t=1779901877; cv=none; b=ejcvyS4DRo+UkZ0LYB6igebO54wG5hA5AFhSCHeQ201ncI0OR5Omt81PdsxWMM0SZRNOzbX+bufOifhTk6kHNNOiVMntI3ZicX0wjlnGLeRainF2MvRG0gQGx4PyHIITGFZh0xtaM4TH+e8NAkTSPx9pO36rfupw2idZ44eo52U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779901872; c=relaxed/simple;
-	bh=Y9H0GY6k4T9clxSJ4yaRMplKa33pAMEcbXdMFf6KU6g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ffNrXvWFBZoyRjJ+izYuL75qPe43OtCq2w8ULFAW5DwJLXe/jYQoiaHYEZfZG3R81yVMIUUm5ubKH5ojDNVAimtfqXZDtrejDxnoKNn+X5eziNoUHQIUzj7veiFjtAegco/LB4fR5iqErSmLSVhV9hAajCbMejv6eHGdlx75oxY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J9u/2OdO; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=cEU/hSam; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1779901877; c=relaxed/simple;
+	bh=5dhYnTz29zgsmBRPPybd5CWIS+uX9bZsxkT+ovNyCbw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OQWfaHQUoFJewwq6JOzL3CLIOWCGUhDLg1QG4mESjj+wykgsDOC2tlEAyodj8zdjsmMa53ojqWDOm5q0xH89LniTi8FHi+EdL+uOekTca+FU72rLHb6dQ41odtxwX7e6UeDL8NjxNCa/XaPBJ3ioQ4k6+EFy8WtBddipX7/1Ew4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=psOXRPVE; arc=none smtp.client-ip=209.85.214.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J9u/2OdO";
-	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="cEU/hSam"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1779901865;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=1yn5UxI8QEgnLkFElBqvhz3nwZebD8rthNLyz5wiHFs=;
-	b=J9u/2OdOer2R8kZkA/AqIS+Ez6NtIObPNeHiX++y7qYAEUhIqjNoaGMAc6ChrpYa1ARe2Y
-	JPwYSHTPL2BX30J8gXdzWDTGak0sZNNODZ3auUhe3VrQXK0ieZz6fXohozyLcJsCHt3kv0
-	9n4lolugreuAxD9E/4vYQkeqWsAlkYY=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-127-wODC3cYfMqm4onkwI5_rrA-1; Wed, 27 May 2026 13:10:53 -0400
-X-MC-Unique: wODC3cYfMqm4onkwI5_rrA-1
-X-Mimecast-MFC-AGG-ID: wODC3cYfMqm4onkwI5_rrA_1779901851
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-48fe6894f3fso73187095e9.2
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 10:10:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="psOXRPVE"
+Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-2ba180a022dso365ad.1
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 10:11:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=redhat.com; s=google; t=1779901851; x=1780506651; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=1yn5UxI8QEgnLkFElBqvhz3nwZebD8rthNLyz5wiHFs=;
-        b=cEU/hSam9VUD2VtmoNRQcDnEQgkJFC5q5GsCkutgzOaIkpHMqK07PAl+3oldB2fV9D
-         rOOb5UeYM01Di7kvN7DD5+6NYxO2VFygXSVNPKiUVvo29BFvYOf6hOY/K/648ZBLx/5i
-         B+JqYiE4ipVBogl/VWZFKYAw3nbpSiGIMopmGyxwdBvpUadXiM7UyoJMWvX1uuMIPkAG
-         MDuu9asx3uYkkeNjQNnG3u1zwrss2EhZrhawPMhbVy3XhoUsfY5WKrnB2JbnKsN3Oibw
-         +ydcxpRsk5gWO0bwvNcsM98HQz6f2fJsvK72Vrbb46DEsLgBBMuJDkuCMlVD2ANj3JwL
-         xk9w==
+        d=google.com; s=20251104; t=1779901876; x=1780506676; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=vvAhvfUYiK9fAI1qqXG1UgLn6BZJB8NhaqamtOZNNLY=;
+        b=psOXRPVEppGh9alOZQ3lctmfbl8QmOGUHYva1K3WlZOko/2PjFcgUk3yrnCTPRQFeW
+         JpO96BJPHkj+UW0zvnsffqXZhRaw/N/hg5bAiwy9exeXu8v1OifCQk5Ypl/xTj424gut
+         YCbK3G4Jxvkh6iDcZUQvcpftmM27ccOR+S4TbgLoFHDEuboakxaIK1fHmkusxzeGHHz3
+         qvsicdymSYhy3aU822S3HFiERQ5UMElbbfk30f4zklK1tP0lyOxunhLvSxxX/5J1tWVT
+         PFqs8usXwzNqKFZv3BamQ7NWbQTCABrW1w/nUKjJSYpHrEp6jj435ZQaK1miv2YtL8Ys
+         G7Lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779901851; x=1780506651;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1yn5UxI8QEgnLkFElBqvhz3nwZebD8rthNLyz5wiHFs=;
-        b=Hx12pBgwHyfUeeyuZk1dLmeYTPnJWTieHhEzMJsTvywsWtlJJts36WG1U88+K/8OHW
-         m21AXQP2wwOoy9pUL458YmWaZ+KdStKSQ2kN8FKaVtWZ3IbaRaK6VT2yLSa36mYh5DHv
-         fzQjG0HTt8j9aEmT1fnnjTieBJaoUipNBKC7s5hrJ9CzeRUG1db7Gqq2s6izia7f1Z6M
-         di7iGCW0ZOp+0F1Nr640vG7TBlEYgEflG3DnqndaTD1ApDkjyA9hD/6X6X682wYDTL9J
-         Wh8KlSE1j1QNNcees88jfgvZLARxa/nLtNgQy8SnijaTQ+CNzEmqWWv8NqlHP2PUPULF
-         hKrw==
-X-Forwarded-Encrypted: i=1; AFNElJ9Ml2nVqN6x7A5hABs9hX9/NWV3tidmU1q2EjDptQT5e60NFBpXf/WwBx/miuF2X/ehnIU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFahTzXUAM9fw+axk5a/v+vKZxrQ4ftR9CppOKY7MI/9YqmcRX
-	jd2NyYmd8zUQpyHiHp3IO800GiRkeCbheLkuKLzEYfz5trmtc6RGsbO8/wC/BDv2gyGSOnDS5Fn
-	uiYbAoxt6oRE0DehBKgCDJGit77ehKalXYGToGoVxuCvEIQ+XY2Svxg==
-X-Gm-Gg: Acq92OHK2CCwcy1k5CE0bePQd8GuR5uj3LRuZGzpbAtMQcUInh3wIzwRlMum2iruosU
-	PaCxtBiLPK6c5B50efNTqPmHxraL72SSic+ydO55cqbEN1Tzqcwb/i/o7jO1Y9cpY1wIMtzNYYA
-	UpMqxbm7qV/8Ae96kYTZmT/iKevNv+bnY3T8QbMSxIMJAyji+5HLlZ7X0Ncux32rSsFBFFP2vGZ
-	KD6ypYFk5+UzWJsONC3sGFwYx7xK8Uy2Dx8bcFolBHntBtcl9HVDr5AM3krNxi7QuyTs9Tv7XJP
-	W+dFuwK1VFTAv4Bx84Rgg8B9+HjcO9PUgKQ57ywEOwm5tLz8HeW+D3jgNllpwiOPy/g6T0EtNq+
-	tFJsnEOkAmtjEL0c0zpxRvy+5YifReaKMS24NzgvAYOCMedsvEcj9FhsiRg==
-X-Received: by 2002:a05:600c:35c8:b0:48f:f7cc:f703 with SMTP id 5b1f17b1804b1-490428e2d58mr447180095e9.30.1779901851350;
-        Wed, 27 May 2026 10:10:51 -0700 (PDT)
-X-Received: by 2002:a05:600c:35c8:b0:48f:f7cc:f703 with SMTP id 5b1f17b1804b1-490428e2d58mr447179465e9.30.1779901850888;
-        Wed, 27 May 2026 10:10:50 -0700 (PDT)
-Received: from stex1 (host-82-53-135-12.retail.telecomitalia.it. [82.53.135.12])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4908097a320sm30225605e9.3.2026.05.27.10.10.47
+        d=1e100.net; s=20251104; t=1779901876; x=1780506676;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vvAhvfUYiK9fAI1qqXG1UgLn6BZJB8NhaqamtOZNNLY=;
+        b=bqMyEC+6dkjNTYPdfBGEJoL6oZICVGsP/T+ExSJlLdUhb9HncjWnX39CbdxhLGOGfq
+         5EYE7gVFRK//oXYAK43Riayv/D6aNd+AlBZC1MDZcpYeYhu5d7ETE5jBSgCndE6scmg4
+         oBTL2uH/Ybqt0IpqI2IBDzKxebxLuYR5rUUOxONLwJJKFV0YTQGdR//nneY7eTYbVRAy
+         HJL25h8APwNUGa8Z0juKxj7XmUsnz5B2AOgAkViSqwthsxJS5qJjiN0KLwuJ9ePKE36v
+         q/rQHVCJy7egPcwMhNmwO2tV0s+PIC3/H1qf/SkA1jBWI+gCWCZO0GtjGynUs7mXNVKr
+         6Vcg==
+X-Forwarded-Encrypted: i=1; AFNElJ+/pWSscfbQVzBwbcEQ5R+8zHmRJui49xcgVJKBdbqcv6DE2I6Q/Bta4q8DbVlwhsrbZfg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwTQ1JfHka4GkYfjoUZkvWRZD9Bcd7Yt2uAb2OaWwkEV6GiHMt
+	7XUnDX+WZ0DWdB+BYBsBNVzw7K35/H+TLw4T3AjC6CMV26lyc+3xNubF29nXqA/kcg==
+X-Gm-Gg: Acq92OFPO+Nr/Cfy1TG9f/eRxf0mCsUy8elFPihPKedzLnTwmgxT/Knci9BAQH+HA/g
+	Fl1VdxnyYbsM1nBQS9pZEP4/l15jxX2zI8qAx5jNVMx3ls0pa/gT5MVJrmIl/kN/PPYPQOjm5zM
+	E1YLcVUfT3wcBpLu+sxVZ0RyMzjLGBCtUHEqHJpbgd+eUxlhdXuqodk8CvAfb932/qX/Wu1R18J
+	qHMwqy4qA80GXVce+t3reLU+IRAVV7G/JS1odnWjY5JH8fuH6tZx86+9569Pjr5L+ylJpBhzcAu
+	nrJN98PC2GVcOB6QVT1rKVW1k4AIkHUzwvpCmsZ6KwNqpswv3ycE1/Zd9qt5eVWup8BMw5jPc/e
+	B16CpbT4WTYZmtdCaL6p55n7h6IJFLmkXlb60R5eQDJD1s/VYeDbm+ERe+paWDHhMmfk3MxkB3B
+	ZGysxP+sVGmFRCNkjMer8hzVPpR6jmdB6CMDDB/8EkO1brTstgUfsK3G4M2tAWoini2Ved5w==
+X-Received: by 2002:a17:902:cf11:b0:2bd:7bec:f0e6 with SMTP id d9443c01a7336-2bec116b716mr9444575ad.1.1779901875118;
+        Wed, 27 May 2026 10:11:15 -0700 (PDT)
+Received: from google.com (153.46.83.34.bc.googleusercontent.com. [34.83.46.153])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb5900b8bsm155801785ad.76.2026.05.27.10.11.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 27 May 2026 10:10:48 -0700 (PDT)
-From: Stefano Garzarella <sgarzare@redhat.com>
-To: netdev@vger.kernel.org
-Cc: "David S. Miller" <davem@davemloft.net>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	virtualization@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	linux-kernel@vger.kernel.org,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	kvm@vger.kernel.org,
-	Paolo Abeni <pabeni@redhat.com>,
-	Stefano Garzarella <sgarzare@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Simon Horman <horms@kernel.org>,
-	Stefan Hajnoczi <stefanha@redhat.com>,
-	Eric Dumazet <edumazet@google.com>,
-	David Laight <david.laight.linux@gmail.com>
-Subject: [PATCH RESEND net] Revert "vsock/virtio: fix skb overhead overflow on 32-bit builds"
-Date: Wed, 27 May 2026 19:10:46 +0200
-Message-ID: <20260527171046.130211-1-sgarzare@redhat.com>
-X-Mailer: git-send-email 2.54.0
+        Wed, 27 May 2026 10:11:14 -0700 (PDT)
+Date: Wed, 27 May 2026 17:11:10 +0000
+From: Samiullah Khawaja <skhawaja@google.com>
+To: Jason Gunthorpe <jgg@ziepe.ca>
+Cc: David Woodhouse <dwmw2@infradead.org>, 
+	Lu Baolu <baolu.lu@linux.intel.com>, Joerg Roedel <joro@8bytes.org>, Will Deacon <will@kernel.org>, 
+	Robin Murphy <robin.murphy@arm.com>, Kevin Tian <kevin.tian@intel.com>, 
+	Alex Williamson <alex@shazbot.org>, Shuah Khan <shuah@kernel.org>, iommu@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org, Saeed Mahameed <saeedm@nvidia.com>, 
+	Adithya Jayachandran <ajayachandra@nvidia.com>, Parav Pandit <parav@nvidia.com>, 
+	Leon Romanovsky <leonro@nvidia.com>, William Tu <witu@nvidia.com>, 
+	Pratyush Yadav <pratyush@kernel.org>, Pasha Tatashin <pasha.tatashin@soleen.com>, 
+	David Matlack <dmatlack@google.com>, Andrew Morton <akpm@linux-foundation.org>, 
+	Chris Li <chrisl@kernel.org>, Pranjal Shrivastava <praan@google.com>, 
+	Vipin Sharma <vipinsh@google.com>, YiFei Zhu <zhuyifei@google.com>
+Subject: Re: [PATCH v2 06/16] iommupt: Implement preserve/unpreserve/restore
+ callbacks
+Message-ID: <ahclK4Pky0huLpoJ@google.com>
+References: <20260427175633.1978233-1-skhawaja@google.com>
+ <20260427175633.1978233-7-skhawaja@google.com>
+ <20260523133357.GH7702@ziepe.ca>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20260523133357.GH7702@ziepe.ca>
 
-From: Stefano Garzarella <sgarzare@redhat.com>
+On Sat, May 23, 2026 at 10:33:57AM -0300, Jason Gunthorpe wrote:
+>On Mon, Apr 27, 2026 at 05:56:23PM +0000, Samiullah Khawaja wrote:
+>> @@ -266,12 +273,22 @@ struct pt_iommu_cfg {
+>>  	};                              \
+>>  	IOMMU_PROTOTYPES(fmt)
+>>
+>> +#ifdef CONFIG_IOMMU_LIVEUPDATE
+>> +#define IOMMU_PT_LIVEUPDATE_OPS(fmt)			\
+>> +	, .preserve = &pt_iommu_##fmt##_preserve,	\
+>> +	.unpreserve = &pt_iommu_##fmt##_unpreserve,	\
+>> +	.restore = &pt_iommu_##fmt##_restore
+>> +#else
+>> +#define IOMMU_PT_LIVEUPDATE_OPS(fmt)
+>> +#endif
+>
+>Don't do it like this at all, new iommupt unique ops should be routed
+>through struct pt_iommu_ops
+>
+>See how map_range/unmap_range now work
 
-This reverts commit 4157501b9a8f ("vsock/virtio: fix skb overhead
-overflow on 32-bit builds"). The fix was semantically correct (although
-it would have been better to use mul_u32_u32(), as David pointed out),
-but in practice we are estimating the memory used to allocate the SKBs,
-and this will never cause a 32-bit variable to overflow on a 32-bit
-system, since the memory would have run out long before that. On 64-bit,
-SKB_TRUESIZE() already evaluates to size_t, so the multiplication is
-already in 64-bit arithmetic without the cast.
+Ah yes. That also looks much cleaner. I will update this.
+>
+>Jason
 
-Let's revert this to avoid unnecessary 64-bit multiplies on the
-per-packet receive path on 32-bit systems.
-
-Reported-by: David Laight <david.laight.linux@gmail.com>
-Closes: https://lore.kernel.org/netdev/20260523173557.5cc4f4f6@pumpkin
-Suggested-by: "Michael S. Tsirkin" <mst@redhat.com>
-Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
----
- net/vmw_vsock/virtio_transport_common.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/net/vmw_vsock/virtio_transport_common.c b/net/vmw_vsock/virtio_transport_common.c
-index b143290a311d..d4d26fba9e37 100644
---- a/net/vmw_vsock/virtio_transport_common.c
-+++ b/net/vmw_vsock/virtio_transport_common.c
-@@ -417,7 +417,7 @@ static int virtio_transport_send_pkt_info(struct vsock_sock *vsk,
- static bool virtio_transport_inc_rx_pkt(struct virtio_vsock_sock *vvs,
- 					u32 len)
- {
--	u64 skb_overhead = ((u64)skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
-+	u64 skb_overhead = (skb_queue_len(&vvs->rx_queue) + 1) * SKB_TRUESIZE(0);
- 
- 	/* Allow at most buf_alloc * 2 total budget (payload + overhead),
- 	 * similar to how SO_RCVBUF is doubled to reserve space for sk_buff
--- 
-2.54.0
-
+Sami
