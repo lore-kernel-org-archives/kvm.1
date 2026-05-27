@@ -1,102 +1,145 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E2E87262B
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 00:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611291925BC
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 01:21:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779842698; cv=none; b=sKvaqL+u7ycLtHEPzAncXbcAa8PjYBgVN+XO97spWS4boeyPsczG/J+dtEx+OBfI9PCxExmS0ZLwsvehRNPeyynevUDeNFsZmJIf5Jg26P9Ql3ZTl3pUc9UTfKqtwQz7zfl+oXZSR0AfkusCCUiml01bg6dDT+D9CevtmuoZMlY=
+	t=1779844883; cv=none; b=l25wfKqVsCvhRWYWHT5Nw8MqdTEA2MyarLps+KYAGZnVSX1yEPIZynTGrMZ8YebTe99p/zBIAMulZ5r8agBPaMrVd6BR6NKjV6BmA03LX59/DZ5Av9sOU4D1mhmWQHOMAPr2IZBW7lA5LxTnIC+9XNsaZ9ewkXsL5cVkDHn8GOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779842698; c=relaxed/simple;
-	bh=ikJINX9vfacFC9f5WAvIrMP8Zy5Q3upW+J1fhaQdno4=;
+	s=arc-20240116; t=1779844883; c=relaxed/simple;
+	bh=XuG8x528mEL9Ms+NFaoo7Nfs1wlMlhApT/75mYcbIME=;
 	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=VGghw7ku+VCG/NiPcOT8TTyswH0MIssCi/3Ie8N41exB3LiYqenKBFYtqWmijU1vmeKasR7p/xUgy8r9AYPW5AJ+Y5DMS7UGSgD4fxQUi9wyK9DIVy1MHXdmG9rYN9XpvUEg4GCpgsgyKSYXJDIlR408o/Rx6VrHF8nOe6/lK18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PriWcaQu; arc=none smtp.client-ip=100.103.45.18
+	 Message-Id; b=n7p4Eyin6g5jUxd4XZvGe2S+QOPLpAHqP2CPS48ALehtLuFm44KePwvifnn0bJOFKpok1UWBMxFA2vTfo2iuGs7nmUuMyhL2wJxZJ/Dn03LIc/gsAbs6L8G+0oBCM97C4Jjvoo9p9RrQ0pNZXbLdQlYzjITgf/IMRUiCkkN9kPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h8T380g3; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PriWcaQu"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F0B81F000E9;
-	Wed, 27 May 2026 00:44:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h8T380g3"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10AD61F000E9;
+	Wed, 27 May 2026 01:21:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779842697;
-	bh=YEp24+eIWzuTW4iiuyX1hNB9n56LoZLY2+4R5K2Ecns=;
+	s=k20260515; t=1779844881;
+	bh=ad3XMcIbrt5lL2dEi51Yr1hz8v6CXw1f7XwpYIUv3Qk=;
 	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=PriWcaQulJ3NbFAiP23L0tL7ecSQhFCVnBsoQIW9DBrR6/L/uW+LHlpns3qv0dZ+f
-	 XRN76gHtJ7EItqRhXG0KQR5YKQuf+n/4lhDYjPhpNs+7fjLMPNaBKWW1yCNM5qR/eJ
-	 aNpsVboyBPf2cHQRD60Rnq51NJCwLtihU1JSE46hqrEx04l+10WMfCo5kd4BaRX6pz
-	 Y6V3ONbGPD030CwFIyHNtrROJA+0mbedvYWOXHLOUFqSnYVsFqdsC39K3iYoZVt6gB
-	 4gOLK+VHDoZF+/2erU1quHL5CStslY1d7/E3lAHdYopJYKRbyNZsHeb6gW03kP6VAb
-	 HZGKXR84zXpyQ==
+	b=h8T380g3kIKJ2BcfzBEVPeAzXIhfiBeVj21xc/JAX1wnH/VBc/gcE7ui1LHmZkfnU
+	 8m79H+6ghwvpWGDYYkn/nw9KXV60VMSJlmtXkEpEgP9h428YNntjwglOrnd8v7pXNO
+	 PtA43ivzh16p/dJdUdVZKUrNFVjnUclZt+Hxz+qEBhUmxW5hGKxoYkDl0cR0XF58IW
+	 8tNYVWz52uxBaqFoeqhZbMsRliUKAd5EUXMnM64YyGCjwNK6WEcNn+lmtbZpa6u6Rw
+	 MDYBmWK3wMSqBxbOWNLhI5s+6+BtZOatk4PuKA1Bi0nysbNQ40ta9Dzz1GQzniRPV3
+	 eI794DttXY3CA==
 From: sashiko-bot@kernel.org
-Subject: Re: [PATCH] KVM: Delete guest-triggerable (in theory) BUG_ON() in
- ioeventfd datamatch
+Subject: Re: [PATCH v6 42/43] KVM: selftests: Add script to exercise
+ private_mem_conversions_test
 Reply-To: sashiko-reviews@lists.linux.dev
-To: "Sean Christopherson" <seanjc@google.com>
+To: "Ackerley Tng via B4 Relay" <devnull+ackerleytng.google.com@kernel.org>
 Cc: kvm@vger.kernel.org
-In-Reply-To: <20260527002910.3931382-1-seanjc@google.com>
-References: <20260527002910.3931382-1-seanjc@google.com>
+In-Reply-To: <20260507-gmem-inplace-conversion-v6-42-91ab5a8b19a4@google.com>
+References: <20260507-gmem-inplace-conversion-v6-42-91ab5a8b19a4@google.com>
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Date: Wed, 27 May 2026 00:44:56 +0000
-Message-Id: <20260527004457.3F0B81F000E9@smtp.kernel.org>
+Date: Wed, 27 May 2026 01:21:20 +0000
+Message-Id: <20260527012121.10AD61F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 1 potential issue(=
+Thank you for your contribution! Sashiko AI review found 4 potential issue(=
 s) to consider:
-- [High] Removing the `BUG_ON()` alignment guard exposes direct pointer der=
-eferences of potentially unaligned memory, leading to C undefined behavior =
-and potential alignment faults on architectures with strict alignment requi=
-rements.
+- [High] Installation Path Resolution Failure in `private_mem_conversions_t=
+est.sh`
+- [High] Silent failure and brittle logic due to unhandled helper utility e=
+xit status
+- [Medium] Bash syntax error when checking default hugepage size if hugetlb=
+fs is disabled
+- [Medium] Redundant execution of `private_mem_conversions_test` binary
 --
 
-commit 811fc6dc622ae4cbc57a596cae2d0500853c54b9
-Author: Sean Christopherson <seanjc@google.com>
+commit b88f984e8ecc669593e0deefcd4e6e9441fbfa8c
+Author: Ackerley Tng <ackerleytng@google.com>
+Subject: KVM: selftests: Add script to exercise private_mem_conversions_test
 
-KVM: Delete guest-triggerable (in theory) BUG_ON() in ioeventfd datamatch
+This commit adds a wrapper script to simplify running the
+private_mem_conversions_test with various configurations. It automatically
+detects hugepage availability to build a list of source types, running tests
+across single and multiple memslots.
 
-This commit removes a BUG_ON() in the ioeventfd datamatch path that can be
-triggered by a guest performing a page-split store. The patch removes the
-alignment check to prevent the guest from causing a host kernel panic.
-
-> diff --git a/virt/kvm/eventfd.c b/virt/kvm/eventfd.c
-> --- a/virt/kvm/eventfd.c
-> +++ b/virt/kvm/eventfd.c
-> @@ -779,9 +779,6 @@ ioeventfd_in_range(struct _ioeventfd *p, gpa_t addr, =
-int len, const void *val)
->  		return true;
+> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/sel=
+ftests/kvm/Makefile.kvm
+> index 6232881be500a..e5769268936a7 100644
+> --- a/tools/testing/selftests/kvm/Makefile.kvm
+> +++ b/tools/testing/selftests/kvm/Makefile.kvm
+> @@ -54,6 +54,7 @@ LIBKVM_loongarch +=3D lib/loongarch/exception.S
 > =20
->  	/* otherwise, we have to actually compare the data */
-> -
-> -	BUG_ON(!IS_ALIGNED((unsigned long)val, len));
-> -
->  	switch (len) {
->  	case 1:
->  		_val =3D *(u8 *)val;
->  	case 2:
->  		_val =3D *(u16 *)val;
->  	case 4:
->  		_val =3D *(u32 *)val;
->  	case 8:
->  		_val =3D *(u64 *)val;
+>  # Non-compiled test targets
+>  TEST_PROGS_x86 +=3D x86/nx_huge_pages_test.sh
+> +TEST_PROGS_x86 +=3D x86/private_mem_conversions_test.sh
+
+[Severity: Medium]
+Since the script is added to TEST_PROGS_x86 here, the kselftest harness will
+execute it. Will the harness also run the underlying
+private_mem_conversions_test binary directly if it remains in
+TEST_GEN_PROGS_x86?
+
+Should the C test be moved to TEST_GEN_PROGS_EXTENDED_x86 to prevent it from
+being executed twice?
+
+> diff --git a/tools/testing/selftests/kvm/x86/private_mem_conversions_test=
+.sh b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.sh
+> new file mode 100755
+> index 0000000000000..7179a4fcdd498
+> --- /dev/null
+> +++ b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.sh
+> @@ -0,0 +1,128 @@
+[ ... ]
+> +script_dir=3D$(dirname "$(realpath "$0")")
+> +test_executable=3D"${script_dir}/private_mem_conversions_test"
+> +kvm_has_gmem_attributes_tool=3D"${script_dir}/../kvm_has_gmem_attributes"
 
 [Severity: High]
-With the alignment check removed, can val now be an unaligned pointer when
-it reaches these casts?
+Will this path resolution work correctly when tests are executed from an
+installed location (e.g., after make install)?
 
-Because dereferencing an unaligned pointer directly is undefined behavior
-in C, could this lead to alignment faults on architectures with strict
-alignment requirements, given that this is in architecture-independent code?
+When installed, TEST_PROGS and TEST_GEN_PROGS_EXTENDED typically end up in
+the same flat directory. Does looking for the helper tool in script_dir/../
+cause the script to fail immediately with a "utility not found" error in
+that environment?
 
-If a system is configured with CONFIG_UBSAN_ALIGNMENT=3Dy and panic_on_warn,
-wouldn't an unaligned access still allow a guest to trigger a host panic,
-leaving the original issue partially unresolved?
+[ ... ]
+> +kvm_has_gmem_attributes=3D$("$kvm_has_gmem_attributes_tool" | tail -n1)
+> +
+> +if [ "$kvm_has_gmem_attributes" -eq 1 ]; then
 
-Does it make sense to use the get_unaligned() helpers here instead of direct
-casts?
+[Severity: High]
+Does this pipeline hide the exit status of the helper tool since set -o
+pipefail is not used?
+
+If /dev/kvm is missing, the helper tool might output a SKIP message instead
+of a number. Will evaluating the output against 1 trigger a bash syntax
+error (integer expression expected), causing the script to incorrectly fall
+into the else block?
+
+If it falls into the else block, wouldn't it attempt to run all the
+hugepage tests, which will then individually skip and return KSFT_SKIP (4)?
+
+Will the wrapper script misinterpret this return code as a hard failure?
+
+[ ... ]
+> +    default_hugepage_size_kb=3D$(get_default_hugepage_size_in_kb)
+> +    hugepage_default_enabled=3D0
+> +    if [ "$default_hugepage_size_kb" -eq 2048 ]; then
+
+[Severity: Medium]
+What happens here if CONFIG_HUGETLB_PAGE is disabled in the kernel?
+
+In that case, /proc/meminfo won't contain Hugepagesize:, making the result
+from get_default_hugepage_size_in_kb() an empty string. Will evaluating an
+empty string against 2048 trigger a bash syntax error and pollute the test
+output?
+
+Should the variable be validated as a non-empty integer or defaulted to 0
+before the numeric comparison?
 
 --=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260527002910.3931=
-382-1-seanjc@google.com?part=3D1
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260507-gmem-inpla=
+ce-conversion-v6-0-91ab5a8b19a4@google.com?part=3D42
