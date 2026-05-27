@@ -1,89 +1,123 @@
-Received: from canpmsgout02.his.huawei.com (canpmsgout02.his.huawei.com [113.46.200.217])
+Received: from xmbghk7.mail.qq.com (xmbghk7.mail.qq.com [43.163.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1924528B4E2;
-	Wed, 27 May 2026 02:42:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=113.46.200.217
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0228A280A56;
+	Wed, 27 May 2026 02:59:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=43.163.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779849748; cv=none; b=XYlwLhQD8ScSsyzr3LaWD+sD3TMhoA4HCOTCTQ8bHzD1ZMcGCSurhV/5En/X/a9B/5oaeDyH82PjwylnPDfR60o1jSS/UTRgk2QODvRLGhwq7tIhGKvvjoSeGCiZK6od1J2heot3O8WP0kRoUbYgj0D+LaTsj73sQG8Z+Mresvk=
+	t=1779850791; cv=none; b=lUKlvioTnU7u6K9Pi3o1yTxPsF2dTwtSAcGl+CsOPbzPSpe7Z/VA+9uS6yXnWriJMWcPsNZxvCNwgwCTmr+KgJ1H7rOBAiCArvd7I4eiwKVjDmvltTxANmBsGgEVv4DfPiB9ldH37mEt5JivhNS7BSkiiuu4pgZNVV99v42UotY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779849748; c=relaxed/simple;
-	bh=LWLxBWu0oUQRieiXt3Qx1lppTPdmdDzSyoQOZ1xnVnU=;
-	h=From:To:CC:Subject:Date:Message-ID:Content-Type:MIME-Version; b=rZgl7fjjIi0D7fUccOx7/UuhlBVOBcC2ShxIF6NKogAlP8E04ulu9ggrY/XS+L+E4xV6Mdkg71fW7ijPle7xm8xOx1nGmqh+AZuQm0KIeP8A94lDwAMrxiEVfjIaz7Ez4qRokQ2ljb6RpqSofuhdd/SUvWZFBpOUYMvWdLZCdV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com; spf=pass smtp.mailfrom=huawei.com; dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b=N81+mgxL; arc=none smtp.client-ip=113.46.200.217
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=huawei.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huawei.com
+	s=arc-20240116; t=1779850791; c=relaxed/simple;
+	bh=SSXNkDo8qKS9ZsKBs/x8OJE9Le+R3l3Do3zi51Srzsk=;
+	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID:
+	 References:In-Reply-To; b=ezAqS/EaxbVsyrK4ZuY3n1q6g207lJo4TrAvj3XqnTAG+UukDriXQm7LgqCd0PmEx7806RgF6SIX1yymHwfAFb0LXEcgal85VRLYVafSJoC1BiK9yZ03zqJTzQuptq/FRsnZ7E6Td6s4XhC5fD9BjW29HFWWphdO2SltA22YOYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com; spf=pass smtp.mailfrom=qq.com; dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b=ZIdI8PTg; arc=none smtp.client-ip=43.163.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=qq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=qq.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=huawei.com header.i=@huawei.com header.b="N81+mgxL"
-dkim-signature: v=1; a=rsa-sha256; d=huawei.com; s=dkim;
-	c=relaxed/relaxed; q=dns/txt;
-	h=From;
-	bh=LWLxBWu0oUQRieiXt3Qx1lppTPdmdDzSyoQOZ1xnVnU=;
-	b=N81+mgxLPtVXoU54AzsJhQF4Q8GJIAxAhJ0adTotEs6zdN5jLHxMCkN7uqGR9iHjt/UbC5KCl
-	JhasNzuWfnr/gRtj5IfWjPyzBEFTiBgUv1kTQA+A0q6fsHfWJxw1HVxOuMF0S6VP4KYV8VNhk8K
-	w5dnC/mCBdwEx0we81TjCi0=
-Received: from mail.maildlp.com (unknown [172.19.162.140])
-	by canpmsgout02.his.huawei.com (SkyGuard) with ESMTPS id 4gQDGj6V0pzcb43;
-	Wed, 27 May 2026 10:34:37 +0800 (CST)
-Received: from kwepemr100009.china.huawei.com (unknown [7.202.195.37])
-	by mail.maildlp.com (Postfix) with ESMTPS id 1428A2025F;
-	Wed, 27 May 2026 10:42:24 +0800 (CST)
-Received: from kwepemr200017.china.huawei.com (7.202.195.7) by
- kwepemr100009.china.huawei.com (7.202.195.37) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1544.36; Wed, 27 May 2026 10:42:23 +0800
-Received: from kwepemr200017.china.huawei.com ([7.202.195.7]) by
- kwepemr200017.china.huawei.com ([7.202.195.7]) with mapi id 15.02.1544.011;
- Wed, 27 May 2026 10:42:23 +0800
-From: "malin (R)" <malin89@huawei.com>
-To: Jakub Kicinski <kuba@kernel.org>
-CC: Arseniy Krasnov <avkrasnov@salutedevices.com>, tanjingguo
-	<tanjingguo@huawei.com>, "mst@redhat.com" <mst@redhat.com>,
-	"jasowang@redhat.com" <jasowang@redhat.com>, "xuanzhuo@linux.alibaba.com"
-	<xuanzhuo@linux.alibaba.com>, "eperezma@redhat.com" <eperezma@redhat.com>,
-	"stefanha@redhat.com" <stefanha@redhat.com>, "sgarzare@redhat.com"
-	<sgarzare@redhat.com>, "davem@davemloft.net" <davem@davemloft.net>,
-	"edumazet@google.com" <edumazet@google.com>, "pabeni@redhat.com"
-	<pabeni@redhat.com>, "horms@kernel.org" <horms@kernel.org>, Chenzhe
-	<chenzhe@huawei.com>, cenxianlong <cenxianlong@huawei.com>, cuirongzhen
-	<cuirongzhen@huawei.com>, "virtualization@lists.linux.dev"
-	<virtualization@lists.linux.dev>, "kvm@vger.kernel.org"
-	<kvm@vger.kernel.org>, "netdev@vger.kernel.org" <netdev@vger.kernel.org>,
-	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH net] vsock/virtio: bind uarg before filling zerocopy skb
-Thread-Topic: [PATCH net] vsock/virtio: bind uarg before filling zerocopy skb
-Thread-Index: Adztggm6M3GXlP0rSUS4BU76FCpiCg==
-Date: Wed, 27 May 2026 02:42:23 +0000
-Message-ID: <bd2b60d9ee5d4edfae4a7ce58ace71a4@huawei.com>
-Accept-Language: zh-CN, en-US
-Content-Language: zh-CN
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (1024-bit key) header.d=qq.com header.i=@qq.com header.b="ZIdI8PTg"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qq.com; s=s201512;
+	t=1779850784; bh=SSXNkDo8qKS9ZsKBs/x8OJE9Le+R3l3Do3zi51Srzsk=;
+	h=From:To:Cc:Subject:Date:References:In-Reply-To;
+	b=ZIdI8PTgzQI5tJD0majtioKrn9sZSKqj9Yh60Z0QuFZSiDkC+RnJg4Cs/rIH10i4Y
+	 8oK0WJG0f4OnlNml3fgR1hCdpmajA+Zqnyo//H2vkObeuilMjVwa7RNCLfIGmu59Vh
+	 /Ea/+9l65rvNAkqh5xhJn6MNVRe1+ZG8dbU1Cpn0=
+X-QQ-XMRINFO: OD9hHCdaPRBwzNATVdHr0BDzQGAPnDDpUA==
+X-QQ-XMAILINFO: M1JY6XCfJolW0EZj7d8OyA0AIq96JIaBFUoSx4vn3MVfN7VnXReZSQEMKDn7ec
+	 kjrqnhJZtPfRn9WHpLM9LGemgDudr55o/lL8cOkdzc+ArbHlto93o5fvRL3ofRYnjhFZTGSaqJSJM
+	 ppnLxWbFaoLCBr6BzhhGz5VgQm7hvXS3gM6oRwqO7UJxu/61yHEtEHUwLy/TRNRyRCYxhG6DRa9jj
+	 BFFQytKReVIWIf6P35kbdWRcmQu0DYgBZbZTeesEepRVOBakWI0HVu/px5i3JuTkHI5bgtNTZLTB6
+	 qqr8ETOT9/8YR8K3Zu2FRejNJ3fG4/v17o3nfnmTIXtWZBJ0zF8vRrEpyDcOirAH3FsCOzfYcTC/w
+	 FlPq3AWQqhBErteGgb994SRckOI65LZu+t4Z+udIk8Z/RuYFOQDDRmt3m6nhlUFEwmFGKGpZzjLpk
+	 MCPpCX8FmQLHhuLYOmZI2+7wJQNV9UV5LsiZx1VOkdK06u8wWIV7m16XAc+kM7/JJ8HFve7tlhC0d
+	 hdpw7PN8V0C75qePWXuIvB+wlpYLr6Ly5isLr/YuS05YInAMacTzCOyXh9L0GCpSRLT0W5W2vMC5p
+	 hb3NLPck8/ZSOh2OxkBe3I3hWSLx7kcViczKS05Tu52xiE/l7OSNfdsUpqWKLiA0UCuqRKbn8isnP
+	 zGx2DUb0WmrdOYQouYP79nmjHC084LG2i3SJrVftgHIoJefLsWsGw7N9GCmzjF9yFHsn0NVBsvo0X
+	 ij6CQSEDCdUsWezM3hJC+jmvKgHzUfQ/Pb7YgqDWNlO/sOvuYBj77wzjjWnLf95bwThBCpQxRfqCk
+	 eF0lZVFhDuiexv+cRjhNgZKjlUqsCtJxbYNoO32NTcigpwybyUcwC9jefkjyxtrbkSWOV1Oy/TO45
+	 9sLuEEYgBwQMWml7FsB3Z5sc4JYM4Px9oWP4m/lFjgljCc3Gj7WeRHUiTKh5kvqgTenEIGWVv2KgA
+	 LAPQ2FHsR0zDOG7LzVrfMic6VmUeZ7Stihy5EaLm5yxKRYZIsINl+xFv66gnpdpPptAVmeCePWZGS
+	 uGOvsOQccKcDLiNjqr6FKmPOem2Nx+CX3e7PuWEGvY5054cajJO5dimV1SIL0Lkl8gAC2UiE/dG6b
+	 vLB//O1yRSfmbg==
+From: "=?utf-8?B?5b+r5LmQ6LGG6LGG?=" <1356292400@qq.com>
+To: "=?utf-8?B?U2VhbiBDaHJpc3RvcGhlcnNvbg==?=" <seanjc@google.com>, "=?utf-8?B?UGFvbG8gQm9uemluaQ==?=" <pbonzini@redhat.com>
+Cc: "=?utf-8?B?a3Zt?=" <kvm@vger.kernel.org>, "=?utf-8?B?bGludXgta2VybmVs?=" <linux-kernel@vger.kernel.org>
+Subject: =?utf-8?B?5Zue5aSN77yaW1BBVENIIHYyXSBLVk06IFZNWDog?=
+ =?utf-8?B?SGFuZGxlIGJhZCB2YWx1ZXMgb24gcHJveGllZCB3?=
+ =?utf-8?B?cml0ZXMgdG8gTEJSIE1TUnM=?=
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+Date: Wed, 27 May 2026 10:59:43 +0800
+X-Priority: 3
+Message-ID: <tencent_1F666644F5064B2B1BC4A7B0FCFC6B5E320A@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+References: <20260527022617.3973884-1-seanjc@google.com>
+In-Reply-To: <20260527022617.3973884-1-seanjc@google.com>
+X-QQ-mid: xmsezb51-0t1779850783todszxny1
 
-Hello Jakub,
+VGhhbmtzIGZvciBwaWNraW5nIHRoaXMgdXAgYW5kIHJld29ya2luZyB0aGUgY2hhbmdlbG9n
+IQoKCuWOn+Wni+mCruS7tgrlj5Hku7bkurrvvJpTZWFuIENocmlzdG9waGVyc29uIDxzZWFu
+amNAZ29vZ2xlLmNvbT4K5Y+R5Lu25pe26Ze077yaMjAyNuW5tDXmnIgyN+aXpSAxMDoyNgrm
+lLbku7bkurrvvJpTZWFuIENocmlzdG9waGVyc29uIDxzZWFuamNAZ29vZ2xlLmNvbT4sIFBh
+b2xvIEJvbnppbmkgPHBib256aW5pQHJlZGhhdC5jb20+CuaKhOmAge+8mmt2bSA8a3ZtQHZn
+ZXIua2VybmVsLm9yZz4sIGxpbnV4LWtlcm5lbCA8bGludXgta2VybmVsQHZnZXIua2VybmVs
+Lm9yZz4sIFh1YW5xaW5nIFNoaSA8MTM1NjI5MjQwMEBxcS5jb20+CuS4u+mimO+8mltQQVRD
+SCB2Ml0gS1ZNOiBWTVg6IEhhbmRsZSBiYWQgdmFsdWVzIG9uIHByb3hpZWQgd3JpdGVzIHRv
+IExCUiBNU1JzCgoKRnJvbTrCoFh1YW5xaW5nwqBTaGnCoDwxMzU2MjkyNDAwQHFxLmNvbT4K
+ClVzZcKgdGhlwqAic2FmZSLCoFdSTVNSwqBBUEnCoHdoZW7CoHdyaXRpbmfCoExCUnPCoG9u
+wqBiZWhhbGbCoG9mwqB0aGXCoGd1ZXN0wqAob3LCoGhvc3QKdXNlcnNwYWNlKSzCoGFuZMKg
+cHJvcGFnYXRlwqBhbnnCoGVycm9yc8KgYmFja8KgdG/CoHRoZcKgaW5zdGlnYXRvcizCoGFz
+wqB0aGXCoHZhbHVlCmJlaW5nwqB3cml0dGVuwqBpc8KgdW50cnVzdGVkLsKgwqBFLmcuwqBp
+ZsKgdGhlwqBndWVzdMKgKG9ywqBob3N0wqB1c2Vyc3BhY2UpwqBhdHRlbXB0cwp0b8Kgc2V0
+wqByZXNlcnZlZMKgYml0c8KgaW7CoExCUl9TRUxFQ1QswqB0aGVuwqBLVk3CoG5lZWRzwqB0
+b8KgcmV0dXJuwqBhbsKgZXJyb3IswqBhbmQKbm90wqBXQVJOwqBvbsKgdGhlwqBiYWTCoHZh
+bHVlLgoKQ29udGludWXCoHVzaW5nwqB0aGXCoCJ1bnNhZmUiwqB2ZXJzaW9uwqBvZsKgUkRN
+U1IswqBhc8KgaXTCoHNob3VsZMKgYmXCoGltcG9zc2libGXCoHRvCnJlYWNowqB0aGXCoGhl
+bHBlcsKgd2l0aMKgYcKgY29tcGxldGVsecKgYm9ndXPCoE1TUizCoGkuZS7CoFdBUk5pbmfC
+oG9uwqBSRE1TUsKgZmFpbHVyZQppc8KgdmVyecKgZGVzaXJhYmxlLMKgZS5nLsKgdG/CoG1h
+a2XCoEtWTcKgYnVnc8KgbW9yZcKgdmlzaWJsZS4KCsKgwqB1bmNoZWNrZWTCoE1TUsKgYWNj
+ZXNzwqBlcnJvcjrCoFdSTVNSwqB0b8KgMHgxYzjCoCh0cmllZMKgdG/CoHdyaXRlwqAweDAw
+MDAwMDAwMDAwMDQwMDApCsKgwqBDYWxswqBUcmFjZToKwqDCoMKgaW50ZWxfcG11X3NldF9t
+c3IrMHg0ZTAvMHg3ZjDCoFtrdm1faW50ZWxdCsKgwqDCoGt2bV9wbXVfc2V0X21zcisweDE3
+ZS8weDFjMMKgW2t2bV0KwqDCoMKga3ZtX3NldF9tc3JfY29tbW9uKzB4Yzc2LzB4MTQ0MMKg
+W2t2bV0KwqDCoMKgdm14X3NldF9tc3IrMHg1ZTYvMHgxNTcwwqBba3ZtX2ludGVsXQrCoMKg
+wqBrdm1fZW11bGF0ZV93cm1zcisweDU0LzB4MWQwwqBba3ZtXQrCoMKgwqB2bXhfaGFuZGxl
+X2V4aXQrMHg3ZmMvMHg5NzDCoFtrdm1faW50ZWxdCgpGaXhlczrCoDFiNWFjMzIyNmExYcKg
+KCJLVk06wqB2bXgvcG11OsKgUGFzcy10aHJvdWdowqBMQlLCoG1zcnPCoHdoZW7CoHRoZcKg
+Z3Vlc3TCoExCUsKgZXZlbnTCoGlzwqBBQ1RJVkUiKQpDYzrCoHN0YWJsZUB2Z2VyLmtlcm5l
+bC5vcmcKU2lnbmVkLW9mZi1ieTrCoFh1YW5xaW5nwqBTaGnCoDwxMzU2MjkyNDAwQHFxLmNv
+bT4KW3NlYW46wqByZXdvcmvCoGNoYW5nZWxvZyzCoG9ubHnCoG1vZGlmecKgV1JNU1LCoHBh
+dGgswqB0YWfCoGZvcsKgc3RhYmxlQF0KU2lnbmVkLW9mZi1ieTrCoFNlYW7CoENocmlzdG9w
+aGVyc29uwqA8c2VhbmpjQGdvb2dsZS5jb20+Ci0tLQoKdjI6CsKgLcKgUmV3b3JrwqBjaGFu
+Z2Vsb2fCoHRvwqBiZXR0ZXLCoGNhcHR1cmXCoHRoZcKgc2NlbmFyaW8uCsKgLcKgS2VlcMKg
+dXNpbmfCoHRoZcKgInVuc2FmZSLCoHZlcnNpb27CoG9mwqBSRE1TUi4KCnYxOsKgaHR0cHM6
+Ly9sb3JlLmtlcm5lbC5vcmcvYWxsL3RlbmNlbnRfNzQ0Qjg3MTg2Q0E1OUNGRDEwNjk5MjMy
+OUE2NTEwRjdGNjBBQHFxLmNvbQoKwqBhcmNoL3g4Ni9rdm0vdm14L3BtdV9pbnRlbC5jwqB8
+wqA2wqArKysrLS0KwqAxwqBmaWxlwqBjaGFuZ2VkLMKgNMKgaW5zZXJ0aW9ucygrKSzCoDLC
+oGRlbGV0aW9ucygtKQoKZGlmZsKgLS1naXTCoGEvYXJjaC94ODYva3ZtL3ZteC9wbXVfaW50
+ZWwuY8KgYi9hcmNoL3g4Ni9rdm0vdm14L3BtdV9pbnRlbC5jCmluZGV4wqAyN2ViNzZlNmI2
+YTAuLjIyMTM4YzQ4NzIxNsKgMTAwNjQ0Ci0tLcKgYS9hcmNoL3g4Ni9rdm0vdm14L3BtdV9p
+bnRlbC5jCisrK8KgYi9hcmNoL3g4Ni9rdm0vdm14L3BtdV9pbnRlbC5jCkBAwqAtMzA4LDEz
+wqArMzA4LDE1wqBAQMKgc3RhdGljwqBib29swqBpbnRlbF9wbXVfaGFuZGxlX2xicl9tc3Jz
+X2FjY2VzcyhzdHJ1Y3TCoGt2bV92Y3B1wqAqdmNwdSwKwqAgwqAqLwrCoCBsb2NhbF9pcnFf
+ZGlzYWJsZSgpOwrCoCBpZsKgKGxicl9kZXNjLT5ldmVudC0+c3RhdGXCoD09wqBQRVJGX0VW
+RU5UX1NUQVRFX0FDVElWRSnCoHsKKyBpbnTCoGVycsKgPcKgMDsKKwrCoCBpZsKgKHJlYWQp
+CsKgIHJkbXNycShpbmRleCzCoG1zcl9pbmZvLT5kYXRhKTsKwqAgZWxzZQotIHdybXNycShp
+bmRleCzCoG1zcl9pbmZvLT5kYXRhKTsKKyBlcnLCoD3CoHdybXNycV9zYWZlKGluZGV4LMKg
+bXNyX2luZm8tPmRhdGEpOwrCoCBfX3NldF9iaXQoSU5URUxfUE1DX0lEWF9GSVhFRF9WTEJS
+LMKgdmNwdV90b19wbXUodmNwdSktPnBtY19pbl91c2UpOwrCoCBsb2NhbF9pcnFfZW5hYmxl
+KCk7Ci0gcmV0dXJuwqB0cnVlOworIHJldHVybsKgIWVycjsKwqAgfQrCoCBjbGVhcl9iaXQo
+SU5URUxfUE1DX0lEWF9GSVhFRF9WTEJSLMKgdmNwdV90b19wbXUodmNwdSktPnBtY19pbl91
+c2UpOwrCoCBsb2NhbF9pcnFfZW5hYmxlKCk7CgpiYXNlLWNvbW1pdDrCoDlmMmE0OWM1MTFj
+YjA1Yjg1NzQ1ZTE1NzhlNGZkNDI1YmZmODdmNTgKLS3CoAoyLjU0LjAuODIzLmc2ZTViY2Mx
+ZmM5LWdvb2cKCgo=
 
-> The email headers are duplicated on this patch.
-> This appears to confuse git am into thinking the patch is empty:
->=20
-> $ git am mbox
-> Patch is empty.
->=20
-> Please fix this and repost (please add the review tags you already
-> received in the repost)
-
-My bad. I have sent the right post with git command.
-https://lore.kernel.org/netdev/20260527023301.1075581-1-malin89@huawei.com/=
-T/#u
-
-Please let me know if there is any other problem.
-
-Thanks
-Lin
