@@ -1,153 +1,135 @@
-Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBA01A6819
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 01:24:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B340277C81
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 01:29:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779845073; cv=none; b=D6wYx88FMZQOltvbXAqXVCzXqvR6cLf1cSJL4KZVPrLYCQuaJI0TtkbqIfkPnQuQGRIOpnAfaZ/egw01Lf4Ym8fDIYvDhIH0O4r5f+9D10/hoyDYoq9WSInDKMteZdW3cCKy1WYxoRWbwZhCNbJ7+4V6CFSnlOLs6Ds6AtrA0b8=
+	t=1779845380; cv=none; b=IJe4MAmHjv/MBDXuEphsrzQAcGvBVa8uEQ/r9pieKvEwOlhzf0cvbFaXZ99Tux4xwa7ye1kdWF04IFp1zhg1TOTlKvPspyiHjfnlbv7h9/AdD1L9fP7aKQU3PhuZmvUAVUFdT2AYlvnML9s7HX/wOJe4m133MoSXY2zXmtHqfy8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779845073; c=relaxed/simple;
-	bh=Yz8iskg8XrvH8zht98Z9Xue2l61E2u+0pLn94aBTjCs=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Fpxfr5jYSmkkWjIXYxuOh1XlPpuQErq2NGSiSH+SB0myom1kvfsXUi/OSKqlF7BXCZ/rhYxdiq2dsqC7QF0iQ/U8SciXA0psjgrnPvs8PDDViTGJRzyXe3QQ4zWfsI4KDfRx07q9eZotJ4lQghxs712nFYzOhH1PJ3P1WskB1xk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dILOrnGH; arc=none smtp.client-ip=209.85.215.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
+	s=arc-20240116; t=1779845380; c=relaxed/simple;
+	bh=MZPGz6ctLe0VVMPEGo2AyWnFmsCo0H+g2n86WeNge/g=;
+	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
+	 Message-Id; b=BnegGSoJX4Oc+wHQ0ntXCdJaISDTjRIokwxSxO7u3k2WF99YIySF2fzBOzm7QnupYFuxLGSXH4e20cuh5wfgb36iPsntVcgqGqoM/9+W4QPwT9xU/3CEFiQyYrVljMYcurNmkUYE3XdGmTokuGoE6/DJGB2vGJnyknsBrJbPHCg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eK6e4qYS; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dILOrnGH"
-Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c8531d89e59so2364302a12.0
-        for <kvm@vger.kernel.org>; Tue, 26 May 2026 18:24:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779845071; x=1780449871; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=JFIl8jD03qcpfdb58Bma0Y2iIu1xFf/+T8XEkiPDXfI=;
-        b=dILOrnGHaTBD5BN2ASIlreuR7dy+n/NI1Wj+S3HHbw+N4OoXXXQpfkmFUM777x6xfH
-         JvjLacmDRlFx/Lq8IwBwbSAEsqOX2lzN48lW4q0hyuy+SXwlJe1KwgN+QIHPN/MfR5Q1
-         V7AmRoCWXdHebrWgWo5CR1sb1ybLPgHrNgPU9cQevdz259PwstE2W6yfFBqNDxB0uibA
-         hecyeC9yThzB3Zqlm3kTwGLmmPiRhTy8JyVBwKZp/7xPo27wjY4IzrH2TVukDCnbO6CX
-         lYlooko33nSRxHshwzXxRMVU+sqJe/EGTlbHrwFUYgK7bzRMVyjw1sINNksgJluuXzMw
-         /6bQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779845071; x=1780449871;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=JFIl8jD03qcpfdb58Bma0Y2iIu1xFf/+T8XEkiPDXfI=;
-        b=bEYYZYqoqO4s/rdDcSTR4J1HzByrVz4a8U3ixLgj8rQyFu+FRRAJMpU0N/rORg2fwa
-         OIUzhhmHQ7SKvfEjL87nPiU7QAUKpDwGWgTXOQAd8ODP4UgTyOCkc/XOH6hvtLs6Q6/e
-         /owse9BoPy5CaMlNc0iOsX6H0r47cC+ThVtQhsymHCR800l9CLhCNnOCsTpjggjVzrZv
-         aYT0/CD0j9hkamBlCKgJISlT2dpyi44MPV9KQympfJ+zgyu1U4xHLyU/TdOMGuzsS43S
-         bdKWCf5DEjF74+CIaFiB2bfFHxmnA8HIOq/ktFVZI0hj7UgvjHR4Gis1e0wrv2femsyT
-         oVpA==
-X-Gm-Message-State: AOJu0Yyen5QXFUZE2TVTogWacLlK+u24WlIASrtQLxXnJrXAmrez3LOZ
-	kcY5B+LAaaepTOXJRzCk+6BTPoSwWXPsCs+xZE6ZwA3BmZ/VWCZFrxbiclAvOtJatY5ENqBtPKa
-	MOoEeSw==
-X-Received: from pgbbk8.prod.google.com ([2002:a05:6a02:288:b0:c82:cd84:79d])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:1518:b0:3a2:edff:2975
- with SMTP id adf61e73a8af0-3b3297b0e28mr15979655637.25.1779845071015; Tue, 26
- May 2026 18:24:31 -0700 (PDT)
-Date: Tue, 26 May 2026 18:24:30 -0700
-In-Reply-To: <20260527004457.3F0B81F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eK6e4qYS"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 162D71F000E9;
+	Wed, 27 May 2026 01:29:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779845379;
+	bh=DqQogEqxsdfomAAExE9eLBJLlbsC8jzE3gzxEQS+RzE=;
+	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
+	b=eK6e4qYSBBw3tyVAP01KT7qthWV2wtCk1CTILTDJ8jJ5IAnAQWALayh57DmzJKSTw
+	 FHIV7k8ygs9rp6aSuABrEkLaEkSSWK+JNHzsFtOU+cM4+WmtM2OLwDM1lniiG1G5qC
+	 ltXR7wJGDaAqjzhzAjo7miZdg/o4OQdRwqVbhVMgH1vMj+td4819MLJseYQKa8M2mt
+	 qfMtVw5gYHngO/XKlXUWuYsXPkF0Sg3D26cm1dQiHbbacaQkZoCh8mUh8KZm8orY1x
+	 kfS2gCkomZHzGavTtEGsUeVJTxAKWJDhPhZkeoyg+jrTONOQ1K1MyFj4Raea1Z0ey0
+	 wV11anLI7v+NA==
+From: sashiko-bot@kernel.org
+Subject: Re: [PATCH v6 34/43] KVM: selftests: Test that shared/private
+ status is consistent across processes
+Reply-To: sashiko-reviews@lists.linux.dev
+To: "Ackerley Tng via B4 Relay" <devnull+ackerleytng.google.com@kernel.org>
+Cc: kvm@vger.kernel.org
+In-Reply-To: <20260507-gmem-inplace-conversion-v6-34-91ab5a8b19a4@google.com>
+References: <20260507-gmem-inplace-conversion-v6-34-91ab5a8b19a4@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+Date: Wed, 27 May 2026 01:29:38 +0000
+Message-Id: <20260527012939.162D71F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20260527002910.3931382-1-seanjc@google.com> <20260527004457.3F0B81F000E9@smtp.kernel.org>
-Message-ID: <ahZHzqfVJmwV8wzY@google.com>
-Subject: Re: [PATCH] KVM: Delete guest-triggerable (in theory) BUG_ON() in
- ioeventfd datamatch
-From: Sean Christopherson <seanjc@google.com>
-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
 
-On Wed, May 27, 2026, sashiko-bot@kernel.org wrote:
-> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
-> > diff --git a/virt/kvm/eventfd.c b/virt/kvm/eventfd.c
-> > --- a/virt/kvm/eventfd.c
-> > +++ b/virt/kvm/eventfd.c
-> > @@ -779,9 +779,6 @@ ioeventfd_in_range(struct _ioeventfd *p, gpa_t addr, int len, const void *val)
-> >  		return true;
-> >  
-> >  	/* otherwise, we have to actually compare the data */
-> > -
-> > -	BUG_ON(!IS_ALIGNED((unsigned long)val, len));
-> > -
-> >  	switch (len) {
-> >  	case 1:
-> >  		_val = *(u8 *)val;
-> >  	case 2:
-> >  		_val = *(u16 *)val;
-> >  	case 4:
-> >  		_val = *(u32 *)val;
-> >  	case 8:
-> >  		_val = *(u64 *)val;
-> 
-> [Severity: High]
-> With the alignment check removed, can val now be an unaligned pointer when
-> it reaches these casts?
+Thank you for your contribution! Sashiko AI review found 2 potential issue(=
+s) to consider:
+- [Medium] A TOCTOU race condition in the `TEST_STATE_AWAIT` macro causes s=
+purious test failures when the child process successfully exits.
+- [Medium] The forked child process does not detect parent termination and =
+will spin infinitely if the parent process crashes or fails an assertion.
+--
 
-Obviously.
+commit e61a976fed3c062fac98d04a5f2859ab8c1293f6
+Author: Sean Christopherson <seanjc@google.com>
 
-> Because dereferencing an unaligned pointer directly is undefined behavior
-> in C,
+KVM: selftests: Test that shared/private status is consistent across proces=
+ses
 
-Ugh, C99 ruins all the fun.
+This commit adds a test to verify that a guest_memfd's shared/private status
+is consistent across processes, and that shared pages mapped in any process
+are unmapped from all processes upon conversion.
 
-> could this lead to alignment faults on architectures with strict
-> alignment requirements, given that this is in architecture-independent code?
-> 
-> If a system is configured with CONFIG_UBSAN_ALIGNMENT=y and panic_on_warn,
-> wouldn't an unaligned access still allow a guest to trigger a host panic,
-> leaving the original issue partially unresolved?
+> diff --git a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test=
+.c b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+> index 960b2da8dd16d..4c33e21f04972 100644
+> --- a/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+> +++ b/tools/testing/selftests/kvm/x86/guest_memfd_conversions_test.c
+[ ... ]
+> +/* Test that shared/private memory protections work and are seen from an=
+y process. */
+> +GMEM_CONVERSION_TEST_INIT_SHARED(forked_accesses)
+> +{
+[ ... ]
+> +	test_state =3D kvm_mmap(sizeof(*test_state), PROT_READ | PROT_WRITE,
+> +			      MAP_SHARED | MAP_ANONYMOUS, -1);
+> +
+> +#define TEST_STATE_AWAIT(__state)						\
+> +	while (READ_ONCE(*test_state) !=3D __state) {				\
 
-LOL, good luck booting with CONFIG_UBSAN_ALIGNMENT=y and panic_on_warn=1.
+[Severity: Medium]
+Does the child process handle parent termination?
 
-> Does it make sense to use the get_unaligned() helpers here instead of direct
-> casts?
+When the child process calls TEST_STATE_AWAIT(), child_pid is 0, so it skips
+the waitpid() block below and spins in an infinite loop waiting for the sta=
+te
+to change.
 
-That does seem like the easiest solution, as this generates identical code
-before and after, at least on x86.  The other easy fix would be to use memcmp(),
-but I like not actually changing the functionality in any meaningful way.
+If the parent process fails an assertion or crashes, it will exit and leave
+the child spinning at 100% CPU indefinitely until the global kselftest
+timeout triggers.
 
-diff --git virt/kvm/eventfd.c virt/kvm/eventfd.c
-index 0e8b8a2c5b79..93ad2ebc963f 100644
---- virt/kvm/eventfd.c
-+++ virt/kvm/eventfd.c
-@@ -24,6 +24,7 @@
- #include <linux/slab.h>
- #include <linux/seqlock.h>
- #include <linux/irqbypass.h>
-+#include <linux/unaligned.h>
- #include <trace/events/kvm.h>
- 
- #include <kvm/iodev.h>
-@@ -779,21 +780,18 @@ ioeventfd_in_range(struct _ioeventfd *p, gpa_t addr, int len, const void *val)
-                return true;
- 
-        /* otherwise, we have to actually compare the data */
--
--       BUG_ON(!IS_ALIGNED((unsigned long)val, len));
--
-        switch (len) {
-        case 1:
--               _val = *(u8 *)val;
-+               _val = get_unaligned((u8 *)val);
-                break;
-        case 2:
--               _val = *(u16 *)val;
-+               _val = get_unaligned((u16 *)val);
-                break;
-        case 4:
--               _val = *(u32 *)val;
-+               _val = get_unaligned((u32 *)val);
-                break;
-        case 8:
--               _val = *(u64 *)val;
-+               _val = get_unaligned((u64 *)val);
-                break;
-        default:
-                return false;
+Could the child check if the parent is still alive during this loop, or set=
+up
+prctl(PR_SET_PDEATHSIG, SIGKILL) prior to the loop?
+
+> +		if (child_pid !=3D 0) {						\
+> +			int status;						\
+> +			pid_t pid;						\
+> +			do {							\
+> +				pid =3D waitpid(child_pid, &status, WNOHANG);	\
+> +			} while (pid =3D=3D -1 && errno =3D=3D EINTR);			\
+> +			if (pid =3D=3D -1)						\
+> +				TEST_FAIL("Couldn't check child status.");	\
+> +			else if (pid !=3D 0)					\
+> +				TEST_FAIL("Child exited prematurely.");		\
+
+[Severity: Medium]
+Is there a race condition here if the child exits after the parent reads the
+state but before waitpid() executes?
+
+If READ_ONCE(*test_state) !=3D __state evaluates to true, the parent enters=
+ the
+loop. If the child concurrently updates the state to __state and then exits
+cleanly, waitpid() will detect the child's exit.
+
+Because the state isn't re-evaluated before failing, the parent will
+erroneously trigger this premature exit failure.
+
+Could we check READ_ONCE(*test_state) =3D=3D __state again before triggerin=
+g the
+TEST_FAIL() to avoid spurious failures?
+
+> +		}								\
+> +	}
+> +
+> +#define TEST_STATE_SET(__state) WRITE_ONCE(*test_state, __state)
+> +
+> +	child_pid =3D fork();
+> +	TEST_ASSERT(child_pid !=3D -1, "fork failed");
+
+--=20
+Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260507-gmem-inpla=
+ce-conversion-v6-0-91ab5a8b19a4@google.com?part=3D34
