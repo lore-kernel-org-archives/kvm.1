@@ -1,145 +1,153 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f202.google.com (mail-pg1-f202.google.com [209.85.215.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611291925BC
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 01:21:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBA01A6819
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 01:24:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779844883; cv=none; b=l25wfKqVsCvhRWYWHT5Nw8MqdTEA2MyarLps+KYAGZnVSX1yEPIZynTGrMZ8YebTe99p/zBIAMulZ5r8agBPaMrVd6BR6NKjV6BmA03LX59/DZ5Av9sOU4D1mhmWQHOMAPr2IZBW7lA5LxTnIC+9XNsaZ9ewkXsL5cVkDHn8GOA=
+	t=1779845073; cv=none; b=D6wYx88FMZQOltvbXAqXVCzXqvR6cLf1cSJL4KZVPrLYCQuaJI0TtkbqIfkPnQuQGRIOpnAfaZ/egw01Lf4Ym8fDIYvDhIH0O4r5f+9D10/hoyDYoq9WSInDKMteZdW3cCKy1WYxoRWbwZhCNbJ7+4V6CFSnlOLs6Ds6AtrA0b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779844883; c=relaxed/simple;
-	bh=XuG8x528mEL9Ms+NFaoo7Nfs1wlMlhApT/75mYcbIME=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=n7p4Eyin6g5jUxd4XZvGe2S+QOPLpAHqP2CPS48ALehtLuFm44KePwvifnn0bJOFKpok1UWBMxFA2vTfo2iuGs7nmUuMyhL2wJxZJ/Dn03LIc/gsAbs6L8G+0oBCM97C4Jjvoo9p9RrQ0pNZXbLdQlYzjITgf/IMRUiCkkN9kPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h8T380g3; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779845073; c=relaxed/simple;
+	bh=Yz8iskg8XrvH8zht98Z9Xue2l61E2u+0pLn94aBTjCs=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Fpxfr5jYSmkkWjIXYxuOh1XlPpuQErq2NGSiSH+SB0myom1kvfsXUi/OSKqlF7BXCZ/rhYxdiq2dsqC7QF0iQ/U8SciXA0psjgrnPvs8PDDViTGJRzyXe3QQ4zWfsI4KDfRx07q9eZotJ4lQghxs712nFYzOhH1PJ3P1WskB1xk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dILOrnGH; arc=none smtp.client-ip=209.85.215.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h8T380g3"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10AD61F000E9;
-	Wed, 27 May 2026 01:21:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779844881;
-	bh=ad3XMcIbrt5lL2dEi51Yr1hz8v6CXw1f7XwpYIUv3Qk=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=h8T380g3kIKJ2BcfzBEVPeAzXIhfiBeVj21xc/JAX1wnH/VBc/gcE7ui1LHmZkfnU
-	 8m79H+6ghwvpWGDYYkn/nw9KXV60VMSJlmtXkEpEgP9h428YNntjwglOrnd8v7pXNO
-	 PtA43ivzh16p/dJdUdVZKUrNFVjnUclZt+Hxz+qEBhUmxW5hGKxoYkDl0cR0XF58IW
-	 8tNYVWz52uxBaqFoeqhZbMsRliUKAd5EUXMnM64YyGCjwNK6WEcNn+lmtbZpa6u6Rw
-	 MDYBmWK3wMSqBxbOWNLhI5s+6+BtZOatk4PuKA1Bi0nysbNQ40ta9Dzz1GQzniRPV3
-	 eI794DttXY3CA==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v6 42/43] KVM: selftests: Add script to exercise
- private_mem_conversions_test
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ackerley Tng via B4 Relay" <devnull+ackerleytng.google.com@kernel.org>
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260507-gmem-inplace-conversion-v6-42-91ab5a8b19a4@google.com>
-References: <20260507-gmem-inplace-conversion-v6-42-91ab5a8b19a4@google.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 27 May 2026 01:21:20 +0000
-Message-Id: <20260527012121.10AD61F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dILOrnGH"
+Received: by mail-pg1-f202.google.com with SMTP id 41be03b00d2f7-c8531d89e59so2364302a12.0
+        for <kvm@vger.kernel.org>; Tue, 26 May 2026 18:24:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779845071; x=1780449871; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=JFIl8jD03qcpfdb58Bma0Y2iIu1xFf/+T8XEkiPDXfI=;
+        b=dILOrnGHaTBD5BN2ASIlreuR7dy+n/NI1Wj+S3HHbw+N4OoXXXQpfkmFUM777x6xfH
+         JvjLacmDRlFx/Lq8IwBwbSAEsqOX2lzN48lW4q0hyuy+SXwlJe1KwgN+QIHPN/MfR5Q1
+         V7AmRoCWXdHebrWgWo5CR1sb1ybLPgHrNgPU9cQevdz259PwstE2W6yfFBqNDxB0uibA
+         hecyeC9yThzB3Zqlm3kTwGLmmPiRhTy8JyVBwKZp/7xPo27wjY4IzrH2TVukDCnbO6CX
+         lYlooko33nSRxHshwzXxRMVU+sqJe/EGTlbHrwFUYgK7bzRMVyjw1sINNksgJluuXzMw
+         /6bQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779845071; x=1780449871;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JFIl8jD03qcpfdb58Bma0Y2iIu1xFf/+T8XEkiPDXfI=;
+        b=bEYYZYqoqO4s/rdDcSTR4J1HzByrVz4a8U3ixLgj8rQyFu+FRRAJMpU0N/rORg2fwa
+         OIUzhhmHQ7SKvfEjL87nPiU7QAUKpDwGWgTXOQAd8ODP4UgTyOCkc/XOH6hvtLs6Q6/e
+         /owse9BoPy5CaMlNc0iOsX6H0r47cC+ThVtQhsymHCR800l9CLhCNnOCsTpjggjVzrZv
+         aYT0/CD0j9hkamBlCKgJISlT2dpyi44MPV9KQympfJ+zgyu1U4xHLyU/TdOMGuzsS43S
+         bdKWCf5DEjF74+CIaFiB2bfFHxmnA8HIOq/ktFVZI0hj7UgvjHR4Gis1e0wrv2femsyT
+         oVpA==
+X-Gm-Message-State: AOJu0Yyen5QXFUZE2TVTogWacLlK+u24WlIASrtQLxXnJrXAmrez3LOZ
+	kcY5B+LAaaepTOXJRzCk+6BTPoSwWXPsCs+xZE6ZwA3BmZ/VWCZFrxbiclAvOtJatY5ENqBtPKa
+	MOoEeSw==
+X-Received: from pgbbk8.prod.google.com ([2002:a05:6a02:288:b0:c82:cd84:79d])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a21:1518:b0:3a2:edff:2975
+ with SMTP id adf61e73a8af0-3b3297b0e28mr15979655637.25.1779845071015; Tue, 26
+ May 2026 18:24:31 -0700 (PDT)
+Date: Tue, 26 May 2026 18:24:30 -0700
+In-Reply-To: <20260527004457.3F0B81F000E9@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+Mime-Version: 1.0
+References: <20260527002910.3931382-1-seanjc@google.com> <20260527004457.3F0B81F000E9@smtp.kernel.org>
+Message-ID: <ahZHzqfVJmwV8wzY@google.com>
+Subject: Re: [PATCH] KVM: Delete guest-triggerable (in theory) BUG_ON() in
+ ioeventfd datamatch
+From: Sean Christopherson <seanjc@google.com>
+To: sashiko-reviews@lists.linux.dev
+Cc: kvm@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
-- [High] Installation Path Resolution Failure in `private_mem_conversions_t=
-est.sh`
-- [High] Silent failure and brittle logic due to unhandled helper utility e=
-xit status
-- [Medium] Bash syntax error when checking default hugepage size if hugetlb=
-fs is disabled
-- [Medium] Redundant execution of `private_mem_conversions_test` binary
---
+On Wed, May 27, 2026, sashiko-bot@kernel.org wrote:
+> Thank you for your contribution! Sashiko AI review found 1 potential issue(s) to consider:
+> > diff --git a/virt/kvm/eventfd.c b/virt/kvm/eventfd.c
+> > --- a/virt/kvm/eventfd.c
+> > +++ b/virt/kvm/eventfd.c
+> > @@ -779,9 +779,6 @@ ioeventfd_in_range(struct _ioeventfd *p, gpa_t addr, int len, const void *val)
+> >  		return true;
+> >  
+> >  	/* otherwise, we have to actually compare the data */
+> > -
+> > -	BUG_ON(!IS_ALIGNED((unsigned long)val, len));
+> > -
+> >  	switch (len) {
+> >  	case 1:
+> >  		_val = *(u8 *)val;
+> >  	case 2:
+> >  		_val = *(u16 *)val;
+> >  	case 4:
+> >  		_val = *(u32 *)val;
+> >  	case 8:
+> >  		_val = *(u64 *)val;
+> 
+> [Severity: High]
+> With the alignment check removed, can val now be an unaligned pointer when
+> it reaches these casts?
 
-commit b88f984e8ecc669593e0deefcd4e6e9441fbfa8c
-Author: Ackerley Tng <ackerleytng@google.com>
-Subject: KVM: selftests: Add script to exercise private_mem_conversions_test
+Obviously.
 
-This commit adds a wrapper script to simplify running the
-private_mem_conversions_test with various configurations. It automatically
-detects hugepage availability to build a list of source types, running tests
-across single and multiple memslots.
+> Because dereferencing an unaligned pointer directly is undefined behavior
+> in C,
 
-> diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/sel=
-ftests/kvm/Makefile.kvm
-> index 6232881be500a..e5769268936a7 100644
-> --- a/tools/testing/selftests/kvm/Makefile.kvm
-> +++ b/tools/testing/selftests/kvm/Makefile.kvm
-> @@ -54,6 +54,7 @@ LIBKVM_loongarch +=3D lib/loongarch/exception.S
-> =20
->  # Non-compiled test targets
->  TEST_PROGS_x86 +=3D x86/nx_huge_pages_test.sh
-> +TEST_PROGS_x86 +=3D x86/private_mem_conversions_test.sh
+Ugh, C99 ruins all the fun.
 
-[Severity: Medium]
-Since the script is added to TEST_PROGS_x86 here, the kselftest harness will
-execute it. Will the harness also run the underlying
-private_mem_conversions_test binary directly if it remains in
-TEST_GEN_PROGS_x86?
+> could this lead to alignment faults on architectures with strict
+> alignment requirements, given that this is in architecture-independent code?
+> 
+> If a system is configured with CONFIG_UBSAN_ALIGNMENT=y and panic_on_warn,
+> wouldn't an unaligned access still allow a guest to trigger a host panic,
+> leaving the original issue partially unresolved?
 
-Should the C test be moved to TEST_GEN_PROGS_EXTENDED_x86 to prevent it from
-being executed twice?
+LOL, good luck booting with CONFIG_UBSAN_ALIGNMENT=y and panic_on_warn=1.
 
-> diff --git a/tools/testing/selftests/kvm/x86/private_mem_conversions_test=
-.sh b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.sh
-> new file mode 100755
-> index 0000000000000..7179a4fcdd498
-> --- /dev/null
-> +++ b/tools/testing/selftests/kvm/x86/private_mem_conversions_test.sh
-> @@ -0,0 +1,128 @@
-[ ... ]
-> +script_dir=3D$(dirname "$(realpath "$0")")
-> +test_executable=3D"${script_dir}/private_mem_conversions_test"
-> +kvm_has_gmem_attributes_tool=3D"${script_dir}/../kvm_has_gmem_attributes"
+> Does it make sense to use the get_unaligned() helpers here instead of direct
+> casts?
 
-[Severity: High]
-Will this path resolution work correctly when tests are executed from an
-installed location (e.g., after make install)?
+That does seem like the easiest solution, as this generates identical code
+before and after, at least on x86.  The other easy fix would be to use memcmp(),
+but I like not actually changing the functionality in any meaningful way.
 
-When installed, TEST_PROGS and TEST_GEN_PROGS_EXTENDED typically end up in
-the same flat directory. Does looking for the helper tool in script_dir/../
-cause the script to fail immediately with a "utility not found" error in
-that environment?
-
-[ ... ]
-> +kvm_has_gmem_attributes=3D$("$kvm_has_gmem_attributes_tool" | tail -n1)
-> +
-> +if [ "$kvm_has_gmem_attributes" -eq 1 ]; then
-
-[Severity: High]
-Does this pipeline hide the exit status of the helper tool since set -o
-pipefail is not used?
-
-If /dev/kvm is missing, the helper tool might output a SKIP message instead
-of a number. Will evaluating the output against 1 trigger a bash syntax
-error (integer expression expected), causing the script to incorrectly fall
-into the else block?
-
-If it falls into the else block, wouldn't it attempt to run all the
-hugepage tests, which will then individually skip and return KSFT_SKIP (4)?
-
-Will the wrapper script misinterpret this return code as a hard failure?
-
-[ ... ]
-> +    default_hugepage_size_kb=3D$(get_default_hugepage_size_in_kb)
-> +    hugepage_default_enabled=3D0
-> +    if [ "$default_hugepage_size_kb" -eq 2048 ]; then
-
-[Severity: Medium]
-What happens here if CONFIG_HUGETLB_PAGE is disabled in the kernel?
-
-In that case, /proc/meminfo won't contain Hugepagesize:, making the result
-from get_default_hugepage_size_in_kb() an empty string. Will evaluating an
-empty string against 2048 trigger a bash syntax error and pollute the test
-output?
-
-Should the variable be validated as a non-empty integer or defaulted to 0
-before the numeric comparison?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260507-gmem-inpla=
-ce-conversion-v6-0-91ab5a8b19a4@google.com?part=3D42
+diff --git virt/kvm/eventfd.c virt/kvm/eventfd.c
+index 0e8b8a2c5b79..93ad2ebc963f 100644
+--- virt/kvm/eventfd.c
++++ virt/kvm/eventfd.c
+@@ -24,6 +24,7 @@
+ #include <linux/slab.h>
+ #include <linux/seqlock.h>
+ #include <linux/irqbypass.h>
++#include <linux/unaligned.h>
+ #include <trace/events/kvm.h>
+ 
+ #include <kvm/iodev.h>
+@@ -779,21 +780,18 @@ ioeventfd_in_range(struct _ioeventfd *p, gpa_t addr, int len, const void *val)
+                return true;
+ 
+        /* otherwise, we have to actually compare the data */
+-
+-       BUG_ON(!IS_ALIGNED((unsigned long)val, len));
+-
+        switch (len) {
+        case 1:
+-               _val = *(u8 *)val;
++               _val = get_unaligned((u8 *)val);
+                break;
+        case 2:
+-               _val = *(u16 *)val;
++               _val = get_unaligned((u16 *)val);
+                break;
+        case 4:
+-               _val = *(u32 *)val;
++               _val = get_unaligned((u32 *)val);
+                break;
+        case 8:
+-               _val = *(u64 *)val;
++               _val = get_unaligned((u64 *)val);
+                break;
+        default:
+                return false;
