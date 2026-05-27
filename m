@@ -1,196 +1,126 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1DA03FF8B5
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 12:51:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14CFC3D1CDB
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 12:51:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779886262; cv=none; b=Y/6HCosMlmagzQfDot5AxR/Z9F7UQFIZtoCU7XPKfIB5Dme/eOczKA15G4MsxFdDJo7QYgQ/Ln94bmiRjj243rxY9qSudoxQmgn1Dg3usV9hrQcb3XBw+aSZJnAIIjPfxN7ey54Fs87Nj4x0wqqgCWeKIAGTo1kVwFj1qOjYS6c=
+	t=1779886308; cv=none; b=AavGoW2pNv6hnFdfKmkvJlTthzN86nkbMCB0bVMayVNLrwPO87UE67ZnhHUhTjzRl/D6JMGwQFgI7VyyRKIHVVrmYPoZOd2dQd8npBXTN3OPJSlzAoKywTgFs9fOuktmrAiS9zhyR/IwZT2+9lDvZSZjT///YRFEsQdLimaTLb8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779886262; c=relaxed/simple;
-	bh=837FnyDbpS/a1PEWC/Inqc4NqRHxMIbFt3S85zcWWtQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=umOU9rGWgAOyWMmdqVKIHTpVoJxz63wLR3ha2dzT1TahU/yRZ2z70dcUxGxq/r+bm1yboawRNPZe/Bp2AFbehDwm8fp2MvYx9YCMN4yHfkkAtH/gRsy1MUP07weK8rkRzgBQyeZFE/pDnd3X7PFJqhqKMo8i7hIjihBHyBQPBJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FujwVX6l; arc=none smtp.client-ip=209.85.214.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1779886308; c=relaxed/simple;
+	bh=3YV519fCLQr/dcnqiYK/3hUmKBEJM/JaljBjBD9SBqU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rSZVyIBmHjNUs4Oy8pFMTH+wM5WH4eOztDUaolsun/kWtR7OqxKAjNbevD2Sdn0Uo+ftL6LZLuFFxKgGJhLj5M04Uq0pOXlC15s1O33TwehULZqmOA8I4ObihADEy7IobiBDZz0RFnEHXu3CmxchRSyR9rHe3JtTrjDnZDAiv44=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca; spf=pass smtp.mailfrom=ziepe.ca; dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b=ga8Z/CNj; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ziepe.ca
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ziepe.ca
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FujwVX6l"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-2be1dd4af34so104202895ad.1
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 05:51:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ziepe.ca header.i=@ziepe.ca header.b="ga8Z/CNj"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-50e5dbd8e0eso135383211cf.1
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 05:51:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20251104; t=1779886261; x=1780491061; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H/w1Ny+GkWjJd36xIuiCWajcu8GK6fBsl49miGPD7vg=;
-        b=FujwVX6lvoZq3VWsWSMMOYE8JF7piHSep9OjK5sU4X1CJpM1hG9rMNTrwGTj3Ew9/V
-         1YI0jNc9lZQbXpyTwACdrmn/QyQJzaey8A4lcgk1KrxcNUoU4njV7UnHElU5R87xxcQu
-         Ig1ND6BJiYTeAzV7jCcUsEqdVu+aCDTNQl9PpHWoF7ulBTYmVmYd62fkRWi6LkqhKpwt
-         cWpnUadDNYZAFxdVpfwQlB+MXYdtwrevYAPcAAGnTUxNEfeN3iVS7Tvj6ZBeXOYEe6US
-         QeGf81Ujqh8z35gSZsABTDalbBC7FG9I0LVenM7HXi42pEc7hcGQWCiBCMjzGkoFo4cm
-         NgmA==
+        d=ziepe.ca; s=google; t=1779886306; x=1780491106; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=Q4NRS1K5QNG7yp7e4rqW6uFiLphCUgs0ec2fYNP5HFo=;
+        b=ga8Z/CNj2OS4OZUoQ7hZbQxPmeemYh6Oxdkmcga+jXSdDruZktqy07KkA+8H1hzLF5
+         +WmCfq4cf5StLpEEA3PVZZe/Il626JLXImJFVEKPS7N2Y691LNTKhA9UYEm0DZA6Ww21
+         x7r0wPpze3y+wlOhQMbNtCtTcNHdxer1LutrJNn4NdPeN0xNWj5AZqGYv1yPY0/O7/Qq
+         7o4ex5vz001epBrK4uQEQ5p2XD+fWXgF8ensCN1fOOepngfG0V2qCyUlt3xetrFePNDn
+         Z7xktNI9dSge5kzq/tDArXcDRhe1X0Tif8UdK1JfCga0rLCy9t6xGCS9QvbDfx/bXySE
+         Ac2g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779886261; x=1780491061;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=H/w1Ny+GkWjJd36xIuiCWajcu8GK6fBsl49miGPD7vg=;
-        b=gmLS+LoWLexW+eEKyauSI7aHaWwfMI0vqjIx8gAihNsMtT6BLcq8DRHprQkNQt9LDo
-         BsPj5ZveqbqFioP87EV5R/m3H/6sVBEUaCnzoDsWR1Ntmr+s/MPcHZC3/P+/NusLCiw5
-         YATciJ3bkxZrhKiBDkYHxCt1TVqtS/tSRM5vdnt75Nbtw2F050V1wWrLPcvaoh7XKXwR
-         X7Yu/NabffN+Iud4fCBDM1VHf8/R1p4qUqVkRoxIzE0c7ewMqbUbzqhr0LgULFkTZNsJ
-         iRLlzDDfQWL7oseUzc9j3ntr3UnIBoSedTC7mp10ytdcvHzg6osqORB1mMxHGXlrhvmC
-         2DJA==
-X-Gm-Message-State: AOJu0YyC84/0DOUJRmCbNXatR/8Bid6gblzpbcu/gvnPCkPdJoFK1aRS
-	U+Tu9C/+xBVUzpjIL6wkm6WS2tOXsf1EeJ8rzHLMu9yYvsTXxA6WQOxA0HaEmg==
-X-Gm-Gg: Acq92OGz5Pi3vA/4D+0Cssm1GP5FEHgD+38qd+M9dbRrd6U4d1Jnqq41nKubuSqb+7D
-	Jm6xH//rCv9vimVBi4KM05W5XuFSigCo+aMMbcsPjGRAvt9euIFkTxh5AGaATN/INeLS9w3Qa+h
-	fb+w4onwaIkqwfN6nR0+OyGRlFkBnPX0N16/VpuRrqItDCOP8n8TOQxKyyXDTESztG4w9YM+mx8
-	YXHh8W8mtvZvLT90M43o+M3R0G6q3vtJAJ+ENCdXua6zCFqz427olDgf2sy3ns1+1rXjcMwZt5O
-	qk82fd+OyShbqcL4CQ3qc89wBy5pDdIVxX8eBzuqzVnYWbNdPuS2CW2Z2KIQQbggotUWccSktwc
-	4G2BWcGikN0KDiWWXP3KwFqSMOpJk0Z9C0iSpDk7CogU6a+tABmcrmuthDOoXS/YDuuoKIaat90
-	WIsmYBZlbToe6mHqJrtGMQn98Vl37oifXyRl4lb6g=
-X-Received: by 2002:a17:903:2f4f:b0:2b4:5f69:715d with SMTP id d9443c01a7336-2beb05d9d8emr260493225ad.25.1779886261058;
-        Wed, 27 May 2026 05:51:01 -0700 (PDT)
-Received: from Mac.ibm.com ([49.205.216.49])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb58c69a0sm151851185ad.59.2026.05.27.05.50.56
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Wed, 27 May 2026 05:51:00 -0700 (PDT)
-From: "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-To: kvm@vger.kernel.org
-Cc: linuxppc-dev@lists.ozlabs.org,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Harsh Prateek Bora <harshpb@linux.ibm.com>,
-	Christophe Leroy <chleroy@kernel.org>,
-	Venkat Rao Bagalkote <venkat88@linux.ibm.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Misbah Anjum N <misanjum@linux.ibm.com>,
-	Anushree Mathur <anushree.mathur@linux.ibm.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	linux-kernel@vger.kernel.org,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>
-Subject: [RFC v3 10/10] KVM: PPC: selftests: Replace u64 gpa, u64 gva|vaddr with gpa_t and gva_t
-Date: Wed, 27 May 2026 18:19:59 +0530
-Message-ID: <bfac43765a97ea184a1bc7e7ab51e322b41401a2.1779885589.git.ritesh.list@gmail.com>
-X-Mailer: git-send-email 2.50.1
-In-Reply-To: <cover.1779885589.git.ritesh.list@gmail.com>
-References: <cover.1779885589.git.ritesh.list@gmail.com>
+        d=1e100.net; s=20251104; t=1779886306; x=1780491106;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Q4NRS1K5QNG7yp7e4rqW6uFiLphCUgs0ec2fYNP5HFo=;
+        b=RlROXM468qxXn9U8AdQeav6B7eYYdHJN1YYhzYUNtkWiO9ShblvhobOPojneJ5oj+O
+         OGr3Ygk6xt65cIb/VNdtkLxh2qikrb41K6q09uQ++pdUYxXqYrvhSPO6vwIN+7OzOg9r
+         vLmYRCR674cW9AwnSXk9SntCDMiESF2/otu1RUL8wscfKQrULPnN8lzjiNle1IiijlIP
+         AT+3oMXpGkShsuJtR52RHpxRve/KYOCxrnP7/Dn/VJOghsLxWeAEJzEuFhDwb1oIKxbG
+         540VCecOxNcQR9CItIJeX9ma8A3La702my8Y/OiYOYWCKfSW/bELRXmnUNZoN1jaSe73
+         8vrw==
+X-Forwarded-Encrypted: i=1; AFNElJ/HQ+1+sCFkYqsT+dznUxw1cbfe+zgx3FKzMK/se9Ygqi8E/lfBVhG+eoSoaRVHsf2IyJA=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOAbcP536hYJGqT1IRCanjvcVtpIH94JZN2LI+VxvwHwlKMXqD
+	NGRchxXxis/IiQtCLXo9EKlhs4jU/nKGhNTngvgHVQ+Gep/9w0RUukYjfuSAFPaGnQ4=
+X-Gm-Gg: Acq92OG+J0oGVAaPZMUve/m9BYfkrk2qICtizdLEEKDstYa4KprO5Zqj5sFF4XQStoN
+	Xv5QaCD9tH9TQI/KN93WnKWu0vO+rbtyFOmhgE9L+GQmzf0X81HXSKpcr248LcYWlCyp5Sxxce+
+	SUDHWILdMsJT2aJji8kOZ4YiiT6fcOfOU9AvUdDbcbgAueUkCHR13uIAYW3y4WD+qD4QqQsyohU
+	9F3/n+1/PglnP2nCe2kSo35vNxsat70d0rzx5DiCVArjFIPzsxTrsIKsV99FexrWr20Pw3Zpr59
+	eUmm1xPt65hHOAsCl8RCvKCYJxM+DFermFer7W4BQuZmHZ02yxAp+5Qxic6z3yBIYPrxa9aGkWs
+	BK74NF8LmSzSl+VMAwxCAofSo5cB+iPDLNyLrDXXZ29BBw+8dCb8qoq0VNqK6FZ5/EbOsJXCoyT
+	dxKLoSevaM19BUG5QGRUMUkOmNO7h7qZTFQBFNC0VrovkzusCDOVD81nvLBRUN13LN/yW8EAL0U
+	+599HEHA4S7bKmS
+X-Received: by 2002:a05:622a:1809:b0:517:1481:54a with SMTP id d75a77b69052e-51714810844mr23315551cf.53.1779886301081;
+        Wed, 27 May 2026 05:51:41 -0700 (PDT)
+Received: from ziepe.ca (crbknf0213w-47-54-130-67.pppoe-dynamic.high-speed.nl.bellaliant.net. [47.54.130.67])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-517069f2464sm41772341cf.2.2026.05.27.05.51.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2026 05:51:40 -0700 (PDT)
+Received: from jgg by wakko with local (Exim 4.97)
+	(envelope-from <jgg@ziepe.ca>)
+	id 1wSDjX-0000000EOpm-3BXO;
+	Wed, 27 May 2026 09:51:39 -0300
+Date: Wed, 27 May 2026 09:51:39 -0300
+From: Jason Gunthorpe <jgg@ziepe.ca>
+To: "Dan Williams (nvidia)" <djbw@kernel.org>
+Cc: Alexey Kardashevskiy <aik@amd.com>,
+	"Aneesh Kumar K.V (Arm)" <aneesh.kumar@kernel.org>,
+	linux-coco@lists.linux.dev, iommu@lists.linux.dev,
+	linux-kernel@vger.kernel.org, kvm@vger.kernel.org,
+	Bjorn Helgaas <helgaas@kernel.org>, Joerg Roedel <joro@8bytes.org>,
+	Jonathan Cameron <jic23@kernel.org>,
+	Kevin Tian <kevin.tian@intel.com>,
+	Nicolin Chen <nicolinc@nvidia.com>,
+	Samuel Ortiz <sameo@rivosinc.com>,
+	Steven Price <steven.price@arm.com>,
+	Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+	Will Deacon <will@kernel.org>, Xu Yilun <yilun.xu@linux.intel.com>,
+	Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+	Paolo Bonzini <pbonzini@redhat.com>,
+	Tony Krowiak <akrowiak@linux.ibm.com>,
+	Halil Pasic <pasic@linux.ibm.com>,
+	Jason Herne <jjherne@linux.ibm.com>,
+	Harald Freudenberger <freude@linux.ibm.com>,
+	Holger Dengler <dengler@linux.ibm.com>,
+	Heiko Carstens <hca@linux.ibm.com>,
+	Vasily Gorbik <gor@linux.ibm.com>,
+	Alexander Gordeev <agordeev@linux.ibm.com>,
+	Christian Borntraeger <borntraeger@linux.ibm.com>,
+	Sven Schnelle <svens@linux.ibm.com>,
+	Alex Williamson <alex@shazbot.org>,
+	Matthew Rosato <mjrosato@linux.ibm.com>,
+	Farhan Ali <alifm@linux.ibm.com>,
+	Eric Farman <farman@linux.ibm.com>, linux-s390@vger.kernel.org
+Subject: Re: [PATCH v5 5/5] iommufd/vdevice: add TSM request ioctl
+Message-ID: <20260527125139.GL2487554@ziepe.ca>
+References: <20260525154816.1029642-1-aneesh.kumar@kernel.org>
+ <20260525154816.1029642-6-aneesh.kumar@kernel.org>
+ <becd865d-09a4-4ac3-b719-4a0deae2692a@amd.com>
+ <6a168c8ea7d10_2129b2100e@djbw-dev.notmuch>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <6a168c8ea7d10_2129b2100e@djbw-dev.notmuch>
 
-commit df079910f9814 ("KVM: selftests: Replace "u64 gpa" with "gpa_t" throughout")
-commit 014dfb7b9bf3f ("KVM: selftests: Replace "vaddr" with "gva" throughout")
+On Tue, May 26, 2026 at 11:17:50PM -0700, Dan Williams (nvidia) wrote:
 
-Similar to above 2 commits, this patch makes the relevant changes to
-powerpc kvm selftests code to make use of gpa_t and gva_t types instead
-of u64 throughout the code.
+> In that case pci_tsm_req_scope becomes tsm_req_type and is just:
+> 
+> TSM_REQ_TYPE_CCA
+> TSM_REQ_TYPE_SEV
+> TSM_REQ_TYPE_TDX
+> 
+> I am leaning towards the latter at this point.
 
-No functional change intended.
+Yeah, this sounds good. I would also include an common op field that
+can be decoded by the TSM driver based on the TYPE above, and the
+usual in/out message buffers.
 
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
----
- .../selftests/kvm/include/powerpc/processor.h |  3 ++-
- .../selftests/kvm/lib/powerpc/processor.c     | 20 +++++++++----------
- 2 files changed, 12 insertions(+), 11 deletions(-)
-
-diff --git a/tools/testing/selftests/kvm/include/powerpc/processor.h b/tools/testing/selftests/kvm/include/powerpc/processor.h
-index 95ec3debc83c..f0ee21a8e2d4 100644
---- a/tools/testing/selftests/kvm/include/powerpc/processor.h
-+++ b/tools/testing/selftests/kvm/include/powerpc/processor.h
-@@ -7,6 +7,7 @@
- 
- #include <linux/compiler.h>
- #include "ppc_asm.h"
-+#include "kvm_util_types.h"
- 
- extern unsigned char __interrupts_start[];
- extern unsigned char __interrupts_end[];
-@@ -24,7 +25,7 @@ struct ex_regs {
- 	u64	xer;
- 	u32	cr;
- 	u32	trap;
--	u64	vaddr; /* vaddr of this struct */
-+	gva_t	gva; /* gva of this struct */
- };
- 
- void vm_install_exception_handler(struct kvm_vm *vm, int vector,
-diff --git a/tools/testing/selftests/kvm/lib/powerpc/processor.c b/tools/testing/selftests/kvm/lib/powerpc/processor.c
-index 2c1e95c8aa9c..009a0859ba05 100644
---- a/tools/testing/selftests/kvm/lib/powerpc/processor.c
-+++ b/tools/testing/selftests/kvm/lib/powerpc/processor.c
-@@ -97,17 +97,17 @@ static u64 pt_entry_coverage(struct kvm_vm *vm, int level)
- 	return size;
- }
- 
--static int pt_idx(struct kvm_vm *vm, u64 vaddr, int level, u64 *nls)
-+static int pt_idx(struct kvm_vm *vm, gva_t gva, int level, u64 *nls)
- {
- 	switch (level) {
- 	case 1:
- 		if (nls)
- 			*nls = 0x9;
--		return (vaddr >> 39) & 0x1fff;
-+		return (gva >> 39) & 0x1fff;
- 	case 2:
- 		if (nls)
- 			*nls = 0x9;
--		return (vaddr >> 30) & 0x1ff;
-+		return (gva >> 30) & 0x1ff;
- 	case 3:
- 		if (vm->mode == VM_MODE_P52V52_4K) {
- 			if (nls)
-@@ -116,12 +116,12 @@ static int pt_idx(struct kvm_vm *vm, u64 vaddr, int level, u64 *nls)
- 			if (nls)
- 				*nls = 0x5;
- 		}
--		return (vaddr >> 21) & 0x1ff;
-+		return (gva >> 21) & 0x1ff;
- 	case 4:
- 		if (vm->mode == VM_MODE_P52V52_4K)
--			return (vaddr >> 12) & 0x1ff;
-+			return (gva >> 12) & 0x1ff;
- 		else /* vm->mode == VM_MODE_P52V52_64K */
--			return (vaddr >> 16) & 0x1f;
-+			return (gva >> 16) & 0x1f;
- 	default:
- 		TEST_ASSERT(false, "Invalid page table level %d\n", level);
- 		return 0;
-@@ -129,9 +129,9 @@ static int pt_idx(struct kvm_vm *vm, u64 vaddr, int level, u64 *nls)
- }
- 
- static u64 *virt_get_pte(struct kvm_vm *vm, gpa_t pt,
--			  u64 vaddr, int level, u64 *nls)
-+			  gva_t gva, int level, u64 *nls)
- {
--	int idx = pt_idx(vm, vaddr, level, nls);
-+	int idx = pt_idx(vm, gva, level, nls);
- 	u64 *ptep = addr_gpa2hva(vm, pt + idx * 8);
- 
- 	return ptep;
-@@ -189,7 +189,7 @@ static gpa_t __vm_alloc_pt(struct kvm_vm *vm, u64 pt_shift)
- 	return pt;
- }
- 
--void virt_arch_pg_map(struct kvm_vm *vm, u64 gva, u64 gpa)
-+void virt_arch_pg_map(struct kvm_vm *vm, gva_t gva, gpa_t gpa)
- {
- 	gpa_t pt = vm->mmu.pgd;
- 	u64 *ptep, pte;
-@@ -331,7 +331,7 @@ struct kvm_vcpu *vm_arch_vcpu_add(struct kvm_vm *vm, u32 vcpu_id)
- 				       MEM_REGION_DATA);
- 	ex_regs_paddr = addr_gva2gpa(vm, ex_regs_vaddr);
- 	ex_regs = addr_gpa2hva(vm, ex_regs_paddr);
--	ex_regs->vaddr = ex_regs_vaddr;
-+	ex_regs->gva = ex_regs_vaddr;
- 
- 	vcpu = __vm_vcpu_add(vm, vcpu_id);
- 
--- 
-2.39.5
-
+Jason
