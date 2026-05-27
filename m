@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C98B33D16F5;
-	Wed, 27 May 2026 23:47:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56F263D25CC;
+	Wed, 27 May 2026 23:47:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779925643; cv=none; b=FteetzO81qIYIaBAWEdYw6h/qKhv3uF3EHPwPRPAbWfVF75AyhEPB8WAWLSX4FQhOIcNLQCQnf9hN3rNotd5kZjXXj9t9s/Tw2fjeY+JO/LrTq/N7MndU4nsqS5lZDYZulKVydtwi8/IogQRxImQBbJ+JXVSWlWW81UehDuq8TY=
+	t=1779925643; cv=none; b=lPM773zSAe4yDzLvHaWsUOKNbdm+qrDvRyygfAIMK31D0SAxnajkXuW8iq4NAbD5EkfKQSBCfsBEVk/tnT4h0tWF1wXIuYJxEl9VK2R24S17fG8ML1SoufRXpZXpNn6n9R9njrzvG4QYPE6VNGPIFLJrFHPGhsMWMaO1eQHshA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1779925643; c=relaxed/simple;
-	bh=G/MiT6wcqobLrSddK4gBSbHHxNnlmJDSsQGVQLMbiZc=;
+	bh=fKy5YCuj1HhVHXrB6k9r2l+HIsSNpTjnXLIix3FgnsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KAeGleFq/opjsAry1ZbKj1kAHEMLKk7gtnx+pU43OAAsOTv+3/MazDVL1u4Lplr7S9BPG2dD8zBuLXcrrB82NNzdE88sExe4vdIkXsKqDISdWzjNYZivNZkPZTy9XwWiNGV5qEhLqmKPzhMkiSaKc8j8U786VPRfoYo0lF0mOSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EM6Bcuek; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=WkGlLV0LRhBNAMETv6IDQn7snLM2nfNntNycDJVPyFV/VYhj2Ni3ETwxsLXVnPEK8dxqS8125Ph6YIbaRjU2qVPzVZ8orq5IN3qzgCJbifSXDXCfhXDKuLQXc2nh/QCDRMimuMKBG3JEBjr6a9ls58RpCVeyaj3Ag2uPKcr/pgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FiPaT3qT; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EM6Bcuek"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006DA1F00ACA;
-	Wed, 27 May 2026 23:47:20 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FiPaT3qT"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACBC71F000E9;
+	Wed, 27 May 2026 23:47:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779925641;
-	bh=wRywIKLjaYBvGlLXm2ij6Kp5db8CtObLdxRCXVphEG4=;
+	s=k20260515; t=1779925642;
+	bh=gGILxze6ukmeEu8hVvjw9FiDyUkak6Xcqt2eg77NxBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=EM6BcuekQV9D2dWJru8TMMHyT+4yLm3ksJOSsCdFodM6krxvGb2cqPpcti2sy/Gwd
-	 KRunu9SuPVuE4vUeXQ7QJ7L34iMglp84plFnASptpjopywbz6NlRQguSyH1VGqRdV0
-	 ZwEyNHb7gz1LfSjrpFBPLao7H3N+6cEPHfz7H4nNz9vN3Wj+QiMcs0k1ZdjqnNMmXB
-	 7xWqiCVCk9QVFZyaQ4FA9ue6SmQBx2hq7JDeMa06laUETHcicFaYiAEPN86A0IVq26
-	 1doOYbkmsQIhPmsDXZXLA8oDYquVrXQbhgTdrL4WTxvjHzBaIQfdQhK0DT2jYyDXvo
-	 ReJVNbusDRDHw==
+	b=FiPaT3qTz5biIsHXCi5rECym4Ses2KamO26CiVFP6AWOP/FFLslSqp4PwE7wK7f/l
+	 h8D2z1pFF7oGoM0oINUY4nyqVSyLoHUtzfqmJFygVAdOLpdvq1+V3Mklw5Ic+QkUg8
+	 PQJmuIMKTjU+bnhlE9K15KZzMZqzD7leJB5sMcp3BDHCwGhJC0TLioYl3NF773n4i/
+	 tVGVUZkM4lC6kzY9mwLYtwMGR1TyY2/q9+ZrwwYMvO3wXwtuO4KELJzbS+l945jyOL
+	 IqjVZv+nTV9A/2/FjCQTYeLVVbpWsfjL9jDiji0EQ6fE5EIWRJ1IkKX6zRkn+0mPLz
+	 2xp6y/uagrPBA==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -41,9 +41,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v7 04/17] KVM: nSVM: Move VMRUN instruction retirement after entering guest mode
-Date: Wed, 27 May 2026 23:46:58 +0000
-Message-ID: <20260527234711.4175166-5-yosry@kernel.org>
+Subject: [PATCH v7 05/17] KVM: x86: Move enable_pmu/enable_mediated_pmu to pmu.h and pmu.c
+Date: Wed, 27 May 2026 23:46:59 +0000
+Message-ID: <20260527234711.4175166-6-yosry@kernel.org>
 X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
 In-Reply-To: <20260527234711.4175166-1-yosry@kernel.org>
 References: <20260527234711.4175166-1-yosry@kernel.org>
@@ -55,52 +55,99 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-A successful VMRUN retires in guest mode and should be counted by the
-PMU as a guest instruction. Move the call to
-kvm_pmu_instruction_retired() after potentially entering guest mode,
-such that VMRUN is counted correctly.
+The declaration and definition of enable_pmu/enable_mediated_pmu
+semantically belongs in pmu.h and pmu.c, and more importantly, pmu.h
+uses enable_mediated_pmu and relies on the caller including x86.h.
 
-The PMU event will be matched against L2's CPL, but otherwise this does
-not change the behavior in terms of guest vs. host, because KVM does
-not virtualize Host-Only/Guest-Only PMC controls yet, so all
-instructions are counted regardless of the vCPU's host/guest state. But
-this change is needed for the incoming support for Host-Only/Guest-Only
-controls to count VMRUN correctly.
+There is already precedence for other module params defined outside of
+x86.c, so move enable_pmu/enable_mediated_pmu to pmu.c.
+
+No functional change intended.
 
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- arch/x86/kvm/svm/nested.c | 10 +++++++---
- 1 file changed, 7 insertions(+), 3 deletions(-)
+ arch/x86/kvm/pmu.c | 10 ++++++++++
+ arch/x86/kvm/pmu.h |  3 +++
+ arch/x86/kvm/x86.c |  9 ---------
+ arch/x86/kvm/x86.h |  3 ---
+ 4 files changed, 13 insertions(+), 12 deletions(-)
 
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index 0063ccbd327bc..7456cacde296c 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -1155,10 +1155,8 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
- 	if (!svm_skip_emulated_instruction(vcpu))
- 		return 0;
+diff --git a/arch/x86/kvm/pmu.c b/arch/x86/kvm/pmu.c
+index e218352e34231..d6ac3c55fce55 100644
+--- a/arch/x86/kvm/pmu.c
++++ b/arch/x86/kvm/pmu.c
+@@ -16,6 +16,7 @@
+ #include <linux/perf_event.h>
+ #include <linux/bsearch.h>
+ #include <linux/sort.h>
++#include <linux/moduleparam.h>
+ #include <asm/perf_event.h>
+ #include <asm/cpu_device_id.h>
+ #include "x86.h"
+@@ -33,6 +34,15 @@ static struct x86_pmu_capability __read_mostly kvm_host_pmu;
+ struct x86_pmu_capability __read_mostly kvm_pmu_cap;
+ EXPORT_SYMBOL_FOR_KVM_INTERNAL(kvm_pmu_cap);
  
--	kvm_pmu_instruction_retired(vcpu);
++/* Enable/disable PMU virtualization */
++bool __read_mostly enable_pmu = true;
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(enable_pmu);
++module_param(enable_pmu, bool, 0444);
++
++/* Enable/disabled mediated PMU virtualization. */
++bool __read_mostly enable_mediated_pmu;
++EXPORT_SYMBOL_FOR_KVM_INTERNAL(enable_mediated_pmu);
++
+ struct kvm_pmu_emulated_event_selectors {
+ 	u64 INSTRUCTIONS_RETIRED;
+ 	u64 BRANCH_INSTRUCTIONS_RETIRED;
+diff --git a/arch/x86/kvm/pmu.h b/arch/x86/kvm/pmu.h
+index 0925246731cb1..b1f2418e960ac 100644
+--- a/arch/x86/kvm/pmu.h
++++ b/arch/x86/kvm/pmu.h
+@@ -53,6 +53,9 @@ struct kvm_pmu_ops {
+ 	const u32 MSR_STRIDE;
+ };
+ 
++extern bool enable_pmu;
++extern bool enable_mediated_pmu;
++
+ void kvm_pmu_ops_update(const struct kvm_pmu_ops *pmu_ops);
+ 
+ void kvm_handle_guest_mediated_pmi(void);
+diff --git a/arch/x86/kvm/x86.c b/arch/x86/kvm/x86.c
+index 1578c0ecbbd1b..cbe740dca5d21 100644
+--- a/arch/x86/kvm/x86.c
++++ b/arch/x86/kvm/x86.c
+@@ -181,15 +181,6 @@ module_param(force_emulation_prefix, int, 0644);
+ int __read_mostly pi_inject_timer = -1;
+ module_param(pi_inject_timer, bint, 0644);
+ 
+-/* Enable/disable PMU virtualization */
+-bool __read_mostly enable_pmu = true;
+-EXPORT_SYMBOL_FOR_KVM_INTERNAL(enable_pmu);
+-module_param(enable_pmu, bool, 0444);
 -
- 	if (ret)
--		return 1;
-+		goto insn_retired;
+-/* Enable/disabled mediated PMU virtualization. */
+-bool __read_mostly enable_mediated_pmu;
+-EXPORT_SYMBOL_FOR_KVM_INTERNAL(enable_mediated_pmu);
+-
+ bool __read_mostly eager_page_split = true;
+ module_param(eager_page_split, bool, 0644);
  
- 	/*
- 	 * Since vmcb01 is not in use, we can use it to store some of the L1
-@@ -1188,6 +1186,12 @@ int nested_svm_vmrun(struct kvm_vcpu *vcpu)
- 		nested_svm_vmexit(svm);
- 	}
+diff --git a/arch/x86/kvm/x86.h b/arch/x86/kvm/x86.h
+index 38a905fa86de2..30a69effc81e2 100644
+--- a/arch/x86/kvm/x86.h
++++ b/arch/x86/kvm/x86.h
+@@ -490,9 +490,6 @@ fastpath_t handle_fastpath_invd(struct kvm_vcpu *vcpu);
+ extern struct kvm_caps kvm_caps;
+ extern struct kvm_host_values kvm_host;
  
-+insn_retired:
-+	/*
-+	 * A successful VMRUN is counted by the PMU in guest mode, so only
-+	 * retire the instruction after potentially entering guest mode.
-+	 */
-+	kvm_pmu_instruction_retired(vcpu);
- 	return 1;
- }
+-extern bool enable_pmu;
+-extern bool enable_mediated_pmu;
+-
+ void kvm_setup_xss_caps(void);
  
+ /*
 -- 
 2.54.0.794.g4f17f83d09-goog
 
