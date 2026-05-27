@@ -1,124 +1,193 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.15])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B13EC2C0298;
-	Wed, 27 May 2026 08:18:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.15
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54360225413
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 08:30:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779869917; cv=none; b=M91B7t59Yjtq0QvgIPmurq7apt5hT6Fg6ZoAJqtVP+WqIMBgMWCxRXOas94kpzMuSwTqEwfqBJoMH9sxJZf6USSDz8KnayOegpqHMDYLfymaQDTGsdjoY7OhUal4s8LPF+sgxvxNPUn4F7uiThqGm+DLNe/P0i8Dd4qPBHmcM7U=
+	t=1779870629; cv=none; b=n9iJLJeidpswhhcg50Yy2SsiObChvwn1OeUi5HlfClsT2fnmyr0AbO3eKf2d8z6rRf5BhMxVLt7eN5cJoON3s7cq1z7QVPab8sctPHyDYEkTU9iTiZSswkvb/XyuoAiTqdEOyQhGVaf/v7dkZwVHVtIqmRA1UKEDpQASWTbQ45I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779869917; c=relaxed/simple;
-	bh=b55VKgZiKOSG2FPMrZJzbwIxqWhf76qsIHBgDm2uw+8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=UckUGm//z/kFRvLseL362HETx2TD2AXeIR6UIpDQA7WW+YCW17X341bXgDWH8NuAin03V29scWV9e0MWAmCMzHgY7aKDQ5FsOecTZJTSVCnHZrvy/qeYTRW3VqV8liReXeIby7AvD30JmGY6FjEhLUasdFwjbhDkDETksteAtxg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=jV3EJ1ps; arc=none smtp.client-ip=198.175.65.15
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1779870629; c=relaxed/simple;
+	bh=kb0kwkVN2uMNWgaZMcdmA3g/oFDrgoG1+NS2Kk3BKEU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=c62nrw6gNxqsTRQ1ldmTpDMj25dsZ84/o0XF2w9CqSlXUGUQF46AjJkrKxvVNFPHMaBDjHiZkLz674x1NDf4GdiE/VkfGUZMJPGE0NaivHyttatO+M6E7k8iggXWHLubU+Qt3YHmuQ0ns64T+InZvBi9a6tRQ9CLVTqvm6OaLJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ByyduOCB; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=HAg1kkvK; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="jV3EJ1ps"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779869915; x=1811405915;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=b55VKgZiKOSG2FPMrZJzbwIxqWhf76qsIHBgDm2uw+8=;
-  b=jV3EJ1pschxYw23oxkdcTuo2CDVJl68YovIPYk/rWdfeE/Nr2ZUQK41Y
-   kdgrNdxYzYSfvOQhTr2/VfjVxD1H6oJfj3FKGR1FQAGg5LD/MlDpDROHP
-   ZFeI/z+O1g98pCzLTiNQptiAm1ALXBYSD+fbfI9n5yByL9ji2MsVwyjRp
-   DXYw6HpHmAxYu8jSB60Jl/qGTFPqlGBiHh1EMXlSutWdOfXwExqcwOeHi
-   fmz/6RiXUiBK5QW1LRDLbiIsf75gNOdMLea4DFbXjPPQXL98RrWL1ZRjJ
-   GY6XVSAe/fadl+46b20eI8lOn4h/tmEN8sXM3bc9ShzD9vVkqjMv+xV3m
-   A==;
-X-CSE-ConnectionGUID: DTRHef3bRVSMNs+5yTN2CQ==
-X-CSE-MsgGUID: BN1Xx4VCRxSLyj5PUYnJNA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11798"; a="84320724"
-X-IronPort-AV: E=Sophos;i="6.24,171,1774335600"; 
-   d="scan'208";a="84320724"
-Received: from fmviesa003.fm.intel.com ([10.60.135.143])
-  by orvoesa107.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 01:18:35 -0700
-X-CSE-ConnectionGUID: D5o+KFTNSTSlwNvmbE8HDw==
-X-CSE-MsgGUID: O0cjRpl6Qhyq1Uex2j8Uqw==
-X-ExtLoop1: 1
-Received: from unknown (HELO [10.239.158.45]) ([10.239.158.45])
-  by fmviesa003-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 01:18:30 -0700
-Message-ID: <534aa31c-c643-4b64-ab0f-59cf29a52d99@intel.com>
-Date: Wed, 27 May 2026 16:18:28 +0800
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ByyduOCB";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="HAg1kkvK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1779870627;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=kb0kwkVN2uMNWgaZMcdmA3g/oFDrgoG1+NS2Kk3BKEU=;
+	b=ByyduOCBIr00CMPT9Sd6j7zq4IS05pzMaXxEM2OfIqbNEzszQhjUVqlVdaHdhb0DDQt/1X
+	P4CCGBVeNCHxX/wcJgqLnZkGwnczFCKrabZNC+7uYrsTYDoMNOguNHOVJomciQLqMclNid
+	vmAHkTsKax8k2W085yoTUhOKGe0wAg8=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-496-zRV_552SMRKlqAwurBOdqg-1; Wed, 27 May 2026 04:30:25 -0400
+X-MC-Unique: zRV_552SMRKlqAwurBOdqg-1
+X-Mimecast-MFC-AGG-ID: zRV_552SMRKlqAwurBOdqg_1779870624
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-48fe40b61a3so75016045e9.3
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 01:30:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1779870624; x=1780475424; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=kb0kwkVN2uMNWgaZMcdmA3g/oFDrgoG1+NS2Kk3BKEU=;
+        b=HAg1kkvKsWuSUCwPOEiR6veHzbkgEBW48Uzjl2faeT2S01GfsgZtKDKsiI+GKNZVhC
+         lXFBx35af+SY1k+zNbv0dG495NTPulDNW0n3h2k227SfLB3LPJ/PiSA31s+gqSPnE1Kj
+         dYYhwcXzQNtXOb2FmC63GeKwlffuwBTCElN/55WIRU6Kj6jVhUKnBV5JHZxqBjNFt8zv
+         ZKVvw4GvckRK61hpppS2Fwl0Ww8tH9K3LhMr6p8NYh/zDW8U0kPaT/Ts2x6Aya/N5cLD
+         DfDbzFJce9Srg8B+pa2SeWOxgzUC9eR4G9QRVloQfcHnsEGgG4fXJwRsIyZtKtEa+Nnn
+         xViw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779870624; x=1780475424;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-gg:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=kb0kwkVN2uMNWgaZMcdmA3g/oFDrgoG1+NS2Kk3BKEU=;
+        b=JHBpB6zn4BAugc55SwxMTFzdYoGOMuP1l8JiUTKba5QIJSTqvdJkhfDmF4sL+qYS+S
+         XyST6z1Lzzvo7Iu8fOVl4z5YmZUvbpuspKLvRrg/J2r9wDx9u8oivuyav+meuDfJHoar
+         Pe7dA5xUU4VQJtG0KK8g/MYneAFbLcfN0eoq0vIIU7gI7XGWFwjZzpEIDqYxea/iryuw
+         tW5mx0s+FcdnL6lGQmAM37ANwzn9799dTN8aTFMcbiFB39PD3J1ILNT8NiO3l2Dz687m
+         SNX/1dRKc8HSAkyt9dH1wl1mjfEq89GJIXWMCnHlaKnY+hZAs+4iFCq9Vbu54Iz30q3Z
+         HLkw==
+X-Forwarded-Encrypted: i=1; AFNElJ9qw3Z/59bhFC0i91lXDKLMW3EvunslyPm6+Xxw4ApC2nB9Ae3E4h4FaeMrGiZTecCCDTs=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzrfLTRAhehNHuR++wDKqDEAnoXx3euSs0S1xrvgQDYvnSiBnOD
+	imG/FP+TdkNa3fPnPGYajeCqVNxJxTfASV/YjMoih83qEAQ0b42YR+c1sYOMxJbfFgz4nVS9Pqg
+	NbQEwIwyGo06WrAoDcfjY91hW/SmKWvvbRmnMqmAZq0mYBy1Q/ENq6Q==
+X-Gm-Gg: Acq92OEEwD74vgDbaDfT/6bXFvINscRmsjJKLawX30pHOO6MW/8g9DJRFNMtd5lzuU3
+	KpymTOrzmPaPzfTwtIgQZpKB5kBKY9WDkZUIlOTws0nyF6tm40AiU3vwtUK6sRCelrcXaasStpy
+	SRY8nz8QCTRMpUZZ+9OxrjcXnMhQBkHztV2dh9yDuGc0y7yBTa25cPLrcGkwKjAVIvINx5faB98
+	h1mdiXATgY2dWyfIo1p3+yJ+7fkvAH4GlK5qBJePFfgZAleso7DKmeCTI4h3zqZb8iM1cOeVkzV
+	HtEaX1RUtUQNTvbc58yH9YEl+ZzTo5U3W5ysHkbjTR3y5QfJLWGu3oFL1Vo902Rzyh1GVhORG0C
+	/KOHaOzMHV9kn3Hnu5FnYMZTODo+PXf+wnA==
+X-Received: by 2002:a05:600d:8499:20b0:48a:5970:1fe1 with SMTP id 5b1f17b1804b1-4904248ad4cmr277017075e9.4.1779870624309;
+        Wed, 27 May 2026 01:30:24 -0700 (PDT)
+X-Received: by 2002:a05:600d:8499:20b0:48a:5970:1fe1 with SMTP id 5b1f17b1804b1-4904248ad4cmr277016485e9.4.1779870623765;
+        Wed, 27 May 2026 01:30:23 -0700 (PDT)
+Received: from fedora (nat-20.ign.cz. [91.219.240.20])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4908098f782sm11525835e9.17.2026.05.27.01.30.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 27 May 2026 01:30:23 -0700 (PDT)
+From: Vitaly Kuznetsov <vkuznets@redhat.com>
+To: David Woodhouse <dwmw2@infradead.org>, Sean Christopherson
+ <seanjc@google.com>, Paolo Bonzini <pbonzini@redhat.com>, Thomas Gleixner
+ <tglx@kernel.org>, John Stultz <jstultz@google.com>, Michael Kelley
+ <mhklinux@outlook.com>
+Cc: Marcelo Tosatti <mtosatti@redhat.com>, "Christopher S. Hall"
+ <christopher.s.hall@intel.com>, Stephen Boyd <sboyd@kernel.org>, Miroslav
+ Lichvar <mlichvar@redhat.com>, Ingo Molnar <mingo@redhat.com>, Borislav
+ Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, "H.
+ Peter Anvin" <hpa@zytor.com>, "K. Y. Srinivasan" <kys@microsoft.com>,
+ Haiyang Zhang <haiyangz@microsoft.com>, Wei Liu <wei.liu@kernel.org>,
+ Dexuan Cui <decui@microsoft.com>, Daniel Lezcano
+ <daniel.lezcano@kernel.org>, kvm@vger.kernel.org,
+ linux-hyperv@vger.kernel.org, x86@kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC] KVM/x86: Killing kvm_get_time_and_clockread() in favour
+ of ktime_get_snapshot()
+In-Reply-To: <b4895a532344ba6a879d922be8536f9000cd398c.camel@infradead.org>
+References: <b4895a532344ba6a879d922be8536f9000cd398c.camel@infradead.org>
+Date: Wed, 27 May 2026 10:30:21 +0200
+Message-ID: <87zf1ljluq.fsf@redhat.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 02/15] x86/virt/tdx: Add extra memory to TDX Module for
- Extensions
-To: Xu Yilun <yilun.xu@linux.intel.com>
-Cc: kas@kernel.org, djbw@kernel.org, rick.p.edgecombe@intel.com,
- x86@kernel.org, peter.fang@intel.com, linux-coco@lists.linux.dev,
- linux-kernel@vger.kernel.org, kvm@vger.kernel.org, sohil.mehta@intel.com,
- yilun.xu@intel.com, baolu.lu@linux.intel.com, zhenzhong.duan@intel.com
-References: <20260522034128.3144354-1-yilun.xu@linux.intel.com>
- <20260522034128.3144354-3-yilun.xu@linux.intel.com>
- <7139c55b-b949-415d-ab82-fca1b1cc3880@intel.com>
- <ahZpUA62NRdNrkvZ@yilunxu-OptiPlex-7050>
- <9073ac91-3aa4-41e2-bb81-8878409498e5@intel.com>
- <ahaeCGLPEfmYNFtC@yilunxu-OptiPlex-7050>
-Content-Language: en-US
-From: Xiaoyao Li <xiaoyao.li@intel.com>
-In-Reply-To: <ahaeCGLPEfmYNFtC@yilunxu-OptiPlex-7050>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 5/27/2026 3:32 PM, Xu Yilun wrote:
-> On Wed, May 27, 2026 at 02:38:27PM +0800, Xiaoyao Li wrote:
->> On 5/27/2026 11:47 AM, Xu Yilun wrote:
->>>>> +static void tdx_clflush_hpa_list(struct page *root, unsigned int nr_pages)
->>>>> +{
->>>>> +	u64 *entries = page_to_virt(root);
->>>>> +	int i;
->>>>> +
->>>>> +	for (i = 0; i < nr_pages; i++)
->>>>> +		clflush_cache_range(__va(entries[i]), PAGE_SIZE);
->>>>
->>>> Is the page flush only needed when CLFLUSH_BEFORE_ALLOC is true?
->>>>
->>>> If so, it inherits the same decision to always flush as what
->>>
->>> Yes it is basically the same as tdx_clflush_page().
->>>
->>>> tdx_clflush_page() did. Then, any chance we can use tdx_clflush_page() here
->>>
->>> But I don't think we should convert hpa/page/va back and forth just for
->>> re-using one line of code.
->>
->> Because we want/need to flush page as late as possible so that the page
->> flush needs to happen right before SEAMCALL?
-> 
-> I think so. Let the flushing be part of the tdh call semantic.
-> 
->>
->> How about we pass in the struct page * and number into tdx_ext_mem_add() and
->> construct the root page inside it?
-> 
-> I assume you don't suggest allocate root page inside the call, then we
-> need 3 parameters for the HPA_LIST_INFO:
-> 
->    struct page *, unsigned int nr_pages, struct page *root
-> 
-> which I think too much.
+David Woodhouse <dwmw2@infradead.org> writes:
 
-yeah, sort of.
+...
 
-> I think your concern is to try not to introduce another tdx_clflush_
-> variant, but I believe this will happen, pfn based memory description is
-> on the way:
-> 
-> https://lore.kernel.org/all/20260430014929.24210-1-yan.y.zhao@intel.com/
+>
+> Then in 2018, Vitaly Kuznetsov added Hyper-V TSC page support in
+> commit b0c39dc68e3b ("x86/kvm: Pass stable clocksource to guests when
+> running nested on Hyper-V"), which extended vgettsc() to handle the
+> HVCLOCK case.
+>
+> I'd quite like to kill it all with fire and make KVM use
+> ktime_get_snapshot() instead.
 
-I don't object the variant of tdx_clflush_hpa_list(), but suggest if 
-tdx_clflush_page() can be used instead of raw clflush_cache_range()
+The main motivation is reducing the complexity of KVM's timekeeping code
+I guess?
 
-Maybe we can try to put tdx_clflush_hpa_list() along with 
-tdx_clflush_page() and tdx_clflush_pfn()? This way, I think we can save 
-the separate comment.
+>
+> However, to correlate with the TSC provided to guests, KVM needs the
+> underlying host TSC counter value, *not* the cycles count from the
+> hyperv_clocksource_tsc_page clocksource which is scaled to 10MHz.
+>
+> If we wanted to support master clock mode while nesting under KVM and
+> bizarrely using the kvmclock for system timing, we'd have the same
+> problem with the kvmclock clocksource, which similarly scales to 1GHz.
+>
+> One option is to say "Don't Do That Then=E2=84=A2": if you want to provid=
+e a
+> masterclock kvmclock to guests then *don't* use the silly pvclocks for
+> your own kernel's timekeeping, use the damn TSC. Because if the TSC
+> *isn't* reliable then you can't do masterclock mode for your guests
+> anyway.
+
+The statement "TSC isn't reliable" deserves a book of its own :-)
+Historically, we've seen all sorts of issues with it, but by the time of
+b0c39dc68e3b, they were mostly gone. The real problem the Hyper-V/Azure
+folks were solving back then was that while the TSC *was* reliable
+(synchronized across CPUs, not jumping backwards, stable frequency,
+...), tons of hardware out there (Azure is quite big) did not support
+TSC scaling. VMs on Azure don't migrate very often, but they do migrate
+when hardware maintenance is needed. Migrating to a host with a
+different TSC frequency would've been a problem, so the Hyper-V TSC page
+was introduced. Note: it is a *single* page for all CPUs, so the
+clocksource was never intended to be used in a situation where TSCs are
+unsynchronized across CPUs.
+
+To deal with migrations, the Hyper-V folks came up with a mechanism
+called 'reenlightenment notifications', and we support it in KVM. It's
+not really great, as we need to stop all the nested VMs, but it does the
+job: we can re-compute guest PV clocksources (kvmclock, TSC page,
+... Xen?) and live happily ever after.
+
+>
+> Perhaps that should have been the response when commit b0c39dc68e3b was
+> submitted, but I guess we're stuck supporting that mode now.
+
+Times are changing, and it is becoming increasingly difficult to find
+x86 hardware without TSC scaling support. Linux guests on Hyper-V now
+prefer TSC if possible (HV_ACCESS_TSC_INVARIANT; see, e.g., commit
+4c78738ead4e), so I expect that in a few years, there will be no need
+for the Hyper-V TSC page clocksource or the reenlightenment logic
+anyway.
+
+> But I really do want to kill the KVM hacks and use ktime_get_snapshot().
+>
+> Reverse-engineering the original TSC reading from the clocksource
+> counter value doesn't look sane, without a loss of precision and/or
+> 128-bit division.
+>
+> One simple option that occurs to me would be to add a 'cycles_raw'
+> value to the system_time_snapshot, for PV clocksources like hyperv and
+> kvmclock to populate with the original TSC reading.
+
+Personally, I don't see this as such an ugly hack.
+
+>
+> That might actually let us clean up some of the PTP code that currently
+> has to deal with TSC vs. kvmclock in counter snapshots too. I think I
+> could kill the use of get_cycles() in vmclock for the kvmclock case,
+> which might make Thomas happy...
+>
+> Any better ideas?
+
+--=20
+Vitaly
 
