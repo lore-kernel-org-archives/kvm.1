@@ -1,200 +1,163 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39ACA40B6C9
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 13:12:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779887567; cv=none; b=rnYZILz4yPMKG7jeFeSGUBeziwYU04nlii88F/KhTZAJTQ5MNyc64pvxLT0A7SffgRbwCX22w4m39XsoXf5VUmHfRF70Xy2OkddNbBVMFSmvmRUlHFSnYw9cI8u6bC7HAieIS3d2Uvb48SSIfGO6n7nSdH8lPkuk1EJjcQvzvho=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779887567; c=relaxed/simple;
-	bh=J12+4nWL9PrSiCy16maSKHEjC+A702WBJSkXdwpkRuQ=;
-	h=From:Subject:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=sKZvFnpypfNKEML6I50hv/kVD7qPRxy92s28jSIw7wUdVEktY4LMPu076knflKY3Iie1c7383qPfGKLOMmS8AtzHjt6RIi0g6dEf+1mIejDGu1H/kIne03HDTDQWv4ErLkW6isJ+PHAdrDCAWpVHseTTxDzEDxtVLZY/OsNvkZE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Wa5vdnum; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8966C40DFB6
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 13:26:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.160.180
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779888373; cv=pass; b=sCmo3dYOSaLk4W0h898q3LOBfHSAG9BKLZvdR8UP07KBOUmKemb4Xe8C1vEJaupx78rKbU9ad2f5FNoJSq38H5tX0zgmSS2TH1hzYqTKSUhMiEr2grwhwsE0axbfvh1hatkoxJEqAxYWbMeN5AA40SMxNKoEBx6hgvCmsoBQYQU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779888373; c=relaxed/simple;
+	bh=7ISeUr5KwK2guzwwLEHpuHEOrOE+ak/mdqUCT/LiwMY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=soFVLA7jc+fpxlkyfV/qg1iJmRd2DR7qgEIhyNq5QEJaPRxc2EKZtOqMig1h+VRcNetU20g+dB4/fC1RhqZRNzPhFo6X9gynQQWryE+nCcSR2ACJZRPUz9Tz1dShcbKrPc6cHW0nkwTxggVj6kp/w94zicpgu+J6+o0LbIkhbvo=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EH3MYEVY; arc=pass smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Wa5vdnum"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD9DA1F000E9
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 13:12:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779887565;
-	bh=7BfQon8HZ7N8lseN94AL4q+87dy7CvB2+OnlojEqRtM=;
-	h=From:Subject:Reply-To:Cc:In-Reply-To:References:Date;
-	b=Wa5vdnum2rdWidT+nZQu1TyJpvYIGOKKuC/QoJrLWoSvT1WgMOUkGf0MOVzLRO268
-	 SfzwSgNH4RvM/4t3qj79vqVqBf3uWZBj8Uwdd/m+MIJzYLQDSfewEg+LamhjTWO06w
-	 GzioBsaOdEa/nlkQR5hCkuKZ8DDIEAJdPyphccZ+a3SSHJ6GDCJCSHRqUZFPjNIBbK
-	 NxvZGXBgwhiCI9+TBNiU9tP7Se4UY0Bil8vZmm6CeqqBVFgwWYff065SkhA04QD5RG
-	 hEP5Izf8rdJJDwX2+2BJnACH9aTmCCWQwzSoH4vcLr1YMNQit1ujTqyxgmk6sTxlr1
-	 b3DJgm6Mn7ZKQ==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v3 2/2] x86/tdx: Fix zero-extension for 32-bit port I/O
-Reply-To: sashiko-reviews@lists.linux.dev
-Cc: kvm@vger.kernel.org
-In-Reply-To: <20260527120544.2903923-3-kas@kernel.org>
-References: <20260527120544.2903923-3-kas@kernel.org>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Wed, 27 May 2026 13:12:43 +0000
-Message-Id: <20260527131245.CD9DA1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EH3MYEVY"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-516d6009380so4121cf.0
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 06:26:11 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; t=1779888370; cv=none;
+        d=google.com; s=arc-20240605;
+        b=UZYdjfcRqQb82UWoqFSd6SpL46Gi49qodZOHtVeOKBur//gOa/zykVpBlq5RkVqDl3
+         ILMNu7DyWEMghL23apDik824nbCfNCe8SqNFozOKfQxMmSlZVdvqZHhEabipIC+2HiDj
+         2JI5C/Ixw33ALyu22ECizHjppEgM3OHIa8aJ7d4jY30sLU15nS+3CBLtjDcHhojdU3cm
+         vPScnruPsQS/F6/YbQmchnoyeXbpkb8Z88UQPDMJt2N3w05EjJtPcMg7pIFvLzP7OVPK
+         3dwHFGmlgarmdF5F5SZ0qGHlVop3VXDoas5ZcTzP1qYGB8ImwDqP2S703Jiza6JAIx7p
+         Tw/g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:dkim-signature;
+        bh=+PPKsSodR5IZsW2lR7kl0s1UGOrQ7Jx8Sr9pFqcYS9w=;
+        fh=gqKUdF8CD45SxF2toXGSE1kW5IMf5jUswmW42Pz++AI=;
+        b=L1sdnWkmZT5ouEFwo040fLqkKI55jwR8RMbKJ6zcPp5vkKFzrnTMxJHRFST+3vCcR3
+         aKoQsTB+P1l1scMVPsANe1hQXLWBVzG/teUhjXI8AlTumJwq8dRx6T4FG/ns1osiju9d
+         XDLj29RK0vRJx7VzgUgaAkmJxqo1YOUUhRkJWx7MjYXqADoTWd/rlL7FVr+Bv50TbjQh
+         qf2Z9aSqbbQOjTMXxREcbxCZGEd5X7tbr49dr20lGrA/CxxoxJkrdbghlNSvstmjyTDn
+         CA1hhv/zMSlysTc5njZ9KgflnpwblE+KgMUH1btj5JVCE9467Tifc1drSwaKKHmPX5+z
+         VzBg==;
+        darn=vger.kernel.org
+ARC-Authentication-Results: i=1; mx.google.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779888370; x=1780493170; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+PPKsSodR5IZsW2lR7kl0s1UGOrQ7Jx8Sr9pFqcYS9w=;
+        b=EH3MYEVYbZf3g0qtEmZ2zVzxM4mW7Kq00zPtEnEpcffAVR9bmvrIS4pvBVGRTwvALy
+         MyN4MIm9NRePi2QGitMlL4Ce4MyCNSfuA89Dz6/XO1v/wrzJ+Tyt6uQ9+8VU/Myj/Pet
+         bbbg1o3PjGcMJIqVUquGXmq5i10yIo+Kips68P8mbc0WMape5Fyx0w8P2nBQECLENKKe
+         lRTyZ38zfdB2vR4qudTe2EbzbzuY1TN3/Kwgd8g4PBxTCjvH6ffCz4WOCpkcgXzpp9u2
+         OH9nrCFs2OZv3Dj1sM8YqnaRWnCYz7WccQ+1gfoPTVuYpa4moh3sHvxjdspxAoV0d3Hj
+         M3Dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779888370; x=1780493170;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=+PPKsSodR5IZsW2lR7kl0s1UGOrQ7Jx8Sr9pFqcYS9w=;
+        b=q21XZZ3fhd65VlyLzQrZ++rTpwSlzlTLnQQALFDGMrXOTSylhE2G3mqJJbrMRlFbH6
+         Y7UAlQkN3Gtf4ud27KkpCbr7u+hT0PUki0/asaq1P9RwRTvY84+DpgZZt8pMVwala2FF
+         dviXRbSR5S41urJxwAHY0CpzVIdvQDeMthM7Kb82KA2LbdOv6COPvH6mJKVeFznU1U9P
+         LmfjmCr1X0dIRlt+DtKPZz/faOlZl1aIeUnrk8ViZgE8Wllv6PX0jeRSH2cKR7RIsUsq
+         nECkolUzUaHxDP6HlXPON9p8bztSpNJFOGELqq/8pWB2tmc/pC5E7f0tcazkqCSfRquA
+         1dUw==
+X-Forwarded-Encrypted: i=1; AFNElJ8/VfbOtAfdqBUKO/UJD6ylJP31mMnAl/qxXptT9BTAIynOTfbue1R8HVlAYHEYmebflaQ=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxe9CBolur7hdekh5tj5RzYeKKsBsGVWXZkNrNCili8QNzhMpF2
+	zfuNK324S+jY4ARQ/SX9QE3vIVgP1P/pjAIaMN1TSiLA13Aanap9XabsHBuhVgQUtd1EKtfXQBb
+	jy1RL625L4Y8V4KmI/oKTEK0yVxx5Nv6Q2FHFnCWw
+X-Gm-Gg: Acq92OGq2eblqH/yPw8bE9Ozo/8tnx93kTqBUHfDe/qMh7rQoPtknrhi774zP9EGAVE
+	QbJhmScxgGAhff4dvRk1f4zc2d55yUYJKbBPuOvh9/NPzY4xk5491EsaJVTfuOlzIUkVShuspXn
+	WdXbVX7YXdI/1oKcKd52geDbBDa0FJlOaWl+lhRcyl2Zl1yZ8AaQJECMO1+0K1bd0B+sCGofxc/
+	muzfHAoTJmuKNmQu5AH2p0gdG7+0SPNVsUeddNEixWb+nnmhhBImqjYVQ08V+7xCDunJ+VTf4bj
+	5jaUWRoM4uh0NjOrgA==
+X-Received: by 2002:a05:622a:5806:b0:514:b17e:86f3 with SMTP id
+ d75a77b69052e-516e0dba205mr49179141cf.12.1779888369544; Wed, 27 May 2026
+ 06:26:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+References: <20260513224608.1859737-1-jmattson@google.com> <20260513224608.1859737-4-jmattson@google.com>
+ <CALMp9eS4s9tsOmvDUDeqS7oph0mSHyhxBiULQdwHVaG+7gXLSQ@mail.gmail.com>
+ <agXcKDjnJc9DPcyr@google.com> <CALMp9eS831M153QmAgjzJcR2dFY_wCCCzDisd7_T6GyS3-gAFw@mail.gmail.com>
+ <agX2SJF3rJSkIqDe@google.com> <CALMp9eQTSxFkVf4vV83yNYvv2AjseHYiD3M68mcc951L4U1Jxw@mail.gmail.com>
+ <agX5v1utAfyMadPm@google.com> <CALMp9eQqbHrcV1_WM+5xUR16OpGk+unxoZGi+=t55cqVhFgAfQ@mail.gmail.com>
+ <DS7PR12MB82016B1B310BD994C83B35D294072@DS7PR12MB8201.namprd12.prod.outlook.com>
+ <CALMp9eQ2SLq2bVngJ1RHEfkFe5yaTDrFxXT0KNTgBZY6WRMDbw@mail.gmail.com> <DS7PR12MB82011943131DF5415365E19E940B2@DS7PR12MB8201.namprd12.prod.outlook.com>
+In-Reply-To: <DS7PR12MB82011943131DF5415365E19E940B2@DS7PR12MB8201.namprd12.prod.outlook.com>
+From: Jim Mattson <jmattson@google.com>
+Date: Wed, 27 May 2026 06:25:54 -0700
+X-Gm-Features: AVHnY4I0b8Xs3Wrm7OXdTuIdTzIeBHdIlZ4VMGY_dPKD2Og3YCofmBlb9Wgl1mg
+Message-ID: <CALMp9eQi=-1S5A1KYgQd4=echbnA6eu+eM8+OyayzsGMGB72Eg@mail.gmail.com>
+Subject: Re: [PATCH v3 3/4] KVM: x86: Virtualize AMD CPUID faulting
+To: "Kaplan, David" <David.Kaplan@amd.com>
+Cc: Sean Christopherson <seanjc@google.com>, "pbonzini@redhat.com" <pbonzini@redhat.com>, 
+	"tglx@kernel.org" <tglx@kernel.org>, "mingo@redhat.com" <mingo@redhat.com>, "bp@alien8.de" <bp@alien8.de>, 
+	"dave.hansen@linux.intel.com" <dave.hansen@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"hpa@zytor.com" <hpa@zytor.com>, "shuah@kernel.org" <shuah@kernel.org>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, 
+	"linux-kselftest@vger.kernel.org" <linux-kselftest@vger.kernel.org>, "ctpence@google.com" <ctpence@google.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Thank you for your contribution! Sashiko AI review found 4 potential issue(=
-s) to consider:
+On Tue, May 26, 2026 at 2:30=E2=80=AFPM Kaplan, David <David.Kaplan@amd.com=
+> wrote:
+>
+> AMD General
+>
+> > -----Original Message-----
+> > From: Jim Mattson <jmattson@google.com>
+> > Sent: Tuesday, May 26, 2026 1:39 PM
+> > To: Kaplan, David <David.Kaplan@amd.com>
+> > Cc: Sean Christopherson <seanjc@google.com>; pbonzini@redhat.com;
+> > tglx@kernel.org; mingo@redhat.com; bp@alien8.de;
+> > dave.hansen@linux.intel.com; x86@kernel.org; hpa@zytor.com;
+> > shuah@kernel.org; kvm@vger.kernel.org; linux-kernel@vger.kernel.org; li=
+nux-
+> > kselftest@vger.kernel.org; ctpence@google.com
+> > Subject: Re: [PATCH v3 3/4] KVM: x86: Virtualize AMD CPUID faulting
+> >
+> > Caution: This message originated from an External Source. Use proper ca=
+ution
+> > when opening attachments, clicking links, or responding.
+> >
+> >
+> > On Thu, May 14, 2026 at 11:17=E2=80=AFAM Kaplan, David <David.Kaplan@am=
+d.com>
+> > wrote:
+> > >
+> > > This appears to be a bug, as most other instructions (e.g. INVPCID) t=
+hat have
+> > CPL checks do the CPL checks before the VMEXIT checks.  I'm following u=
+p on
+> > this internally...
+> >
+> > Did you learn anything from the internal follow-up? The ellipsis
+> > suggests, "stay tuned..." :)
+>
+> It appears it was a deliberate decision, due in part to the fact that the=
+ traditional flow of checking CPL exceptions before intercepts typically ap=
+plies to using instructions in an illegal way, but the user is not doing an=
+ything illegal here by executing CPUID which is normally a legal instructio=
+n at CPL3.
+>
+> That said, clearly the behavior is different now between the vendors, how=
+ever at this point the feedback I got is that our architects want to stick =
+with the existing behavior unless there is a strong reason that it is a pro=
+blem for SW.
 
-Pre-existing issues:
-- [Critical] In `handle_mmio()`, the `val` variable is not fully initialize=
-d before being sent to the VMM during a memory-mapped I/O write emulation, =
-leading to a kernel stack memory leak.
-- [High] The CPUID instruction emulation in `handle_cpuid()` fails to zero-=
-extend the 32-bit results into their respective 64-bit registers.
-- [High] The MMIO emulation for MOVZX and MOVSX instructions in `handle_mmi=
-o()` fails to clear the upper 32 bits when the destination is a 32-bit regi=
-ster.
-- [High] In `write_msr()`, `regs->ax` is not masked to 32 bits before being=
- ORed to form the MSR value, which can corrupt the upper 32 bits (represent=
-ing EDX) sent to the VMM.
---
+No problem from the standpoint of nested SVM emulation.
 
-commit f91083b7c0a39ded55e57262547e0ea4e29968a4
-Author: Kiryl Shutsemau (Meta) <kas@kernel.org>
-
-x86/tdx: Fix zero-extension for 32-bit port I/O
-
-According to x86 architecture rules, 32-bit operations zero-extend the
-result to 64 bits. Update handle_in() to zero out the entire RAX register
-when the I/O size is 4 bytes to ensure correct zero-extension.
-
-Link: https://lore.kernel.org/all/CAKw_Dz96rfSQc6Rn+9QBcUFHhmkK+9zu+P=3Dbxo=
-wfZwxrATCBRg@mail.gmail.com/
-
-> diff --git a/arch/x86/coco/tdx/tdx.c b/arch/x86/coco/tdx/tdx.c
-> index 65119362f9a25..58feca4193269 100644
-> --- a/arch/x86/coco/tdx/tdx.c
-> +++ b/arch/x86/coco/tdx/tdx.c
-
-[ ... ]
-
-> static int write_msr(struct pt_regs *regs, struct ve_info *ve)
-> {
-> 	struct tdx_module_args args =3D {
-> 		.r10 =3D TDX_HYPERCALL_STANDARD,
-> 		.r11 =3D hcall_func(EXIT_REASON_MSR_WRITE),
-> 		.r12 =3D regs->cx,
-> 		.r13 =3D (u64)regs->dx << 32 | regs->ax,
-        ^^^^^^^^
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does this correctly build the
-MSR value?
-
-Since regs->ax is a 64-bit value, it looks like any non-zero bits in the
-upper 32 bits of regs->ax will not be cleared.
-
-Will these upper bits then be logically ORed into the upper 32 bits of the
-result, corrupting the EDX portion of the WRMSR value sent to the VMM?
-
-Could a guest program with legitimately non-zero data in the upper 32 bits =
-of
-RAX prior to the #VE inadvertently write wrong values to MSRs?
-
-[ ... ]
-
-> static int handle_cpuid(struct pt_regs *regs, struct ve_info *ve)
-> {
-> 	struct tdx_module_args args =3D {
-> 		.r10 =3D TDX_HYPERCALL_STANDARD,
-> 		.r11 =3D hcall_func(EXIT_REASON_CPUID),
-> 		.r12 =3D regs->ax,
-> 		.r13 =3D regs->cx,
-> 	};
-
-[ ... ]
-
-> 	/*
-> 	 * As per TDX GHCI CPUID ABI, r12-r15 registers contain contents of
-> 	 * EAX, EBX, ECX, EDX registers after the CPUID instruction execution.
-> 	 * So copy the register contents back to pt_regs.
-> 	 */
-> 	regs->ax =3D args.r12;
-> 	regs->bx =3D args.r13;
-> 	regs->cx =3D args.r14;
-> 	regs->dx =3D args.r15;
-        ^^^^^^^^
-
-[Severity: High]
-This is a pre-existing issue, but does this correctly handle zero-extension
-for 32-bit results into 64-bit registers?
-
-According to x86-64 architecture rules, writes to 32-bit registers must cle=
-ar
-the upper 32 bits of the corresponding 64-bit registers.
-
-Because the values are copied directly from the untrusted VMM (args.r12 to
-args.r15) into the registers without masking to 32 bits, could a malicious
-VMM inject non-zero values into the upper 32 bits?
-
-Can this corrupt guest user-space or kernel state if the code relies on the=
-se
-bits being zeroed?
-
-[ ... ]
-
-> static int handle_mmio(struct pt_regs *regs, struct ve_info *ve)
-> {
-> 	unsigned long *reg, val, vaddr;
-                            ^^^
-
-[Severity: Critical]
-This is a pre-existing issue, but is val fully initialized before being sent
-to the VMM?
-
-When handling an MMIO write of size smaller than 8 bytes, does memcpy only
-write to the lowest size bytes, leaving the upper bytes of val uninitialized
-with kernel stack data?
-
-[ ... ]
-
-> 	/* Handle writes first */
-> 	switch (mmio) {
-> 	case INSN_MMIO_WRITE:
-> 		memcpy(&val, reg, size);
-> 		if (!mmio_write(size, ve->gpa, val))
-
-Because this 8-byte variable is passed to mmio_write() and forwarded to the
-untrusted VMM, does this leak uninitialized kernel stack memory to the guest
-hypervisor?
-
-[ ... ]
-
-> 	switch (mmio) {
-> 	case INSN_MMIO_READ:
-> 		/* Zero-extend for 32-bit operation */
-> 		extend_size =3D size =3D=3D 4 ? sizeof(*reg) : 0;
-> 		break;
-> 	case INSN_MMIO_READ_ZERO_EXTEND:
-> 		/* Zero extend based on operand size */
-> 		extend_size =3D insn.opnd_bytes;
-        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-[Severity: High]
-This isn't a bug introduced by this patch, but does this properly clear the
-upper 32 bits when the destination is a 32-bit register?
-
-For MOVZX and MOVSX instructions, extend_size is set to insn.opnd_bytes.
-When the destination is a 32-bit register, insn.opnd_bytes is 4.
-
-Does memset then only clear or set 4 bytes of the 64-bit register?
-
-Because x86-64 architecture dictates that writing to a 32-bit register alwa=
-ys
-zero-extends to the full 64-bit register, could compiler-generated code
-relying on this zero-extension use garbage values left over in the upper
-half, leading to functional regressions or out-of-bounds memory accesses?
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260527120544.2903=
-923-1-kas@kernel.org?part=3D2
+The APM does say, "**Generally** [emphasis mine], instruction
+intercepts are checked after simple exceptions (such as #GP=E2=80=94when CP=
+L
+is incorrect=E2=80=94or #UD) have been checked, but before exceptions relat=
+ed
+to memory accesses (such as page faults) and exceptions based on
+specific operand values," but it would be nice to have exceptions such
+as this enumerated.
