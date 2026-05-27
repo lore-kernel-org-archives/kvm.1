@@ -1,209 +1,183 @@
-Received: from mail-dl1-f52.google.com (mail-dl1-f52.google.com [74.125.82.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC22E261B8D
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 22:45:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=74.125.82.52
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779921943; cv=pass; b=XW3LjHWqWixcGlkzImR3zWAoRV3+Ky6+cBo9MRDSimGHlkvdW52tg5W79EO53My3TZiMKZOzkpWhcfdx9R8hcatQt9bR0SKUYrr81VSBiJ+f3xxskemEruUUbnO89jymjFnOt3hcbDbeX25wI5JWmcMkuMH5rms6KmZ9eyVcu6I=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779921943; c=relaxed/simple;
-	bh=6e5WtMjcBsDBDJ8IqEqJkKqSEnkZJFoCsLTVw+spA/g=;
-	h=From:In-Reply-To:References:MIME-Version:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SxLJ2iRueYxi4Y97dqDN283WcgoCx0tnokjdd9O0wn0YtSMmxKz8R46Yi6e44dFt4/XqCFs4oKEUlJlHB64YPfEEvMG6WmK5JLKA4XsCXTjUoSprvoBuRK0CcIClMrNth1Gu8+E5wookEmnRMeEkTi4d6DeW7DLabVYb2i+G4mI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vAmNxA/d; arc=pass smtp.client-ip=74.125.82.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5DB6835F17D;
+	Wed, 27 May 2026 22:49:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1779922146; cv=none; b=KmjBWRsY2yDFQSjifkEjFqy9HsySBOxejIrLkIM2MfUT89H9DQ7cnwJrjEfwluOT4+JuA6io/u7Xz2j9hBcFVdBL2fL1457McPt9V/bDNv735ga2CGJ/3BvEg88CPMNqZ7Gir/sWFfHT3ZBYxrSx2rRYVz8PHZQSkU7kYcvInhU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1779922146; c=relaxed/simple;
+	bh=XgCimAoT7hxbVKi27EM2uVlOhhGmrOb94/8bSorKk6o=;
+	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
+	 Mime-Version:Content-Type; b=lCveeWXPtIGs0CJQ8vPtldn0zHWmRRvxhDfSnoCT6hcPouLLzityAVbPe5+L54Gj0FH5fM7uVQVQRjdu2jBeRNrtSUSr4Bye9jagg8L+sodOrj4uxOwqeVTzBMUHlnWZaw6D4LsMuNm+ys2EpyeKZawNjbi33zH0o68iKxKniSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZfXIZS1L; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vAmNxA/d"
-Received: by mail-dl1-f52.google.com with SMTP id a92af1059eb24-135e7f4a295so5109979c88.0
-        for <kvm@vger.kernel.org>; Wed, 27 May 2026 15:45:41 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; t=1779921941; cv=none;
-        d=google.com; s=arc-20240605;
-        b=RlJAgR+/ifZFKpPnKx0uV4oFu4/sQEPAS2p2vo6opFSKxLSX1rDk8vbb6Ud722h0+P
-         yymvTbSsymHCfqVjjZRyW3s4Sqo69HWAXxiP7xdogTovvZIA/cVVrpCqyQLBxffaiO/C
-         6a5EzpU1hK8txLKImhvcOE/8SuX26wKyUddz1QxtDzQMOD87ESUnNgdr3oYBwQqewL9i
-         WRYJNcdvvu6dPImLNXk7JO9o63pPfMfySU4gAsFxua+vks2yUGKuD2ShgL+/4d2hHuln
-         dbtVJhQVOrOqspnOlm48Z+ZsjjcD60sAC5rIw9XLkTMb3YZFuwAC9tCRSOJxsm4ruzS0
-         zxIw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:dkim-signature;
-        bh=+lPtc5dmsndYutIZiuP5KynRR1ndlzwDT+9x2AXFaWI=;
-        fh=KVy4+j+TE0qJlGnL1oxDtQvAs+ZlkPteDJwxhHS2piY=;
-        b=CU1XhwJNAZ212MyNQpvX8ncUvO3u+pkqjkPD4oZSTwi7GW/E5DLZ7FjXnHF82fA8R8
-         OmQVV7LE7YrLhqSI9q171jUo27YhuZb2a3wVuVEYk+L+g1iZPoeLRg+GkBCNyps3ZzAN
-         YTSxGjHSm0an/0FbA21CMqZyUBN0f3HZgHfveLIh1rQ7OURLCyIsat4GTJdCtHAYaSRo
-         htSfdCJ4ApmQIiu6Fc0gBKI1CO56mPGLG9HEyOWN3nDiEdwhtRdguzgIbFW3Pe/eitjW
-         yn9iyFRL0zq16sH5C7HOeMZP64kfGm6rucu8g3IyXOd/LIy/pPu4t2k9E6xBhTctTPSI
-         0BbA==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20251104; t=1779921941; x=1780526741; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+lPtc5dmsndYutIZiuP5KynRR1ndlzwDT+9x2AXFaWI=;
-        b=vAmNxA/doEw4soq1ByJrxLlrqbCw5l6pgUBz2It5uRHJuMq60gT9rB9xlP5cAr4PPx
-         tVhWOCTwciPhE9Fik/95W4Il6KuR8MtFAA8GElS5QmGgCt82XGNKXOIv4U4Y/ypf1VgJ
-         a68SOpQws5wRvTDbErNsPnb9WYZs3mgAAyRhYbhPrVf2oRuwi7iw7wC2PFF2o9hit1cm
-         8hPjZG+YK1mVrdgJrSDc+264FYEKreeA44Oiax/HrFsvyW7ZaYzsY6Ne7aEAEc/0EadH
-         GIYw/NNFXQigOouwekG1twZjTKefQseggQ8u7GXN5MkzfznsSiP1+kPUGoUWQMxnUQxj
-         q3Rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20251104; t=1779921941; x=1780526741;
-        h=content-transfer-encoding:cc:to:subject:message-id:date
-         :mime-version:references:in-reply-to:from:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=+lPtc5dmsndYutIZiuP5KynRR1ndlzwDT+9x2AXFaWI=;
-        b=rRdCXHK58r0TMRC7ozyTxl1qJcJmmV3stTnmmnrJqBjiaXrkPjIbmVIwnmOG7JQvDn
-         BtJ1ahqiDJJgDk5qxJZPkFILlZsbVMV9v2yupvxs2j9xJrWtMxdtAtVZI7lpjTACKPwp
-         iicvaFBwOiJL749rmbvUT+zT+rqDaMXEmw9viSX1cPW+JvlVcQ2GComwbBOr6AlYnSKH
-         OeSNyqsl4G6XIdt0H7XQZJ4yHwykx8vjc8wryUxyxkFyNlAPSMp8GUjgiHyyiFw6qOls
-         zMIeP/0AHqprI5Cp3GCXtn8oCqdBjFqH9ZmQS73IInNnrtXeYrZc6OyzGKn6rx2D8lFF
-         VQRg==
-X-Gm-Message-State: AOJu0YzQ21vrnjny4YPWhs+k2NBCCkn2w5Lei867iKAcb9G3URTB3SrJ
-	ZYWE1ex2MuY/wf1jwXfmlX+d/2kTe+w9IcEcdr6YNmkkqjQdHGOHJujA38glob3KnZiA4Yi43I1
-	dGEKz8Mtt8jgkXgpYXaMOXrUL8q3paW/VXiS6mGXkTmjt4Ld4sTYe8JjRMPs=
-X-Gm-Gg: Acq92OFUO7MwYZXeP2JJeq20jo025q8KXQyfrlDDZJCR87yl55PZ1IjjG5m4gKeTB3u
-	dI2LKav6YQTYLQG/4Oax4uRuMMbPiyIbJMGdSZZnuv9BtBXWt+mFWL6U3cA3MNkwuCam8w4K3h0
-	y+KAMvrUUcvinv+PAaAIZ5L3V6rA7cMrnq7/+RipSL1QAstHKmb48IPrMkOVfoK3bRD5GUzuAVR
-	6GE+qmAGdfzehsOVOZnrmJxyIs3mIY5RLBw+YgP8HzaFk422WhmKN3ThQVz5tjr19pbvFMR0dCY
-	2zLHJ2c4YBH9ceiXN5qYYbQt/w2TzkXaZrjeEuFvMGKO8SGLW7udH7j9tsvlyxvqevY5OrSo94P
-	pZi0=
-X-Received: by 2002:a05:7022:3d12:b0:135:3983:2131 with SMTP id
- a92af1059eb24-136341c8b21mr9992516c88.21.1779921940478; Wed, 27 May 2026
- 15:45:40 -0700 (PDT)
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 27 May 2026 15:45:39 -0700
-Received: from 176938342045 named unknown by gmailapi.google.com with
- HTTPREST; Wed, 27 May 2026 15:45:39 -0700
-From: Ackerley Tng <ackerleytng@google.com>
-In-Reply-To: <20260523010607.CCABC1F000E9@smtp.kernel.org>
-References: <20260522-gmem-inplace-conversion-v7-16-2f0fae496530@google.com> <20260523010607.CCABC1F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZfXIZS1L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199341F00A3D;
+	Wed, 27 May 2026 22:49:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
+	s=k20260515; t=1779922145;
+	bh=kbwvCEgGUo53H1eMdHinsXodo5C04fK1nklZJsj/WrU=;
+	h=Date:From:To:Cc:In-Reply-To:References:Subject;
+	b=ZfXIZS1Ls2HEsX0SlQYoXjWfo4DV+yfsRZo6fAPXpYNLbaKANgvkILGMArld3S/zj
+	 Kl9L+PVwAM9iVCd6ayt1ecyj2PIFBa/HoxpcLq64RWXKA1kY+ckBHfdIsfvsmD6+AA
+	 q8Y7ok0dljyVyUi2HNrJ1ADSolklhHqzH12ygiwE724mSDofrSYq6Tnibrhq6Sqeji
+	 UhPU6Psy+RpY7uirQCbkmhhXCzd+TBsbPCrwfibePFDG3vKQJYp6Iet6oSJz3xpZTG
+	 NSS1V/Fq0n2+GkAB8++1mFf9rC5nCjtEdX7Fv38isZAUS/hzyIJVWvW5kCN5ikGLFI
+	 xSigt28Vy/gYA==
+Received: from phl-compute-04.internal (phl-compute-04.internal [10.202.2.44])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 5353AF4006B;
+	Wed, 27 May 2026 18:49:03 -0400 (EDT)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-04.internal (MEProxy); Wed, 27 May 2026 18:49:03 -0400
+X-ME-Sender: <xms:33QXampOgvj0FTxfrrqvIaE2WkPjN4ZzJPeT7HLRAO703M5bbVhwQg>
+    <xme:33QXak_Ng1KpK1W3mzSKlCKYUqCS3oTxMAXUt2FXME0GQjoHgFhMWxhLzn6CciYqD
+    9SsY4d-krsQC2UkWuE6VAvdEwKZ4ehCyL2BmduTVTzPq-B5N1cM7Bg>
+X-ME-Received: <xmr:33QXai1I8lAnYd5E04lWVxWavWDl5KTjJfgqWjQAvIVzWMRYHkSiABWI9DPINF-1Cd57hmWuX9cQcFB39p8RBMgv0YkN36Om1lU>
+X-ME-Proxy-Cause: dmFkZTEKosdjcGQ0fUzOjNmQ2DaCEkmXgDIgGtQ7CeozMDS1NKqLYgRoYzp4SrcRkoePGh
+    I3/0gP8U7PceQZ5VeBofkCCiqKdtXu/IVi1l7qzDRfWoqulRf4ZxWwe+5xsnELv45z+f/G
+    MaW/6HK6PZ9Po7ctNfm2S2K8YTLug1Wy65sJ4o5Ro+jeumn5uaFuZ85G3XiIiuz96lPvyJ
+    5fVFLuiNLia/ofcgArMi7jyfqb+AyocmjpvFTrvevVedErrFHWQvg4mrVFRK+7hxI8TP9M
+    mH1GI7EFK4AsYlNCrehRXq0VRcua8GPJN1WdVOwJgcw1qyxxLSJNDVONOXjRw9Ti6ErZO8
+    IrHD8LSA2YBfCifjnv7QIoH3nmTTq5UhqXrsa2xxfEYB5iGFJ+/B967wkejXSzOP9s9tkv
+    UziHZTPytzoznWs846mNcKteLWm5xtwTynhnjOrk5gw8NB5l1etb2x+/nrPDugBmnBBK/v
+    1D0lDSGZ10+FSjJsdy6DjVLLoKrjKk78XVjOo/5ByP2KjEIVJvPtPm0VVSuBJj4eR3Sjyv
+    V6VDIJElnseu4xowOBfRXXRYf2l5RdjZ7CSob4xY0gEA9sCwels/KxGLYUc6MfH6UAP10J
+    Ki7RBESOfd6GCyV5R5advgpW4KSHN05EtIQ+9TPuuk3AJBaPYbxgY5UdHtyA
+X-ME-Proxy: <xmx:33QXagjbrn0N50-mkQRVcaem9HyvUmPsqN33puowc7OUHE5Za155kQ>
+    <xmx:33QXaucHNUjz6CMg_eWGBI2GVA5a4BRjQ0__UGwjLXLtFONMDBhu8w>
+    <xmx:33QXas0GqdHzsaxMbrruKhhHapNJW6YuDhyVjV57fZSmFdQuhJRAPA>
+    <xmx:33QXaiN8g3Bd53M7QMBeTuH-AWTijtnsJaP1eq_qSAR8M3WMXLjMYA>
+    <xmx:33QXarTzdGYhkry-UZRJtm3zXrRdJgI-w69jvHYiJrkKw_kYebPLmtte>
+Feedback-ID: i67ae4b3e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 27 May 2026 18:49:02 -0400 (EDT)
+Date: Wed, 27 May 2026 15:49:01 -0700
+From: "Dan Williams (nvidia)" <djbw@kernel.org>
+To: "Aneesh Kumar K.V" <aneesh.kumar@kernel.org>, 
+ "Dan Williams (nvidia)" <djbw@kernel.org>, 
+ Alexey Kardashevskiy <aik@amd.com>, 
+ linux-coco@lists.linux.dev, 
+ iommu@lists.linux.dev, 
+ linux-kernel@vger.kernel.org, 
+ kvm@vger.kernel.org
+Cc: Bjorn Helgaas <helgaas@kernel.org>,  Dan Williams <djbw@kernel.org>,
+  Jason Gunthorpe <jgg@ziepe.ca>,  Joerg Roedel <joro@8bytes.org>,
+  Jonathan Cameron <jic23@kernel.org>,  Kevin Tian <kevin.tian@intel.com>,
+  Nicolin Chen <nicolinc@nvidia.com>,  Samuel Ortiz <sameo@rivosinc.com>,
+  Steven Price <steven.price@arm.com>,
+  Suzuki K Poulose <Suzuki.Poulose@arm.com>,
+  Will Deacon <will@kernel.org>,  Xu Yilun <yilun.xu@linux.intel.com>,
+  Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+  Paolo Bonzini <pbonzini@redhat.com>,
+  Tony Krowiak <akrowiak@linux.ibm.com>,
+  Halil Pasic <pasic@linux.ibm.com>,  Jason Herne <jjherne@linux.ibm.com>,
+  Harald Freudenberger <freude@linux.ibm.com>,
+  Holger Dengler <dengler@linux.ibm.com>,
+  Heiko Carstens <hca@linux.ibm.com>,  Vasily Gorbik <gor@linux.ibm.com>,
+  Alexander Gordeev <agordeev@linux.ibm.com>,
+  Christian Borntraeger <borntraeger@linux.ibm.com>,
+  Sven Schnelle <svens@linux.ibm.com>,
+  Alex Williamson <alex@shazbot.org>,
+  Matthew Rosato <mjrosato@linux.ibm.com>,
+  Farhan Ali <alifm@linux.ibm.com>,  Eric Farman <farman@linux.ibm.com>,
+  linux-s390@vger.kernel.org
+Message-ID: <6a1774dd80f74_19737610095@djbw-dev.notmuch>
+In-Reply-To: <yq5aldd4spyc.fsf@kernel.org>
+References: <20260525154816.1029642-1-aneesh.kumar@kernel.org>
+ <20260525154816.1029642-6-aneesh.kumar@kernel.org>
+ <becd865d-09a4-4ac3-b719-4a0deae2692a@amd.com>
+ <6a168c8ea7d10_2129b2100e@djbw-dev.notmuch>
+ <yq5apl2gsw6y.fsf@kernel.org>
+ <yq5aldd4spyc.fsf@kernel.org>
+Subject: Re: [PATCH v5 5/5] iommufd/vdevice: add TSM request ioctl
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Date: Wed, 27 May 2026 15:45:39 -0700
-X-Gm-Features: AVHnY4LIsg0HNghLgZYcP1TwllMFGycwHKfgPLHe4qjPEhOmdYUpg_w7XPilrVc
-Message-ID: <CAEvNRgH21BoKT1mOQzgmKHKpDi4xbwtbMuenGv5U1ZUSENrJmg@mail.gmail.com>
-Subject: Re: [PATCH v7 16/42] KVM: guest_memfd: Determine invalidation filter
- from memory attributes
-To: sashiko-reviews@lists.linux.dev, 
-	Ackerley Tng via B4 Relay <devnull+ackerleytng.google.com@kernel.org>
-Cc: kvm@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0
+Content-Type: text/plain;
+ charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-sashiko-bot@kernel.org writes:
+Aneesh Kumar K.V wrote:
+> >> I am leaning towards the latter at this point.
+> >
+> > But we already have struct pci_tsm_ops::guest_req, which is specific =
+to
+> > the underlying CC architecture. From the above, pci_tsm_req_scope als=
+o
+> > appears to carry the same information. Is that useful?
+> >
+> =
 
-> Thank you for your contribution! Sashiko AI review found 1 potential issu=
-e(s) to consider:
->
-> Pre-existing issues:
-> - [High] Use-After-Free of KVM memory slots during guest_memfd invalidati=
-on due to missing SRCU read lock.
-> --
->
-> commit 405f31b1513a8790de48221d335a28b8c5c7bf77
-> Author: Ackerley Tng <ackerleytng@google.com>
-> KVM: guest_memfd: Determine invalidation filter from memory attributes
->
-> This commit updates kvm_gmem_get_invalidate_filter to inspect the memory
-> attributes maple tree for a given range. This allows KVM to identify if
-> the range contains private pages, shared pages, or both, and set the filt=
-er
-> bits accordingly.
->
->> diff --git a/virt/kvm/guest_memfd.c b/virt/kvm/guest_memfd.c
->> index a361b3f672516..4570e90f8c042 100644
->> --- a/virt/kvm/guest_memfd.c
->> +++ b/virt/kvm/guest_memfd.c
-> [ ... ]
->> @@ -244,7 +256,7 @@ static void kvm_gmem_invalidate_begin(struct inode *=
-inode, pgoff_t start,
->>  	enum kvm_gfn_range_filter attr_filter;
->>  	struct gmem_file *f;
->>
->> -	attr_filter =3D kvm_gmem_get_invalidate_filter(inode);
->> +	attr_filter =3D kvm_gmem_get_invalidate_filter(inode, start, end);
->>
->>  	kvm_gmem_for_each_file(f, inode)
->>  		__kvm_gmem_invalidate_begin(f, start, end, attr_filter);
->
-> [Severity: High]
-> This is a pre-existing issue, but does __kvm_gmem_invalidate_begin() safe=
-ly
-> access the memory slots when iterating over f->bindings?
->
-> In __kvm_gmem_invalidate_begin(), the code iterates over f->bindings usin=
-g
-> xa_for_each_range(). The retrieved slot pointers are protected by the kvm
-> srcu, but the read lock doesn't appear to be held during the iteration:
->
-> static void __kvm_gmem_invalidate_begin(...)
+> I think there is value in having the VMM express the guest=E2=80=99s
+> confidential computing architecture, so that the TSM backend can
+> validate whether it should handle that guest request ?.
+
+Yes, that is the idea.
+
+> So it would not be the IOMMU validating the scope value, but rather
+> pci_tsm_ops::guest_req.
+> =
+
+> static ssize_t cca_tsm_guest_req(struct pci_tdi *tdi, enum pci_tsm_req_=
+scope scope,
+> 		sockptr_t req, size_t req_len, sockptr_t resp,
+> 		size_t resp_len, u64 *tsm_code)
 > {
-> 	...
-> 	xa_for_each_range(&f->bindings, index, slot, start, end - 1) {
-> 		pgoff_t pgoff =3D slot->gmem.pgoff;
-> 	...
->
-> When a memory slot is deleted, the code calls kvm_gmem_unbind() and
-> kfree(slot) after synchronize_srcu(&kvm->srcu). If the read lock isn't he=
-ld,
-> could a concurrent memslot deletion free the slot while it is still being
-> accessed in this loop?
->
+> 	struct pci_dev *pdev =3D tdi->pdev;
+> =
 
-The issue here is between __kvm_gmem_unbind() and
-__kvm_gmem_invalidate_begin(). Since f->bindings is protected by
-filemap_invalidate_lock(), I'm dividing the analysis into two cases
-where accessing slot through f->bindings with and without holding
-filemap_invalidate_lock().
+> 	/* reject the guest request if VMM was using the link tsm wrongly. The=
+ guest
+> 	 * was using a wrong CC archiecture with this link tsm
+> 	 */
+> 	if (scope !=3D TSM_REQ_TYPE_CCA)
+> 		return -EINVAL;
 
-## Holding filemap_invalidate_lock()
+Right, iommufd is tunneling TSM requests. The tunnel should have an
+envelope of TSM_REQ_TYPE_* and an @op field. The TSM driver gets those
+from iommufd, validates the envelope and then processes @req.
 
-If unbind happens before invalidate, we have
+This self-consistency and explicitness also buys some future-proofing.
+It allows for alternate command sets within an arch, cross TSM
+implementation shared commands, IOMMUFD-to-TSM requests outside of guest
+requests.
 
-    filemap_invalidate_lock()
-    __kvm_gmem_unbind(), would have removed slot from f->bindings.
-    filemap_invalidate_unlock()
+> Jason Gunthorpe <jgg@ziepe.ca> writes:
+> =
 
-    After this, slot can be freed.
+> > On Tue, May 26, 2026 at 11:17:50PM -0700, Dan Williams (nvidia) wrote=
+:
+> >
+> >> In that case pci_tsm_req_scope becomes tsm_req_type and is just:
+> >> =
 
-    filemap_invalidate_lock()
-    __kvm_gmem_invalidate_begin(), which iterates f->bindings and doesn't
-       see bound slot.
-    filemap_invalidate_unlock()
+> >> TSM_REQ_TYPE_CCA
+> >> TSM_REQ_TYPE_SEV
+> >> TSM_REQ_TYPE_TDX
+> >> =
 
-## Not holding filemap_invalidate_lock()
+> >> I am leaning towards the latter at this point.
+> >
+> > Yeah, this sounds good. I would also include an common op field that
+> > can be decoded by the TSM driver based on the TYPE above, and the
+> > usual in/out message buffers.
+> =
 
-In kvm_gmem_unbind(), __kvm_gmem_unbind() can be called without taking
-the filemap_invalidate_lock() if !file. The only places where NULL is
-written to slot->gmem.file is kvm_gmem_release() and __kvm_gmem_unbind()
-itself.
+> We already have iommufd_vdevice_tsm_op_ioctl() to handle common
+> operations.
 
-kvm_gmem_release() is prevented from racing with kvm_gmem_unbind() since
-kvm_gmem_release() holds slots_lock, so since kvm_gmem_unbind() is
-called while holding slots_lock, it should either see a guest_memfd
-memslot with a file or no slot at all? Perhaps I'm missing something
-about get_file_active().
+Per above, I believe this is about an @op value in a common location
+that iommufd can forward to the backend for validation of guest
+requests.
 
-Would like Sean to check my understanding.
+> Right now, it handles IOMMU_VDEVICE_TSM_BIND and
+> IOMMU_VDEVICE_TSM_UNBIND. I guess we should move TSM_REQ_SET_TDI_STATE
+> operations to that as well?
 
-> This race might occur when __kvm_gmem_invalidate_begin() is invoked witho=
-ut
-> holding a file descriptor reference, such as from kvm_gmem_error_folio()
-> after a memory failure. If the file descriptor is closed (refcount is 0),
-> kvm_gmem_unbind() observes a dead file and skips acquiring the
-> filemap_invalidate_lock. This allows concurrent xarray modifications,
-> potentially leading to a use-after-free when dereferencing slot->gmem.pgo=
-ff.
->
-> --
-> Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260522-gmem-inp=
-lace-conversion-v7-0-2f0fae496530@google.com?part=3D16
+I think we can wait to move it to its own IOMMU operation unless/until
+there is a need to set RUN outside of an explicit guest request, right?=
