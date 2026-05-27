@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6E83C942C;
-	Wed, 27 May 2026 23:47:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D17D93DFC94;
+	Wed, 27 May 2026 23:47:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779925651; cv=none; b=R/SyhfjbM3izzHT99sUrC+sSorSaMsLl7/N7sFjBYmREM9h/Thhgz3IF6uFrFI87m6rdeCeHbjmr28yYSsVqytodBYjk8/8/XBzTG6lPW1HqJCtzfkNgik9MUTwKf24+deU2k+YU9kRydv9WgeDy1ffO3cm1UsKat0gk8txgXZY=
+	t=1779925652; cv=none; b=QTXQV8hbrZYJPdGWyl25rtvMhCs9f+BY8EmA8qXOlWCZSbcXoL6VFqsJrFlhrE3PccWGS9wb8KDqTGAQIIPSXV8sdMg5awjQn0P66N/0+IkeogpCRR6i8efoVv9bOAZcbKYLoF8ibHJkQy60osGd+3+oHlIqtlJzIll/4iYCDwQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779925651; c=relaxed/simple;
-	bh=ppFOZXZp1mhQpfCJoAgjRVpQNQTAzRUCth7GOcUVJmE=;
+	s=arc-20240116; t=1779925652; c=relaxed/simple;
+	bh=htyzYObhK3/cOuj6AyO0FGGU7bBU3a64wSW49SLrOYY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vC5rvv5k/LbJszOkcADGjA3KxsvhG/x/LrsH9Q4FbzGRZYJVvT9kg5T9LikK67716lf2pHHlf+bLZvDsmKJ/97G3H+0lifvYzg/D14npyc1JqwlQ8P8jSchrQdimlyZfTAyk6MHBrtqJJ9lLC9/e7uVhdoJO9JD46W+2jjtglKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eH5Z5QXh; arc=none smtp.client-ip=100.103.45.18
+	 MIME-Version; b=Y6MONI4qch5lABMIi0J94vgGzp7TaFVTLGNPmvZ0N9SXeMnBf7kpeSZ9CQEiHdl/oWQWc8g/umCblGqBQYIu7hRpnNjXkZpVRO6t0CUrKlUzHfvHywOp9N4PipVv/ViCA0KMp0J4DeltcHyWpMGKVmZXeCdYzWn+CnHsbCYxz9s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Yd1749ux; arc=none smtp.client-ip=100.103.45.18
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eH5Z5QXh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBBA91F00ACF;
-	Wed, 27 May 2026 23:47:28 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Yd1749ux"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 369791F000E9;
+	Wed, 27 May 2026 23:47:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779925649;
-	bh=bIfcOFpv8y9d0c5rMhhhwZKzXQTjrLMLbf8k9VBsVWA=;
+	s=k20260515; t=1779925650;
+	bh=1U24eWW9n3ACEjNCNLe2CqY0Gd2RUHuKZSqNGo/OPpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=eH5Z5QXh19bZmnUFts3iF80FH+Wx+9fvJK+dXIbZer89lOEesbIrNaPcmyLoL2+Hk
-	 zXZtRcjZXNYlbWqx4XLfp3VSykLM24XbkoV+aAk70ZwBeCqy3n+x+5LVjXJywAD3nX
-	 lzb93rkuHPQqBVInCdtfqWjzSzdc/iLAleLT9qhoYXO7WbpPhbMxruPBpcTqK/YeI3
-	 faWtpweuD0kqdmxCpmEvP7gXA4Q4hrZLjhZWV6r0c6BjZl5asfYGrQUvab5iKJ8nUM
-	 HMGzJLd+B3+eMxvOKneIMhgJJ01db4lgOTronwVMdMGoRLRy4NfjMdG1My/L/RxsCr
-	 R5Bbif20/rcWA==
+	b=Yd1749uxPX+bYLLb0F4WoiJGlXHSEoLk1/XJp/LHCOnqqCKD+5VCE9V2/xUjm8T0j
+	 nfFbDsM/BTchn/J9TwSyNM03ZoiGrY+01/MvSRrPInvzwnWnS5G3+EMt7Be7Fu22jQ
+	 E0YfBLt5ZSpyOBVoCONtt0f0UXe27z0JmdVh6Z+9ANpT+lskDdbHkJxQFvhSWidwXo
+	 Wx/sZ4WceJohdEYuTXQXXM1XHBHsrjp+w/hJAtClfqt0pZbG6B/L2Qn95sZIT8St7N
+	 7t1bvqSrFQ8h/ijpabtDqPsiARSKM9DNlYxpk00BdMK74KzY3LqWpnDDC0wajr8oBH
+	 f3WRJWRAigiHA==
 From: Yosry Ahmed <yosry@kernel.org>
 To: Sean Christopherson <seanjc@google.com>
 Cc: Paolo Bonzini <pbonzini@redhat.com>,
@@ -41,9 +41,9 @@ Cc: Paolo Bonzini <pbonzini@redhat.com>,
 	kvm@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Yosry Ahmed <yosry@kernel.org>
-Subject: [PATCH v7 15/17] KVM: selftests: Allocate a dedicated guest page for x86 L2 guest stack
-Date: Wed, 27 May 2026 23:47:09 +0000
-Message-ID: <20260527234711.4175166-16-yosry@kernel.org>
+Subject: [PATCH v7 17/17] KVM: selftests: Add svm_pmu_host_guest_test for Host-Only/Guest-Only bits
+Date: Wed, 27 May 2026 23:47:11 +0000
+Message-ID: <20260527234711.4175166-18-yosry@kernel.org>
 X-Mailer: git-send-email 2.54.0.794.g4f17f83d09-goog
 In-Reply-To: <20260527234711.4175166-1-yosry@kernel.org>
 References: <20260527234711.4175166-1-yosry@kernel.org>
@@ -55,152 +55,279 @@ List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Instead of relying on the L1-provided stack for L2, which is usually an
-array on L1's own stack, allocate a dedicated page of VM memory for the
-L2 stack in vcpu_alloc_{vmx/svm}() and use that as L2's RSP in the
-VMCS/VMCB instead of the L1-provided value.
+From: Jim Mattson <jmattson@google.com>
 
-Most L1 guest code does not do anything with the L2 stack other than
-stuff it in RSP, so this change is transparent and the L1-provided stack
-is silently ignored. The only exception is memstress nested L1 code
-which puts the vCPU index on L2's stack, so update this code to use the
-newly allocated stack.
+Add a selftest to verify KVM correctly virtualizes the AMD PMU Host-Only
+(bit 41) and Guest-Only (bit 40) event selector bits across all relevant
+SVM state transitions.
 
-L1-provided stacks will be dropped and cleaned up separately.
+The test programs 4 PMCs simultaneously with all combinations of the
+Host-Only and Guest-Only bits, then verifies correct counting behavior
+with EFER.SVME clear and set, as well as in host mode and guest mode.
+The test also verifies that updating Host-Only / Guest-Only bits for a
+PMC works as intended, and that event filtering is still respected.
 
-Suggested-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Jim Mattson <jmattson@google.com>
+Co-developed-by: Yosry Ahmed <yosry@kernel.org>
 Signed-off-by: Yosry Ahmed <yosry@kernel.org>
 ---
- tools/testing/selftests/kvm/include/x86/processor.h | 2 ++
- tools/testing/selftests/kvm/include/x86/svm_util.h  | 3 +++
- tools/testing/selftests/kvm/include/x86/vmx.h       | 2 ++
- tools/testing/selftests/kvm/lib/x86/memstress.c     | 5 ++---
- tools/testing/selftests/kvm/lib/x86/processor.c     | 2 +-
- tools/testing/selftests/kvm/lib/x86/svm.c           | 4 +++-
- tools/testing/selftests/kvm/lib/x86/vmx.c           | 4 +++-
- 7 files changed, 16 insertions(+), 6 deletions(-)
+ tools/testing/selftests/kvm/Makefile.kvm      |   1 +
+ tools/testing/selftests/kvm/include/x86/pmu.h |   6 +
+ .../kvm/x86/svm_pmu_host_guest_test.c         | 216 ++++++++++++++++++
+ 3 files changed, 223 insertions(+)
+ create mode 100644 tools/testing/selftests/kvm/x86/svm_pmu_host_guest_test.c
 
-diff --git a/tools/testing/selftests/kvm/include/x86/processor.h b/tools/testing/selftests/kvm/include/x86/processor.h
-index 06878e7c73479..e918237c3c208 100644
---- a/tools/testing/selftests/kvm/include/x86/processor.h
-+++ b/tools/testing/selftests/kvm/include/x86/processor.h
-@@ -1225,6 +1225,8 @@ struct idt_entry {
- void vm_install_exception_handler(struct kvm_vm *vm, int vector,
- 			void (*handler)(struct ex_regs *));
+diff --git a/tools/testing/selftests/kvm/Makefile.kvm b/tools/testing/selftests/kvm/Makefile.kvm
+index 2908eca1647a1..4449851bc0f23 100644
+--- a/tools/testing/selftests/kvm/Makefile.kvm
++++ b/tools/testing/selftests/kvm/Makefile.kvm
+@@ -119,6 +119,7 @@ TEST_GEN_PROGS_x86 += x86/svm_nested_shutdown_test
+ TEST_GEN_PROGS_x86 += x86/svm_nested_soft_inject_test
+ TEST_GEN_PROGS_x86 += x86/svm_nested_vmcb12_gpa
+ TEST_GEN_PROGS_x86 += x86/svm_lbr_nested_state
++TEST_GEN_PROGS_x86 += x86/svm_pmu_host_guest_test
+ TEST_GEN_PROGS_x86 += x86/tsc_scaling_sync
+ TEST_GEN_PROGS_x86 += x86/sync_regs_test
+ TEST_GEN_PROGS_x86 += x86/ucna_injection_test
+diff --git a/tools/testing/selftests/kvm/include/x86/pmu.h b/tools/testing/selftests/kvm/include/x86/pmu.h
+index 98537cc8840d1..608ed83d7c6a6 100644
+--- a/tools/testing/selftests/kvm/include/x86/pmu.h
++++ b/tools/testing/selftests/kvm/include/x86/pmu.h
+@@ -38,6 +38,12 @@
+ #define ARCH_PERFMON_EVENTSEL_INV		BIT_ULL(23)
+ #define ARCH_PERFMON_EVENTSEL_CMASK		GENMASK_ULL(31, 24)
  
-+gva_t vm_alloc_stack(struct kvm_vm *vm, int nr_pages);
++/*
++ * These are AMD-specific bits.
++ */
++#define AMD64_EVENTSEL_GUESTONLY		BIT_ULL(40)
++#define AMD64_EVENTSEL_HOSTONLY			BIT_ULL(41)
 +
- /*
-  * Exception fixup morphs #DE to an arbitrary magic vector so that '0' can be
-  * used to signal "no expcetion".
-diff --git a/tools/testing/selftests/kvm/include/x86/svm_util.h b/tools/testing/selftests/kvm/include/x86/svm_util.h
-index 6c013eb838beb..3b1cc484fba1c 100644
---- a/tools/testing/selftests/kvm/include/x86/svm_util.h
-+++ b/tools/testing/selftests/kvm/include/x86/svm_util.h
-@@ -28,6 +28,9 @@ struct svm_test_data {
- 	void *msr_hva;
- 	u64 msr_gpa;
- 
-+	/* Stack */
-+	void *stack; /* gva */
+ /* RDPMC control flags, Intel only. */
+ #define INTEL_RDPMC_METRICS			BIT_ULL(29)
+ #define INTEL_RDPMC_FIXED			BIT_ULL(30)
+diff --git a/tools/testing/selftests/kvm/x86/svm_pmu_host_guest_test.c b/tools/testing/selftests/kvm/x86/svm_pmu_host_guest_test.c
+new file mode 100644
+index 0000000000000..ee4633ab79aa7
+--- /dev/null
++++ b/tools/testing/selftests/kvm/x86/svm_pmu_host_guest_test.c
+@@ -0,0 +1,216 @@
++// SPDX-License-Identifier: GPL-2.0-only
++/*
++ * KVM nested SVM PMU Host-Only/Guest-Only test
++ *
++ * Copyright (C) 2026, Google LLC.
++ *
++ * Test that KVM correctly virtualizes the AMD PMU Host-Only (bit 41) and
++ * Guest-Only (bit 40) event selector bits across all SVM state
++ * transitions.
++ *
++ * Programs 4 PMCs simultaneously with all combinations of Host-Only and
++ * Guest-Only bits, then verifies correct counting behavior with different
++ * combinations of EFER.SVME and host/guest mode -- as well as event filtering.
++ */
++#include <fcntl.h>
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
 +
- 	/* NPT */
- 	u64 ncr3_gpa;
- };
-diff --git a/tools/testing/selftests/kvm/include/x86/vmx.h b/tools/testing/selftests/kvm/include/x86/vmx.h
-index 90fffaf915958..1dcb9b86d33d3 100644
---- a/tools/testing/selftests/kvm/include/x86/vmx.h
-+++ b/tools/testing/selftests/kvm/include/x86/vmx.h
-@@ -524,6 +524,8 @@ struct vmx_pages {
- 	u64 apic_access_gpa;
- 	void *apic_access;
- 
-+	void *stack;
++#include "test_util.h"
++#include "kvm_util.h"
++#include "processor.h"
++#include "svm_util.h"
++#include "pmu.h"
 +
- 	u64 eptp_gpa;
- };
- 
-diff --git a/tools/testing/selftests/kvm/lib/x86/memstress.c b/tools/testing/selftests/kvm/lib/x86/memstress.c
-index 61cf952cd2dc2..fa07ef037cad1 100644
---- a/tools/testing/selftests/kvm/lib/x86/memstress.c
-+++ b/tools/testing/selftests/kvm/lib/x86/memstress.c
-@@ -43,7 +43,7 @@ static void l1_vmx_code(struct vmx_pages *vmx, u64 vcpu_id)
- 	GUEST_ASSERT(ept_1g_pages_supported());
- 
- 	rsp = &l2_guest_stack[L2_GUEST_STACK_SIZE - 1];
--	*rsp = vcpu_id;
-+	*(u64 *)vmx->stack = vcpu_id;
- 	prepare_vmcs(vmx, memstress_l2_guest_entry, rsp);
- 
- 	GUEST_ASSERT(!vmlaunch());
-@@ -56,9 +56,8 @@ static void l1_svm_code(struct svm_test_data *svm, u64 vcpu_id)
- 	unsigned long l2_guest_stack[L2_GUEST_STACK_SIZE];
- 	unsigned long *rsp;
- 
--
- 	rsp = &l2_guest_stack[L2_GUEST_STACK_SIZE - 1];
--	*rsp = vcpu_id;
-+	*(u64 *)svm->stack = vcpu_id;
- 	generic_svm_setup(svm, memstress_l2_guest_entry, rsp);
- 
- 	run_guest(svm->vmcb, svm->vmcb_gpa);
-diff --git a/tools/testing/selftests/kvm/lib/x86/processor.c b/tools/testing/selftests/kvm/lib/x86/processor.c
-index 9393bb580a58e..ef56dcefe0119 100644
---- a/tools/testing/selftests/kvm/lib/x86/processor.c
-+++ b/tools/testing/selftests/kvm/lib/x86/processor.c
-@@ -778,7 +778,7 @@ void assert_on_unhandled_exception(struct kvm_vcpu *vcpu)
- 		REPORT_GUEST_ASSERT(uc);
- }
- 
--static gva_t vm_alloc_stack(struct kvm_vm *vm, int nr_pages)
-+gva_t vm_alloc_stack(struct kvm_vm *vm, int nr_pages)
- {
- 	int size = nr_pages * getpagesize();
- 	gva_t stack_gva;
-diff --git a/tools/testing/selftests/kvm/lib/x86/svm.c b/tools/testing/selftests/kvm/lib/x86/svm.c
-index 3b01605ab016c..4e9c37f8d1a61 100644
---- a/tools/testing/selftests/kvm/lib/x86/svm.c
-+++ b/tools/testing/selftests/kvm/lib/x86/svm.c
-@@ -46,6 +46,8 @@ vcpu_alloc_svm(struct kvm_vm *vm, gva_t *p_svm_gva)
- 	svm->msr_gpa = addr_gva2gpa(vm, (uintptr_t)svm->msr);
- 	memset(svm->msr_hva, 0, getpagesize());
- 
-+	svm->stack = (void *)vm_alloc_stack(vm, 1);
++#define EVENTSEL_RETIRED_INSNS	(ARCH_PERFMON_EVENTSEL_OS |	\
++				 ARCH_PERFMON_EVENTSEL_USR |	\
++				 ARCH_PERFMON_EVENTSEL_ENABLE |	\
++				 AMD_ZEN_INSTRUCTIONS_RETIRED)
 +
- 	if (vm->stage2_mmu.pgd_created)
- 		svm->ncr3_gpa = vm->stage2_mmu.pgd;
- 
-@@ -122,7 +124,7 @@ void generic_svm_setup(struct svm_test_data *svm, void *guest_rip, void *guest_r
- 	ctrl->msrpm_base_pa = svm->msr_gpa;
- 
- 	vmcb->save.rip = (u64)guest_rip;
--	vmcb->save.rsp = (u64)guest_rsp;
-+	vmcb->save.rsp = (u64)svm->stack;
- 	guest_regs.rdi = (u64)svm;
- 
- 	if (svm->ncr3_gpa) {
-diff --git a/tools/testing/selftests/kvm/lib/x86/vmx.c b/tools/testing/selftests/kvm/lib/x86/vmx.c
-index 7c10ba6e6fb40..36aa108088ddd 100644
---- a/tools/testing/selftests/kvm/lib/x86/vmx.c
-+++ b/tools/testing/selftests/kvm/lib/x86/vmx.c
-@@ -116,6 +116,8 @@ vcpu_alloc_vmx(struct kvm_vm *vm, gva_t *p_vmx_gva)
- 	vmx->vmwrite_gpa = addr_gva2gpa(vm, (uintptr_t)vmx->vmwrite);
- 	memset(vmx->vmwrite_hva, 0, getpagesize());
- 
-+	vmx->stack = (void *)vm_alloc_stack(vm, 1);
++/* PMC configurations: index corresponds to Host-Only | Guest-Only bits */
++#define PMC_NONE	0  /* Neither bit set */
++#define PMC_G		1  /* Guest-Only bit set */
++#define PMC_H		2  /* Host-Only bit set */
++#define PMC_HG		3  /* Both bits set */
++#define NR_PMCS		4
 +
- 	if (vm->stage2_mmu.pgd_created)
- 		vmx->eptp_gpa = vm->stage2_mmu.pgd;
- 
-@@ -370,7 +372,7 @@ void prepare_vmcs(struct vmx_pages *vmx, void *guest_rip, void *guest_rsp)
- {
- 	init_vmcs_control_fields(vmx);
- 	init_vmcs_host_state();
--	init_vmcs_guest_state(guest_rip, guest_rsp);
-+	init_vmcs_guest_state(guest_rip, vmx->stack);
- }
- 
- bool kvm_cpu_has_ept(void)
++#define LOOP_INSNS	1000
++
++static __always_inline void run_instruction_loop(void)
++{
++	unsigned int i;
++
++	for (i = 0; i < LOOP_INSNS; i++)
++		__asm__ __volatile__("nop");
++}
++
++static __always_inline void read_counters(uint64_t *counts)
++{
++	int i;
++
++	for (i = 0; i < NR_PMCS; i++)
++		counts[i] = rdmsr(MSR_F15H_PERF_CTR + 2 * i);
++}
++
++static __always_inline void run_and_measure(uint64_t *deltas)
++{
++	uint64_t before[NR_PMCS], after[NR_PMCS];
++	int i;
++
++	read_counters(before);
++	run_instruction_loop();
++	read_counters(after);
++
++	for (i = 0; i < NR_PMCS; i++)
++		deltas[i] = after[i] - before[i];
++}
++
++static void assert_pmc_counts(uint64_t *deltas, unsigned int expected_counting)
++{
++	int i;
++
++	for (i = 0; i < NR_PMCS; i++) {
++		if (expected_counting & BIT(i))
++			GUEST_ASSERT_NE(deltas[i], 0);
++		else
++			GUEST_ASSERT_EQ(deltas[i], 0);
++	}
++}
++
++static uint64_t l2_deltas[NR_PMCS];
++
++static void l2_guest_code(void)
++{
++	run_and_measure(l2_deltas);
++	vmmcall();
++}
++
++static void l1_guest_code(struct svm_test_data *svm)
++{
++	struct vmcb *vmcb = svm->vmcb;
++	uint64_t deltas[NR_PMCS];
++	uint64_t eventsel;
++	int i;
++
++	/* Program 4 PMCs with all combinations of Host-Only/Guest-Only bits */
++	for (i = 0; i < NR_PMCS; i++) {
++		eventsel = EVENTSEL_RETIRED_INSNS;
++		if (i & PMC_G)
++			eventsel |= AMD64_EVENTSEL_GUESTONLY;
++		if (i & PMC_H)
++			eventsel |= AMD64_EVENTSEL_HOSTONLY;
++		wrmsr(MSR_F15H_PERF_CTL + 2 * i, eventsel);
++		wrmsr(MSR_F15H_PERF_CTR + 2 * i, 0);
++	}
++
++	/* Step 1: SVME=0 - Only the counter with neither bits set counts */
++	wrmsr(MSR_EFER, rdmsr(MSR_EFER) & ~EFER_SVME);
++	run_and_measure(deltas);
++	assert_pmc_counts(deltas, BIT(PMC_NONE));
++
++	/* Step 2: Set SVME=1 - In L1 "host mode"; Guest-Only stops */
++	wrmsr(MSR_EFER, rdmsr(MSR_EFER) | EFER_SVME);
++	run_and_measure(deltas);
++	assert_pmc_counts(deltas, BIT(PMC_NONE) | BIT(PMC_H) | BIT(PMC_HG));
++
++	/* Step 3: VMRUN to L2 - In "guest mode"; Host-Only stops */
++	generic_svm_setup(svm, l2_guest_code);
++	vmcb->control.intercept &= ~(1ULL << INTERCEPT_MSR_PROT);
++
++	run_guest(vmcb, svm->vmcb_gpa);
++
++	GUEST_ASSERT_EQ(vmcb->control.exit_code, SVM_EXIT_VMMCALL);
++	assert_pmc_counts(l2_deltas, BIT(PMC_NONE) | BIT(PMC_G) | BIT(PMC_HG));
++
++	/* Step 4: After VMEXIT to L1 - Back in "host mode"; Guest-Only stops */
++	run_and_measure(deltas);
++	assert_pmc_counts(deltas, BIT(PMC_NONE) | BIT(PMC_H) | BIT(PMC_HG));
++
++	/* Step 5: Set KVM_PMU_EVENT_DENY - all counters stop */
++	GUEST_SYNC(KVM_PMU_EVENT_DENY);
++	run_and_measure(deltas);
++	assert_pmc_counts(deltas, 0);
++
++	/* Step 6: Set KVM_PMU_EVENT_ALLOW - back to all except Guest-only */
++	GUEST_SYNC(KVM_PMU_EVENT_ALLOW);
++	run_and_measure(deltas);
++	assert_pmc_counts(deltas, BIT(PMC_NONE) | BIT(PMC_H) | BIT(PMC_HG));
++
++	/* Step 7: Clear Host-Only for PMC_HG - counter stops in "host mode" */
++	eventsel = rdmsr(MSR_F15H_PERF_CTL + 2 * PMC_HG);
++	wrmsr(MSR_F15H_PERF_CTL + 2 * PMC_HG, eventsel & ~AMD64_EVENTSEL_HOSTONLY);
++	run_and_measure(deltas);
++	assert_pmc_counts(deltas, BIT(PMC_NONE) | BIT(PMC_H));
++
++	/* Step 8: Restore Host-Only for PMC_HG - counter counts again */
++	wrmsr(MSR_F15H_PERF_CTL + 2 * PMC_HG, eventsel);
++	run_and_measure(deltas);
++	assert_pmc_counts(deltas, BIT(PMC_NONE) | BIT(PMC_H) | BIT(PMC_HG));
++
++	/* Step 9: Clear SVME - Only the counter with neither bits set counts */
++	wrmsr(MSR_EFER, rdmsr(MSR_EFER) & ~EFER_SVME);
++	run_and_measure(deltas);
++	assert_pmc_counts(deltas, BIT(PMC_NONE));
++
++	GUEST_DONE();
++}
++
++static struct kvm_pmu_event_filter *alloc_event_filter(u64 event)
++{
++	struct kvm_pmu_event_filter *filter;
++
++	filter = malloc(sizeof(*filter) + sizeof(event));
++	TEST_ASSERT(filter != NULL, "Filter allocation failed");
++
++	memset(filter, 0, sizeof(*filter));
++	memcpy(filter->events, &event, sizeof(event));
++	filter->nevents = 1;
++	filter->action = KVM_PMU_EVENT_ALLOW;
++
++	return filter;
++}
++
++int main(int argc, char *argv[])
++{
++	struct kvm_pmu_event_filter *filter;
++	struct kvm_vcpu *vcpu;
++	struct kvm_vm *vm;
++	struct ucall uc;
++	gva_t svm_gva;
++
++	TEST_REQUIRE(kvm_cpu_has(X86_FEATURE_SVM));
++	TEST_REQUIRE(kvm_is_pmu_enabled());
++	TEST_REQUIRE(get_kvm_amd_param_bool("enable_mediated_pmu"));
++	TEST_REQUIRE(host_cpu_is_amd && kvm_cpu_family() >= 0x17);
++
++	vm = vm_create_with_one_vcpu(&vcpu, l1_guest_code);
++
++	vcpu_alloc_svm(vm, &svm_gva);
++	vcpu_args_set(vcpu, 1, svm_gva);
++
++	filter = alloc_event_filter(AMD_ZEN_INSTRUCTIONS_RETIRED);
++
++	for (;;) {
++		vcpu_run(vcpu);
++		TEST_ASSERT_KVM_EXIT_REASON(vcpu, KVM_EXIT_IO);
++
++		switch (get_ucall(vcpu, &uc)) {
++		case UCALL_ABORT:
++			REPORT_GUEST_ASSERT(uc);
++			goto done;
++		case UCALL_DONE:
++			goto done;
++		case UCALL_SYNC:
++			filter->action = uc.args[1];
++			vm_ioctl(vm, KVM_SET_PMU_EVENT_FILTER, filter);
++			break;
++		default:
++			TEST_FAIL("Unknown ucall %lu", uc.cmd);
++			goto done;
++		}
++	}
++done:
++	kvm_vm_free(vm);
++	return 0;
++}
 -- 
 2.54.0.794.g4f17f83d09-goog
 
