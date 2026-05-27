@@ -1,95 +1,114 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.17])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f202.google.com (mail-pf1-f202.google.com [209.85.210.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 124543CA493
-	for <kvm@vger.kernel.org>; Wed, 27 May 2026 22:14:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7325A36728F
+	for <kvm@vger.kernel.org>; Wed, 27 May 2026 22:17:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779920054; cv=none; b=ekl+qHGqJqpESPuHv7OrbSbWiMvet/ac/0lEkmf+1bHk8Nu2eOhx1w1jrYrJcpRu5kK3IR7pUJ/VPKGkzWoDdjgn9G7CizckLoAu9IKAUSvthSR/lzuzQ2ghfj3BgTDg0kq9kJ9ZuulFNsFSHLvD+SyTtOSU0OIG6L6r9CK73GY=
+	t=1779920280; cv=none; b=FAglSaVCK3o0LR0EVt6yRiDzqkY1BDbqtfP9jLVFOvGKl+bpizPBD2FZvjdu7s77eOO9uyvUOlMUzqxFGorM0dRs6WnCT56JVsrsI7TN/mvXzFdwpczwbG23+ODcVdpHk2oMX3ZvlPEM87aZUXuYAQ/VHpw0Na3k2UxIV3XLzsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779920054; c=relaxed/simple;
-	bh=Ll4UsZuRNoQNy362Gt9SkZVf4O4AWcOWQWFPjNXElKc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=evrDUwsq6hWuFHDyfZ1eaGxCRLE4jRmhdhDG2RBViItIWhuVudWUwFBbG19UHxs4H7AMCW6+EjhcPbrf02C5abzHhhL8uileIG71AMNKOEH4Czq3DqI+aGm8prXSWKPnLJjQt+R508Wyk1v7xyUKWZtL6DSzQexbDIxRGfzaYe4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=EDy2BTyz; arc=none smtp.client-ip=192.198.163.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1779920280; c=relaxed/simple;
+	bh=1sxaT2yKT87FBjAklG3y4fjte2ftGz9EHca3CrIXFgw=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=cxksfjpUqFSHgFrUA++m1ufRUNqEYqlHr1e/3/FCV6hRTaE4Kc3dhRlxmLD62/Q2SI3OERX+TETubHUv7IU75QmqAPERdrbRjGQXXyiTv/FqQYgUr0tocaD+e8Dokku0zZvy7X/e0k9tu2gbjF4mpEaMUU7UM8agW8oYipFBbkA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=f/ZualOn; arc=none smtp.client-ip=209.85.210.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="EDy2BTyz"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1779920053; x=1811456053;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=Ll4UsZuRNoQNy362Gt9SkZVf4O4AWcOWQWFPjNXElKc=;
-  b=EDy2BTyzqhjeopLmH8cniHMhKBTWKUQzCP3+hP+fnmWbL2Li10j3+btt
-   2i9B6NGwl+Nvn0Hmpz1PxH9EUpDS6+1sHZ5k165uO6oCjil+eUUUwd0sp
-   bAzdRFFhAHEnb86NUtybEmr07IcQsyDlp9lEEDmhu5B00BNQWl6m1acgc
-   vF7G+GZdOVKr1yR0MtXlyIZc/3u3r/j7JzDNS2ALTXoQLb5bs1YtZOPN4
-   lZRyD8XUkaZ3RlwIK3/63vnpAdAvljt+wU+J97+wDVkNaig3r03WpjkcN
-   0e7v+fCDML4lQUptiNT93ktKrn4xlCC2WGi96sAbdRSxsUV+K7htuME+Y
-   Q==;
-X-CSE-ConnectionGUID: qK9xeZPoTOaf3IFArizLGQ==
-X-CSE-MsgGUID: ThrTiaWJTO2MEpOpHlevtA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11799"; a="80615407"
-X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
-   d="scan'208";a="80615407"
-Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by fmvoesa111.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 15:14:12 -0700
-X-CSE-ConnectionGUID: gWDSD+4RTPq+tzCKzK1nPg==
-X-CSE-MsgGUID: UmlhxepqSbCuFl7Er87mYA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.24,172,1774335600"; 
-   d="scan'208";a="239362556"
-Received: from rpedgeco-desk.jf.intel.com ([10.88.27.139])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 May 2026 15:14:12 -0700
-From: Rick Edgecombe <rick.p.edgecombe@intel.com>
-To: kas@kernel.org,
-	dave.hansen@linux.intel.com,
-	x86@kernel.org,
-	linux-coco@lists.linux.dev,
-	kvm@vger.kernel.org,
-	pbonzini@redhat.com,
-	seanjc@google.com
-Cc: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Subject: [PATCH] MAINTAINERS: Move Rick Edgecombe to TDX maintainer
-Date: Wed, 27 May 2026 15:13:42 -0700
-Message-ID: <20260527221342.415814-1-rick.p.edgecombe@intel.com>
-X-Mailer: git-send-email 2.54.0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="f/ZualOn"
+Received: by mail-pf1-f202.google.com with SMTP id d2e1a72fcca58-82f6e6a3a76so14226050b3a.0
+        for <kvm@vger.kernel.org>; Wed, 27 May 2026 15:17:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20251104; t=1779920279; x=1780525079; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=vJUvpxMykDcZEh8E5S70X1RGAlIIE45ie8Q8d7UxZhY=;
+        b=f/ZualOntV9OlXt11saxi9h32w3s+NbpEWXiv+gmaBCU4jlTw2HB0Gi+KSii7x0uzf
+         1agvCb1D/c5DgR/Fj0oVU0E0ZuX3tGA93xe5oFegPPZ7d1YRQNnw+RsaiYBG2QLgE8ns
+         P9yOk8Aj1h7rNiV7NAJMh/9DNmnAi9Wds9kSHWa2KwhjJLjBhmCDY5lf3nzlu73faKdx
+         zBed7NujFjx4357ipANZTgQEdkXWyMTSmicWGbpwLHZujZAbyT1WPr73R86Z/rR0DKCr
+         bYjsp0xmJin1kqTzxS93fs5X+XIR8yYOvZoO1Um0/Wsf7LlW/yxXLoc8B1DkTGd9zfyD
+         mahQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779920279; x=1780525079;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=vJUvpxMykDcZEh8E5S70X1RGAlIIE45ie8Q8d7UxZhY=;
+        b=s/5HoKyTaGrcI1xtzdBIFnDwGik8UW4rhpgsteOdb/2teI5SFYgf6w2KC/L5HgQPz0
+         k7fuwbfWZ2lfwOou9kkmylfuDBgSIJFlzRvCIDq+O/m3bWLhRDVLQC8OXqhm4BB0PAPg
+         SBhtwy6LUaVeVZjLgAyu7wThNd9GABp5TkdXBpsvKuPQtUqOOEIsjG3m7sb8zyocRlGb
+         /EgdRzsgLb2Y9d1qy1BOcRQXruZUhulCbpwrNVKTNynQ8vLH8ZZjcMCOekVE0Mv/wvTd
+         tsIiKOeycmcTia9nuGvuGDguidvH44EwobjqDdkmOC1Yuic0w6XR+M6uyUFTLCeLQVfO
+         iW1Q==
+X-Forwarded-Encrypted: i=1; AFNElJ/la+a6sb22CZNjexWeXcjW8qo6EaGhsVVtdRorb6Fo4TwbTLthbtwKr0Htnqcw1lD+tHo=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy465uMgGWbBnzI0YL/Krd663CsjhqDdNpJpLCcR7uddgdXtfBG
+	ygBQGU26SvYH5DAN3/Hk+4zy/hJUV8B1GmSGJRL+clkGEzLLrQ60737Mb5yiRtaBtJTnYLHX2ic
+	YElfIAg==
+X-Received: from pfbim9.prod.google.com ([2002:a05:6a00:8d89:b0:82f:a396:2232])
+ (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a05:6a00:3a09:b0:83e:c8fb:54df
+ with SMTP id d2e1a72fcca58-8415f3add4cmr24266333b3a.2.1779920278475; Wed, 27
+ May 2026 15:17:58 -0700 (PDT)
+Date: Wed, 27 May 2026 15:17:57 -0700
+In-Reply-To: <bb2a3905fb2fefe815ec482b7eaed5f7d7bd2a3d.camel@intel.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20260509075201.4077-1-yan.y.zhao@intel.com> <20260509075357.4113-1-yan.y.zhao@intel.com>
+ <ahc3hmTa3TiOTZv6@google.com> <bb2a3905fb2fefe815ec482b7eaed5f7d7bd2a3d.camel@intel.com>
+Message-ID: <ahdtlXPnU_sZ04XU@google.com>
+Subject: Re: [PATCH v2 01/15] KVM: TDX: Drop kvm_x86_ops.link_external_spt()
+From: Sean Christopherson <seanjc@google.com>
+To: Rick P Edgecombe <rick.p.edgecombe@intel.com>
+Cc: Yan Y Zhao <yan.y.zhao@intel.com>, Dave Hansen <dave.hansen@intel.com>, 
+	Kai Huang <kai.huang@intel.com>, "kas@kernel.org" <kas@kernel.org>, 
+	"binbin.wu@linux.intel.com" <binbin.wu@linux.intel.com>, "x86@kernel.org" <x86@kernel.org>, 
+	"linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>, Xiaoyao Li <xiaoyao.li@intel.com>, 
+	"kvm@vger.kernel.org" <kvm@vger.kernel.org>, "pbonzini@redhat.com" <pbonzini@redhat.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-Per some offline discussion with Kiryl, he could use some help on the TDX
-host side. I have worked on the TDX host side for the past few years
-including wrangling the initial KVM support, and can help with this.
+On Wed, May 27, 2026, Rick P Edgecombe wrote:
+> On Wed, 2026-05-27 at 11:27 -0700, Sean Christopherson wrote:
+> > > Signed-off-by: Sean Christopherson <seanjc@google.com>
+> > > [Rick: add in trivial feedback]
+> > > Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+> > > Signed-off-by: Yan Zhao <yan.y.zhao@intel.com>
+> > > ---
+> > > MMU_refactors v2:
+> > > - Moved this patch to the very beginning of the series so that when
+> > > =C2=A0=C2=A0 warnings like "KVM_BUG_ON(!is_shadow_present_pte(new_spt=
+e), kvm)" are
+> > > =C2=A0=C2=A0 removed from __tdp_mmu_set_spte_atomic() in TDP MMU in a=
+ later patch, the
+> > > =C2=A0=C2=A0 atomic zap change can be propagated via the .set_externa=
+l_spte() op.
+> > > =C2=A0=C2=A0 (Yan).
+> > >=20
+> > > MMU_refactors v1:
+> > > =C2=A0 - rename external_spt->sept_pt (Rick, Yan)
+> >=20
+> > Put the versioning info below the "---" that delineates the diff, other=
+wise
+> > `git am` adds it to the changelog.
+>=20
+> Hmm, it doesn't for me. The higher "---" gets picked up. Just tested on t=
+his
+> patch and the version logs are dropped after git am.
+>=20
+> I use format Yan has here to keep the version logs in the commit in the g=
+it
+> tree. Then when sending out, it automatically gets dropped by the first a=
+pplier.
 
-I am already listed as TDX reviewer. Move it to maintainer.
+I'm a dumbass.  I didn't apply these, I pulled down the github branch, beca=
+use
+I couldn't get them to apply cleanly.  /facepalm
 
-Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
-Cc: Kiryl Shutsemau <kas@kernel.org>
-Cc: Dave Hansen <dave.hansen@linux.intel.com>
----
- MAINTAINERS | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Actually applying them does indeed work as intended.
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 882214b0e7db5..a838ff047d891 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -28943,8 +28943,8 @@ F:	arch/x86/kernel/unwind_*.c
- 
- X86 TRUST DOMAIN EXTENSIONS (TDX)
- M:	Kiryl Shutsemau <kas@kernel.org>
-+M:	Rick Edgecombe <rick.p.edgecombe@intel.com>
- R:	Dave Hansen <dave.hansen@linux.intel.com>
--R:	Rick Edgecombe <rick.p.edgecombe@intel.com>
- L:	x86@kernel.org
- L:	linux-coco@lists.linux.dev
- L:	kvm@vger.kernel.org
--- 
-2.54.0
-
+Sorry, and thanks!
