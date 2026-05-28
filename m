@@ -1,151 +1,156 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-alma10-1.taild15c8.ts.net [100.103.45.18])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 670C63612D8;
-	Thu, 28 May 2026 10:22:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=100.103.45.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54533C3BF5
+	for <kvm@vger.kernel.org>; Thu, 28 May 2026 10:50:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1779963736; cv=none; b=eiNzv9OaP/XUT3cudfQmSbhqo6D+NJGYCK8WO+VRUz2MpYYrK3Vk53F+vGa+jzb2vpA+H9L7duV4nmUBqiC2X14FW1F2hVm5dcnqmWxl3aw+rjYqjXrmSNBK8NTXf2Zt/VTngBEFx4+YC8B/C+foewFYxSOxmj5zUE9KhlroNDo=
+	t=1779965409; cv=none; b=a+aoV7n1NcFcHNch8iyWP0+SChYFBRGFvYHefZe1PnNfJBWowrXDLrFIvBoL4PlZwFjqc4LfgSIYdwdqtaAKXC8ut9RuA1OCBwaBeDqzOkwmWVzK845yOThMjNGOxeMfZWCPbbo/xyKx0RdtC96Kzb748Ppq9MRKKg2WOkkdKnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1779963736; c=relaxed/simple;
-	bh=hXn7ZvPzhthx+OdAaHDKUl2queVc/bnAHoooLyWA5ZA=;
-	h=From:Subject:To:Cc:In-Reply-To:References:Content-Type:Date:
-	 Message-Id; b=IramauJVyOhlg0zfk1YOTtqzylTi+7hUQdJLw4flkozc/b8H4seT7Tkg+eYqLWnbNBxz+H+z98QdiBIPyaEBxQ6VvzNwhuKYACsb3OsQOkSSQ5l7Xapvyj6aUd0y4sbz6DwHM/KFJsQWZaKBuNTq1hyzko+sOhyRZ55QjzCyD3E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=e/ewSVdp; arc=none smtp.client-ip=100.103.45.18
+	s=arc-20240116; t=1779965409; c=relaxed/simple;
+	bh=eCJWbK5m+tNvzAyjDy46Navw29cBVreFmRG2Woa1MAw=;
+	h=From:To:Cc:Subject:In-Reply-To:Date:Message-ID:References; b=nmdlXuVLV4KiErh7dEFFudMI7GrVkDIep07vstUbMsKP/MqJffmFzzrnIIu5TjPLU/q7XOvuWQgamxooLdkDSFkAXSWfozIQtw3+ulWhIjFbJfV8ulHIsrfmEOAwbpCZ6PGN1DkIhgs0ByX+f25nA5GdxZFfPTUDQjqcsw8QWZY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HuqAh1/r; arc=none smtp.client-ip=209.85.214.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="e/ewSVdp"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D221F000E9;
-	Thu, 28 May 2026 10:22:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kernel.org;
-	s=k20260515; t=1779963735;
-	bh=0sv7qFHe7C9PU5aBfxhtmDXPIWcf4oqJAJXq2oF5Msc=;
-	h=From:Subject:Reply-To:To:Cc:In-Reply-To:References:Date;
-	b=e/ewSVdpEsM227NTwG2WmGM5kv3KGc7bqRy/NcP0naRdGo+p4gh6OGEhAg4/pOmY9
-	 howEz0CwT0fR0AYd2JMrr5V8TDvKiPDWA5FFn9DJDSDZym0G/L9eu98mdiDjE7b9Ow
-	 7srq6wfzEVtxfrtwU+hmO01v8s0aewjG+m+S4MusYmYCO5TzCYkmLTV5Kn09LNzn80
-	 yRznyZ5uUlMPuNfh0OCOyVMJCYStFfRjvdoxO3O4xfRaiwliL3ZiusywUjXsuTClvu
-	 Y3Px0Z4qB0vBhLUiLrQG4u8r9b4F/cpiVGsJOwYagkwbr3XcsBsKigc08C+sCOoW88
-	 NW8PEDbLTWelg==
-From: sashiko-bot@kernel.org
-Subject: Re: [PATCH v7 1/1] vfio/nvgrace-gpu: Add Blackwell-Next GPU
- readiness check via CXL DVSEC
-Reply-To: sashiko-reviews@lists.linux.dev
-To: "Ankit Agrawal" <ankita@nvidia.com>
-Cc: linux-pci@vger.kernel.org, kvm@vger.kernel.org
-In-Reply-To: <20260528093840.4018-1-ankita@nvidia.com>
-References: <20260528093840.4018-1-ankita@nvidia.com>
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-Date: Thu, 28 May 2026 10:22:14 +0000
-Message-Id: <20260528102214.D2D221F000E9@smtp.kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HuqAh1/r"
+Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-2bf125989f2so1575535ad.3
+        for <kvm@vger.kernel.org>; Thu, 28 May 2026 03:50:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20251104; t=1779965407; x=1780570207; darn=vger.kernel.org;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=46bMWh+gCQYzpY1dEMifCzkdbqK+/RCfas0dsX6v9EQ=;
+        b=HuqAh1/roKoG0hIctEWFdBb2sH5x3sG2/KhuwkiE/htE7DObP/e0nm/OoTr1AuHstG
+         ZE1djmIQWj0O8yMOmrZskKqt72gfx4cqqad7Wru2eTIN9iP6XtUnF3nx/I2Afqdyv5Nr
+         aiZWZMU5dlll+8A6ztSaMyxo31dMWxI89v1r1w7QJsa//Ib1dFhdz7+sZOHepzbzITAT
+         3eK/KcG9au19qgI0xrojwTeDJArN1MMu/mTEX3ZcRLBoPkznIOpYyaWi9ZPN5xFluz5t
+         ITu9hC4Bv5EasiDfhr8zuuuV1odUJ4kSiPhy2iJE6NAUbfLYNtA1x5DBm2umglUA0Y3M
+         Kr7w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20251104; t=1779965407; x=1780570207;
+        h=references:message-id:date:in-reply-to:subject:cc:to:from:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=46bMWh+gCQYzpY1dEMifCzkdbqK+/RCfas0dsX6v9EQ=;
+        b=MqBrxPpMG6a2UR5RZRdDomr1jn545CNwBGEn0e1hiQ44Z3aZ7btAQ4q7a21GYvrfmB
+         4Sr3H1N1tbnZ6fy636Skt1JLHkA4G1PcQsRfDzfk2FM+Y0v2TDOHURNUaORTsPgQ4KcC
+         io+3PQD3znRSYeWsrRTPjPLy03BKXu3OczA22g4pemwwWX2tNAR5H32DzWba7dvM5Gta
+         Y6YqcqgV0KbnTMmd7BBPyLSW5p7PRxRJT8qQ50cwpoIKzW2kUWb3n1AnVIMUa4jnZfgs
+         pIbrsN8oOjX98PaP5FG+PZqt6tfqJZ/QQpAKKMJzuzzy/EtkGf204gz/9dN6FobccbWz
+         CJIg==
+X-Forwarded-Encrypted: i=1; AFNElJ9ry8m1QooKR+X6OAJpEgMu1rEkaiIu+MqXfem3NGv4h7FwlYp/Z6x2ffAznRfNn1fcrFc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw/O0J9mod1zlDf1m7kkTnqamBYJUjDiexKDI/qFWeKyslzgqcH
+	ka3MvuSJD8HiSKuv1jJDj8qPe8cm8xFUBHa0+qcu/Hm9g59taCoC5tTm
+X-Gm-Gg: Acq92OE2BaHr+XgMiHUc3xH0eI36KSfCN5AaPROJnMKoHQMon+DiGp6fBbFUuul9ffq
+	Euc1upN/iZsZraEFUleNL6bZoeCqOihZsh7y/Y7+tNvrWSHlb0EN4tAQ+IIZqHbXZ0+g8nLrjhr
+	Nkm59Wazgr9DUeioNMmS7YRq5KVhXeA+HqGgBWQGKovmIFP94EAXw3+sbRj19Et7gRhP4C1DLuO
+	PzioG/wlpynFgqqQTROIbeN+YMEG6drKwseyrAIEYz7sVMLKSmhl2SUcOnWQJr2aGur07xC4ImU
+	37ZsWu9H5Tz9CMdrh3PNSVhs6JcxAIbwGwaYYZDWTTOmpjucxFm0HStwAKshQaIOldqZFODNfAO
+	+zsNUMg+vhK169ee5rEcUe/aglL4CQOuqigK9Vwsls5fPIZffxhRuyxVNVxiKrNaQxPgqM8yk3a
+	40TlvnYj9wkXuzCCsrBUgN6AmSZ4H7tAqF
+X-Received: by 2002:a17:902:e845:b0:2ba:4f37:d3a7 with SMTP id d9443c01a7336-2beb06a63c6mr311583635ad.27.1779965407101;
+        Thu, 28 May 2026 03:50:07 -0700 (PDT)
+Received: from pve-server ([49.205.216.49])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2beb56bc151sm180571765ad.24.2026.05.28.03.50.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 28 May 2026 03:50:06 -0700 (PDT)
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+To: Amit Machhiwal <amachhiw@linux.ibm.com>, linuxppc-dev@lists.ozlabs.org, Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Vaibhav Jain <vaibhav@linux.ibm.com>, Amit Machhiwal <amachhiw@linux.ibm.com>, Anushree Mathur <anushree.mathur@linux.ibm.com>, Paolo Bonzini <pbonzini@redhat.com>, Nicholas Piggin <npiggin@gmail.com>, Michael Ellerman <mpe@ellerman.id.au>, "Christophe Leroy (CS GROUP)" <chleroy@kernel.org>, Jonathan Corbet <corbet@lwn.net>, Shuah Khan <skhan@linuxfoundation.org>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, lkp@intel.com
+Subject: Re: [PATCH v3 1/5] KVM: PPC: Book3S HV: Validate arch_compat against host compatibility mode
+In-Reply-To: <20260522152744.55251-2-amachhiw@linux.ibm.com>
+Date: Thu, 28 May 2026 08:43:04 +0530
+Message-ID: <pl2g6xbz.ritesh.list@gmail.com>
+References: <20260522152744.55251-1-amachhiw@linux.ibm.com> <20260522152744.55251-2-amachhiw@linux.ibm.com>
 Precedence: bulk
 X-Mailing-List: kvm@vger.kernel.org
 List-Id: <kvm.vger.kernel.org>
 List-Subscribe: <mailto:kvm+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:kvm+unsubscribe@vger.kernel.org>
 
-Thank you for your contribution! Sashiko AI review found 2 potential issue(=
-s) to consider:
-- [High] TOCTOU race in lockless device readiness checks causes unexpected =
--EAGAIN or VM_FAULT_SIGBUS errors instead of waiting for the device.
-- [High] The 256-second device readiness polling uses uninterruptible `msle=
-ep()` loops, which can trigger hung task panics and renders user tasks unki=
-llable.
---
+Amit Machhiwal <amachhiw@linux.ibm.com> writes:
 
-commit a85819b2171b67b275d15e9b87eb7447b4dd63a4
-Author: Ankit Agrawal <ankita@nvidia.com>
+> On IBM POWER systems, newer processor generations can operate in
+> compatibility modes corresponding to earlier generations. This becomes
+> relevant for nested virtualization, where nested KVM guests may need to
+> run with a specific processor compatibility level.
+>
+> Currently, when running a nested KVM guest (L2) inside a Power11 pSeries
+> logical partition (L1) booted in Power10 compatibility mode, the guest
+> fails to boot while setting 'arch_compat'. This happens because the CPU
+> class is derived from the hardware PVR (via mfspr()), which reflects the
+> physical processor generation (Power11), rather than the effective
+> compatibility mode (Power10).
+>
+> As a result, userspace may request a Power11 arch_compat for the L2
+> guest. However, the L1 partition, running in Power10 compatibility, has
+> only negotiated support up to Power10 with the Power Hypervisor (L0).
+> When H_SET_STATE is invoked with a Power11 Logical PVR, the hypervisor
 
-vfio/nvgrace-gpu: Add Blackwell-Next GPU readiness check via CXL DVSEC
+s/H_SET_STATE/H_GUEST_SET_STATE 
 
-Adds a CXL DVSEC-based readiness check for Blackwell-Next GPUs in addition
-to the existing legacy BAR0 polling. The device readiness is determined by
-polling the Memory_Active bit outside the memory lock for up to 256 seconds.
+> rejects the request, leading to a late guest boot failure:
+>
+>   KVM-NESTEDv2: couldn't set guest wide elements
+>   [..KVM reg dump..]
+>
 
-> diff --git a/drivers/vfio/pci/nvgrace-gpu/main.c b/drivers/vfio/pci/nvgra=
-ce-gpu/main.c
-> index fa056b69f899a..04fcc0d088f54 100644
-> --- a/drivers/vfio/pci/nvgrace-gpu/main.c
-> +++ b/drivers/vfio/pci/nvgrace-gpu/main.c
+I think irrespective of the other UAPI changes, we should still get this
+fixed - so that we don't see a late KVM guest boot failure msgs.
 
-[ ... ]
+So, in this review, I would like to mainly look at fixing this issue
+first and would request if we can defer the UAPI changes as a separate
+patch series please.
 
-> +static int nvgrace_gpu_wait_device_ready_cxl(struct nvgrace_gpu_pci_core=
-_device *nvdev)
-> +{
-> +	unsigned long deadline =3D jiffies + msecs_to_jiffies(POLL_QUANTUM_MS);
-> +	bool active_phase =3D false;
-> +	u32 status;
-> +	int ret;
-> +
-> +	for (;;) {
 
-[ ... ]
+> This situation should be detected earlier. Rejecting unsupported
+> 'arch_compat' values in 'kvmppc_set_arch_compat()' avoids issuing an
+> invalid H_SET_STATE hcall and provides a clearer failure mode.
 
-> +		if (time_after(jiffies, deadline))
-> +			return -ETIME;
-> +
-> +		msleep(POLL_QUANTUM_MS);
-> +	}
-> +}
+s/H_SET_STATE/H_GUEST_SET_STATE
 
-[Severity: High]
-Will this uninterruptible sleep trigger hung task panics?
+>
+> Add a check to reject Power11 'arch_compat' requests when the host is
+> running in Power10 compatibility mode, returning -EINVAL early instead
+> of deferring the failure to the hypervisor.
+>
+> Suggested-by: Vaibhav Jain <vaibhav@linux.ibm.com>
+> Tested-by: Anushree Mathur <anushree.mathur@linux.ibm.com>
+> Signed-off-by: Amit Machhiwal <amachhiw@linux.ibm.com>
+> ---
+>  arch/powerpc/kvm/book3s_hv.c | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
+>
+> diff --git a/arch/powerpc/kvm/book3s_hv.c b/arch/powerpc/kvm/book3s_hv.c
+> index 61dbeea317f3..249d1f2e4e2c 100644
+> --- a/arch/powerpc/kvm/book3s_hv.c
+> +++ b/arch/powerpc/kvm/book3s_hv.c
+> @@ -446,7 +446,19 @@ static int kvmppc_set_arch_compat(struct kvm_vcpu *vcpu, u32 arch_compat)
+>  			guest_pcr_bit = PCR_ARCH_300;
+>  			break;
+>  		case PVR_ARCH_31:
+> +			guest_pcr_bit = PCR_ARCH_31;
+> +			break;
+>  		case PVR_ARCH_31_P11:
+> +			/*
+> +			 * Need to check this for ISA 3.1, as Power10 and
+> +			 * Power11 share the same PCR. For any subsequent ISA
+> +			 * versions, this will be taken care of by the guest vs
+> +			 * host PCR comparison below.
+> +			 */
+> +			if ((PVR_ARCH_31 & cur_cpu_spec->pvr_mask) ==
+> +				cur_cpu_spec->pvr_value) {
+> +				return -EINVAL;
+> +			}
 
-Since the CXL device readiness can take up to 256 seconds and msleep() plac=
-es
-the task in the TASK_UNINTERRUPTIBLE state, processes accessing the device
-during a reset will become unresponsive and immune to signals (including
-SIGKILL) for up to 4 minutes.
+Instead of the complicated check can we simply do this?
+			if (!cpu_has_feature(CPU_FTR_P11_PVR))
+				return -EINVAL;
 
-With the default Linux hung_task_timeout_secs at 120 seconds, blocking here
-is highly likely to trigger the hung task detector and cause a kernel panic
-on systems with hung_task_panic enabled. Would it be better to use an
-interruptible sleep and abort on pending fatal signals?
+which means that if the Qemu is trying to set the arch_compat with P11
+PVR (arch_compat) and if the host cpu FTR doesn't support P11 PVR, then
+simply return -EINVAL
 
-[ ... ]
+-ritesh
 
-> @@ -313,6 +399,21 @@ static vm_fault_t nvgrace_gpu_vfio_pci_huge_fault(st=
-ruct vm_fault *vmf,
->  	pfn =3D PHYS_PFN(memregion->memphys) + addr_to_pgoff(vma, addr);
-> =20
->  	if (is_aligned_for_order(vma, addr, pfn, order)) {
-> +		/*
-> +		 * Exit early under memory_lock to avoid a potentially lengthy
-> +		 * device readiness wait on a runtime-suspended device. Any
-> +		 * race after the lock is dropped is benign as the re-check
-> +		 * inside the scoped guard below catches it.
-> +		 */
-> +		scoped_guard(rwsem_read, &vdev->memory_lock) {
-> +			if (vdev->pm_runtime_engaged)
-> +				return VM_FAULT_SIGBUS;
-> +		}
-> +
-> +		if (nvdev->cxl_dvsec && READ_ONCE(nvdev->reset_done) &&
-> +		    nvgrace_gpu_wait_device_ready_cxl(nvdev))
-> +			return VM_FAULT_SIGBUS;
-
-[Severity: High]
-Can this lockless check race with a concurrent device reset and bypass the
-intended polling mechanism?
-
-If a concurrent device reset finishes and sets reset_done =3D true right af=
-ter
-this lockless check evaluates to false, the thread proceeds without polling
-and blocks waiting for memory_lock.
-
-Once the lock is acquired, the thread calls nvgrace_gpu_check_device_ready()
-which observes reset_done =3D=3D true and invokes the fallback
-nvgrace_gpu_test_device_ready_cxl() under the lock. Because this CXL test is
-non-blocking, it immediately returns -EAGAIN, causing
-nvgrace_gpu_vfio_pci_huge_fault() to return VM_FAULT_SIGBUS and crash user
-applications instead of waiting.
-
-> +
->  		scoped_guard(rwsem_read, &vdev->memory_lock) {
->  			if (vdev->pm_runtime_engaged ||
->  			    nvgrace_gpu_check_device_ready(nvdev))
-
---=20
-Sashiko AI review =C2=B7 https://sashiko.dev/#/patchset/20260528093840.4018=
--1-ankita@nvidia.com?part=3D1
